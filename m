@@ -1,84 +1,50 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-108-mta188.mxroute.com (mail-108-mta188.mxroute.com [136.175.108.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02784326939
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 04:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1091DD0EF
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 04:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787717738; cv=none; b=txr1hRbeO8e+Dg35KBi7ZWSlYVCQV1JYqFznc/nUKsYm6PJFXHBEbgMfvjXnCFnid9Zn5jJmzMOOYNZd7CNscHagLwJGUTSw8+aEuyohteRPY2UyvK0SKVjLwvU4nTSibwtSMCxH+SY9keCTmfCVbzOFCrS4SeDDy/v7XVHUIcs=
+	t=1787718920; cv=none; b=BhLb8ifyVWiMjHCx8fl9Qnx9WZNwPz/gjf6b1w/IUMRRz4zhZDbRo8m618FUWzyefLBXECHrRENc3D6oC4/0yU3I3bhVjW+trQSsV/IslYOJqH60cw7/qgkBpDbSbImOgAHVIQoaDxO4e8RTMTwHjBiYQjYiqJJVPuTS2mQ8TaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787717738; c=relaxed/simple;
-	bh=4ONt0gXh/2uHX6zYjWxw7ziwPFAUYEy4Miwa68YuEo4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kB+mMsNjcBuzVECQO8cnaw039Ba1pTuEAVtKdEVYr1M7z70LqABfit6Y6hBq11IsXKezKEOedyygkhpwjd4JlMgKLKEuzrcpRo2B8h8ZJSVFAtVDUA4xIgrLG4L/nah7T6p5xvZBaQ38TNUNnWxQE7HbJk0d+E4+8CD1FfwaX2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qRUvSnWZ; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787718920; c=relaxed/simple;
+	bh=ppjWMvWnwpjjCHsGiT3ie3GSioJ8Mxg4di63loirzbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUNJpkVnuLXeJK7Fpin9kxTL9Lnleta/sYKZ9mWBYwvjgzYo9+M6uk1Zv4k62HLgbIgM3aBY6HGXIUPTvP2zJrmvEBOky8sD+W4+WXn27ku9UU9JGtcAfQ0Ay6AwUxGkRYkWGxUk05JlF/r0fYoj9aJTe8e2bxwuB1K615++DJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wii.dev; spf=pass smtp.mailfrom=wii.dev; dkim=pass (2048-bit key) header.d=wii.dev header.i=@wii.dev header.b=aaxr33zF; arc=none smtp.client-ip=136.175.108.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wii.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wii.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qRUvSnWZ"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-836c718715fso4681007b3.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 21:15:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787717736; x=1788322536; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=np00EX9dbTGoqYjv7UUjptr42nQcnWt1jorSNIDNa/c=;
-        b=qRUvSnWZCPQIfhyLRibyMFsMqurZjKOJxG51cVW7lOya6H9nexTWD+WKoCdn6nOXIf
-         agu/AVay7YAcztdDrDnBljr7dUhlOt4+ZCdGOBkf4JrWYTnTfRG+6/06WKS0bGlLPvef
-         gvVy/h95yY5FkIQxyuS1+QoTtxFMMwZvl5ZPOErzQwrTCb9gY/OdhIiT+5VEbWv1+0/g
-         iJdNLR3QX1KVWudxOd/Po77esBWrnBH6GGcWuMr5TPeftL+Yq/gcUbWJKT1woIo+XOSw
-         LkfZOBSdWg/O2ii5pFslktF/wAM0zVx+AWgZKSxYOJL5fTfSontaJ/Xi+rd+uPGcJvOx
-         CWdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787717736; x=1788322536;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=np00EX9dbTGoqYjv7UUjptr42nQcnWt1jorSNIDNa/c=;
-        b=AM9fnzeTx9XR0bQKBRtnM6qfKCD7xkHLDNSuo/AchNrnMcmWSyW9Uwxbx1tI3+vwVg
-         GbBA2aieZtbHTzdCMbObQSsRmfIz87qXtFg28RTciNDQ7/Cj3dADB3u953NiM9dYUW3s
-         5/fw5ttROicVaXBpQgyYTRaywVpO/zJGVB1CJwPzOERQYVVhxbKqIxZhS+7yQ3xKQtZO
-         dx1sclCbW5MxNoi0qpGjw3/fkle5umUJH9n8kepkCYADOxBD2RWkIjFnLT2sjtE3ghgQ
-         GV8CLJPQOC9W4WlSQFMKHf7Bjge+F0xOfmsPZPHjH681gp2Y3smBD58O7emRaXHOvq4X
-         FGrQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr71RV4+DamYauZY+m09fNbddGS/dR1JASyH0dsaWaSYXmkmqR/8Kbvlvf69jPxDlVLav2MrtA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lDVFkHy6X8F9M7T7LC7YEof8qhEJmsBQiPGrQ+obXDBVzy90vV
-	gEpv5ldoqieBXUcP2OOaXEYNdqkue9+r6gbpDsEse4PBbpC8FTvwGIoL
-X-Gm-Gg: AR+sD13Lz93namsm8FXBj5lqGJjm86hSKVGEW51Z73tzA9EURcDx/0P+lkbWJIkwh35
-	KTtlF4w/Qzwyeu1N5l/j8on0KMgcwWwJyGKAHT1hxhLMFxZV6hc8HQJDnXV6/0aZmtc/u2gPSKT
-	g6s7YOWwg09PX0+Wx6Zz2ggu2XjPCRjAuMOhhn3pfN4WIujHRqdcog2Iq+2zKNRrFJPbISa0HJt
-	4zQ76wYOHUsOzBZltlGU9sMMn+rDkYjXgKyDPkKZu/K1KYwuOrDbLj3SiOF8clBBjUAKkGbkH+z
-	AfO1tQZ+hlCVnL9avRzKOL9hyzkDjVLSeTUMxSjvpl9YfsHn46bhegD4z+uCJ/JkGp7QhhvqSAQ
-	GTd6RFpjAGu2QARkaaNFnk+LfNCHW+OoaX5ZzjnKLRmWOmT7js8UIFw7H2CvIZkUEYJwWtpLu28
-	8+Wzrbg8P6UySe9N+g8P2s2Ei44XAVqxn0SYejrw/4L5G/q5PjBND0OwsCqEYiBAt+zB8=
-X-Received: by 2002:a05:690c:3747:b0:7db:a109:f12f with SMTP id 00721157ae682-8573be1b0bamr18128917b3.1.1787717735885;
-        Tue, 25 Aug 2026 21:15:35 -0700 (PDT)
-Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85705380b5esm10344257b3.8.2026.08.25.21.15.35
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 25 Aug 2026 21:15:35 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: ap420073@gmail.com
-Cc: AutonomousCodeSecurity@microsoft.com,
-	andrew+netdev@lunn.ch,
-	blbllhy@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kys@microsoft.com,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=wii.dev header.i=@wii.dev header.b="aaxr33zF"
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta188.mxroute.com (ZoneMTA) with ESMTPSA id 1a03c5522b30001089.007
+ for <netdev@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Wed, 26 Aug 2026 04:30:07 +0000
+X-Zone-Loop: b50bbaafc5351d3ae6d7cdd7106a33d0eef56fd46e7a
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wii.dev;
+	s=x; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:
+	From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=khyyse4THAMrfiJRYpQVeWwsft6Ni//0zfK96H9UO4U=; b=a
+	axr33zFtWtUmm0quhnZC5lWoMk1ZKi+1Jb5ygeGzljxLms8lvAsXMSFohnb2xUicarLvgnr3xhMwQ
+	WsU+KvOxvLlNK43Q++XrEGVa0Zp44oenQIlrouboUde0GyCwvzpVWJv4mVrQtVgOl4Ow2CIhOXjHd
+	b8dp31F0iq2RnfP7L8qgan8U0lxYmqugcbFTOUzkY9R3wII+zAEJpgAtnGyu23C5yiZJvTwRvoEiz
+	Fkttx2pEBxpcIC2ljtlJwzr0/FGd2cU1I8Jm7tAh+Tp8p9K6MfXxQqh6X8ZlA2t1kCAGJWvjH42UC
+	16L794EWpYUlh5fmIge8EOqBP1IJXx35w==;
+From: Richard Patel <ripatel@wii.dev>
+To: intel-wired-lan@lists.osuosl.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Steve Douthit <stephend@silicom-usa.com>,
 	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	tgopinath@linux.microsoft.com,
-	xmei5@asu.edu
-Subject: Re: [PATCH net] amt: do not store tunnel pointer in skb control block
-Date: Wed, 26 Aug 2026 00:15:29 -0400
-Message-ID: <20260826041529.46139-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <CAMArcTUmACRn_h2sthPwsi3jYjKWRM6+Pnhg=tN4jn4VZThHCA@mail.gmail.com>
-References: <CAMArcTUmACRn_h2sthPwsi3jYjKWRM6+Pnhg=tN4jn4VZThHCA@mail.gmail.com>
+	linux-kernel@vger.kernel.org,
+	Richard Patel <ripatel@wii.dev>
+Subject: [PATCH] ixgbe: fix MDIO bus leak when rejecting SFP module
+Date: Wed, 26 Aug 2026 04:29:45 +0000
+Message-ID: <20260826042945.2344686-1-ripatel@wii.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,36 +52,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: ripatel@wii.dev
 
-Thanks for the feedback. Just getting back to this thread.
+Plugging in an unsupported SFP module caused ixgbe NICs to get
+wedged permanently.
 
-On Thu, Aug 20, 2026 at 10:18:43PM +0900, Taehee Yoo wrote:
-> This looks like it adds a per-packet linear scan over all tunnels,
-> so I'm concerned about performance when there are many tunnels.
-> Do you have any idea how to avoid this regression?
+ixgbe unregisters the netdev when rejecting an SFP transceiver as
+unsupported.
 
-I see two possible approaches:
+  ixgbe 0000:3b:00.0: failed to initialize because an unsupported SFP+ module type was detected.
+  ixgbe 0000:3b:00.0: Reload the driver after installing a supported module.
+  ixgbe 0000:3b:00.0: removed PHC on enp59s0
 
-1. Keep the v1 implementation. It is the simplest fix, but changes the
-   Query dequeue path from an O(1) pointer access to an O(n) lookup. I am
-   not sure whether that cost is significant in practice for two reasons:
-   this handles IGMP/MLD Query control packets rather than multicast data
-   packets [1], while the hotter multicast data path already walks
-   tunnel_list for each skb [2]; and max_tunnels defaults to 128. However,
-   max_tunnels is configurable, so users can set it much higher.
+This code path failed to unregister an MDIO bus owned by that
+netdev, so when unregister_netdev() tries to tear it down
+(via device_del() -> devres_release_all() -> mdiobus_free()),
+it trips over the leaked registration.
 
-2. Add a small per-device bucket hash keyed by (ip4, source_port) to [1],
-   while keeping tunnel_list for multicast fan-out in [2]. This avoids
-   a new linear lookup cost, but adds a second index that must be
-   maintained during tunnel creation, expiry, and device teardown.
-   I am not sure whether that is overkill for this fix.
+  ixgbe-mdio-0000:3b:00.0: not in UNREGISTERED state
+  WARNING: drivers/net/phy/mdio_bus_provider.c:711 at mdiobus_free+0x3d/0x50, CPU#21: kworker/u128:0/12
 
-I would appreciate your further feedback here and will prepare v2 after
-settling on the approach.
+This prevents ixgbe from reloading, even after PCIe remove/rescan:
 
-> I think this comment is not necessary. Please remove it.
+  sysfs: cannot create duplicate filename '/class/mdio_bus/ixgbe-mdio-0000:3b:00.0'
 
-Agreed. I will remove it in v2.
+Call mdiobus_unregister() before unregistering the netdev,
+like ixgbe_service_task() does after a firmware error.
 
-[1] https://github.com/torvalds/linux/blob/0f23d56f17fdfc7db69d51f64c8b91bbab947aa9/drivers/net/amt.c#L1261
-[2] https://github.com/torvalds/linux/blob/0f23d56f17fdfc7db69d51f64c8b91bbab947aa9/drivers/net/amt.c#L1276
+Fixes: 8fa10ef01260 ("ixgbe: register a mdiobus")
+Signed-off-by: Richard Patel <ripatel@wii.dev>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index f91856498eb2..fca57749218b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -8470,6 +8470,10 @@ static void ixgbe_sfp_detection_subtask(struct ixgbe_adapter *adapter)
+ 			  "SFP+ module type was detected.\n");
+ 		e_dev_err("Reload the driver after installing a "
+ 			  "supported module.\n");
++		if (adapter->mii_bus) {
++			mdiobus_unregister(adapter->mii_bus);
++			adapter->mii_bus = NULL;
++		}
+ 		unregister_netdev(adapter->netdev);
+ 	}
+ }
+-- 
+2.52.0
+
