@@ -1,171 +1,153 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C0A3C2D;
-	Wed, 26 Aug 2026 00:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB32322A80D
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 00:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787702942; cv=none; b=AaRjMnw3y5hpZzjykjx8fx0Z2v0/rBW+4Fnnj2dfF4oB/8Jnuuiuda4KNqNF2zE7hcvkd3+7bx66ahzwfDC07kqNl6IXxhQxhctX6ERKMN7XU5Ebpla0X4wabe8nFm2Wdbrt7uZ6CWzE2r0vtwu1WvVjk+hn1nLRSEvX63lUYlU=
+	t=1787704787; cv=none; b=qDTiCIFeYWKPUKyd8QdDuLfLwZKtAQKioAJBM9BACL37gduThQkmrxGIdaLb0K+PXoRxdiBD8zMYWNQF2dQu8ybIU5hNyTzugqd4Cc550bM3s0hJ/XBNzQXFpiu+NnkhuEN8nxk5gAK8HPd+W+aIHWfx2iq4n1ZEB2mqJpKkJOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787702942; c=relaxed/simple;
-	bh=rT59UfzklRu5awBynaeRRNy/GIhkT4PjdDpRX4ieppA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sVSdBsEE2Qo29ewBig3+BfaMOe+CFbKipdWNt8bUZki9eNa3SPuPTscNkaYZg3L7Yx34GYrsox5vnTZ110Az+c+J9vj/b+Z00btPHrtf5opuuM2D+m0bedplNTOl21EYJcdLScJyx0vqtZdPjP/uzjBQcvx57ckUsZ1m5fHtbA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=cX3ZfBp2; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1787704787; c=relaxed/simple;
+	bh=kHJYeCK03N4sVT6BcZHnRJF/EyIgOKmsMbTVuSX3Q8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Huxy4GXWdRy6uMjLBySzBxUSTlodoxTonkrxdEnAfOf+Qa6WQffp0+QHUzRY1qse63eIi4LKV91mJOyvy5y1tOpEzq/LZqt50F/MJwBl2TpSQL6D1DtuTyl2xTiqe9D/wPri0IdER6aB7aWQ6W0DQGzInyeEN9q8vOCqsC/4mNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAg6+SaJ; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="cX3ZfBp2"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BEF331C615F;
-	Wed, 26 Aug 2026 02:08:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1787702936; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=2vuOWpSASKJg2znhHds0mJtsBVVDEX1H0ZtqkDQG8JU=;
-	b=cX3ZfBp2hPSrSU883c4qo0fTugVPROEryrT0w3yxNfhIGESOdgRV+P300IoAD4x2vGMWbe
-	t7c5Puz5Og40pOwgBlj6ZS/NVE5Du+j30UZKSVXMVeCiC4C7OdgAfp7sb9UajmCHLb2c2H
-	9Ay4hoB77HXWMVj+VqorKIHeyyjCSBGFZuR41GDkA+0rtprRwv5tQ+7qWmz9t0v1sw9wBr
-	7ErlIq1P+6vwv9tE0cihhTTjHoGqs0ndmP7z2LNPZGs0gpCf5S18s/cSgt1/Xz6mXbJqLf
-	WZdxRN82J45GoRvSyDYlWinBXm5BzNxMOftqK1HH14Onlk/Yia80paWiLGX45Q==
-Message-ID: <4fa1ab31-cdcb-4488-b038-c5869966b6ec@cjdns.fr>
-Date: Wed, 26 Aug 2026 02:08:50 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAg6+SaJ"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84830c774a0so573837b3a.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 17:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787704785; x=1788309585; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oi+0Ngf9vOWuRTniUDFfPIIsu68mB10Me8n+jj7RJuY=;
+        b=PAg6+SaJ4Liidwc7SmjxZp3Kf8OjYFAbuBavHFf0V7Sgt5OJHJuiphq7MXdjgmx2dA
+         mvGbf85RRMdmrld1DgR9Ylpauu5KqWOb/59n4I6bCIc03iiabyRyUojuQAUb04Y+C03y
+         CQjnr2I5qyrJbuZK93BAQbsfJ8MxQtJ9NOsHDPyAhr6UGb+g89fNIaKjDiKggpU35pxW
+         KxBNKVY2w6eJo7C3lxKcMqCBmTElg8ejyUKgfD9TeGoB3h1wW891JiNVOX6/nIuH3ypN
+         BZOicR21kx1GrCWi1Q1FirIPbcwtWZkRUvI8ktZ4CM6ZcMWS0VWd8NAMHSEWi7hvOrer
+         sNmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787704785; x=1788309585;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oi+0Ngf9vOWuRTniUDFfPIIsu68mB10Me8n+jj7RJuY=;
+        b=FmN0XPPoAl6hMcUrD/h8c2aMkAzjRdNUV812vjQ4x+arAzaPu9ppubuqqDtf39UL4q
+         fB3ezZ9+6k7KcBETd8TkHZ7Kzfu8Mhknucdv0FJx3eff+xxot8ZWXJRBVk00OoFX3z49
+         rgJ0INCwDflgrdKk5Dyb4QxlRMKVn1AFFW78ADIFdZ67B6e/aETWt3eN8owUTBt5mdRY
+         AgUZ+A1mLdq3unx6tnwBuzumyDrn23Ctgfqle2cpvL3okyMOTSVhO6jCuBZRWnaoUBj0
+         7LZQqLEbBbmVEdqSqYkDgUwPSsZGNmeSLd48LT92jD4zTW06SrlQRfy1T0z5Wc4CXDCL
+         CVNg==
+X-Gm-Message-State: AFuF++kW1sQKRXTwNZN8WBgD6GoL9wD8uPw/sUsqCY5Xfj7aoWZZLDBd
+	/93UafmCtQlRTmTD6wRxja82Iaj6iYTnIEBl9IxMYkwQpEyQdorxPHem2s8aMsqE
+X-Gm-Gg: AR+sD12YYK2LMzTqwyj30jEwhVCcBGDw2gTDnbKT5+EXNVWWBot3CyBaHbxGmKmt/sG
+	/VZRcEm8PoG6FzaEVO8DbBgS9o0xQO60xk8TxQVrFi3o1n+iLPHLiOx6T07TYTsquVSZOotOzCL
+	fLoWi3NbQ1xY818b7B4uOqDSityIA6DYiE2TQOEyPH26iY+kV8CAPMkq95poOzBizMY6i7e31um
+	4Acm3WSIhgkq4wnjvFfe/mj70X8JMYqkaHtWf+f7I0JH1/DeXwILZh3X+3Wirt4fBwE77pPnyRc
+	cl6ApS+A082hP06hR5fHPDBOfzvLarZHDjzt53GS7dN6InR5r0PZ0Eaj8FmirxZ1gRiK7yLDKzx
+	Spi226numgpvY8VoGGbF9kBN881rCbj8kSYQeK/mbiO2b24/4iw8phQRalERZOp84KWoJlCJDDY
+	fsMmdFL6xiYhOgcd8D1sRJpnyXLdNMGi4t25v/TPh/dZvKAOUQpbaVmEPt/I4VD3wZYY3hJJ5J
+X-Received: by 2002:a05:6a00:6c83:b0:845:e7ee:eae7 with SMTP id d2e1a72fcca58-853720ab337mr5049138b3a.5.1787704784879;
+        Tue, 25 Aug 2026 17:39:44 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535cdc038dsm339377b3a.38.2026.08.25.17.39.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 17:39:44 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: sgarzare@redhat.com,
+	stefanha@redhat.com,
+	bobbyeshleman@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	bryan-bt.tan@broadcom.com,
+	vishnu.dasa@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v4 0/2] vsock: validate packet sources after bound lookup fallback
+Date: Wed, 26 Aug 2026 09:39:26 +0900
+Message-ID: <20260826003929.966160-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] net: phy: mediatek: add driver for EcoNet Fast
- Ethernet SoC PHYs
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, daniel@makrotopia.org,
- naseefkm@gmail.com, joey@tinyisr.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20260825180421.1804729-1-cjd@cjdns.fr>
- <177dc347-4cf9-48ca-97fe-b0f3cd46d8e3@lunn.ch>
-Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <177dc347-4cf9-48ca-97fe-b0f3cd46d8e3@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+
+Both virtio and VMCI look up connected sockets by the full tuple before
+falling back to a destination-only bound lookup. The fallback can select a
+non-listening socket without validating the packet source.
+
+V2 covered only the virtio path. Following Stefano's review, this series
+moves the source and transport validation into a documented AF_VSOCK helper
+and uses it for both virtio and VMCI. The VMCI patch checks both its
+bottom-half and deferred workqueue receive paths.
+
+V4 preserves VMCI's existing RST behavior when source validation fails.
+The reset is addressed from the received packet so that a bound but
+non-listening or concurrently closed socket still notifies the sender,
+without directing the reset to a connected socket's stored peer.
+
+The v3 regression was reproduced in three x86_64 KASAN boots: a REQUEST to
+a bound but non-listening socket returned VMCI_ERROR_NO_ACCESS but no RST
+arrived within one second. With v4, the sending context received the
+expected RST in all three boots. The original VMCI source-validation oracle
+also passed in three v4 boots: a matched RST reset the pending socket while
+a mismatched-context RST left it pending. No KASAN report occurred.
+
+Patch 1 is unchanged from v3 (identical stable patch-id) and carries
+Bobby's Reviewed-by for that revision. Its v3 validation covered the
+cross-UID injection oracle, local CID aliases, selected VSOCK selftests,
+and W=1 changed-object builds under allmodconfig and allyesconfig.
+
+The current-tree guest-CID vhost probe could not be rerun because the test
+user lacks access to /dev/vhost-vsock.
+
+---
+Changes in v4:
+- Preserve RST replies when VMCI source validation rejects a packet.
+- Address those replies from the received packet rather than the socket's
+  stored peer.
+- Add a bound-but-not-listening VMCI regression oracle.
+- Rebase to the current net tree.
+
+Changes in v3:
+- Move transport and source validation into vsock_check_source().
+- Trust the internally generated source CID for the local transport.
+- Add VMCI validation in the bottom-half and workqueue receive paths.
+- Send the related virtio and VMCI fixes in one series.
+- Do not carry Bobby's v2 Reviewed-by because the helper and loopback logic
+  changed; renewed review is requested.
+
+v3:
+https://lore.kernel.org/r/20260823175858.351431-1-4ncienth@gmail.com
+v2:
+https://lore.kernel.org/r/20260820001517.2148196-1-4ncienth@gmail.com
+v1:
+https://lore.kernel.org/r/20260813121236.2328599-1-4ncienth@gmail.com
+
+Daehyeon Ko (2):
+  vsock/virtio: validate packet source for connected sockets
+  vsock/vmci: validate packet source for connected sockets
+
+ include/net/af_vsock.h                  |  3 +++
+ net/vmw_vsock/af_vsock.c                | 32 +++++++++++++++++++++++
+ net/vmw_vsock/virtio_transport_common.c |  3 ++-
+ net/vmw_vsock/vmci_transport.c          | 34 ++++++++++++++++++++-----
+ 4 files changed, 65 insertions(+), 7 deletions(-)
 
 
-On 25/08/2026 21:40, Andrew Lunn wrote:
->> Also provide support for the older EN7512 Fast Ethernet SoC PHYs found
->> in EN751221 chips with do not have the MCM switch. That is chips which
->> do not have a "G" in the name. As these PHYs bear the ID 03a2.9412
->> which collides with MTK_GPHY_ID_MT7530 gigabit PHY, do not match them
->> and instead rely on the user to override the PHY ID in the device tree
->> if they wish to use this driver.
-> Is there a way to tell them apart using other registers?
-
-
-The reference code differentiates this PHY from the other because this 
-one does not advertise gigabit capability. I sent it like this because 
-the idea of a matcher made me nervous and this felt more conservative, 
-but I'm open to guidance about what is the most appropriate solution.
-
-
->
->> +static int en751221_fephy_r50(struct phy_device *phydev)
->> +{
->> +	struct econet_socphy_shared *shared = phy_package_get_priv(phydev);
->> +	struct compensation ctab = get_ctab(phydev);
->> +	int zcal_sz = ARRAY_SIZE(zcal_to_r50ohm);
->> +	u8 rg_zcal_ctrl = ECONET_R50_ZCAL_DEFAULT;
-> Please swap these two lines.
-Whoops, thanks.
->
->> +	for (;;) {
-> It is unusual to do loops like this. Can it be turned into a do while
-> loop? And without looking deep into it, it is not clear if this is
-> endless if the hardware stops responding.
-
-
-You raise a good point in that it's hard to reason out the default exit 
-scenario, and I will figure out how to improve that. I'm not sure I can 
-actually get rid of the infinite loop without making the code worse, 
-because the default exit condition needs to assign ret and goto the 
-error out label.
-
-In any case I'll find something that's easier to reason out at a glance.
-
-
->
->> +static int en751221_fephy_tx_offset(struct phy_device *phydev)
->> +{
->> +	struct econet_socphy_shared *shared = phy_package_get_priv(phydev);
->> +	struct compensation ctab = get_ctab(phydev);
->> +	int initial_comp_out;
->> +	int polarity = 0;
->> +	int offset = ECONET_TXOS_DEFAULT;
->> +	u16 offset_bin;
->> +	int comp_out;
->> +	int ret = 0;
-> Another reverse christmas tree issue. Please check all your functions.
-Whoops, sorry for not catching this before sending.
->
->> +static int en751221_fephy_config_init(struct phy_device *phydev)
->> +{
->> +	struct econet_socphy_shared *shared = phy_package_get_priv(phydev);
->> +	u16 l0r26_temp;
->> +	int ret;
->> +	int i;
->> +
->> +	if (!shared->phydev_p0) {
->> +		phydev_err(phydev, "Port zero must be configured\n");
->> +		return -EOPNOTSUPP;
->> +	}
-> What is the issue here? Why must port 0 be first?
-It doesn't need to be configured first but it must be probed because 
-these PHYs are not independent, they exist as a group and some 
-configuration must be done on the first phy in the group. I will re-send 
-with clarification in a comment.
->
->> +
->> +	for (i = 0; i < 5; i++) {
->> +		ret = en751221_fephy_r50(phydev);
->> +		if (!ret)
->> +			break;
->> +	}
->> +	if (ret)
->> +		return ret;
->> +
->> +	for (i = 0; i < 5; i++) {
->> +		ret = en751221_fephy_tx_offset(phydev);
->> +		if (!ret)
->> +			break;
->> +	}
->> +	if (ret)
->> +		return ret;
->> +
->> +	for (i = 0; i < 5; i++) {
->> +		ret = en751221_fephy_tx_amp(phydev);
->> +		if (!ret)
->> +			break;
->> +	}
-> Why 5 ?
-
-
-Following the reference implementation "keep trying until it's very 
-clear that it's not going to work". But this should be a define and it 
-slipped my mind to do so.
-
-
-Thank you for your review!
-
-
-Caleb
-
->
->
->      Andrew
->
-> ---
-> pw-bot: cr
->
+base-commit: dc4b95b8fee95113587e93ca116356032d271371
