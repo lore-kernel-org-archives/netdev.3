@@ -1,103 +1,70 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3AB40911B;
-	Wed, 26 Aug 2026 12:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948CB3EC2F8;
+	Wed, 26 Aug 2026 12:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787746832; cv=none; b=jX+feuUS3lZ0MCfhiOpmVXNOnmo0eeG3WNk8rQMkRKTmOj1JBTI54cgqdcuzlF2T5sJ84/a3IoYFxnnIzBLjUcdAIoirHhB15nWTlMB+VQoeY6sXpqoYZ6Ny/d04KoWdZ7M+gNU1rdB4BAIq/iY9eFCVJsp1KnG5MkykIdMUZz8=
+	t=1787747021; cv=none; b=iwisO/iC2RoRBpbikJmC8sgWXj6Yjdkfwcd+6JB8dCIx3MQA89s/kL0Y2MvipSOXhyHFbH3BfdzQ/eImrGduOhymwh15CSKrrVk9eiSkFDhMZ9HfVfb9LvjUM3IKJa1aGCVMYnZQ7TEeuwocyXEjGVJejEdL6v2+lvVg/gvzdvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787746832; c=relaxed/simple;
-	bh=u/ZbgQ6YVEFMOOVjQF3TVQ9zgDAloA+CQ3E4MRezZF0=;
+	s=arc-20240116; t=1787747021; c=relaxed/simple;
+	bh=BI2F+ypyKBbDK+wdPWjweJ4g71WNXZd3h9Yemxl5JCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ODafAY5NQumPnNxtZfKLOP2RbXABwKNLIVriN+mh23Bjzziqd9JdP+6To8y+hnoer30+xdky2hf3L9voJqsRgJjGhanevbRxUQ5CoOBEvvFQWWkBtZpVFawxIEj2bBaExeqhaADwjSLJcU0dWCLqdHlmPwVhVFzxNwg1mqi/zyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=o0U5mNBa; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=E5cwXiqatxFMhiPa3fnQzFxQMSAlP97K5gkc7V0ksW3fzj+Sg3Q6YKDZe9zCPuRHB0g7OwnaBzecd53WGx8YscYAWyidFhcYitka8pRNJrqUAs8Z9huDQfE3aCy/wHJzupmpaGIgbqNdLSgg2JkWdFAlslAxmKy72TZLkTo3+8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Wy2OI3f9; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="o0U5mNBa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1787746824;
-	bh=efcHY6AB8gWuYLRRYFwXZGJx8iSndRdJFmvnMuALy4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o0U5mNBaQc88RRPOPM9HI6HiSKtyGpZQo+jvTTP6+sGMqGaM3VC+rWenewJMznGAz
-	 J22OOukcN/3KIinJs53ySKf+XZXIMxqoGN8IrLlwoUTEbDjiwEGz6SY5+Twd5PL+gh
-	 3YsKnrpJ2j7264jmiDoH5Br1YDy1cqM9JZWA8MBH00cnGUUSlAvN4EjcLWU2T6QfVb
-	 Dby3ijfQ64aPIZasrtPebloGVpkL/S/VY3MjKKDzIHcWIcdMsW+zs/47RLNXVDhFp5
-	 M1PHGnZMTsu5w8blOVzzVp/NNimo7sOkSzyPutFCPmYg0kI4pNsoN32/Zm5Qy4FnZU
-	 yOg32YR/hswag==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A49CC60090;
-	Wed, 26 Aug 2026 14:20:24 +0200 (CEST)
-Date: Wed, 26 Aug 2026 14:20:21 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: laforge@gnumonks.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, anthony.l.nguyen@intel.com,
-	wojciech.drewek@intel.com, osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com, xmei5@asu.edu,
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net v2 0/2] gtp: fix sk_created race conditions
-Message-ID: <ao7aBWwaGNCwnEQv@chamomile>
-References: <20260825052404.45665-1-blbllhy@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Wy2OI3f9"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3mBB7aH1lVR/G+Fuyhaip6TpSpRtuDD8azXWh1ZBcjQ=; b=Wy2OI3f9X2Dp162KGlQw2njmql
+	fDI/iKmIDEDY5kw+MfFu2hbk+WhGReuIufB4uFrIFgQibiFxa9BCyA18PK9b3SXhw22POGJgk2HcL
+	nNquSSJg1dezu8mQg/pLw2+kq1Ez06Th8P5HGMWlXVeG3NGa2YAGmui9OykxEaDg0xk0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wzCf7-001WB4-3T; Wed, 26 Aug 2026 14:23:25 +0200
+Date: Wed, 26 Aug 2026 14:23:25 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Richard Patel <ripatel@wii.dev>
+Cc: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Steve Douthit <stephend@silicom-usa.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ixgbe: fix MDIO bus leak when rejecting SFP module
+Message-ID: <87e4aa92-4687-4fbf-b632-9493932c349f@lunn.ch>
+References: <20260826042945.2344686-1-ripatel@wii.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260825052404.45665-1-blbllhy@gmail.com>
+In-Reply-To: <20260826042945.2344686-1-ripatel@wii.dev>
 
-On Tue, Aug 25, 2026 at 01:24:02AM -0400, Cen Zhang (Microsoft) wrote:
-> Two races exist around the sk_created flag in the GTP driver: an
-> initialization ordering issue where sk_created is published before the
-> socket pointers are assigned, and a teardown lifetime issue where
-> concurrent readers can still use the sockets after they are freed. They
-> are split into separate patches because they require fundamentally
-> different fixes -- memory barriers for ordering vs synchronize_net() and
-> RTNL for lifetime.
-
-May I suggest to partial revert of these patches?
-
- d33bd757d362 ("gtp: Implement GTP echo request")
- 9af41cc33471 ("gtp: Implement GTP echo response")
-
-I don't see a use-case for them
-
-I can see a use-case for:
-
-b20dc3c68458 ("gtp: Allow to create GTP device without FDs")
-
-for testing purpose, ie. allowing to create a GTP tunnel without a
-userspace program which deals with control plane.
-
-As far as I understood, the reported issues are all related to them.
-
-> Changes since v1 [1]:
-> - Use smp_store_release()/smp_load_acquire() for proper memory ordering
->   as suggested by Simon Horman.
-> - Add patch 2/2 to fix teardown races in gtp_encap_disable(): reorder
->   to clear sk_created first, add synchronize_net() for softirq paths,
->   and hold RTNL in gtp_genl_send_echo_req() for the process-context
->   path that synchronize_net() cannot protect.
+On Wed, Aug 26, 2026 at 04:29:45AM +0000, Richard Patel wrote:
+> Plugging in an unsupported SFP module caused ixgbe NICs to get
+> wedged permanently.
 > 
-> Patch 1/2 fixes the initialization ordering race.
-> Patch 2/2 fixes the teardown lifetime races (softirq + genl).
+> ixgbe unregisters the netdev when rejecting an SFP transceiver as
+> unsupported.
 > 
-> [1] https://lore.kernel.org/netdev/20260816035205.57966-1-blbllhy@gmail.com/
+>   ixgbe 0000:3b:00.0: failed to initialize because an unsupported SFP+ module type was detected.
+>   ixgbe 0000:3b:00.0: Reload the driver after installing a supported module.
+>   ixgbe 0000:3b:00.0: removed PHC on enp59s0
 > 
-> Cen Zhang (Microsoft) (2):
->   gtp: fix sk_created publication race in gtp_create_sockets()
->   gtp: fix use-after-free during GTP device teardown
-> 
->  drivers/net/gtp.c | 70 ++++++++++++++++++++++++++++++++++-------------
->  1 file changed, 51 insertions(+), 19 deletions(-)
-> 
-> 
-> base-commit: b70b7b71561f2be1183b6046964d950c2b203bfc
-> -- 
-> 2.55.0
+> This code path failed to unregister an MDIO bus owned by that
+> netdev, so when unregister_netdev() tries to tear it down
+> (via device_del() -> devres_release_all() -> mdiobus_free()),
+> it trips over the leaked registration.
+
+Maybe look at using devm_mdiobus_register()?
+
+      Andrew
