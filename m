@@ -1,110 +1,131 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D641847CC8E;
-	Wed, 26 Aug 2026 19:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49EC3B42F6
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 19:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787773332; cv=none; b=tQQXSFjz/e1BPN2xn3Ll8npDXCUzi7mK8xobqeGHoXoIbo9rtQy+VpiK5UVqIHBDbhSFXMHihdJYzTROmWiTDCQkhLRWVFURB8W1r2t42Nscu3JTafZjg3SpMsRtY6dloVut8nWn9F0g9+sKVwdjrUPYspg/IHhXI2plO/cqZGM=
+	t=1787773758; cv=none; b=EjWNTXK3+RIRXtCC12pbWWkqy8fGLAUYSka4XT0pFoITUt3WGhO0PgNC0Ct8M687HX2xEwqABYumBmF9RKyEgJOPbYKIfNJspOQKu7ZMw7zRYi4vZdU+hg7WFA9QVKQ3ZaNTLK+kBP/ViQzHeS8f3vNpGsmq45Xb7kIBL/cxH/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787773332; c=relaxed/simple;
-	bh=n5+zW/sLXcx1YtKY8np6uGvCc7Muo5pDQvEIJAesLos=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RvMA4Nj7C7RUVmpXOYkYMdyH29Gtpas6EdDiYKjZceGgBGH9FrcQq+gTVoc3Lh6QpHuB71b0/7ABVHKyZHv2IA45dVv4d0hNuNBq6IcQ1Vc09hmvJ1vUSjGXXTkUpJUkdLTukOy28/PPj24n3GAw5NtT8FTvcoCye0RtDCiDFV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=ET8CBYu+; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1787773758; c=relaxed/simple;
+	bh=AW4WKEuCghMNgHjYQbHVrEDlGbpcj0lCwJwe/wJ++ak=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cp++67Ikfq0OV9s7uWGkfZN9Gd2DqxO+nLCJJNT+yNYEv4xmv+Uji8SCqmDFTNQBDIcq6Tjmv56uirKOWLetJe3r1bFvqiFb7lvVSnJfX5OFL/ywW+J6qb6lnc0yNUPEHle51ibfsb6vyMbofEcDl2Bj/+1C9Qc3Sj9VVAEbtWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gKVwepYY; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="ET8CBYu+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1787773316;
-	bh=n5+zW/sLXcx1YtKY8np6uGvCc7Muo5pDQvEIJAesLos=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ET8CBYu+Q7E+A8tRwIXw4hZxzpB2sJWVTf+2MNuxXBaQqArP+IhNrnuUyluPP2LWB
-	 AwfTiWPjzemIeRrxpIfocAKolIq15Ou5SG198lf6FmiagknC80bNkhOICQylpykH9D
-	 RrA586cpC4LRyARW/6JWCvgxgtHJtKlmWaExWH+71uQe7QkGuPuEwM2qTu/cLujix2
-	 E8xOWGyMvB1jd3iE5/QKkZ26Zwh1YXD2blO1R12zNGD13/Rta/BeZAnJJk45eEz17q
-	 lMj1+MNS5A/X66cknx2NQNQGME2qFPfJCiruJoWOF7z+bIR7wE1Tg0M0By8PppuO33
-	 tbHHfpIuB13Gg==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id CBB6D60075;
-	Wed, 26 Aug 2026 19:41:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by x201s (Postfix) with ESMTP id 6C1EB20079C;
-	Wed, 26 Aug 2026 19:40:35 +0000 (UTC)
-Message-ID: <2e89120d-c18d-4d0b-9e7c-149611475271@fiberby.net>
-Date: Wed, 26 Aug 2026 19:40:35 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gKVwepYY"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8efbafa1bacso8785626d6.1
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 12:49:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787773747; x=1788378547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=byFpZLeLTlYJCoNU6m6amCAw3MQ4r4mZE5VxqlYI1wI=;
+        b=gKVwepYY0KKdbFTp0604jq0kHjPNtNNpRfsqprCSWBxedff8o1efKnta/bbiFv7w3l
+         9GMbpERuq1x8QDuyU6fHwWJOCmjyLun3V0/W8tVGOStLKWw/YelJnHgvH0/JhiK5IIp3
+         tkj823NsIr2BMqBFep1cRfm0IvLplY7caoLadutFtCIqH/eTAnsC/0vnMHyGNqD2Br6i
+         8S3Euk45X4tcmlsHpc3i2n4jcYU+ojBtQBEHU5reefgtxrggk9VnLj4gZcwehz/me8Sb
+         zuTALpEn3L3iuuTFEQDb1Qcoqc1kahz26dkywuGy9jl3RLYzfx3q8q0JBxGCVoD94lG9
+         d4ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787773747; x=1788378547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=byFpZLeLTlYJCoNU6m6amCAw3MQ4r4mZE5VxqlYI1wI=;
+        b=YDznhRdWkt2B4Bgm+fl55KhcvaMf9d9Mrbf+mUo4iFQtoRXzEuuII0+u9i7+XzpLH3
+         8cXhWLlQqt4xSMGnrPglqJPNR6QrEESKh5BUWQ4YMMwhG0lmHop9wVrdSgCqkF2As/0a
+         5qDWftZvuFZFjB2jkk0HbI4xx4It0K/w8FnsE1nTWNfNmPK2C9bPZt8W9/S3Qi1cPr73
+         tWtOcooDAFH1YyX8rAYVK+0BNgw3wNHaowcdWQRA+imf1RzSq43eCevrWlCYhIfa7WMe
+         DsfEB6HOWSOIyvRDUF2vJg5SgTzm6tjiXXpunhnaRRNwArjNOtX+03ebdAs1cv6ltogv
+         Qgfg==
+X-Gm-Message-State: AFuF++n6AndEDgykVT52t2QIQPU0yrA83NVDWghGiQ6PI0DR1ivRl6z0
+	jX9ZZY/R2c1XcOM1nMVB/6g0B06bNGUGKKgYG2ZUJuFUq/mBxFH+yZMcoYvpEQ==
+X-Gm-Gg: AR+sD11U44iJSx79NkKzNvhHGlR4o4Yh6NZLpIhUg/PXrksgBaLyF8I4YZeMxB+aweQ
+	onegrwXh301smd/XTb5FBnESU38TJ6a6+GDrywMsCuq1fsvK6aX4d1nLXC/e4giTvsVNuWMPXSW
+	y7g+WHTC4n+RjKLA658VD8yjRmnsmkaJwfN94IM+WQ+3EohV1hYRvV4xDbiXmVXbvC5ZCiq5e2v
+	7TPd8w15RZGW9dyOhgUjUUj/emmcYssLNU0rZfEIl/p3oCPz5Z5qOSY+8ByGWcSbcxcx+y42UTl
+	RHUB4w/SyLVJePuNSklLiKWg4Eq6L4hhXW0Y2lgFPuVDRzMDG7QSk4+g4XeE/nGvMP/KeuzeKpT
+	kNixzP+1dfP57hJEcHH7j8Pu1XYpV4rPxUpXWFDNQvfo2Vt9cLQL2uxjIgVZICRxub1UGmXjV93
+	dVxoVNrjkgrT6r1jx1Tck72XpK00Os7hP59geOarqbeSKg0ndUQOQNGJf+Sw+zuuZMl5Kah0I8W
+	d1MHRN+W98CpsiFZMiRw6vBbjCyBm79mp9WUlH+jmplU4+nQS7FHemoP1l82BcqoixE6WJWjZQI
+	NetrlIKWy9cxlnh21rDYBHpdGbmkF1mgAsMHeg==
+X-Received: by 2002:ad4:5ec5:0:b0:90c:576a:db55 with SMTP id 6a1803df08f44-90cc79ba9e8mr99466226d6.21.1787773746653;
+        Wed, 26 Aug 2026 12:49:06 -0700 (PDT)
+Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90cc64216c6sm34448386d6.22.2026.08.26.12.49.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 12:49:06 -0700 (PDT)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>,
+	linux-sctp@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH net] sctp: fix a TOCTOU race in SCTP_CMD_TIMER_START
+Date: Wed, 26 Aug 2026 15:49:04 -0400
+Message-ID: <9d8f1b5c50329d5ea7c642128d35681abaa9ed20.1787773744.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netlink: specs: fix the conntrack filter type
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>,
- "Remy D. Farley" <one-d-wide@protonmail.com>,
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
- Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260825155832.3685714-1-i.maximets@ovn.org>
- <94842eea-a296-4ab9-a026-2475757a82b8@fiberby.net>
- <7b1f615f-d435-4b83-a180-67cf9a4223a0@ovn.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
-In-Reply-To: <7b1f615f-d435-4b83-a180-67cf9a4223a0@ovn.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 8/26/26 6:38 PM, Ilya Maximets wrote:
-> On 8/26/26 7:20 PM, Asbjørn Sloth Tønnesen wrote:
->> On 8/25/26 3:58 PM, Ilya Maximets wrote:
->>> The CTA_FILTER doesn't contain nested tuple attributes, instead it
->>> contains bit masks that specify which tuple attributes to filter on.
->>> The values for filtering are taken from the top-level CTA_TUPLE_ORIG
->>> and CTA_TUPLE_REPLY.
->>
->> As identified by Sashiko-NIPA[1], then CTA_TUPLE_ORIG and CTA_TUPLE_REPLY
->> are both absent from the GET DUMP request attribute list.
->>
->> However this doesn't prevent ynl CLI from sending the attributes:
->>
->> $ sudo ./tools/net/ynl/pyynl/cli.py --family conntrack --dump get --json \
->>     '{"nfgen-family": 2, "filter": {"orig-flags": 1}}'
->> Netlink error: Invalid argument
->>
->> $ sudo ./tools/net/ynl/pyynl/cli.py --family conntrack --dump get --json \
->> '{"nfgen-family": 2, "filter": {"orig-flags": 1}, "tuple-orig": {"tuple-ip": {"ip-v4-src": "192.255.0.255", "ip-v4-dst":
->> "192.255.255.0"}}}'
->> []
->>
->> Otherwise, LGTM.
->>
->> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825155832.3685714-1-i.maximets%40ovn.org
-> 
-> The reported issue is preexisting and a little orthogonal to the goal of
-> this patch.  I.e. missing dump attributes vs wrong type of attributes that
-> are specified.
-> 
-> I can add all the missing attributes: tuple-orig, tuple-reply, mark-mask
-> and status-mask.  Either as a separate patch, or fold the change into this
-> one, but rename it into something like:
->    "netlink: specs: fix conntrack filtering attributes and types"
-> 
-> WDYT?
+The SCTP_CMD_TIMER_START handler checks timer_pending() before calling
+timer_reduce(). The timer can expire and detach between these operations,
+causing timer_reduce() to rearm the timer without taking the association
+reference required for the newly armed timer.
 
-I agree that it is a little orthogonal, but OTOH the patch doesn't really fix
-anything meaningful when the YNL spec doesn't allow actually making the request.
-The commit message directly refers to attributes not allowed in the YNL spec,
-without declaring it as intentionally deferred (like the filter bitmasks).
+The timer callback later unconditionally drops its association reference,
+which can leave the association reference count unbalanced and result in
+use-after-free during association teardown.
 
-I see mark-mask and status-mask as a fully orthogonal issue, as they don't
-clash with the commit message.
+Use the return value of timer_reduce() to determine whether the timer was
+actually armed. Take the association reference only when timer_reduce()
+successfully starts a new timer, closing the race between checking the
+timer state and rearming it.
 
-I would just fold tuple-orig and tuple-reply into this patch, and leave
-mark-mask and status-mask for another patch.  Alternatively make it a series.
+This issue was reported by Nico Yip (@_cyeaa_) working with TrendAI Zero
+Day Initiative.
+
+Fixes: 20a785aa52c8 ("sctp: Don't add the shutdown timer if its already been added")
+Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+---
+ net/sctp/sm_sideeffect.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+index 94716406d602..0d99b7e8c082 100644
+--- a/net/sctp/sm_sideeffect.c
++++ b/net/sctp/sm_sideeffect.c
+@@ -1545,17 +1545,8 @@ static int sctp_cmd_interpreter(enum sctp_event_type event_type,
+ 			timeout = asoc->timeouts[cmd->obj.to];
+ 			BUG_ON(!timeout);
+ 
+-			/*
+-			 * SCTP has a hard time with timer starts.  Because we process
+-			 * timer starts as side effects, it can be hard to tell if we
+-			 * have already started a timer or not, which leads to BUG
+-			 * halts when we call add_timer. So here, instead of just starting
+-			 * a timer, if the timer is already started, and just mod
+-			 * the timer with the shorter of the two expiration times
+-			 */
+-			if (!timer_pending(timer))
++			if (!timer_reduce(timer, jiffies + timeout))
+ 				sctp_association_hold(asoc);
+-			timer_reduce(timer, jiffies + timeout);
+ 			break;
+ 
+ 		case SCTP_CMD_TIMER_RESTART:
+-- 
+2.47.1
+
