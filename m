@@ -1,199 +1,237 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013037.outbound.protection.outlook.com [40.93.201.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115AB29BDBF
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BB83FBB5A
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787758835; cv=fail; b=c8z9y8tMhIHZ9XQ89LIr+XI+TN8tx+/6yRS/rNAHi8HOKF6L7pyEFuXjzFO0io/v5sIvM8BLGSz2RX1O0jozo2iH9T9mIv3qMBu2ypzn2ugS+WC9rTrCI1NCvmn51N2ayQJOsS4wfa7tHsjc+2MShzr27eNYDa8FhTP4FkdSSBo=
+	t=1787759024; cv=pass; b=dYVJ6ZGHRDrlarygwRdds8JJxIKb5kHnAAKvAP6Z8zaarcleRM+nPP6xY5zHFimz7MGuSkbeP6UPhl8dyv5e4nk6utx2AHgzKXANHvG7g1JMW5WPZzW4zYWAmUDlwgQeEYtSSOIWNFthwVs6Nr+ReKhI3hYAWZ0eu7e2id28bJ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787758835; c=relaxed/simple;
-	bh=fV1LaEyuBwgwytgd8j/IWZcWBuY5WVJVDOw0qY8BJT8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IRxuJdTXY69XL37LDj8blViXJpiFKqqUYPkcraO48jLJFY5pCHSaZ2hR8jwmECTkVA16sqSK/HXSgIvCkFCZ0uhYOIMnWuNN8TjCR2OFOmsujBkw/iDxPwFglpQ35ZZqqowP+JR/jbW9+supa2IUG7hRWmpIOm52f0XTrk1kWNU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RCIJdZ+K; arc=fail smtp.client-ip=40.93.201.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1787759024; c=relaxed/simple;
+	bh=t+UZJG+GzsSQuOgLA31dorYvO2F8pVYT+Y4HWV4K/Bw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y5Tl+PCNuwcoVqFfreT73kZWoxPQ8f8XFSJsutg1P/GiTYiITrhcV03wAiag0cnupnJeTs2w9wREKwodFXD3oHFci5XstG74pmQXtGUre3/kOB9m5EWuggROekhWmFGKo6Od8EByHZ10JqcM83q6oYc8KVbzdL7PtTjP/cM8vlQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sq08v3ls; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RCIJdZ+K"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zJO2Ke63YAf+yFak44XvgCJ8pLI3XzeZYD7RYKBsWnvvKXqZkkYnjvvn4fUk7Mh5omu8Hwe57p8dlyQ7lSmdE6a6giE4dfVjo2EKtFB3UXsJApWsULeEVYvf1VQ89OiPsQ3V7C3d1od6OkS2DFVwvnweP3R+KaISp+z+BqEXmhsIIXWIdEYQUJwwMos+wbD4zf9IB02wsz1wj1JCSz4eRudXrIxgjSSHYfhA/F7AXEahVWy1BUSyYTwKcTsHe9WkBYHNCfmNJPmPfKD8lYvkfaTpD6lpvhpdvPjZmQkxy84DcrER1cuvp55ZH35XZa7ZdZa6PvZuvmX6VZF8Xql9fQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dbMtGykyT9tff4tXwSPjx6WfqKSK5r+bu1snDTXMzvU=;
- b=DB1bYcT9uKSZMn/22TcsDejX9u+kSVtbkqfVuzWDiISlDdIb21LnX3I3w6yxIOtY3t2w/OC4eyDh/sRXcQW2BPpyjL+uETGo0XSjis0xHONsDvrC7o6zTlcZBjivDIEVisOWRBnu4eKfFbwUhodFvOXHuRUdy0HqTTxbvrloMIa5qjxt3otUCaDh18/Nf3JQX5ZXYXOUJtaPenTvLvDvTlV2SJLOC+Vkwe3IW6gsUD3Fh35OuDgJWb2BSVoFxziCfj0hTG0Jyn2cDaJTm1/1nnvilocPFSCngXnYw80gJjiocpVzp66XKjUiod2fCfAvYHPJ7ZlyOuBOHcetU5mnHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dbMtGykyT9tff4tXwSPjx6WfqKSK5r+bu1snDTXMzvU=;
- b=RCIJdZ+KMXJnZxZMrXi80b/2BkpCMP7iNobWgXBs/+ZMioBW7JTW7q9xeOTdBrG2cV1T1YyQRRgz/xLyLz/MYohbeNoLIfZu3XGVi8aor3FFwXsO+d/0zoFG821/h6N2oKcOnqBbO46/jvaXP7y1Qo0JPFtRx2QDkUGGazYC8wxG10ukcJM7Q0BtVaDxLyVWQ8FarYpSrHfAAqNLpqoha3dWHkjzE5q8N15nqG5HFsb8QjJFuFILvponUEOEoGnEiXTJ60QmcLe7N191pAyb0+DgsxJsCl5gAQnBjvIGajm+T8j5HCHAlxVW4qs/AjHmw8ayaGNZLilclwnutGgeww==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SA1PR12MB9470.namprd12.prod.outlook.com (2603:10b6:806:459::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 15:40:29 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 15:40:28 +0000
-Date: Wed, 26 Aug 2026 18:40:17 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Dong Chenchen <dongchenchen2@huawei.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	herbert@gondor.apana.org.au, netdev@vger.kernel.org,
-	zhangchangzhong@huawei.com
-Subject: Re: [PATCH net v3] ipv4: icmp: reject RTN_UNREACHABLE input routes
- in icmp_route_lookup
-Message-ID: <20260826154017.GA1834664@shredder>
-References: <20260825094523.1461020-1-dongchenchen2@huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825094523.1461020-1-dongchenchen2@huawei.com>
-X-ClientProxiedBy: FR5P281CA0019.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f1::12) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sq08v3ls"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-52f1a320162so2573111cf.2
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:43:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787759020; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TgULAZKo6ygj9E1AoGJF0a5hACgTxhF1vt1eL/MLjiFdIdUBMshxLEqL3RJeAXW7Vr
+         E5WvTnNxfjH5uJmprXN1ippBCz2FKgKg+N2ZMtdvVZkbFQX5GPAMDCQJ5mk30DC3Wwoo
+         hrVVV0EajAyLo2ITxAL8li9XzQFSdt2QY37t+BpFRnBqn47/6ffqj+wfL1ttBoCfCxnJ
+         kZWxtbVYIhbAs4npRbw8zezuirV1UEOlmUqhsQqw9pK9bHDsd2bHqdS7Gji2142D9PPj
+         83Yr7F3oGL+Y2x27eQumswGVB5LMbGhq4HURIT3s3gxJYqE3X1OVjnfZf/l6ZGrBRmt5
+         002Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UVSjhIziBnajqA7H4PUHZrhD1u9T6d8YmCozPYiqoT4=;
+        fh=DVkc13UHsqV8qzu5NP4fkecl1AAN9dpekIPJV2clEgQ=;
+        b=LPI9CzbsoHs2Je2GwZuWbrJaTk04A9YwWOgj8akbuXRBC1YX8/GCW8NVRa1Mv/1o+L
+         zmE/ufICfxSw1fKyByjy+JhKKzlGXmBPpRAgoUleRDhnze1TfOFmwaKp6//02xT+6TgZ
+         FXtuNjqLe63va8bJ1ci/8tKiGhgx40k0Anh/zGY0245Lo7F9s04G2KnS+FlBAzJ7Kd2K
+         WR/UukG9Y0mrvsvFCp4nIz0qRn8w64DlCDnzRi/R2/oEl0qWIeF59wVVWA3HS4NkcOF9
+         SUREtATqIUFRp/jy1myaSAqSe8hs+Y6N9B3hjODcYpSMjRijB8ZDa74HYCGhVhPO6NiT
+         Se4g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787759020; x=1788363820; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UVSjhIziBnajqA7H4PUHZrhD1u9T6d8YmCozPYiqoT4=;
+        b=sq08v3lsVH1MUXBCYBCk+GmN3jJsBgpTgxTV9kvMCJy24rFlGhmv6zRYHL2E/GnWvV
+         L4YCrmvdMQpFlBnCeUs6xMZR5r7lnAQbYUzki5lLAMqeIf20eQDnXuhjjm7rFfxIeOeO
+         1LvuwkbHU3sPG4/3I5FwkRe89FK8Jk2iRkta+7sZud2GT/nvMNmaSMz1G9YWkQDAnRtn
+         rMm0P2zYz3djEBL2fSIPTvKtik1D1qaZLRbW3O/ctNId2HomrvHulnxXQBPV4OSk1Yg9
+         O9DuxOkS5sk3k2TqOsKiAo1mDI0zXFGPBBaXBqHlZGJpiV2YYcCFpxUGi0/RPARDJ9oL
+         ZvgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787759020; x=1788363820;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UVSjhIziBnajqA7H4PUHZrhD1u9T6d8YmCozPYiqoT4=;
+        b=KRb4r608+AtpmKyj5rU2SB48jgVhc6hepcoAGzTgSaiOocekN91rWAoIJIpdyykejQ
+         BVb4wghz60zGDwpwl/OMgeGNmOKhH6wmk/VY8GIFZaX+qGFhKz4eRKphg1dew6QW83UD
+         IdfNHBdI8orDaVCleo5P5W7Xj56m3uoAnzc27UBRFkqp6CM7IQCllamRR0B3okqQ48DB
+         +GPewROPPuA5U12dVlbGQuYCOJn2xesek/eYWiikYSsqb5HSHHWKm3x9MKPfJ+udcBZ+
+         ednJ4zckKg2L3aTpB+ovEgi7GGQTBegYZVZMeDFyMTPNL94bURFCzkmWTcfO78hqo1rE
+         WPwA==
+X-Forwarded-Encrypted: i=1; AHgh+RrU1jWf+Xlc0ASPVkPC/CuOxsuJvQNxKNMUjL/V+OFqvyuqRd8RE1OyFP83Rf20QpCipKeaRso=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0bNZ4w//joQE8ADlIl3/TvSGIPeHktJuge9+uMtBtqUdt8x8C
+	UjTgCIgVTzBMOIxOvGtGyt7G84gvwR7ExpT5oRfKhwIqbcWCd8ravf8z7dnBiKmrnp/1Mx75DDd
+	G66/MCSoyVrsx1ZegvsTgWdrQislaHV23QQTNY+oP
+X-Gm-Gg: AR+sD12uCJKy1IkGYFdckYpx8UUCqwXKOtH//IytMfHsvHuyWCxP2zcdXjAoI8h+zvN
+	xagRTZLbWYVJVYcGROua2OCcr0EMvi9HJD+sGdLxF+5Him4Uy6tobL0koB98kdP/iNDI0PkIEjj
+	YqmderawvAvmLgx/vgtMowOXrElisMJnSK2E7HBIIdQuPU7b8+CfqhhN+6W9CQY6kyrHgGOCsB1
+	QVuVkmj1NM5UvRdLcekCi+WTB6I+ZqhhE8DlaMjxz9ImtEq1ulAxAscENbNKaubJKRSKY5VnpOf
+	3pswuFPpWnBc8OsW/EFeUgkBdU5XuZk/O48gW0Cv3q3Ij95gMzWIGs0K0df5GTyhF5oeS8K8V/r
+	gGgt7himFI1bkEG9BGq+wXays8hsqILqrJ3pIA164ngAGk6hEqRWUtx+SwH8=
+X-Received: by 2002:a05:622a:1e15:b0:52b:4c5a:5844 with SMTP id
+ d75a77b69052e-52e4232333emr81680181cf.20.1787759019324; Wed, 26 Aug 2026
+ 08:43:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA1PR12MB9470:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83f13a27-4066-4fe3-9778-08df03885ac7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|6133799003|3023799007|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	nIRegnyZJxeY+VcUuxNjl3cv5/9ZZA9ATXuBP3KbKBjX3UZwsPrQS9gKTGbauERIxYkQcHyTOVb1sDdvn57Q8MHRY96iWTO7ILggGxDD+YEa54KBdfYnZlIYEDv6Bw2CgeQEt5SVYVyb7vRUV3DiD0856RB2ie3nbrNiiI9lDjoariJronJm6h7MHzpFZxFpGcL0N+wKSFv/BNCbE8wQB/uVUHwRu3z4NwvgeaCiTXqwTagAvCPBUaYJ4jnohY8azmEmLVoK0mVKSG5qPvAeFGz2YTGFeUIxwofyct+9m4Fj4hwOK6wTTvkeUZewzjREw8HhYSjISIGS1cWqk5DCFH+btOQq3q/GUmwy7O4xjfQvV7ObclP0GwzGttiSA+UFZAoyHBIGxa8JYHrt1b/6vgiARMSGP8SFtYQigAmn34q+eTkGwDc7knCiG43XjW+xW9Q0xEkvM/NyFz19PNhgKiO5a+8CkiZnPUva07+fGSK/r1v5LN3TxIB3DY9d73iTK5vFvL9U23VC60C+CPrs9kn9gX5pgkuRwzmS0POlvMFH+udlgmW45iUOYa+qw8tBS/BgFuklck9d2LH6DC6c0WpirBN6lmrhUYKUWotUoqZqaZlnWmt1MmVuh4vXHld9I2b2RHKaVNJgGtOxA0rjfvHQzbhftForQlYUe6T4w3I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Zp/v8JfQF+dSHNYde+nDNFJhETO1nu5rAruekpbgXhFwmTR67OeKxZYk+Q81?=
- =?us-ascii?Q?/ymAPWeHyUeFMnpKO+q/GdjvHLrKP5JauooVwaawYnPgGVaxQlWFOjtGNkTg?=
- =?us-ascii?Q?JIhZHuLVG7mlPfXPiYDw4kW7fFQK4c3jzJvoj5g04joCeW0O41cxU9rsdTY3?=
- =?us-ascii?Q?pITBF/OdY+al2RpYovZ2s+hWv0xrVbrT3IILHgHG4EV1UoGxml2zBA/7Ioo+?=
- =?us-ascii?Q?hd3/QFciA/MMcPjKYc0lmdP8TmC2lXK6EknF+BxaNx+++3fMGC8vHoYjxrFr?=
- =?us-ascii?Q?LHT4EN6QVSVTzQXVtcqGDCwEDcp9s80zUZqTXOyRRIyvOk0hAaVWAQxBFIA8?=
- =?us-ascii?Q?LOX0Jl7wQTObEw2yiozSxmqoe/fj6m8sv6Ljc/PjRXi9tD0SL6gMMsco5qPy?=
- =?us-ascii?Q?5kekPUgSbeHeiQB/zULnzmKihyqDoH65f0gMperwP9/GxabDG0lrkyZ7dM0V?=
- =?us-ascii?Q?AqyJX/q82p3wL2vwTamx5Nfz7GdJzoV1zk1rvugAODmXS8NCUaeMIZYnBO1e?=
- =?us-ascii?Q?iI26e/mvN530LR5WrK0RdlOKXXMxT5U55jmLWO9qFjMTLWZ5oj/gcBs9qhKK?=
- =?us-ascii?Q?u3VONCR5JjyLDicwJTqsfnOBZ8bqGNkXrt0LrIoj4Sir2H+ydXT/SPKbCdTF?=
- =?us-ascii?Q?QzWcUB+X9UDdz44HdMIC1DhtL4Ki7TFRSHaIPP/71MJpmdvGaw/1yaBfglYR?=
- =?us-ascii?Q?491g9TTSsRDK+MWDbX6wudDhXQqPUMayqw2n67rsjnx9lfPC04g+gsKb3Iyd?=
- =?us-ascii?Q?WhfvM1bFM+ehHVgoOIMb0+/Coii5RtejIwLP/dr48LP44628W7lfQ5rxauhN?=
- =?us-ascii?Q?93atGE6M3Ymt8W36W+WD384n0A2XPLwSdYwPjVCThbcKwbP6YwtAaGKqQyZp?=
- =?us-ascii?Q?VRZIgk/zWYVleFOVjBnxIw8PhtxmiiK3ICjQ0OPVR3gbNxGFQ8nduCSsaQlR?=
- =?us-ascii?Q?VTs1WOwUMQxyFBpJOGe97+gy3QAU//ipI/cE8U8Co6yYX3r0Ob51euWXOrOn?=
- =?us-ascii?Q?HtjKYH+hMlaFaxTayIK5cmY/TsX5K7s0VtpdgaU9iSu/AYTFP2I6TJgBgFva?=
- =?us-ascii?Q?iatiKxFJWMgm+HBoyM3wVMsMXA2HcwYxYn8lqsqZEayMtLTSjtnFigZUoTJw?=
- =?us-ascii?Q?vwDo8HrFWauxa1DbC/69fA3Fy4Z8DxWylsyd/510J/IuPd8lgU45TaOXXM0G?=
- =?us-ascii?Q?24hxS5ckaBEisLL9waU8Cqnloze1eR4BRvGH9npJFdfezzoMvCKROUuI7Cry?=
- =?us-ascii?Q?xO+FW7SE+gJIrlohfiCo3d7FnaHMXoBI58W0jjdNcGDhRz2UGEQDbfrTisxe?=
- =?us-ascii?Q?AMqeHCrksJBmbbDUROcyYdDQGoDJb3Rq4pC7o8G/lL+VKA3kah6dtDCG3VGs?=
- =?us-ascii?Q?fiJK4A19b2TlRszCGga6SD6W7S4fRRuDnK75erPsRaqznDXG67DKAufEhmhq?=
- =?us-ascii?Q?14h2pLjbwYaD4OYHII8HXkjxx+6vlIK2lUqIcjRH0V9dKwmtFGluDbBn+/YR?=
- =?us-ascii?Q?7RvMrVVzGsTKwgAewlC9rrVPVxnLO3k+0Njlff6DfKtFnvwTaZWGJfRSS7Vy?=
- =?us-ascii?Q?jmOAZMpJyM5lCZpZGPvcbcwvZZgNkNaRpKiTkj6xHq4eJqpHno4OLtUdgxyi?=
- =?us-ascii?Q?8uqJLxKZLxrgbYQi8b8JYK14HRamxaJkrUBSOjV9nBK5DR73ARQR3+Jd/eVI?=
- =?us-ascii?Q?o051bQHKp2LkRE45TewN/YirZXITHf2DBUF1nf3O4TNUFcZNs5pMcy34BgN0?=
- =?us-ascii?Q?ZHCO4bbw1g=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83f13a27-4066-4fe3-9778-08df03885ac7
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 15:40:28.6616
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ed1+xxmw/vUAsjjgmHj0gnLQI4ZIvy80Sr4Y9Ahpciu+HE2r4Y1qVFnmr3UgjoaGFYbfFQsnWV5pUR3ZOHs6AQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9470
+References: <20260826135252.3091193-1-florian@schauer.to>
+In-Reply-To: <20260826135252.3091193-1-florian@schauer.to>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 26 Aug 2026 17:43:25 +0200
+X-Gm-Features: AcwNN1UPcaNMSfJEESXZg0-2cY-GKNHw_shclvxV2PmWjE2AEs75WcK4lyzHWtU
+Message-ID: <CANn89iJ7p5P-Ryufr1MBCcYEnzDTMBJbLjNiTNGsVuktMNQOcA@mail.gmail.com>
+Subject: Re: [PATCH net] page_pool: keep frag_offset aligned for odd-sized requests
+To: Florian Schauer <florian@schauer.to>
+Cc: hawk@kernel.org, ilias.apalodimas@linaro.org, netdev@vger.kernel.org, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 25, 2026 at 05:45:23PM +0800, Dong Chenchen wrote:
-> When the forward output route cannot be used in icmp_route_lookup(),
-> it enters the "reverse path" and calls ip_route_input() on fl4_dec.daddr,
-> the original packet's source address.
-> 
-> ip_route_input() only returns an error for truly invalid packets. For
-> unreachable addresses it will succeed and return an input route whose
-> dst.output is set to ip_rt_bug(). The existing check only rejects
-> RTN_LOCAL routes, so the RTN_UNREACHABLE route types can still be returned
-> and later used for output, syzkaller triggering a WARN_ON_ONCE()
-> in ip_rt_bug() as bellow:
-> 
->  ------------[ cut here ]------------
->  WARNING: net/ipv4/route.c:1273 at ip_rt_bug+0x14/0x20
->  RIP: 0010:ip_rt_bug+0x14/0x20
->  Call Trace:
->   ip_push_pending_frames+0xfa/0x100
->   __icmp_send+0x905/0xf10
->   ip_options_compile+0xc0/0xd0
->   ip_rcv_finish_core+0x321/0xae0
->   ip_rcv+0x1de/0x260
->   __netif_receive_skb_one_core+0x11a/0x130
->   netif_receive_skb+0x7b/0x260
->   tun_get_user+0x11bf/0x1c10
->  ------------[ cut here ]------------
-> 
-> Reject input route that is RTN_UNREACHABLE to fix it.
-
-Nit: Also mention that the warning is only printed for RTN_LOCAL, as
-RTN_UNREACHABLE is not the result of a race condition.
-
-> 
-> Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
-> Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+On Wed, Aug 26, 2026 at 3:53=E2=80=AFPM Florian Schauer <florian@schauer.to=
+> wrote:
+>
+> page_pool_alloc_frag_netmem() rounds the requested fragment size with
+>
+>         size =3D ALIGN(size, dma_get_cache_alignment());
+>
+> dma_get_cache_alignment() returns 1 unless the architecture defines
+> ARCH_DMA_MINALIGN, which DMA-coherent architectures such as x86 do not.
+> There the ALIGN() is a no-op and pool->frag_offset advances by the raw,
+> unrounded size.
+>
+> A single caller asking for an odd size then leaves frag_offset misaligned
+> for every fragment carved out of that page afterwards.  The pool is share=
+d,
+> so the damage is not confined to the caller that caused it.
+>
+> The per-cpu system_page_pool used by generic XDP hits this.
+> skb_pp_cow_data() allocates data fragments with the raw packet length:
+>
+>         size =3D min_t(u32, len, PAGE_SIZE);
+>         truesize =3D size;
+>         page =3D page_pool_dev_alloc(pool, &page_off, &truesize);
+>
+> and later calls page_pool_dev_alloc_va() for a new skb head, which
+> napi_build_skb() installs as skb->head.  Once frag_offset is odd that hea=
+d
+> is misaligned, and so is skb_shinfo(skb) =3D=3D skb->head + skb->end.
+>
+> struct skb_shared_info begins with an atomic_t dataref, so the increment =
+in
+> __skb_clone() straddles a cache line.  On x86 with split lock detection -=
+-
+> fatal for kernel split locks by default -- this panics the machine:
+>
+>   Oops: Split lock detected
+>   RIP: 0010:skb_clone+0x154/0x1e0
+>   Call Trace:
+>    <IRQ>
+>    raw_local_deliver+0x1ed/0x2c0
+>    ip_protocol_deliver_rcu+0x54/0x1c0
+>    ip_local_deliver_finish+0x85/0x100
+>    ip_local_deliver+0x67/0x100
+>    __netif_receive_skb_one_core+0x85/0xa0
+>    process_backlog+0x87/0x130
+>
+> Reproduced by attaching any generic-mode XDP program to loopback and
+> opening a RAW IPPROTO_UDP socket, which makes raw_local_deliver() clone
+> every locally delivered UDP packet; ordinary DNS traffic then triggers it=
+,
+> roughly once per 2500 clones.  Observed on 6.12.101 and 7.1.8.
+>
+> Tracing page_pool_alloc_frag_netmem() over one such run shows the
+> amplification -- two odd-sized requests, nine misaligned offsets:
+>
+>   requested size & 7:   0: 17035    5: 1    7: 1
+>   frag_offset & 7:      0: 17028    3: 1    4: 1    5: 1    6: 1    7: 5
+>
+> and skb_pp_cow_data() returning heads that were aligned on entry:
+>
+>   head 0xffff8f4c86aeac00 -> 0xffff8f4c53a9a9c4 (&7=3D4)
+>   head 0xffff8f4d6a8a42c0 -> 0xffff8f4c4f7b7a45 (&7=3D5)
+>
+> Round the fragment size up to at least the natural word size so fragments
+> are always suitably aligned for the objects callers build on them.
+> Architectures needing a larger DMA alignment keep it.
+>
+> This also makes the remainder computed in page_pool_alloc_netmem(),
+>
+>         *size =3D max_size - *offset;
+>
+> aligned, since max_size is a power of two -- which fixes the matching
+> misalignment of skb->end.
+>
+> Verified with a controlled A/B under QEMU/KVM: same tree, same config, sa=
+me
+> compiler, same rootfs and identical traffic, differing only by this patch=
+.  A
+> SEC("xdp.frags") XDP_PASS program on lo plus UDP datagrams larger than
+> max_head_size drives skb_pp_cow_data()'s fragment loop, which passes raw =
+packet
+> lengths to the pool.  Measured at the return of skb_pp_cow_data():
+>
+>                           unpatched   patched
+>   skb_pp_cow_data calls       40800     40800
+>   misaligned skb->head         1120         0
+>   dataref at line offset >60     80         0
+>
+> The last row counts the accesses that actually fault: skb_shinfo()->datar=
+ef
+> sits at head+end+0x20 and is a 4-byte atomic, so `lock incl` splits a 64-=
+byte
+> cache line only when that address lands at offset 61..63.  All 80 occurre=
+nces
+> were at offset 61; the panic reported above was at offset 62.  Eliminatin=
+g the
+> misalignment removes every one of them.
+>
+> Same class of bug as commit 3bed3cc4156e ("net: Do not allocate page
+> fragments that are not skb aligned"), which fixed the older
+> netdev_alloc_frag()/napi_alloc_frag() allocators.
+>
+> Fixes: 53e0961da1c7 ("page_pool: add frag page recycling support in page =
+pool")
+> Signed-off-by: Florian Schauer <florian@schauer.to>
 > ---
-> v2:
-> - RTN_UNICAST judgement will reject bforward packet. Only reject RTN_UNREACHABLE
-> v3:
-> - Modify the comments to make them more accurate.
-> - RTN_UNREACHABLE dont need warn log. 
-> ---
->  net/ipv4/icmp.c | 17 ++++++++---------
->  1 file changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-> index 0caedfc7ca92..7350f0380be1 100644
-> --- a/net/ipv4/icmp.c
-> +++ b/net/ipv4/icmp.c
-> @@ -581,16 +581,15 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
->  		skb_dstref_restore(skb_in, orefdst);
->  
->  		/*
-> -		 * At this point, fl4_dec.daddr should NOT be local (we
-> -		 * checked fl4_dec.saddr above). However, a race condition
-> -		 * may occur if the address is added to the interface
-> -		 * concurrently. In that case, ip_route_input() returns a
-> -		 * LOCAL route with dst.output=ip_rt_bug, which must not
-> -		 * be used for output.
-> +		 * At this point, fl4_dec.daddr should NOT be local (the
-> +		 * address can be added to the interface concurrently) or unroutable.
-> +		 * In that case, ip_route_input() returns a LOCAL or UNREACHABLE
-> +		 * route with dst.output=ip_rt_bug, which must not be used for output.
->  		 */
+>  net/core/page_pool.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index 1234567..89abcde 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -1065,7 +1065,14 @@ netmem_ref page_pool_alloc_frag_netmem(struct page=
+_pool *pool,
+>         if (WARN_ON(size > max_size))
+>                 return 0;
+>
+> -       size =3D ALIGN(size, dma_get_cache_alignment());
+> +       /* dma_get_cache_alignment() is 1 on DMA-coherent architectures, =
+so on
+> +        * its own it cannot keep frag_offset aligned.  Callers build obj=
+ects
+> +        * on these fragments -- skb_pp_cow_data() turns one into skb->he=
+ad,
+> +        * where skb_shinfo() must be aligned -- and the pool is shared, =
+so an
+> +        * odd-sized request must not skew every fragment that follows it=
+.
+> +        */
+> +       size =3D ALIGN(size, max_t(unsigned int, dma_get_cache_alignment(=
+),
+> +                                sizeof(long)));
 
-The code is fine, but the comment is a bit misleading (the "should NOT"
-part is only correct for "local"). I find this clearer:
+Perhaps the comment would not be needed with something more descriptive.
 
-"
-fl4_dec.daddr is not expected to be local here, but it can be added to
-an interface concurrently, in which case ip_route_input() returns a
-LOCAL route. It can also fail to build a forwarding route towards
-fl4_dec.daddr, for example, when forwarding is disabled, and return an
-UNREACHABLE route. Both cases will result in a route with
-dst.output=ip_rt_bug, which must not be used for output.
-"
-
-Thanks!
+size =3D ALIGN(size, max_t(unsigned int, dma_get_cache_alignment(),
+                      __alignof__(struct skb_shared_info)));
