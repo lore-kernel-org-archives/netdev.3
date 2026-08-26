@@ -1,176 +1,152 @@
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE1443C069
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87E844C678
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787759484; cv=pass; b=EwqHqCUfHHQZE/YZD72MzAA5e2DZl0ycXBIfIKd+c/d70sCblywqaE5UwVEeMKEcjZRdH3oZ2KGGBRsOD1BuYwNcPhyuzB+h7g+M93RaFLGa1egVR1RnJRmogICeuZ6rumYHV+dIZU11zl8DgSL3AR4TmAkRiB7Hm1JHOjkpjM0=
+	t=1787759489; cv=pass; b=HP2sCC45eg8MVoShb7LmyKrM1Y/8xXIzs1H5wgB2CbIQt4+Dct25ANxpRwvCQpSVHpXOZtlG7aVe/INCHQ0GmmAqUllMJDOtnrhaCNiltSzYPxtLMdGVXztimKGSd4sQCZshgZ9/mEsiV3BeGH1+vfkTuy/69wVcGD7lv9+6iiI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787759484; c=relaxed/simple;
-	bh=S3oedpMLe1X5Nm1NXewwS51diE6KsPbimGy753lm/k4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=jgEUWPtCJJpHcDWpe07LeOuwPsfU+UjdwBLngjAepQRcprQoW0EYdnRsjCWHdPbXTys/f+zxCGuzQCfFQn5NDjD+topjqcrOd15SEGXVKDh1hqOLf4fkhPKOW3PvQeHubMmR8U8z7kc4q5w3tOinTjHmLNa8jIUZAPqGQlhn5kk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRIlCco9; arc=pass smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787759489; c=relaxed/simple;
+	bh=H/D9eHn0i6FJn8ZBJnf+FHDFfjwn2LjENkZX51FloUM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=leEJNeW1ts4sRKO5i4PcBZoxfnUO4dsXezoi2EQjsbmRuoYmrirhQYVCAQ3t/Q8knuGjzZtgL0e9QQzI/uZmY5LF1ugHN4AzEHsIVqGuZ3czaLoDYvOb8vkBA5ZNfy/l6UbMWbSEF3C9GEtNG2+kQ/BUDevpHvQGzqxU+VHQWt8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AYHDUfNF; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRIlCco9"
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-97c79f2db08so462351241.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:51:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787759475; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AYHDUfNF"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-52de50e77ffso10566041cf.2
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:51:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787759483; cv=none;
         d=google.com; s=arc-20260327;
-        b=pR8dEs8OKnTlJ93lwVY/DBBGHI7B4cC3k5rR1sQ2+RFJWsPT+hNgY24agqSn+XBUjz
-         tifRrC/wuqvIEigK06ywKjzu7NUU1QYwdIsdg+xo2RGUJKuKCaV0KVBjJXue3IGU39bg
-         4ykkoQxpw/Bot9cuLRMBb/9xZenkBuOKWQLVfZhSeD6A33gfK8iC7pZLQmnZ7jIIPS6b
-         L/SBfWZt8UZcAapD2TBuwjlbpWPCgls0SphR85gUorYchsPjze+Txd1F5tO02EWp6qfI
-         3uNxoNuvFw2yaG+eTcuUWFIUo7zopn/C9fIhWnMmK5WLpggD9tJqr1UGfA7L5tk2eT02
-         d7dw==
+        b=RKl6H1ffYBw3lnzq5wv9BTwMhYs4SlOfJfPLIY+lRhV47HKdNNdYWFEx2+BAkFYb9/
+         tvs82QIxgS+pbwCcSXmFP9qB+Cr3cfIQWnJy3vqx7VKTnI7dOeobaZgZS0fJbUgnt/Ga
+         CdedJDlUsqzewfBUFGouBtX+We4y5icCMnEUDX0wa22oFujHREDjn8/vcASllC1wYcO/
+         rexVQsadzyw7my9/ZzyBmbaSoGdX4fHGbMCwVJuyA+TVDcxkBqZTMazvj42RKwp6u0Fy
+         5WyIjgT3lHYp6lMFbLnyyRd84n6/P+v8psi8YD9HYMDIdJc5WZagbjBh8/JglIFOZya1
+         eDbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=SNQiDCMuOX4DVQkBqaZPrnMLK28Qu1U9AZkg+Khh1qI=;
-        fh=aDUZZ9N6NPmO6DMPx8G1ADwl9DVnQFUvUJ2oivftvxg=;
-        b=kf+3InwBkgqy6atGQKlpwQuDD5tWnPMchaWq2Bw4zxTG4iIc1/Fcmcf4c9D9M6N8Nn
-         KjS+obTeboNCgzfHJwyAw00+jKtzPsjEV4UbezWXliNY8997hnhgmcVfLLm/nbBoIhSx
-         KdjdoaDZ0KlxqqcIb6c1Vfp1diBywuPuYI+DGlVR58lEbSfVGKLe8LRjTmigS+nU7k5A
-         324Cszs9h+TbasNC2z9L7kj6iOyzvYKSgdcOg5Ow8H0bJTX8gS4zHDwR5yjFL4XkoSS+
-         9sVAsLWDJh1YzoVyaVwl/ITXYdWoyUAeqS1N1SEcw52zfq/PrAHZEyxY+Ktzidht5R9X
-         Yo7w==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=H/D9eHn0i6FJn8ZBJnf+FHDFfjwn2LjENkZX51FloUM=;
+        fh=MOvxSdLiZAlvO836QWHy+HHvo+qh4a06Z3hxUk54CkY=;
+        b=CRaDjHv7ZpyE0DiZ+IDNGSTVyzFyNpENTSbbY0VscLWgVW0/AygtAmf9m/6lV3CSYR
+         QbH8mW+dXy9+bSyTFMCkD9dY8ZjaSQ0REplVlYd39izKc/Ad4RFZxJ2CEVSm+Zg1T4k1
+         uhfLRF2qQLeanV24kAuPx8YNLrMjYS/RHP99/lsg83G9GgTKB8jSTYouF2HqG242//nI
+         ZMGLwKOsqft/oKFK8oYHW6L1O3vDfgbnW6tKnMEwB4eOKINZaRw3M4wF4s2xupt9Cibn
+         DIrHBPtjaFjqUoer3es4CMuN/R+3FCZASTw5gXO6uJ0+/E9FozxtIoFT5yNn+43Ep/1Q
+         tbVA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787759475; x=1788364275; darn=vger.kernel.org;
-        h=content-type:to:subject:message-id:date:from:mime-version:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=SNQiDCMuOX4DVQkBqaZPrnMLK28Qu1U9AZkg+Khh1qI=;
-        b=NRIlCco9vqwI4f8I65bd+/jEJm48LUxLcnvP1Z96vJKD7SwWBZx4QhheeBxERDejwq
-         64IDZsPfKx3HRiChVPuI973ob625UjMMAlrLwhIsjhYLOuMvONr7FpVfXPj/BgcqE9Ph
-         N/4VlvcdnLjppHgf+TWZxlgQtteu14+d1dnBZkDnvJtmP0dEN1xVW9LFeS4XzJX1DzDE
-         DNzkoprnx4HkDjn7pVVNaO052X44Al6hj4Le31uzidb150ogXOM1xDzVTrY+9Nz69+KM
-         udIWz/JG2WX/tTngw8YnPXWaS52gziCrrwWLOmEY5fFkm7DXDQFyAEbI5GmO5jjasad5
-         b5sQ==
+        d=google.com; s=20251104; t=1787759483; x=1788364283; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H/D9eHn0i6FJn8ZBJnf+FHDFfjwn2LjENkZX51FloUM=;
+        b=AYHDUfNFegDEmMNzE9qpyZLQfKBTi1s7pL2KWjAzzYywXTEwSMrXtkJrW+QC8uYCWE
+         OLXm+b/HpIaYwDcFt/nu0NJegTqWCBCRb1NJGTYo25nQjwRrXQUplD80ExdEXjDythQa
+         BD4TUB53FBbb9SIyjbSFD4PgEHbm383fWEP4u60woL8HVd3oFXnJIFgDeOF6cSq0B3V2
+         VHQaNf4prW6nVy0xWVZOsniEDa0qqCRmRU90RNnFYV0yd3CzFeQmIK1atp+j/ccmbtE7
+         2q3RD4cTuOoY76Pk7qc72IaRFs4ONOhnp2PAD6xJ//+ZqnVLgP9DXxkcn93ai7AFFpDF
+         7TzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787759475; x=1788364275;
-        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787759483; x=1788364283;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SNQiDCMuOX4DVQkBqaZPrnMLK28Qu1U9AZkg+Khh1qI=;
-        b=kFMLvC4+wU9hDh806pbNGzsSxyuI4jToEecFKohXATkPlpWLVG8IK+fojg+hvMvdV9
-         4IlwvxvIn4KGK4Fw1NjxAGTfCoklSTwp1x/+/J1pr4Oyp4eUGq/FpnhwAHHSWG9vPLu0
-         M9Hlnvlc9N5MIJ7ifLZWXlBuAadDEasB7zDjShagtQNv28AnL4FL6ec6krNTpD99LuGZ
-         gbNkVDcXF7MbbmWeT/toa5KplDnuisuIIr1QYgmaesizdCJeyDh46KCQQpCnixlg/aUY
-         zPBaMSi+wj5k0skvARJrLLdiGt/qoBK3NoZGYgT5tbgoOgs3l/5+3Y1klBy0bdtF3mBY
-         oKBA==
-X-Gm-Message-State: AFuF++kLGD2kPsHlma+k9eW4TuQDUZIe0O1GrY3bBvqmT/YBUSSc+33P
-	m401A+Xcj3p0FmO5by5k21gheVLHy1vkowV4TidYWBKggoHFktSZ8QZsgkOC3DcJ3ox9CTfPWZE
-	XYJdJmQ1BhbBhow2VVXULppvxktSjifzoLRKwuqOrhQ==
-X-Gm-Gg: AR+sD13EJN/8aNXi6SC4xAtmTkg5VHjdgs+nMZRNBh0SghM4on0Z1s5OZzZ94MPeQHX
-	tnXvpZTBHQE4/LKmIcfZxkQ3dWr3aGCRQWs5vIIq9cgIiE3BJNK6T1JOgAvZR+5mpVKx8vpb+Ww
-	TbP2m246kP/GS5K07AX67jYllCVOIENTsoUU+l1GP5TKf3H0ND/iAbkW9T0yIIf5yeJkjWv0u/U
-	Oa+dzPaEP9FXY+/yCbQ/L+hP5GFRDjY3TPH1zXeWEJ9/Wp7x95GiMC/lGERhr5F01dhmYNRZhxi
-	Hb/hgrZyrj0W4vs1Pr9edEq4LzNVJEdmKjXaJhgDZSKg74p4ukkEjQOIow==
-X-Received: by 2002:a05:6102:1628:b0:74c:7fd8:73f5 with SMTP id
- ada2fe7eead31-782c07ff7a7mr3060132137.6.1787759474891; Wed, 26 Aug 2026
- 08:51:14 -0700 (PDT)
+        bh=H/D9eHn0i6FJn8ZBJnf+FHDFfjwn2LjENkZX51FloUM=;
+        b=s7yHexm1RkrxK9VZj/ldKV0ibaSZuNFOjmJgH5ZaQ/IKjxylXR/EkK2H5a34oTQRho
+         qVQvRuogXHFUyY9n99XOhHJ8k7IwBfEYarnj0yHrUuKbUPf+CikB+u4/A8ufFK12Dy0y
+         +Ciq23ioSjjIXAB7XY5ze2nlidqO6zHvMhVdfx/gftD9m4pnkM2no7NAONdrBou+Tbk8
+         p/C3cdY5JcEuOMd7E51NTgbg5E4MYYDxvcA8yWKtbu9tuJuNwPQjqLVqZf0lKhKD+PpP
+         C8GY1qq1myLxjb00xAFubzq4se8VmXNU9U2uiuyyZWPEzDwJwqtRBtyuh7fGaBQ3CA+L
+         ve3g==
+X-Gm-Message-State: AFuF++ncnZaeezBzsnNXkgeey8OPhQtafWGgpOyDniiF97QycEkXclMa
+	tyy3MF4StGXLGaV0yvJFcO/0PwmXkRc29DO0iZn434Mgs5fldc+K0H2yCKxFfNIsJHVCvT/JTda
+	s6ZqGp0E4nXoEobnZ2m1Y3i1IZmcpAGmmtzPu1Sl7
+X-Gm-Gg: AR+sD10d1qh+iEQEYvubuAGUJGi8lxYoABQ1WRvMLRo3Y3gZj79EhQyIc8Hppb9Mjwx
+	8TgzIMQD4MKOD4egbf5JgVR+r7SZghp0Z1c3J70opGC+M0YuhiMPbL5gliIQ98+GZKEZyrfbnqQ
+	0yrJDXfz8l/zp+9zq/upfdfWz33WuNR8z8nj5UQ7f9umw+U/KxwP0FoIhijeCzAwbZ8r977G9oz
+	953VjdoAxSTfBlljT/6j+vKuAhi1rBTYqI2c4O11uXizlat3GIGMMSUe3GLkQcMnrBOScMlI9cL
+	WmdaMAibHTmm0If6VpFBMEJrRGtsfyD6tJrOsreDOGVmv93yx2HRl1ZhvzxzIyH0PGB8cobjC0r
+	x4CDyq1bsgFGGtddeX6TK7XwwhHZHS555HiwEi0vQle/qqKiAB+VikcTAFhg=
+X-Received: by 2002:a05:622a:e109:20b0:517:875a:d634 with SMTP id
+ d75a77b69052e-52e422daf0amr54023891cf.2.1787759482234; Wed, 26 Aug 2026
+ 08:51:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: AnnaIv <ivanutka19@gmail.com>
-Date: Wed, 26 Aug 2026 18:51:17 +0300
-X-Gm-Features: AcwNN1XaKNFbDSqdoop8gk09iC_dKf5EWlR0g8BvA8unZZK7aCcgTQMzlWSQIr0
-Message-ID: <CAL+YWWAg6ptwpvaJ5KynbSdOarFZPBHtXp+fLMPuq5uk_Lp_ZQ@mail.gmail.com>
-Subject: iproute2 parser vor ip6gre interface configuration
-To: netdev@vger.kernel.org
+References: <20260826143735.1819315-1-idosch@nvidia.com> <20260826143735.1819315-4-idosch@nvidia.com>
+In-Reply-To: <20260826143735.1819315-4-idosch@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 26 Aug 2026 17:51:10 +0200
+X-Gm-Features: AcwNN1WtL_35bV2gm4CNNp-SeVW9846oHPeCQvxx9DnsMwAuCL8obm53SfRbHRw
+Message-ID: <CANn89iKDuub6PozapwA9hkjYKjYQOOccVxKzkj2N=MnUaq_H9g@mail.gmail.com>
+Subject: Re: [PATCH net 3/4] ipv6: udp: Create exceptions when socket matching failed
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, 
+	willemdebruijn.kernel@gmail.com, aksecurity@gmail.com, 
+	noam.caspi@mail.huji.ac.il, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello, I noticed something that can be considered as a bug and not a
-vulnerability. When I try to up interface with this line in
-configuration file:
+On Wed, Aug 26, 2026 at 4:39=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
+>
+> Currently, when ICMPv6 Packet Too Big and Redirect Message packets are
+> locally delivered and quote a UDP packet, an exception is created in the
+> IPv6 exception cache only if the kernel can match the UDP packet to an
+> existing socket.
+>
+> This behavior allows off-path attackers to conduct a side-channel attack
+> on the exception cache in order to discover the ephemeral port used by a
+> connected UDP socket.
+>
+> Commit 4785305c05b2 ("ipv6: use siphash in rt6_exception_hash()") and
+> commit a00df2caffed ("ipv6: make exception cache less predictible") tried
+> to mitigate such attacks by making it harder for attackers to discover
+> hash collisions in the exception cache and by randomizing the number of
+> exceptions a hash bucket can hold, respectively. Unfortunately, both of
+> the mitigations can be bypassed.
+>
+> Instead, mitigate such attacks by always creating an exception, even if
+> socket matching failed. Do that by calling ip6_update_pmtu() and
+> ip6_redirect(), the helpers used when the quoted packet did not
+> originate from a socket. The resulting exception is indistinguishable
+> from the one created when socket matching succeeded, both in terms of
+> cache occupancy and in terms of its contents.
+>
+> Pass the ifindex of the ingress device and the default uid, in a similar
+> fashion to icmpv6_err(). Unlike IPv4, an oif of 0 would not match any
+> nexthop in ip6_redirect_nh_match() and no exception would be created in
+> response to a Redirect Message.
+>
+> Note that this does not allow attackers to create exceptions that they
+> could not create before, as both helpers can already be reached with
+> little to no validation. For example, by sending an ICMPv6 error that
+> quotes an ICMPv6 Echo Reply or one that quotes a UDP source port that
+> matches a wildcard socket.
+>
+> Also create an exception when a socket does not wish to accept PMTU
+> updates (e.g., by setting 'IPV6_PMTUDISC_OMIT'). Otherwise, the fact
+> that an exception was not created can indicate to an off-path attacker
+> that a socket exists. Unlike IPv4, the check is performed in udpv6_err()
+> and not in ip6_sk_update_pmtu(), as its only other caller, rawv6_err(),
+> does not consult ip6_sk_accept_pmtu() and therefore already creates an
+> exception unconditionally.
+>
+> Fixes: 2b760fcf5cfb ("ipv6: hook up exception table to store dst cache")
+> Cc: stable@vger.kernel.org
+> Reported-by: Amit Klein <aksecurity@gmail.com>
+> Reported-by: Noam Caspi <noam.caspi@mail.huji.ac.il>
+> Reviewed-by: David Ahern <dsahern@kernel.org>
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 
-pre-up ip tunnel add mgre0 mode ip6gre key 1 ttl 64 tos inherit/c0
-
-it cannot be parsed as it is already parsed in ipv4 gre tunnel. I
-checked file link_gre6.c function gre_parse_opt. It says that
-parameter inherit/number cannot be parsed as two. On page
-https://man7.org/linux/man-pages/man8/ip-tunnel.8.html there is a
-paragraph:
-
-tclass T
-                     set the type of service (IPv4) or traffic class
-                     (IPv6) field on tunneled packets, which can be
-                     specified as either a two-digit hex value (e.g. c0)
-                     or a predefined string (e.g. internet).  The value
-                     inherit causes the field to be copied from the
-                     original IP header. The values inherit/STRING or
-                     inherit/00..ff will set the field to STRING or
-                     00..ff when tunneling non-IP packets. The default
-                     value is 00.
-
-I consider this as statement that for IPv4 and IPv6 it must be parsed
-identically. Please, could you fix this issue?
-
-I know that in Linux ip6_gre.c function prepare_ip6gre_xmit_other for,
-as I think, sending non-ip parameter flags has higher priority than
-flowinfo. It can be considered as a reason not to change parser. But I
-think that it also can be fixed with a small patch. I will suggest
-this patch to Linux project or at least fix it just for me.
-
-In any case I ask you to consider this issue because it contradicts
-the paragraph from linux man-pages.
-
-I suppose that without patch you don't accept my issue so I decided to
-make it by myself
-Replace:
- else if (!matches(*argv, "tos") ||
-               !matches(*argv, "tclass") ||
-               !matches(*argv, "dsfield")) {
-            __u8 uval;
-
-            NEXT_ARG();
-            flowinfo &= ~IP6_FLOWINFO_TCLASS;
-            if (strcmp(*argv, "inherit") == 0)
-                flags |= IP6_TNL_F_USE_ORIG_TCLASS;
-            else {
-                if (get_u8(&uval, *argv, 16))
-                    invarg("invalid TClass", *argv);
-                flowinfo |= htonl((__u32)uval << 20) & IP6_FLOWINFO_TCLASS;
-                flags &= ~IP6_TNL_F_USE_ORIG_TCLASS;
-            }
-        }
-With:
-else if (!matches(*argv, "tos") ||
-               !matches(*argv, "tclass") ||
-               !matches(*argv, "dsfield")) {
-            static const char inherit_str[] = "inherit";
-            const size_t inherit_len = sizeof(inherit_str) - 1;
-            __u8 uval;
-
-            NEXT_ARG();
-
-            flowinfo &= ~IP6_FLOWINFO_TCLASS;
-
-            if (strncmp(*argv, inherit_str, inherit_len) == 0 &&
-                (*argv)[inherit_len] == '/') {
-                char *val = *argv + inherit_len + 1;
-
-                if (get_u8(&uval, val, 16))
-                    invarg("invalid TClass", *argv);
-
-                flowinfo |= htonl((__u32)uval << 20) & IP6_FLOWINFO_TCLASS;
-                flags |= IP6_TNL_F_USE_ORIG_TCLASS;
-            } else if (strcmp(*argv, inherit_str) == 0) {
-                flags |= IP6_TNL_F_USE_ORIG_TCLASS;
-            } else {
-                if (get_u8(&uval, *argv, 16))
-                    invarg("invalid TClass", *argv);
-
-                flowinfo |= htonl((__u32)uval << 20) & IP6_FLOWINFO_TCLASS;
-                flags &= ~IP6_TNL_F_USE_ORIG_TCLASS;
-            }
-        }
-
-so it can parse inherit/number type of argument. Please, consider my fix
-
-Sincerely, Anna
+Reviewed-by: Eric Dumazet <edumazet@google.com>
