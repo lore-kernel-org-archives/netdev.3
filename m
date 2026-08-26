@@ -1,109 +1,85 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAD535975;
-	Wed, 26 Aug 2026 05:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from mta1.migadu.com (out-224.mta1.migadu.com [95.215.58.224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340DD333439
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 05:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787722307; cv=none; b=pODTcl/oCXC7S0DsbOCyq4dEUPqcxa2G0JzKZrGbkiUXwCQ+ppjmus9dMBdyiYuFcVjO11eCcEsjmj5MyaSAUe9eAo2d1fonyqh0VhVvtyarxywxl7yHwmenkbq+OKsPoFMemLZGAI3PVGsgcoTbqEvU7I/+uJu7hhZklMGUDmg=
+	t=1787722704; cv=none; b=s5YmMKFiucOxPPPpCY5ViQdjbGiOleEth9bf0/o7zEj4gL4uZI+yQJJj2J62v0Woeeo+59peiMYWJYgJTyhOTY/12eS9+f0670y124RUE5Oxahl25gmdQjLgIQf+GaN723tE3LNKw5qFtyXCpBfC5+YsD36+Mb1FPcNhCliYzbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787722307; c=relaxed/simple;
-	bh=KYYT+/PQ4xcJVd8Wmai5v72T0IDhA620QIZm052UeOc=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=pzTnHybm3rXDC8wN0u+wZwUVUW3lz97GckfASHPK4a3eo3Now5FUUYGaE2zUSxCflsk/Ph2TYkBbLspgYThJQ8EMM/4uY9jjAmRwZgAAtjqlDuxkXMJL9ZdPgKt+jxh12o87tIAqghkD3RI6TvBCMskISm0CdjsHvPa7017lBDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=R2Jl4SJC; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1787722704; c=relaxed/simple;
+	bh=qwiPevUVxC4HbDb6mnNEuMiwDcUKPc5Co7Hl7T7UNxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VjfDcN285e4RChMMUO7C9wqSTKfahdRZW7jZBEtR5e0MAhHb3dzjKO4kjUe+nJf/a1MFQkwA+nHO1gb9+2zRBT3Kj0RcFkKQTXDDX73SMMUhr/vRvbg0Xfft8ANI7ycRnX4VALYikyl9qZnBfQLdh/vchDhAnI7qo9D4M+8PhXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FzeHXx7t; arc=none smtp.client-ip=95.215.58.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="R2Jl4SJC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	References:Date:Message-Id; bh=Qn1K5uZcsjIXg5afIwVEwPEUZMEcJXFBf
-	xRn3HuhEcM=; b=R2Jl4SJCzKDArYGiy4rCDXjo0P9VUuAaKL6vbdPLl+cVY6evq
-	llUgG+RQePIqOYJo8Cdc2IsurArNLyODjRrqe2dPFjinC7du8A5Tbf9abbiCbCzl
-	IdTMS92ZQZcdhSPGKTa4fLUFei7p4asIjevCHQOwWDQ9tNktwsldTboYJ8=
-Received: from [127.0.0.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwCn1s0teo5qc04BAA--.336S2;
-	Wed, 26 Aug 2026 13:31:26 +0800 (CST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FzeHXx7t"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=qwiPevUVxC4HbDb6mnNEuMiwDcUKPc5Co7Hl7T7UNxg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787722700; v=1; x=1788327500;
+ b=FzeHXx7tdPQ1G1BOqAHeUL1P06/vt1CsEM3E85XHyKz2U7jBVpqSv6tnZEquBwVK9uE8E7Yc
+ wv8tLJZ9gJbUOvo3LLGiW0qIW2wdob2geY3blmb/y/nOO+/PSfNLAclWn7b0JajArZF/6TWCNGg
+ ausfuwFSop5UDwvjxMmiDnPQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [IPV6:2408:820c:2709:4101:c80e:c4e9:a56c:6f95] (2a14:7586:6109:1::198)
+	by smtp.migadu.com with ESMTPS id 3a4306510f3658bc;
+	Wed, 26 Aug 2026 05:38:10 +0000
+X-Mizu-Trace-ID: 3a4306510f3658bc
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8ea9c9ce-e1ed-475b-90d3-abf1bd86c3d7@linux.dev>
+Date: Wed, 26 Aug 2026 13:38:02 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 09/12] dt-bindings: dma: snps,dw-axi-dmac: Add
- UltraRISC DP1000 compatible
-From: Jia Wang <wangjia@ultrarisc.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: wangjia@ultrarisc.com, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, 
- Samuel Holland <samuel.holland@sifive.com>, 
- Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
- Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org, 
- netdev@vger.kernel.org, dmaengine@vger.kernel.org
-In-Reply-To: <20260824-throat-arguably-779a75446a81@spud>
-References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-9-61ab7aebe9e5@ultrarisc.com>
- <20260824-moneywise-magician-50d8e6ff79ea@spud>
- <20260824-throat-arguably-779a75446a81@spud>
-Date: Wed, 26 Aug 2026 13:31:12 +0800
-Message-Id: <178772227234.2049162.4715674009458678447.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787722272; l=492;
- i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=KYYT+/PQ4xcJVd8Wmai5v72T0IDhA620QIZm052UeOc=;
- b=ZF4bncxtlyzP5EpRsjS7n7l91oiZzzea5cJ3tGDPIYOG5k7bhC2NAKb/MHRfByrSQ9QA2oNC0
- 96SjQtEw5x1Co0DN6ydYssZfQRyPQVOf7uP3tEi0o2lguU/blniQRpL
-X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
- pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-CM-TRANSID:AQAAfwCn1s0teo5qc04BAA--.336S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYX7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aV
-	CY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
-	5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
-	CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
-	FIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAqzxv26x
-	kF7I0En4kS14v26rWY6Fy7MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd8n5UUUUU
-	=
-X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQALEWqOWvsABAABsb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] KASAN: slab-use-after-free Read in slip_receive_buf
+To: Eric Dumazet <edumazet@google.com>, Jaeyoung Chung <jjy600901@snu.ac.kr>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, 726ksm@gmail.com,
+ kees@kernel.org, linux-kernel@vger.kernel.org, eulgyukim@snu.ac.kr
+References: <20260825150655.1450271-1-jjy600901@snu.ac.kr>
+ <CANn89iJE_HosLBRhZGM-GVpgPCSNtHiS9vnCc3tEmTVaamcJ9g@mail.gmail.com>
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <CANn89iJE_HosLBRhZGM-GVpgPCSNtHiS9vnCc3tEmTVaamcJ9g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 2026-08-24 18:11 +0100, Conor Dooley wrote:
-> On Mon, Aug 24, 2026 at 06:03:21PM +0100, Conor Dooley wrote:
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > pw-bot: not-applicable
-> 
-> Actually no, please add constraints for your device.
+Hi,
 
-In the next version, I will add DP1000-specific constraints for the
-controller resources and hardware configuration, including its channel
-and AXI master counts, data width, and per-channel properties.
-
-Best regards,
-Jia Wang
-
-
+On 2026/8/25 23:27, Eric Dumazet wrote:
+> On Tue, Aug 25, 2026 at 5:07 PM Jaeyoung Chung <jjy600901@snu.ac.kr> wrote:
+>> Hello,
+>>
+>> We found a "KASAN: slab-use-after-free Read in slip_receive_buf" on Linux v7.2.
+>> The issue was found by our own race fuzzer. We have not analyzed the root cause,
+>> so we do not have a proposed fix to offer.
+>>
+>> To reproduce the race reliably, we applied the delay patch below to the
+>> kernel and ran the C reproducer as root inside an x86_64 QEMU guest. The
+>> crash log we observed, the delay patch and the reproducer are all included
+>> below.
+>>
+>> The following kernel config options are required to reproduce the issue:
+>>      CONFIG_SLIP=y
+>>      CONFIG_LEGACY_TIOCSTI=y
+>>      CONFIG_UNIX98_PTYS=y
+>>      CONFIG_TTY=y
+>>      CONFIG_KASAN=y
+>>
+>> We hope this report is useful. Please let us know if any further
+>> information would help.
+>>
+>> Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+>> Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+> This rings a bell; I had a local syzbot report for this issue a while back.
+>
+> I think we should remove slip_hangup().
+ppp_async.c and ppp_synctty.c have the same anti-pattern. Should we 
+remove theirs as well?
