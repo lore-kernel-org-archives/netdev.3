@@ -1,150 +1,110 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012037.outbound.protection.outlook.com [52.101.66.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E333AD52D
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 07:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787729551; cv=fail; b=D61v8FmPAPeINh6thqDNwC/OEnfT2lV/AIUEl2pNitz0TkkNfrMLgcTBocH+5oFC511cC0wkcPj2vCmaej9yVIsTiUCfXIv54YwaxMr3jJsi37JcjJcVLJlyZpdYqbXdI2FIQZnfqSFv8SD20NgDV/Pp4emeZ8zeHpO494h7fXA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787729551; c=relaxed/simple;
-	bh=onAa58bk0yxl7nhYPrtDZdXKuUZXIWHBskrSkvLU9wg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EuRO6wd0LMT6XVnS4xVfLquRJ0pUm17zqs7S+qaBohO2NxiU4SVNxTIDQe6jTZsNGTG+jxBEBWYgjpF85bTM2wj6k12Ys5FYEi+uMpP9cDkhwPfXoOJQHbuRDftVLr6HBDp1j+uNWANHiqEX/P7N74HyWgXpWpwu3Yte7IrO1VY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=K5t/gVV8; arc=fail smtp.client-ip=52.101.66.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0333B0ADC
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 07:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787729657; cv=none; b=ZMrG33EBfZP6qHHAJAlKRPI96kMK+1Cj/oHud/N2m7v5SsWwJhTjoMcx1lPvcorzy0XjFmvAKuE/AfBt8T4nmOLWxxR7RTU/q3kszOpRNvalO6ZwmcoEjZa+FB3JDzK+JsR1kX/8VZJbHDrGidtOmKgARgZc3AdHdW5Q/w/o8tY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787729657; c=relaxed/simple;
+	bh=crT3oVnhlOSF8MK4A9QTRjuu+YdP5f/ggkya5OL7ebA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qThPWBGk7ujysNdmXCpzPyRFEYWfoCpUznTX7/4Kf14GLQi/0j+p8d9KLpGwd49jmfkRseZ9zmcNVVAb+h86WnbMDvg3eUiZPStWehfAvy6mY9w1eD7cIqSEisRQBHp3di9xOTcsS5MAmU1zH7IKNiT8o5X839Hg2e34PJUO9r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=XU3PsAos; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="K5t/gVV8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xjTw1jsoHPFvSlu9g6dxdV2MUbLlM+9f4sGh1gd4ghue3+F9zC+8xALZ/P2doDe+7Jkt/9LVoYEm/JGVF8E/hnM69wpVIs+QhtZVRgW14tBkaTZgBBp2wZIuP6w1JDvxDIHBqjJa2a8LRCfPaQl7RCl2Cp/1hCawKLwfYZ9hhbUfXl0WV+r+EPoqhIzU3Jx8YefaMXqi53ypwC6D0KFgK7u9A8ZK74f7yphDHfUvB4JKJYadINk5PBd//mdatduNdhA63XMb5nhSF6V9YxuUHpL+OFio4GmSUAQtRpHWuNuYc5v0lfRKlVgg5MlqnmR5tvpYR3QI8QmNe5kUtbasQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lJxg1etIyg9SuKXQlBWEqzhUUQU2pUlcqLEH1X70Sgg=;
- b=FWnXHi68yto00OoQshMDv3arbSKDu3bstymxwBZ5qtO1rohVuCvqZbM3m8iw89h+k1qgJw0lXTA1lf6fdjh3jTrk2f66+CYKnjClxYR8xoUjPfYyA9e1tP0F6vgAYm6k2NedwrM03MVlF23ZEC6JXd+cgYP03w+J6gp7pyPA7G+bhcGroGGWEsrRIMoFdregmEnLEq0czjo560acopf2iZUMKh0nOxrfppW0TwimxQVjcNOvSX/aTkC2GCVJCbsKS9k+yZtZ/ukcPUTp/1ORQxOcbt7Bah8qa3ltQv27CN5j7LalBpyV5y2fki+7ENoONgpb8iN5FH+fBnbsGg5hLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lJxg1etIyg9SuKXQlBWEqzhUUQU2pUlcqLEH1X70Sgg=;
- b=K5t/gVV83Hn9Q13CRzH7BrwVwxmHB3thq8ILcUXjxSRNTbGV2wVUG2A0FMSKSqVaFPvzKetwt9OCSJIlCz9tnl1Ze7cXY1tXFZXaaY6HA9BQSli+38HPVytNjfdwu6CxlzYnPOnLy76h29/yQeK2LcLUmsVeu8SaYn8pWAd6nZiG6TGBeSh3nWWNvraHdBC3VWeLW2bKN+eWDFLPVE3kxrG2qQ9IV/euDiYxWbhnpNzZY3Qwavq2GvnW71U3fWLeIm7yncLSpALlabyWTBHHKgT2K5mLKRoaLMvLDpnAs1pKGql/nQn3V9RYlWj+tMS4h2pbrZydZJVdFZEnTX76Ow==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- PA3P189MB3262.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:4b6::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.8; Wed, 26 Aug 2026 07:32:26 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0360.008; Wed, 26 Aug 2026
- 07:32:26 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Srilatha Addanki <saddanki@fortinet.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "jmaloy@redhat.com"
-	<jmaloy@redhat.com>
-Subject: Re: [TIPC] Enabling an already-enabled bearer triggers brief link
- flap (~243ms down) despite 1000ms tolerance
-Thread-Topic: [TIPC] Enabling an already-enabled bearer triggers brief link
- flap (~243ms down) despite 1000ms tolerance
-Thread-Index: AQHdNL/5gg/ZiuzKC0+waAp0eE4DvravIHDwgADJzBs=
-Date: Wed, 26 Aug 2026 07:32:26 +0000
-Message-ID:
- <GV1P189MB1988D232DCFFF279C4EC4595C6AE2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References:
- <BN3SPRMB0002D8DE46CAA989F8F3961CB3AF2@BN3SPRMB0002.namprd18.prod.outlook.com>
- <BN3SPRMB00020EA67E11CAB28D9EBE6AB3AF2@BN3SPRMB0002.namprd18.prod.outlook.com>
-In-Reply-To:
- <BN3SPRMB00020EA67E11CAB28D9EBE6AB3AF2@BN3SPRMB0002.namprd18.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|PA3P189MB3262:EE_
-x-ms-office365-filtering-correlation-id: e6bd6fbf-81e7-4d49-c225-08df03442d5a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|38070700021|10067099003|56012099006|4143699003|11063799006|6133799003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- Q/gtGe+TH3ErHH4HN6/EpPIftBbrP+wOKFtpBfHKIok4xXhJJPjXXpzACZjqgCsf/+Hm5dzyZpULU8CpBqmhuzOoZwhJnO+WcngtvedpqN03DHlLAgbgEmZ6ceKJtRJfADDXM/XLYOe95hA8BtuHS5BTZXDd9+ddRKTCcEcRlWpI4W/7bgtwWDTiUslawVzoSULuPmEFzpmxB20ts8O/GEMKK2LI+5PHIPKeXe883swI7kuFIMgKrGskWd3T85m3KjyeQ4Oz9+uyNI1HycQzf65ISjhf4p9y0qibZPX+dB52C1BFCoaIKapRZwVturqj7IjxUn2k61PgPsZVGGXNGdpFSEpuMGiEmvM9VKxzmMofCxlfh7YXs3bn67M4Ffc6QdYalvkoHvgIkqpeHNb0DTOntu8CT0bR+tXCBytLJ8OQ/dE941iGDOCBL42pkXsoF7BEWul4DwkT8MG07jJKDvFLSpnJ2OuvCC7ZaqjM5cvZ2WEuSFITtentxvclD4v8RpBVZQEVSETufJ3S5hzqkDKVnnDqI1IYkiDhA4XKZvpLZYivM/A1lDFa9KWX1XVzeLSalz0Q6KUhd1HU+zF3iA94IEEaTe+C2cKY5GtDBZG+Vo0XfGZr9kOsvlur1jUQqGMtRahOOGcOXCnRE0HkiT1+OtiaiO+g/X38NMkZVreQF++bxRAs3FkF3OQw4NwBbkshCPokdG8z1OxA8XGhGyFncQI333PH42prreljCxk=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(38070700021)(10067099003)(56012099006)(4143699003)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?oX2hMXJNZfKiuD5/gcM5OgywwOZSkLmrR4id6IUGeKjmC34muC1wRyS/zM?=
- =?iso-8859-1?Q?UkBXV7xcpQZxw5zcw2lJSGBLVvy1JNI4I0ZV0kBrUdPPbFnsYyIYcz+7pb?=
- =?iso-8859-1?Q?F85HjG3m3pCqV0npOjknlZawjCwZmD0WkkUki8Rc6n0nAzI9IENIr6fM+6?=
- =?iso-8859-1?Q?xe8TjcGWu7aFatuL6sODziBPQ9OEOuj3M7YexHkQnqvqoa3RMQHOAHNH/U?=
- =?iso-8859-1?Q?i+BGdisBSwCwZR+ZVBOVuTxK8PCRMv9ZZ5mPAmVKYwob47ehgt53Qp6rk/?=
- =?iso-8859-1?Q?PfYdB1lfpG1BHL4+1tJwn1mYDjxdCSq4aB/ngRQ1Hld0vm4rzI8SXhYwBQ?=
- =?iso-8859-1?Q?PCQKr6aVhtdEUDdMmm/muezDbABbwiafsDIKu0geXjViJZTE8zZ3xAu1eL?=
- =?iso-8859-1?Q?hY7PJ78DQycb+MnUQvYan+1sDLnGUTlbbA+0gXpznC+4/U1eBi27GO2jQz?=
- =?iso-8859-1?Q?aZo/WkNtYW5TjbBpusS7GDhY5+ySaFbQmVlHT/sg6Rj62EoA9oEA5qwLEk?=
- =?iso-8859-1?Q?OWyB1hA37s4NJbNCnoL8uIgvsP75UtWtMloOjv9i4Of1HSlTTT9ESa1KcV?=
- =?iso-8859-1?Q?Bum/By3893UpetxCy8cMhthr7vTFwo0KERdx+Rw+SI97de4eYRlyPvVDjg?=
- =?iso-8859-1?Q?yW1dqsf1YUre2KAXf3Zg4bof4QqPiDm0Swz6xKngVmWmwSl5/fD67eEenP?=
- =?iso-8859-1?Q?8lrbmQlG7jPsqW10tNiNxrlzhxX/TJHTbxesxgZYXWtnB1BsYrxcbJqhFD?=
- =?iso-8859-1?Q?wrvDDwYS60UAIdF+CXLzHhms/MFJ8clwvWgZ8w1XP0HVZU1wltMBcsgmGI?=
- =?iso-8859-1?Q?7JEhUq0OhMgbOdDHzcWp1lJmgx+vZCjpvdq0rZ0fDyz+BsnapUlojvRHWu?=
- =?iso-8859-1?Q?Qa1Ii6ZlDqk7MLLpnSwDtjMKL9o8ztJVVGCrWfZlyMXOjPU5KjpAwTb+2F?=
- =?iso-8859-1?Q?ZBiXx4XKrkMmoeFeqWV7q0G5O5cqGOyynrkVRDUuY8l6WG2c3Z5LQNKmab?=
- =?iso-8859-1?Q?zEf+0IiIHkdPSq9wfJs18Mjgy/c2cvB0qrMFTJmXohG3rLvH4QqT5XkANQ?=
- =?iso-8859-1?Q?HxDHMRKt4oPkX96KugESjT/qt8p9oWkfTmYxs3ujAjSpsnXHSyE5txZQ5F?=
- =?iso-8859-1?Q?DmZehSE+vWghd1BhW90aSeBvG2lxDFaPMEJ28qT/GRtt4ZBt1OvuxX6tEn?=
- =?iso-8859-1?Q?Aw8f8ruhOpjcBCcR20ls74iDwBKFzoZ8GVpOWRP8Sv88We3tqrffJZhlWf?=
- =?iso-8859-1?Q?XJujSYlknvcvhUah6YoLLVefVWPqzdFX4OAsCv2rka2sTQ277kyBg/CinV?=
- =?iso-8859-1?Q?zlrx1N6SIPDU+WjAdMh5cUF9ro9EMdqhRkLFSMdbg6cTWUmbTEnVhvUv2s?=
- =?iso-8859-1?Q?G+orPVpqjeOLoHAwkjwgNupKtKsOxavZXbh6ACGh+3vye5XlwhWLxalYzV?=
- =?iso-8859-1?Q?WgpaIXO6i71H2//VBBe76hIeCrc+SQT/H/Fpq/3rdipMEFytcOkINJ2f/z?=
- =?iso-8859-1?Q?0iazGlDAJWFZVm8SCfQFsPZJ8SA+GN3VMn4zViCEIb7VdhP80q0kdNrOPZ?=
- =?iso-8859-1?Q?01LwnTTJNNCCfvfG/Z1zw2YRr9Q+fEZ9eLSV1aW/VpoJ+CzT+t0SAI62CU?=
- =?iso-8859-1?Q?HsxYZ1M13kVrrQSWgWsgBRemawh3vRqJ5nCQJa22qmxatSt2l2rl4AxMse?=
- =?iso-8859-1?Q?HsmLzjB5M/a1rn/SJnNihtRj1LVHJ9PSgu7qDVZ9xz87srQ4v47gDEdkRc?=
- =?iso-8859-1?Q?+ETcDl1zg1hzJDh6jVwN35/Syt9K+DRe1S9iKwmbRvEfWV2dGeDyIiiriR?=
- =?iso-8859-1?Q?HBe0l3MZgA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="XU3PsAos"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c197eaaab00so99696966b.0
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 00:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1787729653; x=1788334453; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oyoB92oafE8TgjnoFJos6/bCIEhx3ezLRECkRzRrBIg=;
+        b=XU3PsAosE5fBX3sHeVQZn8CwfdK+PkK6T2kJyH/ncI+7zNk3XAucPm45eB3TcJGb53
+         3H8PkVWFkg91Oawy/bz3F0UjpeOVsssPpbbJaRpUpj39bP5yM032jznzaE8DJ5gPOE+H
+         f3+Farh2AIS56LX+FSp2n8/16B187/oI45VPGhyXBb7/rCFi7c8LUiwKgO3+pJrcQ1Z3
+         D0qh6AQJXkm+sGM+OWW4z17smKEGDJc47kvwx1rT7mqMm7kye536d4QBRHn+HYRVxAY7
+         cdKVEyKvfpOw+a/tNF8cdC6Y1HVv+NCOrqxxCv788+v6V1eHr3Aedkh85dB/Uyb7allk
+         ZXow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787729653; x=1788334453;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oyoB92oafE8TgjnoFJos6/bCIEhx3ezLRECkRzRrBIg=;
+        b=Y1S675BYNYJ/uW4znyMNBsCi+Np3ZG2LEMpLQJ9DqlcQH5XU+dZ2+UAoqdOwfDCIvt
+         pfz8KxRN2s7SJedXYzIl0Few+CgDT1FYr9BB/ggIBYsROuCG9TbfDzMgknEbhGHNGKlO
+         ImjW+pV//nbGFxN3LyA6GB3/Gg+SgRYg3JDkEgR+Gzd2gOM2R1WWl0B7qTGzDM84Pg7o
+         VAGLW0X9DeOEBumOErBgERP6h79LenEHy/rvi6ShN1kUo+5SoobZrMlhH01IKgOHCaSZ
+         UFwZejCI/tZNwLiHpyiyEvrs1sDodDRA+a7W7E1XH+CNvWWcu8OdbhkO0Mm5u/NLSnIT
+         3gfw==
+X-Gm-Message-State: AFuF++meJihHlscJlLEOQuZJ7iLXz6k4Gvsn7gv25Lwtbn2NOWCYVMs3
+	0PVz10oYbsNXhTlHFhk2IfHZjQ1SkwJu6Oq1Y1p5lTu8aZY9whp5FoXP9WRWtjzn6do=
+X-Gm-Gg: AR+sD10iZKDqqRD5ZWvH2ahGoKsA546K8SrfsGb5uwhENXG3X3dlgq6lFPrLN+5aHB/
+	V7MJoNbCmZ4ezrAye7LBh4ymFHUr8rqeP/a4RQbZTtXG75TTfcSE3yVmFolHFarj8+VxSFNzy8B
+	cZh3oGYRtqfyMvp0HXtNqKgFXETpPyQ+zho2vFRgipE7NIo8dWEk0QbB01CqG+vWYdQYulVy494
+	pWRFSMPN1TF/z7D0zNUVwc3YZ/XRazRwtCv/ljAMekbOF/b64APmLaCEcwFz+coPQGMJeKXdLzl
+	JmQL5gktQdUpWt94HphYaLqxe3qSsxVHaBKU4TncIRWh0oQwfcR6FokKMHGarxW52bQK2KlIAy+
+	0Cxpg1XhsQtKJZ2Ltn9YiGf1WEwpoJdjSrPg0XZBDCkqb7m3etFL3mPaMjj/sSLOfmX1F85JF0j
+	o2pfP6pGUt+EfqzjuxSJYbWWxO55fzNnvJ1A9PSySeaAvJ+XGmUhAU1N0zgLOe0k9TPDqOwxk4Z
+	pBvDwv3lGF+NLNPvTQS
+X-Received: by 2002:a17:906:f5a2:b0:c20:88a6:8210 with SMTP id a640c23a62f3a-c250bc072a2mr525330166b.9.1787729653099;
+        Wed, 26 Aug 2026 00:34:13 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a5d62easm357931366b.6.2026.08.26.00.34.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2026 00:34:12 -0700 (PDT)
+Message-ID: <3b77ed31-549e-4bb6-a7c6-b4f65dbdf784@blackwall.org>
+Date: Wed, 26 Aug 2026 10:34:11 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6bd6fbf-81e7-4d49-c225-08df03442d5a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2026 07:32:26.3184
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: u/yo5OuWeiBWw2X39MtVJftaCtPY4RZokZuKx8S1UE3PCsj6ohBBxKkaldY59ddaOnN0qg5dapP/R7pSEgsPHnSYwSAq6c0iRDFDS7zS4Ug=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3P189MB3262
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 1/2] bonding: convert unbalanced_load to per-cpu
+ state
+Content-Language: en-US, bg
+To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hangbin Liu <liuhangbin@kylinos.cn>
+References: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
+ <20260825-bond_overflow-v5-1-7a800de133f1@kylinos.cn>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260825-bond_overflow-v5-1-7a800de133f1@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> Subject: [TIPC] Enabling an already-enabled bearer triggers brief link fl=
-ap (~243ms down) despite 1000ms tolerance=0A=
-=0A=
-> Questions:=0A=
->  1. Behavior: Is re-enabling an already-enabled bearer expected to reset =
-the link?=0A=
-=0A=
-No, re-enabling an active bearer does not reset that bearer/link. TIPC kern=
-el rejects that command and returns error message "Error: Already enabled".=
-=0A=
-=0A=
->  2. Tolerance: Why does the link go down for 200ms when tolerance is 1000=
-ms?=0A=
-=0A=
-There is no relation between tolerance and duration of down link,=0A=
-=0A=
-> 3. API Design: Is there an idempotency option for bearer enable?=0A=
-=0A=
-I do not understand this question. Can you give an example of the "option" =
-you expect to have ?=0A=
-=0A=
-=0A=
+On 25/08/2026 04:01, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> A later patch widens the bonding TLB tx counters from u32 to u64. The
+> unbalanced_load counter sits in the transmit hot path, and cross-CPU
+> synchronization of a u64 would introduce measurable overhead. Convert
+> unbalanced_load to a per-cpu counter first so that the subsequent
+> widening only touches per-cpu data local to each CPU.
+> 
+> Introduce struct unbalanced_load_stats to hold the per-cpu counter,
+> and move the aggregation into a helper, reset_unbalanced_load(), which
+> sums all per-cpu instances. Use the delta of current total load vs
+> variable prev_total_unbalanced to calculate the loading.
+> 
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> ---
+>   drivers/net/bonding/bond_alb.c | 37 ++++++++++++++++++++++++++++++-------
+>   include/net/bond_alb.h         |  7 ++++++-
+>   2 files changed, 36 insertions(+), 8 deletions(-)
+> 
+
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+
