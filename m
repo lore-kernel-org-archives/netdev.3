@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16A73BE620
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3DA3BFAE0
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737742; cv=none; b=Q3Ov+5UWCnzPOv4dClA4sFxBncFtgAfGI1LkVa3UMPtWQ69iOk5qHhUS7L7xPsQQmVXcDwU/9FEd2yauYSYHBKKi+UbCM+N8q3WwpcbC9vrBh0WHD/DAlqYT/F1791zOY196viLv4t2wl9YAMEf8PNe/QVbXgbufLrO7OxeeIqw=
+	t=1787737743; cv=none; b=ciJ5whVMI9DFwkkehhH/iSmKIgokWEVG/eitqUHMZLVUTLtInaoNLqdZf+263PZa0o22J8la433MRVu/WWXFzmmrSyCR8LnMP9mFq5s1vyTeRdiCZhvvysee2PB3Hun+NgGfg3qGHboXXeHahwQ6AKU30BUnd1aSrCN/LblfX0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737742; c=relaxed/simple;
-	bh=vVytYBkgUFEleVRg975aHOd00gO14rRA6ZJb4RsNaPQ=;
+	s=arc-20240116; t=1787737743; c=relaxed/simple;
+	bh=V4W7KOtsjsnY4yHHWe5hb+AdAGYAbZLZ7R/sQDp5ISc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGKqp2eXnOhg9vo75K30jjCzMaljGwGDre9kzeZOo5CRO1iP1LV9Ys0rVvl7Kxa+13ClAkYJERVJLb62nsPq+83NC+pUs5X6rhMGEHqwcM8WNhTF1cqCjYDsHH/AQMaNVMI1zltb4+Ng8eJkObcbPsi7WNOIimVEzzNVw6Cwp9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LMMov2MR; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=WQzhZr8K2Zo9iLcDyc8QShuCOeD6kB6Gp/LK9JdJqwncTXnm1LZGtBD85h9ujrL95Lz+iOBv2pBqysehMRsVgTqKBmq/3JGO/QU82TSEaXqshfmy4GNUh12vvwpVyfDfdWifse+dsVX27Q727Kdmzhd7z0h7h6zm2ybq/ghcacQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QyTWHZZk; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LMMov2MR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QyTWHZZk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787737740; x=1819273740;
+  t=1787737741; x=1819273741;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vVytYBkgUFEleVRg975aHOd00gO14rRA6ZJb4RsNaPQ=;
-  b=LMMov2MRewGhLDEd5Xd2Pth62yQRfBAC7xsnzopSbclMPcOo9rMrYvXn
-   HiuZkXbawr8H/gxbQUC3fkBy9IHxQKBoJZB4qIBgE2f2wp1rVBDOiiWxh
-   yIWMteylRNdSaIt/5yx5Q/InjMfzPlizwpjPf6OLa49fmN4hWNuejL3oW
-   vFQNspFuwLcF5wtGtgLJPvTe4GnlKxpDxt+Pz+8z10zwvYSixaPgGFjzZ
-   fQhQNonv9aCH7Z2r5tQhQT27IV/fq2mlO5quE8RVU6HJUVjXk4HwFV131
-   tvMb3IsOtlVjEkQrcS092+OQzE8BNq+/IUXmdIeDkg+lEKxnth6fuvp2Q
-   A==;
-X-CSE-ConnectionGUID: VdwLtoybSeqghoz8apUVPQ==
-X-CSE-MsgGUID: Xo8HBuGtQ2aVyBj4syPdZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88232960"
+  bh=V4W7KOtsjsnY4yHHWe5hb+AdAGYAbZLZ7R/sQDp5ISc=;
+  b=QyTWHZZkuKnh8XxMd8hQ5nNGCQM+KUE2cKEbzYa0OrYeNlaWXS4e6jB5
+   vDMZJvpfb6UHPFNT+TivKVdbuMo/s1w3CturUwhbxZnfZ0nWJbVGsHXUb
+   k5SOC2fzdrJMh4gl9IrgxvAtI8ng7erF4HQOV97jpvz6QRdepDp0Pvaf4
+   Z4QnbO8+BQcdpAH4HJV4ojfyGH3a/kpd+pfQOU9HxvTnPWKSFORSiZ1k4
+   EnL+/UNZQfHw0CxqcE1HJ27VZFdeFHLysKohdTnYBoVnvtcEJn4eEry/z
+   hFgGEBLUDO4efXajnqAfrT3/snrMp3PgzqJtUEft0aCAJ25Juv5Bdw6vF
+   g==;
+X-CSE-ConnectionGUID: KLJ7wZfaSYW3AR7V9vVvXQ==
+X-CSE-MsgGUID: imerr6YZTUSsCvwF04VcJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88232962"
 X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88232960"
+   d="scan'208";a="88232962"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 02:48:56 -0700
-X-CSE-ConnectionGUID: BI4pQt65TJCGJpPljyeEnw==
-X-CSE-MsgGUID: 61z1OQFCQuetpaQs7UmpEg==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 02:48:58 -0700
+X-CSE-ConnectionGUID: 1UbTnaqoTvajhB2pLYJtzA==
+X-CSE-MsgGUID: hQJ5GjLQRoCASmWnTVD8yA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="261404820"
+   d="scan'208";a="261404824"
 Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Aug 2026 02:48:55 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 26 Aug 2026 02:48:56 -0700
 From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next v4 5/6] ice: dpll: Rework U.FL muxed pin (SMA) control
-Date: Wed, 26 Aug 2026 09:48:48 +0000
-Message-ID: <20260826094849.4112016-6-sergey.temerkhanov@intel.com>
+Subject: [PATCH iwl-next v4 6/6] ice: dpll: Rework the SMA control logic to match the requirements
+Date: Wed, 26 Aug 2026 09:48:49 +0000
+Message-ID: <20260826094849.4112016-7-sergey.temerkhanov@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
 References: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
@@ -60,252 +60,256 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rework multiplexed pin control to match the state change listed in
-the design requirements.
+Make the SMA control logic match the requirements:
+
+Setting SMA1 as Rx automatically enables U.FL1 as Tx if U.FL1 is
+disconnected.
+Setting SMA1 as Tx automatically changes U.FL1 state to disconnected.
+
+Setting SMA2 as Tx automatically enables U.FL2 as Rx if U.FL2 is
+disconnected.
+Setting SMA2 as Rx automatically changes U.FL2 state to disconnected.
 
 Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 191 +++++++++++++++++++++-
- 1 file changed, 183 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 172 ++++++++++++++++++----
+ 1 file changed, 146 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index e80460aeac11..6a51b2482a5b 100644
+index 6a51b2482a5b..1cea8ebbfd94 100644
 --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -469,6 +469,40 @@ ice_dpll_sw_pin_frequency_get(const struct dpll_pin *pin, void *pin_priv,
+@@ -1345,28 +1345,37 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ {
+ 	struct ice_dplls *d = &p->pf->dplls;
+ 	struct ice_dpll_pin *peer;
+-	u8 data;
+-	int ret;
++	struct ice_dpll_pin *target = NULL;
++	struct ice_dpll_pin_config peer_config;
++	enum ice_dpll_pin_type type = 0;
++	u8 data, old_data = 0;
++	int peer_dpll_idx, restore_err, ret;
+ 
+ 	if (p->direction == direction && p->active)
+ 		return 0;
+ 	ret = ice_read_sma_ctrl(&p->pf->hw, &data);
+ 	if (ret)
+ 		return ret;
++	old_data = data;
+ 
+ 	switch (p->idx) {
+ 	case ICE_DPLL_PIN_SW_1_IDX:
+-		data &= ~ICE_SMA1_MASK;
+-		if (direction == DPLL_PIN_DIRECTION_OUTPUT)
++		if (direction == DPLL_PIN_DIRECTION_OUTPUT) {
++			data &= ~ICE_SMA1_TX_EN;
+ 			data |= ICE_SMA1_DIR_EN;
++		} else {
++			data &= ~ICE_SMA1_DIR_EN;
++			data &= ~ICE_SMA1_TX_EN;
++		}
+ 		break;
+ 	case ICE_DPLL_PIN_SW_2_IDX:
+ 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
+ 			data &= ~ICE_SMA2_DIR_EN;
+-			data |= ICE_SMA2_UFL2_RX_DIS;
++			data &= ~ICE_SMA2_TX_EN;
+ 		} else {
+-			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
+ 			data |= ICE_SMA2_DIR_EN;
++			data &= ~ICE_SMA2_UFL2_RX_DIS;
++			data &= ~ICE_SMA2_TX_EN;
+ 		}
+ 		break;
+ 	default:
+@@ -1378,7 +1387,7 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 						ICE_DPLL_PIN_TYPE_SOFTWARE,
+ 						extack);
+ 	if (ret)
+-		return ret;
++		goto restore_sma;
+ 
+ 	/* When a direction change activates the paired U.FL pin, enable
+ 	 * its backing CGU pin so the pin reports as connected. Without
+@@ -1389,27 +1398,44 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 	 */
+ 	peer = p->muxed;
+ 	if (peer->active) {
+-		struct ice_dpll_pin *target;
+-		enum ice_dpll_pin_type type;
+-		int peer_ret;
+-
+ 		if (peer->output) {
+ 			target = peer->output;
+ 			type = ICE_DPLL_PIN_TYPE_OUTPUT;
+-		} else {
++		} else if (peer->input) {
+ 			target = peer->input;
+ 			type = ICE_DPLL_PIN_TYPE_INPUT;
++		} else {
++			ret = -EINVAL;
++			goto restore_sma;
+ 		}
+-		peer_ret = ice_dpll_get_fallback_idx(d, target);
+-		if (peer_ret < 0)
+-			peer_ret = d->eec.dpll_idx;
+-		ret = ice_dpll_pin_enable(&p->pf->hw, target, peer_ret, type,
+-					  extack);
+-		if (!ret)
+-			ret = ice_dpll_pin_state_update(p->pf, target,
+-							type, extack);
++
++		ret = ice_dpll_pin_config_get(p->pf, target, type,
++					      &peer_config, extack);
++		if (ret)
++			goto restore_sma;
++
++		peer_dpll_idx = ice_dpll_get_fallback_idx(d, target);
++		if (peer_dpll_idx < 0)
++			peer_dpll_idx = d->eec.dpll_idx;
++		ret = ice_dpll_pin_enable(&p->pf->hw, target, peer_dpll_idx,
++					  type, extack);
++		if (ret)
++			goto restore_peer;
++		ret = ice_dpll_pin_state_update(p->pf, target, type, extack);
++		if (ret)
++			goto restore_peer;
+ 	}
+ 
++	return 0;
++
++restore_peer:
++	restore_err =
++		ice_dpll_pin_config_restore(p->pf, target, type, &peer_config,
++					    extack, ret);
++	if (restore_err)
++		ret = restore_err;
++restore_sma:
++	ice_dpll_restore_sma_ctrl(p->pf, old_data, ret);
  	return ret;
  }
  
-+static int ice_dpll_get_fallback_idx(struct ice_dplls *d, struct ice_dpll_pin *target)
-+{
-+	if (d->pps.dpll_idx < ICE_DPLL_RCLK_NUM_MAX &&
-+	    target->state[d->pps.dpll_idx] == DPLL_PIN_STATE_CONNECTED)
-+		return d->pps.dpll_idx;
-+
-+	if (d->eec.dpll_idx < ICE_DPLL_RCLK_NUM_MAX &&
-+	    target->state[d->eec.dpll_idx] == DPLL_PIN_STATE_CONNECTED)
-+		return d->eec.dpll_idx;
-+
-+	return -EINVAL;
-+}
-+
-+static void ice_dpll_get_peer_target(struct ice_dpll_pin *peer,
-+				     struct ice_dpll_pin **peer_target,
-+				     enum ice_dpll_pin_type *peer_type)
-+{
-+	*peer_target = NULL;
-+	*peer_type = 0;
-+
-+	switch (peer->direction) {
-+	case DPLL_PIN_DIRECTION_OUTPUT:
-+		*peer_target = peer->output;
-+		*peer_type = ICE_DPLL_PIN_TYPE_OUTPUT;
-+		break;
-+	case DPLL_PIN_DIRECTION_INPUT:
-+		*peer_target = peer->input;
-+		*peer_type = ICE_DPLL_PIN_TYPE_INPUT;
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
- /**
-  * ice_dpll_pin_enable - enable a pin on dplls
-  * @hw: board private hw structure
-@@ -1211,6 +1245,87 @@ ice_dpll_input_state_get(const struct dpll_pin *pin, void *pin_priv,
- 				      extack, ICE_DPLL_PIN_TYPE_INPUT);
- }
- 
-+struct ice_dpll_pin_config {
-+	bool enabled;
-+	u8 dpll_idx;
-+};
-+
-+static int
-+ice_dpll_pin_config_get(struct ice_pf *pf, struct ice_dpll_pin *target,
-+			enum ice_dpll_pin_type type,
-+			struct ice_dpll_pin_config *config,
-+			struct netlink_ext_ack *extack)
-+{
-+	int ret;
-+
-+	ret = ice_dpll_pin_state_update(pf, target, type, extack);
-+	if (ret)
-+		return ret;
-+
-+	switch (type) {
-+	case ICE_DPLL_PIN_TYPE_INPUT:
-+		config->enabled = target->flags[0] &
-+				  ICE_AQC_GET_CGU_IN_CFG_FLG2_INPUT_EN;
-+		config->dpll_idx = 0;
-+		return 0;
-+	case ICE_DPLL_PIN_TYPE_OUTPUT:
-+		config->enabled = target->flags[0] &
-+				  ICE_AQC_GET_CGU_OUT_CFG_OUT_EN;
-+		if (!config->enabled) {
-+			config->dpll_idx = 0;
-+			return 0;
-+		}
-+
-+		ret = ice_dpll_get_fallback_idx(&pf->dplls, target);
-+		if (ret < 0)
-+			return ret;
-+		config->dpll_idx = ret;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int
-+ice_dpll_pin_config_restore(struct ice_pf *pf, struct ice_dpll_pin *target,
-+			    enum ice_dpll_pin_type type,
-+			    const struct ice_dpll_pin_config *config,
-+			    struct netlink_ext_ack *extack, int init_err)
-+{
-+	int restore_err, update_err;
-+
-+	if (config->enabled)
-+		restore_err = ice_dpll_pin_enable(&pf->hw, target,
-+						  config->dpll_idx, type, extack);
-+	else
-+		restore_err = ice_dpll_pin_disable(&pf->hw, target, type, extack);
-+	update_err = ice_dpll_pin_state_update(pf, target, type, extack);
-+	if (restore_err || update_err) {
-+		dev_warn(ice_pf_to_dev(pf),
-+			 "Failed to rollback pin state: err %d, restore err %d, update err %d\n",
-+			 init_err, restore_err, update_err);
-+		return restore_err ? restore_err : update_err;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ice_dpll_restore_sma_ctrl(struct ice_pf *pf, u8 old_data,
-+				     int init_err)
-+{
-+	int restore_err;
-+
-+	restore_err = ice_write_sma_ctrl(&pf->hw, old_data);
-+	if (!restore_err)
-+		restore_err = ice_dpll_sw_pins_update(pf);
-+	if (restore_err)
-+		dev_warn(ice_pf_to_dev(pf),
-+			 "Failed to restore SMA control: err %d, restore err %d\n",
-+			 init_err, restore_err);
-+
-+	return restore_err;
-+}
-+
- /**
-  * ice_dpll_sma_direction_set - set direction of SMA pin
-  * @p: pointer to a pin
-@@ -1276,6 +1391,7 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 	if (peer->active) {
- 		struct ice_dpll_pin *target;
- 		enum ice_dpll_pin_type type;
-+		int peer_ret;
- 
- 		if (peer->output) {
- 			target = peer->output;
-@@ -1284,8 +1400,11 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 			target = peer->input;
- 			type = ICE_DPLL_PIN_TYPE_INPUT;
- 		}
--		ret = ice_dpll_pin_enable(&p->pf->hw, target,
--					  d->eec.dpll_idx, type, extack);
-+		peer_ret = ice_dpll_get_fallback_idx(d, target);
-+		if (peer_ret < 0)
-+			peer_ret = d->eec.dpll_idx;
-+		ret = ice_dpll_pin_enable(&p->pf->hw, target, peer_ret, type,
-+					  extack);
- 		if (!ret)
- 			ret = ice_dpll_pin_state_update(p->pf, target,
- 							type, extack);
-@@ -1317,13 +1436,17 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+@@ -1667,11 +1693,15 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
  			   struct netlink_ext_ack *extack)
  {
- 	struct ice_dpll_pin *p = pin_priv, *target;
+ 	struct ice_dpll_pin *sma = pin_priv, *target;
 +	struct ice_dpll_pin *peer_target = NULL;
  	struct ice_dpll *d = dpll_priv;
+ 	struct ice_pf *pf = sma->pf;
 -	enum ice_dpll_pin_type type;
 +	enum ice_dpll_pin_type peer_type = 0, type;
- 	struct ice_pf *pf = p->pf;
 +	struct ice_dpll_pin_config old_config;
 +	struct ice_dpll_pin_config peer_config;
- 	struct ice_hw *hw;
 +	u8 old_data = 0;
  	bool enable;
- 	u8 data;
 -	int ret;
-+	int peer_dpll_idx, restore_err, ret;
++	int peer_dpll_idx, restore_err, ret = -EINVAL;
  
  	if (ice_dpll_is_reset(pf, extack))
  		return -EBUSY;
-@@ -1333,6 +1456,7 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 	ret = ice_read_sma_ctrl(hw, &data);
- 	if (ret)
- 		goto unlock;
-+	old_data = data;
+@@ -1679,6 +1709,10 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 	mutex_lock(&pf->dplls.lock);
+ 	switch (state) {
+ 	case DPLL_PIN_STATE_SELECTABLE:
++		/* Reject direction-mismatched requests: SELECTABLE + OUTPUT
++		 * is an invalid combination, return -EINVAL in this case
++		 * immediately instead of disabling the pin.
++		 */
+ 		if (sma->direction == DPLL_PIN_DIRECTION_OUTPUT) {
+ 			enable = false;
+ 			ret = -EINVAL;
+@@ -1687,6 +1721,10 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 		enable = true;
+ 		break;
+ 	case DPLL_PIN_STATE_CONNECTED:
++		/* Reject direction-mismatched requests: CONNECTED + INPUT
++		 * is an invalid combination, return -EINVAL in this case
++		 * immediately instead of disabling the pin.
++		 */
+ 		if (sma->direction == DPLL_PIN_DIRECTION_INPUT) {
+ 			enable = false;
+ 			ret = -EINVAL;
+@@ -1722,13 +1760,95 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 			goto unlock;
+ 	}
  
- 	ret = -EINVAL;
- 	switch (p->idx) {
-@@ -1392,18 +1516,69 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 
- 	ret = ice_write_sma_ctrl(hw, data);
- 	if (ret)
--		goto unlock;
-+		goto restore_sma_ctrl;
- 	ret = ice_dpll_pin_state_update(pf, p, ICE_DPLL_PIN_TYPE_SOFTWARE,
- 					extack);
- 	if (ret)
--		goto unlock;
-+		goto restore_sma_ctrl;
+-	if (enable)
++	if (enable) {
++		u8 data;
 +
-+	ret = ice_dpll_pin_config_get(pf, target, type, &old_config, extack);
-+	if (ret)
-+		goto restore_sma_ctrl;
- 
- 	if (enable)
- 		ret = ice_dpll_pin_enable(hw, target, d->dpll_idx, type, extack);
- 	else
- 		ret = ice_dpll_pin_disable(hw, target, type, extack);
--	if (!ret)
--		ret = ice_dpll_pin_state_update(pf, target, type, extack);
-+	if (ret)
-+		goto restore_target;
-+	ret = ice_dpll_pin_state_update(pf, target, type, extack);
-+	if (ret)
-+		goto restore_target;
-+
-+	if (enable && p->muxed && p->muxed->active) {
-+		ice_dpll_get_peer_target(p->muxed, &peer_target, &peer_type);
-+		if (!peer_target) {
++		ret = ice_read_sma_ctrl(&pf->hw, &data);
++		if (ret)
++			goto unlock;
++		old_data = data;
++		switch (sma->idx) {
++		case ICE_DPLL_PIN_SW_1_IDX:
++			data &= ~ICE_SMA1_TX_EN;
++			break;
++		case ICE_DPLL_PIN_SW_2_IDX:
++			data &= ~ICE_SMA2_UFL2_RX_DIS;
++			data &= ~ICE_SMA2_TX_EN;
++			break;
++		default:
 +			ret = -EINVAL;
-+			goto restore_target;
++			goto unlock;
 +		}
-+		ret = ice_dpll_pin_config_get(pf, peer_target, peer_type,
-+					      &peer_config, extack);
++		ret = ice_write_sma_ctrl(&pf->hw, data);
++		if (ret)
++			goto restore_sma_ctrl;
++		ret = ice_dpll_sw_pins_update(pf);
++		if (ret)
++			goto restore_sma_ctrl;
++
++		ret = ice_dpll_pin_config_get(pf, target, type, &old_config,
++					      extack);
++		if (ret)
++			goto restore_sma_ctrl;
+ 		ret = ice_dpll_pin_enable(&pf->hw, target, d->dpll_idx, type,
+ 					  extack);
+-	else
+-		ret = ice_dpll_pin_disable(&pf->hw, target, type, extack);
+-	if (!ret)
++		if (ret)
++			goto restore_target;
++		/* Refresh target state before peer-side operations. */
+ 		ret = ice_dpll_pin_state_update(pf, target, type, extack);
 +		if (ret)
 +			goto restore_target;
 +
-+		peer_dpll_idx = ice_dpll_get_fallback_idx(&pf->dplls,
-+							  peer_target);
-+		if (peer_dpll_idx < 0)
-+			peer_dpll_idx = d->dpll_idx;
-+		ret = ice_dpll_pin_enable(&pf->hw, peer_target, peer_dpll_idx,
-+					  peer_type, extack);
-+		if (ret)
-+			goto restore_peer;
-+		ret = ice_dpll_pin_state_update(pf, peer_target, peer_type,
-+						extack);
-+		if (ret)
-+			goto restore_peer;
-+	}
++		if (sma->muxed && sma->muxed->active) {
++			ice_dpll_get_peer_target(sma->muxed, &peer_target,
++						 &peer_type);
++			if (!peer_target) {
++				ret = -EINVAL;
++				goto restore_target;
++			}
 +
++			ret = ice_dpll_pin_config_get(pf, peer_target, peer_type,
++						      &peer_config, extack);
++			if (ret)
++				goto restore_target;
++
++			peer_dpll_idx =
++				ice_dpll_get_fallback_idx(&pf->dplls, peer_target);
++			if (peer_dpll_idx < 0)
++				peer_dpll_idx = d->dpll_idx;
++			ret = ice_dpll_pin_enable(&pf->hw, peer_target,
++						  peer_dpll_idx, peer_type, extack);
++			if (ret)
++				goto restore_peer;
++			ret = ice_dpll_pin_state_update(pf, peer_target, peer_type,
++							extack);
++			if (ret)
++				goto restore_peer;
++		}
++	} else {
++		ret = ice_dpll_pin_disable(&pf->hw, target, type, extack);
++		if (!ret)
++			ret = ice_dpll_pin_state_update(pf, target, type,
++							extack);
++	}
 +	goto unlock;
 +
 +restore_peer:
