@@ -1,79 +1,55 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73DC209F43
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 02:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697F31D9663
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787712693; cv=none; b=tDdahdsr0ogWTg0zH0ZFqQAPQyWEfgHkf85orTnLCyJ7/BBt80/SwB1ebs7aHMShxzrSz8YhHoqOePlvqEkXJuaA+DFg2DbXnr4ALkyqUYjuP5gTEyZW8CSinXZAQGHoZu+H7f2N3UDvWkcu1EC7h2n5pu93cBnu1IBnwuxz5jY=
+	t=1787713610; cv=none; b=Y+loqwiw+2tNzaQrb4WDg7D3gxRdzZh/rcTjU+yJbjwRfEA+EPDuG0TvrVD0iGvpiPp9a1TlgoD1QizyI6s/jakkMjVpZ6xYUO5P32lDUmXKGH0UoY0Ofk9bTMoVVAxUH7usAdeV/efzYLD5YUQRp+X4m8aWKmy69SFv7kZjIkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787712693; c=relaxed/simple;
-	bh=94xkAvnLmMabmgATmJMMNWRzGREe8szbBhLdQ7GGXRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PilqV81v5nC8b8gIw1pNiYnY5XDkid6XwhZVdwuHr8qZTiwT5GU6DEZMRsBC8BWEj+naHaAJEz8VNkq/krizMrAFDeUQsy8RKiNhnOU/bzF5SSp9IdSmExYxAdn8Y81hCbLjzseud19QSQoY38lm7mvJ+rhUKJXtlxZO3PEq3MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ahvBx6aM; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787713610; c=relaxed/simple;
+	bh=9C0JJHnhMl8wq9jIQMg767C/RWM5PoKtkQ6M2MW9bQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=St5KdTkGHaC67F4LQtfHbmpR3tBZrY9ypiCJvs14ZrXavLyidQ44KJVxK7aK7BygzuIEjZPOYCrl0Xz3z7I/3mvnujroyd3ovLILN8ZB9olhIOgPXhEkHnuBo9dfIZNXCvRq7xcaVEsOdG4CMNeXfp2qJe4QszHVKMCn1D1OkLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=o1CaQh/o; arc=none smtp.client-ip=61.135.153.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ahvBx6aM"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e041ea211so663201a91.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 19:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787712691; x=1788317491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ShK5TyOhCBOCjRuaFcsPnw8HbMZUB4sbslz07TTKocE=;
-        b=ahvBx6aMdIKWeri02ar1VLryYA9GMkp3GC0fg4lyiGD4xlhclg81P1zM8M38bJmwng
-         QAwEntIwaG0v+k1yZ+6JF9uii6xB7bCNnChg08QBzqP2Nrv3AYVZAJAkZDtBa7jmYhJi
-         NBCphE1n7/tWVCfgjAPZg8i1cbWyZIqUYQCZ/7GoqBevsVp9jytD8t4VIuKJOdq7AxzI
-         XUkoQk0ms+ikP+ryFUcw7qz5KxWfPDgoQ8ZfHoWnPq3lSLV2d0GRDJ345LbwUc0xGjlC
-         /bbhIVCyMN4cUycUf6dsrwsJkRiopjnYgo1BaUpAd8K97dmAXgjlpRq8I18s1aBNMgUm
-         /5yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787712691; x=1788317491;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ShK5TyOhCBOCjRuaFcsPnw8HbMZUB4sbslz07TTKocE=;
-        b=ci2gMyMLmQbIu4LuFqeRppANwfSNnClQVmMsJyQO3u6jDgZrTPbHNa489aKfs07+p3
-         ywxc4DjUGzcIfujdR60m+Qtv7saxOxoBEYOHYMh6j29jBa+b0jp7afBTUcScRI/wwEc1
-         sd9qgwuCST4u9P5cI/0ENzFctyDzaYDJfB6fW/dxNqikNm1NYF8PSnOm7Z7ca3h/FGua
-         UFXaXxNnYItJxMj76M1w8Qf1BmSozNXAZWxlm60AyBUcWSVeGw5MffZALJVfrLJ7iTpw
-         ozdcSLqXPfXR25htGi4CcfNjb1EULbiD2McxAKT0UPsq/DnftwA7Z17liKAa5fmr0ju5
-         ooWg==
-X-Gm-Message-State: AFuF++lN4syW3X2eppw9JsGAr2+4+B9MLqxUwAuJGwmzqJSXuSnlDi1D
-	QCd8vOdtXz5RA1N6Yt/17U9AWN1gTJgHrRKQGmtBU1siJRwvKm8gMcfR4jScNFLGl33rhg==
-X-Gm-Gg: AR+sD10FZP5qW3UekimHACuwCgvMdar7RyRc4THZUzF/Y06Z5SHT64RueGWZy8VWiis
-	4OKsvJ8XYvmOU5tsmBQk6mLCwgGrXZnH5/lw9bRwf6HFGZqrPw5O6MnIgNfEm5m0VCZXxfqHSvy
-	C4JxWifhfhaUkpSJ9bkTie5RlR8Jy6f/PHBpIBwlEyBr8fJ3Ar277zB1I5oEHt/Shuu6QGGmxyA
-	bqShjsI090fmfZ/+9lQ6b9bPQX6IfKROb1FQEoo74oEopsJp7WOYOxBQm6IFQHyKCIPy6i5gwYR
-	MtH8N3f8pHxtvI+h2uwt0bKL+/gfGx/0Nnsot/SNlYHe1fDylfa66zrZLVr8u9RudnqMC6gnE0S
-	8ejuAU+qShwNH+rf/WCu5GgguFr3V/s5znOh4bSwFDCxDD3LgcClVl92bMO9x+BhvpaWzKngx6F
-	xYON3XmmH4I5w9ook09jxhN3Oigz0nrw8cw8nA7dWQtpfifk2RsLO60/I2SQV70e7TJvFP/5jbI
-	DdNKjB5xEcjLJCeZVAXsrHzK9Ot
-X-Received: by 2002:a17:90b:380b:b0:366:3517:1aa2 with SMTP id 98e67ed59e1d1-3966d002fffmr7293811a91.0.1787712691017;
-        Tue, 25 Aug 2026 19:51:31 -0700 (PDT)
-Received: from localhost.localdomain ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396686e8e74sm2039520a91.1.2026.08.25.19.51.27
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 25 Aug 2026 19:51:30 -0700 (PDT)
-From: Aohan Mei <ljp1205831794@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Cong Wang <cong.wang@bytedance.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Aohan Mei <henrymei@tencent.com>,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/sched: cls_flower: validate mask pointer after nla_next()
-Date: Wed, 26 Aug 2026 10:51:20 +0800
-Message-ID: <20260826025123.62758-1-ljp1205831794@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="o1CaQh/o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1787713603;
+	bh=nbcLAfdK5MFSNjlAPEInJBjn9XrHm5bjrSWsgRuc7mY=;
+	h=From:Subject:Date:Message-ID;
+	b=o1CaQh/os5Ypt0dj9zfavR1WAEAmbOFxDmU+XVQzwB0q7S3JeYNHzc+TCX3p8VJNJ
+	 NHOmIm3inVIRpwxBUY+j7oQ9ccIu/N4+lV6h3TOG9Ra/fEtrK3DamDG0g3dC5G/cpa
+	 YmkVccTIABtp8U6iei+/Q7J6R8ey/QDYJUk1dR5s=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
+	by sina.com (10.54.253.32) with ESMTP
+	id 6A8E58330000017B; Wed, 26 Aug 2026 11:06:33 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 2542204457848
+X-SMAIL-UIID: F5F66C51243C4AA0A0D33808E41F9E16-20260826-110633-1
+From: Hillf Danton <hdanton@sina.com>
+To: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
+	boqun@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	peterz@infradead.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
+Date: Wed, 26 Aug 2026 11:06:18 +0800
+Message-ID: <20260826030619.1519-1-hdanton@sina.com>
+In-Reply-To: <ao2WptQpM2zSQHDt@shinhome>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,60 +58,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Aohan Mei <henrymei@tencent.com>
-
-fl_set_enc_opt() iterates the key's nested tunnel-option attributes
-with nla_for_each_attr() while advancing a single mask pointer via
-nla_next() at the bottom of each loop, so the mask cursor is driven
-by the number of key attributes rather than by the mask's own
-attributes.  The nla_ok() added by commit c96adff956191 ("cls_flower:
-call nla_ok() before nla_next()") only validates the mask pointer
-that was just consumed; the pointer produced by nla_next() is used by
-the next iteration (fl_set_geneve_opt() and siblings) without any
-validation.
-
-The mask's nested attributes are validated with NL_VALIDATE_LIBERAL,
-which merely warns on trailing bytes that do not form a complete
-attribute.  A mask carrying one valid attribute plus 1-3 residue
-bytes (or a non-aligned attribute length making msk_depth negative)
-therefore reaches the next iteration with msk_depth != 0, so neither
-the !msk_depth check in fl_set_enc_opt() nor the !depth check in the
-per-type helpers fires.  nla_type() then reads past the mask payload
-and nla_parse_nested_deprecated() iterates with an nla_len taken
-from those bytes, reading well beyond the mask attribute (KASAN:
-slab-out-of-bounds read in __nla_validate_parse from fl_change()).
-
-Validate the advanced mask pointer as well: when the mask is not
-legitimately exhausted (msk_depth != 0) and the new pointer fails
-nla_ok(), reject the filter with -EINVAL.  An exactly exhausted mask
-still skips the check, preserving exact-match behaviour for the
-remaining key attributes.
-
-Fixes: c96adff95619 ("cls_flower: call nla_ok() before nla_next()")
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Cc: stable@vger.kernel.org
-Assisted-by: CodeBuddy:Kimi-K3
-Signed-off-by: Aohan Mei <henrymei@tencent.com>
----
- net/sched/cls_flower.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 0e275b58151c..1cefea571efd 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -1703,6 +1703,11 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- 			return -EINVAL;
- 		}
- 		nla_opt_msk = nla_next(nla_opt_msk, &msk_depth);
-+
-+		if (msk_depth && !nla_ok(nla_opt_msk, msk_depth)) {
-+			NL_SET_ERR_MSG(extack, "A mask attribute is invalid");
-+			return -EINVAL;
-+		}
- 	}
- 
- 	return 0;
--- 
-2.43.7
-
+On Tue, 25 Aug 2026 22:26:25 +0900 Shin'ichiro Kawasaki wrote:
+>On Aug 25, 2026 / 14:45, Hillf Danton wrote:
+>> On Tue, 25 Aug 2026 14:44:35 +0900 Shin'ichiro Kawasaki wrote:
+>> > On Aug 25, 2026 / 03:50, Eric Dumazet wrote:
+>> > >
+>> > > I think 19bdb70c77d3 should be reverted.
+>> >
+>> > Just reverting the commit will reintroduce the other lockdep WARN that the
+>> > commit addressed. I hope to have another fix to avoid the WARN.
+>> >
+>> I do not think you know the root cause of that lockdep warn, so reverting
+>> 19bdb70c77d3 is the right thing to do because of [11, 12].
+>> 
+>> [11] ffa1e7ada456 ("block: Make request_queue lockdep splats show up earlier")
+>> [12] Subject: Re: [PATCH] nbd: don't warn when reclassifying a busy socket lock
+>> https://lore.kernel.org/lkml/20260816014906.1149-1-hdanton@sina.com/
+>
+> I took a look in the commit [11] and the discussion [12], but couldn't follow
+> why the commit 19bdb70c77d3 should be reverted. Could you elaborate a bit more
+> about the reason you suggest the revert?
+>
+The Fixes tag in d532cddb6c60 proves Eric delivered a HBC, half baked croissant,
+to lore. And the nvme-tcp tucked in the HBC hints Eric copied something from
+somewhere. Finally the absence of ffa1e7ada456 in 19bdb70c77d3 proves it is
+worse than a HBC. Clear dude? Or go to read [12] again?
