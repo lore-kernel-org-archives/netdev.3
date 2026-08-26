@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9673B8405
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D7E3BB102
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737739; cv=none; b=iepea6Osf2FIVErg2lRufWXnczNFKqYHAgNnwkDf9E+j07TBTqGRybuA+V9v7VCtce37YgMsEoW8iV/IPsZu82E32iO1cFbZkxMhn/wLV0OYpLSMuAaQZJ0n2ztYn2i/7/4bKzYdxwdAf07/m0rGtf7YgYS6BilXJTr8bP3Tvb4=
+	t=1787737741; cv=none; b=fUbZUT9B/QhKCTJsfHTWROEw+0UJawqBLYCKd/Oxns6ENeat17MOJC/j3D/QFcXKi6Xz7yPHHUQfOBAY/92Z8ov9hjXTrykZHYYA4dZ7Z5LSwLhh6bKZlLfvqkbzN9jIZe2suysgMlh0YZfobAVTgyeES4gPbzn2WENw5XpQRpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737739; c=relaxed/simple;
-	bh=uS1Gk3FU8H9sDA2GM9EWDtq+Xlygp4KxaypBMwUQwy0=;
+	s=arc-20240116; t=1787737741; c=relaxed/simple;
+	bh=+h3AlGKrgxCjxVVRZxD+Up7aWMC3JsD2ay1MaLwTx1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuurJ/3uO5A8NKeBmUOfLqOo07Cugt8L5c9tsoAPKk+OLA9Qnsx4bWweXZYUZ6Yc6DyVBFmGrDZbzzp1gXxFj+SLz0BpecAfrGoAy9PMfA6z0ISqo8tFyyfXf8urpjsStJtK14VvX+KOcne5eUls9vtVMKXoV1kpxamp2usq5NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hXA6sJy0; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=DyWRG/8kxTUu6GC0GcL5B7syH6GDAJg2gyukqf2vvwKGHQkVB8O6VYdG2NK/IChtIosQJ9d2QGRFUNcjDbvxNTJHx+o4kGdprSN5lBOWNusXneNs/Qoh0cMI569dfOMcqiX2TruhlMntOZR9pC+8oFsxfTR2oJoe5sFOseY+f8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VuzRich3; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hXA6sJy0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VuzRich3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787737736; x=1819273736;
+  t=1787737739; x=1819273739;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uS1Gk3FU8H9sDA2GM9EWDtq+Xlygp4KxaypBMwUQwy0=;
-  b=hXA6sJy0aHDxrElRhtxPbiO+O36GZeBqRFV1nsfy2EuHuuMmU6TO+aQ2
-   /3qX2Mb+qauwYDQBb8YBIBfV4tKIPuKmBfQXtmDZueMIT1/r2MGvR7kSb
-   R5NpKdMj6Ftl8f5S49rN0hKeBbZFz8U1ZLQF2pX/kRcX5CSWVFfQgqQEJ
-   iCXryYZ7eBtA54LOnACCqo5U6KpxVcpoE8ktxSZvwZBswfT9umUfQeXkh
-   P9YqI9bQB89caGWyUT/InfBysqRGX7IchhLETEjLOY6KWKb//g9juph3E
-   pfpxMyskBOur7ws8jB6MzXLOUxMEES6p8FUh9HWJV6tP5tAwA58uh2/8W
-   A==;
-X-CSE-ConnectionGUID: 0lT6xuZ3SmOVFLdWEgKh9g==
-X-CSE-MsgGUID: QckDeysES0a7fj5JWgICZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88232948"
+  bh=+h3AlGKrgxCjxVVRZxD+Up7aWMC3JsD2ay1MaLwTx1c=;
+  b=VuzRich34slMimiLw/k8XKOpeTIG6y9zYfUOAWkJkH6Y5JyPjDxWcwlu
+   ufT/NyWRldaWhukLoeydRGFMlRvVw59BE4eiW4PXOVNFYCh1o7vgCsgAC
+   F6e09t3/u3x3dwJcA4GOpk6RnIoD5iy6YqgsE6Lla+hdy5B2ew8rJCxD0
+   blbe6OpDn2yHT+rRrl73UyDp/2pe1ExyNnMY7HX2vmOjhv/25BBvg5Kq0
+   yuttozzvBTJM6Nz3AQVQ2k5lxeB4gQxbBOIfJ2wTJoyIkfEByz8b/7Exe
+   BiQISXYg0iGoJLbxIxoA8S0T4XiB6vD9u6gJLiOIr5TdccfpjvNpHjx+M
+   g==;
+X-CSE-ConnectionGUID: D91igFOsSKiGIgvxchwthg==
+X-CSE-MsgGUID: SR4yVB6HSg+IJf2e2jfYRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88232957"
 X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88232948"
+   d="scan'208";a="88232957"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 02:48:52 -0700
-X-CSE-ConnectionGUID: 7B5au/OrT/C5AMFFQDelvg==
-X-CSE-MsgGUID: /7CKX7J9SfO7GxMAVXRARA==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 02:48:55 -0700
+X-CSE-ConnectionGUID: wsnH4h7PT+yL4L0hqjElcQ==
+X-CSE-MsgGUID: fBB5Kng5RLGRiYst/g/d4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="261404797"
+   d="scan'208";a="261404817"
 Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Aug 2026 02:48:51 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 26 Aug 2026 02:48:54 -0700
 From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next v4 1/6] ice: dpll: Add the MUX tables to the documentation
-Date: Wed, 26 Aug 2026 09:48:44 +0000
-Message-ID: <20260826094849.4112016-2-sergey.temerkhanov@intel.com>
+Subject: [PATCH iwl-next v4 4/6] ice: dpll: Check for bounds when updating the pin states
+Date: Wed, 26 Aug 2026 09:48:47 +0000
+Message-ID: <20260826094849.4112016-5-sergey.temerkhanov@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
 References: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
@@ -60,48 +60,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the tables documenting the DPLL pin MUX states and behavior
-to the driver.
+Add bounds checking code so that any potential out-of-bound
+array access is avoided
 
 Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 46 +++++++++++++----------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 382fbe98f2b0..9b3584fa43a9 100644
+index f4d6c247e96e..e80460aeac11 100644
 --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -92,6 +92,29 @@ static const struct dpll_pin_frequency ice_esync_range[] = {
- 	DPLL_PIN_FREQUENCY_RANGE(0, DPLL_PIN_FREQUENCY_1_HZ),
- };
+@@ -758,6 +758,8 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
+ 			  struct netlink_ext_ack *extack)
+ {
+ 	u8 parent, port_num = ICE_AQC_SET_PHY_REC_CLK_OUT_CURR_PORT;
++	enum dpll_pin_state eec_state = DPLL_PIN_STATE_DISCONNECTED;
++	enum dpll_pin_state pps_state = DPLL_PIN_STATE_DISCONNECTED;
+ 	int ret;
  
-+/*
-+ * SMA1/U.FL1 MUX table
-+ *+----------------+-------------+------------+
-+ *|                | SMA1_DIR_EN | SMA1_TX_EN |
-+ *+----------------+-------------+------------+
-+ *|SMA1 RX Enable  |       0     |      x     |
-+ *|u.FL1 TX Enable |       0     |      0     |
-+ *|SMA1 TX Enable  |       1     |      0     |
-+ *|All Disable     |       1     |      1     |
-+ *+----------------+-------------+------------+
-+ *
-+ * SMA2/U.FL2 MUX table
-+ *+----------------+-------------+------------+------------+
-+ *|                | SMA2_DIR_EN | SMA2_TX_EN | UFL2_RX_EN |
-+ *+----------------+-------------+------------+------------+
-+ *|SMA2 RX Enable  |       0     |      x     |     x      |
-+ *|u.FL2 RX Enable |       1     |      x     |     0      |
-+ *|SMA2 TX Enable  |       1     |      0     |     x      |
-+ *|SMA2 Disable    |       1     |      1     |     x      |
-+ *|All Disable     |       1     |      1     |     1      |
-+ *+----------------+-------------+------------+------------+
-+ */
-+
- /**
-  * ice_dpll_is_sw_pin - check if given pin shall be controlled by SW
-  * @pf: private board structure
+ 	switch (pin_type) {
+@@ -769,26 +771,26 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
+ 			goto err;
+ 		if (ICE_AQC_GET_CGU_IN_CFG_FLG2_INPUT_EN & pin->flags[0]) {
+ 			if (pin->pin) {
+-				pin->state[pf->dplls.eec.dpll_idx] =
++				eec_state =
+ 					pin->pin == pf->dplls.eec.active_input ?
+ 					DPLL_PIN_STATE_CONNECTED :
+ 					DPLL_PIN_STATE_SELECTABLE;
+-				pin->state[pf->dplls.pps.dpll_idx] =
++				pps_state =
+ 					pin->pin == pf->dplls.pps.active_input ?
+ 					DPLL_PIN_STATE_CONNECTED :
+ 					DPLL_PIN_STATE_SELECTABLE;
+ 			} else {
+-				pin->state[pf->dplls.eec.dpll_idx] =
+-					DPLL_PIN_STATE_SELECTABLE;
+-				pin->state[pf->dplls.pps.dpll_idx] =
+-					DPLL_PIN_STATE_SELECTABLE;
++				eec_state = DPLL_PIN_STATE_SELECTABLE;
++				pps_state = DPLL_PIN_STATE_SELECTABLE;
+ 			}
+-		} else {
+-			pin->state[pf->dplls.eec.dpll_idx] =
+-				DPLL_PIN_STATE_DISCONNECTED;
+-			pin->state[pf->dplls.pps.dpll_idx] =
+-				DPLL_PIN_STATE_DISCONNECTED;
+ 		}
++		/* Commit only after a successful read so lockless readers never
++		 * observe a transient disconnected state.
++		 */
++		if (pf->dplls.eec.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
++			pin->state[pf->dplls.eec.dpll_idx] = eec_state;
++		if (pf->dplls.pps.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
++			pin->state[pf->dplls.pps.dpll_idx] = pps_state;
+ 		break;
+ 	case ICE_DPLL_PIN_TYPE_OUTPUT:
+ 		ret = ice_aq_get_output_pin_cfg(&pf->hw, pin->idx,
+@@ -799,20 +801,17 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
+ 
+ 		parent &= ICE_AQC_GET_CGU_OUT_CFG_DPLL_SRC_SEL;
+ 		if (ICE_AQC_GET_CGU_OUT_CFG_OUT_EN & pin->flags[0]) {
+-			pin->state[pf->dplls.eec.dpll_idx] =
+-				parent == pf->dplls.eec.dpll_idx ?
++			eec_state = parent == pf->dplls.eec.dpll_idx ?
+ 				DPLL_PIN_STATE_CONNECTED :
+ 				DPLL_PIN_STATE_DISCONNECTED;
+-			pin->state[pf->dplls.pps.dpll_idx] =
+-				parent == pf->dplls.pps.dpll_idx ?
++			pps_state = parent == pf->dplls.pps.dpll_idx ?
+ 				DPLL_PIN_STATE_CONNECTED :
+ 				DPLL_PIN_STATE_DISCONNECTED;
+-		} else {
+-			pin->state[pf->dplls.eec.dpll_idx] =
+-				DPLL_PIN_STATE_DISCONNECTED;
+-			pin->state[pf->dplls.pps.dpll_idx] =
+-				DPLL_PIN_STATE_DISCONNECTED;
+ 		}
++		if (pf->dplls.eec.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
++			pin->state[pf->dplls.eec.dpll_idx] = eec_state;
++		if (pf->dplls.pps.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
++			pin->state[pf->dplls.pps.dpll_idx] = pps_state;
+ 		break;
+ 	case ICE_DPLL_PIN_TYPE_RCLK_INPUT:
+ 		if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
+@@ -5180,6 +5179,13 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
+ 
+ 	de->dpll_idx = abilities.eec_dpll_idx;
+ 	dp->dpll_idx = abilities.pps_dpll_idx;
++	if (de->dpll_idx >= ICE_DPLL_RCLK_NUM_MAX ||
++	    dp->dpll_idx >= ICE_DPLL_RCLK_NUM_MAX) {
++		dev_err(ice_pf_to_dev(pf),
++			"invalid dpll_idx in cgu abilities: eec=%u, pps=%u\n",
++			de->dpll_idx, dp->dpll_idx);
++		return -EINVAL;
++	}
+ 	d->num_inputs = abilities.num_inputs;
+ 	d->num_outputs = abilities.num_outputs;
+ 	d->input_phase_adj_max = le32_to_cpu(abilities.max_in_phase_adj) &
 -- 
 2.53.0
 
