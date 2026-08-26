@@ -1,83 +1,82 @@
-Received: from mail-lr2-f7.google.com (mail-lr2-f7.google.com [74.125.230.71])
+Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B0B3A9627
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 06:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFC13A63F2
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 06:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787725830; cv=none; b=ti1WS2bHdWyLzDsBo2R7IJtaHrqa40sTE1lxUEA+gOLPGIFzfmW6J1b6+4bTcsgrlerMJ2t3n9z3ZBCi2xZ1rRWY/QNyBLa/4tMmi60Y6qmftCFL90iw2+R3SqaGEd+LGZIHgvLL66Y9rKkOpI72uQl3TuThHLgUSeDr56JuDUI=
+	t=1787726980; cv=none; b=Nk4sWlBZyBvQQyIU0L7Maq4mBZq44UpBB1g0Edq97a32osVVkBn8o9wlWTDAFuGfjsxp0b12bLnUjjHAzia5x4TCZHO82fRr+IZfRijyIev3F74bb12ZvVBSt1XESWdmXKRktTxxtYpn1/vZHiAA0XJHnicJxtxetUUJJ0JbxGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787725830; c=relaxed/simple;
-	bh=88cwRlOGDn0vpOQmUYNZUGYEdRzAeKkeMTlTyzUNsZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LmGGCpkTKOpSKkwaGAZXVkiJDpYmJzNDFrLaFIXIaPLuSj6HqIYawMKOjYx19EfvfTI/LNn/SxmGszPj/u5YDpvyUyeUoKdao6mCUTdl6bcGp5CDqMUfiGCy9pgQsj6cbVfyRmqn47ONdRA9qEmaah5uut5SmENVOnngpyhqrmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBXkCEJ6; arc=none smtp.client-ip=74.125.230.71
+	s=arc-20240116; t=1787726980; c=relaxed/simple;
+	bh=+s1q81uGzAC3EM5nOyVnAY7Asm3SuhxVuST/IBvgRZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P4gaova7WXC9njZPeOlkEMi7K1IVh56WxUHeUnZvgZXDFrt40yFkzUHPor11tJj3WAQiRs2uPwjo70wbKifHiwXMOSufuM55t+LF3zQwBB+t4PYiUIFn+f5egE9qlmnArhwYG5kfGwe5uGTCnlbW0czVCx9SP/aHDwV6IIAjNEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gKVK5lSI; arc=none smtp.client-ip=74.125.227.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBXkCEJ6"
-Received: by mail-lr2-f7.google.com with SMTP id 38308e7fff4ca-39c689d1d48so2777371fa.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 23:30:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gKVK5lSI"
+Received: by mail-pj2-f5.google.com with SMTP id 98e67ed59e1d1-39662b5cde7so489064a91.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 23:49:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787725823; x=1788330623; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787726976; x=1788331776; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ltu0ibAXLu3xOE6Vns9ZIohMj7npj3m+gIbL5j+64fw=;
-        b=ZBXkCEJ6FKvXL7u4d6F3MzhYY5B8APtuSxPxw6roiPKBN98gRySghXrg5VOjElkJPu
-         n6NbFttPRob3PV+Kz91j+KHJGE3enb1ET+mJppySypsWQFM3dPBGtXAyLzN41BVWXqRV
-         qwl7OI3iarYV+8+71/Lir/z8EJPrD6ltwtMvM1dU6Fl/pYaO5zKrQ1zbwOc7SDcCbf95
-         lARn/BeHdFajJNIzbW3jSjoh+IjWRaqPHkE84wuIykbgKCoLg8G81bgJihcz3h7S+vRy
-         Hkcv4fjEgcTCiVmYZ0D18KlKBUUyy8pddKQ7xVm32ts21l8tMSuryoymwon7pkapzjcL
-         6gSQ==
+        bh=S6+gZISuTotipjsrEyz9Cx/NTi3M8+6APWRf94zGuNA=;
+        b=gKVK5lSIdesLrAP/4gXgIfkMNSC8GuC3igLWZoXRkqVilex6EG8vZAVPJTzQNzuXzy
+         PA7TyS3JCb98ke6hARjLmmkE7OcjCfJFXRFNS5gIDOGJvkgWNKwDzhCeq0gm2hPRF6H8
+         qlZhF6ClpMuloSYO/HPPFxMQN8o5auYNCl1sxwaL2D0xsHVyiq3GqoAkg4v3mZYWoTsQ
+         WD/C0AtEvS18DO46OZtk9nXyhCt3sbJHX2ZkLx7RVEu0tYkHTR4NHtCftVrbcWQuzOrd
+         cacvBv4aVkUMafaom/oNUq24i7uJmgs6COdhF9AzDocDG4WctJc0gZSoeXXRtjzzGnDz
+         SRig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787725823; x=1788330623;
+        d=1e100.net; s=20251104; t=1787726976; x=1788331776;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ltu0ibAXLu3xOE6Vns9ZIohMj7npj3m+gIbL5j+64fw=;
-        b=C0UG0QbuIArY0ksGokXJf2KAPmIrpgKrEvDDgCyKW8bK7FlceOy+aVXeI3mOpGaB8H
-         sobiC0m0Pg3/OgH6EctMJaeEsvoC6V/w8xiTV32lVViaCx36JHBO+cCk7hfABXyeXT6Q
-         s0QMDtyM030ZSZNQZYrrpPASUiJ69SoGrXyljZwbjiUCgqxi32p10Ln68MR6Av7bv9IO
-         8ppye46CRWNW1p8lctSTrLAQrXdMzlSN8hsaIi1pzvKuedfPieoSJtPudSVfVD0zxPNz
-         RuGodg4WRZtY0HRHNzGwPnUnNoIkNhfzuLgezzNQ8sU8bESB5ViG4WqxTb1qd/wbxn7S
-         QdKw==
-X-Forwarded-Encrypted: i=1; AHgh+RoaXI/IBd2dg5RAx5brCZwYiS1MSAePQ1gXBqzdvAB3nYhrKrOD3twhWu+NynbdpS9KZ7AP+Ng=@vger.kernel.org
-X-Gm-Message-State: AFuF++nM99mrMsF6v4OiBv/MnNfoliraRgm6jI07UMxnHwtj+2fFAkXb
-	i07EKw7iYfSwJiXWSb2nNE8J4Se5LScUjmMm03IIa0vitaWg/Pn63xPn
-X-Gm-Gg: AR+sD1265qTK1EMzFadhxiPXPY2c3JXoRn8XchHVu8xpGqfk1NXLhPMkNkmLn2asR61
-	vRA9O2uzEGF15VQu6ZS6OAgkMddLvPK2Vv64DGXTfafsbQT/dx8g9GuR+hw6hPV773G2ddQ+b/6
-	SjtGhrxqHjuTcKZsFdkPjFlemEklxnGzpDzPrLQWL/NlLXDgru1RWBbFK3+aTbha/xIWG2D8Tyx
-	lfYPREAFZrAT0QqfOw4z+oyYoJIkkmr1x0BzEi7J2FXTUB8AyvuPrm/ltrRVjfQBgZJJjgJCiSj
-	I2c4hoc/0ChuHuXJ1BySMb2K265HtbZDuBPF2+7nIRAkpcLvUuNlh+3TdWlisk9/iXZvbUkdtSX
-	y1+UpQIuXDG6ko8cM/ooHRMq7DDYRX9tio9tuTTgQsyh/ZwLyFGnZNgECbZ5wHRqqn+i4qTO36Q
-	O3PYe6vHDWZ2S2USQCLgEoWCdfooqwliybt+YbWnPpoWfB+0jOlJ8Afvq8LJLR0lnbfrSNk8n9V
-	IXrLg==
-X-Received: by 2002:a05:651c:a38a:20b0:3a1:a0fe:990a with SMTP id 38308e7fff4ca-3a1fd63423emr6446281fa.10.1787725822342;
-        Tue, 25 Aug 2026 23:30:22 -0700 (PDT)
-Received: from localhost.localdomain ([78.40.184.2])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a1fd0eb0d7sm3336591fa.24.2026.08.25.23.30.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 23:30:21 -0700 (PDT)
-From: Roman Demidov <roman.demidov.nn@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@mandriva.com>,
-	Yan Zheng <yanzheng@21cn.com>,
+        bh=S6+gZISuTotipjsrEyz9Cx/NTi3M8+6APWRf94zGuNA=;
+        b=b3g6mKG2PHdaN8aGvSG4o5ispH/y/Yn0Od0SPgbhU4Hcvokj8e+04iXS8X56lW//TH
+         9Z3D+w4cLIclP1O/lRcN85YF5SOcpVXLxI5gYDl7XQivQT8J6oXQYYXheq9dvh70MNGx
+         UCJIyAHZmiucRqAxdrhy42wBecAKOdlxuM6UzuwDHMSt6/H7kuZga1AXiqnV1PHdGsIk
+         dyVwdmbR2m9quJShxBqRiZ6vQc1YPs32UrCBQRbcjzCI4ifDwVa/ncXXIOOHUbkgUmKL
+         JiwAO9/2DIKKmIs/8SWMPsvjFwZClFU+IOnip++znO/Z+AJ2oiZUKVE8gDOgjnWwKKNr
+         +lJA==
+X-Forwarded-Encrypted: i=1; AHgh+RoH5DnhxQwpxvoIpWvG2eGcVCLy9yGXzDS6GH1UWQNvxlm4DHnsBbnSsI7PfLFnNQzBeqcNV5M=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxVqmlAV+DF+JfLWmB7KiCiE7ARi70cfYPPC83DBffjwF3HGi7
+	e0RvhNInm9XclbcnY94WVOauqYTWxSfVjd75w3RpD4VzhJ8lxf1Zg3n8
+X-Gm-Gg: AR+sD121gfmXQWwVGv7QMbEaPe7zdqyRRxYgVz/yMGPfCswNtNNBpo2SbnutQVd/C8g
+	YERyH5dUrL7a3aeOtBs20zG4TO+jUSgTnK7InUbPXF3682jrSt9pAp4ffOgIRm22d4Z/vxDzzNP
+	Ctoajg1+a+9IWgI+QnYwDxFXmsCtt/Z3nF3P0ZhCIcV7zh8ZkJmuaeCTZ5JYqECeOIM2/AlywjJ
+	2E7Z/OdpWcEdvQ1A14KH/KFIPnRY/kf/Ri3VYHAIt18JQgc7nZVQn2im3Af36Td69Sh0XMbqFpo
+	jZxejnKBcagWjBzhszjffa6scsWXCeSx/NgL+Ch97in9tD0X/qkz9x3Fjk7ydYvBTfxz1BEo4HE
+	evy7nrs3pdXAUcmMiSy7erwbtYO1qiwx65I4CLGmqXln+diL/CT50WmbZ5EsyFssXp/PJRDtxBa
+	n96v6dQIdTwBvAa4JmI6+I+0+4iQVAOyS7IInB4F2pCzHaSg9ggHriwwdjZ7bO1VnhDNmlwCRFe
+	M6PToAiz9bX21VOz9a2c0x84Q==
+X-Received: by 2002:a17:90b:35c6:b0:38e:fea2:df53 with SMTP id 98e67ed59e1d1-3966d3bd49bmr9980179a91.4.1787726975810;
+        Tue, 25 Aug 2026 23:49:35 -0700 (PDT)
+Received: from localhost.localdomain ([38.60.126.44])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283da25c8asm6151397eec.30.2026.08.25.23.49.32
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 25 Aug 2026 23:49:35 -0700 (PDT)
+From: hoobnn <853555@gmail.com>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org,
+	v9fs@lists.linux.dev
+Cc: linux_oss@crudebyte.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	sripathik@in.ibm.com,
+	aneesh.kumar@linux.vnet.ibm.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Leo Lin <leo@depthfirst.com>,
-	David Ahern <dahern@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.10] ipv6: mcast: Fix use-after-free when processing MLD queries
-Date: Wed, 26 Aug 2026 09:29:38 +0300
-Message-ID: <20260826062942.5272-1-roman.demidov.nn@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	hoobnn <853555@gmail.com>
+Subject: [PATCH] 9p: dynamically allocate directory entry names
+Date: Wed, 26 Aug 2026 14:48:19 +0800
+Message-ID: <20260826064819.52523-1-853555@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,108 +85,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ido Schimmel <idosch@nvidia.com>
+p9dirent_read() copies names into a fixed 256-byte buffer. A name that is
+valid on the host filesystem but longer than that buffer makes strscpy()
+fail and aborts getdents64(), hiding the remaining directory entries.
 
-commit 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 upstream.
+Keep ownership of the protocol-allocated string in p9_dirent and free it
+after dir_emit() consumes the name.
 
-When processing an MLD query, a pointer to the multicast group address
-is retrieved when initially parsing the packet. This pointer is later
-dereferenced without being reloaded despite the fact that the skb header
-might have been reallocated following the pskb_may_pull() calls, leading
-to a use-after-free [1].
-
-Fix by copying the multicast group address when the packet is initially
-parsed.
-
-[1]
-BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
-Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
-
-Workqueue: mld mld_query_work
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-print_report (mm/kasan/report.c:482)
-kasan_report (mm/kasan/report.c:595)
-__mld_query_work (net/ipv6/mcast.c:1512)
-mld_query_work (net/ipv6/mcast.c:1563)
-process_one_work (kernel/workqueue.c:3314)
-worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/x86/kernel/process.c:158)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-</TASK>
-
-[...]
-
-Freed by task 118:
-kasan_save_stack (mm/kasan/common.c:57)
-kasan_save_track (mm/kasan/common.c:78)
-kasan_save_free_info (mm/kasan/generic.c:584)
-__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
-kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
-pskb_expand_head (net/core/skbuff.c:2335)
-__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
-__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
-mld_query_work (net/ipv6/mcast.c:1563)
-process_one_work (kernel/workqueue.c:3314)
-worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/x86/kernel/process.c:158)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-
-Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
-Reported-by: Leo Lin <leo@depthfirst.com>
-Reviewed-by: David Ahern <dahern@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
+Fixes: 7751bdb3a095 ("9p: readdir implementation for 9p2000.L")
+Closes: https://github.com/microsoft/WSL/issues/41192
+Assisted-by: Codex:gpt-5
+Signed-off-by: hoobnn <853555@gmail.com>
 ---
-Backport fix for CVE-2026-53275
+ fs/9p/vfs_dir.c         |  6 +++++-
+ include/net/9p/client.h |  2 +-
+ net/9p/protocol.c       | 12 ++----------
+ 3 files changed, 8 insertions(+), 12 deletions(-)
 
- net/ipv6/mcast.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index e15c3e2318d7..c4a9866ea45b 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -1414,9 +1414,9 @@ void igmp6_event_query(struct sk_buff *skb)
- static void __mld_query_work(struct sk_buff *skb)
+diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
+index e0d34e4e9076..af00b79d801e 100644
+--- a/fs/9p/vfs_dir.c
++++ b/fs/9p/vfs_dir.c
+@@ -185,8 +185,12 @@ static int v9fs_dir_readdir_dotl(struct file *file, struct dir_context *ctx)
+ 			if (!dir_emit(ctx, curdirent.d_name,
+ 				      strlen(curdirent.d_name),
+ 				      QID2INO(&curdirent.qid),
+-				      curdirent.d_type))
++				      curdirent.d_type)) {
++				kfree(curdirent.d_name);
+ 				return 0;
++			}
++
++			kfree(curdirent.d_name);
+ 
+ 			ctx->pos = curdirent.d_off;
+ 			rdir->head += err;
+diff --git a/include/net/9p/client.h b/include/net/9p/client.h
+index 838a94218b59..9f3079c6f386 100644
+--- a/include/net/9p/client.h
++++ b/include/net/9p/client.h
+@@ -268,7 +268,7 @@ struct p9_dirent {
+ 	struct p9_qid qid;
+ 	u64 d_off;
+ 	unsigned char d_type;
+-	char d_name[256];
++	char *d_name;
+ };
+ 
+ struct iov_iter;
+diff --git a/net/9p/protocol.c b/net/9p/protocol.c
+index 67b0586d807f..d4335884e0c0 100644
+--- a/net/9p/protocol.c
++++ b/net/9p/protocol.c
+@@ -770,7 +770,7 @@ int p9dirent_read(struct p9_client *clnt, char *buf, int len,
  {
- 	struct mld2_query *mlh2 = NULL;
--	const struct in6_addr *group;
- 	unsigned long max_delay;
- 	struct inet6_dev *idev;
-+	struct in6_addr group;
- 	struct ifmcaddr6 *ma;
- 	struct mld_msg *mld;
- 	int group_type;
-@@ -1448,8 +1448,8 @@ static void __mld_query_work(struct sk_buff *skb)
- 		goto kfree_skb;
+ 	struct p9_fcall fake_pdu;
+ 	int ret;
+-	char *nameptr;
++	char *nameptr = NULL;
  
- 	mld = (struct mld_msg *)icmp6_hdr(skb);
--	group = &mld->mld_mca;
--	group_type = ipv6_addr_type(group);
-+	group = mld->mld_mca;
-+	group_type = ipv6_addr_type(&group);
+ 	fake_pdu.size = len;
+ 	fake_pdu.capacity = len;
+@@ -785,15 +785,7 @@ int p9dirent_read(struct p9_client *clnt, char *buf, int len,
+ 		return ret;
+ 	}
  
- 	if (group_type != IPV6_ADDR_ANY &&
- 	    !(group_type&IPV6_ADDR_MULTICAST))
-@@ -1501,7 +1501,7 @@ static void __mld_query_work(struct sk_buff *skb)
- 		}
- 	} else {
- 		for_each_mc_mclock(idev, ma) {
--			if (!ipv6_addr_equal(group, &ma->mca_addr))
-+			if (!ipv6_addr_equal(&group, &ma->mca_addr))
- 				continue;
- 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
- 				/* gsquery <- gsquery && mark */
+-	ret = strscpy(dirent->d_name, nameptr, sizeof(dirent->d_name));
+-	if (ret < 0) {
+-		p9_debug(P9_DEBUG_ERROR,
+-			 "On the wire dirent name too long: %s\n",
+-			 nameptr);
+-		kfree(nameptr);
+-		return ret;
+-	}
+-	kfree(nameptr);
++	dirent->d_name = nameptr;
+ 
+ 	return fake_pdu.offset;
+ }
+
+base-commit: 028ef9c96e96197026887c0f092424679298aae8
 -- 
-2.53.0
+2.54.0 (Apple Git-157)
 
