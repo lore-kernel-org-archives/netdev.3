@@ -1,188 +1,176 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f11.google.com (mail-wr2-f11.google.com [74.125.225.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273CF483BDB;
-	Wed, 26 Aug 2026 20:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8C4483BD3
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 20:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787775702; cv=none; b=KzVV6+Amva2COj4arA877/g6pL3p2SFZGBo7d+i9Nu5TXZK2YuzoapUYzRHWpoxSqGj8EzRmH68lvLz1yoTkpSdAfsfvNIFs+56wcgpq+MkvEqGaefpK8bb9IFNIgRokWTCTJTt2p0Dwsd5JFnCl6WJIlsaCWjKhIEK8tMK99Xc=
+	t=1787775858; cv=none; b=lyrzT9L7cCSePpcSrhmRSoRxtf6pZH8YvNLsHEKC56Ptwr5WquYblHbrNhfwYpWGiiaqgjHQLHSv9ChCN8fXRG+F9TRcmuPgwHeKZe0N1qoVWrqMPZN620rI/45T5X1F3liT+Kt4NbXd8U++xOmApeEM5QanwF0aG1p7gt7gg2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787775702; c=relaxed/simple;
-	bh=J8yQWW2BKG+qm0ijnHyOV89UXzDavOQcqaqZUt0eK44=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hFehOOZgVl+7lVSq+L3rvf8x1TXowtMAC0LW/2zxbHc/tIWsFqOHclTkrWzjEzAV5A5vfRrR17bDPL1EROe06qCAVr3ZgWtkJOwvgk9krhxps5MT2vi8oktN9ZDR9zw+X/yLU6dFSbgdL618J6YM2wuZ91NYw64bA8YMyJItN1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=Fn8w0joD; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="Fn8w0joD"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 721E81E61AB;
-	Wed, 26 Aug 2026 22:21:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1787775685; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=TZU8WCosT2iwViMPwgQE9ZFQQYyK49GXxTstdTLYAqs=;
-	b=Fn8w0joDiDH2KVpPN9KCUzwsBfU6XnB4LQVYOb2yFyPjsLy2QKd8Zj+haCpLdmLurBaFa1
-	+azFeEdVPqzNoBMkrDlrDQ+FjXoshgwpQyg6mlI0SZwf77KEFuZj+OeWthXs2pFC5Z/dHc
-	5kuAnyMyRxi57S8YsQhRFk/R6DSiiupQYWtxXoWPD9UzQiAHu2ZGNVpVwyznkViGDViqbW
-	Nuxyn9y70+WQq2mt6+y9X+5h72NmI4dqkbSUdgc/IZgto9FFwwF+jk5wuQj1dMJbjxyxte
-	yizGwV6jKAhPyzLGWEAVZlgJltyniw9x3cvw7dNhbWA8TYXKN5xDozckN19B4Q==
-From: Caleb James DeLisle <cjd@cjdns.fr>
-To: netdev@vger.kernel.org,
-	ansuelsmth@gmail.com
-Cc: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	daniel@makrotopia.org,
-	dqfext@gmail.com,
-	SkyLake.Huang@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	cjd@cjdns.fr,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH v2 net-next 1/3] net: phy: mediatek: move mtk_cal_cycle_wait to mtk-phy-lib
-Date: Wed, 26 Aug 2026 20:21:01 +0000
-Message-Id: <20260826202103.2280645-2-cjd@cjdns.fr>
-In-Reply-To: <20260826202103.2280645-1-cjd@cjdns.fr>
-References: <20260826202103.2280645-1-cjd@cjdns.fr>
+	s=arc-20240116; t=1787775858; c=relaxed/simple;
+	bh=JP8KsHwhOfS7nIKdqZe6YvWpPJlr0W0G7P17lZ7nTE4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f/411YL+6yoOhr2o6xraoOl7x7EcjHpMs4761RWp4UTZxCgufZSqmBBl6yOi1WPo54+cv4nzDH3worQUhma1AzZFGpxQwZLH5giQPEq/DseJx7OR4smGy03qak2tLy93c0Lk2aDAthg27Mz4ZI1VJn5082KouqlQTkG9+K/cn1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr2-f11.google.com with SMTP id ffacd0b85a97d-482e1bf3f18so69605f8f.1
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 13:24:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787775855; x=1788380655;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oSC5H/8dRtlBh3kyNvSSD6HLC6+hQlda/xGM7prGyK4=;
+        b=iKU6jHZC1NyP/8gicEFqeW45/c3K679BKokt9kCK5v6mGg1fm7WZpRa5l5EQUSQMiJ
+         BDTzqY7zu/VQlkkeJhxJm4E0NG0vZepPyhuE+32cGiLqWisCwxu5wKqoZHC1yBiDn18h
+         21XVIBQ/xtaXUKdHmJA/iX4LdZz2JecHRYW6wU6GlZj7NtULPaelo0RCGqR9AxwOPnO+
+         Sqjfy7iIQ+1BiBPhYSrKe47YISvetpv397nlZFocLzS42iYi07x1JsjDxq4GlBf3IPgk
+         sMW34MD9gmlRxDLxiNvCM3hc7Fv5qBM7cQc3NMUhQf2sXaV0wN/n5noaAtxBQJYv1C1q
+         AmPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrEGdyYmdzVOVACdXASTBLB0mestgaMqWnUdaf7IQAjSnzo0hoMgTvJEx0GTtJb1Bn1xgCVqRQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mzlmqJkAC1ItGiuwZNYNOgY5XBWyvbHsddhVCPpZrdQmuHmj/J
+	ApBbXv3U9O7JoILGDgl3hnfmo1DlOR4+caZg5eJbSNdADrAXZhbeDhhB
+X-Gm-Gg: AR+sD10FNEejwOlmnikf6VtY3a+6YHhye0rBtV4ZgaKroWDhmC0olLCXdUbWfLRiSy3
+	qcaPgKDxAi6ASi2v0Hr5BSYAksGKmSiOEaVxE9hro7kP31y2MJCWccLEbyGZ5GosF8pQZyGgyZ6
+	j97IFhF/6FKh618p3C4J6JKsuwxh9x9x8HGT5Xg5LFyOKxyYyWftEdoJy9IRt8zuMn6EGpORkdU
+	pXmpSinoazOcDnuoOK9ZqWg6/WxryhFvAQcvrLrVrzGj8xHCUdnflpR5KDCwgJkSz23AfP7JC/u
+	1Smx6WmWkREphxEVznQQMfmdi6zVVbqI61v2lS3SxTOG8DltRPBiHNN/C4GWGqgCxTrop5saz0y
+	9LI2EjajIheCOKO+j2CqwyW7DGwUV93LCoILlk6V4tIgIte+dUVM+Ml2P0orx69SAVsN4Qfm1bA
+	Ivzt0/ry5ZmsTKaZQygy7mr5H21/TltnSm2zc4nxo0WGYaf2IHJfMdp7cXoEFwnKVX2JNXeWavn
+	Nzn43xzCQBv8w==
+X-Received: by 2002:a05:600c:6792:b0:49a:5b84:a1a6 with SMTP id 5b1f17b1804b1-49b0dec57b6mr17959785e9.5.1787775854527;
+        Wed, 26 Aug 2026 13:24:14 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b0dd3e148sm5514335e9.1.2026.08.26.13.24.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2026 13:24:14 -0700 (PDT)
+Message-ID: <d0d6460a-20db-45f5-a17e-c777a9f832d1@ovn.org>
+Date: Wed, 26 Aug 2026 22:24:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] netlink: specs: fix the conntrack filter type
+To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
+ Ilya Maximets <i.maximets@ovn.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>,
+ "Remy D. Farley" <one-d-wide@protonmail.com>,
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+ Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260825155832.3685714-1-i.maximets@ovn.org>
+ <94842eea-a296-4ab9-a026-2475757a82b8@fiberby.net>
+ <7b1f615f-d435-4b83-a180-67cf9a4223a0@ovn.org>
+ <2e89120d-c18d-4d0b-9e7c-149611475271@fiberby.net>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <2e89120d-c18d-4d0b-9e7c-149611475271@fiberby.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-mtk_cal_cycle_wait() is shared between mtk-ge-soc.c and airoha-ge-soc.c
-making airoha-ge-soc fail to build unless mtk-ge-soc is built too.
+On 8/26/26 9:40 PM, Asbjørn Sloth Tønnesen wrote:
+> On 8/26/26 6:38 PM, Ilya Maximets wrote:
+>> On 8/26/26 7:20 PM, Asbjørn Sloth Tønnesen wrote:
+>>> On 8/25/26 3:58 PM, Ilya Maximets wrote:
+>>>> The CTA_FILTER doesn't contain nested tuple attributes, instead it
+>>>> contains bit masks that specify which tuple attributes to filter on.
+>>>> The values for filtering are taken from the top-level CTA_TUPLE_ORIG
+>>>> and CTA_TUPLE_REPLY.
+>>>
+>>> As identified by Sashiko-NIPA[1], then CTA_TUPLE_ORIG and CTA_TUPLE_REPLY
+>>> are both absent from the GET DUMP request attribute list.
+>>>
+>>> However this doesn't prevent ynl CLI from sending the attributes:
+>>>
+>>> $ sudo ./tools/net/ynl/pyynl/cli.py --family conntrack --dump get --json \
+>>>     '{"nfgen-family": 2, "filter": {"orig-flags": 1}}'
+>>> Netlink error: Invalid argument
+>>>
+>>> $ sudo ./tools/net/ynl/pyynl/cli.py --family conntrack --dump get --json \
+>>> '{"nfgen-family": 2, "filter": {"orig-flags": 1}, "tuple-orig": {"tuple-ip": {"ip-v4-src": "192.255.0.255", "ip-v4-dst":
+>>> "192.255.255.0"}}}'
+>>> []
+>>>
+>>> Otherwise, LGTM.
+>>>
+>>> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825155832.3685714-1-i.maximets%40ovn.org
+>>
+>> The reported issue is preexisting and a little orthogonal to the goal of
+>> this patch.  I.e. missing dump attributes vs wrong type of attributes that
+>> are specified.
+>>
+>> I can add all the missing attributes: tuple-orig, tuple-reply, mark-mask
+>> and status-mask.  Either as a separate patch, or fold the change into this
+>> one, but rename it into something like:
+>>    "netlink: specs: fix conntrack filtering attributes and types"
+>>
+>> WDYT?
+> 
+> I agree that it is a little orthogonal, but OTOH the patch doesn't really fix
+> anything meaningful when the YNL spec doesn't allow actually making the request.
+> The commit message directly refers to attributes not allowed in the YNL spec,
+> without declaring it as intentionally deferred (like the filter bitmasks).
+> 
+> I see mark-mask and status-mask as a fully orthogonal issue, as they don't
+> clash with the commit message.
+> 
+> I would just fold tuple-orig and tuple-reply into this patch, and leave
+> mark-mask and status-mask for another patch.  Alternatively make it a series.
 
-Move it to mtk-phy-lib.c which is for this purpose.
+Makes sense.  I'll make it a set:  First patch will be this one with the
+tuple-orig and tuple-reply folded in.  The second will add missing
+mark-mask and status-mask.
 
-Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
----
- drivers/net/phy/mediatek/mtk-ge-soc.c  | 27 ------------------------
- drivers/net/phy/mediatek/mtk-ge-soc.h  |  3 ---
- drivers/net/phy/mediatek/mtk-phy-lib.c | 29 ++++++++++++++++++++++++++
- drivers/net/phy/mediatek/mtk.h         |  2 ++
- 4 files changed, 31 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.c b/drivers/net/phy/mediatek/mtk-ge-soc.c
-index 868ae089013d..614901a8b7f7 100644
---- a/drivers/net/phy/mediatek/mtk-ge-soc.c
-+++ b/drivers/net/phy/mediatek/mtk-ge-soc.c
-@@ -39,33 +39,6 @@ struct mtk_socphy_shared {
- 	struct mtk_socphy_priv	priv[4];
- };
- 
--int mtk_cal_cycle_wait(struct phy_device *phydev)
--{
--	int reg_val;
--	int ret;
--
--	phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_AD_CALIN,
--			 MTK_PHY_DA_CALIN_FLAG);
--
--	ret = phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
--					MTK_PHY_RG_AD_CAL_CLK, reg_val,
--					reg_val & MTK_PHY_DA_CAL_CLK, 500,
--					ANALOG_INTERNAL_OPERATION_MAX_US,
--					false);
--	if (ret) {
--		phydev_err(phydev, "Calibration cycle timeout\n");
--		return ret;
--	}
--
--	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_AD_CALIN,
--			   MTK_PHY_DA_CALIN_FLAG);
--	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_AD_CAL_COMP);
--	if (ret < 0)
--		return ret;
--
--	return FIELD_GET(MTK_PHY_AD_CAL_COMP_OUT_MASK, ret);
--}
--
- /* One calibration cycle consists of:
-  * 1.Set DA_CALIN_FLAG high to start calibration. Keep it high
-  *   until AD_CAL_COMP is ready to output calibration result.
-diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.h b/drivers/net/phy/mediatek/mtk-ge-soc.h
-index 5e9d24a9833c..834b61dbc690 100644
---- a/drivers/net/phy/mediatek/mtk-ge-soc.h
-+++ b/drivers/net/phy/mediatek/mtk-ge-soc.h
-@@ -358,7 +358,4 @@ enum CAL_MODE {
- 	SW_M
- };
- 
--/* MTK GE SoC common functions */
--int mtk_cal_cycle_wait(struct phy_device *phydev);
--
- #endif /* _MTK_GE_SOC_H_ */
-diff --git a/drivers/net/phy/mediatek/mtk-phy-lib.c b/drivers/net/phy/mediatek/mtk-phy-lib.c
-index 8c2b26f9b840..e78dcc15f4e8 100644
---- a/drivers/net/phy/mediatek/mtk-phy-lib.c
-+++ b/drivers/net/phy/mediatek/mtk-phy-lib.c
-@@ -5,6 +5,7 @@
- #include <linux/netdevice.h>
- 
- #include "mtk.h"
-+#include "mtk-ge-soc.h"
- 
- /* Difference between functions with mtk_tr* and __mtk_tr* prefixes is
-  * mtk_tr* functions: wrapped by page switching operations
-@@ -414,6 +415,34 @@ int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
- };
- EXPORT_SYMBOL_GPL(mt798x_phy_led_hw_control_set);
- 
-+int mtk_cal_cycle_wait(struct phy_device *phydev)
-+{
-+	int reg_val;
-+	int ret;
-+
-+	phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_AD_CALIN,
-+			 MTK_PHY_DA_CALIN_FLAG);
-+
-+	ret = phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
-+					MTK_PHY_RG_AD_CAL_CLK, reg_val,
-+					reg_val & MTK_PHY_DA_CAL_CLK, 500,
-+					ANALOG_INTERNAL_OPERATION_MAX_US,
-+					false);
-+	if (ret) {
-+		phydev_err(phydev, "Calibration cycle timeout\n");
-+		return ret;
-+	}
-+
-+	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_AD_CALIN,
-+			   MTK_PHY_DA_CALIN_FLAG);
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_AD_CAL_COMP);
-+	if (ret < 0)
-+		return ret;
-+
-+	return FIELD_GET(MTK_PHY_AD_CAL_COMP_OUT_MASK, ret);
-+}
-+EXPORT_SYMBOL_GPL(mtk_cal_cycle_wait);
-+
- MODULE_DESCRIPTION("MediaTek Ethernet PHY driver common");
- MODULE_AUTHOR("Sky Huang <SkyLake.Huang@mediatek.com>");
- MODULE_AUTHOR("Daniel Golle <daniel@makrotopia.org>");
-diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
-index cd9d4c5550c3..950bc89d3c74 100644
---- a/drivers/net/phy/mediatek/mtk.h
-+++ b/drivers/net/phy/mediatek/mtk.h
-@@ -87,6 +87,8 @@ void __mtk_tr_clr_bits(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
- int mtk_phy_read_page(struct phy_device *phydev);
- int mtk_phy_write_page(struct phy_device *phydev, int page);
- 
-+int mtk_cal_cycle_wait(struct phy_device *phydev);
-+
- int mtk_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
- 				unsigned long rules,
- 				unsigned long supported_triggers);
--- 
-2.39.5
-
+Best regards, Ilya Maximets.
