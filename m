@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9CE3F7867;
-	Wed, 26 Aug 2026 22:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08CB48821C;
+	Wed, 26 Aug 2026 22:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787781865; cv=none; b=rAgzenfdS7gLbWqRr1n3uQmhRmXP5ZVgjwvibL6KjtXQysIXyROPiAym5Sc7aLU3hqN+gROFPA97NWFPOgZ5ZHiS+e8rtKa2IVrv67EPx7UFztfdfyUrDO3ScBNZuWy7pq/KRJ/5g9XoRsX+XxSykwulbRTRbG3lUlElmfi8Yis=
+	t=1787781865; cv=none; b=KBUi7dFGVQbzrufX9MH+Ggb2WNPQ8qo9KosFNC6MgL+Pv86uskEsHrkCKwflCufc2MqTc7C6CQ27IDYMhL6DwNjIBDqKMOIR01OF327JqhivqCabnkxt1phI8wAti2ZGrZ9FGXC9W5kFlJjcaw7YA7AWEoLfbIK8NfMLPj1soQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787781865; c=relaxed/simple;
-	bh=Xa/8+x3fbN/3+Jk52j6knMgpA06QVo/ahFSa00X/hN0=;
+	bh=lr8fI4hDZfGm5VoPIrb4EnX5v89rsQNx2D/Pz90aQSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/5XeEy68EX8B3gTMiQGMrUkNaXkhBVgaLSiI0XVrR/qk+Sty8O2zZVLyvaxsIAU4hYxnGgCYl+bVXj4D0gaNmiKPl6sNFfD0IOXDnDCOYldPZi5zvKJqTQyxWZsaSJyZTCignR/p8H7iEBOe3Ykl4JuwVrNc/ycS0Pdr3wnkN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=iPEKHxgx; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=lne7oLsFMVnQ9EtfDrFbS+Iqz1rHJNp3fnM2G8Tbh1eIOlah/q4Oad56ElhaMHjxcXkQJLnIZ2dXENL+8sONXqbDijQnnW3EUTY8pK4Wu7/XqiiVK8XRj6RdwxtWVAxYq55xINi+FqT9ftoGRwqGL9mktoNOhgeHYLQJeOqzP3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=gN8oZgoO; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="iPEKHxgx"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="gN8oZgoO"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id BFD8BE83A69;
-	Thu, 27 Aug 2026 00:04:05 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 2908EE83A80;
+	Thu, 27 Aug 2026 00:04:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1787781845;
+	s=mail; t=1787781853;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n8STXjNlKV0wvUn+1PYv95+ojGlTOJB8a3/kKnQWGP4=;
-	b=iPEKHxgx2/4i/W1DiifvlYC4A9Lcahv4cfRYrLPNYOBUBMJDOMklci+bQtzyri/4xCrvwh
-	9G7/wV7NxsbMDZ6m0xd2/InXdBsneUReOu+cmvwl+48IE4bheC7rvz5pY9OaG7c0GvM0kt
-	y7/8RKAWVjUFZLV8odpt5x0qUfXRU4k5p5cEnn3+mdB26e+p6kHyzLO0Ov6jm22cJ6rGzr
-	wExWY9FPRlZpaHfhRJ5lvUhsNNLKYdt8b4PUUHwC/l4YgZNa0BLigvg61lkO01iIykWMSj
-	ct1/xbidNS8aKmJlMo9Cb2dlTRxbUiiL5bsaI43ZaJ4LW3zklwn+rBotjGM5uw==
+	bh=FDhsx1oGENdJZtKAJPdMBfGt+1JcogIfV5A2Sr/PXkg=;
+	b=gN8oZgoO71tnx83bILPY/p/u3kHtBzXjYxIsGePJ+XT3AB7f0CYknggT35oi05wQ333gTH
+	X5fxcNDB1pUeRwO6+H8rW8S0xl4/EbjSv+YsSv2mwQYK0fJt07bF/1bknG252LeHSIQy8K
+	FhEQQmsitma3WbVxY77d8vlsdEvXAtQQrLyRATNxPScLqSRM3NPvEN8iCvZd3Q6wdMKm8z
+	OTFbBKnQJumQ942cBkpI+1WUHRbLD3st3kzhvxVQAQCuMXr8peQEg+lZZ7AwjHjnnpH9rS
+	yFETwDXHauDLiBbZUdfDuJWXOHt71/7tjlEcUx7Ye/F9h4qzDZQcnbpgCh0QPw==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id FDXx5jRcPscu; Thu, 27 Aug 2026 00:04:05 +0200 (CEST)
+ id 1HgRovYW6kuN; Thu, 27 Aug 2026 00:04:12 +0200 (CEST)
 Received: from p14sgen5.lanhh (dslb-088-070-183-212.088.070.pools.vodafone-ip.de [88.70.183.212])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Thu, 27 Aug 2026 00:04:05 +0200 (CEST)
+	Thu, 27 Aug 2026 00:04:12 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -55,9 +55,9 @@ Cc: Corey Leavitt <corey@leavitt.info>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v5 2/5] net: pse-pd: fire lifecycle events on controller register/unregister
-Date: Thu, 27 Aug 2026 00:03:41 +0200
-Message-ID: <20260826220344.121865-3-github@szelinsky.de>
+Subject: [PATCH net-next v5 5/5] net: phy: release phydev->psec from phy_device_remove() again
+Date: Thu, 27 Aug 2026 00:03:44 +0200
+Message-ID: <20260826220344.121865-6-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260826220344.121865-1-github@szelinsky.de>
 References: <20260826220344.121865-1-github@szelinsky.de>
@@ -69,50 +69,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Corey Leavitt <corey@leavitt.info>
+"net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio
+hook" deferred the final pse_control_put() of phydev->psec from
+phy_device_remove() to phy_device_release(), so it would run only after
+the PSE_UNREGISTERED notifier walk had dropped its bus-iterator reference
+on the phy. But bus_for_each_dev() only reaches phys still on the
+mdio_bus_type klist: a phy that has been device_del()'d yet is still
+pinned (e.g. by an attached netdev) is invisible to the walk, so
+phy_pse_detach_one() never clears its phydev->psec. Its deferred put then
+runs after pse_controller_unregister() -> pse_release_pis() has freed
+pcdev->pi[], and __pse_control_release() dereferences the freed array:
+use-after-free.
 
-Hook the newly-introduced pse_controller_notifier chain so that
-pse_controller_register() fires PSE_REGISTERED after the controller
-has been added to pse_controller_list (i.e. is now resolvable by
-of_pse_control_get()), and pse_controller_unregister() fires
-PSE_UNREGISTERED before the controller is removed from the list
-(while it is still valid to dereference from a subscriber's
-pse_control pointer targeting it).
+Put phydev->psec back in phy_device_remove(), before device_del(), so
+the detach is synchronous and ordered ahead of the phy leaving the bus;
+it can no longer outlive the PSE controller. "net: phy: use a dedicated
+mutex instead of rtnl for PSE control attach" replaced rtnl with
+phy_pse_lock for the attach/detach, so this put can take that same lock
+without the rtnl recursion that originally motivated the deferral, and it
+serialises against the notifier walk: whichever runs first clears
+phydev->psec, the other sees NULL.
 
-With no subscribers yet, this is observably a no-op. A later change
-wires the phy subsystem in as the first subscriber.
-
-Signed-off-by: Corey Leavitt <corey@leavitt.info>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/netdev/20260703071025.100797-1-pabeni@redhat.com/
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
-Tested-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 ---
- drivers/net/pse-pd/pse_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/phy/phy_device.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 3c4d09f1d6e4..0190fac33c78 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 	list_add(&pcdev->list, &pse_controller_list);
- 	mutex_unlock(&pse_list_mutex);
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index fa6c3d638b30..dca1b45bbbd2 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -223,19 +223,8 @@ static void phy_mdio_device_free(struct mdio_device *mdiodev)
  
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_REGISTERED, pcdev);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pse_controller_register);
-@@ -1148,6 +1151,9 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
-  */
- void pse_controller_unregister(struct pse_controller_dev *pcdev)
+ static void phy_device_release(struct device *dev)
  {
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_UNREGISTERED, pcdev);
+-	struct phy_device *phydev = to_phy_device(dev);
+-
+-	/* bus_for_each_dev() holds get_device() across each iteration
+-	 * step, deferring this release callback until any in-flight PSE
+-	 * notifier walk has advanced past this phy. pse_control_put()
+-	 * takes pse_list_mutex, so this path must run in sleepable
+-	 * context.
+-	 */
+-	might_sleep();
+-	pse_control_put(phydev->psec);
+-
+ 	fwnode_handle_put(dev->fwnode);
+-	kfree(phydev);
++	kfree(to_phy_device(dev));
+ }
+ 
+ static void phy_mdio_device_remove(struct mdio_device *mdiodev)
+@@ -1326,6 +1315,16 @@ EXPORT_SYMBOL(phy_device_register);
+ void phy_device_remove(struct phy_device *phydev)
+ {
+ 	unregister_mii_timestamper(phydev->mii_ts);
 +
- 	pse_flush_pw_ds(pcdev);
- 	pse_release_pis(pcdev);
- 	if (pcdev->irq)
++	/* Detach synchronously, before the phy leaves the bus, so the put cannot
++	 * outlive the PSE controller (an off-bus but still-pinned phy is missed by
++	 * the PSE_UNREGISTERED walk). phy_pse_lock serialises against that walk.
++	 */
++	mutex_lock(&phy_pse_lock);
++	pse_control_put(phydev->psec);
++	phydev->psec = NULL;
++	mutex_unlock(&phy_pse_lock);
++
+ 	device_del(&phydev->mdio.dev);
+ 
+ 	/* Assert the reset signal */
 -- 
 2.43.0
 
