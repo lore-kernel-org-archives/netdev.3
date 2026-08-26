@@ -1,179 +1,106 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from r3-20.sinamail.sina.com.cn (r3-20.sinamail.sina.com.cn [202.108.3.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05F328B4B
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7E61C84AB
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787739117; cv=none; b=s4xQh0wNlNhc3HiqJBomVUumyWehVG+lRe1Bzn0ZW2q7kuUm7yGCKV+MOVDnKMy6OL0zqu2P9Wvu3xqzOczK4j8ZiphZ6UShEU3xv8OhhFZjcvfQ5eCxMvoz0FMBQ42SJuNrgshpiWumeuMhp4ENDjBl/MnpTEoFdDt5OD3p0YM=
+	t=1787740070; cv=none; b=k1bNcTlWZzJF0aM059Rnpg9ogu2cwtQlZmffy+Cu6NKr+zrzveyQ7BQPKuMcooSK/dfyqOeyORURMKwP934WrNWoG7ZKQVDoiT+Z8YwnmoErwFmWJm0qkz9qMLW4/oEVzzpYZUmsFT4MONoOHyTlJLjTcwYiDE1ByGCdfSNchdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787739117; c=relaxed/simple;
-	bh=oPmmiOIz17kMUSkXuHD6ICEr1VdG2WgD4ERH23dDkzk=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=TGRrIISSahvuyQ9goEJ96XIAWk9qLh7qdMWQyZnoKVvkj91Jxw9akQlTIFLCo/Cpb4rxMNVjR60tD+mdSaK23EXmkvTPtMeZwan0UA7F1Zxz8NlaOB4uwftwmkGe2fDRk8TobmaI9A+YeL0LxAzSdGOghkrcoL2Jf5b0TdbCU8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a49f09233fso990889b6e.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:11:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787739114; x=1788343914;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Bc+hFQHEJTLq8xd3e/5RzI08QtJyD4Yew8VDbBzp9uo=;
-        b=qOQ8RjWO/5ysDmcNliaf8BDDqV7BU+J07KvUuN2UkHmNl1YkkqWe4IAHmvE1I8KBHh
-         G0S96dL3ohvB5TRpD3kZiUVTPPV/mFiAQhUdRb1JcKfqF7XRbnGLkW71NX3W7S95HqHe
-         enEblNvaa9qCRRa0TGxXNCzzphTI24njTuIdn6EnchvBIipB4EYollRGtUvq7sPoQjjd
-         eqBtDqikhrX6HawXhXcIg8UZBiTdGtCnEWj+kBBw+/lVHt5E8diQw51GE7jh3G38OVRd
-         0pzQfWpWFTUMvaV/Grvzg8yFdfENp2jKlSoMoJw7RsfkS2ED7bmoIP4fJM5z5hdLI91C
-         rrXQ==
-X-Forwarded-Encrypted: i=1; AHgh+RryDcDIzGJfyXMaQGrejL3JYQShA9NtTnuzdv+CaHdrOKUHt/pW+s1FLTP+IfhheriNEr/uhJo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mA5LWrk36+CKkpvanakjhlyxIVBEzNL8Z4I/42Vm8g/uwZY6VP
-	JHhOAb+7++P8QjB7CD5Vl7x0WNq5dgQYIEnntFpD+TanqdvWXy6MJjoZdAntreCPK1I3IaouQa7
-	O+euLh4jtJBFUIB7wSkxJe3bg2G4Zfby8pNpSU21uVxOBXSqN7Tf1NhT97rU=
+	s=arc-20240116; t=1787740070; c=relaxed/simple;
+	bh=Y1pHpqz9//ulna1bs7VQAlliILT8I00xc0CdnxJv0VU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lyF70QMvfUCpVKMLu9O8yo8xyo8zuTrB0hwxecJfb5t1RpxvpBAMDCfPrMMU4uBpDVVizBJI1F+30Q6CHSMlutSXa7jU9zfKFMjyTIejZ2kESeQOjtpIX/99i4NkOZuXkKe+i0QcSpOWYc+aDocpSRCwDXjqbJdG6+7+A+dOdCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=G9Y8OzQZ; arc=none smtp.client-ip=202.108.3.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="G9Y8OzQZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1787740064;
+	bh=6xTlKpsDlJOqs3W/yjXrpkuyHUwmKAvYUndEqH2KEDA=;
+	h=From:Subject:Date:Message-ID;
+	b=G9Y8OzQZM3tTwYtM3LRAxi2LyyKUb4HN2eG8W0Un17ZXEuspjzkd37mf+4dF6lv5i
+	 OkztcY3njYIa08hBcL5Ulas05FQLFspFatTcXpe0lnwRwsqkE3FHriYQ8yCEPD8yPo
+	 PxgMki9nFZZ5K1SpSWrvGRGHR5lEtxi3EC9qNc+A=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
+	by sina.com (10.54.253.32) with ESMTP
+	id 6A8EBF8E00005DA2; Wed, 26 Aug 2026 18:27:32 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 2621944456833
+X-SMAIL-UIID: 5DB360D79E3D4E9E9F65D737821476E2-20260826-182732-1
+From: Hillf Danton <hdanton@sina.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>,
+	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
+	boqun@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	peterz@infradead.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
+Date: Wed, 26 Aug 2026 18:27:16 +0800
+Message-ID: <20260826102718.1550-1-hdanton@sina.com>
+In-Reply-To: <CANn89iKEVEs5=K1Uhj_CHagbt+eV0QGernwz9EBFkLEZOB1FAw@mail.gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:3192:b0:4a4:989:bb1f with SMTP id
- 5614622812f47-4b350425f51mr10120061b6e.9.1787739114303; Wed, 26 Aug 2026
- 03:11:54 -0700 (PDT)
-Date: Wed, 26 Aug 2026 03:11:54 -0700
-In-Reply-To: <20260826075703.2400467-1-lee@kernel.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8ebbea.1d9ded08.62e62.00a2.GAE@google.com>
-Subject: [syzbot ci] Re: nfc: llcp: Fix race condition in accept_queue lifecycle
-From: syzbot ci <syzbot+cie83be755322835fa@syzkaller.appspotmail.com>
-To: davem@davemloft.net, david@ixit.cz, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, lee@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev, pabeni@redhat.com, 
-	sameo@linux.intel.com, szymon.janc@tieto.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-syzbot ci has tested the following series
+On Wed, 26 Aug 2026 06:05:15 +0200 Eric Dumazet wrote:
+>On Wed, Aug 26, 2026 at 5:06 AM Hillf Danton <hdanton@sina.com> wrote:
+>> On Tue, 25 Aug 2026 22:26:25 +0900 Shin'ichiro Kawasaki wrote:
+>> >On Aug 25, 2026 / 14:45, Hillf Danton wrote:
+>> >> On Tue, 25 Aug 2026 14:44:35 +0900 Shin'ichiro Kawasaki wrote:
+>> >> > On Aug 25, 2026 / 03:50, Eric Dumazet wrote:
+>> >> > >
+>> >> > > I think 19bdb70c77d3 should be reverted.
+>> >> >
+>> >> > Just reverting the commit will reintroduce the other lockdep WARN that the
+>> >> > commit addressed. I hope to have another fix to avoid the WARN.
+>> >> >
+>> >> I do not think you know the root cause of that lockdep warn, so reverting
+>> >> 19bdb70c77d3 is the right thing to do because of [11, 12].
+>> >>
+>> >> [11] ffa1e7ada456 ("block: Make request_queue lockdep splats show up earlier")
+>> >> [12] Subject: Re: [PATCH] nbd: don't warn when reclassifying a busy socket lock
+>> >> https://lore.kernel.org/lkml/20260816014906.1149-1-hdanton@sina.com/
+>> >
+>> > I took a look in the commit [11] and the discussion [12], but couldn't follow
+>> > why the commit 19bdb70c77d3 should be reverted. Could you elaborate a bit more
+>> > about the reason you suggest the revert?
+>> >
+>> The Fixes tag in d532cddb6c60 proves Eric delivered a HBC, half baked croissant,
+>> to lore. And the nvme-tcp tucked in the HBC hints Eric copied something from
+>> somewhere. Finally the absence of ffa1e7ada456 in 19bdb70c77d3 proves it is
+>> worse than a HBC. Clear dude? Or go to read [12] again?
+>
+> linux development is iterative, we do not submit a single patch fixing
+> 1000 bugs at once.
+> 
+The iterative word fails to justify you can submit any fix before understanding
+the root cause.
 
-[v2] nfc: llcp: Fix race condition in accept_queue lifecycle
-https://lore.kernel.org/all/20260826075703.2400467-1-lee@kernel.org
-* [PATCH v2 1/1] nfc: llcp: Fix race condition in accept_queue lifecycle
+> I decided to ignore your rants a long time ago, as many others did.
+> 
+Your HBC forced you to quiese instead just like the ostrich burying his head
+in sand.
 
-and found the following issue:
-WARNING in __alloc_workqueue
+> How many bugs did you fix last year?
 
-Full report is available here:
-https://ci.syzbot.org/series/6f4e9aed-2eea-44c2-8ef0-04ce578d399f
+More than 150 [13].
 
-***
-
-WARNING in __alloc_workqueue
-
-tree:      linux-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-base:      a8406e6c0b793ce0788019683837c40855b55995
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/3abfab5f-31c6-4773-9338-bbe1caeca14d/config
-
-pci 0000:00:1f.2: [8086:2922] type 00 class 0x010601 conventional PCI endpoint
-pci 0000:00:1f.2: BAR 4 [io  0xc0a0-0xc0bf]
-pci 0000:00:1f.2: BAR 5 [mem 0xfebf2000-0xfebf2fff]
-pci 0000:00:1f.3: [8086:2930] type 00 class 0x0c0500 conventional PCI endpoint
-pci 0000:00:1f.3: BAR 4 [io  0x0700-0x073f]
-ACPI: PCI: Interrupt link LNKA configured for IRQ 10
-ACPI: PCI: Interrupt link LNKB configured for IRQ 10
-ACPI: PCI: Interrupt link LNKC configured for IRQ 11
-ACPI: PCI: Interrupt link LNKD configured for IRQ 11
-ACPI: PCI: Interrupt link LNKE configured for IRQ 10
-ACPI: PCI: Interrupt link LNKF configured for IRQ 10
-ACPI: PCI: Interrupt link LNKG configured for IRQ 11
-ACPI: PCI: Interrupt link LNKH configured for IRQ 11
-ACPI: PCI: Interrupt link GSIA configured for IRQ 16
-ACPI: PCI: Interrupt link GSIB configured for IRQ 17
-ACPI: PCI: Interrupt link GSIC configured for IRQ 18
-ACPI: PCI: Interrupt link GSID configured for IRQ 19
-ACPI: PCI: Interrupt link GSIE configured for IRQ 20
-ACPI: PCI: Interrupt link GSIF configured for IRQ 21
-ACPI: PCI: Interrupt link GSIG configured for IRQ 22
-ACPI: PCI: Interrupt link GSIH configured for IRQ 23
-iommu: Default domain type: Translated
-iommu: DMA domain TLB invalidation policy: lazy mode
-SCSI subsystem initialized
-ACPI: bus type USB registered
-usbcore: registered new interface driver usbfs
-usbcore: registered new interface driver hub
-usbcore: registered new device driver usb
-mc: Linux media interface: v0.10
-videodev: Linux video capture interface: v2.00
-pps_core: LinuxPPS API ver. 1 registered
-pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
-PTP clock support registered
-EDAC MC: Ver: 3.0.0
-Advanced Linux Sound Architecture Driver Initialized.
-Bluetooth: Core ver 2.22
-Bluetooth: Core ver 2.22
-NET: Registered PF_BLUETOOTH protocol family
-Bluetooth: HCI device and connection manager initialized
-Bluetooth: HCI socket layer initialized
-Bluetooth: L2CAP socket layer initialized
-Bluetooth: SCO socket layer initialized
-NET: Registered PF_ATMPVC protocol family
-NetLabel: Initializing
-NetLabel:  domain hash size = 128
-NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
-NetLabel:  unlabeled traffic allowed by default
-nfc: nfc_init: NFC Core ver 0.1
-------------[ cut here ]------------
-workqueue: nfc_llcp_wq is using neither WQ_PERCPU or WQ_UNBOUND. Setting WQ_PERCPU.
-WARNING: kernel/workqueue.c:5939 at __alloc_workqueue+0x1cd2/0x1fe0, CPU#1: swapper/0/1
-Modules linked in:
-CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:__alloc_workqueue+0x1cd5/0x1fe0
-Code: 0b 90 e9 6d fc ff ff e8 f9 f0 38 00 e9 7f fb ff ff e8 ef f0 38 00 e9 85 fb ff ff e8 e5 f0 38 00 48 8d 3d 3e 1a ee 0e 4c 89 f6 <67> 48 0f b9 3a 41 81 cf 00 01 00 00 e9 10 e6 ff ff e8 c5 f0 38 00
-RSP: 0000:ffffc90000067788 EFLAGS: 00010293
-RAX: ffffffff818ecbbb RBX: 0000000000000000 RCX: ffff888102adda00
-RDX: 0000000000000000 RSI: ffff8881680b0d70 RDI: ffffffff907ce600
-RBP: ffffffff8d4e3fa0 R08: ffff888102adda00 R09: 0000000000000002
-R10: 0000000000000102 R11: 0000000000000000 R12: ffff8881680b0c00
-R13: ffff8881680b0c00 R14: ffff8881680b0d70 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8882a8ce0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000000eb48000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- alloc_workqueue_noprof+0xe3/0x210
- nfc_llcp_init+0x15/0x50
- nfc_init+0x74/0xa0
- do_one_initcall+0x250/0x870
- do_initcall_level+0x10a/0x1a0
- do_initcalls+0x59/0xa0
- kernel_init_freeable+0x29d/0x3e0
- kernel_init+0x22/0x1d0
- ret_from_fork+0x514/0xb70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
-
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+[13] Subject: Re: some works in 2025
+https://lore.kernel.org/lkml/20251112225650.9224-1-hdanton@sina.com/
