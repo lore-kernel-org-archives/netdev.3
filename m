@@ -1,80 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E582DECD3;
-	Wed, 26 Aug 2026 09:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECE1349CD6
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787736748; cv=none; b=HjHJgiUGFgxGnKF+HZE6uWbDzBcqojpin+SL8+XtTXWcEhx9yKYsSiCQPcK4BRKXfzEI2nOKeHXUqMcJ0oTtSm/VRtLOjBzw9PkCPvIUNialyy2tslrKO2vMHKYfGH+M2uC0mjsOmLuGEQAGIr2Y/YUPVPEJj8bamg4rGMB+3aE=
+	t=1787737384; cv=none; b=baX7kX3nIbxvGF38MLp5uB8Q92npsonfWWrYI3VX+GiOCWPGW67Cyq0QEPEutToKqg2MEIN+FZHprihxYMapuNEcBpFkpBAi1ldIxUo0XGSvu7XVyOpa6KS2chGKl65Z2zt6VtTcZ8qx6Bysw/jGspJTOWXovBD6CDRxMBDUDpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787736748; c=relaxed/simple;
-	bh=2PHccR8xyLrnPaFs3pmGnj/EtIQOtajP2CR1wKuYah0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tDpv1w02eUhRbKCHft2wi70equeL9KntPQ8wBCMlSOEp3CneYXUrRuizh5lzlfijvwBCLZGLb/XTDGgCBW3j5WphmaT2JG6YY99kkQHbpYFGkwGjdabZM2VtMN+as7FvOGbR8wCYtehHFXJXkj5JvR2KXWVqKOf8nD7HhirC1Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmU5UCZu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787737384; c=relaxed/simple;
+	bh=0LLnpGdR0fj9IJxVAf4kFgF9vmkCEuGCvbwC/a/IHwA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=So9F9oCXRXsfK3XRcZgF2ADj+mjPJ3NeUWvfIH96p01UDASTiB8b3ffh+HTRb11NyJLiFGouEwPnU4AQMz3C14T79MWg6d4MrOmjIKH42ZoAFcRDeH9H0gtz9YKwhD/yyzAoCfvbfG0TMzxMCGYnj2snTo+/XRjjWcn0rOv2xxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MvDuhB4n; arc=none smtp.client-ip=95.215.58.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmU5UCZu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C58D1F000E9;
-	Wed, 26 Aug 2026 09:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787736746;
-	bh=2PHccR8xyLrnPaFs3pmGnj/EtIQOtajP2CR1wKuYah0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cmU5UCZuSb7me/V2S3DfVzH7U9aH4L6RsZOy2YhwofeGMdeBaoMf/quLEmPJ+urTF
-	 We3rCO4fPP8qRTmsH1oAJ70JXjBkNGHqBrtscRFoqm9rD8FomT7Dl5JiDVF3sKELJo
-	 IKfiGesxOyxBU7Y/W77pZ3+yavy7OR8Z6f98nxrNY+Q+IosEuckgSjCO2ALk5/oVxf
-	 1ow62XN1JC/P5nF8cUn52lZEH6/RJmAgSlyu2u7FMpScnXQ/kbNWjDe44LMOlHfYCq
-	 rukqHgRrOOUBrg3F7UJABiezj4u6gt+akQDgmrMsRHEev/J/x0hYAyqETiaJWWWaYf
-	 Lx0JaJfXA0ecA==
-Date: Wed, 26 Aug 2026 12:32:22 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Konstantin Sinyuk <ksinyuk@kernel.org>
-Cc: dri-devel@lists.freedesktop.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
- infrastructure for scale-up accelerator interconnects
-Message-ID: <20260826093222.GC42790@unreal>
-References: <cover.1787552412.git.ksinyuk@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MvDuhB4n"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=0LLnpGdR0fj9IJxVAf4kFgF9vmkCEuGCvbwC/a/IHwA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787737380; v=1; x=1788342180;
+ b=MvDuhB4nHtKVSMth/tJFdQdWWVGphP632TayOhzYeITxR49RZDyNIvwvmpS6Hh3WM/cjaVXC
+ waloXEXqJTwxh53cB5H6B8vPkTlCF8JaeIqRWOaNVuPe3ghblmy08+cUCisNjpILSM6ibq54Gg9
+ MsYn76DJd2V8lk8ShLsrR4NQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [IPV6:2a03:83e0:111e:2:c6:2f62:38ca:59d8] (2620:10d:c092:500::4:fc9b)
+	by smtp.migadu.com with ESMTPS id 49c08756695e3ca9;
+	Wed, 26 Aug 2026 09:43:00 +0000
+X-Mizu-Trace-ID: 49c08756695e3ca9
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <779115dd-30ea-4c53-94fd-4715beecd5b7@linux.dev>
+Date: Wed, 26 Aug 2026 10:42:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1787552412.git.ksinyuk@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
+ which approach?
+To: Sagi Maimon <maimon.sagi@gmail.com>
+Cc: Netdev <netdev@vger.kernel.org>, Jonathan Lemon
+ <jonathan.lemon@gmail.com>, Radhey Shyam Pandey
+ <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
+References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
+ <8c5c1254-34b9-4d38-8cd4-71b3c13e00e4@linux.dev>
+ <CAMuE1bGoYCh8cZZRMiA_TJ58p+QeXxmNh=brEVrV3UyAEJw5aA@mail.gmail.com>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <CAMuE1bGoYCh8cZZRMiA_TJ58p+QeXxmNh=brEVrV3UyAEJw5aA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 24, 2026 at 11:09:28AM +0300, Konstantin Sinyuk wrote:
-> Modern GPUs and AI accelerators are increasingly connected through scale-up
-> fabrics such as AMD xGMI today and emerging UALink systems [4]. Linux lacks
-> common, vendor-neutral infrastructure for reporting which accelerators are
-> directly connected, through which ports, and in what state.
+On 26/08/2026 08:41, Sagi Maimon wrote:
+> On Tue, Aug 25, 2026 at 7:38 PM Vadim Fedorenko
+> <vadim.fedorenko@linux.dev> wrote:
+>>
+>> On 20/08/2026 16:01, Sagi Maimon wrote:
+>>> Hi,
+>>>
+>>> Before posting patches I would like to check which of two approaches you would
+>>> prefer, since they differ a lot in how much code lands and where.
+>>>
+>>> The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx AXI
+>>> Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp already
+>>> supports. We want to expose that Ethernet port as a netdevice.
+>>>
+>>> Approach A - let xilinx_axienet drive it.
+>>>
+>>> ptp_ocp creates a platform device describing the two register windows and the
+>>> three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_ocp
+>>> already does for the Xilinx SPI and I2C cores on the same card, see
+>>> ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
+>>>
+>>> There is no device tree, so a software node stands in for one: "phy-mode"
+>>> replaces a phy-handle, since the MAC is wired to the fabric internally with no
+>>> MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/s full
+>>> duplex.
+>>>
+>>> This needs two things from xilinx_axienet:
+>>>
+>>>     1. Read its configuration through the generic device property API instead of
+>>>        the OF-specific one, so it can be described by a software node. On a
+>>>        device-tree system dev_fwnode() resolves to the OF fwnode and the reads
+>>>        land in the same OF code as today, so this is a no-op for existing users.
+>>>        It is also in line with the wider move from of_* to
+>>>        device_property_*/fwnode_*.
+>>>
+>>>     2. A dma_dev in struct axienet_local. Descriptors and buffers must be mapped
+>>>        against the device that masters the bus, which for a platform device
+>>>        created by a PCIe parent is that parent - a platform device does not
+>>>        inherit its parent's DMA ops or IOMMU domain. For every existing user
+>>>        dma_dev would equal dev, so no behavioural change.
+>>>
+>>> That comes to about 50 changed lines in xilinx_axienet and about 180 new lines
+>>> in ptp_ocp.
+>>>
+>>> Approach B - a separate driver under drivers/ptp.
+>>>
+>>> Reimplement the descriptor rings, NAPI and ethtool support against the same IP,
+>>> roughly 2500 lines, and share xilinx_axienet's register definitions out of
+>>> drivers/net/ethernet/xilinx/.
+>>>
+>>> We have both working. Approach A is tested on 7.0.0-rc1 with the card:
+>>>
+>>>     xilinx_axienet xilinx_axienet.512 eth0: configuring for
+>>> fixed/internal link mode
+>>>     xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
+>>> flow control off
+>>>
+>>> ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way with
+>>> zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and clean
+>>> module unload and reload.
+>>>
+>>> We would much rather do A than maintain a duplicate of an existing driver, so
+>>> the questions are:
+>>>
+>>>     1. Is instantiating xilinx_axienet from a PCIe parent as a platform device
+>>>        acceptable, or would you prefer the driver split so the device can be
+>>>        created on the auxiliary bus? The platform device route keeps the change
+>>>        to xilinx_axienet small and matches what ptp_ocp already does for the SPI
+>>>        and I2C cores, but auxiliary bus is the more usual choice for sub-devices
+>>>        of a PCIe function and would make the DMA parent explicit.
+>>>
+>>>     2. For the dma_dev, we currently infer it by testing whether the parent is a
+>>>        PCI device. That is concise but implicit; we are happy to pass it in
+>>>        explicitly if you would prefer it were not inferred.
+>>>
+>>> I can post the series straight away if you would rather look at the code.
+>>
+>> Well, we definitely don't want to copy code but rather reuse existing as
+>> much as possible. Looks like platform device is the way to go. Let's
+>> discuss the code.
+>>
+> 
+> Thanks - agreed on reusing the existing driver rather than duplicating
+> it, and good to hear the platform device approach looks acceptable.
+> 
+> On timing: the X2 Ethernet support depends on X2 board support in
+> ptp_ocp, which doesn't exist yet, and that in turn builds on the CPLD
+> programming work I currently have in flight for X1.  So the order will
+> be: finish the X1 CPLD series, then X2 board support, then the Ethernet
+> series - the axienet property/dma_dev changes together with the ptp_ocp
+> patch that uses them, as one series since it is all net-next.
+> 
+> I'd rather send them in that order than post Ethernet patches against a
+> board the driver doesn't know about yet.  Happy to share the Ethernet
+> code early as an RFC if it's useful for the architecture discussion in
+> the meantime.
 
-<...>
-
-> No production provider is included. Shipping only the synthetic provider is
-> deliberate, allowing the object model and uAPI to be reviewed before being
-> tied to hardware.
-
-Tell your AI that this is not how things work in the real world. The chances
-of multiple hardware implementations fitting a software model designed
-without considering the actual hardware are effectively zero. This is why
-successful subsystems have emerged from consolidating support for multiple
-existing hardware implementations.
-
-Thanks
+It's OK to send it once required code is landed
