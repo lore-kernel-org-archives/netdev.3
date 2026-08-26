@@ -1,101 +1,129 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C6A54774;
-	Wed, 26 Aug 2026 00:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA3214AD0D
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 00:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787702461; cv=none; b=tpP/K5pDqEdD5OZ8JzeHCjCvRCSIiiyzOyS//maBZo5/aYi/0t71O6hcChWy5xVyVLk3Be1WadekXEoAENwUkYsKGi8rkbMrnQ59zRDoQWGZuaBLvvLZ36KZSsWoCVdebI8VthdqnIBR2K31/WZNy7M6lhWfHksouFASv/s7eNE=
+	t=1787702559; cv=none; b=WdM9McPFcyDUY5NOOGIZscPXSmX1uurz5UKLIPi8QgLalzFxZyQJ2rXb1RGNuWURqi/qcLYDIAcch3KPv6CecpIuAOveflrrHUPdA47Q2IG9ezMdzgCyQXbY0IREkAI9Lv++01isKWJEr1klCkdNVjcLrf6hc3ImxRQhZO0Z08Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787702461; c=relaxed/simple;
-	bh=WKHsVoHAncOAGjrrZgCOBfzYf+uVafryhuj2yc2N+0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OOm9YVgzlhCU7OQm5JmwNUhwMDff3p6WKHLxydKBiTz8yZjAUXHBK3PUW+YdNCoI1m8ZdH30BUEAiFitqa9kynubqUz+wg477O7+4yc5/USD5YxDILfqAfGY2d2xhxi78uoadgZj2v0Pq1tgiOFz83+d0gd8nsvPhdCPaozllB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B4x+Onjx; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787702559; c=relaxed/simple;
+	bh=7VFxiajtNPEz8wd2qW7G25tWjW6JMDTpFm13VJwoHK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXgp50lNp8G/NwR3V56nYlDqym8d2J8MxNGoV2GM60Q5hbFXLw0adebthRYcEnppGStMc6L9dyndqOFfVahPc1pV5W85O5C4suLZXEAkuJQkkbqd1sHZ6U7NywND0EFaa/hoj5wyjS2ZvCg7aaq1aqFtenKtOYBhiZU+XPgPymY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=q2lN9NrA; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B4x+Onjx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BT+cecgcNjbVR7I2Q6p5AdYr9Ocl1W16ZvyXVTG3eqE=; b=B4x+OnjxkiaofaZ3y8mFKXvSGh
-	NBGAyEMoto4kBMslvsYJp/DWC7I5tMCpdB3KYWgR792J+1QPIrbpGDJgSgZWH6xbnxI7zrnkOZkF7
-	uTuFNivYuT8spgqkFWdmP9bemtffuaco90nUzQHE5cZp8G1384+bHClkByE+Hf522CAo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wz140-001RNK-DQ; Wed, 26 Aug 2026 02:00:20 +0200
-Date: Wed, 26 Aug 2026 02:00:20 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, daniel@makrotopia.org,
-	dqfext@gmail.com, SkyLake.Huang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next 3/3] net: phy: mediatek: support EcoNet EN751221
- gbit SoC PHY
-Message-ID: <d7d86078-8a29-4e7f-a62e-91f6b266bea1@lunn.ch>
-References: <20260825193456.1823985-1-cjd@cjdns.fr>
- <20260825193456.1823985-4-cjd@cjdns.fr>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="q2lN9NrA"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so379883a91.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 17:02:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787702557; x=1788307357; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Utmg/kSt4ut5hrQSIKyhDScZLEzGOdoo3IAf81kK6dA=;
+        b=q2lN9NrAZgc1U0CyW707xwP9OjqAt1k869suvt4/yr3Z9XkiAr4lFAYKBbkaqaOIiv
+         3GL5DCdxxVugVdeFcUM2/EiXdn8RCc5NfGuJu7PoVnKM+cucyCIWZcf4LAdEJYtHHnZZ
+         IluaiPDzbFstwaywB8hJ8FKk2sAcodFw6/6AT94keBoAGV3Nxa0WfiWq7+jtEUNoiYcx
+         6N+K+lQ/6IZA+kkk1a7b7cWFCc096/b9ibeYvblDUj/gKQZ5bVegjhkLkGKvE9Ax5ogp
+         0801p9jsUY1Zy6RshCAu9/LBbTFrN4AgHOi70ZEcQzKMK9r6sCrF1XwBsBO+RnRAXazv
+         R0WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787702557; x=1788307357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Utmg/kSt4ut5hrQSIKyhDScZLEzGOdoo3IAf81kK6dA=;
+        b=iY8TiqZl0geW0OaMuXcPk09z/vMhqauwx+x3w4scu2J41EUc4lYpxAd7PYuoJU0h+G
+         u6mmv4ojBQ1Wl8yY7fJgp5+RWf9JnYU+8+vz3+pmdAS53fCU+ZFfQco+3WKOeCgokgyh
+         hFGF2HQDNQUY5ckXXSKzPDRjrjuWe9StjFFkoZtCQaufWrOYY/X95Di0VLBNqG6s+77J
+         lkFMqb+28k728jffmviKJFBcqum1ePfkPK38a1SWBLc15lT+qZ8wHBo2cnVlLZp50Lul
+         rPbnViVWfwBhH/QewHdcvHQdPFM3RfVPfBq/pOJxDKUnRQkS1j/EDEm2nJk2kKIg1dh4
+         3FxA==
+X-Gm-Message-State: AFuF++lrGG922XvVARE4g+vDwU9KnJrDlBVxvPoLpRv2YNRDiG008dhh
+	sBNlBAT2iP4xvtmWavlH7VeD8Mgch3jRsfMykgGqIYYhzU4ypcWHkNJbsJY7sBstpka0SePnjqi
+	7yoCDlgw=
+X-Gm-Gg: AR+sD11DhzQQ/S2SzBTCZa+BI5ZUDv0jfDVdKwvEnLNF9qKZ7/6xCEcjCsTD0KrQNFQ
+	6Fy7fInEnXy+nJxwKVlv9KS4dVOTZTUs9AfgKKQgSMAGlAKigmedAH/eJwPIguwRlxETCr5URaK
+	TC2YerK2FYHV0pGHT3IIX2Fn8w26pyuob37ZnTpwmRn6EsGjeUPhPH6YEZticCldtgeNOs/IjK+
+	g0xQkDLlorjuPmTKH/nmAg3i91h3RmwzWGXkqU9rLM58ALRAgGFOGuQwC6XI+cc0zj3B186hI2T
+	QNCh9G/kmEYgB8/n2z6btpcuck86VYi7sN8J/iOUx51PVwNIEDy7NJOZBnn9zcxoN1+0mebj11V
+	xM7JJJDWBbZilx7ZQdo35lkoX6LpUwZbnAj5oFmykR2R52N1uPNpchQHYSl/4WK/0ev1etCVdzJ
+	3AHK6DlWdsNfeu09W55R1ltEVad1Itylk/DY1bZPjnaUo=
+X-Received: by 2002:a17:90b:560c:b0:396:67ed:da2d with SMTP id 98e67ed59e1d1-3966d4931a0mr5782303a91.15.1787702556523;
+        Tue, 25 Aug 2026 17:02:36 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:49::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645da08desm5362829a91.17.2026.08.25.17.02.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 17:02:35 -0700 (PDT)
+From: Joe Damato <joe@dama.to>
+To: netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Simon Horman <horms@kernel.org>
+Cc: kalesh-anakkur.purayil@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Joe Damato <joe@dama.to>,
+	stable@vger.kernel.org
+Subject: [PATCH net] bnxt_en: Write doorbell when linearizing skb fails
+Date: Tue, 25 Aug 2026 17:02:33 -0700
+Message-ID: <20260826000234.2031564-1-joe@dama.to>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825193456.1823985-4-cjd@cjdns.fr>
+Content-Transfer-Encoding: 8bit
 
-> +static int en751221_tx_amp_compensation_tbl[2][TRANSFORMER_TYPE_MAX][MDI_TYPE_MAX][CALIB_CONST_TYPE_MAX][4] = {
+When the driver is handed a burst of packets, the doorbell is deferred
+until the end. If the last packet has a huge number of frags, but fails
+to linearize, the doorbell will not be written adding latency on TX for
+any packets in the ring and holding their DMA mappings until the next
+TX. Note that the queue is not stopped, so this issue would delay
+pending BDs until the next TX.
 
-const?
+This issue was discovered by Sashiko and reading the code verifies that,
+while unlikely, it is possible.
 
-> +static u8 en751221_zcal_to_r50ohm[64] = {
+Fix this by jumping to tx_free, which replicates the same pre-existing
+logic but also writes the doorbell.
 
-const?
+Fixes: b91e82129400 ("bnxt_en: Linearize TX SKB if the fragments exceed the max")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joe Damato <joe@dama.to>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-> +	125, 125, 125, 125, 125, 125, 124, 121, 118, 115, 112, 110, 108, 105, 103, 101,
-> +	 99,  97,  95,  77,  75,  73,  72,  70,  68,  67,  65,  64,  63,  45,  44,  43,
-> +	 41,  40,  39,  38,  37,  36,  35,  34,  32,  32,  31,  30,  13,  12,  11,  10,
-> +	  9,   8,   8,   7,   6,   5,   5,   4,   3,   2,   2,   1,   0,   0,   0,   0
-> +};
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 9c2cc50276a5..d59bcca73a2b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -502,11 +502,8 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (skb_shinfo(skb)->nr_frags > TX_MAX_FRAGS) {
+ 		netdev_warn_once(dev, "SKB has too many (%d) fragments, max supported is %d.  SKB will be linearized.\n",
+ 				 skb_shinfo(skb)->nr_frags, TX_MAX_FRAGS);
+-		if (skb_linearize(skb)) {
+-			dev_kfree_skb_any(skb);
+-			dev_core_stats_tx_dropped_inc(dev);
+-			return NETDEV_TX_OK;
+-		}
++		if (skb_linearize(skb))
++			goto tx_free;
+ 	}
+ #endif
+ 	if (skb_is_gso(skb) &&
 
-> +/* EN751221 also mirrors RG_BG_RASEL into CHIP SCU register 0x16c. */
-> +static void en751221_gphy_mirror_rext(struct phy_device *phydev, u8 zcal)
-> +{
-> +	struct regmap *chip_scu;
-> +
-> +	chip_scu = syscon_regmap_lookup_by_compatible("econet,en751221-chip-scu");
+base-commit: dc4b95b8fee95113587e93ca116356032d271371
+-- 
+2.53.0-Meta
 
-Does this need a change to the binding document?
-
-> +static int en751221_gphy_config_init(struct phy_device *phydev)
-> +{
-> +	phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
-
-Why is the EEE register being cleared?
-
-> +
-> +	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_52B5);
-> +	__mtk_tr_write(phydev, 0x1, 0xf, 0x00, 0x00002b);
-> +	__mtk_tr_write(phydev, 0x1, 0xf, 0x03, 0x082422);
-> +	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
-> +
-> +	ret = phy_write(phydev, MII_CTRL1000,
-> +			ADVERTISE_1000FULL | CTL1000_PREFER_MASTER |
-> +			CTL1000_AS_MASTER | CTL1000_ENABLE_MASTER);
-
-What does this default to?
-
-> +
-> +	phy_set_bits(phydev, MII_BMCR, BMCR_ANRESTART | BMCR_ANENABLE);
-
-Why? config_aneg() will do this, if needed.
-
-     Andrew
