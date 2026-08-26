@@ -1,412 +1,271 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-oa2-f11.google.com (mail-oa2-f11.google.com [74.125.231.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C143F65EA
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 11:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787745079; cv=pass; b=BAK38gMi7afwPnjQ0kTVGumzznMMwJcbUwJvBXHGYQD/Dm5DEZtX/Ys0M4QeC4xoaCYPvQKX4JGDXRy4LSZeqAQWlfVfa4KkeHAvtOl+IyyHkbqJ7Myywv9qeUspWoyg3r4amjmEe9Ng3S3H8VQL6qHBy5BLkCB3glJ+oJ9cCuQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787745079; c=relaxed/simple;
-	bh=DxpvpATH0oXgY3OB1+W1d1OE1znwY0Dmebkb/FONmNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gPPkvVkJsBBTMpPXrAAmZDoYSZo/hYsdv/M0OF/H2GCT62I8u38yApt/XIkQlrId8EJNycuUrXuVwjI6qm/8gCHRP54z0q22lcX1IlLenTdkcltPtI9breGuafGt/nk1rF9Mxha1FgbfQN0NZCaBcSRxiuR+nYw43yupNMyUCX4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=QnLQRt9K; arc=pass smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="QnLQRt9K"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3a115c08b0bso6670331fa.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 04:51:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787745071; cv=none;
-        d=google.com; s=arc-20260327;
-        b=anUEC9zIbN/b+1i+2D4VZYdSItZp2mxcn9tFcs3yWR+DvBodjEUVCFM/QuywHEoweI
-         /npBH0ThX3f9J4TjxXTF2SPdtniqlZNN5KRHRC8q81CCO7pR5/vg5Mw6vttZhfi4DjVq
-         snTlyWCYysWoqvAx/bnJE9td/Xy/JUNQlmEsceKeV+juL20d47PyWI9oQF/xK7G1qfNz
-         tmrUX16fexw9pedcqDbJSAfnx28fCXB7pLItgLg3cXhnAEVSpyDA6sHD0flI5cXi5CAD
-         9LeJFIys4HMnu5ChxnDnABZzxzOYqPSiA+pv5HVe4yTnzoCYs8n5j+SN6t/Hjwm+Wg1f
-         sS+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Sb//kfcMxDR/KrZuw0yoV/PLJtDrbRO8+A8VLdk2OtE=;
-        fh=xe4M2RueoPmnP7m1rJrW6Zm5FgB+UE81VeZoiVy7ltc=;
-        b=DxVZhtmgmx6h9NLbG/FM+ksEnaR2CN6v6va9Q1nTus4L9fblzDVtR9qhuMvIvn9pCT
-         41YyAaxQDxVN47enSUIo5LAC3reJLTf/JfRH6rq5oiIqlPYscYjXRUkOelDH7gZJu9f4
-         pogWg6bBl2ztMFY15uCJZsbDi7suGuzrHlorVXOk70BxhNc+iGAKmmEvowBUY1UN4oAs
-         Tw9Skqa4Sw42r0RUuTlVOJr43AgBUG7YZO7TjYNbzL43OkVn+EnG8njbAMCzZY0tHaDP
-         AapWXTn69TEwE7sYdyekuqnz5DTsWxI9U1O2+puP7USQbf3KBuYBmBIACTYwhJQVS61q
-         5gyw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787745071; x=1788349871; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Sb//kfcMxDR/KrZuw0yoV/PLJtDrbRO8+A8VLdk2OtE=;
-        b=QnLQRt9KLcRtMwXuLYITE8l7X7aN3uPV2wFDdv7gxME39fw2T7Bc/h9FwuEn281Xar
-         VoGd9Bi7P7JnvV+BajDcDZ36vgyX89SSgVUwmWAP4nSAJbvDY6ifoUfMrL4uwdfyLQNB
-         ZGnQaSdXqseCFO9NrlyuQIxQjmFjnnjQb1cgt2PpshwGfpJeVslx3gpEucu0A+6+l9tB
-         coehrMzYDGRa3cr0Eel840k4/68jm/2rWdSixyXWxtqOUL03FU6OzPMwf87fjxM0oa6v
-         X+egzv1ZsQKq8m41L7c7Ssme+Lq4mWKJGbcYd5YS3M76xh1KTOTGVx89rSKFEt5f6zJC
-         R5lA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDACB17BCA
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 11:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.75
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787745335; cv=none; b=Gj+IL01AlVHSRAg/9+1gFwBABM/87O0iEfgZX8mScui33awtsjW7F6ZtJ0KvvaaKF5ih9w0IuhifV5oEtbK7qeW2rA2P3IekWuYVuu7RHtLxzw/Pblclg2ynQG2rnjzBfni3CxLktf+xlne6HCL6GLfCLR2j/NKXBohRb5Jewic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787745335; c=relaxed/simple;
+	bh=WQOg1GVIOHW5KRCh3gpzmCsFm/tWYnoVt2bAdpgllkg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=jqGdJmuQ41YairYS7ZTjpv4osCWquAoXqn2dbdYa9pePXp7kONuiPGr2b3KakoDPHXzDnqaF4FD0cUm9LAO6HRjU3Dgc6WhnHxrGzAccAP3tTonKhZ5r3IYDIyg4tpaCin1W3mpHVkM0NM99pCMnrlR+GHs7NGyVS9nMH/yeBaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa2-f11.google.com with SMTP id 586e51a60fabf-45958a0c7c4so279260fac.0
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 04:55:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787745071; x=1788349871;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787745333; x=1788350133;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Sb//kfcMxDR/KrZuw0yoV/PLJtDrbRO8+A8VLdk2OtE=;
-        b=JAxEDhoHLf6c/Z5zCT5bLjKhE455lI5FUtcF5z0luhuD58gwnBCqgWRYlv34a5HiQK
-         +oHwmQ6IldmTCSyZMOvA2QUmkU4GBagRdbIzQjoh7gZLxPF7ndYUQN3LAgtV7X98APC7
-         myvrdCFYm/bXRWNgIZaqrEcAGK6VCZxoA4lHuz5oQUdsOKzA1DBYihKUXceDbT54vfp4
-         yVw4pMr41WHoR4zHNtCo871FnWdM2mnCzg0+AxePpvu/ow5BwJD3ex00s+0NRG4QLhtc
-         IFLBggX3fGrU80m9sU1joyB0AyHZjvppsLw2Fus8ygyJ8CfILwyzB2CL330I9R8aNasF
-         ewVw==
-X-Gm-Message-State: AFuF++l9DXSNZRFhchdRB6KC7NPzKwxQ891A+FEVRKN3K0ycQ1AIeaCI
-	spYvoAw1aVS7rA9uGHFF9YLsp5ymACiu7H/YdgI1JJ4yt73wJdqCdOe/t4uU8+BbxaqOU3cg3EO
-	zgiRfrK5/CJQZSxA7zHfP76x/+QfORTWGHjqLxHyulQQ=
-X-Gm-Gg: AR+sD13P4gdoCDMHyRD6Pd4Oz1znVEhNScFdS47gL3bSigRPIMeUxSWkbrpJZwHyHGG
-	SIy9MXQbrYzUiWJKN55ubqZn5bripCJraA5b7GHLCfFKcHhfj80p5nS0esBkiH7uZcQwKCi2paN
-	UiTFqVoNt67Pu2SrNq9s6wjHLAZZku5o+Ev3cmF6bTTNKHgSOjLDSTuN7BHL/Wj+w4ZCHpmEn1I
-	YYVz+2bUnI7YJLKy28hOWIHBNKszDTp/7bGWBY4SZkw/m67QY8QyuuABi+uDxCDoGnUTYqyUOcP
-	z9Qolm6CaBff9bK2jw5zQ5dILWmffyM1m67mpTTNoN/F5deHmbmtGN29s3wxxkvrD9lst2TWcFJ
-	Q
-X-Received: by 2002:a05:651c:b22:b0:39f:fc5b:5183 with SMTP id
- 38308e7fff4ca-3a1fd46657amr13193191fa.3.1787745070995; Wed, 26 Aug 2026
- 04:51:10 -0700 (PDT)
+        bh=BFYWTRqsZ+S1YPbAJm/ppesJOdbaQUOz76T2WSP5MLs=;
+        b=MaHl21+ZLD9mYw2vsE7nYooE75oTN4HnDDDTCAwk55LriO96bf2ttvhaSjSsgazE0k
+         xfQSyqK1o7quF6a00gsCHwMpvsdFFaWOCV9t5mPFbHLeTVReOt2D93gdGYVWjZOMhnxy
+         d3Us1QjQE8HDgD7YIazFKfujVIGnlaD3FNPaQt3BHJ9uAJqhCp+IKW9thfHGUfyQLsX/
+         F1fuk8UoqKqrrTlVFjXwWp+ElUWwpLqkrMyramGIMTwfvF9s9CQDNP4Rvi0D+HhCEoVN
+         MZ8Bt9OU9DFOjphHnCUMpYQeb6rxFc/HtsQbY1ubCdymcEv8zYe2fle8bJDI0zqw98w6
+         TISA==
+X-Forwarded-Encrypted: i=1; AHgh+RoNxyWDiJNRL8cQqU32b22Lpb0MgPxirArfQ8nceu1+ARr+MCBVpFHKqZ2ulezsRt9Sexf11uA=@vger.kernel.org
+X-Gm-Message-State: AFuF++nBFE3riIrUM7K0NkzIg/hKrFLjLIFCmpUELGqL3rUURAgS682B
+	w7cT3ovxHqIAxcm4PAF11tpNyNu98mLF2jShAbqSyUJ6EMVPBAoJCEnAE1mNY24+jVI1Ol/Z8DW
+	IxDM2bZwnq3eCX5Dbu1nNaSY1jFsLaZQUWeoWPICbtjpT49txljm1r7yqMTc=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260822082354.3109-2-zihanx@nebusec.ai> <20260826083441.307129-1-horms@kernel.org>
-In-Reply-To: <20260826083441.307129-1-horms@kernel.org>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Wed, 26 Aug 2026 19:50:59 +0800
-X-Gm-Features: AcwNN1V8GMdtSUJdfLX4wZ23gSyLgIeYZwdSexsJ8bGsHjVlOviAWaJGwWN1k6M
-Message-ID: <CAANe3eRjAcr4-VnAbCdDGxuOuyesdQhJPfJZvjQsdBUO8WdWaA@mail.gmail.com>
-Subject: Re: [PATCH net v5 1/2] llc: fix listener child socket leaks before
- passive open completes
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, vega@nebusec.ai
+X-Received: by 2002:a05:6820:a28f:10b0:6ae:a950:9faa with SMTP id
+ 006d021491bc7-6b1a03c51c4mr4179543eaf.10.1787745332788; Wed, 26 Aug 2026
+ 04:55:32 -0700 (PDT)
+Date: Wed, 26 Aug 2026 04:55:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8ed434.1d9ded08.62e62.00a9.GAE@google.com>
+Subject: [syzbot] [net?] possible deadlock in ip_check_mc_rcu
+From: syzbot <syzbot+a5a07d2f6a71972dc5ed@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 26, 2026 at 4:34=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
->
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260=
-822082354.3109-2-zihanx@nebusec.ai?part=3D1
-> ---
-> llc: fix listener child socket leaks before passive open completes
->
-> This restricts passive-open child creation to SABME commands, answers oth=
-er
-> listener-directed commands with a directly generated DM response, and add=
-s
-> an incoming_state lifecycle (PENDING/QUEUED/NONE) so that children which
-> never reach accept() are unhashed and torn down from a work item.
->
-> > diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
-> > index b0447c33dbf0..7d246d4d281b 100644
-> > --- a/net/llc/af_llc.c
-> > +++ b/net/llc/af_llc.c
->
-> [ ... ]
->
-> > @@ -722,6 +728,7 @@ static int llc_ui_accept(struct socket *sock, struc=
-t socket *newsock,
-> >               goto frees;
-> >       rc =3D 0;
-> >       newsk =3D skb->sk;
-> > +     llc_accept_incoming_sock(newsk);
-> >       /* attach connection to a new socket. */
-> >       llc_ui_sk_init(newsock, newsk);
-> >       sock_reset_flag(newsk, SOCK_ZAPPED);
->
-> [Severity: High]
->
-> llc_accept_incoming_sock() performs the QUEUED to LLC_INCOMING_NONE
-> transition, and the paired sock_put(llc->incoming_listener), with only th=
-e
-> listener's owner lock held (the lock_sock(sk) at the top of
-> llc_ui_accept()).
->
-> Every other transition site holds the child's slock instead:
-> bh_lock_sock()/bh_lock_sock_nested(newsk) in llc_conn_handler(),
-> local_bh_disable() plus bh_lock_sock_nested(newsk) in llc_backlog_rcv(),
-> and bh_lock_sock_nested(newsk) in llc_release_incoming_children().
->
-> Since those two lock sets are disjoint, can a softirq-side release win th=
-e
-> atomic_xchg while accept() sits between skb_dequeue() and the graft?
->
-> CPU0 (softirq) llc_conn_handler() or llc_backlog_rcv()
->         bh_lock_sock_nested(newsk);
->         llc_release_incoming_sock(newsk);  /* xchg -> NONE, work queued *=
-/
->
-> CPU1 (process) llc_ui_accept()
->         newsk =3D skb->sk;
->         llc_accept_incoming_sock(newsk);   /* xchg returns NONE, no fixup=
- */
->         llc_ui_sk_init(newsock, newsk);
->         newsk->sk_state         =3D TCP_ESTABLISHED;
->
-> llc_accept_incoming_sock() returns void, so llc_ui_accept() has no way to
-> notice that it lost the transition, and it takes no reference on newsk an=
-d
-> never holds the child's lock.
->
-> llc_incoming_sock_work() only waits on lock_sock(listener), which accept(=
-)
-> drops on return, so the final sock_put() pair can land immediately after
-> newsock->sk has been published to userspace.
->
-> Would it work for llc_accept_incoming_sock() to return whether it won the
-> transition, taken under the child's lock, so accept() can fail instead of
-> grafting a socket whose teardown is already scheduled?
->
-> > diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-> > index 260460d50f54..8120ecd46ace 100644
-> > --- a/net/llc/llc_conn.c
-> > +++ b/net/llc/llc_conn.c
->
-> [ ... ]
->
-> > @@ -88,6 +89,11 @@ int llc_conn_state_process(struct sock *sk, struct s=
-k_buff *skb)
-> >                * skb->sk pointing to the newly created struct sock in
-> >                * llc_conn_handler. -acme
-> >                */
-> > +             if (sk !=3D skb->sk &&
-> > +                 atomic_read(&llc_sk(skb->sk)->incoming_state) =3D=3D
-> > +                 LLC_INCOMING_PENDING)
-> > +                     atomic_set(&llc_sk(skb->sk)->incoming_state,
-> > +                                LLC_INCOMING_QUEUED);
-> >               skb_get(skb);
-> >               skb_queue_tail(&sk->sk_receive_queue, skb);
-> >               sk->sk_state_change(sk);
->
-> > @@ -765,27 +771,153 @@ static struct sock *llc_create_incoming_sock(str=
-uct sock *sk,
->
-> [ ... ]
->
-> > +static void llc_incoming_sock_work(struct work_struct *work)
-> > +{
-> > +     struct llc_sock *llc =3D container_of(work, struct llc_sock,
-> > +                                                 incoming_work);
-> > +     struct sock *sk =3D &llc->sk;
-> > +     struct sock *listener =3D llc->incoming_listener;
-> > +
-> > +     lock_sock(listener);
-> > +     lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
-> > +     llc_sk_free(sk, false);
-> > +     sock_orphan(sk);
-> > +     release_sock(sk);
-> > +     llc_sk_stop_all_timers(sk, true);
-> > +     release_sock(listener);
-> > +     dev_put(llc->dev);
-> > +     llc->dev =3D NULL;
-> > +     sock_put(sk);
-> > +     sock_put(listener);
-> > +}
-> > +
-> > +void llc_release_incoming_sock(struct sock *sk)
-> > +{
-> > +     struct llc_sock *llc =3D llc_sk(sk);
-> > +
-> > +     if (atomic_xchg(&llc->incoming_state, LLC_INCOMING_NONE) =3D=3D
-> > +         LLC_INCOMING_NONE)
-> > +             return;
-> > +
-> > +     WRITE_ONCE(llc->state, LLC_CONN_OUT_OF_SVC);
-> > +     sock_hold(sk);
-> > +     llc_sap_remove_socket(llc->sap, sk);
-> > +     schedule_work(&llc->incoming_work);
-> > +}
->
-> [ ... ]
->
-> > @@ -813,18 +960,46 @@ void llc_conn_handler(struct llc_sap *sap, struct=
- sk_buff *skb)
-> >               skb->sk =3D sk;
-> >               skb->destructor =3D sock_efree;
-> >       }
-> > -     if (!sock_owned_by_user(sk))
-> > +     if (unlikely(llc_sk(skb->sk)->state < LLC_CONN_STATE_ADM)) {
-> > +             if (newsk)
-> > +                     llc_release_incoming_sock(newsk);
-> > +             else if (atomic_read(&llc_sk(sk)->incoming_state) !=3D
-> > +                      LLC_INCOMING_NONE)
-> > +                     llc_release_incoming_sock(sk);
-> > +             goto drop_unlock;
-> > +     }
->
-> [Severity: Critical]
->
-> Can this free a child that is already sitting on the listener's accept
-> queue?
->
-> Once llc_conn_state_process() has flipped the child to
-> LLC_INCOMING_QUEUED, the connection indication skb is on the listener's
-> sk_receive_queue holding a raw skb->sk pointer to the child;
-> skb_set_owner_r() takes no socket reference. This gate releases the child
-> found directly by established lookup whenever incoming_state is not
-> LLC_INCOMING_NONE, which includes QUEUED children.
->
-> A purely remote frame sequence against a listening socket reaches it:
->
->   SABME  -> llc_create_incoming_sock() publishes the child, PENDING
->          -> llc_conn_state_process() LLC_CONN_PRIM: QUEUED, skb queued
->   DISC   -> __llc_lookup() selects the child, and llc_common_state_trans_=
-4
->             in net/llc/llc_c_st.c moves it from NORMAL to
->             LLC_CONN_STATE_ADM
->   command frame -> llc_adm_state_trans_5 sets LLC_CONN_OUT_OF_SVC
->   one more frame -> this gate sees state < LLC_CONN_STATE_ADM and
->             incoming_state =3D=3D LLC_INCOMING_QUEUED
->
-> llc_release_incoming_sock() then drops the SAP hash reference through
-> llc_sap_remove_socket() and schedules llc_incoming_sock_work(), which dro=
-ps
-> the llc_sk_free() sock_put plus the explicit sock_put, so the child is
-> freed. Nothing dequeues or invalidates the indication skb.
->
-> Does a later accept() then work on freed memory?
->
-> net/llc/af_llc.c:llc_ui_accept() {
->         newsk =3D skb->sk;
->         llc_accept_incoming_sock(newsk);
->         llc_ui_sk_init(newsock, newsk);
->         sock_reset_flag(newsk, SOCK_ZAPPED);
->         newsk->sk_state         =3D TCP_ESTABLISHED;
->         ...
-> frees:
->         kfree_skb(skb);
-> }
->
-> The trailing kfree_skb() also runs sock_rfree() on that sock, and listene=
-r
-> close in llc_release_incoming_children() reads
-> llc_sk(newsk)->incoming_state and takes bh_lock_sock_nested(newsk) on the
-> same pointer.
->
-> The QUEUED branch and the retry: block of llc_backlog_rcv() call
-> llc_release_incoming_sock() on an already-indicated child in the same way=
-.
->
-> Should the release paths be limited to LLC_INCOMING_PENDING children, or
-> should the queued indication skb be removed from the listener's receive
-> queue as part of the release?
->
-> > +     if (!sock_owned_by_user(sk)) {
-> >               llc_conn_rcv(sk, skb);
-> > -     else {
-> > +             if (newsk &&
-> > +                 atomic_read(&llc_sk(newsk)->incoming_state) =3D=3D
-> > +                 LLC_INCOMING_PENDING)
-> > +                     llc_release_incoming_sock(newsk);
-> > +     } else {
->
-> [ ... ]
->
-> > @@ -852,12 +1027,53 @@ static int llc_backlog_rcv(struct sock *sk, stru=
-ct sk_buff *skb)
->
-> [ ... ]
->
-> > +                     if (sock_flag(sk, SOCK_DEAD) ||
-> > +                         sk->sk_state !=3D TCP_LISTEN ||
-> > +                         llc_sk(newsk)->state < LLC_CONN_STATE_ADM) {
-> > +                             llc_release_incoming_sock(newsk);
-> > +                             bh_unlock_sock(newsk);
-> > +                             local_bh_enable();
-> > +                             goto out_kfree_skb;
-> > +                     }
->
-> [ ... ]
->
-> > +             } else if (newsk &&
-> > +                        atomic_read(&llc_sk(newsk)->incoming_state) =
-=3D=3D
-> > +                        LLC_INCOMING_QUEUED) {
-> > +                     local_bh_disable();
-> > +                     bh_lock_sock_nested(newsk);
-> > +                     if (llc_sk(newsk)->state <=3D LLC_CONN_STATE_ADM)=
- {
-> > +                             llc_release_incoming_sock(newsk);
-> > +                             bh_unlock_sock(newsk);
-> > +                             local_bh_enable();
-> > +                             goto out_kfree_skb;
-> > +                     }
->                                             ^^
->
-> [Severity: Medium]
->
-> Is the <=3D bound intended here? The PENDING branch just above and the ga=
-te
-> in llc_conn_handler() both use state < LLC_CONN_STATE_ADM, and the v5
-> changelog describes the new check as an LLC_CONN_OUT_OF_SVC lower bound.
->
-> LLC_CONN_STATE_ADM (1) is a live state with its own transition table
-> (llc_adm_state_transitions), and a queued child legitimately returns to i=
-t
-> after a remote DISC:
->
-> net/llc/llc_c_st.c
-> static const struct llc_conn_state_trans llc_common_state_trans_4 =3D {
->         .ev            =3D llc_conn_ev_rx_disc_cmd_pbit_set_x,
->         .next_state    =3D LLC_CONN_STATE_ADM,
->
-> So the same frame is dispatched when it arrives on the direct path in
-> llc_conn_handler(), but here it is dropped and the child is destroyed via
-> llc_release_incoming_sock(). The retry: block below applies the same
-> asymmetric bound with state > LLC_CONN_STATE_ADM.
->
-> Since llc_qualify_conn_ev() indexes llc_conn_state_table[llc->state - 1],
-> would excluding only LLC_CONN_OUT_OF_SVC (0) be enough?
->
-> [ ... ]
+Hello,
 
-Hi Simon,
+syzbot found the following issue on:
 
-Thanks for forwarding the review. I checked each point manually.
+HEAD commit:    f6f3b36c15ed net: ethernet: qualcomm: remove unneeded 'fas..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15de4b46580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
+dashboard link: https://syzkaller.appspot.com/bug?extid=a5a07d2f6a71972dc5ed
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-[High]
-Confirmed. v5 lets accept() consume the incoming_state transition without
-holding the child lock or knowing whether the concurrent release path alrea=
-dy
-won it. The indication skb also does not keep a child socket reference.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-[Critical]
-Confirmed. A QUEUED child can be released by the out-of-service handling wh=
-ile
-its connection indication remains on the listener receive queue. That leave=
-s
-the skb->sk pointer stale for a later accept() or listener teardown.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/47ae09206bf6/disk-f6f3b36c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9e3daf94ae30/vmlinux-f6f3b36c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c266cfd24092/bzImage-f6f3b36c.xz
 
-[Medium]
-Confirmed. LLC_CONN_STATE_ADM is a valid state, including after a DISC
-transition. The queued-child path should reject only states below ADM, not =
-ADM
-itself.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a5a07d2f6a71972dc5ed@syzkaller.appspotmail.com
 
-For v6, the queued indication will hold a child socket reference until it i=
-s
-consumed; accept() will serialize with the child lock and verify that it wo=
-n
-the QUEUED-to-NONE transition; packet and backlog paths will only release
-PENDING children; and the queued-child state bound will be made consistent
-with the lower-bound state-table check.
+============================================
+WARNING: possible recursive locking detected
+syzkaller #0 Not tainted
+--------------------------------------------
+syz.4.3416/18916 is trying to acquire lock:
+ffff888042dfe6b0 (&im->lock){+.-.}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:348 [inline]
+ffff888042dfe6b0 (&im->lock){+.-.}-{3:3}, at: ip_check_mc_rcu+0x448/0x670 net/ipv4/igmp.c:2869
 
-Thanks,
-Zihan
+but task is already holding lock:
+ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:348 [inline]
+ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmpv3_send_cr net/ipv4/igmp.c:727 [inline]
+ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmp_ifc_timer_expire+0x852/0x10b0 net/ipv4/igmp.c:843
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&im->lock);
+  lock(&im->lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+9 locks held by syz.4.3416/18916:
+ #0: ffffffff9057afc0 (&ops->srcu#2){.+.+}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #0: ffffffff9057afc0 (&ops->srcu#2){.+.+}-{0:0}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
+ #0: ffffffff9057afc0 (&ops->srcu#2){.+.+}-{0:0}, at: rtnl_link_ops_get+0x23/0x250 net/core/rtnetlink.c:595
+ #1: ffffffff9002c240 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
+ #1: ffffffff9002c240 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock net/core/rtnetlink.c:366 [inline]
+ #1: ffffffff9002c240 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xc10/0x1c30 net/core/rtnetlink.c:4194
+ #2: ffffffff8eb4bfa0 (console_lock){+.+.}-{0:0}, at: console_trylock_spinning kernel/printk/printk.c:2026 [inline]
+ #2: ffffffff8eb4bfa0 (console_lock){+.+.}-{0:0}, at: vprintk_emit+0x2cf/0x560 kernel/printk/printk.c:2478
+ #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: rcu_try_lock_acquire include/linux/rcupdate.h:305 [inline]
+ #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: srcu_read_lock_nmisafe include/linux/srcu.h:428 [inline]
+ #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: console_srcu_read_lock kernel/printk/printk.c:291 [inline]
+ #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: console_flush_one_record kernel/printk/printk.c:3246 [inline]
+ #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: console_flush_all+0x123/0xaf0 kernel/printk/printk.c:3343
+ #4: ffffc90000a08cc0 ((&in_dev->mr_ifc_timer)){+.-.}-{0:0}, at: call_timer_fn+0xd4/0x5e0 kernel/time/timer.c:1745
+ #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
+ #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: igmpv3_send_cr net/ipv4/igmp.c:689 [inline]
+ #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: igmp_ifc_timer_expire+0x28/0x10b0 net/ipv4/igmp.c:843
+ #6: ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:348 [inline]
+ #6: ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmpv3_send_cr net/ipv4/igmp.c:727 [inline]
+ #6: ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmp_ifc_timer_expire+0x852/0x10b0 net/ipv4/igmp.c:843
+ #7: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #7: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
+ #7: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: xfrm_policy_get_afinfo+0x30/0x1b0 net/xfrm/xfrm_policy.c:263
+ #8: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
+ #8: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
+ #8: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: ip_route_output_key_hash+0xd8/0x2a0 net/ipv4/route.c:2701
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 18916 Comm: syz.4.3416 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
+ check_deadlock kernel/locking/lockdep.c:3093 [inline]
+ validate_chain kernel/locking/lockdep.c:3895 [inline]
+ __lock_acquire+0x24df/0x2cf0 kernel/locking/lockdep.c:5237
+ lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
+ __raw_spin_lock_bh include/linux/spinlock_api_smp.h:150 [inline]
+ _raw_spin_lock_bh+0x36/0x50 kernel/locking/spinlock.c:182
+ spin_lock_bh include/linux/spinlock.h:348 [inline]
+ ip_check_mc_rcu+0x448/0x670 net/ipv4/igmp.c:2869
+ __mkroute_output net/ipv4/route.c:2600 [inline]
+ ip_route_output_key_hash_rcu+0xe7f/0x2720 net/ipv4/route.c:2872
+ ip_route_output_key_hash+0x18d/0x2a0 net/ipv4/route.c:2702
+ xfrm4_get_saddr+0xb6/0x170 net/ipv4/xfrm4_policy.c:57
+ xfrm_get_saddr net/xfrm/xfrm_policy.c:2472 [inline]
+ xfrm_tmpl_resolve_one net/xfrm/xfrm_policy.c:2508 [inline]
+ xfrm_tmpl_resolve net/xfrm/xfrm_policy.c:2567 [inline]
+ xfrm_resolve_and_create_bundle+0x6df/0x3070 net/xfrm/xfrm_policy.c:2865
+ xfrm_bundle_lookup net/xfrm/xfrm_policy.c:3100 [inline]
+ xfrm_lookup_with_ifid+0x576/0x1b40 net/xfrm/xfrm_policy.c:3231
+ xfrm_lookup net/xfrm/xfrm_policy.c:3330 [inline]
+ xfrm_lookup_route+0x3c/0x1c0 net/xfrm/xfrm_policy.c:3341
+ ip_route_output_ports include/net/route.h:213 [inline]
+ igmpv3_newpack+0x2a7/0x1190 net/ipv4/igmp.c:402
+ add_grhead+0x70/0x340 net/ipv4/igmp.c:473
+ add_grec+0x1123/0x13e0 net/ipv4/igmp.c:607
+ igmpv3_send_cr net/ipv4/igmp.c:744 [inline]
+ igmp_ifc_timer_expire+0x93e/0x10b0 net/ipv4/igmp.c:843
+ call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
+ expire_timers kernel/time/timer.c:1799 [inline]
+ __run_timers kernel/time/timer.c:2374 [inline]
+ __run_timer_base+0x652/0x8b0 kernel/time/timer.c:2386
+ run_timer_base kernel/time/timer.c:2395 [inline]
+ run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
+ handle_softirqs+0x225/0x840 kernel/softirq.c:622
+ __do_softirq kernel/softirq.c:656 [inline]
+ invoke_softirq kernel/softirq.c:496 [inline]
+ __irq_exit_rcu+0xca/0x220 kernel/softirq.c:735
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+RIP: 0010:console_flush_one_record arch/x86/include/asm/irqflags.h:-1 [inline]
+RIP: 0010:console_flush_all+0x7d2/0xaf0 kernel/printk/printk.c:3343
+Code: ff ff e8 71 2d 21 00 90 0f 0b 90 e9 9c fc ff ff e8 63 2d 21 00 e8 3e b0 29 0a 48 85 db 74 c0 e8 54 2d 21 00 fb 48 8b 5c 24 18 <48> 8b 44 24 28 42 80 3c 20 00 4d 8d 77 58 74 08 4c 89 f7 e8 e6 b9
+RSP: 0018:ffffc90002fe6840 EFLAGS: 00000283
+RAX: ffffffff81a544ec RBX: ffffc90002fe69a0 RCX: 0000000000080000
+RDX: ffffc9000db64000 RSI: 0000000000043066 RDI: 0000000000043067
+RBP: ffffc90002fe6950 R08: ffffffff905775f7 R09: 1ffffffff20aeebe
+R10: dffffc0000000000 R11: fffffbfff20aeebf R12: dffffc0000000000
+R13: 0000000000000001 R14: 0000000000000000 R15: ffffffff8f46ec20
+ __console_flush_and_unlock kernel/printk/printk.c:3373 [inline]
+ console_unlock+0xd1/0x1c0 kernel/printk/printk.c:3413
+ vprintk_emit+0x485/0x560 kernel/printk/printk.c:2479
+ _printk+0xdd/0x130 kernel/printk/printk.c:2504
+ vlan_vid0_add net/8021q/vlan.c:347 [inline]
+ vlan_device_event+0x13e6/0x1580 net/8021q/vlan.c:388
+ notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2291 [inline]
+ call_netdevice_notifiers net/core/dev.c:2305 [inline]
+ __dev_notify_flags+0x31e/0x510 net/core/dev.c:9798
+ rtnl_configure_link+0x2f5/0x510 net/core/rtnetlink.c:3712
+ rtnl_newlink_create+0x343/0x7b0 net/core/rtnetlink.c:3957
+ __rtnl_newlink net/core/rtnetlink.c:4078 [inline]
+ rtnl_newlink+0x166d/0x1c30 net/core/rtnetlink.c:4195
+ rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7112
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff1f559de59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff1f37f6028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007ff1f5825fa0 RCX: 00007ff1f559de59
+RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000000000000006
+RBP: 00007ff1f5633e6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ff1f5826038 R14: 00007ff1f5825fa0 R15: 00007ffdfbb2bc38
+ </TASK>
+GRED: Unable to relocate VQ 0x0 after dequeue, screwing up backlog
+----------------
+Code disassembly (best guess), 1 bytes skipped:
+   0:	ff                   	ljmp   (bad)
+   1:	e8 71 2d 21 00       	call   0x212d77
+   6:	90                   	nop
+   7:	0f 0b                	ud2
+   9:	90                   	nop
+   a:	e9 9c fc ff ff       	jmp    0xfffffcab
+   f:	e8 63 2d 21 00       	call   0x212d77
+  14:	e8 3e b0 29 0a       	call   0xa29b057
+  19:	48 85 db             	test   %rbx,%rbx
+  1c:	74 c0                	je     0xffffffde
+  1e:	e8 54 2d 21 00       	call   0x212d77
+  23:	fb                   	sti
+  24:	48 8b 5c 24 18       	mov    0x18(%rsp),%rbx
+* 29:	48 8b 44 24 28       	mov    0x28(%rsp),%rax <-- trapping instruction
+  2e:	42 80 3c 20 00       	cmpb   $0x0,(%rax,%r12,1)
+  33:	4d 8d 77 58          	lea    0x58(%r15),%r14
+  37:	74 08                	je     0x41
+  39:	4c 89 f7             	mov    %r14,%rdi
+  3c:	e8                   	.byte 0xe8
+  3d:	e6 b9                	out    %al,$0xb9
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
