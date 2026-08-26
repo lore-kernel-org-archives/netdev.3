@@ -1,121 +1,143 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66A738F633;
-	Wed, 26 Aug 2026 15:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616882E7391;
+	Wed, 26 Aug 2026 16:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787759992; cv=none; b=eBTnl252QMFb2xcJEC/kYauG/BZEiFYjv/9Z/dzR0Fex24T5wRVI4is8lrO+5BcVBOS+vU1OfWMiLkbseDNtlOYwW6832k60Nn2sK6PpNppQ4B6yGshlvOHhEJ90ZrxopdllBZeL5w3Kl2c6H19+yvJycYn9G8DtwAtIoZOefM8=
+	t=1787760092; cv=none; b=IloZt1KuWyr/FyFuNWiBP8bLWZuwHNma26rRy1uZFCxFQDPTgjkgbghavlr4GIg7xd/SwoEaQJvrCJf0AQLwfPlKaW4O1Rb6bvCpfcy3TUFSN3AGNHBNmCYdtQVC0f09P9ua3JbjgEnzpW8dy0k9xYPRPz17VC6kGINOv2tKdCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787759992; c=relaxed/simple;
-	bh=C/j5JsOQuT9ioo9qkbgBTsuIi+HtFcKKahUZ/Q72Tm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMI3hx+OTY0GGwyOh6bMaHew9VqNpw3ueizO4pXflzpagkUBRoZ0VJu3l5myFprjBypkGgD+pxu3NitFj/HChEku2q2rgZ5XjSMCO8R0DDsmR2/OmPPBC6RsbU5Gvw3ccCi5bm19CZ2swAnIvyyNXL0otqMxzwRRe1/jYgVHGKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hp8ZtsH9; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1787760092; c=relaxed/simple;
+	bh=lVHf+Gvn3rmZVmMJJ4PkKLNngXr6ygOAY1JW9Mjty8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dIepC72MQB6n12AVxRJTXsMaQs6FYjhn2qP616mJsXoy8lCX9BCevNE3lXvM5iym2QzHnPWYHzCC3lpITinI6ef82ktFmoD5DRTc4iMuox/8j4gWkHTqVYg9Oe1BSvEHJMpk8jV/rV/vt8P0ZxmDjc0PLuy3/mVueQegPbDaIg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wx/C6OJ4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hp8ZtsH9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=0l
-	74OhUqceJnGj4xl9NmQr5VfyR7MzAJ2mmS1+9Yg/Q=; b=hp8ZtsH98txM5iq3pN
-	oCwlLezbMUjqRvbU3cInBK9+MCA6YWJcIInrWDX/UMPu33OQGnvn1fb0Lcr/uTtB
-	KcA8EiA6krkGwyTUdcVW09zGJmOgHSfqm/KGWoq5hGcm8BzOK8OxRdaHFcpfoyit
-	Belei59uC+44Ha7j8pGKtMTU4=
-Received: from sky.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDXx1o1DY9qlBl_Dw--.2963S2;
-	Wed, 26 Aug 2026 23:58:54 +0800 (CST)
-From: Junnan Zhang <zhangjn_dev@163.com>
-To: willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	liuhangbin@gmail.com,
-	mst@redhat.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sunshx@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn,
-	zhangjn_dev@163.com
-Subject: Re: [PATCH] net/packet: fix network header offset-VLAN raw packets on VLAN subinterfaces
-Date: Wed, 26 Aug 2026 23:58:42 +0800
-Message-ID: <20260826155842.37442-1-zhangjn_dev@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <willemdebruijn.kernel.388b632cadf16@gmail.com>
-References: <willemdebruijn.kernel.388b632cadf16@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wx/C6OJ4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4391F000E9;
+	Wed, 26 Aug 2026 16:01:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787760091;
+	bh=HKu0+MQ/CsGRSjRAPzNW/D1HhsHLTAjhUx06OW9NRSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Wx/C6OJ4nVwBR1WYCJ/p1IXmhwG8Bef1giEp7MP1cAEjvcuen/1/9Zw1IvjBCVnyd
+	 325dmg92bAt6AQAurk2kbKIgKgoISNqOm8isIRx25d7jrelMaXazQICHx2XNTJ5nw4
+	 GSUHw39VqTbABkYl3A7ZkytBgZKK0ktLfhOhA3SQqQDDBEIz38/ZkqjfbH3FOEebub
+	 Z86E/oyPWVw7Z6T8NrsFabQusjVyv1UqHfOCDtjHzBZC2ps1ysoJqX+rO6ojmoCj6A
+	 zlmpqoYI1PCpKoDyVvQvsUhx381Q6bFtkypAC06u7WalRTwTSn0HfwbYnAtsEUq0qf
+	 7JyIgBJpYtVsA==
+Date: Wed, 26 Aug 2026 17:01:26 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] dt-bindings: dp83867: add binding for
+ output-impedance
+Message-ID: <20260826-salutary-skype-524c69932dc2@spud>
+References: <20260826-v7-2-topic-dp83867-v2-0-a97b4cec6e93@pengutronix.de>
+ <20260826-v7-2-topic-dp83867-v2-2-a97b4cec6e93@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXx1o1DY9qlBl_Dw--.2963S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWFy7Wr1xuFWDKw4kXw1UZFb_yoW5urWfpa
-	yYqF9xtw4Dur15tr48J3WfJFWjvr4fGa4UWFy5JrWI9FWYgFyrAFWftF4jgFyj9ryrXr1F
-	vr1UX3W3uF4vyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JU373kUUUUU=
-X-CM-SenderInfo: x2kd0wxmqbvvry6rljoofrz/xtbC7R-QZmqPDT-sowAA3c
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5aasveUrcJSeX1iD"
+Content-Disposition: inline
+In-Reply-To: <20260826-v7-2-topic-dp83867-v2-2-a97b4cec6e93@pengutronix.de>
 
-Hi Willem,
-Thanks for the follow-up.
-> Why is the real length 14 + 14 == 28?
-> Where does the second 14 come from?
-You're right to flag this - my previous mail used "base" inconsistently,
-which is what made the "14 + 14" look unexplained. Let me redo it with a
-single reference point.
-The cleanest reference is skb->data after packet_snd() has set things up
-(i.e. the start of the user-supplied raw frame). With hard_header_len=18
-and min_header_len=14 on a software-offload VLAN subif:
-  - skb_reset_network_header() runs while data is at head + hlen
-    (hlen = LL_RESERVED_SPACE_EX(dev, 18) = 32, the HH_DATA_MOD-rounded
-     headroom), so network_header lands at head + hlen = head + 32.
-  - The SOCK_RAW branch then does skb_reserve(skb, -reserve) with
-    reserve = hard_header_len = 18, moving data back to head + 14
-    (= head + hlen - hard_header_len).
-  - The small-frame skb_reset_network_header() at packet_snd:3078 does
-    not fire for a GSO frame, so network_header stays at head + 32.
-Relative to data (= head + 14), this means:
-    network_header = data + (32 - 14) = data + 18 = data + hard_header_len
-    real IP header  = data + ETH_HLEN  = data + 14 = data + min_header_len
-So network_header points VLAN_HLEN (4) bytes past the real IP header.
-The "14 + 14 = 28" in my earlier reply was the absolute offset of IP
-from head (data-offset 14 from rounding + ETH_HLEN 14); the second 14 is
-ETH_HLEN, i.e. the user-supplied Ethernet header. I should not have mixed
-the head-relative IP position with a data-relative network_header - sorry
-for the confusion. v2 will use data-relative offsets throughout, which
-also matches skb_network_offset() and is independent of the
-LL_RESERVED_SPACE rounding.
-With the fix, skb_set_network_header(skb, dev->min_header_len) sets
-network_header = data + min_header_len = data + ETH_HLEN, i.e. exactly on
-the real IP header, so both skb_probe_transport_header() (nhoff) and GSO
-see the correct L3.
+--5aasveUrcJSeX1iD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> This is the hint that this is a vlan device with software VLAN tag
-> insertion? Technically, it might apply to other variable length
-> header devices too.
->
-You're right, it is not specific to VLAN. min_header_len <
-hard_header_len also matches Ethernet drivers that reserve extra space
-in hard_header_len beyond ETH_HLEN for their own wrapping. For all of these, 
-the user-supplied non-VLAN SOCK_RAW frame still carries a standard 14-byte 
-Ethernet header, so its L3 header sits at ETH_HLEN = min_header_len, and 
-pointing network_header there is correct.
-The condition is intentionally generic, not VLAN-specific.
-For any ARPHRD_ETHER device whose hard_header_len exceeds min_header_len,
-a non-VLAN SOCK_RAW frame's L3 sits at min_header_len (the standard
-Ethernet header length), regardless of what extra bytes hard_header_len
-reserves for driver-internal wrapping. The fix points network_header at
-exactly that L2/L3 boundary. This matches the existing
-dev->min_header_len != hard_header_len check already used in packet_snd()
-(the small-frame skb_reset_network_header path).
-I'll reword the v2 commit message to describe the scope as "Ethernet
-devices whose hard_header_len exceeds min_header_len" rather than "VLAN
-subinterfaces", and drop the misleading VLAN-only framing.
-I'll send v2 as a new thread.
+On Wed, Aug 26, 2026 at 02:48:40PM +0200, Steffen Trumtrar wrote:
+> Currently, the output-impedance can only be set to default, minimum or
+> maximum or via a nvmem cell.
+> In cases where there is no backend for a nvmem cell, a value can not be
+> set.
+>=20
+> Add a DT binding, 'ti,output-impedance-ohms', for specifying the
+> output-impedance via a fixed value. The existing boolean values for
+> minimum and maximum still take precedence over the new value.
+>=20
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  Documentation/devicetree/bindings/net/ti,dp83867.yaml | 16 +++++++++++++=
++++
+>  1 file changed, 16 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Docu=
+mentation/devicetree/bindings/net/ti,dp83867.yaml
+> index 7a6fe516bab27..49fafe3ce6f47 100644
+> --- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> +++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> @@ -38,6 +38,16 @@ properties:
+>      items:
+>        - const: io_impedance_ctrl
+> =20
+> +  ti,output-impedance-ohms:
+> +    description: |
+> +      MAC Interface Impedance control to set the programmable output imp=
+edance.
+> +      Valid range is 0x00 to 0x1f (32 steps).
+> +      - 0x1f =3D 35 ohms (minimum impedance)
+> +      - 0x00 =3D 70 ohms (maximum impedance)
+> +      - Step size varies with process.
+> +    minimum: 0
+> +    maximum: 31
+
+Your property is named in ohms, but not implemented in ohms.
+pw-bot: changes-requested
+
+Can't you just achieve the same result using the existing max property?
+I don't get the use case where you specify a max, but then don't want to
+use that max. Just set the max to what you actually want?
 
 Thanks,
-Junnan
+Conor.
 
+> +
+>    ti,min-output-impedance:
+>      type: boolean
+>      description: |
+> @@ -121,6 +131,12 @@ allOf:
+>        required: [nvmem-cells, "ti,min-output-impedance"]
+>    - not:
+>        required: [nvmem-cells, "ti,max-output-impedance"]
+> +  - not:
+> +      required: [nvmem-cells, "ti,output-impedance-ohms"]
+> +  - not:
+> +      required: ["ti,output-impedance-ohms", "ti,min-output-impedance"]
+> +  - not:
+> +      required: ["ti,output-impedance-ohms", "ti,max-output-impedance"]
+> =20
+>  required:
+>    - reg
+>=20
+> --=20
+> 2.54.0
+>=20
+
+--5aasveUrcJSeX1iD
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCao8N1QAKCRB4tDGHoIJi
+0kq4APoCzvw4l7ecgIaAmNRRokOfSS6ygTNzDBI5uUoRR4uWCQD/ZuaNbazbM0QU
+fkxAkzNcXif3RRAYNi5zb5r3vMDb3A8=
+=rFze
+-----END PGP SIGNATURE-----
+
+--5aasveUrcJSeX1iD--
