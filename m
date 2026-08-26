@@ -1,57 +1,42 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3DA3BFAE0
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA474156DA
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737743; cv=none; b=ciJ5whVMI9DFwkkehhH/iSmKIgokWEVG/eitqUHMZLVUTLtInaoNLqdZf+263PZa0o22J8la433MRVu/WWXFzmmrSyCR8LnMP9mFq5s1vyTeRdiCZhvvysee2PB3Hun+NgGfg3qGHboXXeHahwQ6AKU30BUnd1aSrCN/LblfX0E=
+	t=1787738027; cv=none; b=FV9kj+R8Bt7GnslgeevIUtTTkXIi+puS1lFlYlqUJTxvp/AK+3t3KPONsDU6NukEkAUfIZxw9NvjfuXXx6LjMbpy5dtCf7LQco3mCzJvtKNiVZ+qA8HbR/qL/5FoyapwRyck/glxb2/2RJMYMtLWiHdEyms1HVLBQ2F9qGWGc0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737743; c=relaxed/simple;
-	bh=V4W7KOtsjsnY4yHHWe5hb+AdAGYAbZLZ7R/sQDp5ISc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQzhZr8K2Zo9iLcDyc8QShuCOeD6kB6Gp/LK9JdJqwncTXnm1LZGtBD85h9ujrL95Lz+iOBv2pBqysehMRsVgTqKBmq/3JGO/QU82TSEaXqshfmy4GNUh12vvwpVyfDfdWifse+dsVX27Q727Kdmzhd7z0h7h6zm2ybq/ghcacQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QyTWHZZk; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QyTWHZZk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787737741; x=1819273741;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=V4W7KOtsjsnY4yHHWe5hb+AdAGYAbZLZ7R/sQDp5ISc=;
-  b=QyTWHZZkuKnh8XxMd8hQ5nNGCQM+KUE2cKEbzYa0OrYeNlaWXS4e6jB5
-   vDMZJvpfb6UHPFNT+TivKVdbuMo/s1w3CturUwhbxZnfZ0nWJbVGsHXUb
-   k5SOC2fzdrJMh4gl9IrgxvAtI8ng7erF4HQOV97jpvz6QRdepDp0Pvaf4
-   Z4QnbO8+BQcdpAH4HJV4ojfyGH3a/kpd+pfQOU9HxvTnPWKSFORSiZ1k4
-   EnL+/UNZQfHw0CxqcE1HJ27VZFdeFHLysKohdTnYBoVnvtcEJn4eEry/z
-   hFgGEBLUDO4efXajnqAfrT3/snrMp3PgzqJtUEft0aCAJ25Juv5Bdw6vF
-   g==;
-X-CSE-ConnectionGUID: KLJ7wZfaSYW3AR7V9vVvXQ==
-X-CSE-MsgGUID: imerr6YZTUSsCvwF04VcJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88232962"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88232962"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 02:48:58 -0700
-X-CSE-ConnectionGUID: 1UbTnaqoTvajhB2pLYJtzA==
-X-CSE-MsgGUID: hQJ5GjLQRoCASmWnTVD8yA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="261404824"
-Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Aug 2026 02:48:56 -0700
-From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next v4 6/6] ice: dpll: Rework the SMA control logic to match the requirements
-Date: Wed, 26 Aug 2026 09:48:49 +0000
-Message-ID: <20260826094849.4112016-7-sergey.temerkhanov@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
-References: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
+	s=arc-20240116; t=1787738027; c=relaxed/simple;
+	bh=N9Dy0V/raQYFb0VUoogg5mLm5yzJJyKI3xz6iUr0UfM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d2dzhHO5hULfnkBuObxKsAqI0f7i79w5TVQoRvowdv2q2cuuY5e6/8+C0gOTMOqMBegzAjI6WzXhv0mg4WAEDkfKy3Dz0tMvG7NhN8GQZFRcnKzcM2/qX/0M0cd/s0/WCaG74e+IUHSai3GVbICg4qBwDh9wNqM0CWlZEkXfrsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpgz8t1787737969tfa91bf1b
+X-QQ-Originating-IP: Zwqgiwh2VkfQq4ApU7OVbZGq83fWM5kw1HmFAvgWhCs=
+Received: from localhost.localdomain ( [122.233.170.62])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 26 Aug 2026 17:52:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 3171394264072839390
+EX-QQ-RecipientCnt: 10
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
+To: netdev@vger.kernel.org
+Cc: jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	linglingzhang@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net] net: libwx: Fix PM suspend/resume flow for VF drivers
+Date: Wed, 26 Aug 2026 17:52:43 +0800
+Message-Id: <20260826095243.16939-1-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,278 +44,143 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: NJV4ECYAIEtcAbnHUJu9TllPoqeNhHEH5nAUndzLhs8cCbRcb42dGo5x
+	UsYc8PqJidFfHnbFZBcQEO5owXTrdAUN4PhMCFR4vvCjRGmDRTvxg/as5evBXXH+hKxgUjc
+	ptRtiy528YG7jrwD+4M2fDC10Uu+cx83wHqWl+RX8nvMSeZZDL3ha3+AeSRcxuQgVrlWNZV
+	kk6S0vwT7kNQMCkYU8S+C8b/n4bTaAMXahozb68ZEx9hNddyJw2k6ZoW6eF68fT792y73kF
+	V3mChYIpo4aTIAijioQGZtSWPqrj6sT/kvqCT4gY2yBPqUkIIRDSD42KwBTLcsI0sueK0IN
+	6e87k9Dy8lDnRFzE1u61/B4Y0NzHqFmV2KP/t+Svnp0LrjBte5Ci63k9Zs0mAemK4aQsDmI
+	pvgYyVOY9hkbkrxZMc3a98JdT+C+Pd6wOmvQttUj0FkydPaZqSuEY/Y3T2Z+iZOR8iKcMf6
+	0j4B/OvTSQh+egkMmmwTNeeApHquixBuH3Nxv8AMpYHBgZocwUsCUNCZ2aGpeV/RwnnYWGU
+	TjEeEFataFQghJdAaQxcfusKoHCaenmL1Z9pgJnc/eexp6xLVpebu13mrY/BhFxaHPompzm
+	5AJrD8GK0OqMQHZgsGOFPqOa62YaV3RLdFBWAVWfTz5fxSFZbjZnH9yabKbVOXYGfIgwr6r
+	ibaV89R9jp+ZtIu2PYCdzDVgWhYOvsFHKmEn8FNQW96rBLSjbwfh6Z0UFlKm+wH8WAXRg35
+	dPXVHm/PXv8iBHG4PvG6xZAgpspiUVW5ZrXrOLAvx2tQkr+wBzVv5H6YKQ+3JbZr3c8K34L
+	jOwLiWAIFxRygN4R9gzCkNm7CXBGIwdXEcz2TJkb7l+42RND5RbD46EJ6sO10fHi5CZJZlU
+	zMKAbA0fhQJDJPP51zbVBHRVhRQVmZcp588T0YM9AU7OSlEnBqmkD27Wn+q4XyIsjZBx60U
+	PWPTB1SOdjgZV9DHdFJOhjue+6/dha6Kzmbs5PqH3opzitus3WbixmHDCRdwRH4ndKBSL4i
+	5DUBPYHp/BBMBcioLHB2hsguIepZSPLpeZ8IaJFrt19SB3W8o+8kwc+6XaYROL7Mh7poLp3
+	EGzwcMbljkZt3dJHEoZuR5SbdBp94P+0Q==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-Make the SMA control logic match the requirements:
+Currently, wxvf_suspend() and wxvf_resume() do not acquire the RTNL
+lock during device state transitions, which can lead to race conditions
+with network interface configuration operations. Furthermore, the VF PM
+callbacks lack proper hardware re-initialization and error handling,
+leading to potential unhandled errors during PM resume and missing
+dependency tracking between VF and PF devices.
 
-Setting SMA1 as Rx automatically enables U.FL1 as Tx if U.FL1 is
-disconnected.
-Setting SMA1 as Tx automatically changes U.FL1 state to disconnected.
+Fix these issues with the following changes:
 
-Setting SMA2 as Tx automatically enables U.FL2 as Rx if U.FL2 is
-disconnected.
-Setting SMA2 as Rx automatically changes U.FL2 state to disconnected.
+1. Hold rtnl_lock() around suspend and resume paths to synchronize netdev
+   state modifications with RTNL core operations.
+2. In wxvf_suspend(), close the netdevice before disabling PCI device and
+   clearing interrupt schemes to ensure clean resource teardown.
+3. In wxvf_resume(), check PCI device enablement errors and perform proper
+   error unwinding if interrupt scheme re-initialization or interface open
+   fails.
+4. Add device links between VF and its parent PF device in probe() for both
+   ngbevf and txgbevf to enforce correct power management ordering.
 
-Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-Reviewed-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Fixes: 377d180bd71c ("net: wangxun: add txgbevf build")
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 172 ++++++++++++++++++----
- 1 file changed, 146 insertions(+), 26 deletions(-)
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c | 30 ++++++++++++++++++-
+ .../net/ethernet/wangxun/ngbevf/ngbevf_main.c |  5 ++++
+ .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  5 ++++
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 6a51b2482a5b..1cea8ebbfd94 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -1345,28 +1345,37 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- {
- 	struct ice_dplls *d = &p->pf->dplls;
- 	struct ice_dpll_pin *peer;
--	u8 data;
--	int ret;
-+	struct ice_dpll_pin *target = NULL;
-+	struct ice_dpll_pin_config peer_config;
-+	enum ice_dpll_pin_type type = 0;
-+	u8 data, old_data = 0;
-+	int peer_dpll_idx, restore_err, ret;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index 26de78e9a69e..2352cf12b289 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -16,9 +16,13 @@ int wxvf_suspend(struct device *dev_d)
+ 	struct pci_dev *pdev = to_pci_dev(dev_d);
+ 	struct wx *wx = pci_get_drvdata(pdev);
  
- 	if (p->direction == direction && p->active)
- 		return 0;
- 	ret = ice_read_sma_ctrl(&p->pf->hw, &data);
- 	if (ret)
- 		return ret;
-+	old_data = data;
++	rtnl_lock();
+ 	netif_device_detach(wx->netdev);
++	if (netif_running(wx->netdev))
++		wxvf_close(wx->netdev);
+ 	wx_clear_interrupt_scheme(wx);
+ 	pci_disable_device(pdev);
++	rtnl_unlock();
  
- 	switch (p->idx) {
- 	case ICE_DPLL_PIN_SW_1_IDX:
--		data &= ~ICE_SMA1_MASK;
--		if (direction == DPLL_PIN_DIRECTION_OUTPUT)
-+		if (direction == DPLL_PIN_DIRECTION_OUTPUT) {
-+			data &= ~ICE_SMA1_TX_EN;
- 			data |= ICE_SMA1_DIR_EN;
-+		} else {
-+			data &= ~ICE_SMA1_DIR_EN;
-+			data &= ~ICE_SMA1_TX_EN;
-+		}
- 		break;
- 	case ICE_DPLL_PIN_SW_2_IDX:
- 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
- 			data &= ~ICE_SMA2_DIR_EN;
--			data |= ICE_SMA2_UFL2_RX_DIS;
-+			data &= ~ICE_SMA2_TX_EN;
- 		} else {
--			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
- 			data |= ICE_SMA2_DIR_EN;
-+			data &= ~ICE_SMA2_UFL2_RX_DIS;
-+			data &= ~ICE_SMA2_TX_EN;
- 		}
- 		break;
- 	default:
-@@ -1378,7 +1387,7 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 						ICE_DPLL_PIN_TYPE_SOFTWARE,
- 						extack);
- 	if (ret)
--		return ret;
-+		goto restore_sma;
- 
- 	/* When a direction change activates the paired U.FL pin, enable
- 	 * its backing CGU pin so the pin reports as connected. Without
-@@ -1389,27 +1398,44 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 	 */
- 	peer = p->muxed;
- 	if (peer->active) {
--		struct ice_dpll_pin *target;
--		enum ice_dpll_pin_type type;
--		int peer_ret;
--
- 		if (peer->output) {
- 			target = peer->output;
- 			type = ICE_DPLL_PIN_TYPE_OUTPUT;
--		} else {
-+		} else if (peer->input) {
- 			target = peer->input;
- 			type = ICE_DPLL_PIN_TYPE_INPUT;
-+		} else {
-+			ret = -EINVAL;
-+			goto restore_sma;
- 		}
--		peer_ret = ice_dpll_get_fallback_idx(d, target);
--		if (peer_ret < 0)
--			peer_ret = d->eec.dpll_idx;
--		ret = ice_dpll_pin_enable(&p->pf->hw, target, peer_ret, type,
--					  extack);
--		if (!ret)
--			ret = ice_dpll_pin_state_update(p->pf, target,
--							type, extack);
-+
-+		ret = ice_dpll_pin_config_get(p->pf, target, type,
-+					      &peer_config, extack);
-+		if (ret)
-+			goto restore_sma;
-+
-+		peer_dpll_idx = ice_dpll_get_fallback_idx(d, target);
-+		if (peer_dpll_idx < 0)
-+			peer_dpll_idx = d->eec.dpll_idx;
-+		ret = ice_dpll_pin_enable(&p->pf->hw, target, peer_dpll_idx,
-+					  type, extack);
-+		if (ret)
-+			goto restore_peer;
-+		ret = ice_dpll_pin_state_update(p->pf, target, type, extack);
-+		if (ret)
-+			goto restore_peer;
- 	}
- 
-+	return 0;
-+
-+restore_peer:
-+	restore_err =
-+		ice_dpll_pin_config_restore(p->pf, target, type, &peer_config,
-+					    extack, ret);
-+	if (restore_err)
-+		ret = restore_err;
-+restore_sma:
-+	ice_dpll_restore_sma_ctrl(p->pf, old_data, ret);
- 	return ret;
+ 	return 0;
  }
- 
-@@ -1667,11 +1693,15 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			   struct netlink_ext_ack *extack)
+@@ -34,12 +38,36 @@ int wxvf_resume(struct device *dev_d)
  {
- 	struct ice_dpll_pin *sma = pin_priv, *target;
-+	struct ice_dpll_pin *peer_target = NULL;
- 	struct ice_dpll *d = dpll_priv;
- 	struct ice_pf *pf = sma->pf;
--	enum ice_dpll_pin_type type;
-+	enum ice_dpll_pin_type peer_type = 0, type;
-+	struct ice_dpll_pin_config old_config;
-+	struct ice_dpll_pin_config peer_config;
-+	u8 old_data = 0;
- 	bool enable;
--	int ret;
-+	int peer_dpll_idx, restore_err, ret = -EINVAL;
+ 	struct pci_dev *pdev = to_pci_dev(dev_d);
+ 	struct wx *wx = pci_get_drvdata(pdev);
++	int err;
++
++	err = pci_enable_device_mem(pdev);
++	if (err) {
++		dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
++		return err;
++	}
  
- 	if (ice_dpll_is_reset(pf, extack))
- 		return -EBUSY;
-@@ -1679,6 +1709,10 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 	mutex_lock(&pf->dplls.lock);
- 	switch (state) {
- 	case DPLL_PIN_STATE_SELECTABLE:
-+		/* Reject direction-mismatched requests: SELECTABLE + OUTPUT
-+		 * is an invalid combination, return -EINVAL in this case
-+		 * immediately instead of disabling the pin.
-+		 */
- 		if (sma->direction == DPLL_PIN_DIRECTION_OUTPUT) {
- 			enable = false;
- 			ret = -EINVAL;
-@@ -1687,6 +1721,10 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 		enable = true;
- 		break;
- 	case DPLL_PIN_STATE_CONNECTED:
-+		/* Reject direction-mismatched requests: CONNECTED + INPUT
-+		 * is an invalid combination, return -EINVAL in this case
-+		 * immediately instead of disabling the pin.
-+		 */
- 		if (sma->direction == DPLL_PIN_DIRECTION_INPUT) {
- 			enable = false;
- 			ret = -EINVAL;
-@@ -1722,13 +1760,95 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			goto unlock;
+ 	pci_set_master(pdev);
+-	wx_init_interrupt_scheme(wx);
++	rtnl_lock();
++
++	err = wx_init_interrupt_scheme(wx);
++	if (err)
++		goto err_pci;
++
++	if (netif_running(wx->netdev)) {
++		err = wxvf_open(wx->netdev);
++		if (err)
++			goto err_clear_int;
++	}
+ 	netif_device_attach(wx->netdev);
++	rtnl_unlock();
+ 
+ 	return 0;
++err_clear_int:
++	wx_clear_interrupt_scheme(wx);
++err_pci:
++	rtnl_unlock();
++	pci_disable_device(pdev);
++	return err;
+ }
+ EXPORT_SYMBOL(wxvf_resume);
+ 
+diff --git a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+index d79cf8d8484f..69bbfd95597c 100644
+--- a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
++++ b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+@@ -171,6 +171,11 @@ static int ngbevf_probe(struct pci_dev *pdev,
+ 		goto err_pci_release_regions;
  	}
  
--	if (enable)
-+	if (enable) {
-+		u8 data;
++	if (!device_link_add(&pdev->dev, &pdev->physfn->dev,
++			     DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER))
++		dev_warn(&pdev->dev, "Failed to create device link to PF %s\n",
++			 pci_name(pdev->physfn));
 +
-+		ret = ice_read_sma_ctrl(&pf->hw, &data);
-+		if (ret)
-+			goto unlock;
-+		old_data = data;
-+		switch (sma->idx) {
-+		case ICE_DPLL_PIN_SW_1_IDX:
-+			data &= ~ICE_SMA1_TX_EN;
-+			break;
-+		case ICE_DPLL_PIN_SW_2_IDX:
-+			data &= ~ICE_SMA2_UFL2_RX_DIS;
-+			data &= ~ICE_SMA2_TX_EN;
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			goto unlock;
-+		}
-+		ret = ice_write_sma_ctrl(&pf->hw, data);
-+		if (ret)
-+			goto restore_sma_ctrl;
-+		ret = ice_dpll_sw_pins_update(pf);
-+		if (ret)
-+			goto restore_sma_ctrl;
-+
-+		ret = ice_dpll_pin_config_get(pf, target, type, &old_config,
-+					      extack);
-+		if (ret)
-+			goto restore_sma_ctrl;
- 		ret = ice_dpll_pin_enable(&pf->hw, target, d->dpll_idx, type,
- 					  extack);
--	else
--		ret = ice_dpll_pin_disable(&pf->hw, target, type, extack);
--	if (!ret)
-+		if (ret)
-+			goto restore_target;
-+		/* Refresh target state before peer-side operations. */
- 		ret = ice_dpll_pin_state_update(pf, target, type, extack);
-+		if (ret)
-+			goto restore_target;
-+
-+		if (sma->muxed && sma->muxed->active) {
-+			ice_dpll_get_peer_target(sma->muxed, &peer_target,
-+						 &peer_type);
-+			if (!peer_target) {
-+				ret = -EINVAL;
-+				goto restore_target;
-+			}
-+
-+			ret = ice_dpll_pin_config_get(pf, peer_target, peer_type,
-+						      &peer_config, extack);
-+			if (ret)
-+				goto restore_target;
-+
-+			peer_dpll_idx =
-+				ice_dpll_get_fallback_idx(&pf->dplls, peer_target);
-+			if (peer_dpll_idx < 0)
-+				peer_dpll_idx = d->dpll_idx;
-+			ret = ice_dpll_pin_enable(&pf->hw, peer_target,
-+						  peer_dpll_idx, peer_type, extack);
-+			if (ret)
-+				goto restore_peer;
-+			ret = ice_dpll_pin_state_update(pf, peer_target, peer_type,
-+							extack);
-+			if (ret)
-+				goto restore_peer;
-+		}
-+	} else {
-+		ret = ice_dpll_pin_disable(&pf->hw, target, type, extack);
-+		if (!ret)
-+			ret = ice_dpll_pin_state_update(pf, target, type,
-+							extack);
-+	}
-+	goto unlock;
-+
-+restore_peer:
-+	restore_err =
-+		ice_dpll_pin_config_restore(pf, peer_target, peer_type,
-+					    &peer_config, extack, ret);
-+	if (restore_err)
-+		ret = restore_err;
-+restore_target:
-+	restore_err =
-+		ice_dpll_pin_config_restore(pf, target, type, &old_config,
-+					    extack, ret);
-+	if (restore_err)
-+		ret = restore_err;
-+restore_sma_ctrl:
-+	restore_err = ice_dpll_restore_sma_ctrl(pf, old_data, ret);
-+	if (restore_err)
-+		ret = restore_err;
+ 	SET_NETDEV_DEV(netdev, &pdev->dev);
  
- unlock:
- 	mutex_unlock(&pf->dplls.lock);
+ 	wx = netdev_priv(netdev);
+diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
+index 8b16b900820a..3868b70ad152 100644
+--- a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
++++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
+@@ -228,6 +228,11 @@ static int txgbevf_probe(struct pci_dev *pdev,
+ 		goto err_pci_release_regions;
+ 	}
+ 
++	if (!device_link_add(&pdev->dev, &pdev->physfn->dev,
++			     DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER))
++		dev_warn(&pdev->dev, "Failed to create device link to PF %s\n",
++			 pci_name(pdev->physfn));
++
+ 	SET_NETDEV_DEV(netdev, &pdev->dev);
+ 
+ 	wx = netdev_priv(netdev);
 -- 
-2.53.0
+2.30.1
 
