@@ -1,209 +1,229 @@
-Received: from ustc.edu.cn (smtp.ustc.edu.cn [202.38.64.46])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E33438F65B;
-	Wed, 26 Aug 2026 23:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.38.64.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787785274; cv=none; b=tqHd5+IgSayYNaJsoBEs+VLFJP1U8RksNzTeTIzcBcvA3kO2YZyU2NkWK6yZ6gEXFJtE4rnsxyjTniEQrxJsoTGIsAWDjh6jJK+Z23f1MyDRmtagTrY/KnwHDJAE1kXoU2gF8rAMnVcF3Hy7cwCdindTu0o/ppaB7PeQuj1MKz4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787785274; c=relaxed/simple;
-	bh=Iw4i56TIUhDjddRRiabwFPLHIl+IFID7m5T8lhsAX8k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GkgeBA0bHVWDlzTXS3ojLQW432/tetnUWeGgIs0OPQYFy5XFeas1PeJg4+jGBUU1OBNo4OgDMenMD9TMeiBopSBxyHUzPYae/L6KGDUSeocQGTs+zcu5WNOmVyXpqgwKTHSs+WpWHio2BAztfGFHT0iYyZwrFEq6IMr+LIGuBkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.ustc.edu.cn; spf=pass smtp.mailfrom=mail.ustc.edu.cn; dkim=pass (1024-bit key) header.d=mail.ustc.edu.cn header.i=@mail.ustc.edu.cn header.b=PKwgYhmT; arc=none smtp.client-ip=202.38.64.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.ustc.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.ustc.edu.cn
+Received: from smtp.fortinet.com (smtp.fortinet.com [208.91.113.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C993B811F
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 23:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.91.113.81
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787787132; cv=fail; b=XkW8ywoirpOa9HpWiB7xjK47DZ5rCSS46+RaQHumb1WQ6WRcZXuvMME11nNexPxV5y1KNXuroeS72C5wrCmbug/kwulieXlhxPGp5W98HUfx0FSpwCDeJbhsjj6+DfPrXSXjyTvi53rrLyMR4Ej7aNbOWPb0+FoLnhLktjkjSbk=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787787132; c=relaxed/simple;
+	bh=zawqtK4w6Wci4NO4k3/HObbiNO+jGW6TGS8nj3ZyqLc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VpdfvpY41pcI9IwN3hBhx5KgDj/AisMtmV1LFA0gVtarUFEAjrKIW/xeGWqpxivwleVc9vBq3qzKiDJwlZWaaLgH+ozG9WNTj8z5qoXquK62kQ73i0qwm8DZktcMv4W9H/qgEoaLH5G4rIXCgnXh/dDmoTVmiLKFUTgYTrPqQac=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fortinet.com; spf=pass smtp.mailfrom=fortinet.com; dkim=pass (2048-bit key) header.d=fortinet.com header.i=@fortinet.com header.b=be+qzyEd; dkim=fail (1024-bit key) header.d=fortinet.com header.i=@fortinet.com header.b=QcN1LAR6 reason="signature verification failed"; arc=fail smtp.client-ip=208.91.113.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fortinet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fortinet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mail.ustc.edu.cn header.i=@mail.ustc.edu.cn header.b="PKwgYhmT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mail.ustc.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=QrfgfmUHeY
-	l5b5B9RzrFiEdDLTdEmBUPmSntgIBZbOk=; b=PKwgYhmTbbwjDbhpTbg2swnS/h
-	zyzkzxMgq4FmGJXk7rAx/taGU9RZjMHO9MbqLSVitxp14UjO3skjIaAWFiLEBiEe
-	uUu0DRVWG2C1C6R/NmRCNCIxBjPPyRiFdnEH30oCoqXTZPIqND49Q5o1Jvel9W70
-	NxK4eIG1uTlu2y/9E=
-Received: from skw.ustc.edu.cn (unknown [211.86.152.137])
-	by mailimap2024 (Coremail) with SMTP id 3pYKCgBXWjH1b49qZj+jAA--.3696S2;
-	Thu, 27 Aug 2026 07:00:35 +0800 (CST)
-From: Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-wpan@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] mac802154: fix data race and NULL deref on local->assoc_dev
-Date: Thu, 27 Aug 2026 06:59:59 +0800
-Message-Id: <20260826225959.682483-1-skwkevin@mail.ustc.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=fortinet.com header.i=@fortinet.com header.b="be+qzyEd";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=fortinet.com header.i=@fortinet.com header.b="QcN1LAR6"
+ARC-Seal: i=2; a=rsa-sha256; t=1787787125; cv=pass; d=fortinet.com; s=dkim;
+ b=Ju60axXNQ+iyPo89sODFoAai77EH56X9+YTrS4fTusIIZMg4yTKmt8FivPMqVkw8NZJBRcdX5fYX
+	VrJEOU/o/9JHkFMrVOokFsFrku4/Zm0shqlE1K1xREEiPS8KpVtwFithZDc0BWuX9wxMBIa0Dfss
+	8proiTbnqtevslEtf6Jggqu7nNFQH2neX2Ntq8BpGLcevyehMFLcv7jWzufXmycKwqbx01Dlvw3O
+	ftXP9syZw1ofMJeeJjXyD9ZNVgGmIKbxBtwSw3+LCIo8U2uIct3a+wY+nBnSf2CT7ChObI4XvL7U
+	fQ4ZyXP5IX2KWtTfUGArAIGm2lJw5ND9ZDjD4A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=fortinet.com; s=dkim; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:references:content-type:mime-version:dkim-signature;
+ bh=WB3VH2cAgFKwqi9XZlscGBA1r7lHzdB1XU1j0eiJANM=;
+ b=bSXB4ghaFic65YOaJEsU1uA5ZIJhW5aDs6zyZt4FoqO6qotukZYUlOcD5YD6ZwC/TtKRAcVQyey+
+	U+Z7xfiMyvUtSF93omuyDh6Yw/7xQM+DKKmES110nEGVeJXWo1XdtZ43e25Vt1AFj1Agivm8BYJg
+	/7Dmsg4Q1lpgov9mchl5kHFhNkhJVsWza+XT3d94mqa4KxPFlJDSzQbjFpcspFfZz6Yvwct6DXzJ
+	fn4/lfA5oDfIlHlmV8srMegnZ1SlrRNtXX6Yr8DnLvQTY4FALfZdBsDMBduo5s42jZK7sRYu1JU9
+	oTKxk7uTldKzLaIFeWa5CfLYyiqpgRC+9sukCQ==
+ARC-Authentication-Results: i=2; smtp.fortinet.com;
+	dkim=pass header.i=@fortinet.com;
+	arc=pass (i=1)
+Authentication-Results: smtp.fortinet.com;
+	dkim=pass header.i=@fortinet.com;
+	arc=pass (i=1)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cw8hr7DWflTVcar2qOTvuM5N1yHxAsCuqTwcZFE3j1m5g/vmW6tSweThpD/m06euVf4sTx5JuNWzH/1Qf0quaiFtf9d8u6pXOrepyE1rpnCf1bbcdGTtW9McVAHgWyX1/KN1UklGlWJvLzrLIMI+2/JZ3p82VFCV4lKCNvxHx0YpgbL0Y9YObCSAQ8dSTMQj2Pei/9WUEKdQZJwMrBucTJcOM1xdq/DcgCktm4HWGIJ8VY0PVDDouQ8sN/sPEYDkvv+3m6Ejf+SppHTjre9OTXZSaR67tI3orBxkjWedsSBdc8LuxchZwbrGyqrzj5Z0hNTDod1WMgyzcbOjKK+F5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CmiryIiS4bewmBfsUp+NKcrOngFiQArqJdJzBX8wXP0=;
+ b=yxUzxJaWi3dyiVeDgbFT+dc4mN39qdi5rFrIqgFrvyip6KShE3q18FaI5Tj7jm8YzV70LBpTPExnJ1myczDVRLFQaPzqhU98Glk7/4eZmzPHWlzQpbX7kSBBquVC9HbZbc0QteB4kvVUV7Fjw+PMW6Eq4ajXwSWhupU0IkdpNMulay8RP0enhv/YJ+czps9BMWUqfFEmd29DhGrLWJxdBtqL/HWnwnJSZaz6miCHWsx2SuF7+Rna86Wv2AABjGCgS63yOTaxNJPYPDH6akNId4rlqtBPqcUveVSTmlCpifK9EdQuT8M/xpikDAV15FrDMYznj7u0rHE4ojBgC9A8Vw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fortinet.com; dmarc=pass action=none header.from=fortinet.com;
+ dkim=pass header.d=fortinet.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=fortinet.com; s=dkim; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:references:content-type:mime-version;
+ bh=WB3VH2cAgFKwqi9XZlscGBA1r7lHzdB1XU1j0eiJANM=;
+ b=be+qzyEdY1TDwxh9YfJYXL2CwK5a1yn+2ZOhuHq65LQHb4bfZsuYvygha+1EbIGiKiGsSypFvF5N
+	bn/WCR5oRkq9HAN6LeW6elt0VKPQijEoKyI2uPUzYnGHsTFOQpt5Tdm+0yvroZEGpc+x85U1otTu
+	0x+/k2nz8plk1GIZv3Rf4+i3w6EfM0pFat9YaaH3SUGwykFmy/rZpfcuMMp3Hiix6o/C6PP7o8eo
+	lbV+9va4+3mtSYQHAQqJE6CdRVwq2H9kTteu3KwPkfpMwIS8J9LIoaP3900fZiYdnjx9O2euqauw
+	/dgJdIEnrWlV9D9e+0vM5Ix1NJdWRa8IIkjqGQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fortinet.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CmiryIiS4bewmBfsUp+NKcrOngFiQArqJdJzBX8wXP0=;
+ b=QcN1LAR6axHJ/x1VTWCYwbc77tRCOMLr6Gaua2udrgngAjHJLG7u/L5lBhzBFZFv28C+s8H/MtPb3FSkkzkKf6CpeXBjZfwunHJDfkg+kV42UnBTNZ2gDLISc2qtBsLiJFjgl00hYeUuID6xDIm4tPij3hcEz6WJNCLD/hf6IGU=
+From: Srilatha Addanki <saddanki@fortinet.com>
+To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "jmaloy@redhat.com"
+	<jmaloy@redhat.com>
+Subject: RE: [TIPC] Enabling an already-enabled bearer triggers brief link
+ flap (~243ms down) despite 1000ms tolerance
+Thread-Topic: [TIPC] Enabling an already-enabled bearer triggers brief link
+ flap (~243ms down) despite 1000ms tolerance
+Thread-Index: AQHdNL/5gg/ZiuzKC0+waAp0eE4DvravIHDwgADJzBuAAQy6B4AABVyg
+Date: Wed, 26 Aug 2026 23:31:59 +0000
+Message-ID:
+ <SA1PR18MB64191BF8C9F6A501752F65DEB3AE2@SA1PR18MB6419.namprd18.prod.outlook.com>
+References:
+ <BN3SPRMB0002D8DE46CAA989F8F3961CB3AF2@BN3SPRMB0002.namprd18.prod.outlook.com>
+ <BN3SPRMB00020EA67E11CAB28D9EBE6AB3AF2@BN3SPRMB0002.namprd18.prod.outlook.com>
+ <GV1P189MB1988D232DCFFF279C4EC4595C6AE2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+ <SA1PR18MB64195FFB1FE652AF2586686DB3AE2@SA1PR18MB6419.namprd18.prod.outlook.com>
+In-Reply-To:
+ <SA1PR18MB64195FFB1FE652AF2586686DB3AE2@SA1PR18MB6419.namprd18.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fortinet.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR18MB6419:EE_|LV8PR18MB5709:EE_
+x-ms-office365-filtering-correlation-id: e4cdbc22-0560-4783-df75-08df03ca39ed
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|10067099003|6133799003|22082099003|18002099003|4143699003|56012099006|38070700021;
+x-microsoft-antispam-message-info:
+ rcCginKKt1dPBymmJ2Zwpkv0A4MqvXbxS5Uy5IBAV69JFSmHvWAL3mZuXpqNWDvhI5dGHcd9JYvxdJ2jcfOhO0rcGvXHGs7xxFTcbj4AWe5kOLjcfQlwPiyKXmhOIqA+e6ZJWZcAHDWh9dMehDNjRFsGthWsM6PxasX4c4+pnGb3T42CI7dWxBg7Q+Zqs+BpcTN0pprlYJ0YI99triUdWORCzz2JMF6aCoWHpaMXDuOGEHEkN3ISp9ijGAFHToCC8TQ5nH/5ZDr+JQ2/kQL5BRPbHSG0gZkh6Y9Cyzc5Zwh1t4qu9+XIbFFC8ortGcl912jT3rDWU5r2U7PUBFiaXqeqe42V6eGOpImZk456qoFurVNFb8810/B+qw9rLDr/pbjrGYiIfLUgGON5DsI/atnb9AdBnTQQac+OhbRLvFwdTNgs4hWRxptUzKX2bRXpoQNc1523f9yh2WvmxSoIuwHQAFqC9VZY9ut9R5UeWCvi/VtO3Dtz4QjDvL2jOIpyK91jWv1KfSuzJ6jSNZ/c+8PcXln8u8ZKMfaF5WDBYeou642/XUGce89k0sGW50wY3Vh/whwLe4u1gOe4DTuUCbrIWljhrDTnFUxfkmBVYH1I3G130XcDfbtITcyTyYM73UxSSwF8cswJH6XWJzX/afryWxwA+jJp3vbrJw3KvxwcHEG2lKKOcM8ddPd/LYmOl39LIxAVPrNGFRBssJL2mYip3bE6uzMHqVgKOmxBrW0=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR18MB6419.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(10067099003)(6133799003)(22082099003)(18002099003)(4143699003)(56012099006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?MJx0AGhXnw3tIkI/hEUONuoQmfjpSQg4BBDgBbu6yj1qtzbWw5XtJgs3XQ?=
+ =?iso-8859-1?Q?l1FTRPikjHJJBK8S7CisC7wSm5FH271L7QZdILrkbErnlL/JZyWDEruHhY?=
+ =?iso-8859-1?Q?fYL2x265M19u8nz4jzah/NjZjHJQ+83pYsfnA3pBhsadHijsav6VQgiv8D?=
+ =?iso-8859-1?Q?uoQhmGJhyAdf8boZLtdhYpGMk6peuC+XiYwEtEakccojVyhSutLAG2MUQv?=
+ =?iso-8859-1?Q?VrtdsEUJz/7Zk18q6A+43xJmFXbqjhSpjc/WF3fg+zd0VxcGojqFsXGkPl?=
+ =?iso-8859-1?Q?OM4tw/H48O4V/0SWx9tA6zkrQnKyNHnNOn0nNSfZBOHCfItWdLL4b240h9?=
+ =?iso-8859-1?Q?PYmerfFYcTXvu1Uvx/CgFrDxPezmjbY4ooaDrD94oQXoOGOH2Bq3Wg1hzJ?=
+ =?iso-8859-1?Q?05eMd2U8Be5eAdhsT/AA+9lO39wgbP9Fe8vGR+VAAOTBqPW+6nUXJ+qxjJ?=
+ =?iso-8859-1?Q?n3zHEoCrmT0NBB/lCNl3/QXv87HtUocuTF2SlWGW4zBUtGong/XasCKPoR?=
+ =?iso-8859-1?Q?1LNXecmnj8eqd6fQj3IlVww9YSxjb6adG3K2lUh8UljYeUhooV2z7ItHmi?=
+ =?iso-8859-1?Q?6FEJ8Oq1u29kJDjnxJDKxnlxEuc7FuR0oveXYkzSpbNUiRL2uZqNqr4JO8?=
+ =?iso-8859-1?Q?DxeVFsbJYpa/5b3Onur0xjf3CNkA3z5/xqUUPZzfyX/Wht0C63M5hObzlx?=
+ =?iso-8859-1?Q?l6mq3ylAPLg1lESlM3k4Dq+A567Z1/AFlViB6hXp/7I5zZ/x7K44CXpt5C?=
+ =?iso-8859-1?Q?qzDv5Y7uttLhAEFwgzzlTByAcZMZizZxZbhp2SOfzIfF0WKAFN3mvmulUC?=
+ =?iso-8859-1?Q?rQRDA2MoasWv9rjMsbuuEJqTVZdlu9ji3MBpsQn2UGZ99LbO56L71nbDfj?=
+ =?iso-8859-1?Q?XZntbzkGRZ1wBxelMFIfNCpVzWM4V3jTY9uBo22au+G6NN/ye9zFsh5v9V?=
+ =?iso-8859-1?Q?i/S/L2a9baeRWOZixDNLYGIWTR2O8wy19oKWJHb96WhyRJiTnhjk7WvoCT?=
+ =?iso-8859-1?Q?LhLkQ+1B+IJMG1+my6TPaGWbCV5dRkQCMuKRs9CIN8Q85PGRMXY2GLyfQZ?=
+ =?iso-8859-1?Q?kjEApsagl4IF8AYaBn87OVCOVVoyWa8px6Xc8hiQ3KQd560nPOPv2Pjy9U?=
+ =?iso-8859-1?Q?veeeoH8+WGGa0FGt/m5XcKVDawvFoHNactEmnw+NAUoaktiO/aY0vJQr32?=
+ =?iso-8859-1?Q?0QayUuqQVTqgFY+J4vLiOewZDqC4oeMa9rYlDBCJRBJ6YV0h4Sju4nTD/F?=
+ =?iso-8859-1?Q?4TmOQAer4122hxVSdh+zaLV6W4dStJYIqLGvkHbE67PHKqtlk8X9TBjB4Z?=
+ =?iso-8859-1?Q?x54yvwklOrcua9cY9xmcf65ET2VQJFheYdR8auIkytvhrwTTNAp/9j3u/n?=
+ =?iso-8859-1?Q?Qg39y4uS3PUHegTKu5QiD/VD7ikJ4lJ3J9SrrhAB7bcKD0cmNq/aYmItqy?=
+ =?iso-8859-1?Q?Fb9GN0OYUl8oT5lJKCOs4QofNIo99MclqjXvU1FnXlXiQeRVeFbNyGlBnW?=
+ =?iso-8859-1?Q?InWf4bboQgVzXSvKmrV93uAKyiCRV/WmU6waf0CRBT8jtFaVKuB/i8LwDh?=
+ =?iso-8859-1?Q?QWDTYxbdye8MhOSkp3Y1YNUJA+yhuvFZz2WZ1xT3+bxa9c6mQEC4aVRt88?=
+ =?iso-8859-1?Q?m3mUvYKDtpVlG56kDDZgu8H4ene7yUgS/bO8Uwbi8Viy0vyAvulDw5bb93?=
+ =?iso-8859-1?Q?EM7zqZOagjXvaUsMIY7ekuEBnw5kYLLBUiB4U0umNMdz/JXvTvaAKFfsl5?=
+ =?iso-8859-1?Q?wd/rvA/9ejuLT9HqpyA4XOZosYl6i+CYj3KQ3W1vpxmrGQzVEPZqh7lQcw?=
+ =?iso-8859-1?Q?dP4ERD08BA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:3pYKCgBXWjH1b49qZj+jAA--.3696S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3WrWkXw4xuFy3XF4ktFWxtFb_yoW7try3pF
-	y2grn5KF1DXFn2vws7Jw1Fqry3ur48uw1xGw17ZFsIv3Z8WF15Z3W2grnFvF1jyr4vvayf
-	ArWDJa15AF4DC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9lb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-	C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6FWl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUyKZXDUUUU
-X-CM-SenderInfo: 5vnzyvxylqqzxdloh3xvwfhvlgxou0/
+X-Exchange-RoutingPolicyChecked:
+	q+y+Kmj3UMxxtB6SOJFIKGSgGBM90nLQ2KzrTaKMmjVHdOxGFjOjJN6kONysiTxBQieLVmw8rmcixb2Tw6+dT7z6uBhitXlQVM5v21opAEYV2fFmOVkCxky6KAdNKWdoNTs/neqkqEnYEnAkA5Sjah7RAG9t/Y5YGZBjk6dZFA2KbS6bqd20p89n9Bw0gClSJvp/BjQPUgiREtiLXUGV/qmJcsqr0vCzP20SVHgmcyRynAXBNIeUnkQoMiciST6b9GfWO7ntgRIwIKkgGMIQdzQx9zGfpMSm9YKt9AXPaNW4myv9NlZy7WBumfljos0RRhrv28Dz4cQ1jjSV9tCfww==
+X-OriginatorOrg: fortinet.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR18MB6419.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4cdbc22-0560-4783-df75-08df03ca39ed
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2026 23:31:59.9491
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2c36c478-3d00-452f-8535-48396f5f01f0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Fk/f6f5KoghfnU7lBORmiaT6jCHeM4igDf2V/xWBfImxti2TtADqXKestYAiBFt7S0eWDmELMkbPYDwNigr6pPKCjSVymWZHxqxTDsOpzRw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR18MB5709
+X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVFYWC88UVpdWFhYWFpbSFpZSBsJDAwJBgMBKA4HGhwBBg0cRgsHBUhZSFpeSBwdBg9GGR0JBg9G
+ Bg8dEQ0GKA0bHEYcDQsASFhIWkhZWkhcWEZRW0ZZXEZZWFlIUEhYSFhIW0hYSFhIWEhZX0gCBQkEBxEoGg0MAAkcRgsHBUhYSFpaSAYNHAwNHigeDw0aRgMNGgYNBEYH
+ Gg9IWEhaXkgcHQYPRhkdCQYPRgYPHRENBigNGxxGHA0LAEhY
+X-FEAS-DKIM-smtp.fortinet.com: Valid
+X-FEAS-ARC-smtp.fortinet.com: Pass (Highest instance tag i=1)
+X-FEAS-Client-IP-smtp.fortinet.com: 40.93.14.101
+X-FE-Last-Public-Client-IP: 40.93.14.101
+X-FE-Policy-ID-smtp.fortinet.com: 13:5:6:SYSTEM
 
-local->assoc_dev is shared between the association path and the
-association-response worker without common synchronization.
+By "idempotency option," I mean a flag or parameter in the API (or CLI to=
+ol like tipc bearer enable) that allows the operation to be called safely=
+ multiple times without returning an error or modifying state if the bear=
+er is already enabled (similar to CREATE IF NOT EXISTS or mkdir -p).
 
-mac802154_perform_association() stores the coordinator pointer and waits
-for a response. Its timeout and error paths clear the pointer and return
-to mac802154_associate(), which may then free the coordinator object.
-Meanwhile, mac802154_rx_mac_cmd_worker() may observe the associating bit
-and enter mac802154_process_association_resp(), which dereferences
-assoc_dev.
+Since tipc bearer enable returns -EEXIST / "Error: Already enabled", call=
+ers currently have to either:
 
-The worker's bit test and the handler's pointer dereference are not
-atomic with respect to cleanup. Cleanup can clear assoc_dev between them,
-causing a NULL dereference, or free the coordinator while the response
-handler still uses the pointer.
+=A0 =A0 Pre-check the bearer status before enabling, or
 
-The response handler only needs the coordinator extended address.
-Replace assoc_dev with a cached address, removing the pointer lifetime
-dependency. Protect the cached address and the associating bit with a
-dedicated spinlock. A READ_ONCE()/WRITE_ONCE() pair would not guarantee
-an atomic __le64 access on all 32-bit architectures.
+=A0 =A0 Explicitly handle and ignore the "Already enabled" error code.
 
-Reset the completion, publish the cached address, and set the associating
-bit while holding the lock. Cleanup clears the bit under the same lock.
-The response handler takes the lock, rechecks the bit, validates the
-cached address, records the response, and completes the waiter before
-unlocking. Thus cleanup cannot pass the handler between its state check
-and completion, and the cached 64-bit value cannot tear.
+I was curious if there is an existing/planned API flag (e.g., --ignore-al=
+ready-enabled in the command) to handle this on the kernel side, or if ig=
+noring the error in user space is the recommended pattern.
+________________________________________
+From: Tung Quang Nguyen <mailto:tung.quang.nguyen@est.tech>
+Sent: Wednesday, August 26, 2026 12:32 AM
+To: Srilatha Addanki <mailto:saddanki@fortinet.com>
+Cc: mailto:netdev@vger.kernel.org <mailto:netdev@vger.kernel.org>; mailto=
+:jmaloy@redhat.com <mailto:jmaloy@redhat.com>
+Subject: Re: [TIPC] Enabling an already-enabled bearer triggers brief lin=
+k flap (~243ms down) despite 1000ms tolerance 
+=A0
+ALERT : This message originated outside of the Fortinet network.=A0 BE CA=
+UTIOUS before clicking any link or opening an attachment.
 
-Both users run in process context, so a plain spinlock is sufficient.
-The lock is not held while waiting for the completion.
 
-Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Fixes: fefd19807fe9 ("mac802154: Handle associating")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
----
-v2:
-  - cache the coordinator extended address instead of retaining the
-    assoc_dev pointer, as suggested by Miquel;
-  - use a plain spinlock to serialize the cached address and associating
-    bit, including 64-bit address accesses on 32-bit architectures;
-  - reset the completion under the same lock, recheck the associating bit
-    in the response handler, and complete before releasing the lock;
-  - use the response payload in the debug message;
-  - add Cc: stable@vger.kernel.org.
+> Subject: [TIPC] Enabling an already-enabled bearer triggers brief link =
+flap (~243ms down) despite 1000ms tolerance
 
-Link: https://lore.kernel.org/r/20260824175938.11143-1-skwkevin@mail.ustc.edu.cn
+> Questions:
+>=A0 1. Behavior: Is re-enabling an already-enabled bearer expected to re=
+set the link?
 
- net/mac802154/ieee802154_i.h |  3 ++-
- net/mac802154/main.c         |  1 +
- net/mac802154/scan.c         | 21 ++++++++++++++-------
- 3 files changed, 17 insertions(+), 8 deletions(-)
+No, re-enabling an active bearer does not reset that bearer/link. TIPC ke=
+rnel rejects that command and returns error message "Error: Already enabl=
+ed".
 
-diff --git a/net/mac802154/ieee802154_i.h b/net/mac802154/ieee802154_i.h
-index 8f2bff268392..8f92ac83f5f9 100644
---- a/net/mac802154/ieee802154_i.h
-+++ b/net/mac802154/ieee802154_i.h
-@@ -76,7 +76,8 @@ struct ieee802154_local {
- 	struct work_struct rx_mac_cmd_work;
- 
- 	/* Association */
--	struct ieee802154_pan_device *assoc_dev;
-+	spinlock_t assoc_lock; /* protects association address and active bit */
-+	__le64 assoc_dev_extended_addr;
- 	struct completion assoc_done;
- 	__le16 assoc_addr;
- 	u8 assoc_status;
-diff --git a/net/mac802154/main.c b/net/mac802154/main.c
-index ea1efef3572a..63e89bd586e3 100644
---- a/net/mac802154/main.c
-+++ b/net/mac802154/main.c
-@@ -104,6 +104,7 @@ ieee802154_alloc_hw(size_t priv_data_len, const struct ieee802154_ops *ops)
- 	INIT_WORK(&local->rx_mac_cmd_work, mac802154_rx_mac_cmd_worker);
- 
- 	init_completion(&local->assoc_done);
-+	spin_lock_init(&local->assoc_lock);
- 
- 	/* init supported flags with 802.15.4 default ranges */
- 	phy->supported.max_minbe = 8;
-diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
-index 005338f89b75..0ae11e448ccb 100644
---- a/net/mac802154/scan.c
-+++ b/net/mac802154/scan.c
-@@ -578,9 +578,11 @@ int mac802154_perform_association(struct ieee802154_sub_if_data *sdata,
- 		return ret;
- 	}
- 
--	local->assoc_dev = coord;
-+	spin_lock(&local->assoc_lock);
- 	reinit_completion(&local->assoc_done);
-+	local->assoc_dev_extended_addr = coord->extended_addr;
- 	set_bit(IEEE802154_IS_ASSOCIATING, &local->ongoing);
-+	spin_unlock(&local->assoc_lock);
- 
- 	ret = ieee802154_mlme_tx_one_locked(local, sdata, skb);
- 	if (ret) {
-@@ -616,8 +618,9 @@ int mac802154_perform_association(struct ieee802154_sub_if_data *sdata,
- 	*short_addr = local->assoc_addr;
- 
- clear_assoc:
-+	spin_lock(&local->assoc_lock);
- 	clear_bit(IEEE802154_IS_ASSOCIATING, &local->ongoing);
--	local->assoc_dev = NULL;
-+	spin_unlock(&local->assoc_lock);
- 
- 	return ret;
- }
-@@ -639,19 +642,23 @@ int mac802154_process_association_resp(struct ieee802154_sub_if_data *sdata,
- 		     dest->mode != IEEE802154_EXTENDED_ADDRESSING))
- 		return -EINVAL;
- 
--	if (unlikely(dest->extended_addr != wpan_dev->extended_addr ||
--		     src->extended_addr != local->assoc_dev->extended_addr))
-+	spin_lock(&local->assoc_lock);
-+	if (unlikely(!test_bit(IEEE802154_IS_ASSOCIATING, &local->ongoing) ||
-+		     dest->extended_addr != wpan_dev->extended_addr ||
-+		     src->extended_addr != local->assoc_dev_extended_addr)) {
-+		spin_unlock(&local->assoc_lock);
- 		return -ENODEV;
-+	}
- 
- 	memcpy(&resp_pl, skb->data, sizeof(resp_pl));
- 	local->assoc_addr = resp_pl.short_addr;
- 	local->assoc_status = resp_pl.status;
-+	complete(&local->assoc_done);
-+	spin_unlock(&local->assoc_lock);
- 
- 	dev_dbg(&skb->dev->dev,
- 		"ASSOC RESP 0x%x received from %8phC, getting short address %04x\n",
--		local->assoc_status, &deaddr, local->assoc_addr);
--
--	complete(&local->assoc_done);
-+		resp_pl.status, &deaddr, resp_pl.short_addr);
- 
- 	return 0;
- }
+>=A0 2. Tolerance: Why does the link go down for 200ms when tolerance is =
+1000ms?
 
-base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
--- 
-2.34.1
+There is no relation between tolerance and duration of down link,
+
+> 3. API Design: Is there an idempotency option for bearer enable?
+
+I do not understand this question. Can you give an example of the "option=
+" you expect to have ?
+
+
+
+
+***  Please note that this message and any attachments may contain confid=
+ential and proprietary material and information and are intended only for=
+ the use of the intended recipient(s). If you are not the intended recipi=
+ent, you are hereby notified that any review, use, disclosure, disseminat=
+ion, distribution or copying of this message and any attachments is stric=
+tly prohibited. If you have received this email in error, please immediat=
+ely notify the sender and destroy this e-mail and any attachments and all=
+ copies, whether electronic or printed. Please also note that any views, =
+opinions, conclusions or commitments expressed in this message are those =
+of the individual sender and do not necessarily reflect the views of Fort=
+inet, Inc., its affiliates, and emails are not binding on Fortinet and on=
+ly a writing manually signed by Fortinet's General Counsel can be a bindi=
+ng commitment of Fortinet to Fortinet's customers or partners. Thank you.=
+ *** 
+
 
