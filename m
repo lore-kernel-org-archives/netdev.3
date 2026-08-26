@@ -1,171 +1,168 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010017.outbound.protection.outlook.com [52.101.84.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4742036997A;
-	Wed, 26 Aug 2026 15:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787756937; cv=fail; b=ia5Xa6tZsqMRdkkDH++HN/afGT10hqQfXGpTRou6oShU9qXP/rYrMo/WetIwdUi++0LWM09aOnCBaPvnp55nSYojaw9nCdOl956QIAkFFrPufEXKxHrqH9oH2cDCgJvIg/jDEYWGzGo16sZa0T5zsqEzvRszdIdZfC+7WDQXKkI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787756937; c=relaxed/simple;
-	bh=wuSMFnr1vSOA4R/tg/JB8BWa7E3cGYwpwvFyt4KpyGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lTRCdTb9Ux+zLT9DFenHKUhLlypCypk/NGcL2ivYkr9cz28/cEMJRHBpsu6/Tvr8XSdxtx+lXsHuU7PjMyAhuhLpx2gqZ7ZKh1yGzBevdOHGP+3ZNCxD//9rsFm9Ku6zIlIVgPsNCPkyJNRSkSXPSTfgMiAhdBA6AHl94i24j5M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b1bPwfXq; arc=fail smtp.client-ip=52.101.84.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A902C17A3
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787757354; cv=none; b=Q21+HdMxUkt0SgT879xzjV4qzAdOHrG7fOSnB9B6SgrgcPyLDJ48JKMFKyLI3Xa3pv/eVaafQDEdchHrkpXm85VL364KuULBV5u/K3Dr19sdcXFkFj8Hli/qqxQh6debspQG0fEFyMh190y9aEAlrsiSQmJb2O+32/Fe3aUAvoM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787757354; c=relaxed/simple;
+	bh=bAuBeeb68Py8UGRJAItmIrBFGrQoRBO6aHLkKHMvBDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B9LGrSE1AgJimfi1e6/aLcF1vOHgitYRJ9tU0gFj3+5E6JjV/cQvFwDsS/8mW4XSYPRf9QaI0D5AjdVNHpcqxtON8flCxhUxRs3jL9Bld/XgBmEiIUF3uwoEX2N2u/XGGWR7cksnuqnyEk+lC21Q1QVDZyBuI9AXBeMauoNNY2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=EmTn0K7L; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b1bPwfXq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gPx2m3w05yNFvvg+00dWGEkLjZOY+rKpFnFUzKlJrA8WApulZqtc7jVx7RhdnTOyvWCYkX3vsyyaWgoCadwKwXn2ZteeluL2xzZyCgpksii91GvUY1AWBW5pvEN9It6f4+x27ePpIu85J1w1PUwoX8vg0OgsnsOLQpiXciqT+Fxh4re6ZlHpujh8Cj3vzjFT/tRl6o2NSTP6dE2onjA1yWM1P42AovxKN2jiZuKXeL1Lxeen0ZsWWqCERv6e4mjGgP0wBxQylQbiSAMvx2hX8lJsF9ldnErnMoEqRfqq0mh/APnUXwLigo5DExnSBAf8romx6LzpRmxPgXgy6kcOtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8MPReGja8iXg8I29tTe7aW34LlmqnlrQKcDTlQGVg3c=;
- b=h3hh1UnwVz19SswaR9q3n58WabE3PEXU4mPbVnCbMtWPJT6unMzzKecbHPx0eKf69ti6t/f0gwywzF9mYZk3l0d+ZUaLfz8hyI4gkIQnf6w5X6TtnQZoIoyGxz88bB1qtbfcbSwbzS0mRJ88d5X+B/wWdYfgaaKseXlwre4wfrbea4St0dsdnBgWxlBbUEl/xFCAiABkbV18bl9sMjl/fU2tDU05o4NzSjdwcQO20TbZ9ETpFcjVNewytEh71ah14uTf1o4WKxzLJnii1rIpWBLggwMFMeKn1EOwHvKoS0ZJrNdiN5pjfg7jt5fyR7Z5iZfBeKONlYsFShg+1+mvOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8MPReGja8iXg8I29tTe7aW34LlmqnlrQKcDTlQGVg3c=;
- b=b1bPwfXqIoNPZ6a3/dKvCm6lw/BD+eyDRVukI685SlcfwQbjDtCaa0IGcwgz1bDDRw4VE8hNRT7Xp14Qaj7w834C7a0gcGywP9koIxy2DHtkCVMB+thqQwE0C12Tk4UIpAHiDixIM39nV/66xgvi7SozOtpYRGOJRfIQu8oe3jzvReiA2fJ4+7zqkWCQ+8q57TvYDD5JHQpYRpLedPCx21kIrkGZsb94QZDPZA+8392Lko/9o9pFVbtCWPy4H3RHkT1P/k5zZlCw/Vaf8IpmhCVkwYMLOWS0fWsRBPGPwcOrxvvYOeQME/aITlw6tgW6ziQTfbKBeuokK8TFCmlprQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13) by DB8PR04MB6828.eurprd04.prod.outlook.com
- (2603:10a6:10:113::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 15:08:52 +0000
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd%3]) with mapi id 15.21.0339.012; Wed, 26 Aug 2026
- 15:08:52 +0000
-Date: Wed, 26 Aug 2026 18:08:48 +0300
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: vjardin@free.fr
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next] net: pcs: lynx: add support for 25GBASE-R
-Message-ID: <67u2oneqflguonmujyimu4itranljavkvqqkz5swsghgojyvur@5lbkofej2pm2>
-References: <20260825-for-upstream-lynx-25gbaser-v1-v1-1-fd71c8047798@free.fr>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825-for-upstream-lynx-25gbaser-v1-v1-1-fd71c8047798@free.fr>
-X-ClientProxiedBy: FR4P281CA0082.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cd::12) To GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13)
+	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="EmTn0K7L"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e041ea211so1385618a91.0
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:15:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=xbow.com; s=google; t=1787757351; x=1788362151; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UXbEbgExHY/t7d7GNe8mdR88tmMCAvM05gHfcSb0VPo=;
+        b=EmTn0K7L1UMPlKyGy4wV7/d3AJSBVvviTcEWv1likUTJUaLeboOE4fJndxZcTxe5aF
+         2rMEgzVw1n+lCepccfCWnlsxtzMx4TPLqXX4fdBT+/V4lVs//Hq0JXDpb2LW4OYk9/cp
+         lrmteIhq776OH7tzrdxAfau1Rvfq323b/C4Kt08BDiMG+Y6Hp+hq3oDCJCmwxRBqdusF
+         9lPjtJVDXhgKtNeU6w07VSiAzewjnPGdm7kOhFq6QrIGvchcv6UlFOzSNmAvYoetbaZ9
+         /fobAZuODcLi0QoOHBwKoDK6SsvOJi/4led6BsaG2tOp28cRsxHniC/QR3UxeOcVUyhq
+         D9Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787757351; x=1788362151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UXbEbgExHY/t7d7GNe8mdR88tmMCAvM05gHfcSb0VPo=;
+        b=ifM9FnXWc4UhbCv2QwnYadAKm82HstMly2RiPU3HOjlxrIYdFLg75FgaxDzqOp1N8R
+         asD51BTzdrWQWNK0yPfilgCjYlhG0BKsBZpko21lagcyGbGup57ngp6QP1I3XyzBva1z
+         vM6Pwjs32WISS4N2KmF3EZq6LoQTfkmqLZQKhzpOAA4+iHMpvk4DVWINFC9bKFl+pDBi
+         nqkNYiUg3EMypsfWKmZrKsMfBBe0omgr1fVl+g+N2dKYxatUgzesyiXmehDoZzbG428G
+         6dfEdAktJx0d7Y0JYk/x1tBsYHza88ZQGb2XDZbANgJ6jVMdWgS8IP+RVkXPkbOAFK1e
+         UGyA==
+X-Forwarded-Encrypted: i=1; AHgh+RrxglA7lKf36k9tX4kZJdK+8WGM6PBzw23AqfGqr/scWq7gRZlTW/f/u56WppvMITaBDLDUy80=@vger.kernel.org
+X-Gm-Message-State: AFuF++lp2dXTxFBOWOzwGOV5DJEGtUD7Gfl0zB9P/zOQvP/JV04Hj2LC
+	BaJD0cO6F6lKTC69hBCSZ/wvTTOCBaUyj7tITbWk3HH8Au3oqDTP1uVoAz7dlSBR0AQ=
+X-Gm-Gg: AR+sD12Cs/yQjFtRPo9CnQ4MeclW6R6tqxC0kBZuhaOmKqIZqJBqqLvQgK8NhfADQgj
+	9F0w66FHH0kxr2oG3miXMFYj7LWGsg96EnyhKsvNEq3oR3l1/0GVe6U7YBHqjFJsIZS6CDtGxEe
+	giTPjs1v1t0DCYPUIFUHR71B90+PsAd0qvYRBND7ung55BLmFg8uHm1yIo61tdAX1oYlyggjX/1
+	3cCSZWmLtk5bGH46dab3Wd2jVK+yE/JXNEhebo1gFhzRBkH2NSr9KkgtPr6ZjLB4u8lrbM6a5Z2
+	C6xdxQV38ezfaMPQ30Fe4Z38jY9yq1Wen0C0dt5SstnGaD3LTJ17souAuyGTB+/A8Ygr1WlArhj
+	zU3PizYaB1EAxeoNkSvJAJ5+kxcXITCTVzBiBlwcheqGJ2toEpQqIpXuMMm+7NyANAfMd5RnvwG
+	9+up6MOAMB8uvqfYTII13N7zfhuKV0sHkZ1UFZ9bG8amp+mo2R34cJB+c9vAz+bvJeXn1fOdbqu
+	Zve88ILK0wAwokl7zJ6EkpU1c+HNjwIhHrwTw==
+X-Received: by 2002:a17:90b:3b4b:b0:381:11eb:d78e with SMTP id 98e67ed59e1d1-3966d8b6295mr16465687a91.14.1787757350757;
+        Wed, 26 Aug 2026 08:15:50 -0700 (PDT)
+Received: from Mac.lan ([125.128.148.126])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39668a57396sm4831991a91.13.2026.08.26.08.15.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 26 Aug 2026 08:15:50 -0700 (PDT)
+From: Baul Lee <baul.lee@xbow.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Baul Lee <baul.lee@xbow.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	federico.kirschbaum@xbow.com
+Subject: [PATCH net] vxlan: mdb: Fix use-after-free in vxlan_mdb_remote_src_del()
+Date: Thu, 27 Aug 2026 00:15:42 +0900
+Message-ID: <20260826151542.68815-1-baul.lee@xbow.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|DB8PR04MB6828:EE_
-X-MS-Office365-Filtering-Correlation-Id: e77df9b0-4d62-4a49-eaaa-08df0383f0ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|366016|1800799024|376014|19092799006|22082099003|18002099003|56012099006|11063799006|6133799003|10067099003|15866825006|41080700001;
-X-Microsoft-Antispam-Message-Info:
-	7h31FeJoJYaiK72cD0XDD3RSRgHMz96kRe+j45EmGJbNOf3JGgZmf2wBGrIcWh7OvhwRczZDwJVreOjTwqPluGvfnWTjm+gxCy/cWwMQGHF9ROv0G+ScWWjq4JByQAw5ukqXxWD4ewXJjKpfynkwrB0z+9BTf5GeTGlCAOWxAlB50e0Ct3Q8iHruETZ8XZcjGhb2540dYHVIT/JL15PXJ0ZsvhOZLPQRtMQwvC/xjtPHujetySVC5+8HI+xN00KPBfFPG2cKYP1g2jsFtMP/thO4HJ+IaJy6f3XOVZAlYBdR8RmUb+BRTIfuySJL/UvR4LQpGWLBSu+QIqX/ttfkPtqQljFVgcsjTxeySfcG+on99gcBSzlH/Khz0gcZuzl2Te9f0Rg4w18RDj37gUxuyCqmgi5UWF5J7sc6GlURo7vo9rsdSLB23gZF8cvKgJXX6MkAtksvKp6NfyOFU1JvEirzmvYKrU40q9+b448Fb8tHgHXhMcfOH8WAT5A/ktP11ZmK1XZF9PgzZPG13aYcCUDg94bf1qotG3W4ppAiLuZTFZU2zlnQhLUuXLHiT5b4U7/Ra9utZrhdTVWua68yUfmPPpo2ImXySEQCoCk2tHt29cMHfP0SJ0hyEp9lmGdZdykBEAWFpC8FvonfO3VQPuQ+qIwd3krPdY3X8VTd3XJEBYCGp82PmuKyRWzRjlftwNUkBT7erWysgtJiHXoOJQAbpCzS69YO4mdyNWatim0yewbSA06bEI9ex1hq/SgA
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(366016)(1800799024)(376014)(19092799006)(22082099003)(18002099003)(56012099006)(11063799006)(6133799003)(10067099003)(15866825006)(41080700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MtiyqWj20f5IhRRWvMufovKLkBrpmyGjXYkquKHXSB/+I2LZWLuV2aDV+2Ww?=
- =?us-ascii?Q?yEbwD4ImUCSthcdt69yFmVTQD0oHNWAzM3DA/zA3a8kUkoIqtyzcGLNpS0yV?=
- =?us-ascii?Q?/NlVqqgt8l7otlf7Qnl8nCGHfGnHgGFm8j/EUu9j2tFgtjQtAIZDoE7oEhSt?=
- =?us-ascii?Q?h0kWHxd6P4wuVpkejixxfMQD4imP/INJjQJwJGtTSkqSgyd464GfBDl6OhT/?=
- =?us-ascii?Q?QGDrEcaBSuhCuU6QeZmibIA0g0XVhCOTwakG1PVPpJ34hJvaijCk0nNtrRp8?=
- =?us-ascii?Q?L1nV0UhA5moZuUHj4vMuPHfKJtVmbTCMjMl4yXl9etWclYd1U9GkuZu3RcjX?=
- =?us-ascii?Q?ZC3KMmgrQ5wmIa01hPvQwHgpU1oZ7zOd5k/t+jc0sBezbNTNJJ8iuiL2fE4v?=
- =?us-ascii?Q?8ZUh3Cu96hdlUWPaPR+mbQkmwJ8cNueuRFhAmZ5BE07cQG3pgLIjadnuwfI0?=
- =?us-ascii?Q?gb0ZE5BPB6pofIx2Md79UC0jVXzKJZY9oyH57x8A80QT1FkXIIgmt5O0lGLE?=
- =?us-ascii?Q?zE7XrUMzCwHQBFWFmHl6+ImZ+mbA/RD4zybb/vnZuUw+YnlY8j4ibRFtDMMi?=
- =?us-ascii?Q?QN0vfzZPSobE1lXDew6WpgYGQ4v6Yr8cankB7sJXxVbH8g7N7hdz9IWjjO1i?=
- =?us-ascii?Q?U8cQMpcpqAblzht/At9dlAQ9fUwFqWk6a2YRfsa0jR6ri7o3ilQSgLAiYhGa?=
- =?us-ascii?Q?TgtmvTPUILHzd+VsiTQEu8ytkBrbSh7xKdrswn3u4da7a/lOWjVFojIKiEN0?=
- =?us-ascii?Q?lhVzwdXkjiI3NTd6ABnEsK6fVufGrGsoAnfympgzC0moBZCsXw1C1WybGgR5?=
- =?us-ascii?Q?rgNgys8rKygB3MEZZo+duFHOIFty7tqFlPl1Z/S/INI/HPn8qVulHDhWJ1nd?=
- =?us-ascii?Q?+WxtixO7xem2fNrZtQ7UI7MdRC1euo4I6O66EHeO/52YO3pTObnpiljDswjY?=
- =?us-ascii?Q?kwr/gjioxQx64G1eLwEN65r5mLihaVYzknKEYFdUJ7yFHEUOk04vuErMb75o?=
- =?us-ascii?Q?OHxRBZsOBkONIpFPOl5zVzvrTD01YdhD+Dkgiy5IbVsQLtJ7PscdLqCOTL6N?=
- =?us-ascii?Q?7A7MZIdN9tuqYFbmeXO/Ur3W3ESZfuXbFlk05H2vyu6qTvR61huxy+u9yCzZ?=
- =?us-ascii?Q?L5VjfrJ0ieLzhgaWGgAWIxYGw8pauA8zSAJxwwceUJLtYsGV2bnV8TO2GvAy?=
- =?us-ascii?Q?/YsXyeYc5wndog/F9MpAfwdbrtj4U/kWP35I+P+DHVdgetJ9CPyD6+jj0Pyo?=
- =?us-ascii?Q?LuFQcwbpf9ZWrdcd1uaHx+gBcNuYRF7P2QHmo0y7k2kDVXiq05CBwNLf9wjr?=
- =?us-ascii?Q?/CJn95YC/TO9hsJqdGNxZ+v+78j2JMCMJgpyYUMrG0BC4nL8+6wjb3Ya05hT?=
- =?us-ascii?Q?rNLkclPPtyFwW+lDCvFCzzAs2xDTTatn8dRyMopB9+cT9+IT013CtzcOBEcW?=
- =?us-ascii?Q?e5hzOHlAmM9kUMmSFPWIOiFbLHyVIH1nxoX+J7NygzXktHucOxuWBxgvX5W1?=
- =?us-ascii?Q?9s+eibI3tubf66i3Y0Hm5KqldJ3Yfjr1HYb/L+/jVc8rYOwwCxUAhxDgX8vz?=
- =?us-ascii?Q?7gHWm1kukCQ7PZx81dNkp+w4x9YUcKAalr0UlA1pkunnH3w6gEe3xeMCuIEu?=
- =?us-ascii?Q?JkUWKIUq/uXFeRJRq+BJFoTU2J/bbl8Zsh83RzfVEZft47xkys57ushulTpb?=
- =?us-ascii?Q?XzasxoMV//X3SKfk2i3y1YuiiX9vvSco+9XvvDQ3zKK/gpI+pB5dnA9YKe2m?=
- =?us-ascii?Q?H/mtZc1BmQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e77df9b0-4d62-4a49-eaaa-08df0383f0ae
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 15:08:52.5033
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W1YdegqSU5vTL7lHZsFPU7X6lpetmnpoZnNVO286/5k7bD6YEki+W9CNSjThVbW2DchAWXgBL8oScME4mFyGmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6828
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 25, 2026 at 04:00:31PM +0200, Vincent Jardin via B4 Relay wrote:
-> From: Vincent Jardin <vjardin@free.fr>
-> 
-> The 25G is missing since commit 1cab8fba5073 ("phy: lynx-28g: add
-> support for 25GBASER").
-> 
+vxlan_mdb_is_valid_source(), which validates MDBE_ATTR_SOURCE and every
+MDBE_ATTR_SRC_LIST member, accepts the all-zeros address.
 
-This could lead me to believe that the 25G support was ok before the
-mentioned commit, which is not true. Can you please rephrase the commit
-message so that it's clear that you are actually adding the 25G support
-in the Lynx PCS and not fixing up any issue?
+A source list is only accepted on a (*, G) entry, whose source is the
+all-zeros address, and for each member of the list an (S, G) entry is
+derived from it by substituting the source. Entries are keyed by a plain
+memcmp() of struct vxlan_mdb_entry_key, so if MDBE_ATTR_SOURCE is present
+and holds the all-zeros address and the source list holds it as well, the
+derived (S, G) key is byte-identical to the (*, G) key and resolves to the
+same entry. Omitting MDBE_ATTR_SOURCE is not equivalent, as the key is
+then left with a zero address family.
 
-> Signed-off-by: Vincent Jardin <vjardin@free.fr>
-> ---
-> RFC to check if we apply NXP's intend.
+vxlan_mdb_remote_src_del() removes the forwarding entry of a source before
+freeing the source entry:
 
-And also because net-next is closed for the moment.
+	vxlan_mdb_remote_src_fwd_del(vxlan, group, remote, &ent->addr);
+	vxlan_mdb_remote_src_entry_del(ent);
 
-> ---
->  drivers/net/pcs/pcs-lynx.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
-> index a92081560e641..da4f99059eef7 100644
-> --- a/drivers/net/pcs/pcs-lynx.c
-> +++ b/drivers/net/pcs/pcs-lynx.c
-> @@ -46,6 +46,7 @@ static unsigned int lynx_pcs_inband_caps(struct phylink_pcs *pcs,
->  		return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
->  
->  	case PHY_INTERFACE_MODE_10GBASER:
-> +	case PHY_INTERFACE_MODE_25GBASER:
->  		return LINK_INBAND_DISABLE;
->  
->  	case PHY_INTERFACE_MODE_USXGMII:
-> @@ -97,6 +98,7 @@ static void lynx_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
->  		lynx_pcs_get_state_usxgmii(lynx->mdio, state);
->  		break;
->  	case PHY_INTERFACE_MODE_10GBASER:
-> +	case PHY_INTERFACE_MODE_25GBASER:
->  		phylink_mii_c45_pcs_get_state(lynx->mdio, state);
+With the keys aliased, the first call deletes the remote of the entry that
+owns 'ent' instead of a separate (S, G) entry, and frees 'ent'. The second
+call then runs on the freed entry, and its hlist_del() reads ->pprev and
+->next out of it and writes through them.
 
-You also need to update the phylink_mii_c45_pcs_get_state() helper so
-that it treats the PHY_INTERFACE_MODE_25GBASER case, otherwise the
-link up print looks something like:
+Adding the (*, G) entry with NLM_F_REPLACE and no source list marks the
+all-zeros source for deletion and reaches this from the sweep at the end
+of vxlan_mdb_remote_srcs_replace().
 
-	fsl_dpaa2_eth dpni.2 endpmac5: Link is Up - Unknown/Unknown - flow control off
+  BUG: KASAN: slab-use-after-free in __vxlan_mdb_add+0x1cd/0xd70
+  Read of size 8 at addr ffff888102852500 by task poc/84
+   __vxlan_mdb_add+0x1cd/0xd70
+   vxlan_mdb_add+0xc0/0x140
+   rtnl_mdb_add+0x157/0x2a0
+   rtnetlink_rcv_msg+0x207/0x5a0
+  Allocated by task 84:
+   __kmalloc_cache_noprof+0x153/0x360
+   vxlan_mdb_remote_srcs_add+0x2eb/0x440
+   __vxlan_mdb_add+0x803/0xd70
+  Freed by task 84:
+   kfree+0x14c/0x3b0
+   vxlan_mdb_remote_del+0x129/0x1a0
+   __vxlan_mdb_del+0x4f/0xe0
+   vxlan_mdb_remote_src_fwd_del.isra.0+0x162/0x1b0
+   __vxlan_mdb_add+0x1c5/0xd70
 
-The following patch should be submitted alonside these PCS changes:
-https://github.com/nxp-qoriq/linux/commit/23ab48259b12cbf8d09ea6a99f66fda01d67536a
+The MDB operations are netns-scoped, so an unprivileged user can perform
+them in a new user and network namespace.
 
-Ioana
+Reject the all-zeros address in vxlan_mdb_is_valid_source(), which covers
+both call sites. A (*, G) entry is expressed by omitting the source, so
+nothing legitimate is refused.
+
+Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+
+Fixes: a3a48de5eade ("vxlan: mdb: Add MDB control path support")
+Signed-off-by: Baul Lee <baul.lee@xbow.com>
+---
+ drivers/net/vxlan/vxlan_mdb.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
+index d71e1925ecfd..7986c5b5dc67 100644
+--- a/drivers/net/vxlan/vxlan_mdb.c
++++ b/drivers/net/vxlan/vxlan_mdb.c
+@@ -354,6 +354,10 @@ static bool vxlan_mdb_is_valid_source(const struct nlattr *attr, __be16 proto,
+ 			NL_SET_ERR_MSG_MOD(extack, "IPv4 multicast source address is not allowed");
+ 			return false;
+ 		}
++		if (nla_get_in_addr(attr) == htonl(INADDR_ANY)) {
++			NL_SET_ERR_MSG_MOD(extack, "IPv4 all-zeros source address is not allowed");
++			return false;
++		}
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case htons(ETH_P_IPV6): {
+@@ -368,6 +372,10 @@ static bool vxlan_mdb_is_valid_source(const struct nlattr *attr, __be16 proto,
+ 			NL_SET_ERR_MSG_MOD(extack, "IPv6 multicast source address is not allowed");
+ 			return false;
+ 		}
++		if (ipv6_addr_any(&src)) {
++			NL_SET_ERR_MSG_MOD(extack, "IPv6 all-zeros source address is not allowed");
++			return false;
++		}
+ 		break;
+ 	}
+ #endif
