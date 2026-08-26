@@ -1,162 +1,179 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010036.outbound.protection.outlook.com [52.101.84.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26983D0BED;
-	Wed, 26 Aug 2026 20:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787775600; cv=fail; b=NaQIGG56g7RnIvcYbJQB9hxO/CO8cjaG9/lb/oHwLPLJkdQYpvQxRx0cuMuSuDYzcQuFHCOteDaT9t54lFXeFELgl9kaxbBP+FQfaY4K2Vhh0Cvv2/1CIeHpivZRoFhpOFJewnxHphN5A8ZijLPG0RQFhEOIdTm5JChEZ0Lm9yw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787775600; c=relaxed/simple;
-	bh=6759dPkQoLHPszAo/ujb6OUM2iiQCl8Y6vo3wAalPYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HdL8X2qPhSDOS+2NiSZeEvM6e/0k9s64gRJH6RPAbkRJDSQKuCJcE4ZnZufNKLqTVRsRyDZMkC6bVzbppiGLVyCjDfkLJ3z9l0cckJGmjh6Nh6b/hSqvZUXyRWpqQ62JrR3Hd1rIfjTsBsDABdD0z1JYFFnsfn4OA/An7gCAa6U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GIxRQcdM; arc=fail smtp.client-ip=52.101.84.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10C335A38C
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 20:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787775617; cv=none; b=ecBHMa5SUfdL3vGhvleZz1jXjNnoZEJTPM4BS3QqJmqk2RMDlg+Fz0qR8Azh7D5QX2n7FS3iJ+PItYiZuEoLZY59xjcz2pTew795FlnffZ1RnEkn+Jpm/4ji/l1IyWu9C3hdWcCuFwYRYaSSOwxLMfh+sQ0bU4cHbFmNb5LF1wo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787775617; c=relaxed/simple;
+	bh=CZHSDnbBZpPDnRSXts72mzhg+0oBlzl3V+dKme0lZS4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mCRqUkuGG2JVpjYbJzTj0ucrq9zJgKbMC7Usv6/KaLkcMl4TLuh5b9LdzhNEjQVyFmu7AB4vkJrgxRAW/08t5xTW0aPSjqGMTrsR6cWSbiDcVqIxcIXgrcKTMprpC4KJppvwfMp8XnTT+PCr3gCdffB/4YwHV7kGK4mTeBLnXco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=aNgePfoD; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GIxRQcdM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JYHr6+ImY+ZiGuhhaimSGvOW4NfvvUqa+U5Jc4ExzolSCj1So7+UqlpGSGfjHM1Tlw+Df9/a22eRqCxcv+EqUA4LmN6eUGLK/GFchIOwtply+p90aRFgS9V5M9q+Ji0gpBfqDofaxopGc081rU0cYMUYo1m9cCQFCg3UKFowR6jywb9iSD2DD7sCfcImxhtVfPYwP2HLGfEcL8pG1FyaToCJObIyZmBCsOtCuq4e/nA1CGlgrDS7miosUWH5/tuISviLUF6qInGfwItM6qDY+/zqht6HecNNeSVVWN4NqOUj0yelcXP0vH25Cq0ohyRuEpkzDNRQyWLYVKv4UoTtYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aA9wuWm0IvRxrSyP2np/X3gwnYONNC+j3OkOGLdiEKo=;
- b=yWR2GMod03eeIr3d8TOXjn0QRNlyOUgpHbxEiC4A9b2l+8jH4HOtjCigVBWVmist81BJkSY17RNtfNwK+zB54Tm+3E6bRde7+V4SgwEKClkMyOzaEvhJXm9LoiKUxlxX1wuBZvPjctNwToutk7vAKMOwRdOQWjhyQrBOhSz3VI22lWRIGKbb9GbhFs+03MPA+2TWrSQODyPwwzbe3dJG9CPJw3hb3TTdazLYwYv7VN5zCmBI8bNK7KoUltbVfjwQ+ykQtWCfHalign0K4tZaVf1oLF6Hb3oEGu8j1CXcXh2hwYy5Ylq9QVZmB4CBeLfsfpS2JL0jHeVmMGfKhwp6Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aA9wuWm0IvRxrSyP2np/X3gwnYONNC+j3OkOGLdiEKo=;
- b=GIxRQcdMXxa5VwcNwsst7/2OpHWcOJqywSmpOB1dQAHb9Ni6If29LaDbE+zp/3NQAFtJ1itznnfuRwOFzhBU29XnSjLBzWVdRKzCCpOlI5w4qu3yZOtO9kbjVwpBgenFp025LwV4xYriwGEJyhY64gFirvEntwe4W6jaWaILiMYvSNOo5zjlVmt7E1I2swycUZX4ORApvbNpx14rjukgrJC55hbMye2F/OTPHGlhkLxrwiQwl958KuM2aSS0EI78uWn67aNYz5bfeQExrjsOXAKLfhhEZDF3vEqojM5pRkG9PS5AGOd4e4fosTnRFhqZgGiwz7I78djJiV6fuOdBdw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by VI0PR04MB10760.eurprd04.prod.outlook.com (2603:10a6:800:25e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
- 2026 20:19:55 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 20:19:55 +0000
-Date: Wed, 26 Aug 2026 23:19:52 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Patryk Biel <pbiel7@gmail.com>
-Cc: Ioana Ciornei <ioana.ciornei@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: pcs: enable autonegotiation for 10g-usxgmii
-Message-ID: <20260826201952.pmvweuqb3awr7vay@skbuf>
-References: <20260820-b4-fix-pcs-lynx-an-v1-1-62d66391eaff@gmail.com>
- <xjhcgn2ki6a4vlmo5cbn4oagw3jyn6zkomjcva5w7gnugzbloy@odub7owqu5pa>
- <CA+DkFDZzFLHxgBv5Z260gwk4UbYAONxtTewFHPV2vV2M6z0Q+g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+DkFDZzFLHxgBv5Z260gwk4UbYAONxtTewFHPV2vV2M6z0Q+g@mail.gmail.com>
-X-ClientProxiedBy: VI1PR0102CA0081.eurprd01.prod.exchangelabs.com
- (2603:10a6:803:15::22) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="aNgePfoD"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7eb6573bd52so1537540a34.3
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 13:20:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1787775615; x=1788380415; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3SS8NdWOZaZQ+a58FcYy/bIg3Kan2uF8Exlc19qObVc=;
+        b=aNgePfoDCXEeDEL0yNVoE4ear876xbbEKM8podI//5/hf9IVwNfzeO3JUb+hTJGnB4
+         KK+BsDVT0lVKyD5qq/Y7s/ROyXbE3nOS6rdmDYmi+fVALTpfv2AemFE2NHR1ciMBO9Rt
+         QWWf3ozbG/pEx7KCE9tt3kb80AbBD7xtbckCURCQKi+BVC6NvTJjd0/tgvmYGB/g++U1
+         3At167BBKLzQor39Kn8h2i9Ux3NfMGthWU17DOayNZcVLv+cdIbxN369QLHBv/oK+O8v
+         tsv+snfc3MjO59lG8feC1EING6nplp3pwz0vRVV3TKXW54scuXGlCluNl1u2nbAF9wN/
+         qn2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787775615; x=1788380415;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3SS8NdWOZaZQ+a58FcYy/bIg3Kan2uF8Exlc19qObVc=;
+        b=WyQl+X+i1fCxFeJ/UpQHUtsM6XrxiZp+lw1aiGxhoQQakC/cI0yswkQbjFpj5vUcZp
+         995w1Ke2nl4a7KeRZxiiLYUwvwq5PYofhSFyMzCFw+rlG6WlKpYxsi4zX95l7ESVAdBu
+         rpwtYJcDyGYcsld8DxdEAU/O2W+qLma1ss+DG0Y3VOWPYJYxgqWQzTxqUVUdgt0ARwRe
+         UFQinnhMd2rEVQhXvYbj6vsrG+widkpiqTWEuHqSdzYpjKNWcK1AtcPFUI+BLFnTNi5w
+         q9jLZFrU6Bw/6AZ68glwHE8KzC0Rnu0nUZjWyKo2Nl4pWO84B2N1+3adKDHUOPJ5AsXC
+         IrlA==
+X-Gm-Message-State: AFuF++lLTz3CWENE0iFCtDrXti3d+nTTg/gFQpwQz9lQIVfyGbmDVLPi
+	LjIp9NlVxvD7Se/lGwivteArHufywvjh4QnSHt49rw91Ibq0VIklPpNrqDBKTOq5ArY=
+X-Gm-Gg: AR+sD10gR3TsU5VDTFpV+G2d12dW6co1BhC0dCFXkDTKUC9WRsOBeiDdKbwHille4N+
+	GyZGgogDgOrGPtMnLrctsCENE1w6csNG82L3JZEAPo1X4WfhDAqdkchh00YEANHoY+z3GFNzrDt
+	v6B/CqFP/8jmW/kXZRiOw37m254LQg8JrfZKDMZwXFlizy7wW8x+5n9tWYSLxx4GC1EHaGUM6+3
+	AMLsuKVfOU1hRLKUpphh5aKn2XC04SfirVs9gmYZjXJ3fpzvHxntGILOHrTSyB6yPVLiKVhCAN4
+	OrJ6L6xJfY2FPzQnxU3fPmYBm4jFgBrd6mAMEduAjL9Toc8YwHO0oCOCYc9bB9G2A1xoJvZ9bO9
+	ZCceg4XUeqEMMB6cElhvQVaXQy4oVvsKhYFDryrTFat262/IeCiSqvxfWsWNx+vVGqUY9o/leIf
+	i2spZGhXRjoBi4w3VnnJSjPlP4gAyXs7aG3Lllub/rce7BBnCg1w==
+X-Received: by 2002:a05:6830:6af3:b0:7e9:c72e:e5d6 with SMTP id 46e09a7af769-7f4c4e7e246mr10511847a34.14.1787775614745;
+        Wed, 26 Aug 2026 13:20:14 -0700 (PDT)
+Received: from [127.0.1.1] ([2a09:bac6:bf21:2e46::49c:30])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f4c83d09d1sm2474928a34.14.2026.08.26.13.20.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 13:20:14 -0700 (PDT)
+From: Chris J Arges <carges@cloudflare.com>
+Subject: [PATCH RFC net-next 0/3] net: hash uncached route lists by device
+Date: Wed, 26 Aug 2026 15:20:06 -0500
+Message-Id: <20260826-hash-bucket-route-lists-v1-0-fa9b9f30eb74@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|VI0PR04MB10760:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f14a114-e538-4e98-94d5-08df03af64b3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|376014|366016|23010399003|10070799003|1800799024|10067099003|56012099006|4143699003|6133799003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	YpeMaSdxbpevocaQyH4xF/kHXg2BBJr0XGGWciKCOmbx3/o09zOs1FUz9j+qbRCh7vyr4kI1U4h7IDikHQWSr5ikbTWL7z+uOKqvjDbcQs4WGA4nN6TJHgdAJ07WVa3mNKg0HQ4cDoYvS1+jfERHKdQz1pPOiuM6TYB+Pxy/26+o1ThtLCc6vJCl/e3s+OJAdrcylOH9//9IGnlUXkFv+HpVxOmrCQq/A74/JlFKGv/cJKX8vb9m/A6BD23alt6l5RSyR759M1iCuB7u0YuTnnfOZwFo4CWpGqU5kU81GXVYL0/yJRRMoXMIhFZnQ9aRY4kGepyI9uGd3x39t+2WsAX+zQq8apYUYPE8ELGjer1sZ+D4qSj2CWj0rrucdhgYoIMN6E2ksgTvps/GU7h6iF6eok0Jt7DPSmVmwVgZTAYpLgDaM+k2PjapfdwnFkOrUnpXboimgxfIjVeNI3BTWdcY0cV7V3OwsVsYqjnPg5U6nBGFDWiiOeZxRa6spoxGJ6SMOTOkbW21atpTUCElLWTYxEhvmaGvNqYke8J3icxHSa6wIbwyecPUUHTkNDpHl0eK62sA5ZhsOeKGjFR32iI2L5vhDdy+6gCJP8/qGqpAJmOSmo0CpdvjnbQdA0IGHOfWBEjx4d3WeQ2coKrLSFh7JY3WiUed6w6Pd10k3DY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(23010399003)(10070799003)(1800799024)(10067099003)(56012099006)(4143699003)(6133799003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MjRDUWY1QnJTb2NnYW9VZXpaWE1yZHhRL2tBUXhHeUF4UlZJMWNEM21kSld2?=
- =?utf-8?B?NDZ2NWpYdlUweitOczNJcUZJdkRVT3k4aGRKbGhmRzhDNFdaTFdLRjRUVFdN?=
- =?utf-8?B?TGNvL2xoVHNPcDNWclQ5ZjdJOXZiNWh5V3Z0S045UWRNbVdYWXpPUm1rS2Vo?=
- =?utf-8?B?ZUY1T1Bic3hXQVV2bWtZa3VHSU1aakNkVElIMnp3cW9INTdQU1Qyejc3T3da?=
- =?utf-8?B?b1lpQS9jeWYrSWIvRkdjWXkrNmhXNXovd3lWUmMvVzN1SGE2emxhdWpJODBI?=
- =?utf-8?B?UnlTZ2tzaTVCM3kxU084a0dhVUpUcGl6MGR3RWtVeVlKcTlzRE84WTFsSG93?=
- =?utf-8?B?YUF1eVJ1YXJOVEZseEtHY3R4QUUzV254RWpZN3JwVlN1aGhIdUE0UTZJVjRo?=
- =?utf-8?B?MVo1cWhCVkJ2aFJUbjQ0d0RCOURRdDFSTjdERk1GVjk5TUYvTDhWaWdUNFRm?=
- =?utf-8?B?UGZTaHVZOWJqbWVPYUhOeGl2NVlkN3hpQWRibTh4S3g5a3RMNjJXQlQrdG9H?=
- =?utf-8?B?eHdJVVFmSUtoUk1TN2RFcDgyQXNxclorWUpSc3lGRFZpSTVaTE5YV0JJMVFR?=
- =?utf-8?B?L2lOSVF3ODdLUDYyMXNjcTcvWk9IUldQcENEajJQMnpJK2ZINU05WHhZUEFL?=
- =?utf-8?B?NmwxSmh0S2syWWN4YVJ5cC9GbzRaZWdFa3picHI0QStBWHNCaFBLNVdQdDh0?=
- =?utf-8?B?TE9RWW83Z09lSUdDRHlrVldyTHFlejQva0xuL1VNNTRLZlc0MG5xVGxJNjQ3?=
- =?utf-8?B?SU5RazdQdld3RHg0WFlSZHE4YTM3eUVYclljaXdGbWxwMHlZL3gzVVNGaVB3?=
- =?utf-8?B?SHVPSkNSUGpEVGMyazRMZld2VWxtbkRTSXdSckRvWk5jOFpFYlFtem44RnhN?=
- =?utf-8?B?OE1ORGp5VnhMMmZURUhTWUZnOXZ2cnM1OUsvYVE3OVg5UzhINVAwZHM1ZWtQ?=
- =?utf-8?B?UWU0SjZIZ01sWkowb0pFdWlSbEc4Z1FBTEpVYjFESVpxaHZ2NmZ1K2hWb3FT?=
- =?utf-8?B?SWZyVmV2cXduRlh1aHRXcWk0QklDTTBhcWtCKy9VcEZIRTM2OFJOVlRnSkpM?=
- =?utf-8?B?Z0FxZ2MwQlVXUkZXaGo2RkxiaWpidUVJZnFXUFdlMUFldEVubEs2REkvblph?=
- =?utf-8?B?KzJFZXRUVEpUZDQ4VS84OFl1TFovTFlIOHhxaUFqb2xzVjZTZk9SSGFTcmQ3?=
- =?utf-8?B?aGU1UldRcTk3ODRhV2Z4SVNKaVFNM3NSZlVFR0NKazNVekpRejFERjVIUktI?=
- =?utf-8?B?Wk1aQi9Gd2lSclE3dkpYQzdSMmxnSHBNbEhGbmd6dnhlTm1IWk5zUEtSQzda?=
- =?utf-8?B?QkpKcWpmWi9IT3ZmSDFubFhpSUpyNTQ1TjNCMkErUFdTSDF0R1dWZFE4M0Jn?=
- =?utf-8?B?SlVrTFQvY0FuMTFXZ0VkQXM2czhPRXAwNjZDU0JVWHN6Qnh0Y2RnVUo5U1Yw?=
- =?utf-8?B?akQ4bTU3L1hqcEE1TDlhSFRTZ2dHMzk4emJZemRJSFZ3dWNJTnpYUFUvZHl2?=
- =?utf-8?B?RXptdmtKN1JuOUJHRkZjQnkvWVBFa1h6dlluaExacFI0SDB1N1A4c01Ia2lv?=
- =?utf-8?B?eGQzNVZGNFpET2hDTEhqRksrdENTdkZrNG1reHpub2MvL1FLbzlIL0t4RlBN?=
- =?utf-8?B?cUVnZ3p1ODYwbnJmV3R6NlJmLzFLS3VnODU0cXNBRlhOOWtMbFpNL3lzWkdx?=
- =?utf-8?B?NFJDK2RUcmxldDJITVA1d1pnY3F4Y3AyZ1BLbElNSHlnY1VtV2xvYTlXaWVa?=
- =?utf-8?B?YWVWbndkRk13bmdwZEIxNmtLMGJDMndhbXVIb2lpenFVTnRtNFU3L0crbzY2?=
- =?utf-8?B?RThwdWNmcm9zNFZ4T05SNmVIcnljQVZ1NUxGb2w3MHprWVYwSjczWmxEeUFO?=
- =?utf-8?B?NnBqSXZtS1h3SWRYOFBaMkQwYWluOEtVU0lzUm1paEpBdVg3S28xNnEwQWdG?=
- =?utf-8?B?cDZDbEVRNHZOSnAvLzNNa3Q0STM5NE5Qb01pbDZlRitSR1hpdmlWNG1tNndT?=
- =?utf-8?B?TnlReFp2dWhjbVVCbWtRZnJDeVhCMGZJdjlGREdkUGRzMUd1M09WeXdBUldq?=
- =?utf-8?B?dk81YVhaT3UrQWxGelJMd1QrN2J6OWFyUHI5NCtMajFhMUttWE4xV3Y0K0JD?=
- =?utf-8?B?QkpvKzVQNytteHZyVkx2RGZqUk1rc1JUejRoVHBkZkFMY0J6dU9SbGd6Tnl1?=
- =?utf-8?B?QzNOL29GcEp4VTJEcFhvRklRSHBpMU9Vanl6Tmc0VnZRMFpIUFkzTXBOVVZF?=
- =?utf-8?B?SjQ0TmJMMm1nL0lpS2FoV29qTXpFNit0K1ZQZnJYZTd1TEhpQjM5L2NsMUhz?=
- =?utf-8?B?Kzh6RUZPMk53UTBuQnRoc0JrazRCUlEvM2JvaXBPUjBDeFF6YlZlcFRnbllW?=
- =?utf-8?Q?XXzkypaTkr1rrJGL88FAeamV8A5SuxVdl/WdYlZwtbFun?=
-X-MS-Exchange-AntiSpam-MessageData-1: zoPrKGsBilhvAu9xZLLotMrru6UtTnrT5Vs=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f14a114-e538-4e98-94d5-08df03af64b3
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 20:19:55.5721
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zEvRDQLneBs6UbopNO+ntNrjLkV/H9YR9DwoAIcIhRgd7qiK9VBvQvokiWV5+r+TTNoYw17EBkjQKCAClWTn9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10760
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHZKj2oC/yWMQQrCMBBFr1Jm7UCMqMWt4AHciotmOppRSSUzk
+ ULp3U11+T7/vQmUs7DCoZkg80dUhlRhvWqAYpfujNJXBu/8zrXeYew0Yij0ZMM8FGN8iZpiaIn
+ 8nqjfbgiq/c58k/FXvsD5dFy2VJ3Eo8H1f9ASHky29GGev2V02nmMAAAA
+X-Change-ID: 20260820-hash-bucket-route-lists-b8cc27ccd53c
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kernel-team@cloudflare.com, 
+ Chris J Arges <carges@cloudflare.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openssh-sha256; t=1787775612; l=4076;
+ i=carges@cloudflare.com; h=from:subject:message-id;
+ bh=CZHSDnbBZpPDnRSXts72mzhg+0oBlzl3V+dKme0lZS4=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgaxY1IIT5oTohBZJmhnVgJo2HsM7Sv
+ 9I0LdJCgpeGX6gAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QIpSwm5r5x7nr512VdfZgxLR2mKeMLhZfMOVWARaaxIsQaaY3M0xR/i1bU/pns6gKtU3XON5XTh
+ 6nUK5wnJdmwg=
+X-Developer-Key: i=carges@cloudflare.com; a=openssh;
+ fpr=SHA256:Cun99EBiH0EV7wvmfTBF9eDrld2NJx+aD4ScWZ45Q5M
 
-On Mon, Aug 24, 2026 at 02:54:54PM +0200, Patryk Biel wrote:
-> Hi,
-> pt., 21 sie 2026 o 12:00 Ioana Ciornei <ioana.ciornei@nxp.com> napisaÅ‚(a):
-> 
-> > For v2 please explicitly target the net tree by changing the subject
-> > prefix to "PATCH net ".
-> 
-> Applied all requested changes, however, according to this suggestion
-> ("PATCH net") I also rebased my changes and changed target to net
-> instead of net-next, and I now see that on patchwork one check is
-> failing, namely "netdev/fixes_present". May I ask how I should proceed
-> with this - should I add a Fixes tag, or change the base back to
-> net-next?
-> 
-> Best regards
-> Patryk
+We have observed hung tasks blocked on rtnl_mutex while network namespaces
+were being removed. The namespaces contained many network devices, and the
+host had accumulated a large population of entries on the global per-CPU
+uncached route lists. A perf profile collected during one incident
+attributed most of the cleanup worker's samples to rt_flush_dev():
 
-I discussed this with Ioana, and we now think it would be better to
-retarget v3 for net-next, given:
-- the fact that you are effectively removing a bootloader dependency
-  (which can be seen as further developing the driver), not fixing a
-  breakage (which will be backported to stable kernels)
-- the risk for introducing regressions in said stable kernels
+```
+99.92% kworker/u384:3-  worker_thread
+  `-88.71% process_one_work
+      `-81.02% cleanup_net
+          `-81.00% unregister_netdevice_many_notify
+              `-79.42% notifier_call_chain
+                  `-78.05% fib_netdev_event
+                      `-77.92% rt_flush_dev
+```
 
-But yes, patches targeted for 'net' should have a Fixes: tag.
+For each device, rt_flush_dev() visits every possible CPU and scans the
+global uncached route population while its caller holds rtnl_mutex. If N is
+the number of devices, C the number of possible CPUs, and R the number of
+uncached routes, the cost is O(N * (C + R)).
+
+During namespace cleanup, other processes that issue RTNETLINK operations
+requiring the RTNL lock can stall until cleanup releases the lock.
+
+A minimal reproducer is available here:
+https://github.com/arges/linux-reproducers/tree/main/rtnl-flush-storm
+
+This series replaces each per-CPU uncached route list with 64 buckets keyed
+by the route's network device. IPv6 routes need additional handling because
+dst.dev and rt6i_idev->dev can refer to different devices. Such routes use
+a separate per-CPU list that is visited in addition to the device's hash
+bucket. Routes whose device references are equal use only the hash bucket.
+
+I measured user-visible RTNL latency on a 192-CPU x86-64 host. The test
+added approximately 80,000 uncached routes across 256 devices simulating a
+distribution we saw in production with 6 devices having 4k to 20k routes,
+and all others holding ~100 routes. The devices being removed owned none
+of these routes.
+
+During asynchronous namespace cleanup, the test repeatedly sends an
+idempotent RTM_NEWLINK request that requires RTNL. It then records the
+worst request-to-acknowledgment latency in each observation window.
+
+For an actual six-device unregister batch, median latency fell from 12.010
+ms to 3.785 ms, a 68.5% reduction. At 36 devices, median latency fell by
+69.5%. In a 256-device stress case, median latency fell by 75.8%.
+
+I measured end-to-end route insertion cost separately on the same machine.
+The test inserted 100,000 routes per round for 30 rounds after three
+warmups, while pinned to one CPU. Median insertion cost was 2,069.9 ns/op
+without hashing and 2,066.6 ns/op with hashing. This test found no
+measurable insertion regression.
+
+The hash approach adds no per-route fields. On x86-64, the tables add
+approximately 3 KiB per possible CPU. The 64 buckets balance fixed per-CPU
+memory cost while reducing collisions.
+
+I also tested an approach where I batched the uncached-route flushes across
+each device unregister batch. At 6 devices, hashing had lower median
+latency. At 36 devices and above, batching performed better. This approach
+seemed riskier in that it required changing core netdevice notifier
+behavior. Therefore, this series proposes using the hashing approach.
+
+Patch 1 hashes IPv4 uncached routes by network device.
+Patch 2 applies the hashing design to IPv6 and handles routes whose device
+references differ.
+Patch 3 adds a selftest for the IPv6 case.
+
+Signed-off-by: Chris J Arges <carges@cloudflare.com>
+---
+Chris J Arges (3):
+      ipv4: hash uncached routes by device
+      ipv6: hash uncached routes by device
+      selftests: net: cover IPv6 uncached route device mismatch
+
+ net/ipv4/route.c                              |  36 +++++++--
+ net/ipv6/route.c                              | 102 +++++++++++++++++---------
+ tools/testing/selftests/net/vrf-xfrm-tests.sh |  35 +++++++++
+ 3 files changed, 133 insertions(+), 40 deletions(-)
+---
+base-commit: 91ec2035134982b98fab0609a9fd8480e8217dc1
+change-id: 20260820-hash-bucket-route-lists-b8cc27ccd53c
+
+Best regards,
+--  
+Chris J Arges <carges@cloudflare.com>
+
