@@ -1,98 +1,131 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f8.google.com (mail-oi2-f8.google.com [74.125.231.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39663F928B;
-	Wed, 26 Aug 2026 12:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38D3B2D0A
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 12:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787746255; cv=none; b=OEVzuSwA+C6oc2FwyB3f2nCszxdlklm9uiO9XgDKdNb4WP3FS0yWXxWPUsR9USRTnQcDdoP9zWCidNU9bpG/Wkd6B2QqzK4xnVDxiAeE6d9MjcJw66K5JE7gXSv8wu3iJeoHj8g3RFmYtsYYlID8pZajqpO04scSsxgS5afr8Jw=
+	t=1787746718; cv=none; b=qKLXWV9F34ozNe39XOFZmFXe9VMwNfATan9WA/11L/dYDkiM02wDb7oQrxHuE2pj/7rOMwg4UeZMzCsxQf36cuxx5ZXInj3/NNFVdUG02fi5BnqfwTaOYNbSxX42yoHq8wsvcPcpEBCT8kVHrCzcPs3NyITOJbAgys2ga9/Z+EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787746255; c=relaxed/simple;
-	bh=GzsTedIp/U7bLZDchwdlS8BV7pxZDQ/KvGK8jj6Qw8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ytt+apvYB0qejBxEXs3KhT2cXX/n8m+0d9Rn5w6M2TQex54L1aTnxLWuWI/EyyTK+bKi3xaKMh8qge1FguxcS+ZwCRmyOCTPA3OgfelC83aO6gXfQRgvsyfc2vVYbl6yq0r4t5BiR0hMII+FUi/PWn4WazRl+WF7MSSUcRZvfaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6A917202411;
-	Wed, 26 Aug 2026 14:10:39 +0200 (CEST)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1wzCSl-003R9a-16;
-	Wed, 26 Aug 2026 14:10:39 +0200
-Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 1B01558CD05;
-	Wed, 26 Aug 2026 12:10:39 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 14/14] can: hi311x: drop hi3110_lock before free_irq() on open failure
-Date: Wed, 26 Aug 2026 14:02:24 +0200
-Message-ID: <20260826121036.2706424-15-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260826121036.2706424-1-mkl@pengutronix.de>
-References: <20260826121036.2706424-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1787746718; c=relaxed/simple;
+	bh=+4+M6dZAUhASDX1TdfrYD3AYj4jHa/a2eMfo72zu5Lk=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=uvBp075HoiCivJpSRGcFeg5wKM136I88DmUIYAlvE2IZ8sW/3saX3807xA2rHBV6cG14qQGmW1/3HqsTWkgJoVEjs4E05ECFcN+UGuxsL25d0dbabEoDzpGDrT7UPgNY6AwQlBumyXJIQ7WRyvDHuwpOF+tadPCUDz7xAlxT3u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi2-f8.google.com with SMTP id 46e09a7af769-7f3a9f626a1so376691a34.0
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 05:18:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787746715; x=1788351515;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6O+Yx3dqixsBvupZN/KGdiqVoNV2KtYYbYkmAMAGd9Y=;
+        b=a0FGO4BX8UMqQBv6oa88BYKJ9T38ikmW2EvsrW8cF+OeryyTdiD2mHaEF4q8d3eM1N
+         nzLB/fSwwQiAskbYDZcyeicecAmowpP4WhC9Sg+U71FXA1+f70CLuezZ9lRRjPermsUV
+         rCdh9PUJEUt64Byj/8KB3xTRIld/kITqYx4MuKe/kCULCtK9vlUAIb0UcfA21LsnDhBS
+         cEmolLsCECm4AFG906rzCVzt5lswVtV9BvmcfeOpCKVIsd+wLIVk4KFSYU3zMj5GGn4+
+         HrHupCzWKhoiC7PAuRxtVnu/LoHtbcxM2ISIpm/NSDQwhVHDQlLFD52K2Uw17cBWxXNm
+         nlBw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpfa7BOPLiKRBwxa1n3e89vX/5KwZNhgO6f2x0wy8U2Fx5ddIciJlyK83mF/hFT1gfmseUAxoA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mOnQm0aAil66SCjKTONUeYM/x1F891ROabIU7uPtOzF6MJm1Tc
+	RBwsv1HhYk+3x10RdyesuJtUTDfSaUd2VxA7wtzo7qqwrSGpQecJePbK/YbwyaD/yhiqfsj5cQW
+	aIZG7GSB4A9HG4M3wv0GtAZwNKaHspI6+rdX0zALwOa7q4Hbvytgg8i1TrcU=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:c2cc:10b0:6b1:8ebb:7efd with SMTP id
+ 006d021491bc7-6b1a03672a4mr4766496eaf.4.1787746715710; Wed, 26 Aug 2026
+ 05:18:35 -0700 (PDT)
+Date: Wed, 26 Aug 2026 05:18:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8ed99b.1d9ded08.62e62.00ab.GAE@google.com>
+Subject: [syzbot] [net?] [usb?] UBSAN: shift-out-of-bounds in __vcc_connect
+From: syzbot <syzbot+f6ac161ee9699270b8dd@syzkaller.appspotmail.com>
+To: 3chas3@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-atm-general@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Hello,
 
-hi3110_open() requests a threaded IRQ and then performs hardware
-setup while holding priv->hi3110_lock. If reset, setup, or
-normal-mode entry fails, the error path calls free_irq() while still
-holding that mutex.
+syzbot found the following issue on:
 
-The threaded handler takes priv->hi3110_lock before checking
-force_quit, while free_irq() waits for the threaded handler to finish.
-That can deadlock the open() rollback path against a pending IRQ
-thread.
+HEAD commit:    26260251022f Merge tag 'livepatching-for-7.3' of git://git..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=14fa5179580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a70bec3546180b6
+dashboard link: https://syzkaller.appspot.com/bug?extid=f6ac161ee9699270b8dd
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12698625580000
 
-Set force_quit, drop hi3110_lock before free_irq(), and take the
-mutex again for the remaining hardware cleanup.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/858149e586b7/disk-26260251.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8c4a5ad34e66/vmlinux-26260251.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/fa4efe98315e/bzImage-26260251.xz
 
-Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Link: https://patch.msgid.link/20260820020631.316418-1-runyu.xiao@seu.edu.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f6ac161ee9699270b8dd@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+UBSAN: shift-out-of-bounds in net/atm/common.c:382:32
+shift exponent -1 is negative
+CPU: 0 UID: 0 PID: 5987 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/05/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
+ __ubsan_handle_shift_out_of_bounds+0x36d/0x400 lib/ubsan.c:494
+ __vcc_connect+0x14b4/0x19c0 net/atm/common.c:382
+ vcc_connect+0x328/0x8f0 net/atm/common.c:498
+ pvc_bind+0x272/0x380 net/atm/pvc.c:52
+ __sys_bind_socket net/socket.c:1945 [inline]
+ __sys_bind+0x2e3/0x410 net/socket.c:1976
+ __do_sys_bind net/socket.c:1981 [inline]
+ __se_sys_bind net/socket.c:1979 [inline]
+ __x64_sys_bind+0x7a/0x90 net/socket.c:1979
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc16739e0d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff0c105ee8 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
+RAX: ffffffffffffffda RBX: 00007fc167625fa0 RCX: 00007fc16739e0d9
+RDX: 000000000000000c RSI: 0000200000000300 RDI: 0000000000000004
+RBP: 00007fc167435024 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fc167625fac R14: 00007fc167625fa0 R15: 00007fc167625fa0
+ </TASK>
+---[ end trace ]---
+
+
 ---
- drivers/net/can/spi/hi311x.c | 3 +++
- 1 file changed, 3 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index ae90e6716de5..2be851e8907d 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -787,7 +787,10 @@ static int hi3110_open(struct net_device *net)
- 	return 0;
- 
-  out_free_irq:
-+	priv->force_quit = 1;
-+	mutex_unlock(&priv->hi3110_lock);
- 	free_irq(spi->irq, priv);
-+	mutex_lock(&priv->hi3110_lock);
- 	hi3110_hw_sleep(spi);
-  out_close:
- 	hi3110_power_enable(priv->transceiver, 0);
--- 
-2.53.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
