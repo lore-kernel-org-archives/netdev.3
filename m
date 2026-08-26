@@ -1,101 +1,179 @@
-Received: from mta1.migadu.com (out-31.mta1.migadu.com [95.215.58.31])
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6931D39A
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05F328B4B
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787739027; cv=none; b=XBUSBFTfZxwCveb6isuBm3A03OXiykEj9tVeoVMYLq+zhkAs9XNtvHa0Xfwv9kPunPrXzT7YTXw4m5b0aApz3eW7YJVfXSieWnTXxXuK4XRW85mjsdlxDqj2CAp/mQtznQqYZNslpE8Us8berHdhJh2CNYILkMkjcvVUufUPwb4=
+	t=1787739117; cv=none; b=s4xQh0wNlNhc3HiqJBomVUumyWehVG+lRe1Bzn0ZW2q7kuUm7yGCKV+MOVDnKMy6OL0zqu2P9Wvu3xqzOczK4j8ZiphZ6UShEU3xv8OhhFZjcvfQ5eCxMvoz0FMBQ42SJuNrgshpiWumeuMhp4ENDjBl/MnpTEoFdDt5OD3p0YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787739027; c=relaxed/simple;
-	bh=57avFade3zuK7/6SQ3eV2ojUUQSJjhGWCjyqA29B4Qg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FW+iY+jFMl0exgrOuGMxLjHq5NsWOvi6mHMyxpThZfmgGFE6gLQ7af7P5Elo5nbr9kHe6mrjWoqJvfWGdsXOw1PbvF540PPT5k92wG+2ZrwQqTb6AITgIB0au5o9aihLb7mgWR4AC5vhKM9G+1M9PltURhdOqSTIhRnT9bFM4nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CuE9nDHt; arc=none smtp.client-ip=95.215.58.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CuE9nDHt"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=57avFade3zuK7/6SQ3eV2ojUUQSJjhGWCjyqA29B4Qg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787739021; v=1; x=1788343821;
- b=CuE9nDHte80mWQmtNvX3zr+RSEqjgOfnNeKRLbGNMfVuQcpcTho2DC1OFHt4VXuQGzw8Kclv
- UzpMl9hpy+GflLoEVn7bO+4r0/U1htvaz85ue1OQZkC/BwGb5mRNHvj4TW3ExAfxMsEfnvq7ybG
- ld/P63cOkQO2jsrFwvMJFqvU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from localhost.localdomain (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id d7afdb5e9b644012;
-	Wed, 26 Aug 2026 10:10:21 +0000
-X-Mizu-Trace-ID: d7afdb5e9b644012
-X-Migadu-Flow: FLOW_OUT
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: netdev@vger.kernel.org
-Cc: richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	arnd@arndb.de,
-	john.stultz@linaro.org,
-	jacob.e.keller@intel.com,
-	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v1] ptp: fix NULL deref when adjtime/adjfine are missing
-Date: Wed, 26 Aug 2026 18:10:04 +0800
-Message-ID: <20260826101004.100979-1-xuanqiang.luo@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1787739117; c=relaxed/simple;
+	bh=oPmmiOIz17kMUSkXuHD6ICEr1VdG2WgD4ERH23dDkzk=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=TGRrIISSahvuyQ9goEJ96XIAWk9qLh7qdMWQyZnoKVvkj91Jxw9akQlTIFLCo/Cpb4rxMNVjR60tD+mdSaK23EXmkvTPtMeZwan0UA7F1Zxz8NlaOB4uwftwmkGe2fDRk8TobmaI9A+YeL0LxAzSdGOghkrcoL2Jf5b0TdbCU8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a49f09233fso990889b6e.0
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:11:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787739114; x=1788343914;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Bc+hFQHEJTLq8xd3e/5RzI08QtJyD4Yew8VDbBzp9uo=;
+        b=qOQ8RjWO/5ysDmcNliaf8BDDqV7BU+J07KvUuN2UkHmNl1YkkqWe4IAHmvE1I8KBHh
+         G0S96dL3ohvB5TRpD3kZiUVTPPV/mFiAQhUdRb1JcKfqF7XRbnGLkW71NX3W7S95HqHe
+         enEblNvaa9qCRRa0TGxXNCzzphTI24njTuIdn6EnchvBIipB4EYollRGtUvq7sPoQjjd
+         eqBtDqikhrX6HawXhXcIg8UZBiTdGtCnEWj+kBBw+/lVHt5E8diQw51GE7jh3G38OVRd
+         0pzQfWpWFTUMvaV/Grvzg8yFdfENp2jKlSoMoJw7RsfkS2ED7bmoIP4fJM5z5hdLI91C
+         rrXQ==
+X-Forwarded-Encrypted: i=1; AHgh+RryDcDIzGJfyXMaQGrejL3JYQShA9NtTnuzdv+CaHdrOKUHt/pW+s1FLTP+IfhheriNEr/uhJo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mA5LWrk36+CKkpvanakjhlyxIVBEzNL8Z4I/42Vm8g/uwZY6VP
+	JHhOAb+7++P8QjB7CD5Vl7x0WNq5dgQYIEnntFpD+TanqdvWXy6MJjoZdAntreCPK1I3IaouQa7
+	O+euLh4jtJBFUIB7wSkxJe3bg2G4Zfby8pNpSU21uVxOBXSqN7Tf1NhT97rU=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:3192:b0:4a4:989:bb1f with SMTP id
+ 5614622812f47-4b350425f51mr10120061b6e.9.1787739114303; Wed, 26 Aug 2026
+ 03:11:54 -0700 (PDT)
+Date: Wed, 26 Aug 2026 03:11:54 -0700
+In-Reply-To: <20260826075703.2400467-1-lee@kernel.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8ebbea.1d9ded08.62e62.00a2.GAE@google.com>
+Subject: [syzbot ci] Re: nfc: llcp: Fix race condition in accept_queue lifecycle
+From: syzbot ci <syzbot+cie83be755322835fa@syzkaller.appspotmail.com>
+To: davem@davemloft.net, david@ixit.cz, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, lee@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev, pabeni@redhat.com, 
+	sameo@linux.intel.com, szymon.janc@tieto.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+syzbot ci has tested the following series
 
-ptp_clock_adjtime() invokes ->adjtime and ->adjfine unconditionally,
-but both callbacks are optional. clock_adjtime() with ADJ_SETOFFSET
-or ADJ_FREQUENCY therefore oopses on a PHC that implements neither.
+[v2] nfc: llcp: Fix race condition in accept_queue lifecycle
+https://lore.kernel.org/all/20260826075703.2400467-1-lee@kernel.org
+* [PATCH v2 1/1] nfc: llcp: Fix race condition in accept_queue lifecycle
 
-iavf registers such a read-only clock: no adjtime/adjfine, and
-max_adj left at 0. ADJ_SETOFFSET hits the NULL ->adjtime after the
-offset is validated. ADJ_FREQUENCY with freq 0 converts to 0 ppb,
-passes the max_adj check, and hits the NULL ->adjfine.
+and found the following issue:
+WARNING in __alloc_workqueue
 
-Return -EOPNOTSUPP when the requested callback is missing, as the
-adjphase path already does, rather than adding driver stubs.
+Full report is available here:
+https://ci.syzbot.org/series/6f4e9aed-2eea-44c2-8ef0-04ce578d399f
 
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Fixes: 75ab70ec5cef ("ptp: remove the .adjfreq interface function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+***
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 4111342d64f03..b5df120be4d1b 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -158,6 +158,8 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 
- 		kt = timespec64_to_ktime(ts);
- 		delta = ktime_to_ns(kt);
-+		if (!ops->adjtime)
-+			return -EOPNOTSUPP;
- 		err = ops->adjtime(ops, delta);
- 	} else if (tx->modes & ADJ_FREQUENCY) {
- 		long ppb;
-@@ -174,6 +176,8 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 		ppb = scaled_ppm_to_ppb(tx->freq);
- 		if (ppb > ops->max_adj || ppb < -ops->max_adj)
- 			return -ERANGE;
-+		if (!ops->adjfine)
-+			return -EOPNOTSUPP;
- 		err = ops->adjfine(ops, tx->freq);
- 		if (!err)
- 			ptp->dialed_frequency = tx->freq;
--- 
-2.43.0
+WARNING in __alloc_workqueue
 
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      a8406e6c0b793ce0788019683837c40855b55995
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/3abfab5f-31c6-4773-9338-bbe1caeca14d/config
+
+pci 0000:00:1f.2: [8086:2922] type 00 class 0x010601 conventional PCI endpoint
+pci 0000:00:1f.2: BAR 4 [io  0xc0a0-0xc0bf]
+pci 0000:00:1f.2: BAR 5 [mem 0xfebf2000-0xfebf2fff]
+pci 0000:00:1f.3: [8086:2930] type 00 class 0x0c0500 conventional PCI endpoint
+pci 0000:00:1f.3: BAR 4 [io  0x0700-0x073f]
+ACPI: PCI: Interrupt link LNKA configured for IRQ 10
+ACPI: PCI: Interrupt link LNKB configured for IRQ 10
+ACPI: PCI: Interrupt link LNKC configured for IRQ 11
+ACPI: PCI: Interrupt link LNKD configured for IRQ 11
+ACPI: PCI: Interrupt link LNKE configured for IRQ 10
+ACPI: PCI: Interrupt link LNKF configured for IRQ 10
+ACPI: PCI: Interrupt link LNKG configured for IRQ 11
+ACPI: PCI: Interrupt link LNKH configured for IRQ 11
+ACPI: PCI: Interrupt link GSIA configured for IRQ 16
+ACPI: PCI: Interrupt link GSIB configured for IRQ 17
+ACPI: PCI: Interrupt link GSIC configured for IRQ 18
+ACPI: PCI: Interrupt link GSID configured for IRQ 19
+ACPI: PCI: Interrupt link GSIE configured for IRQ 20
+ACPI: PCI: Interrupt link GSIF configured for IRQ 21
+ACPI: PCI: Interrupt link GSIG configured for IRQ 22
+ACPI: PCI: Interrupt link GSIH configured for IRQ 23
+iommu: Default domain type: Translated
+iommu: DMA domain TLB invalidation policy: lazy mode
+SCSI subsystem initialized
+ACPI: bus type USB registered
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+mc: Linux media interface: v0.10
+videodev: Linux video capture interface: v2.00
+pps_core: LinuxPPS API ver. 1 registered
+pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+PTP clock support registered
+EDAC MC: Ver: 3.0.0
+Advanced Linux Sound Architecture Driver Initialized.
+Bluetooth: Core ver 2.22
+Bluetooth: Core ver 2.22
+NET: Registered PF_BLUETOOTH protocol family
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO socket layer initialized
+NET: Registered PF_ATMPVC protocol family
+NetLabel: Initializing
+NetLabel:  domain hash size = 128
+NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
+NetLabel:  unlabeled traffic allowed by default
+nfc: nfc_init: NFC Core ver 0.1
+------------[ cut here ]------------
+workqueue: nfc_llcp_wq is using neither WQ_PERCPU or WQ_UNBOUND. Setting WQ_PERCPU.
+WARNING: kernel/workqueue.c:5939 at __alloc_workqueue+0x1cd2/0x1fe0, CPU#1: swapper/0/1
+Modules linked in:
+CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__alloc_workqueue+0x1cd5/0x1fe0
+Code: 0b 90 e9 6d fc ff ff e8 f9 f0 38 00 e9 7f fb ff ff e8 ef f0 38 00 e9 85 fb ff ff e8 e5 f0 38 00 48 8d 3d 3e 1a ee 0e 4c 89 f6 <67> 48 0f b9 3a 41 81 cf 00 01 00 00 e9 10 e6 ff ff e8 c5 f0 38 00
+RSP: 0000:ffffc90000067788 EFLAGS: 00010293
+RAX: ffffffff818ecbbb RBX: 0000000000000000 RCX: ffff888102adda00
+RDX: 0000000000000000 RSI: ffff8881680b0d70 RDI: ffffffff907ce600
+RBP: ffffffff8d4e3fa0 R08: ffff888102adda00 R09: 0000000000000002
+R10: 0000000000000102 R11: 0000000000000000 R12: ffff8881680b0c00
+R13: ffff8881680b0c00 R14: ffff8881680b0d70 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8882a8ce0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000000eb48000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ alloc_workqueue_noprof+0xe3/0x210
+ nfc_llcp_init+0x15/0x50
+ nfc_init+0x74/0xa0
+ do_one_initcall+0x250/0x870
+ do_initcall_level+0x10a/0x1a0
+ do_initcalls+0x59/0xa0
+ kernel_init_freeable+0x29d/0x3e0
+ kernel_init+0x22/0x1d0
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
+
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
