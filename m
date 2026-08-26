@@ -1,63 +1,64 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66D33515C5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DA7380FC4
 	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 17:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787764566; cv=none; b=u8SrU/ELXESuhNqoTMssBUlZsGvqSObdpJi+AU5D9ZRR85KnUznMwltH98vSG+Ng2ll89XcDQDqU743+NFRyXqY0QGUdDYj+O/xhYWxfE2WaV485xNhEqrcP/LAHtpnac2j4LFv+0nsB0h8oqZFLgcnyk2oCRVTK65ZAvCZ/BhM=
+	t=1787764565; cv=none; b=RcVxOQUosAOqFS2pEFKi7WFLJy+qR33MLj2pfFDof4vZSv4PEmDxR/HfTWDdugQn3rkSmGXoJ3Fz7xqvMQa4WtcEchvsLaxtJE+mTmqKc2OvJS2tAk7guKzLSo4DMZVeuUQE2J3VBL1MD5XAjY+sFikYJdvVQ+49oEDqHX6oTe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787764566; c=relaxed/simple;
-	bh=/EgEdrXS4Wv0jxVQALIzvmIefQDOLKjUKXIiXmdSSu0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d70FF/HFxuUm26j4nTkFEcBfv5/70u9R10f8H8a/ad6NNbnxS27fqLTMf/6pOBNFQVULYMVkjUCQZPjoXGk0msJMWRrpth2RN/Pi4sS6rx8pz1eBvGihKcs0LGSJBo53nRiT3lc6URO7oYMR+6QuH+N/zOqfe6xrxLjDidQ4xwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VGrSiPzq; arc=none smtp.client-ip=209.85.208.47
+	s=arc-20240116; t=1787764565; c=relaxed/simple;
+	bh=cKoXIHb2ZuYycMu8ZqrpbWLAyXEe2FutGWvTbc17nDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HvqXhHC5o512TJhUXKAq/Rm8DDVApKOH5RbuBMu2GmpNcQZ1kHvzLjwTFW/z2RKu6GUiS2t/kn72WBFkEiPqh48BCBoNj7vEzEafOmblBilboeaSWSAAvy7C1mlvWCFVQ5FQkuZIqNkwJWbSblD/Sg5NiDwBTmdI2tIyi/e5aoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bskXQ2Th; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VGrSiPzq"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a0a4aa99bdso2045260a12.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bskXQ2Th"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a18e24ad25so1632792a12.1
         for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:15:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787764540; x=1788369340; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=THUloCQaHU46tb48+FvM63t2s6NnBgSS/AfMphriNVc=;
-        b=VGrSiPzqYwQ8lvdnCBpe3Dg9+bJ8S6B8gqRaXDUCZShsV/O56xGyEiH7Q9Ek2N+cE2
-         5ip4c+p90xweTsn0MueVUo0UjJB2JAiNK8MQSK6kt7agUs840HRum6r977FhYFx2j+jd
-         mjpR/PFMKJXZhuH5aPpqUFJYtFGb1qgFf4kHYYQz96f0SEq2bu1H9dxHq9AekgHI6xBO
-         wUnmlIClaYwyGjph30WxRblE9NdJ5+QHawnH0uKYyVJTDRKP80FXGTMKAJWaravV6fLP
-         YTjeoA5pu9clbdnHo3xZARtzgRe/a4ML2lKgZaJHGhSPONCG2vPKmYslgSOuy4Fbu3xC
-         ajeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787764540; x=1788369340;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1787764542; x=1788369342; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=THUloCQaHU46tb48+FvM63t2s6NnBgSS/AfMphriNVc=;
-        b=dNVyPY/7xkBo/8FhCMN41JbrwiP2x8WU1KNoBVbzE0+ViLLyJdy3L7x06vX9iZNecJ
-         dVaB3NWjGiFKJ+tcXnr4UkUipkG/EJps1glZCCM3ygbh1T6BknozwYG8/ogEOcHrZdLB
-         S3DwtssC6538qKnWdD9v3CbhaVHRs8HAQuvwlV46pTdSar965pERcZ1vhuboamUseKxp
-         Ei6njBaz7I//ng7ybERnQyEhuAfshqefDz335ByGK0qBk1Rd9HrQ5eU1sVVbDKsCFiht
-         axMmsaj/VnVBkq1A/Iky5zMavsoy7hEGEopCs0Kf7fJOfz/CYQl1Cjs4v4HPcKqZmEbW
-         03kw==
-X-Forwarded-Encrypted: i=1; AHgh+RoHmTxV/W2kmTNCiob73dj5XJ/e/Sj6IkCFUSDr3hMcMZcVDpAd1iVqyALu3ipLAlh5DcmUeiQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++lgcqtChapF4Qd36Hd/17m3I1/QbHCFZqRXBNdNlispuG/dXeva
-	Qhe2isYxDyTReVrqf0tz4+RRBwglCi+gL2tAkn/sZyg0l+JDkoFXW4bp
-X-Gm-Gg: AR+sD113WWbK/1r+/LwajBoUSgOA25GmcJfUgN7tD0J/5zDcga9uie8bAkbeNjmgCvw
-	NA/8J/fnDOhpjeLoQ2CGsT5ppscdCm0gtGe+oQvJH/99OTY3SokVLXdir4HauJ8jQei9vFE+tQM
-	q3grdrlBDC8n31Hl09vZpdTQIaDd2OZN75QSy3/6XQJqNm42tygLUT4ZRf2dKH5IenCIMTyeeVe
-	ifBKi1x5ySfUbqvZe9TASCVaAStoanQ/FVjvxNw8ctGj85m9IOTBreMsOAV4x/7xsOenP8eZiHc
-	YxR4jQ2TMlBByYXLvPU2+u/ta0ao9cSECFVPAOfnqe+Jwfd9h/Kx1xbFc9JSRGJteVcOVETf1kE
-	yN3ztzHcpr9Gp6WK0metOLLD4unMSJBZDQNFzQoUC1VsIvQwrV/XX5uGqh2ZZeorR4raK+ZG78k
-	y2s3n73bkOO6x8R642MJIoZomDjkNBjp4SvfNLtQZ6z1ZMGxnnP2WrzVI+VH9iZv9RgieNealf8
-	w==
-X-Received: by 2002:a05:6402:354b:b0:69a:928:9405 with SMTP id 4fb4d7f45d1cf-6a5df5ca50cmr9709673a12.1.1787764540403;
-        Wed, 26 Aug 2026 10:15:40 -0700 (PDT)
+        bh=rX7O4Cyu214edbufKKR6tV50lN9glgVksMzMntzrD6w=;
+        b=bskXQ2ThLvtsm3r+9JicOhwvFfpYLVy0mu+0pKnYM+NwigiUA//+GpLBSzgQYz39+Z
+         BWuT6SbYeq/Yh1yNQDtg/a//x51C/52iJEZmCsR6C3gkmZwLjEkDZfgYdkXlXEoLD4Fz
+         ccLL4rbjF4LsWP+b+qX9DIWT/nZYnCTgg6/QSyBM55wjGMQ6hEmuBePqEME3KW52OI1Y
+         QG7dzoVx6It+fvmpAbI+TNLXEnK+py+0mfD5sijAsTjvxY4XPNlbzApCHkLgfc41tzmO
+         bGIDZLxu0eBylP34lrI9OYWkLXQsXCfWuG1PXBYQZLADRYCsFFXWmZfh0xHKzY7gPBWJ
+         qwdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787764542; x=1788369342;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rX7O4Cyu214edbufKKR6tV50lN9glgVksMzMntzrD6w=;
+        b=bgAj2KV5ivr/S8OTDXxouCrym+Z3TieaeyI45cd/5Pp5KbOGTnQwLhcGEMUbFSa0gJ
+         utd92+NZ+1PbxCfb6pM/kDKjRgX+1uRdDxhvvrtGQJvAKaCV2a8vKyFC033zQxvUfhuw
+         q6eaPC1QGDwsgLkEf8Kb9ivt9bWR56DlGLKg60A85fevNDYO6po/RGt7o/230WiTu3ha
+         V25lTZncbJv9CtKlxdae2C04KaEsPemV4wdD+VNH93nKS5XPK9P7mKWBfyh4+OZnNEjR
+         1EBTx0IWrqnx2n5P8jDgXyTzphm+TLhlORKz1qtZMEVH2Izz+Ycu2PsAXZRq4OWVNbLi
+         50ww==
+X-Forwarded-Encrypted: i=1; AHgh+RpbFr/pruIPRbA01ELMbYfvRh0cS0q3PrE7/crh3jPRpbcnz/sHwg7iXosmxGAOKTOizj0s8nk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kwqnYU+U48aV0dQtX2GLb8O80YJ7orNL9Joqpm3w0wiMy+1FPv
+	qDWCLkbQr0XY+o3wzRnUo6g5398Jeo83DXsJl4BoeqI//gQ3eO6R7Iey3u3ZoOX9bEY=
+X-Gm-Gg: AR+sD12bDwiunsEwx4tOsXKID9FiT6OTx1aJYORPROis57tuNtkm4RncXQzsqpaf0ac
+	n5sCqjkM3+Kqp3E5HRnpZBeMJpnqqyjzRQBuq/caLuWeWqyJf//H7lH5IvC7jdI4jmNsrbrTEji
+	yC71/dXGkXuYR65bDLv/TT1yw2dqMqO5Te6eeN7LN1Z6FmncgqM6ydO2df2EiQzSv7Tftw+olUf
+	Rs9HTlte28xhhSPjSZ1vX5Ebty5MzMbJdvXfIw0s7AiEZpfh3oixF+E+E8Y1+9ahCP7hOozFsPK
+	Gv8bA2AoMhDaC/Ooq3wPlK0Mw17C9HWkmD9s2TsHJzxjJZdTQoYwyZV7W29ybBJHiKOd5KHE83i
+	bV2INDoV00pKcGq6hR/Z8IKmwzpuCzzIylhOB8TOrb49zERHRY+L2jF3/aPCX6emLOkUk6Xvm8r
+	vs1/HrOVPn/1+3qWbVn6CoUvnrDzD1syawpasKdUWMMA0lAvEG3mJYroteyUomLzE=
+X-Received: by 2002:a05:6402:4489:b0:6a5:f2a6:f624 with SMTP id 4fb4d7f45d1cf-6a5f2a6fea4mr3631908a12.15.1787764542446;
+        Wed, 26 Aug 2026 10:15:42 -0700 (PDT)
 Received: from SVR.localdomain ([185.179.67.170])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de8b5e5esm4244556a12.4.2026.08.26.10.15.37
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de8b5e5esm4244556a12.4.2026.08.26.10.15.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 10:15:38 -0700 (PDT)
+        Wed, 26 Aug 2026 10:15:41 -0700 (PDT)
 Sender: Semih Baskan <strstgs@gmail.com>
 From: Semih Baskan <strst.gs@gmail.com>
 To: florian.fainelli@broadcom.com,
@@ -72,10 +73,12 @@ Cc: vladimir.oltean@nxp.com,
 	horms@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 0/2] net: dsa: b53: fix 8021q uppers on standalone ports
-Date: Wed, 26 Aug 2026 20:15:24 +0300
-Message-ID: <20260826171526.391-1-strst.gs@gmail.com>
+Subject: [PATCH net v2 1/2] net: dsa: let drivers offload 8021q uppers on standalone ports
+Date: Wed, 26 Aug 2026 20:15:25 +0300
+Message-ID: <20260826171526.391-2-strst.gs@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260826171526.391-1-strst.gs@gmail.com>
+References: <20260826171526.391-1-strst.gs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,99 +87,159 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since v5.15, a standalone port on a bcm5301x b53 switch cannot receive
-its own tagged traffic: the switch VID lookup is always active, an 8021q
-upper's VID never reaches the VLAN table, and a tagged frame with a
-missing VID is forwarded only toward the IMP0 management port, which the
-in-tree bcm5301x topology leaves disabled, so it never reaches the CPU.
-The common victim is a VLAN-tagged PPPoE WAN, where the PADI goes out
-and the tagged PADO never reaches the CPU.
+Before v5.15, DSA delivered the VIDs of 8021q uppers to switch
+drivers unconditionally: user ports advertised
+NETIF_F_HW_VLAN_CTAG_FILTER, the 8021q layer reported upper VIDs to
+.ndo_vlan_rx_add_vid, and .port_vlan_add programmed them whether or
+not a bridge had enabled VLAN filtering. Commit 06cfb2df7eb0 ("net:
+dsa: don't advertise 'rx-vlan-filter' when not needed") stopped the
+delivery for standalone ports and commit f089652b6b16 ("net: dsa: b53:
+do not program vlans when vlan filtering is off") stopped the
+programming, on the model that a standalone port is VLAN-unaware and
+any 8021q upper is a software VLAN.
 
-My first attempt disabled the VLAN table while not filtering:
+That model does not fit hardware whose VID lookup cannot be turned off.
+b53 keeps its lookup enabled at all times, because disabling it moves
+the ARL to shared VLAN learning: the hash that selects the ARL slot then
+treats every VID as 0, entries keyed by a real VID become unreachable,
+and the hardware table drifts away from the bridge fdb. With the lookup
+active, a tagged frame whose VID is absent from the table is discarded
+before it reaches the CPU, measured on bcm5301x. Such a port is never
+VLAN-unaware, whatever the bridge asked for. Commit 06cfb2df7eb0 ("net:
+dsa: don't advertise 'rx-vlan-filter' when not needed") lists the
+reasons a driver may keep it on, and this is its first case, standalone
+ports that would otherwise drop VLAN-tagged traffic, except that here
+the VLAN awareness is held on by the silicon itself rather than by a
+VLAN-aware bridge elsewhere on the switch.
 
-  https://lore.kernel.org/all/20260805072641.402-1-strst.gs@gmail.com/
+The existing opt-in, ds->needs_standalone_vlan_filtering, is not a
+fit. It exists for hellcreek, whose traffic separation depends on
+per-port VLANs, so standalone operation there needs the
+vlan_filtering state itself forced on:
+dsa_port_reset_vlan_filtering() forces vlan_filtering=1 when a port
+leaves a VLAN-unaware bridge, and with vlan_filtering_is_global that
+lands the whole switch in the state hellcreek wants. On b53 the same
+flip is a user-visible mode change for every port on the switch:
+bridge VLANs that were committed while inactive become enforced, and
+the unknown-VID ingress drop modes turn on chip-wide.
+b53 needs the VIDs, not the state.
 
-Jonas pointed out that this moves the ARL to shared VLAN learning and
-desynchronizes the hardware table from the bridge fdb, and I withdrew
-it. I then measured the alternatives on an RT-N18U (BCM53011 rev 5),
-with the outbound direction of the same link as a positive control on
-every run:
+Add ds->needs_standalone_vlan_offload for that narrower need. It
+advertises NETIF_F_HW_VLAN_CTAG_FILTER on user ports permanently, so
+upper VIDs reach .port_vlan_add again, and it leaves the
+vlan_filtering state alone. This restores the pre-v5.15 delivery
+pipeline for drivers that opt in and changes nothing for drivers
+that do not.
 
-  - With the table enabled, no ingress VID check setting delivers the
-    frame: VC4_NO_ING_VID_CHK, VC4_ING_VID_VIO_FWD and
-    VC4_ING_VID_VIO_TO_IMP all give 0, and the miss control bit
-    VC5_DROP_VTABLE_MISS already sits in its non-drop state, whose only
-    delivery target is the disabled IMP0. The frame does not die at
-    ingress admission, it dies on the miss path behind it.
-  - With the table disabled, a static fdb entry with VID 100 is lost
-    from the hardware ARL no matter how the driver drives the ARL
-    registers: keeping ARLTBL_IVL_SVL_SELECT at IVL does not preserve
-    it, and neither does additionally keeping the VID learning bits in
-    VLAN_CTRL0 set.
-  - The VID to PVID rewrite bit (CHANGE_1Q_VID) does deliver such a
-    frame, but only by rewriting the VID to the PVID, which destroys the
-    VID the upper is keyed on.
+A permanent feature bit also means dsa_user_manage_vlan_filtering()
+must not run on vlan_filtering toggles of such a switch. The
+ds->ops->port_vlan_filtering call is unchanged and the driver still
+sees every toggle; what is skipped only toggles the feature bit and
+replays or clears the VID list, and both halves are wrong when the
+bit never goes away. The replay re-adds VIDs that were never cleared,
+so vlan_vid_add() refcounts every upper VID twice. The clear strips
+the feature bit and the VIDs from a port that happens to be bridged
+at toggle time, and its uppers then stay dead even after it leaves
+the bridge, because nothing re-offloads them once the feature bit is
+gone. Both effects were measured on bcm5301x hardware. The conduit
+change path keeps its explicit teardown and restore of the 8021q
+upper VLANs, and now runs it for every port of such a switch,
+bridged or not, because with the permanent feature bit every port
+with uppers has VLANs on the CPU port.
 
-So on this hardware, delivering the frame and keeping VID-keyed ARL
-entries are mutually exclusive unless the VID is in the table. This
-series therefore programs the table, narrowed to what is actually
-needed: a standalone port only needs the VIDs its 8021q uppers use,
-which is one table write per upper instead of entries for all 4096
-VIDs.
+Fixes: 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when not needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Semih Baskan <strst.gs@gmail.com>
+---
+ include/net/dsa.h |  3 +++
+ net/dsa/port.c    | 22 +++++++++++++++-------
+ net/dsa/user.c    |  4 +++-
+ 3 files changed, 21 insertions(+), 8 deletions(-)
 
-I tried to keep the fix inside b53, but the driver cannot solve this
-alone: without NETIF_F_HW_VLAN_CTAG_FILTER the 8021q layer never calls
-.ndo_vlan_rx_add_vid, so the VIDs never reach the driver, and DSA
-manages that feature bit. The one existing way to get it,
-ds->needs_standalone_vlan_filtering, does not work here. It was
-measured insufficient, because f089652b6b16 makes .port_vlan_add skip
-the hardware write while not filtering, and its other effect is one
-b53 cannot take: with vlan_filtering_is_global, the forced
-vlan_filtering=1 in dsa_port_reset_vlan_filtering() would flip the
-whole switch into VLAN filtering when any port leaves a VLAN-unaware
-bridge. hellcreek relies on exactly those semantics, so patch 1 adds a
-narrower opt-in that only delivers the VIDs and leaves vlan_filtering
-alone, and patch 2 uses it in b53 and programs entries that carry
-standalone members, masked so bridge VLANs stay without effect while
-not filtering.
-
-Tested on the RT-N18U: the standalone upper receives 7 of 7 probe frames
-with vlan_filtering staying 0, the static fdb entry with a VID now
-survives a vlan_filtering toggle since the table enable and the ARL mode
-are never touched, uppers keep working across bridge join and leave and
-across a vlan_filtering toggle including on ports that were bridged
-while the toggle happened, deleting an upper or bridging its port
-verifiably stops delivery of that VID to the CPU, and the PPPoE session
-establishes. 802.1ad uppers keep working as software VLANs, since this
-switch does not parse 0x88a8, and stacked QinQ over an offloaded upper
-works too.
-
-Changes in v2:
- - patch 1's commit message rewritten after Vladimir Oltean's review.
- - the delivery failure is scoped to bcm5301x in both messages; Jonas
-   Gorski observed that other family members still deliver unknown
-   VIDs, and the programmed entries are correct there as well.
- - the cover's description of the miss path corrected per the v1
-   thread register discussion, and the measured alternatives extended
-   with the CHANGE_1Q_VID result.
- - patch 1: the conduit change path no longer skips ports that sit
-   under a bridge; with the permanent feature bit their uppers are
-   offloaded too, so their CPU port VLANs must move with the conduit.
-   Not reachable on b53, which has no .port_change_conduit.
- - patch 2: code unchanged.
-
-v1: https://lore.kernel.org/all/20260806073119.387-1-strst.gs@gmail.com/
-
-Semih Baskan (2):
-  net: dsa: let drivers offload 8021q uppers on standalone ports
-  net: dsa: b53: offload 8021q uppers on standalone ports
-
- drivers/net/dsa/b53/b53_common.c | 118 ++++++++++++++++++++++++++-----
- include/net/dsa.h                |   3 +
- net/dsa/port.c                   |  22 ++++--
- net/dsa/user.c                   |   4 +-
- 4 files changed, 121 insertions(+), 26 deletions(-)
-
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 7507d632e7c6..67a01fc5f81e 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -405,6 +405,9 @@ struct dsa_switch {
+ 	/* Keep VLAN filtering enabled on ports not offloading any upper */
+ 	u32			needs_standalone_vlan_filtering:1;
+ 
++	/* Offload 8021q uppers of standalone ports even when not filtering */
++	u32			needs_standalone_vlan_offload:1;
++
+ 	/* Pass .port_vlan_add and .port_vlan_del to drivers even for bridges
+ 	 * that have vlan_filtering=0. All drivers should ideally set this (and
+ 	 * then the option would get removed), but it is unknown whether this
+diff --git a/net/dsa/port.c b/net/dsa/port.c
+index 1f5536c0dffc..e61abc7c74f7 100644
+--- a/net/dsa/port.c
++++ b/net/dsa/port.c
+@@ -831,6 +831,9 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
+ 			if (!user)
+ 				continue;
+ 
++			if (ds->needs_standalone_vlan_offload)
++				continue;
++
+ 			err = dsa_user_manage_vlan_filtering(user,
+ 							     vlan_filtering);
+ 			if (err)
+@@ -839,10 +842,12 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
+ 	} else {
+ 		dp->vlan_filtering = vlan_filtering;
+ 
+-		err = dsa_user_manage_vlan_filtering(dp->user,
+-						     vlan_filtering);
+-		if (err)
+-			goto restore;
++		if (!ds->needs_standalone_vlan_offload) {
++			err = dsa_user_manage_vlan_filtering(dp->user,
++							     vlan_filtering);
++			if (err)
++				goto restore;
++		}
+ 	}
+ 
+ 	return 0;
+@@ -1445,10 +1450,13 @@ int dsa_port_change_conduit(struct dsa_port *dp, struct net_device *conduit,
+ 
+ 	/* The port might still be VLAN filtering even if it's no longer
+ 	 * under a bridge, either due to ds->vlan_filtering_is_global or
+-	 * ds->needs_standalone_vlan_filtering. In turn this means VLANs
+-	 * on the CPU port.
++	 * ds->needs_standalone_vlan_filtering, and every port of a
++	 * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
++	 * VLANs whether bridged or not. In turn this means VLANs on the
++	 * CPU port.
+ 	 */
+-	vlan_filtering = dsa_port_is_vlan_filtering(dp);
++	vlan_filtering = dsa_port_is_vlan_filtering(dp) ||
++			 ds->needs_standalone_vlan_offload;
+ 	if (vlan_filtering) {
+ 		err = dsa_user_manage_vlan_filtering(dev, false);
+ 		if (err) {
+diff --git a/net/dsa/user.c b/net/dsa/user.c
+index 041f9060c8ef..fda6ba4fdd13 100644
+--- a/net/dsa/user.c
++++ b/net/dsa/user.c
+@@ -1946,6 +1946,7 @@ static int dsa_user_clear_vlan(struct net_device *vdev, int vid, void *arg)
+  *
+  * - If standalone (this includes software bridge, software LAG):
+  *     - if ds->needs_standalone_vlan_filtering = true, OR if
++ *       ds->needs_standalone_vlan_offload = true, OR if
+  *       (ds->vlan_filtering_is_global = true AND there are bridges spanning
+  *       this switch chip which have vlan_filtering=1)
+  *         - the 8021q upper VLANs
+@@ -2717,7 +2718,8 @@ void dsa_user_setup_tagger(struct net_device *user)
+ 	user->hw_features |= NETIF_F_HW_TC;
+ 	if (user->needed_tailroom)
+ 		user->features &= ~(NETIF_F_SG | NETIF_F_FRAGLIST);
+-	if (ds->needs_standalone_vlan_filtering)
++	if (ds->needs_standalone_vlan_filtering ||
++	    ds->needs_standalone_vlan_offload)
+ 		user->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+ 
+ 	user->lltx = true;
 -- 
 2.53.0.windows.1
 
