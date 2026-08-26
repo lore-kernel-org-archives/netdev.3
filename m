@@ -1,209 +1,142 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F36233956
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 00:40:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8B9226D05;
+	Wed, 26 Aug 2026 00:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787704811; cv=none; b=Tsz0hxPIs7+dTe1KYjZeOHaK/+DK2nTKnKgT/CJ0qD/zKYWZyJVkD7tZWk0QFVF1fltVJYo37qBww3/uC7tbLWIPjcKX9KYuTlingkdhOfK5tbj2BaNHYS2YgcmSOXlR54xFCcZhsKTqnXlnBkVJ1QOsbx4ONAqJTrEfuTIOVb4=
+	t=1787705997; cv=none; b=GBGUS9pb0y1hMfcLgPDF6fbHE1ZKCz+xKGvFksVUHiQPe3T0v5ePX5py9DVvxTyyVHOt/g4/P3kavwca/R01mJSIrh+oNTqfR4N4kOj4eoucmQA1vw5kG7tjRSChQpm1Uz+yKh9bSn+SlTPEPan67gIX0kauMHDAMpfNRqG+ZxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787704811; c=relaxed/simple;
-	bh=FcFN70EMn3NFxzjIeQEMtx0bY3hAkneIIufEHZNApnw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ab4HrUGaZ+ctm6y1D7Yefu4/qfHfHShIbm1PZ1UqSIs5rp8+iVUF8huTRrtyN7qeimOOIxFCWxds5AFzzC1KxB1XssPv48kmYtH/mUBwlAcu4niYOEmEul69rOkn/7U1fyw5AjLSbCpF0lhBZvcFqcu3xQpHBy5YH5brvKU26ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r1rlF2Ug; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787705997; c=relaxed/simple;
+	bh=KXGI0iKaZmT839Wx1OWbGMxwNFK55RyTUtTtSZq4Nn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MQuX59CFe75ZKjqYI/gzszJ8Gph53LB4rDAYnlju39Q4Q8GTp1JPwqmHCVDeNM/bcvGcRNXh01qQEOhIURWSVBrsbHEPi7ME4tLkJyy7KTUJh0A2UIf3xoY2q+33Xi5GVi30i1zg71Er3E2F0/dCOisGLb17vt/05pi5wqefiqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=qgWkSdsN; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r1rlF2Ug"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84830c774a0so574188b3a.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 17:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787704810; x=1788309610; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JuJMd61vQn7VC6GY3r3MpRqnhIXcz7QetrZGVrziers=;
-        b=r1rlF2UgBR0VPlf9D8z36y2dw2gvX6mIMJqKfmENe0mvlHx5VdOrn3buNCnv0nwINS
-         UTbNNh7CTkRIvbdcCQmIUHDudFmprIu8kEHFpHz0u01OXdWmqGg/w9TM2Ll9oJI3uNV9
-         ebgSTZzsbtxHhiCSUDazzQfOTDH32luOrtHh8/2boRNBiP3OUaKdndvEJ3FhUWe3HWYX
-         5pakIqd8PrQbUVxkh10hA4W9qmTRuSmhwCMyFy6IQL7Lsxq4o2K9pB0aqLdsGUK2QXB0
-         xv1+WRuL2xuRZBeMpm8jxI/0OM1KYOVRzfC8DQj/fVUjpAhLc2WZ3UMEu6X1wEWQ4v37
-         lU4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787704810; x=1788309610;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JuJMd61vQn7VC6GY3r3MpRqnhIXcz7QetrZGVrziers=;
-        b=TpoZLKDbqjFJXPwhdivLoRx0093/32fifkpUE3qgyYMBQVsrLQq5ddr0inKnIYHFDr
-         vp7JIhUFPpZ1KV76rPpYqwQGnkCfbp8n5tYOSjricreq+Z0n5v6ZWQfbKORHqk5p3x3V
-         m5tMUd51O+D8tBrsuZo/jJzCAj2kVPOjweXhMvXmQsIVRtpAYAHN8BZ7DYY+QV0uxd/Q
-         fsKlSslG2Y8gcX28Gsgze7gfe5qT9lIVxS51vaxkVmPTtsSZ6olAF9XLB7YyYYzrf1zC
-         EQgS3btd1lKdeswdAGqrG1Ore/95zYMdeFWfPE/vg2UoShSSKMRuOuRxHjpsuKvwy3sY
-         eXSA==
-X-Gm-Message-State: AFuF++kQds7NYsDaYVAbLee4oTO6G2K2ae26i3enT8uDvIR0OFmXOrg6
-	SsxDXpwgqPYYsQFBwu6CFCnq2O7UnxI4EdphMcVLft4/Qgoz7uWLfxhhEMBcfWpK
-X-Gm-Gg: AR+sD13vjhYST1V0S6ggbSULp4wBBIowp422YMmJyXFShzSClXW9sV51LSqolY+1+I/
-	m9WhHTw6v4M4WYdnFGxu1SzdFt/NqAvZmFRl9WVu0z4T4RSebQsAlP5D4dsYbZt/zefq0hfk4wb
-	jbtEjpK7KQ6dyG/5oukmSI20nA4wUUvFLA2H3w0gx4bBtW0QVVnHsgXRzH//pcy8NT/ExNeFfjc
-	7nQJJY3tPN6G2fyOZZdcKAq6YXzSIoVAJcg/Dt/yC9EEzwCAI0SNLVw9jESZOGCKcMMnqg1isea
-	0uVS+CJZl8U8PEj/vqd2J1j9nZxVru3JgAcP5zI5Dz0/zXRsIah7aG0OBatfvG84oHzRTOwEjn2
-	P6DB0l8hML/le0WRxcMN8a7Dr5KUr7f6eVDUJTNH3SyamVfoOs5UkqwR10daaKVKgDPPCSVmCN+
-	Rzlr3P+iyq74wKkWb+YF4WYK7fso318D8EaPYTe3rRNTXUgo02q4/TX1e94lRcr1VEdW20Kd3C
-X-Received: by 2002:a05:6a00:464e:b0:847:881c:7026 with SMTP id d2e1a72fcca58-85371baa990mr4853484b3a.3.1787704809556;
-        Tue, 25 Aug 2026 17:40:09 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535cdc038dsm339377b3a.38.2026.08.25.17.40.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 17:40:09 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: netdev@vger.kernel.org
-Cc: sgarzare@redhat.com,
-	stefanha@redhat.com,
-	bobbyeshleman@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	bryan-bt.tan@broadcom.com,
-	vishnu.dasa@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sashiko-bot@kernel.org
-Subject: [PATCH net v4 2/2] vsock/vmci: validate packet source for connected sockets
-Date: Wed, 26 Aug 2026 09:39:28 +0900
-Message-ID: <20260826003929.966160-3-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260826003929.966160-1-4ncienth@gmail.com>
-References: <20260826003929.966160-1-4ncienth@gmail.com>
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="qgWkSdsN"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 247351C6BA7;
+	Wed, 26 Aug 2026 02:59:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1787705992; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=NYZTQkL5Jzv5jHcLk9d/FWbuGL1zpQHqOJLwaJI1Qdk=;
+	b=qgWkSdsNodFTmessuFQuNJNkTikXGeDFLJioSMdU5XVoHnZLlYBxtSWEfobf56AHPm6tbk
+	DUAjtqoxNxpejWOOsUFTtoFXv6fwmzGfOeXKC2FYBMKZhi4HAJqjtbCTKbjY7bjn6whkOA
+	zgUqOuqc2gCXUlrjVtDlTOSixrOnEI6NrXFbtiO5khf/GWEGH7uvHpqD3lgIEyYdIcuvJj
+	SATbSE+uD//L6aeHTQgUHhWg84x89vtWZukmQHkmDcva9hD8c5D6QaEZA7yC4IAO81AbJm
+	r2IVR7BQcBhfme4EDgSC3lYmNnPkr1Umvsayfm5C/GFeY2K94SnST489EBYCww==
+Message-ID: <a75b6b15-f86b-4cb2-934c-87583b5bb02c@cjdns.fr>
+Date: Wed, 26 Aug 2026 02:59:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next 3/3] net: phy: mediatek: support EcoNet EN751221
+ gbit SoC PHY
+To: Andrew Lunn <andrew@lunn.ch>, ansuelsmth@gmail.com
+Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, daniel@makrotopia.org, dqfext@gmail.com,
+ SkyLake.Huang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20260825193456.1823985-1-cjd@cjdns.fr>
+ <20260825193456.1823985-4-cjd@cjdns.fr>
+ <d7d86078-8a29-4e7f-a62e-91f6b266bea1@lunn.ch>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <d7d86078-8a29-4e7f-a62e-91f6b266bea1@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-vmci_transport_recv_stream_cb() looks up sockets first by the full source
-and destination tuple, then by destination only in the bound table. The
-fallback can select a non-listening socket without checking whether the
-packet came from its stored peer.
 
-This was reproduced with two VMCI contexts. A RST from the context not
-stored in a TCP_SYN_SENT socket reset that socket after it was selected by
-the destination-only lookup.
+On 26/08/2026 02:00, Andrew Lunn wrote:
+>> +static int en751221_tx_amp_compensation_tbl[2][TRANSFORMER_TYPE_MAX][MDI_TYPE_MAX][CALIB_CONST_TYPE_MAX][4] = {
+> const?
+Ahh yes, indeed all of them should be. Note to Ansuel: This is relevant 
+to your Airoha code as well.
+>
+>> +static u8 en751221_zcal_to_r50ohm[64] = {
+> const?
+>
+>> +	125, 125, 125, 125, 125, 125, 124, 121, 118, 115, 112, 110, 108, 105, 103, 101,
+>> +	 99,  97,  95,  77,  75,  73,  72,  70,  68,  67,  65,  64,  63,  45,  44,  43,
+>> +	 41,  40,  39,  38,  37,  36,  35,  34,  32,  32,  31,  30,  13,  12,  11,  10,
+>> +	  9,   8,   8,   7,   6,   5,   5,   4,   3,   2,   2,   1,   0,   0,   0,   0
+>> +};
+>> +/* EN751221 also mirrors RG_BG_RASEL into CHIP SCU register 0x16c. */
+>> +static void en751221_gphy_mirror_rext(struct phy_device *phydev, u8 zcal)
+>> +{
+>> +	struct regmap *chip_scu;
+>> +
+>> +	chip_scu = syscon_regmap_lookup_by_compatible("econet,en751221-chip-scu");
+> Does this need a change to the binding document?
 
-VMCI can process notification packets in bottom-half context when the
-socket is not owned by user context, or defer packets to a workqueue. Use
-vsock_check_source() after taking the socket lock in the bottom-half path,
-and recheck after lock_sock() in the workqueue path. Listening sockets
-continue to accept packets from any source.
 
-Reply with a RST addressed from the received packet before dropping a
-source that fails validation. This preserves the existing reset behavior
-for bound non-listening and concurrently closed sockets without directing
-the reset to a connected socket's stored peer.
+Not as far as I know. econet,en751221-chip-scu is defined in 
+mfd/syscon.yaml because it's a catch-all for configuration that the 
+engineers didn't know what to do with.
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260814121255.6B5001F000E9@smtp.kernel.org/
-Cc: stable@vger.kernel.org
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- net/vmw_vsock/vmci_transport.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 1c4ee039c..1f186e8f8 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -680,11 +680,13 @@ static int vmci_transport_recv_stream_cb(void *data, struct vmci_datagram *dg)
- 	struct vmci_transport_packet *pkt;
- 	struct vsock_sock *vsk;
- 	bool bh_process_pkt;
-+	bool drop_pkt;
- 	int err;
- 
- 	sk = NULL;
- 	err = VMCI_SUCCESS;
- 	bh_process_pkt = false;
-+	drop_pkt = false;
- 
- 	/* Ignore incoming packets from resources that aren't vsock
- 	 * implementations.
-@@ -765,17 +767,29 @@ static int vmci_transport_recv_stream_cb(void *data, struct vmci_datagram *dg)
- 	bh_lock_sock(sk);
- 
- 	if (!sock_owned_by_user(sk)) {
--		/* The local context ID may be out of date, update it. */
--		vsk->local_addr.svm_cid = dst.svm_cid;
-+		if (sk->sk_state != TCP_LISTEN &&
-+		    !vsock_check_source(vsk, &vmci_transport, &src)) {
-+			drop_pkt = true;
-+			err = VMCI_ERROR_NO_ACCESS;
-+		} else {
-+			/* The local context ID may be out of date, update it. */
-+			vsk->local_addr.svm_cid = dst.svm_cid;
- 
--		if (sk->sk_state == TCP_ESTABLISHED)
--			vmci_trans(vsk)->notify_ops->handle_notify_pkt(
--					sk, pkt, true, &dst, &src,
--					&bh_process_pkt);
-+			if (sk->sk_state == TCP_ESTABLISHED)
-+				vmci_trans(vsk)->notify_ops->handle_notify_pkt(sk, pkt, true,
-+									       &dst, &src,
-+									       &bh_process_pkt);
-+		}
- 	}
- 
- 	bh_unlock_sock(sk);
- 
-+	if (drop_pkt) {
-+		if (vmci_transport_send_reset_bh(&dst, &src, pkt) < 0)
-+			pr_err("unable to send reset\n");
-+		goto out;
-+	}
-+
- 	if (!bh_process_pkt) {
- 		struct vmci_transport_recv_pkt_info *recv_pkt_info;
- 
-@@ -900,6 +914,7 @@ static void vmci_transport_recv_pkt_work(struct work_struct *work)
- {
- 	struct vmci_transport_recv_pkt_info *recv_pkt_info;
- 	struct vmci_transport_packet *pkt;
-+	struct sockaddr_vm src;
- 	struct sock *sk;
- 
- 	recv_pkt_info =
-@@ -908,6 +923,12 @@ static void vmci_transport_recv_pkt_work(struct work_struct *work)
- 	pkt = &recv_pkt_info->pkt;
- 
- 	lock_sock(sk);
-+	vsock_addr_init(&src, pkt->dg.src.context, pkt->src_port);
-+	if (sk->sk_state != TCP_LISTEN &&
-+	    !vsock_check_source(vsock_sk(sk), &vmci_transport, &src)) {
-+		vmci_transport_reply_reset(pkt);
-+		goto out;
-+	}
- 
- 	/* The local context ID may be out of date. */
- 	vsock_sk(sk)->local_addr.svm_cid = pkt->dg.dst.context;
-@@ -937,6 +958,7 @@ static void vmci_transport_recv_pkt_work(struct work_struct *work)
- 		break;
- 	}
- 
-+out:
- 	release_sock(sk);
- 	kfree(recv_pkt_info);
- 	/* Release reference obtained in the stream callback when we fetched
+>
+>> +static int en751221_gphy_config_init(struct phy_device *phydev)
+>> +{
+>> +	phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
+> Why is the EEE register being cleared?
+
+
+ From reading the reference implementation, I get the impression that 
+this hardware is something of a basket case. There was a certain amount 
+of "write three times and then read back" type magic that I just omitted 
+because it really looks like they were actively debugging and as soon as 
+it started working they shipped the code exactly as it was.
+
+
+In the case of disabling EEE, I thought it more prudent to follow them 
+because I don't have every SoC that this PHY ever appeared on and I 
+would rather not diverge too greatly and risk it being unreliable on 
+some devices.
+
+
+>
+>> +
+>> +	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_52B5);
+>> +	__mtk_tr_write(phydev, 0x1, 0xf, 0x00, 0x00002b);
+>> +	__mtk_tr_write(phydev, 0x1, 0xf, 0x03, 0x082422);
+>> +	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
+>> +
+>> +	ret = phy_write(phydev, MII_CTRL1000,
+>> +			ADVERTISE_1000FULL | CTL1000_PREFER_MASTER |
+>> +			CTL1000_AS_MASTER | CTL1000_ENABLE_MASTER);
+> What does this default to?
+It starts with only ADVERTISE_1000FULL. I don't know why the engineers 
+wanted to set it to master, but its definitely intentional.
+>
+>> +
+>> +	phy_set_bits(phydev, MII_BMCR, BMCR_ANRESTART | BMCR_ANENABLE);
+> Why? config_aneg() will do this, if needed.
+
+
+Okay this is probably just because the code I was working from is very 
+old. I will review this and see if it's truly needed.
+
+
+Also you're certainly more knowledgeable than me about what to expect 
+from PHY hardware, so if it is your opinion that setting master and 
+disabling EEE are probably not a real workaround for stability problems, 
+then I'll be happy to give it a try with these omitted.
+
+
+Thanks,
+
+Caleb
+
+
+>
+>       Andrew
