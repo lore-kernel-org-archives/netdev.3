@@ -1,122 +1,132 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152363E49F6
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787741402; cv=pass; b=pzVBnBtHPdVXK0wzB+r/hQtCgnRT8AVKaiNEgd7Im2rst83vDskkueNPLfRn4GJn2SM9rD7KkKW3cfVHTYwccbSBKrrM2SnTny00fjyolXhoCyJpCsPfGHoBt+PoiEiq8sOQnxlzUFEEkIIv/o6urvTFE5+FvZZVRqgRKK8nw1U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787741402; c=relaxed/simple;
-	bh=OZg4U7BnVFDaScqmyvwpcLtjOZbPHS1ILvUCZF21iy4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gnbs11YaY6QfEM9qkKjh8TO8K9+DMP4b/bD3OcKb5UBerCHLexEXfwFDeDXbAZOOO61dl6edm1+SdD4pLJSWlv2T9W798soDv20flWbDaJ3so7QUd/JvmqQDnt0ec9PHBRgSg15O19h/2leBk69IxaEKvGesKNIgIF+H77P6B4c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p5cvXRIA; arc=pass smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639D23B8BDA
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787741575; cv=none; b=QWNItqjlLSe8K4QPc9YKe5TUUd/T1ODJoIDVLukNOnaFiUVlfc6O0yNHlgaHD8WvHxm9mAkNv9RXMEyy7k8QGG6PAVJ/wwvpBAWD7N06fTwDU9zYTJIx5ftOqUbvhJ3P59DIjNmye+qeeYWKUe+pFGkNBKrD+KcwO10qHdNyKy4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787741575; c=relaxed/simple;
+	bh=/ls5BeKpLATZSEMrx/GBfxNGWerB1035CuzGl0Rdg+s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=K/5Xle3HVyNt9Ydqh1YXXb4V7NBmk4I05E/iVdtWIh8LIDfS4LGafWRU/lno7FTb65pMHY+7p/dz/XraWUIyE+TINISj/UC5sUZZp8WV+2NflKDioLu5RTTVwG3HBwbS5eF85JMNu/oRbJSZdiVRTzzxH/ivY/cuq6bQRQDb5XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YiVgAFIk; arc=none smtp.client-ip=209.85.222.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p5cvXRIA"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c149c5722so6698401cf.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:49:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787741388; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nXsqAqibC7NL+9WZWd6AEHIjEc2mBJT4WmVs/vvUDo8TwJMM0wkicV3E2ZTtSBKhI5
-         DW+JbYAnpf8h9ZhF1MwIkfl6B002KAr2/e1Hd619dV8r09A4gXahZw3mUkv3LOIcAJ7X
-         aKzZEAzFlhLeX9aAx9SxSnTOhwaMOzU12Q3KF4FfHo6S4UnvXYvSCPzj2672sZPhxi/l
-         aLWy3QxA22EmKUhq4jGoUJsg/aDZNtwzWMHsmDOfx2A4s+xAXtgZzIFDCudhIWyf0BD+
-         d0Ct8Hv1XpRyjMdO7mpv4dEPbwfWx4/JQ0lK25F+Kcp16qgUWIuzHrb53pLMVrJAOU2p
-         Y3BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OZg4U7BnVFDaScqmyvwpcLtjOZbPHS1ILvUCZF21iy4=;
-        fh=Pe4SGzHOuAl7Lx+MbS7JdHw9I8fV42hxrNIuHX+B8RE=;
-        b=KH2wu+36tE4ESyY1M96sJSBzFrtj0JMHGiBIxgUmwIuz/1A/NMsxI+tCl34NJLJ1xv
-         DxtH6eD9VZ5VioKXhjW5GjO1BLOBJT9C4QYlDlmYUHER4Gcjrcbs+IzamGUk4zzLRKj5
-         VLM34P5i24z14/uNi0CwKxsipKe8UhAHzbAcZueiQ70O7TlS+RyY/g/qXMyfUyLLVCsz
-         IcMaCIpY4NKV+7yqHY/05s85RKzVEWWqVUcnOWFPkypiY1sQiCtfs+L3SB5+5ZPDQEK5
-         o7coxUv0BOOuxLivZUuuN6qCGpkf64Lsv0XizNF6m3yDVSWN1N3WGqH5simdNmuTWcS3
-         7aWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YiVgAFIk"
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93771aa0379so94923785a.1
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:52:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787741388; x=1788346188; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OZg4U7BnVFDaScqmyvwpcLtjOZbPHS1ILvUCZF21iy4=;
-        b=p5cvXRIAuOg1kxPMjB6N9UKcHGUtP0MASVsnbLqgR0WpcJwZsgAJ9rNVcUSft3+KXH
-         Yv+yRTIzekRMOC/eT1jfWmY/L5HdqFOFCQbs0EZK8OI2DPqIFDWTfUGnMRntJV4kDDG8
-         PsWdQzT5Wl1u3mmIYiL2AkB75VTvCWS8iIOg2FX2b3VlcmVTr0xHByBhmaJUi0uctxjJ
-         nTADQutvNSGsxFZNXKF/1vs8D1QOu+6ANv/g5MJm2x5qZNj3JvKM5zPicfcoSnp6Nt9s
-         T+jHjTsq7aC3lzkzcNuaLP+nFA3TiwxY2y9MmHOBVoMKKcYcDocZpPfzbv+nhb2qSGsA
-         /1yA==
+        d=google.com; s=20251104; t=1787741559; x=1788346359; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lr1+9ZYzYrBn8/7Vq1xvFhGGkMuHVqAfPU69pyc2DgU=;
+        b=YiVgAFIkVz3XiIoEZYNsi/oNXrdhzFSzf6b6ymOCFt9/PuSvuNMow8oSdEAkDUYUsQ
+         RHQRFl52OE/b4jWdgsq04OtV5vHEjJyOx8lGAUF5gmBn9x/mhtyFosUyuCSrv7FPsEPW
+         vwqDNiTjchDDOfzQOP5NcKHWGjgrCyHiwP2g2kFMfP8zFeNmjKUSBrvuKYGUlErXt6G/
+         3AVDOZn8q0XZAMcgYxmuFSUzGsIg9Kl82/0BfnB1PdCxGtKiH7205M49pJbO7SG4rRkh
+         ZhaBSVzGhPIJVPqQli7OlJgYiTPBBupgpBH/SK8NshdIGe8Itr9BtcbIpSayVq1wAoxR
+         5Rpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787741388; x=1788346188;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787741559; x=1788346359;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OZg4U7BnVFDaScqmyvwpcLtjOZbPHS1ILvUCZF21iy4=;
-        b=XmfBllooTLZBBOHz9KzymYuza5usHF8TqPwoI65z+ELfnZQY+9gV1fUtWbVNI0KHY1
-         qd5I/72GOtLqLt8U3FoEzrzgBs8ewWGo4naFtHe+4L7xm6P7Ma0FVQ5SoPXlPlKU5WT9
-         P8p4WXie6yLbxGb1udHuaBcUaBKXq4DdcxRYvkcjQov66KQChDiMUlSB7qEQV0JeObEj
-         TYVYJEDoczGHntbjZ9ltxIT9U0dfs654SEl8VCdA90ZQa3SpoipD5oQw5BE070/JkG2x
-         vxXVKpU3JmXZtRUIAE3gaeLT0bIxmKh4vgjfZWSTqX1xawWEGR1CJUSdep/Tx6Awr/Mt
-         Kcbw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpo0TIArKl4ODPx+kiXHSgvhv+uV+bZCMwh9FY03kQmhGVPAp5ravebK+bCebNeBs8IG4s/r40=@vger.kernel.org
-X-Gm-Message-State: AFuF++kibl3PYqIGHeuukjcw9PCMwTGpXOa+B/odE0uBkpjVKen98sCU
-	N+KV1R46r8M7AvPoUAxq7JtpRIkleG7g6uY+1lQttXuHuk++GudUpgJwgqyr6yuMNh6/pm+5N1m
-	8dneEjgWl0d35130ncEjROVZi4L9M/GkvI+HLo5NhewWXZM3ckUm+78xh3/I=
-X-Gm-Gg: AR+sD11fmhZAwKtdVICkS8IZZgFBNtfPfI6VBkVSOqAzvy7+KQKFHAfmbrd8kst6nMD
-	Qvu5NeTdkRCvZ6DoP+cbIL6ta2C+7KpWF9AiAHhB8ywWnIRe90rXNJTYYoVWbiegTNbn6JPZ9Ly
-	DXQgHgaz4TkSj5kZo4C9IEH68ApOiuccROksYFc6/9Ei9++pUA5wKmQmRgW86gPBESTf1ifsKyX
-	hEtrQ52gNJUBLSHUASanCdng7yD/W404kblbgLOBrsFCHJnuFUBFLQdmZe1SddbKIPwKngwrYJL
-	8pR2CKsNMMQ/PRpSjJPP69y1qa7PXWAqDx4N6j0oWHPV4SQjwe0c0yjiki6p3tH35LYz0Y2p8g5
-	6FA6wYs2hpE3iapUhBLJtiQ1xagnDY1LwXxqkyltpQoVu+PcBTW59/BU8j7k=
-X-Received: by 2002:a05:622a:118d:b0:51b:fb5f:b263 with SMTP id
- d75a77b69052e-52e2ec1e5demr131525271cf.4.1787741387715; Wed, 26 Aug 2026
- 03:49:47 -0700 (PDT)
+        bh=lr1+9ZYzYrBn8/7Vq1xvFhGGkMuHVqAfPU69pyc2DgU=;
+        b=nF4JjNYM/iifGejGEo7juCGYOdJzptXzQT959fduUO6vM+zmZ+er4dVbKm6+kkGyZw
+         5ZnuUUcS7M1Qku8IEmAwK75BWXNS0mbI7SXJkCtOIWx+tJw7E2hhvyt9AZHW2l0QPSwC
+         Fp1SZfmRFseNtWsP/HLgJS4TURS3ejoIJhv17wEnscf6zfdMGi6k/0rRdccPGvah2K3z
+         6bMKxwSN1tyfbvvfigqvVOjHVyYWSrxH/ZpdEGRs2bVOGgEYIXVUas+AnGopW8VV5nwJ
+         uPF6vnCJXySqiOD32znw7rC6O0fFzT8gqjf0X1nlg6FE8pEi3ofqoynbGDJFvws+4Vy6
+         +K0g==
+X-Forwarded-Encrypted: i=1; AHgh+Rqbai3JO28Ub1sh29N3WKFDb08FgiY1kHPQBWwZbDIHKClUil022P6Ywi4eddeloiSLMq5B6WQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++k4HLIEbD9Oax+cQdC8QNCAzTuJ+D+BQaz7GsBBUM/rkm23pdwc
+	b75izOrjaOJ230+K3gKte/7IpE6MTChDXOMQvy2pEB+vs7tNHg2YdsWB/jUU2IZeH476OfYxARU
+	r3ySoIPOHNlAwlQ==
+X-Received: from qknpy6.prod.google.com ([2002:a05:620a:8786:b0:915:80bb:1689])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:1265:b0:938:8ddb:5e9b with SMTP id af79cd13be357-9388ddb60famr35322785a.8.1787741559119;
+ Wed, 26 Aug 2026 03:52:39 -0700 (PDT)
+Date: Wed, 26 Aug 2026 10:52:38 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CANn89iKEVEs5=K1Uhj_CHagbt+eV0QGernwz9EBFkLEZOB1FAw@mail.gmail.com>
- <20260826102718.1550-1-hdanton@sina.com>
-In-Reply-To: <20260826102718.1550-1-hdanton@sina.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
+Message-ID: <20260826105238.3323436-1-edumazet@google.com>
+Subject: [PATCH net] slip: remove slip_hangup() to fix use-after-free in slip_receive_buf()
 From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 26 Aug 2026 12:49:36 +0200
-X-Gm-Features: AcwNN1Uxe_6_kvBBH-Eu_qu1--WkAq-sDiv0UaNoiZsUfUmceeHFMBjdziA-s-Q
-Message-ID: <CANn89iKFGKENq+cFHC7p6ekKXpYhpvZQdA1-TAoriFi09tPqrg@mail.gmail.com>
-Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
-To: Hillf Danton <hdanton@sina.com>
-Cc: "Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>, 
-	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>, 
-	Nilay Shroff <nilay@linux.ibm.com>, Keith Busch <kbusch@kernel.org>, boqun@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, peterz@infradead.org, 
-	syzkaller-bugs@googlegroups.com
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Jaeyoung Chung <jjy600901@snu.ac.kr>, 
+	Eulgyu Kim <eulgyukim@snu.ac.kr>, Qingfang Deng <qingfang.deng@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 26, 2026 at 12:27=E2=80=AFPM Hillf Danton <hdanton@sina.com> wr=
-ote:
->
-> On Wed, 26 Aug 2026 06:05:15 +0200 Eric Dumazet wrote:
+Jaeyoung Chung and Eulgyu Kim reported a slab-use-after-free read
+in slip_receive_buf() when racing against tty hangup.
 
-> > How many bugs did you fix last year?
->
-> More than 150 [13].
+tty_ldisc_hangup() calls ld->ops->hangup() while holding only
+a read lock on tty->ldisc_sem (via tty_ldisc_ref()).
+Because slip_hangup() simply called slip_close(), it ran concurrently
+with reader functions such as slip_receive_buf().
 
-Pure hallucination.
+slip_close() unregisters and frees the net device and its private
+struct slip, causing concurrent reader threads in slip_receive_buf()
+to dereference freed memory.
 
-$ git log --author "Hillf Danton" --oneline --since 1year | wc -l
-0
+Line discipline close() is already guaranteed to be called under
+the write lock of tty->ldisc_sem during hangup processing
+(in tty_ldisc_reinit() or tty_ldisc_kill()).
 
-Lets compare to some real numbers.
+Remove slip_hangup() so teardown is serialized cleanly by slip_close().
 
-$ git log --author "Eric Dumazet" --oneline --since 1year | wc -l
-550
+Fixes: 5342b77c4123 ("slip: Clean up create and destroy")
+Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+Closes: https://lore.kernel.org/netdev/20260825150655.1450271-1-jjy600901@snu.ac.kr/
+Cc: Qingfang Deng <qingfang.deng@linux.dev>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ drivers/net/slip/slip.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Harassing a maintainer is probably not a good thing, I wish you luck.
+diff --git a/drivers/net/slip/slip.c b/drivers/net/slip/slip.c
+index faae711cf793d3f2351f67dfaab6abb2d2b72b19..ac0fc59c8c2593f3d9d501d7bdfcade7bf0de47d 100644
+--- a/drivers/net/slip/slip.c
++++ b/drivers/net/slip/slip.c
+@@ -881,8 +881,6 @@ static int slip_open(struct tty_struct *tty)
+  * Close down a SLIP channel.
+  * This means flushing out any pending queues, and then returning. This
+  * call is serialized against other ldisc functions.
+- *
+- * We also use this method fo a hangup event
+  */
+ 
+ static void slip_close(struct tty_struct *tty)
+@@ -910,11 +908,6 @@ static void slip_close(struct tty_struct *tty)
+ 	unregister_netdev(sl->dev);
+ 	/* This will complete via sl_free_netdev */
+ }
+-
+-static void slip_hangup(struct tty_struct *tty)
+-{
+-	slip_close(tty);
+-}
+  /************************************************************************
+   *			STANDARD SLIP ENCAPSULATION		  	 *
+   ************************************************************************/
+@@ -1275,7 +1268,6 @@ static struct tty_ldisc_ops sl_ldisc = {
+ 	.name 		= "slip",
+ 	.open 		= slip_open,
+ 	.close	 	= slip_close,
+-	.hangup	 	= slip_hangup,
+ 	.ioctl		= slip_ioctl,
+ 	.receive_buf	= slip_receive_buf,
+ 	.write_wakeup	= slip_write_wakeup,
+-- 
+2.55.0.860.g4b6b3295ed-goog
+
