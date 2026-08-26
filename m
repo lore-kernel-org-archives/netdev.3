@@ -1,95 +1,223 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736D93B0586;
-	Wed, 26 Aug 2026 20:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CA536AB46
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 20:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787776047; cv=none; b=HMxJ7ojAn+/yIbd06FV6o75WbRmBSFXiXsiXNytpeq/BhIdwnkooghdX88FbnTaE1SV9akXtmnuu4pC8PKFFZ2GX9lhKlqIBjcGd98uoB/jUGoPL1kmO/Kl10jXJOm/0VvlJgvUFKvwp14unLZOvHrFGhN6qK5652C6kLfTSZQ4=
+	t=1787776098; cv=none; b=akdspyFis/Kjc+O+O4K5JLVtBiYqZpJkqbgFkUwe0U3JozSD9vtfViJbvYU+ZvNiyIE17+ls/f5RqjjqJ/5M3ua15cQXXFYTu/xL4bq8J+CRKZaBLwAcOBDVzfDcOmrIqNss/3oq3kovAKaBaEo693ib7VVjUXZlOAfMJBOme1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787776047; c=relaxed/simple;
-	bh=Ky6LthHIHTpGbGdgl8B00TwJaOe0BFJIBEAFmD6ikRA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W1whmI1Myo5NLOb8X//DLrvczm8PFWyOle39sOQEijevFwv+e2gYtGgeBbdU+zpjl2+rOknEsriV9S85pdhT2CjwNiTcEr0A888pC6QYqFP8eYAI2sj2FcLISct/SkPKZeaXhUqXvoUdyWgKy12VnSrsYV5SZmtxXjqL8twk0GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=S+AmJYRr; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1787776098; c=relaxed/simple;
+	bh=5oYtPm6z4ArC+5zm0cngRv2jRsYWShcxBZPm/ZjfTu8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CkSy0Hpdas/Q9HMHJb5fqksYuV8bgEnvFXBHxkOCV/0cA9whHLJM2XCzQ4VLj1taFHM2WwZyox8/l1ThuGIJaOl5Py8VukjXcIfPhppFvAktRopk1PrVUawO7ojAMuOaYCvTWXBYwnR/IWax+rSyyYHEAZUnbNASJlDmcSH+aqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YY2acPzY; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="S+AmJYRr"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F27701E25E0;
-	Wed, 26 Aug 2026 22:27:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1787776043; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=WHfz/XH3YitbIt7V+TouW3EtPz2ZC9CU8oNr6aba570=;
-	b=S+AmJYRrI2BDGneRLc4Xr40yRRcGOYvqCju3wJn8tIGW0L/mDN683PvTJ/ycfyFQ+q7roV
-	8olNPruPc8pNflssh+kYlnH2lhzPkUB3G2E6JbLW0i5WZeVibig7Znn46yE17IjdyhV/+S
-	IMDExSH10GkUbCnyOhYIVkOrxwjOYCUL/27kCr0BU3sWcAeyGTpDu3EREDvS+nWnjEq+LH
-	JWnp118lsK+96Z2DNvAmJvmuoi/eCAxd7eaJ+ShjDwSjW/dfs61Ahd+xkYOq6wZoq89nUZ
-	Q44Sa6sUQUv//XgTH93FIxmong6cy6aYdZN50U7foPy89aNr2NWpkngrgYKVWw==
-Message-ID: <121a7ddc-e194-4773-9165-449d410eedfa@cjdns.fr>
-Date: Wed, 26 Aug 2026 22:27:18 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YY2acPzY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787776096; x=1819312096;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5oYtPm6z4ArC+5zm0cngRv2jRsYWShcxBZPm/ZjfTu8=;
+  b=YY2acPzY0zZlEHeBHozQkW+9HNe7RyN1aslXAobNGx3kTg0m3Z8hC5hp
+   VhBSxRKUzoeW/OFAvigv6lu2UX2HXr9Hrwv+/HWZT43Pu9uA0RyCe/mDQ
+   HtyvXpNUIlc7aIUTax3fIdc5hZBG8N/aWUam3BoXVpvQ0MRgzQzffo+Ai
+   GF2ptFWJHgdBtRAhw8+TMCVdIFnVe9kCHXB9AOfQHUs7gSbHoSqfIoDsP
+   wyK63fZTCrbLF7YFD8vUB9Q7tvfUyxmX96hgwwnrTHkb8Qu9ivicToT/J
+   B43zUYjs1fclPbzkgHxvyaALfPMZtG3zYf24C5qFVjFdQdyODhWjqapgf
+   g==;
+X-CSE-ConnectionGUID: ORTW1ye0Qca/9NP0nz/+yA==
+X-CSE-MsgGUID: IXLMa4saQWmWViOwFZDs6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="87398555"
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
+   d="scan'208";a="87398555"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 13:28:10 -0700
+X-CSE-ConnectionGUID: jdEWrRVHS9GUyRJBktZK7Q==
+X-CSE-MsgGUID: 0csEfiItQuusfvRnoD6mTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; 
+   d="scan'208";a="297562630"
+Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 26 Aug 2026 13:28:08 -0700
+Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wzKE9-000000008ST-075W;
+	Wed, 26 Aug 2026 20:28:05 +0000
+Date: Thu, 27 Aug 2026 04:27:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mengyuan Lou <mengyuanlou@net-swift.com>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: Re: [PATCH net v3] net: libwx: protect ring accesses with RCU
+Message-ID: <202608270436.2nJKiNXZ-lkp@intel.com>
+References: <20260824103606.303-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 3/3] net: phy: mediatek: support EcoNet EN751221
- gbit SoC PHY
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: ansuelsmth@gmail.com, netdev@vger.kernel.org, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, daniel@makrotopia.org, dqfext@gmail.com,
- SkyLake.Huang@mediatek.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20260825193456.1823985-1-cjd@cjdns.fr>
- <20260825193456.1823985-4-cjd@cjdns.fr>
- <d7d86078-8a29-4e7f-a62e-91f6b266bea1@lunn.ch>
- <a75b6b15-f86b-4cb2-934c-87583b5bb02c@cjdns.fr>
- <4d594c62-2ceb-43c1-a3d2-731b80493787@lunn.ch>
- <cd7e6b13-a712-43ce-aae6-f45da2f77ba9@cjdns.fr>
- <25195db9-c15e-449d-b792-8f5a7c0aa371@lunn.ch>
-Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <25195db9-c15e-449d-b792-8f5a7c0aa371@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824103606.303-1-mengyuanlou@net-swift.com>
 
+Hi Mengyuan,
 
-On 26/08/2026 18:50, Andrew Lunn wrote:
->> I tested my board removing the EEE disable and the MASTER line, and it seems
->> to work. I can't get any CRC errors flooding the link, and MII_STAT1000
->> reads LPA_1000LOCALRXOK | LPA_1000REMRXOK | LPA_1000FULL which suggests to
->> me that it's able to operate happily in slave mode.
->>
->>
->> So unless you or someone else thinks it's inadvisable, I'm inclined to just
->> enable these things and then wait to see if anybody finds a board that has
->> problems.
-> Master/slave should sort itself out, maybe taking a little longer if
-> there is an initial conflict. Where it can go wrong is when the random
-> number generator in the PHY always returns 42. Put the same PHY on the
-> other end and the election always fails.
->
-> EEE issues can be more subtle, it depends on what the link partner is.
->
-> But yes, we can start without these. But please mention this in the
-> commit message, just to give a hint to anybody who ends up trying to
-> debug in these areas.
+kernel test robot noticed the following build warnings:
 
+[auto build test WARNING on net/main]
 
-Just re-sent v2, in fact after this conversation I did more testing and 
-caught it sporadically failing to negotiate, so I put back the force 
-master, confirmed it is fixed, and added a comment.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mengyuan-Lou/net-libwx-protect-ring-accesses-with-RCU/20260824-183606
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260824103606.303-1-mengyuanlou%40net-swift.com
+patch subject: [PATCH net v3] net: libwx: protect ring accesses with RCU
+config: microblaze-randconfig-r133-20260826 (https://download.01.org/0day-ci/archive/20260827/202608270436.2nJKiNXZ-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 8.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260827/202608270436.2nJKiNXZ-lkp@intel.com/reproduce)
 
-Thanks again for your kind review and advice.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608270436.2nJKiNXZ-lkp@intel.com/
 
-Caleb
+sparse warnings: (new ones prefixed by >>)
+>> drivers/net/ethernet/wangxun/libwx/wx_vf_common.c:208:54: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_vf_common.c:208:54: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_vf_common.c:208:54: sparse:     got struct wx_ring [noderef] __rcu *
+--
+>> drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c:179:56: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c:179:56: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c:179:56: sparse:     got struct wx_ring [noderef] __rcu *
+--
+>> drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:158:22: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:158:22: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:158:22: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:173:22: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:173:22: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:173:22: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:808:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:810:36: sparse: sparse: dereference of noderef expression
+--
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:1717:17: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:1717:17: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:1717:17: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:2662:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2662:45: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2662:45: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2704:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2704:49: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2704:49: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:2778:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2778:45: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2778:45: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2826:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2826:49: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2826:49: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2936:56: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2936:56: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2936:56: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2948:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2948:49: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2948:49: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3039:56: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3039:56: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3039:56: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3051:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3051:49: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3051:49: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:3327:58: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const * @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3327:58: sparse:     expected void const *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3327:58: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3343:57: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3343:57: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3343:57: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:3345:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void * @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3345:43: sparse:     expected void *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3345:43: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3355:58: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const * @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3355:58: sparse:     expected void const *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3355:58: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3371:57: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3371:57: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3371:57: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3372:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void * @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3372:43: sparse:     expected void *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3372:43: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c: note: in included file (through include/linux/if_ether.h, include/linux/etherdevice.h):
+   include/linux/skbuff.h:2904:28: sparse: sparse: unsigned value that used to be signed checked against zero?
+   include/linux/skbuff.h:2904:28: sparse: signed value source
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:2061:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2068:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2075:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2080:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2101:28: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2104:28: sparse: sparse: dereference of noderef expression
+--
+>> drivers/net/ethernet/wangxun/libwx/wx_hw.c:1602:51: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:1602:51: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:1602:51: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_hw.c:1800:25: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:1800:25: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:1800:25: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_hw.c:2025:53: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2025:53: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2025:53: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2251:53: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2251:53: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2251:53: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2842:58: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2842:58: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2842:58: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2845:59: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2845:59: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/libwx/wx_hw.c:2845:59: sparse:     got struct wx_ring [noderef] __rcu *
+--
+>> drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c:40:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c:42:36: sparse: sparse: dereference of noderef expression
+--
+>> drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:409:52: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct wx_ring *ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:409:52: sparse:     expected struct wx_ring *ring
+   drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:409:52: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:425:41: sparse: sparse: dereference of noderef expression
 
+vim +1717 drivers/net/ethernet/wangxun/libwx/wx_lib.c
 
->
->        Andrew
+09a508800952f8 Mengyuan Lou 2023-02-03  1696  
+09a508800952f8 Mengyuan Lou 2023-02-03  1697  netdev_tx_t wx_xmit_frame(struct sk_buff *skb,
+09a508800952f8 Mengyuan Lou 2023-02-03  1698  			  struct net_device *netdev)
+09a508800952f8 Mengyuan Lou 2023-02-03  1699  {
+09a508800952f8 Mengyuan Lou 2023-02-03  1700  	unsigned int r_idx = skb->queue_mapping;
+09a508800952f8 Mengyuan Lou 2023-02-03  1701  	struct wx *wx = netdev_priv(netdev);
+09a508800952f8 Mengyuan Lou 2023-02-03  1702  	struct wx_ring *tx_ring;
+09a508800952f8 Mengyuan Lou 2023-02-03  1703  
+09a508800952f8 Mengyuan Lou 2023-02-03  1704  	if (!netif_carrier_ok(netdev)) {
+09a508800952f8 Mengyuan Lou 2023-02-03  1705  		dev_kfree_skb_any(skb);
+09a508800952f8 Mengyuan Lou 2023-02-03  1706  		return NETDEV_TX_OK;
+09a508800952f8 Mengyuan Lou 2023-02-03  1707  	}
+09a508800952f8 Mengyuan Lou 2023-02-03  1708  
+09a508800952f8 Mengyuan Lou 2023-02-03  1709  	/* The minimum packet size for olinfo paylen is 17 so pad the skb
+09a508800952f8 Mengyuan Lou 2023-02-03  1710  	 * in order to meet this minimum size requirement.
+09a508800952f8 Mengyuan Lou 2023-02-03  1711  	 */
+09a508800952f8 Mengyuan Lou 2023-02-03  1712  	if (skb_put_padto(skb, 17))
+09a508800952f8 Mengyuan Lou 2023-02-03  1713  		return NETDEV_TX_OK;
+09a508800952f8 Mengyuan Lou 2023-02-03  1714  
+09a508800952f8 Mengyuan Lou 2023-02-03  1715  	if (r_idx >= wx->num_tx_queues)
+09a508800952f8 Mengyuan Lou 2023-02-03  1716  		r_idx = r_idx % wx->num_tx_queues;
+09a508800952f8 Mengyuan Lou 2023-02-03 @1717  	tx_ring = wx->tx_ring[r_idx];
+09a508800952f8 Mengyuan Lou 2023-02-03  1718  
+09a508800952f8 Mengyuan Lou 2023-02-03  1719  	return wx_xmit_frame_ring(skb, tx_ring);
+09a508800952f8 Mengyuan Lou 2023-02-03  1720  }
+09a508800952f8 Mengyuan Lou 2023-02-03  1721  EXPORT_SYMBOL(wx_xmit_frame);
+09a508800952f8 Mengyuan Lou 2023-02-03  1722  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
