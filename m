@@ -1,130 +1,101 @@
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEAE3E5EF1
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 23:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C6A54774;
+	Wed, 26 Aug 2026 00:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787702165; cv=none; b=TA3pL5dqOnlfDXcQONsHk/L0UcodHM//fbp1PIIie0ezHx6sZb8yUP6NfIsOxAux4bDEB0BgR709U4wh3ylp8nRISmsCVG/IOoJo1qxobNGAQc1aaF5H4PjW/BaOVuKbS77iZ0IB+mQqUGuj9nx9bOjv7vgeGkMBTCy8w6WvKKk=
+	t=1787702461; cv=none; b=tpP/K5pDqEdD5OZ8JzeHCjCvRCSIiiyzOyS//maBZo5/aYi/0t71O6hcChWy5xVyVLk3Be1WadekXEoAENwUkYsKGi8rkbMrnQ59zRDoQWGZuaBLvvLZ36KZSsWoCVdebI8VthdqnIBR2K31/WZNy7M6lhWfHksouFASv/s7eNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787702165; c=relaxed/simple;
-	bh=u4RhN4rbo6U/CaIYZY+2wB4CsC8y/ZHMm49Y4elRzyo=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=rU2RzHDGJvaI5m/FmzXUpxOqhTXTJSD9B+g3DgiCaoGswuVlEswm11v9hB8PxBWC8d8Lqf0aCEYWctZz72Jif39DFG4V3feFRH+Z3FTgSORo4C1ZFmfNGUjaKyzFc/nNwxYWVF6I0d1dlVMDRsYS3MEHrJWQGCE2PyZx62gWT0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=mrGmclxG; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	s=arc-20240116; t=1787702461; c=relaxed/simple;
+	bh=WKHsVoHAncOAGjrrZgCOBfzYf+uVafryhuj2yc2N+0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OOm9YVgzlhCU7OQm5JmwNUhwMDff3p6WKHLxydKBiTz8yZjAUXHBK3PUW+YdNCoI1m8ZdH30BUEAiFitqa9kynubqUz+wg477O7+4yc5/USD5YxDILfqAfGY2d2xhxi78uoadgZj2v0Pq1tgiOFz83+d0gd8nsvPhdCPaozllB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=B4x+Onjx; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="mrGmclxG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail3; t=1787702146; x=1787961346;
-	bh=0zuxoKD2M1JEVqHANBIUbWduPp/SxtJyTy5Prh/oD7w=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=mrGmclxGRKil5ZV/uCVKYMkGgZX257YTVHByLpKbQjafzcklEip4jwpOOgdPl2hch
-	 tqTZFnukn1bui8ETwIF6tdrefF4GR4SCv3s3aBBHDPKS8lkdI56C1nkKpaPZ1+rvPT
-	 CQGTwcanShKSG2PUZlDhKTqcAqL1mMdagjK3HMkrHwky3dHFfHFgYBtnT+gRAvkBJF
-	 dCOhDtafvMec+qinDtVQKzeH/DIUpxqP2DWiNsxQorhPCNzMyLJI+/RDr2j6vwYm7X
-	 aYVsXeF0IwZKinWiNHh08MmMxEQTonwL9f4BXX6sxUCoKuJzwnXSNQVNXV5j48aaZi
-	 FRr9h/9BRK6Zg==
-Date: Tue, 25 Aug 2026 23:55:40 +0000
-To: intel-wired-lan@lists.osuosl.org
-From: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, maciej.fijalkowski@intel.com, andre.guedes@intel.com, vedang.patel@intel.com, jithu.joseph@intel.com, richardcochran@gmail.com, tkusters@aweta.nl, stable@vger.kernel.org
-Subject: [PATCH net] igc: only strip RX timestamp header from first buffer
-Message-ID: <20260825235530.3278670-1-p@1g4.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 8f3ba88960520ef0ca5839f4ffd264c7e10e4b08
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="B4x+Onjx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=BT+cecgcNjbVR7I2Q6p5AdYr9Ocl1W16ZvyXVTG3eqE=; b=B4x+OnjxkiaofaZ3y8mFKXvSGh
+	NBGAyEMoto4kBMslvsYJp/DWC7I5tMCpdB3KYWgR792J+1QPIrbpGDJgSgZWH6xbnxI7zrnkOZkF7
+	uTuFNivYuT8spgqkFWdmP9bemtffuaco90nUzQHE5cZp8G1384+bHClkByE+Hf522CAo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wz140-001RNK-DQ; Wed, 26 Aug 2026 02:00:20 +0200
+Date: Wed, 26 Aug 2026 02:00:20 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, daniel@makrotopia.org,
+	dqfext@gmail.com, SkyLake.Huang@mediatek.com,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next 3/3] net: phy: mediatek: support EcoNet EN751221
+ gbit SoC PHY
+Message-ID: <d7d86078-8a29-4e7f-a62e-91f6b266bea1@lunn.ch>
+References: <20260825193456.1823985-1-cjd@cjdns.fr>
+ <20260825193456.1823985-4-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825193456.1823985-4-cjd@cjdns.fr>
 
-igc_clean_rx_irq() strips IGC_TS_HDR_LEN whenever a descriptor reports
-IGC_RXDADV_STAT_TSIP. For multi-buffer packets, continuation descriptors
-retain TSIP even though the inline timestamp is present only in the first
-RX buffer.
+> +static int en751221_tx_amp_compensation_tbl[2][TRANSFORMER_TYPE_MAX][MDI_TYPE_MAX][CALIB_CONST_TYPE_MAX][4] = {
 
-Subtracting the header length from each continuation buffer truncates
-jumbo packets by 16 bytes per continuation and leaves the packet length
-larger than the received data.
+const?
 
-Only consume the timestamp header when skb is NULL, which identifies the
-first buffer of a new packet. An skb carried in rx_ring->skb remains
-non-NULL when packet assembly resumes in a later NAPI poll.
+> +static u8 en751221_zcal_to_r50ohm[64] = {
 
-Link: https://lore.kernel.org/all/20260625-igb-rx-ts-fix-v3-1-99b3efa08dca@=
-aweta.nl/
-Fixes: e1ed4f92a625 ("igc: Refactor Rx timestamp handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Moses <p@1g4.org>
----
-#
-# REPRO
-#=20
-# Receiver: igc / enp1s0 / 10.0.5.175
-# Sender:   RTL8125B / enP4p65s0 / 10.0.5.165
+const?
 
-# Both hosts
-sudo ip link set dev enp1s0 mtu 9000
-sudo ip link set dev enP4p65s0 mtu 9000
+> +	125, 125, 125, 125, 125, 125, 124, 121, 118, 115, 112, 110, 108, 105, 103, 101,
+> +	 99,  97,  95,  77,  75,  73,  72,  70,  68,  67,  65,  64,  63,  45,  44,  43,
+> +	 41,  40,  39,  38,  37,  36,  35,  34,  32,  32,  31,  30,  13,  12,  11,  10,
+> +	  9,   8,   8,   7,   6,   5,   5,   4,   3,   2,   2,   1,   0,   0,   0,   0
+> +};
 
-# Baseline: RX timestamping off
-sudo hwstamp_ctl -i enp1s0 -t 0 -r 0
-ping -n -M do -c 5 -s 8972 10.0.5.175
-# 5/5 received
+> +/* EN751221 also mirrors RG_BG_RASEL into CHIP SCU register 0x16c. */
+> +static void en751221_gphy_mirror_rext(struct phy_device *phydev, u8 zcal)
+> +{
+> +	struct regmap *chip_scu;
+> +
+> +	chip_scu = syscon_regmap_lookup_by_compatible("econet,en751221-chip-scu");
 
-# Enable RX timestamping only
-sudo hwstamp_ctl -i enp1s0 -t 0 -r 1
+Does this need a change to the binding document?
 
-# Receiver
-sudo timeout 20 tcpdump -ni enp1s0 -s 0 -w /tmp/igc-jumbo.pcap \
-  'icmp and host 10.0.5.165'
+> +static int en751221_gphy_config_init(struct phy_device *phydev)
+> +{
+> +	phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
 
-# Sender
-ping -n -M do -c 5 -W 2 -s 8972 10.0.5.175
-# 0/5 received
+Why is the EEE register being cleared?
 
-# Receiver
-sudo tcpdump -nn -e -vvv -r /tmp/igc-jumbo.pcap
-# length 8950
-# [total length 9000 > length 8936] (invalid)
-# wrong icmp cksum
+> +
+> +	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_52B5);
+> +	__mtk_tr_write(phydev, 0x1, 0xf, 0x00, 0x00002b);
+> +	__mtk_tr_write(phydev, 0x1, 0xf, 0x03, 0x082422);
+> +	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
+> +
+> +	ret = phy_write(phydev, MII_CTRL1000,
+> +			ADVERTISE_1000FULL | CTL1000_PREFER_MASTER |
+> +			CTL1000_AS_MASTER | CTL1000_ENABLE_MASTER);
 
-# Expected Ethernet length: 9014
-# Captured length:          8950
-# Loss:                       64 =3D 4 continuation buffers * 16 bytes
+What does this default to?
 
-# Disable RX timestamping again
-sudo hwstamp_ctl -i enp1s0 -t 0 -r 0
-ping -n -M do -c 5 -s 8972 10.0.5.175
-# 5/5 received
+> +
+> +	phy_set_bits(phydev, MII_BMCR, BMCR_ANRESTART | BMCR_ANENABLE);
 
----
+Why? config_aneg() will do this, if needed.
 
- drivers/net/ethernet/intel/igc/igc_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethern=
-et/intel/igc/igc_main.c
-index 1fb5f3cbe93c..41b293dc10c3 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -2639,7 +2639,8 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_ve=
-ctor, const int budget)
-=20
- =09=09pktbuf =3D page_address(rx_buffer->page) + rx_buffer->page_offset;
-=20
--=09=09if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
-+=09=09if (!skb &&
-+=09=09    igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
- =09=09=09ctx.rx_ts =3D pktbuf;
- =09=09=09pkt_offset =3D IGC_TS_HDR_LEN;
- =09=09=09size -=3D IGC_TS_HDR_LEN;
---=20
-2.55.GIT
-
-
+     Andrew
