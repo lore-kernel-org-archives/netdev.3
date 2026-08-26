@@ -1,131 +1,193 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-lr2-f7.google.com (mail-lr2-f7.google.com [74.125.230.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB71392C46
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 06:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787724871; cv=pass; b=b6yeVSfImdDVtmP2G0WLKRheDWk469P3jW287FOQ8y8qvii+bkojUy6RzssIqawlpj8X6+i08DGdgQU220D3k++lbcs61emsBBw8edly8UumeZtgrN0A0i8swMMx/mf56/mDid2SeGw7JfLsnVk7ZDKqizr++4Fkm32ug/4c9EU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787724871; c=relaxed/simple;
-	bh=sgwPHEyJVpvFcUadwCHn2S7IC1vBXiMJjKzN/5ObH80=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q1yeRiuMmJUoTohhTHbK9tRgIXNUJriMKHgi2BVDRjPZXQx2Dng32/JEqF6lmEebP0VSSE/v6anyrqCmui02QwpLjylbjIvGmJAyjBdTWluEJ/wLuUPap7xoxy0uTOEBWrEzg0h2rI5i+c8TOX57b5VvF1MKJmNzA2RrKFdsbIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FYeujDHq; arc=pass smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B0B3A9627
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 06:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.71
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787725830; cv=none; b=ti1WS2bHdWyLzDsBo2R7IJtaHrqa40sTE1lxUEA+gOLPGIFzfmW6J1b6+4bTcsgrlerMJ2t3n9z3ZBCi2xZ1rRWY/QNyBLa/4tMmi60Y6qmftCFL90iw2+R3SqaGEd+LGZIHgvLL66Y9rKkOpI72uQl3TuThHLgUSeDr56JuDUI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787725830; c=relaxed/simple;
+	bh=88cwRlOGDn0vpOQmUYNZUGYEdRzAeKkeMTlTyzUNsZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LmGGCpkTKOpSKkwaGAZXVkiJDpYmJzNDFrLaFIXIaPLuSj6HqIYawMKOjYx19EfvfTI/LNn/SxmGszPj/u5YDpvyUyeUoKdao6mCUTdl6bcGp5CDqMUfiGCy9pgQsj6cbVfyRmqn47ONdRA9qEmaah5uut5SmENVOnngpyhqrmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBXkCEJ6; arc=none smtp.client-ip=74.125.230.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FYeujDHq"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c0c45c580so2011141cf.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 23:14:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787724869; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RtmUSGrdHtxKcw80eb/BwGoR1tPhgsFl5An0apuaWolWE0ZL5u2AY1GbSuPNPYWPt7
-         o8ALSsksA9jQ/0QMVXZRxhXPU3KJ4gXzMs/B3jmMcEpV61rXBFZWphj9ipGQtDQ3x4zu
-         4v0IbqEdpssCwmd4L51IypGoRyJQKViqXlyOHlYDHOjzQGISVCDLyywRo5Si7SSnH35e
-         QmyRM8dRUD46tl2kgF77wNQrW9prqubcLD80EiI1gwjiRt57cmm1fntXV/2U28efq4Qp
-         RugUsiKvqYfwOfk19IY6r9WdqTmsqxN7borV0QmLSjx/b1Akcv3N8ISTxj5DjQo6oaP6
-         JdkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sgwPHEyJVpvFcUadwCHn2S7IC1vBXiMJjKzN/5ObH80=;
-        fh=78yp2U6WKz8V6B0bGqmUOSU6vRqus0tDB8EiUhi46Kk=;
-        b=UVDGFR9OawSKBC/DYok4E+fWBGzC+b3Nx2/SM3m1jcVfTDTCZdcw2eimMT7OvoEYIb
-         jEf6bXSz81+mVa1M5c926i1j1Yl/RiZrS4LikyZ7XRTD0m7cSJ6FDwupO4HqR7l6MJS0
-         I0pQ7pIWYWdPu4+o5wJiFZ/d/yq6pnxZ3i2gFF8eyUrBp9xHDEAEGrXOC5MgjySCb+cn
-         iTsFk9iG+5XnE+TiU9U06xj8YKZxX6+Iil6MLSLp80p57wUsJb0bVSjdN5MIkKiTWBhv
-         gM98BwusZY/G1YVFa6ubgOaZwj3CxMBVdIETPEXai/fqrqtQGvDXxcuptEtfCuy0iQdX
-         VHHw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBXkCEJ6"
+Received: by mail-lr2-f7.google.com with SMTP id 38308e7fff4ca-39c689d1d48so2777371fa.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 23:30:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787724869; x=1788329669; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sgwPHEyJVpvFcUadwCHn2S7IC1vBXiMJjKzN/5ObH80=;
-        b=FYeujDHqNzmbaMfeKMj+MXmLa+kh7ZbBtKvmvLYaAiRFcfa8+HkKg2uBeivxgN5omt
-         UGn9UXV6nWTio2c/bfSGZKF7r6PF515ko2JNkxqnSfPVoYbxHavK2F8yE/qDgVkhvxvc
-         /AabQKXJxa0rWaD8AOwjTq9BcJ17mhoSSJt97L9u2aazHBA4o41H3wX7NkB4IZj8u8Yp
-         sJO2OB7AoP98iHtD/AdM+qgKXKj7kMhAn2P0vMVKs9T0dnHoahc8T061CLQuVQVfTqj9
-         Nz1UwLC9HnpyloCgZSQ2XkjDKAcgNHHHF/1sZRtVbI3RhbIfrf/qIKRAzDTz4fYBTMxt
-         iGHA==
+        d=gmail.com; s=20251104; t=1787725823; x=1788330623; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ltu0ibAXLu3xOE6Vns9ZIohMj7npj3m+gIbL5j+64fw=;
+        b=ZBXkCEJ6FKvXL7u4d6F3MzhYY5B8APtuSxPxw6roiPKBN98gRySghXrg5VOjElkJPu
+         n6NbFttPRob3PV+Kz91j+KHJGE3enb1ET+mJppySypsWQFM3dPBGtXAyLzN41BVWXqRV
+         qwl7OI3iarYV+8+71/Lir/z8EJPrD6ltwtMvM1dU6Fl/pYaO5zKrQ1zbwOc7SDcCbf95
+         lARn/BeHdFajJNIzbW3jSjoh+IjWRaqPHkE84wuIykbgKCoLg8G81bgJihcz3h7S+vRy
+         Hkcv4fjEgcTCiVmYZ0D18KlKBUUyy8pddKQ7xVm32ts21l8tMSuryoymwon7pkapzjcL
+         6gSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787724869; x=1788329669;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sgwPHEyJVpvFcUadwCHn2S7IC1vBXiMJjKzN/5ObH80=;
-        b=Neay6l9Dzjabnc03ds2O5yEGoZBVyY5KuWxJgzcna1pal3eIYJ8UKKm2/R+EXD2fhu
-         GzA/PAw/QR9+gLVkD0TohTNjGWQJRV1H7IRptkcYAK6hhVhw9/oPWgy20H0ABr9MmjEr
-         b/QtAr1DRaVFmG0lnqLtO8vAbhCAuJ9heFkzLQj9LHqXPuPp9GgN/MUbmendDIgEK1Xn
-         J3KRlDRW2pR/qbNGLO/cMkZmE6qYppeTZtj4xNkt5Kj9QueIjzabOxgprbxcSJ2Uybby
-         df5B9TBJfNDYXW5vS0GGIhCi8ZCsowwbDWjC860sv2Q5hZcpcsZghJyjZkNCIOZG6VEo
-         dw9g==
-X-Forwarded-Encrypted: i=1; AHgh+RrETVsT6QwWmKPMXeoAFALSatF0pv8k3gzBUnByWkYpktcCJYCY6rab38ceIMlMy0l6CA/HfEE=@vger.kernel.org
-X-Gm-Message-State: AFuF++l4bKFviT3Dejd0JzBrtQYgfKNWSBrZ4Tc45KUIzpwf3LqYk5aK
-	ufbCJvqPDhBdbAA1aKHSSLuWV5eR78TdQU1BawOCwvCf2qJ8frQ9dBlpS0PtacDP5ihQuP22ppY
-	mlKXcfpsvWuK18KK9D+nKUIhk5iYVPXLuHbf+BiO5
-X-Gm-Gg: AR+sD11TgQ+ddYFFKq+WE14TatzBIFvL+2J429wAKh+XxCMN3lDKEzFPtWb4aFv5i7Y
-	XvnmNUKdn4oIhRLuvJlH9fwSWpxQ1PtSc9ZecnKeWAuYdhuBnRtMicsog4y3TWrr/SobQYH3Bby
-	QvRmACMgb2ilYAiZvBbBwjMG1LYnFgbLRlmSGoFoNleTyCI3iUSbYCJJC/XylzCECVPyxDR39qP
-	gs2UChcQQE8f7MjsMgnnFK1GRq4FiQRTesH4Cj+UxKrflUz2Z+Ual3NVimIg/XvzcDrdChIk1A7
-	3O4mvxtQ73gYYIlYH7tCmgkYks9P1AJzrwpdbdM5WDcNb6Oikq7jDyHBUCBAz50vreeb7Dzg91V
-	uHGjt/lA9OG/APAWYp/Z3WKVH1UVTK4XNsGNL0GCVzbCV5hVEb/CkW5KNaXo=
-X-Received: by 2002:a05:622a:2506:b0:517:906b:c043 with SMTP id
- d75a77b69052e-52e423ab010mr38816871cf.36.1787724868696; Tue, 25 Aug 2026
- 23:14:28 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787725823; x=1788330623;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ltu0ibAXLu3xOE6Vns9ZIohMj7npj3m+gIbL5j+64fw=;
+        b=C0UG0QbuIArY0ksGokXJf2KAPmIrpgKrEvDDgCyKW8bK7FlceOy+aVXeI3mOpGaB8H
+         sobiC0m0Pg3/OgH6EctMJaeEsvoC6V/w8xiTV32lVViaCx36JHBO+cCk7hfABXyeXT6Q
+         s0QMDtyM030ZSZNQZYrrpPASUiJ69SoGrXyljZwbjiUCgqxi32p10Ln68MR6Av7bv9IO
+         8ppye46CRWNW1p8lctSTrLAQrXdMzlSN8hsaIi1pzvKuedfPieoSJtPudSVfVD0zxPNz
+         RuGodg4WRZtY0HRHNzGwPnUnNoIkNhfzuLgezzNQ8sU8bESB5ViG4WqxTb1qd/wbxn7S
+         QdKw==
+X-Forwarded-Encrypted: i=1; AHgh+RoaXI/IBd2dg5RAx5brCZwYiS1MSAePQ1gXBqzdvAB3nYhrKrOD3twhWu+NynbdpS9KZ7AP+Ng=@vger.kernel.org
+X-Gm-Message-State: AFuF++nM99mrMsF6v4OiBv/MnNfoliraRgm6jI07UMxnHwtj+2fFAkXb
+	i07EKw7iYfSwJiXWSb2nNE8J4Se5LScUjmMm03IIa0vitaWg/Pn63xPn
+X-Gm-Gg: AR+sD1265qTK1EMzFadhxiPXPY2c3JXoRn8XchHVu8xpGqfk1NXLhPMkNkmLn2asR61
+	vRA9O2uzEGF15VQu6ZS6OAgkMddLvPK2Vv64DGXTfafsbQT/dx8g9GuR+hw6hPV773G2ddQ+b/6
+	SjtGhrxqHjuTcKZsFdkPjFlemEklxnGzpDzPrLQWL/NlLXDgru1RWBbFK3+aTbha/xIWG2D8Tyx
+	lfYPREAFZrAT0QqfOw4z+oyYoJIkkmr1x0BzEi7J2FXTUB8AyvuPrm/ltrRVjfQBgZJJjgJCiSj
+	I2c4hoc/0ChuHuXJ1BySMb2K265HtbZDuBPF2+7nIRAkpcLvUuNlh+3TdWlisk9/iXZvbUkdtSX
+	y1+UpQIuXDG6ko8cM/ooHRMq7DDYRX9tio9tuTTgQsyh/ZwLyFGnZNgECbZ5wHRqqn+i4qTO36Q
+	O3PYe6vHDWZ2S2USQCLgEoWCdfooqwliybt+YbWnPpoWfB+0jOlJ8Afvq8LJLR0lnbfrSNk8n9V
+	IXrLg==
+X-Received: by 2002:a05:651c:a38a:20b0:3a1:a0fe:990a with SMTP id 38308e7fff4ca-3a1fd63423emr6446281fa.10.1787725822342;
+        Tue, 25 Aug 2026 23:30:22 -0700 (PDT)
+Received: from localhost.localdomain ([78.40.184.2])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a1fd0eb0d7sm3336591fa.24.2026.08.25.23.30.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 23:30:21 -0700 (PDT)
+From: Roman Demidov <roman.demidov.nn@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>
+Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@mandriva.com>,
+	Yan Zheng <yanzheng@21cn.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 5.10] ipv6: mcast: Fix use-after-free when processing MLD queries
+Date: Wed, 26 Aug 2026 09:29:38 +0300
+Message-ID: <20260826062942.5272-1-roman.demidov.nn@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825150655.1450271-1-jjy600901@snu.ac.kr> <CANn89iJE_HosLBRhZGM-GVpgPCSNtHiS9vnCc3tEmTVaamcJ9g@mail.gmail.com>
- <8ea9c9ce-e1ed-475b-90d3-abf1bd86c3d7@linux.dev> <CANn89iLr7+c_Hgxgj-odS10LW7CR_aTQr6ozFezKtYC6=vXG+A@mail.gmail.com>
- <f68f55d0-b012-4ea2-9623-2b8a63b2d0cd@linux.dev>
-In-Reply-To: <f68f55d0-b012-4ea2-9623-2b8a63b2d0cd@linux.dev>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 26 Aug 2026 08:14:17 +0200
-X-Gm-Features: AcwNN1WJCp0OJeW9chCW4yKvE-963WCoZ7bUBg882SOdNyz70JYn4uO8OOn6NEM
-Message-ID: <CANn89iKUZm10d3mMU4ZxD18frFNhztczmU960UtbxecJ_Hdg_A@mail.gmail.com>
-Subject: Re: [BUG] KASAN: slab-use-after-free Read in slip_receive_buf
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Jaeyoung Chung <jjy600901@snu.ac.kr>, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 726ksm@gmail.com, 
-	kees@kernel.org, linux-kernel@vger.kernel.org, eulgyukim@snu.ac.kr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 26, 2026 at 7:53=E2=80=AFAM Qingfang Deng <qingfang.deng@linux.=
-dev> wrote:
->
-> On 2026/8/26 13:46, Eric Dumazet wrote:
-> > On Wed, Aug 26, 2026 at 7:38=E2=80=AFAM Qingfang Deng <qingfang.deng@li=
-nux.dev> wrote:
-> >> Hi,
-> >>
-> >> On 2026/8/25 23:27, Eric Dumazet wrote:
-> >>> This rings a bell; I had a local syzbot report for this issue a while=
- back.
-> >>>
-> >>> I think we should remove slip_hangup().
-> >> ppp_async.c and ppp_synctty.c have the same anti-pattern. Should we
-> >> remove theirs as well?
-> > Probably, akthough ppp_async and ppp_synctty historically suffered
-> > from this exact race, they added their own workaround: a global disc_da=
-ta_lock,
-> > refcount_t refcnt, and wait_for_completion(&ap->dead) on every callback=
-.
-> >
-> > Oh well.
->
-> Then the workaround should also be removed, according to the FIXME.
->
-> Relavent syzbot report:
-> https://lore.kernel.org/all/000000000000e8231f0601095c8e@google.com/
->
+From: Ido Schimmel <idosch@nvidia.com>
 
-I can take care of slip_hanghup() removal, I will let you handle ppp :)
+commit 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 upstream.
+
+When processing an MLD query, a pointer to the multicast group address
+is retrieved when initially parsing the packet. This pointer is later
+dereferenced without being reloaded despite the fact that the skb header
+might have been reallocated following the pskb_may_pull() calls, leading
+to a use-after-free [1].
+
+Fix by copying the multicast group address when the packet is initially
+parsed.
+
+[1]
+BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
+Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
+
+Workqueue: mld mld_query_work
+Call Trace:
+<TASK>
+dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+print_address_description.constprop.0 (mm/kasan/report.c:378)
+print_report (mm/kasan/report.c:482)
+kasan_report (mm/kasan/report.c:595)
+__mld_query_work (net/ipv6/mcast.c:1512)
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+</TASK>
+
+[...]
+
+Freed by task 118:
+kasan_save_stack (mm/kasan/common.c:57)
+kasan_save_track (mm/kasan/common.c:78)
+kasan_save_free_info (mm/kasan/generic.c:584)
+__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
+pskb_expand_head (net/core/skbuff.c:2335)
+__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
+__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
+mld_query_work (net/ipv6/mcast.c:1563)
+process_one_work (kernel/workqueue.c:3314)
+worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+kthread (kernel/kthread.c:436)
+ret_from_fork (arch/x86/kernel/process.c:158)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+
+Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Reviewed-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
+---
+Backport fix for CVE-2026-53275
+
+ net/ipv6/mcast.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index e15c3e2318d7..c4a9866ea45b 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1414,9 +1414,9 @@ void igmp6_event_query(struct sk_buff *skb)
+ static void __mld_query_work(struct sk_buff *skb)
+ {
+ 	struct mld2_query *mlh2 = NULL;
+-	const struct in6_addr *group;
+ 	unsigned long max_delay;
+ 	struct inet6_dev *idev;
++	struct in6_addr group;
+ 	struct ifmcaddr6 *ma;
+ 	struct mld_msg *mld;
+ 	int group_type;
+@@ -1448,8 +1448,8 @@ static void __mld_query_work(struct sk_buff *skb)
+ 		goto kfree_skb;
+ 
+ 	mld = (struct mld_msg *)icmp6_hdr(skb);
+-	group = &mld->mld_mca;
+-	group_type = ipv6_addr_type(group);
++	group = mld->mld_mca;
++	group_type = ipv6_addr_type(&group);
+ 
+ 	if (group_type != IPV6_ADDR_ANY &&
+ 	    !(group_type&IPV6_ADDR_MULTICAST))
+@@ -1501,7 +1501,7 @@ static void __mld_query_work(struct sk_buff *skb)
+ 		}
+ 	} else {
+ 		for_each_mc_mclock(idev, ma) {
+-			if (!ipv6_addr_equal(group, &ma->mca_addr))
++			if (!ipv6_addr_equal(&group, &ma->mca_addr))
+ 				continue;
+ 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
+ 				/* gsquery <- gsquery && mark */
+-- 
+2.53.0
+
