@@ -1,168 +1,150 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A902C17A3
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787757354; cv=none; b=Q21+HdMxUkt0SgT879xzjV4qzAdOHrG7fOSnB9B6SgrgcPyLDJ48JKMFKyLI3Xa3pv/eVaafQDEdchHrkpXm85VL364KuULBV5u/K3Dr19sdcXFkFj8Hli/qqxQh6debspQG0fEFyMh190y9aEAlrsiSQmJb2O+32/Fe3aUAvoM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787757354; c=relaxed/simple;
-	bh=bAuBeeb68Py8UGRJAItmIrBFGrQoRBO6aHLkKHMvBDY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B9LGrSE1AgJimfi1e6/aLcF1vOHgitYRJ9tU0gFj3+5E6JjV/cQvFwDsS/8mW4XSYPRf9QaI0D5AjdVNHpcqxtON8flCxhUxRs3jL9Bld/XgBmEiIUF3uwoEX2N2u/XGGWR7cksnuqnyEk+lC21Q1QVDZyBuI9AXBeMauoNNY2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=EmTn0K7L; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D544AB77
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787757630; cv=pass; b=SQdCIY79J/odeuxRrxHb/JjwtkuXvAIWNwaE1/CSQeohIBIQ3qLF2UxwNL3kid4I5TTVjFWBtnT/0W7Lso5fqT2lP8yts+ZnrPB5FIYDXaSy9X6c0JO5WZ71IiKM6yud5k3cvocrn0EnFAzPMfkvmBE3n3yrm9mAWAf/IteMF+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787757630; c=relaxed/simple;
+	bh=sCZYn2GfaCakpfs73hnSx6QFjMiUhnTYTcyWSrJLlxA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fS+u/Z74cigC+n9CrKCnIW0dkdHHtdPdTXBeeP4hR8FCko7mTOzcrnCx1FWIq8/z4It/e6zlLdWO3/CunGypByaXSNV2cOvRF4NtXAdfZqa1WYtcOs68CSVjs875uHo9HBsOGH5BBw69YPdlOZNq9XcSCz7U39jfGeOTRjK8wUU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HA+Oy/r4; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="EmTn0K7L"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e041ea211so1385618a91.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:15:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HA+Oy/r4"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52de50e77ffso10235381cf.2
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:20:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787757627; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RaMX26BsNmplGIYTDrgNdtLyfjzIBQhHZIO+rZcpJ7612g47aCbdfmp8BSYIsfDFqh
+         RokVkdxiNbIPJvGHHUKKO2rszKwHn6qCUqf9ys9sw0TVCtkPh7TeUDO0sUbkeHFpdH05
+         MjR/fWXcS7Ed+7KSXwwKSuHZFtsiZWo/nlHvZUIj0fx3/BEYlmxBPs9brwvSF3FMfvxv
+         VyoK7CzI0x1qZfAyCTi909DjRF2sqdCXKvppy+yTVI8cmzMpkHBQteRViicXqWndPahs
+         aOO+wm60z3CBeW+hITN3YkyvaVsCmoAvGMjbQTn4bhKBd7gktMBsDYYyc5lwMj6GLTSB
+         6l4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SfCiydN0Xlj7GfJ4cH4asf0TucQSK91D8eGGF7AZl/s=;
+        fh=thUfcEwzc9XSLXaq/DZZh2Zm+o1U8RGXvmsIYtbOlyI=;
+        b=XN7Jk0TJGkqEDx7Yt9CvoG2TMm5HMqXN4IyvC8x2I97JhyP9b0hbRFBgEFHoVbgWXf
+         rwCJZ/K6O39Eh3EUF/9g+CR2nCrMx5K41yiFSIghHrH0rsYd6IlkDr+IgI97oXWE2ctA
+         9NJkZ2CM1X4hGnyjGMnClV8WoC6qc/GJmAhRENR+VfAgOTAcSnsECb2dXAEkxCgU9Yo4
+         wcpeTgCKyOhrbb8EjkiiUmDlMzjDXBnkesyb2gWaJZFCWcOOyGuSuvVEnNpsjMoPspfg
+         dgz64duX0YG+CKVsnOstYZ4Mb+tMxOw/DewF5eqyaoGcczFfL+60YZ1k+pf93+ZYfNIz
+         NkKw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=xbow.com; s=google; t=1787757351; x=1788362151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UXbEbgExHY/t7d7GNe8mdR88tmMCAvM05gHfcSb0VPo=;
-        b=EmTn0K7L1UMPlKyGy4wV7/d3AJSBVvviTcEWv1likUTJUaLeboOE4fJndxZcTxe5aF
-         2rMEgzVw1n+lCepccfCWnlsxtzMx4TPLqXX4fdBT+/V4lVs//Hq0JXDpb2LW4OYk9/cp
-         lrmteIhq776OH7tzrdxAfau1Rvfq323b/C4Kt08BDiMG+Y6Hp+hq3oDCJCmwxRBqdusF
-         9lPjtJVDXhgKtNeU6w07VSiAzewjnPGdm7kOhFq6QrIGvchcv6UlFOzSNmAvYoetbaZ9
-         /fobAZuODcLi0QoOHBwKoDK6SsvOJi/4led6BsaG2tOp28cRsxHniC/QR3UxeOcVUyhq
-         D9Aw==
+        d=google.com; s=20251104; t=1787757627; x=1788362427; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SfCiydN0Xlj7GfJ4cH4asf0TucQSK91D8eGGF7AZl/s=;
+        b=HA+Oy/r4tB99u5/Pk/LDNGXurwOxfLwosOEGLltfzlpNk2DHw3Y67aZM9kn8yX2xT2
+         y1L5bziQD8OXna4h49LznHskr2YIuYVBdqhFtlKSX967vxRpov5VFXwImCWwjG0pNU4v
+         3bEpIWPiCT0RP3FUjD1v+0t3l44df5mqzpO3yMyKXBxlXKL+J5u44cGtJLC+vaIn98qr
+         N29YyzoX1gYz32EbPx5kM7sr0kVzb3SMJ12qPF9TLxkFiKd4pHl+kM+V7NYAye8PHJUH
+         KMwvyulW8vwuSTu/PbdtavxaJFIYIjJxcc7LqYbAuDgdRRDjmAOW0TpdV2nVw2UG/9XD
+         mtrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787757351; x=1788362151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UXbEbgExHY/t7d7GNe8mdR88tmMCAvM05gHfcSb0VPo=;
-        b=ifM9FnXWc4UhbCv2QwnYadAKm82HstMly2RiPU3HOjlxrIYdFLg75FgaxDzqOp1N8R
-         asD51BTzdrWQWNK0yPfilgCjYlhG0BKsBZpko21lagcyGbGup57ngp6QP1I3XyzBva1z
-         vM6Pwjs32WISS4N2KmF3EZq6LoQTfkmqLZQKhzpOAA4+iHMpvk4DVWINFC9bKFl+pDBi
-         nqkNYiUg3EMypsfWKmZrKsMfBBe0omgr1fVl+g+N2dKYxatUgzesyiXmehDoZzbG428G
-         6dfEdAktJx0d7Y0JYk/x1tBsYHza88ZQGb2XDZbANgJ6jVMdWgS8IP+RVkXPkbOAFK1e
-         UGyA==
-X-Forwarded-Encrypted: i=1; AHgh+RrxglA7lKf36k9tX4kZJdK+8WGM6PBzw23AqfGqr/scWq7gRZlTW/f/u56WppvMITaBDLDUy80=@vger.kernel.org
-X-Gm-Message-State: AFuF++lp2dXTxFBOWOzwGOV5DJEGtUD7Gfl0zB9P/zOQvP/JV04Hj2LC
-	BaJD0cO6F6lKTC69hBCSZ/wvTTOCBaUyj7tITbWk3HH8Au3oqDTP1uVoAz7dlSBR0AQ=
-X-Gm-Gg: AR+sD12Cs/yQjFtRPo9CnQ4MeclW6R6tqxC0kBZuhaOmKqIZqJBqqLvQgK8NhfADQgj
-	9F0w66FHH0kxr2oG3miXMFYj7LWGsg96EnyhKsvNEq3oR3l1/0GVe6U7YBHqjFJsIZS6CDtGxEe
-	giTPjs1v1t0DCYPUIFUHR71B90+PsAd0qvYRBND7ung55BLmFg8uHm1yIo61tdAX1oYlyggjX/1
-	3cCSZWmLtk5bGH46dab3Wd2jVK+yE/JXNEhebo1gFhzRBkH2NSr9KkgtPr6ZjLB4u8lrbM6a5Z2
-	C6xdxQV38ezfaMPQ30Fe4Z38jY9yq1Wen0C0dt5SstnGaD3LTJ17souAuyGTB+/A8Ygr1WlArhj
-	zU3PizYaB1EAxeoNkSvJAJ5+kxcXITCTVzBiBlwcheqGJ2toEpQqIpXuMMm+7NyANAfMd5RnvwG
-	9+up6MOAMB8uvqfYTII13N7zfhuKV0sHkZ1UFZ9bG8amp+mo2R34cJB+c9vAz+bvJeXn1fOdbqu
-	Zve88ILK0wAwokl7zJ6EkpU1c+HNjwIhHrwTw==
-X-Received: by 2002:a17:90b:3b4b:b0:381:11eb:d78e with SMTP id 98e67ed59e1d1-3966d8b6295mr16465687a91.14.1787757350757;
-        Wed, 26 Aug 2026 08:15:50 -0700 (PDT)
-Received: from Mac.lan ([125.128.148.126])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39668a57396sm4831991a91.13.2026.08.26.08.15.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 26 Aug 2026 08:15:50 -0700 (PDT)
-From: Baul Lee <baul.lee@xbow.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Baul Lee <baul.lee@xbow.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	federico.kirschbaum@xbow.com
-Subject: [PATCH net] vxlan: mdb: Fix use-after-free in vxlan_mdb_remote_src_del()
-Date: Thu, 27 Aug 2026 00:15:42 +0900
-Message-ID: <20260826151542.68815-1-baul.lee@xbow.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20251104; t=1787757627; x=1788362427;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SfCiydN0Xlj7GfJ4cH4asf0TucQSK91D8eGGF7AZl/s=;
+        b=ZyxMG7OEwoqfB8seVY6DmKnhM4hfd7Ym5xFYexV6ebu/Ypkgj14gnmfqDewPqTekDr
+         oOtIQXSH2rwKlMi2ZWkOqRNNJSF3tH8OIB3sff+BywdVIZPvDvfJsUq/StbGiQOqSIUA
+         uB/NdMLejOt6SlICCZqZxE+rnkdcSQii/fqsiO0LcAEiB5BrYpFCYFRsxt2/1MuBI7y/
+         L0r2OO7GP1SsnGO8FybZLlvBpwbKIl6jsd+H/C6iACqx7r2bLcAwGElZw16FUkrVwHyq
+         NZce0ieAStqaJTpo2uVQO7wfx3KcKRA0z8aPoF5fS5cQxS2mVPyN+qQk4jCK0HuZvqzo
+         9sxw==
+X-Gm-Message-State: AFuF++me0GyVyKZxEaKFg4TgEVWtxO16uuFL++wUuLi6Ind8x1EnjBHA
+	hZ1IMVCRkjVr32G6Za2ZygFAvBMuA9koREELDuFOskH7d284Pv9ysSEK+wHuTi98y/rd+frOLZC
+	i4mmE0mzf9buMrwo1mKT0e0VfUhi9KbKWY7W0ujI5
+X-Gm-Gg: AR+sD10bCHpc7z2w9ovZjhlQ5BlViREYGBx+Fi8EqX9PNNWOdt/eEK5K5JZ8X7qqAWc
+	EbI2+yb1EY0FSSzPNa+Ua6fFvPjwOnOMmVITnsvc4MqEVA6rr6L+LwAc86TNfrdTwNExMgvQi8O
+	LnwEEobt8n/LJhwkTOWKm6Mje8PT5Yf1Zjoyu3uTupZLRkBENWkvIC/Vox3lmpFKYVbtesSDpLv
+	BHr2KajeplhmKbEpmAJEXCcjHnrm3HGMhMqZHvCI8yxqob852Ei51VPl4ly0FuFlSYT6qsNeSwi
+	ohfdLyKK/R1XEVeCSHXuaFF3U8iQIi6LNkgk6Bd3D15Z7fgGCr+V/YK9CT7ysT15P4Q1y5+cPgk
+	4tfGJQb+E6qFBXippiAN8WK8OTC7VghBgDtYAqAl5fwmq8LuS/yAXNubqbig=
+X-Received: by 2002:ac8:5fc3:0:b0:52d:6c92:b5e1 with SMTP id
+ d75a77b69052e-52e423e01d9mr75971011cf.27.1787757626391; Wed, 26 Aug 2026
+ 08:20:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260826141145.67823-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260826141145.67823-1-jiayuan.chen@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 26 Aug 2026 17:20:15 +0200
+X-Gm-Features: AcwNN1WQYfOEPBxc7l95bDB56B-HoAnly0oktECUAuu-7YHrmEIMuUzsrsZifHk
+Message-ID: <CANn89iLWF7qg+VYcao1L_-e1vXSTCKPLw9a855Gr5+gPe_yG2Q@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] tcp: fix corruption of urgent data on
+ multi-segment retransmit
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Yuchung Cheng <ycheng@google.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-vxlan_mdb_is_valid_source(), which validates MDBE_ATTR_SOURCE and every
-MDBE_ATTR_SRC_LIST member, accepts the all-zeros address.
+On Wed, Aug 26, 2026 at 4:11=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> On the normal xmit path, while in urgent mode we refuse to build a
+> multi-segment TSO packet, so every segment gets its own urg_ptr:
+>
+>         /* tcp_write_xmit() */
+>         limit =3D mss_now;
+>         if (tso_segs > 1 && !tcp_urg_mode(tp))
+>                 limit =3D tcp_mss_split_point(...);
+>
+> The retransmit path has no such guard. __tcp_retransmit_skb() builds a
+> segs > 1 skb and hands it to the GSO layer, which only advances th->seq
+> per segment and copies urg_ptr verbatim:
+>
+>         /* __tcp_retransmit_skb() */
+>         len =3D cur_mss * segs;           /* segs > 1, no urg_mode check =
+*/
+>         ...
+>         /* tcp_gso_segment(): bumps seq only, urg_ptr is copied */
+>
+> urg_ptr is an offset from the segment's own seq, so a copied value points
+> at a different place on each segment. The receiver rebuilds the absolute
+> urgent seq as seg.seq + urg_ptr, so it walks a moving urgent point instea=
+d
+> of the one OOB byte:
+>
+>         seg1  seq 1     urg_ptr 5001 -> urgent @ 5001   (ok)
+>         seg2  seq 1001  urg_ptr 5001 -> urgent @ 6001   (wrong, +MSS)
+>         seg3  seq 2001  urg_ptr 5001 -> urgent @ 7001   (wrong, +2*MSS)
+>
+> The real OOB byte is never pointed at, so the receiver stops splicing it
+> out and delivers it as normal in-band data, corrupting the stream.
+>
+> Guard the retransmit length like the xmit path: keep segs =3D 1 while in
+> urgent mode.
+>
+> Fixes: 10d3be569243 ("tcp-tso: do not split TSO packets at retransmit tim=
+e")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
 
-A source list is only accepted on a (*, G) entry, whose source is the
-all-zeros address, and for each member of the list an (S, G) entry is
-derived from it by substituting the source. Entries are keyed by a plain
-memcmp() of struct vxlan_mdb_entry_key, so if MDBE_ATTR_SOURCE is present
-and holds the all-zeros address and the source list holds it as well, the
-derived (S, G) key is byte-identical to the (*, G) key and resolves to the
-same entry. Omitting MDBE_ATTR_SOURCE is not equivalent, as the key is
-then left with a zero address family.
+Nice!
+So we had a bug for 10 years.
+This is a testament to the fact that urgent mode is no longer used as
+advised by RFC 6093.
 
-vxlan_mdb_remote_src_del() removes the forwarding entry of a source before
-freeing the source entry:
-
-	vxlan_mdb_remote_src_fwd_del(vxlan, group, remote, &ent->addr);
-	vxlan_mdb_remote_src_entry_del(ent);
-
-With the keys aliased, the first call deletes the remote of the entry that
-owns 'ent' instead of a separate (S, G) entry, and frees 'ent'. The second
-call then runs on the freed entry, and its hlist_del() reads ->pprev and
-->next out of it and writes through them.
-
-Adding the (*, G) entry with NLM_F_REPLACE and no source list marks the
-all-zeros source for deletion and reaches this from the sweep at the end
-of vxlan_mdb_remote_srcs_replace().
-
-  BUG: KASAN: slab-use-after-free in __vxlan_mdb_add+0x1cd/0xd70
-  Read of size 8 at addr ffff888102852500 by task poc/84
-   __vxlan_mdb_add+0x1cd/0xd70
-   vxlan_mdb_add+0xc0/0x140
-   rtnl_mdb_add+0x157/0x2a0
-   rtnetlink_rcv_msg+0x207/0x5a0
-  Allocated by task 84:
-   __kmalloc_cache_noprof+0x153/0x360
-   vxlan_mdb_remote_srcs_add+0x2eb/0x440
-   __vxlan_mdb_add+0x803/0xd70
-  Freed by task 84:
-   kfree+0x14c/0x3b0
-   vxlan_mdb_remote_del+0x129/0x1a0
-   __vxlan_mdb_del+0x4f/0xe0
-   vxlan_mdb_remote_src_fwd_del.isra.0+0x162/0x1b0
-   __vxlan_mdb_add+0x1c5/0xd70
-
-The MDB operations are netns-scoped, so an unprivileged user can perform
-them in a new user and network namespace.
-
-Reject the all-zeros address in vxlan_mdb_is_valid_source(), which covers
-both call sites. A (*, G) entry is expressed by omitting the source, so
-nothing legitimate is refused.
-
-Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
-
-Fixes: a3a48de5eade ("vxlan: mdb: Add MDB control path support")
-Signed-off-by: Baul Lee <baul.lee@xbow.com>
----
- drivers/net/vxlan/vxlan_mdb.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
-index d71e1925ecfd..7986c5b5dc67 100644
---- a/drivers/net/vxlan/vxlan_mdb.c
-+++ b/drivers/net/vxlan/vxlan_mdb.c
-@@ -354,6 +354,10 @@ static bool vxlan_mdb_is_valid_source(const struct nlattr *attr, __be16 proto,
- 			NL_SET_ERR_MSG_MOD(extack, "IPv4 multicast source address is not allowed");
- 			return false;
- 		}
-+		if (nla_get_in_addr(attr) == htonl(INADDR_ANY)) {
-+			NL_SET_ERR_MSG_MOD(extack, "IPv4 all-zeros source address is not allowed");
-+			return false;
-+		}
- 		break;
- #if IS_ENABLED(CONFIG_IPV6)
- 	case htons(ETH_P_IPV6): {
-@@ -368,6 +372,10 @@ static bool vxlan_mdb_is_valid_source(const struct nlattr *attr, __be16 proto,
- 			NL_SET_ERR_MSG_MOD(extack, "IPv6 multicast source address is not allowed");
- 			return false;
- 		}
-+		if (ipv6_addr_any(&src)) {
-+			NL_SET_ERR_MSG_MOD(extack, "IPv6 all-zeros source address is not allowed");
-+			return false;
-+		}
- 		break;
- 	}
- #endif
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Thanks.
