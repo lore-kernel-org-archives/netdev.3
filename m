@@ -1,100 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3E640F72D;
-	Wed, 26 Aug 2026 12:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24BE3FD139;
+	Wed, 26 Aug 2026 12:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787748222; cv=none; b=Y3OhlHvZlowvwg+reK0RTfJ5/PeOdlJ/av8Z0zgyui0UvYzYWSBdzo1kIrXI4GdNMQBdpP3W4+Kje/iUSWCAhvhxeA+Fx+gojFdoWD9xHvpDL1asf0QR84RsmEKfOrWfTFWVGcoUQlaM9y/poA5FYrylEBxqW1DIK2oO4gof5RU=
+	t=1787748544; cv=none; b=hmP/yKTqV1C2u8CVS79dTpw8lkNNM2L/Myk+oYjlXE6rH6Iz/6v3hemSWCQoIalF4ASZew+eGU5nW/n1gXUUU5QVaCjCZGJlVJIGkIGrWx6tnTWRT8NCMIlhh0pL24y7P+dGXry2aHezW3llMISPWRy7PBCki/i/RO3qARtpDBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787748222; c=relaxed/simple;
-	bh=50EVnbLhgMdyVGypBo9kduQP9h4EKPQxaXXDjtJbMYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TkFgYlIdYTOBO8E4hxKkY/LksiAFuVf/OSyXmEsCJqI/nDt7WVuvUyhRvZmOcLugQeIDl+0M5i8/LrEU++V7oeLx0a8D+AuHxM7ztd0VHN5XRlaWMrPNb4jcih21DZYEe4ktIzyv5M4E2BRLdP1yt8J/ZgEugHIF6SCyu2veenc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4pWIDh7X; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4pWIDh7X"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=arzcOx6vfsLYPgRwHygN2YIb0+P0qfJJ6xKycIsxFh8=; b=4pWIDh7XFmvoLHLNC90P76IIWl
-	ucnt/UAr0z3ZD3IrCPmywBEsDDygHbtcNufv3Dpiv0zthavCUNKbywAYYAG4k2+CWaJxPt7cpzcs2
-	fGOQnPfFvyjJmEPrl/mdAhEjRazQejowXjDqtapyjCnezhp9CGL6oWcK2UF5wuoWg9OY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wzCyT-001WTi-LH; Wed, 26 Aug 2026 14:43:25 +0200
-Date: Wed, 26 Aug 2026 14:43:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
-	horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com
-Subject: Re: [PATCH v3 net-next 2/2] net: dsa: Add support for Motorcomm
- YT922x
-Message-ID: <55523ac4-023b-4ed8-8519-293c778044a4@lunn.ch>
-References: <20260825061610.3116673-1-kyle.switch@motor-comm.com>
- <20260825061610.3116673-3-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1787748544; c=relaxed/simple;
+	bh=/RYNfUur2igYikcCTLtsJTw9NmqouEwWBRy73ncqdEk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Opcr/4lcTpq0SKZcCwTWiDuJEIs1eJ8h5JiVMz9j1OEaQJDfp8T22hgZw2lpcTl4ty2+3tGFGf8Yycgs7jwYxNqrdnobB6yogNwKdZC/G2dE0zglBnn+AtgHg07n+eWuzn1RUh4Z/JgzBy+JhceeW2SGy1c3VVI93zeSwM4llfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 64B84200F53;
+	Wed, 26 Aug 2026 14:48:55 +0200 (CEST)
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1wzD3n-003RRH-10;
+	Wed, 26 Aug 2026 14:48:55 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH v2 0/3] net: dp83867: add new output-impedance DT binding
+Date: Wed, 26 Aug 2026 14:48:38 +0200
+Message-Id: <20260826-v7-2-topic-dp83867-v2-0-a97b4cec6e93@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825061610.3116673-3-kyle.switch@motor-comm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NwQ6DIBAFf8Vw7jaAVmhP/Y/Gg+Kq2wMQQGJj/
+ Peqvfc4ybx5K4sYCCN7FCsLmCmSszvIS8HM1NoRgfqdmeSy5ppXkBVISM6Tgd7rUtcKUJWtrky
+ puKjZPvQBB1rO6Kv5cZy7N5p0lA5jophc+JyvWRze34MsgIMwrbpjd6sQh6dHO84pOEvLtUfWb
+ Nv2BZJLouXLAAAA
+X-Change-ID: 20260804-v7-2-topic-dp83867-e73a84c37016
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2057;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=/RYNfUur2igYikcCTLtsJTw9NmqouEwWBRy73ncqdEk=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ1bfg23u/d/VlA1e2VrmZPkyvtBYaFWz+Nj+vsvxUhuYD
+ iodcdPqKGVhEONikBVTZFFZWMEn6vHBM3KaCBfMHFYmkCEMXJwCMJEXexn+1zAlTcj07FwnrXZ2
+ zz3BAGXe4rjVP33Tk9YXhk75cGPVAkaGozwazI4G76L7pk85wP6ALfaY3RX2ZT/i81o5l/wIvcP
+ NBwA=
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-On Wed, Aug 26, 2026 at 05:08:02PM +0800, Kyle Switch wrote:
-> Motorcomm YT922x is a series of ethernet switches including:
-> 
->  - YT9224: 4 * 2.5G UTPs and 2 serdes interface
-> 
-> This patch just add basic func for a working DSA switch.
+Currently the dp83867 supports setting the io impedance to minimum,
+maximum, default or a value from a nvmem cell. In situations where there
+is no backend for a nvmem cell, the value can not be set to anything but
+minimum, maximum or default.
 
-I asked you to break this patch up. I want to see lots of little
-patches, each with a good commit messages, each obviously correct.
+Add support for a ti,output-impedance-ohms binding, allowing to specify
+the impedance via the devicetree. The existing boolean bindings for
+minimum and maximum take precedence over this new binding. The nvmem
+consumer still takes lowest precedence.
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+Changes in v2:
+- change 'u8 *val' to 'u32 *val'
+- fix logic in driver
+- update description of new binding
+- rename ti,output-impedance -> ti,output-impedance-ohms
+- make mutual exclusivity explicit in binding
+- Link to v1: https://patch.msgid.link/20260804-v7-2-topic-dp83867-v1-0-1ca79eb54eef@pengutronix.de
 
-says you can have a patch series of up to 15 patches.
-
->  static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
->  {
->  	struct yt921x_priv *priv = mbus->priv;
-> +	int max_ports;
->  	u16 val;
->  	int res;
->  
-> -	if (port >= YT921X_PORT_NUM)
-> +	max_ports = priv->series_info->ports;
-> +	if (port >= max_ports)
->  		return U16_MAX;
-
-What did i say about this in my last review? This would make a good,
-simple patch, changing all YT921X_PORT_NUM to priv->series_info->ports.
-
-You first need a simple patch which adds struct yt92xx_series and
-yt92xx_series_table[] with very minimal contents, only mode and name,
-for the existing device. And add the code to do the lookup and
-associate it to priv.
-
-Then you can have a patch which adds .ports, and changes all
-YT921X_PORT_NUM to priv->series_info->ports.
-
-Then you can add .num_lag_ids and change all those references.
-
-Then you can add .ageing_time_FOO and change all those references.
-
-Slowly make the existing code more generic by adding to struct
-yt92xx_series.
-
-    Andrew
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Andrew Davis <afd@ti.com>
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
 ---
-pw-bot: cr
+Steffen Trumtrar (3):
+      dt-bindings: net: dp83867: make exclusivity explicit
+      dt-bindings: dp83867: add binding for output-impedance
+      net: phy: dp83867: support setting output-impedance
+
+ .../devicetree/bindings/net/ti,dp83867.yaml        | 26 +++++++++++++++++++---
+ drivers/net/phy/dp83867.c                          | 18 +++++++++++----
+ 2 files changed, 37 insertions(+), 7 deletions(-)
+---
+base-commit: 495561a136eaf585a305d36fc3affdba94aaf28e
+change-id: 20260804-v7-2-topic-dp83867-e73a84c37016
+
+Best regards,
+--  
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
