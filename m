@@ -1,73 +1,64 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012029.outbound.protection.outlook.com [52.101.48.29])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013037.outbound.protection.outlook.com [40.93.201.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2642E3C0A13;
-	Wed, 26 Aug 2026 15:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115AB29BDBF
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 15:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787758782; cv=fail; b=fy20yMpA6ko6D+A8IcKjJcH2qjNb8HEuQHZZU1bPJL1bCJMsAY1YDug7NLxtlWmdI+POmp9rxUXxOrWOLyzVsMqwnm9FCHEawf3d3yIEnv+mfOKB0U2HIczz8AXnrX3GTNFiaYRXqxNc9i4e11DJoToM0bWPyVrsjLJCWOcUSj4=
+	t=1787758835; cv=fail; b=c8z9y8tMhIHZ9XQ89LIr+XI+TN8tx+/6yRS/rNAHi8HOKF6L7pyEFuXjzFO0io/v5sIvM8BLGSz2RX1O0jozo2iH9T9mIv3qMBu2ypzn2ugS+WC9rTrCI1NCvmn51N2ayQJOsS4wfa7tHsjc+2MShzr27eNYDa8FhTP4FkdSSBo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787758782; c=relaxed/simple;
-	bh=V/84nM68ahBLqJVDV6xUWnX2a2ZIe/PrDPKP0tebO5M=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IJU33pS1Auv092rvua/uhGY8S3hnm4doRCrnzYO6YtRWOeFQzdhkpa6kFKCclNiQznotOWXAMs5Wp7mcVusfLf9f2gqhT/IhkHxzlUi1VH/1q45zSHAPg1lm0I1iZqZaZxS0g1gezT8FoevZ7VkfwidoCYX+oec/Nlu16eCz4Fw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dT3OoIBY; arc=fail smtp.client-ip=52.101.48.29
+	s=arc-20240116; t=1787758835; c=relaxed/simple;
+	bh=fV1LaEyuBwgwytgd8j/IWZcWBuY5WVJVDOw0qY8BJT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=IRxuJdTXY69XL37LDj8blViXJpiFKqqUYPkcraO48jLJFY5pCHSaZ2hR8jwmECTkVA16sqSK/HXSgIvCkFCZ0uhYOIMnWuNN8TjCR2OFOmsujBkw/iDxPwFglpQ35ZZqqowP+JR/jbW9+supa2IUG7hRWmpIOm52f0XTrk1kWNU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RCIJdZ+K; arc=fail smtp.client-ip=40.93.201.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dT3OoIBY"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RCIJdZ+K"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vooHsJbcObTzYef7DiLbNtN7e3WMwDXUGptaoxYqyPEcA/bZCt6xaEoKOVwVg1sXz6bPWbpBC40mKdWM72VRXxmQ+hTs/5Tx/0PjHpucPSiSmYZxVi02NRf8AekJydrbjpzcKeCbf4EgygGal3TKXHaSjELqvYpNsGOeaklwjK7z+FJc4Us649xo25SyxXOvq2GMuE5ccZkUPIDq8jdXNqXBLxICfKp6g18+qYo7xioX2kbm96QiuhL5VmmsNv9GWn/c1eM+CX4kYTjD+5SWMhAD15D7u22FTiCI00MeIzlgL6qqZ4dDbttBOS+9+ZpITghL9mY84zy0KS+fYYhtmA==
+ b=zJO2Ke63YAf+yFak44XvgCJ8pLI3XzeZYD7RYKBsWnvvKXqZkkYnjvvn4fUk7Mh5omu8Hwe57p8dlyQ7lSmdE6a6giE4dfVjo2EKtFB3UXsJApWsULeEVYvf1VQ89OiPsQ3V7C3d1od6OkS2DFVwvnweP3R+KaISp+z+BqEXmhsIIXWIdEYQUJwwMos+wbD4zf9IB02wsz1wj1JCSz4eRudXrIxgjSSHYfhA/F7AXEahVWy1BUSyYTwKcTsHe9WkBYHNCfmNJPmPfKD8lYvkfaTpD6lpvhpdvPjZmQkxy84DcrER1cuvp55ZH35XZa7ZdZa6PvZuvmX6VZF8Xql9fQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jTQNsz/Wja0N/SSjuVRsEjik1ZGWR23+xu3Z38xgeZg=;
- b=PqaKOwcq7gjwOxNzJWhlsrcLs+1u8oKwzWz7LKvdrkMH/geKwV5lxTzvc6w3Q5AC8CAWYNfkV6EjPHka73GGieUFgU3jAcBpVa4jJNpcMuMnfji3AsykFUufl9gjJdisAkwcLA3G/7gwltbOcK6NIchA34P20KTvjfTpyRve6ClY2NLHQbejcNXWrZdKWN4kKyAqW9fJ21uLP6snV0GXH6cwrAhyaixsErz8e2td63oWhXqoKVCXMteIKIaEDQ6TeqP0/HsovqFJh6PaHi2k6O7NPpuGYC5xzEqOiaw1e/wg1sf2NjuwIKvYkwpVpG6DY3GG17Yq474qaYBdiWB9AA==
+ bh=dbMtGykyT9tff4tXwSPjx6WfqKSK5r+bu1snDTXMzvU=;
+ b=DB1bYcT9uKSZMn/22TcsDejX9u+kSVtbkqfVuzWDiISlDdIb21LnX3I3w6yxIOtY3t2w/OC4eyDh/sRXcQW2BPpyjL+uETGo0XSjis0xHONsDvrC7o6zTlcZBjivDIEVisOWRBnu4eKfFbwUhodFvOXHuRUdy0HqTTxbvrloMIa5qjxt3otUCaDh18/Nf3JQX5ZXYXOUJtaPenTvLvDvTlV2SJLOC+Vkwe3IW6gsUD3Fh35OuDgJWb2BSVoFxziCfj0hTG0Jyn2cDaJTm1/1nnvilocPFSCngXnYw80gJjiocpVzp66XKjUiod2fCfAvYHPJ7ZlyOuBOHcetU5mnHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jTQNsz/Wja0N/SSjuVRsEjik1ZGWR23+xu3Z38xgeZg=;
- b=dT3OoIBY4qSceOy5aspmvGdOclKHH/v1hpazCguXSEjyg1SfMrW7VarMXLxAeN5dZEOPKHyCgApvLFnFUtq9f9YHQn+Cgq0P+y9HTIKTGhqP8B91N+mrW37xzID5mELKN3ZOALB0t5d7e7dKt23KnE7l9iDWX4N/Zxszh0HzCE5AFmXWjONy8TpWwKcPxyBPfRXbNEhnL9kA/zJJvNYJciB/9wti/xBFIkwYEI+1R2f6UPYQkfmtIU2I9r4iywn1eyVzAM39LdePS/1efHg0pBSFlaJxwbq1P6CQmNCJhhEsMYqAqZ1jryDRMNLdN88UGNuJCZog4uKNtH0+DdZCpg==
+ bh=dbMtGykyT9tff4tXwSPjx6WfqKSK5r+bu1snDTXMzvU=;
+ b=RCIJdZ+KMXJnZxZMrXi80b/2BkpCMP7iNobWgXBs/+ZMioBW7JTW7q9xeOTdBrG2cV1T1YyQRRgz/xLyLz/MYohbeNoLIfZu3XGVi8aor3FFwXsO+d/0zoFG821/h6N2oKcOnqBbO46/jvaXP7y1Qo0JPFtRx2QDkUGGazYC8wxG10ukcJM7Q0BtVaDxLyVWQ8FarYpSrHfAAqNLpqoha3dWHkjzE5q8N15nqG5HFsb8QjJFuFILvponUEOEoGnEiXTJ60QmcLe7N191pAyb0+DgsxJsCl5gAQnBjvIGajm+T8j5HCHAlxVW4qs/AjHmw8ayaGNZLilclwnutGgeww==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA0PR12MB8716.namprd12.prod.outlook.com (2603:10b6:208:485::18)
- by DS0PR12MB9397.namprd12.prod.outlook.com (2603:10b6:8:1bd::15) with
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by SA1PR12MB9470.namprd12.prod.outlook.com (2603:10b6:806:459::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
- 2026 15:39:26 +0000
-Received: from IA0PR12MB8716.namprd12.prod.outlook.com
- ([fe80::c18d:8eab:b36c:32da]) by IA0PR12MB8716.namprd12.prod.outlook.com
- ([fe80::c18d:8eab:b36c:32da%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 15:39:25 +0000
-Message-ID: <e2a95399-be5a-4194-8368-69599291ad66@nvidia.com>
-Date: Wed, 26 Aug 2026 17:39:19 +0200
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
-To: Mostafa Saleh <smostafa@google.com>
-Cc: Luigi Rizzo <lrizzo@google.com>, Jakub Kicinski <kuba@kernel.org>,
- rizzo.unipi@gmail.com, m.szyprowski@samsung.com, robin.murphy@arm.com,
- willemb@google.com, kuniyu@google.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, gregkh@linuxfoundation.org,
- rafael@kernel.org, akpm@linux-foundation.org, david@kernel.org,
- netdev@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev,
- driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260615234220.3946885-1-lrizzo@google.com>
- <20260615172535.080cf94f@kernel.org>
- <CAMOZA0KAHKsvA9yRcdrjG13S+=rJhw-Cvnw2WdLjGGY0azG0kw@mail.gmail.com>
- <ajEuUZMgS_NRmDcp@google.com>
- <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
- <ao3DzzFIVPdtL7MX@google.com>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <ao3DzzFIVPdtL7MX@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0253.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:af::8) To IA0PR12MB8716.namprd12.prod.outlook.com
- (2603:10b6:208:485::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.8; Wed, 26 Aug
+ 2026 15:40:29 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
+ 15:40:28 +0000
+Date: Wed, 26 Aug 2026 18:40:17 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Dong Chenchen <dongchenchen2@huawei.com>
+Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	herbert@gondor.apana.org.au, netdev@vger.kernel.org,
+	zhangchangzhong@huawei.com
+Subject: Re: [PATCH net v3] ipv4: icmp: reject RTN_UNREACHABLE input routes
+ in icmp_route_lookup
+Message-ID: <20260826154017.GA1834664@shredder>
+References: <20260825094523.1461020-1-dongchenchen2@huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825094523.1461020-1-dongchenchen2@huawei.com>
+X-ClientProxiedBy: FR5P281CA0019.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f1::12) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,109 +66,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8716:EE_|DS0PR12MB9397:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf00e31b-298c-4d1a-b0d4-08df03883529
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA1PR12MB9470:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83f13a27-4066-4fe3-9778-08df03885ac7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|6133799003|3023799007|10067099003|56012099006|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	2vAiH9WlRO/QIBul3BUcqHMZES9GIAnu5CuEucmtauX65B6UkH78owbxkD4uqnVCpNd11UmwZwg7j3FWCSem8IGsWCi8qS2BqJX83fhLqfTA8zvRDaBCHxR8/eQKL8Th40S6Fkdq8MCVObdLYgmvr5H5v2HkDKOzia5fTCHy9NY91qnX6eN+/e5ypajA4+e0wFOmfTiSRef03BEa++Biws41HtWWBYcVsU6P1/2rGVJF0Rk1svs2f6YFiAxBAttGU0VY98CFQAsfjFGdoy0OCt4x2x6D8olAEA9Or5t3zt6hvGSHDVywwk2nVD62Fedr84VLlqGVYoZZE8N2LEgwWw4P20B5mJp84HHpVIOCVREVrmZIQ+uOe2QbIjFfTLjpCdYw1c8CQk/linozjlyEL1ArU34Yj/OJU8BQ0PaGHzbIbLDhLiCtVe7x8v/ZyryW4peHm/wdNn61o+Efz4s/rvKKRQ2TuDKyNMCg2YVvGtJd1QX8HDd1rxzafcCpHeRz+KjqJHMTbqFbuSDY6RO7U/Wgvs9rfw2cyUggV293yc1Sy3Y1A1k2V2umFyDTtejl2F7Yvmp75f23mL/8mGKpT9v2BWyLUvv3RUQS5y9LLMU8pPMDgpmwWq5keggkX+d1vBaZltTdPDagpWqsr6K37g==
+	nIRegnyZJxeY+VcUuxNjl3cv5/9ZZA9ATXuBP3KbKBjX3UZwsPrQS9gKTGbauERIxYkQcHyTOVb1sDdvn57Q8MHRY96iWTO7ILggGxDD+YEa54KBdfYnZlIYEDv6Bw2CgeQEt5SVYVyb7vRUV3DiD0856RB2ie3nbrNiiI9lDjoariJronJm6h7MHzpFZxFpGcL0N+wKSFv/BNCbE8wQB/uVUHwRu3z4NwvgeaCiTXqwTagAvCPBUaYJ4jnohY8azmEmLVoK0mVKSG5qPvAeFGz2YTGFeUIxwofyct+9m4Fj4hwOK6wTTvkeUZewzjREw8HhYSjISIGS1cWqk5DCFH+btOQq3q/GUmwy7O4xjfQvV7ObclP0GwzGttiSA+UFZAoyHBIGxa8JYHrt1b/6vgiARMSGP8SFtYQigAmn34q+eTkGwDc7knCiG43XjW+xW9Q0xEkvM/NyFz19PNhgKiO5a+8CkiZnPUva07+fGSK/r1v5LN3TxIB3DY9d73iTK5vFvL9U23VC60C+CPrs9kn9gX5pgkuRwzmS0POlvMFH+udlgmW45iUOYa+qw8tBS/BgFuklck9d2LH6DC6c0WpirBN6lmrhUYKUWotUoqZqaZlnWmt1MmVuh4vXHld9I2b2RHKaVNJgGtOxA0rjfvHQzbhftForQlYUe6T4w3I=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8716.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b3hlTnNKbjVSc3FtYmkxbGZRMHJoeTVSZzZjb3RMaUc5MEdoc3NzbUVndDRr?=
- =?utf-8?B?U2lmRlc2MGMzRDVSc0lwb1FRditRMDM4WFQ1UkhrVlpsOWdkNDJBZmEyajNU?=
- =?utf-8?B?T0dHL0lVd2RKMGxjN3B6eDdLWmpkVUdyNFpGTmtaNTZwQUZxWndpWUIrRkxD?=
- =?utf-8?B?dFZ0Wi9Tak5RR1gwRzIwbnNVUlo1S05HenJYWDEzem0waUNrR0hTMStIejJV?=
- =?utf-8?B?MHVab2ZGbnpKRFQxQ0FDMlh5cXozMFpPbGpLSHFVY2NNa1hhTjZRaGR1bTJv?=
- =?utf-8?B?Rjc5emF1dHNaV0diYVBvYkc5cVBqVHpjcDJNSlJ6RXJ3SjBmRUtXKzA5SkpT?=
- =?utf-8?B?cEkvQldJVmxwQ2VabFFWbWpMYXlxRjJScm9ZdTI4Vkl2RExMU1Y2ZmdoczYy?=
- =?utf-8?B?akcvV3VhYjU5cXFVOGxRWnNtVGZiN1BpRmt2NUpGYmNSQ1UzTFRJeVRJR1oy?=
- =?utf-8?B?N2ZkZHR0bnN2Y05JcmMyUDYwQWtJaFZCYzlBMFpzSHNDTkk3V2w3ZUhDTldy?=
- =?utf-8?B?K1NSTmJjcmIwOGE4bnIyWDJrYlZjQXdraVhEVk0xWUlnV1Y0TWZwTmtIRGFK?=
- =?utf-8?B?ZXFLS1FsaVNETTFJVjF0WGtVdUoyaUgvYTlIdSs4c0p4eEV5YThkTjFZMExM?=
- =?utf-8?B?T1FhZUhSMDJ4Wlg0cmlVZ200cFNqK2NXVU0rNmpwRGgrMUlqLzRyRm5Xb3pz?=
- =?utf-8?B?d1E0QjF4bWpFMFo1MkMzenpiVS96V3l4cHhiVnBwTG0zQnJuV3BOMUFRdS83?=
- =?utf-8?B?NUtwRVhESHB2L05PNW45b2VVRnhCODdwK0Y3Y3BoRFlqb0M0OW5TUzRXdFVP?=
- =?utf-8?B?MnZEc2ZOQ1QxUTdMREVhVVhoVDdJT1QxdTZUZytRR2FIdi80YytDRElGdkFY?=
- =?utf-8?B?QVBjWm8rZEx2NjRPVXgvcElLUUFjTEhlNHJhYUxyNm5LUHE2aFVNL1ppT0pW?=
- =?utf-8?B?YWRWcERhcnpUbXloZDFUVG9UV2hjRUU3MXNjTjBZUTJMaitlL2Nabnc2cjZQ?=
- =?utf-8?B?TVN2UmlPQm5nclpNNHVTWHlnelNOTnQ2SDQ2UnZWWjJTdWxHYWVzamhyN1A0?=
- =?utf-8?B?MDVmK2FJWDJVUU1EOS9Cc2FHa3pxZGlMWkl4Y0twNlBlMXVzdUR6MzAzdVd6?=
- =?utf-8?B?Y2dOUG0yY0IrZmlNdzUvZXFSRU1oSDhQUlN4UzFNYzkxRmdmang0MVZxMTdW?=
- =?utf-8?B?Z0JYNTJvZTB6UTlZczZIOWo2WlN0YjlZUEJuNnF3b21CWEtZbXBJMUxFQ2RX?=
- =?utf-8?B?YTQ2eTlmdFRCRE1nakNwMUltV1lkK1NBandKRVVaZWt5SWxZOUE4d1FCc1RI?=
- =?utf-8?B?UlljblZRUlR3UngwUnhQSm5PeXcvSmhmV1l4VGxPSnhvMlJEMjMydTB2ckFl?=
- =?utf-8?B?MmM4MzN4QUl4clpxREs4amwxUXhnY0RrRW1QeDVRcThPdDYyelhPakk2VVps?=
- =?utf-8?B?bzVmTHNndUVJVThFN25VbktYWXZqR2dWUk1QUm4xaEZuWkhvRkQyL0ZtdWZK?=
- =?utf-8?B?S0dUcnZISEFSczJMTFpuMzBJbVRCdWtRQ0FYbFF3OUE2d2FDdXpuQ3RiMGhY?=
- =?utf-8?B?SU0wTkw3V1lYRXdhVW5hOXBDcGlEZjV0MmlVT0V4N3FheWc1NzhpbWtPclYr?=
- =?utf-8?B?MnZCOHhONGRQckk4ZG5WcWw5SElvQ1Z0ZitQU3VxZnFOTHZXUnNacnhIbmpW?=
- =?utf-8?B?WkR2M3lIbktwZ056MVRCcEYyeFl1WVNXQlhZQTFTaXNFcVFwNEg1ck96Z1BM?=
- =?utf-8?B?K3B1SDdpL3RCNDdSWnV5cisvK3lMbGc5alE0K3l2Nis0Y1NiZlhrK0VWWTB6?=
- =?utf-8?B?S25VUzlkdG4zRW9zSDUzb1hoTk1mUjE0TjJaRUNnb1dqWlJDSmg2cGNYWS9z?=
- =?utf-8?B?R3J0RzlTVWltZXdtQ3ZWUHB2WVNUbjdCdWJ4RElFMFB6RVN0bXFxYXB3bnky?=
- =?utf-8?B?RzNzbmcwRE9aQVl3d1ZXazNIeE1LZlJmdzQ4WDVCeDNTaStTSUIvK1ZxY3Iv?=
- =?utf-8?B?SERmQkdmK0EvK2MwZzdwbyttNU1kWWZQdUg3ZGVzTWtINnM3NElKVXU5dklU?=
- =?utf-8?B?R0d6Y1dqTklIdjYxa3NwNitFVzBmMGRDUWlpTUp1a3FpcEM1MWFGbVZnSGpm?=
- =?utf-8?B?NEFSeDFDK2E3djgzTlBoVG5UcFRIUVdsaWZhRmZ4bW9UQjV5Z1FaNHhOY1hE?=
- =?utf-8?B?V0cvL0RaU3RDSUIxcTlrLzhCNEdHZXhOeE9TVVFoNWF4NXBVMjNTOTFVWEwx?=
- =?utf-8?B?d0Y1YW5SbVNDSFNSK2pMWHFRU1R5RW55eW1vdWdxcktzV094RUY3Qlp0aTgw?=
- =?utf-8?B?OU5NV04rNXBCOWVrUXB0MVBOM3RSZWJOK0pBdFpvakRCZ3RwUHltQT09?=
+	=?us-ascii?Q?Zp/v8JfQF+dSHNYde+nDNFJhETO1nu5rAruekpbgXhFwmTR67OeKxZYk+Q81?=
+ =?us-ascii?Q?/ymAPWeHyUeFMnpKO+q/GdjvHLrKP5JauooVwaawYnPgGVaxQlWFOjtGNkTg?=
+ =?us-ascii?Q?JIhZHuLVG7mlPfXPiYDw4kW7fFQK4c3jzJvoj5g04joCeW0O41cxU9rsdTY3?=
+ =?us-ascii?Q?pITBF/OdY+al2RpYovZ2s+hWv0xrVbrT3IILHgHG4EV1UoGxml2zBA/7Ioo+?=
+ =?us-ascii?Q?hd3/QFciA/MMcPjKYc0lmdP8TmC2lXK6EknF+BxaNx+++3fMGC8vHoYjxrFr?=
+ =?us-ascii?Q?LHT4EN6QVSVTzQXVtcqGDCwEDcp9s80zUZqTXOyRRIyvOk0hAaVWAQxBFIA8?=
+ =?us-ascii?Q?LOX0Jl7wQTObEw2yiozSxmqoe/fj6m8sv6Ljc/PjRXi9tD0SL6gMMsco5qPy?=
+ =?us-ascii?Q?5kekPUgSbeHeiQB/zULnzmKihyqDoH65f0gMperwP9/GxabDG0lrkyZ7dM0V?=
+ =?us-ascii?Q?AqyJX/q82p3wL2vwTamx5Nfz7GdJzoV1zk1rvugAODmXS8NCUaeMIZYnBO1e?=
+ =?us-ascii?Q?iI26e/mvN530LR5WrK0RdlOKXXMxT5U55jmLWO9qFjMTLWZ5oj/gcBs9qhKK?=
+ =?us-ascii?Q?u3VONCR5JjyLDicwJTqsfnOBZ8bqGNkXrt0LrIoj4Sir2H+ydXT/SPKbCdTF?=
+ =?us-ascii?Q?QzWcUB+X9UDdz44HdMIC1DhtL4Ki7TFRSHaIPP/71MJpmdvGaw/1yaBfglYR?=
+ =?us-ascii?Q?491g9TTSsRDK+MWDbX6wudDhXQqPUMayqw2n67rsjnx9lfPC04g+gsKb3Iyd?=
+ =?us-ascii?Q?WhfvM1bFM+ehHVgoOIMb0+/Coii5RtejIwLP/dr48LP44628W7lfQ5rxauhN?=
+ =?us-ascii?Q?93atGE6M3Ymt8W36W+WD384n0A2XPLwSdYwPjVCThbcKwbP6YwtAaGKqQyZp?=
+ =?us-ascii?Q?VRZIgk/zWYVleFOVjBnxIw8PhtxmiiK3ICjQ0OPVR3gbNxGFQ8nduCSsaQlR?=
+ =?us-ascii?Q?VTs1WOwUMQxyFBpJOGe97+gy3QAU//ipI/cE8U8Co6yYX3r0Ob51euWXOrOn?=
+ =?us-ascii?Q?HtjKYH+hMlaFaxTayIK5cmY/TsX5K7s0VtpdgaU9iSu/AYTFP2I6TJgBgFva?=
+ =?us-ascii?Q?iatiKxFJWMgm+HBoyM3wVMsMXA2HcwYxYn8lqsqZEayMtLTSjtnFigZUoTJw?=
+ =?us-ascii?Q?vwDo8HrFWauxa1DbC/69fA3Fy4Z8DxWylsyd/510J/IuPd8lgU45TaOXXM0G?=
+ =?us-ascii?Q?24hxS5ckaBEisLL9waU8Cqnloze1eR4BRvGH9npJFdfezzoMvCKROUuI7Cry?=
+ =?us-ascii?Q?xO+FW7SE+gJIrlohfiCo3d7FnaHMXoBI58W0jjdNcGDhRz2UGEQDbfrTisxe?=
+ =?us-ascii?Q?AMqeHCrksJBmbbDUROcyYdDQGoDJb3Rq4pC7o8G/lL+VKA3kah6dtDCG3VGs?=
+ =?us-ascii?Q?fiJK4A19b2TlRszCGga6SD6W7S4fRRuDnK75erPsRaqznDXG67DKAufEhmhq?=
+ =?us-ascii?Q?14h2pLjbwYaD4OYHII8HXkjxx+6vlIK2lUqIcjRH0V9dKwmtFGluDbBn+/YR?=
+ =?us-ascii?Q?7RvMrVVzGsTKwgAewlC9rrVPVxnLO3k+0Njlff6DfKtFnvwTaZWGJfRSS7Vy?=
+ =?us-ascii?Q?jmOAZMpJyM5lCZpZGPvcbcwvZZgNkNaRpKiTkj6xHq4eJqpHno4OLtUdgxyi?=
+ =?us-ascii?Q?8uqJLxKZLxrgbYQi8b8JYK14HRamxaJkrUBSOjV9nBK5DR73ARQR3+Jd/eVI?=
+ =?us-ascii?Q?o051bQHKp2LkRE45TewN/YirZXITHf2DBUF1nf3O4TNUFcZNs5pMcy34BgN0?=
+ =?us-ascii?Q?ZHCO4bbw1g=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf00e31b-298c-4d1a-b0d4-08df03883529
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8716.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83f13a27-4066-4fe3-9778-08df03885ac7
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 15:39:25.5086
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 15:40:28.6616
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yuDZUJk0MEl+6MBRg4iCoqaHhSrRVYpKiAG+vx0jSkSZCPqj0pjWNbVAt8ZegjmN2A9nzwSR1XhZHWdwktlQOg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9397
+X-MS-Exchange-CrossTenant-UserPrincipalName: ed1+xxmw/vUAsjjgmHj0gnLQI4ZIvy80Sr4Y9Ahpciu+HE2r4Y1qVFnmr3UgjoaGFYbfFQsnWV5pUR3ZOHs6AQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9470
 
-
-
-On 25.08.26 18:33, Mostafa Saleh wrote:
-> On Mon, Aug 24, 2026 at 10:59:21AM +0200, Dragos Tatulea wrote:
->>
->>
->> On 16.06.26 13:06, Mostafa Saleh wrote:
->>> On Tue, Jun 16, 2026 at 02:33:52AM +0200, Luigi Rizzo wrote:
->>> [...]
->>> I am still looking into this, I was planning to bring this up in the
->>> upcoming LPC.
->>> I will give this patch a try. However, I believe that we need a more
->>> generalised concept for CoCo pre-decrypted allocators in the kernel.
->>>
->> There is a talk at LPC in the networking track about this [2]. This is
->> exactly the type of discussion that I was hoping to have there.
+On Tue, Aug 25, 2026 at 05:45:23PM +0800, Dong Chenchen wrote:
+> When the forward output route cannot be used in icmp_route_lookup(),
+> it enters the "reverse path" and calls ip_route_input() on fl4_dec.daddr,
+> the original packet's source address.
 > 
-> I see, thanks for point that. I plan to be in LPC, so I will aim to
-> attend this talk.
+> ip_route_input() only returns an error for truly invalid packets. For
+> unreachable addresses it will succeed and return an input route whose
+> dst.output is set to ip_rt_bug(). The existing check only rejects
+> RTN_LOCAL routes, so the RTN_UNREACHABLE route types can still be returned
+> and later used for output, syzkaller triggering a WARN_ON_ONCE()
+> in ip_rt_bug() as bellow:
 > 
-Great!
-
->>
->> Besides the issues mentioned in this thread we've also found that a lot
->> of overhead can come only from swiotlb allocations when running many queues.
->>
->> I will add information about this series in my talk. Hopefully I will also
->> have time to add some numbers for comparison.
+>  ------------[ cut here ]------------
+>  WARNING: net/ipv4/route.c:1273 at ip_rt_bug+0x14/0x20
+>  RIP: 0010:ip_rt_bug+0x14/0x20
+>  Call Trace:
+>   ip_push_pending_frames+0xfa/0x100
+>   __icmp_send+0x905/0xf10
+>   ip_options_compile+0xc0/0xd0
+>   ip_rcv_finish_core+0x321/0xae0
+>   ip_rcv+0x1de/0x260
+>   __netif_receive_skb_one_core+0x11a/0x130
+>   netif_receive_skb+0x7b/0x260
+>   tun_get_user+0x11bf/0x1c10
+>  ------------[ cut here ]------------
 > 
-> I had a quick look, I am not sure how that will shape at the end, but I
-> think we need a general solution beyond NICs. For example in pKVM the
-> bouncing is used with virtio devices, so doing this per-driver won't
-> really work and is not possible in some scenarios where memory is
-> allocated from the core kernel and then passed to the driver.
-> So, I was thinking the kernel relying on
-> CC_ATTR_MEM_ENCRYPT/force_dma_unencrypted() could detect that and
-> allocate pre-shared memory for those cases.
->
-Ideally it shouldn't be per driver. But I was thinking that there should
-be a way for the user to provision memory for certain devices.
+> Reject input route that is RTN_UNREACHABLE to fix it.
 
-Thanks,
-Dragos
+Nit: Also mention that the warning is only printed for RTN_LOCAL, as
+RTN_UNREACHABLE is not the result of a race condition.
+
+> 
+> Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+> Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+> ---
+> v2:
+> - RTN_UNICAST judgement will reject bforward packet. Only reject RTN_UNREACHABLE
+> v3:
+> - Modify the comments to make them more accurate.
+> - RTN_UNREACHABLE dont need warn log. 
+> ---
+>  net/ipv4/icmp.c | 17 ++++++++---------
+>  1 file changed, 8 insertions(+), 9 deletions(-)
+> 
+> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+> index 0caedfc7ca92..7350f0380be1 100644
+> --- a/net/ipv4/icmp.c
+> +++ b/net/ipv4/icmp.c
+> @@ -581,16 +581,15 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+>  		skb_dstref_restore(skb_in, orefdst);
+>  
+>  		/*
+> -		 * At this point, fl4_dec.daddr should NOT be local (we
+> -		 * checked fl4_dec.saddr above). However, a race condition
+> -		 * may occur if the address is added to the interface
+> -		 * concurrently. In that case, ip_route_input() returns a
+> -		 * LOCAL route with dst.output=ip_rt_bug, which must not
+> -		 * be used for output.
+> +		 * At this point, fl4_dec.daddr should NOT be local (the
+> +		 * address can be added to the interface concurrently) or unroutable.
+> +		 * In that case, ip_route_input() returns a LOCAL or UNREACHABLE
+> +		 * route with dst.output=ip_rt_bug, which must not be used for output.
+>  		 */
+
+The code is fine, but the comment is a bit misleading (the "should NOT"
+part is only correct for "local"). I find this clearer:
+
+"
+fl4_dec.daddr is not expected to be local here, but it can be added to
+an interface concurrently, in which case ip_route_input() returns a
+LOCAL route. It can also fail to build a forwarding route towards
+fl4_dec.daddr, for example, when forwarding is disabled, and return an
+UNREACHABLE route. Both cases will result in a route with
+dst.output=ip_rt_bug, which must not be used for output.
+"
+
+Thanks!
