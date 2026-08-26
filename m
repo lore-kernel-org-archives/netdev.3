@@ -1,106 +1,138 @@
-Received: from r3-20.sinamail.sina.com.cn (r3-20.sinamail.sina.com.cn [202.108.3.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7E61C84AB
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CE03C13E3
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787740070; cv=none; b=k1bNcTlWZzJF0aM059Rnpg9ogu2cwtQlZmffy+Cu6NKr+zrzveyQ7BQPKuMcooSK/dfyqOeyORURMKwP934WrNWoG7ZKQVDoiT+Z8YwnmoErwFmWJm0qkz9qMLW4/oEVzzpYZUmsFT4MONoOHyTlJLjTcwYiDE1ByGCdfSNchdc=
+	t=1787740527; cv=none; b=BWbguKyCAOlyHTzqom5oKmY4SYuc1ssbThgnPZOabhwzInqBW3FNln9hGuGzrepnf0dTrAK+lGt/ilf/aGlazR6ezNTSbXtjt5FIPYjTFS2H7sb2mTIeBzbTtFPMElmq4t/ynW58Vaw7ka2oOzCJdDgZEHJVbEjWtK1KhEUHrbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787740070; c=relaxed/simple;
-	bh=Y1pHpqz9//ulna1bs7VQAlliILT8I00xc0CdnxJv0VU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lyF70QMvfUCpVKMLu9O8yo8xyo8zuTrB0hwxecJfb5t1RpxvpBAMDCfPrMMU4uBpDVVizBJI1F+30Q6CHSMlutSXa7jU9zfKFMjyTIejZ2kESeQOjtpIX/99i4NkOZuXkKe+i0QcSpOWYc+aDocpSRCwDXjqbJdG6+7+A+dOdCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=G9Y8OzQZ; arc=none smtp.client-ip=202.108.3.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1787740527; c=relaxed/simple;
+	bh=y/qxAQMIW2CMYc/bzkgwh68GybbVe61ppJSHYTFLsDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A6zrm5Qvt0T7wRdTemwRcfUy8DMAQ1hsFop5z6FQlwp2farchtrz6Xlot9Q0OSwtTUy9+VrCS2T5D0AHrzWOhcmNKGuppDqPRgE/A0NyJwPNMFUZSZs5DzhR6bEGP4W5K3COguAD0ffQeC3J8ibFPv0OvsvMnpdBT6yng/dOMig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HtOsLMjx; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="G9Y8OzQZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1787740064;
-	bh=6xTlKpsDlJOqs3W/yjXrpkuyHUwmKAvYUndEqH2KEDA=;
-	h=From:Subject:Date:Message-ID;
-	b=G9Y8OzQZM3tTwYtM3LRAxi2LyyKUb4HN2eG8W0Un17ZXEuspjzkd37mf+4dF6lv5i
-	 OkztcY3njYIa08hBcL5Ulas05FQLFspFatTcXpe0lnwRwsqkE3FHriYQ8yCEPD8yPo
-	 PxgMki9nFZZ5K1SpSWrvGRGHR5lEtxi3EC9qNc+A=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6A8EBF8E00005DA2; Wed, 26 Aug 2026 18:27:32 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 2621944456833
-X-SMAIL-UIID: 5DB360D79E3D4E9E9F65D737821476E2-20260826-182732-1
-From: Hillf Danton <hdanton@sina.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>,
-	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
-	boqun@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HtOsLMjx"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cc1cc97b84bso164916a12.1
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:35:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787740526; x=1788345326; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5X3ww+aTNIQSQQs0nmBvcYcUDlxPlN9HB4Ktt9oSZxg=;
+        b=HtOsLMjxStDwUD9d75FjNBEmCyBBYq8irE8OROfVcCUOHIuNZIAYJ+ccXaoLbiIilK
+         3gi7ynORW8OpxVtaD1X5E/SynILXtBiTEbf15oEQdnYUyH2jNCsfbf8mtB26wQ0lIUpR
+         xY+rLsRlHArwoF4U6TSqZDna10jQlsaTu8LB4HiDe+Est9a9qjEGHeO2OngfVGc10Gn5
+         JRcVWIR23/8iBI2TP6slne3iqqsSOp4a3RkmVjZ/hsnKEnTHg39Lo8tCTYi/Te4omGhx
+         BJHL7qP98N0bIRoYqwcSmeVQBs0aSzlAafK9aEW6PNvKy53P/pQBNgtcLBIr1GRg/RV1
+         WVmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787740526; x=1788345326;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5X3ww+aTNIQSQQs0nmBvcYcUDlxPlN9HB4Ktt9oSZxg=;
+        b=sXR5zNHqGJdWjdsHJ/ss8R4DaUkUopxAzxiRJsic1bZEWaq94tR0qfjwBv/vNrQsP2
+         w4R67uzkZ0Tx+nnyC3nFMpvSnSG/9GM++T30Pt/jZGPBiQMKycFh/yrqBcMVuEpTX1yP
+         BupdC0Uvehvg18lAwo08mf7gSCjacqZiDxg84vD1Q+f4cmXPouIoPrjIoatQgwTF7Aob
+         LYIb01ifuQpdNJReNBV8JCBkgwDcaDyBytxMBOvaiLYzJoHNYs5GrM434PsMz9N2pu9c
+         sI2MM2aaXFieLCeqvLMWrP63lpzHbwcqSWDeCTUJ5v+nU+0VNzylH6ucngUYUC7Hsiss
+         5M/Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpPR9Ks0VNFUuk64q8f/clHeqU34vkLJs2INs57EN7kUqaVqrdcWd/QspeA3weVjk5/3wNjh6Y=@vger.kernel.org
+X-Gm-Message-State: AFuF++lLQIyaBWIEvLYTj+CmiU4Zm7zmpthnIBbCXt5FSyqJhN1LPzUY
+	brp+OHiRLqZ41mYdd68gOOSChW2AoTOPMPWvuWyf3fqRARqz4bRGQOvw
+X-Gm-Gg: AR+sD12szBev/k4FSePLAF/4rsxYFawFxmgLAq5pcAXfDRTNuzLCK1LRn0a/bJD9I6w
+	dX9zDhgZYd2IgTm7+qpeIeVXjzf1A6v81bDElaz42EnCwh8hpYqwmIpb9IYroeLJ0xkuzvHYVbR
+	E4JXmEYKCXsZuoAVxgxKXO0XLHN1cAJrJrQ1DZ6PfPcm9TgIYIadJGxNm0laeRt6jKkQAxrqH6M
+	t7Id+013oZRbAC5DyrzrYjZSWAdq472fi1I+ouqy0wuXNH9fYmXssp7R4CHsNPjGc+y8pdGMUSU
+	5xX6CCVDS0xsnQqPJGTcLrzj7ygdRl3I+6rzjM+ReLB9Bs+y6kuD1CwXURitmI5y82KvBz7+8G3
+	RRMqr9wRbHOSiBtNpKRBDw/rtlhrVAZrPlNDdIv0y3re6uXc8aw17yCdSHGogjEtcO/YbL2eCJ1
+	CkUBu4D9clRd/TRGEJz+KE1MQLnlm5JOA7XnBBra91k3XGnmqXH1xsp342ygjHJTM6kBhbO96g1
+	HQhIhg2P+5yyS/rTFnlwAO4ljnyFQSQ2i0OSJglouNvtCTCzOK7P+hnD90yceM1yU2w7mmeHUPS
+	84wrmA==
+X-Received: by 2002:a17:90b:1649:b0:37f:fdc8:71b4 with SMTP id 98e67ed59e1d1-3966d3fe36bmr12075307a91.2.1787740525585;
+        Wed, 26 Aug 2026 03:35:25 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3967591f49csm676654a91.3.2026.08.26.03.35.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 03:35:25 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	peterz@infradead.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
-Date: Wed, 26 Aug 2026 18:27:16 +0800
-Message-ID: <20260826102718.1550-1-hdanton@sina.com>
-In-Reply-To: <CANn89iKEVEs5=K1Uhj_CHagbt+eV0QGernwz9EBFkLEZOB1FAw@mail.gmail.com>
-References: 
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH net v2] net: fec: only stop PTP if it was initialized
+Date: Wed, 26 Aug 2026 17:34:28 +0700
+Message-ID: <20260826103428.32807-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Wed, 26 Aug 2026 06:05:15 +0200 Eric Dumazet wrote:
->On Wed, Aug 26, 2026 at 5:06 AM Hillf Danton <hdanton@sina.com> wrote:
->> On Tue, 25 Aug 2026 22:26:25 +0900 Shin'ichiro Kawasaki wrote:
->> >On Aug 25, 2026 / 14:45, Hillf Danton wrote:
->> >> On Tue, 25 Aug 2026 14:44:35 +0900 Shin'ichiro Kawasaki wrote:
->> >> > On Aug 25, 2026 / 03:50, Eric Dumazet wrote:
->> >> > >
->> >> > > I think 19bdb70c77d3 should be reverted.
->> >> >
->> >> > Just reverting the commit will reintroduce the other lockdep WARN that the
->> >> > commit addressed. I hope to have another fix to avoid the WARN.
->> >> >
->> >> I do not think you know the root cause of that lockdep warn, so reverting
->> >> 19bdb70c77d3 is the right thing to do because of [11, 12].
->> >>
->> >> [11] ffa1e7ada456 ("block: Make request_queue lockdep splats show up earlier")
->> >> [12] Subject: Re: [PATCH] nbd: don't warn when reclassifying a busy socket lock
->> >> https://lore.kernel.org/lkml/20260816014906.1149-1-hdanton@sina.com/
->> >
->> > I took a look in the commit [11] and the discussion [12], but couldn't follow
->> > why the commit 19bdb70c77d3 should be reverted. Could you elaborate a bit more
->> > about the reason you suggest the revert?
->> >
->> The Fixes tag in d532cddb6c60 proves Eric delivered a HBC, half baked croissant,
->> to lore. And the nvme-tcp tucked in the HBC hints Eric copied something from
->> somewhere. Finally the absence of ffa1e7ada456 in 19bdb70c77d3 proves it is
->> worse than a HBC. Clear dude? Or go to read [12] again?
->
-> linux development is iterative, we do not submit a single patch fixing
-> 1000 bugs at once.
-> 
-The iterative word fails to justify you can submit any fix before understanding
-the root cause.
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-> I decided to ignore your rants a long time ago, as many others did.
-> 
-Your HBC forced you to quiese instead just like the ostrich burying his head
-in sand.
+fec_ptp_init() is only called when fep->bufdesc_ex is available.
+However, fec_probe() unconditionally calls fec_ptp_stop() on the
+failed_init path, and fec_drv_remove() unconditionally calls
+fec_ptp_stop() during device removal.
 
-> How many bugs did you fix last year?
+Check fep->bufdesc_ex before calling fec_ptp_stop() in both paths
+to avoid stopping PTP when it was not initialized.
 
-More than 150 [13].
+Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe fail path")
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+---
 
-[13] Subject: Re: some works in 2025
-https://lore.kernel.org/lkml/20251112225650.9224-1-hdanton@sina.com/
+Changes in v2:
+ - Handle fec_drv_remove() as suggested in Sashiko's review.
+ - Update the commit message.
+ - Add the Reviewed-by tag.
+
+ drivers/net/ethernet/freescale/fec_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index ced4dbf8cd90..794ec427b0ee 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -5457,7 +5457,8 @@ fec_probe(struct platform_device *pdev)
+ failed_irq:
+ 	fec_enet_deinit(ndev);
+ failed_init:
+-	fec_ptp_stop(pdev);
++	if (fep->bufdesc_ex)
++		fec_ptp_stop(pdev);
+ failed_reset:
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+@@ -5499,7 +5500,8 @@ fec_drv_remove(struct platform_device *pdev)
+ 			ERR_PTR(ret));
+ 
+ 	cancel_work_sync(&fep->tx_timeout_work);
+-	fec_ptp_stop(pdev);
++	if (fep->bufdesc_ex)
++		fec_ptp_stop(pdev);
+ 	unregister_netdev(ndev);
+ 	fec_enet_mii_remove(fep);
+ 	if (fep->reg_phy)
+-- 
+2.43.0
+
