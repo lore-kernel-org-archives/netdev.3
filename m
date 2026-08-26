@@ -1,150 +1,179 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADB143BDB3
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 14:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E2C2D94BA
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 14:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787754018; cv=none; b=tJuMg9HkQw4LFvnT9LLRa7RACmC+xlT2ruKmT9QaNqbuW5rtqpWwpj51JaV0TAj0oFCPHvU/AnnMKXylpUCj0ma/CbHKlScalK6EQXvlIMWJnwPRcF8o3nI4U4OL/9DVnvUs6b/TvVTCMWecBHmVH9p6mtNTJIqeBP5lkv034yc=
+	t=1787754831; cv=none; b=bUFVgz+syblJiK06MxwdY+i+vIX1C5Ur7GD1Gr8OE32p+V/VT6eF5GJO7jZsn6PlMOQreRGRNrueLSDKuywWpzGJ+JrSxfavl/fmqMdCWviGTzqE2tfilxRiSBAexu+H329SomnKlhyNeN/wccmzH3phO49yTPCk4ajlbg+scRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787754018; c=relaxed/simple;
-	bh=wukuL8CwW5Sw95Eq3HK+NwHjNtJ5hpUPHptVYnfF13I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QXB4Znrj+qdo5lS+OhiQ/LQ75b53Iyr1tZqgJ0sOpBf82GKHkUDbvRhCHBTcrKTuG8NfocJC2ZESYVKJCFFApyAhQh4UtGdnHsbQ0O9mQdccQkkGPoFkSeu9q1OvRM0RYs+yoBF7O7LjQUMav0rN11ZiP1zA07hGTOUqmbCbASA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cVrkRI/P; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787754831; c=relaxed/simple;
+	bh=cWtcSD1aVGl/l5FrVNBbCsmXWKZxOQmaos7Ej0w97dM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=llCazYJVg5NWYQYL79kAspn87Q9zg/MUkgIsee1CIrl0WqevyC5bIB9+RxH1fyJdJawoLhG9WS6EjWk7o5ht6KDFZpzkASXTJ0fgfNV3lhM53J04k8MVpGjvqRaB7zzbz51zBnnWk5FotJonQpVG6K3XCT1/ggv+6+ofVVHQ7Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=cL0/TDPM; arc=none smtp.client-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cVrkRI/P"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1124035a91.2
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 07:20:15 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="cL0/TDPM"
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-747355a8565so402274137.3
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 07:33:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787754014; x=1788358814; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
+        d=mojatatu.com; s=google; t=1787754828; x=1788359628; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/1XUCO5ehW6HIK1UxtZ/MdhG2zZvli3B4/DG5Oizxoc=;
-        b=cVrkRI/PMurosqZocvroLG2C2KTArW7gOLQgtIC/Yvq7jlbJhoreSZ7D7umvnULUPW
-         Md3KpIdecg4PTIlWfifW/lkmAUj2tfCoqbhm1Qgl8xLfe7mz7kkhvBqymh1w/4fytj65
-         KVDkIeY3S0WpxkrzmjxYZstufgX8p6WqiJRD4lIog/FKe4yXYKq7o2O+JDqyxqf1n53j
-         R5OVGCiA71M2BeHH9BMGQE77As131utbJpRe0lLLXpukuwGgNR+phrIaWcurAelTYSEh
-         5DQlTD6yN6mgMARUfm4NmDbWguE20NQNA8O3J1/i81M2hFlFyNCwGMRKF6MkbH92Nyz4
-         G0WA==
+        bh=D2Eltb4XjJtEUEC3rTx67Ix4EpQUpDEVTRuEwidhbk4=;
+        b=cL0/TDPMETQnTCtK82SnTL2znbhnd2Q2mxkCUZN7ZNDS7fF2Viioojecw31VLOa2a4
+         WqbHr8uNG4/B6oIkG/LPQsDJNQ9+PdTBQMOo/jTNPrPoDwzpqq3PIHqncSNvthJwvWd1
+         qqAYmcjV0pNS6Q9AOBKmaW252eEtlxDeTxAWE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787754014; x=1788358814;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/1XUCO5ehW6HIK1UxtZ/MdhG2zZvli3B4/DG5Oizxoc=;
-        b=obEWmctoN1kURNFL5/DkuiyPqo7/ZeIs3AZ2ymb02IsJwdm56POLElevdmAw+/zjiS
-         cZTPjU8x5DKnK2nOFP3FcpjYtEtugMcV0blQU0IT45BfGrhMuyHMW+CFmb10st3q6865
-         qvLwWmvl5Wp46HMVR2DBLPcl77ZexPpfP68AxboUlXmgdhMzOYmwSHg02JIqqU5xCs97
-         KASiV3G9teJbTW38NLkAMkAmmSkq8sjKDX6LesRiaoDtMOsI8DsldBVyVHvyi/cYk4oC
-         RsdO2Bcfn6X71i641yhEbf+dE48sdJH/ilx7R2v6CIPPcxH7IbCbtysn+jt7R/xt+nyX
-         UNpQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr8USPuYxtXdgPU8OBEKCKzqhmzS9LZFFehBMnh/fk5QjF+3dXEv+t4onMYdWEb7uPAvkP+ugQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ntKqNJ1CIeqFF91ttkLbm86mXVXXT7J33+bEez2abi0hdpWHjI
-	JEOcJSrfUWy6RnC2fSEpZ+SyivePVlPbvb6TQJkNQp+4uEbN3xP54Tgz
-X-Gm-Gg: AR+sD11roKnqzomlHrud7LSTogTTZpxvBcoRU1mP88mK4aXNczaXFFtE1ti5jPWw2TL
-	wtT0t/JnnOEBS9+Q7qGvqNk+mYG/8jblxkuSdTY/vizxNw8jmwEkBQoQd55jNr6494pzW4R6nyM
-	RP9/wLm0EYvjo2emNRtvrmYnSrvYvgQZG07DMuMfdv20UEkCAXVPCQCS0bMgl50wYf6aI7GUXku
-	2+/FsfNwCaxitP/XZ98cL+2qsf6mjYVa/MYJ1NqdWWOVGa+Oh6ze4/2WPIJr+ZSjMUyxhfLzuGa
-	1PY9Iq6sMXh9xZQ3TI3J/qMdEwEU21Of900Xx5Icyf+NBeY31+ayz37iLtlkj61Wl6O1ZD7ckOM
-	aV6QBS6sJeP6Xr+4PQ9ZVQVS5jzVNWcX9EUzBAYzzbErecLV95dY+m4Z06qZaiF/R/ElpWdXk5c
-	Fulv9YqOCmYNWctIm46FkCSdrChbiD5UmNzzbL6sobztHgwWpTxJBwqKJ+K3HjNj4gdFjeV6mnk
-	7fd13e4IYpaV4KJgdEnHWY8mZ12K25pE+T0TA==
-X-Received: by 2002:a17:90a:d2c6:b0:38e:5c6:4db9 with SMTP id 98e67ed59e1d1-3966d3dafb9mr16370184a91.11.1787754014381;
-        Wed, 26 Aug 2026 07:20:14 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d60bf36sm9592172eec.2.2026.08.26.07.20.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2026 07:20:13 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <7532cd0d-6f9d-4278-9216-5d9aea92fa16@roeck-us.net>
-Date: Wed, 26 Aug 2026 07:20:11 -0700
+        d=1e100.net; s=20251104; t=1787754828; x=1788359628;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D2Eltb4XjJtEUEC3rTx67Ix4EpQUpDEVTRuEwidhbk4=;
+        b=VD6ZWKu9Ps72A0NzEwSDtPizx5qfrun6jRbjCNaYtdKL242fjsEAZB/tlGfZ4hy8kp
+         87iz2DqA58VSqfxHuXS6juYVfBED2+a8/T0VLTFYLiWNM0oFhJ33keex+xhlIRPC6JyF
+         Ex1ar8n7hoqYrnjC//HztBzUtY7Xn41QdKqjqL/1OIGnAxDdlrNXl56YjofkYx7s/2vK
+         MKDasdqxJIt44c5bi0Crvi22Q0CB2zFp7BNSFJwgXn/NgUBOgiCOVLCqJJRw2V98tqVi
+         sFQTw3UHrJhob1lAtTW3rlU/vJoVZpt0aK2/ojfC9H1EPZiAorX5DFzYH1+oHm5UBsCM
+         S+Fg==
+X-Forwarded-Encrypted: i=1; AHgh+RrJYN6qg4auNMEGYeb7z+k31Dw76loPS/xH08YEOOyYru4MftIMUZvsZ+aHdjBp04m5XHUigKI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nI+00zpzUOCEUbKCq//4sHte0WRqCLNeB4Bafhl8zbxUdy/9++
+	Mdp/HG6SoYDGi2OGlrom1ceaaJq73ZAgsJtMOLRXnnc9+WcMAQVl+EovyN+xU2uDrQ==
+X-Gm-Gg: AR+sD107koL8a/pN7EPAj47SWm8QT00PmftW84sJsqXzuIHLL0SVGdIS5fAJqJf8anL
+	taPt3Fci8o2JI/fgfb1jDcTKRMC9jAS1xHoaybkNrHtManx/0JU1+bgA8AQdOoXQx6Q4J2oCpWq
+	RdaegHx5FIl1X7hFIct9kfpXrnoOqvuizV608cfxUSN5GBeV7kXGWhcWqDxH26fj5ER/wK1YVCy
+	tYmn+VyhbL5i08oDLuNaw9Xvt2mXQ9HtIvfBVf1UWEQgNTKwHGTjbG/3wIzOC18C0twstkrixzW
+	xzPb60fz5bx3XNwA7crZtMAjRHFqVYdaksAK6PQWzDZe8tlA6X2wUveLrs/pTWzjbNSV53dXwbs
+	Za7ZcX2OH7yfTOF4A8GAwJhUf7RXrjgs//dtLDX/ZtOwSRhrBfDVXe/aFB5qG+UAFyveg3e2+hV
+	BRztVAiFsj2/G6HWfbLf1Pu2BeePEGozQPlLkZy6Oh1cLgV+tUbjQ6HA==
+X-Received: by 2002:a05:6102:441b:b0:77b:2881:580b with SMTP id ada2fe7eead31-782bffdabbcmr2235690137.4.1787754828221;
+        Wed, 26 Aug 2026 07:33:48 -0700 (PDT)
+Received: from exu-caveira ([2804:14d:5c54:4d67::2000])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-97ccc0f4963sm12969241.12.2026.08.26.07.33.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 07:33:46 -0700 (PDT)
+From: Victor Nogueira <victor@mojatatu.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net v2] net/sched: sch_htb: limit htb_classify inner-class filter hops
+Date: Wed, 26 Aug 2026 11:33:39 -0300
+Message-ID: <20260826143339.271935-1-victor@mojatatu.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] treewide: fix spelling of "overridden"
-To: Linlin Yang <yanglinlin@kylinos.cn>, linux-kernel@vger.kernel.org
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-mmc@vger.kernel.org,
- netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org
-References: <20260826083715.625136-1-yanglinlin@kylinos.cn>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260826083715.625136-1-yanglinlin@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 8/26/26 01:37, Linlin Yang wrote:
-> Fix misspelling of "overridden" (missing a 'd') in comments across
-> multiple drivers.  The correct spelling "overridden" is already used
-> 292 times in the same drivers/ directory.
-> 
-> All occurrences are in comments only, no functional change.
-> 
-> Signed-off-by: Linlin Yang <yanglinlin@kylinos.cn>
-> ---
->   .../gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c    | 2 +-
->   .../gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c    | 2 +-
->   .../amd/display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
->   drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c               | 2 +-
->   drivers/gpu/drm/msm/registers/gen_header.py                   | 2 +-
->   drivers/gpu/drm/nouveau/nouveau_bios.c                        | 2 +-
->   drivers/hwmon/abituguru.c                                     | 2 +-
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-I would expect this to be a separate patch to even consider applying it.
+htb_classify() follows each filter-selected inner class by switching
+to cl->filter_list, but never bounds the number of hops. A filter on
+an inner class can point back to itself or to another inner class that
+points back, creating an infinite loop in the packet classification
+path with the qdisc lock held and BH disabled — a soft lockup / panic
+from a single packet.
 
-Guenter
+Bound the traversal with a hop counter and drop the packet with a
+rate-limited warning once the bound is exceeded. The counter is
+incremented at the point the inner filter chain is picked up, after the
+TC_ACT_* switch has consumed the classifier verdict, so a terminal
+TC_ACT_QUEUED/STOLEN/TRAP on the last permitted chain still sets *qerr
+to __NET_XMIT_STOLEN and the packet is not charged as a drop by this
+qdisc or its parent.
+
+The bound is TC_HTB_MAXDEPTH, taken from HTB's own parameters rather than
+from the qdisc hierarchy depth limit. Class levels run from 0 to
+TC_HTB_MAXDEPTH - 1, so a traversal that strictly descends in level can
+take at most TC_HTB_MAXDEPTH hops. That descent is what a sane
+configuration does, but it is assumed here rather than enforced:
+htb_find() resolves a classid against every class in the qdisc, so a
+filter may equally select a sibling or an ancestor. The normal
+root -> inner -> leaf path takes a single hop, so the bound does not
+affect legitimate classification.
+
+htb_classify() can now return NULL irrespective of CONFIG_NET_CLS_ACT,
+whereas previously every NULL return sat inside that ifdef. The NULL
+handler in htb_enqueue() therefore cannot stay conditional either, so
+drop the ifdef around it. This matches hfsc_enqueue(), which has always
+handled a NULL class unconditionally. Without it, a kernel built
+without actions would dereference a NULL class instead of dropping.
+
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED, CONFIG_NET_SCH_HTB, CONFIG_NET_CLS_U32,
+  CONFIG_LOCKUP_DETECTOR.
+- Create an HTB qdisc on a device (e.g. lo), add an inner class
+  1:1 with a leaf child 1:10, install a root u32 filter selecting
+  1:1, and an inner-class u32 filter on 1:1 also selecting 1:1.
+- Send one packet (ping). On the unfixed kernel the classify loop
+  spins with the qdisc lock held; with softlockup_panic=1 it panics.
+- Reachable from unprivileged user via unshare -Urn (CAP_NET_ADMIN).
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Vega <vega@nebusec.ai>
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+v1 -> v2:
+- Count the hop where the inner filter chain is picked up instead of at
+  the top of the loop body. That way we don't ignore the run's verdict
+  for the last iteration (Sashiko)
+- Fix reverse xmas tree declaration ordering for the new hops variable
+- Add a name to the Reported-by tag
+v1: https://lore.kernel.org/netdev/20260824161809.4147223-1-victor@mojatatu.com
+---
+ net/sched/sch_htb.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index fdac0dc8f35a..1ba67b121de4 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -224,6 +224,7 @@ static struct htb_class *htb_classify(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct htb_class *cl;
+ 	struct tcf_result res;
+ 	struct tcf_proto *tcf;
++	unsigned int hops = 0;
+ 	int result;
+ 
+ 	/* allow to select class by setting skb->priority to valid classid;
+@@ -266,6 +267,10 @@ static struct htb_class *htb_classify(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (!cl->level)
+ 			return cl;	/* we hit leaf; return it */
+ 
++		if (++hops > TC_HTB_MAXDEPTH) {
++			pr_warn_ratelimited("htb: classify loop detected, dropping packet\n");
++			return NULL;
++		}
+ 		/* we have got inner class; apply inner filter chain */
+ 		tcf = rcu_dereference_bh(cl->filter_list);
+ 	}
+@@ -633,13 +638,11 @@ static int htb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		} else {
+ 			return qdisc_drop(skb, sch, to_free);
+ 		}
+-#ifdef CONFIG_NET_CLS_ACT
+ 	} else if (!cl) {
+ 		if (ret & __NET_XMIT_BYPASS)
+ 			qdisc_qstats_drop(sch);
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+-#endif
+ 	} else if ((ret = qdisc_enqueue(skb, cl->leaf.q,
+ 					to_free)) != NET_XMIT_SUCCESS) {
+ 		if (net_xmit_drop_count(ret)) {
+-- 
+2.55.0
 
