@@ -1,69 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta168.mxroute.com (mail-108-mta168.mxroute.com [136.175.108.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737339C006
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 18:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653CB399007
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 18:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787769152; cv=none; b=F29Cz7mfQiFZao8tHwz42+0BMHblCoo3FhnIgBgTLfKGp0L8oSzOi87JQfJe/peauhHwEKY7ixUplGbh1SgOR4EOWN3SS6/BxIELYhoPa66/Ib/0zhJBV4y2/AwLVnR3FXTK1oo/dWkhi0aacoDNxwerExkkEq7XeHxMc51dyiE=
+	t=1787769175; cv=none; b=raKnHrZEQPmqZ3EXaDpJ9EjMRF7DOyZT4F1oE+i2UbvL3yt9+gDIFAMngSH+7DE2Us+cU+eK8R1yX21UCtD+d8tr4iqgOeWlr9pCgeBlwVP5bPVv6rhc4c0QeoPj3neD+a/kvLef8FZy2B0kc6sNNeacXI5WSVD91eP5e6XioKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787769152; c=relaxed/simple;
-	bh=tbgq4t0OFMkZxlpxE6fozn6lVY8Yn/h0hvloaFPv1ak=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=XPRcZUL+bovbBFJfLqc4W7AcGpzUpBgrJg/EDs7pn9sR3tiHrwxoDPbUVLFLKU4XOi0tmkH1E/oVe7MZ+RRm461Q6YBZCDxsTSoy9BWkCVd5AphVH2A1HYc11q+7c6YYetG3EYPVbILmIDSVUytRrqCr49rNsrIDK5GN5YfBuR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nChOROIb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787769175; c=relaxed/simple;
+	bh=MDzOo0vJhpPf3JYPDUSu0FsN1VRM4ZboiTN726K+WIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JNFfStNg/hxoIjlDbwaY/YRwuH49C5YwNHLJ02BjPUAoQAt9Gy/vjf3f6q3whh1gM67V5w66NpSdvtuDSwGY8i/Hs+dCLLJMw6IayI9B8daD+AeO39Z67lBCdpLNNQcuiPSqFo4wPRgzE6bJHMNIf1/Yai7iGWvIRJwh+xRGIi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wii.dev; spf=pass smtp.mailfrom=wii.dev; dkim=pass (2048-bit key) header.d=wii.dev header.i=@wii.dev header.b=xAgaOhMm; arc=none smtp.client-ip=136.175.108.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wii.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wii.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nChOROIb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D00E1F000E9
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 18:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787769143;
-	bh=+n6bKDkO53IVd0nnBBHB/FQlHI4UsiAiMFvJH1xOAj4=;
-	h=Date:From:To:Subject;
-	b=nChOROIb61VUBWU+SLWL+K2Xk/mm8wAW1p+BZgvnk1P4rZAJ+Ko5thS1i4SPUIhu2
-	 CtLpK5ItH5bOUdmyvJff74SN2SEDWC9P6gBbQlIW+XCNts6FBZ/yT0xlrQ4jkUQnWg
-	 b7/i6r7GB0YqQ7bCABWcEDU2o1W7QxIywVNfVtrWx+mMSP+PViG5GdL+pI4m5hLJp2
-	 RKH+hmft1YQdlLidef6hEha+lESpgnprt1mfy4imKh3d5OpAhQJ5kHv9ms0ALWtkJs
-	 rbhoOpc89tacuTdlGmzg06JauQOvJFk7VBnF/6XacI3steAFRAH9rRzMfimoFycOnL
-	 VrDhjppNRfRvg==
-Date: Wed, 26 Aug 2026 11:32:22 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev@vger.kernel.org
-Subject: [ANN] netdev foundation TSC meeting notes - Aug 25th
-Message-ID: <20260826113222.0c82c0e3@kernel.org>
+	dkim=pass (2048-bit key) header.d=wii.dev header.i=@wii.dev header.b="xAgaOhMm"
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta168.mxroute.com (ZoneMTA) with ESMTPSA id 1a03f53b7fe0001089.008
+ for <netdev@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Wed, 26 Aug 2026 18:27:26 +0000
+X-Zone-Loop: 0284b4761ecbd84d94273a58fe1bd608be0c11833def
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wii.dev;
+	s=x; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc
+	:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=mOrWrsVxNY4DeKzF4oVpyrcTmPtW8ML65wACYvxEaYo=; b=xAgaOhMmwZ7SlDvKpdqUk5kn/U
+	Er7LKw8sIjIMgSadrb7joPJ4ln5IQ8QZmy947SskB70pIIYIwYMQCCLQqiLNLdkf6Uh9WPjZ8t0sQ
+	E06hVcdBsdQHMpt0h4eoNqqF9h+69Cs/tWEgwBBY0NhYbJgZNqtdL5igkd49KMVySG0RpMw+xdThS
+	mLOnwBm5aCVNSxhX1ZeC632sRj+BYCRDdXZVBUKGgdgtsiBELODKTNWqW167zSfD+Rssz/dgbj2vd
+	JGpOFTGnDqVaeWm6+fCXqSbDznusZwlf6W0ltLx3NysG1ik1w24g4w6DlF2YL53ZYvf78CKhbsjvg
+	MCMyredQ==;
+Date: Wed, 26 Aug 2026 18:27:04 +0000
+From: Richard Patel <ripatel@wii.dev>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Steve Douthit <stephend@silicom-usa.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ixgbe: fix MDIO bus leak when rejecting SFP module
+Message-ID: <ao8v+E27nWRW7g7V@wii.dev>
+References: <20260826042945.2344686-1-ripatel@wii.dev>
+ <87e4aa92-4687-4fbf-b632-9493932c349f@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87e4aa92-4687-4fbf-b632-9493932c349f@lunn.ch>
+X-Authenticated-Id: ripatel@wii.dev
 
-Present: Andrew, Eric, Iwashima-san, Jakub, Paolo, Willem, Simon
+On Wed, Aug 26, 2026 at 02:23:25PM +0200, Andrew Lunn wrote:
+> On Wed, Aug 26, 2026 at 04:29:45AM +0000, Richard Patel wrote:
+> > This code path failed to unregister an MDIO bus owned by that
+> > netdev, so when unregister_netdev() tries to tear it down
+> > (via device_del() -> devres_release_all() -> mdiobus_free()),
+> > it trips over the leaked registration.
+> 
+> Maybe look at using devm_mdiobus_register()?
 
-Academic research program
- - Minor updates to proposal
- - Need to coordinate with Board Chair on next steps
+oh nice. Will submit a V2 tomorrow with that instead, thanks.
 
-Logo
- - Feedback on latest ideas/drafts shared with designer
- - Updated designs pending
- - Approximate ETA: next TSC meeting
-
-Conferences
- - LPC track accepted
-
-Lab Update
- - Contracted admin and development
-   - Dockerisation of self-tests complete
- - Next: close loop on hardware testing
-
-Request for funding for more NIC testing
- - 2 machines, 400G NICs from nVidia and Broadcom, w/ crypto offloads
- - DRAM / SSD prices are crazy but not expected to go down any time soon
- - total cost ~50k USD
- - approved by TSC, Simon to submit officially to the board
-
-PHY testing development update
- - Contractor is refocused on this work
- - Expect tests to be included in next patch drop
+	Richard
