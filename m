@@ -1,245 +1,214 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DA7380FC4
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 17:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179AD3546C2
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 17:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787764565; cv=none; b=RcVxOQUosAOqFS2pEFKi7WFLJy+qR33MLj2pfFDof4vZSv4PEmDxR/HfTWDdugQn3rkSmGXoJ3Fz7xqvMQa4WtcEchvsLaxtJE+mTmqKc2OvJS2tAk7guKzLSo4DMZVeuUQE2J3VBL1MD5XAjY+sFikYJdvVQ+49oEDqHX6oTe4=
+	t=1787764710; cv=none; b=PdannDZjJeuh++UIDJRRKM2noAPn99/6gDc0KTlBqjrSIHov+OBc+rrNdZ9CALf6tB9eAXVLicWx/bxQ7oUJ0CLc+ZpnwYadXwFL0yVtSGUDkSjt9dVWOzoBOa21tIctZg16mIWKq/IkKqPlOMTydcpD1rR59NSODmYFWqtJn04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787764565; c=relaxed/simple;
-	bh=cKoXIHb2ZuYycMu8ZqrpbWLAyXEe2FutGWvTbc17nDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvqXhHC5o512TJhUXKAq/Rm8DDVApKOH5RbuBMu2GmpNcQZ1kHvzLjwTFW/z2RKu6GUiS2t/kn72WBFkEiPqh48BCBoNj7vEzEafOmblBilboeaSWSAAvy7C1mlvWCFVQ5FQkuZIqNkwJWbSblD/Sg5NiDwBTmdI2tIyi/e5aoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bskXQ2Th; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1787764710; c=relaxed/simple;
+	bh=p/3R7pDB+5TX/gkYttPa97Up0LnPUOzgc/791LDw8eY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=nVCMyxovJrqeeMFOuDKf2x9/TZ7461bfYqSJ0NvGTNnsxceHsYXcRcimclyE4fFJ7IlVSrqftVTvoUb3CuE+hAaVHpivTGs3Orl1/o+Ogyk2RYnEqlEYPhLiI+AJyZiSKSXgQBx9cKoHFSo/lgSSz8F2FbRQdjJTqtN8DuuFxrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dOhLpuOK; arc=none smtp.client-ip=74.125.224.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bskXQ2Th"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a18e24ad25so1632792a12.1
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:15:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dOhLpuOK"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-66de7e0bc85so318761d50.2
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 10:18:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787764542; x=1788369342; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rX7O4Cyu214edbufKKR6tV50lN9glgVksMzMntzrD6w=;
-        b=bskXQ2ThLvtsm3r+9JicOhwvFfpYLVy0mu+0pKnYM+NwigiUA//+GpLBSzgQYz39+Z
-         BWuT6SbYeq/Yh1yNQDtg/a//x51C/52iJEZmCsR6C3gkmZwLjEkDZfgYdkXlXEoLD4Fz
-         ccLL4rbjF4LsWP+b+qX9DIWT/nZYnCTgg6/QSyBM55wjGMQ6hEmuBePqEME3KW52OI1Y
-         QG7dzoVx6It+fvmpAbI+TNLXEnK+py+0mfD5sijAsTjvxY4XPNlbzApCHkLgfc41tzmO
-         bGIDZLxu0eBylP34lrI9OYWkLXQsXCfWuG1PXBYQZLADRYCsFFXWmZfh0xHKzY7gPBWJ
-         qwdQ==
+        d=gmail.com; s=20251104; t=1787764700; x=1788369500; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wQ0JzTmJJZsXzrleAx3dGwdXnsAEBsFvSA9gb2m/MvQ=;
+        b=dOhLpuOKuqakFk1XRxT/2i5pIdcnHOeNSfLEIhDeHHqCcURme8B4StPzaBebnirkPM
+         WBOAmz1ct8fKztqLR+MGwZ3S5JU3Q0ubBgbnw3Z6l2PW5rNExA36E8C4xK6jSq0pWi26
+         oucyA+N3A3Jn/64rzDF7NAXzDp+F4TTX+CI3wweipbeCp4JoDJU+32IkVT1Z6CuZdZbt
+         Nh/ylsNsKTyJ1LGwawd3JQAUuu0i0TYXEsTQHTfZlpZTK4yC/hRKHHjg9he1evPGI8Fy
+         2oLOclcoISBmYDuEiAGlnUdOmCl13OCOy2gjLzWm74d5g14l4xRN0lcUZBENC8PgkxiK
+         hNnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787764542; x=1788369342;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+        d=1e100.net; s=20251104; t=1787764700; x=1788369500;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rX7O4Cyu214edbufKKR6tV50lN9glgVksMzMntzrD6w=;
-        b=bgAj2KV5ivr/S8OTDXxouCrym+Z3TieaeyI45cd/5Pp5KbOGTnQwLhcGEMUbFSa0gJ
-         utd92+NZ+1PbxCfb6pM/kDKjRgX+1uRdDxhvvrtGQJvAKaCV2a8vKyFC033zQxvUfhuw
-         q6eaPC1QGDwsgLkEf8Kb9ivt9bWR56DlGLKg60A85fevNDYO6po/RGt7o/230WiTu3ha
-         V25lTZncbJv9CtKlxdae2C04KaEsPemV4wdD+VNH93nKS5XPK9P7mKWBfyh4+OZnNEjR
-         1EBTx0IWrqnx2n5P8jDgXyTzphm+TLhlORKz1qtZMEVH2Izz+Ycu2PsAXZRq4OWVNbLi
-         50ww==
-X-Forwarded-Encrypted: i=1; AHgh+RpbFr/pruIPRbA01ELMbYfvRh0cS0q3PrE7/crh3jPRpbcnz/sHwg7iXosmxGAOKTOizj0s8nk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kwqnYU+U48aV0dQtX2GLb8O80YJ7orNL9Joqpm3w0wiMy+1FPv
-	qDWCLkbQr0XY+o3wzRnUo6g5398Jeo83DXsJl4BoeqI//gQ3eO6R7Iey3u3ZoOX9bEY=
-X-Gm-Gg: AR+sD12bDwiunsEwx4tOsXKID9FiT6OTx1aJYORPROis57tuNtkm4RncXQzsqpaf0ac
-	n5sCqjkM3+Kqp3E5HRnpZBeMJpnqqyjzRQBuq/caLuWeWqyJf//H7lH5IvC7jdI4jmNsrbrTEji
-	yC71/dXGkXuYR65bDLv/TT1yw2dqMqO5Te6eeN7LN1Z6FmncgqM6ydO2df2EiQzSv7Tftw+olUf
-	Rs9HTlte28xhhSPjSZ1vX5Ebty5MzMbJdvXfIw0s7AiEZpfh3oixF+E+E8Y1+9ahCP7hOozFsPK
-	Gv8bA2AoMhDaC/Ooq3wPlK0Mw17C9HWkmD9s2TsHJzxjJZdTQoYwyZV7W29ybBJHiKOd5KHE83i
-	bV2INDoV00pKcGq6hR/Z8IKmwzpuCzzIylhOB8TOrb49zERHRY+L2jF3/aPCX6emLOkUk6Xvm8r
-	vs1/HrOVPn/1+3qWbVn6CoUvnrDzD1syawpasKdUWMMA0lAvEG3mJYroteyUomLzE=
-X-Received: by 2002:a05:6402:4489:b0:6a5:f2a6:f624 with SMTP id 4fb4d7f45d1cf-6a5f2a6fea4mr3631908a12.15.1787764542446;
-        Wed, 26 Aug 2026 10:15:42 -0700 (PDT)
-Received: from SVR.localdomain ([185.179.67.170])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de8b5e5esm4244556a12.4.2026.08.26.10.15.40
+        bh=wQ0JzTmJJZsXzrleAx3dGwdXnsAEBsFvSA9gb2m/MvQ=;
+        b=h1iiCor3MoUhYet1TiKeYnOknD/stFarXIacuQCjuhl/ccecyJ0bP2Vp2Be5ZMVOre
+         r/huDNafNkLGOYyygqPsdnw8TgjgxetQqCSuBKYEtTQEqzUqM4Xx7tl69wzB9BUmd0gz
+         0n9X8Wq7JtQMwb2+8JzrFuWCCLLsorEu6QCAYIGgJZzq6Kdz2SL4khTfHAz+slhe8/pR
+         ZwRDhPjPF1w9UHKd7Coat4rmnNzEePIjjMLhKM+DiuBA5MY+6flOg9kpHZ69e00txXSV
+         aTCBxGPdcxpBssLAddzNuFcLFsMcxQAG1GWJInYIGlCzqrSEYXjj0rgDzeWm++nhWbZP
+         6tQg==
+X-Forwarded-Encrypted: i=1; AHgh+RoRh72STPHPYshNOG8JYlUXIM9/f8l3cvLuYQrzvP1Gk3CdgMEFIKWET4aSdVJ+RJNlNw8/vU0=@vger.kernel.org
+X-Gm-Message-State: AFuF++m65kHQ1tLhxr/ccw5xJ63B7knEu0C8pEuHkF7YWfwG4uhioO/l
+	L5t3P8I8vEXixpRGtVgt2egFmTBoqIKt9JRcOTPp/aJmawrGu1H190cJ
+X-Gm-Gg: AR+sD13CBaOK/eBPtIhcCPV+SM2V0Qe+m4XSlD3You/1hxWyBmnU+9aTkVpZ5xR+eNT
+	fVhbjyKHH6IVvMx98NzOt5jGlaJiU+qJ5so7yilOxfwdBEzfZmwLQNqIm//nIDGSaC3GxlvlK6L
+	z7rHH6aI5PEOLeOajsKTZcrR6NUT57hR+PcWL++dzjMbxn7P2Vj3qfxJG+QCX1MzGTkEeK7MfAe
+	QbMAKRSiBT0IXGE/0VUGW3qAA17GKlIy6417ASo31HsD/Lx4Hvu1JVx9xrzOuxfs61szwYncnt5
+	03mLe0FxvhWKnMdUIUr1iEz30Bdfc9KiadhUnvgpWnQta06Y+VRSVun7QXP+IaocPjsbshq0RL4
+	sLuD4OWiSs15dlplJm4tI0R34mbpwUBMelbrChJ+bavxLh118X1he3hAvNbYH2oufwmcLU5LL0V
+	7XNpnWHfyhGTSXT79n4YeYfeTgYluhlv2JbkIYZ/AYvcJtJCY8fPp0t4aTjUM84rfn/mkyADYAL
+	yiO0AnHDAVoNLeVon+gp8sYm/bl2WFCHFCFA+iit2LdIUFPjV3w
+X-Received: by 2002:a53:9003:0:b0:66c:f16e:fea7 with SMTP id 956f58d0204a3-66d2575b6bfmr2240985d50.28.1787764700071;
+        Wed, 26 Aug 2026 10:18:20 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66d24749dd2sm1749285d50.16.2026.08.26.10.18.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 10:15:41 -0700 (PDT)
-Sender: Semih Baskan <strstgs@gmail.com>
-From: Semih Baskan <strst.gs@gmail.com>
-To: florian.fainelli@broadcom.com,
-	jonas.gorski@gmail.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: vladimir.oltean@nxp.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 1/2] net: dsa: let drivers offload 8021q uppers on standalone ports
-Date: Wed, 26 Aug 2026 20:15:25 +0300
-Message-ID: <20260826171526.391-2-strst.gs@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260826171526.391-1-strst.gs@gmail.com>
-References: <20260826171526.391-1-strst.gs@gmail.com>
+        Wed, 26 Aug 2026 10:18:19 -0700 (PDT)
+Date: Wed, 26 Aug 2026 13:18:18 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Alice Mikityanska <alice.kernel@fastmail.im>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Hannes Frederic Sowa <hannes@stressinduktion.org>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ netdev@vger.kernel.org, 
+ Alice Mikityanska <alice@isovalent.com>
+Message-ID: <willemdebruijn.kernel.3645a45d69737@gmail.com>
+In-Reply-To: <20260825200215.90326-4-alice.kernel@fastmail.im>
+References: <20260825200215.90326-1-alice.kernel@fastmail.im>
+ <20260825200215.90326-4-alice.kernel@fastmail.im>
+Subject: Re: [PATCH net v4 3/4] selftests: net: Test UDP length overflow with
+ PMTU discover and big MTU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Before v5.15, DSA delivered the VIDs of 8021q uppers to switch
-drivers unconditionally: user ports advertised
-NETIF_F_HW_VLAN_CTAG_FILTER, the 8021q layer reported upper VIDs to
-.ndo_vlan_rx_add_vid, and .port_vlan_add programmed them whether or
-not a bridge had enabled VLAN filtering. Commit 06cfb2df7eb0 ("net:
-dsa: don't advertise 'rx-vlan-filter' when not needed") stopped the
-delivery for standalone ports and commit f089652b6b16 ("net: dsa: b53:
-do not program vlans when vlan filtering is off") stopped the
-programming, on the model that a standalone port is VLAN-unaware and
-any 8021q upper is a software VLAN.
+Alice Mikityanska wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
+> 
+> Two previous commits fixed overflow of UDP length when setsockopt
+> IP(V6)_MTU_DISCOVER is set to IPV6_PMTUDISC_DO or IP(V6)_PMTUDISC_PROBE,
+> and a large packet is sent over a netdev with an unusually large MTU.
+> 
+> This commit adds the selftests that replicate the described steps to
+> reproduce for IPv6 and IPv4, and also one more test that ensures that
+> sending UDP jumbograms over a raw socket is still possible after the
+> fix.
+> 
+> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
 
-That model does not fit hardware whose VID lookup cannot be turned off.
-b53 keeps its lookup enabled at all times, because disabling it moves
-the ARL to shared VLAN learning: the hash that selects the ARL slot then
-treats every VID as 0, entries keyed by a real VID become unreachable,
-and the hardware table drifts away from the bridge fdb. With the lookup
-active, a tagged frame whose VID is absent from the table is discarded
-before it reaches the CPU, measured on bcm5301x. Such a port is never
-VLAN-unaware, whatever the bridge asked for. Commit 06cfb2df7eb0 ("net:
-dsa: don't advertise 'rx-vlan-filter' when not needed") lists the
-reasons a driver may keep it on, and this is its first case, standalone
-ports that would otherwise drop VLAN-tagged traffic, except that here
-the VLAN awareness is held on by the silicon itself rather than by a
-VLAN-aware bridge elsewhere on the switch.
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-The existing opt-in, ds->needs_standalone_vlan_filtering, is not a
-fit. It exists for hellcreek, whose traffic separation depends on
-per-port VLANs, so standalone operation there needs the
-vlan_filtering state itself forced on:
-dsa_port_reset_vlan_filtering() forces vlan_filtering=1 when a port
-leaves a VLAN-unaware bridge, and with vlan_filtering_is_global that
-lands the whole switch in the state hellcreek wants. On b53 the same
-flip is a user-visible mode change for every port on the switch:
-bridge VLANs that were committed while inactive become enforced, and
-the unknown-VID ingress drop modes turn on chip-wide.
-b53 needs the VIDs, not the state.
+Thanks for respinning for the code dedup between ipv4 and ipv6
+> ---
+>  tools/testing/selftests/net/Makefile         |   1 +
+>  tools/testing/selftests/net/cork_fragsize.py | 140 +++++++++++++++++++
+>  2 files changed, 141 insertions(+)
+>  create mode 100755 tools/testing/selftests/net/cork_fragsize.py
+> 
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index 0f5c178bc224..c6d332c90a54 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -25,6 +25,7 @@ TEST_PROGS := \
+>  	cmsg_so_mark.sh \
+>  	cmsg_so_priority.sh \
+>  	cmsg_time.sh \
+> +	cork_fragsize.py \
+>  	double_udp_encap.sh \
+>  	drop_monitor_tests.sh \
+>  	ecmp_rehash.sh \
+> diff --git a/tools/testing/selftests/net/cork_fragsize.py b/tools/testing/selftests/net/cork_fragsize.py
+> new file mode 100755
+> index 000000000000..c54af8f21e3b
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/cork_fragsize.py
+> @@ -0,0 +1,140 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +# Test possible UDP length overflow in udp_send_skb/udp_v6_send_skb.
+> +
+> +import errno
+> +import gzip
+> +import os
+> +import socket
+> +import struct
+> +import subprocess
+> +from contextlib import contextmanager
+> +
+> +from lib.py import KsftSkipEx, ksft_eq, ksft_raises, ksft_true
+> +from lib.py import KsftNamedVariant, ksft_exit, ksft_pr, ksft_run, ksft_variants
+> +from lib.py import NetNS, NetNSEnter, ip
+> +
+> +
+> +IP_MTU_DISCOVER = 10
+> +IP_PMTUDISC_PROBE = 3
+> +IPV6_MTU_DISCOVER = 23
+> +IPV6_PMTUDISC_DO = 2
+> +IPV6_PMTUDISC_PROBE = 3
+> +IPV6_TLV_JUMBO = 194
+> +
+> +
+> +def check_kernel_config(option: str) -> bool | None:
+> +    for filename, method in [
+> +        ('/proc/config.gz', gzip.open),
+> +        (f'/boot/config-{os.uname().release}', open),
+> +    ]:
+> +        try:
+> +            with method(filename, 'rt') as config:
+> +                for line in config:
+> +                    if line.rstrip() == f'{option}=y':
+> +                        return True
+> +                return False
+> +        except OSError:
+> +            continue
+> +        return None
+> +
+> +
+> +def assert_debug_kernel() -> None:
+> +    res = check_kernel_config('CONFIG_DEBUG_NET')
+> +    if res is None:
+> +        ksft_pr("WARN: Can't read kernel config; assuming debug kernel, and running the test")
+> +    elif not res:
+> +        raise KsftSkipEx('CONFIG_DEBUG_NET is not set')
+> +
+> +
+> +def check_dmesg_clean(func: str) -> bool:
+> +    with subprocess.Popen(['dmesg'], stdout=subprocess.PIPE) as dmesg:
+> +        res = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout, check=False)
+> +    return res.returncode != 0 and dmesg.returncode == 0
+> +
+> +
+> +@contextmanager
 
-Add ds->needs_standalone_vlan_offload for that narrower need. It
-advertises NETIF_F_HW_VLAN_CTAG_FILTER on user ports permanently, so
-upper VIDs reach .port_vlan_add again, and it leaves the
-vlan_filtering state alone. This restores the pre-v5.15 delivery
-pipeline for drivers that opt in and changes nothing for drivers
-that do not.
+Interesting approach. In ksft the built-in defer() mechanism may be
+preferred. Not sure.
 
-A permanent feature bit also means dsa_user_manage_vlan_filtering()
-must not run on vlan_filtering toggles of such a switch. The
-ds->ops->port_vlan_filtering call is unchanged and the driver still
-sees every toggle; what is skipped only toggles the feature bit and
-replays or clears the VID list, and both halves are wrong when the
-bit never goes away. The replay re-adds VIDs that were never cleared,
-so vlan_vid_add() refcounts every upper VID twice. The clear strips
-the feature bit and the VIDs from a port that happens to be bridged
-at toggle time, and its uppers then stay dead even after it leaves
-the bridge, because nothing re-offloads them once the feature bit is
-gone. Both effects were measured on bcm5301x hardware. The conduit
-change path keeps its explicit teardown and restore of the 8021q
-upper VLANs, and now runs it for every port of such a switch,
-bridged or not, because with the permanent feature bit every port
-with uppers has VLANs on the CPU port.
+> +def dummy_netdev(ns: NetNS, mtu: int, ipv6: bool) -> None:
+> +    try:
+> +        ip('link add dummy type dummy', ns=ns)
+> +        ip(f'link set dummy mtu {mtu}', ns=ns)
+> +        ip('link set dummy up', ns=ns)
+> +        flag = '-6' if ipv6 else ''
+> +        nodad = 'nodad' if ipv6 else ''
+> +        local = 'fd00::1/64' if ipv6 else '10.0.0.1/24'
+> +        remote = 'fd00::2' if ipv6 else '10.0.0.2'
+> +        ip(f'{flag} addr add {local} dev dummy {nodad}', ns=ns)
+> +        ip(f'{flag} neigh add {remote} lladdr 02:00:00:00:00:02 dev dummy nud permanent', ns=ns)
+> +        yield
+> +    finally:
+> +        ip('link del dummy', ns=ns)
+> +
+> +
 
-Fixes: 06cfb2df7eb0 ("net: dsa: don't advertise 'rx-vlan-filter' when not needed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Semih Baskan <strst.gs@gmail.com>
----
- include/net/dsa.h |  3 +++
- net/dsa/port.c    | 22 +++++++++++++++-------
- net/dsa/user.c    |  4 +++-
- 3 files changed, 21 insertions(+), 8 deletions(-)
-
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 7507d632e7c6..67a01fc5f81e 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -405,6 +405,9 @@ struct dsa_switch {
- 	/* Keep VLAN filtering enabled on ports not offloading any upper */
- 	u32			needs_standalone_vlan_filtering:1;
- 
-+	/* Offload 8021q uppers of standalone ports even when not filtering */
-+	u32			needs_standalone_vlan_offload:1;
-+
- 	/* Pass .port_vlan_add and .port_vlan_del to drivers even for bridges
- 	 * that have vlan_filtering=0. All drivers should ideally set this (and
- 	 * then the option would get removed), but it is unknown whether this
-diff --git a/net/dsa/port.c b/net/dsa/port.c
-index 1f5536c0dffc..e61abc7c74f7 100644
---- a/net/dsa/port.c
-+++ b/net/dsa/port.c
-@@ -831,6 +831,9 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
- 			if (!user)
- 				continue;
- 
-+			if (ds->needs_standalone_vlan_offload)
-+				continue;
-+
- 			err = dsa_user_manage_vlan_filtering(user,
- 							     vlan_filtering);
- 			if (err)
-@@ -839,10 +842,12 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
- 	} else {
- 		dp->vlan_filtering = vlan_filtering;
- 
--		err = dsa_user_manage_vlan_filtering(dp->user,
--						     vlan_filtering);
--		if (err)
--			goto restore;
-+		if (!ds->needs_standalone_vlan_offload) {
-+			err = dsa_user_manage_vlan_filtering(dp->user,
-+							     vlan_filtering);
-+			if (err)
-+				goto restore;
-+		}
- 	}
- 
- 	return 0;
-@@ -1445,10 +1450,13 @@ int dsa_port_change_conduit(struct dsa_port *dp, struct net_device *conduit,
- 
- 	/* The port might still be VLAN filtering even if it's no longer
- 	 * under a bridge, either due to ds->vlan_filtering_is_global or
--	 * ds->needs_standalone_vlan_filtering. In turn this means VLANs
--	 * on the CPU port.
-+	 * ds->needs_standalone_vlan_filtering, and every port of a
-+	 * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
-+	 * VLANs whether bridged or not. In turn this means VLANs on the
-+	 * CPU port.
- 	 */
--	vlan_filtering = dsa_port_is_vlan_filtering(dp);
-+	vlan_filtering = dsa_port_is_vlan_filtering(dp) ||
-+			 ds->needs_standalone_vlan_offload;
- 	if (vlan_filtering) {
- 		err = dsa_user_manage_vlan_filtering(dev, false);
- 		if (err) {
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index 041f9060c8ef..fda6ba4fdd13 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -1946,6 +1946,7 @@ static int dsa_user_clear_vlan(struct net_device *vdev, int vid, void *arg)
-  *
-  * - If standalone (this includes software bridge, software LAG):
-  *     - if ds->needs_standalone_vlan_filtering = true, OR if
-+ *       ds->needs_standalone_vlan_offload = true, OR if
-  *       (ds->vlan_filtering_is_global = true AND there are bridges spanning
-  *       this switch chip which have vlan_filtering=1)
-  *         - the 8021q upper VLANs
-@@ -2717,7 +2718,8 @@ void dsa_user_setup_tagger(struct net_device *user)
- 	user->hw_features |= NETIF_F_HW_TC;
- 	if (user->needed_tailroom)
- 		user->features &= ~(NETIF_F_SG | NETIF_F_FRAGLIST);
--	if (ds->needs_standalone_vlan_filtering)
-+	if (ds->needs_standalone_vlan_filtering ||
-+	    ds->needs_standalone_vlan_offload)
- 		user->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
- 
- 	user->lltx = true;
--- 
-2.53.0.windows.1
 
