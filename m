@@ -1,303 +1,178 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003E63B6C15;
-	Wed, 26 Aug 2026 08:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787733453; cv=none; b=AOvrzu/HQEHa566DB8aX4ikqlTIE/vzouDrYgW0R9fji4cAILew8Vws4WD92X+E/12OsAixVHtaswbkDR9JlCLZTwhqzLxF4ZIejZGqPZb6xwTIk0du2/TnKEm6AzKQgPUUbr/dZo3VVI5HqlVaLgL39NI7FHCzqG/wMY8/nPws=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787733453; c=relaxed/simple;
-	bh=/nJ+6muvPjw51iymCr3S4mmwHKOg1vP9q5wNnUEFStE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mf+VelpsG7HnpQ7+3GeVLcEXvraqNlHfSCnSyhfB1EUSqgvmPDDnMK4Rv8kJFvsOiY7LHooju+ub0ccz5lyuGarsDGRQfnrYs2D+tBeZoKy9beb8o8mBeR8T9SgBEUpAr2xEI1m/W66/4WudMyuOftDTuN4gyiL9hKC6+7fbMn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5b4cb9eaa12911f19a56ed5b684f684d-20260826
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:3271276e-ecaf-42b4-9819-320377205142,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:7db8b62,CLOUDID:6c3636afc8496d9cf70cbed7c874e8f3,BulkI
-	D:nil,BulkQuantity:0,SF:102|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:n
-	il,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LE
-	S:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5b4cb9eaa12911f19a56ed5b684f684d-20260826
-X-User: yanglinlin@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <yanglinlin@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1157170727; Wed, 26 Aug 2026 16:37:22 +0800
-From: Linlin Yang <yanglinlin@kylinos.cn>
-To: linux-kernel@vger.kernel.org
-Cc: amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	Linlin Yang <yanglinlin@kylinos.cn>
-Subject: [PATCH] treewide: fix spelling of "overridden"
-Date: Wed, 26 Aug 2026 16:37:15 +0800
-Message-Id: <20260826083715.625136-1-yanglinlin@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C53B71A6
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 08:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787733518; cv=pass; b=ikEcYQTWx420/g3xLcoSxI1DdpXk2srGie7c70rX4HcRbKq/tG9/2ew0qVU7IzmKssnGsK23Lmb5kD5HX1mi0e1xBLZRbQFyIkcVbffSo+MFD78qkOdJiyvxueQglW9SZRTYFBCc7GB705UVKTrvuCE1waSExltnsNK29Ek5FLM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787733518; c=relaxed/simple;
+	bh=24N/sCv8A+Sgxe2K/2t202PGrqGrIdKpHKk5dX/bzXA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ai7kGVXg1vPevV7T7pAtQqh+5n9EUnjH3EiRhzIeakI0xiin9OMUER2ndr2Z9ChvZdXF3oKQQ9Em/MPDocgmANkf/6gD3y8cyr/RRxmBnYK4Po+U51f5cIxKnOyC47Js4gI1bB1Z5dCKRO+PanQFqJWBk4JqF6UcHz6Msu6RlI8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=xLByd3BI; arc=pass smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="xLByd3BI"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84e507b079dso620387b3a.0
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 01:38:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787733516; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R97n/kHVDKiqYtpCVkfKVIeuayB5rYLgw69OlFf/rTzCqk++e9mxr7cNWLEJYEVRdW
+         XgyFLhmAGZcoivLbwlz/qzCRtskI9SE3IKNzlUBSD1Hh+veYMs5jBW6G+UjSLc7Kp8tS
+         WXtkbF9BJorm1YHK2Bkwh8y8dXyAPf+7NsUQroD80I74yZf1Beznp3V3prLcSbrfcaJ/
+         1OK6xvrG5TM3Dz2lte9StciLifmHb9ODmYEqU+ZUwrenUEZOM6UxPn8lfJRouGItkrTt
+         aMxOgA4YD/DLXnNLm/QB9dJPIkI+IpEFE3XdiaMUU2F+R1sSOp0PdcJB3LOfmYObgwtD
+         S2nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+bJ8eYMIUXouSj69aCBQazvq1wAkww2CJKOy9ZLrqcg=;
+        fh=iiWNtmNKuPTuYC5yBTc/CxAhsY66ryz9haIkEMV30T4=;
+        b=fgKqZfkSl/Y28S8q7YA34RLwkdmjT9KWDelDgb3ZG+kDPwUD4qTZYUqk6Y6iwdD7t5
+         cwd1GgkbehyLIFsT4N/CFFXgwSueSlurV3lge/v6hBuTd0iASVeeayCrxyh1YLrnGfFC
+         HWAV1C9Svvpqp5LPtNmglkE/+xBcGLYOsl4wqR90OrwLVdfiaBMotcnePE9p1cunEP5N
+         KuCBfEictgOpxAFhl7Q3qAhVum7fHvZgXwpJtYRBKkUOvWPT02xVg8uEJY/aLY6qgnDz
+         9pi1kGsbXJzHRSbFw73kKFIQiS/au8S6sYtMiEAxiB8X+jplnghUddk4iSiP2/xsd2pJ
+         4Rrg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787733516; x=1788338316; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+bJ8eYMIUXouSj69aCBQazvq1wAkww2CJKOy9ZLrqcg=;
+        b=xLByd3BITMnHfpPPRp1t6iTMC3n+zOW2xpgTPIYghA1Eo9Bz8J/E4rJ3FgfamuLe0Q
+         p8ROXD8GlB5ZCTMXl9/p2+MO6XyjW9wOErU0j3cr93XcyjDTulQrbWAT84vrpVByW72P
+         eC1VgLLLLhemAtMG1RCGCss6uY3x+N0XRiKyU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787733516; x=1788338316;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+bJ8eYMIUXouSj69aCBQazvq1wAkww2CJKOy9ZLrqcg=;
+        b=PTTsdurmGB+eg3NmiDrlQdG+qRrZrMIIHCxbs7ZMv2xhanjC4pGaj9JZzjPHXrnth6
+         I1/bJM2n8ydcvhcjR3o3H90BEt7tVvq+VJ4oIl3oV5ZmI6arMZyOIVjk+/ooiQzcTkJ5
+         6uK1UPvb6l5uNC5ok5vMCWZulA8WlIKihC5t4rCqaJTju98HpBDrC4wLY4yXJF4mlpyR
+         Bo2n9uccfOxSU4/fiAzNxrJpPLEPGZ9w2TOLbB4fgubxdu7dJH079wANdEUobqtaMJ0N
+         oZK0x3auvnLMfU0jpbaTfipDfqBzxavn4ro6BeXgYUwLd6W/Sm+86Zk4E1FjBc0edFWJ
+         O4nQ==
+X-Gm-Message-State: AFuF++mJIt8AK0qqCu/jU0kLH3MWhpvFj8FQhqmQcMeoiEbNeTHTENIT
+	oP1AYtvok/BAxrwUw33Ue/GaeO5uuSXgCwUGpuZ5HeQGcO9bY8zdoUTclnbbtIl96kEeKjHA9Zw
+	pQ7jd3HWiULM9Joo+4q/RKLj0jaCUST9F35qAwGQ2
+X-Gm-Gg: AR+sD10j2OZ2kB8Z1V2KaO6lVQzzKT3w2ZEo9wrM0uDq5HWLHcqU0uE9BkXNKQLJo32
+	GIjo8pqcG7El4OAQbkHjyvM6ecs78NF4kYMHM+nQaCI8dw3XeMciqueajZSb5xpn/HMdlqaLoQt
+	NwitDtv5UB5NDZoV9ssoRvolvnbjzd2ud1zLAWmCXmtVIi1tzbTar/dGHI05rHytG8mTocqfFSl
+	Ct45077UCDYYmKhOJAskqQKxZvPitRPnRchRamnnkTXYBnsHDqwBDsshuJDvYP6KnlswfzV6L4Q
+	YWu00DAqPypldbkiIvKAmjJvnZSVHjZOt0sQ7iGS6x1SjA==
+X-Received: by 2002:a05:6a00:1bc8:b0:845:31a6:d84d with SMTP id
+ d2e1a72fcca58-85372b9f5a4mr8970724b3a.7.1787733515122; Wed, 26 Aug 2026
+ 01:38:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260826025123.62758-1-ljp1205831794@gmail.com>
+In-Reply-To: <20260826025123.62758-1-ljp1205831794@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 26 Aug 2026 04:38:22 -0400
+X-Gm-Features: AcwNN1U5MQQ-Foz8JLEN1r_JLP27SIQF7hWiHU5_TAQqV-_hBURXNm5Fcz97j1k
+Message-ID: <CAM0EoMnuw6C0MWvBiZTNYpQfr4hWccqUjocC-acBCC7h4h5e_g@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: cls_flower: validate mask pointer after nla_next()
+To: Aohan Mei <ljp1205831794@gmail.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Cong Wang <cong.wang@bytedance.com>, Jason Xing <kerneljasonxing@gmail.com>, 
+	Aohan Mei <henrymei@tencent.com>, TencentOS Corvus AI <corvus@tencent.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix misspelling of "overridden" (missing a 'd') in comments across
-multiple drivers.  The correct spelling "overridden" is already used
-292 times in the same drivers/ directory.
+On Tue, Aug 25, 2026 at 10:51=E2=80=AFPM Aohan Mei <ljp1205831794@gmail.com=
+> wrote:
+>
+> From: Aohan Mei <henrymei@tencent.com>
+>
+> fl_set_enc_opt() iterates the key's nested tunnel-option attributes
+> with nla_for_each_attr() while advancing a single mask pointer via
+> nla_next() at the bottom of each loop, so the mask cursor is driven
+> by the number of key attributes rather than by the mask's own
+> attributes.  The nla_ok() added by commit c96adff956191 ("cls_flower:
+> call nla_ok() before nla_next()") only validates the mask pointer
+> that was just consumed; the pointer produced by nla_next() is used by
+> the next iteration (fl_set_geneve_opt() and siblings) without any
+> validation.
+>
+> The mask's nested attributes are validated with NL_VALIDATE_LIBERAL,
+> which merely warns on trailing bytes that do not form a complete
+> attribute.  A mask carrying one valid attribute plus 1-3 residue
+> bytes (or a non-aligned attribute length making msk_depth negative)
+> therefore reaches the next iteration with msk_depth !=3D 0, so neither
+> the !msk_depth check in fl_set_enc_opt() nor the !depth check in the
+> per-type helpers fires.  nla_type() then reads past the mask payload
+> and nla_parse_nested_deprecated() iterates with an nla_len taken
+> from those bytes, reading well beyond the mask attribute (KASAN:
+> slab-out-of-bounds read in __nla_validate_parse from fl_change()).
+>
+> Validate the advanced mask pointer as well: when the mask is not
+> legitimately exhausted (msk_depth !=3D 0) and the new pointer fails
+> nla_ok(), reject the filter with -EINVAL.  An exactly exhausted mask
+> still skips the check, preserving exact-match behaviour for the
+> remaining key attributes.
+>
 
-All occurrences are in comments only, no functional change.
+Hi,
+In the future, can you please send a reproducer, such as a simple tdc
+test. We test all tc patches.
+I think you can easily add a TDC test for this specific patch and it
+may even be worth resending to have the tdc test included.
+If the reproducer is sensitive, don't cc the liists but send it to maintain=
+ers,
 
-Signed-off-by: Linlin Yang <yanglinlin@kylinos.cn>
----
- .../gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c    | 2 +-
- .../gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c    | 2 +-
- .../amd/display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
- drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c               | 2 +-
- drivers/gpu/drm/msm/registers/gen_header.py                   | 2 +-
- drivers/gpu/drm/nouveau/nouveau_bios.c                        | 2 +-
- drivers/hwmon/abituguru.c                                     | 2 +-
- drivers/mmc/core/block.c                                      | 2 +-
- drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c              | 2 +-
- drivers/net/ethernet/chelsio/cxgb4vf/sge.c                    | 2 +-
- drivers/net/ethernet/freescale/fman/fman_memac.c              | 2 +-
- drivers/net/ethernet/sfc/mcdi_pcol.h                          | 2 +-
- drivers/scsi/aic7xxx/aic79xx_osm.c                            | 2 +-
- drivers/scsi/sym53c8xx_2/sym53c8xx.h                          | 2 +-
- drivers/spi/spi-omap2-mcspi.c                                 | 2 +-
- drivers/video/fbdev/tridentfb.c                               | 2 +-
- 16 files changed, 17 insertions(+), 17 deletions(-)
+The patch looks sane. I was going to suggest using strict mode but
+noticed the fixes commit states it intetionaly avoided strict mode
+with claim it will break uapi.
+One nit: the commit message says "call nla_ok() before nla_next()" in
+the Fixes:  but noting that that commit moved nla_next() to the loop
+bottom and added the pre-consumption nla_ok(), but the
+post-advancement pointer was left unchecked. Your description is
+accurate; just double check if you got the right Fixes..
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-index 33b5136f7ce3..75bdad22bf69 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-@@ -1805,7 +1805,7 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 	v->DISPCLKWithRamping = 0;
- 	v->DISPCLKWithoutRamping = 0;
- 	v->GlobalDPPCLK = 0.0;
--	/* DAL custom code: need to update ReturnBW in case min dcfclk is overriden */
-+	/* DAL custom code: need to update ReturnBW in case min dcfclk is overridden */
- 	v->IdealSDPPortBandwidthPerState[v->VoltageLevel][v->maxMpcComb] = dml_min3(
- 			v->ReturnBusWidth * v->DCFCLK,
- 			v->DRAMSpeedPerState[v->VoltageLevel] * v->NumberOfChannels * v->DRAMChannelWidth,
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-index 8064c4b3fd25..3f62ea493787 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-@@ -2045,7 +2045,7 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 	v->DISPCLKWithRamping = 0;
- 	v->DISPCLKWithoutRamping = 0;
- 	v->GlobalDPPCLK = 0.0;
--	/* DAL custom code: need to update ReturnBW in case min dcfclk is overriden */
-+	/* DAL custom code: need to update ReturnBW in case min dcfclk is overridden */
- 	{
- 	double IdealFabricAndSDPPortBandwidthPerState = dml_min(
- 			v->ReturnBusWidth * v->DCFCLKState[v->VoltageLevel][v->maxMpcComb],
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-index 16951a9550f2..d3fe6e024891 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-@@ -108,7 +108,7 @@ enum dp_panel_mode dp_get_panel_mode(struct dc_link *link)
- 			/* alternate scrambler reset is required for Travis
- 			 * for the case when external chip does not
- 			 * provide sink device id, alternate scrambler
--			 * scheme will  be overriden later by querying
-+			 * scheme will  be overridden later by querying
- 			 * Encoder features
- 			 */
- 			if (strncmp(
-@@ -124,7 +124,7 @@ enum dp_panel_mode dp_get_panel_mode(struct dc_link *link)
- 			/* alternate scrambler reset is required for NUTMEG
- 			 * for the case when external chip does not provide
- 			 * sink device id, alternate scrambler scheme will
--			 * be overriden later by querying Encoder feature
-+			 * be overridden later by querying Encoder feature
- 			 */
- 			if (strncmp(link->dpcd_caps.branch_dev_name,
- 				DP_VGA_LVDS_CONVERTER_ID_3,
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-index 204375f1eff8..587d26c742cd 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -584,7 +584,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
- 		return false;
- 	}
- 
--	/* set default inbox type if not overriden */
-+	/* set default inbox type if not overridden */
- 	if (dmub->inbox_type == DMUB_CMD_INTERFACE_DEFAULT) {
- 		if (default_inbox_type != DMUB_CMD_INTERFACE_DEFAULT) {
- 			/* use default inbox type as specified by DCN rev */
-diff --git a/drivers/gpu/drm/msm/registers/gen_header.py b/drivers/gpu/drm/msm/registers/gen_header.py
-index d3b56a9d84fb..d6bfb7b7d7b3 100644
---- a/drivers/gpu/drm/msm/registers/gen_header.py
-+++ b/drivers/gpu/drm/msm/registers/gen_header.py
-@@ -576,7 +576,7 @@ class Parser(object):
-             raise self.error(e)
- 
-     def parse_varset(self, attrs):
--        # Inherit the varset from the enclosing domain if not overriden:
-+        # Inherit the varset from the enclosing domain if not overridden:
-         varset = self.current_varset
-         if "varset" in attrs:
-             varset = self.enums[attrs["varset"]]
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
-index 38032bb95826..10cd606d01b9 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bios.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
-@@ -323,7 +323,7 @@ get_fp_strap(struct drm_device *dev, struct nvbios *bios)
- 	/*
- 	 * The fp strap is normally dictated by the "User Strap" in
- 	 * PEXTDEV_BOOT_0[20:16], but on BMP cards when bit 2 of the
--	 * Internal_Flags struct at 0x48 is set, the user strap gets overriden
-+	 * Internal_Flags struct at 0x48 is set, the user strap gets overridden
- 	 * by the PCI subsystem ID during POST, but not before the previous user
- 	 * strap has been committed to CR58 for CR57=0xf on head A, which may be
- 	 * read and used instead
-diff --git a/drivers/hwmon/abituguru.c b/drivers/hwmon/abituguru.c
-index ba8c68ae4595..5accd463599c 100644
---- a/drivers/hwmon/abituguru.c
-+++ b/drivers/hwmon/abituguru.c
-@@ -475,7 +475,7 @@ abituguru_detect_bank1_sensor_type(struct abituguru_data *data,
- 	u8 val, test_flag, buf[3];
- 	int i, ret = -ENODEV; /* error is the most common used retval :| */
- 
--	/* If overriden by the user return the user selected type */
-+	/* If overridden by the user return the user selected type */
- 	if (bank1_types[sensor_addr] >= ABIT_UGURU_IN_SENSOR &&
- 			bank1_types[sensor_addr] <= ABIT_UGURU_NC) {
- 		ABIT_UGURU_DEBUG(2, "assuming sensor type %d for bank1 sensor "
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index e760d13ee325..a02bb2fee874 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -86,7 +86,7 @@ MODULE_ALIAS("mmc:block");
- static DEFINE_MUTEX(block_mutex);
- 
- /*
-- * The defaults come from config options but can be overriden by module
-+ * The defaults come from config options but can be overridden by module
-  * or bootarg options.
-  */
- static int perdev_minors = CONFIG_MMC_BLOCK_MINORS;
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-index ea310057fe3a..bc36d7578ce2 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_link.c
-@@ -3743,7 +3743,7 @@ static void bnx2x_warpcore_enable_AN_KR(struct bnx2x_phy *phy,
- 		{MDIO_WC_DEVAD, MDIO_WC_REG_CL72_USERB0_CL72_TX_FIR_TAP, 0},
- 	};
- 	DP(NETIF_MSG_LINK, "Enable Auto Negotiation for KR\n");
--	/* Set to default registers that may be overriden by 10G force */
-+	/* Set to default registers that may be overridden by 10G force */
- 	for (i = 0; i < ARRAY_SIZE(reg_set); i++)
- 		bnx2x_cl45_write(bp, phy, reg_set[i].devad, reg_set[i].reg,
- 				 reg_set[i].val);
-diff --git a/drivers/net/ethernet/chelsio/cxgb4vf/sge.c b/drivers/net/ethernet/chelsio/cxgb4vf/sge.c
-index 31fab2415743..b4374ca1d653 100644
---- a/drivers/net/ethernet/chelsio/cxgb4vf/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4vf/sge.c
-@@ -2194,7 +2194,7 @@ static void __iomem *bar2_address(struct adapter *adapter,
-  *	@rspq: pointer to the new rxq's Response Queue to be filled in
-  *	@iqasynch: if 0, a normal rspq; if 1, an asynchronous event queue
-  *	@dev: the network device associated with the new rspq
-- *	@intr_dest: MSI-X vector index (overriden in MSI mode)
-+ *	@intr_dest: MSI-X vector index (overridden in MSI mode)
-  *	@fl: pointer to the new rxq's Free List to be filled in
-  *	@hnd: the interrupt handler to invoke for the rspq
-  */
-diff --git a/drivers/net/ethernet/freescale/fman/fman_memac.c b/drivers/net/ethernet/freescale/fman/fman_memac.c
-index e2d8c58deef0..c1d588337751 100644
---- a/drivers/net/ethernet/freescale/fman/fman_memac.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_memac.c
-@@ -1311,7 +1311,7 @@ int memac_initialization(struct mac_device *mac_dev,
- 
- 	/* Most boards should use MLO_AN_INBAND, but existing boards don't have
- 	 * a managed property. Default to MLO_AN_INBAND rather than MLO_AN_PHY.
--	 * Phylink will allow this to be overriden by a fixed link. We need to
-+	 * Phylink will allow this to be overridden by a fixed link. We need to
- 	 * be careful and not enable this if we are using MII or RGMII, since
- 	 * those configurations modes don't use in-band autonegotiation.
- 	 */
-diff --git a/drivers/net/ethernet/sfc/mcdi_pcol.h b/drivers/net/ethernet/sfc/mcdi_pcol.h
-index b9866e389e6d..9adfa058512f 100644
---- a/drivers/net/ethernet/sfc/mcdi_pcol.h
-+++ b/drivers/net/ethernet/sfc/mcdi_pcol.h
-@@ -13547,7 +13547,7 @@
-  * an ancestor of the current user (see MC_CMD_SET_VI_USER). Note that LL
-  * queues require this to be called after allocation but before initialisation
-  * of the queue. TLP options of a queue are fixed after queue is initialised,
-- * with the values set to current global value or they can be overriden using
-+ * with the values set to current global value or they can be overridden using
-  * this command. At LL queue allocation, all overrides are cleared.
-  */
- #define MC_CMD_SET_VI_TLP_PROCESSING 0xb1
-diff --git a/drivers/scsi/aic7xxx/aic79xx_osm.c b/drivers/scsi/aic7xxx/aic79xx_osm.c
-index feb1707feb7e..c9470f80626b 100644
---- a/drivers/scsi/aic7xxx/aic79xx_osm.c
-+++ b/drivers/scsi/aic7xxx/aic79xx_osm.c
-@@ -173,7 +173,7 @@ static adapter_tag_info_t aic79xx_tag_info[] =
- 
- /*
-  * The I/O cell on the chip is very configurable in respect to its analog
-- * characteristics.  Set the defaults here; they can be overriden with
-+ * characteristics.  Set the defaults here; they can be overridden with
-  * the proper insmod parameters.
-  */
- struct ahd_linux_iocell_opts
-diff --git a/drivers/scsi/sym53c8xx_2/sym53c8xx.h b/drivers/scsi/sym53c8xx_2/sym53c8xx.h
-index 11f5dc29aa59..8790f1315f75 100644
---- a/drivers/scsi/sym53c8xx_2/sym53c8xx.h
-+++ b/drivers/scsi/sym53c8xx_2/sym53c8xx.h
-@@ -128,7 +128,7 @@ struct sym_driver_setup {
- /*
-  *  Initial setup.
-  *
-- *  Can be overriden at startup by a command line.
-+ *  Can be overridden at startup by a command line.
-  */
- #define SYM_LINUX_DRIVER_SETUP	{				\
- 	.max_tag	= CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS,	\
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index a3355147f5de..90f3990e0060 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1244,7 +1244,7 @@ static int omap2_mcspi_transfer_one(struct spi_controller *ctlr,
- 		omap2_mcspi_set_fifo(spi, t, 0);
- 
- out:
--	/* Restore defaults if they were overriden */
-+	/* Restore defaults if they were overridden */
- 	if (par_override) {
- 		par_override = 0;
- 		status = omap2_mcspi_setup_transfer(spi, NULL);
-diff --git a/drivers/video/fbdev/tridentfb.c b/drivers/video/fbdev/tridentfb.c
-index 9f055ba776c8..6501f6e2615a 100644
---- a/drivers/video/fbdev/tridentfb.c
-+++ b/drivers/video/fbdev/tridentfb.c
-@@ -58,7 +58,7 @@ static struct fb_fix_screeninfo tridentfb_fix = {
- 	.accel = FB_ACCEL_NONE,
- };
- 
--/* defaults which are normally overriden by user values */
-+/* defaults which are normally overridden by user values */
- 
- /* video mode */
- static char *mode_option;
--- 
-2.25.1
-
+cheers,
+jamal
+> Fixes: c96adff95619 ("cls_flower: call nla_ok() before nla_next()")
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Cc: stable@vger.kernel.org
+> Assisted-by: CodeBuddy:Kimi-K3
+> Signed-off-by: Aohan Mei <henrymei@tencent.com>
+> ---
+>  net/sched/cls_flower.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+> index 0e275b58151c..1cefea571efd 100644
+> --- a/net/sched/cls_flower.c
+> +++ b/net/sched/cls_flower.c
+> @@ -1703,6 +1703,11 @@ static int fl_set_enc_opt(struct nlattr **tb, stru=
+ct fl_flow_key *key,
+>                         return -EINVAL;
+>                 }
+>                 nla_opt_msk =3D nla_next(nla_opt_msk, &msk_depth);
+> +
+> +               if (msk_depth && !nla_ok(nla_opt_msk, msk_depth)) {
+> +                       NL_SET_ERR_MSG(extack, "A mask attribute is inval=
+id");
+> +                       return -EINVAL;
+> +               }
+>         }
+>
+>         return 0;
+> --
+> 2.43.7
+>
