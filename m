@@ -1,85 +1,122 @@
-Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697F31D9663
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 03:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434DE1EFF93;
+	Wed, 26 Aug 2026 03:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787713610; cv=none; b=Y+loqwiw+2tNzaQrb4WDg7D3gxRdzZh/rcTjU+yJbjwRfEA+EPDuG0TvrVD0iGvpiPp9a1TlgoD1QizyI6s/jakkMjVpZ6xYUO5P32lDUmXKGH0UoY0Ofk9bTMoVVAxUH7usAdeV/efzYLD5YUQRp+X4m8aWKmy69SFv7kZjIkw=
+	t=1787714318; cv=none; b=pu+zAUM8CKaQtj+xr7OqkkF9+ElNrfFyCrgh735DGBgAaJeAsTktFvks/FdvoEJviofIz0I6Cm+LMlJQK6SwC6L54i+c0edzftV+lF51cQ1kCBV9utMWpZWRE0ZQOG2mUEZYanHiVmiXOkHkwxWuUn9FkmMxTL2XEFaiFdc9/Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787713610; c=relaxed/simple;
-	bh=9C0JJHnhMl8wq9jIQMg767C/RWM5PoKtkQ6M2MW9bQU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=St5KdTkGHaC67F4LQtfHbmpR3tBZrY9ypiCJvs14ZrXavLyidQ44KJVxK7aK7BygzuIEjZPOYCrl0Xz3z7I/3mvnujroyd3ovLILN8ZB9olhIOgPXhEkHnuBo9dfIZNXCvRq7xcaVEsOdG4CMNeXfp2qJe4QszHVKMCn1D1OkLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=o1CaQh/o; arc=none smtp.client-ip=61.135.153.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1787714318; c=relaxed/simple;
+	bh=h8msQHr+CXsejwj0Tg9mxPlXdG/lbLNOfIaOqLqNyqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rYpYQXBj5ymfH6MQhNnZfv/Vab41SvOvT2dUh/HpNT5rs8yQekj6APqYbvW2cEcqhGquT85GsypDWlNQvNSNBvL42eZqHwekCuTMp+hWiQjGR11eG6+eaB0aISV6AECS4bcifET1dekpUJ60biw7neSkhfN/hRpf90jJrPDufaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=c0m3KFNY; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="o1CaQh/o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1787713603;
-	bh=nbcLAfdK5MFSNjlAPEInJBjn9XrHm5bjrSWsgRuc7mY=;
-	h=From:Subject:Date:Message-ID;
-	b=o1CaQh/os5Ypt0dj9zfavR1WAEAmbOFxDmU+XVQzwB0q7S3JeYNHzc+TCX3p8VJNJ
-	 NHOmIm3inVIRpwxBUY+j7oQ9ccIu/N4+lV6h3TOG9Ra/fEtrK3DamDG0g3dC5G/cpa
-	 YmkVccTIABtp8U6iei+/Q7J6R8ey/QDYJUk1dR5s=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6A8E58330000017B; Wed, 26 Aug 2026 11:06:33 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 2542204457848
-X-SMAIL-UIID: F5F66C51243C4AA0A0D33808E41F9E16-20260826-110633-1
-From: Hillf Danton <hdanton@sina.com>
-To: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Cc: Eric Dumazet <edumazet@google.com>,
-	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
-	boqun@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	peterz@infradead.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
-Date: Wed, 26 Aug 2026 11:06:18 +0800
-Message-ID: <20260826030619.1519-1-hdanton@sina.com>
-In-Reply-To: <ao2WptQpM2zSQHDt@shinhome>
-References: 
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="c0m3KFNY"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787714312; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=Kyr8+8isRvv+cr0uQOk3l0k7AzeaOzG44yM3F3HZ2c0=;
+	b=c0m3KFNY4Hm/pnCxvfqBZf3rLOzi7KTM7d9ar/g3RdQ8Wz9xUF5d2cmJGSt2Icu6wrfPHoWq5NTRCs580nKqq9LiDtpQklodK042xdUBxKnSCI2GJHyJ3KnZ0lDVd2iAiu5nwhuoBsFS6a3lqoRfzjBvS7awORNGt8jvtoTXDms=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X9fbpz2_1787714311;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X9fbpz2_1787714311 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 26 Aug 2026 11:18:31 +0800
+Date: Wed, 26 Aug 2026 11:18:31 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
+	hidayath@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net/smc: serialize clcsock teardown in
+ smc_accept_dequeue
+Message-ID: <ao5bB9OCbJ5PQbEp@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20260824065851.1070988-1-mjambigi@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824065851.1070988-1-mjambigi@linux.ibm.com>
 
-On Tue, 25 Aug 2026 22:26:25 +0900 Shin'ichiro Kawasaki wrote:
->On Aug 25, 2026 / 14:45, Hillf Danton wrote:
->> On Tue, 25 Aug 2026 14:44:35 +0900 Shin'ichiro Kawasaki wrote:
->> > On Aug 25, 2026 / 03:50, Eric Dumazet wrote:
->> > >
->> > > I think 19bdb70c77d3 should be reverted.
->> >
->> > Just reverting the commit will reintroduce the other lockdep WARN that the
->> > commit addressed. I hope to have another fix to avoid the WARN.
->> >
->> I do not think you know the root cause of that lockdep warn, so reverting
->> 19bdb70c77d3 is the right thing to do because of [11, 12].
->> 
->> [11] ffa1e7ada456 ("block: Make request_queue lockdep splats show up earlier")
->> [12] Subject: Re: [PATCH] nbd: don't warn when reclassifying a busy socket lock
->> https://lore.kernel.org/lkml/20260816014906.1149-1-hdanton@sina.com/
+On 2026-08-24 08:58:51, Mahanta Jambigi wrote:
+>smc_accept_dequeue() open-codes clcsock teardown for SMC_CLOSED child sockets
+>without taking clcsock_release_lock:
 >
-> I took a look in the commit [11] and the discussion [12], but couldn't follow
-> why the commit 19bdb70c77d3 should be reverted. Could you elaborate a bit more
-> about the reason you suggest the revert?
+>  new_sk->sk_prot->unhash(new_sk);
+>  if (isk->clcsock) {
+>      sock_release(isk->clcsock);
+>      isk->clcsock = NULL;
+>  }
 >
-The Fixes tag in d532cddb6c60 proves Eric delivered a HBC, half baked croissant,
-to lore. And the nvme-tcp tucked in the HBC hints Eric copied something from
-somewhere. Finally the absence of ffa1e7ada456 in 19bdb70c77d3 proves it is
-worse than a HBC. Clear dude? Or go to read [12] again?
+>This bypasses the clcsock_release_lock discipline used elsewhere in SMC clcsock
+>lifetime handling. In particular, other paths serialize clcsock access and
+>updates with clcsock_release_lock, but this local teardown path does not.
+>
+>Fix it by taking clcsock_release_lock around the local teardown and by storing
+>NULL before sock_release(), matching the established ordering used by other
+>clcsock teardown paths.
+>
+>Fixes: 127f49705823 ("net/smc: release clcsock from tcp_listen_worker")
+>Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
+>Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+>---
+> net/smc/af_smc.c | 12 ++++++++----
+> 1 file changed, 8 insertions(+), 4 deletions(-)
+>
+>diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>index 00403175b740..bbf8269876ee 100644
+>--- a/net/smc/af_smc.c
+>+++ b/net/smc/af_smc.c
+>@@ -1833,10 +1833,14 @@ struct sock *smc_accept_dequeue(struct sock *parent,
+> 		smc_accept_unlink(new_sk);
+> 		if (new_sk->sk_state == SMC_CLOSED) {
+> 			new_sk->sk_prot->unhash(new_sk);
+>-			if (isk->clcsock) {
+>-				sock_release(isk->clcsock);
+>-				isk->clcsock = NULL;
+>-			}
+>+			mutex_lock(&isk->clcsock_release_lock);
+>+			if (isk->clcsock) {
+>+				struct socket *clcsock = isk->clcsock;
+>+
+>+				isk->clcsock = NULL;
+>+				sock_release(clcsock);
+>+			}
+>+			mutex_unlock(&isk->clcsock_release_lock);
+
+Why not call smc_clcsock_release() here ?
+
+After looking deeper into this issue, I found smc_diag_msg_common_fill()/
+smc_getname() and many other branches hasn't hold lock_sock() and may also
+have the race issue ? For example, smc_getname() calling smc->clcsock->ops->getname()
+while the other workqueue is releasing the clcsock.
+
+Since SMC has long been plagued by this kind of locking issue, I think we
+should consider a long-term solution to address it.
+
+What about stop releasing the clcsock early and tie its lifetime to the SMC
+socket itself. The early paths don't really need to release it ??? a
+kernel_sock_shutdown()/tcp_abort() is enough to stop it, and calling them more
+than once is safe because the TCP layer already handles that.  sock_release()
+is different: it frees the socket, so it must happen exactly once. If we move
+this single release to the final teardown of the SMC socket, no user can exist
+at that point anymore (fd users are gone after smc_release(), and every
+work/accept-queue context holds a sock reference), which makes both
+clcsock_release_lock and all the if (smc->clcsock) NULL checks removable.
+
+Ideas ?
+
+Best regards,
+Dust
