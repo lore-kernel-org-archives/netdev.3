@@ -1,143 +1,169 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60253209F43
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 01:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7252036E9
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 02:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787708567; cv=none; b=YVpHG1WUaz4FThbQXddfVCIeQZDY9QXyJMw4w8x0Y81OVoZnzgQ/uTPfW2aXaNk9QD7NhKk9vRrDduqfDC+oHasokfNJLmN3xkt7mo2X8+MxJuulB8yqrhGRiqDgtxnc5i/3NaexpBW18Iq2ftLONzrZEftd19Yzh0dp5WwIpFE=
+	t=1787709739; cv=none; b=HSAhqthqb+QgmvGR1kZs2tLub6stbOwzfi48742u/a0RnJZcjHE54TUjoKjQSYEMmaKcGOs8W37vl3Moy6lqLFiMMfiEem/ppw5mrqewYvfqp/N2mL4ZFAnAqwJ3fH47Yn/dnE34+UO/X1kbU0xVTv9s3PQY/wzCZvlVbPoKb7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787708567; c=relaxed/simple;
-	bh=xkHYSMpPHPn5UAznXrMTLNZUM0GY8dMnzzBw3PK9Ecw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kJ7DG3E1tGDI95i/Bov2PNBHgrLs8Cv60m/Ps+kaDiUXsOdiUqlzTBvNUfA/039UVqesvx+5UIfGseRF+jjTyvCly31tHWvMfS2wXyx1/ns+H0sbUJYu8Nu+yya71IjCGAmB3AI9QnDAh5LLNcCevGrvy9RxGm12sY9Jk7Lxmn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B9HoidBc; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1787709739; c=relaxed/simple;
+	bh=NJCCto9wLlVWCInGQDNhRaPAkrXW3Ymoo5rST/Wij80=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=jwpGtfHYxDQNPEX4iKUeplFApB3m7WulWf1Xb+ykR0fNr76pw1s9PitfytQBUDiqTq3FPvbpkNvlpt1enTxpcXy2Or0h3oEQdEWRHRAlEi0+6J0h5Oog4kGmN2B1++wiYdUg03ZUujOTg2bhymg2yUXCKl3o94hqkRH/KXOz1zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fN1Xq/4g; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B9HoidBc"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cc891373e0so6254985ad.2
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 18:42:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fN1Xq/4g"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-855c26cf490so4424377b3.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 19:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787708566; x=1788313366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uX7w3zYS1582cLpnHIAGQCV970wUYP+EwxQlHWpL6X4=;
-        b=B9HoidBcZfe0MNEqv7cPNTqvIn2B9ESx4YCTXc7sA/nCA3hQAb4DZ2oStAr7BbfnWo
-         4Uvsye6HVBhZxqSZEA51IRGDDeBJUt6rfo8qioljVPGUt2knqgya5Jk1t89WkDcfIy9q
-         ofI3QlaByJiUx3PKNhaKfp14dqxzBjVRfM2dSSzP3CSEfuzpTqFTWz0MUyYx/iUHsIpT
-         53mxZjPWO5T6/X5pB60hgD9sdTk69yYp72TwWyOJ8CfLQYGMCBUufM55/Um18aNGUHsr
-         avaI3LKTZ5DB4AcC+LQHA2U3svJh+Mu0/04k1RfO2GGnoYGnuJeAfo1qepqSbitFf2mP
-         pE1w==
+        d=gmail.com; s=20251104; t=1787709737; x=1788314537; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/j2cKbyDnLqH/Uv8OCdqOUyQE63/GyK6ijE5X1RB5ZA=;
+        b=fN1Xq/4glB5q+SsFCeTwUbnBh8SV+IW7YEbqYlWcu57h/N80AHskRkSIWIPhQhCGA/
+         QPb8OwVMPVwL8gvlKKE6QkFn58bjm9sylkWXuO/dmtrFI3cIA/Mphvck32BhGH/2wmXk
+         tIGOSbqaPRh7whFWXMI3Ml+JzFEBQ7497bKB+ZMPaT6fX/6zlBynC+BB5fCV9LdVES1M
+         d4+yANHhMzuNlSp96tdBXrsLhB8TyUeKhQmdWTGVYvunkzfWiQV00ontRkgQT4xnA5qr
+         vHa0SVTFln7+7VzUn8I350DUm2+t0EL4+2mugRcQencWIvIwwVAzwvFVihopug1DXWKX
+         XTWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787708566; x=1788313366;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uX7w3zYS1582cLpnHIAGQCV970wUYP+EwxQlHWpL6X4=;
-        b=ARbbj4P+VQKHSQqoAlTc+H69KF1TRjqcgZV6wc3BimM5Ciwdwbl0vvGbh4rZbS0/iY
-         DBA5YH3MjHdCVTeYCliiZTJrR+5HrlFD+NaeeYUWs28SVYNxW4Hw1NrMis9g6bZQYXeN
-         AFRxVrURWZsDOP/s5jrQGCEFdsAkaMM9ufRzpdQJD0v43V92lgIgy7MN8JThGe1VUnc/
-         7zFQTp5rYuu6+waqVXEWz5OzCdC6wvRGtXxGTABgXYXUOh0H98/Tk+EZOvKgJF6C2Ldv
-         Nv+ZX8f1w4kFtNLCYl6SMngYDiTzilWMT8HgOL+81rN+it90wtfgynVkySAXor699qHM
-         KqRA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1dqUbDuXun+j9XMRW63UTHYHSCHOD+hIpeH5XCkfa7DrEMhpHxC2V/UawSfjGveMbrRim1b4=@vger.kernel.org
-X-Gm-Message-State: AFuF++l0qrpEoA/9RQenhR9bJum+7umQgIUg0REESsjkxO1RHWHgs+Iy
-	laiMdYSDOz38xo80NINTJZhPz8MTgeN4OjXyYJgyelVlqEQO26sOGZXo
-X-Gm-Gg: AR+sD11rv6JwmmtV+wE2QR5EBA9sbK5W82SYGiJmi/RaPfnPnKg6gMy4sAwlo0oXiYS
-	UKcByOg9U0PZaviZDbEvyfhIxsiwOrYuOot+6Kkltlj9GUgBiUraV2R5gN3jlzgz9OB20e0hKtT
-	dO1GB1ps9dhQdJ/hRZNyaTmz9v/mhecEgVP2ojbBgS7Nr8xtIt9/nRp/xInVTGACUQAckG4K1Pu
-	vEcTslpW7dddbjKg546EHSgBYFka8WPktvw4YliSp9K9pnKqgzzAHnfCe2T5vjrDRT46o9p74vp
-	dDlUQ3cC6GaGErvCNaEWzh2oz/TUJbjr3t1dB6pYfu+jgAK/ozK4XnxsedL33vsdF8HwCnqUdBe
-	mSU31HkGQVLp6JuxJH1/ex43pK7uXMFl8HhWKRhB5xs4+r3T6JaBAkgpmVkPgKsY0A9dX5jSWId
-	u7P4MniH06uFFTw5Ek2kqlJcpGT3m4vXtGl0bFwMaHS8McmuxgnB18wJdKxfNtjQ==
-X-Received: by 2002:a17:903:2c03:b0:2d6:ee6b:1b08 with SMTP id d9443c01a7336-2d707a2f363mr42050785ad.3.1787708565680;
-        Tue, 25 Aug 2026 18:42:45 -0700 (PDT)
-Received: from TENCENT64.site ([103.7.29.106])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d7049aac32sm2943735ad.33.2026.08.25.18.42.42
+        d=1e100.net; s=20251104; t=1787709737; x=1788314537;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/j2cKbyDnLqH/Uv8OCdqOUyQE63/GyK6ijE5X1RB5ZA=;
+        b=gSUxDUgsUqH9XkSGI9Sg0u8sMSYzK8x2rpNKyddTHggzuA46+wMn0PB0mKts38iPjO
+         tgr5/XPFPuJN6ZWRFE6dJbLuxC0TuqSQRMHVAuVSA/EpEkwtQdujWYMnWOzk0ls0K03B
+         zUGMD6U5LKk8CGKUnwys6InkL8quIR3reoXUGGDxNThlGhIwTheTUP5xwDTBGOECo+Wk
+         +gPN8hnyP+v3LkzTugRueCC/Kfb6U6dFL9Fwfz10PlmZhY06XFEGmaY2H9aSCZohxivm
+         fM34pGGTXzqtg1JmPrA2sDMrYMeUX1Lubw6bDPNIgCrhcTMELAaAb1vpGQn5VrF1aJme
+         HU6g==
+X-Forwarded-Encrypted: i=1; AHgh+Ros2fGhyK9Sv8SnQ+PDt0W29KGMW3HZ8QGfmk/hopB9cS2Kuo0ly6N0bwIMowuIBmd22AtnlWE=@vger.kernel.org
+X-Gm-Message-State: AFuF++mIEDamc6tIHAIGyrM11bglCQoNYMkDwc4PlUbIOUdZZua+/T4n
+	OhOfC0sAbA/srBbmFacGFIlx8jD0HaGaIC37kZyfOId0DnFPD/M9p8L6
+X-Gm-Gg: AR+sD13j8JMEuYIMQNPFQqUIdsiDGEkr50ziyNd8y6vVat5e424Rj0gVWPjg85oyZKp
+	ho3yEtM4KvbleLXSAhLkRVbRARu7Ww7xWLSWU1IAVPeJA+StHCqkSS0vudtgyahP9UUXkZDE1xz
+	E8vGshYJ2puUVzXAId+Mts4ttzduissjwAfDidyTCA9qqa9JIPpasdlh0N4fu2RUXjeA8Hv6Ch0
+	pVWnUEc+I/pAWbPhf8q854I2TFyqQeJxoVyt0Tn4sA+Cy1CTjveZ5f2dyAI2gHBnPm+QRI7SI8Y
+	UkPfI8XWiyJ1d/EnbpFan+WiL1DJHMEIIgILmrV+LvR8/ozG4lC6I63Po2RlsXgSJN8Bm2kWlB9
+	izNkp1ZwkMThymsDOfK58pfO1M0POhkJP7frIU5yZvvsEzjkV8AUivg6BSVdNFh6etN6f0H85X4
+	rHSLnxPs2Q2H+jEaJjb2OXUCsSs5bUjygMvQz5MMJ66YLGDb3WP1kvezNDIhOLgRkA+cxFwvSQ+
+	7Ohbk1vxRUC615eO6AVybO+kl3IY6w0oV+4vmo5Ng==
+X-Received: by 2002:a05:690c:6a10:b0:81e:c972:e8c3 with SMTP id 00721157ae682-8574087e819mr16641587b3.29.1787709736910;
+        Tue, 25 Aug 2026 19:02:16 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85705f35aebsm9805617b3.15.2026.08.25.19.02.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 18:42:45 -0700 (PDT)
-From: Jun Yang <littleddfu@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>
-Subject: [PATCH net v2] net: bridge: mcast: don't truncate the port group walk on teardown
-Date: Wed, 26 Aug 2026 09:41:44 +0800
-Message-ID: <20260826014200.362304-1-littleddfu@gmail.com>
-X-Mailer: git-send-email 2.43.7
+        Tue, 25 Aug 2026 19:02:16 -0700 (PDT)
+Date: Tue, 25 Aug 2026 22:02:15 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Qihang <q.h.hack.winter@gmail.com>, 
+ jv@jvosburgh.net, 
+ jiri@resnulli.us
+Cc: andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ willemb@google.com, 
+ netdev@vger.kernel.org, 
+ Qihang Tang <q.h.hack.winter@gmail.com>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.2ec10017f4836@gmail.com>
+In-Reply-To: <20260824021802.90369-1-q.h.hack.winter@gmail.com>
+References: <20260824021802.90369-1-q.h.hack.winter@gmail.com>
+Subject: Re: [PATCH net 1/2] bonding: reject frames with insufficient headroom
+ in bond_header_create
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Jun Yang <junvyyang@tencent.com>
+Qihang wrote:
+> From: Qihang Tang <q.h.hack.winter@gmail.com>
 
-__br_multicast_disable_port_ctx() and br_multicast_del_port() walk
-port->mglist with hlist_for_each_entry_safe(). However,
-br_multicast_find_del_pg() can also delete other entries from the same
-list through br_multicast_fwd_src_remove() or __fwd_del_star_excl().
+Thanks for working on this Qihang.
 
-If such an entry is the iterator's saved next node, hlist_del_init()
-clears its ->next and terminates the walk early. The reproducer triggers
-this in both teardown walks, leaving port groups in the bridge mdb with
-a dangling ->key.port after del_nbp() frees the port:
+Minor: a patch series should generally have a cover letter
 
-  BUG: KASAN: slab-use-after-free in __mdb_fill_info+0x1191/0x1320
-   __mdb_fill_info+0x1191/0x1320
-   br_mdb_dump+0x594/0xe40
-   rtnl_mdb_dump+0x1cf/0x5d0
+> AF_PACKET SOCK_DGRAM sends reserve skb headroom from a snapshot of
+> bond_dev->hard_header_len.  A concurrent bond type change can switch the
+> active slave to one with a larger hard_header_len between that snapshot
+> and bond_header_create(), so the slave's create() pushes or writes past
+> skb->head.
 
-Use hlist_del_init_rcu() to unlink the group while preserving ->next.
-br_multicast_del_pg() and the teardown walks run under
-br->multicast_lock. The GC worker must acquire the same lock before
-detaching the group for destruction, so the node remains alive while
-the walk uses the preserved pointer.
-
-Fixes: b08123684bd5 ("net: bridge: mcast: install S,G entries automatically based on reports")
-Cc: stable@vger.kernel.org
-Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-v2: delete with hlist_del_init_rcu() to preserve ->next for an in-progress
-    teardown walk, per Nikolay's suggestion, instead of restarting the walks.
-    Tested on 7.2-rc7 with KASAN: the original use-after-free is no longer
-    reported.
-
-v1: https://lore.kernel.org/all/20260812113435.1854275-1-junvyyang@tencent.com/
-
- net/bridge/br_multicast.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 00aa9b2879d6..8022c7f12169 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -808,7 +808,11 @@ void br_multicast_del_pg(struct net_bridge_mdb_entry *mp,
- 	struct hlist_node *tmp;
+Are we certain that bond and team are the only devices that implement
+header_ops->create?
  
- 	rcu_assign_pointer(*pp, pg->next);
--	hlist_del_init(&pg->mglist);
-+	/* Keep ->next (held under multicast_lock, freed later by the GC work):
-+	 * a port->mglist teardown walk may have latched this node as its next,
-+	 * and deleting other groups of the same port must not truncate it.
-+	 */
-+	hlist_del_init_rcu(&pg->mglist);
- 	br_multicast_eht_clean_sets(pg);
- 	hlist_for_each_entry_safe(ent, tmp, &pg->src_list, node)
- 		br_multicast_del_group_src(ent, false);
--- 
-2.43.7
+> The hard_header_len snapshot series that fixed the SOCK_RAW send paths
+> deferred this SOCK_DGRAM race: dev->header_ops is the stable
+> bond_header_ops, so snapshotting header_ops in the caller does not help.
+> 
+> Reject the frame if skb headroom is smaller than the active slave's
+> hard_header_len, before delegating under the existing rcu_read_lock.
+> 
+> Fixes: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
+
+What's the rationale behind blaming this SHA1?
+
+> Cc: stable@vger.kernel.org
+> Cc: Willem de Bruijn <willemb@google.com>
+> Signed-off-by: Qihang Tang <q.h.hack.winter@gmail.com>
+> ---
+>  drivers/net/bonding/bond_main.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 522eab060f9e..9ec663610dfd 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -1524,10 +1524,24 @@ static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
+>  	slave = rcu_dereference(bond->curr_active_slave);
+>  	if (slave) {
+>  		slave_ops = READ_ONCE(slave->dev->header_ops);
+> -		if (slave_ops && slave_ops->create)
+> +		if (slave_ops && slave_ops->create) {
+> +			unsigned int hlen = READ_ONCE(slave->dev->hard_header_len);
+> +
+> +			/* Headroom was reserved from a snapshot of
+> +			 * bond_dev->hard_header_len that may predate this
+> +			 * slave (concurrent bond type change); reject if
+> +			 * insufficient for the slave's create(), which
+> +			 * pushes its own hlen.
+> +			 */
+> +			if (skb_headroom(skb) < hlen) {
+> +				ret = -EINVAL;
+> +				goto unlock;
+> +			}
+>  			ret = slave_ops->create(skb, slave->dev,
+>  						type, daddr, saddr, len);
+> +		}
+
+Ideally we could fix this in dev_hard_header or PF_PACKET itself,
+rather than in each implementation that's in scope.
+
+But there seems no way around holding this rcu reference on the slave
+device while re-checking.
+
+
+
+>  	}
+> +unlock:
+>  	rcu_read_unlock();
+>  	return ret;
+>  }
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
+
 
