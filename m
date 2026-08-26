@@ -1,154 +1,86 @@
-Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECE1349CD6
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEA93BCD28
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 09:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787737384; cv=none; b=baX7kX3nIbxvGF38MLp5uB8Q92npsonfWWrYI3VX+GiOCWPGW67Cyq0QEPEutToKqg2MEIN+FZHprihxYMapuNEcBpFkpBAi1ldIxUo0XGSvu7XVyOpa6KS2chGKl65Z2zt6VtTcZ8qx6Bysw/jGspJTOWXovBD6CDRxMBDUDpo=
+	t=1787737738; cv=none; b=AKOMtl+PtIjVpmWzMCIb+DkCKDPXPMWAQTQg4x+Z9iGv+wmdjMhyp8PVYup15hKaNy9GE9+uuflmb0L1u+sgjEbZ7Bzo8ckJbp9nvepenFfNI0k9a4Xx/zkbLqWW6nJqKHP80acQ3bD0aZX2+tpscy7e4V7C2KzaPLs8KZJrOIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787737384; c=relaxed/simple;
-	bh=0LLnpGdR0fj9IJxVAf4kFgF9vmkCEuGCvbwC/a/IHwA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=So9F9oCXRXsfK3XRcZgF2ADj+mjPJ3NeUWvfIH96p01UDASTiB8b3ffh+HTRb11NyJLiFGouEwPnU4AQMz3C14T79MWg6d4MrOmjIKH42ZoAFcRDeH9H0gtz9YKwhD/yyzAoCfvbfG0TMzxMCGYnj2snTo+/XRjjWcn0rOv2xxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MvDuhB4n; arc=none smtp.client-ip=95.215.58.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787737738; c=relaxed/simple;
+	bh=qY7WCG2lM8/FG+VYanFZuap8dJ1+0ITIBbtnyEuH5ds=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QWXS10bcJOB1T4eAJ9YyIz/nNtbAiQ8DJbfPdVGwxBE70pqeBz7w4Aa/lsLN9b68Gbo+BhQb7b3johRX7pzss3FuNtS0Kl9SyG1yyxiw6djBUumqISN1z/t2iqW9c+jIoBA4R0jXqvqBEgaVkTLRWItDwm8tW/PxtSusT7ok/m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cYQvYQFK; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MvDuhB4n"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=0LLnpGdR0fj9IJxVAf4kFgF9vmkCEuGCvbwC/a/IHwA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787737380; v=1; x=1788342180;
- b=MvDuhB4nHtKVSMth/tJFdQdWWVGphP632TayOhzYeITxR49RZDyNIvwvmpS6Hh3WM/cjaVXC
- waloXEXqJTwxh53cB5H6B8vPkTlCF8JaeIqRWOaNVuPe3ghblmy08+cUCisNjpILSM6ibq54Gg9
- MsYn76DJd2V8lk8ShLsrR4NQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [IPV6:2a03:83e0:111e:2:c6:2f62:38ca:59d8] (2620:10d:c092:500::4:fc9b)
-	by smtp.migadu.com with ESMTPS id 49c08756695e3ca9;
-	Wed, 26 Aug 2026 09:43:00 +0000
-X-Mizu-Trace-ID: 49c08756695e3ca9
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <779115dd-30ea-4c53-94fd-4715beecd5b7@linux.dev>
-Date: Wed, 26 Aug 2026 10:42:59 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cYQvYQFK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787737735; x=1819273735;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qY7WCG2lM8/FG+VYanFZuap8dJ1+0ITIBbtnyEuH5ds=;
+  b=cYQvYQFK+p4J0E0MbyF7uxVVsIDxesGszbzAEsxZTehS8wiUaTVrR49c
+   7aJqcXe2TzTd6NUJ8h6UlfY4D+b+U1wqezRVsktI383EnLA7YY8G6rBoG
+   xjQZQo5xI8ZOGI67jAL/NqdYnzIMa3EK2UAMts4YHepb1hQ8JEzWyK0AF
+   +6IlBYew25f12dqDGAc9qEYhuJdXJ5196T1AHT8I9s77j5Y98TD1WY3bS
+   Bu7k5/RBqG0JPqA0/r/MaH1HIq5maQ9iboh/7H8dXaKaEDUMcLR9Q6OzD
+   iYKgiZFU83Ms7s6DV3c1VbsYPYS1CnjoZ1WG7c4RXlVFaIOj76XhRTEsl
+   Q==;
+X-CSE-ConnectionGUID: QTO2F/hxT82WgE/UovSTDQ==
+X-CSE-MsgGUID: i/+YkNexQ++7g+WDK2wgdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88232945"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="88232945"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 02:48:51 -0700
+X-CSE-ConnectionGUID: AorEXLkCRNO8uJ6fipy6Dw==
+X-CSE-MsgGUID: sEGI6fqDStGZvKc+fLx2Ww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
+   d="scan'208";a="261404792"
+Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
+  by fmviesa009.fm.intel.com with ESMTP; 26 Aug 2026 02:48:50 -0700
+From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Subject: [PATCH iwl-next v4 0/6] Rework dpll pin control
+Date: Wed, 26 Aug 2026 09:48:43 +0000
+Message-ID: <20260826094849.4112016-1-sergey.temerkhanov@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
- which approach?
-To: Sagi Maimon <maimon.sagi@gmail.com>
-Cc: Netdev <netdev@vger.kernel.org>, Jonathan Lemon
- <jonathan.lemon@gmail.com>, Radhey Shyam Pandey
- <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
-References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
- <8c5c1254-34b9-4d38-8cd4-71b3c13e00e4@linux.dev>
- <CAMuE1bGoYCh8cZZRMiA_TJ58p+QeXxmNh=brEVrV3UyAEJw5aA@mail.gmail.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <CAMuE1bGoYCh8cZZRMiA_TJ58p+QeXxmNh=brEVrV3UyAEJw5aA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 26/08/2026 08:41, Sagi Maimon wrote:
-> On Tue, Aug 25, 2026 at 7:38 PM Vadim Fedorenko
-> <vadim.fedorenko@linux.dev> wrote:
->>
->> On 20/08/2026 16:01, Sagi Maimon wrote:
->>> Hi,
->>>
->>> Before posting patches I would like to check which of two approaches you would
->>> prefer, since they differ a lot in how much code lands and where.
->>>
->>> The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx AXI
->>> Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp already
->>> supports. We want to expose that Ethernet port as a netdevice.
->>>
->>> Approach A - let xilinx_axienet drive it.
->>>
->>> ptp_ocp creates a platform device describing the two register windows and the
->>> three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_ocp
->>> already does for the Xilinx SPI and I2C cores on the same card, see
->>> ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
->>>
->>> There is no device tree, so a software node stands in for one: "phy-mode"
->>> replaces a phy-handle, since the MAC is wired to the fabric internally with no
->>> MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/s full
->>> duplex.
->>>
->>> This needs two things from xilinx_axienet:
->>>
->>>     1. Read its configuration through the generic device property API instead of
->>>        the OF-specific one, so it can be described by a software node. On a
->>>        device-tree system dev_fwnode() resolves to the OF fwnode and the reads
->>>        land in the same OF code as today, so this is a no-op for existing users.
->>>        It is also in line with the wider move from of_* to
->>>        device_property_*/fwnode_*.
->>>
->>>     2. A dma_dev in struct axienet_local. Descriptors and buffers must be mapped
->>>        against the device that masters the bus, which for a platform device
->>>        created by a PCIe parent is that parent - a platform device does not
->>>        inherit its parent's DMA ops or IOMMU domain. For every existing user
->>>        dma_dev would equal dev, so no behavioural change.
->>>
->>> That comes to about 50 changed lines in xilinx_axienet and about 180 new lines
->>> in ptp_ocp.
->>>
->>> Approach B - a separate driver under drivers/ptp.
->>>
->>> Reimplement the descriptor rings, NAPI and ethtool support against the same IP,
->>> roughly 2500 lines, and share xilinx_axienet's register definitions out of
->>> drivers/net/ethernet/xilinx/.
->>>
->>> We have both working. Approach A is tested on 7.0.0-rc1 with the card:
->>>
->>>     xilinx_axienet xilinx_axienet.512 eth0: configuring for
->>> fixed/internal link mode
->>>     xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
->>> flow control off
->>>
->>> ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way with
->>> zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and clean
->>> module unload and reload.
->>>
->>> We would much rather do A than maintain a duplicate of an existing driver, so
->>> the questions are:
->>>
->>>     1. Is instantiating xilinx_axienet from a PCIe parent as a platform device
->>>        acceptable, or would you prefer the driver split so the device can be
->>>        created on the auxiliary bus? The platform device route keeps the change
->>>        to xilinx_axienet small and matches what ptp_ocp already does for the SPI
->>>        and I2C cores, but auxiliary bus is the more usual choice for sub-devices
->>>        of a PCIe function and would make the DMA parent explicit.
->>>
->>>     2. For the dma_dev, we currently infer it by testing whether the parent is a
->>>        PCI device. That is concise but implicit; we are happy to pass it in
->>>        explicitly if you would prefer it were not inferred.
->>>
->>> I can post the series straight away if you would rather look at the code.
->>
->> Well, we definitely don't want to copy code but rather reuse existing as
->> much as possible. Looks like platform device is the way to go. Let's
->> discuss the code.
->>
-> 
-> Thanks - agreed on reusing the existing driver rather than duplicating
-> it, and good to hear the platform device approach looks acceptable.
-> 
-> On timing: the X2 Ethernet support depends on X2 board support in
-> ptp_ocp, which doesn't exist yet, and that in turn builds on the CPLD
-> programming work I currently have in flight for X1.  So the order will
-> be: finish the X1 CPLD series, then X2 board support, then the Ethernet
-> series - the axienet property/dma_dev changes together with the ptp_ocp
-> patch that uses them, as one series since it is all net-next.
-> 
-> I'd rather send them in that order than post Ethernet patches against a
-> board the driver doesn't know about yet.  Happy to share the Ethernet
-> code early as an RFC if it's useful for the architecture discussion in
-> the meantime.
+This series reworks and clarifies DPLL control logic. Contains
+refactoring changes for better readability as well as the changes making
+the pin controls compliant to design requirements.
+Bounds checking is added to avoid any potential out-of-bounds access
 
-It's OK to send it once required code is landed
+https://www.mail-archive.com/intel-wired-lan@osuosl.org/msg19449.html
+
+v1->v2: Harden the error handling paths, additional bounds and
+        pointer checks
+v2->v3: Fully rework the rollback codepaths, rearrange changes
+v3->v4: Fix transient state visibility during the state switch process
+
+Sergey Temerkhanov (6):
+  ice: dpll: Add the MUX tables to the documentation
+  ice: dpll: Rework multiplexed pin notifications
+  ice: dpll: Use switch statements to handle pin states
+  ice: dpll: Check for bounds when updating the pin states
+  ice: dpll: Rework U.FL muxed pin (SMA) control
+  ice: dpll: Rework the SMA control logic to match the requirements
+
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 544 ++++++++++++++++++----
+ drivers/net/ethernet/intel/ice/ice_dpll.h |   1 +
+ 2 files changed, 456 insertions(+), 89 deletions(-)
+
+-- 
+2.53.0
+
