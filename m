@@ -1,154 +1,167 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244B3360EFC
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 07:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D48A359A91
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 07:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787816553; cv=none; b=pG8v087eciP1Gwxar3bTA4OxK2SUfBDgsvixXoK/To+O2KRUR5zfHynbiY1/XUDaYp/yd8oHFSXREYpITEwq4Fm83IF0UkkkBSxKu+v9ea+G8YhVZX43bZY04sMUC6CEunNFTEc0pwLMJ9Bc4nxNMmxNHZwFBt3xjaO8vWV4PDk=
+	t=1787817053; cv=none; b=EycZ3vBAH3DGfZIh0R/HQQ6AGxaI5OO1VqlYgH9xatknMrJ2/SO3T9MYzQL5amBwITD3lUoV712ccRaQ7HLmQY3hZBt6hWUiClOuVMgx+iFsclYc7Mo4Qiwm0+iv1z/Yyzz61iGrW6aOux8ax99JogdQMbLB99pgCBfMPlEq3d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787816553; c=relaxed/simple;
-	bh=5lONB/RmW0Flfioz0g0QuoYagnCVyulcy4xNZsg1NNo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IVuhjIHmNruwlJ93i5xmGUNGruABXuGcG1XTYpRkrf8jITyeRtUEz/lZGH9Rj9xc2bWt+Vbot8u7yrqgwNnAvsx6WFOZ/alKgKzNBoRKJwrH5QgJVp5mc/Hu8eXeojJieWS05D4oiQzzNQ8SKyHYwm0I03QctMTfwOahQUJNyNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QpVgitOu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rlc6TLXN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787817053; c=relaxed/simple;
+	bh=ombfWduYmRzuQM+qSTOW1ygfQL83duLTVFuIzr1u56M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f+rCf3PkewRMHzvj/QvDx6T9cQ4ULYOP78U3RjWkeO8jTRb8iXn0U82GbALl2U1bDkFMyWRhc1mJzEya9VS36uJO/WOuKw0ZcSvtkjR05wov2Iz5eOJyg5l4kKO0ksKycBi/QnOuLxdj3+QACsLUx8O4vSmZHvRoA381CQIWcSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jWQVZIjG; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QpVgitOu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rlc6TLXN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787816551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g3BPinrdVBOdDQQQt8BzGf7HdXKF75mHk//qttHKOl8=;
-	b=QpVgitOuUvLV7z/YZ3c2Hznvg0hPDSmpJ4tw4BHzqRvF6XQ5PTafIhcWUdq3ZnxatAJJG2
-	5Ne5qXY+fFi1+QWaFTzwTc4PcVtwbDcTIhOdAOjgkKY7nlwxU5uUiYeOcbuFy+Z8HYT15O
-	p3Jcr/UFDP/KpSY15vXWlh1zKp2NXqg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-13PPc4eEOy2FSz_SFzDK7w-1; Thu, 27 Aug 2026 03:42:29 -0400
-X-MC-Unique: 13PPc4eEOy2FSz_SFzDK7w-1
-X-Mimecast-MFC-AGG-ID: 13PPc4eEOy2FSz_SFzDK7w_1787816548
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f835ac1aeso927649f8f.3
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 00:42:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jWQVZIjG"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8485ab7c382so82067b3a.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 00:50:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787816548; x=1788421348; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g3BPinrdVBOdDQQQt8BzGf7HdXKF75mHk//qttHKOl8=;
-        b=Rlc6TLXNAKak7xDHnUahwcJ3r0rwq9kOgkjxLcyzgjiFf/UXJPvQBUFEy+4P+1Qyec
-         1RuB6gkeKufSS3uNzlea/IEV0/d+GbviSi7rt7uBwqanx1WD9DfMeuH17TJGJ8RvT4GT
-         Xr+GzdXVGm6/b21+tEQH37+/KzuEK9LEIckE3vM4/fJ6mcmcKeMjr9spa5mKUpMOYGIs
-         AxaVeVzYAUmKLLFEKdwui4sN6EPsaut23djbyCBBd5jee8UHlaORTzzsan6WwBoCmNx4
-         p8q1VgoPfiwZS812yXplzsdsxGakq7Dlz73oMgu52ID2JhEy9hDzh8ztc84RG3QNPDl+
-         c3+A==
+        d=gmail.com; s=20251104; t=1787817051; x=1788421851; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QJxok4wgUB8E2b2EBexjp7DU43elN9IiB4VyNdbeBMI=;
+        b=jWQVZIjGm1P24DRfClznD9+7yzaeXVPc0wzpMJbuAd/RNGPmN7gVHVYvo6Zc8OjUfg
+         CKiJ7OW2aKP6+T0mhBxULF00v7cqfLQXZgwcbwkeN5dIto9u7cYw8n+Zj0PSYYkmXhsx
+         l9IdtO+Dr8tCqbzJixZu/rzCfiDKn0cGzedji1xD2swihZIX3u4jL9cLMuDcmGbfCdzU
+         OKU5gtW5b0+Rd2C2y915qsfdX0OGLeOii9uwNrFIfCe/ODxrthMqcjvmdnLplepyw0wL
+         bG6j7t55kP7awbmZLX304OyhBrolPJf6QFHXqqZJcFHVi1TavE+3zO4ORvgNNk6NDBLZ
+         WB2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787816548; x=1788421348;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787817051; x=1788421851;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=g3BPinrdVBOdDQQQt8BzGf7HdXKF75mHk//qttHKOl8=;
-        b=Gr09t684Xw7/MGM2E+OB+TdshCb5mlGpBf8oX/dLiViBkzYDRvO7WnpFgJg1bukm4e
-         RiMXyJI0FNnE169DB44L/ka03tDMO8u+G2xv2PJBi2RMSQRAVepWgpcK9Wawz4DV752r
-         93nAmmuzP2kjqwq8ogzwyCtsfzsLSy8NOoeKygzwbSH5NDKZK6P+KZhSDTiNzZG6+w5D
-         YJG5VJyOh0lq5y2rtQifO0UNkK48yRPpMRYLDBSPhSuZ5qTtHfjMxukozpTsGKcf7uBX
-         mDVd003DrtsZwXSDSsn5wyHhr4O8PgqiClTqfDni1VK0vPW9sUexcx9ap8XIHB0G760j
-         xCeg==
-X-Gm-Message-State: AFuF++kzXW03e4K/TuwIkrhBrqzEO6IU9LU0tNgphXKD/N7N8pL2gQ3S
-	iqxG8OV0kNPPtuQBUBAqLU9IzQq3CFOjHyiwN/JY7juhDhwBMzrnacalaz200mWG/L5kvKtWmV2
-	YhRv9eIGMaMdKM2UrUTjLFjGMaDXCPsX98VGpnessBLQRt/F3GZJgHuqgAg==
-X-Gm-Gg: AR+sD12yDXLQDZ2O9s6dkZLKkeckYHHLta80hDs0xoB0/7h1mV8xHVd2K4qwfyN+tNp
-	S2RzxN0WSW2MGyOHFwCH9c5vj/hA10X/HPy2tC2hiuOXKiqWNPUKQQ6KyK/Af6TcuD26qxI9fRf
-	cbi7ZPu+mBdyRBy4OW6HsSBwhNUChmirvvuFV61U1JGaWceWeiHJFS1FxIqm7yJQ+V8JvXnikh2
-	w2SsP/istMN47+PXcWSQdJva0RDIBeJ+nCiJjUbhQRrgSSRS+nxxByloiGZFAs2ySIsbPFSS8OS
-	sFsGN9NQJwfR6DXqy2HC7tT2WSpCxGBjGTUdM38Yz4hEht4N4GroqN0a4pMQHRv79ek7+kKbRsl
-	GvyiAHBhVKxWtDGFnQu7kzj7e1c23bAhxOM7IYe+W+B5GbkFwIY/VgvOdj/2dufdlPKIdybU=
-X-Received: by 2002:a05:6000:4552:b0:482:ddb3:d4de with SMTP id ffacd0b85a97d-482e26adcd5mr11304872f8f.13.1787816548194;
-        Thu, 27 Aug 2026 00:42:28 -0700 (PDT)
-X-Received: by 2002:a05:6000:4552:b0:482:ddb3:d4de with SMTP id ffacd0b85a97d-482e26adcd5mr11304786f8f.13.1787816547677;
-        Thu, 27 Aug 2026 00:42:27 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e28e8fb5sm6871464f8f.29.2026.08.27.00.42.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 00:42:25 -0700 (PDT)
-Message-ID: <73331a07-46a3-4349-98b1-b388bcd783d0@redhat.com>
-Date: Thu, 27 Aug 2026 09:42:24 +0200
+        bh=QJxok4wgUB8E2b2EBexjp7DU43elN9IiB4VyNdbeBMI=;
+        b=Y+g9YdgJLlAJ/kREwJO9i/LAt4CecMF/OSOCTq4cUbvGgzkVHDnBUkttOGr7/I9NiJ
+         yIRdXAsclzlru0wyX8u0xvHXoS1135lHko0ASSS0XmNwR2xG/s/O+uuoQw56EROXxy2S
+         wKTfAV9plkzBFJq/KdKxB+53Qsa3RstpVNGyHzhoSd+J6y6c0+J4M+N6Zq7IG253E0b7
+         8NPu1RI6tn57rkLETZrGDi4IgUHBI89CSIWC/hgB/jf6KW936uZJZjptDPh3RUSu6cIa
+         QZKKnucdNZiuIh4K5lH9iqvyIGicnaITh5jsSXPxUlgsbM82Fcjup6D5ZCmE5utj9gWS
+         k6dg==
+X-Forwarded-Encrypted: i=1; AHgh+RoKzevoPKQ48UWA80HmcD2VfjRXNpgaNA1lDZzABpO61jgr9fNPUL8ic3vAWqwo7+qP+KSpqVA=@vger.kernel.org
+X-Gm-Message-State: AFuF++muZtjMtl8Yk1pbndgYhNwQqq+oa5gBjsl8Kq9MXT4LeltvJWz4
+	jGWqK+Uv+wP/wIXYja7ryhC7cvslsHAJbo5tcOwsdlZpycba+PULSpk3
+X-Gm-Gg: AR+sD12jsuzaArbAXSXYEaJLE4ixCpZihiR5Pqh3TnebIa4DLB6/dehPUrZwKBWhWrN
+	dgCdWKzPgbtVDbAc4gsjt/RLUXVtk4DwYN1yDX1FYjgNPRmXK5XtiwM8tzbVDJhrTUM68uka68I
+	fnnmPTL/jZ7dO6WaXYpkXX8MoAdJVMM58Uk9sIeWHBUhMmuyGjpoZDC+h+zsMjNsaSKnbD2FWvu
+	ua4Geya7lUAHQ/xk6WYs82k1jsbaBEFap2Hx9Fio+hTExbYhoanef9jkH8sW3L1pXZMSCWLQ/kM
+	1wY4WCKBFCzAiQyi5EtXKsJyibRdM2Zlo/Uwgj+Eysxf6xqbHCMdQlPBZJ+T1whs+qjH5jiZPr3
+	Dg5SkCR/cnciL/XR/l3ndf+idSc0zbdYVRJsR5g2I87IMmD4q/v68lV8B8MYK0OOzCGG6blodkr
+	iAA6PJMYStO+NEGSi9B6m9h+yb6R9kId1FJFMfYiKtlJvlW6ympx+4/raN4wuF7lqsCnliRl1ad
+	2hJ817c7FxeAlInWf/XFJfkAr8LWg==
+X-Received: by 2002:a05:6a21:c147:20b0:3d1:56e6:daad with SMTP id adf61e73a8af0-3d156e6db8emr2237492637.0.1787817050967;
+        Thu, 27 Aug 2026 00:50:50 -0700 (PDT)
+Received: from localhost.localdomain ([189.1.242.96])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1bec80fdesm1761524a12.24.2026.08.27.00.50.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 00:50:50 -0700 (PDT)
+From: Yiqi Sun <sunyiqixm@gmail.com>
+To: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yiqi Sun <sunyiqixm@gmail.com>
+Subject: [PATCH net] sctp: avoid livelock while updating retransmit path
+Date: Thu, 27 Aug 2026 15:50:06 +0800
+Message-Id: <20260827075006.3979566-1-sunyiqixm@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next] net: Use fixed slots for skb extensions
-To: Florian Westphal <fw@strlen.de>, Jakub Sitnicki <jakub@cloudflare.com>
-Cc: netdev@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>,
- kernel-team@cloudflare.com
-References: <20260825-rfc-skb-ext-fixed-offsets-v1-1-8050ff33bec9@cloudflare.com>
- <ao9UV9S7rUkyQ8jv@strlen.de>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <ao9UV9S7rUkyQ8jv@strlen.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/26/26 11:02 PM, Florian Westphal wrote:
-> Jakub Sitnicki <jakub@cloudflare.com> wrote:
->> Replace the dynamic skb extension allocator (->chunks + per-object offset[]
->> array) with fixed per-id slots with offsets computed at compile time.
-> 
-> Why is that better than
-> 
-> struct skb_ext {
-> 	refcount_t refcnt;
-> 	struct secpath s;
-> 	struct nf_bridge_info b;
-> 	...
-> 
-> ?
+sctp_assoc_update_retran_path() walks the association transport list from
+the current retransmit path's successor and stops once it reaches the
+current retransmit path again. However, the loop skips transports in
+SCTP_UNCONFIRMED state before checking for the wraparound condition.
 
-I *think* the layout above would possibly be better (with compiler's
-guard around each struct definition).
+This makes the loop non-terminating when the association contains only
+UNCONFIRMED transports at that point and asoc->peer.retran_path is also
+UNCONFIRMED. One way to reach that state is through ASCONF wildcard
+DEL-IP processing after an unconfirmed address is selected as the
+primary transport. sctp_assoc_del_nonprimary_peers() then removes the
+other transports one by one; when removing the current retran_path,
+sctp_assoc_rm_peer() calls sctp_assoc_update_retran_path() before
+unlinking it. If the remaining candidate and the current retran_path are
+both UNCONFIRMED, the loop repeatedly continues before it can observe
+that it has completed a full pass.
 
-> Yes, initially this was krealloc()'d area.  But the other assumption
-> was that most skbs will carry no extension at all, or, in some configs
-> one maybe two (IPsec gateway for instance).
-> 
-> Thats why the first added extension is also at the beginning of the
-> memory blob (that needs to be accessed anyway), regardless of the ID.
-> 
-> I don't insist on keeping offsets[], if you feel like microbenchmarking
-> different use-cases to see if it makes a difference to have a fixed
-> memory layout feel free to explore that.
+The same reproducer that exercised the bug fixed by commit 9b2854f86f0b
+("sctp: don't free the ASCONF's own transport in DEL-IP processing") can
+still trigger this CPU stall after that fix is applied. With the UAF
+prevented, the ASCONF processing no longer dereferences the freed
+transport, but it can still reach the retransmit-path update described
+above and spin in the all-UNCONFIRMED case.
 
-Both options for different skb ext layouts save a few bytes from the
-final `struct skb_ext` size. This is IMHO quite relevant as the total
-size is approaching the memory partition size (IIRC it's almost 256
-bytes), and the bpf ext could make skb_ext require the next one (512).
+Fix this by remembering whether the current transport is the original
+retran_path, still considering it as a candidate when it is not
+UNCONFIRMED, and then breaking after the candidate logic. This preserves
+the existing fallback semantics while making the full-pass termination
+independent of the transport state.
 
-That in turn should impact performances quite noticeably (IIRC we
-observed measurable regression for bulk transfers due to similar changes
-in the past), as the number of slabs required to support the same number
-of in-flight packets will double, putting more pressure on the memory
-allocator and possibly hitting the slab slow-path.
+Also restore the NULL guard around the retran_path assignment. In the
+all-UNCONFIRMED case there is no eligible replacement transport, and
+installing NULL would leave later retransmit-path users and the debug
+print with a NULL path.
 
-Still WRT optimizing skb_ext size, I think that it should be feasible to
-optimize the layout proposed by Florian by taking in account that some
-exts are 'mutually exclusive' i.e. on top of my head mptcp and bridge
-should never be attached to the same skb, and I *guess* can_skb_ext is
-mutually exclusive with most of the others.
+Fixes: 4c47af4d5eb2 ("net: sctp: rework multihoming retransmission path selection to rfc4960")
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+---
+ net/sctp/associola.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-The layout could be adapted to such constraints, and there could be
-run-time checks (under DEBUG_NET) to verify such constrains at skb_add
-time leveraging `present_extensions` and a static matrix describing the
-mutual exclusive status for all extensions.
-
-/P
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index c0512c827d0f..6f19eb0b01e2 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1272,6 +1272,7 @@ void sctp_assoc_update_retran_path(struct sctp_association *asoc)
+ {
+ 	struct sctp_transport *trans = asoc->peer.retran_path;
+ 	struct sctp_transport *trans_next = NULL;
++	bool last = false;
+ 
+ 	/* We're done as we only have the one and only path. */
+ 	if (asoc->peer.transport_count == 1)
+@@ -1289,18 +1290,20 @@ void sctp_assoc_update_retran_path(struct sctp_association *asoc)
+ 		/* Manually skip the head element. */
+ 		if (&trans->transports == &asoc->peer.transport_addr_list)
+ 			continue;
+-		if (trans->state == SCTP_UNCONFIRMED)
+-			continue;
+-		trans_next = sctp_trans_elect_best(trans, trans_next);
+-		/* Active is good enough for immediate return. */
+-		if (trans_next->state == SCTP_ACTIVE)
+-			break;
++		last = trans == asoc->peer.retran_path;
++		if (trans->state != SCTP_UNCONFIRMED) {
++			trans_next = sctp_trans_elect_best(trans, trans_next);
++			/* Active is good enough for immediate return. */
++			if (trans_next->state == SCTP_ACTIVE)
++				break;
++		}
+ 		/* We've reached the end, time to update path. */
+-		if (trans == asoc->peer.retran_path)
++		if (last)
+ 			break;
+ 	}
+ 
+-	asoc->peer.retran_path = trans_next;
++	if (trans_next)
++		asoc->peer.retran_path = trans_next;
+ 
+ 	pr_debug("%s: association:%p updated new path to addr:%pISpc\n",
+ 		 __func__, asoc, &asoc->peer.retran_path->ipaddr.sa);
+-- 
+2.34.1
 
