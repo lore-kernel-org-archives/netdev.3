@@ -1,144 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B7B40F755;
-	Thu, 27 Aug 2026 11:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF048440A19
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787831084; cv=none; b=q0K/x18RB11ehHsoOSJnYXC8I3EwLAWgPNyuIcHY9XcSKqUOnymhVoP8V4J+sVET5hUQ52iL7iHbBMo1pB8JLx0EkvvzXEDOXvVCnZkN7P9+HjEuTkJikYumzA6YUieQDB3pvwc7USzV53+3rOS1bt8QVBzckN6Pp8YohPrJVMo=
+	t=1787831360; cv=none; b=K1olNcxkGaoDzcKcNAKWWpmz43isarqEabTejP6xewy4C6xdkziKFClPeQ4wYSzzYDmvYuFIqsLkKkyY6hCIfwHZzcwB+FvmCqcCwZRtcxmShvHsX17E+rNn6cENOPMEh/Y8siIZ5U8+1l2F+haF+TSQBfFMGBzp6xP2CsepODw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787831084; c=relaxed/simple;
-	bh=IWf42pdyMfdCr1eIuXsg20NMlFAg+Ccf9LgxvsYMKps=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jloyhmqCjjRtuqW2bCROV0w2zbFhRrnVqRYKrgVKpjc7cxvxEL/upfzeCS2QIsaOA2G5pIbgNWrf9wjVwa5gViJsA1JW0vuf+amH5dEM5RaXnEuEoKCyQOxStCWJK9YpPcNLqd2Vm3cD+7sM09s1VThK398pJe48d8AoWfWHLcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGHn30hP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787831360; c=relaxed/simple;
+	bh=FoO1QJ0GF50BvlM8x2sXaYqmyZtQ27nfVk7V1frg8n8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=C0eXDtSY/NhIwSuTA2VJFCwYPxHUYgLpu5VLaGzv1eDkXwEXs5KYqya7Qy1XMsqYSYph2KMNcXyR7wO+vwD7Maj9pYDBqAndAvJ+AU1yf8qmcp8FHbMPVIbGlMSYZb4WTRmxu3g4eS/Y7ci4CNtad+ls5R1pkd7xRc/jH3MK1Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Wkb+1rV0; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DGHn30hP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6593DC19425;
-	Thu, 27 Aug 2026 11:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787831084;
-	bh=IWf42pdyMfdCr1eIuXsg20NMlFAg+Ccf9LgxvsYMKps=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=DGHn30hPCBjMCGBUnCBJwGBnhyjlU55/1yu2aP7qPrv06dTIpN8lVrj6dyFlvoWhB
-	 HwdKINaIQK6VHS8gbSXWNjIAhk7bt9bzI3fy9j/KwIFbKErOYbypLfueC/UXVWSp+J
-	 qEn4GGLWj3yvbkU4rw5p5qJ9HuPt8m70go6Fv3IoPwfuEiO9ShyN9oVwuOWmzMAvUo
-	 b/eUQfAU/gsEpJSX32BQ+hlz0/buhKJfgYvPi8xi8oniJbZdXtgdbgMXgBHdOy0ggg
-	 Bj/VrdgADo0BKO0tkbaCcAaXyL9dDIEZ3B+NnvklRi7uaH6a3p8o8VNo1LZdmcfSAv
-	 R0tcd8hkD1Zsg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E8A7C61DB9;
-	Thu, 27 Aug 2026 11:44:44 +0000 (UTC)
-From: Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-Date: Thu, 27 Aug 2026 13:44:42 +0200
-Subject: [PATCH net v2] bonding: fix initial last_rx vs ARP-monitor slack
- window
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Wkb+1rV0"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=+mzw++BiW9LAc9yAYC/WAMU5QJ4XXRR59EeZztCWpFg=;
+	b=Wkb+1rV0iEudRgEXbvOKFH3uJLgDqvhseIHCwlA7xmPA1PzCgKL3yT+27hRgZrlC1ffrHAkGf
+	a5ZwuxwpEm/c0xeZxN0Zg0y0C9FTDpsR6aa4zm24R+sm3p8bHqZhlEaQRCjVR1zZZy4EPY5mqSI
+	iGUh07QRkt68B573g5PNyh4=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hW00B3YVKz12LFy;
+	Thu, 27 Aug 2026 19:38:50 +0800 (CST)
+Received: from whupemk200012.china.huawei.com (unknown [7.152.185.169])
+	by mail.maildlp.com (Postfix) with ESMTPS id E9CC74056D;
+	Thu, 27 Aug 2026 19:49:06 +0800 (CST)
+Received: from [10.174.177.223] (10.174.177.223) by
+ whupemk200012.china.huawei.com (7.152.185.169) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 27 Aug 2026 19:49:05 +0800
+Message-ID: <ba64acb2-0078-4403-8780-d2f4719ca5c0@huawei.com>
+Date: Thu, 27 Aug 2026 19:49:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] ipv4: icmp: reject RTN_UNREACHABLE input routes in
+ icmp_route_lookup
+To: Ido Schimmel <idosch@nvidia.com>
+CC: <dsahern@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>,
+	<zhangchangzhong@huawei.com>
+References: <20260825094523.1461020-1-dongchenchen2@huawei.com>
+ <20260826154017.GA1834664@shredder>
+From: "dongchenchen (A)" <dongchenchen2@huawei.com>
+In-Reply-To: <20260826154017.GA1834664@shredder>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNzQ6CMBCEX8Xs2TVtMfx48j0Mh8JuoYYU05aKI
- by7gGePM/nmmwUCe8sBbqcFPCcb7Oi2oM4naHvtOkZLWwYlVC5KWWAzOrKuw0GHiH5GkYnMaHE
- tTUWwrV6ejZ0P4wMcR6h/ZZiaJ7dxd+1Yb0Mc/ef4TfKA/14kiRIr0rkpDJlSqvubhwHNODliu
- hAnqNd1/QJN45NXzAAAAA==
-X-Change-ID: 20260817-bonding-last-rx-0303fa048f9d
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jiri Bohac <jbohac@suse.cz>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ramses de Norre <ramses@well-founded.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787831083; l=3281;
- i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
- bh=T48xGoU3KzSkcd2tBf16bfYAqcNmp14bJn/dIB4xjzI=;
- b=ZZHu3gviffYLVV8oZ2OKEx6X52QwFdffsj9mJfhVUiQejyjD+VV3wqVMziQpwqybaK22kj36/
- 3r34ASxNiQlAoY1k1Fhnf9qYA+t+iqvrvtadjO2tZGCPc6uFfAKWHdN
-X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
- pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
-X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
- auth_id=957
-X-Original-From: Ramses de Norre <ramses@well-founded.dev>
-Reply-To: ramses@well-founded.dev
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ whupemk200012.china.huawei.com (7.152.185.169)
 
-From: Ramses de Norre <ramses@well-founded.dev>
 
-Commit f31c7937c254 ("bonding: start slaves with link down for ARP
-monitor") initialises a freshly enslaved port's last_rx to
-jiffies - (arp_interval + 1) so that it does not "immediately cause
-fake detection of 'up' state". At the time, the comparison was a plain
-<= arp_interval and the value was just stale enough.
+> On Tue, Aug 25, 2026 at 05:45:23PM +0800, Dong Chenchen wrote:
+>> When the forward output route cannot be used in icmp_route_lookup(),
+>> it enters the "reverse path" and calls ip_route_input() on fl4_dec.daddr,
+>> the original packet's source address.
+>>
+>> ip_route_input() only returns an error for truly invalid packets. For
+>> unreachable addresses it will succeed and return an input route whose
+>> dst.output is set to ip_rt_bug(). The existing check only rejects
+>> RTN_LOCAL routes, so the RTN_UNREACHABLE route types can still be returned
+>> and later used for output, syzkaller triggering a WARN_ON_ONCE()
+>> in ip_rt_bug() as bellow:
+>>
+>>   ------------[ cut here ]------------
+>>   WARNING: net/ipv4/route.c:1273 at ip_rt_bug+0x14/0x20
+>>   RIP: 0010:ip_rt_bug+0x14/0x20
+>>   Call Trace:
+>>    ip_push_pending_frames+0xfa/0x100
+>>    __icmp_send+0x905/0xf10
+>>    ip_options_compile+0xc0/0xd0
+>>    ip_rcv_finish_core+0x321/0xae0
+>>    ip_rcv+0x1de/0x260
+>>    __netif_receive_skb_one_core+0x11a/0x130
+>>    netif_receive_skb+0x7b/0x260
+>>    tun_get_user+0x11bf/0x1c10
+>>   ------------[ cut here ]------------
+>>
+>> Reject input route that is RTN_UNREACHABLE to fix it.
+> 
+> Nit: Also mention that the warning is only printed for RTN_LOCAL, as
+> RTN_UNREACHABLE is not the result of a race condition.
+> 
+>>
+>> Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+>> Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+>> ---
+>> v2:
+>> - RTN_UNICAST judgement will reject bforward packet. Only reject RTN_UNREACHABLE
+>> v3:
+>> - Modify the comments to make them more accurate.
+>> - RTN_UNREACHABLE dont need warn log.
+>> ---
+>>   net/ipv4/icmp.c | 17 ++++++++---------
+>>   1 file changed, 8 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+>> index 0caedfc7ca92..7350f0380be1 100644
+>> --- a/net/ipv4/icmp.c
+>> +++ b/net/ipv4/icmp.c
+>> @@ -581,16 +581,15 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+>>   		skb_dstref_restore(skb_in, orefdst);
+>>   
+>>   		/*
+>> -		 * At this point, fl4_dec.daddr should NOT be local (we
+>> -		 * checked fl4_dec.saddr above). However, a race condition
+>> -		 * may occur if the address is added to the interface
+>> -		 * concurrently. In that case, ip_route_input() returns a
+>> -		 * LOCAL route with dst.output=ip_rt_bug, which must not
+>> -		 * be used for output.
+>> +		 * At this point, fl4_dec.daddr should NOT be local (the
+>> +		 * address can be added to the interface concurrently) or unroutable.
+>> +		 * In that case, ip_route_input() returns a LOCAL or UNREACHABLE
+>> +		 * route with dst.output=ip_rt_bug, which must not be used for output.
+>>   		 */
+> 
+> The code is fine, but the comment is a bit misleading (the "should NOT"
+> part is only correct for "local"). I find this clearer:
+> 
+> "
+> fl4_dec.daddr is not expected to be local here, but it can be added to
+> an interface concurrently, in which case ip_route_input() returns a
+> LOCAL route. It can also fail to build a forwarding route towards
+> fl4_dec.daddr, for example, when forwarding is disabled, and return an
+> UNREACHABLE route. Both cases will result in a route with
+> dst.output=ip_rt_bug, which must not be used for output.
+> "
+> 
+> Thanks!
 
-Commit da210f559019 ("bonding: add some slack to arp monitoring time
-limits"), four months later, added a +arp_interval/2 slack term to
-every comparison (now bond_time_in_interval()) but did not widen the
-init to match. Since then, bond_time_in_interval(bond, last_rx, 1) is
-true for the first ~arp_interval/2 after enslavement even though no
-packet has been received: the upper bound is last_rx + 1.5*delta and
-last_rx was set to jiffies - delta - 1.
+Thanks for review!
+v4 will be sent
 
-If the ARP monitor tick lands in that window, bond_ab_arp_inspect()
-proposes the slave UP. If the slave is the configured primary,
-bond_ab_arp_commit() sets do_failover and the still-armed
-force_primary in bond_choose_primary_or_current() makes it the active
-slave regardless of primary_reselect. ARP validation as the active
-slave then fails (the link has not actually received anything; on
-SFP+ ports the PHY is often still negotiating) and the bond falls back
-to the backup. With primary_reselect=failure, force_primary has now
-been spent and the bond stays on the backup until something else
-triggers a reselect.
-
-Reproducer:
-
-  ip link add bond0 type bond mode active-backup arp_interval 1000 \
-      arp_validate all arp_ip_target 192.0.2.1 \
-      primary eth0 primary_reselect failure
-  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
-  ip link set eth0 master bond0
-  ip link set eth1 master bond0
-  ip link set bond0 up
-  # bond0 lands on eth0 via force_primary, ARP-fails it before the
-  # SFP+ has carrier, falls to eth1, and stays there.
-
-Initialise last_rx (and the per-target array, and last_tx) to two full
-intervals in the past so it is outside the slack window from the
-start.
-
-Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
-Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
----
-Changes in v2:
-- No code changes. Resend with my personal name in the From and
-  Signed-off-by lines instead of my handle, as requested for the DCO.
-- Link to v1: https://patch.msgid.link/20260817-bonding-last-rx-v1-1-9da6f7fdf812@well-founded.dev
----
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 522eab060f9ed..23e1544faf39f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2123,7 +2123,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 		new_slave->link = BOND_LINK_DOWN;
- 
- 	new_slave->last_rx = jiffies -
--		(msecs_to_jiffies(bond->params.arp_interval) + 1);
-+		(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
- 		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
- 
-
----
-base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
-change-id: 20260817-bonding-last-rx-0303fa048f9d
-
-Best regards,
---  
-Ramses de Norre <ramses@well-founded.dev>
-
+> 
 
