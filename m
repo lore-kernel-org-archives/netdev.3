@@ -1,85 +1,119 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B36232D7F1
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 22:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from ustc.edu.cn (smtp.ustc.edu.cn [202.38.64.46])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E213F1072;
+	Thu, 27 Aug 2026 22:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.38.64.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787868518; cv=none; b=trRZlWDqGNgdIHcvYi5hbFYW2HBLTDOMnugj+YsZidsmqEvVh+Q4HoK1Mji/x0Qd++Rs/Ma4vtBJ3LQMhwK/zR4fqF3WE2PvH8DVFnxFzvyZk2GzBViZp3DQqECqcvaKcREqPt/r+0Oq1A5zvDB/oNbkcK99VxnW/IKhwOYFKqk=
+	t=1787868711; cv=none; b=VzjSNS5jOD8g34yvW0THVjeq2u40MD8tVI48QS+AWYAn/lf3rNQtLOFfB7Bq0Gllc4b+xn+YMBYqTGeKHlBwbW/3xo2inJDnc61TMsDk4sgvFIcFn1n3MFKHp6gq5lPnYnm7hDTFI3FPppBBsEE4Nr1F6cfeHTcBWelipUSTt90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787868518; c=relaxed/simple;
-	bh=u8rB7E1KTIPKCvlCYRtbSGJSrJqJfo1aVYB/7J/Tu90=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=DXDQNCaxWglxwJujRYSTXr/fmzNXP2r8lHXQrM0No5XGr0oajCwFp51MTDm06ZtD7yj7MURw02Ni+RIMwJqGPjdBO7++7brXV6v8oQZLJtXt0a5sInkPubLnAVEYaeciOGFkptrkiiEHwSzr6+cORp0nReeCbvCQShuSurKaTRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PyUS3tnp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787868711; c=relaxed/simple;
+	bh=mBkgzZiTkzfnWoJHWaSXz+J9IHU5F76u8a1Plg3Xa7Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Iab8n/HhAEMaRMnXbkCG5uf2Kei/YCi35+0DQqG8csAP+0YJuV/WhF6i4n6sEEEX8ewtpvsb10ALBIhyORQKtWVZ8+hF873XUZhtcHUUNm9FxywlE+01/18Cgd+UhUVGclGCEgO0CzWP5wsEm5wjdFBcz0vfgCfkfMzn9g3R+GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.ustc.edu.cn; spf=pass smtp.mailfrom=mail.ustc.edu.cn; dkim=pass (1024-bit key) header.d=mail.ustc.edu.cn header.i=@mail.ustc.edu.cn header.b=QhZl6WKn; arc=none smtp.client-ip=202.38.64.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.ustc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.ustc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PyUS3tnp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787868516;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GMxp6wSms+vw9kLz6cUgEySeuHNAMRuIDlnUVPAS7tU=;
-	b=PyUS3tnpJxytOQ5GFGdGZ05FIFY7Rl0GdL6Q/kp1BDp31AfOG/qApCbKFTdp2I2vU8g8jF
-	7TeD1A6SovkJIumMf9I7L/r1gK82s8Fp7iSygKYcTiOGv77WtqIJ0Z4cGRLx4kVG/1RE2e
-	VNdLKDau7Qu6EENdG5SFlNFySuQDjdI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-4yYeBdglN9KmKFpx6HSY4Q-1; Thu,
- 27 Aug 2026 18:08:32 -0400
-X-MC-Unique: 4yYeBdglN9KmKFpx6HSY4Q-1
-X-Mimecast-MFC-AGG-ID: 4yYeBdglN9KmKFpx6HSY4Q_1787868510
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F28C21933F9A;
-	Thu, 27 Aug 2026 22:08:29 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.22.88.47])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 349F31955F7B;
-	Thu, 27 Aug 2026 22:08:27 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <a0563aec-0ac2-47da-b03e-2e991a2aeabb@redhat.com>
-References: <a0563aec-0ac2-47da-b03e-2e991a2aeabb@redhat.com> <20260824091645.415423-1-dhowells@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: dhowells@redhat.com, netdev@vger.kernel.org,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Jakub Kicinski <kuba@kernel.org>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v8 00/12] rxrpc: Fix CHALLENGE packet handling
+	dkim=pass (1024-bit key) header.d=mail.ustc.edu.cn header.i=@mail.ustc.edu.cn header.b="QhZl6WKn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mail.ustc.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-Id:In-Reply-To:References:MIME-Version:Content-Type:
+	Content-Transfer-Encoding; bh=mBkgzZiTkzfnWoJHWaSXz+J9IHU5F76u8a
+	1Plg3Xa7Y=; b=QhZl6WKnN2V5jHNVbEa+N9cAQNtp/9h021Qjstn+VPFDO5FAUA
+	LojwIMtxhyZaaAHXUs3t8WyTNUdNdiCAtt2ydpdnxdQ7C7N7jfZh30A8jzXzIAy5
+	9zKc79Qc2xxUxMZ4ooA9Fsx92mJnmpxq/iVoOYG4ih78KFUNXIe3q2byg=
+Received: from skw.ustc.edu.cn (unknown [211.86.152.107])
+	by mailimap2024 (Coremail) with SMTP id 3pYKCgB3fDP5tZBqp6aqAA--.3738S2;
+	Fri, 28 Aug 2026 06:11:30 +0800 (CST)
+From: Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
+To: miquel.raynal@bootlin.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
+Subject: Re: [PATCH net v2] mac802154: fix data race and NULL deref on local->assoc_dev
+Date: Fri, 28 Aug 2026 06:11:01 +0800
+Message-Id: <20260827221101.884762-1-skwkevin@mail.ustc.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <878q5sdj1y.fsf@bootlin.com>
+References: <878q5sdj1y.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2422274.1787868506.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 27 Aug 2026 23:08:26 +0100
-Message-ID: <2422275.1787868506@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:3pYKCgB3fDP5tZBqp6aqAA--.3738S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr4xZFyxJF18tr4fAryxKrg_yoW8tF1fpr
+	WY9ws0krn7tr1Ivws5Jw4rJry3uF45Ca43Xr1YqrWY93Z8XF1SvFy2qr1qva4Yvrn7ZFWF
+	vrs0v39xCFs0v3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
+	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_ZwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU6MKtUUUUU=
+X-CM-SenderInfo: 5vnzyvxylqqzxdloh3xvwfhvlgxou0/
 
-Did you mean:
+Hi Miquèl,
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-=
-1-dhowells%40redhat.com
+> Can you justify the choice of a spinlock vs. mutex here? This is an open
+> question, not a request for changes.
 
-I've had a look through and I don't think there's anything that merits a
-respin.  There's quite a bit of pre-existing stuff that will need looking =
-at,
-both in rxrpc and afs, but I don't think I need to do it in this series.
-Also, the docs need updating, which again doesn't need to be done here.
+Both users run in process context (the response handler runs from a
+workqueue), so either lock is legal. I used a spinlock because the
+critical sections are tiny and never sleep: caching a __le64 address and
+flipping the associating bit, or validating a frame, storing a short
+address plus a status byte, and completing the waiter. The lock is never
+held across wait_for_completion_killable_timeout(), so a sleeping lock
+would add nothing.
 
-David
+I also looked at reusing wpan_dev->association_lock rather than adding a
+lock. It is not held on either of the two paths involved here
+(mac802154_perform_association() and mac802154_process_association_resp()),
+and pan.c has several lockdep_assert_held() on it, so widening its scope
+to the response path looked like a bigger change than this fix should
+carry. Happy to revisit if you would rather see one lock covering both.
+
+> Shouldn't we also make sure that accessing assoc_status/assoc_addr is
+> serialized? Typically, I believe the IS_ASSOCIATING bit should be
+> cleared earlier in mac802154_perform_association(), just after the
+> wait_for_completion call returns ...
+
+You are right. The success path reads assoc_status/assoc_addr after the
+wait returns but before clearing the bit, so a second (e.g. malicious)
+response accepted in that window can still overwrite them mid-read.
+
+With a debug delay inserted between the wait returning and the result
+being read, and a peer that keeps answering the same request with an
+increasing short address, the association path reads 0x08f0 right after
+the wait and 0x0903 after the delay; 38 further responses were accepted
+in between. v3 clears the associating bit and snapshots both fields under
+assoc_lock right after the wait returns, and in the same test no response
+is accepted in that window and both reads return the same address.
+
+This is also what the scan path already does: mac802154_scan_cleanup_locked()
+clears IEEE802154_IS_SCANNING first, "to prevent any further use of the
+scan request", and only then replaces and frees the request.
+
+A v3 follows.
+
+Thanks,
+Kaiwen
 
