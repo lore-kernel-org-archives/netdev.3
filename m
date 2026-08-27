@@ -1,110 +1,131 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D860F2F7AD2
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 23:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C66C3CDBD7
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 23:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787873774; cv=none; b=V0PLRgcBvFpQBdVUC90/xoN/tpgnUtprsrbGAqd3YJgQntj2Rm/TY/tmoaNOQk6cqbjFsdwi/3SzsuT1103JjS8CmRK1V62gLqzzrNewQv5OdCcU723/txpU/n2km5zclmFhrpdC8CKpmpbphqNr2ORK4rZssw7rNEYvBAHLoCE=
+	t=1787874068; cv=none; b=rk4lBOlr8hwzgu6altosdxGecWhAXprddAmhQ/n1Y2wne6G0cx9gdCaSgbn4wtcgkNKCihDHrO9UNmPJzajGviWp/vYgm27O1eWpIF9ALsGsSiWGKW2sWC2dO8eENQvxk9qd3sGu+cS4IqBWnDupDPaqrFwzRjodItiWu0WSvQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787873774; c=relaxed/simple;
-	bh=XTQLGcR3T+FCgbuQUWCruXGoe4VfH0XLf/K7HDZ2r1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cjI1OYJEO7IIai31xk0OzaAEyIFb3BjFXyXIWtd+BhRK+BEJs8mN9CwpNzQnQczI+lObPD34pFJmZv0y5Cn8GQdTfWqK57FOZIQE4119kpxwQX3rh9+FJcOmdE4OMKGt3C9W/hiXUEGbu0mxOSRhWQ2EmAwFjh9CA6si3Wz2Mqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HtIENhes; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787874068; c=relaxed/simple;
+	bh=VhXID8Q2Dlk7SGe+8uD8VtqeZ11RIRSkFnVIvMqoK1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M14q84aEIEXqc7KG4/Nc+fZ3teRFsRp+F9LFv4FLG557MRqNeTDeX5wQz6NmVCzOdVuoxpiF11ifHPcDa8JUzr9iTw+7SlVoeNmRvBCaSUU3uc8oLT3SG/1SkNr2fghHSk1imX0ypv4tFzn1QNBwvw1L4QpRz2nqmSom4rNjJYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Wj4kbHJr; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HtIENhes"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d712281f8bso4782505ad.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 16:36:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Wj4kbHJr"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3964e480f76so656929a91.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 16:41:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787873772; x=1788478572; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Kf6JULue6KdJKxJejpX7OoZpqQfA/4cqzePyQZ+hPGU=;
-        b=HtIENhesklGIzXsZB0/sT8a5q8KUuvMVl3uKNt+T/7iwO1r8l6jHY+VvxVnD0TZTqJ
-         t4GoNDVE4D0XjXTnV26cutD0ZT6cMNn+7S/VIuUP4EMC2bjHMktGf8JN9fvmnVAlVZfW
-         LcIhVSL8LFR3BpmUgI0FXWZsqSuher981TGNEzJ1t8Dp1fsp+ZAqTkoXOlYpKzvBV5N/
-         O68ahE0xIckdflmwCANwApYPZHOdU8J/oC4RGfhxnjvgOK9CPq+eCk6Z/MS60Jz0Q2l6
-         tYf83YpB2PNXxR7tvOJeJ2EHFnOLHCvQZXMYmyMtCZuf2iw1aj3tatQMLBhI/+GhoUGa
-         Fpcw==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787874066; x=1788478866; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:mail-followup-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gAjqfC0SW4nxG2w1tJx7WfUnmE/BSNkbt+YGxZxti/o=;
+        b=Wj4kbHJraKww5MW0qB++UX3yBLjeqjvLWC5TVjCxGn8HsiYdf4mXM9gII73C9GbAER
+         So4Pm+xsD4RXICdYcvRJ/WXMpDNISuAfJ4K6uz/cYlEjg7nR6zQKjfSqOVc07Kv4eQeD
+         dFbXQfRggl8iWyexbPVw3y0dQsY/uLA9k+XNrS3VDeWWKvbsbIIuXcCkfnA3/PO37+IQ
+         bMeFhCk6K2LY8bY+rRIsmD/sYipNHj28/hsR4edJrHeyn4ECBgPoN6wpLc1xW8Z2+dGo
+         LnbEmmfrfrbRN1VvlM9av03JAx6YCJX0os+4A66yIDXfkLLZ1NdlaQNJJuuCpUukCpfu
+         64NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787873772; x=1788478572;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Kf6JULue6KdJKxJejpX7OoZpqQfA/4cqzePyQZ+hPGU=;
-        b=GyWuDQvbRId6TXCDjI77G0E24O+UpS1deuL8cbDdXtXLNVLcA5JGRvun1DMBLys0Mh
-         0nDxH3AakxKpcSqgujYbSRpjHDyPRcnIZQQxCdWnOIEIrTQ/olMxTJPGkhzE6UIfstnS
-         HMzRg+WRDntKV3zx0oaimLeKqF5Q2ms+pbLxfHECrXKjgYLZ82esa02+Nhkj27iP8qD0
-         8fit4N8/l37LTa6lS8QuVd4D3Z0Z3HAn5k3PSPlZ9biJijl8hzO1sicW1NpFLTsfXwbV
-         MucspqIGcj2aFzWvkyFvOK2FVnQd6kCrTC37W5Q/CnxNe5dmvZqi6zVj9MFmumqmpyd2
-         WFQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrwD78dsQ0cxtJEUL41W1gtSfX6ZwpdNko2L6Epk0wlF0DeyhMQlrjq9MBSM/gwfvQtZI2VfGE=@vger.kernel.org
-X-Gm-Message-State: AFuF++m1jXXkoZUDiGgWXvVc04dY88xIpBOAlObcpM8fQD7/Gd9DLs+K
-	6a1eUdSo6S9hPr+pzKxUGOAkYSX92QiwGACjNlE+UA09Iin8OXYdZzMF
-X-Gm-Gg: AR+sD100yBumjkcW8LC8nTO8hvKH2HpjmWfoTFncnXMEmFIDzxLYb3HAb1aCpj6xtk0
-	n8sN5lQcsX5KKfDV65lwW+Nyw5LXicMOZDHtM8yPg/PKvyFRax4Y9zQYBdU8LAaYGkx/4JTlEHP
-	bx70KfpzzyK4kYUCx9wmBmtw2oXbPbjd56XLQbQyd/O6N1SPXFZOlFY47KBpIeFJ5ZhzPc9wHOP
-	uysTThpzv9FotohPkknOMkrf2hGbdvx3H46ib+9vZROFGZZoKlYT/CwnmJwDkUSROZsegjFlDJR
-	7UhK/0rEY3Mfv89ylR1MX0FsTkkF6L1qXDX4pRzpb+mCj++ANSEJ0ve0ijo3ruG22rXr8pvC8DC
-	Rp8HeLTLDP/7OVJ46CqndViyEoDnR8gzWyzwUK8Y9lX6glq2esk/CvVctds46h6vD0Y3j9YZtI+
-	4L9SnlHXHjFxOFjgKFV+AEJCiFkKWU9SHB06yQssxXGcfxZbfqEuzvYrlILS2TGFxgnbHAJfl0K
-	s+dMTT7N/WwKpAekdlrzEeoG67ZQkwbQI9WXFeaLnhoAUYKXogzoVO27yRg4/kVfmK9bFVVzaSO
-	PEWP6UYIAK/b59PFXRqRNrQRlmsQd3BTe/WWBLOJA11A5TEUVw==
-X-Received: by 2002:a17:90b:2dc5:b0:395:4290:46e0 with SMTP id 98e67ed59e1d1-396d0e83c28mr5526530a91.5.1787873771994;
-        Thu, 27 Aug 2026 16:36:11 -0700 (PDT)
-Received: from localhost.localdomain (2403-4800-2450-5401--2d10.sta.dodo.net.au. [2403:4800:2450:5401::2d10])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0d1b38esm520403c88.3.2026.08.27.16.36.08
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 27 Aug 2026 16:36:11 -0700 (PDT)
-From: aslan.jnn@gmail.com
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
-	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
-	netdev@vger.kernel.org,
-	Thomas.Lendacky@amd.com,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH net v2] net: amd-xgbe: support receiving packets with bad FCS
-Date: Fri, 28 Aug 2026 09:35:27 +1000
-Message-Id: <20260827233527.71620-1-aslan.jnn@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260821213646.7bbb94d6@pumpkin>
-References: <20260821213646.7bbb94d6@pumpkin>
+        d=1e100.net; s=20251104; t=1787874066; x=1788478866;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:mail-followup-to:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gAjqfC0SW4nxG2w1tJx7WfUnmE/BSNkbt+YGxZxti/o=;
+        b=pGCrJwtQ9eaHlGiCUSyXrINzhHlZBbQ1OPliE28uLJaxfDsGktMLho4kbv1lIM83QE
+         Zz/MXny5IpMaRplvpx6QsWQgjEUXI7aOtUBJosV/sRYoH8Tji/SJrpq7OZLOXihniO0r
+         Mva6CltA6hrmNWygMQ03MfRBNDu4DA6LFmhTCfZPwe3hSBlSGmRaisOkJwtJbXfMJwPe
+         1dNgo6s+iuv9OiGWL6F0jkAksmzOvQSB26+TqyR6jSqUfmexqxnmbR+Nlt/ERxKYEm5l
+         mNp8aIiAOppxwRT7O2Ij7eqDP2xvaDQmLzPNridYJNOv3r0i/dOzjFX7/nB02oR/VGlL
+         2GvQ==
+X-Gm-Message-State: AFuF++kFCT/CCxkCZW3ZP7Vp4jfI0hp2HOkXBNy5sMN1ie2SAwWlBmxN
+	nMPG7WfJwaj5hwBGufISR0jrvNfQ7Dow6v0qtdfWtmRok+iAF2Hh6RXsmqnl6pn/GaY=
+X-Gm-Gg: AR+sD122zJZUgnN6aBL0EDS9rISsxHldY8d5GsEhN1G0dwpiP31YSBgU4uMxJBVLLLB
+	b+XJQoo8pryOGDApky9rmftrznlYbfHsWK/tNQkV1CSPK4qK0wYbQg17z1irWXIyDeItNj2+bRH
+	x+EsxmNcGtmaPnHap+uX9Wb+XvwpiCqrrysTXfOwYCiCc/9yW6RyuSIafzPaST+OuP2w2Migp5f
+	+QRUdNLyb62EqcK+MDaNNZd//zKpws2BrxTrYXTrEU38qT4+NfLL8tI1AZ+wO1IA1oSbtyBHruO
+	jj0PDlN5LhYbE+zVrH5AP587H+Gu2b8WloemB1Hgfv6Veic6/J/Yxelfm2eAlsfFJsx8eJkDFUw
+	s9JkTV3/Dj46DiiY29zySWcfwdq4AoUtUAxQ5FBXAhObxr8NxtYyFhh2vHqg6D4NK8R6mnV3Rw0
+	/n8LzsQWY9j8ZuqUscEtZ5bPd7SzDN1iAWU6elujuLkA==
+X-Received: by 2002:a17:90b:51d2:b0:38f:26c7:165e with SMTP id 98e67ed59e1d1-396d0f8ffdamr5528045a91.9.1787874066635;
+        Thu, 27 Aug 2026 16:41:06 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:74::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396b1992e05sm4677116a91.15.2026.08.27.16.41.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 16:41:05 -0700 (PDT)
+Date: Thu, 27 Aug 2026 16:41:05 -0700
+From: Joe Damato <joe@dama.to>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Colin Winegarden <colin.winegarden@broadcom.com>,
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, horms@kernel.org,
+	linux-kernel@vger.kernel.org, raphaelcf@meta.com,
+	stable@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH net v3] bnxt_en: Bound SW TPA IDs to prevent crashes
+Message-ID: <apDLEbEu1PLTGU+f@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Colin Winegarden <colin.winegarden@broadcom.com>,
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, horms@kernel.org,
+	linux-kernel@vger.kernel.org, raphaelcf@meta.com,
+	stable@vger.kernel.org, llvm@lists.linux.dev
+References: <20260827185700.2157164-1-joe@dama.to>
+ <CACKFLikJiCdjej4ezF=U16Leef3oAjSZGQAyetRnF=nLRvUfZA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACKFLikJiCdjej4ezF=U16Leef3oAjSZGQAyetRnF=nLRvUfZA@mail.gmail.com>
 
-Hi David,
+On Thu, Aug 27, 2026 at 04:07:16PM -0700, Michael Chan wrote:
+> On Thu, Aug 27, 2026 at 11:57 AM Joe Damato <joe@dama.to> wrote:
+> 
+> > @@ -3831,6 +3834,7 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
+> >         int i, rc;
+> >
+> >         bp->max_tpa = MAX_TPA;
+> > +       bp->max_tpa_roundup_size = MAX_TPA;
+> 
+> This is strictly not needed.  If we return early below, it means the
+> chip does not support TPA at all.  We skip allocating the TPA array
+> for every ring, so it really makes no difference.
+> 
+> BNXT_SUPPORTS_TPA() will be false if we return early.  LRO and HW_GRO
+> will not be supported.  So I would say it's a false positive from
+> Sashiko.  Thanks.
 
-I agree with your first statement. I've just submitted the v3 of this patch
-which removes the DCRCC unsetting on xgbe_disable_rx.
+Sorry, I should have been more explicit in my last message: is it worth a
+respin to remove this? Unless I am misunderstanding something, it's harmless
+and while not necessary, might be more clear for a human reader?
 
-And thanks for your input for setting MAC_RCR non-atomically like that! I
-didn't thought much about it before, to be honest. Will try handling that
-on the next submission.
-
-  James
-
-On Fri, Aug 21, 2026 at 9:36:46PM +0100, David Laight <david.laight.linux@gmail.com> wrote:
-> On Wed, 19 Aug 2026 19:16:56 +1000
-> James <aslan.jnn@gmail.com> wrote:
->
->
-> You can delete the line in the disable function that turns it off.
->
-> But, really, you should be setting the required MAC_RCR bits in a single
-> write.
-> Doing RMW sequences on the hardware registers for each bit is really wrong.
-> You also need to start with a known value for all the bits, otherwise
-> 'silly' things can happen is (say) some bios boot code set bits you don't
-> otherwise change.
->
-> 	David
+LMK what you think.
