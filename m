@@ -1,245 +1,301 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F13D2E8DE3
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A60443A97;
+	Thu, 27 Aug 2026 11:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787828498; cv=none; b=sUAnkbUEe9orrM9Rxarh53tjXU7oD7rzDj4IN7wVmbutgPBq1nY4ILnr5l0j0pQA4Nh+1sWMw7DwT1AmOdgb8UvpL+xWksG7ll5R7hHUk8yGryJSpsmG3CrHFSCrelHhmKk3Pq+q6VMo8JJjLZPFP/fgZa9PZW1E8x7DDeSD6qc=
+	t=1787828698; cv=none; b=dsv6dwo+0Sk9/AD5g9Z9M6DCUvNtSeqyrwbb+Mg15wbPcDP55r4Spj6+pwHCQox2ep4MQVZuvoC99aYYsWb2qgf62JqRtAbU+qdUGIcg5Kay3Murc6oahS9H7TMTrHQuyvARNIySWLDvh8xGd8WNFQok4LVuX04uhT0gA6xXW9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787828498; c=relaxed/simple;
-	bh=OYFg1Jou5x8E47a/FUTmdlvRqngXQBELcGZdIMaomGI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1owEa4G/tEFg0SQI81muaH5HE/7XxV1b++utyK69XunIgIARQEX9L4uSdAM+HGhDa56eY0W597ZMBfDwglxUBt4YVnk3XBAhHWWLzDrrBWvIyQsSWpRgTdWYe+ySKddXKBdru/uIMoGO+MM0itW9WnIBfXHLkDNF5rTCwVVTg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OWDzjhK4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787828698; c=relaxed/simple;
+	bh=uqK5KltcbwpqUBeSergeS/QuUrYZoB8S81EH8qYNC5I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ULWK4+Y7Aa8nlKWupRS8H8yEsf710KP2VVaKi+Um91Re86rx9kJcOLfqZs1mHNvAUZiHjrOe0i0EawcmkiKkFBWFPUMMQUDNmSUkQJOQeYgDV/lquKkPSfR+G55NLHc6pE6LM8GlBNDfrxC9Sv74t/13uSiPMzFpQVtqPHN7d9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkoXgfHO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OWDzjhK4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787828496;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wgw61i5ygc+23hUMhfZfLn1I9aKNXr7tn4a/rdJfgHw=;
-	b=OWDzjhK46z+oZyd+39SiexPNU8SOCiJkPDe25KLAl0343T6OPsWQZH0VhNP5Gz1n/gq6tG
-	oLF3ItVBmgPvI0iuNgC8sslx3+P8HS7Vt8NlDtMEdJ3vlKhG0IHO9dtC8zrcEYUONbUvsu
-	YtUUYhhMXFgTMuWpriJYIr9U0u3EABw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-1TonA37qO96TtBGRkIs2uw-1; Thu,
- 27 Aug 2026 07:01:29 -0400
-X-MC-Unique: 1TonA37qO96TtBGRkIs2uw-1
-X-Mimecast-MFC-AGG-ID: 1TonA37qO96TtBGRkIs2uw_1787828488
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A7E3195605B;
-	Thu, 27 Aug 2026 11:01:27 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.49])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B20231955F07;
-	Thu, 27 Aug 2026 11:01:23 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	vega@nebusec.ai,
-	victor@mojatatu.com
-Subject: Re: [PATCH net v2] net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
-Date: Thu, 27 Aug 2026 13:01:16 +0200
-Message-ID: <20260827110116.180569-1-pabeni@redhat.com>
-In-Reply-To: <20260825081403.133992-1-jhs@mojatatu.com>
-References: <20260825081403.133992-1-jhs@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkoXgfHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8611F00A3A;
+	Thu, 27 Aug 2026 11:04:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787828690;
+	bh=fvzPWXzSuaZU03OKJ9pJj5UCDL8q2ZeT6Fzq1mkL1fo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fkoXgfHOedd8s0fPmX9t8dB1uCsv4oXDRwXZh1WPJWqDSmiB2eujR6FVkwBBjpYty
+	 giK+l+ossnXnMpBhbDHuh2LV2f5G7ZKMSjPSBTsvvmS1+AZgAhnOm0Fo90nuf0WHeh
+	 KHBEZ6SSBRqWqoH/88b8maaFKSGydELX+LFZxpcS7MudFZsHbQfG1kLhBkpsBgEW29
+	 vmv3wY+FCsS3BOi5CBHLkN0esktPvm2HxITqWrIgPwKy3tukcNTu7USaeGZhcIwaTm
+	 6ItrI7sCkKwl40YJyOGrt+ScAoaONc04G8yooGGP9Wu5RfprgGeRP13ichH9Dz6U2b
+	 VN/ACG+5forgg==
+Date: Thu, 27 Aug 2026 12:04:45 +0100
+From: Simon Horman <horms@kernel.org>
+To: Koichiro Den <den@valinux.co.jp>
+Cc: Jakub Kicinski <kuba@kernel.org>, Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, ntb@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ntb_netdev: Fix statistics races
+Message-ID: <20260827110445.GD396647@horms.kernel.org>
+References: <20260824025720.3520288-1-den@valinux.co.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824025720.3520288-1-den@valinux.co.jp>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
+On Mon, Aug 24, 2026 at 11:57:20AM +0900, Koichiro Den wrote:
+> ntb_netdev updates shared net_device stats from per-QP RX and TX
+> callbacks. Once multiple queues are enabled, concurrent updates can be
+> lost.
+> 
+> Use core-managed per-CPU dstats for packet, byte and drop counters.
+> Keep infrequent error counters in net_device_stats with atomic
+> DEV_STATS_INC(). The core handles allocation and aggregation.
+> 
+> Transport queues can still complete after ndo_stop. Tear them down from
+> ndo_uninit before the core frees dstats.
+> 
+> Fixes: 24d9e73c7e00 ("net: ntb_netdev: Support ethtool channels for multi-queue")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> ---
+> This is the follow-up mentioned here:
+> https://lore.kernel.org/r/20260819172539.1450821-1-den@valinux.co.jp/
+> The related TX and RX fixes have now landed in net.
+> 
+>  drivers/net/ntb_netdev.c | 44 ++++++++++++++++++++++++----------------
+>  1 file changed, 27 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+> index 9c171697e762..6a1e58d5d7d6 100644
+> --- a/drivers/net/ntb_netdev.c
+> +++ b/drivers/net/ntb_netdev.c
 
-This adds QDISC_PKT_LEN_MAX (1 MiB) and clamps the value computed by
-__qdisc_calculate_pkt_len() into the range [1, QDISC_PKT_LEN_MAX], with the
-stated goal of preventing a crafted TCA_STAB size table from driving the DRR
-and ETS deficit refill loops into a multi-billion iteration spin under the
-qdisc lock.
+...
 
-A couple of questions about the fix and about the arithmetic it now
-consumes.
-
-> diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-> index 18a419cd9d949..90d3e7943b19a 100644
-> --- a/include/net/pkt_sched.h
-> +++ b/include/net/pkt_sched.h
-> @@ -12,6 +12,7 @@
+> @@ -219,11 +218,13 @@ static void ntb_netdev_tx_handler(struct ntb_transport_qp *qp, void *qp_data,
+>  		return;
 >  
->  #define DEFAULT_TX_QUEUE_LEN	1000
->  #define STAB_SIZE_LOG_MAX	30
-> +#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
->  
->  struct qdisc_walker {
->  	int	stop;
-> diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-> index 65b35528d125f..90503e59e6e3b 100644
-> --- a/net/sched/sch_api.c
-> +++ b/net/sched/sch_api.c
-> @@ -610,8 +610,11 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
->  
->  	pkt_len <<= stab->szopts.size_log;
+>  	if (len > 0) {
+> -		ndev->stats.tx_packets++;
+> -		ndev->stats.tx_bytes += skb->len;
+> +		/* TX completion may run from the memcpy kthread. */
+> +		local_bh_disable();
+> +		dev_dstats_tx_add(ndev, skb->len);
+> +		local_bh_enable();
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the new clamp consumes the
-result of arithmetic that is done entirely in a signed int on unvalidated
-user input, so it may not bound what it is intended to bound.
 
-In __qdisc_calculate_pkt_len():
+Hi Den-san,
 
-	pkt_len = skb->len + stab->szopts.overhead;
+There is an AI-generated review of this patch available at [1].
+This is separate to the AI-generated review forwarded elswhere in this
+thread by sashiko-bot.
+
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824025720.3520288-1-den%40valinux.co.jp
+
+It raises a concern regarding using local_bh_disable/local_bh_enable.
+And I wonder if this might be addressed by unrolling dev_dstats_tx_add,
+something like this:
+
+		u64_stats_update_begin_irqsave(&dstats->syncp, syncp_flags);
+		u64_stats_inc(&dstats->tx_packets);
+		u64_stats_add(&dstats->tx_bytes, skb->len);
+		u64_stats_update_end_irqrestore(&dstats->syncp, syncp_flags);
+
+AI-generated review text:
+
+  Can ntb_netdev_tx_handler() run with interrupts disabled here?
+
+  With the ntb_transport defaults (use_dma=false, tx_memcpy_offload=false)
+  the TX completion is not deferred to a kthread at all, it runs inline in
+  the ndo_start_xmit caller's context:
+
+  ntb_netdev_start_xmit()
+    ntb_transport_tx_enqueue()
+      ntb_process_tx()
+        ntb_async_tx()            /* chan == NULL, goto err */
+          ntb_memcpy_tx()
+            ntb_memcpy_tx_on_stack()
+              ntb_tx_copy_callback()
+                qp->tx_handler()  == ntb_netdev_tx_handler()
+
+  netpoll calls ndo_start_xmit with interrupts off:
+
+  net/core/netpoll.c:netpoll_send_skb() {
 	...
-	pkt_len = stab->data[stab->szopts.tsize - 1] *
-			(slot / stab->szopts.tsize) +
-			stab->data[slot % stab->szopts.tsize];
+	local_irq_save(flags);
+	ret = __netpoll_send_skb(np, skb);
+	local_irq_restore(flags);
+	...
+  }
 
-	pkt_len <<= stab->szopts.size_log;
+  and ntb_netdev does not set IFF_DISABLE_NETPOLL, so netconsole can bind
+  to the interface. In that context local_bh_enable() hits:
 
-qdisc_get_stab() only validates tsize consistency and size_log/cell_log
-against STAB_SIZE_LOG_MAX:
+  kernel/softirq.c:__local_bh_enable_ip() {
+	WARN_ON_ONCE(in_hardirq());
+	lockdep_assert_irqs_enabled();
+	...
+	if (unlikely(!in_interrupt() && local_softirq_pending()))
+		do_softirq();
+	...
+  }
 
-	if (s->size_log > STAB_SIZE_LOG_MAX ||
-	    s->cell_log > STAB_SIZE_LOG_MAX) {
-		NL_SET_ERR_MSG(extack, "Invalid logarithmic size of size table");
-		return ERR_PTR(-EINVAL);
-	}
+  so besides the splat, softirqs would be run from inside a netpoll/printk
+  section that expects interrupts to stay disabled.
 
-The overhead field and the u16 data table are not range checked (the
-changelog itself notes overhead 999999999 is accepted), and size_log may be
-up to 30, so the shift overflows for any table entry >= 4.
+  The pre-existing dev_kfree_skb_any() a couple of lines below already
+  assumes this handler can be entered from hardirq or with IRQs disabled,
+  which is the same assumption the plain ndev->stats.tx_packets++ was safe
+  under.
 
-Is the signed left shift here reportable under CONFIG_UBSAN_SHIFT, and can
-that be reached by a namespace-local CAP_NET_ADMIN user?
+  There is also a second entry path: ntb_async_tx_submit() installs
+  ntb_tx_copy_callback() as txd->callback_result, and whether a dmaengine
+  provider calls that from hardirq is up to the provider. If it does, a
+  BH-disable is not enough to protect the pcpu_dstats syncp that the RX
+  side writes from the rxc_db tasklet on the same CPU, so on 32-bit the
+  seqcount can be torn.
 
-With the usual wrapping behaviour, is the new clamp monotone in the
-attacker-controlled inputs? For example data[slot] = 65535 with
-size_log = 16 wraps to -65536, which clamp_t(int, ...) turns into 1, so
-shaping qdiscs such as TBF, HTB and fq would account one byte for a packet
-the table describes as huge.
+  Would an IRQ-safe update (local_irq_save()/local_irq_restore() around
+  the update, or u64_stats_update_begin_irqsave() on
+  this_cpu_ptr(ndev->dstats)) be correct in all of these contexts?
 
-Would doing this arithmetic in u64 (or unsigned with saturation) and
-narrowing before the clamp make the new bound actually hold?
-
->  out:
-> -	if (unlikely(pkt_len < 1))
-> -		pkt_len = 1;
-> +	/* A size table can inflate qdisc_pkt_len() beyond any real packet
-> +	 * (via overhead, the data table, or size_log); cap it so deficit
-> +	 * schedulers such as DRR/ETS terminate their refill loops.
-> +	 */
-> +	pkt_len = clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
->  	qdisc_skb_cb(skb)->pkt_len = pkt_len;
+>  	} else {
+> -		ndev->stats.tx_errors++;
+> -		ndev->stats.tx_aborted_errors++;
+> +		DEV_STATS_INC(ndev, tx_errors);
+> +		DEV_STATS_INC(ndev, tx_aborted_errors);
+>  	}
+>  
+>  	dev_kfree_skb_any(skb);
+> @@ -277,7 +278,7 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
+>  
+>  drop:
+>  	dev_kfree_skb_any(skb);
+> -	ndev->stats.tx_dropped++;
+> +	dev_dstats_tx_dropped(ndev);
+>  	return NETDEV_TX_OK;
 >  }
+>  
+> @@ -427,7 +428,19 @@ static int ntb_netdev_change_mtu(struct net_device *ndev, int new_mtu)
+>  	return rc;
+>  }
+>  
+> +static void ntb_netdev_uninit(struct net_device *ndev)
+> +{
+> +	struct ntb_netdev *dev = netdev_priv(ndev);
+> +	unsigned int q;
+> +
+> +	for (q = 0; q < dev->num_queues; q++) {
+> +		ntb_transport_free_queue(dev->queues[q].qp);
+> +		dev->queues[q].qp = NULL;
+> +	}
+> +}
+> +
 
-[Severity: High]
-Does this clamp actually bound the DRR/ETS refill loops, or only one of
-their inputs?
+[1] also raises a concern here relating to holding RTNL for too long.
 
-drr_dequeue() round-robins the active class list, and each unsuccessful
-visit advances only the head class by one quantum:
+I wonder if this can be addressed by quiescing the queues in
+ntb_netdev_uninit() while leaving the calls ntb_transport_free_queue()
+until after unregister_netdev() has been called in ntb_netdev_remove().
 
-net/sched/sch_drr.c:drr_dequeue() {
-	while (1) {
-		cl = list_first_entry(&q->active, struct drr_class, alist);
-		skb = cl->qdisc->ops->peek(cl->qdisc);
-		...
-		len = qdisc_pkt_len(skb);
-		if (len <= cl->deficit) {
-			...
-			return skb;
+AI-generated review text:
+
+  How long can RTNL be held by this new ndo_uninit path?
+
+  ndo_uninit is called from unregister_netdevice_many_notify() with RTNL
+  held (unregister_netdev() -> rtnl_net_dev_lock()):
+
+  net/core/dev.c:unregister_netdevice_many_notify() {
+	...
+		if (dev->netdev_ops->ndo_uninit)
+			dev->netdev_ops->ndo_uninit(dev);
+	...
+  }
+
+  ntb_transport_free_queue() then drains the DMA channels for each queue
+  pair, once for TX and once for RX:
+
+  drivers/ntb/ntb_transport.c:ntb_transport_free_queue() {
+	...
+		dma_sync_wait(chan, qp->last_cookie);
+		dmaengine_terminate_all(chan);
+	...
+  }
+
+  and dma_sync_wait() is a busy-poll with a 5 second timeout and no early
+  abort:
+
+  drivers/dma/dmaengine.c:dma_sync_wait() {
+	unsigned long dma_sync_wait_timeout = jiffies + msecs_to_jiffies(5000);
+	dma_async_issue_pending(chan);
+	do {
+		status = dma_async_is_tx_complete(chan, cookie, NULL, NULL);
+		if (time_after_eq(jiffies, dma_sync_wait_timeout)) {
+			dev_err(chan->device->dev, "%s: timeout!\n", __func__);
+			return DMA_ERROR;
 		}
-
-		WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
-		list_move_tail(&cl->alist, &q->active);
-	}
-}
-
-Since every active class advances at the same rate, isn't the iteration
-count before the first packet becomes eligible roughly
-nr_active_classes * (qdisc_pkt_len / quantum) rather than
-qdisc_pkt_len / quantum?
-
-The minimum accepted quantum is 1, since drr_change_class() only rejects
-zero:
-
-net/sched/sch_drr.c:drr_change_class() {
-	quantum = nla_get_u32(tb[TCA_DRR_QUANTUM]);
-	if (quantum == 0) {
-		NL_SET_ERR_MSG(extack, "Specified DRR quantum cannot be zero");
-		return -EINVAL;
-	}
-}
-
-and drr_enqueue() re-arms the worst case on every reactivation:
-
-net/sched/sch_drr.c:drr_enqueue() {
-	if (!cl_is_active(cl)) {
-		list_add_tail(&cl->alist, &q->active);
-		WRITE_ONCE(cl->deficit, READ_ONCE(cl->quantum));
-	}
-}
-
-So with quantum 1, the new 2^20 cap and roughly 1024 active classes (class
-creation is not bounded, and drr_classify() maps skb->priority to a classid
-so an unprivileged socket can steer packets per class), does a single
-drr_dequeue() still run on the order of 10^9 iterations with the root qdisc
-spinlock held and softirqs disabled?
-
-The same shape appears in ets_qdisc_dequeue(), which is the other consumer
-named in the new comment:
-
-net/sched/sch_ets.c:ets_qdisc_dequeue() {
-		cl->deficit += READ_ONCE(cl->quantum);
-		list_move_tail(&cl->alist, &q->active);
-}
-
-with an added per-iteration scan of the q->nstrict strict bands.
-
-Also, is this reachable with no TCA_STAB at all, for instance ~16k classes
-with quantum 1 and ordinary 64 KiB packets? If so, the deficit-loop stall
-does not appear to be gated on size-table amplification in the first place.
-
-And can __qdisc_run() interrupt it?
-
-net/sched/sch_generic.c:__qdisc_run() {
-	while (qdisc_restart(q, &packets, quota)) {
-		quota -= packets;
-		if (quota <= 0) {
-			...
+		if (status != DMA_IN_PROGRESS)
 			break;
-		}
-	}
-}
+		cpu_relax();
+	} while (1);
+	...
+  }
 
-The quota is only evaluated after qdisc_restart() returns, so it cannot
-preempt the internal refill loop.
+  With use_dma=1 and a wedged channel or a downed peer, that is up to
+  roughly 10 seconds of spinning per queue pair, multiplied by
+  dev->num_queues, plus kthread_stop(), tasklet_kill() and
+  cancel_delayed_work_sync(), all under RTNL. Before this patch the same
+  loop ran in ntb_netdev_remove() after unregister_netdev() returned, with
+  no locks held.
 
-Would bounding the loop itself, either with an iteration limit or by
-requiring a quantum that is sane relative to the maximum pkt_len, be
-needed instead of clamping one of its inputs?
--- 
-This is an AI-generated review.
+  Since the stats fix only needs the transport callbacks to stop before
+  the core frees dstats, could the channel drain and release stay in
+  ntb_netdev_remove()?
 
+>  static const struct net_device_ops ntb_netdev_ops = {
+> +	.ndo_uninit = ntb_netdev_uninit,
+>  	.ndo_open = ntb_netdev_open,
+>  	.ndo_stop = ntb_netdev_close,
+>  	.ndo_start_xmit = ntb_netdev_start_xmit,
+> @@ -647,6 +660,7 @@ static int ntb_netdev_probe(struct device *client_dev)
+>  	}
+>  
+>  	ndev->features = NETIF_F_HIGHDMA;
+> +	ndev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
+>  
+>  	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+>  
+> @@ -696,8 +710,7 @@ static int ntb_netdev_probe(struct device *client_dev)
+>  	return 0;
+>  
+>  err_free_qps:
+> -	for (q = 0; q < dev->num_queues; q++)
+> -		ntb_transport_free_queue(dev->queues[q].qp);
+> +	ntb_netdev_uninit(ndev);
+>  
+>  err_free_queues:
+>  	kfree(dev->queues);
+> @@ -711,11 +724,8 @@ static void ntb_netdev_remove(struct device *client_dev)
+>  {
+>  	struct net_device *ndev = dev_get_drvdata(client_dev);
+>  	struct ntb_netdev *dev = netdev_priv(ndev);
+> -	unsigned int q;
+>  
+>  	unregister_netdev(ndev);
+> -	for (q = 0; q < dev->num_queues; q++)
+> -		ntb_transport_free_queue(dev->queues[q].qp);
+>  
+>  	kfree(dev->queues);
+>  	free_netdev(ndev);
+> 
+> base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
+> -- 
+> 2.51.0
+> 
