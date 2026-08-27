@@ -1,224 +1,504 @@
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DDC3D9665
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 23:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787872055; cv=none; b=mqo7CVlMyxXaBR3tCQTdqZcTlQ7vO5mgjyiIbpTY0VIfUG7jZN0nWFNmQ9QKNDOeLc8iHfuJy2wis8fs1v8/cYQnQRyosIEOpXH3hMRfIGwEGGWcCj8Az0qE1rR//q1YEKVVjDOJ6aJOpNxzstS8PBEGUlp6lU6Nq3aMd7q77nw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787872055; c=relaxed/simple;
-	bh=0OiA6GmlEWhYukQSNheEmMwfJg8mCwCK526TajnO2hE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F550380FC3
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 23:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787872162; cv=pass; b=qrlaOdSXKy3fDEdv0IzsP5sgsz1z6HlDMnNr6wcFVd8WpyW/OfbsH5j4pA0mmTgOEebU5NV6EmMRzr5z62un8DeX6HZ60HDK45Vn/ijD1YiVF2qnSWvvZzJGhdRwg4DBgy5yQ1DQHG4BMaPUPBgzFL9KSXgA0bukH6rlUsfjV7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787872162; c=relaxed/simple;
+	bh=/x5J5q4yjJYwyd+sa4fScN3EuJbPa6wJ/abKxVUCDsU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fXL1HHZaS5sP3x64DBEeudsDhukCXPf2CCIIuecYZ8ykdL3qatktJO+LHAluP8VgM8st7zt/YYR6JkgAt22luexWtlZFGD0PhVuV1JDXCefGgns7ev+c7fKINNHVEJnVcg7Dgcpr4CPRO/YJffwwWomzXT7DlgFoqujwKZk1K6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Sq/L9MWd; arc=none smtp.client-ip=209.85.215.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	 To:Cc:Content-Type; b=AeElrQDOT11cn035zgtbuSlQgnrYa/rStOtJNWHztOn2WGOQLCLmmBsODHS3w9IJ2PVCnOvCJlQ2kzIxfuZ07xusuRQC0w3ubnZLuZR3Mxlo4D78P3IOg1Qp+ZQiHuUI+ix9uVY/+DMnKhkBEmPifLEo4GEl02tQTSzPF53SXiM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=bnjTp/sg; arc=pass smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Sq/L9MWd"
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-cc1a4c62804so206233a12.3
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 16:07:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787872051; x=1788476851;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mmuLq4cYwxRqd4N0xGa2HbXEzBKXlblcl/gqeEnxyfs=;
-        b=A4JalLfCJkMQdkrdT00kmSOok8DzWamyMBc+xFHji+HG8Yh5Z4b9t/GOSZfz1uhSEw
-         RADvvnA4ubwallqF1eMPwNrDJqrC1QIg80QjuMTXyK/yYxH1rKPdj+AMa8WvE2zxnPP3
-         o0scQ2JKw2bdp7pkkf9W59ZcoPV39oqWdIwGspD5mhBO6+R71JIWXX+ZWmEk8qSfaFBx
-         Vj5IixhD2m6S6sS8gxxnqW+6nwS36YabY1hGimmA1hx3e8LuQfgmNU1ln9fQDyb80MSo
-         Oz5ljDp6aDSloW/jwkF9L4uHnVRQD+Jcxmwf9RQqMYPHxm6hcqYcsR0m3fpr0wdML4Hw
-         P5NQ==
-X-Gm-Message-State: AFuF++kOrVaDH+axU0FgYLCTpMlpb3FI/E2VipzmMG4T5sufeKJ0jSSd
-	l6fbVWeEua4ZqCHAJ3e77xW+BNh1d1j9kMFL6ahdtoUzLhwzNq7RfgR3FkK0R7FuzxzBo7+bYRt
-	KMD4dVNqIczc1Fm6cYfDzKcfdlSNr+Zz2Zkn6imwZuBGcmGOMg/plifOWVNcGzWQFT0zA++v+8b
-	lNvfHF5qvFDdHEndmQKKQcRojDMCcRo/2QM4YsjKzS8cx0M/zwV6PqWZLFbMBs61Uw+gh9uBr4Y
-	fOfr/VVX7c=
-X-Gm-Gg: AR+sD10yMw+p27QTjcrOfl+kjDAEBcfncyfMZTHmeozLtOSwCj4qugomc9+lrYJn/RA
-	ZB3HR0rdQiguxPpzbWJBDBtWFKlx8xXBdde5/oWIRDnrH0OtX7CRal8kO+0yOI4pOTUnan2s33B
-	2IKtoo54oXBSEcHt0ozz7TDBLBT1cZIQot4h0khKp21UJAj61m77AKzN4PdLsMTLR6tB/GIsT0S
-	CWCT6B+W07VyLIwCJLxc8Yde3YRgkjOCzmWidFZVTcvmKLPcZCjL2CEQbAD1vphJy8I/qrQ4XAd
-	GLcHBMnGDAl6EmnOkmGA4kBKZFTqujjXq7hRTGCjuvndPJ9v1S3siDBGDNNHg/JaXTIcVVY+sOM
-	2mTMohVXPdkjIVj6373MBqDKwaCRR+jvhnwI4uiWQeeJf4Y5n4/7gvgl7zMM7HL5B12lLF0HnuS
-	RXpbA6gAdwcHnzl67ZPvZnHcKXdfVR2kDP0Qs=
-X-Received: by 2002:a17:90b:1a8e:b0:396:4c63:7193 with SMTP id 98e67ed59e1d1-396d0fe45damr4842153a91.11.1787872051265;
-        Thu, 27 Aug 2026 16:07:31 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-396b1127282sm1524546a91.13.2026.08.27.16.07.30
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Aug 2026 16:07:31 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a1188c8948so248683a12.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 16:07:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="bnjTp/sg"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-853c947bfefso339666b3a.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 16:09:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787872158; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GZ6KZULFpNS951cwGLFLLfoqbh+t1dfcpA0VXrgmVyY5qPlaEVj3oiGMhY8Rv1xTmU
+         o+plGORTaSN9wsLF7CXVEgESpRofmCepvYSy5Icmx5lHhNAceCV1Nfx0thOSSoeMCex7
+         rsqS9HYRd4nO8brUa+MdfHtbAMAy+iIgr5J0vgOMsR36d8A157GnSET0ffIRbs3WR3X5
+         6NQ+NCxKZbk+7ZLVQKkEBeo/GLPr/TyUA7AdGPCcDwRAYAoH01gR6FmcD4I/MR8hE9VH
+         KHTjfBPqI/DPT47aX1CpBSnL+LVApYsamyrUGxwUnXDB/YszDO2cMWzO69cH8YqnjNf5
+         dCEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tod0y6MgEoGaSXNvm2KOHEnvF1ljfX4bUWCj/hc1m7s=;
+        fh=3U2UA5tbxnFXQZ8Nigit4ju26tXt176fiZ5EmO/RIN8=;
+        b=axwOLaPSC+Xq6xm+i8hUvnhVFg7YNWrouYGRELgpdRvBoh8aTDpNufbavVTIyhYWzB
+         bJyfZA9zSNinT4LgRDKwwB6il7yraUg41lTrUNVm/hX4CbRcoG6BStJkRACgqDr6NbbY
+         a/0fj7ReKuVyBb0jkgi8oDQPy8wMlFgJ7HlZOugLVLbAfXx0a3xwMdYJDxjwFZOoSZ5Q
+         vfGor4jk/aZfnZt+lfIsVblFiXX+TahvZ7cBDfcLY1XDcE/IRc7JP2joKjrE5Z8qJ1Ye
+         Ej3V9xxQsCJ2sTa36j438ixaVViGRvw//P9pipu9bb3IQeBf+mI1B3L8MVlKRC3eChbF
+         kbVg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787872049; x=1788476849; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=mojatatu.com; s=google; t=1787872158; x=1788476958; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tod0y6MgEoGaSXNvm2KOHEnvF1ljfX4bUWCj/hc1m7s=;
+        b=bnjTp/sgYVpEAQfv77k+FLKOuQDLVWixdqXVbV59SUPaEN/JdKI6u5AFv64Qi9eDAA
+         IU1MCWKF2x3Q4ujqGFogpaPXz0VFGVIloWOUSsefqNV6nYo2ZhIWZgzwiOiT/S5vtvaf
+         aM8Od5F/R0+pt8knTEWmE6w0HnF8/bsV5iXC4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787872158; x=1788476958;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mmuLq4cYwxRqd4N0xGa2HbXEzBKXlblcl/gqeEnxyfs=;
-        b=Sq/L9MWdFuxbVzREXNh/miei/QYSksZZ90gY4OL9X2ReM/FRrb75pa0Ot2f2qGkJYA
-         +QIWADF9z0KtX9YpiaWVc4YzpPCiuPCF/qwwJlOlzhcx8GNr6wkYoxUJFuBO/1d4iN6K
-         pc9Ge09NJBmZbDXn/E3TRNimmBSSrW4bMFUyc=
-X-Received: by 2002:a05:6402:44c4:b0:6a4:21c6:1d14 with SMTP id 4fb4d7f45d1cf-6a60d15f4b9mr1059308a12.0.1787872049341;
-        Thu, 27 Aug 2026 16:07:29 -0700 (PDT)
-X-Received: by 2002:a05:6402:44c4:b0:6a4:21c6:1d14 with SMTP id
- 4fb4d7f45d1cf-6a60d15f4b9mr1059292a12.0.1787872048918; Thu, 27 Aug 2026
- 16:07:28 -0700 (PDT)
+        bh=tod0y6MgEoGaSXNvm2KOHEnvF1ljfX4bUWCj/hc1m7s=;
+        b=RFWos/aj5Tl0QZ+5+UX4/jNuCt33R0W19jxPwXmhY1hNvHh3luMgHWAsqlI3zoZm0o
+         nQxpImw6b3JUUCuMKZuG8G7VeonJGFNJIO7uSMCMoCY32nbvuW7ezuWWkEE+IIgxoNSw
+         UcF+xICfbyGZd5uInq5RaWOA8uX5eM2szzchAIHe8M8HP5y5+IRHwg4VmVJDul5AmMEJ
+         3FYSeScIyydEOlY0bpz7GvQ+UJNAFGajehtazWdH3PdAg7T8gMHSDR2VEJr6hYwucvcm
+         taX13vM+5hmEuPus06WVNWBjbRfePSV4m/7g/3JR4r/vKUJwf2pu+uYknSHGFtR4kbbe
+         hYMg==
+X-Gm-Message-State: AFuF++lBBxo5XU62vODCRSxKW6pT+gC6iYyZn+rhfyngeLVhzKt6I6I2
+	McDYBTB9RucZUecu9No6OB1rYM2S1ndPYEp8f3PC23xMYDwcdx3UzBZTGGkAEwcyz1ziqo4hOUg
+	+v151w+VK1zmltURIgZ16mkV44EyD6JxAehN5F1CN
+X-Gm-Gg: AR+sD10thxdzyVSKH+nG5mYpEKimUcOd8ROBATaPFaMfrsIIDFivQ+vGhQ18eTixgC9
+	zALfGaedk39VEZtqjfzGqMtzvMQYuU/xwWOacstrMDCiITiMzM9RFrUbAuiFLGtOisD+t+9B9DJ
+	wWRkg4129yLL2LWEUEvNSVlg2RumwNMcVrwIIGkY8fClliJ4xytP7XbRPmtdTI/oniruxxo0c7a
+	5S6b0aOSNyCRaMFuOZdMPuqNu9P0U5JrQZl823ECziwPGmqOnw3K7iwm98Xy45A08d+vYj/9Vb3
+	LlUd7qL0jJANmoGzhoKE30XHkJ7RIewAXv9Q3w8DR5t2MQQoae+54piUoL8OKrOsvkEK3ZKzoSE
+	BpnsPdEJmMkeqaWbGZY+mUpkzOgki
+X-Received: by 2002:a05:6a00:2316:b0:848:48d0:934 with SMTP id
+ d2e1a72fcca58-854c91098c7mr12010465b3a.18.1787872157457; Thu, 27 Aug 2026
+ 16:09:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827185700.2157164-1-joe@dama.to>
-In-Reply-To: <20260827185700.2157164-1-joe@dama.to>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Thu, 27 Aug 2026 16:07:16 -0700
-X-Gm-Features: AcwNN1WAU4dLCKrvJBx349gD-WHw0mwDs76fZv8G0nESP3RnD5CVTvjCeEbfZYM
-Message-ID: <CACKFLikJiCdjej4ezF=U16Leef3oAjSZGQAyetRnF=nLRvUfZA@mail.gmail.com>
-Subject: Re: [PATCH net v3] bnxt_en: Bound SW TPA IDs to prevent crashes
-To: Joe Damato <joe@dama.to>
-Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Colin Winegarden <colin.winegarden@broadcom.com>, 
-	Rukhsana Ansari <rukhsana.ansari@broadcom.com>, 
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, horms@kernel.org, 
-	linux-kernel@vger.kernel.org, raphaelcf@meta.com, stable@vger.kernel.org, 
-	llvm@lists.linux.dev
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000006b9c07065a0f6622"
-
---0000000000006b9c07065a0f6622
+References: <20260826074056.7873-1-jhs@mojatatu.com> <20260827193424.4017151-1-kuba@kernel.org>
+In-Reply-To: <20260827193424.4017151-1-kuba@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 27 Aug 2026 19:09:05 -0400
+X-Gm-Features: AcwNN1VsZ0c0oAtDgseEyaPa-JTF9aPR6J2SQzPgoc6T-0JHeDvnjlJ7IKKiAWk
+Message-ID: <CAM0EoMnWf3PkJdfxukW1ri+A-h5SD=XKgVxA=8ttGcrojUBD8A@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: clamp quantum and psched_mtu in change
+ paths and missed siblings
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, victor@mojatatu.com, 
+	vtahiliani@nitk.edu.in, toke@redhat.com, chia-yu.chang@nokia-bell-labs.com, 
+	subramanian.vijay@gmail.com, vega@nebusec.ai, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 11:57=E2=80=AFAM Joe Damato <joe@dama.to> wrote:
-
-> @@ -3831,6 +3834,7 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
->         int i, rc;
+On Thu, Aug 27, 2026 at 3:34=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 >
->         bp->max_tpa =3D MAX_TPA;
-> +       bp->max_tpa_roundup_size =3D MAX_TPA;
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 
-This is strictly not needed.  If we return early below, it means the
-chip does not support TPA at all.  We skip allocating the TPA array
-for every ring, so it really makes no difference.
 
-BNXT_SUPPORTS_TPA() will be false if we return early.  LRO and HW_GRO
-will not be supported.  So I would say it's a false positive from
-Sashiko.  Thanks.
+Thanks for forwarding - I hadnt looked yet. Some of the findings are
+valid and expose patterns. I'll send a v2 with:
 
->         if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
->                 if (!bp->max_tpa_v2)
->                         return 0;
+- ETS: move the 256 floor into ets_quantum_parse() so explicit quanta
+are covered, not just the fallback path. Add upper bound (1<<20).
+- DRR: add upper bound clamp_t(u32, quantum, 256, 1<<20) matching sfq.
+- sch_fq: add 256 floor in fq_change() for TCA_FQ_QUANTUM and in
+fq_init() for tiny-MTU devices.
+- hhf: clamp hhf_init() to [256, 1<<20] matching the siblings.
+- Add Fixes: dcc68b4d8084 for ETS.
 
---0000000000006b9c07065a0f6622
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+The Medium finding (STAB size_log=3D30 =E2=86=92 2^31) is addressed by the
+merged qdisc_pkt_len cap (8f735d64382d) =E2=80=94 together with the 256 flo=
+or
+they bound the loop; neither alone is sufficient.
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCC+KYQQ
-0pzXN/aYFLVCpwhfHT/GUwfM5PdcVCxM7k0XnjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MjcyMzA3MjlaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAeRUkOkaxDkqYWi+plrDFMiBUToj6TaFU08KmsFCrZ
-5odpV3E7deHGnUL0ERf8oyCxuccrDmwAF/Wv79Oot+auTrcOXxiU9FtrFi7IYBt/t9rmFZOxDqzc
-58Cyxs67Jh7OJbkfF7XQaa/H0rFnPMDkdPTCqTvYjVELQNhjHrIVETbDLal12qKreLjat12iIOrM
-AfjBCPcYg9wLU59x4AEHjE82nZPJeC/raMLacbNu9vZSZMcu6K9otzHNKmE/4kc7lvJGxneYBmQ1
-WRZ1vunJ0N6Pa6+BNn+N1BFaejkCJhUqD8wQ6omXwg+mQbj2d2SoJ4vqkITJVyWFvpfjQgTD
---0000000000006b9c07065a0f6622--
+The rest are opinionated, so i will ignore them. There is nothing to
+followup for net-next..
+
+cheers,
+jamal
+
+> ---
+> net/sched: clamp quantum and psched_mtu in change paths and missed siblin=
+gs
+>
+> This follow-Thanks for forwarding the Sashiko review. The findings are va=
+lid and
+expose same-pattern gaps. I'll send a v2 folding them in:
+
+- ETS: move the 256 floor into ets_quantum_parse() so explicit quanta
+  are covered, not just the fallback path. Add upper bound (1<<20).
+- DRR: add upper bound clamp_t(u32, quantum, 256, 1<<20) matching sfq.
+- sch_fq: add 256 floor in fq_change() for TCA_FQ_QUANTUM and in
+  fq_init() for tiny-MTU devices.
+- hhf: clamp hhf_init() to [256, 1<<20] matching the siblings.
+- Add Fixes: dcc68b4d8084 for ETS.
+
+The Medium finding (STAB size_log=3D30 =E2=86=92 2^31) is addressed by the
+merged qdisc_pkt_len cap (8f735d64382d) =E2=80=94 together with the 256 flo=
+or
+they bound the loop; neither alone is sufficient.
+
+cheers,
+jamal
+up to 709f34f7c28d adds a 256 byte floor to the quantum written
+> by the change() paths of fq_pie, hhf, sfq and drr, floors the psched_mtu(=
+)
+> fallback in drr and ets, narrows the sch_fq TCA_FQ_INITIAL_QUANTUM policy
+> range to 1<<20, and clamps psched_mtu() to [1, 1<<20] in sch_dualpi2 and
+> sch_pie. The stated goal is to stop a small quantum combined with a
+> STAB-inflated qdisc_pkt_len from spinning the deficit-refill loops under =
+the
+> qdisc lock.
+>
+> A few questions on the changelog first.
+>
+> >     8. sch_ets: ets_qdisc_change() falls back to psched_mtu() with no f=
+loor
+> >        for bands without an explicit quantum.  Add max(256U, ...) on th=
+e
+> >        fallback path (vega@nebusec.ai independent bug)
+>
+> [Severity: Low]
+>
+> The ETS item is described as fixing a real denial-of-service condition, b=
+ut
+> none of the seven Fixes: tags names an ETS commit. git blame on the
+> psched_mtu() fallback in ets_qdisc_change() at the baseline points at
+> dcc68b4d8084 ("net: sch_ets: Add a new Qdisc"), which is not in the tag
+> list. Should the following be added so stable tooling can map the ETS par=
+t?
+>
+>   Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
+>
+> >     1. fq_pie_change() accepts quantum=3D1 (NLA policy fq_pie_q_range.m=
+in=3D1).
+> >        Add max(256U, ...) matching fq_codel_change()
+> >        (Sashiko nipa gpt-5-6-sol-3-8 and gpt-5-6-sol-6-7)
+> [ ... ]
+> >     5. sch_dualpi2: dualpi2_calculate_c_protection() and get_memory_lim=
+it()
+> >        call psched_mtu() with no clamp. A huge MTU makes (s32)psched_mt=
+u()
+> >        overflow in the signed multiply for c_protection_init, and 2 *
+> >        psched_mtu() wraps in get_memory_limit(). Clamp to [1, 1<<20] at
+> >        all three call sites. (Sashiko nipa main-6-4)
+>
+> [Severity: Low]
+>
+> This patch bundles eight independent fixes over seven qdiscs with seven
+> Fixes: tags and Cc: stable, covering different bug classes: deficit-spin
+> quantum floors, the signed multiply overflow in dualpi2 c_protection_init=
+,
+> the bytemode divide in pie_drop_early(), and a netlink policy narrowing.
+> The tags span very different stable ranges (320d031ad6e4 for dualpi2 is
+> recent, 13d2a1d2b032 for drr is from 2008). Can this be split so each bug
+> can be backported or reverted on its own?
+>
+> The changelog also carries what look like internal review-tool
+> identifiers - "Sashiko nipa gpt-5-6-sol-3-8 and gpt-5-6-sol-6-7",
+> "Sashiko nipa main-6-4", "Sashiko gemini", "Internal review noticing same
+> pattern". Are those meant to stay in the upstream commit message?
+>
+> > diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+> > index 91b1ef824afaf..0ffdab27bae42 100644
+> > --- a/net/sched/sch_drr.c
+> > +++ b/net/sched/sch_drr.c
+> > @@ -82,8 +82,9 @@ static int drr_change_class(struct Qdisc *sch, u32 cl=
+assid, u32 parentid,
+> >                       NL_SET_ERR_MSG(extack, "Specified DRR quantum can=
+not be zero");
+> >                       return -EINVAL;
+> >               }
+> > +             quantum =3D max(256U, quantum);
+> >       } else
+> > -             quantum =3D psched_mtu(qdisc_dev(sch));
+> > +             quantum =3D max(256U, (u32)psched_mtu(qdisc_dev(sch)));
+>
+> [Severity: High]
+>
+> Only the low side is bounded here. drr_change_class() still accepts any
+> non-zero u32, and cl->quantum and cl->deficit are both u32. What happens
+> with a quantum near U32_MAX?
+>
+>   tc class add ... drr quantum 4294967293
+>
+> net/sched/sch_drr.c:drr_dequeue() {
+>         ...
+>         WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
+>         list_move_tail(&cl->alist, &q->active);
+>         ...
+> }
+>
+> With quantum =3D 0xfffffffd that refill wraps modulo 2^32 and is the same=
+ as
+> deficit -=3D 3, so with a STAB-inflated qdisc_pkt_len of 0x40000000 the l=
+oop
+> needs roughly 3.6e8 passes before deficit wraps past zero, all with the
+> qdisc root lock held. ets_qdisc_dequeue() uses the identical u32 arithmet=
+ic
+> and ets_quantum_parse() rejects only zero.
+>
+> Should drr and ets also reject quantum > 1<<20, the way sfq_change() now
+> does in this same patch?
+>
+> > diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+> > index 25fcf4079fece..f23c8dc68f8cb 100644
+> > --- a/net/sched/sch_ets.c
+> > +++ b/net/sched/sch_ets.c
+> > @@ -636,7 +636,7 @@ static int ets_qdisc_change(struct Qdisc *sch, stru=
+ct nlattr *opt,
+> >        */
+> >       for (i =3D nstrict; i < nbands; i++) {
+> >               if (!quanta[i])
+> > -                     quanta[i] =3D psched_mtu(qdisc_dev(sch));
+> > +                     quanta[i] =3D max(256U, (u32)psched_mtu(qdisc_dev=
+(sch)));
+>
+> [Severity: High]
+>
+> This assignment is guarded by !quanta[i], so it only applies to bands tha=
+t
+> carry no explicit quantum. Every explicit value still goes through
+> ets_quantum_parse(), which rejects zero only:
+>
+> net/sched/sch_ets.c:ets_quantum_parse() {
+>         *quantum =3D nla_get_u32(attr);
+>         if (!*quantum) {
+>                 NL_SET_ERR_MSG(extack, "ETS quantum cannot be zero");
+>                 return -EINVAL;
+>         }
+>         return 0;
+> }
+>
+> So does the reproducer in the changelog still work for ETS?
+>
+>   tc qdisc add dev dummy0 root ets bands 2 quanta 1 1
+>
+> ets_class_change() has the same gap, it writes the parsed value straight
+> through with WRITE_ONCE(cl->quantum, quantum), and then
+> ets_qdisc_dequeue() refills one byte per pass:
+>
+> net/sched/sch_ets.c:ets_qdisc_dequeue() {
+>         ...
+>         cl->deficit +=3D READ_ONCE(cl->quantum);
+>         list_move_tail(&cl->alist, &q->active);
+>         ...
+> }
+>
+> Would putting the floor in ets_quantum_parse() cover the explicit path as
+> well? If so, test 41f5 in
+> tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json expects
+> "quanta 4294967294 1 1" to be accepted and dumped unchanged, so it would
+> need updating.
+>
+> [Severity: Low]
+>
+> The comment just above this loop still says the fallback is the MTU:
+>
+>         /* If there are more bands than strict + quanta provided, the rem=
+aining
+>          * ones are ETS with quantum of MTU. Initialize the missing value=
+s here.
+>          */
+>
+> On a headerless or tiny-MTU device, which is the case this hunk exists fo=
+r,
+> the band now gets 256 rather than the MTU. Could the comment be updated t=
+o
+> say max(MTU, 256)?
+>
+> > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> > index 6144b5686f13f..ab8e7c6ae2039 100644
+> > --- a/net/sched/sch_fq.c
+> > +++ b/net/sched/sch_fq.c
+> > @@ -980,7 +980,7 @@ static int fq_resize(struct Qdisc *sch, u32 log)
+> >  }
+> >
+> >  static const struct netlink_range_validation iq_range =3D {
+> > -     .max =3D INT_MAX,
+> > +     .max =3D 1 << 20,
+> >  };
+>
+> [Severity: High]
+>
+> This narrows TCA_FQ_INITIAL_QUANTUM, which seeds the credit of a new flow=
+.
+> The refill amount in the dequeue loop comes from q->quantum instead, and
+> fq_change() still accepts 1:
+>
+> net/sched/sch_fq.c:fq_change() {
+>         ...
+>         if (tb[TCA_FQ_QUANTUM]) {
+>                 u32 quantum =3D nla_get_u32(tb[TCA_FQ_QUANTUM]);
+>
+>                 if (quantum > 0 && quantum <=3D (1 << 20)) {
+>                         WRITE_ONCE(q->quantum, quantum);
+>         ...
+> }
+>
+> net/sched/sch_fq.c:fq_dequeue() {
+>         ...
+>         if (f->credit <=3D 0) {
+>                 f->credit +=3D q->quantum;
+>                 head->first =3D f->next;
+>                 fq_flow_add_tail(q, f, OLD_FLOW);
+>                 goto begin;
+>         }
+>         ...
+> }
+>
+> The lead paragraph says "The change() paths with the same pattern, same
+> writer of q->quantum, same privilege level ... were not clamped", and
+> sch_fq is the qdisc of the primary Fixes: commit. With
+>
+>   tc qdisc replace dev dummy0 root fq quantum 1 stab data 32767 \
+>     size_log 16 cell_log 0
+>
+> does fq_dequeue() still need ~2^31 passes of f->credit +=3D 1 after
+> f->credit -=3D plen? Should sch_fq get the same 256 floor as its siblings=
+?
+>
+> > diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+> > index 96acab6a8da03..bb8e8952f5553 100644
+> > --- a/net/sched/sch_hhf.c
+> > +++ b/net/sched/sch_hhf.c
+> > @@ -551,7 +551,7 @@ static int hhf_change(struct Qdisc *sch, struct nla=
+ttr *opt,
+> >               return err;
+> >
+> >       if (tb[TCA_HHF_QUANTUM])
+> > -             new_quantum =3D nla_get_u32(tb[TCA_HHF_QUANTUM]);
+> > +             new_quantum =3D max(256U, nla_get_u32(tb[TCA_HHF_QUANTUM]=
+));
+>
+> [Severity: High]
+>
+> The floor is applied only when the attribute is present, so a small quant=
+um
+> coming from hhf_init() survives:
+>
+> net/sched/sch_hhf.c:hhf_init() {
+>         ...
+>         q->quantum =3D psched_mtu(qdisc_dev(sch));
+>         ...
+>         if ((int)q->quantum <=3D 0 ||
+>             (u64)q->quantum * q->hhf_non_hh_weight > INT_MAX)
+>                 q->quantum =3D 256;
+>         ...
+> }
+>
+> Values in 1..255 pass untouched here, unlike sfq_init() and fq_pie_init()
+> which use clamp_t(u32, psched_mtu(...), 256, 1 << 20). With
+> ip link set dummy0 mtu 0 psched_mtu is 14, and on a veth with mtu 68 it i=
+s
+> 82.
+>
+> The changelog states "The init paths of fq_pie, sfq, and hhf delegate to
+> their _change() when opt is present, so the floor covers tc qdisc add ...
+> quantum 1 as well as change". Is that true for
+> tc qdisc add dev dummy0 root hhf with no options, where hhf_change() is
+> never called? And for tc qdisc change ... hhf non_hh_weight 1, where
+> new_quantum defaults to the unfloored q->quantum and is re-committed by
+> WRITE_ONCE(q->quantum, new_quantum)?
+>
+> With q->quantum =3D 14 and a STAB-inflated qdisc_pkt_len, does hhf_dequeu=
+e()
+> still need ~7.7e7 passes of bucket->deficit +=3D weight * q->quantum? Wou=
+ld
+> clamping in hhf_init() to [256, 1<<20] like the siblings be more robust?
+> The member comment also still reads
+>
+>         u32                quantum;        /* psched_mtu(qdisc_dev(sch));=
+ */
+>
+> which no longer describes either writer.
+>
+> > diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+> > index 187d3ed578f26..8bbcfc9e85d94 100644
+> > --- a/net/sched/sch_sfq.c
+> > +++ b/net/sched/sch_sfq.c
+> > @@ -660,6 +660,11 @@ static int sfq_change(struct Qdisc *sch, struct nl=
+attr *opt,
+> >               return -EINVAL;
+> >       }
+> >
+> > +     if (ctl->quantum > 1 << 20) {
+> > +             NL_SET_ERR_MSG_MOD(extack, "quantum too large");
+> > +             return -EINVAL;
+> > +     }
+> > +
+>
+> [Severity: Low]
+>
+> With this reject in place, is the documented field contract still
+> reachable?
+>
+> net/sched/sch_sfq.c:sfq_sched_data {
+>         ...
+>         unsigned int    quantum;        /* Allotment per round: MUST BE >=
+=3D MTU */
+>         ...
+> }
+>
+> sfq_init() already caps the default with
+> clamp_t(u32, psched_mtu(qdisc_dev(sch)), 256, 1 << 20), and after this
+> change userspace can no longer raise quantum to the MTU on a device whose
+> psched_mtu exceeds 1 MiB (dummy clears max_mtu and accepts an MTU of
+> 2147483634, as noted in 709f34f7c28d). Could the comment be updated to
+> state the enforced 256..1<<20 range?
+>
+> Also, tc_sfq_qopt configurations with quantum > 1 MiB that used to be
+> accepted now return -EINVAL, while the peer attributes
+> (TCA_FQ_PIE_QUANTUM, TCA_HHF_QUANTUM) clamp instead of rejecting. Was
+> rejecting rather than clamping intended for sfq here?
+>
+> > @@ -688,7 +693,7 @@ static int sfq_change(struct Qdisc *sch, struct nla=
+ttr *opt,
+> >
+> >       /* update and validate configuration */
+> >       if (ctl->quantum)
+> > -             quantum =3D ctl->quantum;
+> > +             quantum =3D max(256U, ctl->quantum);
+>
+> [Severity: Medium]
+>
+> Does a constant floor bound the spin, or only divide it by a constant? Th=
+e
+> numerator stays user-controlled:
+>
+> net/sched/sch_api.c:__qdisc_calculate_pkt_len() {
+>         ...
+>         pkt_len <<=3D stab->szopts.size_log;
+> out:
+>         if (unlikely(pkt_len < 1))
+>                 pkt_len =3D 1;
+>         ...
+> }
+>
+> STAB_SIZE_LOG_MAX is 30 and qdisc_get_stab() only checks size_log and
+> cell_log against it, so qdisc_pkt_len still reaches ~2^31. With quantum
+> exactly at the new floor:
+>
+> net/sched/sch_sfq.c:sfq_dequeue() {
+>         ...
+>         if (slot->allot <=3D 0) {
+>                 q->tail =3D slot;
+>                 WRITE_ONCE(slot->allot, slot->allot + q->quantum);
+>                 goto next_slot;
+>         }
+>         ...
+> }
+>
+> that is still ~8.4e6 iterations per dequeued packet with the qdisc root
+> lock held and BH disabled, and fq_pie_dequeue(), hhf_dequeue(),
+> drr_dequeue() and ets_qdisc_dequeue() have the same shape. Would bounding
+> the STAB-derived pkt_len, or rounding the deficit up to cover the packet =
+in
+> one step instead of looping, remove the class rather than attenuate it?
