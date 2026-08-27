@@ -1,178 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC93410F2;
-	Thu, 27 Aug 2026 05:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174EF303CAB;
+	Thu, 27 Aug 2026 05:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787809796; cv=none; b=PNShLCjVz+V/zcldn8YEbbLr4X00adpBS2ihpLrBSRIXSV0BD66ZZGd1b4MJfaw2TZ/nENSRYLzE6WwwPpM11KZA22jTOiPljFLfHfrQXoXcSOU2vyGR75xXvx3vUZOVbjino3tqa6RjBjyUhukNl7vIe8mu2C1ZHMdH4B0tAzg=
+	t=1787810058; cv=none; b=DY460jcc6E4xP5rJDZpS5pW0KYLMprvvFR/BTFc/LlB4Bm+M0wV8t956ysrVWResNt3UVtypUOZzHat2JM9TT4DyUHo3skmAuetU2N0sn/osg2hWlayBjdL/KRTgHks2bw99xQgeZ0mJbkpvyY0gwTOrU0SY9HPO337d9bHSBVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787809796; c=relaxed/simple;
-	bh=Z0WoQFfQ6flKBGDHLSAeSX33Ew58x+pi4jdxuilyIlI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=TYXGGySfl326/z8uCQWjt3q63+xxbJHucYLDsHGjOOl0eSYLb9H5+6TS+b/xtQ9YlA67ay7VlmD5L9wdJOSpicucfFjwZQu5QTbLFp7QI+P1jfJ9TJCbHvEM/T12Jw0yq682dnaymmfudxQS8Jm4HG2RJN1/rdV2lYH7Ug6OL28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6woMtHr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787810058; c=relaxed/simple;
+	bh=/G6iAWc4FYPn/V+EoSVVwxeq1U5YZSLZd53vROooY04=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NnbqSG2n7qqnYqM8ri+4YREGKGK3IkWT0rrCDigJUTAbE2pzp+SRfI9un6L4+jECqBpKndCcDxKQUNY1B+IdFUwhwLYtGFyKXnaIxslgSaPrGHqbQCuEDMXSOalaCjx8DmDkdkjx7AYjG29R7GoNzZPDk9cnYEsn8QHXkEBseAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=KdvJR7w1; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6woMtHr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2821F000E9;
-	Thu, 27 Aug 2026 05:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787809794;
-	bh=/DNH7/Wwtrh+SJ6YbpOxxbEnDSPFOQlBwUSdg4shbCk=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=S6woMtHrVtcWRWX8dubiQ+1NWVxuwj7S2PpKGTFYCu+UPr6tAwwbVy4owMgeXGfUj
-	 3dOwEJl+6b0zwBqfvmROx1f/U7fhAcl7mDiUp6uRbIDGLpsjZdjafIxH6epccF8G5H
-	 FDSffRlfLS0kHmK3/OJ1HFgp2HL87SLkkwTudp6o3B2hJXS0Web3RFXPhZLIZ1yTJE
-	 6ZAergNmIg6wUtl7AHI5yQ7rWrB6e0mpeI4Od4KEbcZQo64c4/rNBT9V7914sRurqX
-	 /Ar2YWftQMqbuLzeZeKlhrYhQ11x/lEC0ataYpQP99lMYPdNUD8J00Vdc806t1aRcU
-	 LrTTuSms4/ClA==
-Content-Type: multipart/mixed; boundary="===============1588356556942625386=="
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="KdvJR7w1"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67R3KWXZ2560829;
+	Wed, 26 Aug 2026 22:53:55 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=ewQFocWI4Gi3kw7+QTl0ecalB
+	8+/SU+XZVkXMXgdWPk=; b=KdvJR7w15slc4LW0v0GghdwuwNQ9j7yNA2V8wNL8y
+	tc+++R9YM3F6q8/q27TNk1tMSm9CEripXYVq0AaSJ5omeL0ix0ypOCXsOXD6tUHC
+	KZBsdlHdWiow5j2XdMTnQrzw9JTj2o6qlXlBd4UgLbtZggNiLAZaoAaq8QPa2FQg
+	sFmL/EaakYvfHTBjh3HqFY8p3T5C7JJ2oYm79VWci/UMpvwGKeob1phcFjav1NBv
+	VQHKMmDHcP66A61hfc3Hv4rlILj1pdmvzIFZOf0YBobUofiNBdkALBu0AwBb77tm
+	l2EuyYjJ3nbUIoZOrZgqA6qeMVSNORPXp5q29dgq8E57w==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g9xjqktjs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Aug 2026 22:53:55 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 26 Aug 2026 22:53:54 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 26 Aug 2026 22:53:54 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 73BD43F709E;
+	Wed, 26 Aug 2026 22:53:51 -0700 (PDT)
+Date: Thu, 27 Aug 2026 11:23:50 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <davem@davemloft.net>, <gakula@marvell.com>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <sgoutham@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+Subject: Re: [PATCH v2 net] octeontx2-af: allocate qmem from page allocator
+ to avoid CMA
+Message-ID: <ao_Q7lClzT-yeK-0@rkannoth-OptiPlex-7090>
+References: <20260825045616.3723078-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <43efa71e1fcb4cee5edd4d2ed696f13b902159fd0ef31a75f90803cb79284eb1@mail.kernel.org>
-In-Reply-To: <20260827051859.45511-1-blbllhy@gmail.com>
-References: <20260827051859.45511-1-blbllhy@gmail.com>
-Subject: Re: [PATCH bpf] bpf: Fix NULL pointer dereference in __bpf_sk_storage_map_seq_show
-From: bot+bpf-ci@kernel.org
-To: blbllhy@gmail.com,ast@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org
-Cc: ameryhung@gmail.com,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,wangfushuai@baidu.com,bestswngs@gmail.com,mattbobrowski@google.com,kees@kernel.org,menglong8.dong@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,AutonomousCodeSecurity@microsoft.com,xmei5@asu.edu,tgopinath@linux.microsoft.com,kys@microsoft.com,blbllhy@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Thu, 27 Aug 2026 05:49:53 +0000 (UTC)
-
---===============1588356556942625386==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20260825045616.3723078-1-rkannoth@marvell.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI3MDA0NiBTYWx0ZWRfX2dxSBv+S2NfX
+ sHTJtIX+5QKZYJC3JrKQv4znFock6wm4Q4i6AMsjFPbd+TOwzEy1HumUmA3+AhH6alE+m38k16Q
+ lkv5MrZQ1XvHQFkLHIBCY2ouztp1oVg=
+X-Proofpoint-ORIG-GUID: AKENDr7iJ3urEj31f3ub611BSUOc6-A7
+X-Authority-Analysis: v=2.4 cv=C/jZDwP+ c=1 sm=1 tr=0 ts=6a8fd0f3 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8
+ a=F5F7DfbbKpmmxRlMgb4A:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
+ a=Oh551-UHZqmTy8JkqTUo:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI3MDA0NiBTYWx0ZWRfXzbQ3fuy3U5/6
+ kCHhaz7XoNSnhozG6H7Vwinp6Et51ffhyd7eVNq0tVAIhwUn2bn41jk/0p59T7OMDWvoWKCITcm
+ RBDxDJEHtf44EwPfEGI3i7HM7ZtfnpVTRNYexNdZBYKF6oRg9e4lKDqWKrPyAeFxvaYIuRWCsSn
+ 20DjPl1p0pGDfCU+JIX0pbl11AI73qKxqwnIbPFQE9mwLqIfyxjOkT0GjiBUTflAMDwR6f5XTJj
+ +9q4GOJTTdzvIv6JcxSzwWy3jkyxwmoFgO4YpEpz1A0eb7lNHK3m7ZWIA84zFPEz8AYuV4C5MJq
+ V8OPltbjLfW/AR7rp4verVZRK12NnDMNjb1SQ8VwYLKmKxcCS1a6thi8k+rytAxNW4MiQvjUdwW
+ +Rt5oK7Kp5+wy4/jT2PZkoyO2EPOVFzZM069dvG5zc6UJ9HuHWCuuEW40XDbyJ24r2bQj3iFao6
+ 3RVofys7gxbhgovu0hg==
+X-Proofpoint-GUID: AKENDr7iJ3urEj31f3ub611BSUOc6-A7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-27_02,2026-08-26_02,2025-10-01_01
 
-> diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-> index 1d295a8769fa..7228520aa2b6 100644
-> --- a/net/core/bpf_sk_storage.c
-> +++ b/net/core/bpf_sk_storage.c
-> @@ -806,6 +806,8 @@ static int __bpf_sk_storage_map_seq_show(struct seq_file *seq,
->  		ctx.map = info->map;
->  		if (selem) {
->  			sk_storage = rcu_dereference(selem->local_storage);
-> +			if (!sk_storage)
-> +				return 0;
-                                   ^
-Should this return SEQ_SKIP instead of 0?
+On 2026-08-25 at 10:26:16, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> qmem_alloc() uses dma_alloc_attrs() with DMA_ATTR_FORCE_CONTIGUOUS so
+> CN10K LMTST regions get physically contiguous DMA memory across page
+> boundaries.  On platforms with CMA enabled, that attribute causes
+> allocations to be drawn from the CMA pool.  qmem is used for NIX and
+> NPA queue contexts, admin queues, and LMTST regions, so the footprint
+> grows with the number of enabled interfaces and is difficult to
+> provision in CMA.
+>
+> Add otx2_dma_alloc_coherent() and otx2_dma_free_coherent() helpers
+> that allocate compound pages with __get_free_pages(__GFP_COMP),
+> DMA-map them with dma_map_page(), and retry with GFP_DMA32 when the
+> physical address exceeds the device DMA mask.  Switch qmem_alloc()
+> and qmem_free() to use them instead of
+> dma_alloc_attrs()/dma_free_attrs().
+>
+> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-Returning 0 tells bpf_seq_read() that the object was shown, but it was
-actually skipped. In kernel/bpf/bpf_iter.c bpf_seq_read():
+Will address sashiko comments in v3
 
-	err = seq->op->show(seq, p);
-	if (err > 0) {
-		/* object is skipped, decrease seq_num, so next
-		 * valid object can reuse the same seq_num.
-		 */
-		bpf_iter_dec_seq_num(seq);
-		seq->count = offs;
-	} else if (err < 0 || seq_has_overflowed(seq)) {
-
-With return 0, bpf_iter_dec_seq_num() is not called, so the skipped
-element consumes a seq_num that no BPF program invocation ever observes.
-
-If the skipped element is the first one returned by
-bpf_sk_storage_map_seq_start(), seq_num 0 is consumed with no program
-run, the next valid element is shown with ctx->meta->seq_num == 1, and
-iterator programs that emit a header on `ctx->meta->seq_num == 0`
-silently lose their header. Examples that would break:
-
-tools/testing/selftests/bpf/progs/bpf_iter_bpf_hash_map.c:
-	if (ctx->meta->seq_num == 0)
-		BPF_SEQ_PRINTF(seq, "      id   refcnt  ...\n");
-
-tools/testing/selftests/bpf/progs/bpf_iter_tcp4.c:
-	if (ctx->meta->seq_num == 0)
-		BPF_SEQ_PRINTF(seq, "  sl  local_address ...\n");
-
-For later elements the observable effect is a gap in the seq_num
-sequence.
-
-The other socket iterators handle this exact situation (object found
-stale after handed to ->show()) by returning SEQ_SKIP:
-
-net/ipv4/tcp_ipv4.c bpf_iter_tcp_seq_show():
-	if (unlikely(sk_unhashed(sk))) {
-		ret = SEQ_SKIP;
-		goto unlock;
-	}
-
-net/ipv4/udp.c bpf_iter_udp_seq_show():
-	if (unlikely(sk_unhashed(sk))) {
-		ret = SEQ_SKIP;
-		goto unlock;
-	}
-
-net/unix/af_unix.c bpf_iter_unix_seq_show():
-	ret = SEQ_SKIP;
-
-Returning SEQ_SKIP is safe for the first object too: seq_num is u64
-and bpf_iter_dec_seq_num()/bpf_iter_inc_seq_num() in
-kernel/bpf/bpf_iter.c wrap back to 0 before the next ->show().
-
----
-
-A subsystem pattern flags the following as potentially concerning:
-
->  			sk_storage = rcu_dereference(selem->local_storage);
-> +			if (!sk_storage)
-> +				return 0;
->  			ctx.sk = sk_storage->owner;
->  			ctx.value = SDATA(selem)->data;
-
-The fix adds a single check-based abort path for a race that has no
-exclusion mechanism, and the instructions that follow the abort point
-still consume the contested selem.
-
-Looking at bpf_selem_unlink_nofail() in kernel/bpf/bpf_local_storage.c,
-it tears the selem down in this order:
-
-1. b->lock: hlist_del_init_rcu(&selem->map_node);
-   bpf_obj_free_fields(smap->map.record, SDATA(selem)->data);
-2. RCU_INIT_POINTER(SDATA(selem)->smap, NULL);
-3. local_storage->lock: hlist_del_init_rcu(&selem->snode);
-4. RCU_INIT_POINTER(selem->local_storage, NULL);    <- new check sees this
-
-A concurrent iterator that re-reads selem->local_storage between steps
-1 and 4 still sees a non-NULL pointer and proceeds to:
-
-	ctx.sk = sk_storage->owner;
-	/* owner is deliberately NOT cleared in the destroy path:
-	 * "Okay to skip clearing owner_storage and storage->owner
-	 * in destroy() since the owner is going away" - so ctx.sk
-	 * can be a sock already inside __sk_destruct() */
-
-	ctx.value = SDATA(selem)->data;
-	/* bpf_obj_free_fields() has already released the value's
-	 * special fields (kptr/timer/etc.) at step 1 */
-
-So the NULL check closes the specific general-protection fault in the
-report (sk_storage == NULL, offset 0x88 == offsetof(struct
-bpf_local_storage, owner), matching the KASAN address
-0xdffffc0000000011) but does not make the iteration race-safe; it
-narrows the window rather than closing it.
-
-Worth confirming with the local-storage maintainers whether the
-iterator needs to observe selem->state / SDATA(selem)->smap (or take
-the same exclusion bpf_selem_unlink_nofail uses) rather than only
-local_storage?
-
-The residual window is not introduced by this patch - the same two
-lines executed unconditionally before it, so relative to the parent
-commit the change is a strict improvement. Practical impact of the
-residual window is also limited: ctx.sk is registered
-PTR_TO_BTF_ID_OR_NULL so programs must NULL-check it, and ctx.value is
-PTR_TO_BUF, so a BPF program cannot dereference a released kptr read
-out of it without a kfunc.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33042447773
---===============1588356556942625386==--
+pw-bot: changes-requested
