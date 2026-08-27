@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB98847F78C;
-	Thu, 27 Aug 2026 16:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D410B37EFFB;
+	Thu, 27 Aug 2026 16:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787848271; cv=none; b=sQ/AqUTZcjcFVfgtyTty/l3BUPq7b3VL8bDaotQ/Jge6rOnqikLrwqBIxCuUpytwjg0vfSITQCSYlAeUkipfrWMdhy8wU37RivgVb8KPlc9DUhenbHrblNhTzPFZlbO1t8IqyKrLwIiGohoWmBc9LjhlyUsv4nlQkuPwVy55Azk=
+	t=1787848979; cv=none; b=sXezEpaKQ2C/YuB0FqsplisRc2VOU6WX1mfdc7BY03XvwcvaRxs2Xrys9Ku+0D4NfsPL1ch7bqcOQVDX4BvohIzQ5keb4ojB3397wUb58uCDfhizThXurj3UTTc6li/32EU26oQkd+nW+PAuUFkSecWp+TsU0IJov+cmZRC5OO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787848271; c=relaxed/simple;
-	bh=MY2v7ct+Julxej+haFC8gYN1Ge8OstgGnBcoaF3VO1s=;
+	s=arc-20240116; t=1787848979; c=relaxed/simple;
+	bh=fGI2MpVCodiuZVXvHnbYkTw2oowxTlHHdU8F4xi60p0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cNFRbq7nc7/TtG8Y1BWmHnVY6phsWsflh4TgnsmM4XdTU1Jjk4dvtSfQQ9ONBbcCp8DcmKpTn1x8VozRRPsjsluzEr435uhtm2JiWp6yQGt/R9K+fIkG/Pyqntc9uN49Bl7njMye9yLfMryTxCN+oRbNcd1WSneqmU3I+x+KLyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cy0cHJY6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=tpQKmUft0sGYlSynAOGla4vjqxZK8bH4gyCnALRD4gWp6Sev6VHoxR5gCuaRq+QFpJc+HPS8bufh1oIwvBa7DB1y4MGZrWPILKwykBK3Yr7cAvnX0HDqBFeY5YVoWqNcnCE9MyIn4qObJr1BffdP16P0NFeclMjRgJ7FUeSm5mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bxu7og+F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cy0cHJY6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104651F000E9;
-	Thu, 27 Aug 2026 16:31:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bxu7og+F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C161F000E9;
+	Thu, 27 Aug 2026 16:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787848270;
-	bh=MY2v7ct+Julxej+haFC8gYN1Ge8OstgGnBcoaF3VO1s=;
+	s=k20260515; t=1787848978;
+	bh=P1YoYWCEFcjtKC/P86efzHKVbvarMBWFO1WdX4/Sngk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Cy0cHJY6Qy9kzFlS2JgmUBbUdDuCFzq4Tbhk52w6395njwipqUyQTglpF3h5cL2Ib
-	 epiU0kszmcZ2/YFUXLWgJAISPU6tP7vP/MUAbEjUYhz5wnkWf1COzDpTmBcOmA4Avv
-	 UGhdrtK4Tr3J46gaPtFKRwy8smckaQz0NFCwQ7O6RzMZZp8SJQAzsi7u1rUoCxBfNa
-	 h+85fpgPlbGscxrU6ksD8hPQAdWFVZ4abKquGTsfe9IziAe0nEAjQN5tjlQZu3HBt7
-	 zf2XRZ6yTqEz6Eg0WJJA5SEB8XE41gYz7rfctCSqkQWC9pJigw1rRoAfVytqVLYkeJ
-	 NbFWcOWVgD4Mg==
-Date: Thu, 27 Aug 2026 09:31:09 -0700
+	b=Bxu7og+F94vw2jvWVNt+CwdBQHlA7cmlo8+w8Hlj9gSC+8oUzcXujR8vAno0WjTLg
+	 xE/E0CkjQSDbUNHYa8QN04mv/gdbVewmBCX3AGbAhyBlARNTV6mnh8eeOkbKlc7iMb
+	 yRDNCZJMEm0oMmvSlrBW3Ow4k/lt/j3VHXziTQ2dE1Lnwi5ZR0bKEMo2Jt4+Lp8wOs
+	 st02cITr8XqMZCdZg1yN+aV1TkIH0Z9jqP05zhELjKnf1GjF/B3cyWEfh0dncTI3Jv
+	 dkgybZHXJb2OS5PdtauaVc/KlSlNpyRECTLmjAnfwLwrDuOQvHLwkOGQjIZBJWSGeg
+	 sF3GQQ7gKQ5wg==
+Date: Thu, 27 Aug 2026 09:42:57 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Nimrod Oren <noren@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman
- <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>, Willem de
- Bruijn <willemb@google.com>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yael
- Chemla <ychemla@nvidia.com>, "Dragos Tatulea" <dtatulea@nvidia.com>
-Subject: Re: [PATCH net] selftests: drv-net: pp_alloc_fail: restore ring
- size after timeout
-Message-ID: <20260827093109.5b26bac2@kernel.org>
-In-Reply-To: <20260825090758.308167-1-noren@nvidia.com>
-References: <20260825090758.308167-1-noren@nvidia.com>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bhargava.marreddy@broadcom.com,
+ rahul-rg.gupta@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+ rajashekar.hudumula@broadcom.com, dharmender.garg@broadcom.com,
+ ajit.khaparde@broadcom.com
+Subject: Re: [PATCH net v2] bnge: add missing ndo_set_features
+Message-ID: <20260827094257.610ece67@kernel.org>
+In-Reply-To: <20260827161230.1724658-1-vikas.gupta@broadcom.com>
+References: <20260827161230.1724658-1-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,13 +48,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 25 Aug 2026 12:07:58 +0300 Nimrod Oren wrote:
-> Would it be preferable for cmd() to terminate and wait for
-> timed-out subprocesses?
+On Thu, 27 Aug 2026 21:42:30 +0530 Vikas Gupta wrote:
+> +	bnge_close_core(bn);
+> +	bn->priv_flags = flags;
+> +	bnge_set_ring_params(bd);
+> +
+> +	rc = bnge_open_core(bn);
+> +	if (rc) {
+> +		netdev_err(dev, "bnge_open_core err: %d\n", rc);
+> +		bn->priv_flags = old_flags;
+> +		bnge_set_ring_params(bd);
+> +		netif_close(dev);
 
-Meaning send a kill signal and then wait? Does it help anything?
+We have been requiring NIC reconfiguration to be resilient against
+OOM conditions for years now. bnxt is even older so it got
+grandfathered in, but bnge has to do it right. So we will reject
+any patch that tries to close / reopen and hope for the best.
 
-Regarding the patch - I'm not sure we should be complicating
-tests for this. How about we make NIPA reboot the machine if
-it sees subprocess.TimeoutExpired ? Adding defer()s before
-seems like a bit of a whack-a-mole.
+If you want a net fix - you should reflect current operation
+of the driver - meaning make GRO-HW either forced on or forced off.
+(Forced on by leaving it in the netdev->features but not in
+->hw_features). Or reject changes while the device is UP
+-- 
+pw-bot: cr
