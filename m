@@ -1,183 +1,245 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152C38B12A
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787828196; cv=pass; b=dubr3DdUT+KR9TL1q4lD6ZphrWZWuhU22Yk7p8lLXV1h7t6kZGMrm86LNPR4dLuae2ewjiJk4HkjJXMtaG3MgxyKAH8htVXxuTDHFQTxKkJjF4utDxbrJ1xqxAPY0B05P90kG7vrwjZZO6XRq9YdOSy/xOZZdPdZYp6DSbLYddU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787828196; c=relaxed/simple;
-	bh=dXDPfK0dhT02d1TeV6qse5w+WInzpV0flL6ANp2uo78=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FtjUc4dOdrSWrWh/AzaZwMQkDh4fzgLszhFpe/cs2yQpzMvUCZrDhmXvxcvXztHMme7obV122oepTD6tbDyJwGPjGSMcoxnAvvDrAnjSyd0BJFOCsNeTjZMlpsdB42Ui+UUuLs4IZ6z75M3Y8qhqRLW9rKJN4/YPehMn9b5WwOM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OL7GCYIz; arc=pass smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F13D2E8DE3
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787828498; cv=none; b=sUAnkbUEe9orrM9Rxarh53tjXU7oD7rzDj4IN7wVmbutgPBq1nY4ILnr5l0j0pQA4Nh+1sWMw7DwT1AmOdgb8UvpL+xWksG7ll5R7hHUk8yGryJSpsmG3CrHFSCrelHhmKk3Pq+q6VMo8JJjLZPFP/fgZa9PZW1E8x7DDeSD6qc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787828498; c=relaxed/simple;
+	bh=OYFg1Jou5x8E47a/FUTmdlvRqngXQBELcGZdIMaomGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t1owEa4G/tEFg0SQI81muaH5HE/7XxV1b++utyK69XunIgIARQEX9L4uSdAM+HGhDa56eY0W597ZMBfDwglxUBt4YVnk3XBAhHWWLzDrrBWvIyQsSWpRgTdWYe+ySKddXKBdru/uIMoGO+MM0itW9WnIBfXHLkDNF5rTCwVVTg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OWDzjhK4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OL7GCYIz"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-836cb2fa1bcso33055967b3.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 03:56:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787828194; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QtsJ6TbV28BJsTS/Y/EkOZo/Y9HAUJOot4LGew9dWa/K8Noq55idbQptPLs5lmuhnK
-         +570gmN7H8U7ZufvT0zPsbQDemyi9bF4P/yJnV/mJfSf58EBHkBuaIcUt4s031pNGJuV
-         mDbvxqXaIAwxW6QaRUvShxsdUmruf1bqCFUWNNiZOvnC1iFFTDwdAwdAI8xkfhQ6N6jd
-         tx6Rd01JzupC9UeBVf8DOw2pS4HttqRCKvpIRymmttbGl8IS77m26C1wuTd6I407F6AN
-         xHvpLWhg2WyfKKnlmm38GO3//j6faQ7kKwLPtNJyTb+aIVIvUyKjI0/Oa40m8nLNHDNO
-         u+sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GDuiIzVATVb1cumV32b7bxAagNo8z0DEhbz/qi0Mnf0=;
-        fh=yYMvh/gr46yg61dPHAxL7ZQehre0EqQ1+L4hLaFzVzo=;
-        b=Uxhk635I1FW4Z4sonyT5m/8SqMCPe/mpDMWNOXbRP5FOuNfG4jo9E5iWKgTU1ogixS
-         phtAATuhFQkeUR2CSpmO3M0BHvM9kH6l/dT6IA29JsGDu8n3wua4opBcSLpX57Sv5RuJ
-         QM5O+OlaZ0VHqjw69//P4S8q9tGa5z4+uRT8/GMQZ7d2G3aN2UPyHBGxWtj4Io3DtmGf
-         OlHucBaEOKXsf9ukikKzeROg1eSqfDePkrHmnYvdhXdvSShVlATpnxyY3tLp2DS0XUQx
-         rpIO4uFChqVDEAlEtgBMDnEkfkS9IYot/Vd8Xg7cW4GhdSknkYTezX/Vfj1C0N4BcFHq
-         +cCA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787828194; x=1788432994; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GDuiIzVATVb1cumV32b7bxAagNo8z0DEhbz/qi0Mnf0=;
-        b=OL7GCYIz8PcQV6y+N0u1R1H87N5gf1RgTOo3EHVq+WnlfMvrX3BuKQXQtxvXTlAy0v
-         Z5uvzBMJ/+4Gxirq27qQIYxLcNDYkc1mVvUlMi71CRtAc1MOd3FqluojcMYNwUbYJNdX
-         ia4ck9/4hWOus7dmqVVgC4JEdksxh9ikoDJjmPTkqW4L4K4JXkeHx+drF/82O9wJDH4M
-         tmtSbCppzixoCaKu+jXab3Ier080GIwPNZJPNOtqdC/UPOqb2L8CafKgnXzXDfC1Vn83
-         ADy1gY4+jfhAanup6g2fG8XU/Gfs50R759JTUtlDN7kyS2N2ubTkDwRaR8A4yDajNvzC
-         eZsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787828194; x=1788432994;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GDuiIzVATVb1cumV32b7bxAagNo8z0DEhbz/qi0Mnf0=;
-        b=WF/0c98i9ZxOco4dygTtu1J/uxhOti1ilPgazin3gftjynOdVmijOAFYV3tduX/LcD
-         I1swkgZ8fnVlzemdNXqJO7TzgeY3k0fKNDwrRrswikPHDIGMze0nXqYh1mcslx3NT9z8
-         ztezhC2eGZo6qm9dqvstFiDjjlCpBxI1phWgT/tWDVeMycUUBOswZr4jzC3iBxQCduWV
-         Uwl49v01kOQ7o3zi8zfHgsCjQTuEOZWdU5K40/AIlXoXIIKc1lX12k3m5uTUcThSNnuY
-         2s3cmev1vlhGvTu8MObYQWKSKaOZtht9/NBxZv2mW6HT7yp9a3IOpYKZVnln7O7UYvTs
-         6Ogw==
-X-Forwarded-Encrypted: i=1; AHgh+RpvOFg1HYmqPYsKYnySa62FeHfYhctVJd0VBAN3xINl2nqgp43xxbBleJ6F8BJCGNEgKyS28eg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lih3IO2XE4BAjEjzSMRh949aASMPwF7kM+5zrE7YOovPcYe1yW
-	4aZvE+yfvV8aBI2MLySAEpDERHl8V5p2YQqSrTyWrnsDqzdXkvlzrfFDFb+Sqgl3X3uYe+i7Zkw
-	teRuVJ0qLyLHfF+Alm+eAFFRnXf5tKba8kINWyi0/
-X-Gm-Gg: AR+sD13YLUSCDrgCeNaWJm4t2q0nruWbZfvF1MLXiUAjCbIVyjIQ4q+O3ubS5bEkUlA
-	cd7n+2P8SjYVqPplDQhVAl6ylXoVPZm7WCTjWEejDdjt6BoU22FwRa9168BW5tOvG6GdKhW4WSd
-	1Zq9wmVL8aisQTxHPahXEXHQlhhz+WsMkT/ilvDt05gJ5I6bDvIG+qlSFKj0RZP0JCWXoNw9VH1
-	eJ7YRKHnKgNOinjRSLl6k2UusBYMIk5lfmfPohL3NIFcFNgigWVGkTuzZqOLFasSzd0lXw8qIZo
-	1bPNICgyyBkK83F647pN0PinG6OvGUKla1zdslrWSW1rtRV3AMnt7FZ6RdvVw+xSW4pjRyri7+g
-	piPGtk0n/8gaapX7jqxYLcc8LyW/rb+Lv2YF+xUoQ/ncE2/JXYBp9oydqgwGmG+rGnmtrNg==
-X-Received: by 2002:a05:690c:a4d2:b0:81e:abe2:9a3b with SMTP id
- 00721157ae682-857445e6731mr48323077b3.10.1787828193276; Thu, 27 Aug 2026
- 03:56:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OWDzjhK4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787828496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wgw61i5ygc+23hUMhfZfLn1I9aKNXr7tn4a/rdJfgHw=;
+	b=OWDzjhK46z+oZyd+39SiexPNU8SOCiJkPDe25KLAl0343T6OPsWQZH0VhNP5Gz1n/gq6tG
+	oLF3ItVBmgPvI0iuNgC8sslx3+P8HS7Vt8NlDtMEdJ3vlKhG0IHO9dtC8zrcEYUONbUvsu
+	YtUUYhhMXFgTMuWpriJYIr9U0u3EABw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-1TonA37qO96TtBGRkIs2uw-1; Thu,
+ 27 Aug 2026 07:01:29 -0400
+X-MC-Unique: 1TonA37qO96TtBGRkIs2uw-1
+X-Mimecast-MFC-AGG-ID: 1TonA37qO96TtBGRkIs2uw_1787828488
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A7E3195605B;
+	Thu, 27 Aug 2026 11:01:27 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.32.49])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B20231955F07;
+	Thu, 27 Aug 2026 11:01:23 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	vega@nebusec.ai,
+	victor@mojatatu.com
+Subject: Re: [PATCH net v2] net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
+Date: Thu, 27 Aug 2026 13:01:16 +0200
+Message-ID: <20260827110116.180569-1-pabeni@redhat.com>
+In-Reply-To: <20260825081403.133992-1-jhs@mojatatu.com>
+References: <20260825081403.133992-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825023614.1228551-1-edumazet@google.com> <9eeac695-ff8b-4473-b0ab-b3ad873b6915@redhat.com>
- <CANn89iLb1qJ9asoisJzPmXQ-ZD7Xp6H5kfjOdMtjxYBuL_2sKA@mail.gmail.com> <4619ea36-bd62-4d31-b3be-c5948748046a@redhat.com>
-In-Reply-To: <4619ea36-bd62-4d31-b3be-c5948748046a@redhat.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 27 Aug 2026 12:56:21 +0200
-X-Gm-Features: AcwNN1XCqi5IuPetZCzsptwMPSmJc1RpswhDLcqh7daPkbN8Nzwq1ZbTI-cKKIw
-Message-ID: <CANn89i+Ob-n5mKN0bP6yETZ1tNUJa1XQ_+ER_dC=3HY+cSPf-A@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: use GFP_ATOMIC in tcp_send_active_reset()
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Aug 27, 2026 at 12:04=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
-ote:
->
-> On 8/27/26 11:33 AM, Eric Dumazet wrote:
-> > On Thu, Aug 27, 2026 at 11:09=E2=80=AFAM Paolo Abeni <pabeni@redhat.com=
-> wrote:
-> >>
-> >> On 8/25/26 4:36 AM, Eric Dumazet wrote:
-> >>> tcp_send_active_reset() can be called from contexts where gfp_any()
-> >>> (in tcp_disconnect()) or sk->sk_allocation (in __tcp_close() and
-> >>> mptcp_do_fastclose()) evaluates to GFP_KERNEL, which includes
-> >>> __GFP_FS and __GFP_DIRECT_RECLAIM.
-> >>>
-> >>> Allocating with GFP_KERNEL while holding the socket lock (sk_lock) cr=
-eates
-> >>> a lockdep dependency:
-> >>>   sk_lock -> fs_reclaim
-> >>>
-> >>> This causes false-positive lockdep circular locking warnings with sto=
-rage
-> >>> subsystems (such as nvme-tcp) that acquire socket locks in block I/O =
-paths
-> >>> and invoke tcp_disconnect() or close sockets upon teardown:
-> >>>   set->srcu -> sk_lock -> fs_reclaim -> elevator_lock -> set->srcu
-> >>>
-> >>> Active resets are small RST packet headers that should never
-> >>> enter direct reclaim or block while holding socket locks.
-> >>>
-> >>> Hardcode GFP_ATOMIC inside tcp_send_active_reset() and remove its
-> >>> priority argument since all callers now use GFP_ATOMIC.
-> >>>
-> >>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> >>> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> >> Sashiko has a bit to say:
-> >>
-> >> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825023614.122=
-8551-1-edumazet%40google.com
-> >>
-> >> A couple of issues (the same lockdep chain still be present for
-> >> regular transmissions, and SOCK_MEMALLOC being ignored) looks
-> >> real to me. WDYT?
-> >
-> > Thanks for the pointer; my local Sashiko couldn't spot this.
-> >
-> > Regarding SOCK_MEMALLOC, that's a good point.
-> > Using bare GFP_ATOMICdrops __GFP_MEMALLOC and misses __GFP_NOWARN.
-> > We should use:
-> >     sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN)
-> >
-> > I will squash this into V2.
->
-> Thanks!
-> > All the remarks against nvme will be taken care of once this patch is m=
-erged.
-> So the addressed lockdep splat is against nvme, right? Given the
-> reclassification and memalloc_noio_save() dance performed by nvme
-> noted by sashiko, I'm wondering if something alike the following
-> (completely untested!) could be a viable alternative?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
 
-I considered that, but having tcp_send_active_reset() use
-sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN) internally is  cleaner
-and safer:
+This adds QDISC_PKT_LEN_MAX (1 MiB) and clamps the value computed by
+__qdisc_calculate_pkt_len() into the range [1, QDISC_PKT_LEN_MAX], with the
+stated goal of preventing a crafted TCA_STAB size table from driving the DRR
+and ETS deficit refill loops into a multi-billion iteration spin under the
+qdisc lock.
 
- Active resets are small control packets sent during
- abort/teardown. There is no reason to ever enter direct reclaim or
- __GFP_FS while holding socket locks, just as we never do for FINs,
- ACKs, or window probes in tcp_output.c
- Note that the current thread is likely to free memory sooner;
-it's better not to block it because of GFP_KERNEL.
+A couple of questions about the fix and about the arithmetic it now
+consumes.
 
-tcp_disconnect() was not the only caller passing GFP_KERNEL; __tcp_close()
- (when tossing unread data) and mptcp_do_fastclose() also passed
- sk->sk_allocation (GFP_KERNEL for normal sockets).
+> diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+> index 18a419cd9d949..90d3e7943b19a 100644
+> --- a/include/net/pkt_sched.h
+> +++ b/include/net/pkt_sched.h
+> @@ -12,6 +12,7 @@
+>  
+>  #define DEFAULT_TX_QUEUE_LEN	1000
+>  #define STAB_SIZE_LOG_MAX	30
+> +#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
+>  
+>  struct qdisc_walker {
+>  	int	stop;
+> diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+> index 65b35528d125f..90503e59e6e3b 100644
+> --- a/net/sched/sch_api.c
+> +++ b/net/sched/sch_api.c
+> @@ -610,8 +610,11 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
+>  
+>  	pkt_len <<= stab->szopts.size_log;
 
-7 out of the 10 call sites of tcp_send_active_reset() were already passing
- GFP_ATOMIC (tcp_abort, timers, linger2, OOM, mptcp reset reason). Removing
- the priority argument simplifies the API and guarantees that all callers
- use a safe, non-reclaiming mask.
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the new clamp consumes the
+result of arithmetic that is done entirely in a signed int on unvalidated
+user input, so it may not bound what it is intended to bound.
 
-Other in-kernel users (or future storage drivers) that do not explicitly se=
-t
- sk->sk_allocation to GFP_ATOMIC would still suffer from the same issue if
- we keep GFP_KERNEL under socket locks.
+In __qdisc_calculate_pkt_len():
+
+	pkt_len = skb->len + stab->szopts.overhead;
+	...
+	pkt_len = stab->data[stab->szopts.tsize - 1] *
+			(slot / stab->szopts.tsize) +
+			stab->data[slot % stab->szopts.tsize];
+
+	pkt_len <<= stab->szopts.size_log;
+
+qdisc_get_stab() only validates tsize consistency and size_log/cell_log
+against STAB_SIZE_LOG_MAX:
+
+	if (s->size_log > STAB_SIZE_LOG_MAX ||
+	    s->cell_log > STAB_SIZE_LOG_MAX) {
+		NL_SET_ERR_MSG(extack, "Invalid logarithmic size of size table");
+		return ERR_PTR(-EINVAL);
+	}
+
+The overhead field and the u16 data table are not range checked (the
+changelog itself notes overhead 999999999 is accepted), and size_log may be
+up to 30, so the shift overflows for any table entry >= 4.
+
+Is the signed left shift here reportable under CONFIG_UBSAN_SHIFT, and can
+that be reached by a namespace-local CAP_NET_ADMIN user?
+
+With the usual wrapping behaviour, is the new clamp monotone in the
+attacker-controlled inputs? For example data[slot] = 65535 with
+size_log = 16 wraps to -65536, which clamp_t(int, ...) turns into 1, so
+shaping qdiscs such as TBF, HTB and fq would account one byte for a packet
+the table describes as huge.
+
+Would doing this arithmetic in u64 (or unsigned with saturation) and
+narrowing before the clamp make the new bound actually hold?
+
+>  out:
+> -	if (unlikely(pkt_len < 1))
+> -		pkt_len = 1;
+> +	/* A size table can inflate qdisc_pkt_len() beyond any real packet
+> +	 * (via overhead, the data table, or size_log); cap it so deficit
+> +	 * schedulers such as DRR/ETS terminate their refill loops.
+> +	 */
+> +	pkt_len = clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
+>  	qdisc_skb_cb(skb)->pkt_len = pkt_len;
+>  }
+
+[Severity: High]
+Does this clamp actually bound the DRR/ETS refill loops, or only one of
+their inputs?
+
+drr_dequeue() round-robins the active class list, and each unsuccessful
+visit advances only the head class by one quantum:
+
+net/sched/sch_drr.c:drr_dequeue() {
+	while (1) {
+		cl = list_first_entry(&q->active, struct drr_class, alist);
+		skb = cl->qdisc->ops->peek(cl->qdisc);
+		...
+		len = qdisc_pkt_len(skb);
+		if (len <= cl->deficit) {
+			...
+			return skb;
+		}
+
+		WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
+		list_move_tail(&cl->alist, &q->active);
+	}
+}
+
+Since every active class advances at the same rate, isn't the iteration
+count before the first packet becomes eligible roughly
+nr_active_classes * (qdisc_pkt_len / quantum) rather than
+qdisc_pkt_len / quantum?
+
+The minimum accepted quantum is 1, since drr_change_class() only rejects
+zero:
+
+net/sched/sch_drr.c:drr_change_class() {
+	quantum = nla_get_u32(tb[TCA_DRR_QUANTUM]);
+	if (quantum == 0) {
+		NL_SET_ERR_MSG(extack, "Specified DRR quantum cannot be zero");
+		return -EINVAL;
+	}
+}
+
+and drr_enqueue() re-arms the worst case on every reactivation:
+
+net/sched/sch_drr.c:drr_enqueue() {
+	if (!cl_is_active(cl)) {
+		list_add_tail(&cl->alist, &q->active);
+		WRITE_ONCE(cl->deficit, READ_ONCE(cl->quantum));
+	}
+}
+
+So with quantum 1, the new 2^20 cap and roughly 1024 active classes (class
+creation is not bounded, and drr_classify() maps skb->priority to a classid
+so an unprivileged socket can steer packets per class), does a single
+drr_dequeue() still run on the order of 10^9 iterations with the root qdisc
+spinlock held and softirqs disabled?
+
+The same shape appears in ets_qdisc_dequeue(), which is the other consumer
+named in the new comment:
+
+net/sched/sch_ets.c:ets_qdisc_dequeue() {
+		cl->deficit += READ_ONCE(cl->quantum);
+		list_move_tail(&cl->alist, &q->active);
+}
+
+with an added per-iteration scan of the q->nstrict strict bands.
+
+Also, is this reachable with no TCA_STAB at all, for instance ~16k classes
+with quantum 1 and ordinary 64 KiB packets? If so, the deficit-loop stall
+does not appear to be gated on size-table amplification in the first place.
+
+And can __qdisc_run() interrupt it?
+
+net/sched/sch_generic.c:__qdisc_run() {
+	while (qdisc_restart(q, &packets, quota)) {
+		quota -= packets;
+		if (quota <= 0) {
+			...
+			break;
+		}
+	}
+}
+
+The quota is only evaluated after qdisc_restart() returns, so it cannot
+preempt the internal refill loop.
+
+Would bounding the loop itself, either with an iteration limit or by
+requiring a quantum that is sane relative to the maximum pkt_len, be
+needed instead of clamping one of its inputs?
+-- 
+This is an AI-generated review.
+
