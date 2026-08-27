@@ -1,387 +1,235 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0874023C4F3;
-	Thu, 27 Aug 2026 08:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1229434DCE0
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787819110; cv=none; b=NkTV5rg2sijz5tqOG1Q4kuxkJFMKlF6MToG/YEokyC5auHR6Lt4EPZuxG0iP3yEbJ1pFI386+WCfjnL0wiIgLYvJfMGryr/ntvMrIM3eh6iXe99iMHNEN4S1xH6Z4ZCol8NMPzwucC3OCQR+ZBeABilWgK4Oj+eDHRAQtd4q8W8=
+	t=1787819309; cv=none; b=IpNiO2IxxuZgE3AHHNQoxOnpTerqhc19vaavgNXN0bxlrPdPiU14GhAaA7URhZciRMjTyiB4OZLKFTADXJZQjIMvdUZlEyYdX2V5GjLWp7j7XBxW45wlqCczB4uuG1MeBpuN0oUfeEjCFR7VA6X3wEadBMf1tzRACp3AYTUj2Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787819110; c=relaxed/simple;
-	bh=K//dcqOj/u1f4v/t1XJXee1C8LWkVqJwhqugohvZIwI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cNkkc5UxTXAuro6qO+9TbNfmuWHU2EqFrYXP4zeKKT3BFbk2GaaUZK0rDEvQfsUptr4mQ0YqxHj2HOaOHfNNPYIjhk/qafK2EjchQ7sxX06UAgcSy9DGMS8+5bDg7dJi0r5HOdOvk5yU93KDKeCocYMYkJgAiL6lz3hQyxC3T7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=A1xOEvsw; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787819309; c=relaxed/simple;
+	bh=wxdiu5Au59yPOBpM2YAAJDIGhWo1HwTNuKoNefXGVs8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ppghr/KaERZZ42Tg/pEsYTeHe/4iChFD9iZ03GGwYe5l7ZbDxW2v2RrYP3KVHVQ+Wgjxos+29lFbpJpfTm3EWnboq29TOpMTOqgja6Em+D1I8chFfaXbG9w6vK0aET+Cr1dlIC/yOOKtu/biqlFJGkwrUL+kHN4lvIvo8hMt/dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ayHQofSI; arc=none smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="A1xOEvsw"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67R6PgNI2868611;
-	Thu, 27 Aug 2026 01:24:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=b2ICdb/gaA7hSkuEmMuxQ/U
-	oiiH5nTsEmWK24FkrIaE=; b=A1xOEvswsaiB1NSkbZh+pnZ+Vv8kCiVRx9MQKBI
-	lm+0rwN9KM3tVzSYdHFeqQbnLkPKQugttHzJo+WdL9qMYf/ZRZEFxo5sNW2br/l1
-	cSyIhDvZrSstZLerAq+ijvQANllPBWtLrlkAGemcmNpl+Ths8UDZuzoX/KKWp9bH
-	GMCCsMg+5NYlWNv9IHtdzP61NYmHWUrKoEr2XjuuEqoHbrzyDDR9rMj98Xp8VriN
-	Bk3T/gQGnviUL9SpttgiPl8+zETRbzzn+cIkxYPGCUD3mseHcX0urDz9jDKrQytW
-	NL/8V+l4J9F5f6ypCHRjxVpYjHaKjgMdQiQMS7nWFoXIItA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ga970sb9k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Aug 2026 01:24:48 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 27 Aug 2026 01:24:46 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 27 Aug 2026 01:24:46 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 878FB3F7058;
-	Thu, 27 Aug 2026 01:24:42 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Geetha sowjanya <gakula@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        "Paolo
- Abeni" <pabeni@redhat.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        "Harman
- Kalra" <hkalra@marvell.com>, Simon Horman <horms@kernel.org>
-Subject: [PATCH net v2] octeontx2-af: Fix Rep link state sync up with PF/VFs
-Date: Thu, 27 Aug 2026 13:54:29 +0530
-Message-ID: <20260827082430.383813-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ayHQofSI"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2caed617615so20359795ad.3
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:28:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787819305; x=1788424105;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Vj8QA7IhmwgzrR44bjxhX9/6B6xlbBRS9M+8nabSv/8=;
+        b=SfqrR2qkHZF4cjABCx/xmkomA2oFW1RC1jRyIWbTL+NFGqmkoLHQurdG8/gjL3/zlT
+         pVszweLdD1jni+LJSrzc2+SvbWGPfYytl1moHoZaqrHJL1rIm1cBLrZj/d3tCRANIGlJ
+         2NahmtB+rz1djBlKsBSIZqK6kSFmyb9hDnaUb9m3XR8BcuBIqNkOH3h9qV93wPDMehfB
+         pXGvAXO/tnCh1NaxovRGmlobFAavC3VvuVoX+C8SYN9h6FOnDb56TbK/uYuhiMvziMpi
+         2OJWxycXpNHlft1S5Gl/ORKKCWdZ8AKBv5qrQoTqDAfnvn/TqumvnNaPhagNzZb9FskE
+         ZxNg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrpnyu2ulradz6pCrumjWJWqJP8ZiicfujTxWS4XBTVrR32x5PWwAC+siabREwD+l7anWDq5Os=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKvvXU2wONm2NePoRnYn9MIRK2KYz4xFtwph8ClFrIuE6kAfnD
+	T0jXxyudNzHPBAVrAFGv67uNr9D8yOKy/J2EW/nww+7CI9ggsA79d6aEwKixY+sJC/gS2dC/kV0
+	GewH2W/Q6fnD9qQOu2HSypEPKI8w6ZkCkkeBn7myrKRVEnH3Q4DfJyrbjnI2kgeKHSY3lHuAWN3
+	rzGlzlj688+KIG9kVhPpOWFOf4TSlEI6XAAmQNvUhlHwKUVnVU8tJfr+ueEXd3prbEk/p49XM81
+	pc4zq04n2E=
+X-Gm-Gg: AR+sD112gp69qXtHNXloItjyUAm9bRU5ffWYLzYyAHz74/yLYLLbynacLT9mP52o/pW
+	zCF+XQweq8W2N+wbq5VFqpWqwiUrnILOy486Q3rMCFYy/Xze9iPOeDFZ10LIRGNqvNBMsi4IR38
+	X1/lv3dVhrdceE+huLFXX8iZhh35nu5bfHU6J6g+OZDK6uBJ3+cZI0OHN0NNA4wmHLFU8LhLEjv
+	B9KTRm1SC1nIQdc4wIzjJxkrQTYxO21zJSc/lFpYNx8Oea1Imu2PJc4XcRjNIPRH+eYjc0pB48L
+	wKAHtSVaJ2iyuzqTetfXhr9rk5tx5bmtsgV+wgW1U6BLw1/qq5+r27Jba0Rz6NTD6SY7ysl0GuJ
+	lsbILAp92A32UkMKZ/zdHAhCtqeE05pYup9wvtgxuKx8OegeOr/QbAGpWRsFPhOX266Dga1Lo/A
+	NfBbEEqOLTd2bWegT75fMxr0rEz2OYdkJ6ng/+qA==
+X-Received: by 2002:a17:90b:2247:b0:385:393e:7124 with SMTP id 98e67ed59e1d1-3966d49471bmr25063234a91.14.1787819304613;
+        Thu, 27 Aug 2026 01:28:24 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-121.dlp.protect.broadcom.com. [144.49.247.121])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-396b1127282sm659023a91.13.2026.08.27.01.28.24
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Aug 2026 01:28:24 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1b6f65dacso2470873a12.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:28:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1787819303; x=1788424103; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vj8QA7IhmwgzrR44bjxhX9/6B6xlbBRS9M+8nabSv/8=;
+        b=ayHQofSIWX9f8TWA5PGrPcubopsfoCKLUIf5jTPLuIQHD7NT2xSz8XVa4OYdfSduMW
+         htzpeQaIdqp7+5Vm55MKhMGvkdoAqgBqV/zYEPtB8UNcxoUxiiMS3FkwoAe4dHeaTl2h
+         GmNiIgBfqJetnLTZ+0NkbXGmbU78wWmQMHTpA=
+X-Forwarded-Encrypted: i=1; AHgh+Rpj8KG+hTSnoD4sUaNZz4vI1tKl8HZzXTas+r0eCLFbYsDlwe9VNFwpQBYWYXHoNKYRF7DEliM=@vger.kernel.org
+X-Received: by 2002:a05:6a00:2d81:b0:848:6b76:592f with SMTP id d2e1a72fcca58-853722a1873mr22145200b3a.5.1787819302984;
+        Thu, 27 Aug 2026 01:28:22 -0700 (PDT)
+X-Received: by 2002:a05:6a00:2d81:b0:848:6b76:592f with SMTP id
+ d2e1a72fcca58-853722a1873mr22145154b3a.5.1787819302579; Thu, 27 Aug 2026
+ 01:28:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 41Dm5wEoMnQq6uRLgIvF5CNVd0nU2iWK
-X-Proofpoint-GUID: 41Dm5wEoMnQq6uRLgIvF5CNVd0nU2iWK
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI3MDA2OSBTYWx0ZWRfXzB7hh+Mxkuk/
- yUx7KyABdYPmaXTTKMbUUyIpj7O85EzOl3LcgU9JW983A8uGXXyj4K5uhA16KoGPogEa6ZgJGH8
- RIORR5jAFeRJXLjg0Q2tCBJHcCvkP5E=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI3MDA2OSBTYWx0ZWRfX9i94z0qRWxiX
- Z/6C5FcRf8JbOUkAoQpHAJ27cxUCfSKNbQPJyJwSGQil6evbl0dToQXkL/4x/OTm80WblgLi0fD
- dFkZY48Ge9d8PxMEKIl4Q0SevuH11eIRSRyU2kizJNl+4rqlEbsbHvUdP3YSGnbOu9minXtfF9a
- 04XdQd520jhImmE1r4F3QG/fT+xRKjkXxJmSuF0CU4+xr3Vepz9omkDDM2IYHXMmdwLG2ATURw1
- Sx7Pp6MnDrJ3/1y/eNAB8LNrT+7KOAdHP1nq4tO+6wPpSvSshUVZSx1smBydTAiNRtuH930sbE8
- MS51mJlgWRIfVYWQdIHjp2nFr79v5aGqPyxWiXwZEf/vbgs25XwS0Ra5ijuxnXMFlDbdWVJux2m
- MEK7M4zTyh1Cd35JGCYQpviRI0O7begQ9nKAdZ+Z0A9B43Bo6g2zYbsKBzs/ltrYwy6Z73UwTDa
- VQFRvurPwcEDeZKmoEA==
-X-Authority-Analysis: v=2.4 cv=NvbhtcdJ c=1 sm=1 tr=0 ts=6a8ff450 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=kp-MP-1-nDhws-s2F5cA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-27_03,2026-08-26_02,2025-10-01_01
+References: <20260827-bnxt-uc-overflow-v1-1-f20d48864fe9@topgolf.com>
+In-Reply-To: <20260827-bnxt-uc-overflow-v1-1-f20d48864fe9@topgolf.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Date: Thu, 27 Aug 2026 13:58:10 +0530
+X-Gm-Features: AcwNN1XWQNSDDkVbClCgjHDVZjiJXE8b3YY9KztOJ4Zg0dWwWS-kthVRWZrRtQY
+Message-ID: <CALs4sv0ng6DquAhOFSjKeXhckzxa-NrCKA3k98uezW46Rx+BRw@mail.gmail.com>
+Subject: Re: [PATCH net] bnxt_en: avoid redundant RX mask updates in UC
+ overflow state
+To: johnathan.browall@topgolf.com
+Cc: Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	=?UTF-8?Q?Pontus_H=C3=A5llstedt?= <pontus.hallstedt@topgolf.com>
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000007fa186065a031ec0"
 
-From: Geetha sowjanya <gakula@marvell.com>
+--0000000000007fa186065a031ec0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sync representor link state with PF/VFs and move rep event workqueue
-init to rvu_mbox_handler_get_rep_cnt().
+On Thu, Aug 27, 2026 at 12:42=E2=80=AFPM Johnathan Browall via B4 Relay
+<devnull+johnathan.browall.topgolf.com@kernel.org> wrote:
+>
+> From: Johnathan Browall <johnathan.browall@topgolf.com>
+>
+> bnxt_cfg_rx_mode() stops programming individual L2 filters and turns
+> on the promiscuous bit in the VNIC rx mask when the interface has more
+> unicast addresses than the hardware has filter slots
+> (BNXT_MAX_UC_ADDRS).  The driver state never becomes consistent after
+> that: vnic->uc_filter_count stays at 1, so bnxt_uc_list_updated()
+> keeps reporting the UC list as changed on every rx-mode callback, and
+> bnxt_set_rx_mode() removes the promiscuous bit from the mask it
+> computes (it only re-adds it for IFF_PROMISC), so the mask comparison
+> also fails every time.
+>
+> As a consequence, every rx-mode callback resends the same
+> HWRM_CFA_L2_SET_RX_MASK to the firmware, including for requests that
+> change nothing, such as setting a link flag to the value it already
+> has, or a macvlan going up or down.  That would only cost an
+> unnecessary firmware call if SET_RX_MASK processing did not affect
+> traffic, but on BCM57416 and BCM57504 (firmware 23.3 and 23.6) it
+> does: each invocation causes a short interval in which incoming
+> unicast traffic is dropped.  We observed this in production as
+> sequence gaps in GigE Vision camera streams on a PF carrying 19
+> secondary unicast addresses, with HWRM tracing showing a SET_RX_MASK
+> (and no filter alloc/free) for every repeated "ip link set ... arp on"
+> that changed nothing.
 
-Fixes: b8fea84a0468 ("octeontx2-pf: Add support to sync link state between representor and VFs")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
----
-v2: Reject REP event notifications before workqueue setup and
-    validate PF/VF state event pcifuncs.
-v2: Make REP map initialization atomic by using a temporary map,
-    handling zero-REP cases, and rolling back on workqueue allocation
-    failure.
-v2: Use an unbound REP event workqueue.
-v2: Serialize LBK link TL2 configuration with rsrc_lock.
----
- .../net/ethernet/marvell/octeontx2/af/rvu.c   |   4 +
- .../ethernet/marvell/octeontx2/af/rvu_rep.c   | 113 ++++++++++++------
- .../marvell/octeontx2/af/rvu_switch.c         |   2 +
- .../net/ethernet/marvell/octeontx2/nic/rep.c  |   6 +
- 4 files changed, 86 insertions(+), 39 deletions(-)
+Regardless of why/whether firmware behaves that way, to me, your patch
+looks like the right thing to do.
+LGTM except that you may want to fix the checkpatch complaint of 82 chars..
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 74c041ab5280..f484e362cf57 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -3716,6 +3716,10 @@ static void rvu_remove(struct pci_dev *pdev)
- 	rvu_unregister_dl(rvu);
- 	rvu_unregister_interrupts(rvu);
- 	rvu_flr_wq_destroy(rvu);
-+	if (rvu->rep_evt_wq) {
-+		destroy_workqueue(rvu->rep_evt_wq);
-+		rvu->rep_evt_wq = NULL;
-+	}
- 	rvu_cgx_exit(rvu);
- 	rvu_fwdata_exit(rvu);
- 	rvu_mcs_exit(rvu);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-index a2781e0f504e..ef8d30eeeafd 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-@@ -44,6 +44,8 @@ static int rvu_rep_up_notify(struct rvu *rvu, struct rep_event *event)
- 	if (event->event & RVU_EVENT_MAC_ADDR_CHANGE)
- 		ether_addr_copy(pfvf->mac_addr, event->evt_data.mac);
- 
-+	if (event->event & RVU_EVENT_PFVF_STATE)
-+		pf = rvu_get_pf(rvu->pdev, event->hdr.pcifunc);
- 	mutex_lock(&rvu->mbox_lock);
- 	msg = otx2_mbox_alloc_msg_rep_event_up_notify(rvu, pf);
- 	if (!msg) {
-@@ -53,6 +55,10 @@ static int rvu_rep_up_notify(struct rvu *rvu, struct rep_event *event)
- 
- 	msg->hdr.pcifunc = event->pcifunc;
- 	msg->event = event->event;
-+	msg->pcifunc = event->pcifunc;
-+
-+	if (event->event & RVU_EVENT_PFVF_STATE)
-+		msg->hdr.pcifunc = event->hdr.pcifunc;
- 
- 	memcpy(&msg->evt_data, &event->evt_data, sizeof(struct rep_evt_data));
- 
-@@ -97,6 +103,9 @@ int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
- {
- 	struct rep_evtq_ent *qentry;
- 
-+	if (!rvu->rep_evt_wq)
-+		return -EINVAL;
-+
- 	/* The mailbox dispatcher normalises only the header pcifunc; the
- 	 * nested struct rep_event::pcifunc body field is sender-controlled
- 	 * and is later used by rvu_rep_up_notify() to index rvu->pf[] /
-@@ -105,6 +114,10 @@ int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
- 	if (!is_pf_func_valid(rvu, req->pcifunc))
- 		return -EINVAL;
- 
-+	if ((req->event & RVU_EVENT_PFVF_STATE) &&
-+	    rvu_get_pf(rvu->pdev, req->hdr.pcifunc) >= rvu->hw->total_pfs)
-+		return -EINVAL;
-+
- 	qentry = kmalloc_obj(*qentry, GFP_ATOMIC);
- 	if (!qentry)
- 		return -ENOMEM;
-@@ -119,31 +132,17 @@ int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
- 
- int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable)
- {
--	struct rep_event *req;
--	int pf;
-+	struct rep_event req = { 0 };
-+	struct msg_rsp rsp;
- 
- 	if (!is_pf_cgxmapped(rvu, rvu_get_pf(rvu->pdev, pcifunc)))
- 		return 0;
- 
--	pf = rvu_get_pf(rvu->pdev, rvu->rep_pcifunc);
--
--	mutex_lock(&rvu->mbox_lock);
--	req = otx2_mbox_alloc_msg_rep_event_up_notify(rvu, pf);
--	if (!req) {
--		mutex_unlock(&rvu->mbox_lock);
--		return -ENOMEM;
--	}
--
--	req->hdr.pcifunc = rvu->rep_pcifunc;
--	req->event |= RVU_EVENT_PFVF_STATE;
--	req->pcifunc = pcifunc;
--	req->evt_data.vf_state = enable;
--
--	otx2_mbox_wait_for_zero(&rvu->afpf_wq_info.mbox_up, pf);
--	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pf);
--
--	mutex_unlock(&rvu->mbox_lock);
--	return 0;
-+	req.hdr.pcifunc = rvu->rep_pcifunc;
-+	req.event = RVU_EVENT_PFVF_STATE;
-+	req.pcifunc = pcifunc;
-+	req.evt_data.vf_state = enable;
-+	return rvu_mbox_handler_rep_event_notify(rvu, &req, &rsp);
- }
- 
- #define RVU_LF_RX_STATS(reg) \
-@@ -325,6 +324,7 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
- 	u16 start = rswitch->start_entry;
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u16 pcifunc, entry = 0;
-+	struct rvu_pfvf *pfvf;
- 	int pf, vf, numvfs;
- 	int err, nixlf, i;
- 	u8 rep;
-@@ -334,7 +334,10 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
- 			continue;
- 
- 		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
-+		pfvf = rvu_get_pfvf(rvu, pcifunc);
- 		rvu_get_nix_blkaddr(rvu, pcifunc);
-+		if (test_bit(NIXLF_INITIALIZED, &pfvf->flags))
-+			rvu_switch_enable_lbk_link(rvu, pcifunc, true);
- 		rep = true;
- 		for (i = 0; i < 2; i++) {
- 			err = rvu_rep_install_rx_rule(rvu, pcifunc,
-@@ -354,6 +357,9 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
- 		rvu_get_pf_numvfs(rvu, pf, &numvfs, NULL);
- 		for (vf = 0; vf < numvfs; vf++) {
- 			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf + 1);
-+			pfvf = rvu_get_pfvf(rvu, pcifunc);
-+			if (test_bit(NIXLF_INITIALIZED, &pfvf->flags))
-+				rvu_switch_enable_lbk_link(rvu, pcifunc, true);
- 			rvu_get_nix_blkaddr(rvu, pcifunc);
- 
- 			/* Skip installimg rules if nixlf is not attached */
-@@ -379,16 +385,6 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
- 			}
- 		}
- 	}
--
--	/* Initialize the wq for handling REP events */
--	spin_lock_init(&rvu->rep_evtq_lock);
--	INIT_LIST_HEAD(&rvu->rep_evtq_head);
--	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
--	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_PERCPU, 0);
--	if (!rvu->rep_evt_wq) {
--		dev_err(rvu->dev, "REP workqueue allocation failed\n");
--		return -ENOMEM;
--	}
- 	return 0;
- }
- 
-@@ -443,35 +439,74 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
- 	return 0;
- }
- 
-+static int rvu_rep_get_rep_map(struct rvu *rvu, struct msg_req *req,
-+			       struct get_rep_cnt_rsp *rsp)
-+{
-+	int rep;
-+
-+	rvu->rep_pcifunc = req->hdr.pcifunc;
-+	rsp->rep_cnt = rvu->rep_cnt;
-+	for (rep = 0; rep < rvu->rep_cnt; rep++)
-+		rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
-+
-+	return 0;
-+}
-+
- int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
- 				 struct get_rep_cnt_rsp *rsp)
- {
- 	int pf, vf, numvfs, hwvf, rep = 0;
- 	u16 pcifunc;
-+	u16 *map;
-+
-+	if (rvu->rep2pfvf_map)
-+		return rvu_rep_get_rep_map(rvu, req, rsp);
- 
- 	rvu->rep_pcifunc = req->hdr.pcifunc;
- 	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
--	rvu->rep_cnt = rsp->rep_cnt;
- 
--	rvu->rep2pfvf_map = devm_kzalloc(rvu->dev, rvu->rep_cnt *
--					 sizeof(u16), GFP_KERNEL);
--	if (!rvu->rep2pfvf_map)
-+	/* Allocate at least one element so the map pointer is always non-NULL
-+	 * once published, making the above guard unconditionally reliable.
-+	 */
-+	map = devm_kzalloc(rvu->dev, (rsp->rep_cnt ?: 1) * sizeof(u16),
-+			   GFP_KERNEL);
-+	if (!map)
- 		return -ENOMEM;
- 
-+	rvu->rep_cnt = rsp->rep_cnt;
-+
- 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
- 		if (!is_pf_cgxmapped(rvu, pf))
- 			continue;
- 		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
--		rvu->rep2pfvf_map[rep] = pcifunc;
-+		map[rep] = pcifunc;
- 		rsp->rep_pf_map[rep] = pcifunc;
- 		rep++;
- 		rvu_get_pf_numvfs(rvu, pf, &numvfs, &hwvf);
- 		for (vf = 0; vf < numvfs; vf++) {
--			rvu->rep2pfvf_map[rep] = pcifunc |
--				((vf + 1) & RVU_PFVF_FUNC_MASK);
--			rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
-+			map[rep] = pcifunc | ((vf + 1) & RVU_PFVF_FUNC_MASK);
-+			rsp->rep_pf_map[rep] = map[rep];
- 			rep++;
- 		}
- 	}
-+
-+	if (!rvu->rep_cnt) {
-+		rvu->rep2pfvf_map = map;
-+		return 0;
-+	}
-+
-+	/* Initialize the wq for handling REP events */
-+	spin_lock_init(&rvu->rep_evtq_lock);
-+	INIT_LIST_HEAD(&rvu->rep_evtq_head);
-+	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
-+	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_UNBOUND, 0);
-+	if (!rvu->rep_evt_wq) {
-+		dev_err(rvu->dev, "REP workqueue allocation failed\n");
-+		devm_kfree(rvu->dev, map);
-+		rvu->rep_cnt = 0;
-+		return -ENOMEM;
-+	}
-+
-+	rvu->rep2pfvf_map = map;
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
-index 49ce38685a7e..6f1330ae8d90 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
-@@ -15,8 +15,10 @@ void rvu_switch_enable_lbk_link(struct rvu *rvu, u16 pcifunc, bool enable)
- 
- 	nix_hw = get_nix_hw(rvu->hw, pfvf->nix_blkaddr);
- 	/* Enable LBK links with channel 63 for TX MCAM rule */
-+	mutex_lock(&rvu->rsrc_lock);
- 	rvu_nix_tx_tl2_cfg(rvu, pfvf->nix_blkaddr, pcifunc,
- 			   &nix_hw->txsch[NIX_TXSCH_LVL_TL2], enable);
-+	mutex_unlock(&rvu->rsrc_lock);
- }
- 
- static int rvu_switch_install_rx_rule(struct rvu *rvu, u16 pcifunc,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-index 0f5d5642d3f7..3f89a2c04b2b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-@@ -459,6 +459,9 @@ static int rvu_rep_open(struct net_device *dev)
- 	netif_carrier_on(dev);
- 	netif_tx_start_all_queues(dev);
- 
-+	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
-+		return 0;
-+
- 	evt.event = RVU_EVENT_PORT_STATE;
- 	evt.evt_data.port_state = 1;
- 	evt.pcifunc = rep->pcifunc;
-@@ -478,6 +481,9 @@ static int rvu_rep_stop(struct net_device *dev)
- 	netif_carrier_off(dev);
- 	netif_tx_disable(dev);
- 
-+	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
-+		return 0;
-+
- 	evt.event = RVU_EVENT_PORT_STATE;
- 	evt.pcifunc = rep->pcifunc;
- 	rvu_rep_notify_pfvf(priv, RVU_EVENT_PORT_STATE, &evt);
--- 
-2.48.1
+--0000000000007fa186065a031ec0
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
+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
+/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
+ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
+NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
+MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
+miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
+QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
+Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
+CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
+jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
+6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
+PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
+eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
+Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
+a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAB7Ci7
+q3rZ80kO0x/ZHeM7YwGo8mOAIG0s0Xsi78r39DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA4MjcwODI4MjNaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBTKHuRc/Y8J7IA3K3fci7AxWc71tf4JShdczPwMM++
+BIWJaqTG4ytji58ubDif7Jf0cVXalK+tNDhNdB8L5X8C41Z6uqowKTnWhM5MBEdNX5Kdjxj4RNuw
+bduxULhOHqjGNGpL0oiofl8jKYzUkXUoEweSgpAgggOgVKPlAKfZAyM/W1Ln8CtYZu3aHxha2kpD
+qof50/dA6wgJCy8x7XzXuIRHYQCoIdwKK4SPkXmEGON56Qu8g40vvGii857WKdvztxywrIbXPEw0
+ncueB5Cfd7LTVjUl6r1HsVS4irNhw6mnjFEEa2rooiTqa8JsRdZ0IZctSQri/WPqnaN8eKaY
+--0000000000007fa186065a031ec0--
