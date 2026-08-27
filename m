@@ -1,199 +1,194 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3024749F0
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 13:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0145D5D9
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 13:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787837281; cv=none; b=ZA+xFoe7BLnKSgDGmcil4q9IGvPEY/HNWMP+5U5fC96ITW8wFvJaqccdRPhKgcX0O2P7XHzM5FpKrjXTlxqIBQbw/PG0ime/wGDXMgwjuISKxDrwmkC9LjeeUNkLU4GZQG4m2FpF02Ktr7zM8JN0iXcYCNqhkJ2LdzMY4qmhP98=
+	t=1787837310; cv=none; b=AP0wgNKZHTH2kFowlmuOUnPfyPDSoPbW1+1IYuoJTd6y6qJNpAHhndy40ThO8PifHYxa+sUwt5hzP07vXyueWKybmYt+LgNscO7xrmi7h8PVV2ALZiTeS2DtY9ydoXg8DAF30sTGCbcjgmUBb1LIgytkWIv+whohlvdZK1K5la4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787837281; c=relaxed/simple;
-	bh=KtfRFkT+oAksoiG4I1U+6QdBXNwsPCdzM2S02ggA6Nc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=q62WblW3kMQEvMRgr3jfq2SSqXYN6MAz6d7iN2opJZefj0wIYTBJXNUEo8ERTk+0ZxrNTl03NmvQ0/EsqBudp7mAPwFhZY5D9BtzYWMz72guSuuaRlEHcJd1iAju3iq8uXmlfT7kJQFRENQ4GnOGNmzRcICHQ3yFzUweetrqdqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L6kjwZI5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LBWSw5So; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1787837310; c=relaxed/simple;
+	bh=7iws63+16wpG8prIlgxf9CM1D0Nn+luPsBt8FZSBa74=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aNSeYRp36rVxo1SR/enJW5C//wrJpRcqd/m8DbUJs2+fG8hbfPqGCF5wTjFa+ozzUwZVv2NJ/3oaVSM2L2vaRRFM7Q41wfMli4lCmDfZKfg/a8ekw7QRczJw0F6VorsXRBTGnZDtsduJ+2c0+HLtdOlviDGp6bbNW0JaSY62GX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cVHeMPge; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IjTOiGF1; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L6kjwZI5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LBWSw5So"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cVHeMPge";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IjTOiGF1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787837266;
+	s=mimecast20190719; t=1787837292;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tyawd/wlpyXA+cjjPTN3rEnerzspCQ+EjODeWqtloEg=;
-	b=L6kjwZI5KYoC2xhDMrnT+h3+Ap53Vdla6Fw6998RgILcHosMej3u/yu6QTs512kbNUFPl/
-	j4kSCANy/Eh81P7UXQ2amKoebaI6SwaM4iUddncMIBBr3ESBI5CdohReM/ar8I+nTHMVeO
-	yc8kCUT5IFsfazyQEccbgbg+1DT9wQw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=dgsSqq61G4OIRRb8rEJF3DAo7sETU8xbSmJ6z7e8iaw=;
+	b=cVHeMPgeCqQfoteMk9ecGkRIwVMGKv3QA9aqejP/2/qigvip5X4MHBZvEDu89gen/hqxg/
+	jYrGgHwFRQFCYAEwkVPpg6ym30lSZCaog94/yIgf89CSdEKbgpE1ZbcyitCgJ/l4JFS8G/
+	6oCZnE4zbQmyjENvP1C8aax7l1fbkgA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-SFuH6TFKOcCPoB9s7XNIdA-1; Thu, 27 Aug 2026 09:27:45 -0400
-X-MC-Unique: SFuH6TFKOcCPoB9s7XNIdA-1
-X-Mimecast-MFC-AGG-ID: SFuH6TFKOcCPoB9s7XNIdA_1787837264
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4957287363bso13814555e9.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 06:27:45 -0700 (PDT)
+ us-mta-679-sHRghxtyO86026c44CYZZw-1; Thu, 27 Aug 2026 09:28:11 -0400
+X-MC-Unique: sHRghxtyO86026c44CYZZw-1
+X-Mimecast-MFC-AGG-ID: sHRghxtyO86026c44CYZZw_1787837290
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4994d67d0e3so13831735e9.2
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 06:28:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787837264; x=1788442064; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tyawd/wlpyXA+cjjPTN3rEnerzspCQ+EjODeWqtloEg=;
-        b=LBWSw5Soh+wJmDL0pgNNx9x2wCgirAUiddqVjZgFPiYtqyQNgf6I/UMleOT3hnr6Pt
-         DLPwej7SuScPN3cgPtkB6tLwT2bXPEivRxpA9XOqHIDls8gZJbaqN8AqSia7cl4BMGrf
-         JVNwLQDPaaGH/bgqfe3b6NalH3Y9TE4K69UN3XUlLQIL4dzfd6y4R959IigJS36laY+L
-         itXlPhb5qrzsSJnl9GCgzoBDd3xzyTcqG0pO0t9VtHDCq3rxD9Bl8EJ0i8RxNz2f9mbd
-         tuNm4CdM/n3Ffy1JnST0O60YsS91TtxmKZaLkZT18YiIuBWLn47ZV0NN8ibdE3AOFcsW
-         2kdw==
+        d=redhat.com; s=google; t=1787837290; x=1788442090; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dgsSqq61G4OIRRb8rEJF3DAo7sETU8xbSmJ6z7e8iaw=;
+        b=IjTOiGF1QE6y4VjaWIvGAVKQ/tePWYWdCcN/KZEHa59woFV8fOiR7XhfvtWaNBjt4s
+         ldLXTVDFtu/5Q8Cl2ZoCN70PMnDK+3p/L5z8FCFNoHLR9AWaIzmqlrVVL08UXbUr2WIG
+         c+jsZtscXY9iT2vcANo86V0vDP+u4IBecEuaZqLvA/1da2WOvM6f2RwEWxqJPV6C+298
+         55ZCPavAxn/zb0t3JDoyFAS6vpzCkzd0XMHA9+WXYAtdQMWEKNB0g4SEwyPiVD7X5V2f
+         8F5Uo1aCOU9Gy2oJtGvCdkMV5bjOWevB5vKuXGQq62ASWheb3HZzSnJQdyVEdHG3nmSl
+         lF3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787837264; x=1788442064;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tyawd/wlpyXA+cjjPTN3rEnerzspCQ+EjODeWqtloEg=;
-        b=Jh5g+7dsALhX8ZkrKpHi1xvaYAlCptcL0Upwj7ezMhW/KZ+9e6pK06dJ5+fPQi+kRO
-         sjMunNQk3fNwNu/XfrvlpfsZSLwoa1eNit0NysLTer8x755E7cNLUNfGC/u+WGfgxHsU
-         rsa/H0GibHZPspOShzzDTI4GmG9yYMGfKx1Vrr16IN1N0vwDVbNlC10wO+ICZ5LFVPlg
-         8ncKAQxPQhOwBU5GRGVYmsCBGUsRJK1rMhMVnOgzjqb8ZTrQCJZLOaee2xgTA/C1TEte
-         tASaW5St4F5gqAMiBFoEoynVsWZENWsVvPRQT11G+PvGwh95PRgOuzJXb3z+67w2AYek
-         6J6w==
-X-Forwarded-Encrypted: i=1; AHgh+RqW2kLbUMUUhH8//aDyeotvMzy6FVBL8A/Y7lKW7bN7j4owPLo4BXnbkeYtWEYDPlaq2N/JIZw=@vger.kernel.org
-X-Gm-Message-State: AFuF++ks5EPZiHjUNnnyGcKz+mdh95WHWOGB4BgVqueOfA/cQD3M8eus
-	OTGdyA7HQIm52nGvrDVQxOp582DJ8VBL0Ebp3BSPjAfSfzgomSAiKHcssBIH1nZEhtJgeeRHkrT
-	4iP/MLY5ZR81rVC+BbONLXWdhoVzGfnkpXz1tmMZL5Fn5OMrRfuM6/d23ng==
-X-Gm-Gg: AR+sD12dSnTyn0vS72RHwCGtH7XYBfT/tLAH/1uNz91JJY5xcNx+snw94FQUK6x/VhX
-	l+X+BgkZkhlnb2eMXvCZvg8aIxSoE3bd12v14ur0RMHlfJDEi9Yj4uUxf19sZNS9NHBHQWeaolL
-	KYRpdwznC7xLHMho9IFcRDQ4q580/83KgxaWAjBWYOD8GJJ9e3xFFx5K59KtgoSaWubz8aGks5/
-	EuVTAX3uN9G+zYfbRakVVLdGI+/dECj8F8AX19eTd76UXu/IC8p2+cRDD2mGi+kMUUnqF1Q2FD6
-	FradbFvNVbNbwGCDG6mvcFB/dRVzdr8ILg7Hr774QiW7ZnERDjTCAzWM/G55UHk4Vvco2m47Vv7
-	sQPW1EdoqN6xMN/l6J93uFmIXkNI=
-X-Received: by 2002:a05:600c:c3cf:10b0:499:d880:ae40 with SMTP id 5b1f17b1804b1-499dc724098mr137786325e9.10.1787837264175;
-        Thu, 27 Aug 2026 06:27:44 -0700 (PDT)
-X-Received: by 2002:a05:600c:c3cf:10b0:499:d880:ae40 with SMTP id 5b1f17b1804b1-499dc724098mr137785405e9.10.1787837263657;
-        Thu, 27 Aug 2026 06:27:43 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4af00fd2sm48599195e9.12.2026.08.27.06.27.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 06:27:42 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id C54AE979E5C; Thu, 27 Aug 2026 15:27:41 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: bot+bpf-ci@kernel.org, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
- martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, lorenzo@kernel.org
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, ast@kernel.org,
- andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org,
- eddyz87@gmail.com, yonghong.song@linux.dev, clm@meta.com,
- ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 1/2] libbpf: Move XDP frags flag to prog_flags
-In-Reply-To: <f8413c983b5bbf569125bfa9d12a81f2293adc9905f89d746cc51276c21459ea@mail.kernel.org>
-References: <20260827100214.169215-1-toke@redhat.com>
- <f8413c983b5bbf569125bfa9d12a81f2293adc9905f89d746cc51276c21459ea@mail.kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Thu, 27 Aug 2026 15:27:41 +0200
-Message-ID: <87cxv34rsi.fsf@toke.dk>
+        d=1e100.net; s=20251104; t=1787837290; x=1788442090;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dgsSqq61G4OIRRb8rEJF3DAo7sETU8xbSmJ6z7e8iaw=;
+        b=VbODTzBTCbSuM/0Cv9oIaL4Lyf/6vg8xwVs4om8waRZwzrXvFK5lMWJJOopFn73gSR
+         dUcULVDZs+PXKs2mnZk2Waau7LniQX1oW7PNW8ahgc2PKKJdzHFGxtsJzYG6CjXmi40v
+         PMm0rBJOPBXUXrnY/tbgG2lHCpgIgBHEF1tYc8C/J3TkCtneg1dFL8cvb2J4mOv2N//N
+         wjxA4MWTNV9H+Jkrq06vO5jolX3U4QQ3fsVLF0BFyrqWPw/zHRTvUvokL+H/V5xKGiFd
+         WGJyDF7TimZy0YSUO+jHDZOt8tXWAHUYewQHNb07Fvtw7lOk5dYEYoEVK7X+vt4q75OT
+         2mwQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpgGS+ebO3iojpK9bbM/OJyCavtEm7lb6rklB1FPgx1VmAnBq3CwuNuCT34yHNss0+ug7lkh7s=@vger.kernel.org
+X-Gm-Message-State: AFuF++lPPGMFiJqRLc4RfbDvFcXZdqWhta4QJ5Qz6TnltjhDdvAU0k9R
+	qi43IiR92ZjgPn8oWC7X5Deb9kpu0lSVUD9ekuUd4RkBLK16yYneneI8bvCKKxKP7Zozjypcpo/
+	6gw/INsch0QUp+vldxNF3XqoQjcrIy2JkS7aobv3TbwBVXpgMAJ8/OtFKUw==
+X-Gm-Gg: AR+sD13v1H+iJxqQs/tDewTfnFkxSvJdozxJEnO/7dYsPT43SuHPjl6zoqDc3ljRI5T
+	yIiTPpnaG6sIHfiI8ev5t3gIoctJ/5/NpjOSL0gKOAFWnf2MgnPQuM4KM0oMrRr2fr5iGb7CozL
+	SByF0io0X6TEiTXnq+svh0XTw4hxi1ExW9xkxrPxyE4V6QRRaTuDvREmvjWPx7YNtfWn+2N+C6V
+	t7JVS4XMM3utSLR3TJbxES4f0RuTuVZ79n93rU2HEoOWXmi+/rJnD7W+qZXqoG5hKA5hjZUWNgM
+	kMatssywhkxiB1dQtMjbsn6vsKfLbTb7YtyIwzje905Y616e5Os/sDzbfN97nrlKtNINGGATrMh
+	cnd1D1al+9oQw0zf6E1RqoSgHZXj/i5w7AxEhioyQtwp5TgMCLcC+S4FvM+lBOC51ijEs6kI=
+X-Received: by 2002:a05:600c:3f08:b0:499:51f0:a9b2 with SMTP id 5b1f17b1804b1-499dc6ec0e7mr200670355e9.1.1787837290305;
+        Thu, 27 Aug 2026 06:28:10 -0700 (PDT)
+X-Received: by 2002:a05:600c:3f08:b0:499:51f0:a9b2 with SMTP id 5b1f17b1804b1-499dc6ec0e7mr200669165e9.1.1787837289791;
+        Thu, 27 Aug 2026 06:28:09 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4e2c1af7sm52968915e9.15.2026.08.27.06.28.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Aug 2026 06:28:08 -0700 (PDT)
+Message-ID: <79005413-9560-4dba-945e-525a3badc059@redhat.com>
+Date: Thu, 27 Aug 2026 15:28:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/2] net: phy: restore the interrupt after a
+ generic-driver bind cycle
+To: Aleksei Sviridkin <f@lex.la>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260824024029.41310-1-f@lex.la>
+ <20260824024029.41310-3-f@lex.la>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260824024029.41310-3-f@lex.la>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-bot+bpf-ci@kernel.org writes:
+On 8/24/26 4:40 AM, Aleksei Sviridkin wrote:
+> A PHY with no specific driver available at attach time gets the generic
+> one, and phy_probe() parks it in polling mode because that driver has
+> no interrupt callbacks. phy_detach() releases the generic driver so a
+> real one can bind later, but the interrupt is not given back, and a
+> generic probe that fails leaves the PHY the same way without reaching
+> phy_detach() at all. The specific driver then attaches with
+> irq == PHY_POLL and the PHY stays polled for the rest of the uptime,
+> with no warning on that path.
+> 
+> Take it back from the MDIO bus interrupt table on both exits from the
+> cycle: the cycle does not touch that table, so whatever the bus
+> recorded there still stands. A bus that never filled it has nothing to
+> give back and its PHY stays polled. Restore only where the cycle left
+> PHY_POLL, so that an interrupt mode installed on the attached PHY
+> afterwards is not reset.
+> 
+> Signed-off-by: Aleksei Sviridkin <f@lex.la>
+> ---
+> The cycle is easy to hit on a DSA switch that probes before the rootfs
+> is mounted: the switch connects its user ports during setup, the PHY
+> driver is still a module on that rootfs, so the generic driver binds
+> and is released again when the connect fails. The real driver binds at
+> ifup and gets irq == PHY_POLL.
+> 
+> Both exits from the cycle need the restore: phy_detach() for a generic
+> driver that bound and is being released, and phy_attach_direct()'s
+> error_module_put label for a generic probe that failed, which never
+> calls phy_detach() at all.
+> 
+> What the table covers and what it does not. Nothing writes
+> mii_bus->irq[] after the bus is registered except stmmac_mdio.c and
+> mlxbf_gige_main.c, and both assign the same value to phydev->irq in the
+> same breath, so a PHY whose interrupt came from firmware is fixed here.
+> A PHY handed its interrupt by its MAC driver is not: lan78xx and
+> smsc95xx write phydev->irq after registration and leave the table
+> alone, so they keep polling after a generic cycle exactly as they do
+> today, and the set of drivers that write only phydev->irq is larger
+> than those two. Which raises a question I would rather ask than settle
+> alone: if bus->irq[] is the per-address registry for a bus, should
+> those drivers be mirroring into it the way mlxbf_gige and stmmac
+> already do? If that is the intent I am happy to send it as a follow-up.
+> 
+> What the guard distinguishes and what it does not. It preserves an
+> interrupt mode installed on the attached PHY after connect, so
+> PHY_MAC_INTERRUPT from genet, tsnep or bcmasp survives the detach. It
+> cannot tell phy_probe()'s parking from the other ways phydev->irq
+> reaches PHY_POLL, so a PHY parked by PHY_F_NO_IRQ, by a failed
+> phy_request_interrupt(), or by a MAC taking the phy.rst advice to set
+> PHY_POLL, is restored here as well. That is harmless for the drivers
+> that do so today: phy_attach_direct() applies PHY_F_NO_IRQ again on the
+> next attach, a failed request is simply retried, and every MAC that
+> forces PHY_POLL does so in the same function that connects the PHY, so
+> a restored value is overwritten before anything can act on it.
+> 
+> The guard is not only tidiness. Without it a PHY that a MAC had put in
+> PHY_MAC_INTERRUPT mode would get a real interrupt number back at
+> detach, the next phy_connect_direct() would request it, and
+> phy_disconnect() would then skip phy_free_interrupt(), because the MAC
+> overwrites phydev->irq again right after connect and
+> phy_interrupt_is_valid() is false by the time the interrupt would be
+> freed. That asymmetry between phy_connect_direct() and
+> phy_disconnect() is not new, and it bites any such MAC whose PHY has an
+> interrupt to request; the guard keeps a generic-driver cycle from
+> walking a PHY into it.
+> 
+> The same interrupt is also lost on a plain sysfs unbind and rebind of a
+> PHY driver, and this patch does not cover that. A restore in
+> phy_remove() would cover both paths, but is_genphy_driven is what keeps
+> the intent narrow here, so I would rather not widen the fix on a guess.
+> 
+> No Fixes: tag on this one. The behaviour predates what I can bisect in
+> this tree; if someone can name the commit I will add it.
 
->> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
->> index b749c01742ee0..7d6f0fe518d99 100644
->> --- a/tools/lib/bpf/libbpf.c
->> +++ b/tools/lib/bpf/libbpf.c
->
-> [ ... ]
->
->> @@ -7879,6 +7877,12 @@ static int tracing_multi_mod_fd(struct bpf_program *prog, int *btf_obj_fd)
->>  	return 0;
->>  }
->>
->> +static int setup_xdp_frags(struct bpf_program *prog, long cookie)
->> +{
->> +	prog->prog_flags |= BPF_F_XDP_HAS_FRAGS;
->> +	return 0;
->> +}
->
-> Does storing BPF_F_XDP_HAS_FRAGS in prog->prog_flags here break callers
-> that use bpf_program__set_flags()?
->
-> bpf_program__set_flags() overwrites rather than OR-ing:
->
->     int bpf_program__set_flags(struct bpf_program *prog, __u32 flags)
->     {
->             ...
->             prog->prog_flags = flags;
->     }
->
-> Previously the flag was OR'd into the load-time opts by
-> libbpf_prepare_prog_load(), so it survived any user manipulation of
-> prog_flags between open and load. The new code latches it into
-> prog->prog_flags at open time, so it's lost whenever a caller assigns
-> prog_flags instead of OR-ing.
+If the root cause predates git history, the fixes tag should be:
 
-Making it possible to manipulate the flag after loading is the whole
-point of the patch, so this is expected. As for users like:
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-> bpf_object_load_prog() passes prog->prog_flags straight to the kernel:
->
->     load_attr.prog_flags = prog->prog_flags;
->
-> Two in-tree callers do exactly that on SEC("xdp.frags") programs.
->
-> bpftool (tools/bpf/bpftool/prog.c), i.e. 'bpftool prog load FILE PIN
-> xdpmeta_dev DEV':
->
->     if (prog_type == BPF_PROG_TYPE_XDP && xdpmeta_ifindex) {
->             bpf_program__set_flags(pos, BPF_F_XDP_DEV_BOUND_ONLY);
->             bpf_program__set_ifindex(pos, xdpmeta_ifindex);
+Otherwise the oldest commit that still reproduces the issue would do.
 
-...doing a set_flags without preserving the existing flags will lead to
-clobbering, that's what's implied by the API? So any users doing that
-are buggy, I'd argue.
+It looks like out sashiko instance did not pick this series, and this is
+net material. Please re-submit with the correct target tree and fixes tag.
 
-> Keeping the load-time 'opts->prog_flags
-> |= BPF_F_XDP_HAS_FRAGS' in addition to the new prog_flags initialisation,
-> or having bpf_program__set_flags() preserve section-implied bits, would give
-> visibility without breaking existing callers.
+Please also try to condense the above writing in a much shorter text, or
+point to prior discussion.
 
-Both of these options will still make it impossible to turn off the
-frags bit after loading the object. I guess we could do the "preserve
-section-implied bits" part and add an explicit
-bpf_program__clear_flags() to remove everything. What do others think?
-
->>  /* this is called as prog->sec_def->prog_prepare_load_fn for libbpf-supported sec_defs */
->>  static int libbpf_prepare_prog_load(struct bpf_program *prog,
->>  				    struct bpf_prog_load_opts *opts, long cookie)
->>  @@ -7892,9 +7896,6 @@ static int libbpf_prepare_prog_load(struct bpf_program *prog,
->>  	if (def & SEC_SLEEPABLE)
->>  		opts->prog_flags |= BPF_F_SLEEPABLE;
->>
->> -	if (prog->type == BPF_PROG_TYPE_XDP && (def & SEC_XDP_FRAGS))
->> -		opts->prog_flags |= BPF_F_XDP_HAS_FRAGS;
->> -
->
-> Should setup_xdp_frags() keep a program type guard?
-
-No, the setup callback callback is called too early for this to make
-sense. However:
-
-> The trigger requires a deliberate retype, but the guard removal is a
-> behaviour change that the changelog does not mention. If the flag is meant
-> to be XDP-only, should setup_xdp_frags() keep the type test or should
-> bpf_program__set_type() drop the bit when moving away from
-> BPF_PROG_TYPE_XDP?
-
-Clearing the type-specific flags on type change could make sense. I can
-add that in v2 if others agree?
-
--Toke
+/P
 
