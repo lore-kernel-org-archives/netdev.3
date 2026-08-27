@@ -1,141 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E493BED66
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9295B380FDE;
+	Thu, 27 Aug 2026 08:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787818238; cv=none; b=Fd89mAKUi5eET6/WE+QPH8j/jUcfFh3YsnUhUgrPcuUbnngymu0HH3XwL02r/scDjVvraKd9IK7q186oyIqa+oLi2eKT99c1H1jPGUfrdv51mLlRT6vbQIn3iX5bAyeVt8bBYDqHQJHsS15S5VpOlGwlVfo0USHxVs0soy4d900=
+	t=1787818265; cv=none; b=g1QcAgMUel5eEwMklYa0dQ7Y+nxbNzceUrz0TR/4BVtxuNYWT3mN0SDRIuXbyL0/zjWvdom3WINnRJDzfMow7H2FiSMjqK11YvFq4FdVUK6Fjh+th7Wkm5UIWZkMhwr7GgCh2P2IaaXVEwkMCdukYyTXyyh6GLWIPH1SG3muyVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787818238; c=relaxed/simple;
-	bh=v8DlLY7ma2LyAtWyVwiNsJ5k6Cb0yYYgQsJlQMG0xg4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SUwA4OvSb1Rpj4VHo8I9MIX0QE3SSrgKAGzLSkOGmqZis/CG7rQMQTdkf3NngE4HwF/atp1E7rski0KzingUOuqrBW2ji5nnUI4h1DBPwRYVkvqipLNy6/QVOHGDQvVaQVAodR4vD1/KluUhS4eJC5YnvCQTI3n7MPjOIaq3sTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KBIcBuTL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BqJjMqYU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787818265; c=relaxed/simple;
+	bh=bxhnAPZCY5DW4eFRZDPe7yLHv6R0ofl8xh/MPWZq9PE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fTZFk9gfZ66tn/rTCCEX7fXZ9c9Xgc7ZAsNJDKiMHaw05AX9FtyQ2t0+U7t04bOy+4F0ZcXbjtCuc07pKDGEvDMAr3d2a199L6c2+Pq1hbZBcKZtpQqTvM5UqX96LYJ0xYjsNPPNiPD53lFIJFd5W+ZgK8XGUc05az8Kkp12sRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8rppW3A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KBIcBuTL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BqJjMqYU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787818234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LjEuQn0GyYN4mR6spCUyGj8pF4DNE5yUhyvyjSUBEAA=;
-	b=KBIcBuTLFmfvETNuNjm+YClnbWyh1iNU6VfyNlhMHyy7ravDB7HxtGFqe9GXwa1/LwRVwr
-	eHnsFAmubfN6QM2WooHwg4Y7SVNyf12dys+Yzcn4cHT0OxTX0ppqVfrzMeYbXEOP4lGJdq
-	AT3xq+tDiXIwXywRNdRSSC+eEAwb5eE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-OsGkzxqhMZCQlqmXudIV3A-1; Thu, 27 Aug 2026 04:10:33 -0400
-X-MC-Unique: OsGkzxqhMZCQlqmXudIV3A-1
-X-Mimecast-MFC-AGG-ID: OsGkzxqhMZCQlqmXudIV3A_1787818232
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49b7c1dc61eso2232435e9.3
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:10:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787818232; x=1788423032; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LjEuQn0GyYN4mR6spCUyGj8pF4DNE5yUhyvyjSUBEAA=;
-        b=BqJjMqYU2/36jLSx9+Pe5fLck42enSGzdoE3bcUpcSOMU6JRdMp44mSRRpmT0uFfVH
-         dCgA5t53caeWMUgQfzMGj2/asBf3zuCVwV/cAYzWDU02VTQ13Bdipl2hVMmEUCAF0q2k
-         Of4ujqOg8/+pL3Ttb8OeOeG6i2GPCnoYPsAw+nEa/oBd9YQA+LSH1jPNzz/mZRijQ0tn
-         Q0s9mKhETN82aAP3KVbzt1r0bQvRqyBY2EcEpQvKxm9sR8uU4VhorUaeFYyvt1jyDKAm
-         /ZmcO3hs4hfxrXX6GuXsDNpffE41w3qkBLtnmkmZmfbDiSTLvl2natsjjnEnyP6gxZB5
-         HyPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787818232; x=1788423032;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LjEuQn0GyYN4mR6spCUyGj8pF4DNE5yUhyvyjSUBEAA=;
-        b=BkGF4F01W6BhFbQb8OSS/QkfHChTvNjAtRm2C7IHBu/Vgs6DAhjEHRcw4Ir0hIyPOE
-         VRE/lB5E13C+B1wJH8+N5SMtKgeaOo+jM5FQTue0q8nUkgtM7OusbGhMk8GYWo3b92DN
-         OiE6eGURmwrkpJzY5je7PKznNfqwFZLK/iRnUvgKqvwIRAu18CZCGtHfgYW03lJjY3qj
-         zYhz2i/IiJZJOkd8qz7Am8/Qb+fdX0KeQk6+VKkyRE/HJvxwH7/U+nq3SjoxSjC2MO+7
-         2u1bUCL+OFwCm+NCHkrMzVXoElAF7q1ZGuTlhdNqFcKFdBLIsQckAmVCZcYli4PmYTG+
-         pbjA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6dpy8bkjKSmO9uCUewNNkzYzcy9+p3NlY1IdWA8ace6spRH8xx/BApksfColulyb3Ka0qm2E=@vger.kernel.org
-X-Gm-Message-State: AFuF++kyEbVSKLk/oTyHWWIYu3u2y+eOAh778/KRLWLDdqN1Uu2AZhYg
-	7Mq7rTyXzkuogDUAZpF529lhV+cx6fNIyJ8MEdyINToFPln35VuzZ6JnWxERMvMqakpasEIscNB
-	/Zn8sxCpGSxWbk6CY5gyW1X3TujGXHiYIJYrikzZSLr9MCDsk4Q/jDEfCxg==
-X-Gm-Gg: AR+sD12MknXDYpz/WJcegr29xinfR0p/DDYKAE1ZWYXUCLSHaFlnajvsIIvnsNC5Aaz
-	XKMi53OYfiXFcx1TDyJyp11UkwEah+hIRfSgHX7n4mcAI100Mt/tsA4Yc5ouE8PZQ8HnvXMpe/O
-	kOukFdXC/NvBrBSGtSTf9tw0AawY03gPNoKWkTftUclWGcfCbXcs6tjJ2JqpeeFcXuqDy6lILtd
-	tLbKS0xYdFd98S1dnPnZxGyQfNV88MaF9pzo0CUatjJKJMuRnJo1qFksQNa9X46ruADLpa68iwr
-	8ppaWi2VBbrqJSnT1Sfx2YgXvv61HQaou5SW2gQ+Pxh331M1w887bnC/fZypRwVHdR9nbEEIUgf
-	gsesognmFfoPz0OtKKSzyV2K8U0jsrKhUyGRFLaoImGgrymIGr/zPOH4Jlt2ixSbas/9y6nQ=
-X-Received: by 2002:a05:600c:a43:b0:497:fecd:5b00 with SMTP id 5b1f17b1804b1-499dc717e27mr129887115e9.9.1787818231663;
-        Thu, 27 Aug 2026 01:10:31 -0700 (PDT)
-X-Received: by 2002:a05:600c:a43:b0:497:fecd:5b00 with SMTP id 5b1f17b1804b1-499dc717e27mr129885015e9.9.1787818230497;
-        Thu, 27 Aug 2026 01:10:30 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dd56acedsm61647295e9.3.2026.08.27.01.10.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 01:10:29 -0700 (PDT)
-Message-ID: <69d874a2-dc5e-45c5-8f94-418d5a73e738@redhat.com>
-Date: Thu, 27 Aug 2026 10:10:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8rppW3A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E971F000E9;
+	Thu, 27 Aug 2026 08:11:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787818260;
+	bh=+MwTcniFgsQyj/mh+HBBLh8w4RBABQD8nqYNKGZKxGU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=K8rppW3ABdUDNXrK6Q7jT8E+OfMviBE+EPcrDRVdF8nvH61z4tOpwpzhH1mIZqVEW
+	 0YlYdIVc7HXFKeek3Cu77gsBKHUnyQzO0+18UhO5l8yyGg0L996u0CHk+T1BoE+8VP
+	 Ue93xqJYJVxpfX4YnKFPkzGdDTOSuZBxt78p7Xf/2ZRsCf8kWDPBtJkxH8Bm3GxR9R
+	 sO0dv6iFxWB0hf0lBZy1slylRLtWW9wHSRb49d+kNmkPVIFw9/h8bzUDJpatg87GX8
+	 1qtMk8zA+BPZQTxm1lp/YVVzTAB+ak4lOilFKxyUGX8xYIY0WDmzLXZKwaON5RotdZ
+	 RWq09+78fpGAw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939493809A12;
+	Thu, 27 Aug 2026 08:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: fec: support RX flushing via an ethtool
- private flag
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>, netdev@vger.kernel.org
-Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260825091908.1362677-1-alexander.sverdlin@siemens.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260825091908.1362677-1-alexander.sverdlin@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: ethernet: sun4i-emac: Fix IRQ error handling
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178781820640.1094636.14217098118734046137.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Aug 2026 08:10:06 +0000
+References: <20260824100901.31675-1-phucduc.bui@gmail.com>
+In-Reply-To: <20260824100901.31675-1-phucduc.bui@gmail.com>
+To: Bui Duc Phuc <phucduc.bui@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, wens@kernel.org,
+ jernej.skrabec@gmail.com, samuel@sholland.org, linusw@kernel.org,
+ kees@kernel.org, bartosz.golaszewski@oss.qualcomm.com, arnd@arndb.de,
+ sr@denx.de, mripard@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
 
-On 8/25/26 11:19 AM, A. Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> The FEC controller can flush the RX FIFO of an individual receive queue
-> through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
-> 
-> RX flushing prevents frames in the RX FIFO from being blocked. Blocking
-> can occur when the frame at the head of the RX FIFO cannot be forwarded
-> because the ring it is associated with cannot accept it, i.e. when the
-> ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flushing
-> is enabled for a ring, such a blocking frame is flushed (discarded)
-> instead of stalling the FIFO and holding up the other rings.
-> 
-> Expose this per-queue capability as a runtime ethtool private flag
-> ("rx-flush-qN").
-> 
-> Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flushing
-> on more than one queue at a time can lock up the receive path, so only a
-> single queue may have flushing enabled.
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-## Form letter - net-next-closed
+Hello:
 
-net-next pull request for v7.3 has already been merged, and therefore
-the net-next tree is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Please repost when net-next reopens after Aug 31st.
+On Mon, 24 Aug 2026 17:09:01 +0700 you wrote:
+> From: bui duc phuc <phucduc.bui@gmail.com>
+> 
+> irq_of_parse_and_map() returns 0 when parsing or mapping an IRQ fails.
+> The current code checks for -ENXIO and therefore does not detect the
+> failure.
+> 
+> Check for a zero return value and convert it to -ENXIO.
+> 
+> [...]
 
-RFC patches sent for review only are obviously welcome at any time.
+Here is the summary with links:
+  - [net] net: ethernet: sun4i-emac: Fix IRQ error handling
+    https://git.kernel.org/netdev/net/c/991c2be78257
 
-See:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+You are awesome, thank you!
 -- 
-pw-bot: defer
-pv-bot: closed
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
