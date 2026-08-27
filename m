@@ -1,96 +1,209 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948C22DF126;
-	Thu, 27 Aug 2026 15:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787846298; cv=none; b=bQzHQg1qw8B0SC6kCKEW9R0gpKkUctK4fyRh4qWDN3j+66qV9n+dsxfQ1MCn83fE8BRLGGpY6U/gDIUtXWqeRbqjTN32dt1OaNtAyVJxBi6lV9VxjcufdnOWth1T4xx9nwyN9gZIeVAY4XPSXvoFhDdxRW0S9bUqxzyN5U3n3EA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787846298; c=relaxed/simple;
-	bh=Z+eipQhdtOKYG9k8rAHYiBvYAhnVgaDQShblxN/RvgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YnEgHrxC9mb0T5kDrJ4J9q+3yl7g5+lGXQDzzH7k+/7L+Ptuv4w2e+BIyVXFvanC4a9LqtOJmmeiIzFCIhG8JmiPuGJ9NIOIiCV9ruHVWznQtv9WG0yyfweTriwV75Qg/uIFPWaXdKMoaB36RnvDyYs82brP3GEtUk1NNBsIj/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dvhiR35v; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873A74746A4
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 15:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787846394; cv=pass; b=L3lUhsfsamSfyPSvMbCREIAIgqPiJ9itzd8JAo6gjpXIrhjNLFV5Ps8pZAUZj0ea5wWZNsNPEdp75PO5Ny+oLdEjEcH/rX/x68Olume3elrp0J0ShTpeiBTQcf27pTpKWMRFMIG2dxCto5yZaLa7r4QzXBP4hXCKOyZ0hClhvaE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787846394; c=relaxed/simple;
+	bh=MapsIztLy09UbhU+7+S9oaDp8H3eC/Z/hVQj74AC93E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s039B3pWjcDYIxR0zYx5zH3WkHkaVAGQ28sG9XjNqIcYQVuPSRKEctSUCokRbyrgAeWiT+L6BL4yjqquKjbXBcxFIgFRMxdOYYXErkUQRZvRycnsOlDF1qbKR8SMzngcdcHZR93Hh09M7CTiYz2tHeA0y+1GMYSEhpm5uuok9gA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gyQsAXYu; arc=pass smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dvhiR35v"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6BAlB5E9Lc1tBEnNCwlOu2d8LC7r9rm3Xnm3W0D01Mk=; b=dvhiR35vEJvxEZUuql1UlX+9GV
-	IfV77reIhC5gkpBkc0kYUWI6/+KN7n6GlSOhYV4iFftE8S7MID6/SbuXImCuDrPhnlyGH4qdctVZr
-	JLZ7nvt2WZcO1HwwFnIrGP4hYLO6PGPJ8lWw66lC+lcbuO32wrGpRZg3aOU5dju/W96M=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wzcUP-001gVy-Kk; Thu, 27 Aug 2026 17:58:05 +0200
-Date: Thu, 27 Aug 2026 17:58:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
-	horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com
-Subject: Re: [PATCH v3 net-next 2/2] net: dsa: Add support for Motorcomm
- YT922x
-Message-ID: <4eef8e07-8593-4c50-a46d-eda5f72e2d35@lunn.ch>
-References: <20260825061610.3116673-1-kyle.switch@motor-comm.com>
- <20260825061610.3116673-3-kyle.switch@motor-comm.com>
- <55523ac4-023b-4ed8-8519-293c778044a4@lunn.ch>
- <0c8024bc-c444-42ea-83fc-88446c8c560e@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gyQsAXYu"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca766c1c9ccso52492a12.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:59:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787846392; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fkPxBSvfkCWSr7Cuum3B+O3yW0yyiBzXgpAA7nRcuB6AzvjUHGdwSh8+oIRqG5XzFF
+         7txVywDQEEFq5kccgIQpPZLUdQcQJ4VsTrqeWGN8qL6Ne9/dchqP1HFusbPMWFaoJfkE
+         tPOdUrCh2MWh26P9rphXnazljJnsgz1AVRO7o0AZiL/1BSv+9jCrXLevyyvDRZWrbniR
+         Dd9lA06Sl8tyIvndMR21W2LZtizRsmG4Ve2JSHRHZAUu0rJ7X/R5LUIeCZRdQm1mwwKW
+         ApjHk5XcQT9/AbyDiFyqKE02i8S3etwqbn4yYMffWxYuBfIBqgFM624ZxM8/Tz3Kgvnv
+         k4GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Uf3bB7qcZpR+PPJRdyv+umREJvvSw/JAIAYin8FVQIk=;
+        fh=XueEHT5P69N7KyfkPqDkS0TU7wSAVdqiiVuOWjbfvLY=;
+        b=i7w/wAHeJG9j5gtXJ5kkynPEID2Q/herIIAKb8xciA6rJoXSNeUPiA/0O4nZRS4pIl
+         qVqi2QzWecVGJUFmTsBs5mHQD8c5122iy2Ej3SklWMKju+eqZcfNBbIy17AKPCK3SA6l
+         RJqkiKvnEgNIyHhxetqy3XaNZMs31cHglH4ciXZcOetBI9ffQrH5fgTTg+n69RJ3lxgB
+         HZh5Gu9JjE5xlCjYrNU2TVt36ezXsqdOaecJz+x89z8LvvN1g2eXEokIHXZ9/IJ9J8/v
+         ZCAI4mAe8v9f0FrcOAYUX718U0YotnuugrFAwnAAB2yckhyO0aHy7YbqbK+GnnZnhKnm
+         mZVw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787846392; x=1788451192; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Uf3bB7qcZpR+PPJRdyv+umREJvvSw/JAIAYin8FVQIk=;
+        b=gyQsAXYui1kjZzJaYcacaul2rNwImI3SwlddyhMwBZqU44Q1InzwFAeElIaPKTkSFx
+         /Fqqhn6ZcieZHRdj4EYxHgw6drK1uVMy8CIkzYZNqCpcuGlheZzBUQ2yb/0zwEvQWyPd
+         8e4gH7IxDMDL3QVvgIfAvxhEhZ1uyCKG71i5fF48WAQ3nABbLbRYeKS2K94LlMvw8oGL
+         atOHMfyOTZFz0KlViALDu3hVo41YjCZJp0lo7sgI0DPbO8xIMy8DVP8zWXeo92sCIa2f
+         CRLPYPO6vMzGi/zKn/wslT6zXTPYHApS6xxLN5Sv7jXpZMOa/GYOeLVeiOIHbBKvEnKr
+         RVjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787846392; x=1788451192;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Uf3bB7qcZpR+PPJRdyv+umREJvvSw/JAIAYin8FVQIk=;
+        b=a0JRLak0iREHV7/AkNG/Tw8G1jGY9I6edWBVg8PL2JMezF7MkCaF/lWJzBkLm9QaD7
+         HOhMlZgj5NRYfzXSYM7NSmgXTh1tGblu4wVwsqvGOhzm4kLlQJwvIA7lT3rW7SGSK28Q
+         3OW1uTUOwHSeydk/35PSSQqab2nM3stewbr+Dt1j/Cks5ai0kCVXHFTc37jPFTEBFmTc
+         jBNzh8grY6xtueT2F74WRuN3a9nvLhmwKrk546aj/+G16cnExkNcVFN8650d55TnsaM6
+         46WTsoE0bI90U2OytSaChsO2SaC6WH6VVvtX0NXMwX9xtwKuhW2DEJn3lihA0s4i/3s6
+         jqZg==
+X-Gm-Message-State: AFuF++kPcgdwu4KNQtnkEVb+EJH/isZR6G01WtpcLoy/X9xWbU+YWJuZ
+	bo9b2vqFnQJYr9Za/if2pFijeTsg9RptL8xq3g8tl/Y60prSS6uoHbMiEUGhEHUhDL0uRRnLvmz
+	sOrgxQRTyVDPrMorS5REVPfi2n969PJ0=
+X-Gm-Gg: AR+sD12wix3FFDwoOhIL2x0D9RWl4kWzc/9kEN/ijP4VI5bXRZ35jAEslYalWQAH4iA
+	iYSEiCBWiuRk0zvMShnViEkKAovipK5Xu1yK9ogJXIQ3GfGTDSfBrxcsbTR5myly88euHhnA00b
+	+MiVIqObNq1TMt9U18ACwCJag3r6hYqFouHkDCTwqJ641TECnchxr9tqqfY+B8/WbKH3NubjHMs
+	qEs6BFPcGy4OoUmav70mNeESSc0vV0JTcg/JK+EdBEca9uUAosV8is6CDXTZZPR9R2tKm/Y/+f4
+	jh6xBaB1JoLszNYSMSGnOtwrpZc1YFBB8VqoNr2QT78NWtQjK8UI5DhYvHARo30oOf2x06eHtQN
+	WVhu7/ppfOOQNMJreNFO28/53VXXmKMj/Rn57XDiz/LQL
+X-Received: by 2002:a05:6a00:a118:b0:847:8449:2bb6 with SMTP id
+ d2e1a72fcca58-8562953d5e9mr371891b3a.4.1787846391540; Thu, 27 Aug 2026
+ 08:59:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0c8024bc-c444-42ea-83fc-88446c8c560e@motor-comm.com>
+References: <CADvbK_dr8Oz7DFpA3YJ_YH0HXgWJgkQPRK7QNDCUQrQzQnw-MQ@mail.gmail.com>
+ <20260825082909.2650171-1-bsdhenrymartin@gmail.com>
+In-Reply-To: <20260825082909.2650171-1-bsdhenrymartin@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 27 Aug 2026 11:59:39 -0400
+X-Gm-Features: AcwNN1UBd9hEJA40P83_GWTvA_-wfWR0MxVh5pE0XrwDHnI3rwCFvXgtb9RJz7A
+Message-ID: <CADvbK_fh1LG1nr5gFgFRZUPWam_A0DRxG+tuHd+bq2hYwsgMZg@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: fix soft lockup from unpadded ASCONF-ACK
+ parameter iteration
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> I would also like to seek your advice on a design question.
-> For the yt92xx_series_info table, the maveall reference design invokes
-> chip_detect() inside probe() to perform the matching lookup.
-> However, in the existing yt921x DSA driver, chip_detect() is called within
-> dsa_setup() instead.
-> 
-> We are considering two possible approaches:
-> 1. Keep the code as-is and relocate the initialization of certain
-> dsa_switch structure parameters into dsa_setup().
-> 2. Refactor by moving chip_detect() into probe() to align with
-> the reference design.
-> 
-> Which of these two approaches would you lean toward,
-> and what are your considerations?
+On Tue, Aug 25, 2026 at 4:29=E2=80=AFAM Henry Martin <bsdhenrymartin@gmail.=
+com> wrote:
+>
+> sctp_verify_asconf() walks ASCONF-ACK parameters with
+> sctp_walk_params(), which advances by SCTP_PAD4(length), and its
+> SCTP_PARAM_ERR_CAUSE case performs no length checks, so an odd-length
+> parameter passes verification. The consumer sctp_get_asconf_response()
+> then iterates the same parameters advancing by the raw length, without
+> padding. A single odd-length parameter desynchronises the two walks and
+> makes the consumer interpret attacker-controlled bytes at a misaligned
+> offset.
+>
+> When those bytes yield a length of zero, the while loop over
+> asconf_ack_len makes no progress, spinning forever in softirq context,
+> and the watchdog reports a soft lockup. A remote peer can trigger this
+> with a crafted ASCONF-ACK on an ADD-IP enabled association with an
+> outstanding ASCONF (RFC 5061 section 4.1.2 requires the chunk to be
+> authenticated, but the predefined empty key id 0 allows the peer to
+> compute the same association HMAC from publicly exchanged parameters,
+> so the gate does not help).
+>
+> The missing length check in the SCTP_PARAM_ERR_CAUSE case also lets a
+> 4-byte parameter reach the consumer, which reads crr_id (offset 4)
+> before validating anything, yielding a 4-byte out-of-bounds read past
+> the parameter, as reported by Sashiko.
+>
+> All reads stay within the received skb for the lockup, so it is a
+> pure remote denial of service.
+>
+> Reject undersized SCTP_PARAM_ERR_CAUSE parameters at the verifier,
+> and advance the consumer iterator with the same padding rule as the
+> verifier to keep the two walks in lockstep. The verifier change alone
+> guarantees length >=3D sizeof(struct sctp_paramhdr) for every parameter
+> the consumer can see, so no separate minimum-length check is needed in
+> the consumer. The consumer padding fix is still required because odd
+> lengths >=3D sizeof(struct sctp_addip_param) remain valid for
+> SCTP_PARAM_ERR_CAUSE per RFC 5061.
+>
+> The issue was found by ZeroHive, a vulnerability hunting agent at
+> Tencent Yunding Lab.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+> v2:
+> - Drop the redundant length < sizeof(struct sctp_paramhdr) check in
+>   sctp_get_asconf_response(); sctp_walk_params() together with the
+>   param.v !=3D chunk->chunk_end check in sctp_verify_asconf() already
+>   guarantees it (Xin Long).
+> - Add length < sizeof(struct sctp_addip_param) check to the
+>   SCTP_PARAM_ERR_CAUSE case in sctp_verify_asconf(), which also fixes
+>   the out-of-bounds crr_id read reported by Sashiko.
+>
+>
+>  net/sctp/sm_make_chunk.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 236e25abc7a42..1166d1c5ea584 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -3215,6 +3215,8 @@ bool sctp_verify_asconf(const struct sctp_associati=
+on *asoc,
+>                 *errp =3D param.p;
+>                 switch (param.p->type) {
+>                 case SCTP_PARAM_ERR_CAUSE:
+> +                       if (length < sizeof(struct sctp_addip_param))
+> +                               return false;
 
-There is some advantage in postponing as much as possible to
-later. The DSA design when used with MDIO to control the switch has a
-chicken/egg problem.
+Sashiko [1] is asking to raise the check against:
 
-The conduit MAC driver probes, and first creates its MDIO bus. The bus
-is walked and the devices on the bus probe. Meaning the switch driver
-probes. At this time, if you can detect if the switch exists, cheaply,
-do it, so you can return -ENODEV. However, don't do anything
-expensive, because... the switch driver registers the switch with the
-DSA framework. The DSA core pokes around in the DT description and
-looks for the phandle to the conduit interface. It wants to take a
-reference on the interface, but finds it does not exist yet. So the
-DSA core returns -EPROBE_DEFER. The switch probe unwinds, and returns
--EPROBE_DEFER.
+sizeof(struct sctp_addip_param) + sizeof(struct sctp_errhdr)
 
-The registration of the MDIO bus completes, without error, because bus
-and devices on the bus have different lifetimes. This allows the MAC
-driver to continue and it will eventually register the interface.
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825082909.2650=
+171-1-bsdhenrymartin%40gmail.com
 
-Sometime later the driver core will reprobe the switch, and this time
-it succeeds.
+With this change, I think you can remove the asconf_ack_len check from the
+SCTP_PARAM_ERR_CAUSE case in sctp_get_asconf_response(), like:
 
-So avoid doing expensive things early in probe, because you will have
-to do it again later.
+-                               asconf_ack_len -=3D length;
+-                               if (asconf_ack_len > 0)
+-                                       return err_param->cause;
+-                               else
+-                                       return SCTP_ERROR_INV_PARAM;
+-                               break;
++                               return err_param->cause;
 
-   Andrew
+Thanks.
 
+>                         break;
+>                 case SCTP_PARAM_IPV4_ADDRESS:
+>                         if (length !=3D sizeof(struct sctp_ipv4addr_param=
+))
+> @@ -3460,8 +3462,8 @@ static __be16 sctp_get_asconf_response(struct sctp_=
+chunk *asconf_ack,
+>                 }
+>
+>                 length =3D ntohs(asconf_ack_param->param_hdr.length);
+> -               asconf_ack_param =3D (void *)asconf_ack_param + length;
+> -               asconf_ack_len -=3D length;
+> +               asconf_ack_param =3D (void *)asconf_ack_param + SCTP_PAD4=
+(length);
+> +               asconf_ack_len -=3D SCTP_PAD4(length);
+>         }
+>
+>         return err_code;
+> --
+> 2.43.0
