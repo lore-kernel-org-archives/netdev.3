@@ -1,197 +1,187 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED34237B007
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1EB389116
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787851833; cv=pass; b=PY1iVnJPYxVXdeKibRZNNJHqlct17g+fKg+cILVdKWCM54u+xbE7WrBDDH/cWT6/TE2EZmNb4hWhwEpSvXyrBENyniZrjaWP6/thvID/PAZXhu1KJJs6b3VZX5tGjdpeRphLhYjzgsDZhVSmQ2IwEs2Ai4k7w9f/ql65oPhq/fo=
+	t=1787852387; cv=pass; b=IRTMZY8BR6OZ0FQQ+jJQ3eGtTqbSoNquW2YEzKLbBp/oYhX/xhI+O6IOhBP4ShcvkU2OWko/TCiRPkB64bucksnCKbxzMKXGULQSICAniZXN/mkYnraqYQssbEB1Aso999uWqZQQM0hzi25zZs62o9QrLTIT4GjsHY0Fj0Y35KE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787851833; c=relaxed/simple;
-	bh=JHGHTCIHkS7ZtSd/nhPlvivP9R4MXEl6d74i8khb/Yg=;
+	s=arc-20240116; t=1787852387; c=relaxed/simple;
+	bh=X9YbJ6QofxnPh7gMvJb/TbnUGqOGkcvag5nMxtHriUM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EsYVJ27yT7AYweZ1QuInnp85vC3wSXR+8JUHihZeo1n/gA5drizU7J7dLfpsWMpxIL3YuuA37OlvuWV87uaO07R3srhKzwcrg1N/0W8ryrawGjVkh4QlV8/SQTRetMpDGBBpM1Tsm381jnaqdpVuVJk/T3l8kSmJ2QSJmZvdli4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=PE92KcBx; arc=pass smtp.client-ip=209.85.215.181
+	 To:Cc:Content-Type; b=o6DgEZpmKMjtc2kAviXFAULEx5YYvLF4rSNtZZLNek7vtf4/xN6aPa7r6udu88UuhOnXZ+oHEpAA3rJF161CUPQiAVgQk35JAQPGAgVKFS5wvV0BLmO8kM/D7xg2EaF3KlVm6kGILSzEHxszpZARkmh8Z7bHgJtbDW34A9Z+dLI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=LJjc50/0; arc=pass smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="PE92KcBx"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1c9879395so155880a12.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:30:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787851829; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="LJjc50/0"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8534d507f59so254852b3a.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:39:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787852385; cv=none;
         d=google.com; s=arc-20260327;
-        b=mbtACj+xb09sruhzFdBzW9/OWIxHMG0JLqECqexdIxX5Gb4+lkgGCUWsU82cyZMzKE
-         BGQ/pqmGobmFtZXm9Wx/a7SbBIezGGgUw20qfmwvgtt2M5W6jRL6+yz/+/UxzbQEO7XG
-         93pFZ6ZIaRaKhZBnHkRpMcErGnl8KIcsSwGfNipvGT8M6S5VddKzXLGiqKjBx2IVf16L
-         HmyCrllBl8A6y9fTcKeH7K6n00/zRY6hYRjUPTbElhR8SlgU75TiX0yFHKiMA4srwtJu
-         0LvE8paNWlIBVuiuGm6qbBme6VGEmebvfBNpPSkBG5jWPV70eV8HnkLO2DwH13NAzta8
-         AjHw==
+        b=ZSQe8ntbERAU/zFwJgONfgDg0NJLsM9VVaJ89aqWfH5+nSMMJqjrXg9vWa1bR0zLcf
+         4vIMBcac8hkfzGlQ4QfX7Y6nmPnfXe0zI905ELZKbTv93PpCV+I30ZDHN3ZIT0j7ddpS
+         4qx/iI8h9BusEpE0NzQXsshPN3TcDvaLE7kKpMhe1daAN43NX9k9Anqi6dhLOiZIY/R0
+         nDCQLXLlgdXUYkR7AUitu1AxXbMpZU3sE/dJpZMi/bL6vGzN5byCwPBBbmSUQ/Md92+R
+         RLtvoaelzR3mZ3OAYSzAPMlxPGIQeUS4K04Fk26mCxRG+I3L7EAlTsp2hxgYkDT9VSrE
+         4SzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=iLLGcbVfuf7yTVoqHZ5vu3n3AKk5F6JdfA/5wggXb4w=;
-        fh=HT4IJx8X1XHWE0kO1rJYUVXvPrGfN/R8edo5bEfj7r4=;
-        b=QprWjJ7Gotufq+k4d/rNN4hr6RUoPIa0zmhy/3nhdiDrEzYxnJa8ievUKWS4BflzTB
-         w6NR8kIcjiaqD4qdwhkYC3ke/ILSpk7+L38SvRK3SxAvQD184T1OqKCEx0tbVt24Ftr3
-         ZiSAT2+duVtJYTvTEl364fPLJGtRbSc2t+8+xG2UVj00yiVRqa+OTjAIGEezySVcJEKx
-         F0dbr/Vuyx1HSB4Ew43SljQsQzP95UwQCGNGQirqjP9A7+CfX0jOyh2wScQJaxTkqE+E
-         AzHHrhHo34nzH0ZrMjll9gCGMU/xEX59drZhT+hyOmvC3ld1rAr4c4vG66q2Ud2U8dN3
-         VbVw==;
+        bh=DTGdWxptOrtcajv4oSEp2WQDMzQSokE8vUw0BxvLVgw=;
+        fh=VdIE8irQdMztvZvWd7pFJTH0S7KpJAO7/sagonXu1Kk=;
+        b=Zr9GYFUvN9G2Ur2us+pKhbN8plmXGMXh6HXDmlLeNeIHtNrsZ37aGSUCEyXgn83rlK
+         rxJthncwNVTZQNdrxiePhiCraPFpJo9+vreciPfB1nzFSb6gWHTZ2nvpY8pApwCjB1gs
+         oZVbEn11ZZTDelFB4vN2dHMRX3jWIqHFj4Z173FM+pPKTgcIunGyMtpdEm83TglHCafy
+         UxPeB7MxnSGvmjRmTXOJ++/cwI/en1mxqUj24lL29bdRFJjWlqwSxZlySoaGLUGv+WRu
+         9Tw9GGPR22sqwv4eWzQXzs68GgdXYQ74NTbSQnrKdFPFNuLdUld0YNxbCfeWjkArDiiT
+         NnfA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787851829; x=1788456629; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787852385; x=1788457185; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=iLLGcbVfuf7yTVoqHZ5vu3n3AKk5F6JdfA/5wggXb4w=;
-        b=PE92KcBxaKBdKSIPDJ8c1DK1dY7foYtGGdx7Cybh3RXQGzUO/I8/AmmJo65cytftMc
-         RxvfG3hVusk51XRvnpDKrCCln3wE5jIrV460l5N9zCxG61TZ/PBAyxXYLowdmb8AFy+y
-         rr3745dDjaBJC8BuWOL4vS0ASRaxXdJcVdUCM=
+        bh=DTGdWxptOrtcajv4oSEp2WQDMzQSokE8vUw0BxvLVgw=;
+        b=LJjc50/0XCgM8Ux3z5UMx/sVPMDgySw3tFPe6REU5I2TTbGRMApNg2w/VRelLxEOZx
+         IyH67SHJwyOz1Unpdd2u5UhXnruRvKsd1s5vQWwVJ8qc9A2hwrGkVOFxzw6Oy1Hhk5J6
+         f0TO7Tb5jl64MievYIeAUK/GpTtABug4GFvfo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787851829; x=1788456629;
+        d=1e100.net; s=20251104; t=1787852385; x=1788457185;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iLLGcbVfuf7yTVoqHZ5vu3n3AKk5F6JdfA/5wggXb4w=;
-        b=K0zZYg2BknqoqegZ1/GKi5bjiT0bEyBajPyrZj+ZVifB2ewlA5pdm37FGbp4J0A9Jf
-         3nHK7cDwgTfxunxX48R06aP0+uZ9WR/zt8oW5fNjWUlCwD3nhd+tJAcmvJ1GeKkbtSTj
-         7PNi5Gtg+81DzVARzeYQCL85Zi6BWqv3i8AwiwGMdJXRzfaNWNPaGIFDiCcro9r0mJpQ
-         i40I4latq/2HqSUNVQ7VccKpQmrXYFA9qod7vTBFTNuT6kqVVxShXgBoEgLkuOwBqL8x
-         s5HKl7h0HSz4nOxsCo7Rjf9KqsTNG+bVOabwB8LJrNfcY5qdAXPoDpmTcgOJWqHLToxI
-         IPig==
-X-Gm-Message-State: AFuF++mrKX0JAGEQw+zB4B1olepxyfTZRCjw+jHYvwzIYVjSOH4rWB2U
-	aHGAEwTWtPWQ3pLUhA1GcH7oN0ceDriawUDbe1u9KWI9ujv/fBReG65DqGWOnwIBszpGMUWrsCH
-	rUPA5qwZBhtVDc4PVVr+mlBCjxJDWkkGQY6bo4ubAR+zQe3hYUUVsBnRQ
-X-Gm-Gg: AR+sD11zngQEPm2YjsnyE71thLGSxd34ZX5tYySM0NSStSE9Hg8119DUW1x2QlsqbiT
-	GR0kZCPjU3XVmzE755+nUEd8a6QOFMsj62c6ufEbSzt23FkgjsQmiTKRT7/A4sWHMQX6Hlebzlx
-	MrdI6WLZTjjACRX8FhSyruVZvQrDEqcVSQkUAx7NvRZMlWBuKJo2imtibwSuRzAAQMBYHKVcXw7
-	PNPADh4tEBnBHea7nCy+xZQvwFXgaB0pwU2u8isGEOk2e2kAYRKtLKWeZJIUzJyeqH6/vrvt0yu
-	3CjjEy+DaTn/OQMitSDklvRy9l5fWJoL1atxxgwKjNjPFg==
-X-Received: by 2002:a05:6a00:1da4:b0:847:8acd:747c with SMTP id
- d2e1a72fcca58-8562ba7dcb8mr1537496b3a.13.1787851829194; Thu, 27 Aug 2026
- 10:30:29 -0700 (PDT)
+        bh=DTGdWxptOrtcajv4oSEp2WQDMzQSokE8vUw0BxvLVgw=;
+        b=b+gf8IxZwS28kNrzThNAzcFgOs+qqLA8wEl4BhVkyG3IwmeYOhQhPD1B6PQWbQT6IN
+         0kPyjX+X00XjwXKQ2gJLdSR7QLI+hrx6o2NkvDmXAokl0GSpZYTQ9GGgPe83xSI/761x
+         X03AG1PDb+efq9prtJSMUNvZw3DNEqn93/WIPjUIHbrR8SmfGDuXbYbDPLDgWid6jc4A
+         KfImexsF2/OVmGhlJU/9CT1ccucOsJLikqk/GiWE+m/LGGkoQDYtsk22rIC/VGG1rvVs
+         p0vBcGcJ0dcSQA89inV1CzpYNtKYx6WpAcXBGJ0D3FcvABjvRCybyP6NfzYKTkaGgTib
+         1uRA==
+X-Gm-Message-State: AFuF++kw2/z7v9CqmisPpY3Io71VeXVGnCF81B7chRDS90p4fUpjZKgI
+	asmsChdGRMbs4COnasiqPHuCL76sEJRkIzW9LSFPUf+gZB4Q3J38rIzXAy6KzLMSNCZOjJiZrS1
+	n7POMOLED/fcoTgJmk+SMsavEau05J462H4rCPb7o
+X-Gm-Gg: AR+sD13eYk+uee51XXMQqsU1WW/aeO8ECCTdTutnsGy7zOjhRMhoyeQQBH3xkwtVTIX
+	WZzb4GpGZssXKNoOeq4Y3hKckWRW4AW/ZUzsZ9/2vk3d5gvnknRWMtGyRZVyxXCnUAQHlHHFTlH
+	8mP0ACGTWb6EIsfdBe1smeGnXq2BmqHzI2G2c9XMUMJwIYn4PUSpoRRBygBkyAZYwIeigA1WCJr
+	vnvUSM9zt3qCxLnf0AA25SbuJVZ3GVQuqfANsJQbRF+IKMeyQ5LgevZYARVDe8kl0npZQ8a0/+d
+	C8CH/tudyPNzT+ON8AKHImUsHOl/5CTcFQsFoFsWO8DmwA==
+X-Received: by 2002:a05:6a00:1143:b0:852:131f:b9d2 with SMTP id
+ d2e1a72fcca58-85626f06db3mr1663965b3a.2.1787852384661; Thu, 27 Aug 2026
+ 10:39:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825081052.133898-1-jhs@mojatatu.com> <81ad3c6c-85d3-4ba0-b36e-3db21138416d@redhat.com>
-In-Reply-To: <81ad3c6c-85d3-4ba0-b36e-3db21138416d@redhat.com>
+References: <20260825081751.134086-1-jhs@mojatatu.com> <daceef26-eae7-49c3-acd8-0908bd6a31dd@redhat.com>
+In-Reply-To: <daceef26-eae7-49c3-acd8-0908bd6a31dd@redhat.com>
 From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 27 Aug 2026 13:30:17 -0400
-X-Gm-Features: AcwNN1W5MtHUvt907HbvKT0Wx9tpkEAYjM1m7_cW7ZJ1J38wEThkvR6LGeVp2lI
-Message-ID: <CAM0EoMk1b8kFf_FNH5vJvT4g6Nc3+affDB1PrJcm=p8nyoaAeQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/2] net/sched: cls_u32: fix duplicate handle when
- node ID pool is exhausted
+Date: Thu, 27 Aug 2026 13:39:32 -0400
+X-Gm-Features: AcwNN1XdcbmgV0dvtYrOQWsFkN2ugg8bCS-hzROqjekOwutDYlvFA_wJO950OTo
+Message-ID: <CAM0EoMkJdo_e5VYPRcPN2mZpNyrTQ43FxNvkqFSNDjyV9x45dA@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] net/sched: pfifo_fast: reject oversized ring
+ and account to memcg
 To: Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, stable@vger.kernel.org, 
-	vega@nebusec.ai, Victor Nogueira <victor@mojatatu.com>
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 6:30=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+On Thu, Aug 27, 2026 at 7:26=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
 te:
 >
-> On 8/25/26 10:10 AM, Jamal Hadi Salim wrote:
-> > gen_new_kid() falls back to returning max (htid | 0xFFF) when both
-> > idr_alloc_u32() ranges are full, instead of reporting an error.
-> > u32_change() trusts that value and inserts a new knode with a handle
-> > that is already live in the hash table, breaking handle uniqueness
-> > within the table's node ID space.
+> On 8/25/26 10:17 AM, Jamal Hadi Salim wrote:
+> > pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
+> > ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
+> > bound. An unprivileged user (via unshare -Urn) can set a huge
+> > tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
+> > memory, causing a system-wide OOM.
 > >
-> > The handle was never reserved in ht->handle_idr, so every later error
-> > path that does idr_remove(&ht->handle_idr, handle) removes the
-> > reservation of a different, live knode, which is then reused =E2=80=94 =
-one
-> > failed add compounds into further duplicates.
+> > Reject tx_queue_len values exceeding S16_MAX (32767) with -ERANGE
+> > in both pfifo_fast_init() and pfifo_fast_change_tx_queue_len().
+> > Note: For the init path, NL_SET_ERR_MSG_FMT_MOD reports the error
+> > via extack whereas for the resize path, the error propagates to
+> > netif_change_tx_queue_len() which rolls back dev->tx_queue_len to
+> > the original value. Use GFP_KERNEL_ACCOUNT so the ring allocations
+> > are charged to the allocating process's memory cgroup.
 > >
-> > The 4095 limit is per (table, bucket) =E2=80=94 ht->handle_idr is per h=
-ash
-> > table and the range is derived from htid (bucketid), so a table with
-> > divisor 256 can legitimately hold 256*4095 knodes.
-> >
-> > The sibling helper gen_new_htid() has the same silent in-band failure:
-> > it returns 0 when the tp_c handle pool (1..0x7FF) is full, and
-> > u32_init() publishes the root hash table with handle 0 without
-> > checking.  Two root tables with handle 0 alias in u32_lookup_ht(),
-> > allowing cross-tcf_proto knode add/lookup/delete.  Add the same
-> > exhaustion check that the divisor path already has.
-> >
-> > Return an error so u32_change() fails with ENOSPC/ENOMEM when the
-> > node ID space is exhausted, and so u32_init() fails with -ENOMEM
-> > when the hash table ID space is exhausted.  The extack message
-> > distinguishes pool exhaustion (-ENOSPC) from a transient allocation
-> > failure (-ENOMEM).
+> > S16_MAX is the virtio virtqueue size limit: the virtio specification
+> > stores the queue size as a u16 with a maximum of 32768, so 32767 is
+> > the largest tx_queue_len any in-tree driver can meaningfully use.
 > >
 > > Conditions to recreate the bug:
-> > - CONFIG_NET_SCHED=3Dy, CONFIG_CLS_U32=3Dy (or =3Dm with module loaded)
-> > - Create a clsact qdisc on a device, then add 4095 u32 filters with
-> >   auto-generated handles to fill the node ID space for the root hash
-> >   table (single bucket). The 4096th auto-handle filter add triggers
-> >   the duplicate handle (fh 800::fff reused). Reachable at Level 2
-> >   (unshare -Urn, namespace-local CAP_NET_ADMIN).
-> > - For gen_new_htid: create 2047 u32 proto entries on the same block
-> >   to fill the tp_c handle pool, then create one more. The root table
-> >   gets handle 0 and aliases with other handle-0 root tables.
+> > - CONFIG_NET_SCHED=3Dy, CONFIG_VETH=3Dy, CONFIG_USER_NS=3Dy, CONFIG_NET=
+_NS=3Dy.
+> > - Unprivileged user in a fresh user+net namespace (unshare -Urn).
+> > - Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
+> >   while the devices are down.
+> > - Attach mq at root, then replace each child queue with pfifo_fast:
+> >     tc qdisc replace dev veth0 root handle 1: mq
+> >     tc qdisc replace dev veth0 parent 1:1 pfifo_fast
+> >     tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
+> > - Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_array
+> >   rings of tx_queue_len entries (~12MB per qdisc at QLEN=3D500000).
+> > - On the unfixed kernel this exhausts global memory in ~28 iterations
+> >   on a 2GB guest -> OOM panic. On the fixed kernel the oversized
+> >   tx_queue_len is rejected with -ERANGE.
 > >
-> > Fixes: 7801db8aec95 ("net_sched: avoid generating same handle for u32 f=
-ilters")
+> > Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
 > > Reported-by: vega@nebusec.ai
 > > Tested-by: Victor Nogueira <victor@mojatatu.com>
 > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 > > ---
-> > v2 -> v3:
-> > - Fixed tdc test that sashiko (correctly) pointed potential security
-> >   issue on.
-> > - extack: condition the "Hash table node ID pool exhausted" message on
-> >   -ENOSPC; emit a neutral "Failed to allocate node ID" for -ENOMEM
-> >   Introduce small extack helper. The v2 message was misleading for
-> >   -ENOMEM (Sashiko nipa gpt-5-6-sol-1-2).
-> It looks like that sashiko was able to think more about this patch and
-> found new stuff:
+> > v1 -> v2:
+> > - Replaced silent clamp + pr_warn_ratelimited with reject (-ERANGE) (Ja=
+kub)
+> > - Changed cap from 65535 to S16_MAX (32767), matching virtio's
+> >   virtio16 ring size limit.
+> > - Dropped the doubled module prefix in extack (NL_SET_ERR_MSG_FMT_MOD
+> >   already prepends KBUILD_MODNAME).
+> > - Added resize-path tdc test case (Sashiko nipa gpt-5-6-sol-1-2).
+> > - Fixed tdc teardown to use JSON list form for acceptable exit codes.
+> > ---
+> >  net/sched/sch_generic.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> > index ef2b4bf51564..eb5c0d3f67c2 100644
+> > --- a/net/sched/sch_generic.c
+> > +++ b/net/sched/sch_generic.c
+> > @@ -910,11 +910,18 @@ static int pfifo_fast_init(struct Qdisc *qdisc, s=
+truct nlattr *opt,
+> >       if (!qlen)
+> >               return -EINVAL;
+> >
+> > +     if (qlen > S16_MAX) {
+> > +             NL_SET_ERR_MSG_FMT_MOD(extack,
+> > +                                    "ring size %u too large (max %d)",
+> > +                                    qlen, S16_MAX);
+> > +             return -ERANGE;
 >
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825081052.133898=
+> Sashiko noted that setting a large tx_queue_len to a down
+> interface gives an inconsistent behavior:
+>
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825081751.134086=
 -1-jhs%40mojatatu.com
 >
-> I'm unsure if that falls under the 'same bug' category and should
-> addressed here or separately. WDYT?
+> (all other comments are IMHO noise and should be ignored)
+>
+> I don't see and effective way to avoid that, short of falling
+> back to v1, WDYT?
 
-Separately. The Sashiko findings on v3 are the same pre-existing
-issues it flagged on v2.
-All three are different root causes (IDR key mismatch, refcount
-management) from the silent exhaustion failure this patch fixes.
-
-I am tracking them as separate follow-up patches for net-next. Here's
-the list just from this one patch from the sashikos, none of them
-wrong, but none "regression" and worth fixing for net in my opinion:
-
-1. handle2id() alloc/remove key asymmetry in the divisor path causes
-hnode handle duplication
-2. ht_down refcount leak on new knode hw offload failure errunbind cleanup
-3. ht_down spurious refcount_inc on update knode hw offload failure
-
-There's a bunch of minor ones, that may be worth fixing for niceness
-but as you know no good deed goes unpunished with sashiko, the moment
-i post a new patch it will find something to complain about.
-
-These are:
-- Commit message range "1..0x7FF"   being inaccurate - which is true.
-- Extack should say "bucket" not "table"  - which is a minor refinement
-- tdc test to check and assert for ENOSPC, i think the explanation it
-made is sensible. We only check for failures not which exact return
-code it made, but if i change this it will meaning changing a good
-number of tdc tests to follow the same approach.
-
-I could probably sneak some of these in in net-next or i could just
-resend only fixing this. What says you?
+I changed my mind on this. See this thread and let me know what you think:
+https://lore.kernel.org/netdev/CAM0EoMk8fAACt11fe1pUsFeG9np3SdsV0YUNmEevLu=
+=3Di=3Db+xKg@mail.gmail.com/
 
 cheers,
 jamal
-
 > /P
 >
