@@ -1,165 +1,136 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCE13ECBD2
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7DD403E8A
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787820620; cv=none; b=Y1yDpp7+ds/7NxgFN49NI7u8+P7o31M5rBUnARzwgAgfE8Bqe4+XeaUDFto412Unj/fxcp4TDpH8njpKLhHCZEBPfu5yC7iDBfss7rc8FJOBa51RMa9zu+X4AC76mD+B4zgQbYCQhlwU4+Qx/FwLUi8MsVFbaM5CcSpkPfIZ8Po=
+	t=1787820748; cv=none; b=RfkSs8EfeNjtowjPIHrawiiyFFnannfvNjWBKOqLbVltagrps/Qg4hXdY4iJ81UdCKfLBmlUhihTyv9MCPgFlHzQ6/uzzc9C1Wi653bPri1Cuzxoxc/kM0E704RuYmVIK5KxXTY3zPqQ1DvWQiyOGz30n5OFReUfag4xWGRheLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787820620; c=relaxed/simple;
-	bh=UUtg24uMtezL1PSnw3eID1209ibYhnVW30qSpuB9m1A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuXPuqrY+afSEYLg6s+NS7cxVch9L2nWGFvQnEeLVxbtvQQX9tDqCl4uywZmN78d/SV3n/ookzljzcFLV2qOBt2zeggpnNGCnyIER9LYEKU2UYjeniRQfHrs+Z9o1jXvHOXK9x9Pu1tIICiTTdcSzz+0DB23eIw5TWOMSRPGl/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=AMLWuMMT; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1787820748; c=relaxed/simple;
+	bh=5hJ7mZeypVJLmhRFxJYm9bHOTFShVm8RTGv547/GiLI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W880xO/h7ZJOVHnqCj1Z1y7bK3u3/GTPxX/uXCcUIBK5c9cRBaNifLTzlN9MgWH+5OS3q9S9bmeaz5t5K2F5LTUIqL+2cl7bjhH4igiDKJKBGUfaLHOyKlawkHhf4k8MKiKlC3HHYmTMpJuWjjMZsvysedsl3oOw5sqX8pjM+58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SpUVYlGC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ti0mge+2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="AMLWuMMT"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cbe827e3cb4so591552a12.3
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:50:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SpUVYlGC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ti0mge+2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787820745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5hJ7mZeypVJLmhRFxJYm9bHOTFShVm8RTGv547/GiLI=;
+	b=SpUVYlGCsEByTOdBb3BL+i55+BzMpz/T4cdRoKtFy1Zh1KsUdcePG6K+XzhyFNNW2gEY2k
+	1ut8Xk9eLqjmyJLE5RLdGclFqOqqVY1kmS6J37xnci/41gxQcoh35dXEAyIxQj3XiMw21j
+	Zm/1Rugy3vC1ljpGJ2rRyBIbKQhb6EM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-2cMPo-MdMOOijBJMUGrrGQ-1; Thu, 27 Aug 2026 04:52:23 -0400
+X-MC-Unique: 2cMPo-MdMOOijBJMUGrrGQ-1
+X-Mimecast-MFC-AGG-ID: 2cMPo-MdMOOijBJMUGrrGQ_1787820742
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47fecbb7f88so1162512f8f.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:52:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787820618; x=1788425418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xKZ6u/wqQ8d3u6q9Lp+QtNXkUz6sKkb9jejuBTbsvrw=;
-        b=AMLWuMMTuQAPK9C07bK32Oi8yMO2w03jnswK2aX0naEpSb3nuvce0CdTuAF4YrAqeg
-         ocZSy2HGJjSjmcyrCPFHwERSrYR7DQ8JXW47RzZSNtRVA6OIkQY/iuOQ0BEYOxfDAjKt
-         9gIweFIs+s88BxjudGswn7J9Flfb8n1CWphSssuew2LgE6vzI/39b03m5vYEMnhg5Jz0
-         YiWPMP5Awpm2cZgbjnQl5u4OPB2n/8A1RnJDLglCnfyrzYLDww3fOK57zy5n5fnMjS2H
-         73fFA+seEE3YEt4itXfftUc855RPrKjToc0BTJ3uLVWsrtcRG9/nc+sRWSB2htA26y7j
-         EZbw==
+        d=redhat.com; s=google; t=1787820742; x=1788425542; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5hJ7mZeypVJLmhRFxJYm9bHOTFShVm8RTGv547/GiLI=;
+        b=ti0mge+2wPefxvEtLhEKK4dracbWY5JUUyqz18gA50kWQA5lSzOzWy3OBw9wFCQRS2
+         iD3BpvnlsfDFU1p5Wtdyt45OvtH5KNMprYb1CE9WsliASizBqPCPrRgNJnZ/z7MDCimw
+         FrxWmBgB3V8+t8PrdLKBGTiXZfBMW+mrkaQA8qSdRe+nvGQ+ZuiW7TwP6y+Zet0eE1gk
+         Dh7LX7F9IpMKALcCV2Wt1ZBy9hi+xa0VvTSmumBVPtzb3JxyzU5IeW4XIvXQEe3gngIY
+         a2qZQasE/xhKX5tvZbZf014dlkRqFRHHkiLOeWDLJGURgJsNXJYsAAhXoaCH7OCzaSJs
+         V1Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787820618; x=1788425418;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xKZ6u/wqQ8d3u6q9Lp+QtNXkUz6sKkb9jejuBTbsvrw=;
-        b=W57IrK+Px/0NFxJNmCRUZ5ocefxJq968s3TaxkzqYaDoX1CAzdrAmVC7FVXATrTDP+
-         bHha8bcC0otKhkNihZeKKq2Pkwenf6PAZeuNTPHMTUBlCVnEPSilCWKY11iSmMVEQvxV
-         27uHtB6VfudUZZpqifvT6yEimskedKlDMpYtwixCxgj+/dZOo1e9xFhwR10ewivfMvbO
-         aSeOHUrmoLUcQjTMpJbRhjILbMygKUWiWzrGek2qgUsOqh/jHPt0adwuD1Oerj59UA1j
-         B2xhkXdLxXXtg2SQhLSodqaHEUo78bCBDEAIj7HRV9goo53fMvqc44B3U9IGHdZ6XHXw
-         Y0ow==
-X-Gm-Message-State: AFuF++lwRW8fJJre7thbJQksACYRP3n5Tr2ZgYoM4WBj21BupvHdTjAu
-	ImRDWImzSoqZi9N/aqM8bLQL6RqpC6Y0LFmC9Mpygu0OV/WH+438xY7pI+mBBg5l/Apt
-X-Gm-Gg: AR+sD10cvi5NaJWKhBZruqmumStMP7T/uZr9urURtjePxECelB03qtJPMO4bK+3Z8/o
-	0b5V8VFahjr7gKfxT/8YBDzbB2agwkYvgdkn77SpRubSkjul9+AzOmh8AIaLOWfUbMb6yYIMB8U
-	zNY69kwJy7otZxhgRY5JPaDn5al+T0OjroDHNRm0EjPhJxPD4jlmkQ9bzxcukHsKi0CwMi7dL0r
-	/bo+ggyJnGYOzZZbppO315jU+3S3G5mxzl4SkDfFgP5jQyvSnFVFktHudZbXDE8SLYyng0axFMF
-	X+em+n8XAGGmHfrH41Yv1sk2ZJ32Vtbi7nbybMzGZ9k6lqEe94lwSd3j/g80qiF5urAJtgQbpQh
-	ur93wT2geq0MRDEf3Oqn+1Bmqq8h5bHmTeXNRF8tA82f0iLrrXlttpLWYtJbYRdwHGNSibrcAHq
-	hJPvkK0vk4T5TGgQWeSCHN/RlurH+TnFq4+QfE39V+xM6ug31MuVzevSitwJp26+SZhdyVa4ZIf
-	p0B5Zz2QE0=
-X-Received: by 2002:a05:6a20:2584:b0:3cc:8344:1213 with SMTP id adf61e73a8af0-3cf83531791mr24545584637.8.1787820618112;
-        Thu, 27 Aug 2026 01:50:18 -0700 (PDT)
-Received: from gmail.com ([42.88.197.68])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1beeb53absm1836637a12.32.2026.08.27.01.50.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 01:50:17 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zihan Xi <zihanx@nebusec.ai>,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH net v6 2/2] llc: reject out-of-service state before state lookup
-Date: Thu, 27 Aug 2026 08:49:38 +0000
-Message-ID: <8fa3c9e6d5dcf328979ed2bdc27817c11a5eff91.1787752861.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1787752861.git.zihanx@nebusec.ai>
-References: <cover.1787752861.git.zihanx@nebusec.ai>
+        d=1e100.net; s=20251104; t=1787820742; x=1788425542;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5hJ7mZeypVJLmhRFxJYm9bHOTFShVm8RTGv547/GiLI=;
+        b=McbTMIxtaFRNJ19gTPBtmhk7kYwGjUr5p/b2DzDIRxG/zBMUVGj3NU7n3B3ROA0JeL
+         MxD3Q41Ak+bYT/9aRZYJwHCtCsxfotCOk9lFmI8Lhd662XEWOiD16HoUfguVmrxZv3Ks
+         hrgS5TGyMVgQ9sgGtU1AC97sVXn7Y9rt2pRlh1KBs8baNw0KoW8cMmrYW0hA6RdQd75g
+         iFowA9/4TMIhXY+qe9uBYD2/+jxrxWBtWhefJlv3Z0d3ZKVKhb5hExay4LWDaiefU3jS
+         ZTcAZowqpxSGNxfz6fcgrCG+T64M2cQZex263iwtEqd+Rw/yXsSjBiLt/cdQwGmTcHfN
+         mOIQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7YKEwnXI2f4Zxz1BjjUcZsToeOgDCiTyhT4uHphb+k/RCtjcO/jN6vICFs3PvEzHI9fzqzF4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nA7qPcDBVUfbmplGdVG39sutzfnvp/cdtaSdBzbdMSdB/RrO0v
+	m0z1XhbePtEe9Aa7Q+oC7J/VpsdW6IrIzOIN6E5FTmWdBwebIwr1bkQB50Qlky1jyEP+6YMxzZM
+	oTRGSc573oMqvSwBwylBNLyeuDCkCRdvCSI24SYoN7JeACYmAAIFv1vYT9A==
+X-Gm-Gg: AR+sD11dnbWslu4l2wjEwMK0WABV7aka5PemGjSPm9mcd5R2qh+I4w0Qddicup+uqO8
+	43FpPdEo+6+prFln9ad6l2r9KUgcxC0nq7hASRaN+2j1zFn40GgrHwN/IvQtmlLpF4r0hV8NhLw
+	U2SZcbvGEhQ0HopYeFB+8TaVWWoIVOEDsf9AkZKX9528G1e+Mwx9Aj1gxnsBWoivw8PZGi3fxIn
+	GeC7DGF7akZ/kQWjim5x06QGirvxoyr9KD2nYbtm931C7a/0T3UhpbZ9NFtiWNHrIy2fAYOVKoX
+	/KHeGK9vh4YvY5Xy2r6D3LoczzriXtdPWN5jnzQIvmRHHCngCfIneyOYLgmZ37XOS/oFzi+BoyN
+	XFjN3FkF2YOtmt96hOVtTI+QBCLv9lGAxDS2sPuOXG74RK8hAfUtjvhFVGUB6HK3wiZ4+eHY=
+X-Received: by 2002:a5d:4f82:0:b0:482:e263:2c7e with SMTP id ffacd0b85a97d-482e26de754mr13993877f8f.13.1787820742493;
+        Thu, 27 Aug 2026 01:52:22 -0700 (PDT)
+X-Received: by 2002:a5d:4f82:0:b0:482:e263:2c7e with SMTP id ffacd0b85a97d-482e26de754mr13993819f8f.13.1787820742077;
+        Thu, 27 Aug 2026 01:52:22 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e279ecaesm7707204f8f.6.2026.08.27.01.52.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Aug 2026 01:52:20 -0700 (PDT)
+Message-ID: <18d43f38-ad3c-4e1e-b313-dd3b64fe02c3@redhat.com>
+Date: Thu, 27 Aug 2026 10:52:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: macb: exclude software FCS from TX byte
+ statistics
+To: Nicolai Buchwitz <nb@tipi-net.de>, =?UTF-8?Q?Th=C3=A9o_Lebrun?=
+ <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Jonathan Bell <jonathan@raspberrypi.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260824134703.766708-1-nb@tipi-net.de>
+ <20260824134703.766708-2-nb@tipi-net.de>
+ <d1f02ab923c0464fa73cafa75a21943d@tipi-net.de>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <d1f02ab923c0464fa73cafa75a21943d@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-llc_conn_service() checks only the upper bound of the connection state
-before llc_qualify_conn_ev() indexes the state table. A socket in
-LLC_CONN_OUT_OF_SVC therefore reaches llc_conn_state_table[state - 1]
-with a negative index and can read and call data outside the table.
+On 8/25/26 5:04 PM, Nicolai Buchwitz wrote:
+> Replying to netdev's sashiko
+> https://netdev-ai.bots.linux.dev/sashiko/#/message/20260824134703.766708-2-nb%40tipi-net.de:
 
-Reject states below LLC_CONN_STATE_ADM before the state-table lookup.
+It looks like you instead replied to the comments from:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v6:
-  - Hold a reference for children queued for accept() and release it when they
-    are dequeued, while retaining SAP publication so tuple lookup still finds
-    a pending child before the passive open completes.
-  - Make direct receive, backlog, accept-queue, and listener-close cleanup
-    symmetric, with bottom-half-disabled child locking in process context.
-  - Keep the LLC_CONN_OUT_OF_SVC lower-bound check in its separate patch and
-    use the ADM state boundary consistently.
-  - v5 Link: https://lore.kernel.org/all/20260822082354.3109-1-zihanx@nebusec.ai/
-changes in v5:
-  - Make listener child cleanup unconditional so queued children are also
-    released if the socket leaves TCP_LISTEN before close.
-  - Serialize process-context child cleanup and backlog dispatch with bottom
-    halves disabled, avoiding child-lock acquisition races with LLC receive
-    and timer paths.
-  - Drop packets redirected through a pending child after its listener is no
-    longer listening, and release children left out of service instead of
-    dispatching them.
-  - Split the LLC_CONN_OUT_OF_SVC lower-bound check into a separate patch.
-  - v4 Link: https://lore.kernel.org/all/20260814185843.4748-1-zihanx@nebusec.ai/
-changes in v4:
-  - Create a passive-open child only for SABME and generate listener-side DM
-    replies directly for non-SABME commands.
-  - Use an atomic incoming-child lifecycle and serialize pending-child lookup,
-    backlog processing, rollback, and listener close with the child lock.
-  - Keep immediate SAP publication for passive-open tuple matching, but release
-    unaccepted children on direct and backlog failures and on listener close.
-  - Defer final incoming-child cleanup to workqueue context so timer
-    synchronization does not run in the receive softirq path.
-  - Add an LLC state lower-bound check before state-table dispatch.
-  - v3 Link: https://lore.kernel.org/all/20260805175945.10698-1-zihanx@nebusec.ai/
-changes in v3:
-  - Drop the unused llc_conn_handler() local rc variable reported in review.
-  - Rebase the numbered patch and cover onto commit
-    ede76849012e45ffb2193ad110b42027eec02c5c.
-  - v2 Link: https://lore.kernel.org/all/cover.1785386749.git.zihanx@nebusec.ai/
-changes in v2:
-  - Rework the fix to preserve the existing passive-open tuple matching
-    semantics instead of deferring child publication until LLC_CONN_PRIM.
-  - Track listener-created children pending publication to accept(), and roll
-    them back on every earlier failure or drop path.
-  - Cover the original non-SABME leak and SABME paths which fail before
-    LLC_CONN_PRIM, including backlog enqueue and backlog drop failures.
-  - Correct Fixes to 1da177e4c3f4 ("Linux-2.6.12-rc2") based on the earliest
-    locally visible history carrying the same root-cause fact.
-  - Clarify panic_on_oom crash evidence and packetdrill selection.
-  - v1 Link: https://lore.kernel.org/all/cover.1784725007.git.zihanx@nebusec.ai/
- net/llc/llc_conn.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+https://sashiko.dev/#/patchset/20260824134703.766708-1-nb%40tipi-net.de
 
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 885a5c33024c..4a34f240ad2c 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -362,7 +362,8 @@ static int llc_conn_service(struct sock *sk, struct sk_buff *skb)
- 	struct llc_sock *llc = llc_sk(sk);
- 	int rc = 1;
- 
--	if (llc->state > NBR_CONN_STATES)
-+	if (llc->state < LLC_CONN_STATE_ADM ||
-+	    llc->state > NBR_CONN_STATES)
- 		goto out;
- 	rc = 0;
- 	trans = llc_qualify_conn_ev(sk, skb);
--- 
-2.43.0
+Note that our reference saskiko instance is actually the one you
+pointed to above, even if the comments are at as slightly different
+URL:
+
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824134703.766708-1-nb%40tipi-net.de
+
+Also note that pre-existing issue should (usually) not be addressed
+in the same patchset (unless really bad/exploitable).
+
+Finally I have some concerns WRT patch 2/2: it should bring a
+significant performance regression, and the frames transmitted ATM are
+still valid (even if 'downgraded' csum wise). It would probably be good
+to provide some priv flag to enable/disable such behavior.
+
+I guess some/most users would prefer send 1 frame out of 64K with csum
+validation unexpectedly disabled than hit a huge slowdown.
+
+/P
 
