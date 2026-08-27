@@ -1,144 +1,122 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BA8379EE6
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 03:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDD137C103
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 04:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787801140; cv=pass; b=STlJhsx509d9n/5Gz9FzNtAXiq173XJp4v7sNIUMJAAsPUUYIEEpESPkxQj+zjoDnge8LO6M8GntCoEbia569s1Oj5T0z0RpRTKSbP4xneSvuOiT1qH8rk72kszK75y3KWdskpbF71+DiedEzh2xDUiGA4GHU5wTr/d9k1idouY=
+	t=1787805475; cv=pass; b=rrFunoacXVM2A4t6nIkRdJH7hKB8JOQDohWwmkhssMnCzRFy2tupru2S3wJVowRvFTiU222NG1aV82CWUdcP5eEaF7ijWoDbK19YX10BPEnNIAaanXEaeoHlT8OeG0T+UIJNphjKZYp9LfrB4CbeSrSGZdVObgq8AUYhzTEp7II=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787801140; c=relaxed/simple;
-	bh=g54itBuxSGyTv+TNAUIo3lSrFxdYUvWmXIkBOCtztfM=;
+	s=arc-20240116; t=1787805475; c=relaxed/simple;
+	bh=TF4gCEvN5ThIoaSNFiv7l3yYWMkjVNVbqThw5433U58=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tdS5DUg+2/SxDWxhL6AS7RvvV/5S98NvqgH084slMaz82S09BIeNQ/gZQkv5EM44WqQeXADfqVEYu4RR4pFmb0c0TK+Eh3WEge2UoaZalZpPELJ3wQrRr2+v1eAfR8MI8xddrG9BpzbhV7XLablb3VLR22wamM3iwCF6mz8v/AQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EeViQMlj; arc=pass smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=b6/Gro4HlcKIsDSGJ0sH2wCMDs7xUBUa/rNCjYssHBhM5bH08/83lfX07/BoBtM3b5xrqGBBOuasoxyS8T6k1NP8eCTR3HHBjM8UWadZ/pyUK2j5nRTXRHVpf4hzqWxTt6sjn3nRG66ljzy5Uiw5wk6G+BxwuoyjEXytAb/VhCM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OQguqOGp; arc=pass smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EeViQMlj"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-396afefb35bso33364a91.2
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 20:25:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787801138; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OQguqOGp"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso18473955ad.3
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 21:37:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787805474; cv=none;
         d=google.com; s=arc-20260327;
-        b=qOrQQzu8QuwZ8jvYtWbwPiWhIfCRPmLfUaYNNsv1POf6nr50HQq5Dnxf0VeaXJMoI3
-         c0jAS9ZorpnGlgXQZVFZxu/vwymosF+syq4UuVzwhx82L4eQ1Ad4MuI/i5sxTZxUtvEw
-         WHYkKwgYCPsF/Gcd90Ccj+41gAsFhrAt1paPU+3iPeOX+woz8w/iFStKvWsf1zVUDKCI
-         ZevuZ3MyntnYYGP533CWVXQUhRSkF//5cnkFUAut0FflpUQVD26QuX+GUupkGKCplohX
-         In/lRqzNIY963fBufTV0hCsPTklUFfRcRP2XK5S6MLjiJ7ZlXdar0iqzJuFGfYWoHefa
-         T1hA==
+        b=XluNc4jjW+KZBS5FyC870OFNMycc7DfHKkHxNTGs2luGGU76+k1Gx8k6UmtoCd2HGt
+         IEDzcAYk8aiRFLBfwfKqnZWqxNDVVS6Kg/JkHFt9NKzDDN8wejfG5GG1GXHj0bWJQup+
+         F5Bw94TaYr25JIEayL8kkDaFmjTQWfRLL/DIrQasszJPj0AU0k9J/zToqhIVxwevxDAf
+         op/XyKuUB6QXvNPSDk9dSyVEdG+1jYBM+FKYzKo3CuJaXWCPTeEWKyhsviOL8NRzshaw
+         tTiKoBRrgHYYyitq85zFQzQaSngR2CRhMoHn/1ZP3WU/ixvwRw1yVVT9OuA4fUdak3pW
+         0tXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Y6tDIPKS/uqXuuUFnPzqnQhBgbsl8522wLxb5JPJ+mQ=;
-        fh=Yqg5r+cegAWdYVICdVgfILwUIo6UkDRsbpXwvpBVvBo=;
-        b=TQInnSFwxzZ2rrLNA6+Q/8emQNOVChE9CcyM+dRginXabwWc+AnA6wKwE2UQefmxY2
-         HOtmrfstjZPvIpBp09rxUVyE4WuG2z+Akx3t4Z+hwZM7YyGQB14nke4v2dgj1v9S3Cr3
-         5ol8P/B95GEyvKQZE0bg7WfH/gPe2u3CZ9BbYGos+d4Exms/G0Jxprx3PWl5PF8w/DIe
-         g64U2a6vU4d3Pw4XWEdG560vdYbsPXR+uY1MSvTTUSRONshaw/NcbbF6zTS+tCy466LF
-         ZM2bCmGu6Z7VirMB7KpghXF1im7xBhCQnBbEZqc8cgg890CdDZKLsiPSHdzVuAIiN37A
-         bvvA==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=TF4gCEvN5ThIoaSNFiv7l3yYWMkjVNVbqThw5433U58=;
+        fh=KKvIeSjWEn2Fhv6xpbha4/T/xlGmOo63oBApenrXRpw=;
+        b=hi92q/Kt3PstklF9P9FDbws6Cnq82GGqxeaKZvajPLqLkMxQEEPaW7xO8/h7oSqDJ2
+         +0H9BZ6dqlv1EfXv/qhkFQg9bFPXaR3gxzSMrCO/oFnIkkPnX++liW3/kYaO2+oBzQTp
+         y7oUnaA8Ys0359Xwq9t91SDQAZ2nhmMWCTECsgMxFcxPFfaQQOiW3geNBHR7O+nm1qzt
+         C4NpjSyH+8ly0dDNE05SfvuDSphf+twP8UpUXQS5Eyo5HMvifTkPK36HvxyslxQwENpB
+         bp63qJ3fuCQMbWZrmFITtYSwDs7BFHOFgmhSIpvXAmyQwDJfSMHe3KH/1dgQ8tKdvHbO
+         YUAg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787801138; x=1788405938; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Y6tDIPKS/uqXuuUFnPzqnQhBgbsl8522wLxb5JPJ+mQ=;
-        b=EeViQMljhcvK+BJjvzeRTbaTkGuVC1cxbaW+ykbBaejdPoSA/4+WZHw6VwKv8E6FoP
-         vobt8Mu3opgs+l3yUhlszPHAzu1zWq6g1WkMIVUfEVgO9LKraXp7k8qRZ9uw1NimXUbE
-         UtpLCMIWLkGWJUZ89lrOARkFU++vkosIOMQsHOGuy0zlwih9qJHhIkrS7Q5SP3bi0nes
-         ybzXVjOe+Zq58UmhQ1E2ykj9lUUWebxw+CiKU66wQUFodfmasrvvBwicshYe/hGjXb5J
-         HuG7w9tnAhJzazGTSJJZNfWZraCqgIGfw3olaCXMoY5qvCz2u9dn+q+9Ws+p4+k1JZ9+
-         2AKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787801138; x=1788405938;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1787805474; x=1788410274; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y6tDIPKS/uqXuuUFnPzqnQhBgbsl8522wLxb5JPJ+mQ=;
-        b=BtU/rB1AqfuaxwqIScyW0xYXk+SXNjQ7DaeGrhxG4TmNwBTqQC5BIZqV+hgnsZCNhq
-         bRknDP8nWRHM8PMMtZA5IDWcfwRcmWEZ1Jyfdw4hMRaJtAm4ce5uY4Z88tC7LSxW3i6G
-         JowOOROZvcB9obzG/i647Nq5QhLLFwjHxgl2XmZu8QnehLR1khkIiibtOcL6No+lwjDP
-         7gwF0YhY79vxyASvCpxlSM394nShQQJ7o1k1DSCzdbRWHBIGzuOLdE8JNTHnbe8KR0s2
-         sEyvcqElSHEYZZdTHrrQ1D5CqjqBtk0GXfNdHvcqTD80/thd+7zYUx1iCUXKQByTxC2y
-         yl0A==
-X-Forwarded-Encrypted: i=1; AHgh+RrWqfKF6+7OvFZnCy6wHa+QeEeWR70tCkWrqu16H9IgJvhim7NxWdeGAdPsj9w8c4/AYlJPbRc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kszdPuJSSfVl+svk2HLxzxoeOWJTceozfcZP+S5cufaTHuPa+k
-	x1z+zsMsRGzxeBsTClXLWGG4UhWtz/teAa8HboD0ZcMurZYIjyUCI6TKzaimkk1mbjOnpsgLJ1j
-	QR/jG1zpiy/1XMz4nNY/nDjNjhYCFUDc=
-X-Gm-Gg: AR+sD110aYmO+m4ds5fw21+hPjifvWwjsngyo6X+UsOpeo4t27HOzQQE+agxczznb0/
-	WtN4G4vNhLbyAfHC61oiY9BGdyFn9yCa4wjg0z3PSeFS9kjbE4XbGvfWR4tyhmYpE5eZRiSeU5s
-	ejg5NW59uWlROIZpOXU98RwEmM953xkd7d6OIyhoea6ONTgFJLR08GBRm8f0hh9z02wsbsV6QHe
-	d31z/NwGDBxBZCDCMk/CvHkuGhA1O5lZe2+IigKou2okdusaBYnb8tmOI0or0XSP/CYTqGiAmNO
-	hroKGr29CBkSB76Qw5LhcrKZQGeq3O/uSM45Fv6Fxpxf43l3b8n5k2ciZ2WJO7d5lmw6ymNHBaE
-	lIr1UvSnQ2MBwA9yNJA5t47rv8sEJl34NfBlrW5uvzu3LPQ==
-X-Received: by 2002:a17:90b:5890:b0:38e:ab3f:2c99 with SMTP id
- 98e67ed59e1d1-3969784322fmr4319785a91.2.1787801138078; Wed, 26 Aug 2026
- 20:25:38 -0700 (PDT)
+        bh=TF4gCEvN5ThIoaSNFiv7l3yYWMkjVNVbqThw5433U58=;
+        b=OQguqOGpKSMBKsKrggvFv/FNX5gfUzPkQt2r9lSKRoGyizlj6BecIlu6ZXY52W5S5m
+         wyTpmA1ro092rIqdEU7LSGzrshonczFLZV5AlGkFu6vWWFBhVYDuYNjh7th6/M0cWRSe
+         i4TKGwlqRyGHX59SoKKoAR1bzWLQbHROmjE/REci1y+D6I30+oRlP7YncTCIKnp0tS6m
+         VAJZwvxvyoFTmowBKxnCEH1bpzNNs548dqF85OL8EH7FdeSlrPifYFlfSP4T45nZB9Bw
+         0Mm8H0wWNO28ft+5TmULSm6Hu1C02lFrfuO+3Y34bn4PB/Ipt45QLGRjaCnsuu36grw/
+         lcPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787805474; x=1788410274;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=TF4gCEvN5ThIoaSNFiv7l3yYWMkjVNVbqThw5433U58=;
+        b=F6HqOc7KpdWTCEuFpfLxZOBsa2pZf6XXb0n/ESaHeUl6NUPGqu2hGIG81k8UNX/iVM
+         uLcznfBA07ajoY/dDvkbWn6BAnAavYD995hpfR48+85gpnGu6JNhvaif6Mgg6/zJgjv3
+         /+4ZntYr3C8yV0oXMhuvTLBXltxJ6QNvP+/7ysLqDPXUkz6FOzm0ssRo7XIRUl1HrzYC
+         kBe4pBy89fm7f4piR5ZGcziXt9u4KEuU0L8SbhId1JwSY01em/mFNs8lpiQ1eibzJIf4
+         veeDRWjgeVs4mly2tmLm0hLVTP7kWJ6XyR2d4uBOmAT13JqA87K9KsBSgH0nsiZLyR9C
+         xISg==
+X-Forwarded-Encrypted: i=1; AHgh+RqkS5fAfAkjz+vNA4Cfk1SfdskECn/qP6Osmb4aYe/Y2YIFPe/yTMuQ4HB9nP+RHh/poWDGzKA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kxMno8dAILSBZPVjw6Oq3W9tKZNFQ05rPGK1XykG2u5kDcHgrj
+	CTo+iz9pbS5/6EbbMBPqG4cByeIxY8fOx2NTAtR1cOf4vwWwKppgvL4pqtgAkmFZf3cPG/tBgQk
+	pWhv+qm4k1gP9w6pwVXWr6FlD6akhHGk=
+X-Gm-Gg: AR+sD1238KUQlDYNe16kWMLrTJYaySx8khrdH+sK+MuEK0ADJIwSd/+HqpjiFYszeOG
+	U+J+4TW1/BecEZIOXsprnmv12f4IOZZ921vnNBVM7r9x5G66/nsrlGsvCUjg6HUDT2J7O3lkZeG
+	mBFaZ2YV5JqWIMu6l5kgAkUAo9AQ9ssBqY/7vjZeZm5iEM4OF8yhhRzA/cCjZ03Qep2TSctcFVb
+	r68mUiOw9QIKMzjpDehoj5dPIHKHvIyIVJz56r8C8uuAqCxdFp/zCuM4iMIokmjnhzRap7hBSH5
+	titNdE5VXHRO5r+BEkjkyfVMx7wAsV/RRZlZ46Pqg3z3KHFWv0VAJvjrK0YUIuOqk1Roxh90wg+
+	CXfz9u3VvrVnu4rZC43QQ6bJGtF7J2pdlF3i+XBjVXzvrmKctLpfMXLmnagwBPsRWQj4=
+X-Received: by 2002:a17:902:d54e:b0:2bf:27b2:4b80 with SMTP id
+ d9443c01a7336-2d707c11148mr245120485ad.14.1787805473655; Wed, 26 Aug 2026
+ 21:37:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824021802.90369-1-q.h.hack.winter@gmail.com> <ao-OhAl-Mys6zU25@fedora>
-In-Reply-To: <ao-OhAl-Mys6zU25@fedora>
-From: Qihang <q.h.hack.winter@gmail.com>
-Date: Thu, 27 Aug 2026 11:25:26 +0800
-X-Gm-Features: AcwNN1UsW2jM8ssQQpvcbBQcH5RsqQMruPr46XEBnGMCtC1F0gnCVtmZRBd-LOI
-Message-ID: <CAH78GvupXnEHuW_MW=19u2yAw1gHq1+wnpdtUYKLGp3eS1jhYA@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] bonding: reject frames with insufficient headroom
- in bond_header_create
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: jv@jvosburgh.net, jiri@resnulli.us, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	willemb@google.com, netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20260824100758.31622-1-phucduc.bui@gmail.com> <20260826124040.GB22033@horms.kernel.org>
+In-Reply-To: <20260826124040.GB22033@horms.kernel.org>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Thu, 27 Aug 2026 11:37:42 +0700
+X-Gm-Features: AcwNN1Uwq03wbJzFAkj4RVE-iN9Gvx0spZf-CcmajrHFwjhcmB8WRiI_cPvaFIw
+Message-ID: <CAABR9nGKNzNygC79eaXJMnG27qRUVTjg1S8JPnD+oqDXCHe84g@mail.gmail.com>
+Subject: Re: [PATCH net] net: mvpp2: Fix IRQ error handling
+To: Simon Horman <horms@kernel.org>
+Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Hangbin,
+Hi Simon,
 
-Thanks for the catch. You're right, my wording was inaccurate. This is not
-about an active slave switch or changing the bond type while sending.
+Thanks for clarifying.
 
-The issue is a hard_header_len update race in bond_setup_by_slave(). An
-in-flight AF_PACKET SOCK_DGRAM send can snapshot the old
-bond_dev->hard_header_len
-for skb headroom reservation, then bond_setup_by_slave() updates it and
-installs a new active slave. The existing send path can continue after this
-because dev_close()/dev_open() does not synchronize with already running
-packet_snd().
-
-Later bond_header_create() uses the new active slave's hard_header_len, whi=
-ch
-may be larger than the reserved headroom.
-
-For the first-slave case, the bond can be slaveless before enslaving, so
-removing existing slaves does not prevent this window.
-
-Thanks,
-Qihang
-
-On Thu, Aug 27, 2026 at 9:10=E2=80=AFAM Hangbin Liu <hangbin.liu@linux.dev>=
- wrote:
 >
-> Hi Qinghang,
+> As pointed out by an AI-generated review [1], although the current
+> condition is unnecessarily wide, it does correctly catch the v->irq == 0
+> case.
 >
-> On Mon, Aug 24, 2026 at 10:18:01AM +0800, Qihang wrote:
-> > From: Qihang Tang <q.h.hack.winter@gmail.com>
-> >
-> > AF_PACKET SOCK_DGRAM sends reserve skb headroom from a snapshot of
-> > bond_dev->hard_header_len.  A concurrent bond type change can switch th=
-e
-> > active slave to one with a larger hard_header_len between that snapshot
-> > and bond_header_create(), so the slave's create() pushes or writes past
-> > skb->head.
+> So this is a clean-up rather than a bug fix.
+> And should be for net-next, without a Fixes tag, rather than net.
 >
-> How can bonding change its device type while still sending skbs?
-> Bonding does not allow enslaving devices of different types. We have
-> to remove all slaves before changing its type.
+> Please also note that net-next is closed for the merge window.
+> I expect it to reopen in early September. Please don't post
+> patches for net-next until it reopens.
 >
-> Thanks
-> Hangbin
+> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824100758.31622-1-phucduc.bui%40gmail.com
+>
+
+I'll resend the patch to net-next after August 31.
+
+Best regards,
+Phuc
