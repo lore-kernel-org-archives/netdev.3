@@ -1,129 +1,193 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317C646AEE4
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855229; cv=none; b=YzD9KVqVUxW10Kk2meCwKhjf3Wk4zki/6mVAR0Kxeypp9RQjkKB+mmU/xNz+j6yLwgTuNRVkjxPYXGzm7mFJMxle7wkvi8clMiI+nw+q0ND3kxi/UW9OvSi5Wzecb2J0RgrYYuJD/dGFWdDyYLiNKoooEPUOStRjgLEGsiOt0jg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855229; c=relaxed/simple;
-	bh=QYThMHGG1K+g7XdUfWdgFZNifigH3qkZM0bwORC1CQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5o1Ipx4jV24qWqyt9dVjGGd9NJUbFe+cOGJE0IMj0gpNA2P621/gjkMNQZ4GhW42b8KCNwN0UUntbZRfDCm9w0xxqO3+WM365C0RmFol1XOR8u4wmvhR7OsYpK6eQ7LCFbNqvuZnCQwcLAVuQuRfDp2QAchUHj6oXoMonAPwWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=mtgkdzHJ; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFA62D7D47
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787855890; cv=pass; b=EXiiOC43VYoB0THi9fKPgXbTCHPW5yD31nnv1sw3/HBDHBCMaw3vImgz6VIR+Px2Q/sPsFeHu4mSZ8zOkjN0YSmoaxh683HA0R0xmR0gWOU0QrZmSj0V4tGnD/YhTGRqM80vY8V3eEZjoQFJwTjcb2PmrWG+3G2fF+IzqOwWtlA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787855890; c=relaxed/simple;
+	bh=A3OHUfTDY4B60KmnWjZgp77Qh697513pEoWAN+uT65s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gtx9EWrzGGGyw82QR0oD6zjCg4ZuvpLe6LDrMI0YJsE6nu5PvOiGmzvjdREmMdnKrX1bOMozFNwun8ztSVCayRCTo7KeKWEXG82NqUhVpJzGiN7SVAYLsnAEMWvuOoCqqSwopeKzMpUxfQoiB58YbzAwQGrb6zZIvLPHTkiQTwY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=R5/fwmMa; arc=pass smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="mtgkdzHJ"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso96820b3a.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:27:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="R5/fwmMa"
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-66c744a00edso319183d50.2
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:38:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787855887; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HFderc6v3hj2oEz13NFI3NUeMeDYzLYkRkyQMXg0pZDOr7vOuivUUG4i9/sPYxLg54
+         sLcKpkJ2mbLTZ6NJj0jf+jXZVcQ4VZ5QHsTKVWTN5PfVo7OLPJR8VpO8FB12AIihuwyb
+         kie4me2azMXJ0l8pEnWHSR71nDLLIFaAoN1dYmI1ADEpzgHzRhA7sXvteuUt8IrQVnF0
+         8aU0CzU2OUQ7TGiPzHexvYSM+9md+qQNEt8zDDxZ4YNaAEg5tEX/i6rPy6zgZBu1AR72
+         eELmuoMr6riDb/3v/LYaehieX6PXaNXZminmhtQvN4a0PAdIdXQc6ddLO5HDsJDXXyfl
+         lAwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5lMK2X0TFxVNPsZak8BQQicRG+0cwUrweeRcMx9M16A=;
+        fh=T+XlqujZH9hK4qHYQeJGWWQGNCghtKHpotUqh0b3YZU=;
+        b=hQWcJCauscJl3hllsmatzUFxppJaM3cLHTc7/ZBNrT3ccbiD1NHdlq7VKz/c73+d3f
+         0D/iqq/p+YGAxzIARWrAqal5fXrwxdGV2IQJFTMUrRHbLOL0vrvQtx+5DhcloEYw0gOh
+         TEsb2QLOVqYoooy59MnWMZxPvPPFWhxuJzdgL159nxTyyl4j0KpyRTH8Sycgl8tmTGNi
+         2ZaoilDOardYnNuBPMJIpN5D/0jXctCMWqyX52AdhRhOdTZZ/w0K6Ta2q9m4VR1oSyCp
+         RGnQ8nu6uRFi/givqK3v2EOdg7w2jUei0hQrP99gHmfkySDCSIghFCcgLoPd1ky8zPKa
+         vCRw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787855227; x=1788460027; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bWfJta+Gdp3BTxZw5fOdxizjLpZb3H9i2ar+IchDHeI=;
-        b=mtgkdzHJ+kKOLb9/pocEM+FY/c2arAH0DntR+IA9oQ14bo5dSXnw+Y6sDFXInihc1A
-         5XLerAETkgMvTj8QDlMQOi7OWatckE3MOIZrEDFcVfEXXpMrMFnoMCQH8ISoQzlx4e5F
-         fm2RGmlIgZiurQra9JMCe2k2Mh3LPZ6lOsC1CEkELC1pcLatBmyfIdtW/34r1bAW8HLv
-         nMCmxs8YEC0h+aDnIpIt4sxfOHDWifFwUSFlZxmwpZzcvDMJlUb7RHZ4jLiCjzppIQo5
-         aedi4VjJkQ8K7+z6kiNY1nXhJ4Ak/9IL5PhYGnNPpQotXuEaIlYhm1U854IewrL6VM8R
-         tXyQ==
+        d=mojatatu.com; s=google; t=1787855887; x=1788460687; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5lMK2X0TFxVNPsZak8BQQicRG+0cwUrweeRcMx9M16A=;
+        b=R5/fwmMapuoLh1VH9Q6QvkT52HPBhv/6HJfAF76HQvEYfyB3Y1lAVsjd5qlqEfIFZG
+         NjawUmaiOU8zga5d78Sg1bCvBILxtJt/tOjpBHrJneQHmLT5+TUh/tm2JqwUmqSmlk6m
+         I1JgVxe8Z6ZpAlGlUO6tsiaLRAfpN6dF2z5dk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855227; x=1788460027;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bWfJta+Gdp3BTxZw5fOdxizjLpZb3H9i2ar+IchDHeI=;
-        b=GnpWEZeTKVANaVB4z3l0mgTj5KY6wHRLDgOUB5cQxeVNC2UAjmi5nwycF4LVgpSPyu
-         uFUBFaw4GCOocSZ2SpftLCPYY2Z7iSM5aPqFhrYmr8E5JQDJS3OiSbgQIbk9Ok7vcgVH
-         qc9Mdo7uFgUTjBKZ4Vryiwx3KOUO5zJShGlpGyoF3UMN+EZ7TICruuZsO2L/IALJtjPL
-         j1alkjMTD7Q9ibOZMRoWegjU19AqHAXb88eKMqkh6UgHDkQ3rh2RBiTgUUhDStqFY8D0
-         Gw0PREaxARxTcRADpnYoQw0QJhoUSGCIE0QDtLbk5cWZAMa0ak5aIG8CG14KqsJcimSX
-         zsMw==
-X-Gm-Message-State: AFuF++kC2r4RrtTGe40r09ulqWV1qNrSWDIE5tkiqCRD5ZMbaRD6n6Mm
-	QuHmkrwMPy4/8PJZqoD7DmmYZRt3RG9Ib2aATty/YoBedndNs8WW0jHg8rN4AQ5fTanOKYGdLmQ
-	dFjOKGMZ5P6Dffw==
-X-Gm-Gg: AR+sD13ePvngVTfq6V19sxwOJ0tbffI0lRD3vATpAtuqRlx7O5/rPoI/50fm/toVR6x
-	/Aq5XKzJATHEOHYEFMmLzFA0wIBlt0QAAuFgqQFXiBY2qGftC95q3i/FuLLR7E87FO1do4Hop2k
-	y9USD2/8civ0sQ4u7Sr+CZSXOsVUGQU9EgjkoX8vfa2j4n64rooSAymMQLDbXTqC3+w1Td+Jd2y
-	GSoab0e9wtQcobzUlkFM1SW7tGKxmJpt43rroiZQbHlO0PdALRvWNUchB4vXOqZtC1TDpRaVybP
-	CiiTtCcY1OeXMeD9N+gILtP7eP+o+QoD61Vsnj5K2njamA15XwCyGUE1I89wP+SHZf37xPjDoVJ
-	hGnL+e6Innql7xBT5Nkzk5uRH/CIlC9UFfl6rpB5CG06/XdDX38vqqvY4tCT5CD5GBJNbInXQou
-	1RT+fjb2UgVPwYXeTYhZ4kQTpk+EFwwp3XcIl5X7yviL3hXpZObuJl8FI+eMZMzlYtU6rwVc3Sx
-	BtWUIXz6KCG8g==
-X-Received: by 2002:a05:6a00:a585:b0:853:90fb:aa6c with SMTP id d2e1a72fcca58-854c6485748mr12053839b3a.2.1787855227265;
-        Thu, 27 Aug 2026 11:27:07 -0700 (PDT)
-Received: from gmail.com ([202.201.12.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535cf4462esm2333905b3a.53.2026.08.27.11.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 11:27:06 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	=?UTF-8?q?Peter=20N=C3=B8rlund?= <pch@ordbogen.com>,
-	stable@vger.kernel.org,
-	Zihan Xi <zihanx@nebusec.ai>,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH net v2 1/1] ipv4: avoid divide by zero in fib_rebalance
-Date: Thu, 27 Aug 2026 18:25:14 +0000
-Message-ID: <20260827182514.4667-2-zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260827182514.4667-1-zihanx@nebusec.ai>
-References: <20260827182514.4667-1-zihanx@nebusec.ai>
+        d=1e100.net; s=20251104; t=1787855887; x=1788460687;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5lMK2X0TFxVNPsZak8BQQicRG+0cwUrweeRcMx9M16A=;
+        b=CtO8NMs0SgNO+RWRii2tHqhGgUFaypTYWP3YE2eQOaMzMiRbWx0S10FsdLN/OE5aNK
+         HmYBkzoM1MFevdvKuMKDqAFGV0k691b/lUHhfIk7FQwoEFA2/Cdq/zjx9NER2gUR7177
+         fsBeUM1O2D5SVnR4LKamYC47Py0yoUPknv52DuTteIg9Z/IqBM+WUYSUdSevMTwgz4UD
+         pIDI4DbWzoSNpOKTLf9FHZMkCM6dZvcw7tEdxdfN/UTCh8kmz95cyeOCfdDVkOPpOxs8
+         E0wWrNOxFCcqUxkCqxYBls7u19WdOU6dRV/BiNHX+7XHk59Y25B2JdDZcM1Ngu+bCRHj
+         eUHA==
+X-Forwarded-Encrypted: i=1; AHgh+RoHTiBFVwTRnd4RjK/Fkz50Tw4O1gCnHMAofwS/VSF5fu4vfPprXln/RHVgDgwdjRxmrbq8Ibk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kGD+J8fEp9Cd8I2Eq3U1TA6ZYfKSEbmO39dclqIAgrYnhrqy6Z
+	CD4O3t1G/B2q/REPwGjwSAggNz/VEZI18oVP5O5WB35k1bwJ3Z2ckSVGHLZRkYyOcy7TGp1wHrE
+	Lpf6adu367VxyPo0TONm+rNR4WH9f7unQmzgbHTQI
+X-Gm-Gg: AR+sD13pXOIfIFXM/o0ETrBfMfLa0joG6U812dg5TaMQMX2rl/7VGEeL8DXZG7BpKc8
+	ilnRtoqIiisJLqgtsSyCRMpxaGxCymGByRqNpU0Sp9Mh0vvQk8PoCHYrZ+FoGp43QMdyIVnCPI9
+	bhBBAm0GqLaNfljJHgvpeuAkFgBcn4GRbyhVNGK++m4RaoVeSUn5GIUs10FZCtE9r78p/cBquXE
+	wKJb3KusI1o8wg0Daxrj3SI0x2/JCMiEa8y35lStBOl5Q+dhUMWRXuhrutT/tV5OuVCIaUp1TMc
+	0Hk6I/HwXp72gt/i9N7WKDyYSAl2wbQI85J1XDSv0yy83+62HxHMGDyEotQ=
+X-Received: by 2002:a53:c6c1:0:b0:66c:fd1b:117 with SMTP id
+ 956f58d0204a3-66e4c5f36camr133209d50.5.1787855886638; Thu, 27 Aug 2026
+ 11:38:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260824153903.4143642-1-victor@mojatatu.com> <20260824153903.4143642-2-victor@mojatatu.com>
+ <20260827084456.GA396647@horms.kernel.org>
+In-Reply-To: <20260827084456.GA396647@horms.kernel.org>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Thu, 27 Aug 2026 15:37:55 -0300
+X-Gm-Features: AcwNN1Xs7Xbud-5E3z-gTFDfmnNs9DwcfpWsx63JUxk7ecadRS1H8BCyixO9dVM
+Message-ID: <CA+NMeC9wz08GtvBv6B8Uma2suKQDi8okr_VZt7hDZ5shmX_8Yw@mail.gmail.com>
+Subject: Re: [PATCH net 1/4] net/sched: act_api: budget all shared attributes
+ in notify skbs
+To: Simon Horman <horms@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, pctammela@mojatatu.com, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-fib_rebalance() computes the total eligible nexthop weight in one pass
-and programs upper bounds in a second pass. A concurrent change to
-ignore_routes_with_linkdown can make the first pass return zero while
-the second pass sees an eligible nexthop, resulting in division by zero.
+On Thu, Aug 27, 2026 at 5:45=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> On Mon, Aug 24, 2026 at 12:39:00PM -0300, Victor Nogueira wrote:
+> > tcf_action_shared_attrs_size() is supposed to return an upper bound on =
+the
+> > netlink attributes every action dump emits outside of TCA_ACT_OPTIONS, =
+so
+> > that tcf_add_notify_msg(), tcf_del_notify_msg() and friends can allocat=
+e
+> > an skb large enough for the reply.  It has fallen behind the dump path =
+and
+> > is now an underestimate for every single action.
+> >
+> > Attributes, such as, TCA_ACT_IN_HW_COUNT and TCA_STATS_BASIC_HW are
+> > emitted unconditionally and never accounted for. TCA_STATS_PKT64,
+> > TCA_ACT_USED_HW_STATS, TCA_STATS_RATE_EST, TCA_STATS_RATE_EST64 require
+> > specific conditions, but are also not accounted for.
+> >
+> > Fix the issue by budgeting all of them so that we have a legitimate
+> > upper bound. Even tough for of them require specific conditions, they
+> > are cheap so, to avoid overcomplicating, we opted to account for them
+> > unconditionally as well to account for a real worst case scenario.
+> >
+> > Fixes: 4e76e75d6aba ("net sched actions: calculate add/delete event mes=
+sage size")
+> > Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810164=
+357.1653956-1-victor%40mojatatu.com
+> > Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+>> [...]
+> Hi Victor,
+>
+> As you are no doubt aware there is an AI-generated review
+> of this patchset available at
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.414364=
+2-1-victor%40mojatatu.com
+>
+> And while I trust you will look over it, I did feel the following issue
+> was worth raising here for you to comment on.
+>
+> I do see that it doesn't strictly effect this patch. But at the same time=
+,
+> perhaps it ought to be fixed, either as part of this patch or as a
+> follow-up.
+>
+> Text of the AI-generated review:
+>
+>   This isn't a bug introduced by this patch, the TCA_ACT_STATS line is
+>   unchanged, but while the surrounding terms are being made exact, should=
+ this
+>   container use nla_total_size_64bit(0)?
+>
+>   It is opened through nla_put_64bit():
+>
+>   net/sched/act_api.c:tcf_action_copy_stats() {
+>                 err =3D gnet_stats_start_copy(skb, TCA_ACT_STATS,
+>                                             &p->tcfa_lock, &d, TCA_ACT_PA=
+D);
+>   }
+>
+>   which reaches gnet_stats_start_copy_compat() -> gnet_stats_copy(d, type=
+,
+>   NULL, 0, padattr), and on !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS a 4-b=
+yte
+>   TCA_ACT_PAD attribute can precede the nest.  gen_stats.c even fixes up
+>   d->tail for exactly that case:
+>
+>   net/core/gen_stats.c:gnet_stats_start_copy_compat() {
+>                 int ret =3D gnet_stats_copy(d, type, NULL, 0, padattr);
+>                 /* The initial attribute added in gnet_stats_copy() may b=
+e
+>                  * preceded by a padding attribute, ...
+>                  */
+>                 if (ret =3D=3D 0 && d->tail->nla_type =3D=3D padattr)
+>   }
+>
+>   No overrun follows from this today: TCA_ACT_KIND is budgeted
+>   nla_total_size(IFNAMSIZ) =3D 20 bytes while the longest registered in-t=
+ree
+>   kind is "tunnel_key", emitted as 16, so every action carries at least 4=
+ bytes
+>   of slack that absorbs the missing pad.  It is only the term-by-term upp=
+er
+>   bound property that is lost.
 
-If the first pass reports a zero total, set each nexthop upper bound to
--1 and skip the division. This matches the IPv6 fix in commit
-d2c26c2911dd ("ipv6: avoid divide by zero in rt6_multipath_rebalance")
-and preserves the lock-free rebalance path.
+Hi Simon,
 
-Fixes: 0e884c78ee19 ("ipv4: L3 hash-based multipath")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v2:
-  - Replace the v1 RTNL sysctl serialization with a total == 0 guard
-    in fib_rebalance(), matching the applied IPv6 fix.
-  - v1 Link: https://lore.kernel.org/all/cover.1786812660.git.zihanx@nebusec.ai
+Since this doesn't look like it causes any problems today, I think we
+should, in the spirit of what Paolo suggested on patch 4, send this as
+a net-next patch later.
+WDYT?
 
- net/ipv4/fib_semantics.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 0483519b7fb0..7a362f2e2c2b 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -874,7 +874,7 @@ static void fib_rebalance(struct fib_info *fi)
- 	change_nexthops(fi) {
- 		int upper_bound;
- 
--		if (nexthop_nh->fib_nh_flags & RTNH_F_DEAD) {
-+		if (!total || nexthop_nh->fib_nh_flags & RTNH_F_DEAD) {
- 			upper_bound = -1;
- 		} else if (ip_ignore_linkdown(nexthop_nh->fib_nh_dev) &&
- 			   nexthop_nh->fib_nh_flags & RTNH_F_LINKDOWN) {
--- 
-2.43.0
-
+cheers,
+Victor
