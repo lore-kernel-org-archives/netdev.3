@@ -1,185 +1,218 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1337B361971
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 13:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787838152; cv=none; b=qy/j47d7SNokCCUApUKk80l6x7adUQH5JVS3e4lx2KsOpzs7hb+/aNLwNHzY0rwVC/Ka7KrQM9ce9Kvg2hEh14CSpe4NQ7UwulbJdhsCk8oK5chDhL4+/nbtm77jAruMINAqrWWNCYfbHW5USqXfi7qUzNeontKs7AX46c9iCNE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787838152; c=relaxed/simple;
-	bh=Jnsta+rzeP4pRDS9BbJWgQj9SR1Ch/rWz4YgMi4AxB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qFswvYa/a8Hp+Cv0NH0zkixLgi94dEo8ryDQGerQs9rWD0wOwKp+e93tdjicjPu60cA9wHsEyXq60Z4poAG0TPoiM3V/vei06iUjKfTiVQ/N34H4R8M9UfdnwNaNPfll1x4ztW8qESvX5DEDX3Embf+ozMPi8k5rbMLjQwN1Ogw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aCx4hCQO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KV5R70wM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54A0472F7B
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 13:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787838294; cv=pass; b=uA/Xe6q/zJ/bwOMJAx2WhYxDI29Eo182+8FHL6k0Z/7fxqKY4FsD+f5vq0E5KSRB+CMWSpDemi0Yj6QX25Jc63j8zgQo1DB3Ct2lNyx+R6FMoweEgojXWzps262N2qbjgMhx+X0Q7OY5BMqUjV/OzJdAvKchV64Mj9zYNNDKqsE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787838294; c=relaxed/simple;
+	bh=Mzu4lSA71TnUpIkFlRqeJimp6Rqi1HOQl6MU/Vy3sxw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d6OEHQK7Fcs+SC97lYR6CnOZqZEvnOYzMrcqS3f2aYQ3d0gQKwg/Uy235HbcAAbu02utZqMzRAlXACUebpwC2anbbdo8bUTGqYXbEW1LPKSraWLXCFjQKhuUxeUdgQCHGybH8wB6HJDsmMrqZbaE2dGiDuZGYkqHvyz+pgtzM2k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bpV24GdT; arc=pass smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aCx4hCQO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KV5R70wM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787838150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lAk+QMGNNJtgvFGVN0ymbgGSoDsKOby2WpfQYyiXVyM=;
-	b=aCx4hCQOzMVspeRtuYe7ra6ocTo+h4zHbLDR4hl5CQ6j5H48dq7CAZg6YFv0zKzV7fvkWM
-	MhDpszz8hYcNq93O+kM+kuzw9r+IwAhNf0uLDgf1PIIB0Tj7R+jGjUi+TwttNtLUzugAcv
-	qRxLhyfB5d5U7EG4YOn+zSSAKdqCA/8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-UGfZFHJ_MmqLXMwQNXktsA-1; Thu, 27 Aug 2026 09:42:28 -0400
-X-MC-Unique: UGfZFHJ_MmqLXMwQNXktsA-1
-X-Mimecast-MFC-AGG-ID: UGfZFHJ_MmqLXMwQNXktsA_1787838147
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49554715277so7199755e9.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 06:42:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bpV24GdT"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-52f9fc510e1so5986281cf.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 06:44:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787838289; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZwivxcOHJEnvIhosqnoOyxEbTlHRdgly7dIsaSjOG8HslAB9BulsTcTIqgIaKXvMPG
+         3TIZ1UTmUUI3+O8LF7iS/OYhfHPxDy0oezssukeGMAAHCFukuDjgqFUjPLNhNLqdCSoW
+         JX6jjnyk0gDFVcieri5qieQVsR945ZypWr/LdcoS2LJOQQH6UBeN5mGEeJ1VrD19yLIA
+         BAKYqkqGdrxX8sT0dDrOVQadfDk/c2lEXEHsigFBigX3pi2PHL30lvxqGtAyQNf410uw
+         P1yzgdxKK8cHhgIoP9y7YqKBa0iJHOdBncA/iWNwIxM/UM522EKp1ghTybcBucc1xhUw
+         hDoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TiarfUjA5o3AcHVmQi+rQTGlDx3EfO+y+iS+w99lDxU=;
+        fh=LT1yjlr21M89Z1nxULb1h63cK/MpgbviXwPeWJh4p3Y=;
+        b=SNgOzLcZaIU2JLobklcK73Jj2iOtvXkMrA/dDIGGYoD0vM0jiTqR3SYuQOy8NizApD
+         eyZMSeQjjUcAkv0E9jerJRQlyodeJM6e5Bdaxsi8DCpjGTKiKxocZKDp7YrqHs2aa+BI
+         swoOY6tgoO1B6mMdJOUoP77lB6c3XQilNDcEFjo/T9LfWO2fnQEmhOf3oO4NEjZOex2A
+         gYvcD7R3T1NEww5CseGSmlyS6yuo07eYxVEa3GXcUaH4W9DSTptiYm7PHNLhIWZwb8Mf
+         f+uJfsCaRrpGbl6U4Wo8u7gyxOMnhiNjpJezXk1zGWurVStivHLr0n3SQJLOrEL6tds4
+         MhGw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787838147; x=1788442947; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lAk+QMGNNJtgvFGVN0ymbgGSoDsKOby2WpfQYyiXVyM=;
-        b=KV5R70wM+ov76+p5f2kalpHwpxX4ZmriNQvvtZ0XaM/GlbHhe4B8ZlMGMVzPEWSXCj
-         HLhHBnd0MlvHPw+AfsfLFXJ2FH5LLlZxRPflcn4qwwkZc0XyeZLbXsxYA/L59+NOtk7K
-         JIYoH2F9MYy4ydLDBSzB0QdhZ3nN4Zpl1mnk7Wr+gGFudLGi+OsUFEJ2utEmAWLrz4pJ
-         v1bfxHqz7/4Sh/TbSUpXgA9dVAj3t0tY4xeBwVV/SGHhAtyaH3L9ZpTHpfdha7bN7Evi
-         lnK4+o94SllnACSvCgN+jIlHfTO/sI8XuwZJGEOip4Kog/ckGPn6aZqIyCYHWeVz1fhw
-         8g8w==
+        d=google.com; s=20251104; t=1787838289; x=1788443089; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TiarfUjA5o3AcHVmQi+rQTGlDx3EfO+y+iS+w99lDxU=;
+        b=bpV24GdTMFBEm6u82o+JoRDDkfAlcFUN4HBmtPkCRmU2qQrPiEKqf1ct3XU5w1TVsI
+         6aA9pwgm0sV7SlYAmWfovTRchDMJVO9F/ea6o989B1wZzoDJ0bhPCBTsy6PKm3P/QaJD
+         QomcPu+ygzVVzi37+KYo9S0cASPmYbVL1uUoJmvB/1VyV2oYcj8ZnBx5a7jtEqgkklyJ
+         wXIbKGjP0124LsLVtoTIXnxzq0kse3a4Mtk6g2ANjSdR4KXdr3cwVb5/55GGOnapdtco
+         MvynFb2gv0qbfIi847uq7EtJoMI2SEixevEZrYFtyAvR1Xegz4RoDRKnOlOEvj6HdK4h
+         e1NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787838147; x=1788442947;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lAk+QMGNNJtgvFGVN0ymbgGSoDsKOby2WpfQYyiXVyM=;
-        b=bSrmHR35veUugSW5T0vQ0VbTZ9XA4g3NJqyagEubLSEklkPgacuXNfQWSGylU8B3f5
-         WTjw9lOzQfOLTy4INCVkju4Ks65zh3BcWd367oIFRV03J8KDVkJwvqwBWHLNceGcqYOO
-         yuWH7kIommk31yshkGTuyFT0yE3Jotrh1SmoBdlLa0+PY4XcaK/W1FzMGtYMW5QRTkqI
-         tJbCBQt/1pRnH6kAzoZqdGC3L3HVbe5a6BxUPx5QXVcdoU3P/NLcxf6wffE+Y9IkvUby
-         seIF3Xj8R0laBarP9mFBWHNLIoSv4LE8qN8aGYjDvnfhuWp448VpfKTLxXNueef33FRi
-         zViQ==
-X-Gm-Message-State: AFuF++mZRQv6Zkt3BxgeIkrPsYJhFlmbpIUYmnehhh8Z6hFyd5TompPc
-	pB9C/edzt1475pzoR75iJbn0ntcXzchKKYCEVAvwwQRd7SYemkmH3P022qc/ebH40rRhYIaIXFV
-	AdL4ECrK9cYPAnOa6i/K8uTKV5j/WadOE6Ns7QADKQwOr9FuiTAe+4atJ9w==
-X-Gm-Gg: AR+sD12kDLqaSYOl5fKC0tILX9cd93iCNycbdRgJGgqsIebVbnAC1RR9MQe8Pas7bEr
-	D2w8BtVY26T2mKfj9g1EPfTdhPe0iumWxiLdGpZdLpsZ1xkThyCSN5zgcPuZOYIVRqQZmHaxpOX
-	oRhlIkgffRMlDX2s1thyZ098hANfckaXvcsqU9R/HR9uRO3/RcSm0UwOtMb8UZrFMVPiC9O+VXo
-	EOpFhE73ZmXsuNMasAJsSp1Bijuxj9URsaAaeT/3Wxcjq7Tb7Knhf8XzIdVKuIUJHUfg4NzzwJh
-	l0mjjlQwMYcQaHtBL66nPAgG1aSFJIbB6KfH1GpHWa4CCZgoA3B/pZgpRFKBe3cdKGo1HXnGHRQ
-	BrEjFuI04mRE9xeGJXhbZgRoAQmSY14xFkBnlmhp2dfeqn2pVuxJPduawvkDxjLNDgjiYK54=
-X-Received: by 2002:a05:600c:3513:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-499dc82c0d7mr177474485e9.12.1787838147126;
-        Thu, 27 Aug 2026 06:42:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:3513:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-499dc82c0d7mr177473885e9.12.1787838146709;
-        Thu, 27 Aug 2026 06:42:26 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499e7170b72sm107302285e9.0.2026.08.27.06.42.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 06:42:25 -0700 (PDT)
-Message-ID: <d045bf04-be89-41ad-bd0a-b62fe4de8dfe@redhat.com>
-Date: Thu, 27 Aug 2026 15:42:23 +0200
+        d=1e100.net; s=20251104; t=1787838289; x=1788443089;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TiarfUjA5o3AcHVmQi+rQTGlDx3EfO+y+iS+w99lDxU=;
+        b=c0qLgQK/w9IPvVb/7lx9JDKjnmAhHP+vdN7O90fzFOrMXo9dRouUBttjEHFCpv1lfv
+         TihcNcQR/s5XO9LuydvYIDunpIsQGXiVnyRmfzCNqrsmd6AJKi/GGiNZkx/ENK3NMfVF
+         W52byN6hQTsq9rx3Cur+LICIsm2/zmLi5NOslF5txTDdjh8z0ahRCXcBPgUx3nkFmcWP
+         AxvND2MaH0z0ak3FUA2ecb3uaeim4rQI871/e5ncXUsQfF/zHcnu96O4az6fE+BL5ad5
+         zoaBCdIzJs0HQ/zLUGuzwJnduaMKm72lxKzz52nWlnkuMu8OMFoI4SIAaMTQq7qbbG8P
+         qVdg==
+X-Gm-Message-State: AFuF++nMfL6Mpguz+Rz5elXxbXorQYdYG7fCx7DaxJYg1zGvSjtrsFCb
+	hHHl0bXihIJwpP8J80Mk1+EwbKDD2juToTmXuaM5vrhLNygaoNb9nrWKIrvkfQ8H8WpJJLlLlJO
+	z0lgaXJcAA9oblQPXBhMKt5NxhIprDXrteGkML+L2
+X-Gm-Gg: AR+sD12N2IO6CxbiFK3fjA3/Ebj1kGjVSv3oZbHPEEgvZK9491nfZvmBriWTPfQE0Sl
+	MkHQnW39oecI0r8IahCjxXqUfSfUNvIqgC/6z3uH7uh2okegcUaEa3A8VZMdTeSH7WfYJoRciR0
+	7oIgQlNIK5Qvsv+lTVxeZOUT31i8FJS+sOxEgfuzrL2fVfJUwInkKH7YVLq0dj2uTrZcR+mBIAf
+	NARZuAIMFz9j6aA+78D/aF20VaioCacUkoTp4Kb8bv9ddCYTDLczWZk3+gfg16XWglq8Lkq0oE0
+	bVlSWOLm/n4hi8OzIDL2YCzTpRM+n/DcgdsiAJxd2mvejpKlnm3RYIJi7icy0I6gxg+tcDgZruf
+	LFrnnYMC0WJmwUL7iHYhRKj1AU5LuSoGaho24HVH1WshmZ6s7fSG1grdIoe2oFRBNf+SIOg==
+X-Received: by 2002:a05:622a:1aa9:b0:517:c65c:4987 with SMTP id
+ d75a77b69052e-52fa1def2bamr71264701cf.22.1787838287984; Thu, 27 Aug 2026
+ 06:44:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 2/2] bonding: fix u32 overflow in compute_gap()
-To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
- <20260825-bond_overflow-v5-2-7a800de133f1@kylinos.cn>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260825-bond_overflow-v5-2-7a800de133f1@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260827132820.11815-1-2045gemini@gmail.com>
+In-Reply-To: <20260827132820.11815-1-2045gemini@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 27 Aug 2026 15:44:36 +0200
+X-Gm-Features: AcwNN1VTeP4O74Z9FZNjuIihE6nD92fIGVkcW9WBbJsfoH-8owf1Wfnzar0YN5c
+Message-ID: <CANn89iL_6foOEX5_bhDq5i9yXBFMyeyPy=uZHSxhsw8q_71B4g@mail.gmail.com>
+Subject: Re: [PATCH net] net: gso: always scan dodgy frag_list for linear heads
+To: Guidong Han <2045gemini@gmail.com>, Xinyang Ge <xinyang@anthropic.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Shmulik Ladkani <shmulik@metanetworks.com>, 
+	Alexander Duyck <alexander.h.duyck@linux.intel.com>, Cen Zhang <zzzccc427@gmail.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/25/26 3:01 AM, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> The TLB load-tracking fields tx_bytes, load_history, load, and
-> unbalanced_load are all u32. At sustained throughput above ~3.2 Gbit/s
-> over the 10-second rebalance interval the byte counters wrap, causing
-> compute_gap() to produce incorrect gap values and mis-select slaves.
-> Such speeds are common on modern NICs under heavy traffic.
-> 
-> Widen these fields to u64. Use u64_stats_sync to protect the per-cpu
-> unbalanced_load_stats against tearing on 32-bit architectures, and
-> div_u64() for the 64-bit divisions. The tx_bytes and load_history
-> are protected in spin_lock. Also protect the slave load writing in
-> bond_alb_monitor() with spin_lock in case of tear on 32-bit.
-> 
-> Rework compute_gap() to use s64 arithmetic throughout. Return LLONG_MIN
-> when the speed is unknown.
-> 
-> Detected by AI code review.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+On Thu, Aug 27, 2026 at 3:28=E2=80=AFPM Guidong Han <2045gemini@gmail.com> =
+wrote:
+>
+> skb_segment() moves frag_list data into the segments either by sharing
+> page frags (zero-copy, requires the source memory to be page backed)
+> or by copying. Sharing into a linear kmalloc head is invalid, so for
+> SKB_GSO_DODGY skbs (untrusted GSO metadata, e.g. from a virtio net
+> header supplied by a VM guest or an AF_PACKET/TUN user) the frag_list
+> gets a defensive scan: if any member has a linear head without
+> head_frag set, NETIF_F_SG is cleared to force the copying fallback.
+> Without it, segmentation dies at BUG_ON(!list_skb->head_frag).
+>
+> The scan is skipped when mss =3D=3D skb_headlen(head_skb), on the
+> assumption that the frag_list members then terminate on exact mss
+> boundaries, so segments never cut into the middle of a member and
+> page sharing stays safe. That assumption comes from GRO-built lists,
+> where every member holds exactly one received segment. It does not
+> hold in general: the first segment also contains head_skb's paged
+> frags, so even with mss =3D=3D skb_headlen(head_skb) a frag_list member
+> need not start on an mss boundary.
+>
+> Such a layout is reachable from a guest: it sends two IPv4 fragments
+> through virtio-net, the first with a forged gso_size equal to the
+> reassembled linear head length, and conntrack defrag appends the
+> second, kmalloc-backed fragment to the frag_list. Forwarding then
+> forces software GSO (gso_size > egress MTU, or the egress lacks
+> NETIF_F_FRAGLIST) and panics the host: an unprivileged guest can take
+> down the host and all co-located VMs. The same layout is reachable
+> from host userspace via AF_PACKET PACKET_VNET_HDR or TUN with
+> IFF_VNET_HDR, given any conntrack user.
+>
+> Drop the mss !=3D skb_headlen(head_skb) test so the scan runs for all
+> dodgy frag_list skbs.
+>
+> Fixes: 3dcbdb134f32 ("net: gso: Fix skb_segment splat when splitting gso_=
+size mangled skb having linear-headed frag_list")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Cen Zhang <zzzccc427@gmail.com>
+> Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+> Signed-off-by: Guidong Han <2045gemini@gmail.com>
 > ---
->  drivers/net/bonding/bond_alb.c | 52 ++++++++++++++++++++++++++++++------------
->  include/net/bond_alb.h         | 11 +++++----
->  2 files changed, 44 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-> index 0afed2c39231..9a43a1f47893 100644
-> --- a/drivers/net/bonding/bond_alb.c
-> +++ b/drivers/net/bonding/bond_alb.c
-> @@ -6,6 +6,7 @@
->  #include <linux/skbuff.h>
->  #include <linux/netdevice.h>
->  #include <linux/etherdevice.h>
-> +#include <linux/ethtool.h>
->  #include <linux/pkt_sched.h>
->  #include <linux/spinlock.h>
->  #include <linux/slab.h>
-> @@ -74,8 +75,8 @@ static inline u8 _simple_hash(const u8 *hash_start, int hash_size)
->  static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
->  {
->  	if (save_load) {
-> -		entry->load_history = 1 + entry->tx_bytes /
-> -				      BOND_TLB_REBALANCE_INTERVAL;
-> +		entry->load_history = 1 + div_u64(entry->tx_bytes,
-> +				      BOND_TLB_REBALANCE_INTERVAL);
->  		entry->tx_bytes = 0;
->  	}
->  
-> @@ -133,7 +134,7 @@ static int tlb_initialize(struct bonding *bond)
->  	if (!new_hashtbl)
->  		return -ENOMEM;
->  
-> -	bond_info->unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
-> +	bond_info->unbalanced_load = netdev_alloc_pcpu_stats(struct unbalanced_load_stats);
->  	if (!bond_info->unbalanced_load)
->  		goto out;
->  
-> @@ -170,8 +171,14 @@ static void tlb_deinitialize(struct bonding *bond)
->  
->  static long long compute_gap(struct slave *slave)
->  {
-> -	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
-> -	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
-> +	u32 raw_speed = READ_ONCE(slave->speed);
-> +
-> +	/* It's meaningless to compare gap on unknown speed NIC */
-> +	if (raw_speed == (u32)SPEED_UNKNOWN)
-> +		return LLONG_MIN;
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index ba3dbac80fb4..e97b27ec13fd 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -4796,7 +4796,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_sk=
+b,
+>         int nfrags, pos;
+>
+>         if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
+> -           mss !=3D GSO_BY_FRAGS && mss !=3D skb_headlen(head_skb)) {
+> +           mss !=3D GSO_BY_FRAGS) {
+>                 struct sk_buff *check_skb;
+>
+>                 for (check_skb =3D list_skb; check_skb; check_skb =3D che=
+ck_skb->next) {
+> @@ -4804,11 +4804,13 @@ struct sk_buff *skb_segment(struct sk_buff *head_=
+skb,
+>                                 /* gso_size is untrusted, and we have a f=
+rag_list with
+>                                  * a linear non head_frag item.
+>                                  *
+> -                                * If head_skb's headlen does not fit req=
+uested gso_size,
+> -                                * it means that the frag_list members do=
+ NOT terminate
+> -                                * on exact gso_size boundaries. Hence we=
+ cannot perform
+> -                                * skb_frag_t page sharing. Therefore we =
+must fallback to
+> -                                * copying the frag_list skbs; we do so b=
+y disabling SG.
+> +                                * The frag_list members cannot be truste=
+d to terminate
+> +                                * on exact gso_size boundaries: head_skb=
+'s paged frags
+> +                                * take part in the first segment, so eve=
+n
+> +                                * mss =3D=3D skb_headlen(head_skb) does =
+not guarantee the
+> +                                * alignment. Hence we cannot perform skb=
+_frag_t page
+> +                                * sharing. Therefore we must fallback to=
+ copying the
+> +                                * frag_list skbs; we do so by disabling =
+SG.
+>                                  */
+>                                 features &=3D ~NETIF_F_SG;
+>                                 break;
 
-Sashiko noted the above could entirely disable:
+This is not enough.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825-bond_overflow-v5-0-7a800de133f1%40kylinos.cn
+We have a better fix coming from Xinyang Ge soon.
 
-I think the v2 code for the above should be fine.
+pw-bot: rejected
 
-All other comments look noise to me.
+diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
+index fc0cb993959f9b6506063a4118078abde12521d9..c17e57ec7d5cdb6aac4b26777ab=
+96254940b1945
+100644
+--- a/net/ipv4/inet_fragment.c
++++ b/net/ipv4/inet_fragment.c
+@@ -435,6 +435,13 @@ int inet_frag_queue_insert(struct inet_frag_queue
+*q, struct sk_buff *skb,
+ {
+        struct sk_buff *last =3D q->fragments_tail;
 
-/P
-
++       /* An IP fragment is never a GSO packet, but an untrusted source
++        * (virtio_net_hdr) may have attached GSO metadata to it. Do not le=
+t
++        * that reach the reassembled skb, whose head keeps the first
++        * fragment's shinfo and whose frag_list is not GRO-shaped.
++        */
++       skb_gso_reset(skb);
++
+        /* RFC5722, Section 4, amended by Errata ID : 3089
+         *                          When reassembling an IPv6 datagram, if
+         *   one or more its constituent fragments is determined to be an
