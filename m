@@ -1,503 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35506473C66;
-	Thu, 27 Aug 2026 16:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D244437858;
+	Thu, 27 Aug 2026 16:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787846627; cv=none; b=j1nUKssSKYFRGOUGRA+rBPdS0VBb8yIOJV+Lwqry+TPvVIB9q01WiI9ZzmhufpMeZbzIYY+FUULoMpnfRJnWJqL/NYyOGD91FPYiFbwXLdrpUfX6/XEPuYFMyIGWsQ3xqde1G9aCzwSDUtsHMouiHdNNsNhJzak83fueoqd8aRU=
+	t=1787846756; cv=none; b=M7elryTCzZkjx984X/aOT5sTPv3DXRFfAqCLpwsSf+rezGGFt1IlyozPhqWseTLZaCBdn/Trbik0PNu6CfQ5jz2PFmLrBHq4oUfwxLiG/hU1pUdSDGkotNJw4aCnzPgppn2FJJ+GH9SJy2poiSuJVDJlEX/+rkPZZhrauGwh6lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787846627; c=relaxed/simple;
-	bh=Nik9sJwYjEv3cw2vckL5N7WOKhAF2MblAvlONONkswk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eXJhyAo1sDgqJjGC4wnb2kKoO+LURx6I+LYF99R5eGOgifqCRZnS2TFi0Dr8XHWJfni2M5UkoLF7FiP/J/3PUgTXUe8S0p8tbgTjsbx4WZ4V4C/oFA1vvLgIa0TH+HY7rhxT1M33hpF9T7PeNVFKNq0hpJeG8bDe5hnbeZIHfsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HdGCSKa5; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787846756; c=relaxed/simple;
+	bh=lacU/TSx1NcvabfxvNBRGifDGK3o9moYIvo+260BSeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BAtBE5wm9mDv0GM3ieNUJEV4PGP8Yxb9FWE3emDVxToydFZa3qSE4mTjmCRmDvobsqD5Ffq7rWaP0566ieSR3rwhnviC7TauRk3dtM9Mbdlbgs8oqt4elLFdIbwHnmMCigvbO4+88VTDDylDQVtKL4gZYQVtm18P0sIguYmW+4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPpXPEkF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HdGCSKa5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787846625; x=1819382625;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Nik9sJwYjEv3cw2vckL5N7WOKhAF2MblAvlONONkswk=;
-  b=HdGCSKa5m3v/3sd5W8eGwpP2kAtlstvXVeEx04HIxPfuRbYWBiip4kSE
-   iLn8keSh6EVWQv5bgwqrU2gEBKpPmHh4Lnmdk6mlz9iIEv2k6tDLzdhOk
-   sOtNWcNxgdFzqk5xS10lxKAy8NYw2cL0elwp3JzWYP/zS5iYkYozlCUNG
-   DLifDq1FbOGEbHSqbeXNnF1JURZVt3XGZmgzEbB6Zafvff1mEYmHWuzap
-   hWjZCb2yPl3temdTc3FIbwXFUdVgETuDvmGMVuXWZfks+DGjT87WFc+7H
-   LciSDuu+VAWUr9XmWSfLUOxKzp1Nhs2SeUF53+YfLjHxwZ1PKeHw04RBZ
-   g==;
-X-CSE-ConnectionGUID: dIiSIZOaR4WTLQ3o1rC8bQ==
-X-CSE-MsgGUID: O0bLP9WlQNWbwZ/VEkW6Sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="105725792"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="105725792"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 09:03:44 -0700
-X-CSE-ConnectionGUID: i/YRYntsSXOkRfTAaY0fiQ==
-X-CSE-MsgGUID: uAwv8KziRKSNwJI2R7qCeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="267942034"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.124]) ([10.125.109.124])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 09:03:43 -0700
-Message-ID: <4ce6682d-526b-4d78-8bff-1dd26422496a@intel.com>
-Date: Thu, 27 Aug 2026 09:03:42 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPpXPEkF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79421F000E9;
+	Thu, 27 Aug 2026 16:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787846755;
+	bh=q6F3biC/iYrHhvp5844L0IIL+RiXhuFzeg4V45yJTy8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KPpXPEkF3+4Zg+igYUAjGWxy/dUdkDcXbN6DerCJ/AfY7aWbUlVp5zdhQOnCL2I0+
+	 HItC7noi1Yuygq5IUEsTbkVlTheIBJ7Up45m/qhPnUMun30kEoiUrBxN6DGaAc9q+K
+	 +YiwVQS0OESkYLCw4cTAnUvOlsJVkLx6iZxBypRcpe1JZkpfqxIyorJN6US2Mp1X7X
+	 Mu6V9EEof6EbNTL5r9NoB6o/7YbaS6ZIaydN8TcrMkWkgbvmwELfJdmrsrr3tux5CB
+	 14g6KxUUGvUXiaXjLlc1RLgvRucugKjTNXkSY4vRoS45sQNRPwR6uTeP+p7sdL+Yy/
+	 hsG7dTdPr3P9g==
+Date: Thu, 27 Aug 2026 17:05:49 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] dt-bindings: dp83867: add binding for
+ output-impedance
+Message-ID: <20260827-skipper-egomaniac-ac6aeb078b9d@spud>
+References: <20260826-v7-2-topic-dp83867-v2-0-a97b4cec6e93@pengutronix.de>
+ <20260826-v7-2-topic-dp83867-v2-2-a97b4cec6e93@pengutronix.de>
+ <20260826-salutary-skype-524c69932dc2@spud>
+ <87ik4wgfbc.fsf@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/16] NTB: ntb_transport: Implement direct-DMA QP session
- handshake
-To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
- Frank Li <Frank.Li@kernel.org>, Allen Hubbe <allenbh@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Niklas Cassel <cassel@kernel.org>, Nicholas Bellinger <nab@linux-iscsi.org>
-Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260810165136.2292436-1-den@valinux.co.jp>
- <20260810165136.2292436-11-den@valinux.co.jp>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260810165136.2292436-11-den@valinux.co.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="I5t7dZcYEjhqEG0J"
+Content-Disposition: inline
+In-Reply-To: <87ik4wgfbc.fsf@pengutronix.de>
 
+--I5t7dZcYEjhqEG0J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Aug 27, 2026 at 10:04:07AM +0200, Steffen Trumtrar wrote:
+> On 2026-08-26 at 17:01 +01, Conor Dooley <conor@kernel.org> wrote:
+>=20
+> > On Wed, Aug 26, 2026 at 02:48:40PM +0200, Steffen Trumtrar wrote:
+> > > Currently, the output-impedance can only be set to default, minimum or
+> > > maximum or via a nvmem cell.
+> > > In cases where there is no backend for a nvmem cell, a value can not =
+be
+> > > set.
+> > > > Add a DT binding, 'ti,output-impedance-ohms', for specifying the
+> > > output-impedance via a fixed value. The existing boolean values for
+> > > minimum and maximum still take precedence over the new value.
+> > > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > > ---
+> > >  Documentation/devicetree/bindings/net/ti,dp83867.yaml | 16 +++++++++=
++++++++
+> > >  1 file changed, 16 insertions(+)
+> > > > diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > > index 7a6fe516bab27..49fafe3ce6f47 100644
+> > > --- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > > +++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > > @@ -38,6 +38,16 @@ properties:
+> > >      items:
+> > >        - const: io_impedance_ctrl
+> > >  > +  ti,output-impedance-ohms:
+> > > +    description: |
+> > > +      MAC Interface Impedance control to set the programmable output=
+ impedance.
+> > > +      Valid range is 0x00 to 0x1f (32 steps).
+> > > +      - 0x1f =3D 35 ohms (minimum impedance)
+> > > +      - 0x00 =3D 70 ohms (maximum impedance)
+> > > +      - Step size varies with process.
+> > > +    minimum: 0
+> > > +    maximum: 31
+> >=20
+> > Your property is named in ohms, but not implemented in ohms.
+>=20
+> So without the -ohms?
+>=20
+> > pw-bot: changes-requested
+> >=20
+> > Can't you just achieve the same result using the existing max property?
+>=20
+> The max property is a boolean which just says "use 70ohms".
 
-On 8/10/26 9:51 AM, Koichiro Den wrote:
-> A logical QP can be reused while its shared memory still contains RX
-> addresses and completions from the previous instance. Without a session
-> ID, the new QP could accept that stale state.
-> 
-> Give each QP instance a fresh session ID and enable direct DMA only
-> after both peers acknowledge it. Teardown also exchanges the final
-> issued boundary so RX mappings remain valid until all outstanding
-> transfers have completed.
-> 
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
->  drivers/ntb/ntb_transport.c | 275 ++++++++++++++++++++++++++++++++++--
+Ah, I somehow missed that. I thought it was a uint32...
 
-Will you considered moving most of the ntb_direct code to ntb_transport_direct.c instead of increasing the size of ntb_transport.c? Just from an organization perspective this may be better for maintenance and reading in the future.
+>=20
+> > I don't get the use case where you specify a max, but then don't want to
+> > use that max. Just set the max to what you actually want?
 
-DJ
+And this question was based on that assumption, so while your answer
+makes no sense that's because the question didn't. Sorry bout that.
 
->  1 file changed, 267 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-> index 67044d0ea0ff..ca08cb690311 100644
-> --- a/drivers/ntb/ntb_transport.c
-> +++ b/drivers/ntb/ntb_transport.c
-> @@ -58,6 +58,7 @@
->  #include <linux/limits.h>
->  #include <linux/module.h>
->  #include <linux/pci.h>
-> +#include <linux/random.h>
->  #include <linux/slab.h>
->  #include <linux/seq_file.h>
->  #include <linux/types.h>
-> @@ -153,6 +154,14 @@ struct ntb_rx_info {
->  	unsigned int entry;
->  };
->  
-> +enum ntb_direct_state {
-> +	NTB_DIRECT_DOWN,
-> +	NTB_DIRECT_HANDSHAKE,
-> +	NTB_DIRECT_ACTIVE,
-> +	NTB_DIRECT_QUIESCING,
-> +	NTB_DIRECT_QUIESCED,
-> +};
-> +
->  struct ntb_transport_qp {
->  	struct ntb_transport_ctx *transport;
->  	struct ntb_dev *ndev;
-> @@ -195,6 +204,8 @@ struct ntb_transport_qp {
->  	struct ntb_direct_shared *direct_shared;
->  	struct ntb_direct_shared __iomem *peer_direct_shared;
->  	unsigned int direct_ring_entries;
-> +	/* Serialize direct session, TX ring, and RX publication state. */
-> +	spinlock_t direct_lock;
->  	u32 *direct_rx_cpl;
->  	dma_addr_t direct_rx_cpl_dma;
->  	u32 *direct_tx_cpl;
-> @@ -203,6 +214,9 @@ struct ntb_transport_qp {
->  	u32 direct_rx_cons;
->  	u32 direct_tx_issue;
->  	u32 direct_tx_cons;
-> +	u32 direct_session;
-> +	u32 direct_peer_session;
-> +	enum ntb_direct_state direct_state;
->  	void *rx_buff;
->  	unsigned int rx_index;
->  	unsigned int rx_max_entry;
-> @@ -509,6 +523,228 @@ static bool ntb_direct_layout(struct ntb_transport_ctx *nt)
->  #define QP_TO_MW(nt, qp)	((qp) % nt->mw_count)
->  #define NTB_QP_DEF_NUM_ENTRIES	100
->  #define NTB_LINK_DOWN_TIMEOUT	10
-> +#define NTB_DIRECT_TEARDOWN_RETRY_INTERVAL_MS	10
-> +
-> +static bool ntb_direct_rx_mode(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_transport_ctx *nt = qp->transport;
-> +
-> +	return (nt->direct_features & NTB_DIRECT_FEAT_RX) &&
-> +	       (nt->peer_direct_features & NTB_DIRECT_FEAT_TX);
-> +}
-> +
-> +static bool ntb_direct_tx_mode(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_transport_ctx *nt = qp->transport;
-> +
-> +	return (nt->direct_features & NTB_DIRECT_FEAT_TX) &&
-> +	       (nt->peer_direct_features & NTB_DIRECT_FEAT_RX);
-> +}
-> +
-> +static bool ntb_direct_link_capable(struct ntb_transport_qp *qp)
-> +{
-> +	return ntb_direct_rx_mode(qp) || ntb_direct_tx_mode(qp);
-> +}
-> +
-> +static void ntb_transport_notify_peer(struct ntb_transport_qp *qp)
-> +{
-> +	if (qp->use_msi)
-> +		ntb_msi_peer_trigger(qp->ndev, PIDX, &qp->peer_msi_desc);
-> +	else
-> +		ntb_peer_db_set(qp->ndev, BIT_ULL(qp->qp_num));
-> +}
-> +
-> +static bool ntb_direct_tx_idle(struct ntb_transport_qp *qp)
-> +{
-> +	return qp->direct_tx_issue == qp->direct_tx_cons;
-> +}
-> +
-> +static bool ntb_direct_rx_drained(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_direct_shared *shared = qp->direct_shared;
-> +	u32 session = qp->direct_session;
-> +
-> +	if (!shared || !session || READ_ONCE(shared->quiesce) != session)
-> +		return false;
-> +
-> +	/* quiesce is written after its final issue boundary. */
-> +	dma_rmb();
-> +	return READ_ONCE(qp->direct_rx_cons) ==
-> +	       READ_ONCE(shared->quiesce_issue);
-> +}
-> +
-> +static bool ntb_direct_tx_acked(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_direct_shared *shared = qp->direct_shared;
-> +	u32 session = qp->direct_session;
-> +
-> +	return shared && session &&
-> +	       READ_ONCE(shared->quiesce_ack) == session;
-> +}
-> +
-> +static bool ntb_direct_control_pending(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_direct_shared *shared = qp->direct_shared;
-> +	enum ntb_direct_state state = READ_ONCE(qp->direct_state);
-> +	u32 peer_session = READ_ONCE(qp->direct_peer_session);
-> +	u32 session = READ_ONCE(qp->direct_session);
-> +
-> +	if (!shared)
-> +		return false;
-> +	if (state == NTB_DIRECT_HANDSHAKE)
-> +		return READ_ONCE(shared->session) != peer_session ||
-> +		       READ_ONCE(shared->session_ack) == session;
-> +	if (state != NTB_DIRECT_ACTIVE)
-> +		return false;
-> +
-> +	return READ_ONCE(shared->session) != peer_session ||
-> +	       READ_ONCE(shared->quiesce) == session;
-> +}
-> +
-> +static void ntb_direct_control_publish_locked(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_direct_shared __iomem *peer = qp->peer_direct_shared;
-> +	u32 peer_session = qp->direct_peer_session;
-> +
-> +	lockdep_assert_held(&qp->direct_lock);
-> +
-> +	/* Publish the completion array address before its session. */
-> +	iowrite32(lower_32_bits(qp->direct_rx_cpl_dma), &peer->cpl_addr_lo);
-> +	iowrite32(upper_32_bits(qp->direct_rx_cpl_dma), &peer->cpl_addr_hi);
-> +
-> +	iowrite32(qp->direct_session, &peer->session);
-> +	if (!peer_session)
-> +		return;
-> +
-> +	iowrite32(peer_session, &peer->session_ack);
-> +	if (qp->direct_state == NTB_DIRECT_QUIESCING) {
-> +		/* Publish the final exclusive TX boundary before its marker. */
-> +		iowrite32(qp->direct_tx_issue, &peer->quiesce_issue);
-> +		iowrite32(peer_session, &peer->quiesce);
-> +	}
-> +	if (ntb_direct_rx_drained(qp))
-> +		iowrite32(peer_session, &peer->quiesce_ack);
-> +}
-> +
-> +/*
-> + * Accept the peer session during HANDSHAKE. In ACTIVE or QUIESCING, a
-> + * replacement peer session or quiesce request enters the local teardown path.
-> + */
-> +static bool ntb_direct_control_progress(struct ntb_transport_qp *qp)
-> +{
-> +	struct ntb_direct_shared *shared = qp->direct_shared;
-> +	u32 peer_session, session_ack, quiesce;
-> +	bool published = false;
-> +	bool cleanup = false;
-> +	bool ready = false;
-> +
-> +	if (!qp->transport->link_is_up || !shared ||
-> +	    !qp->peer_direct_shared ||
-> +	    !ntb_direct_link_capable(qp) ||
-> +	    ntb_link_is_up(qp->ndev, NULL, NULL) != 1)
-> +		return true;
-> +
-> +	peer_session = READ_ONCE(shared->session);
-> +	session_ack = READ_ONCE(shared->session_ack);
-> +	quiesce = READ_ONCE(shared->quiesce);
-> +
-> +	scoped_guard(spinlock_bh, &qp->direct_lock) {
-> +		if (!qp->direct_session)
-> +			goto out;
-> +
-> +		if (qp->direct_state == NTB_DIRECT_HANDSHAKE && peer_session) {
-> +			qp->direct_peer_session = peer_session;
-> +		} else if (qp->direct_state == NTB_DIRECT_ACTIVE && peer_session &&
-> +			   peer_session != qp->direct_peer_session) {
-> +			qp->direct_state = NTB_DIRECT_QUIESCING;
-> +		}
-> +
-> +		if (quiesce == qp->direct_session &&
-> +		    (qp->direct_state == NTB_DIRECT_HANDSHAKE ||
-> +		     qp->direct_state == NTB_DIRECT_ACTIVE)) {
-> +			qp->direct_state = NTB_DIRECT_QUIESCING;
-> +			cleanup = qp->client_ready;
-> +		}
-> +
-> +		ntb_direct_control_publish_locked(qp);
-> +		published = true;
-> +		if (qp->direct_state == NTB_DIRECT_HANDSHAKE &&
-> +		    qp->direct_peer_session &&
-> +		    session_ack == qp->direct_session)
-> +			qp->direct_state = NTB_DIRECT_ACTIVE;
-> +		ready = qp->direct_state == NTB_DIRECT_ACTIVE;
-> +	}
-> +
-> +out:
-> +	if (published)
-> +		ntb_transport_notify_peer(qp);
-> +	if (cleanup)
-> +		schedule_work(&qp->link_cleanup);
-> +
-> +	return ready;
-> +}
-> +
-> +static void ntb_direct_session_start(struct ntb_transport_qp *qp)
-> +{
-> +	u32 session;
-> +
-> +	if (!ntb_direct_link_capable(qp) || !qp->direct_shared)
-> +		return;
-> +
-> +	session = get_random_u32_above(0);
-> +
-> +	memset(qp->direct_shared, 0, sizeof(*qp->direct_shared));
-> +	/* Complete local shared-state reset before publishing the new session. */
-> +	dma_wmb();
-> +
-> +	guard(spinlock_bh)(&qp->direct_lock);
-> +	qp->direct_session = session;
-> +	qp->direct_peer_session = 0;
-> +	qp->direct_state = NTB_DIRECT_HANDSHAKE;
-> +}
-> +
-> +static void ntb_direct_quiesce(struct ntb_transport_qp *qp)
-> +{
-> +	bool done;
-> +
-> +	if (!ntb_direct_link_capable(qp))
-> +		return;
-> +
-> +	scoped_guard(spinlock_bh, &qp->direct_lock) {
-> +		if (qp->direct_state == NTB_DIRECT_DOWN ||
-> +		    qp->direct_state == NTB_DIRECT_QUIESCED)
-> +			return;
-> +		if (!qp->direct_peer_session) {
-> +			/*
-> +			 * No peer session means RX publication and TX
-> +			 * submission never became active.
-> +			 */
-> +			qp->direct_state = NTB_DIRECT_QUIESCED;
-> +			return;
-> +		}
-> +		qp->direct_state = NTB_DIRECT_QUIESCING;
-> +	}
-> +
-> +	/*
-> +	 * Keep the mappings until the peer acknowledges the final boundaries,
-> +	 * or until the link is down or the peer starts a new session.
-> +	 */
-> +	for (;;) {
-> +		ntb_direct_control_progress(qp);
-> +
-> +		scoped_guard(spinlock_bh, &qp->direct_lock)
-> +			done = ntb_direct_tx_idle(qp) &&
-> +			       ntb_direct_tx_acked(qp) &&
-> +			       ntb_direct_rx_drained(qp);
-> +		if (done || ntb_link_is_up(qp->ndev, NULL, NULL) != 1)
-> +			break;
-> +
-> +		msleep(NTB_DIRECT_TEARDOWN_RETRY_INTERVAL_MS);
-> +	}
-> +
-> +	guard(spinlock_bh)(&qp->direct_lock);
-> +	qp->direct_state = NTB_DIRECT_QUIESCED;
-> +}
->  
->  /**
->   * ntb_transport_rx_queue_size - Query the RX queue depth
-> @@ -1204,6 +1440,9 @@ static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
->  	qp->direct_rx_cons = 0;
->  	qp->direct_tx_issue = 0;
->  	qp->direct_tx_cons = 0;
-> +	qp->direct_session = 0;
-> +	qp->direct_peer_session = 0;
-> +	qp->direct_state = NTB_DIRECT_DOWN;
->  }
->  
->  static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-> @@ -1221,6 +1460,7 @@ static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
->  	dev_info(&pdev->dev, "qp %d: Link Cleanup\n", qp->qp_num);
->  
->  	cancel_delayed_work_sync(&qp->link_work);
-> +	ntb_direct_quiesce(qp);
->  	ntb_qp_link_down_reset(qp);
->  
->  	if (qp->event_handler)
-> @@ -1457,6 +1697,7 @@ static void ntb_qp_link_work(struct work_struct *work)
->  						   link_work.work);
->  	struct pci_dev *pdev = qp->ndev->pdev;
->  	struct ntb_transport_ctx *nt = qp->transport;
-> +	bool direct_ready;
->  	int val;
->  
->  	if (!qp->client_ready)
-> @@ -1466,13 +1707,17 @@ static void ntb_qp_link_work(struct work_struct *work)
->  
->  	val = ntb_spad_read(nt->ndev, QP_LINKS);
->  
-> +	if (qp->direct_state == NTB_DIRECT_DOWN)
-> +		ntb_direct_session_start(qp);
-> +
->  	ntb_peer_spad_write(nt->ndev, PIDX, QP_LINKS, val | BIT(qp->qp_num));
-> +	direct_ready = ntb_direct_control_progress(qp);
->  
->  	/* query remote spad for qp ready bits */
->  	dev_dbg_ratelimited(&pdev->dev, "Remote QP link status = %x\n", val);
->  
->  	/* See if the remote side is up */
-> -	if (val & BIT(qp->qp_num)) {
-> +	if ((val & BIT(qp->qp_num)) && direct_ready) {
->  		dev_info(&pdev->dev, "qp %d: Link Up\n", qp->qp_num);
->  		qp->link_is_up = true;
->  		qp->active = true;
-> @@ -1559,6 +1804,7 @@ static int ntb_transport_init_queue(struct ntb_transport_ctx *nt,
->  	spin_lock_init(&qp->ntb_rx_q_lock);
->  	spin_lock_init(&qp->ntb_tx_free_q_lock);
->  	spin_lock_init(&qp->ntb_tx_offl_q_lock);
-> +	spin_lock_init(&qp->direct_lock);
->  
->  	INIT_LIST_HEAD(&qp->rx_post_q);
->  	INIT_LIST_HEAD(&qp->rx_pend_q);
-> @@ -2054,6 +2300,11 @@ static void ntb_transport_rxc_db(struct work_struct *work)
->  	dev_dbg(&qp->ndev->pdev->dev, "%s: doorbell %d received\n",
->  		__func__, qp->qp_num);
->  
-> +	if (ntb_direct_control_pending(qp))
-> +		ntb_direct_control_progress(qp);
-> +	if (!qp->active)
-> +		goto clear_db;
-> +
->  	/* Limit the number of packets processed in a single interrupt to
->  	 * provide fairness to others
->  	 */
-> @@ -2070,7 +2321,11 @@ static void ntb_transport_rxc_db(struct work_struct *work)
->  		/* there is more work to do */
->  		if (qp->active)
->  			queue_work(system_dfl_wq, &qp->rxc_db_work);
-> -	} else if (ntb_db_read(qp->ndev) & BIT_ULL(qp->qp_num)) {
-> +		return;
-> +	}
-> +
-> +clear_db:
-> +	if (ntb_db_read(qp->ndev) & BIT_ULL(qp->qp_num)) {
->  		/* the doorbell bit is set: clear it */
->  		ntb_db_clear(qp->ndev, BIT_ULL(qp->qp_num));
->  		/* ntb_db_read ensures ntb_db_clear write is committed */
-> @@ -2080,7 +2335,9 @@ static void ntb_transport_rxc_db(struct work_struct *work)
->  		 * ntb_process_rxc and clearing the doorbell bit:
->  		 * there might be some more work to do.
->  		 */
-> -		if (qp->active)
-> +		if (qp->active ||
-> +		    (qp->client_ready &&
-> +		     READ_ONCE(qp->direct_state) == NTB_DIRECT_HANDSHAKE))
->  			queue_work(system_dfl_wq, &qp->rxc_db_work);
->  	}
->  }
-> @@ -2128,10 +2385,7 @@ static void ntb_tx_copy_callback(void *data,
->  	dma_mb();
->  	ioread32(&hdr->flags);
->  
-> -	if (qp->use_msi)
-> -		ntb_msi_peer_trigger(qp->ndev, PIDX, &qp->peer_msi_desc);
-> -	else
-> -		ntb_peer_db_set(qp->ndev, BIT_ULL(qp->qp_num));
-> +	ntb_transport_notify_peer(qp);
->  
->  	/* The entry length can only be zero if the packet is intended to be a
->  	 * "link down" or similar.  Since no payload is being sent in these
-> @@ -2586,6 +2840,7 @@ void ntb_transport_free_queue(struct ntb_transport_qp *qp)
->  
->  	cancel_work_sync(&qp->link_cleanup);
->  	cancel_delayed_work_sync(&qp->link_work);
-> +	ntb_direct_quiesce(qp);
->  	qp->active = false;
->  
->  	if (qp->tx_offload_thread) {
-> @@ -2636,6 +2891,7 @@ void ntb_transport_free_queue(struct ntb_transport_qp *qp)
->  	/* Catch cleanup queued while draining RX processing. */
->  	cancel_work_sync(&qp->link_cleanup);
->  	cancel_delayed_work_sync(&qp->link_work);
-> +	ntb_qp_link_context_reset(qp);
->  
->  	qp->cb_data = NULL;
->  	qp->rx_handler = NULL;
-> @@ -2822,6 +3078,7 @@ void ntb_transport_link_down(struct ntb_transport_qp *qp)
->  		return;
->  
->  	qp->client_ready = false;
-> +	ntb_direct_quiesce(qp);
->  
->  	val = ntb_spad_read(qp->ndev, QP_LINKS);
->  
-> @@ -2927,7 +3184,9 @@ static void ntb_transport_doorbell_callback(void *data, int vector)
->  		qp_num = __ffs(db_bits);
->  		qp = &nt->qp_vec[qp_num];
->  
-> -		if (qp->active)
-> +		if (qp->active ||
-> +		    (qp->client_ready &&
-> +		     READ_ONCE(qp->direct_state) == NTB_DIRECT_HANDSHAKE))
->  			queue_work(system_dfl_wq, &qp->rxc_db_work);
->  
->  		db_bits &= ~BIT_ULL(qp_num);
+>=20
+> That's why I added the exclusion in the binding, because having nvmem-cel=
+ls
+> and/or any of the other output-impedance bindings doesn't make any sense.
 
+--I5t7dZcYEjhqEG0J
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCapBgXQAKCRB4tDGHoIJi
+0k5uAQC8qINi5nlfRFTvNWGd3w0ol15pK4HH52QQGhPE/H47lwEA1Hl4qytjPTrZ
+fKXD4HlmX5L6WxP1b57iK9WHwP8BfQI=
+=58fY
+-----END PGP SIGNATURE-----
+
+--I5t7dZcYEjhqEG0J--
