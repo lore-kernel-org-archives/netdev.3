@@ -1,99 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA833264DA;
-	Thu, 27 Aug 2026 17:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9329141D21A
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787850556; cv=none; b=K7RO2UBZq0diwXxGNxhFTlbefHpCposCc4S7rz7oIsNZilg3jEV6j+xk712ZoPp/IlCpk2A9QBWnpzrcPDMefw/mhpkcCGlrZ7QnRqO/0FvI18w6PnOPiBeZjrcLmQz9dezBIyYTbYApaPaCa4FZBNan5E5J6DxtYkCpG3DE2d4=
+	t=1787850657; cv=none; b=r5O8FOAOOMqt6ETCzZxpfknWaV8g7l1I9dHRBuGLHDb4RzXS+CoDgT1DUrvPr6OM0M7jTOB5kBOpGukKVMlnG9Nno0UiCg6wBgKFOokqy/hFOe4ivd1+LLCNvD+/bhVqX5u/8MMvG3J9h3iLH0kJLWYngB5Wo9tggzkBjMfI9TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787850556; c=relaxed/simple;
-	bh=XsgjWEza/jlVxyJ3C6ruuoSk3ktRa5DTQ+KkAq38LYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QOY8MhG+3KvYDryVBgZewOH6KxqaUpNnykyaW1gpxZGjIJJvVnXy1XaLcJ9B53UA8ZTGTDHpEQCdQgZIkvTbydzVMpazfqoKnVr4A80zX3W5KPaEsoKZYBP1KtlLz/VXTFVXa3Z9Uiw40dWWJLt0uroEzRW9Pg1t4dhEvkjETFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VIqrCKX+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787850657; c=relaxed/simple;
+	bh=niFL7bm0kSzXdARTm82C9hFNncC2h+OAKvYNwbF/UIA=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=dKNk+Lu96xWzNDfknFtys5iR4oaEaowdmuXmgL1jFSAQbEw1rOtlH6OvWlNYxHlOvMfGbOjqjFXjRAsxnKdxkwuOlan0e09WHTzgDNqRHAx/0lWgNDMOKE9gFLsbzyV4Qb4qKlT2gU5EDLnUv1CgDmuHvFJ3Tv8vBlXht/pTPmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5lKEa6I; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VIqrCKX+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33F01F000E9;
-	Thu, 27 Aug 2026 17:09:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787850555;
-	bh=pxe2I/QgTe79nkIJa+GTgxKyMaq8Csj03/OYd3xEmvk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VIqrCKX+wTnEtyc/9X0BbcUg6tAVAJ9EMfYxSM8vmU3EhE/Yt5rr5/fOgjMkfh58Y
-	 ets88aLe5ekWPr0NVaExRb/K6efqyMVnP1WMEsDryNmV+aQlHDOzuY7PBBQKFRjjvp
-	 N0HhCHm6ADoqx9YwUov91e6cZ27S8QV7NoSsKmObVbhPbiAtpiAKF4ieKi65jsYzHy
-	 cam03ruaoNkQ67HEdw04GLiXfPvbXcd+9ydohe7v/ysuhRNsDRsuMhOA4TTZO3RDUw
-	 Xu0X0fv/0c+57n3yGziCLiAbmpkxC9ds8YKp/X2jE2yrEvpvlEjyu2d6zqmOcCWciS
-	 Xvl24iyzVJIeA==
-Date: Thu, 27 Aug 2026 20:09:11 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Konstantin Sinyuk <ksinyuk@kernel.org>
-Cc: dri-devel@lists.freedesktop.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
- infrastructure for scale-up accelerator interconnects
-Message-ID: <20260827170911.GG42790@unreal>
-References: <cover.1787552412.git.ksinyuk@kernel.org>
- <20260826093222.GC42790@unreal>
- <fabric-leon-reply.1787844400.ksinyuk@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5lKEa6I"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5b4a95ab94fso1343163e87.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787850653; x=1788455453; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=SGL5LGzLQwg1/37HG8XcUTKvJQ5Nvx/6mBTpYN8+4GI=;
+        b=S5lKEa6IxTxPsFewD+FW3OVIsVorki7kDHKiDA86NFLm9jYru7VJqcSxyzchPaDBft
+         plCtALFzAMPSRM/nqZkFaVh/ALma0tKrsCS+8DSIiqnmoqX8UuEf5zNMxbVvXN5H+jOr
+         ZxlUYVKE5z15Ts8zwUu50rRv5G6Y0uJvA7llervM1icm06gTKsrBnniCokfyp3xq3DFl
+         ce8p4nP6ngFHHPVUe3yOlfXj9zroThNThqH56MchCeGKwLP3g/5H4IotEqnoPhsydhwf
+         Ke9BlLiy49AItznIM6v6B1+90/dYN2W5ziTvhzzZnZk6TBSY7zDGSS7/DRVlppJ3tnRH
+         Dhqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787850653; x=1788455453;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SGL5LGzLQwg1/37HG8XcUTKvJQ5Nvx/6mBTpYN8+4GI=;
+        b=ewHdUeWeaGsyCFkw9uHs6kJ0279hXjSOvfIHCl9EL6tTw1ereaXff9qf6/dRT05fkw
+         +ZmqHEKrvrZxzrVz3cAv5muEn+9HjyMJlX2IODG0SIUYcDM6JiihVV3Z0iwwribXVFZS
+         GFztuK4BvMQ3NnT3syAMaub3S+zzvE0R/njk4b33h0BJLh7XVOibXGkHViCcnsN9dsa/
+         OcQv6yXJUReZgd0qfxBzqD5yWXxczw6fTpvl2o3zpdZqO6cSiWG8jYuClrTFb3VzDFJh
+         5npCoKq4WJ+b9+oENXdylwj5hxTgvss40mxKyJZRjyvbBKNGbvzo9hdl74k+LaoRJtxh
+         gLXA==
+X-Gm-Message-State: AFuF++mSwIa5sN+GKGkCRn1qIi/2y1N3rkCyIweeCBt/O7n7MC8CvRfO
+	ov0KnYABY5u0rRoxwJM0delVQkVpCe5BjPi6hTDDtbZZdE8kGJTXKea5
+X-Gm-Gg: AR+sD11Nz1INaUSRwYRBTVPDSyTgARGW5f+j0u12rxxZwoevqaRFISX3aHhciOfK20P
+	IPN/SGz+8CyLPrun8Kz+TELySP/U8BpjgFkY+VOMpRERtrXuAdGUAVQSPdGPNUx2ZedNYDMHQ37
+	gK/cBf04xsFo84ZoNQFBcMwTKw2YMmoysDxArYolWhI1+Y9yjklQe7Eye98PTxkIQmh2nypydb4
+	tFdhOEympK9T/ah+iCauv9kHB2fgU/v3eXI7J5QsUzx+5074X7T/biLJRaIiBsnyVXlAT2IDxfh
+	JgeEnXEWWxuLvvBZ2z/GNgEqI/82XSjH1UwbmPrGqDL7JHTwHdYIwFrsUQDO9UKmzOk3uzelVY0
+	6dDwarcjA0JXduFvUPA9t04b5gFSmr/G9EJxO0vgK6asYRwVL4wxE0YofgMcCVvwSscyZR9kkLw
+	cD/foosIpjBDr9LlnsU3CJvYUp6kh8i7VCUUz0BfI+z71Xl/xlLgyReUbW/q40i8q0x9bLPINe/
+	jWJUw==
+X-Received: by 2002:a05:6512:b9c:b0:5b4:5a42:ab3d with SMTP id 2adb3069b0e04-5b5e63cbb4bmr163347e87.8.1787850652633;
+        Thu, 27 Aug 2026 10:10:52 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([217.196.163.190])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b5e68db0cdsm8519e87.44.2026.08.27.10.10.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Aug 2026 10:10:52 -0700 (PDT)
+Date: Thu, 27 Aug 2026 20:10:50 +0300
+From: Bohdan <boulderobscura@gmail.com>
+To: Mark <markmunene827@gmail.com>, linux-wireless@vger.kernel.org
+CC: netdev@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BBUG=5D_iwlwifi=3A_Comet_Lake_PCH_CNVi_AX201_=28?=
+ =?US-ASCII?Q?8086=3A06f0=29_fails_with_error_-110_on_warm_reboot?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <CAMSTZOnSYZjqj4AyBpLg2hQfRs6JYZA5H26MwQ+G2WMGgNzBkg@mail.gmail.com>
+References: <CAMSTZOnSYZjqj4AyBpLg2hQfRs6JYZA5H26MwQ+G2WMGgNzBkg@mail.gmail.com>
+Message-ID: <025FFEEC-E57A-4C74-BF1E-D273253F4D9A@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fabric-leon-reply.1787844400.ksinyuk@kernel.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 26, 2026 at 06:38:58PM +0300, Konstantin Sinyuk wrote:
-> On Wed, Aug 26, 2026 at 12:32:22PM +0300, Leon Romanovsky wrote:
-> > Tell your AI that this is not how things work in the real world. The chances
-> > of multiple hardware implementations fitting a software model designed
-> > without considering the actual hardware are effectively zero. This is why
-> > successful subsystems have emerged from consolidating support for multiple
-> > existing hardware implementations.
-> 
-> Fair point. The simulator validates the implementation, not whether the
-> abstraction fits real hardware.
-> 
-> The model was shaped by the public amdgpu xGMI implementation, and the
-> cover letter asks AMD whether it covers their requirements. It still
-> needs validation against production implementations, and the read-only
-> milestone will not be proposed for merge without a production provider.
-> I will fix the wording in the next revision.
+On 27 August 2026 19:26:58 EEST, Mark <markmunene827@gmail=2Ecom> wrote:
+>Hardware: Dell Precision 7550 (Comet Lake-H)
+>Wi-Fi: Intel Wi-Fi 6 AX201 / CNVi
+>PCI ID: 8086:06f0
+>Subsystem: 8086:0074
+>
+>OS/Kernel:
+>
+>Linux Mint 22=2Ex
+>Ubuntu 24=2E04
+>Ubuntu 20=2E04 LTS (clean installation)
+>Kernel 7=2E0=2E0-28-generic
+>Kernel 6=2E14=2Ex
+>
+>Firmware:
+>
+>Stock firmware
+>iwlwifi-QuZ-a0-hr-b0-77=2Eucode
+>iwlwifi-Qu-b0-hr-b0-77=2Eucode
+>Summary
+>
+>The AX201 initializes normally after a complete cold boot, but fails to
+>re-initialize after a warm reboot, resume from sleep, or iwlwifi module
+>reload=2E
+>
+>The failure consistently occurs during the early PCIe/CNVi initialization=
+,
+>around CSR_RESET and Host Monitor polling, before the driver reaches the
+>firmware loading stage=2E
+>
+>The resulting error is:
+>
+>iwlwifi 0000:00:14=2E3: probe with driver iwlwifi failed with error -110
+>Kernel log
+>[  609=2E416668] iwlwifi 0000:00:14=2E3: Host monitor block 0x0 vector 0x=
+6
+>[  609=2E416670] iwlwifi 0000:00:14=2E3:     value [iter 0]: 0x00000003
+>=2E=2E=2E
+>[  609=2E416695] iwlwifi 0000:00:14=2E3: Host monitor block 0x22 vector 0=
+x0
+>[  609=2E416714] iwlwifi 0000:00:14=2E3:     value [iter 0]: 0x00000003
+>[  609=2E422051] iwlwifi 0000:00:14=2E3: probe with driver iwlwifi failed=
+ with
+>error -110
+>
+>Steps to reproduce
+>
+>   1=2E Perform a complete cold boot=2E
+>   2=2E Confirm that the AX201 initializes and Wi-Fi works normally=2E
+>   3=2E Remove and reload the driver:
+>   4=2E sudo modprobe -r iwlwifi
+>   5=2E sudo modprobe iwlwifi
+>   6=2E The driver fails to probe and returns -110=2E
+>   7=2E The same behavior occurs after a warm reboot and after resume fro=
+m
+>   sleep=2E
+>
+>
+>What has been tested;
+>
+>   - Upstream firmware revision 77 - no change=2E
+>   - Both Qu-b0 and QuZ-a0 revision 77 firmware files tested=2E
+>   - pcie_aspm=3Doff - no change=2E
+>   - iwlwifi=2Epower_save=3D0 - no change=2E
+>   - Intel AMT / Manageability disabled in BIOS=2E
+>   - POST Fastboot set to Thorough=2E
+>   - Clean Ubuntu 20=2E04 LTS installation - same warm-reboot/module-relo=
+ad
+>   failure=2E
+>   - Linux Mint and Fedora - same behavior=2E
+>
+>
+>A complete cold power-on consistently allows the initial probe to succeed=
+,
+>while reinitialization without removing power results in the -110 timeout=
+=2E
+>
+>Firmware loading
+>The firmware revision does not appear to affect the failure=2E
+>The timeout occurs during the initial bus/reset handling and Host Monitor
+>polling, before the driver reaches the point where it requests the
+>microcode=2E Because of this, changing the firmware version or location d=
+oes
+>not change the observed behavior=2E
+>
+>Additional information
+>
+>The system is a dedicated Linux installation with no Windows dual-boot or
+>Fast Startup involved=2E
+>Full dmesg, lshw, and Intel SSU output are attached=2E
+>The behavior appears consistent with a failure to properly reset or
+>reinitialize the CNVi device after a warm reset/power-state transition=2E=
+ I'm
+>not sure whether this points specifically to D3cold handling or reset
+>sequencing, so I've included the logs and hardware information for furthe=
+r
+>investigation=2E
+>Please let me know if any additional register dumps, PCI
+>configuration-space data, or specific kernel debugging output would be
+>useful=2E
+>
+>Thanks,
+>Mark
 
-The wording alone is not sufficient. Your proposal should be backed by
-real devices representing different architectures from different
-vendors.
+Heya Mark,
 
-The current proposal is based on a single implementation, which is
-unlikely to be ported to this new framework in the foreseeable future.
-The amdgpu xGMI implementation already exposes the required UAPI through
-sysfs and would need very strong incentives to abandon its "legacy"
-users in favor of this new netlink interface.
+Can you try the mainline kernel? I'd try on NixOS and Arch, but I don't ha=
+ve access to your hardware=2E
 
-The last new subsystem I am aware of was introduced with implementations
-from three different vendors to demonstrate its robustness. You should
-probably aim for a similar level of coverage here.
+Fedora has a COPR repo, more here: https://fedoraproject=2Eorg/wiki/Kernel=
+_Vanilla_Repositories
 
-Thanks
+Bohdan
 
-> 
-> Thanks,
->  Konstantin.
+P=2ES=2E resending because the mailing lists rejected an HTML-formatted me=
+ssage AND I forgot about "Reply All"
