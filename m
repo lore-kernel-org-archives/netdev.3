@@ -1,78 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-197.mta1.migadu.com [95.215.58.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D645A26738D
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 07:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5644F332601
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 07:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787814204; cv=none; b=gw1piCH4rcHRUjmx0MSUvk0lClBRPtHUx+ArhnRvTkCCIm4gycfrVarKtg7Y5K79U1os8I+hOzli+Pt7DMHv6pdByHgbLbJIIU9EdxNRd9kusV4aKAafgT7YGZKVu4yYl4d5GAqrDQNBZFT41mfxkVXvewCaKH2bBR7RNuDnchM=
+	t=1787814320; cv=none; b=ToC7wr+nnR/qXao5w14dnAKvsw+SMrgyWAsbYwB+/AZMP+4JAfmX8BbXQYHJyA5cbzQlH6ErJy0frdoCdEzBEkf8ruYJX4SuUsh6DS78dYLgt/zCeAlXMGTm98LGxW9Null77awG4g1ZKK3F7oqJ5CV6aoRhLaKNDZ/SxoDm968=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787814204; c=relaxed/simple;
-	bh=W9nnWcgoWlf1wj4Ru9lPZhKoaI/HWiFsPFG1d4YLYUs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qEBrwWSmzvzRwplIMtUQuH2PuSiKmlAFExM6KkSvEqI3jWQ1DSlqOYX1wZRAkfJv7xuHiJFt/cA0Uo2xz1RKabhJ3OA3zlxKRocquUICSTNzngJvf4d3OC4QdtsAL12lGU8ojwRNDbPR5TMUa9YQyr49jtQPqW7XUVszwQ66t4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1slLTVK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787814320; c=relaxed/simple;
+	bh=J/q53GV7BVk1Lr8b5iatkIuwYAEhyAk7tPRMPNXwllA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=slVwn0boxbv4lVqTgxulaTLG77PmVXHKSXk4T79uuljQKSnQg+9LYonppCoQ75FbyUN4/mpbmwuMbbFjfRc0b2CBbREBNO6wiggNRhs1fdSp9N7R270RpdgrDVrArR63UcqN+Xk914sdUmjhVcGIKrHbb0ZNFg5zjVQY1Hegr6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JS8qtwgi; arc=none smtp.client-ip=95.215.58.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1slLTVK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0459E1F00A3A
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 07:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787814202;
-	bh=W9nnWcgoWlf1wj4Ru9lPZhKoaI/HWiFsPFG1d4YLYUs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=f1slLTVK5sOuTkChpV90e3DKl7/kNzM1KMBwHGZQZoUyyqJHbNTt7MGeP1sZ0F8cs
-	 KlPAXd3JbinXyNx3rIbZqPVU250WgGTFTVZJr5T754vN4fo8XJVligXsLwUBkkVIYJ
-	 MppRFWD4osfzNVlvQlKiFCbB0p0U5YQ70ILiLBKlWEcg0TUzPhM6EIvTwnqYfFG7KB
-	 F9f8bqudjwaCsUT4aekgCLh7HuBlHwwKWSYiTy9Cy4rC3V123cwjv/M1nSCweoD1XY
-	 srY3qAbdk3maGHb3o//bAzFX/fB4t5xHp6Q4wZTzBX3Jj6iL3JHqsSiUOnSGcCjU3t
-	 wFyjWCsT7qXSw==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b568dae0e8so350614e87.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 00:03:21 -0700 (PDT)
-X-Gm-Message-State: AFuF++ljjHL+wqUgnYwBR1ge8jgJv5rc9iU9n1W7i2F5663wNxoRd1OB
-	4KRunTv1LFq1PWmup3Vu52ET/9flVXG+fEyr2rC8FgjPtmang86bNq7o57aFpSfhd9Ge+s6xmHI
-	EAGeSuKW++LySHp80625DR62gPPD4bXo=
-X-Received: by 2002:ac2:51d1:0:b0:5b5:e263:dcc7 with SMTP id
- 2adb3069b0e04-5b5e263e266mr28670e87.5.1787814200712; Thu, 27 Aug 2026
- 00:03:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JS8qtwgi"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=J/q53GV7BVk1Lr8b5iatkIuwYAEhyAk7tPRMPNXwllA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787814315; v=1; x=1788419115;
+ b=JS8qtwgiAZQ2Qdf174qcLU+hXBqNFytk0d5q54hscRbTbdaQyVC7fapU+KR9IpoIeUy2I/+q
+ schgzd2laIWC8AZ/LTAmoZdTczp91BsK8F6lUBWy4aRFPZeuc+3FH08g/VVKpbjOlm3PolQSreq
+ 1pQ3LvY/Tv9syNnfrYRe2IWY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [IPV6:2408:820c:b608:6660:20e9:11e4:d882:2911] (2408:820c:b608:6660:20e9:11e4:d882:2911)
+	by smtp.migadu.com with ESMTPS id 30122852869e774a;
+	Thu, 27 Aug 2026 07:05:15 +0000
+X-Mizu-Trace-ID: 30122852869e774a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <512af244-e4af-4d85-9be6-b3bd8141e092@linux.dev>
+Date: Thu, 27 Aug 2026 15:05:09 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827013634.167932-1-rosenp@gmail.com>
-In-Reply-To: <20260827013634.167932-1-rosenp@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 27 Aug 2026 09:03:06 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=8OfNw_uBoJNphoJXZvu7ws-9iUBYy-Z9=YOp0XA7mqg@mail.gmail.com>
-X-Gm-Features: AcwNN1WGux25MIiGrEnw-amtAQmQ3YQ-7vY1ZVAQBSZKJAotasia4tMjWPJsinA
-Message-ID: <CAD++jL=8OfNw_uBoJNphoJXZvu7ws-9iUBYy-Z9=YOp0XA7mqg@mail.gmail.com>
-Subject: Re: [PATCH net] net: ixp4xx_eth: handle probe deferral from of_get_mac_address()
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Imre Kaloz <kaloz@openwrt.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"moderated list:ARM/INTEL IXP4XX ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: fix refcnt_tracker use-after-free on netns
+ creation failure
+To: Eric Dumazet <edumazet@google.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: netdev@vger.kernel.org,
+ syzbot+d3f912a2e30e2079a512@syzkaller.appspotmail.com,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Jan Kara <jack@suse.cz>,
+ Qiliang Yuan <realwujing@gmail.com>, Jeff Layton <jlayton@kernel.org>,
+ linux-kernel@vger.kernel.org
+References: <20260827052219.290380-1-jiayuan.chen@linux.dev>
+ <CANn89iKK5jxVa34F7QMPjp5wormMQrZgoK4THJCqVp76Tw1NNA@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CANn89iKK5jxVa34F7QMPjp5wormMQrZgoK4THJCqVp76Tw1NNA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 27, 2026 at 3:36=E2=80=AFAM Rosen Penev <rosenp@gmail.com> wrot=
-e:
 
-> ixp4xx_of_get_platdata() returns NULL on failure, which the probe convert=
-s
-> to -ENODEV, discarding the real cause of the failure. Return ERR_PTR()
-> with the appropriate error so callers can distinguish cases such as
-> missing DT properties (-EINVAL) and, importantly, handle -EPROBE_DEFER
-> from of_get_mac_address().
+在 8/27/26 2:56 PM, Eric Dumazet 写道:
+> On Thu, Aug 27, 2026 at 7:22 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>> The copy_net_ns() error path tears the net down via net_passive_dec(),
+>> which only exits notrefcnt_tracker. refcnt_tracker is exited in
+>> __put_net(), which this path never reaches, so it is left alive.
+>>
+>> Since ref_tracker_dir_init() started registering a debugfs file per
+>> dir, that file must be dropped by ref_tracker_dir_exit(). The missing
+>> exit leaves the file pointing at the freed net, so reading it walks
+>> net->refcnt_tracker.lock and hits a use-after-free.
+>>
+>> The missing exit has been there all along, but before the debugfs file
+>> refcnt_tracker was just an in-memory ledger and empty on this path, so
+>> skipping it leaked nothing and did no harm. Only the commit below, which
+>> gives every dir a debugfs file, turned it into a use-after-free, so
+>> Fixes points there.
+>>
+>> Exit refcnt_tracker on the failure path.
+>>
+>> Fixes: 65b584f53611 ("ref_tracker: automatically register a file in debugfs for a ref_tracker_dir")
+>> Reported-by: syzbot+d3f912a2e30e2079a512@syzkaller.appspotmail.com
+> Missing `Closes:` tag makes analysis cumbersome.
 >
-> Fixes: 95aafe911db6 ("net: ethernet: ixp4xx: Support device tree probing"=
-)
-> Assisted-by: opencode:hy3-free
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>> ---
+>>   net/core/net_namespace.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+>> index a91d2b58aadd..0c3f169d9afb 100644
+>> --- a/net/core/net_namespace.c
+>> +++ b/net/core/net_namespace.c
+>> @@ -591,6 +591,10 @@ struct net *copy_net_ns(u64 flags,
+>>                  key_remove_domain(net->key_domain);
+>>   #endif
+>>                  put_user_ns(user_ns);
+>> +               /* setup_net() failure is not routed through __put_net(), so the
+>> +                * refcnt_tracker (and its debugfs file) has to be released here.
+>> +                */
+>> +               ref_tracker_dir_exit(&net->refcnt_tracker);
+>>                  net_passive_dec(net);
+>>   dec_ucounts:
+>>                  dec_net_namespaces(ucounts);
+> I am a bit confused. I thought this was already discussed and fixed by
+> Tetsuo Handa?
+>
+> f85dc137aabf ("net: add missing ref_tracker_dir_exit() to net_passive_dec()")
+> should be fixing this?
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Thanks Rosen!
-Linus Walleij
+Thanks Eric, now I find it it in net tree. I should anylyze it base net 
+tree not net-next.
+
+Please ignore my patch.
+
+
+pw-bot:cr
+
+
+>
+> Tetsuo also followed up with 3220b62fbb8a  ("net: fix a resource leak
+> in copy_net_ns() error handling path").
