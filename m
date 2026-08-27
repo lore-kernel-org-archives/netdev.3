@@ -1,221 +1,220 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7933944E671
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE852D7D47
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855915; cv=pass; b=e0xfG1wS4PWDkA6deOvgaLSK40ajNnwyj9x/a89anpybpSZrLk2YAnVrMMAUY1bIO1p/dtr69Q+NrCNMsDq6RUeyGGbM719HyQ9gW8I6yxFGY2f8KAkZKxIxNlnp6OckN1zvvvY2Jtw4S90jktFS0c+QKNAPU5mwfclbc1JxYC8=
+	t=1787855961; cv=pass; b=PqU/YSMaV96A/WhNkL8HsbF1GbBl+rlCpjEtPjEpBYRUHc1FcEWIJAs4K6afdTmGDb0x8VuT8f9UKcKQHQDJZ0ZvEs4mEUS2iXYCIX32yXyxSDfu+wtKT6ABM+iYURYTr5DHM1rQD/gPUx7u66Y6Fni84RgscGeSX2UXprdBz7I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855915; c=relaxed/simple;
-	bh=rxnWqQdnwias0sCGqPIkSwuv4XVIyzVXplkgsrStZGU=;
+	s=arc-20240116; t=1787855961; c=relaxed/simple;
+	bh=t1YTCYnw7taCGQOC3DmeU3gnr8wnT7msmENWPO1h/kE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XcAkTpRbByYWUJ863Ybpy4iiRGeNRwJ0J+90E/SJMzqtAYFdkixa/7HMaP4xMtCn5/DMNG+6yz+AtsQolHb3Wl019VdPnL/b8+Rhe77ylVqiCXBjyBYYJA+wYy4I0NPwQX2qbt+nVXZgDtCq2rAhdL8idaKSXXoqy7O6A1hstOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=OABMlJDM; arc=pass smtp.client-ip=74.125.224.42
+	 To:Cc:Content-Type; b=JcPutUJsSptC5af4HED/qVIufTQaH/X9BxyXau4pBXfd4fVbtuBmFOw98Te3lJnJXDVnPXEpAtoSKZ2kyDL9eod2rXcD1xtUGFKORrzL+dSA7w9OSJDIWCCKoI5BJiZAL38qUfXJlhftC/B60xTwEp+dagVW7wphWBA0d9d6PqI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=DdbjciqO; arc=pass smtp.client-ip=74.125.224.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="OABMlJDM"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66c744a00edso319662d50.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:38:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787855912; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="DdbjciqO"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-66d146f04cfso536618d50.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:39:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787855959; cv=none;
         d=google.com; s=arc-20260327;
-        b=qheviCXbg0owfIArOj75bP7pa6UMnCpzWwD52rEEEzujq2ciKVrcj4PZbhrJ1IOBf2
-         0ZhQAhrjkkHu8P1gtSwZUbd6yemxm7IEQ2VKEEcnUujFYzojBmLbzZ1Luil1LRjVuTwv
-         KHNoBBKFqOfZLcBioygHsItmvzAl01qHarUdOrgbwIHfjl0myINZxlgMm171nACpawr2
-         WXFa5FL3tZoUsuENUIEmaTGo3PJNaWZSr9MaMDk5hKMtTwwu+QOyaKT9UAb1tcBlcH3O
-         ruFLOGiICAez53J4QFAO/2fr1khGIc8Z+39+FjVJuFIu6H2juEMLV+R1YWmz+eVEZw2s
-         XNqg==
+        b=E+7RxNnapWgMNEGW2hSZFxXAKh3e1QUwZlV5wA1Od294ZtKx9pcxx3Eu04tcW5QQmt
+         R0m3YZknoDdsvCIHfqSJNjUMWNoIMvm8xTvwXWEaIrkCT5UNfYrBeFTiGlonEuDjaSSR
+         MS2Hz9cMbEfz4WmGABHv+szTY/4T7JZUxhc18r5hkuXoFdmxnmBYPRp9nl7j7/g4RmeC
+         GJgl0J90/QC64jy6cc/IK+YzqRCHnvTzl/y8VjsvZIQgnXDCWDwXpf/cy86j3ylyY3VR
+         HgGtfDibgvTwInnD2mExz5S9HzmoPkwteSMCi5asUbbBpnd8fCOfsarogtQfnNlwTJYA
+         TcTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pv6sTNPGFzOFtJOLlSTMVhTMFC8bbFeFSQbwESwAySE=;
-        fh=ueQSjq1HJEwaD19rhoU+dI2YLfUhSUU4vGSx7Gdp6n4=;
-        b=NO0aNjiIJyO1vgLtmU5dWWQf44nfa2XsBvD8RuiV7pf2sMnZCUBd2HDLB0FocQRQoa
-         oxrOVrqucWLhNWl99I7s8nRL8nmyK6k4eeW+VJQOrdrLXqGZ+4H9akIXtjKVWwByWGLZ
-         AzP4/w233fpfgkftfS/qXrtEB2X9bQNEPsdwQ+Qn4OvIQwMxn2wQe2mGOWvOVsvw/3Jm
-         cGhhOYsfUzqeLS3g74ZaWE6i0AuCPz+xCDOdU/iUGm0ntlbaq9/toLq8kxdOSeK+Y/ln
-         MW9tUKipNqPF7VFM7Pks7DcL9izM1nZThKwOkIdSaYqzBjCEDzfHdLCLwbRkzFQBKpxe
-         KeIA==;
+        bh=uAVPEg27oHBf2ZAIG8X1Zu028g2AuFXVbv5fslOiiKE=;
+        fh=8ZY0tp67fVj6e7mMovC1rSveYX+wb40ljVaIKF5IUUE=;
+        b=hDAXtI//LgL2OUvzbKqP6Hk2HzPxsn34AItxXgmCdpA35wwyCsshZkqczU+yPDnqIP
+         kmB6H/H697iInd4OvJFFkaYvTbiAHct/SaP+ThFg4Z670Z2cbGjFV+SDj7nUrnJaxCCZ
+         bC4TNh+o5b4ezcgk+EYTjruUV2wvZMjyk/8ugaEPEVcw8AjWoJwaLPyiSd+HzuoTiN/T
+         nsGMN0bb2bUq7+1fI2Z553tkq2/4AhqaT8QkqLZM04HAfcbpYNkfJ76ptpoNw2YO+7BC
+         Tl2KB2K4Q5cw/ujqf3swoY4JNjgFg437fTahW7DUNy9nwI6GarRvA0yctOX1WBhqh3XH
+         3Rbw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787855912; x=1788460712; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787855959; x=1788460759; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=pv6sTNPGFzOFtJOLlSTMVhTMFC8bbFeFSQbwESwAySE=;
-        b=OABMlJDMVUSjWZc3P0eZ47JlRncatwJlzZ/rbb2sOrt3I7xB6SjmKzF3rNd4xzTT/j
-         9ChU4wOPRcC2wiVaRZXVNQAeWw67TNcG/kuQLmjr8cHvu7BQJGbRLo0sD9qc3fsbkihE
-         Rg9yOFblWRqlKus7kEThSVfxW8M+HOktCQKEI=
+        bh=uAVPEg27oHBf2ZAIG8X1Zu028g2AuFXVbv5fslOiiKE=;
+        b=DdbjciqO/tYDHAqLYmYiVScxuUbzqGM+HtUn2KV5h5DzAwYQetyhc4aZBKHuZXeYbt
+         t0arkLZ3FvXbxLqCtR0b8XuPKpfU78EuDrgOQqJE5ZpdcXz9d4KICKdGprr6w4Cr1A7G
+         qH5MxJ0aOHzxASxAeERHOyfFXlgnY0yIGuPkY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855912; x=1788460712;
+        d=1e100.net; s=20251104; t=1787855959; x=1788460759;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pv6sTNPGFzOFtJOLlSTMVhTMFC8bbFeFSQbwESwAySE=;
-        b=YdHQ9DFwOrAkZ2nQ3w3eIBG9JNKBrUUvsPCAXWeuJpmoUufHedHTwWLJz4yfx7ms6Y
-         A4b2BV9wVKSaQvyBztJflnNhN0JwxzgGhYzQEcybcheD8EkIQ+kv2TZs7i1+0fOuQxjz
-         VYWZ5lewrlAkoZOowPwRr3vpoaadzWCiuEJXCkHAy7dia11mtkQggLVw7pz6ZBjvO7LF
-         4r1pzewB4XCOhwLMUmwFEfI9gGPQRxZjUhDHhYPkMl7Ysj+1qLZnSTdL3P+MIU9Kel0/
-         4Mr2FFcQWCRnBMYoBX+D+7ylDi/IHoP39t5YCsLv7GZpf/fpM7+FNLb8Y1OQvZXaIHhW
-         YuFQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro19mgawKVPHpQy8jDrJp1zHI3mnOwUhshZKgDmLbOPMYCJnZh/tc6rvMDaZBqcBb+RuCiKi8c=@vger.kernel.org
-X-Gm-Message-State: AFuF++lqHfgldrgFF4IXnfq5cSm6u5wxmj1IMHAOYBsGbubhpTVHe7Zq
-	4+xDWY9yP8OA51jQT4d91aOM58dHyUKLWLqrwFzgfCVbAHwDx0ne+BV/GFNESfXbnOHW2fHRhLf
-	XvWEI6kX+9hNmHomi7FoZJdWNmtvjc3Obfh/JMNY2
-X-Gm-Gg: AR+sD13vkcgij5chRSNpeYmP4C1TL6xgad9uyoFfyQABdmFAWmBId4WVCY6SST0H8p/
-	9BLGH8efHu/gfhVJKHYYefdeXLFai7n9SFrzxoJUZJZ3SeVqKTeSb0jG1b7v4ITjv8qsbEWWQpz
-	wYd1qHbh5w59ixHp4j9sKtxoTE5EvIgzZjrRCLtCPUEwQ5dP/G+g5/hsAlVwxD5TMox0mHyV5nD
-	ee/6I59Y2UUtErdb7mPLNiVR5p3o23Tet2uURh54HVl5cNkGqVmM69Ll8g+xVOqualpzbWR8Ux+
-	lmiXbs/dAwVC5RFQh06ggSQeDe1eyUkLFwReU45XuNtcE3bmyhUI2uC6CnKT
-X-Received: by 2002:a53:d143:0:b0:667:b314:aea4 with SMTP id
- 956f58d0204a3-66e4c645d19mr115794d50.16.1787855911615; Thu, 27 Aug 2026
- 11:38:31 -0700 (PDT)
+        bh=uAVPEg27oHBf2ZAIG8X1Zu028g2AuFXVbv5fslOiiKE=;
+        b=blHTZULz6lqe2Cn5lhMXEBNCbFStAt3J+5BLoe0DdE1SJsNShSkCeTrDaXVy9VypA8
+         f/0GT88rtGS7KLNMyEgyBfuCh6Ixe9oV7vStvkqi5HvhYimpvEQJAR1lmW0mjS3fDypl
+         Ob9cXjfeLFKaZNGSE8hEj3M9/1Fmk2X3mTY3rssC5fFinBgfkGdr1Z05f1zUDdDrMcxc
+         cEJBgdGxvysBflNEL+x4pFMZr8OhxhrbAUSX8PDN3oBAAeUn0wmXl3veL3VeNRmNU7Ua
+         g0GtyvknuQ/wVVbD2NjDW4nmdr2Io0uFm9u4i32lCz/snoU+PZq44YPqvSgnK0u1xgsn
+         mM7g==
+X-Forwarded-Encrypted: i=1; AHgh+RqvuREmef702lyIVnb8wqOCLZbL27DsWWXBSYzt6MIJwV0r7pjzTtrMnemiNc5klbSjAXE2tsA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mgrjXZCs75IPWTL5Yz6uSKTXr4l5LOXP0HzdnsSe7DAK6cR3UF
+	I5hNdEc6CnQLRe0/Hz6Tl3gowoe2t5p+b2h3Yd3ApIIXikJ8J4nQjhoYeJxbGQG6Y6aHSvaQxvf
+	67u6ElIsPDkSuAx+Gm+ReGjVoDUVtvw0IFYypwdYg
+X-Gm-Gg: AR+sD10u7oE4P1VjU1EfZ2QIJWGZYd6ODN3LwQIrb1k/a7HTQ9j+xICM/nbH6NZol1c
+	JbnyBkm6IHqOs5IJXd2CQTHJbn0ygatcGICcP7NgB1OndxIq8o+Yq1gidUTPZiX+sKUa8p0CHNN
+	AMcypVkXLpibPKOxWmIqWW3uuaaa/8HvOW02OxSsNC7bqW0v/yndMTuKKdJxLP+DXNr/L6MF+fN
+	i8crNBgQ8tI+kr6HI+nDhvD0o5glfMqp1YtKar+Ez/ecFPBcj83cRXoIRdE16sjVeAjLuuKudSJ
+	10uGItKYU3oyTaA5R2Wc4ARMGZoZ180Czlu40XlnLrgggc+njdUkF1cmA48=
+X-Received: by 2002:a05:690e:d4f:b0:667:5cde:6f36 with SMTP id
+ 956f58d0204a3-66e4c539b60mr246521d50.33.1787855958597; Thu, 27 Aug 2026
+ 11:39:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824153903.4143642-1-victor@mojatatu.com> <20260824153903.4143642-3-victor@mojatatu.com>
- <20260827084927.GB396647@horms.kernel.org>
-In-Reply-To: <20260827084927.GB396647@horms.kernel.org>
+References: <20260824153903.4143642-1-victor@mojatatu.com> <20260824153903.4143642-5-victor@mojatatu.com>
+ <20260827085332.GC396647@horms.kernel.org>
+In-Reply-To: <20260827085332.GC396647@horms.kernel.org>
 From: Victor Nogueira <victor@mojatatu.com>
-Date: Thu, 27 Aug 2026 15:38:20 -0300
-X-Gm-Features: AcwNN1UcCn0589IEusTSJKTSb9Sl5YsKYcjl8zIhAil8DpXcu8US4-Xm3z6TlAs
-Message-ID: <CA+NMeC9BemY9OqZqUWTP7dQoLmBBHyL+ctqBVMQZa9gNupSwSg@mail.gmail.com>
-Subject: Re: [PATCH net 2/4] net/sched: act_api: size the RTM_GETACTION reply
- from the actions
+Date: Thu, 27 Aug 2026 15:39:07 -0300
+X-Gm-Features: AcwNN1VYL_swJuqZoqGbNCgXQCvpH4j_MWpF70vC4RkHQ7Mo9FK6vF0EKtv0QcU
+Message-ID: <CA+NMeC-xaHMo9N6fvu_TGtVEgeaCexFmLHqMAyTcn40gFPMG8A@mail.gmail.com>
+Subject: Re: [PATCH net 4/4] net/sched: act_mirred: account for
+ TCA_MIRRED_BLOCKID in get_fill_size
 To: Simon Horman <horms@kernel.org>
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, 
-	baowen.zheng@corigine.com, louis.peens@corigine.com, pctammela@mojatatu.com, 
+	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, pctammela@mojatatu.com, 
 	netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 5:49=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
+On Thu, Aug 27, 2026 at 5:53=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
 te:
 >
-> On Mon, Aug 24, 2026 at 12:39:01PM -0300, Victor Nogueira wrote:
-> > tca_action_gd() already walks every requested action and accumulates
-> > attr_size +=3D tcf_action_fill_size(act), then wraps the result in
-> > tcf_action_full_attrs_size().  For RTM_DELACTION that value is handed t=
-o
-> > tcf_del_notify_msg(), which allocates max(attr_size, NLMSG_GOODSIZE).  =
-For
-> > RTM_GETACTION it is silently discarded and tcf_get_notify() allocates a
-> > fixed NLMSG_GOODSIZE skb instead.
+> On Mon, Aug 24, 2026 at 12:39:03PM -0300, Victor Nogueira wrote:
+> > tcf_mirred_get_fill_size() only budgets TCA_MIRRED_PARMS, but
+> > tcf_mirred_dump() also emits TCA_MIRRED_BLOCKID whenever the action was
+> > created with a block instead of a device. So tcf_mirred_get_fill_size i=
+s
+> > missing 8 bytes in its accounting.
 > >
-> > Any action whose dump exceeds that fixed budget therefore cannot be rea=
-d
-> > back. For example, act_pedit overruns the budget with 32 actions of fou=
-r
-> > munge keys each, act_police with 32 policers once the optional
-> > rate/peakrate/result/avrate attributes are present
+> > Fix this issue by accounting for TCA_MIRRED_BLOCKID unconditionally:
+> > it costs 8 bytes for device-mirred actions and avoids having to read
+> > tcfm_blockid outside tcf_lock, where a concurrent replace could change
+> > it between sizing and dumping.
 > >
-> > Fix this by passing attr_size through and allocate the reply the way th=
-e
-> > add and delete paths do.
+> > Note: Dumping mirred with blocks currently works in most use cases, but
+> > would break in some corner cases, for example, if there are 20 blockcas=
+t
+> > mirred actions in one request, each with a non-ANY hw_stats and a
+> > non-zero user flag, with a listener on RTNLGRP_TC (or NLM_F_ECHO):
 > >
-> > Note on exposure: RTM_GETACTION is the only one of the three action
-> > commands that is not capability checked - tc_ctl_action() requires
-> > CAP_NET_ADMIN for RTM_NEWACTION and RTM_DELACTION only - so this turns =
-a
-> > fixed NLMSG_GOODSIZE reply into a user sized allocation on an
-> > unprivileged path.  It is bounded by TCA_ACT_MAX_PRIO actions per
-> > request, and tca_action_gd() does not reject duplicate indices, so a
-> > single large action can be requested 32 times; an act_bpf program near
-> > BPF_MAXINSNS is about 32KB of dump, or roughly 1MB for one request.
-> > Creating such an action still requires CAP_NET_ADMIN, and the add and
-> > delete paths have sized their skbs this way since the Fixes commit.
-> > Should this ever need bounding, GFP_KERNEL_ACCOUNT would charge the
-> > reply to the caller's memcg.
+> > budget 180 B/action -> attr_size =3D 20*180 + 24 =3D 3624
+> >                     -> alloc_skb(3776) =3D 3776, tailroom exactly 3776
+> > emitted 196 B/action -> 20*196 + 24 =3D 3944 > 3776
+> >                      -> tca_get_fill() fails
+> >
+> > Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
+> > Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 >
 > Hi Victor,
 >
-> The AI-generated review of this patch [1] makes the case that this
-> allocation is a concern and ought to be addressed up-front.
->
-> While I do see that GFP_KERNEL_ACCOUNT is not used in TC,
-> and that does give me pause for thought, I am concerned
-> about the size of the allocation a user can indirectly request
-> the kernel to make.
+> Although the issue flagged below by an AI-generated review of this patch[=
+1]
+> may be strictly out of scope for this patchset I am pasting it here
+> because I see that quite some work is being undertaken to correct
+> get_fill_size issues and I wanted to be sure that this is considered
+> on the scope of that broader set of work.
 >
 > [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.41=
 43642-1-victor%40mojatatu.com
 >
-> Text of AI-generated review:
+> AI-generated review text:
 >
->   Should this allocation use GFP_KERNEL_ACCOUNT rather than plain
->   GFP_KERNEL, given that attr_size here is caller influenced on a path wi=
-th
->   no capability check?
+>   This is a pre-existing issue and not something this patch introduces, b=
+ut
+>   while the audit is being done on get_fill_size callbacks, was act_gate
+>   looked at?  Its shortfall is unbounded rather than a fixed 8 bytes.
 >
->   tc_ctl_action() only gates the privileged commands:
+>   net/sched/act_gate.c:tcf_gate_get_fill_size() {
+>         return nla_total_size(sizeof(struct tc_gate));
+>   }
 >
->   net/sched/act_api.c:tc_ctl_action() {
->         if ((n->nlmsg_type !=3D RTM_GETACTION) &&
->             !netlink_capable(skb, CAP_NET_ADMIN))
->                 return -EPERM;
+>   That is 24 bytes, while tcf_gate_dump() emits TCA_GATE_BASE_TIME,
+>   TCA_GATE_CYCLE_TIME and TCA_GATE_CYCLE_TIME_EXT via nla_put_u64_64bit()=
+,
+>   plus TCA_GATE_CLOCKID, TCA_GATE_FLAGS, TCA_GATE_PRIORITY, TCA_GATE_TM a=
+nd
+>   a per-entry nest:
+>
+>   net/sched/act_gate.c:tcf_gate_dump() {
+>         ...
+>         entry_list =3D nla_nest_start_noflag(skb, TCA_GATE_ENTRY_LIST);
+>         if (!entry_list)
+>                 goto nla_put_failure;
+>         list_for_each_entry(entry, &p->entries, list) {
+>                 if (dumping_entry(skb, entry) < 0)
+>                         goto nla_put_failure;
+>         }
 >         ...
 >   }
 >
->   so any process that can open an rtnetlink socket in the netns reaches
->   tca_action_gd() with RTM_GETACTION, and now controls the reply size
->   through the accumulated attr_size instead of getting a fixed
->   NLMSG_GOODSIZE skb.
+>   Each TCA_GATE_ONE_ENTRY costs roughly 40 bytes, and parse_gate_list() p=
+uts
+>   no bound on the entry count:
 >
->   The commit message says this is "bounded by TCA_ACT_MAX_PRIO actions pe=
-r
->   request, and tca_action_gd() does not reject duplicate indices, so a
->   single large action can be requested 32 times".  Is that bound per
->   request only?  Nothing appears to limit how many such requests an
->   unprivileged caller can have outstanding at once.
->
->   With a classic BPF action near BPF_MAXINSNS, tcf_bpf_get_fill_size()
->   budgets nla_total_size(bpf_num_ops * sizeof(struct sock_filter)), rough=
-ly
->   32KB, and the 32 slots give roughly 1MB.  An alloc_skb() of that size
->   exceeds KMALLOC_MAX_CACHE_SIZE, so kmalloc_reserve() falls through to a
->   high order GFP_KERNEL page allocation, and the RTM_GETACTION handler is
->   registered without RTNL_FLAG_DOIT_UNLOCKED:
->
->   net/sched/act_api.c
->         {.msgtype =3D RTM_GETACTION, .doit =3D tc_ctl_action,
->          .dumpit =3D tc_dump_action},
->
->   Can direct reclaim and compaction for that order-8 request run under
->   rtnl_lock here?
->
->   On the retention side, netlink_attachskb() admits the first skb on an
->   otherwise empty socket regardless of sk_rcvbuf:
->
->   net/netlink/af_netlink.c:netlink_attachskb() {
->         if ((rmem =3D=3D skb->truesize || rmem <=3D READ_ONCE(sk->sk_rcvb=
-uf)) &&
->             !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+>   net/sched/act_gate.c:parse_gate_list() {
+>         nla_for_each_nested(n, list_attr, rem) {
+>                 if (nla_type(n) !=3D TCA_GATE_ONE_ENTRY) {
 >         ...
 >   }
 >
->   so a caller that never reads its socket can keep one oversized reply
->   queued per socket.  Since the allocation is not GFP_KERNEL_ACCOUNT, non=
-e
->   of that is charged to the requester's memcg.
+>   So for one gate action the emitted dump is about 256 B plus 40 B per ga=
+te
+>   control list entry, against tcf_action_fill_size() returning 264 + 24 =
+=3D
+>   288 B with an NLMSG_GOODSIZE floor of about 3776 B on x86_64.  Beyond
+>   roughly 88 entries, does tca_get_fill() start failing?
 >
->   The commit message already notes "Should this ever need bounding,
->   GFP_KERNEL_ACCOUNT would charge the reply to the caller's memcg" - is
->   there a reason not to do that in this patch, considering the add and
->   delete paths that set the precedent are behind CAP_NET_ADMIN while this
->   one is not?
+>   If it does, two effects follow.  RTM_GETACTION on such an action return=
+s
+>   -EINVAL unconditionally, since tcf_get_notify() builds the reply even w=
+ith
+>   no listener.  And on RTM_NEWACTION with an RTNLGRP_TC listener or
+>   NLM_F_ECHO, the failure happens after the action is created:
+>
+>   net/sched/act_api.c:tcf_action_add() {
+>         ret =3D tcf_add_notify(net, n, actions, portid, attr_size, extack=
+);
+>         /* only put bound actions */
+>         tca_put_bound_many(actions, init_res);
+>         return ret;
+>   }
+>
+>   leaving the gate action installed while userspace is told the command
+>   failed.  Would it make sense to mention act_gate in the series, or fix =
+it
+>   in the same audit, so readers do not assume the sizing audit is complet=
+e?
 
-I tend to agree with Paolo on this.
-As of now, those actions will have to be created using CAP_NET_ADMIN
-so I don't know whether the exposure is that much higher, but I could
-be missing something.
-WDYT?
+This looks like a legit issue, but I think it should be part of another ser=
+ies.
+In the case of act_gate, I think we should limit the maximum number of
+act_gate control list entries first.
+Since those are unbounded today, the message size could grow
+significantly, creating a clear path for excessive memory allocations.
+Analogously, it seems like sch_taprio has a similar issue...
+Since the entires there are also unbounded, it might not fit on a dump
+which always allocates NLMSG_GOODSIZE.
+Will also take a look later.
 
 cheers,
 Victor
