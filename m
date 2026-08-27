@@ -1,197 +1,119 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9329141D21A
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0AF41D64E
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787850657; cv=none; b=r5O8FOAOOMqt6ETCzZxpfknWaV8g7l1I9dHRBuGLHDb4RzXS+CoDgT1DUrvPr6OM0M7jTOB5kBOpGukKVMlnG9Nno0UiCg6wBgKFOokqy/hFOe4ivd1+LLCNvD+/bhVqX5u/8MMvG3J9h3iLH0kJLWYngB5Wo9tggzkBjMfI9TI=
+	t=1787850779; cv=none; b=i3FNPP4LncESZGZ4FmsNKNbSgP9z4czoK5W928YdWliBXVeZCRkkdwbowThVb5PwdT/5fDWoF8htu+fIUwCY6WMeMsO28q3SMkU7mAcmFbhvP8R0WFfKmqC4/EMO0WLQyzQPnFs6eNOnO+yiHGYJA2GCqm0uKF2sI9M0dEYtHk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787850657; c=relaxed/simple;
-	bh=niFL7bm0kSzXdARTm82C9hFNncC2h+OAKvYNwbF/UIA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=dKNk+Lu96xWzNDfknFtys5iR4oaEaowdmuXmgL1jFSAQbEw1rOtlH6OvWlNYxHlOvMfGbOjqjFXjRAsxnKdxkwuOlan0e09WHTzgDNqRHAx/0lWgNDMOKE9gFLsbzyV4Qb4qKlT2gU5EDLnUv1CgDmuHvFJ3Tv8vBlXht/pTPmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5lKEa6I; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787850779; c=relaxed/simple;
+	bh=G05FvWZ3ROG79TGw2T2POGYVVd9pzh+yGgHjP3yfwrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mv+rge3wKb/reQMNDlzRnu2S83kRzQEdKn+QI55yDn8fFdF/fdkA7MkKnPNn8Gn4riFKAiGcxRlTSy0SzXfeFFYooYHfnzFjt4Lyrnn00NHyJVaArk2P7tzRtNEfA+GSs2/p1wkAwKJWERPPxZR7ca1//vjPYtR7G/nH+nq1c1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=d8kjHvLI; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5lKEa6I"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5b4a95ab94fso1343163e87.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:10:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="d8kjHvLI"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a2e6d6c31dso705401fa.2
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787850653; x=1788455453; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=SGL5LGzLQwg1/37HG8XcUTKvJQ5Nvx/6mBTpYN8+4GI=;
-        b=S5lKEa6IxTxPsFewD+FW3OVIsVorki7kDHKiDA86NFLm9jYru7VJqcSxyzchPaDBft
-         plCtALFzAMPSRM/nqZkFaVh/ALma0tKrsCS+8DSIiqnmoqX8UuEf5zNMxbVvXN5H+jOr
-         ZxlUYVKE5z15Ts8zwUu50rRv5G6Y0uJvA7llervM1icm06gTKsrBnniCokfyp3xq3DFl
-         ce8p4nP6ngFHHPVUe3yOlfXj9zroThNThqH56MchCeGKwLP3g/5H4IotEqnoPhsydhwf
-         Ke9BlLiy49AItznIM6v6B1+90/dYN2W5ziTvhzzZnZk6TBSY7zDGSS7/DRVlppJ3tnRH
-         Dhqg==
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1787850773; x=1788455573; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G05FvWZ3ROG79TGw2T2POGYVVd9pzh+yGgHjP3yfwrY=;
+        b=d8kjHvLI2KlB16hQnNc8jmPycUPw0Jvs4sFNtxiCtp4fnRvNJlZK68xhLGocVJqDkC
+         u2gfv93duOM+0d6lYP+ID4c3CzXVUXGHFf22dlCUAomy5f+kdGY8RC9hhN+AuzInw+Uv
+         Yj3i2pDHVv8W3Zm9WMzzZoeU680WM76SaacajWw2fpszXddtfOZunQhsq7f5v/Gwz9HV
+         CIliovyz2ZJjEZsm0/mRM1MHOrBQM5Khc9x0mVZZ28qdWylY7G4R1jMrOTRxQvBFwcXr
+         wtENCFpjBPX+QfNAU350zl8wCc32TPbPXF51W+p2LZaTms+VuPmi+LhN4ZQRt2sactnA
+         UluQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787850653; x=1788455453;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1787850773; x=1788455573;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SGL5LGzLQwg1/37HG8XcUTKvJQ5Nvx/6mBTpYN8+4GI=;
-        b=ewHdUeWeaGsyCFkw9uHs6kJ0279hXjSOvfIHCl9EL6tTw1ereaXff9qf6/dRT05fkw
-         +ZmqHEKrvrZxzrVz3cAv5muEn+9HjyMJlX2IODG0SIUYcDM6JiihVV3Z0iwwribXVFZS
-         GFztuK4BvMQ3NnT3syAMaub3S+zzvE0R/njk4b33h0BJLh7XVOibXGkHViCcnsN9dsa/
-         OcQv6yXJUReZgd0qfxBzqD5yWXxczw6fTpvl2o3zpdZqO6cSiWG8jYuClrTFb3VzDFJh
-         5npCoKq4WJ+b9+oENXdylwj5hxTgvss40mxKyJZRjyvbBKNGbvzo9hdl74k+LaoRJtxh
-         gLXA==
-X-Gm-Message-State: AFuF++mSwIa5sN+GKGkCRn1qIi/2y1N3rkCyIweeCBt/O7n7MC8CvRfO
-	ov0KnYABY5u0rRoxwJM0delVQkVpCe5BjPi6hTDDtbZZdE8kGJTXKea5
-X-Gm-Gg: AR+sD11Nz1INaUSRwYRBTVPDSyTgARGW5f+j0u12rxxZwoevqaRFISX3aHhciOfK20P
-	IPN/SGz+8CyLPrun8Kz+TELySP/U8BpjgFkY+VOMpRERtrXuAdGUAVQSPdGPNUx2ZedNYDMHQ37
-	gK/cBf04xsFo84ZoNQFBcMwTKw2YMmoysDxArYolWhI1+Y9yjklQe7Eye98PTxkIQmh2nypydb4
-	tFdhOEympK9T/ah+iCauv9kHB2fgU/v3eXI7J5QsUzx+5074X7T/biLJRaIiBsnyVXlAT2IDxfh
-	JgeEnXEWWxuLvvBZ2z/GNgEqI/82XSjH1UwbmPrGqDL7JHTwHdYIwFrsUQDO9UKmzOk3uzelVY0
-	6dDwarcjA0JXduFvUPA9t04b5gFSmr/G9EJxO0vgK6asYRwVL4wxE0YofgMcCVvwSscyZR9kkLw
-	cD/foosIpjBDr9LlnsU3CJvYUp6kh8i7VCUUz0BfI+z71Xl/xlLgyReUbW/q40i8q0x9bLPINe/
-	jWJUw==
-X-Received: by 2002:a05:6512:b9c:b0:5b4:5a42:ab3d with SMTP id 2adb3069b0e04-5b5e63cbb4bmr163347e87.8.1787850652633;
-        Thu, 27 Aug 2026 10:10:52 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([217.196.163.190])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b5e68db0cdsm8519e87.44.2026.08.27.10.10.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 10:10:52 -0700 (PDT)
-Date: Thu, 27 Aug 2026 20:10:50 +0300
-From: Bohdan <boulderobscura@gmail.com>
-To: Mark <markmunene827@gmail.com>, linux-wireless@vger.kernel.org
-CC: netdev@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BBUG=5D_iwlwifi=3A_Comet_Lake_PCH_CNVi_AX201_=28?=
- =?US-ASCII?Q?8086=3A06f0=29_fails_with_error_-110_on_warm_reboot?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <CAMSTZOnSYZjqj4AyBpLg2hQfRs6JYZA5H26MwQ+G2WMGgNzBkg@mail.gmail.com>
-References: <CAMSTZOnSYZjqj4AyBpLg2hQfRs6JYZA5H26MwQ+G2WMGgNzBkg@mail.gmail.com>
-Message-ID: <025FFEEC-E57A-4C74-BF1E-D273253F4D9A@gmail.com>
+        bh=G05FvWZ3ROG79TGw2T2POGYVVd9pzh+yGgHjP3yfwrY=;
+        b=NqNryVpFtn0rLNyEWvzP3Y1zbdXf+RhnD5Mfhdcb+OpSfnxxwXttvG/UHW3jirB45L
+         GwzQpjo9Ubj3xTYUKTGJUXuN1srOf6qbMODzO3fXMjLY+sPMpG39pjaY2GMaLyvM5RDd
+         CaGZ7cNb9YJFJ8+RolPXmsJA+FVDSlcna2aeA7ZHuBKKYS5VcXLBHv+d7gi+6O+JSWwC
+         fcshE/3NLmZTRj0Fl/z7GyInLOjISeWkgwmnDqcLUR/yFwZo4R+G8eMgbP+IOCaJhxJD
+         FYfP0YLQuB/4R1kIRZb5kJ8/EcNnvNF5RzpfObhyIR/FjzG9Uhooh1NSGbm71vZZZKa/
+         JajQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqkYb3yqhEE4AucOPD5hTaz4pLuSvAXW2ryf5WCVveU66G3mNYgZb7HE2h+OBD1G3lW9wSTXgQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mYGbacvXrDspcV6w90Z8ugLArEmTA7HSDJQzyWTZ0vmQxiA4+1
+	4k+8feYxK0KPnSZ8Tsf7l0yrkh1vfVTmJmC4kDOmE7Epnw7WOprXaLiziILPXd9lV1+xuLWX+in
+	5Fcub
+X-Gm-Gg: AR+sD13h38C/yFpXTE0lM4rzLyV8QWh7V3YR3RL6HFBqdouWzr/4St5KpejV4w9bfoJ
+	dKhUJja71lL3qH5Iv3+M8syGL/cCP7XxxughyEnJl0PPXToaZLF4eR8VbeW/3ixMbV7mvBoBqNT
+	hQO/SwYEDAl9Px8gWF0075DeegDc+iBluohFw+QbAUCZp49qgCmx1y3g0ayDkSj1bTgco31Nwsj
+	wuauYG9R11uJVzeD8j+PsVEp0gOIEvXkE6OvuSaDdYK9IT2dvK5HnOwPToDVzcMAqk5JIhw3KgN
+	6vpjWIHgKVwNzqeJ9J//vgagG8qInbVTAz1c3zEldJmctO0l145weFdP590rAvP9ntyRKdi9lxF
+	7p9ExAA055+AvRbzLZynquLeLzf41SWWA6Iozv5jpgQBMb14f2lKLPM4RojgbkrdDNlT47K3h77
+	zsLJS3THDyDtz4LNPzvpbyYvi55rq1pybqCf1KbMbtZZtXH2vcOg1a0N2if+AeUGJSlPdoL17Ah
+	C6OiWcQ4w==
+X-Received: by 2002:a05:651c:30ca:b0:3a1:5172:c287 with SMTP id 38308e7fff4ca-3a1fd4a1fb5mr44250431fa.5.1787850772908;
+        Thu, 27 Aug 2026 10:12:52 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a26be2acfesm6108311fa.21.2026.08.27.10.12.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 10:12:52 -0700 (PDT)
+Date: Thu, 27 Aug 2026 19:12:48 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Ali Rouhi <arouhi@sitime.com>
+Cc: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, 
+	"ivecera@redhat.com" <ivecera@redhat.com>, "kuba@kernel.org" <kuba@kernel.org>, 
+	"arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"cjubran@nvidia.com" <cjubran@nvidia.com>, 
+	"Oleg.Zadorozhnyi@devoxsoftware.com" <Oleg.Zadorozhnyi@devoxsoftware.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v7 3/3] dpll: add SiTime SiT9531x DPLL clock
+ driver
+Message-ID: <apBv_Kik3Mak3GzL@FV6GYCPJ69>
+References: <20260815221919.64226-1-arouhi@sitime.com>
+ <20260815221919.64226-4-arouhi@sitime.com>
+ <6a529684-bd6a-4187-9ed9-bb40f4b98065@linux.dev>
+ <ao1Zh0uHO0mWj-2t@FV6GYCPJ69>
+ <20260825215523.84195-1-arouhi@sitime.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825215523.84195-1-arouhi@sitime.com>
 
-On 27 August 2026 19:26:58 EEST, Mark <markmunene827@gmail=2Ecom> wrote:
->Hardware: Dell Precision 7550 (Comet Lake-H)
->Wi-Fi: Intel Wi-Fi 6 AX201 / CNVi
->PCI ID: 8086:06f0
->Subsystem: 8086:0074
+Tue, Aug 25, 2026 at 11:55:24PM +0200, arouhi@sitime.com wrote:
+>On 25/08/2026 11:00, Jiri Pirko wrote:
+>> It's a new driver. Linear review in one hunk. I think it is better that
+>> way as you see the whole thing right away.
 >
->OS/Kernel:
+>Jiri, Vadim, Ivan - the reviews point in opposite directions, so I would
+>rather ask than guess.
 >
->Linux Mint 22=2Ex
->Ubuntu 24=2E04
->Ubuntu 20=2E04 LTS (clean installation)
->Kernel 7=2E0=2E0-28-generic
->Kernel 6=2E14=2Ex
+>Vadim asked for a split. Ivan agreed with him, suggested low-level ops,
+>then core ops, then features one by one, and pointed at the zl3073x git
+>history as the example to follow. I agreed to that, and the plan for v8
+>was 13 patches on that shape, each building and working on its own, with
+>the end state identical to v7. Jiri would rather it stayed one patch.
+
+I don't care that much.
+
 >
->Firmware:
+>The breakdown is in my reply of 21 August, in case it did not reach your
+>mailbox:
 >
->Stock firmware
->iwlwifi-QuZ-a0-hr-b0-77=2Eucode
->iwlwifi-Qu-b0-hr-b0-77=2Eucode
->Summary
+>https://lore.kernel.org/netdev/20260821010556.95192-1-arouhi@sitime.com/
 >
->The AX201 initializes normally after a complete cold boot, but fails to
->re-initialize after a warm reboot, resume from sleep, or iwlwifi module
->reload=2E
->
->The failure consistently occurs during the early PCIe/CNVi initialization=
-,
->around CSR_RESET and Host Monitor polling, before the driver reaches the
->firmware loading stage=2E
->
->The resulting error is:
->
->iwlwifi 0000:00:14=2E3: probe with driver iwlwifi failed with error -110
->Kernel log
->[  609=2E416668] iwlwifi 0000:00:14=2E3: Host monitor block 0x0 vector 0x=
-6
->[  609=2E416670] iwlwifi 0000:00:14=2E3:     value [iter 0]: 0x00000003
->=2E=2E=2E
->[  609=2E416695] iwlwifi 0000:00:14=2E3: Host monitor block 0x22 vector 0=
-x0
->[  609=2E416714] iwlwifi 0000:00:14=2E3:     value [iter 0]: 0x00000003
->[  609=2E422051] iwlwifi 0000:00:14=2E3: probe with driver iwlwifi failed=
- with
->error -110
->
->Steps to reproduce
->
->   1=2E Perform a complete cold boot=2E
->   2=2E Confirm that the AX201 initializes and Wi-Fi works normally=2E
->   3=2E Remove and reload the driver:
->   4=2E sudo modprobe -r iwlwifi
->   5=2E sudo modprobe iwlwifi
->   6=2E The driver fails to probe and returns -110=2E
->   7=2E The same behavior occurs after a warm reboot and after resume fro=
-m
->   sleep=2E
->
->
->What has been tested;
->
->   - Upstream firmware revision 77 - no change=2E
->   - Both Qu-b0 and QuZ-a0 revision 77 firmware files tested=2E
->   - pcie_aspm=3Doff - no change=2E
->   - iwlwifi=2Epower_save=3D0 - no change=2E
->   - Intel AMT / Manageability disabled in BIOS=2E
->   - POST Fastboot set to Thorough=2E
->   - Clean Ubuntu 20=2E04 LTS installation - same warm-reboot/module-relo=
-ad
->   failure=2E
->   - Linux Mint and Fedora - same behavior=2E
->
->
->A complete cold power-on consistently allows the initial probe to succeed=
-,
->while reinitialization without removing power results in the -110 timeout=
-=2E
->
->Firmware loading
->The firmware revision does not appear to affect the failure=2E
->The timeout occurs during the initial bus/reset handling and Host Monitor
->polling, before the driver reaches the point where it requests the
->microcode=2E Because of this, changing the firmware version or location d=
-oes
->not change the observed behavior=2E
->
->Additional information
->
->The system is a dedicated Linux installation with no Windows dual-boot or
->Fast Startup involved=2E
->Full dmesg, lshw, and Intel SSU output are attached=2E
->The behavior appears consistent with a failure to properly reset or
->reinitialize the CNVi device after a warm reset/power-state transition=2E=
- I'm
->not sure whether this points specifically to D3cold handling or reset
->sequencing, so I've included the logs and hardware information for furthe=
-r
->investigation=2E
->Please let me know if any additional register dumps, PCI
->configuration-space data, or specific kernel debugging output would be
->useful=2E
+>Tell me which you would rather have and I will do that. My default is to
+>go ahead with the split.
 >
 >Thanks,
->Mark
-
-Heya Mark,
-
-Can you try the mainline kernel? I'd try on NixOS and Arch, but I don't ha=
-ve access to your hardware=2E
-
-Fedora has a COPR repo, more here: https://fedoraproject=2Eorg/wiki/Kernel=
-_Vanilla_Repositories
-
-Bohdan
-
-P=2ES=2E resending because the mailing lists rejected an HTML-formatted me=
-ssage AND I forgot about "Reply All"
+>Ali
+>This email message and any attachments are for the sole use of the intended recipient and contain proprietary and/or confidential information that may be privileged or otherwise protected from disclosure. Any unauthorized review, use, disclosure, copying or distribution of the information included in this message and any attachment is prohibited and may be unlawful. If you are not an intended recipient, please contact the sender by reply email and permanently delete and destroy the original message and any attachments, and any printouts or copies of the message and attachments to the original message. Thank you.
