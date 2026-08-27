@@ -1,144 +1,138 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF048440A19
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F28844606D;
+	Thu, 27 Aug 2026 11:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787831360; cv=none; b=K1olNcxkGaoDzcKcNAKWWpmz43isarqEabTejP6xewy4C6xdkziKFClPeQ4wYSzzYDmvYuFIqsLkKkyY6hCIfwHZzcwB+FvmCqcCwZRtcxmShvHsX17E+rNn6cENOPMEh/Y8siIZ5U8+1l2F+haF+TSQBfFMGBzp6xP2CsepODw=
+	t=1787831578; cv=none; b=WLVN3CsboUpBKYkbdcLQZrc3rJ/tbX5DNXACQCCmVCGR+K1HP+0SDiQmvuK6T28dv+mFYkX2oE2hTmfw3y7o3EMNEBRR7X0m6ZFCV0UYTTzsWwH7cHoSVaqf7ixpLbIkm5C1+sPP9PwvHNyUSuhCxFjV4TdPrvO5C6B/hTitCZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787831360; c=relaxed/simple;
-	bh=FoO1QJ0GF50BvlM8x2sXaYqmyZtQ27nfVk7V1frg8n8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=C0eXDtSY/NhIwSuTA2VJFCwYPxHUYgLpu5VLaGzv1eDkXwEXs5KYqya7Qy1XMsqYSYph2KMNcXyR7wO+vwD7Maj9pYDBqAndAvJ+AU1yf8qmcp8FHbMPVIbGlMSYZb4WTRmxu3g4eS/Y7ci4CNtad+ls5R1pkd7xRc/jH3MK1Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Wkb+1rV0; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1787831578; c=relaxed/simple;
+	bh=wLfhtJbidDA/gsiOrfePKaFD/W8brBBgPdwwN7+m9G8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oyBmlqks5yafGI16Yx1Vkz+iKQnHKV3rJsD22bMHz0ePm934o2yM03vrLChmT+QQBkseQ4pzAlDThJAmFJbt8EN2U/2ElWAmEcNJv9o3s4jpZL78nBi47r05goGgU432R8vlWvjijZtiQ4KHzImhwnBgk8lLlTjxEdOA5FN2TN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7l7WKVV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Wkb+1rV0"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=+mzw++BiW9LAc9yAYC/WAMU5QJ4XXRR59EeZztCWpFg=;
-	b=Wkb+1rV0iEudRgEXbvOKFH3uJLgDqvhseIHCwlA7xmPA1PzCgKL3yT+27hRgZrlC1ffrHAkGf
-	a5ZwuxwpEm/c0xeZxN0Zg0y0C9FTDpsR6aa4zm24R+sm3p8bHqZhlEaQRCjVR1zZZy4EPY5mqSI
-	iGUh07QRkt68B573g5PNyh4=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hW00B3YVKz12LFy;
-	Thu, 27 Aug 2026 19:38:50 +0800 (CST)
-Received: from whupemk200012.china.huawei.com (unknown [7.152.185.169])
-	by mail.maildlp.com (Postfix) with ESMTPS id E9CC74056D;
-	Thu, 27 Aug 2026 19:49:06 +0800 (CST)
-Received: from [10.174.177.223] (10.174.177.223) by
- whupemk200012.china.huawei.com (7.152.185.169) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 27 Aug 2026 19:49:05 +0800
-Message-ID: <ba64acb2-0078-4403-8780-d2f4719ca5c0@huawei.com>
-Date: Thu, 27 Aug 2026 19:49:04 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7l7WKVV"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9DE6EC19425;
+	Thu, 27 Aug 2026 11:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787831577;
+	bh=wLfhtJbidDA/gsiOrfePKaFD/W8brBBgPdwwN7+m9G8=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=B7l7WKVVWStsLjEEch7bR5sbarYzbUJkk33+C8ETBczD27tS9rO5KAofx6b/r13zs
+	 5EuYoV5GZqDf0YeZSxfgZ8Ad40CJQ/FTHwUN4CH+jM2oalHg/p4pHRZiWwVaObo69b
+	 XYju01Quh00IjQc6HgBa0voaOftX/LoXOG6nEiuJbXQydmr/6D7M796wKEdZDnDnNS
+	 9RJOWTeB5v9JyLGSrF83gSrdHe+8xcAPJ4ahMIvfRj2Hv70JY7ba5nLgN0zmqjzICq
+	 L1oaHs6Eq0njMV5SPAYAI43pzPgLL5gQYy6EwJNwDEVyFTwPzCUTPdChZAAxZWZ5GV
+	 XJOg9g4JyA0Lg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89D76C61DC2;
+	Thu, 27 Aug 2026 11:52:57 +0000 (UTC)
+From: Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
+Date: Thu, 27 Aug 2026 13:52:56 +0200
+Subject: [PATCH net] wireguard: queueing: preserve tstamp_type in
+ wg_reset_packet()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] ipv4: icmp: reject RTN_UNREACHABLE input routes in
- icmp_route_lookup
-To: Ido Schimmel <idosch@nvidia.com>
-CC: <dsahern@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-	<herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>,
-	<zhangchangzhong@huawei.com>
-References: <20260825094523.1461020-1-dongchenchen2@huawei.com>
- <20260826154017.GA1834664@shredder>
-From: "dongchenchen (A)" <dongchenchen2@huawei.com>
-In-Reply-To: <20260826154017.GA1834664@shredder>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- whupemk200012.china.huawei.com (7.152.185.169)
+Message-Id: <20260827-wg-tstamp-v1-1-4acfebb855ef@well-founded.dev>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMzQqDMBAGX0W+cwNmiz/0VUoPMW51BVPJRlsQ3
+ 72xPc4wzA7lKKy4FTsib6LyChnspYAfXRjYSJ8ZVFJdtrYx78EkTW5eTHelpqXKEvUeuV8iP+X
+ ze90ROOHxl7p2E/t0XnAcXx73bRhyAAAA
+X-Change-ID: 20260817-wg-tstamp-b327825122dc
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Martin KaFai Lau <kafai@fb.com>
+Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ramses de Norre <ramses@well-founded.dev>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787831576; l=2656;
+ i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
+ bh=WGuiPvIeqUZ6TraJfQmCZ8rPDSP8532P5rIyXoxvRGI=;
+ b=Gp5zWyXdujY/Zn8Q99qdy4u61/WREzVXqkjjg9LH0XlpiPw0K+sImzBcyS/Zw+L4bOCAJLCxr
+ q3EkFWdJUutAN5I84XhRxOgYoY4rZsdXKQWzkRt84APQoOdYYQSLNX5
+X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
+ pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
+X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
+ auth_id=957
+X-Original-From: Ramses de Norre <ramses@well-founded.dev>
+Reply-To: ramses@well-founded.dev
 
+From: Ramses de Norre <ramses@well-founded.dev>
 
-> On Tue, Aug 25, 2026 at 05:45:23PM +0800, Dong Chenchen wrote:
->> When the forward output route cannot be used in icmp_route_lookup(),
->> it enters the "reverse path" and calls ip_route_input() on fl4_dec.daddr,
->> the original packet's source address.
->>
->> ip_route_input() only returns an error for truly invalid packets. For
->> unreachable addresses it will succeed and return an input route whose
->> dst.output is set to ip_rt_bug(). The existing check only rejects
->> RTN_LOCAL routes, so the RTN_UNREACHABLE route types can still be returned
->> and later used for output, syzkaller triggering a WARN_ON_ONCE()
->> in ip_rt_bug() as bellow:
->>
->>   ------------[ cut here ]------------
->>   WARNING: net/ipv4/route.c:1273 at ip_rt_bug+0x14/0x20
->>   RIP: 0010:ip_rt_bug+0x14/0x20
->>   Call Trace:
->>    ip_push_pending_frames+0xfa/0x100
->>    __icmp_send+0x905/0xf10
->>    ip_options_compile+0xc0/0xd0
->>    ip_rcv_finish_core+0x321/0xae0
->>    ip_rcv+0x1de/0x260
->>    __netif_receive_skb_one_core+0x11a/0x130
->>    netif_receive_skb+0x7b/0x260
->>    tun_get_user+0x11bf/0x1c10
->>   ------------[ cut here ]------------
->>
->> Reject input route that is RTN_UNREACHABLE to fix it.
-> 
-> Nit: Also mention that the warning is only printed for RTN_LOCAL, as
-> RTN_UNREACHABLE is not the result of a race condition.
-> 
->>
->> Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
->> Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
->> ---
->> v2:
->> - RTN_UNICAST judgement will reject bforward packet. Only reject RTN_UNREACHABLE
->> v3:
->> - Modify the comments to make them more accurate.
->> - RTN_UNREACHABLE dont need warn log.
->> ---
->>   net/ipv4/icmp.c | 17 ++++++++---------
->>   1 file changed, 8 insertions(+), 9 deletions(-)
->>
->> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
->> index 0caedfc7ca92..7350f0380be1 100644
->> --- a/net/ipv4/icmp.c
->> +++ b/net/ipv4/icmp.c
->> @@ -581,16 +581,15 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
->>   		skb_dstref_restore(skb_in, orefdst);
->>   
->>   		/*
->> -		 * At this point, fl4_dec.daddr should NOT be local (we
->> -		 * checked fl4_dec.saddr above). However, a race condition
->> -		 * may occur if the address is added to the interface
->> -		 * concurrently. In that case, ip_route_input() returns a
->> -		 * LOCAL route with dst.output=ip_rt_bug, which must not
->> -		 * be used for output.
->> +		 * At this point, fl4_dec.daddr should NOT be local (the
->> +		 * address can be added to the interface concurrently) or unroutable.
->> +		 * In that case, ip_route_input() returns a LOCAL or UNREACHABLE
->> +		 * route with dst.output=ip_rt_bug, which must not be used for output.
->>   		 */
-> 
-> The code is fine, but the comment is a bit misleading (the "should NOT"
-> part is only correct for "local"). I find this clearer:
-> 
-> "
-> fl4_dec.daddr is not expected to be local here, but it can be added to
-> an interface concurrently, in which case ip_route_input() returns a
-> LOCAL route. It can also fail to build a forwarding route towards
-> fl4_dec.daddr, for example, when forwarding is disabled, and return an
-> UNREACHABLE route. Both cases will result in a route with
-> dst.output=ip_rt_bug, which must not be used for output.
-> "
-> 
-> Thanks!
+Sending traffic through a wireguard tunnel on a host using the fq
+qdisc fills the log with:
 
-Thanks for review!
-v4 will be sent
+  fq: likely mono tstamp with tstamp_type 0
 
-> 
+An skb carries a timestamp in skb->tstamp and, separately, a
+skb->tstamp_type field recording which clock that timestamp came from.
+The two have to agree.
+
+When wireguard encapsulates a packet it calls wg_reset_packet(), which
+clears the fields that must not leak from the inner packet into the
+tunnel packet. It does so in two steps:
+
+  skb_scrub_packet(skb, true);
+  memset(&skb->headers, 0, sizeof(skb->headers));
+
+skb_scrub_packet() deliberately keeps skb->tstamp when it holds a
+monotonic timestamp: that value is the time the packet is scheduled to
+be sent, and the qdisc still needs it. The memset then zeroes
+skb->tstamp_type, because that field sits inside the headers group
+while skb->tstamp does not. The packet therefore leaves wireguard
+carrying a monotonic timestamp labelled as a realtime one.
+
+Nothing noticed until commit c4f796c4f16b ("net_sched: sch_fq: convert
+skb->tstamp if not monotonic"): fq used to assume every timestamp was
+monotonic. It now consults tstamp_type, spots the mismatch, warns, and
+falls back to treating the value as monotonic. Pacing still ends up
+correct, so the log spam is the actual problem.
+
+Save tstamp_type before the memset and restore it when encapsulating,
+next to the hash fields that are already carried over this way. When
+decapsulating it stays zeroed, which is right: an incoming packet's
+timestamp is a realtime receive timestamp.
+
+Fixes: de799101519a ("net: Add skb_clear_tstamp() to keep the mono delivery_time")
+Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
+---
+ drivers/net/wireguard/queueing.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireguard/queueing.h b/drivers/net/wireguard/queueing.h
+index 79b6d70de236b..663b19b783953 100644
+--- a/drivers/net/wireguard/queueing.h
++++ b/drivers/net/wireguard/queueing.h
+@@ -78,12 +78,14 @@ static inline void wg_reset_packet(struct sk_buff *skb, bool encapsulating)
+ 	u8 l4_hash = skb->l4_hash;
+ 	u8 sw_hash = skb->sw_hash;
+ 	u32 hash = skb->hash;
++	u8 tstamp_type = skb->tstamp_type;
+ 	skb_scrub_packet(skb, true);
+ 	memset(&skb->headers, 0, sizeof(skb->headers));
+ 	if (encapsulating) {
+ 		skb->l4_hash = l4_hash;
+ 		skb->sw_hash = sw_hash;
+ 		skb->hash = hash;
++		skb->tstamp_type = tstamp_type;
+ 	}
+ 	skb->queue_mapping = 0;
+ 	skb->nohdr = 0;
+
+---
+base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
+change-id: 20260817-wg-tstamp-b327825122dc
+
+Best regards,
+--  
+Ramses de Norre <ramses@well-founded.dev>
+
 
