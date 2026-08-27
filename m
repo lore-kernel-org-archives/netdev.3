@@ -1,120 +1,132 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820EE4657C6
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79558342538
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855981; cv=pass; b=CDqqPJudS8Hx8/3ZB6Le2fP7jy+NHKGvTWkBCNe/L5FD2FgZEBBcfBgrUzYc9N2wKnm4pbCW0iMkJp/evizQlb8L6P8UYtNZT53ZJ88IxejUBEMJZIbjtvKanam/FTUWx9ZKwleDIAEKF7akmGMjLesjESy7HPKHS0ZLxdVrSSU=
+	t=1787856031; cv=pass; b=Cn5c3A1dGdWXlpvD/c22TnEvX4KFRC96giTGEzyjQRdHjXtuAu0+fR+bTGfoj2UDOhkGk6tCu2YB7bGf7r+x63199SonCqe1OCe+WX3sAXdcFZU1Vh9L69CLRffvA00HhGTIDjhuMuszJzngnuJG1V2R++sc8ZoGs36hNh2rZMk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855981; c=relaxed/simple;
-	bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
+	s=arc-20240116; t=1787856031; c=relaxed/simple;
+	bh=Ij74GLVk8iV1p9HxtVaw9mUYbGaW/88PYSKzY7YOyZE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jmy/8Y6SADYzjtqIKfBrrNeXL2ucGG9nKoOcl3VlAG6TV+62a3R6kYBQlKN54UDVkmmnr1M52XjSlTlACi6aJjvIHkYh/5BlQkqU0NCC6d1rqAP3LUK2AhfsLIPB5mRTusFsWv9CC14aQ3yCzZW2SCs770IJxsVg9dH2xWnx/Zg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kM/LTmSz; arc=pass smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=QM3Wh8IADiUQn40ubihL6OveJLq2Ct3PzWO78PoDuq1O1CDygpO5isnI/5/3rf5KKT2KXsLRHLiKiUKoFD6dXSc9CEzKTR8yx0DsxEne8WTaFjh/hcHMLiuhNgAundLgewpe1Sfgt9TmpkcrhPOVgTMEls7M6ODEbwvWvYulDCo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=FJjMJI/K; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kM/LTmSz"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-936e393176fso10876685a.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:39:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787855979; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="FJjMJI/K"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66c4e9769bdso407725d50.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:40:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787856029; cv=none;
         d=google.com; s=arc-20260327;
-        b=P4dzu5R2cPy+ot8VcGlDIBXg29GynrBkwuaXhF3Kka4Da4Bnpu2GGP29f3TfPH9b4L
-         r7NfmgU+HCzSPrrNYY9A1FZ4rj+wUWQN7JGZXrw010rHxJKQ2zsqxn2MUmlXO7aly3Ms
-         4duGhsOcIC1YAzY7hb8g0tPpIQTrlDRdTwiu4RItof7X9i27XblZm2xJmEP8agUnP73b
-         7nTnvB6U3Q3kIao56RUeGQIT95GDteUCTGwUlH4AC1Mvn4kz9RJsOA0EWQ+nar8z8T1X
-         fr57lJUmVBkh4qHE6UZZvxcChrvtBN34dAyg2ETfAzFO8AUcuuS5mknHpUrUlsXkwxSF
-         iiow==
+        b=I4MzL0IfpBTqTHP5DL66Ahcs9PIkNCjIpuwxNNpnTawcsPl+wKZfGvSnF+13rN/If3
+         skS85DvdX+OctOSzYk8LfUVXX/8zT0s8B4fuG3z5G5OqpoHHsWJ/vJ6cFncHjCrxIrcC
+         0Gp0FocRQg72rI4EBQEfVCYkMyy4/bX0zfbbZ9gLYaYzvVVb+mt34YqQQ7zDlo14IUj+
+         wnPJ6rfrf408ptB++OmG4yNXeLVSvPQcEnnhndVVyQYvnkOZT69mLu6mv1xkKt5wcBKt
+         H/7cg/WcEklskwe/1LWe/ApE7m9Kd161Q+eNkwZW9AVuDQXOSTPn5+ZIDecWY16K5vuz
+         fYuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
-        fh=A8n998BmTyIJ/6LdoAbLnpCP1R3RaQ5x2s/UKy9f9PY=;
-        b=AHQIh2kk00keH4pDUnPSkj7G70aOzRLJf5WX1h66MGSTaMgN9mazVHFlTyniLeFqMV
-         llB3SUbYNd0TjROdgF050I53qQDIXvCSJhATzi2CrCvrE/UZhYEBCsaYqubFISURM3cP
-         vna8PUMCV0HZj5jx/vc92AGRscUjrJ8vnwxAaV9JEmcOf4N6TR5XLXIfS/0mrSuFfKCJ
-         BgOEkqKG2MxrHcdG34tpW8fR0XjREDslzHDxYnN3Jua8IfxiQ7ARFSC/PeDlbymd1YLV
-         mHOX/25rYY1FLohH8K2MQ09aSUWUkFc3H9Q/wXXq7b0CkZVbQHE+arfkurzE7iL7+5Fc
-         hRMg==;
+        bh=+0/wOwC4Fbtk4CvQd4/xRKB2vl8WVlSHFz+v1IPLVlw=;
+        fh=JJWQL90aaaGO0XUb+t6DdVQu7h1yZwx0IGVydSKgf+8=;
+        b=NIvPXFvBIO1HpV74rmCsnPv5PQJYvkpR9j7/fPxQspt89QuVn3hhdd1UkCORBMkdkb
+         Sc88DGfJ5HmByR/xlLUjPwkJ4wW6kk5TSON7U2xmV+xO2azXIMbm6lkUdxxCZri75cVm
+         W+nVNVvC+jdJPuTOKSdC7EUXBo4/R2jdJlKjkBwkViHr7sUjUN5ZW/THzjatqTbQW3nG
+         HaibRhlE7AKx45xCIuirGNDIISK+Op5sFulQt9zDBC+Valqwsr9/Bb2DtHNz6qRP6O+J
+         9o3D8JOO6t9k0AMkAZR8nfe0H1gVP2M1pDM/f7mvG54BJLNV22hotwW2PsuW1obcm7pN
+         o4PQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787855979; x=1788460779; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787856029; x=1788460829; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
-        b=kM/LTmSzoS6Y0PH8bT/wWDKBss0HJQa4+UtDuu4tsV+f8lcM/e59BQoVQk+TD3rHYf
-         HRjMpjBdYA397FQ+PswQQ/mBIctZ0IAnbJEJMOEayRBlBCj7a+DHserTNqqBThW+pPVO
-         oUpiCEwH3fQ01bqkvELj4mpZQe1HKZwpwrcIOoMOJWygu665SNII7aAbzMf3FJq+fc4N
-         IH2Zo0Qai2el/M/3Q7BdQ7/U1GAFW/+Vk0Mc4dYRZRQV2M72Xcg7lqarVALQ8gqIZa7e
-         gNF2tuGnFF5JYfncshb8qj3uKm7QHV9YpzGHxbaPfEqHAsyG1ulNX1BeuY+jUabnGWRh
-         I8cQ==
+        bh=+0/wOwC4Fbtk4CvQd4/xRKB2vl8WVlSHFz+v1IPLVlw=;
+        b=FJjMJI/KPX9yD7hhqTye68VPTwTIwNoLNpCYl6kAI81CsEYop8ffByWRH5anSUwEIJ
+         pyoUP4J7aICPifSjfmmAKAvb+HUurwO37RoIn+Bpm/+20z0FsGRlYmjb/V686TmIanqj
+         oysXy2U3bZE4AlKK2FNdaBe+HgjjUwXCUGzD0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855979; x=1788460779;
+        d=1e100.net; s=20251104; t=1787856029; x=1788460829;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
-        b=ryGaqK4MDWhcovwldPAsiR7mRrKkQdwmlX+QfLoaTi7qsvdkxvu1RVsKNMy8ijh+0e
-         I6dlDTFtC6HgqLNna+aHHuoKqDA+4k3p7HbkNygOambRU4HJCYMfshCnakYyJT1C7kbt
-         hASmRDDAHpPiBgigyGRiQ+Dd2Oo2DkOgXjnMkJQFEgQzn2K+NCo2CliVuMuqBnGhajVx
-         +T1BNANUSsSH7Hoz7KVjWPpYNIOjyZz3iWlgo3q5eEOQVhrgVlOmoxLGic38dHiBovrQ
-         X7wpzegPa+MittmSpxaj5AYslPf4MTPY1gBQGtgzHRXC+gL+8AMUaXJtLEw4Ga/pmub3
-         gplQ==
-X-Gm-Message-State: AFuF++lWslDObpLzDc5wptlOqzdZMDvl5lWDe5scHzc8Y2lu+fhjhsRq
-	q1p5LYkQom/dDgHrI63sd1bZnH8KMyElQQ4GJ09m2UyEKFR430N0i7ihwIDLoqNuPnCffpFVDhe
-	ucpwi+F8EQs3hgWHgdj11dZ7h3ZRzsoukaO20vGq4
-X-Gm-Gg: AR+sD11iF+ense0oLwdNX/6LwyE52e8aYx7G8qBXuujeigVdHP6tXy3OrVBZdHaBql9
-	1O5olcVkP1YI95uj1hIdZIBjs4wEjMKW2u22iNly/p+hbsN4SnQe3nmODJnnzI6Kc2cjcOzshBn
-	6FY7vFUX8Cq5GTaDhr3JofWT1uAKdkseSEHwtJPYzz9QFBQZ9chbm0WIEz+PZCKB5YRZ04SSUUV
-	EZK8qCbJWrxTM5NqKOuc0qH/WmoyhMjdGoOAHh/TUy4pniMCwLi7KTeAMz/6oj9kvM+WJWMUsgV
-	7KZvVEkg3LGMpGXC1r1TpEumCEV852s8g4Z9zAslLt5xnTYYxm1iAst+XhSEXmDG+ST34Wi/lD1
-	QpgYKrUVIRVAiq9l4iErc2GDG58LZyBChh2xwPolUBhmAVJ/C4vrP8Dw2Sek=
-X-Received: by 2002:a05:620a:a913:b0:939:2e1:91b1 with SMTP id
- af79cd13be357-939139b0e77mr79071685a.42.1787855973945; Thu, 27 Aug 2026
- 11:39:33 -0700 (PDT)
+        bh=+0/wOwC4Fbtk4CvQd4/xRKB2vl8WVlSHFz+v1IPLVlw=;
+        b=AEV2rrE8eNHofT1ENyg7SOMtJFwa29y3F5ExcYClgIWgiVREnW//Zi8iWSwlmfeS/y
+         0jK+2J//mlNDCqafJOjqZ7SuouxMTZL2WZ96x5pLFyn6NH/lx0IeIA00XmmtNX2Rzbt4
+         PX9OqZNm3/OTXK1fz/3knRN5qIU494bSKbhPoScsguapbmWE1CG+DqlSSTeordPaRhIH
+         DS+LARMAyOVly+ZNYXtadDdwPjt+XepesF3qcu5aOEhJ11BTwpw0zjOSVVyfaeoAW9Vm
+         ErMbgcQgMJSJD7fuYxgGbbEwh69wcreFIZJX2uVnksrviHmBLiLsh5HvgQvsFQ8MyNq1
+         CtLA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9s6ncChbIILyNJRjbmLEmPpdXqWi5eFa9IulfhHoR7RyFoimmYFQWtCAIDBZ5nvYaeVtScJc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kRrU8UAxzLfCph/m8dtjqu4ShgGabNNVxTFowpIbmfOpvGIALI
+	Va2th0OA2/5neqJJJ9EIYPhFEUhsfqqR6E5wu53fIViz10qBHQwVWLS1HHc/kqagS6W0EzVXz2U
+	feonpJ3AyBF7K4kz+gQAn7kD1lfAYmdW2llBSvccwYktsLGC+qsw=
+X-Gm-Gg: AR+sD13bnZ9Vz1oef2tFA/J5z8Y80J6VJG4/Of1b1LKA9t6LsNKSrP0Pvk1IEzMWXRq
+	/SZ5grEw+ZoAQWauA3GHFQuKEzn+tzSknqZH8K23BIVG8f9Zd4A+NiO/g71RcW9LNtW0AfeKKm0
+	DmWOB2CdlngrxMiNDv4Z0I9cJIuy0m22XW3Q8pqroo9uW1tVXQ+9QiVKiKuy6NnCOWf7ULBzH8D
+	h35FO65a2xFlMf0m9QVcIj7/jbdH8l2ViwN39aNEvkLpVlr0jEvgZyAuv5lIer3aMR9dwSjbTVK
+	sV3472Ogek9ltgYydHapwctzkWFdtzNpE2k1tsMDOzysi1oUsZ7HaLUggIw=
+X-Received: by 2002:a05:690e:2590:b0:66d:2e0e:ef59 with SMTP id
+ 956f58d0204a3-66e4c793efdmr113334d50.25.1787856029297; Thu, 27 Aug 2026
+ 11:40:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827182514.4667-1-zihanx@nebusec.ai> <20260827182514.4667-2-zihanx@nebusec.ai>
-In-Reply-To: <20260827182514.4667-2-zihanx@nebusec.ai>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 27 Aug 2026 20:39:22 +0200
-X-Gm-Features: AcwNN1VRhQVJWnUjimjnCssYVB-RsZLLiLw-RwPls-JFeJyYJ0GNI-z6p5Tnrm8
-Message-ID: <CANn89iLL7g9iZ-pZZw321GFNVKKW=xs-6exMxeoM7=krsL2T3g@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] ipv4: avoid divide by zero in fib_rebalance
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, =?UTF-8?Q?Peter_N=C3=B8rlund?= <pch@ordbogen.com>, 
-	stable@vger.kernel.org, Vega <vega@nebusec.ai>
+References: <20260824153903.4143642-1-victor@mojatatu.com> <20260824153903.4143642-5-victor@mojatatu.com>
+ <76fed437-dbd6-4d5f-bfbd-2c00fb745013@redhat.com>
+In-Reply-To: <76fed437-dbd6-4d5f-bfbd-2c00fb745013@redhat.com>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Thu, 27 Aug 2026 15:40:17 -0300
+X-Gm-Features: AcwNN1VT9CjSmFrh3iSwKNT4VwAbE3QYLdL1Ej55LgV9oeGMweftQLIyx1YZdxA
+Message-ID: <CA+NMeC84PyhDpFJuezfGEHweEw0=BydyTieSXmfGyMzw4u7cnQ@mail.gmail.com>
+Subject: Re: [PATCH net 4/4] net/sched: act_mirred: account for
+ TCA_MIRRED_BLOCKID in get_fill_size
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	jhs@mojatatu.com, jiri@resnulli.us, horms@kernel.org, pctammela@mojatatu.com, 
+	netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 8:27=E2=80=AFPM Zihan Xi <zihanx@nebusec.ai> wrote:
+On Thu, Aug 27, 2026 at 6:24=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
 >
-> fib_rebalance() computes the total eligible nexthop weight in one pass
-> and programs upper bounds in a second pass. A concurrent change to
-> ignore_routes_with_linkdown can make the first pass return zero while
-> the second pass sees an eligible nexthop, resulting in division by zero.
+> On 8/24/26 5:39 PM, Victor Nogueira wrote:
+> > tcf_mirred_get_fill_size() only budgets TCA_MIRRED_PARMS, but
+> > tcf_mirred_dump() also emits TCA_MIRRED_BLOCKID whenever the action was
+> > created with a block instead of a device. So tcf_mirred_get_fill_size i=
+s
+> > missing 8 bytes in its accounting.
+> >
+> > Fix this issue by accounting for TCA_MIRRED_BLOCKID unconditionally:
+> > it costs 8 bytes for device-mirred actions and avoids having to read
+> > tcfm_blockid outside tcf_lock, where a concurrent replace could change
+> > it between sizing and dumping.
+> >
+> > Note: Dumping mirred with blocks currently works in most use cases, but
+> > would break in some corner cases, for example, if there are 20 blockcas=
+t
+> > mirred actions in one request, each with a non-ANY hw_stats and a
+> > non-zero user flag, with a listener on RTNLGRP_TC (or NLM_F_ECHO):
+> >
+> > budget 180 B/action -> attr_size =3D 20*180 + 24 =3D 3624
+> >                     -> alloc_skb(3776) =3D 3776, tailroom exactly 3776
+> > emitted 196 B/action -> 20*196 + 24 =3D 3944 > 3776
+> >                      -> tca_get_fill() fails
 >
-> If the first pass reports a zero total, set each nexthop upper bound to
-> -1 and skip the division. This matches the IPv6 fix in commit
-> d2c26c2911dd ("ipv6: avoid divide by zero in rt6_multipath_rebalance")
-> and preserves the lock-free rebalance path.
->
-> Fixes: 0e884c78ee19 ("ipv4: L3 hash-based multipath")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> Sashiko also noted that the above should not be reachable in practice on
+> top of the previous patches. If so, would it make sense to divert this
+> patch to net-next with a slightly different changelog (and no fixes tag)?
 
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Yes, I think Sashiko has a point there.
+I can send this patch as a net-next patch once it reopens.
+
+cheers,
+Victor
