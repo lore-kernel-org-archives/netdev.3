@@ -1,167 +1,129 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D48A359A91
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 07:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCD53B9617;
+	Thu, 27 Aug 2026 08:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787817053; cv=none; b=EycZ3vBAH3DGfZIh0R/HQQ6AGxaI5OO1VqlYgH9xatknMrJ2/SO3T9MYzQL5amBwITD3lUoV712ccRaQ7HLmQY3hZBt6hWUiClOuVMgx+iFsclYc7Mo4Qiwm0+iv1z/Yyzz61iGrW6aOux8ax99JogdQMbLB99pgCBfMPlEq3d4=
+	t=1787817867; cv=none; b=t1lh55Hq/R2xGyf8t75GEVsR7pMz/9XlCtTn5sCdoBrzBVb75bGiTLGq7K7CYoXtVMpnv1223ZG7qmEWP4HeZw+5vJetrTann4Wu1ixd8bjz6U5T/at7ulr1ntSF7oh3ZmPX6pP12xEF/1FuJIbLw9r6ttylGH2AGPk85BBzxAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787817053; c=relaxed/simple;
-	bh=ombfWduYmRzuQM+qSTOW1ygfQL83duLTVFuIzr1u56M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f+rCf3PkewRMHzvj/QvDx6T9cQ4ULYOP78U3RjWkeO8jTRb8iXn0U82GbALl2U1bDkFMyWRhc1mJzEya9VS36uJO/WOuKw0ZcSvtkjR05wov2Iz5eOJyg5l4kKO0ksKycBi/QnOuLxdj3+QACsLUx8O4vSmZHvRoA381CQIWcSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jWQVZIjG; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jWQVZIjG"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8485ab7c382so82067b3a.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 00:50:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787817051; x=1788421851; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QJxok4wgUB8E2b2EBexjp7DU43elN9IiB4VyNdbeBMI=;
-        b=jWQVZIjGm1P24DRfClznD9+7yzaeXVPc0wzpMJbuAd/RNGPmN7gVHVYvo6Zc8OjUfg
-         CKiJ7OW2aKP6+T0mhBxULF00v7cqfLQXZgwcbwkeN5dIto9u7cYw8n+Zj0PSYYkmXhsx
-         l9IdtO+Dr8tCqbzJixZu/rzCfiDKn0cGzedji1xD2swihZIX3u4jL9cLMuDcmGbfCdzU
-         OKU5gtW5b0+Rd2C2y915qsfdX0OGLeOii9uwNrFIfCe/ODxrthMqcjvmdnLplepyw0wL
-         bG6j7t55kP7awbmZLX304OyhBrolPJf6QFHXqqZJcFHVi1TavE+3zO4ORvgNNk6NDBLZ
-         WB2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787817051; x=1788421851;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QJxok4wgUB8E2b2EBexjp7DU43elN9IiB4VyNdbeBMI=;
-        b=Y+g9YdgJLlAJ/kREwJO9i/LAt4CecMF/OSOCTq4cUbvGgzkVHDnBUkttOGr7/I9NiJ
-         yIRdXAsclzlru0wyX8u0xvHXoS1135lHko0ASSS0XmNwR2xG/s/O+uuoQw56EROXxy2S
-         wKTfAV9plkzBFJq/KdKxB+53Qsa3RstpVNGyHzhoSd+J6y6c0+J4M+N6Zq7IG253E0b7
-         8NPu1RI6tn57rkLETZrGDi4IgUHBI89CSIWC/hgB/jf6KW936uZJZjptDPh3RUSu6cIa
-         QZKKnucdNZiuIh4K5lH9iqvyIGicnaITh5jsSXPxUlgsbM82Fcjup6D5ZCmE5utj9gWS
-         k6dg==
-X-Forwarded-Encrypted: i=1; AHgh+RoKzevoPKQ48UWA80HmcD2VfjRXNpgaNA1lDZzABpO61jgr9fNPUL8ic3vAWqwo7+qP+KSpqVA=@vger.kernel.org
-X-Gm-Message-State: AFuF++muZtjMtl8Yk1pbndgYhNwQqq+oa5gBjsl8Kq9MXT4LeltvJWz4
-	jGWqK+Uv+wP/wIXYja7ryhC7cvslsHAJbo5tcOwsdlZpycba+PULSpk3
-X-Gm-Gg: AR+sD12jsuzaArbAXSXYEaJLE4ixCpZihiR5Pqh3TnebIa4DLB6/dehPUrZwKBWhWrN
-	dgCdWKzPgbtVDbAc4gsjt/RLUXVtk4DwYN1yDX1FYjgNPRmXK5XtiwM8tzbVDJhrTUM68uka68I
-	fnnmPTL/jZ7dO6WaXYpkXX8MoAdJVMM58Uk9sIeWHBUhMmuyGjpoZDC+h+zsMjNsaSKnbD2FWvu
-	ua4Geya7lUAHQ/xk6WYs82k1jsbaBEFap2Hx9Fio+hTExbYhoanef9jkH8sW3L1pXZMSCWLQ/kM
-	1wY4WCKBFCzAiQyi5EtXKsJyibRdM2Zlo/Uwgj+Eysxf6xqbHCMdQlPBZJ+T1whs+qjH5jiZPr3
-	Dg5SkCR/cnciL/XR/l3ndf+idSc0zbdYVRJsR5g2I87IMmD4q/v68lV8B8MYK0OOzCGG6blodkr
-	iAA6PJMYStO+NEGSi9B6m9h+yb6R9kId1FJFMfYiKtlJvlW6ympx+4/raN4wuF7lqsCnliRl1ad
-	2hJ817c7FxeAlInWf/XFJfkAr8LWg==
-X-Received: by 2002:a05:6a21:c147:20b0:3d1:56e6:daad with SMTP id adf61e73a8af0-3d156e6db8emr2237492637.0.1787817050967;
-        Thu, 27 Aug 2026 00:50:50 -0700 (PDT)
-Received: from localhost.localdomain ([189.1.242.96])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1bec80fdesm1761524a12.24.2026.08.27.00.50.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 00:50:50 -0700 (PDT)
-From: Yiqi Sun <sunyiqixm@gmail.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yiqi Sun <sunyiqixm@gmail.com>
-Subject: [PATCH net] sctp: avoid livelock while updating retransmit path
-Date: Thu, 27 Aug 2026 15:50:06 +0800
-Message-Id: <20260827075006.3979566-1-sunyiqixm@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1787817867; c=relaxed/simple;
+	bh=SNyRT5rxQCCe6lGK+DFiDOerNMLATPQpc/CAw0TIWBU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=vDpq37WTosnJxhR355OGyDpob1E+d+0+kOJWoBH6coydrT3TxRoU5ezxys2OW2ctlZMjnSdDN08aHo4sRWnhz8wV4Q8aEaBzcc11mJz7Wt1k+ybscBX6bdaqEfwO8vFeOlYJSzYSKaUljjXbvq7wl+KO7/utxwpG7Zv7kww8kb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 13989202200;
+	Thu, 27 Aug 2026 10:04:12 +0200 (CEST)
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1wzV5n-003ZJW-32;
+	Thu, 27 Aug 2026 10:04:12 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: Conor Dooley <conor@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
+ Dooley <conor+dt@kernel.org>,  Andrew Davis <afd@ti.com>,  Andrew Lunn
+ <andrew@lunn.ch>,  Heiner Kallweit <hkallweit1@gmail.com>,  Russell King
+ <linux@armlinux.org.uk>,  netdev@vger.kernel.org,
+  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] dt-bindings: dp83867: add binding for
+ output-impedance
+In-Reply-To: <20260826-salutary-skype-524c69932dc2@spud> (Conor Dooley's
+	message of "Wed, 26 Aug 2026 17:01:26 +0100")
+References: <20260826-v7-2-topic-dp83867-v2-0-a97b4cec6e93@pengutronix.de>
+	<20260826-v7-2-topic-dp83867-v2-2-a97b4cec6e93@pengutronix.de>
+	<20260826-salutary-skype-524c69932dc2@spud>
+User-Agent: mu4e 1.14.3; emacs 30.2
+Date: Thu, 27 Aug 2026 10:04:07 +0200
+Message-ID: <87ik4wgfbc.fsf@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-sctp_assoc_update_retran_path() walks the association transport list from
-the current retransmit path's successor and stops once it reaches the
-current retransmit path again. However, the loop skips transports in
-SCTP_UNCONFIRMED state before checking for the wraparound condition.
+--=-=-=
+Content-Type: text/plain; format=flowed
 
-This makes the loop non-terminating when the association contains only
-UNCONFIRMED transports at that point and asoc->peer.retran_path is also
-UNCONFIRMED. One way to reach that state is through ASCONF wildcard
-DEL-IP processing after an unconfirmed address is selected as the
-primary transport. sctp_assoc_del_nonprimary_peers() then removes the
-other transports one by one; when removing the current retran_path,
-sctp_assoc_rm_peer() calls sctp_assoc_update_retran_path() before
-unlinking it. If the remaining candidate and the current retran_path are
-both UNCONFIRMED, the loop repeatedly continues before it can observe
-that it has completed a full pass.
+On 2026-08-26 at 17:01 +01, Conor Dooley <conor@kernel.org> wrote:
 
-The same reproducer that exercised the bug fixed by commit 9b2854f86f0b
-("sctp: don't free the ASCONF's own transport in DEL-IP processing") can
-still trigger this CPU stall after that fix is applied. With the UAF
-prevented, the ASCONF processing no longer dereferences the freed
-transport, but it can still reach the retransmit-path update described
-above and spin in the all-UNCONFIRMED case.
+> On Wed, Aug 26, 2026 at 02:48:40PM +0200, Steffen Trumtrar wrote:
+> > Currently, the output-impedance can only be set to default, minimum or
+> > maximum or via a nvmem cell.
+> > In cases where there is no backend for a nvmem cell, a value can not be
+> > set.
+> > 
+> > Add a DT binding, 'ti,output-impedance-ohms', for specifying the
+> > output-impedance via a fixed value. The existing boolean values for
+> > minimum and maximum still take precedence over the new value.
+> > 
+> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > ---
+> >  Documentation/devicetree/bindings/net/ti,dp83867.yaml | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > index 7a6fe516bab27..49fafe3ce6f47 100644
+> > --- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > +++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+> > @@ -38,6 +38,16 @@ properties:
+> >      items:
+> >        - const: io_impedance_ctrl
+> >  
+> > +  ti,output-impedance-ohms:
+> > +    description: |
+> > +      MAC Interface Impedance control to set the programmable output impedance.
+> > +      Valid range is 0x00 to 0x1f (32 steps).
+> > +      - 0x1f = 35 ohms (minimum impedance)
+> > +      - 0x00 = 70 ohms (maximum impedance)
+> > +      - Step size varies with process.
+> > +    minimum: 0
+> > +    maximum: 31
+> 
+> Your property is named in ohms, but not implemented in ohms.
 
-Fix this by remembering whether the current transport is the original
-retran_path, still considering it as a candidate when it is not
-UNCONFIRMED, and then breaking after the candidate logic. This preserves
-the existing fallback semantics while making the full-pass termination
-independent of the transport state.
+So without the -ohms?
 
-Also restore the NULL guard around the retran_path assignment. In the
-all-UNCONFIRMED case there is no eligible replacement transport, and
-installing NULL would leave later retransmit-path users and the debug
-print with a NULL path.
+> pw-bot: changes-requested
+> 
+> Can't you just achieve the same result using the existing max property?
 
-Fixes: 4c47af4d5eb2 ("net: sctp: rework multihoming retransmission path selection to rfc4960")
-Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
----
- net/sctp/associola.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+The max property is a boolean which just says "use 70ohms".
 
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index c0512c827d0f..6f19eb0b01e2 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -1272,6 +1272,7 @@ void sctp_assoc_update_retran_path(struct sctp_association *asoc)
- {
- 	struct sctp_transport *trans = asoc->peer.retran_path;
- 	struct sctp_transport *trans_next = NULL;
-+	bool last = false;
- 
- 	/* We're done as we only have the one and only path. */
- 	if (asoc->peer.transport_count == 1)
-@@ -1289,18 +1290,20 @@ void sctp_assoc_update_retran_path(struct sctp_association *asoc)
- 		/* Manually skip the head element. */
- 		if (&trans->transports == &asoc->peer.transport_addr_list)
- 			continue;
--		if (trans->state == SCTP_UNCONFIRMED)
--			continue;
--		trans_next = sctp_trans_elect_best(trans, trans_next);
--		/* Active is good enough for immediate return. */
--		if (trans_next->state == SCTP_ACTIVE)
--			break;
-+		last = trans == asoc->peer.retran_path;
-+		if (trans->state != SCTP_UNCONFIRMED) {
-+			trans_next = sctp_trans_elect_best(trans, trans_next);
-+			/* Active is good enough for immediate return. */
-+			if (trans_next->state == SCTP_ACTIVE)
-+				break;
-+		}
- 		/* We've reached the end, time to update path. */
--		if (trans == asoc->peer.retran_path)
-+		if (last)
- 			break;
- 	}
- 
--	asoc->peer.retran_path = trans_next;
-+	if (trans_next)
-+		asoc->peer.retran_path = trans_next;
- 
- 	pr_debug("%s: association:%p updated new path to addr:%pISpc\n",
- 		 __func__, asoc, &asoc->peer.retran_path->ipaddr.sa);
+> I don't get the use case where you specify a max, but then don't want to
+> use that max. Just set the max to what you actually want?
+
+That's why I added the exclusion in the binding, because having nvmem-cells and/or any of the other output-impedance bindings doesn't make any sense.
+
+Best regards,
+Steffen
+
 -- 
-2.34.1
+Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJAEARYKADgWIQQkoXgOFUjwSVmWFAoavSByCl5WIgUCao/vdxoccy50cnVtdHJh
+ckBwZW5ndXRyb25peC5kZQAKCRAavSByCl5WItC/AQD1VMwEkHhE52B58HmnCX+b
+wCkD46VgGZCu2CgbHn2j2wEA8NSy176kK7DWYdHnOtnWGgxAiFb0WzEbthvpscfI
+/Ak=
+=VG6h
+-----END PGP SIGNATURE-----
+--=-=-=--
