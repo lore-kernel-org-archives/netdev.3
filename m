@@ -1,112 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.79.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF9D353A64;
-	Thu, 27 Aug 2026 02:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36D381AF0
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 02:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.79.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787798789; cv=none; b=OHzG0omPVzNN8t9zJgHBohp0NnshQGi6gJzh1FLwhpMWe2GcbJFeupke8LeLPP3hGY+/zmV33klcvgG6Qm2F1NlrlMfh/dLDQoU9VxIoo9uNHXhpwfluj/3mpzgeLnlgGNeepk+yi+SbLSxRiMOMIcG56VWIWUOkm97NDPOd8X8=
+	t=1787799337; cv=none; b=rywZh7Vc7MR6Eq5brBjVPjy4K2wsA9VXw9++QeFUGO9Z8WtjLlBP29+ptruxFO/WDgLB0qG9ZIywixc3+TNnKDNmemZ7I3zDdpFJtUL+oJZsR/aLtxl5Clc3k16YyBqyXIOqKdKTaqUEdM/C4czqVKXxkSCD5dhgNNucHROOL5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787798789; c=relaxed/simple;
-	bh=0dXjWTo19D2E3ml75KHH0Al/zvpUFf+k4OwGb0ydw4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nuAlLiq05LaOPqG3L2HS091SbbnWDAmjKGbmsEU6+WvV6aZLm5jkC/GDE8r+MkwRU0s+gNjfszzDp6OWl9/UNHNqsqaplLoVU+iJuqPOdx7QYVcEV+YXk3mhrUZL0hdcHFteq73WT2X1g55Kp/5z9hlH5fqeGQA9lkGrtzamemU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=amLerCpJ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787799337; c=relaxed/simple;
+	bh=CqJYyk93cRk5aUtMm56ZAmFrER7CnGCNWNBB4HXjfz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MSQtmEFDgmswjeMEiqyGhBdvGphLE7QoqHIfClfTqKehurLdY5h0iT+3jL+ncE/rXBvx/VzczdJCIxVabQQAxhyprDHZFO/FBd6h9m4pr6pItBUEMttoZWvjO91QglhesdYJvdKVCezEkOGdgAaq8kvjH7eiAxKuSRxcYMkgVkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=cP50c20M; arc=none smtp.client-ip=114.132.79.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="amLerCpJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=04LV//Qqu8AJccIRCStGRzmejSwdi5G60bO+SIOXoKQ=; b=amLerCpJ/Smpy9mCR2c6EZPLHv
-	8uYNlnRnUKBmnI/Ik/B6ExblrZ0E0hP0t5flRLXUxlTF+bCL+0zEb7IaU7FHed2bHZoyz+yMLx5pW
-	CubhHcNuReLflxAQkihRVcoCssPUMZXohqnEYx3yVGuyPYmb/jXd+dpuk9HAujgNRRX0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wzQ7t-001arp-R8; Thu, 27 Aug 2026 04:46:01 +0200
-Date: Thu, 27 Aug 2026 04:46:01 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jia Wang <wangjia@ultrarisc.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>,
-	devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-	dmaengine@vger.kernel.org
-Subject: Re: [PATCH 11/12] riscv: dts: ultrarisc: Add Shenzhen Rongda M0
- board device tree
-Message-ID: <db174bcd-3b21-464f-ab56-439d65e2a064@lunn.ch>
-References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-11-61ab7aebe9e5@ultrarisc.com>
- <d93868e7-00c7-4251-9b23-8b3ed0535185@lunn.ch>
- <178779718359.1423015.16616466921659081322.b4-reply@b4>
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="cP50c20M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1787799285;
+	bh=zVE2SzTabNG8jcZz0PwA/kz3j8ilu3QHZ2JTIs77byU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=cP50c20MotK2IRTAFxvMSOl+Uc8SHTpOQRHruwxSCyMc/F5lFbyDdGkMwgvpAjtfy
+	 3plJl2xvhCooCa9BkkRWQa+fx3m/bi2KdFTyMCeJWofxgdx0PTxWO4skukHSsJi+Oq
+	 3EBCpm3iAqY4VJ4T/gc9mkopnRmt7pC3SplLghDs=
+X-QQ-mid: esmtpsz17t1787799270td1fb8d54
+X-QQ-Originating-IP: RlPSDMQ0IW+5J7jKbMsuzznADAl+ByN6fHqr9Ry+Dps=
+Received: from PEN002676 ( [1.202.39.170])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 27 Aug 2026 10:54:19 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9149043113890004404
+EX-QQ-RecipientCnt: 16
+From: ZhaoJinming <zhaojinming@uniontech.com>
+To: netdev@vger.kernel.org,
+	maxime.chevallier@bootlin.com
+Cc: andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	boon.leong.ong@intel.com,
+	weifeng.voon@intel.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	ZhaoJinming <zhaojinming@uniontech.com>,
+	joabreu@synopsys.com,
+	f.fainelli@gmail.com
+Subject: [PATCH] net: stmmac: stop DMA before freeing descriptors on open
+Date: Thu, 27 Aug 2026 10:54:15 +0800
+Message-ID: <32EB352EB66D74E7+20260827025415.2684733-1-zhaojinming@uniontech.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178779718359.1423015.16616466921659081322.b4-reply@b4>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NZ7AOwlfFyuSKHOsjpI4cG5tTQH3WKvmY1HT+hHT6M6honuBAGe3Ulo2
+	iFI58335+I3u/0azEMdhAYwxSfAHmMlKqmNwBu+ZJSivA743SaqC1ZBDRxu5Ba1JJ4VuWpG
+	zBYdFMWg7XTc/Kn4dxEIzKo8b/zJlzp9jWesMbnvftzNzpkmMQkh/TdbooRLVoWfM+gV5XI
+	n5YqKAoXDW/9EnbCT02PY6JbVPEkhzHvxHHFYENwGAqaCvhHxigA1rSnImgLPCMwghEIUCD
+	c5TjqwSSC5F6cXGlP9EKVn7ZBte2w/Sj6nlN56aRQISTVeVdVT0rmxkE0tkkoAQzZ+szziI
+	VQjZUuz5DkE7Ms4lhYWNwdHNxgO6Re/YjiVsjTYT06Wru1tL0oMPURCiPDpovvCT8nUJHuX
+	t9a69UMJWMn194/ziKUoHGIgC76kv0PZwl/QOAIiCVtYOtYlfiKZ1U11oxs1mc7sQkDTcxE
+	n3Nd1jW37II16/zXj1FyhGDknFcTyyFKB9gW51Vek4mUAVKFYWuy00juV8cf4UOFvXXzBbK
+	Rl5w9ubm9ImciX7292NoVMFq8v2efbezWMSKZ5rZBnUEMCe3KYKTxMxJAQRzQPscuXw7kh6
+	ZOd9l1yaKVK7ySbbQhMbwOCDT8tV//leM/t8MuCNBWGJAubT73rQSs4PILTgVF62xNYSYGK
+	ifG8PFdKVuG/ljcZFa/hITRYZ3HlfHTkz1oKqITWrKx9eB4YRtl330/9frBKAiSmFGsKAW7
+	GXGQTBjRHw6ee8Xoh6mGAnCvdMEVTyBBXnO5OIyJUhjvcESpeXk3nbjzjEX+Qd9QohAG8Qb
+	ZeiWtKiKj9CVnBTrXSo2mB8JBJskZGzIql1XOdBvl10iq87IaAmaDd8Zos4HWlAA2c/+cRs
+	8tvBtMs5vQ7fIYqOM3c3RIYyO4KFr4PRsLAYLpNwrxsisMyFhdttIwDnsQMLTPUe6BIIAZb
+	Rmd7FWzD4V9kW2tzdN7xDqOXxLaJ7tyb7JPcrw94z9oyj69swPAQ/G0lg6c5fazMFeuI/G5
+	erfDh2IOf63mmzPJ2oWiLClZNYfQ0=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 
-On Thu, Aug 27, 2026 at 10:19:43AM +0800, Jia Wang wrote:
-> On 2026-08-24 15:02 +0200, Andrew Lunn wrote:
-> > > +&ethernet {
-> > > +	phy-handle = <&phy0>;
-> > > +	/*
-> > > +	 * YT8531 RGMII timing on this board requires no PHY internal delays.
-> > 
-> > Please extend this sentence with an explanation why it needs no delay?
-> > 
-> > There are times this is correct, but it is also mostly wrong. Without
-> > an explanation, i cannot say if this is correct or not.
-> > 
-> 
-> Thanks for the review.
-> 
-> The DP1000 SoC integration provides the required TX and RX RGMII clock
-> skew, so enabling the YT8531 internal delays would apply the delay twice.
+In __stmmac_open() and stmmac_xdp_open(), the DMA engine is started
+before stmmac_request_irq() is called.  If the IRQ request fails, the
+clean-up paths free the DMA descriptor rings via dma_free_coherent()
+without stopping the DMA engine first.
 
-Please take a read of
+With the DMA engine still running, hardware may continue to access the
+descriptor ring memory after it has been freed.  Add stmmac_stop_all_dma()
+to both error paths, matching the teardown order in __stmmac_release().
 
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+Fixes: 8532f613bc78b ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-You need to make the MAC driver do the correct thing:
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b2b7d0242dd3..f76d762c314c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4176,6 +4176,8 @@ static int __stmmac_open(struct net_device *dev,
+ irq_error:
+ 	phylink_stop(priv->phylink);
+ 
++	stmmac_stop_all_dma(priv);
++
+ 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+ 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+ 
+@@ -7203,6 +7205,8 @@ int stmmac_xdp_open(struct net_device *dev)
+ 	return 0;
+ 
+ irq_error:
++	stmmac_stop_all_dma(priv);
++
+ 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+ 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+ 
+-- 
+2.51.0
 
-# There are a small number of cases where the MAC has hard coded
-# delays which cannot be disabled. The 'phy-mode' only describes the
-# PCB.  The inability to disable the delays in the MAC does not change
-# the meaning of 'phy-mode'. It does however mean that a 'phy-mode' of
-# 'rgmii' is now invalid, it cannot be supported, since both the PCB
-# and the MAC and PHY adding delays cannot result in a functional
-# link. Thus the MAC should report a fatal error for any modes which
-# cannot be supported. When the MAC implements the delay, it must
-# ensure that the PHY does not also implement the same delay. So it
-# must modify the phy-mode it passes to the PHY, removing the delay it
-# has added. Failure to remove the delay will result in a
-# non-functioning link.
-
-    Andrew
