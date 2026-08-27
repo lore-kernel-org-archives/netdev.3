@@ -1,128 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898903AB27F
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from ultrarisc.com (unknown [218.76.62.146])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A133DB64B;
+	Thu, 27 Aug 2026 08:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787818575; cv=none; b=mH+PNBya3KYPfCsMbSrq4vSseQJEBwo85Fo16W0nxWQwXGEdGaIPCWnHIDWVnWn9Hd/odwSYKsEdS1LcNlZtuGm5Asc0wosIW04CFhDaODOo06acvo4E7iUZ3AxY7K/B0t9LCLSIDO4qjqi6poWCD+6SE5puOf02D/k95NXNCFY=
+	t=1787818683; cv=none; b=mU7HbzohjpyAgNfK+kwTWx3ai8SWmBosnAMXd/tfrt75K0aycHDf0eRLxDqhBlF28uUt6EVUpRS5IRXGtVD9bCeL9WJ8uAWiKyJPDp8U/rsKEHuyeDMRb4CWTwTMaqPLGPnP8xQZfxsI9lHpQ6itZIKWc3ZU3Oan2eIlxTOgCzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787818575; c=relaxed/simple;
-	bh=5Wil38iMvpsIZK11IUVvoJ5BScZQ47Tf0YA6/5qz4K4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A563Hn53bztJawpSBK6aCrHa0zEw+KAN7rJTGRdCwNAZH/0gp54ll1Feuy0FCi1WFjUQA+8N4D4YeH+dHxIbM5yP9X6z9P8SrZttMC5KksMsi3MoMoBquZjzuJtLqI9Jr0zis8psdQWQKaNwu8RieMREgkRQ0OnGNaaiVfuhaB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DxBnwFzG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gy1hf5lz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787818683; c=relaxed/simple;
+	bh=5BaBaUpgbE7yZAPVZNeV57kX7ae+OLSMniMswhoEkkw=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=NUjJqaotUxOj+UOsX0Ohl9yiG4WIqFp06ZVpspInUM5KueqMsX0dK/gjdoxeKmTEARR78C5lTiaof0UdO7fREn4Snr/HdzLnBdsQbNrMrcAbP1RVONJzVu4LH7waCN1dLkGyURPkGlwkZ5nIL50JqOl7S7q9FwwbY/sYpE6vTpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=qFsXo8DW; arc=none smtp.client-ip=218.76.62.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DxBnwFzG";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gy1hf5lz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787818571;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tp54ta4RHV2vRPlzgplP43voGXKdaE4x6ZtC8ibQyt4=;
-	b=DxBnwFzGVp/vizxprD5TydllWa9y7vAcdsItKN8R65ZaJNERe65E0bev8csX1nYLQumt7M
-	SHPzpobUG7DdOc09f6bJ5KjoQMyyoOKadPnzV2//03uDoDgpJ3PZL+/8rHOaRjO0CzI2NL
-	tgL01GOH9A3AZaRU7kbZtcoGsU3pKvU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-Md4MMa_JPgSGaMnZ3pac-w-1; Thu, 27 Aug 2026 04:16:09 -0400
-X-MC-Unique: Md4MMa_JPgSGaMnZ3pac-w-1
-X-Mimecast-MFC-AGG-ID: Md4MMa_JPgSGaMnZ3pac-w_1787818569
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49808ea1b64so5354795e9.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:16:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="qFsXo8DW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787818569; x=1788423369; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tp54ta4RHV2vRPlzgplP43voGXKdaE4x6ZtC8ibQyt4=;
-        b=gy1hf5lz6TjgyEgkigHt8QU11Ko1pwJzzKqS0LHUcYtrtfaNbX4Iuau/7KZ6Ekao90
-         loyNCFswJYRqHCWjGjpWRW6fmMZCEquhxTYGv12uZIHF/NLn2maFM8T817wNKNjJgsmm
-         bqXp8enU/59ma7Yj3KASvX3ehVbCKJ1UC9bfHdP627mhUxBCxq0Kh9GfRo7eJCKVDjQg
-         Hir/5qJg3mvj+CSlmGyOZUh6lyaE2vlbd+9H7oE26kU9agybdryOISosapkoUNTBsT2F
-         RlSfgYsj/c88Abtc+O/H7nUhzfSGPYZj9GcIoGdY98XMLr4MxE5lXbMbHuy19hGxUxmP
-         7lwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787818569; x=1788423369;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tp54ta4RHV2vRPlzgplP43voGXKdaE4x6ZtC8ibQyt4=;
-        b=kEUKZqqTj4+eIKWovJL6L6MLSNXVRdGdSswPOin0uR+EhgdthFBRc8NB6jO9wp5ZYO
-         jVSPPGdzIWsbt0FPY5a3kgmq6eoKG6CJtPrIzaMmlW8xlPhgyrmfTeoodcKZcntuB5ak
-         pmbUudAdHf8C1gr7mtu1SozkzkohQTtNiygAjIY2OLznBYe+31ZXVTkvbbvPuo5OFkic
-         amdw4cLqqQ5ajSNWbCu3iJPIY2mx3qPcLQeEViZqmEEIxZUgh6OmGtJ7VNk28VZTXs8i
-         c/VFqVXEyOkNRGOfwdhjBqfYGRKa0av8NLiUwDLOw7f0t9l1mIHRhg9vzMKEnrOEhU+i
-         k4tQ==
-X-Gm-Message-State: AFuF++lWsBTTJ68kYAtLaQc0R5MbzXDvOJhd3XA2tmCl2YqQXHQjeS+1
-	lYqSVTLk4BrYh3FuECMY7H0NHO+swz6l/EoRIW2YahRcriEMM5jm+fAnGxORxJ0kznSnVj88rIN
-	TQdZl8Jajgvu+1KceQaHRIaOineFDFBfuir6VwNlnYSDlKrHQixxVJwA6Hg==
-X-Gm-Gg: AR+sD13xdnvdQSouDbars0NMFfiWvDfxGTK4Ad74FnA/zwH27OmjIqGt4q8Rzn3iQdi
-	HxVOEx8PObJ+zGmBX4qXWovlLm6zRj8R/h0e+3A/yONhZUZTgvkMi7Cq6zOIHBPIfTdGeTW1D+B
-	IxwVTLUPLsYwUdh9MDeUCZFR/V9ppmoeWFpQ+h3+1+zgbnrx26x0sWlbLswQiD/4yF0Ja1F5s86
-	s8POeTRqObuL1Rz1gmDdt9suMOby2gpb1+Tr/2+euQMbmnABp++ASZFaG6Zj+maV+Opa9v1ZQM6
-	Um9XkxFkQHaTYtvFFvaBLI+UkDUHWociRpfGtfhQe8uJbdfMc+eSuizmcDF2M3BFHq9k5BVszH3
-	eUtknyrqFkPBogr00gayNWaEKh6kWKiaSW1SFBVhMiNsKB+jNBBH/nMeLgr7HiOLCxnAoC1Q=
-X-Received: by 2002:a05:600c:46d0:b0:495:5d6d:9cc1 with SMTP id 5b1f17b1804b1-49b0dd5821cmr54084695e9.0.1787818568699;
-        Thu, 27 Aug 2026 01:16:08 -0700 (PDT)
-X-Received: by 2002:a05:600c:46d0:b0:495:5d6d:9cc1 with SMTP id 5b1f17b1804b1-49b0dd5821cmr54083825e9.0.1787818568254;
-        Thu, 27 Aug 2026 01:16:08 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4af00fd2sm29601255e9.12.2026.08.27.01.16.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 01:16:07 -0700 (PDT)
-Message-ID: <9397cfcc-03ee-4269-a9f9-97df1f454ebd@redhat.com>
-Date: Thu, 27 Aug 2026 10:16:06 +0200
+	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	References:Date:Message-Id; bh=qJn7wJbUMWgChHPDDyLMAt32tsdxeqxOd
+	//ZEjwgzPE=; b=qFsXo8DW3ymaL/dtk0EINHI7KkhHPMs9yCPEQqLlrzcMnVVGe
+	c8QTLOmFyHsjEE1LI8F98ftxeTEGWBoA7YoeRYGyXCkXRT1qx/Gk3PwzAXH6MBoq
+	9Ex+LFy66KozxrJg3/r6cCwkZioTmcAoriIgH85uCPgxKCzC2rWy6/M9HU=
+Received: from [127.0.0.1] (unknown [192.168.100.1])
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwB3V86Z8o9qyloBAA--.426S2;
+	Thu, 27 Aug 2026 16:17:29 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: pktgen: return bool from
- __pktgen_NN_threads()
-To: Chengfeng Ye <nicoyip.dev@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260824152331.216494-1-nicoyip.dev@gmail.com>
- <20260825185313.239861-1-nicoyip.dev@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260825185313.239861-1-nicoyip.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 08/12] dt-bindings: net: snps,dwmac: Add compatible for
+ UltraRISC DP1000 SoC
+From: Jia Wang <wangjia@ultrarisc.com>
+To: Jia Wang <wangjia@ultrarisc.com>
+Cc: Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
+ Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ netdev@vger.kernel.org, dmaengine@vger.kernel.org
+In-Reply-To: <178765275795.744215.4911904858473260204.b4-reply@b4>
+References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
+ <20260824-ultrarisc-dts-v1-8-61ab7aebe9e5@ultrarisc.com>
+ <20260824-bride-food-052b313e4b76@spud>
+ <20260824-blimp-spirited-01365897db24@spud>
+ <178765275795.744215.4911904858473260204.b4-reply@b4>
+Date: Thu, 27 Aug 2026 16:17:16 +0800
+Message-Id: <178781863615.2006105.6267469136684218126.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787818636; l=2733;
+ i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
+ bh=5BaBaUpgbE7yZAPVZNeV57kX7ae+OLSMniMswhoEkkw=;
+ b=yY3yRewGFr8detGpKXWyntfFHN5tgfDhLwzMiCHKFuFC9QP8BaO4Ra35Xa9Z5GUaqytZylF/o
+ TBafhCLJFs0CdSTIHPO0SFPDgpPeTVPXfGX+6IafSoBj78xUPCINNMC
+X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
+ pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
+X-CM-TRANSID:AQAAfwB3V86Z8o9qyloBAA--.426S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxWF4DWrykZF13Zr4fWr4rXwb_yoW5Jw13pF
+	yrAFWjkF47Jr13Jw1kt3WxGF1jvr4SkrW8Xr4rtr1UKF90gFnYqrsrKw15W3Z5Zr4rGFy2
+	vrWUuw13J3WjvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBEb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWrXVW3AwCY02Avz4vE-s
+	yl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWU
+	JVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x
+	0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8
+	JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIx
+	AIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pKiifUUUUUU
+	=
+X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQAMEWqPrHsAIQAAsP
 
-On 8/25/26 8:53 PM, Chengfeng Ye wrote:
-> Callers of __pktgen_NN_threads() only check whether a pktgen_dev was
-> found. After the RCU lookup they never dereference the returned
-> pointer, so returning it past rcu_read_unlock() is confusing.
+On 2026-08-25 18:12 +0800, Jia Wang wrote:
+> On 2026-08-24 18:13 +0100, Conor Dooley wrote:
+> > On Mon, Aug 24, 2026 at 06:09:48PM +0100, Conor Dooley wrote:
+> > > On Mon, Aug 24, 2026 at 01:54:21PM +0800, Jia Wang via B4 Relay wrote:
+> > > > From: Jia Wang <wangjia@ultrarisc.com>
+> > > > 
+> > > > Add the SoC-specific compatible string for the UltraRISC DP1000 GMAC
+> > > > controller to the DesignWare MAC binding.
+> > > > 
+> > > > Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+> > > 
+> > > The dts may not be right, but I am also a bit concerned here.
+> > > 
+> > > This binding permits 100s of combinations of properties, of which only
+> > > a very limited set can be correct for your device. Just adding the
+> > > compatible permits all of this variation.
+> > > 
+> > > Please add some restrictions.
+> > 
+> > In fact, it's particularly bad here because you don't even restrict
+> > which fallback compatibles are used, so there's no guidance on what
+> > version of the IP is even in use!
+> > 
 > 
-> Return bool instead and keep the pktgen_dev pointer local to the
-> RCU critical section.
+> I have rechecked the DTS against the hardware. The controller uses a
+> DesignWare GMAC IP from the 5.20 series, with "snps,dwmac-5.20" as its
+> version-specific fallback.
 > 
-> Suggested-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-## Form letter - net-next-closed
+> In the next version, I will restrict the fallback compatibles and add
+> DP1000-specific constraints for its hardware resources.
+> 
 
-net-next pull request for v7.3 has already been merged, and therefore
-the net-next tree is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
+Following the discussion in patch 11, I will drop this patch from v2. I
+will first submit the dedicated DP1000 GMAC binding and DWMAC glue driver
+as a separate series, and then send v2 of this DTS series with that
+dependency recorded.
 
-Please repost when net-next reopens after Aug 31st.
+> > > 
+> > > pw-bot: changes-requested
+> > > 
+> > > Thanks,
+> > > Conor.
+> > >
+> 
+> Best regards,
+> Jia Wang
+>  
 
-RFC patches sent for review only are obviously welcome at any time.
+Best regards,
+Jia Wang
 
-See:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
--- 
-pw-bot: defer
-pv-bot: closed
+> > > > ---
+> > > >  Documentation/devicetree/bindings/net/snps,dwmac.yaml | 1 +
+> > > >  1 file changed, 1 insertion(+)
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> > > > index 2449311c6d28..2ed4564ae99d 100644
+> > > > --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> > > > +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> > > > @@ -119,6 +119,7 @@ properties:
+> > > >          - starfive,jh7110-dwmac
+> > > >          - tesla,fsd-ethqos
+> > > >          - thead,th1520-gmac
+> > > > +        - ultrarisc,dp1000-gmac
+> > > >  
+> > > >    reg:
+> > > >      minItems: 1
+> > > > 
+> > > > -- 
+> > > > 2.34.1
+> > > > 
+> > > > 
+> > > > 
+> > > > _______________________________________________
+> > > > linux-riscv mailing list
+> > > > linux-riscv@lists.infradead.org
+> > > > http://lists.infradead.org/mailman/listinfo/linux-riscv
+> > 
+> > 
+> 
+> 
+> 
+
 
