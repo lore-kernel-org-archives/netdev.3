@@ -1,121 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEA73115A2;
-	Thu, 27 Aug 2026 13:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A7B448BA4
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 13:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787836933; cv=none; b=RzLXmGkW0+u40sigdOFo/58RXSmwEt3Re/hBo3XWEBS3v2aKmIGbLkpFm+xYvACV5yILRY9PTQUNpamKDjYhoezRyb++xrpTq5j4eQloVH1V+IAE0L5Njqk9OYB4ZBlhxY+oy8rxPYNiTa4oDWhEgFZtmVqUiIbfHN50gDKyNUs=
+	t=1787837030; cv=none; b=uYpBScbAX3F7WMAtifrnc7GBcuf0ifJxJ28O/u7Twm4Hwt7SEbFvD5Clh7SaE1A7BH3fZKLUQvN5AGnYYWYFrcpJBJypwEw5UllF9RQwRpDP6RauPI+YXpKb2VNC4LXcGpMLEip5QpwCan7GjsoXhEomlOjyea+n3agpKUCX7C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787836933; c=relaxed/simple;
-	bh=Ahfvl98Kni8h2pddJBVCx/9exawY9HcW1u6INwcL3TM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u2raxI1oJkefIhUbLqC7HzM8ca8FIAIDt4vzFUYO33+6PFHxIno/2gWQ5kjJtSBHmoVqi17vS0S42xIOZFxpV7QWBOX+kzibadxbICQFrn/F/au3xU0mvOtEpzbwLDm+bBI455NaeBkMDk4XUR3ecgIgy7NC0roLhwv4iCLZLyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aleW7UDg; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aleW7UDg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787836917; x=1819372917;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Ahfvl98Kni8h2pddJBVCx/9exawY9HcW1u6INwcL3TM=;
-  b=aleW7UDgQUydfRJ/WW1TereOqRuDQR4vo4sH46AHux/4juwO0qlMQj//
-   3+oaJ/xR/iOLuX8PWKPG0rkaF0sexAyYRFeL6EMKWmWMwBNtynmQ4vt53
-   fW5OvXdCccUEsJz+mbGNx9eyuHnvLsbLNhTCD9NJFo3ZnPa7V5K1GEKeh
-   C/7omfND5eRzsZl7W4We3ufkOA0fnapj6Fo9Utf9lOIvFX0mmcXHlrH48
-   Xb84yJPsYDx+lxxBC2VOvnjF9PcsvBAxhUGTSGqLc42bEvxcqwIbLGmWb
-   p2kcFOOg1UPCWvkH6bkVgJyyJhbca7WtESMbhnQ74a6A16cC00pg6VeNB
-   Q==;
-X-CSE-ConnectionGUID: 0orarIURTPG01TsyYYPVhQ==
-X-CSE-MsgGUID: US9RhKnEQZioLvaZmTmL/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="88458775"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="88458775"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 06:21:50 -0700
-X-CSE-ConnectionGUID: QWVjZ9mpSWeDneGYAg3UWQ==
-X-CSE-MsgGUID: r6+9rxErQO2TIRo0KT3Rtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="264628482"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa007.fm.intel.com with ESMTP; 27 Aug 2026 06:21:48 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kuniyu@google.com,
-	magnus.karlsson@intel.com,
-	sdf@fomichev.me,
-	bpf@vger.kernel.org,
-	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH net] ipvlan: unregister upper devices outside pnodes_lock
-Date: Thu, 27 Aug 2026 15:21:33 +0200
-Message-Id: <20260827132133.439890-1-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
+	s=arc-20240116; t=1787837030; c=relaxed/simple;
+	bh=lFuP0YWh1r+w7r6g8Vw7y9JWTkVPZDJAy867PC78g6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T34ShdqeuKSxBaBX2kMmn77PhaRHhRawk4hJDRGnmmlTrz6oxW7xmS0O5vsGVw5GqL5bPPCwCZLb6QcgXTd4luoznEFXAzDadyZz21Pk1MpQyh5JBakxXf/LfpLPlCS8x3OD51hM9RltYjbE/OFDV8dQkko8KZpLomDBf5+5Myg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id D8955602F5; Thu, 27 Aug 2026 15:23:35 +0200 (CEST)
+Date: Thu, 27 Aug 2026 15:23:33 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC net-next] net: Use fixed slots for skb extensions
+Message-ID: <apA6Vaei3-GEXEWz@strlen.de>
+References: <20260825-rfc-skb-ext-fixed-offsets-v1-1-8050ff33bec9@cloudflare.com>
+ <ao9UV9S7rUkyQ8jv@strlen.de>
+ <73331a07-46a3-4349-98b1-b388bcd783d0@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73331a07-46a3-4349-98b1-b388bcd783d0@redhat.com>
 
-syzbot reported the following circular locking dependency:
+Paolo Abeni <pabeni@redhat.com> wrote:
+> > Yes, initially this was krealloc()'d area.  But the other assumption
+> > was that most skbs will carry no extension at all, or, in some configs
+> > one maybe two (IPsec gateway for instance).
+> > 
+> > Thats why the first added extension is also at the beginning of the
+> > memory blob (that needs to be accessed anyway), regardless of the ID.
+> > 
+> > I don't insist on keeping offsets[], if you feel like microbenchmarking
+> > different use-cases to see if it makes a difference to have a fixed
+> > memory layout feel free to explore that.
+> 
+> Both options for different skb ext layouts save a few bytes from the
+> final `struct skb_ext` size. This is IMHO quite relevant as the total
+> size is approaching the memory partition size (IIRC it's almost 256
+> bytes), and the bpf ext could make skb_ext require the next one (512).
 
-  xs->mutex -> netdev lock -> pnodes_lock -> net->xdp.lock -> xs->mutex
+We're close to the 8-extensions limit (u8 id), the total blob size can
+be 2k, as offset is in '>> 8' units.
 
-The pnodes_lock -> net->xdp.lock edge is recorded when
-ipvlan_device_event(NETDEV_UNREGISTER) calls unregister_netdevice_many()
-while holding pnodes_lock.  A nested NETDEV_UNREGISTER notification for
-an IPvlan device enters xsk_notifier(), which acquires net->xdp.lock.
+> Still WRT optimizing skb_ext size, I think that it should be feasible to
+> optimize the layout proposed by Florian by taking in account that some
+> exts are 'mutually exclusive' i.e. on top of my head mptcp and bridge
+> should never be attached to the same skb, and I *guess* can_skb_ext is
+> mutually exclusive with most of the others.
 
-Keep pnodes_lock only while marking the upper devices as dying, removing
-them from port->ipvlans, and queueing them for unregistration.  Once the
-devices have been detached from the protected list, release pnodes_lock
-before unregister_netdevice_many() invokes notifier callbacks.
+Yes, there are extensions that are expected to be mutually exclusive,
 
-The port remains alive across unregistration because
-ipvlan_device_event() holds the reference acquired by ipvlan_port_get().
-The dying flag prevents a concurrent ->dellink() callback from deleting a
-queued device again.
+> The layout could be adapted to such constraints, and there could be
+> run-time checks (under DEBUG_NET) to verify such constrains at skb_add
+> time leveraging `present_extensions` and a static matrix describing the
+> mutual exclusive status for all extensions.
 
-Fixes: 35add1093e2f ("ipvlan: Protect ipvl_port.ipvlans with mutex.")
-Reported-by: syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aa48b5fe7bfda62d1682
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
----
- drivers/net/ipvlan/ipvlan_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Yes, simple union this, union that, is too fragile, skb_ext_add will
+have to check and reject as you say.
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index ee46a55f73d1..2730581e0a56 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -846,7 +846,6 @@ static int ipvlan_device_event(struct notifier_block *unused,
- 				__ipvlan_link_delete(net, ipvlan->dev, &lst_kill);
- 		}
- 
--		unregister_netdevice_many(&lst_kill);
- 		break;
- 	}
- 	case NETDEV_FEAT_CHANGE:
-@@ -895,6 +894,10 @@ static int ipvlan_device_event(struct notifier_block *unused,
- 
- 	mutex_unlock(&port->pnodes_lock);
- 
-+	/* Avoid invoking nested netdevice notifiers under pnodes_lock. */
-+	if (!list_empty(&lst_kill))
-+		unregister_netdevice_many(&lst_kill);
-+
- 	ipvlan_port_put(port);
- 
- 	return ret;
--- 
-2.43.0
-
+OTOH, I think this is orthogonal to what Jakub S. needs for the BPF
+extension.
