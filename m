@@ -1,75 +1,71 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F5A3164A9
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 05:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C031E332601;
+	Thu, 27 Aug 2026 06:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787810378; cv=none; b=OxY4JXf8veMMHLghvLXRAq75bdVTaYFOgNerBoF4aaV/nOUks+qkdnBH37DVktl+9Fn8CCC2FwfGKHV4UUF+0FP38RO814/QW1WA+kgeNxokwY8818p0zWMaQZC8J+3zfsOQEEQhoOzZBpTZoKofdeBz5pvl/cPzfvrJsjYyWAg=
+	t=1787812463; cv=none; b=qTf2rISQqFHoRr1dRt7LreD7kqMrTbDrpj+45Mf8eFYEF1RuyamjzVo/JQhjoC9Mh/WB0K/r5FrXOGFeKw6HpIVFhOjtGYOU2sjl5KisQjhBSjy4sr6eHGbGy8Amv0fi6BVRsI6FziR17lVkmUV8fT8CfKF7XpjBj/I4T0sVw1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787810378; c=relaxed/simple;
-	bh=6xGaRyHabjqQHSPfBdLVdAauPJVqvcRRuz9CkwkMyeE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lQY2uR7g6ebHLWs5xm7fDyKcHV4DrdFMPrJdwixKHmzIbdCMJCiuCD8w+wl8dMqV743EOY9Kju2pJLOLqspz1vWOPeVJA/knMUlWK+yLsk0qf8WLDyFrmDDYh3a+j6QwXUUlMwoVLGS8axskZfs2UXNCAVs1FD+DPCUy71qYHmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xs0FqDlj; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787812463; c=relaxed/simple;
+	bh=xJc+PFbYXZlDDxBThfzDJhi4RR2IJmSUnfUaEbcKXzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mr0evGwzG6kLNOTzZ2k5hecd7uMzsFW5uiu+OISTOIFMimHEFnSnq2Wy/GWm/X8WG6HZ+hUOsx7yLXMrIq06er8Dw32wB4EkNtgy1u+0G7XJspXX2QEm0cRF74AHzDXoMVx9lW/SHVHu1mU5fiefCFPjqQtIFnlOadlRIvhX96Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qiMKPu92; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xs0FqDlj"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d6f9e2f681so19274905ad.3
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 22:59:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787810376; x=1788415176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O+Chh90ybpjMvhqrL9ZavLsHC4dx+fqvxodSXo5kx7g=;
-        b=Xs0FqDljlZn6x2APeKbbN8j5+UH+bW7gCj4xE83ZZvJJNxFhu7A4Ncc1cNleiuAigo
-         ZedauA0g9W8IRsdrDZ19PCtRhtu4MWDsSIKcOMO+so7BsQEnJ2vTanX8+wzs9cirJWJW
-         IVhddrbpRIzYA8N4FZ7AJff8pt1OAPzea6Rx4L6pN7JVFOlpU9oDdXQXUKWDMd2nMO9U
-         qj8UObvAoPdP9goHhsQU+tb2IQq0WOnlUft04TQaePTDKsgXB/IfKpuV1ZiEb6eNEVSb
-         ptUZ9aAqy9QVcxBcD9ZqGCNGThjyEHFn5i81kBYGr1cNR1smJynm1p8Gj1bYz19ouZJe
-         YAZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787810376; x=1788415176;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O+Chh90ybpjMvhqrL9ZavLsHC4dx+fqvxodSXo5kx7g=;
-        b=QfoeSLj8riRQp8eqlyZ2NU5ib8pwq9DyNPxxXPfYI6pKveNYFkc/cgblpTz+OZdkqG
-         e+52KWbdyYrMRz8+CXVk6/VTUdrFjzKQ2u8JUJpRlM7tKMLhPmapmY24fYgYPQaJ6UV+
-         J+nugLmK2H4S+iulrckTm0P+a4FIPDJ6amPz1cgiCaee5SOhpbfLWou3qeYdl71hsdo8
-         Z8um6PMaGD48suyNzqAYhIOnY7IeV85K9XdgYYfWV2guAqlz5MM6WzJodLGcHoxnYFcH
-         +4HkVcD1DsnR0KHotWabMR5itKja2LGarCnMiK+uIuFZYsUTyv4q3xfIEZeD4zX2NvD6
-         2fIQ==
-X-Forwarded-Encrypted: i=1; AHgh+RotFLdmAYX9x8mT20NvcId7r2Zu/oJK6QNQFuxm3nKi7J7wh8zZEZhU2dBH7abGPwO7OYHCm/Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++nxyTjwfSuC4VkuMnbPlCT6QqeIppQuj6e4oaCXTMsaT4Up8fAY
-	IyLNq7gAoSIbmxTIH7UjOOACBxs25YY9NgSf6c2pfSfrvDEvE8NxsOGe
-X-Gm-Gg: AR+sD135jAqGm77dSkRf3n+HXih286H4T3djOEmD92VynDse9MaNHKz6w44RBDE/rgF
-	qCZkTW9EVMg7I2lv5A6NN3pi4e1Ak6mkS+S9b82timxwGIJwvFPBEeG7usOOAMur4Tvbtcu53hz
-	/P+UVwh93cp/0WdIgu5kIf1NPPiC+ZHwV0rBiU08iHvpBQKCmHRxqlB2QRHoWswfH3mPMR9d/rx
-	lFTqEjMxf5WHQ4PCgkbfH8dfrhj7obUQpfWBEnEIBC3u9eHHGZPjhe8FuOCUcuRC8xSyrKLxo/K
-	ca2imiibnd4t3L9gYryhM60/7gRL2cMRwNTqNspxRTIFaHqHmmt6I040IfXmGanf/8r+Lf7vl76
-	nIb2haCGy+5zQ7qvi2VU/cCMzN4uM/3xleXT1MmoDJiB5touW9hqFQO4muwswj+5hV3lUO/HfVq
-	jkirqNYK7WX1HvAQgNAetm4Xb0ufMmLpbuoJQVNatM6n6WeeS7P5+HtwSy0r3pVfonVqNqlyY=
-X-Received: by 2002:a17:903:26c5:b0:2d1:1a18:4d0a with SMTP id d9443c01a7336-2d707b3c6a6mr237304505ad.9.1787810375877;
-        Wed, 26 Aug 2026 22:59:35 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d70493f3f5sm13971145ad.1.2026.08.26.22.59.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 22:59:35 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vhost/vsock: batch RX used-ring updates
-Date: Thu, 27 Aug 2026 13:58:50 +0800
-Message-Id: <20260827055850.26951-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qiMKPu92"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67R6Vd4E2210175;
+	Thu, 27 Aug 2026 06:34:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=Ucz1NzMG7UG1Ra9zk0/01qWlK+f/HZv573tGt0HO1
+	ec=; b=qiMKPu926FcTEGyqxbzXEbs69pLR3pFGjZ04enEhRRg2Fh4aWpTb4hyox
+	ei5n1F11A3U78xXtNXpmlDyJs8ivBpkyuWqSb7rv00RN1zGwC8PYcGFeRF2CDhxL
+	bwjskWDb0E03wxVlI1wJOMfr2RDgpJ9Im8kSqwaaPHpK8whQY2UTHykZNtp4nKq6
+	52i73yMMq4oa39DRNZcbadSY6iprMdQqZa9/BJXN52ZzhfQf/DhezHA31tUlxsXI
+	mTzNFm8NZSuC9l+t1WtrYAhATz/09tTvNDNLxuFOyKGh5Ngy3OU0r3OdJ9ZUxMvR
+	h1rG+okdZycq3EWiUONXBNYcnxSuw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73g53pkt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Aug 2026 06:34:13 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67R6Qfw2028939;
+	Thu, 27 Aug 2026 06:34:13 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7rsye96g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Aug 2026 06:34:12 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67R6Y94B47382904
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Aug 2026 06:34:09 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1FD1020043;
+	Thu, 27 Aug 2026 06:34:09 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D339020040;
+	Thu, 27 Aug 2026 06:34:08 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 27 Aug 2026 06:34:08 +0000 (GMT)
+From: Aswin Karuvally <aswin@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        stable@vger.kernel.org
+Subject: [PATCH net v2] s390/ctcm: Prevent XID null dereference
+Date: Thu, 27 Aug 2026 08:34:08 +0200
+Message-ID: <20260827063408.2168914-1-aswin@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,177 +73,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 762s6FFUaum0lzydxH7_aC0VwQ_7nxTh
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI3MDA1MiBTYWx0ZWRfX+EJCg15VLrsJ
+ s6nNOcFjveuvQZMHOElkVVAkqEnJ4DNiOS1Pf3SPl+5yPDCBQCyAOC6COdvODQVD/e4+HIPhc1e
+ HBXtocShl2Rxf81A5zlhkB+O3AIBbyA=
+X-Proofpoint-GUID: xeY1t9zm4bbETlLclys8avAOd8CZdbBa
+X-Authority-Analysis: v=2.4 cv=JZyMa0KV c=1 sm=1 tr=0 ts=6a8fda66 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=OtRM_J3iQteCy_yeMqoA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI3MDA1MiBTYWx0ZWRfX7OytTd7l2ozB
+ zCMfqgcHE0KQr9y/RhsSC29TlD23zXiJQJxduO9jJ7S+FZhioAgyACl1Wb/3s119Y3IiXiaJmG3
+ R1rbSD3v8AdNIyVsChJpE8r/eVB5HovD3lOp6ciLskpUpmnKhdzefUcf1osrwMOwNTrMXzAst9l
+ HA98mNMnZP0kfdQG2yAZ5fUWoj1EhYkEcoZZYrMATt3dOFIN3N1A+PX34I0aKCgnbWb04P+eYlr
+ ybWCRYAWp+YNsye020YINESg0HX6TVAvSX6xX9fdleROB5lmvO36t1wUT3raTPrizX7dBLxUQOQ
+ Bl4ktFzjqcijUPyXNZ84QYf437h1NRN29Y/0CYUJykulvktU+lP0x+pqYUEDxdFS66xrxXOmz7F
+ BEj4TAQCJEnKj75WkpsysNlVDbR9QjecqAwd1bgXL03zDFD+YIFX4pW3F/xinHDdqY4ZcXJbcOk
+ fhYu1kQ/OmvfkSS1fPA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-27_03,2026-08-26_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 adultscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608270052
 
-vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
-buffer even though it delays the Guest signal until the worker finishes.
-Each call publishes one used entry and updates the used index separately.
+The mpc_validate_xid() function sets grp->saved_xid2->xid2_flag2 to 0x40
+to signal XID validation error. If peer XID is NULL or r/w channel
+pairing mismatch happens, grp->saved_xid2 is never initialized. An
+attempt to set the flag in such case leads to NULL dereference.
 
-Collect the completed buffer heads in the arrays already allocated for the
-virtqueue and publish them with vhost_add_used_n().  Bound the batch by the
-ring size, array capacity, and worker packet budget.  Flush before
-re-enabling notifications or leaving the worker.
+Fix this by using the always available priv->xid->xid2_flag2 instead of
+grp->saved_xid2->xid2_flag2 for validation errors.
 
-Each used entry describes one completed RX buffer and keeps its actual used
-length, so set nheads to 1 for every entry.  This patch does not change
-negotiated features or compress multiple buffers into one used entry.
-
-This patch is limited to the current skb-based vhost-vsock RX path.
-
-Performance:
-
-Tested with a QEMU/KVM guest on a host with 4 online CPUs, using 2 vCPUs
-pinned to host CPUs 2 and 3, QEMU 10.2.1, q35, 1536 MiB, and Linux
-7.2.0-rc3-next-20260713-next-debug-kasan.  The vhost-vsock source is based
-on linux-next master at 49362394dad7df66c274c867a271394c10ca2bb8.
-
-Current vhost-vsock does not implement VIRTIO_F_IN_ORDER or
-VIRTIO_F_RING_PACKED, so both configurations used packed=off and
-in_order=off:
-
-  baseline:                 RX batching=off
-  vhost-vsock RX batching:  RX batching=on
-
-The test used vsock_perf.  The Guest receiver was started with:
-
-  vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
-
-The Host sender was started with:
-
-  vsock_perf --sender 3 --port PORT --bytes BYTES \
-      --buf-size SEND_BUF --vsk-size 64M
-
-Each workload transferred BYTES=1 GiB.  The SEND_BUF values were 256 B
-(SEND_BUF=256), 512 B (SEND_BUF=512), 4 KiB (SEND_BUF=4K), and 64 KiB
-(SEND_BUF=64K).
-Each state used a fresh Guest.  Each workload uses 20 paired runs, with 10
-runs in each order.  The reported values are
-Guest RX throughput in Gbits/s.  The baseline and batching columns are the
-geometric means over the 20 runs; change is batching / baseline - 1,
-computed from the unrounded values:
-
-  workload   baseline RX    batching RX   change   faster
-  256 B      0.0795724      0.0831509      +4.497%  20/20
-  512 B      0.1194885      0.1210297      +1.290%  14/20
-  4 KiB      0.7208273      0.7242053      +0.469%  11/20
-  64 KiB     2.1712797      2.1951941      +1.101%  13/20
-
-For reference, the table below gives the 95% normal-approximation intervals
-obtained from the 20 paired log(batching / baseline) values:
-
-  workload   paired 95% interval
-  256 B      +3.985% to +5.011%
-  512 B      +0.206% to +2.385%
-  4 KiB      -1.442% to +2.416%
-  64 KiB     -1.474% to +3.745%
-
-All transfers passed byte-count checks, and no kernel errors were observed
-in the logs.  The 256-byte workload improved in every pair.  The 512 B
-workload was faster in 14 of 20 pairs, with a small gain.  The 4 KiB and
-64 KiB workloads showed no material throughput change; the difference
-between their results may be due to scheduling and execution variation.
-
-Link: https://lore.kernel.org/r/20181214082146-mutt-send-email-mst@kernel.org
-Link: https://lore.kernel.org/r/20220901055434.824-4-qtxuning1999@sjtu.edu.cn
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+Fixes: 293d984f0e36 ("ctcm: infrastructure for replaced ctc driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
 ---
- drivers/vhost/vsock.c | 41 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 39 insertions(+), 2 deletions(-)
+Changes in v2:
+* Ensure FSM goes to INOP for XID validation failure of either channel
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 9aaab6bb8..d8050cca2 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -103,12 +103,37 @@ static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
- 	return found;
- }
+ drivers/s390/net/ctcm_mpc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
+index 08e36685e578..61c88fe853c5 100644
+--- a/drivers/s390/net/ctcm_mpc.c
++++ b/drivers/s390/net/ctcm_mpc.c
+@@ -826,7 +826,7 @@ static void mpc_action_go_ready(fsm_instance *fsm, int event, void *arg)
  
-+static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
-+				   unsigned int *used_count)
-+{
-+	if (!*used_count)
-+		return false;
-+
-+	vhost_add_used_n(vq, vq->heads, vq->nheads, *used_count);
-+	*used_count = 0;
-+	return true;
-+}
-+
-+static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
-+				 unsigned int *used_count,
-+				 unsigned int head, unsigned int len)
-+{
-+	struct vring_used_elem *used = &vq->heads[*used_count];
-+
-+	used->id = cpu_to_vhost32(vq, head);
-+	used->len = cpu_to_vhost32(vq, len);
-+	vq->nheads[*used_count] = 1;
-+	(*used_count)++;
-+}
-+
- static void
- vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 			    struct vhost_virtqueue *vq)
- {
- 	struct vhost_virtqueue *tx_vq = &vsock->vqs[VSOCK_VQ_TX];
- 	int pkts = 0, total_len = 0;
-+	unsigned int used_count = 0;
-+	unsigned int used_limit;
- 	bool added = false;
- 	bool restart_tx = false;
+ 	fsm_deltimer(&grp->timer);
  
-@@ -120,6 +145,12 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 	if (!vq_meta_prefetch(vq))
- 		goto out;
+-	if (grp->saved_xid2->xid2_flag2 == 0x40) {
++	if (priv->xid->xid2_flag2 == 0x40) {
+ 		priv->xid->xid2_flag2 = 0x00;
+ 		if (grp->estconnfunc) {
+ 			grp->estconnfunc(grp->port_num, 1,
+@@ -1636,7 +1636,6 @@ static int mpc_validate_xid(struct mpcg_info *mpcginfo)
+ 			"The XID used in the MPC protocol is not valid, "
+ 			"rc = %d\n", rc);
+ 		priv->xid->xid2_flag2 = 0x40;
+-		grp->saved_xid2->xid2_flag2 = 0x40;
+ 	}
  
-+	used_limit = min_t(unsigned int, vq->num,
-+			   min_t(unsigned int, vq->dev->iov_limit,
-+				 vq->dev->weight));
-+	if (unlikely(!used_limit))
-+		goto out;
-+
- 	/* Avoid further vmexits, we're already processing the virtqueue */
- 	vhost_disable_notify(&vsock->dev, vq);
- 
-@@ -134,9 +165,13 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 		u32 offset;
- 		int head;
- 
-+		if (used_count == used_limit)
-+			added |= vhost_vsock_flush_used(vq, &used_count);
-+
- 		skb = virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
- 
- 		if (!skb) {
-+			added |= vhost_vsock_flush_used(vq, &used_count);
- 			vhost_enable_notify(&vsock->dev, vq);
- 			break;
- 		}
-@@ -153,6 +188,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 			/* We cannot finish yet if more buffers snuck in while
- 			 * re-enabling notify.
- 			 */
-+			added |= vhost_vsock_flush_used(vq, &used_count);
- 			if (unlikely(vhost_enable_notify(&vsock->dev, vq))) {
- 				vhost_disable_notify(&vsock->dev, vq);
- 				continue;
-@@ -230,8 +266,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 		 */
- 		virtio_transport_deliver_tap_pkt(skb);
- 
--		vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
--		added = true;
-+		vhost_vsock_add_used(vq, &used_count, head,
-+				     sizeof(*hdr) + payload_len);
- 
- 		VIRTIO_VSOCK_SKB_CB(skb)->offset += payload_len;
- 		total_len += payload_len;
-@@ -264,6 +300,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 			virtio_transport_consume_skb_sent(skb, true);
- 		}
- 	} while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
-+	added |= vhost_vsock_flush_used(vq, &used_count);
- 	if (added)
- 		vhost_signal(&vsock->dev, vq);
- 
+ 	return rc;
+
+base-commit: f967455fb2a5a2079b9eb5823e9ccf359174bf9f
 -- 
 2.53.0
+
