@@ -1,141 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3E43FCB2F
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787820818; cv=none; b=R6GVsbIm6C78oFUILBFv74FwUdUMTc5BG2EGFfMCAF7j2PDhd1qSBXDHS/jYAWuNcgsvU61W7YyFGxgymgLSA9M55Qngq15W4YYQX4Vl40lC/nvZU4NOUEQKh592wL4fGIvE12H0ocMqZwUQLxm9BUdcDa1Vw7hAoYmcAytI0hE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787820818; c=relaxed/simple;
-	bh=ggUUSaZZQcCofyR7BBp/fsPQZooZrTSifTmmzhtzPYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ntQWJJ/KkloVzixfQU41vW8MDIJN3TgEP+JTOv7oFkhRXdnvvE4K6yVEZdDEzRkPRLEh8iUjbeaJ1LoUbDT0as/hsf+TuVT1TguPLcMDUoi0bBQrmIYi2zWpwKtWwG/bImVecPe08+D903gygymdT2qz31s4ERFjyBq5uadsKMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TG0fM3x3; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D55E31D730
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787820905; cv=pass; b=bvRj0tht4oufwfVGJCo+ijnkkslseGXVeSKlk7PgogSjSehLSBxJKDQipQIM1OldDqy5dL1ThwKjZnXXKTqS6oqjHBvNCMyvjmmoCldF6yFjzGCRAoMmerER/B3iBqv6nBk2MizoFyI6wHG/LPTAxyxzWl4Cwo30nsjvCT4uzSk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787820905; c=relaxed/simple;
+	bh=MDS7E9iPk5ujZKnxtbZrF33ZdgtP77vTUuppLaIfI6w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r1l55xYO1dNLg+0dgtQuwlk6uY6WCaD+KCIkQTesf3oTxO3mTs2vi7JVm6UAvZDsCI9R/dn7e6W6PXiziUeVXy3D/K1FgG5t1F4tdO6Ut63CuKj06sIwAgWrLSzuurBeYJveKGaOER6/NqYpWVRo4xNrmLILm8/HxLR6zfe2uLM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hLy44wos; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TG0fM3x3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7BA1F000E9;
-	Thu, 27 Aug 2026 08:53:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787820817;
-	bh=uTzQa01wp23mjn8/3lUkKaTv9u00TDpwkGLS3/GoyBM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TG0fM3x3KAQXYWUlCR+JwzrXafelALwPmSGlx2D5dVhfz3C/IBARUACSeFmUB+B8s
-	 5FPQhkp6e8FRPqth2fHYQVQMvVHI/4qT9y3zkRZD15LDAaKrQgz4YfTaS/lXSdfjxG
-	 /E6+VKV096Uv9YKLbJk0nDpGAbdtdGrPtq3Jd6o7j8FGjFhII7sArtnhwfOQiQE58A
-	 oAaB+8fac/O5PB55+wRBZcxTBefL6w2WsgvnLBI1gIKcY+ApnccHA5wyQB9Ufb6QuT
-	 0rKKxsrDj05ixwPikh37q2Sudk1Z6brgBOaFrtyZN043DIx8NpFb5+HKIaW1LG7JuK
-	 TZLf6f7NsT6/g==
-Date: Thu, 27 Aug 2026 09:53:32 +0100
-From: Simon Horman <horms@kernel.org>
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
-	baowen.zheng@corigine.com, louis.peens@corigine.com,
-	pctammela@mojatatu.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net 4/4] net/sched: act_mirred: account for
- TCA_MIRRED_BLOCKID in get_fill_size
-Message-ID: <20260827085332.GC396647@horms.kernel.org>
-References: <20260824153903.4143642-1-victor@mojatatu.com>
- <20260824153903.4143642-5-victor@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hLy44wos"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5276d598b96so2158381cf.3
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:55:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787820902; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kJHMH1MwS6o7zxyZHx8oco/brn/cT9ajMUaXfokDb01Fr9h9MSovSdI7HsqD+ReQfX
+         2/+UBPTCeySte7hut2tlsePXgxHglLrZAfrBJ/knMI4rayZocikt8h0Z4DSgWBFbA8Gr
+         hbGxakPdfBj81zK71f8xISgBm/I3J3lGvl9bAyUhgZZ3QmcfwnrKZAWMpvJTc8e6gse0
+         fppmQe6nmiVWEYwQj4gBs7M05zOTiar9CWDw2NOlQIH0gTDI4PNyy/9+gVPaaup+1umR
+         HgsnGY3rFxV0s6AN0Dlj0I4Z3IrVHXNTL0KhXFHot1aQYdr0YmPe3hjCeJq3IJpiDn3z
+         S4cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W0WO78toE0nHGJ0yjl5B3K/QPDORn+5Fabr/fQygYoU=;
+        fh=ZySGBTmCbtGt3NjRnNxXZ5h/K9pAp+V/KmcvJn1DMuU=;
+        b=Hi2KQFfUEZF2lPScM6hw303k0Rdqdt6sdsH7MUyfuFPvkehbVkWxEInX31gL5PBkJG
+         KBBe4qT8iv0bA0/kO052xsktdVoEh/eG29dm7umPQo4uF1fhIb9xNM8rbggIujfTug7M
+         dM9G1rOhXs72rlpROP88qSdVj7C20GO1R2hHx+Yg1w3N+UJO7UnrPj6ZScQDv04iLh2f
+         21oilNyr8+po1MZfax7p2A4LUmTGnmTGa4HLmkaLAK2hy71v/pav9SybRRCSEiubMEXS
+         pUGhxwFNxooGYfGodVQZl/73vQ5Fa3bxZirwBlzt/pFOBq5f8JDRqj3Hu/G6uWR287x3
+         HxgQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787820902; x=1788425702; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=W0WO78toE0nHGJ0yjl5B3K/QPDORn+5Fabr/fQygYoU=;
+        b=hLy44wosh84d0VvBiUtUS/brdgQZbmNEup9elFj9JDd5db51zClAoxSsYILtQkIXEW
+         DJ+vCG45avyEbDdDXgfZletV/R1GM7qH67RgFmnZc0dxakkPrZ3S9bFZ3aMdESrcHk/c
+         CnegURn+UjXqhbqW9Lnf5vBOJ1sc8qABzqs+rrh/nECg7Fw2by/JtLoze5iWe+yau7RO
+         XwZPmG8k993KDyYWsD4aWFpr+KG5f6AhGZFNSgU3gSc8MOlCbzZRcIahJbPEWQF+2ZDT
+         XMLBOE+OBdW2rnenQzuT9AruVdMwQKkvFAQXih7TBllTkYDPiAMVJ1cl8jNldgdYXwNd
+         Y/Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787820902; x=1788425702;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W0WO78toE0nHGJ0yjl5B3K/QPDORn+5Fabr/fQygYoU=;
+        b=Qug5oxoK9vuBtK+HhF2cvN1EBB6b1YAqnVv086FzDxXzXWUu2mOeAFPKyp41mC/+cy
+         cbc3X+VK9/KNswshAEX5mAXhXWLkUq4wHCdWkYviTIXXr+T85WQCtKuGmFXvt+tV7Eew
+         nVEkaf+Cs5zA43vMlkjFi9fxhl6LQU4FcO6OOTyRImSj2j3D3SclbNwMzksfq5IFZh9/
+         e4HTrIfzrd003ME4i3+vV5kCch8b+0efUbnojuCHIhAm6ReQGvEKe4tNoUJf062jnAZ9
+         2H0tmaAUZXODAz8b6biJipSszaa/N+2nBdd5fPt5WWSMlnv0iNRvDd28KCh+DCUMdLTw
+         3eJA==
+X-Forwarded-Encrypted: i=1; AHgh+RrWuczSDL7Qpq7iBjE13cHYDWp9YwEaMxsFKttGL1tOyedWYPHnViKhhyFDKIVqmSRQZcTGcS4=@vger.kernel.org
+X-Gm-Message-State: AFuF++ljE4a7ZoGzN0STOn0imrssJIoVVHxco/ZnBNpJmvIzCEX7QLwa
+	iyrP+/QpB8gdrIEQkkGafqvhAwB79rS2sEipGyfzyqNtt+RyjYjQE7xMYyHfWIVDsmyhuRHJ3fZ
+	pxHPdui8DU2b84/JjgnrMzU6aSFyC+c9E/yG9+YOSh1TRMHKFd82LGusBNM8=
+X-Gm-Gg: AR+sD12fWkrov1a7PvYQaHBhSXDNgH5VxJ1xnvLF+iYIbFPliZGF0Rqc2ljASd+cz4U
+	hOoRlnolXmy8bh85kwzk/kiT3jxhY5Nb/GN/rcpb94723miQAkEFXD2Dn6XlRASlQYkMBU/Ifg8
+	rasGJk6bhMsXCYBEbNVCwzp6BqddpxINamamFh13k4cbLPYXDA5TycYD4l3mwQDyb+8CBBA1+Mo
+	00+mYpVKIm2K8JcLoNL7vfKAAdC8VDvyJvGhwY3qsfmArcAljtXU1ZJY25AXqA2FB3BIEypT/lk
+	U+pm1t51MYK++ktRS8VsX8AxXsItyyla0ElYtVuJF94danH+kSpDeU1G/SxR9o3/NFmptWyZ64C
+	eKPZoj1gSPJbCmlMqw4ZSxhJaJpzHVRVgDgOO6RxMn74fX26wSeUUKxog/u8=
+X-Received: by 2002:a05:622a:148:b0:516:dbf6:f8e7 with SMTP id
+ d75a77b69052e-52e422cd252mr135734321cf.17.1787820901550; Thu, 27 Aug 2026
+ 01:55:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824153903.4143642-5-victor@mojatatu.com>
+References: <20260826115913.3381537-1-edumazet@google.com> <202608271655.mXCyurGJ-lkp@intel.com>
+In-Reply-To: <202608271655.mXCyurGJ-lkp@intel.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 27 Aug 2026 10:54:50 +0200
+X-Gm-Features: AcwNN1VEzEA04F0KK7rJNSKHCJJVby0DbVe7XbYqwSp7_DdMUu2dLxQDhY85qyc
+Message-ID: <CANn89iJQci2kNmEEPHmqkw2qE2NXnQCmCPUfow1MjudjCTJXFQ@mail.gmail.com>
+Subject: Re: [PATCH net] igmp: convert struct ip_sf_list to RCU
+To: kernel test robot <lkp@intel.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, oe-kbuild-all@lists.linux.dev, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	syzbot+a5a07d2f6a71972dc5ed@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 24, 2026 at 12:39:03PM -0300, Victor Nogueira wrote:
-> tcf_mirred_get_fill_size() only budgets TCA_MIRRED_PARMS, but
-> tcf_mirred_dump() also emits TCA_MIRRED_BLOCKID whenever the action was
-> created with a block instead of a device. So tcf_mirred_get_fill_size is
-> missing 8 bytes in its accounting.
-> 
-> Fix this issue by accounting for TCA_MIRRED_BLOCKID unconditionally:
-> it costs 8 bytes for device-mirred actions and avoids having to read
-> tcfm_blockid outside tcf_lock, where a concurrent replace could change
-> it between sizing and dumping.
-> 
-> Note: Dumping mirred with blocks currently works in most use cases, but
-> would break in some corner cases, for example, if there are 20 blockcast
-> mirred actions in one request, each with a non-ANY hw_stats and a
-> non-zero user flag, with a listener on RTNLGRP_TC (or NLM_F_ECHO):
-> 
-> budget 180 B/action -> attr_size = 20*180 + 24 = 3624
->                     -> alloc_skb(3776) = 3776, tailroom exactly 3776
-> emitted 196 B/action -> 20*196 + 24 = 3944 > 3776
->                      -> tca_get_fill() fails
-> 
-> Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+On Thu, Aug 27, 2026 at 10:13=E2=80=AFAM kernel test robot <lkp@intel.com> =
+wrote:
+>
+> Hi Eric,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on net/main]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/igmp-=
+convert-struct-ip_sf_list-to-RCU/20260826-115913
+> base:   net/main
+> patch link:    https://lore.kernel.org/r/20260826115913.3381537-1-edumaze=
+t%40google.com
+> patch subject: [PATCH net] igmp: convert struct ip_sf_list to RCU
+> config: i386-randconfig-062-20260827 (https://download.01.org/0day-ci/arc=
+hive/20260827/202608271655.mXCyurGJ-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> sparse: v0.6.5-rc1
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20260827/202608271655.mXCyurGJ-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202608271655.mXCyurGJ-lkp=
+@intel.com/
+>
+> sparse warnings: (new ones prefixed by >>)
+>    net/ipv4/igmp.c: note: in included file (through include/linux/igmp.h)=
+:
+>    include/uapi/linux/igmp.h:60:32: sparse: sparse: array of flexible str=
+uctures
+> >> net/ipv4/igmp.c:3114:13: sparse: sparse: incorrect type in assignment =
+(different address spaces) @@     expected struct ip_sf_list *psf @@     go=
+t struct ip_sf_list [noderef] __rcu *sf_next @@
+>    net/ipv4/igmp.c:3114:13: sparse:     expected struct ip_sf_list *psf
+>    net/ipv4/igmp.c:3114:13: sparse:     got struct ip_sf_list [noderef] _=
+_rcu *sf_next
+> >> net/ipv4/igmp.c:3130:21: sparse: sparse: incorrect type in assignment =
+(different address spaces) @@     expected struct ip_sf_list *psf @@     go=
+t struct ip_sf_list [noderef] __rcu *sources @@
+>    net/ipv4/igmp.c:3130:21: sparse:     expected struct ip_sf_list *psf
+>    net/ipv4/igmp.c:3130:21: sparse:     got struct ip_sf_list [noderef] _=
+_rcu *sources
+>    net/ipv4/igmp.c:3098:29: sparse: sparse: incorrect type in assignment =
+(different address spaces) @@     expected struct ip_sf_list *psf @@     go=
+t struct ip_sf_list [noderef] __rcu *sources @@
+>    net/ipv4/igmp.c:3098:29: sparse:     expected struct ip_sf_list *psf
+>    net/ipv4/igmp.c:3098:29: sparse:     got struct ip_sf_list [noderef] _=
+_rcu *sources
+>    net/ipv4/igmp.c:3098:29: sparse: sparse: incorrect type in assignment =
+(different address spaces) @@     expected struct ip_sf_list *psf @@     go=
+t struct ip_sf_list [noderef] __rcu *sources @@
+>    net/ipv4/igmp.c:3098:29: sparse:     expected struct ip_sf_list *psf
+>    net/ipv4/igmp.c:3098:29: sparse:     got struct ip_sf_list [noderef] _=
+_rcu *sources
+>
 
-Hi Victor,
+Thanks, I will squash in V2:
 
-Although the issue flagged below by an AI-generated review of this patch[1]
-may be strictly out of scope for this patchset I am pasting it here
-because I see that quite some work is being undertaken to correct
-get_fill_size issues and I wanted to be sure that this is considered
-on the scope of that broader set of work.
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index 5516329c9caa5f6f3ec7a2f633bda5d1a16eb4ec..d56355aca79776575d93e338109=
+b768f9acf2eaa
+100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -3095,7 +3095,7 @@ static inline struct ip_sf_list
+*igmp_mcf_get_first(struct seq_file *seq)
+                im =3D rcu_dereference(idev->mc_list);
+                if (likely(im)) {
+                        spin_lock_bh(&im->lock);
+-                       psf =3D im->sources;
++                       psf =3D pmc_dereference(im->sources, im);
+                        if (likely(psf)) {
+                                state->im =3D im;
+                                state->idev =3D idev;
+@@ -3111,7 +3111,7 @@ static struct ip_sf_list
+*igmp_mcf_get_next(struct seq_file *seq, struct ip_sf_l
+ {
+        struct igmp_mcf_iter_state *state =3D igmp_mcf_seq_private(seq);
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.4143642-1-victor%40mojatatu.com
-
-AI-generated review text:
-
-  This is a pre-existing issue and not something this patch introduces, but
-  while the audit is being done on get_fill_size callbacks, was act_gate
-  looked at?  Its shortfall is unbounded rather than a fixed 8 bytes.
-
-  net/sched/act_gate.c:tcf_gate_get_fill_size() {
-	return nla_total_size(sizeof(struct tc_gate));
-  }
-
-  That is 24 bytes, while tcf_gate_dump() emits TCA_GATE_BASE_TIME,
-  TCA_GATE_CYCLE_TIME and TCA_GATE_CYCLE_TIME_EXT via nla_put_u64_64bit(),
-  plus TCA_GATE_CLOCKID, TCA_GATE_FLAGS, TCA_GATE_PRIORITY, TCA_GATE_TM and
-  a per-entry nest:
-
-  net/sched/act_gate.c:tcf_gate_dump() {
-	...
-	entry_list = nla_nest_start_noflag(skb, TCA_GATE_ENTRY_LIST);
-	if (!entry_list)
-		goto nla_put_failure;
-	list_for_each_entry(entry, &p->entries, list) {
-		if (dumping_entry(skb, entry) < 0)
-			goto nla_put_failure;
-	}
-	...
-  }
-
-  Each TCA_GATE_ONE_ENTRY costs roughly 40 bytes, and parse_gate_list() puts
-  no bound on the entry count:
-
-  net/sched/act_gate.c:parse_gate_list() {
-	nla_for_each_nested(n, list_attr, rem) {
-		if (nla_type(n) != TCA_GATE_ONE_ENTRY) {
-	...
-  }
-
-  So for one gate action the emitted dump is about 256 B plus 40 B per gate
-  control list entry, against tcf_action_fill_size() returning 264 + 24 =
-  288 B with an NLMSG_GOODSIZE floor of about 3776 B on x86_64.  Beyond
-  roughly 88 entries, does tca_get_fill() start failing?
-
-  If it does, two effects follow.  RTM_GETACTION on such an action returns
-  -EINVAL unconditionally, since tcf_get_notify() builds the reply even with
-  no listener.  And on RTM_NEWACTION with an RTNLGRP_TC listener or
-  NLM_F_ECHO, the failure happens after the action is created:
-
-  net/sched/act_api.c:tcf_action_add() {
-	ret = tcf_add_notify(net, n, actions, portid, attr_size, extack);
-	/* only put bound actions */
-	tca_put_bound_many(actions, init_res);
-	return ret;
-  }
-
-  leaving the gate action installed while userspace is told the command
-  failed.  Would it make sense to mention act_gate in the series, or fix it
-  in the same audit, so readers do not assume the sizing audit is complete?
+-       psf =3D psf->sf_next;
++       psf =3D pmc_dereference(psf->sf_next, state->im);
+        while (!psf) {
+                spin_unlock_bh(&state->im->lock);
+                state->im =3D state->im->next;
+@@ -3127,7 +3127,7 @@ static struct ip_sf_list
+*igmp_mcf_get_next(struct seq_file *seq, struct ip_sf_l
+                        state->im =3D rcu_dereference(state->idev->mc_list)=
+;
+                }
+                spin_lock_bh(&state->im->lock);
+-               psf =3D state->im->sources;
++               psf =3D pmc_dereference(state->im->sources, state->im);
+        }
+ out:
+        return psf;
