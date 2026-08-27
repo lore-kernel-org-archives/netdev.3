@@ -1,220 +1,120 @@
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE852D7D47
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820EE4657C6
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855961; cv=pass; b=PqU/YSMaV96A/WhNkL8HsbF1GbBl+rlCpjEtPjEpBYRUHc1FcEWIJAs4K6afdTmGDb0x8VuT8f9UKcKQHQDJZ0ZvEs4mEUS2iXYCIX32yXyxSDfu+wtKT6ABM+iYURYTr5DHM1rQD/gPUx7u66Y6Fni84RgscGeSX2UXprdBz7I=
+	t=1787855981; cv=pass; b=CDqqPJudS8Hx8/3ZB6Le2fP7jy+NHKGvTWkBCNe/L5FD2FgZEBBcfBgrUzYc9N2wKnm4pbCW0iMkJp/evizQlb8L6P8UYtNZT53ZJ88IxejUBEMJZIbjtvKanam/FTUWx9ZKwleDIAEKF7akmGMjLesjESy7HPKHS0ZLxdVrSSU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855961; c=relaxed/simple;
-	bh=t1YTCYnw7taCGQOC3DmeU3gnr8wnT7msmENWPO1h/kE=;
+	s=arc-20240116; t=1787855981; c=relaxed/simple;
+	bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JcPutUJsSptC5af4HED/qVIufTQaH/X9BxyXau4pBXfd4fVbtuBmFOw98Te3lJnJXDVnPXEpAtoSKZ2kyDL9eod2rXcD1xtUGFKORrzL+dSA7w9OSJDIWCCKoI5BJiZAL38qUfXJlhftC/B60xTwEp+dagVW7wphWBA0d9d6PqI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=DdbjciqO; arc=pass smtp.client-ip=74.125.224.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	 To:Cc:Content-Type; b=Jmy/8Y6SADYzjtqIKfBrrNeXL2ucGG9nKoOcl3VlAG6TV+62a3R6kYBQlKN54UDVkmmnr1M52XjSlTlACi6aJjvIHkYh/5BlQkqU0NCC6d1rqAP3LUK2AhfsLIPB5mRTusFsWv9CC14aQ3yCzZW2SCs770IJxsVg9dH2xWnx/Zg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kM/LTmSz; arc=pass smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="DdbjciqO"
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-66d146f04cfso536618d50.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:39:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787855959; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kM/LTmSz"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-936e393176fso10876685a.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:39:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787855979; cv=none;
         d=google.com; s=arc-20260327;
-        b=E+7RxNnapWgMNEGW2hSZFxXAKh3e1QUwZlV5wA1Od294ZtKx9pcxx3Eu04tcW5QQmt
-         R0m3YZknoDdsvCIHfqSJNjUMWNoIMvm8xTvwXWEaIrkCT5UNfYrBeFTiGlonEuDjaSSR
-         MS2Hz9cMbEfz4WmGABHv+szTY/4T7JZUxhc18r5hkuXoFdmxnmBYPRp9nl7j7/g4RmeC
-         GJgl0J90/QC64jy6cc/IK+YzqRCHnvTzl/y8VjsvZIQgnXDCWDwXpf/cy86j3ylyY3VR
-         HgGtfDibgvTwInnD2mExz5S9HzmoPkwteSMCi5asUbbBpnd8fCOfsarogtQfnNlwTJYA
-         TcTg==
+        b=P4dzu5R2cPy+ot8VcGlDIBXg29GynrBkwuaXhF3Kka4Da4Bnpu2GGP29f3TfPH9b4L
+         r7NfmgU+HCzSPrrNYY9A1FZ4rj+wUWQN7JGZXrw010rHxJKQ2zsqxn2MUmlXO7aly3Ms
+         4duGhsOcIC1YAzY7hb8g0tPpIQTrlDRdTwiu4RItof7X9i27XblZm2xJmEP8agUnP73b
+         7nTnvB6U3Q3kIao56RUeGQIT95GDteUCTGwUlH4AC1Mvn4kz9RJsOA0EWQ+nar8z8T1X
+         fr57lJUmVBkh4qHE6UZZvxcChrvtBN34dAyg2ETfAzFO8AUcuuS5mknHpUrUlsXkwxSF
+         iiow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=uAVPEg27oHBf2ZAIG8X1Zu028g2AuFXVbv5fslOiiKE=;
-        fh=8ZY0tp67fVj6e7mMovC1rSveYX+wb40ljVaIKF5IUUE=;
-        b=hDAXtI//LgL2OUvzbKqP6Hk2HzPxsn34AItxXgmCdpA35wwyCsshZkqczU+yPDnqIP
-         kmB6H/H697iInd4OvJFFkaYvTbiAHct/SaP+ThFg4Z670Z2cbGjFV+SDj7nUrnJaxCCZ
-         bC4TNh+o5b4ezcgk+EYTjruUV2wvZMjyk/8ugaEPEVcw8AjWoJwaLPyiSd+HzuoTiN/T
-         nsGMN0bb2bUq7+1fI2Z553tkq2/4AhqaT8QkqLZM04HAfcbpYNkfJ76ptpoNw2YO+7BC
-         Tl2KB2K4Q5cw/ujqf3swoY4JNjgFg437fTahW7DUNy9nwI6GarRvA0yctOX1WBhqh3XH
-         3Rbw==;
+        bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
+        fh=A8n998BmTyIJ/6LdoAbLnpCP1R3RaQ5x2s/UKy9f9PY=;
+        b=AHQIh2kk00keH4pDUnPSkj7G70aOzRLJf5WX1h66MGSTaMgN9mazVHFlTyniLeFqMV
+         llB3SUbYNd0TjROdgF050I53qQDIXvCSJhATzi2CrCvrE/UZhYEBCsaYqubFISURM3cP
+         vna8PUMCV0HZj5jx/vc92AGRscUjrJ8vnwxAaV9JEmcOf4N6TR5XLXIfS/0mrSuFfKCJ
+         BgOEkqKG2MxrHcdG34tpW8fR0XjREDslzHDxYnN3Jua8IfxiQ7ARFSC/PeDlbymd1YLV
+         mHOX/25rYY1FLohH8K2MQ09aSUWUkFc3H9Q/wXXq7b0CkZVbQHE+arfkurzE7iL7+5Fc
+         hRMg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787855959; x=1788460759; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787855979; x=1788460779; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=uAVPEg27oHBf2ZAIG8X1Zu028g2AuFXVbv5fslOiiKE=;
-        b=DdbjciqO/tYDHAqLYmYiVScxuUbzqGM+HtUn2KV5h5DzAwYQetyhc4aZBKHuZXeYbt
-         t0arkLZ3FvXbxLqCtR0b8XuPKpfU78EuDrgOQqJE5ZpdcXz9d4KICKdGprr6w4Cr1A7G
-         qH5MxJ0aOHzxASxAeERHOyfFXlgnY0yIGuPkY=
+        bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
+        b=kM/LTmSzoS6Y0PH8bT/wWDKBss0HJQa4+UtDuu4tsV+f8lcM/e59BQoVQk+TD3rHYf
+         HRjMpjBdYA397FQ+PswQQ/mBIctZ0IAnbJEJMOEayRBlBCj7a+DHserTNqqBThW+pPVO
+         oUpiCEwH3fQ01bqkvELj4mpZQe1HKZwpwrcIOoMOJWygu665SNII7aAbzMf3FJq+fc4N
+         IH2Zo0Qai2el/M/3Q7BdQ7/U1GAFW/+Vk0Mc4dYRZRQV2M72Xcg7lqarVALQ8gqIZa7e
+         gNF2tuGnFF5JYfncshb8qj3uKm7QHV9YpzGHxbaPfEqHAsyG1ulNX1BeuY+jUabnGWRh
+         I8cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855959; x=1788460759;
+        d=1e100.net; s=20251104; t=1787855979; x=1788460779;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uAVPEg27oHBf2ZAIG8X1Zu028g2AuFXVbv5fslOiiKE=;
-        b=blHTZULz6lqe2Cn5lhMXEBNCbFStAt3J+5BLoe0DdE1SJsNShSkCeTrDaXVy9VypA8
-         f/0GT88rtGS7KLNMyEgyBfuCh6Ixe9oV7vStvkqi5HvhYimpvEQJAR1lmW0mjS3fDypl
-         Ob9cXjfeLFKaZNGSE8hEj3M9/1Fmk2X3mTY3rssC5fFinBgfkGdr1Z05f1zUDdDrMcxc
-         cEJBgdGxvysBflNEL+x4pFMZr8OhxhrbAUSX8PDN3oBAAeUn0wmXl3veL3VeNRmNU7Ua
-         g0GtyvknuQ/wVVbD2NjDW4nmdr2Io0uFm9u4i32lCz/snoU+PZq44YPqvSgnK0u1xgsn
-         mM7g==
-X-Forwarded-Encrypted: i=1; AHgh+RqvuREmef702lyIVnb8wqOCLZbL27DsWWXBSYzt6MIJwV0r7pjzTtrMnemiNc5klbSjAXE2tsA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mgrjXZCs75IPWTL5Yz6uSKTXr4l5LOXP0HzdnsSe7DAK6cR3UF
-	I5hNdEc6CnQLRe0/Hz6Tl3gowoe2t5p+b2h3Yd3ApIIXikJ8J4nQjhoYeJxbGQG6Y6aHSvaQxvf
-	67u6ElIsPDkSuAx+Gm+ReGjVoDUVtvw0IFYypwdYg
-X-Gm-Gg: AR+sD10u7oE4P1VjU1EfZ2QIJWGZYd6ODN3LwQIrb1k/a7HTQ9j+xICM/nbH6NZol1c
-	JbnyBkm6IHqOs5IJXd2CQTHJbn0ygatcGICcP7NgB1OndxIq8o+Yq1gidUTPZiX+sKUa8p0CHNN
-	AMcypVkXLpibPKOxWmIqWW3uuaaa/8HvOW02OxSsNC7bqW0v/yndMTuKKdJxLP+DXNr/L6MF+fN
-	i8crNBgQ8tI+kr6HI+nDhvD0o5glfMqp1YtKar+Ez/ecFPBcj83cRXoIRdE16sjVeAjLuuKudSJ
-	10uGItKYU3oyTaA5R2Wc4ARMGZoZ180Czlu40XlnLrgggc+njdUkF1cmA48=
-X-Received: by 2002:a05:690e:d4f:b0:667:5cde:6f36 with SMTP id
- 956f58d0204a3-66e4c539b60mr246521d50.33.1787855958597; Thu, 27 Aug 2026
- 11:39:18 -0700 (PDT)
+        bh=445iCSTTCoBe15Hu3Q0tcs0o1U+eeAp83PGi5YJxTA4=;
+        b=ryGaqK4MDWhcovwldPAsiR7mRrKkQdwmlX+QfLoaTi7qsvdkxvu1RVsKNMy8ijh+0e
+         I6dlDTFtC6HgqLNna+aHHuoKqDA+4k3p7HbkNygOambRU4HJCYMfshCnakYyJT1C7kbt
+         hASmRDDAHpPiBgigyGRiQ+Dd2Oo2DkOgXjnMkJQFEgQzn2K+NCo2CliVuMuqBnGhajVx
+         +T1BNANUSsSH7Hoz7KVjWPpYNIOjyZz3iWlgo3q5eEOQVhrgVlOmoxLGic38dHiBovrQ
+         X7wpzegPa+MittmSpxaj5AYslPf4MTPY1gBQGtgzHRXC+gL+8AMUaXJtLEw4Ga/pmub3
+         gplQ==
+X-Gm-Message-State: AFuF++lWslDObpLzDc5wptlOqzdZMDvl5lWDe5scHzc8Y2lu+fhjhsRq
+	q1p5LYkQom/dDgHrI63sd1bZnH8KMyElQQ4GJ09m2UyEKFR430N0i7ihwIDLoqNuPnCffpFVDhe
+	ucpwi+F8EQs3hgWHgdj11dZ7h3ZRzsoukaO20vGq4
+X-Gm-Gg: AR+sD11iF+ense0oLwdNX/6LwyE52e8aYx7G8qBXuujeigVdHP6tXy3OrVBZdHaBql9
+	1O5olcVkP1YI95uj1hIdZIBjs4wEjMKW2u22iNly/p+hbsN4SnQe3nmODJnnzI6Kc2cjcOzshBn
+	6FY7vFUX8Cq5GTaDhr3JofWT1uAKdkseSEHwtJPYzz9QFBQZ9chbm0WIEz+PZCKB5YRZ04SSUUV
+	EZK8qCbJWrxTM5NqKOuc0qH/WmoyhMjdGoOAHh/TUy4pniMCwLi7KTeAMz/6oj9kvM+WJWMUsgV
+	7KZvVEkg3LGMpGXC1r1TpEumCEV852s8g4Z9zAslLt5xnTYYxm1iAst+XhSEXmDG+ST34Wi/lD1
+	QpgYKrUVIRVAiq9l4iErc2GDG58LZyBChh2xwPolUBhmAVJ/C4vrP8Dw2Sek=
+X-Received: by 2002:a05:620a:a913:b0:939:2e1:91b1 with SMTP id
+ af79cd13be357-939139b0e77mr79071685a.42.1787855973945; Thu, 27 Aug 2026
+ 11:39:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824153903.4143642-1-victor@mojatatu.com> <20260824153903.4143642-5-victor@mojatatu.com>
- <20260827085332.GC396647@horms.kernel.org>
-In-Reply-To: <20260827085332.GC396647@horms.kernel.org>
-From: Victor Nogueira <victor@mojatatu.com>
-Date: Thu, 27 Aug 2026 15:39:07 -0300
-X-Gm-Features: AcwNN1VYL_swJuqZoqGbNCgXQCvpH4j_MWpF70vC4RkHQ7Mo9FK6vF0EKtv0QcU
-Message-ID: <CA+NMeC-xaHMo9N6fvu_TGtVEgeaCexFmLHqMAyTcn40gFPMG8A@mail.gmail.com>
-Subject: Re: [PATCH net 4/4] net/sched: act_mirred: account for
- TCA_MIRRED_BLOCKID in get_fill_size
-To: Simon Horman <horms@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, pctammela@mojatatu.com, 
-	netdev@vger.kernel.org
+References: <20260827182514.4667-1-zihanx@nebusec.ai> <20260827182514.4667-2-zihanx@nebusec.ai>
+In-Reply-To: <20260827182514.4667-2-zihanx@nebusec.ai>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 27 Aug 2026 20:39:22 +0200
+X-Gm-Features: AcwNN1VRhQVJWnUjimjnCssYVB-RsZLLiLw-RwPls-JFeJyYJ0GNI-z6p5Tnrm8
+Message-ID: <CANn89iLL7g9iZ-pZZw321GFNVKKW=xs-6exMxeoM7=krsL2T3g@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] ipv4: avoid divide by zero in fib_rebalance
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, =?UTF-8?Q?Peter_N=C3=B8rlund?= <pch@ordbogen.com>, 
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 5:53=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
+On Thu, Aug 27, 2026 at 8:27=E2=80=AFPM Zihan Xi <zihanx@nebusec.ai> wrote:
 >
-> On Mon, Aug 24, 2026 at 12:39:03PM -0300, Victor Nogueira wrote:
-> > tcf_mirred_get_fill_size() only budgets TCA_MIRRED_PARMS, but
-> > tcf_mirred_dump() also emits TCA_MIRRED_BLOCKID whenever the action was
-> > created with a block instead of a device. So tcf_mirred_get_fill_size i=
-s
-> > missing 8 bytes in its accounting.
-> >
-> > Fix this issue by accounting for TCA_MIRRED_BLOCKID unconditionally:
-> > it costs 8 bytes for device-mirred actions and avoids having to read
-> > tcfm_blockid outside tcf_lock, where a concurrent replace could change
-> > it between sizing and dumping.
-> >
-> > Note: Dumping mirred with blocks currently works in most use cases, but
-> > would break in some corner cases, for example, if there are 20 blockcas=
-t
-> > mirred actions in one request, each with a non-ANY hw_stats and a
-> > non-zero user flag, with a listener on RTNLGRP_TC (or NLM_F_ECHO):
-> >
-> > budget 180 B/action -> attr_size =3D 20*180 + 24 =3D 3624
-> >                     -> alloc_skb(3776) =3D 3776, tailroom exactly 3776
-> > emitted 196 B/action -> 20*196 + 24 =3D 3944 > 3776
-> >                      -> tca_get_fill() fails
-> >
-> > Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
-> > Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> fib_rebalance() computes the total eligible nexthop weight in one pass
+> and programs upper bounds in a second pass. A concurrent change to
+> ignore_routes_with_linkdown can make the first pass return zero while
+> the second pass sees an eligible nexthop, resulting in division by zero.
 >
-> Hi Victor,
+> If the first pass reports a zero total, set each nexthop upper bound to
+> -1 and skip the division. This matches the IPv6 fix in commit
+> d2c26c2911dd ("ipv6: avoid divide by zero in rt6_multipath_rebalance")
+> and preserves the lock-free rebalance path.
 >
-> Although the issue flagged below by an AI-generated review of this patch[=
-1]
-> may be strictly out of scope for this patchset I am pasting it here
-> because I see that quite some work is being undertaken to correct
-> get_fill_size issues and I wanted to be sure that this is considered
-> on the scope of that broader set of work.
->
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.41=
-43642-1-victor%40mojatatu.com
->
-> AI-generated review text:
->
->   This is a pre-existing issue and not something this patch introduces, b=
-ut
->   while the audit is being done on get_fill_size callbacks, was act_gate
->   looked at?  Its shortfall is unbounded rather than a fixed 8 bytes.
->
->   net/sched/act_gate.c:tcf_gate_get_fill_size() {
->         return nla_total_size(sizeof(struct tc_gate));
->   }
->
->   That is 24 bytes, while tcf_gate_dump() emits TCA_GATE_BASE_TIME,
->   TCA_GATE_CYCLE_TIME and TCA_GATE_CYCLE_TIME_EXT via nla_put_u64_64bit()=
-,
->   plus TCA_GATE_CLOCKID, TCA_GATE_FLAGS, TCA_GATE_PRIORITY, TCA_GATE_TM a=
-nd
->   a per-entry nest:
->
->   net/sched/act_gate.c:tcf_gate_dump() {
->         ...
->         entry_list =3D nla_nest_start_noflag(skb, TCA_GATE_ENTRY_LIST);
->         if (!entry_list)
->                 goto nla_put_failure;
->         list_for_each_entry(entry, &p->entries, list) {
->                 if (dumping_entry(skb, entry) < 0)
->                         goto nla_put_failure;
->         }
->         ...
->   }
->
->   Each TCA_GATE_ONE_ENTRY costs roughly 40 bytes, and parse_gate_list() p=
-uts
->   no bound on the entry count:
->
->   net/sched/act_gate.c:parse_gate_list() {
->         nla_for_each_nested(n, list_attr, rem) {
->                 if (nla_type(n) !=3D TCA_GATE_ONE_ENTRY) {
->         ...
->   }
->
->   So for one gate action the emitted dump is about 256 B plus 40 B per ga=
-te
->   control list entry, against tcf_action_fill_size() returning 264 + 24 =
-=3D
->   288 B with an NLMSG_GOODSIZE floor of about 3776 B on x86_64.  Beyond
->   roughly 88 entries, does tca_get_fill() start failing?
->
->   If it does, two effects follow.  RTM_GETACTION on such an action return=
-s
->   -EINVAL unconditionally, since tcf_get_notify() builds the reply even w=
-ith
->   no listener.  And on RTM_NEWACTION with an RTNLGRP_TC listener or
->   NLM_F_ECHO, the failure happens after the action is created:
->
->   net/sched/act_api.c:tcf_action_add() {
->         ret =3D tcf_add_notify(net, n, actions, portid, attr_size, extack=
-);
->         /* only put bound actions */
->         tca_put_bound_many(actions, init_res);
->         return ret;
->   }
->
->   leaving the gate action installed while userspace is told the command
->   failed.  Would it make sense to mention act_gate in the series, or fix =
-it
->   in the same audit, so readers do not assume the sizing audit is complet=
-e?
+> Fixes: 0e884c78ee19 ("ipv4: L3 hash-based multipath")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 
-This looks like a legit issue, but I think it should be part of another ser=
-ies.
-In the case of act_gate, I think we should limit the maximum number of
-act_gate control list entries first.
-Since those are unbounded today, the message size could grow
-significantly, creating a clear path for excessive memory allocations.
-Analogously, it seems like sch_taprio has a similar issue...
-Since the entires there are also unbounded, it might not fit on a dump
-which always allocates NLMSG_GOODSIZE.
-Will also take a look later.
-
-cheers,
-Victor
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
