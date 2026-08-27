@@ -1,172 +1,156 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A8837B400
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 14:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913847424F;
+	Thu, 27 Aug 2026 14:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787839676; cv=none; b=o2ioVpWNwgqWMziRW4DFyhWLWJqecK0k85kqd8VqH6gjoeAf7DEutBERU+pNnmyaKW9NsV/APK/6wcEYQy6tQDN4RCAxCXyYJNq7qElRudoCG6AwV+3h4TQ3VKRMpst2Jfx/WoL+cEoFY7jGOYan8YXrgwawPR4S+w0nfI7CLD4=
+	t=1787839995; cv=none; b=mS5ZA/C4Xue3WB6dZBtKtYAaAbhYPmK9E/ubkwcmOsZ3dmlOtKyjoxR8BpWxSPPvfsg0QZplwnLT8kGxsmDp+FTpsrQcg/luXXYd1zEihxNPFHsehxXdGozdjHoMV9Y8ip0qRfVWYwqpr+swRuM7Eo5nRZBmM79cGg9xwKTXCBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787839676; c=relaxed/simple;
-	bh=+ciPl3/mLFgpvo1njgY75oEIlCiA/sU3D3DllCFwnm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=saJ+vpaJTHFtTDHIEyrKmk1gp83FSdt6n8d2BfVZkMesRzzli/kr4qXYoMX0gb2KIJv8hM0IFNvMnjv+5I8W5+JNVjb2asyUr5gpntcRZH4TLEvdbKyF4+iOQZp9MSABvrDf+bx4iEmFAEPJlPwlKWlBb+yzTxpEQq/r1ip2bY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ciUbor1J; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787839995; c=relaxed/simple;
+	bh=qgoTk0FffKkqSpgQvoC0WiZvAqC3Sczemg8Y1gXFwzI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aa24add7BPW3S1vNPsu5VA4mCpKttGjPHJFHaViJ42IwNbnQvvjgEMhlSthH/FmX2luO2biey7uNZBSXHXXYyMAqK/fQZxZychIdzdmTh0qm1lud7ZIxAlBeVxs3S71TWjGI5I8Av++I7xhyNoWG7eKveoHhubeIq3cMCyRa+6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=q4UtTmqE; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ciUbor1J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787839664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CzR6A+BIiEoqvwSCIdFJiW75M7DsswKBnPGYvG71oTM=;
-	b=ciUbor1Jju/UNh0r/nhyj5BuRuhLTxzlNLgsYqot480ZyvoIZQElfx3RMs1Lio3B0uHX5w
-	/VHvrqHtjNzhbh33V+uM8NCSH906AASdkSzwxlPqacjS/hrKESXTMUa3Yga2g9IhJsubFq
-	/6/3qy9pC0mIG8wtNoojWPTlPkhh1hE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-364-e4GPXzNpOva9frK6c6qP9g-1; Thu,
- 27 Aug 2026 10:07:40 -0400
-X-MC-Unique: e4GPXzNpOva9frK6c6qP9g-1
-X-Mimecast-MFC-AGG-ID: e4GPXzNpOva9frK6c6qP9g_1787839658
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3528D1933E8F;
-	Thu, 27 Aug 2026 14:07:38 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.49])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EC9BA1955F71;
-	Thu, 27 Aug 2026 14:07:34 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>
-Subject: [PATCH net] inet: frags: strip GSO state from fragments before reassembly
-Date: Thu, 27 Aug 2026 16:07:07 +0200
-Message-ID: <937926e509f2acd8e0e66520dc2b30fd6b4d1687.1787839506.git.pabeni@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="q4UtTmqE"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787839986; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=F6giDRd0p/yf7qoIy3FaS4PKsSAbcJZMzUCM/HAW+00=;
+	b=q4UtTmqEPO/YZApv0sR3Zll9k9ZBBfq3EeLiBMEcid2nanA2J5o4CVfsuVxWzIo5BdLEfcPxOmIIdd5igbaw0N8R4vtBq+J3IamXvrHFcYmhIzeoH3Gi5lB0SFmtLAR8F14Gpz8g/3/qGSytKPJzBQ1Gb4ehMzu+4TRd/ScGIXg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R251e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X9jskyo_1787839660;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X9jskyo_1787839660 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 27 Aug 2026 22:07:41 +0800
+Date: Thu, 27 Aug 2026 22:07:40 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
+	hidayath@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net/smc: serialize clcsock teardown in
+ smc_accept_dequeue
+Message-ID: <apBErK3BBw0KHd6Y@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20260824065851.1070988-1-mjambigi@linux.ibm.com>
+ <ao5bB9OCbJ5PQbEp@linux.alibaba.com>
+ <bd56d983-e5bf-4343-910e-8965c3ff57dc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <bd56d983-e5bf-4343-910e-8965c3ff57dc@linux.ibm.com>
 
-From: Xinyang Ge <xinyang@anthropic.com>
+On 2026-08-26 14:42:31, Mahanta Jambigi wrote:
+>
+>
+>On 26/08/26 8:48 am, Dust Li wrote:
+>> On 2026-08-24 08:58:51, Mahanta Jambigi wrote:
+>>> smc_accept_dequeue() open-codes clcsock teardown for SMC_CLOSED child sockets
+>>> without taking clcsock_release_lock:
+>>>
+>>>  new_sk->sk_prot->unhash(new_sk);
+>>>  if (isk->clcsock) {
+>>>      sock_release(isk->clcsock);
+>>>      isk->clcsock = NULL;
+>>>  }
+>>>
+>>> This bypasses the clcsock_release_lock discipline used elsewhere in SMC clcsock
+>>> lifetime handling. In particular, other paths serialize clcsock access and
+>>> updates with clcsock_release_lock, but this local teardown path does not.
+>>>
+>>> Fix it by taking clcsock_release_lock around the local teardown and by storing
+>>> NULL before sock_release(), matching the established ordering used by other
+>>> clcsock teardown paths.
+>>>
+>>> Fixes: 127f49705823 ("net/smc: release clcsock from tcp_listen_worker")
+>>> Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
+>>> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+>>> ---
+>>> net/smc/af_smc.c | 12 ++++++++----
+>>> 1 file changed, 8 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>>> index 00403175b740..bbf8269876ee 100644
+>>> --- a/net/smc/af_smc.c
+>>> +++ b/net/smc/af_smc.c
+>>> @@ -1833,10 +1833,14 @@ struct sock *smc_accept_dequeue(struct sock *parent,
+>>> 		smc_accept_unlink(new_sk);
+>>> 		if (new_sk->sk_state == SMC_CLOSED) {
+>>> 			new_sk->sk_prot->unhash(new_sk);
+>>> -			if (isk->clcsock) {
+>>> -				sock_release(isk->clcsock);
+>>> -				isk->clcsock = NULL;
+>>> -			}
+>>> +			mutex_lock(&isk->clcsock_release_lock);
+>>> +			if (isk->clcsock) {
+>>> +				struct socket *clcsock = isk->clcsock;
+>>> +
+>>> +				isk->clcsock = NULL;
+>>> +				sock_release(clcsock);
+>>> +			}
+>>> +			mutex_unlock(&isk->clcsock_release_lock);
+>> 
+>> Why not call smc_clcsock_release() here ?
+>
+>I initially considered *smc_clcsock_release()*, but it unconditionally
+>calls cancel_work_sync() for child sockets (since listen_smc is always
+>set and current_work() != &smc->smc_listen_work is always true here).
+>Even though smc_listen_work has already completed before
+>smc_accept_enqueue() is called, cancel_work_sync() is not truly free on
+>that path — it still acquires the worker pool spinlock and scans the
+>executing-worker list before determining the work is idle. The inline
+>open-coding avoids that overhead entirely.
 
-A virtio_net_hdr (tun/tap, or AF_PACKET with PACKET_VNET_HDR) can mark
-an IPv4 or IPv6 fragment as GSO; nothing relates gso_type to frag_off.
-inet_frag_reasm_prepare()/inet_frag_reasm_finish() keep the first
-fragment's skb as the head of the reassembled datagram, including its
-shinfo->gso_size/gso_type/gso_segs, and chain the remaining fragments
-on frag_list with whatever linear/paged layout they arrived with.
+OK
 
-After ip_defrag() (ip_local_deliver(), nf_defrag_ipv4, ...) the
-reassembled skb therefore still claims to be GSO (SKB_GSO_DODGY), and
-the next software segmentation point - udp_rcv_segment() on local
-delivery, validate_xmit_skb(), or the ip_finish_output_gso() slow
-path - hands it to skb_segment(). skb_segment()'s frag_list walk
-assumes GRO-shaped input and hits one of its BUG_ON()s. Two writes to
-a tap by an unprivileged user in its own userns are enough:
+>
+>> 
+>> After looking deeper into this issue, I found smc_diag_msg_common_fill()/
+>> smc_getname() and many other branches hasn't hold lock_sock() and may also
+>> have the race issue ? For example, smc_getname() calling smc->clcsock->ops->getname()
+>> while the other workqueue is releasing the clcsock.
+>
+>I am addressing the smc_diag_msg_common_fill() issue via a separate
+>patch[1].
 
-  kernel BUG at net/core/skbuff.c:4899!
-  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-  CPU: 0 UID: 1000 PID: 82 Comm: poc Not tainted 7.2.0-pentest+ #2
-  RIP: 0010:skb_segment+0x20ca/0x48b0
-  Call Trace:
-   <TASK>
-   __udp_gso_segment+0x29a/0x27d0
-   udp4_ufo_fragment+0x458/0x6c0
-   inet_gso_segment+0x429/0x1340
-   skb_mac_gso_segment+0x233/0x4f0
-   __skb_gso_segment+0x308/0x660
-   udp_queue_rcv_skb+0x440/0xad0
-   udp_unicast_rcv_skb+0xc7/0x2c0
-   udp_rcv+0x16ce/0x2260
-   ip_protocol_deliver_rcu+0x197/0x2d0
-   ip_local_deliver+0x430/0x690
-   ip_rcv+0x16f/0x1f0
-   __netif_receive_skb_one_core+0x15e/0x1c0
-   __netif_receive_skb+0x1e/0x110
-   netif_receive_skb+0xf6/0x5c0
-   tun_rx_batched.isra.0+0x3ab/0x790
-   tun_get_user+0x17c3/0x3550
-   tun_chr_write_iter+0xba/0x1b0
-   vfs_write+0x646/0x1130
-   </TASK>
-  Kernel panic - not syncing: Fatal exception in interrupt
+What about other places that dereference clcsock, like smc_getname()/smc_set_keepalive() ?
 
-This runs with BH disabled, so it is a panic rather than an oops. The
-same is reachable with CAP_NET_RAW in a netns where a defrag point
-precedes a GSO point, and from a guest whose VMM forwards
-virtio_net_hdr to a tap. The SKB_GSO_DODGY frag_list checks added by
-commit 3dcbdb134f32 ("net: gso: Fix skb_segment splat when splitting
-gso_size mangled skb having linear-headed frag_list") and by
-commit 9e4b7a99a03a ("net: gso: fix panic on frag_list with mixed head
-alloc types") do not cover it: page-backed heads skip them, and kmalloc
-heads skip them when gso_size == skb_headlen(head), which the sender
-controls.
 
-An skb entering a frag queue is an IP fragment by definition and
-cannot legitimately carry GSO state: GRO does not merge fragments and
-the stack segments before it fragments, so only untrusted sources are
-affected. This has been reachable since
-commit f43798c27684 ("tun: Allow GSO using virtio_net_hdr"), the first
-path that let userspace attach GSO metadata to an IP fragment. Reset
-the GSO fields of every fragment as it is queued, in
-inet_frag_queue_insert(), which IPv4, IPv6, nf_conntrack_reasm and
-6lowpan reassembly share; then neither the head nor the frag_list
-members of the reassembled skb carry them (the members matter too:
-the ip_do_fragment()/ip6_fragment() fast paths send them out as they
-are). The head may remain CHECKSUM_PARTIAL; that is already accepted
-on receive and resolved by skb_checksum_help() in
-ip_do_fragment()/ip6_fragment() on forward.
+>
+>> 
+>> Since SMC has long been plagued by this kind of locking issue, I think we
+>> should consider a long-term solution to address it.
+>> 
+>> What about stop releasing the clcsock early and tie its lifetime to the SMC
+>> socket itself. The early paths don't really need to release it ??? a
+>> kernel_sock_shutdown()/tcp_abort() is enough to stop it, and calling them more
+>> than once is safe because the TCP layer already handles that.  sock_release()
+>> is different: it frees the socket, so it must happen exactly once. If we move
+>> this single release to the final teardown of the SMC socket, no user can exist
+>> at that point anymore (fd users are gone after smc_release(), and every
+>> work/accept-queue context holds a sock reference), which makes both
+>> clcsock_release_lock and all the if (smc->clcsock) NULL checks removable.
+>> 
+>> Ideas ?
+>
+>I agree, but it is a significant refactor touching every early-release
+>path in af_smc.c, smc_close.c etc & it warrants its own patch series
+>with careful ordering of changes.
 
-Tested on top of net.git (dc4b95b8fee9), x86_64: the tap reproducer
-above, two further IPv4 frag_list geometries that reach
-BUG_ON(i >= nfrags) and BUG_ON(!list_skb->head_frag), and an IPv6
-fragment-header variant (udp6_ufo_fragment()) each panic the unpatched
-kernel; with this patch all four datagrams are delivered intact and
-nothing is logged.
+Yes, that should be a bit refactor, are you interested in doing that ?
 
-Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-Cc: stable@kernel.org
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Assisted-by: Claude:unspecified
-Signed-off-by: Xinyang Ge <xinyang@anthropic.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
- net/ipv4/inet_fragment.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index fc0cb993959f..c17e57ec7d5c 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -435,6 +435,13 @@ int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
- {
- 	struct sk_buff *last = q->fragments_tail;
- 
-+	/* An IP fragment is never a GSO packet, but an untrusted source
-+	 * (virtio_net_hdr) may have attached GSO metadata to it. Do not let
-+	 * that reach the reassembled skb, whose head keeps the first
-+	 * fragment's shinfo and whose frag_list is not GRO-shaped.
-+	 */
-+	skb_gso_reset(skb);
-+
- 	/* RFC5722, Section 4, amended by Errata ID : 3089
- 	 *                          When reassembling an IPv6 datagram, if
- 	 *   one or more its constituent fragments is determined to be an
--- 
-2.55.0
-
+Best regards,
+Dust
