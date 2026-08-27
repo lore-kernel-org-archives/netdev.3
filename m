@@ -1,309 +1,275 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021097.outbound.protection.outlook.com [40.93.194.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39863F105E
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 20:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787864176; cv=none; b=ku8BjP7xy8P9Lf8K3IWXLnWnFipgq+v3NJuh9ETtHAX7UdEWtb0NQ5nqqV9kt/pzSIvBhWmr/+cycN3glKJ5u1mrJWXEcHvi8QiyJmVlncQ5oDVfaUyaleZxLW/2SKKQCXiPsPukhaMdoga7VSzHNhf6BkSnef/yQKe9ujQqwLI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787864176; c=relaxed/simple;
-	bh=HAb4sKoq3/y24jGZpoYxsxYkCQ3UeXGVfGFniROwOL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mvg1Gb+q3oZjRNPACk8uBIdTryqb8HJtTmGzzNzmDqZhQ/HLXEdxda/ZNfr7fSQt30LpMfhfRe8Bm3hCHnaknK7a/Qu/wGMkgV+qwPxEkziGZryfgol/xPK4/jcex0BGnuev2Rr5eIT2WYUgsu/k6BAgUiX/CF4IG2AtPEW1Ohw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XabJXmco; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8123CAA49
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 21:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787865047; cv=fail; b=UolVGvFC8zYa6WjWBeXm3asENCTAmqonMMF7zhleeyiDhF48lzRXxHvobjC6biE4p6Fd+KhjKnkdxgkGwwtjhYUKJ9YSCvJaZbx3zaLQ4f+/0k8muLqSJumuSwbPdKb/zrRojc4iKEv51K+VOrfvEnHlyWG/X97SqYU3tPAUGkI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787865047; c=relaxed/simple;
+	bh=Pm/9ZVF7BAfchTcrXjkg1HwIk4deHqf/5ZvxQmzZQa4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rqMsKfwsRNVZeM9FiswoRWjZWyCZiAUtwjDJVIQzqkQPc1lYWSyeiS2rivbh4iRkr7Xt561bA8lEPijOyf36J9GIA+Cj6oRv+rK12fcofUEj4si5BVxatexIVcdU/pT2EuoN3pawgX18vLPR93iMro5z5W0LTanhNLaV7EqJugc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=hgJSyBkM; arc=fail smtp.client-ip=40.93.194.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XabJXmco"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49b8f86c6deso1172545e9.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 13:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787864173; x=1788468973; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9IUjECHGRPZ5AS1JgF5ljYEk0yP4ArA0eNWneDlgSHA=;
-        b=XabJXmcoD8ieX1XLELDEk+gHXUy5HRsbbDKgGwzZDJ7BEkwYPpH91mT8vJyRBCAs9z
-         dLV2E84Jyr/lWaW8lCG2z5hB619XrR9pK7d5ll1O6Ga1SBe27xhlwapDcEATYEv9FVFA
-         LKBQyjHQ1ZivKsqWouOgUFImRL87xvCWCCbVTInXJ+9/vfOT3bQXOhh+n4yGoqW1M12s
-         BByNPcZkOI1+1GNTAnfex2HOf7eZoKRfihq0tzYp1R8GGiIrWDcXC/6fiFm4ov9G848+
-         Bs+dFeAkQS1ipz+ewnu8KlA9D0St7jHk1GU5wLwQ0vugrnlzgcQeDP+kHX5ixygHLfPK
-         e0BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787864173; x=1788468973;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9IUjECHGRPZ5AS1JgF5ljYEk0yP4ArA0eNWneDlgSHA=;
-        b=h3sBovaIPQJb2TiTceqMaMVpWrex+sVYWs2KLPKn7sr3uAB3gYoygrh0E7/BRzPwCv
-         VL8y2WJfli/WfoKZJT+tftpIBYJsH/hOz/uj8T7fDgEN89oEQJ+Y3mbxA9m7s//F92hs
-         klRgmHVpHiPIAjYoJMQTNVaWEattFcB9iFQ7rmhVZhtM7+M93uGiQVFz6w/gTu1WqRaB
-         Zx9ebX18VYR+TyrHRJQ4H5kTvmXSaRTBfmX5NKXC9fZlOLyL019u+lZU56WtCKd39xxg
-         jCn33V20FETUFglADfhIEN7N5Ij1VO+FonQY4uekbi6nd9dppL5U/VkPkfUFEawFnpnq
-         AA6A==
-X-Forwarded-Encrypted: i=1; AHgh+Rolp1wLX5KWh9b5xGwPig9Tg1iLNeQlLjKeppNaBpnxTdnWGgm6vZMbIB3g2g9zQAon/G9cBLA=@vger.kernel.org
-X-Gm-Message-State: AFuF++ljTpcAALjQQYsbVXllJqOZbSPAzBRhosjSvYslCmCKz5UeP51+
-	P/DZdjs43L53q9VYhvS2u0v/byzPcwwr0GGvEH24f+zZKt2Lqy2SXA8/
-X-Gm-Gg: AR+sD12HQUV8DJiZyyn9vnf+WnaMeXPjgnU0dkUq/nrknrND8Prvd4z9YqXtOdmrWk/
-	Sip+TqCBgo7QcVXUSfsTccBVGS7FxUTjsOu/7RFzrgxhJYRrPdpT+VOcRrXZ77H87Rfd5ve4DTh
-	kSdN2/EBhHqFyw3B4zf5nCDVu8p0CIx7Vq4o5dqmvQTQFHmR8lGN43SSgxSbASrwThEcJ81PUcH
-	Zdm1aj21cAJwPeadLNYfQN/Te7qrRlRcuPSVk83yvw2DUBEmQTxUn4srRFs8tlsBEwoOI14dlCJ
-	W8fo5EUHLaYdlTu6NPstFAZzGhxBmNBV07QmgavRGI3uoOn2srS64SESZtDMzQSMlat1Nk+apJl
-	qSfRdMXz0AacEly42nZOuX/5HgkVtJHTqqe/BdsQuu09bADsU+RBtfX9YnwiVhvVV+1MkCv4kaa
-	XaTdZigQhLQKEk71x0nlNj6fbA+Tx4tToH3Wwiux4XXk0DewvcaqkSgGzRYFP+YrvhFKd9QgIJ0
-	mZjJTEV0dk0QsK7E82+hZ3Hoh5VBxRlzRGl
-X-Received: by 2002:a05:600c:6091:b0:499:484a:98e7 with SMTP id 5b1f17b1804b1-49b91c4b3c5mr27624945e9.14.1787864172931;
-        Thu, 27 Aug 2026 13:56:12 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b9268e134sm4808735e9.4.2026.08.27.13.56.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 13:56:12 -0700 (PDT)
-Date: Thu, 27 Aug 2026 21:56:11 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net v5 2/2] bonding: fix u32 overflow in compute_gap()
-Message-ID: <20260827215611.1cb9f252@pumpkin>
-In-Reply-To: <9e71daf9-aad4-4c8b-9fc4-7429f62130c7@blackwall.org>
-References: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
-	<20260825-bond_overflow-v5-2-7a800de133f1@kylinos.cn>
-	<20260827192048.39ea95e6@pumpkin>
-	<9e71daf9-aad4-4c8b-9fc4-7429f62130c7@blackwall.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="hgJSyBkM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hVe1UX4SeEmYncMzz980Wf8FsSWhL8rLU6+bJkJtEPzIi2Cspo5pHUpiHhnADl+VK9hyV9SczMTyYySWOFt6pU9AtbJ8BqGFC5It7k2nSx9V+lHf/2o8c+sst1j9E8aJ+5cAh5fXA9XAuJWwfibmqOk/YhR19tTgABgrqhNfUMq8YZXOu1bWn1nVxZxVCY00ETiBvOf65gxzTx2vXe5zf7KFEwOWVBqT5B49sPw5bzdKh7GbGFTbnbfwfpY0KvbZiXa7+repjaffvGha0wIyh7jGUC5mTFkQe7KRbq/4zOirZpxySCgy/+hOV40E1+07LjvQlyo0FCzeTBehRa6R0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KeMArLL0HP9j1Upy91bt8TAepaUry3AbwDkA3mXdqBY=;
+ b=J3qVbZ4XO3ZAW2ejsjyYZSfShBJP8Ip59z/visihDypPULe8uipvEh5Gix14c9laPjvv59XCv3osZv06QKDqIxWwukb5B7HHpEwyAuUPqGUJYSRMgZWZ7eMP6Rw4gzrd+Vc1XM06kJLwMj49I/SmYCatvqq1NYm//p5nvphiqph5lCiHRAddcqj7WcB+2SqTaeUHdte3kcY2/c24bhif1aYBmt7bzVCVmXhPe4Ffv6iwcv688X8o0Ga/SyL5mDvUnGV6DgS6L+ykqmM6a4+te9sEw+PeVEj1kHuoZxWMVf35X+yX0eeb0JQkdkXxIgjgZm/Qlhl+jEMLWEsMJN3PcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
+ dkim=pass header.d=pa.msu.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KeMArLL0HP9j1Upy91bt8TAepaUry3AbwDkA3mXdqBY=;
+ b=hgJSyBkMSvrX/bJt5H+MrEMQRlSQ/5c0hEqbnVRIk8FAMkzHvKrBC6DLx90gZaDqjC5afMvGl4F9wYpnIj1h4PGizxk9QXIbP9MTUG92k+xNgfY+VGUPLd3Azx+eM6HTisnHpi2FQ3vT2QAeSILmuN8qLBNHXqN8/6hdIXjBe4ZOTc177thLjZUqNjsCei0aHKVseLbKj4uG0D4hpMig2K7Oag/ROtzJfhSRlQNTffQHGHdG82+fpyp5IOcYPGIG90EuMkqO5ZdXTrec01M2qQTRtmyFuCTnL10eDcuZqXxc/Qtt5LhHfxiNIGiul5MRzTJ2UL0FV+5fWsIa+x3acg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=pa.msu.edu;
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com (2603:10b6:5:2a9::12)
+ by IA0PPF44635DB8D.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bcc) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
+ 2026 21:10:43 +0000
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5]) by DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5%6]) with mapi id 15.21.0339.012; Thu, 27 Aug 2026
+ 21:10:43 +0000
+Message-ID: <1746a953-8f62-40f9-aa09-5cf87ed3a196@pa.msu.edu>
+Date: Thu, 27 Aug 2026 17:10:42 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 2/2] net: macb: add support for 1000BASE-X
+ autonegotiation to PCS
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
+ conor.dooley@microchip.com, charles.perry@microchip.com, andrew@lunn.ch,
+ kuba@kernel.org
+References: <20260813153705.23407-3-nwhitehorn@pa.msu.edu>
+ <20260818131426.191990-1-pabeni@redhat.com>
+Content-Language: en-US
+From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
+In-Reply-To: <20260818131426.191990-1-pabeni@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH2PR07CA0056.namprd07.prod.outlook.com
+ (2603:10b6:610:5b::30) To DM6PR12MB4337.namprd12.prod.outlook.com
+ (2603:10b6:5:2a9::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4337:EE_|IA0PPF44635DB8D:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5bbf272-591d-47a6-2701-08df047fa7e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|23010399003|366016|786006|376014|10067099003|11063799006|5023799004|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	++RqTqojbaWRGbrypFR1C8zenfW9T4ga4TUMr1nyO0SXzcsdERTzlmdcfypH9VaqPc6NGpuO/aPa4no+CaKzV4MbpDXzEqbh22ACNcbEd/IuXzB46407EvB7UOGH0sUrPE+Huv0fI6vRwmhbptB53TMcZwNfAcvDtk6dCpvSvY3YddkBRCl140Wrw+oYJixoivChnFMvy815j5JjDPQh0w0HQg15LhRxtNJPplwqmp452tHIYsy5RSVOKm/olmvtpaKdcClDUpzWEmYTD0aIZEhgyInVTiBVz+QfpgGWYEyNpgl+p21grH4Ysgj0v/DIEQ2gZp8Wu1hIbCSLr00+KLFxzqct2mRhoHRl7cjFiNwokvgeHYeSHc9OTPASK6bsrSD46UTe6j77qnV4YlzERXudGoNnFTGWSLH8ikODj7LpxccbrqZu8dVbMwqLdbxoJ6pln7rRaMx4slO5m/D/g/41GZEStMtAEXkRRm2gU1yTmUwuLSBTofJ30wjEWFELjgfmeub9SjviRqAxQIJAF1uveZ9TfgKiNReLHkfNJQWeh5DUwKA4t3f6B9Lp6X6w7SMWTOeaiXLS9H7EmmGKKyZQjQX/YfDq2EHeZGahVygrZGz35ydBpZiLjsEPOox1
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4337.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(23010399003)(366016)(786006)(376014)(10067099003)(11063799006)(5023799004)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bjlIV1VXUC9pZjJGS2pDaHZxSWxKeGpLSzdMakpvQ0JYWTJvV3FFZ0pVRTB4?=
+ =?utf-8?B?S2prQTlTbHJLN2wxWUdNK01uSHd1NkVsNFFHNldYOTZMNjhyK0tNUExndHly?=
+ =?utf-8?B?NVhjaC9PamtaN3FyRlAvdXJ0SEdsY1pQUVl1a0xxUU1TRk56amsxSE55ajFN?=
+ =?utf-8?B?b0VSYnZRcVhzcmtYZklYYTdVc2FmdTBERmdjbDUzdmplSTFidUlzcWwremZo?=
+ =?utf-8?B?bjBJRUQ1OXQ4MGwzTkcvUE9ZeUFhSWNJZU82cmp6blV1RWU0NHozcE0zQkNq?=
+ =?utf-8?B?K3hiaU1Meis4UnZoQmxKUmJ6VWRqZkRCTUprSXlPQ0RqL3JmMzFYSWNDSk9G?=
+ =?utf-8?B?UkRiMjRHelBoQjM2ZDNLZnpjeWlGcldkZ01BTnJDZmVSYXE5TEhad0prK3A0?=
+ =?utf-8?B?d2hwZ0w4cDFqcWJwVGlJVEpIZ1lxQWVQM1RQVVFFK2JBU3NkSFZsM1l1NzZI?=
+ =?utf-8?B?NnBVUmdPOWdHbVZ3NWl1OXN5U2xtYnluMkpvNnFxL0RScUJjaFBDWmZ6eDdM?=
+ =?utf-8?B?RFV6S1l0ZjB3Y2FBQnZJU29UN1dBOXQxOHNnZitrWDJDdCs3RlpXZ0c2NU1w?=
+ =?utf-8?B?OEtsVzZnZ2pmYktST0NGK0Q1R1hHS0lwWU5KM1VYU1NLN1lFY2tGRVZKejl4?=
+ =?utf-8?B?bXhYZGU0RFNRR0c5SWhNUjQvYTh0RHE4bVdRRjVzWUVXaHNMczJEeEFDcCth?=
+ =?utf-8?B?VHhzUDZIMkl3ZHRlYW9XMXZBY1BtYkJLSE9MWERZU1hORUJ3MDNBcUhWNnY5?=
+ =?utf-8?B?aTFOV25XZXdDYkhEREovMEovZDVuSTgrTFpjL3d3QnMzaGtlZzVRa2RJSEdN?=
+ =?utf-8?B?Y21mU2ptQVYwMDdkSEpNZ05pS0ZLM2szeHF5ejRYaTJWVHFicWlUeDNERWhu?=
+ =?utf-8?B?cTNSZTVaVmhNbk1xZXlDRmZMR1BpanJIYVpJNGNGd01KT091Q3dseHpiTFRr?=
+ =?utf-8?B?ZjZtU1gzRVkwT0Z1cnBOcXFTaHVldGQzOUZST2pUc2NXMk9pcFlsV3h1RnlU?=
+ =?utf-8?B?TldkWW1FRnd4YUc1NnV5WGpvQjdYdXpmbTl2Nk5JejlPRmJyY2NScm9DRkpo?=
+ =?utf-8?B?U2lLL1BIdlRkNW0ra0t4MDM5Y0ZqN3B0SzZwZk5HN1FxVW9qeFBubDR6ZEto?=
+ =?utf-8?B?ckg2Y1dTTTZqK0N4dXBTcjdMLzdNalU2bEJvc3gxZ2xqWHJTQlFyY3RmYmY5?=
+ =?utf-8?B?THh1Q2VSMk9JRnBQZm4wYVIrNEhScDVRNFZNd0hRTWs3dXJ4TFgzZkxnandj?=
+ =?utf-8?B?akVDT0NUL3hlNGxtYkNvMG4wZHpKUjhFL2FaV044TnN4RDZDcEFRci9FWEpE?=
+ =?utf-8?B?OWFyeWRtb09wdm5heEYyVDgwWlhOSWhQUEIwdW1ocVErZ0RwQzF3Qk5sN0hE?=
+ =?utf-8?B?TXhyeUdTZEh5NXMrZlBsQVozMmNldUU0SFBZdDV4b0xBSWx5QXhOQy9sVGt4?=
+ =?utf-8?B?bXdyUTIyc3Fub1FwQWJEcVBuNEdid2JpYWpSM0M3d0RkTnU2cVc1dDFYNVNU?=
+ =?utf-8?B?YnlPbm9RekpLVmp6eXJ4VnFVWTJoYUxiNjhFTWtQeUxqWkVCWW1wOWhmOXc2?=
+ =?utf-8?B?dEQrUy9sMFpOUE9MVS9aMHV4ZE51UUVVcU5qRmczS2d2VWtRenpmSEZSRm1n?=
+ =?utf-8?B?NzJEK3d4QnRPNm1QOC82bmhPQjRXT21TZG5Ua01BVTcrWGVDbDFMcTRQVkZy?=
+ =?utf-8?B?TWM2OTRHZHliZUJIV3hyeG05V29Oc2VtRENkVjUraFlaeUQzakMrK3pkRnlw?=
+ =?utf-8?B?VEYyT2RTRUR3ZGx1ZnkwMnpDOGhVc08wc0lKT05JNmtMbWc3a0x3UXVha0RQ?=
+ =?utf-8?B?dW81bHJHRWlTcUJSQVp1YlJlaWNjMXdJL25wdTN4NUpUWVErckFLWVRlRkdH?=
+ =?utf-8?B?NnZZQW1nOWYxUU02Ym80ODJocTFEUm1TenBydTRPdU5ubHRPY1RIMVB2TGs0?=
+ =?utf-8?B?ZjhyMVBjUmIrSDRjZ2gzR2VNTXNzVWt3MExvNWlGUWhJZGpkcXU2VnloOG8w?=
+ =?utf-8?B?NHU4bHBGb0Q4QSttZWVxYmVWMDBGcHNSN1ZiSTAxZldOT2ZhNXljSFoyL0U3?=
+ =?utf-8?B?blhIUTA3bVNYQlZoUUkxaEI2OTlDT09jYXNHbkVab3hUVktrTDFoREtUL3lI?=
+ =?utf-8?B?aFJTMmh0OVp6aEF1ZDFzREw0V1hoQnpweitncTUyOGY4NW1RVVlzS3RzTVhp?=
+ =?utf-8?B?bTJxamR3M2R4Rzkxa2x5RWNoUS9EWk5nYkxUMkltTnE1N0tqUDN2d1FEcTJu?=
+ =?utf-8?B?UTJ1TmxLRGhpZlE4cEt6Rk5tb2Y4czRLNDM1U0hla0lhZm5MendQN2N1WGJo?=
+ =?utf-8?B?S1NUMHMwRk42eW93bE9uTzFKL1dacmtPemdhMVVWSjVYYTZBL3oxUT09?=
+X-OriginatorOrg: pa.msu.edu
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5bbf272-591d-47a6-2701-08df047fa7e0
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 21:10:43.5137
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V4lY2ZaYsz3rrRny2/K2s8WImiK4n+dng2dXb2N/Al+nrIAver32eBpztGJDMEQW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF44635DB8D
 
-On Thu, 27 Aug 2026 22:09:04 +0300
-Nikolay Aleksandrov <razor@blackwall.org> wrote:
 
-> On 27/08/2026 21:20, David Laight wrote:
-> > On Tue, 25 Aug 2026 09:01:30 +0800
-> > Hangbin Liu <hangbin.liu@linux.dev> wrote:
-> >   
-> >> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> >>
-> >> The TLB load-tracking fields tx_bytes, load_history, load, and
-> >> unbalanced_load are all u32. At sustained throughput above ~3.2 Gbit/s
-> >> over the 10-second rebalance interval the byte counters wrap, causing
-> >> compute_gap() to produce incorrect gap values and mis-select slaves.
-> >> Such speeds are common on modern NICs under heavy traffic.
-> >>
-> >> Widen these fields to u64. Use u64_stats_sync to protect the per-cpu
-> >> unbalanced_load_stats against tearing on 32-bit architectures, and
-> >> div_u64() for the 64-bit divisions. The tx_bytes and load_history
-> >> are protected in spin_lock. Also protect the slave load writing in
-> >> bond_alb_monitor() with spin_lock in case of tear on 32-bit.  
-> > 
-> > How about changing the rebalance interval to either 8 or 16 seconds
-> > to avoid the expensive divide?
-> > Alternatively multiply the other side of the comparisons by the interval,
-> > replacing the expensive divide with a cheap multiply.
-> > 
-> > David
-> >   
-> 
-> How is that relevant to these patches?
-> And how does that help at all if today that is done at about 10 second interval?
 
-The 10 seconds is almost certainly completely arbitrary.
-It is relevant because the 64bit divide is significantly expensive on 32bit.
+On 8/18/26 09:14, Paolo Abeni wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+> ---
+> net: macb: add support for 1000BASE-X autonegotiation to PCS
+>
+> This decouples PCS enablement from the SGMII mode selection, advertises
+> PHY_INTERFACE_MODE_1000BASEX to phylink when the controller has a PCS, and
+> adds an autonegotiation restart implementation plus a return of 1 from
+> pcs_config() when the advertisement changed.
+>
+>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+>> index c15a9c7e69d37..9097ccb14c13b 100644
+>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> [ ... ]
+>
+>> @@ -1061,9 +1075,12 @@ static int macb_mii_probe(struct net_device *dev)
+>>   			  bp->phylink_config.supported_interfaces);
+>>   		phy_interface_set_rgmii(bp->phylink_config.supported_interfaces);
+>>   
+>> -		if (bp->caps & MACB_CAPS_PCS)
+>> +		if (bp->caps & MACB_CAPS_PCS) {
+>> +			__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+>> +				  bp->phylink_config.supported_interfaces);
+>>   			__set_bit(PHY_INTERFACE_MODE_SGMII,
+>>   				  bp->phylink_config.supported_interfaces);
+>> +		}
+> [Severity: Medium]
+>
+> Advertising PHY_INTERFACE_MODE_1000BASEX here makes a device tree with
+> phy-mode = "1000base-x" acceptable on every PCS-capable GEM, including the
+> zynqmp, versal, mpfs and pic64hpsc configs whose .init hook is
+> init_reset_optional().  Should that hook also learn about 1000BASE-X?
+>
+> It still gates the whole SerDes and firmware bring-up on SGMII only:
+>
+> drivers/net/ethernet/cadence/macb_main.c:init_reset_optional() {
+> 	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
+> 		/* Ensure PHY device used in SGMII mode is ready */
+> 		bp->phy = devm_phy_optional_get(&pdev->dev, NULL);
+> 		...
+> 		ret = phy_init(bp->phy);
+> 		...
+> 			ret = zynqmp_pm_set_gem_config(pm_info[1], GEM_CONFIG_FIXED, 0);
+> 			...
+> 			ret = zynqmp_pm_set_gem_config(pm_info[1], GEM_CONFIG_SGMII_MODE, 1);
+> 	}
+>
+> With phy-mode = "1000base-x" that branch is skipped, so bp->phy stays NULL,
+> phy_init() is never called on the PS-GTR lane, and GEM_SGMII_MODE is never
+> set in the ZynqMP GEM_CLK_CTRL register, which is what routes the MAC onto
+> the serial/PCS clock path.
+>
+> Is the failure also silent?  macb_open() calls
+> phy_set_mode_ext(bp->phy, PHY_MODE_ETHERNET, bp->phy_interface) and
+> phy_power_on(bp->phy), and both return 0 immediately for a NULL phy in
+> drivers/phy/phy-core.c, so probe and open succeed with no diagnostic while
+> the link can never come up.
 
-David
+Per an earlier discussion on this list 
+(https://lore.kernel.org/netdev/DKH9Z0IMH95B.3JWB4PXQC9SN5@bootlin.com/), 
+this seems like the right thing to do in this case. This particular code 
+is apparently ZynqMP-specific and only relevant in SGMII mode; the 
+particular PHY control behavior here is for particular onboard devices 
+that need to be reset only when operating in SGMII mode. I don't have 
+any of this hardware, however, so have to rely on the comments from Théo 
+Lebrun here.
+>
+>> @@ -4932,7 +4949,9 @@ static int macb_init_dflt(struct platform_device *pdev)
+>>   	/* Set MII management clock divider */
+>>   	val = macb_mdc_clk_div(bp);
+>>   	val |= macb_dbw(bp);
+>> -	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII)
+>> +	if (bp->phy_interface == PHY_INTERFACE_MODE_1000BASEX)
+>> +		val |= GEM_BIT(PCSSEL);
+>> +	else if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII)
+>>   		val |= GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL);
+>>   	macb_writel(bp, NCFGR, val);
+> [Severity: Medium]
+>
+> macb_init_dflt() is reached from init_reset_optional() a few statements after
+> the SGMII-only branch above, and macb_mac_config() sets PCSSEL for
+> 1000BASE-X too.  Does that leave NCFGR.PCSSEL enabled while the SerDes lane
+> and the firmware GEM clock mux were never programmed on those platforms?
 
-> 
-> >>
-> >> Rework compute_gap() to use s64 arithmetic throughout. Return LLONG_MIN
-> >> when the speed is unknown.
-> >>
-> >> Detected by AI code review.
-> >>
-> >> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> >> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> >> ---
-> >>   drivers/net/bonding/bond_alb.c | 52 ++++++++++++++++++++++++++++++------------
-> >>   include/net/bond_alb.h         | 11 +++++----
-> >>   2 files changed, 44 insertions(+), 19 deletions(-)
-> >>
-> >> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-> >> index 0afed2c39231..9a43a1f47893 100644
-> >> --- a/drivers/net/bonding/bond_alb.c
-> >> +++ b/drivers/net/bonding/bond_alb.c
-> >> @@ -6,6 +6,7 @@
-> >>   #include <linux/skbuff.h>
-> >>   #include <linux/netdevice.h>
-> >>   #include <linux/etherdevice.h>
-> >> +#include <linux/ethtool.h>
-> >>   #include <linux/pkt_sched.h>
-> >>   #include <linux/spinlock.h>
-> >>   #include <linux/slab.h>
-> >> @@ -74,8 +75,8 @@ static inline u8 _simple_hash(const u8 *hash_start, int hash_size)
-> >>   static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
-> >>   {
-> >>   	if (save_load) {
-> >> -		entry->load_history = 1 + entry->tx_bytes /
-> >> -				      BOND_TLB_REBALANCE_INTERVAL;
-> >> +		entry->load_history = 1 + div_u64(entry->tx_bytes,
-> >> +				      BOND_TLB_REBALANCE_INTERVAL);
-> >>   		entry->tx_bytes = 0;
-> >>   	}
-> >>   
-> >> @@ -133,7 +134,7 @@ static int tlb_initialize(struct bonding *bond)
-> >>   	if (!new_hashtbl)
-> >>   		return -ENOMEM;
-> >>   
-> >> -	bond_info->unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
-> >> +	bond_info->unbalanced_load = netdev_alloc_pcpu_stats(struct unbalanced_load_stats);
-> >>   	if (!bond_info->unbalanced_load)
-> >>   		goto out;
-> >>   
-> >> @@ -170,8 +171,14 @@ static void tlb_deinitialize(struct bonding *bond)
-> >>   
-> >>   static long long compute_gap(struct slave *slave)
-> >>   {
-> >> -	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
-> >> -	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
-> >> +	u32 raw_speed = READ_ONCE(slave->speed);
-> >> +
-> >> +	/* It's meaningless to compare gap on unknown speed NIC */
-> >> +	if (raw_speed == (u32)SPEED_UNKNOWN)
-> >> +		return LLONG_MIN;
-> >> +
-> >> +	return ((s64)raw_speed << 20) - /* Convert to bits per sec */
-> >> +	       ((s64)SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
-> >>   }
-> >>   
-> >>   static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
-> >> @@ -188,7 +195,7 @@ static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
-> >>   		if (bond_slave_can_tx(slave)) {
-> >>   			long long gap = compute_gap(slave);
-> >>   
-> >> -			if (max_gap < gap) {
-> >> +			if (!least_loaded || max_gap < gap) {
-> >>   				least_loaded = slave;
-> >>   				max_gap = gap;
-> >>   			}
-> >> @@ -1354,8 +1361,14 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
-> >>   	if (!tx_slave) {
-> >>   		/* unbalanced or unassigned, send through primary */
-> >>   		tx_slave = rcu_dereference(bond->curr_active_slave);
-> >> -		if (bond->params.tlb_dynamic_lb)
-> >> -			this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
-> >> +		if (bond->params.tlb_dynamic_lb) {
-> >> +			struct unbalanced_load_stats *pcpu_load;
-> >> +
-> >> +			pcpu_load = this_cpu_ptr(bond_info->unbalanced_load);
-> >> +			u64_stats_update_begin(&pcpu_load->syncp);
-> >> +			u64_stats_add(&pcpu_load->tx_bytes, skb->len);
-> >> +			u64_stats_update_end(&pcpu_load->syncp);
-> >> +		}
-> >>   	}
-> >>   
-> >>   	if (tx_slave && bond_slave_can_tx(tx_slave)) {
-> >> @@ -1539,21 +1552,27 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
-> >>   	return bond_do_alb_xmit(skb, bond, tx_slave);
-> >>   }
-> >>   
-> >> -static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
-> >> +static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
-> >>   {
-> >> +	u64 delta, tx_bytes, total_bytes = 0;
-> >>   	struct unbalanced_load_stats *p;
-> >> -	u32 delta, total_bytes = 0;
-> >> +	unsigned int start;
-> >>   	int i;
-> >>   
-> >>   	for_each_possible_cpu(i) {
-> >>   		p = per_cpu_ptr(bond_info->unbalanced_load, i);
-> >> -		total_bytes += READ_ONCE(p->tx_bytes);
-> >> +		do {
-> >> +			start = u64_stats_fetch_begin(&p->syncp);
-> >> +			tx_bytes = u64_stats_read(&p->tx_bytes);
-> >> +		} while (u64_stats_fetch_retry(&p->syncp, start));
-> >> +
-> >> +		total_bytes += tx_bytes;
-> >>   	}
-> >>   
-> >>   	delta = total_bytes - bond_info->prev_total_unbalanced;
-> >>   	bond_info->prev_total_unbalanced = total_bytes;
-> >>   
-> >> -	return delta / BOND_TLB_REBALANCE_INTERVAL;
-> >> +	return div_u64(delta, BOND_TLB_REBALANCE_INTERVAL);
-> >>   }
-> >>   
-> >>   void bond_alb_monitor(struct work_struct *work)
-> >> @@ -1597,8 +1616,13 @@ void bond_alb_monitor(struct work_struct *work)
-> >>   	if (atomic_read(&bond_info->tx_rebalance_counter) >= BOND_TLB_REBALANCE_TICKS) {
-> >>   		bond_for_each_slave_rcu(bond, slave, iter) {
-> >>   			tlb_clear_slave(bond, slave, 1);
-> >> -			if (slave == rcu_access_pointer(bond->curr_active_slave))
-> >> -				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
-> >> +			if (slave == rcu_access_pointer(bond->curr_active_slave)) {
-> >> +				u64 new_load = reset_unbalanced_load(bond_info);
-> >> +
-> >> +				spin_lock_bh(&bond->mode_lock);
-> >> +				SLAVE_TLB_INFO(slave).load = new_load;
-> >> +				spin_unlock_bh(&bond->mode_lock);
-> >> +			}
-> >>   		}
-> >>   		atomic_set(&bond_info->tx_rebalance_counter, 0);
-> >>   	}
-> >> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
-> >> index 6fb09b4fc7e2..32f1981033e4 100644
-> >> --- a/include/net/bond_alb.h
-> >> +++ b/include/net/bond_alb.h
-> >> @@ -57,12 +57,12 @@ struct tlb_client_info {
-> >>   				 * packets to a Client that the Hash function
-> >>   				 * gave this entry index.
-> >>   				 */
-> >> -	u32 tx_bytes;		/* Each Client accumulates the BytesTx that
-> >> +	u64 tx_bytes;		/* Each Client accumulates the BytesTx that
-> >>   				 * were transmitted to it, and after each
-> >>   				 * CallBack the LoadHistory is divided
-> >>   				 * by the balance interval
-> >>   				 */
-> >> -	u32 load_history;	/* This field contains the amount of Bytes
-> >> +	u64 load_history;	/* This field contains the amount of Bytes
-> >>   				 * that were transmitted to this client by
-> >>   				 * the server on the previous balance
-> >>   				 * interval in Bps.
-> >> @@ -118,19 +118,20 @@ struct tlb_slave_info {
-> >>   			 * are the entries that were assigned to use this
-> >>   			 * slave for transmit.
-> >>   			 */
-> >> -	u32 load;	/* Each slave sums the loadHistory of all clients
-> >> +	u64 load;	/* Each slave sums the loadHistory of all clients
-> >>   			 * assigned to it
-> >>   			 */
-> >>   };
-> >>   
-> >>   struct unbalanced_load_stats {
-> >> -	u32			tx_bytes;
-> >> +	u64_stats_t		tx_bytes;
-> >> +	struct u64_stats_sync	syncp;
-> >>   };
-> >>   
-> >>   struct alb_bond_info {
-> >>   	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
-> >>   	struct unbalanced_load_stats __percpu	*unbalanced_load;
-> >> -	u32			prev_total_unbalanced;
-> >> +	u64			prev_total_unbalanced;
-> >>   	atomic_t		tx_rebalance_counter;
-> >>   	int			lp_counter;
-> >>   	/* -------- rlb parameters -------- */
-> >>  
-> >   
-> 
+I think this is the same concern related to the particular ZynqMP PHYs, 
+unless I am misunderstanding what is written here.
+
+>
+> Also, the binding in Documentation/devicetree/bindings/net/cdns,macb.yaml
+> documents phys with maxItems: 1 for the controller without tying it to
+> phy-mode = "sgmii", so can a 1000BASE-X board legitimately expect the driver
+> to initialize that SerDes?
+>
+> One related asymmetry: for a board declaring phy-mode = "sgmii" with an SFP
+> attached, phylink may select 1000BASE-X for the PCS while macb_open() still
+> programs the SerDes submode from the device tree value in bp->phy_interface.
+> Should the submode follow the interface phylink actually selected?
+>
+> Note this does not regress a previously working setup, since 1000BASE-X was
+> not in supported_interfaces before this patch.
+
+This is an interesting question. The behavior after this patch is that 
+the listed phy-mode is basically a default setting: the MAC driver 
+declares all the interfaces it supports (GMII, 1000BASE-X, SGMII, etc.) 
+unconditionally and uses whatever is in the device tree if no 
+higher-level interface calls to select one of the options otherwise. 
+Aside from the SFP layer, I'm not sure there was anything in the kernel 
+that would switch at runtime from e.g. GMII to SGMII and enable the PCS, 
+so this probably didn't come up much. On devices supporting 10G links, 
+which I don't have, setting phy-mode to "sgmii" would not previously 
+have inhibited the phylink layer from switching to 10G-BASE-R in the 
+same way: the device would have come up in SGMII mode, then later been 
+reprogrammed to a higher speed. This patch is equivalent and doesn't 
+change that process: it would come up in whichever mode is in the device 
+tree and then be switched over once the kernel has a better idea of what 
+to do.
+
+I think treating the device-tree value as a default but allowing phylink 
+to do something else listed as supported, as both the existing and 
+modified code do, is the desired behavior, or at least I can't think of 
+a good alternative: if you want to use an SFP, and the SFP has a 
+preferred interface, I don't see a downside to allowing phylink to 
+change which interface is used. And if nothing explicitly chooses one of 
+the interfaces the driver declares as supported, it will use whatever is 
+in the device tree as a default.
+-Nathan
+
+-- 
+Nathan Whitehorn (he/him)
+Associate Professor
+Department of Physics and Astronomy
+Michigan State University
+Biomedical and Physical Sciences 3225
+East Lansing, MI 48824
+(517) 884-5563
+
 
