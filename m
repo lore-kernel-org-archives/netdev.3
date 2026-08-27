@@ -1,292 +1,137 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921F13BB113
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 09:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E48A3B3BFE
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 09:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787821759; cv=none; b=dUac7WBHGy6fDsyd2ccr9FOZ1QfGsTRzhuHvootwsnewnmQgEL1Sc32r0m9rcfh7uxCIG8L+NIci46W3uDMVCPpFAAlFBdUyJlgdAonJ3CohZU4Ky1zv+UJTmcLTeKu+sQe6UNo1ZyHds6FOEI32gYA3yKzwlZ+PFztQpsAweMM=
+	t=1787821799; cv=none; b=YABQfvEfcvimuq2YbYpmtS9ePbReNXTxzpVuhajchcM2OUAr/Ugp0SsxAsLfXLQUA40BDVt/etsy9WKwlYXZmPCecDeLtdm2Tqd9mr0YDJlPXL13SfUK8z42ZTK5oopaJgprUFMSCCacopIU1P7wEd3rbE5lh3MpZdiKc470fS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787821759; c=relaxed/simple;
-	bh=nm3i+GjmpMFUoTcQO0ptVNCqpBf+DZEquh1+BwAStjc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=EIw3AFZvhNOeCjavt6fttRXhfvkCafxDhSBa9ACFdXW6hh/6dvHpOA7fNK3+WAmKTVFFddJGKZbtKv6yf6q+czvL+Ug8Elhjq+RWUwBuXctrl1QDHk/Jh90fIpjdFM/i6itlMQwHQjB1xDDuDlmNcVRnaXXqMDNo8QZ2BfqqnYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpsz17t1787821696t2ff67989
-X-QQ-Originating-IP: aeoXvOO4AYqWroKLjFEs+hovkmWC4rrJQH8Mu+/upW4=
-Received: from smtpclient.apple ( [122.233.170.62])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 27 Aug 2026 17:08:02 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15438221679702872010
-EX-QQ-RecipientCnt: 10
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1787821799; c=relaxed/simple;
+	bh=aswDqIhxn9zDbIYCw7uhogF3N11JxfjDaIzh5muurGE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ie2qfuQjNEfqyRocUKdPyr7DM3bJD3vm7IFkULd4zA/agcozCB5GdUmUDp8AcDleW8IFbbdN6653wBefhjU6OlAL9ldX3737ys8cghvGSFGHjIb6Eh0shJp0nJburt7uIdbxSbRSdAd8nBV9e6SZMg1YnwpoMRsiuHtrakH3yxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y7fStErk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OkEXX7zG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y7fStErk";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OkEXX7zG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787821797;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kExiMJWjGxifaBnSkovuP5HHG9otva8PNINfdnTGN5c=;
+	b=Y7fStErkqaU+4s7FX7hMgzleLV73FbOHvxLkz+75r5V1DT0r9XAPHmdrkY6T+dQJIMz/wa
+	q420+wbWVsQooAhjiCDs7ww1s3LlZ7Rq5509PeRrNyPWwXV4zm6WToICs5Tptq5A2G6Gdf
+	IGo75q/wtwvxnm0G0EgL1iPAdDmE+g0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-274--cqWOwRlMnqdQN0nduFxBg-1; Thu, 27 Aug 2026 05:09:55 -0400
+X-MC-Unique: -cqWOwRlMnqdQN0nduFxBg-1
+X-Mimecast-MFC-AGG-ID: -cqWOwRlMnqdQN0nduFxBg_1787821795
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-482e95788d3so463080f8f.2
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 02:09:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787821794; x=1788426594; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kExiMJWjGxifaBnSkovuP5HHG9otva8PNINfdnTGN5c=;
+        b=OkEXX7zG6v9/CRrK2xFSFrXr5up21txlcT93DQPXGxkkT5h91FiqMpQnZMdH11jtvI
+         2cTagCnfUjqnlisy6yyFAtBAxi+jHKSkm5TRWrXXdWe2xB465DHwNoLPdQEzKRvAyDT6
+         W6nQkO1OHVP6cz/Ma3robdxyOD5qBL1TZYDCJCethRtpJYd7NgvuZv9PuUV2GODWmq74
+         cZApaDG9V+JQqxDOyVmbKCGcjJvs6HIvOqq39QB31Dm6Ed010unb3OIgRNVC9o1l03rM
+         UXOmDv2ZJw+8lUiaFF+1xiad6MLRD/nVxiLw5cpL6bYomgugjUPywO7kkeFY2turZkJ9
+         3mXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787821794; x=1788426594;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kExiMJWjGxifaBnSkovuP5HHG9otva8PNINfdnTGN5c=;
+        b=MAQW1Q3OtDxW2I9CeaE/wrR7vjvebLXWv1Ol9F/dTrrYkrak9/4DRqUBgD1GfSgM9p
+         i+esvQ5gCm1JfTOYmQRbYvk0M4pDWqVEUzCLLnixwwXxUSjscqRNJgKuzZ4u6PC07Gjc
+         yibFH0OFslTmyoFWgH/c978iElvDE7xU+IYSg9RMW5O+JJdlSMmBijVqarjPCdhtifFV
+         ZGEQzwEBOgshmFYFjK4bQ7OWnBeh849kGEBfIkXI4P0fxRJ6HvEFaGMof4kHDW//lOTW
+         phrpgU74+7+l5pTRjPP3vFvml47W60AGgiBvHXUW6DZMHGbRxbPRwKKxRm+MqwNhPMq8
+         DT0A==
+X-Forwarded-Encrypted: i=1; AHgh+RpXWke/L2l3ivQBYkn1BUnlYvwR9TRbNyhr0PPgqMKEkP5/185x13llduXcWO4X19EIuUJhqmI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mcFlNJMuG9+nSrFsPm5QWHRr5XKG7wmMRK8kcPpXImadHsTGG3
+	hrlRQBsU8tfXTSvkI6a6Uxq8Wd6arLLP53E23BvMGAPlC7lsvg+2d9RCRhWu0gB2dVwHFcd5dws
+	Zp9oRhezQxAfVOZQs5SVfamI33J2gZuV5RMOFWojez/mGzkYegUfnk262MQ==
+X-Gm-Gg: AR+sD13L4ynkmLhy5S/u3P9kamlU9cf947Ku8OT2+XkSzEfZoWNMY4qyc3jVvz4pDev
+	Vwv4/xliReitiPWUp6BtR08LJ3VHVhCXCQQ4dLGLJyvv3vsfcZPZJyUXe1oNa0zMxfCiVz+8DzD
+	W6GyWK+EbVWr2mM6FOSidqzoJZap/T5bvn6WeE22BzjwXGvE2f2aQVpfQfAeb+lhPSmPYUjFhaV
+	vR04oXm7hzJVrxxLGAFxxSXD4f8QBbeYky9OunFL/pYRtbRyHGxqLvLSEoTL6U+Brvn021hFrYx
+	bgfKXWLlA54kYmO9h0K8bZ9QXz+/IiuaImpK2s7D8Q6ruvO4O0+faCki6FayrJeaIQwD3VdKH6f
+	OYofxVKwfAULx2kwtyBZFwB63/uktI/8+59s2CLM4ICr8kAol/HxXqfqzBCUNAFN+x2Dfgdg=
+X-Received: by 2002:a05:6000:46c8:b0:47f:e377:8d61 with SMTP id ffacd0b85a97d-482e26add2amr13838211f8f.11.1787821794521;
+        Thu, 27 Aug 2026 02:09:54 -0700 (PDT)
+X-Received: by 2002:a05:6000:46c8:b0:47f:e377:8d61 with SMTP id ffacd0b85a97d-482e26add2amr13838111f8f.11.1787821793965;
+        Thu, 27 Aug 2026 02:09:53 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e28dc0d6sm8192606f8f.18.2026.08.27.02.09.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Aug 2026 02:09:53 -0700 (PDT)
+Message-ID: <9eeac695-ff8b-4473-b0ab-b3ad873b6915@redhat.com>
+Date: Thu, 27 Aug 2026 11:09:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net] net: libwx: Fix PM suspend/resume flow for VF drivers
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <CAEAWyHf4bVm_DQbLo=Q1NwJ2g5WY2HU7Y+ApndDHdAbEDnfk4g@mail.gmail.com>
-Date: Thu, 27 Aug 2026 17:07:51 +0800
-Cc: netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8875A5CE-3A34-4227-B06B-34E8292D19F5@net-swift.com>
-References: <20260826095243.16939-1-mengyuanlou@net-swift.com>
- <CAEAWyHf4bVm_DQbLo=Q1NwJ2g5WY2HU7Y+ApndDHdAbEDnfk4g@mail.gmail.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: NY7N4KDmsCacniHqki94FDIeaJbjaWJZXznfTUR1YeX3tweh0UfYb0eR
-	IKJrF18Woi8sMBQMLinXKRJjL1UEb104UQV+x6stnAqyMA06YmM/eXJEwA/Y+3qVo+afIXP
-	1UdpTh+j8IFQvvsrHqoMGNYccZF7o4l10fQYTKdf7CuMh16KXU6GU9p/GCSKtZ95zRpfTvS
-	Z6Qj8tonYiWgMmtlfuh0uAqZGwmT6f43LR/daIGjTOKU31klXtpSd6uPBX4lKamRDueuDaF
-	V7ZhVVCyDYU2O94oeIR84U6htybweT5SCdyyQOABlHvQ3W0MRBJyHrVX0opnCnz8HnGO7mP
-	Rnt+C+pvmDZyg+CrqZ8st8rv4C4obmKQ7pYUgW0+77XhRhCt9GnoLlbDcZ2g56Qq7PHcffW
-	VATTtV430LV5FrajUqjY14qEzKoOFtGPkNnh9yfVoIZ+lepdN3DpsFUoULZuY3xwHaJjQwP
-	HlFQfnv60TqNgUVT23r6JFp2w/LIBEZoU4iS27aFkaz8xgPKMCZ4+yFOEswOnV2YmdAg4BH
-	LC9RG75pzcPI0MC+TuvKhwpiy4T+RoBgcT9+aKoGNvxyhOW5OO/nG1kEj920DtkshToq5Xd
-	TjB5cn1/DRyiDqtIcJzbf/MDRkOhwUN7NrBsllSYSyD+My8QSzSTagtJ4nKWnygkcPH+WXN
-	idxTa5O8KVLJOIaT9E1THjOe2KeVpOeABsb/KdM7SaSHHql/SHP3kCHV1IxUZink33tsfSg
-	OJsXYpxcjy/h05imhVRg3bqYubLaWfq5pZFfchbr1WO1B1B3Nuv/HRcvdqByhXb4FL0gxi/
-	6W1fRBwaM+4kC+NTofKbCEOVAzLKoY5pyAA70CmPuK6HrifvPta/zv4miJbnDwNwi4RqRn1
-	OzdGySfv1EQP0xW0c5KEXKkmFHyAGJMQL3mzZAeIgC58SkRCOro9OqcNLSHp6m3sHmWkY/W
-	gVPVVrxDQXe0TlNcmeO+r+daKpxtKXar8jKyeRPxnRpGR4XNnn5hWvdVwEu/r/PWoFajHjt
-	c2K1mz3F8FMOuH47AZofPKtzdRDzDhvx9PNfimnDlKX27vi0BILb+Fks6jEldxzlSbSzuc/
-	XdGDyerBd6mTF2tGv3TDeM=
-X-QQ-XMRINFO: Nq+8W0+stu50ZnsSE8K0tl4AWNuJxP2pTA==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: use GFP_ATOMIC in tcp_send_active_reset()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
+References: <20260825023614.1228551-1-edumazet@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260825023614.1228551-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 8/25/26 4:36 AM, Eric Dumazet wrote:
+> tcp_send_active_reset() can be called from contexts where gfp_any()
+> (in tcp_disconnect()) or sk->sk_allocation (in __tcp_close() and
+> mptcp_do_fastclose()) evaluates to GFP_KERNEL, which includes
+> __GFP_FS and __GFP_DIRECT_RECLAIM.
+> 
+> Allocating with GFP_KERNEL while holding the socket lock (sk_lock) creates
+> a lockdep dependency:
+>   sk_lock -> fs_reclaim
+> 
+> This causes false-positive lockdep circular locking warnings with storage
+> subsystems (such as nvme-tcp) that acquire socket locks in block I/O paths
+> and invoke tcp_disconnect() or close sockets upon teardown:
+>   set->srcu -> sk_lock -> fs_reclaim -> elevator_lock -> set->srcu
+> 
+> Active resets are small RST packet headers that should never
+> enter direct reclaim or block while holding socket locks.
+> 
+> Hardcode GFP_ATOMIC inside tcp_send_active_reset() and remove its
+> priority argument since all callers now use GFP_ATOMIC.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+Sashiko has a bit to say:
 
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825023614.1228551-1-edumazet%40google.com
 
-> 2026=E5=B9=B48=E6=9C=8827=E6=97=A5 08:41=EF=BC=8CHarshitha Ramamurthy =
-<hramamurthy@google.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Wed, Aug 26, 2026 at 3:01=E2=80=AFAM Mengyuan Lou =
-<mengyuanlou@net-swift.com> wrote:
->>=20
->> Currently, wxvf_suspend() and wxvf_resume() do not acquire the RTNL
->> lock during device state transitions, which can lead to race =
-conditions
->> with network interface configuration operations. Furthermore, the VF =
-PM
->> callbacks lack proper hardware re-initialization and error handling,
->> leading to potential unhandled errors during PM resume and missing
->> dependency tracking between VF and PF devices.
->>=20
->> Fix these issues with the following changes:
->>=20
->> 1. Hold rtnl_lock() around suspend and resume paths to synchronize =
-netdev
->>   state modifications with RTNL core operations.
->> 2. In wxvf_suspend(), close the netdevice before disabling PCI device =
-and
->>   clearing interrupt schemes to ensure clean resource teardown.
->> 3. In wxvf_resume(), check PCI device enablement errors and perform =
-proper
->>   error unwinding if interrupt scheme re-initialization or interface =
-open
->>   fails.
->> 4. Add device links between VF and its parent PF device in probe() =
-for both
->>   ngbevf and txgbevf to enforce correct power management ordering.
->=20
-> This patch is trying to do a few too many things.
->=20
->>=20
->> Fixes: 377d180bd71c ("net: wangxun: add txgbevf build")
->=20
-> The patch adds code to ngbevf/ngbevf_main.c but the Fixes: tag is for
-> a txgbevf commit....
->=20
->> Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
->> ---
->> .../net/ethernet/wangxun/libwx/wx_vf_common.c | 30 =
-++++++++++++++++++-
->> .../net/ethernet/wangxun/ngbevf/ngbevf_main.c |  5 ++++
->> .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  5 ++++
->> 3 files changed, 39 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c =
-b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
->> index 26de78e9a69e..2352cf12b289 100644
->> --- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
->> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
->> @@ -16,9 +16,13 @@ int wxvf_suspend(struct device *dev_d)
->>        struct pci_dev *pdev =3D to_pci_dev(dev_d);
->>        struct wx *wx =3D pci_get_drvdata(pdev);
->>=20
->> +       rtnl_lock();
->>        netif_device_detach(wx->netdev);
->> +       if (netif_running(wx->netdev))
->> +               wxvf_close(wx->netdev);
->>        wx_clear_interrupt_scheme(wx);
->>        pci_disable_device(pdev);
->> +       rtnl_unlock();
->>=20
->>        return 0;
->> }
->> @@ -34,12 +38,36 @@ int wxvf_resume(struct device *dev_d)
->> {
->>        struct pci_dev *pdev =3D to_pci_dev(dev_d);
->>        struct wx *wx =3D pci_get_drvdata(pdev);
->> +       int err;
->> +
->> +       err =3D pci_enable_device_mem(pdev);
->> +       if (err) {
->> +               dev_err(&pdev->dev, "Cannot enable PCI device from =
-suspend\n");
->> +               return err;
->> +       }
->>=20
->>        pci_set_master(pdev);
->> -       wx_init_interrupt_scheme(wx);
->> +       rtnl_lock();
->> +
->> +       err =3D wx_init_interrupt_scheme(wx);
->> +       if (err)
->> +               goto err_pci;
->> +
->> +       if (netif_running(wx->netdev)) {
->> +               err =3D wxvf_open(wx->netdev);
->=20
-> Don't you need to reset the VF before attempting the open?
+A couple of issues (the same lockdep chain still be present for
+regular transmissions, and SOCK_MEMALLOC being ignored) looks
+real to me. WDYT?
 
-It is not necessary.
+Thanks,
 
->=20
->> +               if (err)
->> +                       goto err_clear_int;
->> +       }
->>        netif_device_attach(wx->netdev);
->> +       rtnl_unlock();
->>=20
->>        return 0;
->> +err_clear_int:
->> +       wx_clear_interrupt_scheme(wx);
->> +err_pci:
->> +       rtnl_unlock();
->> +       pci_disable_device(pdev);
->> +       return err;
->> }
->> EXPORT_SYMBOL(wxvf_resume);
->>=20
->> diff --git a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c =
-b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
->> index d79cf8d8484f..69bbfd95597c 100644
->> --- a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
->> +++ b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
->> @@ -171,6 +171,11 @@ static int ngbevf_probe(struct pci_dev *pdev,
->>                goto err_pci_release_regions;
->>        }
->>=20
->> +       if (!device_link_add(&pdev->dev, &pdev->physfn->dev,
->=20
-> Accessing pdev->physfn here from a VF will cause a kernel panic inside
-> VMs. Also creating device links to the PF is odd. The PF should manage
-> its own PM state.
-
-Yeah, you are right.=20
-
-But my problem is that when both PF and VFs all in host, VFs resume =
-before than PF.
-VFs can not work if PF is not up.
-
-Are there any good methods? Solve this problem by itself in the pf =
-resume.
-
-
-[24500.725614] smpboot: Booting Node 0 Processor 23 APIC 0x1b
-[24500.730077] CPU23 is up
-[24500.733353] ACPI: PM: Waking up from system sleep state S3
-[24500.842648] ngbevf 0000:07:00.0: enabling device (0000 -> 0002)
-[24500.843113] ngbevf 0000:07:00.0: Failed to obtain mailbox lock for =
-VF.
-[24500.843144] ngbevf 0000:07:00.0: Failed to obtain mailbox lock for =
-VF.
-[24500.843185] ngbevf 0000:07:00.0: Failed to obtain mailbox lock for =
-VF.
-[24500.844013] serial 00:00: activated
-[24500.853861] ngbevf 0000:07:00.0: Could not enable Tx Queue 0
-[24500.853909] ngbevf 0000:07:00.0: Failed to obtain mailbox lock for =
-VF.
-[24500.864810] ngbevf 0000:07:00.0: RRCFG.EN on Rx queue 0 not set =
-within the polling period
-[24500.874722] nvme nvme0: 24/0/0 default/read/poll queues
-[24500.904063] ngbe 0000:06:00.1 enp6s0f1: PHY [ngbe-601:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[24500.904598] ngbe 0000:06:00.1: registered PHC device on enp6s0f1
-[24500.904836] ngbe 0000:06:00.1 enp6s0f1: configuring for =
-phy/rgmii-rxid link mode
-[24500.950076] ngbe 0000:06:00.0 enp6s0f0: PHY [ngbe-600:00] driver =
-[Generic FE-GE Realtek PHY] (irq=3DPOLL)
-[24500.950509] ngbe 0000:06:00.0: registered PHC device on enp6s0f0
-[24500.950549] ngbe 0000:06:00.0 enp6s0f0: configuring for =
-phy/rgmii-rxid link mode
-[24500.971368] ngbe 0000:06:00.0: Failed to obtain mailbox lock for PF0
-[24501.000057] r8169 0000:08:00.0 enp8s0: Link is Down
-[24501.053774] OOM killer enabled.
-[24501.053775] Restarting tasks: Starting
-[24501.055611] Restarting tasks: Done
-[24501.055623] efivarfs: resyncing variable state
-[24501.059625] efivarfs: finished resyncing variable state
-[24501.059651] random: crng reseeded on system resumption
-[24501.059656] PM: suspend exit
-[24501.151222] ata2: SATA link down (SStatus 0 SControl 300)
-[24501.151329] ata1: SATA link down (SStatus 0 SControl 300)
-[24504.026452] ngbe 0000:06:00.0: Failed to obtain mailbox lock for PF0
-[24504.026461] ngbe 0000:06:00.0 enp6s0f0: Link is Up - 1Gbps/Full - =
-flow control rx/tx
-[24504.230844] r8169 0000:08:00.0 enp8s0: Link is Up - 1Gbps/Full - flow =
-control rx/tx
-
-
-
->=20
->> +                            DL_FLAG_PM_RUNTIME | =
-DL_FLAG_AUTOREMOVE_CONSUMER))
->> +               dev_warn(&pdev->dev, "Failed to create device link to =
-PF %s\n",
->> +                        pci_name(pdev->physfn));
->> +
->>        SET_NETDEV_DEV(netdev, &pdev->dev);
->>=20
->>        wx =3D netdev_priv(netdev);
->> diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c =
-b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
->> index 8b16b900820a..3868b70ad152 100644
->> --- a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
->> +++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
->> @@ -228,6 +228,11 @@ static int txgbevf_probe(struct pci_dev *pdev,
->>                goto err_pci_release_regions;
->>        }
->>=20
->> +       if (!device_link_add(&pdev->dev, &pdev->physfn->dev,
->> +                            DL_FLAG_PM_RUNTIME | =
-DL_FLAG_AUTOREMOVE_CONSUMER))
->> +               dev_warn(&pdev->dev, "Failed to create device link to =
-PF %s\n",
->> +                        pci_name(pdev->physfn));
->> +
->>        SET_NETDEV_DEV(netdev, &pdev->dev);
->>=20
->>        wx =3D netdev_priv(netdev);
->> --
->> 2.30.1
-
+Paolo
 
