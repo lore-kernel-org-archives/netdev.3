@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F383F3DCDBC;
-	Thu, 27 Aug 2026 19:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E074C6EF7;
+	Thu, 27 Aug 2026 19:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787859678; cv=none; b=JKg8wCYqU0/qyW+51IoMemLKuAgxAcSxe1TEIW8ik5SXuSdVKIjq0ujSs7MqyIdc9Fc+6frkoKhN3XJZdBEvJfhI6j20G/7dUliJaGTFs/TcgVbTHgk9M2TL0Qg4gQfZ3NLH2hUO7RQCRDVOrmVQhhmhG8p8GiwbinJL7yXSTgI=
+	t=1787859679; cv=none; b=C9dYaSUKWUkVGqzfZwfr3ZkQNpzne8qFVjmyb6/EnIG9y+6+OJ/vqqGtDQoEQ/qrIll8oUnpv4Nw0NrH7/1h4aLFXy5s0h9d0ZtOg3jF/EBWHfnRnPbJpEVFFuwJlX64YXtfgH3XY4tjSjAaNMsQHRF3zqIiFGbRp1f+1JE9bbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787859678; c=relaxed/simple;
-	bh=GrDlXsxDUff5YtMLADA+wjlJc4I5yQwkc1rBrWifFVU=;
+	s=arc-20240116; t=1787859679; c=relaxed/simple;
+	bh=uugn2ai9HExjwBqEor/dmnJ6+Tr0faZfygGeTA2CFfI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kCARfSIz7Rccva/LuGT1zoHAfrk2tVrEs9WhQZgEqaY2j5PQZCVGLtfI7vSxRQOc6tZKW8YZYUKLeMfhYuQhLfQm8P6khLaWPvkHeTAQX6tFNHqV7ytMV/QSgHubvF04PR3XyWl2xCjxtGUTdVngHBzdKJ1zJceDyHFgjBpnhU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RNfh1Qse; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Fvv7b4/H2OL3Yh9QoMv4W9tIfja8ETiK+TjG85UtFXxOnTana4+xXgc+ZsKVnXgfdA4deEvYtSKzLdYCmxm2FgNwSEbI1QQCyD9YEbgDjeVFs0HfTIkWMFxsiV2lz+jDEWnYilJI0HVHIQOJwx3ReAjG4h5JkC/0sbN5esG22I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KsC/ztD0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNfh1Qse"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32801F000E9;
-	Thu, 27 Aug 2026 19:41:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KsC/ztD0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D101F000E9;
+	Thu, 27 Aug 2026 19:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787859676;
-	bh=KZaMdScOuViKuR5f8yRHEFF6Xafdvr12KHrN2lbVNtY=;
+	s=k20260515; t=1787859678;
+	bh=4jIpGuvU/UsNaCaMDbLeLw5b82ZBqhbyFl1ubw748ns=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=RNfh1QsecBVNl1WzAUJcgDE2ylUkIrkOMtk/rNxfGqq+CS1HnNWoGuStBLTnax6ZJ
-	 9D5m7rrFS8+CzXrHlw+7G5KhLMbHNFmAhLRe3aEhgzbs49cXjeuCkBtDJoU0dfpBUq
-	 l3a+kbc2mtAC7oHyRvQZE3K2veus191iqgycw54P/TyNexoLkbcP5UK3kG7AOOxqyA
-	 NNjOddBE1FerK1tCVHmmQBBSyrQVxe3zPq7jWxezNZ8WO0P2/f46y7AZw2aSHYO0g3
-	 bpbJVlafqXtJyPXG4QSk1Vieg/im1OupyJBVCqGAacZumzX++BEG6sRI2TehR87h/7
-	 14wwO9CCeXYOQ==
+	b=KsC/ztD0B+zlMuLKGcfxZNISNH2rF3UZjNVgTBjnnO3qc2vCaWnyY3wASrayAxOzE
+	 F4JzolewCGvT6kZO3BB8GQRuxX3XrHwQsDk4Wnw3RB+IUeQW6ho89DpWkPRkAq2diD
+	 JfK2yAsG9N6gZvUis/kSCnzurmz95tjAZhQ5NrYcC0KKbzUyHMiA76UQyNxzB1r3oX
+	 iKznW8nCupvJaDHN45BUtMpswzvWidL0iqXCGOnosto66n+uQOOluNK72fkUglBNGS
+	 6IP5MICqoLqRrXI/MjM6+68bwbjQjD50K0DQ/5HOMK3IX+pkJokBytD/Wma8k6kE6T
+	 gNJ9KzgqiKdvg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5694C3809A8D;
-	Thu, 27 Aug 2026 19:40:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09663809A8D;
+	Thu, 27 Aug 2026 19:40:24 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,53 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/6] net: stmmac: More selftest related fixes
+Subject: Re: [PATCH net v2] net: stmmac: restore NET_IP_ALIGN in the RX DMA
+ offset
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178785962189.1816627.5526551046496058964.git-patchwork-notify@kernel.org>
-Date: Thu, 27 Aug 2026 19:40:21 +0000
-References: <20260826140500.616466-1-maxime.chevallier@bootlin.com>
-In-Reply-To: <20260826140500.616466-1-maxime.chevallier@bootlin.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
- hkallweit1@gmail.com, alexis.lothore@bootlin.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, kernel@esmil.dk, minda.chen@starfivetech.com,
- neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com, jan.petrous@oss.nxp.com,
- ovidiu.panait.rb@renesas.com, Jose.Abreu@synopsys.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
+ <178785962339.1816627.16266435775453733564.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Aug 2026 19:40:23 +0000
+References: <20260824125014.47862-1-PKneuper@dspace.de>
+In-Reply-To: <20260824125014.47862-1-PKneuper@dspace.de>
+To: Pascal Kneuper <PKneuper@dspace.de>
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+ maxime.chevallier@bootlin.com, 0x1207@gmail.com, si.yanteng@linux.dev,
+ larysa.zaremba@intel.com, aleksander.lobakin@intel.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ DBaldin@dspace.de
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 26 Aug 2026 16:04:52 +0200 you wrote:
-> Hello everyone,
+On Mon, 24 Aug 2026 14:50:14 +0200 (CEST) you wrote:
+> Since the RX path was converted to zero-copy, the page pool page is handed
+> to the stack directly as the skb head, and the offset the DMA engine writes
+> at is what determines the alignment of the packet headers.
 > 
-> This series addresses some (but not all) issues found while running the
-> ethtool selftest on various stmmac platforms. As a reminder, ethtool
-> selftest are run with 'ethtool -t ethX', and for stmmac the goal is to test
-> hardware features and bugs from the IP integration in the platform.
+> Before the conversion the payload was copied into an skb obtained from
+> napi_alloc_skb(), which reserves NET_SKB_PAD + NET_IP_ALIGN. The
+> conversion moved the headroom into stmmac_rx_offset() but did not carry
+> over NET_IP_ALIGN, so on architectures where NET_IP_ALIGN is 2 the IP
+> header now lands misaligned:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/6] net: stmmac: selftests: Check multiple MMC counters
-    https://git.kernel.org/netdev/net/c/d29b399150b0
-  - [net,2/6] net: stmmac: dwmac1000: Account for the primary MAC address for UC filtering
-    https://git.kernel.org/netdev/net/c/9698b6da3714
-  - [net,3/6] net: stmmac: dwmac4: Account for the primary MAC address for UC filtering
-    https://git.kernel.org/netdev/net/c/82187f42c014
-  - [net,4/6] net: stmmac: dwxgmac: Account for the primary MAC address for UC filtering
-    https://git.kernel.org/netdev/net/c/2739d6f9a2b8
-  - [net,5/6] net: stmmac: selftests: Account for the UC filter list for filtering tests
-    https://git.kernel.org/netdev/net/c/cd8c3b2752c6
-  - [net,6/6] net: stmmac: selftests: Don't test flow control for small rx fifos
-    https://git.kernel.org/netdev/net/c/96e8cb5527ce
+  - [net,v2] net: stmmac: restore NET_IP_ALIGN in the RX DMA offset
+    https://git.kernel.org/netdev/net/c/23680bf5f8c6
 
 You are awesome, thank you!
 -- 
