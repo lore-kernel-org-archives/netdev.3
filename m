@@ -1,136 +1,183 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415943DC4D7
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787828113; cv=none; b=ZUXleZSQXI+pnHlkqqCa3zzw6GvHysEu/OwUUCvBUiMIae3GDEzjBXjRVSl66kCvHzdKLnkgWxSeWfmhgT4SCRs2IOnVzwTvynyU4hO0Z2bnW1RhIm8KKyzQe6wDrJMOHuCn56balx9tdWn409KJfwgIIlnt/ql3ht1dtc/IYcA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787828113; c=relaxed/simple;
-	bh=2vEDbTV5u5xfkJVFpzOKcLm91VAFKFRWxlLRYf2tYEI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iuWGYIocmVRjb5grrWCkpqmnwDT4rrstYzSKDLFznE0S6or4aXDoIQ522+TjQ8POFkH55RtTh19Lb865O24j8WvcFP2/dT3leGsKTTi1lCcpro2ZZSVmF9w+MaKBqN/IA3qJaCXXoQZMtmIsb+PIK6TVmArEKJc1bUHofiMfZaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fEXK3a6g; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SNyzplPB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152C38B12A
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787828196; cv=pass; b=dubr3DdUT+KR9TL1q4lD6ZphrWZWuhU22Yk7p8lLXV1h7t6kZGMrm86LNPR4dLuae2ewjiJk4HkjJXMtaG3MgxyKAH8htVXxuTDHFQTxKkJjF4utDxbrJ1xqxAPY0B05P90kG7vrwjZZO6XRq9YdOSy/xOZZdPdZYp6DSbLYddU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787828196; c=relaxed/simple;
+	bh=dXDPfK0dhT02d1TeV6qse5w+WInzpV0flL6ANp2uo78=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FtjUc4dOdrSWrWh/AzaZwMQkDh4fzgLszhFpe/cs2yQpzMvUCZrDhmXvxcvXztHMme7obV122oepTD6tbDyJwGPjGSMcoxnAvvDrAnjSyd0BJFOCsNeTjZMlpsdB42Ui+UUuLs4IZ6z75M3Y8qhqRLW9rKJN4/YPehMn9b5WwOM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OL7GCYIz; arc=pass smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fEXK3a6g";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SNyzplPB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787828111;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yB9i88j5pk81rn9+4AiT0mA4kRNQA0X0aghVXDq5a7w=;
-	b=fEXK3a6gW/ZO4WfQd2bHGtMJRS+FDEeK8881eeYgJ9hJbhVq9TG6xYGle+rLB+eyaoten4
-	THiMZlemHtPDpODGJX/7DibDNm6gn58Aqa+mLMqEcMhU+TFeXF6I1z1IOBs5L4LVYgIVRk
-	M/l1gYzSLtM6lrqskYHolMTFr0L3zpo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-TFTt_fs8PHCkCiJDOWK7Ew-1; Thu, 27 Aug 2026 06:55:07 -0400
-X-MC-Unique: TFTt_fs8PHCkCiJDOWK7Ew-1
-X-Mimecast-MFC-AGG-ID: TFTt_fs8PHCkCiJDOWK7Ew_1787828106
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-472c330e555so944233f8f.1
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 03:55:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OL7GCYIz"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-836cb2fa1bcso33055967b3.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 03:56:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787828194; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QtsJ6TbV28BJsTS/Y/EkOZo/Y9HAUJOot4LGew9dWa/K8Noq55idbQptPLs5lmuhnK
+         +570gmN7H8U7ZufvT0zPsbQDemyi9bF4P/yJnV/mJfSf58EBHkBuaIcUt4s031pNGJuV
+         mDbvxqXaIAwxW6QaRUvShxsdUmruf1bqCFUWNNiZOvnC1iFFTDwdAwdAI8xkfhQ6N6jd
+         tx6Rd01JzupC9UeBVf8DOw2pS4HttqRCKvpIRymmttbGl8IS77m26C1wuTd6I407F6AN
+         xHvpLWhg2WyfKKnlmm38GO3//j6faQ7kKwLPtNJyTb+aIVIvUyKjI0/Oa40m8nLNHDNO
+         u+sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GDuiIzVATVb1cumV32b7bxAagNo8z0DEhbz/qi0Mnf0=;
+        fh=yYMvh/gr46yg61dPHAxL7ZQehre0EqQ1+L4hLaFzVzo=;
+        b=Uxhk635I1FW4Z4sonyT5m/8SqMCPe/mpDMWNOXbRP5FOuNfG4jo9E5iWKgTU1ogixS
+         phtAATuhFQkeUR2CSpmO3M0BHvM9kH6l/dT6IA29JsGDu8n3wua4opBcSLpX57Sv5RuJ
+         QM5O+OlaZ0VHqjw69//P4S8q9tGa5z4+uRT8/GMQZ7d2G3aN2UPyHBGxWtj4Io3DtmGf
+         OlHucBaEOKXsf9ukikKzeROg1eSqfDePkrHmnYvdhXdvSShVlATpnxyY3tLp2DS0XUQx
+         rpIO4uFChqVDEAlEtgBMDnEkfkS9IYot/Vd8Xg7cW4GhdSknkYTezX/Vfj1C0N4BcFHq
+         +cCA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787828106; x=1788432906; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yB9i88j5pk81rn9+4AiT0mA4kRNQA0X0aghVXDq5a7w=;
-        b=SNyzplPBODx3sCWeq+Id02ApDxookm8JZ+k2+M+q1VgFhBoH4gdzde5gpkdzxOIyVj
-         0pUdXnXuGwCTwVMuOVJ9EjpzrZYg0B9f5SSkVPBOMW35MqASy6/zebH1fslXHPaWgKCH
-         VU2e0aFPozgMMUVYbYbCHtrai5EafoNumxdHP+4xlQgr9pjvJ0cLq/KrZ5DmUNMtUdoP
-         cyGCHveUE+rN7A7FUK3uoL6LuxeFkKrPmWgVVCK0PAHOrjdDoRlR+reQnr0ifHZTn2nS
-         j2A22MrwCJxPH4nwYSr+UeIucRO/afPeydjZSnD/hdqjLDdTHkVr2AFyv3+Nd5pp+30e
-         7bcA==
+        d=google.com; s=20251104; t=1787828194; x=1788432994; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GDuiIzVATVb1cumV32b7bxAagNo8z0DEhbz/qi0Mnf0=;
+        b=OL7GCYIz8PcQV6y+N0u1R1H87N5gf1RgTOo3EHVq+WnlfMvrX3BuKQXQtxvXTlAy0v
+         Z5uvzBMJ/+4Gxirq27qQIYxLcNDYkc1mVvUlMi71CRtAc1MOd3FqluojcMYNwUbYJNdX
+         ia4ck9/4hWOus7dmqVVgC4JEdksxh9ikoDJjmPTkqW4L4K4JXkeHx+drF/82O9wJDH4M
+         tmtSbCppzixoCaKu+jXab3Ier080GIwPNZJPNOtqdC/UPOqb2L8CafKgnXzXDfC1Vn83
+         ADy1gY4+jfhAanup6g2fG8XU/Gfs50R759JTUtlDN7kyS2N2ubTkDwRaR8A4yDajNvzC
+         eZsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787828106; x=1788432906;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yB9i88j5pk81rn9+4AiT0mA4kRNQA0X0aghVXDq5a7w=;
-        b=UExMoGU0MXuIDdRuT8wPQguuGrq/qp6Sa5/4OhJmZHOXDDMWjLpxedv/2r+a3YuPuW
-         iUMS2edkYxebwRcvcVHNsdRI/dQAjGcguFffgrShPk3dm1RvwOIkrX19zGqA2qGw6PZX
-         f17mhfqC80QR2bCndh6gnfrKdUdihXlcjkD40nmd8+X1TxRNko0Q/7bp34+UzD6mIeZy
-         nps/p+Bei2YroPOpH5/Gf6D5N0kGqeaNyp6XkAsYCt+FBqbr9y1wJpFPQ60vff8RQ2ti
-         WKPMV8jiWmPYZbPPCMgQ4F21PXFDxwxMlsBOUUVmaTCI2Ox57Kk5mYfo3EGmRc6YsxDR
-         l7Mw==
-X-Forwarded-Encrypted: i=1; AHgh+RpUnfac4vjOfuP758QOzQ4KXR5uyyxLCBkXpMBip53Pl2qm82ml5LIEFPdLVVOOZoq7tkrU6/4=@vger.kernel.org
-X-Gm-Message-State: AFuF++k/60c07YaxUOyqbMUukg+JxQ3zP21w7RBBcdEtxtBvOrkHrLA8
-	R6MBznal8Dtn44r+XbeFy8XK5r2wASidGKfVZvx03p2Gs4/XC9dDd9cP0cBNZEcriWc4OJpnVvG
-	Ugh3J1MWTZYMGmyDJsuSrZSyWXWAqgLa+uX4QxpelJmP/2ADTtT0EHpxhCQ==
-X-Gm-Gg: AR+sD11u36XqJyOw1ZWGF+bvQFLREV4P48AICPSX6ljSOUWMISUMPieON6Dq5WiPxlZ
-	F/Iyif6am9WwP6AA7Xt5lRZYkHH58FEP5zhk/12knRTNzrQJq3VIL0t+RBnUFD40Xjc9aFFv3Oo
-	39aK66Rkd5waw85XkDfQf2m0pQm3V4XxEwXohv+bI/jFglsbi/i8Twg2/a5EwOkQY/xhHDO6kUy
-	E6fUehONDxhJH/BX2rvFJViPaROpqghulKw/0Q08O7mEYnMXoIecRdYR+wtRU2u6tprez9h9Jo9
-	d5lAkIh5nzGBW0vySjCrYXb1EXt9IOabe4zKOPA/BtFHBGmHHfYpw3u+GOsuK4COpCy5DDh4EBL
-	vKtfblPR7yr86zQ6tzXl14kByViFTY3b6YE2cUB41lOwX7FNKkEL7WjU01vXpufcIO2lsxfo=
-X-Received: by 2002:a05:6000:25e8:b0:482:f4f8:7a00 with SMTP id ffacd0b85a97d-482f4f87a1cmr2544385f8f.16.1787828106317;
-        Thu, 27 Aug 2026 03:55:06 -0700 (PDT)
-X-Received: by 2002:a05:6000:25e8:b0:482:f4f8:7a00 with SMTP id ffacd0b85a97d-482f4f87a1cmr2544302f8f.16.1787828105890;
-        Thu, 27 Aug 2026 03:55:05 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e279eb1csm8227772f8f.4.2026.08.27.03.55.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 03:55:05 -0700 (PDT)
-Message-ID: <08c53736-eaaa-47b9-a65c-b920d21b2993@redhat.com>
-Date: Thu, 27 Aug 2026 12:55:04 +0200
+        d=1e100.net; s=20251104; t=1787828194; x=1788432994;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GDuiIzVATVb1cumV32b7bxAagNo8z0DEhbz/qi0Mnf0=;
+        b=WF/0c98i9ZxOco4dygTtu1J/uxhOti1ilPgazin3gftjynOdVmijOAFYV3tduX/LcD
+         I1swkgZ8fnVlzemdNXqJO7TzgeY3k0fKNDwrRrswikPHDIGMze0nXqYh1mcslx3NT9z8
+         ztezhC2eGZo6qm9dqvstFiDjjlCpBxI1phWgT/tWDVeMycUUBOswZr4jzC3iBxQCduWV
+         Uwl49v01kOQ7o3zi8zfHgsCjQTuEOZWdU5K40/AIlXoXIIKc1lX12k3m5uTUcThSNnuY
+         2s3cmev1vlhGvTu8MObYQWKSKaOZtht9/NBxZv2mW6HT7yp9a3IOpYKZVnln7O7UYvTs
+         6Ogw==
+X-Forwarded-Encrypted: i=1; AHgh+RpvOFg1HYmqPYsKYnySa62FeHfYhctVJd0VBAN3xINl2nqgp43xxbBleJ6F8BJCGNEgKyS28eg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lih3IO2XE4BAjEjzSMRh949aASMPwF7kM+5zrE7YOovPcYe1yW
+	4aZvE+yfvV8aBI2MLySAEpDERHl8V5p2YQqSrTyWrnsDqzdXkvlzrfFDFb+Sqgl3X3uYe+i7Zkw
+	teRuVJ0qLyLHfF+Alm+eAFFRnXf5tKba8kINWyi0/
+X-Gm-Gg: AR+sD13YLUSCDrgCeNaWJm4t2q0nruWbZfvF1MLXiUAjCbIVyjIQ4q+O3ubS5bEkUlA
+	cd7n+2P8SjYVqPplDQhVAl6ylXoVPZm7WCTjWEejDdjt6BoU22FwRa9168BW5tOvG6GdKhW4WSd
+	1Zq9wmVL8aisQTxHPahXEXHQlhhz+WsMkT/ilvDt05gJ5I6bDvIG+qlSFKj0RZP0JCWXoNw9VH1
+	eJ7YRKHnKgNOinjRSLl6k2UusBYMIk5lfmfPohL3NIFcFNgigWVGkTuzZqOLFasSzd0lXw8qIZo
+	1bPNICgyyBkK83F647pN0PinG6OvGUKla1zdslrWSW1rtRV3AMnt7FZ6RdvVw+xSW4pjRyri7+g
+	piPGtk0n/8gaapX7jqxYLcc8LyW/rb+Lv2YF+xUoQ/ncE2/JXYBp9oydqgwGmG+rGnmtrNg==
+X-Received: by 2002:a05:690c:a4d2:b0:81e:abe2:9a3b with SMTP id
+ 00721157ae682-857445e6731mr48323077b3.10.1787828193276; Thu, 27 Aug 2026
+ 03:56:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netlink: specs: rt-link: fix ipv6 devconf doc
-To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
- Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Felix Maurer <fmaurer@redhat.com>, Danielle Ratson <danieller@nvidia.com>,
- Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260824103816.40040-1-ast@fiberby.net>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260824103816.40040-1-ast@fiberby.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260825023614.1228551-1-edumazet@google.com> <9eeac695-ff8b-4473-b0ab-b3ad873b6915@redhat.com>
+ <CANn89iLb1qJ9asoisJzPmXQ-ZD7Xp6H5kfjOdMtjxYBuL_2sKA@mail.gmail.com> <4619ea36-bd62-4d31-b3be-c5948748046a@redhat.com>
+In-Reply-To: <4619ea36-bd62-4d31-b3be-c5948748046a@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 27 Aug 2026 12:56:21 +0200
+X-Gm-Features: AcwNN1XCqi5IuPetZCzsptwMPSmJc1RpswhDLcqh7daPkbN8Nzwq1ZbTI-cKKIw
+Message-ID: <CANn89i+Ob-n5mKN0bP6yETZ1tNUJa1XQ_+ER_dC=3HY+cSPf-A@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: use GFP_ATOMIC in tcp_send_active_reset()
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/24/26 12:38 PM, Asbjørn Sloth Tønnesen wrote:
-> devconf is even odder than described in the blamed commit, where bpth
-> IPv4 and IPv6 are described in an identical way:
-> "u32 indexed by ipv?-devconf - 1 on output, on input it's a nest".
-> 
-> There are two issues with that line for IPv6:
-> 
-> 1) The subtraction is an IPv4 specific quirk, to avoid having an unused
->    u32 at index 0, thus saving 4 bytes per net device being dumped:
-> 
->    - In include/uapi/linux/ip.h the IPV4_DEVCONF_* enum begins with
->      IPV4_DEVCONF_FORWARDING = 1, so the enum starts at 1, which is
->      the reason for the subtraction in the IPv4 variant.
-> 
->    - In include/uapi/linux/ipv6.h the DEVCONF_* enum begins with
->      DEVCONF_FORWARDING = 0, so subtraction would underflow.
-> 
->    - ipv6_store_devconf() in net/ipv6/addrconf.c also doesn't do the
->      subtraction in the output path.
-> 
-> 2) Setting IPv6 devconf through Netlink is not yet supported, as
->    IFLA_INET6_CONF is not handled in inet6_set_link_af().
-> 
-> Fixes: 720447bd0b24 ("netlink: specs: rt-link: remove implicit structs from devconf")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Nowadays net PRs are already too big due more-or-less security-relevant
-changes. I think this is better suited for net-next, with no 'fixes' tag
-nor stable cc, WDYT?
+On Thu, Aug 27, 2026 at 12:04=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
+ote:
+>
+> On 8/27/26 11:33 AM, Eric Dumazet wrote:
+> > On Thu, Aug 27, 2026 at 11:09=E2=80=AFAM Paolo Abeni <pabeni@redhat.com=
+> wrote:
+> >>
+> >> On 8/25/26 4:36 AM, Eric Dumazet wrote:
+> >>> tcp_send_active_reset() can be called from contexts where gfp_any()
+> >>> (in tcp_disconnect()) or sk->sk_allocation (in __tcp_close() and
+> >>> mptcp_do_fastclose()) evaluates to GFP_KERNEL, which includes
+> >>> __GFP_FS and __GFP_DIRECT_RECLAIM.
+> >>>
+> >>> Allocating with GFP_KERNEL while holding the socket lock (sk_lock) cr=
+eates
+> >>> a lockdep dependency:
+> >>>   sk_lock -> fs_reclaim
+> >>>
+> >>> This causes false-positive lockdep circular locking warnings with sto=
+rage
+> >>> subsystems (such as nvme-tcp) that acquire socket locks in block I/O =
+paths
+> >>> and invoke tcp_disconnect() or close sockets upon teardown:
+> >>>   set->srcu -> sk_lock -> fs_reclaim -> elevator_lock -> set->srcu
+> >>>
+> >>> Active resets are small RST packet headers that should never
+> >>> enter direct reclaim or block while holding socket locks.
+> >>>
+> >>> Hardcode GFP_ATOMIC inside tcp_send_active_reset() and remove its
+> >>> priority argument since all callers now use GFP_ATOMIC.
+> >>>
+> >>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> >>> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> >> Sashiko has a bit to say:
+> >>
+> >> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825023614.122=
+8551-1-edumazet%40google.com
+> >>
+> >> A couple of issues (the same lockdep chain still be present for
+> >> regular transmissions, and SOCK_MEMALLOC being ignored) looks
+> >> real to me. WDYT?
+> >
+> > Thanks for the pointer; my local Sashiko couldn't spot this.
+> >
+> > Regarding SOCK_MEMALLOC, that's a good point.
+> > Using bare GFP_ATOMICdrops __GFP_MEMALLOC and misses __GFP_NOWARN.
+> > We should use:
+> >     sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN)
+> >
+> > I will squash this into V2.
+>
+> Thanks!
+> > All the remarks against nvme will be taken care of once this patch is m=
+erged.
+> So the addressed lockdep splat is against nvme, right? Given the
+> reclassification and memalloc_noio_save() dance performed by nvme
+> noted by sashiko, I'm wondering if something alike the following
+> (completely untested!) could be a viable alternative?
 
-/P
+I considered that, but having tcp_send_active_reset() use
+sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN) internally is  cleaner
+and safer:
 
+ Active resets are small control packets sent during
+ abort/teardown. There is no reason to ever enter direct reclaim or
+ __GFP_FS while holding socket locks, just as we never do for FINs,
+ ACKs, or window probes in tcp_output.c
+ Note that the current thread is likely to free memory sooner;
+it's better not to block it because of GFP_KERNEL.
+
+tcp_disconnect() was not the only caller passing GFP_KERNEL; __tcp_close()
+ (when tossing unread data) and mptcp_do_fastclose() also passed
+ sk->sk_allocation (GFP_KERNEL for normal sockets).
+
+7 out of the 10 call sites of tcp_send_active_reset() were already passing
+ GFP_ATOMIC (tcp_abort, timers, linger2, OOM, mptcp reset reason). Removing
+ the priority argument simplifies the API and guarantees that all callers
+ use a safe, non-reclaiming mask.
+
+Other in-kernel users (or future storage drivers) that do not explicitly se=
+t
+ sk->sk_allocation to GFP_ATOMIC would still suffer from the same issue if
+ we keep GFP_KERNEL under socket locks.
