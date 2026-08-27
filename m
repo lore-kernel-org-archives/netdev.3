@@ -1,209 +1,140 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873A74746A4
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 15:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787846394; cv=pass; b=L3lUhsfsamSfyPSvMbCREIAIgqPiJ9itzd8JAo6gjpXIrhjNLFV5Ps8pZAUZj0ea5wWZNsNPEdp75PO5Ny+oLdEjEcH/rX/x68Olume3elrp0J0ShTpeiBTQcf27pTpKWMRFMIG2dxCto5yZaLa7r4QzXBP4hXCKOyZ0hClhvaE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787846394; c=relaxed/simple;
-	bh=MapsIztLy09UbhU+7+S9oaDp8H3eC/Z/hVQj74AC93E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s039B3pWjcDYIxR0zYx5zH3WkHkaVAGQ28sG9XjNqIcYQVuPSRKEctSUCokRbyrgAeWiT+L6BL4yjqquKjbXBcxFIgFRMxdOYYXErkUQRZvRycnsOlDF1qbKR8SMzngcdcHZR93Hh09M7CTiYz2tHeA0y+1GMYSEhpm5uuok9gA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gyQsAXYu; arc=pass smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7214436A004
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 16:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787846469; cv=none; b=IovK2roShOpIAqYhsKNRZP/jd2oKgZw+KtaN6TVF+XRIjpLJUchQFsVDml/5BDlLBHJ2g0ySEiklaLvlzX6rA8AaWlDIxo7a0ct+Kzs+p9xEJnsEVy4KVCSi8RfJtSF5kCLwzKzthTc9XsK48wMbnLK5S2MkbeU8C5MVYKqeA7A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787846469; c=relaxed/simple;
+	bh=wf94Tgtp+mIa1Q5XRbJfuuqfksgiLCtqb8r2gfCY2rQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IaKV2zFKbpESzXkmu7nXgeAPMs2Fq27JQe/9g+k3I/kbzgoozQgJt1Ngceucet2HpuimpcXBISr7MM2QpgCw+GkodRRHmTWNfdwwNVCFfeEA+VRFHKXYVMky8sjRuSOGMMoiieTEQacWZaoYt/45pzx308m2k9Swf8XWQ4WFaYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Cj85lULj; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gyQsAXYu"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca766c1c9ccso52492a12.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:59:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787846392; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fkPxBSvfkCWSr7Cuum3B+O3yW0yyiBzXgpAA7nRcuB6AzvjUHGdwSh8+oIRqG5XzFF
-         7txVywDQEEFq5kccgIQpPZLUdQcQJ4VsTrqeWGN8qL6Ne9/dchqP1HFusbPMWFaoJfkE
-         tPOdUrCh2MWh26P9rphXnazljJnsgz1AVRO7o0AZiL/1BSv+9jCrXLevyyvDRZWrbniR
-         Dd9lA06Sl8tyIvndMR21W2LZtizRsmG4Ve2JSHRHZAUu0rJ7X/R5LUIeCZRdQm1mwwKW
-         ApjHk5XcQT9/AbyDiFyqKE02i8S3etwqbn4yYMffWxYuBfIBqgFM624ZxM8/Tz3Kgvnv
-         k4GA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Uf3bB7qcZpR+PPJRdyv+umREJvvSw/JAIAYin8FVQIk=;
-        fh=XueEHT5P69N7KyfkPqDkS0TU7wSAVdqiiVuOWjbfvLY=;
-        b=i7w/wAHeJG9j5gtXJ5kkynPEID2Q/herIIAKb8xciA6rJoXSNeUPiA/0O4nZRS4pIl
-         qVqi2QzWecVGJUFmTsBs5mHQD8c5122iy2Ej3SklWMKju+eqZcfNBbIy17AKPCK3SA6l
-         RJqkiKvnEgNIyHhxetqy3XaNZMs31cHglH4ciXZcOetBI9ffQrH5fgTTg+n69RJ3lxgB
-         HZh5Gu9JjE5xlCjYrNU2TVt36ezXsqdOaecJz+x89z8LvvN1g2eXEokIHXZ9/IJ9J8/v
-         ZCAI4mAe8v9f0FrcOAYUX718U0YotnuugrFAwnAAB2yckhyO0aHy7YbqbK+GnnZnhKnm
-         mZVw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Cj85lULj"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8549a96e93cso25369817b3.3
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 09:01:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787846392; x=1788451192; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=rowland.harvard.edu; s=google; t=1787846466; x=1788451266; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Uf3bB7qcZpR+PPJRdyv+umREJvvSw/JAIAYin8FVQIk=;
-        b=gyQsAXYui1kjZzJaYcacaul2rNwImI3SwlddyhMwBZqU44Q1InzwFAeElIaPKTkSFx
-         /Fqqhn6ZcieZHRdj4EYxHgw6drK1uVMy8CIkzYZNqCpcuGlheZzBUQ2yb/0zwEvQWyPd
-         8e4gH7IxDMDL3QVvgIfAvxhEhZ1uyCKG71i5fF48WAQ3nABbLbRYeKS2K94LlMvw8oGL
-         atOHMfyOTZFz0KlViALDu3hVo41YjCZJp0lo7sgI0DPbO8xIMy8DVP8zWXeo92sCIa2f
-         CRLPYPO6vMzGi/zKn/wslT6zXTPYHApS6xxLN5Sv7jXpZMOa/GYOeLVeiOIHbBKvEnKr
-         RVjQ==
+        bh=DNepDFInVPeIQZp56PM2k6duwIn9bQ+gjDRMqyyZVgU=;
+        b=Cj85lULjueIzeaN6Ftf3iWcUfY5N7nL5wUmCJ17eFOC72XuObwI0unKIjPg36IB5Ri
+         RZ0ShYgr1rTPGid7BgZ/TZ4H4MPz10n8tXH6HAcB4HLMpW4rivXIwiIXyL3mvrRK9SZP
+         zUuyol+gnkPfDl9UMwJuLcuLM8lSDV11wuWeELvPQ59FNk+6CHXwtQ9Kn1m7AG/FNsPP
+         jiNfAMrIfQcRXaGOVro0ZgesyseSCSXesCsrwz8rOQXiQg0i2CMjz1t9Azc66XK2fNyV
+         /0slHENlBbp7QlY1m3SjaYvshEMthqvqtDMhCsounolT0leswKTiTfM7bE/4U9uv/ceQ
+         m5NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787846392; x=1788451192;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787846466; x=1788451266;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Uf3bB7qcZpR+PPJRdyv+umREJvvSw/JAIAYin8FVQIk=;
-        b=a0JRLak0iREHV7/AkNG/Tw8G1jGY9I6edWBVg8PL2JMezF7MkCaF/lWJzBkLm9QaD7
-         HOhMlZgj5NRYfzXSYM7NSmgXTh1tGblu4wVwsqvGOhzm4kLlQJwvIA7lT3rW7SGSK28Q
-         3OW1uTUOwHSeydk/35PSSQqab2nM3stewbr+Dt1j/Cks5ai0kCVXHFTc37jPFTEBFmTc
-         jBNzh8grY6xtueT2F74WRuN3a9nvLhmwKrk546aj/+G16cnExkNcVFN8650d55TnsaM6
-         46WTsoE0bI90U2OytSaChsO2SaC6WH6VVvtX0NXMwX9xtwKuhW2DEJn3lihA0s4i/3s6
-         jqZg==
-X-Gm-Message-State: AFuF++kPcgdwu4KNQtnkEVb+EJH/isZR6G01WtpcLoy/X9xWbU+YWJuZ
-	bo9b2vqFnQJYr9Za/if2pFijeTsg9RptL8xq3g8tl/Y60prSS6uoHbMiEUGhEHUhDL0uRRnLvmz
-	sOrgxQRTyVDPrMorS5REVPfi2n969PJ0=
-X-Gm-Gg: AR+sD12wix3FFDwoOhIL2x0D9RWl4kWzc/9kEN/ijP4VI5bXRZ35jAEslYalWQAH4iA
-	iYSEiCBWiuRk0zvMShnViEkKAovipK5Xu1yK9ogJXIQ3GfGTDSfBrxcsbTR5myly88euHhnA00b
-	+MiVIqObNq1TMt9U18ACwCJag3r6hYqFouHkDCTwqJ641TECnchxr9tqqfY+B8/WbKH3NubjHMs
-	qEs6BFPcGy4OoUmav70mNeESSc0vV0JTcg/JK+EdBEca9uUAosV8is6CDXTZZPR9R2tKm/Y/+f4
-	jh6xBaB1JoLszNYSMSGnOtwrpZc1YFBB8VqoNr2QT78NWtQjK8UI5DhYvHARo30oOf2x06eHtQN
-	WVhu7/ppfOOQNMJreNFO28/53VXXmKMj/Rn57XDiz/LQL
-X-Received: by 2002:a05:6a00:a118:b0:847:8449:2bb6 with SMTP id
- d2e1a72fcca58-8562953d5e9mr371891b3a.4.1787846391540; Thu, 27 Aug 2026
- 08:59:51 -0700 (PDT)
+        bh=DNepDFInVPeIQZp56PM2k6duwIn9bQ+gjDRMqyyZVgU=;
+        b=MiPR9Xab3Vaw2QMvpqqq+fbu7qeqKBBIajziI3xj+ULv5LLAJBRZMQ5YOeebBrBL9f
+         ec60bfsZkYHoAMr8Nq9isSlkEXfNFFtU0IWV8pAjm8Y0liNbDqRY0vYAKhxozkv+xQ22
+         rQ6sn4TlThBWgCyhAmgKJHWD8mOjs4fgrbRQJKqXhK/3nYiccP46iYg0GFT5YkYZZORZ
+         /SpukBGw/np3DTZFExXj5joq1/9jxPdseQT0YZ/ccvJ3veFJrQkS0i2L0X0NDV4p8fdW
+         /D4dbhfJWY+zDnSoLNgLBHk6YW8m7A08nDoCUxk7thISkYBwG/ppcLz6oL5mfcQj3Ek8
+         9s1w==
+X-Forwarded-Encrypted: i=1; AHgh+RqaZDr3VNcTqAVjjAlx0NlkWaUXZJ/zAI2s00nuISqA7QJRVONaKT3eP4FV3PCXIH+Q0oaDkLg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lDxLh7mnR6IhvBGQPr2Z54D17rUsLSf++Kuh9ct1+hrPEOnnR3
+	sVDoHu2je6ZPeSJRhQ3omSWcDOXtJYQ4W1dkElv33g2tvFfvu8grFp2AhkZG0ViGsQ==
+X-Gm-Gg: AR+sD10pGm80zlljsIm/LitSqd3BWQSVt1NCDCNsHEjEgsiMLkuAV4W8i349XiLMwwg
+	tTmITGrMPeqmTgyOSmXxnQtuD31gKmp3zu8SDx+Hr69zfKX2LxRCoh7X5Wb04fR+qRgxhiK+WDj
+	LU1F/Vv/WNgJWo+RVM7VCWp7YpEcW9S8/H7ruylC5UQGHr4q+lwWLGHDfFpFoTh3fdm8+AhSegz
+	LD9IW87gTpCcQLRElxTnt/exJjIhAfiEfnrW6K6XXFdW8uL6OJQGrjyXGGLli8fjKZLzf1q7oSh
+	n0MLg0+zXQUeIBjulqs/jcX/f27pune7y7zpBiXDYEASTKHUzmnJBoxGYrdxHD99XFflmZJlp6i
+	yq2Yi+wH+lGBUdGtVdhXLts/P72Cn1BYlvV5GScAvV/jBLrrPx0XoKxm4KhAFbKvqSDbdsaoe7I
+	6M7q4jmwaS90KhAOVvcP3an8H4AMBd3EiFl/IWWbdnevphkvKBXGc5MqkZfUZWk4KkWtMHEu/vH
+	4ehw99Vb9OH+BBuMz0PwaxZKc9o/EF8
+X-Received: by 2002:a05:690e:d4c:b0:66d:11b0:addd with SMTP id 956f58d0204a3-66d257d1a54mr6143501d50.37.1787846466030;
+        Thu, 27 Aug 2026 09:01:06 -0700 (PDT)
+Received: from rowland.harvard.edu ([2607:fb60:1011:2006:2008:aeb7:73d7:d8ff])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90cd73fc2c9sm19596796d6.35.2026.08.27.09.01.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 09:01:05 -0700 (PDT)
+Date: Thu, 27 Aug 2026 12:01:02 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Petko Manolov <petkan@nucleusys.com>, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed
+ work on system_dfl_long_wq
+Message-ID: <31b46916-dd89-4ae9-89b9-9d39e29e8e69@rowland.harvard.edu>
+References: <20260720100902.155605-1-marco.crivellari@suse.com>
+ <20260720100902.155605-6-marco.crivellari@suse.com>
+ <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
+ <20260825151812.4aJyFUgE@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADvbK_dr8Oz7DFpA3YJ_YH0HXgWJgkQPRK7QNDCUQrQzQnw-MQ@mail.gmail.com>
- <20260825082909.2650171-1-bsdhenrymartin@gmail.com>
-In-Reply-To: <20260825082909.2650171-1-bsdhenrymartin@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 27 Aug 2026 11:59:39 -0400
-X-Gm-Features: AcwNN1UBd9hEJA40P83_GWTvA_-wfWR0MxVh5pE0XrwDHnI3rwCFvXgtb9RJz7A
-Message-ID: <CADvbK_fh1LG1nr5gFgFRZUPWam_A0DRxG+tuHd+bq2hYwsgMZg@mail.gmail.com>
-Subject: Re: [PATCH net v2] sctp: fix soft lockup from unpadded ASCONF-ACK
- parameter iteration
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825151812.4aJyFUgE@linutronix.de>
 
-On Tue, Aug 25, 2026 at 4:29=E2=80=AFAM Henry Martin <bsdhenrymartin@gmail.=
-com> wrote:
->
-> sctp_verify_asconf() walks ASCONF-ACK parameters with
-> sctp_walk_params(), which advances by SCTP_PAD4(length), and its
-> SCTP_PARAM_ERR_CAUSE case performs no length checks, so an odd-length
-> parameter passes verification. The consumer sctp_get_asconf_response()
-> then iterates the same parameters advancing by the raw length, without
-> padding. A single odd-length parameter desynchronises the two walks and
-> makes the consumer interpret attacker-controlled bytes at a misaligned
-> offset.
->
-> When those bytes yield a length of zero, the while loop over
-> asconf_ack_len makes no progress, spinning forever in softirq context,
-> and the watchdog reports a soft lockup. A remote peer can trigger this
-> with a crafted ASCONF-ACK on an ADD-IP enabled association with an
-> outstanding ASCONF (RFC 5061 section 4.1.2 requires the chunk to be
-> authenticated, but the predefined empty key id 0 allows the peer to
-> compute the same association HMAC from publicly exchanged parameters,
-> so the gate does not help).
->
-> The missing length check in the SCTP_PARAM_ERR_CAUSE case also lets a
-> 4-byte parameter reach the consumer, which reads crr_id (offset 4)
-> before validating anything, yielding a 4-byte out-of-bounds read past
-> the parameter, as reported by Sashiko.
->
-> All reads stay within the received skb for the lockup, so it is a
-> pure remote denial of service.
->
-> Reject undersized SCTP_PARAM_ERR_CAUSE parameters at the verifier,
-> and advance the consumer iterator with the same padding rule as the
-> verifier to keep the two walks in lockstep. The verifier change alone
-> guarantees length >=3D sizeof(struct sctp_paramhdr) for every parameter
-> the consumer can see, so no separate minimum-length check is needed in
-> the consumer. The consumer padding fix is still required because odd
-> lengths >=3D sizeof(struct sctp_addip_param) remain valid for
-> SCTP_PARAM_ERR_CAUSE per RFC 5061.
->
-> The issue was found by ZeroHive, a vulnerability hunting agent at
-> Tencent Yunding Lab.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-> ---
-> v2:
-> - Drop the redundant length < sizeof(struct sctp_paramhdr) check in
->   sctp_get_asconf_response(); sctp_walk_params() together with the
->   param.v !=3D chunk->chunk_end check in sctp_verify_asconf() already
->   guarantees it (Xin Long).
-> - Add length < sizeof(struct sctp_addip_param) check to the
->   SCTP_PARAM_ERR_CAUSE case in sctp_verify_asconf(), which also fixes
->   the out-of-bounds crr_id read reported by Sashiko.
->
->
->  net/sctp/sm_make_chunk.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index 236e25abc7a42..1166d1c5ea584 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -3215,6 +3215,8 @@ bool sctp_verify_asconf(const struct sctp_associati=
-on *asoc,
->                 *errp =3D param.p;
->                 switch (param.p->type) {
->                 case SCTP_PARAM_ERR_CAUSE:
-> +                       if (length < sizeof(struct sctp_addip_param))
-> +                               return false;
+On Tue, Aug 25, 2026 at 05:18:12PM +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-07-22 10:29:50 [+0200], Oliver Neukum wrote:
+> > On 20.07.26 12:08, Marco Crivellari wrote:
+> > Hi,
+> Hi Oliver,
+> 
+> > > Since the workqueue work doesn't rely on per-cpu variables, there is no
+> > > obvious reason that justify the use of a per-cpu workqueue. So change
+> > > system_long_wq with system_dfl_long_wq so that the work may benefit from
+> > > scheduler task placement.
+> > 
+> > these changes are problematic, although they look like a good cleanup
+> > in first place. But the test you are using to determine whether USB
+> > devices need their own work queue is incomplete because you are not
+> > considering the reason they allocate their own work queues.
+> 
+> This driver does not using its own workqueue.
+> 
+> > These drivers have their own work queues because they are part of the block layer.
+> > USB devices can share a device with a block device (storage & UAS) and
+> > USB devices have common, per device operations, in particular reset
+> > and runtime power management and disconnect handling. Because these operations
+> > can be necessary to complete block IO neither they nor anything
+> > they depend on can use IO to allocate memory. That is they need to
+> > perform any memory allocation with GFP_NOIO or GFP_ATOMIC.
+> 
+> This is a networking driver. It has nothing to do with storage and UAS.
+> It uses USB, yes.
 
-Sashiko [1] is asking to raise the check against:
+Ah, but a composite USB device can have both a networking interface and 
+a mass-storage interface.
 
-sizeof(struct sctp_addip_param) + sizeof(struct sctp_errhdr)
+Suppose you have such a device, and suppose the disk attached to its 
+mass-storage interface contains a swap partition.  Now suppose the 
+device is being reset, and as part of the preparation for that reset the 
+networking driver needs to flush its workqueue.  This means waiting 
+until the work routines that are already running have completed.
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825082909.2650=
-171-1-bsdhenrymartin%40gmail.com
+Since it's a general-purpose workqueue, you don't know what those work 
+routines are going to do.  One of them might try to allocate memory 
+using GFP_KERNEL.  Suppose that in order to satisfy the memory request, 
+the kernel decides it needs to write some pages to the swap partition on 
+the USB mass-storage interface.  But the mass-storage driver is stuck; 
+it can't do anything until the device reset finishes.  Deadlock.
 
-With this change, I think you can remove the asconf_ack_len check from the
-SCTP_PARAM_ERR_CAUSE case in sctp_get_asconf_response(), like:
+That's why USB drivers have to use their own workqueues.
 
--                               asconf_ack_len -=3D length;
--                               if (asconf_ack_len > 0)
--                                       return err_param->cause;
--                               else
--                                       return SCTP_ERROR_INV_PARAM;
--                               break;
-+                               return err_param->cause;
-
-Thanks.
-
->                         break;
->                 case SCTP_PARAM_IPV4_ADDRESS:
->                         if (length !=3D sizeof(struct sctp_ipv4addr_param=
-))
-> @@ -3460,8 +3462,8 @@ static __be16 sctp_get_asconf_response(struct sctp_=
-chunk *asconf_ack,
->                 }
->
->                 length =3D ntohs(asconf_ack_param->param_hdr.length);
-> -               asconf_ack_param =3D (void *)asconf_ack_param + length;
-> -               asconf_ack_len -=3D length;
-> +               asconf_ack_param =3D (void *)asconf_ack_param + SCTP_PAD4=
-(length);
-> +               asconf_ack_len -=3D SCTP_PAD4(length);
->         }
->
->         return err_code;
-> --
-> 2.43.0
+Alan Stern
