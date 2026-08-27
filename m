@@ -1,183 +1,171 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from bg-bec.cloudflare-smtp.org (bg-bec.cloudflare-smtp.org [104.30.16.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8532F1FE4
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 12:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32072DE70D
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 12:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.30.16.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787834129; cv=none; b=LUM54YxbNelLjLwLllwc3EbZxuJpxaNdeXwnIwLou/d1XApOTMOaGMJEeMPrb7zFemCXU08FD4Fa2klq3RWqn+nDJDwS2V+Kh793IeWVIvaoZA2S0qZwwK84qxzLDvBAF+mBuVO3XmdT5rLVo07HloJetjcOsAZWdh4cjGk1ozE=
+	t=1787834517; cv=none; b=h9E/I7urBJBKWNRkqyOKwfZpaTu25Y7rEXePaDev+rs8CkIgvIo14vg71+4vGq8LSma17LZhYC1Ms7ytseFEKCiBzhdTfkUliJIens20Wvl8Yk6etesV8WfLS62twYF2DxANN/Nhx7+7uGFAs+u3BtYyWHYDCpUTUKOO1SlGwAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787834129; c=relaxed/simple;
-	bh=bmbiqdOCeZle1t8GhFHFgUaBjsvNdWoT+bkaG6Qn/FA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HTGsfOiLMdRkYxJqSAnhSsz5RTmemfNMNGcR9q2k4z7/FJP26AvLaXnnbgQq+/KB4a+WVroBOw7vSbz371N36EyE4YXPhZL0gX4xD99OgDPBJSHrKzTNmfAHHfcJuiLXmqUDY+XnHygWCaMIYXJJJPIXPuCXmgm2/GdSVL27454=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=HzxUP10U; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1787834517; c=relaxed/simple;
+	bh=zkZbpzJ/hTqBLL/12FtKBo9jG1YH5wjhTJdGirG3RIc=;
+	h=From:Message-ID:Date:Subject:To:MIME-Version:Content-Type; b=p9vwRVEEE9361VWEOddmRZdsIOa+SLSSR9jfoei8k0ZOps3tMd48rl1lnPO5YRBZhWOkL7alkMXebztqL9OYR8Z8unIkRF9ZXKh9dS6svhDnSCUBISn9nz9kpWSsuftJGM+jfT2oIMZUgQr0MZ1YO/K4m2Benp1nmD2ZFceSQEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bugs.sh; spf=pass smtp.mailfrom=cf-bounce.bugs.sh; dkim=pass (2048-bit key) header.d=cloudflare-smtp.org header.i=@cloudflare-smtp.org header.b=NnoEx2bw; dkim=pass (2048-bit key) header.d=bugs.sh header.i=@bugs.sh header.b=aE22PJEq; arc=none smtp.client-ip=104.30.16.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bugs.sh
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cf-bounce.bugs.sh
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="HzxUP10U"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49b0eab380eso8315355e9.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 05:35:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1787834122; x=1788438922; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FqMm8FT0UDvKvnU0PABnBSS+wYbc4aE8U5V+uRrPoww=;
-        b=HzxUP10U4ZXwOcdfmkfuv5zV+yOdGKiFym6mZv2T3oNwYEnklHASsNatL0EbZKqqWq
-         gagrP5NNJulSlGAXD4Tb5rHjHaLJyeaOiSCe3TXrScW4nklUZ49bOS2gKjVqSj3YnE3Z
-         mDXdcYwnUXn4wfpzP7q4svINJvOWkDYUkryc7+JkopFkS87CLWtEkaOnV1rYAyJinLnU
-         FvX+OYy4anL7SMmqQOlqWxwI3APBJxLKBztVI5wBGbWXPEGHu4sq0oWbOHAV0K3cbIem
-         hRoOxoEN83nXbdie/L3T3pjQf6NDAvNSbSSOSwSwCfiDSWutRzQMBZm1l2n28Y5U8OPN
-         /+1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787834122; x=1788438922;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FqMm8FT0UDvKvnU0PABnBSS+wYbc4aE8U5V+uRrPoww=;
-        b=hwPWFdxXuoOJinTMm/K31qnARtnamA2Ig0Ju/105MwQbOlcEkQwVTS7pFoajzwMSVG
-         5XUh5VOZqjOrAPP6dIiUbz8yiSip2j6kCk/g2aKPTcNe0WQx2ov7jJ6+bfWoKOa1XhV3
-         +d1hJAO1diIo++It6rd+Od6dEdOq4ciyhwyoPxmC8hrX653Y8X5bVlmxX7wNHNg/Mg25
-         hCmo/wuLljCeR3uQC+96lfgWIWW5rvxYyTBmKr0o4XpBo9Jn9jiA2M2cyPFVbc5c6rCR
-         lEtey7nK06L0xAlhuZk0JHK9FhhGr07S4AuhEgNF/ev8oFRIrPnAVNgaHfmm9x4nClaS
-         P3xg==
-X-Forwarded-Encrypted: i=1; AHgh+RpDq6FhT+fvUh4RM/PpktXyYWKFTCmS7jmCgZessLsPMvnUNop4egozYqitz712dHgQ0J/9EEM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nxhoB17s2xioJFAkqOd28H7z/GXk+cQqCrovkjPxVpi6elm0/a
-	b2nUM+UZfq1DNTCZlCxQIKuVxSnvtSqNb0nKuotqG1dIneoWXo1yJ9cO6uTqRUthjtk=
-X-Gm-Gg: AR+sD11dWAiNwydAtyHm4ZgkLbKWrxZBSD+ym5zQXwXQr+N1DfOTU29jk/EI1CEF9jp
-	ruY56z52DP295LxbKmoh/ddYzAMcSrbaqBiip3r6ynryUp6yG63lkYsAhDhmywxTEQuAxM38VEw
-	TGIfJilHRkrg3VdF4EtAVi0/hsdI8Qmi50Ld+x470cv95G3r9dvKA0TfwR8jVMlniW7rdhEXolB
-	ftCNJznX+bpTUHG0+YRphS9rNZchC43H6tpFAVcXBQZmM4FWGmtkbHBGBci4nx5IYrujb4GzXk7
-	ybT5K5GV9u7urE//1npBnvUZfU0HaSEZC1cbNUbdggIRJliCjjHrX2vRwB1CBIEuJqi+ekf64aA
-	LobAtTdeM/IJU2P6iNHZRmyiGcLKtRpvRGWmNBanKouJ83R6cusqEAn3cqqEKa0iZfdPad1BtcN
-	cjyd4AlJDNcKM11sBT9sVDCBzvoWnp8fvd/wvNszeoSft+Xha6DpAyr7nHRRrXCVZCtFZLYqxy4
-	/AdQHlS
-X-Received: by 2002:a05:600c:3e8e:b0:499:5f80:83ac with SMTP id 5b1f17b1804b1-49b0dfd7d2cmr84639315e9.7.1787834121595;
-        Thu, 27 Aug 2026 05:35:21 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4a940aeasm46658765e9.10.2026.08.27.05.35.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 05:35:21 -0700 (PDT)
-Date: Thu, 27 Aug 2026 14:35:16 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Konstantin Sinyuk <ksinyuk@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Francois Dugast <francois.dugast@intel.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jhs@mojatatu.com, jgg@nvidia.com
-Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
- infrastructure for scale-up accelerator interconnects
-Message-ID: <apAsfOowcG0cTvT8@FV6GYCPJ69>
-References: <cover.1787552412.git.ksinyuk@kernel.org>
+	dkim=pass (2048-bit key) header.d=cloudflare-smtp.org header.i=@cloudflare-smtp.org header.b="NnoEx2bw";
+	dkim=pass (2048-bit key) header.d=bugs.sh header.i=@bugs.sh header.b="aE22PJEq"
+DKIM-Signature: v=1; a=rsa-sha256; s=cf2024-1; d=cloudflare-smtp.org; c=relaxed/relaxed;
+	h=To:Subject:Date:From:Feedback-ID:from:reply-to:cc:resent-date
+	:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help
+	:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post
+	:list-owner:list-archive; t=1787834515; x=1788439315; bh=Fe5mwI+uyadpwilkS/
+	Ud1QcG+ym0QNHsLruGoVJ0/pE=; b=NnoEx2bwj+Xm1PubbVqWUkvcx20yyDjcqjINW3l5W50Lw
+	U5I4iMUpWbdJ3nGpi+70CisClRE6zT6kQ3+snK5XIzZ5Vm15t1JpU4cimt3vcrBjplDXxsXNeGD
+	Rk8ZJDUyPsSQCUozRuwz3cu475zMhFXxT1h/cqSdopw/WLMoU3VC1vumVpYNnH1F5AfETJMlBnA
+	Sn8GPLid9OVmLMlYIJRJKZRwspke2YWlfCvZNP0U3XvYxzHNlhy5VtOp152lVreXeiC8mLwIlsU
+	m1qsxADicwz19xjRuXlHD/0k8KFfw++tb/9KsDcuF3yl6EkbwNseRqfBs338AxVYMG37W27Q==;
+DKIM-Signature: v=1; a=rsa-sha256; s=cf-bounce; d=bugs.sh; c=relaxed/relaxed;
+	h=To:Subject:Date:From:Feedback-ID:from:reply-to:cc:resent-date
+	:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help
+	:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post
+	:list-owner:list-archive; t=1787834515; x=1788439315; bh=Fe5mwI+uyadpwilkS/
+	Ud1QcG+ym0QNHsLruGoVJ0/pE=; b=aE22PJEq3eFNkLqOsQOqozHaY8rf3sbmWq6Aia4OD6MB4
+	vbmCpFSn0NFobTbvZWyg/jzFWTOmUFv+mO628aGSdagqAdWcTkTqzmmgx5wqlyF3SBBslnh5f/E
+	QNAlyE345Bzl+eiToNmyU1dDDYoRCPkpD0yz9z4u+Wz72hioAZZevIw5qdRU8AcElLMkzDOalQn
+	FHOWWE2ui1SeXQwMgO4MhqIcmRZJjSTcqrGfpZ7EQFdTty4kMvTOnWy7E1tNr1sozX7xT2Pd8BO
+	Li0JayBQjwPZL/n0Q7MuF/rfb7gKmUOUj8ZwMZkRGITEyWT4pb0dYnMilPspAEuBn/RPjqGg==;
+Feedback-ID: bugs.sh:5:6:Cloudflare
+From: co <co+28eef7d8af9428e6@bugs.sh>
+Message-ID: <jH6u350kaBRuqklDjd3k3BW4nWzp0tYRjq3p@bugs.sh>
+Date: Thu, 27 Aug 2026 12:41:49 +0000
+Subject: [BUG] net/dsa: out-of-bounds in crc32_le()
+To: netdev@vger.kernel.org, "Florian Fainelli" <florian.fainelli@broadcom.com>, "Jonas
+ Gorski" <jonas.gorski@gmail.com>, "Andrew Lunn" <andrew@lunn.ch>, "Vladimir
+ Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ =?utf-8?b?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1787552412.git.ksinyuk@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Mon, Aug 24, 2026 at 10:09:28AM +0200, ksinyuk@kernel.org wrote:
+We found a bug reachable in:
 
-[..]
+    path    net/dsa
+    crash   out-of-bounds in crc32_le()
+    commit  7cbfb180945c ("net/sched: sch_cake: fix autorate reconfiguratio=
+n throttling")
 
->Example queries using the in-tree YNL tool are:
->
->    $ ./tools/net/ynl/pyynl/cli.py \
->          --spec Documentation/netlink/specs/drm_fabric.yaml \
->          --dump fabric-get
->    $ ./tools/net/ynl/pyynl/cli.py \
->          --spec Documentation/netlink/specs/drm_fabric.yaml \
->          --dump endpoint-get --json '{"fabric-id": <id>}'
->    $ ./tools/net/ynl/pyynl/cli.py \
->          --spec Documentation/netlink/specs/drm_fabric.yaml \
->          --do port-get --json '{"endpoint-id": <id>, "port-index": 0}'
+Config, environment, the sanitizer report and a C reproducer follow.
 
-Using generic netlink instead of sysfs for this makes a lot of sense,
-but it may be a bit odd to use it outside the networking area.
-I've been struggling with the same in another non-networking use-case
-as well. I have been building a framework that keeps the benefits of
-generic netlink, extends it and is fd-based.
-I call it CTLV, here's a link to an early pre-RFC draft:
+=3D=3D Notes =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+    If you patch the bug based on our artifacts, a tag would be
+    appreciated:
 
-https://github.com/jpirko/linux_mlxsw/commits/wip_ctlv_pre_rfc_draft1/
+Reported-by: co+28eef7d8af9428e6@bugs.sh
 
-What are the benefits over generic netlink:
+    Everything in this mail is validated by the reproducer below.
 
-- No networking in the dependency chain. No netlink sockets,
-  no CAP_NET_ADMIN, and no network namespace semantics to reason about
-  for a device that has none.
+    We also hold an LLM-generated root-cause analysis and a candidate
+    patch. The patch passes an A/B test: the same reproducer panics the
+    unpatched kernel and runs clean on the patched one. Neither has had
+    human review, so both still require validation before you send or
+    apply them. Available on:
 
-- One character device per registered instance, not one global family.
-  Access control is the file: udev rules, ACLs, an fd passed into
-  a container. The open mode decides what is allowed - actions need
-  write, queries need read - so there is no permission model
-  to reinvent per family.
+        patch.diff  https://bugs.sh/b/28eef7d8af9428e6/patch.diff
+        report.md   https://bugs.sh/b/28eef7d8af9428e6/report.md
 
-- Events per open file description, not a multicast group.
-  Each descriptor has its own subscriptions and queue, and an overflow
-  is reported in-band: the next read returns an event-overflow record
-  naming the first and last sequence lost and how many.
+    This is an open science project. The code and the full set of PoCs
+    are not public at this moment, as we intend to disclose our findings
+    in an ethical way.
 
-- Large payloads are referenced, not copied. A blob attribute carries
-  a user VA, a memfd and offset, or a dma-buf fd. Nothing big travels
-  through the message.
+    Happy to test patches. Complaints and suggestions about our work
+    are welcome at:
 
-- One YAML specification, everything generated from it: kernel metadata,
-  UAPI headers, userspace bindings and the reference documentation.
-  Introspectio. is answered out of the same metadata the validator
-  enforces, so a device cannot advertise an operation it will refuse.
-  A checked-in ABI snapshot makes any wire change a reviewable diff.
+        cedalion@bugs.sh
 
-- Family inheritance. A family inherits another's operations and fills
-  declared extension points. The effective schema is resolved per
-  device and the chain is exposed to user. A shared core with
-  per-driver extensions is declared once, and both attributes and
-  operations can be extended.
+=3D=3D Environment =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+    Reproduced on  7cbfb180945c ("net/sched: sch_cake: fix autorate reconfi=
+guration throttling")
+    VM setup       https://bugs.sh/b/28eef7d8af9428e6/run.sh
+    config         https://bugs.sh/b/28eef7d8af9428e6/config.gz
+    poc            https://bugs.sh/b/28eef7d8af9428e6/repro.c
 
-- Introspection is per-device and live. The framework answers three
-  queries on every device: the family chain, one entry per published
-  operation, and any operation's full attribute tree with its bounds
-  and limits.
+=3D=3D Sanitizer Report =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+BUG: KASAN: slab-out-of-bounds in crc32_le (lib/crc/crc32-main.c:38 lib/crc=
+/x86/crc32.h:22 lib/crc/crc32-main.c:74)
+Read of size 1 at addr ffff8880131a4fc0 by task exploit/148
+CPU: 0 UID: 0 PID: 148 Comm: exploit Tainted: G S 7.2.0+ #63 PREEMPTLAZY
+Call Trace:
+dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
+kasan_report (mm/kasan/report.c:595)
+crc32_le (lib/crc/crc32-main.c:38 lib/crc/x86/crc32.h:22 lib/crc/crc32-main=
+.c:74)
+brcm_leg_fcs_tag_xmit (net/dsa/tag_brcm.c:343)
+dsa_user_xmit (net/dsa/user.c:942)
+dev_hard_start_xmit (./include/linux/netdevice.h:5429 ./include/linux/netde=
+vice.h:5438 net/core/dev.c:3937 net/core/dev.c:3953)
+__dev_queue_xmit (net/core/dev.c:4926)
+packet_sendmsg (net/packet/af_packet.c:3110 net/packet/af_packet.c:3142)
+__sys_sendto (net/socket.c:800 (discriminator 1) net/socket.c:815 (discrimi=
+nator 1) net/socket.c:2281 (discriminator 1))
+__x64_sys_sendto (net/socket.c:2288 net/socket.c:2284 net/socket.c:2284)
+do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:8=
+4)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+Allocated by task 148:
+kasan_save_stack (mm/kasan/common.c:57)
+kasan_save_track (mm/kasan/common.c:78)
+__kasan_slab_alloc (mm/kasan/common.c:340 mm/kasan/common.c:366)
+kmem_cache_alloc_node_noprof (include/linux/kasan.h:253 mm/slub.c:4584 mm/s=
+lub.c:4917 mm/slub.c:4989)
+kmalloc_reserve (net/core/skbuff.c:615 (discriminator 2))
+__alloc_skb (net/core/skbuff.c:715)
+alloc_skb_with_frags (./include/linux/skbuff.h:1384 net/core/skbuff.c:6786)
+sock_alloc_send_pskb (net/core/sock.c:3012)
+packet_sendmsg (net/packet/af_packet.c:2959 net/packet/af_packet.c:3053 net=
+/packet/af_packet.c:3142)
+__sys_sendto (net/socket.c:800 (discriminator 1) net/socket.c:815 (discrimi=
+nator 1) net/socket.c:2281 (discriminator 1))
+__x64_sys_sendto (net/socket.c:2288 net/socket.c:2284 net/socket.c:2284)
+do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:8=
+4)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+The buggy address belongs to the object at ffff8880131a4d00
+which belongs to the cache skbuff_small_head of size 704
+The buggy address is located 0 bytes to the right of
+allocated 704-byte region [ffff8880131a4d00, ffff8880131a4fc0)
 
-  The answer is what this device accepts right now, including what
-  a vendor extension added to an inherited operation and whether an op
-  is currently disabled, and op-changed events carry the generation
-  ops-dump reports, so a dump can be ordered against a change.
-  GETFAMILY and GETPOLICY describe a family statically - there is
-  no device in that model to ask.
 
-- Fragmented queries are built in, with a consistency check.
-  A continuation carries the generation it started from, and if
-  the answer changed underneath it is refused with ESTALE,
-  reporting the expected and the current generation instead of
-  reassembling a torn reply.
+---
+The report format is based on syzbot bug report.
 
-- Attributes are 8-byte aligned. CTLV_ALIGNTO is 8, so
-  a 64-bit payload is naturally aligned and there is no per-family
-  padding to remember - netlink's 4-byte alignment is why
-  nla_put_64bit() needs an explicit NOP pad attribute.
+This report is generated by a bot. It may contain errors.
+See https://github.com/n132/cedalion for more information.
 
-- Cheaper round trip. A one-attribute query measured 2.6x cheaper
-  than a genetlink one in the same guest - a debug kernel.
+For any issue with this report, reach out to cedalion@bugs.sh
 
-- Async operations using io_uring are planned as a follow-up extension.
+If the report is already addressed, let us know by replying with:
+#co fix: <commit hash>
 
-The framework owns validation, schema resolution, blob acquisition,
-reply serialization and the event queues. All getters and putters
-are generated helpers. A family implements semantics only, and
-the aim is to make that hard to get wrong.
+If the report is a duplicate of another one, reply with:
+#co dup: <lore link>
 
-Would this make sense to use for you?
+If you want to undo deduplication, reply with:
+#co undup
 
-[..]
+
