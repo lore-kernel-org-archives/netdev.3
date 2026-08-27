@@ -1,129 +1,79 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16E843CE6F;
-	Thu, 27 Aug 2026 10:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F1540DB42;
+	Thu, 27 Aug 2026 10:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787827814; cv=none; b=DlL8/SBCGStbyguaCD5N2dAZhEcR8klidaOPuFB7h+oXcaq0UEsqE2qCFm8yWnmODyZldx6D3UaYZblik+0uq2vxpl6nCmx4VWyUENmO34KEkHnUR9fKFN1QtJGsOVHQf8mMjLd2EEEX9GlPc2lOA1kwLsU8JVqv1ALQ8p/CsKE=
+	t=1787827864; cv=none; b=WjAy6QLn+dRZSLKksY4WLs5pa/uSah3rcMGxzsNTfyys94lJ0IOWbn1RdRGSW6CNxkwZxzICpuvMb5Jd49XYxU1x0Dkip8iQE5VffASk70RljKdLM0Ad/xtwM+XHLZ09wCzZYOXSNCnoSWSri6r70rlg0TUkbrKH4eozRC0hQAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787827814; c=relaxed/simple;
-	bh=WKikv7UDh0swUxIskP5m5gbLAwHhjW6fwJWJtfX2mOM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emlZdCu0XayxkUTixlZFsAKvLlSsOrWq8TYCkIJvS/0iRS64OrYzr0mJVrhhdJ39Z1Tlk4BGUoWn2Bo7C2mLeiYgJfeOKEbkGDNlpJpyJpmTovcjz2XQpk5vSaIZNbJGt6dIz8qCejFX5u9xK24GP96oroyIKAZ9sYl+9iCQ90E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AsHVFGSQ; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1787827864; c=relaxed/simple;
+	bh=TwFShiIpAHR2BE36dP58qYN0KG5LfgyIQX9eXQkzsi4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YW9RjVa1pr5GeHW4HOQVVup83ATsrGkoTVcIHacToIGBGLyCC6j9NUAJv8x7sf3Bo5pik2Nu6W/fc1HRpptrrpQSf4puPT3u6Alf/7A/xyu34JYfEAwOcYULX90+xs99/Q/O3Xtuc03owD6B4NZJYmgm+eBRDTzboQU7tHu2iNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeLl8ReN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AsHVFGSQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1787827816; x=1819363816;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WKikv7UDh0swUxIskP5m5gbLAwHhjW6fwJWJtfX2mOM=;
-  b=AsHVFGSQjxdIhNPh73Z/ArgCYdJEkYW0CGc4IQlayZtxxgwDoltAEqZ7
-   1nhy2RdMSVTSmrZ/Du2hFYn+kHiSHzcQpLL0uS8D1dXAMuvj07PalYo39
-   nGHKDu0jPpp0Mw1PINom6jOCzkh2+WMUHa8QT29AbtLReRs/+qcdwmT1d
-   hOMwROVWY2QjahYY/lg5sDVfGKlvoJEXUAlpb9p0Y5azwqBJSB7xinxQw
-   LwUCxVB2WHXvwqbtTX2xmXyscOJ4pyH7cedRg5MeVNRVtEWDPgAIkyz10
-   YE4R8dD1b1BbyqwIfkHj6ilk2gjWMxBeGeDs6FAiPhoExCPHDOQgAm7+6
-   Q==;
-X-CSE-ConnectionGUID: On+VD9zvSDyogEdmr1ElXg==
-X-CSE-MsgGUID: oJikmRcNRw6C4o8l2jsrCA==
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="61843423"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 03:50:15 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.45; Thu, 27 Aug 2026 03:50:11 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 27 Aug 2026 03:50:07 -0700
-Date: Thu, 27 Aug 2026 12:50:07 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, "Steen
- Hegelund" <steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "Herve
- Codina" <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v5 11/13] net: lan966x: add PCIe FDMA XDP support
-Message-ID: <20260827105007.ghfhbfhko3dkr37n@DEN-DL-M70577.microsemi.net>
-References: <20260520-lan966x-pci-fdma-v5-0-ca56197ae05b@microchip.com>
- <20260520-lan966x-pci-fdma-v5-11-ca56197ae05b@microchip.com>
- <20260522190126.0f2d6587@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeLl8ReN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A111F000E9;
+	Thu, 27 Aug 2026 10:51:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787827863;
+	bh=LRQ/tYb3r8887oPPrEHjtLg41BYUQ/dsQx+cIOUaWLg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=OeLl8ReNb073wT8lQWMsZ9tX8ixeWpH0hxithw0krRsmH6Jv94fBQKTPtSN4k5QFX
+	 VENvlv8Y3wUKUzzjBnZfMVmJU4ZxMgmrB4CUnOHwsF0cVs9jN/nvgJHfiCu4lzKoJE
+	 S4Tx6L+oKClAAUquVeyAavr9NpncIYAbHjaWk7lHicnC8UCIZftZf0cZUwxPNf9L6z
+	 zV/sZO2SOGgMrwgNj04ljioSL32Vdt1sFYyi58IG7QmSLShV3+q3sIjs+RjaUyFqKn
+	 /D/PxQmIDIuW6LZA8j3Kw4Tdp6ps2YmiO81fXb6f7PwVzcCCNUpMkDCVMWjFGLEJ7M
+	 YMf6tvhXIWqqA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09B23809A19;
+	Thu, 27 Aug 2026 10:50:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260522190126.0f2d6587@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] slip: fix use-after-free in sl_sync()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178782780840.1160948.18084154764950747859.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Aug 2026 10:50:08 +0000
+References: <20260824100547.164773-1-haa@amicon.ru>
+In-Reply-To: <20260824100547.164773-1-haa@amicon.ru>
+To: Aleksandr Khromov <haa@amicon.ru>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ lvc-project@linuxtesting.org, rrv@amicon.ru
 
-> On Wed, 20 May 2026 10:12:23 +0200 Daniel Machon wrote:
-> >  #if IS_ENABLED(CONFIG_MCHP_LAN966X_PCI)
-> >  extern const struct lan966x_fdma_ops lan966x_fdma_pci_ops;
-> > +
-> > +static inline bool lan966x_is_pci(struct lan966x *lan966x)
-> > +{
-> > +     return lan966x->ops == &lan966x_fdma_pci_ops;
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Mon, 24 Aug 2026 13:05:47 +0300 you wrote:
+> slip_devs[] stores bare net_device pointers and takes no reference on
+> them.  sl_sync() and sl_alloc() walk that table from slip_open() under
+> rtnl_lock(), while an entry is dropped by sl_free_netdev(), which
+> sl_setup() installs as dev->priv_destructor.
 > 
->         return IS_ENABLED(CONFIG_MCHP_LAN966X_PCI) &&
->                 lan966x->ops == &lan966x_fdma_pci_ops;
+> priv_destructor is called from netdev_run_todo(), which deliberately
+> runs with the RTNL semaphore released so that it can sleep while waiting
+> for the device refcount to drop:
 > 
-> compiler will eliminate the reference to the ops as dead code
-> and linker will not complain that its object is missing.
+> [...]
 
-Ack. Will change in v6.
+Here is the summary with links:
+  - [net,v2] slip: fix use-after-free in sl_sync()
+    https://git.kernel.org/netdev/net/c/2c4e7c42d77e
 
-> 
-> > +}
-> > +#else
-> > +static inline bool lan966x_is_pci(struct lan966x *lan966x)
-> > +{
-> > +     return false;
-> > +}
-> >  #endif
-> >
-> >  int lan966x_lag_port_join(struct lan966x_port *port,
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c
-> > index 9ee61db8690b..b470f731e25c 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c
-> > @@ -24,6 +24,16 @@ static int lan966x_xdp_setup(struct net_device *dev, struct netdev_bpf *xdp)
-> >       old_prog = xchg(&port->xdp_prog, xdp->prog);
-> >       new_xdp = lan966x_xdp_present(lan966x);
-> >
-> > +     /* PCIe FDMA uses contiguous buffers, so no page_pool reload
-> > +      * is needed. Drain NAPI before freeing the old program so
-> > +      * no in-flight poll holds a stale pointer.
-> > +      */
-> 
-> Not sure what this does. BPF programs are under RCU, they are not
-> immediately freed (if that's that you mean..)
-> 
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-It was added to stop NAPI from reading a NULL xdp_prog during a concurrent
-program swap, however that issue was closed using READ_ONCE in an earlier
-version. napi_synchronize() and the comment will be dropped in v6.
 
-> > +     if (lan966x_is_pci(lan966x)) {
-> > +             if (old_prog)
-> > +                     napi_synchronize(&lan966x->napi);
-> > +             goto out;
-> > +     }
-
-/Daniel
