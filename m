@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A663F104A
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 19:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536A53F1042
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 19:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787859781; cv=none; b=Vom+vxP6zFQzHD/Nzpyiz9omESdA5UPiNcoXhCddPczDWcFmnrC7QPREkmtJXfT8jFwFsnbRDLQ0A2LfQCAit9U9W97e5LceoKzBMQyYNMUaE2ESBXlmlsXMWb+phfQ0+i5lEmfgUhkIxh4R9DoZHjewRyNlE+nNsaSLbTdM9go=
+	t=1787859782; cv=none; b=Ij430xZK78I+Go7E1cLttCLimaFBuFKXwBk7g9FcP971tS5RdjMd3NYVArgmeQH3kJy9x2KVZ0NuB4BxPw9f95r9rvQCFx0XLrNUXH59rlwdVh5uT5OSFXkwSqG6GnJ8zZW8djptG5NN3TYf6K+aGPk3EJXXcmHotP9vosgq0Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787859781; c=relaxed/simple;
-	bh=7zV+wbiqOkr08kFZq4uLO3eQGPk8UCXdfRZsBndXTNA=;
+	s=arc-20240116; t=1787859782; c=relaxed/simple;
+	bh=WtiPzDoSOzG0T7Ywspf6pTI618IyJwZwx1GqXuQY7aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vro18A/whuhd1I8JoJmTFTrQbufHsR8fv+v8rdUqlIcUC5iULcv9Jqz2gUUSFrK5z67OwmdNm4MWhUjf7oUy/oVBxcu2l18vaFkVm7l0p64lk7SSct6X28I3S+s9f9arqPUxycQDpm3FELxBddlIz3JgKFijw/yDYn6St18ICWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bg+7v4hD; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=WVa/GbNI0kMYnHvWR90X7f0w8U1FcPRQANfn1Hc/+wnxjRPRk21UcVuNVla9GaNS3RVBRjFeL6rR8B6rrAalLjPO6RZGlALnNWehkQ/pYUCFloEVqzDy57ao7jV6CIhm1AFFw0fEEELQ/z7iP4VGz/b8ADszhbIzfgsFZr7sJqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeMq4TAP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bg+7v4hD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3E31F000E9;
-	Thu, 27 Aug 2026 19:42:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeMq4TAP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B989D1F00A3A;
+	Thu, 27 Aug 2026 19:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787859779;
-	bh=PzKd8xTMZhiTnTJWOQFI1SHCJAz2Gl57zMBg7qryKqM=;
+	s=k20260515; t=1787859781;
+	bh=kv4Hw3VNn5QJhvIE4Ouu8f0tz4L7ZJQ4RnfMELS9Lek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bg+7v4hDoD1RuKfVPsvaKYM04rx8REN4gdAd+tHJ4QgG4uFX/eZ19p4pQGE3h9JvL
-	 d+ExyMzeyKNr7l7tQJZogexp7dOvHM8Q30Mcek9wLxlqOvb2t4NQqX/cREOMRJlSBp
-	 t1WzYxk/9R2KYZq7R4Ft8TJSdmIBgNEhC384NhnqvzYksIKGpBZxZ+W+UIkMar36n8
-	 9LkM03W+hfmeg962sE4kYGiTWF0jt8l8y35nXKBZL7xUeKtoAUO2mvuTgp120xAVco
-	 XXqRXT7ZXJbXmAqbvitL7H2Gcti4dZ4Y8w4p92NQq/LfXKCh5FBHJSqykDlTGwtbUH
-	 Cxxn+S0nlsflA==
+	b=NeMq4TAPtSoT5kO3GNTVFa9vdKgVfsglrTOnfA+Flr+OFu9vSGSQq67BN4rA2cbAD
+	 R4zhqiKLG76Bew0i/lsJDmdbsgU/SwCDjuk3my4HKr3m0WdmYWLH8Cm1Kw+4osevUB
+	 VKn6ZhutLgtjYkcb7ZaQjjUSFOd1ueDLCBIY6znR25+Q+ViTFgsFAjhDOskLpEk+9e
+	 wP+UJgLNqwF2SQ/+VSk4dInJVw3CDYyilt3CFLkC5uknnMXiFL+ffUY+okb4l67zfR
+	 cOCggFEc85VlyGQ1u9NKj+GS0LzEJnosIN0ARsGqBS27BctV/Q6wMsDb8BZxKt1RYi
+	 mJxRdMTcgxyfw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: edumazet@google.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -36,12 +36,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	dsahern@kernel.org,
 	netdev@vger.kernel.org,
 	eric.dumazet@gmail.com
-Subject: Re: [PATCH net 2/5] ipv6: mcast: use copy-on-write RCU updates in ip6_mc_source()
-Date: Thu, 27 Aug 2026 12:42:58 -0700
-Message-ID: <20260827194258.4022962-1-kuba@kernel.org>
+Subject: Re: [PATCH net 3/5] ipv6: mcast: fix delay calculation in igmp6_join_group()
+Date: Thu, 27 Aug 2026 12:42:59 -0700
+Message-ID: <20260827194259.4022994-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826103711.3302915-3-edumazet@google.com>
-References: <20260826103711.3302915-3-edumazet@google.com>
+In-Reply-To: <20260826103711.3302915-4-edumazet@google.com>
+References: <20260826103711.3302915-4-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,209 +53,77 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ipv6: mcast: use copy-on-write RCU updates in ip6_mc_source()
+ipv6: mcast: fix delay calculation in igmp6_join_group()
 
-This converts ip6_mc_source() from in-place mutation of pmc->sflist to
-copy-on-write: a new ip6_sf_socklist is fully populated before being
-published with rcu_assign_pointer(), and the old one is freed with
-kfree_rcu(), matching ip6_mc_msfilter(). The unused IP6_SFBLOCK macro is
-also removed.
+igmp6_join_group() reused the remaining expiry of an already scheduled
+report work as the new delay without bounding it. The patch initializes
+delay to unsolicited_report_interval(ma->idev) and re-randomizes it with
+get_random_u32_below(interval) whenever delay >= interval, matching
+igmp6_group_queried().
 
-> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-> index ec7fac511c8d5..40e996f36c373 100644
-> --- a/net/ipv6/mcast.c
-> +++ b/net/ipv6/mcast.c
+No Link: tags present in the commit header.
 
-[ ... ]
+Only the changelog wording looks questionable to me; the code change itself
+reads correctly, so the diff hunks are omitted.
 
-> @@ -424,58 +422,75 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
->  			goto done;
->  		}
->  
-> +		if (psl->sl_count == 1) {
-> +			newpsl = NULL;
-> +		} else {
-> +			newpsl = sock_kmalloc(sk, struct_size(newpsl, sl_addr,
-> +							      psl->sl_count - 1),
-> +					      GFP_KERNEL);
-> +			if (!newpsl) {
-> +				err = -ENOBUFS;
-> +				goto done;
-> +			}
+> 1. If the timer has already expired (timer.expires <= jiffies),
+>    ma->mca_work.timer.expires - jiffies underflows to a very large
+>    unsigned long value (~ULONG_MAX), causing mod_delayed_work() to
+>    schedule the report weeks/months into the future.
 
 [Severity: Medium]
-Should removing a source from the filter be able to fail with -ENOBUFS
-now?
+Can mod_delayed_work() really push the report weeks or months out in this
+case?
 
-Before this change the !add path only shifted psl->sl_addr[] down and
-decremented psl->sl_count, so MCAST_LEAVE_SOURCE_GROUP and
-MCAST_UNBLOCK_SOURCE could not fail.  Now a shrinking update needs a
-fresh sock_kmalloc(), and the old buffer's charge is released only after
-that allocation succeeded:
+The delayed work layer converts the delay straight back into an absolute
+expiry in __queue_delayed_work():
 
-	newpsl = sock_kmalloc(sk, struct_size(newpsl, sl_addr,
-					      psl->sl_count - 1), GFP_KERNEL);
+kernel/workqueue.c:__queue_delayed_work() {
 	...
-	atomic_sub(struct_size(psl, sl_addr, psl->sl_max),
-		   &sk->sk_omem_alloc);
-	rcu_assign_pointer(pmc->sflist, newpsl);
+	timer->expires = jiffies + delay;
+	...
+}
 
-so the peak sk_omem_alloc charge for the operation is old + (old - 16).
+With delay == expires_old - jiffies_old, that modular arithmetic gives back
+expires_old, i.e. the same already-past expiry rather than a near-ULONG_MAX
+value.
 
-sock_kmalloc() in net/core/sock.c rejects on the sum:
+__queue_delayed_work() then calls add_timer_global()/add_timer_on(), which
+end in __mod_timer(timer, timer->expires, ...) and calc_wheel_index():
 
-	if ((unsigned int)size <= optmem_max &&
-	    atomic_read(&sk->sk_omem_alloc) + size < optmem_max) {
-
-With the default sysctl_mld_max_msf of 64 a full filter is 24 + 16*64 =
-1048 bytes, so roughly 19 fully populated groups reach the default
-optmem_max of 20480 and any further per-source removal returns -ENOBUFS
-instead of releasing memory.
-
-mld_max_msf is also registered with plain proc_dointvec and no extra2
-clamp in net/ipv6/sysctl_net_ipv6.c, so a single filter installed via
-ip6_mc_msfilter() can exceed half of optmem_max, in which case
-per-source removal stays impossible for that filter until userspace
-clears the whole list (MCAST_MSFILTER with gf_numsrc == 0 takes the
-newpsl == NULL path) or leaves the group.
-
-The IPv4 counterpart ip_mc_source() in net/ipv4/igmp.c still does the
-in-place shift:
-
-	for (j = i+1; j < psl->sl_count; j++)
-		psl->sl_addr[j-1] = psl->sl_addr[j];
-	psl->sl_count--;
-	err = 0;
-
-Is the resulting difference in error contracts between the two families
-for the same socket option intended?
-
-> +			newpsl->sl_max = psl->sl_count - 1;
-> +			newpsl->sl_count = psl->sl_count - 1;
-> +			for (j = 0; j < i; j++)
-> +				newpsl->sl_addr[j] = psl->sl_addr[j];
-> +			for (j = i + 1; j < psl->sl_count; j++)
-> +				newpsl->sl_addr[j - 1] = psl->sl_addr[j];
-> +		}
-> +
->  		/* update the interface filter */
->  		ip6_mc_del_src(idev, group, omode, 1, source, 1);
->  
-> -		for (j = i+1; j < psl->sl_count; j++)
-> -			psl->sl_addr[j-1] = psl->sl_addr[j];
-> -		psl->sl_count--;
-> +		atomic_sub(struct_size(psl, sl_addr, psl->sl_max),
-> +			   &sk->sk_omem_alloc);
-> +		rcu_assign_pointer(pmc->sflist, newpsl);
-> +		kfree_rcu(psl, rcu);
->  		err = 0;
->  		goto done;
->  	}
->  	/* else, add a new source to the filter */
-
-[ ... ]
-
-> +	newpsl->sl_max = i;
-> +	newpsl->sl_count = i;
-> +	if (psl) {
-> +		for (j = 0; j < psl->sl_count; j++)
-> +			newpsl->sl_addr[j] = psl->sl_addr[j];
->  	}
-> -	for (j = psl->sl_count-1; j >= i; j--)
-> -		psl->sl_addr[j+1] = psl->sl_addr[j];
-> -	psl->sl_addr[i] = *source;
-> -	psl->sl_count++;
-> +	newpsl->sl_addr[i - 1] = *source;
-> +
-> +	err = ip6_mc_add_src(idev, group, omode, 1, source, 1);
-> +	if (err) {
-> +		sock_kfree_s(sk, newpsl, struct_size(newpsl, sl_addr,
-> +						     newpsl->sl_max));
-> +		goto done;
-> +	}
-
-[Severity: Medium]
-Is the new error propagation from ip6_mc_add_src() a deliberate part of
-this conversion?
-
-The old code was:
-
-	err = 0;
-	/* update the interface list */
-	ip6_mc_add_src(idev, group, omode, 1, source, 1);
-
-so MCAST_BLOCK_SOURCE and MCAST_JOIN_SOURCE_GROUP always returned 0 and
-always installed the socket filter.  Two failures are now returned to
-userspace with pmc->sflist left unchanged:
-
-- -ENOBUFS from the interface-level allocation in ip6_mc_add1_src():
-
-	psf = kzalloc_obj(*psf);
-	if (!psf)
-		return -ENOBUFS;
-
-- -ESRCH when ip6_mc_add_src() does not find the group on idev.  That
-  is reachable with gsr_interface == 0, since the pmc lookup skips the
-  ifindex comparison:
-
-	if (pgsr->gsr_interface && pmc->ifindex != pgsr->gsr_interface)
-		continue;
-
-  while ip6_mc_find_idev()/ip6_mc_find_dev() resolves the device from
-  rt6_lookup(), which need not be the device the socket joined on.
-
-The delete branch above still ignores the identical -ESRCH from
-ip6_mc_del_src(), so the two branches disagree.  The commit message
-describes only the RCU publication fix and does not mention this change
-in setsockopt() return values, which matters for the stable backport
-implied by the Fixes: tag.  Would it be worth either splitting this out
-or documenting it in the changelog?
-
-> +
-> +	if (psl)
-> +		atomic_sub(struct_size(psl, sl_addr, psl->sl_max),
-> +			   &sk->sk_omem_alloc);
-> +	rcu_assign_pointer(pmc->sflist, newpsl);
-> +	kfree_rcu(psl, rcu);
->  	err = 0;
-> -	/* update the interface list */
-> -	ip6_mc_add_src(idev, group, omode, 1, source, 1);
->  done:
->  	mutex_unlock(&idev->mc_lock);
->  	in6_dev_put(idev);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the companion field
-pmc->sfmode is still a plain store while the list is now published
-atomically.  inet6_mc_check() consumes both fields together under
-rcu_read_lock() only:
-
-	psl = rcu_dereference(mc->sflist);
-	if (!psl) {
-		rv = mc->sfmode == MCAST_EXCLUDE;
+kernel/time/timer.c:calc_wheel_index() {
+	...
+	} else if ((long) delta < 0) {
+		idx = clk & LVL_MASK;
+		*bucket_expiry = clk;
 	} else {
-		...
-		if (mc->sfmode == MCAST_INCLUDE && i >= psl->sl_count)
-			rv = false;
-		if (mc->sfmode == MCAST_EXCLUDE && i < psl->sl_count)
-			rv = false;
-	}
+		/*
+		 * Force expire obscene large timeouts to expire at the
+		 * capacity limit of the wheel.
+		 */
+		if (delta >= WHEEL_TIMEOUT_CUTOFF)
+			expires = clk + WHEEL_TIMEOUT_MAX;
+	...
+}
 
-ip6_mc_msfilter() publishes the list first and updates the mode after:
+A past expiry takes the (long) delta < 0 branch and lands in the current
+bucket, so it fires at the next tick; the WHEEL_TIMEOUT_CUTOFF capping
+branch is not reachable for a delta that is negative when read as signed.
+add_timer()'s kerneldoc says the same thing:
 
-	rcu_assign_pointer(pmc->sflist, newpsl);
-	kfree_rcu(psl, rcu);
-	pmc->sfmode = gsf->gf_fmode;
+kernel/time/timer.c:add_timer() {
+ * If @timer->expires is already in the past @timer will be queued to
+ * expire at the next timer tick.
+}
 
-and ip6_mc_source() does the same kind of plain store with
-pmc->sfmode = omode.
+So for case 1, is the actual symptom that the randomized delay is lost and
+the second unsolicited report goes out on the next tick, right behind the
+first one, rather than a report deferred for weeks or months? The stated
+symptom implies dropped membership reports and multicast traffic loss, which
+reads differently for anyone triaging this for stable.
 
-Can a softirq receive path then pair the newly published list with the
-stale mode?  For an EXCLUDE{A} to INCLUDE{A} transition a reader that
-sees the new list but the old mode takes i < psl->sl_count and sets
-rv = false, dropping a datagram the socket now includes; the opposite
-interleaving accepts one that should be blocked.  Both sides are also
-unannotated, so KCSAN can report the sfmode access as a data race.
-
-Would publishing the mode and the source list as one RCU-protected
-object be a reasonable follow-up?
+Case 2 (a delay inherited from a query with a large maximum response delay
+exceeding unsolicited_report_interval()) matches the code, and the clamp
+added here covers both cases either way. Could the first paragraph be
+reworded to describe the lost randomization and the reuse of the stale
+expiry instead?
