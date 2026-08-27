@@ -1,109 +1,300 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A8F5733E
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787852857; cv=none; b=HMR/LcnB4RdQehkj9tbqj6LF89PMm+h186a/r/AwWn49bacgy9CblUo3Apecx3BMPVcs706V3wXfNEJBkUh0zMufuu49oi/oqp2+KKVWWkxKF7dg1LE9Yx5balSdxwKZWO+GkfSI6sUF+J4MJqVDE9clbrKLSSF+6eQT5e7kj7g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787852857; c=relaxed/simple;
-	bh=Eg+Qv/iiwr+rC20BGSW6HXYU7tC5N1NGEE1ncPpNAIs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=i5dd1xEcu9RwQIMVDdhrDy2KmqI8xB5Cr1BTcPn8UULyw14fsfgX7MU4BKD+R6RpxqzhGUC7BHIJ8IW3yKbbKPJcQ3Eu/o7ff309t2km5yEc2+H/PJ3hXlu5K/Y7DD07e8i+psoc6BrVjuzF3SUZcQtZx3xRNyIOUKSvWKNxiCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YpMnr5VJ; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259EB33CE80
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787852917; cv=pass; b=XjMZLhV2Z0jZgeKJkYMrG/1w59mau3ssEYUmTP04upj1MayjOPvB/JBKwwcpamRmpENzLLCLhGFG2wUH51DXyRYDw/j4Q2QH0q5QR8UMIrl/uU2XfCJaiNjVZaWOIGXrDmw3R1A4piW0VzKavbGg3gQvalDV9E34u6xGTEfglkM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787852917; c=relaxed/simple;
+	bh=s4iC0oPHtM2xTR2guRivNW0jOnigPWNa0R5PIlMDi+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jopmUETmSERSeIwTBD7fsZIlu2YGv6A7BOqG/ni4KCTU1zXlZNFEsMzoCvH5HaL99tjdURlVUQ51tB29ZFVPL4r0YvbZiBmd+E8doso+YfJh2QRu1oHv1Co199T6Jf81YUhZlSrvJ8CMIoUKC5UNxdaURo5T+qvSMSMtzGOZpo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=eDCU/fcT; arc=pass smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YpMnr5VJ"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2544ff970dso18204566b.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:47:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="eDCU/fcT"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-848743155bcso157350b3a.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:48:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787852914; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Zeauq3nNRvRVT5JNIyg266ofu3d1pA7fCzcwHrYwi2vYWHdwilovrAZmNIV9sMb+vQ
+         T91HKr2ZkwUMm0vBUFImU9amDxZTBy4MNYql0mH9N5aOm9aldGlHQ/toPS3CbblXiB+T
+         BWCEAZxnjAgO8WFbfkbvcWBehmY5z78otlwLl8NwmqKjiJzaTocnztVH4W6asKHblH85
+         sczoQ/rTAJK9NIChaoGfHmFyMvM7PTAI1i+63h6CoKVOkHaGPDbplJjXRPUjtJpAh5Js
+         8mdj9ZZdACK8jdY1rdSDOg4FbyGAddRK3PsK3/8r5gnyvc4LuxSXTZuWlIvc/beF+wzG
+         JVYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LyT9m6vYgvCboypQm7Wqmumh+kl8ebK0ZWBWK+xDPrY=;
+        fh=2dYrxVXduOV/KVujmVU3W4VIgQGbxia0vlaWDQKEx0M=;
+        b=NqJV/Drta1Rs3E2NdH5FYfseDCTYwH4GI4smfbaSMDOtC8JSbBfpOforSfxIcC/OUk
+         MslOSQld1tyQJpxxZlShAPkLEDJcf37fM/ehM8v2R1Y9j+JaNtpemAKLR64MNQiTei3a
+         3CoOXPhnC8QJXkLGQ3bgsFwEtaVl7cOusZMKv9VsWzn6nCUztCd+j924ZBOfJXWm/L2F
+         Rce3bi5+PaXU2pOqmmqLmsfQuRbMLK7XmuhUW+mr4qtNDozigNv6bYNcSo59dmPeRf1y
+         PMB88t+W2me1UoSgGYK4+UzY9UgdtNunlP8SmexjauyORkln4tekAv9f38zPDVjjIzF7
+         3QCQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787852854; x=1788457654; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Eg+Qv/iiwr+rC20BGSW6HXYU7tC5N1NGEE1ncPpNAIs=;
-        b=YpMnr5VJbf5uBhLMmQGk47T72fiaL9zGwTyEUDXg54GbxnuJLOhd9S/eCNn8nDPpNm
-         RO+f9nAQI4riQ4pfgj4loIXO7y9CWhIohjzyjvR06gMLHm/fX2Jhd0m4c/E9NzW2qQfK
-         ersj2dniPd8dunobJ6ItRJtBAok1PsCT9cpUkI8UueXa5JDoBMMyRu4C9vAuM2eWknGk
-         eN2OvNNnXDbTW8ObaG/xK3HdXk8kU4wfBhefRihHG4Yv2tjRY0M5eJts0J2Cb0ja5g31
-         YmiJp68BdZBry4dns1cq7ACIr7mvkaAMAwc9tDdvIFa9eMMV1B+ik/2dXEZvkc87DFoe
-         2siA==
+        d=mojatatu.com; s=google; t=1787852914; x=1788457714; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LyT9m6vYgvCboypQm7Wqmumh+kl8ebK0ZWBWK+xDPrY=;
+        b=eDCU/fcTjex6ImzmMfBEWNOmcQQB9qsHFZ6V21wq5+9KrNZjB5MTh2floQVe754MRf
+         zQSrQ5PQ8K2qcYt+gvmH+CZCtmR3WgYXerzk0Wj16jlInjMbo3tktu9Rw1B6/natnOeM
+         JY59hfo/wDbCfGbTM9F5UsDMgN6cicRaA1lBg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787852854; x=1788457654;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1787852914; x=1788457714;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Eg+Qv/iiwr+rC20BGSW6HXYU7tC5N1NGEE1ncPpNAIs=;
-        b=OGEyXNE+8wQA9xAaDa6ptYu8w/A98IMuAFn6DuQ8kgwkXgcOad6ybqDZqtukNlCcvp
-         W+vof1td82ifTAipcHjJ2SWzD2M7FMvva0TQOBATRz2+N5JzddN7Z6BAtCb2l1cVnG7a
-         TZokGBZcsNSdQ/j3fJSeC50XVMqU6twAOZI8kGmi+3+rC+t/VVvnnFPRNeAyM6P+GgIk
-         1r9UY8MTLf9u+cIw+FRhDY14U+x2WrgU1WhWKcDBn50WUJBI0QJSq0KAiMtQtzQAZ/p4
-         uO8b2xxEYBlNnZ4UPs8l6UCNDmUZUxpy8qb+O+jUWFTcInxjVvH+X7luHEV7VV8h9UUq
-         rolA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6iRmfZ7Rnd+uXg10VU4smm/CjFo/HXtfbQoQKs6+3sO+JhQUWzKtuoHAR+//U1AfS94JtYSU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nkvpQvFTpqv12P65THf+ZW2MmidNGT2xl0jrZuqwkaoIvFU5v0
-	Hto48z+IpQ5AsEuGuup0YxFAmEXFwn6ZIevSAJfLqktRAib4SDSYoEofUbsL/w==
-X-Gm-Gg: AR+sD12FGxfzGJ+saVPPRZ/hx0EPbLhvF32VUJZJx1c7th4Toc2EkcHkbtgGBwV5fuC
-	X+euToBZfWMHPZ2ZD4Jwh/lc3eEKKfefwiyQwW13kHY1b0faZh9N14IuVA+X6totjJy+PV/G5OV
-	s1VBIMg74LFHK9LbIGmdemU0wDbPUN6wuOWO3qgHzyeWqJuEYqIhQHcnzXAacH1nL9zcpqj6dNW
-	Obzb68q5hUhjqkJMr5H/Ag94LxxwPmWvGKIlP8k2/+y+y19ApTyt5qyj6l3WWKlg3yrupU+yYQ2
-	RNOBPKyoidTaDDSG4LH7BU1wS2pwKXXAguLbkob5BFxAincJoR94h6P5GAeevR5HAOeZ55ft0eT
-	BbsRH3vqpRsCRtbyC5XpziCANQmgijKNNYKyI5TGwKTDm/74BARuNanLf7cjvHQ+ql5glIxjWp6
-	YExb7xCe5zSynk6vG7dj4G55hqlNwv05Uw5EKHD26n+/fFK51oQmGBUp17LD/cribIRhDA5S6Bu
-	9TWig==
-X-Received: by 2002:a17:906:7947:b0:c25:4ba1:5953 with SMTP id a640c23a62f3a-c255702dfb5mr34260366b.11.1787852853888;
-        Thu, 27 Aug 2026 10:47:33 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([217.196.163.190])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250f99f6bdsm647834566b.0.2026.08.27.10.47.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 10:47:33 -0700 (PDT)
-Date: Thu, 27 Aug 2026 20:47:33 +0300
-From: Bohdan <boulderobscura@gmail.com>
-To: Mark <markmunene827@gmail.com>
-CC: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BBUG=5D_iwlwifi=3A_Comet_Lake_PCH_CNVi_AX201_=28?=
- =?US-ASCII?Q?8086=3A06f0=29_fails_with_error_-110_on_warm_reboot?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <CAMSTZO=2dm21hYcKKeDGCTb4KJ6R0ukDAFBQtsp4QVzPmCfcSg@mail.gmail.com>
-References: <CAMSTZOnSYZjqj4AyBpLg2hQfRs6JYZA5H26MwQ+G2WMGgNzBkg@mail.gmail.com> <025FFEEC-E57A-4C74-BF1E-D273253F4D9A@gmail.com> <CAMSTZO=2dm21hYcKKeDGCTb4KJ6R0ukDAFBQtsp4QVzPmCfcSg@mail.gmail.com>
-Message-ID: <1EF6CC70-90BC-4B9F-9F96-9DB1F3A69F1E@gmail.com>
+        bh=LyT9m6vYgvCboypQm7Wqmumh+kl8ebK0ZWBWK+xDPrY=;
+        b=qgK6SnrPzhzkMhVkii+VBD01sgVP5Fyckxl0evODWv5fHLIArfUvV3mhgIE3DYC/i4
+         kkYFW+xukUQjV1DsOifwmWvhP1ZVqRTenR4XuY9/bKfeF2UqE/6cRFZrh37TR+zm2Sk5
+         7UY5wdoeSco1CAKgCinzRkeExOYhkbRh7jwi2RNF8viSVC/P87MW8guk/Wv6cTMFCI+5
+         UBQyCMEJzjJhmIwS5MwSPoofmHnosBSLv/9HD9OJhwJeIUHcanUTwlKYsSkxpcoDTG26
+         fVPh/VaeGVkB1s+ZDLkwttjS9akQuVO9IVa/F5QqSRkdZSTjFsPpzp0PLmZBaSPyfvLY
+         RjHw==
+X-Gm-Message-State: AFuF++kFjusDWgNTGdDkRCz9KbP3i//IL8A3WzEcAK3UB1jwaPp35E/l
+	tQNMKBAdzRsDzbnLfinSQlFjCxIpligSx+sT/qU8pP5tTSPkyku65jIO1mOk+iK48Pz75/NwgbJ
+	zDd52YMb4hOSD4IP29DJ6O/21X52H8jS/OSdbSI5Z
+X-Gm-Gg: AR+sD133chQ6stJZ3jbHeBw+vpOwblOVRkxfav8EK8gZVHB95WBhlQfruUI8AHswadV
+	bqJ4fXJP4/a2NZxmp5gVP406ADIP7vdZMBM0wyfCXFZXDRVZrMtqIy/EzH9Bbe6YLdxTck2T7fI
+	qo64I5uHJLNniwi1WulgU0Qz11WWAMiJ90U4wgy2R1f/4WhYolXIXdwaHibj5BoAxY3qExJGBEa
+	YJkmjEBBGHRemilKAdt6lvQFsw7ij8x+o6Qdjt0U1Ym3tTyKkmllo25QLM9SSJl3nOHhwPCYG9Q
+	c7KJb5LZW1hGqxYSp0iemlVbeDFkIt31r+FjXuJS2i+PGWY/TW8qtKWwz7nGmhXyp6p4wnKcQbH
+	2g4JFjXzPorSRSexHpazax+FgH0TpwGr+zYujsw==
+X-Received: by 2002:a05:6a00:14c1:b0:84e:24df:3870 with SMTP id
+ d2e1a72fcca58-85625744b34mr1835179b3a.0.1787852914280; Thu, 27 Aug 2026
+ 10:48:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20260825081403.133992-1-jhs@mojatatu.com> <20260827110116.180569-1-pabeni@redhat.com>
+In-Reply-To: <20260827110116.180569-1-pabeni@redhat.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 27 Aug 2026 13:48:22 -0400
+X-Gm-Features: AcwNN1Xisaq6K8bC0YznwHG6b1MniRy0iqbFR2TGreidXeFcIaSECmie-xf1g9E
+Message-ID: <CAM0EoMnA==Hyf4rROCxnuyHcjone30=XbeQK3HD7AGf8_k99AQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] net/sched: bound qdisc_pkt_len to prevent qdisc
+ soft lockup
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, horms@kernel.org, 
+	stable@vger.kernel.org, vega@nebusec.ai, victor@mojatatu.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> Hi Bohdan and Boulder,
+On Thu, Aug 27, 2026 at 7:01=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 
-Both are me, for some reason Thunderbird on Android decided to use "Boulde=
-r" which is Google account name=2E Hope this won't happen this time=2E Plea=
-se bear with me while I debug identity settings=2E
+I have two followups both targetted for net-next. Both are valid but
+pre-existing different-root-cause bugs, not things this patch
+introduces or should fold in tbh.
 
->I tried testing the mainline 7=2E1 build directly, but on this Precision =
-7550
->the generic mainline image hits an early boot panic=2E It looks to be rel=
-ated
->to the out-of-tree proprietary GPU module and its initramfs hooks, so I
->wasn't able to get a clean 7=2E1 boot on this installation=2E
+cheers,
+jamal
 
-We still can debug this, but you'll have to blacklist the drivers that mak=
-e your system not boot (and lose the graphical interface in the meantime, o=
-r rely purely on integrated graphics during debugging if they are present) =
-and try iwlwifi through the command line=2E In the worst-case scenario, you=
- will need a USB with Linux distro ISO on it, and a guide on how to use chr=
-oot=2E Keep track of the changes you will have done, that way it will be ea=
-sier to restore the system=2E
-
-If you use NetworkManager for wireless (you likely do, most Linux distros =
-do), you can use nmtui to connect to Wi-Fi from there, which may be useful =
-for further testing=2E
-
-Hope it's not NVIDIA (it will surely be NVIDIA),
-Bohdan
+> ---
+> net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
+>
+> This adds QDISC_PKT_LEN_MAX (1 MiB) and clamps the value computed by
+> __qdisc_calculate_pkt_len() into the range [1, QDISC_PKT_LEN_MAX], with t=
+he
+> stated goal of preventing a crafted TCA_STAB size table from driving the =
+DRR
+> and ETS deficit refill loops into a multi-billion iteration spin under th=
+e
+> qdisc lock.
+>
+> A couple of questions about the fix and about the arithmetic it now
+> consumes.
+>
+> > diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+> > index 18a419cd9d949..90d3e7943b19a 100644
+> > --- a/include/net/pkt_sched.h
+> > +++ b/include/net/pkt_sched.h
+> > @@ -12,6 +12,7 @@
+> >
+> >  #define DEFAULT_TX_QUEUE_LEN 1000
+> >  #define STAB_SIZE_LOG_MAX    30
+> > +#define QDISC_PKT_LEN_MAX    (1 << 20)       /* 1 MiB */
+> >
+> >  struct qdisc_walker {
+> >       int     stop;
+> > diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+> > index 65b35528d125f..90503e59e6e3b 100644
+> > --- a/net/sched/sch_api.c
+> > +++ b/net/sched/sch_api.c
+> > @@ -610,8 +610,11 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb=
+,
+> >
+> >       pkt_len <<=3D stab->szopts.size_log;
+>
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the new clamp consumes the
+> result of arithmetic that is done entirely in a signed int on unvalidated
+> user input, so it may not bound what it is intended to bound.
+>
+> In __qdisc_calculate_pkt_len():
+>
+>         pkt_len =3D skb->len + stab->szopts.overhead;
+>         ...
+>         pkt_len =3D stab->data[stab->szopts.tsize - 1] *
+>                         (slot / stab->szopts.tsize) +
+>                         stab->data[slot % stab->szopts.tsize];
+>
+>         pkt_len <<=3D stab->szopts.size_log;
+>
+> qdisc_get_stab() only validates tsize consistency and size_log/cell_log
+> against STAB_SIZE_LOG_MAX:
+>
+>         if (s->size_log > STAB_SIZE_LOG_MAX ||
+>             s->cell_log > STAB_SIZE_LOG_MAX) {
+>                 NL_SET_ERR_MSG(extack, "Invalid logarithmic size of size =
+table");
+>                 return ERR_PTR(-EINVAL);
+>         }
+>
+> The overhead field and the u16 data table are not range checked (the
+> changelog itself notes overhead 999999999 is accepted), and size_log may =
+be
+> up to 30, so the shift overflows for any table entry >=3D 4.
+>
+> Is the signed left shift here reportable under CONFIG_UBSAN_SHIFT, and ca=
+n
+> that be reached by a namespace-local CAP_NET_ADMIN user?
+>
+> With the usual wrapping behaviour, is the new clamp monotone in the
+> attacker-controlled inputs? For example data[slot] =3D 65535 with
+> size_log =3D 16 wraps to -65536, which clamp_t(int, ...) turns into 1, so
+> shaping qdiscs such as TBF, HTB and fq would account one byte for a packe=
+t
+> the table describes as huge.
+>
+> Would doing this arithmetic in u64 (or unsigned with saturation) and
+> narrowing before the clamp make the new bound actually hold?
+>
+> >  out:
+> > -     if (unlikely(pkt_len < 1))
+> > -             pkt_len =3D 1;
+> > +     /* A size table can inflate qdisc_pkt_len() beyond any real packe=
+t
+> > +      * (via overhead, the data table, or size_log); cap it so deficit
+> > +      * schedulers such as DRR/ETS terminate their refill loops.
+> > +      */
+> > +     pkt_len =3D clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
+> >       qdisc_skb_cb(skb)->pkt_len =3D pkt_len;
+> >  }
+>
+> [Severity: High]
+> Does this clamp actually bound the DRR/ETS refill loops, or only one of
+> their inputs?
+>
+> drr_dequeue() round-robins the active class list, and each unsuccessful
+> visit advances only the head class by one quantum:
+>
+> net/sched/sch_drr.c:drr_dequeue() {
+>         while (1) {
+>                 cl =3D list_first_entry(&q->active, struct drr_class, ali=
+st);
+>                 skb =3D cl->qdisc->ops->peek(cl->qdisc);
+>                 ...
+>                 len =3D qdisc_pkt_len(skb);
+>                 if (len <=3D cl->deficit) {
+>                         ...
+>                         return skb;
+>                 }
+>
+>                 WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quant=
+um));
+>                 list_move_tail(&cl->alist, &q->active);
+>         }
+> }
+>
+> Since every active class advances at the same rate, isn't the iteration
+> count before the first packet becomes eligible roughly
+> nr_active_classes * (qdisc_pkt_len / quantum) rather than
+> qdisc_pkt_len / quantum?
+>
+> The minimum accepted quantum is 1, since drr_change_class() only rejects
+> zero:
+>
+> net/sched/sch_drr.c:drr_change_class() {
+>         quantum =3D nla_get_u32(tb[TCA_DRR_QUANTUM]);
+>         if (quantum =3D=3D 0) {
+>                 NL_SET_ERR_MSG(extack, "Specified DRR quantum cannot be z=
+ero");
+>                 return -EINVAL;
+>         }
+> }
+>
+> and drr_enqueue() re-arms the worst case on every reactivation:
+>
+> net/sched/sch_drr.c:drr_enqueue() {
+>         if (!cl_is_active(cl)) {
+>                 list_add_tail(&cl->alist, &q->active);
+>                 WRITE_ONCE(cl->deficit, READ_ONCE(cl->quantum));
+>         }
+> }
+>
+> So with quantum 1, the new 2^20 cap and roughly 1024 active classes (clas=
+s
+> creation is not bounded, and drr_classify() maps skb->priority to a class=
+id
+> so an unprivileged socket can steer packets per class), does a single
+> drr_dequeue() still run on the order of 10^9 iterations with the root qdi=
+sc
+> spinlock held and softirqs disabled?
+>
+> The same shape appears in ets_qdisc_dequeue(), which is the other consume=
+r
+> named in the new comment:
+>
+> net/sched/sch_ets.c:ets_qdisc_dequeue() {
+>                 cl->deficit +=3D READ_ONCE(cl->quantum);
+>                 list_move_tail(&cl->alist, &q->active);
+> }
+>
+> with an added per-iteration scan of the q->nstrict strict bands.
+>
+> Also, is this reachable with no TCA_STAB at all, for instance ~16k classe=
+s
+> with quantum 1 and ordinary 64 KiB packets? If so, the deficit-loop stall
+> does not appear to be gated on size-table amplification in the first plac=
+e.
+>
+> And can __qdisc_run() interrupt it?
+>
+> net/sched/sch_generic.c:__qdisc_run() {
+>         while (qdisc_restart(q, &packets, quota)) {
+>                 quota -=3D packets;
+>                 if (quota <=3D 0) {
+>                         ...
+>                         break;
+>                 }
+>         }
+> }
+>
+> The quota is only evaluated after qdisc_restart() returns, so it cannot
+> preempt the internal refill loop.
+>
+> Would bounding the loop itself, either with an iteration limit or by
+> requiring a quantum that is sane relative to the maximum pkt_len, be
+> needed instead of clamping one of its inputs?
+> --
+> This is an AI-generated review.
+>
