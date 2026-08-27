@@ -1,193 +1,94 @@
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFA62D7D47
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787855890; cv=pass; b=EXiiOC43VYoB0THi9fKPgXbTCHPW5yD31nnv1sw3/HBDHBCMaw3vImgz6VIR+Px2Q/sPsFeHu4mSZ8zOkjN0YSmoaxh683HA0R0xmR0gWOU0QrZmSj0V4tGnD/YhTGRqM80vY8V3eEZjoQFJwTjcb2PmrWG+3G2fF+IzqOwWtlA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787855890; c=relaxed/simple;
-	bh=A3OHUfTDY4B60KmnWjZgp77Qh697513pEoWAN+uT65s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gtx9EWrzGGGyw82QR0oD6zjCg4ZuvpLe6LDrMI0YJsE6nu5PvOiGmzvjdREmMdnKrX1bOMozFNwun8ztSVCayRCTo7KeKWEXG82NqUhVpJzGiN7SVAYLsnAEMWvuOoCqqSwopeKzMpUxfQoiB58YbzAwQGrb6zZIvLPHTkiQTwY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=R5/fwmMa; arc=pass smtp.client-ip=74.125.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3381844E671
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 18:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787855911; cv=none; b=XXfac9f1aFQG+7+QbAWVnjzmAyKy1cO6uYYISHxMlr1kiwGnm0lNXbEomPhp1kbyZyNG0XjOxqBFwrRWZ9Z2FT8Y4E+hBO7p2J+xYTyFwmmeAvTehK49+w8bNq6YLFeZvvuLlqaSYgQcOPZsj/y53DIswIDV7/LImqwF5wSbFXM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787855911; c=relaxed/simple;
+	bh=58T6L8zY8YnAabkJIK6RV974jXsNeGtFbOn8Th+ho4E=;
+	h=Message-ID:MIME-Version:From:To:Cc:Date:Subject:Content-Type; b=CRZwifTeNnopVSMeB2hcSREScgj+VQgU69l5xV44I/7VhpKoZGO7vOwwcj+R5c7DcOrmimxjYXaqGCLGq709XT2VUYRPHTkqcMPD5TlIVUNKGj/mRYnSuLB81zlmBVErLZ9lru/a9OYnC/bfLBSI7iyixq2pSeMj8Gx/Ci5+wCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLEueCTW; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="R5/fwmMa"
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-66c744a00edso319183d50.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:38:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787855887; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HFderc6v3hj2oEz13NFI3NUeMeDYzLYkRkyQMXg0pZDOr7vOuivUUG4i9/sPYxLg54
-         sLcKpkJ2mbLTZ6NJj0jf+jXZVcQ4VZ5QHsTKVWTN5PfVo7OLPJR8VpO8FB12AIihuwyb
-         kie4me2azMXJ0l8pEnWHSR71nDLLIFaAoN1dYmI1ADEpzgHzRhA7sXvteuUt8IrQVnF0
-         8aU0CzU2OUQ7TGiPzHexvYSM+9md+qQNEt8zDDxZ4YNaAEg5tEX/i6rPy6zgZBu1AR72
-         eELmuoMr6riDb/3v/LYaehieX6PXaNXZminmhtQvN4a0PAdIdXQc6ddLO5HDsJDXXyfl
-         lAwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5lMK2X0TFxVNPsZak8BQQicRG+0cwUrweeRcMx9M16A=;
-        fh=T+XlqujZH9hK4qHYQeJGWWQGNCghtKHpotUqh0b3YZU=;
-        b=hQWcJCauscJl3hllsmatzUFxppJaM3cLHTc7/ZBNrT3ccbiD1NHdlq7VKz/c73+d3f
-         0D/iqq/p+YGAxzIARWrAqal5fXrwxdGV2IQJFTMUrRHbLOL0vrvQtx+5DhcloEYw0gOh
-         TEsb2QLOVqYoooy59MnWMZxPvPPFWhxuJzdgL159nxTyyl4j0KpyRTH8Sycgl8tmTGNi
-         2ZaoilDOardYnNuBPMJIpN5D/0jXctCMWqyX52AdhRhOdTZZ/w0K6Ta2q9m4VR1oSyCp
-         RGnQ8nu6uRFi/givqK3v2EOdg7w2jUei0hQrP99gHmfkySDCSIghFCcgLoPd1ky8zPKa
-         vCRw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLEueCTW"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38759bcd877so8398a91.2
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:38:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787855887; x=1788460687; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5lMK2X0TFxVNPsZak8BQQicRG+0cwUrweeRcMx9M16A=;
-        b=R5/fwmMapuoLh1VH9Q6QvkT52HPBhv/6HJfAF76HQvEYfyB3Y1lAVsjd5qlqEfIFZG
-         NjawUmaiOU8zga5d78Sg1bCvBILxtJt/tOjpBHrJneQHmLT5+TUh/tm2JqwUmqSmlk6m
-         I1JgVxe8Z6ZpAlGlUO6tsiaLRAfpN6dF2z5dk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787855887; x=1788460687;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1787855909; x=1788460709; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:subject:date:cc:to:from
+         :mime-version:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5lMK2X0TFxVNPsZak8BQQicRG+0cwUrweeRcMx9M16A=;
-        b=CtO8NMs0SgNO+RWRii2tHqhGgUFaypTYWP3YE2eQOaMzMiRbWx0S10FsdLN/OE5aNK
-         HmYBkzoM1MFevdvKuMKDqAFGV0k691b/lUHhfIk7FQwoEFA2/Cdq/zjx9NER2gUR7177
-         fsBeUM1O2D5SVnR4LKamYC47Py0yoUPknv52DuTteIg9Z/IqBM+WUYSUdSevMTwgz4UD
-         pIDI4DbWzoSNpOKTLf9FHZMkCM6dZvcw7tEdxdfN/UTCh8kmz95cyeOCfdDVkOPpOxs8
-         E0wWrNOxFCcqUxkCqxYBls7u19WdOU6dRV/BiNHX+7XHk59Y25B2JdDZcM1Ngu+bCRHj
-         eUHA==
-X-Forwarded-Encrypted: i=1; AHgh+RoHTiBFVwTRnd4RjK/Fkz50Tw4O1gCnHMAofwS/VSF5fu4vfPprXln/RHVgDgwdjRxmrbq8Ibk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kGD+J8fEp9Cd8I2Eq3U1TA6ZYfKSEbmO39dclqIAgrYnhrqy6Z
-	CD4O3t1G/B2q/REPwGjwSAggNz/VEZI18oVP5O5WB35k1bwJ3Z2ckSVGHLZRkYyOcy7TGp1wHrE
-	Lpf6adu367VxyPo0TONm+rNR4WH9f7unQmzgbHTQI
-X-Gm-Gg: AR+sD13pXOIfIFXM/o0ETrBfMfLa0joG6U812dg5TaMQMX2rl/7VGEeL8DXZG7BpKc8
-	ilnRtoqIiisJLqgtsSyCRMpxaGxCymGByRqNpU0Sp9Mh0vvQk8PoCHYrZ+FoGp43QMdyIVnCPI9
-	bhBBAm0GqLaNfljJHgvpeuAkFgBcn4GRbyhVNGK++m4RaoVeSUn5GIUs10FZCtE9r78p/cBquXE
-	wKJb3KusI1o8wg0Daxrj3SI0x2/JCMiEa8y35lStBOl5Q+dhUMWRXuhrutT/tV5OuVCIaUp1TMc
-	0Hk6I/HwXp72gt/i9N7WKDyYSAl2wbQI85J1XDSv0yy83+62HxHMGDyEotQ=
-X-Received: by 2002:a53:c6c1:0:b0:66c:fd1b:117 with SMTP id
- 956f58d0204a3-66e4c5f36camr133209d50.5.1787855886638; Thu, 27 Aug 2026
- 11:38:06 -0700 (PDT)
+        bh=58T6L8zY8YnAabkJIK6RV974jXsNeGtFbOn8Th+ho4E=;
+        b=GLEueCTWt9v1kPJwUM6OuesuBRiQQWsBQWLUDJVi5J9CmIP8B2gvNBklSN0kPFT+jz
+         NWgm+T2b/tEbkZSL3A4iKP3ew3nCx3hEmeED9XHGHwapoaMc6X1ncDN+zu29gYwbPihT
+         sP2LNnbUzAnxFyefL4qDH1aLFlrz/b99GZhF4vVE9aNu6ADCp2iHJoRokhJU1OisOmAR
+         ZxiZvKINaZRSMqtIhQMp3AHH3ainjV7q/BuwWX4z+B4lwy9C55cpUMFv/SmGIv7LbDDv
+         PFCtf93/+AuUUnPx1T4YXDQ5J7FQ5oBoM/JDmsPI4yms9n5RqzvQe+wguyTN+VV24k6e
+         uyQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787855909; x=1788460709;
+        h=content-transfer-encoding:content-type:subject:date:cc:to:from
+         :mime-version:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=58T6L8zY8YnAabkJIK6RV974jXsNeGtFbOn8Th+ho4E=;
+        b=fPK5p61VXiHh16rmOA+wXCj/7i8l6BTNXRlPG72bnLykuZjfronPqRlVLWsgRQJZwF
+         NFbTOO6//Clb0A20NpkkeG+MiVAKTise0t7thAb/LlNinJWinMN+2W+xNd5hCXrSshep
+         npb8zpV8p0dSrXOHjBZRtF0TEuUe+v8lwhmXxpPCgw6IIl0iEXCoVhIxOeaoF9sfUvNE
+         nHib8EishqhZl8OA5ZkUohuiOeLvJ0tGK4vhljyksu0gxsxq2XYDVfmNZ06o5NbyfPdl
+         t2pWQCBPNlUPlwHuFgkkGXisXjsVVA0aPHTV8y1etiWw+EayuQLbdPk2XVqcAMwRk3kX
+         pIVg==
+X-Forwarded-Encrypted: i=1; AHgh+RqTlU7i0JrnmCn/mEwACbhQmG4M9F2d7Fb6QmZUdL3jNrL2yU5GMcV4dEhzREbwgeQdY1rv6wg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kUTvm55dWXmV2xqZEYzEYU+YgCjH1d/G8EXVHMRWEkkKhf50S1
+	kiqzs288/rR+wyEq4kBLGcmepbTYWWujXPdm+3C252Ed6bWOgpp6e6qgMny7kAt/
+X-Gm-Gg: AR+sD12q4mNoO26FcaJ781+v1AJxxroZGXCMMpS8FHymJw2oai6TCbGrbbJ4dkgw7vN
+	s/u2XO3l6gvexNxfNmhJDsmCdLti3sJ5GFiqRn6eTll+NZlG8iM5Enp0ZroanRfArex5syRH5f3
+	vqATPNnD8oQQ0+igpGkG4xfq5ApR3dVZJCBJqMi464YglS5znPfNkffj8I50eIAq0zyzHZd0FBq
+	zgTL13hKMCRuOrHEcWB0by95rnLdrqUHKHOmhbqibfIzJSvNI2ew/gKkjxEVjJqeB/JUSGuOXgV
+	wEjyf559QW/s5vPgChNtVL0LL8plGKhU/8uw+EHLAEd9WB43Z3UsRD0mv22RzM6zGMsKUOmlm8w
+	p4z0bnbUBhToLP6bn70pC503/n3n0Y2amkzpqHqKUpU1UMKzCzQ167tcEY4x7tKsUNKV+ddvgyf
+	ciVm6vP2PZPZcTp5WNLILGLC/EMwEK/F78721xayE5FxhBeurgDtITEKWXSt0FqDDN5sb31Rdsn
+	+IPGfOdTAn0ZYeQA/yqWE7UoF8r3vHoFBLVSEmvIsJ+xtr80oONQZPKxw==
+X-Received: by 2002:a17:90b:2f0f:b0:380:540:d499 with SMTP id 98e67ed59e1d1-396d0ed0023mr2507141a91.6.1787855909342;
+        Thu, 27 Aug 2026 11:38:29 -0700 (PDT)
+Received: from manush ([2406:7400:94:a5e3:4457:ae79:9170:871a])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141a8eefd98sm35452937c88.3.2026.08.27.11.38.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 11:38:28 -0700 (PDT)
+Message-ID: <6a908424.0318b02e.61962.fb5d@mx.google.com>
+X-Mailer: git-send-email-equivalent-ps1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824153903.4143642-1-victor@mojatatu.com> <20260824153903.4143642-2-victor@mojatatu.com>
- <20260827084456.GA396647@horms.kernel.org>
-In-Reply-To: <20260827084456.GA396647@horms.kernel.org>
-From: Victor Nogueira <victor@mojatatu.com>
-Date: Thu, 27 Aug 2026 15:37:55 -0300
-X-Gm-Features: AcwNN1Xs7Xbud-5E3z-gTFDfmnNs9DwcfpWsx63JUxk7ecadRS1H8BCyixO9dVM
-Message-ID: <CA+NMeC9wz08GtvBv6B8Uma2suKQDi8okr_VZt7hDZ5shmX_8Yw@mail.gmail.com>
-Subject: Re: [PATCH net 1/4] net/sched: act_api: budget all shared attributes
- in notify skbs
-To: Simon Horman <horms@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, pctammela@mojatatu.com, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+From: "Manush Prajwal" <manushprajwal555@gmail.com>
+To: kuba@kernel.org
+Cc: sgoutham@marvell.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Date: 28 Aug 2026 00:08:28 +0530
+Subject: Re: [PATCH 1/2] net: thunder_bgx: fix fwnode leak in
+ bgx_init_of_phy()
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 5:45=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Mon, Aug 24, 2026 at 12:39:00PM -0300, Victor Nogueira wrote:
-> > tcf_action_shared_attrs_size() is supposed to return an upper bound on =
-the
-> > netlink attributes every action dump emits outside of TCA_ACT_OPTIONS, =
-so
-> > that tcf_add_notify_msg(), tcf_del_notify_msg() and friends can allocat=
-e
-> > an skb large enough for the reply.  It has fallen behind the dump path =
-and
-> > is now an underestimate for every single action.
-> >
-> > Attributes, such as, TCA_ACT_IN_HW_COUNT and TCA_STATS_BASIC_HW are
-> > emitted unconditionally and never accounted for. TCA_STATS_PKT64,
-> > TCA_ACT_USED_HW_STATS, TCA_STATS_RATE_EST, TCA_STATS_RATE_EST64 require
-> > specific conditions, but are also not accounted for.
-> >
-> > Fix the issue by budgeting all of them so that we have a legitimate
-> > upper bound. Even tough for of them require specific conditions, they
-> > are cheap so, to avoid overcomplicating, we opted to account for them
-> > unconditionally as well to account for a real worst case scenario.
-> >
-> > Fixes: 4e76e75d6aba ("net sched actions: calculate add/delete event mes=
-sage size")
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810164=
-357.1653956-1-victor%40mojatatu.com
-> > Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > Signed-off-by: Victor Nogueira <victor@mojatatu.com>
->> [...]
-> Hi Victor,
->
-> As you are no doubt aware there is an AI-generated review
-> of this patchset available at
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.414364=
-2-1-victor%40mojatatu.com
->
-> And while I trust you will look over it, I did feel the following issue
-> was worth raising here for you to comment on.
->
-> I do see that it doesn't strictly effect this patch. But at the same time=
-,
-> perhaps it ought to be fixed, either as part of this patch or as a
-> follow-up.
->
-> Text of the AI-generated review:
->
->   This isn't a bug introduced by this patch, the TCA_ACT_STATS line is
->   unchanged, but while the surrounding terms are being made exact, should=
- this
->   container use nla_total_size_64bit(0)?
->
->   It is opened through nla_put_64bit():
->
->   net/sched/act_api.c:tcf_action_copy_stats() {
->                 err =3D gnet_stats_start_copy(skb, TCA_ACT_STATS,
->                                             &p->tcfa_lock, &d, TCA_ACT_PA=
-D);
->   }
->
->   which reaches gnet_stats_start_copy_compat() -> gnet_stats_copy(d, type=
-,
->   NULL, 0, padattr), and on !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS a 4-b=
-yte
->   TCA_ACT_PAD attribute can precede the nest.  gen_stats.c even fixes up
->   d->tail for exactly that case:
->
->   net/core/gen_stats.c:gnet_stats_start_copy_compat() {
->                 int ret =3D gnet_stats_copy(d, type, NULL, 0, padattr);
->                 /* The initial attribute added in gnet_stats_copy() may b=
-e
->                  * preceded by a padding attribute, ...
->                  */
->                 if (ret =3D=3D 0 && d->tail->nla_type =3D=3D padattr)
->   }
->
->   No overrun follows from this today: TCA_ACT_KIND is budgeted
->   nla_total_size(IFNAMSIZ) =3D 20 bytes while the longest registered in-t=
-ree
->   kind is "tunnel_key", emitted as 16, so every action carries at least 4=
- bytes
->   of slack that absorbs the missing pad.  It is only the term-by-term upp=
-er
->   bound property that is lost.
+Hi Jakub,=0D=0A=0D=0ASorry for the confusion. Patch 2/2 ("misc: e=
+eprom: idt_89hpesx: fix=0D=0Afwnode leak in idt_get_fw_data()") w=
+as numbered as part of this series=0D=0Aby mistake -- it touches =
+an unrelated driver (drivers/misc/eeprom)=0D=0Awith different mai=
+ntainers and no netdev-owned code, so it was never=0D=0Ameant to =
+go to netdev in the first place.=0D=0A=0D=0AIt was sent separatel=
+y to the correct recipients (Arnd Bergmann, Greg=0D=0AKroah-Hartm=
+an, Serge Semin, linux-kernel@vger.kernel.org), and has=0D=0Asinc=
+e been reposted as a standalone "[PATCH v2] misc: eeprom:=0D=0Aid=
+t_89hpesx: fix fwnode leak in idt_get_fw_data()" (using=0D=0Adevi=
+ce_for_each_child_node_scoped(), per Markus Elfring's review),=0D=0A=
+with no series numbering.=0D=0A=0D=0ANothing further to send to n=
+etdev for that one. Thanks for flagging=0D=0Ait.=0D=0A=0D=0ARegar=
+ds,=0D=0AManush
 
-Hi Simon,
-
-Since this doesn't look like it causes any problems today, I think we
-should, in the spirit of what Paolo suggested on patch 4, send this as
-a net-next patch later.
-WDYT?
-
-cheers,
-Victor
