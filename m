@@ -1,193 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010034.outbound.protection.outlook.com [52.101.84.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1A3444713;
-	Thu, 27 Aug 2026 11:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787829062; cv=none; b=Vjb9Wcg/eckjVbdq3PnxmwLerbLLz6JQcrWiTWWvTIJqzBmOXYAtUOqKYkc+KtNKjpgvmXlyEdu5pN2qVDGdWyaKxY34UNpoDCWg7jygn9Uug/kDNRbiJkDDmxEPwvyxYFGocOhUhFo7+VxYbbCSbcFq+RDeZ5nbLT0whiLpin0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787829062; c=relaxed/simple;
-	bh=csLblvEF7PomuCSEWvL/6BgEeru+n0VaCgNQeZwA0EI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=KR9TPSwwLgXyY+2G+1VfCx7kS8ZUiLbiGbqV0eOQ/eSC5zc8X6gEHFlcrAMxxtI39OLypM7oYESqaxP5flfSHkmos0k7MQ9fTCPvG8HsAwJDcXEgAYKhuPuIy4XKm6ci0xgiu11nVu872avhK/Ux9bFQZD09M9onVgL8coIn5+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwC+dvDg; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A9A3C76A6
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 11:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787829275; cv=fail; b=WfK3QI/ENXErwS3NwGRQrGvpHrs80Gyzhg4VYQrXaYJZXPXZi/0DNHSMMLQHrlaKOwGFjblE+4rzGUsahOkgHiwrHd9iKedlz/aa/oTFs/BgJOE4RCipchpoH5B4XXfUGW8R3lHRX0cQOKnHbmVvzNwh+2RX630Hf5xm3wLVitM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787829275; c=relaxed/simple;
+	bh=CEoLQdekSa+5FKdFkbtafm/R7KmxTsK8bGMo9SdK/hc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=fYs9aq+ORb1RsybYv/rra/xrJ87F6LSlF8iSocbxRTXcOhMsOv24PZbsC787alxlqnuUn8fREGrZ58bF0ojOtcc90+4Faa/IQbyv/0nYvYUdzRydeyF7pZ9vdfAmfo+Rnh5rh74l2cAzbLR4XNmqHjS8vU3dMPqpax+Hz0aan8k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=RhO5xH05; arc=fail smtp.client-ip=52.101.84.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwC+dvDg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573D91F000E9;
-	Thu, 27 Aug 2026 11:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787829054;
-	bh=vXob/rpMQi2QRQEHDISu89Hqj+pXmFCgFtfSg61dU0E=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=DwC+dvDgNHaX/g9BXGo9hrJkg5hSVz3nMxYzN5vFuac1nSL5g4q4+nyA4qIKn1ger
-	 Sg7t3I5c7qPVXr76M7LJl9yMhjW0en6iFqNVD2TX2N9zvjStKROc71gQoQ1wnhmPMa
-	 cidG3KExpoAUMqxDgMmHnIg1cMPkc0EslNaaRzWWguqjS+ctdBhhzvyfiDDdTuPJLj
-	 Ri7HT3Y4gOnxYMJ5PYh47btZ3AUKZIMOM5VxEVZ6qdiwtk7Nh978+GI0MhsqU8CXSN
-	 SvRI2noT0wWP4YFX7gVa29UbZRQHcpYx7dactqpTcpvGSGjRsyGFY4owbs4Q6bhWmW
-	 e1t8QhELoy16Q==
-Content-Type: multipart/mixed; boundary="===============0691679697015854772=="
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="RhO5xH05"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xy/GQdoyjg4fM19tSvSkSoZU3jFuekrB+Tic4RkNSGBXu0yzM8QQ5NCrmj32UhS41dzgHX6zkZ12IEuwz6MV6nFjk7m07ilibKOzX4LuO3WR5qEwrHxKZDt8X7vcWAE89VM+8Bz4kTTgMW33oCD4QV6M04xfPH89CJTjY4STL6NwMQJaWBYgdtI+LAjBO14P/HhCWd8/+fnRL9M+LalPwJFwDW5KF6hCRoObYZLPu8aYl1Dt/LQIGhdln7RniWN+ifAeME97dSsHwNhNwO//jVzVglG5dciJNlcrpvptE/GmXMwmhkLKtphh0FUXkduP0sj6HF2W/GWmRuqciiR2/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J78uukPKtxcNlXwl1V1/IhqvYRND3xgjztjCciNcFcU=;
+ b=zJqYujbRqOMSEYKaxK9sXOgI/qddVw+T27T4xnI5LkvbP+ZjPvt7OoghsMYJfLRM5IMvEJ/D/oo1KrSCvyqcTFIM6dDjz/Wzq14Rvkn4kUo3/FdV764H9ufcCab/ctDmogTA99YwuzGBDTQDOavHoKk1mzk76HbFcbCVPblsKNPhhNYdtPSRl/nUyc0WUBON6WwNfnEjeaI18dH/DB5WFenLJDrwVtthLw/FJuIhiRU3xdvEc32wA55ol55OJ/yIVaj7R5S2tfPPguoKe4Akjdh/p4SFU3Br0SrGMUGTCU/c41AuxFYTItsQUPG/zXThLZpqN68B1c/fN42OSKUfKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J78uukPKtxcNlXwl1V1/IhqvYRND3xgjztjCciNcFcU=;
+ b=RhO5xH05Sx4eKy6RMKB4AZrnOAs8OSELgQ4SM+v8uEndvFVnb55LS4h7bhMcAlE6yLmiKRnDVd/LAxB4uXJXGXLQPWMdoSwOYaDuDiFZ8ZJHqV7vxQke06yv/hAVKYic0hEoNa0lKs5EoPErUOmlRE5xJeQF9Z2UmBrbj2GnP+1b55rIo9SrAyCbT4pOlxeelc96Jy9/QUv4VwKKcyr/EkoNxfPqq7pTfqIgJOc5nOr3AXFH3ge6M9yifLekh/uVK8AKhk9WXyT0/7BPno6Gshxx4d/dCyufJvWEvHy0WlKZtYnZZAu8XKtdlp9th5e/98WkMtJ5d5bBeexZa2ys5Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ DB8P189MB1064.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:168::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.10; Thu, 27 Aug 2026 11:14:28 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
+ 11:14:27 +0000
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	jmaloy@redhat.com,
+	horms@kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net v17] tipc: fix NULL deref in tipc_named_node_up() on empty publication list
+Date: Thu, 27 Aug 2026 18:13:46 +0700
+Message-ID: <20260827111418.164957-1-tung.quang.nguyen@est.tech>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: KU2P306CA0078.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:3a::7) To GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:150:63::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <f8413c983b5bbf569125bfa9d12a81f2293adc9905f89d746cc51276c21459ea@mail.kernel.org>
-In-Reply-To: <20260827100214.169215-1-toke@redhat.com>
-References: <20260827100214.169215-1-toke@redhat.com>
-Subject: Re: [PATCH bpf-next 1/2] libbpf: Move XDP frags flag to prog_flags
-From: bot+bpf-ci@kernel.org
-To: toke@redhat.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,lorenzo@kernel.org,toke@redhat.com
-Cc: bpf@vger.kernel.org,netdev@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Thu, 27 Aug 2026 11:10:54 +0000 (UTC)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1P189MB1988:EE_|DB8P189MB1064:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49758e75-d62e-41c7-f106-08df042c5bca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|10070799003|7416014|376014|11063799006|56012099006|3023799007|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	4OEJPvcfUMaz3nbXT9aa3XFX3aOUynlWmt59igNM/9nbmA2SOqE3IeEUDsrv5L/mcLlWiECSWeoaS+hzKU57x/7w6uhl/1LjJtEKVzktnrqEp3BT8DLGplUPsEj623kMmGYJY47hn5K7/Rcu2KAo6WX3OSsdQY8qbugzYGNcylLTkBCItoy7/fenv3jxA98mWrSnAIB0IEBGRZ/Ptyo3zojQ+3vS23zZQ5dW9MmcIoBOHcNybic51qDxhIYvVC8+ufhwoOnPTnfs3jf6Y7WXsfhx10VkKAe+RFsXRHagI2t7EklJBkQnBARRgIa9kE/au9xfwWcTASZsZA0PXk7ztpKh0fpD4jItOyYfn6pyHroVh9+uYw1KGsLwxG1goXIpvLcQOF2+grSO+NBt8dr+bxpMCehxP5a8qOVrbI8ntQmI0Fyrbbz/Z2LsvG8znmZpd64jcisDMRbbFZP9MlhyKfI2MHnHbL01P57XzpHGewVdIcHq43OiM3QwSIZaadeBna/Q9q2iMWSQBWrDB6lcwPFkjRLDnP8KG/H5TtLJVzmziVBdH1/j232B5pCjHrz5y3Ifz0Il+Ocf/CULvD3C/aGhK2a89OmhbRLF0fPgGoWYpPiShhPf1UbtjBuaCZ40za53PEbNszCArgISZOnRwK23jpEWoa8eK/4V/tFWYiI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(10070799003)(7416014)(376014)(11063799006)(56012099006)(3023799007)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QjcYXVTpBB2zVF5hP4LlfpK8YK0EAgcVV76ugcZHtNDPmTIqBa8W98ruiXNY?=
+ =?us-ascii?Q?qbxj8qEEGysU6y0TMlDlpnT//p2SO8SMLnPYq7J7UdYH+Ka6SmRmfXB51VeE?=
+ =?us-ascii?Q?tsX49ABrwF+WmrawpSC1KZh6fea5CJVUOS72QwubONtMJ8+NH6gvlTMSnY6f?=
+ =?us-ascii?Q?JseekRua80nx+cfyigsFZR5Llj7Hwrn/htY8vritTgKdOP1Llg9UWrIoZoHX?=
+ =?us-ascii?Q?Jf5o0jenLboaEzHewnSkTCK8zJxxIfI1As0R7aWZmEiEhBuOYZhXsbI5J/V+?=
+ =?us-ascii?Q?SFl7/uG8lH9VW+xgmx9ydAn7nJXtuwfTprMLkN7aaRxu4KuxmAm41G+MfgNw?=
+ =?us-ascii?Q?CxE62Bs+FCldN/C5kbmTjPjKRbyTBqPOObi0Ut9tKRnI8yV1HAOjxRbkUZm6?=
+ =?us-ascii?Q?xCj4FVL+N5RokxVIzcm2vp8fn/F7/wBFIDJpP/KpW9Y1+rnI0WaSxQ8ohUXL?=
+ =?us-ascii?Q?yjBHOOi7IynXazh9Y7xT1Q/Wr+AbMeiWBivKh7Jr0JQqfU/zYiIkmSgoa/Xr?=
+ =?us-ascii?Q?hqggCwwsPtukKibYr2IMOGn4i7ZOBX0TkQhaCjyilSbuQqQhCiQO9DRVM5wE?=
+ =?us-ascii?Q?UF7sRIUwErabxG+qi/pl0Lac0kFs+cnPREl8wiUDJjARotSss2o50IMThMQK?=
+ =?us-ascii?Q?DrxbBhgeDfnULZwl0Bt0x5OVT2oDTHQYo93j4FmJVKJnAY4QnIWlV0ocOfr3?=
+ =?us-ascii?Q?UX5LgCwRQLCrNf4cNgfhtE4gwMqSEs/dDhL2Jg2LxhTE2zkDLJPmXhjkkQSv?=
+ =?us-ascii?Q?LyRQGDrR3T9ylbi8PegTKA6aFd05canTyzAii9f+HETqZEOykz8eT6B5sG3U?=
+ =?us-ascii?Q?LcKq3Stlsk1mOdYJTYfqrSnoPNlZKBurxeQYX3fdaNF2lUpxZKFluvvMKTb3?=
+ =?us-ascii?Q?3tgz4eAj8Gv7LR/WnkuDAgcNEpyKjDSYMCwbLiV/0wCUY8liaKUclnxsMBq5?=
+ =?us-ascii?Q?tJtyVU4F/Oncbxw39KtdbbhNgvPcDy8qKOR3eGNyVArH2fPNzHB47ix1c5Ri?=
+ =?us-ascii?Q?5XwozUzioilnGtPbO/L/DzFuZgmp+lnjAK0mZq3ciNhtBO/OfG7G/TkYpRAj?=
+ =?us-ascii?Q?Goq23YqauvSc/cPNzYCbO8ohMMHP9n/Tmbp/tX94gvthEnq9mB05ABNM+iWt?=
+ =?us-ascii?Q?w9GFS35Mc7hxM6kQU+ibdcMwvigO+p8pF3o+6h1mkhxYrQdl3wPlufBHB6hT?=
+ =?us-ascii?Q?wai3aZ+/v+1+sAmEe5QYRHHXgGOXWbTsuwz4LimVG7YFxnk3YQt9EaIgm7CG?=
+ =?us-ascii?Q?qx6Mr1V3kkp4Kw5wGhdtXpsLnN9Umrwjoz32am6K7qRj7M/Pk6NyWfjxKo7/?=
+ =?us-ascii?Q?RJNmAknlVcpAD1225NF6eg/oS1Gdk6NRVl6wMFfC9i9uo8pXB5enM29pPDrK?=
+ =?us-ascii?Q?Nj/fgcLTqN337G4+W8PxAB73a6fm3QRbxIJi2EPeeuV7dMgQsmgceS42BCt1?=
+ =?us-ascii?Q?s/4ttZUXbKl3E51G5BPNKcjdpMZMsxD3OwRcWJWtNHzJHiHCoRDD93fbch8V?=
+ =?us-ascii?Q?SeaQ9Pctq8WPQYKxzuFuP1F0aNdD2W4vXOwj5CS8+jg2gtozpxUmYGM6TcuO?=
+ =?us-ascii?Q?mnDI77QHYUo6M2HF3Wp2qnwgXG8txcNp7XX4y9UH/Mb9/d5JQpxTgIvZZGBR?=
+ =?us-ascii?Q?EfjcJ4sOlLj+LJrKqXUbwXIz5TZ7wE9YdtC+mDmNcfUpo70TcGKeB4gZoPp6?=
+ =?us-ascii?Q?yrcd7kplIpFSZ3EYCKJkug8zLMwtBIRmK1AYeN8tgZzR/giqWxsD05udPKxz?=
+ =?us-ascii?Q?E+rwK8G37zqu6cEq2U/p2p8CZ8Mll4+mzdBGWUlUrvkHwNHIl+BRZ/Xk3wl2?=
+X-MS-Exchange-AntiSpam-MessageData-1: aHBmkU6/T5bhZWJ9vWrkn3jj4NDe1FNvQd4=
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49758e75-d62e-41c7-f106-08df042c5bca
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 11:14:27.6086
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OFv/Gf2NNVZMJazX0Ad4qEEa0mZO2ikNwYni3llcH0pwLmp85jBo0N7amowRn+skpOgZmj/3dkofmwTRJu9ASgClHcA2nI1n6BALcftrsTI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8P189MB1064
 
---===============0691679697015854772==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+User-space applications can bind a large number of service addresses to
+one or more sockets. Each binding of a local-scope service address inserts
+one entry (publication) into the TIPC name table. If the number of these
+publications exceeds TIPC_MAX_PUBL (65535), protocol service types
+(such as node state and link state) are no longer inserted into the name
+table. This causes two issues:
 
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index b749c01742ee0..7d6f0fe518d99 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
+1. User-space applications subscribing to node or link up/down events
+   stop receiving notifications.
 
-[ ... ]
+2. A NULL pointer dereference can occur:
 
-> @@ -7879,6 +7877,12 @@ static int tracing_multi_mod_fd(struct bpf_program *prog, int *btf_obj_fd)
->  	return 0;
->  }
->
-> +static int setup_xdp_frags(struct bpf_program *prog, long cookie)
-> +{
-> +	prog->prog_flags |= BPF_F_XDP_HAS_FRAGS;
-> +	return 0;
-> +}
+   BUG: kernel NULL pointer dereference, address: 00000000000000d0
+   ...
+   CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc4-default+ #5 PREEMPT(full)
+   ...
+   RIP: 0010:tipc_named_node_up (./include/linux/skbuff.h:2251 net/tipc/name_distr.c:195 net/tipc/name_distr.c:221)
+   ...
+   Call Trace:
+   <IRQ>
+   tipc_node_write_unlock (net/tipc/node.c:428)
+   tipc_rcv (net/tipc/node.c:934 net/tipc/node.c:2189)
+   tipc_udp_recv (net/tipc/udp_media.c:389)
 
-Does storing BPF_F_XDP_HAS_FRAGS in prog->prog_flags here break callers
-that use bpf_program__set_flags()?
+   Thread 1 (tipc_net_finalize) | Thread 2 (named_distribute)
+   -----------------------------|-----------------------------
+                                | ...
+                                | list_for_each_entry(publ, pls, binding_node) {
+                                | ...
+                                | __skb_queue_tail(list, skb);
+                                | ...
+                                | }
+                                | ...
+                                | hdr = buf_msg(skb_peek_tail(list));
+   ...                          |
+   tipc_nametbl_publish();      |
 
-bpf_program__set_flags() overwrites rather than OR-ing:
+   If 'tipc_nametbl_publish()' (Thread 1) fails because the number of
+   local publications reaches TIPC_MAX_PUBL, list (Thread 2) will be empty. As a
+   result, NULL is passed to 'buf_msg()', leading to a NULL pointer dereference.
 
-    int bpf_program__set_flags(struct bpf_program *prog, __u32 flags)
-    {
-            ...
-            prog->prog_flags = flags;
-    }
+Fix these issues by allowing protocol service types (node state, link state,
+and topology server) to be inserted into the name table unconditionally.
+This ensures that users subscribing to these types always receive
+notifications. In addition, the maximum number of local user publications is
+reduced to (TIPC_MAX_PUBL - 1). This ensures that the maximum bulk size
+calculated in tipc_link_set_queue_limits() remains valid.
 
-Previously the flag was OR'd into the load-time opts by
-libbpf_prepare_prog_load(), so it survived any user manipulation of
-prog_flags between open and load. The new code latches it into
-prog->prog_flags at open time, so it's lost whenever a caller assigns
-prog_flags instead of OR-ing.
-
-bpf_object_load_prog() passes prog->prog_flags straight to the kernel:
-
-    load_attr.prog_flags = prog->prog_flags;
-
-Two in-tree callers do exactly that on SEC("xdp.frags") programs.
-
-bpftool (tools/bpf/bpftool/prog.c), i.e. 'bpftool prog load FILE PIN
-xdpmeta_dev DEV':
-
-    if (prog_type == BPF_PROG_TYPE_XDP && xdpmeta_ifindex) {
-            bpf_program__set_flags(pos, BPF_F_XDP_DEV_BOUND_ONLY);
-            bpf_program__set_ifindex(pos, xdpmeta_ifindex);
-
-Before: final prog_flags = BPF_F_XDP_DEV_BOUND_ONLY | BPF_F_XDP_HAS_FRAGS.
-After:  final prog_flags = BPF_F_XDP_DEV_BOUND_ONLY only.
-
-tools/testing/selftests/bpf/xdp_hw_metadata.c on program "rx", whose
-section is SEC("xdp.frags") (progs/xdp_hw_metadata.c):
-
-    prog = bpf_object__find_program_by_name(bpf_obj->obj, "rx");
-    bpf_program__set_ifindex(prog, ifindex);
-    bpf_program__set_flags(prog, BPF_F_XDP_DEV_BOUND_ONLY);
-
-The load still succeeds (BPF_F_XDP_HAS_FRAGS is optional,
-kernel/bpf/syscall.c:2936), so the loss is silent:
-kernel/bpf/syscall.c:3062 sets prog->aux->xdp_has_frags = 0, after which
-net/core/dev.c:10418 refuses to attach the program on a device whose MTU
-needs more than one buffer, skb_cow_data_for_xdp() returns -EINVAL
-(net/core/skbuff.c:1021), and drivers such as mlx5 (en_main.c:4701)
-restrict the RQ configuration. A multi-buffer XDP program is silently
-downgraded to a single-buffer one.
-
-Note the resulting asymmetry inside libbpf_prepare_prog_load() itself:
-the other section-implied flag is still applied at load time:
-
-    if (def & SEC_SLEEPABLE)
-            opts->prog_flags |= BPF_F_SLEEPABLE;
-
-so BPF_F_SLEEPABLE survives bpf_program__set_flags(prog, 0) while
-BPF_F_XDP_HAS_FRAGS no longer does. Keeping the load-time 'opts->prog_flags
-|= BPF_F_XDP_HAS_FRAGS' in addition to the new prog_flags initialisation,
-or having bpf_program__set_flags() preserve section-implied bits, would give
-visibility without breaking existing callers.
-
->
->  /* this is called as prog->sec_def->prog_prepare_load_fn for libbpf-supported sec_defs */
->  static int libbpf_prepare_prog_load(struct bpf_program *prog,
->  				    struct bpf_prog_load_opts *opts, long cookie)
->  @@ -7892,9 +7896,6 @@ static int libbpf_prepare_prog_load(struct bpf_program *prog,
->  	if (def & SEC_SLEEPABLE)
->  		opts->prog_flags |= BPF_F_SLEEPABLE;
->
-> -	if (prog->type == BPF_PROG_TYPE_XDP && (def & SEC_XDP_FRAGS))
-> -		opts->prog_flags |= BPF_F_XDP_HAS_FRAGS;
-> -
-
-Should setup_xdp_frags() keep a program type guard?
-
-The deleted load-time code was guarded:
-
-    if (prog->type == BPF_PROG_TYPE_XDP && (def & SEC_XDP_FRAGS))
-            opts->prog_flags |= BPF_F_XDP_HAS_FRAGS;
-
-setup_xdp_frags() has no equivalent guard, and because the flag is now
-latched into prog->prog_flags at open time it also survives a later type
-change. bpf_program__set_type() only clears the section handler, not the
-flags:
-
-    prog->type = type;
-    ...
-    if (prog->sec_def != &custom_fallback_def)
-            prog->sec_def = NULL;
-
-So for a SEC("xdp.frags") program retyped to something else, the old code
-dropped BPF_F_XDP_HAS_FRAGS while the new code keeps it.
-
-bpftool retypes on request:
-
-    if (bpf_program__type(pos) != prog_type)
-            bpf_program__set_type(pos, prog_type);
-
-'bpftool prog load xdp_frags.o PIN type sched_cls dev DEV' now reaches
-bpf_prog_dev_bound_init() with BPF_F_XDP_HAS_FRAGS but without
-BPF_F_XDP_DEV_BOUND_ONLY and is rejected:
-
-    if (attr->prog_flags & BPF_F_XDP_HAS_FRAGS &&
-        !(attr->prog_flags & BPF_F_XDP_DEV_BOUND_ONLY))
-            return -EINVAL;               /* kernel/bpf/offload.c */
-
-where it previously loaded. Without an ifindex the load still succeeds, but
-a non-XDP program ends up with prog->aux->xdp_has_frags = 1
-(kernel/bpf/syscall.c:3062), which changes prog-array owner compatibility
-('map->owner->xdp_has_frags == aux->xdp_has_frags', kernel/bpf/core.c:2541)
-and so can make a tail-call map setup fail.
-
-The trigger requires a deliberate retype, but the guard removal is a
-behaviour change that the changelog does not mention. If the flag is meant
-to be XDP-only, should setup_xdp_frags() keep the type test or should
-bpf_program__set_type() drop the bit when moving away from
-BPF_PROG_TYPE_XDP?
-
-[ ... ]
-
-
+Fixes: a5e7ac5ce134 ("tipc: fix regression bug where node events are not being generated")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Tested-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+v17: Only fix original issue reported by Xiang Mei. Other pre-existing issues
+     (including sashiko's findings) will be addressed via separate
+     patches.
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33062649421
---===============0691679697015854772==--
+ net/tipc/name_table.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/net/tipc/name_table.c b/net/tipc/name_table.c
+index 253c72d1366e..6fda36ab1766 100644
+--- a/net/tipc/name_table.c
++++ b/net/tipc/name_table.c
+@@ -763,21 +763,40 @@ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
+ 					 struct tipc_socket_addr *sk, u32 key)
+ {
+ 	struct name_table *nt = tipc_name_table(net);
++	u32 max_user_pub = TIPC_MAX_PUBL - 1;
+ 	struct tipc_net *tn = tipc_net(net);
+ 	struct publication *p = NULL;
+ 	struct sk_buff *skb = NULL;
++	bool protocol_type = false;
+ 	u32 rc_dests;
+ 
++	if (ua->sr.type == TIPC_NODE_STATE || ua->sr.type == TIPC_LINK_STATE ||
++	    ua->sr.type == TIPC_TOP_SRV)
++		protocol_type = true;
++
+ 	spin_lock_bh(&tn->nametbl_lock);
++	if (protocol_type)
++		goto insert;
+ 
+-	if (nt->local_publ_count >= TIPC_MAX_PUBL) {
+-		pr_warn("Bind failed, max limit %u reached\n", TIPC_MAX_PUBL);
++	/* Reserve one entry for node state service type because it has cluster
++	 * scope and it is distributed in bulk. So, the maximum number of user's
++	 * publications is (TIPC_MAX_PUBL - 1).
++	 */
++	if (nt->local_publ_count >= max_user_pub) {
++		pr_warn("Bind failed, max limit %u reached\n", max_user_pub);
+ 		goto exit;
+ 	}
+ 
++insert:
+ 	p = tipc_nametbl_insert_publ(net, ua, sk, key);
+ 	if (p) {
+-		nt->local_publ_count++;
++		/* Not count node state, link state and topology server types
++		 * so that maximum nt->local_publ_count does not prevent
++		 * protocol service types from being inserted into the name
++		 * table.
++		 */
++		if (!protocol_type)
++			nt->local_publ_count++;
+ 		skb = tipc_named_publish(net, p);
+ 	}
+ 	rc_dests = nt->rc_dests;
+@@ -810,7 +829,10 @@ void tipc_nametbl_withdraw(struct net *net, struct tipc_uaddr *ua,
+ 
+ 	p = tipc_nametbl_remove_publ(net, ua, sk, key);
+ 	if (p) {
+-		nt->local_publ_count--;
++		if (p->sr.type != TIPC_NODE_STATE &&
++		    p->sr.type != TIPC_LINK_STATE &&
++		    p->sr.type != TIPC_TOP_SRV)
++			nt->local_publ_count--;
+ 		skb = tipc_named_withdraw(net, p);
+ 		list_del_init(&p->binding_sock);
+ 		kfree_rcu(p, rcu);
+-- 
+2.43.0
+
