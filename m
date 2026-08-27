@@ -1,165 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFE840F730
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 10:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E5B40F730;
+	Thu, 27 Aug 2026 10:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787826654; cv=none; b=DnzE+4WVB9i/Wto8GdgtmyCI8btIR+GEZpPWnRxxAFNP186zBvzQo1wAwPNHNGdQstGWLyHbmE/VZIxlttjowdKPDViLSG7PxyQecoF/UXYjytvyTsfmCPqrA+ZgLgez4XQj7BAH3UDnWdTyAX8dV0Bs4nHzCN/gL90A085dvRU=
+	t=1787826717; cv=none; b=FjVfK3siAZcgmbNkA74J8vfk/M+y/5RRWkeJEu9vDTIW00yR0DrZz4og77YeYn1LAqflOI+w0rcCWfdYUpHr7AfeQNEw1hTudR3NNmWmaZeTHO5gvXUR4ow+zcFFTxWoN44pisvO4RSt6dSPJw5ASuES8ZEInzi7hnBmTf8ELd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787826654; c=relaxed/simple;
-	bh=S6GhQVyUZGTnSl/ca8Rx2+Jo7hUuN+FEZGl+i0njXk4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S09kz/V8uzq9I+piTh+FAgwDJ1QanDhkrg8UOZWUk34h4Tx/DgWKejkVLQLTNtrIjINTgZHTp8uhJH4y7/bqqxRjZXtKlo6j7Ye+MM9lCs45cue5JJjH6cxtKNlK7av/7EOlyuJ0PDi0SCNReSpPb6rRIVO3OINsdPtHJZUDzaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fuOaZrTT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=n57NY5Pk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787826717; c=relaxed/simple;
+	bh=gTI/2zY28PlksG51O7DVosuqQ8uAwW9c+zVSAfbIE5A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TvCDZnkmdVNO7SIcet/WHA6BOFbkgtCzyydIw9b6Hp7xHVsEU5RUZ25bQW7Ul/oGlATjW4Tmrxjn9y+7/M5M+BhOTBM2AT0u8dxxYp0xZIKiqQj8ilWBLis1UZX9ImaCDFkUyxP0zulknzo0Ivgo16ubmmvOxEbALdMvkVT3byw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7UZGM82; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fuOaZrTT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="n57NY5Pk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787826649;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KsgJELkcaTebKxgMzCShmGLeI9I6HcVeNbXES+/VH7g=;
-	b=fuOaZrTTTwmt2JpaoQrcTR4Xo7bDd02ldxOX4y9BhovsIlYg4CYq6dCvNszApa4/nq0H1C
-	ZM+MN7S0Mjqf50QaBu6ay0oc4JzMQSdiaRpcrcQtMbcFog07NCj+657IDdhcJg87UO7H1+
-	pm3dcEULjxh+6dq4IiFANXoYsAeyBMA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-VC_l7fsMP2CkaVfE_6KiHQ-1; Thu, 27 Aug 2026 06:30:48 -0400
-X-MC-Unique: VC_l7fsMP2CkaVfE_6KiHQ-1
-X-Mimecast-MFC-AGG-ID: VC_l7fsMP2CkaVfE_6KiHQ_1787826647
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47d81cf0c4cso905148f8f.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 03:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787826647; x=1788431447; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KsgJELkcaTebKxgMzCShmGLeI9I6HcVeNbXES+/VH7g=;
-        b=n57NY5PkU+tv8ua1btl3whlpGCQ92GhvXhUoSNlKISAacTeIpfXxcF4m4lsm1geedg
-         sQyXNG/Djmf3Iw7Ub4xJDu6wwiBOE8oZpuZpsNnLp7weN6lJ8M/KyxzbNwnZAvyRVmdc
-         SVZf5hO5XcdZ9Lo3bVHqKDeN6bNUai8w5sKwH2MHkR54bIhAFg3eqnITZPA/hEQJhTwv
-         mTUm2z6KqDrTLc/nK0fslJwxw3fpUR5wKeHicNmjoMREizv9eg8FD1e7NTwjf0Z6n5N+
-         pWY4MU9eq4a8bPK+oTLVQ33HntLOgxFD2TvWtWi6v1tOVfWcjirj64taiic5powta8PS
-         KiCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787826647; x=1788431447;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KsgJELkcaTebKxgMzCShmGLeI9I6HcVeNbXES+/VH7g=;
-        b=BvzYcTN7fK+Od0zO+Nu22qJOkeTVm9KGUOZ/wZuIrObj2t0/jEt51yvqCxYU292MFL
-         6BLjnAUnzQCmsg8lfBosD/LVRe0L7CLfmSJd/cpYNa2oZhDTGAC2uxluiAZmnohZ39iW
-         9YX7zi/09ngy0yPxA++QOBtsiDAgsYpEA/LWFHSXHRLr/FWoWa/7lxSfMzTwNbquIxP4
-         jxsgdvloUMRLQk+hiytaNOopZRYqCcX6ilA0yFlnAyCAD+YtF6KTp7PtLZe9Fk0XCCwp
-         ktwiCLJJsXcEiL8ls3RintPeqeHvIZn4QGCEdDyZ+YhebTljtfJoWK6WcUNO9FJp+Dyy
-         02Xw==
-X-Forwarded-Encrypted: i=1; AHgh+RqJaFJwqE4iRMmqj91e6oFJzHCwoCZAk8zxUC6zUAhTW22BJJo/kaZUpZV+Ltszok9ZlALcMjc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mELLRSpwSE8aGMCdAFdHsjgskl9joUE3HHtOy4Bi/CsWz2AcFY
-	11FrNR60mtS/RSCPwZ3FHDR73IAHIzPbNOPdC0N43UZ87cJwVoQ7l6HJNiAV0XAQLzgGGLOb4qU
-	VjECeXz6SbM1dVoo9Qr3yn4x3h4aFTWNxkJoxwFOnQoUVxizPSO30wbfZzw==
-X-Gm-Gg: AR+sD10AEtVym28yGi4CTYD5j/uHmhFo4HWRCNlR1vhq4JpBPP1HHygVuc5pAnPm3/W
-	k1jh0x87Du6fDBNc5sfeQ/3JXHZh3DdVVtboy/8Oe/1/Xx1rmrrhFEzGdYAgH+mmXlnMuwwp04z
-	BIkG0nMB9CW+lQDFsydwOS9WupXnO1l0MffSE8blmzyadBekaKKtXQzS1louOmKp6j50cuhNmjy
-	if+cAg1K19zwc1yHjGzKx0s2oWqpaoEuzo1q0nn8xne1c9zipRNwEzcaMSpzGZS7BGto2r8wn9S
-	a/lCE4KfieZqRZghf4DF+Xd/XwVTPsowNHg5q0LuTn5cKx1XrS74vp5T7Yco6r5z5rY2sBgGIpm
-	hSNdXja/UYhdW54lroh5PVnTYRYl+IBJA4Sd3tJ1RXQpjalQJps3TpGX7I57owH7iSrJ13Vw=
-X-Received: by 2002:a05:600c:a12:b0:499:dae2:c613 with SMTP id 5b1f17b1804b1-499dc81cca1mr157369905e9.12.1787826647211;
-        Thu, 27 Aug 2026 03:30:47 -0700 (PDT)
-X-Received: by 2002:a05:600c:a12:b0:499:dae2:c613 with SMTP id 5b1f17b1804b1-499dc81cca1mr157369265e9.12.1787826646760;
-        Thu, 27 Aug 2026 03:30:46 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e28dbe1dsm8545317f8f.22.2026.08.27.03.30.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2026 03:30:45 -0700 (PDT)
-Message-ID: <81ad3c6c-85d3-4ba0-b36e-3db21138416d@redhat.com>
-Date: Thu, 27 Aug 2026 12:30:44 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7UZGM82"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD61F000E9;
+	Thu, 27 Aug 2026 10:31:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787826714;
+	bh=dcHTYbKYT/nJkwAK6jeYRLpi/KgxCeK7/I6NNC8+9io=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V7UZGM82RCn78p5P69dazx6jcIHBDkgAi/ENOGOGgrK9P5dVTftJFuMnHQ+061e9w
+	 YMRl+JmKi3D2w1ttgg1JBRZSq39q7G0WnlYQnS2nldfYVGSluPpGRZkEGE4ptE0/BL
+	 7s/hoTh4HJ2gI3xeL5mSVaRXWzNqX0k1+KnHO7hcyyAewOSjRZ9UsKGwCtMR+CdyuB
+	 k/ieseVCyhSYcRGYgp78TljaomORFF3LvVziLZ8UiQUMmWerg/c8J+LyHCxiZMcD8G
+	 TbpxP1Qgck2OP4w5jNExH8Ix7PpOuIjDG56nwpp6vr6rqRtXzles3VEnjnHw/3ftzo
+	 HloujtBgSiPJA==
+Date: Thu, 27 Aug 2026 12:31:51 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Kristian Brox <isyourbrainfoss@proton.me>
+Cc: Luca Weiss <luca.weiss@fairphone.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: add
+ ST21NFCD NFC
+Message-ID: <20260827-strange-sensible-duck-40cfa3@quoll>
+References: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me>
+ <20260820-fp5-st21nfcd-v3-v3-3-5ee0a7f44d04@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/2] net/sched: cls_u32: fix duplicate handle when
- node ID pool is exhausted
-To: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, stable@vger.kernel.org, vega@nebusec.ai,
- Victor Nogueira <victor@mojatatu.com>
-References: <20260825081052.133898-1-jhs@mojatatu.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260825081052.133898-1-jhs@mojatatu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260820-fp5-st21nfcd-v3-v3-3-5ee0a7f44d04@proton.me>
 
-On 8/25/26 10:10 AM, Jamal Hadi Salim wrote:
-> gen_new_kid() falls back to returning max (htid | 0xFFF) when both
-> idr_alloc_u32() ranges are full, instead of reporting an error.
-> u32_change() trusts that value and inserts a new knode with a handle
-> that is already live in the hash table, breaking handle uniqueness
-> within the table's node ID space.
+On Thu, Aug 20, 2026 at 08:56:13PM +0000, Kristian Brox wrote:
+> Enable the ST21NFCD on i2c9 (0x08), IRQ TLMM 41, reset TLMM 38
+> active-high. Compatible is st,st21nfcd (raw NCI).
 > 
-> The handle was never reserved in ht->handle_idr, so every later error
-> path that does idr_remove(&ht->handle_idr, handle) removes the
-> reservation of a different, live knode, which is then reused — one
-> failed add compounds into further duplicates.
+> SYS_CLK is LN_BB_CLK2. VPS_IO is L18B (vreg_l18b). ese-present and
+> uicc-present follow the public schematic (NFC_SWP1/SWP2: SWP_SE to
+> SIM1, SWP_UICC to SIM2). Reader path is tested; SE/HCE is not.
 > 
-> The 4095 limit is per (table, bucket) — ht->handle_idr is per hash
-> table and the range is derived from htid (bucketid), so a table with
-> divisor 256 can legitimately hold 256*4095 knodes.
-> 
-> The sibling helper gen_new_htid() has the same silent in-band failure:
-> it returns 0 when the tp_c handle pool (1..0x7FF) is full, and
-> u32_init() publishes the root hash table with handle 0 without
-> checking.  Two root tables with handle 0 alias in u32_lookup_ht(),
-> allowing cross-tcf_proto knode add/lookup/delete.  Add the same
-> exhaustion check that the divisor path already has.
-> 
-> Return an error so u32_change() fails with ENOSPC/ENOMEM when the
-> node ID space is exhausted, and so u32_init() fails with -ENOMEM
-> when the hash table ID space is exhausted.  The extack message
-> distinguishes pool exhaustion (-ENOSPC) from a transient allocation
-> failure (-ENOMEM).
-> 
-> Conditions to recreate the bug:
-> - CONFIG_NET_SCHED=y, CONFIG_CLS_U32=y (or =m with module loaded)
-> - Create a clsact qdisc on a device, then add 4095 u32 filters with
->   auto-generated handles to fill the node ID space for the root hash
->   table (single bucket). The 4096th auto-handle filter add triggers
->   the duplicate handle (fh 800::fff reused). Reachable at Level 2
->   (unshare -Urn, namespace-local CAP_NET_ADMIN).
-> - For gen_new_htid: create 2047 u32 proto entries on the same block
->   to fill the tp_c handle pool, then create one more. The root table
->   gets handle 0 and aliases with other handle-0 root tables.
-> 
-> Fixes: 7801db8aec95 ("net_sched: avoid generating same handle for u32 filters")
-> Reported-by: vega@nebusec.ai
-> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
 > ---
-> v2 -> v3:
-> - Fixed tdc test that sashiko (correctly) pointed potential security
->   issue on.
-> - extack: condition the "Hash table node ID pool exhausted" message on
->   -ENOSPC; emit a neutral "Failed to allocate node ID" for -ENOMEM
->   Introduce small extack helper. The v2 message was misleading for
->   -ENOMEM (Sashiko nipa gpt-5-6-sol-1-2).
-It looks like that sashiko was able to think more about this patch and
-found new stuff:
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 34 +++++++++++++++++++++-
+>  1 file changed, 33 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> index 04cb9230d..ef66079a0 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> @@ -908,7 +908,23 @@ redriver_ss_in: endpoint {
+>  &i2c9 {
+>  	status = "okay";
+>  
+> -	/* ST21NFC NFC @ 28 */
+> +	nfc@8 {
+> +		compatible = "st,st21nfcd";
+> +		reg = <0x08>;
+> +
+> +		interrupts-extended = <&tlmm 41 IRQ_TYPE_LEVEL_HIGH>;
+> +		reset-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825081052.133898-1-jhs%40mojatatu.com
+This must be ACTIVE_LOW and existing driver is just wrong. Driver should
+handle old DTS without change, but for the new device correct it to
+proper way of handling logical state of GPIO pin (reset as "1" means
+asserted, so device is not working).
 
-I'm unsure if that falls under the 'same bug' category and should
-addressed here or separately. WDYT?
-
-/P
+Best regards,
+Krzysztof
 
