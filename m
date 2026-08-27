@@ -1,212 +1,255 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715A743B3E5;
-	Thu, 27 Aug 2026 09:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C47235295C
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 09:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787824753; cv=none; b=saCdKYkjDCodmg6OWZkniJj/sG7YBcHLig8nwJCfjOHZbr++muehI4TfFVPyFnq3eXyEyeykIgjEDrTgc0Y576IaE66wGIXa/R7DOfSQm0I7fk6aLOYk8zKJ/Ro4F9Uw8Hq7bD9oUmdBmlsTj1zBCHKjEWgheof/uZxV1iTjzsw=
+	t=1787824798; cv=none; b=l4+E/cyOHsKRj7d73oLt5BwJCfVrn7ebAivl6I3b5MqNgW+TKr3R5+DrSzih16dAO040ZArZU6rV5dINijSeL0YB7hOxwy8hDVnM24mT90Kk66NTtw/7ahdbRad4tVzGEUl053M7X1MQ3FlZhgsvZ/dCdDtKGy/4xnomlSil0UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787824753; c=relaxed/simple;
-	bh=9zWHX1koS7Y08c8z6OqdIcI8jre+mu/ZH79BynCwR7I=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NLZIeLbXxukBb+fAoSjHin54Pg2huw7PtsJU9ySpieLi98MZE5nxX4VhKnD/lblCx3cVUw1vCqFUiKNoi5lty8Bnk1/81Z4wfIzBcCKa8Sn7y9RZY/vL/Mf43PThhea+WO/a0YXz48K/XP4PpENZH8XH4NUH8U2638nFRgoHWks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rJVdl54x; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1787824798; c=relaxed/simple;
+	bh=h7G3/kC+p8D1kUbhgBcyAsgXcspLGJsAuz7vfvbqZ0w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rWYcmuW0uJLQ4AjOK8to2AjEtJjCQWno/lZYK2cS8OzwYz86preTGHi6u3s9tzvDoGOv5weHMtoiVUYXehKgDHxmt5dzqOkxAxanti2pmJYGPmIesS2xDu4e91wbuScEPdU1rHxyD6s2PuJZH2jmMbz63pxWV74PiF9a756aEw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CG2BSFet; arc=none smtp.client-ip=209.85.222.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rJVdl54x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1787824749; x=1819360749;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=9zWHX1koS7Y08c8z6OqdIcI8jre+mu/ZH79BynCwR7I=;
-  b=rJVdl54xWdwPmieXltYO74HZpuuMhkTad9vsCKiZ17eJgpe/hkTO12PZ
-   iSl3DxQJ8skr15WeMwWfvKjDGMPPxX4olxvJ5ve9bSxAITfwnJNXnQp9p
-   niB7e/njPB8NaOuSspZrEkqHFbU5cnGR79tu6T8f1ZCCXBvc1ftb2nDmn
-   LxZQ6U5JyRC7o2CcxxvySCCapgRQa+jw23ppGZl1VLd5Dfv0YAeoV7a+W
-   W72AeWh/XanVhzpjbqg4IpMqyy6cOLQbIxT81tTjGL1d0i9j7a8vkrSAe
-   T3P/JDL88VJukgmMYlcIdEM8nZYWTsQj2uG93TDa+AwarUSsqiQLz+4x6
-   g==;
-X-CSE-ConnectionGUID: TKd9ukl7SMmUnG5Q+MYsKQ==
-X-CSE-MsgGUID: Wh+SSoq1RgyeT1qOVKnEPA==
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; 
-   d="scan'208";a="294132463"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Aug 2026 02:59:02 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 27 Aug 2026 02:59:01 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 27 Aug 2026 02:58:57 -0700
-Date: Thu, 27 Aug 2026 11:58:57 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, "Steen
- Hegelund" <steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "Herve
- Codina" <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v5 09/13] net: lan966x: add PCIe FDMA support
-Message-ID: <20260827095857.nt2zngzhoq777qou@DEN-DL-M70577.microsemi.net>
-References: <20260520-lan966x-pci-fdma-v5-0-ca56197ae05b@microchip.com>
- <20260520-lan966x-pci-fdma-v5-9-ca56197ae05b@microchip.com>
- <20260522185637.1fe72213@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CG2BSFet"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-92ec3146553so312993585a.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 02:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787824778; x=1788429578; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FBIzrg8ZFKoNTtfDO8edGrIoQ09TXt9xuNZA8cBP54Q=;
+        b=CG2BSFetK9MyOU601BDRfJdGMrJ4J6i9Dw6hErb6cG2Cvp/vYUAWAZg1tTzOSipBij
+         XA7BBdwCkyoIXO164XGyxCuauEnJKX3aNLUivor0vA+k6HVrgsfonMGz3cD7rUY082l+
+         4Wyih7zNmIvQhYq1ZNL+wUdTvUnizpQy8W1GimpmWaCB/tYQnScSiJQdlHH2DDJWuBON
+         4gT+o2vwhpUG4sa7gZpHp+UYy+S+8OZPCOiXXzimrSlkyIolV2tur3RsSBJKcPCXF1KM
+         0QCAbhmUsP+/4Jl0wmz5F55PUyNAjWzNseAEHuvgLlKS2ZYYYuRlMvyyx/GAFwcDktWk
+         2KnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787824778; x=1788429578;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FBIzrg8ZFKoNTtfDO8edGrIoQ09TXt9xuNZA8cBP54Q=;
+        b=nN0n5n1XOhvalgF8nGbKCN/Ol44OXvtteDxfH+tocdE3oXLg8CWqfhDbHZY8ZoReC7
+         wYvuKT/RZgCaOis7HIsQBW31fTM1DDO2WsKjVmhIPrv/RTd5QcQjOcH9UY7ROzf2BdS7
+         kW9yri6pe7WgOySCzd1Oy2wf9+Yg64FthoYiQRbuSBDWx9WnoW8GGMNftazHhlBfLKry
+         p1mhq5eGREoBUukdsMlz03eumrXozSfFxPSJxDkG5B7Pts+xnm90cyqZN5yn1zl1b8he
+         dYQe0hmmrwUhR116Q1gqHfzlNpRx56PEsXunU/mlq1c7YYL+jFhXsU+KBkMXAD8zMekV
+         oi2w==
+X-Forwarded-Encrypted: i=1; AHgh+Ro28NzK/GrgHbgI3ZKGTr2aKjbSksrjY7yseZwDlzJ0z/v8DT+cvJSHT6ZAQ4UlzV+qYoxdHP8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nBQKuBufd/vvgUO8CJ+ZJcTGxFkYRpQ0JI5NmsoOXBhDceBdE/
+	CLqBXpPCX31WjvaX6KYwPfZnpgOrOl8FAu5t2Ux4zTDEL3c4QVo5NsjisXh0vt8i5VZqCiY1H+J
+	fcTxo4SEI8E7xeA==
+X-Received: from qkac8.prod.google.com ([2002:a05:620a:2008:b0:934:95c3:41d6])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:708c:b0:92e:f380:dabf with SMTP id af79cd13be357-937803ebd11mr1266668485a.30.1787824777658;
+ Thu, 27 Aug 2026 02:59:37 -0700 (PDT)
+Date: Thu, 27 Aug 2026 09:59:36 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260522185637.1fe72213@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.887.g758fc8c411-goog
+Message-ID: <20260827095936.551524-1-edumazet@google.com>
+Subject: [PATCH v2 net] tcp: use GFP_ATOMIC in tcp_send_active_reset()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-> On Wed, 20 May 2026 10:12:21 +0200 Daniel Machon wrote:
-> > Add PCIe FDMA support for lan966x. The PCIe FDMA path uses contiguous
-> > DMA buffers mapped through the endpoint's ATU, with memcpy-based frame
-> > transfer instead of per-page DMA mappings.
-> >
-> > With PCIe FDMA, throughput increases from ~33 Mbps (register-based I/O)
-> > to ~620 Mbps on an Intel x86 host with a lan966x PCIe card.
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/Makefile b/drivers/net/ethernet/microchip/lan966x/Makefile
-> > index 4cdbe263502c..ac0beceb2a0d 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/Makefile
-> > +++ b/drivers/net/ethernet/microchip/lan966x/Makefile
-> > @@ -18,6 +18,10 @@ lan966x-switch-objs  := lan966x_main.o lan966x_phylink.o lan966x_port.o \
-> >  lan966x-switch-$(CONFIG_LAN966X_DCB) += lan966x_dcb.o
-> >  lan966x-switch-$(CONFIG_DEBUG_FS) += lan966x_vcap_debugfs.o
-> >
-> > +ifdef CONFIG_MCHP_LAN966X_PCI
-> 
-> ifeq ()
-> 
-> would be more common in a Makefile?
+tcp_send_active_reset() can be called from contexts where gfp_any()
+(in tcp_disconnect()) or sk->sk_allocation (in __tcp_close() and
+mptcp_do_fastclose()) evaluates to GFP_KERNEL, which includes
+__GFP_FS and __GFP_DIRECT_RECLAIM.
 
-Switching to ifneq ($(CONFIG_MCHP_LAN966X_PCI),) in v6.
+Allocating with GFP_KERNEL while holding the socket lock (sk_lock) creates
+a lockdep dependency:
+  sk_lock -> fs_reclaim
 
-> 
-> > +lan966x-switch-y += lan966x_fdma_pci.o
-> > +endif
-> > +
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > index cc3c7b6c65ae..7036b1d937d5 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > @@ -7,6 +7,7 @@
-> >  #include <linux/ip.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_net.h>
-> > +#include <linux/pci.h>
-> >  #include <linux/phy/phy.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/reset.h>
-> > @@ -49,6 +50,9 @@ struct lan966x_main_io_resource {
-> >  static const struct lan966x_main_io_resource lan966x_main_iomap[] =  {
-> >       { TARGET_CPU,                   0xc0000, 0 }, /* 0xe00c0000 */
-> >       { TARGET_FDMA,                  0xc0400, 0 }, /* 0xe00c0400 */
-> > +#if IS_ENABLED(CONFIG_MCHP_LAN966X_PCI)
-> 
-> why config option being enabled changes the targets?
-> Can someone with a non-PCI device enable that option too
-> (sure it would be useless but given that/if they can guarding
-> with an #if seems like a waste of LoC)
-> 
+This causes false-positive lockdep circular locking warnings with storage
+subsystems (such as nvme-tcp) that acquire socket locks in block I/O paths
+and invoke tcp_disconnect() or close sockets upon teardown:
+  set->srcu -> sk_lock -> fs_reclaim -> elevator_lock -> set->srcu
 
-Rationale was to only map in the PCIE_DBI target if actually needed. Sure, can
-drop the conditional in v6.
+Active resets are small RST packet headers that should never
+enter direct reclaim or block while holding socket locks.
 
-> > +     { TARGET_PCIE_DBI,             0x400000, 0 }, /* 0xe0400000 */
-> > +#endif
-> >       { TARGET_ORG,                         0, 1 }, /* 0xe2000000 */
-> >       { TARGET_GCB,                    0x4000, 1 }, /* 0xe2004000 */
-> >       { TARGET_QS,                     0x8000, 1 }, /* 0xe2008000 */
-> > @@ -1100,6 +1104,13 @@ static int lan966x_reset_switch(struct lan966x *lan966x)
-> >
-> >  static const struct lan966x_fdma_ops *lan966x_get_fdma_ops(struct device *dev)
-> >  {
-> > +#if IS_ENABLED(CONFIG_MCHP_LAN966X_PCI)
-> > +     for (struct device *p = dev->parent; p; p = p->parent) {
-> > +             if (dev_is_pci(p))
-> 
-> If the PCIe devices also use an intermediate platform device for
-> probing, can't they explicitly have some flag / state to indicate
-> they are PCIe? The device walk in such a constrained env seems
-> like an overkill
-> 
+Use sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN) inside tcp_send_active_reset()
+and remove its priority argument. This preserves __GFP_MEMALLOC access
+for SOCK_MEMALLOC sockets, suppresses allocation failure warnings,
+and aligns with other control packet allocations (e.g. tcp_send_fin(),
+__tcp_send_ack(), tcp_xmit_probe_skb()).
 
-I think it could be possible to pass some state between lan966x_pci and the
-switch driver, however that seems like a much more complex solution than this.
-The parent bus node already implies the same — the switch device only ever sits
-under a PCI-created bus in the PCIe case, so an explicit flag/state would just
-restate what the topology already tells us. The walk itself is deliberate, v1
-checked dev->parent->parent directly, and I opened it up to a walk so PCIe
-detection keeps working if the overlay's DT topology gains or loses an
-intermediate bus node. I'd like to keep as it.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+v2: addressed actionnable Sashiko's feedback (https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825023614.1228551-1-edumazet%40google.com)
+v1: https://lore.kernel.org/netdev/20260825023614.1228551-1-edumazet@google.com/
 
-> > +                     return &lan966x_fdma_pci_ops;
-> > +     }
-> > +#endif
-> > +
-> >       return &lan966x_fdma_ops;
-> >  }
-> >
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-> > index 5f4dbeda17cd..e7fdd4447fb6 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-> > @@ -17,6 +17,9 @@
-> >  #include <net/xdp.h>
-> >
-> >  #include <fdma_api.h>
-> > +#if IS_ENABLED(CONFIG_MCHP_LAN966X_PCI)
-> > +#include <fdma_pci.h>
-> > +#endif
-> 
-> Conditional #includes make build testing harder, better to avoid them
-> 
+ include/net/tcp.h     |  3 +--
+ net/ipv4/tcp.c        | 14 ++++++--------
+ net/ipv4/tcp_output.c |  4 ++--
+ net/ipv4/tcp_timer.c  |  6 +++---
+ net/mptcp/protocol.c  |  3 +--
+ net/mptcp/protocol.h  |  2 +-
+ 6 files changed, 14 insertions(+), 18 deletions(-)
 
-Ack.
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 670c20876f265c14504c26f45b87763ae47d3127..436495ff2271de047423dbe33036b7c6d1556584 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -765,8 +765,7 @@ int tcp_fragment(struct sock *sk, enum tcp_queue tcp_queue,
+ void tcp_send_probe0(struct sock *);
+ int tcp_write_wakeup(struct sock *, int mib);
+ void tcp_send_fin(struct sock *sk);
+-void tcp_send_active_reset(struct sock *sk, gfp_t priority,
+-			   enum sk_rst_reason reason);
++void tcp_send_active_reset(struct sock *sk, enum sk_rst_reason reason);
+ int tcp_send_synack(struct sock *);
+ void tcp_push_one(struct sock *, unsigned int mss_now);
+ void __tcp_send_ack(struct sock *sk, u32 rcv_nxt, u16 flags);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b4237d0e994d6f9d754d2167023e3981a40b58f4..93d723d8c1098e421cb7e3596318acd20fd80233 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3182,8 +3182,7 @@ void __tcp_close(struct sock *sk, long timeout)
+ 		/* Unread data was tossed, zap the connection. */
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPABORTONCLOSE);
+ 		tcp_set_state(sk, TCP_CLOSE);
+-		tcp_send_active_reset(sk, sk->sk_allocation,
+-				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
++		tcp_send_active_reset(sk, SK_RST_REASON_TCP_ABORT_ON_CLOSE);
+ 	} else if (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime) {
+ 		/* Check zero linger _after_ checking for unread data. */
+ 		sk->sk_prot->disconnect(sk, 0);
+@@ -3257,7 +3256,7 @@ void __tcp_close(struct sock *sk, long timeout)
+ 		struct tcp_sock *tp = tcp_sk(sk);
+ 		if (READ_ONCE(tp->linger2) < 0) {
+ 			tcp_set_state(sk, TCP_CLOSE);
+-			tcp_send_active_reset(sk, GFP_ATOMIC,
++			tcp_send_active_reset(sk,
+ 					      SK_RST_REASON_TCP_ABORT_ON_LINGER);
+ 			__NET_INC_STATS(sock_net(sk),
+ 					LINUX_MIB_TCPABORTONLINGER);
+@@ -3276,7 +3275,7 @@ void __tcp_close(struct sock *sk, long timeout)
+ 	if (sk->sk_state != TCP_CLOSE) {
+ 		if (tcp_check_oom(sk, 0)) {
+ 			tcp_set_state(sk, TCP_CLOSE);
+-			tcp_send_active_reset(sk, GFP_ATOMIC,
++			tcp_send_active_reset(sk,
+ 					      SK_RST_REASON_TCP_ABORT_ON_MEMORY);
+ 			__NET_INC_STATS(sock_net(sk),
+ 					LINUX_MIB_TCPABORTONMEMORY);
+@@ -3377,14 +3376,14 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	} else if (unlikely(tp->repair)) {
+ 		WRITE_ONCE(sk->sk_err, ECONNABORTED);
+ 	} else if (tcp_need_reset(old_state)) {
+-		tcp_send_active_reset(sk, gfp_any(), SK_RST_REASON_TCP_STATE);
++		tcp_send_active_reset(sk, SK_RST_REASON_TCP_STATE);
+ 		WRITE_ONCE(sk->sk_err, ECONNRESET);
+ 	} else if (tp->snd_nxt != tp->write_seq &&
+ 		   (1 << old_state) & (TCPF_CLOSING | TCPF_LAST_ACK)) {
+ 		/* The last check adjusts for discrepancy of Linux wrt. RFC
+ 		 * states
+ 		 */
+-		tcp_send_active_reset(sk, gfp_any(),
++		tcp_send_active_reset(sk,
+ 				      SK_RST_REASON_TCP_DISCONNECT_WITH_DATA);
+ 		WRITE_ONCE(sk->sk_err, ECONNRESET);
+ 	} else if (old_state == TCP_SYN_SENT)
+@@ -5147,8 +5146,7 @@ int tcp_abort(struct sock *sk, int err)
+ 	bh_lock_sock(sk);
+ 
+ 	if (tcp_need_reset(sk->sk_state))
+-		tcp_send_active_reset(sk, GFP_ATOMIC,
+-				      SK_RST_REASON_TCP_STATE);
++		tcp_send_active_reset(sk, SK_RST_REASON_TCP_STATE);
+ 	tcp_done_with_error(sk, err);
+ 
+ 	bh_unlock_sock(sk);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index f2709d585edbd9d9fef97953920edfcb7c45e61c..3581384d097feea4cddc3c1f30404367aa93aaa8 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3849,9 +3849,9 @@ void tcp_send_fin(struct sock *sk)
+  * was unread data in the receive queue.  This behavior is recommended
+  * by RFC 2525, section 2.17.  -DaveM
+  */
+-void tcp_send_active_reset(struct sock *sk, gfp_t priority,
+-			   enum sk_rst_reason reason)
++void tcp_send_active_reset(struct sock *sk, enum sk_rst_reason reason)
+ {
++	gfp_t priority = sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN);
+ 	struct sk_buff *skb;
+ 
+ 	TCP_INC_STATS(sock_net(sk), TCP_MIB_OUTRSTS);
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 1038e7ba9c2eb19279b431249b56f8a8e4ffaf74..e56eae4bc341e94880bf0d6d1435094dfaaf879f 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -126,7 +126,7 @@ static int tcp_out_of_resources(struct sock *sk, bool do_reset)
+ 		    (!tp->snd_wnd && !tp->packets_out))
+ 			do_reset = true;
+ 		if (do_reset)
+-			tcp_send_active_reset(sk, GFP_ATOMIC,
++			tcp_send_active_reset(sk,
+ 					      SK_RST_REASON_TCP_ABORT_ON_MEMORY);
+ 		tcp_done(sk);
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPABORTONMEMORY);
+@@ -809,7 +809,7 @@ static void tcp_keepalive_timer(struct timer_list *t)
+ 				goto out;
+ 			}
+ 		}
+-		tcp_send_active_reset(sk, GFP_ATOMIC, SK_RST_REASON_TCP_STATE);
++		tcp_send_active_reset(sk, SK_RST_REASON_TCP_STATE);
+ 		goto death;
+ 	}
+ 
+@@ -836,7 +836,7 @@ static void tcp_keepalive_timer(struct timer_list *t)
+ 		    icsk->icsk_probes_out > 0) ||
+ 		    (user_timeout == 0 &&
+ 		    icsk->icsk_probes_out >= keepalive_probes(tp))) {
+-			tcp_send_active_reset(sk, GFP_ATOMIC,
++			tcp_send_active_reset(sk,
+ 					      SK_RST_REASON_TCP_KEEPALIVE_TIMEOUT);
+ 			tcp_write_err(sk);
+ 			goto out;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index b474d03620a75d3df26fcae1a84901b965c6954e..e1f08f71cdb16b2bbecd5630bca895d651c17b4c 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3109,8 +3109,7 @@ static void mptcp_do_fastclose(struct sock *sk)
+ 		 */
+ 		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
+ 
+-		tcp_send_active_reset(ssk, ssk->sk_allocation,
+-				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
++		tcp_send_active_reset(ssk, SK_RST_REASON_TCP_ABORT_ON_CLOSE);
+ unlock:
+ 		release_sock(ssk);
+ 	}
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 06a107d4e8392269b42f3af7ac531764619107c1..87ccb84e9927ccb23b242c11d34eb69427362702 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -690,7 +690,7 @@ mptcp_send_active_reset_reason(struct sock *sk)
+ 	enum sk_rst_reason reason;
+ 
+ 	reason = sk_rst_convert_mptcp_reason(subflow->reset_reason);
+-	tcp_send_active_reset(sk, GFP_ATOMIC, reason);
++	tcp_send_active_reset(sk, reason);
+ }
+ 
+ /* Made the fwd mem carried by the given skb available to the msk,
+-- 
+2.55.0.887.g758fc8c411-goog
 
-> >  #include <vcap_api.h>
-> >  #include <vcap_api_client.h>
-> >
-> > @@ -288,6 +291,10 @@ struct lan966x {
-> >
-> >       void __iomem *regs[NUM_TARGETS];
-> >
-> > +#if IS_ENABLED(CONFIG_MCHP_LAN966X_PCI)
-> > +     struct fdma_pci_atu atu;
-> > +#endif
-> > +
-> >       int shared_queue_sz;
-> >
-> >       u8 base_mac[ETH_ALEN];
-> > @@ -586,6 +593,10 @@ void lan966x_fdma_wakeup_netdev(struct lan966x *lan966x);
-> >  int lan966x_fdma_get_max_frame(struct lan966x *lan966x);
-> >  int lan966x_qsys_sw_status(struct lan966x *lan966x);
-> >
-> > +#if IS_ENABLED(CONFIG_MCHP_LAN966X_PCI)
-> > +extern const struct lan966x_fdma_ops lan966x_fdma_pci_ops;
-> > +#endif
-> 
-> There should be no need to wrap extern in an #if
-
-Ack.
-
-
-/Daniel
