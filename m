@@ -1,121 +1,183 @@
-Received: from smtp153-163.sina.com.cn (smtp153-163.sina.com.cn [61.135.153.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2D520125F
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 12:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8532F1FE4
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 12:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787833946; cv=none; b=nz0GtFMN1TqTSD6QKaJTfO2Qs8Ubi+NaDgnVKBF7C38+pTqOiDzyifLXe259QDyj3qfQsMsQdtuJ7x8anVYIGtz9s0Qmo5B6stTpG3SaF6aC/2IB6sirBySDblgKbpIexasD4jjrsjSE8D7FK2lqP2ylCzS+BQKblqmSEznGWr0=
+	t=1787834129; cv=none; b=LUM54YxbNelLjLwLllwc3EbZxuJpxaNdeXwnIwLou/d1XApOTMOaGMJEeMPrb7zFemCXU08FD4Fa2klq3RWqn+nDJDwS2V+Kh793IeWVIvaoZA2S0qZwwK84qxzLDvBAF+mBuVO3XmdT5rLVo07HloJetjcOsAZWdh4cjGk1ozE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787833946; c=relaxed/simple;
-	bh=RBZB9BXn3rlldYFpbD1GyN4U/QuX7F8ri+NK7+Xtd1Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qr7brhwAACPafriU9Ox4szImyMAmjvItbyznJ9mLe+sSF1TN/A/xT/En4b/10bnjQNvNcBAgsQKKx++dGwGpIzQw3szbYvxZ2pwiJOeeYKy52NaTs3UHRi92JR4M6To672V/5YKa/SA0kmmbO1KyucDANdI62ResY9X2BXPC/2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=u0WXwYhY; arc=none smtp.client-ip=61.135.153.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1787834129; c=relaxed/simple;
+	bh=bmbiqdOCeZle1t8GhFHFgUaBjsvNdWoT+bkaG6Qn/FA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HTGsfOiLMdRkYxJqSAnhSsz5RTmemfNMNGcR9q2k4z7/FJP26AvLaXnnbgQq+/KB4a+WVroBOw7vSbz371N36EyE4YXPhZL0gX4xD99OgDPBJSHrKzTNmfAHHfcJuiLXmqUDY+XnHygWCaMIYXJJJPIXPuCXmgm2/GdSVL27454=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=HzxUP10U; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="u0WXwYhY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1787833936;
-	bh=agJhLpE5CHkUfs7uAAwp3BtaT09Vi1FullFH2L5M9Dc=;
-	h=From:Subject:Date:Message-ID;
-	b=u0WXwYhYGdvIea7U1Rm0LaBcCKZUGVUDe8JZ8j2CQ6kT+Wbh2V53mgICAE8AElojD
-	 a0lGFQ7XFxfRCGFB/kaEiZJuYgQZzi5oGDBpegz4j8NPDalpkR+QXEccR6ndIixAUv
-	 83lO1IjPXyyrGXbYK7RiywtglDLk7P8vOkTPCY0k=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6A902E4500003855; Thu, 27 Aug 2026 20:32:11 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 9179554456780
-X-SMAIL-UIID: 48D082B2065245AE981D4AE5203837A0-20260827-203211-1
-From: Hillf Danton <hdanton@sina.com>
-To: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Cc: Eric Dumazet <edumazet@google.com>,
-	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
-	boqun@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	peterz@infradead.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
-Date: Thu, 27 Aug 2026 20:31:53 +0800
-Message-ID: <20260827123155.1835-1-hdanton@sina.com>
-In-Reply-To: <ao5BNjnM_pwcdk9X@shinhome>
-References: 
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="HzxUP10U"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49b0eab380eso8315355e9.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 05:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1787834122; x=1788438922; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FqMm8FT0UDvKvnU0PABnBSS+wYbc4aE8U5V+uRrPoww=;
+        b=HzxUP10U4ZXwOcdfmkfuv5zV+yOdGKiFym6mZv2T3oNwYEnklHASsNatL0EbZKqqWq
+         gagrP5NNJulSlGAXD4Tb5rHjHaLJyeaOiSCe3TXrScW4nklUZ49bOS2gKjVqSj3YnE3Z
+         mDXdcYwnUXn4wfpzP7q4svINJvOWkDYUkryc7+JkopFkS87CLWtEkaOnV1rYAyJinLnU
+         FvX+OYy4anL7SMmqQOlqWxwI3APBJxLKBztVI5wBGbWXPEGHu4sq0oWbOHAV0K3cbIem
+         hRoOxoEN83nXbdie/L3T3pjQf6NDAvNSbSSOSwSwCfiDSWutRzQMBZm1l2n28Y5U8OPN
+         /+1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787834122; x=1788438922;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FqMm8FT0UDvKvnU0PABnBSS+wYbc4aE8U5V+uRrPoww=;
+        b=hwPWFdxXuoOJinTMm/K31qnARtnamA2Ig0Ju/105MwQbOlcEkQwVTS7pFoajzwMSVG
+         5XUh5VOZqjOrAPP6dIiUbz8yiSip2j6kCk/g2aKPTcNe0WQx2ov7jJ6+bfWoKOa1XhV3
+         +d1hJAO1diIo++It6rd+Od6dEdOq4ciyhwyoPxmC8hrX653Y8X5bVlmxX7wNHNg/Mg25
+         hCmo/wuLljCeR3uQC+96lfgWIWW5rvxYyTBmKr0o4XpBo9Jn9jiA2M2cyPFVbc5c6rCR
+         lEtey7nK06L0xAlhuZk0JHK9FhhGr07S4AuhEgNF/ev8oFRIrPnAVNgaHfmm9x4nClaS
+         P3xg==
+X-Forwarded-Encrypted: i=1; AHgh+RpDq6FhT+fvUh4RM/PpktXyYWKFTCmS7jmCgZessLsPMvnUNop4egozYqitz712dHgQ0J/9EEM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxhoB17s2xioJFAkqOd28H7z/GXk+cQqCrovkjPxVpi6elm0/a
+	b2nUM+UZfq1DNTCZlCxQIKuVxSnvtSqNb0nKuotqG1dIneoWXo1yJ9cO6uTqRUthjtk=
+X-Gm-Gg: AR+sD11dWAiNwydAtyHm4ZgkLbKWrxZBSD+ym5zQXwXQr+N1DfOTU29jk/EI1CEF9jp
+	ruY56z52DP295LxbKmoh/ddYzAMcSrbaqBiip3r6ynryUp6yG63lkYsAhDhmywxTEQuAxM38VEw
+	TGIfJilHRkrg3VdF4EtAVi0/hsdI8Qmi50Ld+x470cv95G3r9dvKA0TfwR8jVMlniW7rdhEXolB
+	ftCNJznX+bpTUHG0+YRphS9rNZchC43H6tpFAVcXBQZmM4FWGmtkbHBGBci4nx5IYrujb4GzXk7
+	ybT5K5GV9u7urE//1npBnvUZfU0HaSEZC1cbNUbdggIRJliCjjHrX2vRwB1CBIEuJqi+ekf64aA
+	LobAtTdeM/IJU2P6iNHZRmyiGcLKtRpvRGWmNBanKouJ83R6cusqEAn3cqqEKa0iZfdPad1BtcN
+	cjyd4AlJDNcKM11sBT9sVDCBzvoWnp8fvd/wvNszeoSft+Xha6DpAyr7nHRRrXCVZCtFZLYqxy4
+	/AdQHlS
+X-Received: by 2002:a05:600c:3e8e:b0:499:5f80:83ac with SMTP id 5b1f17b1804b1-49b0dfd7d2cmr84639315e9.7.1787834121595;
+        Thu, 27 Aug 2026 05:35:21 -0700 (PDT)
+Received: from localhost ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4a940aeasm46658765e9.10.2026.08.27.05.35.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 05:35:21 -0700 (PDT)
+Date: Thu, 27 Aug 2026 14:35:16 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Konstantin Sinyuk <ksinyuk@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Francois Dugast <francois.dugast@intel.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jhs@mojatatu.com, jgg@nvidia.com
+Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
+ infrastructure for scale-up accelerator interconnects
+Message-ID: <apAsfOowcG0cTvT8@FV6GYCPJ69>
+References: <cover.1787552412.git.ksinyuk@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1787552412.git.ksinyuk@kernel.org>
 
-On Wed, 26 Aug 2026 11:23:37 +0900 Shin'ichiro Kawasaki wrote:
->On Aug 25, 2026 / 16:27, Eric Dumazet wrote:
->> On Tue, Aug 25, 2026 at 3:53 PM Eric Dumazet <edumazet@google.com> wrote:
->> > I think you missed one problem in lib/once.c
->> >
->> > Revert commit e8eef69a99f1 (or restore once_disable_jump(once_key,
->> > mod) inside __do_once_sleepable_done())
->> > so static_branch_disable() is never called synchronously under caller locks.
->> >
->> > Previously, once_disable_jump() deferred static_branch_disable() to a
->> > worker thread via schedule_work().
->> >
->> > Commit e8eef69a99f1 made it run synchronously in the caller's context.
->> > Because __inet_hash_connect() is called under lock_sock(sk), calling
->> > static_branch_disable() directly inside DO_ONCE_SLEEPABLE() takes
->> > cpus_read_lock() (cpu_hotplug_lock) while holding lock_sock(sk).
->> >
->> > This created the bogus lock dependency sk_lock -> cpu_hotplug_lock.
->> >
->> > Every other storage/networking client (sunrpc, nbd, cifs, iscsi_tcp,
->> > rxe, siw) uses static lockdep keys (static struct lock_class_key
->> > ...[2]) without issue.
->> 
->> I  sent the revert request for review :
->> https://lore.kernel.org/lkml/20260825142515.1965654-1-edumazet@google.com/T/#u
+Mon, Aug 24, 2026 at 10:09:28AM +0200, ksinyuk@kernel.org wrote:
+
+[..]
+
+>Example queries using the in-tree YNL tool are:
 >
-> Thank you for the clarification. Now I have better understanding.
-> 
-> When I looked at the lock dependency chain among six locks below, I assumed
-> that any of the dependencies could not be cut.
-> 
->    set->srcu -> sk_lock -> cpu_hotplug_lock -> fs_reclaim -> q_usage_counter -> elevator_lock -> set->srcu
-> 
-> So I thought that the idea to introduce the dynamic lockdep key for nvme-tcp
-> sk_lock instances would be the only one solution. But you pointed out that the
-> dependency sk_lock -> cpu_hotplug_lock can be cut by reverting the commit
-> e8eef69a99f1.
-> 
-> I did trial and confirmed that your suggestion works. With the kerenl v7.2 +
-> revert 19bdb70c77d3 + revert e8eef69a99f1, I confirmed the blktests test case
-> nvme/005 passed with tcp transport. The lockdep WARN due to the six locks goes
-> away. Great :)
->
-Reverting e8eef69a99f1 alone failed to survive the syzbot test [15].
-Nor did Eric's change [16] to lockdep alone [17].
-Nor did Eric's change [16] to lockdep after Reverting e8eef69a99f1 [18].
+>    $ ./tools/net/ynl/pyynl/cli.py \
+>          --spec Documentation/netlink/specs/drm_fabric.yaml \
+>          --dump fabric-get
+>    $ ./tools/net/ynl/pyynl/cli.py \
+>          --spec Documentation/netlink/specs/drm_fabric.yaml \
+>          --dump endpoint-get --json '{"fabric-id": <id>}'
+>    $ ./tools/net/ynl/pyynl/cli.py \
+>          --spec Documentation/netlink/specs/drm_fabric.yaml \
+>          --do port-get --json '{"endpoint-id": <id>, "port-index": 0}'
 
-[15] Subject: Re: [syzbot] [kernfs?] possible deadlock in kernfs_link_sibling (2)
-https://lore.kernel.org/lkml/6a90125e.1d9ded08.62e62.00d0.GAE@google.com/
+Using generic netlink instead of sysfs for this makes a lot of sense,
+but it may be a bit odd to use it outside the networking area.
+I've been struggling with the same in another non-networking use-case
+as well. I have been building a framework that keeps the benefits of
+generic netlink, extends it and is fd-based.
+I call it CTLV, here's a link to an early pre-RFC draft:
 
-[16] Subject: [PATCH] locking/lockdep: Invalidate stale class_cache entries for zapped classes
-https://lore.kernel.org/lkml/20260824155129.676096-1-edumazet@google.com/
+https://github.com/jpirko/linux_mlxsw/commits/wip_ctlv_pre_rfc_draft1/
 
-[17] Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
-https://lore.kernel.org/lkml/6a8fa86e.27659fcc.2ceef7.000c.GAE@google.com/
+What are the benefits over generic netlink:
 
-[18] Subject: Re: [syzbot] [kernfs?] possible deadlock in kernfs_link_sibling (2)
-https://lore.kernel.org/lkml/6a8fd74f.4d659fcc.734b4.000c.GAE@google.com/
+- No networking in the dependency chain. No netlink sockets,
+  no CAP_NET_ADMIN, and no network namespace semantics to reason about
+  for a device that has none.
 
-WTF root cause is Eric attempting to fix?
+- One character device per registered instance, not one global family.
+  Access control is the file: udev rules, ACLs, an fd passed into
+  a container. The open mode decides what is allowed - actions need
+  write, queries need read - so there is no permission model
+  to reinvent per family.
+
+- Events per open file description, not a multicast group.
+  Each descriptor has its own subscriptions and queue, and an overflow
+  is reported in-band: the next read returns an event-overflow record
+  naming the first and last sequence lost and how many.
+
+- Large payloads are referenced, not copied. A blob attribute carries
+  a user VA, a memfd and offset, or a dma-buf fd. Nothing big travels
+  through the message.
+
+- One YAML specification, everything generated from it: kernel metadata,
+  UAPI headers, userspace bindings and the reference documentation.
+  Introspectio. is answered out of the same metadata the validator
+  enforces, so a device cannot advertise an operation it will refuse.
+  A checked-in ABI snapshot makes any wire change a reviewable diff.
+
+- Family inheritance. A family inherits another's operations and fills
+  declared extension points. The effective schema is resolved per
+  device and the chain is exposed to user. A shared core with
+  per-driver extensions is declared once, and both attributes and
+  operations can be extended.
+
+- Introspection is per-device and live. The framework answers three
+  queries on every device: the family chain, one entry per published
+  operation, and any operation's full attribute tree with its bounds
+  and limits.
+
+  The answer is what this device accepts right now, including what
+  a vendor extension added to an inherited operation and whether an op
+  is currently disabled, and op-changed events carry the generation
+  ops-dump reports, so a dump can be ordered against a change.
+  GETFAMILY and GETPOLICY describe a family statically - there is
+  no device in that model to ask.
+
+- Fragmented queries are built in, with a consistency check.
+  A continuation carries the generation it started from, and if
+  the answer changed underneath it is refused with ESTALE,
+  reporting the expected and the current generation instead of
+  reassembling a torn reply.
+
+- Attributes are 8-byte aligned. CTLV_ALIGNTO is 8, so
+  a 64-bit payload is naturally aligned and there is no per-family
+  padding to remember - netlink's 4-byte alignment is why
+  nla_put_64bit() needs an explicit NOP pad attribute.
+
+- Cheaper round trip. A one-attribute query measured 2.6x cheaper
+  than a genetlink one in the same guest - a debug kernel.
+
+- Async operations using io_uring are planned as a follow-up extension.
+
+The framework owns validation, schema resolution, blob acquisition,
+reply serialization and the event queues. All getters and putters
+are generated helpers. A family implements semantics only, and
+the aim is to make that hard to get wrong.
+
+Would this make sense to use for you?
+
+[..]
