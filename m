@@ -1,48 +1,53 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AB5416CF4;
-	Thu, 27 Aug 2026 18:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C419366075;
+	Thu, 27 Aug 2026 18:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787854204; cv=none; b=rownEclyDdzEzWgzsU/6+G4TmeLzPft6edAGChhHHQEQIP47MV3drrLFHL/xL+r+p2e9Fg9kYnp6VKRL+akO+p22hOPVqtYX8rdNfm0CVpp6V1LjAj/o5msximtcj631LbVD4iZ4AvWRBIoy9TlBPu5I9BhBipIBZvtZZ3LmIGE=
+	t=1787854399; cv=none; b=MIziTHdCCJ1ulgWkWf+dHwEchzv7btDSq81TeiMiBaRV0ekK7bUzA0tOo2FzxSl/TsQEebgGScPi4Cjq47ibnf2ihgtSgl9sLuxiQnN2wzhIvmhZd+EUyw4lnYIH2Byy1HmPlKQx1qcb+Lx/f82UVXSRezEbX88Ea9p4XrBD/oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787854204; c=relaxed/simple;
-	bh=UIMCsVLpzvWHq+z9iEtltJCyvdqjRmLaJ77+sslW+xk=;
+	s=arc-20240116; t=1787854399; c=relaxed/simple;
+	bh=67gFJyU1P+ShSTG8wExHaaoaRNU52SWxJIXR0MbC0sQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ECZF0aNKxH4+govjylhS+W+F1t00ZsJIHo75ksXo41GmSxTIfpGiLRIjusENDIFAQG+KQXcTlA31oukRtvXoHp+YJakuimM8hbKcYZsTH1wvXJRWhWAEqQpbKS1FyZzORCXf77UlPqbVsmiMIrenRy2Mn7zUl9dRodn3c3tuLM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tpK/2Eck; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=lAZLKLIy4FJnkfcPOOOpKv5VvucihdRRR4t/oiajPh04N+qkVSoYMYuxUOPrc6elZb6mY9+J07a8fkQywshl8Mvjbi+0MZ8Zt8OG57BSAqTfEixkOFYWs64rh9tLcSlcMOPnNzwjA9wRHa9+fyZZQnyjQepXWrbUNYD6Hn4mU8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dHqgXAoV; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tpK/2Eck"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dHqgXAoV"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wl6yMmOELLW6bxlp5Du4LCsDn+qHqgXfz4pwmkLspD0=; b=tpK/2EcklDpZ5j8fv6xtVJLQWA
-	ZXjRrxkd/CVR2XpyGcsYLpUE86DQ+gKRs5TogH5fhb7Upr2kmAJqrH0jSd7H6M89J7RXoR0ibtdef
-	7Tkg8rpGmJ+pgayukJDyn0BoXUuko4YKzil6blWnUn3cx/O7j0Ft763P/m7x9o8ms99Y=;
+	bh=IoQU/6fzzXlG8e+LszOJee1lrSsQe+ACl9wBVnDv6zA=; b=dHqgXAoVmI0kVTLChoKEvm9ki1
+	0+1g6Rlq4XeWS0grpmb/rQsHCvZ8r+YlQc8p6GRYvmBcnm2TrEL61m8KpvyK/KqoiEi+QkFaHLi/m
+	iQckVUu4djA4uI/ZpGarA5rEe+WaZ28I5I504JZe+DSnPODMsG/fMnNZOiI3DjQWrfK0=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wzeXy-001hly-81; Thu, 27 Aug 2026 20:09:54 +0200
-Date: Thu, 27 Aug 2026 20:09:54 +0200
+	id 1wzeaz-001hnJ-8B; Thu, 27 Aug 2026 20:13:01 +0200
+Date: Thu, 27 Aug 2026 20:13:01 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Aleksei Sviridkin <f@lex.la>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vladimir Oltean <olteanv@gmail.com>,
+Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vladimir Oltean <olteanv@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: phy: restore the interrupt after a
- generic-driver bind cycle
-Message-ID: <576ee16b-407d-4cc4-b5bf-67843fa16f62@lunn.ch>
-References: <20260824024029.41310-1-f@lex.la>
- <20260824024029.41310-3-f@lex.la>
+	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net v2 1/2] net: dsa: mt7530: populate lpi_interfaces to
+ fix EEE support
+Message-ID: <55dbbbcf-f3b2-4e2d-bc3b-78fb0be4d843@lunn.ch>
+References: <20260824024117.46154-1-f@lex.la>
+ <20260824024117.46154-2-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,24 +56,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260824024029.41310-3-f@lex.la>
+In-Reply-To: <20260824024117.46154-2-f@lex.la>
 
-> Take it back from the MDIO bus interrupt table on both exits from the
-> cycle: the cycle does not touch that table, so whatever the bus
-> recorded there still stands. A bus that never filled it has nothing to
-> give back and its PHY stays polled.
+On Mon, Aug 24, 2026 at 05:41:16AM +0300, Aleksei Sviridkin wrote:
+> mt753x_phylink_get_caps() fills in lpi_capabilities and
+> lpi_timer_default but never lpi_interfaces, so phylink treats the MAC
+> as not supporting EEE: ethtool reports "Not supported" and
+> phy_disable_eee() keeps userspace locked out. That undoes what
+> commit 06dfcd4098cf ("net: dsa: mt7530: fix enabling EEE on MT7531
+> switch on all boards") arranged: EEE off by default, but enableable
+> with ethtool.
+> 
+> Copy the supported interfaces into lpi_interfaces after
+> mac_port_get_caps() has populated them, and leave the speeds above
+> 1 Gbps out for now: drop 2500BASE-X from the copy, drop MAC_2500FD
 
-Bit of an odd phrase.
+Blah, blah, blah.
 
-It might be better to explain that mdiobus_alloc() defaults to filling
-bus->irq[] for polling.
+Please assume i can read the patch and understand what it does.
 
-> +static void phy_restore_genphy_irq(struct phy_device *phydev)
-> +{
-> +	if (phydev->irq == PHY_POLL)
-> +		phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
-
-Why conditional? Maybe it is buried deep in that wall of text?
+The commit message is about answering the question "Why?". That you
+often cannot see from the code.
 
     Andrew
 
+---
+pw-bot: cr
