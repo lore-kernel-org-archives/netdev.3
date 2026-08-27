@@ -1,179 +1,203 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010033.outbound.protection.outlook.com [52.101.84.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F05A3E49F7;
-	Thu, 27 Aug 2026 08:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491B840DB42
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787820942; cv=fail; b=VXkptpcTfNynx3zCS23JaQ88Go+tZPYrVmpPRTCD7yHO4XvwlEhUk3BK1CMg14GtNIRzdOc3RAdHMkHh9mlzIDtK7neuu3HBw5y7O3GODjb+/A90X8OfDaIlRDXH1ZQoNbkd3FoNCisg4+W30vI8o+NGBl7DFtGHPfNwxhYbSrg=
+	t=1787821198; cv=pass; b=FOMrYR5P9UE31GubHnfq3WRBsXpWTD2OVbCkdfr4RLXq3RG0oPuAJjXUloI5MH16+C5OqaK0q/lXvxqAvnWp8+D41Y+db0TgfIob9VdxI3c56HxPxGy5V3gfAq67SNTOvLZ4l5mes46wR2t6KXIeZeD4acQKFuwlrMNcu8QGIeY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787820942; c=relaxed/simple;
-	bh=XVc9BGwdGOoQZHg0sfKBsYVxaSwQyq9UJd3aOmtvN9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=YY4IsMDQXp6t7L/lEJThlaxzopBoQY+fO8JkwBWIc6K0vwLk52PiYh/UnmZN3ezTNZfKoBMBHO/c/dEgSFoH1UjdD/+BAc1esb3l/0RSglrQaUkWYwNrQuO7WlTE7qcVUBFkEzy0tW4v37HiqR/2qmIVybwNl7aSeATRGGCzcHM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EDhzpc8F; arc=fail smtp.client-ip=52.101.84.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1787821198; c=relaxed/simple;
+	bh=Zl0Xi1im1WWgWmTNZS51xXxuwsxPbGv4es/ndeBbCpI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YWe+3pS1KdeknzYZzpC/p3560AlZFki9aOLX5ljICBJgZyfChV3E3NsmquJ0TuiJIXE0eeumns4ewVh84XsQawdhJVIxHD+30dt7sDLjF57aARJxRknp36Zf66IBu/f6hfEpskiHLXeWHHpnzGVb2LIpQNUR9qpNyVr1qzqlH44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oq53GHdg; arc=pass smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EDhzpc8F"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZrbFltDGQ7B94sBJi/nftjLQrEA9UTwinOqPlNS5vonTUdcMuJ1COwPgwBR4rQlhTuTkKHTUIAYFULnBBvMOLvNZyaNp/7E8PY7ZKSZSYJb/XyDI2r+3XJ68HMZzcZwqJFiDow8rOgEDbAcF1UmvzbuJ8+RHd5+vW7oWXo02eUKrcK3feKkzwW/DZvu64aAqENYlAO6SpQzcbn3qEGEPht1aXZYuGNMJ07bnF75h4frbaygkeiYf8gUvfZ4eFwoY4a7it+sL4NQZ+K+LHxEjE6GYRM1C4lyx6MDuz12qFVTXya/TlysScv1TSUEq2SZLR0EvzU33p1QQUqbd6MbyLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xQChZYZOdd50Gb09LwNlW4uu0GZjfDqu9kM6lY+P98w=;
- b=VxXlCe+zSFESfd7XI5Nq03mThNigcJyyDRskQgQ4auLrNh03HphdWyWprQWn7FXQRjsMGi0dowOmA30kpf55n7NKPtJLqfqcry7aY9EOTmRMHDnCoEalJh0/oBj0Zz6K9POg1zFWhLbgqsFCzuxwYcTF0x5W5FlugV1FfyRketML2WmqxGXzUjSGKAWaSz1EHqC54z2Ujlts4lt8KAmR13+2MpPMpEUzyGWX43MbCwOTVH+miDT6Spu7TUhl870BTmwLQnKBwKZ9xov3ZStj1DTxP5/TIx3kHhGFbV/YFhiUngHKw26iPCmroE6YmlAZAMWAbphGs8KRUAbcxTJZHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xQChZYZOdd50Gb09LwNlW4uu0GZjfDqu9kM6lY+P98w=;
- b=EDhzpc8F7w1AshVIOId6Kluzq9tcfHhc70QoX/VLQ5hlJzty9cGzpAjkv21N7Md3EgQIAgJZ1FiTBNvYhvFXb/MG8jqKLYkNfYY6pYj2tRTb2dNlmQ7mL1jObyfAtZfJsY39XPdXL57EDxkKKf4rnficJW7dMkUQqfTFk9GfZlwsaLfQLmcwaQLL60S4oKJQaCgXcAVVei3KG9JKlt6hkXKNeXcrmOG7NiQbTgUm0sasbMjXGWNXByvsuKclpavj6XYERkS1CCSICjLhDsfLI3fAXptslg/jkWvguo32V+tmecLTODFVcBfOPShEXdbMwG2ciN4zjgl8AbZ1wjsnzA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by AM7PR04MB6886.eurprd04.prod.outlook.com (2603:10a6:20b:106::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
- 2026 08:55:37 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 08:55:37 +0000
-Date: Thu, 27 Aug 2026 11:55:33 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Patryk Biel <pbiel7@gmail.com>
-Cc: Ioana Ciornei <ioana.ciornei@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: pcs: enable autonegotiation for 10g-usxgmii
-Message-ID: <20260827085533.2a3ocp6llvhzczps@skbuf>
-References: <20260824-b4-fix-pcs-lynx-an-v2-1-9bb1dec96f0b@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824-b4-fix-pcs-lynx-an-v2-1-9bb1dec96f0b@gmail.com>
-X-ClientProxiedBy: WA2P291CA0010.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::16) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oq53GHdg"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc1c9879395so1530222a12.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 01:59:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787821195; cv=none;
+        d=google.com; s=arc-20260327;
+        b=olX8PTlzNGSIyI0mKRf9gSN8i9igSb1iZoOr4t/m7AqP7X4Ltf2HHSf/lo5c5+puQ2
+         w3d+So1wxdhiCfoVdoXygmV4wbDtnjRnTHxadpBdKF89T59+CmmlcfbeDL9dMqi05ZX+
+         vbIm2j+jWamcY7zpLiEp7gHg0l+blVzI0T52ObmHA9s9iItxpsBgswPNjEffguYQp0Gb
+         UqQWOs6QNsNhmZXmXrRXSivEdCVKKZ5vrqjsG2fd4w2mRoODZ3Jpy5potj/wQzW2vTTZ
+         A+K7G4fKOJZMRHwpk8Tf3JbinB8IpLygznzlmgSMiAYYE1MW84tqKVLQAhLjuyacE7fO
+         AAhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=U5o/wEz5/lt+36aU3uUCxwokoFei+3AJ1EnYcOWvnko=;
+        fh=Ol1hsEhnAVl71+xd5LmlW4W9Cl6jLUvln/dPlWH/9hs=;
+        b=I2TSmPdm4/2sldPmD3Z4cynz5PVEAB0UQJuD7+uYdlAYwtoZOE+CWIcgUND+thzMRC
+         /iC//h0QHRfzRPhLj0pcn4RvT3Lzs8jF9GSm223oC24Q4vPvMc7UAaEX/Q+sxzm5NpoN
+         AIMpHnJZNYl8kinxlLHkTmQmhOgTauEp0PCE13ZSNUprtCTdeqtqLRf3T0t+n1AcBJBv
+         4+vnEiipPcx3aPOqepbvVypevhi6H9VvvJTcSUfo8IrB50AwqqjpUgyxJA63Dd99Gc9A
+         tlSg26OIIOUxetbehIU7s1mGSbygPn2p69VDZGMUm1/VmOt27G1Vgb+82criqMwbfk96
+         nGIg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787821195; x=1788425995; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=U5o/wEz5/lt+36aU3uUCxwokoFei+3AJ1EnYcOWvnko=;
+        b=Oq53GHdgNBdqw4+AGnl28IpzRIZOTbf/GvP5Z6tRTf5X7JsgLaGws2zwYrU48NOg2Y
+         yHB7uQw/icx3wMS7ZM8qWlKeyyneWrtTwz3dNsYNvEXPA6I6m4YYR0L/mz966mwK5JXw
+         yOZ63Ji/1liHBXwoDsXIUBgEnbEJm7BvMa8aOCcfD9DcxHk/DSAgJz8mCdKxI7YxneoY
+         LXV08AGywKQlxQBmnJbUST5qar15JgrBheCAOMXXMqGln92b/Y2fdRU/RykQuFberDnm
+         8a0RbFdmNxA1TEDN4kNdT4cRJIV0gxHcgccTmbI/ZIkcQDhr0EJmdLMaxEJhDu9JgdqN
+         eA6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787821195; x=1788425995;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U5o/wEz5/lt+36aU3uUCxwokoFei+3AJ1EnYcOWvnko=;
+        b=emoNH4+hUaME9sMkO42cx5r34SDfKEHAwzo5WYsrqtPsjq/d0XRfpaSMfxnLmzsmj+
+         4XmSiqBpl8bDhEfj2eXB0aQ7EPi2hsFtjUjaDzz00yyBwT8KLV3UEBbtwXB0zrLjKRj+
+         Oglyeb7W1sm+YPhe3g485p5UfRxjHHQSWRKXxZbxQEKTbomgUfV68NAMTTq3FFPqZfAY
+         TGbndU6HPnukJnJ6I6nDb+zL6RmqdTLsdIaODAIT8eX4uCu92KwIkxXhE0oqbl/0XQ0r
+         LE+VIr2tWQJ/ne7jl3cVspbL0SJHDI9cnamC0V0KijbIqH2AfyEAIlaXQX1KngLe/hd2
+         X8VQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpZpqguSMoIW4fsU0Pm8TaluCLttGKWDydR7MR2RciiDWd81Ay940Dx7kDpXwV3vBSYpw8UwlM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mR2erODXyzuO7vjI7B+wrf1YIkkDJfAcXxXLNeRX51K9gkmETc
+	l+kjZAQUXnDxIgW5FD5H1qMtHwg9maqvtRCXaTDmB44CirumGCSndNgUFBdHnFeoiLRFoukr8x3
+	auGz6ry0mL+4KTMUn3Nyiu6hosLQl43g=
+X-Gm-Gg: AR+sD12NcDrk85hJ9EtSnaGt3uO1fhO5biv1i1XS1WzPm/phAd/Mq344ewBg+uwGp6E
+	iDV8qo1oGkEC6Xh9SzxHIhZjpkyRtpyGV9vcGF1WVoqTbVWP25BrfFH4137KBbYbjJFJLGVRud+
+	mG197HWr0hJE0bg1tFlX5XGZagcutbjV4/fZKYRmxy6mJ49IiHwdAnuxpqCMHP9iYDMsQ/bNvkW
+	YD/96w/0GpRZ8eh9t1yP1LhXx0gldGty/eZVuNnabv5tCzV+HD/HlJvzmFLuBp213s45nOmmRrP
+	mseX/NPN7BVjWgW9tfiuNCLB7n+DsuRjk+z4EXl3OPefWYxs86UDY8Iqafz9SFxLKarbAeke8mp
+	EbQQHwFnmuaAMqdiWVCK/yDXQHiPlmJhlGZgBGTnENtzsdwZlJkU+0zUUXV4l
+X-Received: by 2002:a05:6a21:680d:b0:3c3:bbe6:95de with SMTP id
+ adf61e73a8af0-3cf75e8e39cmr32380428637.6.1787821192868; Thu, 27 Aug 2026
+ 01:59:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AM7PR04MB6886:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9eab3a4e-a06f-401d-684d-08df0418f66d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|19092799006|366016|23010399003|376014|7416014|1800799024|10067099003|6133799003|18002099003|22082099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	neIaSRAhTvppTB53kt9NA/U4Hg/p8qRIq+xdHqKhuBAYskHEDKQXZOOtQNGCB6jRkv3w3RMAUkRQfDcwrr01ZVXbM7P2xiJRq4R0ij5/MSDiv5XelR46ao70BBr011ze+DJg8xddmOYrLMKvrnvciN32xx4GkIE0/qc/gEet3yzeFmVY49p11/nYcHAPRRyGwaMHNlcsRa8zQ5pZJVQvNDKjqbRGlNbqocB0kmgWTUHiFa861Sbl3Hf6HWUB6XN8k7G9p/InX8YB2QgzFJdkEZzib2gfm+kogpASySiRFyuECvy/W++X8faNL6XG90fudffU3XfUFtfS+SUd47mP4F2sPMrQ6THTvbzWKUs8k89mVjVs5XsR86AnZlCA+xTrP7ODJ99HuUs0GivG9QTkU2gLa5UTWB2HHpZtA+JPTGk8mbN6NbiNhF0/Mi9wFmDVwyyvgoRVBNVhp6hnw5TRDURehFsXvCUBcYYL3ZeaDvD4oy5z2plmVRCuXVTBjBN18mU0AIklVpUEON3ZMaqx88W+Rdagsa+i4FOSrNH7gnLA7h2QN6ouxBQ5zK0j1gH1hueA9bUwjDWDw4UblX+cQS0oSkVHAJGCO4Px/Yydh92S9zUEsvPJacc5CRkkwWvht6n/UkVCPEoIhbsqPQA4jLiAPRRPDwI4x+vbCdE3bq8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(19092799006)(366016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NO+oZRHQPC8rewHDOTbcRAOZ0748c58qAZDCPhp8AUyjTqODOfo4MVryzjaj?=
- =?us-ascii?Q?LaoUn/7Cm6LbPN9jpPhMccr6Yy5s/yoZxp29opS+53TVlHdichysJYMPRVmL?=
- =?us-ascii?Q?gZdq2TekyOM+fEw/Hgy8QU0oww6QkN2B67nWxAGSaHQ8mrTwjf2ZDBxgtGHB?=
- =?us-ascii?Q?m4YJDeiyqt+TTPSdQk8aSDc1ZXrQPkPQwxDWISavRCGsEZczwlbzFCg1Lu4Y?=
- =?us-ascii?Q?1PFBYSNiTJEnxpOMs0MDdMLPEb7IxZTZ4K77Bhd5iGJEgXd4k0yb3NASHAR3?=
- =?us-ascii?Q?gbHGflTn5M2c0Ki8Y9ncpqIFXdlTNNv86+p5h6x/XeV4RV0Z70B9ykZLhuYP?=
- =?us-ascii?Q?SoGbIp68Lxwp+hF0AGqazqaqe037pe0MkJJ61ObAbNOw28ftorHxcrJP3Hux?=
- =?us-ascii?Q?S104SBufSs8FvMCPCNpWAUuwJXu+fm4o4Gvru4nE1GGu/zgoZqLDlLUuH175?=
- =?us-ascii?Q?BAhxCvAtRcDXlNusVuMWqe7mz7yzwGcftKX/TPEOYVCx+w2F7eZRoHziRLo0?=
- =?us-ascii?Q?PCDiCxdBuXMRp3EDT9IarxjZkOzhz9GrIapSoG1AvV55OBkvzGR7Ie/jycCA?=
- =?us-ascii?Q?8WBeD1WL0aN6pH99YTidr3GUdfRnt/fiZHooAGfpnrKOhJ2Z616kZdX54AzP?=
- =?us-ascii?Q?zae6Ak/gSV0q41eSX9ezMVStQGq+vCLgY26IpTd8MciKB4kWjehllXnYBF5g?=
- =?us-ascii?Q?qwGGSric/65ch8iG15zqAyNIna4nQizK8PvKX4wrwhmoU69Rn7z1Od+VPPu5?=
- =?us-ascii?Q?2hYoj+f0EZElZQDgezmV0vDfelqXIuvu49ncGMCEzI03klJ7eesWTAL2DKyc?=
- =?us-ascii?Q?im/hN8rYkUdVLFt8Ws4Mi/z1fmJjDz6sJsmAmbsMUc837YzdkIKtSneqlMS4?=
- =?us-ascii?Q?L4MDOdtxB7Fx/E4kAOlDDHyeMmzTfYZ6b06uO03tdIbQmBBmpzqrAcdEmbmQ?=
- =?us-ascii?Q?NlngbOWR7t/ZJm/f82ftP1gMy7T+LQlcUqwksKyjS4WgXYHR4KLRtYPpdzQV?=
- =?us-ascii?Q?BvdlFfdG8KkGHMO9SEJRFvDjKaWmZxuKq3cDwg34KQhVZonLFL4pvQBbdam/?=
- =?us-ascii?Q?iGMTb3Q5fiGe6W7Au0EcyqN1j9sQj45JrPFtfC4VhFKribNat4M0HHZ4CBAe?=
- =?us-ascii?Q?r/a3eVSD3Mui3nl+W4xc0ctQBpK/AASVIo/xa7ohzHEiqqRD9K3tkcOJZ/hS?=
- =?us-ascii?Q?020Vp+NJf4lbDubwVTCaoWdbm25QLb4N3Aq3WLQQacyc77+/hAGd6dWuBFYk?=
- =?us-ascii?Q?k1f6hpFvFq5l6QsBt0kHX5urp3DOpSQJz7/RmwkQrtpUCCVSEHQMzVn1RHz8?=
- =?us-ascii?Q?r4yJftEGTB0zIvA+DdGy0SXEzjawEVetrOqme/Nf1tamBlgtCJ9YGq8R0CMU?=
- =?us-ascii?Q?YorFxJvWbYnHdxYu8WFZBEA/fQ5lxhIvBiAYr3YYkDe8Lm7lwa9O9RN2Ff98?=
- =?us-ascii?Q?v+noJOweh2pSxvLzFWUtjstJnki5/QswB6PPKpW2hSqZ4y7GLtK5asyMMZep?=
- =?us-ascii?Q?+iM2OK5Gms3FaWioV/zvqTykQ7ByZUdKHYA0U7u8Mt5ZLd9EWUTlUp00PZ3i?=
- =?us-ascii?Q?K4tdlo6U2QYDbor/Rd7Q6EKd4UFAjmulZQCTRh7b0vVgvP8Vdlm1TqTbd2PC?=
- =?us-ascii?Q?L5sxLfgmA6XRWKFZMcEYt2nn/K4Y4h+owa85Vz7k2F0Dld6mT1RL3VHkyl0j?=
- =?us-ascii?Q?DkOpYx5/h0BcTz2n7GeFwkOkV60zjzdwYzhlredi/vppPGhwMEk7rE/2PdeR?=
- =?us-ascii?Q?EDxyt+Jj392EbN/zhRQ6Fzz8b5IcrsfN3pu0gOEc5R1qzpbvwORUcTTd5yyI?=
-X-MS-Exchange-AntiSpam-MessageData-1: +ihG4QehBSomw4IkeLDOXsLn7tF7/gK2HAI=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9eab3a4e-a06f-401d-684d-08df0418f66d
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 08:55:37.6787
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O4LGlgsyQiEV7vibXdRmfFOBiLNRWtqDJU1ZCd9nXZwLfh6L3+qLLNa6W2qGasJJdptKGwU5CtDxdFKw2N8BIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6886
+References: <20260824-b4-fix-pcs-lynx-an-v2-1-9bb1dec96f0b@gmail.com>
+ <20260825214928.rz52tysloa5yxq2y@skbuf> <CA+DkFDaHQVE8g2iDUrSbRcY6-xihJQpRNommh57B8wRnePZa1A@mail.gmail.com>
+ <20260826153634.ygcvnsbtc4ibpp7f@skbuf>
+In-Reply-To: <20260826153634.ygcvnsbtc4ibpp7f@skbuf>
+From: Patryk Biel <pbiel7@gmail.com>
+Date: Thu, 27 Aug 2026 10:59:40 +0200
+X-Gm-Features: AcwNN1WGPx46vyjABkQI0k31IMmNVq4-GWF-LqDO9U9Aw1o6rsQ0YaaLuGai6Tc
+Message-ID: <CA+DkFDZLv5BS7z7MEV_uBFdNgfrBQr_nkzGa2q6BKx_F4fU0xQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: pcs: enable autonegotiation for 10g-usxgmii
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 24, 2026 at 12:36:12PM +0200, Patryk Biel wrote:
-> The Lynx PCS USXGMII setup programs the replicator advertisement, but
-> does not explicitly enable and restart in-band autonegotiation or program
-> the replicator link timers.
-> 
-> This leaves the PCS dependent on firmware or bootloader state. Systems
-> which do not get the USXGMII replicator preconfigured before Linux may
-> therefore fail to negotiate the link correctly.
-> 
-> After programming the USXGMII device ability, configure the replicator
-> BMCR with reset, autonegotiation enable and autonegotiation restart. Also
-> program the replicator link timer registers with the values used by the
-> ENETC/Felix setup.
-> 
-> Signed-off-by: Patryk Biel <pbiel7@gmail.com>
-> ---
-> This is a follow-up to the discussion started here:
-> 
-> Link: https://lore.kernel.org/netdev/CA+DkFDaW_wJ5p9_P7pMpz-8iE6xeKkdF-MQcd2m2GcyVUE3S4Q@mail.gmail.com/
-> 
-> To summarize: on systems that don't rely on the U-Boot Felix switch
-> driver to pre-configure 10G-QXGMII in-band autonegotiation, the Lynx
-> PCS USXGMII code programs the replicator device ability but never
-> actually enables/restarts autonegotiation nor sets up the replicator
-> link timers. This leaves link establishment dependent on bootloader
-> state that isn't guaranteed to exist.
-> 
-> This series only addresses the PCS side of the problem: it configures
-> the USXGMII replicator BMCR (reset/AN enable/AN restart) and the link
-> timer registers whenever lynx_pcs_config_usxgmii() is called, so that
-> in-band AN comes up correctly regardless of what the bootloader did.
-> 
-> It intentionally does NOT yet remove the "only supports in-band AN for
-> now" limitation, nor does it wire up neg_mode-based configuration to
-> support the managed = "in-band-status" property being absent from the
-> device tree. That part still needs more work/testing on my side (in
-> particular the in-band-disable path isn't behaving as expected yet
-> with the PHY I'm testing against), and I'd like to discuss the right
-> approach for it separately before sending a follow-up series.
-> 
-> Feedback welcome, especially on whether this is an acceptable
-> incremental step or whether it should be bundled together with the
-> neg_mode/in-band-disable work
+Hi,
 
-Furthermore, you don't need such a long text under ---, it will be
-discarded when applying the patch. Fold whatever information isn't
-duplicated in the commit message and drop the rest.
+On Wed, Aug 26, 2026 at 5:36=E2=80=AFPM Vladimir Oltean <vladimir.oltean@nx=
+p.com> wrote:
+> I suspect our documentation is wrong, in that both for USXGMII and for
+> 10G-QXGMII, we have the same text:
+>
+>   Set the Link Timer value from 0 to 6.4ms in 3.2ns steps (312.5MHz clock
+>   periods or 312.5 million XGMII columns per second). The reset value set=
+s
+>   the Link Timer to 1ms (312500).
+>
+> But when you think about it, 10G-QXGMII multiplexes 4 ports over the
+> same lane. So each XGMII receives one block at 1/4 the rate of the lane,
+> because of the time slicing. Consequently, by my logic, the PCS link
+> timer, which uses the rate of those columns to keep track of time,
+> *can't* have the same link timer tick for both the single-port as for
+> the multi-port mode.
+>
+> I was suspicious of the link timer limit I obtained (263050 ticks,
+> corresponding to the ~0.84 ms I was talking about yesterday). Higher
+> than that, and the AQR412C system side autoneg would restart (and a PHY
+> counter would continuously increase, indicating this). Furthermore, the
+> AQR412C system side PCS would never lose block lock.
+>
+> So I wanted to see whether an ENETC, using the single-port USXGMII mode,
+> could also make its AQR112 PHY to fail in-band autoneg in the same way.
+> And surprise, I could, by increasing the link timer to 1037500 ticks.
+> Surprisingly (or not), the maximum # of link timer ticks for USXGMII is
+> 3.94x the maximum # of link timer ticks for 10G-QXGMII.
+>
+> So actually, I suspect that when we program a link_timer of
+> LINK_TIMER_VAL(1600000 ns) on 10G-QXGMII, in reality this results in a
+> link timer of 6.4 ms. And my AQR412C doesn't like a value this large.
+>
+> The above is pure speculation/intuition, but it's the only thing that
+> seems to be consistent with all data so far. The only unknown is - why
+> does your PHY tolerate a link timer value that the AQR412C doesn't, and
+> will it work when we set the link timer to 1/4 that value?
 
-It is acceptable as an incremental step because logically, it is a
-different change compared to also supporting PHYLINK_PCS_NEG_INBAND_DISABLED.
-No matter whether you also submit that or not, they would still be
-separate patches.
+That sounds plausible to me, especially given the ~4x difference you
+measured between USXGMII and 10G-QXGMII. I hadn't considered the
+effect of the time slicing on the link timer before.
 
-I guess the more important question is: do you also plan to submit a
-PHYLINK_PCS_NEG_INBAND_DISABLED patch? Any problems there?
+> Could you please test the diff below, which should give us the info to
+> the second question?
+>
+> diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
+> index 305740b577fc..735ef4069a7f 100644
+> --- a/drivers/net/pcs/pcs-lynx.c
+> +++ b/drivers/net/pcs/pcs-lynx.c
+> @@ -24,8 +24,11 @@
+>  #define IF_MODE_SPEED_MSK              GENMASK(3, 2)
+>  #define IF_MODE_HALF_DUPLEX            BIT(4)
+>
+> -/* USXGMII replicator link timer step is 3.2 ns (312.5 MHz clock) */
+> -#define USXGMII_LINK_TIMER_VAL(ns)     ((u32)((ns) * 10 / 32))
+> +/* USXGMII replicator link timer step is 3.2 ns (312.5M XGMII columns pe=
+r sec)
+> + * for single port mode. For quad port mode, it is 1/4 of that.
+> + */
+> +#define LINK_TIMER_VAL_USXGMII(ns)     ((u32)((ns) * 10 / 32))
+> +#define LINK_TIMER_VAL_10G_QXGMII(ns)  ((u32)((ns) * 10 / 128))
+>
+>  struct lynx_pcs {
+>         struct phylink_pcs pcs;
+> @@ -187,7 +190,10 @@ static int lynx_pcs_config_usxgmii(struct mdio_devic=
+e *pcs,
+>
+>         link_timer_ns =3D phylink_get_link_timer_ns(interface);
+>         if (link_timer_ns > 0) {
+> -               link_timer =3D USXGMII_LINK_TIMER_VAL(link_timer_ns);
+> +               if (interface =3D=3D PHY_INTERFACE_MODE_10G_QXGMII)
+> +                       link_timer =3D LINK_TIMER_VAL_10G_QXGMII(link_tim=
+er_ns);
+> +               else
+> +                       link_timer =3D LINK_TIMER_VAL_USXGMII(link_timer_=
+ns);
+>
+>                 ret =3D mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2,
+>                                         LINK_TIMER_LO, link_timer & 0xfff=
+f);
+>
+
+I tested it and it keeps working fine. Logs below, but there is
+nothing new compared to the previous test.
+Given your other email, for v3, I understand that I should retarget
+the patch from net to net-next.
+I'm just not sure how you'd prefer to handle your changes. Should I
+fold them into my patch for v3, or are you planning to send them
+separately?
+
+root@tru-:~# ip link set up swp0
+[  134.191267] mscc_felix 0000:00:00.5 swp0: configuring for
+inband/10g-qxgmii link mode
+[  137.215349] mscc_felix 0000:00:00.5 swp0: Link is Up - 1Gbps/Full -
+flow control off
+
+Best regards
+Patryk
