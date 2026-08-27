@@ -1,331 +1,119 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D31F32E728
-	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787819527; cv=none; b=KN5lK6p9R1vEAp7Jet4c92+LvWZvlr7yeOUhxfx8CwvNXBGZ3ZvnjIgMCjmeD4+xt8xe9S9be+5SIEUBa3/JHmmCyNvH/nG4GDxnEwU2sxRRnN2ijR76ky11SsQKqTu/ync9ctJSd3RX6G4mnr50AcmAWs7t6phmag5renBDqC4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787819527; c=relaxed/simple;
-	bh=8ePSUhaQb8QnUXHlOG+I36CHMeCDYSesDAACGnE1aSE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRPVnIRe5Vl0THPfBAQW2bJzvN9CKIv9wUMpQSneeWyFFsVJ8pH2DZbXk7LyKtB/exye54JLX0R7Ea9CGiW8oTxZK1dGPWNY3SbPCoX1MjC9drkYl8InLRGC273fpYH0JaQQ3MEFseVCDAVTp2+0paBwrmyZZqzcS66b+XGMTmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NdUmNAsd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0709F3DD50D
+	for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 08:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787819664; cv=pass; b=upb+excnoxFe02DiXcDTcN1I4ebOzxfzjGXfFot2x9J7cnvkbozEhTwN8eu4Ff5chKp3ejX+IEXl+NORtvLuos+115Oc4IWDzGnfMt1BWNGQ7EEWVzZg6uoRVluXbe9KpQkA+SMElDthXyQX60H/AlyIf9VLBSCryS34eUqOr2o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787819664; c=relaxed/simple;
+	bh=zkWu1QXsO5BhUtx/uaZDapNCFP9r1lgNqeSZMQRg/68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ehPwq+sUcziWKWPby/pYtcEeIX927x7N8Lkb6hLRNaSbzjLn7L2R1th99sVV+N9i8/dhs6HKH7dYWgMHyBr84McBDli28P5dz+AXbuTuOGV3nDSvzI4HiAHQLYxpJTRYKh+uP3Yp0QpOqHS80mxE6XUh+V3MTZNRt5ZStgcf1DY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=bfVhzx5i; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=3K3HLdK6; arc=pass smtp.client-ip=85.215.255.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NdUmNAsd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787819520;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gq1pX0waFkvUy+2Abzjcz983OJaf9bd9P1XTs6fxpd4=;
-	b=NdUmNAsduj2rVT/Z5kU5Goue6AgfnvFDN54xwjP737wMFuGI6C+Ch1Y3yvL3i9Ys+Pq6tD
-	LyhG8bM34RGKTjJZzRVqy8c+Bmxxr4RywsbJiRon1P/rrlSa5iz9WDOnGjH8SOnDwCPy1K
-	VwpuPM6RBby3mWBQYjtsXe0o5r+r1Y8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-MurbVM_8Pk2eTPtGsKl6UA-1; Thu,
- 27 Aug 2026 04:31:55 -0400
-X-MC-Unique: MurbVM_8Pk2eTPtGsKl6UA-1
-X-Mimecast-MFC-AGG-ID: MurbVM_8Pk2eTPtGsKl6UA_1787819512
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 02D2D1835AE2;
-	Thu, 27 Aug 2026 08:31:52 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.49])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8D4171955F04;
-	Thu, 27 Aug 2026 08:31:45 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: joe@dama.to
-Cc: netdev@vger.kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	colin.winegarden@broadcom.com,
-	rukhsana.ansari@broadcom.com,
-	horms@kernel.org,
-	kalesh-anakkur.purayil@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	raphaelcf@meta.com,
-	stable@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH net v2] bnxt_en: Bound SW TPA IDs to prevent crashes
-Date: Thu, 27 Aug 2026 10:31:39 +0200
-Message-ID: <20260827083139.91346-1-pabeni@redhat.com>
-In-Reply-To: <20260825001842.2501798-1-joe@dama.to>
-References: <20260825001842.2501798-1-joe@dama.to>
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="bfVhzx5i";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="3K3HLdK6"
+ARC-Seal: i=1; a=rsa-sha256; t=1787819657; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=OFzt9+dftmWkApd6VNZMG59q0AB6ijHKq6lQLs+b8iMyu+3aTFW90wkfSHSVRhYxMQ
+    lXQ1DE6I61GPsElLVV9i5avFQZ5Y6eizarT8oAEmGfwGFfLYSIMGGfFJ7mmRlbFg8Kv3
+    J7tWnZH5npWPtMd87CsX7q7NDKvQHF4lMtL3zI9QztunBb0uqkCi7hbsSz3wX8ZyYZ5o
+    BHTgwNzscWeFjGgMDM91Ng8XlIkV/7eZbz0icWJs59XyUeEChzVglbG02fHI9B0veRQA
+    IEvZu2cZReEHpivscQbu2xLHd+wj03dZD6Mqy1tDg8gxswtZVnKUlXa36/dVDmNkuvA/
+    89iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1787819657;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=chJ3Mwc0RJU1vBvaq4a+2hTBNOZsgq4lgTnTn1JJd/4=;
+    b=PuBkFHykl0MWeNDnGY6YEXm5Rsb0he7ZDxg4TRF5NvqdDUEy/N81LAp9jIZ6+wz8wg
+    k2T4Til23nY2WwHiTtc2pEyptQFqsAp3vqPK2SMv77U+AbJuUleTU2kRkw6zLj/BuJBh
+    QqganfeCYyhTs8FibYMCnxynvaI5L4WNJ5Kr9EvDuERXh0abIkA1BbIJ3BFXvUhdetvX
+    N/EcsN+Q7tOHccBpXFbX/jLxg4Xw3BW+vbAnqezC/W632omUIR52mqorbHpavoqV0n6n
+    sE7CsZoSxApci2Su4asQViSGe9QEHjVg4Z2YCRt+8nFDRXjGgmTyXAzVoFr00u31a3os
+    ZIwA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1787819657;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=chJ3Mwc0RJU1vBvaq4a+2hTBNOZsgq4lgTnTn1JJd/4=;
+    b=bfVhzx5iitUfrRquWoj/BwaKLo6swTagzWZsYLBJ6luZi9jOM4UlVTD8MB0Dm5j+QC
+    yVCrwJ8mn3KHUVJLe2XqzE82350b9iGUtbe+06LjOYi9bPyUs5BytkjVuR2FG7HHH1E3
+    H3Guouf8n2qKeuCAo1FJ1XszPTartsOA/VHoeLAC3aSB9lRi3rKsFKTwRUavj/vSgeie
+    s506xrK2yIjT2gbMhB5NKRbzXw0E5mVIe4RC16Z7nwD33RiVmwunfpDIuUQPqoTwARDl
+    O1FlYxDOWug9gxbH1WuGQyog9aykiMN+2t+J7wRU7Fo/UpO+pHYTn1UjKG0/F8bVyzp5
+    y7iw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1787819657;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=chJ3Mwc0RJU1vBvaq4a+2hTBNOZsgq4lgTnTn1JJd/4=;
+    b=3K3HLdK6zT6wslL+S+tioH60FpyYG77RE68HTO9C2UBUSFc33bgxAIsYPZZiDVeZAK
+    hb8R4QOyJJTSY++xpkCA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6800::989]
+    by smtp.strato.de (RZmta 55.6.2 AUTH)
+    with ESMTPSA id K171b727R8YGyHB
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 27 Aug 2026 10:34:16 +0200 (CEST)
+Message-ID: <bea8bbbc-d96e-4c87-b935-8f4e12a6916f@hartkopp.net>
+Date: Thu, 27 Aug 2026 10:34:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next] net: Use fixed slots for skb extensions
+To: Paolo Abeni <pabeni@redhat.com>, Florian Westphal <fw@strlen.de>,
+ Jakub Sitnicki <jakub@cloudflare.com>
+Cc: netdev@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>,
+ kernel-team@cloudflare.com
+References: <20260825-rfc-skb-ext-fixed-offsets-v1-1-8050ff33bec9@cloudflare.com>
+ <ao9UV9S7rUkyQ8jv@strlen.de>
+ <73331a07-46a3-4349-98b1-b388bcd783d0@redhat.com>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <73331a07-46a3-4349-98b1-b388bcd783d0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-bnxt_en: Bound SW TPA IDs to prevent crashes
+On 27.08.26 09:42, Paolo Abeni wrote:
+> On 8/26/26 11:02 PM, Florian Westphal wrote:
+>> Jakub Sitnicki <jakub@cloudflare.com> wrote:
 
-The patch allocates rxr->rx_tpa with bp->max_tpa rounded up to the next
-power of two, stored in a new bp->max_tpa_roundup_size field, and masks the
-firmware TPA ID with that size in bnxt_alloc_agg_idx() instead of using
-MAX_TPA_P5_MASK.  All of the TPA info allocation and free loops now use the
-new field as their bound.
+> Still WRT optimizing skb_ext size, I think that it should be feasible to
+> optimize the layout proposed by Florian by taking in account that some
+> exts are 'mutually exclusive' i.e. on top of my head mptcp and bridge
+> should never be attached to the same skb, and I *guess* can_skb_ext is
+> mutually exclusive with most of the others.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 9c2cc50276a59..ba710704b1921 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -1517,14 +1517,16 @@ static int bnxt_discard_rx(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
->  	return 0;
->  }
->  
-> -static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
-> +static u16 bnxt_alloc_agg_idx(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
-> +			      u16 agg_id)
->  {
->  	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
-> -	u16 idx = agg_id & MAX_TPA_P5_MASK;
-> +	u16 idx = agg_id & (bp->max_tpa_roundup_size - 1);
->  
->  	if (test_bit(idx, map->agg_idx_bmap)) {
-> -		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
-> -		if (idx >= MAX_TPA_P5)
-> +		idx = find_first_zero_bit(map->agg_idx_bmap,
-> +					  bp->max_tpa_roundup_size);
-> +		if (idx >= bp->max_tpa_roundup_size)
->  			return INVALID_HW_RING_ID;
->  	}
->  	__set_bit(idx, map->agg_idx_bmap);
+I would say with *all* of the others. CAN skbs only interact with 
+ARPHDR_CAN netdevs containing a special ml_priv reference. And 
+routing/forwarding is done by a CAN specific net/can/gw.c code.
 
-[Severity: Medium]
+The only code outside net/can that looks into CAN skbs is:
+em_canid.c  Ematch rule to match CAN frames according to their CAN IDs
 
-This isn't a bug introduced by this patch, but the value stored is now
-bounded while the index it is stored at is still the raw firmware ID, just
-below the last quoted line:
+But I think this is not even relevant for CONFIG_NET_TC_SKB_EXT.
 
-	map->agg_id_tbl[agg_id] = idx;
+> The layout could be adapted to such constraints, and there could be
+> run-time checks (under DEBUG_NET) to verify such constrains at skb_add
+> time leveraging `present_extensions` and a static matrix describing the
+> mutual exclusive status for all extensions.
 
-agg_id comes from TPA_START_AGG_ID_P5(), whose descriptor field is 12 bits
-wide:
++1
 
-	#define RX_TPA_START_CMP_AGG_ID_P5	(0x0fff << 16)
-
-and the table it indexes is 1024 entries, immediately followed by the
-in-use bitmap:
-
-struct bnxt_tpa_idx_map {
-	u16		agg_id_tbl[1024];
-	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
-};
-
-Can an ID of 1024 or above write past agg_id_tbl[] into agg_idx_bmap?
-
-The same raw ID is used for the read side in bnxt_lookup_agg_idx(), whose
-result is used unchecked by bnxt_tpa_end() and bnxt_tpa_agg():
-
-	agg_id = bnxt_lookup_agg_idx(rxr, agg_id);
-	tpa_info = &rxr->rx_tpa[agg_id];
-
-The commit message says "TPA IDs are generated by FW and can be up to
-1024", which matches the table size, and I could not find a capability
-field that would allow firmware to emit an ID above 1023, so this may not
-be reachable in practice.
-
-Would an agg_id &= ARRAY_SIZE(map->agg_id_tbl) - 1 in both helpers be worth
-adding while this function is being touched?
-
-[ ... ]
-
-> @@ -3784,7 +3786,7 @@ static void bnxt_free_one_tpa_info(struct bnxt *bp,
->  	kfree(rxr->rx_tpa_idx_map);
->  	rxr->rx_tpa_idx_map = NULL;
->  	if (rxr->rx_tpa) {
-> -		for (i = 0; i < bp->max_tpa; i++) {
-> +		for (i = 0; i < bp->max_tpa_roundup_size; i++) {
->  			kfree(rxr->rx_tpa[i].agg_arr);
->  			rxr->rx_tpa[i].agg_arr = NULL;
->  		}
-> @@ -3810,13 +3812,14 @@ static int bnxt_alloc_one_tpa_info(struct bnxt *bp,
->  	struct rx_agg_cmp *agg;
->  	int i;
->  
-> -	rxr->rx_tpa = kzalloc_objs(struct bnxt_tpa_info, bp->max_tpa);
-> +	rxr->rx_tpa = kzalloc_objs(struct bnxt_tpa_info,
-> +				   bp->max_tpa_roundup_size);
->  	if (!rxr->rx_tpa)
->  		return -ENOMEM;
->  
->  	if (!(bp->flags & BNXT_FLAG_CHIP_P5_PLUS))
->  		return 0;
-> -	for (i = 0; i < bp->max_tpa; i++) {
-> +	for (i = 0; i < bp->max_tpa_roundup_size; i++) {
->  		agg = kzalloc_objs(*agg, MAX_SKB_FRAGS);
->  		if (!agg)
->  			return -ENOMEM;
-
-[Severity: High]
-
-This is a pre-existing issue, but this loop now runs up to
-bp->max_tpa_roundup_size times (for example 33 becoming 64), so there are
-more chances for the 272 byte kzalloc_objs(*agg, MAX_SKB_FRAGS) to fail.
-
-On failure, bnxt_alloc_one_tpa_info() returns before rx_tpa_idx_map is
-replaced, and the caller for a queue restart goes to the cleanup path:
-
-	if (bp->flags & BNXT_FLAG_TPA) {
-		rc = bnxt_alloc_one_tpa_info(bp, clone);
-		if (rc)
-			goto err_free_tpa_info;
-	...
-err_free_tpa_info:
-	bnxt_free_one_tpa_info(bp, clone);
-
-clone is a shallow copy of the live ring made in bnxt_queue_mem_alloc():
-
-	memcpy(clone, rxr, sizeof(*rxr));
-	bnxt_init_rx_ring_struct(bp, clone);
-	bnxt_reset_rx_ring_struct(bp, clone);
-	...
-	clone->rx_agg_bmap = NULL;
-
-Only rx_agg_bmap is cleared there, and bnxt_reset_rx_ring_struct() does not
-touch rx_tpa or rx_tpa_idx_map.
-
-So does bnxt_free_one_tpa_info(bp, clone) free the running ring's map here?
-
-	kfree(rxr->rx_tpa_idx_map);
-	rxr->rx_tpa_idx_map = NULL;
-
-The live ring's own rx_tpa_idx_map field is not cleared by that, and the
-NAPI path writes through it on every TPA completion, in
-bnxt_alloc_agg_idx():
-
-	__set_bit(idx, map->agg_idx_bmap);
-	map->agg_id_tbl[agg_id] = idx;
-
-with a second kfree() of the same pointer when the source ring is torn down.
-Should clone->rx_tpa and clone->rx_tpa_idx_map be set to NULL alongside
-clone->rx_agg_bmap before allocating?
-
-> @@ -3843,6 +3846,8 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
->  			bp->max_tpa = MAX_TPA_P5;
->  	}
->  
-> +	bp->max_tpa_roundup_size = roundup_pow_of_two(bp->max_tpa);
-> +
->  	for (i = 0; i < bp->rx_nr_rings; i++) {
->  		struct bnxt_rx_ring_info *rxr = &bp->rx_ring[i];
->  
-
-[Severity: Medium]
-
-Can the early return earlier in bnxt_alloc_tpa_info() skip this assignment
-while bp->max_tpa is already set?
-
-	bp->max_tpa = MAX_TPA;
-	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
-		if (!bp->max_tpa_v2)
-			return 0;
-
-On a P5+ device whose firmware does not report max_aggs_supported,
-bp->max_tpa_v2 is 0, so bp->max_tpa_roundup_size keeps its zero value while
-bp->max_tpa is MAX_TPA.
-
-bnxt_alloc_one_tpa_info() is also reachable from bnxt_queue_mem_alloc(),
-which is gated only on the TPA flag and not on max_tpa_v2:
-
-	if (bp->flags & BNXT_FLAG_TPA) {
-		rc = bnxt_alloc_one_tpa_info(bp, clone);
-
-With a count of 0, does kzalloc_objs(struct bnxt_tpa_info, 0) return
-ZERO_SIZE_PTR and pass the following check?
-
-	if (!rxr->rx_tpa)
-		return -ENOMEM;
-
-And in bnxt_alloc_agg_idx(), does the new mask become a no-op when the field
-is 0?
-
-	u16 idx = agg_id & (bp->max_tpa_roundup_size - 1);
-
-That would leave idx as large as 4095 for the test_bit()/__set_bit() calls
-on the 256 bit agg_idx_bmap and for &rxr->rx_tpa[idx] in bnxt_tpa_start().
-
-BNXT_FLAG_TPA can be set in that state because bnxt_set_rx_skb_mode(), which
-bnxt_xdp_set() calls on XDP detach, adds NETIF_F_LRO to hw_features without
-a BNXT_SUPPORTS_TPA() check:
-
-		if (rx > 1) {
-			bp->flags &= ~BNXT_FLAG_NO_AGG_RINGS;
-			bp->dev->hw_features |= NETIF_F_LRO;
-		}
-
-Would setting bp->max_tpa_roundup_size next to every bp->max_tpa assignment
-keep the two in sync?
-
-> @@ -4554,7 +4559,7 @@ static int bnxt_alloc_one_tpa_info_data(struct bnxt *bp,
->  	u8 *data;
->  	int i;
->  
-> -	for (i = 0; i < bp->max_tpa; i++) {
-> +	for (i = 0; i < bp->max_tpa_roundup_size; i++) {
->  		data = __bnxt_alloc_rx_frag(bp, &mapping, rxr,
->  					    GFP_KERNEL);
->  		if (!data)
-
-[Severity: High]
-
-This is a pre-existing issue, but this loop now performs up to twice as many
-GFP_KERNEL allocations, and the queue restart caller ignores the -ENOMEM
-that follows the quoted check, in bnxt_queue_mem_alloc():
-
-	if (bp->flags & BNXT_FLAG_TPA)
-		bnxt_alloc_one_tpa_info_data(bp, clone);
-
-	return 0;
-
-The open path checks the same call, so is the missing check here
-intentional?
-
-If the first __bnxt_alloc_rx_frag() fails, the remaining rxr->rx_tpa[i]
-entries keep data == NULL and mapping == 0, and bnxt_queue_start() installs
-the array into the live ring:
-
-	rxr->rx_tpa = clone->rx_tpa;
-	rxr->rx_tpa_idx_map = clone->rx_tpa_idx_map;
-
-Does bnxt_tpa_start() then post a zero DMA address to the device and a NULL
-buffer into the software ring for such an entry?
-
-	prod_rx_buf->data = tpa_info->data;
-	prod_rx_buf->data_ptr = tpa_info->data_ptr;
-
-	mapping = tpa_info->mapping;
-	prod_rx_buf->mapping = mapping;
-	...
-	prod_bd->rx_bd_haddr = cpu_to_le64(mapping);
-
-When that descriptor completes, bnxt_rx_pkt() uses rx_buf->data without a
-NULL check.
--- 
-This is an AI-generated review.
+Best regards,
+Oliver
 
