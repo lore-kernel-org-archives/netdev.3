@@ -1,112 +1,108 @@
-Received: from mta1.migadu.com (out-204.mta1.migadu.com [95.215.58.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5641B3932CE
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 13:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AED448B95;
+	Fri, 28 Aug 2026 13:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787922846; cv=none; b=ILC+GIYATV+eFG5dybhzcGLJAzdFln/DqcoAXEptuablTruhnwBFDDTC9zgVCUYt6Szbv4geFvKqMo/2j1MPL28FSycgOdwWAQXivqka6P+sYTd+z9oGi9LNZJwHcZ29HjOsTHbxJGMqdGxpgubPFKS7uJUEny4Jjm+gFjHhNEU=
+	t=1787923211; cv=none; b=OcOx/1YIlSaqCBNOZRbjcgjD3Mq6Inrkyv/lgGr99J7mQWWtkKp7sQiAfm/9VHsSW5OqDPnlVpUIUanary0YawWmHzfqhD459hqdOiynXHAOIuctLFjsFGo3Rt/NcpPIebsh8I0ur/HSWccGnfE8mRboL6HQOZteLPvCj3Xuj8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787922846; c=relaxed/simple;
-	bh=/uU6ExnLVG8tAtofPabSQjz3nnh9Al8RD1/uyGGyRwE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GWopxnr8A9G/Ws0QEMANSTS8pvX/iqfB0ruTBU7pwhoz3VFT8YfEy3jqOnjKDz9qSBIF0BvBaaR+CJfGRxJwjrupMryNLQFx0p1UvxpYVuGuU388Ib1Wd7mu4dpI6R3yvTX0DLgP4S65UlhYJE/3x3v5wd6t3wjOBxeWgaOPsyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ab0mLKLS; arc=none smtp.client-ip=95.215.58.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787923211; c=relaxed/simple;
+	bh=Ex5vOC+LUEcBTFT/o+t5phdslOqFz172rhzcADsqSLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OkJeuZpnUx1jBRS/9WF25hcAaoCNtmp7E1U7aS8mafbbxtUrYg204NtgAF2DNPXGwOJIRP/NcvDXdGQpwk2lccrX/AlozZ8Sorb8GQg/7XLaEPsF3Dcas/50JkczOwSuiHHNsF9bz+MQ/tcQG2GePc7wY+q0KUoeHyQWY8Lch/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yBuix4px; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ab0mLKLS"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/uU6ExnLVG8tAtofPabSQjz3nnh9Al8RD1/uyGGyRwE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787922842; v=1; x=1788527642;
- b=ab0mLKLSYKni1Yn1cpe1G22RYFOfCOAqM4B9Gc5qj3+XmMMNXEZRbuVfdTrFsy5o2jPM9/HJ
- /CMhFaWfH1jxX8uXrwrlmCJqvxrRU8exSqw7AlY/VpdFvNawsF2UevDvtc+sX1EqI0dF1s1OE7W
- mKOYsJ99ut+ZiAv6p5Cg0eQY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ffb82de6059f5183;
-	Fri, 28 Aug 2026 13:13:52 +0000
-X-Mizu-Trace-ID: ffb82de6059f5183
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f0b9caba-7851-444c-a242-44e4a35dd0e4@linux.dev>
-Date: Fri, 28 Aug 2026 21:13:44 +0800
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yBuix4px"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Vchko25pYKVSr4oaZ/OL59g91b0pE1vVHZrmkSjJqpw=; b=yBuix4pxASxEU3o+zcoKA+J8AT
+	/jRUY7cahy2wsOM3KwY5slnLdz+5AVE7WZgY8uH3JQbo3Skif+vpkdLz6gTHGWnhJaGTqwpUJfNTx
+	wzfSK1UFroNYNA/TFPfJyyhiz66IwKodxexN/EPMUXXjv7Pjy9bEKICzwumxUSqPCeZE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wzwUu-001oiK-6X; Fri, 28 Aug 2026 15:19:56 +0200
+Date: Fri, 28 Aug 2026 15:19:56 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
+	horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com
+Subject: Re: [RFC net-next v2] net:dsa:yt922x: Add support for Motorcomm
+ YT922x
+Message-ID: <d3c8d8b7-7998-42ef-a518-9acb9a4c6038@lunn.ch>
+References: <20260820080542.2017118-1-kyle.switch@motor-comm.com>
+ <10c23416-dce1-4ec6-91bd-3e9eda9b18a3@lunn.ch>
+ <3e87da63-420b-4582-956c-2ecd853b0619@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: pch_gbe: Propagate device restart errors from
- resume
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260828105722.29952-1-pengpeng@iscas.ac.cn>
-From: luoxuanqiang <xuanqiang.luo@linux.dev>
-In-Reply-To: <20260828105722.29952-1-pengpeng@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3e87da63-420b-4582-956c-2ecd853b0619@motor-comm.com>
 
+> > > +static int yt922x_port_sds_init(struct yt921x_priv *priv, int port,
+> > > +				phy_interface_t interface)
+> > > +{
+> > > +	int addr;
+> > > +	u16 data;
+> > > +	int res;
+> > > +
+> > > +	addr = yt922x_sds_phyaddr_get(port,
+> > > +				      YT922X_PHY_REG_TYPE_SDS_COMMON_EXT,
+> > > +				      YT922X_PHY_REG_SPACE_SGMII);
+> > > +	if (addr < 0)
+> > > +		return -EINVAL;
+> > > +	/* write protect */
+> > > +	res = yt921x_intif_ext_write(priv, addr, 0x4be, 0xd);
+> > > +	if (res)
+> > > +		return res;
+> > > +	/* CDR */
+> > > +	if (interface == PHY_INTERFACE_MODE_100BASEX) {
+> > > +		res = yt921x_intif_ext_write(priv, addr, 0x406, 0x0);
+> > > +		if (res)
+> > > +			return res;
+> > > +		res = yt921x_intif_ext_write(priv, addr, 0x416, 0x3458);
+> > > +		if (res)
+> > > +			return res;
+> > > +	} else {
+> > > +		res = yt921x_intif_ext_write(priv, addr, 0x406, 0x800);
+> > > +		if (res)
+> > > +			return res;
+> > > +		res = yt921x_intif_ext_write(priv, addr, 0x416, 0x4558);
+> > > +		if (res)
+> > > +			return res;
+> > > +	}
+> > > +	/* PLL */
+> > > +	if (interface == PHY_INTERFACE_MODE_USXGMII) {
+> > > +		res = yt921x_intif_ext_write(priv, addr, 0x43a, 0x1006);
+> > > +		if (res)
+> > > +			return res;
+> > > +		res = yt921x_intif_ext_write(priv, addr, 0x43f, 0x3029);
+> > > +		if (res)
+> > What is this function doing?
+> Ans: Complete some init configuration according to serdes interface mode.
 
-在 2026/8/28 18:57, Pengpeng Hou 写道:
-> pch_gbe_up() can fail while allocating the IRQ or receive and transmit
-> buffers.  The resume path ignores that result and attaches the netdevice
-> even though restart did not complete.
->
-> Return the restart error, leave the netdevice detached, and restore the
-> PHY and PCI device to the suspended resource state.  pch_gbe_up()
-> already frees allocations made before its failure.
->
-> The issue was identified via static analysis and manually reviewed.
->
-> Fixes: 77555ee72282 ("net: Add Gigabit Ethernet driver of Topcliff PCH")
->
-> Assisted-by: LLM
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> ---
->   drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c | 12 +++++++++---
->   1 file changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> index 88c5c52e0e38..737bdc9d569e 100644
-> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> @@ -2449,7 +2449,7 @@ static int pch_gbe_resume(struct device *device)
->   	struct net_device *netdev = pci_get_drvdata(pdev);
->   	struct pch_gbe_adapter *adapter = netdev_priv(netdev);
->   	struct pch_gbe_hw *hw = &adapter->hw;
-> -	u32 err;
-> +	int err;
->   
->   	err = pci_enable_device(pdev);
->   	if (err) {
-> @@ -2462,8 +2462,14 @@ static int pch_gbe_resume(struct device *device)
->   	/* Clear wake on lan control and status */
->   	pch_gbe_mac_set_wol_event(hw, 0);
->   
-> -	if (netif_running(netdev))
-> -		pch_gbe_up(adapter);
-> +	if (netif_running(netdev)) {
-> +		err = pch_gbe_up(adapter);
-> +		if (err) {
-> +			pch_gbe_phy_power_down(hw);
+Sorry, missed this email until today.
 
-The comment in pch_gbe_phy_power_down() explicitly says that the PHY
-cannot be powered down when WoL is enabled or AMT is active.
+Which SERDES? The switches SERDES, or the PHY SERDES.
 
-Please do not call it unconditionally here.
+We normally refer to the switch SERDES as a PCS, and have a PCS driver
+for it. Sometimes you also need a generic PHY. Please look around at
+other devices and understand the architecture.
 
-Thanks,
-Xuanqiang
+The PHYs SERDES interface is configured by the PHY driver. The MAC
+driver should never touch PHY registers. Same as the PHY driver should
+never touch MAC registers.
 
-> +			pci_disable_device(pdev);
-> +			return err;
-> +		}
-> +	}
->   	netif_device_attach(netdev);
->   
->   	return 0;
+       Andrew
