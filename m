@@ -1,127 +1,131 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF11357CF7
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 16:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787935892; cv=pass; b=MJmNvusMTvwr7v/Zqne9J5Zqe+KysPby/r/oeuU8jNjEAfQEPeDgwsTTgVomYDxlxtqTHdG5KX7kokl0q6XqOsIZwPxmhaM0GfQ9i6mV8a1SMonsIJJNteJJita3mx19s4yNWy8C5D0Ql5AGCI7OuVCb/v1DIi6EnNXlW9jjhRQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787935892; c=relaxed/simple;
-	bh=9bt4yB4wrN8kHYOfxeXhMbkcmKTisipIJsXnXK0ZxD4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ex2x6zsH7RehJizexzZ17+rNI8GfJrDaRRNRCNDjiniJvGzn9omPaaNHaQ2hLRU75w7iqBjL2dB8eSwYz0vVS1gAce4sCoryqndAZivoE/sZ6cyIPVssArq0hnwbs5ak7JTqYQQdy49fo7u6CyfI3gE5BbOvAy/cdnTIV9iKvys=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S03MfrYd; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0693391E58
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 16:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787936048; cv=none; b=An7TnkMOJVsbX8qHCg6brMadn4Y5kCdTwC8p+rFZyHyrPKQJTE9QrJ2UVP6V6/IbzglSdP/Fcm6qNQ1zSLl1V43P8kN5RYvcBzu0sd0bgjcrLA4R5vEpNQJpRLF27Vl+PwPUNGOHbhrw8nUNHeyvhgRGM1gis1XTnqHht4YiwiY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787936048; c=relaxed/simple;
+	bh=xV58Vw1wCq2qg8UpHCbXJ07X+09OeIqQniW9rzZXcOA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Fp2iMLjeylSaqlDrspKDkcrHQDrqVfZ4t6HPUaYUtZO+l7xjQzmsS8O6hEhQ5RxnYNXdu4ek8T+RSBe7HZsbpWWvfuWDk3SXKDhwgKWap/gO5iH95e6Oi/ZICLjG6jWyC0zZ+OkAmam5EtBV4qXQaLkH9B8nMgY3t71K5ewKotI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQRVBVUU; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S03MfrYd"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52f83889a93so10356311cf.2
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 09:51:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787935887; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WtoeGflYJ1VgBDh0Yutqu21J2zO16v2ZYnlQLDZ5paHExtmiuT5AQLb1jZbiSTtqvc
-         OCcMkC8gNLcFzh+ScG63omxGPKEBo0jzChVDAT7VYOPThK4dVQl4+EH3+bv0gZtK1//U
-         NpSVZi9sUGt2FiBeAhmbb58Xgcu1AO86dRCQm0ddsNm1qoHQDTreZ0bbj8aLVv1MCqnO
-         jltmmoDnC4RfgYgQKEIe321Xhw2CEdMgxHdHFDMJq0kKeDj63RWpPPgrZ+74SyRZ+HVn
-         QMWPVLtfh1rYRzBfSSSegHViyAsta5LX6rhDziheZkTbpo/mh+W78n8ayEPYkpEck6cX
-         +96A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mMlaPah34klg2SfIGU5Q2NKW+XSAghjYJ83EboJBxEQ=;
-        fh=vcKY0jlpnaixeEabHNdFoz2CU/7U2ZCQX99dw26BGIY=;
-        b=Czn7BxWsNCOrMTeb76wIlLRvE0uCtwDkSZ2ZK3PrL8dTccfe+H+oZYlnoM9ep3Xpcc
-         nxarPBWIvj2+Mrjo9EqOeU4kmiwbW+oSHfhgH2/8icW5Le4vOLilPfxfXi1kB2UhcMkS
-         J0EH+0zLAvnqUHbWXqowPggzmazRDOQJHIq4hxGyZLpy+Engn1EKoBoCyuOZz4Q2P0FD
-         rsdhuDwBZBzYzpkvaHMlexp0FTMGnO0mdK16K5nMiQv8yk3H156Pqj87JFYQQ03VehNo
-         +DLhRG0mLPvT4IayMEBartoPGa58gEZ0WhrPMMRZl5Xv9vBt6LCGrQB5qebkz7SQh8Xs
-         wDEA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eQRVBVUU"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7f18c0e03e3so726903a34.2
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 09:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787935887; x=1788540687; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mMlaPah34klg2SfIGU5Q2NKW+XSAghjYJ83EboJBxEQ=;
-        b=S03MfrYdTW5Rx3/WhElnx7QQSdMr+5rJQDaq3lBdKyDnImCmv3yJf7n9u5zXH0QkBz
-         ZBR+yhImIBK/ChSOg5AirlOjVmhzVHKDV5eJtRRUUd8bbLUMz9MrNgYHglvSICjoI+lb
-         QdgEtIeN4Bp7xv5FZkys+nF+Ahz1bcxvG0yZGtwh+pApyECjKa/HoxE8fksGmw56oCeG
-         Yy09Uo20M4OeTlcqkJrZZygsgFY5hk63rIeIW7daMlRZWGN8hc+x5hA3WI0DqFtF7793
-         x9AYNvCqLDa37MfAs3i5LqP2TH5vGbyjhjdgI/gA5r+B89WmZhfid+VcDOTC6YfGAwLS
-         efIg==
+        d=gmail.com; s=20251104; t=1787936043; x=1788540843; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xV58Vw1wCq2qg8UpHCbXJ07X+09OeIqQniW9rzZXcOA=;
+        b=eQRVBVUUAsgpXwzA5UNrPGLyTJK+ESsEsK+XvgKAlzSNWslSH3+1RSA7r6HJRuhG2d
+         L6j1MnX7oPKxxznbZg3EQqYA1xuI5paqWMygsslG68MVEwouRrjCAKOumopp1VpRPlzm
+         XnfFg96mjI358FBKeAt2L+ys3YcDFqEefHejNa6olAU1zJdryssH95zeRF1BZy1CVQHY
+         XUoGcT3E0AhZ7JzlTfUXudx32slWk3JREpFpWVIpsWiV53dqlL0J1fYZIc0jUbQ9WtS/
+         kzc9PRG1hEcziTingtKQ2nIF+hW68rrYI8RX0vKCJCwSCg2J1yLBsg8gdKmJEbEaD8Wx
+         AgQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787935887; x=1788540687;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787936043; x=1788540843;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mMlaPah34klg2SfIGU5Q2NKW+XSAghjYJ83EboJBxEQ=;
-        b=ZM2ZTl1aFrHoGjvIYQVHvkOrWAjtT4UxZh0GI35o2n/JaAEZkVpYECaFPhDg0qGuUQ
-         XLZSm8Ff89V+rRdvfZGQEqseLKrWK2JQFjW+cwfbr2Ubb/YTU5CUNqc2VrB75xokh7i4
-         /j6XT+SPR6Fn2WQeYNKPnyZ7ZUH/JVLSwfFGffZNdY8b7+zqUieXkanIm+d8XZQvpzqN
-         /LLT7EjC0wYfyYS9BkaagCG0usYxtdDJl86B+4cjvYGVXjVODJ6rY1UxuEiE1px/UPTO
-         oT9m00Y8Qi1T7kUD1dzG8CTNdKkLbVFsT/0PKzOo98zHUnUg9pwaYv1o+kood3/gzyhE
-         8mnA==
-X-Gm-Message-State: AFuF++m4QwRn/e9wa7jmd1kadhB5bRyxvM/+2ihdHMY48B7A3SD1H0x2
-	DEZ87VjE+Xlx3Uyy+0OqfhQ8Y0riOiPP9yJdbazPYLzBvWma2FwOOj56vmYC9p/Wlq3ikaD1oSZ
-	q++ojcTKJ+HNiONMdnDCAZ28EPaK+x3sWoHedWPOfb7nbhPCJKVgO3xfi
-X-Gm-Gg: AR+sD12guv7k7FlxgbkRGl4v5vz8kPpNMIbYFVJPpZU0pjWwU+dyswJHJfaPFwJGPDt
-	D0Fjb2Khr6GQc133SGaqlSHh7DVWatC4e1JC17gXLpyyFsCuAWrD6Dev6E3DKgD9aiI/CT6qAPm
-	A4w3urpy6EMjZscXxgdCWX4xqib1LzprwVCO9TilBXVFzYQdN4uGppLQ7VzAykVPXBZOPgCA1GC
-	lwrbGKvpHHg9w1/FhJnKIbuavggqfsxC70adzkwhxWZwYarc+6IARUpCRpSwtUzy/duhVXHEZfD
-	kW2LIGDZ5vzKkGTewX/vsSIcnzjy2bGnMkCq0SKTUM+OuJMzdYoLTeB908Mo4Bsd/DzrxH5mV0L
-	4fmX+MJrdXfQPG3Ds/HdCJ7F/mcoY9QAsZzfmGGSOOx1kdBZ3Hv1qfL4pbQE=
-X-Received: by 2002:a05:622a:c0e:b0:51b:ee11:e71e with SMTP id
- d75a77b69052e-52fb93cf74dmr100711571cf.1.1787935886865; Fri, 28 Aug 2026
- 09:51:26 -0700 (PDT)
+        bh=xV58Vw1wCq2qg8UpHCbXJ07X+09OeIqQniW9rzZXcOA=;
+        b=RVdPRt1GwSUoOUuKfYwJJ2rVLcSjIpyOdKhh1q2SS/4faOwaeDy9x0w7TmUMDgVGr1
+         AmPNOJVUWNJ+90C+bvi6QLoZmqcl3uiPhvJtYg37rcejfJK2xizmL7u8eXPGphnpdzSP
+         LoKzSHfWbN31KY+YPr1UlLkIgRQfxQ3gFL675o7Im9zzDf621dQiL+FhsMGu4HglbBKF
+         qyHlDShu1qUuqVu3eEVXbKeHzaDkBKDq5cSvQWd4Jbyd5huQ0s1haX8uNaSFJQ1IZKLn
+         X/evL2d6QuiO/cmWQyJQ3BhzVIE+hhOQWT6Nb+gkSUbjJEuGsQNed2n3cuIW3EnrEhxe
+         sPDA==
+X-Forwarded-Encrypted: i=1; AHgh+RpG0+GRbXMpwGrriFWX6oqa5nA3Ke6BLRFVXYIFAlk/wHIJBBuhQIg8Uc8gXO/b4QBN5fSWoBE=@vger.kernel.org
+X-Gm-Message-State: AFuF++lwm8kt+HIIJ9V8InTgjlP8CghNTpFLdswZ+kkmre5k/ozyrV1t
+	yKC5vW0Mtbi7BG4O3GZNePA+SWyIWlmvemOdBzrJoAPkKqA+e+zGqGqwpGMMN6BF
+X-Gm-Gg: AR+sD11kc9yHmSKTrWMqZpI05tWe/01NMsLYOfAtX9iFEhnegbkHkMAmj05UKjIjIsH
+	0TYsYqZ43EvrVAtKYlYlnV7NN5EOFVbttAOuwIaZq5IUuf1WbkPpuxoqPdqDjFB3XdGsPAurfHD
+	gfdRfGAg3w7JzidhJgF1xvBGF28WdFlDk8j7QKmx81DEL5i4vbkvyr5qdxoTeqG00hOgIoFXJ3V
+	U3K6cMBsY78+jI4VLY8ebtYHSkFIIcGNCbmVVFanSEPUo/cgXwbkFU4vOe/f4Mv7E/rcJuwDPxr
+	VXehHAzXfozvZ1Sf0eauzH9Yh1LKqEJmf4xf4yn3IVmkEBTcOZBtLdogChQJd1xtLU1fHdnWdGp
+	nXkEPwpvhqoTt6CLdaw9Mcaj7EeIlYFSrM6AC4ni1JJdOJZYpzUEcRV5b/U99sipsVCfcNNCSrs
+	QOkHotESK/hYJeL5AhCWk3L9MqSvQiKyTJoTCWv0fSRDS5/ORINoD5VnY=
+X-Received: by 2002:a05:6820:180d:b0:6b0:589e:42f4 with SMTP id 006d021491bc7-6b1c66b745cmr7372417eaf.20.1787936043165;
+        Fri, 28 Aug 2026 09:54:03 -0700 (PDT)
+Received: from localhost ([13.93.150.60])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b1ce122df5sm2041447eaf.5.2026.08.28.09.54.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Aug 2026 09:54:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
-In-Reply-To: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 28 Aug 2026 18:51:15 +0200
-X-Gm-Features: AcwNN1U6wjvnrTjChRJ42-n0h-q835Ksy05AvEQrrkJT1qt_7aTQ3cY8JbZm830
-Message-ID: <CANn89iKJRSsYNzirnzUwLSwGOoyn8ujKyBWRh4BBeZHHPFaM3w@mail.gmail.com>
-Subject: Re: [PATCH v2 net] ipvlan: unregister upper devices outside pnodes_lock
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, 
-	magnus.karlsson@intel.com, sdf@fomichev.me, bpf@vger.kernel.org, 
-	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 28 Aug 2026 16:54:00 +0000
+Message-Id: <DL0QFI20UBL6.3BM3CZWLDS1K3@gmail.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Arun Ajith S" <aajith@arista.com>, "Roopa
+ Prabhu" <roopa@nvidia.com>, "Jaehee Park" <jhpark1013@gmail.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC net-next] ipv6: update NUD_FAILED neighbors from NA
+ messages
+From: "Lawrence Lee" <lfqlee314@gmail.com>
+To: "Ido Schimmel" <idosch@nvidia.com>
+X-Mailer: aerc 0.17.0
+References: <20260813233344.445265-1-lfqlee314@gmail.com>
+ <20260825115226.GA1338930@shredder> <DKY84BEFKL1S.1BZWGQTGRZLMU@gmail.com>
+ <20260827090516.GA2014023@shredder>
+In-Reply-To: <20260827090516.GA2014023@shredder>
 
-On Fri, Aug 28, 2026 at 6:49=E2=80=AFPM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
+On Thu Aug 27, 2026 at 9:05 AM UTC, Ido Schimmel wrote:
+> On Tue, Aug 25, 2026 at 06:07:44PM +0000, Lawrence Lee wrote:
+> > Sorry I should have been more specific before. Maybe a better way to=20
+> > phrase it is that this would be analogous to IPv4 in the sense that it=
+=20
+> > allows NUD_FAILED neighbors to change states upon receipt of a NA, but=
+=20
+> > by using NUD_STALE it remains consistent with RFC9131 Section 6.1.1.
 >
-> syzbot reported the following circular locking dependency:
+> I think that your setup is quite unique and I don't necessarily agree
+> with the statements regarding the CPU load, but it doesn't change my
+> conclusion: IMO it makes sense to transition from FAILED to STALE when
+> receiving NAs (most likely unsolicited given FAILED state).
 >
->   xs->mutex -> netdev lock -> pnodes_lock -> net->xdp.lock -> xs->mutex
->
-> The pnodes_lock -> net->xdp.lock edge is recorded when
-> ipvlan_device_event(NETDEV_UNREGISTER) calls unregister_netdevice_many()
-> while holding pnodes_lock.  A nested NETDEV_UNREGISTER notification for
-> an IPvlan device enters xsk_notifier(), which acquires net->xdp.lock.
->
-> Keep pnodes_lock only while marking the upper devices as dying, removing
-> them from port->ipvlans, and queueing them for unregistration.  Once the
-> devices have been detached from the protected list, release pnodes_lock
-> before unregister_netdevice_many() invokes notifier callbacks.
->
-> The port remains alive across unregistration because
-> ipvlan_device_event() holds the reference acquired by ipvlan_port_get().
-> The dying flag prevents a concurrent ->dellink() callback from deleting a
-> queued device again.
->
-> Fixes: 35add1093e2f ("ipvlan: Protect ipvl_port.ipvlans with mutex.")
-> Reported-by: syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3Daa48b5fe7bfda62d1682
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+> Mention in the commit message that trying to resolve FAILED neighbours
+> by periodically probing them (e.g., using NTF_EXT_MANAGED) adds extra
+> work compared to having the kernel stop ignoring the information that
+> it's getting via NAs. Also mention that the approach taken here is more
+> conservative than IPv4, which by default transitions FAILED neighbours
+> to STALE upon receiving GARPs.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+I will be sure to mention these points in the message. Is it appropriate=20
+to credit you with a 'Suggested-By' tag in the commit messages as well? =20
+I'm not sure what the proper attribution convention is here for commit=20
+message content.
+
+> Note that you also need to update the RFC 9131 comment in
+> ndisc_recv_na() and the description of accept_untracked_na in
+> Documentation/networking/ip-sysctl.rst. In addition, please add a test
+> case in tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+>
+> Before submitting, please read:
+> https://docs.kernel.org/next/process/maintainer-netdev.html
+>
+> Run the CI checks locally:
+> https://github.com/linux-netdev/nipa#running-locally
+>
+> And LLM review:
+> https://github.com/sashiko-dev/sashiko#1-local-review-recommended
+>
+> Thanks
+
+Will do, thanks for the suggestions. I will submit a patch once the tree=20
+re-opens.
