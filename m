@@ -1,170 +1,88 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mta0.migadu.com (out-224.mta0.migadu.com [91.218.175.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E85A24A078
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4BA3911AB
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787886213; cv=none; b=SGGbqRt0f6pUmIPnpz40lxcejlRq7dd4ushI7P9SJl2f3ebWAUkqKn6qK5OU+iT5Qa+2uTFkA43WUydA+XXRYU2DVltrQW9WbX4KsbZjpIEEPS81uHJSYZv3VwfA6ixI8RO9MX0xX62AyQ8gh0h3JyevRO18HfcFUzUxMYRj2os=
+	t=1787886907; cv=none; b=WH/A1QsDZTrDUcGvrDORW6vKEhwIf1cZrvb1FxSrIkkR0ti4DnfKsMF2eroWi41pdnl9NWBjELKAbrv3ZywgaO0PcC6DNsBLU+1j1zWoLUVRRP17GV9EUGg54VAJ9y6lSuU69gv01Fev5Y9rzf0bEsJKYZBTuwQDlMGz3AznvSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787886213; c=relaxed/simple;
-	bh=hKjcfysmqpwkfoKcmOZNV4zNNLgROO+mCygL3RPRE0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HtgNYxEp5I+0zQatzSIBjMXIFuYmo3ZMoWwdKtLqLX6gOBawRnk7DSrded0d8550CSV1Al/VZRbcCkWNkILYckIohaGrnYTxenPttHClh5Evlg2y4rvhy8GsRonlqiRXvsymbBYFZGAS6miuKMeu6rXf4tv1iDbRTYQi3/cvQHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=uIiGQS0l; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1787886907; c=relaxed/simple;
+	bh=yUa3Hro+MdJZiWBpMPxBnVciF+EbzJuiaZoNiXMvROI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZX4qf5zd74R+ZLHoVgCDMYiGDCea6RbtzjOO6D+qjc4k7TsA/lEf87RX/cohfDODf3l9DU1jRoQDlRJ5r+t3fuaSFh/Jl7V2OqhYtbcAAnDZykjXS13aV2mgNgeVvlpcAGlBNbn2DSSS8w83hM3SAocayVxYtp5lN6ZLx9p2Zvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kehrhWx3; arc=none smtp.client-ip=91.218.175.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="uIiGQS0l"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8525efa7274so533898b3a.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 20:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787886211; x=1788491011; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S/6wjXJ5t2JcwV8iIbOzHQwgonuJXRvuDvZRhLDazjw=;
-        b=uIiGQS0lCLCPCmusn0yZEF3h+v8Pn1tC5GSproN6glBsYySEbAvYPsHTnVkbIfdFXK
-         EGWx4lb5Sai+vK/nEu0GJ7P5IoLkD//xpGRIFPpGC8ZCrBguyUQGZnvJS48Ym+JxgBM7
-         ZmTSYkBoH9XZmH7T5O5NSWfrfBQJcUBw+3ZD1IlYUg53yv/Cst0G7p5upLLQp9q7872J
-         vNTO+5VMUz/mo1/y3WGKVWhawpOkAMM2oupWtZVc7ZG9EhnXocLxjaew5AbMzdYP2ONf
-         JgjoJnd5SjqSM9IaAgrNd3BDDx9ZhUZMNfAQSfwUCLa1SEJQCvdVb7icPdkjVUMx1ZTV
-         uPLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787886211; x=1788491011;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=S/6wjXJ5t2JcwV8iIbOzHQwgonuJXRvuDvZRhLDazjw=;
-        b=otSY9ruY1uDNmu5uQrijGyIh0vbVkAwBaC4MpWhqaD8TBG2OMMeJXxGk1aFwC7AOG+
-         YWAPdv57uyzjkoYK2XkvvFI+HzAcoAMzc+Ta/u8NibwMAJm/peFC+NNUHs6BdkiazlLG
-         JBCMeUBgvS40iLowcpMaMFEMYRMQOXSJc0mvg82c91sGobiqaw1W8htRDJX3GgYwOD5Q
-         RsLh+mpiw9dsc2fMZds/25LWQpNuJgXW4NuBrqX0iFw92oSvnXTi/mL6AzSOm+TkXpB1
-         EoxNBvRtYa91tGnlGYtTMmTgVTWvyazWR/ErDUORWuN5gRNwCzxaGd44Bg+zwg+MpYin
-         YfUw==
-X-Gm-Message-State: AFuF++lnlGdZhRreqEVplf9wnEY9PuCzx/UC/SZ8zfN8kbsR7bJ2w2LR
-	83z+AuKsCkjGwfPTXbyesr2x0sdkY79wQe2bb6s81E6AKSWLJcg74YaYfAa2rk63ONU=
-X-Gm-Gg: AR+sD13QcMPbV0dkXbxaERtuZ+Tp7rrAur3gWa5dKQQsaF+Or380P6foWTgGVcpFC4R
-	8/WnnwPh0wAhGWuXerkKWgwy/novxPEPTDFdqXF6uMP6f4vNuQk5FzgMffALbz6tXWU9TClDMym
-	9lx1JExF4PangBlNCuHJxJYViaAvKUWLjvz8PQqTsfdU5j4Xo0O0A298CTf/sPOri7HXICFxfe0
-	sRLG7sUkBX1qN19Vp27vVE1LxbGgEPOExqxVXgFeaztB31NxHgnnfPkskwzr2NMTuQcm3aS09VS
-	KDBW/bxYEshqFm5iAHbXqXwtoNjin56frMd/qhW3bszQw3sR/sFVP/1kQSg81FgjpgEqm8vl9o4
-	SQJYMPJrBlqrSJLgfXgEeHO5TAPt0NmrEMd82VnLup8vRsoywjagQVBZggPzkxTI2q0MU6ahbdD
-	d5O9fOumrhT9P8eupYn7RzReT5spCYQtR/OIFconZufVdnudt1RZPL
-X-Received: by 2002:a05:6a00:4210:b0:853:59ed:5539 with SMTP id d2e1a72fcca58-8562aeacd01mr7858899b3a.16.1787886209642;
-        Thu, 27 Aug 2026 20:03:29 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:48::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8569fa7d94fsm137211b3a.17.2026.08.27.20.03.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 20:03:28 -0700 (PDT)
-Date: Thu, 27 Aug 2026 20:03:27 -0700
-From: Joe Damato <joe@dama.to>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Colin Winegarden <colin.winegarden@broadcom.com>,
-	Rukhsana Ansari <rukhsana.ansari@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, horms@kernel.org,
-	linux-kernel@vger.kernel.org, raphaelcf@meta.com,
-	stable@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH net v3] bnxt_en: Bound SW TPA IDs to prevent crashes
-Message-ID: <apD6fwM7beKVGz++@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Colin Winegarden <colin.winegarden@broadcom.com>,
-	Rukhsana Ansari <rukhsana.ansari@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, horms@kernel.org,
-	linux-kernel@vger.kernel.org, raphaelcf@meta.com,
-	stable@vger.kernel.org, llvm@lists.linux.dev
-References: <20260827185700.2157164-1-joe@dama.to>
- <CACKFLikJiCdjej4ezF=U16Leef3oAjSZGQAyetRnF=nLRvUfZA@mail.gmail.com>
- <apDLEbEu1PLTGU+f@devvm20253.cco0.facebook.com>
- <CACKFLinQHs80MQbn8o8Fw3Qg=1DJ+7ZMevPkDzxnDr+mNX=SfQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kehrhWx3"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=yUa3Hro+MdJZiWBpMPxBnVciF+EbzJuiaZoNiXMvROI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787886894; v=1; x=1788491694;
+ b=kehrhWx3snTYnmhUkHFtA7UTAzfqBqFkqYKzA4DFvGyX6F8pfiQN9TSnPeH4aifbwzrddyjq
+ aXktoqeJdS6f1PEwKRLdrmJ6c9xBYLYN3S8CXXm3LgPKoeaFp5hY50VU6XRFxuMEA3avmByR2ST
+ 0nkQHRHtZ8b/FZLyikIuSvxA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a9c4a572758bbc32;
+	Fri, 28 Aug 2026 03:14:54 +0000
+X-Mizu-Trace-ID: a9c4a572758bbc32
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <451c8ea9-dc48-4ec4-a35a-76707c3bd580@linux.dev>
+Date: Fri, 28 Aug 2026 11:14:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/2] tcp: fix use-after-free in
+ do_tcp_getsockopt(TCP_CC_INFO)
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>, edumazet@google.com,
+ ncardwell@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
+Cc: kuniyu@google.com, horms@kernel.org, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, yhs@fb.com, kafai@fb.com,
+ andriin@fb.com, ast@kernel.org, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ AutonomousCodeSecurity@microsoft.com, xmei5@asu.edu,
+ tgopinath@linux.microsoft.com, kys@microsoft.com, stable@vger.kernel.org
+References: <cover.1787870710.git.blbllhy@gmail.com>
+ <65fd3816ed5d541d9edd4bf4fcf97104a2cf907a.1787870710.git.blbllhy@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <65fd3816ed5d541d9edd4bf4fcf97104a2cf907a.1787870710.git.blbllhy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLinQHs80MQbn8o8Fw3Qg=1DJ+7ZMevPkDzxnDr+mNX=SfQ@mail.gmail.com>
 
-On Thu, Aug 27, 2026 at 05:00:29PM -0700, Michael Chan wrote:
-> On Thu, Aug 27, 2026 at 4:41 PM Joe Damato <joe@dama.to> wrote:
-> >
-> > On Thu, Aug 27, 2026 at 04:07:16PM -0700, Michael Chan wrote:
-> > > On Thu, Aug 27, 2026 at 11:57 AM Joe Damato <joe@dama.to> wrote:
-> > >
-> > > > @@ -3831,6 +3834,7 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
-> > > >         int i, rc;
-> > > >
-> > > >         bp->max_tpa = MAX_TPA;
-> > > > +       bp->max_tpa_roundup_size = MAX_TPA;
-> > >
-> > > This is strictly not needed.  If we return early below, it means the
-> > > chip does not support TPA at all.  We skip allocating the TPA array
-> > > for every ring, so it really makes no difference.
-> > >
-> > > BNXT_SUPPORTS_TPA() will be false if we return early.  LRO and HW_GRO
-> > > will not be supported.  So I would say it's a false positive from
-> > > Sashiko.  Thanks.
-> >
-> > Sorry, I should have been more explicit in my last message: is it worth a
-> > respin to remove this? Unless I am misunderstanding something, it's harmless
-> > and while not necessary, might be more clear for a human reader?
-> >
-> 
-> Yes, the extra line is harmless.  But I think it will further confuse
-> the reader (or AI) into thinking that TPA is supported when we return
-> early.  I slightly prefer not adding this line.  If you end up
-> re-spinning, maybe add an extra comment explaining that TPA is not
-> supported when we return early?  Thanks.
 
-I think I'll propose something like this for the next version:
+在 8/28/26 7:55 AM, Cen Zhang (Microsoft) wrote:
+> From: "Cen Zhang (Microsoft Security FORGE Labs)" <blbllhy@gmail.com>
+>
+> do_tcp_getsockopt() reads icsk->icsk_ca_ops and dereferences the
+> get_info function pointer without rcu_read_lock(). With BPF struct_ops
+> congestion control, ca_ops can point to dynamically allocated memory
+> that is freed concurrently, resulting in a use-after-free when the
+> kernel dereferences or calls through the stale pointer.
+>
+>    BUG: KASAN: slab-use-after-free in do_tcp_getsockopt+0x2037/0x23e0
+>    Read of size 8 at addr ffff888013701258 by task exploit/149
+>     do_tcp_getsockopt+0x2037/0x23e0 (net/ipv4/tcp.c:4564)
+>     tcp_getsockopt+0x91/0xf0
+>     __sys_getsockopt+0xf7/0x170
+>
+> Fix this by wrapping the ca_ops load and get_info call within
+> rcu_read_lock()/rcu_read_unlock(), and using READ_ONCE() to load
+> the icsk_ca_ops pointer.
+>
+> Fixes: 0baf26b0fcd7 ("bpf: tcp: Support tcp_congestion_ops in bpf")
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Cc: AutonomousCodeSecurity@microsoft.com
+> Cc: stable@vger.kernel.org
+> Assisted-by: GitHub-Copilot:claude-opus-4.6
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <blbllhy@gmail.com>
 
-@@ -3832,6 +3835,10 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
 
-        bp->max_tpa = MAX_TPA;
-        if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
-+               /* TPA is not supported at all, so there is nothing to
-+                * allocate. BNXT_SUPPORTS_TPA() is false in this case and
-+                * neither LRO nor HW GRO can be enabled.
-+                */
-                if (!bp->max_tpa_v2)
-                        return 0;
-                bp->max_tpa = min_t(u16, bp->max_tpa_v2, MAX_TPA_P5);
-@@ -3839,6 +3846,7 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
-                if (bp->max_tpa <= 32 && BNXT_CHIP_P5(bp) && !BNXT_NPAR(bp))
-                        bp->max_tpa = MAX_TPA_P5;
-        }
-+       bp->max_tpa_roundup_size = roundup_pow_of_two(bp->max_tpa);
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Because otherwise max_tpa_roundup_size would be 0 and bnxt_alloc_one_tpa_info
-(and other tpa functions) would use an alloc size of 0 and return
-ZERO_SIZE_PTR (non-NULL) which would then break checks like:
-
-  if (!rxr->rx_tpa)
-
-because it would be ZERO_SIZE_PTR instead of NULL.
-
-Am I getting that right?
