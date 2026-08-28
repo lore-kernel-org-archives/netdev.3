@@ -1,210 +1,207 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E01324B20;
-	Fri, 28 Aug 2026 03:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500CE3911AB;
+	Fri, 28 Aug 2026 03:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787889170; cv=none; b=aUP5+ISbTih/Q4XRYMigXoV+I0XFY3wx8+tx4uABJBvlmW6x2/FEMhvc2A1JCeVtfkN8zX+AFrniHWrCqIT1G9KnzmbQBQV0ebWBW5Rkem7RwR/qg6wKNl1B/fzAi7PbMrRezR/s8xpMhFpHWkPFc8SDTZSUJlIfQZvcYDmXCvU=
+	t=1787889325; cv=none; b=HmuEeIi1+jq0IS9qBYPTCuKiQFIHYd1v2e4kAi4MZ5X6ZcVNcwwlteN4VuT2DT0Ny1Lv69ZW02rpgkQOhCqfSINJhsp3Gh9avpFr59LZ+xgDKAOzHCKBo6xPbSse308GcRiEyQuyoBakGNO+VNQ1fF1VOLzGoOm5CI21iAg0EFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787889170; c=relaxed/simple;
-	bh=PKCarzxa7XiNXnPxFgr/x2dkK2Ej87CGw/W+tSRnDIA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jehKWu6kVFlzTsLkQewlEpSmjUNfEw10nxFl6JOH8pc5Cl2uRItjrfTTeoAo+GkbGCTYm+01iiz9VMGbeiooc7K1beH3cACVyZ+ZOp187ZIi/z9f9kJrmIw137G4OIgSmAgULkaTgg/41mBYA2uUTD+PNtvi5dg713m1f0Jthmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=MIFHxnuV; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787889325; c=relaxed/simple;
+	bh=FCpEZDxc4jEepPZ3bdAy23c/UIgwajhvEbvF74xOfpA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z6Oa8bCtmXnMieZSqFEXQcyUaIBZLsde8QjTZHL8Yc6PiysfrpDz0QtYJixIeGaYplGDLTh689cmU2hJ060nbWy6mM8A3z9sAvUFFrvdUgjKiF3K4f4Ea8wCmmE2KQBHf86C38N266kz+VU2MHMkhFtNA2NHM3gBM2Rx4nkTvvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoNaC3y+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="MIFHxnuV"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67S223ph440082;
-	Thu, 27 Aug 2026 20:52:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=ngwmB6xJLwD9o53tmuOr+Xg
-	eZX6geOISFL12sbDv1/w=; b=MIFHxnuVDznF3ODTxcAVS3IPwK4B0G3e2JHMeqN
-	LeHpJU9tL6DyBcCPO8ZM+vonDIOsYDkJpG5a4MsbMShqx3gF/mBPH1TPtB5AwTOJ
-	3M5SNidNKmKpyKQ1QGMaeRYaPeLjxu6CJDv0sD6O5yDi/oGvMWNIH/1+WFdZ4I+9
-	Mz1esvQs8RckQCq/HFVpI38kgSPnHmryl5ZhIq0vw9z2YB0ciKnaFXSFP9F+DkN4
-	o9/T3lp5Y6KN1DS0EWJc66fyZ0HFqhdDgYUB2MH6WPcRLUNxU/tl3ivj3vgL7/z5
-	ttXZ6gbevFpX5bad7R/urAKXfJBLftgBkA3EBIdVffDi1ug==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gan4w3apg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Aug 2026 20:52:38 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 27 Aug 2026 20:52:37 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 27 Aug 2026 20:52:37 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 941783F7084;
-	Thu, 27 Aug 2026 20:52:33 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <davem@davemloft.net>, <hkelam@marvell.com>,
-        <linux-kernel@vger.kernel.org>, <naveenm@marvell.com>,
-        <netdev@vger.kernel.org>, <sgoutham@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: [PATCH v3 net] octeontx2-pf: reset HTB scheduler topology before freeing queues
-Date: Fri, 28 Aug 2026 09:22:31 +0530
-Message-ID: <20260828035231.46911-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoNaC3y+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A801F000E9;
+	Fri, 28 Aug 2026 03:55:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787889324;
+	bh=4+zCmYDgwdjFjvy4pwMM+TuoalPKK3GwFiN1mmUURkE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UoNaC3y+DvalM35SWgtiNtZVjEaqCu7pHPeVItgXMgS2fUheBfbH8H5WccHo9bxqw
+	 nJLYCC/TqBI/GZ73S+AF/SSuBJACyhLQW9pKFTF/QgVO8DASb+3XQ+Em1Of70X0kM3
+	 eeyN2M95I1Px1ecEbqqPr0nFjrnvQpYPa9ZR8xmlVxP6/q4ecFd8l2GTCC5vk7W0qW
+	 dVlcSrEsABZC9SR2B+0Rm0rosuR3HJ0bH85lmjFnQwUKEhbyDSNA/SGpBpw16jbLKe
+	 iUqKmX/0Poacbsxy/wAzm+9RB+xbalIgbdD711xj404sPmJPecDSm4bA+JCwtXyZB9
+	 gUoA79kiMmNdw==
+Message-ID: <f61be21da825131657194f9fec83a77d7a92fe8a.camel@kernel.org>
+Subject: Re: [PATCH net v2] net: rds: fix uninitialized trans dereference in
+ CM event handler
+From: Allison Henderson <achender@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>, ljp1205831794@gmail.com
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org, 
+	kerneljasonxing@gmail.com, henrymei@tencent.com, corvus@tencent.com, 
+	stable@vger.kernel.org
+Date: Thu, 27 Aug 2026 20:55:22 -0700
+In-Reply-To: <20260827161820.3867858-1-kuba@kernel.org>
+References: <20260825021223.3483044-1-ljp1205831794@gmail.com>
+	 <20260827161820.3867858-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: pLHqxDNCo4lYDlo64WKvEgdTnzed5nYh
-X-Proofpoint-GUID: pLHqxDNCo4lYDlo64WKvEgdTnzed5nYh
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDAzMCBTYWx0ZWRfX1b1wJIDCzBJO
- P4sObI7cYuTIkJw5VuYTVzsNrUoGX8+KofyeJuBEQNPBhYedoqzQNlawe2vkckkKN3gJckBBFEI
- Z5anK1ZlVs+wOqO4iXZ8jT4ML+ePfnU=
-X-Authority-Analysis: v=2.4 cv=AsneGu9P c=1 sm=1 tr=0 ts=6a910606 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=9R54UkLUAAAA:8 a=M5GUcnROAAAA:8 a=c92rfblmAAAA:8
- a=feDtNzwfOZ3BIhz8oLkA:9 a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDAzMCBTYWx0ZWRfX+sJ9+LBd0ZR4
- 4rjDQ2uQzwFoVmC6OqZPKVyqgxkYKQGb9H0R2vtrKW9hb/9tStYzCaRxIctLm/7ETMwP5x8BqFk
- DAgzY3rcFrhnoBL9Tl5cXqRkJCqn7I7aiDshSl+iFpWO4CH+SDrYRRg4ZR7OF93+40h6/oSW+cQ
- FrXZHoqGzKA0+QWfi0ia2cbr7ojVecmwd+ifO2Su6ykfYcd4N94vAL3orIsbj5Di5AOCGpb8MO4
- ltuBU6CUY07bEjL+F9Sj/dzghBY8uCuRsayfZWra6C5DBo2jYwTVJ9ePiW/FWTr2zoWpdi5Te2s
- U6PzjQAum73H4A3fGXqCNpo411rmKmwHIGG0TtrTW0AzzsdNAP43Qjpxn+ZRPIDLKFBcQqxEYFK
- Y2SOB3mOXMyVqcsm4Wo7BXrJs8gxwUEduOaO2KV0oi9g8J5XkhuLCJJnnbUV7gVKVfuSIOM9JD7
- 2OdFFDbAl1G/z7H8zmw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-28_01,2026-08-27_02,2025-10-01_01
 
-HTB offload programs NIX_AF_TLxX_TOPOLOGY on QoS-allocated scheduler
-queues via otx2_qos_txschq_set_parent_topology(), but teardown freed
-those queues without clearing TOPOLOGY.  The AF only restores PARENT and
-SCHEDULE on free, so PRIO_ANCHOR/RR_PRIO settings can survive in the
-shared scheduler pool and affect later allocations.
+On Thu, 2026-08-27 at 09:18 -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: rds: fix uninitialized trans dereference in CM event handler
+>=20
+> This initializes trans to &rds_ib_transport at declaration in
+> rds_rdma_cm_event_handler_cmn(), drops the conditional assignment based o=
+n
+> cm_id->device->node_type, and adds an early bail-out that returns 1 for a=
+ny
+> event arriving on a device that is not RDMA_NODE_IB_CA.
+>=20
+> > diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
+> > index b15cf316b23a2..2c5481f1fcb4f 100644
+> > --- a/net/rds/rdma_transport.c
+> > +++ b/net/rds/rdma_transport.c
+>=20
+> [ ... ]
+>=20
+> > @@ -80,6 +77,12 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma=
+_cm_id *cm_id,
+> >  		}
+> >  	}
+> > =20
+> > +	/* Only the IB transport is supported. */
+> > +	if (cm_id->device->node_type !=3D RDMA_NODE_IB_CA) {
+> > +		ret =3D 1;
+> > +		goto out;
+> > +	}
+> > +
+>=20
+> [Severity: High]
+> Should this non-zero return be limited to RDMA_CM_EVENT_CONNECT_REQUEST?
+> As written it applies to every event type.
+>=20
+> include/rdma/rdma_cm.h documents what a non-zero return means:
+>=20
+> /**
+>  * rdma_cm_event_handler - Callback used to report user events.
+>  *
+>  * Notes: Users may not call rdma_destroy_id from this callback to destro=
+y
+>  *   the passed in id, or a corresponding listen id.  Returning a
+>  *   non-zero value from the callback will destroy the passed in id.
+>  */
+>=20
+> The cma dispatchers implement exactly that, for example addr_handler() an=
+d
+> cma_work_handler() in drivers/infiniband/core/cma.c:
+>=20
+> 	if (cma_cm_event_handler(id_priv, &event)) {
+> 		destroy_id_handler_unlock(id_priv);
+> 		return;
+> 	}
+>=20
+> But RDS keeps ownership of connection cm_ids.  rds_ib_conn_path_connect()
+> stores it:
+>=20
+> 	ic->i_cm_id =3D rdma_create_id(&init_net, handler, conn,
+> 				     RDMA_PS_TCP, IB_QPT_RC);
+>=20
+> and rds_ib_conn_path_shutdown() later dereferences and destroys the same
+> pointer, clearing it only afterwards:
+>=20
+> 	if (ic->i_cm_id) {
+> 		rdsdebug("disconnecting cm %p\n", ic->i_cm_id);
+> 		err =3D rdma_disconnect(ic->i_cm_id);
+> 	...
+> 		rdma_destroy_id(ic->i_cm_id);
+> 	...
+> 		ic->i_cm_id =3D NULL;
+>=20
+> So if any event other than CONNECT_REQUEST is delivered with conn !=3D NU=
+LL on
+> a cm_id whose device node_type is not RDMA_NODE_IB_CA, does the core free=
+ the
+> cm_id while ic->i_cm_id still points at it?  Can the following conn drop,
+> socket close or module unload then hit freed memory in
+> rds_ib_conn_path_shutdown(), including a second rdma_destroy_id() on the =
+same
+> id?
+>=20
+> A reachable path without any race: rds_ib_laddr_check() short-circuits vi=
+a
+> rds_ib_get_device(), which only walks the ipaddr_list of RDS's own IB
+> devices:
+>=20
+> net/rds/ib_rdma.c:rds_ib_get_device() {
+> 	list_for_each_entry_rcu(rds_ibdev, &rds_ib_devices, list) {
+> 		list_for_each_entry_rcu(i_ipaddr, &rds_ibdev->ipaddr_list, list) {
+> 			if (i_ipaddr->ipaddr =3D=3D ipaddr) {
+> 	...
+> }
+>=20
+> while the device actually bound for the outgoing connection is picked lat=
+er
+> by cma_acquire_dev_by_src_ip(), which walks the global cma dev_list and c=
+an
+> match a siw device on the same address.  siw_device_create() sets:
+>=20
+> 	base_dev->node_type =3D RDMA_NODE_RNIC;
+>=20
+> In that configuration, rdma_resolve_addr() from rds_ib_conn_path_connect(=
+)
+> binds a RDMA_NODE_RNIC device, and the resulting RDMA_CM_EVENT_ADDR_RESOL=
+VED
+> with conn !=3D NULL now returns 1, so addr_handler() destroys the id whil=
+e RDS
+> still tracks it.
+>=20
+> The same function a few lines above already documents the opposite
+> convention:
+>=20
+> 		/* If the connection is being shut down, bail out
+> 		 * right away. We return 0 so cm_id doesn't get
+> 		 * destroyed prematurely */
+> 		if (rds_conn_state(conn) =3D=3D RDS_CONN_DISCONNECTING) {
+> 			/* Reject incoming connections while we're tearing
+> 			 * down an existing one. */
+> 			if (event->event =3D=3D RDMA_CM_EVENT_CONNECT_REQUEST)
+> 				ret =3D 1;
+> 			goto out;
+> 		}
+>=20
+> Separately, does the unconditional goto out also skip the rds_conn_drop()
+> that the ADDR_ERROR, ROUTE_ERROR, CONNECT_ERROR, UNREACHABLE,
+> DEVICE_REMOVAL, ADDR_CHANGE, DISCONNECTED and TIMEWAIT_EXIT cases perform=
+,
+> leaving the RDS connection stuck in CONNECTING or UP with no error
+> propagated?
+>=20
+> Would something along these lines match the existing convention, while st=
+ill
+> dropping the conn for the remaining events:
+>=20
+> 	ret =3D (event->event =3D=3D RDMA_CM_EVENT_CONNECT_REQUEST) ? 1 : 0;
+>=20
+> or moving the node_type test into the RDMA_CM_EVENT_CONNECT_REQUEST case?
 
-Add otx2_qos_reset_schq_topology() and otx2_qos_free_hw_schq() to zero
-TL4 through TL2 TOPOLOGY before each schq is returned to the AF during
-hierarchy teardown and cfg rollback.  Skip the aggregation level (TL1):
-it is a per-tx-link queue shared by the PF, default Tx hierarchy and VFs,
-and is not freed back to the AF by nix_txschq_free_one().
+I think the cleaner solution here would be to hoist the check into the call=
+ing function.  So in
+rds_rdma_cm_event_handler_cmn():
 
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+        case RDMA_CM_EVENT_CONNECT_REQUEST:
+		/* Only the IB transport is supported. */
+                if (cm_id->device->node_type =3D=3D RDMA_NODE_IB_CA)
+                        ret =3D trans->cm_handle_connect(cm_id, event, isv6=
+);
+                else
+                	ret =3D 1;
+                break;
 
----
-v2 -> v3: Addressed AI review comments.
-	https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824072147.3524339-1-rkannoth@marvell.com?part=1
-v1 -> v2: Addressed sashiko comments
-        https://sashiko.dev/#/patchset/20260821072812.2890922-1-rkannoth%40marvell.com
----
- .../net/ethernet/marvell/octeontx2/nic/qos.c  | 60 +++++++++++++++++--
- 1 file changed, 56 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 69c0911e28e9..ab9661334e6f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -235,6 +235,58 @@ static int otx2_qos_txschq_set_parent_topology(struct otx2_nic *pfvf,
- 	return rc;
- }
- 
-+static int otx2_qos_reset_schq_topology(struct otx2_nic *pfvf, u16 lvl,
-+					u16 schq)
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *cfg;
-+	int rc;
-+
-+	if (lvl < NIX_TXSCH_LVL_TL4 || lvl >= NIX_TXSCH_LVL_TL1)
-+		return 0;
-+
-+	mutex_lock(&mbox->lock);
-+
-+	cfg = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!cfg) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	cfg->lvl = lvl;
-+	cfg->num_regs = 1;
-+
-+	if (lvl == NIX_TXSCH_LVL_TL4)
-+		cfg->reg[0] = NIX_AF_TL4X_TOPOLOGY(schq);
-+	else if (lvl == NIX_TXSCH_LVL_TL3)
-+		cfg->reg[0] = NIX_AF_TL3X_TOPOLOGY(schq);
-+	else if (lvl == NIX_TXSCH_LVL_TL2)
-+		cfg->reg[0] = NIX_AF_TL2X_TOPOLOGY(schq);
-+	else
-+		cfg->reg[0] = NIX_AF_TL1X_TOPOLOGY(schq);
-+
-+	cfg->regval[0] = 0;
-+
-+	rc = otx2_sync_mbox_msg(mbox);
-+
-+	mutex_unlock(&mbox->lock);
-+
-+	return rc;
-+}
-+
-+static void otx2_qos_free_hw_schq(struct otx2_nic *pfvf, u16 lvl, u16 schq)
-+{
-+	int err;
-+
-+	err = otx2_qos_reset_schq_topology(pfvf, lvl, schq);
-+	if (err)
-+		netdev_warn(pfvf->netdev,
-+			    "QoS: failed to reset topology for schq %u at level %u: %d\n",
-+			    schq, lvl, err);
-+
-+	otx2_txschq_free_one(pfvf, lvl, schq);
-+}
-+
- static void otx2_qos_free_hw_node_schq(struct otx2_nic *pfvf,
- 				       struct otx2_qos_node *parent)
- {
-@@ -252,7 +304,7 @@ static void otx2_qos_free_hw_node(struct otx2_nic *pfvf,
- 	list_for_each_entry_safe(node, tmp, &parent->child_list, list) {
- 		otx2_qos_free_hw_node(pfvf, node);
- 		otx2_qos_free_hw_node_schq(pfvf, node);
--		otx2_txschq_free_one(pfvf, node->level, node->schq);
-+		otx2_qos_free_hw_schq(pfvf, node->level, node->schq);
- 	}
- }
- 
-@@ -266,7 +318,7 @@ static void otx2_qos_free_hw_cfg(struct otx2_nic *pfvf,
- 	otx2_qos_free_hw_node_schq(pfvf, node);
- 
- 	/* free node hw mappings */
--	otx2_txschq_free_one(pfvf, node->level, node->schq);
-+	otx2_qos_free_hw_schq(pfvf, node->level, node->schq);
- 
- 	mutex_unlock(&pfvf->qos.qos_lock);
- }
-@@ -913,7 +965,7 @@ static void otx2_qos_free_cfg(struct otx2_nic *pfvf, struct otx2_qos_cfg *cfg)
- 	for (lvl = 0; lvl < NIX_TXSCH_LVL_CNT; lvl++) {
- 		for (idx = 0; idx < cfg->schq[lvl]; idx++) {
- 			schq = cfg->schq_list[lvl][idx];
--			otx2_txschq_free_one(pfvf, lvl, schq);
-+			otx2_qos_free_hw_schq(pfvf, lvl, schq);
- 		}
- 	}
- 
-@@ -921,7 +973,7 @@ static void otx2_qos_free_cfg(struct otx2_nic *pfvf, struct otx2_qos_cfg *cfg)
- 		for (idx = 0; idx < cfg->schq_contig[lvl]; idx++) {
- 			if (cfg->schq_index_used[lvl][idx]) {
- 				schq = cfg->schq_contig_list[lvl][idx];
--				otx2_txschq_free_one(pfvf, lvl, schq);
-+				otx2_qos_free_hw_schq(pfvf, lvl, schq);
- 			}
- 		}
- 	}
--- 
-2.43.0
+Thanks for working on this!
+Allison
 
