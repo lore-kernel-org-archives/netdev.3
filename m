@@ -1,196 +1,130 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012033.outbound.protection.outlook.com [40.107.209.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E44326939;
-	Fri, 28 Aug 2026 17:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDF03890F1
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 17:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787936599; cv=fail; b=Q2NZ5+Q5uxlaIONtLcvjlEFRIFsFOVOsp6Q5sC3oLLzAG6FQbTgp9kGZg7vMSCGiF7D+ojX7Wxf4RlhLAtb0DQ0VY/KzdL//dLNNWjlAc9PyQtwxJ5jzJpXreAqB0H/TGgSZtwTfzqVuW10yyLTnoCaRTZmqf/ui3AQuNcWbh90=
+	t=1787936602; cv=pass; b=ImcmZ8pAlhR/5ZBG+r6oGTcjYTswGD9kt4N7B0qakUxSLOnjYSNShqG1pYavcUaxmOFRIqmMWDa9J0YTWOBpZwz98ucweeBtPaY9P7m9O7SVKhQsBo5iMfDapNcxj07F8ZkJZwSkgxWkZPVKVb1AdCpudFaX92NbZsSqqOI6+Y8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787936599; c=relaxed/simple;
-	bh=h+ABdsJJQuy4pMc6npDUdN+OL04GBs03O+kP9AP9vvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tSsBFs5i5eSUuzV0MWJxcHAS/Qn0swgfhEos6H8+SmSjIKhmLVBpwgHiQUaojumR8NioU3S9nbdM7lXdLFRspIVI7zesT4Em9PgaYH+KQ3c6UtFSjM7S3cB6Mub8beObYhm3jWzTBYcl6ezIPZYoyvvhNH1Z7ze4lrgIr9rchoU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KxXTt8aL; arc=fail smtp.client-ip=40.107.209.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1787936602; c=relaxed/simple;
+	bh=wP62moPxMAH/ckYjnceOzlKQcAACIf9yQB3gQOrPKi8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LkjD2WjE7THptSyfwlanEhR/5I0MRdzv7GmwYoaOfLP/giYxdAdnt14HfD/MpDdFo8iSh6ddeZrzlitr4aIp3T1MvVYhw8xrwpJ0S6zEYcwNBgo/7xqJcBgXMQzPQBD4T1t1+eNL4QnvlIAjj3BXz6BR1lVG6JEUUbT+sYxoJYo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gBPDN3yl; arc=pass smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KxXTt8aL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y3mW6c9NRBN1ZpAzw/zTBF4EAjvF0KhuE7jnuu5HLG6pIaiMAGohbgLYxRt11q7AT23/CHPjiSqXrfRjpHILvikGQuRQ2C0ZJDFJAzIFjnazkhturnyKFm1gRQ2751h7RXnCGv0iQD4qTLh9XuWRCDPp4QkP8dmDvrVfcswSt4mwLTnLy9/1vvU9YEqNA0BHTZmLn4CBvmgfL023NX/KiXTy1wbJ52OQJG3LDYPKWL+aDDfA0S/1iK5QzJ5fPxHUFrScReQq/Lz6AGvvjylusWJ8zMoubVcPiIs+4PqWKe00ZAIqgHfyp5r+ZOPyJ6bMVXv29r/sVLAVj8H0DgQciw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lOkZKl8FLrxcDgiwBhG5npLG0VN2yeJe+wNzshWNTd8=;
- b=ORkM7Agx2tZFlaEhKVTpnImIF80RhsuSerIgFRa3lm8N2zuCP+WfH2RXcDxlfKysDG+Let5ot5mWglI59D1FdTXVQL+Bpz5qEj7RVH9EWGnkugmrEptrIUcvxG5SDl5ejUX8MSCEdkHn7Ca1x51nJfpHQESiMzXrgnMpOf60CyrnvkWUrQqf/23t3GvIhq/IfNrEJGu3Y9tvARcu7TAQloFurNKcXTiKwetL/JiWmqRqrF7fF4ofcAptDQiTf35VfO9sJFFgv8BQGpPDb9ebjuN1SrRTLE5SwyG+HeiDN8lY20Ycull+JxhKlqdFjPNO08vi+1gLxBeG1Nx+uij/PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lOkZKl8FLrxcDgiwBhG5npLG0VN2yeJe+wNzshWNTd8=;
- b=KxXTt8aL+Xoy847Eb696pK9cMuSXU01hZ4WHGWtghTtxWgxRJAAKSZUWCYHW/5RnevWt1i6ce0Ogs7IjwS4UKUgji0zruNuED7vW777xakI/kW8FpETngwp67aVlCE+pzY5sgtz3jCYboBV2ek3sd4E70OU8waswptZqMX8XLB66gofCN69YJW6rKLtPezzpS69Eeq3N8ZF7AofriR6K4b5yKol2lYX5hrjRGrNGPRX3rFlRtA7a0AU/7iJ/IzQ3FLxtEKaRNx2cj00BbvzfzvcV0Y+SFRE7+I8iBEwbsklUrz1/+uGK63YRgA20mWDlKEBKy67FWwY/QNYZTqJrAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by DS0PR12MB6487.namprd12.prod.outlook.com (2603:10b6:8:c4::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.11; Fri, 28 Aug
- 2026 17:03:05 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 17:03:03 +0000
-Date: Fri, 28 Aug 2026 14:03:01 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, Konstantin Sinyuk <ksinyuk@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jhs@mojatatu.com
-Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
- infrastructure for scale-up accelerator interconnects
-Message-ID: <20260828170301.GA4157646@nvidia.com>
-References: <cover.1787552412.git.ksinyuk@kernel.org>
- <apAsfOowcG0cTvT8@FV6GYCPJ69>
- <apG3Gsk1TeMD-oCc@intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apG3Gsk1TeMD-oCc@intel.com>
-X-ClientProxiedBy: BN9P221CA0008.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:408:10a::30) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gBPDN3yl"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc147d86bebso1354566a12.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 10:03:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787936600; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VapJUoQiUDepzP41L/l2fGxSvtP/SlailHr/JCZFJRvhfgSswqC0uQWAF3yBpFupNH
+         NVrXpV8XhM7mFyzZZEAoipOqmxUNYsqip7xX5Jv316fG8/Ze5JFAcgcMNg1fUtAXKB4+
+         chG3igGLJJ38ylQ0FC4BbLBocLsEHRb37d8B15r5fU7btjvdTSV58nOtxV9xfJo7AD/r
+         gtvu4Rw9ejptScjJm6ujBYzxXijfglefG3gah7W4BRFT74ysQ25pEBKRktZB/8+1g7Kx
+         qCNxjVuYmMyDZDFryyDf4Pvy26WpW8yFr96+KvzTN32UHjmf0G5/3KJ+HtsHhhNq0x7+
+         O3Rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3D9xQtFnagYVLW4vz/xB8xNx9SMn/YPoGUoz7up9AxU=;
+        fh=sd0EUqneYiTRk5yM2PQCuUTBRdLXP4OSX/nU1Z3Hl2s=;
+        b=NWr3jPj4xRyVf0kXIFcpLoaQa+cal3kIAaj8x1p9DuRhqtcUJh+rkc8inrLMvF0C2E
+         rSW16xm4Fu5rpNKKgnQ6YUrgw7yXrugDEDwjW3ksgoglo3fvslBP9aXDXa5s6bSY7riU
+         sjX93wEs64vdWudAd7lNQbx4e73QvP8/Dbt6xwnFULUiKsGjya1vFLmSqrREU4wZZY9u
+         yEnZ8iUaj3I5LDSPlrPcRCM5WcXTNEHHM5uhgncTrnO0mWWAbo6y4KvlS0OIK8034Iex
+         Tf+U9CHeGq7sUISayOgYJcbjbrwiCouXDfgYWHwuVhC2QMWeyqh2BnPwEcXsX8pnkdmw
+         yjAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787936600; x=1788541400; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3D9xQtFnagYVLW4vz/xB8xNx9SMn/YPoGUoz7up9AxU=;
+        b=gBPDN3ylyBZjzTKa7/C5y98b18l1cCoPCjwkqSMrOCExe2sRsEDmaHblE8Ip0g6Da4
+         zlE59uwWis3PYnpXMXO9TxNcXxNR8MgOZD3XoJ0vg0bHZnll0lmOhMR6eZ50OWwrNWcK
+         Icit+Avggf/xgulUKd08ddZ8jGyUKIuq7n0uoT7zz291ZT9J6ZiEsg59NvSUW/kCwBZj
+         mBxSqZ535brwNZZtSFZYvNlykUKfm03oZdi/7eUHJ1pyj2iuPfMBpkf07F46MaAMB5xg
+         4D2ZTGnUGF9GNm3nb+f9jgHlVwvDQPd3hiPUGItrDnjaErbSuQCl+eOoShuRmA3m/tY2
+         +h1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787936600; x=1788541400;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3D9xQtFnagYVLW4vz/xB8xNx9SMn/YPoGUoz7up9AxU=;
+        b=Hb+oMUEfB+MG1rLZ9Edi5CWtQgp0vZLFpKhbAtDwtpCnmGd/7gTjBmLaTaRoPO+EJt
+         FolE/NnTnPrzlD/ptmUHB8NwNdjqmTmC3BdUoio+sQq/bD5WAKhByVQKUDXSQDtl19h5
+         DdMbH/m2GBzROYWxi3vyfdWKAJqIdg7WRPDk79q7FOgbH3GUq0AEg7bdr6/3T7ELwHnc
+         pPGigBGoGSGuKTGrPQ3ZWZtKGDYN1ZF+xkgV3F2Iar+2KowHQgnQJL7LQt8VcbFEn4jr
+         shy82pLBzaS3rrgxRS09Z5kczdv+yuO0wD01a7151wNUOX6BV63Hdtz03fEzxFegwk9y
+         fLag==
+X-Gm-Message-State: AFuF++lODG8zeNQKNCPjI1VX5APW569xdajvnPlXadiySswMwov9n5ra
+	AGC3KTBo0NYI0BgKACquOpryQr6/53BJAdQKPWAXIlW5vFBbbberCkh97WarIYeNpYW8rMsPkwl
+	iSYWe8NfeUTeVIpwY5Vb+Md/wORcxB4Oo9FpO7pMp
+X-Gm-Gg: AR+sD10imChb+mVW4Yyf8ZKuGUtDAyirdaaY4cLrAOoYkIDdku8uRYazpI32vUXAjzQ
+	Yo3xS9GEtE850F44bHfkHuhXqRu/GeMYvfpiG78Bdhj7nZGIU8cbgIG9K1lYx9NT4QLzvrGHsqH
+	58Z7fQzoa04m1DNpsP3rsXjtkp200PyhLEGhy0r2K3yA1owlFsYgjaTfuKJhJFYf97LsH4q2r40
+	ebwMBWBytOPBTyzSt0qkSHnSl/gpKWmx+y+NvDEAO3ZcJYeae6P9ZHy+Y2AobRw/A3wmBpkbjMV
+	/+ARpLsJoVKNZmZtnktnwrEcBLt0fyXaMSn2AUXH0zADCEnF9FOO4Q4jlM/ujeU2b9bIc6+amK9
+	dJH0rM6CeTgKsJLwU/cg2uajUd+McNvIrmd06X9QOC35uJU1gbbD9p3ZUq/HYRJqrIKFvwf2/T5
+	+8h6mFk+FQUnBZzEc=
+X-Received: by 2002:a17:90b:4e88:b0:38e:a52e:a3c9 with SMTP id
+ 98e67ed59e1d1-3969bb05e4fmr23190637a91.8.1787936597976; Fri, 28 Aug 2026
+ 10:03:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS0PR12MB6487:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2bea89e-975e-4f9a-c1d5-08df052638d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|6133799003|10067099003|4143699003|56012099006|5023799004|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	falNyYxFLYValaE2+gRzb4v85L+JMaE4HVph73kNapQad03eJjKWvCzumXNPtqU5A1xe2U66rOoAh+y14ADBxBQsks+5RB0Q8ratwcQe3eHNEKY148EK1scceSiqy0k7xmt2qptZmbwLVBqsbV/SW7Xx3a91VNrJ13IsY+C3oLKjy01TYYSDAnu779Yi/C9pdGD2n2zKOSku/mzZBjOujIJULqPuO8sjBmxumL4b2ApHJmUdMHrb0dqSHVVn6XtNugURdADSRFj8hLn4YALr/IauezKjToZp+Ty62pi8lkHvKEpvWkyuStSeXGeUgXMRgRxqHVLox9ZZnXYdAywNZ4Wv97c3rC1IX/QPCcwynjmAE9OtvfhBknyjiVv4dxrBTY14lJKe4hcWiAHYcBNTfJt6xK8kLWfc2pv7wJy364I8nIa9MZ1/nuKdO/nRhnPBe0a2uQBm1u6P9F90z8Gs77X6f0M6eWpopfgPUeqHtdbDbG6X7+VB6mtk4d1q/CVZJI8lhkqNLLXck9hjVM2rZZaT/Bd6140WHRvgXMSE2T4kL3D8/X0uzdkDktHQKxrjqNMF/9YSPfmv4Slp0Twy3EDR6fKlmHr02ivcFx4c9mIsqOH945AhrQQq8Fl0L8jvFGiTfBFHKB7gN343b8Bcb/eJuClGeSiqGUPcPSb/2T8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(6133799003)(10067099003)(4143699003)(56012099006)(5023799004)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6tY3ypkzi4eTB8tC01egKXs4HX/8qhDx1HzK/qzlAqy8g1CiGYD1f6heGedy?=
- =?us-ascii?Q?8b7qRmwMz0T195byO+fd/mhXVkmOVpY+3ipJFB2sZQ7oZYqQpjdnzFbA8yMp?=
- =?us-ascii?Q?3LD4oyuWv0m0GnQu8rlPftOcUYi9dLSwfG2qdITrhZWnTqBI+aG1yyxCsluD?=
- =?us-ascii?Q?WtdLT1PL9/KqqMjO9d5nBKJYmrVFi4monIR6bA2cgYvQv/hUpWuSS2DJKpYT?=
- =?us-ascii?Q?VgZ8ns3q03N53F06neo3boSi28J2kdF9dh3ssN0YRj+gBQYl+quwbgx3hllk?=
- =?us-ascii?Q?0HspdlcGztuJE304mvoUwYV889GJ/raxjZV9iARg4ufuhwzvDZjXi//mtHtq?=
- =?us-ascii?Q?UodzL/nxohPSxMMtSUOyyoXJNv4Td98GG5hFZ0gXY4FjUeL/PEyNPyk+alRP?=
- =?us-ascii?Q?Lap73QhTg3oLGMluagEx/0XllbWurOsrcCiAt7DmaItkiJp4a/JodjMF9kIw?=
- =?us-ascii?Q?0/PqWmHr9IMlw/FpRoQ4zGBhHrLL59sziY1CCnI0oEuvrPQhOy5myz0Yc0UR?=
- =?us-ascii?Q?TNtnt3vZ71nOMLzSzbEQHVi6lt3MmeKn4UO/KE1Gg6QPltjAURJNGO9ZDB8W?=
- =?us-ascii?Q?/lfsONczs7sE+SmojvWwvCxXjOIZcdoP6rGRteq6EX/9KeGUE1ESfKIKPZLu?=
- =?us-ascii?Q?0P1iM5EUyCmPYepqVS0aSyahh/ttghZvLM8YY6yqJV09Wl9ghF8yBcQqLcvW?=
- =?us-ascii?Q?L/K7JBIQu/j8sXI283BSUJjeDodibK3iHwQC50Vec8EUnObIxe8ekzqOIeX1?=
- =?us-ascii?Q?NS2llgHUEcEsFyc5wwl+PJf3igM89n2dlbrv9x1d6JOz9NlTP3XC+Ani6JkE?=
- =?us-ascii?Q?axTFiTDt9yCgwgb1kbz+VOAIYPLcRVJbi8vKrhhLI6yPcLIYrgbexALATTC8?=
- =?us-ascii?Q?0jBrX9GWRC8HKNsAcydliXdtDxKgakoqJGy9C/Nrxxc/px2OEaMOibZAIVGn?=
- =?us-ascii?Q?bDXKy2e8BDLN6s/UbaPctyrfAzCS4UAwQolaXLBGtCbHS3Ad6M9uAYUEnvwv?=
- =?us-ascii?Q?Q8cQTe9SafD1sQdE/7wnvjYAhnqpfRqk8FPkupV3a1REjZSSM5rhTAVJUfOL?=
- =?us-ascii?Q?MqVnsSZP2WjLU+IB78y1IBK4V+nY7Md+IR9d4agDyk6LNoaxPMpeUH2KGZ5X?=
- =?us-ascii?Q?P0IGv/M+F4HLjqbP2dVBCfKFP9b5wp6VFjk7kYD26ihTbY9n60zpTCiFZ2Ne?=
- =?us-ascii?Q?cDGnwjHsPPMPE+iS+W0BY5Bv//rvkmG0j4ypjoNEgQcK81Wbz7F5IBQJRfB8?=
- =?us-ascii?Q?SItSVEgnztRkoEEQ3NpTxcoadoBdNIFV7j8J9oEUaH4IoOP70Mxo4+RxzUwF?=
- =?us-ascii?Q?WOnxMQ7+AFteAN1P49daCwAVlHzy8flhtBUVfl42q8Z5N917K6ytMeQpGI7n?=
- =?us-ascii?Q?W6VFF5T0Oe0QrdgH2D/8tNtfuJKjvf+WkZNt0o75GbEwqeRFlGFF+mVdDzhc?=
- =?us-ascii?Q?nTwK7hFboCVuGtg/T+jvZhFUBa2/7lXbOYzjJcN6EcOaA73ofynh6EE0WVEQ?=
- =?us-ascii?Q?luyAO3tL99XEgoto6eMQoMGyewQFtJiSqHEEuUvY3V9eidiyT//8JW3UBblu?=
- =?us-ascii?Q?/hsvd1WlQ3CepYE4Z68QL8/UEkvyWdf0PshWXjNn2GsUTwtc7Y53suvuG/jt?=
- =?us-ascii?Q?vXH2mkVcjKuwWZsDvwg3OzRvXIYLPDcENaPi5fCDPS5TM3FMLYZHdGlp8eAf?=
- =?us-ascii?Q?CD6bK6yyIff2z97NN4B6wmvkiFI01Rfuh7Pyz3voexkWCvFg?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2bea89e-975e-4f9a-c1d5-08df052638d1
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 17:03:03.1768
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7/qEqiIGJtkG2csj8qgdK1ksg5yoIBbZxe7EOir45849mdWwYheT6yRaa8q6ZjkI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6487
+References: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
+In-Reply-To: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 28 Aug 2026 10:03:05 -0700
+X-Gm-Features: AcwNN1UazCKsXBt1bQZ2-rlEPqZo593Iv86LFjnUhcYSmeB20RqI5rKuNU43TFs
+Message-ID: <CAAVpQUDEXAOc5UeMwDwFMBgxV3gONM4qDU6dHQhyCgjef5DpLQ@mail.gmail.com>
+Subject: Re: [PATCH v2 net] ipvlan: unregister upper devices outside pnodes_lock
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	magnus.karlsson@intel.com, sdf@fomichev.me, bpf@vger.kernel.org, 
+	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 28, 2026 at 12:28:10PM -0400, Rodrigo Vivi wrote:
-> On Thu, Aug 27, 2026 at 02:35:16PM +0200, Jiri Pirko wrote:
-> > Mon, Aug 24, 2026 at 10:09:28AM +0200, ksinyuk@kernel.org wrote:
-> > 
-> > [..]
-> > 
-> > >Example queries using the in-tree YNL tool are:
-> > >
-> > >    $ ./tools/net/ynl/pyynl/cli.py \
-> > >          --spec Documentation/netlink/specs/drm_fabric.yaml \
-> > >          --dump fabric-get
-> > >    $ ./tools/net/ynl/pyynl/cli.py \
-> > >          --spec Documentation/netlink/specs/drm_fabric.yaml \
-> > >          --dump endpoint-get --json '{"fabric-id": <id>}'
-> > >    $ ./tools/net/ynl/pyynl/cli.py \
-> > >          --spec Documentation/netlink/specs/drm_fabric.yaml \
-> > >          --do port-get --json '{"endpoint-id": <id>, "port-index": 0}'
-> > 
-> > Using generic netlink instead of sysfs for this makes a lot of sense,
-> > but it may be a bit odd to use it outside the networking area.
-> > I've been struggling with the same in another non-networking use-case
-> > as well.
-> 
-> Please notice that this bubble was already broken. Netlink design
-> always had the dream to replace ioctl everywhere. And there are already
-> other usage in place that are not network related.
+On Fri, Aug 28, 2026 at 9:49=E2=80=AFAM Maciej Fijalkowski
+<maciej.fijalkowski@intel.com> wrote:
+>
+> syzbot reported the following circular locking dependency:
+>
+>   xs->mutex -> netdev lock -> pnodes_lock -> net->xdp.lock -> xs->mutex
+>
+> The pnodes_lock -> net->xdp.lock edge is recorded when
+> ipvlan_device_event(NETDEV_UNREGISTER) calls unregister_netdevice_many()
+> while holding pnodes_lock.  A nested NETDEV_UNREGISTER notification for
+> an IPvlan device enters xsk_notifier(), which acquires net->xdp.lock.
+>
+> Keep pnodes_lock only while marking the upper devices as dying, removing
+> them from port->ipvlans, and queueing them for unregistration.  Once the
+> devices have been detached from the protected list, release pnodes_lock
+> before unregister_netdevice_many() invokes notifier callbacks.
+>
+> The port remains alive across unregistration because
+> ipvlan_device_event() holds the reference acquired by ipvlan_port_get().
+> The dying flag prevents a concurrent ->dellink() callback from deleting a
+> queued device again.
+>
+> Fixes: 35add1093e2f ("ipvlan: Protect ipvl_port.ipvlans with mutex.")
+> Reported-by: syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Daa48b5fe7bfda62d1682
+> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-Yeah, and people have been living with the friction, and some places
-don't have quite the same complexity, but that doesn't mean it cannot
-be improved. :)
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-For something complex like this, if you can't concretetly tie the HW
-to a net namespace, and follow the net namespace rules for visibility,
-then it is going to be a painful choice. I speak from alot of rdma
-experiance where net namespaces have been consistently challenging.
-
-> In our case we use the netlink API for GPU RAS error reporting: drm-ras.
-> 
-> Also there are other usages in netlink spec that apparently has nothing
-> to do with networking, like energy...
-> 
-> And in this particular case here, the drm-fabric is a 'network' of
-> GPU memory... At some point we even wondered if net/ was the right
-> place for this common API....
-
-net/ is mainly focused on IP networking, it is where you should be
-putting the ethernet layer at the bottom of the ua link over ethernet,
-SUE, or whatever. It is hard to imagine having an actual physical
-ethernet network and claiming no implementation will ever need to
-process ethernet packets or deal with ethernet phy.
-
-There are so many variations of these "scale up" fabrics now, it would
-probably be appropriate to have one subsystem that aims to work with
-all of them. It is almost rdma but different enough it probably
-wouldn't fit well.
-
-Certainly redoing all that ethernet related stuff in drm or, worse, in
-amdgpu, is a pretty ugly idea.
-
-Jason
+Thanks!
