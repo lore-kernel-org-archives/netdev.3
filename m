@@ -1,106 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C13E471CED;
-	Fri, 28 Aug 2026 19:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787946278; cv=none; b=J+w1S7Hqjx945MJzh6yYiy/uRKPADj2eWOW1vb1nNT+F8mXGTySnFZ/xaXAVVrCa2p9WlBEqCCthkHkjAnrVKJkhOeIHLE21PKnqZvWMtIZJPCiBqJWrkecBkb70d2tarD1Rrbgar7GBwH8ll+QMRI0shly2qxtIBOcibvTquoQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787946278; c=relaxed/simple;
-	bh=RwlCa+t6dIq1rxouaYaRmmA3T7lfvMdAhNdIaM3gWgE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tm449fQv5WEwQcjCWXdxCI7QJ2xcIktQ7A6cQyHVK/TsgO1gH/QSMzPxqYUGh/MdDgsteBLIQI/+jYsF7rmBGYDX4pFejdZFwIDpnBAgQIUu52nI8HLHhwH0BoCmAwr1v0KBjUpCch2iDIa1TFjlX2pTVM8r+Py3Q8MdxOpdinY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JK1LohB7; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AA747426A
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 19:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787946287; cv=pass; b=phG05b6pS13g6KCTDHuz5mfmlh3Fyq0nV90UJfwdWjZS/ljeBwn3kZWtSvKO3Vg7SRQgT/EFP9KlmQwvPChH9gqzRDsUn8FCBOmFGC6L9HS2w/dhh+DLHwklmO6ueR293yP6VV+7LSMIfKiYej+iRSUiki483JCgz130wMp44Q8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787946287; c=relaxed/simple;
+	bh=ezmawUeZfIihlnCZxaj/Y+NiA51zVoKGOvpMQNGYGWU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XMEjvtpXYB6psxtSifBLeqoyLlfCz/fIdNTqt3+SMSKCvUAho3tbamqLBG26T3uu8p4kB0aUMstFBVZJZoNVQAvIWZzuN8XpoMxZklK7BoRVptGAH33QCZ4GT/3uXg949ciIcRMyt+817ybsOwFR7LUz5sdxHW8RszdJ487AsK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cxk63c6P; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JK1LohB7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9977F1F000E9;
-	Fri, 28 Aug 2026 19:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787946277;
-	bh=IpdH02QA/LcoI2X6u7ScHAw7VBEB1RPjCK91e47PraA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JK1LohB7wESH6ubI7weJLBoP4FcORJF5AU40piE4r31M8HhF1QmRZBc6sT2ZXyYpT
-	 mVA9ek/7LkboqMXvWyRqo5/ytBgJ1MIe0nBxKtc6eY2qvxLrpeG9hxteg7Vqb21Tc8
-	 2nhNY6z01RI3iNInWQW5xVfpdF97ID1/yt5OZzYeCvz4LqWvE5+9HpWwMOOsPLRXN8
-	 Mx3XySs8nNs8bpnV8/53+aWZCmWLh2wlxFkfALeTjHhY1/qrU/4E/5TMpJuL/750vK
-	 jGcuwW+Agr2awa9N7xloVYvIoaEKwfTNtrB+TX3fbiVP6eRX2AbPml8FM9E5BZo6wZ
-	 3TEwmAVRNgxvA==
-Message-ID: <78032928-40aa-4a38-97dd-875bde7de1f2@kernel.org>
-Date: Fri, 28 Aug 2026 13:44:35 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cxk63c6P"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5218927884fso16266271cf.3
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 12:44:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787946282; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XysYxyKHKJetnjkpBfoyXB+yabTsEYqBGjkYAqDevfuuJBaRxr6rs9ZSSy7zCjznU4
+         yNaDCt7U9ZzUY+vspgcsnpwzS75bmaNw2sX+jej0DRc/KcKf62Pe/OygMbF8jW7/8iil
+         Rk4m4eV7k6QwfMc4kaMZ2sj96BNuYTWihBfXRFoM8KjWzDx7TXFbdJl2SAMwA/EaGlz3
+         rxwvfy2cqN4K02gL8d/duor4lAyiUaRVwhzGzv6Phlf/euEQwK0ok40OIrIoPAr/sv8x
+         wVCYMRZswmVe8f6T6Ep9fwM/dW8rSXE4A0o408QdFbeh3OkiBp5QyTSvJS0oCT7DOfDs
+         NXkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8AGJvH8Hm8+TZBsqJqj4crWZ4Cjkk8dFFd6elusTrto=;
+        fh=mGj7soclz/85SeH14q6yY417Glib9COQC82wVtK9ZLg=;
+        b=b4IZFebjeqcDFIPvKbuZXsnOzkV3H4UgxJbgvBjXaZEg7ZOEXlpH7/NBwQigzXSlJg
+         BjMHTptD/yicbxubmeN9oujX+QH69Q48nsBsWF+cdxCJo7By5QZ+tiZKIUtsrSRqvN/Q
+         5vsy0ttkUBUBTWH8JSbHyb2V5p0TECtrD3Z26lQOmk0tjFtfYXTuF+xtW+C7G/QI+o32
+         nntg3N4MgIEs30rJ5dw8jsRZIspT6WzabKj+lZJ52qcsgHV2GtXqjSKPXvQIA8nZox2p
+         l0M+sDoEcET5qaEBSpTUhtKnoKSomCUt5udVuzqKwDK5c/g96w+6tnqzTkormt1HdDXF
+         sT7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787946282; x=1788551082; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8AGJvH8Hm8+TZBsqJqj4crWZ4Cjkk8dFFd6elusTrto=;
+        b=Cxk63c6P7RL68gBF9lSpk+p5HFUGJUsqrQNDNbCk5Wg6eFhOmNiKNj0jSyicbB79bh
+         8fZNviXGs15/a9ZXZZnjDVJpH1TKV8WKNAKBdReKTAERWVeFIqqiSrOJmxJ6Q4vNLn1N
+         OBQGOpFraUBlP+4KIMThd1A6Ohyf62OiA9K1+xitX2g5IDt217Dpa7Q3iC2QUF4VSU8s
+         jCb2PXhUrEttzoVg33IzZsayAzH3Vw3Wr0+FoZiTP99SmdHcgHkYDx6aN3UyCA5Fdi5U
+         njVj5vPmfctwDKYWSKDMVadsVHMAezN44LR94WsX3SN4wejmpCAbdwIKcKUz4OvjSNeu
+         E66A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787946282; x=1788551082;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8AGJvH8Hm8+TZBsqJqj4crWZ4Cjkk8dFFd6elusTrto=;
+        b=HYgI2D8n/gQoI8zLLCB7ouGDyd0p41xN3J4lE16MjvAR9n6E9Qdr8JmiIona39UBhj
+         Dq0oaNHVam3RGlDRDaV1Lwqybfq3bmG0tncphyk3dG5wqBV1FTkoWIM6zvt9POX2pV9g
+         Op58hcoQRIIcMZfn8VcsJPvsos1j9tXX2rhA9VLGDW4pAF8e7nhJ2qwE1wqN6Wkl16nT
+         P9XtBPRhuGO0g6DO8Kdi+4xddvoPLOPmiY5CqepdN4oJrWyanWYnoOYTsUookIiBn76y
+         Ja0wDlr1dZRzSi4mVq8m0B+0iNge4lGt8QnfljhVtDGRukTVnRuUdjIEXOccD60GKo9p
+         Sr4g==
+X-Forwarded-Encrypted: i=1; AHgh+RqAdCocnY9Ng+IbqZSkyNW2xT3MMkdSVpJimPbeGPLFVYHeODrAwBV4Zxp7OmCcPRXCn70WXts=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKCtMuzjEs8X5N5NvJpqiL99EKd94ETYpznNID8DYDFasvo6xB
+	RLH9mr1cMlK/1fGR6RO/gyrd8Sf6kP+ePIloQgHsIdD3VQ07uq7Knu+sibMXHZWJaZ2cIJtKIiH
+	7xuTspWwhOmBKAbXZWq7EcWp9p6FADdU=
+X-Gm-Gg: AR+sD12BCFG1vAAre2XXs6uzP7UhiC17FjkccdDppdRfH6o2TfawP2WyBRgZSQfA70Z
+	axs1I6yqHUOC6t/+MIcZCDbNNOGF/UwxMl/Mg+UGxCtnBPcF0YmvOymshjRyO24lIMlv8uTq+0+
+	Wqv2mmTYY8NKp4KtQBVXjsZeBVaq8NlybgKbCpB2UOeSWaqeUTINy8+vIB1pXnKfscVD8PlEZI+
+	yi4HzpP4YI7jxOrbKNORyBKiDTP4IGWKmZDOjNE/MvtVVfjwMtMwrdyAuBX971tkaohR+whBEpJ
+	XjOkxHDOPxtJmDDZv5JHUFOhaN7k0wDYsxIKR7vXThv5
+X-Received: by 2002:a05:622a:282:b0:52c:dde9:5cd5 with SMTP id
+ d75a77b69052e-52fb95f3111mr109878031cf.21.1787946282501; Fri, 28 Aug 2026
+ 12:44:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/4] ipv4: udp: Create exceptions before socket
- matching
-Content-Language: en-US
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, willemdebruijn.kernel@gmail.com,
- aksecurity@gmail.com, noam.caspi@mail.huji.ac.il, stable@vger.kernel.org
-References: <20260828192344.2596928-1-idosch@nvidia.com>
- <20260828192344.2596928-3-idosch@nvidia.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260828192344.2596928-3-idosch@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <cover.1778378864.git.zylzyl2333@gmail.com> <7198fe2845c30c60c6b3833dd78cead8c5966931.1778378864.git.zylzyl2333@gmail.com>
+ <e1f1b080-cfde-4ea4-b444-b64d43778b2f@blackwall.org> <9263d4c1-0c57-4926-930b-1d701e1f17db@blackwall.org>
+ <CAAAOPT8mBxW9Fd9Sr=xWAb-fa4MUHCqKaQf86-DFNqaB9Xvgng@mail.gmail.com>
+ <7ffc7cdc-8140-4ea2-b3bd-c86abe6e6cff@blackwall.org> <6c1c6972-c212-4139-b629-4603a8801cbb@blackwall.org>
+In-Reply-To: <6c1c6972-c212-4139-b629-4603a8801cbb@blackwall.org>
+From: Yuan Tan <yuantan098@gmail.com>
+Date: Fri, 28 Aug 2026 12:44:31 -0700
+X-Gm-Features: AcwNN1VGS688MXKgT72PsJhBCbqzV58ouNrjMVRWyL1dcGe6AdTVLI7Yz0t9dm8
+Message-ID: <CAPuPA7KykYqE71P+7-7=1A50S1H3Ksi7ONk+kb_xR0Ep8HKBaw@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] net: bridge: cfm: use a per-bridge frame type
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Yilin Zhu <zylzyl2333@gmail.com>, Ren Wei <n05ec@lzu.edu.cn>, bridge@lists.linux.dev, 
+	netdev@vger.kernel.org, idosch@nvidia.com, horatiu.vultur@microchip.com, 
+	kuba@kernel.org, henrik.bjoernlund@microchip.com, yifanwucs@gmail.com, 
+	tomapufckgml@gmail.com, bird@lzu.edu.cn, ronbogo@outlook.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/28/26 1:23 PM, Ido Schimmel wrote:
-> Currently, when ICMP Fragmentation Needed and Redirect Message packets
-> are locally delivered and quote a UDP packet, a FIB nexthop exception
-> (FNHE) is only created if the kernel can match the UDP packet to an
-> existing socket.
-> 
-> This behavior allows off-path attackers to conduct a side-channel attack
-> on the FNHE cache in order to discover the ephemeral port used by a
-> connected UDP socket.
-> 
-> Commit 6457378fe796 ("ipv4: use siphash instead of Jenkins in
-> fnhe_hashfun()") and commit 67d6d681e15b ("ipv4: make exception cache
-> less predictible") tried to mitigate such attacks by making it harder
-> for attackers to discover hash collisions in the FNHE cache and by
-> randomizing the number of exceptions a hash bucket can hold,
-> respectively. Unfortunately, both of the mitigations can be bypassed.
-> 
-> Instead, mitigate such attacks by always creating a FNHE, even before
-> trying to find a matching socket. Do that by calling ipv4_update_pmtu()
-> and ipv4_redirect(), the helpers used when the quoted packet did not
-> originate from a socket.
-> 
-> This means that guesses (right or wrong) from an off-path attacker will
-> always result in a FNHE being created or updated in the cache that the
-> attacker can observe.
-> 
-> Pass an oif of 0, in a similar fashion to icmp_err(). This is also the
-> oif used by the socket path for sockets that are not bound to a device.
-> 
-> Note that this does not allow attackers to create FNHEs that they could
-> not create before, as both helpers can already be reached with little to
-> no validation. For example, by sending an ICMP error that quotes an ICMP
-> Echo Reply or one that quotes a UDP source port that matches a wildcard
-> socket.
-> 
-> Also note that in the good case (matched socket) the above scheme comes
-> at the cost of an extra route lookup, as the no socket helpers perform
-> their own lookup before the one performed by ipv4_sk_update_pmtu() /
-> ipv4_sk_redirect(). When the two resolve to different nexthops, it also
-> results in two exceptions being created for the same destination IP. One
-> in the FNHE cache of the nexthop resolved by the no socket helpers and
-> another in the FNHE cache of the nexthop used by the socket.
-> 
-> Fixes: 4895c771c7f0 ("ipv4: Add FIB nexthop exceptions.")
-> Cc: stable@vger.kernel.org
-> Reported-by: Amit Klein <aksecurity@gmail.com>
-> Reported-by: Noam Caspi <noam.caspi@mail.huji.ac.il>
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->  net/ipv4/udp.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
+On Fri, Aug 28, 2026 at 3:23=E2=80=AFAM Nikolay Aleksandrov <razor@blackwal=
+l.org> wrote:
+>
+> On 12/05/2026 11:09, Nikolay Aleksandrov wrote:
+> > On 12/05/2026 08:21, Yilin Zhu wrote:
+> >> On Sun, 10 May 2026 at 04:40, Nikolay Aleksandrov <razor@blackwall.org=
+> wrote:
+> >>>
+> >>> On 10/05/2026 13:05, Nikolay Aleksandrov wrote:
+> >>>> On 10/05/2026 12:15, Ren Wei wrote:
+> >>>>> From: Yilin Zhu <zylzyl2333@gmail.com>
+> >>>>>
+> >>>>> CFM registers a bridge frame handler when the first MEP is created =
+and
+> >>>>> unregisters it when the last MEP is deleted. The registered object =
+also
+> >>>>> contains the hlist_node used by the bridge-local frame_type_list.
+> >>>>>
+> >>>>> The CFM frame type is currently global, so enabling CFM on multiple
+> >>>>> bridges links the same hlist_node into multiple bridge-local lists.=
+ A
+> >>>>> later unregister on one bridge can then operate on list state belon=
+ging
+> >>>>> to another bridge.
+> >>>>>
+> >>>>> Move the CFM frame type into struct net_bridge and register/unregis=
+ter
+> >>>>> the bridge-owned object. This keeps frame handler list membership l=
+ocal
+> >>>>> to the bridge while preserving the existing first-MEP/last-MEP life=
+time.
+> >>>>>
+> >>>>> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of C=
+FM. CCM
+> >>>>> frame RX added.")
+> >>>>> Cc: stable@kernel.org
+> >>>>> Reported-by: Yuan Tan <yuantan098@gmail.com>
+> >>>>> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+> >>>>> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+> >>>>> Reported-by: Xin Liu <bird@lzu.edu.cn>
+> >>>>> Co-developed-by: Peihan Liu <ronbogo@outlook.com>
+> >>>>> Signed-off-by: Peihan Liu <ronbogo@outlook.com>
+> >>>>> Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+> >>>>> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> >>>>> ---
+> >>>>>    net/bridge/br_cfm.c     | 14 ++++++--------
+> >>>>>    net/bridge/br_private.h | 18 +++++++++++-------
+> >>>>>    2 files changed, 17 insertions(+), 15 deletions(-)
+> >>>>>
+> >>>>
+> >>>> I think MRP suffers from the same bug, but I also think we can conta=
+in the
+> >>>> fix within the packet type structure instead of making the already h=
+uge
+> >>>> struct net_bridge even bigger. Also, linking a struct within net_bri=
+dge
+> >>>> to a list within the same net_bridge looks weird.
+> >>>>
+> >>>> IMO br_add_frame should take a type & a frame_handler, allocate a br=
+_frame_type
+> >>>> dynamically and link it, then br_del_frame should take a type instea=
+d of a ptr
+> >>>> and remove that frame type and free it with kfree_rcu. That would re=
+quire
+> >>>> br_add_frame return value to be checked in the respective cfm/mrp fu=
+nctions.
+> >>>> Warnings for already existing types on add or missing types on del s=
+hould be
+> >>>> added.
+> >>>>
+> >>>
+> >>> Actually I have a better idea since these handlers can be added only =
+once per
+> >>> bridge, we can do away with a simple bitmask (e.g. use net_bridge's o=
+ptions
+> >>> which is in a Rx hot cache line) and even reduce net_bridge size whil=
+e fixing
+> >>> these bugs, and also remove a conditional from the fast-path when CFM=
+/MRP are
+> >>> not compiled in. Would you like me to prepare it or do you want to gi=
+ve it a go?
+> >>>
+> >>
+> >> Hi Nik,
+> >>
+> >> Thanks for the suggestion.
+> >>
+> >> I'll give it a go. IIUC, the idea is to remove the shared
+> >> br_frame_type list entries for CFM/MRP, track their per-bridge enable
+> >> state with bridge option bits, and dispatch the CFM/MRP handlers direc=
+tly
+> >> from the receive path when the corresponding EtherType and option bit
+> >> match.
+> >>
+> >> I'll include MRP in v2.
+> >>
+> >> Thanks,
+> >> Yilin
+> >>
+> >
+> > Great, thank you. That should simplify the code and give us 8 bytes of =
+Rx hot
+> > cache line back. The important point is that there haven't been any new
+> > handlers since these were added back in 2020, and also these are not
+> > common, so making their impact on the fast-path as small as possible
+> > while fixing the bug sounds good.
+> >
+> > A quick & dirty sketch of the fixes gives me:
+> > 5 files changed, 47 insertions(+), 66 deletions(-)
+> >
+> > That can probably be improved (i.e. more deletions).
+> >
+> > Just please make sure that if CFM/MRP are not enabled in .config, they
+> > would not affect the fast-path at all.
+> >
+> > Cheers,
+> >   Nik
+> >
+>
+> Hi Yilin,
+> Are you still considering fixing these problems? A few months passed sinc=
+e
+> we last spoke.
+>
+> Cheers,
+>   Nik
+>
+>
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Hi Nik,
 
+I=E2=80=99m very sorry for the long delay. Yilin has gone back to continue =
+his
+studies and unfortunately no longer has the time to finish this patch.
+
+There was also an issue on my side in keeping track of this work, and
+I failed to notice that the patch had been left without a follow-up
+for so long. I apologize for that.
+
+I can take over the patch, address the remaining feedback, and send a
+new version. That said, I=E2=80=99m not sure whether it might actually be
+easier for you to make the changes directly, if you are willing to do
+so. I=E2=80=99ve heard from maintainers that reviewing and iterating on
+someone else=E2=80=99s patch can sometimes take more effort than simply mak=
+ing
+the fix themselves, so I wanted to ask which approach you would
+prefer.
+
+If you would prefer to fix the issue directly, could you please
+include the following tags?
+Reported-by: zylzyl2333@gmail.com
+Reported-by: vega@nebusec.ai
+
+Otherwise, I=E2=80=99m happy to take over and prepare the next revision.
+What would you prefer?
+
+Best,
+Yuan
