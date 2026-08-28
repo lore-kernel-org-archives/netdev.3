@@ -1,197 +1,221 @@
-Received: from mta1.migadu.com (out-206.mta1.migadu.com [95.215.58.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1A54315F
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 04:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9308F348898;
+	Fri, 28 Aug 2026 05:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787892980; cv=none; b=S0n5g4oSUIoPXYFdLmq5JGi28ZkuNl5TgT21FEhvIszHMlfkbririkDqkIcpImMy4gCQGWL8HClvLX62swis6CsSgFR6ap3y1xLhJRdDhid4d+srSTh6VwoMB4rHgV+OREaJS5MsJIW0PSjPGqG2zAC4sC62HEzoGBJehxPiCI8=
+	t=1787893735; cv=none; b=HHYCESTDpglmt+pOmKFm1kUTfnzUab1msXB6TAevhASQG6HlUwmcanexd+KE4D/KjB480lHHWR7qbwbmljjn56hTKtqcfZXxCZ4cbii2iKmWuN2FHO0D0LQhYdzA/othJfDYl5UyDzZ2TvG5Whfb3DXmYsiJdqYRSPC16De8Soc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787892980; c=relaxed/simple;
-	bh=fZhglLoWTNrH1aaF5Azu3NNgyHJwxU8ggLwqo+Wjufo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eWZgcX0+y2rNF7hcpOzqylgeg/J9jMREhFAav2VZluHewH3j+ZGaUmTvXDwj1SU2bAc9JxbbV0FQDf/ZoQD/xcRckFnefQHThKsCLMuo3MJ9/XzuTFCrp6qp+s3Eo0ZkjWL8aSCb8UhJdCaw2nEqU9hDPA1wRd1D5rNfQtaDMzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cressey.dev; spf=pass smtp.mailfrom=cressey.dev; dkim=pass (2048-bit key) header.d=cressey.dev header.i=@cressey.dev header.b=WHJEB2Yq; arc=none smtp.client-ip=95.215.58.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cressey.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cressey.dev
+	s=arc-20240116; t=1787893735; c=relaxed/simple;
+	bh=8wrwRZmXV7c1kit9DHdHncVIapI+5wgRg6JtVOj1gmw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O8cM1GlLOTuH/XwJyiQ2B0PH7o0eURA+L8VAT0cQiglo5slcHCOGGWeRqzJhD+yVnbvF+pWB1fopQG+A/NAEKDaLmJ2lTZFsBhXZW7eJFuKJg+cK0L4fRfFN8V9W7AbscmNk06Sta3rfa03frwkJJPOTskcg7YFwCYQLN+lyuH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com; spf=pass smtp.mailfrom=airoha.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DcjvGGbF; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=airoha.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cressey.dev header.i=@cressey.dev header.b="WHJEB2Yq"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=fZhglLoWTNrH1aaF5Azu3NNgyHJwxU8ggLwqo+Wjufo=;
- c=simple/simple; d=cressey.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787892976; v=1; x=1788497776;
- b=WHJEB2YqzV6teklhLC5KJGY9yqMNDvbp8H/4fw9/VZyRjHNoLQPEEuc5MZwbDZzZ/7CSr1IQ
- 5sbtHDcavG3xh8Nvs7y7XLOnbG0cEsju/M1eKtxnP/q8WlpCUZYDXjUFZEpIF40SpY405SXUlFg
- Q9az4hnCLiH8PWeLS90bOXXWSToCTlng72mVegf6Jvau/cNHfNcNMG+wf4knMZrYGJjnXr0Bb94
- 1GkdwVUjuSat/3Gbx2U/ipGeLWMQrBhc3oOGelBzpohGCW8dpf7aVSLRlht86nmrByeM7Yw0bt2
- 2nuu/wPgrrdm6O5Zh2GVtxWSeYBEz3A3E8e2rgrtGxhdw==
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ef95467f80a113ed;
-	Fri, 28 Aug 2026 04:56:15 +0000
-X-Mizu-Trace-ID: ef95467f80a113ed
-X-Migadu-Flow: FLOW_OUT
-From: Ben Cressey <ben@cressey.dev>
-Date: Fri, 28 Aug 2026 04:55:52 +0000
-Subject: [PATCH net] Revert "net/mlx5: Add sensor name to temperature event
- message"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DcjvGGbF"
+X-UUID: 8c75fcfea29e11f1b1788b6acf885367-20260828
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=uQ1iJTPql4QJ/5QzAf6I6rFP6Ucg6tGTRI9VOFDo99k=;
+	b=DcjvGGbFI/yfQgMbLwAQunsEJzbCxBQFQ01cmPHDVbc+1w7n5yTtRIPxFUvng1nXF50J9xoWRCKWvHNX38F48cEQuch9KZIAqj7uwp3CGHrnKkB/0vKfYSRgAmOcuzQrp8V/K825rdwSvV6xdthpqlltGIu046XxCSAg9kNJrDI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:cd853161-e651-46d3-a48c-27537f4f7245,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:7db8b62,CLOUDID:2b7e2ef2-6b5d-4016-ba8d-9f799a78b7e4,B
+	ulkID:nil,BulkQuantity:0,SF:81|82|102|836|865|888|898,TC:-5,Content:0|15|5
+	0|99,EDM:-3,IP:nil,URL:99|1,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
+	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 8c75fcfea29e11f1b1788b6acf885367-20260828
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
+	(envelope-from <ar702101@airoha.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 760232335; Fri, 28 Aug 2026 13:08:47 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 28 Aug 2026 13:08:45 +0800
+Received: from mediatek.com (172.18.153.125) by mtkmbs13n2.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.2562.29 via Frontend
+ Transport; Fri, 28 Aug 2026 13:08:45 +0800
+Received: by arhtenbupstream01.localdomain (Postfix, from userid 1007)
+	id A602A141B88; Fri, 28 Aug 2026 13:08:45 +0800 (CST)
+From: Weiting Lee <weiting.lee@airoha.com>
+To: <netdev@vger.kernel.org>
+CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>, <bjorn@mork.no>,
+	<ericwouds@gmail.com>, <frank-w@public-files.de>, <joseph.lin@airoha.com>,
+	<wenshin.chung@airoha.com>, <lucien.jheng@airoha.com>,
+	<albert-al.lee@airoha.com>, Weiting Lee <weiting.lee@airoha.com>
+Subject: [PATCH v2 net-next] net: phy: air_en8811h: select LED GPIO pins based on AN8811HB package variant
+Date: Fri, 28 Aug 2026 13:05:36 +0800
+Message-ID: <20260828050537.2728253-1-weiting.lee@airoha.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <8530a501-705b-45b2-b876-68855955bccd@lunn.ch>
+References: <8530a501-705b-45b2-b876-68855955bccd@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260828-b4-mlx5-temp-warn-revert-v1-1-4e2ae5a0351f@cressey.dev>
-X-B4-Tracking: v=1; b=H4sIANcUkWoC/02NTQ6CMBCFr0Jm7QRshKBXMS6mZZAKlGZahYRwd
- wtuXL7v/a0QWCwHuGUrCH9ssJNL4nzKwHTknoy2SRpUoaqiVjXqC47DUmLk0eNM4jDVWCJeG1U
- 3RMS6aiHVvXBrl2P6Do4jPH4wvPWLTdxH95imwKiFnOl2NPjcTPMkPUt+WH3wA0VUZfn3G9iFS
- WDbvsN3x6TAAAAA
-X-Change-ID: 20260828-b4-mlx5-temp-warn-revert-9d28daaaeb6f
-To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shahar Shitrit <shshitrit@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Will Mortensen <will@extrahop.com>, 
- "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>, 
- Ben Cressey <ben@cressey.dev>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-This reverts commit 46fd50cfcc12368bed9ae5257cc3beaea5b3c193.
+The AN8811HB comes in two package variants, AN8811HBCN and AN8811HBN,
+which use different GPIO pins to drive LED outputs. AN8811HBCN uses
+GPIOs 0, 1, and 15, while AN8811HBN uses GPIOs 3, 4, and 5. Using a
+fixed GPIO assignment causes incorrect LED behavior on one of the
+variants.
 
-print_sensor_names_in_bit_set() passes the sensor index from the
-temperature warning event to hwmon_get_sensor_name(), which uses it
-as an index into temp_channel_desc[]. That array is indexed by hwmon
-channel, not by sensor index: it has one entry per ASIC or platform
-sensor the device reports, plus at most one module sensor
-(module_scount is 0 or 1). Module sensors have index 64 and up, so a
-module temperature warning reads far past the end of the allocation
-and prints whatever memory follows it, up to the next NUL byte, into
-the log.
+Read the package variant from the read-only silicon identification bits
+in AN8811HB_HWTRAP2 at probe time and store it in priv->is_an8811hbcn.
+Add an8811hb_led_gpio_setup() to configure the correct GPIO output pins
+and select lines based on the detected variant, and call it from
+config_init.
 
-The mapping from sensor index to hwmon channel cannot be made
-reliable here: the driver registers at most one module channel, while
-the event can carry bits for other ports' modules, and the bitmap in
-the existing warning already distinguishes the ASIC sensor (bit 0)
-from module sensors (bit 64 and up). Drop the name lookup rather than
-fix the mapping, as suggested in review of an earlier fix [1].
-
-Fixes: 46fd50cfcc12 ("net/mlx5: Add sensor name to temperature event message")
-Cc: stable@vger.kernel.org
-Suggested-by: Leon Romanovsky <leon@kernel.org>
-Link: https://lore.kernel.org/netdev/20260518112555.GM33515@unreal/
-Reported-by: Will Mortensen <will@extrahop.com>
-Closes: https://lore.kernel.org/netdev/20260512-b4-mlx5-sensor-fix-v2-1-531fee4fd7fd@extrahop.com/
-Link: https://lore.kernel.org/netdev/20260515-b4-mlx5-sensor-fix-v3-1-f537ce191d6c@extrahop.com/ [1]
-Assisted-by: LLM
-Reviewed-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-Signed-off-by: Ben Cressey <ben@cressey.dev>
+Signed-off-by: Weiting Lee <weiting.lee@airoha.com>
 ---
-The restored warning string intentionally lacks the trailing period
-and newline: this is a pure revert of 46fd50cfcc12, the commit that
-added them.
+v1 -> v2:
+- Rename pkg_sel to is_an8811hbcn (bool) for clarity
+- Remove phydev_info log to avoid spamming the kernel log
+- Fix commit message: HWTRAP2 bits are read-only silicon
+  identification, not a hardware strap pin
 
-Will - happy for you to carry this as v4 if you'd prefer.
----
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 31 +++---------------------
- drivers/net/ethernet/mellanox/mlx5/core/hwmon.c  |  5 ----
- drivers/net/ethernet/mellanox/mlx5/core/hwmon.h  |  1 -
- 3 files changed, 3 insertions(+), 34 deletions(-)
+v1: https://lore.kernel.org/netdev/20260827054156.2681908-1-weiting.lee@airoha.com/
+ drivers/net/phy/air_en8811h.c | 69 +++++++++++++++++++++++++++++++----
+ 1 file changed, 62 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 4d7f35b968761..a5d4586edf435 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -6,7 +6,6 @@
- #include "mlx5_core.h"
- #include "lib/eq.h"
- #include "lib/events.h"
--#include "hwmon.h"
+diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
+index 0eeb7b9a4e26..7b69bb79b77f 100644
+--- a/drivers/net/phy/air_en8811h.c
++++ b/drivers/net/phy/air_en8811h.c
+@@ -145,10 +145,22 @@
  
- struct mlx5_event_nb {
- 	struct mlx5_nb  nb;
-@@ -154,28 +153,11 @@ static int any_notifier(struct notifier_block *nb,
- 	return NOTIFY_OK;
+ #define AN8811HB_GPIO_OUTPUT		0x5cf8b8
+ #define   AN8811HB_GPIO_OUTPUT_345		(BIT(3) | BIT(4) | BIT(5))
++#define   AN8811HB_GPIO_OUTPUT_0115		(BIT(0) | BIT(1) | BIT(15))
++
++#define AN8811HB_GPIO_SEL1		0x5cf8bc
++#define   AN8811HB_GPIO_SEL1_0_MASK		GENMASK(3, 0)
++#define   AN8811HB_GPIO_SEL1_1_MASK		GENMASK(7, 4)
++#define   AN8811HB_GPIO_SEL1_0			BIT(0)
++#define   AN8811HB_GPIO_SEL1_1			0
++
++#define AN8811HB_GPIO_SEL2		0x5cf8c0
++#define   AN8811HB_GPIO_SEL2_15_MASK		GENMASK(31, 28)
++#define   AN8811HB_GPIO_SEL2_15			BIT(29)
+ 
+ #define AN8811HB_HWTRAP1		0x5cf910
+ #define AN8811HB_HWTRAP2		0x5cf914
+ #define   AN8811HB_HWTRAP2_CKO			BIT(28)
++#define   AN8811HB_HWTRAP2_PKG			GENMASK(14, 12)
+ 
+ #define AN8811HB_CLK_DRV		0x5cf9e4
+ #define AN8811HB_CLK_DRV_CKO_MASK		GENMASK(14, 12)
+@@ -202,6 +214,7 @@ struct en8811h_priv {
+ 	struct phy_device	*phydev;
+ 	unsigned int		cko_is_enabled;
+ 	struct mdio_device	*pbusdev;
++	bool			is_an8811hbcn;
+ };
+ 
+ enum {
+@@ -1071,10 +1084,49 @@ static int en8811h_leds_setup(struct phy_device *phydev)
+ 	return ret;
  }
  
--#if IS_ENABLED(CONFIG_HWMON)
--static void print_sensor_names_in_bit_set(struct mlx5_core_dev *dev, struct mlx5_hwmon *hwmon,
--					  u64 bit_set, int bit_set_offset)
--{
--	unsigned long *bit_set_ptr = (unsigned long *)&bit_set;
--	int num_bits = sizeof(bit_set) * BITS_PER_BYTE;
--	int i;
--
--	for_each_set_bit(i, bit_set_ptr, num_bits) {
--		const char *sensor_name = hwmon_get_sensor_name(hwmon, i + bit_set_offset);
--
--		mlx5_core_warn(dev, "Sensor name[%d]: %s\n", i + bit_set_offset, sensor_name);
--	}
--}
--#endif /* CONFIG_HWMON */
--
- /* type == MLX5_EVENT_TYPE_TEMP_WARN_EVENT */
- static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
++static int an8811hb_led_gpio_setup(struct phy_device *phydev)
++{
++	struct en8811h_priv *priv = phydev->priv;
++	int ret;
++
++	if (priv->is_an8811hbcn) {
++		/* AN8811HBCN: LED GPIOs are 0, 1, 15 */
++		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
++						  AN8811HB_GPIO_OUTPUT_0115,
++						  AN8811HB_GPIO_OUTPUT_0115);
++		if (ret < 0)
++			return ret;
++
++		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_SEL1,
++						  AN8811HB_GPIO_SEL1_0_MASK |
++						  AN8811HB_GPIO_SEL1_1_MASK,
++						  AN8811HB_GPIO_SEL1_0 |
++						  AN8811HB_GPIO_SEL1_1);
++		if (ret < 0)
++			return ret;
++
++		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_SEL2,
++						  AN8811HB_GPIO_SEL2_15_MASK,
++						  AN8811HB_GPIO_SEL2_15);
++		if (ret < 0)
++			return ret;
++	} else {
++		/* AN8811HBN: LED GPIOs are 3, 4, 5 */
++		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
++						  AN8811HB_GPIO_OUTPUT_345,
++						  AN8811HB_GPIO_OUTPUT_345);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
+ static int an8811hb_probe(struct phy_device *phydev)
  {
- 	struct mlx5_event_nb *event_nb = mlx5_nb_cof(nb, struct mlx5_event_nb, nb);
- 	struct mlx5_events   *events   = event_nb->ctx;
--	struct mlx5_core_dev *dev      = events->dev;
- 	struct mlx5_eqe      *eqe      = data;
- 	u64 value_lsb;
- 	u64 value_msb;
-@@ -187,17 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+ 	struct mdio_device *mdiodev;
+ 	struct en8811h_priv *priv;
++	u32 reg_val;
+ 	int ret;
  
--	if (net_ratelimit()) {
--		mlx5_core_warn(dev, "High temperature on sensors with bit set %#llx %#llx.\n",
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %#llx %#llx",
- 			       value_msb, value_lsb);
--#if IS_ENABLED(CONFIG_HWMON)
--		if (dev->hwmon) {
--			print_sensor_names_in_bit_set(dev, dev->hwmon, value_lsb, 0);
--			print_sensor_names_in_bit_set(dev, dev->hwmon, value_msb,
--						      sizeof(value_lsb) * BITS_PER_BYTE);
--		}
--#endif
--	}
+ 	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(struct en8811h_priv),
+@@ -1115,6 +1167,12 @@ static int an8811hb_probe(struct phy_device *phydev)
+ 	/* MDIO_DEVS1/2 empty, so set mmds_present bits here */
+ 	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
  
- 	return NOTIFY_OK;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-index afcdebac9c4fd..bf36c1c9bf781 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.c
-@@ -416,8 +416,3 @@ void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev)
- 	mlx5_hwmon_free(hwmon);
- 	mdev->hwmon = NULL;
- }
++	/* Detect package variant */
++	ret = air_phy_buckpbus_reg_read(phydev, AN8811HB_HWTRAP2, &reg_val);
++	if (ret < 0)
++		goto err_dev_create;
++	priv->is_an8811hbcn = FIELD_GET(AN8811HB_HWTRAP2_PKG, reg_val);
++
+ 	ret = en8811h_leds_setup(phydev);
+ 	if (ret < 0)
+ 		goto err_dev_create;
+@@ -1125,13 +1183,6 @@ static int an8811hb_probe(struct phy_device *phydev)
+ 	if (ret)
+ 		goto err_dev_create;
+ 
+-	/* Configure led gpio pins as output */
+-	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
+-					  AN8811HB_GPIO_OUTPUT_345,
+-					  AN8811HB_GPIO_OUTPUT_345);
+-	if (ret < 0)
+-		goto err_dev_create;
 -
--const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int channel)
--{
--	return hwmon->temp_channel_desc[channel].sensor_name;
--}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-index f38271c22c105..999654a9b9da5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/hwmon.h
-@@ -10,7 +10,6 @@
+ 	return 0;
  
- int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev);
- void mlx5_hwmon_dev_unregister(struct mlx5_core_dev *mdev);
--const char *hwmon_get_sensor_name(struct mlx5_hwmon *hwmon, int channel);
+ err_dev_create:
+@@ -1263,6 +1314,10 @@ static int an8811hb_config_init(struct phy_device *phydev)
+ 	if (ret < 0)
+ 		return ret;
  
- #else
- static inline int mlx5_hwmon_dev_register(struct mlx5_core_dev *mdev)
-
----
-base-commit: 4e15e89faac9f308baeb01f46c13a051814d2449
-change-id: 20260828-b4-mlx5-temp-warn-revert-9d28daaaeb6f
++	ret = an8811hb_led_gpio_setup(phydev);
++	if (ret < 0)
++		return ret;
++
+ 	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
+ 			    AIR_LED_MODE_USER_DEFINE);
+ 	if (ret < 0)
+-- 
+2.43.0
 
