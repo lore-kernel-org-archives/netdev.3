@@ -1,35 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9E3288C96
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 22:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E0E3A875F
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 22:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787955063; cv=none; b=lcyeax+zKjdSMY5T82xP46KGuc21KrDzYJLZovzdJBKF4VVRrZGNe8Paq69BOkARlTb9GLAX9BabojXtTBxgsGEJax83uonstwkSOhgbRGMTVB89alI9ScCVfdyte3Lc1/UArOxeSUD77F1pJMdQuaP1SKkaJNq++fQKnB91GXM=
+	t=1787955656; cv=none; b=AI5c9MRLU71JybPFrpyxCr2R+XPifE6/ODm6qqq2Zfr0f8QnhZ2rjKMEKPTWAO+aSu6UJrS6OulmWbX5/BirMLtRGxsf9itnMogQTQqJt4FAYbK9jYNlJTGWr4xiAZgN6FPQAq5qTO1pipa7IfGm9OoHIHP0/hTrY7gRkaCzKv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787955063; c=relaxed/simple;
-	bh=duKYzC96DSDXO9aU3DH2EvC90AfQM4HZ8RKCfeUmzKY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LHCKoINFfMC2InbEY4ayfjNAT0kB3krww46U1HYVxo/+QGfonwROMtj5b3WH+qw2J5bX78UPpDilUWF5j5T6L/PWYPs/QJdJLmQskuJn4KbeOdzgojblXWa2DHJl4+XBcotlX6D9NdX244tnihCIcFu18Q79hBssI/Wzz81XiZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KETt7C7+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787955656; c=relaxed/simple;
+	bh=E/W+ksdADl9ywTHJd2TuA2lVsVD11eIiuEkKnDyCD/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OKL18UyOzli2LlJUrsJpXltz7t9MPERLS3XKxCQ0QqZNkw4735lcxgSqJx10ThB9ujh3a7cy1NWrcMI4+yj4v9LA+l5J3dgc9rGVPk2CwBSKK7M3cb0mqPTBwZvNhJbICtIVFPs8f6bFHSGQMxqCrFPsNFzxfTCSbV9r+xIDOcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HOVFq+AK; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KETt7C7+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF26C1F000E9;
-	Fri, 28 Aug 2026 22:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787955062;
-	bh=nygYmCHuhzIdnG57U4cF6eClg3pg/mtv98Uw30qLcXQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=KETt7C7+8YtfHuLbzoT37BIcxvn8h9krgkBqbIXtgP6xFSqKgftBexJ35PiAZCzH7
-	 8HOeBesY78OLC1VgBeBsfyIE0zOMRuL9zJ4GihSjacka3u29zfodxR5GbUSXrp4wa/
-	 LBYJTt1f3Pj6aoJQbzVmu5PBS7INp/WUWQA1Eoswult/37bA1bj6Wtx2ep4TcBF2dp
-	 1yUj7zf/JPdbKc8kXEEglYXl+B4BJpaElbrNCYlVLDw64TIVP6nuZJ5FwXdJDja+Kl
-	 c57r+bbbZ97+0K3mxye9D3RcI7RvVvue1Dpn0GP6msu2LmLvBCTTlZhmOiutxOEqVu
-	 Zaxpr7Fjr25WQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A29380AA69;
-	Fri, 28 Aug 2026 22:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HOVFq+AK"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cace91f112so12133965ad.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 15:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787955654; x=1788560454; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fkzPOJyjg522oMEaLV0n0OoyZNgVtknUfEY52R/omSs=;
+        b=HOVFq+AKdaOJrHxLRfkVQa8W2PFT5pa31HhlZNcIhBTITrtkwbvvQj478nkrFwO6jE
+         kE6RcbUqfXt+SaNC1Ib/dNzYctLrp6xg0RUB4z70z3ebprUyo8pxIa8slGBB4OKMj1TO
+         bpVMyalbRleXe5udEDckqn4+as/bf1aidPL5fB1zu/L59uuAPHoos9JyeM/yS/SONkZm
+         9xb9uFjj2iIg7lujZqiXjBRA3ofxzEz0WEZz0ZDeEFbnAJmMGW+R23HxPfntrDhtgD4E
+         A0Kg7+ODSxUoIXo1ySssQErBVvmN9SI0h2J9XHii/oN9xHp+/q7qB1rFkAzzRgYFl0Hb
+         1sdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787955654; x=1788560454;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fkzPOJyjg522oMEaLV0n0OoyZNgVtknUfEY52R/omSs=;
+        b=EVm6y8VxNCBOYhN6mGmUYlelXuNXTGn6UGh4ZjRzYVd3/XX5vJ0KBJv/Kgzg1ZJtTI
+         1PX1e+TStyTwM4aUQ1QaDB3pk9cLszqoo/XA5XQyD9Jpwy+yuQiY3MO/Y8W+ffZSArwH
+         5mv0wvyMRZph4xLi+/9SzEoIa7eqgN7uIEh5jyxdJILQYtc9peHF37a+lBalhgT0DUHp
+         +DphDM5FoX/m5JbJVmCs841LN2VmFzmeu1jlIAHXsuFeQbt2mkB9qQLO3YCIjxL6t9Kc
+         TEvRu6CLG8WcFZepj9qLacBUGdlI/Ul9i3RF/sf67aUjm8HZlY47qSx4x44PDOVPEjcU
+         C1ZA==
+X-Gm-Message-State: AFuF++nxdDVy/MTbw3hnLKCyNeVKw4Nam9+2w3Upz6iJ8Bf3vZSPOqrU
+	srG9ycTXIFJV4AQ2IBAmtPGtSJfXhMbaIeIfC6OKZX+HzZ+RgIk5DVl+XGm1DQ==
+X-Gm-Gg: AYBFou0OyRp8cksYHGFOm+n7VPFLBMUpTF7QxL64WqsPs7vxq5WsWuY2vc4esimZYhB
+	kzRAhWNgsydF2FyGPxhhyvXj14kgEjhCTIvQ2wruiQw8++SLR+J6HV6ZilpqFysBAwmWiYhWC31
+	Caxe4NqS8Um4ajUSz7KgrNo0m3aMtglI6woycIdEhYzX3pJBGewPcKEL2kCZweeICi94UXICRxr
+	0rWCwEIQ4dd2lukUN5/Yy4f5HvExgM1kKLpxFGORLnt5oH8sm5UUsS5Fhkd5whaSJj2WQ4zB1iE
+	EUo0qIiD2m4Sdu5dpM8D5ouoJtIVlTYDJjX/fmf05G/IbbRLROzgcp39nP2vr+KdFbzfsDJmTiv
+	Z3dQ9sihKuz+Wc65lyLFUnGvZI7Wu5Lv/bNH8aE54+Lg7qgNnyOTKQiMam5CF+S1x1o9SvDIJmJ
+	OY6oVUrSlGki2WjDscHzZ/lm7QjCCWND1Ee6AJ2UiZg0Z8rqs6E0h4YMCKHJoV9j7f2MJQ0VH6y
+	7XMlGvauqNZMaKXcybbp7SNwBAUoSLr7feD1+Mqz4M1eX6CX56C6IMIcYK9Co001RJrThmSWqiF
+	DRLx+oMOQP+2ycxHwHA6JUpQ4TOpkEgs7GJSOX0oEEV2fS/o
+X-Received: by 2002:a17:903:1b07:b0:2c7:ebfb:618f with SMTP id d9443c01a7336-2d74df29e26mr215740625ad.14.1787955653649;
+        Fri, 28 Aug 2026 15:20:53 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d759869aeesm9563725ad.46.2026.08.28.15.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 15:20:53 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: gianfar: handle startup_gfar failure and fix double free
+Date: Fri, 28 Aug 2026 15:20:51 -0700
+Message-ID: <20260828222051.77604-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,56 +77,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: icmp: avoid invalid transport header access in
- icmp_send tracepoint
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178795500640.2819210.2098274616727139246.git-patchwork-notify@kernel.org>
-Date: Fri, 28 Aug 2026 22:10:06 +0000
-References: <20260825084551.1562967-1-edumazet@google.com>
-In-Reply-To: <20260825084551.1562967-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- idosch@nvidia.com, dsahern@kernel.org, netdev@vger.kernel.org,
- eric.dumazet@gmail.com,
- syzbot+6d2762674103618994b0@syzkaller.appspotmail.com, he.peilin@zte.com.cn,
- xu.xin16@zte.com.cn, rostedt@goodmis.org
 
-Hello:
+reset_gfar() ignores the return value of startup_gfar(), so a reset
+that fails to reallocate resources (e.g. -ENOMEM) leaves the interface
+logically UP with stale descriptor-ring pointers. If the device is
+closed afterwards, gfar_close() -> stop_gfar() -> free_skb_resources()
+frees the same coherent DMA ring a second time, causing a double free
+of the TX/RX buffer descriptors.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Make reset_gfar() and gfar_change_mtu() propagate the startup_gfar()
+error instead of silently continuing. Make free_skb_resources() idempotent
+by NULLing the descriptor-ring base pointers after freeing them, so a
+second free cannot operate on a stale pointer regardless of which error
+path is taken.
 
-On Tue, 25 Aug 2026 08:45:51 +0000 you wrote:
-> syzbot reported a WARNING triggered by DEBUG_NET_WARN_ON_ONCE():
-> 
->  WARNING: at skb_transport_header include/linux/skbuff.h:3087 [inline]
->  WARNING: at udp_hdr include/linux/udp.h:23 [inline]
->  WARNING: at do_trace_event_raw_event_icmp_send include/trace/events/icmp.h:30 [inline]
->  WARNING: at trace_event_raw_event_icmp_send+0x48c/0x6ec include/trace/events/icmp.h:11
->  Call trace:
->   skb_transport_header include/linux/skbuff.h:3087 [inline]
->   udp_hdr include/linux/udp.h:23 [inline]
->   do_trace_event_raw_event_icmp_send include/trace/events/icmp.h:30 [inline]
->   trace_event_raw_event_icmp_send+0x48c/0x6ec include/trace/events/icmp.h:11
->   __traceiter_icmp_send include/trace/events/icmp.h:11 [inline]
->   __do_trace_icmp_send include/trace/events/icmp.h:11 [inline]
->   trace_icmp_send+0x320/0x49c include/trace/events/icmp.h:11
->   __icmp_send+0xcfc/0x11d8 net/ipv4/icmp.c:1013
->   ipv4_send_dest_unreach net/ipv4/route.c:1280 [inline]
->   ipv4_link_failure+0x57c/0x8dc net/ipv4/route.c:1287
->   dst_link_failure include/net/dst.h:438 [inline]
->   vti_tunnel_xmit+0xe40/0x17a4 net/ipv4/ip_vti.c:307
-> 
-> [...]
+Fixes: 0851133bb5ad ("gianfar: Fix device reset races (oops) for Tx")
+Assisted-by: opencode:big-pickle
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/ethernet/freescale/gianfar.c | 42 +++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 12 deletions(-)
 
-Here is the summary with links:
-  - [net] net: icmp: avoid invalid transport header access in icmp_send tracepoint
-    https://git.kernel.org/netdev/net/c/7fcc2fe39fed
-
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
+index cf636fc5aafa..d0ac8a958696 100644
+--- a/drivers/net/ethernet/freescale/gianfar.c
++++ b/drivers/net/ethernet/freescale/gianfar.c
+@@ -1140,11 +1140,24 @@ static void free_skb_resources(struct gfar_private *priv)
+ 			free_skb_rx_queue(rx_queue);
+ 	}
+ 
+-	dma_free_coherent(priv->dev,
+-			  sizeof(struct txbd8) * priv->total_tx_ring_size +
+-			  sizeof(struct rxbd8) * priv->total_rx_ring_size,
+-			  priv->tx_queue[0]->tx_bd_base,
+-			  priv->tx_queue[0]->tx_bd_dma_base);
++	if (priv->tx_queue[0]->tx_bd_base) {
++		dma_free_coherent(priv->dev,
++				  sizeof(struct txbd8) *
++				  priv->total_tx_ring_size +
++				  sizeof(struct rxbd8) *
++				  priv->total_rx_ring_size,
++				  priv->tx_queue[0]->tx_bd_base,
++				  priv->tx_queue[0]->tx_bd_dma_base);
++
++		for (i = 0; i < priv->num_tx_queues; i++) {
++			priv->tx_queue[i]->tx_bd_base = NULL;
++			priv->tx_queue[i]->tx_bd_dma_base = 0;
++		}
++		for (i = 0; i < priv->num_rx_queues; i++) {
++			priv->rx_queue[i]->rx_bd_base = NULL;
++			priv->rx_queue[i]->rx_bd_dma_base = 0;
++		}
++	}
+ }
+ 
+ void stop_gfar(struct net_device *dev)
+@@ -2003,6 +2016,7 @@ static int gfar_set_mac_address(struct net_device *dev)
+ static int gfar_change_mtu(struct net_device *dev, int new_mtu)
+ {
+ 	struct gfar_private *priv = netdev_priv(dev);
++	int err = 0;
+ 
+ 	while (test_and_set_bit_lock(GFAR_RESETTING, &priv->state))
+ 		cpu_relax();
+@@ -2013,24 +2027,27 @@ static int gfar_change_mtu(struct net_device *dev, int new_mtu)
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+ 
+ 	if (dev->flags & IFF_UP)
+-		startup_gfar(dev);
++		err = startup_gfar(dev);
+ 
+ 	clear_bit_unlock(GFAR_RESETTING, &priv->state);
+ 
+-	return 0;
++	return err;
+ }
+ 
+-static void reset_gfar(struct net_device *ndev)
++static int reset_gfar(struct net_device *ndev)
+ {
+ 	struct gfar_private *priv = netdev_priv(ndev);
++	int ret;
+ 
+ 	while (test_and_set_bit_lock(GFAR_RESETTING, &priv->state))
+ 		cpu_relax();
+ 
+ 	stop_gfar(ndev);
+-	startup_gfar(ndev);
++	ret = startup_gfar(ndev);
+ 
+ 	clear_bit_unlock(GFAR_RESETTING, &priv->state);
++
++	return ret;
+ }
+ 
+ /* gfar_reset_task gets scheduled when a packet has not been
+@@ -2058,6 +2075,7 @@ static int gfar_hwtstamp_set(struct net_device *netdev,
+ 			     struct netlink_ext_ack *extack)
+ {
+ 	struct gfar_private *priv = netdev_priv(netdev);
++	int ret = 0;
+ 
+ 	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+@@ -2076,7 +2094,7 @@ static int gfar_hwtstamp_set(struct net_device *netdev,
+ 	case HWTSTAMP_FILTER_NONE:
+ 		if (priv->hwts_rx_en) {
+ 			priv->hwts_rx_en = 0;
+-			reset_gfar(netdev);
++			ret = reset_gfar(netdev);
+ 		}
+ 		break;
+ 	default:
+@@ -2084,13 +2102,13 @@ static int gfar_hwtstamp_set(struct net_device *netdev,
+ 			return -ERANGE;
+ 		if (!priv->hwts_rx_en) {
+ 			priv->hwts_rx_en = 1;
+-			reset_gfar(netdev);
++			ret = reset_gfar(netdev);
+ 		}
+ 		config->rx_filter = HWTSTAMP_FILTER_ALL;
+ 		break;
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int gfar_hwtstamp_get(struct net_device *netdev,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.55.0
 
