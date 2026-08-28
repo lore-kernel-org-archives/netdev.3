@@ -1,92 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-201.mta1.migadu.com [95.215.58.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB533A4F4B
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3977B3033EB
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787901183; cv=none; b=C/G6fIgC93bPBRwHbjokSkzV8dNxeNEaTSK+FQRc5p42wv0xbS4XXYR0P55o2vb/yVUPt4WDNzQ8/iOnsajOE6YWgPYr8uAW/+UiPRcaDZK+Y1Y96GYLtZiJlygxbFiC+MuQKMSAVOf9fOsqJUY71gYtum82xUTmEj0EAmBp/Cg=
+	t=1787901500; cv=none; b=rhQyZwvUT/D63+lX3/sfCiROqWOT702EpujFWtIsSQwkPJbuCoD2lNDkH6qk0zyR1yTsrdByMW1UTJRJKoPR/iPDgw/HZPzGqsyaywJnQ8JZpDuj6iQ8W4201hS2j5tOv/m3FHau43NHQaBsTCNEACWTxs+7BopAU/lWvVOchN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787901183; c=relaxed/simple;
-	bh=iCJUfJv4ZhUZHmTzZnX6JEu4X2v32p8EQHUJrJkO+yQ=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=dfZdD0mlLU6BVLqHg3e8P7mIbxEH1fOYOw6IrPw8X7P6k+oFkcMkUlOl0WmlQyIBaJEgYNC4OoydQ4rejZnghfEscQSFG4nlH7vjxReVQm3+lcISJVNvYTtaLtDOr3nid3MOG6RXrGNwAkHl/2dbMwHB2jrCq1x+prHpuSMZQtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KVioHxX1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787901500; c=relaxed/simple;
+	bh=EyM07Uw8LqZupBVNP8WyHv4g2L5HNpw85p6dXlSM9xk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ngOzIXH7sMHeeKVtpq8fOEYBTq2K3U8xNembPFYwwbl+zTi7FMyrZzcZgWpwgaZyqLLG8vdfWM5MfdNkjDNYul/72Q1aQNf6Xbc1InDZlPFR08WHWKU9PfBvAfv7pq6wON3fiGE5RnJNyVuQV4ho2B2uVNbINXLE/oZpo824Lvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oQlfsA5p; arc=none smtp.client-ip=95.215.58.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KVioHxX1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787901180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AJ5XTjPGWuvp0rDtOzuNKrCwaKf5Txk4jMJiBlh5BW0=;
-	b=KVioHxX18fby+wq9kJ31I6QMMeU+nggCYWTF+Np6p2nZo5BToI0CDVAV5J6ixsrnM2J+N/
-	lrHklPtPG1/FZQHitiFzjQkllrLQR0GQdeflNQbDxfa1GzEAF1KL4u28ENBa9YI0DgSeOM
-	IS6/fYxgYfFMRPXSkXkwjLzIKoZ/RZc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-cftgXQacPLiPo0_h_lKG3g-1; Fri,
- 28 Aug 2026 03:12:55 -0400
-X-MC-Unique: cftgXQacPLiPo0_h_lKG3g-1
-X-Mimecast-MFC-AGG-ID: cftgXQacPLiPo0_h_lKG3g_1787901173
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A060E18CC4AF;
-	Fri, 28 Aug 2026 07:12:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.22.88.47])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AD77226C;
-	Fri, 28 Aug 2026 07:12:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <a0563aec-0ac2-47da-b03e-2e991a2aeabb@redhat.com>
-References: <a0563aec-0ac2-47da-b03e-2e991a2aeabb@redhat.com> <20260824091645.415423-1-dhowells@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: dhowells@redhat.com, netdev@vger.kernel.org,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Jakub Kicinski <kuba@kernel.org>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v8 00/12] rxrpc: Fix CHALLENGE packet handling
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oQlfsA5p"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=EyM07Uw8LqZupBVNP8WyHv4g2L5HNpw85p6dXlSM9xk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787901496; v=1; x=1788506296;
+ b=oQlfsA5pxQGE3mPi4IotNWFQ5I6u0fdbMQp2I1gmK/M49YUqXkjHqoF90gHEwTKgNAXB13hR
+ y6PzJZEwyeuKoNuywOsWJ4LayKA96IqwInLoKWvOKOxlHvDfx5U3ky31uIPecqQct0nW16IW8v1
+ VsTITPA+a2lYJLDczH2xNPqo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id e9c5d0fed02762d4;
+	Fri, 28 Aug 2026 07:18:06 +0000
+X-Mizu-Trace-ID: e9c5d0fed02762d4
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <7a6ba0f3-efc0-45f1-a372-ced250733b62@linux.dev>
+Date: Fri, 28 Aug 2026 15:17:57 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2558720.1787901169.1@warthog.procyon.org.uk>
-Date: Fri, 28 Aug 2026 08:12:49 +0100
-Message-ID: <2558721.1787901169@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+User-Agent: Mozilla Thunderbird
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Subject: Re: [PATCH net v3] mac802154: fix data race and NULL deref on
+ local->assoc_dev
+To: Kaiwen Shi <skwkevin@mail.ustc.edu.cn>, alex.aring@gmail.com,
+ stefan@datenfreihafen.org, miquel.raynal@bootlin.com,
+ linux-wpan@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260827221339.885245-1-skwkevin@mail.ustc.edu.cn>
+In-Reply-To: <20260827221339.885245-1-skwkevin@mail.ustc.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Actually, sashiko has a point.  It's theoretically possible for userspace to
-fabricate a ticket with an encoding type that's supported by the client but
-not by the fileserver, in which case, yes the fileserver would be unable to
-use the proposed return channel if someone else tried to contact it with a
-valid ticket.
 
-Note that this is an afs layer problem, not an rxrpc layer problem.  Each
-rxrpc call is tagged with the keys to use and are grouped into virtual
-connections by those keys.
+在 2026/8/28 06:13, Kaiwen Shi 写道:
+> @@ -599,25 +603,38 @@ int mac802154_perform_association(struct ieee802154_sub_if_data *sdata,
+>   		goto clear_assoc;
+>   	}
+>   
+> -	if (local->assoc_status != IEEE802154_ASSOCIATION_SUCCESSFUL) {
+> -		if (local->assoc_status == IEEE802154_PAN_AT_CAPACITY)
+> +	/* The association is complete: clear the associating bit and snapshot
+> +	 * the result under the same lock, so a second (e.g. malicious) ASSOC
+> +	 * RESP can no longer pass the recheck below and overwrite
+> +	 * assoc_status/assoc_addr before they are consumed.
+> +	 */
+> +	spin_lock(&local->assoc_lock);
+> +	clear_bit(IEEE802154_IS_ASSOCIATING, &local->ongoing);
 
-To solve the issue, it might be sufficient to ditch the appdata key from the
-server record if the fileserver returns RXGK_BADETYPE and the caller's key
-matches the enctype of the server's appdata - but that leaves a potental race
-in which two callers try to talk to the fileserver simultaneously.
+I think this clear_bit() should be moved to
+mac802154_process_association_resp(), after saving the first valid
+response and before calling complete().
 
-Probably the afs server rotation code needs to be changed so that, when a new
-afs_server record is created, the caller creating it holds off other callers
-until at least one probe is completed successfully - and if not, it removes
-the key and moves on to the next fileserver.
+Clearing it only after wait_for_completion() returns may still leave a
+window, since the woken waiter may not acquire assoc_lock before the
+next work item runs. Clearing it earlier in the response handler ensures
+that subsequent responses fail the in-lock
+IEEE802154_IS_ASSOCIATING check and cannot overwrite the saved result.
 
-David
+> +	resp_status = local->assoc_status;
+> +	resp_short_addr = local->assoc_addr;
+> +	spin_unlock(&local->assoc_lock);
+> +
+> +	if (resp_status != IEEE802154_ASSOCIATION_SUCCESSFUL) {
+> +		if (resp_status == IEEE802154_PAN_AT_CAPACITY)
+>   			ret = -ERANGE;
+>   		else
+>   			ret = -EPERM;
+>   
+>   		dev_warn(&sdata->dev->dev,
+>   			 "Negative ASSOC RESP received from %8phC: %s\n", &ceaddr,
+> -			 local->assoc_status == IEEE802154_PAN_AT_CAPACITY ?
+> +			 resp_status == IEEE802154_PAN_AT_CAPACITY ?
+>   			 "PAN at capacity" : "access denied");
+> -		goto clear_assoc;
+> +		return ret;
+>   	}
+>   
+> -	ret = 0;
+> -	*short_addr = local->assoc_addr;
+> +	*short_addr = resp_short_addr;
+> +
+> +	return 0;
+>   
+>   clear_assoc:
+> +	spin_lock(&local->assoc_lock);
+>   	clear_bit(IEEE802154_IS_ASSOCIATING, &local->ongoing);
+> -	local->assoc_dev = NULL;
+> +	spin_unlock(&local->assoc_lock);
+>   
+>   	return ret;
+>   }
+> @@ -639,19 +656,23 @@ int mac802154_process_association_resp(struct ieee802154_sub_if_data *sdata,
+>   		     dest->mode != IEEE802154_EXTENDED_ADDRESSING))
+>   		return -EINVAL;
+>   
+> -	if (unlikely(dest->extended_addr != wpan_dev->extended_addr ||
+> -		     src->extended_addr != local->assoc_dev->extended_addr))
+> +	spin_lock(&local->assoc_lock);
+> +	if (unlikely(!test_bit(IEEE802154_IS_ASSOCIATING, &local->ongoing) ||
+> +		     dest->extended_addr != wpan_dev->extended_addr ||
+> +		     src->extended_addr != local->assoc_dev_extended_addr)) {
+> +		spin_unlock(&local->assoc_lock);
+>   		return -ENODEV;
+> +	}
+>   
+>   	memcpy(&resp_pl, skb->data, sizeof(resp_pl));
+>   	local->assoc_addr = resp_pl.short_addr;
+>   	local->assoc_status = resp_pl.status;
+
+here
+
+> +	complete(&local->assoc_done);
+> +	spin_unlock(&local->assoc_lock);
+>   
+>   	dev_dbg(&skb->dev->dev,
+>   		"ASSOC RESP 0x%x received from %8phC, getting short address %04x\n",
+> -		local->assoc_status, &deaddr, local->assoc_addr);
+> -
+> -	complete(&local->assoc_done);
+> +		resp_pl.status, &deaddr, resp_pl.short_addr);
+>   
+>   	return 0;
+>   }
+>
+> base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+
+Thanks,
+Xuanqiang
 
