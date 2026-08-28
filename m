@@ -1,46 +1,46 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011054.outbound.protection.outlook.com [52.101.57.54])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011004.outbound.protection.outlook.com [52.101.57.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA333C73D9;
-	Fri, 28 Aug 2026 19:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F083AD530
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 19:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787945244; cv=fail; b=oACcWGUpKJ0BVFnEHHcPgBTV3o7XdxAZsJax94VRKZoFZdCKKRqyiwVefTVqKeCrVRdK9t2Ve1leCR5wcD3swvc69gy/fMGrk/BldQ/OtwXtmSi9LJCdVPznITXmFjZd8LbJxxkKWrc78YWATgw5NoKQfiNNdzRghAWx/xTPvsc=
+	t=1787945250; cv=fail; b=OCWRwHseH3sy5vaNAOwAdm8zHeEmYGi1Wo0dvWV+9SfS7ujk0RDaa3Z9J9fdLyzVIZR4Bb/Vx0DTke0B3XeXRnktJl8cIG6YtQZyDDSUyYkhllReYiZ/88oQPLy5sOG/5SGmsOoFYgEvSxXhwImcwty2F7O5R4iR7h2Rnq8Hvrg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787945244; c=relaxed/simple;
-	bh=VBOr4GhPs+BCtCcE3BWnR3j0Ps+BDIuEFHsA5/9yrAg=;
+	s=arc-20240116; t=1787945250; c=relaxed/simple;
+	bh=706cmopSZKajXuBAlqFDQLwyHRupoK/Fweyze8RFlB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YQH5YqRQpfTfbujp9hiqFttjkBZ+bID0pF5uxmEImWS9FS074+KF0PnkLnuvf0zjjQ2RPwHNjBSo7e2kfdL9HuDp8XyykN4KcSsS9h7tZkv2xT9bnkHz9nBTdRfYXbhhYxSQvkOfaZ2u4umQVCR+UFoZ25C25pFRBFCjUiS6nps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=J69ME0vM; arc=fail smtp.client-ip=52.101.57.54
+	 Content-Type:MIME-Version; b=ec/cNNMkfci5EZFIvDPsXy5XmdjHCT+BUiY+5drSrrmxw2VwnDb0LCJ4DKPbU4CnHzJoEbrSWBRPkA8IrcIwsE+f0t1W8H9IKBW1lCbXcU5iRiFHSXUMKcJ5zLtlJtpZ5rBfF+1bbVElX1edN+Adee3cBsxXwbIOXcuyB9Zomrc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ek9lYSk/; arc=fail smtp.client-ip=52.101.57.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="J69ME0vM"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ek9lYSk/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KATo9GZO24Yh2vG1vdYUMuePBWJaOjjyDn5ofDVAzG4J4Kks3gBSJ2KGHOfKdPSphZkvfcOeYSCDnvWsbkKfw2JCTXBU1FYnkUThqbl0vlmtC9S/jfloUQuuegylevIw2xuX88D+4JXKWVT8Qz+ccGIlDfAuQrzDkKvHBa3l7ShH8UJ0lUyBPMjRMwSLdFPC8MCf0UIhwMzbomFC6H1vr4zPeejASpVQ70lNEAxAnR+qyF5uooJIXTuoUr9PubN62MJ3TF32P6bsiDslmJ1vKqux4bf7a/guERB1hX2DuLQZCOeDKlUb30chxbIcpX2g3w5sPlt/UkWBRlqIt9/0rQ==
+ b=wdsxrtkX6OcNFyujJcd9Hi18ntEqHVhQm00tWnjgPNadMSUHXvLv2Z4Tyqi9tO9A+FA3jCg+GI+lYepH23dspEXqD5KSkq/qLZB04sT8ZKkf037I8MD/RZUxkCUlT0Yx3/3q2TAuK8pea37DncPwYllv1q1ijAzqzxrrUbYW78vMcs8RKpYBrEUV60RvAe8ZReRHM3UMPktY++Gb4jxXDFuPdnLGKWBKvumJyncoitdExFllSKs9ch64SKqThDf5PClo+2UCLCW1dwAgve9TulbR5OksUJ2JkW2d36GV4j9sEmrpo9DpBkqgP9pbygwCH9raLCwQhubyiKy4CtEp/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sRNHD6AKMxQAm7Aj5FbxxnErvnkY39CwzXPicg3FLPI=;
- b=MP73hyk3Td44Hg5FWz30wQhb4SbxayixbtciFGsjc1wN8++jmPrOzWLH+lK52gToiafgt7lJWtCtFcW3cxzesX8Hg6NqcX5W5/8f+6IR0d4OLjG6JKknDx7oucYjuRPg5JCSiQ2/LTV3JgKNEctMJgID7yaxxaOznKciXLZxnXubIkErn78CmiJPNgi1/N8XRv9Lsl1C6ewL48wxVpB2pWdv7aXuNGwtbIemsDH8vcAqYJkjfBDMpoRAh/LPy8kUTeJ5SwuaA7gdNeYi3gCvoZHzz6iFN/q3IiTU5sVi7Q+laUef7GIwVqDmAFU00MfSsipa3bFbTknK3qMEoBmDSg==
+ bh=3yK8d38K9094fPulArdpwDfbvNm4BT2EzGYk1keqfSQ=;
+ b=QepUKe2zgrR76boy3eBrjog1BDiKa4DK9/RAZkbyhuJfNWlHs8R3Mt1CWE6+pbeGCeWeRbf+oCIHS1OKGjoenq56ZTtrw0RZWacZBXO71Tr7Jq0++gaBTa8B2Np3uZ9XyZD8la3BNUx6AoTopDXv4Y32DpvbTiDbbgXgDbAOIATBOK8ogpPhXDQBoXVYMlEB5TKSQfhs6YscnUCy0GjcZBo90haJyWSudw7dlvKmkD0uwKq0r9pebp6C7na9NFCw5EZo6EGIODDnxB9738BjCx/pAIicA3gEBB71nS1k18sNyrtlovbxE5Td0fF7zKAjZ3/c0DSPXeiIzLNCSA5SFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sRNHD6AKMxQAm7Aj5FbxxnErvnkY39CwzXPicg3FLPI=;
- b=J69ME0vMPKn3qptcX0iR2dRI3irzyYlZBewGFoGUAVz1KmMG86jn/3jlt/q40Pg8B0obaVwasHSBFdzU+ZtbBtUqo0OCBCwvoUYKeKVPBEWZ9OT63nnUbaPeWeKI5rWXl1ns9RGTuuiXpiQ8Fg7WXIZLBTgKywIpW/2oIfotUo2GpekCAfLeU8Ks+Ogxejnnq9fFKqyFn4HIvkGvM8VJ8ogUbp+UvGThjNdykbysNSuevPb1a5+/i1vxT13Vld1If3Oi2NLp6zpMYlYjZ5muY/gNWLNaTfrO8sRDrp/6LtL3bHwCbFlb5IAouPmZ1xV3742L/rdEKBr+eQ/tAghJdg==
+ bh=3yK8d38K9094fPulArdpwDfbvNm4BT2EzGYk1keqfSQ=;
+ b=Ek9lYSk/aebbtojff/Tol0zmpJYcZlKxaqfAK12SJOUdYHWqSDT31ICStp9wUgWkVmeGXI03q6hSrGjyLkKrGH3hkpPXvjKHoidH2Zm1xJ8TCFxVadAKoKwYTYkl2JUScrQQqgWzIUfF8EsQ6Jwnyi3j7zwyOzYmNUmqT385Z1Z7GFI4ejHg5zuHGdAiNUBNPMeRIjaQRGeDuaq42rLVaz+44LBrN7KpIJDmhrrVvd7waJjjxOlTIoOTlWH6YS2IGTRyxJA1I1JEJo4FpD6UlRCWmMIcupZUg+MbqQA4HdBy7Zl2YN0ZYimi6oM5Tuatce/f8+a6ktU8PlqnvuMesQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
  by DM4PR12MB5964.namprd12.prod.outlook.com (2603:10b6:8:6b::6) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.11; Fri, 28 Aug 2026 19:27:18 +0000
+ 15.21.360.11; Fri, 28 Aug 2026 19:27:23 +0000
 Received: from PH0PR12MB7957.namprd12.prod.outlook.com
  ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
  ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 19:27:12 +0000
+ 19:27:23 +0000
 From: Ido Schimmel <idosch@nvidia.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -52,19 +52,17 @@ Cc: davem@davemloft.net,
 	willemdebruijn.kernel@gmail.com,
 	aksecurity@gmail.com,
 	noam.caspi@mail.huji.ac.il,
-	Ido Schimmel <idosch@nvidia.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 3/4] ipv6: udp: Create exceptions before socket matching
-Date: Fri, 28 Aug 2026 22:23:43 +0300
-Message-ID: <20260828192344.2596928-4-idosch@nvidia.com>
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net v2 4/4] selftests: net: Add exception cache tests
+Date: Fri, 28 Aug 2026 22:23:44 +0300
+Message-ID: <20260828192344.2596928-5-idosch@nvidia.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260828192344.2596928-1-idosch@nvidia.com>
 References: <20260828192344.2596928-1-idosch@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: TL0P290CA0012.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::12) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+X-ClientProxiedBy: TL0P290CA0006.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:5::9)
+ To PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,143 +71,652 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB5964:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7c57f26-9534-4009-3f8b-08df053a5c0e
+X-MS-Office365-Filtering-Correlation-Id: c5ee87fb-4871-4661-74a0-08df053a6277
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|10067099003|11063799006|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	dfmLvyp4DdKS14VUvKjzWD8IDbTgQQMxcesJSs6uxpr//qMh1sjr3t+TG+KgmtmWR2OGwBvIn/zzCg/m1Be8+8z41/rzZkXNVpX2tWLItPvaxslWbgp5pId0NVSTazAXVouiju4rL9FcIgC2byG/dQyiVcFlpJgAqkxIlygBYgFos4t53/g8HvsUCEDENtgljSZvivqMD8my7fwdkFbqW1lrGmAi+ZkSxaAqnd6vfAZDyaoiirjLt0O6seafgxEwhqJQ5iR4oZ1agi/Qde5TRqY6sTKJCyvAiZ8G2ErbBaNwYY+qq7Qp+vEMvoEh6cHTR6QqpakZoBeEbvIfdmyJx5SrYq1Lh78Bupb1gEbvizUN9/b7tGWQObWLn4XVJvPn7OoSBg1e0xtosMAproNnqBiCSsurrLkMJxtnfNehVX1qrP1fbiQy/AT3Sq5pkvo2A/07Ia4cvv+LyUiZQ5HCfvAqgVLbBoUmXwSjLNBZ1hH/4ufiRIgGt2m1UD6BBWuKmMjaH+sRFW2WI0YAAYOPoxZ8zy+IzCApt4EdRmThTUMATkc5GlLTr6bjRETtXUbue5bkWCFuKtw8LwQ00t+3n2Mk+w3jQZH5fx+qaHDGiMxgrzoB0pASpWJqVziaQmECVoyXhhEHfISaq7Zx8jyVGzm87iJY1HsYNG5/wFEQhN4=
+	WvyuJMsnC9CrBnCooXsmtAJOtoCZ3G9gyBa4YeWRSExodxt6+7b5YJ3v3WLOdTcrx60hXTqjz8B9LwnTfgr6jVTS6ZqifD76jqSQ5bYuSnD9MgpDF+fgQCGW1GVZOKwR+RahAHW8gZkTX/WGMvpcrg5hqFCNoQ2r/PPvEpBhyJm76ov8QLPXaOehSmB9iFMYcwWedq3x4gMpzRFKaydrbEr1UeGUOLYXP9AkzMR5FVwc2gzbW/BKpTQoo3Ej8LIAW8Z2IE4CHdnYugDBeALWvyL088VvOEJ45ir6Guo0Btj5z/JzN+b8xcK4AfCVAc8NCD8W4LoTs4vxxQHv7PDof0l1RLgNqJAd4LSdHHTugPCqMGcSBXh+pUmNgI8XTbigmWvD1bwmxfal4loa7ShyPavmRZgSTFgMm5TZXDEmCKCAFTIMu7JnLFr+WclLLNPBMMEZYejVJn/jfEpvWnPTykOfSwe7dMxnh1w0wiawkt28xF0PpbaWzNeJGpmErIPINebw53DLIwpHjKhees4TJA/S56T9jDMxhLbBujDGX3OouySqPiVxolRuEWm9Ms+NFM+a/Ml4HDVOHWq4KdCvskAoZhxVrt1T8IGmI+ZqZE01pX6F7SbAXfTIQ74QwJoXM/MtLtP1q0jPA+tIPrJ5kYckc8ppnVmlXAzLq6Lg8CM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vx9SXjTIXxoT0MkwytakUf1oUiqXdueeOTOQKV9WaZEJ5QhMNkrVfW2byIX/?=
- =?us-ascii?Q?aFW9AA9lB24eGB9YoCSMeIspIYtSQSxTL5Rr1D8wHYp/uuPpJkSl8Q9u1dYK?=
- =?us-ascii?Q?gKqi3VmZ8KBwwNDIIAwQYI92eh9XPBCslkOaZIcmQUzPCH4IDf01HDFzUVcL?=
- =?us-ascii?Q?bUksCvBbfOQd3xHOgg8Avp2WrLDRfBRFQ059HbvzXVbJpjq75VtL5XCiiuL0?=
- =?us-ascii?Q?Bu7B2c9MifqQm2Ll+ItH1eEyudILjhYKJw+F36fX/T0VP1sZyO6KnKDMclTZ?=
- =?us-ascii?Q?0A3hJe69ez/YQbUGM4j8csOTEUOWcIXNiZ9EX0InvPuUzk5i9Zz97dmixvex?=
- =?us-ascii?Q?gCT25MtrWJGfXvEidYwL58cSlbli0cSbkdju2Ck8tYJcp3Rz0pVlPou34hJW?=
- =?us-ascii?Q?nSGGKKJVLebBwn2eEypE4xfSjj0kEAwwEifbBSlg/ZmPXZ/Vi692epyvLH2e?=
- =?us-ascii?Q?sIvlDQU7UkOFbR9X3S9FqaXuGZkUJUKkJNmYWFqYNRWcw5MPRILSRzTdQ5Wh?=
- =?us-ascii?Q?v50/vHuKOY1flooax8dqeX37/uCr6nm+/oVWnkDhJXtFx6m0dCJ0FMrzYyb6?=
- =?us-ascii?Q?Hf5OpoYCEzu1lEXx7SySAU13DOhWqTZQ7hYU3pcpHGFZAHTur8Q40u3xBMtC?=
- =?us-ascii?Q?aav+l6iVtiIzvZEtJcsp9vd1rHbMbcT/OnW9L6k0skCLE1p2S/1PJPY2ko2C?=
- =?us-ascii?Q?BxchQNuAEqwxXTg7OwNV+Ji3Fkl4l+7+5zWsEh+oq5vGhqSk8cjnQ3blAhVD?=
- =?us-ascii?Q?lPOlZIsastklp8M9FVQ+46cjfKJ1Hc4sxKPL8VRIA4L5LxBMiuMLe/imj3xS?=
- =?us-ascii?Q?VWiQ+A0R1Xn97Q57mVnJP1UpyoXoLVVNhQECCrBa3kH0XjGHwaDwyOFz+dgN?=
- =?us-ascii?Q?TrlxckMBhZqMqqhsqNRJIIaQ8jK+ylgNLoWQytcAA9itdOkED6V6lVk0sANe?=
- =?us-ascii?Q?Cy231OP26Fug5Kq0bwUyXXwecfUJY3RSealZO5Lsu113+Fa9dAhJEwFWyWgQ?=
- =?us-ascii?Q?WZx+bw9y22ERhQZGdksazY2C63rBZ9BBnjqFhsn+EjC0YdTxGeeK/c8MlLJH?=
- =?us-ascii?Q?ZQ/nMSLKXn+hJIAgk+mTrwiCAoIGzXxF9c6HCypp7P4aL8gNtQa1czTrKVBz?=
- =?us-ascii?Q?CfJPPNkXNzHCV9CgBFH1N0ohvWOo4AY2M2VLfs+0S6Y/wGUNt1V70CKVpLW9?=
- =?us-ascii?Q?0p8p2eyu3cTQjDNdTyOAGahTpphdbM/gJh8RYd02yd3GLUMotEF7Aljo2+pj?=
- =?us-ascii?Q?46y2chuDQnKtXEL7iV+RxicG+9JwGRoWaBv7FdWy5haPl/3q6Bb3WpubYw1t?=
- =?us-ascii?Q?Qz7LFMwYuMVfKpeyEugsTsd3FdDP7s5CPVIuKYqwW7YUSa38ABw6v9n+NkRP?=
- =?us-ascii?Q?H/NOnRRGX8FwzHJs0RxqKICo0Or7kc4NwpEfoJwmBUrQtW0ytFF5Nx4FRCVm?=
- =?us-ascii?Q?4FsIfTQmWZwW7le+OLtcXoX9V8joY2BKBxIL+i4JaHS5iV3oq1Fb3aCKWzEz?=
- =?us-ascii?Q?zLd/PjdKw0ifXF6qdObMuaiAMDZ5Xx64iVDXL2mp9IhUdm42sXSxxx2cnG2L?=
- =?us-ascii?Q?o58LaRteH9NzbncZZ70h8raP4p/6I48zT2Zc0HJbN+9zgQ+tJ1bgCGXMUlzF?=
- =?us-ascii?Q?lUHwuUOGENxOcEA3pkBlgML0iXfSYD0Exi0+EfgpVVgtHxg7RZlD8Pi++Wnr?=
- =?us-ascii?Q?WXUBGXHGMRz3tvNo/MvyO6ZdPbOHoCHSU43zCGBj7c5ZSqvFcSQ+WTOgayPz?=
- =?us-ascii?Q?sdQvQb2Ssw=3D=3D?=
+	=?us-ascii?Q?a6ECZ5gIuN+LcnzAMj07TlN3BK+r32Zp4DahBlqt/IHpY/Iba4WrAmE6VZaO?=
+ =?us-ascii?Q?9+7d3dbfSun39BaqdJgNbADnlAQAhyS+d7Y5rxZUZFvG7nxH9Yb33gkwKC9l?=
+ =?us-ascii?Q?UiWfiaFRemEUwcYbMNTXOALCQrAm1FqRrmwDvR2+Xc4zJN+wCX2aHqCVhtCV?=
+ =?us-ascii?Q?BvUNotR7VpiRVN8prkNKYo00D08vJDtTlajI2kewNzkNYx23ixQc7F0cyKKH?=
+ =?us-ascii?Q?Xszo8VvcVIRl87U5oOfOTZ45QDmOmJmgC24W+RZ3Uhg4YqzFB6OQEsigbXnH?=
+ =?us-ascii?Q?WYBEZ6lQ/tMxz7xdHRQmAxemIA/DUTxmtu9XOyl3i8LNonpHXkBwO/rWAPYl?=
+ =?us-ascii?Q?Tdwh9c2y9m8xOK08dk3aWBQY5JWPnXkUIZfg1eBDYpyvamZaHa1ifw22dbSB?=
+ =?us-ascii?Q?QbuzoauWHw/m6dxFHXKGcjsL3J77wOi7QPmoms7uir3it93YxGRrmo/PWbEf?=
+ =?us-ascii?Q?XW+6+a5FELDe1A74iew8eMR4AASphrulNi/RtWM/FEU9fou4dJCnvik9svKP?=
+ =?us-ascii?Q?dA33MZ9oX6FMcNV/L/BtxSpMqtosv627BR29krxpqjmJmIvm+uu/f2IEtv0x?=
+ =?us-ascii?Q?Uuu2dSzggWh46laS8TNbSUSpAA4J4hpVstzb9+3aNzU+Iurhj8sN747jnAxk?=
+ =?us-ascii?Q?C/uoGeRvtzibf5WrJmw1UBvqLZ8Zo/CF+CcSo7Ft+gjBssZ35WatT9Gaep7S?=
+ =?us-ascii?Q?/avbSHOHP6QXbWcPEy5usqSFHWLpKBvviUlRIeCjQfyeNZ1k0DzbLL6/ON/x?=
+ =?us-ascii?Q?QoVbiEM6ySaZGg5OKLs8wUff+ns8/wGU++t2/OKqVxSUFrTifmcM4TjTdHjG?=
+ =?us-ascii?Q?eoBrs9AdLJmJ311zu3JXiGpcsYgSNvMV539FGnJi9UPNTD62ZGriPt0tPCLx?=
+ =?us-ascii?Q?d6vIzAOxeKUby3QeK57yJ4owI05/rplOAQpMB56cNgmeRu2SO/LMKv3jFhYT?=
+ =?us-ascii?Q?ZRiHBIo1RJ9fR90YwTec9HTw3jWAdOojlpHwYbiqL7ZPwOzaMm3skzoFLmT7?=
+ =?us-ascii?Q?SkhNKoUQOzXBp1nH4Xezw/fZY1Z1CX5euO9y3nH2zGqQYhBA7IeD+1WShP/V?=
+ =?us-ascii?Q?axIXkcTtzJPH+QLJJ21jX4ngmoEEJtIWweJJHUaITW4mP1ebM70B4YGfM5BE?=
+ =?us-ascii?Q?QtJh0Jz514mExx5RFqqtZjMWNkuWkcDCnQhvJ+DjwKHhOTyLaCn1nuHhrJEZ?=
+ =?us-ascii?Q?ulgylBMSsK2pSoi46c4KzFcA61S+R7FOaGPWf6/zp2pHEkrnXAu+i+qmKlKc?=
+ =?us-ascii?Q?0d6A7toL/P0Zeqw3uSYeQjPoFuZ++uI9KtXIoIXcubPdOC4tG/m7h/FiNlP1?=
+ =?us-ascii?Q?m8kXQqJNpprl2SLXOOydaiYXmbdMiEBsbD6Hks/BlG2ovIrwLg7s6g0i+0oo?=
+ =?us-ascii?Q?Dd+M2img9jHJKBwB0/RDk6Wrr6+gEd4nN57ailu6kOyLlHdzeh/+cEKEsCBl?=
+ =?us-ascii?Q?kauiO2HN19IGqN/uLcrV4Fggj/BXgoCI8RHTq4+ICEhRZM0fHuZBWhOXKq+D?=
+ =?us-ascii?Q?avecz1i7Q8bfc9ZMoTSTFPGaJfSZbfKgdyegqHcMht7VU8Ge2gyLOfO2YuvR?=
+ =?us-ascii?Q?Zeky5SMQp5uY3e88rhb5SRHdIcXmg+JRfIUSztADN60/6jszU8VIjqds2EjN?=
+ =?us-ascii?Q?+DZ9o2cr1VcGPIWatx3UKr3CQXRtDFet2wRb+LxLnqCmfbLEamw+rD3Wm8nt?=
+ =?us-ascii?Q?wasGdLcFO/KGb9LnaIm194qWF4rbJkT7lDEvoMEnpx2Y1AH7rNgKL8sWySD0?=
+ =?us-ascii?Q?0I442/wCiQ=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7c57f26-9534-4009-3f8b-08df053a5c0e
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5ee87fb-4871-4661-74a0-08df053a6277
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 19:27:12.3586
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 19:27:22.9617
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8/fwJAIw6MppQbdB5BpbZmzI0nk4gS4Jbve7AC8JS4zELKm8tBYJINq3u4PSo2caR2AVdCaE5PYbwJ4dl5H8Kw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: p6y8NZ1dAHS8koat0iS9U8M17YqnvhaCh0CKa74fn/E82gkkTrlJuaw8PK5UYtT1HvrXlaPMowIrZWMdoJrsGA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5964
 
-Currently, when ICMPv6 Packet Too Big and Redirect Message packets are
-locally delivered and quote a UDP packet, an exception is only created
-in the IPv6 exception cache if the kernel can match the UDP packet to an
-existing socket.
+Add a test for the IPv4 and IPv6 exception caches, covering the
+exceptions that are created in response to ICMP errors quoting a UDP
+packet.
 
-This behavior allows off-path attackers to conduct a side-channel attack
-on the exception cache in order to discover the ephemeral port used by a
-connected UDP socket.
+The topology consists of a host (h1) that reaches a remote host (h2)
+via a router (r1), with a second router (r2) attached to the segment
+shared by h1 and r1. UDP packets are injected using a packet socket, so
+that an ICMP error quoting them is only matched to a socket when one was
+opened separately with the same source port. PMTU errors are provoked by
+lowering the MTU of the far end of the path and redirects by pointing
+r1's route towards h2 back over the segment it received the packet from.
 
-Commit 4785305c05b2 ("ipv6: use siphash in rt6_exception_hash()") and
-commit a00df2caffed ("ipv6: make exception cache less predictible") tried
-to mitigate such attacks by making it harder for attackers to discover
-hash collisions in the exception cache and by randomizing the number of
-exceptions a hash bucket can hold, respectively. Unfortunately, both of
-the mitigations can be bypassed.
+The following is tested for both address families and for both PMTU and
+redirect exceptions:
 
-Instead, mitigate such attacks by always creating an exception, even
-before trying to find a matching socket. Do that by calling
-ip6_update_pmtu() and ip6_redirect(), the helpers used when the quoted
-packet did not originate from a socket.
+* An error that is not matched to a socket creates an exception that
+  carries the new MTU or gateway.
+* An error that is matched to a socket creates the same exception.
 
-This means that guesses (right or wrong) from an off-path attacker will
-always result in an exception being created or updated in the cache that
-the attacker can observe.
+The PMTU tests further verify that a lower PMTU replaces the one stored
+in the exception whereas a higher one does not, and that a socket which
+disabled PMTU discovery using IP{,V6}_PMTUDISC_OMIT gets the same
+exception as the other cases.
 
-Pass the ifindex of the ingress device and the default uid, in a similar
-fashion to icmpv6_err(). Unlike IPv4, an oif of 0 would not match any
-nexthop in ip6_redirect_nh_match() and no exception would be created in
-response to a Redirect Message.
+Without "ipv4: udp: Create exceptions before socket matching" and "ipv6:
+udp: Create exceptions before socket matching", the tests that do not
+open a socket fail:
 
-Note that this does not allow attackers to create exceptions that they
-could not create before, as both helpers can already be reached with
-little to no validation. For example, by sending an ICMPv6 error that
-quotes an ICMPv6 Echo Reply or one that quotes a UDP source port that
-matches a wildcard socket.
+ # ./exception_cache.sh
+ TEST: IPv4: PMTU: exception without a matching socket               [FAIL]
+         No socket: exception does not carry an MTU of 1400
+ TEST: IPv6: PMTU: exception without a matching socket               [FAIL]
+         No socket: exception does not carry an MTU of 1400
+ TEST: IPv4: PMTU: exception with a matching socket                  [ OK ]
+ TEST: IPv6: PMTU: exception with a matching socket                  [ OK ]
+ TEST: IPv4: PMTU: exception with a socket ignoring it               [FAIL]
+         PMTU discovery disabled: exception does not carry an MTU of 1400
+ TEST: IPv6: PMTU: exception with a socket ignoring it               [FAIL]
+         PMTU discovery disabled: exception does not carry an MTU of 1400
+ TEST: IPv4: Redirect: exception without a matching socket           [FAIL]
+         No socket: exception does not carry the new gateway
+ TEST: IPv6: Redirect: exception without a matching socket           [FAIL]
+         No socket: exception does not carry the new gateway
+ TEST: IPv4: Redirect: exception with a matching socket              [ OK ]
+ TEST: IPv6: Redirect: exception with a matching socket              [ OK ]
 
-Also note that in the good case (matched socket) the above scheme comes
-at the cost of an extra route lookup, as the no socket helpers perform
-their own lookup before the one performed by ip6_sk_update_pmtu() /
-ip6_sk_redirect(). When the two resolve to different nexthops, it also
-results in two exceptions being created for the same destination IP. One
-in the exception cache of the nexthop resolved by the no socket helpers
-and another in the exception cache of the nexthop used by the socket.
-
-Fixes: 2b760fcf5cfb ("ipv6: hook up exception table to store dst cache")
-Cc: stable@vger.kernel.org
-Reported-by: Amit Klein <aksecurity@gmail.com>
-Reported-by: Noam Caspi <noam.caspi@mail.huji.ac.il>
+Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- net/ipv6/udp.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../testing/selftests/net/exception_cache.sh  | 521 ++++++++++++++++++
+ 2 files changed, 522 insertions(+)
+ create mode 100755 tools/testing/selftests/net/exception_cache.sh
 
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index fd875908ac0c..93478d1ad576 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -690,6 +690,17 @@ static struct sock *__udp6_lib_err_encap(struct net *net,
- 	return sk;
- }
- 
-+static void udpv6_err_update_exception(struct net *net, struct sk_buff *skb,
-+				       u8 type, __be32 info)
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 0f5c178bc224..517c09d60bef 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -28,6 +28,7 @@ TEST_PROGS := \
+ 	double_udp_encap.sh \
+ 	drop_monitor_tests.sh \
+ 	ecmp_rehash.sh \
++	exception_cache.sh \
+ 	fcnal-ipv4.sh \
+ 	fcnal-ipv6.sh \
+ 	fcnal-other.sh \
+diff --git a/tools/testing/selftests/net/exception_cache.sh b/tools/testing/selftests/net/exception_cache.sh
+new file mode 100755
+index 000000000000..8d3eed5c532a
+--- /dev/null
++++ b/tools/testing/selftests/net/exception_cache.sh
+@@ -0,0 +1,521 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Test that the state of the route exception cache after an ICMP error is
++# processed does not depend on whether the quoted packet was matched to a
++# socket. Otherwise, an off-path attacker can probe the cache to discover the
++# ephemeral port used by a connected UDP socket.
++#
++# When the quoted packet is not matched to a socket, the same exception is
++# created as when it is matched, so that neither its presence nor its contents
++# reveal the result of socket matching.
++#
++#                              +----+
++#                    +---------| r1 |
++#                    |         +----+
++#  +----+   +--------+            | .1
++#  | h1 |---| bridge |            |    198.51.100.0/30
++#  +----+   +--------+            |    2001:db8:2::/64
++#      .1            |            | .2
++#                    |         +----+           +----+
++#                    +---------| r2 |-----------| h2 |
++#                    .2   .3   +----+ .1     .2 +----+
++#                                   203.0.113.0/24
++#                                   2001:db8:3::/64
++#         192.0.2.0/24
++#         2001:db8:1::/64
++#
++# Traffic from h1 to h2 is routed via r1, which reaches h2's network via r2
++# over the point-to-point link. The MTU of the r2 - h2 link is lowered so that
++# r2 emits ICMP errors towards h1.
++#
++# For the redirect tests r1's route to h2's network is replaced with one via r2
++# on the shared segment, so that r1 forwards the packet back to the segment it
++# arrived from and emits a redirect towards h1.
++#
++# The packets that provoke the ICMP errors are injected with a packet socket so
++# that no socket is ever associated with them. A socket is created separately,
++# with socat, when a test needs the ICMP error to be matched.
++
++# shellcheck disable=SC1091,SC2034,SC2154,SC2329
++source lib.sh
++
++require_command jq
++require_command mausezahn
++require_command nstat
++require_command socat
++
++ALL_TESTS="
++	pmtu_no_socket_ipv4
++	pmtu_no_socket_ipv6
++	pmtu_socket_ipv4
++	pmtu_socket_ipv6
++	pmtu_omit_ipv4
++	pmtu_omit_ipv6
++	redirect_no_socket_ipv4
++	redirect_no_socket_ipv6
++	redirect_socket_ipv4
++	redirect_socket_ipv6
++"
++
++# Shared segment.
++H1_ADDR4=192.0.2.1
++R1_ADDR4=192.0.2.2
++R2_ADDR4=192.0.2.3
++H1_ADDR6=2001:db8:1::1
++R1_ADDR6=2001:db8:1::2
++R2_ADDR6=2001:db8:1::3
++
++# r1 - r2 link.
++R2_R1_ADDR4=198.51.100.2
++R2_R1_ADDR6=2001:db8:2::2
++
++# r2 - h2 link.
++H2_ADDR4=203.0.113.2
++H2_NET4=203.0.113.0/24
++H2_ADDR6=2001:db8:3::2
++H2_NET6=2001:db8:3::/64
++
++SPORT=12345
++DPORT=54321
++
++# The MTU of the shared segment and of the r1 - r2 link. Large enough for the
++# injected packets to reach r2 intact.
++SEGMENT_MTU=2000
++# Size of the injected packets. The PMTU tests need a size that exceeds every
++# MTU used for the r2 - h2 link, so that r2 responds with an ICMP error. The
++# redirect tests need a size that does not, otherwise r2 would respond with an
++# ICMP error in addition to the redirect emitted by r1.
++PMTU_PACKET_SIZE=1800
++REDIRECT_PACKET_SIZE=100
++
++# The MTUs used for the r2 - h2 link. All of them must be at least
++# IPV6_MIN_MTU, otherwise IPv6 silently ignores the error instead of creating
++# an exception.
++MTU_MID=1400
++MTU_LOW=1300
++
++# Values for the IP{,V6}_MTU_DISCOVER socket option.
++PMTUDISC_DONT=0
++PMTUDISC_OMIT=5
++
++SOCAT_PID=
++
++linklocal_get()
 +{
-+	if (type == ICMPV6_PKT_TOOBIG)
-+		ip6_update_pmtu(skb, net, info, skb->dev->ifindex, 0,
-+				sock_net_uid(net, NULL));
-+	else if (type == NDISC_REDIRECT)
-+		ip6_redirect(skb, net, skb->dev->ifindex, 0,
-+			     sock_net_uid(net, NULL));
++	local ns=$1; shift
++	local dev=$1; shift
++
++	ip -n "$ns" -j -6 addr show dev "$dev" | \
++		jq -r '.[]["addr_info"][] | select(.scope == "link") | .local'
 +}
 +
- static int udpv6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 		     u8 type, u8 code, int offset, __be32 info)
- {
-@@ -703,6 +714,8 @@ static int udpv6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	int harderr;
- 	int err;
- 
-+	udpv6_err_update_exception(net, skb, type, info);
++linklocal_exists()
++{
++	local ns=$1; shift
++	local dev=$1; shift
 +
- 	daddr = seg6_get_daddr(skb, opt) ? : &hdr->daddr;
- 	saddr = &hdr->saddr;
- 	sk = __udp6_lib_lookup(net, daddr, uh->dest, saddr, uh->source,
++	[ -n "$(linklocal_get "$ns" "$dev")" ]
++}
++
++family_vars_set()
++{
++	local family=$1; shift
++
++	FAMILY=$family
++
++	if [ "$family" -eq 4 ]; then
++		H1_ADDR=$H1_ADDR4
++		H2_ADDR=$H2_ADDR4
++		MZ_FAMILY_OPT=()
++		# Without the Don't Fragment bit set r2 fragments the packet
++		# instead of reporting the MTU of the next hop.
++		MZ_IP_OPTS="df,"
++		SOCAT_DST="UDP4-CONNECT:$H2_ADDR4:$DPORT"
++		SOCAT_BIND="bind=$H1_ADDR4:$SPORT"
++		SOCAT_PMTUDISC="ip-mtu-discover"
++	else
++		H1_ADDR=$H1_ADDR6
++		H2_ADDR=$H2_ADDR6
++		MZ_FAMILY_OPT=(-6)
++		MZ_IP_OPTS=
++		SOCAT_DST="UDP6-CONNECT:[$H2_ADDR6]:$DPORT"
++		SOCAT_BIND="bind=[$H1_ADDR6]:$SPORT"
++		SOCAT_PMTUDISC="ipv6-mtu-discover"
++	fi
++}
++
++topology_setup()
++{
++	local ns
++
++	setup_ns h1 r1 r2 h2 sw
++	defer cleanup_all_ns
++
++	# Link-local addresses are generated from the MAC address and read
++	# back during setup, so request that generation mode explicitly and
++	# make the addresses available as soon as the devices are brought up.
++	for ns in "$h1" "$r1" "$r2" "$h2" "$sw"; do
++		ip netns exec "$ns" sysctl -qw \
++			net.ipv6.conf.default.addr_gen_mode=0 \
++			net.ipv6.conf.default.accept_dad=0 \
++			net.ipv6.conf.all.accept_dad=0
++	done
++
++	ip -n "$sw" link add name br0 type bridge
++	ip -n "$sw" link set dev br0 mtu "$SEGMENT_MTU" up
++
++	ip -n "$h1" link add name eth0 mtu "$SEGMENT_MTU" type veth \
++		peer name swp1 mtu "$SEGMENT_MTU" netns "$sw"
++	ip -n "$r1" link add name eth0 mtu "$SEGMENT_MTU" type veth \
++		peer name swp2 mtu "$SEGMENT_MTU" netns "$sw"
++	ip -n "$r2" link add name eth0 mtu "$SEGMENT_MTU" type veth \
++		peer name swp3 mtu "$SEGMENT_MTU" netns "$sw"
++	ip -n "$r1" link add name eth1 mtu "$SEGMENT_MTU" type veth \
++		peer name eth1 mtu "$SEGMENT_MTU" netns "$r2"
++	ip -n "$r2" link add name eth2 type veth peer name eth0 netns "$h2"
++
++	ip -n "$sw" link set dev swp1 master br0 up
++	ip -n "$sw" link set dev swp2 master br0 up
++	ip -n "$sw" link set dev swp3 master br0 up
++
++	ip -n "$h1" link set dev eth0 up
++	ip -n "$r1" link set dev eth0 up
++	ip -n "$r1" link set dev eth1 up
++	ip -n "$r2" link set dev eth0 up
++	ip -n "$r2" link set dev eth1 up
++	ip -n "$r2" link set dev eth2 up
++	ip -n "$h2" link set dev eth0 up
++
++	ip -n "$h1" address add "$H1_ADDR4/24" dev eth0
++	ip -n "$r1" address add "$R1_ADDR4/24" dev eth0
++	ip -n "$r2" address add "$R2_ADDR4/24" dev eth0
++	ip -n "$r1" address add 198.51.100.1/30 dev eth1
++	ip -n "$r2" address add "$R2_R1_ADDR4/30" dev eth1
++	ip -n "$r2" address add 203.0.113.1/24 dev eth2
++	ip -n "$h2" address add "$H2_ADDR4/24" dev eth0
++
++	ip -n "$h1" -6 address add "$H1_ADDR6/64" dev eth0 nodad
++	ip -n "$r1" -6 address add "$R1_ADDR6/64" dev eth0 nodad
++	ip -n "$r2" -6 address add "$R2_ADDR6/64" dev eth0 nodad
++	ip -n "$r1" -6 address add 2001:db8:2::1/64 dev eth1 nodad
++	ip -n "$r2" -6 address add "$R2_R1_ADDR6/64" dev eth1 nodad
++	ip -n "$r2" -6 address add 2001:db8:3::1/64 dev eth2 nodad
++	ip -n "$h2" -6 address add "$H2_ADDR6/64" dev eth0 nodad
++
++	ip netns exec "$r1" sysctl -qw net.ipv4.ip_forward=1
++	ip netns exec "$r1" sysctl -qw net.ipv4.conf.all.send_redirects=1
++	ip netns exec "$r1" sysctl -qw net.ipv6.conf.all.forwarding=1
++	ip netns exec "$r2" sysctl -qw net.ipv4.ip_forward=1
++	ip netns exec "$r2" sysctl -qw net.ipv6.conf.all.forwarding=1
++
++	ip netns exec "$h1" sysctl -qw net.ipv4.conf.all.accept_redirects=1
++	ip netns exec "$h1" sysctl -qw net.ipv4.conf.eth0.accept_redirects=1
++	ip netns exec "$h1" sysctl -qw net.ipv6.conf.all.accept_redirects=1
++	ip netns exec "$h1" sysctl -qw net.ipv6.conf.eth0.accept_redirects=1
++
++	slowwait 5 linklocal_exists "$r1" eth0
++	check_err $? "r1: link-local address was not generated"
++	slowwait 5 linklocal_exists "$r2" eth0
++	check_err $? "r2: link-local address was not generated"
++
++	R1_LLADDR=$(linklocal_get "$r1" eth0)
++	R2_LLADDR=$(linklocal_get "$r2" eth0)
++	R1_MAC=$(ip -n "$r1" -j link show dev eth0 | jq -r '.[]["address"]')
++	R2_MAC=$(ip -n "$r2" -j link show dev eth0 | jq -r '.[]["address"]')
++
++	ip -n "$h1" route add "$H2_NET4" via "$R1_ADDR4" dev eth0
++	ip -n "$h1" -6 route add "$H2_NET6" via "$R1_LLADDR" dev eth0
++	ip -n "$r1" route add "$H2_NET4" via "$R2_R1_ADDR4" dev eth1
++	ip -n "$r1" -6 route add "$H2_NET6" via "$R2_R1_ADDR6" dev eth1
++	ip -n "$h2" route add default via 203.0.113.1 dev eth0
++	ip -n "$h2" -6 route add default via 2001:db8:3::1 dev eth0
++
++	far_mtu_set "$MTU_MID"
++}
++
++# Make r1 forward towards h2's network over the segment it receives the packet
++# from, so that it emits a redirect towards h1.
++redirect_route_set()
++{
++	ip -n "$r1" route replace "$H2_NET4" via "$R2_ADDR4" dev eth0
++	ip -n "$r1" -6 route replace "$H2_NET6" via "$R2_LLADDR" dev eth0
++
++	# __ip_do_redirect() only creates an exception if the new gateway is
++	# already a valid neighbour. Otherwise it merely triggers address
++	# resolution. IPv6 resolves the target itself, in rt6_do_redirect().
++	ip -n "$h1" neigh replace "$R2_ADDR4" lladdr "$R2_MAC" dev eth0 \
++		nud permanent
++}
++
++far_mtu_set()
++{
++	local mtu=$1; shift
++
++	ip -n "$r2" link set dev eth2 mtu "$mtu"
++	ip -n "$h2" link set dev eth0 mtu "$mtu"
++}
++
++socket_is_open()
++{
++	ip netns exec "$h1" ss -uHn "sport = :$SPORT" | grep -q .
++}
++
++socket_start()
++{
++	# Disable PMTU discovery by default so that ICMP errors are not
++	# reported to the socket. Otherwise socat would exit when the first one
++	# arrives and later packets in the same test would not be matched to a
++	# socket. The exception is still created, as ip{,6}_sk_accept_pmtu()
++	# only rejects IP{,V6}_PMTUDISC_{INTERFACE,OMIT}.
++	local pmtudisc=${1:-$PMTUDISC_DONT}
++
++	# Send socat's diagnostics to /dev/null. It reports the ICMP errors
++	# that reach the socket, which is exactly what the tests provoke.
++	ip netns exec "$h1" socat -u -lf/dev/null \
++		"$SOCAT_DST,$SOCAT_BIND,$SOCAT_PMTUDISC=$pmtudisc" \
++		OPEN:/dev/null,wronly=1 &
++	SOCAT_PID=$!
++	defer socket_stop
++
++	slowwait 5 socket_is_open
++	check_err $? "socket did not open"
++}
++
++socket_stop()
++{
++	[ -z "$SOCAT_PID" ] && return 0
++
++	kill "$SOCAT_PID" &> /dev/null
++	wait "$SOCAT_PID" 2> /dev/null
++	SOCAT_PID=
++}
++
++# Inject a packet towards h2 with a packet socket. No socket is associated with
++# it, so an ICMP error quoting it is matched to a socket only if one was
++# created separately with the same source port.
++packet_send()
++{
++	local size=$1; shift
++
++	ip netns exec "$h1" mausezahn "${MZ_FAMILY_OPT[@]}" eth0 \
++		-a own -b "$R1_MAC" -A "$H1_ADDR" -B "$H2_ADDR" \
++		-t udp "${MZ_IP_OPTS}sp=$SPORT,dp=$DPORT" \
++		-p "$size" -c 1 -q
++}
++
++exception_show()
++{
++	if [ "$FAMILY" -eq 4 ]; then
++		# IPv4 exceptions without a bound route are not dumped, but
++		# "route get" reports the exception and binds a route to it.
++		ip -n "$h1" route get "$H2_ADDR"
++	else
++		# IPv6 does not report a cache indication in "route get"
++		# output, so dump the exceptions instead.
++		ip -n "$h1" -6 route show cache | grep -F "$H2_ADDR" || true
++	fi
++}
++
++exception_mtu_get()
++{
++	exception_show | grep -o "mtu [0-9]*" | cut -d ' ' -f 2
++}
++
++exception_gw_get()
++{
++	exception_show | grep -o "via [0-9a-f.:]*" | cut -d ' ' -f 2
++}
++
++exception_mtu_check()
++{
++	local expected=$1; shift
++
++	[ "$(exception_mtu_get)" = "$expected" ]
++}
++
++icmp_errors_get()
++{
++	local ctr=IcmpInDestUnreachs
++
++	[ "$FAMILY" -eq 6 ] && ctr=Icmp6InPktTooBigs
++
++	ip netns exec "$h1" nstat -asz "$ctr" | \
++		awk -v ctr="$ctr" '$1 == ctr { print $2 }'
++}
++
++exception_pmtu_check()
++{
++	local mtu=$1; shift
++	local desc=$1; shift
++
++	busywait "$BUSYWAIT_TIMEOUT" exception_mtu_check "$mtu"
++	check_err $? "$desc: exception does not carry an MTU of $mtu"
++}
++
++pmtu_no_socket()
++{
++	local family=$1; shift
++
++	RET=0
++	family_vars_set "$family"
++	topology_setup
++
++	packet_send "$PMTU_PACKET_SIZE"
++	exception_pmtu_check "$MTU_MID" "No socket"
++
++	log_test "IPv$family: PMTU: exception without a matching socket"
++}
++
++pmtu_no_socket_ipv4()
++{
++	pmtu_no_socket 4
++}
++
++pmtu_no_socket_ipv6()
++{
++	pmtu_no_socket 6
++}
++
++pmtu_socket()
++{
++	local family=$1; shift
++	local t0
++
++	RET=0
++	family_vars_set "$family"
++	topology_setup
++	socket_start
++
++	packet_send "$PMTU_PACKET_SIZE"
++	exception_pmtu_check "$MTU_MID" "Matching socket"
++
++	# A lower PMTU replaces the one currently stored in the exception.
++	far_mtu_set "$MTU_LOW"
++	packet_send "$PMTU_PACKET_SIZE"
++	exception_pmtu_check "$MTU_LOW" "Lower PMTU"
++
++	# A higher PMTU is ignored, so the exception is left as it is. Wait
++	# for the error to be received, as otherwise the check below would
++	# pass even if it never was.
++	far_mtu_set "$MTU_MID"
++	t0=$(icmp_errors_get)
++	packet_send "$PMTU_PACKET_SIZE"
++	busywait "$BUSYWAIT_TIMEOUT" until_counter_is ">= $((t0 + 1))" \
++		icmp_errors_get > /dev/null
++	check_err $? "Higher PMTU: ICMP error was not received"
++
++	exception_mtu_check "$MTU_LOW"
++	check_err $? "Higher PMTU: exception does not carry an MTU of $MTU_LOW"
++
++	log_test "IPv$family: PMTU: exception with a matching socket"
++}
++
++pmtu_socket_ipv4()
++{
++	pmtu_socket 4
++}
++
++pmtu_socket_ipv6()
++{
++	pmtu_socket 6
++}
++
++pmtu_omit()
++{
++	local family=$1; shift
++
++	RET=0
++	family_vars_set "$family"
++	topology_setup
++	socket_start "$PMTUDISC_OMIT"
++
++	packet_send "$PMTU_PACKET_SIZE"
++	exception_pmtu_check "$MTU_MID" "PMTU discovery disabled"
++
++	log_test "IPv$family: PMTU: exception with a socket ignoring it"
++}
++
++pmtu_omit_ipv4()
++{
++	pmtu_omit 4
++}
++
++pmtu_omit_ipv6()
++{
++	pmtu_omit 6
++}
++
++exception_gw_check()
++{
++	local expected=$1; shift
++
++	[ -n "$expected" ] && [ "$(exception_gw_get)" = "$expected" ]
++}
++
++redirect_gw_new()
++{
++	if [ "$FAMILY" -eq 4 ]; then
++		echo "$R2_ADDR4"
++	else
++		echo "$R2_LLADDR"
++	fi
++}
++
++redirect_no_socket()
++{
++	local family=$1; shift
++
++	RET=0
++	family_vars_set "$family"
++	topology_setup
++	redirect_route_set
++
++	packet_send "$REDIRECT_PACKET_SIZE"
++	busywait "$BUSYWAIT_TIMEOUT" exception_gw_check "$(redirect_gw_new)"
++	check_err $? "No socket: exception does not carry the new gateway"
++
++	log_test "IPv$family: Redirect: exception without a matching socket"
++}
++
++redirect_no_socket_ipv4()
++{
++	redirect_no_socket 4
++}
++
++redirect_no_socket_ipv6()
++{
++	redirect_no_socket 6
++}
++
++redirect_socket()
++{
++	local family=$1; shift
++
++	RET=0
++	family_vars_set "$family"
++	topology_setup
++	redirect_route_set
++	socket_start
++
++	packet_send "$REDIRECT_PACKET_SIZE"
++	busywait "$BUSYWAIT_TIMEOUT" exception_gw_check "$(redirect_gw_new)"
++	check_err $? "Matching socket: exception does not carry the new gateway"
++
++	log_test "IPv$family: Redirect: exception with a matching socket"
++}
++
++redirect_socket_ipv4()
++{
++	redirect_socket 4
++}
++
++redirect_socket_ipv6()
++{
++	redirect_socket 6
++}
++
++trap defer_scopes_cleanup EXIT
++tests_run
++
++exit "$EXIT_STATUS"
 -- 
 2.55.0
 
