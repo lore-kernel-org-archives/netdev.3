@@ -1,129 +1,105 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from sg-2-1.ptr.blmpb.com (sg-2-1.ptr.blmpb.com [71.18.227.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1113E123F
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 10:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CD13B5E01
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 10:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787911619; cv=none; b=gA15yLYYb05V9+U0Oe3arU5ai8UJNFUfEOf5cAjmtxlFAzt3Lpul6v2XDmQgoDGCAKP6vBKWzv7oktncXtY1XVFQdrv5TqT+X22OGvGsMdBax6l6fbbXpUDcsNfIcLo/Pfxm1SLaKUb/0Bia7BOxcnZ5R26KAAcf2nTtEsBUWfs=
+	t=1787912119; cv=none; b=NJ4X+ijfS4MgzdBh2t3HtJC0/zbHtXsNhkXM70OGeOe7kquvsZMUihZLwBoavcTeUZuNx/Roj+H3sXA5vwyUFafulJxd1Ba1C/2VJH107YZ2nnhESg4L1096qRHJ4eSjwSJBaXDm6eIrXgIbIL3CIVNcKrcQho/MnFL6B22OTAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787911619; c=relaxed/simple;
-	bh=pW75mykq4qb5j9EYWFECBMjJsWX/64+SnhaNBfbhy8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XdciYLmYds94nENFWKZFLrHS4bMe8Nvsbe81JRiskPfFrngdllBntSYcwgh+81efyCQhSbBtFm1i3UBoeqOxjkyX32amR2DrQAP0Xvorltx+mCobrrVJ7oVvuKNcA/on91RTSB0A8UFhZC6EqpMP2LUi1L+s2rAZZhVlRsq/mbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=aCr2Ts20; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1787912119; c=relaxed/simple;
+	bh=1D0z3XDIxhuLPSl3ONCnGkNcEisGAOG8EjoLCXAfyks=;
+	h=Cc:Mime-Version:From:Subject:Date:Message-Id:To:Content-Type; b=aywbYNKNPpDfSsglrMWaZ038aFaQcraPVkNurNq8DjBCNIijsPR0RC9hWWfqV+EZKeoLZoHptYAGusYkCB99MlmWGUbv3a56dImd19aR8DOlVx0qlb5WL2BXUmduIRHjNU8hHmNwJcztXsaQeAiO/Sujs6sWwRAc93vxUorq4Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=sbZeiBYK; arc=none smtp.client-ip=71.18.227.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="aCr2Ts20"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47f96c5b722so484984f8f.0
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787911616; x=1788516416; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=L2d9aOk1DG5PJgTbHtKObATO+j7rQRq+47Wx1t8d6YA=;
-        b=aCr2Ts202u4jI1hLcUVzPwh2k6G3Y1wi5elqMe52jBfN4cSDZsXo5VEIdAVSeIKtZ+
-         hPqjSpgJjm4yBLeFhbaWlo4NP0rsx+1imn/9DSDGUO4Tu3geP4f7qMZKKW2syErQYP23
-         TJHi4Nc9szAw9vVDvYVFwMhFPU2yIPGC/vrrCuRT00anQLgIy1Zt4TwLuU7pNDsQRBYI
-         7j3N/7mvJUIa74GTykJRHTJzQcJuaBaEtLmLSPAmwDUeXA3Ht/ER7qveA05PK3IJXeQy
-         otDiDypyleifcA/stnfvDCi+aMRLdJI4t4zGTZOFUXHRJ1+1i8ykafQ4SSuz3fgso+z7
-         AlsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787911616; x=1788516416;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=L2d9aOk1DG5PJgTbHtKObATO+j7rQRq+47Wx1t8d6YA=;
-        b=Hd3nesenXxIlnM5rTWdIMNSNG476Lc4TRKn+en5LTdgsH4XZoKqSzuFAvDD+jNUhUw
-         47AFqvcjma00/Qat2bFsnX5CeE0+MkGW+zqxrApBOjc8dK86sIRDHpNj2vVb9Ft+HPUN
-         XAMZ5zHxLb4Qg2LNuUEyIynwmGHMbDg/STFZUbYN1y1bT7CmTjf6EynaKEYbKmkQj2AG
-         KAkXcqF+BwcmdXh/NvdCQvI6QROjFyjnrCa344pJ3a1ymTCS/FPHgGg9QzFWh/pg3HSp
-         /+ez7MUphK35ry9k3FHxV/K/SLW7HD5KNSsHDZsEoUl+RTHpnbhll/WIOHBrYJl9Q1Yt
-         cBTQ==
-X-Gm-Message-State: AFuF++l3MtR0QRDUwDe+8V1oWbMeS7Z8xeW+vIwVpbF6w/PIdgy+k5hQ
-	2Fg2J7WQX6CRbvVjXh+E5fiIsS4MX57U6WqtEEMRHstLseUi2WLDtfHjFbwcjplBi0NEyXRHjUo
-	jivsSKwI=
-X-Gm-Gg: AR+sD13+BiDpHQTLAm5eY5aV7fdSTnEEUSb/XjQZJlJCn56elMZruRwQI33rs1uf6W6
-	axwW9K8VpTErYokiLo29+NGYxIRqXwQvMgRV42d6nxK8gisA1fZ8y9LvudNkSMITWKsU7AwyCwh
-	N4ldcnwUSkmJ6aA5xvo+1gpRjLGiHCMEP8Hiln9n2mzbCcnk7JW7+d9ZrMgJGQpoxW/2lIxlHiP
-	juq+aq+9O1c/sQs6zF0lTRfFQVhco2fzv0Xsz/4+mGLUPydlTMa5yfUC97u5CXKeLA5EBLL8WGj
-	7bUnyIm6p1jws+fv/moPlWIP6PacjZQt86DB/BpwfkWz/eiY5IFjCWA5pK+NUz96Hz/M1ZLpeFJ
-	SvaYo4YSOCQDYbfH31nXf2ho8IC8yPAVfmYbv9LW392BbuX/6kK1B5cSxzFx3aQ7V2cbJ0awbEW
-	tnmOkJjXxXmfGgA65YdaQR/PrsXyzMEXTS/yEYA1pC4ZGZMFBb2WMBngHxu48lqF+BZHEyLhkPq
-	cuVwPEtMjs=
-X-Received: by 2002:a05:600c:a418:b0:49b:9433:ea44 with SMTP id 5b1f17b1804b1-49b9433eb4dmr59357095e9.4.1787911615692;
-        Fri, 28 Aug 2026 03:06:55 -0700 (PDT)
-Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49b49cc61cfsm127971735e9.6.2026.08.28.03.06.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 03:06:55 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linus.luessing@c0d3.blue,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net] net: bridge: mcast: fix br_multicast_list_adjacent rcu walk of mglist
-Date: Fri, 28 Aug 2026 13:06:42 +0300
-Message-ID: <20260828100642.2664347-1-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="sbZeiBYK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2604220257; d=cherr.cc; t=1787912104; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=FVK+0yhgCI3q0pPTOyN+Ad8nUAuXDwjVZzyNNRt6CiQ=;
+ b=sbZeiBYKpAWrd+bOcGMsn1aKRqHqkfIzvHOXI15/9QeIYufXRHYA7YxWMplk2Hh9wPRypc
+ 2fdyv30hLq9liH9Nl+yhZK2qxV+dUT7iVK57q1bI0v0EmrdORv7ja2ZlS56iPz3oY+Otyl
+ lKEUj4q1+e6Xd7qmN/2SKVmXw2kfjLqkHlZWIVJXhkOWC3MxNowDLmaLT19UVZpgwpaK30
+ 8PtdUP33JsMKSIWe2qOQo1HbjmXDjw5rssMasdyPctSuXmY6ou/3AaBRgTk1OdtF1sDFz6
+ 1emCP95jmsS6k2VebxX5o3zo/zcPsG5t+i8tb42A0IYSU+eY1Pw2Xag0z5XPFA==
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<stable@vger.kernel.org>, "Shengzhuo Wei" <me@cherr.cc>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: b4 0.16.0
+X-B4-Tracking: v=1; b=H4sIAKFfkWoC/3WNQQ6CMBBFr0Jm7Zi2VkBX3sOwKMMgVQJmWlFDu LuAcenyJf+/N0Jg8RzgmIwgPPjg+24Gs0mAGtddGH01MxhlUpWbDF1sNZLriFsUDhzx2csN97b mPLMppWYH8/kuXPvXKj4XXw6P8soUF9uyaHyIvbzX8qCX3S+S/4sMGjUenNFWVa5UmT1RwyJbI iimafoA3bnXws0AAAA=
+X-Change-Id: 20260827-atl1-cancel-reset-work-54fe8746c623
+From: "Shengzhuo Wei" <me@cherr.cc>
+Subject: [PATCH v2] atlx: atl1: cancel reset and link works on remove
+Date: Fri, 28 Aug 2026 18:14:58 +0800
+Message-Id: <20260828-atl1-cancel-reset-work-v2-1-1ee8a5ac2f47@cherr.cc>
+Content-Transfer-Encoding: 7bit
+To: "Chris Snook" <chris.snook@gmail.com>, 
+	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, "Jeff Garzik" <jeff@garzik.org>
+Received: from [192.168.9.107] ([111.42.148.113]) by smtp.feishu.cn with ESMTPS; Fri, 28 Aug 2026 18:15:01 +0800
+X-Lms-Return-Path: <lba+26a915fa6+277ac2+vger.kernel.org+me@cherr.cc>
+X-Original-From: Shengzhuo Wei <me@cherr.cc>
+Content-Type: text/plain; charset=UTF-8
 
-Sashiko reported a bug [1] that br_multicast_del_port_group unlists the
-port group not using proper rcu helper that preserves the next pointer and
-after that immediately frees the port group without waiting for rcu grace
-period. The only rcu walker of mglist is br_multicast_list_adjacent() and
-it turns out that function has always been buggy because mglist was never
-converted to RCU. Fix it by acquiring the bridge's multicast lock for the
-mglist walk. We can do a proper mglist rcu conversion later.
+atl1_reset_dev_task is scheduled from the interrupt handler on PCIe
+PHY link down and DMA read/write errors, and link_chg_task can be
+pending from link events. atl1_remove() tears down and frees the
+net_device without cancelling either work, so a work scheduled just
+before unregister_netdev() can run after free_netdev() and touch the
+freed adapter.
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
+Cancel both works before unregistering the net_device, as atl2_remove()
+already does for its reset and link works.
 
-Fixes: 07f8ac4a1e26 ("bridge: add export of multicast database adjacent to net_dev")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Fixes: f3cc28c79760 ("Add Attansic L1 ethernet driver.")
+Cc: stable@vger.kernel.org
+Assisted-by: GLM:5.3
+Signed-off-by: Shengzhuo Wei <me@cherr.cc>
 ---
-We can do a proper mglist rcu conversion when net-next opens up.
+Remove-side work cancellation, matching what atl2_remove() already
+does for its reset and link works: the IRQ handler schedules
+reset_dev_task on PCIe PHY link down and DMA errors, and link events
+schedule link_chg_task, but atl1_remove() frees the net_device without
+cancelling either work.
+---
+Changes in v2:
+- Point Fixes at the initial driver commit instead of the 2012 rename
+  commit; both works and the cancel-less remove go back to the
+  original import (Breno Leitao).
+- Link to v1: https://patch.msgid.link/20260828-atl1-cancel-reset-work-v1-1-9a2140dab074@cherr.cc
+---
+ drivers/net/ethernet/atheros/atlx/atl1.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- net/bridge/br_multicast.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
+index 98a4d089270e..b49353a94f5e 100644
+--- a/drivers/net/ethernet/atheros/atlx/atl1.c
++++ b/drivers/net/ethernet/atheros/atlx/atl1.c
+@@ -3128,6 +3128,9 @@ static void atl1_remove(struct pci_dev *pdev)
+ 
+ 	adapter = netdev_priv(netdev);
+ 
++	cancel_work_sync(&adapter->reset_dev_task);
++	cancel_work_sync(&adapter->link_chg_task);
++
+ 	/*
+ 	 * Some atl1 boards lack persistent storage for their MAC, and get it
+ 	 * from the BIOS during POST.  If we've been messing with the MAC
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 3ef5d8bbf552..7fa5f4444c4c 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4967,15 +4967,19 @@ int br_multicast_list_adjacent(struct net_device *dev,
- 		if (!port->dev || port->dev == dev)
- 			continue;
- 
--		hlist_for_each_entry_rcu(group, &port->mglist, mglist) {
-+		spin_lock_bh(&br->multicast_lock);
-+		hlist_for_each_entry(group, &port->mglist, mglist) {
- 			entry = kmalloc_obj(*entry, GFP_ATOMIC);
--			if (!entry)
-+			if (!entry) {
-+				spin_unlock_bh(&br->multicast_lock);
- 				goto unlock;
-+			}
- 
- 			entry->addr = group->key.addr;
- 			list_add(&entry->list, br_ip_list);
- 			count++;
- 		}
-+		spin_unlock_bh(&br->multicast_lock);
- 	}
- 
- unlock:
--- 
-2.47.3
+---
+base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
+change-id: 20260827-atl1-cancel-reset-work-54fe8746c623
 
+Best regards,
+--  
+Shengzhuo Wei <me@cherr.cc>
