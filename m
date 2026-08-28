@@ -1,187 +1,168 @@
-Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49A92472A2;
-	Fri, 28 Aug 2026 06:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E7F41C6A;
+	Fri, 28 Aug 2026 06:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787897320; cv=none; b=h1WzQrDI3XKNS8l29llzc3TTvC2bpYStchCG88FO2p9jCoUzkpIp4c5I/49eL67FKijRhKG/9nGBZtSMY6eTLvgVlaSieQCba2Siny3J2TKahFs+XhizBWoWYhzLUimFzgWLaDpnuKnjsychnGcQsMWjAFXQPkQUnVaslA78a78=
+	t=1787897419; cv=none; b=MS5Y96ECJmJYXHlfddIbQD5y1uUCgCwtW+wFoUyt3mqncrGhh4OkHTSXZyVKip3CON5QLtKL4r8H32Gg9X0RyJZfiHyp9ySKlI1idYMvMpFiyKUWkmXL8yn9OQnEl8fjNPLzqZ5RwXV+NZD0DaRUJ/xPNaREUat8x52dw1QBSjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787897320; c=relaxed/simple;
-	bh=Pt8iG8FRmUsyMAl7DKYsLkgXlyGJTxab3ZqlzdP7+Vw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nuJ38wNqPWbCh/hZiQJWC/m5TEHx5/9xP+NEWsVvdtXfGLhj3U7LCKl6Foqo0AcSEmRYQLDR8K6W17eKxz0sA1BSQAoAMahVF4adpX9GF5xL8lF3GUAlSYGvYJ/nsiYrI2Dv7X5z3IerCYN/7FirgaUqCiwvH25SI7G9Z3kCWCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schauer.to; spf=pass smtp.mailfrom=schauer.to; dkim=pass (2048-bit key) header.d=schauer.to header.i=@schauer.to header.b=nCb7NtYU; arc=none smtp.client-ip=185.70.43.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schauer.to
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schauer.to
+	s=arc-20240116; t=1787897419; c=relaxed/simple;
+	bh=2ShxXbg/WXPkLKVlOfIcxkSzSfE3n62us5GpSUhv3S4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GmphJfXxda1aswYl2OefYlWcbRZ7dhHRb4jIaS9clqGSGC68Wg8jAC4Y0ihU47BWn+sqyJwhQt8C2Ix6gbtGT1VL+MaHdBFg4erIFY7Tx0lPQ98CychpIx92H/7asd3Gsf5KnZ+SOGSKDOb5oTh7FRqkQ6rMMOMBZNojGGVUmEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=cBKT+1MS; arc=none smtp.client-ip=217.92.40.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=schauer.to header.i=@schauer.to header.b="nCb7NtYU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schauer.to;
-	s=protonmail3; t=1787897306; x=1788156506;
-	bh=RdmktDHYrNA4Xpiuvts8V3ojy0sMIivuhS/SjIYmfcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=nCb7NtYULsaqgsDNMVEbG6SioQ8t+tan/JPUIx8SQmp0QsaxDeOvh8XT8//goK12r
-	 yPiENg/rsWaQT9Rk3FugYV4cop6PhBCxSW9y+UaJQnX5vdSXOdN1tte/etTQriFHo3
-	 D50rKdQL4fNP2UQjx1J/SDIPGD8TTtvjoGuMr8XAh/ITOGwJ6jSmfe/Vv5zKtnIMO0
-	 HB5g9D+GKQfTptxJzwzNBT7Bbc96Ftc5cVA9WGRO9NeZhJPndHgmKMo3T5W7o1DQLF
-	 qzXHQDU83UQdXwOqXoIDDE3pEcQfzPewelaSe0emBgd2+pNHVZEAy/gMuUjfdTFgs3
-	 Hx6Jj+ze19YRw==
-X-Pm-Submission-Id: 4hWScS1FP2z2Schl
-From: Florian Schauer <florian@schauer.to>
-To: hawk@kernel.org,
-	ilias.apalodimas@linaro.org
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	linyunsheng@huawei.com
-Subject: [PATCH net v2] page_pool: keep frag_offset aligned for odd-sized requests
-Date: Fri, 28 Aug 2026 08:08:22 +0200
-Message-ID: <20260828060822.2628276-1-florian@schauer.to>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="cBKT+1MS"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A4BA1487E85;
+	Fri, 28 Aug 2026 08:04:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
+	t=1787897058; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=IeXlbKopy25D1cxmA5FDWjy1hNWPVZ0ZdcBgGyK1nxY=;
+	b=cBKT+1MSOlxZwKvXBXr9zaFsyz8vZ4BDTBZbG6VET1b542cLSfSj+AYJ9nIKNvQE6OcPwG
+	q456RnIUXBg0lfmqjsUHoHm/46wsJTQ7UDaF+/7JtuQDCX+TVk9fL9pe2lB56ZhylsT+zp
+	Prt9ywLdnX+qZsBM13sWUs87eAHSAUzJM5aGhixdKqHPF2WtDw8uCN3ijqGgbkiqQYZjBN
+	wQhSud73d4OpaDKRAgegUCKk0/zdjQ51XFUraUtkwulC9GMQRebn5uNHdr9RH8ao6CD1FZ
+	KoC2Jf4oSb3v8sEtC+R6whtBbdN95htktSO9RW315eYj1BHQ8ERgAPXBxRChSA==
+Date: Fri, 28 Aug 2026 08:04:08 +0200
+From: Alexander Dahl <ada@thorsis.com>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/2] net: macb: fix zero UDPv4 checksum on transmit
+Message-ID: <20260826-untrimmed-take-024590e9f9d8@thorsis.com>
+Mail-Followup-To: Nicolai Buchwitz <nb@tipi-net.de>,
+	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+References: <20260824134703.766708-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824134703.766708-1-nb@tipi-net.de>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Last-TLS-Session-Version: TLSv1.3
 
-page_pool_alloc_frag_netmem() rounds the requested fragment size with
+Hello Nicolai,
 
-	size = ALIGN(size, dma_get_cache_alignment());
+Am Mon, Aug 24, 2026 at 03:47:01PM +0200 schrieb Nicolai Buchwitz:
+> When a UDPv4 checksum computes to zero, RFC 768 wants 0xffff on the
+> wire, but the GEM sends the raw 0x0000, which receivers read as "no
+> checksum". Raspberry Pi confirmed in a simulation of the Cadence IP
+> that the engine skips the substitution for UDPv4. UDPv6 and TCP are
+> fine, and the IP changelog suggests all GEM revisions could be affected.
+> Reported and analyzed on the Raspberry Pi 5:
+> https://github.com/raspberrypi/linux/issues/7550
+> 
+> Patch 2 does UDPv4 checksums in software and lets the existing pad
+> and FCS path keep the hardware off the frame, UDPv6 and TCP keep
+> the offload. That path miscounts tx_bytes by the software FCS, so
+> patch 1 fixes the accounting first.
+> 
+> Tested on CM5. To reproduce, send bulk UDP to another host and capture
+> zero checksums on the receiving side:
+> 
+>   iperf3 -c <host> -u -b 200M -t 30
+>   tcpdump -ni <iface> 'src host <dut> and udp[6:2] == 0'
+> 
+> Without the fix a packet shows up every few seconds:
+> 
+>   12:46:20.002739 IP <dut>.36309 > <host>.5201: UDP, length 1448
+>   12:46:23.773968 IP <dut>.36309 > <host>.5201: UDP, length 1448
+>   12:46:40.227460 IP <dut>.36309 > <host>.5201: UDP, length 1448
+> 
+> With the fix the capture showed none.
+> 
+> Some numbers (udpgso_bench):
+> - 18-byte UDP throughput dropped by ~ 8%
+> - 256-byte UDP throughput dropped by ~ 10%
+> - MTU-sized UDP and UDP GSO were unchanged at the 116 MiB/s link limit
+> 
+> Unfortunately I don't see a cheaper fix, the zero only shows up after
+> computing the checksum, the MAC inserts it in flight, and AFAIU there is
+> no register or descriptor bit for the substitution.
+> 
+> I'd appreciate testing on other silicon.
 
-dma_get_cache_alignment() returns 1 unless the architecture defines
-ARCH_DMA_MINALIGN, which DMA-coherent architectures such as x86 do not.
-There the ALIGN() is a no-op and pool->frag_offset advances by the raw,
-unrounded size.
+I tested without your patch on at91 sama5d2 (Cadence GEM rev
+0x00020203), sam9x60 (Cadence MACB rev 0x0001010c), and sam9g20
+(Cadence MACB rev 0x0001010c), and tried to reproduce the flaw (not
+the fix).  Rewrote the Python reproducer suggested in that RPi github
+issue in C, but iperf3 gave similar results:  tcpdump started as
+suggested showed not a single wrong package!
 
-A single caller asking for an odd size then leaves frag_offset misaligned
-for every fragment carved out of that page afterwards.  The pool is shared,
-so the damage is not confined to the caller that caused it.
+However according to ethtool it seems at least the older MACB bases
+hardware has no hardware checksumming here.  On sama5d2 (GEM, but no
+Gigabit) I'm not sure if it is supposed to be done for UDP?  See:
 
-The per-cpu system_page_pool used by generic XDP hits this.
-skb_pp_cow_data() allocates its fragments with the raw packet length:
+    $ ethtool -k eth0 | grep sum
+    rx-checksumming: on
+    tx-checksumming: on
+            tx-checksum-ipv4: off [fixed]
+            tx-checksum-ip-generic: on
+            tx-checksum-ipv6: off [fixed]
+            tx-checksum-fcoe-crc: off [fixed]
+            tx-checksum-sctp: off [fixed]
+    tx-gre-csum-segmentation: off [fixed]
+    tx-udp_tnl-csum-segmentation: off [fixed]
+    tx-tunnel-remcsum-segmentation: off [fixed]
+    esp-tx-csum-hw-offload: off [fixed]
 
-	size = min_t(u32, len, PAGE_SIZE);
-	truesize = size;
-	page = page_pool_dev_alloc(pool, &page_off, &truesize);
+On sam9x60 (MACB) there seems to be no hardware offloading at all:
 
-leaving frag_offset odd for whatever is carved out of that page next.  Its
-own head allocation is already aligned -- SKB_HEAD_ALIGN(size) plus the
-XDP_PACKET_HEADROOM its callers pass -- so it is a later user of the shared
-pool that pays: page_pool_dev_alloc_va() returns a misaligned buffer,
-napi_build_skb() installs it as skb->head, and skb_shinfo(skb) ==
-skb->head + skb->end is misaligned with it.
+    $ ethtool -k eth0 | grep sum
+    rx-checksumming: off [fixed]
+    tx-checksumming: off
+            tx-checksum-ipv4: off [fixed]
+            tx-checksum-ip-generic: off [fixed]
+            tx-checksum-ipv6: off [fixed]
+            tx-checksum-fcoe-crc: off [fixed]
+            tx-checksum-sctp: off [fixed]
+    tx-gre-csum-segmentation: off [fixed]
+    tx-udp_tnl-csum-segmentation: off [fixed]
+    tx-tunnel-remcsum-segmentation: off [fixed]
+    esp-tx-csum-hw-offload: off [fixed]
 
-skb_shinfo()->dataref is a 4-byte atomic_t at offset 0x20, so the
-atomic_inc() in __skb_clone() straddles a cache line.  On x86 with split
-lock detection -- fatal for kernel split locks by default -- this panics
-the machine:
+How are those chips affected by your patch then?
 
-  Oops: Split lock detected
-  RIP: 0010:skb_clone+0x154/0x1e0
-  Call Trace:
-   <IRQ>
-   raw_local_deliver+0x1ed/0x2c0
-   ip_protocol_deliver_rcu+0x54/0x1c0
-   ip_local_deliver_finish+0x85/0x100
-   ip_local_deliver+0x67/0x100
-   __netif_receive_skb_one_core+0x85/0xa0
-   process_backlog+0x87/0x130
+> Nicolai Buchwitz (2):
+>   net: macb: exclude software FCS from TX byte statistics
+>   net: macb: fix zero UDPv4 checksum on transmit
 
-Reproduced by attaching any generic-mode XDP program to loopback and
-opening a RAW IPPROTO_UDP socket, which makes raw_local_deliver() clone
-every locally delivered UDP packet; ordinary DNS traffic then triggers it,
-roughly once per 2500 clones.  Observed on 6.12.101 and 7.1.8.
+That fix seems to be very generic and not specific to macb or gem nor
+to any variant.  I'd suggest narrowing it down and testing on more
+hardware.
 
-Tracing page_pool_alloc_frag_netmem() over one such run shows the
-amplification -- two odd-sized requests, nine misaligned offsets:
+Greets
+Alex
 
-  requested size & 7:   0: 17035    5: 1    7: 1
-  frag_offset & 7:      0: 17028    3: 1    4: 1    5: 1    6: 1    7: 5
-
-and skb_pp_cow_data() returning heads that were aligned on entry:
-
-  head 0xffff8f4c86aeac00 -> 0xffff8f4c53a9a9c4 (&7=4)
-  head 0xffff8f4d6a8a42c0 -> 0xffff8f4c4f7b7a45 (&7=5)
-
-Round the fragment size up to at least the alignment struct skb_shared_info
-requires, so fragments are always suitably aligned for the objects callers
-build on them.  Architectures needing a larger DMA alignment keep it.
-
-This also makes the remainder computed in page_pool_alloc_netmem(),
-
-	*size = max_size - *offset;
-
-aligned, since max_size is a power of two -- which fixes the matching
-misalignment of skb->end.
-
-Verified with a controlled A/B under QEMU/KVM: same tree, same config,
-same compiler, same rootfs and identical traffic, differing only by this
-patch.  A SEC("xdp.frags") XDP_PASS program on lo plus UDP datagrams
-larger than max_head_size drives skb_pp_cow_data()'s fragment loop, which
-passes raw packet lengths to the pool.  Measured at the return of
-skb_pp_cow_data():
-
-                          unpatched   patched
-  skb_pp_cow_data calls       40800     40800
-  misaligned skb->head         1120         0
-  dataref at line offset >60     80         0
-
-The last row counts the accesses that actually fault:
-skb_shinfo()->dataref sits at head+end+0x20 and is a 4-byte atomic, so
-`lock incl` splits a 64-byte cache line only when that address lands at
-offset 61..63.  All 80 occurrences were at offset 61; the panic reported
-above was at offset 62.  Eliminating the misalignment removes every one
-of them.
-
-Same class of bug as commit 3bed3cc4156e ("net: Do not allocate page
-fragments that are not skb aligned"), which fixed the older
-netdev_alloc_frag()/napi_alloc_frag() allocators.
-
-Fixes: 53e0961da1c7 ("page_pool: add frag page recycling support in page pool")
-Cc: stable@vger.kernel.org
-Signed-off-by: Florian Schauer <florian@schauer.to>
----
-v2:
-  - express the minimum alignment as __alignof__(struct skb_shared_info)
-    instead of sizeof(long), and drop the explanatory comment the previous
-    version carried, since the expression now states the requirement
-    directly (Eric Dumazet)
-  - no functional change vs v1 on 64-bit: the emitted code is identical
-  - Cc the maintainers and the blamed author that v1 missed
-  - correct two statements in the commit message: dataref is at offset 0x20
-    in struct skb_shared_info, not its first member, and skb_pp_cow_data()
-    allocates its head before the fragment loop, so the misaligned head
-    comes from an earlier user of the shared pool
-v1: https://lore.kernel.org/netdev/20260826135252.3091193-1-florian@schauer.to/
-
- net/core/page_pool.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 8f8956fb0..08d7f35cf 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -1073,7 +1073,8 @@ netmem_ref page_pool_alloc_frag_netmem(struct page_pool *pool,
- 	if (WARN_ON(size > max_size))
- 		return 0;
- 
--	size = ALIGN(size, dma_get_cache_alignment());
-+	size = ALIGN(size, max_t(unsigned int, dma_get_cache_alignment(),
-+				 __alignof__(struct skb_shared_info)));
- 	*offset = pool->frag_offset;
- 
- 	if (netmem && *offset + size > max_size) {
--- 
-2.47.3
-
+> 
+>  drivers/net/ethernet/cadence/macb.h      |  3 +++
+>  drivers/net/ethernet/cadence/macb_main.c | 28 +++++++++++++++++++++-------
+>  2 files changed, 24 insertions(+), 7 deletions(-)
+> 
+> -- 
+> 2.53.0
+> 
