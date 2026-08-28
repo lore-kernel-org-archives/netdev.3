@@ -1,238 +1,131 @@
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390384483A2
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 12:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787919804; cv=pass; b=vCj4xgsSdLnYX1yVbgT97NoGQv4128qFTUofTLUm1plAtjt0YcnSVjEEeczTqEzDz+06zo0Z1wnfieV2cSxajWKpXTSUCr9wgFOMwUOt+M41TBw6GtYeBNIGGsiaRmfjhVBH5NNa7MgQaJDz7CrTFBLRU3iIn5+Ff6SaIcbGQNM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787919804; c=relaxed/simple;
-	bh=q05yhdljTuNNf7sfPgFPphWY+5c1iVND33/t6QKmR2w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mAUReIrffw/Tly6hJHrWcnU4aaDQqMJ+9VKUQpajAggVtfpO5GTbpu6+ztY+8obnhfoXjCXrsCl1KK6ZDNRhraWizlQiT/VoMNNkrt458mOX2BO+4tDq9u7EE/qSjucWkmNIqih5nZRCMRZ6Edp1ca6y0Nj69EDF7K9zPZbsN94=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YIL5fjVm; arc=pass smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FF3439909
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 12:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787920670; cv=none; b=TzHf/6D8BPelFX/IvDV/4n15BQbOyt/pGPZOGRUj8svmgyvVtdAJmEzq6+J/EcyoJosfG18iP9ZGz2+UAMMd9Sg8/zt+83CI6oy+sRyP6mduI8PofGJBNjtI1IGOsVK9Mg8rJIHtlam8OcZEHgRfofZrP+FFnGKaixFvkJhCrNk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787920670; c=relaxed/simple;
+	bh=aecsmX2x4QGyjJ2aUdyYlUgsK74USnPlG1syju1rAyQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uVf77McVdoyJv3M6PhUMWO8HQSRtXRGEQp6XspJp4aCIl+uIGoolpVtxYihDYgWbS0dhDxyRaSdVisylx29fr28Z/LHIe9ACttRBDwdTkUTvyaf1oP/UtJNYWPpGvA7Hqrp07k7OorAJgnse83E5S2fWMYkxiEMquCLoZfp59dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QowVZeF9; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YIL5fjVm"
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-66ce5312ca6so811592d50.0
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 05:23:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787919788; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JTIaUvGMVevQ5nLavpnBISlbtmOGSXS7ZuN4yTsaqJW9IGPeyIf4faiXDRD2BuTXmn
-         NgY7zCvsZKMt+9V2/I+QUl2tMQAOYz8tN6sVGI8o1thWY4tgHfmBESHOl0so8j/3cBui
-         sTkudFGqJxvzez7VDRpGrNFYSdFe123q+2svTevCS6+mNnLO3uf/SvRZVg/4GJCvvypN
-         uSBzAZp4L11H9WoeclOQDFtNayIjOB7W2tD54opzMg2eGwjATLZr6di+WFIlN6PrF6RH
-         z2GMJkGrgBJNPZ7Y/0A+pnpzX0NU0PR27DMHEwbtkpDRKG/ZP1vBX1EqxfZ0CDr3OoYO
-         K9UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=j1b4t74NQJ3nRxicXXJ0utr9vRb/lMNbg7kPlr+BPS4=;
-        fh=S9hrEk7k87moYJR3zeZ5NCNj/aPWW2rWX3j+4lpAErc=;
-        b=gYiVK18/Wz9xl6ZRUhALBlcCQ7Uvn0pULZX1K6wi5owMH0NXwR4VCBXYCwpJG1MY6D
-         1kAoO1eaUyahXFMltPnopRspx3v1yBGovoVzAadXfb7zSEptKUFMGsDgI0LJgCEsjnQn
-         JudUU9PCKOk6YsQ8nSZOtCivphpAo+vc6PZHiFgDHpMTwf6zdWdHt7Kby0Zn4bpUp1zR
-         UsppAuDTlK8usfjXHUZiji1w5ayri0H6MbwjErAOCFukp2YpEZedLxl1y74J1nlDQDGC
-         afdDOTtKSlrxX0NWHN1+2DPxooVjmYPsrkJRhEgfVXwx/CtHkp2UaZqVuZvo5UXxOups
-         2tfw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QowVZeF9"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so7131885e9.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 05:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787919788; x=1788524588; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=j1b4t74NQJ3nRxicXXJ0utr9vRb/lMNbg7kPlr+BPS4=;
-        b=YIL5fjVmHIswe8uzGuoaD753KybQZuOvBLgS/Q+YtcitYMtt1mJwbAtpkGaCILU3Qg
-         cxmJlbuzGayl2nzhjptDifCR+iVgCh3ydBE9bWnjsRLZt33XlQBMsVJxvxoBAFZKr+hO
-         lm2b8ZNZpJlHaqPpUwf4UTfb1+DMEGZR1Ho2cBRQsOmIBEngDYOVxQf2fVTtB4ABKL5c
-         DyUFQBK4Wp2qH4tpnCApdMoO5va/1EALJFw91FdTJQd4fwNjxmWnjLbcF+IHrQsy1tBa
-         DuH3AE2oWTaTpsKRcG2+0u3JKAtib0Ki90lm4j8fagXJx63gdpaI9vZXpnFrn5rkbwm6
-         iNcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787919788; x=1788524588;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1787920659; x=1788525459; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j1b4t74NQJ3nRxicXXJ0utr9vRb/lMNbg7kPlr+BPS4=;
-        b=Ms4Ky3+wXFY5jLgEqbH3UKAWxZp7l+isuAQhecjTlp7+/zmDEM4bWF51B0mf+jXBfk
-         SJKkt0iN0CZccmNdtfg0fqnz0KSMOHYYKCRHHhrgBYidmMuN/gD5PAnXQD9YpW/7U/x1
-         VihjN9GH3CDoND2vToI5Jw6ocl/8Uv8rkR/xy5Koe/mO3XZeC0zH1LDZioiHVUhRsSR7
-         RpK1IUYn20Le9mTTkc9v0yh3Pw++Ok91Lg0hrEPJ62UCdniCol5SB/utOkYL8nN8KG2t
-         b66/+IR/lpeIGIbcj/2/mwwXfbzU80OP6+cb02Fr5TbxadoCiqiuTfza5YPYcL7Rre8D
-         LbKA==
-X-Forwarded-Encrypted: i=1; AKwUvByS/Q6l+SihNZVqd9tXXzq1ma7KNs0J+ZqH88ktQZWrILCfA5gp4MCpzXYtDrnYjXBLnEeeoHs=@vger.kernel.org
-X-Gm-Message-State: AFuF++keadEmhztvJymIdnBXSElXdisO/mp6WCiI9HPMi8R1CNMJ57gI
-	cLdqzPy/cApC9X+xwCqqqpOJkSH+oeWjQ24iqKnxKSPid7m01aYV6X/Out9LdEO2ngZ6SnFXXWi
-	moeWxRWcn+CEFQ+DC+uUCWPU0cm1Ikv3ZF1s6sAlw
-X-Gm-Gg: AYBFou17zA23dMI105Cf2TnTG/8ct5JhJ0V5oKzM0z2SqGDqI6m3+KW1VSlLJGnd0FR
-	QuogLXiX5hpExP16tc2+882ZH1RCKpA7VAuBFYuFh0/rfBrPAZ+BXIBGPSMW1PuXcU8gHHC8oLD
-	UHqasohYGvkNWnMCy89+1WbTahxh008j/SFPCg74MamEm+VP/0TNoBv8oCk7ByLuxJfhO8n1Fyn
-	9E7zyQDLU/fclp9K7XIzZPfvmzKgfg9eME4q5mDV7rg/nBtb5GRKSJGCds5zkOJeVfNyqkry8i4
-	zGKIr/oM5KEkvAmokinKjiVPoSgBdpCOOiT0KIC+d9fUOVnfN3qyqQFgV4o2BXhBzFvwyA8Z5Fz
-	gsieJVj9KQbOe2vbH/49qnLwPEj+MoTe8dBlfMbshgmmJzgSqyE3qXAylCE0=
-X-Received: by 2002:a05:690e:e8d:b0:66d:28f9:3b51 with SMTP id
- 956f58d0204a3-66e4c658ba9mr1820527d50.10.1787919787065; Fri, 28 Aug 2026
- 05:23:07 -0700 (PDT)
+        bh=Htljc1jy5vbyDxB2+F6ZhJTpienRDAzM/B8CyFyuNxI=;
+        b=QowVZeF9ShxDC2mG9ONUFD1c0zFbd3V+RaFjccwT1ZiWuyc1zVzQcjnc+4gr2e+rnT
+         X8uz15zzM4noh+kIXV4/dgdz6O/tdWbTs85SKrbkXbC87mMuRpIBzsrVS1z2VTysZ7bs
+         XXGW8nFcM1aCTQwakqH7JSm+P6DCqOVYogTlyXfaGxTmTFR3ao4MgncBz06CismQwvrd
+         78Owtq85evk/vSxXex/hg1WU7BNC1ppouWXRpgaMYaGWZdr+ZaYuouPWxpr52yCCGZV9
+         wKuPDAJrXyW+t8INlxtfKlP1fIoP/dU0KbVkg+1cSNaaHEXdV3+9RmKk7cQogEXwVMoI
+         +/Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787920659; x=1788525459;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Htljc1jy5vbyDxB2+F6ZhJTpienRDAzM/B8CyFyuNxI=;
+        b=HqOHBd/Ll4DjcW2LQp9F1a6ehiFeN5LHBsM1ptFBLs8+FfpIb4qyWVshPZ4ZuBwypa
+         15ZoxlcY/DXUuiRei/aYshthY8+Y38MzmwrybdyMols0J0WSbWSlwXqQhiuczzI9taTY
+         5csqCdyjA3QPZPidtU17kI2Hx/kEPEiBx7KwN3L3qmZFiR1duXBBsgIRYHDuXPhhUdGo
+         faK4O7g7CH4QIhjLUpk1nlRctVc/FPCH3l0zSZcV8a3OzQxIblkfo2BhiA6CjSts+RvQ
+         HkCZYkbCpPy2LPJKfEZityZaPWYHXfisT/cAnfGJ88LGWPf9UtKpzUY6JNQh+O9xlbnO
+         mzpQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqMWQ/Wrdd1/CWY5w+uyUr3TeuCiOQQ5npe+E17GNvOoLwKnkXU3qXu0E2gekJbNBSIWw7XAXY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lMvI6qzKGnYd5ejTzliNA8v19U7Ds59DkcX131MQJ8sYSrAqIp
+	rNfyOtHVppMRp6pn8txCMS/Ub4jHYe55D8NhalcU5GnpLiG5MDkRlvJvRDtUkQ==
+X-Gm-Gg: AR+sD137imM5VZ1KZIaAQCUe/XW4p5ialwWUw0kaMM8UjrSzMUbSSHtfmme7t5Igbhg
+	oe0VRRUabeStuODBsw1kVSnhSLBLoNeh57iZfFuAFHk8R0ki5n+MtEtHOPWO+yWL5jZPPbXAQy/
+	4A3AACk++5DwpbEcJ5K9MFzNUv5penZuV1Xn2HWIqMwYX2S+TziqVGNKCVmdHhV4zuKCyONUlS6
+	1Q7MKu5wCy+PNGizpsoC0mIF4Z9WVtNLKcDxvpIe6r4bqWZpG9xK00i/MMg5MchqaZlebISydSK
+	/cTjlqBTuRHvwGaSJFXj3AvvQIoc/vRbAJwlT6dlTD889wARiszyFQ4ovwEFDYLbR3JW02Rvmf6
+	26nCnx8IwyZG7Y7WuB7yKAI17ruFR2EhoyIgrl35wvV6GQaAFock8H6PqDRUvKZmLQeBdaNPCue
+	y6WrI/Vvld5KwDvUG8N1vNKibnUsPVYbAWUrRQOP0S09rXsT7B2+/Xgz9B2XacXD1aC5YHDTV4e
+	j4GrzMCydptU6+nF6Kn6OAa9W+wlUwwg0QTU4/BL2zPDpJZgNNTaybUBn5KNFywPdDCFk2cz+to
+	UqX7wWsUUNeOZZs+2A==
+X-Received: by 2002:a05:600c:3549:b0:496:bffb:fb7b with SMTP id 5b1f17b1804b1-49b91c57464mr88153515e9.10.1787920659134;
+        Fri, 28 Aug 2026 05:37:39 -0700 (PDT)
+Received: from [10.218.30.141] (82-132-213-132.dab.02.net. [82.132.213.132])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b91c9cf95sm46448655e9.1.2026.08.28.05.37.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Aug 2026 05:37:37 -0700 (PDT)
+Message-ID: <0db1151c-35a0-4597-b69c-091b60cb864c@gmail.com>
+Date: Fri, 28 Aug 2026 13:37:36 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827092345.2301937-1-fouriezhang@tencent.com> <CAM0EoMnPbkMWsUB3W2TuQDmkN_GN0Rp0MMurCGgvOXv3ROy7GA@mail.gmail.com>
-In-Reply-To: <CAM0EoMnPbkMWsUB3W2TuQDmkN_GN0Rp0MMurCGgvOXv3ROy7GA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 28 Aug 2026 14:22:55 +0200
-X-Gm-Features: AcwNN1XOVlHhdpZEz3yUYLo5mHyf0IsMRVjba2JXRvdL7LQOK3v6BQd9xfrJHwM
-Message-ID: <CANn89iLvzamYctH5EC-4xnWh04vF2fi7Nji7JVbjawwKQUAtfw@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: sch_frag: reject a negative L2 length in sch_fragment()
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Fourie Zhang <littleddfu@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Cong Wang <cong.wang@bytedance.com>, wenxu <wenxu@ucloud.cn>, 
-	netdev@vger.kernel.org, Fourie Zhang <fouriezhang@tencent.com>, stable@kernel.org, 
-	TencentOS Corvus AI <corvus@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/1] tcp: reject non zerocopy devmem tx
+To: Mina Almasry <almasrymina@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org
+References: <ddb2d77e49974232b7f379851dc9809c953a6649.1787396169.git.asml.silence@gmail.com>
+ <CAHS8izMLw5EwR8Fr-0F6S8V0dYgyGe6UW0dmy0EurfHU5TswoA@mail.gmail.com>
+ <75cf5a10-f7ae-4b4d-ae47-1556a30d76c9@gmail.com>
+ <CAHS8izPB6xS5KOKOUORvJ99d-mF7F+9gZCFe5aoQPQpUeDhWBA@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izPB6xS5KOKOUORvJ99d-mF7F+9gZCFe5aoQPQpUeDhWBA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 28, 2026 at 12:43=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com=
-> wrote:
->
-> On Thu, Aug 27, 2026 at 5:24=E2=80=AFAM Fourie Zhang <littleddfu@gmail.co=
-m> wrote:
-> >
-> > sch_fragment() bounds the L2 header length only from above:
-> >
-> >         if (skb_network_offset(skb) > VLAN_ETH_HLEN)
-> >
-> > skb_network_offset() returns int and the comparison is signed, so a
-> > negative offset passes. sch_frag_prepare_frag() then stores it in an
-> > unsigned int and uses it as a memcpy() length into the 18-byte per-CPU
-> > l2_data buffer:
->
-> The patch looks good. Comments:
-> 1. Cc: stable@kernel.org should be Cc: stable@vger.kernel.org.
-> 2. Looking at the current sashiko review, the two issues it mentions
-> certainly do not require a v2. A followup is needed.
-> I am recording the followups - do you want to send thos patches?
-> Otherwise we will.
-> 3. In the future, if you send a patch make sure you include a tdc test
-> that would fail without your patch and pass with your patch.We test
-> everything tc related. Can you provide a tdc test or a standalone
-> reproducer script? If it is sensitive just send directly to me.
->
-> Handwaving: you dont need a v2 except for #1 above. Unfortunately, it
-> seems the nipa sashiko now looks only 72 hours later, so you are not
-> off the hook yet.  Lets wait to see what the overlord says before
-> deciding  if there's a need for v2.
->
-> cheers,
-> jamal
->
-> >
-> >         unsigned int hlen =3D skb_network_offset(skb);
-> >         memcpy(&data->l2_data, skb->data, hlen);
-> >
-> > The offset is negative whenever the network header sits behind
-> > skb->data. ipv6_srh_rcv() runs in that state, because
-> > ip6_protocol_deliver_rcu() pulls each extension header as it walks the
-> > chain and the segments_left > 0 branch pushes back only
-> > sizeof(struct ipv6hdr). act_ct enables the static key that gates
-> > sch_frag_xmit_hook() and sets tc_skb_cb(skb)->mru, which survives
-> > receive and forward, so an act_mirred redirect from a root qdisc can
-> > reach sch_fragment() with the offset still negative.
-> >
-> > A negative L2 header length is invalid, so reject it through the existi=
-ng
-> > "L2 header too long to fragment" path. A non-negative offset behaves
-> > exactly as before.
-> >
-> > Reproduced on v7.2 by an unprivileged user with only
-> > unshare(CLONE_NEWUSER|CLONE_NEWNET). RDX is the truncated length,
-> > (unsigned int)(-42):
-> >
-> >   RIP: 0010:memcpy+0x8/0x20
-> >   RDX: 00000000ffffffd6
-> >    sch_frag_prepare_frag+0x364/0x440   net/sched/sch_frag.c:74
-> >    sch_fragment+0x1c7/0x7a0            net/sched/sch_frag.c:122
-> >    tcf_mirred_to_dev+0x7a9/0xf10
-> >    ip6_forward+0x114b/0x31b0
-> >    ipv6_rthdr_rcv+0x40d7/0x5e10
-> >
-> > With the patch applied the drop path fires and the packet is discarded.
-> >
-> > Fixes: c129412f74e9 ("net/sched: sch_frag: add generic packet fragment =
-support.")
-> > Cc: stable@kernel.org
-> > Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> > Assisted-by: tencentos-corvus-ai:kimi-k3
-> > Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
-> > ---
-> >  net/sched/sch_frag.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/sched/sch_frag.c b/net/sched/sch_frag.c
-> > index 75ee52750919..b68a198b1646 100644
-> > --- a/net/sched/sch_frag.c
-> > +++ b/net/sched/sch_frag.c
-> > @@ -89,9 +89,10 @@ static struct dst_ops sch_frag_dst_ops =3D {
-> >  static int sch_fragment(struct net *net, struct sk_buff *skb,
-> >                         u16 mru, int (*xmit)(struct sk_buff *skb))
-> >  {
-> > +       int hlen =3D skb_network_offset(skb);
-> >         int ret =3D -1;
-> >
-> > -       if (skb_network_offset(skb) > VLAN_ETH_HLEN) {
-> > +       if (hlen < 0 || hlen > VLAN_ETH_HLEN) {
-> >                 net_warn_ratelimited("L2 header too long to fragment\n"=
-);
-> >                 goto err;
-> >         }
+On 8/26/26 18:29, Mina Almasry wrote:
+> On Wed, Aug 26, 2026 at 7:36 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>
+>> On 8/23/26 16:58, Mina Almasry wrote:
+>>> On Sat, Aug 22, 2026 at 3:57 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>> ...> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+>>> index b4237d0e994d6..1e34f50770446 100644
+>>> --- a/net/ipv4/tcp.c
+>>> +++ b/net/ipv4/tcp.c
+>>> @@ -1170,7 +1170,8 @@ int tcp_sendmsg_locked(struct sock *sk, struct
+>>> msghdr *msg, size_t size)
+>>>           }
+>>>
+>>>           if (!sockc_err && sockc.dmabuf_id &&
+>>> -           (!(flags & MSG_ZEROCOPY) || !sock_flag(sk, SOCK_ZEROCOPY))) {
+>>> +           (!(flags & MSG_ZEROCOPY) || !sock_flag(sk, SOCK_ZEROCOPY) ||
+>>
+>> This check before your diff fells off. From a quick look, via io_uring
+>> you can have a sendmsg call with dmabuf_id that would happily pass this
+>> check but never goes through net_devmem_get_binding() and
+>> msg_zerocopy_realloc(). It's not much too problematic for now but feels
+>> dangerous to rely on it in the current form. I think we want sth like
+>> this in the end.
+>>
+>> if (sockc.dmabuf_id && !sockc_err) {
+>>          if (!binding || zc != MSG_ZEROCOPY)
+>>                  // fail;
+>> }
+>>
+> 
+> OK it sorta makes sense to me. I think we're making a mistake checking
+> SOCK_ZEROCOPY/MSG_ZEROCOPY when instead all these are conveniently
+> condensed into 'zc == MSG_ZEROCOPY' when everything lines up. The
+> point of this line was roughly 'if the user is trying to send devmem
+> but not MSG_ZEROCOPY'd, fail'.
 
-I am only speaking for mysef, but
+Alright, good to know as I was assuming that. Let's do it like that
+then, I'll send a patch.
 
-pw-bot: cr
+-- 
+Pavel Begunkov
 
-IMO this is defensive programming working around the real bug in ipv6_srh_r=
-cv().
-
-Let's fix the root cause.
-
-I saw a recent patch which had some issues:
-https://sashiko.dev/#/patchset/20260817104128.22681-1-juny24602@gmail.com?p=
-art=3D1
-
-It's funny that both patches were assisted by tencentos-corvus-ai:kimi-k3 :=
-/
-
-I think something like this could fix both issues:
-
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 51941ad656a36e739388c7da2fcd639ab0e453b5..09a4552f7f08aa8208eb981c053=
-6c58a3561ecbd
-100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -445,7 +445,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb,
-struct inet6_dev *idev)
-        hdr->segments_left--;
-        addr =3D hdr->segments + hdr->segments_left;
-
--       skb_push(skb, sizeof(struct ipv6hdr));
-+       skb_push(skb, -skb_network_offset(skb));
-
-        if (skb->ip_summed =3D=3D CHECKSUM_COMPLETE)
-                seg6_update_csum(skb);
-@@ -469,7 +469,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb,
-struct inet6_dev *idev)
-                }
-                ipv6_hdr(skb)->hop_limit--;
-
--               skb_pull(skb, sizeof(struct ipv6hdr));
-+               skb_pull(skb, skb_transport_offset(skb));
-                goto looped_back;
-        }
