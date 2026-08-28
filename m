@@ -1,190 +1,211 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856DD37187C
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 10:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787912588; cv=none; b=EP0sOpiURQcKaCqRTC4VU4O02Ltlb446teghw6VXQ/sy84gepXW/Y/oBCuDAsnf9ZRyOEjUDk2jIU8fRj8sp6zZsdmwA/ooMpiubEDZvzBzrfwAV7q/DhQ4xKonLLQFY7E0UUovLS84XKGI7A/7dP6qw3OAtbIw5cNps9TdoEp0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787912588; c=relaxed/simple;
-	bh=EfQtWsR8HhNL/FTZFFNCO2u47LKPG7z6X31K2hLCtXI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WylKZX4WaXODQgxKmZbjadgdNu7N7LwFGN+piriiOpdi0VlL2fYz8gZL+XcsbrQRt7N2Vi1yhLAePLBCwE/ZpvHvMVMCcXZU5W+pk1D42L1KnLs4hIHObeYN89AzUSGbt1E9O5YVkEkDPWn6GNwi2DHuLFVTC9cqeJIb91ttac8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=enTTJrnC; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190C6411F80
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 10:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787912994; cv=pass; b=Oio6CRUxDBwE3Rzzpu10JS/VsskdzeKW2TsYQkqMjVQjpSn3+/oPBACpMvSmeVbRIwmUnCkQGOTTvCq1ZCzD0mYlfg29y5rBu67jORUCtJ6tpMYz3wunV7acRhW70QPT9G0xZaa/VhOEc8LbF5glbsLHu8TI7AhfhdH1HjkFtMs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787912994; c=relaxed/simple;
+	bh=2//e3DwCGJOQidpg8uCFiQQV/bUoaFberVIWhbIc3RQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P/dJzRrgfeCOr6lU2ORxpxgvfm2StVuwwLq3m9khxByM21tMDI1WKRI1R5thYbBCYIj72OjRb+H/PPivuh4vrRfP83khIC16iATdKKqSCMp657Q+uiUKDxR1lAxzDEdwt7u21Thm88VSW2aK4p//Xhg8vB8KxgIXJgAOsKCdft8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=MnVUVzxs; arc=pass smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="enTTJrnC"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-482e61a34e5so296119f8f.3
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:23:06 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="MnVUVzxs"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso733974b3a.1
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:29:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787912989; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mD0WjSnuxvOyqvV1Th+A3VOsrMXPVK8Uiip70HNzK4xx2GmNFMD9+vG8NkW75NaiCP
+         YTkz3KS8Ux7VpA9ZROGkQb7oQAc4hwU35A+ozWchxww9c1G9xZX7xhNZ6dPFlTrTE7qi
+         srqBidpHgJBrGAF164LaHGeyegFdmALseJsBxU+Wv61Zm8+dof77zhMxoE1S4hk6qbeQ
+         +76l6FVPiGXNieTwYD65yRmGXW3o6GgvAxxSHaolAPZm6pUxoUFzK0MYhbpDwPhmN7mq
+         8Ck2Qy6odoMF/V8erLg5QZ/rd6nWZSWKDNFLRxiLhfCciMau4NO2s4qV6g6/uzhFdTUv
+         CVrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qzWqPpyiNdDWvlAa7ObVMhLFRMXenMVDW76N50jUTB8=;
+        fh=VdIE8irQdMztvZvWd7pFJTH0S7KpJAO7/sagonXu1Kk=;
+        b=Z/wz3ICzbJryj30eWx7IC91dvpobKJyB472R/IXBKkcD9xyN35q0ns5/a9M3MYrvmy
+         +7e/0urLoZ0y1zC6YHSq1PYJgpCD9Dq8reOOWpZOI2wkndozWvybI+nVZqxMD7qMQHM4
+         HGVwMOx9eo00eHFK/tP8YlpL6mkVgWcGqmjAALW32JkF63jQ8n3asMDSE1xJba7ap1RA
+         rwzZ2QxrbWogiwvH8bvPgxSJI/EY+D0DkROyYH5VM1B0K0EXkJPkOulteFmxY0cayLVI
+         WosU4GWcN2BA8M3ozmja1cYnRW8aB3+BVkKJJKS6vdVKbxZzdwcNiZZJC57QyIzf2tos
+         jp5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787912585; x=1788517385; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ud1SVn2U/zjHi4VSWIq5F5o3aDeRY2u2GtAjGiMvvok=;
-        b=enTTJrnCy2ayi4dRWe4RCSOzfzTJ04daSBCBPlYzRUjSAkxTJi25TF8AU/fOFXqVJj
-         UzfhcWBtEInaD+qjJiVTUpnj+sgKiTzr3ldR6/BmkLaCKEkTw1P8j9SuD8CDOMup+Mji
-         S8873gt5bSjEZ2DDIaPppW+UBGf0NEF2R6f5T4LTJksZGLRkoe+A/Xc97eYGrIUuXCh5
-         HdGgFhlLlQ/iJvvkvhi79vvk7q/LNlotZ6xC3kUeIb76Eft91HIQbQ/fwjJVAmWC87EE
-         FQJ5iiitG28JTgU69DstuRjWQAjaG7cyvSHKuJSKNM/xoSjyU9d8UghI3ugEN+zChti9
-         8yfQ==
+        d=mojatatu.com; s=google; t=1787912989; x=1788517789; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qzWqPpyiNdDWvlAa7ObVMhLFRMXenMVDW76N50jUTB8=;
+        b=MnVUVzxsCyJD9tsb8L0uNjZClpmQPRH87d/ysqrvFzMEhZTbqRe7jCy1wKsGOOCvgU
+         5o6DDtfi41efCuXGDm8yB+M58jS7CMg17IR1XDzvxbMmBAW0MzDOywJN6PJvL+j7Xs7q
+         RVXj+arPz3exyIRXbhi+wcL7XMt5/QtrKfxgA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787912585; x=1788517385;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ud1SVn2U/zjHi4VSWIq5F5o3aDeRY2u2GtAjGiMvvok=;
-        b=dr6+w3sRTq5u+l12SA0K/pUu9A+TrOy/KwxfYtKPVaHRjaIWiGBz6uSAxnzXKB4DnL
-         44Yfd5DfR34pknrrZOR4vbI1YtZlAsNHe7sf7v+a+l9MirjaBgv3G+c86QMlO3Sv/VhK
-         7JRjvVUyWk+kFm/bV8I7GzrksQwsYex3r7poqfWnsPL9Zkzl6qF9QD+VWe5h6b6j7QFG
-         OI1GPfQazmdacw43w6P5tylqo1vwz4+VlsRhtxWxQ1ME6ybT/mPRgJbRhitg0on38jAc
-         Li//v+oEAPYpoGrH1ptlh2cmS/VU9JDhJMGxQCdZL2qM8y2xrIXtRamHjfo+TeVrqLdL
-         3Gsw==
-X-Forwarded-Encrypted: i=1; AHgh+RpQ2iT15r8Fly1sro/LeUEt/q+gdeskc/hD0dEBrEIKrxvVHk8jZ/fovP7ORfWeMh0H0ckjjl4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lx7JrddbDMEjjIEbYMKCLIPg+G7mmNEvih91OR7Ur3uRCsiI9M
-	6zgEOQbNE9cSTsOFLhJz5Pn0XykH9DiT6cVVVXmFrzn7f0WiO5emzDkgNNNgyDpAkNw=
-X-Gm-Gg: AR+sD11+GUZuQOTuE0U7xH/zQj+K+WWjTddU7PTULSqZdnBRne0gZ9uhTpYffsp5zAT
-	7zKoWewy0P8+Z4OxL8FonU6d49OwY4PvTN9Kb4k1MG3s8YFRjNix+zwT686MaD6GNhyT8VysRZa
-	b0UjzaeYY+z1sLqQOT45ZHkVf5dSJhTypWoW6zKSEuXaKlbkX20EMUV80kmuJWCCN5qBfEiTCZs
-	voCvMBsEMDIs/WPXRcRpdRV1Budt5JBSfJCWiS7UO8jjMTPHkXZ/cPw5D4bI0LKuvnsptiTzBIl
-	cPBdX58Bf6hPtazLrGxgAXz3m+qOnj4h7smWbyTNDSTQC5FA36b+i/sAq2NEv8NNLSdDlgKwHW/
-	Ld9S47qc6wmeiq1HV//UM5fHHSx0Y4ZVphWfnRYdnPAR8YJ8SQEaodfNgi5xgsYljaroVujKllv
-	MeDGCJSSY79EMSjKssWSRqWp4EEZGk85UQwS6bZDi6DO9g7MeDqlhLeGluNs7EA5xFdRPWTVNUG
-	vf4ZnrQ1XGX3yTECsQ=
-X-Received: by 2002:a05:6000:2401:b0:482:dd67:3a57 with SMTP id ffacd0b85a97d-482f7989684mr7352129f8f.4.1787912584753;
-        Fri, 28 Aug 2026 03:23:04 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbab5a2csm2775134f8f.4.2026.08.28.03.23.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Aug 2026 03:23:04 -0700 (PDT)
-Message-ID: <6c1c6972-c212-4139-b629-4603a8801cbb@blackwall.org>
-Date: Fri, 28 Aug 2026 13:23:03 +0300
+        d=1e100.net; s=20251104; t=1787912989; x=1788517789;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qzWqPpyiNdDWvlAa7ObVMhLFRMXenMVDW76N50jUTB8=;
+        b=XJCps355UWUNbVZ8PpRDiTMvRYKLD+4wFWyrLEUjSmWrSl93DlDpCvu9oBsh+KN2cW
+         kz2pUnz2094T3YbdDwTB+DT/DTuaASztloVDDhYkH9SHKJW6BnqldqJIl9YpM1sSRzUP
+         xAsRapUvVq0hMjkJYduiVITY08bHyqJJD/tmgJgbKRph9jaSNOy/JJ6GMxH1achdE16B
+         qU8OhkAhiar4M+y/fR31LFuFtfAf89A2oQjIdgX9VCbc14WmESdyZ6pFiGPrhjVAjGlI
+         ROzqM/OzmBiotRBNHsvtOdU7F9xDZTzI1t6XrTvqDPZmPbqCyD1Tf/liUNKTyMKP5itn
+         A59g==
+X-Gm-Message-State: AFuF++n2puszV/q7Qi3mFwst3Nw1JpoJOP+/HQMQDcg6QgHy15j23SUH
+	c3FdCKvK8ROtIFp/2FX5BCXLDl4RrAp8rOUaEzn+VGA8NMjOW9LmRj9J2DJ0p8QB0tr+hU8NcoP
+	DFm5KeiUWhzUQAUP0ma8IyjOhSLyrg8FtnVN3dB/n
+X-Gm-Gg: AR+sD13Zn/FaaBmHv7lr0Hdp6azf42j8kzUv46vT++g4qDvhzBvmBaunxvVZPvrNkwJ
+	Q7+trKm5+u3ILfeqd5td9GYS4MRmUyo71HfR8xjdFHzXd/X1K9dGJh39Nzt5f4fs9hrLpSRoM+e
+	/hfzKnWqSB77vHZdZGJaEL8J2utDSOAyxTjhV2u9XnmhcMBBni/Xq2X55czDMrDcp+ez/V05GwW
+	xCjyEtDf33wZC7suVfKejSIsBcWSa3JK1ovZr4hStPJiAStjmNrbB5xL7z0zJerUDfyYyOCbdwr
+	z+1eFw6JOmrliZ1fsC89V5WvjPmd8gN1b8TxLkwV04Uppgb5uHSQKZUoNby/Pwth5GsB2aPl95Z
+	xvcewqboH6/vYM/JHvId7yJk=
+X-Received: by 2002:a05:6a00:1d97:b0:84e:354:422b with SMTP id
+ d2e1a72fcca58-85628f673c9mr2444972b3a.2.1787912989371; Fri, 28 Aug 2026
+ 03:29:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] net: bridge: cfm: use a per-bridge frame type
-Content-Language: en-US, bg
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Yilin Zhu <zylzyl2333@gmail.com>
-Cc: Ren Wei <n05ec@lzu.edu.cn>, bridge@lists.linux.dev,
- netdev@vger.kernel.org, idosch@nvidia.com, horatiu.vultur@microchip.com,
- kuba@kernel.org, henrik.bjoernlund@microchip.com, yuantan098@gmail.com,
- yifanwucs@gmail.com, tomapufckgml@gmail.com, bird@lzu.edu.cn,
- ronbogo@outlook.com
-References: <cover.1778378864.git.zylzyl2333@gmail.com>
- <7198fe2845c30c60c6b3833dd78cead8c5966931.1778378864.git.zylzyl2333@gmail.com>
- <e1f1b080-cfde-4ea4-b444-b64d43778b2f@blackwall.org>
- <9263d4c1-0c57-4926-930b-1d701e1f17db@blackwall.org>
- <CAAAOPT8mBxW9Fd9Sr=xWAb-fa4MUHCqKaQf86-DFNqaB9Xvgng@mail.gmail.com>
- <7ffc7cdc-8140-4ea2-b3bd-c86abe6e6cff@blackwall.org>
-In-Reply-To: <7ffc7cdc-8140-4ea2-b3bd-c86abe6e6cff@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260825081751.134086-1-jhs@mojatatu.com> <daceef26-eae7-49c3-acd8-0908bd6a31dd@redhat.com>
+ <CAM0EoMkJdo_e5VYPRcPN2mZpNyrTQ43FxNvkqFSNDjyV9x45dA@mail.gmail.com> <38a2e111-799f-4c8c-b46b-501999f71e52@redhat.com>
+In-Reply-To: <38a2e111-799f-4c8c-b46b-501999f71e52@redhat.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 28 Aug 2026 06:29:36 -0400
+X-Gm-Features: AcwNN1XrQNwuVNsWYkq2OHTBpHPj5wSKZYt3RJHR_7vumvgjXlKfPUYU7WwR1D4
+Message-ID: <CAM0EoMnV66aObnjNJg-FLbvXaE21b1_K-yOJ1s==+z+xj5RnEg@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] net/sched: pfifo_fast: reject oversized ring
+ and account to memcg
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/05/2026 11:09, Nikolay Aleksandrov wrote:
-> On 12/05/2026 08:21, Yilin Zhu wrote:
->> On Sun, 10 May 2026 at 04:40, Nikolay Aleksandrov <razor@blackwall.org> wrote:
->>>
->>> On 10/05/2026 13:05, Nikolay Aleksandrov wrote:
->>>> On 10/05/2026 12:15, Ren Wei wrote:
->>>>> From: Yilin Zhu <zylzyl2333@gmail.com>
->>>>>
->>>>> CFM registers a bridge frame handler when the first MEP is created and
->>>>> unregisters it when the last MEP is deleted. The registered object also
->>>>> contains the hlist_node used by the bridge-local frame_type_list.
->>>>>
->>>>> The CFM frame type is currently global, so enabling CFM on multiple
->>>>> bridges links the same hlist_node into multiple bridge-local lists. A
->>>>> later unregister on one bridge can then operate on list state belonging
->>>>> to another bridge.
->>>>>
->>>>> Move the CFM frame type into struct net_bridge and register/unregister
->>>>> the bridge-owned object. This keeps frame handler list membership local
->>>>> to the bridge while preserving the existing first-MEP/last-MEP lifetime.
->>>>>
->>>>> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM
->>>>> frame RX added.")
->>>>> Cc: stable@kernel.org
->>>>> Reported-by: Yuan Tan <yuantan098@gmail.com>
->>>>> Reported-by: Yifan Wu <yifanwucs@gmail.com>
->>>>> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
->>>>> Reported-by: Xin Liu <bird@lzu.edu.cn>
->>>>> Co-developed-by: Peihan Liu <ronbogo@outlook.com>
->>>>> Signed-off-by: Peihan Liu <ronbogo@outlook.com>
->>>>> Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
->>>>> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
->>>>> ---
->>>>>    net/bridge/br_cfm.c     | 14 ++++++--------
->>>>>    net/bridge/br_private.h | 18 +++++++++++-------
->>>>>    2 files changed, 17 insertions(+), 15 deletions(-)
->>>>>
->>>>
->>>> I think MRP suffers from the same bug, but I also think we can contain the
->>>> fix within the packet type structure instead of making the already huge
->>>> struct net_bridge even bigger. Also, linking a struct within net_bridge
->>>> to a list within the same net_bridge looks weird.
->>>>
->>>> IMO br_add_frame should take a type & a frame_handler, allocate a br_frame_type
->>>> dynamically and link it, then br_del_frame should take a type instead of a ptr
->>>> and remove that frame type and free it with kfree_rcu. That would require
->>>> br_add_frame return value to be checked in the respective cfm/mrp functions.
->>>> Warnings for already existing types on add or missing types on del should be
->>>> added.
->>>>
->>>
->>> Actually I have a better idea since these handlers can be added only once per
->>> bridge, we can do away with a simple bitmask (e.g. use net_bridge's options
->>> which is in a Rx hot cache line) and even reduce net_bridge size while fixing
->>> these bugs, and also remove a conditional from the fast-path when CFM/MRP are
->>> not compiled in. Would you like me to prepare it or do you want to give it a go?
->>>
->>
->> Hi Nik,
->>
->> Thanks for the suggestion.
->>
->> I'll give it a go. IIUC, the idea is to remove the shared
->> br_frame_type list entries for CFM/MRP, track their per-bridge enable
->> state with bridge option bits, and dispatch the CFM/MRP handlers directly
->> from the receive path when the corresponding EtherType and option bit
->> match.
->>
->> I'll include MRP in v2.
->>
->> Thanks,
->> Yilin
->>
-> 
-> Great, thank you. That should simplify the code and give us 8 bytes of Rx hot
-> cache line back. The important point is that there haven't been any new
-> handlers since these were added back in 2020, and also these are not
-> common, so making their impact on the fast-path as small as possible
-> while fixing the bug sounds good.
-> 
-> A quick & dirty sketch of the fixes gives me:
-> 5 files changed, 47 insertions(+), 66 deletions(-)
-> 
-> That can probably be improved (i.e. more deletions).
-> 
-> Just please make sure that if CFM/MRP are not enabled in .config, they
-> would not affect the fast-path at all.
-> 
-> Cheers,
->   Nik
-> 
+On Fri, Aug 28, 2026 at 2:28=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 8/27/26 7:39 PM, Jamal Hadi Salim wrote:
+> > On Thu, Aug 27, 2026 at 7:26=E2=80=AFAM Paolo Abeni <pabeni@redhat.com>=
+ wrote:
+> >> On 8/25/26 10:17 AM, Jamal Hadi Salim wrote:
+> >>> pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
+> >>> ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
+> >>> bound. An unprivileged user (via unshare -Urn) can set a huge
+> >>> tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
+> >>> memory, causing a system-wide OOM.
+> >>>
+> >>> Reject tx_queue_len values exceeding S16_MAX (32767) with -ERANGE
+> >>> in both pfifo_fast_init() and pfifo_fast_change_tx_queue_len().
+> >>> Note: For the init path, NL_SET_ERR_MSG_FMT_MOD reports the error
+> >>> via extack whereas for the resize path, the error propagates to
+> >>> netif_change_tx_queue_len() which rolls back dev->tx_queue_len to
+> >>> the original value. Use GFP_KERNEL_ACCOUNT so the ring allocations
+> >>> are charged to the allocating process's memory cgroup.
+> >>>
+> >>> S16_MAX is the virtio virtqueue size limit: the virtio specification
+> >>> stores the queue size as a u16 with a maximum of 32768, so 32767 is
+> >>> the largest tx_queue_len any in-tree driver can meaningfully use.
+> >>>
+> >>> Conditions to recreate the bug:
+> >>> - CONFIG_NET_SCHED=3Dy, CONFIG_VETH=3Dy, CONFIG_USER_NS=3Dy, CONFIG_N=
+ET_NS=3Dy.
+> >>> - Unprivileged user in a fresh user+net namespace (unshare -Urn).
+> >>> - Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
+> >>>   while the devices are down.
+> >>> - Attach mq at root, then replace each child queue with pfifo_fast:
+> >>>     tc qdisc replace dev veth0 root handle 1: mq
+> >>>     tc qdisc replace dev veth0 parent 1:1 pfifo_fast
+> >>>     tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
+> >>> - Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_arra=
+y
+> >>>   rings of tx_queue_len entries (~12MB per qdisc at QLEN=3D500000).
+> >>> - On the unfixed kernel this exhausts global memory in ~28 iterations
+> >>>   on a 2GB guest -> OOM panic. On the fixed kernel the oversized
+> >>>   tx_queue_len is rejected with -ERANGE.
+> >>>
+> >>> Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
+> >>> Reported-by: vega@nebusec.ai
+> >>> Tested-by: Victor Nogueira <victor@mojatatu.com>
+> >>> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> >>> ---
+> >>> v1 -> v2:
+> >>> - Replaced silent clamp + pr_warn_ratelimited with reject (-ERANGE) (=
+Jakub)
+> >>> - Changed cap from 65535 to S16_MAX (32767), matching virtio's
+> >>>   virtio16 ring size limit.
+> >>> - Dropped the doubled module prefix in extack (NL_SET_ERR_MSG_FMT_MOD
+> >>>   already prepends KBUILD_MODNAME).
+> >>> - Added resize-path tdc test case (Sashiko nipa gpt-5-6-sol-1-2).
+> >>> - Fixed tdc teardown to use JSON list form for acceptable exit codes.
+> >>> ---
+> >>>  net/sched/sch_generic.c | 14 ++++++++++++--
+> >>>  1 file changed, 12 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> >>> index ef2b4bf51564..eb5c0d3f67c2 100644
+> >>> --- a/net/sched/sch_generic.c
+> >>> +++ b/net/sched/sch_generic.c
+> >>> @@ -910,11 +910,18 @@ static int pfifo_fast_init(struct Qdisc *qdisc,=
+ struct nlattr *opt,
+> >>>       if (!qlen)
+> >>>               return -EINVAL;
+> >>>
+> >>> +     if (qlen > S16_MAX) {
+> >>> +             NL_SET_ERR_MSG_FMT_MOD(extack,
+> >>> +                                    "ring size %u too large (max %d)=
+",
+> >>> +                                    qlen, S16_MAX);
+> >>> +             return -ERANGE;
+> >>
+> >> Sashiko noted that setting a large tx_queue_len to a down
+> >> interface gives an inconsistent behavior:
+> >>
+> >> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825081751.134=
+086-1-jhs%40mojatatu.com
+> >>
+> >> (all other comments are IMHO noise and should be ignored)
+> >>
+> >> I don't see and effective way to avoid that, short of falling
+> >> back to v1, WDYT?
+> >
+> > I changed my mind on this. See this thread and let me know what you thi=
+nk:
+> > https://lore.kernel.org/netdev/CAM0EoMk8fAACt11fe1pUsFeG9np3SdsV0YUNmEe=
+vLu=3Di=3Db+xKg@mail.gmail.com/
+> Whoops, I missed the last message in such a thread. I think it makes
+> sense and will cover all the sashiko-reported concerns. You can probably
+> also additionally get rid of the old test:
+>
+>          if (new_len !=3D (unsigned int)new_len)
+>                 return -ERANGE;
 
-Hi Yilin,
-Are you still considering fixing these problems? A few months passed since
-we last spoke.
+Good catch; that check becomes dead once the S16_MAX cap is in place.
+I'll drop it
+How do i "withdraw" this patch? Is it sufficient to say:
+pw-bot: cr
 
-Cheers,
-  Nik
+Based on what you said to Victor: Should i keep GFP_KERNEL_ACCOUNT or
+make it a followup to net-next?
+The tdc test patch is still valid.
+
+cheers,
+jamal
 
 
+>
