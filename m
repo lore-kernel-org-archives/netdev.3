@@ -1,112 +1,113 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890613E5EF6
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 08:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C15B155C97
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 08:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787906230; cv=none; b=cVkf6WwD3KHnq7LZRo4qcXInB7u8aRMvoMQvzkTJaLLh7EeWIL3Qag8fn6EwdfUWGOWzSUqFuS9BwFdKYEXEt2HNJSm3+8/zQqm4wEBDXYVJwviejexjv8DsYIWWjuzTGLkNplkIyLTcJD25BvGptsRicM4d9ptt2BK382keQ2E=
+	t=1787906741; cv=none; b=jjeZbXLOmB7lERUE3dHT53a0gB8cN52Tr4O0RqauB4dih72AmnvrZukatgDceqJ8vbR/cVAiOJZvqxSyVowkzRO21E+dFD9a3vPhd2dNQVYxDlZ83b3WvBI4H/2LCGRmQWZb1FERrmj5WAmC5mmIo81qADj14k2I4TEIYd96aRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787906230; c=relaxed/simple;
-	bh=JjimoRVScCSqsPgCSM4g4WWACozV9xBIYZan/cGHbEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NTORQoNKj9vdn8KV98/ovdEcW08GtCYw4goMqySwhex7HRGY9LuUdGohpugso2CaTI3lrHYbFMc2yIFY2XpTW+v06qy13qnvLjE2BBC1KGzuYfJTXQfrI+Kn5jC3pd5Mm96+QoMM4/vsTjy5iKjd2YfR1E4AqCleGTuI2izpeRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9kJhNEO; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787906741; c=relaxed/simple;
+	bh=NqoqCfyoFE6X5OHQBuc+CfaqoiCY1+1elxwSxpA+jWI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Nojj/meizqbG04t+ATAEJLyl5Qz7cmfFH4v+qZkC+NJAY0bev/np2V2OQXwJfe7e9bpIoa4zsCfC0BKF7rkUfN6rpjTGWW1pHo6ITpcva+X0bUpkSRyNYpdL1fpbA8q9BYS8g8aMOOwvaNDf3RPZ8e63I84Vo+GCOaBCw8WFZ94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sdi9dwQ0; arc=none smtp.client-ip=209.85.222.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9kJhNEO"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49b0dbfbf7bso4432315e9.2
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:37:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sdi9dwQ0"
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-936708f129aso72944785a.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787906228; x=1788511028; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xY6rbTR5zEzizwjLS/TmjAP1rgdrCTsmvdQtVQtF9P0=;
-        b=T9kJhNEOsj1kF51Bmky2hbGcUeL2Rtto0QRtEp7USCaEljuIUpOtwCceoM3TAbbpmH
-         917IxUrp0WKArqLNfqYyvEzamcl+JKi5zwRSQxVP+JgSKy16AiME70ZVsfQscHMpGz3n
-         74BlXyysTu3Gv5KwUZNQ/QjHdz5YdQvJSMBUiyGdF8h9N/JvZrlu+Jfcb2505RsK0CzA
-         gkSPZMa4STlTxQ7ua6Iy9MCvrrSC0D/dCOJr9neu+1IsjBCrF4kQG0NRDIP3BfHxrDVm
-         85ETEUw0Kzj5TW0TjlEPNFrxHJ1yOqYCXgGubANkBQMgPFW6n+1I6naBoNOPkoKb25MW
-         YLDw==
+        d=google.com; s=20251104; t=1787906739; x=1788511539; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gz3GUsAoUfnTfSCRuKI8Oi8c89aw9vjcgL+SSV6OIz0=;
+        b=sdi9dwQ0pf8QG+LO+01tMB9XyLHWA6VCi1rgfLO0EhijFfvlOO8lsS+QMimjdMqNnI
+         WVA/6xcTQZybuj8Vy0jvW7pUSkKhcsEXW853A/1xkrMNpWqRLfSQzVNhTOoJ3Z4JfmJD
+         oVE4vglMZhvY1YrT6EFHqgz7OGZJUUXO0LgefyJawumxzir0YA/zDZpTSoriBWe4CzLH
+         wK+Ac64Qv38fZ5S4uNyNDK8cZVz0upwbYYn8nsL1ISLLBoS46Z6QmRTO6zS4ncSuPT0h
+         BV1OpP73vv/1Bzcg4PB4Oj2Elb0XwjvdDLKaIECQndcY9CRzA+Z5HRssltyVSbpMz/BO
+         96TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787906228; x=1788511028;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1787906739; x=1788511539;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xY6rbTR5zEzizwjLS/TmjAP1rgdrCTsmvdQtVQtF9P0=;
-        b=W6qzqiME65H9PrFJatfLB/vNi0OUj3bCxnQLnbJpKcMmAAG8FEd7XKZocg5RqWmuW7
-         tjVtGfAkCuPQT1HOmXNtGpD6uLK0SQFjYt8BhvRVhYod1PBN68sOkgJQ0g9fejoQAXTP
-         egcumdxAt8tWVPaqTjA2yyHEBp5NnLntjRn8/75mKteTCzwkDTWL8nEDnjqHx807uoLs
-         rAwiCdej60YZ6tM4ROX96BlSlHZRLfKAX9OEETCVDuKaKh24EnJozhDvR16mqdQW74qx
-         sTj3/aF9/PTYCdGUZDKagkFyro98LRri9JKIHfjUzfuQuouA5t1nDGni5tFxxwdSVUqr
-         Vaog==
-X-Forwarded-Encrypted: i=1; AHgh+RqU0ZN7EJArc45VqeXA9KA6nLE0NbReYUlZImbBcfV9qAMoKTX9+zwc3IUaP22eJDVArODUC1I=@vger.kernel.org
-X-Gm-Message-State: AFuF++mb/V18wi63kT3K9rSmZPBxUdNwt6H4vkpNtKzQskXBwmFrgVHe
-	C4wsGTA0ZlCDpIqCbHb+ayNUu8V9C5sq5VsEY5GDn/bGrn6ccUNxcdmF0ku7intC
-X-Gm-Gg: AR+sD10uJRhbeLib8PmZPgr8DPY4BB0igG3HC6/TL3ciy1/KusmbGmYcrh7XYndbg0/
-	6keOcwFlYhkAkypgtGefa4KgmjQiLIIYMgTRZw+5Akd2m4L8rVNGaXfjQEzGZX8lCX19oVgxhhN
-	SR/7OO+hA+uoI/PuwI5rEINpjSOD7pEjqhnbNDyi6Gl2xO39K0Vjtc0n89xpSHZVo+TUxvWccI+
-	CRim5d7atwRAvF1vZcDD1CldArXqiWxGozc2IQQVgg0rXwNFTixUvhLNlV3N4yciir9F1YKb19C
-	1gQYKj63amlvch0d3DxM9b1aj8/okAWtOvDRnHf3OiYuCDqk4/9kPb7r7x+c2FId/4BxEiz6tNF
-	oJaY6FJFeGio3Grq9uVC4sCj+GTG2Xlw07w24KNqHj2lDFYlEdPOqAEffK5erDiJXkNLVDYa22X
-	TA91HAaQg9E2ioWTqm34H+tbjM75JBFBGeMn1fz0vxwE27rPotbz8yQAlg+rbQis7NbwN2Fjap8
-	MGbUc6jmSrdIonlsdW7SlOkyw==
-X-Received: by 2002:a05:600c:3f0b:b0:49b:9105:cdaf with SMTP id 5b1f17b1804b1-49b91c30753mr77538815e9.8.1787906227824;
-        Fri, 28 Aug 2026 01:37:07 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b49cc61cfsm121431165e9.6.2026.08.28.01.37.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 01:37:07 -0700 (PDT)
-Date: Fri, 28 Aug 2026 09:37:06 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Nicolai Buchwitz <nb@tipi-net.de>, =?UTF-8?B?VGjDqW8=?= Lebrun
- <theo.lebrun@bootlin.com>, Conor Dooley <conor.dooley@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Jonathan Bell
- <jonathan@raspberrypi.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: macb: exclude software FCS from TX byte
- statistics
-Message-ID: <20260828093706.3419d646@pumpkin>
-In-Reply-To: <20260827115601.6bf0b18a@kernel.org>
-References: <20260824134703.766708-1-nb@tipi-net.de>
-	<20260824134703.766708-2-nb@tipi-net.de>
-	<20260827115601.6bf0b18a@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=gz3GUsAoUfnTfSCRuKI8Oi8c89aw9vjcgL+SSV6OIz0=;
+        b=YFRmtCdS87yXh386qYT/KJ2mM9z8VEQ8uyn/Tm54hxGmUiRy5z+X1EjaE/6Qp3L67Y
+         43RXtYOIa11VwQnQffdF9Rd8kvq4i03J2K1mk8kMEekodlP+X4cSxV6TJoZMVobGllhG
+         wojD42Gz6q4IMpx4Fz6dyEbUrOhJ+pyK8r4kgQp7ngTYKnt4mdKVpCkJXzlYL8VpfIK0
+         J9rO+awI9Z4DSy0ZrececsVLqq93V4saytXEVO4JMNacQ80c0TTaqBrNoaHAV4MqKiT4
+         kL4DTzw92JBDq3HjR6A6t0OYGyMHDDKDWRVT6xmOxhzUIVCD9eM+X/NIFii8XYKVNi4l
+         2mmg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8Neatdsj+fFWDWLXvnb5UAy2LIqeggMiLhCnxu3sHwk2w9jKiWAsQqGC4PCZMBDEk68pjfEc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mZAqiPDpEhFshkLCB+q2zm0DVhbWq7lK1jRR/iyCaKSb/zbe2G
+	JTZ5p5oDXizR/84mL5BPwug4Thwvp5nK8thlSbMA6WOWkXI+7J4gZoJ7qxc2K4Gyk8zFpabdW+A
+	oeXmhiE/UfJ277g==
+X-Received: from qknus12.prod.google.com ([2002:a05:620a:6b0c:b0:92e:6aaa:d1c3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:2810:b0:92e:745c:6c5a with SMTP id af79cd13be357-93913809eb0mr572171285a.14.1787906738836;
+ Fri, 28 Aug 2026 01:45:38 -0700 (PDT)
+Date: Fri, 28 Aug 2026 08:45:26 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+Message-ID: <20260828084531.1826790-1-edumazet@google.com>
+Subject: [PATCH v2 net 0/5] ipv6: mcast: RCU and timer fixes
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 27 Aug 2026 11:56:01 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+This series addresses several RCU synchronization and timer calculation
+issues identified in IPv6 multicast (MLD) handling within net/ipv6/mcast.c
+while I was working on fixing a syzbot report in net/ipv4/icmp.c.
 
-> On Mon, 24 Aug 2026 15:47:02 +0200 Nicolai Buchwitz wrote:
-> > + * @skb_len: skb->len as handed over by the stack, before padding and
-> > + *           software FCS, only set for the last buffer of the frame  
-> 
-> counting pad bytes to ETH_ZLEN as sent is perfectly legit,
-> it's a driver preference. Some don't because HW pads and
-> the driver doesn't want to bother adding a conditional.
-> But it's best if the driver bytes match wire bytes IMO.
-> 
-> Either way, you only need u8 or even a flag for this,
-> not a full u32?
-> 
+Patch 1 fixes an RCU reader diversion in ip6_mc_del1_src() where mutating
+psf->sf_next to insert an unlinked source node into the tombstone list
+diverted concurrent lockless readers (e.g. ipv6_chk_mcast_addr()) into
+pmc->mca_tomb, causing them to miss remaining active sources.
 
-You could save a count to be subtracted from skb->len.
-But isn't that also unrelated to the UDP checksum issue?
+Patch 2 converts ip6_mc_source() to use copy-on-write RCU updates.
+Previously, source additions and deletions modified the socket's
+psl->sl_addr array in-place, causing concurrent lockless readers in
+inet6_mc_check() (UDP/RAW receive path) to observe torn 16-byte IPv6
+addresses or duplicated/missed sources.
 
-Note that the receiver will treat an IPv4 checksum of zero as valid.
-For IPv6 it is a protocol error.
+Patch 3 fixes delay calculation in igmp6_join_group() when canceling an
+existing delayed work, preventing unsigned jiffies underflows when the
+timer has already expired and clamping the delay to the unsolicited report
+interval.
 
-David
+Patch 4 ensures rcu_assign_pointer() is consistently used for __rcu list
+updates in __ipv6_dev_mc_dec(), ipv6_sock_mc_drop(), __ipv6_sock_mc_close(),
+and related helpers.
+
+Patch 5 switches igmp6_mc_seq_show() to use jiffies_delta_to_clock_t()
+with a signed long delta, preventing underflows in /proc/net/igmp6 timer
+duration reporting.
+
+v2: addressed AI review.
+v1: https://lore.kernel.org/netdev/20260826103711.3302915-1-edumazet@google.com/
+
+Eric Dumazet (5):
+  ipv6: mcast: fix RCU list diversion in ip6_mc_del1_src()
+  ipv6: mcast: use copy-on-write RCU updates in ip6_mc_source()
+  ipv6: mcast: fix delay calculation in igmp6_join_group()
+  ipv6: mcast: use rcu_assign_pointer() for __rcu list updates
+  ipv6: mcast: use jiffies_delta_to_clock_t() in igmp6_mc_seq_show()
+
+ include/net/if_inet6.h |   2 -
+ net/ipv6/mcast.c       | 148 ++++++++++++++++++++++++-----------------
+ 2 files changed, 88 insertions(+), 62 deletions(-)
+
+-- 
+2.55.0.897.gb25b4bd76c-goog
+
