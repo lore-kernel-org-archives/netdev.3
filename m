@@ -1,305 +1,195 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8503CB554;
-	Fri, 28 Aug 2026 06:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787900109; cv=none; b=HoPrUwiexknaDpRtsiPbk0J33HXOZz2Uq4Mj4iQtN9CuKIckTFbu7w9vImuL9/s9xiZ7cyv2adIM4QG346i5B1FoFOSFMcEvhXZpW2Ai2lSdawijyWJA9uS/0ahrA2rOfDWM94ww8Rrs0NKP9zEfqbp6pKmvIurQ6vptX6QLTbo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787900109; c=relaxed/simple;
-	bh=LK9coVivaEg6X7pyagvSH/oxJLLh/lXIGvmAeUZugI8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccjBkpmxcFL5cX//KZBdIabAKS7tyJILHd90FA/iMERTKNTm0S8T80s5bXVfv6gYJsNXDy3OG3DexHnDpfH4d9H1mZ/cYdElQnwEhCYgxnYOvp356paDE9Q0BMPspVEsgdGuFUot438hkxNuThWmAgT6ViLT1tYQkB1nQaapLJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TAlpaHkS; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B110F3B52E7;
+	Fri, 28 Aug 2026 06:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787900260; cv=fail; b=baZWiUAhtKWggLXKWE3jHHJZPG/d1wWztt3S6C3KGmRuAXPFTL1CRBMuDQb4a1aIkEY/au6OwqG4eq+CoeEj3YZIBHGD2IldtxbyYQ3Z6r3IZHHoNAbqXufF8t/M/Ft8hC4IHWIZi0geOaJP30oYWZvYBGsfbcJWeyf+YUbLWL0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787900260; c=relaxed/simple;
+	bh=sfu2ZgXkf5C8iipDZOen9NR5JXDCv+xnh5zXTi6jyj0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=j5smOAJFB7SlOu9lw0mlwpWuCazZLTroVoghy9j/pWIhJy6M7TRVlVGNwJjhitCMtELtl1xip0YHNIthRTwveRlLwZV62lL9UKrrI7OSwAQyRdfkorNKtBf3nO+jq+oSZD3/qnq6sSsZeCrQMcE+kVNpvSi0n6FLxpcLrE1bF9c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yji7xCJc; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TAlpaHkS"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67S6VcJK1265199;
-	Fri, 28 Aug 2026 06:55:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=A40Vc1mh0XS9Z4S9a
-	2t2St9YNWjs5QnCiHvbMash+Cw=; b=TAlpaHkSoTnC22KSEFg9H9GDu+SorR80H
-	dfnKtFDL0fXvhRLUt7iAB3ww6F871plR3IN02CVHzhlzskc9qJ3nhjheNP1Q+Xcc
-	2M/p/jIu4Q5/CoX1fDqbhyc0OCtFWa4NKL2p+LE8lMBs9nIYhKV2zv6CiuGKB+Fm
-	NH7m02LSzBqk22tT7MnDB6Mb/+RQ695VNfp0KtFAAfLFhrLIcwQU/AXF0whK1y1/
-	El4TBDLPfQ2XZ/vvOOHkBAosNaBWaHeGFkO8oGdF9Vep/rqT1rNVyCD1kssoQm93
-	e2+E4Sp3v6RTbXF1QT6nbpA6/mu4OohU2k43Y9Jto/iNzvbSgOD+Q==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73dxt6ej-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Aug 2026 06:55:00 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67S6QP2h009516;
-	Fri, 28 Aug 2026 06:54:59 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkhmqyu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Aug 2026 06:54:59 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67S6stIV39846202
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Aug 2026 06:54:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6AD4D2004B;
-	Fri, 28 Aug 2026 06:54:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EA6420049;
-	Fri, 28 Aug 2026 06:54:55 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Fri, 28 Aug 2026 06:54:55 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 56341)
-	id 1A45C16161F; Fri, 28 Aug 2026 08:54:55 +0200 (CEST)
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, stable@vger.kernel.org,
-        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-rdma@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>
-Subject: [PATCH net v2 2/2] net/smc: fix races in smc_diag dump path
-Date: Fri, 28 Aug 2026 08:54:39 +0200
-Message-ID: <20260828065439.3582783-3-mjambigi@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260828065439.3582783-1-mjambigi@linux.ibm.com>
-References: <20260828065439.3582783-1-mjambigi@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yji7xCJc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787900258; x=1819436258;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=sfu2ZgXkf5C8iipDZOen9NR5JXDCv+xnh5zXTi6jyj0=;
+  b=Yji7xCJcJrxVYAFdCW7r4tJLfatkU7NiIW6jMovqEnaALIbJj+PFfXVm
+   0owEYI4dN0xxkeelEi4rwh5As+5VyKSO5nrkRQjGx8a8Y16VfkVZyX04s
+   IqREIeDOa16O7UCtVvmB5banvxZel4WiRrOvtL2cKH39sIoLMTrU9CkQL
+   SExmvRjhfK8gcU+3CAD/qD7YrftAJci8Bpl5UB1TrRiYXWzDsPAeYuufn
+   jxyD6HUuTExH5bRD0ZImNzRkMvF/QPWHFvXJFgSW/IpGr7pE/c4moYBLw
+   Tmi1SekRoMjPDwqrXesMThah4HBnASuzOmqqFaBfrVmDynzUkdjTC4Ix7
+   Q==;
+X-CSE-ConnectionGUID: NFJLmDVLRLSGnyve96a9OQ==
+X-CSE-MsgGUID: OUNRgNHjREma9uNT3D9KcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="92219495"
+X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
+   d="scan'208";a="92219495"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 23:57:37 -0700
+X-CSE-ConnectionGUID: VT1hGQxuRpiQNxFlbjkDPg==
+X-CSE-MsgGUID: pTUm68ybRrKXtaGLthHyGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,248,1779174000"; 
+   d="scan'208";a="271602201"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 23:57:36 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 27 Aug 2026 23:57:36 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Thu, 27 Aug 2026 23:57:36 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.28) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 27 Aug 2026 23:57:35 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QQTPl5vQs/220Y+t9Ihem/PX/VPq3hBERlFHXFSQ5qrE2rTzAnZqFSUgEI9cdWct7+f4TgTWuC/FxyVpKCvQsjqy1XwaQolilF4qiA66UcrJ87wIjscWCk0q6QtxbZGI90viKNBCVZnaX4Nc3JfKs0rY2Vmdp74FqHW+cUOv7+oJHlUXbxhfcWd4fY/iuGZs1/R48NESs7fuqc4DknZ4A5GC+H5Q+N0VZY2Qm4C/v63MOR0Mr9Phz8opJL3nqpP3emuhchZmWjlaxkyzWdULZ6a9tEcc1Z2bo6NzdiqGjl3ZceTFeISGi8874yRHWqusXzMhVqYcFKPP3NaR/t/1oA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OKmExH/1vWizgJD6te4ffAszCA/TJfWZ+U/NPcU/cwM=;
+ b=hVakWxsWVTi2rOYGv/FEzgRFgbUJbs7G2afahmI+8jv+stj1hmrvXJMItV1qhci98pL2BrPOyoijlRrl5/Sh9HouA2EqA77Ztc5RFRP4UK9S9kmZBNftZeBaecSZQqKWBnuXUInROY1H00CbCuefLMgs7ZBUDIKATZ60mMkieSohbqhSNVWeg2+3icPFe8mkYJ14MG2vmK8rAYG287TUIhnfidYtzUBMTiDo/to72iB9Z3Ft5BXzOO2x00d/buTAOvnYK/PHu6giScC4fYZCvDXyEpnNvxqPU0im07/m6GQdpw4HC9MfxFK/wOoXO4pq3GIB7NhHxHc9VRh1I/i4zA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
+ by IA1PR11MB7725.namprd11.prod.outlook.com (2603:10b6:208:3fd::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
+ 2026 06:57:27 +0000
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919%3]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
+ 06:57:27 +0000
+From: "Rinitha, SX" <sx.rinitha@intel.com>
+To: Pawel Dembicki <paweldembicki@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH net-next 1/2] igb: detect M88E1112
+ 100BASE-FX SGMII mode
+Thread-Topic: [Intel-wired-lan] [PATCH net-next 1/2] igb: detect M88E1112
+ 100BASE-FX SGMII mode
+Thread-Index: AQHdGFuLcH/Op4za+k+yi0QHZKnTubazMz/Q
+Date: Fri, 28 Aug 2026 06:57:27 +0000
+Message-ID: <IA1PR11MB62414ADBEA79DD610FFF8DDC8BAC2@IA1PR11MB6241.namprd11.prod.outlook.com>
+References: <20260718165213.3620511-2-paweldembicki@gmail.com>
+In-Reply-To: <20260718165213.3620511-2-paweldembicki@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|IA1PR11MB7725:EE_
+x-ms-office365-filtering-correlation-id: 6de192d8-9e16-4f18-1b03-08df04d19f26
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|38070700021|56012099006|10067099003|11063799006|18002099003|22082099003;
+x-microsoft-antispam-message-info: CTvcT7eDurh+OvKJ88Dg9lpoI8YyKUMcIVGkYyxXV7h5cVNbxYR3jBHzNF6gc58aL+aCS/oU2OJLpS1DvGt66esHmz+y8ZIYWKVAY3C4+KggiemI43JeQce5XvKqnQ3KgosOfRW/hakqio1gkeJd1Nb+jwCypnLWB27BVuTxp5RIcQ+vDms7nOUPS3zEZkeXM0AwD7X7py7PazYf53JA7yCBsFHKFpruqWiyShU3I6Bp7wTw0IdvmOOneLRre+th5F6pgn8dnBB48NpE6w+zPm5jxmr2VFRAK26nBUlabm8UsB6+Ew0Trc529oUWX8ttOtV6OAfdyJRMVfb/l0bRFZAl82pDNMf+xtH4LkMsNUIFqTdczau68euZ3jFCH1ZFUuGGDy0JbBMd2mNBvSzY5zasi7quy3gZLVuLjywTur8tXxNy38GAgRsN+uCeAO5WXPs/nRFN9kmwJshauRBEbvEu5kfMk1Xh1duSMEzEU4RtLX8Ju5eqz2O+ckHhf9Gq5eyI6i8pbOjWQ44/Uyx0SWWzSjvwryCUJidKrkFEP9hUqDqkqH1K2KAf1uqNw6uhdmOG2NQ5FgXe48XPACVAjkeW3hovJoknkI2hi9+qnGOY7eeXuqtva/o/e4oXQmn+MBkg6kA/9hSvpWjvFBc+r3nt5M2x1JEmgswMY3+HXfa6Ie50B1y3FYD5mNgR8PYOr0V1biX8TrObzEgp35p549DzsCnnLZ1u6QUFZU0BzFM=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(38070700021)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?oUXNEpY3SUHXCGaVOhsPbDf30W5qVpZazZBA0nu/MW5Wdix7uxs8N52K//0F?=
+ =?us-ascii?Q?X41v9OTBEvhRmrZ3agvqTtjBTM7EgORcY9rLh2znF86F13B4IEvPNPV7XSn6?=
+ =?us-ascii?Q?yznThxs3567SaW6lEJlpfyYBDjFtU5gAZ0BADp3jbJwg3eYW7zsg0XbzjZVn?=
+ =?us-ascii?Q?k8rc90TLMOQKe0cengqLqJS+/ry55dFn3ihO9ZMW6ugO5IR6ALJjxGVGihuR?=
+ =?us-ascii?Q?rRwZKaFwprX5NrB6Gl6xHko9FCUwrfpjQK45kI/VyIwqhbTnYvZJEFZtbveC?=
+ =?us-ascii?Q?nOWsiJ1G2euPVypz0aty/6qM3FQV0T9KMj1PKRD2dmFjHUwZfgrl5YuDUPaw?=
+ =?us-ascii?Q?9X17CphmI88Y6LSR2w5l98YPW6Zr+B8fDjFMK6B0RgsiBwcKVoSPtDTWI+uG?=
+ =?us-ascii?Q?pVUnC9lxXp8m+1DVLRbdW0u+iOZZzOSrBVlTDuXDE0HK2gIiYYtqVkSdEPV2?=
+ =?us-ascii?Q?wN/Inl4HioqJrvLe+7sTMHq2Zuv8gh7M6Ul7tOULl8ZNWQQazRc8iiuQ4F/2?=
+ =?us-ascii?Q?voyMH3GZ6fxNDuYzsO2CgiL5r1bzG7RWwiw/3SmeYtT4wnqTEX07Q4f9n7Bq?=
+ =?us-ascii?Q?UPY9t7ZUqayP0TGT/Lped9vgQJuyAUcObpxam+GIaPaIUWkvj63lkmHb3dpS?=
+ =?us-ascii?Q?f4eGFIsR7bBrOB0eCy+3JeeV1CXO3sNIhfLIVAEwSsjfLMh89pL2wbKMRG+V?=
+ =?us-ascii?Q?mAHR6fAvioutAG0MJNAlnWwoykiu6625a3YWm6hewv/uzLI6yw3wWy4B5gjg?=
+ =?us-ascii?Q?OgyVPCKRETybabvbcZLOgd31S0CD/+aIjVw9Or+G90LFhf0wVceiYOAYyizP?=
+ =?us-ascii?Q?bgFD2B6yiOM9hUOrVYKzeoQLaSyZ2BFkdZXq2DiCrjK5zt0AaojLMGD1cVYJ?=
+ =?us-ascii?Q?oB7KkCBAwIgkKrAd9JyuPG4V6nFl0ahwiYq33SL3r2dCz1CJUoYIxSGaNdn6?=
+ =?us-ascii?Q?5R6+wS6v7ynJT9Uf1XKPCxkLyc89VcTfcvxdPC7wzX7upiZAKgTRsufX5y3s?=
+ =?us-ascii?Q?j3h38iQynnrarKoGJMTCSJW4veXcmouLkWVcMHQhJ4h86+1VwMKScjfpqUrs?=
+ =?us-ascii?Q?KQAvPXKK8fp1p8x7Wi6BTYrqHxFJEHXikOJIRXFGwTyZTPd6Y5nqB4azIBUt?=
+ =?us-ascii?Q?bitQ9dCLoEB1f8PfulkWqKN+a8hdmM8lbIjL6HAZgAe0AnjT8Y1Bw+S8kcom?=
+ =?us-ascii?Q?7WACLDpJdIeMR7hKw5uBqwlP3YArAQov9ZFzc7zarksitNBZptf/P0Myxm/0?=
+ =?us-ascii?Q?ohKNt8agW4Z4G1Q6b+IltutQGtGzdLizBYUgSU+ERBmw6nXsZDdn2rNsBTx8?=
+ =?us-ascii?Q?k1nxdx5BZ2Icu57+HqBHnljgxC+KA+ZZCS2uPuCN2Weq29OkvOmFt2OsJofX?=
+ =?us-ascii?Q?G+sitIHOOIj79tTqbx6NuZsI9JaYfVqSt+Rpc9JYGvQ/k0HjNeqPIiV8q6Xz?=
+ =?us-ascii?Q?Lgrwn9pcZkx0E0FvG0CFZFyiyAutKv5BRaSEQGaKnJHYnpRmfSFkoYRT/8b5?=
+ =?us-ascii?Q?IwXMn52nfCENNq/H4eYgmAzWs1Mc0tOWuomDHOoChhexxX/KOHer3v1ZjDmy?=
+ =?us-ascii?Q?ZkwKKKwevey21vC19vY4C/5//6lJ2zoL4wZeT2JrJljq20n5OZ/looqbioZU?=
+ =?us-ascii?Q?7B/uGbIAsDoiraAlpCN47dXWS6U/Z60zuIxbJ58Ykqm71J+euxFQKAvQ23e7?=
+ =?us-ascii?Q?LYZh8fT01d6ls++4AOAD+UqhdBOLood4T2t5nHB7kX3qCZIL?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDA1NCBTYWx0ZWRfXyWXRDcIKoHTr
- ryjxHSLnL2vBSqy3alPggwd0mR+/CFpdytuuwDXz1CVAhIqvGtpKfv7NDeab7QzLoDGkv/CkdXI
- 5BEghAT/Qf1g5OJZeGHQbfZKnChPc5s=
-X-Authority-Analysis: v=2.4 cv=AYuB2XXG c=1 sm=1 tr=0 ts=6a9130c4 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=1D_QaxW2Y1NEVYoI354A:9
-X-Proofpoint-ORIG-GUID: Bm7krsO1TqWXhTYBYmuApEmp7GmLRUmG
-X-Proofpoint-GUID: a0cIJQrVdK67meDY1Rra8XgvsZS9uj7a
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDA1NCBTYWx0ZWRfX1OXpnI5Rjdhn
- Xo+q+voTNg/MTbQKy3CQnWHz/rR/sg7/yDYXCL6+rCCVd8CLHRTP6c6R/EpzdJHzWEKTJ/W/FxV
- NkFM0dd0O25OnFNwDF/qBTNFuh3VkiI6rFa6ScWvs+p3c1KXgxrdXgROOw7ipbDSjvRzctjLQul
- deZbDWu1Q3nnwK/Gm0oNOqA7sTSmlkHJD+9dSoAfCLsxh+yuacp1lg0XaP0C/rLKd0wFwYexjWG
- uG4CDRCXf+kaXmUr+AAybUDKE8rKBN4I5G0TWnLGy+bMq0U3SidQcLBz6Vs9ZFjRS+1Vsl826ff
- xAjaC3XcSVnCAlH6t0RM1K2Pp7iVpgAPUHe/ym4X2p/SKPw4deZ05J3DOThA4yQ9E57x62Xp9Sz
- mkGvp41Fj/gpC+QbwivZTM2xw6aijRmI067ZCABm1QHBMj0CCynaydbDDlXRRYy+Jvhpwl1MlvN
- ajirqaamT8HuL0lsk0g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-28_02,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608280054
+X-Exchange-RoutingPolicyChecked: XXVkhYPZ3EOHUsZsd8LPynFTIVyIlLPnQiaeE1lcANfq/OfM5asdR9XKgVQGBbNa+T2VVsTfMeQ38hU66un8MJcpo8+U4CSiRFLagn/z1S0Hg6aRmYFchJAAi6XrPnitm6+B/jUWv9aYlZ8Try0nFm8nkQyRcwlYEhAgIv68aZHSFsqU3g4wi2E+Nr+NUYWqctUz3Rux/jHt+tumpgogEo4wFGGFEoq0YoO0ywjsK6KKAI2TiQL4fWHS+G/tCilUYQ6KxBgyGlePKuSVgoucoxNW2Z7pHuBqFmiFcouBY3G4NCegl7xlAmpu4eSDNzYEspYW0MndyhIbjXE3PahuAA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6de192d8-9e16-4f18-1b03-08df04d19f26
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2026 06:57:27.4440
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ckrd5Zx45r9hF6KPijr7S1q4pdG+t26vIpYYIuwoAcP9Cfl0FvJ5QGoJ0ImsOa8gYUD+ZRiWvZaFxzT90hgs0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7725
+X-OriginatorOrg: intel.com
 
-Two races exist in the SMC diag dump path.
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of P=
+awel Dembicki
+> Sent: 18 July 2026 22:22
+> To: netdev@vger.kernel.org
+> Cc: Pawel Dembicki <paweldembicki@gmail.com>; Nguyen, Anthony L <anthony.=
+l.nguyen@intel.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; An=
+drew Lunn <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; E=
+ric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo =
+Abeni <pabeni@redhat.com>; intel-wired-lan@lists.osuosl.org; linux-kernel@v=
+ger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH net-next 1/2] igb: detect M88E1112 100B=
+ASE-FX SGMII mode
+>
+> The M88E1112 can be strapped or EEPROM-configured to bridge SGMII to 100B=
+ASE-FX. In this mode the driver still needs the SGMII PHY register access p=
+ath to identify the external PHY, but the MAC link setup must follow the SE=
+RDES media path rather than copper setup.
+>
+> Decode the M88E1112 MAC Control 1 mode field and switch the I210 media ty=
+pe and physical interface setup callback when the PHY reports 100BASE-FX mo=
+de.
+>
+> The driver only observes the Marvell mode. It does not program the
+> 88E1112 registers or its EEPROM. The board must configure it through firm=
+ware or straps before probe.
+>
+> Assisted-by: Codex:GPT-5
+> Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+> ---
+> drivers/net/ethernet/intel/igb/e1000_82575.c   | 12 +++++++++++-
+> drivers/net/ethernet/intel/igb/e1000_defines.h |  1 +
+> 2 files changed, 12 insertions(+), 1 deletion(-)
+>
 
-Race 1: smc->clcsock can be set to NULL by smc_clcsock_release() after a =
-bare
-NULL check in smc_diag_msg_common_fill() and before the subsequent field =
-reads.
-Use mutex_trylock() on clcsock_release_lock to serialize the check and th=
-e reads
-with that writer. If the lock cannot be taken, teardown or fallback is in
-progress; leaving address fields zeroed is a safe transient gap for a mon=
-itoring
-tool.
-
-Race 2: conn->lgr and conn->lnk can be torn down concurrently by
-smc_conn_free(). Take conn->lgr_lnk_lock when accessing these fields in t=
-he dump
-path. This covers three sites: the diag_mode classification
-(conn->lgr->is_smcd), the SMC_DIAG_LGRINFO block, and the SMC_DIAG_DMBINF=
-O
-block. In each case, fields are snapshotted into local variables under th=
-e lock
-and used after releasing it.  With patch 1/2, a non-NULL conn->lgr seen u=
-nder
-that lock guarantees the lgr is alive. conn->lnk is likewise valid when n=
-on-NULL
-under the lock. nla_put() is called after releasing the lock.
-
-This design avoids borrowing an extra lgr reference, which would require
-smc_lgr_put() to be called inside __smc_diag_dump() -- a problem because
-smc_diag_dump_proto() holds an atomic read_lock for the duration of that =
-call.
-
-Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
-Fixes: 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R c=
-onnections")
-Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-
-diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-index bf0beaa23bdb..06db3d769929 100644
---- a/net/smc/smc_diag.c
-+++ b/net/smc/smc_diag.c
-@@ -39,8 +39,20 @@ static void smc_diag_msg_common_fill(struct smc_diag_m=
-sg *r, struct sock *sk)
- 	memset(r, 0, sizeof(*r));
- 	r->diag_family =3D sk->sk_family;
- 	sock_diag_save_cookie(sk, r->id.idiag_cookie);
--	if (!smc->clcsock)
-+	/* smc_clcsock_release() sets smc->clcsock =3D NULL under
-+	 * clcsock_release_lock. Use mutex_trylock() to make the NULL check and=
- all
-+	 * field reads atomic with that writer. mutex_trylock() is safe under t=
-he
-+	 * hash read_lock held by smc_diag_dump_proto() because it never sleeps=
-. If
-+	 * it fails, the socket's clcsock is being modified or released (teardo=
-wn
-+	 * or fallback transition); leaving address fields zeroed is a safe
-+	 * transient gap for a monitoring tool.
-+	 */
-+	if (!mutex_trylock(&smc->clcsock_release_lock))
- 		return;
-+	if (!smc->clcsock) {
-+		mutex_unlock(&smc->clcsock_release_lock);
-+		return;
-+	}
- 	r->id.idiag_sport =3D htons(smc->clcsock->sk->sk_num);
- 	r->id.idiag_dport =3D smc->clcsock->sk->sk_dport;
- 	r->id.idiag_if =3D smc->clcsock->sk->sk_bound_dev_if;
-@@ -55,6 +67,7 @@ static void smc_diag_msg_common_fill(struct smc_diag_ms=
-g *r, struct sock *sk)
- 		       sizeof(smc->clcsock->sk->sk_v6_daddr));
- #endif
- 	}
-+	mutex_unlock(&smc->clcsock_release_lock);
- }
-=20
- static int smc_diag_msg_attrs_fill(struct sock *sk, struct sk_buff *skb,
-@@ -88,12 +101,18 @@ static int __smc_diag_dump(struct sock *sk, struct s=
-k_buff *skb,
- 	r =3D nlmsg_data(nlh);
- 	smc_diag_msg_common_fill(r, sk);
- 	r->diag_state =3D sk->sk_state;
--	if (smc->use_fallback)
-+	if (smc->use_fallback) {
- 		r->diag_mode =3D SMC_DIAG_MODE_FALLBACK_TCP;
--	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
--		r->diag_mode =3D SMC_DIAG_MODE_SMCD;
--	else
--		r->diag_mode =3D SMC_DIAG_MODE_SMCR;
-+	} else {
-+		bool is_smcd =3D false;
-+
-+		spin_lock_bh(&smc->conn.lgr_lnk_lock);
-+		if (smc_conn_lgr_valid(&smc->conn))
-+			is_smcd =3D smc->conn.lgr->is_smcd;
-+		spin_unlock_bh(&smc->conn.lgr_lnk_lock);
-+		r->diag_mode =3D is_smcd ? SMC_DIAG_MODE_SMCD
-+				       : SMC_DIAG_MODE_SMCR;
-+	}
- 	user_ns =3D sk_user_ns(NETLINK_CB(cb->skb).sk);
- 	if (smc_diag_msg_attrs_fill(sk, skb, r, user_ns))
- 		goto errout;
-@@ -143,45 +162,57 @@ static int __smc_diag_dump(struct sock *sk, struct =
-sk_buff *skb,
- 			goto errout;
- 	}
-=20
--	if (smc_conn_lgr_valid(&smc->conn) && !smc->conn.lgr->is_smcd &&
--	    (req->diag_ext & (1 << (SMC_DIAG_LGRINFO - 1))) &&
--	    !list_empty(&smc->conn.lgr->list)) {
--		struct smc_link *link =3D smc->conn.lnk;
--
--		struct smc_diag_lgrinfo linfo =3D {
--			.role =3D smc->conn.lgr->role,
--			.lnk[0].ibport =3D link->ibport,
--			.lnk[0].link_id =3D link->link_id,
--		};
--
--		memcpy(linfo.lnk[0].ibname, link->smcibdev->ibdev->name,
--		       sizeof(link->smcibdev->ibdev->name));
--		smc_gid_be16_convert(linfo.lnk[0].gid, link->gid);
--		smc_gid_be16_convert(linfo.lnk[0].peer_gid, link->peer_gid);
--
--		if (nla_put(skb, SMC_DIAG_LGRINFO, sizeof(linfo), &linfo) < 0)
-+	if (req->diag_ext & (1 << (SMC_DIAG_LGRINFO - 1))) {
-+		struct smc_connection *conn =3D &smc->conn;
-+		struct smc_diag_lgrinfo linfo;
-+		bool lgr_valid =3D false;
-+
-+		memset(&linfo, 0, sizeof(linfo));
-+		spin_lock_bh(&conn->lgr_lnk_lock);
-+		if (smc_conn_lgr_valid(conn) && !conn->lgr->is_smcd &&
-+		    conn->lnk && !list_empty(&conn->lgr->list)) {
-+			linfo.role =3D conn->lgr->role;
-+			linfo.lnk[0].ibport =3D conn->lnk->ibport;
-+			linfo.lnk[0].link_id =3D conn->lnk->link_id;
-+			memcpy(linfo.lnk[0].ibname,
-+			       conn->lnk->smcibdev->ibdev->name,
-+			       sizeof(conn->lnk->smcibdev->ibdev->name));
-+			smc_gid_be16_convert(linfo.lnk[0].gid,
-+					     conn->lnk->gid);
-+			smc_gid_be16_convert(linfo.lnk[0].peer_gid,
-+					     conn->lnk->peer_gid);
-+			lgr_valid =3D true;
-+		}
-+		spin_unlock_bh(&conn->lgr_lnk_lock);
-+		if (lgr_valid &&
-+		    nla_put(skb, SMC_DIAG_LGRINFO, sizeof(linfo), &linfo) < 0)
- 			goto errout;
- 	}
--	if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd &&
--	    (req->diag_ext & (1 << (SMC_DIAG_DMBINFO - 1))) &&
--	    !list_empty(&smc->conn.lgr->list) && smc->conn.rmb_desc) {
-+	if (req->diag_ext & (1 << (SMC_DIAG_DMBINFO - 1))) {
- 		struct smc_connection *conn =3D &smc->conn;
- 		struct smcd_diag_dmbinfo dinfo;
--		struct smcd_dev *smcd =3D conn->lgr->smcd;
--		struct smcd_gid smcd_gid;
-+		bool lgr_valid =3D false;
-=20
- 		memset(&dinfo, 0, sizeof(dinfo));
--
--		dinfo.linkid =3D *((u32 *)conn->lgr->id);
--		dinfo.peer_gid =3D conn->lgr->peer_gid.gid;
--		dinfo.peer_gid_ext =3D conn->lgr->peer_gid.gid_ext;
--		copy_to_smcdgid(&smcd_gid, &smcd->dibs->gid);
--		dinfo.my_gid =3D smcd_gid.gid;
--		dinfo.my_gid_ext =3D smcd_gid.gid_ext;
--		dinfo.token =3D conn->rmb_desc->token;
--		dinfo.peer_token =3D conn->peer_token;
--
--		if (nla_put(skb, SMC_DIAG_DMBINFO, sizeof(dinfo), &dinfo) < 0)
-+		spin_lock_bh(&conn->lgr_lnk_lock);
-+		if (smc_conn_lgr_valid(conn) && conn->lgr->is_smcd &&
-+		    conn->rmb_desc && !list_empty(&conn->lgr->list)) {
-+			struct smcd_dev *smcd =3D conn->lgr->smcd;
-+			struct smcd_gid smcd_gid;
-+
-+			dinfo.linkid =3D *((u32 *)conn->lgr->id);
-+			dinfo.peer_gid =3D conn->lgr->peer_gid.gid;
-+			dinfo.peer_gid_ext =3D conn->lgr->peer_gid.gid_ext;
-+			copy_to_smcdgid(&smcd_gid, &smcd->dibs->gid);
-+			dinfo.my_gid =3D smcd_gid.gid;
-+			dinfo.my_gid_ext =3D smcd_gid.gid_ext;
-+			dinfo.token =3D conn->rmb_desc->token;
-+			dinfo.peer_token =3D conn->peer_token;
-+			lgr_valid =3D true;
-+		}
-+		spin_unlock_bh(&conn->lgr_lnk_lock);
-+		if (lgr_valid &&
-+		    nla_put(skb, SMC_DIAG_DMBINFO, sizeof(dinfo), &dinfo) < 0)
- 			goto errout;
- 	}
-=20
---=20
-2.50.1 (Apple Git-155)
-
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
