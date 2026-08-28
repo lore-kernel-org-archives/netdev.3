@@ -1,102 +1,110 @@
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-219.mta1.migadu.com [95.215.58.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241523F1042;
-	Fri, 28 Aug 2026 09:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2602DCC13
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 09:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787907908; cv=none; b=JNWxxJrTrA4nFJT4VAYwOFFC7Ybb2/rWzYMeZvJonUHGomKE4gsxyC0rxtwv9BxdRRzXJSAFr22jVVEisIx5p9wsULTusOAj8wdifx+hLuYyB7XHRlNqR0dSR2dUnMktLgXnUzILd0MOGwQmt8zhyFYevxNfoSSKQKTmucQl6iY=
+	t=1787908219; cv=none; b=k5egFLw3+EadTVlsFl1yV1cLr+RH7e5dRtEvofhZMFXIGIxWFW2taR91sY5I5KZHFyfw7/aSKehSMO5iPahlgkORVufLsuLaWoLVUKpEE4nmPFDmAMqRL2MODR85UR1bhTPhxnT4jWxGcfbRIJ04CFNwnouXwMt79SFnqcL3Nwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787907908; c=relaxed/simple;
-	bh=Ejf70St9xv35smMJRlt75iZRTrv+MkSeYJX80TfDbYI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNaPej0k+w288fuV89mXVIPtKATwFzi1kyBi/2rhNFSomx5rv7td4tO5aUbIQWrgtMLfjLy7MXpK6M+VJ814puOzgoBHY3EI7jd5ebgxwHaO69WwYSwYwQQW3hNjYMNKCo8FYB7i+raezWVzDJ57SwVrIsFOrDyhKwMSA9XVkjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=iw1e0k7T; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+	s=arc-20240116; t=1787908219; c=relaxed/simple;
+	bh=NQQjSsx7MDadVDc7TngFEjnUA3fUDa8WYM/oWjHn/5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ICgnokT6+04LRU0v/FTYdoZIdOebrHdZGvBiO39lYi/rJWIo+UNLL7/uhuPSLTyoimGJDM/ysdqIcUSOoSq6Qg7eL8Kt0A8ADN5SSHJytPVN7Tn3qKAFMMA9dmq23acPiP4fhE2klJtDhPDbHOwqLOWBXvxRi+s+hVL85vAphX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C7FFUdrc; arc=none smtp.client-ip=95.215.58.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="iw1e0k7T"
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1787907322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kDm083ubOGPoeNyTcgkSzWZYrZQ4GupNUIX+4IAgrbM=;
-	b=iw1e0k7T//K0LXM0/oS2ZLYjls91dFlNFynVCHITC+zWpWiIYyy0tCj0TovmOQPmZXF0r2
-	p9t+jQyryEqERsGoENfCiG93kmI5+0mUVDcMYytuq1x17t90UVwn6hdUqWNEe1CTaaGmTb
-	i1O9MOZobUc4sZnD5u5CHykIOiVtSGM=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Wensong Zhang <wensong@linux-vs.org>,
-	Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Dwip Banerjee <dwip@linux.vnet.ibm.com>,
-	netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10/6.1] ipvs: reload ip header after head reallocation
-Date: Fri, 28 Aug 2026 11:55:21 +0300
-Message-ID: <20260828085522.31015-1-arefev@swemel.ru>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C7FFUdrc"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NQQjSsx7MDadVDc7TngFEjnUA3fUDa8WYM/oWjHn/5c=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787908211; v=1; x=1788513011;
+ b=C7FFUdrclWIjlGAUHNO2RFOoZppux97O+f2i75p3h7hbmPKv9Z/2AsTmW9+p9juelQiTTfp5
+ qw54w2ZZ8qY5D/rqk6pN05UBdkxw0OkbhR04Io7sdCcsjbMxIDoI6/Dmgf46ebfxPpL2tCnAaPZ
+ MEVtvYURXC8ohQl6eq/p94Ew=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 17eb4ab48f81af9e;
+	Fri, 28 Aug 2026 09:10:07 +0000
+X-Mizu-Trace-ID: 17eb4ab48f81af9e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ddc21a8e-b2dc-41a7-8390-5642664f08ea@linux.dev>
+Date: Fri, 28 Aug 2026 10:10:05 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] iavf: add missing PTP adjustment callbacks
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>, netdev@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org, richardcochran@gmail.com,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ jacob.e.keller@intel.com, ahmed.zaki@intel.com,
+ mateusz.polchlopek@intel.com, saikrishnag@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+ stable@vger.kernel.org
+References: <20260828015837.2759-1-xuanqiang.luo@linux.dev>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260828015837.2759-1-xuanqiang.luo@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Florian Westphal <fw@strlen.de>
-
-commit a2f57827bf7c695b8c72dc4511cae8e86582369d upstream.
-
-__ip_vs_get_out_rt() calls skb_ensure_writable() which may
-reallocate skb->head.
-
-Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-sonnet-4-6
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-[Denis Arefev: adapted for 5.10/6.1: keep EnterFunction/LeaveFunction
-instrumentation]
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-Backport fix for CVE-2026-68476 
-Link: https://nvd.nist.gov/vuln/detail/CVE-2026-68476 
----
- net/netfilter/ipvs/ip_vs_xmit.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index 9e199f00eea7..29ca141e3795 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -718,15 +718,13 @@ int
- ip_vs_bypass_xmit(struct sk_buff *skb, struct ip_vs_conn *cp,
- 		  struct ip_vs_protocol *pp, struct ip_vs_iphdr *ipvsh)
- {
--	struct iphdr  *iph = ip_hdr(skb);
--
- 	EnterFunction(10);
- 
--	if (__ip_vs_get_out_rt(cp->ipvs, cp->af, skb, NULL, iph->daddr,
--			       IP_VS_RT_MODE_NON_LOCAL, NULL, ipvsh) < 0)
-+	if (__ip_vs_get_out_rt(cp->ipvs, cp->af, skb, NULL, ip_hdr(skb)->daddr,
-+			       IP_VS_RT_MODE_NON_LOCAL, NULL, ipvsh) < 0)
- 		goto tx_error;
- 
--	ip_send_check(iph);
-+	ip_send_check(ip_hdr(skb));
- 
- 	/* Another hack: avoid icmp_send in ip_fragment */
- 	skb->ignore_df = 1;
--- 
-2.43.0
-
+On 28/08/2026 02:58, Xuanqiang Luo wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> 
+> The PTP hardware clock documentation requires drivers to implement all
+> callbacks and return -EOPNOTSUPP for unsupported features.
+> 
+> The iavf driver registers a PHC without adjtime or adjfine callbacks.
+> A userspace clock_adjtime(2) request reaches ptp_clock_adjtime(), where
+> ADJ_SETOFFSET calls adjtime and ADJ_FREQUENCY calls adjfine. The missing
+> callbacks can therefore cause a NULL dereference.
+> 
+> Provide both callbacks and return -EOPNOTSUPP for the unsupported
+> operations.
+> 
+> Fixes: d734223b2f0d ("iavf: add initial framework for registering PTP clock")
+> Link: https://docs.kernel.org/driver-api/ptp.html#writing-clock-drivers
+> Link: https://lore.kernel.org/all/20260826101004.100979-1-xuanqiang.luo@linux.dev/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> ---
+>   drivers/net/ethernet/intel/iavf/iavf_ptp.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.c b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+> index 87b97e09df14a..fcb273828bc1b 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+> @@ -252,6 +252,16 @@ static int iavf_ptp_gettimex64(struct ptp_clock_info *info,
+>   	return iavf_read_phc_indirect(adapter, ts, sts);
+>   }
+>   
+> +static int iavf_ptp_adjfine(struct ptp_clock_info *info, long scaled_ppm)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static int iavf_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>   static int iavf_ptp_settime64(struct ptp_clock_info *info,
+>   			      const struct timespec64 *ts)
+>   {
+> @@ -326,6 +336,8 @@ static int iavf_ptp_register_clock(struct iavf_adapter *adapter)
+>   		 KBUILD_MODNAME, dev_name(dev));
+>   	ptp_info->owner = THIS_MODULE;
+>   	ptp_info->gettimex64 = iavf_ptp_gettimex64;
+> +	ptp_info->adjfine = iavf_ptp_adjfine;
+> +	ptp_info->adjtime = iavf_ptp_adjtime;
+>   	ptp_info->settime64 = iavf_ptp_settime64;
+>   	ptp_info->do_aux_work = iavf_ptp_do_aux_work;
+>   
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
