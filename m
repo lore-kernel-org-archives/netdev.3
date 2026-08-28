@@ -1,164 +1,197 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FB03C0625
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787903583; cv=pass; b=mcTvFj8Q+Yezt9pAwViJ1knkR9SnwgLvdJX/HaIgRNhespovoMGRmJLToy8yS9E2pONeRHLT5iC7gBHfxrtwVfxeySnlCWVcmi776h/Z2BGb/OnEGIcJcyrsHEDhFXmY9/CKbCPWaTu3aaQ7q1rflu9Sygekp15PLk0s155Iwhs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787903583; c=relaxed/simple;
-	bh=TNafH1k/IbhOZ+c1ihZUoSaIWJuTHLQx1WBK/0hi05w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ddWW9I3b4zGHUvYQcjJumlNwMB7rnxD+RdAl3BQgh1QDjIh14svT5VakD1R5UWslqnouDhKg0GX12DeJZYtKk3UOPGY5am9PGrRn+Gxpys2ZBxcMjYRuioBY80btqtZm8zwDbUAS8WWHFe3uJhc6liwV1xfPiip0+plqZTSgaw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=tWnSTDcu; arc=pass smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5A03D7D89;
+	Fri, 28 Aug 2026 07:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787903865; cv=none; b=pFHeBGBgl4dmgM0S4bKuwvbzYlWeOdGCkkKmua/MCgZqFFoyyHgZfGwo3QN9lfV3y/1eaNKUZ82ZJ0or7sqHtMEWsoRVL9oRRXYjYcCZjzW0PVUPZHR8CGQp8uDvuRT0p0df+01m+6MVppIrUAgBsI4ajDCPdD3Y8JnBvA1VoOw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787903865; c=relaxed/simple;
+	bh=iSupq5fhD6RKiuSnL0iJAjflrNswUh/qfGnW5qvE63c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVF52YUAdstl1tDLj7eujDs1QZGRIrdk1j3bp25YvVTGy85hN/j8PgdFZ2AMth9CNYN3EiEk7P4dxexRspCee0+tc1F+JAOZXIo/oyTgt5wQwdvKA/mstRC34umH9PVdfIrKMbsnDHFXnaL3oYyLBO19lFmXXyABn+sFUWGrM4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=EYyXpGnT; arc=none smtp.client-ip=3.9.82.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="tWnSTDcu"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3a2e6d6c31dso6575141fa.2
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 00:53:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787903580; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m4YhzBkGjaz9J31o8/v0cPZDFMDkfC2lAwFa1ffvZNScWn6zV0WF9YgU6IvPS7NsL8
-         fVDX4fyFiW6zU9aQu7GC9HtnSZ5uCe5uTWnhXRlRWKbEgnTv/V5Xw9fHiTTiuRwdwAjn
-         ij3wznUwcKHASlKD3bPYlUhW4pSlVsrRbVRpDwf3hsv7oxB0fFGVokoMYxJ/3XGHhuZ6
-         gM3Hb+iA9EMLt0HcbFD1PbyBtN6TgGZ76aMDJP83aGxgQy/rG4OlbYS5qqvMX8keyWa4
-         1bgRfkhOoWkNfbUe2lgquaxmbYxdwTvAxCXDBABGLsstRf1hg8+VZq5Cz4wbb2zFnS1m
-         hRAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kmYleCXYZYXRkt4vuaUJjHHMfAWiaxlT7cmkptdUeOY=;
-        fh=bTvYvVRJZ/o+f3Ne3gpKNWlWsczp/GunEoVArvTyQII=;
-        b=oQG5yFLuF8m9ZVlTa9j4SG82Bwx0ND+iCiwA/g6sMVE1U20/Diex9ZnvXcRehscBtd
-         n5BaEs9kBEeAKgf34jty6cByrNOCSyKbeyXGU6jWAGE8s9Vm0TRovpTwmgPKEIlvvwvq
-         3u+F1WeOLBBibhWQXiJkzSGUamxN9EiqJ27is6dTdmuOl0cEZIoXI5X9XI6cQNv3sGMe
-         FQ3qGbKFWLczoKYiPD5Ai3Ek+3gHrIReld0QYBalSeca6Vk9jfqHnYdbK2fXtYnGoDvs
-         HA9q2lRmuKbJHIfTM4CVQnj0+zHNzV9auvu4CvnJASYWbdse6c2ysY0UgIkYfaqfIff7
-         nfkA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787903580; x=1788508380; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kmYleCXYZYXRkt4vuaUJjHHMfAWiaxlT7cmkptdUeOY=;
-        b=tWnSTDcu0GYyc/e7/d0A8y7abDGzZs9N+RbdkkoOaQLFmpdmEjOxitrgNF8A/WNezC
-         oLxucOmUo5SleW6WaOlYhtmtXO0Sj8isLirx55mp9tR+XD6ruQL0HYimhLtvXRSzMBqf
-         OXVbxir/48YTXMgen6r3nMuMOGvI3U8VZ96ZxAUn4ViaVBCUucJG4OZFHZmIVrltGDTP
-         jaQRukr4qeNJsPNg8u1Hs5dQtQDKSZncHvmK+BvMNqp5jhjw7giMhIdf+sSLA5a3KFcR
-         3xeiIwe0cZB0dRlXfuibspYPMC7StEP/T8vdmY9RbDLSqYFyCvr985FcVGzlXmMdgleq
-         SsQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787903580; x=1788508380;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kmYleCXYZYXRkt4vuaUJjHHMfAWiaxlT7cmkptdUeOY=;
-        b=Qc1K63lQJKpdox57yZyp0N3qHvPI9ELeEc+2fCLYnXWXvkgWoNZyYO+yOudIopWv8C
-         f3HmzWtc8w3y4SVH8Q1JQO1XtBaRccU83V3/t9fWzU13c64syF7zaYw1iGLLOpJ6Jach
-         NMAPOUaQALCmlf2ReCKz5nRokXKuen9Ir1v3HSgOV6k+k+Du0nf4JJkZS1W967qoJx1T
-         NxYLro20LIs908cQfNVgwDKARsbZ2PlMKNBHy3Pu2T67ugsRO8p/0SXdTFXxeQDILfhu
-         GCD/Dvck5XbXXn2Jrti6eifvotxqDMDYZgpCaM9zyB0tcqP5bGiZZYN5XrIG/mI6Siss
-         079A==
-X-Gm-Message-State: AFuF++lQ3bqWbKlmrbXrF0QqNvDTgBuCWhWIkHKwJmz9ojR0Z70LylyF
-	a39zoptRUNFf6t8I75STaievVQ59ExuL8ZXE7uFZnPls9H2QXgj6wu8wFYEO+0Q+WJDmqOPx0g8
-	xi+3g0ZY1+zldsDglrm9PixtdJ0/lO97kOdTLh3w5psj9sxsSfKXxx48UznuY3fLl
-X-Gm-Gg: AR+sD10cbdlCy21bH+4agFC6Ol5yXHhYkqcS0EPWDw7kIYnb+axO3HqpCh95Qp/as7+
-	6+E5iT5Cn5MrRBluvj9PIQxm3TfVjKhbxlfSLyYPaaLIJ4ltz8T5f6GneQSAhdhQuyMHUcCOe63
-	dtfc1DhpnEEBTiS/WX4AgcbsVMl8WgQRbpi9sPJ7qH6UuIpWCvdeW24sAv4hYIGzMmC9jITGm+H
-	H0GynAo7HOP7EhO/v5CMmI9Y8vYEeAmDuwPZZUxBg9HTwoXVWeEXX7Aa9Da6Ai6UPkMsYdmA0gu
-	x3a4MMbrhXvjsNBBuQ8QMKIcSvnANCFjq/oN5owudcRskzulVU5iKhl96gjb2pt40epcy21nMv0
-	YESBbA5GQBWBmZXZ/FmT+
-X-Received: by 2002:a05:651c:3056:b0:3a3:a3:3560 with SMTP id
- 38308e7fff4ca-3a301b1b926mr7137971fa.6.1787903579652; Fri, 28 Aug 2026
- 00:52:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="EYyXpGnT"
+Received: from localhost (82-69-49-219.dsl.in-addr.zen.co.uk [82.69.49.219])
+	(Authenticated sender: tom)
+	by mail.katalix.com (Postfix) with ESMTPSA id 128A27D3E7;
+	Fri, 28 Aug 2026 08:57:36 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
+	t=1787903856; bh=iSupq5fhD6RKiuSnL0iJAjflrNswUh/qfGnW5qvE63c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Disposition:In-Reply-To:From;
+	z=Date:=20Fri,=2028=20Aug=202026=2008:57:35=20+0100|From:=20Tom=20P
+	 arkin=20<tparkin@katalix.com>|To:=20zihan=20xi=20<zihanx@nebusec.a
+	 i>|Cc:=20netdev@vger.kernel.org,=20davem@davemloft.net,=20edumazet
+	 @google.com,=0D=0A=09kuba@kernel.org,=20pabeni@redhat.com,=20horms
+	 @kernel.org,=0D=0A=09bhong@brocade.com,=20stephen@networkplumber.o
+	 rg,=20sven@brocade.com,=0D=0A=09linux-kernel@vger.kernel.org|Subje
+	 ct:=20Re:=20[PATCH=20net=200/1]=20net:=20l2tp:=20ignore=20multicas
+	 t=20notification=20errors=0D=0A=20in=20netlink=20commands|Message-
+	 ID:=20<apE_bzlcmIK1FOs1@katalix.com>|References:=20<cover.17869622
+	 20.git.zihanx@nebusec.ai>=0D=0A=20<ao1QMuGwSzhtlmo5@katalix.com>=0
+	 D=0A=20<CAANe3eR857ZyGa_2PdBOVaehCoHr+6qH1J0jid66-z_0nCEgMw@mail.g
+	 mail.com>|MIME-Version:=201.0|Content-Disposition:=20inline|In-Rep
+	 ly-To:=20<CAANe3eR857ZyGa_2PdBOVaehCoHr+6qH1J0jid66-z_0nCEgMw@mail
+	 .gmail.com>;
+	b=EYyXpGnTUZc7KZcwg1BbyUuP0FW+yxVz0ZaQ/hxcb/bFBtzBqcsVBPPgDpk95UZ7F
+	 oQmqylBp3paSb6Lq9nqp4glBbPcAgm89V19f9pmlpE60O8Xbwk3Pvgj9TWQI36KwEo
+	 KmAOUL+++1xfeL9IntbF84iwa5vpEotH3ex9ErPaC10h5fQq2upgYPwPyacjBqQzPX
+	 pPrjx3yIkI6qKperUbnz3SxcDbe0nT9jTMtjHSBHWgG2ilhdyfFioC1TrVn7R4cfhH
+	 Z26cY1LhxjXkREgSxqDh4AJ0RCaYBMedpjfdspj1iLR2WNumsNTTnUyb3+KDGSYPFR
+	 t3SUMZkSJuAjQ==
+Date: Fri, 28 Aug 2026 08:57:35 +0100
+From: Tom Parkin <tparkin@katalix.com>
+To: zihan xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	bhong@brocade.com, stephen@networkplumber.org, sven@brocade.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/1] net: l2tp: ignore multicast notification errors
+ in netlink commands
+Message-ID: <apE_bzlcmIK1FOs1@katalix.com>
+References: <cover.1786962220.git.zihanx@nebusec.ai>
+ <ao1QMuGwSzhtlmo5@katalix.com>
+ <CAANe3eR857ZyGa_2PdBOVaehCoHr+6qH1J0jid66-z_0nCEgMw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1787854085.git.zihanx@nebusec.ai> <a31c6fb1ab9846c85e245fcf34948ac2bc27e521.1787854085.git.zihanx@nebusec.ai>
- <CANn89i+1xLiL=nZOwoSH+OwX1+8io_Cd2_5b4s-_NcN+kBh+8A@mail.gmail.com>
-In-Reply-To: <CANn89i+1xLiL=nZOwoSH+OwX1+8io_Cd2_5b4s-_NcN+kBh+8A@mail.gmail.com>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Fri, 28 Aug 2026 15:52:45 +0800
-X-Gm-Features: AcwNN1Wlw2xmG9VSQqhlLFZOqVW920HInRT6-kbppYVXYZCPm1-sEjFLBIVBm2Q
-Message-ID: <CAANe3eSydRy9qiDQhQMPO1nEni_Ekz4aUjnhYh-o2gwEn=9Y8w@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] ipmr: restore a limit for unresolved cache entries
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, stable@vger.kernel.org, Vega <vega@nebusec.ai>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TWalUHQLgH2pfhjG"
+Content-Disposition: inline
+In-Reply-To: <CAANe3eR857ZyGa_2PdBOVaehCoHr+6qH1J0jid66-z_0nCEgMw@mail.gmail.com>
+
+
+--TWalUHQLgH2pfhjG
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 28, 2026 at 3:33=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+On  Tue, Aug 25, 2026 at 18:35:21 +0800, zihan xi wrote:
+> On Tue, Aug 25, 2026 at 4:20=E2=80=AFPM Tom Parkin <tparkin@katalix.com> =
 wrote:
->
-> On Fri, Aug 28, 2026 at 8:52=E2=80=AFAM Zihan Xi <zihanx@nebusec.ai> wrot=
-e:
 > >
-> > Unresolved multicast cache entries retain up to four received skbs whil=
-e
-> > waiting for userspace to install an MFC route.  The cache entry count w=
-as
-> > tracked but no longer bounded, so a stream of distinct source and group
-> > pairs could retain packet memory until the system ran out of memory.
+> > On  Mon, Aug 17, 2026 at 16:53:17 +0000, Zihan Xi wrote:
+> > > Hi Linux kernel maintainers,
+> > >
+> > > We found and validated a issue in net/l2tp/l2tp_netlink.c. The bug is=
+ reachable by a
+> > > non-root user via user and net namespace.
+> > > Here, that reachability statement refers to the finite state-commit t=
+rigger;
+> > > the OOM transcript below is a separate root initramfs leak-mode run (=
+UID 0,
+> > > PID 1) used to make the leak and panic deterministic.
+> > > We've tested it, and it should not affect any other functionality.
+> > > Regression coverage includes the root namespace and an unprivileged u=
+ser/net
+> > > namespace, with notification-queue pressure and successful ACK paths =
+for all
+> > > three commands; no broader regression suite was run.
+> > > The finite fixed-kernel runs returned ACK success for all three comma=
+nds in
+> > > both namespaces. The leak run returned ENOBUFS and reached OOM after =
+41984
+> > > hidden Ethernet sessions.
 > >
-> > Restore the unresolved-entry limit for both IPv4 and IPv6 multicast
-> > routing.  Reject new cache entries once the limit is reached while keep=
-ing
-> > existing entries available for normal route resolution.
+> > I think the underlying point about allowing l2tp_tunnel_notify and
+> > l2tp_session_notify to impact the return from l2tp_nl_cmd_tunnel_create
+> > and l2tp_nl_cmd_tunnel_create is not unreasonable.
 > >
-> > Fixes: 0079ad8e8dc3 ("ipmr: remove hard code cache_resolve_queue_len li=
-mit")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: Codex:gpt-5.4
-> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> > ---
-> >  include/linux/mroute_base.h | 3 +++
-> >  net/ipv4/ipmr.c             | 6 ++++++
-> >  net/ipv6/ip6mr.c            | 5 +++++
-> >  3 files changed, 14 insertions(+)
+> > IMO it seems relatively silly to allow the notification to cause an err=
+or
+> > response to be indicated to userspace for the create command when in
+> > fact the instance creation was otherwise successful.
 > >
-> > diff --git a/include/linux/mroute_base.h b/include/linux/mroute_base.h
-> > index 4d55827e9705..af9247bb3f4d 100644
-> > --- a/include/linux/mroute_base.h
-> > +++ b/include/linux/mroute_base.h
-> > @@ -224,6 +224,9 @@ struct mr_table_ops {
-> >         void *cmparg_any;
-> >  };
+> > That said, I think it would be worth clarifying the behaviour around
+> > the "hidden" tunnel and session.  From my reading of the code, at the
+> > point that the nl notification function is called in both tunnel and
+> > session instantiation, the kernel has already performed checks on
+> > input arguments, allocated the instance, and registered it.  Even if
+> > the l2tp code then returns an error to userspace, the instance is
+> > present in the kernel's tracking structures.  I would expect that if
+> > one then listed tunnel and session instances the new instance would
+> > show up.
 > >
-> > +/* Bound unresolved MFC entries and their queued skbs. */
-> > +#define MFC_UNRES_QUEUE_LEN_MAX        10
->
-> Wasn't this very very very small limit a reported problem in the past?
->
-> Nothing will prevent an OOM to happen, even if you set the limit to 1
->
-> If panic_on_oom is set, it seems to me that this is working as intended.
->
-> If we want to silence the OOM, just change ipmr_cache_alloc_unres()
-> to add a __GFP_NOWARN?
+> Hi Tom,
+>=20
+> Thanks for taking the time to review this.
+>=20
+> > That being the case, it's not accurate IMO to say that the tunnel or
+> > session instance is leaked, and the fact that you can cause OOM by
+> > continuing to allocate new tunnel and session instances with new IDs
+> > isn't surprising.
+>=20
+> Agreed. =E2=80=9CLeaked=E2=80=9D was too broad a term here. The tunnel an=
+d session are
+> already committed and remain present in the kernel after the notification
+> returns -ENOBUFS.
+>=20
+> The PoC does not use `ip l2tp show`; it sends generic-netlink GET requests
+> for the newly created objects. On the unpatched kernel, the relevant outp=
+ut
+> was:
+>=20
+>     tunnel_create returned ENOBUFS at tunnel_id=3D1040
+>     hidden tunnel is live: tunnel_id=3D1040 ...
+>     session_create returned ENOBUFS at session_id=3D1000032 ...
+>     hidden session is live: tunnel=3D1040 session=3D1000032 ...
+>     session_modify returned ENOBUFS as expected
+>     post-modify session state: recv_seq=3D1 send_seq=3D1 lns_mode=3D1
+>=20
+> So the OOM result comes from continuing to create new live Ethernet sessi=
+ons
+> after userspace has received failure responses, rather than from an object
+> being lost in the kernel's tracking structures.
+>=20
+> The more precise description is therefore that a best-effort notification
+> error overwrites the result of an already committed operation. This can
+> cause userspace to retry and accumulate live L2TP objects.
+>=20
+> The v2 wording was updated accordingly, and v2 has since been applied to
+> netdev/net.git.
+>=20
+> - v2 Link: https://lore.kernel.org/all/cover.1787247008.git.zihanx@nebuse=
+c.ai/
 
-Hi Eric,
+Hi Zihan,
 
-You are right. I missed the rationale for 0079ad8e8dc3 and the
-earlier report that the fixed limit caused problems on busy networks.
+Sorry my review was late (I saw the v2 was applied right after I'd
+responded to the v1!) -- but thank you for taking the time to expand
+on the above.
 
-The reproducer was run with vm.panic_on_oom=3D2. It therefore only shows
-the expected result of forcing a panic on generic memory exhaustion; it
-does not justify reintroducing a per-table limit.
+Your explanation makes sense and aligns with what I was expecting, and
+I'm glad the underlying issue is fixed which I agree is an improvement
+on the previous state :-)
 
-Please disregard this series. I will not post a v2.
+All the best,
+Tom
+--=20
+Tom Parkin
+Katalix Systems Ltd
+https://katalix.com
+Catalysts for your Embedded Linux software development
 
-Thanks,
-Zihan
+--TWalUHQLgH2pfhjG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEsUkgyDzMwrj81nq0lIwGZQq6i9AFAmqRP2sACgkQlIwGZQq6
+i9DFigf+JzXcHfxoC3NH1UM2cvpOxEFRgO23cljMTzALe6vqh6XFYKk8MS6y/6W7
+OZfRmSZ8LROoWDqaXbDZpTNHLwpsc3fgIEsEx1xNg2Xl8i6SZdSErhhw23nyH0LA
+u1wemLaKOAX58m9jMVAHiizWpbtIwPK5AObbTAC6RkAOhMYr36B1Go16YKRsf8Lt
+ckbuVC3SUkDjWSYHQUhnly6NAUNKdJiJNMwrl6qA9nhfvj2IVqUcbNyG+c4CWKc4
+YCBxlRPE5cxRnR/8o8aZKAhLju1F2rUBglr1962xZ2pyNQdPgci5s3x5HWYQInvz
+4oIqhU8l9jtseukiZ/VYKJ+/3CR+iA==
+=TnJD
+-----END PGP SIGNATURE-----
+
+--TWalUHQLgH2pfhjG--
