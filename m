@@ -1,156 +1,220 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EB238D017
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6F33644A6
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 03:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787887779; cv=none; b=cH2/ChXRs8Dej4tUBW9P1kHR6XAmdOprmTLRoTnnix1Tp3udANYdUSqOrzFNIhP3I+3/gUyVpCCqh0mvZ/Gf+PKASGd2uxXPHHvwV41sMxMV9PQ8KvT8inkkNKk54NrFpH8U0tvK7WnhrLXVJ+FvW4Nr0E41NGgvB5AGKkmsvps=
+	t=1787888102; cv=none; b=pZ3ZzRmssAaKdrQZzh6Yh+4QHDWjUEFzqNhWYs9HGR+EOSAnHl7k2IbCnkKalRoJ6QWjKbbMnuRjRxTJvPTLP4DxCQuBjUxlEIQ13DPBLNv52/3rjadxl2VW+5fg8NFExE2Cj1JNKAngGgAbWZUkLn4eY5qsBRoPydPgOf63dx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787887779; c=relaxed/simple;
-	bh=jPjlin0tmMCDRTUW+snF3PCNw9aRjkrQLg8rejx6Ly4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bJjfZJfspEeWhFzC0JjJG9yYwQNGRtBRzfN0azPwBgtas52mUWpewPHSzp1wuCbzaqoNA0ltnN9EthlC6HV6131hMMrnXz/TUl30moxzgnX/YhAPQuywQDv+Ogudtd9nm6WZvp+U0nXfeYVimshke/OQLRPezhimQOIleC+JEgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQZGM383; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787888102; c=relaxed/simple;
+	bh=bGbiVB/lr//yzff+veufoYp4ay18R2tNbJazcW+MhxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iHKrLSl5uTD7Wjmm87yWhxMYCucl/sCam8VeP0WXvdtkGQrFTYXGSxIXtxkMlxvXoBPCQrBnfFKkVzDC/bzFtgjvHTKeJH82izpL7wxKADVkNzPeU7quxDsm07X+xSm6nn5umEK4WYfhOLLHH35roNFWNVznSxEnkWae2+XpkFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ScaQthX1; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQZGM383"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8556ec44e9aso670131b3a.3
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 20:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787887777; x=1788492577; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Nm+oSzw2CJimOwrmR4fmonPKPbwcboKbls/SrfJtGuk=;
-        b=ZQZGM383K2s1zkYeHdJcoSVFaHA33CHT89DmYEYIU/ylCJmPbAibUdK2EHIWXFeiZx
-         /Vxd+Fwop1tgVMKhpcu8b4SYswRqcH+CcaMsS75+BF1ft6hist5CHui2eF/HrSjmeRFY
-         9fDvRwiht1K1b6VRVBskyFS1IYBwzKMdHsKnctvQN78nIY6yBMB9rxUmQO8uyy99e0kL
-         8NnmthT4C/vDWRNPc4w4jPy245ICoqprQHkj3dq7Quev+rf2g62ZsySiK4O+1ilwKr1A
-         /59neHNjS3Gn8uqdahUPhODiFG9kg0Ryv/n97JsvQaNIhkNJ2G3UGOnfUwPPNgeOmTPl
-         cIUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787887777; x=1788492577;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Nm+oSzw2CJimOwrmR4fmonPKPbwcboKbls/SrfJtGuk=;
-        b=MSTZe+EFnZsWYji8I+iC6E49UlC1NW8ZkEwC3q+aNAsgYL3jbWq2JcFQqFb7MRNr3N
-         3DmLVVWkbTHnP3r1SufzJV6Rw/z0tYqBxEDumrP0brQKS7T/OnY5JvG6Dooib+6UPweQ
-         TKoHauiZ3njhlMnZI4hC0E8NVKD7089U+9E12TZnEYCLXAJ9+0J23lfpL7XOlz19XB9a
-         6xeShzd/tOHichO0ZIipzqozmdEut0QuolzKN2CbfUukcfVc8unYGE6c0esYI9cPRrKa
-         tv1Ywh/oyuOEDCuRnrDpsuxiZmjn277P9F0yaxAG5DDZbsDr6VXMfRYTqEUjt6Fe6M3L
-         Deqg==
-X-Gm-Message-State: AFuF++nmHlulv79WNQkGgvZjY9KvN9ViN4QFG3p9lPCqLe1+yVAfXaS3
-	pkdH1lUrGi+mApVNaQEsdShTlwg5SY8dckbnYssMUR7jb/o85Di74QhqvPDtZgzd1KGQH/N1
-X-Gm-Gg: AR+sD13FDnYIT+e3EhpFVs7mY6gDznWZ2XSsS09L3x04AyDuyg1nhLqkbRZDeIDtPG3
-	L/1dLdRvbLCyLsdnzxd6E0J/okx57JzRZw95IM/1+rMFsu68QyP/dSvWLK1Tp8QwcJtPGE+W9Qh
-	zyIkF0HShE31+vax41xBtD3sYYrcsQB5hH1+Eu7i7Qf/ye8b4qssunH5I2e8WikvHxxNme4SnGp
-	/A3q1OFoMFALwpiDNpmAFmA+lRt78z4JRbw66KlOIgp/GAi21rttYbYy5kO7P1yWGBn/mDLFssa
-	KZggzrsxQ4JFJV2o5zHq98Oq6zwDvDS7ueoQz0AnW1OMk3Z2IVB7YUe9AfYenZSWS98p2y6tkrL
-	V34fNm9zP5zR34Rg6qHmbPX3cGbNLTAgPOo/R59NxoyPKZSY3uJeWF5Oy7eE4kPyIE1ViATl4F8
-	mEdFAef6BzSX7DAQtHbE3/iLNMrLcRPUNkuVUy6jrACKIpuIKL+9LleeFCS36YOnU1
-X-Received: by 2002:a05:6a00:13a0:b0:855:a211:6679 with SMTP id d2e1a72fcca58-85628b7d138mr6941183b3a.5.1787887776957;
-        Thu, 27 Aug 2026 20:29:36 -0700 (PDT)
-Received: from DESKTOPHOME.lan ([240e:3a3:9304:9820:f4a6:931b:cf31:308])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-856a3d6c845sm135770b3a.59.2026.08.27.20.29.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 20:29:36 -0700 (PDT)
-From: Ziyou Xu <xuziyougm@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bjorn@mork.no,
-	ericwouds@gmail.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: phy: air_en8811h: restore AN8811HB LED GPIO after MCU restart
-Date: Fri, 28 Aug 2026 11:29:22 +0800
-Message-ID: <20260828032922.469449-1-xuziyougm@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ScaQthX1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787888099; x=1819424099;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bGbiVB/lr//yzff+veufoYp4ay18R2tNbJazcW+MhxQ=;
+  b=ScaQthX1L2ONNUYhWH2bWaLdIG96zzDtGQuSKjbjyQMMWJAMR0HJg8Al
+   lqWB099ddRfa3xJdLPuMSsqlWWpl/PgOTIv7hBH6f+orEximygSIt5rrk
+   WuCaLdz7Ng0VnjhLiCFs+gjWGlKqR7crmPGo5QJoaGf2K5VrqVbABpRWh
+   iyfT2ZCZMFjcjb3u/ncmZqQSrIkMIrxK3gmCW13aQeGNRCYUpwUir+vaI
+   KevWriZlbq9oKYLbwrWlec1vAk90TjMfKTRqA5GQE39ols2Uhs7ocDqUQ
+   GhGJqZ2ed+9p8S6wLy9J/w9QtyshuMRdbqzXXquaJAN5g21SXCnNBEn+n
+   g==;
+X-CSE-ConnectionGUID: WJRTyT7KRRG1vrXMWDOCYg==
+X-CSE-MsgGUID: LF6nKHvDSe2QyCPSREQ9fA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="98729945"
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
+   d="scan'208";a="98729945"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 20:34:59 -0700
+X-CSE-ConnectionGUID: Whkqq+FeRHSkrUvs80CzxQ==
+X-CSE-MsgGUID: 5mEGUJyhRua651Tebv7Q5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
+   d="scan'208";a="264799199"
+Received: from lkp-server01.sh.intel.com (HELO 3532383e6126) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 27 Aug 2026 20:34:56 -0700
+Received: from kbuild by 3532383e6126 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wznMj-00000000AJ3-0ZjL;
+	Fri, 28 Aug 2026 03:34:53 +0000
+Date: Fri, 28 Aug 2026 11:34:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mengyuan Lou <mengyuanlou@net-swift.com>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: Re: [PATCH net v3] net: libwx: protect ring accesses with RCU
+Message-ID: <202608281122.ImEa1DuX-lkp@intel.com>
+References: <20260824103606.303-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824103606.303-1-mengyuanlou@net-swift.com>
 
-Commit 03b4702fc5e3 ("net: phy: air_en8811h: move LED GPIO
-configuration to config_init") moved the EN8811H LED GPIO setup from
-probe to config_init because an MD32 restart clears the output-enable
-bits.
+Hi Mengyuan,
 
-AN8811HB follows the same initialization sequence: an8811hb_probe()
-enables GPIO3/4/5, and later config_init() calls restart MD32.
+kernel test robot noticed the following build warnings:
 
-Move the AN8811HB GPIO setup to the end of an8811hb_config_init(),
-matching the current EN8811H path.
+[auto build test WARNING on net/main]
 
-Fixes: 5afda1d734ed ("net: phy: air_en8811h: add Airoha AN8811HB support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ziyou Xu <xuziyougm@gmail.com>
----
-Changes in v2:
-- Drop the EN8811H change, merged independently as commit 03b4702fc5e3
-  ("net: phy: air_en8811h: move LED GPIO configuration to config_init").
-- Apply the same fix to AN8811HB per Jakub's review.
-- Rebase onto netdev/main.
+url:    https://github.com/intel-lab-lkp/linux/commits/Mengyuan-Lou/net-libwx-protect-ring-accesses-with-RCU/20260824-183606
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260824103606.303-1-mengyuanlou%40net-swift.com
+patch subject: [PATCH net v3] net: libwx: protect ring accesses with RCU
+config: csky-randconfig-r113-20260826 (https://download.01.org/0day-ci/archive/20260828/202608281122.ImEa1DuX-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 15.2.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260828/202608281122.ImEa1DuX-lkp@intel.com/reproduce)
 
-Not tested on AN8811HB hardware.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608281122.ImEa1DuX-lkp@intel.com/
 
-v1: https://lore.kernel.org/netdev/20260820141034.1400439-1-xuziyougm@gmail.com/
+sparse warnings: (new ones prefixed by >>)
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:1717:17: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:1717:17: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:1717:17: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2662:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2662:45: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2662:45: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2704:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2704:49: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2704:49: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2778:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2778:45: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2778:45: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2826:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2826:49: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2826:49: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2936:56: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2936:56: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2936:56: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2948:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2948:49: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2948:49: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3039:56: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3039:56: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3039:56: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3051:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3051:49: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3051:49: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:3327:58: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const *from @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3327:58: sparse:     expected void const *from
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3327:58: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3343:57: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *tx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3343:57: sparse:     expected struct wx_ring *tx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3343:57: sparse:     got struct wx_ring [noderef] __rcu *
+>> drivers/net/ethernet/wangxun/libwx/wx_lib.c:3345:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void *to @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3345:43: sparse:     expected void *to
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3345:43: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3355:58: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const *from @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3355:58: sparse:     expected void const *from
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3355:58: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3371:57: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct wx_ring *rx_ring @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3371:57: sparse:     expected struct wx_ring *rx_ring
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3371:57: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3372:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void *to @@     got struct wx_ring [noderef] __rcu * @@
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3372:43: sparse:     expected void *to
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:3372:43: sparse:     got struct wx_ring [noderef] __rcu *
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c: note: in included file (through include/linux/if_ether.h, include/linux/etherdevice.h):
+   include/linux/skbuff.h:2904:28: sparse: sparse: unsigned value that used to be signed checked against zero?
+   include/linux/skbuff.h:2904:28: sparse: signed value source
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2061:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2068:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2075:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2080:36: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2101:28: sparse: sparse: dereference of noderef expression
+   drivers/net/ethernet/wangxun/libwx/wx_lib.c:2104:28: sparse: sparse: dereference of noderef expression
 
----
- drivers/net/phy/air_en8811h.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+vim +3327 drivers/net/ethernet/wangxun/libwx/wx_lib.c
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 0eeb7b9a4..6ee5df63c 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -1125,13 +1125,6 @@ static int an8811hb_probe(struct phy_device *phydev)
- 	if (ret)
- 		goto err_dev_create;
- 
--	/* Configure led gpio pins as output */
--	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
--					  AN8811HB_GPIO_OUTPUT_345,
--					  AN8811HB_GPIO_OUTPUT_345);
--	if (ret < 0)
--		goto err_dev_create;
--
- 	return 0;
- 
- err_dev_create:
-@@ -1265,10 +1258,19 @@ static int an8811hb_config_init(struct phy_device *phydev)
- 
- 	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
- 			    AIR_LED_MODE_USER_DEFINE);
--	if (ret < 0)
-+	if (ret < 0) {
- 		phydev_err(phydev, "Failed to initialize leds: %d\n", ret);
-+		return ret;
-+	}
- 
--	return ret;
-+	/* Restore LED GPIO output enables after MCU initialization. */
-+	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-+					  AN8811HB_GPIO_OUTPUT_345,
-+					  AN8811HB_GPIO_OUTPUT_345);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
- }
- 
- static int en8811h_config_init(struct phy_device *phydev)
+3b05aa997c4914 Jiawen Wu    2025-04-21  3314  
+0ce45ae881fd90 Mengyuan Lou 2026-07-10  3315  int wx_set_ring(struct wx *wx, u32 new_tx_count,
+883b5984a5d290 Jiawen Wu    2024-01-03  3316  		u32 new_rx_count, struct wx_ring *temp_ring)
+883b5984a5d290 Jiawen Wu    2024-01-03  3317  {
+883b5984a5d290 Jiawen Wu    2024-01-03  3318  	int i, err = 0;
+883b5984a5d290 Jiawen Wu    2024-01-03  3319  
+883b5984a5d290 Jiawen Wu    2024-01-03  3320  	/* Setup new Tx resources and free the old Tx resources in that order.
+883b5984a5d290 Jiawen Wu    2024-01-03  3321  	 * We can then assign the new resources to the rings via a memcpy.
+883b5984a5d290 Jiawen Wu    2024-01-03  3322  	 * The advantage to this approach is that we are guaranteed to still
+883b5984a5d290 Jiawen Wu    2024-01-03  3323  	 * have resources even in the case of an allocation failure.
+883b5984a5d290 Jiawen Wu    2024-01-03  3324  	 */
+883b5984a5d290 Jiawen Wu    2024-01-03  3325  	if (new_tx_count != wx->tx_ring_count) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3326  		for (i = 0; i < wx->num_tx_queues; i++) {
+883b5984a5d290 Jiawen Wu    2024-01-03 @3327  			memcpy(&temp_ring[i], wx->tx_ring[i],
+883b5984a5d290 Jiawen Wu    2024-01-03  3328  			       sizeof(struct wx_ring));
+883b5984a5d290 Jiawen Wu    2024-01-03  3329  
+883b5984a5d290 Jiawen Wu    2024-01-03  3330  			temp_ring[i].count = new_tx_count;
+883b5984a5d290 Jiawen Wu    2024-01-03  3331  			err = wx_setup_tx_resources(&temp_ring[i]);
+883b5984a5d290 Jiawen Wu    2024-01-03  3332  			if (err) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3333  				wx_err(wx, "setup new tx resources failed, keep using the old config\n");
+883b5984a5d290 Jiawen Wu    2024-01-03  3334  				while (i) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3335  					i--;
+883b5984a5d290 Jiawen Wu    2024-01-03  3336  					wx_free_tx_resources(&temp_ring[i]);
+883b5984a5d290 Jiawen Wu    2024-01-03  3337  				}
+0ce45ae881fd90 Mengyuan Lou 2026-07-10  3338  				return err;
+883b5984a5d290 Jiawen Wu    2024-01-03  3339  			}
+883b5984a5d290 Jiawen Wu    2024-01-03  3340  		}
+883b5984a5d290 Jiawen Wu    2024-01-03  3341  
+883b5984a5d290 Jiawen Wu    2024-01-03  3342  		for (i = 0; i < wx->num_tx_queues; i++) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3343  			wx_free_tx_resources(wx->tx_ring[i]);
+883b5984a5d290 Jiawen Wu    2024-01-03  3344  
+883b5984a5d290 Jiawen Wu    2024-01-03 @3345  			memcpy(wx->tx_ring[i], &temp_ring[i],
+883b5984a5d290 Jiawen Wu    2024-01-03  3346  			       sizeof(struct wx_ring));
+883b5984a5d290 Jiawen Wu    2024-01-03  3347  		}
+883b5984a5d290 Jiawen Wu    2024-01-03  3348  
+883b5984a5d290 Jiawen Wu    2024-01-03  3349  		wx->tx_ring_count = new_tx_count;
+883b5984a5d290 Jiawen Wu    2024-01-03  3350  	}
+883b5984a5d290 Jiawen Wu    2024-01-03  3351  
+883b5984a5d290 Jiawen Wu    2024-01-03  3352  	/* Repeat the process for the Rx rings if needed */
+883b5984a5d290 Jiawen Wu    2024-01-03  3353  	if (new_rx_count != wx->rx_ring_count) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3354  		for (i = 0; i < wx->num_rx_queues; i++) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3355  			memcpy(&temp_ring[i], wx->rx_ring[i],
+883b5984a5d290 Jiawen Wu    2024-01-03  3356  			       sizeof(struct wx_ring));
+883b5984a5d290 Jiawen Wu    2024-01-03  3357  
+883b5984a5d290 Jiawen Wu    2024-01-03  3358  			temp_ring[i].count = new_rx_count;
+883b5984a5d290 Jiawen Wu    2024-01-03  3359  			err = wx_setup_rx_resources(&temp_ring[i]);
+883b5984a5d290 Jiawen Wu    2024-01-03  3360  			if (err) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3361  				wx_err(wx, "setup new rx resources failed, keep using the old config\n");
+883b5984a5d290 Jiawen Wu    2024-01-03  3362  				while (i) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3363  					i--;
+883b5984a5d290 Jiawen Wu    2024-01-03  3364  					wx_free_rx_resources(&temp_ring[i]);
+883b5984a5d290 Jiawen Wu    2024-01-03  3365  				}
+0ce45ae881fd90 Mengyuan Lou 2026-07-10  3366  				return err;
+883b5984a5d290 Jiawen Wu    2024-01-03  3367  			}
+883b5984a5d290 Jiawen Wu    2024-01-03  3368  		}
+883b5984a5d290 Jiawen Wu    2024-01-03  3369  
+883b5984a5d290 Jiawen Wu    2024-01-03  3370  		for (i = 0; i < wx->num_rx_queues; i++) {
+883b5984a5d290 Jiawen Wu    2024-01-03  3371  			wx_free_rx_resources(wx->rx_ring[i]);
+883b5984a5d290 Jiawen Wu    2024-01-03  3372  			memcpy(wx->rx_ring[i], &temp_ring[i],
+883b5984a5d290 Jiawen Wu    2024-01-03  3373  			       sizeof(struct wx_ring));
+883b5984a5d290 Jiawen Wu    2024-01-03  3374  		}
+883b5984a5d290 Jiawen Wu    2024-01-03  3375  
+883b5984a5d290 Jiawen Wu    2024-01-03  3376  		wx->rx_ring_count = new_rx_count;
+883b5984a5d290 Jiawen Wu    2024-01-03  3377  	}
+0ce45ae881fd90 Mengyuan Lou 2026-07-10  3378  	return 0;
+883b5984a5d290 Jiawen Wu    2024-01-03  3379  }
+883b5984a5d290 Jiawen Wu    2024-01-03  3380  EXPORT_SYMBOL(wx_set_ring);
+883b5984a5d290 Jiawen Wu    2024-01-03  3381  
 
-base-commit: 1b78070aaef63512688aebfbc82365ef9d6660f1
--- 
-2.43.0
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
