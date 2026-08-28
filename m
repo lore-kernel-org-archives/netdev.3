@@ -1,112 +1,68 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEBF36A364;
-	Fri, 28 Aug 2026 21:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01224746A8;
+	Fri, 28 Aug 2026 21:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787952258; cv=none; b=Jetlurq0dLow6d/xD/hBxIzKzI2Z1PpqW6GToJrjxfr2LvyTeGDxw8yYlP0aVpn495+7EO5zYZr3X+V09fbjBkIRmMDR9R9OEcQeFNCSdGUiHuFV4Yc9n73TW1vgy/WTe2fgTd/gnJrSVbRiLy7AS3ckOQxRkKlQAJ9zLCg+iV4=
+	t=1787952425; cv=none; b=iYdk5wWXSIgevidIMvLgIBqEfnlWisDDXXNUBlvbgmNcuXdjRKyIFOMQHPoCaKIaFCga/BAGnYWE3PY2nXwhfn21j/Hctst4IitSttxy2qeWaEFj0GLeN/ibj9J70F0ypPAauY7evCSURRIYWD3pgY/PbGgLSH0jD0QUTJrbsLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787952258; c=relaxed/simple;
-	bh=khsePphpghxx00y1hn1YuBpJNWFSJZh9he/T1ccyMYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TNoBXW6krCYG1Gq1oq9vDfpT68GFS6MuHAkxXMGSNO/0kBChNWnHR1GntAFuMEGc/3ITIH5gCXgmtMpz2m1wsRAkr2yUB34M/NkFIuvefKlYlvJCk5ojR2rEQqtAciDZPlfAiRAUFZspvZ/7xJCvHfArbkWTpdDBxri1EGLFxrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1009)
-	id 1CC4420B7167; Fri, 28 Aug 2026 14:23:43 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1CC4420B7167
-From: Dexuan Cui <decui@microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] hv_netvsc: Advertise the SR-IOV capability for CoCo VMs
-Date: Fri, 28 Aug 2026 14:23:25 -0700
-Message-ID: <20260828212325.2309515-1-decui@microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1787952425; c=relaxed/simple;
+	bh=YUt9XlHUuYGVuLPv1w9qGwxEq25tB10H5+HjXKtdj0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UVfPJYazNFfYNThLN0flmAyIha+eLUlhh6YwzTFtPuAvE6KWxdr9wL2i3MCKfGNdqv8KvLAPGfB4FxdBr4seethI4xuMA9qBJcWUqC0SWb3mpwJo7sBu7DMJOmC6iKtiLYun3IgUf4ruln1tpJQud0MQTGCO8cYHEUO4T/E4f6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C2HFt6bt; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C2HFt6bt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356141F000E9;
+	Fri, 28 Aug 2026 21:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787952423;
+	bh=02/+eupWtl3O4k6yVI+71Pv7fqgZ37drhXSlQCN+ujs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=C2HFt6btPYGvEEXCOeD51VYsRyAawkN1xcRdtVHNaEfWgGFQ6Cas8WxJQj0SriTPW
+	 VOpl1upc1K35RSImJFq7ZYVkvj0DyktI/g7GWioBredtOrVPQSKQD9+CxMU8qwujhR
+	 W0Eb9KjLAXnCezDAqj9ZXm6TANnpD+bbMhtPeDbHXrWHX+3BROqi/47W/TBGzC0Xra
+	 8hLMCLbuJKLrzblKPjpZCu0IEHHYc9COfo8w5ZSd64dKcdLsYXNuNv8y8nSmT4TkFY
+	 76a4wTXy3/EdlVunwrAE27zSwGYTbJ0mjoKkiwMo8AYDX4o2LV6tycOGLVFinPczPR
+	 GNwBrbNzqFOGQ==
+Date: Fri, 28 Aug 2026 14:27:02 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
+Cc: jackbb_wu@compal.com, Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>,
+ Shi-Wei Yeh <shi-wei.yeh@mediatek.com>, Minano Tseng
+ <Minano.tseng@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
+ Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Robert Yu <robert_yu@compal.com>, Jeff Chang
+ <Jeff_Chang@compal.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v7 0/6] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
+Message-ID: <20260828142702.0736cbee@kernel.org>
+In-Reply-To: <20260828-t9xx_driver_v1-v7-0-bf8f6074d88a@compal.com>
+References: <20260828-t9xx_driver_v1-v7-0-bf8f6074d88a@compal.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This basically reverts the Feb 2021 change:
-commit 96854bbda24f ("hv_netvsc: Restrict configurations on isolated guests")
+On Fri, 28 Aug 2026 17:17:17 +0800 Jack Wu via B4 Relay wrote:
+> Subject: [PATCH v7 0/6] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
 
-In Feb 2021, PCI device assignment for CoCo VMs on Hyper-V was not
-supported: if the host offered a PCI VF NIC device to the VM, the VM
-couldn't handle it properly, so the 2021 commit was made to tell the host
-"I'm unable to handle SR-IOV NICs, so please don't offer a VF to me".
-If the host offers a VF NIC to the VM anyway, the change to
-netvsc_receive_inband() ignores the VF NIC.
-
-Since Mar 2023, the VM is able to support PCI device assignment due to
-commit 2c6ba4216844 ("PCI: hv: Enable PCI pass-thru devices in Confidential VMs")
-and related commits, so hv_netvsc can functionally work with a VF NIC, but
-we haven't advertised the SR-IOV capability because the MANA NIC driver
-(drivers/net/ethernet/microsoft/mana/) hadn't been hardened, so a
-malicious MANA NIC might be able to attack the VM.
-
-Recently, we have finished hardening the MANA driver, so we can safely
-use the MANA NIC in a CoCo VM now. Note: currently the MANA driver in a
-CoCo VM still uses bounce buffering (i.e. shared decrypted memory)
-for DMA. In the future, it will be able to use private encrypted
-memory for DMA with the help of TDISP.
-
-Now, advertises the SR-IOV capability for CoCo VMs.
-
-Note: for MANA to work properly for CoCo VMs, the following earlier
-commits are also required:
-commit 2e2a83b4998a ("net: mana: Validate the packet length reported by the NIC")
-commit c72a0f09c57f ("net: mana: Sync page pool RX frags for CPU")
-
-Note: the host might offer a VF NIC device that's not MANA -- in that
-case, if the corresponding VF NIC driver isn't hardened for CoCo VMs,
-the driver should be blacklisted in CoCo VMs.
-
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
----
- drivers/net/hyperv/netvsc.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index 5cd084e5696c..fc6548b16c91 100644
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -625,10 +625,7 @@ static int negotiate_nvsp_ver(struct hv_device *device,
- 	init_packet->msg.v2_msg.send_ndis_config.capability.ieee8021q = 1;
- 
- 	if (nvsp_ver >= NVSP_PROTOCOL_VERSION_5) {
--		if (hv_is_isolation_supported())
--			netdev_info(ndev, "SR-IOV not advertised by guests on the host supporting isolation\n");
--		else
--			init_packet->msg.v2_msg.send_ndis_config.capability.sriov = 1;
-+		init_packet->msg.v2_msg.send_ndis_config.capability.sriov = 1;
- 
- 		/* Teaming bit is needed to receive link speed updates */
- 		init_packet->msg.v2_msg.send_ndis_config.capability.teaming = 1;
-@@ -1665,10 +1662,7 @@ static void netvsc_receive_inband(struct net_device *ndev,
- 		break;
- 
- 	case NVSP_MSG4_TYPE_SEND_VF_ASSOCIATION:
--		if (hv_is_isolation_supported())
--			netdev_err(ndev, "Ignore VF_ASSOCIATION msg from the host supporting isolation\n");
--		else
--			netvsc_send_vf(ndev, nvmsg, msglen);
-+		netvsc_send_vf(ndev, nvmsg, msglen);
- 		break;
- 	}
- }
+net-next is closed. Please a week from now when it's open.
+Before you repost please fix the bugs pointed out by AI:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828-t9xx_driver_v1-v7-0-bf8f6074d88a%40compal.com
+This link will only reveal the results next week per the embargo
+message, wait for that to happen of course.
 -- 
-2.34.1
-
+pw-bot: defer
+pv-bot: closed
