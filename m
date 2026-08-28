@@ -1,50 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-1.mta0.migadu.com [91.218.175.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B8531DDBF;
-	Fri, 28 Aug 2026 01:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7152532F749
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787881596; cv=none; b=gg1OFKIGwMAZacvbWuuaRZNkus3YP6qWPX5DvL9RlMSouZKaxyylNWKAPKGWk08oKRiYm6hmzk4EH6/3LhFgemDVILaSQc61Zc/ZOzEAXCEoki1Ko4a+6jwhGYNQ8kbyv73ul3r7nTaFjQCRUcc8oB1VzP9r6+R8lvl58W9mi58=
+	t=1787882344; cv=none; b=kUr3Zo2i++RI0gm8ca1V6uLX5jlB9bROiOPJv3wJrEbWCRMWrpb7iRXDdkm/s3nD7cQ4KaTu5McRFSwtVeaLoMpc3q/tS0I1T9z6a9cfIjBW/H92W/X5PHfgq5kS63+i05Edyu1jgxCXSQROxzTYgZjEixXuGTxWSQmhCL5HHIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787881596; c=relaxed/simple;
-	bh=AV7nx/hFeroT1YnmOJlIMWe0OqRNyrCw1i1idLKRdFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X567ktc3cMUDjjaqu5e+8a+D1yP7tAMrJF/cSCXaBv3yQKmK0RDX9Cg5IotFdd879Rx7tTElQn89jIv0lMmmvo80d3MSsV3R2hDm4mURfbb0BZQRZi+5TGsMFwt+GL5K9C7KAkOnH8e46BJaA2y6Rbzh8rrJEI5nwfXE/+XwndE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hok/d3t6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787882344; c=relaxed/simple;
+	bh=AAcpEs2VGk20y3FAdUf8trsxmtZYFZ0VYb330q/Ah7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CslJy4doBHxu9+gCedARTGLV9094YYaFV8+UxdpQQhnTvHRTge8F+OKB+fyVcKVqEHR9uGGYCAUaKiu/W8RLYDyB58kmaQZFJeH4+6DzvdeEwyu/+CRm+V93dFyHZWXuqKGmymLtlbygQK0dlgdzCcvtM8sP2Xq9y22M3uUUrtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OGzQgMnm; arc=none smtp.client-ip=91.218.175.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hok/d3t6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1435D1F00A3E;
-	Fri, 28 Aug 2026 01:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787881592;
-	bh=X3TRLwIPMqSoNtNi7xgzngJ8JZS+cPJqCIUwBHClWRk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hok/d3t6eiwU82MWcqdafYqf8Ssk+WKcqdWQzyssFoqP+ye6ihE1StqBGt/8kwpLf
-	 S+nrkAw07/0y6RU8fILaBE3uOFNai4oAo9q7Ua5tQRP7zYpQkhCB5IdkToR9+OAcbe
-	 n918jpBA3pN/X7SYohC8788J2vO5a/sm8/Ka26QLMtEOEXFcaMdSoXph1HArrlMD7s
-	 t0Lh4n6s/Rc8xhURIW+Hmx3kIFnPWFvZPsRpA/xDrOFObhQVIzQpokXAER6kxpJTul
-	 7zgt3bhl9pbJfZ2PnM8GLZrsbSz2YhFpX2Hm9KHe9deX2071ryio/EBDlwE2YAHp9y
-	 +UQtlz+1r0HRw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Hideaki Yoshifuji <yoshfuji@linux-ipv6.org>,
-	Dmitiry Korovkin <dmitriy.korovkin@windriver.com>,
-	netdev@vger.kernel.org,
-	=?UTF-8?q?Juhandr=C3=A9=20Knoetze?= <juhandre.knoetze@windriver.com>
-Subject: Re: [PATCH linux-6.1.y 0/1] inet: backport of RAW sockets dropping incoming ICMP
-Date: Thu, 27 Aug 2026 21:46:17 -0400
-Message-ID: <20260827-stable-daily-0004-inet-ipproto-raw@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260826175018.131474-1-juhandre.knoetze@windriver.com>
-References: <20260826175018.131474-1-juhandre.knoetze@windriver.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OGzQgMnm"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=AAcpEs2VGk20y3FAdUf8trsxmtZYFZ0VYb330q/Ah7w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787882340; v=1; x=1788487140;
+ b=OGzQgMnmvTWKq+Q0pNExkPyHds9sFvt7mENRDFZeFJJg401MiIIrctzuWt3bT46qgknaNPwJ
+ k0tNMlvL8WUXPbJoBClUVeKund944zYFiv0uA1812oBgZ5vBww2LNgOJOjKgpXMft1iT8rc5S0h
+ zqkugct7TwVQnawPMb9spFkw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a1430dc3be629d11;
+	Fri, 28 Aug 2026 01:59:00 +0000
+X-Mizu-Trace-ID: a1430dc3be629d11
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: netdev@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org,
+	vadim.fedorenko@linux.dev,
+	richardcochran@gmail.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	jacob.e.keller@intel.com,
+	ahmed.zaki@intel.com,
+	mateusz.polchlopek@intel.com,
+	saikrishnag@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v1] iavf: add missing PTP adjustment callbacks
+Date: Fri, 28 Aug 2026 09:58:37 +0800
+Message-ID: <20260828015837.2759-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,13 +58,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> Attached is a backport of upstream commit c89477ad7944 for 6.1.y. The
-> main difference between 6.1.y and the upstream commit is that in 6.1.y
-> the function 'icmpv6_notify()' in 'net/ipv6/icmp.c' returns void
-> opposed to a 'skb_drop_reason'.
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Queued for 6.1, thanks.
+The PTP hardware clock documentation requires drivers to implement all
+callbacks and return -EOPNOTSUPP for unsupported features.
 
+The iavf driver registers a PHC without adjtime or adjfine callbacks.
+A userspace clock_adjtime(2) request reaches ptp_clock_adjtime(), where
+ADJ_SETOFFSET calls adjtime and ADJ_FREQUENCY calls adjfine. The missing
+callbacks can therefore cause a NULL dereference.
+
+Provide both callbacks and return -EOPNOTSUPP for the unsupported
+operations.
+
+Fixes: d734223b2f0d ("iavf: add initial framework for registering PTP clock")
+Link: https://docs.kernel.org/driver-api/ptp.html#writing-clock-drivers
+Link: https://lore.kernel.org/all/20260826101004.100979-1-xuanqiang.luo@linux.dev/
+Cc: stable@vger.kernel.org
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ drivers/net/ethernet/intel/iavf/iavf_ptp.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.c b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+index 87b97e09df14a..fcb273828bc1b 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_ptp.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+@@ -252,6 +252,16 @@ static int iavf_ptp_gettimex64(struct ptp_clock_info *info,
+ 	return iavf_read_phc_indirect(adapter, ts, sts);
+ }
+ 
++static int iavf_ptp_adjfine(struct ptp_clock_info *info, long scaled_ppm)
++{
++	return -EOPNOTSUPP;
++}
++
++static int iavf_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
++{
++	return -EOPNOTSUPP;
++}
++
+ static int iavf_ptp_settime64(struct ptp_clock_info *info,
+ 			      const struct timespec64 *ts)
+ {
+@@ -326,6 +336,8 @@ static int iavf_ptp_register_clock(struct iavf_adapter *adapter)
+ 		 KBUILD_MODNAME, dev_name(dev));
+ 	ptp_info->owner = THIS_MODULE;
+ 	ptp_info->gettimex64 = iavf_ptp_gettimex64;
++	ptp_info->adjfine = iavf_ptp_adjfine;
++	ptp_info->adjtime = iavf_ptp_adjtime;
+ 	ptp_info->settime64 = iavf_ptp_settime64;
+ 	ptp_info->do_aux_work = iavf_ptp_do_aux_work;
+ 
 -- 
-Thanks,
-Sasha
+2.43.0
+
