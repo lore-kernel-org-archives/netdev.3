@@ -1,168 +1,194 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E7F41C6A;
-	Fri, 28 Aug 2026 06:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8B83C8705
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 06:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787897419; cv=none; b=MS5Y96ECJmJYXHlfddIbQD5y1uUCgCwtW+wFoUyt3mqncrGhh4OkHTSXZyVKip3CON5QLtKL4r8H32Gg9X0RyJZfiHyp9ySKlI1idYMvMpFiyKUWkmXL8yn9OQnEl8fjNPLzqZ5RwXV+NZD0DaRUJ/xPNaREUat8x52dw1QBSjU=
+	t=1787898499; cv=none; b=JR2DK1CmuZuzQedXQwzqt8d9U/Z9qVdwwI5Ul077m6LoKL5D5xsHyXBGqOHbpZFAjTD3jBY1w+SZFZeuOaLhdcUHZCkoS4nrxi03byrYyZthQWg1sgQn7vf8W1zkvYgdeMK1m7bJMeNyce3bLE1yVfUjm96nHdEcJMrM+4gVUiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787897419; c=relaxed/simple;
-	bh=2ShxXbg/WXPkLKVlOfIcxkSzSfE3n62us5GpSUhv3S4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GmphJfXxda1aswYl2OefYlWcbRZ7dhHRb4jIaS9clqGSGC68Wg8jAC4Y0ihU47BWn+sqyJwhQt8C2Ix6gbtGT1VL+MaHdBFg4erIFY7Tx0lPQ98CychpIx92H/7asd3Gsf5KnZ+SOGSKDOb5oTh7FRqkQ6rMMOMBZNojGGVUmEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=cBKT+1MS; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1787898499; c=relaxed/simple;
+	bh=iylSaV0d0HRd+S2GPFe5/jKSghYie3AtA0Grqnoy3Ew=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k8R2kOk2Ag6IcdIkBkUUnqOCRWFDzyyuNMm6SuHO9QtOzH+ExpH/8tStT1NGSK4SBYtjtjkw10zPJ/8AGOHna4okjsd70lqv3m1KYD7TUy6xLe8c3zzw0fpVrAvJezjNN1JQWtvF12ExkCUkOwWzUlyf4qTLFc8UGyxZl3LH5oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B2WAPh60; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CWa0JYMx; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="cBKT+1MS"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A4BA1487E85;
-	Fri, 28 Aug 2026 08:04:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1787897058; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=IeXlbKopy25D1cxmA5FDWjy1hNWPVZ0ZdcBgGyK1nxY=;
-	b=cBKT+1MSOlxZwKvXBXr9zaFsyz8vZ4BDTBZbG6VET1b542cLSfSj+AYJ9nIKNvQE6OcPwG
-	q456RnIUXBg0lfmqjsUHoHm/46wsJTQ7UDaF+/7JtuQDCX+TVk9fL9pe2lB56ZhylsT+zp
-	Prt9ywLdnX+qZsBM13sWUs87eAHSAUzJM5aGhixdKqHPF2WtDw8uCN3ijqGgbkiqQYZjBN
-	wQhSud73d4OpaDKRAgegUCKk0/zdjQ51XFUraUtkwulC9GMQRebn5uNHdr9RH8ao6CD1FZ
-	KoC2Jf4oSb3v8sEtC+R6whtBbdN95htktSO9RW315eYj1BHQ8ERgAPXBxRChSA==
-Date: Fri, 28 Aug 2026 08:04:08 +0200
-From: Alexander Dahl <ada@thorsis.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jonathan Bell <jonathan@raspberrypi.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 0/2] net: macb: fix zero UDPv4 checksum on transmit
-Message-ID: <20260826-untrimmed-take-024590e9f9d8@thorsis.com>
-Mail-Followup-To: Nicolai Buchwitz <nb@tipi-net.de>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Jonathan Bell <jonathan@raspberrypi.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260824134703.766708-1-nb@tipi-net.de>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B2WAPh60";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CWa0JYMx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787898496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wHGnCVhNuLFnG/5OVisM5ogzmWXFPIK5JB6VW53vdI8=;
+	b=B2WAPh60GR74CtI3xOzSOHDQ+Pf15pZz/Bp/9ylWpjJnH9YhZ7hLW+wAWRSYCqJApKy9Oy
+	/+v+Nfa7tX5I2YlHdEmLeXk1RHWXzkVkGFT4nEf3+RqDjjt2g0R/SVWgCM2XHOBbQry8dw
+	/Kqpcq8B9ga6jc19lsDrfHqQDfTyMbY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-o5MP__pVO9GR9hpUbeGNJA-1; Fri, 28 Aug 2026 02:28:14 -0400
+X-MC-Unique: o5MP__pVO9GR9hpUbeGNJA-1
+X-Mimecast-MFC-AGG-ID: o5MP__pVO9GR9hpUbeGNJA_1787898493
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49991beee7aso3942485e9.2
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 23:28:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787898493; x=1788503293; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wHGnCVhNuLFnG/5OVisM5ogzmWXFPIK5JB6VW53vdI8=;
+        b=CWa0JYMx53xORfKNv/JtE8lOfg0NFQ4xCKgFXa0aDsPQKd8nQv12OAjSn2Qyz3JjoO
+         X1KoJOJMiOQhoi1xs75ryDCxOe4rXjrrZMJMcnCJICm/MLNcwxNHrHlQ+GV58UXFUQSy
+         ia/Hzy+1yMKrIvOMaEgeB+Z+MtU2pHOGWGBTjdQEY9/zFLubNXvkwJRB9qQSDROOJkHh
+         1/PSt0vxII6DwCgdFkIhgQxlNbm7LFtzOp3x/4rtrsGEiUJxBn4weGV1kQ+fLmRoJsub
+         nkqqEAV9p9uxxvUT/frTlbsfpriunhu606iCha5NYrpepEau2fEaqa1pqb7RpqkfgjpC
+         icjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787898493; x=1788503293;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wHGnCVhNuLFnG/5OVisM5ogzmWXFPIK5JB6VW53vdI8=;
+        b=KI5+UpjBbOj4FNUhYwreAqon6eRlW3Z3ie7Uv7XMbZcQC23Tj3q9in7bjXQMA5KLSA
+         Tx7Eug0d9xBoOGnhsu8o4KFANgujgDhJDl1vRlTbwE1ZdUjhR5Kb/AQQMUhn/iaPX/GM
+         OwKZ41lLqn0Ig2s6eUK2Pu0edt/z6VOsBlfNd1ZtUcpg2GgPZuNFZb/QFNPINglmPthC
+         5m6oOcHBLGqPNiWn3TKScRnUWr+xHen3fJeQqyM59/hAhAFt+Fr48yfbltGovajauXya
+         0mavEAZm8Fr7QGHcs3PqntMuy0cHayrxIxnpg2ssZKP6IUM1mUcMFydtLd6vm2rCgnEL
+         KTGA==
+X-Gm-Message-State: AFuF++nRiDsOhVXt6SjEPqATyCH9LSxFsZqLgy2/hlegAUYaZT9gCX/K
+	TCqG8LXFJzB6f/5joLhQq0u3UCcd1Jy/9sVlPTqtre8AhmOitG9/1C8DCoK9C748/dV3Nwb5oMf
+	NmviXIjOIsD+tNHNy2A8oEdCYUGUS2ThmQtMtpy6KpQ5dJEUNAXaSs1yN86lPQq5NnA==
+X-Gm-Gg: AR+sD10jF88DKdOhrC8mnARhHHPYdjN21QIugEB6ADl2vI869CMhS5DfJ7gbmdxWxFV
+	4m+/j7sBHGzTKMtL3yZY47L0aEqmUWOoPDF7MhhqMrUGR2id00K+/KRNXkFihBvZ+0DDs0dKEzf
+	Xk4OrhOVD8T+mlw9xVxyaV1ZYimftDL7vP/BSK2PmMRE/TGhoTsoEWhwglm7F+xlF4D4Z1HubBV
+	et20hXXcK0t6G9hQxa/1GQCnu2aF/pILYo8ETaSLMUysdRCUqSHr130IhhUZsP/IXInAsrkFeqE
+	3sH3KYiAjU6t/TnGWYGdga4jhimRgx3D2uz016I+28q15KeUfmCWwUDNyiEjoU32Pa39jvI+RWY
+	TNq81z41PZEykUUk47XTR6tP2htM9X+tVeQy37PZ/BD9A5ccVGvWb6s/aX2IaPxeXjf9/cis=
+X-Received: by 2002:a05:600c:3493:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49b91c4792bmr62738075e9.10.1787898491952;
+        Thu, 27 Aug 2026 23:28:11 -0700 (PDT)
+X-Received: by 2002:a05:600c:3493:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49b91c4792bmr62736365e9.10.1787898490772;
+        Thu, 27 Aug 2026 23:28:10 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4942366asm99143435e9.3.2026.08.27.23.28.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Aug 2026 23:28:10 -0700 (PDT)
+Message-ID: <38a2e111-799f-4c8c-b46b-501999f71e52@redhat.com>
+Date: Fri, 28 Aug 2026 08:28:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824134703.766708-1-nb@tipi-net.de>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/2] net/sched: pfifo_fast: reject oversized ring
+ and account to memcg
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org,
+ vega@nebusec.ai, Victor Nogueira <victor@mojatatu.com>
+References: <20260825081751.134086-1-jhs@mojatatu.com>
+ <daceef26-eae7-49c3-acd8-0908bd6a31dd@redhat.com>
+ <CAM0EoMkJdo_e5VYPRcPN2mZpNyrTQ43FxNvkqFSNDjyV9x45dA@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAM0EoMkJdo_e5VYPRcPN2mZpNyrTQ43FxNvkqFSNDjyV9x45dA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello Nicolai,
+On 8/27/26 7:39 PM, Jamal Hadi Salim wrote:
+> On Thu, Aug 27, 2026 at 7:26 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>> On 8/25/26 10:17 AM, Jamal Hadi Salim wrote:
+>>> pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
+>>> ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
+>>> bound. An unprivileged user (via unshare -Urn) can set a huge
+>>> tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
+>>> memory, causing a system-wide OOM.
+>>>
+>>> Reject tx_queue_len values exceeding S16_MAX (32767) with -ERANGE
+>>> in both pfifo_fast_init() and pfifo_fast_change_tx_queue_len().
+>>> Note: For the init path, NL_SET_ERR_MSG_FMT_MOD reports the error
+>>> via extack whereas for the resize path, the error propagates to
+>>> netif_change_tx_queue_len() which rolls back dev->tx_queue_len to
+>>> the original value. Use GFP_KERNEL_ACCOUNT so the ring allocations
+>>> are charged to the allocating process's memory cgroup.
+>>>
+>>> S16_MAX is the virtio virtqueue size limit: the virtio specification
+>>> stores the queue size as a u16 with a maximum of 32768, so 32767 is
+>>> the largest tx_queue_len any in-tree driver can meaningfully use.
+>>>
+>>> Conditions to recreate the bug:
+>>> - CONFIG_NET_SCHED=y, CONFIG_VETH=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
+>>> - Unprivileged user in a fresh user+net namespace (unshare -Urn).
+>>> - Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
+>>>   while the devices are down.
+>>> - Attach mq at root, then replace each child queue with pfifo_fast:
+>>>     tc qdisc replace dev veth0 root handle 1: mq
+>>>     tc qdisc replace dev veth0 parent 1:1 pfifo_fast
+>>>     tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
+>>> - Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_array
+>>>   rings of tx_queue_len entries (~12MB per qdisc at QLEN=500000).
+>>> - On the unfixed kernel this exhausts global memory in ~28 iterations
+>>>   on a 2GB guest -> OOM panic. On the fixed kernel the oversized
+>>>   tx_queue_len is rejected with -ERANGE.
+>>>
+>>> Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
+>>> Reported-by: vega@nebusec.ai
+>>> Tested-by: Victor Nogueira <victor@mojatatu.com>
+>>> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+>>> ---
+>>> v1 -> v2:
+>>> - Replaced silent clamp + pr_warn_ratelimited with reject (-ERANGE) (Jakub)
+>>> - Changed cap from 65535 to S16_MAX (32767), matching virtio's
+>>>   virtio16 ring size limit.
+>>> - Dropped the doubled module prefix in extack (NL_SET_ERR_MSG_FMT_MOD
+>>>   already prepends KBUILD_MODNAME).
+>>> - Added resize-path tdc test case (Sashiko nipa gpt-5-6-sol-1-2).
+>>> - Fixed tdc teardown to use JSON list form for acceptable exit codes.
+>>> ---
+>>>  net/sched/sch_generic.c | 14 ++++++++++++--
+>>>  1 file changed, 12 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+>>> index ef2b4bf51564..eb5c0d3f67c2 100644
+>>> --- a/net/sched/sch_generic.c
+>>> +++ b/net/sched/sch_generic.c
+>>> @@ -910,11 +910,18 @@ static int pfifo_fast_init(struct Qdisc *qdisc, struct nlattr *opt,
+>>>       if (!qlen)
+>>>               return -EINVAL;
+>>>
+>>> +     if (qlen > S16_MAX) {
+>>> +             NL_SET_ERR_MSG_FMT_MOD(extack,
+>>> +                                    "ring size %u too large (max %d)",
+>>> +                                    qlen, S16_MAX);
+>>> +             return -ERANGE;
+>>
+>> Sashiko noted that setting a large tx_queue_len to a down
+>> interface gives an inconsistent behavior:
+>>
+>> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825081751.134086-1-jhs%40mojatatu.com
+>>
+>> (all other comments are IMHO noise and should be ignored)
+>>
+>> I don't see and effective way to avoid that, short of falling
+>> back to v1, WDYT?
+> 
+> I changed my mind on this. See this thread and let me know what you think:
+> https://lore.kernel.org/netdev/CAM0EoMk8fAACt11fe1pUsFeG9np3SdsV0YUNmEevLu=i=b+xKg@mail.gmail.com/
+Whoops, I missed the last message in such a thread. I think it makes
+sense and will cover all the sashiko-reported concerns. You can probably
+also additionally get rid of the old test:
 
-Am Mon, Aug 24, 2026 at 03:47:01PM +0200 schrieb Nicolai Buchwitz:
-> When a UDPv4 checksum computes to zero, RFC 768 wants 0xffff on the
-> wire, but the GEM sends the raw 0x0000, which receivers read as "no
-> checksum". Raspberry Pi confirmed in a simulation of the Cadence IP
-> that the engine skips the substitution for UDPv4. UDPv6 and TCP are
-> fine, and the IP changelog suggests all GEM revisions could be affected.
-> Reported and analyzed on the Raspberry Pi 5:
-> https://github.com/raspberrypi/linux/issues/7550
-> 
-> Patch 2 does UDPv4 checksums in software and lets the existing pad
-> and FCS path keep the hardware off the frame, UDPv6 and TCP keep
-> the offload. That path miscounts tx_bytes by the software FCS, so
-> patch 1 fixes the accounting first.
-> 
-> Tested on CM5. To reproduce, send bulk UDP to another host and capture
-> zero checksums on the receiving side:
-> 
->   iperf3 -c <host> -u -b 200M -t 30
->   tcpdump -ni <iface> 'src host <dut> and udp[6:2] == 0'
-> 
-> Without the fix a packet shows up every few seconds:
-> 
->   12:46:20.002739 IP <dut>.36309 > <host>.5201: UDP, length 1448
->   12:46:23.773968 IP <dut>.36309 > <host>.5201: UDP, length 1448
->   12:46:40.227460 IP <dut>.36309 > <host>.5201: UDP, length 1448
-> 
-> With the fix the capture showed none.
-> 
-> Some numbers (udpgso_bench):
-> - 18-byte UDP throughput dropped by ~ 8%
-> - 256-byte UDP throughput dropped by ~ 10%
-> - MTU-sized UDP and UDP GSO were unchanged at the 116 MiB/s link limit
-> 
-> Unfortunately I don't see a cheaper fix, the zero only shows up after
-> computing the checksum, the MAC inserts it in flight, and AFAIU there is
-> no register or descriptor bit for the substitution.
-> 
-> I'd appreciate testing on other silicon.
+	 if (new_len != (unsigned int)new_len)
+                return -ERANGE;
 
-I tested without your patch on at91 sama5d2 (Cadence GEM rev
-0x00020203), sam9x60 (Cadence MACB rev 0x0001010c), and sam9g20
-(Cadence MACB rev 0x0001010c), and tried to reproduce the flaw (not
-the fix).  Rewrote the Python reproducer suggested in that RPi github
-issue in C, but iperf3 gave similar results:  tcpdump started as
-suggested showed not a single wrong package!
+/P
 
-However according to ethtool it seems at least the older MACB bases
-hardware has no hardware checksumming here.  On sama5d2 (GEM, but no
-Gigabit) I'm not sure if it is supposed to be done for UDP?  See:
-
-    $ ethtool -k eth0 | grep sum
-    rx-checksumming: on
-    tx-checksumming: on
-            tx-checksum-ipv4: off [fixed]
-            tx-checksum-ip-generic: on
-            tx-checksum-ipv6: off [fixed]
-            tx-checksum-fcoe-crc: off [fixed]
-            tx-checksum-sctp: off [fixed]
-    tx-gre-csum-segmentation: off [fixed]
-    tx-udp_tnl-csum-segmentation: off [fixed]
-    tx-tunnel-remcsum-segmentation: off [fixed]
-    esp-tx-csum-hw-offload: off [fixed]
-
-On sam9x60 (MACB) there seems to be no hardware offloading at all:
-
-    $ ethtool -k eth0 | grep sum
-    rx-checksumming: off [fixed]
-    tx-checksumming: off
-            tx-checksum-ipv4: off [fixed]
-            tx-checksum-ip-generic: off [fixed]
-            tx-checksum-ipv6: off [fixed]
-            tx-checksum-fcoe-crc: off [fixed]
-            tx-checksum-sctp: off [fixed]
-    tx-gre-csum-segmentation: off [fixed]
-    tx-udp_tnl-csum-segmentation: off [fixed]
-    tx-tunnel-remcsum-segmentation: off [fixed]
-    esp-tx-csum-hw-offload: off [fixed]
-
-How are those chips affected by your patch then?
-
-> Nicolai Buchwitz (2):
->   net: macb: exclude software FCS from TX byte statistics
->   net: macb: fix zero UDPv4 checksum on transmit
-
-That fix seems to be very generic and not specific to macb or gem nor
-to any variant.  I'd suggest narrowing it down and testing on more
-hardware.
-
-Greets
-Alex
-
-> 
->  drivers/net/ethernet/cadence/macb.h      |  3 +++
->  drivers/net/ethernet/cadence/macb_main.c | 28 +++++++++++++++++++++-------
->  2 files changed, 24 insertions(+), 7 deletions(-)
-> 
-> -- 
-> 2.53.0
-> 
