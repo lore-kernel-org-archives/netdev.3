@@ -1,46 +1,43 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9119E4519B8;
-	Fri, 28 Aug 2026 13:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7264E3D566F;
+	Fri, 28 Aug 2026 13:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787922466; cv=none; b=sSEttsT3wOSSX/HDbt7GKmVYaWjOdXAKE763BdvyfPnIYDibUUH4Vri/svzxCvtkKNq2i1Dp6K84b5w5aKRQlyi9gVolD8XImXPkVRQygQin+o6iAu0H4OXbuRQHO+MBb5LnXYk+HKOpB3anMO8aOaGEzSHixbSF7hESIVvJwS0=
+	t=1787922545; cv=none; b=LzMSOAsO5W8Gpvfjv612Mh9vmxbFHXeVV0DRGO8bAH43RjLjynjH5fHbaL2jgrPZ5mJdb0AzKhni5gUTsiQ3ov8lkobgZh2qerlY27sEgW69UvYPXHMR0xdNczfpNBAj25AzUYYdRkKqp/E/kTNecnt2W7czDhAcvw/DeIFQ3Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787922466; c=relaxed/simple;
-	bh=yBazce1ZWkYueOaWEr6WgWdrpBTY/w4ntsY+EX3Kvfg=;
+	s=arc-20240116; t=1787922545; c=relaxed/simple;
+	bh=GpAZknrMBRXWW+bZfpZyG60znjXYQsu7tPc03eLMNqc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PZdf8Ou4IX+srKLaChdKrFV1+986lKG5RAWvV9GINxc6AlWm5FeB1xoZt6S0jubg2v8VseaStfFvFBJwcvNjqt7xTAFAriI71N6D43z07VHy9RwS4slbkaqGKUBMEnSz2WVgLu20e/vHIu3vWSa8OmtiGVdp5ROa1B2Py/eDzBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0p/RHAQ5; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=a8SmcBTICZuG/Vct9qVvm1XMcunP5/OVxzaRCzP1LUge2ROjlJjbBik3/3qilDE7po8eEDZBPddY8Z9QpN9xlQUM7MkUm4n2hZXmwrllZkxMk45nx+scVNwEmjqRz4bq888oXG/acFCp1tzULP+YlsK5lEunuizfEP8YyQSaU6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FHuMMzR+; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0p/RHAQ5"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FHuMMzR+"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=36W10jThyPqCCiB0lPjUbAlEaFBQJ3iDfK2MHS8CG84=; b=0p/RHAQ5uxVOrTBgp+pCequ3zJ
-	b+84BHeFAeL+pzaeciODVGkMNBwgoirl8nUtKMesx/MKvLzl7L29fKNygIel22egA+/YIGc2UJSei
-	LH0QkSNmUjHWvVgJyXpiGrGb71/pOeUC/If0O9uggclNH46VG/bZTb594hAn6ptm53sc=;
+	bh=QMRsiKsZQYF4PHFFxZwdOkrqAXkbqotX7ULcFDnvPFE=; b=FHuMMzR+gi/BxnGIl6UHLEkTFd
+	mzHjlpiDWQ34IgPn9xo1I1OTgH0MWI02Emeg95Kr28FlULUSDgxY2pyLT4dPUk1O14bAIkWRie47l
+	xsTVyTJBeADQHwpZL50AA31mv2lx/vIchP8ZBGScqo9JpvqB/peq1UYr9gulUnochvxs=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wzwIf-001obz-BS; Fri, 28 Aug 2026 15:07:17 +0200
-Date: Fri, 28 Aug 2026 15:07:17 +0200
+	id 1wzwKE-001odR-Dn; Fri, 28 Aug 2026 15:08:54 +0200
+Date: Fri, 28 Aug 2026 15:08:54 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Weiting Lee <weiting.lee@airoha.com>
+To: Ziyou Xu <xuziyougm@gmail.com>
 Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-	pabeni@redhat.com, linux-kernel@vger.kernel.org, bjorn@mork.no,
-	ericwouds@gmail.com, frank-w@public-files.de, joseph.lin@airoha.com,
-	wenshin.chung@airoha.com, lucien.jheng@airoha.com,
-	albert-al.lee@airoha.com
-Subject: Re: [PATCH v2 net-next] net: phy: air_en8811h: select LED GPIO pins
- based on AN8811HB package variant
-Message-ID: <8e7094bd-4880-436c-a86b-e13e07d331d3@lunn.ch>
-References: <8530a501-705b-45b2-b876-68855955bccd@lunn.ch>
- <20260828050537.2728253-1-weiting.lee@airoha.com>
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, bjorn@mork.no, ericwouds@gmail.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: phy: air_en8811h: restore AN8811HB LED GPIO
+ after MCU restart
+Message-ID: <0db183d7-3881-4f81-9e04-cd2c13d1dcee@lunn.ch>
+References: <20260828032922.469449-1-xuziyougm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,26 +46,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260828050537.2728253-1-weiting.lee@airoha.com>
+In-Reply-To: <20260828032922.469449-1-xuziyougm@gmail.com>
 
-On Fri, Aug 28, 2026 at 01:05:36PM +0800, Weiting Lee wrote:
-> The AN8811HB comes in two package variants, AN8811HBCN and AN8811HBN,
-> which use different GPIO pins to drive LED outputs. AN8811HBCN uses
-> GPIOs 0, 1, and 15, while AN8811HBN uses GPIOs 3, 4, and 5. Using a
-> fixed GPIO assignment causes incorrect LED behavior on one of the
-> variants.
-> 
-> Read the package variant from the read-only silicon identification bits
-> in AN8811HB_HWTRAP2 at probe time and store it in priv->is_an8811hbcn.
-> Add an8811hb_led_gpio_setup() to configure the correct GPIO output pins
-> and select lines based on the detected variant, and call it from
-> config_init.
+> @@ -1265,10 +1258,19 @@ static int an8811hb_config_init(struct phy_device *phydev)
+>  
+>  	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
+>  			    AIR_LED_MODE_USER_DEFINE);
+> -	if (ret < 0)
+> +	if (ret < 0) {
+>  		phydev_err(phydev, "Failed to initialize leds: %d\n", ret);
+> +		return ret;
+> +	}
+>  
+> -	return ret;
+> +	/* Restore LED GPIO output enables after MCU initialization. */
+> +	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
+> +					  AN8811HB_GPIO_OUTPUT_345,
+> +					  AN8811HB_GPIO_OUTPUT_345);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
 
-Have yo seen the patch:
+That can be squashed down to:
 
-Ziyou Xu [PATCH net v2] net: phy: air_en8811h: restore AN8811HB LED GPIO after MCU
+	return ret;
 
-There is likely to be a merge conflict with it. We probably should get
-that patch merged first.
+    Andrew
 
-     Andrew
+---
+pw-bot: cr
