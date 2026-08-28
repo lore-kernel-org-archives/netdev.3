@@ -1,115 +1,109 @@
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82143EC830
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 08:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E603E49DD
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 08:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787906749; cv=none; b=dbNuvkL0QNg3ijGW99AtK7jPJiP9WhPXnCv+btk6P06tlx59TZu5CZNFgj+NgMiIjbS2xkV+aEL7GuU/u1UZ9BdDiiFOPKH+Bz6FPqG5br/0sxZ2ye6wVQOKcbmzc9CBf+XMh9LoaZfIg3sqAt7gzNd6keHIL2BjEwX29IPCqIs=
+	t=1787907392; cv=none; b=BQBKzYaBFCNZOJF9hWsARqvfETivMtKAb1kBCMstmWUogBa0Msmd+GFGDolKDGDwUFn2gZEcoz+FQfLtyy1cZNCgiCRxao/QVhMnTjD7m79SuGO6KH2IXQeRAvS1F1X42gZu2Necu2RdFvSPhi+OM2HM2nq/Pfi/yPrwwP7FBI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787906749; c=relaxed/simple;
-	bh=SWxiKUvemoaXLtkGQUzu2Zlxcf3wrD3kHvd6mX6PUoc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g4q8kQnwZ1KIUhmBd0+fmPRC30SXQ7vj4S/I0dbOSooSKtDvZp/jzd+6qBk+6m+QmslBuP0Dr63xQ5OD0cimU24ghob3qeJeAVCuCVfTuScGtJTslWmJSZ73SthdnSuAOtVS5AzJGLOkFCujr5R1smUygZtlMgHmig48R4AlN7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GqDGa+7H; arc=none smtp.client-ip=209.85.219.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1787907392; c=relaxed/simple;
+	bh=A2hgjeOh3c/LljnQd3v6NScIdJwHbE8OvR2D3bwTWao=;
+	h=Message-ID:MIME-Version:From:To:Cc:Date:Subject:Content-Type; b=CLpTCF1CJlZK4ABu/+onp0bVrttByeAmX+Jnn6klQrwbpN+HPA3LpxEmkNeDQ08zjS6n2Vi0MOTEaEPJLhPnP4qv8J3+Tkfl0IGn8pRk6ylD+W2maAl3SK4PShMS51dmsWgfTlzVpYxFHiEjhjyLYT28D+DINrkGriTIEER7mEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITy7Nviy; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GqDGa+7H"
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8eec6acbe21so16770766d6.3
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:45:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITy7Nviy"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e7109321dso659623a91.3
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787906746; x=1788511546; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1787907389; x=1788512189; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:subject:date:cc:to:from
+         :mime-version:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GYHofbdl/jBrAUQGBv0NFrgAyPWaOtqINCFSiXv6QmI=;
-        b=GqDGa+7H1JEBlEhpQiyKYyG5mmco/3ubpW/F0L05uIlwmGIOxgeai1dcU57aXG0rkH
-         vsh0qYwt2gFRmimr4Ir6RFnTZIs6vVVpTzmGbA0uUJjxbBOk+9GPuIqfYpNg2emwiB3X
-         5fqnrrJCZmHqIWHhVPEJl0Es4oyiFRZKbTfJ+OpDR08hDnSaUoV2hhKh1zHJjHUK1D1W
-         x9QYNQMoEHwvRSEOX45fZ5TmD360wOp/hpSAjjVNY0eXlrFxs18E3xPwG37cJiLrPLLr
-         UIlI5S16BF26Of/a0VY6bafaIgzmxNL6Xqtozm0iDrD0V4qPwUOcnE3k2kIdxl53vAkP
-         JQfQ==
+        bh=9CqYKtog+RGx4sBEIIa/0emlDuhYnBDf992c5lgKQL8=;
+        b=ITy7Nviy8nXApuS4UGhKOAQzDv80qj2lezHACB1apdM8n/H+Z5fVeXvKJCApfMshi5
+         gIAHe9OP4o5Ce/tkh1dj0D+OfSnz7fAwEBEHG4BUWMT2K6gNNq3+o6nckF/YEPj4VPcI
+         ALbp4KvuSvJLA7RvPlLMF9WUcXWsdi53HUnsFvpIZ+9AdRDCh4HD+ZWW8yj3oyv+Nv5Z
+         i5NivooRmKfUwl8fokdzHYp5l/0J4cW8nv7XwWdZzmuR5Sk0oFHDiiHnhWOM/Z4ZjaGM
+         5sUwNbj+1MDHRXseOjiIjxTQ71ZgMQBckyFV8d5l+H6tkMjeF0rEWBM9y+n4dJj5A2Kq
+         dljA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787906746; x=1788511546;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GYHofbdl/jBrAUQGBv0NFrgAyPWaOtqINCFSiXv6QmI=;
-        b=H86jj7LlF5AwkE168G3DydfVapp4cKh4XXppcJS08oziSnAy0c85iE136jEU6jRH4T
-         GXierUqkebWdOmmKO11mjiXNsKd/SlujJhEF/05H2oiOzc5T6SuNpCQK295nVYHyojqV
-         uUlXaF3pEHX53fzM2bn3H3KAXqQ4DIqqtRP8KBS06s3EAQRQjOS3+xz6GdlMowHwlo6v
-         rcULxh6FXeDVmStI8BRPQWmmvEeWNZuwcJJHRPLL+YgfaGmPefh31GA3HJdy5nG56/YU
-         cyvtzpiY08yxhaBLer5UniR/452Qm7HLuqjKym/JH4qgjbCjFy0GPtMX5F3nyKftXDtK
-         eFBA==
-X-Forwarded-Encrypted: i=1; AHgh+RpHdH1ESs11S/tzjhTnTHpjMp2z+CE7WA8H6yTAIjUtJchuK7Q4ASHdan0I1P/6ezeqq+NvhHc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kg6N670jDsVRy2Sajuvzh7S6LNuxuQ72pMXTy1xpnzex2F5b9A
-	nK6MfCIPVdTpUfqlHIakrL2hEwGvFrpwKVO/JJi3w3cQ/A2VJSiV1LdDZ6SG5NxdQTGD2JY3W8S
-	V67WF06MWe9r8VQ==
-X-Received: from qknus20.prod.google.com ([2002:a05:620a:6b14:b0:938:774c:6b96])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:f01:b0:936:6911:38ed with SMTP id af79cd13be357-9391351e8f3mr497334485a.0.1787906746271;
- Fri, 28 Aug 2026 01:45:46 -0700 (PDT)
-Date: Fri, 28 Aug 2026 08:45:31 +0000
-In-Reply-To: <20260828084531.1826790-1-edumazet@google.com>
+        d=1e100.net; s=20251104; t=1787907389; x=1788512189;
+        h=content-transfer-encoding:content-type:subject:date:cc:to:from
+         :mime-version:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9CqYKtog+RGx4sBEIIa/0emlDuhYnBDf992c5lgKQL8=;
+        b=qC8V9G7OLXjbanKbycWWaFsASG+znUY/EnnBie3S0XOWDgiFrDwoG9sY5PB5NMWyDl
+         F16wckffLHwyDxw8uOYiMe4fs+kWpAmhgbos2lybgCzWzfBwjNcQz80EC47MAMNHeR1a
+         9eej8gEdr/MxRGqic3ghkZ7bAS2b4U/0Ui+QtRqLva1Ve81Rt/m/suSRYJRKB3wJm3B5
+         IAG0oXwif6l3szW9hXEo9PrQnYBpyxDPRILueaGGdsZfcUM2+K6dQ4wly7SW5SK/wUcq
+         9dN6Ok4PD1WsV287HVVjlNaAN8QHZ1ILo5nQRORdgtWvItupGunlfP4U2S9CAqV0N5vb
+         xXyw==
+X-Gm-Message-State: AFuF++ncLyx7tmHJoZv9naf9bpj2l7cVY9a428pZnG6G5s0BCWP7dBsm
+	JLP2pscS+p+WFEreW6bw45rmCWlw/CL9vl92a3Cwgrv4t39bzD1yI2J5
+X-Gm-Gg: AR+sD11R+3qub6Mgtba+fSv/Q7fD+hW/41fdCRHtRpvwsaMCZiioZ9RJWgJeq2FtH9U
+	MnDoYzOBUEWXSoOTMmu42IMlAcxHCL/4jKlFZhtyGoVpJi25EZ9jFEkrNTe1Ty22MrmOHSCOQt9
+	5W4iZaNLdISjsj8UVT/qarSZy+Q6SctPZLufUmYS5SsIErPY55f44nrEDqy/MOdOk9lbuLfEnQG
+	wNdV3Q7YOwdWWMWMK7mC7s1lCNOvmPnyVGDwb4uWuypNBubfh8XykIuk1GpLamtBiUK7msnI1ar
+	ORBq/MYDCdOStbGZ8AmIMfawt4FJj0Yk3Ywp4/kKI1PWIavcsdq46o8nFygSdr9B7KPh0T6T+sh
+	2RSe/j9uzFFM/Y+g3krOajsGuHzp0VmNZ/zuioMsjhXmSiKwXZt3Ar3Dby0XgKCXbJbAt/q329M
+	gkqQypXPSg0lVFnShIc+AnTFJ/g6jIwkEVryKSrnADYcZYX9jIw2dqVtE4JuhchwkVTkWaLIIwc
+	elgqgcF4LH50rDXVS2VwRzKT+agXQWtEasAH+ZHAteIfHawMmuNYF6sAg==
+X-Received: by 2002:a17:90b:3c08:b0:38e:485c:ebd3 with SMTP id 98e67ed59e1d1-396d0f9ad1fmr11555024a91.15.1787907389017;
+        Fri, 28 Aug 2026 01:56:29 -0700 (PDT)
+Received: from manush ([2406:7400:94:7a79:ddde:713d:7785:c4a3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0df264csm8407712c88.14.2026.08.28.01.56.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 01:56:28 -0700 (PDT)
+Message-ID: <6a914d3c.018c0331.f1305.be74@mx.google.com>
+X-Mailer: git-send-email 2.46.2.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260828084531.1826790-1-edumazet@google.com>
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260828084531.1826790-6-edumazet@google.com>
-Subject: [PATCH v2 net 5/5] ipv6: mcast: use jiffies_delta_to_clock_t() in igmp6_mc_seq_show()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+From: "Manush Prajwal" <manushprajwal555@gmail.com>
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org
+Cc: netdev@vger.kernel.org, andrew@lunn.ch
+Date: 28 Aug 2026 14:26:27 +0530
+Subject: [PATCH v2] net: ethernet: ti: netcp_core: use
+ for_each_available_child_of_node_scoped() in netcp_probe()
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-If a multicast group timer has expired but the delayed work has
-not yet run to clear MAF_TIMER_RUNNING, expires - jiffies produces
-a negative value.
-
-Because unsigned arithmetic was used with jiffies_to_clock_t(),
-expires - jiffies underflows to a huge value and reports invalid
-timer durations in /proc/net/igmp6.
-
-Use jiffies_delta_to_clock_t() with a signed long delta to properly
-cap expired deltas to 0, matching IPv4 igmp_mc_seq_show() and commit
-a399a8053164 ("time: jiffies_delta_to_clock_t() helper to the rescue").
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv6/mcast.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 2290457eb8d3dd7a8d19fa9bf19f97160b7d2492..ecef55f261890c3de11c874d623d268dcb11670f 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -3029,7 +3029,7 @@ static int igmp6_mc_seq_show(struct seq_file *seq, void *v)
- 	struct ifmcaddr6 *im = (struct ifmcaddr6 *)v;
- 	struct igmp6_mc_iter_state *state = igmp6_mc_seq_private(seq);
- 	unsigned int mca_flags = READ_ONCE(im->mca_flags);
--	unsigned long expires = READ_ONCE(im->mca_work.timer.expires);
-+	long delta = READ_ONCE(im->mca_work.timer.expires) - jiffies;
- 
- 	seq_printf(seq,
- 		   "%-4d %-15s %pi6 %5d %08X %ld\n",
-@@ -3037,7 +3037,7 @@ static int igmp6_mc_seq_show(struct seq_file *seq, void *v)
- 		   &im->mca_addr,
- 		   READ_ONCE(im->mca_users), mca_flags,
- 		   (mca_flags & MAF_TIMER_RUNNING) ?
--		   jiffies_to_clock_t(expires - jiffies) : 0);
-+		   jiffies_delta_to_clock_t(delta) : 0);
- 	return 0;
- }
- 
--- 
-2.55.0.897.gb25b4bd76c-goog
+Rework the interfaces loop in netcp_probe() around=0D=0Afor_each_=
+available_child_of_node_scoped() instead of adding a manual=0D=0A=
+of_node_put(child) at the probe_quit_interface error label, so th=
+e=0D=0Areference on the current child node is released automatica=
+lly on=0D=0Aevery exit path from the loop, including the early go=
+to on a=0D=0Anetcp_create_interface() failure. child is never use=
+d outside the=0D=0Aloop, so the now-unused outer child declaratio=
+n is dropped along=0D=0Awith it; no extra of_node_get() is needed=
+.=0D=0A=0D=0ASuggested-by: Andrew Lunn <andrew@lunn.ch>=0D=0ASign=
+ed-off-by: Manush Prajwal <manushprajwal555@gmail.com>=0D=0A---=0D=0A=
+v2: Rework around for_each_available_child_of_node_scoped() inste=
+ad=0D=0A    of the manual of_node_put(child) from v1, per Andrew =
+Lunn's=0D=0A    review.=0D=0A---=0D=0A drivers/net/ethernet/ti/ne=
+tcp_core.c | 4 ++--=0D=0A 1 file changed, 2 insertions(+), 2 dele=
+tions(-)=0D=0A=0D=0Adiff --git a/drivers/net/ethernet/ti/netcp_co=
+re.c b/drivers/net/ethernet/ti/netcp_core.c=0D=0Aindex eb8fc2e..f=
+bc011f 100644=0D=0A--- a/drivers/net/ethernet/ti/netcp_core.c=0D=0A=
++++ b/drivers/net/ethernet/ti/netcp_core.c=0D=0A@@ -2204,7 +2204,=
+7 @@ static int netcp_probe(struct platform_device *pdev)=0D=0A {=
+=0D=0A 	struct device_node *node =3D pdev->dev.of_node;=0D=0A 	st=
+ruct netcp_intf *netcp_intf, *netcp_tmp;=0D=0A-	struct device_nod=
+e *child, *interfaces;=0D=0A+	struct device_node *interfaces;=0D=0A=
+ 	struct netcp_device *netcp_device;=0D=0A 	struct device *dev =3D=
+ &pdev->dev;=0D=0A 	struct netcp_module *module;=0D=0A@@ -2246,7 =
++2246,7 @@ static int netcp_probe(struct platform_device *pdev)=0D=0A=
+ 		goto probe_quit;=0D=0A 	}=0D=0A=0D=0A-	for_each_available_chil=
+d_of_node(interfaces, child) {=0D=0A+	for_each_available_child_of=
+_node_scoped(interfaces, child) {=0D=0A 		ret =3D netcp_create_in=
+terface(netcp_device, child);=0D=0A 		if (ret) {=0D=0A 			dev_err=
+(dev, "could not create interface(%pOFn)\n",=0D=0A--=0D=0A2.46.2.=
+windows.1
 
