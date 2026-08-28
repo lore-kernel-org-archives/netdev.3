@@ -1,143 +1,269 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F2B442B38
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 11:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787917590; cv=pass; b=NgYN6sXHBWIzyXd8nkbG7qgLaABvCc7cyqyEW5i2mm/SHYJuiW8NbkVtfqQmAgKPjfliugsIT0hekmVe9VPEsXl5dlO/OnPOIwwxEzFLa/1BGAT378K6dlQwGJxPjV12ai2qBb5DgL/lkwieMkdM7OW12UJJwUo55pOjN0aPmNk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787917590; c=relaxed/simple;
-	bh=czq0iY86tE9vmk1UpEtdE66iRV2mN8LTKlZ3L7FI82A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CE+R8Z3Uy1XM9Ls+3TD9VV3M9inqZPhcnLPU4fdWeMshhnHD2mEsZzDt8rt2cByZuN1XOhDe3efnvYuflxrrUD3ZVarmHaiLcdovKWYmjLObJvJCCI/tM+GAj0Ok093VH5WoYmz0aoO+bmB6A6nCA+isWsDQT6rvoMg8YrxaKs4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cUJ2nVeq; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156003C10A1
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 12:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787918664; cv=none; b=D1F+JiLyFrQpZW6YnXXzwKOWp/pFaezlYv2URtnmeZETEqja4pLrc1Lr4xq6ytJp4JH6SYMDXxutnq5kBGPhfGFZz3hBDroHyyl3PPIESwGQJMqTe/pXtAmxfoEy0R01/qO9zu009V1Uo8Xer9EJ/DrXJhTvET2M0F5DwOpQIyM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787918664; c=relaxed/simple;
+	bh=ioyjpTYahVnOWBhr/MamxD5RG95sppP+CU9ydVJYjSI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QC6o5/ukvntksQG+4/bcaN8r9kVgTyMe7CSeJKx1gCCV745v3VTmngwoafEI1z2zj/P/YnZIdyNtQ1+94MHTWRpR2y2TxKjY/1LOVKDG01/C0bR0gOA52uUlCXXEulk+3aQOEhEKhIXNf+xkUckw+ok7kBR/ecWdjg2B/yz23sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AATRDwSr; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cUJ2nVeq"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a051b737d8so998671a12.1
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 04:46:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787917578; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lNL7wSynBywHXugCeq0oB9cCv/tEm+g+/pZNg2hoI3f70Vp/yc5se83oUKr3si2DyR
-         jwYrpBofLh88ARwuWxX3PXmvzsL0HbpVYozuTfuLbtUHvIcWCgLstpRWcqDnNjLp8Mts
-         g+JqC0kHVQINsmTEYvdFdz4eeto6LAQaO434xM3aBBxWOuj1vVUOkh8gQftbrtTuFiMH
-         vFaoLxCm0CfJWPYnXLdlf29T5PU/PW3f7tCBZSPfzGa25u4dAtA84krfMPklq98/74Fh
-         P7wqrREWFzXZvc+cyJL6Oy8OIAIQMfv4fxQndkJI4/8co2xgbseH++Ht/tYZli+Rl6Nm
-         h1NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/J9olIsIhTk7fKZiLNVC6UMyj9uo0DyblzLYos7atQA=;
-        fh=e3Vp6R3zOhN+nOx4DljuUbsOPjTI3MpzoBPWKFOtqrA=;
-        b=hONkXIEJc7Fz25zu+l4sgMqFIvM+XXG7I7hFxinFGGxbhnmwRoAHWqB9b47fWcrm3d
-         iXEOz8DdfKT0StvnOpRj3j84t4kPCtkxqUchRMol7lrHkQo+ls6Hu4mJv+JV1rCGIuk8
-         TQDY66Mv1rcZdweIkPzQ/SzVhlkY8rVZ4p0YQymF3qgYSnkJTDRTtGUp2Aw+0qYVy7Oh
-         qocb/r0N5Kd6eo2McxLzTQP6r5opnYGhmAhzwfxjOFvdU5LK6jIAKbCFL9TncugGhsb5
-         BNPT+FWM5mXSpdZbljbD75qW1GHpLTp1Mrgdgs2a53UOZBx7WV3MzV83Ne5Y4wuYTY/l
-         icRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AATRDwSr"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so6724325e9.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 05:03:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787917578; x=1788522378; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/J9olIsIhTk7fKZiLNVC6UMyj9uo0DyblzLYos7atQA=;
-        b=cUJ2nVeqOcVpyJMcBKkrcCAu4kWacl5pXWrTo58eMVvXrcGGDDYIdvSHWRta51RLtM
-         M6ktSWZjpRFDORxChRQqb+R3/20PlGhKfsacV4UoLfu61+j28g2tWUYEw+qeIxHOX1XZ
-         ZD0r9E/0BZJPykXfnznoojyDJPyWId0PnMakDUf+kNUkXA64sFcfV+wgNs4Y7umFLJU2
-         F7fnIdSpZ0tCKiWdsOLOmFaGRfrt/QECWGb74PTEMFCb/wDumE7gQvjupcX62Y5ZA8+E
-         0xn6HgFoITRKr0P5Q8oC2hXbhi4FkEZPXvNkbzejxeFt8bufKi2gUKNY+PFs+puX6tWm
-         npqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787917578; x=1788522378;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1787918635; x=1788523435; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/J9olIsIhTk7fKZiLNVC6UMyj9uo0DyblzLYos7atQA=;
-        b=VK5y4ZPDFaXSxa/TKYwGLg5R17z12R2llfewK/fX22Qz0UfnRAX/w84anG58OYGIiJ
-         bvIjEgQvM+sGwRPU+/q2E+ikHvzeoW5ShXpn2Ehib/bbI79tOhZuykrMsle1O1PozK9q
-         e6sqwIP62RzAInPHnJKm002YqMBXahCaod/dYo62JhlvM7lY0LuTsu/oKPJbzM/9M2ia
-         GB9OPbSVEDMgKy1MOyi1y1OMwsXuJkRe3rNIPbMzwXEnAVgG7V5QyL+FO2mWNOOcn8Yz
-         PPV+QOFniu2m2i7SjrEQH9QwiItcFbqNmFcBVWvCEYfQTjfzXh4ZD+ECARU4Zpj7CLO3
-         QfGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpHOj1EU18KIt7QcJFldc/YH1RvjqdoYJNpBLeIyFmVxwAtsR6s6WPxyu5ADiNm0Ca3PkVnEG8=@vger.kernel.org
-X-Gm-Message-State: AFuF++m1NfCueRY+1whYIbf+B3epwvVLSniMfBnWphk3s55TVENyUPOp
-	G8gRLg8CBLs2YszLhqBhTWSyMbZfOAo0ZI+TQMdy1elgHyrHro7wCwCttqusIBj+LVSH8ec8Tti
-	oFSAxCtWhcKIHawuQVtl+YLRDpoiE3wFJA8r4sWUpIQ==
-X-Gm-Gg: AR+sD11WnWtGBf8Dw5d+j+JJKvYmZr5DNapV6U0Vl7OsbV99gR1pL8RoGDqF9p+9BIU
-	P9FItuYIL3lSUiF+kZ8EriCcpXpoimJJMEggEwYlHjYOU4YRnP77zdNr+syxYH1ECmUgcN+1EpH
-	l2mpAftiE4DrfrToGV9UEPrt/mYlL5SuFsUDTf4R9fgqEgU6YqlHmDLTC5orfhEaMO3iTSFlGdf
-	aLhQrZcv6M49mkQp/mFf6w22KUOz2P6vty8rOLFke+npNCwpbPabJUYG5+2q43rN9TafugGL8OF
-	tWY5Pcco9IMWZlbQEFx4Vo+f48kgAiWC0MBBSMG08ec1RYm9TxaO8FU7JCU7j4ejLrFazmqW+wB
-	BMvyvwzphQrme4HvvtjUQDs73s1J7b9MzfxjQnjiqzu+eVldepy80g5soNnpMp8wxH2W7Xcw=
-X-Received: by 2002:a05:6402:43c6:b0:6a1:4458:7f2d with SMTP id
- 4fb4d7f45d1cf-6a60d35f215mr4409501a12.5.1787917578299; Fri, 28 Aug 2026
- 04:46:18 -0700 (PDT)
+        bh=7FUqt9t1EencF9nSDcvizzvehr/v/zWd6fGeSLy9Tio=;
+        b=AATRDwSragpnbSvMRV3V2aGNoX6eztyoaD6Wg5X+ItIaz1ggOPcjM3pbPnjwWjMydY
+         KV9sg8hfxy9k+fj2rVlfUsybgJEgypBeGSvi5/h289h/yftoa/y6ShygyAiZTpMyMA9y
+         FmUb3nqXHBtrgXHtP6gI8D0RPt9j4EL+UXKy5WhDDAVr4yolTPV+gSs5xfTHU6zR3reL
+         dd/qIuecjLffo6SbtZhTUAQG8VrO5bYwzwVR+VTLoTIxlt47DYvdvljJrRVyeq9aDWFx
+         IaCstpZjUK5ByaWZRpv9u+WZuHDlnMDPi4g6sV2asQlnWE5yRLIFK0HNtO7oQFmmtdCl
+         rYFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787918635; x=1788523435;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7FUqt9t1EencF9nSDcvizzvehr/v/zWd6fGeSLy9Tio=;
+        b=ntN4rDLnseNFSSEr6FOfSpctuP1c3guwVysv99dUi7HmXX+akt0+ammkWCBYhij8A9
+         ovRTCswnHPHDsCCJ5Ruf1A8l0fq1Cw5EIz2sDxDTdpvcGac8CXwenTbVTnuSeAVuF9Wr
+         zeDoVKoFteLI6wqnYjqt1dLw8hS0W9RFdhUTowZmV99zUXDRTPEVa+QXxgw5dKd0AFfz
+         yyv/uckVH0RZg++uSo7GTnWIZzxWhwqy2ekBEX47ehO1DHmUxrlVBh60j95EVyNjjJSd
+         /XEb5k95I663jOC86jJuOVpqdivDGEKKJAiRIV8FNYI5mrYgO9QNN3PwIiJdYsvxHmF6
+         YV0Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rq62MqHkNhvfElRAhpyJThtjdGaPaDR2cs12VYbALA2Hj8YcIt9Ev46vZ+Uz2iVrBvsh3hVIho=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKktCJeUZivYdupmWcqUKkBEs8EmS0Gvgn60kYQh60k87bc/Du
+	PSz6MZH61K+diFDUicraNs0vm3Vam91GHApVytmV/QqzjiV6mwcFQEclT/GZgcwGe3I=
+X-Gm-Gg: AR+sD11UMgt9jdWozWxRurmHKbzSBtP7Cn5zCJ1Gj6OmmxLqFnI2JmfXtbc0iPknxep
+	Qg1GcKwVhFWul4bzE+2t9Z3U3OC3dbxBHTAv68YWfWdhslAj9qFjLESDvOAm5EDVJTJn4xoPYfX
+	e31Rw6AIl1BITOcznajmYdrbEPN7vPRePDEIAD7bVmZlJg6EQMQk1Pt+/GOR1cJ4LMvMKfbjTh6
+	lM5nPJgbizWXw38wG4+WXT73C0Tw0616Q7Az+h+JZnp5TlDxug1z09boVJ9nswp0njq2tOJjnYc
+	6zGZhW57f40En4ZT/uKzrmW3v7wkbFuLAeInBmlRS/e0PQo/STE9yuMayuZpa6Q/5x7BnjeOH0e
+	VG3s4q1ALXYGUcOOa21bMlvhNEarupzk74xKvFwLxfk4pCT2F83TO/pzKHMnZwMvwI5O0wDE6OQ
+	rrdhAYtZGFDfbD4cPRiSCfK3AxAsa5hlsf1B32JlaQwQcFsObg/19ThfCoXRYHwgS4xKJHnmyDY
+	ZIMwNx9kZA20LatTHUr26fC
+X-Received: by 2002:a05:600c:a418:b0:49b:9433:ea44 with SMTP id 5b1f17b1804b1-49b9433eb4dmr73573625e9.4.1787918635141;
+        Fri, 28 Aug 2026 05:03:55 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b9266be71sm117554035e9.2.2026.08.28.05.03.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Aug 2026 05:03:54 -0700 (PDT)
+Message-ID: <8b6506a1-5bfc-4f9b-92fa-234c89afe9ad@suse.com>
+Date: Fri, 28 Aug 2026 14:03:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMSTZOnSYZjqj4AyBpLg2hQfRs6JYZA5H26MwQ+G2WMGgNzBkg@mail.gmail.com>
- <025FFEEC-E57A-4C74-BF1E-D273253F4D9A@gmail.com> <CAMSTZO=2dm21hYcKKeDGCTb4KJ6R0ukDAFBQtsp4QVzPmCfcSg@mail.gmail.com>
- <1EF6CC70-90BC-4B9F-9F96-9DB1F3A69F1E@gmail.com> <CAMSTZOkWe9C2pGS75zX=_H4_Up6B6qSddkUPeaU8=br0geh-xA@mail.gmail.com>
- <AC809A9E-A3B7-4DB4-A267-7A183F60CA72@gmail.com>
-In-Reply-To: <AC809A9E-A3B7-4DB4-A267-7A183F60CA72@gmail.com>
-From: Mark <markmunene827@gmail.com>
-Date: Fri, 28 Aug 2026 14:46:06 +0300
-X-Gm-Features: AcwNN1UmI5M8lOLcrjuqT5vvcILd_sSk1zBQiCz1dA9ktvI7z9mOXknkvedT__0
-Message-ID: <CAMSTZO==h8Z+mDqF=bQOBOq=icRh8O0okDS9T2x-ovPwt0g7fg@mail.gmail.com>
-Subject: Re: [BUG] iwlwifi: Comet Lake PCH CNVi AX201 (8086:06f0) fails with
- error -110 on warm reboot
-To: Bohdan <boulderobscura@gmail.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] module: init-failure path can free a module with live
+ try_module_get() users
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+ "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>,
+ Sidraya Jayagond <sidraya@linux.ibm.com>, Tony Lu
+ <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+ Alexandra Winter <wintera@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Hidayath Khan <hidayath@linux.ibm.com>
+References: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Bohdan,
+On 8/24/26 8:13 AM, Mahanta Jambigi wrote:
+> Hi Luis, Petr, Daniel, Sami, Aaron,
+> 
+> I'm writing to ask about what looks like a generic module-init failure
+> lifetime problem in the module loader. I ran into it while working on
+> the SMC networking module (net/smc/), but after several patch
+> iterations, it seems the root issue may belong in kernel/module/main.c
+> rather than in SMC itself. I'd appreciate your guidance on whether this
+> reading is correct, and if so, what fix direction would be preferred.
+> 
+> THE ISSUE IN do_init_module()
+> =============================
+> 
+> include/linux/module.h has a long-standing FIXME in module_is_live():
+> 
+>     /* FIXME: It'd be nice to isolate modules during init, too, so they
+>        aren't used before they (may) fail. But presently too much code
+>        (IDE & SCSI) require entry into the module during init. */
+>     static inline bool module_is_live(struct module *mod)
+>     {
+>         return mod->state != MODULE_STATE_GOING;
+>     }
+> 
+> Because MODULE_STATE_COMING is not MODULE_STATE_GOING, try_module_get()
+> can succeed once a module's __init is executing. If __init makes the
+> module externally reachable partway through and then later fails, the
+> failure path in do_init_module() appears to do:
+> 
+>     fail:
+>         mod->state = MODULE_STATE_GOING;
+>         synchronize_rcu();
+>         module_put(mod);
+>         ...
+>         free_module(mod);
+> 
+> synchronize_rcu() waits for RCU readers, but not for threads that
+> already obtained a module reference via try_module_get() and are still
+> executing module text.
+> 
+> By contrast, the normal unload path in try_stop_module() refuses to
+> proceed while the refcount is non-zero.
+> 
+> So the asymmetry seems to be that the normal unload path waits for
+> references to drain, while the init-failure path does not.
+> 
+> A concrete race would look like:
+> 
+>   1. Module __init registers an externally reachable interface.
+>   2. User space enters through that interface and try_module_get()
+>      succeeds while the module is still COMING.
+>   3. A later __init step fails.
+>   4. do_init_module() frees the module.
+>   5. The in-flight caller is still executing module text.
+> 
+> SMC AS A CONCRETE EXAMPLE
+> =========================
+> 
+> In SMC, simply moving registration later does not appear to eliminate
+> the window, because there are two separate registration points that can
+> make the module reachable via socket():
+> 
+>   1. sock_register(&smc_sock_family_ops)
+>      After this, socket(AF_SMC, ...) can succeed and reach
+>      try_module_get() via __sock_create().
+> 
+>   2. smc_inet_init() -> inet_register_protosw()
+>      After this, socket(AF_INET, SOCK_STREAM, IPPROTO_SMC) can succeed
+>      and again reach try_module_get().
+> 
+> Either registration point can succeed before a later init step fails.
+> 
+> This may not be specific to SMC; other protocol modules that become
+> reachable during init, such as Bluetooth, may have similar exposure and
+> appear worth auditing as well.
+> 
+> ON THE FIXME'S IDE/SCSI CONCERN
+> ===============================
+> 
+> The FIXME mentions IDE and SCSI as reasons not to isolate modules
+> during init.
+> 
+>   1. IDE was removed in Linux 5.14, so that half of the concern no
+>      longer applies.
+> 
+>   2. SCSI still appears to self-reference during init
+>      (scsi_device_get() -> try_module_get(hostt->module) during
+>      scsi_scan_host()), so a blanket wait-for-refcount-to-drain
+>      approach in the failure path may deadlock there.
+> 
+> Also, strong_try_module_get() already rejects MODULE_STATE_COMING with
+> -EBUSY, so the infrastructure for refusing callers during init already
+> exists in some form.
+> 
+> QUESTIONS
+> =========
+> 
+> First, is my reading of this init-failure refcount/lifetime asymmetry
+> correct?
 
-I tried the PCI remove/rescan suggestion you mentioned:
+Your analysis looks correct to me.
 
-echo 1 > /sys/bus/pci/devices/0000:00:14.3/remove
-echo 1 > /sys/bus/pci/rescan
+> 
+> If so, would one of the following directions be acceptable?
+> 
+>   1. An opt-in mechanism (for example, a module flag) for modules that
+>      are safe to isolate during init and whose init-failure path should
+>      wait for external references to drain.
 
-The device does come back at `00:14.3`, but the driver fails the exact
-same way =E2=80=94 same `-110`, never even gets to loading firmware, no
-wireless interface shows up afterward.
+In general, it is preferred if the module loader handles all modules in
+the same way.
 
-Here's the relevant bit from dmesg right after the rescan:
+I would say that the module loader should wait for external references
+to drain after an init failure for all modules and that it should be the
+responsibility of individual modules to ensure that this wait eventually
+completes. Excluding some modules would mean that the module loader
+could still free them while they are in use by the kernel.
 
-[174005.380038] iwlwifi 0000:00:14.3: Host monitor block 0x0 vector 0x6
-[174005.380057] iwlwifi 0000:00:14.3:     value [iter 0]: 0x00000003
-...
-[174005.380178] iwlwifi 0000:00:14.3: Host monitor block 0x22 vector 0x0
-[174005.380198] iwlwifi 0000:00:14.3:     value [iter 0]: 0x00000003
-[174005.397491] iwlwifi 0000:00:14.3: probe with driver iwlwifi failed
-with error -110
+Before such a wait, the module loader should cancel all idempotent
+module loads. This is especially important during boot when several
+udevd workers may be trying to insert the same module. In that case,
+a failed module init function should block only a single udevd task, so
+that the system can still boot properly.
 
+> 
+>   2. Treating MODULE_STATE_COMING as non-live for normal
+>      try_module_get() users, with some explicit escape hatch for the
+>      remaining subsystems that genuinely need self-entry during init.
 
-A few other details in case they help:
+This might make sense, but the kernel currently has over 500 users of
+try_module_get() so changing its semantics in this way would need to be
+done very carefully.
 
-- Intel AMT: disabled in BIOS
-- POST fastboot set to Thorough
-- linux-firmware version: 20240318.git3b128b60-0ubuntu2.27
-- Also tried it with the upstream rev 77 ucode dropped into
-/lib/firmware/intel/iwlwifi/, same result
-- Device is the Intel Comet Lake PCH CNVi WiFi, `8086:06f0`, using the
-iwlwifi module
+I'm also not sure there is anything inherently wrong with calling
+try_module_get() on a module while it is still executing its init
+function. It must mean the module has reached a state in which it
+properly initialized functionality to be registered with a specific
+subsystem.
 
-What stands out to me is that even a full PCI remove/rescan doesn't
-bring it back; only an actual cold power cycle does. So whatever bad
-state the CNVi ends up in, it's not something the PCI bus reset is
-touching at all. That's starting to point more toward the platform's
-own power/reset handling rather than the driver itself, though I
-honestly can't tell yet if that's ACPI, the EC, or something internal
-to the CNVi's own power state.
+For instance, the __sock_create() function mentioned in your email
+contains (simplified):
 
-Best,
-Mark
+[...]
+	if (rcu_access_pointer(net_families[family]) == NULL)
+		request_module("net-pf-%d", family);
+
+	rcu_read_lock();
+	pf = rcu_dereference(net_families[family]);
+	err = -EAFNOSUPPORT;
+	if (!pf)
+		goto out_release;
+
+	if (!try_module_get(pf->owner))
+		goto out_release;
+[...]
+
+Consider two tasks that both call socket(XYZ). The first one sees
+net_families[family]==NULL and calls request_module(XYZ). The module
+then starts loading and its init function calls sock_register(XYZ). At
+this point, the second task can see that net_families[family]!=NULL, so
+it skips request_module(XYZ) and calls try_module_get(pf->owner). If
+that call newly fails because the module is still in
+MODULE_STATE_COMING, it breaks the autoload functionality of
+__sock_create().
+
+The scheme would need to be changed to call request_module(XYZ) if
+either net_families[family]==NULL or !try_module_get(pf->owner).
+
+> 
+> Any guidance on the preferred direction would be much appreciated.
+
+Waiting for external references to drain after an init failure makes
+sense to me. I'm less sure about changing the semantics of
+try_module_get(), or whether strong_try_module_get() should instead be
+exposed.
+
+-- 
+Thanks,
+Petr
