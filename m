@@ -1,207 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500CE3911AB;
-	Fri, 28 Aug 2026 03:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4851339368
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 04:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787889325; cv=none; b=HmuEeIi1+jq0IS9qBYPTCuKiQFIHYd1v2e4kAi4MZ5X6ZcVNcwwlteN4VuT2DT0Ny1Lv69ZW02rpgkQOhCqfSINJhsp3Gh9avpFr59LZ+xgDKAOzHCKBo6xPbSse308GcRiEyQuyoBakGNO+VNQ1fF1VOLzGoOm5CI21iAg0EFI=
+	t=1787890087; cv=none; b=PFoclvIKYtON2AQENk2wrik7Ggf1gWTo0yJiOgMGU3hmJ5XTo0aAn9CtymRRHc5ZXvOi/nk93t3lTu9ePOWDkojZQ83Bf4ssaMLGSEGMjefWu1VA5dmwFg4UtONQ1qactTI6fOCT+MRO9gmMsfhOkGCAU/xrO0R9uIFsH6uq9RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787889325; c=relaxed/simple;
-	bh=FCpEZDxc4jEepPZ3bdAy23c/UIgwajhvEbvF74xOfpA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z6Oa8bCtmXnMieZSqFEXQcyUaIBZLsde8QjTZHL8Yc6PiysfrpDz0QtYJixIeGaYplGDLTh689cmU2hJ060nbWy6mM8A3z9sAvUFFrvdUgjKiF3K4f4Ea8wCmmE2KQBHf86C38N266kz+VU2MHMkhFtNA2NHM3gBM2Rx4nkTvvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoNaC3y+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787890087; c=relaxed/simple;
+	bh=va2D4PPN7bDWy90o+kzcgFaY8tPz6FoVSh30o+YpqKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNdFBQbmYfJMAAIthyJvxCZD/quS3tWKM2Y3OD7/Kksu8xpqZ6PVdrq9vxTtTn9edvHobR4zoIXLsRZTgp4vheRtwWzSnoyLtnDhMXhh9Ld0G5oabtdSwCw/rtrt7Mr6rYH7odZ3Xm7tuVKWh85gNAG7ObYdILEpL3l8FQqQ42w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ic+TGs3M; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoNaC3y+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A801F000E9;
-	Fri, 28 Aug 2026 03:55:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787889324;
-	bh=4+zCmYDgwdjFjvy4pwMM+TuoalPKK3GwFiN1mmUURkE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UoNaC3y+DvalM35SWgtiNtZVjEaqCu7pHPeVItgXMgS2fUheBfbH8H5WccHo9bxqw
-	 nJLYCC/TqBI/GZ73S+AF/SSuBJACyhLQW9pKFTF/QgVO8DASb+3XQ+Em1Of70X0kM3
-	 eeyN2M95I1Px1ecEbqqPr0nFjrnvQpYPa9ZR8xmlVxP6/q4ecFd8l2GTCC5vk7W0qW
-	 dVlcSrEsABZC9SR2B+0Rm0rosuR3HJ0bH85lmjFnQwUKEhbyDSNA/SGpBpw16jbLKe
-	 iUqKmX/0Poacbsxy/wAzm+9RB+xbalIgbdD711xj404sPmJPecDSm4bA+JCwtXyZB9
-	 gUoA79kiMmNdw==
-Message-ID: <f61be21da825131657194f9fec83a77d7a92fe8a.camel@kernel.org>
-Subject: Re: [PATCH net v2] net: rds: fix uninitialized trans dereference in
- CM event handler
-From: Allison Henderson <achender@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>, ljp1205831794@gmail.com
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org, 
-	kerneljasonxing@gmail.com, henrymei@tencent.com, corvus@tencent.com, 
-	stable@vger.kernel.org
-Date: Thu, 27 Aug 2026 20:55:22 -0700
-In-Reply-To: <20260827161820.3867858-1-kuba@kernel.org>
-References: <20260825021223.3483044-1-ljp1205831794@gmail.com>
-	 <20260827161820.3867858-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ic+TGs3M"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3a1585728b5so5021171fa.0
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 21:08:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787890083; x=1788494883; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3CKdSKdLdxXqUAJ8+SDUUepiueedYKIw7PG3SRPgDmM=;
+        b=ic+TGs3MjG45smJ3BTxH7bVhgihYT8NO4AgAuwHsKuktXZxOJvuF5rxF5aijy8drMx
+         Wzr9iq0lhJB93c/FvWZEYLEEH7rWi1KnlTsaSU9r6ymstejj/PhHZOHsqz/b6Q24pBIj
+         MOnedHXRoF94plUtXL2aOA3bZRkBpIG6saFJaUzeB0fcrqq65GCuv6EHwjUcGv6oTd4R
+         ZLikpKcLvP1QreRn2Jg35dCLLqfQQGcD7T4Shq3g7s6+XNv/i5sIrJ+pRd3bHCZfvH8S
+         enFCEM7buM+zMV92/UMNph5I37zuudKONNsLYuTAvQ1Qe4vGdworXcih83Zl6JTdjf0H
+         RaFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787890083; x=1788494883;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3CKdSKdLdxXqUAJ8+SDUUepiueedYKIw7PG3SRPgDmM=;
+        b=HxwvR/CZTuuQEFH2oy//PWNbREFZFeTY6x122ihK5bXnvXEamgkUAG5zjPxxzJQYiZ
+         m4csTeh97lxrE1fIoSMHyOPUkg+F8lMwyVrN+lYxAp9r/A2/aRER+PBsHh5KOmrdOAqm
+         ynAKhEVnULbxB/bH/yYb+kviBdUkGMo8cwYLRcjWR7bZRJLoTfMhZhKEZrfxFnSFAczA
+         BtDUGBmMp/oQkCxeSrv6fn1qbS9yZrTRGj6V9I8RM790uR8+WxjuTu2YxR55YPy5kgks
+         Gnh4zeQFg4RxCMNzNzaa0+1KUvrHCGRF/6C2frf7liEp778SF/oOwOgIlokVdYtSITnm
+         csKg==
+X-Forwarded-Encrypted: i=1; AHgh+RouKeSfGta6b3aAZbrKwSg/uYGeW5D4/U826WYadxMl12B5fXIK+1IGsV+mLlM+GYy1/u0XCuo=@vger.kernel.org
+X-Gm-Message-State: AFuF++l0nAChSsVFe+QY5jFDyWmZQ0s1tBj8/HMKmZrlis+EhVLbT0js
+	10pkyX4jDXdYWX4VBnyKD08sn6VwKc5ensj63BiR+qU8Z1chkztVE2wXGl+/ePdsO7w=
+X-Gm-Gg: AR+sD13iWW0U1lG++tS+glaecMJA41OTOm6ZZAst/y5w/p0HGsVjHNEbXl7Y3LGZKbQ
+	1yKZa0uTt4SfOJBmQ0VuXnc8OHJvSSxIthQ1yrecUi2gX1apWnFZAspjBTkgax8ZwLXM3sV9oi7
+	fXag5LWG2vZ/BACC35J1D/QsE4hBKyApBE0CZ+0IFRWz7X+E8OQPub5rziiw1vNTAgWuR8uCqoA
+	F9dcx1mNnqq+5/2B3RV6HbdE1+yhoXVT/cy4uU0L5aBz4XHLAT1n9+9GITl3lp93l5nenWnHxax
+	1FRYa7a4z0XUm9tmMY3zlbVgOIK2dJPaaCrycOLDTEX15ckvca81MgA5G+w0GE/AnzJvM6LUvf7
+	jNjppsi2qeNtmQE21xfpz2+QLUdocb+/1ubDrkPRd2jgR9eTphL+41Y+ug7df3x/sMRPphcJb+y
+	x4tFAYY0pPdriXa0alyjTESeJ8vdwf/R8xyO1beMTQvDFCxenxz2uGSWU2Lf6al3I=
+X-Received: by 2002:a05:651c:1445:b0:3a2:eb57:8a99 with SMTP id 38308e7fff4ca-3a301afd639mr5669501fa.9.1787890083299;
+        Thu, 27 Aug 2026 21:08:03 -0700 (PDT)
+Received: from mobilestation ([2a00:1fa1:829d:a0d6:4e24:60c8:bd9:494f])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a305575833sm701491fa.35.2026.08.27.21.07.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 21:08:01 -0700 (PDT)
+Date: Fri, 28 Aug 2026 07:07:15 +0300
+From: Joseph Steel <recv.jo@gmail.com>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, shuah@kernel.org, 
+	joabreu@synopsys.com, jun.ann.lai@intel.com, yi.fang.gan@intel.com, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v3 2/5] net: stmmac: Move double VLAN handling to a
+ dedicated op
+Message-ID: <wmeffk2whc47cwfxnsrs46lwmd52n3ezwb5un6qn4nwnturqie@pd77k47zoeka>
+References: <20260825164522.4244-1-ovidiu.panait.rb@renesas.com>
+ <20260825164522.4244-3-ovidiu.panait.rb@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825164522.4244-3-ovidiu.panait.rb@renesas.com>
 
-On Thu, 2026-08-27 at 09:18 -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+Hi Ovidiu
+
+On Tue, Aug 25, 2026 at 04:45:19PM +0000, Ovidiu Panait wrote:
+> The double VLAN bits (EDVLP, ESVL, DOVLTC) are currently handled inside
+> update_vlan_hash(). This ties the double VLAN state to the hash filter
+> update, even though the two features are independent: hash filtering is
+> controlled by dma_cap.vlhash and double vlan by dma_cap.dvlan.
+> 
+> In preparation for removing double vlan support from dwmac4, move the
+> double vlan logic into a separate update_dvlan_state() VLAN operation.
+
+The S-VLAN implementation in STMMAC is a complete mess. It seems like
+the original code author didn't fully understand what he was doing.
+
+Double VLAN feature of DW *MACs has nothing to do with S-Tag VLANs.
+It merely provides a way to insert/extract/filter an additional level
+of VLAN header - inner. That's it. Seeing the networking subsystem
+provides only the outer VLAN header for HW-accelerations, having the
+DW MACs somehow working with the inner one is not only redundant but
+had been harmful up until a recent kernel. The Tx path has been fixed
+there.  What you see here is a leftover of the incomplete fix.
+
+Anyway if you feel like cleaning up a mess here then the only correct
+solution would be to almost completely drop any double vlan stuff from
+the VLAN implementation of the driver. That is:
+1. Drop EDVLP flag toggle. But preserve the flag being always set
+otherwise COE won't work for packets with an inner VLAN header.
+2. Rename "double" word to "svlan".
+
+You must not touch the ESVL and DOVLTC flags, since they are responsible
+for the S-VLAN tags handling, have nothing to do with the Double VLAN
+feature, and must be set so VLAN hash-based filter would perceive
+VLAN S-tagged packets.
+
+If you need to make DW GMAC4 not stripping VLAN S-Tags on Rx packets,
+then you have to find a way to prevent the networking core from
+enabling HW-accelerated S-Tags handling.
+
+-Joseph
+
+> 
+> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 > ---
-> net: rds: fix uninitialized trans dereference in CM event handler
->=20
-> This initializes trans to &rds_ib_transport at declaration in
-> rds_rdma_cm_event_handler_cmn(), drops the conditional assignment based o=
-n
-> cm_id->device->node_type, and adds an early bail-out that returns 1 for a=
-ny
-> event arriving on a device that is not RDMA_NODE_IB_CA.
->=20
-> > diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
-> > index b15cf316b23a2..2c5481f1fcb4f 100644
-> > --- a/net/rds/rdma_transport.c
-> > +++ b/net/rds/rdma_transport.c
->=20
-> [ ... ]
->=20
-> > @@ -80,6 +77,12 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma=
-_cm_id *cm_id,
-> >  		}
-> >  	}
-> > =20
-> > +	/* Only the IB transport is supported. */
-> > +	if (cm_id->device->node_type !=3D RDMA_NODE_IB_CA) {
-> > +		ret =3D 1;
-> > +		goto out;
-> > +	}
-> > +
->=20
-> [Severity: High]
-> Should this non-zero return be limited to RDMA_CM_EVENT_CONNECT_REQUEST?
-> As written it applies to every event type.
->=20
-> include/rdma/rdma_cm.h documents what a non-zero return means:
->=20
-> /**
->  * rdma_cm_event_handler - Callback used to report user events.
->  *
->  * Notes: Users may not call rdma_destroy_id from this callback to destro=
-y
->  *   the passed in id, or a corresponding listen id.  Returning a
->  *   non-zero value from the callback will destroy the passed in id.
->  */
->=20
-> The cma dispatchers implement exactly that, for example addr_handler() an=
-d
-> cma_work_handler() in drivers/infiniband/core/cma.c:
->=20
-> 	if (cma_cm_event_handler(id_priv, &event)) {
-> 		destroy_id_handler_unlock(id_priv);
-> 		return;
-> 	}
->=20
-> But RDS keeps ownership of connection cm_ids.  rds_ib_conn_path_connect()
-> stores it:
->=20
-> 	ic->i_cm_id =3D rdma_create_id(&init_net, handler, conn,
-> 				     RDMA_PS_TCP, IB_QPT_RC);
->=20
-> and rds_ib_conn_path_shutdown() later dereferences and destroys the same
-> pointer, clearing it only afterwards:
->=20
-> 	if (ic->i_cm_id) {
-> 		rdsdebug("disconnecting cm %p\n", ic->i_cm_id);
-> 		err =3D rdma_disconnect(ic->i_cm_id);
-> 	...
-> 		rdma_destroy_id(ic->i_cm_id);
-> 	...
-> 		ic->i_cm_id =3D NULL;
->=20
-> So if any event other than CONNECT_REQUEST is delivered with conn !=3D NU=
-LL on
-> a cm_id whose device node_type is not RDMA_NODE_IB_CA, does the core free=
- the
-> cm_id while ic->i_cm_id still points at it?  Can the following conn drop,
-> socket close or module unload then hit freed memory in
-> rds_ib_conn_path_shutdown(), including a second rdma_destroy_id() on the =
-same
-> id?
->=20
-> A reachable path without any race: rds_ib_laddr_check() short-circuits vi=
-a
-> rds_ib_get_device(), which only walks the ipaddr_list of RDS's own IB
-> devices:
->=20
-> net/rds/ib_rdma.c:rds_ib_get_device() {
-> 	list_for_each_entry_rcu(rds_ibdev, &rds_ib_devices, list) {
-> 		list_for_each_entry_rcu(i_ipaddr, &rds_ibdev->ipaddr_list, list) {
-> 			if (i_ipaddr->ipaddr =3D=3D ipaddr) {
-> 	...
-> }
->=20
-> while the device actually bound for the outgoing connection is picked lat=
-er
-> by cma_acquire_dev_by_src_ip(), which walks the global cma dev_list and c=
-an
-> match a siw device on the same address.  siw_device_create() sets:
->=20
-> 	base_dev->node_type =3D RDMA_NODE_RNIC;
->=20
-> In that configuration, rdma_resolve_addr() from rds_ib_conn_path_connect(=
-)
-> binds a RDMA_NODE_RNIC device, and the resulting RDMA_CM_EVENT_ADDR_RESOL=
-VED
-> with conn !=3D NULL now returns 1, so addr_handler() destroys the id whil=
-e RDS
-> still tracks it.
->=20
-> The same function a few lines above already documents the opposite
-> convention:
->=20
-> 		/* If the connection is being shut down, bail out
-> 		 * right away. We return 0 so cm_id doesn't get
-> 		 * destroyed prematurely */
-> 		if (rds_conn_state(conn) =3D=3D RDS_CONN_DISCONNECTING) {
-> 			/* Reject incoming connections while we're tearing
-> 			 * down an existing one. */
-> 			if (event->event =3D=3D RDMA_CM_EVENT_CONNECT_REQUEST)
-> 				ret =3D 1;
-> 			goto out;
-> 		}
->=20
-> Separately, does the unconditional goto out also skip the rds_conn_drop()
-> that the ADDR_ERROR, ROUTE_ERROR, CONNECT_ERROR, UNREACHABLE,
-> DEVICE_REMOVAL, ADDR_CHANGE, DISCONNECTED and TIMEWAIT_EXIT cases perform=
-,
-> leaving the RDS connection stuck in CONNECTING or UP with no error
-> propagated?
->=20
-> Would something along these lines match the existing convention, while st=
-ill
-> dropping the conn for the remaining events:
->=20
-> 	ret =3D (event->event =3D=3D RDMA_CM_EVENT_CONNECT_REQUEST) ? 1 : 0;
->=20
-> or moving the node_type test into the RDMA_CM_EVENT_CONNECT_REQUEST case?
-
-I think the cleaner solution here would be to hoist the check into the call=
-ing function.  So in
-rds_rdma_cm_event_handler_cmn():
-
-        case RDMA_CM_EVENT_CONNECT_REQUEST:
-		/* Only the IB transport is supported. */
-                if (cm_id->device->node_type =3D=3D RDMA_NODE_IB_CA)
-                        ret =3D trans->cm_handle_connect(cm_id, event, isv6=
-);
-                else
-                	ret =3D 1;
-                break;
-
-Thanks for working on this!
-Allison
+> v3 changes:
+> - Rebased after dropping the dma_cap.dvlan patch.
+> - Added "Reviewed-by" tag from Maxime.
+> 
 
