@@ -1,134 +1,179 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D0146D558
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 13:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787925601; cv=pass; b=Ky66RD5nA9ImLDNEF0+ctJnc3C3uWtVDmIP7UkJcwjtV6ygqDCv5Esrtkx7YOtXJDFQ2cXzUA3JA4f1kxjGoge+LqB6e/sgzC8xjhwqXcvOV4KwhznMkbC7lC22TR5EkXpHbKBQIOhH7HDjnpjVD5ze9brgBxEof/DWqmiWEAuk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787925601; c=relaxed/simple;
-	bh=PLDkatDMFuj3LfTf/LIfXkKvgu8bZZ7TEdRf9Z+1JP4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mvtnE1T/PL1CVReFykiaDS2YTU+D68MCTKy+NqEQJiWR1k+sMYo0B7YuBEO5rcuM7sOJbeCMwVL2tHalPMpVQM1uEX+ikJtEoyEerYMyfKnlLx513lrkGoGR01OMnEmfooAARP1sQRt2MsVaEqldGL3P5Z6Nu+278SbGvkkZr54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AtnER0Bx; arc=pass smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C549470429
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 14:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787926221; cv=none; b=BXPn7G5jqMozbsr53KcOYI1o0pl2W9VClXD/xIRMuEzhC8AmjupteuvwOvcv6mMYOesmIMe998KEGzNsIY61c9OfOGFZbazfkcP5Pt73tnyNmxvRuETycQIBsKWjtXCCljH3cKo5KG8Sixmjh9s3LwX6GoB2Sx6nyAQmoegxNws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787926221; c=relaxed/simple;
+	bh=ZNKccxZiCzly9I5k80F35B1pc+eR7vQ/qDH/pYuN0m8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ddBrHjFIq0CGK/laJen6gmAqeZt12EGECbPgPGnO8mWSF1nKQqcmyQY8SaORE9I/xlcslUXVlIGJGZdNVDWX2g8TrgcX/XLeTd1DveywSru9JMtq5hye6h09aDArEn0LqvajQpad8qWrW754zyidS9JWXGnNHe24/d2X6fwoGP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=TvOCVadC; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AtnER0Bx"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cbe827e3cb4so1139928a12.3
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 06:59:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787925597; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VarDjnr47hkYDSbcct8xBpSWtl6ZNekKqD9TrSI9rqARzDVxVXNj54WBpOmjVEYnLQ
-         S7RKMBeRetsBEXuoohz0U1RQ3An2TiTQAEctn4RgvEEgjJGtQl7Vx1KQYvvC/lmrJcp8
-         oDaUvm3Mn6L9w0MbyutZuwKUx6Tr9A1PABYHEpv/gOeMaGmU608hgbCJhVtntVy49HJE
-         a/Mg2YgM2I+pQhNAyCG15ZegnJTkuRsTWV8Xyxtb/UJCoIy6ZR/KEwUoEGT1HUAD+c0K
-         Wldrxth1whRZ5ywZrqHAHwcJyQeYkcsEawnIZEYHk7yALVdrrBrbWtEq5H6pgMcfwTIw
-         4rPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2GfMRvhyksSuSYcJwpV/kMHEmDv12BqauazUIu9BuUA=;
-        fh=J1OTgqub8q+HBtjJXz7P2Sd+MLrs37u4BfZZFCtuEfA=;
-        b=bJMYOo3E+5gi5XCD1KOgr3/Yn7yvcUoE9IO/1sWLIz6GRvMLAqM20qu4FQ/7ioxL5J
-         WRgP8V+QJ5412WwYgkwiecFQ49UmFMgQcnLe4TwK5mabbx4U4trsT+gtANNAjEpE4Vpg
-         +6U5bgtHAvCzOtEa8OdDRk50SVBgEeBPcxB/SetwVQF9hWKKz/9qwlQr2CwgCxpPoOTp
-         datLRsR0y5Kraca3cQED+WKTx2JQMwmo4jQyIK+m/c8rZA1p9UrA73Szw0g/Bfv1XI3r
-         jWd9ClpTr/9TtorAcajF31FcW9n5Z3kHdW2YIRZR9zjLqoNMD69G2LDNi+Q4sx7L+VEj
-         W/mA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="TvOCVadC"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-936623c6dd3so148739485a.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:10:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787925597; x=1788530397; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=rowland.harvard.edu; s=google; t=1787926208; x=1788531008; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=2GfMRvhyksSuSYcJwpV/kMHEmDv12BqauazUIu9BuUA=;
-        b=AtnER0Bxly1hJYGTtR8GyEKYZH6vPsORM/+OpfltLCq8OBF+4n0jmIPUVGtw15zRwV
-         iILX+zxOOiN7uxMcBuhcqkS36vjc5YGnZABQ6bMjl4zVJxncaUhypXJhlcWx3z15LOPn
-         YUo1x+pAQqtNRmOJoi+4c5yplNvJY1iwAfpO+rffoWgapXS0J+QeWI9vLys5RMqODo/n
-         bC3F4DN2e+EOn7TeZXIEirFh7HV1H4+F4AiBj2Sfto9L82dEbsJpYUSCnQ7pRe9GGi2Z
-         8b73nHVkgfXKpxZCmPJvO17yMwukwHY+u9OtcXasKCp4HyQOZRNCv5Jy2P6mlRzVOTZM
-         sWWQ==
+        bh=DMTxMAG/rJvYI6GDoxI7NDM2NcdqW0dm+aSGvfT6mdk=;
+        b=TvOCVadC1WTItmA22XmsKcrfeIiy/ML5wGK/co9em10igxF8Yku06eJvoOSCxyfrLM
+         fIZPDzlOkzXWr6E4yojYGEar2yz//3QL4Mp4AKxHagEAGXH1pxkXXaNVgyB8uS3MC96+
+         i1keVpSBwc8qJIrsDzJlmVsdqxnrWCvYHrp5qXZRWDlE1Epweu4GrJvH0h5k3zVW/Wxf
+         lU8YKakaJHNa393oM/EPH9qpc5nHpoy+2igaJ4Exjf65vyi2GYneEQZBuOPj3zolNdBb
+         FwOUHD6H+esaqClg4YssScg5kZassGR2pTAWGWuvWF9pgjZj8JOs9RVqqFRo8tYnIlTg
+         CEzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787925597; x=1788530397;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787926208; x=1788531008;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2GfMRvhyksSuSYcJwpV/kMHEmDv12BqauazUIu9BuUA=;
-        b=cLsnpnhkbbNHwWvX9W51Jyo3vErp/tnOadHCaeHMTgESeV104B0BaCZWVjEFbOaX7a
-         FaLp6wxpKiBVdfnIBFMRaEgD3U0/K5jFedkBDBjijUKPTBVxVW2P5DLGFRsDcsw0lbqE
-         EANVM3/7SdwKTBv5rf4ajUplYYgi3DaQa+iIhxdPhvIZZsrfkdJ5Ir91AtMJM0j16ER/
-         WE7U27ynpU3s+JeMkRe4DGZVgj240lgIiA0jvGM7BMdRP2c8tZHDvEbOCL0c3wvMAxL7
-         jzhXAYA6DSlw9heN1dmVnY/s2De7cd8lrZPBg+8LUUjtsKwrRsY71KrBTprnNMwFoeAq
-         Xsiw==
-X-Gm-Message-State: AFuF++lQFAe29rc/Hnj0csbmg7D/77B/cJJE5bfjzLWq0KKwqO2jsfzl
-	amXhz5MISzwatxQq1IRghF6Q2Dh64Uv7LdmFBkDMmfp0PIDsvdrMQyHSekrgO5fnDvBZrfFJXjo
-	2sjZ2BokaNBoc44pzbFq6oPMu2AFa1yU=
-X-Gm-Gg: AR+sD13qz5pXTA2UHXoEEv5CK8zEZLTu9GU6L/AJ4cEOl9vjIW91cE7vtk07geIcM41
-	AWlBIPQncOBaXykQZTj/K80IpwRUbC7KfrfWt4fLP67ne310BoC7tWHVA50ojHgf/BGlXSXKIGB
-	2Tx3I05v/4KR9wTulcPAV6tHqvNz9aC8H3xVjJq2JqvBHMxFEJMlkRtyTYcI6cWl7CcsNWyBUui
-	SMlnyG0VFr0aL2nbLO40Humt4czaPOdROtaSAAxZXBcFB/Mce+B8iRpNhg8oreU5UQNaVa0OCDO
-	VnFtSc2UyKWJbAxBITquIyRWpeTZpnKl62plfmYi2bjUno8=
-X-Received: by 2002:a17:90b:2f8d:b0:38e:4114:d8c7 with SMTP id
- 98e67ed59e1d1-396d0a3f016mr16289039a91.0.1787925597040; Fri, 28 Aug 2026
- 06:59:57 -0700 (PDT)
+        bh=DMTxMAG/rJvYI6GDoxI7NDM2NcdqW0dm+aSGvfT6mdk=;
+        b=PIFgNNuf3YeVikCMyH4Vs946sEi6KIKgCryuH+iJ5JeTK+sFahbqCOe0zi+ANf7EB/
+         uFw7aJzAnKR3jDWEfc63NqXeXlKEo5QxwUjAUG8XsWMARJ2NBfzGGHWJoZN6b4iIjbqL
+         ANbzog8CdczEgqnw+nNN5DqaL/67fuouu1n3vm5wTM4ScIm2vlFjXs1h/MatbpEFHEhx
+         ycfi3A2ilcOqelLv3XOsjkswmQTvEx1A/M220iCjBkHwvoibKnQrVPObtdUBnyEhZZDp
+         +ETTbKXa3RnjiSnXCtTqSgdWUW01OJJNXMpKU3yKX50foC5PZqD7XkfymBK1X6i3dZBX
+         4Qzg==
+X-Forwarded-Encrypted: i=1; AHgh+RqLi+ciphrvDcOipTT5dhx+15p/HiStrljNev10NHVIoa2X3z5CHpgnymt0OxxsS1vUmG4ZCvQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nQ0LwJgmRE1JBaMLlwGsOUmDJ/H5SO+9RjlRDhRrvnLuwslFMr
+	NsKdBGwmkqNeLQ3PEx+OFprSTwUGlnZwKLNX9LgdA3Rv4iYrG+I8r20BBcMuP/K18w==
+X-Gm-Gg: AR+sD12T+ZfVLCAS0FV0PuGptLmlkO/6kRDGGKcLX+AIeT9wpUzRL3DWiw/Q/E1A3jE
+	uit727nsgD2widnMXYCcQfohQWJ4gL1OBSzKmFRy68/VJqjaktBkRNGe9zayUO7M7hffH1wFKZb
+	HX2fnsUlG6mPo811GtwDvKbmMg/jaAlmmvHsBPH+HoqGWX7tFIctHb7UVQijDBc0u/pVXXpalBU
+	thhntEareIG9V404L5ssj2a4qWZU7pKuuCTFYyYZxDw/y/HI103MCTJ38XeeVcn6gnEoLU7ZDsh
+	Jo0q1MORBb0hCyZapIOCczVmxFKLulBv90X3zOLUEbDZ73/SebCiuUw51DhY2rvGPeHYn89OhuM
+	YQEK6NBIRmCP8TRj/toVZop/9+eo4AWMrmFEiWhvrNlpf+nzmR/mkc5L/fTp3kLD5CubvB1KyB5
+	DrX7TgrIoJkCLGIId1hJzx2/oEF0AaLBXqCLu7QfcNXvsiFoNQVTKT/53I8UKc6vN42+hQ2AlxM
+	5v6bO8=
+X-Received: by 2002:a05:620a:1588:b0:930:9cbc:7121 with SMTP id af79cd13be357-93900131031mr1301468585a.3.1787926205824;
+        Fri, 28 Aug 2026 07:10:05 -0700 (PDT)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90ce4460e0dsm15997766d6.11.2026.08.28.07.10.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 07:10:04 -0700 (PDT)
+Date: Fri, 28 Aug 2026 10:10:01 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Petko Manolov <petkan@nucleusys.com>, linux-usb@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed
+ work on system_dfl_long_wq
+Message-ID: <b6cf44a1-d2b1-443d-8efe-c596ef89cc2a@rowland.harvard.edu>
+References: <20260720100902.155605-1-marco.crivellari@suse.com>
+ <20260720100902.155605-6-marco.crivellari@suse.com>
+ <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
+ <20260825151812.4aJyFUgE@linutronix.de>
+ <31b46916-dd89-4ae9-89b9-9d39e29e8e69@rowland.harvard.edu>
+ <20260828094318.bOajNBno@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260828032922.469449-1-xuziyougm@gmail.com> <0db183d7-3881-4f81-9e04-cd2c13d1dcee@lunn.ch>
-In-Reply-To: <0db183d7-3881-4f81-9e04-cd2c13d1dcee@lunn.ch>
-From: Ziyou Xu <xuziyougm@gmail.com>
-Date: Fri, 28 Aug 2026 21:59:45 +0800
-X-Gm-Features: AcwNN1WIz7kiRjyaUFUv6xWV9lPHFkUCwWjJHmG3pD7abaxNcROmy-pxsGrQvww
-Message-ID: <CAF2gcSUVmn57iSo_Vf08+QWHxAoDRbpuone5MOnMd=4c_GhfGA@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: phy: air_en8811h: restore AN8811HB LED GPIO
- after MCU restart
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	bjorn@mork.no, ericwouds@gmail.com, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260828094318.bOajNBno@linutronix.de>
 
-Right, I'll fold that into v3.
+On Fri, Aug 28, 2026 at 11:43:18AM +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-08-27 12:01:02 [-0400], Alan Stern wrote:
+> > > > These drivers have their own work queues because they are part of the block layer.
+> > > > USB devices can share a device with a block device (storage & UAS) and
+> > > > USB devices have common, per device operations, in particular reset
+> > > > and runtime power management and disconnect handling. Because these operations
+> > > > can be necessary to complete block IO neither they nor anything
+> > > > they depend on can use IO to allocate memory. That is they need to
+> > > > perform any memory allocation with GFP_NOIO or GFP_ATOMIC.
+> > > 
+> > > This is a networking driver. It has nothing to do with storage and UAS.
+> > > It uses USB, yes.
+> > 
+> > Ah, but a composite USB device can have both a networking interface and 
+> > a mass-storage interface.
+> 
+> okay.
+> 
+> > Suppose you have such a device, and suppose the disk attached to its 
+> > mass-storage interface contains a swap partition.  Now suppose the 
+> > device is being reset, and as part of the preparation for that reset the 
+> > networking driver needs to flush its workqueue.  This means waiting 
+> > until the work routines that are already running have completed.
+> 
+> The individual functions are usually independent. But if the USB core
+> would reset the whole device it would reset each function.
+> 
+> > Since it's a general-purpose workqueue, you don't know what those work 
+> > routines are going to do.  One of them might try to allocate memory 
+> > using GFP_KERNEL.  Suppose that in order to satisfy the memory request, 
+> > the kernel decides it needs to write some pages to the swap partition on 
+> > the USB mass-storage interface.  But the mass-storage driver is stuck; 
+> > it can't do anything until the device reset finishes.  Deadlock.
+> 
+> So you are saying, the USB-storage device is in reset and we wait until
+> the networking part finishes its workqueue flush. That flush is stuck
+> behind behind a memory allocation which waits on the storage device. So
+> any URB passed to usb_submit_urb() just waits for the reset to complete?
+> 
+> > That's why USB drivers have to use their own workqueues.
+> 
+> While this does make sense I don't see how this is related to this
+> patch. The pegasus driver uses `system_long_wq'. This is a system wide
+> workqueue_struct and is not limited to USB or this driver.
+> This workqueue is per-CPU meaning if you enqueue the work item on CPU3
+> it will be executed on CPU3. However pegasus uses a delayed work item
+> and the timer can fire on any CPU so even if it is enqueued on CPU3 it
+> could be executed on CPU1.
 
-Andrew Lunn <andrew@lunn.ch> =E4=BA=8E2026=E5=B9=B48=E6=9C=8828=E6=97=A5=E5=
-=91=A8=E4=BA=94 21:09=E5=86=99=E9=81=93=EF=BC=9A
->
-> > @@ -1265,10 +1258,19 @@ static int an8811hb_config_init(struct phy_devi=
-ce *phydev)
-> >
-> >       ret =3D air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
-> >                           AIR_LED_MODE_USER_DEFINE);
-> > -     if (ret < 0)
-> > +     if (ret < 0) {
-> >               phydev_err(phydev, "Failed to initialize leds: %d\n", ret=
-);
-> > +             return ret;
-> > +     }
-> >
-> > -     return ret;
-> > +     /* Restore LED GPIO output enables after MCU initialization. */
-> > +     ret =3D air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-> > +                                       AN8811HB_GPIO_OUTPUT_345,
-> > +                                       AN8811HB_GPIO_OUTPUT_345);
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     return 0;
->
-> That can be squashed down to:
->
->         return ret;
->
->     Andrew
->
-> ---
-> pw-bot: cr
+It doesn't matter what CPU the work item runs on.  Here's the deadlock 
+sequence, in brief:
+
+	USB device reset cannot proceed until network interface's
+	->pre_reset() method returns.
+
+	The ->pre_reset() method cannot return until its call to
+	flush_workqueue() returns.
+
+	flush_workqueue() cannot return until the already executing
+	work item finishes.
+
+	The work item cannot finish until its kmalloc() call returns.
+
+	kmalloc() won't return until the kernel can free up memory by 
+	writing some pages to the swap partition.
+
+	The write to the swap partition cannot take place until the
+	usb_storage/uas driver carries it out.
+
+	usb_storage/uas cannot do anything until the USB device reset
+	is finished.
+
+> Therefore the suggested change system_long_wq -> system_dfl_long_wq
+> should not make a difference here: it is a different workqueue and it is
+> unbound (instead of per-CPU) but given the usage it is unchanged but
+> more obvious. Also its usage recommendations (use this for long running
+> items) is the same.
+> 
+> The plan is remove system_long_wq from the tree.
+
+The point Oliver was making is that the driver shouldn't be using a 
+general-purpose workqueue at all.  Switching from one general-purpose 
+workqueue to another ignores this point; it's not the right thing to do.
+
+Alan Stern
