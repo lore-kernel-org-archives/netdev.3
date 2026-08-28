@@ -1,56 +1,56 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142D63EC80D
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 08:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E573E5A21
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 08:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787906747; cv=none; b=DEY9vkQ9ZRxHSF4SRI6WbTiytDY+sXGqaHhUz2KtlZKdFGYVCdHAllIJceKk4Q/mRkLnPfFNCu5fe6dG6CezY5a9lj0jYAUfeJgtL+kdPJorDBxCMSfuRNQtDVm7asuULODromgcCdBSqH+8QVN8cxcdOBXcIlLyi4ONElKTa/A=
+	t=1787906748; cv=none; b=Bf305gVLs108sPe8fCwXItmlLEALX1oV6Ekph5mXCbxnCMtGR8Tp92nFN6vyliT4eDAl0XNo4Q9qH63HtbFBDM7YtDF/nP/SWvGo91Cyn8RBiPDmjXXMRv/M6E0zNxjxsiRQGKftt9kVw/vjc0IUn3emruEZCgDJ795/ASBcBvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787906747; c=relaxed/simple;
-	bh=YGL+8Ca4jZUObe1okovXlElB9inL2PP2Hl29vDu5III=;
+	s=arc-20240116; t=1787906748; c=relaxed/simple;
+	bh=mKPMeff3ITvX9TBhuc34HK/gU0Pymz6ubyE2WPP1SGQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i9rt1/KMEVogsyrMcfjVEEyb9JMCqEh0A7h3uHXsf3VchSNn+mwx868NRCUCyjD1vxXNkPP6N7KUeEOyaOWx5FMz1wn/1if5uuvOZLyN5rki9hTnZRZEo3uH33Oztd+M+zv3wlfVQKASg/WUv+kSlauTWPBysquYkBNHYy1Gez0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UNMaiVsh; arc=none smtp.client-ip=209.85.222.198
+	 To:Cc:Content-Type; b=BQlxISasQhdt59K2aOOHnhIKTILYMLYxXQ3j17+VVkGtijc/f4AXdHPu8f6lHih3Th/QTyfWQS6w2jrLYqpZYOjI7oGFctlQLT7p9AOPg0kDnA262aLAa95IFGXGT05oBX++ga4dwwOSiZCj+FH4/S0uRPGyX6o+/2N/LSI3Ygg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cae/OTcl; arc=none smtp.client-ip=209.85.219.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UNMaiVsh"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e5e38fbc5so68697985a.2
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:45:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cae/OTcl"
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ef8249f871so6306406d6.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787906743; x=1788511543; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787906745; x=1788511545; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=viywTkSRIcigYeB9qBwDmmT+rt0pzoc2K5Tui7iRFMw=;
-        b=UNMaiVshPJomdxV3KekNtFtOZHjFpg6biziABN/iOV+1+w69XlgQ1sqTxx6debzB/u
-         qrZniJ+lmQtjpGedZ4TKuat5ZbfERwqofw1W8z7dksR0NLH8b4c/J25JRKFgI8S9I8jL
-         qQCYjUOPChScQCLXkWHbtU8FjAkGn3VlCnOUIZ3v1HM85E78U4FzACzbKTq088G+iv3m
-         R0x5x1Qyg7T7VKZZTT/n4r32MHMG7QV71WaFYHWlqdm7X7PTDr+Tp7qVpUUbecTRZ1it
-         RdChtx9QRt3D5iMhiRY83SKdKRoST7PUH82Kngk7b/ybpDhmqekJ6ig6PC7MKUmKfPve
-         kSGQ==
+        bh=JTmkG1mJd7a0w+JixNvK735nzP/GgEQ/B6WOUEIvr1s=;
+        b=Cae/OTclBu41WTqxff8IuWKrZkpAw1oVKyWOFCywnOG9h473nxxmjQDIXYnjUHaGwS
+         fHlCb8WNUVRUFAebzQnu6nCdb0YnnFlLqe31DKoA9seYRppXWbCQo/cxqjkH+WbZHecm
+         s8GoaWeUxcThUAZTA++KKCbogekuqh0xrRtImFt+6QlrJ1TKguWYYyF39RgIp4TQHxrm
+         MU6ubhGjtTRNiWKkT1MJu6pz4GQiQynXkgkmjf7QpObLiiEeLESQTmaLwjLBUiRxvp81
+         CKrHJi7aB1C9pJWhdvwjGaADNaXzYL21I0o+vXEkJrRPFAUizp7iOk7Gpj5MsUpBKzcj
+         VlLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787906743; x=1788511543;
+        d=1e100.net; s=20251104; t=1787906745; x=1788511545;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=viywTkSRIcigYeB9qBwDmmT+rt0pzoc2K5Tui7iRFMw=;
-        b=pNvJKc+vyK6ccIpUwGuP5/WhWhkGQ/iRDjs21QlcZKpshIQNaRd1sIhFNMJZNH3Gyh
-         fif4r3U/NZnt9dmETuET2BlD0uJGX/QOnZXpl5p1kwIeKtHC2o5nbmsbmly9r2vzbfme
-         MsX4NQO+fTuDEL4DUE49w11oTO72In/v2DNVepVmxIosZklrwMIIeJ9gH3j6IcyFJbf5
-         wM/6AfU+EcIrXq/1e0pzRfJrYJkoZJj1P94j7+zt4l7b15OH6HYCmQPSQgGKb00B2I2o
-         jT9CzEI2i3r7ZFOyUQQ8MQ0BX5YGhv6iTYIyFoDkAEvEngX8lYXRMJ3S7XsT2yMcWFoq
-         7RTA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqi9k6a4HMZkDHSpacfEtwAvT0uwUAooyP1epKrpY5BmoNdrs7+ZD1VB5HMvPvsPr8p3e6hnEk=@vger.kernel.org
-X-Gm-Message-State: AFuF++myB/oDzlTM1qmT9Eiut9glxJ45mZ47EB5MzfXL3mLnII8qH072
-	7FG4gjWFum4XwtFUKXekz0ednU1L6ghN4SQBWJbGLh1HTmA1rVHUGlk/yF65NHB4uVqkJDfg0fq
-	PbQdOGXX9oEVr1Q==
-X-Received: from qkcax15-n2.prod.google.com ([2002:a05:620a:6e4f:20b0:92e:535f:a6b1])
+        bh=JTmkG1mJd7a0w+JixNvK735nzP/GgEQ/B6WOUEIvr1s=;
+        b=LFyLA6obLJrzkXLEjWahm5Y/GT9l7xmwUFwUHWDKDoFyLRUIK1I+ZVxKT9YrmCY+cQ
+         eSyETWdI5aZ2nwnr63WUzvXeA63FcIV3A57UkS/MkPE8oJtg40Tw7PRjcwEyZnUacWW2
+         3uX4+W+eTo2wl1z+Bu0VLTiL8lVfnEv85+QH3FtlWt5s8lJZlmSNOn2z+pbEnHMXt09R
+         8CQCrkqm+vVBUkmi+FTlCdS0M3MAcLCxu+6vKNJ3d+9nztrentqYz/28Lxz5vtE54n7o
+         80uBu7Hjah8mdzNc4ty10aJoAHKHV+WlgS/XDgO9MmZmg5GWtsXa9Qcp7e8OixJuJUvG
+         8gsw==
+X-Forwarded-Encrypted: i=1; AHgh+RrJpKPyjrqbCm73vEqw3IQ+0894rczCH/yQFPtYoPr8OWeIU+qavoy/bs3vkjIs/3tfkz9zC9Y=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLUkTy04RAfqyELQmvtDJ/tYZosQF1yTt63FiyXrt/EZ3wBhRl
+	a/pQo0tsCZ1EQuAjNze1mzRy42ONsYkldAMo9L9v2kcjuIRyKS+iDC5gOJ9yLNNyOtmgOR62RzW
+	PGfEWZEk4kBLefw==
+X-Received: from qvmt3.prod.google.com ([2002:a0c:e583:0:b0:907:5aad:bfd3])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:27d4:b0:930:adac:1e99 with SMTP id af79cd13be357-93913988103mr557075385a.38.1787906743280;
- Fri, 28 Aug 2026 01:45:43 -0700 (PDT)
-Date: Fri, 28 Aug 2026 08:45:29 +0000
+ 2002:a05:6214:2a86:b0:90c:cce2:afcb with SMTP id 6a1803df08f44-90ce0f1d77bmr64393186d6.23.1787906744756;
+ Fri, 28 Aug 2026 01:45:44 -0700 (PDT)
+Date: Fri, 28 Aug 2026 08:45:30 +0000
 In-Reply-To: <20260828084531.1826790-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260828084531.1826790-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260828084531.1826790-4-edumazet@google.com>
-Subject: [PATCH v2 net 3/5] ipv6: mcast: fix delay calculation in igmp6_join_group()
+Message-ID: <20260828084531.1826790-5-edumazet@google.com>
+Subject: [PATCH v2 net 4/5] ipv6: mcast: use rcu_assign_pointer() for __rcu
+ list updates
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -70,71 +71,101 @@ Cc: Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>, Taehee Yoo <ap420073@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When joining a multicast group, if a report work is already pending
-(e.g. scheduled by a query or a previous join), igmp6_join_group()
-cancels the delayed work and recalculates the delay:
+Several places in net/ipv6/mcast.c update RCU-protected lists
+(np->ipv6_mc_list, idev->mc_list, idev->mc_tomb) using direct pointer
+assignments instead of rcu_assign_pointer():
 
-	if (cancel_delayed_work(&ma->mca_work)) {
-		refcount_dec(&ma->mca_refcnt);
-		delay = ma->mca_work.timer.expires - jiffies;
-	}
+1. In __ipv6_dev_mc_dec(), unlinking a group from idev->mc_list did:
+       *map = ma->next;
+   without rcu_assign_pointer() while concurrent readers traverse
+   idev->mc_list locklessly under rcu_read_lock().
+2. In ipv6_sock_mc_drop() and __ipv6_sock_mc_close(), unlinking a group
+   from np->ipv6_mc_list directly assigned *lnk = mc_lst->next and
+   np->ipv6_mc_list = mc_lst->next without rcu_assign_pointer(), racing
+   with lockless readers in inet6_mc_check().
+3. In __ipv6_sock_mc_join(), mc_lst->next was initialized to
+   np->ipv6_mc_list via raw assignment before publishing mc_lst.
+4. In mld_del_delrec() and __ipv6_dev_mc_inc(), __rcu source pointers
+   passed into rcu_assign_pointer() lacked explicit dereference helpers.
 
-Unlike igmp6_group_queried(), igmp6_join_group() did not check
-if delay >= interval. This leads to two issues:
+Fix these by consistently using rcu_assign_pointer() along with
+mc_dereference() / sock_dereference().
 
-1. If the timer has already expired (timer.expires <= jiffies), the
-   stale expiry is reused by mod_delayed_work(), causing the second
-   unsolicited report to fire on the very next tick without a
-   randomized delay.
-2. If the timer was originally armed by a query with a large
-   maximum response delay, delay could exceed
-   unsolicited_report_interval(ma->idev).
-
-Fix this by initializing delay to unsolicited_report_interval(ma->idev)
-and re-randomizing it with get_random_u32_below(interval) when
-delay >= interval, mirroring the logic in igmp6_group_queried().
-
-Fixes: 2d9a93b4902b ("mld: convert from timer to delayed work")
+Fixes: 456b61bca8ee ("ipv6: mcast: RCU conversion")
+Fixes: 88e2ca308094 ("mld: convert ifmcaddr6 to RCU")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Cc: Taehee Yoo <ap420073@gmail.com>
 ---
-v2: refined the changelog
-
- net/ipv6/mcast.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv6/mcast.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 66f5858e5fea68e27da1f857b5596808632618a3..4423b90dc9abffff9661da22caa4b9e2f618def7 100644
+index 4423b90dc9abffff9661da22caa4b9e2f618def7..2290457eb8d3dd7a8d19fa9bf19f97160b7d2492 100644
 --- a/net/ipv6/mcast.c
 +++ b/net/ipv6/mcast.c
-@@ -2639,7 +2639,7 @@ static void ip6_mc_clear_src(struct ifmcaddr6 *pmc)
- 
- static void igmp6_join_group(struct ifmcaddr6 *ma)
- {
--	unsigned long delay;
-+	unsigned long delay, interval;
- 
- 	mc_assert_locked(ma->idev);
- 
-@@ -2648,13 +2648,17 @@ static void igmp6_join_group(struct ifmcaddr6 *ma)
- 
- 	igmp6_send(&ma->mca_addr, ma->idev->dev, ICMPV6_MGM_REPORT);
- 
--	delay = get_random_u32_below(unsolicited_report_interval(ma->idev));
-+	interval = unsolicited_report_interval(ma->idev);
-+	delay = interval;
- 
- 	if (cancel_delayed_work(&ma->mca_work)) {
- 		refcount_dec(&ma->mca_refcnt);
- 		delay = ma->mca_work.timer.expires - jiffies;
+@@ -240,7 +240,8 @@ static int __ipv6_sock_mc_join(struct sock *sk, int ifindex,
+ 		return err;
  	}
  
-+	if (delay >= interval)
-+		delay = get_random_u32_below(interval);
-+
- 	if (!mod_delayed_work(mld_wq, &ma->mca_work, delay))
- 		refcount_inc(&ma->mca_refcnt);
- 	WRITE_ONCE(ma->mca_flags, ma->mca_flags |
+-	mc_lst->next = np->ipv6_mc_list;
++	rcu_assign_pointer(mc_lst->next,
++			   sock_dereference(np->ipv6_mc_list, sk));
+ 	rcu_assign_pointer(np->ipv6_mc_list, mc_lst);
+ 
+ 	return 0;
+@@ -300,7 +301,8 @@ int ipv6_sock_mc_drop(struct sock *sk, int ifindex, const struct in6_addr *addr)
+ 	      lnk = &mc_lst->next) {
+ 		if ((ifindex == 0 || mc_lst->ifindex == ifindex) &&
+ 		    ipv6_addr_equal(&mc_lst->addr, addr)) {
+-			*lnk = mc_lst->next;
++			rcu_assign_pointer(*lnk,
++					   sock_dereference(mc_lst->next, sk));
+ 			__ipv6_sock_mc_drop(sk, mc_lst);
+ 			return 0;
+ 		}
+@@ -333,7 +335,8 @@ void __ipv6_sock_mc_close(struct sock *sk)
+ 	struct ipv6_mc_socklist *mc_lst;
+ 
+ 	while ((mc_lst = sock_dereference(np->ipv6_mc_list, sk)) != NULL) {
+-		np->ipv6_mc_list = mc_lst->next;
++		rcu_assign_pointer(np->ipv6_mc_list,
++				   sock_dereference(mc_lst->next, sk));
+ 		__ipv6_sock_mc_drop(sk, mc_lst);
+ 	}
+ }
+@@ -798,9 +801,11 @@ static void mld_del_delrec(struct inet6_dev *idev, struct ifmcaddr6 *im)
+ 	if (!pmc)
+ 		return;
+ 	if (pmc_prev)
+-		rcu_assign_pointer(pmc_prev->next, pmc->next);
++		rcu_assign_pointer(pmc_prev->next,
++				   mc_dereference(pmc->next, idev));
+ 	else
+-		rcu_assign_pointer(idev->mc_tomb, pmc->next);
++		rcu_assign_pointer(idev->mc_tomb,
++				   mc_dereference(pmc->next, idev));
+ 
+ 	im->idev = pmc->idev;
+ 	if (im->mca_sfmode == MCAST_INCLUDE) {
+@@ -980,7 +985,7 @@ static int __ipv6_dev_mc_inc(struct net_device *dev,
+ 		return -ENOMEM;
+ 	}
+ 
+-	rcu_assign_pointer(mc->next, idev->mc_list);
++	rcu_assign_pointer(mc->next, mc_dereference(idev->mc_list, idev));
+ 	rcu_assign_pointer(idev->mc_list, mc);
+ 
+ 	mld_del_delrec(idev, mc);
+@@ -1014,7 +1019,8 @@ int __ipv6_dev_mc_dec(struct inet6_dev *idev, const struct in6_addr *addr)
+ 
+ 			WRITE_ONCE(ma->mca_users, new_users);
+ 			if (new_users == 0) {
+-				*map = ma->next;
++				rcu_assign_pointer(*map,
++						   mc_dereference(ma->next, idev));
+ 
+ 				igmp6_group_dropped(ma);
+ 				inet6_ifmcaddr_notify(idev->dev, ma,
 -- 
 2.55.0.897.gb25b4bd76c-goog
 
