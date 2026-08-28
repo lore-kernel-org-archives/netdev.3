@@ -1,239 +1,118 @@
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F0D274641
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 00:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB23D175A5;
+	Fri, 28 Aug 2026 00:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787875254; cv=none; b=mClz+5Ma8m/aBSeVZbutokk6f7+MqhQCDzjd2+O7QOH9Rbw9zj273svxYg0dUzPvHiiZ/gZLFpnw3hJKFaPabJOpXB+uwEcOCHkGiTZX21iYu7HGNgJPYvdEiMnrzYeD4+WUZpaFQjS+PAP2zuKsqkVrH9CHqbhQzwVdF9Jr6RA=
+	t=1787875960; cv=none; b=iBTkXJppEnvcA4143KJ4VQ+bS7xQPelUqQOPkJtUkOPNXj0ODuf7d29+NDUKyNpcezhOwFtoloch4gmmD9GmEuKYQM36Av34mzBNHmcI7/gLy6aL66p4XI3xAnkc29wQYn5636O8qFwhVjGnnMqR1Xvoga51bt2mDJnWnsr5I+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787875254; c=relaxed/simple;
-	bh=lO9Np7BPp6MNp7UnCC2OxKTEdPHS23RozvIMiDcpeTA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=e1Xj/iihu+InonG/Fu+UDq+7XvZeM2sVcqhwRDDk49DCEB/gK4vwUamLgPqj9ehSAv3UK1UguPpBPM9riBNjsnlvv490QtJmMFy3ndyG/Vq4cR5oHVKFKlZJlWRcrLzOR8peO5NhxOh6dT3RapJZNIPNwgEAI/GNelmo/4f3QiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=IULoWJKx; arc=none smtp.client-ip=209.85.216.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="IULoWJKx"
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-38e347638adso359657a91.0
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:00:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787875253; x=1788480053;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=bzZTSV35j72styd1HtGyHfvoHjvWMcX5XdSbil1cPpE=;
-        b=OqJSp1g/d35yDtJNyPneOIIysn+Tp5YXoyfZTJnRuz4c4kXIzSKMr15PqjfbI8g4Kz
-         ZzAnpMo3bTRRUz+xzxnRNxTqU1a/LT73A91ouhZ7vniciMzMUKp1z3b8A/cXlAb2G2qR
-         H1LTVrTisbCwkM6bF4KeKSx2tsuFKIW7PKeeAeByZbugGTIsptjh+WDM3gecIaZB90WO
-         JnxO+TLmGN+npMSpXiDv10V29SE4uQpsNoioilt3Po1Xn51Fhn9e96hB/x6MLjPmPC8U
-         6rjQbef3YzC0B7/hIpg7F8+sx0MNv5JslCEvRvpUDa5U+20guYnKSpeAC6SsSgbHL3U7
-         6CJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpsiWsbJ/GOxbKCgurUYz1ZNSgDKRZ08KwMye6pLhW/Jmhmo/YUKKjtM26UstTvWoq9catySI8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lPhwxBi/YQMiBQjcljS89jeFEsDiRgQ3r+iwzm+qExpcUI9Z8N
-	zoOrGZyyh9kWEX4+9jQ8FYEaUdjV7TQDfHJW6KViCvMacFR7xzrx7oTSHsK1f2mpqVcM55kKyAg
-	wZDcVcg/ok3JnvmbUnHf52yRL0GwfXuue2+y9oetxni7rD/ARmQ3YtO4IAKjVYi//5Mfr/Qx899
-	fU6ZqHpqRUOyxnBRMMkK2275PifbLPdZsrsPBjMGozWjWqsX+gVAosklGXJU7W06/EOPYnrCXpI
-	jaSKO+gu9w=
-X-Gm-Gg: AR+sD10c97jA52h3bQ06/vNlpjVmzCRx+Gv41N4j3r0bB/Mv80zUOdgBGjksKjkAkdq
-	lCGuCMroDlb7nyOZoTOGLflxZoFyLTWoW5rAJPlf40uXYjZuU4qR0OWjEWLA/oE32YVnFg7/sdV
-	fD+kVRdo6S6Gob3QLwSBioViOseXu+mdgiXLe2LM3Q3JmZCwrIT9PUaUAcIoBVPtP/0W1w0dtfw
-	E9Uxs0r8nA+xbiAgdoMQeKt54sOCk3tAu/EUULCRsuD0nS99TfrEbhhEQP0zD3xvPTSJFAoDvhm
-	au2npnOFxFm0v1NxsSh0Z6CjfRmF9LB8TbQ7ys3W3Xl8DMTURf560DJwRTDtNdd/4m58JclJH5P
-	H1JGKdxeSZWKofgtC7FKQlWqygYEakIahxCnpHCaHc7dxq3f6x6hS/Z5BO6BBlPj6ra/i74uS42
-	uNiSt69PmU/yaXLhjKH969XY+1LX1SCa5Nx5E=
-X-Received: by 2002:a17:90a:dfd0:b0:38e:b400:a860 with SMTP id 98e67ed59e1d1-396d0fccf78mr5850439a91.13.1787875245651;
-        Thu, 27 Aug 2026 17:00:45 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-396dda4044bsm31501a91.1.2026.08.27.17.00.44
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Aug 2026 17:00:45 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c1f74261f67so37794366b.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 17:00:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787875243; x=1788480043; darn=vger.kernel.org;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bzZTSV35j72styd1HtGyHfvoHjvWMcX5XdSbil1cPpE=;
-        b=IULoWJKxqRuseSJbpJRSNl3N28Q5iPxbS3/zil4cFWpwJRRBhnAAvLko9gdn4x2Ebq
-         o11IrshJ28Wk6alwQmOYbUJdNyDZ8gSA0go+R5mO1Qq0NRf4A98SVT0DQJckHWSs5tPX
-         /+g02yTjYPw72XrQTcAFrQDhNh1SCHWW6//hE=
-X-Forwarded-Encrypted: i=1; AHgh+RptgIuYeLF4m4okBWxdwW+f6K+IeEqN+eOy7x/UjjHXE2951xB3Y7iHFgHy8VMo9iZ6FCa03dk=@vger.kernel.org
-X-Received: by 2002:a17:907:3e1a:b0:c20:d90b:2ccf with SMTP id a640c23a62f3a-c2556c14f17mr145848266b.7.1787875243507;
-        Thu, 27 Aug 2026 17:00:43 -0700 (PDT)
-X-Received: by 2002:a17:907:3e1a:b0:c20:d90b:2ccf with SMTP id
- a640c23a62f3a-c2556c14f17mr145845066b.7.1787875243089; Thu, 27 Aug 2026
- 17:00:43 -0700 (PDT)
+	s=arc-20240116; t=1787875960; c=relaxed/simple;
+	bh=2hHQDq8+RfNXkFmSZpp1GMkJiiuqB2/Xsh3zOp1xYcU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ozp4tWypOPaef6N/DdImk6zQj6Jr6qwdV99J5XYfD+9lfXZxH40hsv9tPoNQcoslaKzEvKodJgpzWIRpLgLrPcD8eEeiQzkZ53kIfdHHA28sHVImRQHE3w0ZuSxhcfv0EkceI6ygGM+aXaHgGqQpQyR2TcNY3mzLGBKKGX38Vio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 5904E20B7167; Thu, 27 Aug 2026 17:12:05 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5904E20B7167
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org,
+	shirazsaleem@microsoft.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net: mana: Clear RDMA teardown and suspend state in mana_rdma_probe()
+Date: Thu, 27 Aug 2026 17:12:02 -0700
+Message-ID: <20260828001202.2110938-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827185700.2157164-1-joe@dama.to> <CACKFLikJiCdjej4ezF=U16Leef3oAjSZGQAyetRnF=nLRvUfZA@mail.gmail.com>
- <apDLEbEu1PLTGU+f@devvm20253.cco0.facebook.com>
-In-Reply-To: <apDLEbEu1PLTGU+f@devvm20253.cco0.facebook.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Thu, 27 Aug 2026 17:00:29 -0700
-X-Gm-Features: AcwNN1WFRgpuBAtVvWtNMG0S--jmfHrMpARn-HAZdrm0Q-QQTiZvklwBN73cxkY
-Message-ID: <CACKFLinQHs80MQbn8o8Fw3Qg=1DJ+7ZMevPkDzxnDr+mNX=SfQ@mail.gmail.com>
-Subject: Re: [PATCH net v3] bnxt_en: Bound SW TPA IDs to prevent crashes
-To: Joe Damato <joe@dama.to>, Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Colin Winegarden <colin.winegarden@broadcom.com>, 
-	Rukhsana Ansari <rukhsana.ansari@broadcom.com>, 
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, horms@kernel.org, 
-	linux-kernel@vger.kernel.org, raphaelcf@meta.com, stable@vger.kernel.org, 
-	llvm@lists.linux.dev
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000ce3663065a10247a"
+Content-Transfer-Encoding: 8bit
 
---000000000000ce3663065a10247a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+mana_rdma_remove() sets gd->rdma_teardown to stop
+mana_rdma_service_handle() from acting on servicing events, but nothing
+ever clears it. A hardware service reset (GDMA_EQE_HWC_RESET_REQUEST)
+goes through mana_gd_suspend() -> mana_rdma_remove() and mana_gd_resume()
+-> mana_rdma_probe(), so from the first reset onwards every
+GDMA_EQE_HWC_SOC_SERVICE event returns early and RDMA suspend/resume
+servicing is silently dropped for the life of the device.
 
-On Thu, Aug 27, 2026 at 4:41=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
->
-> On Thu, Aug 27, 2026 at 04:07:16PM -0700, Michael Chan wrote:
-> > On Thu, Aug 27, 2026 at 11:57=E2=80=AFAM Joe Damato <joe@dama.to> wrote=
-:
-> >
-> > > @@ -3831,6 +3834,7 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
-> > >         int i, rc;
-> > >
-> > >         bp->max_tpa =3D MAX_TPA;
-> > > +       bp->max_tpa_roundup_size =3D MAX_TPA;
-> >
-> > This is strictly not needed.  If we return early below, it means the
-> > chip does not support TPA at all.  We skip allocating the TPA array
-> > for every ring, so it really makes no difference.
-> >
-> > BNXT_SUPPORTS_TPA() will be false if we return early.  LRO and HW_GRO
-> > will not be supported.  So I would say it's a false positive from
-> > Sashiko.  Thanks.
->
-> Sorry, I should have been more explicit in my last message: is it worth a
-> respin to remove this? Unless I am misunderstanding something, it's harml=
-ess
-> and while not necessary, might be more clear for a human reader?
->
+gd->is_suspended has the same problem: it is set when servicing removes
+the adev and is cleared only by a matching resume. A reset while RDMA is
+suspended re-adds the adev but leaves is_suspended set, so a later resume
+event calls add_adev() on top of a live gd->adev and leaks it. This is
+currently masked by the rdma_teardown bug.
 
-Yes, the extra line is harmless.  But I think it will further confuse
-the reader (or AI) into thinking that TPA is supported when we return
-early.  I slightly prefer not adding this line.  If you end up
-re-spinning, maybe add an extra comment explaining that TPA is not
-supported when we return early?  Thanks.
+Clear both in mana_rdma_probe(). is_suspended is otherwise only touched
+by mana_rdma_service_handle() on the ordered service workqueue, so clear
+it while rdma_teardown still gates that handler and re-open the gate with
+smp_store_release(), paired with smp_load_acquire() in the handler.
 
---000000000000ce3663065a10247a
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Fixes: 505cc26bcae0 ("net: mana: Add support for auxiliary device servicing events")
+Signed-off-by: Long Li <longli@microsoft.com>
+---
+Changes in v2:
+- No functional change; the diff is identical to v1, rebased on net/main.
+- Target the net tree explicitly in the subject prefix; v1 omitted it and
+  the netdev CI guessed net-next, where the Fixes: tag is not evaluated.
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCCznDVz
-6rTou6DDWpgRxfPvHnhY7QE2devDi752Wec02TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MjgwMDAwNDNaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCNN9xPyzxF1/waeRZiJll7AIattZxG+W7RGI1pZCIg
-Tk0Ivk3+Nxo0XPZQLVkMDqQM7RQkR7LcJsMIV27ydzAtd7lZZtCGngRyQd/nJFy7CQgNcjaftPTv
-uqnTiMjxFrUqERJ4migwYrp6mP2ZYvLhmqVfmsnHxmi3V1hqckS3CmfLd2IxhSV9BCG7nHhnDL7A
-Gr4/NHJG2GeX57bj4hzH106E9IAauH6pelfmejC7S0ytaaaaklVUZ3LMUjMUmJFY75jiXYGsQ4lQ
-jJ+OCi6r6i3Lu77H1SF0O1r5nieauBRC6cVw6ApZJHYmHIYMHV0S/miloGVYKr2JMNKB9ft/
---000000000000ce3663065a10247a--
+v1: https://lore.kernel.org/all/20260826235940.1869565-1-longli@microsoft.com/
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 7a1ac853e3abcd28c4a1e5c6987ec631a18ad840..56f426da728647e39f4c4ffa9c66123436297ac1 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3983,7 +3983,8 @@ static void mana_rdma_service_handle(struct work_struct *work)
+ 	struct device *dev = gd->gdma_context->dev;
+ 	int ret;
+ 
+-	if (READ_ONCE(gd->rdma_teardown))
++	/* Pairs with the smp_store_release() in mana_rdma_probe(). */
++	if (smp_load_acquire(&gd->rdma_teardown))
+ 		goto out;
+ 
+ 	switch (serv_work->event) {
+@@ -4279,6 +4280,17 @@ int mana_rdma_probe(struct gdma_dev *gd)
+ 	if (err)
+ 		return err;
+ 
++	/* Clear the state left by a previous mana_rdma_remove() so servicing
++	 * events are handled again after a reset cycle.
++	 */
++	gd->is_suspended = false;
++
++	/* Publish is_suspended before re-opening the gate, so the handler
++	 * cannot act on a stale value.  Pairs with the smp_load_acquire()
++	 * in mana_rdma_service_handle().
++	 */
++	smp_store_release(&gd->rdma_teardown, false);
++
+ 	err = add_adev(gd, "rdma");
+ 	if (err)
+ 		mana_gd_deregister_device(gd);
+-- 
+2.43.0
+
