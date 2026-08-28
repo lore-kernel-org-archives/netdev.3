@@ -1,203 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6814E3AA1BF;
-	Fri, 28 Aug 2026 07:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D53C3BE146
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787901606; cv=none; b=GCLcC0/By2BMLEIP2p2RMLSGyleIxn4HEmKOUiuxm1riGXn6ssw5a4tfZKyrvwXDId7yXj1BkesEYqagtkJxfGc887ifoKjKFrllUjNBG8/Gn0A8JXcG0boD1NxcZpqs4e76WExn2b3BD3DaG/9QjveTpyfBbANZw8zg/1OAteU=
+	t=1787901968; cv=none; b=uI/AU7VXut6jFJTB2PSNOEx8dn4ZkwiMfrhktS+85haQpt53ljpTKDBiOaoxFX7OJQBqeqxPgM036OzdB+r18APRUgN9BvcAy4Ts2D8WAxX8S/qkAe4hH4GnDxpU6QWeA0I2p/qeBZUzcR3o0AYao2UvNWLO/RQG4fPITD72b6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787901606; c=relaxed/simple;
-	bh=bPXaGDBjNtHLplF2+slqxQYhJz2XNu62j7X+6nnmwG8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sYyS/08wbRo00ONpYokS7YsOlAnmBtUcAlsRG7ESk7OEbiV6+s4IOrgbXmYZrMMWk42W+W118Qh6OEP0ZR+R6iGbehs+VXu1kfiV+xSAsOrK0zmf0P2hjlsw6XerGoogzOvLDesXd6p6lWg1Fm4kDsLf2U8W9qyaI7q+HfYWQnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSmQctkO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787901968; c=relaxed/simple;
+	bh=pjp4l55TcSvtQ0qk1M8HaIkpbfVrhCBR046DcCeU/U4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=W7ax24N8IamZJDbr3xCndeiM6ejmJbuodlTvSCTpUwUQs8Bn4Tx82rYEFmOqfbvrFAHWlUXi6ghoHW9Z/Mg9mxeaQVQs1L0lPCAg8sQfCOEi5L1DLO/U9AUdWaCTHX9IfBJJvuwbqMizPT/7zqJLfcINRMRIc9p0rYiWeUG91YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=I+SYkX0B; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSmQctkO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DC193C2BCC7;
-	Fri, 28 Aug 2026 07:20:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787901605;
-	bh=bPXaGDBjNtHLplF2+slqxQYhJz2XNu62j7X+6nnmwG8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=RSmQctkOzX0fgRf08pFWCXTjqc6cPyHz199VXMIJwqXy06sE0ZwgzRAAFVXDoRaXx
-	 e/S/52CrsfHoAiKftQhAx1RamZ8iOo1WzSXlAedRvjARKAhezopDKngmxJPzdfdyAE
-	 dWF+Z4WMrEUcKxgNboWNYqjkUZDCb/nnCF10YDs3pVxnhEHpn69mPODXDE6+cFstkE
-	 bQzCB03tlmBROeuLcMBbTaj5G/Fgr7nBINOKlWU/DV6iB1ZHnyHsyW/yRbfddkkUaj
-	 UFRvRpMsBVoWcTfOt60oeLMkPj7n+dbiJJulpQZFhlD1Yin3rZ3ArJIEpceXvxA0J1
-	 Mx9Mr0SDge5bw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7659C61DBD;
-	Fri, 28 Aug 2026 07:20:05 +0000 (UTC)
-From: Johnathan Browall via B4 Relay <devnull+johnathan.browall.topgolf.com@kernel.org>
-Date: Fri, 28 Aug 2026 09:20:04 +0200
-Subject: [PATCH net v2] bnxt_en: avoid redundant RX mask updates in UC
- overflow state
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="I+SYkX0B"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c255acff671so67262466b.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 00:26:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1787901964; x=1788506764; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/zT7X/XiN8cWELBs01ki64OmNK2wItsswFcyj5x5QOQ=;
+        b=I+SYkX0BBTu0luCT2xd+fEbQw66drIePy8DC415z35QxHhV3ItAx7fWIzpUIli06GL
+         euChHQtGcW1+M/8hEGGzbfOqdhGbr/wZ6Zj+igukZS0w0XZOlnXA3Kaj20S2/nImHVe1
+         idfy27Wg1LXZFAOXnnsGuiOsyO9PU6JxdgfCqTyFlBCyW5BnIq5ql7JJDK6IkHzTEcF+
+         Y1SbRAe2ot7BwRD747CRHxX389f+t4X6JJf5U1MyrfkZviEIy9lRX7zlA9ZgKlgQJQpr
+         2GJ8cTrrbCixjbUhENtP8uWmqL/VoQp37ujMnbodA9ZEK0nIyqdRw83Nwtp2CR9vttma
+         ldmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787901964; x=1788506764;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/zT7X/XiN8cWELBs01ki64OmNK2wItsswFcyj5x5QOQ=;
+        b=H9yn4mj4kxxlZLlTi9UEockeQMa/uCnemR7tknp8KJkJfAHTHDy3WT/h+J/mljd1ax
+         gxcrJCzC4PZ6c9OthjyOTbUhukVmI0c4YaqWNOGzJGSsZvpuUD2Cf538uhm6IWp5rYBt
+         VAYKlB8uzugzIA7YWzW31mXFqebSSoXn/hc8+2bB4UcutaFruMRSLYzikx7s6dgZBVVF
+         N5RZPyckELox/+lgSsIyt29Ut5uGBaNBFfwWhfe71b2rb1pxAeID8nP1T+t97TSMrF34
+         n4W+NNZgi1fbpSG3tME5VJ/HL7vN3Vm8GgnNVz8+j1Xu4qF9wU8YKvx8xMtauKd0ZN+7
+         UfNg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqa4JvmuViUtrG7MbbKbBcPvkV9w5G6mQH/CJci2EXiAsG7+FHbE92POQbM88u/il6yzJJc/J0=@vger.kernel.org
+X-Gm-Message-State: AFuF++keTOsH0gfXUlUDW0eCw9dkcwvLsB+GmO1ZDz7eAl49uP0HYBir
+	IQM24fbLxKoRsZy6V5fK8q3sARyC/sQclyk/XXBrqXkvDQre/W+5Sw8HrToshpARIjb3XYTlR+w
+	zRoMP/480rQ==
+X-Gm-Gg: AR+sD11YZTN/UpMXi1SljI+EKkWfDdouqa4yJ6iEnf2g19/lGOt/r9evVb/1eonakFP
+	TmYS++/uxkVDsCnGOSH1SmiUZNzIAT9oS59zc2yleiVqbNhuVk/KDJgA8xaT0wwZFRKVk5avvcT
+	9TNSXZYpt3k2CGop7yq8gs1meUzLzd/OCpXO/Q9Vo2BWPujRGkmWBHR7BRataar8RkLyjvFJfnn
+	SufzUwC+hBey2dd2Pk4TTuDPYyZHPbh4ENxa4vYKPkJlIIhZCkT/VqN6fKCf5IjjkmCNjALmsJB
+	b/6f5/yNoQn9GYc7tbbJYDWrw/ZftO0UYnU7VPiC5mof2GtRsowOznCaTLs8akWO1xHd5B/hUf+
+	d7JMyXzIUyOS9FNHu/l8wA0rlhioHVKgoEr+lhbBmaNOnuMQyIzGJ+lKnwAAyZLTfNLqw2OvK0C
+	Orkmt/kQA63IvBhEyp+eYqJ+wtNh4EoctZMGz6rw2Tp1B9dwbdL63znzLYGzdzQc83hxa+iJ4wA
+	n6AKx6fPEMAUJbRR5hh2rrrqCY6PiyH8A==
+X-Received: by 2002:a17:907:c08c:b0:c1c:3b06:ed03 with SMTP id a640c23a62f3a-c2557423bfemr308843566b.23.1787901964423;
+        Fri, 28 Aug 2026 00:26:04 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee09f4dsm50367266b.6.2026.08.28.00.26.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Aug 2026 00:26:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260828-bnxt-uc-overflow-v2-1-faddc16b0ea0@topgolf.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WNyxKCIBSGX8U562iUjKhV79G4CDwojYEDSDYO7
- x5au5b/9VvAo9Po4VIs4DBqr63Jgu4KkP3ddEh0mzXQkrKSU0aEmQOZJLERnRrsi6iDOPKcUCY
- E5NnoUOl5u7yBwQDN1/STeKAM69la67UP1r03cKy28o9x+mfEilRE0bKtOWe1wvM12LGzg9pL+
- 4QmpfQBLS7WuMkAAAA=
-X-Change-ID: 20260826-bnxt-uc-overflow-f3b5882626bb
-To: Michael Chan <michael.chan@broadcom.com>, 
- Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Pontus_H=C3=A5llstedt?= <pontus.hallstedt@topgolf.com>, 
- Johnathan Browall <johnathan.browall@topgolf.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787901604; l=6188;
- i=johnathan.browall@topgolf.com; s=20260826; h=from:subject:message-id;
- bh=qoOM3hdhVbw91pW/wNxs7uEg1sZi5YWQl5/bh0WuJk8=;
- b=K4DRdM9Zda0czMudUWEnNRU1fUXHX27PYMLtDmiyHGqSIYR2gF/VfJtfXXh9aJ5aPRpuvXzrP
- CSPB4SNEqKWBsP99AgxBZkalUolZXj1B/vjXnL9VjG+OsSRWDY4krHE
-X-Developer-Key: i=johnathan.browall@topgolf.com; a=ed25519;
- pk=w6Hvfd81SFSs3dF3Kpe2Y17SpDtiKU3eXu0RdWOCnZk=
-X-Endpoint-Received: by B4 Relay for johnathan.browall@topgolf.com/20260826
- with auth_id=976
-X-Original-From: Johnathan Browall <johnathan.browall@topgolf.com>
-Reply-To: johnathan.browall@topgolf.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 28 Aug 2026 09:26:03 +0200
+Message-Id: <DL0ECN3CA1GR.3P0BIK580UYDV@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Kristian Brox" <isyourbrainfoss@proton.me>, "Luca Weiss"
+ <luca.weiss@fairphone.com>
+Cc: "Krzysztof Kozlowski" <krzk@kernel.org>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>, "David Heidelberg" <david@ixit.cz>,
+ <oe-linux-nfc@lists.linux.dev>, <netdev@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH v3 0/3] nfc: st-nci: Fairphone 5 NFC bring-up (ST21NFCD)
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me>
+ <DKUIKHDS44LA.10CHEGZHLQSNS@fairphone.com>
+ <20260823194152.501107-1-isyourbrainfoss@proton.me>
+In-Reply-To: <20260823194152.501107-1-isyourbrainfoss@proton.me>
 
-From: Johnathan Browall <johnathan.browall@topgolf.com>
+Hi Kristian,
 
-bnxt_cfg_rx_mode() stops programming individual L2 filters and turns
-on the promiscuous bit in the VNIC rx mask when the interface has more
-unicast addresses than the hardware has filter slots
-(BNXT_MAX_UC_ADDRS).  The driver state never becomes consistent after
-that: vnic->uc_filter_count stays at 1, so bnxt_uc_list_updated()
-keeps reporting the UC list as changed on every rx-mode callback, and
-bnxt_set_rx_mode() removes the promiscuous bit from the mask it
-computes (it only re-adds it for IFF_PROMISC), so the mask comparison
-also fails every time.
+On Sun Aug 23, 2026 at 9:42 PM CEST, Kristian Brox wrote:
+> Hi Luca,
+>
+> On Fri, Aug 21, 2026 at 11:28:22 +0200, Luca Weiss wrote:
+>> Can you please confirm how you tested this on your side, and if I'm
+>> maybe missing some parts?
+>
+> Cover letter tests were postmarketOS, these changes as modules on
+> 7.1.2: nfctool -d nfc0 -1 -p on an NTAG 215, then neard for NDEF.
+> No extra firmware or userspace on top of the three patches.
+>
+> That 7.1.2 dmesg already had
+>
+>   nci_ntf_packet: unsupported ntf opcode 0xf02
+>
+> I treated a found tag as enough and did not mention it. I have a
+> driver change so that NTF is handled; I'll send it in v4. The ndlc:
+> dumps are debug prints.
+>
+> I also ran nfctool -d nfc0 -1 -p on a locally built 7.2.0 kernel
+> (sc7280-mainline, with that handler): no 0xf02 line, a Type 2 tag
+> in about 0.13 s, and Ctrl-C with no tag still left Powered: Yes.
+>
+> I have not reproduced an error after Ctrl-C with nfctool on that
+> kernel. If you have the nfctool and dmesg lines from the second
+> start, that would help.
 
-As a consequence, every rx-mode callback resends the same
-HWRM_CFA_L2_SET_RX_MASK to the firmware, including for requests that
-change nothing, such as setting a link flag to the value it already
-has, or a macvlan going up or down.  That would only cost an
-unnecessary firmware call if SET_RX_MASK processing did not affect
-traffic, but on BCM57416 and BCM57504 (firmware 23.3 and 23.6) it
-does: each invocation causes a short interval in which incoming
-unicast traffic is dropped.  We observed this in production as
-sequence gaps in GigE Vision camera streams on a PF carrying 19
-secondary unicast addresses, with HWRM tracing showing a SET_RX_MASK
-(and no filter alloc/free) for every repeated "ip link set ... arp on"
-that changed nothing.
+I tried again a bit more yesterday and saw the same behavior. For a few
+tag scans it appears fine (apart from the bunch of errors in dmesg), but
+after playing around more, I again got the NFC stack into a state where
+no further tag scans were possible.
 
-Fix it by recording the overflow state in a new vnic flag.  While the
-flag is set, the UC list is only treated as updated once it has shrunk
-enough to fit the available filters (the content of the list does not
-matter while all unicast is accepted through promiscuous mode), and
-bnxt_set_rx_mode() keeps the promiscuous bit in the mask, subject to
-the same bnxt_promisc_ok() check that bnxt_cfg_rx_mode() applies.
-bnxt_cfg_rx_mode() sets the flag when the list does not fit and clears
-it, together with the promiscuous bit, when the list fits again.
+I've scanned both a standard r/w NFC tag (ISO 14443-3A, NXP - NTAG216),
+and sometimes my Android phone, which also got recognized as tag.
 
-An unchanged rx mode no longer causes any firmware call, and neither do
-UC list changes that stay above the limit.  Crossing the limit and
-real changes to the flags or the MC list are programmed as before.
+Looking forward to testing v4.
 
-Tested with the equivalent patch on 6.12.y on BCM57416: the repeated
-SET_RX_MASK invocations no longer occur and the receive disruption is
-no longer reproducible.
+Regards
+Luca
 
-Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
-Cc: stable@vger.kernel.org # needs adjustment for <= 6.18
-Co-developed-by: Pontus Hållstedt <pontus.hallstedt@topgolf.com>
-Signed-off-by: Pontus Hållstedt <pontus.hallstedt@topgolf.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Johnathan Browall <johnathan.browall@topgolf.com>
----
-Changes in v2:
-- Wrap a line exceeding 80 columns (Pavan Chebbi)
-- Collect Reviewed-by (Pavan Chebbi)
-- Note on the stable Cc that trees <= 6.18 need an adjusted version:
-  the rx-mode path was restructured for ndo_set_rx_mode_async in 7.x,
-  so this patch does not apply to any current stable tree. A version
-  against the older API is ready and will be sent to stable@ once this
-  is merged; it applies cleanly to 6.18.y down to 5.10.y and has been
-  running in production on 6.12.y.
-- Link to v1: https://patch.msgid.link/20260827-bnxt-uc-overflow-v1-1-f20d48864fe9@topgolf.com
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 22 ++++++++++++++++++++++
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  1 +
- 2 files changed, 23 insertions(+)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 9c2cc5027..d960cf942 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -13791,6 +13791,16 @@ static bool bnxt_uc_list_updated(struct bnxt *bp,
- 	struct netdev_hw_addr *ha;
- 	int off = 0;
- 
-+	/* In the overflow state all unicast is accepted through the
-+	 * promiscuous RX mask and no secondary L2 filters are in use,
-+	 * so the list only needs reprogramming once it fits the
-+	 * available filters again.  Reporting an update here would
-+	 * resend an identical SET_RX_MASK on every callback, which
-+	 * causes brief RX packet loss on some chips.
-+	 */
-+	if (vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG)
-+		return netdev_hw_addr_list_count(uc) <= (BNXT_MAX_UC_ADDRS - 1);
-+
- 	if (netdev_hw_addr_list_count(uc) != (vnic->uc_filter_count - 1))
- 		return true;
- 
-@@ -13826,6 +13836,13 @@ static int bnxt_set_rx_mode(struct net_device *dev,
- 	if (dev->flags & IFF_PROMISC)
- 		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
- 
-+	/* Keep the promiscuous bit while the UC list is longer than the
-+	 * available L2 filters, so that an unchanged rx mode is not
-+	 * treated as a mask change.
-+	 */
-+	if ((vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG) && bnxt_promisc_ok(bp))
-+		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
-+
- 	uc_update = bnxt_uc_list_updated(bp, uc);
- 
- 	if (dev->flags & IFF_BROADCAST)
-@@ -13869,7 +13886,12 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
- 	netif_addr_lock_bh(dev);
- 	if (netdev_hw_addr_list_count(uc) > (BNXT_MAX_UC_ADDRS - 1)) {
- 		vnic->rx_mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
-+		vnic->flags |= BNXT_VNIC_UC_PROMISC_FLAG;
- 	} else {
-+		vnic->flags &= ~BNXT_VNIC_UC_PROMISC_FLAG;
-+		if (!(dev->flags & IFF_PROMISC))
-+			vnic->rx_mask &=
-+				~CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
- 		netdev_hw_addr_list_for_each(ha, uc) {
- 			memcpy(vnic->uc_list + off, ha->addr, ETH_ALEN);
- 			off += ETH_ALEN;
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index ab894f8ad..53ad39f44 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1332,6 +1332,7 @@ struct bnxt_vnic_info {
- #define BNXT_VNIC_RFS_NEW_RSS_FLAG	0x10
- #define BNXT_VNIC_NTUPLE_FLAG		0x20
- #define BNXT_VNIC_RSSCTX_FLAG		0x40
-+#define BNXT_VNIC_UC_PROMISC_FLAG	0x80
- 	struct ethtool_rxfh_context *rss_ctx;
- 	u32		vnic_id;
- 	u16		default_rx_ring;
-
----
-base-commit: f967455fb2a5a2079b9eb5823e9ccf359174bf9f
-change-id: 20260826-bnxt-uc-overflow-f3b5882626bb
-
-Best regards,
---  
-Johnathan Browall <johnathan.browall@topgolf.com>
-
+>
+> Regards
+> Kristian
 
