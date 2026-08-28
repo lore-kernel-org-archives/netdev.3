@@ -1,130 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012033.outbound.protection.outlook.com [40.107.209.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D8D390231
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 16:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787936300; cv=none; b=YTKtM1mxHvp00wHMmuGL4UBFTAjo+WSz3UhxHnYEEGZwb8waWFbySipaAFmCXHIi6DJZ0opnIM8b97adLd7Lb7ZNqgYKhTHvQfxZEug/2JID18XdaSs/guaKxezYX+T+SIyBG5MYanIYV0yJ96nWfRzUoIHEO3gyja3v+yjgT1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787936300; c=relaxed/simple;
-	bh=Tc+kyTrwgV5fVxF+TVTMzzRV8pS+LC2+lWm4rGw29us=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QKnvxcXfTe6YxA+i0p/G6dtWBj0ZWaO9eI7akduUNbUMITFpm/uVc64038cNaHVQ/352zRQkx6nNtilF8GtXLVE8w9egvTPlpHLLssZl99NjYwFzEBeXGBs7euSp939uX+25d7hKJX5dizxz/AOeLQ/IA6/EBmoNWuz3tELvVpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6MOYS4P; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E44326939;
+	Fri, 28 Aug 2026 17:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787936599; cv=fail; b=Q2NZ5+Q5uxlaIONtLcvjlEFRIFsFOVOsp6Q5sC3oLLzAG6FQbTgp9kGZg7vMSCGiF7D+ojX7Wxf4RlhLAtb0DQ0VY/KzdL//dLNNWjlAc9PyQtwxJ5jzJpXreAqB0H/TGgSZtwTfzqVuW10yyLTnoCaRTZmqf/ui3AQuNcWbh90=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787936599; c=relaxed/simple;
+	bh=h+ABdsJJQuy4pMc6npDUdN+OL04GBs03O+kP9AP9vvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tSsBFs5i5eSUuzV0MWJxcHAS/Qn0swgfhEos6H8+SmSjIKhmLVBpwgHiQUaojumR8NioU3S9nbdM7lXdLFRspIVI7zesT4Em9PgaYH+KQ3c6UtFSjM7S3cB6Mub8beObYhm3jWzTBYcl6ezIPZYoyvvhNH1Z7ze4lrgIr9rchoU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KxXTt8aL; arc=fail smtp.client-ip=40.107.209.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6MOYS4P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D421F000E9;
-	Fri, 28 Aug 2026 16:58:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787936293;
-	bh=lgjw3dPxE1FCMUtveMSarz0lLZzABoWwz9/pVEQSxRk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=L6MOYS4PrY40stkxVhZz9FVhpuCuGHsHy66i+ZNO4Dx4C+Ewfxri71fWhnmJX0EeF
-	 zh+aGtgSb6ROl29l64zduBn1USxkslGQuXYcOzrEdcEtsfID+DQxc5LH/9dFGp7jHc
-	 DF4sfbtsgJiAt2wi3SF6Z/45l13m9WJdI9vdhho33mMuJqDx/liUFGiZekN8GL9Opj
-	 fhBP7w1bDjPPGEPktBR1rAOT511wGq0pqhiRLkkI+uCkEhkq6utGEm0b3ApJKVvz7u
-	 2scHwZO3kU+UdKSB4dFCyQaX5OHt2i7SgEUfGToaB0g2xC2av2gpKrHge3DYRtfPjQ
-	 u7S0bjFfPG9ig==
-Message-ID: <8dabbae4-514b-4fa1-8fd5-f80dba052237@kernel.org>
-Date: Fri, 28 Aug 2026 18:58:08 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KxXTt8aL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y3mW6c9NRBN1ZpAzw/zTBF4EAjvF0KhuE7jnuu5HLG6pIaiMAGohbgLYxRt11q7AT23/CHPjiSqXrfRjpHILvikGQuRQ2C0ZJDFJAzIFjnazkhturnyKFm1gRQ2751h7RXnCGv0iQD4qTLh9XuWRCDPp4QkP8dmDvrVfcswSt4mwLTnLy9/1vvU9YEqNA0BHTZmLn4CBvmgfL023NX/KiXTy1wbJ52OQJG3LDYPKWL+aDDfA0S/1iK5QzJ5fPxHUFrScReQq/Lz6AGvvjylusWJ8zMoubVcPiIs+4PqWKe00ZAIqgHfyp5r+ZOPyJ6bMVXv29r/sVLAVj8H0DgQciw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lOkZKl8FLrxcDgiwBhG5npLG0VN2yeJe+wNzshWNTd8=;
+ b=ORkM7Agx2tZFlaEhKVTpnImIF80RhsuSerIgFRa3lm8N2zuCP+WfH2RXcDxlfKysDG+Let5ot5mWglI59D1FdTXVQL+Bpz5qEj7RVH9EWGnkugmrEptrIUcvxG5SDl5ejUX8MSCEdkHn7Ca1x51nJfpHQESiMzXrgnMpOf60CyrnvkWUrQqf/23t3GvIhq/IfNrEJGu3Y9tvARcu7TAQloFurNKcXTiKwetL/JiWmqRqrF7fF4ofcAptDQiTf35VfO9sJFFgv8BQGpPDb9ebjuN1SrRTLE5SwyG+HeiDN8lY20Ycull+JxhKlqdFjPNO08vi+1gLxBeG1Nx+uij/PA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lOkZKl8FLrxcDgiwBhG5npLG0VN2yeJe+wNzshWNTd8=;
+ b=KxXTt8aL+Xoy847Eb696pK9cMuSXU01hZ4WHGWtghTtxWgxRJAAKSZUWCYHW/5RnevWt1i6ce0Ogs7IjwS4UKUgji0zruNuED7vW777xakI/kW8FpETngwp67aVlCE+pzY5sgtz3jCYboBV2ek3sd4E70OU8waswptZqMX8XLB66gofCN69YJW6rKLtPezzpS69Eeq3N8ZF7AofriR6K4b5yKol2lYX5hrjRGrNGPRX3rFlRtA7a0AU/7iJ/IzQ3FLxtEKaRNx2cj00BbvzfzvcV0Y+SFRE7+I8iBEwbsklUrz1/+uGK63YRgA20mWDlKEBKy67FWwY/QNYZTqJrAQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DS0PR12MB6487.namprd12.prod.outlook.com (2603:10b6:8:c4::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.11; Fri, 28 Aug
+ 2026 17:03:05 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
+ 17:03:03 +0000
+Date: Fri, 28 Aug 2026 14:03:01 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, Konstantin Sinyuk <ksinyuk@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jhs@mojatatu.com
+Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
+ infrastructure for scale-up accelerator interconnects
+Message-ID: <20260828170301.GA4157646@nvidia.com>
+References: <cover.1787552412.git.ksinyuk@kernel.org>
+ <apAsfOowcG0cTvT8@FV6GYCPJ69>
+ <apG3Gsk1TeMD-oCc@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apG3Gsk1TeMD-oCc@intel.com>
+X-ClientProxiedBy: BN9P221CA0008.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:408:10a::30) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v2 net] tcp: use GFP_ATOMIC in tcp_send_active_reset()
-Content-Language: fr
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
-References: <20260827095936.551524-1-edumazet@google.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260827095936.551524-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS0PR12MB6487:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2bea89e-975e-4f9a-c1d5-08df052638d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|6133799003|10067099003|4143699003|56012099006|5023799004|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	falNyYxFLYValaE2+gRzb4v85L+JMaE4HVph73kNapQad03eJjKWvCzumXNPtqU5A1xe2U66rOoAh+y14ADBxBQsks+5RB0Q8ratwcQe3eHNEKY148EK1scceSiqy0k7xmt2qptZmbwLVBqsbV/SW7Xx3a91VNrJ13IsY+C3oLKjy01TYYSDAnu779Yi/C9pdGD2n2zKOSku/mzZBjOujIJULqPuO8sjBmxumL4b2ApHJmUdMHrb0dqSHVVn6XtNugURdADSRFj8hLn4YALr/IauezKjToZp+Ty62pi8lkHvKEpvWkyuStSeXGeUgXMRgRxqHVLox9ZZnXYdAywNZ4Wv97c3rC1IX/QPCcwynjmAE9OtvfhBknyjiVv4dxrBTY14lJKe4hcWiAHYcBNTfJt6xK8kLWfc2pv7wJy364I8nIa9MZ1/nuKdO/nRhnPBe0a2uQBm1u6P9F90z8Gs77X6f0M6eWpopfgPUeqHtdbDbG6X7+VB6mtk4d1q/CVZJI8lhkqNLLXck9hjVM2rZZaT/Bd6140WHRvgXMSE2T4kL3D8/X0uzdkDktHQKxrjqNMF/9YSPfmv4Slp0Twy3EDR6fKlmHr02ivcFx4c9mIsqOH945AhrQQq8Fl0L8jvFGiTfBFHKB7gN343b8Bcb/eJuClGeSiqGUPcPSb/2T8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(6133799003)(10067099003)(4143699003)(56012099006)(5023799004)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6tY3ypkzi4eTB8tC01egKXs4HX/8qhDx1HzK/qzlAqy8g1CiGYD1f6heGedy?=
+ =?us-ascii?Q?8b7qRmwMz0T195byO+fd/mhXVkmOVpY+3ipJFB2sZQ7oZYqQpjdnzFbA8yMp?=
+ =?us-ascii?Q?3LD4oyuWv0m0GnQu8rlPftOcUYi9dLSwfG2qdITrhZWnTqBI+aG1yyxCsluD?=
+ =?us-ascii?Q?WtdLT1PL9/KqqMjO9d5nBKJYmrVFi4monIR6bA2cgYvQv/hUpWuSS2DJKpYT?=
+ =?us-ascii?Q?VgZ8ns3q03N53F06neo3boSi28J2kdF9dh3ssN0YRj+gBQYl+quwbgx3hllk?=
+ =?us-ascii?Q?0HspdlcGztuJE304mvoUwYV889GJ/raxjZV9iARg4ufuhwzvDZjXi//mtHtq?=
+ =?us-ascii?Q?UodzL/nxohPSxMMtSUOyyoXJNv4Td98GG5hFZ0gXY4FjUeL/PEyNPyk+alRP?=
+ =?us-ascii?Q?Lap73QhTg3oLGMluagEx/0XllbWurOsrcCiAt7DmaItkiJp4a/JodjMF9kIw?=
+ =?us-ascii?Q?0/PqWmHr9IMlw/FpRoQ4zGBhHrLL59sziY1CCnI0oEuvrPQhOy5myz0Yc0UR?=
+ =?us-ascii?Q?TNtnt3vZ71nOMLzSzbEQHVi6lt3MmeKn4UO/KE1Gg6QPltjAURJNGO9ZDB8W?=
+ =?us-ascii?Q?/lfsONczs7sE+SmojvWwvCxXjOIZcdoP6rGRteq6EX/9KeGUE1ESfKIKPZLu?=
+ =?us-ascii?Q?0P1iM5EUyCmPYepqVS0aSyahh/ttghZvLM8YY6yqJV09Wl9ghF8yBcQqLcvW?=
+ =?us-ascii?Q?L/K7JBIQu/j8sXI283BSUJjeDodibK3iHwQC50Vec8EUnObIxe8ekzqOIeX1?=
+ =?us-ascii?Q?NS2llgHUEcEsFyc5wwl+PJf3igM89n2dlbrv9x1d6JOz9NlTP3XC+Ani6JkE?=
+ =?us-ascii?Q?axTFiTDt9yCgwgb1kbz+VOAIYPLcRVJbi8vKrhhLI6yPcLIYrgbexALATTC8?=
+ =?us-ascii?Q?0jBrX9GWRC8HKNsAcydliXdtDxKgakoqJGy9C/Nrxxc/px2OEaMOibZAIVGn?=
+ =?us-ascii?Q?bDXKy2e8BDLN6s/UbaPctyrfAzCS4UAwQolaXLBGtCbHS3Ad6M9uAYUEnvwv?=
+ =?us-ascii?Q?Q8cQTe9SafD1sQdE/7wnvjYAhnqpfRqk8FPkupV3a1REjZSSM5rhTAVJUfOL?=
+ =?us-ascii?Q?MqVnsSZP2WjLU+IB78y1IBK4V+nY7Md+IR9d4agDyk6LNoaxPMpeUH2KGZ5X?=
+ =?us-ascii?Q?P0IGv/M+F4HLjqbP2dVBCfKFP9b5wp6VFjk7kYD26ihTbY9n60zpTCiFZ2Ne?=
+ =?us-ascii?Q?cDGnwjHsPPMPE+iS+W0BY5Bv//rvkmG0j4ypjoNEgQcK81Wbz7F5IBQJRfB8?=
+ =?us-ascii?Q?SItSVEgnztRkoEEQ3NpTxcoadoBdNIFV7j8J9oEUaH4IoOP70Mxo4+RxzUwF?=
+ =?us-ascii?Q?WOnxMQ7+AFteAN1P49daCwAVlHzy8flhtBUVfl42q8Z5N917K6ytMeQpGI7n?=
+ =?us-ascii?Q?W6VFF5T0Oe0QrdgH2D/8tNtfuJKjvf+WkZNt0o75GbEwqeRFlGFF+mVdDzhc?=
+ =?us-ascii?Q?nTwK7hFboCVuGtg/T+jvZhFUBa2/7lXbOYzjJcN6EcOaA73ofynh6EE0WVEQ?=
+ =?us-ascii?Q?luyAO3tL99XEgoto6eMQoMGyewQFtJiSqHEEuUvY3V9eidiyT//8JW3UBblu?=
+ =?us-ascii?Q?/hsvd1WlQ3CepYE4Z68QL8/UEkvyWdf0PshWXjNn2GsUTwtc7Y53suvuG/jt?=
+ =?us-ascii?Q?vXH2mkVcjKuwWZsDvwg3OzRvXIYLPDcENaPi5fCDPS5TM3FMLYZHdGlp8eAf?=
+ =?us-ascii?Q?CD6bK6yyIff2z97NN4B6wmvkiFI01Rfuh7Pyz3voexkWCvFg?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2bea89e-975e-4f9a-c1d5-08df052638d1
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 17:03:03.1768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7/qEqiIGJtkG2csj8qgdK1ksg5yoIBbZxe7EOir45849mdWwYheT6yRaa8q6ZjkI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6487
 
-Hi Eric,
-
-On 27/08/2026 11:59, Eric Dumazet wrote:
-> tcp_send_active_reset() can be called from contexts where gfp_any()
-> (in tcp_disconnect()) or sk->sk_allocation (in __tcp_close() and
-> mptcp_do_fastclose()) evaluates to GFP_KERNEL, which includes
-> __GFP_FS and __GFP_DIRECT_RECLAIM.
+On Fri, Aug 28, 2026 at 12:28:10PM -0400, Rodrigo Vivi wrote:
+> On Thu, Aug 27, 2026 at 02:35:16PM +0200, Jiri Pirko wrote:
+> > Mon, Aug 24, 2026 at 10:09:28AM +0200, ksinyuk@kernel.org wrote:
+> > 
+> > [..]
+> > 
+> > >Example queries using the in-tree YNL tool are:
+> > >
+> > >    $ ./tools/net/ynl/pyynl/cli.py \
+> > >          --spec Documentation/netlink/specs/drm_fabric.yaml \
+> > >          --dump fabric-get
+> > >    $ ./tools/net/ynl/pyynl/cli.py \
+> > >          --spec Documentation/netlink/specs/drm_fabric.yaml \
+> > >          --dump endpoint-get --json '{"fabric-id": <id>}'
+> > >    $ ./tools/net/ynl/pyynl/cli.py \
+> > >          --spec Documentation/netlink/specs/drm_fabric.yaml \
+> > >          --do port-get --json '{"endpoint-id": <id>, "port-index": 0}'
+> > 
+> > Using generic netlink instead of sysfs for this makes a lot of sense,
+> > but it may be a bit odd to use it outside the networking area.
+> > I've been struggling with the same in another non-networking use-case
+> > as well.
 > 
-> Allocating with GFP_KERNEL while holding the socket lock (sk_lock) creates
-> a lockdep dependency:
->   sk_lock -> fs_reclaim
+> Please notice that this bubble was already broken. Netlink design
+> always had the dream to replace ioctl everywhere. And there are already
+> other usage in place that are not network related.
+
+Yeah, and people have been living with the friction, and some places
+don't have quite the same complexity, but that doesn't mean it cannot
+be improved. :)
+
+For something complex like this, if you can't concretetly tie the HW
+to a net namespace, and follow the net namespace rules for visibility,
+then it is going to be a painful choice. I speak from alot of rdma
+experiance where net namespaces have been consistently challenging.
+
+> In our case we use the netlink API for GPU RAS error reporting: drm-ras.
 > 
-> This causes false-positive lockdep circular locking warnings with storage
-> subsystems (such as nvme-tcp) that acquire socket locks in block I/O paths
-> and invoke tcp_disconnect() or close sockets upon teardown:
->   set->srcu -> sk_lock -> fs_reclaim -> elevator_lock -> set->srcu
+> Also there are other usages in netlink spec that apparently has nothing
+> to do with networking, like energy...
 > 
-> Active resets are small RST packet headers that should never
-> enter direct reclaim or block while holding socket locks.
-> 
-> Use sk_gfp_mask(sk, GFP_ATOMIC | __GFP_NOWARN) inside tcp_send_active_reset()
-> and remove its priority argument. This preserves __GFP_MEMALLOC access
-> for SOCK_MEMALLOC sockets, suppresses allocation failure warnings,
-> and aligns with other control packet allocations (e.g. tcp_send_fin(),
-> __tcp_send_ack(), tcp_xmit_probe_skb()).
+> And in this particular case here, the drm-fabric is a 'network' of
+> GPU memory... At some point we even wondered if net/ was the right
+> place for this common API....
 
-Thank you for the modification! For the MPTCP part:
+net/ is mainly focused on IP networking, it is where you should be
+putting the ethernet layer at the bottom of the ua link over ethernet,
+SUE, or whatever. It is hard to imagine having an actual physical
+ethernet network and claiming no implementation will ever need to
+process ethernet packets or deal with ethernet phy.
 
-Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+There are so many variations of these "scale up" fabrics now, it would
+probably be appropriate to have one subsystem that aims to work with
+all of them. It is almost rdma but different enough it probably
+wouldn't fit well.
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+Certainly redoing all that ethernet related stuff in drm or, worse, in
+amdgpu, is a pretty ugly idea.
 
+Jason
