@@ -1,171 +1,106 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mta0.migadu.com (out-50.mta0.migadu.com [91.218.175.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD0933B6DA
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 02:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBB430DED5
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 02:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787885011; cv=none; b=hbGavHWKdm8VU+sYyeWJgihOUdxnqubGXvS2wN48+VIdk7x7Ok2WLNDw1md/SM17/SH6qQ9btf32itr5wQCWk1uq5FgPXk97+NWLdQl5R1qlR9P9b0fqgEbDGBTHZE9VzUHzU4NQCtsG/iIEiCFuCAeu1NPkRD32N8ds3iMGr70=
+	t=1787885414; cv=none; b=YNevdQAMk3G6b3xuQqx7KmB292K9kQQcGe24cH+8Geo+HHAVzxESn3OavoDqzfueY6ilhS+RknNGcLS6DTBijU0IpzLWM3rZWKj9bSzHGyl6uHhF0pUZshYNejdSzugBxjhPhCwLfzxcT8pgkLPyz6Y+sTCMMNNZ2h+TszEqiKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787885011; c=relaxed/simple;
-	bh=x+NfT23xtsOuMyluadpQItVxOmRCcSjP7wwid4hR0yM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=nbPUqjCr38eAZ3lLnQhjgvYH+O/vl6eqH41Jx8Icb3SyBxL+bpz2wNA8LUxhLPyogf4pZuGeljJCCRnHAIHUkJS4Icw5l2lYltSfkTS4kmiKwAGIWNiBzo3E2EHAoVNKTjKuXfkoKbZ8A5y/HPwJ4sVqeh4aBjS1tWUufNBKaUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hevJ+5KV; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787885414; c=relaxed/simple;
+	bh=PyLxxoQkuzWGfdy8Bdesmy9AppZutLYqvrD0li3nAA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHvryBInWiTAP2tfEstQS8YAHc0R4dtDz6lWVeTrBp+cDi0+jSRK32FKu2JurjGxYgRRo+u05yq91w7T6N3n6EJqLCOk0cfRD7zDKHW5NHvSKZsdMEXhK6Ntv/ukbZxwsczL5ozvkKdVuh989R3w2euqKOA7UVbvZcwLHPsLQMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NilnXoa0; arc=none smtp.client-ip=91.218.175.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hevJ+5KV"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-856114a8247so8111957b3.2
-        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 19:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787885009; x=1788489809; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=bKG9LeGJl4HRaolEQhjC7Ndckz2inmxAZZ2u5dpOI+A=;
-        b=hevJ+5KV009uiIIYQtLol/qzXGZpNlWLvKfED7FSYk6xp+4bypyG9BqqsYfJoQJTeG
-         QzB6qqPeM4CzFWL/AD2AgUoxJeKUQ2fTJTVfaUcVVVjFs/pFs/FfU+yOYPTUSSyUKuQp
-         zz6BP+JAbRdhQ6FR+8GwFjkK0Wyxx+LbTKD+weYkWr9yg2FD3FfQ3jGBHaBBH7ER4h/O
-         eQajal4wX1qGerwK3Uhu1guLodApb2cKWVMsdYUXxNBZiM6QXelcD25UzMAnog/nSvgV
-         6kdGMh9/6rsq+DsDDUxkxAQJOzW80fQuXPmWMogZk64BDFe9ML7JDdQLotD/wcLBXUPb
-         eyRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787885009; x=1788489809;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bKG9LeGJl4HRaolEQhjC7Ndckz2inmxAZZ2u5dpOI+A=;
-        b=sRCCW1mFYXjIFzFkprlearE5CjOhk1VHwTu/TvD5DBFbuA3q9Md2738lnjeaAFt7vE
-         8e8tV1BA4his4V0IxauJE16x9Pqam+0VEVLobVnaptFf2g+vAAjrRlPuKBBceVrkmFQ/
-         rE2HK1jBwKVFyqswWEvBc3x8jvu13GeY2AXpfz3ANMlXdsXn0DJrPlv4e8uR3KBCs171
-         qADD7Y7dzQaG9sP6loIzNKZhagkr47A97UMXSw21XniyOe2vtCtA/s+VgwuGduOBvT1b
-         tX/G+/cMKiFHvKP/Vn0ayDs4VQJF3eIj0Q8RvWrQ8GqeQ+IXZv0zgCAepoTYnsLuEWB6
-         7PSg==
-X-Forwarded-Encrypted: i=1; AHgh+RrJ3ncD4WqcHyhWi4dJ7IiSBFpuMk4644WCf1K4y1mzc3EFlkVi60pN9Nt1g4D76+PpagllJII=@vger.kernel.org
-X-Gm-Message-State: AFuF++nQp2WQUp08F9DQnf2ayPgckD4pNLWwAXLnJJYajwL+LlTTnMZX
-	K8nKeq7RCcal4VDLI9hb0iDq+f+COhIsMb1wAeNhiGGLCPt0fOz2IP/R
-X-Gm-Gg: AR+sD10/3pS9lODW6kZpdiXgnIJuy7bVkZqpvofTSRV5pKfbIPoIKMlTHJjqYsjl4zn
-	m1n1U1zAeIRnVaIIrgblW1NpksO7yHv1VH0yfaeMu3M4WCJ5z/VqJFtUN89vG4EvQUCHauo+zAO
-	ARDaFtpiAmkCr4Os6l/WCr3OHgCBg/5Ru5M3JPf5boIp3jwdOof5RXQeKBVtLga9oU9qec+i1HY
-	4zf7q8xS+bu0gbFNR9114DWxCUG7u1sJTr0s9pg6ab5PE1I3DshTWzpHCMsqp+hKr9BKcSnZsi9
-	ZkFewA9l8Xnzdvi7B8NMcr0ptR3zHeTN3pKCQT1CicWG4VUSfcxE59oIvhFA4G3JxudBVUya/yD
-	6MGJxp3A60uLwKSYJ4ABt1mlkk4MudNnzWgscZGqNSDKw49zQVlOwVCxBRssTxVwrHTenkflbhB
-	lYp6PxEfiEh6f7UNr2UzBGEoqxbDcSd32ifvvz6usZXXBjI5xMP1QsyBzTdXmmi2Cqqu57MMIIQ
-	2y3lHCmJ81LVh31TnCVnx1WbjhQO6SL6nSr3TgnDA==
-X-Received: by 2002:a05:690c:319:b0:80f:8faa:b8e0 with SMTP id 00721157ae682-85d69e009femr21839417b3.8.1787885008958;
-        Thu, 27 Aug 2026 19:43:28 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e7163c4dfsm953097b3.15.2026.08.27.19.43.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 19:43:28 -0700 (PDT)
-Date: Thu, 27 Aug 2026 22:43:27 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Hangbin Liu <hangbin.liu@linux.dev>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Qihang <q.h.hack.winter@gmail.com>, 
- jv@jvosburgh.net, 
- jiri@resnulli.us, 
- andrew+netdev@lunn.ch, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- willemb@google.com, 
- netdev@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.3786f2ddb8b17@gmail.com>
-In-Reply-To: <apDgeCLGiHTd7fAC@fedora>
-References: <20260824021802.90369-1-q.h.hack.winter@gmail.com>
- <willemdebruijn.kernel.2ec10017f4836@gmail.com>
- <CAH78GvvF-mBij7exwgkthJC2puz1-1Ti=WkNr2PwFcKr_v5U4Q@mail.gmail.com>
- <willemdebruijn.kernel.361c9e585560e@gmail.com>
- <apDgeCLGiHTd7fAC@fedora>
-Subject: Re: [PATCH net 1/2] bonding: reject frames with insufficient headroom
- in bond_header_create
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NilnXoa0"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=PyLxxoQkuzWGfdy8Bdesmy9AppZutLYqvrD0li3nAA4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787885410; v=1; x=1788490210;
+ b=NilnXoa0lUmRhzvGqEed4zgcKnCeu6DTtyyK3u+CNrdiFDxruvHfWaUz9aaW6dkYo7JBIqZb
+ 5/pzAChl2zreOkkFiyLnDw45G3pnXj0a0Z8wwl5wYRPaOfYwHoNxfflbTqRz1VWAPit+yDD3aeC
+ D95dJQ1okiC46neaj9ibuqDI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 6a6b53d03bb3845f;
+	Fri, 28 Aug 2026 02:50:10 +0000
+X-Mizu-Trace-ID: 6a6b53d03bb3845f
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 28 Aug 2026 10:49:59 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: ramses@well-founded.dev
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jiri Bohac <jbohac@suse.cz>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] bonding: fix initial last_rx vs ARP-monitor slack
+ window
+Message-ID: <apD3VyaIOmMlv6kK@fedora>
+References: <20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev>
 
-Hangbin Liu wrote:
-> On Thu, Aug 27, 2026 at 05:37:09PM -0400, Willem de Bruijn wrote:
-> > Qihang wrote:
-> > > Hi Willem,
-> > > 
-> > > I'll resend this as v2 with a cover letter.
-> > > 
-> > > On scope: I grepped every header_ops->create.  Five devices delegate to a
-> > > lower device (bond, team, macvlan, ipvlan, 6lowpan), but only bond and
-> > > team re-select that lower device under RCU -- the rest bind it at netdev
-> > > creation.  So bond and team are the full scope.
-> > > 
-> > > Re Fixes: I used 950803f because it introduced bond_header_create (where
-> > > this check lives); before it the type-confusion BUG masked this race.
-> > > Happy to point at 1284cd3a2b74 instead if you prefer.
-> > > 
-> > > On the fix location, I'd rather get your read before writing more.  The
-> > > options I see:
-> > > 
-> > >   1. per-wrapper headroom reject in bond/team only -- small, safe,
-> > >      backport-friendly, but not generic (the next stacked device needs
-> > >      its own).
-> > > 
-> > >   2. central check in dev_hard_header on dev->hard_header_len -- one
-> > >      place, but I think it's unsafe for bond: bond_dev->hard_header_len
-> > >      only follows the first slave (bond_setup_by_slave),
-> > >      bond_change_active_slave flips curr_active_slave without touching
-> > >      it, and same-type slaves can have different hard_header_len (two GRE
-> > >      tunnels).  So it can under-reject.  Would need bond to maintain
-> > >      hard_header_len differently first.
-> > > 
-> > >   3. resolve the effective {dev, ops, hard_header_len} as one RCU triple
-> > >      via a generic callback, so the caller never cares which subordinate
-> > >      the master picks.  Truly generic and race-free, but it's a new ndo --
-> > >      net-next material, awkward for stable backport.
-> > > 
-> > >   4. make header_ops->create() take an explicit headroom contract and
-> > >      fail cleanly instead of pushing blind -- cleanest long-term, but
-> > >      touches every create() in the tree.  Too heavy for now.
-> > > 
-> > > My v1 is option 1 (per-wrapper).  Want one of these, a combination,
-> > > or something else entirely?
-> > 
-> > Thanks for the analysis.
-> > 
-> > I agree that 3 nd 4 are too invasive for the scope of the bug.
-> > 
-> > It's a bit odd that bond and team just take the hard_header_len of the
-> > first slave. And that bond_create_header just passes to
+On Thu, Aug 27, 2026 at 01:44:42PM +0200, Ramses de Norre via B4 Relay wrote:
+> From: Ramses de Norre <ramses@well-founded.dev>
 > 
-> Actually, bond will use the max hard_header_len of all slaves, see
+> Commit f31c7937c254 ("bonding: start slaves with link down for ARP
+> monitor") initialises a freshly enslaved port's last_rx to
+> jiffies - (arp_interval + 1) so that it does not "immediately cause
+> fake detection of 'up' state". At the time, the comparison was a plain
+> <= arp_interval and the value was just stale enough.
 > 
-> netdev_compute_master_upper_features()
-
-Awesome. That should address the issue.
- 
+> Commit da210f559019 ("bonding: add some slack to arp monitoring time
+> limits"), four months later, added a +arp_interval/2 slack term to
+> every comparison (now bond_time_in_interval()) but did not widen the
+> init to match. Since then, bond_time_in_interval(bond, last_rx, 1) is
+> true for the first ~arp_interval/2 after enslavement even though no
+> packet has been received: the upper bound is last_rx + 1.5*delta and
+> last_rx was set to jiffies - delta - 1.
 > 
-> > curr_active_slave, while various bond modes like LAG will have
-> > multiple concurrently active slaves.
-> > 
-> > That indicates that the intent is for all slaves to have the same
-> > header length and header_ops->create callback.
+> If the ARP monitor tick lands in that window, bond_ab_arp_inspect()
+> proposes the slave UP. If the slave is the configured primary,
+> bond_ab_arp_commit() sets do_failover and the still-armed
+> force_primary in bond_choose_primary_or_current() makes it the active
+> slave regardless of primary_reselect. ARP validation as the active
+> slave then fails (the link has not actually received anything; on
+> SFP+ ports the PHY is often still negotiating) and the bond falls back
+> to the backup. With primary_reselect=failure, force_primary has now
+> been spent and the bond stays on the backup until something else
+> triggers a reselect.
+
+Can we set primary_reselect to always or better to avoid this? If you prefer
+to using the primary slave.
+
 > 
-> And here seem you want to all saves also sync the header length?
+> Reproducer:
 > 
-> I'm not sure if we should/could do this in the same function
-> netdev_compute_master_upper_features().
+>   ip link add bond0 type bond mode active-backup arp_interval 1000 \
+>       arp_validate all arp_ip_target 192.0.2.1 \
+>       primary eth0 primary_reselect failure
+>   # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
+>   ip link set eth0 master bond0
+>   ip link set eth1 master bond0
+>   ip link set bond0 up
+>   # bond0 lands on eth0 via force_primary, ARP-fails it before the
+>   # SFP+ has carrier, falls to eth1, and stays there.
+> 
+> Initialise last_rx (and the per-target array, and last_tx) to two full
+> intervals in the past so it is outside the slack window from the
+> start.
 
-As long as the header length allocated is the max of all slaves'
-requirements, no need to check again here, I think.
+Is this trying to init the backup slave down by default?
 
-> Thanks
-> Hangbin
-
-
+Thanks
+Hangbin
