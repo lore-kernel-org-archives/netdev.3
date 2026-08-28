@@ -1,83 +1,82 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CB738A71F;
-	Fri, 28 Aug 2026 09:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7A73905F0;
+	Fri, 28 Aug 2026 09:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787909118; cv=none; b=o8c1W6OJTgnwfSSZ07ixT5yYOaAvV7A/H04z7Sp8K3Sx9kbTNf9VY7PcDuqTBQJVGMEqg6igQVIpGvhhy6Y9YBDELXHWCYZTjj/12Tsfht3KaTHNwBQhW4a66Rv0BvgUw6c5fsdf1+NfCQkSWiMo/9krZqR/hh2ZotrzGzTS6nQ=
+	t=1787909591; cv=none; b=fe21VfLeVC3KGvVPz3LiHdp1yLUb9MxEZkxdgosR+iXpf4oDMRqaYEUUXV5MGF62pvR67OY7l4wNY5grV1K4bg+QACdxdN0cBFZbkE8bWEUZizwnum4AK9EyE6vcKlYFyMerigeMWASNrrOQH/f4Ibgo3GUtTJeGJRkdkUhwTbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787909118; c=relaxed/simple;
-	bh=HFWIYqbamR9H7JG+SKSGlBKoxUG1LOgShNgbcylqktk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=CDfROyinUXkhm+3XQ7dcqPqNZ/qWIIhyJi/e7LItKri2D5yrAkPDFdUCSOpUMrqNLriMS7/+KAiQSiQsDqP5md+vyKax+z4XXrGcIywY6gkz+DFcmHSynQxFQtREjX+uQXmh0ywqL3Fd02yBiRYN4UCwVexhwroTpLmTUQ+iEyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HYRXmWDW; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1787909591; c=relaxed/simple;
+	bh=gFGESkEnaYY6xmTzY8wle3SNahbizO9UAow6Oloksrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cilhajQ2+8IfUUwUrq8cGNx9rgzQXBztrjOjgKGDQWICTrpRo9sqF3yLyYNrGVldvSbVKmiZCue/tAz1EmcSPtZqnVUaTBZ2nAFh7q8RA8bWoPozCIIfxTzIbQLvRvtRUwNkZAQ7lh8WF8FpMYa2WvjMxgIBDhn7EZRyOE6MB4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=SVnjDUpz; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HYRXmWDW"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C92241A189B;
-	Fri, 28 Aug 2026 09:25:13 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9BCCC60537;
-	Fri, 28 Aug 2026 09:25:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55C5711C78028;
-	Fri, 28 Aug 2026 11:25:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787909109; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=HFWIYqbamR9H7JG+SKSGlBKoxUG1LOgShNgbcylqktk=;
-	b=HYRXmWDWUOZ1zEyHJbQDi/zzqTGz43VaGd25flf+99Ab+gUA+YbP+Sz71zNVxpX/By+ClB
-	Ykt4ORz5ydsAa5VV8ANY3gF7NZfOx4tXaXIptfKp82lN6UPZ57Qrgxjxh6LxcnIYgFXyRG
-	8D1iPOUo2xCJW79N5YgmulAipTZypbqtKzRkguXIhSjDwGnt7LxNmhPVcxBPygKhXfCQt8
-	YpEOAoXoWkbUOxm5dcz/jHnd8q9PJkgjjAL2VYbe2T1VvVoRn4KBtLdIXzglYSbZSmxzCW
-	gqp0zLmoXHYqmy1LDU3sehCNVFSmfSsUpPzBf+f/YAuKSNCgst6XGHyQrbuLAg==
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="SVnjDUpz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6UJWbhtuWI0OcYV8DoACzNDsaVGPnMK9sBA1/f6ey/M=; b=SVnjDUpzFczRCwN6Z0P0ywFRqy
+	2SdxrvFcxickFaj8pE3LuY/7HJWy0cTvF9IXAyD8LHSlQLm1jfU7oi2GzHgIQaOqCgTuuoSfZKcjz
+	RFPEAtu3UmGwAS8ieseE44ecCZEKaZUemsj24ea6e8gai+zkr+o1Ut21ZoZD+4FL1ykiLPXTwe2OD
+	iLzcihXaoXe5PNnmL1PK5od9W8jyWPHZddppGJU8swLPv1JLhLvfCHXRq4iXpeaMUCC12eL6UyeDL
+	Yr16JrhDvzRNBySXXodm+UOn7k3XB0GgD0JlzgPJGy25SDh1T+cA1xBlAAn2DJpKEgKUzayCxZOFc
+	T9t5IbRA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wzsxD-00Gg0A-2O;
+	Fri, 28 Aug 2026 09:32:55 +0000
+Date: Fri, 28 Aug 2026 02:32:50 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Denis Arefev <arefev@swemel.ru>
+Cc: stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Wensong Zhang <wensong@linux-vs.org>, 
+	Simon Horman <horms@verge.net.au>, Julian Anastasov <ja@ssi.bg>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, 
+	Florian Westphal <fw@strlen.de>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Dwip Banerjee <dwip@linux.vnet.ibm.com>, netdev@vger.kernel.org, 
+	lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.10/6.1] ipvs: reload ip header after head reallocation
+Message-ID: <apFViEhRXxJOb3SC@gmail.com>
+References: <20260828085522.31015-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 28 Aug 2026 11:25:06 +0200
-Message-Id: <DL0GVSSI2FQU.24LQFERB8T03X@bootlin.com>
-Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
- <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next 2/4] net: macb: Move TC capability and PM
- checks to macb_setup_tc()
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
- <20260807095012.640223-3-vineeth.karumanchi@amd.com>
-In-Reply-To: <20260807095012.640223-3-vineeth.karumanchi@amd.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260828085522.31015-1-arefev@swemel.ru>
+X-Debian-User: leitao
 
-Hello Vineeth,
+On Fri, Aug 28, 2026 at 11:55:21AM +0300, Denis Arefev wrote:
+> From: Florian Westphal <fw@strlen.de>
+> 
+> commit a2f57827bf7c695b8c72dc4511cae8e86582369d upstream.
+> 
+> __ip_vs_get_out_rt() calls skb_ensure_writable() which may
+> reallocate skb->head.
+> 
+> Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-sonnet-4-6
+> Acked-by: Julian Anastasov <ja@ssi.bg>
+> Signed-off-by: Florian Westphal <fw@strlen.de>
+> [Denis Arefev: adapted for 5.10/6.1: keep EnterFunction/LeaveFunction
+> instrumentation]
 
-On Fri Aug 7, 2026 at 11:50 AM CEST, Vineeth Karumanchi wrote:
-> Move the NETIF_F_HW_TC capability check and the runtime PM suspend
-> guard from macb_setup_taprio() into the common macb_setup_tc()
-> entry point.
->
-> These preconditions apply to all hardware TC offload paths routed
-> through ndo_setup_tc(), not just TAPRIO. Centralizing them avoids
-> duplicating the same checks as new TC qdisc types are added.
->
-> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+yea, the backport seems fine and match commit a2f57827bf7c69 ("ipvs:
+reload ip header after head reallocation")
 
-Makes sense
+> Signed-off-by: Denis Arefev <arefev@swemel.ru>
 
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
