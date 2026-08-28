@@ -1,269 +1,187 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156003C10A1
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 12:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AD02236EE
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 12:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787918664; cv=none; b=D1F+JiLyFrQpZW6YnXXzwKOWp/pFaezlYv2URtnmeZETEqja4pLrc1Lr4xq6ytJp4JH6SYMDXxutnq5kBGPhfGFZz3hBDroHyyl3PPIESwGQJMqTe/pXtAmxfoEy0R01/qO9zu009V1Uo8Xer9EJ/DrXJhTvET2M0F5DwOpQIyM=
+	t=1787919567; cv=none; b=ouPkclxe4DW4Co2loHPjduBiuh4GQWtG2gbuCPBBVgR0LIi61iQsn7q9L3LvzAcUD7cUzVTV7Bb6+LwnGHucEsjN8MHVJRV6Zlpp7EvlzmYztFDQ5p1nEicDmphDb6rGI6vf1ApVSEh5RxlglFV0tcUwVJQIVzH4lq2hjfpO4B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787918664; c=relaxed/simple;
-	bh=ioyjpTYahVnOWBhr/MamxD5RG95sppP+CU9ydVJYjSI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QC6o5/ukvntksQG+4/bcaN8r9kVgTyMe7CSeJKx1gCCV745v3VTmngwoafEI1z2zj/P/YnZIdyNtQ1+94MHTWRpR2y2TxKjY/1LOVKDG01/C0bR0gOA52uUlCXXEulk+3aQOEhEKhIXNf+xkUckw+ok7kBR/ecWdjg2B/yz23sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AATRDwSr; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1787919567; c=relaxed/simple;
+	bh=bshnzLQtuqK5RsJ+j4asqunOyQeV3NNzp0HpDR+Co9k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iigDGqV6ww/h3KWgbjDH0SbqfL7r7fHAc1O/WJK+ARiu9lCLRrCOQP9FaOAP8F5wMnkViS+9gXsLQmE64SZxC5j3CnnbnEUDWfNzREcLe0e2iZ4t95PsigGD76Ad5NvAfMNftebah1n65V1Ex6x6ImW5YXTWc+n8RZwazO91+ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=gZS5E1YV; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AATRDwSr"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so6724325e9.0
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 05:03:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="gZS5E1YV"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-930f618435cso37820485a.3
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 05:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1787918635; x=1788523435; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7FUqt9t1EencF9nSDcvizzvehr/v/zWd6fGeSLy9Tio=;
-        b=AATRDwSragpnbSvMRV3V2aGNoX6eztyoaD6Wg5X+ItIaz1ggOPcjM3pbPnjwWjMydY
-         KV9sg8hfxy9k+fj2rVlfUsybgJEgypBeGSvi5/h289h/yftoa/y6ShygyAiZTpMyMA9y
-         FmUb3nqXHBtrgXHtP6gI8D0RPt9j4EL+UXKy5WhDDAVr4yolTPV+gSs5xfTHU6zR3reL
-         dd/qIuecjLffo6SbtZhTUAQG8VrO5bYwzwVR+VTLoTIxlt47DYvdvljJrRVyeq9aDWFx
-         IaCstpZjUK5ByaWZRpv9u+WZuHDlnMDPi4g6sV2asQlnWE5yRLIFK0HNtO7oQFmmtdCl
-         rYFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787918635; x=1788523435;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1787919558; x=1788524358; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7FUqt9t1EencF9nSDcvizzvehr/v/zWd6fGeSLy9Tio=;
-        b=ntN4rDLnseNFSSEr6FOfSpctuP1c3guwVysv99dUi7HmXX+akt0+ammkWCBYhij8A9
-         ovRTCswnHPHDsCCJ5Ruf1A8l0fq1Cw5EIz2sDxDTdpvcGac8CXwenTbVTnuSeAVuF9Wr
-         zeDoVKoFteLI6wqnYjqt1dLw8hS0W9RFdhUTowZmV99zUXDRTPEVa+QXxgw5dKd0AFfz
-         yyv/uckVH0RZg++uSo7GTnWIZzxWhwqy2ekBEX47ehO1DHmUxrlVBh60j95EVyNjjJSd
-         /XEb5k95I663jOC86jJuOVpqdivDGEKKJAiRIV8FNYI5mrYgO9QNN3PwIiJdYsvxHmF6
-         YV0Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rq62MqHkNhvfElRAhpyJThtjdGaPaDR2cs12VYbALA2Hj8YcIt9Ev46vZ+Uz2iVrBvsh3hVIho=@vger.kernel.org
-X-Gm-Message-State: AFuF++mKktCJeUZivYdupmWcqUKkBEs8EmS0Gvgn60kYQh60k87bc/Du
-	PSz6MZH61K+diFDUicraNs0vm3Vam91GHApVytmV/QqzjiV6mwcFQEclT/GZgcwGe3I=
-X-Gm-Gg: AR+sD11UMgt9jdWozWxRurmHKbzSBtP7Cn5zCJ1Gj6OmmxLqFnI2JmfXtbc0iPknxep
-	Qg1GcKwVhFWul4bzE+2t9Z3U3OC3dbxBHTAv68YWfWdhslAj9qFjLESDvOAm5EDVJTJn4xoPYfX
-	e31Rw6AIl1BITOcznajmYdrbEPN7vPRePDEIAD7bVmZlJg6EQMQk1Pt+/GOR1cJ4LMvMKfbjTh6
-	lM5nPJgbizWXw38wG4+WXT73C0Tw0616Q7Az+h+JZnp5TlDxug1z09boVJ9nswp0njq2tOJjnYc
-	6zGZhW57f40En4ZT/uKzrmW3v7wkbFuLAeInBmlRS/e0PQo/STE9yuMayuZpa6Q/5x7BnjeOH0e
-	VG3s4q1ALXYGUcOOa21bMlvhNEarupzk74xKvFwLxfk4pCT2F83TO/pzKHMnZwMvwI5O0wDE6OQ
-	rrdhAYtZGFDfbD4cPRiSCfK3AxAsa5hlsf1B32JlaQwQcFsObg/19ThfCoXRYHwgS4xKJHnmyDY
-	ZIMwNx9kZA20LatTHUr26fC
-X-Received: by 2002:a05:600c:a418:b0:49b:9433:ea44 with SMTP id 5b1f17b1804b1-49b9433eb4dmr73573625e9.4.1787918635141;
-        Fri, 28 Aug 2026 05:03:55 -0700 (PDT)
-Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b9266be71sm117554035e9.2.2026.08.28.05.03.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Aug 2026 05:03:54 -0700 (PDT)
-Message-ID: <8b6506a1-5bfc-4f9b-92fa-234c89afe9ad@suse.com>
-Date: Fri, 28 Aug 2026 14:03:53 +0200
+        bh=3k0hfFe60nKdt8DGCq8JnmcVepv/kZYgUjKWBiJ3cLw=;
+        b=gZS5E1YVj9ED9DcaSoOkEnQfLffUxXZWx0sNqJDKe3hIfWlSStG7DpC4pkWKCKa64B
+         UOrXIzRwDb3c6o+7+ISDfol4Y/cmesoKDFEem1+u8bu5Ekzr1b0Y1JQOh3EjdMoBgsdT
+         By6Ecft4R6M/8IXMsxY5JrR79O33xo7KUSMBY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787919558; x=1788524358;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3k0hfFe60nKdt8DGCq8JnmcVepv/kZYgUjKWBiJ3cLw=;
+        b=cJTuaMXuygXhQ9PFQlZ26zefGBba7jjQS2gvcLeUuh2XXLKoCPJMxM566cdiGEKbBs
+         Ph3WqfKyNZevPjBLMnfnS8wDykP47iq0son3tRTy4OYmoFdzE8C6XPmHnGBYQVRhUIsd
+         VrUFoQTVPd8tvnaMc1+8Em69gqOfBQMHLiH5MJV7CncEs5CvNB8otRS1+gtydL3wENgR
+         FUzMFAkFCGTNWeE6gLwgvxbHuOZe39cPxXn+Dpf8/HO35wYfMfzLO7Z7YBjPsArLWR1h
+         NQoOTVOl7dRYLBQVa1yoJhRiCbTYsYxGHYV7KjALpSBSku5XSczH/Ei3wsmPBIe/mLu3
+         wpmw==
+X-Gm-Message-State: AFuF++nSMS0yuo/dbJdhSnMF+JeXbwcZBGspFqRSe7RcTo6VZWQh9tKm
+	ea1LbU8kEmpw5aMueGln3Zkfb3frj5lfko0ociB46qzzBaMXVHrzui9mGjvOo+N1thxH2mkxy2d
+	A3AHoVg==
+X-Gm-Gg: AR+sD11zJ8lISfO3hbBnckmi4MB0XQMCmlFy/ycybCi8HInthlXXly3z2goqWtWMije
+	JPk6PKAbdqGxWKNfdolWMaUuFmVkF2YfFDpXp5vqwydRscMQYhKdHIPNk42On2tps1pf/hcCXCV
+	oRwS3wPguTkp5GQKIAQFeH37lhVpH0PKMgfbm+arofek02h2rgcSj41gFfwhRmiPKCtZQktOZbp
+	ZHaim8gvTze02u3zG4R3lIj9bqUvi31RD5BwAsdm4YRNBIRIqQZSJd9FpcpBO4HaO+pOu0Y/eJx
+	Xo3jqOXaqV3ImAzRX6aBqQCN2rmt06b/Da8JDV6BRIWfjAl3ky0+nXs9XYDC82Eo8nszzZUG2Xb
+	XzMlD2tTaRQ52mLuAtcsvDBqrICmsFKYO1HziXJlamb3M5cLMvTh27AM+rGGUbz7MMxbLbxhuPu
+	PvnL6Qwspv2g9q2xHnZBdVV6XpxaK9cDJFPWAu2s4ZMFx6w3CXgc9GLGHJDTTY/KvvQ2IO4c1Oi
+	2ksKikYwQOsJZFJfxKaZXlg+FpqDlVEparQ4w==
+X-Received: by 2002:a05:620a:1722:b0:939:1df9:4970 with SMTP id af79cd13be357-9391df9516amr83484385a.24.1787919558297;
+        Fri, 28 Aug 2026 05:19:18 -0700 (PDT)
+Received: from majuu.waya ([184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9391740a306sm128672885a.42.2026.08.28.05.19.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 05:19:17 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	vega@nebusec.ai,
+	Victor Nogueira <victor@mojatatu.com>
+Subject: [PATCH net 2/2] selftests: tc-testing: add tx_queue_len cap regression tests
+Date: Fri, 28 Aug 2026 08:19:02 -0400
+Message-Id: <20260828121902.66837-2-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260828121902.66837-1-jhs@mojatatu.com>
+References: <20260828121902.66837-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] module: init-failure path can free a module with live
- try_module_get() users
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-s390@vger.kernel.org,
- "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>,
- Sidraya Jayagond <sidraya@linux.ibm.com>, Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
- Alexandra Winter <wintera@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Hidayath Khan <hidayath@linux.ibm.com>
-References: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/24/26 8:13 AM, Mahanta Jambigi wrote:
-> Hi Luis, Petr, Daniel, Sami, Aaron,
-> 
-> I'm writing to ask about what looks like a generic module-init failure
-> lifetime problem in the module loader. I ran into it while working on
-> the SMC networking module (net/smc/), but after several patch
-> iterations, it seems the root issue may belong in kernel/module/main.c
-> rather than in SMC itself. I'd appreciate your guidance on whether this
-> reading is correct, and if so, what fix direction would be preferred.
-> 
-> THE ISSUE IN do_init_module()
-> =============================
-> 
-> include/linux/module.h has a long-standing FIXME in module_is_live():
-> 
->     /* FIXME: It'd be nice to isolate modules during init, too, so they
->        aren't used before they (may) fail. But presently too much code
->        (IDE & SCSI) require entry into the module during init. */
->     static inline bool module_is_live(struct module *mod)
->     {
->         return mod->state != MODULE_STATE_GOING;
->     }
-> 
-> Because MODULE_STATE_COMING is not MODULE_STATE_GOING, try_module_get()
-> can succeed once a module's __init is executing. If __init makes the
-> module externally reachable partway through and then later fails, the
-> failure path in do_init_module() appears to do:
-> 
->     fail:
->         mod->state = MODULE_STATE_GOING;
->         synchronize_rcu();
->         module_put(mod);
->         ...
->         free_module(mod);
-> 
-> synchronize_rcu() waits for RCU readers, but not for threads that
-> already obtained a module reference via try_module_get() and are still
-> executing module text.
-> 
-> By contrast, the normal unload path in try_stop_module() refuses to
-> proceed while the refcount is non-zero.
-> 
-> So the asymmetry seems to be that the normal unload path waits for
-> references to drain, while the init-failure path does not.
-> 
-> A concrete race would look like:
-> 
->   1. Module __init registers an externally reachable interface.
->   2. User space enters through that interface and try_module_get()
->      succeeds while the module is still COMING.
->   3. A later __init step fails.
->   4. do_init_module() frees the module.
->   5. The in-flight caller is still executing module text.
-> 
-> SMC AS A CONCRETE EXAMPLE
-> =========================
-> 
-> In SMC, simply moving registration later does not appear to eliminate
-> the window, because there are two separate registration points that can
-> make the module reachable via socket():
-> 
->   1. sock_register(&smc_sock_family_ops)
->      After this, socket(AF_SMC, ...) can succeed and reach
->      try_module_get() via __sock_create().
-> 
->   2. smc_inet_init() -> inet_register_protosw()
->      After this, socket(AF_INET, SOCK_STREAM, IPPROTO_SMC) can succeed
->      and again reach try_module_get().
-> 
-> Either registration point can succeed before a later init step fails.
-> 
-> This may not be specific to SMC; other protocol modules that become
-> reachable during init, such as Bluetooth, may have similar exposure and
-> appear worth auditing as well.
-> 
-> ON THE FIXME'S IDE/SCSI CONCERN
-> ===============================
-> 
-> The FIXME mentions IDE and SCSI as reasons not to isolate modules
-> during init.
-> 
->   1. IDE was removed in Linux 5.14, so that half of the concern no
->      longer applies.
-> 
->   2. SCSI still appears to self-reference during init
->      (scsi_device_get() -> try_module_get(hostt->module) during
->      scsi_scan_host()), so a blanket wait-for-refcount-to-drain
->      approach in the failure path may deadlock there.
-> 
-> Also, strong_try_module_get() already rejects MODULE_STATE_COMING with
-> -EBUSY, so the infrastructure for refusing callers during init already
-> exists in some form.
-> 
-> QUESTIONS
-> =========
-> 
-> First, is my reading of this init-failure refcount/lifetime asymmetry
-> correct?
+Add two test cases for the S16_MAX tx_queue_len cap in
+netif_change_tx_queue_len():
 
-Your analysis looks correct to me.
+1. Set path: set txqueuelen to 100000000. On a fixed kernel the
+   change is rejected with -ERANGE (exit code 2) and txqueuelen
+   stays at the default 1000.
 
-> 
-> If so, would one of the following directions be acceptable?
-> 
->   1. An opt-in mechanism (for example, a module flag) for modules that
->      are safe to isolate during init and whose init-failure path should
->      wait for external references to drain.
+2. Resize path: set txqueuelen to 500, attach pfifo_fast, then raise
+   txqueuelen to 100000000. On a fixed kernel the resize is rejected
+   with -ERANGE and txqueuelen rolls back to 500.
 
-In general, it is preferred if the module loader handles all modules in
-the same way.
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ .../tc-tests/qdiscs/pfifo_fast.json           | 51 ++++++++++++++++---
+ 1 file changed, 45 insertions(+), 6 deletions(-)
 
-I would say that the module loader should wait for external references
-to drain after an init failure for all modules and that it should be the
-responsibility of individual modules to ensure that this wait eventually
-completes. Excluding some modules would mean that the module loader
-could still free them while they are in use by the kernel.
-
-Before such a wait, the module loader should cancel all idempotent
-module loads. This is especially important during boot when several
-udevd workers may be trying to insert the same module. In that case,
-a failed module init function should block only a single udevd task, so
-that the system can still boot properly.
-
-> 
->   2. Treating MODULE_STATE_COMING as non-live for normal
->      try_module_get() users, with some explicit escape hatch for the
->      remaining subsystems that genuinely need self-entry during init.
-
-This might make sense, but the kernel currently has over 500 users of
-try_module_get() so changing its semantics in this way would need to be
-done very carefully.
-
-I'm also not sure there is anything inherently wrong with calling
-try_module_get() on a module while it is still executing its init
-function. It must mean the module has reached a state in which it
-properly initialized functionality to be registered with a specific
-subsystem.
-
-For instance, the __sock_create() function mentioned in your email
-contains (simplified):
-
-[...]
-	if (rcu_access_pointer(net_families[family]) == NULL)
-		request_module("net-pf-%d", family);
-
-	rcu_read_lock();
-	pf = rcu_dereference(net_families[family]);
-	err = -EAFNOSUPPORT;
-	if (!pf)
-		goto out_release;
-
-	if (!try_module_get(pf->owner))
-		goto out_release;
-[...]
-
-Consider two tasks that both call socket(XYZ). The first one sees
-net_families[family]==NULL and calls request_module(XYZ). The module
-then starts loading and its init function calls sock_register(XYZ). At
-this point, the second task can see that net_families[family]!=NULL, so
-it skips request_module(XYZ) and calls try_module_get(pf->owner). If
-that call newly fails because the module is still in
-MODULE_STATE_COMING, it breaks the autoload functionality of
-__sock_create().
-
-The scheme would need to be changed to call request_module(XYZ) if
-either net_families[family]==NULL or !try_module_get(pf->owner).
-
-> 
-> Any guidance on the preferred direction would be much appreciated.
-
-Waiting for external references to drain after an init failure makes
-sense to me. I'm less sure about changing the semantics of
-try_module_get(), or whether strong_try_module_get() should instead be
-exposed.
-
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+index 30da27fe8806..03668d86bd0a 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+@@ -9,8 +9,7 @@
+         "plugins": {
+             "requires": "nsPlugin"
+         },
+-        "setup": [
+-        ],
++        "setup": [],
+         "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
+         "expExitCode": "0",
+         "verifyCmd": "$TC qdisc show dev $DUMMY",
+@@ -30,8 +29,7 @@
+         "plugins": {
+             "requires": "nsPlugin"
+         },
+-        "setup": [
+-        ],
++        "setup": [],
+         "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
+         "expExitCode": "0",
+         "verifyCmd": "$TC -s qdisc show dev $DUMMY",
+@@ -81,8 +79,7 @@
+         "verifyCmd": "$TC qdisc show dev $DUMMY",
+         "matchPattern": "qdisc pfifo_fast 1: root refcnt [0-9]+ bands 3 priomap",
+         "matchCount": "0",
+-        "teardown": [
+-        ]
++        "teardown": []
+     },
+     {
+         "id": "4385",
+@@ -105,5 +102,47 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
++    },
++    {
++        "id": "ed33",
++        "name": "Reject tx_queue_len exceeding S16_MAX at set time",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$IP link set dev $DUMMY txqueuelen 100000000",
++        "expExitCode": "2",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 1000$",
++        "matchCount": "1",
++        "teardown": []
++    },
++    {
++        "id": "04b5",
++        "name": "Reject tx_queue_len resize exceeding S16_MAX, rollback to original",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY txqueuelen 500",
++            "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast"
++        ],
++        "cmdUnderTest": "$IP link set dev $DUMMY txqueuelen 100000000",
++        "expExitCode": "2",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 500$",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root",
++            "$IP link set dev $DUMMY txqueuelen 1000"
++        ]
+     }
+ ]
 -- 
-Thanks,
-Petr
+2.43.0
+
