@@ -1,132 +1,127 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DC037CD21
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 20:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97502192FA
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 20:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787948791; cv=none; b=tmHMmAl5FR3QSvC43Zy3ciMH9y5kjdG59PUhS8cbgqQJbglAEnOR+eucHUjs6xvSiUW7tj4QFmj4jQ24zbvh+5VMUBAAgo29K9yG6G9BeF5HYw7ADK/TvpvXtXqIEX1+uc6YryQ2wbjOy1JHl5EFsh3h431jNfEGKUFJ0IFDZ84=
+	t=1787949388; cv=none; b=YaSe+p493LZwarYjIY6MT6g/vQ0F8OZB4fIH2vi1FsBFCSF/8YEs2c6b+gbzGTglPwsB5gjSxxC5+iCkcaW5KRvH8Mx3wPWRQ1pdqU+1h+P+tSw2CTcbXgPy91xwY+QNgi1Wp7YB9vL4tVvDoaObZlgMja/1PxNtxhJsY217/+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787948791; c=relaxed/simple;
-	bh=lFpFtYv6iQcb7S5D9sDFzWR132x+i45bvQJN5YmB7Zg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=QBXRRKYv8vsIvf/0IoRUz7tjtiVOht4YCgDAPBg286Ok/tIs9o3k+yGvyD79j4QBqy30Msn0Dr+iEtbJBqrXsVEa6oHv781f7kkPZQN1zpR+T5bnJvqVzWe0V4lq87v6jDc3CKWvwGLL+ja6LuYt3ilCLroWTE4GUkqoT/iNH5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHe0a0U7; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787949388; c=relaxed/simple;
+	bh=qxnErit/6r4KPY362kHRjVcCBndDRDhfVu6Gk75x3UQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YOTepvE8MRF5Tj1hf55AB16iaE4T5VrZAjay6tS93U8BiHfb5d1cbZyOTIIDloV1h6VPhzS96fsccNHG3W/05+aqVWEZsRgonELmjwQGGg0hHNxuTeZsrqWaD/uz5ijQyKuIm5zvo3QaMrO0ILCDlBL49saM03MlP31NAH5IUrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=SBUANxDJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=J0JH8avK; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHe0a0U7"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66bd7857841so1715476d50.3
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 13:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787948789; x=1788553589; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tGVauGPoAYu5wHetzl3LM6n1Jp84rQMdvhVyIaoVuCg=;
-        b=bHe0a0U73dR7D66cNuxInO9OFEprZe1WVNp+4DAFZ9NnedJtyWEwJuLcS1ku0nmxBj
-         fy6/vZ/U3YSe8+1sNYbnBCH1iaX/xftHMO5lA7VxCFBViX/qdnw+I7DqsV4IMZgMggCw
-         BHypkkkzust1/SFpxQ5EKRaNFUHys4hAyYI+pni8StKM+L+SQhTSQhGKEoUvdvDSCihf
-         KMKeZc+e/KNuIeZhxvMas31N51ZAZJg//CAy5bK22x/0qDYA9QLuv7rxsO5eAnSPpPCq
-         /G9IcSl6VhG57fhxWpuu58AGxfyMutW0mYdcTcUc/LQOy1Y5nLVWWKD41k9GTBvpcwMJ
-         569A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787948789; x=1788553589;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tGVauGPoAYu5wHetzl3LM6n1Jp84rQMdvhVyIaoVuCg=;
-        b=DWw28QIbgpmNDr+pNu5ecUB+pC6neOJxyEZM5JODbAp3QeQg6SCmC7FXVJlBlovBon
-         I/FLdX+DpbHH4nlMc8kyB463H8vOcWkrRW3m9vQijKa5G3CJYZyS82mywhYJWZCcU9Ru
-         MV9Bc4JK40JIJHljsTiDo01lvpQQE4RxdFCf0lw5/EIzAegsJGe0ppQf21timYdxkS5Y
-         DiG6yzAYJ1zjYHfj+L7dEHpDD7ro4qq5dEbMsGQGXrdoJHGm2jjX2uoriXKS4LReD8Tj
-         Q335EJsV0vyEEYdYgdsA3CfsP7UFEggVBFVQbWP0nT/FZHVV0/wuaUIJJNxGJsMzL3x0
-         Aiuw==
-X-Forwarded-Encrypted: i=1; AKwUvBxOVfgHolHvtNhPaoAde7Wno3IiUkA97L06YpmNoS21KEl17v/rayrydo1I8crgSAQM2fe1B8o=@vger.kernel.org
-X-Gm-Message-State: AFuF++nhxol7QwID5OxXFScZIiDQgNnvqFSFwIhiT9wMuk040oZdtPVd
-	cmfiI7V8prf7VbSj/kD38pGrpy7m13FUjwR4aROXaKbUI71CMcJ2wDuI
-X-Gm-Gg: AYBFou0g2a4OZSNCHi1I2i86Bxi+MgG/2cw8HDWIKzbkkcbJJVQP9ty2D+aZhXX0IMw
-	j6yu6FwoO37nQWGSvtIxZ2TDBLfgcZuYRiIop+vlnMC98Vz7EAySLTZwsRa6pVTaifbR263XOU5
-	eODAWO3E+O+xBnLRzS3Ss31CPcSV4sPWNAArvnOKPZperOEH0IaB8fCr5BVPKyRafv8tYluX0fp
-	JhDK8QW++T6kkEQohqfqq60p5s515gePb48oKs7Ie4uBj4xP2egGU2Rg9yA3+c+bxDT9QNdWG8+
-	26OyNldlcglDIO1Em+LI67BSksHzJjdRVuemloZOb69jUL5Bfo32StE+FvUxgckr0Es0FRzYW9O
-	PaX8+Z0fhFhIcP44SCFD37xahmLEQOtl7VIKgLoXQLjEQmcV2oTMoDkXyae9A4OgAwxjICognAy
-	RZwwJIQJoJc2rnlgAu4LwNeE7rEX1epoKqa+R1N8KOZBrc9BF0Cn605F1IWXIynBkZVtTXIREC4
-	a2GOv2ldtATfNvN6eNAbbOktYo3WNH+Go65EaSAN8i5M1+veUIKQw==
-X-Received: by 2002:a53:bc8b:0:b0:66d:117c:6cfb with SMTP id 956f58d0204a3-66e4c731f0dmr2380958d50.31.1787948789271;
-        Fri, 28 Aug 2026 13:26:29 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66e4eb66e45sm1469968d50.9.2026.08.28.13.26.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 13:26:28 -0700 (PDT)
-Date: Fri, 28 Aug 2026 16:26:27 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Qihang <q.h.hack.winter@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, 
- jv@jvosburgh.net, 
- jiri@resnulli.us, 
- andrew+netdev@lunn.ch, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- willemb@google.com, 
- netdev@vger.kernel.org, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.3553a6121b350@gmail.com>
-In-Reply-To: <CAH78GvtPSzvaRtph3d9j5CV+wBZNhLEuUN7bvsQVc6DmcfFY1A@mail.gmail.com>
-References: <20260824021802.90369-1-q.h.hack.winter@gmail.com>
- <willemdebruijn.kernel.2ec10017f4836@gmail.com>
- <CAH78GvvF-mBij7exwgkthJC2puz1-1Ti=WkNr2PwFcKr_v5U4Q@mail.gmail.com>
- <willemdebruijn.kernel.361c9e585560e@gmail.com>
- <apDgeCLGiHTd7fAC@fedora>
- <willemdebruijn.kernel.3786f2ddb8b17@gmail.com>
- <CAH78GvtPSzvaRtph3d9j5CV+wBZNhLEuUN7bvsQVc6DmcfFY1A@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] bonding: reject frames with insufficient headroom
- in bond_header_create
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="SBUANxDJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="J0JH8avK"
+Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 1DF187A0070;
+	Fri, 28 Aug 2026 16:36:23 -0400 (EDT)
+Received: from ams-imap-19 ([10.64.2.39])
+  by ams-compute-01.internal (MEProxy); Fri, 28 Aug 2026 16:36:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1787949382;
+	 x=1788035782; bh=grr5hkgau72H/fPgCw/qRoIvfcHsGK4U9MKvISLfesk=; b=
+	SBUANxDJIuOo52Eulpw64uFNANq24v0i29vlvH0nxcvsEonsOy970CpwoRsrOyOQ
+	krCbENbGAF2EIOtl/JQS379Xe1w92rZRvJulLzo9iW53mggWObhVgbLa6S2zeGyn
+	DEvbjd0Z1cd6fbiX5L+ZmlS3wVRI9YsauX3YlkzXT9qVcGJbj3XY1xa/5z0s8pzw
+	Jutp4FjMvXYSPp7i4ju8EKMAYLw+xSMFh5jiky1blq2vzc60gK/JTB81lVGO7zmH
+	HM1PkuPSAo4r+45IviVhvJMXe42Z42pgmGABmu44zPvhtoyxBX0+2FHIAXwM/AXX
+	pFbSXmGTcHroguwc95oK4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787949382; x=
+	1788035782; bh=grr5hkgau72H/fPgCw/qRoIvfcHsGK4U9MKvISLfesk=; b=J
+	0JH8avKYmpfbwJA+i1s87Oh69/l0YUgVTDZ929TJqkkYmB/rM67aCvl8eXBp2YLR
+	1P/luNkJ4bevsOl7T6iyJ7rpl3VMqNBAH/6ETrv5PnzQQHGT7f3g0ZkcWArWKkeL
+	G+la1fM7IPVbxoaOqq9gY100KQnyq3nMUKzmDBfhr2fjqfI1YYRqvT8qfFT6NdpD
+	ktvQh5aoMzv1YmGkU/KSHIO38K7hliENAFtMVyjTDyCJEjSks1zVqVk4hEGhoyzK
+	Yrfd6DEDIwuX+hHdEXu2y2lZtIpI0rPN+E75+E589QGqkmpDlpZeQobmewQhTb2A
+	VKAHX7RnIKTZDHAMSrdrA==
+X-ME-Sender: <xms:P_GRaudotP-yMYQvhLB8jmMixjdkuZKsEuJZEXzznqpS18Ug69MTDw>
+    <xme:P_GRajAIk9iZtygRAUSRRNcHTJpDvNC1cGqbO1NRKTnKXOt_Ija-Z5UvEopkXwVPV
+    Aus7AiD-Z1J1xM_dBxdw_t-SN4rkN1A570b-GZh5oiVymZ5fnPr9-4>
+X-ME-Proxy-Cause: dmFkZTFEjP/baf7GdtFILBnf3EkFJw/YT6c8W6ZxFKBT4NC9/bxirVJcW6+mE0X7XuUOMc
+    U5z7brCw+TY7m43icCk5v3db1RXPKL4BRShYHAUEuj9RsBeLFUnW+hoRwdphbH2d4Ho9rA
+    /G+7Mg9BtIXteQ5FRCNPmuqTjk6dS1Cvck9IWXTLQ2cWsh6piUKniKcufmjKgO0M54OOSZ
+    WhV9RBdITfx5g9WVSTF5Y8woNAP9K6pBdyXWNF3GkZCJ8sF53H0Vd5TGidjqiGpWbIxmTu
+    f1dEgpWU/AHemmEYI9iL/MPFezxnJRkBqxUsuAQau6LN5DTI1UvyErQDRWXl15Iiq8bqSZ
+    Q/LBIJ+1+EoiY2zwBmQYacIHJ4zOuKFE6AN6DEM8uiWSetLIOIFWxPvA82a/90V/Y/Xwni
+    DQSVbHJnFqxp9XoYWDd6KefAjVzh7AG8eNmsafNWKX2EQpV/Kj8Ssk+UDLvWewnDqWliVw
+    OqZOjkUV+yD84apWUnwYPRgM/SZmmhO3VN7aWfHO0+MgqHUt2HBa+pAEq6i+Jxox/zyuXX
+    57R2DjGZfbHFXgvhA4ql0yjD3RYTdyZ4Ayi+zMMmFpickMndIg5yl5CZ/D3kAHFm0aD+Jm
+    BIEDvoxCzypiVqjlomxIZrQ7K5uVM7pKTRtXT0rUTPPawEqQB5/alMVFm60A
+X-ME-Proxy: <xmx:QfGRalPSAoHpzHElncPrtSsLb89NLFQ8QPt5eAzkaO1c9ghaB-wkaA>
+    <xmx:QfGRaue-G7vdPBdM1SDztqgPX6EOT2GkazFPyiGXqH6LgUNaWDQSUg>
+    <xmx:QfGRaiTdMYD5S5efSksP4TJvHWhqvGDw9Xh_D3RgdTHgjfy5CNWpZg>
+    <xmx:QfGRakfMw4RBsTpoJFzc39rBt6kHAXOtt2SBWjXQDLvbUiAYMKyrlw>
+    <xmx:RvGRaj4yDz3teXFyzLCMQ1kKlShmGRiYbMI7Nd6PHNL0jQTkoH6LYKUw>
+Feedback-ID: i559e4809:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 249912F81645; Fri, 28 Aug 2026 16:36:15 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+X-ThreadId: AQCaIXmGAEe7
+Date: Fri, 28 Aug 2026 23:35:54 +0300
+From: "Alice Mikityanska" <alice.kernel@fastmail.im>
+To: "Jakub Kicinski" <kuba@kernel.org>,
+ "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
+ "Shuah Khan" <shuah@kernel.org>,
+ "Hannes Frederic Sowa" <hannes@stressinduktion.org>,
+ "Vadim Fedorenko" <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
+ "Alice Mikityanska" <alice@isovalent.com>
+Message-Id: <e01d7fc0-cc3f-4a52-a587-f9087f1c787d@app.fastmail.com>
+In-Reply-To: <20260827122856.4b6eeb96@kernel.org>
+References: <20260825200215.90326-1-alice.kernel@fastmail.im>
+ <20260825200215.90326-4-alice.kernel@fastmail.im>
+ <willemdebruijn.kernel.3645a45d69737@gmail.com>
+ <20260827122856.4b6eeb96@kernel.org>
+Subject: Re: [PATCH net v4 3/4] selftests: net: Test UDP length overflow with PMTU
+ discover and big MTU
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-Qihang wrote:
-> Yeah, agreed on steady state.
-> 
-> One thing to flag: packet_snd snapshots dev->hard_header_len at
-> af_packet.c:3023 (no lock) but pushes the header at :3059 onto whatever
-> curr_active_slave is then. A concurrent enslave that bumps it in between
-> -- first non-Ethernet slave 14->24, or a bigger-header failover -- can
+On Thu, Aug 27, 2026, at 22:28, Jakub Kicinski wrote:
+> On Wed, 26 Aug 2026 13:18:18 -0400 Willem de Bruijn wrote:
+>> > +def check_dmesg_clean(func: str) -> bool:
+>> > +    with subprocess.Popen(['dmesg'], stdout=subprocess.PIPE) as dmesg:
+>> > +        res = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout, check=False)
+>> > +    return res.returncode != 0 and dmesg.returncode == 0
+>> > +
+>> > +
+>> > +@contextmanager  
+>> 
+>> Interesting approach. In ksft the built-in defer() mechanism may be
+>> preferred. Not sure.
+>
+> +1 small preference towards defer() if Alice is willing.
+> It's be more idiomatic for our selftests
 
-It does appear that all slaves need to be of the same type, in
-bond_enslave:
+No problem, I can switch to defer, thanks for the suggestion.
 
-        if (!bond_has_slaves(bond)) {
-                ...
-        } else if (bond_dev->type != slave_dev->type) {
-                SLAVE_NL_ERR(bond_dev, slave_dev, extack,
-                             "Device type is different from other slaves");
-        }
+> More importantly ruff check and pylink --disable=R have to be clean
+> for new tests. The test cases need a docstring explaining what they are
+> trying to test. The helpers can probably get a _ prefix to mark them
+> as private and silence the warning.
 
-> leave the in-flight frame short and trip skb_under_panic (oops/panic,
-> not silent corruption; local DoS for a privileged user).
+Got it, will do. I thought it was OK, because all tests I saw didn't
+have docstrings.
 
-But the same type can still create different hard_header_len, e.g.,
-with GRE devices.
-
-I had expected that bond slave changes, such as bond_enslave, would
-flush the stack using synchronize_net(). For instance when updating
-the valid slaves for non-primary bonds, in bond_set_slave_arr.
-
-But it does appear that a packet may see two different
-bond->hard_header_len in a single packet_snd.
-
-> Happy to drop v1, or hand over the create-time check if you want it closed.
-
-Much appreciate your help on this, Qihang.
+> -- 
+> pw-bot: cr
