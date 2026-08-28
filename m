@@ -1,29 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEAF3D955B
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05773E022C
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 07:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787903042; cv=none; b=C/vhbeueoWleELdmI1Skl1ELd+4/Egp9YFutWBOndNeA0iDiwVGPPKpLVk1eU3xafEYGpkvhPKVn6BQzCMB+eSrtSMgbrxAruWpnntUT6UJWTS+E9dCcjfBVyUqli8wGKrkaFS8Wo1oknIp5GSgXG029Fo28KdwWf2Mg+s5OGiU=
+	t=1787903043; cv=none; b=gM5rIzVnF38c022I1NICQLIUpiIl2byF//G5R+Hy9NaX8/TeoWgzEAMWPsGelHL/HbM1iJ+YC4YJNvdNg8TeXefJEiMb6CXlhU/4668eQCPov89zboJSr97RzPUO9EDbddfeTA10DknRotL12yzAadRjOoqmOSQaXIV6NOed3e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787903042; c=relaxed/simple;
-	bh=6+8SCkeE5GDewaVcyBIFJDde+1jl9GEd5NXujbQqRK4=;
+	s=arc-20240116; t=1787903043; c=relaxed/simple;
+	bh=LI9Quol+nMgp/OX9SBZkoQDiofWyejDL3d7Pi2BEK6U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gUH6zNJvrjQ8Z5Qm0jB5Pl+/MtdpSqk1Ssog1nlB6IbS++NJZ8bwPHG90XSrKCXWf059ThOFTHXpOe8pnJOjcla3ussf3B4cPp34kpzbT3oDe0ZJkIsc/qdRVoZmQs4s3OTNpp3AHqjUeGpogUwkIepMEP5t91Y4gHMEk5MIvt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gIY+0di5; arc=none smtp.client-ip=220.197.31.4
+	 MIME-Version; b=VijBRLzhH0qwWmx7gXRbc0eDqD0d6floFkmTFEVynFLfKGtMyW3oWCQAiF1vwRlopcn0RhofKplqsvo5kgOXH7tZbPgacu7Ue0WZKO7Zcui7J0F+g4QCtVLFZpNiWaTDhmFInvQmrZR9chmgfD79vsohxPM153haevKINk4MuxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hCdty1Pw; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gIY+0di5"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hCdty1Pw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=RN
-	bG4smiAer10VHrwAAiPyMG2/S+zhchKudn52VSqHk=; b=gIY+0di52HoYHN+72u
-	ucRUE6aF6gCF21hMOvYv9BmDnZ+z7a9IkIYasPTVPntYy9NsJnmP641/Ky4GazKF
-	Eb4kbgYFNTedYT0AZR9bhojSN9O6gqBfxzqvtAAMdUP71i3Nr4lEINjSRdkAiRvZ
-	f4etTbnhXp4sDwFkNLznC1oUQ=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=wv
+	1N4lWbfgZMBDJNbukHBckk+7/7CyVr7NXZ98QYgkw=; b=hCdty1PwkwUluBXdo+
+	RaXUlupbAlzvbWlDby371kVbzorXaKphY+6W+z+xxOkjKkQ9BuS05t8MU8hl0ysL
+	QfgsJ9L/iJYZaEtZHFZRNQ9jvDenqff3aPFGIXN+dChHFrxPkDRAkGHsCnZ+ggnU
+	DCS1r0jvjm86TJ7VfNtgmz9sE=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgD31xMfPJFqXWYePg--.48947S4;
+	by gzsmtp3 (Coremail) with SMTP id PigvCgD31xMfPJFqXWYePg--.48947S5;
 	Fri, 28 Aug 2026 15:43:29 +0800 (CST)
 From: Longjun Tang <lange_tang@163.com>
 To: mst@redhat.com,
@@ -33,9 +33,9 @@ Cc: jasowangio@gmail.com,
 	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	tanglongjun@kylinos.cn
-Subject: [RFC PATCH 2/3] virtio_net: introduce an RX queue watchdog for stuck detection
-Date: Fri, 28 Aug 2026 15:43:25 +0800
-Message-Id: <20260828074326.65594-3-lange_tang@163.com>
+Subject: [RFC PATCH 3/3] virtio_net: add rx_timeouts per-queue statistic
+Date: Fri, 28 Aug 2026 15:43:26 +0800
+Message-Id: <20260828074326.65594-4-lange_tang@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260828074326.65594-1-lange_tang@163.com>
 References: <20260828074326.65594-1-lange_tang@163.com>
@@ -46,182 +46,68 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgD31xMfPJFqXWYePg--.48947S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr17Jw15tF4UWF43Zw4xJFb_yoW7CryfpF
-	W3Cwn8trWktr4xuryft397JFy5KF97Xry7Gryft3y5ZF98Kr1rZFn2kFy5Ga909FZ3Xr17
-	ZF4qy3yfCaykuFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jqoGPUUUUU=
-X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC-QEWRGqRPCFZMwAA3i
+X-CM-TRANSID:PigvCgD31xMfPJFqXWYePg--.48947S5
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4fXryDCr45Ary7Zw1UKFg_yoW8uFWfpF
+	4Yy3ZFyFyrXw47Xa4fG3yDZF15K3s3JrW7Gry7K345CFn8KrnYyr10grWUKFyakFZ8Zr1j
+	vwsYv398W3yUuF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j-2-nUUUUU=
+X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC-QIWRGqRPCJZPQAA3s
 
 From: Longjun Tang <tanglongjun@kylinos.cn>
 
-The backend raises an interrupt after adding buffers to the used ring,
-and the hypervisor injects it. If one is lost (e.g., a transient KVM
-failure), NAPI will not be scheduled and the driver stops consuming
-buffers. The ring eventually fills up, the backend stops notifying, and
-the queue is left permanently stuck.
-
-Add a per-device watchdog that scans the RX queues once per second and
-detects a queue that has a non-zero backlog while making no consumption
-progress and receiving no new interrupt for rx_watchdog_timeo seconds
-(default 5, 0 disables it). On detection it logs a warning, rate-limited
-to once per timeout.
+Add an rx_timeouts field to the per-queue RX statistics, expose
+it via ethtool and increment it when the RX watchdog fires,
+so RX watchdog timeouts can be observed per queue.
 
 Assisted-by: Kilo:deepseek-v4-pro
 Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
 ---
- drivers/net/virtio_net.c | 96 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 96 insertions(+)
+ drivers/net/virtio_net.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index e34c52d059d3..02d0c4a67360 100644
+index 02d0c4a67360..44a093604d82 100644
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -36,6 +36,10 @@ module_param(csum, bool, 0444);
- module_param(gso, bool, 0444);
- module_param(napi_tx, bool, 0644);
+@@ -134,6 +134,7 @@ struct virtnet_rq_stats {
+ 	u64_stats_t xdp_redirects;
+ 	u64_stats_t xdp_drops;
+ 	u64_stats_t kicks;
++	u64_stats_t rx_timeouts;
+ };
  
-+/* RX queue stall timeout in seconds; 0 disables the watchdog. */
-+static unsigned int rx_watchdog_timeo = 5;
-+module_param(rx_watchdog_timeo, uint, 0644);
-+
- #define VIRTIO_OFFLOAD_MAP_MIN	46
- #define VIRTIO_OFFLOAD_MAP_MAX	47
- #define VIRTIO_FEATURES_MAP_MIN	65
-@@ -330,6 +334,11 @@ struct receive_queue {
- 	/* The number of rx notifications */
- 	u16 calls;
+ #define VIRTNET_SQ_STAT(name, m) {name, offsetof(struct virtnet_sq_stats, m), -1}
+@@ -167,6 +168,7 @@ static const struct virtnet_stat_desc virtnet_rq_stats_desc[] = {
+ 	VIRTNET_RQ_STAT("xdp_redirects", xdp_redirects),
+ 	VIRTNET_RQ_STAT("xdp_drops",     xdp_drops),
+ 	VIRTNET_RQ_STAT("kicks",         kicks),
++	VIRTNET_RQ_STAT("rx_timeouts",   rx_timeouts),
+ };
  
-+	/* RX watchdog state for lost-interrupt detection. */
-+	u16 watchdog_last_used_idx;
-+	u16 watchdog_calls;
-+	unsigned long watchdog_jiffies;
-+
- 	/* Is dynamic interrupt moderation enabled? */
- 	bool dim_enabled;
- 
-@@ -441,6 +450,9 @@ struct virtnet_info {
- 	/* Work struct for setting rx mode */
- 	struct work_struct rx_mode_work;
- 
-+	/* RX watchdog timer for lost-interrupt detection */
-+	struct timer_list rx_watchdog;
-+
- 	/* OK to queue work setting RX mode? */
- 	bool rx_mode_work_enabled;
- 
-@@ -3046,6 +3058,85 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
- 	return received;
- }
- 
-+/*
-+ * The RX path is entirely event driven: the driver relies on the
-+ * hypervisor injecting an interrupt for every used buffer. If an
-+ * interrupt is lost (e.g. a transient KVM failure), NAPI is never
-+ * scheduled, the driver stops consuming buffers, the backend fills the
-+ * ring and, once it runs out of descriptors, stops sending further
-+ * notifications. Both sides then wait for the other and the queue is
-+ * permanently stuck.
-+ *
-+ * This watchdog detects that state: a queue is considered stalled when
-+ * it has a non-zero backlog, makes no consumption progress and receives
-+ * no new interrupt for rx_watchdog_timeo seconds. On detection it logs
-+ * a warning.
-+ */
-+static void virtnet_rx_watchdog(struct timer_list *t)
-+{
-+	struct virtnet_info *vi = timer_container_of(vi, t, rx_watchdog);
-+	unsigned long timeout = rx_watchdog_timeo * HZ;
-+	int i;
-+
-+	if (!rx_watchdog_timeo)
-+		return;
-+
-+	for (i = 0; i < vi->curr_queue_pairs; i++) {
-+		struct receive_queue *rq = &vi->rq[i];
-+		u16 last_used = virtqueue_get_last_used_idx(rq->vq);
-+		u16 calls = rq->calls;
-+		bool backlog = virtqueue_poll(rq->vq, last_used);
-+
-+		if (!backlog || last_used != rq->watchdog_last_used_idx ||
-+		    calls != rq->watchdog_calls) {
-+			/* No pending data, or the queue made progress, or a
-+			 * new interrupt arrived: restart the window.
-+			 */
-+			rq->watchdog_last_used_idx = last_used;
-+			rq->watchdog_calls = calls;
-+			rq->watchdog_jiffies = jiffies;
-+			continue;
-+		}
-+
-+		if (time_after(jiffies, rq->watchdog_jiffies + timeout)) {
-+			unsigned int stall_ms =
-+				jiffies_to_msecs(jiffies - rq->watchdog_jiffies);
-+
-+			netdev_warn(vi->dev, "RX queue %u stalled for %u ms\n",
-+				    i, stall_ms);
-+
-+			/* Rate-limit to one event per timeout. */
-+			rq->watchdog_jiffies = jiffies;
-+		}
-+	}
-+
-+	mod_timer(&vi->rx_watchdog, jiffies + HZ);
-+}
-+
-+static void virtnet_rx_watchdog_start(struct virtnet_info *vi)
-+{
-+	int i;
-+
-+	if (!rx_watchdog_timeo)
-+		return;
-+
-+	for (i = 0; i < vi->curr_queue_pairs; i++) {
-+		struct receive_queue *rq = &vi->rq[i];
-+
-+		rq->watchdog_last_used_idx =
-+			virtqueue_get_last_used_idx(rq->vq);
-+		rq->watchdog_calls = rq->calls;
-+		rq->watchdog_jiffies = jiffies;
-+	}
-+
-+	mod_timer(&vi->rx_watchdog, jiffies + HZ);
-+}
-+
-+static void virtnet_rx_watchdog_stop(struct virtnet_info *vi)
-+{
-+	timer_delete_sync(&vi->rx_watchdog);
-+}
-+
- static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+ static const struct virtnet_stat_desc virtnet_sq_stats_desc_qstat[] = {
+@@ -3069,8 +3071,9 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+  *
+  * This watchdog detects that state: a queue is considered stalled when
+  * it has a non-zero backlog, makes no consumption progress and receives
+- * no new interrupt for rx_watchdog_timeo seconds. On detection it logs
+- * a warning.
++ * no new interrupt for rx_watchdog_timeo seconds. On detection it
++ * records the event in the per-queue rx_timeouts statistic and logs a
++ * warning.
+  */
+ static void virtnet_rx_watchdog(struct timer_list *t)
  {
- 	virtnet_napi_tx_disable(&vi->sq[qp_index]);
-@@ -3209,6 +3300,8 @@ static int virtnet_open(struct net_device *dev)
- 		netif_carrier_on(dev);
- 	}
+@@ -3102,6 +3105,10 @@ static void virtnet_rx_watchdog(struct timer_list *t)
+ 			unsigned int stall_ms =
+ 				jiffies_to_msecs(jiffies - rq->watchdog_jiffies);
  
-+	virtnet_rx_watchdog_start(vi);
++			u64_stats_update_begin(&rq->stats.syncp);
++			u64_stats_inc(&rq->stats.rx_timeouts);
++			u64_stats_update_end(&rq->stats.syncp);
 +
- 	return 0;
+ 			netdev_warn(vi->dev, "RX queue %u stalled for %u ms\n",
+ 				    i, stall_ms);
  
- err_enable_qp:
-@@ -3802,6 +3895,8 @@ static int virtnet_close(struct net_device *dev)
- 	struct virtnet_info *vi = netdev_priv(dev);
- 	int i;
- 
-+	virtnet_rx_watchdog_stop(vi);
-+
- 	/* Prevent the config change callback from changing carrier
- 	 * after close
- 	 */
-@@ -6869,6 +6964,7 @@ static int virtnet_probe(struct virtio_device *vdev)
- 
- 	INIT_WORK(&vi->config_work, virtnet_config_changed_work);
- 	INIT_WORK(&vi->rx_mode_work, virtnet_rx_mode_work);
-+	timer_setup(&vi->rx_watchdog, virtnet_rx_watchdog, 0);
- 
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF)) {
- 		vi->mergeable_rx_bufs = true;
 -- 
 2.43.0
 
