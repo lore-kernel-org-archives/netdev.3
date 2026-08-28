@@ -1,110 +1,322 @@
-Received: from mta1.migadu.com (out-219.mta1.migadu.com [95.215.58.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2602DCC13
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 09:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33633392C27;
+	Fri, 28 Aug 2026 09:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787908219; cv=none; b=k5egFLw3+EadTVlsFl1yV1cLr+RH7e5dRtEvofhZMFXIGIxWFW2taR91sY5I5KZHFyfw7/aSKehSMO5iPahlgkORVufLsuLaWoLVUKpEE4nmPFDmAMqRL2MODR85UR1bhTPhxnT4jWxGcfbRIJ04CFNwnouXwMt79SFnqcL3Nwo=
+	t=1787908683; cv=none; b=qWR1m0E/0nzRMLYnJTRMC9IG5lrYgeJbsr2NjShbuTOox2hoh53K+e7yQ4tkqUyi/OcJfDX7zCIgOOOtD7TPTa/ox0RyboXE9EHbuW31sGMVkgoOYtVR5t+5Ndk8AWzHz4S+b097+MMZVEesSbg5finWBtnCXC2c1uWk3zgh41Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787908219; c=relaxed/simple;
-	bh=NQQjSsx7MDadVDc7TngFEjnUA3fUDa8WYM/oWjHn/5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ICgnokT6+04LRU0v/FTYdoZIdOebrHdZGvBiO39lYi/rJWIo+UNLL7/uhuPSLTyoimGJDM/ysdqIcUSOoSq6Qg7eL8Kt0A8ADN5SSHJytPVN7Tn3qKAFMMA9dmq23acPiP4fhE2klJtDhPDbHOwqLOWBXvxRi+s+hVL85vAphX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C7FFUdrc; arc=none smtp.client-ip=95.215.58.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787908683; c=relaxed/simple;
+	bh=psC+Pm1C52OGErPzFsuc5Xi2brMYlnpCeU52yeLDA7c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=d6VjviAhouo6+TytCVb5vNrjxOj9guw39cQntQ1bMC3f0Mb7R5zMuCyOkVDpYBkRKDRbUMlK7KXfSjfI5JhyiMs+ARWtXZZwluRrJgfp4RWZf0bY0+ptxHbditjd74RtK65rqCTPZcyTknjhpiSnu40z2jAs+/wIcRTSuHAeIQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhQjLOFY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C7FFUdrc"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=NQQjSsx7MDadVDc7TngFEjnUA3fUDa8WYM/oWjHn/5c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787908211; v=1; x=1788513011;
- b=C7FFUdrclWIjlGAUHNO2RFOoZppux97O+f2i75p3h7hbmPKv9Z/2AsTmW9+p9juelQiTTfp5
- qw54w2ZZ8qY5D/rqk6pN05UBdkxw0OkbhR04Io7sdCcsjbMxIDoI6/Dmgf46ebfxPpL2tCnAaPZ
- MEVtvYURXC8ohQl6eq/p94Ew=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 17eb4ab48f81af9e;
-	Fri, 28 Aug 2026 09:10:07 +0000
-X-Mizu-Trace-ID: 17eb4ab48f81af9e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ddc21a8e-b2dc-41a7-8390-5642664f08ea@linux.dev>
-Date: Fri, 28 Aug 2026 10:10:05 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhQjLOFY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 36E42C2BCF7;
+	Fri, 28 Aug 2026 09:18:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787908682;
+	bh=psC+Pm1C52OGErPzFsuc5Xi2brMYlnpCeU52yeLDA7c=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=QhQjLOFYiPuIBNI1UOCgNDUczKDrWXs3vQSXNn38LlhOp2JfnyuAXCxA3Z5KzlmVG
+	 naZDOzWgH5lznyTH1G6zLf4+bvQPN04b4FCTdKMcnPCiC6iU9wneRVqFjBYB5n0itO
+	 iweWj3KstfJgyqSlEG9Qx+AbaJmqb4Z65rtDu1eLcLiiCQlbH9Oh7O2BuNJA8gjHpE
+	 4MQH8Uo2n7YLOI0fL8yYa88pWYwBZN73DEGcUJSIjhYCtPw4qQp+nCu379h3svZ/12
+	 yJq9Mj3ptiSQ7IG+evETyHKgoUYroDenC9u855XekbUsvVfljbIw3kDB/zriYuuUOi
+	 lf5ikMef/+biw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C69FC61DD5;
+	Fri, 28 Aug 2026 09:18:02 +0000 (UTC)
+From: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
+Date: Fri, 28 Aug 2026 17:17:19 +0800
+Subject: [PATCH v7 2/6] net: wwan: t9xx: Add control plane transaction
+ layer
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1] iavf: add missing PTP adjustment callbacks
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>, netdev@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org, richardcochran@gmail.com,
- anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- jacob.e.keller@intel.com, ahmed.zaki@intel.com,
- mateusz.polchlopek@intel.com, saikrishnag@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
- stable@vger.kernel.org
-References: <20260828015837.2759-1-xuanqiang.luo@linux.dev>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260828015837.2759-1-xuanqiang.luo@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260828-t9xx_driver_v1-v7-2-bf8f6074d88a@compal.com>
+References: <20260828-t9xx_driver_v1-v7-0-bf8f6074d88a@compal.com>
+In-Reply-To: <20260828-t9xx_driver_v1-v7-0-bf8f6074d88a@compal.com>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jack Wu <jackbb_wu@compal.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>, 
+ Shi-Wei Yeh <shi-wei.yeh@mediatek.com>, 
+ Minano Tseng <Minano.tseng@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Robert Yu <robert_yu@compal.com>, 
+ Jeff Chang <Jeff_Chang@compal.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ linux-doc@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787908678; l=6974;
+ i=jackbb_wu@compal.com; s=20260526; h=from:subject:message-id;
+ bh=vuOoF1S4yacoIe/fJXVMIUwk0KIIejR9ydhwr36eXio=;
+ b=zhbOpa+zWXvDVB+yAmJ+Shda5AxTXn2yfqs4qu3I2BRaBtyqTLhxlHqBh2gDrNoaZmaor4UC4
+ ILIzT+ZJsLYBlPB7XONRY5yqk7ezuWY0eoIbMzCmg5UBxmjFDN8xaPa
+X-Developer-Key: i=jackbb_wu@compal.com; a=ed25519;
+ pk=VH1prTWixNl8OEUPPSfII3p46MzJpQN8J3+ecE1tZXg=
+X-Endpoint-Received: by B4 Relay for jackbb_wu@compal.com/20260526 with
+ auth_id=793
+X-Original-From: Jack Wu <jackbb_wu@compal.com>
+Reply-To: jackbb_wu@compal.com
 
-On 28/08/2026 02:58, Xuanqiang Luo wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> 
-> The PTP hardware clock documentation requires drivers to implement all
-> callbacks and return -EOPNOTSUPP for unsupported features.
-> 
-> The iavf driver registers a PHC without adjtime or adjfine callbacks.
-> A userspace clock_adjtime(2) request reaches ptp_clock_adjtime(), where
-> ADJ_SETOFFSET calls adjtime and ADJ_FREQUENCY calls adjfine. The missing
-> callbacks can therefore cause a NULL dereference.
-> 
-> Provide both callbacks and return -EOPNOTSUPP for the unsupported
-> operations.
-> 
-> Fixes: d734223b2f0d ("iavf: add initial framework for registering PTP clock")
-> Link: https://docs.kernel.org/driver-api/ptp.html#writing-clock-drivers
-> Link: https://lore.kernel.org/all/20260826101004.100979-1-xuanqiang.luo@linux.dev/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> ---
->   drivers/net/ethernet/intel/iavf/iavf_ptp.c | 12 ++++++++++++
->   1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.c b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
-> index 87b97e09df14a..fcb273828bc1b 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_ptp.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
-> @@ -252,6 +252,16 @@ static int iavf_ptp_gettimex64(struct ptp_clock_info *info,
->   	return iavf_read_phc_indirect(adapter, ts, sts);
->   }
->   
-> +static int iavf_ptp_adjfine(struct ptp_clock_info *info, long scaled_ppm)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static int iavf_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
->   static int iavf_ptp_settime64(struct ptp_clock_info *info,
->   			      const struct timespec64 *ts)
->   {
-> @@ -326,6 +336,8 @@ static int iavf_ptp_register_clock(struct iavf_adapter *adapter)
->   		 KBUILD_MODNAME, dev_name(dev));
->   	ptp_info->owner = THIS_MODULE;
->   	ptp_info->gettimex64 = iavf_ptp_gettimex64;
-> +	ptp_info->adjfine = iavf_ptp_adjfine;
-> +	ptp_info->adjtime = iavf_ptp_adjtime;
->   	ptp_info->settime64 = iavf_ptp_settime64;
->   	ptp_info->do_aux_work = iavf_ptp_do_aux_work;
->   
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: Jack Wu <jackbb_wu@compal.com>
+
+Introduce the control plane and transaction layer framework
+for the T9XX WWAN driver. This patch adds the core data
+structures (mtk_ctrl_blk, mtk_ctrl_trans) and initialization
+entry points that subsequent patches build upon.
+
+Split PCIe-specific objects into a separate mtk_t9xx_pcie
+module gated by the hidden MTK_T9XX_PCI config symbol.
+
+The control plane block (ctrl_blk) serves as the central
+context for managing the transaction layer, port layer, and
+FSM interactions. The actual DMA engine and TX/RX service
+implementations are added in subsequent patches.
+
+Signed-off-by: Jack Wu <jackbb_wu@compal.com>
+---
+ drivers/net/wwan/Kconfig                    |  9 ++++--
+ drivers/net/wwan/t9xx/Makefile              |  5 ++--
+ drivers/net/wwan/t9xx/mtk_ctrl_plane.c      | 46 +++++++++++++++++++++++++++++
+ drivers/net/wwan/t9xx/mtk_ctrl_plane.h      | 22 ++++++++++++++
+ drivers/net/wwan/t9xx/mtk_dev.c             | 11 +++++++
+ drivers/net/wwan/t9xx/mtk_dev.h             |  2 ++
+ drivers/net/wwan/t9xx/pcie/Makefile         | 10 +++++++
+ drivers/net/wwan/t9xx/pcie/mtk_pci.c        |  1 +
+ drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h | 21 +++++++++++++
+ 9 files changed, 123 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
+index 55c45af410ee..aeaed8f058ec 100644
+--- a/drivers/net/wwan/Kconfig
++++ b/drivers/net/wwan/Kconfig
+@@ -124,14 +124,19 @@ config MTK_T7XX
+ config MTK_T9XX
+ 	tristate "MediaTek PCIe 5G WWAN modem T9xx device"
+ 	depends on PCI && ACPI
++	select MTK_T9XX_PCI
+ 	help
+ 	  Enables MediaTek PCIe based 5G WWAN modem (T9xx series) device.
+ 
+-	  To compile this driver as a module, choose M here: the module will be
+-	  called mtk_t9xx.
++	  To compile this driver as a module, choose M here: the modules will
++	  be called mtk_t9xx and mtk_t9xx_pcie.
+ 
+ 	  If unsure, say N.
+ 
++config MTK_T9XX_PCI
++	tristate
++	depends on PCI
++
+ endif # WWAN
+ 
+ endmenu
+diff --git a/drivers/net/wwan/t9xx/Makefile b/drivers/net/wwan/t9xx/Makefile
+index 6f2dd3f91454..ae9d6f2344ab 100644
+--- a/drivers/net/wwan/t9xx/Makefile
++++ b/drivers/net/wwan/t9xx/Makefile
+@@ -4,7 +4,8 @@ ccflags-y += -I$(src)/pcie
+ ccflags-y += -I$(src)
+ 
+ obj-$(CONFIG_MTK_T9XX) += mtk_t9xx.o
++obj-$(CONFIG_MTK_T9XX_PCI) += pcie/
+ 
+ mtk_t9xx-y := \
+-	pcie/mtk_pci.o \
+-	pcie/mtk_pci_drv_m9xx.o
++	mtk_dev.o \
++	mtk_ctrl_plane.o
+diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+new file mode 100644
+index 000000000000..65a20407173d
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2022, MediaTek Inc.
++ * Copyright (c) 2022-2023, Intel Corporation.
++ */
++
++#include <linux/device.h>
++
++#include "mtk_ctrl_plane.h"
++
++/**
++ * mtk_ctrl_init() - Initialize the control plane block.
++ * @mdev: Pointer to the MTK modem device.
++ *
++ * Allocates and initializes the control plane block
++ * associated with @mdev.
++ *
++ * Return: 0 on success, -ENOMEM on allocation failure.
++ */
++int mtk_ctrl_init(struct mtk_md_dev *mdev)
++{
++	struct mtk_ctrl_blk *ctrl_blk;
++
++	ctrl_blk = devm_kzalloc(mdev->dev, sizeof(*ctrl_blk), GFP_KERNEL);
++	if (!ctrl_blk)
++		return -ENOMEM;
++
++	ctrl_blk->mdev = mdev;
++	mdev->ctrl_blk = ctrl_blk;
++
++	return 0;
++}
++EXPORT_SYMBOL(mtk_ctrl_init);
++
++/**
++ * mtk_ctrl_exit() - Clean up the control plane block.
++ * @mdev: Pointer to the MTK modem device.
++ *
++ * Clears the control plane block pointer. The allocation
++ * itself is managed by devres and freed on driver detach.
++ */
++void mtk_ctrl_exit(struct mtk_md_dev *mdev)
++{
++	mdev->ctrl_blk = NULL;
++}
++EXPORT_SYMBOL(mtk_ctrl_exit);
+diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.h b/drivers/net/wwan/t9xx/mtk_ctrl_plane.h
+new file mode 100644
+index 000000000000..c141876ef95d
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#ifndef __MTK_CTRL_PLANE_H__
++#define __MTK_CTRL_PLANE_H__
++
++#include <linux/kref.h>
++#include <linux/skbuff.h>
++
++#include "mtk_dev.h"
++
++struct mtk_ctrl_blk {
++	struct mtk_md_dev *mdev;
++	struct mtk_ctrl_trans *trans;
++};
++
++int mtk_ctrl_init(struct mtk_md_dev *mdev);
++void mtk_ctrl_exit(struct mtk_md_dev *mdev);
++
++#endif /* __MTK_CTRL_PLANE_H__ */
+diff --git a/drivers/net/wwan/t9xx/mtk_dev.c b/drivers/net/wwan/t9xx/mtk_dev.c
+new file mode 100644
+index 000000000000..50f77d5a210c
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_dev.c
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#include <linux/module.h>
++
++#include "mtk_dev.h"
++
++MODULE_DESCRIPTION("MediaTek T9xx PCIe WWAN driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/net/wwan/t9xx/mtk_dev.h b/drivers/net/wwan/t9xx/mtk_dev.h
+index 8278a0e2875e..9843171fe2ae 100644
+--- a/drivers/net/wwan/t9xx/mtk_dev.h
++++ b/drivers/net/wwan/t9xx/mtk_dev.h
+@@ -36,6 +36,7 @@ enum mtk_dev_evt_d2h {
+ };
+ 
+ struct mtk_md_dev;
++struct mtk_ctrl_blk;
+ 
+ struct mtk_dev_ops {
+ 	u32 (*get_dev_state)(struct mtk_md_dev *mdev);
+@@ -57,6 +58,7 @@ struct mtk_md_dev {
+ 	void *hw_priv;
+ 	u32 hw_ver;
+ 	char dev_str[MTK_DEV_STR_LEN];
++	struct mtk_ctrl_blk *ctrl_blk;
+ };
+ 
+ static inline u32 mtk_dev_get_dev_state(struct mtk_md_dev *mdev)
+diff --git a/drivers/net/wwan/t9xx/pcie/Makefile b/drivers/net/wwan/t9xx/pcie/Makefile
+new file mode 100644
+index 000000000000..7410d1796d27
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/pcie/Makefile
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++ccflags-y += -I$(src)
++ccflags-y += -I$(src)/..
++
++obj-$(CONFIG_MTK_T9XX_PCI) += mtk_t9xx_pcie.o
++
++mtk_t9xx_pcie-y := \
++	mtk_pci_drv_m9xx.o \
++	mtk_pci.o
+diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+index a89780390dd2..c2370fdbf6e8 100644
+--- a/drivers/net/wwan/t9xx/pcie/mtk_pci.c
++++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ 
+ #include "mtk_dev.h"
++#include "mtk_trans_ctrl.h"
+ #include "mtk_pci.h"
+ #include "mtk_pci_reg.h"
+ 
+diff --git a/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
+new file mode 100644
+index 000000000000..d6de4c43b529
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#ifndef __MTK_TRANS_CTRL_H__
++#define __MTK_TRANS_CTRL_H__
++
++#include <linux/kref.h>
++#include <linux/list.h>
++#include <linux/skbuff.h>
++#include <linux/types.h>
++
++#include "mtk_dev.h"
++
++struct mtk_ctrl_trans {
++	struct mtk_ctrl_blk *ctrl_blk;
++	struct mtk_md_dev *mdev;
++};
++
++#endif
+
+-- 
+2.34.1
+
+
