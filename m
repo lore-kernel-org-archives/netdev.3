@@ -1,221 +1,137 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9308F348898;
-	Fri, 28 Aug 2026 05:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787893735; cv=none; b=HHYCESTDpglmt+pOmKFm1kUTfnzUab1msXB6TAevhASQG6HlUwmcanexd+KE4D/KjB480lHHWR7qbwbmljjn56hTKtqcfZXxCZ4cbii2iKmWuN2FHO0D0LQhYdzA/othJfDYl5UyDzZ2TvG5Whfb3DXmYsiJdqYRSPC16De8Soc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787893735; c=relaxed/simple;
-	bh=8wrwRZmXV7c1kit9DHdHncVIapI+5wgRg6JtVOj1gmw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O8cM1GlLOTuH/XwJyiQ2B0PH7o0eURA+L8VAT0cQiglo5slcHCOGGWeRqzJhD+yVnbvF+pWB1fopQG+A/NAEKDaLmJ2lTZFsBhXZW7eJFuKJg+cK0L4fRfFN8V9W7AbscmNk06Sta3rfa03frwkJJPOTskcg7YFwCYQLN+lyuH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com; spf=pass smtp.mailfrom=airoha.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DcjvGGbF; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=airoha.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386DE3B9D96
+	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 05:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787894979; cv=pass; b=gzvW8py08Uxb/HKiP4C48pIiFee9ufiIzN5jhW/JPChQYnxXvl+LC7bH5VqlbLJnZ7fD9TwH6V0yaqBF1EcNLZTzn6Q0lUGANbK+mSTdd0kxNaJ7CC2L1MiYz5cY0f/Gy0Zn1wWsF7GUANqSk0b51gS32FwGRJJMb4xKpM/Rk9o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787894979; c=relaxed/simple;
+	bh=5gQzlDU5Yw/kup+7ZjKy32uHtpa2jry3TclqVwl88kk=;
+	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=g79A/CvIKOqZQ0pp8dE3/FyYwBxEaMCpHXi/hA0frYtd0711JfDmh9Bec95ZfDyAmCQAXKpOcrOnZB9HfYokWrNwTnkLFYmw2Mpi5hiOJyYG5RfyRe3XA/wBIIj6BPHN/ZEAS04qXgq6+AVQZ//PD6PyCbDWpaoLGJi/GI/LyPs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu; spf=pass smtp.mailfrom=berkeley.edu; dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b=VIChUD1E; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkeley.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DcjvGGbF"
-X-UUID: 8c75fcfea29e11f1b1788b6acf885367-20260828
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=uQ1iJTPql4QJ/5QzAf6I6rFP6Ucg6tGTRI9VOFDo99k=;
-	b=DcjvGGbFI/yfQgMbLwAQunsEJzbCxBQFQ01cmPHDVbc+1w7n5yTtRIPxFUvng1nXF50J9xoWRCKWvHNX38F48cEQuch9KZIAqj7uwp3CGHrnKkB/0vKfYSRgAmOcuzQrp8V/K825rdwSvV6xdthpqlltGIu046XxCSAg9kNJrDI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:cd853161-e651-46d3-a48c-27537f4f7245,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:7db8b62,CLOUDID:2b7e2ef2-6b5d-4016-ba8d-9f799a78b7e4,B
-	ulkID:nil,BulkQuantity:0,SF:81|82|102|836|865|888|898,TC:-5,Content:0|15|5
-	0|99,EDM:-3,IP:nil,URL:99|1,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
-	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8c75fcfea29e11f1b1788b6acf885367-20260828
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-	(envelope-from <ar702101@airoha.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 760232335; Fri, 28 Aug 2026 13:08:47 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 28 Aug 2026 13:08:45 +0800
-Received: from mediatek.com (172.18.153.125) by mtkmbs13n2.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.2562.29 via Frontend
- Transport; Fri, 28 Aug 2026 13:08:45 +0800
-Received: by arhtenbupstream01.localdomain (Postfix, from userid 1007)
-	id A602A141B88; Fri, 28 Aug 2026 13:08:45 +0800 (CST)
-From: Weiting Lee <weiting.lee@airoha.com>
-To: <netdev@vger.kernel.org>
-CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>, <bjorn@mork.no>,
-	<ericwouds@gmail.com>, <frank-w@public-files.de>, <joseph.lin@airoha.com>,
-	<wenshin.chung@airoha.com>, <lucien.jheng@airoha.com>,
-	<albert-al.lee@airoha.com>, Weiting Lee <weiting.lee@airoha.com>
-Subject: [PATCH v2 net-next] net: phy: air_en8811h: select LED GPIO pins based on AN8811HB package variant
-Date: Fri, 28 Aug 2026 13:05:36 +0800
-Message-ID: <20260828050537.2728253-1-weiting.lee@airoha.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <8530a501-705b-45b2-b876-68855955bccd@lunn.ch>
-References: <8530a501-705b-45b2-b876-68855955bccd@lunn.ch>
+	dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b="VIChUD1E"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-382ef647e20so553089a91.1
+        for <netdev@vger.kernel.org>; Thu, 27 Aug 2026 22:29:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787894977; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e3EMdbVhWtPUH0vEvwY7pysGhvl+yOzOnBpfCOuNiDr2ZflXdIeJQjDi6N7jG7UkTb
+         KT4hTAroez33wkrq/BN/NZSZqBmI5d3FNZirnFdtfIAG6z6g1xRw6wBwDg3WGN6C2sWt
+         B7XylVXkqhSZ1by+M9iM/506hSSXJQDKaPFo6RBynCTuRKFdwDHudc24B81xsnCFI1hN
+         G67lj7Vp3RhJ3sFCMyesL+BX2tzBDMeALoL8i7SyfPUFR9kPbSeAecYM+fa8QxgBqdLG
+         y2LvwSpmh16b5klVn0/riCHSGna39mUNpf39vnnQFzQrMiGcWvARlatwCu1+otgQ26Nb
+         DSmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=wySzWZ0oRbL3oNrX9dKVffVxG9TivUEYJv7g/hqtFT8=;
+        fh=KQFpgvg+KFBewbz3pf+wyqj9AumR4WbfK0oLrsn0a78=;
+        b=A8Q5RERE9I0+JFyGPnr2dmg0s06x9lPGaCoizegiiqIzKY8ejkQXeIaiszn7ij4smu
+         zQByvI8/cU8VRGWjF2WbW0h4pTjxOG+nKwjTVLbEpZrppkr6MuhTn2yJ9THOSnRVqE0Q
+         R77Oic7lhYPfmZGfTEOCGNlZ5cTe2LwnEdNSt5e4uMjueEZCWtHyz4gwDz7HFHuGtPpq
+         MTwGHcYWuIw7j/a7F28GZzoqBo1XLy6odX03QoUANr0Nf8LN4yLM/puHw0Aw6Z0lVtza
+         MFNWorDxMOxWhYkMAsFgfVsOJmMoJamfmn/zcPY+QHVgW/2BYgoAuZt2bmVyT6CLQZzn
+         msqg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=berkeley.edu; s=google; t=1787894977; x=1788499777; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wySzWZ0oRbL3oNrX9dKVffVxG9TivUEYJv7g/hqtFT8=;
+        b=VIChUD1E9jt8bbVh4hBJVAMRD3Q9RPlSVo+r75ixttslM650FBc8jbPavEOl2MlJrZ
+         RfmWKnWSpL2ccdTxB60b5HtBrZKteUjNH8ygmZXIsYKvjH1V1trRDk9EiWL7DYeu6EOJ
+         aQ9InqqXPjgLQRZfgSOylTnobKMC8eKTCpDe1acsY+QSy3HLnNFC0viZI8W9iHsZAvUI
+         cgjQNKpyl0LmZOaeXuYWt1tjM/TCUOnVQgIGE7sbfjAL8qffoD5bCMoXKpLhz9vwLIvL
+         L+ZeqKjpYx9QE3EB7x+pG0oGbpn9K0KHEZVl6xPcEmsbOjVHtR1PgB5rlwMfkA1T3WcI
+         3UlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787894977; x=1788499777;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wySzWZ0oRbL3oNrX9dKVffVxG9TivUEYJv7g/hqtFT8=;
+        b=YoCSMk1IXDom4gUp8vS4BO/kJmmIfGXK+oCe6VhRojca3g6CsWL28Gf4AKKrdZSR7Z
+         Jdpmk6HnKcYfzVovzgJR0q6zIaB90CFdlu7kvOFRS946lhsEB04eIeq7LnbpLeUK8uKe
+         zyYiYB27AsDke1boEm63XBetOBOj8qRDySkg1ggeaRbZyqn/tt+F3Ij+lk+XUgUnRztt
+         tPfLmUKVuFlxAl5bVPkIG09Wob0NQV/WfE1j7uNKVmmxbz+PxdMC6cuqGpksH4P6aHHJ
+         K1MaIYkALTABEmY936OKfLa5oYRFpNBY6TckUbooeO586aKtmKumNekjTOAnwK4/som+
+         vvtQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6ModskfXVAlkbRmUHUO33cdMye3tVvtlKWT9Czsyw3S4ovpJjEpKvkhuu3CA+JrBDaRfqNA4=@vger.kernel.org
+X-Gm-Message-State: AFuF++n+rzt94ondWtixMleSfLMk0+A6Gx3SpfLPiywVRH0nknohZ0kU
+	C0x1gI1OrMnouZXpkRUo2zQSku7GhKwY2ooT1iHABuGNdYh7ast3VKpImdngIus425HX41gQL/d
+	/JVvSDCu/KDBzAQRucpemL6M60g9k9z43pBaqXftT
+X-Gm-Gg: AR+sD10EP2w2F0408SzZq3ijLPtoSLxAQRftCLk2I1oj9fTOVY6/Hi/IhbJSfeqdto8
+	YkiCqleYJx9LlV1RUMSNar3MA0/e3k2425ToB/8yhNO/b5fHfAfQDzIdhSM48hA5L2odGX5XqPb
+	vTR1cKrfOJHDnKqhg75Dkjeu/m4RdfOZKnEcTDmWj22nRqNguO9ZBIpbsIVcJYgeytTFrZc9/sT
+	GIN7oamDEhasc2KWkU8mFUx/3lJoCWH5whVnbDYk7czY1PcyPXEyCTRcsgIfl0xAvxa3GKYFO6K
+	BD1BewxVYmA1Lq9BhVCjAsGxon/dtcL4HECzY+R0b8D/BAf3jS3Q+JZYE1D9fSvaHjRl9/Qwx9z
+	Dz2y6AlGkhEt8qSMYUOJDs5hp7oVjTvryeJf0QpP51ZA=
+X-Received: by 2002:a17:90b:5443:b0:395:4de0:b78f with SMTP id
+ 98e67ed59e1d1-396d0d4cf4emr9102094a91.1.1787894976530; Thu, 27 Aug 2026
+ 22:29:36 -0700 (PDT)
+Received: from 474444807712 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 27 Aug 2026 22:29:36 -0700
+Received: from 474444807712 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 27 Aug 2026 22:29:36 -0700
+From: Farhad Alemi <farhad.alemi@berkeley.edu>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Date: Thu, 27 Aug 2026 22:29:36 -0700
+X-Gm-Features: AcwNN1VO63bjkd2n_6mccACQVNrK0RX-U_09RMsQQJ0CGRGMOkLHVtgRLdncZrw
+Message-ID: <CA+0ovChAkaCGmDrkaAzfrmpccDXVampiV9OmjLKwDgkYXThvGg@mail.gmail.com>
+Subject: [BUG] _phy_state_machine / phy_stop -- a USB PHY that reports an MDIO
+ error to phylib panics a panic_on_warn kernel
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: falemi@asu.edu, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The AN8811HB comes in two package variants, AN8811HBCN and AN8811HBN,
-which use different GPIO pins to drive LED outputs. AN8811HBCN uses
-GPIOs 0, 1, and 15, while AN8811HBN uses GPIOs 3, 4, and 5. Using a
-fixed GPIO assignment causes incorrect LED behavior on one of the
-variants.
+Hello,
 
-Read the package variant from the read-only silicon identification bits
-in AN8811HB_HWTRAP2 at probe time and store it in priv->is_an8811hbcn.
-Add an8811hb_led_gpio_setup() to configure the correct GPIO output pins
-and select lines based on the detected variant, and call it from
-config_init.
+As part of the kernel research at ASU's SEFCOM
+lab, we hit the crash below. Crash reports can be found here:
 
-Signed-off-by: Weiting Lee <weiting.lee@airoha.com>
----
-v1 -> v2:
-- Rename pkg_sel to is_an8811hbcn (bool) for clarity
-- Remove phydev_info log to avoid spamming the kernel log
-- Fix commit message: HWTRAP2 bits are read-only silicon
-  identification, not a hardware strap pin
+  https://github.com/farhad-alemi/public_bug_reports/tree/main/146-phylib-phy_error-warn_on-mdio-error/
 
-v1: https://lore.kernel.org/netdev/20260827054156.2681908-1-weiting.lee@airoha.com/
- drivers/net/phy/air_en8811h.c | 69 +++++++++++++++++++++++++++++++----
- 1 file changed, 62 insertions(+), 7 deletions(-)
+  smsc95xx 6-1:1.0 eth0: Error reading MII_ACCESS
+  smsc95xx 6-1:1.0 eth0: smsc95xx_mdio_read: MII is busy
+  _phy_start_aneg+0x0/0x480: returned: -32
+  WARNING: drivers/net/phy/phy.c:1352 at phy_error_precise
+drivers/net/phy/phy.c:1352 [inline], CPU#0: kworker/0:3/5063
+  WARNING: drivers/net/phy/phy.c:1352 at
+_phy_state_machine+0x667/0xf20 drivers/net/phy/phy.c:1613, CPU#0:
+kworker/0:3/5063
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 5063 Comm: kworker/0:3 Not tainted 7.1.0-rc5 #1
+PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+1.16.3-debian-1.16.3-2 04/01/2014
+  Workqueue: events_power_efficient phy_state_machine
+  RIP: 0010:phy_error_precise drivers/net/phy/phy.c:1352 [inline]
+  RIP: 0010:_phy_state_machine+0x66d/0xf20 drivers/net/phy/phy.c:1613
+  Call Trace:
+   <TASK>
+   phy_state_machine+0x2b/0x70 drivers/net/phy/phy.c:1652
+   process_one_work kernel/workqueue.c:3314 [inline]
+   process_scheduled_works+0x881/0x1170 kernel/workqueue.c:3397
+   worker_thread+0x988/0xde0 kernel/workqueue.c:3478
+   kthread+0x333/0x420 kernel/kthread.c:436
+   ret_from_fork+0x351/0x940 arch/x86/kernel/process.c:158
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 0eeb7b9a4e26..7b69bb79b77f 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -145,10 +145,22 @@
- 
- #define AN8811HB_GPIO_OUTPUT		0x5cf8b8
- #define   AN8811HB_GPIO_OUTPUT_345		(BIT(3) | BIT(4) | BIT(5))
-+#define   AN8811HB_GPIO_OUTPUT_0115		(BIT(0) | BIT(1) | BIT(15))
-+
-+#define AN8811HB_GPIO_SEL1		0x5cf8bc
-+#define   AN8811HB_GPIO_SEL1_0_MASK		GENMASK(3, 0)
-+#define   AN8811HB_GPIO_SEL1_1_MASK		GENMASK(7, 4)
-+#define   AN8811HB_GPIO_SEL1_0			BIT(0)
-+#define   AN8811HB_GPIO_SEL1_1			0
-+
-+#define AN8811HB_GPIO_SEL2		0x5cf8c0
-+#define   AN8811HB_GPIO_SEL2_15_MASK		GENMASK(31, 28)
-+#define   AN8811HB_GPIO_SEL2_15			BIT(29)
- 
- #define AN8811HB_HWTRAP1		0x5cf910
- #define AN8811HB_HWTRAP2		0x5cf914
- #define   AN8811HB_HWTRAP2_CKO			BIT(28)
-+#define   AN8811HB_HWTRAP2_PKG			GENMASK(14, 12)
- 
- #define AN8811HB_CLK_DRV		0x5cf9e4
- #define AN8811HB_CLK_DRV_CKO_MASK		GENMASK(14, 12)
-@@ -202,6 +214,7 @@ struct en8811h_priv {
- 	struct phy_device	*phydev;
- 	unsigned int		cko_is_enabled;
- 	struct mdio_device	*pbusdev;
-+	bool			is_an8811hbcn;
- };
- 
- enum {
-@@ -1071,10 +1084,49 @@ static int en8811h_leds_setup(struct phy_device *phydev)
- 	return ret;
- }
- 
-+static int an8811hb_led_gpio_setup(struct phy_device *phydev)
-+{
-+	struct en8811h_priv *priv = phydev->priv;
-+	int ret;
-+
-+	if (priv->is_an8811hbcn) {
-+		/* AN8811HBCN: LED GPIOs are 0, 1, 15 */
-+		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-+						  AN8811HB_GPIO_OUTPUT_0115,
-+						  AN8811HB_GPIO_OUTPUT_0115);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_SEL1,
-+						  AN8811HB_GPIO_SEL1_0_MASK |
-+						  AN8811HB_GPIO_SEL1_1_MASK,
-+						  AN8811HB_GPIO_SEL1_0 |
-+						  AN8811HB_GPIO_SEL1_1);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_SEL2,
-+						  AN8811HB_GPIO_SEL2_15_MASK,
-+						  AN8811HB_GPIO_SEL2_15);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		/* AN8811HBN: LED GPIOs are 3, 4, 5 */
-+		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-+						  AN8811HB_GPIO_OUTPUT_345,
-+						  AN8811HB_GPIO_OUTPUT_345);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int an8811hb_probe(struct phy_device *phydev)
- {
- 	struct mdio_device *mdiodev;
- 	struct en8811h_priv *priv;
-+	u32 reg_val;
- 	int ret;
- 
- 	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(struct en8811h_priv),
-@@ -1115,6 +1167,12 @@ static int an8811hb_probe(struct phy_device *phydev)
- 	/* MDIO_DEVS1/2 empty, so set mmds_present bits here */
- 	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
- 
-+	/* Detect package variant */
-+	ret = air_phy_buckpbus_reg_read(phydev, AN8811HB_HWTRAP2, &reg_val);
-+	if (ret < 0)
-+		goto err_dev_create;
-+	priv->is_an8811hbcn = FIELD_GET(AN8811HB_HWTRAP2_PKG, reg_val);
-+
- 	ret = en8811h_leds_setup(phydev);
- 	if (ret < 0)
- 		goto err_dev_create;
-@@ -1125,13 +1183,6 @@ static int an8811hb_probe(struct phy_device *phydev)
- 	if (ret)
- 		goto err_dev_create;
- 
--	/* Configure led gpio pins as output */
--	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
--					  AN8811HB_GPIO_OUTPUT_345,
--					  AN8811HB_GPIO_OUTPUT_345);
--	if (ret < 0)
--		goto err_dev_create;
--
- 	return 0;
- 
- err_dev_create:
-@@ -1263,6 +1314,10 @@ static int an8811hb_config_init(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = an8811hb_led_gpio_setup(phydev);
-+	if (ret < 0)
-+		return ret;
-+
- 	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
- 			    AIR_LED_MODE_USER_DEFINE);
- 	if (ret < 0)
--- 
-2.43.0
+Our reproducer.c is available upon request.
 
+Happy to test a patch if that would help.
+
+Regards,
