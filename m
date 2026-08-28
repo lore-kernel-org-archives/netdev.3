@@ -1,169 +1,128 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053873ABD83;
-	Fri, 28 Aug 2026 09:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85DC3B38B0;
+	Fri, 28 Aug 2026 09:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787909904; cv=none; b=IT0IKNw6EBvkgE3eBvzyd1OHn0jNpqKyg0LZW43epCX89ng/bTjPFObYf8oH1MCwvEQ8FOBQ0RcNf+53O1REjc97B6g8quY6XHj6MnWHQmyAOvB4Uskqgy8w307fxLRso5zXSqkJhqxXdKMmQGMQl8yyQxWsoVDar4JYk4uZiEc=
+	t=1787910118; cv=none; b=CqIj9VO0tnExY3IizoRxwhDumJRz6UskKN1P6jNEXm7UQ9a1RXPyccm27T7mHZ87sePe0JuL4BYuK4d0/4hmCCEilnw8I49lurULfrspVjh6VqmRt/Qoe3Fnq9EBJazH32/2J9aTJkdzRlrm3eSKqabSz6qDF6dZrrQ/9TSYJBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787909904; c=relaxed/simple;
-	bh=sFPfepcxPZvl74G8ef9OP/hhpD1y/qErmkaLHo7O0ps=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sbcfxqKzjlWJsmGJdmZGcjQIsNbRtLi+q8bjCB+U6XKSjs4Zq68cbT0mDYZG1juHhBU67c7PbEevbrIbO5pqvB08QqR8YJQVq+Q8ZpQM3TTjDYHQAS637N3fZlXHQ51rl5MGYkef4Yytg5xYcZlTaQxbgRJAjFeoNiAZLgCmxVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=HGq3rt2q; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787910118; c=relaxed/simple;
+	bh=3OEuy4BD1dsHy197xzLSBLtBnyzQJ4BNrMV6jDbgf8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MrtASGPu0i2jeWxvt2XpgCjcyOXvJcqN82JQE09ZCvgz+DoYPUth3MOML01pJJz41YFilrvHLwjca4RDqFi48vj8x3RnNoSIYpX7Zj9Q7qkWMasd4FtFeZy7YUD+Osq6nvLiHQUyGBy+gxVSmfX2AUo6iZTp95vqDxowC5VwP1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQipGGLc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="HGq3rt2q"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67S68uuW1333975;
-	Fri, 28 Aug 2026 02:19:53 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=rWjUJdM0+PMAjtfnnD7f/6I
-	zWPBGOTtq9uq9AybHbak=; b=HGq3rt2qJZy5iZQYkA8HK6O4MNswHjo6prJpdW/
-	hgtKilwKNC1KcMRYRfHBN2orGjAfmWNp6pFjG/+6SWL3eJ9gFio2Z8o9gZcVwYCe
-	fXrirbAWUni2eljlGAm1o5KI8j+pmo/Jv/UgYwot2anO2Q/pSk9/66Scck3504BW
-	mh6GnwdHHOR1MXwPjdBCr+fwozsCW9H70MA0KkHwPdpsBuDUxufvHq2ooAS8qU2n
-	5NPaUUUx9+aB6gNpsSbVvcytTJjLGvZo2ZiZz+O46ByzJ1BYehm3D4+4TjLsfjt3
-	ccuoLMo4rfj7zYsoOj8L7OWq67dk97pC8pBUmo+fMZDU6Tg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gaww41qjc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Aug 2026 02:19:53 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 28 Aug 2026 02:19:52 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 28 Aug 2026 02:19:52 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id A8AD53F707A;
-	Fri, 28 Aug 2026 02:19:48 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Sunil Goutham <sgoutham@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        "Geetha
- sowjanya" <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        "Paolo
- Abeni" <pabeni@redhat.com>,
-        Tomasz Duszynski <tduszynski@marvell.com>
-Subject: [PATCH net v2] octeontx2-af: Fix limiting SRIOV VF count logic
-Date: Fri, 28 Aug 2026 14:49:45 +0530
-Message-ID: <20260828091945.683722-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQipGGLc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19981F000E9;
+	Fri, 28 Aug 2026 09:41:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787910117;
+	bh=LPr7Cgdghm1Kz2vcUzEZZn5UouwztW/+50mQHoKvomA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iQipGGLc7zqwEKjY4rWswUBu1HBNTwly6FGF0zyFghS2j+cgmvVf6hgdZIcboHM//
+	 EPtlXIV6dfyElr0U3yvBij0FoZtl5eluuNA283pXk/WKV9IxQccyKpMhFX3qlTFr3O
+	 uzVsbth6cw+h/Q4e/oF/Hf7NfJH0nNZkPKT1wPvwPhXpI828SzOmIns5LDvxtgLeuc
+	 ZLe4M/lvIGhc018PEbDw4V87Ti/Edzp3i/qJhvJm2UAGSRbkwqCA5rg/witGBk1ja+
+	 cmzTj/ZeFArBwDg1qSkbFQaq+S8oT/XYGCmKerfeZb6Q0n+P2oDlZBLl063F0lhA5F
+	 XvvifETVZg9Yw==
+Message-ID: <d5eac10c-48f1-4c09-b871-b946c6417399@kernel.org>
+Date: Fri, 28 Aug 2026 11:41:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDA3OSBTYWx0ZWRfX5UxsOArbd/4I
- GSkEx+1rIUaoZlVTYwtx8XDQb/HGMCLHdKdEvPC9DVQyVV7QuGAPigL3cYEvF0FpZgaH8JcXAIx
- RK82y+Gvy2X2FNv5tNsE5Irf5IDg9Nx9jODA1xnmP01azKRLlqKzQzYfONdjDHH8R0g7tna+feS
- FaidaOAsDW8Iwp2xk4L3MIsnDXjrN8zhG3w/ltsiXovaq4onrG2oHwvxvAfMf1rDIRe14hErGUE
- 5YIn4c4pduMuBgrIHplpvO3G+UXFiVJY26o1SPRNa0AdCXsNlUagOWOhxWlW+OMXUpF/NdM42ZN
- Pd1pmm0CYaT0oLv8c0wL/8LfCSQoQpmrM9+iuDMub/FDmzahuzcAJGdlYU8LnLO2XAcWv0Lc5mO
- EROsG2Vk/xcf6PKUJB3ETc/VByIVqVzYWDbiOST0gi8iQMiT7Hus/A6/S2RZvKEiuWhIP1KTfVq
- i2QgL17brfdJFdEeffw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDA3OSBTYWx0ZWRfX3IF3qkJ0fM+X
- PSxZlLYRfsySl/CxZ0ARyxM08LQuVtymC8bBJGmgeIBO4VoN3RKMzuJ/JzYftEZlmw7NHPOx8dR
- uq6Oe2b0+fYfGYtJW8JvhIVtS3K/0mE=
-X-Authority-Analysis: v=2.4 cv=eOEjSnp1 c=1 sm=1 tr=0 ts=6a9152b9 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=6kWvUkGnr9YHOatCuM0A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: Xftae-IciJOCH6yeqeoiqycIOgg45Rmm
-X-Proofpoint-GUID: Xftae-IciJOCH6yeqeoiqycIOgg45Rmm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-28_02,2026-08-27_02,2025-10-01_01
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v3 1/2] tcp: fix use-after-free in
+ do_tcp_getsockopt(TCP_CONGESTION)
+Content-Language: fr
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>, edumazet@google.com,
+ ncardwell@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com
+Cc: kuniyu@google.com, horms@kernel.org, martineau@kernel.org,
+ geliang@kernel.org, yhs@fb.com, kafai@fb.com, andriin@fb.com,
+ ast@kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ AutonomousCodeSecurity@microsoft.com, xmei5@asu.edu,
+ tgopinath@linux.microsoft.com, kys@microsoft.com, stable@vger.kernel.org
+References: <cover.1787870710.git.blbllhy@gmail.com>
+ <d3f97f1acbf0010898148be6e6406e4b8b4a5c84.1787870710.git.blbllhy@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <d3f97f1acbf0010898148be6e6406e4b8b4a5c84.1787870710.git.blbllhy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Sunil Goutham <sgoutham@marvell.com>
+On 28/08/2026 01:55, Cen Zhang (Microsoft) wrote:
+> From: "Cen Zhang (Microsoft Security FORGE Labs)" <blbllhy@gmail.com>
+> 
+> do_tcp_getsockopt() reads icsk->icsk_ca_ops->name without holding
+> rcu_read_lock(). Since commit 0baf26b0fcd7 ("bpf: tcp: Support
+> tcp_congestion_ops in bpf"), icsk_ca_ops can point to dynamically
+> allocated BPF struct_ops memory that may be freed concurrently via
+> setsockopt(TCP_CONGESTION), leading to a use-after-free.
+> 
+>   BUG: KASAN: slab-use-after-free in _copy_to_user+0x37/0x60
+>   Read of size 16 at addr ffff888013505260 by task exploit/149
+>    _copy_to_user+0x37/0x60
+>    do_tcp_getsockopt+0x158a/0x2460 (net/ipv4/tcp.c:4585)
+>    tcp_getsockopt+0x91/0xf0
+>    __sys_getsockopt+0xf7/0x170
+> 
+> Fix this by holding rcu_read_lock() around the ca_ops->name access,
+> using READ_ONCE() to load icsk_ca_ops, and copying the name to a
+> stack buffer before releasing the lock. Also annotate the relevant
+> icsk_ca_ops stores with WRITE_ONCE() to fix the accompanying KCSAN
+> data-race issue.
 
-When RVU PF0/AF's VFs are SDP instead of LBK, limiting the VF count
-based on the LBK channel count is incorrect.
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Apply LBK channel-based VF limits only when the VF device ID matches
-the LBK RVU AFVF device.
-
-Fixes: 9bd6caf33567 ("octeontx2-af: Enable sriov on AF to create VFs")
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
----
-v2:
- - Use min() to simplify VF count capping
- - guard against negative vfs when chans < 2
----
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 33 +++++++++++--------
- 1 file changed, 19 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 74c041ab5280..937b085582b5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -3468,6 +3468,8 @@ int rvu_get_num_lbk_chans(void)
- 	return ret;
- }
- 
-+#define PCI_DEVID_OCTEONTX2_RVU_AFVF	0xA0F8
-+
- static int rvu_enable_sriov(struct rvu *rvu)
- {
- 	struct pci_dev *pdev = rvu->pdev;
-@@ -3486,24 +3488,27 @@ static int rvu_enable_sriov(struct rvu *rvu)
- 		return 0;
- 	pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &rvu->vf_devid);
- 
--	chans = rvu_get_num_lbk_chans();
--	if (chans < 0)
--		return chans;
--
- 	vfs = pci_sriov_get_totalvfs(pdev);
--
--	/* Limit VFs in case we have more VFs than LBK channels available. */
--	if (vfs > chans)
--		vfs = chans;
--
- 	if (!vfs)
- 		return 0;
- 
--	/* LBK channel number 63 is used for switching packets between
--	 * CGX mapped VFs. Hence limit LBK pairs till 62 only.
--	 */
--	if (vfs > 62)
--		vfs = 62;
-+	if (rvu->vf_devid == PCI_DEVID_OCTEONTX2_RVU_AFVF) {
-+		chans = rvu_get_num_lbk_chans();
-+		if (chans < 0)
-+			return chans;
-+
-+		/* The last LBK channel is reserved for switching packets between
-+		 * CGX mapped VFs. Also, since LBK VFs work in pairs, limit VF
-+		 * count to available LBK channels minus 2.
-+		 */
-+		vfs = min(vfs, chans - 2);
-+
-+		if (vfs <= 0) {
-+			dev_warn(&pdev->dev,
-+				 "Skipping SRIOV enablement, not enough LBK channels available\n");
-+			return 0;
-+		}
-+	}
- 
- 	/* Save VFs number for reference in VF interrupts handlers.
- 	 * Since interrupts might start arriving during SRIOV enablement
+Cheers,
+Matt
 -- 
-2.48.1
+Sponsored by the NGI0 Core fund.
 
