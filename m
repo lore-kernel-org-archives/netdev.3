@@ -1,201 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0A13783B4;
-	Fri, 28 Aug 2026 09:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B93409637;
+	Fri, 28 Aug 2026 10:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787911145; cv=none; b=sAgG5faIykFBMZ/W7wTeVYmsImSbkso4KIiY1NNfi03/7YD9qOHC84nVJyYjcZPM9X1oQOfaVVf5oayghOh/Z2nfGlE9ayNoKsF7ioXBNNah1jY5fbRot7+EEKneSFMEAppJuCG/N7EzctpCjV0vAq1Owjoq6OgwrTDJHoo3rcY=
+	t=1787911568; cv=none; b=ckZe9r1RrYRW+R9wAnNy/z3Wjk1BSTdeNYnCcv2BNEcA80CXN+30kcX/Izf4tj6oU2hDcnC5j9PsxaFPc6oVD96yx28d8N5lyCBGcFzdGNmanaHpo432nBFNi2OqfvRKhDNJfmz85DwNJ5LnTOSEQJyawEIXfpjf2wsiORB0mTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787911145; c=relaxed/simple;
-	bh=rh7ydI7GKJqG6nY9dYE/lkWRfceAJLLwblnkmdTBs90=;
+	s=arc-20240116; t=1787911568; c=relaxed/simple;
+	bh=X2bq9OIm48Q+SAoL4uEP6fjrYNFiKSJHuLKLbDkqb14=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m+lwJPD4ubHFiOWMjQgXEavrJVmLwSn/dsDLzrPFrwr5AIgnf8IWt75ANSFTF4Fsb4B5P0fuDM8cLIwTp7lqTkE+2fhgLvD0ES04JGCLY0GI0idykXbDDViMG5auUxkaD62YWWrOipvOhq9c8oMtaeW1kkj3OrZStDd0biLMLLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LhfgIKc7; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=Sezqb5tf5IyNgPGYY1J2QdNZ219/8I/qbglE3RFzj+ghwaWxdzIfr61Rz4/DNaa3IqChR4aA3ReApZsSL7Jpjmxqs9KGPoB6nIdb3m9W9JvLoeGL33SlBYZA4ZN7c5ihitez6lL9icjYIsj1L70uKDOPHBbNxquCC9hginW0yfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N7XnIuvM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LhfgIKc7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E1E1F000E9;
-	Fri, 28 Aug 2026 09:59:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787911143;
-	bh=2+/PLbq9eAr3WZpjlc5dc0ni8rDbxUE+V7YrchB1cDk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LhfgIKc7j1RnY8NAmPSkj953ILT5SymGzndUyAhN2IQmM9nruMTa5dI7q/t/DVrXd
-	 4PWk1+8AUg7TJA9LMDVHeQ/vc/XBFvgc8Wg/4F+ygYZGoUPSbGyx9xbibnd70Y7udR
-	 935JD3KHYzGcOgZ+oGle9Q/wGxayTZC+YsoYIh6pM8gZQfi+7Nfp9qBymjxOC840T5
-	 kePJdh6B+W08eYGhJvpF+X7S3/EyOa+pD0ZT4ne3L/FAeo60E+l+tdk52cW83Bqy4j
-	 DEMC+l+AXPbXbqdFJnYcyKs9JiPqxgPksGCyS1NhHK5pzgvBcwy/sFPVdkDj6nHT6Z
-	 lqwMMfIOK5Aqw==
-Message-ID: <b98464cc-5bb4-4dec-a843-0b0931e506e1@kernel.org>
-Date: Fri, 28 Aug 2026 11:58:58 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N7XnIuvM"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67S6Vgrn1183759;
+	Fri, 28 Aug 2026 10:05:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Zcld0B
+	q7lN/AGA+G8wNPr3Nv9H3ZtxPKVLAMCEuWJHA=; b=N7XnIuvMS70Q5qMT5NxBSS
+	4XgpweFv6Ig8DQTT1bdIMSu8Nieql3vrgJAe+zG8JYoNa0TNxwYtAcSAVCBQ6h9H
+	30WvZjVgu5kI3I/70jZE0EwhYGrJhSBM0t5oZW7vqlhsl8uJpmiCDXQwcF7J/7c2
+	M03SLPPId48p7pB3qid+yDxoNWOWIgFX6Bg1aP+9AvyAZdvxf6QsgQrvQBbOKNm0
+	4LHpa3rVVCZHRHVrMgEADwAUXXwSzxHoJzDB7Mj0ZX2nrE0JWaXtoegivkNNhnOc
+	KDjoLM5lz0Tj1+mRRbWTIOlWA8Xco/UPw0UFxwJa45FZglWgS57WT9Hybq2MZ76A
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g7394kf1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Aug 2026 10:05:56 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67S9uFgU027443;
+	Fri, 28 Aug 2026 10:05:55 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7ragwcj8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Aug 2026 10:05:55 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67SA5ppe13697418
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Aug 2026 10:05:51 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 824C32006C;
+	Fri, 28 Aug 2026 10:05:51 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3792720040;
+	Fri, 28 Aug 2026 10:05:51 +0000 (GMT)
+Received: from [9.111.135.176] (unknown [9.111.135.176])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 28 Aug 2026 10:05:51 +0000 (GMT)
+Message-ID: <833853f7-6659-4e9a-b8d1-be27d5804930@linux.ibm.com>
+Date: Fri, 28 Aug 2026 12:05:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 02/14] mptcp: subflow: no need to copy thmac during
- ulp_clone
-Content-Language: fr
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260824-net-mptcp-misc-fixes-7-3-rc1-v1-2-a92309d121ca@kernel.org>
- <20260827190725.3998222-1-kuba@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260827190725.3998222-1-kuba@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/3] net/iucv: only send the window update on
+ HiperSockets sockets
+To: hexlabsecurity@proton.me, Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+        Thorsten Winkler <twinkler@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc: Hidayath Khan <hidayath@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
+ <20260821-b4-disp-3a6e8695-v2-1-37597ff723a8@proton.me>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260821-b4-disp-3a6e8695-v2-1-37597ff723a8@proton.me>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: BF6zlPgnwNa7mrkLfaLOMU-iGAUMta5h
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI4MDA4NiBTYWx0ZWRfX5S0+zjSuXrt2
+ 4VisFqFbWkVR+dNJ/eeXwJnSo+mAqHo1YFGLOa/DLR/Kpkm+cKrSAD1HkzwYUXxacN/K5qb7HHF
+ J3IT1cuQUqvrh6noGDK2YRuaRrnOnFWglmyhIcm2VX4AeVxaE+HnjT6JgHZU49tJ8ekNxFB7mmP
+ J+d0uqy3fgLbgDQ0NhnAAk7ZwM26ncvYMxDhbrLTV/Ob12/FO/EYXHTZyt9oH3QIw5hKSYgJM/q
+ DZGHTWeoWiip+ID4nHPPxqwMw3//+B7/yrn+vDIo7j1+jPVJ9FT+it2bA1Ym9L2pzjdC63u51TZ
+ YJmIMi8kGEoeyNBHtZYBpDufZfV9aeeK7hOPx9EQ8qc3EpD3CPA/ovijkCMaet99dKB5dZWZj0i
+ 3bgY9QNdrE52R+WfWZKT2U1PtESMMYB7Qoil+Ysqz4MC+a81DPmbvgUaHv0ixKTz214gdtBPNUZ
+ HxP1c8lcrX1zDqJuKdQ==
+X-Authority-Analysis: v=2.4 cv=Y/nIdBeN c=1 sm=1 tr=0 ts=6a915d84 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=zuM-BvYbtpJmjVirTZoA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI4MDA4NiBTYWx0ZWRfX7BBrUGiGuUNG
+ I6LgNYsMfmLd6EP+625cUpj2z30WTnQ0bGyijCYnhuenvYJZ6vkwNXTn9vAq0327xHXT5d8Q5Oy
+ RB1YYdZE4ZeyP2wFqOpETRj4ipEswFo=
+X-Proofpoint-ORIG-GUID: 3p_voacDNfRY4kBA6Thl4rRyZRQISzq6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-28_02,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608280086
 
-Hi Jakub,
 
-On 27/08/2026 21:07, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
 
-Thank you for having forwarded this, I didn't manage to look at it before.
+On 21.08.26 13:17, Bryam Vargas via B4 Relay wrote:
+> From: Bryam Vargas <hexlabsecurity@proton.me>
+> 
+> iucv_sock_recvmsg() sends AF_IUCV_FLAG_WIN without testing the transport,
+> but that flag exists only on HiperSockets. On a classic z/VM socket
+> iucv->hs_dev is NULL and iucv_send_ctrl() sizes the skb from
+> LL_RESERVED_SPACE(iucv->hs_dev), so the read goes through NULL. It is one
+> recvmsg() away for an unprivileged process on a socket of its own:
+> SO_MSGLIMIT accepts 1, so msglimit / 2 is 0 and msg_recv never leaves 0 on
+> a classic socket. The read lands in mapped lowcore on a default kernel and
+> the socket takes a spurious disconnect; with relocate_lowcore it faults.
 
-> ---
-> mptcp: subflow: no need to copy thmac during ulp_clone
-> 
-> This drops the copy of subflow_req->thmac into the new subflow context in
-> subflow_ulp_clone(), since the truncated HMAC is no longer needed once the
-> passive-side request is over.  The commit message notes that thmac is left
-> uninitialised on the SYN cookie path, so removing the copy also avoids a
-> KMSAN uninitialised-read report.
-> 
-> (no Link: tags in the commit header)
-> 
->> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
->> index af81ad5e699d1..01db7edce18a6 100644
->> --- a/net/mptcp/subflow.c
->> +++ b/net/mptcp/subflow.c
->> @@ -2084,7 +2084,6 @@ static void subflow_ulp_clone(const struct request_sock *req,
->>  		new_ctx->request_bkup = subflow_req->request_bkup;
->               ^^^^
-> 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but while looking at the
-> neighbouring store: does request_bkup have exactly the same
-> uninitialised-on-SYN-cookies problem that motivated removing the thmac
-> copy here?
-> 
-> subflow_init_req() only clears a subset of the fields:
-> 
-> net/mptcp/subflow.c:subflow_init_req() {
-> 	subflow_req->mp_capable = 0;
-> 	subflow_req->mp_join = 0;
-> 	subflow_req->csum_reqd = mptcp_is_checksum_enabled(sock_net(sk_listener));
-> 	subflow_req->allow_join_id0 = mptcp_allow_join_id0(sock_net(sk_listener));
-> 	subflow_req->msk = NULL;
-> 	mptcp_token_init_request(req);
-> }
-> 
-> and the only assignment of request_bkup for a request sock happens on the
-> SYN, in subflow_token_join_request():
-> 
-> 	subflow_req->local_id = local_id;
-> 	subflow_req->request_bkup = mptcp_pm_is_backup(msk, (struct sock_common *)req);
-> 
-> On the cookie ACK path that function is not called, and the state restore
-> does not cover request_bkup either:
-> 
-> net/mptcp/syncookies.c:mptcp_token_join_cookie_init_state() {
-> 	subflow_req->remote_nonce = e->remote_nonce;
-> 	subflow_req->local_nonce = e->local_nonce;
-> 	subflow_req->backup = e->backup;
-> 	subflow_req->remote_id = e->join_id;
-> 	subflow_req->local_id = e->local_id;
-> 	subflow_req->token = e->token;
-> 	subflow_req->msk = msk;
-> }
-> 
-> struct join_entry has no request_bkup member at this commit, so the bit
-> carries whatever was in the freshly allocated request sock.
-> 
-> Unlike thmac, the copied value is consumed afterwards, for instance in
-> mptcp_subflow_get_send() and mptcp_subflow_get_retrans():
-> 
-> net/mptcp/protocol.c:mptcp_subflow_get_send() {
-> 	bool backup = subflow->backup || subflow->request_bkup;
-> 
-> It is also put on the wire by mptcp_established_options_mp_prio() and
-> exported to userspace by the mptcp diag code.
-> 
-> So when a remote MP_JOIN is accepted while tcp_syncookies is active, can a
-> joined subflow end up randomly flagged as backup and reported that way in
-> diag, along with the same class of KMSAN uninit-value branch report that
-> this patch removes for thmac?
-> 
-> For the record, the next patch in this series, "mptcp: syncookies: remember
-> the request backup flag", adds request_bkup:1 to struct join_entry and
-> stores/restores it, and the store happens after subflow_token_join_request()
-> has set the field (subflow_token_join_request() runs before
-> subflow_init_req_cookie_join_save() in subflow_check_req()), so the field is
-> properly initialised at the end of the series.
 
-All of this to say that it is fixed in the next patch...
+Hi Bryam,
 
-> Would it be worth mentioning
-> that dependency here, given this patch carries a Cc: stable tag?
+FYI, I tried to reproduce the fault with boot parameter relocate_lowcore.
+It did not run into a page fault. My AI says: "relocate_lowcore moves the
+lowcore mapping from 0x0 to 0x70000. It does not necessarily unmap all of page 0."
+So a garbage read still happens.
 
-Do we really need to mention that?? This report says "there is a
-pre-existing bug in the code around", then there is no direct
-dependence. Or should we add for each patch: other fixes follow this one?
+The bug is very valid and I can reproduce the spurious disconnect, and that
+it is fixed with the proposed fix.
+But you may want to adapt the commit message.
 
-Note that there is an issue on Sashiko's side to improve that:
-
-https://github.com/sashiko-dev/sashiko/issues/392
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
 
