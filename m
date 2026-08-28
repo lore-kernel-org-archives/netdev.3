@@ -1,89 +1,65 @@
-Received: from mta1.migadu.com (out-142.mta1.migadu.com [95.215.58.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5161B242D6B
-	for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 01:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B8531DDBF;
+	Fri, 28 Aug 2026 01:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787881313; cv=none; b=LQhNXxTpFF2sW+nsMAB0Sv+PR5c2UrElo0uHJAoVdbmXTTw0rD5UfJBseTlF4WwwYBArjmhfx8Qyf2UgV3oOkhSvyWQh4ms+XHY1CdV5QRFsD9ChrhD1zLsyaELCh0rPimq2wAWp6a6YNfTbc2rrwfnx+FuwTuFEnghajliJGPQ=
+	t=1787881596; cv=none; b=gg1OFKIGwMAZacvbWuuaRZNkus3YP6qWPX5DvL9RlMSouZKaxyylNWKAPKGWk08oKRiYm6hmzk4EH6/3LhFgemDVILaSQc61Zc/ZOzEAXCEoki1Ko4a+6jwhGYNQ8kbyv73ul3r7nTaFjQCRUcc8oB1VzP9r6+R8lvl58W9mi58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787881313; c=relaxed/simple;
-	bh=kpSeqosgnracdP3JFhVUo24EJrTnvL6cnEkIWNBdVcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A99/mA5whDKMYHkzDLa8sSvbZqXa0uC/AFovr2tn5NxdGFlLprX/RdwY2Fz3Z6aDkU7UU5h73iB4rByuaRj3rSZZ8y5ADi7qS4I8YycaeaTq2l2rgdqeSr8Lz1Am/63VpXelz/rn2gl+e/GkJtz4OqhWkLHvwfUwh9OIESyzOvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lveLZiHP; arc=none smtp.client-ip=95.215.58.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787881596; c=relaxed/simple;
+	bh=AV7nx/hFeroT1YnmOJlIMWe0OqRNyrCw1i1idLKRdFg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X567ktc3cMUDjjaqu5e+8a+D1yP7tAMrJF/cSCXaBv3yQKmK0RDX9Cg5IotFdd879Rx7tTElQn89jIv0lMmmvo80d3MSsV3R2hDm4mURfbb0BZQRZi+5TGsMFwt+GL5K9C7KAkOnH8e46BJaA2y6Rbzh8rrJEI5nwfXE/+XwndE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hok/d3t6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lveLZiHP"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=kpSeqosgnracdP3JFhVUo24EJrTnvL6cnEkIWNBdVcU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787881310; v=1; x=1788486110;
- b=lveLZiHP5CLBdFszOjllxy1ugPPHxcZqAX5ZZP5GVtUXmRzKPRcKVU45AojQ26pFnwBLe6fH
- JM71ZKmZs8UukaWysy6cdfX/+UHAKujfOq96iAsunM3xkDlGP/JnElo+lq6m6f1d8VECLpu6hqT
- dkLCgBFeePnHvPbQbLkj+VFU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id b6996e5a22c93adc;
-	Fri, 28 Aug 2026 01:41:50 +0000
-X-Mizu-Trace-ID: b6996e5a22c93adc
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 28 Aug 2026 09:41:40 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [ynl] how to fix the order of selector and `_decode_sub_msg`
-Message-ID: <apDnVCOroIPIhFWG@fedora>
-References: <ao2PN6wp9A2SjRar@fedora>
- <20260827101416.44f53ba5@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hok/d3t6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1435D1F00A3E;
+	Fri, 28 Aug 2026 01:46:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787881592;
+	bh=X3TRLwIPMqSoNtNi7xgzngJ8JZS+cPJqCIUwBHClWRk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Hok/d3t6eiwU82MWcqdafYqf8Ssk+WKcqdWQzyssFoqP+ye6ihE1StqBGt/8kwpLf
+	 S+nrkAw07/0y6RU8fILaBE3uOFNai4oAo9q7Ua5tQRP7zYpQkhCB5IdkToR9+OAcbe
+	 n918jpBA3pN/X7SYohC8788J2vO5a/sm8/Ka26QLMtEOEXFcaMdSoXph1HArrlMD7s
+	 t0Lh4n6s/Rc8xhURIW+Hmx3kIFnPWFvZPsRpA/xDrOFObhQVIzQpokXAER6kxpJTul
+	 7zgt3bhl9pbJfZ2PnM8GLZrsbSz2YhFpX2Hm9KHe9deX2071ryio/EBDlwE2YAHp9y
+	 +UQtlz+1r0HRw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Hideaki Yoshifuji <yoshfuji@linux-ipv6.org>,
+	Dmitiry Korovkin <dmitriy.korovkin@windriver.com>,
+	netdev@vger.kernel.org,
+	=?UTF-8?q?Juhandr=C3=A9=20Knoetze?= <juhandre.knoetze@windriver.com>
+Subject: Re: [PATCH linux-6.1.y 0/1] inet: backport of RAW sockets dropping incoming ICMP
+Date: Thu, 27 Aug 2026 21:46:17 -0400
+Message-ID: <20260827-stable-daily-0004-inet-ipproto-raw@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260826175018.131474-1-juhandre.knoetze@windriver.com>
+References: <20260826175018.131474-1-juhandre.knoetze@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260827101416.44f53ba5@kernel.org>
 
-On Thu, Aug 27, 2026 at 10:14:16AM -0700, Jakub Kicinski wrote:
-> On Tue, 25 Aug 2026 20:48:55 +0800 Hangbin Liu wrote:
-> > Hi Donald, Jakub,
-> > 
-> > Recently I have been trying to add encap decoding support for `rt‑route.yaml`,
-> > with formats similar to:
-> > 
-> >       -
-> >         name: encap-type
-> >         type: u16
-> >         enum: encap-type
-> >       -
-> >         name: encap
-> >         type: sub-message
-> >         sub-message: encap-data
-> >         selector: encap-type
-> > 
-> > However, sub‑message decoding is broken inside `ynl.py`. The root cause is
-> > that `lwtunnel_fill_encap()` sets the encap‑type *after* the encap payload
-> > data.
-> > 
-> > In iproute2, `parse_rtattr()` extracts all attributes together. In contrast,
-> > `ynl.py` stores attributes one‑by‑one into `search_attrs` after they get
-> > decoded (_decode() -> self._rsp_add()). As a result, we cannot locate the
-> > `selector` while decoding the "encap" payload.
-> > 
-> > Should we decode sub‑messages after finishing first‑level attribute decoding?
-> > Do you have any suggestions on how we can fix this?
-> 
-> I'd change the kernel to output the type before the data.
-> The code seems to be trying to cancel out cleanly on EOPNOTSUPP.
-> Which is a good code pattern in principle but I don't think it makes
-> sense for dump / get. And no existing ->fill_encap can return EOPNOTSUPP
-> so instead of complicating things we should just move the type before
-> the data in the kernel.
+> Attached is a backport of upstream commit c89477ad7944 for 6.1.y. The
+> main difference between 6.1.y and the upstream commit is that in 6.1.y
+> the function 'icmpv6_notify()' in 'net/ipv6/icmp.c' returns void
+> opposed to a 'skb_drop_reason'.
 
-Thanks, that would be an easy fix.
+Queued for 6.1, thanks.
 
-Hangbin
+-- 
+Thanks,
+Sasha
