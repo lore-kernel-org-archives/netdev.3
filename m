@@ -1,325 +1,176 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C9E2848BE
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 12:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3693A257E
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 13:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788008378; cv=none; b=ZK0uk82Il3TXIZN5C8H7+XKNoeCPb/PCQ5KJ1VQWZD8JFHA0DKAhirWdG+XZDLgWcIcjAonjGGY3xT3p25Vbs42aSuI74B1z6lA9CFHT77X75LGT6RDuD6O9cK0pPPLJWq6gJ7csIE//iSMwiHDJUs46VWS8Bb1JaWddEdeQ87k=
+	t=1788009642; cv=none; b=jrFjFZk9SFEUaN3UyaqlL2G4zO6ZwcPj7gS3QYahauaW+PTeDNVTGvazdXpt4pY2V8jUEpMbbcyodvq9n/+QczpmUcsqb4XEOUDjWEFHyaj/oxeCeCOZJjHuhhXiGbUIZ1lAgYtVfdXqQKKu/eni1CrcRVLtajyODmRv15PVYic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788008378; c=relaxed/simple;
-	bh=2ycYbbpNGSpzUXcGe+o946SclPa6PHpkQZV9848KdVc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cwZu9t7NrtSBMlvDYL2P+tzCngIq0mJrVgkc4L3lJHURRmuppQMmNx4aFDrU444CbYDwEMnkTqKGL8ll9Gkx6nRKPCdd2/2DKVBFhqnWIrMaNU9aSdqu/RkVfMV4GB1NThSGzIVxWFdijMBxnPsVxR5FOY2NK+IoPlPBEKX7nH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=0iX0ox62; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788009642; c=relaxed/simple;
+	bh=ZmorWBw9yFgvvoPoyAAtZZMyfZ76Aag4PA6C1hXaBWM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jIYjWyv3xi/g8MNae7T5EPGond7EhvmMkp0awNZa477Dg5XnAN2WnNogaTxHoqIQs4WclNaoHYhlm8847+8tGQUZwrtkq74qZAfNGkAGyCmYZYtid8TqGE1oNHXfUNHgJPQjqMD1BCGc8iYwTNSEpsPB25glGD4+6bcFOoZx4Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il; spf=pass smtp.mailfrom=mail.huji.ac.il; dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b=aLSuGv6x; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.huji.ac.il
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="0iX0ox62"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C724D1A181F;
-	Sat, 29 Aug 2026 12:59:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 854186053C;
-	Sat, 29 Aug 2026 12:59:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0101111C781D9;
-	Sat, 29 Aug 2026 14:59:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788008359; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=TRRAn3ayWpp6KkR8fe/DKlKoibDKlKjshRYEpoSI6+M=;
-	b=0iX0ox62T/oe9zqr19dwg/emDTB+bsDyVxp2Nu7bNqkJ0jtJ+FQoZOTWs+62bF19ePknGU
-	IKDVZ8CJGKTqR4QyX2D6EAGuOWWCXkztd4L4NMjTb8Pzks7dm5KeZc3D1Lpa8bg8T2Rmr7
-	j/6RZhTjaKcwyjNvXUS3uxaMrpg5ggYPuhm0UCyjwvmohpKYr3CNfeVw+zpRhtrair5MXK
-	UN2jlm/pDLM9amrVqWk2KzNDCic2wVWSVUhzz5BFTQHiKWSiwfGAltl6vrEQGRVYAYUajY
-	n++s3B5cD+wuAzUytmOmJCYURANix8Lkadp58qi3upHrU6pkUUz3Of3u86oNTg==
-Message-ID: <4d333480-758e-4061-9c8a-39959bd6a8f9@bootlin.com>
-Date: Sat, 29 Aug 2026 14:59:11 +0200
+	dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b="aLSuGv6x"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-499b2981a7bso19949905e9.3
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 06:20:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mail.huji.ac.il; s=mailhuji; t=1788009636; x=1788614436; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QaaYsyMk0LotJwBZ8+yTnLDDOuYKQGa1ccvtLoH50qY=;
+        b=aLSuGv6xPoRRGQ+FDlm2NIt0JohyMHZormpEJ3Afxea+talYYxmMyginuBccS0FJ0P
+         uzGT1YHuCWbAab2fGr1CDdC7pLKSt4LFQw12+I9C8vLf4YxbPnIODxT95RstaMstZwYv
+         58/ixM2fSBVva9A9Zf61Vg2iRMMVoCCgyLFzg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788009636; x=1788614436;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QaaYsyMk0LotJwBZ8+yTnLDDOuYKQGa1ccvtLoH50qY=;
+        b=kLao9xJ81RGtr/KXITITsQuJrF9pzPzIuVGMuF0mA6kIZRzeKRuKo1NbSqjBCwS6Tg
+         kQeHqRPEt4a2WeiyK4eBypjhhdMK1qzQabEFK8QAiFwz8xDpbTi/rpPauCugur+LCLTA
+         K2swkBHY9jv9UcHVojyqgkBQ1vcWPwdIw1eCZ6uS2TYh/pCxrug410eum6Z/v08jv4Q/
+         hcT6fiYbslqK1DhQ/IjgUrjao2DQafPAPz0A0vE0bjsFzml7sK5TxXcyOvsPIibgTgzv
+         eP6Gh+iBwFHXYjHocuPknY7CRdIPZ7ZwY9kluo3037DNK517bSaYJYXEfvLbRrhbZkFi
+         07yw==
+X-Gm-Message-State: AFuF++kV0uE85NoyPIoO5/4KACAHvlua2aeSqOsyPlZTi4t2r9rjN0H9
+	/+8qekDt1jJZuf4I//kqu2pnTGrTF6H90Jxf1iXx7on1r3U1EPfvENVncKUCzO/5oZwiyTLLoW6
+	ojDw9u2co4JIJ1WtXsNGzpyAueet+m8f9m47Yebcdhj9qjz4ch9VIWzIryfnf04SlKSiND3Yqm2
+	hogs/iIYpm3wedcB4qq4V1dGtdvHJxqyuGmv8Iafb9zoPY5BvaaPeQqE9Uvg==
+X-Gm-Gg: AR+sD10v37nGa/SJYyECawrSzxWURo5+o8jkLX4+z3OgjSWCgbJQf6KjociaAyb6/js
+	jC/F637B2N9pq2F9Wh7DrZXv7OmkBhaavApYnjrptwXE6XGY1SVgQh7IKq/YjHq750yWjcMB/NL
+	HW+hN0ozKUx67LmbywnOK/+GWcx0a6JfDnG8IcOMtwdwjopTtog/+J71ZeUxL0vTsB14zV4+9Z0
+	Wlsc1c4TvCdcXLLf2Z0u/EswlfJwqruEqotVa49t/6bCkQ7ohl5my0w5zEABqIQMOoUMz+F/4ni
+	fvW6oz0IUUR2lOqINfKjCQecrW6Kwy69pqVf3JTwOzNJoF4aETkr/dK+FHReJBrabMiVRQmUvQS
+	VjOutDC6TlrtmxwFoGsDKvKBam+cBZR0YjlNNkZCAeFDQ2RV7VpklCuWiDEzvfBaNORvlL9hU/O
+	5e8FvFUMUdz/3lsJqJlSZPkkmgcf+obsOMDEfsEWgBx+V/eGxNX0XvESI0dBKZa6NSCPq2lEO99
+	rzKA2d0ozfJiNSy9MQfpb2zQmWl9oUbnsjgM37nXWpAqiKi4tFRad+jZlf5pcfjo4vZNubqm98m
+	qw==
+X-Received: by 2002:a05:600c:1394:b0:499:83f1:398 with SMTP id 5b1f17b1804b1-49b91c47b6bmr178646055e9.9.1788009635721;
+        Sat, 29 Aug 2026 06:20:35 -0700 (PDT)
+Received: from aklabmpc3-HP-EliteDesk-8-Mini-G1i-Desktop-AI-PC.tail24119c.ts.net ([2a00:a041:e00c:da00:39dc:2bfc:bb1e:d7d3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbb2794dsm10577076f8f.25.2026.08.29.06.20.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Aug 2026 06:20:35 -0700 (PDT)
+From: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+To: netdev@vger.kernel.org
+Cc: edumazet@google.com,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Michael Cohen <michael.cohen3@mail.huji.ac.il>,
+	Tamir Shahar <tamir.shahar1@gmail.com>,
+	Amit Klein <amit.klein@mail.huji.ac.il>
+Subject: [PATCH net v2] tcp: reject completely old segments during sequence validation
+Date: Sat, 29 Aug 2026 16:20:21 +0300
+Message-ID: <20260829132021.2096728-1-michael.cohen3@mail.huji.ac.il>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: stmmac: re-apply taprio offload in
- __stmmac_open()
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Jose Abreu <Jose.Abreu@synopsys.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org,
- Rayagond Kokatanur <rayagond@vayavyalabs.com>
-References: <20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92@oss.qualcomm.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Lorenzo,
+tcp_sequence() rejects an incoming segment when end_seq is before
+rcv_wup. Since end_seq is one past the last sequence number consumed by
+the segment, this misses the boundary case where end_seq is equal to
+rcv_wup.
 
-On 8/29/26 11:56, Lorenzo Bianconi wrote:
-> The core soft reset issued in stmmac_init_dma_engine() clears the
-> MTL_EST registers, but nothing re-applies the taprio offload after it:
-> priv->est->enable stays true while the hardware EST block is left
-> disabled. The TX/XDP paths then keep dropping frames larger than
-> priv->est->max_sdu[] and taprio is reported as offloaded, although the
-> EST block is not programmed.
-> 
-> Re-apply the taprio offload in __stmmac_open() after PTP is up. The
-> base time is recomputed from the reserved base time and the current PTP
-> time, since the timestamp counter has been re-initialized and the
-> previously programmed base time is stale.
-> Introduce the stmmac_setup_est utility routine.
-> 
-> Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+A segment that consumes sequence space and has end_seq equal to rcv_wup
+is therefore allowed to reach later processing, including ACK handling,
+even though it should be rejected as a completely old segment.
 
-Sorry I realise I didn't reply to your V1 question :( What you did is
-what I meant, so it's all good :)
+Reject this boundary case for segments without SYN or FIN, while
+retaining the existing behavior for control segments and segments
+that consume no sequence space.
 
-This looks fine to me, thanks !
+One consequence of the early rejection is that, in some cases, a
+completely old duplicate data segment will no longer reach
+tcp_rcv_spurious_retrans(). For IPv6, this may prevent a retransmission
+with a different flow label from triggering transmit-path rehashing.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+We accept this trade-off because the segment is completely old and
+outside the receive window, and therefore should be rejected before
+normal ACK processing.
 
-> ---
-> Changes in v2:
-> - Rename stmmac_est_reconfigure() in stmmac_setup_est().
-> - Rely on stmmac_setup_est() in tc_taprio_configure().
-> - Link to v1: https://lore.kernel.org/r/20260825-stmmac-est-reapply-after-open-v1-1-dfa80735e0a1@oss.qualcomm.com
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_est.c  | 33 +++++++++++++++++++++++
->  drivers/net/ethernet/stmicro/stmmac/stmmac_est.h  |  2 ++
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 16 +++++++++--
->  drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 26 ++----------------
->  drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 27 ++++++-------------
->  5 files changed, 59 insertions(+), 45 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-> index afc516059b89..bbebd33c8a88 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-> @@ -80,6 +80,39 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
->  	return 0;
->  }
->  
-> +int stmmac_setup_est(struct stmmac_priv *priv)
-> +{
-> +	struct timespec64 current_time, time;
-> +	ktime_t current_time_ns, basetime;
-> +	u64 cycle_time;
-> +	int err;
-> +
-> +	mutex_lock(&priv->est_lock);
-> +
-> +	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-> +	current_time_ns = timespec64_to_ktime(current_time);
-> +
-> +	time.tv_nsec = priv->est->btr_reserve[0];
-> +	time.tv_sec = priv->est->btr_reserve[1];
-> +	basetime = timespec64_to_ktime(time);
-> +
-> +	cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC + priv->est->ctr[0];
-> +
-> +	time = stmmac_calc_tas_basetime(basetime, current_time_ns, cycle_time);
-> +	priv->est->btr[0] = (u32)time.tv_nsec;
-> +	priv->est->btr[1] = (u32)time.tv_sec;
-> +
-> +	err = stmmac_est_configure(priv, priv, priv->est,
-> +				   priv->plat->clk_ptp_rate);
-> +
-> +	mutex_unlock(&priv->est_lock);
-> +
-> +	if (err)
-> +		netdev_err(priv->dev, "failed to re-configure EST\n");
-> +
-> +	return err;
-> +}
-> +
->  static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
->  			   struct stmmac_extra_stats *x, u32 txqcnt)
->  {
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-> index f70221c9c84a..f620d3331c2c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-> @@ -65,3 +65,5 @@
->  #define EST_GCL_DATA			0x00000034
->  
->  extern const struct stmmac_est_ops dwmac510_est_ops;
-> +
-> +int stmmac_setup_est(struct stmmac_priv *priv);
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index d576059c04df..b30036428188 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -48,6 +48,7 @@
->  #include "stmmac_ptp.h"
->  #include "stmmac_fpe.h"
->  #include "stmmac.h"
-> +#include "stmmac_est.h"
->  #include "stmmac_pcs.h"
->  #include "stmmac_xdp.h"
->  #include <linux/reset.h>
-> @@ -4153,11 +4154,22 @@ static int __stmmac_open(struct net_device *dev,
->  	ret = stmmac_hw_setup(dev);
->  	if (ret < 0) {
->  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-> -		goto init_error;
-> +		return ret;
->  	}
->  
->  	stmmac_setup_ptp(priv);
->  
-> +	/* The core soft reset in stmmac_hw_setup() clears the MTL_EST
-> +	 * registers, so re-apply the taprio offload after PTP is up.
-> +	 */
-> +	if (priv->est && priv->est->enable) {
-> +		ret = stmmac_setup_est(priv);
-> +		if (ret < 0) {
-> +			priv->est->enable = false;
-> +			return ret;
-> +		}
-> +	}
-> +
->  	stmmac_init_coalesce(priv);
->  
->  	phylink_start(priv->phylink);
-> @@ -4181,7 +4193,7 @@ static int __stmmac_open(struct net_device *dev,
->  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
->  
->  	stmmac_release_ptp(priv);
-> -init_error:
-> +
->  	return ret;
->  }
->  
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> index 960249960004..917ef7ddcae6 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> @@ -8,6 +8,7 @@
->    Author: Rayagond Kokatanur <rayagond@vayavyalabs.com>
->  *******************************************************************************/
->  #include "stmmac.h"
-> +#include "stmmac_est.h"
->  #include "stmmac_ptp.h"
->  
->  #define PTP_SAFE_TIME_OFFSET_NS	500000
-> @@ -55,7 +56,6 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
->  	u32 quotient, reminder;
->  	int neg_adj = 0;
->  	bool xmac, est_rst = false;
-> -	int ret;
->  
->  	xmac = dwmac_is_xmac(priv->plat->core_type);
->  
-> @@ -84,30 +84,8 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
->  
->  	/* Calculate new basetime and re-configured EST after PTP time adjust. */
->  	if (est_rst) {
-> -		struct timespec64 current_time, time;
-> -		ktime_t current_time_ns, basetime;
-> -		u64 cycle_time;
-> -
-> -		mutex_lock(&priv->est_lock);
-> -		priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-> -		current_time_ns = timespec64_to_ktime(current_time);
-> -		time.tv_nsec = priv->est->btr_reserve[0];
-> -		time.tv_sec = priv->est->btr_reserve[1];
-> -		basetime = timespec64_to_ktime(time);
-> -		cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC +
-> -			     priv->est->ctr[0];
-> -		time = stmmac_calc_tas_basetime(basetime,
-> -						current_time_ns,
-> -						cycle_time);
-> -
-> -		priv->est->btr[0] = (u32)time.tv_nsec;
-> -		priv->est->btr[1] = (u32)time.tv_sec;
->  		priv->est->enable = true;
-> -		ret = stmmac_est_configure(priv, priv, priv->est,
-> -					   priv->plat->clk_ptp_rate);
-> -		mutex_unlock(&priv->est_lock);
-> -		if (ret)
-> -			netdev_err(priv->dev, "failed to configure EST\n");
-> +		stmmac_setup_est(priv);
->  	}
->  
->  	return 0;
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> index 14cabe76e53e..b41df317d73c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> @@ -10,6 +10,7 @@
->  #include "dwmac4.h"
->  #include "dwmac5.h"
->  #include "stmmac.h"
-> +#include "stmmac_est.h"
->  
->  static void tc_fill_all_pass_entry(struct stmmac_tc_entry *entry)
->  {
-> @@ -968,8 +969,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
->  {
->  	u32 size, wid = priv->dma_cap.estwid, dep = priv->dma_cap.estdep;
->  	struct netlink_ext_ack *extack = qopt->mqprio.extack;
-> -	struct timespec64 time, current_time, qopt_time;
-> -	ktime_t current_time_ns;
-> +	struct timespec64 time;
->  	int i, ret = 0;
->  	u64 ctr;
->  
-> @@ -1069,34 +1069,23 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
->  	}
->  
->  	mutex_lock(&priv->est_lock);
-> -	/* Adjust for real system time */
-> -	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-> -	current_time_ns = timespec64_to_ktime(current_time);
-> -	time = stmmac_calc_tas_basetime(qopt->base_time, current_time_ns,
-> -					qopt->cycle_time);
-> -
-> -	priv->est->btr[0] = (u32)time.tv_nsec;
-> -	priv->est->btr[1] = (u32)time.tv_sec;
->  
-> -	qopt_time = ktime_to_timespec64(qopt->base_time);
-> -	priv->est->btr_reserve[0] = (u32)qopt_time.tv_nsec;
-> -	priv->est->btr_reserve[1] = (u32)qopt_time.tv_sec;
-> +	time = ktime_to_timespec64(qopt->base_time);
-> +	priv->est->btr_reserve[0] = (u32)time.tv_nsec;
-> +	priv->est->btr_reserve[1] = (u32)time.tv_sec;
->  
->  	ctr = qopt->cycle_time;
->  	priv->est->ctr[0] = do_div(ctr, NSEC_PER_SEC);
->  	priv->est->ctr[1] = (u32)ctr;
->  
->  	priv->est->ter = qopt->cycle_time_extension;
-> -
->  	tc_taprio_map_maxsdu_txq(priv, qopt);
->  
-> -	ret = stmmac_est_configure(priv, priv, priv->est,
-> -				   priv->plat->clk_ptp_rate);
->  	mutex_unlock(&priv->est_lock);
-> -	if (ret) {
-> -		netdev_err(priv->dev, "failed to configure EST\n");
-> +
-> +	ret = stmmac_setup_est(priv);
-> +	if (ret)
->  		goto disable;
-> -	}
->  
->  	ret = stmmac_fpe_map_preemption_class(priv, priv->dev, extack,
->  					      qopt->mqprio.preemptible_tcs);
-> 
-> ---
-> base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
-> change-id: 20260824-stmmac-est-reapply-after-open-181d70a15eb6
-> 
-> Best regards,
+We consider preserving the RFC 793 and RFC 9293 sequence-acceptability
+boundary for such data segments more important than preserving this
+side effect of processing an otherwise unacceptable segment.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+Reported-by: Tamir Shahar <tamir.shahar1@gmail.com>
+Reported-by: Amit Klein <amit.klein@mail.huji.ac.il>
+Signed-off-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+---
+Changes in v2:
+- Exclude SYN and FIN segments from the boundary-old check to preserve
+  existing SYN/FIN handling, including simultaneous connect
+  and retransmitted SYN+ACK AccECN processing.
+
+Packetdrill reproducer:
+
+// Off by one bug in tcp_sequence()
+// the negative test before(end_seq, tp->rcv_wup) has off by one error, since end_seq is SEG.SEQ+SEG.LEN,
+// whereas the RFCs require SEG.SEQ+SEG.LEN-1 (their positive test is RCV.NXT =< SEG.SEQ+SEG.LEN-1)
+
+0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0 bind(3, ..., ...) = 0
++0 listen(3, 1024) = 0
+
++0 < S 0:0(0) win 12345
++0 > S. 0:0(0) ack 1 <...>
++0 < . 1:1(0) ack 1 win 12345
++0 accept(3, ..., ...) = 4
+
+// This is not mandatory for the phenomenon, we just do this to increment SND.NXT (set SND.NXT=101, retain SND.UNA=1) so we can show
+// later that the problematic segment is actually accepted (via the tcpi_accepted_bytes count).
++0 send(4, ..., 100, 0) = 100
++0 > P. 1:101(100) ack 1
+
++0 < P. 1:1001(1000) ack 1 win 12345
++0 > . 101:101(0) ack 1001
+
+// Now RCV.NXT=1001, so according to the RFC, a subsequent 1:1001 should be discarded.
+// But in Linux, 1:1001 is accepted(!).
+// Note that bytes_acked is incremented to the packet's ack number, which shows the packet is accepted.
+
++0 < P. 1:1001(1000) ack 23 win 12345   
+// +0 < P. 1:1000(999) ack 23 win 12345   // if you use this instead, you get an assertion error, as expected.
+
+// this assert will succeed in the presence of the bug, but per the RFCs, it should fail because the packet should have been discarded
++0 %{ assert(tcpi_bytes_acked==22) }% 
+
+ net/ipv4/tcp_input.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index daff93d51..1991285aa 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4844,7 +4844,11 @@ static enum skb_drop_reason tcp_sequence(const struct sock *sk,
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+ 	u32 seq_limit;
+ 
+-	if (before(end_seq, tp->rcv_wup))
++	if (before(end_seq, tp->rcv_wup) ||
++	    (end_seq == tp->rcv_wup &&
++	     seq != end_seq &&
++	     !th->syn &&
++	     !th->fin))
+ 		return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
+ 
+ 	seq_limit = tp->rcv_nxt + tcp_max_receive_window(tp);
+-- 
+2.43.0
 
