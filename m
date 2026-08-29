@@ -1,340 +1,211 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012030.outbound.protection.outlook.com [52.101.53.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f97.google.com (mail-oo1-f97.google.com [209.85.161.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D740233F8AA;
-	Sat, 29 Aug 2026 07:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787987217; cv=fail; b=jsngHx60yw3nMXsG8KUSplcx5l6CsWM4uLBCVNHhe3V5kUGUd8Ou8KVzcX3luTIiSycZUclzq5Z3qxWuq3eNbs+43U5bOakUzyK9gBtXL8vfyFHQMEgMDoM0el4tSrbDIzTPUo/JZIugAlVPnIZPFFfOtPgcmq6z2GjAg2SkRgE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787987217; c=relaxed/simple;
-	bh=/Y0aGarGc+MTrg5dIko7eA3SXnxKwobwh2huKZpzhWQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=K6qnUT+Dxy9hVO842t3La6L+C5R2up9FJVKZrxiFgxH0WTBMk+IJWrlp1uE3NNPUNyM3AQC71aIdkEvvgwRTk5DysltRSBTfh7nHmDe5gecZZH2SruU+VqE6OMUoRI86KpKApVDVupRqL4svkxygFe3Fvt/tkWCnaXbx0WOytEw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xfR4DXTe; arc=fail smtp.client-ip=52.101.53.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69039357D0E
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 07:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.97
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787988044; cv=none; b=JOg5nz/JvvGvFM6Cb0VLUXB2nQJzWSBKXN4U0V+qVVROhAVlhNSsnNl50kxeVqwsmpGOgA6AcvSYJbDMnd50sDg7+OtzF80yUtA0gkgbYxoSxAhLv8/VMVNwACuONvlUOyPKEDUKX47H3QyISWR9KhQh3EiycUWUbZvjCY8C5Og=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787988044; c=relaxed/simple;
+	bh=fUqdARnAfcO8fofiiff5e5SkqhPpEXmOCzU+BofnGxA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XWhlqeH+ujlg9doBsBNSBFB34/rMqZS+0JnrgeNKctwTrIsIVBhSrLna8KyJXKGkVnAfH/afXrr8T8pgZNR7cwPd0gfaZOJqkATVKJuCW6P2+Yl9IhpPeI+lrYeqj6kK+PhEAkzMoc5KzN4fQGD5Iq701Hpva3gXeXZ9WvEPX90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Sx3oCpOU; arc=none smtp.client-ip=209.85.161.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xfR4DXTe"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F0QSXZ5xt1demVbO8PdWc1XN/I6Sai0t+jyFMgVfpr2ztu1iTdBTWM+v3+i0N0FCWNVjH+LASgDoCw3WrXlaRbPMxZ5xk0+1RGPbjJANfwR5Zea/eNkgx8WjoBbQHKhzcTB5t85xpounzgWpfsIDpb4uokOvBs3AeLmYKhEexR4iZ/Gc4BcxrRmQ1hJ2U0G3A0m61kXOTeQgZUX0obX9gCoT6O2QOc6x4NCl7JEJdO7CpSL6CE01l6uFhz8lREbXF07ALAeygK59trpOMbEJYlrcS3rBN+pTChzyDrbUasU9RJbWTSTxRwW2RpO230KOGAQULNVQ174lgiLNCiO3yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wCJF2tfyKaUt42f+98vi1rdrcnz+JhTrdf2NI4Ka55k=;
- b=GfBfs4jWqW98XEhuBewKfQ3SaV/2FHKKdsQVWuuAR6HQ5F0LwGHQFd7uw+y2heZ9pttIr/RK9LXUKOIQzborYizuBAVmQdlpVzP2ybbSbJ2S/BBtYl5oEp3RZQnhXpaM1FgSPx97RGjM14n8p/D7QmTETK0wzLbvd48PtFy+kM9CstOoLNnyIteepsXSmoxOYjrgij2H/rtZxrhLKYDhYW0SN8rgLBNZS1SUOoPnrFjqiT5JTLHJTixTy/huR1ZPuSQGpUcJqnsTdflT+bySPc5YMMZlHAWAsDl2vK9WfwFL+tAP5bLAl1lhgrlVOgQVS3FrNximS0AMWbxMpKURCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wCJF2tfyKaUt42f+98vi1rdrcnz+JhTrdf2NI4Ka55k=;
- b=xfR4DXTeNzUvJejmYfAqcNsgiAPWewCuBAyIJROf/XfGn+HwmkuOUfNCbWYuhaCXRFoguzQJ3lSj270J0W3OLyCAhbQ15XyR1e6gSfMFMHp3+FrselD6fgL7V9yWRDDDYphafaHd7Kej/Lhg5fLWXdt2qLYwHVU1f7GdU/+JHTI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
- LV3PR12MB9353.namprd12.prod.outlook.com (2603:10b6:408:21b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.11; Sat, 29 Aug
- 2026 07:06:51 +0000
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1%6]) with mapi id 15.21.0360.008; Sat, 29 Aug 2026
- 07:06:51 +0000
-Message-ID: <173a8a29-2ea9-4231-815c-c6b0cca3ed80@amd.com>
-Date: Sat, 29 Aug 2026 08:06:46 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/2] cxl/memdev: add support for mutipf device
-To: Richard Cheng <icheng@nvidia.com>
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org, edward.cree@amd.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, dave.jiang@intel.com,
- Alejandro Lucero <alucerop@amd.com>
-References: <20260821155134.260053-1-alejandro.lucero-palau@amd.com>
- <20260821155134.260053-2-alejandro.lucero-palau@amd.com>
- <aov-jfhJtNtZJxlN@MWDK4CY14F> <a313b340-9263-4204-b0b2-bc492cf746a4@amd.com>
- <2a7d2d8c-ff02-4f2f-94d8-21d64dd77f82@amd.com> <apErJUX77f4x02LH@MWDK4CY14F>
-Content-Language: en-GB
-From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
-In-Reply-To: <apErJUX77f4x02LH@MWDK4CY14F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P265CA0060.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2af::6) To DM4PR12MB6254.namprd12.prod.outlook.com
- (2603:10b6:8:a5::17)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Sx3oCpOU"
+Received: by mail-oo1-f97.google.com with SMTP id 006d021491bc7-6b1b881a8e9so58381eaf.1
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 00:20:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787988042; x=1788592842;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2tSDNHw63WBQrtjFlfGI5Mxkm6OZuBbGOI2GkuYI0Mw=;
+        b=cRowM3B+VtucAeJTYwel29coc04JbYzYSqBKk+yTF6z0TJ9OyRxZXFggG5BIx6jDo+
+         chRJUJeeVkIzKgE/lGscLJNvHhn+/kimQ9i80ieOKngeu7dNzf4qzHFZ1h17HPo6U1l4
+         VCpOhuk8VkIjRx/fHb7+ZDOCs/5ZKtr8CcXkMA9b0/gqIr/ktH8auymJ7RDoTpDw1GCb
+         EOkLclCIWndJAgoURXtBjwLlXHLrOoWylLrqiwSDJc+FR5oCvHZvRJPPjAErALRrMjdP
+         VgJSrwMtfBmks+QN2he/8brVF0teqXJiRnJrWOPPPU3Uy1j4McOJnexF+Lo+PYRpTOFJ
+         O2wA==
+X-Gm-Message-State: AFuF++lAJNDY3ivX0t7ic3OjZS3ZyViAMEYPZ4AfRezkWIJV05py+dQp
+	ZtGzA06I7AvltidV6LYf6yTJ3g8IOZ0odXje0m5XQCKP9DQROln9CA0H6bvWnKSuth2DD46Fhkj
+	w80dBv4aRadbr0+mf5dL8wxddayYYyX985AFlOyWq0WNi7UwTYj2OpXF/URY/IRe7R9z607nQDb
+	AVabILkHOgYynBXhxw4aclOncBcZ81C0ELU4XEZtEPnaiQ/yzaXwGbYkInFiD1Ux3bGVewG7anS
+	Gn3hL70L2o=
+X-Gm-Gg: AR+sD10QqkKWn+68kxiR614WAJl2P9iAhnH79DoUCQovpasHALp4koE/vehrmmraXxt
+	DrXW8txVOFj1HNamYcPCrgHpo2lyHkFxwG98/gcue1PVWC0Q4cLu54JJsRuFFYB+J/zNr2Yat4o
+	M7F6nX3Z3Rxw4CcY6t0Z7SFjEaCxIOlT96Zb3usopgOmUQsdSzoO+k15LdMMv8csjGwLVX0D052
+	S2ReqcpDlynl3cuBMCSH11cbvwbB7AKF7gEraIR8N7u5o4ap0ezfi87isXMh4Vud8lzHlWJU8Be
+	lAYAM8wI7QrZwHqRiS3Sz3QUOAqbFb/4ObA0q7xvDVBRQbLndIsMUw0P93/XapVkgbZpc48AZca
+	VbgMshlqAhKTG5mLMsP70GKitbYpWMKtw/4RdhqFOMrEtB2bUQ+3C91ip+EELluJOwerctKN8t+
+	VUfs+R3Uapw1iVY3kRmbhZt2FZnQWJgmk9
+X-Received: by 2002:a05:6820:1515:b0:6aa:ea7e:1dac with SMTP id 006d021491bc7-6b1c675d716mr12377523eaf.33.1787988042071;
+        Sat, 29 Aug 2026 00:20:42 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-1.dlp.protect.broadcom.com. [144.49.247.1])
+        by smtp-relay.gmail.com with ESMTPS id 006d021491bc7-6b1ce1f7cb7sm43784eaf.15.2026.08.29.00.20.40
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 29 Aug 2026 00:20:42 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a6056e2039so1215577a12.3
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 00:20:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1787988039; x=1788592839; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2tSDNHw63WBQrtjFlfGI5Mxkm6OZuBbGOI2GkuYI0Mw=;
+        b=Sx3oCpOUkb4p0hS5FWqHvtSBF97TBE9hzRLi7atXaQ7QPXcSdklsJILKVexuv4nzHN
+         L84pmLCgidyOSPXZVWkL7GJZSX+AgnWImCaZn3qttnT8SmStUE/hiWHYCr/0Ifa8QLiI
+         2nvvR3mU+6e/BG0oK3bZXsStCdLo0lLfN4wTY=
+X-Received: by 2002:a05:6402:4503:b0:6a6:32f5:90b3 with SMTP id 4fb4d7f45d1cf-6a632f5939bmr420651a12.21.1787988039339;
+        Sat, 29 Aug 2026 00:20:39 -0700 (PDT)
+X-Received: by 2002:a05:6402:4503:b0:6a6:32f5:90b3 with SMTP id
+ 4fb4d7f45d1cf-6a632f5939bmr420619a12.21.1787988038903; Sat, 29 Aug 2026
+ 00:20:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|LV3PR12MB9353:EE_
-X-MS-Office365-Filtering-Correlation-Id: d574bc3b-1cf6-4a60-bc90-08df059c19b1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|6133799003|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	scxoAwXBHJ/FTJwBP0CYNr/d1Ki1bFHQEjpU8dRFQvXdvVDAkcG37mQlcz+Ze+8O7EzliuVfthS3mZWC9LvLfDnSVl4w9BmWmBfTXN1ph077O01SjShaQu6CpXXg3wL2HbaHyN5v3eVDh9vcLf96aCojU3OqGAYFFDpPNzXFYLOAxzPJNJfV9C/Rz8H1QzTofXge8BJFogn7Th5O6j9sfrXO3qnXqAYHKRE1ABXRSpHcXzIWCOkLUTfHYxj8ADjSH9Rs9wyQVRYCAqZhf+MWe6A5vR6ru4xttTf1J3uIvbAGYtrb3y4UPVPEyU7iDMiwkJuPeUoBVvEW6nmDINhIbT8MIDdA0aL+oYjBLOmYk/Lg9zhSVdlGKrPZkItOhz0nbNmWAfsOS+uJpLUUj6/vF7ik/y3dh30ogV+N7+tuSF06L4+2boxopZ4JS+C1OICujISQz4dm3/w21lFeKS0FNIpc2wt1B8Mgdjd2PePK8JH1aHRqlbuIQSkkwzKf2fp07lj/vpGayqyzdk2jpkg6VWg4WEwa1G6nenqvewlymWk9/Cv/5UlE+oK4QcHYQjLyveZM+LisdPldsbFFsL2IpCb0S6ntQ2gL4bUwX2NxpGjsQ6KxSHmV5KadR3JVUecCMgPxBLjxp84gS1WHuFsKjnqCsAZrvWVbY751kdG2YAY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(6133799003)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UDIyeG5zRWtqd1pKV01pOFNTc0p0WjFhdTlWZW1DbktMZVJZRVFzNUpsblVC?=
- =?utf-8?B?eGRuam9WOG94NTMzYmtiaU5UMEVFZ2Z3Si95cG9USkJGbG93ZWFkSjN1YjJr?=
- =?utf-8?B?d1dyMHVabjRFUHkrRzlEMnVCdTJiMG90UUxhcC9Mclh3ZFVWMThrZWVqTHJY?=
- =?utf-8?B?K3FDR0JVR2QvVDdoTm1QRGhJQjBjSTlJbUtrS1B1amFlK2puRmR3QkFNc0dY?=
- =?utf-8?B?bU1JRHlhb1BhSStqSkZOMU5wdS9IOWlXUWFHNUVITnRHSmJ4ZWs0dEVoQ0Rh?=
- =?utf-8?B?VzdHY0VmOHFZVXNmK0J2Skpuc3B5OENnUmV3MWJJRnlSWG5TbS9vaHNuREd3?=
- =?utf-8?B?RTRzR0s4a25CdSsrQmV2Q3E2RDV4ODluRGV6V1Y5VHJ2OGNpZnFCWWpsZUt4?=
- =?utf-8?B?Q2xpVDh3ai9qVlFWSTgza2ZRV1Q0NmdkR2Q4cUxwVnhVM2ZWaFVERk0wQzBC?=
- =?utf-8?B?d3pJQ1B2em1vMmhGRDRNUTQxdWg1Tlk2bFhuYXBQQ3BhTVpMaXJJQm95eThU?=
- =?utf-8?B?NlIxL2hNSEMvd21xZERBM2NQTFJDdjNaSnZuaUVZYVJlUVVNVW9zV0lzSlpV?=
- =?utf-8?B?TXNuTDJrdnk2YitJVjJiL05aUVAzdVFiOS9TV0JScU1OMmpUVGoranNrNDY0?=
- =?utf-8?B?cnllZ3AxMDZBcFhoTGtJbVg5Rks5YnlqQ1Q3eFNZYjZLSXBzQlEwenVDT1hq?=
- =?utf-8?B?TklFNnB5YVA3UDQxcTc2bmZBR2lodmF5cFB2ZyttbVZNdDFyc0djYTFHa0VK?=
- =?utf-8?B?azYveW5JVmFCVzU5WEJUWjQ1YkhKS2hVQXR1VUZVcVYvU3BkQndQZHpZekV5?=
- =?utf-8?B?QUphWHdYMDZwZ2dRMHF3c0lnUUZ1OFdibU1HNnpCUnkzRkpiNFVkRHpseUhR?=
- =?utf-8?B?WWtlZE9JYk1BUUVGT0pqUlhiOGdRQXQ3N2tLY2ZyS1FMSHFmQ1BTdmtxbFFU?=
- =?utf-8?B?ZWxvbGtSc2dMTTZDVE5mdXNlWHpoTU9tQkhPZTNxd1BpQk9WOHVPSGNaejI5?=
- =?utf-8?B?cFBtdzZUMUpaOU16VE5ncUpOdGhUZ3ZQVkVFR0xENUFSVjVyVGhIa0FRMHFi?=
- =?utf-8?B?MGJhUkUxSmZ1dCtYaDhGUzdzRC8wZit6Z1c5UEhGNFFYME41SklGV1ByY0hz?=
- =?utf-8?B?U3JkM1daaGZPaGJ1alg3eFJEdC9aOTJCSmdjYlludnFFYlhSRDhLTEduamg5?=
- =?utf-8?B?RUJLTjFWb0wwSU1xM2c3cXZBVXZ4WW9JMS9lNWY3dVdCSnRTUlFKZWlHNU9u?=
- =?utf-8?B?Z0dDNVpzVS9qNjNKT1BDZ09iUzY2VFJkNjJ5c2V3N2NDY1FNd05Oanpha3ZQ?=
- =?utf-8?B?R1cxekt3OUFoMk9NVFRlSGQvaTlJSDZ0RWVTMjYwZXZabE5rOERLZHA0eEow?=
- =?utf-8?B?V0lGV3FCRFZqdERxbEI3eUk0VDFCNldZcGwrVjBVeG1wWkhyaXNwYUFZbjc2?=
- =?utf-8?B?QVdncXZYVE43OG5La29Iek1NVGJQRjJPTGsrNGQwdFQ0ZFJVampTWjk2OFhO?=
- =?utf-8?B?bUhLSXV2a0ZscjJ0UDdiMW54VHdYRFhUcnhPeXBrdzg5bm1pZVpWYitSTHpy?=
- =?utf-8?B?amtjSUNJZU5DZVhBcG83cGNrbXUwcUF2SkFNMlpOdytiRnhBL25MZll1UVlx?=
- =?utf-8?B?aEdHOXpIaXNNRHh4dFc0NmNvcFk2bUFyWEVvV1JBeU5DTEY1VEdkMmRhdzFy?=
- =?utf-8?B?cjlvN0NpaXNDSXc0c0ErNHhBTG15S29OTEdpeUluSEtpeFd2WjZzc1hBZHI4?=
- =?utf-8?B?eXNYV0FiT0FrZ3YyVTZJUEZhWVdjUnRweHlmTjBvYy9iTDhoTUdVZWl4dGJt?=
- =?utf-8?B?QnBRR1N3Y1FUTjRvTnJvTWxQTXFQbER2Mng3R2tvdFh4N05WTHFCRW9IQmsr?=
- =?utf-8?B?S3FySmJ1QXdkbWx0YlR4Mk5ON0kwZTBHUUtNVDh0V1ZKL0tyTWNwRE4zYjBO?=
- =?utf-8?B?V2xRM2VlbjJ3OHJIMklqcG1Sc2lNb2FGbXNKcUwrRXFBaTI1SDhoaXpMWXBF?=
- =?utf-8?B?c0M1R3pWYWpIM3RtZ2dCc090SXIzWnIxYWtYelZVTU9LUTdqNStKNFNDSFJK?=
- =?utf-8?B?bDN3REJyYmpKcDlQVmU3dFVpM245UnZlanZXRU1ITCthQ2dQNDIxakpLWW9E?=
- =?utf-8?B?MzZlNWNkWkxoeHMyNjZyMXpGNENzdUd1L0Vldk9Samc2MUdoOS9NRmp4VWpI?=
- =?utf-8?B?OVZpNnJWUEJ2TFhFSXRpM0NHTUh4dXlUQ2QvRWg5S0JvUEs0ZkRwVDFVLzhS?=
- =?utf-8?B?TVN6Nk9VdEpETEl1bUZaWGk4K0lpRlFZcGlXS2hPVU1CcTNPU29WcmhpME5P?=
- =?utf-8?B?UlptbUhaRTExeFVuWDRIalZRLzgvK3lOaVlSMHRhV1JTMjFaSnMxUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d574bc3b-1cf6-4a60-bc90-08df059c19b1
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2026 07:06:51.5700
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zpnKiGnnxcKzy2Q41jdSzgs/MreD3YQCLm5baa2I2cbaOlB3WEOmFUMjtsCIeEerb1/O1AgSo40/ROdnOQS+rA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9353
+References: <20260828190900.1767611-1-joe@dama.to>
+In-Reply-To: <20260828190900.1767611-1-joe@dama.to>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Sat, 29 Aug 2026 00:20:26 -0700
+X-Gm-Features: AcwNN1WVrFXM_voeT-cJuO_FrmoGuKmvs0Pt4kKCh5KY5qM_MwOGRru62FRO-tQ
+Message-ID: <CACKFLiks4ueY4faqOiu9-Zk6odEdNL1Abyhg+giOE72iMe0Z7g@mail.gmail.com>
+Subject: Re: [PATCH net v4] bnxt_en: Bound SW TPA IDs to prevent crashes
+To: Joe Damato <joe@dama.to>
+Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>, horms@kernel.org, 
+	colin.winegarden@broadcom.com, linux-kernel@vger.kernel.org, 
+	raphaelcf@meta.com, stable@vger.kernel.org, llvm@lists.linux.dev
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000f74c9a065a2a6776"
 
+--000000000000f74c9a065a2a6776
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 28/08/2026 09:15, Richard Cheng wrote:
-> On Thu, Aug 27, 2026 at 06:44:42PM +0800, Lucero Palau, Alejandro wrote:
->> On 25/08/2026 08:37, Lucero Palau, Alejandro wrote:
->>> On 24/08/2026 09:33, Richard Cheng wrote:
->>>> On Fri, Aug 21, 2026 at 04:51:33PM
->>>> +0800,alejandro.lucero-palau@amd.com wrote:
->>>>> From: Alejandro Lucero<alucerop@amd.com>
->>>>>
->>>>> A PCI device can present multiple Physical Functions(PFs) but the CXL
->>>>> specs restrict to the first one, PF0, the discovery and management of
->>>>> CXL capabilities accessed through a PF0 BAR. Other non-PF0 PFs need to
->>>>> obtain the CXL.mem range to work with somehow.
->>>>>
->>>>> Although this could be handled internally by an accelerator/Type2
->>>>> driver, it requires to properly handle changes to the CXL mem device,
->>>>> mainly its release by the CXL core, but also potential CXL device
->>>>> resets. When this release happens, those other PFs need to be
->>>>> told about
->>>>> it.
->>>>>
->>>>> Implement a way for non-PF0 PFs to register/unregister to the memdev
->>>>> linked to the PF0 device. At memdev release, trigger the release of
->>>>> those non-PF0 PFs devices registered to such memdev from the
->>>>> driver they
->>>>> are bound to.
->>>>>
->> <snip>
->>
->>>> I suggest replacing cxl_get_pf0_memdev() and cxl_put_pf0_memdev()
->>>> with another
->>>> helper, e.g.:
->>>>
->>>> int cxl_memdev_link_consumer(struct device *pf0, struct device
->>>> *consumer, struct range *range);
->>>>    It should live in cxl/core/memdev.c , and the behavior is
->>>> something like
->>>>
->>>> 1. Find PF0's memdev and take a temp ref.
->>>> 2. Lock the memdev
->>>> 3. Verify that the memdev is still registered, driver-bound,
->>>> attached, and has a valid HPA range
->>>> 4. Create a managed devce link via device_link_add(consumer,
->>>> &cxlmd->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
->>>
->>> Interesting approach.
->>>
->>>
->>> Not sure this could do the proper thing though.
->>> DL_FLAG_AUTOREMOVE_CONSUMER seems to remove the link, cxlmd->dev in your
->>> case, when consume driver unbinds ... but it is the other way what we
->>> need. Maybe I do not understand well all the implications with this
->>> approach, so let me study it.
->>
->> I'm having problems just trying to implement the supposedly basic
->> functionality linking the cxlmd device with the non-PF0 device, I mean
->> without thinking about potential races with this approach (I think it has
->> less problems in this regard than my approach).
->>
->>
->> I can use DL_FLAG_AUTOREMOVE_SUPPLIER with the supplier being cxlmd->dev, so
->> at device unbinding it can trigger the non-PF0 device unbinding as well. But
->> it seems all this link code is quite related to PM, so some checks at link
->> creation fail. I have tried using DL_FLAGS_SYNC_STATE_ONLY along with the
->> previous one, but another check precludes the link creation if both are used
->> (See device_link_flag_is_sync_state_only() ).
->>
->>
->> Do you have any advice here?
->>
->>
-> Hi Alejandro,
+On Fri, Aug 28, 2026 at 12:09=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
+> v4:
+>   - Moved bp->max_tpa_roundup_size init out of the early return path and
+>     documented that TPA is unsupported there, as suggested by Michael.
 >
-> Thanks for trying the device-link approach. I wonder what deivce-link eperiment you actually execute ?
-> Though I don't have your HW, maybe we can discuss on the experiment method ?
->
->  From what I can know from the current driver-core behavior is
-> - DL_FALG_SYNC_STATE_ONLY | DL_FLAG_AUTOREMOVE_SUPPLIER is rejected by design
-> - a sync-state-only link won't enforce consumer unbind
-> - DL_FLAG_AUTOREMOVE_SUPPLIER alone is a valid flag combination, so a NULL there depends on runtime state or
->    the specific device relationship
->
-> You're right that DL_FLAG_AUTOREMOVE_CONSUMER means the link is removed when the consumer driver unbinds.
-> Now we get it more clear that, the autoremove flag control the liftetime of the link, they don't control supplier-to-consumer unbind direction.
->
-> For normal managed device link, driver core unbinds active consumers before unbinding the supplier.
-> For this case I think DL_FLAG_AUTOREMOVE_CONSUMER is appropriate since the non-PF0 driver creates the dependency during probe and no longer
-> needs it after that driver unbinds.
+Thanks.
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 
+--000000000000f74c9a065a2a6776
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-I was confused with the flags. A non-PF0 function should be able to 
-delete the link without triggering the unbinding of the supplier, and 
-the supplier unbinding should trigger the non-PF0 unbinding. The flag 
-seems to do the first one, and the implicit functionality when unbinding 
-the supplier does the second thing. So, I think this could do what we need.
-
-However,  I can not (properly) test it, because the supplier is checked 
-with device_pm_initialized() and it fails for the memdev device and I 
-guess it will with the region device as well. If I remove the check, it 
-all works, so maybe adding some support for this case and conditionally 
-do such PM check could be the way to go, as it simplifies a lot the 
-design. I will study this further and see the implications.
-
-
-Thanks!
-
-
-> But I rethink about linking consumer to cxlmd->dev, memdev is not the object whose lifetime defines whether the returned HPA range is valid.
-> An open /dev/cxl/memX can keep the memdev object alive even after the EP and region have been torn down.
->
-> I am not sure but cxl_region seems like a more accurate supplier, it provides vaid HPA to consumers.
->
-> I let GPT sketched the implementation of the API I was thinking about, maybe something like the following.
->
-> """
->    int cxl_memdev_link_region_consumer(struct cxl_memdev *cxlmd,
->    				    struct device *consumer,
->    				    struct range *range)
->    {
->    	struct device *decoder_dev __free(put_device) = NULL;
->    	struct device *region_dev __free(put_device) = NULL;
->    	struct cxl_endpoint_decoder *cxled;
->    	struct cxl_region_params *p;
->    	struct cxl_region *cxlr = NULL;
->    	struct cxl_port *endpoint;
->    	struct device_link *link;
->
->    	endpoint = cxlmd->endpoint;
->    	if (!endpoint)
->    		return -EPROBE_DEFER;
->
->    	/*
->    	 * Endpoint removal owns region teardown, so this prevents the
->    	 * endpoint and its decoder children from disappearing while the
->    	 * supplier is being resolved.
->    	 */
->    	guard(device)(&endpoint->dev);
->
->    	if (!endpoint->dev.driver)
->    		return -EPROBE_DEFER;
->
->    	decoder_dev = device_find_child(&endpoint->dev, NULL,
->    					first_mapped_decoder);
->    	if (!decoder_dev)
->    		return -EPROBE_DEFER;
->
->    	cxled = to_cxl_endpoint_decoder(decoder_dev);
->
->    	/*
->    	 * Take an independent region-device reference while the decoder to
->    	 * region association is protected. The association is revalidated
->    	 * below after taking the region device lock.
->    	 */
->    	scoped_guard(rwsem_read, &cxl_rwsem.region) {
->    		cxlr = cxled->cxld.region;
->    		if (!cxlr)
->    			return -EPROBE_DEFER;
->
->    		region_dev = get_device(&cxlr->dev);
->    	}
->
->    	/*
->    	 * Serialize link creation against region driver unbind. Without this,
->    	 * a link could be added after device_links_busy() has already marked
->    	 * the supplier as unbinding and walked its existing consumers.
->    	 */
->    	guard(device)(region_dev);
->    	guard(rwsem_read)(&cxl_rwsem.region);
->    	guard(rwsem_read)(&cxl_rwsem.dpa);
->
->    	p = &cxlr->params;
->
->    	if (!region_dev->driver ||
->    	    cxled->cxld.region != cxlr ||
->    	    p->state != CXL_CONFIG_COMMIT ||
->    	    !p->res ||
->    	    p->nr_targets != 1)
->    		return -EPROBE_DEFER;
->
->    	link = device_link_add(consumer, region_dev,
->    			       DL_FLAG_AUTOREMOVE_CONSUMER);
->    	if (!link)
->    		return -ENXIO;
->
->    	*range = (struct range) {
->    		.start = p->res->start,
->    		.end = p->res->end,
->    	};
->
->    	return 0;
->    }
-> """
->
-> I think it needs more tweaks, but hope it can give you some idea.
->
-> The intended ordering is then,
->
-> non-PF0 probe -> validate comitted region -> create (consumer, region) managed link -> copy HPA range -> map the PF slice
-> region teardown -> driver core sees an active/probing consumer -> wait -> unbind the non-PF0 driver -> consumer unmaps its HPA slice -> AUTOREMOVE_CONSUMER removes the link -> region teardown removes the decoder
->
-> driver core can manage the device references and drops the supplier lock before forcing consumer unbind.
->
-> Does it match the behavior you need ?
->
-> Best regards,
-> Richard Cheng.
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCCrAEmU
+8N4DFp0xOcTqSLaxYVT89jjzmIGRNw19EeWIyTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA4MjkwNzIwMzlaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQB7qhHF1ICxJtdcU8MJNKkxGnnnAQ5tgbSrjCHRyiHy
+c+BScsThyffwB34Wmdf5Whh6kVkjy/RGi0dB0Rf8P2X/9SJvDuy2ZEUOVrS54mCfMuPJJrJXKTa4
+66jisRz1YPfe/jg3Skl5ZW224lPLkZMTwXW+AAFJsROCYr17NMCzOEpJJAJQ3ZbwJlEoYTqWL1Zl
+isKfSqNr6RK3Ew+8+Gw/LAD+i/uzoKjZvd8K2uZEZyy4dEKXzkJMC9Q5roW4pYimvLTwMLZ6WD0T
+RHbE1pnknz7brdNtkw7eHEjxRatx6M9Dv8ABOclWLMbgKe63RZhPGNn1Is47HAQldTmXUKdR
+--000000000000f74c9a065a2a6776--
