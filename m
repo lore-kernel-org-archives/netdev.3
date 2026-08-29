@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBFA3F1045;
-	Sat, 29 Aug 2026 05:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FFB341650;
+	Sat, 29 Aug 2026 05:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787981468; cv=none; b=qxGlhMf/dU7PKIZetXubx/jrzpfmveofqmd0ZTr3Z7CezlcbTiiZ1kt/C7J+zbLh5QloORS/yn53mobQ36U5TKZZ1eyyLNr275CDFqCIJqoezfwz4/ExlH+k03JRuyDoZpPZvhEUrknIr+mAAmjNyNRw0hFpT8fLRoqIQvYrAK8=
+	t=1787981469; cv=none; b=LT9qEmqs43EEWGJsjnzboXMeHsCud6m+UDPWM3vc2pHjq4eIvnNDxLRaP4urxG0DuCEudgT8WLmKnvA1Cqh/UJXbZIaSlFcrOuI1lWP7DWB8XU5yc+Lr26K211J8z1QW/em6U6UMwGYDCYU/ek3ZBjLWnQi3PIGAaN+/Vk+q5GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787981468; c=relaxed/simple;
-	bh=ITs9qIqe3Wpeo4pIZ/jbSBTgNIVyR04nZvo2x4q7OZ4=;
+	s=arc-20240116; t=1787981469; c=relaxed/simple;
+	bh=b82psDUIi2qOn3bm1nujE2u/Q6bosrXcl5ToU5K67Ns=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Pej02VJKpvrUVQ91rvZaM7Bcl0imY89CzUG7XOFB3FqwqJS1eq8/i/iYp/GaB8ShcgENlfCH+0xfMZN+31CQQ8vsQREWMVuJluBamb1038jxr5EkAwnahnTTizWT8WKD0EXYWxlLHbcgvnFHLdFj1iky4SEQiSy5DaKChJbwpmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4ouYXb6; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=HOp6+1TDd/4lYGn3JC/Qco4xCxoCaCkKMcJgRDMjA/lY9he2ijJ+X022oEk1nN9Z9g8NSRr9sFbKH6a1CI/Cd7W2eM6TuCdj8+mvEIVIkCa9lPl8BYdHjalJxQYovz3dvD5aQSQk0xQg1dV4CKMVfm+SVzKHB5lvwXgy90bBpMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMgNSG4r; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4ouYXb6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977161F000E9;
-	Sat, 29 Aug 2026 05:31:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMgNSG4r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDFF1F00A3D;
+	Sat, 29 Aug 2026 05:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787981466;
-	bh=Ain05BJCy5NsIwfYaX0WDpEr4lzuh/JsNHswjjjqE4o=;
+	s=k20260515; t=1787981468;
+	bh=6Y9smdtBakaL1e4Wvih4nJi5BGEbyPSbIdMY202VLUk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Q4ouYXb6EicWRIRXtzwrjQ2txoNqggZ6CDd0NkoDeS3BGHAEEuul5Z+e1CLMUhYSE
-	 MrxTLm7RZPFGiddgfButxHj72iV/NBRvuwNCkFPU2OvM1jOfG2iYvaWSb2K0NnCoA1
-	 9r7z1SVRkLPIeO72KxIA1kF2B6Ul8SeGSjRxYZc3QGXuHlg4lmTOmLIve0E3HIOkaD
-	 Q8MeV+2eW5ifjEhV3en6ddQ4lyFGCSoUTxyL1bAN/I5S4f7Tn2b+UMop3mXaFqdeEv
-	 4237D30qDfeKSAQmRShiqMfD74smtxhGiE6pp1tS2wvuPYbYgLXwQNeSqXJdA/XH9f
-	 Ed2pTjhEo+t9A==
+	b=jMgNSG4rgm5ZjT0jR+6GqgE8Kii95JMzzTcirxNtjAEXFGnD0imIVO/U/fKGImXaA
+	 czCbO2cybLslaZbkdHlMxE/HOaBTfXRLOziegtpNFnYnKs7a16wvnLJzVRZ8DJPstp
+	 3HkDPu/5ntqJETuJG0phkW63PPgffk7XMes8eJSAuKX9T3kiOc5ZAmrRD6dT4aOKuu
+	 rU1CMsT58LpOCkYushNaMFPrEpXnV5nwZ6K/OLh9D0KImPfJSZT4DJt84V8R9sKij6
+	 PFWlGnqf7K3x+vHo2rXa8d+4HIsiuNbOBWhNcefGkcoWwDCTuYn4q/d2MytcEpUQ6/
+	 92Ey+sIwYd90w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56938380AAD2;
-	Sat, 29 Aug 2026 05:30:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09B8380AAD2;
+	Sat, 29 Aug 2026 05:30:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] tcp: fix use-after-free in do_tcp_getsockopt()
+Subject: Re: [PATCH net] sctp: fix a TOCTOU race in SCTP_CMD_TIMER_START
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178798141089.2932800.13873660526223105626.git-patchwork-notify@kernel.org>
-Date: Sat, 29 Aug 2026 05:30:10 +0000
-References: <cover.1787870710.git.blbllhy@gmail.com>
-In-Reply-To: <cover.1787870710.git.blbllhy@gmail.com>
-To: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, horms@kernel.org,
- matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org, yhs@fb.com,
- kafai@fb.com, andriin@fb.com, ast@kernel.org, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- AutonomousCodeSecurity@microsoft.com, xmei5@asu.edu,
- tgopinath@linux.microsoft.com, kys@microsoft.com
+ <178798141239.2932800.13798843916535751547.git-patchwork-notify@kernel.org>
+Date: Sat, 29 Aug 2026 05:30:12 +0000
+References: 
+ <9d8f1b5c50329d5ea7c642128d35681abaa9ed20.1787773744.git.lucien.xin@gmail.com>
+In-Reply-To: 
+ <9d8f1b5c50329d5ea7c642128d35681abaa9ed20.1787773744.git.lucien.xin@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ marcelo.leitner@gmail.com, zdi-disclosures@trendmicro.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 27 Aug 2026 19:55:09 -0400 you wrote:
-> From: "Cen Zhang (Microsoft Security FORGE Labs)" <blbllhy@gmail.com>
+On Wed, 26 Aug 2026 15:49:04 -0400 you wrote:
+> The SCTP_CMD_TIMER_START handler checks timer_pending() before calling
+> timer_reduce(). The timer can expire and detach between these operations,
+> causing timer_reduce() to rearm the timer without taking the association
+> reference required for the newly armed timer.
 > 
-> do_tcp_getsockopt() has two lockless reads of icsk_ca_ops. Since BPF
-> struct_ops congestion control made icsk_ca_ops point to dynamically
-> allocated memory, a concurrent setsockopt(TCP_CONGESTION) can replace
-> the pointer and free the old object while either reader is using it.
+> The timer callback later unconditionally drops its association reference,
+> which can leave the association reference count unbalanced and result in
+> use-after-free during association teardown.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/2] tcp: fix use-after-free in do_tcp_getsockopt(TCP_CONGESTION)
-    https://git.kernel.org/netdev/net/c/5271b79b7ad6
-  - [net,v3,2/2] tcp: fix use-after-free in do_tcp_getsockopt(TCP_CC_INFO)
-    https://git.kernel.org/netdev/net/c/385e474086c2
+  - [net] sctp: fix a TOCTOU race in SCTP_CMD_TIMER_START
+    https://git.kernel.org/netdev/net/c/2188569e7e1b
 
 You are awesome, thank you!
 -- 
