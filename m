@@ -1,46 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C73F1055;
-	Sat, 29 Aug 2026 02:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0ED23D7F0
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 03:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787968852; cv=none; b=hEO55oqnBktL0WtWpiZqpnHv3Ci4eWiP/HIMXaz0zodkD93XjDQ7fikLdlAjXmgeGNFapAjsieaqzJwejGGEtL8NKl+FjUGzE4PQZDTHJjZ45+n5XIM0i65MhlRCqnz2GLAkDaWOAPTc0nn+BwkJfs4oQEW9kY0S8tgIZ+FB3yA=
+	t=1787972495; cv=none; b=uVr0L2Sm0iaCdj8bSBoSH6rsJP0FAnzIAaSO8fqF3hq0wOFTzfB9EdJmpGH90yJEcYTeawWvhPz7ay2I3wm62krdNpwQuweNZ399vqJL+4xV5UxxeKK4ayXe/RxS6u7qUrxHJKtjVIJRThISLhxOLZ7aTsxKAkfPZq/AJBPYO8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787968852; c=relaxed/simple;
-	bh=fcgJKQ13NwZDQFiGuIFXg1tC9IF34aSOD3MOKSpLUhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PLPKbPgrNQq9jf23xHJ09ah6o1X3uZUSHL8JJNyJVdx3gvw1xwe3L15QyPVhZufk0gaV48gmvtsIphjoo13qRPKmetGch3IpS2/QxUPEELK8YaedzUDswztzjDYVqrea6csnQqp/cLMyrWVN3VMec836+F+/FlIez8lZQn3urPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3MKV1Kx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787972495; c=relaxed/simple;
+	bh=qQdMi8Jgb8bfEkmTNXvPHUJmLQKYjK/Vxzq0/r/+LkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CyTmdRK0+/jYrohkHtYYSFQmZraSIoQizoC5Y8vSbbs4VnSmS5PXagzJe3/XG4ZfACqT+dOpoO5iz2qPI9psWoj5QAwM7qULx3nfuANhG4ucr7zgzY5awm01SkxHs9kC3ftehy/lN4PJV2jZ+jxgKZSDNMzjj48SMwo5ml74XVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O367jAo4; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3MKV1Kx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F116A1F000E9;
-	Sat, 29 Aug 2026 02:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787968848;
-	bh=BqBGi3eF6GR0R1wUXJeXZsTvg7gOn9/O04X1RxIM0kE=;
-	h=From:To:Cc:Subject:Date;
-	b=N3MKV1KxrWe6AV1QBQI6ERtSuiRFLqA4y+5g3l/+76Xb1s0AnMcWzePOvUv8zxj9o
-	 EkQStN3DY5ONiz6TBFn0IKtjt14HqOqsFiFScHi6LKE8H+K3Ttk1DUCxW04lsy+bJY
-	 b7oTAdLH5U4viRaHjmHNQXsdkyczSuyhLYUDlvGMFuK2RfyCdzx/TYsQmNj17D3hO/
-	 WfHeCkils0hpE73BmzFOe2Z2Fl6ITq2EX63UJVoCxMfN2Fo/N190Hgch7Qyc0X2jaq
-	 o/JrXiUsf6vEnK4bb33/N+1tE2VTK9E91IH854CxCbQWJM9zDTZBsfGwY9Mky2aSts
-	 byO0bckqhoWUQ==
-From: Geliang Tang <geliang@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH] bpf, sockmap: Fix self-redirect copied_seq double-counting
-Date: Sat, 29 Aug 2026 10:00:12 +0800
-Message-ID: <b840c35fdfdf36e9fddedfa645b12699bc51aa34.1787968065.git.tanggeliang@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O367jAo4"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-499ae1c6471so12133455e9.3
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 20:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787972491; x=1788577291; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5EH4v06YGJpqqsWC3cck6VVt8t8Ztw0dDHt3qG/Q8H0=;
+        b=O367jAo4IPDUqyw7wcAEErND/dFeWT5ZXlWhry/Vn656CCCYZBiQ3kezXjgF7CFh6u
+         wBPOXu3mTHk7iQ9Y9qUgEQxf5kpDrK1kQ1M3y8XoY/tfu2ULwFaZSYUbBUsEsJb9tjmY
+         OPNxPzdTo9aFbCTwH7o/w8VvIXetuCVoOv9HrnIpvHAwUod+LFDsLDZKJaYPx+bNRCqf
+         wol1s3XZxWPJGW7of1CPUQLF/7TxuqwZLFVdWfVDiy9zl3i3Ycragz5nhF1o5UsVISox
+         CH5PVIZribqDeH8hqlqE8068mzkAexKyT5djqInAHfzhl3ieSo9Yp5f5ehAPcZ3U3adZ
+         vQWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787972491; x=1788577291;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5EH4v06YGJpqqsWC3cck6VVt8t8Ztw0dDHt3qG/Q8H0=;
+        b=VbPnHup0ssLr+3FNnyn1xAvjTAtC7X4WhgPPRMiHssgx86ayrx0TatrRaP54akw2XW
+         2ULWvuM9A3HfsL/8ZXCSnwyA6jP3kVWa1/UTfxtX3MNPnk+YmzcidLrBk8rjLvcqIQpa
+         WZL1eFoueIIgz5sygtjfyY6qfJD83oE6UlofZQmuwUP2tTBgZaRdj3d4Y61ab6kEPHra
+         TOr767ZpzJ4o8vtH7RaKuAyNlKbWKO78qfWP9YtRk9HLxojkeSvchXbqhx9myA3BJLin
+         7gQi1Bbj4E6IEsv6q9YZwFcJcOVZ/8uHN/Z52u2FsDsJub3Opz9Bj1i3oXUtydeZMXdi
+         M/zw==
+X-Gm-Message-State: AFuF++mARPCTGKHndwh77w37k8USrJm0zSxDeX9HK/2WcOfN81MzPFav
+	E7m/bCNQy4HYkmLa5C7lIA3bqVjEjVEWEh4TrjEAubvygME++LK937liTxfm+oozbfI=
+X-Gm-Gg: AR+sD1250gAZl+Z4AwGjF6nx6Y2voklXTbx6PugwX33amNTXJmQrqQli9SGp6djNI3M
+	3riOCzwS+ceAOfDWYtvF8+toLZ5NfS2iqkP5qNrySjmbqKKvKyEq3K28zsUwWjNxhe8wIsqw9wO
+	jmTmhQcPkdut3fj3VZECVon6Qgfrn3z88E4XEQavoUaoTj8gFe6q6WbG6H3yhYePe1wpB2EYrby
+	P00piqyMYG5YIzlPiuyRtnzeHqCorW7iV7y7P3AneEh+W8rhgRKCoUfUIawU0lgPM8qZGYwO0e7
+	Jyx4Ojo7h7dwEShovax4jv7Bk6EuFj63e3oKyGnogg6b9O1AcghP+rmnzcxGjkpRx5bQIyPK60q
+	IZfIrKr7JVkE+PPf6p4+hbVqHTXXyJ6+lAteCKZ+9lB6bVRAgFi5S63lMlveH/nH/ql7F/F0tGu
+	gPIBxYaxk2ujbHNDS034BZzWpI6rrSKUX0/+5hIWUgxqFe9lVcN9cQ+MDFHmnPHgG5EIm9E6Muq
+	JNHs6xjlGLy7g==
+X-Received: by 2002:a05:600c:3b1a:b0:495:4d5c:903e with SMTP id 5b1f17b1804b1-49b91c2d8f3mr136960095e9.7.1787972490411;
+        Fri, 28 Aug 2026 20:01:30 -0700 (PDT)
+Received: from kali ([169.224.126.247])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b945816f2sm116637235e9.8.2026.08.28.20.01.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Aug 2026 20:01:30 -0700 (PDT)
+From: Ali Firas <alishmery18@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	idosch@nvidia.com,
+	razor@blackwall.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ali Firas <alishmery18@gmail.com>
+Subject: [PATCH net] vxlan: vnifilter: validate the VNI range in vni_filter_entry_policy
+Date: Sat, 29 Aug 2026 06:00:41 +0300
+Message-ID: <20260829030041.940594-1-alishmery18@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -50,80 +80,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+VXLAN_VNIFILTER_ENTRY_START and VXLAN_VNIFILTER_ENTRY_END are declared as
+bare NLA_U32, so neither is range-checked before vxlan_process_vni_filter()
+passes them to vxlan_vni_add_del():
 
-When a BPF stream_verdict program redirects an skb back to the same
-socket (self-redirect with BPF_F_INGRESS), sk_psock_verdict_apply()
-calls tcp_eat_skb() which advances tcp_sk->copied_seq. However, the
-skb is then delivered to the socket's psock ingress queue and later
-read by tcp_bpf_recvmsg_parser(), which also advances copied_seq via
-the copied_from_self accounting path. This double-counting causes
-copied_seq to advance by 2x the actual data length, triggering:
+	int v, err = 0;
 
-  TCP recvmsg seq # bug 2: copied BF2E806, seq BF2E7FD, \
-			   rcvnxt BF2E806, fl 0
-  WARNING: net/ipv4/tcp.c:2745 at tcp_recvmsg_locked+0x72b/0x2640
-  Call Trace:
-   tcp_recvmsg+0x10a/0x500
-   sock_recvmsg+0x168/0x1d0
-   __sys_recvfrom+0x19a/0x2a0
-   __x64_sys_recvfrom+0xe4/0x1f0
-   do_syscall_64+0xf7/0x530
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	for (v = start_vni; v <= end_vni; v++) {
 
-  cleanup rbuf bug: copied BF2E806 seq BF2E806 rcvnxt BF2E806
-  WARNING: net/ipv4/tcp.c:1609 at tcp_cleanup_rbuf+0xf2/0x1c0
-  Call Trace:
-   tcp_recvmsg_locked+0x8d1/0x2640
-   tcp_recvmsg+0x10a/0x500
-   sock_recvmsg+0x168/0x1d0
-   __sys_recvfrom+0x19a/0x2a0
-   __x64_sys_recvfrom+0xe4/0x1f0
-   do_syscall_64+0xf7/0x530
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+v is int and end_vni is __u32, so the comparison is unsigned. With
+end_vni == U32_MAX the loop cannot terminate through its own condition:
+v reaches U32_MAX, wraps to 0, and 0 <= U32_MAX is true again. Every
+iteration allocates a vxlan_vni_node plus a per-CPU vxlan_vni_stats_pcpu
+block until the machine is out of memory. Neither allocation carries
+__GFP_ACCOUNT, so the memory is not charged to the caller's memory
+cgroup, and the per-CPU block multiplies the cost by the number of CPUs.
 
-Fix this by checking if the redirect destination is the same socket.
-For self-redirect (dst == psock->sk), skip tcp_eat_skb() since the
-copied_seq will be advanced when the data is actually read from the
-ingress queue. For cross-socket redirects, tcp_eat_skb() is still
-needed to account for data leaving the source socket.
+The rtnl_msg_handler entry for RTM_NEWTUNNEL carries no
+RTNL_FLAG_DOIT_UNLOCKED, so the loop runs holding rtnl_lock. rtnl_lock is
+global rather than per-netns, so for as long as the loop runs every
+network configuration operation on the host blocks, in every namespace.
+There is no cond_resched() in the loop either.
 
-Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+The interface is reachable without privilege: creating the device and
+adding VNIs only requires CAP_NET_ADMIN in the network namespace's user
+namespace, so an unprivileged user inside unshare(CLONE_NEWUSER |
+CLONE_NEWNET) can trigger this with a single netlink message.
+
+A VNI at or above VXLAN_N_VID is also accepted and stored, although the
+VXLAN header carries only 24 bits.
+
+The MDB interface in the same driver already range-validates its VNI
+attributes with an identical constraint (vxlan_mdb.c, vni_range with
+.max = VXLAN_N_VID - 1). Apply the same validation here.
+
+Tested under KASAN in a 2G guest: before the change, adding the range
+0-U32_MAX from an unprivileged user namespace drives a global OOM with
+the allocating task in vxlan_vnifilter_process(); after it, out-of-range
+values are rejected and the in-range case is unaffected.
+
+Reproducer available on request.
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6 [claude-code]
+Signed-off-by: Ali Firas <alishmery18@gmail.com>
 ---
-Hi,
+ drivers/net/vxlan/vxlan_vnifilter.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-I encountered this while adding MPTCP BPF sockmap support. The existing
-TCP sockmap selftests don't cover self-redirect, but the MPTCP tests do,
-exposing this latent issue.
-
-With this fix, both TCP and MPTCP tests pass, validating self-redirect
-functionality.
----
- net/core/skmsg.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 2521b643fa05..5fa7b9639eef 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1039,10 +1039,14 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
- 				goto out_free;
- 		}
- 		break;
--	case __SK_REDIRECT:
--		tcp_eat_skb(psock->sk, skb);
-+	case __SK_REDIRECT: {
-+		struct sock *dst = skb_bpf_redirect_fetch(skb);
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index dd94085e0886..9e86ac39cf9d 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -459,9 +459,15 @@ static int vxlan_vnifilter_dump(struct sk_buff *skb, struct netlink_callback *cb
+ 	return err;
+ }
+ 
++static const struct netlink_range_validation vni_filter_vni_range = {
++	.max = VXLAN_N_VID - 1,
++};
 +
-+		if (dst != psock->sk)
-+			tcp_eat_skb(psock->sk, skb);
- 		err = sk_psock_skb_redirect(psock, skb);
- 		break;
-+	}
- 	case __SK_DROP:
- 	default:
- out_free:
+ static const struct nla_policy vni_filter_entry_policy[VXLAN_VNIFILTER_ENTRY_MAX + 1] = {
+-	[VXLAN_VNIFILTER_ENTRY_START] = { .type = NLA_U32 },
+-	[VXLAN_VNIFILTER_ENTRY_END] = { .type = NLA_U32 },
++	[VXLAN_VNIFILTER_ENTRY_START] = NLA_POLICY_FULL_RANGE(NLA_U32,
++							      &vni_filter_vni_range),
++	[VXLAN_VNIFILTER_ENTRY_END] = NLA_POLICY_FULL_RANGE(NLA_U32,
++							    &vni_filter_vni_range),
+ 	[VXLAN_VNIFILTER_ENTRY_GROUP]	= NLA_POLICY_EXACT_LEN(sizeof_field(struct iphdr, daddr)),
+ 	[VXLAN_VNIFILTER_ENTRY_GROUP6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ };
 -- 
 2.53.0
 
