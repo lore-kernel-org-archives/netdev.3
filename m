@@ -1,163 +1,173 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021117.outbound.protection.outlook.com [40.107.74.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC5E2D5932
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 14:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788013539; cv=none; b=ewU2PBj8vNwnWKjMiNiGZl3SWG1eK848xlSiRlPCoSDfQ44f8vSzz64uPeCWOEeOB+/1s07Lx18Ms6Dtp+LDaOZfg1VoJYkRemIBRSR5jIiNGtjw/Zg5Q3mgd2E3iQMLyXKj5yRVw+kGFtDn1selbtlqjPp7zZAcInEUBSAygao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788013539; c=relaxed/simple;
-	bh=ubMPolVr1RyqlqLsPDJ9Q3hMnDeZ3ThPTZSytVpBbcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZabBbaLelH92MBE+Q6UU1ZfRikH0H4O5iKJRC3QgRdKPr0wXTwAt6EWh9TY/ZT4e1zdutyvN/KiJXiR63u6o140uQTus6o8QY1ir3zejq+D2NzA0NDLOW2A8ETsz4Q+xNPkA6WO6i7uA7QVQjT57WSa95wsredJcWn3BS8CUn9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1XKbvWu; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA79EFC0A;
+	Sat, 29 Aug 2026 14:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.117
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788014340; cv=fail; b=fQjMfnkrsT+pydixe7GQHdb/sbWBEGVqhZo5NJoPaybiwABw6tEzYTIJ2r0lNZR4f44SIMh/GJUKfGq5pnPVQqzLNlHQYUF9C3JjDFK2Z/Pl3RIi8IfsoxRvlCiYsY8PDGVzDJlbryEAB4ZVV486Pp6VdNNvuGnv8TaIt79wutU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788014340; c=relaxed/simple;
+	bh=Fucn6vIqm+EKDj91sPQqyiRtIva9Lr9ZwtRblrOONnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gBx1W+Dekp/XsUWOfciatABKFgPmtcEnTpzu7QoZB4S0UNQ9j4fd2rNDjhA/Z+pFnpddm8lx74g6AnvDXcMYN024mUFkzUe74PDTu6ZJOxB5l/WRqqIcFA6LvSclq2M/O+FWp8yMuwJLsQ7TQT8pBIPg+BOycIW7j/8DBfuN8vE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=juCjKVAP; arc=fail smtp.client-ip=40.107.74.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1XKbvWu"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f502ff678so270942f8f.0
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 07:25:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788013536; x=1788618336; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=krHARCezf5ftbCW4uWxA5magjwIWxrSJ3wP9w668rkk=;
-        b=H1XKbvWuR3t1lrXl7A0e8hWTHBVqUNvE1QEzLrhS1rI17wT3NXyy/RY8LnvxfnkcRY
-         iePgqh64ynxtJ6AEiGXGkR1rEMTvjtNFeZMmZncCS5n6OOa1q231ijiPK69YHNUO72vh
-         U0Na2DE/nxUEyfS4C9BlN6hraoNGEng4TV4ll+HvVI85RGh+IV14H3eLd26NG49B02oA
-         2G9It1zZomO8VevNlGbWKbrHRqeBQ8nDj6jETMM71lZOFoMbmFGqB7G0BHOSWaktuINv
-         6wGw1HHOUUWKrkzYyaOCJs+ZCV+Vhylrfgplqy58XLXttlEs3ojO2001T+7H+MuFeB4M
-         7Jgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788013536; x=1788618336;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=krHARCezf5ftbCW4uWxA5magjwIWxrSJ3wP9w668rkk=;
-        b=QDOfugM1JfEJWVgaKbXvVci/dn/elrlMZfPiqyeZgkFQKv61vxgMUEaFarnGogkT/o
-         yYh6IjdRUYTEsYKL2dBfSLJo7i5n4FOpFahC265a/hqEcpq7NcDhEuJTa5dJtGlOU5CY
-         busNAjNkRFsKF/Tmec65oCdxidsIjtiNnUz2nEXGlDCnMN+u2LEMa43SMJCwyU9qRdLH
-         ZVi19kaF81YzvNYslclbX0MrA+aqJznz6RalCpg5NgxX12Rhz/ZRlD/4VXPtlnXMeHVm
-         16A2dY4dMMJx1Y1fx2Hy5iC6xOKZEDW3u1g+0mH/cnp+ZJohT9VnwHjtZ999nBWqa3dy
-         gYvg==
-X-Gm-Message-State: AFuF++nRdlj5we/cXZ03/kjLXPf2xOd5U1RCdA6NpkqagZY+bCNWwCKZ
-	hoRhCVU361CvUcurSQp12kpUZ6MfqAwxW9QblP3mFX94QCXTB7p+IN4jaiqBB5Dx1pY=
-X-Gm-Gg: AYBFou0akpMSgOtRRqNZegqcE9AHWKJ/Vd/oBYHlxglUpYfu6CsHpFzU+KWDBkueJEI
-	vqp8pgvk5FCwEeTVB7rv3bH9rnquGq+OADxAEEIfNtt+2HtTd+qZP+RNRlkjZAc3UvMR5ArDQ4h
-	hil8kDqbQ5NWe46JVOd/nQylT7L0Km8RbnYA8A9EtVxCPHGNoX27ejLkGnVTr10KPFNn8j++PH/
-	MojLB7i5ume63b/mKe019A6F2IMDKMIf4ZWpBTQs3MLeyb35DvGDDp4fm44tL6z8XjNs94zSIsT
-	ocjfYLH44U76GvzVlwDd/pMWDrlRtb9B8F927BOt6/TwM3vdhXqk0BsB7Gdvb4/wloOCWvnN2Gk
-	kzurjSB53hbSW0YwJ/yImd6ZDpyO/mSesU5OA7HkCnxk9AZC9Pg/A2ieNhT6rmJAXxfii+qc25g
-	4OdhcqlgsFcsKeDEgqLXa3aTZ98qidd1XIj0Qjvyrz/HdanMlb32qu3ZIbRLMfa5PSC6ypwoHnW
-	RmORgBf2cVwEo0lZH+5xq3BhCCOsIBKiGsm0o14sc1L92rashgdiTuHGqKGVrTK+UwFkevqBhwG
-	gksUMaahiERSOw==
-X-Received: by 2002:a05:6000:2502:b0:482:f2f2:3b99 with SMTP id ffacd0b85a97d-482f782b2cdmr10414798f8f.0.1788013536211;
-        Sat, 29 Aug 2026 07:25:36 -0700 (PDT)
-Received: from pop-os.. (98.102.222.87.dynamic.jazztel.es. [87.222.102.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbb20713sm10107497f8f.21.2026.08.29.07.25.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 07:25:35 -0700 (PDT)
-From: Miguel Garcia <miguelgarciaroman8@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Miguel Garcia <miguelgarciaroman8@gmail.com>,
-	syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Subject: [PATCH net] devlink: request flash firmware without instance lock
-Date: Sat, 29 Aug 2026 16:24:40 +0200
-Message-ID: <20260829142525.3900565-1-miguelgarciaroman8@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6a908733.1d9ded08.62e62.00d9.GAE@google.com>
-References: <6a908733.1d9ded08.62e62.00d9.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="juCjKVAP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ryyQACfXY1X6NFTN0O4RnrFoc8n0u5Cfjuv8UJD33FJa5eEDKEWn/7syagdcTJX/7YzNCM0IQQtwiyitHRGJcQ9ZQkrh0+GrxCmjRcXyf962KV1ev0VDRCRHtZXzQuUyMyrp7oUznXncl0Fmsd3ds9cvvYES9EHuHkJgupJFh8H+QSxK3RjvWRQr6mgNtxUKVTPz7dPMFA/oKRIodNRrFooNtwDzv/dDYmc2MFk5U02GHLWmqeJnDMOUPeJiiME5EOEDRQM3rrxPswpARvatOpJq67IFl1eBPTs2Per3m32mlKWQTSdfHNgb3tfhnZnR1cbTvOFcr36PoPgCuvA2pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jbnKJIY4d27LSF8JYvrxLckl+ehtRzWDr+6C32ltQGY=;
+ b=XaRVXxpA6hxDoRgJjkkUeaDtHLa/26JZEcGvi6L+/g9VuYCYJEe0RZzx3QnRmn0Q1d25Mah4wD0Mq1gJL/B0i9dhHQN8ukp88oV0K9I3uN7UL00xfWpzdbe5Wd+jjVlDspYOVQ7FC4XBjIeZMHKtWyimFrMVAp0oyDx+YeDOJyI8e0zxnC45FlT0KhuCwN4du3EcD3rDB+6f26TUnUvuFyp5hjDcXclhMQbK/6mwkw84jrlMXURajpPNYa9Eab5V+Qar2GDLUpjCBqQtqA09+hOV+JFRbvC0dj8GeNNnT6Hu+u+9SqRNaOOlhSZFwu7rF2Bc05g7efxLMTHpRS7wBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jbnKJIY4d27LSF8JYvrxLckl+ehtRzWDr+6C32ltQGY=;
+ b=juCjKVAPruRrICYVwCuUkhsLGnxoDzAJgO/2cJv1n7/9kcxwu+mBj3EQSe9W+sc027721tdv2A6X5yLQXL2GRlVcPU/7AacpNT8bkXzCqGZyDaAm01uqeWyk2D8vqvgcg/FoIUZbv6VAHS3y1BGGkonIEKnSCwlKzyshi69N/9U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by OS7P286MB7244.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:455::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.12; Sat, 29 Aug
+ 2026 14:38:55 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%4]) with mapi id 15.21.0360.008; Sat, 29 Aug 2026
+ 14:38:54 +0000
+Date: Sat, 29 Aug 2026 23:38:52 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Jon Mason <jdmason@kudzu.us>, 
+	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	ntb@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: ntb_netdev: Fix statistics races
+Message-ID: <rlu5hlwm4qx36hwew3x2r5yyzh5sh2oad3lbahvkbquysidr53@slny6vshky2e>
+References: <20260828154122.2643578-1-den@valinux.co.jp>
+ <20260828134957.5b95472b@kernel.org>
+ <20260828141048.685b9e9a@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260828141048.685b9e9a@kernel.org>
+X-ClientProxiedBy: TY4PR01CA0062.jpnprd01.prod.outlook.com
+ (2603:1096:405:370::14) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS7P286MB7244:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffc6403c-d1a6-413f-dc1b-08df05db401c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|23010399003|22082099003|18002099003|56012099006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	Ce14AKfLK8pgW5zcJaGTFCYq4tnUYZNl25CVUWdF+h23Qo8C83sVJzTE7+7qouAFHAYshnyfiVpQOp7oWx4uxyvoWMOTyQ1yghaQx9on+nUQAfbItRuxi1bAvTaL1ambbAxK0cNXHVDBG4wmw2CBI52RDQaZqN4nt2StYGWdiTWfbHr8xUXhWjSdaNos0tcI3Rif4BAMu/mxiycwIusyHBYN9tuzkhaXHqxlttXTngt/DoHUajEFy70M/R2ci4PlC2uTZq+XsyqHEJgNr/qOyy0LUN6YUoDPuJ/uEDyCC+HphA6Ln4TApFTwB+w4th4XvjnsePGCsZKAPhXksyZBvwEiT30PIel3n4/3ZzqmvV9iIbnAFnpELdvDoxspwT6lQqji9+G8Ntk39yQqjSg8jvuXtfmgdANZk9s5EsgmYMm7p3upI2GDlE3z1BkNoG7OyOglLcWDyNDaotJTg7bZRC8vxh25lJmLcWWHTYENWYrwCXI89542zUgz8YPUadVp6Su6+b4G1BO2TVLZteiDDotqBJqhkfZGnTHzvoHWSM2V7oVTVSFMAH6t833XOmLK/01WwMoRhDjtAyemXJ5CICokQzfA75P9S8rxbPgP6PQ26WkIGHUtIS5SW5j1zD/808zhc8caOye6vg1icUJCOkKRyD+b7ZCq9vhwNTyMHKE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(23010399003)(22082099003)(18002099003)(56012099006)(4143699003)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RS43y6Jsgzt7kuUAiL0jvv86oNcoNlMw9CSrqeTzM+YCgtqUW56NyCV//2JV?=
+ =?us-ascii?Q?R7JfsrdQn9Uu3xg4fMntHRhD5jmk5VUefNOwNlG2Sky05hHQRFm+s5l15WKq?=
+ =?us-ascii?Q?+ZXmT2IoYeSoHR3bXboycVTAHoifrC/w5pyDKIJkHc/Yr/Qu6rl6nsdWGQpF?=
+ =?us-ascii?Q?3ckcJd0Fs+ojsFWvvA0l/oqN6A44FKBHhbbYglh0Pl/a46DjJB2eAixv5Vrm?=
+ =?us-ascii?Q?qsFvFyjF9qKBI4GxfCP4lyeqID1LG9RdaBUBKJi1Dbot3Ux9ZytIm8QlNiTO?=
+ =?us-ascii?Q?mNZU5Y5+Yr/EULo7rgV0/QVWeru+UqSQ8WVCu0UUInK1vg9dz3agcfK60rTc?=
+ =?us-ascii?Q?UZdxCEiSkq1avuZ1mV5+hSlil1egKJpADMUfAadBEBWdI5rh9D5TOfKFRVbZ?=
+ =?us-ascii?Q?/Q+hvtqlQfboD+j1HERVYJKv2RdxVa0rlWD5ZHiUml1NnqSD+SUGKqGgMZoM?=
+ =?us-ascii?Q?PeHcyrXdLdHqVt1z4WMXviPlPIIAWkDA2VNqepkPBGERF/+qOLBfn9nzeF9T?=
+ =?us-ascii?Q?iperZVfn0EGAdnv1JOuLib8DVV45SFc2+1HKqcvq08HDKMugqMuZ3uGX1llF?=
+ =?us-ascii?Q?luon21d9xrICjSpmR9zWK6QLxZmH0hYuMjbLIGK8+bZfcJoGBnsdt2PjQsjd?=
+ =?us-ascii?Q?c9xqeux70/aYAIcxwfyKwscYH2ddpvVXyhOX3ImmBpoWKJ5Sex9MhmUwBju5?=
+ =?us-ascii?Q?AD7TUO4I9kaxddfsec9LQWrM+EOqlxI99ASE2SeT6Qs7AP/KZ0X00wAV+z/P?=
+ =?us-ascii?Q?80wGyd1o/6Db8Qnsr6s4yKg2Sizu+6cKSgMG7q+gfqfWGfKOB8PuaGMHr5jl?=
+ =?us-ascii?Q?9UxImcie+/3G86tmTMYeoa86SDlpJiqcw4Mr7gN9XUxd5UUpFvfPnUwIhXu5?=
+ =?us-ascii?Q?FXfDpjnzegYjMfMjylHopc/M3r6YfkTS6/KvNI8sV41uNmiWKNnG3Usz+cbs?=
+ =?us-ascii?Q?/WrZn0D6baZkcHdSym5wVbZO3ZB1i/32E6QSJIuL93m/xjSTwlR3ZkVKDN0z?=
+ =?us-ascii?Q?rDys3Exe4dNN+HDEiEaNKizCISp0+v4hYrTgu1SsMSgFZ4ATnwTjyjJwVnS3?=
+ =?us-ascii?Q?UhuPAQc70gSPmbWbPWwmTz+SLqLmArQLcxOMSG3dME1GrzMksTlQqNU1qLIR?=
+ =?us-ascii?Q?Ug1/JhDMXnGJGYBwtTXEUGD25ORqeokMoa0ZVk6nRorVmoGe7BSSuwFH1AQ6?=
+ =?us-ascii?Q?ysKADAp/5u1fMgots3ZP21mRONeCcO8fOCCTH4/v/bN3+YEqUatvTK3dii0b?=
+ =?us-ascii?Q?h63kfIkFCUEasxBg+Kp+5FCVvPnbIcfQKyMZZJUDdPFDrIaJdGABPqHBJDCm?=
+ =?us-ascii?Q?/8G3rBSTTmZaSKWZRU8bvrundAZoWeKP2vJ3wtsPhD+Sh8W2M7DUP5eKdEq0?=
+ =?us-ascii?Q?S/7DWqVV1Qme1dxJINvbpKcacdFwDaThz0LlNEpxL2cYasIev8NXxBuo7ukn?=
+ =?us-ascii?Q?Z0WQlsYDbmdJ/dbh7rOuxz0WwJHm2zjrWNhnLV3DFqsgNU3sxGPUSGPb2VAj?=
+ =?us-ascii?Q?BHCpc7mRmcCjolCW8b8wqiC1moyKjbcSxcrE0cdKmDCdGoQuAPaRfwtenZJo?=
+ =?us-ascii?Q?hPrr/c4EQW6iN2phwgiPBJzqaASsJu0oqEpXovQSAbKjG1F5DYQio+64CjT+?=
+ =?us-ascii?Q?cYhvF4o+YwLpw4lPnlClwTdpfmBnKog0VVN73fceSI1wMS1J85LT60SwmQ5c?=
+ =?us-ascii?Q?D6XxaT9Qucc8qbAXRuEpyWv678fXI/ltwhoR7UF5O8Id0JBbIApWIrH6weGQ?=
+ =?us-ascii?Q?uoqV06LyKFChLoYFVagQFPD0HPVez/MCt7DkGiqe3uOiz0eSsaqp?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffc6403c-d1a6-413f-dc1b-08df05db401c
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2026 14:38:54.2262
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d6FyL3LJgWbMZumfm4KgzoBg0UtF4tdh/9FsnoaZjbOXAioudjZmwefHb5a4lh5lt02BT6twrb1yxp3MAvLlbg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB7244
 
-request_firmware() may enter the userspace fallback and call
-try_to_freeze(). Holding the devlink instance lock across that call
-triggers a lockdep warning and can block unregister for the duration of
-the firmware fallback.
+On Fri, Aug 28, 2026 at 02:10:48PM -0700, Jakub Kicinski wrote:
+> On Fri, 28 Aug 2026 13:49:57 -0700 Jakub Kicinski wrote:
+> > On Sat, 29 Aug 2026 00:41:22 +0900 Koichiro Den wrote:
+> > > Note that transport callbacks may still complete after
+> > > unregister_netdev(), so tie the tstats lifetime to the client device.  
+> > 
+> > We shouldn't really call devm_netdev_alloc_pcpu_stats() for types
+> > of stats declared by netdev core. We should set the pointer type
+> > like you did in v1.
 
-Drop the instance lock around firmware loading in both flash update paths.
-The callers hold a devlink reference, which also pins the parent device.
-Recheck registration after reacquiring the lock before calling into the
-driver.
+Thanks for pointing that out, I wasn't aware of that.
 
-Fixes: b44cfd4f5b91 ("devlink: move request_firmware out of driver")
-Fixes: ed539ba614a0 ("devlink: always check if the devlink instance is registered")
-Reported-by: syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=372a7d84708b07f64d9b
-Signed-off-by: Miguel Garcia <miguelgarciaroman8@gmail.com>
----
- net/devlink/dev.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> > 
+> > Could you instead fix the fact that the Tx callback runs on 
+> > an unregistered device? Maybe just wrap the whole body of
+> > ntb_netdev_tx_handler() in RCU and check 
+> > 
+> > 	READ_ONCE(ndev->reg_state) == NETREG_REGISTERED
+> > 
+> > ?
+> 
+> Maybe it's over-complicating. IDK.
 
-diff --git a/net/devlink/dev.c b/net/devlink/dev.c
-index 55959b0ff..cdbf39f19 100644
---- a/net/devlink/dev.c
-+++ b/net/devlink/dev.c
-@@ -1169,17 +1169,25 @@ int devlink_nl_flash_update_doit(struct sk_buff *skb, struct genl_info *info)
- 
- 	nla_file_name = info->attrs[DEVLINK_ATTR_FLASH_UPDATE_FILE_NAME];
- 	file_name = nla_data(nla_file_name);
-+	devl_unlock(devlink);
- 	ret = request_firmware(&params.fw, file_name, devlink->dev);
-+	devl_lock(devlink);
- 	if (ret) {
- 		NL_SET_ERR_MSG_ATTR(info->extack, nla_file_name,
- 				    "failed to locate the requested firmware file");
- 		return ret;
- 	}
-+	/* The device may have been unregistered while the lock was dropped. */
-+	if (!devl_is_registered(devlink)) {
-+		ret = -ENODEV;
-+		goto out_release;
-+	}
- 
- 	devlink_flash_update_begin_notify(devlink);
- 	ret = devlink->ops->flash_update(devlink, &params, info->extack);
- 	devlink_flash_update_end_notify(devlink);
- 
-+out_release:
- 	release_firmware(params.fw);
- 
- 	return ret;
-@@ -1244,15 +1252,24 @@ int devlink_compat_flash_update(struct devlink *devlink, const char *file_name)
- 		ret = -EOPNOTSUPP;
- 		goto out_unlock;
- 	}
-+	devl_unlock(devlink);
- 
- 	ret = request_firmware(&params.fw, file_name, devlink->dev);
-+	devl_lock(devlink);
- 	if (ret)
- 		goto out_unlock;
- 
-+	/* The device may have been unregistered while the lock was dropped. */
-+	if (!devl_is_registered(devlink)) {
-+		ret = -ENODEV;
-+		goto out_release;
-+	}
-+
- 	devlink_flash_update_begin_notify(devlink);
- 	ret = devlink->ops->flash_update(devlink, &params, NULL);
- 	devlink_flash_update_end_notify(devlink);
- 
-+out_release:
- 	release_firmware(params.fw);
- out_unlock:
- 	devl_unlock(devlink);
--- 
-2.43.0
+I think the RCU approach is clean enough. RCU plus the NETREG_REGISTERED
+check should address the stats lifetime issue without moving transport
+teardown under RTNL.
 
+I'll respin and let the core manage tstats by setting
+NETDEV_PCPU_STAT_TSTATS, as v1 did for dstats. Late completions will still
+consume the skb, but skip accounting and queue wake.
+
+Also, looking again at the commit message paragraph you quoted, I realized
+it was poorly written and confusing. What I meant was:
+
+    Tie tstats to the client device so they remain alive until transport
+    queue teardown. Moving that teardown into .ndo_uninit() would put
+    potentially long DMA waits under RTNL, so leave it after
+    unregister_netdev(). TX completions may therefore still update stats in
+    between.
+
+After reworking it as you suggested, the last paragraph in v3 will say:
+
+    Let the core manage tstats while keeping transport teardown after
+    unregister_netdev(), outside RTNL. RCU lets unregister wait for a
+    completion already updating stats, while later completions only consume
+    the skb and skip accounting and queue wake.
+
+Best regards,
+Koichiro
