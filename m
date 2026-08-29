@@ -1,242 +1,389 @@
-Received: from mail-vk1-f228.google.com (mail-vk1-f228.google.com [209.85.221.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E1036F916
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5521D4606
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787995697; cv=none; b=mH2pANagDaeSD+IdTwOivuy2VVDIcp3r4IvpoJ5ax/Q2R2GjENJ8acsJFCczCxOMZEv/U9U8KsS+tykIIbTvSHMsrp6uppaY8bqVgavGMe2+vm+XJ6kJ3MPrk4Ix25m73/n71mBWdLK2E+OojuWS+BN9s9ZhU8+o3cFL8pDqtQg=
+	t=1787997419; cv=none; b=XXRgLkXuxkwli6FyINaelG/Io32Qax5skIqCBRz/QFI1tAOhzl57ZqaA/eiEj6l+3ZFEQl9fSAx6aBbXwqeutXYx6PxmG/ouQ+GBRdnm+oYpgw/mp9oKjkBQWijja5kSLM73OHxlOn4Na80Rp/vzmwRwkGNcARkec8EXi/fCzPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787995697; c=relaxed/simple;
-	bh=8RDAHm/4LM2DadBxK36iI94b5X5Cay+sEWwoqvWqhOw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zq6bWeW/odZJk2J+ZS6Ppgvm+zSaajOVAyT/3SKvPoqRh0jpnfScVx12qzRu3aFsB1PfRib6PD0UAuyBjkh/AOBYsEQqn/BM8ASZYM2vLSE7QrvUNilw5/rMMn72Dis4TPEngal2SZszlHZ3uZ9YsJ4agafkXjsaPUMLoa6anz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hxFomWQ+; arc=none smtp.client-ip=209.85.221.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1787997419; c=relaxed/simple;
+	bh=tiv1H7s/1GYn4T9yRyDeoJO06NVr7/tNVolqS/2JgTA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ADtBsx06ZOu180Obi+viTOoxv4v8i4L/hN0k3Ty70Qn7lS5tYTlAo+ydIu4YbUbnEJ7T+54qlgTSaEUUnZma7hJn/0cqsmh8cye277nS5ePferraQR0gx1mbELfYXmDtU745bbZprnF7IHFHxWON24aSy/5SucMXcaDU8YLk0ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UxwG/I2p; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=e691WoyA; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hxFomWQ+"
-Received: by mail-vk1-f228.google.com with SMTP id 71dfb90a1353d-59b074ec7ceso757740e0c.1
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 02:28:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787995694; x=1788600494;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VCM4aWqF0dgx3EBT9OtMz84UCQrM5Wfu3V/YZ6QJ1eg=;
-        b=NWT2O8eypKmb+6vgyjd8+Ch7GRiLZaRHBwhHZtJeCL6zXukoWRiwzGpkUwWfCHXJQq
-         q5SondUBmUMyMbkFXUjgi7ZsqvgXpr4izL+4uW8Qo8K5LRFcD2L/zs3aYa4hkdOdPoXl
-         lnirBUPnkQ6hGUgtdiUt+DykUWgl5CHKcMzlwAWIWnVbFEKaMbbtjMhKGCtikBLAq7xR
-         KUiQLvZNS3fPofOmK1CZDOg/FzV61sZ2Aa72PfkYjtFPyTWVtz5Yle6k1+6Gk71mYawh
-         xkRhsLU6INj93rpicq3nm3oNPOxTTmxLaMIjqWBwQERbAxSc94KQf6h5L2ksPUHtJ/gK
-         Wc1Q==
-X-Gm-Message-State: AFuF++kRi6OrPtCXFeiUuJ1ADiECpJU+ywOcO2YlFCTUcBhFQ2qbSLip
-	7TIRUDgntFYcivzG0jnbGYWcrOfYNkBSUwxYZhELwNGMrGbTwHmcJ9ermf2gRFFhovlAc/D45p1
-	n0AMv3veFkC1oz3TjNTAzhlyDS86BOsSNhfOcEorfOndkYhGFKQZh5iPyIIakpech+GUvB8kdUE
-	K85XQ7KqC31Bx9VM07jNUoZGn/7iptwAdR54A8HI6ukmzIdvflUy8KKvu+nrVEjon4Mbn/Z+lAj
-	90ty+f/edo=
-X-Gm-Gg: AR+sD126+bJ9wWcPEMjdwmmEzA9FxPABimgdQSGL8UkDp4ZNbJxRJUZOtmoilrJVFuN
-	3mZ5tOooU/lYTh6/+/a+rgUikxGhaPeT0+h0eJ8nFd+BEpfXUpDpa6q4mrKLRpa+pw2DRyykLGR
-	LS5VYv4043hAo8DjWqwWlnvs/OwpnDus2PQyZ37K3HFnF8fYwQ+uhdADkbGZqrWSZCVJy9POueM
-	BAdBn5OvBSx19Y4IWNcPQ8WK5CaZbsXlHlZM6KI8J1PgiuFts7TdfF5I1hPdV7lf9prtzJoad+S
-	VESpiC71B+RYAx0QIvm6kM7pypFuNHFcT+r1BiZfk7mK3z+tkZ+eEKmgVSf3Jby02Ob3jyrMR/t
-	V6FnF48Rfb4PexDMg0vTA7XCQhv7UwkvAPpjWzynpZa7HiQB00LmoKwBEvwNawCZvdDwtFhERA+
-	xMJIM1ZB9BrW1b1Q89ObdQmIZlvvAIRX8axrA=
-X-Received: by 2002:a05:6122:8c8:b0:5bc:42be:f758 with SMTP id 71dfb90a1353d-5c681493196mr5238993e0c.3.1787995694032;
-        Sat, 29 Aug 2026 02:28:14 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
-        by smtp-relay.gmail.com with ESMTPS id 71dfb90a1353d-5c724194ec0sm1271313e0c.8.2026.08.29.02.28.13
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 29 Aug 2026 02:28:14 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-848d21bbb55so3133940b3a.0
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 02:28:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UxwG/I2p";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="e691WoyA"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67T802fL1353069
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:56:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=roPEVsoQUhFBjB1PneBAof
+	XRNLn5gkvGNPkS1bJbndI=; b=UxwG/I2pScGjdD0Y/5Zg093L9A8xhOsplkZSfo
+	yNQFBMcZcHx0Ca7zhYBRWs8eIqsqyBObC89oUZ6OqFT4QPu8uxER8HOZOTBUMrg4
+	P8UlkH+e6mxqLUApyb/THHyq2VJiuLHw3vMEAbWjTS21rrRQLMUfYVoMAqnXas1E
+	b0/qhuc9H1AEvFylW9jTpiFfbw1xAcHLLOJNaHe4lXC6kmXRUBRud2TxVEyPzJ8e
+	UL9sOEk/3ds0jCZoWhVnPexw+zW9lM9GwPqh/wMAS4QFMcctLHISihBoCg01crlg
+	yh4UkOCXPmGKf5k3CicoSacZmFUKCYq8TAZLz1RBrMxIop6g==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gbqhw8nr6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:56:56 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52ffe24490bso4166331cf.1
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 02:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787995692; x=1788600492; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VCM4aWqF0dgx3EBT9OtMz84UCQrM5Wfu3V/YZ6QJ1eg=;
-        b=hxFomWQ+5pr2FC/C5vcgHZEuQCMoqn2TyxZeLhiBt7jsaYMW8jg24K0EWaAmdKMAEx
-         rRP2MS+AZk6j91ys/vAkRHuOAJEczyJ56PjsL9/ykG0jtdh+/RQL7ZmditqpJeg4b132
-         Ux4d6xqAOyHq9dyZUx0fOcEimew8sx+TA7iJs=
-X-Received: by 2002:a05:6a00:1813:b0:848:4754:28e5 with SMTP id d2e1a72fcca58-8562aeaa990mr22156847b3a.16.1787995692281;
-        Sat, 29 Aug 2026 02:28:12 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1813:b0:848:4754:28e5 with SMTP id
- d2e1a72fcca58-8562aeaa990mr22156780b3a.16.1787995691772; Sat, 29 Aug 2026
- 02:28:11 -0700 (PDT)
+        d=oss.qualcomm.com; s=google; t=1787997415; x=1788602215; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=roPEVsoQUhFBjB1PneBAofXRNLn5gkvGNPkS1bJbndI=;
+        b=e691WoyApgUs1Mwx9jC3nRALbu/1jsZG0nU1Ajs87fqWGOFoyZ9+41gadJQ8cHw9De
+         VMIdTgMU9rz4wBCNNYlknhZ2AthKwXpcYBrpflJ8QyVCRpQMp81jgmOoC5MHnkTz+lhk
+         ulOUQpvXQDCaXN92RoGeeLQTnKBwV5cMzBIanXvcDFHLQaVR4Q5ufEXlkKO9obH7S1e+
+         P2kUtse3aLJeRItdQsmJGWVfcs9lyNsc2MVi6u5p3EjrFuKuoUE5NgZ9ZhDTstkSoG1/
+         HgnKt/jOwyACNFARMAEIORG/esTDkc7HUT91egyCzzUH4HOoAAfMgVG2VX2HkTH78KKN
+         Wvig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787997415; x=1788602215;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=roPEVsoQUhFBjB1PneBAofXRNLn5gkvGNPkS1bJbndI=;
+        b=L3n4xDhqHSMGGazZ/hFIw36Ppe0TGKx/7xyaX4SescA27tE8AN1wuUQdpYQwEFOhSC
+         XDEsVkk8nw9rRTTjX21hJ17a17dgHgMpxxb0yyPyygVOVm3pO1geJMoMAN4UB/ZcOKin
+         ePVoWoEsyphPAo/As6nozKvSlLk0+k8P2egSuSQCcWxqutFvbGMAkd/NfqbQSz/NQ3hz
+         1wOeRHz1IL35cnXUzDXyXrNVOih7u3eDGLEnso6obX04GwvkwURcZSmARh//Nckzr5qO
+         39ghDbCFk9KwdEI6HpRUlBUsWZ01Yuopb64VPcXjtEX/tDazHLFyj+LuBIpHz96D9zwJ
+         /Tgg==
+X-Gm-Message-State: AFuF++l3TwuGDDnsMbTLjainR6bmI15uTlvQUy5vQbM9ksz04H11lgMB
+	6D2dV7H4GrSpHEjLPETpkxujyrMJ4NCUcPDeR9Qt4ahcWwtlwBWHmvPf3Vqdq+WvxZ50Y/40V3/
+	hysoK2xYNZ5VikOsl06GeOVBDi5ChnfjEUqKLriNVcgmYb0I469XG7G2pY8uRRybo9KM=
+X-Gm-Gg: AR+sD121zY7bpYS09RGtwi+30nW48LQd4vpCd2znKPDLlO0fPI7xxxLqk/i7TEM0duY
+	Ivb8oGORL3bVDzbFb45PodKMBbgNBtyh/hefCOVYEs0xgNTg9+MMsunNbENLVtsypspsVcR1chV
+	JinWRXCwwapeczxpQDcLFGPNdcL6h863LZv8Gim4Xv1QKgVog1BtTBSZ0PtYWH6A2NHh85Lj1Uz
+	TuRy7C3KMAupzfK4mdPUVJ3BgJrxGD/zZ9ZZpz+UjNJ2kgHzUv95w709rTxucGu72KYb7b0YE1B
+	Asom7kSOeZhyCqt4N7h+pgDJg/I0+2BT2rjXllbxfI1Bwq2sGbbiE0XBLOOuWmK7ZmRosFkJASv
+	DTc6kAs2fMMLYSw==
+X-Received: by 2002:a05:622a:1e19:b0:52f:a196:79a6 with SMTP id d75a77b69052e-52fb9694badmr168692061cf.33.1787997415423;
+        Sat, 29 Aug 2026 02:56:55 -0700 (PDT)
+X-Received: by 2002:a05:622a:1e19:b0:52f:a196:79a6 with SMTP id d75a77b69052e-52fb9694badmr168691661cf.33.1787997414807;
+        Sat, 29 Aug 2026 02:56:54 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b4942298fsm201048045e9.1.2026.08.29.02.56.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Aug 2026 02:56:54 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Sat, 29 Aug 2026 11:56:33 +0200
+Subject: [PATCH net v2] net: stmmac: re-apply taprio offload in
+ __stmmac_open()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827230233.94878-1-joe@dama.to>
-In-Reply-To: <20260827230233.94878-1-joe@dama.to>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Sat, 29 Aug 2026 14:57:59 +0530
-X-Gm-Features: AcwNN1W2waLey4-84n7PaXplySQ4DKnIbZlqhbWc0cUMnHxU3uIb6suUVCnFFFU
-Message-ID: <CALs4sv1v7E_pxmdcNzxf8GyR7=-B26J5Z1YZ7fc4Y2Oc7Le8yg@mail.gmail.com>
-Subject: Re: [PATCH net] bnxt_en: Prevent queue stop with deferred completions
-To: Joe Damato <joe@dama.to>
-Cc: netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001e4e78065a2c30b8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNywqDMBBFf0Vm3ZEkrQ+66n8UF6mONWAezaRSE
+ f+9Qbrv5sK5F87dgCkaYrgWG0RaDBvvMqhTAf2k3ZPQDJlBCVWLVl2Qk7W6R+KEkXQI84p6TBT
+ RB3IoWzk0QsuKHjVkR4g0ms/hv4OjBF0uJ8PJx/X4XOQx/fTVH/0iUeIw6lY054ryz80zl6+3n
+ ntvbZkDun3fv5JVc8DWAAAA
+X-Change-ID: 20260824-stmmac-est-reapply-after-open-181d70a15eb6
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jose Abreu <Jose.Abreu@synopsys.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+        Rayagond Kokatanur <rayagond@vayavyalabs.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-GUID: w3sTF7y7arzjTEY1yd-Ufxc9-Vf2P_rP
+X-Proofpoint-ORIG-GUID: w3sTF7y7arzjTEY1yd-Ufxc9-Vf2P_rP
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI5MDA4NSBTYWx0ZWRfX7oxKCVx0H1wW
+ rzoxzMBo+8rEasFci9wE9rlBduhMMchRWzWYnZpQJjGNQMMwS7i34D5DTKclEHFnVI6DQDvn9gc
+ HT2a7Gpc1bP9PiUtldm+NFwINgvL8rQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI5MDA4NSBTYWx0ZWRfXxB+126mB9L48
+ nqP0JzJySK8wibOJU7l0Bi0pQZLLIUa1/gcw+wOtt89vhN3GzZx5scdXnFGqPae5e7rkYQL1Tn+
+ kKYe58+qjcCqBAqSQJ6cKyWvRFrSAqd6hRndNRUw7CQrfFn2G6oXyeqWR8WGtqcv/3FUTrpAu27
+ eRqxLEteg07DpHTlQzwl7gS4YgsIfwhl978K3ORIek6G927JyRXMPxGX1Z+Ug6rRRkDBwbwhtf1
+ b/Wgxj+w7p+9MK0qXvUr+lYyI4UEuMZGXLHcsErVI7L8EAJviOnx5vqJbtHM5/69E+qDDXR1dYS
+ XQSgTtmMMBQd6CSfgOD8ZJMWNgdH/BLLsQoV4Hirf6n5vO+PUT2UiYZnbFYWmCQ7wRy1BKqNnf3
+ wlypsYaHSb28i/qabXL84MmLPBXT/AuqJGtcWe34Gx/bvXTVG0oFXV3SYFqlKSpp6fta4/PuJNm
+ X6c2/g/Eb4kKoI2RHcA==
+X-Authority-Analysis: v=2.4 cv=YKKvDxGx c=1 sm=1 tr=0 ts=6a92ace8 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=JpBpa1p7AAAA:8 a=mSazJyEt4tbewPo3ZqYA:9
+ a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22 a=YCh05so4W2E6r1tszMC6:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-29_02,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 suspectscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608290085
 
---0000000000001e4e78065a2c30b8
-Content-Type: text/plain; charset="UTF-8"
+The core soft reset issued in stmmac_init_dma_engine() clears the
+MTL_EST registers, but nothing re-applies the taprio offload after it:
+priv->est->enable stays true while the hardware EST block is left
+disabled. The TX/XDP paths then keep dropping frames larger than
+priv->est->max_sdu[] and taprio is reported as offloaded, although the
+EST block is not programmed.
 
->         if (unlikely(bnxt_tx_avail(bp, txr) < bds_needed)) {
->                 netif_txq_try_stop(txq, bnxt_tx_avail(bp, txr),
->                                    bp->tx_wake_thresh);
-> -               return NETDEV_TX_BUSY;
-> +               goto tx_busy;
->         }
->
->         /* BD backpressure alone cannot prevent overwriting in-flight
-> @@ -77,7 +77,7 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
->          */
->         if (!netif_txq_maybe_stop(txq, bnxt_inline_avail(txr),
->                                   num_segs, num_segs))
-> -               return NETDEV_TX_BUSY;
-> +               goto tx_busy;
->
->         if (unlikely(tso_dma_map_init(&map, &pdev->dev, skb, hdr_len)))
->                 goto drop;
-> @@ -235,4 +235,17 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
->         dev_kfree_skb_any(skb);
->         dev_core_stats_tx_dropped_inc(bp->dev);
->         return NETDEV_TX_OK;
-> +
-> +tx_busy:
-> +       if (txr->kick_pending) {
-> +               u16 kick_prod = txr->kick_prod;
-> +               struct tx_bd *txbd0;
-> +
-> +               txbd0 = &txr->tx_desc_ring[TX_RING(bp, kick_prod)]
-> +                                         [TX_IDX(kick_prod)];
-> +               txbd0->tx_bd_len_flags_type &=
-> +                       cpu_to_le32(~TX_BD_FLAGS_NO_CMPL);
+Re-apply the taprio offload in __stmmac_open() after PTP is up. The
+base time is recomputed from the reserved base time and the current PTP
+time, since the timestamp counter has been re-initialized and the
+previously programmed base time is stale.
+Introduce the stmmac_setup_est utility routine.
 
-Should we not do a bnxt_txr_db_kick() also? It maybe a good idea to do
-it in success case also instead of bnxt_db_write..
+Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+---
+Changes in v2:
+- Rename stmmac_est_reconfigure() in stmmac_setup_est().
+- Rely on stmmac_setup_est() in tc_taprio_configure().
+- Link to v1: https://lore.kernel.org/r/20260825-stmmac-est-reapply-after-open-v1-1-dfa80735e0a1@oss.qualcomm.com
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c  | 33 +++++++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.h  |  2 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 16 +++++++++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 26 ++----------------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 27 ++++++-------------
+ 5 files changed, 59 insertions(+), 45 deletions(-)
 
-> +       }
-> +
-> +       return NETDEV_TX_BUSY;
->  }
->
-> base-commit: e2a6641e3bfde58f2284f9859c2b0fdcc6d1c0da
-> --
-> 2.53.0-Meta
->
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+index afc516059b89..bbebd33c8a88 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+@@ -80,6 +80,39 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
+ 	return 0;
+ }
+ 
++int stmmac_setup_est(struct stmmac_priv *priv)
++{
++	struct timespec64 current_time, time;
++	ktime_t current_time_ns, basetime;
++	u64 cycle_time;
++	int err;
++
++	mutex_lock(&priv->est_lock);
++
++	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
++	current_time_ns = timespec64_to_ktime(current_time);
++
++	time.tv_nsec = priv->est->btr_reserve[0];
++	time.tv_sec = priv->est->btr_reserve[1];
++	basetime = timespec64_to_ktime(time);
++
++	cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC + priv->est->ctr[0];
++
++	time = stmmac_calc_tas_basetime(basetime, current_time_ns, cycle_time);
++	priv->est->btr[0] = (u32)time.tv_nsec;
++	priv->est->btr[1] = (u32)time.tv_sec;
++
++	err = stmmac_est_configure(priv, priv, priv->est,
++				   priv->plat->clk_ptp_rate);
++
++	mutex_unlock(&priv->est_lock);
++
++	if (err)
++		netdev_err(priv->dev, "failed to re-configure EST\n");
++
++	return err;
++}
++
+ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
+ 			   struct stmmac_extra_stats *x, u32 txqcnt)
+ {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
+index f70221c9c84a..f620d3331c2c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
+@@ -65,3 +65,5 @@
+ #define EST_GCL_DATA			0x00000034
+ 
+ extern const struct stmmac_est_ops dwmac510_est_ops;
++
++int stmmac_setup_est(struct stmmac_priv *priv);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index d576059c04df..b30036428188 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -48,6 +48,7 @@
+ #include "stmmac_ptp.h"
+ #include "stmmac_fpe.h"
+ #include "stmmac.h"
++#include "stmmac_est.h"
+ #include "stmmac_pcs.h"
+ #include "stmmac_xdp.h"
+ #include <linux/reset.h>
+@@ -4153,11 +4154,22 @@ static int __stmmac_open(struct net_device *dev,
+ 	ret = stmmac_hw_setup(dev);
+ 	if (ret < 0) {
+ 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+-		goto init_error;
++		return ret;
+ 	}
+ 
+ 	stmmac_setup_ptp(priv);
+ 
++	/* The core soft reset in stmmac_hw_setup() clears the MTL_EST
++	 * registers, so re-apply the taprio offload after PTP is up.
++	 */
++	if (priv->est && priv->est->enable) {
++		ret = stmmac_setup_est(priv);
++		if (ret < 0) {
++			priv->est->enable = false;
++			return ret;
++		}
++	}
++
+ 	stmmac_init_coalesce(priv);
+ 
+ 	phylink_start(priv->phylink);
+@@ -4181,7 +4193,7 @@ static int __stmmac_open(struct net_device *dev,
+ 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+ 
+ 	stmmac_release_ptp(priv);
+-init_error:
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+index 960249960004..917ef7ddcae6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+@@ -8,6 +8,7 @@
+   Author: Rayagond Kokatanur <rayagond@vayavyalabs.com>
+ *******************************************************************************/
+ #include "stmmac.h"
++#include "stmmac_est.h"
+ #include "stmmac_ptp.h"
+ 
+ #define PTP_SAFE_TIME_OFFSET_NS	500000
+@@ -55,7 +56,6 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
+ 	u32 quotient, reminder;
+ 	int neg_adj = 0;
+ 	bool xmac, est_rst = false;
+-	int ret;
+ 
+ 	xmac = dwmac_is_xmac(priv->plat->core_type);
+ 
+@@ -84,30 +84,8 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
+ 
+ 	/* Calculate new basetime and re-configured EST after PTP time adjust. */
+ 	if (est_rst) {
+-		struct timespec64 current_time, time;
+-		ktime_t current_time_ns, basetime;
+-		u64 cycle_time;
+-
+-		mutex_lock(&priv->est_lock);
+-		priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
+-		current_time_ns = timespec64_to_ktime(current_time);
+-		time.tv_nsec = priv->est->btr_reserve[0];
+-		time.tv_sec = priv->est->btr_reserve[1];
+-		basetime = timespec64_to_ktime(time);
+-		cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC +
+-			     priv->est->ctr[0];
+-		time = stmmac_calc_tas_basetime(basetime,
+-						current_time_ns,
+-						cycle_time);
+-
+-		priv->est->btr[0] = (u32)time.tv_nsec;
+-		priv->est->btr[1] = (u32)time.tv_sec;
+ 		priv->est->enable = true;
+-		ret = stmmac_est_configure(priv, priv, priv->est,
+-					   priv->plat->clk_ptp_rate);
+-		mutex_unlock(&priv->est_lock);
+-		if (ret)
+-			netdev_err(priv->dev, "failed to configure EST\n");
++		stmmac_setup_est(priv);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 14cabe76e53e..b41df317d73c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -10,6 +10,7 @@
+ #include "dwmac4.h"
+ #include "dwmac5.h"
+ #include "stmmac.h"
++#include "stmmac_est.h"
+ 
+ static void tc_fill_all_pass_entry(struct stmmac_tc_entry *entry)
+ {
+@@ -968,8 +969,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ {
+ 	u32 size, wid = priv->dma_cap.estwid, dep = priv->dma_cap.estdep;
+ 	struct netlink_ext_ack *extack = qopt->mqprio.extack;
+-	struct timespec64 time, current_time, qopt_time;
+-	ktime_t current_time_ns;
++	struct timespec64 time;
+ 	int i, ret = 0;
+ 	u64 ctr;
+ 
+@@ -1069,34 +1069,23 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 	}
+ 
+ 	mutex_lock(&priv->est_lock);
+-	/* Adjust for real system time */
+-	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
+-	current_time_ns = timespec64_to_ktime(current_time);
+-	time = stmmac_calc_tas_basetime(qopt->base_time, current_time_ns,
+-					qopt->cycle_time);
+-
+-	priv->est->btr[0] = (u32)time.tv_nsec;
+-	priv->est->btr[1] = (u32)time.tv_sec;
+ 
+-	qopt_time = ktime_to_timespec64(qopt->base_time);
+-	priv->est->btr_reserve[0] = (u32)qopt_time.tv_nsec;
+-	priv->est->btr_reserve[1] = (u32)qopt_time.tv_sec;
++	time = ktime_to_timespec64(qopt->base_time);
++	priv->est->btr_reserve[0] = (u32)time.tv_nsec;
++	priv->est->btr_reserve[1] = (u32)time.tv_sec;
+ 
+ 	ctr = qopt->cycle_time;
+ 	priv->est->ctr[0] = do_div(ctr, NSEC_PER_SEC);
+ 	priv->est->ctr[1] = (u32)ctr;
+ 
+ 	priv->est->ter = qopt->cycle_time_extension;
+-
+ 	tc_taprio_map_maxsdu_txq(priv, qopt);
+ 
+-	ret = stmmac_est_configure(priv, priv, priv->est,
+-				   priv->plat->clk_ptp_rate);
+ 	mutex_unlock(&priv->est_lock);
+-	if (ret) {
+-		netdev_err(priv->dev, "failed to configure EST\n");
++
++	ret = stmmac_setup_est(priv);
++	if (ret)
+ 		goto disable;
+-	}
+ 
+ 	ret = stmmac_fpe_map_preemption_class(priv, priv->dev, extack,
+ 					      qopt->mqprio.preemptible_tcs);
 
---0000000000001e4e78065a2c30b8
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+---
+base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+change-id: 20260824-stmmac-est-reapply-after-open-181d70a15eb6
 
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCApf3Kc
-KMpaVA2SYnBX25ZfcHtMsbir5DjMFuZzCvUg6jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MjkwOTI4MTJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCq+Fz95uI1hCHCkST8+ZeSLOBMc8dxYAVF0M6wQS93
-MecgVaKvXY6VBkEuCa+WUCMg6bT3eZ+VDTiClCue37oVhaqqWoq7g9N0p0sjosEIdUdlOK0jw/2R
-aeKq/o51SpIdnKd1To3OEOFipn1SJiP56JQ1GsCcfFCdBRF/5kV5mDSbpQvFyU0OiXC8Y9hTZIWa
-uRvsHnbqk/GQKBfwwQeW2joVKFUkTZvfkN+ziVADW0VmKIebcYIRSuA2kY2arJxPChbhkXhmD13A
-IRvlhvDKAd2dyeRVyA9q8ZAHhEtW3BMMRMoOjkh4zP6AFDu/E+tfaAFX5nudtpxynMWeZt/f
---0000000000001e4e78065a2c30b8--
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+
