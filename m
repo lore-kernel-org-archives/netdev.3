@@ -1,80 +1,77 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8C3346FAE
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 10:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBD979CD
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 11:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787999021; cv=none; b=qHWn7cVxnVhPYeJ3amiPlaEv0oXyjl9NLF9BqXfGLR6YyCh9WLB9pLuxHLXl0BwtCyWeI3bg/bEt/TJdomvLmBVtufAObRS4BwixI11dADtxaR8qPr1UZqrA/d+bzRkbBS2kruqF9gSLfGTlvqVo/7Pel9LbPKaFzGF4Ym/i688=
+	t=1788004700; cv=none; b=peYM6Nx4mICbrE7IgV/awku8t0jXZELMgrYJ2B3M8ImVi3bVa0b4SU94EbaeEgQgJZ98aZRXo/MkhFzagojrr0On98CUAaHBwdgZd1tcrSZsq9vOdcisLzv/S1T+8tPPNG9ebYSTIOhcRyGV+pzbAmF8WxVirJyNMuuuNCOu950=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787999021; c=relaxed/simple;
-	bh=sDC0HmFo76Iy3rvXEpuC5VSYCGQLKOYblHtCiH1t8bg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZ5BuwIWagC5mqpOnxpM8XRFXyjuHGDPT0Bo+T0j5C/SA+F8C9bOg8y+GHigy92FSEQyO57WW5a6u7BD0/LnJMSHf8r4GBfbfXg3kr7sF1pzaGQ0dRkezV6VfSv+qamUtVUKd8k/xvmy9vMmNJlvE3N8D+rL0R6JP2+LnGNNyWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=DGYkApae; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1788004700; c=relaxed/simple;
+	bh=fcybU6WtucAqrRnRamQo8KcDviNxcOroj9L29qhD4tM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WoIQ0jpEKy4fzlW+2OjJCPberzPPKRUt3HYIsjkj1FSh4GflIBSsG+nBRJE3LEut0IQ340O5Xd8BK5tVd8Y+IwsnsDI8yzX1cpWoHK4z3L/gl9un7KABLvk626wDp2uq8NyMZQIbhwPIasNkzkNxiEssRaEGEcF1FKATAuGxoCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lgFJDIlE; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="DGYkApae"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d712281f8bso21655785ad.1
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 03:23:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lgFJDIlE"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49cca4ffdcfso5751915e9.0
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 04:58:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787999020; x=1788603820; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TipxU31zFnpolw1J+4rCh41D6Ze6WOhL1E995FT0jys=;
-        b=DGYkApaemnhfluKbmke6+1HuxzwhztJXrtRCsL+rKuviTU2SsTQNuNaQyRu5aM1b36
-         bSSLcuv7k/A2/VUARPMg8f/i/G79KZh/YK6pJlbd/rd2QlGTMCiuJmn8793Wm7tpjsP+
-         Wfz337hoIQ0Sui8s1xNYn9+gqMYPS/2KAqI7ZS/eoBlQ3sYiOBMA8JugqFl0FFvs+NC+
-         pnAh0vbLZKK8PfHVQmYnynltSo5BLqWr+PC0x6ZfhagS0zbT80QI4POuwDncQYd9QWsN
-         s0AEe6HkdC71S/Ej583yCjw5AArVTiZbMP+g4i9h0Eq2ePtjo4z/2/4iGZvomk1ZDD9a
-         y1nQ==
+        d=gmail.com; s=20251104; t=1788004697; x=1788609497; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ykjbkNzPyrHDcACdSDRoxsErWSrqkdYz5FycPTt5TBM=;
+        b=lgFJDIlExzqO3AeiM/s68htkqnQv1K5itBC9gabhgf46krUyIS72kttJ5R83lEJooL
+         Qq09Lah9z+frSNi0fHy38Ve0vu9Qs7uiwbYP+kutPgcIe8+p4qVn8QAh41fO0ySxzpDW
+         /XfbXnJzydGmzZj3Rk/EVe8W1H/8h6hBjSCm7gU0WHHyqhtJ5gvJbZ1r5Q5Kwgs63mBR
+         b8Gs/R3LAFTFogzQ6Ao3cYY5F12jxMXvHs2an4FQQ4N9omDqsVptDgw5hFdFTh6efLJ1
+         oWhLKA8cYe2hQVdwa2UUVuAkdKVasNZ7a4t8j+VZYevlsdtLIGiIkJt+EQN/0QWzSklb
+         /faQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787999020; x=1788603820;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TipxU31zFnpolw1J+4rCh41D6Ze6WOhL1E995FT0jys=;
-        b=lqrZDNs++AP96diVHJ2n9iGuZdx7STkKP4QHv3MvuKXvL34S+CiIQCRxso03utEdSx
-         TNptC7eIEisQs7C8kwp1tbsP4KZlOJlqlZeKPXH6JU4SsnRL16OmI9NqwC7lgeR1ML63
-         QYbZSD/tl/RrFeb8+XgKGzyzmJN3eGwQkoGvA9DLSwWcH4kOPWKCEBeKbwpicpFYKkC5
-         iqPBcRD3hp3O3itoyT3iiP5sfxBXaBPj69dfrtdbh6D1e4BAtduWYFOmBkQ5xAfsWWcH
-         ogB00MRmjs9nTzxxGc+bkhaujlQwvJ8+EReZJK2hPyc+vXBmp0MvoGgxXcMxV3n8XUeu
-         umcw==
-X-Gm-Message-State: AFuF++liTD3ai+b8Ke5kr6XxIGzxrXgaxALWcitjdoQDphITf+RmQOeL
-	mD7MuNJ2rnubjTQXDjcs4ZV+//mOb3/XvMpUFRWpj60a1FB4EsJ6Cx78pBG1iSwLvb5wz1Ce87+
-	rbHmIeRwB
-X-Gm-Gg: AYBFou0hiysQPAo72MtH0UrSkugado60DPaLJItuzWQAPw7MqlQ7/ZdCLn0VhUji59Z
-	1MSsgrqcCb3UsiiQ4t81uFKzpHwghx+ul+3w4NsSIDvvvWprB5CBes3cFaLG6dgGmXeOzMJ51ET
-	475F1bO+XUGZnz9ZnrRcwd0WZKTFpt9Mk0JL+GojOZPMOKzpcu57YirhXHPMNZQUFA5Fl5pD0s8
-	+h1A8C1NXckFdkmlAcZP8HAhRBLwcuCObuSvw24k5fQvII3mb1z6ilr0M84xam4CxGDCSlKaxYN
-	pWFC3pnbqOSTvq+kgl+y8Gebrc9/7O+ReUO31O47586goAGeRS7cqiFIuacUwE5bw0fPNmnqScy
-	VJOLJ0+TwDdjtJcNxSZITAJYDDtoMLXfbcz/ZtUewWbfFN/szuuGg47PwwxCRgOmN0Gwq3OS4Up
-	gVsE4cYUhmnP7kWS8iGOPD/CbFOpl4ULlslhZcM+qBkYnDnEejl356rGhMQcPDeU1zGwld
-X-Received: by 2002:a17:902:e549:b0:2ca:6eca:492f with SMTP id d9443c01a7336-2d74df5f87cmr202927005ad.14.1787999019553;
-        Sat, 29 Aug 2026 03:23:39 -0700 (PDT)
-Received: from Roxy.localdomain ([2602:feda:30:ae86:295:dff:fe84:68f4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f959575sm13858193eec.15.2026.08.29.03.23.36
+        d=1e100.net; s=20251104; t=1788004697; x=1788609497;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ykjbkNzPyrHDcACdSDRoxsErWSrqkdYz5FycPTt5TBM=;
+        b=HbS2q1Qi7oZOtB5BUGU7BORukOxcr7/xDrAeUCe49TavR7Tgg2xklAEbr0DXhiLsn9
+         DacUXKLyeQaVAodILgwoCFmcN3ANoJCrg/tB0yqzwJ4dBXQAlABwswAp3HZqWreZA6X1
+         y9Ffb/BB0rJjKU4hncg/1uDdHQ9wjeR+6OMWIvvqgESf3Oi4ncV3od78Si2UmC0YGeJk
+         MbynqofkY3DYBro77Av/JMG5i/7slaW/Gjw5y6VuIWFUy+dFNTw+alMxcenNrjOejKeW
+         jcfSw34MzsUW/HUmJ4fI4dQ/5CT7nwtG+BiOjEBsxyxDb1tfHiNAadtRCI1NJhllCUt5
+         HOPA==
+X-Forwarded-Encrypted: i=1; AHgh+RoydV4NpLCyojTiYYIIvGnuJd27M+JeRzeiweCmLRqVn3IjAo84+n8R86L4SANL/SEgUVShmY4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kTsG+IzteLZ3Lk3YDZYdV2yYCGBAMSvkNxvBcsaA2+1c4bnvbm
+	sV2X4jG999Q9d5t7cHKI2Z/77p1JZsgJTuZs/ufZIq/ymu+tTFZlqk0X
+X-Gm-Gg: AR+sD114PVInsh9mUGXQClV6G/jj6AxYzokK1yemwuPgHxOhVIxKLrq4YyvRQoNZXup
+	MMxBhIHd7j3KxF1YqVtOyLZKr7ye/q08VKBkqd7FAItW59p0PlppmIDzRceoZeZnBmMt7RzJRlE
+	HHUpidL/pEEco95KTsXJ0xzFCkFNSNNwIIELoTdGCnCGIMwW8grX0yKJQuvMTlFrUfvNtvI3oQx
+	OuFDDtRsyFPDd6XnQ0WnGSfNFmh2NVTBHzcNySJxD3ec4EytF+fnCcfcfGBW+62vZLkyb58b27n
+	sEGND6lEJsUNWpIgqzIi73l70TnrT/ct6rN5xqdkTBPKYeVx1gAT6yJ4/DfYp/tGyLRo1uLNQOA
+	Ge/WIz+iloWuuBgsQtfQeqBhGBUsr+A8Y1nWkaJZq+Tez+soG4YbGC2As7y7zbwVTfxRtjccqY5
+	HBETiZmKtbs2P0mKEDUGisz+80LWpFNG2r2hg64+IWRJpIgf8F8OMCfUqdyhsctR7RI5d8+uHLQ
+	geXKtHe+5yn/wreEnlwDrRVM0XLJzzj05Wwmy04vDys+g==
+X-Received: by 2002:a05:600c:6088:b0:49b:2796:be30 with SMTP id 5b1f17b1804b1-49b91c433a4mr210674615e9.11.1788004696658;
+        Sat, 29 Aug 2026 04:58:16 -0700 (PDT)
+Received: from snowdrop.snailnet.com (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b91c5790csm111094815e9.0.2026.08.29.04.58.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 03:23:39 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	phil@philpotter.co.uk,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net 1/1] net: tun: reject addr_len changes with active lists
-Date: Sat, 29 Aug 2026 18:23:23 +0800
-Message-ID: <07d1a274b5144fe2ad8e30a6d3d25a5b8ea88fa7.1787998545.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1787998545.git.zhilinz@nebusec.ai>
-References: <cover.1787998545.git.zhilinz@nebusec.ai>
+        Sat, 29 Aug 2026 04:58:16 -0700 (PDT)
+From: David Laight <david.laight.linux@gmail.com>
+To: Jon Maloy <jmaloy@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net] tipc: Dont send random pad bytes in RESET/ACTIVATE messages
+Date: Sat, 29 Aug 2026 12:58:12 +0100
+Message-Id: <20260829115813.188600-1-david.laight.linux@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,38 +80,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TUNSETLINK can change a TAP device's address length while packet
-memberships are active. The address lists are keyed by the current
-address length, so changing it makes subsequent membership cleanup
-lookups fail and strands netdev_hw_addr entries until unregister.
+The interface name is passed in a fixed length (TIPC_MAX_IF_NAME) buffer.
+Replace the strcpy(data, l->if_name) with memcpy() so that the
+pad bytes are actually written (l->if_name[] is zero padded)
+rather than sending random bytes from the skb to the remote system.
 
-Reject link-type changes that alter addr_len while either the unicast or
-multicast address list is non-empty. This prevents address entries from
-becoming unreachable through the normal deletion path.
+Replace two other strcpy() with strscpy().
 
-Fixes: cca8ea3b05c9 ("net: tun: set tun->dev->addr_len during TUNSETLINK processing")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+Fixes: e74a386d70c7 ("tipc: remove pre-allocated message header in link struct")
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
 ---
- drivers/net/tun.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/tipc/link.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 5a302709a68aa..e5b7729a967de 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3341,6 +3341,10 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
- 			netif_info(tun, drv, tun->dev,
- 				   "Linktype set failed because interface is up\n");
- 			ret = -EBUSY;
-+		} else if (tun_get_addr_len(arg) != tun->dev->addr_len &&
-+			   (!netdev_uc_empty(tun->dev) ||
-+			    !netdev_mc_empty(tun->dev))) {
-+			ret = -EBUSY;
- 		} else {
- 			ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
- 						       tun->dev);
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index 49dfc098d89b..6427c69f8929 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -504,7 +504,7 @@ bool tipc_link_create(struct net *net, char *if_name, int bearer_id,
+ 	snprintf(l->name, sizeof(l->name), "%s:%s-%s:unknown",
+ 		 self_str, if_name, peer_str);
+ 
+-	strcpy(l->if_name, if_name);
++	strscpy(l->if_name, if_name);
+ 	l->addr = peer;
+ 	l->peer_caps = peer_caps;
+ 	l->net = net;
+@@ -574,7 +574,7 @@ bool tipc_link_bc_create(struct net *net, u32 ownnode, u32 peer, u8 *peer_id,
+ 		snprintf(l->name, sizeof(l->name), "%s:%s", tipc_bclink_name,
+ 			 peer_str);
+ 	} else {
+-		strcpy(l->name, tipc_bclink_name);
++		strscpy(l->name, tipc_bclink_name);
+ 	}
+ 	trace_tipc_link_reset(l, TIPC_DUMP_ALL, "bclink created!");
+ 	tipc_link_reset(l);
+@@ -1898,7 +1898,7 @@ static void tipc_link_build_proto_msg(struct tipc_link *l, int mtyp, bool probe,
+ 			msg_set_dest_session(hdr, l->peer_session);
+ 		}
+ 		msg_set_max_pkt(hdr, l->advertised_mtu);
+-		strcpy(data, l->if_name);
++		memcpy(data, l->if_name, TIPC_MAX_IF_NAME);
+ 		msg_set_size(hdr, INT_H_SIZE + TIPC_MAX_IF_NAME);
+ 		skb_trim(skb, INT_H_SIZE + TIPC_MAX_IF_NAME);
+ 	}
 -- 
-2.43.0
+2.39.5
 
