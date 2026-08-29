@@ -1,63 +1,63 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19050391E7C
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95D5396D09
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787991169; cv=none; b=GvBcreyxsfGB3eLzHup+BkyTcMcVmiAhsm4N/Er7UsnRBMjAhIBXUh5x8mDMtnuVLv7t1jZCJQqn4cmAI1vq0ipFjKGqQ5Bdm8UNiOJiNIy88uLBU9I707ZLAWHl5qLIvoS6xT2gs+ZQbd6Pd3fd3mYi7V+KJnpxuuAyPBw6sdU=
+	t=1787991170; cv=none; b=hiXH2lQlQIZkFZLoq/tp1gYQ+rTo/jqDW+F7UBl8b+ljIklm4kuXba/x66ev8LGSYnkPtt+W0rJiInoycBmKWMyXoI8+KM50J3fEAT9eKrUK3TDvCKBOKE+TIAVbDoYrHy2djyjpv8sFxtvafuzUqNtSCQzteoUlc7pfbi6iA7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787991169; c=relaxed/simple;
-	bh=BNvdFc28OirNme4nOiVVSm2N77c4+Bdl5E11EpJUi04=;
+	s=arc-20240116; t=1787991170; c=relaxed/simple;
+	bh=eNjnF9KlBa3ZOuQ34ZlHZHotf1GzfNMkQ8oBzZnw00Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n6mo1UOVatgmZMHa7mfspr7IAqr5z+lH75EwqYJweskkBGeneAp9d3X1oEKiA55OpPfHOySec5Hm4LwQ3hNA/NDbTTkH1wiFvewYIbgSTK8A0DB84l71JDrfxFsWIOhUzOjyNeyBc85tgQVhHTvkNdHOsZRVoSOZSBsZplpIPIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Sbt1qy00; arc=none smtp.client-ip=209.85.222.179
+	 MIME-Version:Content-Type; b=KcAfqo0R2EbTKAgYNR+RuZJGEbiU9NCw9PnPnkOC0Fg5vsgEbcjuaebS967H08CT3cPdYImOYEEmwsMNMmP8Ll4CuwKCX4F+R9nX1BSQrqTdvwk0Bmfu+XFY8eudyZIuGl/nH5Vl337G5jKC4to/IcNvvZ0u0Q1CbSo4/NV5uC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=S0tNJXuj; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Sbt1qy00"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9390c3ade1dso88988485a.0
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 01:12:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="S0tNJXuj"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e50a650a0so150074185a.1
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 01:12:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=mojatatu.com; s=google; t=1787991167; x=1788595967; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=fgwAcg2QIz2kJViuMyXUOwt7mGNsxAiO6To1hWCAJdQ=;
-        b=Sbt1qy00QaANYG63qlkFr0IKMnRoChwc4op7Qp86DxNWwjYc02ris+GjnjWC0Vnlun
-         thFlZs7KSaAcH3++E1Sd7fJGsqd0EE5j76V0sL16lrMpjj2VXIzoEtxXf0xXjPBDnQdF
-         wbIyA0x+E4B5MDtkF4LD7CUMmTx4cWOKh1u98=
+        bh=7hvWUJoJvnXpjqhu3W0EwadWbrxUFdGuL3OAyMAegJ0=;
+        b=S0tNJXuj+Te0mcsSvIFF5uM2zQxzxzC7iv1WFAvCqG103anKLVNA//Rmt1EcEGzZGi
+         DPMh2MaaFcb6tPk9yMlYZKb6q1pNX7S3hvLpq8VcCF2aVmBwjqgNeldhIsSkvjK3pb6W
+         NqAUSst5ssBbdSGQTuVo4lqs+PaiQAhOeqQy0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1787991167; x=1788595967;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fgwAcg2QIz2kJViuMyXUOwt7mGNsxAiO6To1hWCAJdQ=;
-        b=rV6N2dVe7k73+ejqgiX5PiPbg9TGjaJcyq+n9Oxc3srUPhVOE6VD4cBfO1InBE1mn0
-         D1fjF3bZvDdWMZAR8zuDMskGoE7vdhc1LemMFIz8MO9T8E7I+6Bg8/5W8xrqNAjrFRuO
-         7Ek2n7Fx9GYlRR2JIvF+tu1tc9PQWVO+bZiSMCg9Y8ZHGqev3cj+T1PAPL80SCxNP7Jr
-         kDzh9pOtAjFCXvBn5S4e6SN2rfNt35ZsfsVWJn/8EftH4XNF9VqbtmdsmHMuwy8AO+jt
-         KKa+RQ/1cYqlCnPptOl7F1lLx5YrlqKfmMwuE29EmkrPmYQWvEgjHsOqEDanxSBhxQAC
-         +Viw==
-X-Gm-Message-State: AFuF++luRn1HoJcTioqJ1UwS00N4YTCMMdr25wKb0OnYvmftEOMNF2b3
-	PTSGxvXAihrd+WlYoKJ49eG0vxtmPt8Irs8PASzO4g806RMySKEQeetL+KW79w6W45hPakGZWly
-	IsKk71A==
-X-Gm-Gg: AR+sD12SSLplgRqilF9P47CfwMygu0o6n8rpKh7MDrGlc3oBfZdEaybyn4HrHMXefZr
-	0u6lUvRLGJQ+xxWwILcFSqOAAz7eoynPVIMX0hqR1COVJyDjnecQWA18j8ZB3xH07TpZ0PNqTCB
-	f/0rN3YB0u9zpJEHT7kzXmsGloPLnA7Ny5Kp4a3mLBqxwrGsn+iwKztZjMJUQq0/QnBXncGI+gc
-	DdZ9X8sNeLCH5xPFXIhslYs2rO6tM0/XBBB/qTpbgULq+UsAcfSfPrzdYhFTslYI0SoUhcBj0a0
-	x86MHnxZXGvhyAAv15rDhsodQeml5a+9YIPuXRSYjF6qVWY3hB9Rx/HmncY+k7QCgIG7ZX/V5S3
-	eNjncbKmHoFbWI4TTmV37f3p4WD5UuC9YXLlpDdXeftruTX1A7ZjuSyln3TfIqPby2/wDO96ql2
-	uUji0X5n2HDfYAIOeJu/MhbuYL3z7jqQ3xN2v3ete4aPFShf1Ww3labCUc/2kLxcTGyhuToOOV7
-	HcWm87eTQQDiGtTVsZgu8XvdNCn8QuMPm6ajAZkuwb2Zc7+3xx4VLc6EGmWSTubi38/MISy29e+
-	kAZLy5hssJDCg2leUtVL+DMJA2g=
-X-Received: by 2002:a05:620a:371b:b0:939:820:2e71 with SMTP id af79cd13be357-93913904558mr1311203185a.33.1787991166842;
-        Sat, 29 Aug 2026 01:12:46 -0700 (PDT)
+        bh=7hvWUJoJvnXpjqhu3W0EwadWbrxUFdGuL3OAyMAegJ0=;
+        b=PcYJtcRZxx1QqF0JaKEUopJEdiq3xuhTS6ElQxBuTsy8aWhuJJLZ+mh6b+sSzsbNae
+         h8FZjRWZ7YgtOeeVXxVvxeiN0ZxAby7DM3nUuY8R/jl6fvjJvEaxk00cm1TVhHOO/hCw
+         M485YLXBGaFLyzg+z/u/rni5gLXKV7uyT288wSogguY80YDhRLf4iFKwyaESIH9a2ZGN
+         ZtLVWv2emiK8YqJ0n/kcJJIco7ClmJYtOSZ9BN2HDBSOewqJ6kYuR/P1XYMsVlvJmqSr
+         k1/Eao9IfJDmHWRATFak12o6x8E2Zw2GY8Vh7JYZ5KLdeLYt7NO7+uAkZ5i+Ds4NfAOi
+         pUXA==
+X-Gm-Message-State: AFuF++nqpF0HNXKAzQv4zh8nE6GKYg19SKctDRZ+DwX5wRzDxvH5HMMI
+	xGp69SKIKag0H1xbjDmXHCp+HKKg0/SOblMZT87Ynyd5KEsUh6p+/wF4J3ZjxDjNrxdmrgh4Qan
+	Lpt80Mw==
+X-Gm-Gg: AR+sD12UCTTkITn2t5N0xtIYEY/zH0u4FchZdyCWgU5SegmY8WNuRVzROyQakR2NCoB
+	gUOubghOuGc/zpvztjf+89KbCMdRZBiqTzZArrr1sE9y1bsx8CriZZK560vHxUIWTB8cCsjpXu7
+	U/Gls9SumU5AgYRv3f1Nr9f83S07vQNJwWN0f26LUSZGjJ1M0ASGKNl/nDr/HbqcL/emIsmeYw9
+	9JoLEWVf08WI21/FYu8TkC1Xi66BBJMtMc4Na56CU96KUof3x/SWRHHuFUufyD9TIyyW3pQtSwm
+	tkbU2lJJFUNGDShSYicstNOGFYRTRysmQaU9KAAVO9u4f6m8kaTRH01yOeiembZwlaNk9chmE/I
+	/ZwgXN2VxSrvvU0KNw1xEQn2tjQ47eIFMTzcPnWwvIEj9G8VxQmAHMxOhkadFWyiWLf8fhdBpr4
+	XWE86FJTrNL93MlgF06fJ7ub10dvsYrBrwXlQsVA/tayoLQWdBhQ2RyLVJzgELdKM728zY+Ev+s
+	/oyRkO9p4xtasz5gwTWR7n92w8JNjjwyfTvRwsv5yqswqSmEZCwP3i4p9n5SFh2YUGZJS6FbLTG
+	ya/jNlX6r74LRbmAxXFLsSY2NTM=
+X-Received: by 2002:a05:620a:4011:b0:939:13aa:1ba1 with SMTP id af79cd13be357-93913aa1d9cmr1221864885a.5.1787991162780;
+        Sat, 29 Aug 2026 01:12:42 -0700 (PDT)
 Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93917014c56sm325358385a.10.2026.08.29.01.12.45
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93917014c56sm325358385a.10.2026.08.29.01.12.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 01:12:46 -0700 (PDT)
+        Sat, 29 Aug 2026 01:12:41 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -74,9 +74,9 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	chia-yu.chang@nokia-bell-labs.com,
 	subramanian.vijay@gmail.com,
 	petrm@nvidia.com
-Subject: [PATCH net v2 3/8] net/sched: sfq: clamp quantum in change path
-Date: Sat, 29 Aug 2026 04:12:24 -0400
-Message-Id: <20260829081229.81708-4-jhs@mojatatu.com>
+Subject: [PATCH net v2 1/8] net/sched: fq: clamp quantum and initial_quantum in change path
+Date: Sat, 29 Aug 2026 04:12:22 -0400
+Message-Id: <20260829081229.81708-2-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260829081229.81708-1-jhs@mojatatu.com>
 References: <all>
@@ -90,56 +90,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-sfq_change() accepts any non-negative quantum (only rejects
-(int)ctl->quantum < 0). With a crafted size table qdisc_pkt_len reaches
-~2 GiB, so quantum=1 makes the deficit-refill loop spin ~2^31 times
-under the qdisc lock (a soft lockup / denial of service).
+The fq change path accepts TCA_FQ_QUANTUM in [1, INT_MAX] and
+TCA_FQ_INITIAL_QUANTUM up to INT_MAX, while fq_init() already clamps to
+[1, 1<<20]. A user can override the init clamp via tc qdisc change,
+restoring the small-quantum deficit spin that the init clamp prevents.
 
-Add max(256U, ...) matching fq_codel_change(). Reject quantum > 1<<20
-with -EINVAL, matching fq_codel_change() and the init clamp.
+Narrow iq_range.max to 1<<20 so TCA_FQ_INITIAL_QUANTUM is rejected at
+parse time. Clamp TCA_FQ_QUANTUM to [256, 1<<20] in fq_change() and
+fq_init() quantum to [256, 1<<20] for tiny-MTU devices.
 
 Conditions to recreate the bug:
-  CONFIG_NET_SCH_SFQ=y. Requires CAP_NET_ADMIN (namespace-local via
+  CONFIG_NET_SCH_FQ=y. Requires CAP_NET_ADMIN (namespace-local via
   unshare -Urn suffices).
 
-  tc qdisc add dev dummy0 root sfq
-  tc qdisc change dev dummy0 root sfq quantum 1 stab data 32768 size_log 15 cell_log 0
+  tc qdisc add dev dummy0 root fq
+  tc qdisc change dev dummy0 root fq quantum 1 stab data 32768 size_log 15 cell_log 0
 
-Fixes: e4650d7ae425 ("net_sched: sch_sfq: handle bigger packets")
+Fixes: 709f34f7c28d ("net/sched: fq: add overflow bounds to quantum and initial quantum")
 Reported-by: vega@nebusec.ai
 Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
 Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Cc: stable@vger.kernel.org
 ---
- net/sched/sch_sfq.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sched/sch_fq.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 187d3ed578f2..8bbcfc9e85d9 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -660,6 +660,11 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 		return -EINVAL;
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index 6144b5686f13..35f940b2205d 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -980,7 +980,7 @@ static int fq_resize(struct Qdisc *sch, u32 log)
+ }
+ 
+ static const struct netlink_range_validation iq_range = {
+-	.max = INT_MAX,
++	.max = 1 << 20,
+ };
+ 
+ static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
+@@ -1106,14 +1106,10 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
+ 			   nla_get_u32(tb[TCA_FQ_FLOW_PLIMIT]));
+ 
+ 	if (tb[TCA_FQ_QUANTUM]) {
+-		u32 quantum = nla_get_u32(tb[TCA_FQ_QUANTUM]);
++		u32 quantum = clamp_t(u32, nla_get_u32(tb[TCA_FQ_QUANTUM]),
++				     256, 1 << 20);
+ 
+-		if (quantum > 0 && quantum <= (1 << 20)) {
+-			WRITE_ONCE(q->quantum, quantum);
+-		} else {
+-			NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+-			err = -EINVAL;
+-		}
++		WRITE_ONCE(q->quantum, quantum);
  	}
  
-+	if (ctl->quantum > 1 << 20) {
-+		NL_SET_ERR_MSG_MOD(extack, "quantum too large");
-+		return -EINVAL;
-+	}
-+
- 	if (ctl->perturb_period < 0 ||
- 	    ctl->perturb_period > INT_MAX / HZ) {
- 		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-@@ -688,7 +693,7 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 	/* update and validate configuration */
- 	if (ctl->quantum)
--		quantum = ctl->quantum;
-+		quantum = max(256U, ctl->quantum);
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+ 	if (tb[TCA_FQ_INITIAL_QUANTUM])
+@@ -1232,7 +1228,7 @@ static int fq_init(struct Qdisc *sch, struct nlattr *opt,
+ 	sch->limit		= 10000;
+ 	q->flow_plimit		= 100;
+ 	mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
+-	q->quantum		= min_t(u32, 2 * mtu, 1 << 20);
++	q->quantum		= clamp_t(u32, 2 * mtu, 256, 1 << 20);
+ 	q->initial_quantum	= min_t(u32, 10 * mtu, 1 << 20);
+ 	q->flow_refill_delay	= msecs_to_jiffies(40);
+ 	q->flow_max_rate	= ~0UL;
 -- 
 2.43.0
 
