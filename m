@@ -1,190 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A8D41A56F;
-	Sat, 29 Aug 2026 21:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from ustc.edu.cn (smtp.ustc.edu.cn [202.38.64.46])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCC11D5146;
+	Sat, 29 Aug 2026 23:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.38.64.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788040721; cv=none; b=DAylg0duQkQNYU+oPkl+STyigYTCj3xBllkRbsz8MZ2yF7p6fRYdZMe3KW3ZTz7vhOLLFOwDuXnL7WXWmTZmAJqgyBI97zQutwRr3rwQk2Q+sgGU5i3lUEvUbEVbyUOjMEAOJP2pUtQcfJyDpNTyvI5M1iRN+ffm5TVuqSBbEqA=
+	t=1788044587; cv=none; b=cZFYSwF1N6drSb6zcs7bXbgaQ/P/K4X7HZ74edDpH18h/Ef7Bg0N4yG02Ddaja6RFgAifcHX2ShRFqwa9B/hExpKwXgPYjPQIKNjIJWW+4XVVSQcCK1eJCuL3bXRqh5tTUtk7yeMomeY7X2s0p96G2MH//fp/UXoOTrVEqVnAv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788040721; c=relaxed/simple;
-	bh=jp7Lces/2Eg1UQKRgafSHJa0d9mOhphFOk2iZ6Iw1JI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=GjdukcglSdjXEwwKJrepZkP59bT7Q8aFQ/wVHry1nw6z0stjlMbu9HRHQ9SZBPGNzmtslCuc9trPBaaCjVoRpCP8C7tg8EYyl9PtLfJMWdaWjok3DW/6evXFw4cOCABWdnh80lGhSio0f66rUixrkWbnGcCqCdKKXZl+f7PuC3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=f2h2yJOG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788044587; c=relaxed/simple;
+	bh=c39o0ERndxvmvuFitpw15CgstT8hPBsgQAkrVn8bMkA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=k2DyTVS3j37n5IDNKVfxauaTxj7mWu52Y1Acp62c4FCN15SLOnHMDtHh6c4+oOP6QMO1XD+XSnP1HBG/6FKrIAg+Xh/yQoD0IJE8ee6NxDsYxQt/9wziefzGrfwJq/PAMbVLpcNVQbLNcUvT+KP6t33wQqRaZ0AmQruyOCD1v+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.ustc.edu.cn; spf=pass smtp.mailfrom=mail.ustc.edu.cn; dkim=pass (1024-bit key) header.d=mail.ustc.edu.cn header.i=@mail.ustc.edu.cn header.b=Zt5mBzm6; arc=none smtp.client-ip=202.38.64.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.ustc.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.ustc.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="f2h2yJOG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405321F000E9;
-	Sat, 29 Aug 2026 21:58:39 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=mail.ustc.edu.cn header.i=@mail.ustc.edu.cn header.b="Zt5mBzm6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1788040719;
-	bh=pdp2KYYF/8DbOvF5byyXuFVlInYv4CiLt0saQi9aJsQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=f2h2yJOGpiZ7jQWOsex1MBBGzJDL2xe4GDMoiuttXJpgCWkVoS9zQq2EmHbs5TauG
-	 DTTp0Jd6w5/lSnMX/1ECf7h1m1rL98R6Co8g5recVRUDuTclbhBlFj0jRL2zkJknFw
-	 CYjzl9QlkJNzQLNUaJkI/JVrDPdgQW5bEhjAehNg=
-Date: Sat, 29 Aug 2026 14:58:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com>
-Cc: dvyukov@google.com, elver@google.com, glider@google.com,
- jannh@google.com, kasan-dev@googlegroups.com, liam.howlett@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, netdev@vger.kernel.org, pfalcato@suse.de,
- syzkaller-bugs@googlegroups.com, vbabka@suse.cz, Junjie Cao
- <junjie.cao@intel.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
-Message-Id: <20260829145838.19351db0a28b30b7ccc1b295@linux-foundation.org>
-In-Reply-To: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
-References: <695aefde.050a0220.1c9965.001c.GAE@google.com>
-	<6a934778.4d659fcc.734b4.002f.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	d=mail.ustc.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-Id:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=c39o0ERndxvmvuFitpw15CgstT8hPBsgQA
+	krVn8bMkA=; b=Zt5mBzm60PJ08v/sG/MB5ifkSqUT9ciMzRUYSecZm9qpl4/EA6
+	Ngvjelu3HwhxjOHPaKsm1pRnYsl64rhPUET+7RYCDxekLzgxNcOTvNpwZskpUcvq
+	D5E2jUxVJ35EYh2skuD2+WZA1bkZVm2SUWtWyOUz/sExQi8cLiTBmKxBw=
+Received: from skw.ustc.edu.cn (unknown [211.86.152.107])
+	by mailimap2024 (Coremail) with SMTP id 3pYKCgCnpCsGZZNqHoG3AA--.2628S2;
+	Sun, 30 Aug 2026 07:02:43 +0800 (CST)
+From: Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
+Subject: Re: [PATCH net v3] mac802154: fix data race and NULL deref on local->assoc_dev
+Date: Sun, 30 Aug 2026 07:02:28 +0800
+Message-Id: <20260829230228.1786426-1-skwkevin@mail.ustc.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <7a6ba0f3-efc0-45f1-a372-ced250733b62@linux.dev>
+References: <20260827221339.885245-1-skwkevin@mail.ustc.edu.cn> <7a6ba0f3-efc0-45f1-a372-ced250733b62@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:3pYKCgCnpCsGZZNqHoG3AA--.2628S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ur43ZF4rKry7Xw43XryftFb_yoW8Cw18pr
+	Z0qrn8Kw4kKwnIyrs2yr4FyFy3Zr1Sk3y3Xr1YgrW5u3Z8ZF18ZrW0qw1qyFWjyrs5Aa4F
+	qF45WFZ7A3s8XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
+	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_uwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUVwZcUUUUU=
+X-CM-SenderInfo: 5vnzyvxylqqzxdloh3xvwfhvlgxou0/
 
-On Sat, 29 Aug 2026 13:56:24 -0700 syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com> wrote:
+Hi Xuanqiang,
 
-> syzbot has found a reproducer for the following iss
-> 
-> HEAD commit:    1b78070aaef6 Merge tag 'net-7.3-rc1' of git://git.kernel.o..
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=154d7d49580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-> dashboard link: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
-> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=134d7d49580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1177ae25580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/18856a03a9a3/disk-1b78070a.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/cc2bc68d7ef4/vmlinux-1b78070a.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/05a5e00f8f91/bzImage-1b78070a.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
+> I think this clear_bit() should be moved to
+> mac802154_process_association_resp(), after saving the first valid
+> response and before calling complete().
+>
+> Clearing it only after wait_for_completion() returns may still leave a
+> window, since the woken waiter may not acquire assoc_lock before the
+> next work item runs. Clearing it earlier in the response handler ensures
+> that subsequent responses fail the in-lock
+> IEEE802154_IS_ASSOCIATING check and cannot overwrite the saved result.
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git main
+Good catch, you are right. complete() is issued while the handler still
+holds assoc_lock, so between the wake-up and the waiter taking that lock
+another response can get in, pass the recheck and replace
+assoc_status/assoc_addr before perform_association() has consumed them.
 
-From: Junjie Cao <junjie.cao@intel.com>
-Subject: net/sched: taprio: catch up in bounded time when the schedule falls behind
-Date: Thu, 20 Aug 2026 14:27:13 +0800
+I reproduced it on a debug kernel: on v3 the bit is still set when the
+wait returns, later responses keep being accepted after that point, and
+the association ends up with an address from one of them instead of the
+first one. With the clear_bit() moved, none is accepted.
 
-advance_sched() advances exactly one entry per hrtimer expiry.  When the
-operational schedule falls behind - the timer was delayed, the CPU was
-starved, or the reference clock stepped forward - every elapsed entry is
-replayed back to back from hrtimer context with current_entry_lock held,
-and each replay rearms the timer with an expiry in the past.  Once the
-backlog is large enough the CPU never leaves timer processing and RCU
-stalls follow.  syzbot triggers this with schedules whose intervals are
-shorter than the cost of servicing one expiry, so the backlog only ever
-grows.
+So v4 does what you suggested: clear_bit() right after the result is
+stored and before complete(), both under assoc_lock. The timeout and error
+paths still clear it under the lock. The success and negative paths do not
+need to any more, because a wait that returns success now means the
+handler has already cleared the bit.
 
-Skip complete cycles arithmetically and walk at most one cycle of entries
-to land on the entry covering the current time.  Gate close times and
-budgets are still only computed for the entry landed on.  An admin
-schedule crossed by the jump is picked up by the existing
-should_change_schedules() check on the recomputed end time.  The walk is
-capped at twice the entry count as a safeguard against degenerate
-intervals; leftover backlog is then handled by the next expiry as today.
+One thing I got wrong earlier, while I am at it. In my v2 reply I said
+wpan_dev->association_lock is not held on either of the two paths
+involved. That was wrong. nl802154_associate() takes it around
+rdev_associate(), so it is held for the whole of
+mac802154_perform_association(), the wait for the response included. That
+rules out reusing it here: the handler would only get that mutex once the
+association has already timed out. The v4 commit message states this
+correctly.
 
-Link: https://lore.kernel.org/20260820062715.278124-2-junjie.cao@intel.com
-Fixes: 5a781ccbd19e ("tc: Add support for configuring the taprio scheduler")
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+A v4 follows.
 
- net/sched/sch_taprio.c |   56 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 53 insertions(+), 3 deletions(-)
-
---- a/net/sched/sch_taprio.c~net-sched-taprio-catch-up-in-bounded-time-when-the-schedule-falls-behind
-+++ a/net/sched/sch_taprio.c
-@@ -916,6 +916,51 @@ static bool should_change_schedules(cons
- 	return false;
- }
- 
-+/* The operational schedule fell behind, e.g. because the timer was delayed
-+ * or the reference clock stepped forward. Advancing one entry per timer
-+ * expiry would replay the whole backlog from hrtimer context, so skip
-+ * complete cycles arithmetically and walk the remaining entries to land on
-+ * the entry covering the current time.
-+ */
-+static void taprio_catch_up(struct sched_gate_list *oper,
-+			    struct sched_entry **next, ktime_t *next_start,
-+			    ktime_t *end_time, ktime_t now)
-+{
-+	int budget = 2 * oper->num_entries + 1;
-+	struct sched_entry *entry = *next;
-+	ktime_t start = *next_start;
-+	ktime_t end = *end_time;
-+	s64 behind = ktime_sub(now, end);
-+
-+	if (oper->cycle_time > 0 && behind >= oper->cycle_time) {
-+		s64 jump = div64_s64(behind, oper->cycle_time) * oper->cycle_time;
-+
-+		start = ktime_add_ns(start, jump);
-+		end = ktime_add_ns(end, jump);
-+		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
-+	}
-+
-+	while (ktime_before(end, now) && --budget) {
-+		if (list_is_last(&entry->list, &oper->entries) ||
-+		    ktime_compare(end, oper->cycle_end_time) == 0) {
-+			entry = list_first_entry(&oper->entries,
-+						 struct sched_entry, list);
-+			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
-+							    oper->cycle_time);
-+		} else {
-+			entry = list_next_entry(entry, list);
-+		}
-+
-+		start = end;
-+		end = ktime_add_ns(end, entry->interval);
-+		end = min_t(ktime_t, end, oper->cycle_end_time);
-+	}
-+
-+	*next = entry;
-+	*next_start = start;
-+	*end_time = end;
-+}
-+
- static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- {
- 	struct taprio_sched *q = container_of(timer, struct taprio_sched,
-@@ -925,7 +970,7 @@ static enum hrtimer_restart advance_sche
- 	int num_tc = netdev_get_num_tc(dev);
- 	struct sched_entry *entry, *next;
- 	struct Qdisc *sch = q->root;
--	ktime_t end_time;
-+	ktime_t end_time, next_start, now;
- 	int tc;
- 
- 	spin_lock(&q->current_entry_lock);
-@@ -961,14 +1006,19 @@ static enum hrtimer_restart advance_sche
- 		next = list_next_entry(entry, list);
- 	}
- 
--	end_time = ktime_add_ns(entry->end_time, next->interval);
-+	next_start = entry->end_time;
-+	end_time = ktime_add_ns(next_start, next->interval);
- 	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
- 
-+	now = hrtimer_cb_get_time(timer);
-+	if (unlikely(ktime_before(end_time, now)))
-+		taprio_catch_up(oper, &next, &next_start, &end_time, now);
-+
- 	for (tc = 0; tc < num_tc; tc++) {
- 		if (next->gate_duration[tc] == oper->cycle_time)
- 			next->gate_close_time[tc] = KTIME_MAX;
- 		else
--			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
-+			next->gate_close_time[tc] = ktime_add_ns(next_start,
- 								 next->gate_duration[tc]);
- 	}
- 
-_
+Thanks,
+Kaiwen
 
