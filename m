@@ -1,63 +1,63 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5193E353A84
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 05:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F72378D88
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 05:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787981172; cv=none; b=b2c+J6QBN4jALYRGoSH1e33Kto6I9kaBIf62fEA7nnLWmpk16aToHkzz/8h31PHf0slw/a86PUZ5xRexjM7SKebcieI/bFH3L8srtwIrf6lYloQ1VDxOBaafCJMhq1KD1w6cRoPBphpdTZOE36KqXBQzv0f2SKoZ/JsaoROZbw4=
+	t=1787981174; cv=none; b=IREUE2KgrYKGtwSBUxwZB/MhvRXFmH3SDEfzYSY6dAJNEMujahTjr8dh+CUSAGkcdmaKtKF05KXyQtwbYHHzIMrIVAeSdneztD81iy2Dh4ccM7T+eI7Q2f/Y8XEzcWitFUFgqJ1A55QBb3RWTo7TGg6oa41K7CyDUD5bpe8RP/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787981172; c=relaxed/simple;
-	bh=mReJ0qk+WPzQHug/wzwZgzokeoGyjEKDx1oAK0frKb4=;
+	s=arc-20240116; t=1787981174; c=relaxed/simple;
+	bh=Nn4d0wHJqZTPdzNfFzD2yqGS9Q0cS3NqhyFR6MO2xBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTDniWGGTY/MANDYwRyjLYGlO/pG3FMXVmObY1uFt9R7RRwnoGLYITqVTWzcT4bszBeWw7RS5eDx0+1oNEutJ9Ix4lPN1zr+jNZrKEUVHt32Nl/QzWlutoSG5StzHphUmFO2Vlh5/Lft5RdYtET6TiICydQgQ3sjyAkVL3qNj2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=asHm3tRA; arc=none smtp.client-ip=209.85.208.54
+	 MIME-Version; b=PxsqBdW26HeoymHNXoDji6MAk2XPKsViXOOtBSrBzI7eqYGxeT9WrlH9NwlwN21x1r5g6J0PNB8m+qotQ0it+R0Z0oYx3kLoXg5lkTGTFak9U9arL+OAwyVH+TU3l3Ikb0A9YaNvnFVmPW43OlUWOd31wCYZANSneJ9PkbPH0Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=JDJvzlCC; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="asHm3tRA"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a20319d030so2189880a12.2
-        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 22:26:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="JDJvzlCC"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c169ae1cb26so567151966b.1
+        for <netdev@vger.kernel.org>; Fri, 28 Aug 2026 22:26:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1787981166; x=1788585966; darn=vger.kernel.org;
+        d=lex.la; s=google; t=1787981167; x=1788585967; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=puUVl7pjescZC2ZF+/6D0mZfkH713/A5cm+7yIXo/uY=;
-        b=asHm3tRAHoiEpC9ghGkTDl5b88n4CecWvpmU0rK2CiOBriP0ooN1Zqlv9WmsI8lNAK
-         QtDm3xmrenEQmqFauuN6bK4gbGKNyhllrnCqlKIgrFbc2oz8E3Y1fkhyZE0lC13xC/9P
-         pCDPEnY9nsDKbhcUKnLKduN1SOSQIH1MXk74a4dqPjTmIdWQVniUYng0p+sLeOICYqaS
-         wtLS9BSogrtu9jzzKoZ+M0A8pw7zkLZZo7/tHMo3bxZoiicfOdeQNOph8/+OazpI/UkI
-         D/fSUyvo9U3bBzP5bIqVsvYbFkG3O7AvrauZk6i9bb+yzHIvS0VTq8CJqq9U295beDnL
-         WXWA==
+        bh=BexHGXJfmWG9wttaxQjMKssISHmEBGNX9tS0o3mB1bs=;
+        b=JDJvzlCCHzaweqCApEYNm3u9o6oXLSw7fbD4X4d00U4rX4h3XZau7IwhOEE6wQ/oZG
+         OXFNGh9z3h4jKdSUcXCjtlrGiLTysDOpkczZLoxFW2RhZ0UgYcJZ1X0KjlkumU9E3jbJ
+         p1s6Red65YAyg3ps5DDucymlNsAX6gUVI0w9vBVWSshGvvYkAy3dtb6+6VNpkmbteuiy
+         i4d0TVSvVtQjlCqBqbZq8AUO5Ubw9+GoxTURWqZWdmpDlDrfR1l/QUvYXtzNLXk0EnYc
+         0ZV51JuU0bEvT4mV+9/1RMKVr1iH4b4dhmk8dBtBsmSpFYvlchVVERxUywt4opbrhsSF
+         3VVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787981166; x=1788585966;
+        d=1e100.net; s=20251104; t=1787981167; x=1788585967;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=puUVl7pjescZC2ZF+/6D0mZfkH713/A5cm+7yIXo/uY=;
-        b=UbbZWS8slKn2GUj4b+JgiUKjjtBXvG9eRFF9ijov2sx/+W4b+b1tIw61sRs0NvpKUr
-         uvPUGwL/rAuG6SQHgkfUPvC4BKDSou66F+TLavfMYxZS8td8phJ8U1/YrYZD5Ir2kA/i
-         rBBMfo84AIEe6gb8ffFqEhgMX1cIcbNIiaZqLS8I0tGt+uSNztjnvPFUVL2WarO2LC6K
-         vaPyHS/lyJQhi5jLkDQGE3CluMNqoifP+/SoQzWQh/2da9Z/RgFrbCCz3ZVp2Xv8YICW
-         KZXVcDFPghs8pAyOijDfvesTFbzwF44UMK0ByePQ8MgtU5tigfm7zXFXsrQebcArl5Om
-         b+Vg==
-X-Gm-Message-State: AFuF++nPjEibDp5jG7fiRLRThQnRRD+eGEd1FoZrzixqbQd/ODRNb79v
-	uAThNIN0WD9A0uaXdN1i5fauCVOHICxtTs22Py86O3qAMLJUdPvlrzFb+eXo/4i5zE0tfSfyZAE
-	gcP3EyqmZpw==
-X-Gm-Gg: AYBFou2TgeRgpeTdnyXmr58WC099/v0WTP6JQKfwh6ecn1rm5AcATLM1kufopl8zrFB
-	Lj+Q+/+LU3qYiDniEvipgTUwbXrKITivTO9C/fGK4+kanFhPtNCOUkVQpKmtorswZQjXuZOLPC6
-	/tlL+I1NXuns0U9uDudgw5GpLHHOF+75R55uQ90tN5rzoI+V3p3P/R0cJdWo4lQ2W2FUmKfPXrE
-	Pdu2PtsOjtRCOFrIGaPzOQktC8W5Y+hDWYo57q9rcxZv3R8I1IL9zEjedNkzXRuQCJmZ35rgkFI
-	R7Ya0NqzuEsGXmAUXu6n7g/EPouiT4X9jPi+ovl8mQswt+FSIbAidCO2/Lun4J5dMO4pzddtqwq
-	fpA2+m/DvtYf18JJbYP3JNFdkkd41YPSJIR6uqhzvxYGkbD1tNbLblPJY9v/IP7HWjz/VdB59jg
-	iVVpEhAQqJQS73ztjct0rswnWmkFsKCtiU2yOlXX8brg==
-X-Received: by 2002:a05:6402:e95:b0:6a6:32fa:1e9c with SMTP id 4fb4d7f45d1cf-6a632fa1f14mr123281a12.20.1787981165662;
-        Fri, 28 Aug 2026 22:26:05 -0700 (PDT)
+        bh=BexHGXJfmWG9wttaxQjMKssISHmEBGNX9tS0o3mB1bs=;
+        b=TdN4rA+1SAOPBOI28x2FLASZ7mfkFI8Mw57bCTiJE4OI/PWUpahLBjGN5kg+ColsHT
+         Q8pWSckgvJPAIfFslDoyJa8EVzDnjC03kcPHgG/wHtECCkWnStx25V42tdKT5DSva/QA
+         WfonyeRB1f3qrCh/+bp+E8qon0AWbBm1o2TEPHPaUPb4qeSaSb3XhjhzAjHShkvlOIjC
+         nVGqO0KNylbNDDuXK5mwR5CLNXa1/US0qYPxTsxV9sFhSS6R+b7Twr39hthsTz/GNi00
+         4PKsDQ9WEiWnAXI6+sWq7Pqc/hbqulbNk9r5GNegHsJSyvLBX01KzCXO6BqoFkFYQYp/
+         WhYw==
+X-Gm-Message-State: AFuF++miDNbE5m8YSveQbw7T53RCUbhLMz+8J25SI1s6bQNN96MEjPCU
+	zTCzJcyn8ACwopDJGfUeDTFxbSP7Gr2wvHtBXzfmIXqJH7mPA7Vb5H/QJpmGUPXpFgkvze7gKRi
+	xWgRUKTC7gw==
+X-Gm-Gg: AYBFou24Yav32N/STz2ZBesCAqgwrUD8iHOFxjuxO+ubfRtbh4IwNOrdKq8Ed5+BFCl
+	kTFLPYTx+OarrE26qhqMnriCPQelszOGMH3RviJdr6MW2Sj+UGspvfA58I0mIeiUhI8wvualjxP
+	ZxWAdBRZlwD4eFb6c4HfkeY3vQBZ6lmE4QSU6FPQQOKnnLrPdT67+1H5IeSRY23XBfUOkgu3ncr
+	CZ8Rcxt4WGPDyOiy4wRScmM5zxkN/hE9KE01cyHPWx0TedbcwdgXi3YLvS7Dkw8/tqL4PR0tMP8
+	pv0I8kLToQgHhhTSgrpVgLPr0bFOPxUAsoBiKtbWPSWp8pDXfwMVcuHKawvTXDfAo0VCZUEU/hD
+	4hMZiyncFDsS0kAbiQk0UnGJsiFGMmKKHqi+BhHd7DoR3KC69/mERWn8MFdlQXFybYpHEstn1zj
+	HZufETQ5y7ZV4ZTWsUWOWMM2psCKUGq+2MBZAiSSGDmQ==
+X-Received: by 2002:a17:907:1b0e:b0:c1c:2218:f317 with SMTP id a640c23a62f3a-c2535eab9b1mr1470544266b.2.1787981167088;
+        Fri, 28 Aug 2026 22:26:07 -0700 (PDT)
 Received: from remote-01 ([45.85.105.214])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee75a36sm163750666b.28.2026.08.28.22.26.04
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee75a36sm163750666b.28.2026.08.28.22.26.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 22:26:05 -0700 (PDT)
+        Fri, 28 Aug 2026 22:26:06 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
 To: netdev@vger.kernel.org
 Cc: andrew@lunn.ch,
@@ -73,9 +73,9 @@ Cc: andrew@lunn.ch,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Aleksei Sviridkin <f@lex.la>
-Subject: [RFC PATCH net-next 7/9] net: mdio: en8811h: add the nested pass-through bus
-Date: Sat, 29 Aug 2026 05:25:44 +0000
-Message-ID: <20260829052546.1152446-8-f@lex.la>
+Subject: [RFC PATCH net-next 8/9] net: phylink: wait for PHYs that are known to probe late
+Date: Sat, 29 Aug 2026 05:25:45 +0000
+Message-ID: <20260829052546.1152446-9-f@lex.la>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260829052546.1152446-1-f@lex.la>
 References: <20260829052546.1152446-1-f@lex.la>
@@ -87,194 +87,336 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Registering the bus is what publishes the PHY, so it must happen only
-once the MD32 is running its firmware. Put the PHY on a bus of its
-own rather than on the parent so that the device tree can describe it
-normally, interrupts included, and so that the MCU keeps ownership of the
-reset line the PHY must not touch.
+A PHY whose driver or firmware lives on a filesystem mounted after the
+MAC probes cannot be connected when the port is set up, and the port is
+lost for the rest of the uptime. Let a port say so with slow-to-probe,
+and poll for the PHY instead of failing.
 
-Only the address the MD32 answers on is passed through; every other
-address returns -ENODEV, so scanning this bus cannot produce anything but
-this chip's PHY. phy_mask would express the same thing but is not usable
-here: of_mdiobus_register() overwrites it before walking the children.
+Returning 0 rather than -ENODEV matters beyond the error itself: DSA
+reads -ENODEV as permission to go looking for the PHY on the switch's
+internal MDIO bus, which is the wrong device.
 
-Take the parent lock with MDIO_MUTEX_NESTED and use the __mdiobus
-accessors, which is how the DSA drivers reach through a child bus into
-their parent.
+Wait for a PHY whose own driver has finished probing, not merely for one
+that exists. A PHY can be registered long before its driver is, because
+the driver arrives when userspace gets around to loading it; connecting
+in between would bind the generic driver, which cannot drive such a PHY
+and leaves it worse off than not connecting at all.
+phylink_sfp_connect_phy() already refuses a PHY with no driver for the
+same reason. Binding alone is not enough either: phy_probe() publishes
+phydev->drv before it calls the driver's probe, so a PHY caught inside
+that window is validated against a supported mask that is still empty.
+Note that this makes slow-to-probe a request for a specific driver: a
+PHY meant to run on the generic driver must not sit behind the property,
+because the wait would then never end.
+
+A PHY arriving this late has missed phylink_start(), which starts the PHY
+it finds already attached, so start it here when the port is up.
+
+Keep polling after a failed connect, because the errno does not say
+whether the failure is permanent: phylink_validate_phy() returns -EINVAL
+both for a PHY that cannot speak the port's interface and for one whose
+link modes are not in place yet, and only the PHY's driver binding again
+changes that answer. Giving up would lose the port for good. Back the
+interval off and report the first failure only, since a retry that
+reaches bringup detaches the PHY again and phy_detach() asserts its
+reset line.
+
+The poller runs from a workqueue and needs rtnl, while
+phylink_disconnect_phy() cancels it with rtnl already held, so it takes
+rtnl with trylock and requeues on failure. For the same reason the
+synchronous cancel belongs in phylink_destroy(), which documents that
+rtnl must not be held.
 
 Assisted-by: LLM
 Signed-off-by: Aleksei Sviridkin <f@lex.la>
 ---
- drivers/net/mdio/mdio-airoha-en8811h.c | 128 +++++++++++++++++++++++++
- 1 file changed, 128 insertions(+)
+ drivers/net/phy/phylink.c | 202 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 196 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-airoha-en8811h.c b/drivers/net/mdio/mdio-airoha-en8811h.c
-index e16211da3d70..b28e116289e6 100644
---- a/drivers/net/mdio/mdio-airoha-en8811h.c
-+++ b/drivers/net/mdio/mdio-airoha-en8811h.c
-@@ -17,6 +17,8 @@
- #include <linux/mdio.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_mdio.h>
-+#include <linux/phy.h>
- #include <linux/property.h>
- #include <linux/workqueue.h>
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 5b8e956902fb..eda7b61ba5d1 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -73,6 +73,24 @@ struct phylink {
+ 	struct phylink_link_state phy_state;
+ 	unsigned int phy_ib_mode;
+ 	struct work_struct resolve;
++	/* Set while waiting for a PHY that is expected to probe late.
++	 * Written and read under rtnl only: phylink_disconnect_phy() puts
++	 * and clears it there, which is what makes the poller's dereference
++	 * safe.
++	 */
++	struct fwnode_handle *slow_phy_fwnode;
++	u32 slow_phy_flags;
++	struct delayed_work slow_phy_poll;
++	/* Interval before the next poll. Set when the poller is armed and
++	 * thereafter owned by it, since a delayed work never runs twice at
++	 * once.
++	 */
++	unsigned int slow_phy_poll_ms;
++	unsigned int slow_phy_waited_ms;
++	/* Written under rtnl, read unlocked by the poller; a stale read only
++	 * costs an extra poll cycle.
++	 */
++	bool slow_phy_stop;
+ 	unsigned int pcs_neg_mode;
+ 	unsigned int pcs_state;
  
-@@ -47,6 +49,112 @@ struct en8811h_mcu {
- 	bool warned;
- };
+@@ -1829,6 +1847,8 @@ int phylink_set_fixed_link(struct phylink *pl,
+ }
+ EXPORT_SYMBOL_GPL(phylink_set_fixed_link);
  
-+static int en8811h_mcu_read(struct mii_bus *bus, int addr, int regnum)
-+{
-+	struct en8811h_mcu *mcu = bus->priv;
-+	struct mii_bus *parent = mcu->mdiodev->bus;
-+	int ret;
++static void phylink_slow_phy_poll(struct work_struct *work);
 +
-+	if (addr != mcu->mdiodev->addr)
-+		return -ENODEV;
+ /**
+  * phylink_create() - create a phylink instance
+  * @config: a pointer to the target &struct phylink_config
+@@ -1867,6 +1887,7 @@ struct phylink *phylink_create(struct phylink_config *config,
+ 	mutex_init(&pl->phydev_mutex);
+ 	mutex_init(&pl->state_mutex);
+ 	INIT_WORK(&pl->resolve, phylink_resolve);
++	INIT_DELAYED_WORK(&pl->slow_phy_poll, phylink_slow_phy_poll);
+ 
+ 	pl->config = config;
+ 	if (config->type == PHYLINK_NETDEV) {
+@@ -1950,6 +1971,10 @@ void phylink_destroy(struct phylink *pl)
+ 	if (pl->link_gpio)
+ 		gpiod_put(pl->link_gpio);
+ 
++	WRITE_ONCE(pl->slow_phy_stop, true);
++	cancel_delayed_work_sync(&pl->slow_phy_poll);
++	fwnode_handle_put(pl->slow_phy_fwnode);
 +
-+	mutex_lock_nested(&parent->mdio_lock, MDIO_MUTEX_NESTED);
-+	ret = __mdiobus_read(parent, addr, regnum);
-+	mutex_unlock(&parent->mdio_lock);
-+
-+	return ret;
-+}
-+
-+static int en8811h_mcu_write(struct mii_bus *bus, int addr, int regnum, u16 val)
-+{
-+	struct en8811h_mcu *mcu = bus->priv;
-+	struct mii_bus *parent = mcu->mdiodev->bus;
-+	int ret;
-+
-+	if (addr != mcu->mdiodev->addr)
-+		return -ENODEV;
-+
-+	mutex_lock_nested(&parent->mdio_lock, MDIO_MUTEX_NESTED);
-+	ret = __mdiobus_write(parent, addr, regnum, val);
-+	mutex_unlock(&parent->mdio_lock);
-+
-+	return ret;
-+}
-+
-+static int en8811h_mcu_read_c45(struct mii_bus *bus, int addr, int devad,
-+				int regnum)
-+{
-+	struct en8811h_mcu *mcu = bus->priv;
-+	struct mii_bus *parent = mcu->mdiodev->bus;
-+	int ret;
-+
-+	if (addr != mcu->mdiodev->addr)
-+		return -ENODEV;
-+
-+	mutex_lock_nested(&parent->mdio_lock, MDIO_MUTEX_NESTED);
-+	ret = __mdiobus_c45_read(parent, addr, devad, regnum);
-+	mutex_unlock(&parent->mdio_lock);
-+
-+	return ret;
-+}
-+
-+static int en8811h_mcu_write_c45(struct mii_bus *bus, int addr, int devad,
-+				 int regnum, u16 val)
-+{
-+	struct en8811h_mcu *mcu = bus->priv;
-+	struct mii_bus *parent = mcu->mdiodev->bus;
-+	int ret;
-+
-+	if (addr != mcu->mdiodev->addr)
-+		return -ENODEV;
-+
-+	mutex_lock_nested(&parent->mdio_lock, MDIO_MUTEX_NESTED);
-+	ret = __mdiobus_c45_write(parent, addr, devad, regnum, val);
-+	mutex_unlock(&parent->mdio_lock);
-+
-+	return ret;
-+}
-+
-+static int en8811h_mcu_bus_register(struct en8811h_mcu *mcu)
-+{
-+	struct device *dev = &mcu->mdiodev->dev;
-+	struct mii_bus *parent = mcu->mdiodev->bus;
-+	struct device_node *np;
-+	struct mii_bus *bus;
-+	int ret;
-+
-+	np = of_get_child_by_name(dev->of_node, "mdio");
-+	if (!np) {
-+		dev_err(dev, "no mdio node describing the PHY\n");
-+		return -ENODEV;
-+	}
-+
-+	bus = devm_mdiobus_alloc(dev);
-+	if (!bus) {
-+		of_node_put(np);
-+		return -ENOMEM;
-+	}
-+
-+	bus->name = "airoha-en8811h";
-+	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
-+	bus->priv = mcu;
-+	bus->parent = dev;
-+
-+	if (parent->read) {
-+		bus->read = en8811h_mcu_read;
-+		bus->write = en8811h_mcu_write;
-+	}
-+	if (parent->read_c45) {
-+		bus->read_c45 = en8811h_mcu_read_c45;
-+		bus->write_c45 = en8811h_mcu_write_c45;
-+	}
-+
-+	ret = devm_of_mdiobus_register(dev, bus, np);
-+	of_node_put(np);
-+
-+	return ret;
-+}
-+
- static void en8811h_mcu_fw_poll(struct work_struct *work)
+ 	cancel_work_sync(&pl->resolve);
+ 	kfree(pl);
+ }
+@@ -2201,10 +2226,8 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ }
+ 
+ static int phylink_attach_phy(struct phylink *pl, struct phy_device *phy,
+-			      phy_interface_t interface)
++			      phy_interface_t interface, u32 flags)
  {
- 	struct en8811h_mcu *mcu = container_of(to_delayed_work(work),
-@@ -60,6 +168,15 @@ static void en8811h_mcu_fw_poll(struct work_struct *work)
- 	if (!ret) {
- 		dev_dbg(dev, "firmware %08x running after %ums\n",
- 			mcu->fw_version, mcu->waited_ms);
-+
-+		/* Unlike a missing firmware file, this does not resolve by
-+		 * itself, so unlike the poll there is no retry: surface it
-+		 * once and stop.
-+		 */
-+		ret = en8811h_mcu_bus_register(mcu);
-+		if (ret)
-+			dev_err(dev, "failed to register the PHY's bus: %pe\n",
-+				ERR_PTR(ret));
- 		return;
+-	u32 flags = 0;
+-
+ 	if (WARN_ON(pl->cfg_link_an_mode == MLO_AN_FIXED))
+ 		return -EINVAL;
+ 
+@@ -2242,7 +2265,7 @@ int phylink_connect_phy(struct phylink *pl, struct phy_device *phy)
+ 		pl->link_config.interface = pl->link_interface;
  	}
  
-@@ -86,6 +203,7 @@ static int en8811h_mcu_probe(struct mdio_device *mdiodev)
- {
- 	struct device *dev = &mdiodev->dev;
- 	struct en8811h_mcu *mcu;
-+	struct device_node *np;
- 	u32 deassert_us = 0;
+-	ret = phylink_attach_phy(pl, phy, pl->link_interface);
++	ret = phylink_attach_phy(pl, phy, pl->link_interface, 0);
+ 	if (ret < 0)
+ 		return ret;
  
- 	mcu = devm_kzalloc(dev, sizeof(*mcu), GFP_KERNEL);
-@@ -95,6 +213,16 @@ static int en8811h_mcu_probe(struct mdio_device *mdiodev)
- 	mcu->mdiodev = mdiodev;
- 	mdiodev_set_drvdata(mdiodev, mcu);
+@@ -2254,6 +2277,129 @@ int phylink_connect_phy(struct phylink *pl, struct phy_device *phy)
+ }
+ EXPORT_SYMBOL_GPL(phylink_connect_phy);
  
-+	/* The bus registration only needs this once the firmware runs, but
-+	 * a DT hole should fail the bind now, not as a work-item error a
-+	 * second after probe already returned success.
-+	 */
-+	np = of_get_child_by_name(dev->of_node, "mdio");
-+	if (!np)
-+		return dev_err_probe(dev, -ENODEV,
-+				     "no mdio node describing the PHY\n");
-+	of_node_put(np);
++/* How often to re-check whether a late-probing PHY has turned up. */
++#define PHYLINK_SLOW_PHY_POLL_MS	1000
++#define PHYLINK_SLOW_PHY_WARN_MS	60000
 +
- 	/*
- 	 * The core only claims reset-gpios for devices flagged as PHYs
- 	 * (mdiobus_register_device()), so claim it here. Owning it at this
++/* Ceiling that interval backs off to once a connect attempt has failed. */
++#define PHYLINK_SLOW_PHY_POLL_MAX_MS	30000
++
++/* A phy-handle has resolved only once it names a device with its own driver
++ * bound. A device that is absent, or present with the generic driver bound to
++ * it, is equally unusable: this is the state slow-to-probe waits out, and both
++ * the arming site and the poller must agree on it.
++ *
++ * Bound is not probed. phy_probe() assigns phydev->drv before it calls the
++ * driver's own probe(), and only fills phydev->supported from get_features()
++ * once that has returned; a device connected in between is validated against
++ * an empty link-mode mask. PHY_DOWN is the documented state of a device whose
++ * probe has not completed, and phy_probe() leaves it in PHY_READY.
++ */
++static bool phylink_phy_is_usable(struct phy_device *phy_dev)
++{
++	return phy_dev && phy_dev->drv && phy_dev->state != PHY_DOWN &&
++	       !phy_driver_is_genphy(phy_dev);
++}
++
++static void phylink_slow_phy_poll(struct work_struct *work)
++{
++	struct phylink *pl = container_of(to_delayed_work(work), struct phylink,
++					  slow_phy_poll);
++	struct phy_device *phy_dev;
++	int ret;
++
++	if (READ_ONCE(pl->slow_phy_stop))
++		return;
++
++	/* phylink_disconnect_phy() cancels this work while holding rtnl, so
++	 * blocking on rtnl here would deadlock against it. Requeue instead and
++	 * let the canceller finish.
++	 */
++	if (!rtnl_trylock())
++		goto requeue;
++
++	if (READ_ONCE(pl->slow_phy_stop)) {
++		rtnl_unlock();
++		return;
++	}
++
++	/* Do not "optimize" the lookup out from under rtnl: rtnl is what
++	 * makes phylink_disconnect_phy()'s put-and-clear of slow_phy_fwnode
++	 * safe against this dereference. The uncontended trylock above is
++	 * cheaper than the use-after-free.
++	 */
++	phy_dev = fwnode_phy_find_device(pl->slow_phy_fwnode);
++	if (!phylink_phy_is_usable(phy_dev)) {
++		if (phy_dev)
++			phy_device_free(phy_dev);
++
++		/* A PHY that never turns up would otherwise wait in complete
++		 * silence: one breadcrumb after a minute, like the connect
++		 * failure below gets, and like a missing firmware file gets
++		 * from the MDIO side.
++		 */
++		pl->slow_phy_waited_ms += pl->slow_phy_poll_ms;
++		if (pl->slow_phy_waited_ms >= PHYLINK_SLOW_PHY_WARN_MS &&
++		    pl->slow_phy_waited_ms - pl->slow_phy_poll_ms <
++		    PHYLINK_SLOW_PHY_WARN_MS)
++			phylink_warn(pl,
++				     "still waiting for the slow-to-probe PHY (%pfw)\n",
++				     pl->slow_phy_fwnode);
++		rtnl_unlock();
++		goto requeue;
++	}
++
++	if (pl->link_interface == PHY_INTERFACE_MODE_NA) {
++		pl->link_interface = phy_dev->interface;
++		pl->link_config.interface = pl->link_interface;
++	}
++
++	ret = phylink_attach_phy(pl, phy_dev, pl->link_interface,
++				 pl->slow_phy_flags);
++	phy_device_free(phy_dev);
++	if (!ret) {
++		ret = phylink_bringup_phy(pl, phy_dev,
++					  pl->link_config.interface);
++		if (ret)
++			phy_detach(phy_dev);
++		else if (!test_bit(PHYLINK_DISABLE_STOPPED,
++				   &pl->phylink_disable_state))
++			/* phylink_start() starts the PHY it finds attached,
++			 * and ran long before this one turned up.
++			 */
++			phy_start(phy_dev);
++	}
++	if (ret) {
++		/* Whether this is permanent cannot be read off the errno: the
++		 * same -EINVAL comes out of phylink_validate_phy() for a PHY
++		 * that is still filling in its link modes and for one that
++		 * genuinely cannot speak this interface. What decides it is
++		 * the PHY's supported mask, and only the driver binding again
++		 * changes that, so keep polling - giving up here loses the
++		 * port for the lifetime of this phylink. Back off instead: a
++		 * failed bringup ends in phy_detach(), which asserts the PHY's
++		 * reset line. Report the first failure only, so a PHY that
++		 * will never fit costs one line rather than a stream of them.
++		 */
++		if (pl->slow_phy_poll_ms == PHYLINK_SLOW_PHY_POLL_MS)
++			phylink_err(pl, "failed to connect late PHY: %pe\n",
++				    ERR_PTR(ret));
++
++		WRITE_ONCE(pl->slow_phy_poll_ms,
++			   min_t(unsigned int, pl->slow_phy_poll_ms * 2,
++				 PHYLINK_SLOW_PHY_POLL_MAX_MS));
++	}
++	rtnl_unlock();
++
++	if (!ret)
++		return;
++
++requeue:
++	queue_delayed_work(system_freezable_power_efficient_wq,
++			   &pl->slow_phy_poll,
++			   msecs_to_jiffies(READ_ONCE(pl->slow_phy_poll_ms)));
++}
++
+ /**
+  * phylink_of_phy_connect() - connect the PHY specified in the DT mode.
+  * @pl: a pointer to a &struct phylink returned from phylink_create()
+@@ -2282,7 +2428,13 @@ EXPORT_SYMBOL_GPL(phylink_of_phy_connect);
+  * Connect the phy specified @fwnode to the phylink instance specified
+  * by @pl.
+  *
+- * Returns 0 on success or a negative errno.
++ * If the port node carries the slow-to-probe property and the PHY is not
++ * usable yet, 0 is returned with no PHY connected: a poller connects it
++ * once its driver has probed. Until then the MAC runs without a PHY and
++ * ethtool reports no link modes.
++ *
++ * Returns 0 on success - the PHY connected, or the deferred connect
++ * armed - or a negative errno.
+  */
+ int phylink_fwnode_phy_connect(struct phylink *pl,
+ 			       const struct fwnode_handle *fwnode,
+@@ -2304,6 +2456,32 @@ int phylink_fwnode_phy_connect(struct phylink *pl,
+ 	}
+ 
+ 	phy_dev = fwnode_phy_find_device(phy_fwnode);
++	if (!phylink_phy_is_usable(phy_dev) &&
++	    fwnode_property_present(fwnode, "slow-to-probe")) {
++		/* The PHY is known to appear late, so keep the node and poll
++		 * for it rather than failing the port for good. Returning an
++		 * error here would also send DSA off to look for the PHY on
++		 * the switch's own MDIO bus.
++		 */
++		if (phy_dev)
++			phy_device_free(phy_dev);
++
++		pl->slow_phy_fwnode = phy_fwnode;
++		pl->slow_phy_flags = flags;
++		WRITE_ONCE(pl->slow_phy_poll_ms, PHYLINK_SLOW_PHY_POLL_MS);
++		pl->slow_phy_waited_ms = 0;
++		WRITE_ONCE(pl->slow_phy_stop, false);
++		/* mod_ rather than queue_: a poll that a disconnect cancelled
++		 * mid-backoff may still be pending with seconds left on it.
++		 */
++		/* Freezable: attaching and starting a PHY has no place in
++		 * the middle of a system suspend transition.
++		 */
++		mod_delayed_work(system_freezable_power_efficient_wq,
++				 &pl->slow_phy_poll, 0);
++		return 0;
++	}
++
+ 	/* We're done with the phy_node handle */
+ 	fwnode_handle_put(phy_fwnode);
+ 	if (!phy_dev)
+@@ -2345,6 +2523,18 @@ void phylink_disconnect_phy(struct phylink *pl)
+ 
+ 	ASSERT_RTNL();
+ 
++	/* Cannot cancel synchronously: the poller takes rtnl, which is held. */
++	WRITE_ONCE(pl->slow_phy_stop, true);
++	cancel_delayed_work(&pl->slow_phy_poll);
++	/* The next connect re-arms from its own fwnode lookup; holding on to
++	 * this one would leak a reference per connect cycle and keep the
++	 * pending state - and its empty-ksettings window - alive on an
++	 * interface whose PHY is long since usable. The poller cannot race
++	 * this: it reads the node only under rtnl, after the stop check.
++	 */
++	fwnode_handle_put(pl->slow_phy_fwnode);
++	pl->slow_phy_fwnode = NULL;
++
+ 	mutex_lock(&pl->phydev_mutex);
+ 	phy = pl->phydev;
+ 	if (phy) {
+@@ -3730,7 +3920,7 @@ static int phylink_sfp_config_phy(struct phylink *pl, struct phy_device *phy)
+ 	/* Attach the PHY so that the PHY is present when we do the major
+ 	 * configuration step.
+ 	 */
+-	ret = phylink_attach_phy(pl, phy, config.interface);
++	ret = phylink_attach_phy(pl, phy, config.interface, 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.53.0
 
