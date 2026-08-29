@@ -1,243 +1,158 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0813264C7
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBC92DC765;
+	Sat, 29 Aug 2026 08:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787992166; cv=none; b=QIw+Zet5dMD3OvMUweON8S7D4WuXj0DimuewFtzzmIvSB5ZB2DmUH0EK3g3csq+Lfq9Oo5lWHzdMJjPhl6zolsKd2nKtKCA1Jo9hE2EiooW4NhnwhM5GrgyKG1hdURg3o6hxw8wxPlMSELaBwDeDzsjTzBjtKBE+nInPn3NN43s=
+	t=1787993913; cv=none; b=GMY49jyI80ZqtxBN+fLq1LH2clfPE+oO8yjl0WBe3cubk3iYopZBN11/yBJxZFD0wck9CAZN3pGA5vwhVsjWljLci6c1ScbJBmNaX7d5MhG3afnV5esfrrtQqvyrxgWLKijtYmJdS9bl/Pf0iImd111fBph4HHfwxhc76Z4sR64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787992166; c=relaxed/simple;
-	bh=dFpkxZ6S0GABT+n/bMxQ5rDAGck+CMsMGlaFbIsqlXE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LhiaD+4aKrPYwFtM5aee//ZQqX0upcwxpeYZehEnHoy8tgFAR9L8oFtzbdQjPKS0+LQWmbfLJ5d+Yvez4wNKo/g11zg9r10JlUKfpR5K7Cw/MnUEAl+VfOYlw544wgJX2fU6YgaHqM5LSO2165ilFHVjjvwccEaLbrpRnmgw5+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cJKBSSSo; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=T/9GTDdb; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1787993913; c=relaxed/simple;
+	bh=FERN2EqKmyh8zsj/376CUSMZGIj8gzRHRpqVxDpwdc8=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=KIGztEGSi85fgAwKfB2/wWhjStrmwlVHe5mG8tSq/CHOBlLoHHqz2d5MJTagE+M6XxB9DJcGE6LJkIXkyQl1+JrUot8J9br5KlpYo+EaTHT7OQN2ipihQFRH2VDFw4X5qreujyt/+r6Mzhn+PoFLxpyIpMtYQ9TuPWP5zIQ8F+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=gw4dNqy5; arc=none smtp.client-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cJKBSSSo";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="T/9GTDdb"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67T81B8S741542
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:29:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MKn8lekjkFoQYC6eM+ArO7Rdiu2dZ1XkkIrsn13g+Yc=; b=cJKBSSSoupBmZTTP
-	T/dTW7GGPzY3YpdwrZQJwEKYl05vFjdYOjrRErAisvoVkfx2pSypT9ySWKmbgk0c
-	msp6sDG3C0ubEIg7WI0P9WDQMX+LIpiz7zML6HaQrRfw6xBDLv4b69RkCoTwwSpr
-	HoweePevxdxn50qlPJ8O/lQ47Bygjvi2LdSR6X2fe4UdcGvXN5XRGuo1va4Of30y
-	dvW8MXn7tNMXsCSe9gvQYW8tbTlLgvZSpO7WihBsP+/laT827SnLASq4JhqibO6/
-	/n16/yY6eKVrBgkz0TCevRvQEuTaj6KTX7xi+fZiNBqNQFLLXdkwg3OxudjFB/2y
-	engASQ==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gbqt6gfmb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:29:24 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52e7a49452aso25188681cf.3
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 01:29:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1787992163; x=1788596963; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MKn8lekjkFoQYC6eM+ArO7Rdiu2dZ1XkkIrsn13g+Yc=;
-        b=T/9GTDdbmFlj7UtfftwSzhpeVxk4kl+pQsOE15Ol5jQtu1IXVnbnieGn11kwp8yuQW
-         Dd/0j8jJhVZPqOdWTWfdjpR/yHB3rah/vpyj7DzWpBifijh1Dp+kr3j/o0gXgQvkalk+
-         iRucbm4BDs4/HbGMPDzK8Uj13sfBppEO8l8CAjp5/AByxK6oWy/rKyCkSe2Pkz71rovt
-         C+O0f+fEx72r39z0NWj/InGTBqBrmNAitglo8f4X13yprtrR9ImggxbjXYt4ygSfcUCW
-         g6yX+BP/XALvWDHI+uzCUeSW0RBm0tMxFBfmMpdD1p1j6SjSuqwWCd47vM5aTnAwzOJu
-         m8hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787992163; x=1788596963;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MKn8lekjkFoQYC6eM+ArO7Rdiu2dZ1XkkIrsn13g+Yc=;
-        b=tAtKTUx0bWf8oiuVQCu1E75xV0Eed/CdvD3oCdVL3ntZYjSiKfcHUOZLwAo7NBefW7
-         60gW6TVyk2fj/KNf8kss862Rxg/PYD/2oc/4Zh6rwoB1jaVLhtRlppeW/XbFKaVtDbve
-         qnqArfdepfZHvlBtqIXY8QRyvgXWoBdtnvesGk28Zi5o/kfSM53fEAK6oW+Tt8ewAQf1
-         uRuVyzgR7fRaJ8OiWMfP4TvMTHgVoE/xnNHyYYmxYOiMcyPlXhlJ4DYSRLdZjZr/Rvb0
-         krPTuSnnuGM3Y8E+kAE97HPiOBkAvsmS4odPXW3kkp2CJhW5lY/c2Pkgp3NXvS8KfZaz
-         bYvw==
-X-Gm-Message-State: AFuF++mWEMt9VXuYVD9LIO3Nn5Zs/RK9pVfguXCfx8KTNyHXAt72wdQ7
-	G+ylJXGZx3OosaN6oiBosqQgp+VBQES7g0QN5ehLGIXz4/B0htgeuR12G/Bo8A/zrdXmbZmnr6r
-	sIBxP1aBXvYNez4eXOl4m2KvhiIvrT+y14ThnGkJ5XxBjK60xgGrTGswmpSY=
-X-Gm-Gg: AR+sD117Tg2D4x/aTJl4z0hYSEtCla016kJ01HVx9/6BfKdfdr1PcFQN2zFBh54Lm9T
-	4nt7Rn46Gqv5f9oawxHh8sKjW5OSqG6vpzRCWtyjF67h+1GFvWc2mucP9O6iiOnneyX28EA0pMZ
-	pDDWRFMZL5B5/midxqCZQvbKIjeo3CVpvNDOXDDo2G+x+KaGkT2EXfi8u2BZ5UrhllV3EnHxfom
-	i1xuzEoLbycbBu/2z10Kt5uLWCrHpQuVFbyiIrx9Tmvw/N0suvEEqFDXg+UiS9TQxKjGgDubBjN
-	lYidJudqUB9vUEryGBX3QwijE7k64KFCYxgNDOwhvxA/U/nRgsJtgrn8aI8kz2XMH71BVvltt19
-	7CakHZCUi2j6uAA==
-X-Received: by 2002:a05:622a:1308:b0:52d:844c:b0c2 with SMTP id d75a77b69052e-52fb9429883mr141022281cf.12.1787992163555;
-        Sat, 29 Aug 2026 01:29:23 -0700 (PDT)
-X-Received: by 2002:a05:622a:1308:b0:52d:844c:b0c2 with SMTP id d75a77b69052e-52fb9429883mr141021991cf.12.1787992163169;
-        Sat, 29 Aug 2026 01:29:23 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbb20793sm8640067f8f.17.2026.08.29.01.29.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 01:29:22 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Sat, 29 Aug 2026 10:28:50 +0200
-Subject: [PATCH net 2/2] net: stmmac: preserve FPE preemption class across
- qdisc replacement
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="gw4dNqy5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1787993903; bh=xCU610GmJiQDQ+65gxam5Cv3pS/7BUwvSyAngRbU1JM=;
+	h=From:To:Cc:Subject:Date;
+	b=gw4dNqy5d9wWQpMJmc7hsblnNMR1+sMpIhVn7w6CYlGZ3YZI5LXdWtPx0Q6NBtaS8
+	 Kam4JagA9Roj+PY2u3iRUyITzBdTdD7a+5I3USqHxejQICFl3DUkxOkj2W2aYJHfzq
+	 WFWxwxTyuivD4WMHwuXDOcOsSZounHoSflIPJVV4=
+Received: from wang-VMware-Virtual-Platform.localdomain ([111.23.130.39])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id E950FAD0; Sat, 29 Aug 2026 16:58:21 +0800
+X-QQ-mid: xmsmtpt1787993901thwg5vjaw
+Message-ID: <tencent_9FDB4FAAFE9F3EF38210AC963C73897A2E09@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNzn347iVFquuJ+ypcr3bdw+s5c68UOPu8DFahjxZLQRCrSY0gQtfS
+	 tukcEwv2OJFKEtgLNrYk2pK9caCLK2zGewg5VIb9JVygey6UGoMEalQxIn8nyZEa2DmOz1X2uoCD
+	 kNc+vTaMH2rzKLZG4o/7tTjOGCHvI6qWhJovtXDBvqyAUWKxsrq5P62MD6Nmv/d7c1LnfUG0wloU
+	 L9+h9zUb7sirKnDbyXWF89xvlvhVQb5YT+9gQyEBxm5i1l7RpxpjqFD83xdIH8IVMFfGM6GWdISq
+	 GnqhYof4URz00JGd5M7hntFHSFGZ8W163tX4AldONlamVQy5J4m0zsYZbDCZJzSabVrauHXMuHIy
+	 PVqD8adZViBPz9bRBvL6VTgduBBCA7BzGcyTTIMIiZSE8bWMV6KN2l5la+yPj1tzlKECgCm+8O0a
+	 1Ms9DDE8phAWN0SeUGK81HZW0O3g3eYv1q+42ZSoDeD5sJtukCAAGn43jG3COd9LpdkIOB5qTgRS
+	 Z67dfofToT5SW7BConiZ0TehJeDko7tYlUnidEiw3CAnS+vsaccmqrPpFWP+/UC8vubEj/pduwIn
+	 bFXcBPhQFWLLKkt0B1TnGmXkN/1UHWYLgQPGpawDVtw+QJFV8JB7/HNjtvZVHpDwEwGzgjxobpJ9
+	 HYHjou6SQAmetqdLbsl/GKKL+sHMnHwoi15jEJCJW3/yte30+D1UUjbXFexMG/IrADgb/MMN07tu
+	 5tk0F6XkEijgBglvLnSQt9i1G2EuC7Jg589AABsg5TYXC7Eawm+0HXpkgfxKC8yk98WJMGSI/PmA
+	 z08Xh/whc86ag632fu2M6AHJTSRZL3b2pXEAYIayn6IuRA7CATMsgawgFTL8T8I9FxF8phAXOnlk
+	 OVRUNVIT8ar9TcTWUDv/zdLrxexoF78MzOGHHDja6W1c/7+O/r64b2WI2xzpLaHO4maYJYnCoy55
+	 5VZDuTq6R1yBLBb4z5ZwgW7PZxSjErqcBoJQE9E5OdR7ZiMPqTg17LaUk5FVPZcpKP2uT68c+QD6
+	 33E0GQIb8n2NdDvez+RaSE+PhDpbIwkb12g2ChG3zrqzKHymXA6YO0VvBj368J4br3Unk7MyyHbW
+	 6N4NDp
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: Yingjie Wang <1075151112@qq.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	stable@vger.kernel.org,
+	kuniyu@google.com,
+	Yingjie Wang <1075151112@qq.com>
+Subject: [PATCH net v2] net: unix: reject negative max_dgram_qlen values
+Date: Sat, 29 Aug 2026 16:58:20 +0800
+X-OQ-MSGID: <20260829085820.474780-1-1075151112@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260829-stmmac-fix-graft-overwrite-v1-2-a4f84c4c264e@oss.qualcomm.com>
-References: <20260829-stmmac-fix-graft-overwrite-v1-0-a4f84c4c264e@oss.qualcomm.com>
-In-Reply-To: <20260829-stmmac-fix-graft-overwrite-v1-0-a4f84c4c264e@oss.qualcomm.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Furong Xu <0x1207@gmail.com>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: -8JuP8UJ_BYNq2wYPDCrMPUV2qSL8wP1
-X-Proofpoint-GUID: -8JuP8UJ_BYNq2wYPDCrMPUV2qSL8wP1
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI5MDA3MiBTYWx0ZWRfX4wGJ4BM5jirz
- M9xGmhJz07TSXWkvqBZPJBD3ZOCvkvQ6PUoaObAlot3AeeLGzw0cemI62zWzdO/TYdffoJUBHRh
- y8AHRiOKWNYan4Q2OsWw7//1Zgqwv4+/wp30eJzqWxeCgPwA8vExfvrgmj3/Bv4pVR0DTf30+wh
- qyhe4M8fM3Susf8cgaNeFJLjpJ8/8uo+PKsvXO05baNg6mYxyf7YEel8dbDmKqChTY+ck2//mnp
- RwDJzvLK+p7o/PRWIKzVZbso906Hyr73MbpfpD23ZYgUccv1EPSGKxwKvHNqQRgiHxWapBn/IX5
- m+wm+AZst7ARkK/YqOPI9l1Jzj0maX04Oect87/P+RgMSGdALmztTwxKHlHnMt6vKEhiYcZ+Z3U
- jmgH/maChskUn4Fo0IQgGRjgd2T5R/YnvrxMCqgQW3OH8zAmIv+ZMwjM5+mAvuJP6T7ics0h9JP
- TBmsMNyUGfdwRZ/TMRw==
-X-Authority-Analysis: v=2.4 cv=S8/pBosP c=1 sm=1 tr=0 ts=6a929864 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=Z2yARmqO49GXmbJYkD0A:9 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI5MDA3MiBTYWx0ZWRfXwMC3B5ULzOZe
- aKXwVPAHm3RR1ouxKrIN+rU804G3wkhQElruWYTfX9P0A5/83fx/3ougYJBvaBwyr/P838Gg5xY
- pUV0UNgRHUmviKO+CesUe1/KumcihNo=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-29_02,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- bulkscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608290072
+Content-Transfer-Encoding: 8bit
 
-The kernel replaces a root qdisc by creating the new qdisc first and
-destroying the old one only afterwards (qdisc_create() then
-qdisc_graft() -> notify_and_destroy()). For a cross-kind replace this
-means the teardown of the old qdisc runs after the offload of the new
-one.
+net.unix.max_dgram_qlen is parsed into a signed int but copied to the
+u32 sock::sk_max_ack_backlog when an AF_UNIX socket is created.  As a
+result, negative values are accepted and converted to large queue limits;
+for example, -1 becomes UINT_MAX.  A nonblocking sender can then continue
+enqueueing instead of receiving EAGAIN at a finite limit.
 
-This breaks the FPE preemption-class mapping when replacing between
-qdiscs that both program it. For example replacing taprio with mqprio:
+The -1 convention in the listen(2) backlog path is separate from this
+sysctl; max_dgram_qlen has no documented sentinel value.  Keep it a
+non-negative queue length rather than relying on the signed-to-unsigned
+conversion.
 
-  1. the mqprio offload (REPLACE) programs FPE_MTL_PREEMPTION_CLASS
-     with mqprio->preemptible_tcs
-  2. the old taprio is then torn down; tc_taprio_configure() runs the
-     TAPRIO_CMD_DESTROY path and resets the preemption class to 0
+Using a signed min/max handler would reject negative values, but would
+also restrict the maximum to INT_MAX even though both sk_max_ack_backlog
+and sk_buff_head::qlen are u32.
 
-Track which root qdisc policy is currently offloaded in a new
-priv->qdisc_type field and only clear the FPE preemption class during
-teardown if the qdisc being destroyed actually owns it.
+Make the backing value unsigned and use proc_douintvec_minmax.  This
+rejects negative input while letting userspace configure the full u32
+range directly.  The default, zero, and existing nonnegative values
+remain unchanged.
 
-Fixes: 15d8a407a547 ("net: stmmac: support fp parameter of tc-taprio")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5
+Signed-off-by: Yingjie Wang <1075151112@qq.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac.h    |  7 +++++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 22 ++++++++++++++++++----
- 2 files changed, 25 insertions(+), 4 deletions(-)
+v2:
+  - Change the backing value and handler to unsigned, preserving the full
+    u32 range (Kuniyuki Iwashima).
+  - Update the commit message to explain why a signed minimum would cap the
+    interface at INT_MAX.
+  - Document the sysctl as unsigned and clarify that the listen(2) -1
+    convention is not a documented max_dgram_qlen sentinel.
+v1: https://lore.kernel.org/netdev/tencent_4AD5738B48FDD2FC84E21FE59338C8DBAA05@qq.com/
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 7582fca63741..957317ec1461 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -258,6 +258,12 @@ struct stmmac_msi {
- 	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
+ Documentation/networking/ip-sysctl.rst | 5 +++--
+ include/net/netns/unix.h               | 2 +-
+ net/unix/sysctl_net_unix.c             | 4 ++--
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index 208f469..2fe1ca8 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -3818,8 +3818,9 @@ l3mdev_accept - BOOLEAN
+ ``/proc/sys/net/unix/*``
+ ========================
+ 
+-max_dgram_qlen - INTEGER
++max_dgram_qlen - UNSIGNED INTEGER
+ 	The maximum length of dgram socket receive queue
+ 
+-	Default: 10
++	Negative values are rejected.
+ 
++	Default: 10
+diff --git a/include/net/netns/unix.h b/include/net/netns/unix.h
+index 9859d13..e233c42 100644
+--- a/include/net/netns/unix.h
++++ b/include/net/netns/unix.h
+@@ -15,7 +15,7 @@ struct unix_table {
+ struct ctl_table_header;
+ struct netns_unix {
+ 	struct unix_table	table;
+-	int			sysctl_max_dgram_qlen;
++	unsigned int		sysctl_max_dgram_qlen;
+ 	struct ctl_table_header	*ctl;
  };
  
-+enum stmmac_qdisc_type {
-+	STMMAC_QDISC_NONE = 0,
-+	STMMAC_QDISC_MQPRIO,
-+	STMMAC_QDISC_TAPRIO,
-+};
-+
- struct stmmac_priv {
- 	/* Frequently used values are kept adjacent for cache effect */
- 	u32 tx_coal_frames[MTL_MAX_TX_QUEUES];
-@@ -299,6 +305,7 @@ struct stmmac_priv {
- 	/* Protect est parameters */
- 	struct mutex est_lock;
- 	struct stmmac_est *est;
-+	enum stmmac_qdisc_type qdisc_type;
- 	struct dma_features dma_cap;
- 	struct stmmac_counters mmc;
- 	int hw_cap_support;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index be8ddda2aa76..7fe587b47d52 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -1103,6 +1103,8 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- 	if (ret)
- 		goto disable;
+diff --git a/net/unix/sysctl_net_unix.c b/net/unix/sysctl_net_unix.c
+index 47660d5..8f6f065 100644
+--- a/net/unix/sysctl_net_unix.c
++++ b/net/unix/sysctl_net_unix.c
+@@ -17,9 +17,9 @@ static const struct ctl_table unix_table[] = {
+ 	{
+ 		.procname	= "max_dgram_qlen",
+ 		.data		= &init_net.unx.sysctl_max_dgram_qlen,
+-		.maxlen		= sizeof(int),
++		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec
++		.proc_handler	= proc_douintvec_minmax,
+ 	},
+ };
  
-+	priv->qdisc_type = STMMAC_QDISC_TAPRIO;
-+
- 	return 0;
- 
- disable:
-@@ -1120,7 +1122,11 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- 		mutex_unlock(&priv->est_lock);
- 	}
- 
--	stmmac_fpe_map_preemption_class(priv, priv->dev, extack, 0);
-+	if (priv->qdisc_type == STMMAC_QDISC_TAPRIO &&
-+	    qopt->cmd == TAPRIO_CMD_DESTROY) {
-+		stmmac_fpe_map_preemption_class(priv, priv->dev, extack, 0);
-+		priv->qdisc_type = STMMAC_QDISC_NONE;
-+	}
- 
- 	return ret;
- }
-@@ -1266,9 +1272,15 @@ static void stmmac_reset_tc_mqprio(struct net_device *ndev,
- {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
- 
--	netdev_reset_tc(ndev);
--	netif_set_real_num_tx_queues(ndev, priv->plat->tx_queues_to_use);
--	stmmac_fpe_map_preemption_class(priv, ndev, extack, 0);
-+	if (priv->qdisc_type != STMMAC_QDISC_TAPRIO)
-+		stmmac_fpe_map_preemption_class(priv, ndev, extack, 0);
-+
-+	if (priv->qdisc_type == STMMAC_QDISC_MQPRIO) {
-+		netdev_reset_tc(ndev);
-+		netif_set_real_num_tx_queues(ndev,
-+					     priv->plat->tx_queues_to_use);
-+		priv->qdisc_type = STMMAC_QDISC_NONE;
-+	}
- }
- 
- static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
-@@ -1318,6 +1330,8 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
- 	if (err)
- 		goto error_reset_num_tx_queues;
- 
-+	priv->qdisc_type = STMMAC_QDISC_MQPRIO;
-+
- 	return 0;
- 
- error_reset_num_tx_queues:
-
 -- 
-2.55.0
+2.43.0
 
