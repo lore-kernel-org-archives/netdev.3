@@ -1,77 +1,75 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3693A257E
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 13:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4F834F279
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 13:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788009642; cv=none; b=jrFjFZk9SFEUaN3UyaqlL2G4zO6ZwcPj7gS3QYahauaW+PTeDNVTGvazdXpt4pY2V8jUEpMbbcyodvq9n/+QczpmUcsqb4XEOUDjWEFHyaj/oxeCeCOZJjHuhhXiGbUIZ1lAgYtVfdXqQKKu/eni1CrcRVLtajyODmRv15PVYic=
+	t=1788009720; cv=none; b=gNNUuuTd+fGS3+aC1oti4NzdBLaJr4SHE4gsimjh2jJJNuR5iTSR5vm4b/dwRXSTM0jpEE1xNfU8ZjtrFuNoPyHZSKmxck4fbRihBVw+ypHH2E/wt2Q9tu9atjtNUP6SsR/OzT8sk+NTxJqCunjW2Xd6Dl4+jMFZsq0drnesXS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788009642; c=relaxed/simple;
-	bh=ZmorWBw9yFgvvoPoyAAtZZMyfZ76Aag4PA6C1hXaBWM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jIYjWyv3xi/g8MNae7T5EPGond7EhvmMkp0awNZa477Dg5XnAN2WnNogaTxHoqIQs4WclNaoHYhlm8847+8tGQUZwrtkq74qZAfNGkAGyCmYZYtid8TqGE1oNHXfUNHgJPQjqMD1BCGc8iYwTNSEpsPB25glGD4+6bcFOoZx4Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il; spf=pass smtp.mailfrom=mail.huji.ac.il; dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b=aLSuGv6x; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.huji.ac.il
+	s=arc-20240116; t=1788009720; c=relaxed/simple;
+	bh=NS4/QUjL68zLUBCHeKxZrahJl6PjtvFpClsfvHXpPzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o0+3U6Ht2LApLNuNAM9rwllbEurPjVpMKELafvOZOVjnyBrm9eUe4jd4VRdFoney8dRGsPH8HXxftSAj8DnOn4ProjmggpU0D51uOkl/EHLiKIDqFcgCmcAH1tUizi4mECvPIjYS7C/upSRIeSWernmdnbRRUSSwaptPyBlNJ8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TG53lVJe; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b="aLSuGv6x"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-499b2981a7bso19949905e9.3
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 06:20:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TG53lVJe"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1768020b3a.1
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 06:21:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mail.huji.ac.il; s=mailhuji; t=1788009636; x=1788614436; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788009718; x=1788614518; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QaaYsyMk0LotJwBZ8+yTnLDDOuYKQGa1ccvtLoH50qY=;
-        b=aLSuGv6xPoRRGQ+FDlm2NIt0JohyMHZormpEJ3Afxea+talYYxmMyginuBccS0FJ0P
-         uzGT1YHuCWbAab2fGr1CDdC7pLKSt4LFQw12+I9C8vLf4YxbPnIODxT95RstaMstZwYv
-         58/ixM2fSBVva9A9Zf61Vg2iRMMVoCCgyLFzg=
+        bh=2mC5OZsOJnLy47+jnfxfhBCcVVpyNHiIDytrP83Hm1I=;
+        b=TG53lVJe8y6n2kgi7le5W+RA0Ydv7Eb6n+0691wnBCAWQkH6MU/rDKw9OCHp5HvxLj
+         Kg5JMWYCgi+Wj6EYZxIetiCuau/OVCSEyuYmABmkAO1Ehf9OVrCvUC39JNA8IL3Aiwgt
+         QzD1ACQ37KUO+OVF4i+qOdWnnylL8YVoszc81Mo60NF0dzvcLq0Sp7A+0Jabs6rUOuM/
+         NpVRNwVwRsrX+nYWmGhEVSOK8VdFqr3WSUcBODKfik/vCY0LC+i0fFfshqaoQCxIvJ+n
+         198EaQTor6kC7RpkV63hYhodsuen37ls1ItYTH0qFSbMxJLrklpdBGu++h8ZyvQKWrNs
+         +qVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788009636; x=1788614436;
+        d=1e100.net; s=20251104; t=1788009718; x=1788614518;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QaaYsyMk0LotJwBZ8+yTnLDDOuYKQGa1ccvtLoH50qY=;
-        b=kLao9xJ81RGtr/KXITITsQuJrF9pzPzIuVGMuF0mA6kIZRzeKRuKo1NbSqjBCwS6Tg
-         kQeHqRPEt4a2WeiyK4eBypjhhdMK1qzQabEFK8QAiFwz8xDpbTi/rpPauCugur+LCLTA
-         K2swkBHY9jv9UcHVojyqgkBQ1vcWPwdIw1eCZ6uS2TYh/pCxrug410eum6Z/v08jv4Q/
-         hcT6fiYbslqK1DhQ/IjgUrjao2DQafPAPz0A0vE0bjsFzml7sK5TxXcyOvsPIibgTgzv
-         eP6Gh+iBwFHXYjHocuPknY7CRdIPZ7ZwY9kluo3037DNK517bSaYJYXEfvLbRrhbZkFi
-         07yw==
-X-Gm-Message-State: AFuF++kV0uE85NoyPIoO5/4KACAHvlua2aeSqOsyPlZTi4t2r9rjN0H9
-	/+8qekDt1jJZuf4I//kqu2pnTGrTF6H90Jxf1iXx7on1r3U1EPfvENVncKUCzO/5oZwiyTLLoW6
-	ojDw9u2co4JIJ1WtXsNGzpyAueet+m8f9m47Yebcdhj9qjz4ch9VIWzIryfnf04SlKSiND3Yqm2
-	hogs/iIYpm3wedcB4qq4V1dGtdvHJxqyuGmv8Iafb9zoPY5BvaaPeQqE9Uvg==
-X-Gm-Gg: AR+sD10v37nGa/SJYyECawrSzxWURo5+o8jkLX4+z3OgjSWCgbJQf6KjociaAyb6/js
-	jC/F637B2N9pq2F9Wh7DrZXv7OmkBhaavApYnjrptwXE6XGY1SVgQh7IKq/YjHq750yWjcMB/NL
-	HW+hN0ozKUx67LmbywnOK/+GWcx0a6JfDnG8IcOMtwdwjopTtog/+J71ZeUxL0vTsB14zV4+9Z0
-	Wlsc1c4TvCdcXLLf2Z0u/EswlfJwqruEqotVa49t/6bCkQ7ohl5my0w5zEABqIQMOoUMz+F/4ni
-	fvW6oz0IUUR2lOqINfKjCQecrW6Kwy69pqVf3JTwOzNJoF4aETkr/dK+FHReJBrabMiVRQmUvQS
-	VjOutDC6TlrtmxwFoGsDKvKBam+cBZR0YjlNNkZCAeFDQ2RV7VpklCuWiDEzvfBaNORvlL9hU/O
-	5e8FvFUMUdz/3lsJqJlSZPkkmgcf+obsOMDEfsEWgBx+V/eGxNX0XvESI0dBKZa6NSCPq2lEO99
-	rzKA2d0ozfJiNSy9MQfpb2zQmWl9oUbnsjgM37nXWpAqiKi4tFRad+jZlf5pcfjo4vZNubqm98m
-	qw==
-X-Received: by 2002:a05:600c:1394:b0:499:83f1:398 with SMTP id 5b1f17b1804b1-49b91c47b6bmr178646055e9.9.1788009635721;
-        Sat, 29 Aug 2026 06:20:35 -0700 (PDT)
-Received: from aklabmpc3-HP-EliteDesk-8-Mini-G1i-Desktop-AI-PC.tail24119c.ts.net ([2a00:a041:e00c:da00:39dc:2bfc:bb1e:d7d3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbb2794dsm10577076f8f.25.2026.08.29.06.20.33
+        bh=2mC5OZsOJnLy47+jnfxfhBCcVVpyNHiIDytrP83Hm1I=;
+        b=VWJPgiWgSA7yJd9/NJRkG9NiFJN+Ji+X4hMivBl3ennDgnZsWa/mDLaeOFT3Ie9UqE
+         FePfAhZ9kjy6VnDzrARD+c0QS0V+rJEYhwjY08ePRYHXTtjGza3OwObqhsxh4zYuTM+T
+         8Kv6StHvMwXxY0NQgUaYfmHApL0M5LxowXbiuwVuX8STKZCMwkVyOUqyq/ocKAfZhhgc
+         rP66KCJADA64y+qNik52FwrLbOKuwJBxRnuCbj0h0YP3NebIooczZSGC6qjkGr+2lHmL
+         nuTge4HEEGYFn0uF5SPqMDi+NX4BCuzZiME29YI7oyqVCzjjjAq0CwwSeouU9bfdewfE
+         Bcsg==
+X-Gm-Message-State: AFuF++njhNHudKj0CMM/7E+nalcsC2w/AsbtKZWPHnPB8phUNOMsijRx
+	xYXYCT2R4ijz3C31eXtgQiJX4hZiSTOhXRLf9syK4JxVuFbFwHQmQ8I4g5Qc2A==
+X-Gm-Gg: AR+sD12DBrrTgn20gpfrEwedmFXzENGninLVPpbcoygttv/8sn1XzOkjzVLZmpkPqYA
+	jHZoSbV1TATZppt0ztLP/FfxWdlSs7InG7ZPl573qGohQ/l2AEdMwARhZdQOv4CJXZzDiK57YrU
+	J6Zc/mIx5s4tqvJ3p8QsvAQxP27fOQTiTu7tOs4C0MQiEiXCs01FGk7U4vN0q7MTozjRClCGMJm
+	/9zPcOFnJ1uQBtr7fAZkeAA8C4Uw0Z3E3spzJw3g6V0/AxJ3CKn2J4AmMrjWPEWFxmVBnNf2s+K
+	F0/y2NWoyzMLTTUkCZSmkMA2HdqqGrZZ5eNInEkBKjO8psCaz6pEG0RiBhZiCcmpc6MF0CHzh2g
+	BnzCBWK3+FrcujCr2v07LFIv4JdfxCR50w4VU18fNXgxluorI/wkbivWzAz5kW1tCt92XlZDZas
+	EoZj58oQMc7cmf/Yo3K0eOT6wnCrZGZ+kwQ8gp5ZujWeVg0Gxn9uJF4ySAwNcZVuZoqhT3VuLJB
+	w==
+X-Received: by 2002:a05:6a00:1a0b:b0:857:73c3:4469 with SMTP id d2e1a72fcca58-85773c34923mr5441146b3a.24.1788009718156;
+        Sat, 29 Aug 2026 06:21:58 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8569f59a54bsm1537407b3a.6.2026.08.29.06.21.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 06:20:35 -0700 (PDT)
-From: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+        Sat, 29 Aug 2026 06:21:57 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
 To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Michael Cohen <michael.cohen3@mail.huji.ac.il>,
-	Tamir Shahar <tamir.shahar1@gmail.com>,
-	Amit Klein <amit.klein@mail.huji.ac.il>
-Subject: [PATCH net v2] tcp: reject completely old segments during sequence validation
-Date: Sat, 29 Aug 2026 16:20:21 +0300
-Message-ID: <20260829132021.2096728-1-michael.cohen3@mail.huji.ac.il>
-X-Mailer: git-send-email 2.43.0
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vladislav Yasevich <vyasevic@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] udp: revalidate socket family before publishing an IPv6 cork
+Date: Sat, 29 Aug 2026 22:21:20 +0900
+Message-ID: <20260829132125.1160893-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,97 +78,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tcp_sequence() rejects an incoming segment when end_seq is before
-rcv_wup. Since end_seq is one past the last sequence number consumed by
-the segment, this misses the boundary case where end_seq is equal to
-rcv_wup.
+udpv6_sendmsg() prepares the IPv6 flow and route before taking the socket
+lock when a datagram is corked.  IPV6_ADDRFORM takes the same lock, but it
+can convert the socket to AF_INET while the send path is doing that
+lockless preparation because no cork has been published yet.
 
-A segment that consumes sequence space and has end_seq equal to rcv_wup
-is therefore allowed to reach later processing, including ACK handling,
-even though it should be rejected as a completely old segment.
+If the conversion wins the race, udpv6_sendmsg() later publishes an
+AF_INET6 cork on an AF_INET socket.  Uncorking through the IPv4 socket
+operations then interprets the IPv6 cork as IPv4 state.  The IPv4
+finalizer writes a 20-byte IPv4 header into the 40-byte IPv6 header
+reservation while the retained IPv6 dst routes the skb through
+ip6_output().  ip6_finish_output2() consequently consumes the unwritten
+20-byte tail.
 
-Reject this boundary case for segments without SYN or FIN, while
-retaining the existing behavior for control segments and segments
-that consume no sequence space.
+An unprivileged reproducer triggered the mixed state on 12 of 10,000
+sockets.  KMSAN reported an uninitialized-value read in
+ip6_finish_output2() on three fresh boots, with the allocation origin in
+__alloc_skb() through __ip6_append_data().  The same process recovered the
+20-byte region from the TX timestamp error queue; one of three fresh boots
+contained recognizable stale heap data.
 
-One consequence of the early rejection is that, in some cases, a
-completely old duplicate data segment will no longer reach
-tcp_rcv_spurious_retrans(). For IPv6, this may prevent a retransmission
-with a different flow label from triggering transmit-path rehashing.
+The route prepared by the racing send is not published in the socket dst
+cache.  An implicit send on the IPv4-mapped peer required by ADDRFORM
+delegates to udp_sendmsg() before the IPv6 lookup.  An explicit native IPv6
+destination reaches the lookup, but leaves connected false and therefore
+cannot call ip6_sk_dst_store_flow().  Conversely, a native connected send
+can publish an IPv6 dst, but ADDRFORM rejects that peer with EADDRNOTAVAIL.
+The same reasoning covers the non-corking explicit send path.
 
-We accept this trade-off because the segment is completely old and
-outside the receive window, and therefore should be rejected before
-normal ACK processing.
+After taking the lock, revalidate that IPV6_ADDRFORM has not changed the
+socket family before publishing the cork.  The existing error path releases
+the invocation's prepared dst, flowlabel, and transmit-option references;
+there is no socket dst cache entry from this send to reset.  With this
+change, the serialized controls retain their existing results and the
+forbidden mixed state occurred zero times across 20,000 sockets.
 
-We consider preserving the RFC 793 and RFC 9293 sequence-acceptability
-boundary for such data segments more important than preserving this
-side effect of processing an otherwise unacceptable segment.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
-Reported-by: Tamir Shahar <tamir.shahar1@gmail.com>
-Reported-by: Amit Klein <amit.klein@mail.huji.ac.il>
-Signed-off-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+Fixes: 03485f2adcde ("udpv6: Add lockless sendmsg() support")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 ---
 Changes in v2:
-- Exclude SYN and FIN segments from the boundary-old check to preserve
-  existing SYN/FIN handling, including simultaneous connect
-  and retransmitted SYN+ACK AccECN processing.
+- Add the requested individual maintainer Cc recipients.
+- Explain why the corked and non-corked explicit IPv6 sends do not publish
+  an IPv6 socket dst cache, and why sk_dst_reset() is not needed here.
+- Note that the separately raised UDP sockmap proto mismatch was reproduced
+  and will be handled independently.
+- No code changes.
+---
+ net/ipv6/udp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Packetdrill reproducer:
-
-// Off by one bug in tcp_sequence()
-// the negative test before(end_seq, tp->rcv_wup) has off by one error, since end_seq is SEG.SEQ+SEG.LEN,
-// whereas the RFCs require SEG.SEQ+SEG.LEN-1 (their positive test is RCV.NXT =< SEG.SEQ+SEG.LEN-1)
-
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
-
-+0 < S 0:0(0) win 12345
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 12345
-+0 accept(3, ..., ...) = 4
-
-// This is not mandatory for the phenomenon, we just do this to increment SND.NXT (set SND.NXT=101, retain SND.UNA=1) so we can show
-// later that the problematic segment is actually accepted (via the tcpi_accepted_bytes count).
-+0 send(4, ..., 100, 0) = 100
-+0 > P. 1:101(100) ack 1
-
-+0 < P. 1:1001(1000) ack 1 win 12345
-+0 > . 101:101(0) ack 1001
-
-// Now RCV.NXT=1001, so according to the RFC, a subsequent 1:1001 should be discarded.
-// But in Linux, 1:1001 is accepted(!).
-// Note that bytes_acked is incremented to the packet's ack number, which shows the packet is accepted.
-
-+0 < P. 1:1001(1000) ack 23 win 12345   
-// +0 < P. 1:1000(999) ack 23 win 12345   // if you use this instead, you get an assertion error, as expected.
-
-// this assert will succeed in the presence of the bug, but per the RFCs, it should fail because the packet should have been discarded
-+0 %{ assert(tcpi_bytes_acked==22) }% 
-
- net/ipv4/tcp_input.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index daff93d51..1991285aa 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4844,7 +4844,11 @@ static enum skb_drop_reason tcp_sequence(const struct sock *sk,
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	u32 seq_limit;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index fd875908ac0c66..566c634a5a5945 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1716,6 +1716,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	}
  
--	if (before(end_seq, tp->rcv_wup))
-+	if (before(end_seq, tp->rcv_wup) ||
-+	    (end_seq == tp->rcv_wup &&
-+	     seq != end_seq &&
-+	     !th->syn &&
-+	     !th->fin))
- 		return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
- 
- 	seq_limit = tp->rcv_nxt + tcp_max_receive_window(tp);
+ 	lock_sock(sk);
++	if (unlikely(sk->sk_family != AF_INET6)) {
++		release_sock(sk);
++		err = -EAFNOSUPPORT;
++		goto out;
++	}
+ 	if (unlikely(up->pending)) {
+ 		/* The socket is already corked while preparing it. */
+ 		/* ... which is an evident application bug. --ANK */
+
+base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
 -- 
-2.43.0
-
+2.54.0
