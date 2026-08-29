@@ -1,139 +1,142 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518AB3BD65A;
-	Sat, 29 Aug 2026 16:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9886639B947
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 16:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788020120; cv=none; b=USF0WBnCSS0gI9li4luKEeEP4DOHAFKNbR90qGYFbt21HxM826feVZEj3OmphMbWR0CWTcz7YyH58LC6UyWGDvEbmJNCOHQmsukoqoIuOrHy4Wv6/t7msxO6Pl8LPb2+Tj6y59wZzOVEmIITXR5CV/6BbHBnv5ux46v1OW3Gxq4=
+	t=1788022595; cv=none; b=CW0BG40EL18KnOXw9AqqJPSryuL2alroJD7280LWZ4g/aw1ViCO3C+kRplUPyYSJDftrojZBmL3JiHpxZ9GR4wb+c8GMkjKYzjG6NqA1eZbECEMvyMmO35WkkyiVCUotITKHQQNNbfdRXANfkAA8tnl+5L1iqYK4BcNDW6zwYL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788020120; c=relaxed/simple;
-	bh=fk6soj2kgif1rUwUP76eTosUgLLLhPsTxnPqnlfGzfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqLzIG7Vr7Ef41VeoSXhMbY4PgQBcJ7hHnU/f/XPq49csmVJpE7TLh/9PULI8FnCoA/2d2+iP8QSuNiVcEEiusepJmcGC8bQR/YmRis/dDCXjc4vELhwavHjaI6uKY6hNAHoIgRUbG44FFP1FtNVP3Mo/+Zt2U6s4M3sps5VmlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=oTH1iLLZ; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=fyMVgo+8; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=grrlz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1788022595; c=relaxed/simple;
+	bh=1uEW+6SOlAFA8NY9T1gSTaZvUlQQS478fgHHsQ7CsWc=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=RY0CPSBC/sDCS3tKLdiUZD/lUeleGUpCuTF90Cwr4Sgu3O25CJhoIMeaofyIWVXXpkhIucmHpJp6EJwUdoK9tF9CSUkLObtSXIUMYW5a2ynma+POqYljKuhkThO9WW0ZDUy8he3JpVIUxza4ae4V00T4dFPx5uAHMxvYBers6/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=WMuXIup2; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="oTH1iLLZ";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="fyMVgo+8"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1788020101; bh=889FD8uT+5VIJCvWbwHe9z0
-	bvZ7anIjBiHhlW1DiVOc=; b=oTH1iLLZELewgQmZmAOonXJ9x+J3asNkhrmYDzI/FgXc/8LVQb
-	W/mE7C3GU8Y//XZnp/0RXma022TcUWO6gV88TXxXmcfW5sLkmBJoCRkAm9N8po7AS6yhYAwgbLm
-	nJWw4EDc3fl300qIeGm8+vD1+5M3IWOpGB8E0/eglNn5tIVCIHlJ+w85jJJMeknRhN5Cy88jbas
-	fGBe7DATniEe8UjUcj2I+YeXo1kc3n9xbr4H0C2vf73un/CR2ACMA+CmL7m/7Gj2sKE9NnuL1B0
-	2Biuh7mIUgT4msokSVSaLQnxXlZRyJnGVc5zYvpx+TIKv5bdezFhjW5L7YFuFZyEr9g==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1788020101; bh=889FD8uT+5VIJCvWbwHe9z0
-	bvZ7anIjBiHhlW1DiVOc=; b=fyMVgo+8fwOmHPYFGwurLk1arO1fhvi7JKVujC1dSPCiWZaujk
-	ioFV3uB7bx41/X7LLO0vFCZZ3C0wJr3Cp0BA==;
-From: Bradley Morgan <include@grrlz.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	brads@mainlining.org
-Subject: [PATCH 2/5] net: encx24j600: convert to kthread_run_worker
-Date: Sat, 29 Aug 2026 16:15:02 +0000
-Message-ID: <20260829161502.18418-1-include@grrlz.net>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260829161150.16301-1-include@grrlz.net>
-References: <20260829161150.16301-1-include@grrlz.net>
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="WMuXIup2"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2530cabcf4so323043266b.0
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:56:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=doyensec.com; s=google; t=1788022592; x=1788627392; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2JHuNFyBqBV7i/n9uU3aIKvff48cRNUPOa5Ukv7rkvQ=;
+        b=WMuXIup2SHzZ7f19VvJe+M3YxHZVzuf7+Km+X+tOXymo1rZpPtX0CoxGynXZfGaUk3
+         /LIij0c/z8rEDTmW5LH1BQFzngJ/45blucQBaMUJma7iByJHaEC6hXdubjtG90K8vhHZ
+         5TYSYUN8KKjJs3ouGQKRpO0a9hLTgj+EjdFv22tdbzjECUUktRoURAojdWSjGP6vQr+R
+         gwLdc0Mg49vrKxIHSpWTXdnIh0EwUYSnuzgrKjL2F6ol4o4DR73y1f42D09LBjIhbhbt
+         o2neFqpFHl347jgtP/Ikgt4YNVrNz+23WwSK4aKK6JFxzdcI+f+GJcDpNf45p06UzWhA
+         kg0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788022592; x=1788627392;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2JHuNFyBqBV7i/n9uU3aIKvff48cRNUPOa5Ukv7rkvQ=;
+        b=a1yw8Ym/BrmkHzAgmH76Ok74mAr6g5bG2RPxb2FJUBSixpcyXVKHUvM/ti+Lh/zgai
+         W5zLzlxzzcb2r0SN4NvS1kmFNAfpXdGEXBkkkLPDhwRD0Y//vCC+RWJP6dHja1hglbxq
+         goU9Gwq6FXEB08bJjH/LKpjIq3qgFy9cjp2SC7/5wmJJaV5BOVQHggwIm4nIDyRmgWXe
+         VrpWReociU0GG6Rsv/z/wpF5ACvpq4odYa1CuGINjVijEyP7BmPahmLmqYtdwrtcO4IO
+         t4wUhsVdV/wWZ3+a6E/XOhL9JSruZDme3LfA2RaXF09GA7AbnAUH4PW35r+r8ixAEGI6
+         D68w==
+X-Gm-Message-State: AFuF++kwCIDSjJExSJ8K5uut5KeO3XjIbg6f/M7lprF1GIdJQIQA31ba
+	jBqz6iPcMImjGMI5bEgcwveAGh5AoBtcUbEwAjt0B8JbucMA70zJerv1sTsFyqjMef+C8iEnJm9
+	pFg7QxIj7YA==
+X-Gm-Gg: AR+sD12COlCjQWCyKi9vUkeIsD8onhGsBaueCkoTZ4NY/ZWM4HD1amIbkpYUot4GfIG
+	qJ0lWnU9D7bOeuU9tPokgH13XV3P+x+P2pLuZTDBXmswZmWY/ED7UkTGHot8nbB8vFr9IqePCfG
+	w2SWZ5m6hHVDrFhM1d6kY2ZNPB9o+vhNryfz0FRkhUvS28vTn/kg0joWUvG+t2k/dpldRT1G7El
+	Gvul6ebGeGZeYWYsRqU7qmO53m+KCN92H+G8+wFV0/oSYc7aTEvTEKbUYlPBL4z80Q/ZZcuHphd
+	pNadyvySGfAwaXUsGGnu2xEuGR2uXKc8pXhOsRc/vgVbJp0OLigrCrWinuBXNQMVNze1FgCeTT2
+	pVp0U5E6izmbd9nRPJmaZq68q8hAtp9HMJRZzwCFAgn/vLDpjmQVMT47n4ngcNundTFD8jH2she
+	U8yC5Fq2xBGspSNx24ao/Lrvu+IVy/bi1zhdc/l76+x50YtHdb2rNGRU+xR+ieIqQQzAjNdkpGb
+	CBtKagiDqFiNAgSN6oN9rnzlPp7HjPD+bmjTxrboW8E4HZrGgnn8BS99L1F8dBuA+wVbXoloeW6
+	F8AwuJsa33Qf5wH11PnnoQkxLkc=
+X-Received: by 2002:a17:907:ea7:b0:c25:4f7c:8ec5 with SMTP id a640c23a62f3a-c25571fb792mr967095466b.23.1788022591667;
+        Sat, 29 Aug 2026 09:56:31 -0700 (PDT)
+Received: from smtpclient.apple (83.10.35.35.ipv4.supernova.orange.pl. [83.10.35.35])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1fa3ddsm210342666b.45.2026.08.29.09.56.29
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 29 Aug 2026 09:56:30 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: [PATCH net] net: psp: do not inherit the Rx association on clone
+Message-Id: <BC10EB92-ABB3-41B2-AB16-266BEEBE18C0@doyensec.com>
+Date: Sat, 29 Aug 2026 18:56:18 +0200
+Cc: Eric Dumazet <edumazet@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>,
+ Daniel Zahka <daniel.zahka@gmail.com>,
+ linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-From: Bradley Morgan <brads@mainlining.org>
+sk->psp_assoc sits past sk_dontcopy_end, so sock_copy() copies it into
+every socket accepted from a listener without taking a reference, while
+inet_sock_destruct() puts for every inet socket. psp_twsk_init() does
+refcount_inc() for the timewait socket, so a child closing through
+TIME_WAIT cancels its own put and leaves the association with one
+reference and N timewait sockets holding the same pointer. Closing the
+listener frees it, and the timewait timers then put freed memory.
 
-Embedding a kthread_worker and running kthread_worker_fn yourself is
-the old way. Convert encx24j600 to kthread_run_worker(), dropping the
-separate kworker_task pointer.
+Rejecting the association on a listening socket is not sufficient: a =
+socket
+can acquire one while established and then be turned back into a =
+listener,
+because tcp_disconnect() leaves sk->psp_assoc in place.
 
-This is part of removing the worker->task self-assignment in
-kthread_worker_fn().
+  BUG: KASAN: slab-use-after-free in psp_twsk_assoc_free+0x6f/0xf0
+  Write of size 4 at addr ffff888110f9255c by task swapper/7/0
+   psp_twsk_assoc_free+0x6f/0xf0
+   inet_twsk_put+0xda/0x1b0
+   call_timer_fn+0x53/0x2e0
+   __run_timers+0x764/0xa80
+  Freed by task 99:
+   kfree+0x1a7/0x500
+   process_one_work+0x7ec/0x1100
 
-Signed-off-by: Bradley Morgan <brads@mainlining.org>
+An association carries a per-connection SPI and key, so a child must not
+inherit the parent's. Clear it on clone.
+
+Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
 ---
- drivers/net/ethernet/microchip/encx24j600.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+Reproducer available on request.
 
-diff --git a/drivers/net/ethernet/microchip/encx24j600.c b/drivers/net/ethernet/microchip/encx24j600.c
-index b011bf5c2305..460189064332 100644
---- a/drivers/net/ethernet/microchip/encx24j600.c
-+++ b/drivers/net/ethernet/microchip/encx24j600.c
-@@ -49,8 +49,7 @@ struct encx24j600_priv {
- 	struct mutex              lock; /* device access lock */
- 	struct encx24j600_context ctx;
- 	struct sk_buff           *tx_skb;
--	struct task_struct       *kworker_task;
--	struct kthread_worker     kworker;
-+	struct kthread_worker    *kworker;
- 	struct kthread_work       tx_work;
- 	struct kthread_work       setrx_work;
- 	u16                       next_packet;
-@@ -823,7 +822,7 @@ static void encx24j600_set_multicast_list(struct net_device *dev)
- 	}
- 
- 	if (oldfilter != priv->rxfilter)
--		kthread_queue_work(&priv->kworker, &priv->setrx_work);
-+		kthread_queue_work(priv->kworker, &priv->setrx_work);
- }
- 
- static void encx24j600_hw_tx(struct encx24j600_priv *priv)
-@@ -884,7 +883,7 @@ static netdev_tx_t encx24j600_tx(struct sk_buff *skb, struct net_device *dev)
- 	/* Remember the skb for deferred processing */
- 	priv->tx_skb = skb;
- 
--	kthread_queue_work(&priv->kworker, &priv->tx_work);
-+	kthread_queue_work(priv->kworker, &priv->tx_work);
- 
- 	return NETDEV_TX_OK;
- }
-@@ -1046,15 +1045,12 @@ static int encx24j600_spi_probe(struct spi_device *spi)
- 	/* Initialize the device HW to the consistent state */
- 	encx24j600_hw_init(priv);
- 
--	kthread_init_worker(&priv->kworker);
- 	kthread_init_work(&priv->tx_work, encx24j600_tx_proc);
- 	kthread_init_work(&priv->setrx_work, encx24j600_setrx_proc);
- 
--	priv->kworker_task = kthread_run(kthread_worker_fn, &priv->kworker,
--					 "encx24j600");
--
--	if (IS_ERR(priv->kworker_task)) {
--		ret = PTR_ERR(priv->kworker_task);
-+	priv->kworker = kthread_run_worker(0, "encx24j600");
-+	if (IS_ERR(priv->kworker)) {
-+		ret = PTR_ERR(priv->kworker);
- 		goto out_free;
- 	}
- 
-@@ -1087,7 +1083,7 @@ static int encx24j600_spi_probe(struct spi_device *spi)
- out_unregister:
- 	unregister_netdev(priv->ndev);
- out_stop:
--	kthread_stop(priv->kworker_task);
-+	kthread_destroy_worker(priv->kworker);
- out_free:
- 	free_netdev(ndev);
- 
-@@ -1100,7 +1096,7 @@ static void encx24j600_spi_remove(struct spi_device *spi)
- 	struct encx24j600_priv *priv = dev_get_drvdata(&spi->dev);
- 
- 	unregister_netdev(priv->ndev);
--	kthread_stop(priv->kworker_task);
-+	kthread_destroy_worker(priv->kworker);
- 
- 	free_netdev(priv->ndev);
- }
--- 
-2.47.3
+ net/core/sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 1ad41904db25..fa60b7494c58 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2494,6 +2494,9 @@ struct sock *sk_clone(const struct sock *sk, const =
+gfp_t priority,
+ #ifdef CONFIG_BPF_SYSCALL
+ 	RCU_INIT_POINTER(newsk->sk_bpf_storage, NULL);
+ #endif
++#if IS_ENABLED(CONFIG_INET_PSP)
++	RCU_INIT_POINTER(newsk->psp_assoc, NULL);
++#endif
+=20
+ 	/* SANITY */
+ 	if (likely(newsk->sk_net_refcnt)) {
+--=20
+2.55.0
 
