@@ -1,158 +1,208 @@
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBC92DC765;
-	Sat, 29 Aug 2026 08:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2FF374A14
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787993913; cv=none; b=GMY49jyI80ZqtxBN+fLq1LH2clfPE+oO8yjl0WBe3cubk3iYopZBN11/yBJxZFD0wck9CAZN3pGA5vwhVsjWljLci6c1ScbJBmNaX7d5MhG3afnV5esfrrtQqvyrxgWLKijtYmJdS9bl/Pf0iImd111fBph4HHfwxhc76Z4sR64=
+	t=1787994940; cv=none; b=AHnF96OC7Rg9NmowGAztBqp2WjV1ueHHI732Qc3Rr5yV8vzbzE7pNk6J3sijDrRzAqJwunnu45KYvmSdQQt8+oXsUuP1ZHgub2zUXhY+Q9RxRJ6QdeGrwTz3x8IUjbWm7Yxyd8Bv+/vNT4oi5SPGOVzW5aRr7p7W2adS/IZYfs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787993913; c=relaxed/simple;
-	bh=FERN2EqKmyh8zsj/376CUSMZGIj8gzRHRpqVxDpwdc8=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=KIGztEGSi85fgAwKfB2/wWhjStrmwlVHe5mG8tSq/CHOBlLoHHqz2d5MJTagE+M6XxB9DJcGE6LJkIXkyQl1+JrUot8J9br5KlpYo+EaTHT7OQN2ipihQFRH2VDFw4X5qreujyt/+r6Mzhn+PoFLxpyIpMtYQ9TuPWP5zIQ8F+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=gw4dNqy5; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="gw4dNqy5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1787993903; bh=xCU610GmJiQDQ+65gxam5Cv3pS/7BUwvSyAngRbU1JM=;
-	h=From:To:Cc:Subject:Date;
-	b=gw4dNqy5d9wWQpMJmc7hsblnNMR1+sMpIhVn7w6CYlGZ3YZI5LXdWtPx0Q6NBtaS8
-	 Kam4JagA9Roj+PY2u3iRUyITzBdTdD7a+5I3USqHxejQICFl3DUkxOkj2W2aYJHfzq
-	 WFWxwxTyuivD4WMHwuXDOcOsSZounHoSflIPJVV4=
-Received: from wang-VMware-Virtual-Platform.localdomain ([111.23.130.39])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id E950FAD0; Sat, 29 Aug 2026 16:58:21 +0800
-X-QQ-mid: xmsmtpt1787993901thwg5vjaw
-Message-ID: <tencent_9FDB4FAAFE9F3EF38210AC963C73897A2E09@qq.com>
-X-QQ-XMAILINFO: M1rD3f8svNzn347iVFquuJ+ypcr3bdw+s5c68UOPu8DFahjxZLQRCrSY0gQtfS
-	 tukcEwv2OJFKEtgLNrYk2pK9caCLK2zGewg5VIb9JVygey6UGoMEalQxIn8nyZEa2DmOz1X2uoCD
-	 kNc+vTaMH2rzKLZG4o/7tTjOGCHvI6qWhJovtXDBvqyAUWKxsrq5P62MD6Nmv/d7c1LnfUG0wloU
-	 L9+h9zUb7sirKnDbyXWF89xvlvhVQb5YT+9gQyEBxm5i1l7RpxpjqFD83xdIH8IVMFfGM6GWdISq
-	 GnqhYof4URz00JGd5M7hntFHSFGZ8W163tX4AldONlamVQy5J4m0zsYZbDCZJzSabVrauHXMuHIy
-	 PVqD8adZViBPz9bRBvL6VTgduBBCA7BzGcyTTIMIiZSE8bWMV6KN2l5la+yPj1tzlKECgCm+8O0a
-	 1Ms9DDE8phAWN0SeUGK81HZW0O3g3eYv1q+42ZSoDeD5sJtukCAAGn43jG3COd9LpdkIOB5qTgRS
-	 Z67dfofToT5SW7BConiZ0TehJeDko7tYlUnidEiw3CAnS+vsaccmqrPpFWP+/UC8vubEj/pduwIn
-	 bFXcBPhQFWLLKkt0B1TnGmXkN/1UHWYLgQPGpawDVtw+QJFV8JB7/HNjtvZVHpDwEwGzgjxobpJ9
-	 HYHjou6SQAmetqdLbsl/GKKL+sHMnHwoi15jEJCJW3/yte30+D1UUjbXFexMG/IrADgb/MMN07tu
-	 5tk0F6XkEijgBglvLnSQt9i1G2EuC7Jg589AABsg5TYXC7Eawm+0HXpkgfxKC8yk98WJMGSI/PmA
-	 z08Xh/whc86ag632fu2M6AHJTSRZL3b2pXEAYIayn6IuRA7CATMsgawgFTL8T8I9FxF8phAXOnlk
-	 OVRUNVIT8ar9TcTWUDv/zdLrxexoF78MzOGHHDja6W1c/7+O/r64b2WI2xzpLaHO4maYJYnCoy55
-	 5VZDuTq6R1yBLBb4z5ZwgW7PZxSjErqcBoJQE9E5OdR7ZiMPqTg17LaUk5FVPZcpKP2uT68c+QD6
-	 33E0GQIb8n2NdDvez+RaSE+PhDpbIwkb12g2ChG3zrqzKHymXA6YO0VvBj368J4br3Unk7MyyHbW
-	 6N4NDp
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Yingjie Wang <1075151112@qq.com>
+	s=arc-20240116; t=1787994940; c=relaxed/simple;
+	bh=XzpoOSZbty0jRrVJafLMy92kRi93giPYXUUgkIbm5Ms=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Hs3ClSUdkFcvtEgHMbBHmO3GSaWfNVcwi9oJSh6LbU3uZWFXZ4vw/M4Mj7Una48gnDWUd0bLWf9hsnTPk3BJEXmXv5+tWXs2j3x7TayjD7wwGSZ/qZD2Gq7PtitsxuIRBzDfMdyFdEY9Y18XHDpM2zzyTitL7JbeTCksLrTSDpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpgz4t1787994870t4b1936f4
+X-QQ-Originating-IP: KFH0PE+GyrNE6n36WnMfVsC3SZb1PNxOuKeUU/8hA0g=
+Received: from localhost.localdomain ( [36.24.99.71])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 29 Aug 2026 17:14:28 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5247917018781375560
+EX-QQ-RecipientCnt: 11
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+Cc: jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	linglingzhang@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	stable@vger.kernel.org,
-	kuniyu@google.com,
-	Yingjie Wang <1075151112@qq.com>
-Subject: [PATCH net v2] net: unix: reject negative max_dgram_qlen values
-Date: Sat, 29 Aug 2026 16:58:20 +0800
-X-OQ-MSGID: <20260829085820.474780-1-1075151112@qq.com>
-X-Mailer: git-send-email 2.43.0
+	hramamurthy@google.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net v2] net: libwx: fix PM suspend/resume flow for VF drivers
+Date: Sat, 29 Aug 2026 17:14:23 +0800
+Message-Id: <20260829091423.83097-1-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: M4KtbCSV5heiO2OEPLZo+ce0W2kpgWzOOnpX6hZRA4TzVgAPTjUoXAJq
+	+cc6/twVwCWk97rCWym/QBti79j8aae4Pw1jvz5/L7MbZKTwMWiphnsBXZQmZ4zxS7vHMbo
+	PA9ny+VPDdqucKxswb01mj6WjE/oHKKKsoyAVvxMLGZMkamp3E+MorIkH+A/TKC8y+ElRJe
+	cah9uQ4UWqQDJgDBe3mfYaK4y1JqFqHT8KpwQIkE5PrR7jKssRw9JkPYw+GnZ7dLG5Rr4JD
+	D1wiLRtlfTNYj7Po1JW+Z4nwEyBWEb+1Pk4YfNMlWpNuxCiAMxzv1CgVAdJQxbMwPGjngTH
+	In8JZ1vMrak3e8mK+BLLgo7xC/Meq8Wo+gaG8Dk//n/YCI1E+s13+0tvDRgL0CbX425870f
+	SaQw6Oou+GITaR2RC003Eb2/YkpMsx1uV2mhb6pMCbGq9lydWP2wxr+39SSursPHm1kaEks
+	c3cJmbrgoK16TPnxJeQwTPh1CcA4cB/hmufpY9p7VkpWkBacJeMlcXKkQP+ebnsr0uZD7zM
+	KOTtkSX+34rl2G7fKRx5SbLzFPD9mmr5xbQ17ZE333pjx95JTmyMw4Gn6cWIDNdRysHo4BW
+	lehEx7ZjCVZ5Gorv5fQjpGCxGUlgi7qgjcYWa8vlsRtiX8dRuomU2NXtVWcUR9lIzA5JEJv
+	tx80YrXu+eSlfKBYEIGu3FM4TKNxILYxMptXOGtoM+2SswnZogc8GC/FrPblSFPwbWYrqu1
+	izs2fmwscuMJOwJEULiCUT8vADBIn/DbjX66p1xTr+4SVDPGSis1q1h22Neu4dJ/sB5qkL6
+	pOeJjZMAdNNQauHW5+fXpRQ0UhLXu7eYmmHzYaUkh1jYv905u4QQtlUwJszot+eIDo5Unnl
+	1Xiqh/iG37DiWZpwJIbel7KXcm8DBPcc3ql8m77qp1BNuRJT6fIamsXcHZS85jAMI6U5/WT
+	LAYstwn4tuYUy+cCMuB5A+e6Azhad6aRioezRamj0GJWu3rsIGXl4yaNOPwl+oF2LKVfWdp
+	5szlmcAbN0kSq5HsXBArIPfWKiSg41ptbhmfH1eCg+9Cp41ZgZNLYltUDVpRvlMnOyKSFUz
+	3zr2PYdQUeB
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-net.unix.max_dgram_qlen is parsed into a signed int but copied to the
-u32 sock::sk_max_ack_backlog when an AF_UNIX socket is created.  As a
-result, negative values are accepted and converted to large queue limits;
-for example, -1 becomes UINT_MAX.  A nonblocking sender can then continue
-enqueueing instead of receiving EAGAIN at a finite limit.
+In the current wxvf_suspend() and wxvf_resume() implementations, power
+management operations lack synchronization with network device
+configuration, and proper hardware cleanup/restoration lifecycle
+handling is missing.
+Specifically:
 
-The -1 convention in the listen(2) backlog path is separate from this
-sysctl; max_dgram_qlen has no documented sentinel value.  Keep it a
-non-negative queue length rather than relying on the signed-to-unsigned
-conversion.
+1. Operations are not guarded by rtnl_lock(), leading to potential race
+   conditions with concurrent netdevice callbacks.
+2. The suspend path leaves background work and timers running, omits
+   disabling TX queues/NAPI instances, and fails to release IRQ and ring
+   resources when the interface is up.
+3. The resume path does not re-enable the PCI device with MEM access, lacks
+   re-allocation and request of MSI-X IRQs/resources, and missing proper
+   unroll error handling upon failures.
 
-Using a signed min/max handler would reject negative values, but would
-also restrict the maximum to INT_MAX even though both sk_max_ack_backlog
-and sk_buff_head::qlen are u32.
+Fix these issues with the following changes:
 
-Make the backing value unsigned and use proc_douintvec_minmax.  This
-rejects negative input while letting userspace configure the full u32
-range directly.  The default, zero, and existing nonnegative values
-remain unchanged.
+- Synchronize both suspend and resume handlers under rtnl_lock().
+- In wxvf_suspend(), synchronously cancel background timers/service tasks,
+  clear state flags, bring down queues and NAPI, free IRQ/resources if
+  running, and clear PCI bus master flag before disabling the device.
+- In wxvf_resume(), re-enable the PCI device via pci_enable_device_mem(),
+  re-initialize the interrupt scheme, and for running interfaces,
+  re-allocate resources, re-request MSI-X IRQs, triggering
+  WX_FLAG_NEED_DO_RESET for subsequent HW reset handling, and attach the
+  device. Complete error handling paths are added to rollback safely on
+  failures.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5
-Signed-off-by: Yingjie Wang <1075151112@qq.com>
+Fixes: 377d180bd71c ("net: wangxun: add txgbevf build")
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
+Changelogs:
 v2:
-  - Change the backing value and handler to unsigned, preserving the full
-    u32 range (Kuniyuki Iwashima).
-  - Update the commit message to explain why a signed minimum would cap the
-    interface at INT_MAX.
-  - Document the sysctl as unsigned and clarify that the listen(2) -1
-    convention is not a documented max_dgram_qlen sentinel.
-v1: https://lore.kernel.org/netdev/tencent_4AD5738B48FDD2FC84E21FE59338C8DBAA05@qq.com/
+- Refactored the suspend and resume logic to eliminate full netdevice close/open
+  cycles in favor of lightweight interrupt and queue manipulation:
+  * In wxvf_suspend(), replaced wxvf_close() with explicit queue stopping
+    (netif_tx_disable), carrier drop, NAPI disabling (wx_napi_disable_all), IRQ
+    releasing (wx_free_irq), and resource freeing (wx_free_resources).
+  * In wxvf_resume(), replaced wxvf_open() with granular resource allocation
+    (wx_setup_resources), MSI-X IRQ requesting (wx_request_msix_irqs_vf), and deferred
+    hardware reconfiguration via WX_FLAG_NEED_DO_RESET flag.
+- Dropped the addition of device_link_add() to parent PF in ngbevf and txgbevf probe()
+  paths to keep the patch focused strictly on libwx PM suspend/resume flow.
+v1: https://lore.kernel.org/netdev/20260826095243.16939-1-mengyuanlou@net-swift.com/
+---
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c | 62 ++++++++++++++++++-
+ 1 file changed, 59 insertions(+), 3 deletions(-)
 
- Documentation/networking/ip-sysctl.rst | 5 +++--
- include/net/netns/unix.h               | 2 +-
- net/unix/sysctl_net_unix.c             | 4 ++--
- 3 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 208f469..2fe1ca8 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -3818,8 +3818,9 @@ l3mdev_accept - BOOLEAN
- ``/proc/sys/net/unix/*``
- ========================
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index 26de78e9a69e..8a212e36c3d8 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -15,10 +15,26 @@ int wxvf_suspend(struct device *dev_d)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev_d);
+ 	struct wx *wx = pci_get_drvdata(pdev);
++	struct net_device *netdev;
  
--max_dgram_qlen - INTEGER
-+max_dgram_qlen - UNSIGNED INTEGER
- 	The maximum length of dgram socket receive queue
+-	netif_device_detach(wx->netdev);
++	netdev = wx->netdev;
++	timer_delete_sync(&wx->service_timer);
++	cancel_work_sync(&wx->service_task);
++	clear_bit(WX_STATE_SERVICE_SCHED, wx->state);
++
++	rtnl_lock();
++	netif_device_detach(netdev);
++	if (netif_running(netdev)) {
++		netif_tx_disable(netdev);
++		netif_carrier_off(netdev);
++		wx_napi_disable_all(wx);
++		wx_free_irq(wx);
++		wx_free_resources(wx);
++	}
+ 	wx_clear_interrupt_scheme(wx);
++	pci_clear_master(pdev);
+ 	pci_disable_device(pdev);
++	rtnl_unlock();
  
--	Default: 10
-+	Negative values are rejected.
+ 	return 0;
+ }
+@@ -34,12 +50,52 @@ int wxvf_resume(struct device *dev_d)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev_d);
+ 	struct wx *wx = pci_get_drvdata(pdev);
++	struct net_device *netdev;
++	int err;
++
++	netdev = wx->netdev;
++	err = pci_enable_device_mem(pdev);
++	if (err) {
++		dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
++		return err;
++	}
  
-+	Default: 10
-diff --git a/include/net/netns/unix.h b/include/net/netns/unix.h
-index 9859d13..e233c42 100644
---- a/include/net/netns/unix.h
-+++ b/include/net/netns/unix.h
-@@ -15,7 +15,7 @@ struct unix_table {
- struct ctl_table_header;
- struct netns_unix {
- 	struct unix_table	table;
--	int			sysctl_max_dgram_qlen;
-+	unsigned int		sysctl_max_dgram_qlen;
- 	struct ctl_table_header	*ctl;
- };
+ 	pci_set_master(pdev);
+-	wx_init_interrupt_scheme(wx);
+-	netif_device_attach(wx->netdev);
++	rtnl_lock();
++
++	err = wx_init_interrupt_scheme(wx);
++	if (err)
++		goto err_pci;
++
++	/* Since vf resume before than pf, only the vf interrupt and software
++	 * resources need to be initialized. The hardware configuration will be
++	 * reconfigured in reset subtask.
++	 */
++	if (netif_running(netdev)) {
++		err = wx_setup_resources(wx);
++		if (err)
++			goto err_clear_int;
++
++		err = wx_request_msix_irqs_vf(wx);
++		if (err)
++			goto err_free_resources;
++
++		wxvf_up_complete(wx);
++		set_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
++	}
++
++	netif_device_attach(netdev);
++	rtnl_unlock();
  
-diff --git a/net/unix/sysctl_net_unix.c b/net/unix/sysctl_net_unix.c
-index 47660d5..8f6f065 100644
---- a/net/unix/sysctl_net_unix.c
-+++ b/net/unix/sysctl_net_unix.c
-@@ -17,9 +17,9 @@ static const struct ctl_table unix_table[] = {
- 	{
- 		.procname	= "max_dgram_qlen",
- 		.data		= &init_net.unx.sysctl_max_dgram_qlen,
--		.maxlen		= sizeof(int),
-+		.maxlen		= sizeof(unsigned int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec
-+		.proc_handler	= proc_douintvec_minmax,
- 	},
- };
+ 	return 0;
++err_free_resources:
++	wx_free_resources(wx);
++err_clear_int:
++	wx_clear_interrupt_scheme(wx);
++err_pci:
++	rtnl_unlock();
++	pci_disable_device(pdev);
++	return err;
+ }
+ EXPORT_SYMBOL(wxvf_resume);
  
 -- 
-2.43.0
+2.30.1
 
