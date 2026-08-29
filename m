@@ -1,63 +1,63 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D1D3932CE
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240AF38E8B8
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 08:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787991172; cv=none; b=AkEOE1+jpndwdIJ/J6YLrzk/waDgQHBk3A9ILsnOVfkdIP0uow5sOX2gdEXC0IcIT3wwbrZLIWIqRNBhXlatm8MRChdGvCfEuJHaKzk0S3xGie6jOHmEl06z4/LqAn0RvIROR+DEZ3WLMtYjUT2jcZSsHQkSANlbiOLBy7SqmSI=
+	t=1787991176; cv=none; b=VBPKnclneIB9/ifNKOODUbAjFHvJAVlZBcv8zCEpN86awD6NT5evT5A6e48YQzM7k4ItMgskh1tCMoU0h2c1cUFZoX9vBllTmH+20So+O7QyPJgIzNeyRYN37Qby1JjiXHBoyIz7Wy1cYOoqrqjwVnCie2ENqGOHRHDjwsU/RXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787991172; c=relaxed/simple;
-	bh=8uDIkkzVKcJJcGm8vz8sajeR8G60JBz5XXY98NmCRk4=;
+	s=arc-20240116; t=1787991176; c=relaxed/simple;
+	bh=NNiqIoW95J4VoaZIqNbNYxj62ObUv6XngGlQw+ysAyY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nsuzHNiKKyF6LFLDxFIDDeJvg8M38P4E5lk1iwztWb1zt/35G+TbqNluZ9bSlHeq90KJ8OzmZKraBvBQyEZEMdeET1A9m0jmASAURZPe4oAb24C+aTaYBZPJC7CnFllkDNsf2EkFJi2fGpdVF3OLEHWQ+2D/1uJnI9XQXUiSAF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=otmQJice; arc=none smtp.client-ip=209.85.222.179
+	 MIME-Version:Content-Type; b=PJv6ao48dPUyTrsU2MilKWT6XzViiZ4OD4Tc3BxN2YXvgr5AVeLstCijOOnfD6O8HKZiCfm7Y3b7bxz/gpXPqrVmjsWTBbUYh3SDAFMowhvjOKhRTnqE8MqB5XaxNxAldB9zfb5spr7w4u19eLdqTIeFBjQGUzO6hLLsjL+T/Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=tzQtrxMH; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="otmQJice"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92ea24a2dbfso173126685a.0
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 01:12:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="tzQtrxMH"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-9087fb771d3so13559096d6.0
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 01:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787991169; x=1788595969; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787991174; x=1788595974; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7oz77OMrkgFB1w0C3emSz4sp5+lLJW/M03ziQF+FrN8=;
-        b=otmQJiceUi0NjrJ17nWy8ea8NtiGkhWCIs3Bgit/AhnuVIyKquQX9Nlfkphc2Ea3QC
-         5jV6QGVJEeum2huKKPtdgrnvaHp99slti+j6TO7vC8eqd2NkZAprvb2fu48o6YejZuum
-         9M9r9VwKLr3hpxIc6VHy1FYcSmIHpXnJMfT64=
+        bh=vH+5YsNTB/xDLOggySY7l0UJb0258tXEDEvScD3qwdE=;
+        b=tzQtrxMHiVJGvh+9cUvqM+l7biNH1Vj29SaNNCFQz7nuWskfc7Ex4nkNp9Rc4H0GSh
+         INAYH3PX5fiIYiRR1PrjL/XD6BAnEUjqr5Zla82b7HqAbNiW3ZE8i1ytTGW+4G0vO2ns
+         wyxGrp2+v+nqmkz6wGqqBC+OxkaWb9g3rc630=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787991169; x=1788595969;
+        d=1e100.net; s=20251104; t=1787991174; x=1788595974;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7oz77OMrkgFB1w0C3emSz4sp5+lLJW/M03ziQF+FrN8=;
-        b=cbwM6ZFiQ7trPUMFtoOyNNPrMvTalAAUoFvD3Q0ifAcVECItuEVbQE5uxXRopmRG7g
-         rfh+sWv2ECKLSf09kNY3rtk1+gFXAgYxn5NKo/d9KdZCYZVS+oLz8PqIM/xokoOZl1cn
-         77oazseW1AcBHnE2tEW90TYCI6N1aCEubR/acx3pVudXzw3c0TDlL3lUbVLu63x1gABD
-         JqvNq0qDHLhUgTIRFZsPsehVw708nf5WKrAQfQg0DMeHpUIdI7nw+5kYzYIrfkJN2Win
-         f9hWAeCaucDl9hIdAlgJZ8z3yJ1P8SGQFosU9M77HNm1cYsOiQJliquvNN7NST7gB/Og
-         JF0g==
-X-Gm-Message-State: AFuF++l6ukfKDeJ26q5sDUGOs3ucYMEkC/hv18Ifb8gFB7t4yVQ+gt/t
-	ErxondOFZN4nTuqJuAC9VDCfKXOIP+IGmyjK8G5IuiqNYVxJM0ov80Olxv1Npm2p0OP3sZCZBMC
-	7HLONxg==
-X-Gm-Gg: AR+sD131jB9ckZYvnXTqB3qEFWuDHlJJieYoQZUsJAhD8wGMdpygELrX+0n+/NV1/Kx
-	Ku60q15pRncFDQYx2mnc6CrajLWbP4VkYs2CBHjVVrQNKXmK1vUt+YEj3KLsyTNP/rehlY8L+x6
-	X0iPkXvefXyGImhJbj5xjL4Srunroeff57DchBKPv9yszSq+uY/i/70jlXzA84X/zrh6Izhvjw4
-	UuJKUCY+QQJNvTwFOUovgIN4CRuj5wGDcM4par7Tujh+WiYZcfusNEOXeypWSa9sHbKpres7ZOx
-	75xNDwALBMwk6bK1vDM5Puj7Vf2JiFNWmwEXgjN4Orwn0N+fftCZcgcSj45DILpUPLeCGo2D9Ko
-	QWtiIxXgzomXxozLoWvJ3a3lKA9KfYILydHpZfV1yzamMiQk3w/f3DrPCEb/7vY4cJXyf5QKAxp
-	f+AWfEePV5f3b/Ai3OWkwdzgSq2lvPtHSznxzrqgmZ7clAfYkzQMetPHttzuB5VZIbfsyfzp7tU
-	UmwfoRMZBqFx7stJVlF4pLYTjVyCz0vaXbhs7Xy+xjX9eD2WbJi6PI2do0x2rS284h6wV0g0BM5
-	vMIBmWIreW3h2DUirDTdf+1cmjDZeCzdNMZ2Hg==
-X-Received: by 2002:a05:620a:880f:b0:92e:bd39:9993 with SMTP id af79cd13be357-93913952c79mr1475368585a.31.1787991169629;
-        Sat, 29 Aug 2026 01:12:49 -0700 (PDT)
+        bh=vH+5YsNTB/xDLOggySY7l0UJb0258tXEDEvScD3qwdE=;
+        b=dkpMkOlSlUKDllJ0w1xHRqnSF5ZTGfVCZKoK+ZMuvDFXMSD750I0xjpuB8gfREOUyd
+         4d3a2+CtaULRoH63/PMinYIRBfFmOa1KrQgTqpSkmwZ6Jbt2C2sKrOjiFbgHU2r+sP0c
+         gf0gOts4jvfDi23UdvYe/U3v4aD3XurQn09HyPKRivhDPZk5pblbzf0L/m5H8RKOMXTS
+         n9hmaDEYmlsT91+pOUJeDPBEEqvPRaUZYOSqbcPdzaIcw6sUqag/qSwDwUbi9Cu/nfkr
+         KZqK1wRxCr87Z+jiSOGk7Okarr6PLAgC9uSbpBC7jLQA3b5lznPJ65wVA7m2xiOQ5MBh
+         v4+A==
+X-Gm-Message-State: AFuF++mek15KNg/6FVGvcZ8mT4ACHpHAqKoJK6qEWDpRmalTXMsLcKKH
+	Re7RkPz6cBdZAHCR9fj4L18ADkexVL0dt9Ph+nFLwWKwadbDua9IG3pRU/KDaqu/xgUlROs1JHi
+	3qzLLrA==
+X-Gm-Gg: AR+sD11zPRBvp7jXlKNllTklqodC2ZcdXv7p27PYqT/ABA5jVFbwVrcOIOnHioTlTA9
+	xBcuTNJWKP05uqSCMYF9Cq4C4szueCfv7BnKY80I9F29870GUVn9VL/bxVe1a3outUn7rOHkqsv
+	C9huh0H2xUbYvJu0BDWMKAhx3AF+VUA+mfgkbNpzR9Dz987RF+ybXPPaUQKUGtqWcMG7BGqfeih
+	KM7Qs5nI3sQKzPHUCGTi2YrZJvnAWK8kIppikfXpt8p8T/UW181pBb/7A7R9AlmBJR2XwgBqet3
+	9WWOdgiIpouvjquVXyFrJuXF0Y1pR1bCbdZIHhVUbZxy4RxduXiZ5/JFbbwwLwue7u0WnrO+rSd
+	n9hlluVmL6XVuGtND6e1s8kmyUm9jHR3dFyrWnGlH+RBkaj25H5Zbb41YxBV4ih5LGy6N4YINWd
+	QeJ2Vwj3lT++wJjGJZAKDwvlLvi4pM3rcsxP365z4FoS8HaQ41oBdAao8Xk29BaMKoUijb8Ri1V
+	HvWYnQI14ea9qS/A9TUXWgaZs5/o/kvSPeCIqBbc4uMj8b4qn67+K8RbFf93R+X85l9QZ4QpBXa
+	hU2KRlTj8IU0NeqE4NHGRZHtMlo=
+X-Received: by 2002:a05:620a:7001:b0:92b:5408:b6be with SMTP id af79cd13be357-93913862520mr1228692585a.23.1787991173931;
+        Sat, 29 Aug 2026 01:12:53 -0700 (PDT)
 Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93917014c56sm325358385a.10.2026.08.29.01.12.47
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93917014c56sm325358385a.10.2026.08.29.01.12.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 01:12:48 -0700 (PDT)
+        Sat, 29 Aug 2026 01:12:53 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -74,9 +74,9 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	chia-yu.chang@nokia-bell-labs.com,
 	subramanian.vijay@gmail.com,
 	petrm@nvidia.com
-Subject: [PATCH net v2 4/8] net/sched: hhf: clamp quantum in change and init paths
-Date: Sat, 29 Aug 2026 04:12:25 -0400
-Message-Id: <20260829081229.81708-5-jhs@mojatatu.com>
+Subject: [PATCH net v2 6/8] net/sched: pie: clamp psched_mtu in pie_drop_early
+Date: Sat, 29 Aug 2026 04:12:27 -0400
+Message-Id: <20260829081229.81708-7-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260829081229.81708-1-jhs@mojatatu.com>
 References: <all>
@@ -90,65 +90,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-hhf_change() accepts any quantum from userspace, including 1. With a
-crafted size table qdisc_pkt_len reaches ~2 GiB, so quantum=1 makes
-the deficit-refill loop spin ~2^31 times under the qdisc lock
-(a soft lockup / denial of service).
-
-Add max(256U, ...) in hhf_change() matching fq_codel_change(). Clamp
-hhf_init() to [256, 1<<20] matching the siblings, and remove the old
-fallback that only set quantum=256 on overflow.
+pie_drop_early() calls psched_mtu() with no clamp. With mtu=0x80000000
+the bytemode divide silently zeroes the drop probability, disabling AQM.
+Clamp to [1, 1<<20].
 
 Conditions to recreate the bug:
-  CONFIG_NET_SCH_HHF=y. Requires CAP_NET_ADMIN (namespace-local via
+  CONFIG_NET_SCH_PIE=y. Requires CAP_NET_ADMIN (namespace-local via
   unshare -Urn suffices).
 
-  tc qdisc add dev dummy0 root hhf
-  tc qdisc change dev dummy0 root hhf quantum 1 stab data 32768 size_log 15 cell_log 0
+  tc qdisc add dev dummy0 root pie
+  tc qdisc change dev dummy0 root pie stab data 32768 size_log 15 cell_log 0
 
-Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
+Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
 Reported-by: vega@nebusec.ai
 Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
 Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Cc: stable@vger.kernel.org
 ---
- net/sched/sch_hhf.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ net/sched/sch_pie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index 96acab6a8da0..fc72f825fbd9 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -551,7 +551,7 @@ static int hhf_change(struct Qdisc *sch, struct nlattr *opt,
- 		return err;
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index b41f2def2e2c..3b7863ffd284 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -35,7 +35,7 @@ bool pie_drop_early(struct Qdisc *sch, struct pie_params *params,
+ {
+ 	u64 rnd;
+ 	u64 local_prob = vars->prob;
+-	u32 mtu = psched_mtu(qdisc_dev(sch));
++	u32 mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
  
- 	if (tb[TCA_HHF_QUANTUM])
--		new_quantum = nla_get_u32(tb[TCA_HHF_QUANTUM]);
-+		new_quantum = max(256U, nla_get_u32(tb[TCA_HHF_QUANTUM]));
- 
- 	if (tb[TCA_HHF_NON_HH_WEIGHT])
- 		new_hhf_non_hh_weight = nla_get_u32(tb[TCA_HHF_NON_HH_WEIGHT]);
-@@ -613,7 +613,7 @@ static int hhf_init(struct Qdisc *sch, struct nlattr *opt,
- 	int i;
- 
- 	sch->limit = 1000;
--	q->quantum = psched_mtu(qdisc_dev(sch));
-+	q->quantum = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 256, 1 << 20);
- 	get_random_bytes(&q->perturbation, sizeof(q->perturbation));
- 	INIT_LIST_HEAD(&q->new_buckets);
- 	INIT_LIST_HEAD(&q->old_buckets);
-@@ -624,10 +624,6 @@ static int hhf_init(struct Qdisc *sch, struct nlattr *opt,
- 	q->hhf_evict_timeout = HZ;      /* 1  sec */
- 	q->hhf_non_hh_weight = 2;
- 
--	if ((int)q->quantum <= 0 ||
--	    (u64)q->quantum * q->hhf_non_hh_weight > INT_MAX)
--		q->quantum = 256;
--
- 	if (opt) {
- 		int err = hhf_change(sch, opt, extack);
- 
+ 	/* If there is still burst allowance left skip random early drop */
+ 	if (vars->burst_time > 0)
 -- 
 2.43.0
 
