@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C377541CB4D;
-	Sat, 29 Aug 2026 21:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430523F9281;
+	Sat, 29 Aug 2026 21:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788037255; cv=none; b=j5kUAE0FOMHfCArEUktQBlIUAg9CYExQrISMDPrH1kNK395SAd+uRwGD3St2o63yd/4N++pLeAi9oxMmer/DZttU2JVVAmdNOfm66cwHCrZekmbq4AI/4dujjjTDiVDGf1BMLnr5QgLTmSx7voPsSY2re1/i/qVXmoo0+59unU4=
+	t=1788037257; cv=none; b=TjvXZEbgjctScRbXVztWCz8Sk0uRd3Y26aa6WgxVZspcTwJUGQr+9EawdVOaRtUH8WD/YYo23+lTelqkxDvNbIsBgf+dHpqjPGUdmht0Ss6eBuX7fVWSSWoS5AVNBB3bY9dnxXyR4WLJ60N6H7lreeyDj0qXitva760J7xGnXp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788037255; c=relaxed/simple;
-	bh=rzLy83Gde+jCVb+UFilIX5Mi3lSsPZZr74UuP3zMDUg=;
+	s=arc-20240116; t=1788037257; c=relaxed/simple;
+	bh=61i9TUGiMtFGD5L1Jd4TFG0Pn606vX80fSJMHrD3TOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P7OLzaTV3wFOyTK/j7M2k618OD6FwiLUsttAD8R95bzl2TCCWmCOj/QeykGYrt2AbTwgn73xCyxhNLECWL3P4oua9MwfT/NkcEHHKPF3jHp9VqNZR4ccScUdpoWvq88VqkG2V3xVmr4NB1DIQR61QxQVPoXYg98q0G0lBEvfDLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bozgxFUe; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=sZ7uzyCSzkjFjmYVglALFIz7GlzMA89S7cwYh4cGRbuwJt1iiwHXN0OZexYiOdncA8RypG2AoeHeAudAieChm43+fittR5eeNqNB98f6OGuKfxsxzb4KixoZOXhc9RSJGpJTzvBi2Evb+UJos9bc59O9cvV10sDy0WBLeM8jLxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=e5etv1uw; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bozgxFUe"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="e5etv1uw"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=Aq/TBRR68oABPHWW85xGriW8VExh69+qjG0gLLF3G64=; b=bozgxFUe8nPsZD4FUklfwMN0Wj
-	6m6voV6rIYsjAmBfSHE2itUoTEvlyZ4AFoD2EaCCplBdEF5MAB0kcpN94Ji/XvAtsmCPZs8gzIchY
-	6ganracYqMGpv4ldBSQZq3y99rU0ejKs25SVxCBX1qOOjE+StHF96ESGoD/cp9n/t0dPDcSttYyGh
-	crfVLcOMpTGJCn/hsxsKnVgIV22hs31LnIiiFMdFady7G56jctljhU/pEcpgqe1WLTV+xdiL+9iZ0
-	3pMhiVR568O7v5yE9U5OjVFSE+ApI8qudEw64aZ2tkx7f3N49hrstTAEbY/Gw9Ie8r7+uu+I6mdoJ
-	fxLg230w==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=jqYYq9Ac56ACEkZrVBV/w0LxW42KRKMnT6vdezFJ190=; b=e5etv1uwZCvT8B7GIva8z0plIq
+	iB2OaZ1M27xgOV8RN1KOyxSIwNotQMGliN+D0Mli26NSO9IV4bw/hO1J7NEcA+N1Bw99G39Q446Uc
+	KEayHxI0X0m6qmJp3wKR3fzSmCjeqw4cIHyJntqtuHb/wDUFipym8n09p8nBAe+KmlE6r9Vrstiqu
+	sYk8lMOivLHQQqcPnqcmk38hsBCwUCS01lyjYE0a/iTmW3HrvS5GZzQ1jyARc+i8dXB5MGqnHX6rl
+	JzzPLbpbh8UWa7XLxBSwXrwC/DU27oQr1bjTMuNq1RJS991kvCXzHbcTp6HL10pgsgfPadA0HRYGh
+	BBPmlCrg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0QAO-0000000H5t8-3vPF;
+	id 1x0QAP-0000000H5tA-0YHN;
 	Sat, 29 Aug 2026 21:00:45 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1x0QAO-00000000Aba-381I;
+	id 1x0QAO-00000000Abm-406g;
 	Sat, 29 Aug 2026 22:00:44 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Rodolfo Giometti <giometti@enneenne.com>,
@@ -50,9 +50,9 @@ To: Rodolfo Giometti <giometti@enneenne.com>,
 	netdev@vger.kernel.org,
 	Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v4 1/4] timekeeping: Apply extrapolated ntp_error to clock snapshots
-Date: Sat, 29 Aug 2026 21:56:59 +0100
-Message-ID: <20260829210041.40649-2-dwmw2@infradead.org>
+Subject: [PATCH v4 4/4] [DO NOT MERGE] ptp: ptp_vmclock: Add simulated 1PPS support
+Date: Sat, 29 Aug 2026 21:57:02 +0100
+Message-ID: <20260829210041.40649-5-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260829210041.40649-1-dwmw2@infradead.org>
 References: <20260829210041.40649-1-dwmw2@infradead.org>
@@ -62,223 +62,332 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The time reported in ::systime of a system_time_snapshot is known to be
-slightly inaccurate because of the way that the reported realtime clock
-sawtooths around the *intended* time series, limited by the integer mult
-value used to calculate the inter-tick times, and designed to ensure
-smoothness and monotonicity for its consumers.
+Before the timekeeping_set_reference() work, the simplest way to
+synchronise the kernel against vmclock was to simulate a 1PPS signal.
+Restore that hack here, for testing CONFIG_NTP_PPS in NOHZ mode.
 
-It is particularly inaccurate in a tickless kernel, where ntp_err_mult
-is not adjusted on each tick, allowing the reported clock to diverge
-from the intended time for a large number of ticks before re-converging.
+Set up an hrtimer to fire at each vmclock second boundary, and teach
+vmclock_get_crosststamp() to return the cycle counter and the
+corresponding { systime, monoraw } at the *start* of the current second,
+because hardpps() expects the timestamps it is given for phase and
+frequency adjustment to be the kernel's clock readings at the moment the
+true time is at the top of a second (i.e. when the pulse arrives).
 
-This appears to be the reason why CONFIG_NTP_PPS is not enabled on
-tickless kernels — because at that scale of precision, the realtime
-snapshot at the time of the pulse bears little relation to the time the
-kernel *actually* believes it to be, thus introducing random errors into
-the PPS phase correction.
-
-It would be better for callers of get_device_system_crosststamp() and
-ktime_get_snapshot_id() to receive the *accurate* time, not the
-sanitized version provided to gettimeofday().
-
-Compute the deviation in snapshot_ntp_error() and add it to the returned
-::systime so the snapshot lands on the ideal line. It sums four terms in
-ns << NTP_SCALE_SHIFT before converting to signed ns:
-
-  - tk->ntp_error, the deviation as of the last update;
-  - (cycle_delta * ntp_err_frac), the fractional-mult drift accrued
-    since then (cycle_delta is at most a tick on a tickful kernel, but
-    many ticks' worth under NO_HZ);
-  - (cycle_delta * ntp_err_mult), subtracting the applied +1 mult dither
-    over the same span;
-  - the sub-nanosecond fraction dropped when the read was truncated to
-    whole ns (low shift bits, exact despite the multiply overflowing).
-
-The helper uses the timekeeper selected for the requested clock id, so
-all NTP-disciplined clocks are corrected, including the AUX clocks (each
-has its own NTP instance); only CLOCK_MONOTONIC_RAW is undisciplined and
-gets no correction. The residual is then a single clocksource cycle, the
-same bound as a tickful kernel.
-
-Note that this *unconditionally* changes the ::systime returned by all
-snapshot and cross timestamp consumers (PTP SYS_OFFSET_PRECISE/EXTENDED,
-etc.): it is now the ideal NTP-disciplined time rather than the raw
-accumulated clock.
+The timer feeds a PTP_CLOCK_PPSUSR event; with PTP_ENABLE_PPS, the PPS
+source bound to the in-kernel hardpps() consumer and STA_PPSTIME/PPSFREQ
+set, the kernel disciplines CLOCK_REALTIME directly from vmclock. The
+second-boundary cycle is recovered from get_device_system_crosststamp()
+using a history snapshot for interpolation.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: Kiro:claude-opus-4.8
 ---
- include/linux/timekeeper_internal.h |  6 +++
- kernel/time/timekeeping.c           | 70 +++++++++++++++++++++++++++--
- 2 files changed, 72 insertions(+), 4 deletions(-)
+ drivers/ptp/ptp_vmclock.c | 196 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 185 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper_internal.h
-index fe077d97b5f8..b17f7d54fb4d 100644
---- a/include/linux/timekeeper_internal.h
-+++ b/include/linux/timekeeper_internal.h
-@@ -97,6 +97,11 @@ struct tk_read_base {
-  * @ntp_error_shift:		Shift conversion between clock shifted nano seconds and
-  *				ntp shifted nano seconds.
-  * @ntp_err_mult:		Multiplication factor for scaled math conversion
-+ * @ntp_err_frac:		Fractional part of the per-cycle NTP-ideal mult that the
-+ *				integer @mult truncates, as a fraction of 2^32 in
-+ *				clock-shifted nanoseconds per cycle. Used to
-+ *				extrapolate @ntp_error to an arbitrary cycle count in
-+ *				the lockless snapshot readers (ktime_get_snapshot_id).
-  * @cs_tick_adj:		Per-second adjustment handed to NTP via ntp_clear()
-  *				accounting for the difference between the nominal
-  *				NTP interval and the real time taken by the
-@@ -187,6 +192,7 @@ struct timekeeper {
- 	s64			ntp_error;
- 	u32			ntp_error_shift;
- 	u32			ntp_err_mult;
-+	u64			ntp_err_frac;
- 	s64			cs_tick_adj;
- 	u32			skip_second_overflow;
- 	s64			skew_delta;
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index ea2e6e55f37b..5ef7eb1ab62b 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -422,6 +422,7 @@ static void tk_setup_internals(struct timekeeper *tk, struct clocksource *clock)
- 	tk->tkr_mono.mult = clock->mult;
- 	tk->tkr_raw.mult = clock->mult;
- 	tk->ntp_err_mult = 0;
-+	tk->ntp_err_frac = 0;
- 	tk->skip_second_overflow = 0;
- 	tk->skew_delta = 0;
+diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c
+index bb0e14bac9f2..44fb82f4054f 100644
+--- a/drivers/ptp/ptp_vmclock.c
++++ b/drivers/ptp/ptp_vmclock.c
+@@ -13,6 +13,7 @@
+ #include <linux/err.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
++#include <linux/hrtimer.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/interrupt.h>
+@@ -51,6 +52,10 @@ struct vmclock_state {
+ 	enum clocksource_ids cs_id, sys_cs_id;
+ 	int index;
+ 	char *name;
++	struct hrtimer pps_timer;
++	bool pps_enabled;
++	struct system_time_snapshot history_snap;
++	bool history_valid;
+ };
  
-@@ -1230,6 +1231,51 @@ static inline u64 tk_clock_read_snapshot(const struct tk_read_base *tkr,
- 	return clock->read(clock);
+ #define VMCLOCK_MAX_WAIT ms_to_ktime(100)
+@@ -98,10 +103,13 @@ static bool tai_adjust(struct vmclock_abi *clk, uint64_t *sec)
+ static int vmclock_get_crosststamp(struct vmclock_state *st,
+ 				   struct ptp_system_timestamp *sts,
+ 				   struct system_counterval_t *system_counter,
+-				   struct timespec64 *tspec)
++				   struct timespec64 *tspec,
++				   bool on_second)
+ {
+ 	ktime_t deadline = ktime_add(ktime_get(), VMCLOCK_MAX_WAIT);
+ 	uint64_t cycle, delta, seq, frac_sec;
++	uint64_t period_frac_sec;
++	uint8_t period_shift;
+ 
+ #ifdef CONFIG_X86
+ 	/*
+@@ -154,11 +162,46 @@ static int vmclock_get_crosststamp(struct vmclock_state *st,
+ 
+ 		delta = cycle - le64_to_cpu(st->clk->counter_value);
+ 
++		period_frac_sec = le64_to_cpu(st->clk->counter_period_frac_sec);
++		period_shift = st->clk->counter_period_shift;
++
+ 		frac_sec = mul_u64_u64_shr_add_u64(&tspec->tv_sec, delta,
+-						   le64_to_cpu(st->clk->counter_period_frac_sec),
+-						   st->clk->counter_period_shift,
++						   period_frac_sec, period_shift,
+ 						   le64_to_cpu(st->clk->time_frac_sec));
+-		tspec->tv_nsec = mul_u64_u64_shr(frac_sec, NSEC_PER_SEC, 64);
++
++		/* For simulated PPS, adjust to the most recent second boundary */
++		if (on_second) {
++			uint64_t delta_cycles;
++			int frac_shift, shift_remain;
++
++			if (tspec->tv_sec == 0)
++				return -EAGAIN;  /* No second boundary crossed yet */
++
++			/*
++			 * Roll the counter back to the top of the current second.
++			 * frac_sec == 0 means we are already exactly on the
++			 * boundary (and __builtin_clzll(0) is undefined).
++			 */
++			if (frac_sec) {
++				/* Shift frac_sec left until top bit is set */
++				frac_shift = __builtin_clzll(frac_sec);
++				frac_sec <<= frac_shift;
++
++				/* Shift period right by the remaining bits */
++				shift_remain = period_shift - frac_shift;
++				if (shift_remain > 0)
++					period_frac_sec >>= shift_remain;
++				else
++					frac_sec >>= -shift_remain;
++
++				delta_cycles = frac_sec / period_frac_sec;
++				cycle -= delta_cycles;
++			}
++			tspec->tv_nsec = 0;
++		} else {
++			tspec->tv_nsec = mul_u64_u64_shr(frac_sec, NSEC_PER_SEC, 64);
++		}
++
+ 		tspec->tv_sec += le64_to_cpu(st->clk->time_sec);
+ 
+ 		if (!tai_adjust(st->clk, &tspec->tv_sec))
+@@ -193,7 +236,8 @@ static int vmclock_get_crosststamp(struct vmclock_state *st,
+ static int vmclock_get_crosststamp_kvmclock(struct vmclock_state *st,
+ 					    struct ptp_system_timestamp *sts,
+ 					    struct system_counterval_t *system_counter,
+-					    struct timespec64 *tspec)
++					    struct timespec64 *tspec,
++					    bool on_second)
+ {
+ 	struct pvclock_vcpu_time_info *pvti = this_cpu_pvti();
+ 	unsigned int pvti_ver;
+@@ -204,7 +248,7 @@ static int vmclock_get_crosststamp_kvmclock(struct vmclock_state *st,
+ 	do {
+ 		pvti_ver = pvclock_read_begin(pvti);
+ 
+-		ret = vmclock_get_crosststamp(st, sts, system_counter, tspec);
++		ret = vmclock_get_crosststamp(st, sts, system_counter, tspec, on_second);
+ 		if (ret)
+ 			break;
+ 
+@@ -240,10 +284,10 @@ static int ptp_vmclock_get_time_fn(ktime_t *device_time,
+ #ifdef SUPPORT_KVMCLOCK
+ 	if (READ_ONCE(st->sys_cs_id) == CSID_X86_KVM_CLK)
+ 		ret = vmclock_get_crosststamp_kvmclock(st, NULL, system_counter,
+-						       &tspec);
++						       &tspec, false);
+ 	else
+ #endif
+-		ret = vmclock_get_crosststamp(st, NULL, system_counter, &tspec);
++		ret = vmclock_get_crosststamp(st, NULL, system_counter, &tspec, false);
+ 
+ 	if (!ret)
+ 		*device_time = timespec64_to_ktime(tspec);
+@@ -280,6 +324,98 @@ static int ptp_vmclock_getcrosststamp(struct ptp_clock_info *ptp,
+ 	return ret;
  }
  
-+/*
-+ * snapshot_ntp_error - record how far a snapshot's ::systime is from the
-+ * ideal NTP-disciplined time at @now, in signed nanoseconds, so a caller
-+ * can land exactly on the ideal line by adding it to ::systime.
-+ *
-+ * The value is summed in ns << NTP_SCALE_SHIFT from four parts:
-+ *
-+ *  - tk->ntp_error, the deviation accumulated as of the last timekeeping
-+ *    update (tkr_mono.cycle_last);
-+ *  - (cycle_delta * ntp_err_frac), the fractional-mult drift accrued over
-+ *    the cycles read since then -- at most a tick on a tickful kernel, but
-+ *    potentially many ticks' worth under NO_HZ;
-+ *  - (cycle_delta * ntp_err_mult), subtracting the applied +1 mult dither
-+ *    over the same span;
-+ *  - the sub-nanosecond fraction that ::systime dropped when the read was
-+ *    truncated to whole ns (the low @shift bits, exact even though the
-+ *    multiply overflows).
-+ *
-+ * CLOCK_MONOTONIC_RAW is not NTP-disciplined and carries no error. Every
-+ * other clock id uses its own timekeeper @tk -- including the AUX clocks,
-+ * which each have their own NTP instance.
-+ */
-+static s64 snapshot_ntp_error(const struct timekeeper *tk, clockid_t clock_id,
-+			      u64 now)
++static int ptp_vmclock_get_time_fn_pps(ktime_t *device_time,
++				       struct system_counterval_t *system_counter,
++				       void *ctx)
 +{
-+	u64 cycle_delta;
-+	u32 nes;
-+	s64 tmp, err;
++	struct vmclock_state *st = ctx;
++	struct timespec64 tspec;
++	int ret;
 +
-+	if (clock_id == CLOCK_MONOTONIC_RAW)
-+		return 0;
++#ifdef SUPPORT_KVMCLOCK
++	if (st->history_valid && st->history_snap.cs_id == CSID_X86_KVM_CLK)
++		ret = vmclock_get_crosststamp_kvmclock(st, NULL, system_counter,
++						       &tspec, true);
++	else
++#endif
++		ret = vmclock_get_crosststamp(st, NULL, system_counter, &tspec, true);
 +
-+	cycle_delta = (now - tk->tkr_mono.cycle_last) & tk->tkr_mono.mask;
-+	nes = tk->ntp_error_shift;
++	if (!ret)
++		*device_time = timespec64_to_ktime(tspec);
 +
-+	err = tk->ntp_error;
-+	err += ((s64)mul_u64_u64_shr(cycle_delta, tk->ntp_err_frac, 32) -
-+		(s64)(cycle_delta * tk->ntp_err_mult)) << nes;
-+
-+	tmp = (s64)(cycle_delta * tk->tkr_mono.mult + tk->tkr_mono.xtime_nsec);
-+	tmp &= (1ULL << tk->tkr_mono.shift) - 1;
-+	err += tmp << nes;
-+
-+	return (err + (1LL << (NTP_SCALE_SHIFT - 1))) >> NTP_SCALE_SHIFT;
++	return ret;
 +}
- 
- /**
-  * ktime_get_snapshot_id -  Simultaneously snapshot a given clock ID with
-@@ -1253,6 +1299,7 @@ void ktime_get_snapshot_id(clockid_t clock_id, struct system_time_snapshot *syst
- {
- 	ktime_t base_raw, base_sys, offs_sys, *offs, offs_zero = 0;
- 	u64 nsec_raw, nsec_sys, now;
-+	s64 ntp_error;
- 	struct timekeeper *tk;
- 	struct tk_data *tkd;
- 	unsigned int seq;
-@@ -1315,10 +1362,12 @@ void ktime_get_snapshot_id(clockid_t clock_id, struct system_time_snapshot *syst
- 
- 		nsec_sys = timekeeping_cycles_to_ns(&tk->tkr_mono, now);
- 		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, now);
 +
-+		ntp_error = snapshot_ntp_error(tk, clock_id, now);
- 	} while (read_seqcount_retry(&tkd->seq, seq));
++/*
++ * Generate simulated PPS events for feeding __hardpps(), which expects to be
++ * given both CLOCK_REALTIME and CLOCK_MONOTONIC_RAW values for when a 1PPS
++ * signal actually happened (i.e. at the top of a second).
++ *
++ * vmclock_get_crosststamp(..., on_second=true) reads the vmclock and both
++ * system clocks from the same TSC value, then rolls the TSC back to the value
++ * it would have had at the start of the current second so the timestamps line
++ * up with a real pulse. The hrtimer reschedules itself for the top of the next
++ * second according to *vmclock*, not necessarily CLOCK_REALTIME.
++ */
++static enum hrtimer_restart ptp_vmclock_pps_timer(struct hrtimer *timer)
++{
++	struct vmclock_state *st = container_of(timer, struct vmclock_state, pps_timer);
++	struct system_device_crosststamp xtstamp = { .clock_id = CLOCK_REALTIME };
++	struct ptp_clock_event event;
++	ktime_t next, now_rt;
++	s64 delta_ns;
++	int ret;
++
++	if (!st->pps_enabled)
++		return HRTIMER_NORESTART;
++
++	/* Only report PPS if we have a valid history snapshot to interpolate from */
++	ret = -EINVAL;
++	if (st->history_valid) {
++		ret = get_device_system_crosststamp(ptp_vmclock_get_time_fn_pps, st,
++						    &st->history_snap, &xtstamp);
++		if (!ret) {
++			event.type = PTP_CLOCK_PPSUSR;
++			event.pps_times.ts_real = ktime_to_timespec64(xtstamp.sys_systime);
++#ifdef CONFIG_NTP_PPS
++			event.pps_times.ts_raw = ktime_to_timespec64(xtstamp.sys_monoraw);
++#endif
++			ptp_clock_event(st->ptp_clock, &event);
++		}
++	}
++
++	/* Capture a snapshot to bound the next interpolation */
++	ktime_get_snapshot_id(CLOCK_REALTIME, &st->history_snap);
++	st->history_valid = true;
++
++	/*
++	 * Schedule the next timer for the top of the next second according to
++	 * vmclock. If we reported a PPS event, xtstamp.sys_systime is already
++	 * at the second boundary, so just add a second; otherwise read the
++	 * current vmclock time and work out when it next hits a boundary.
++	 */
++	if (!ret) {
++		next = ktime_add_ns(xtstamp.sys_systime, NSEC_PER_SEC);
++	} else {
++		struct timespec64 ts;
++
++		if (vmclock_get_crosststamp(st, NULL, NULL, &ts, false))
++			return HRTIMER_NORESTART;
++
++		delta_ns = NSEC_PER_SEC - ts.tv_nsec;
++		next = ktime_add_ns(st->history_snap.systime, delta_ns);
++	}
++
++	/* Never reschedule in the past, or the timer tight-loops */
++	now_rt = ktime_get_real();
++	if (ktime_compare(next, now_rt) <= 0)
++		next = ktime_add_ns(now_rt, NSEC_PER_SEC);
++
++	hrtimer_set_expires(timer, next);
++
++	return HRTIMER_RESTART;
++}
++
+ /*
+  * PTP clock operations
+  */
+@@ -306,12 +442,43 @@ static int ptp_vmclock_gettimex(struct ptp_clock_info *ptp, struct timespec64 *t
+ 	struct vmclock_state *st = container_of(ptp, struct vmclock_state,
+ 						ptp_clock_info);
  
- 	systime_snapshot->cycles = now;
--	systime_snapshot->systime = ktime_add_ns(base_sys, offs_sys + nsec_sys);
-+	systime_snapshot->systime = ktime_add_ns(base_sys, offs_sys + nsec_sys) + ntp_error;
- 	systime_snapshot->monoraw = ktime_add_ns(base_raw, nsec_raw);
+-	return vmclock_get_crosststamp(st, sts, NULL, ts);
++	return vmclock_get_crosststamp(st, sts, NULL, ts, false);
+ }
  
- 	/*
-@@ -1570,6 +1619,7 @@ int get_device_system_crosststamp(int (*get_time_fn)
- 	ktime_t base_sys, base_raw, *offs;
- 	u32 clock_was_set_seq = 0;
- 	u64 nsec_sys, nsec_raw;
-+	s64 ntp_error;
- 	u8 cs_was_changed_seq;
- 	unsigned int seq;
- 	bool do_interp;
-@@ -1636,9 +1686,10 @@ int get_device_system_crosststamp(int (*get_time_fn)
- 
- 		nsec_sys = timekeeping_cycles_to_ns(&tk->tkr_mono, cycles);
- 		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, cycles);
-+		ntp_error = snapshot_ntp_error(tk, xtstamp->clock_id, cycles);
- 	} while (read_seqcount_retry(&tkd->seq, seq));
- 
--	xtstamp->sys_systime = ktime_add_ns(base_sys, nsec_sys);
-+	xtstamp->sys_systime = ktime_add_ns(base_sys, nsec_sys) + ntp_error;
- 	xtstamp->sys_monoraw = ktime_add_ns(base_raw, nsec_raw);
- 
- 	/*
-@@ -2433,6 +2484,7 @@ static void timekeeping_adjust(struct timekeeper *tk, s64 offset)
+ static int ptp_vmclock_enable(struct ptp_clock_info *ptp,
+ 			  struct ptp_clock_request *rq, int on)
  {
- 	u64 ntp_tl = ntp_tick_length(tk->id);
- 	s64 skew = ntp_get_skew_delta(tk->id);
-+	u64 dividend;
- 	u32 mult;
++	struct vmclock_state *st = container_of(ptp, struct vmclock_state,
++						ptp_clock_info);
++
++	switch (rq->type) {
++	case PTP_CLK_REQ_PPS:
++		st->pps_enabled = !!on;
++		if (on) {
++			struct timespec64 ts;
++			s64 delta_ns;
++
++			/* Snapshot to bound the first interpolation */
++			ktime_get_snapshot_id(CLOCK_REALTIME, &st->history_snap);
++			st->history_valid = true;
++
++			if (vmclock_get_crosststamp(st, NULL, NULL, &ts, false))
++				return -EIO;
++
++			/* When will vmclock next reach a second boundary? */
++			delta_ns = NSEC_PER_SEC - ts.tv_nsec;
++
++			hrtimer_start(&st->pps_timer,
++				      ktime_add_ns(st->history_snap.systime, delta_ns),
++				      HRTIMER_MODE_ABS);
++		} else {
++			hrtimer_cancel(&st->pps_timer);
++		}
++		return 0;
++	default:
++		break;
++	}
++
+ 	return -EOPNOTSUPP;
+ }
  
- 	/*
-@@ -2451,8 +2503,18 @@ static void timekeeping_adjust(struct timekeeper *tk, s64 offset)
- 		 * scale it back up to the full per-tick rate for the mult bias.
- 		 */
- 		skew *= NTP_INTERVAL_FREQ;
--		mult = div64_u64((tk->ntp_tick + skew) >> tk->ntp_error_shift,
--				 tk->cycle_interval);
-+		dividend = (tk->ntp_tick + skew) >> tk->ntp_error_shift;
-+		mult = div64_u64(dividend, tk->cycle_interval);
-+		/*
-+		 * Stash the fractional part of the per-cycle ideal mult that
-+		 * the integer @mult discards, scaled by 2^32, in clock-shifted
-+		 * ns per cycle. The lockless snapshot readers use it to
-+		 * extrapolate @ntp_error forward over the cycles accumulated
-+		 * since the last tick (which on a NO_HZ kernel may be many
-+		 * ticks' worth).
-+		 */
-+		dividend -= (u64)mult * tk->cycle_interval;
-+		tk->ntp_err_frac = div64_u64(dividend << 32, tk->cycle_interval);
- 	}
+@@ -320,7 +487,7 @@ static const struct ptp_clock_info ptp_vmclock_info = {
+ 	.max_adj	= 0,
+ 	.n_ext_ts	= 0,
+ 	.n_pins		= 0,
+-	.pps		= 0,
++	.pps		= 1,
+ 	.adjfine	= ptp_vmclock_adjfine,
+ 	.adjtime	= ptp_vmclock_adjtime,
+ 	.gettimex64	= ptp_vmclock_gettimex,
+@@ -356,6 +523,10 @@ static struct ptp_clock *vmclock_ptp_register(struct device *dev,
+ 	st->ptp_clock_info = ptp_vmclock_info;
+ 	strscpy(st->ptp_clock_info.name, st->name);
  
- 	/*
++	hrtimer_setup(&st->pps_timer, ptp_vmclock_pps_timer, CLOCK_REALTIME,
++		      HRTIMER_MODE_ABS);
++	st->pps_enabled = false;
++
+ 	return ptp_clock_register(&st->ptp_clock_info, dev);
+ }
+ 
+@@ -643,8 +814,11 @@ static void vmclock_remove(void *data)
+ 					   vmclock_acpi_notification_handler);
+ #endif
+ 
+-	if (st->ptp_clock)
++	if (st->ptp_clock) {
++		st->pps_enabled = false;
++		hrtimer_cancel(&st->pps_timer);
+ 		ptp_clock_unregister(st->ptp_clock);
++	}
+ 
+ 	if (st->miscdev.minor != MISC_DYNAMIC_MINOR)
+ 		misc_deregister(&st->miscdev);
 -- 
 2.55.0
 
