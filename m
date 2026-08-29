@@ -1,142 +1,176 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9886639B947
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 16:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA32361670
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 17:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788022595; cv=none; b=CW0BG40EL18KnOXw9AqqJPSryuL2alroJD7280LWZ4g/aw1ViCO3C+kRplUPyYSJDftrojZBmL3JiHpxZ9GR4wb+c8GMkjKYzjG6NqA1eZbECEMvyMmO35WkkyiVCUotITKHQQNNbfdRXANfkAA8tnl+5L1iqYK4BcNDW6zwYL8=
+	t=1788023230; cv=none; b=m2nhU9R3HtNZa/t9CIQiYN3UNSOdH+jPEFohmNzC80qsvrv8Bg0j91tY1QpqohiWBx7y299EBBGtVLOfpcJFkkJXuVsEXG5wW/FVtPr5qLH7PaY9I3VJfL5oP1aMUuYXbI//QI/SsM36NiHu8pdv3kWVyNtEHyKLGzN7CcQQJ3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788022595; c=relaxed/simple;
-	bh=1uEW+6SOlAFA8NY9T1gSTaZvUlQQS478fgHHsQ7CsWc=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=RY0CPSBC/sDCS3tKLdiUZD/lUeleGUpCuTF90Cwr4Sgu3O25CJhoIMeaofyIWVXXpkhIucmHpJp6EJwUdoK9tF9CSUkLObtSXIUMYW5a2ynma+POqYljKuhkThO9WW0ZDUy8he3JpVIUxza4ae4V00T4dFPx5uAHMxvYBers6/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=WMuXIup2; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1788023230; c=relaxed/simple;
+	bh=pHbnwUN3UUCK4uiyoAaioeKCV4llbaKe1YQzv4Jod+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oaBoQlFSP4Qc5lww81uwzo06dif1GTzp5NDr90Xf1uUahyKwG+sakuQTjTpzOZXREkZmoflPDvTwz3ae8H6jBLtAx6vYS55qwEp90SWobYpICNDWd6fJK6Xx8WRNnf+IJwzrPRhYuVPK+HkN7aRhpnZavYz8DFxpp2KbhfA2OSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fUhQOgkQ; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="WMuXIup2"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2530cabcf4so323043266b.0
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 09:56:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fUhQOgkQ"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-482f9309813so1234045f8f.1
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 10:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1788022592; x=1788627392; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2JHuNFyBqBV7i/n9uU3aIKvff48cRNUPOa5Ukv7rkvQ=;
-        b=WMuXIup2SHzZ7f19VvJe+M3YxHZVzuf7+Km+X+tOXymo1rZpPtX0CoxGynXZfGaUk3
-         /LIij0c/z8rEDTmW5LH1BQFzngJ/45blucQBaMUJma7iByJHaEC6hXdubjtG90K8vhHZ
-         5TYSYUN8KKjJs3ouGQKRpO0a9hLTgj+EjdFv22tdbzjECUUktRoURAojdWSjGP6vQr+R
-         gwLdc0Mg49vrKxIHSpWTXdnIh0EwUYSnuzgrKjL2F6ol4o4DR73y1f42D09LBjIhbhbt
-         o2neFqpFHl347jgtP/Ikgt4YNVrNz+23WwSK4aKK6JFxzdcI+f+GJcDpNf45p06UzWhA
-         kg0Q==
+        d=gmail.com; s=20251104; t=1788023224; x=1788628024; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qc1W4fex00U+eOWL5xaR6NDiG48y7mOQwn5RsxVM7a4=;
+        b=fUhQOgkQ0huY0PfIjDpKtX1qwp34/hG2mIsavIkzOoZg17PInORw2E/9dkI9JWV0h6
+         ZpApOoJxEDvO1ZvoD9C7JgcRm5DbFyD6oSGBqQDOSyo2/fBezZzv/wwYePwsO+5gUTCA
+         KUlOSsMkQ9Oh4rh7FjYwQUXTSIDpYkCi/cccV/ISEYGdM5lB0iebrZPZLH8vG7OlrEiO
+         7CqKYJwXQyon7Un/HLV+yg0ZU2f8JFnTVL5wBMw84lPT5wWTLxIHhoYTu8xyzBi94OHj
+         sBDha1hvlxaDa9lSjuZnDtm3uDX2mnBPoDqVJKPusuKdb7OW/7JCtskFY39ebZ3ICv+t
+         2lyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788022592; x=1788627392;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2JHuNFyBqBV7i/n9uU3aIKvff48cRNUPOa5Ukv7rkvQ=;
-        b=a1yw8Ym/BrmkHzAgmH76Ok74mAr6g5bG2RPxb2FJUBSixpcyXVKHUvM/ti+Lh/zgai
-         W5zLzlxzzcb2r0SN4NvS1kmFNAfpXdGEXBkkkLPDhwRD0Y//vCC+RWJP6dHja1hglbxq
-         goU9Gwq6FXEB08bJjH/LKpjIq3qgFy9cjp2SC7/5wmJJaV5BOVQHggwIm4nIDyRmgWXe
-         VrpWReociU0GG6Rsv/z/wpF5ACvpq4odYa1CuGINjVijEyP7BmPahmLmqYtdwrtcO4IO
-         t4wUhsVdV/wWZ3+a6E/XOhL9JSruZDme3LfA2RaXF09GA7AbnAUH4PW35r+r8ixAEGI6
-         D68w==
-X-Gm-Message-State: AFuF++kwCIDSjJExSJ8K5uut5KeO3XjIbg6f/M7lprF1GIdJQIQA31ba
-	jBqz6iPcMImjGMI5bEgcwveAGh5AoBtcUbEwAjt0B8JbucMA70zJerv1sTsFyqjMef+C8iEnJm9
-	pFg7QxIj7YA==
-X-Gm-Gg: AR+sD12COlCjQWCyKi9vUkeIsD8onhGsBaueCkoTZ4NY/ZWM4HD1amIbkpYUot4GfIG
-	qJ0lWnU9D7bOeuU9tPokgH13XV3P+x+P2pLuZTDBXmswZmWY/ED7UkTGHot8nbB8vFr9IqePCfG
-	w2SWZ5m6hHVDrFhM1d6kY2ZNPB9o+vhNryfz0FRkhUvS28vTn/kg0joWUvG+t2k/dpldRT1G7El
-	Gvul6ebGeGZeYWYsRqU7qmO53m+KCN92H+G8+wFV0/oSYc7aTEvTEKbUYlPBL4z80Q/ZZcuHphd
-	pNadyvySGfAwaXUsGGnu2xEuGR2uXKc8pXhOsRc/vgVbJp0OLigrCrWinuBXNQMVNze1FgCeTT2
-	pVp0U5E6izmbd9nRPJmaZq68q8hAtp9HMJRZzwCFAgn/vLDpjmQVMT47n4ngcNundTFD8jH2she
-	U8yC5Fq2xBGspSNx24ao/Lrvu+IVy/bi1zhdc/l76+x50YtHdb2rNGRU+xR+ieIqQQzAjNdkpGb
-	CBtKagiDqFiNAgSN6oN9rnzlPp7HjPD+bmjTxrboW8E4HZrGgnn8BS99L1F8dBuA+wVbXoloeW6
-	F8AwuJsa33Qf5wH11PnnoQkxLkc=
-X-Received: by 2002:a17:907:ea7:b0:c25:4f7c:8ec5 with SMTP id a640c23a62f3a-c25571fb792mr967095466b.23.1788022591667;
-        Sat, 29 Aug 2026 09:56:31 -0700 (PDT)
-Received: from smtpclient.apple (83.10.35.35.ipv4.supernova.orange.pl. [83.10.35.35])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1fa3ddsm210342666b.45.2026.08.29.09.56.29
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 29 Aug 2026 09:56:30 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20251104; t=1788023224; x=1788628024;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qc1W4fex00U+eOWL5xaR6NDiG48y7mOQwn5RsxVM7a4=;
+        b=QE+6Y51MKEUxEkDGtXoPBalHA4tX4nOW0PnRsUiOAsFNNTZSf8DbSmnD/e826nXEnc
+         6NmoEcotkcbbFzPyLyk/SUHtr8FxT15Ch5cx8UAuA7SL9TC/Yq/ibb4z2A5QhIoM6NTl
+         2IdEFQK/HBnNKRBndCTuQcmwrVb2cskQqP4QaNqeaqgH9ivmINGom2EEzJU2aKasxDo7
+         ZmRrxfydVCKPG1TVWqP//thJwszhc6CRTD71//wiJCPTIH+yMJrgfyOMprO7OfOyBd1y
+         uvakVm0EAprlgcQps3ziVKEaf9ZFF3qsVgb1frTUgzdRn3fZam0fWm0SRZPrW50DDeHE
+         nQVA==
+X-Gm-Message-State: AFuF++kl0f/H/fs+WVLAyBKgJ4zyRjEdztEoKV2WOJUgLAnln8FbZP6y
+	UqPoyM9tGLGWEFIkAY0mOBS7+ONG3jIAeYREJ+t+yuqefbQUqags0BN7MSYLXCy2
+X-Gm-Gg: AYBFou1wktoadSt4Tb2FlaQEa9/duj4CfDBbjCEMInKYoRbkAAKjN45gX1sWe8ukOmt
+	4PC4klD2AAlzs1qyhNyP2PB8p9z5H25rucKwLKAE/tz7/1fBIrt9gFJEHS9aAVmBfHmRgijsYrc
+	DlUivFV6Le4tgQ3kPHitzw9wIwmFAKJNTb3/2CxVEtS9cMzJl5VCODTPXCrjYD3MEfixhDlMnDF
+	9G0ntbN78GB0kXS/emkr8HgFviPn3/HU17MRLGHhwSYFjlUyVQUJgr8THVhJyP/VN1xmt5cDZ5H
+	LOldFCTN4s/oMblVTUGd8cDS47+tGbSC7xfBWEWVPrRBxASmq3bOiaf3V09J1WUkYWNZRjpNafb
+	PT1CXhtRjrLRS3Ks2xaXtQRl16uLTKf8+St4JJeZT7bkPPIwjN4ykhNGGEi4+7cU3qvSrJslLeN
+	4dgggZYoIfuZUCJVKVqRS3MNn++iUVydbs/3sk9Yv4Gwdqk4obiWUlrO0tBNk341Dv9A==
+X-Received: by 2002:a5d:64c5:0:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482f7977aabmr22156144f8f.1.1788023224359;
+        Sat, 29 Aug 2026 10:07:04 -0700 (PDT)
+Received: from SurHub.localdomain ([102.213.68.39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbad04d4sm11936201f8f.15.2026.08.29.10.07.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Aug 2026 10:07:03 -0700 (PDT)
+From: "user.email" <suruurism@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
+	sean.tranchetti@oss.qualcomm.com,
+	horms@kernel.org
+Subject: [PATCH net v3] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
+Date: Sat, 29 Aug 2026 20:06:56 +0300
+Message-ID: <20260829170656.15548-1-suruurism@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net] net: psp: do not inherit the Rx association on clone
-Message-Id: <BC10EB92-ABB3-41B2-AB16-266BEEBE18C0@doyensec.com>
-Date: Sat, 29 Aug 2026 18:56:18 +0200
-Cc: Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>,
- Daniel Zahka <daniel.zahka@gmail.com>,
- linux-kernel@vger.kernel.org
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-sk->psp_assoc sits past sk_dontcopy_end, so sock_copy() copies it into
-every socket accepted from a listener without taking a reference, while
-inet_sock_destruct() puts for every inet socket. psp_twsk_init() does
-refcount_inc() for the timewait socket, so a child closing through
-TIME_WAIT cancels its own put and leaves the association with one
-reference and N timewait sockets holding the same pointer. Closing the
-listener frees it, and the timewait timers then put freed memory.
+From: Abdifatah Suruur <suruurism@gmail.com>
 
-Rejecting the association on a listening socket is not sufficient: a =
-socket
-can acquire one while established and then be turned back into a =
-listener,
-because tcp_disconnect() leaves sk->psp_assoc in place.
+An rmnet device may be created with its real device in a different
+netns than the rmnet device itself (rmnet_newlink() resolves it in
+link_net), and the rtnl config paths below only check CAP_NET_ADMIN
+against dev_net(dev), while mutating rmnet port state attached to the
+real device:
 
-  BUG: KASAN: slab-use-after-free in psp_twsk_assoc_free+0x6f/0xf0
-  Write of size 4 at addr ffff888110f9255c by task swapper/7/0
-   psp_twsk_assoc_free+0x6f/0xf0
-   inet_twsk_put+0xda/0x1b0
-   call_timer_fn+0x53/0x2e0
-   __run_timers+0x764/0xa80
-  Freed by task 99:
-   kfree+0x1a7/0x500
-   process_one_work+0x7ec/0x1100
+- rmnet_changelink() rewrites the endpoint mux table and
+  port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
+  MTU of the rmnet endpoint netdevs.
+- rmnet_add_bridge() and rmnet_del_bridge(), reachable via
+  ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
+  port->rmnet_mode and port->bridge_ep on the real device's port; with
+  bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
+  forwards real-device ingress frames to it.
 
-An association carries a per-connection SPI and key, so a child must not
-inherit the parent's. Clear it on clone.
+A caller privileged only in the rmnet device's netns can therefore
+rewrite the shared cellular data-path state owned by another netns, and
+steer its ingress traffic.
 
-Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
+Gate all three with rtnl_dev_link_net_capable(), matching the "require
+CAP_NET_ADMIN in the device netns for changelink" series (vxlan/geneve,
+CVE-2026-68432).
+
+Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
+Fixes: 60d58f971c1077 ("net: qualcomm: rmnet: Implement bridge mode")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
 ---
-Reproducer available on request.
+v3:
+- cover rmnet_add_bridge() and rmnet_del_bridge() with the same gate;
+  they mutate the same real-device port state via ndo_add_slave/
+  ndo_del_slave and have no capability check of their own
+- correct the impact wording: rmnet_vnd_update_dev_mtu() only reads
+  real_dev->mtu; the MTU store lands on the rmnet endpoint netdevs via
+  rmnet_vnd_change_mtu(), not on the real device
+v2:
+- drop Reported-by: (implied for the author), per Jakub Kicinski
+---
+ .../ethernet/qualcomm/rmnet/rmnet_config.c    | 30 ++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
- net/core/sock.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1ad41904db25..fa60b7494c58 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2494,6 +2494,9 @@ struct sock *sk_clone(const struct sock *sk, const =
-gfp_t priority,
- #ifdef CONFIG_BPF_SYSCALL
- 	RCU_INIT_POINTER(newsk->sk_bpf_storage, NULL);
- #endif
-+#if IS_ENABLED(CONFIG_INET_PSP)
-+	RCU_INIT_POINTER(newsk->psp_assoc, NULL);
-+#endif
-=20
- 	/* SANITY */
- 	if (likely(newsk->sk_net_refcnt)) {
---=20
-2.55.0
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+index 78d4df55740a1..50c60e553d09f 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -312,6 +312,14 @@ static int rmnet_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (!rmnet_is_real_dev_registered(real_dev))
+ 		return -ENODEV;
+ 
++	/*
++	 * The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but the port state mutated below is attached to real_dev, which
++	 * may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(dev, dev_net(real_dev)))
++		return -EPERM;
++
+ 	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	if (data[IFLA_RMNET_MUX_ID]) {
+@@ -440,6 +448,14 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ 	struct rmnet_port *port, *slave_port;
+ 	int err;
+ 
++	/*
++	 * The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but the port state mutated below is attached to real_dev, which
++	 * may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(rmnet_dev, dev_net(real_dev)))
++		return -EPERM;
++
+ 	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	/* If there is more than one rmnet dev attached, its probably being
+@@ -488,7 +504,19 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ int rmnet_del_bridge(struct net_device *rmnet_dev,
+ 		     struct net_device *slave_dev)
+ {
+-	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
++	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
++	struct net_device *real_dev = priv->real_dev;
++	struct rmnet_port *port;
++
++	/*
++	 * The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but rmnet_unregister_bridge() below clears the bridge state of
++	 * the real device's port, which may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(rmnet_dev, dev_net(real_dev)))
++		return -EPERM;
++
++	port = rmnet_get_port_rtnl(slave_dev);
+ 
+ 	rmnet_unregister_bridge(port);
+ 
+-- 
+2.53.0
 
