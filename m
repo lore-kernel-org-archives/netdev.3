@@ -1,129 +1,201 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBD979CD
-	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 11:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788004700; cv=none; b=peYM6Nx4mICbrE7IgV/awku8t0jXZELMgrYJ2B3M8ImVi3bVa0b4SU94EbaeEgQgJZ98aZRXo/MkhFzagojrr0On98CUAaHBwdgZd1tcrSZsq9vOdcisLzv/S1T+8tPPNG9ebYSTIOhcRyGV+pzbAmF8WxVirJyNMuuuNCOu950=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788004700; c=relaxed/simple;
-	bh=fcybU6WtucAqrRnRamQo8KcDviNxcOroj9L29qhD4tM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WoIQ0jpEKy4fzlW+2OjJCPberzPPKRUt3HYIsjkj1FSh4GflIBSsG+nBRJE3LEut0IQ340O5Xd8BK5tVd8Y+IwsnsDI8yzX1cpWoHK4z3L/gl9un7KABLvk626wDp2uq8NyMZQIbhwPIasNkzkNxiEssRaEGEcF1FKATAuGxoCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lgFJDIlE; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC9D39891E
+	for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 12:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788006063; cv=pass; b=p78wtSaRhUgyiAvVZodUMKWZeaRzHrO+ml4CXlyRuKoYZDpMJ0iFXpQsWRc6hPmaV2258OdLroQ7K7buGaxhU0ODMq2Wsv3eIuMM3sWMGgrOJIt+/w2dQlpr7VKt4GUnrYPWXI3D3R6ib4D5ILG02Eo3ZBq48tqRGR3Qe2Fr/Zg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788006063; c=relaxed/simple;
+	bh=YhhiT+lMqx5HjW0/PRoXbfXIAG7+7GDtlBab+gtNpMk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kAy4JBUAzYC4BORJZIneL8EhEg/4kKpzCMB7HoilXBLC2n8RuSrZSofcmOoTjBoqtG5GatCs3JRfKHdPB6zmxFja61ccKm/313GSvyIFosYwocVXPJjBPI5O0fOyVkDDnE67s+bZ1Qo+iqN1cqfyJMDV2OEvfN/4mET/IHGw9JU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=HFcDzDb6; arc=pass smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lgFJDIlE"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49cca4ffdcfso5751915e9.0
-        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 04:58:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="HFcDzDb6"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a1f75277f3so14274251fa.0
+        for <netdev@vger.kernel.org>; Sat, 29 Aug 2026 05:21:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788006059; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X/TzSjurGEvo/X5PVDtx4NMgIZpFw74A+DjsJzl5o0g2I3kQctS5FfPLwUgNME60iW
+         Xzmqgm9HsOK5QbFBH111JmllLvAe7C5RbYY4mIdL/jObfoLffYbF885vhzJoXIPK8QIM
+         7cQd8q4Fo1kGHbwzhCzjwkMZz8Xc7mn9Vw+HgESFoaUDGZc6Z2tI2UmChLX9dvRj5a0u
+         nFzSooKx0SRk7fcpc3HJkOqwCNRS9Q/h9Q5HKzVjMxl0iKPcumCwj3VEIPKFR/0/Z4Ms
+         QlIII33MDQaQODzaHO8TcJjCXuVpklwxG3aXYyIQXUSyXnGUxjFKCnoCDEhnv6vK3dmb
+         /mzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nE/f8PbdH5aPK+fOdkT8SOOm4R+FJIcq6dMyrpYaz8g=;
+        fh=yMvtgaqT2e7gkx/r8ILA/L7sOV6kim4nYvtpBXkn5BI=;
+        b=Q2vIZ5t6EiUh01C3pRgZ5Xcy7r3BnI0LGiReqB0fijXl2tCeogRvm1k0x/VNvYbIoN
+         FcILIqC+vXz/7NANT7acFb6Hkx4WLtMRYJLJNsMkfUkzWiVlzGikaS9xaqZ/byVk4daQ
+         6WjBrVAl2sEe9XKTvWh3EQK2uBOOI9fBu3V2hAPENHUZ2p54u6d5D6zaayj1DbYCuRGC
+         ToGoq8zmCQ3T0PQrQ3wArLNnqVBt9cr3yqmgXU+vaMWOOEDcE82xnGUNNVDGGYx+0583
+         4dfhbVfF+ipnw0LWumPPlqQ1VST0BfgqH0vQLJevx0KU2wm7oGZ3nsCCBNl+SePQHY0Q
+         rZGQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788004697; x=1788609497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ykjbkNzPyrHDcACdSDRoxsErWSrqkdYz5FycPTt5TBM=;
-        b=lgFJDIlExzqO3AeiM/s68htkqnQv1K5itBC9gabhgf46krUyIS72kttJ5R83lEJooL
-         Qq09Lah9z+frSNi0fHy38Ve0vu9Qs7uiwbYP+kutPgcIe8+p4qVn8QAh41fO0ySxzpDW
-         /XfbXnJzydGmzZj3Rk/EVe8W1H/8h6hBjSCm7gU0WHHyqhtJ5gvJbZ1r5Q5Kwgs63mBR
-         b8Gs/R3LAFTFogzQ6Ao3cYY5F12jxMXvHs2an4FQQ4N9omDqsVptDgw5hFdFTh6efLJ1
-         oWhLKA8cYe2hQVdwa2UUVuAkdKVasNZ7a4t8j+VZYevlsdtLIGiIkJt+EQN/0QWzSklb
-         /faQ==
+        d=nebusec.ai; s=google; t=1788006059; x=1788610859; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nE/f8PbdH5aPK+fOdkT8SOOm4R+FJIcq6dMyrpYaz8g=;
+        b=HFcDzDb6kRKB9Quw6R/ZsGMk2g6xONxRRL7G7ZagrcGy+LkN9nw+h/uLM4ZNMHF89I
+         tMhKA+J4t0yIa2OombsSE6wxqK8xzFqfdZ1J4d25kNOfiszRZz20uL6iVVZhfwMPi5mw
+         qfJwwsnO6XEwWGBm1L3GmKfQGjjL1DlLzcjx1QWFS8Qe+MUd1Zwgdwreoj1Ii7Sj4Ze3
+         foymhnRv0iaJcgMc149nibCZNX5NuEcyBvm1v2nrYHyugSC/F8aByY+rzAzRdbxzxnZP
+         zNR7VMmsxXmV5gPT0prLq7SK1Ya4sQz8vjoJmg7tZ/1KY0HSPSxH+z5YR2EpPWP+JSsp
+         Ey4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788004697; x=1788609497;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ykjbkNzPyrHDcACdSDRoxsErWSrqkdYz5FycPTt5TBM=;
-        b=HbS2q1Qi7oZOtB5BUGU7BORukOxcr7/xDrAeUCe49TavR7Tgg2xklAEbr0DXhiLsn9
-         DacUXKLyeQaVAodILgwoCFmcN3ANoJCrg/tB0yqzwJ4dBXQAlABwswAp3HZqWreZA6X1
-         y9Ffb/BB0rJjKU4hncg/1uDdHQ9wjeR+6OMWIvvqgESf3Oi4ncV3od78Si2UmC0YGeJk
-         MbynqofkY3DYBro77Av/JMG5i/7slaW/Gjw5y6VuIWFUy+dFNTw+alMxcenNrjOejKeW
-         jcfSw34MzsUW/HUmJ4fI4dQ/5CT7nwtG+BiOjEBsxyxDb1tfHiNAadtRCI1NJhllCUt5
-         HOPA==
-X-Forwarded-Encrypted: i=1; AHgh+RoydV4NpLCyojTiYYIIvGnuJd27M+JeRzeiweCmLRqVn3IjAo84+n8R86L4SANL/SEgUVShmY4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kTsG+IzteLZ3Lk3YDZYdV2yYCGBAMSvkNxvBcsaA2+1c4bnvbm
-	sV2X4jG999Q9d5t7cHKI2Z/77p1JZsgJTuZs/ufZIq/ymu+tTFZlqk0X
-X-Gm-Gg: AR+sD114PVInsh9mUGXQClV6G/jj6AxYzokK1yemwuPgHxOhVIxKLrq4YyvRQoNZXup
-	MMxBhIHd7j3KxF1YqVtOyLZKr7ye/q08VKBkqd7FAItW59p0PlppmIDzRceoZeZnBmMt7RzJRlE
-	HHUpidL/pEEco95KTsXJ0xzFCkFNSNNwIIELoTdGCnCGIMwW8grX0yKJQuvMTlFrUfvNtvI3oQx
-	OuFDDtRsyFPDd6XnQ0WnGSfNFmh2NVTBHzcNySJxD3ec4EytF+fnCcfcfGBW+62vZLkyb58b27n
-	sEGND6lEJsUNWpIgqzIi73l70TnrT/ct6rN5xqdkTBPKYeVx1gAT6yJ4/DfYp/tGyLRo1uLNQOA
-	Ge/WIz+iloWuuBgsQtfQeqBhGBUsr+A8Y1nWkaJZq+Tez+soG4YbGC2As7y7zbwVTfxRtjccqY5
-	HBETiZmKtbs2P0mKEDUGisz+80LWpFNG2r2hg64+IWRJpIgf8F8OMCfUqdyhsctR7RI5d8+uHLQ
-	geXKtHe+5yn/wreEnlwDrRVM0XLJzzj05Wwmy04vDys+g==
-X-Received: by 2002:a05:600c:6088:b0:49b:2796:be30 with SMTP id 5b1f17b1804b1-49b91c433a4mr210674615e9.11.1788004696658;
-        Sat, 29 Aug 2026 04:58:16 -0700 (PDT)
-Received: from snowdrop.snailnet.com (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b91c5790csm111094815e9.0.2026.08.29.04.58.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 04:58:16 -0700 (PDT)
-From: David Laight <david.laight.linux@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net] tipc: Dont send random pad bytes in RESET/ACTIVATE messages
-Date: Sat, 29 Aug 2026 12:58:12 +0100
-Message-Id: <20260829115813.188600-1-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20251104; t=1788006059; x=1788610859;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nE/f8PbdH5aPK+fOdkT8SOOm4R+FJIcq6dMyrpYaz8g=;
+        b=egwxJORgC1g0EbyC6qzV3GwGs3Jvm5aj5X8x+D4PA3eBOfOgQ8FFCf5OEGrCT1wIZ4
+         xBOe0XaJVx0eJoaSzm4/LPQHwFg1c3h6autBBpNL3YvDNBAU8mPaLn3DaDo1WEoQ/IaV
+         c5T3bb9F/u99MOwlGjwsVmMDZL5T8hnV+tH9coe4iSuwzk5qhY+dRZiOF5/KOScsWIkH
+         9xcFjNH+9IuaKUiSw+mbCjQeNJJNNDO5poGiVu7OD5JERmDHZ81AqaiOxsHiQOE1AFSi
+         8s0GpkaC7EJjD8GMRrGa0zXej44B2iQpQRpD6KIb4cHcsuIbA7Y21VuQNTqsRJvRcwQr
+         9Lpg==
+X-Forwarded-Encrypted: i=1; AKwUvByOpOYCCkCds1d5QPcAW3isNmiHM+MuUtFBMwFIxeInnQYGN09sup5TyLCMZ2lnyyDW7IOO6aw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjedd5EI3zf0SbJX9Z63o4KIfdeMcKRPrNXvRIvda7FMEmZmLf
+	BbIxMdqcYW5t7uFGrX6KWp1B+8Xwex1bcnCsMpPs/rfd9n67bvBUy7D0SNSopSZVOqIqy/KKz7B
+	fEGmRICbIb+TT+W554PKonvYlcNzhR9PJiXHXoERPsic=
+X-Gm-Gg: AYBFou2dHkm13TPR5DhK2c61FfRZKA6nyXxu4JSQwj8TYw3grQQFEaUH1kn6fbx+TOk
+	sM5PyY0fq0XMNLv3Q5BfXI54UnKaMosuGtp61ZZCCYHuf3fusBaCSeDh8miLNxKvmrQOPYXHSfh
+	wcWA6o0HKYnyFtEOwzaoxYd+qShwsiwaCmoLmTEiljXuVuK1umI3AMBJ4kNv5DtUHQfyhQSD1k1
+	e2vKL+tcbLN3oZ/TnPiu0310zagTuYb3QipNgWqF8ISjFGJLQkAN9kNKCZ4ddWQSYIynrY8YFwI
+	rV2r2fXd2QqSuqox0Pp9rdPf0re62/jPfM/b51SfnXyiykm1wDFzN0ja/zBJ1HqRdshLINC37s0
+	UIRNLHVGnpWU=
+X-Received: by 2002:a05:651c:2227:b0:3a3:2127:8ef3 with SMTP id
+ 38308e7fff4ca-3a321279098mr394261fa.10.1788006058169; Sat, 29 Aug 2026
+ 05:20:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1787903722.git.zihanx@nebusec.ai> <8e45ea5d0cf764267a90d959fa40f0f831aabf08.1787903722.git.zihanx@nebusec.ai>
+ <apKl65BbdyWCtre7@strlen.de>
+In-Reply-To: <apKl65BbdyWCtre7@strlen.de>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Sat, 29 Aug 2026 20:20:44 +0800
+X-Gm-Features: AcwNN1WiZi8R9J8wiesRuFh5zNnD6DxT-pHV8VKVtagX319I_sL7Cv1N8NzmPJ4
+Message-ID: <CAANe3eT8ycDkomgpzZmni7hMrUX1fr2dE4QvQOcKCPEcw=J=2A@mail.gmail.com>
+Subject: Re: [PATCH nf 1/1] netfilter: nf_dup: prevent asynchronous duplicate recursion
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Phil Sutter <phil@nwl.cc>, Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The interface name is passed in a fixed length (TIPC_MAX_IF_NAME) buffer.
-Replace the strcpy(data, l->if_name) with memcpy() so that the
-pad bytes are actually written (l->if_name[] is zero padded)
-rather than sending random bytes from the skb to the remote system.
+On Sat, Aug 29, 2026 at 5:27=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
+te:
+>
+> Zihan Xi <zihanx@nebusec.ai> wrote:
+> > nf_dup_ipv4() and nf_dup_ipv6() use current->in_nf_duplicate to keep
+> > duplicated packets from being duplicated again while ip_local_out() or
+> > ip6_local_out() walks netfilter hooks. The task flag is cleared as soon
+> > as the output function returns.
+> >
+> > NFQUEUE can retain a duplicate and return from the output hook. A later
+> > NF_ACCEPT verdict resumes the same skb at the following hook from the
+> > verdict task, after in_nf_duplicate has been cleared. A later TEE targe=
+t
+> > or dup expression can then duplicate it again. With an earlier queue
+> > hook and a later duplication hook, one packet can sustain an unbounded
+> > packet generation loop.
+> >
+> > Record the duplication state in the cloned skb as well as the task. The
+> > skb flag survives queuing, reinjection, and skb metadata copies, so an
+> > asynchronously resumed duplicate cannot enter either IPv4 or IPv6
+> > duplication helper again. Copy the flag through nf_copy() so fragments
+> > retain the same state. Keep the task flag for the nested xtables jumpst=
+ack.
+>
+> Not sure about this one.  I think this is a case of "behaves as
+> intended", you get oops because you *ask* the kernel to oops.
+>
+> I think there are a great many other ways to OOM the kernel,
+> outside of dup/TEE/nfqueue.
+>
+> IFF we prented that this is a real problem, then I would
+> prefer to solve this in nf_dup, not involving sk_buff changes.
+>
+> I cannot see a sensible use case for nf_dup outside of
+> physical hardware (sending packets to some external
+> packet logging machine for instance).
+>
+> So. I think a better solution would be to either disable
+> dup in user namespaces entirely, or, restore the "old" behaviour
+> of passing the clone directly (no reentry) if we were configured
+> from user namespace.
 
-Replace two other strcpy() with strscpy().
+Hi Florian,
 
-Fixes: e74a386d70c7 ("tipc: remove pre-allocated message header in link struct")
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
- net/tipc/link.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks for the review and for outlining the two possible directions.
 
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index 49dfc098d89b..6427c69f8929 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -504,7 +504,7 @@ bool tipc_link_create(struct net *net, char *if_name, int bearer_id,
- 	snprintf(l->name, sizeof(l->name), "%s:%s-%s:unknown",
- 		 self_str, if_name, peer_str);
- 
--	strcpy(l->if_name, if_name);
-+	strscpy(l->if_name, if_name);
- 	l->addr = peer;
- 	l->peer_caps = peer_caps;
- 	l->net = net;
-@@ -574,7 +574,7 @@ bool tipc_link_bc_create(struct net *net, u32 ownnode, u32 peer, u8 *peer_id,
- 		snprintf(l->name, sizeof(l->name), "%s:%s", tipc_bclink_name,
- 			 peer_str);
- 	} else {
--		strcpy(l->name, tipc_bclink_name);
-+		strscpy(l->name, tipc_bclink_name);
- 	}
- 	trace_tipc_link_reset(l, TIPC_DUMP_ALL, "bclink created!");
- 	tipc_link_reset(l);
-@@ -1898,7 +1898,7 @@ static void tipc_link_build_proto_msg(struct tipc_link *l, int mtyp, bool probe,
- 			msg_set_dest_session(hdr, l->peer_session);
- 		}
- 		msg_set_max_pkt(hdr, l->advertised_mtu);
--		strcpy(data, l->if_name);
-+		memcpy(data, l->if_name, TIPC_MAX_IF_NAME);
- 		msg_set_size(hdr, INT_H_SIZE + TIPC_MAX_IF_NAME);
- 		skb_trim(skb, INT_H_SIZE + TIPC_MAX_IF_NAME);
- 	}
--- 
-2.39.5
+I take your suggestion to mean that, if we decide this is worth addressing,=
+ the
+fix should stay within nf_dup rather than add state to struct sk_buff. Befo=
+re
+deciding whether to pursue a patch, I rechecked the practical impact.
 
+The current reproducer intentionally drives the system into OOM, and this i=
+s
+not a memory-corruption issue. An unprivileged trigger requires user and
+network namespaces, NFQUEUE, TEE/dup support, and a userspace verdict servi=
+ce.
+CAP_NET_ADMIN is available in the child network namespace when user namespa=
+ces
+are enabled. However, vm.panic_on_oom is global and cannot be enabled by th=
+e
+child namespace. With the normal panic_on_oom=3D0 setting, the demonstrated=
+ effect
+is resource pressure and possible OOM-killer activity, rather than a direct
+kernel panic. I have not demonstrated privilege escalation or a memory-safe=
+ty
+impact.
+
+The crash log in the cover letter came from a separate root validation run =
+with
+panic_on_oom=3D1. It should not be taken as evidence that an unprivileged u=
+ser can
+directly panic the host.
+
+Based on this reassessment, I do not think the original struct sk_buff guar=
+d
+series is justified. My current preference is therefore to withdraw that
+series, unless you think a defense-in-depth change is still desirable.
+
+If you do prefer to keep a small nf_dup-only change, I can prepare either:
+
+1. disable IPv4/IPv6 dup in network namespaces owned by a non-initial user
+   namespace; or
+2. restore the historical direct ip_output()/ip6_output() path there.
+
+The second option preserves one duplicate but bypasses the clone's LOCAL_OU=
+T and
+POST_ROUTING netfilter processing, so it changes observable semantics. The
+first option removes dup/TEE functionality in those namespaces but avoids t=
+hat
+hook bypass.
+
+Please let me know whether you prefer that I withdraw the series or prepare=
+ one
+of these defense-in-depth changes. I will hold off on sending a v2 of the
+struct sk_buff-field patch until then.
+
+Best regards,
+Zihan Xi
