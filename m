@@ -1,32 +1,33 @@
 Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863C73C416B;
-	Sat, 29 Aug 2026 15:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518AB3BD65A;
+	Sat, 29 Aug 2026 16:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788019046; cv=none; b=G8MOL+0JKXInxdpNYzH3ICY1DuI3ppQuB0pCFGcv6PBQfCc3gdNB0PIR677SxeO9IKcH4Mhf0LVZTkylpRxBBwEnfpmqrwfWIroHqR6I59djf+nbk2ORPXdIFoccITbpq5fwqdSMbCgxjgO/flo5aAZmBQ9dlQSn9sum+bIXThA=
+	t=1788020120; cv=none; b=USF0WBnCSS0gI9li4luKEeEP4DOHAFKNbR90qGYFbt21HxM826feVZEj3OmphMbWR0CWTcz7YyH58LC6UyWGDvEbmJNCOHQmsukoqoIuOrHy4Wv6/t7msxO6Pl8LPb2+Tj6y59wZzOVEmIITXR5CV/6BbHBnv5ux46v1OW3Gxq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788019046; c=relaxed/simple;
+	s=arc-20240116; t=1788020120; c=relaxed/simple;
 	bh=fk6soj2kgif1rUwUP76eTosUgLLLhPsTxnPqnlfGzfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KydbVDyxpjGe7NrtrIfAywW7P+mkIvMvP2XgL0Kx6f9zgTIv4ikbftKXMCPgEEiG27FpBsA9c4SsjNtlQdreAy4fVaPYflQQ1GmrIWEcK7XsQHOp9l4INW6aDwoKb0enbrtygANivCuK3lNKJt17+HHOrCxiDwx91Lb1x7Iagkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=DuvbTWPE; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=+z7FPinG; arc=none smtp.client-ip=5.75.144.95
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fqLzIG7Vr7Ef41VeoSXhMbY4PgQBcJ7hHnU/f/XPq49csmVJpE7TLh/9PULI8FnCoA/2d2+iP8QSuNiVcEEiusepJmcGC8bQR/YmRis/dDCXjc4vELhwavHjaI6uKY6hNAHoIgRUbG44FFP1FtNVP3Mo/+Zt2U6s4M3sps5VmlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=grrlz.net; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=oTH1iLLZ; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=fyMVgo+8; arc=none smtp.client-ip=5.75.144.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=grrlz.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="DuvbTWPE";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="+z7FPinG"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="oTH1iLLZ";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="fyMVgo+8"
 DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1788019011; bh=889FD8uT+5VIJCvWbwHe9z0
-	bvZ7anIjBiHhlW1DiVOc=; b=DuvbTWPEV5tTBz8Z/DK64F3Z5MI2lki+SrKBNqBIK9DOw1PwIb
-	xC6YGmkvDFxDY5QdBihd9lHor6LmbhluCB/yIPy9NB4z5BT5tYbrR6Gh8KvQ596NBhzvoUc65yo
-	2FJPYoMx9cTS5Fpgf7fiZpEsA7rq6V0nGtg9yYMAT/t+EAV5PnTV6bQ5Q7x/PYYOiS6bGffKAW3
-	RxDzffSATPVHauHQlgdbsr0r9fYjgjpvdIL3nFHg0QgUD5lj92Ps4lbdR/dG1ZpKdnKNJsmXxC7
-	YOxv9UtQS/g3R3bU5s+mPsgf7qKImIPNZciyr+R2CzsEtcsZ0dp2r5zyhIY+F9WbSZA==;
+	h=Message-ID:Date:Subject:To:From; t=1788020101; bh=889FD8uT+5VIJCvWbwHe9z0
+	bvZ7anIjBiHhlW1DiVOc=; b=oTH1iLLZELewgQmZmAOonXJ9x+J3asNkhrmYDzI/FgXc/8LVQb
+	W/mE7C3GU8Y//XZnp/0RXma022TcUWO6gV88TXxXmcfW5sLkmBJoCRkAm9N8po7AS6yhYAwgbLm
+	nJWw4EDc3fl300qIeGm8+vD1+5M3IWOpGB8E0/eglNn5tIVCIHlJ+w85jJJMeknRhN5Cy88jbas
+	fGBe7DATniEe8UjUcj2I+YeXo1kc3n9xbr4H0C2vf73un/CR2ACMA+CmL7m/7Gj2sKE9NnuL1B0
+	2Biuh7mIUgT4msokSVSaLQnxXlZRyJnGVc5zYvpx+TIKv5bdezFhjW5L7YFuFZyEr9g==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=Message-ID:Date:Subject:To:From; t=1788019011; bh=889FD8uT+5VIJCvWbwHe9z0
-	bvZ7anIjBiHhlW1DiVOc=; b=+z7FPinG98FgpqeLj0iG/HjgFkoMJjJN48kdBRelouU6RaUrhH
-	7L/SyQVIb7omsVTsx4PbnbPbABzj+QdaWZAA==;
+	h=Message-ID:Date:Subject:To:From; t=1788020101; bh=889FD8uT+5VIJCvWbwHe9z0
+	bvZ7anIjBiHhlW1DiVOc=; b=fyMVgo+8fwOmHPYFGwurLk1arO1fhvi7JKVujC1dSPCiWZaujk
+	ioFV3uB7bx41/X7LLO0vFCZZ3C0wJr3Cp0BA==;
 From: Bradley Morgan <include@grrlz.net>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>
@@ -37,9 +38,11 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	linux-kernel@vger.kernel.org,
 	brads@mainlining.org
 Subject: [PATCH 2/5] net: encx24j600: convert to kthread_run_worker
-Date: Sat, 29 Aug 2026 15:56:52 +0000
-Message-ID: <20260829155652.4438-1-include@grrlz.net>
+Date: Sat, 29 Aug 2026 16:15:02 +0000
+Message-ID: <20260829161502.18418-1-include@grrlz.net>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260829161150.16301-1-include@grrlz.net>
+References: <20260829161150.16301-1-include@grrlz.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
