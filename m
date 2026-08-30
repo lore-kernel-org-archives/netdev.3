@@ -1,148 +1,149 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A1C39EF35
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 08:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDCD39E6CD
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 08:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788078916; cv=none; b=t/1KlvSxwKtmWTIQSSDUFXYClzg+kRJOaqM+nd73siPSgJsdHfZRz67W1A23/tchSrs4ifKoksCbQQMai/aY22unLudLlaj00ZPqXZRPHQ/kwMShD4jbr03LusmUqZHZpxH+w104lDlDLNoVABp0PA5aGz1/HINt9HKN4yQp9KI=
+	t=1788080045; cv=none; b=trpzNEKR9HjW2xf5qPhhApvpDwZ9Xbp+iesph2UUSGJIcemDlzSObY9LdSdpSvfuokWJavqnZmMRxYwObANfgRfWlCJAjn1RvswPU9J9Ny4MzAWhJrYT6s6hUOexVv1x50SZH0zNDf6lu9rkc8Ly6iA+fAH+WcdCDiiNYtoD19E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788078916; c=relaxed/simple;
-	bh=c96ZSUeJEjcxvGP7WpBQGII8OiT+vmcXUz7HcyhNHDY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=a67Szoosx3JVRb90aai47fYG5AzI5EjrSCFKD+eP8maV+/M3Y5NGFtQTErwKN8as0J6OPrIEpNhk6a6eMUzAibjtAaHgjDVx9Ld4GBNKYRC5XWmyrF27KYLoyjvulIhJ2hDnR+PrMb4Uc3nD3runiR6ZK4otqEz8PlWvycDA5FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=VoM/Sqek; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1788080045; c=relaxed/simple;
+	bh=SnV7qMnJnGGnA1tGCCTiRMQdf/6JklFHWRYohECXXDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PMIb0EFzDpJimQxi200U8hKOXi0/VzPnfYKhUEg1d1Gl7fB5F3qDcEgnd5o4u6HBBbeamBFZ/idTpcPfsev/8E85xwGqQoqoXaAiqw5i4MiYZ/phPRzQ+JCTtu1hUX1S4z1hOx/iNGQ26mjrXahqKqMj8lSo93GM5LfAll2CdxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/wr637Y; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="VoM/Sqek"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48431648f33so540698f8f.0
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 01:35:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q/wr637Y"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1712a04ddaso394565666b.2
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 01:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788078904; x=1788683704; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lPERQ4gNn92lOKV4sdrKZ2WIeiK7tfsawsRQ1ZqnsKg=;
-        b=VoM/Sqek1wdX2Uiko4C91WcBS4ollQ/LqPJKwI1GaEHQVtpx3skyL845CEY4XA8IEi
-         W2gmNpLZCX0QiY/RmK3oOe1P8sfaNYH4Euppb0G7xPtY+zZ1qUmFDVcA5XtURNiojfoS
-         Gmu2VLCTsurXeNp1Hubd5zblRUUBydYC6o0WPRd7isaxVLzfJhubXy0SoEJFeL3EcFZO
-         LENtUrWXLw0Qlma8E+Ny7jCG5aC1znkZZtAof/YHQnYzDyYqU4Niu1mvciuoDL+Nzhf2
-         1M3M+dQHx/rAC2QxQGRNEtr872J38g7soJHjakMwDOYYVeT12XMLk7UDNRFf41USLLcD
-         iLzw==
+        d=gmail.com; s=20251104; t=1788080042; x=1788684842; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HQ5vBRYf+tr60JYXeTNkJIuGhQ+YcT7vQL2jhuUkKao=;
+        b=Q/wr637YknOR1Itf4ex8GXbJC//sH6tUQwa/mW8pPrKVFbrH+6rGzSEaXSeEvnDsWJ
+         4mmkLk75QZ0GI65QTcNe/Izf9tfciM9wHyJQ9Y8TIo3cX61iXP95Nnhaa9cmjVjxktHq
+         JxmdF2bKfauYgX4Yeol5OjTSZcrvt93uuphpPKn/JHN/4vIw648ECFsBvV2RKIKR1PmF
+         MYJ8VvyFlvUmMKMAwwOfS+iJY5CQDEy6Hk9Bgvjmv7NfmiCPL2TYdZu0N6oNQdzs2Kj2
+         1rtxSjy9hN90+PHFe5NhXNSxgsctIgdfEDGRvgkoCi8DjHN2bf7eL9Hk8QFq8TYAV5ji
+         Rlfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788078904; x=1788683704;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788080042; x=1788684842;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lPERQ4gNn92lOKV4sdrKZ2WIeiK7tfsawsRQ1ZqnsKg=;
-        b=XayBUM+Bx2A0skLXIIr8RK5n+F7m0fpcVUgo76CfLho3avjaJ/45FXS0Lf2E/Bunsh
-         1fAvSMuLdN6hRyTXIPUZTEALfJwTKkKAw++vpLI6xlFjTP0HbkziAZ6kOni6KhnU1/sL
-         0H3UbGAQNXk0djobQJimaNJK6/oSZ1N6HV4Bb5tabo5y8NbTrAvyXAcG1NVLkkDc4Dpj
-         gHtxknNg5+XRbC2D0mEmj1fDCnjyZicSsBnX45LJaVuuNrlWnmoF9wrWSJMpMi2eFwW8
-         St3CilJiV84clwF1qafpyekmHqIej8KGNGU1xnCZ2+w2wJ//ZYphhXQvsr5BBeH8c7OD
-         KXaA==
-X-Forwarded-Encrypted: i=1; AHgh+RrtGmalbolcnc7TNgMo8npYKvjmqCcmooRWNhkmfQUWNkYf7Z1h8ROvFoHR7fe9B9aqZkEYnUo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mZjR0LUhOSlFeEoVhpscEhSc+/gxk6Bsuj6V82Y0jK+7pmNaBd
-	1OW+Ll+SUh1Wk8OKyJozusy8IbJW96AebLSESNJPpyj3B2vJNva5gp8tpVt7QTLhZU0=
-X-Gm-Gg: AR+sD13gE5nuxOuSp6T3zl/pQA4qIjILNhgMlAWwaL0fp3EvfajDZ1u5LP5UFVI+igb
-	JYRnA++JBL26iMcMk0WRTHwxwoTNbaucmlBLj1VwEehMKt14B1L+O34i40dKoFrK5+XnJ4bAwmU
-	s0QSDslYSaNOVc6vo8g9GUCCXn9OR2mu9zORhmWTNzAggkKC6MpcFLiFOUE2Y5TBKIAOTiB9EzW
-	4iTJNzL4PGw8zXSR9OuwE7TfGJuWehkdMljj/f6pUCrH52PfFFKg6Zv2ywhNmf9DK6lo8cU6aUS
-	uQB72mleefzPmS9r/G9GD+Dmzb3LTGyOXH2Z1cmIK95KiM3Hh5dc29E6WdJK+Ir5adEhe609WzE
-	OVCqQTnqv5g8erMmO03YPkIYiCYrF1/DfBQm5IV482sGALjoZZGPPCosRqVq5yXjNOy4azUCfdd
-	WeEwM+IpTCp0jPwencZXk+hkhvb6yd29GqjTlKXX/eSnpYOVmg/q5dB0gdcUDUaYsD2SYij4wlU
-	G3PQcQQZVDxCdL9gBQ=
-X-Received: by 2002:a05:600c:870f:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-49cd538cb5fmr21200585e9.3.1788078903667;
-        Sun, 30 Aug 2026 01:35:03 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b9617179asm85766775e9.2.2026.08.30.01.35.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Aug 2026 01:35:03 -0700 (PDT)
-Message-ID: <2ef6bf41-8626-40ce-8ba8-82dbd3f0c30e@blackwall.org>
-Date: Sun, 30 Aug 2026 11:35:02 +0300
+        bh=HQ5vBRYf+tr60JYXeTNkJIuGhQ+YcT7vQL2jhuUkKao=;
+        b=XbI9gKPfmdo7ow66fbzCKinw298Anpf2Dyk1h5pyg2GLoQwXkGKV4UIwb6PcYa0QfJ
+         MuTx1h1FtgTWwS9t/HhbedntpmrWl4GYbgN1PtwWJLku4pqb9bqTKUoKCg24OJVJLXZ/
+         9SVvZQ9c47jrSXxIVwYK8akg/iWnZIV8FRx3Xvtk+LGLURMTTKWoH9svMqlACzFyIAfO
+         mTO7J2FmN3ogeYi3TPB0cjtmQRz3xQ1XSa3MZafYxofNZv8fM9fLbMRVRSJLnf+h6pZC
+         jHckQBFZb5iTkXa4gCod1me0Kl/0MZhjTY4XFpoz0wIFZRAvRcSf97XeTSxa6yn5uKnr
+         6K1A==
+X-Forwarded-Encrypted: i=1; AHgh+RoEw+XDb+2ApBbbMe8dNTzWYCDkMKqnXt18wFMw/3CCiRsPo2Jzsgjvog2c9wj2TVuWQ7Gr27I=@vger.kernel.org
+X-Gm-Message-State: AFuF++ntArSAL5hCfp89FInpauSGtb+Ck9TxHpyCRtHT9BAeqcTGv3XR
+	El+I6j6SEpOsDVHUBa0WU9oMNFZ89bUlz+cWwm+PO6LDMPgKczm42tFy
+X-Gm-Gg: AR+sD12CFkIeg55vIwrd4SrDt05wG63bOPCgRm96zZUlDr2VtJm5GAvZqCqK7V1dVCP
+	N0sEUqPeY1/UMSUJaclIpxMs1XJZY1kRie5a/hqU5Bfx+D9GK35MjNHs3UDtvg4RIXYjDL0O+0r
+	ijf8wbtZPoIYBLhpCAlElCVcS0kcjH0v+YjkJZhlAOC9rZrpEQJf/HYFQayC6YjnPoBtZYJrgtx
+	7PEiSHnwoRShNMXWnUxGP7AwBalB8shEHF6ZvuXKMrS66fmNLABR0PHOryHUX0hoFYf34dQVIEv
+	p9dgsKNbUIIl9OkBrqngr9yT6hLtJteGhevqcu2wdZhlTDeD32epsUaDjJMXTxQjWhdI+1+49v6
+	aqGlSy7J7PQ9rxIdNXNRhl519OAbqtHoo5hp5icGb6NBQkJuRp5zD/2LgMprOaKwoPc8/g4UdEg
+	iBgToEWlr6aKBo1uvheTsaP5dnwmnIjgn3VzucOWRt0pDvQM7pfrX1kSdscrbsTMEMXKKNEHvj/
+	Lp4Lvv6BYbDY3OtLhQ=
+X-Received: by 2002:a17:906:7952:b0:c20:d90b:2cb1 with SMTP id a640c23a62f3a-c2556795d78mr1257354066b.0.1788080041834;
+        Sun, 30 Aug 2026 01:54:01 -0700 (PDT)
+Received: from localhost (83-131-188-112.adsl.net.t-com.hr. [83.131.188.112])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1b2049sm297331766b.36.2026.08.30.01.54.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 01:54:01 -0700 (PDT)
+From: Dmitry Sinyavin <sinyavin@gmail.com>
+To: Stephan Gerhold <stephan@gerhold.net>
+Cc: Dmitry Sinyavin <sinyavin@gmail.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: wwan: qcom_bam_dmux: account network packets
+Date: Sun, 30 Aug 2026 10:54:00 +0200
+Message-ID: <20260830085400.2542956-1-sinyavin@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] vxlan: mdb: Fix use-after-free in
- vxlan_mdb_remote_src_del()
-Content-Language: en-US, bg
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Baul Lee <baul.lee@xbow.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, federico.kirschbaum@xbow.com
-References: <20260826173604.90158-1-baul.lee@xbow.com>
- <c985ef2a-3e0d-48fc-9e21-33501bb92cf3@blackwall.org>
-In-Reply-To: <c985ef2a-3e0d-48fc-9e21-33501bb92cf3@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 26/08/2026 20:40, Nikolay Aleksandrov wrote:
-> On 26/08/2026 20:36, Baul Lee wrote:
->> vxlan_mdb_is_valid_source(), which validates MDBE_ATTR_SOURCE and every
->> MDBE_ATTR_SRC_LIST member, accepts the all-zeros address.
->>
->> A source list is only accepted on a (*, G) entry, whose source is the
->> all-zeros address, and for each member of the list an (S, G) entry is
->> derived from it by substituting the source. Entries are keyed by a plain
->> memcmp() of struct vxlan_mdb_entry_key, so if MDBE_ATTR_SOURCE is present
->> and holds the all-zeros address and the source list holds it as well, the
->> derived (S, G) key is byte-identical to the (*, G) key and resolves to the
->> same entry. Omitting MDBE_ATTR_SOURCE is not equivalent, as the key is
->> then left with a zero address family.
->>
->> vxlan_mdb_remote_src_del() removes the forwarding entry of a source before
->> freeing the source entry:
->>
->>     vxlan_mdb_remote_src_fwd_del(vxlan, group, remote, &ent->addr);
->>     vxlan_mdb_remote_src_entry_del(ent);
->>
->> With the keys aliased, the first call deletes the remote of the entry that
->> owns 'ent' instead of a separate (S, G) entry, and frees 'ent'. The second
->> call then runs on the freed entry, and its hlist_del() reads ->pprev and
->> ->next out of it and writes through them.
->>
->> Adding the (*, G) entry with NLM_F_REPLACE and no source list marks the
->> all-zeros source for deletion and reaches this from the sweep at the end
->> of vxlan_mdb_remote_srcs_replace().
->>
->>    BUG: KASAN: slab-use-after-free in __vxlan_mdb_add+0x1cd/0xd70
->>    Read of size 8 at addr ffff888102852500 by task poc/84
->>     __vxlan_mdb_add+0x1cd/0xd70
->>     vxlan_mdb_add+0xc0/0x140
->>     rtnl_mdb_add+0x157/0x2a0
->>     rtnetlink_rcv_msg+0x207/0x5a0
->>    Allocated by task 84:
->>     __kmalloc_cache_noprof+0x153/0x360
->>     vxlan_mdb_remote_srcs_add+0x2eb/0x440
->>     __vxlan_mdb_add+0x803/0xd70
->>    Freed by task 84:
->>     kfree+0x14c/0x3b0
->>     vxlan_mdb_remote_del+0x129/0x1a0
->>     __vxlan_mdb_del+0x4f/0xe0
->>     vxlan_mdb_remote_src_fwd_del.isra.0+0x162/0x1b0
->>     __vxlan_mdb_add+0x1c5/0xd70
->>
->> The MDB operations are netns-scoped, so an unprivileged user can perform
->> them in a new user and network namespace.
->>
->> Reject the all-zeros address in vxlan_mdb_is_valid_source(), which covers
->> both call sites. A (*, G) entry is expressed by omitting the source, so
->> nothing legitimate is refused.
->>
->> Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
->>
->> Fixes: a3a48de5eade ("vxlan: mdb: Add MDB control path support")
->> Signed-off-by: Baul Lee <baul.lee@xbow.com>
->> ---
-> 
-> You should wait 24 hours before posting another version
+The BAM-DMUX data path does not update the network device packet and byte
+counters. As a result, userspace sees zero traffic even while packets are
+being transferred.
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Use the standard per-CPU software statistics helpers. Account transmitted
+packets after their DMA completion and received packets after removing the
+BAM-DMUX header and padding.
+
+Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
+Signed-off-by: Dmitry Sinyavin <sinyavin@gmail.com>
+---
+Build-tested for ARM with CONFIG_QCOM_BAM_DMUX=m using Clang and W=1.
+
+ drivers/net/wwan/qcom_bam_dmux.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+index cc6ace8d6437..40c40bc5645a 100644
+--- a/drivers/net/wwan/qcom_bam_dmux.c
++++ b/drivers/net/wwan/qcom_bam_dmux.c
+@@ -177,8 +177,15 @@ static void bam_dmux_tx_callback(void *data)
+ {
+ 	struct bam_dmux_skb_dma *skb_dma = data;
+ 	struct sk_buff *skb = skb_dma->skb;
++	struct net_device *netdev = skb->dev;
++	unsigned int len = 0;
++
++	if (netdev)
++		len = ((struct bam_dmux_hdr *)skb->data)->len;
+ 
+ 	bam_dmux_tx_done(skb_dma);
++	if (netdev)
++		dev_sw_netstats_tx_add(netdev, 1, len);
+ 	dev_consume_skb_any(skb);
+ }
+ 
+@@ -402,6 +409,7 @@ static const struct net_device_ops bam_dmux_ops = {
+ 	.ndo_open	= bam_dmux_netdev_open,
+ 	.ndo_stop	= bam_dmux_netdev_stop,
+ 	.ndo_start_xmit	= bam_dmux_netdev_start_xmit,
++	.ndo_get_stats64	= dev_get_tstats64,
+ };
+ 
+ static const struct device_type wwan_type = {
+@@ -421,6 +429,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
+ 	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
+ 	dev->needed_tailroom = sizeof(u32); /* word-aligned */
+ 	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
++	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+ 
+ 	/* This perm addr will be used as interface identifier by IPv6 */
+ 	dev->addr_assign_type = NET_ADDR_RANDOM;
+@@ -533,6 +542,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
+ 		break;
+ 	}
+ 
++	dev_sw_netstats_rx_add(netdev, skb->len);
+ 	netif_receive_skb(skb);
+ }
+ 
+
+base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+-- 
+2.53.0
