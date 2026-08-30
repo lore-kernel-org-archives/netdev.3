@@ -1,182 +1,137 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2AE1A9FBC
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 18:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B762D283FE5;
+	Sun, 30 Aug 2026 19:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788116388; cv=pass; b=jwsLQY4GewZKd27rgB+XMaFtSjEbyYyx/dxzIbqqTfwPpxnf8PuLj3WHzyS7V3zOT+5kEzmUs0MEQoXBfEQfaacpXG9BMetUht+Irel7KP2eE4VG0BDIZi6F+umV0bm6y+o9nre62j7qi/7nZ43SG3OLknKLH17mTTBR4ZsSBUA=
+	t=1788117848; cv=pass; b=Oz/idUiJIjQsDhm026Jv2dXjgAeXjztvAyiERVvIe7JLBoqd+DUSkfusblEDqoJonvq4nWov0cls0mnyRMBKUDxgJOOTBtw3I6/LOqoHVUmJAAyZiqg1a0eJoZNEFuRKSRSasuOCb0OXlDw2n0HfsZbEXKj3V4qZWU2BmkjTbos=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788116388; c=relaxed/simple;
-	bh=xbpg2TRI0C42OXAMFayac9Bn6jFq7IN06oCls2Xxiiw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kV2zrqW+BDyxqv3V5fogMo7AfSKiUTBKFD0KdazNxoew31JspBiqciZpjZ7TZ0kQOzCSED3My9HfcwMj+FNHBxXCmEsL/gDd0j6g5Odxu2lRCwc3+ColC6gieNYOCAaEP+EwRQbCoDZC5NHsVXwsEpkzjyo/YfYCE0VcXfDQNes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=xH/AXU2q; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1788117848; c=relaxed/simple;
+	bh=cafKovKonKDC6hVfLDOvclmhUB+Qzsj3q7UYI75hoJM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NPuFhYCOmeBhT/YmPqpiF6MxTXFQsRaeRBWf6AR19UjOTp5Afbq9HyNQc4jp8C6mdIU6usJ2WoRIHhjXfgII++UdqlRtrzLMotbpcNSm+EvjGu7DdPbMrkLwwyxpETFLGlmMW9YnXZSkqzc4pCoZcWRTElwOVonJiMVwh02JWfc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=gL1xu/rp; arc=pass smtp.client-ip=165.173.182.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="xH/AXU2q"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-853c947bfefso2065369b3a.0
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 11:59:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788116386; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OIDnyyaUXw0rEySkpqkw7+FsLwr+vdcpj0h4JHmMyfOuApOkKKvn6Nla1eZiWB2gsB
-         azVYtFImxMk8vLQVWt9iEyU5KGOvpZIYsdR4N89/ak71TovIZ/YSV1vUfawVillu4TPp
-         6AeqlhkIpQzfhAhl0oFX9izGaGu+5oBmyZfjSTA//Vbf2RFlrHMbLdIZpuVStrTiaoXl
-         t2y4R/tbaVr9NwxVqT6vSpI5a++ogn5GhEre796aLdjNTYQTGqKDdpcU1EF4/Vp/+szT
-         unryIbJ47why5SJPDdz/zM57h98Rd6DvQuq4bHmjc+R517Kk4wLrykr2aVlK3ZTd6gne
-         sk9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QbXewKwmqwNuSHKKlHe85Bu7vpV4AuPa4cAJebOCRp0=;
-        fh=LRdKlYzfviwIcwNqwIZDEfz4JRyHx6lDc/K76Lfbe6A=;
-        b=pes8cK9bwJwN3z5jkKfuv5gBRicDZCjDVgIt618XaVniiLpN0DzGLmgn4riZO4G/VY
-         RYhvVz+qC29mJ41GQF/5xs6qzPieTBo/aPRraDmG9zOYknvMLX7uvkBAQSgPJJSwHcYy
-         DLK97+aFullqyLHuby8aTiALJ9ZFmDKFjQSj3sozyWpUWJj3OdZCiZvSqLLOGKjm7f//
-         W4CYFfDavnOrYMjZt6ZfyobAq9wV69NZIFnKrM0oym3Wgm8+gwJKdY7j5oNC+FCaW41y
-         +9wkLEXoJKJFLXBPbOqb56XoTdPaEoGjLnD10G66GuO46VMHPBefik4TVJ9/DOSsDYGp
-         PJZg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788116386; x=1788721186; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QbXewKwmqwNuSHKKlHe85Bu7vpV4AuPa4cAJebOCRp0=;
-        b=xH/AXU2qd0kes6xERLoSBWaDqc/myo5emxdHzviXkOvYXNLJFcHPlH9OhRIre++Cyp
-         wNpmZgiuNhjl29Tjc0OhKCCwyMNtaotJqmXiUBrODOR7KWO9x4TlJ17yhgw/M8Zgkevr
-         hyflwL0B1ZIAUH6B/dNgm09Ken77mBNhnNboI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788116386; x=1788721186;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QbXewKwmqwNuSHKKlHe85Bu7vpV4AuPa4cAJebOCRp0=;
-        b=XFzauQs2tHG5XNoUNMeULuvAjaSU62UwwRJlZ/0RTczWAssu7C3zyHTGIZJ29m83BG
-         ndjAQTep518op2zgCj4MrDJ7hNoKhnGKlgM5rG2pFDsUsw0MDP84J+In3SVDbS/X/9UT
-         YPWMDf66/wFsLkz8dbC6imIOrjbLNlC/BMX/A3aKpL5X5BU8ICnvi4UeXm3Txw1M632R
-         C2YpxR7qehUEm3eHeW1wKaNKMuX/hUkwFac5PGWT4AvEF07ie0EwiOyLvRjmYylXYp+a
-         uAUVVaOLxooixVZQkxu3LV30c3akN4BBkQf/oyfkifxlU/slU9Eds6TPZEz7XYEc8Af+
-         +/pQ==
-X-Gm-Message-State: AFuF++mOXs9kw03jh/7yQ7yphpLajiFNwwCsmbQHjO91Ie1s0SBOs3nS
-	iw+ZT5kzX+vlkQ8Mn2o86hyupvEaJTgNCTQB/ASYfd6Qwnhgmpj4JjF5HjZzWtSE6ApaATLotU9
-	xdqlXk6PyZz6Mv7xPujBwc2X3fgl5HONltAvdLRdD
-X-Gm-Gg: AR+sD10dhCAH9OVRp+gM+ykGS1hxaTp/osWoqEGMOr0HLrt6TaLf6xm8LRtzpYs+yrX
-	HdNuRoweV04WE+P94BDqkcWmxl5/IvJc3MPBp+jsGwbiJaJ//Z0cxIrQUccaTyxNz3g+l2aKa7o
-	TR2Yobf7yaBjoM/XQtjkx1j81g7SbkvSn5P+HqC9b42Oo6XfkTG255AmBxwVzBPYMkeoRJrEyP3
-	7c9LuWWXeJ08Env281n6d6AKTC0jOm2yQMlIrU34w+U3UsY7kBaPXVLiVdLCc9T0eY6imSX1FxO
-	4OBsF2+Qg0npkj0iDm2Il0inU8D8dRDi8JP8u7ghiLwChAHpF8uvU2RiuRLTzD7gG3kVZAeFT9S
-	e2Hw9kwEjpiWHSpe/ID5WH2s=
-X-Received: by 2002:a05:6a00:4398:b0:851:8bde:7861 with SMTP id
- d2e1a72fcca58-85994a72f67mr2596918b3a.1.1788116386341; Sun, 30 Aug 2026
- 11:59:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="gL1xu/rp"
+ARC-Seal: i=1; a=rsa-sha256; t=1788117841; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mUG88sgryoz8qQasnhSsEYlJ1KfRKkB/Vy+sUH8+FB+45xqQKJFYotZjDmsYi724riKd530i8jlF0O8wG8PchdgA4Dxlf30H8SctVFpDp8TxJh19YBuQm1E09eoeo4zvKDnUbv1nTStWc4VtxhuGR07Y3YRlWk7Vyj65Np7pn3A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788117841; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=x/IuvBM0fyN81m81e/0lHfg1Jm0ctFD8XtKlrDWR4AM=; 
+	b=DG7HCSrpM/QlDKgj7r0PNX5Z/xFzpx7EDcdU0w0dlbSBPW5t+AbYJyXXtzu6Jp1COK/s/IM+HtSkyrl2yrhH1luwfPYtv2FAfllYRQoXAsuH+7zbzq9QcSOeEj0xdjewGbtQq5wAI4nnjzv61l2H3uQh2rteay8k0zmFxd7yy6E=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788117841;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=x/IuvBM0fyN81m81e/0lHfg1Jm0ctFD8XtKlrDWR4AM=;
+	b=gL1xu/rpdMhxh8YGthDKiLap/d+Kti1xhmvwIpQfIYBSQRz5BZSftdmw1vjj0KjN
+	loPzfm89kG5OuuGLJxJAipMhvi6G4VOXqSk75+I7/0a84JaOkRWyWzZVJkuWaebmlv+
+	CsjN9/tINpWdvNZMlPoSdHq6GGfjXizU6pP0Ui6A=
+Received: by mx.zohomail.com with SMTPS id 1788117838159432.42891456736606;
+	Sun, 30 Aug 2026 12:23:58 -0700 (PDT)
+Date: Sun, 30 Aug 2026 19:23:43 +0000
+From: Yao Zi <me@ziyao.cc>
+To: Giuseppe Nespolino <g.nespolino@gmail.com>, Yao Zi <me@ziyao.cc>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: dwmac-motorcomm: RX dies after long s2idle, only wrapper
+ SYS_RESET recovers
+Message-ID: <apSDPwF49Z1Zd0kJ@pie>
+References: <CAKx9m6PywVwkirvkAtz144c-yg71c2+OcNYOTM4Bjtd8dF2PaA@mail.gmail.com>
+ <CAKx9m6OsGKGKGxPnjwy8U-bDyvXVEK-dVNmvP0ZqSL-t2Exsgg@mail.gmail.com>
+ <anziUH_cC1LXoB1x@pie>
+ <CAKx9m6OMQKufDpqGJewG1OyvZGBKGimSxxxGRDGWgFicSRoTGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260829081229.81708-1-jhs@mojatatu.com> <20260829081229.81708-9-jhs@mojatatu.com>
- <20260830110317.3357a4ea@kernel.org>
-In-Reply-To: <20260830110317.3357a4ea@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sun, 30 Aug 2026 14:59:35 -0400
-X-Gm-Features: AcwNN1WY7UoDBrjlFHjnDqvoutGF0gDv1OHIC7YEbWS_c6uGwqVFCgouc_47OkM
-Message-ID: <CAM0EoMk6t2FB_3ewLHrh8rqnaj_ecO2L2w7BA0xRUXGJSoqJeA@mail.gmail.com>
-Subject: Re: [PATCH net v2 8/8] net/sched: ets: clamp quantum in parse and
- fallback paths
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, vega@nebusec.ai, stable@vger.kernel.org, 
-	toke@redhat.com, chia-yu.chang@nokia-bell-labs.com, 
-	subramanian.vijay@gmail.com, petrm@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKx9m6OMQKufDpqGJewG1OyvZGBKGimSxxxGRDGWgFicSRoTGQ@mail.gmail.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/288.103.78
+X-ZohoMailClient: External
 
-On Sun, Aug 30, 2026 at 2:03=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Sat, 29 Aug 2026 04:12:29 -0400 Jamal Hadi Salim wrote:
-> > ets_qdisc_change() falls back to psched_mtu() with no floor for bands
-> > without an explicit quantum. With a crafted size table qdisc_pkt_len
-> > reaches ~2 GiB, so a zero psched_mtu on a headerless device makes the
-> > deficit-refill loop spin under the qdisc lock.
-> >
-> > Move the floor into ets_quantum_parse() so explicitly configured quanta
-> > are also clamped to [256, 1<<20], not just the fallback path.
-> >
-> > Conditions to recreate the bug:
-> >   CONFIG_NET_SCH_ETS=3Dy. Requires CAP_NET_ADMIN (namespace-local via
-> >   unshare -Urn suffices).
-> >
-> >   tc qdisc add dev dummy0 root ets bands 3 strict 2 quanta 1 1
-> >
-> > Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-> > Reported-by: vega@nebusec.ai
-> > Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> > Tested-by: Victor Nogueira <victor@mojatatu.com>
-> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  net/sched/sch_ets.c | 12 +++++-------
-> >  1 file changed, 5 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-> > index 25fcf4079fec..6cc902a03838 100644
-> > --- a/net/sched/sch_ets.c
-> > +++ b/net/sched/sch_ets.c
-> > @@ -83,11 +83,7 @@ static int ets_quantum_parse(struct Qdisc *sch, cons=
-t struct nlattr *attr,
-> >                            unsigned int *quantum,
-> >                            struct netlink_ext_ack *extack)
-> >  {
-> > -     *quantum =3D nla_get_u32(attr);
-> > -     if (!*quantum) {
-> > -             NL_SET_ERR_MSG(extack, "ETS quantum cannot be zero");
-> > -             return -EINVAL;
-> > -     }
-> > +     *quantum =3D clamp_t(u32, nla_get_u32(attr), 256, 1 << 20);
-> >       return 0;
-> >  }
-> >
-> > @@ -632,11 +628,13 @@ static int ets_qdisc_change(struct Qdisc *sch, st=
-ruct nlattr *opt,
-> >                       return err;
-> >       }
-> >       /* If there are more bands than strict + quanta provided, the rem=
-aining
-> > -      * ones are ETS with quantum of MTU. Initialize the missing value=
-s here.
-> > +      * ones are ETS with quantum of max(MTU, 256). Initialize the mis=
-sing
-> > +      * values here.
-> >        */
-> >       for (i =3D nstrict; i < nbands; i++) {
-> >               if (!quanta[i])
-> > -                     quanta[i] =3D psched_mtu(qdisc_dev(sch));
-> > +                     quanta[i] =3D clamp_t(u32, (u32)psched_mtu(qdisc_=
-dev(sch)),
-> > +                                         256, 1 << 20);
-> >       }
-> >
-> >       /* Before commit, make sure we can allocate all new qdiscs */
->
-> Does this run afoul of one of the tdc cases?
->
-> # not ok 39 41f5 - ETS offload where the sum of quanta wraps u32
-> # Could not match regex pattern. Verify command output:
-> # qdisc ets 8004: root refcnt 5 offloaded bands 3 quanta 1048576 256 256 =
-priomap 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
->
-> https://github.com/p4tc-dev/tc-executor/blob/storage-dbg/artifacts/799938=
-/1-tdc-sh/stdout
+Hi Giuseppe,
 
-Yikes. I will resend with this fixed.
+Sorry for the late reply.
 
-cheers.
-jamal
+On Thu, Aug 13, 2026 at 11:12:40AM +0200, Giuseppe Nespolino wrote:
+> On Wed, Aug 12, 2026 at 09:14:56PM +0000, Yao Zi wrote:
+> > This is quite unexpected. I found enabling OOB_WOL_CTRL blocks DMA
+> > interrupts because it's the default state after resetting, without
+> > clearing it, the MAC is non-operational.
+> 
+> That fits what I see, and it explains the asymmetry: the write only takes
+> effect in the window right after a reset. On an already-armed engine,
+> writing the DIS bit back does nothing, which is exactly what I measured.
+> 
+> > Have you tested the idea? We always call pci_wake_from_d3(pdev, true) but
+> > from your description, broken RX only happens after s2idle is active for
+> > some time, right?
+> 
+> Right, and it's a fair objection; the wake is armed on every suspend, so
+> it can't be what distinguishes a 30s cycle from an 18min one. I built and
+> loaded that change here but haven't been through a long suspend with it
+> yet, so I have no result either way yet.
+> 
+> > From my own testing, with OOB WOL enabled, both DMA TX and RX interrupts
+> > aren't delivered. So TX behavior when RX is broken might indicate what
+> > has happened.
+> 
+> I can't answer that from what I captured: between my two snapshots no
+> frames were transmitted (mmc_tx_framecount_gb stayed at 98), so the frozen
+> tx-0 vector count proves nothing. Worth noting that TX packets do leave
+> the interface while RX is broken, but that is expected even with TX
+> interrupts dead, since stmmac cleans the ring from the coalescing hrtimer.
+> 
+> I've instrumented for it. Next occurrence I'll force TX traffic and report
+> the tx-0 vector delta.
+> 
+> > Anyway, please try figuring out state of the DIS bit when the problem
+> > occurs before sending the patch, which would be a strong reason to
+> > perform a reset in the resume hook.
+> 
+> Already captured, from the last natural occurrence (s2idle 14:43 -> 15:01,
+> 18 minutes, on AC):
+> 
+>   OOB_WOL_CTRL (BAR0+0x1010) while broken:  0x00000001
+>   OOB_WOL_CTRL healthy baseline:            0x00000001
+> 
+> Identical, and motorcomm_init() had already run at resume and written that
+> same value. So there is no software-visible state left to correct: the
+> register claims DIS is set while interrupts are not being delivered, and
+> nothing short of the reset recovers it.
+
+Sorry for not making me clear. I mean the state of OOB_WOL_CTRL right
+before motorcomm_resume() sets it would help, which would prove whether
+it's the case that some firmware or internal hardware logic
+automatically arms OOL WOL after suspend.
+
+> I'll send the reset-in-resume patch. One design question bef
+> you want motorcomm_reset() followed by the eFuse settle delay and
+> motorcomm_init(), i.e. the probe sequence minus the MAC addr
+> would you rather keep resume lighter than that?
+
+I'll prefer the former. Please fold the call to usleep_range() into
+motorcomm_reset(), too, which fits in the semantics of
+motorcomm_reset(), so your fix is simpler.
+
+> One disclosure, per Documentation/process/generated-content.rst: this
+> investigation was done with an AI coding assistant. It drove the
+> register-level diagnosis and the experiment design; the measurements are
+> all from this machine and I ran and verified them myself.
+> 
+> Thanks,
+> Giuseppe
+
+Regards,
+Yao Zi
