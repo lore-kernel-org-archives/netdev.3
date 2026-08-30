@@ -1,93 +1,93 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463FF30CD95
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 20:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A927F30FF31
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 20:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788123085; cv=pass; b=WAQEvh55SQuGP8XCt1xxci4AO+udJGx6e086axcKVDuS7IAmYmVi7L7k1WZghhpAy98yZ+HMnCazuqd4l3PzOvjkxxhGlzs4aL84pRHS1+fIb6CYSQdVP/mjtd/2tSntPhgaRvkIDMg02bqlka8XvYEeMigbIhYHwVCbQKIkHGw=
+	t=1788123127; cv=pass; b=FdfpqNJkN/A7TmJsCZo4VCDQKhE2wDzpiIBB5Es3YUarVyA16hWtd8WJMPSUEO9yZKAg/i6ITT7KvkSiyCzOop9KHz/ZukEIpkL6NLIAoo3tHCk1IPfinbfB/soEf80qodfPhnvRUPJs6eAf4r56QntFLqQDjBZwZmzlrs8a0Mg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788123085; c=relaxed/simple;
-	bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
+	s=arc-20240116; t=1788123127; c=relaxed/simple;
+	bh=AYjhl47EsIwn1DyL5gmpc8wtKBp5jDGTaUHfCK2SgJ0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NyXjJ5nHGMpF6C/tOOMNYvcrQpk1g/W2xrYrCa3XJRhso4pOS9tQb8DrsWWv1EjcISdtGvdLfv6Mgk/enCClr5OdibnHfRaoAfHe7TFsMnStcjHnXBLTRou7z2WALNHqFCOvg/3P2Jnyn/uhc/8KDpSs03OgNlGbU9iq7u3/lqE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mRf2eHh7; arc=pass smtp.client-ip=209.85.208.49
+	 To:Cc:Content-Type; b=ZPL72VZJ4RuN0W4iaMRie+zc5bJjycD9RTwa63hyhP+5AFD0RsRVPB2fkIbuTmJDIEyeglTNR5Qjqdxvyv8nmKlY703KpNPDvMKseQ9Rp6yiTFWOZh7C+E9YRoIeRxjrHu70+qMEJANcyZaTBV5fDlI1j4nJMWOhmxr6uvyHxE0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r/Fy4QX7; arc=pass smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mRf2eHh7"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so6937a12.1
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 13:51:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788123080; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r/Fy4QX7"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a5f95a879cso8247a12.0
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 13:52:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788123124; cv=none;
         d=google.com; s=arc-20260327;
-        b=iteXxTKjfzOBwqyne6rlFuZRathTygd5wyMv+wOJ2QbgAeVG/1qqJHerEUE8KB2VXe
-         drTsNo5NF+I03u+s9mJovnfRloQdd0FEZFpnF2NC0ixG/Djtxy8+E/3dSo0I0i+7BPIN
-         udCCM+OAI4tIeHCcfYcJLQ+1FDp/IYeWolVrEGEEk7x5BGshOf01CNY9D2yrAGu8f7Dg
-         uOSgAe85MAPx+qucZqcHqAWg/aRhu2/Hf0c0JXvQly/vhSclmw4AW6Xj3ZuQLYM5HmRu
-         TcF6xg8SLQh0iDl44jy3mWjXOn7llgXxBf7ktPj8EfysPZDY1eJ7HuE391lto4zaN51T
-         kxxw==
+        b=Vrmh/5AHpBvzYXQKF1QBThSWmv2h21OxBhNQ8w9LM8wJH6CS2CRGa0QHy/NEwTkyHO
+         Gh8yNxPkAU7VItCVC5EAM1k0A9uZhr0bC4K4UCJ0N2u5baZZwtNUJFoY1/6MBPrS1rJx
+         c/d2ly/WFCWQlAagHrXolLv9qwWP1i9tYYQoMIGjwS568I4VV9oBQKzpH0AWVliAwUYu
+         6tQvY+S2IHnRTsBebOZGjaZzUczW96g7Z6B3x1NthwmIBHx30et7LfntCF9kKVJ0AznJ
+         sWly7jjiNgJ1RD3G0z2irnERHi95zY0kBD3UXzab+0DIQPHKcJ7B2r1gva7zsF+xhxYR
+         1rmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
-        fh=yh98KWVwMLzWCQ71RnvrnNjzOqWJHM8zJUtw4qGVfdE=;
-        b=ZUrWbKjU5xFSDts5RLsn89EmE/+8fRWNdRRQGPHXUqKr5Ccc9H5/JqvGEEsAHdD8vp
-         i0TX/QLKAlfrBoRv8TuBl8WjQpYnkVIhzhI0M5W6Ez9pHNt/QYzLrmI/gbZ3eyW11xKR
-         0rSiL2moKXBj5f1apW1zDo7/8JnkO/zqP69BXoPjsH8O89GcGLWGHxw0C9t37DWvMmhS
-         kPTTInKFWS+wVF2SXxSVIFP8Mpkq3QHVisyG75Bvx3j1a3DBRGF41tPEYcTIjh4cmVE+
-         Y2SYJIlKLVbr8YTzyYU3lc1nviJ1Nqs0NCzMgaZvTqKm1BxipXy1WWAUApKBPt+kwm6U
-         V+iA==;
+        bh=AYjhl47EsIwn1DyL5gmpc8wtKBp5jDGTaUHfCK2SgJ0=;
+        fh=FT5uNrNTcCr7JVdsMPLdkyjjyGRkQmYB9mRo11PCoXc=;
+        b=O4vMyoNni/toUGPnvjUDprGsCgnZ5lt+7oVjKXt+Hdls1LYO/5l/79Ly1mWW6MCNFA
+         0hYEA6r0/A2GT0JFJNkBpP0DUh9Ci/W7DJ8eWpS0YyQxrnVKGNpLMW/5BOuereYpdJQa
+         EvKAtj0fxe2CeNMIAAP/SzJ/zJA82mFF49cnfpR7mA1rkg6diG186qUrhIcCNzq4xA+U
+         SbkU9bEQF9d1CYPGkBvZyKTc+fLwDJOMAQu0/hI4IczzUmz/dgD8DxpQ8uQUH8mAm5Nf
+         zV9Xpyu72Ym3a2CQuZWnAbNf7gI+RRCtqMPqQoqGQwWxdquBm+RetPDFARntHjCAXvce
+         +I0g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788123080; x=1788727880; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788123124; x=1788727924; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
-        b=mRf2eHh7xq3mfglMpCNgppOLgsMfs4A3lP90nnTODkYvC2RP5NhGW84NrP8Fqsl6n8
-         rojL7epCf+x9i8Alzn7FviGBIfmkVxGR0b5JgtfsKkkxoaf1jYge8qgMzUhOWHfD/xUP
-         tBeik8mb/8U25jvfImn6yki/9o1O0z3znmwDj1VYxL+RCTuXXYhLbri3ngOrme8JNt/m
-         VvO2qCumj8SVAVT3INA2PR/gr0OBW6ephRUiPxBZV0jyfdE6iPms7U690jHSb7tBfcEE
-         m/GDa2oSJo4B3SXoJGVY1caoJVwWd741/gc1Tp6CG/EM52kBtg094APKLvybZAJCKuR7
-         HyIQ==
+        bh=AYjhl47EsIwn1DyL5gmpc8wtKBp5jDGTaUHfCK2SgJ0=;
+        b=r/Fy4QX7ITrSC9mh4ISpwMhqu3ZZMZBpjsmiJ/bup7R88go4/YSnTewfLXnvVNPFcQ
+         Xf4a8LH/x9S/r+UGeVDF8+3rnm654ZlWbXYGh0cYQrca4CIPlv2anlqD8HW0/EpFSp9j
+         Um1trhjl2thJKxEWaWKf6hhBVKByqD3ahx8vPnhjLsre/n/0BuKtyveor99pvoSxVile
+         QE749loy8Kv4lY289+wzZJ/KL2jeIJMANXoxX5XbNhEPl9SNUOU+Vq3ofPOLQItme62u
+         Y668UQfr+sH6jFHUEGMPH0e1vFkN1D++wUPLurHsACyAERU/MO3tA3zYUFNrQhdYKWcK
+         1H8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788123080; x=1788727880;
+        d=1e100.net; s=20251104; t=1788123124; x=1788727924;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
-        b=UwZCGKF125K2ZMdPFQjD8IKDYCQci6Bam4e5SyJCVY6XBTNAtq3ftwtR4rWzSsT600
-         KEPWlILLUiP7ERDkkkfw6irix+xv33n+8d1wcisLHA200TTUnwDj8SOGHHcrxQphWNCX
-         gsnksmBLoOkegb1mXs60/Ax2GgKExth1T4BwVIsdu3mABa5Z5goIwJbpyH93U2sbSQLX
-         CTUByiLwHhi35yljO7BNnnAt4r/rkN6Q4Yy9iTDLl9u+UsYAg30U5HpE5n4jMO3/4NUt
-         i/RAftSUFqsuBSBuKb2zNqke6R3pLPgMhdQYu/N5j29E1v6v2DdGLP5Dxs7tFVe8eoFF
-         JmUg==
-X-Forwarded-Encrypted: i=1; AKwUvBxSz3OASrY1eWKC1xZ+quuPiXMLcp+xXzvoOnzZrn+UhpOIh5l/VVnjUvpJQsGHQPG2ufceO34=@vger.kernel.org
-X-Gm-Message-State: AFuF++kvaSWVIx1n3Pbj/YVI7GfoU0ghfcxvEWu1H0NWLDOr7KWi7GJ8
-	QPKoURG1A48UxchTnNO6cqduTbrNxPQsCicDNzwSay2qQjNbQ2JpBHOORAHpnwLZrtBGCR3MpN/
-	oe9grCfJHkDnVRJ0EneaOjFFdKcOiZXrLhb/kvLQU
-X-Gm-Gg: AYBFou30EsgAoJrzjKFUNwCdzKM7TAhEpHe9RZLDHz5pTDRgJwVohcZo1vold5zfCNx
-	ZD+PrPViunf1fOTJUjybmKi7fhgtAgQoDPEx55q0T8+O73d2PdzLfJ+lWM+CZGbP2lubDhJVYI5
-	4fLprhDHI4/NdlxpDMSmBNTDx8uFMelfaRstFYgxCoxeM0lbABJm25qbcxqlb/VdBcBhjoi7uYX
-	bIIGOrBb6nQHqiy/lugJMwk05DKLK7ziSzVpsj3cY8MVWvCcr/9U0PqRkvzyg1Hf0+ngTSk7N6r
-	9k6LWwBLgTUFKiFjHtWTZ3xM2RgsGYWUmF3StbiehG0=
-X-Received: by 2002:a05:6402:5052:b0:6a6:32f5:b172 with SMTP id
- 4fb4d7f45d1cf-6a633634602mr29431a12.16.1788123079816; Sun, 30 Aug 2026
- 13:51:19 -0700 (PDT)
+        bh=AYjhl47EsIwn1DyL5gmpc8wtKBp5jDGTaUHfCK2SgJ0=;
+        b=AXv5uQzB0khPUyZOeCC+BFzrOBkMXHmWCbFapVx+AW6kajT3zOGGOQY+ooGEySFEps
+         cBa1+dabN4Jz7KJtRyf0ThlpxrpUWrw4GQEdFtBIKJsIgOpkvZgfXTLuI4bqWvxSInS0
+         hl4rHsTRKwqmCvYXJykID45oqo3C0olS6qAFyg/WTaVrWGPR2q7X2FfhAl1XsfkNeYp7
+         OmiGftM8L8GclROZzEzlwfyeSRMqXf5GKyqcdQxg/mA3Z7chz6G7kjtzlURV54+HwZY6
+         Tq4i84CpzWFx7djYXFg8pc4YBu82lsq/0MFfHpAkPVj82NVRWZSKIdItdS56V4SZIBMZ
+         wzlg==
+X-Forwarded-Encrypted: i=1; AKwUvBw3YI1/E6peiy+3FG+Ttup+HvD0lWNAcaYFLjcS2un/0+fjdaR5zaWdtEsKv+za4Fl12Q6o2Kw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mybq7XrYeHcwoztMk4vLXbK+Nrcp7AklYy7IGrxT98HibFWY3r
+	W7AUV2rvjGxwdEQF3q6i0qR44RTQsIrKOMdzFa8DQhTg6IduThkdiMJc8Ja3GnRZRFIsP5ZDBIJ
+	AAjzKCurFena0hak6NAGzJbsr+1tdZc9X5UNpjUfcUQpDCVvItR2yU4dl
+X-Gm-Gg: AYBFou1EcECq1Fn8XRvV3WlAIsx42CP3XGsp4jGFr14Kzsm45MlbVidI8cQwdglloV5
+	6QwGaggc7VR0TMcXqvMHZUuxD9TUBFgY3k2tvWunPjKKTEn1ww3NB8ruatFUdM7oQU6u2UoyBxN
+	NQf6Dh1iEOR06gMmn5+glrljcQVajtk6qqfXiq6xYmwuV6NLY6UMffQh2GL7IPYJCQpWY9u8T7s
+	27cl4qGZnBAABp7irbKGO98E68e4adQFXCAQlLTmdzrhwPvbdT8rjFsy/ke/S9Qwrz/crqwJQL7
+	nbfS0+fRtd638208oS1qJpXBjbzeB4HEKWi7m4kokNc=
+X-Received: by 2002:aa7:c4ef:0:b0:69c:39f5:7e36 with SMTP id
+ 4fb4d7f45d1cf-6a6334422ccmr20461a12.0.1788123122697; Sun, 30 Aug 2026
+ 13:52:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260830142333.1741155-1-tristmd@gmail.com>
-In-Reply-To: <20260830142333.1741155-1-tristmd@gmail.com>
+References: <20260830142333.1741155-1-tristmd@gmail.com> <CAHS8izPvuOBx08kGEp+sFR-VjCa=Ta4Ub=EVb1kBP+ROZOMYnQ@mail.gmail.com>
+In-Reply-To: <CAHS8izPvuOBx08kGEp+sFR-VjCa=Ta4Ub=EVb1kBP+ROZOMYnQ@mail.gmail.com>
 From: Mina Almasry <almasrymina@google.com>
-Date: Sun, 30 Aug 2026 13:51:08 -0700
-X-Gm-Features: AcwNN1Xm1QyezA-JkdWtSZwOXWMjI9Yt2s6qRIxGaQ-qmcEpa_70-3k-yXY5nmg
-Message-ID: <CAHS8izPvuOBx08kGEp+sFR-VjCa=Ta4Ub=EVb1kBP+ROZOMYnQ@mail.gmail.com>
+Date: Sun, 30 Aug 2026 13:51:51 -0700
+X-Gm-Features: AcwNN1UQs3VpoPc5tVAlx3mcW2vUdqnrQx3Tyi9lFFLFEIZgxoe0lirGis_pFI4
+Message-ID: <CAHS8izMK_gXiyd=1XEJgSOD3Ybzdmet3ucggboyy2vAsWRFLsg@mail.gmail.com>
 Subject: Re: [PATCH net] net: devmem: add missing permission check for bind-tx
 To: Tristan Madani <tristmd@gmail.com>
 Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -97,32 +97,43 @@ Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 30, 2026 at 7:23=E2=80=AFAM Tristan Madani <tristmd@gmail.com> =
-wrote:
+On Sun, Aug 30, 2026 at 1:51=E2=80=AFPM Mina Almasry <almasrymina@google.co=
+m> wrote:
 >
-> From: Tristan Madani <tristan@talencesecurity.com>
+> On Sun, Aug 30, 2026 at 7:23=E2=80=AFAM Tristan Madani <tristmd@gmail.com=
+> wrote:
+> >
+> > From: Tristan Madani <tristan@talencesecurity.com>
+> >
+> > The bind-tx netlink command (NETDEV_CMD_BIND_TX) was introduced in comm=
+it
+> > 8802087d20c0 ("net: devmem: TCP tx netlink api") without any permission
+> > flags in the netlink spec. As a result, the generated genl code does no=
+t
+> > enforce any capability check, allowing unprivileged users to bind
+> > DMA-BUFs to network devices that support TX netmem.
+> >
+> > In contrast, the bind-rx command (NETDEV_CMD_BIND_RX) correctly require=
+s
+> > GENL_UNS_ADMIN_PERM (CAP_NET_ADMIN in the namespace's owning user
+> > namespace). Both operations perform the same class of privileged DMA-BU=
+F
+> > binding, and bind-tx should require the same level of authorization.
+> >
+> > Add the uns-admin-perm flag to the bind-tx command in the netlink spec
+> > and update the generated C code to enforce CAP_NET_ADMIN.
+> >
+> > Fixes: 8802087d20c0 ("net: devmem: TCP tx netlink api")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 >
-> The bind-tx netlink command (NETDEV_CMD_BIND_TX) was introduced in commit
-> 8802087d20c0 ("net: devmem: TCP tx netlink api") without any permission
-> flags in the netlink spec. As a result, the generated genl code does not
-> enforce any capability check, allowing unprivileged users to bind
-> DMA-BUFs to network devices that support TX netmem.
+> This is the second time some AI finds this 'bug'. It's intentional
+> that rx needs permissions, and tx doesn't. rx bind takes ownership of
+> an rx queue. tx does not.
 >
-> In contrast, the bind-rx command (NETDEV_CMD_BIND_RX) correctly requires
-> GENL_UNS_ADMIN_PERM (CAP_NET_ADMIN in the namespace's owning user
-> namespace). Both operations perform the same class of privileged DMA-BUF
-> binding, and bind-tx should require the same level of authorization.
->
-> Add the uns-admin-perm flag to the bind-tx command in the netlink spec
-> and update the generated C code to enforce CAP_NET_ADMIN.
->
-> Fixes: 8802087d20c0 ("net: devmem: TCP tx netlink api")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 
-This is the second time some AI finds this 'bug'. It's intentional
-that rx needs permissions, and tx doesn't. rx bind takes ownership of
-an rx queue. tx does not.
+It may be worth it to add a comment at this point for future AIs
+reviewing the code.
 
 --=20
 Thanks,
