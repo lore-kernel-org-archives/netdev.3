@@ -1,143 +1,423 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.qrator.net (mx12.qrator.net [185.104.210.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6F03F105B
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 18:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788113644; cv=pass; b=noRUjrw/thzmlaa8zaBxiXJ89F15HfEMUf+EtOlMv2rpku8JR5G05ym0R645e+oX0I4FeEEDOiqI8RnH7LujTQFhPEc5qelx3lO5hMxG7maY1o1Ghk1RvJoqBDwPeMfw7YFAhGh1xGjtW5LjOqdDDoSp1NIH1lDAt8z89W5mbck=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788113644; c=relaxed/simple;
-	bh=HdzWhpqTNOBl+oorJBrdklXOW54bPXg89ysssBhka1U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PkLt42mb2AKthTMMx4/bCAlFKqs8Ed0JUvdtdSXzxCzYFRu3hZUKOnpLNEDbxFSzmcIX1TqAZdqKJb7TuuCDj1qlH6J0iVaei3Dr9LgITg89c1Y3McsYBdY08rFrNUfY8isnNxJphu3CHSaYkAyLOjPa+PsFEnLnAwv3oavVP/A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SNoQZ4OG; arc=pass smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443283B7769
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 18:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.104.210.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788114055; cv=none; b=GDQHWOKGParNgh83HVum8P/7UXcw9uAGjjSe9H2LEBxzTW9C/0O9Lu+oUAONeVNicXBBsLcCmdf2MCu+AptTwFoEb4+tfzGGX7qmHK+g4KFofA0IQo7ERSzUT6+3UuYOuTiCdbsp2nj8ZOFRS8KsjfKQfKYYmdO6uYW/P9fYI9A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788114055; c=relaxed/simple;
+	bh=BEEWmr/DeynyvOJBGv108UxF9anDqruSLzOZVx6TQ0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qFfWc5JrwrJ3ivKiAijaOuFMTmxnylF3BOCWSrWJx1JXew2lxkw6FCR1FkQRnAeTfI+pLAmf23RV6wkWyEnCN6Fs+70KppKhoBfVgYcPERbYXjYkiBM2HY+RgX4kHGo3t2SslpTQ0AtWdEJiIdNqyEw8APEh93hVimo0j2pwulE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qrator.net; spf=pass smtp.mailfrom=qrator.net; dkim=pass (2048-bit key) header.d=qrator.net header.i=@qrator.net header.b=I/D2oMMj; arc=none smtp.client-ip=185.104.210.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qrator.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qrator.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SNoQZ4OG"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e85499ffbso213262885a.0
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 11:14:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788113642; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QVvFhjXfK6aAFy7tkxRBaNXonZA4Klb8igS5PEWJukzT4J5wU6p0Glu6lxc/pZrcV5
-         f4W8KoZsab6XiWEaPKz96q8M6FF69fnVg/tAJMDOmrukuo3Hyi4UhyaGI3S2LGKp0k6k
-         oEECXJ5u/gM3alPQWhyStm2T2gZbtB0Mk6PkcHr2MpyDLMkG39j0lfJz1sK8SuLr4djp
-         mZ8DL0lrSeMaANpmnvkxV0Gt5Lo4V24wYc/Q8kalMA4npZKc5EG0PC6nTBYEG79Vfc4p
-         0g5tL5lDosUleehg5BR4kzvdR+nf15zR6xunslBvs/w32NtvuqZMZmi/PYJMlCa9gWXa
-         s5mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sAmNPF/JjH9F41LuxYyTcqwhseN26JSfCU5penkd+pY=;
-        fh=MYQuwmDCCzhtU1yPuyGoem4qj+Ce5HRjz0gG92RFGJo=;
-        b=YUETlpvqOwyJoCjlfhnCAoVUPDfxlDT5fqcQTY3nT/H6wbqdtsVyfwX+DzEWs6SQZT
-         R1BQKRXcuX0fmjd2I4GkrosRg4pt8oie7W+xeoyV/Kdg+0ZZ1hEiqVX6XXlaOHJjcomk
-         UDnx7pRgHo870wqUZzM9k9xizVB1JvrfkBGtT8MHU1nQu7sQiBl5KdC9fTzX0A33xwHr
-         t8SQTsdD4YtE9N+MLsUVZE/M9ZkXHBATgVR7yDJ01edfkrHBNJG6tqQfryDWPRQuoHZX
-         lm9+Eu9sCT/A5Hu8FtRQTOv2nZ5qKHiCBuHd3LCATXZTIfJOpOEwCKLSls68UWAYEYaL
-         80NQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788113642; x=1788718442; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sAmNPF/JjH9F41LuxYyTcqwhseN26JSfCU5penkd+pY=;
-        b=SNoQZ4OGCuiWs3IOfSZkxlKT9kCQ23X5OT2yc81H2RBrxxiKqZmEjDvmVRdyChk/1T
-         TSJNaW0NMqJNX+h/f4F3E9ay+HoQGrM77jkcflro/h2mWl5JK95bZCOLHKPcA4n8Jws/
-         +4gCsgE0wEo/g4HPIR74c96rz/kO5OWlH9zS6YIlCcMHqPpXba+Yhw1A9CajsRoZRk+X
-         KbzGVEBqFSJZw3yHw1HTvLTYBg/mpsQe4KIYUEcj3d5MLeZ6qVNbdNf02pON0r45XL4Z
-         MCuvQfOH1zHwoqiS08xBPOppTyLx/wMTGLkvsKqbbSYg7hhtf79AJ24Ax06X5LdNDgl9
-         R/Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788113642; x=1788718442;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sAmNPF/JjH9F41LuxYyTcqwhseN26JSfCU5penkd+pY=;
-        b=hqXFy41/DUHs4Q4rvRzuyJMCnP7toS9hCRRzG2T7SaYTiRzlqSwe7S1q4NqfwKd6z1
-         Q8sp0B1r6YtLsqjDwymIipYyKKKwEGDE6tIImK8kv+RUYQHD8Q10nfoFiE8JfhLBIPfY
-         P1LzbARsRCLSHos2lMZgYTEBbbvKD9YGKl086fuaVkZaeokDoZBRhqVPsHQrpCjuWV+E
-         diPLwKv0ZCsnFn+tshutTGIymfymstURF4V/4ogAzNMnfOJoDl+w6Yg09um57YWtg2ZA
-         dUJjs2jlNvI897eDXAevS2R4tpDHcneJMMtxloFD7wyg7c98vtLJ9ad45MCl7tgZqGrE
-         oHKg==
-X-Forwarded-Encrypted: i=1; AHgh+RrbSRBk0oynKYGjpJkuOlH+DWBCAyWXRD+nvOL93I6RAxgtjuXu7ZTa8kSJdDTxWOmbNFZlvGE=@vger.kernel.org
-X-Gm-Message-State: AFuF++n6/+yXZbsbUFWb9XPgK3mQTaCksbqVvPzNNYwMbOczcrqHvkjr
-	Eic9DuNp6lo0J6YIXl7We56kzAeCQRUsaQakVBiBjiuUW38lszA8+KYLf25dMCx6UEeOVVxJ9NN
-	99z3rFUlfMNgs0SmwlAoVIPbxQXfrwmDD2uUut2yz
-X-Gm-Gg: AR+sD10Q1g10WyrOjy3TxUE0t/Rm/TuG+2oBEXGFyF2YCNbglNOwGgL6EV8Wp+ke3hw
-	J8z1lH95QKoWZaiIfLyz/AEyuXtbJsKmRnxNL+lM6CEi2j87Ts0ASgjYFmwpOvd0f58aybVpDhq
-	qjmZn/YtTZnzSBpBhEkpQzzH8UcWR/U6e0cDfs0aBJ5Zl+6Cb/T1FM5DBpdY3gT2XnmffeoTTNo
-	6GS+dWfIpA/LsOshXgqOwr7Czv6c+W3wTjkJDM8m4DcXQtx/3aCOnxFNHR90+oCO/bTTjhT7M3n
-	vNtGMOMT4TJsLXSHBac5vysRsk6FEw7mzYppgXmaWhLHba1DM4VzxC8VXMBmVIUkzJVsJiOQ1no
-	zpmrOfETBrLVh0LNrhJx+J+sohLV7AexlFGMuQdR6K5Nfk0fPeCcfBGk8WeY=
-X-Received: by 2002:a05:620a:4553:b0:934:970a:beb2 with SMTP id
- af79cd13be357-93913904111mr2296320885a.26.1788113641282; Sun, 30 Aug 2026
- 11:14:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qrator.net header.i=@qrator.net header.b="I/D2oMMj"
+Received: from mail.router (mail-postfixrouter-1.mail_default [10.0.5.10])
+	by mail.qrator.net (Postfix) with ESMTP id 518456B28A7E;
+	Sun, 30 Aug 2026 18:20:51 +0000 (UTC)
+Received: from enterprise.localdomain (unknown [10.0.5.1])
+	by mail.router (Postfix) with ESMTP id 229E76B28A7D;
+	Sun, 30 Aug 2026 18:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=qrator.net; s=mx12;
+	t=1788114051; bh=BEEWmr/DeynyvOJBGv108UxF9anDqruSLzOZVx6TQ0o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=I/D2oMMj3mSG2EQO9Gykl/aaHQVOJ7sSHqn/SQhvNfCwumoXyZmtBmkTKPSqPoy6t
+	 w72ATYLZ3Uy/roHa3x7SP5U9LveA9cgYLrY1cfDX4/HyfVqgponNMCK0yikKZTDCwJ
+	 kbN7fVHBvbsJdNAB/3dXewvgA+EW4L1RwKx9RyqSO8dxSHsLbfJW3b+gd0NruI6yj1
+	 rgL7xtCQzTVdCR8On2i8w6g5WoYOOvXRGO5NUDNIYsUPeFmBJ8lnAEROXG0fp9EeLF
+	 KaxuLIxXeTOqTQj+4KfcWQF1jArjni66rXlW+kLNHR86+PWiKLvz4magjzwxrzed5q
+	 PMS8QtE1oba6g==
+Received: from localhost.localdomain (localhost [127.0.0.1])
+	by enterprise.localdomain (Postfix) with ESMTP id C9438B3A8ADB;
+	Sun, 30 Aug 2026 18:20:50 +0000 (UTC)
+From: Alexander Zubkov <green@qrator.net>
+To: netdev@vger.kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Cc: Petr Machata <me@pmachata.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>
+Subject: [PATCH 1/2] ip: ipstats: Merge statistics split across several netlink messages
+Date: Sun, 30 Aug 2026 20:19:48 +0200
+Message-ID: <20260830181949.1096-2-green@qrator.net>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260830181949.1096-1-green@qrator.net>
+References: <20260830181949.1096-1-green@qrator.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260830151617.3546585-1-den@valinux.co.jp>
-In-Reply-To: <20260830151617.3546585-1-den@valinux.co.jp>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 30 Aug 2026 20:13:49 +0200
-X-Gm-Features: AcwNN1V16jcKxWw-kvVgE7bYpkcZejTegRvsFb9cvbrFA76wK31yO_UJFO7y4ic
-Message-ID: <CANn89iLWSa-4_Agcpmt61FEV=X7YY42nLzW9OLv8=aWycF01-w@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: ntb_netdev: Fix statistics races
-To: Koichiro Den <den@valinux.co.jp>
-Cc: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Jon Mason <jdmason@kudzu.us>, 
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, ntb@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 30, 2026 at 5:16=E2=80=AFPM Koichiro Den <den@valinux.co.jp> wr=
-ote:
->
-> ntb_netdev updates shared net_device stats from per-QP RX and TX
-> callbacks. Once multiple queues are enabled, concurrent updates can be
-> lost.
->
-> Use per-CPU tstats for packet and byte counters and DEV_STATS_INC() for
-> less frequent drop and error counters. Callbacks can run synchronously
-> in the xmit path or asynchronously from a tasklet or the memcpy kthread.
-> Pin TX updates against migration in the kthread path. Use the IRQ-safe
-> u64_stats helpers because netpoll can invoke the synchronous path with
-> IRQs disabled.
->
-> Let the core manage tstats while keeping transport teardown after
-> unregister_netdev(), outside RTNL. RCU lets unregister wait for TX
-> completions already updating stats, while later completions only consume
-> the skb and skip accounting and queue wake.
->
-> Fixes: 24d9e73c7e00 ("net: ntb_netdev: Support ethtool channels for multi=
--queue")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
-> Changes in v3:
->   - Use core-managed tstats and gate TX callback work under RCU (Jakub)
->   - Fix reverse xmas tree ordering overlooked in v2
->
-> Changes in v2:
->   - Make packet and byte updates IRQ-safe in netpoll context (Simon, Sash=
-iko)
->   - Use device-managed tstats and restore the original teardown order
->
-> @Eric, thanks for reviewing v2. v3 moves tstats management back to the
-> core and adds RCU protection following Jakub's suggestion, so I did not
-> carry your R-b tag. Would appreciate another look when you have cycles.
+A netlink dump can split the statistics of a single interface across
+several messages. When an attribute does not fit into the current skb,
+rtnl_fill_statsinfo() keeps the partial message, records how far it got
+in idxattr/prividx, and the dump is resumed at the same ifindex, with
+the remaining attributes emitted in the next message.
 
-SGTM, but at some point we probably want to make dev_isalive()
-available instead of copy/pasting it.
+"ip stats show group offload subgroup l3_stats" requests both
+IFLA_OFFLOAD_XSTATS_HW_S_INFO and IFLA_OFFLOAD_XSTATS_L3_STATS, and
+rtnl_offload_xstats_fill() emits them one by one, so a dump over a
+sufficient number of netdevices regularly ends up cut in between the
+two. Each message is currently formatted on its own, which yields two
+bogus records instead of one, and, because ipstats_show_hw_stats() bails
+out when the HW_S_INFO attribute is missing, the counters carried by the
+second message are dropped:
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+    109: vlan859: group offload subgroup l3_stats on used on
+
+    109: vlan859: group offload subgroup l3_stats
+
+Postpone formatting until the whole object has been received: keep the
+message around, merge into it any immediately following message that
+carries the same ifindex, and format the result once a message for
+another ifindex arrives or the dump ends. At most one interface worth of
+statistics is buffered at a time.
+
+Merging the two messages means merging the nests that were open when the
+first one was cut short and that got reopened in the second one. Netlink
+does not mark nests reliably here -- nla_nest_start_noflag() is used --
+so they are recognized by the message layout instead: a reopened nest
+appears exactly once in either message, and at the outer level is known
+to be a nest by ipstats_stat_ifla_max[]. That knowledge only reaches as
+deep as ipstats.c parses the message, so merging stops at the group
+nests and their contents are appended in the order they arrived, which
+is correct both for a deeper nest reopened between two of its children
+and for an array of same-type attributes, as bridge per-VLAN xstats are.
+
+A layout that does not fit the above cannot be told apart from an array
+of same-type attributes, and reassembling it would corrupt the result.
+Such a message pair is refused with -EOPNOTSUPP and the two halves are
+formatted separately, as before this patch. Failures to allocate or to
+build the merged message are not papered over that way and terminate the
+dump.
+
+Fixes: 54d82b0699a0 ("ip: Add a new family of commands, "stats"")
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Alexander Zubkov <green@qrator.net>
+---
+ ip/ipstats.c | 280 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 276 insertions(+), 4 deletions(-)
+
+diff --git a/ip/ipstats.c b/ip/ipstats.c
+index 8a2ac85e..c531885f 100644
+--- a/ip/ipstats.c
++++ b/ip/ipstats.c
+@@ -850,12 +850,225 @@ ipstats_show_one(int ifindex, struct ipstats_stat_enabled *enabled)
+ 	return err;
+ }
+ 
+-static int ipstats_dump_one(struct nlmsghdr *n, void *arg)
++/* A netlink dump can split the statistics of one interface across several
++ * messages: when an attribute does not fit into the current skb, the kernel
++ * ends the message and resumes the dump at the same ifindex, emitting the
++ * remaining attributes in the next message. See rtnl_fill_statsinfo() and
++ * rtnl_offload_xstats_fill() in the kernel.
++ *
++ * Reassembling the two messages means merging the nests that were open when
++ * the first message was cut short and got reopened in the second one. Netlink
++ * does not mark nests reliably -- nla_nest_start_noflag() is used here -- so
++ * they are recognized by the message layout instead: a nest that was reopened
++ * appears exactly once in either message, and, at the outer level, is known to
++ * be a nest by ipstats_stat_ifla_max[].
++ *
++ * That knowledge only reaches as deep as ipstats.c parses the message, so
++ * merging stops at the group nests, and their contents are appended in the
++ * order they arrived. Appending is the right thing to do whether a deeper nest
++ * was reopened between two of its children or the children are just an array
++ * of same-type attributes, as bridge per-VLAN xstats are. It does the wrong
++ * thing only if a kernel splits a nest that ipstats.c does not know how to
++ * show either, in which case the merge is not the first thing that needs
++ * updating.
++ */
++
++enum {
++	/* Merge the outer level and the group nests, append below that. */
++	IPSTATS_MERGE_MAX_DEPTH = 1,
++};
++
++static struct rtattr *ipstats_rta_find(struct rtattr *rtas, int len,
++				       unsigned short type, unsigned int *count)
++{
++	struct rtattr *found = NULL;
++	struct rtattr *rta;
++
++	*count = 0;
++	for (rta = rtas; RTA_OK(rta, len); rta = RTA_NEXT(rta, len)) {
++		if (rta->rta_type != type)
++			continue;
++		if (found == NULL)
++			found = rta;
++		(*count)++;
++	}
++
++	return found;
++}
++
++/* Whether the two messages can be reassembled at this attribute, and how.
++ * MERGE means RTA and OTHER are the two halves of one nest that the first
++ * message left open. APPEND means the attribute belongs to one message only
++ * and is copied over as it is. REFUSE means the type is present in both
++ * messages in a layout that cannot be told apart from an array of same-type
++ * attributes, so reassembling it would corrupt the result.
++ */
++enum ipstats_merge_action {
++	IPSTATS_MERGE_APPEND,
++	IPSTATS_MERGE_MERGE,
++	IPSTATS_MERGE_REFUSE,
++};
++
++static enum ipstats_merge_action
++ipstats_merge_action(const struct rtattr *rta, unsigned int nrta,
++		     const struct rtattr *other, unsigned int nother, int depth)
++{
++	if (rta == NULL || other == NULL)
++		return IPSTATS_MERGE_APPEND;
++
++	if (nrta != 1 || nother != 1)
++		return IPSTATS_MERGE_REFUSE;
++
++	if (depth == 0) {
++		unsigned int type = rta->rta_type;
++
++		if (type >= ARRAY_SIZE(ipstats_stat_ifla_max) ||
++		    ipstats_stat_ifla_max[type] == 0)
++			return IPSTATS_MERGE_REFUSE;
++	}
++
++	return IPSTATS_MERGE_MERGE;
++}
++
++static int ipstats_copy_rtas(struct nlmsghdr *n, int maxlen,
++			     struct rtattr *rtas, int len)
++{
++	struct rtattr *rta;
++
++	for (rta = rtas; RTA_OK(rta, len); rta = RTA_NEXT(rta, len)) {
++		if (addattr_l(n, maxlen, rta->rta_type,
++			      RTA_DATA(rta), RTA_PAYLOAD(rta)))
++			return -EMSGSIZE;
++	}
++
++	return 0;
++}
++
++static int ipstats_merge_rtas(struct nlmsghdr *n, int maxlen,
++			      struct rtattr *a, int alen,
++			      struct rtattr *b, int blen, int depth)
++{
++	struct rtattr *rta;
++	int rem;
++	int err;
++
++	for (rta = a, rem = alen; RTA_OK(rta, rem); rta = RTA_NEXT(rta, rem)) {
++		unsigned int nrta, nother;
++		struct rtattr *other;
++		struct rtattr *nest;
++
++		other = ipstats_rta_find(b, blen, rta->rta_type, &nother);
++		ipstats_rta_find(a, alen, rta->rta_type, &nrta);
++
++		switch (ipstats_merge_action(rta, nrta, other, nother, depth)) {
++		case IPSTATS_MERGE_REFUSE:
++			return -EOPNOTSUPP;
++		case IPSTATS_MERGE_APPEND:
++			if (addattr_l(n, maxlen, rta->rta_type,
++				      RTA_DATA(rta), RTA_PAYLOAD(rta)))
++				return -EMSGSIZE;
++			continue;
++		case IPSTATS_MERGE_MERGE:
++			break;
++		}
++
++		nest = addattr_nest(n, maxlen, rta->rta_type);
++		if (nest == NULL)
++			return -EMSGSIZE;
++
++		if (depth < IPSTATS_MERGE_MAX_DEPTH) {
++			err = ipstats_merge_rtas(n, maxlen,
++						 RTA_DATA(rta), RTA_PAYLOAD(rta),
++						 RTA_DATA(other),
++						 RTA_PAYLOAD(other), depth + 1);
++		} else {
++			err = ipstats_copy_rtas(n, maxlen, RTA_DATA(rta),
++						RTA_PAYLOAD(rta));
++			if (!err)
++				err = ipstats_copy_rtas(n, maxlen,
++							RTA_DATA(other),
++							RTA_PAYLOAD(other));
++		}
++		if (err)
++			return err;
++
++		addattr_nest_end(n, nest);
++	}
++
++	for (rta = b, rem = blen; RTA_OK(rta, rem); rta = RTA_NEXT(rta, rem)) {
++		unsigned int nrta, nother;
++		struct rtattr *other;
++
++		other = ipstats_rta_find(a, alen, rta->rta_type, &nother);
++		ipstats_rta_find(b, blen, rta->rta_type, &nrta);
++
++		/* Whatever is present in both messages has been dealt with
++		 * in the loop above.
++		 */
++		if (ipstats_merge_action(rta, nrta, other, nother,
++					 depth) != IPSTATS_MERGE_APPEND)
++			continue;
++
++		if (addattr_l(n, maxlen, rta->rta_type,
++			      RTA_DATA(rta), RTA_PAYLOAD(rta)))
++			return -EMSGSIZE;
++	}
++
++	return 0;
++}
++
++static int ipstats_ifsm_len(const struct nlmsghdr *n)
++{
++	return n->nlmsg_len - NLMSG_LENGTH(sizeof(struct if_stats_msg));
++}
++
++static struct nlmsghdr *ipstats_msg_merge(const struct nlmsghdr *a,
++					  const struct nlmsghdr *b, int *err)
++{
++	int hdrlen = NLMSG_LENGTH(sizeof(struct if_stats_msg));
++	int maxlen = a->nlmsg_len + b->nlmsg_len;
++	struct nlmsghdr *n;
++
++	n = calloc(1, maxlen);
++	if (n == NULL) {
++		fprintf(stderr, "Error merging netlink answer: %s\n",
++			strerror(errno));
++		*err = -errno;
++		return NULL;
++	}
++
++	memcpy(n, a, hdrlen);
++	n->nlmsg_len = hdrlen;
++
++	*err = ipstats_merge_rtas(n, maxlen,
++				  IFLA_STATS_RTA(NLMSG_DATA(a)),
++				  ipstats_ifsm_len(a),
++				  IFLA_STATS_RTA(NLMSG_DATA(b)),
++				  ipstats_ifsm_len(b), 0);
++	if (*err) {
++		free(n);
++		return NULL;
++	}
++
++	return n;
++}
++
++struct ipstats_dump_ctx {
++	struct ipstats_stat_enabled *enabled;
++	struct nlmsghdr *pending;
++};
++
++static int ipstats_dump_pending(struct ipstats_dump_ctx *ctx)
+ {
+-	struct ipstats_stat_enabled *enabled = arg;
++	struct nlmsghdr *n = ctx->pending;
+ 	int rc;
+ 
+-	rc = ipstats_process_ifsm(stdout, n, enabled);
++	if (n == NULL)
++		return 0;
++
++	ctx->pending = NULL;
++	rc = ipstats_process_ifsm(stdout, n, ctx->enabled);
++	free(n);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -863,8 +1076,63 @@ static int ipstats_dump_one(struct nlmsghdr *n, void *arg)
+ 	return 0;
+ }
+ 
++static int ipstats_dump_one(struct nlmsghdr *n, void *arg)
++{
++	struct ipstats_dump_ctx *ctx = arg;
++	struct nlmsghdr *merged;
++	struct nlmsghdr *copy;
++	int rc;
++
++	if (ipstats_ifsm_len(n) < 0) {
++		fprintf(stderr, "BUG: wrong nlmsg len %d\n", n->nlmsg_len);
++		return -EINVAL;
++	}
++
++	if (ctx->pending != NULL) {
++		const struct if_stats_msg *pending = NLMSG_DATA(ctx->pending);
++		const struct if_stats_msg *ifsm = NLMSG_DATA(n);
++
++		if (pending->ifindex == ifsm->ifindex) {
++			merged = ipstats_msg_merge(ctx->pending, n, &rc);
++			if (merged != NULL) {
++				free(ctx->pending);
++				ctx->pending = merged;
++				return 0;
++			}
++			if (rc != -EOPNOTSUPP)
++				return rc;
++
++			/* An attribute layout that cannot be reassembled:
++			 * show the two halves separately, like older
++			 * versions did, rather than dropping either.
++			 */
++			fprintf(stderr,
++				"Cannot merge statistics of ifindex %d split across messages\n",
++				ifsm->ifindex);
++		}
++
++		rc = ipstats_dump_pending(ctx);
++		if (rc)
++			return rc;
++	}
++
++	copy = malloc(n->nlmsg_len);
++	if (copy == NULL) {
++		fprintf(stderr, "Error saving netlink answer: %s\n",
++			strerror(errno));
++		return -ENOMEM;
++	}
++
++	memcpy(copy, n, n->nlmsg_len);
++	ctx->pending = copy;
++	return 0;
++}
++
+ static int ipstats_dump(struct ipstats_stat_enabled *enabled)
+ {
++	struct ipstats_dump_ctx ctx = {
++		.enabled = enabled,
++	};
+ 	int rc = 0;
+ 
+ 	if (rtnl_statsdump_req_filter(&rth, PF_UNSPEC, 0,
+@@ -874,11 +1142,15 @@ static int ipstats_dump(struct ipstats_stat_enabled *enabled)
+ 		return -2;
+ 	}
+ 
+-	if (rtnl_dump_filter(&rth, ipstats_dump_one, enabled) < 0) {
++	if (rtnl_dump_filter(&rth, ipstats_dump_one, &ctx) < 0) {
+ 		fprintf(stderr, "Dump terminated\n");
+ 		rc = -2;
+ 	}
+ 
++	if (rc == 0)
++		rc = ipstats_dump_pending(&ctx);
++
++	free(ctx.pending);
+ 	return rc;
+ }
+ 
+-- 
+2.55.0
+
