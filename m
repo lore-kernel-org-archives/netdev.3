@@ -1,135 +1,358 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013009.outbound.protection.outlook.com [40.93.201.9])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.58.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34AA243964
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 07:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788073398; cv=fail; b=mcaYqIN3ovfSrYyXOblXVU4afX/Tp/kz8Bw76+2Nm65esQeORabMFT6fkvIlV4xNpN9p5J5GQ7D9BKzOuhV9OttBolQ7N6+KAiS+qj452F6yCzaMyNV3RWE2RIjSHzUCTzYZjjKJ5qxKPhioOsUwVabJr2C8fkVxkLI1s04hILo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788073398; c=relaxed/simple;
-	bh=PfZGQtf7C+vFBpgYSQDgpXDdSFBbens8vulx1+JHMmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AAAhyXWxoeJBoJcWzjS2sIJzCtZn8x1NKj1MIjYsZ6awBZIVXCMGkjd0NG2w+D0gtP2ySLIJaoMNzIQErYbAzGhOcA3oOBYaMudmCD2ZJDaB1C1HDM0TsNWTF3/Fym2G7QsuFlGxvBcq9vQybFab98TdwAzDOBqV5rtksmPoqu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=e2/QZNDL; arc=fail smtp.client-ip=40.93.201.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="e2/QZNDL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ynwd4QCYPWXs50JogvUN4IBs6PdD+2dBp9mKOkUhcTUUdgrIN4nGpq9925FugTmNGMfsd+4uP2rlkqSGNBfR2ytLLiSHnPrzbObF+dZWqSHIW/w9o+dNNnRfIpuQga4vUpSljpDfAHYTDe15tGKYrMceCrKEsn/RRQ7EusJBNQJJhRIJ5eme9xDdNuw1lWCGoYlrl91pkT8peirfaVPWASlDn57Nb4MPxQZe1726hMAyH6vKBJv2pkUf7+0xtoGaWSU1/80A356h/g4vCYyzWlFR/aLdJUGavX6rpq490F9U5zRFzW++6BqNBaxfpv+YuRLpvnnP5+L6BYWM5XviFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LI1sgWxaQPz9nBsgoGnnLC3heOuqvc2lOip8HRBmMRs=;
- b=WIcdO53hlKDrdjkqXgMSnVRbaTrRTNmgjhK243aEvZSILJYDh6QH0jaACjzTpZcwK5s0sag6w/BttmgHUFAd0iDSUzeWakpNVy7tDsA6flD/wN7cFIv+TY3pM4/qVDnxhee7hQljIat/mNOWFHxxfPXfou+Dhr8gE3MIPVATQieldbl3lA+b9ToKrqtg6GVov6eNyjOzhDG0KGtDY0TtjyASJo4b3HS20Mtr9PRpnlkS7taNOJleVXh17+K4CPQOeq/uzQWIudUdnbKyS1gFHzyvC4pQ3S2RPlNItJWPVy17Uo9QNpwweXEcYJ6JRY15p0Oca0Gz4lxAH9/mulY+oA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LI1sgWxaQPz9nBsgoGnnLC3heOuqvc2lOip8HRBmMRs=;
- b=e2/QZNDLIFxKx0etL42aCTzz4VuZfwtq1piWYY/qlj8/dIig0rZhogWARMbE72Q5lc1wJcLN+XGZO7oGSThKWavOnJPyZetpXvck0ndlxEzovFRD4KOe1UGr21C+IsEBFmwIpXHB6sBLPSY/I9h7X/9DMvvKuKNcewhbyKlvxTamKq1KOs8ffJSwHshqOyDZB/mqWnh8bPQxFi5iOUvPQsf6Wd6kvdpcTM+EAE1pY8k0PopyHMhjnqHDyos4QDi45tD38d3oUz0id+1rHdFCFwCMg3XfHqaBT8EYBrtcj0BdiWjUgjpmrtpmLEZTC364u1ELCJeFZe/+CP1xP0nFXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by LV1PR12MB999328.namprd12.prod.outlook.com (2603:10b6:408:3f8::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Sun, 30 Aug
- 2026 07:03:13 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Sun, 30 Aug 2026
- 07:03:13 +0000
-Date: Sun, 30 Aug 2026 10:03:04 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	linus.luessing@c0d3.blue, bridge@lists.linux.dev
-Subject: Re: [PATCH net] net: bridge: mcast: fix br_multicast_list_adjacent
- rcu walk of mglist
-Message-ID: <20260830070304.GA2757218@shredder>
-References: <20260828100642.2664347-1-razor@blackwall.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260828100642.2664347-1-razor@blackwall.org>
-X-ClientProxiedBy: FR4P281CA0250.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f5::8) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321B638399A
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 07:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.58.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788073685; cv=none; b=h1o5bAJm3sxV/WTjEuKFiJ4RgJXpNMiZFvNPA5FDpAwTySd/pumpIJVdnGix7GUZqAutsgwrPOw0a90HuTzWKS943bwx+xjgKtXzsOyi5YGieAw5NcafxRHseotMurobX6o/pT3oq2UXxZWt/k0HNQD+9+8hHQi2aNK2Z2ILnac=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788073685; c=relaxed/simple;
+	bh=9EQmXxdFsOdWJOwXtVEvBP/iXEteCmwvLuiOBZae5Lw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jNpF8eRRpYsBEA5C5U8gYyyhGK6g+j73eRxZqImz7PisXWvaCoIClgfl/NyM7rztNZpnTminz48V37iCJyKAgV8B73TztWvP+DS1nMytaxrAxiTFvE/qQrXkMCJu1frEm1CruVyHOTigoyOwcqkHE8a8mCjF3fR7zTNOxKehsuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=114.132.58.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpip2t1788073609taceb0203
+X-QQ-Originating-IP: MVSx1Z/qaqyPoaP4sfWkf4jrI4Xs4jk1YSqR87GDwOE=
+Received: from 192.168.1.228 ( [192.168.1.228])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 30 Aug 2026 15:06:29 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11642051627260665772
+EX-QQ-RecipientCnt: 10
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
+To: netdev@vger.kernel.org
+Cc: linglingzhang@trustnetic.com,
+	jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net v4] net: libwx: protect ring accesses with RCU and NULL check
+Date: Sun, 30 Aug 2026 15:06:24 +0800
+Message-ID: <4353E83B1147D652+20260830070624.7410-1-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|LV1PR12MB999328:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1432090a-9c32-4696-5e4a-08df0664c239
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ZQqRvPodmG+RTHHEitBuBSUjTCW5oQVtgCB7BAIOYmuhzIVQeJyXtPGHfA0RKbXEfiHL0aJbm7InrB2aMt5t0cdOl9Imj+aeQlW5cAr73BkxKikbNTyfm0Mc3dFQ1MTRiRT04iLifk1W2pnDU33zi5V8e7OhcegZrm23QU/CneEB3iKmz/qPWWLRDeg/oksrRSzA55YrbAS3dwt8sEGhgOUIrbMg1kY3XpGvaOOvYHBjUAbUJ/CYSn3fWH+75MCadbcTfkAFoXVRtyzvfBXm820BnfcckatYzwAyZ3KfhWOVr+UXrwgnxdHid1tVlkG2hLJ46wyeK1J1tZ5sdhxDDIKJcDlPM7AfB0o0mPIXfMSMQt6TgYPBYfxgmGwvy+maAzXqx8TXZEVj2uyC8IOaXry5lPeST5eglNcIP+ps3IytHCrOXpLLufbof0Fb2dnvv2oN5528jY9oMUXIUzPp+j/KvrBxiaRGCjY2AdVO+86VMVWgsbmlFjRIz3gc6LN2LseBnErowiYPTATDlnC+LC4DvHzn0U0gh+D/SE2IrxCvCR3rMoDQfRND8hCtwMQy3Zj65oc3Z86P+U4ev0wwldl2yde/dpVQWKfIDZ6x8srYZ5dvmvNbSwf10qyARlvBAoyXqT95F7sjSSNvxbBQdeMsBz1RlZE/+hxMpQ4is+8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KZglCVwrLwtIOFNeKG10dDfH2sOpikuF7qzyIChsDx9FAzUxcJeVtvOoS9nu?=
- =?us-ascii?Q?vDRGiGHwAd6Ba/5ng33MFd+7vz+/LkoVkQ9p7j6zYx7OQ6Fdl0KNKaJ4Yow6?=
- =?us-ascii?Q?/ZCnlD6odmu+49U1blGqk/tdcMs+8SCmZ5tsTOcW4/7O7CU9cJkZf0Q5ssQE?=
- =?us-ascii?Q?JZExbU+XdQINKu1QVBPZ3Pszah7styjH+Wgh40hjklMD4QzoCZQAmMTQJOkx?=
- =?us-ascii?Q?9y6Qn4+BtzXjhtYDMBeWdvO2QN2ZSdcaDEwleekBZUMriGq0H6hnoXLn0eWT?=
- =?us-ascii?Q?YvRJoNE7zCTIFFuPytIUHXMWWCzyevR0YXcNqa32u1SLDd1bqQxqws97ABNk?=
- =?us-ascii?Q?7pZEeuguSGKrPocVBz+TybG0/YyuXC9DIytMiHE6kDPfQcb8TP5PqQvB/JhM?=
- =?us-ascii?Q?BRXxiE7K+zEaIGcYgwdMYnbTDoGvJXOdcH2ecB7LeJVQGtdBIDob37T9lu/W?=
- =?us-ascii?Q?f9M5Ob1BBce3EXJ9oFzNxfkerl6FZ54wx2OojxrkNOwu+Ut6189sJBPErOwS?=
- =?us-ascii?Q?00SrK6CBNB3JP9DLKtpNmi65xJuZRf5gkWWe+ObMknvYWI2y1tkLmAgnG13Z?=
- =?us-ascii?Q?NGMvpzCk5afY7yvYpjCwUfbM3lwGdaRLDBp8FTbY5xsmzEyq3YfHcC8VvLv8?=
- =?us-ascii?Q?P9kGJO+Sn10AXk0zf1tyuwoawKlKgbW9DIzyXeWvRFsSIuyO2f9tfpG9hN8O?=
- =?us-ascii?Q?c8ndTiqwIwwmbk7r8YZejxmPvy9ADt6tE/s913jkubM1jXNMCNN5bmNq1Ynp?=
- =?us-ascii?Q?JUjbwVtNBo8+1LYGlX4iyJrnK8A9OViIjyxRUXyCMxhPsEpqK86jmCCUEhsn?=
- =?us-ascii?Q?9oRenToIuLGwiuS/3JlnYSn+pWTf+bfTcqfBPlAh7C9TD7hBKiDj5Klwf7fI?=
- =?us-ascii?Q?DrkDlmQd8Pp71EIFbnTh3PoMuFwl+z/BBzTKmkRNUlzA0y+3fBuco26K/Vcx?=
- =?us-ascii?Q?xXXQw8KV4BxAeyJYZiS8xKDflgkPdY28k8uFDoV62SPi6ryuzkHtVEbChqzO?=
- =?us-ascii?Q?3xhBfF40ivfieBT76ZJlh2fBvGqIfUmn+5HyiVh5+kJzcwYUPuUHUPj64z9l?=
- =?us-ascii?Q?Zub1pt2/ELXSEKU22PkH43JdEcxfGizDF3MW0e0gKLN9qk4Q2/oA7C3aaHs5?=
- =?us-ascii?Q?wN+szW74cAmxzhUzQAfM6pwxveMNLymDiLqcVY+G3lkBr7CUucUeYDSswI1s?=
- =?us-ascii?Q?zxuOSHbXOuPpT/D+inh6tNzETtIybqH4DNTa8/ENT2eSIhyVIKEeWNhu8uQI?=
- =?us-ascii?Q?uyMuxDL91SvjfoRpTZkSk7Z4c/lSBq7DOChHQ3XH8MKLC+Nbmnuz5zCjvDBj?=
- =?us-ascii?Q?BkLmH4FyZ/cgaaiAd216GE7qvnwO5eE14F0T+pNhrUvwmuCwc2j95LCCFAWD?=
- =?us-ascii?Q?d43sRK7cZhYE//QrfVSsdAacusLoKI8t7WxRxbYWPbFE/scTLymNk6tBQ/L+?=
- =?us-ascii?Q?KGUIDPt8UwDNZbJBWsujqYOhXE7BSXrIHwH7onqQZPmUOuVsgUV1HJxWTEoA?=
- =?us-ascii?Q?Sj1Sv4g4UXtrtLc2aoMPsBrGSoXjkfG0felIID2VNKw8BOz8j1+ExBALWhyN?=
- =?us-ascii?Q?Q4DmmCO67+KiG6Q5I8URqQMyp6VSEXQ8HbHrAn5Ii7UnVao/y8z4bfpy/w9i?=
- =?us-ascii?Q?6Edj6AvJQ7MiK4LUdnIGZlrnMeWFMF5V4Lp/lILBczvaRV0bFSnqrUWyBfLt?=
- =?us-ascii?Q?kyWbrFCkDlvqLCuAHvUGmpaYqoQdviUVtDo8wJALR/byP09Y?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1432090a-9c32-4696-5e4a-08df0664c239
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2026 07:03:13.7025
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3vE7PkIEAKrXkSd87sQgTsF1MfZMF1YA0DUH8uVIDYS3j22WsQa/VlU7rokiYY2P7gKRkxvMqLWyI2XdzN73gA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB999328
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: MXZrlka9y5vPXPHXhL4iPj5hddLg6zu/3Y5gyxy9wboJOTXO7v06dnHX
+	fvZ2U5RSt02zZEWsuAiiCp3pJ6K8UOGUmj2KZWOp9F8mQWGh2dKFfwkJk1oAxC6VQWlAo0y
+	5SXFan8taEWqZ3jwk9wKaiZwoKyGS6NwUBm7Kf1hziihBOfuUvUJeaC7HdMdUXAqyLAE0zk
+	JLfYPo85elSvRxslg8Qs1vHal9tretRV5u9Lceb1D+pb9+mNN0J9CoM5haj7eloFVPjk4WK
+	c058bj/lkd0E+QbEQR3q8bOJDPl9vaKZKe+NgZ5RK82TUNINspFGoeilrbQ6jbMWL53CK0g
+	gbO5VCrffznSlvZuGw0aJzAD+gvFqYEBLdzmBHIh5X1EcS+39dRvUGC28kp8Jo++22/8LEW
+	/B/MHVuKYeWFRyIWghqdPL+bLD8gyh7drCiKMI/mnKUYChXgBLZZfTV0wtssD6HwI9nIpmT
+	yCQpz6GI4i9rC/k9qM5YlkxnX+RdtU8uaMXje2XlMSTg+OHs78nmEUP52DRkXchue6w6dzX
+	yy/GUpGaKjKdRsw83aqfNOaGs/ep3MGztCj1+vd8u0YNbrXfnzg8nSN/TqEjBomqm1NnzM5
+	Ax2B/+aZKEKwfnCijdfBGuPyDOuTpA6WuNJoWItpp/HLiy0jrt4B9iTSv8Ktrpdo2tfi5iw
+	QI6PZ+tnBNGJKrr/X2X/4k/sjrbz2sQDnQp5OTf0UIS5ucXPfbUbdRfcj1FS1QL8q3WyYEm
+	XKoF6M/2anRpzZv+SrNI7SKf1d8mik1MKre3XP3WUJjF0jxY0XJlpqP7T1hFbE+bjsUcMxZ
+	TCT0j4ivNZi8qMvp47+NMwKpvuVe9FjXLdKY3VOGH+g7C7h4yYTrnji8H5l1EPpftf1e5Kf
+	puil5u6uDa2TvPJF1NWUFV359rer+O7mN+eBLqlNiulhVqK7utSlXOfq8vzqEqedhC2x/Zm
+	rmB+JMS+QZC4tAN4BLqlkC6bGO8FS3hdOZCe+pkZmd0ScGRu6L0CIoAvAvJXwa+cJ5O9gKA
+	eHzvX/p8lAJlppKISl/Ktdpad5M17Z6W+1NSHWFF8TuFtloRyQxu6NvsdebwU45NkpaEiO1
+	HPKiWAsCMw+r/PTZmF7VoRtlzA+gI8drg==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-On Fri, Aug 28, 2026 at 01:06:42PM +0300, Nikolay Aleksandrov wrote:
-> Sashiko reported a bug [1] that br_multicast_del_port_group unlists the
-> port group not using proper rcu helper that preserves the next pointer and
-> after that immediately frees the port group without waiting for rcu grace
-> period. The only rcu walker of mglist is br_multicast_list_adjacent() and
-> it turns out that function has always been buggy because mglist was never
-> converted to RCU. Fix it by acquiring the bridge's multicast lock for the
-> mglist walk. We can do a proper mglist rcu conversion later.
-> 
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
-> 
-> Fixes: 07f8ac4a1e26 ("bridge: add export of multicast database adjacent to net_dev")
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+In wx_update_stats(), wx_get_ethtool_stats(), and other service tasks,
+the ring pointers wx->rx_ring[i] and wx->tx_ring[i] can become NULL or be
+freed asynchronously during queue teardown or channel reconfiguration.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+1. Enclosing ring pointer traversals in wx_get_ethtool_stats(),
+wx_vlan_strip_control(), wx_update_stats(), wx_update_xoff_rx_lfc(),
+wx_err.c, and wx_ptp.c within rcu_read_lock()/rcu_read_unlock() sections.
+2. Using READ_ONCE() when reading wx->rx_ring[] and wx->tx_ring[]
+pointers alongside NULL check guards before dereferencing them.
+3. Using WRITE_ONCE() when assigning and clearing ring pointers in
+wx_alloc_q_vector() and wx_free_q_vector() to prevent compiler reordering.
+
+Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+---
+Changelogs:
+v4:
+- Switched from rcu_dereference()/rcu_assign_pointer() back to
+  READ_ONCE()/WRITE_ONCE().
+- Standardized on READ_ONCE() and WRITE_ONCE() for all ring pointer
+  accesses and assignments across the driver.
+- Added RCU read-side critical sections (rcu_read_lock/unlock) and NULL
+  pointer checks to wx_get_ethtool_stats() in wx_ethtool.c and
+  wx_vlan_strip_control() in wx_hw.c.
+- Updated commit message to explicitly document the expanded protection
+  in ethtool statistics gathering and VLAN strip configuration tasks.
+v3: https://lore.kernel.org/netdev/20260818100841.37483-1-mengyuanlou@net-swift.com/
+- Replaced READ_ONCE() with rcu_dereference() when reading __rcu annotated
+  rx_ring and tx_ring pointers to fix Sparse static checker warnings and
+  enable Lockdep runtime validation.
+- Wrapped wx_update_xoff_rx_lfc() with its own rcu_read_lock() and
+  rcu_read_unlock() section to ensure self-contained protection regardless
+  of caller context.
+- Extended RCU read-side critical sections and NULL pointer checks to other
+  background tasks accessing ring arrays, including wx_ring_tx_pending(),
+  wx_detect_tx_hang() in wx_err.c, and wx_ptp_rx_hang() in wx_ptp.c.
+- Updated commit message to accurately reflect the use of rcu_dereference()
+  and the expanded scope of protected functions.
+v2: https://lore.kernel.org/netdev/20260818100841.37483-1-mengyuanlou@net-swift.com/
+- Moved rcu_read_unlock() after wx_update_xoff_rx_lfc() in wx_update_stats()
+  to ensure flow control processing remains fully protected within the RCU
+  read-side critical section.
+- Replaced WRITE_ONCE() with rcu_assign_pointer() when assigning and clearing
+  ring pointers in wx_alloc_q_vector() and wx_free_q_vector(), providing
+  proper release memory barrier semantics for lockless RCU readers.
+- Added __rcu annotations to tx_ring and rx_ring in struct wx (wx_type.h) to
+  align with Linux kernel RCU coding standards and fix Sparse warnings.
+v1: https://lore.kernel.org/netdev/20260813095141.88227-1-mengyuanlou@net-swift.com/
+---
+ drivers/net/ethernet/wangxun/libwx/wx_err.c   | 22 +++++++++--
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  6 ++-
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 39 +++++++++++++++----
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  8 ++--
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c   |  8 +++-
+ 5 files changed, 64 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+index b56fbdc959de..70147901b90b 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+@@ -201,12 +201,18 @@ static bool wx_ring_tx_pending(struct wx *wx)
+ {
+ 	int i;
+ 
++	rcu_read_lock();
+ 	for (i = 0; i < wx->num_tx_queues; i++) {
+-		struct wx_ring *tx_ring = wx->tx_ring[i];
++		struct wx_ring *tx_ring = READ_ONCE(wx->tx_ring[i]);
+ 
+-		if (tx_ring->next_to_use != tx_ring->next_to_clean)
++		if (!tx_ring)
++			continue;
++		if (tx_ring->next_to_use != tx_ring->next_to_clean) {
++			rcu_read_unlock();
+ 			return true;
++		}
+ 	}
++	rcu_read_unlock();
+ 
+ 	return false;
+ }
+@@ -264,8 +270,16 @@ static void wx_detect_tx_hang(struct wx *wx)
+ 
+ 	/* Force detection of hung controller */
+ 	if (netif_carrier_ok(wx->netdev)) {
+-		for (i = 0; i < wx->num_tx_queues; i++)
+-			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
++		rcu_read_lock();
++		for (i = 0; i < wx->num_tx_queues; i++) {
++			struct wx_ring *tx_ring = READ_ONCE(wx->tx_ring[i]);
++
++			if (!tx_ring)
++				continue;
++
++			set_bit(WX_TX_DETECT_HANG, tx_ring->state);
++		}
++		rcu_read_unlock();
+ 	}
+ }
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 940d2e59876c..c0fb5639e370 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -154,8 +154,9 @@ void wx_get_ethtool_stats(struct net_device *netdev,
+ 		}
+ 	}
+ 
++	rcu_read_lock();
+ 	for (j = 0; j < netdev->num_tx_queues; j++) {
+-		ring = wx->tx_ring[j];
++		ring = READ_ONCE(wx->tx_ring[j]);
+ 		if (!ring) {
+ 			data[i++] = 0;
+ 			data[i++] = 0;
+@@ -170,7 +171,7 @@ void wx_get_ethtool_stats(struct net_device *netdev,
+ 		i += 2;
+ 	}
+ 	for (j = 0; j < WX_NUM_RX_QUEUES; j++) {
+-		ring = wx->rx_ring[j];
++		ring = READ_ONCE(wx->rx_ring[j]);
+ 		if (!ring) {
+ 			data[i++] = 0;
+ 			data[i++] = 0;
+@@ -184,6 +185,7 @@ void wx_get_ethtool_stats(struct net_device *netdev,
+ 		} while (u64_stats_fetch_retry(&ring->syncp, start));
+ 		i += 2;
+ 	}
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL(wx_get_ethtool_stats);
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 122c4952d203..9e2cf794f81c 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1598,13 +1598,18 @@ static void wx_vlan_strip_control(struct wx *wx, bool enable)
+ {
+ 	int i, j;
+ 
++	rcu_read_lock();
+ 	for (i = 0; i < wx->num_rx_queues; i++) {
+-		struct wx_ring *ring = wx->rx_ring[i];
++		struct wx_ring *ring = READ_ONCE(wx->rx_ring[i]);
++
++		if (!ring)
++			continue;
+ 
+ 		j = ring->reg_idx;
+ 		wr32m(wx, WX_PX_RR_CFG(j), WX_PX_RR_CFG_VLAN,
+ 		      enable ? WX_PX_RR_CFG_VLAN : 0);
+ 	}
++	rcu_read_unlock();
+ }
+ 
+ static void wx_vlan_promisc_enable(struct wx *wx)
+@@ -2870,8 +2875,16 @@ static void wx_update_xoff_rx_lfc(struct wx *wx)
+ 	if (!data)
+ 		return;
+ 
+-	for (i = 0; i < wx->num_tx_queues; i++)
+-		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
++	rcu_read_lock();
++	for (i = 0; i < wx->num_tx_queues; i++) {
++		struct wx_ring *tx_ring = READ_ONCE(wx->tx_ring[i]);
++
++		if (!tx_ring)
++			continue;
++
++		clear_bit(WX_HANG_CHECK_ARMED, tx_ring->state);
++	}
++	rcu_read_unlock();
+ }
+ 
+ /**
+@@ -2893,10 +2906,13 @@ void wx_update_stats(struct wx *wx)
+ 
+ 	spin_lock(&wx->hw_stats_lock);
+ 
++	rcu_read_lock();
+ 	/* gather some stats to the wx struct that are per queue */
+ 	for (i = 0; i < wx->num_rx_queues; i++) {
+-		struct wx_ring *rx_ring = wx->rx_ring[i];
++		struct wx_ring *rx_ring = READ_ONCE(wx->rx_ring[i]);
+ 
++		if (!rx_ring)
++			continue;
+ 		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
+ 		alloc_rx_buff_failed += rx_ring->rx_stats.alloc_rx_buff_failed;
+ 		hw_csum_rx_good += rx_ring->rx_stats.csum_good_cnt;
+@@ -2912,19 +2928,28 @@ void wx_update_stats(struct wx *wx)
+ 		u64 rsc_flush = 0;
+ 
+ 		for (i = 0; i < wx->num_rx_queues; i++) {
+-			rsc_count += wx->rx_ring[i]->rx_stats.rsc_count;
+-			rsc_flush += wx->rx_ring[i]->rx_stats.rsc_flush;
++			struct wx_ring *rx_ring = READ_ONCE(wx->rx_ring[i]);
++
++			if (!rx_ring)
++				continue;
++
++			rsc_count += rx_ring->rx_stats.rsc_count;
++			rsc_flush += rx_ring->rx_stats.rsc_flush;
+ 		}
+ 		wx->rsc_count = rsc_count;
+ 		wx->rsc_flush = rsc_flush;
+ 	}
+ 
+ 	for (i = 0; i < wx->num_tx_queues; i++) {
+-		struct wx_ring *tx_ring = wx->tx_ring[i];
++		struct wx_ring *tx_ring = READ_ONCE(wx->tx_ring[i]);
++
++		if (!tx_ring)
++			continue;
+ 
+ 		restart_queue += tx_ring->tx_stats.restart_queue;
+ 		tx_busy += tx_ring->tx_stats.tx_busy;
+ 	}
++	rcu_read_unlock();
+ 	wx->restart_queue = restart_queue;
+ 	wx->tx_busy = tx_busy;
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index ed5aad7857bd..c227e9ab8a4a 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -2191,7 +2191,7 @@ static int wx_alloc_q_vector(struct wx *wx,
+ 		ring->queue_index = txr_idx;
+ 
+ 		/* assign ring to wx */
+-		wx->tx_ring[txr_idx] = ring;
++		WRITE_ONCE(wx->tx_ring[txr_idx], ring);
+ 
+ 		/* update count and index */
+ 		txr_count--;
+@@ -2217,7 +2217,7 @@ static int wx_alloc_q_vector(struct wx *wx,
+ 		ring->queue_index = rxr_idx;
+ 
+ 		/* assign ring to wx */
+-		wx->rx_ring[rxr_idx] = ring;
++		WRITE_ONCE(wx->rx_ring[rxr_idx], ring);
+ 
+ 		/* update count and index */
+ 		rxr_count--;
+@@ -2245,10 +2245,10 @@ static void wx_free_q_vector(struct wx *wx, int v_idx)
+ 	struct wx_ring *ring;
+ 
+ 	wx_for_each_ring(ring, q_vector->tx)
+-		wx->tx_ring[ring->queue_index] = NULL;
++		WRITE_ONCE(wx->tx_ring[ring->queue_index], NULL);
+ 
+ 	wx_for_each_ring(ring, q_vector->rx)
+-		wx->rx_ring[ring->queue_index] = NULL;
++		WRITE_ONCE(wx->rx_ring[ring->queue_index], NULL);
+ 
+ 	wx->q_vector[v_idx] = NULL;
+ 	netif_napi_del(&q_vector->napi);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+index 4708e7f3958f..01071386409a 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+@@ -257,7 +257,6 @@ static void wx_ptp_overflow_check(struct wx *wx)
+  */
+ static void wx_ptp_rx_hang(struct wx *wx)
+ {
+-	struct wx_ring *rx_ring;
+ 	unsigned long rx_event;
+ 	u32 tsyncrxctl;
+ 	int n;
+@@ -274,11 +273,16 @@ static void wx_ptp_rx_hang(struct wx *wx)
+ 
+ 	/* determine the most recent watchdog or rx_timestamp event */
+ 	rx_event = wx->last_rx_ptp_check;
++	rcu_read_lock();
+ 	for (n = 0; n < wx->num_rx_queues; n++) {
+-		rx_ring = wx->rx_ring[n];
++		struct wx_ring *rx_ring = READ_ONCE(wx->rx_ring[n]);
++
++		if (!rx_ring)
++			continue;
+ 		if (time_after(rx_ring->last_rx_timestamp, rx_event))
+ 			rx_event = rx_ring->last_rx_timestamp;
+ 	}
++	rcu_read_unlock();
+ 
+ 	/* only need to read the high RXSTMP register to clear the lock */
+ 	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
+-- 
+2.53.0
+
