@@ -1,168 +1,129 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD0431A55B
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 20:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788121035; cv=none; b=LmCwAlaK6hF+avd4XvENEMdEttHfngZvVn4xLcIzwZQQ9YtlwOQsPi6LAHs2QWKH23BWjCxoxstwEO/9cdk1+ayDJmtvGd7L8zhV3wwbsEqrJbCgvU9+w+ywtWn1qFcymEax6xEfcb9JiXHhrEIy2VDik3TDR2mLZuaVdZ4FkPE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788121035; c=relaxed/simple;
-	bh=qnBuxHRm0ZKAQlNWrNsQLPpAatqA7MRJqtCeBnPdJco=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jI0GNmxRkz8W8yQ5VVGds3XAl5JhsAFrQ1wZ1hk50UqD7vMVs91x4Q3fMjWKkhE5NGZN6sXLnDmojaMCXMPUhTu63RgoeUnPqdK0ZW1GUHUPQhUhEWU2fP2WqS3BOzg0Y+mU/6h6aq8Iz/8MidkUXpGn+ir62U9e0kK2PBNmr7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WiPjRTwg; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463FF30CD95
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 20:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788123085; cv=pass; b=WAQEvh55SQuGP8XCt1xxci4AO+udJGx6e086axcKVDuS7IAmYmVi7L7k1WZghhpAy98yZ+HMnCazuqd4l3PzOvjkxxhGlzs4aL84pRHS1+fIb6CYSQdVP/mjtd/2tSntPhgaRvkIDMg02bqlka8XvYEeMigbIhYHwVCbQKIkHGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788123085; c=relaxed/simple;
+	bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NyXjJ5nHGMpF6C/tOOMNYvcrQpk1g/W2xrYrCa3XJRhso4pOS9tQb8DrsWWv1EjcISdtGvdLfv6Mgk/enCClr5OdibnHfRaoAfHe7TFsMnStcjHnXBLTRou7z2WALNHqFCOvg/3P2Jnyn/uhc/8KDpSs03OgNlGbU9iq7u3/lqE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mRf2eHh7; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WiPjRTwg"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49b96837ca3so15013135e9.3
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 13:17:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mRf2eHh7"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so6937a12.1
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 13:51:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788123080; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iteXxTKjfzOBwqyne6rlFuZRathTygd5wyMv+wOJ2QbgAeVG/1qqJHerEUE8KB2VXe
+         drTsNo5NF+I03u+s9mJovnfRloQdd0FEZFpnF2NC0ixG/Djtxy8+E/3dSo0I0i+7BPIN
+         udCCM+OAI4tIeHCcfYcJLQ+1FDp/IYeWolVrEGEEk7x5BGshOf01CNY9D2yrAGu8f7Dg
+         uOSgAe85MAPx+qucZqcHqAWg/aRhu2/Hf0c0JXvQly/vhSclmw4AW6Xj3ZuQLYM5HmRu
+         TcF6xg8SLQh0iDl44jy3mWjXOn7llgXxBf7ktPj8EfysPZDY1eJ7HuE391lto4zaN51T
+         kxxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
+        fh=yh98KWVwMLzWCQ71RnvrnNjzOqWJHM8zJUtw4qGVfdE=;
+        b=ZUrWbKjU5xFSDts5RLsn89EmE/+8fRWNdRRQGPHXUqKr5Ccc9H5/JqvGEEsAHdD8vp
+         i0TX/QLKAlfrBoRv8TuBl8WjQpYnkVIhzhI0M5W6Ez9pHNt/QYzLrmI/gbZ3eyW11xKR
+         0rSiL2moKXBj5f1apW1zDo7/8JnkO/zqP69BXoPjsH8O89GcGLWGHxw0C9t37DWvMmhS
+         kPTTInKFWS+wVF2SXxSVIFP8Mpkq3QHVisyG75Bvx3j1a3DBRGF41tPEYcTIjh4cmVE+
+         Y2SYJIlKLVbr8YTzyYU3lc1nviJ1Nqs0NCzMgaZvTqKm1BxipXy1WWAUApKBPt+kwm6U
+         V+iA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788121031; x=1788725831; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=google.com; s=20251104; t=1788123080; x=1788727880; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=WuLxHG99e7u2lGKea2+n10AjWQDCxmpN+ylQ+0r2DPw=;
-        b=WiPjRTwgZHZz5gqY9fpb7d4A7JN/czmHcPHnZVgwR2kFcIzPxmrIiUrBqiGuMjbW+t
-         dd4VAt2A+KMGsOlqs1wgWPc/WBjcX/bjpTop7H4PjThj3l7St8EJGore4jGYfVHh6ru5
-         07aQy4svkk/p0wvX+pnq1hopk30ZMQtYEhU5673HKx9YlOas0jVKcngtGSx8Km2zVfkq
-         ZPaJVy3ySPNwJ+kWynSy0oEOmD4cHGreHRLkftQJh+Q7ko0OgmJkqW0NZAqbTRkpbiUG
-         c9g1ZLBl3gNMqcpiBcYYN95EnHOSZl0/iYMxvane6XbefOUASvD+bWTrz3QeFgh0J0r1
-         iMqg==
+        bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
+        b=mRf2eHh7xq3mfglMpCNgppOLgsMfs4A3lP90nnTODkYvC2RP5NhGW84NrP8Fqsl6n8
+         rojL7epCf+x9i8Alzn7FviGBIfmkVxGR0b5JgtfsKkkxoaf1jYge8qgMzUhOWHfD/xUP
+         tBeik8mb/8U25jvfImn6yki/9o1O0z3znmwDj1VYxL+RCTuXXYhLbri3ngOrme8JNt/m
+         VvO2qCumj8SVAVT3INA2PR/gr0OBW6ephRUiPxBZV0jyfdE6iPms7U690jHSb7tBfcEE
+         m/GDa2oSJo4B3SXoJGVY1caoJVwWd741/gc1Tp6CG/EM52kBtg094APKLvybZAJCKuR7
+         HyIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788121031; x=1788725831;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788123080; x=1788727880;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WuLxHG99e7u2lGKea2+n10AjWQDCxmpN+ylQ+0r2DPw=;
-        b=WlaIVw9TqQ5N5gkZ8mJHEapzo25e16ppYPLCi9+HLdFSfa6DFz2Y89Fyi1BS/PnoPg
-         2jnVom8z8qnOCQmB0UE+3kkCTV6nOKkhB/CD+eH5lNi6Fy+ssVv2JqTAS+vyIblA6lYf
-         AqxuFvS/D7gDEiHG77IOnqrd5xzWZfpUxECZTcVjFoDbo4RbmSW/ZRG6xPagc+LKDgGC
-         xvpheXIcrNwwrEUDA/0SEiEioH/XUJAiGUnLXsifW7+DFIG6Mv2GHDQJ01T19SI6N6WE
-         SQ2yck221h/JMwHy9BdxHpdp+LsKeS3dbTT3JAIROzvKxvdybdEiPZ5icYbhc9XBgQ6H
-         Ykvg==
-X-Forwarded-Encrypted: i=1; AHgh+RoX8rOM0ahHScFniQadN/XLieRAGbKRsFyJS9Y7TTqJ+xUl5D+DhFCMtKkV/xi7lEiQcDIv+Lg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lMs0NwAnAVxQDiVZd5nsQgryslSQlsJorzVyzqPDv2GKHhD/by
-	4tcfBsILFhWIWvZSbC8vkkFHOcb0yOjItoaoCEtGwkCb82+NytucXA8ucr86fJtC
-X-Gm-Gg: AR+sD12CnpDJqj1YgLqylMdCLlrUwFXAV98ZKJatLsWR0uVaELVIn7vu2SEjgYTYwFf
-	+GE/K92768cR8OUji/UbXL20ISSRu9H+Z/UPaRUvVtjB7KAjvCSGtPeJFSap+Y2S0mQjGydL/Ws
-	FSTkabLHGLL6+tIc5o1P7E6xqArJgegSsWtyzx+Zj3rugUditlQ/59AtIJTIJWw2yFWzjuSeJ1/
-	qVvxZGqipIUjg5y2CH5vtzU1yWFXmv5onofJq8yBIgIEmuEhpFogTZk9BZ0uSgyocP7C9y/LpOq
-	F/oLMHF5p/Anub9mI1YSbd8naFzABAI4XNQb4vz6in6FVGqOArBMW/01/WN8bpsmCNixvKdRX7P
-	CH+AxJMakf21IYBiDbFzzaM+8jxdEHg8q+4GBtLQkAt5kIpmdWJMvIsh+6Y/pqv/Fhh2mcEgorg
-	Sf2/Htfooy+EVe9Ng/YarsnZ8CftEbUPS2ekc8wsAIz53vrcggLgQxdU+SpkM5JBTLPaT21B+9s
-	M1xVdK2xhVNHQ==
-X-Received: by 2002:a05:600c:c4ac:b0:499:a5fc:2087 with SMTP id 5b1f17b1804b1-49b91c20e36mr318733065e9.6.1788121031326;
-        Sun, 30 Aug 2026 13:17:11 -0700 (PDT)
-Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cd2922ebdsm100498265e9.3.2026.08.30.13.17.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 13:17:11 -0700 (PDT)
-From: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
-To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Cc: Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	mptcp@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
-Subject: [PATCH 6/6] landlock: Document MPTCP access rights
-Date: Sun, 30 Aug 2026 22:16:50 +0200
-Message-ID: <20260830201650.67050-7-gnoack3000@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260830201650.67050-1-gnoack3000@gmail.com>
-References: <20260830201650.67050-1-gnoack3000@gmail.com>
+        bh=51qPjagGnK9IkgpUmhvIHxYp8R8l8qOTFkMoSuBy/7w=;
+        b=UwZCGKF125K2ZMdPFQjD8IKDYCQci6Bam4e5SyJCVY6XBTNAtq3ftwtR4rWzSsT600
+         KEPWlILLUiP7ERDkkkfw6irix+xv33n+8d1wcisLHA200TTUnwDj8SOGHHcrxQphWNCX
+         gsnksmBLoOkegb1mXs60/Ax2GgKExth1T4BwVIsdu3mABa5Z5goIwJbpyH93U2sbSQLX
+         CTUByiLwHhi35yljO7BNnnAt4r/rkN6Q4Yy9iTDLl9u+UsYAg30U5HpE5n4jMO3/4NUt
+         i/RAftSUFqsuBSBuKb2zNqke6R3pLPgMhdQYu/N5j29E1v6v2DdGLP5Dxs7tFVe8eoFF
+         JmUg==
+X-Forwarded-Encrypted: i=1; AKwUvBxSz3OASrY1eWKC1xZ+quuPiXMLcp+xXzvoOnzZrn+UhpOIh5l/VVnjUvpJQsGHQPG2ufceO34=@vger.kernel.org
+X-Gm-Message-State: AFuF++kvaSWVIx1n3Pbj/YVI7GfoU0ghfcxvEWu1H0NWLDOr7KWi7GJ8
+	QPKoURG1A48UxchTnNO6cqduTbrNxPQsCicDNzwSay2qQjNbQ2JpBHOORAHpnwLZrtBGCR3MpN/
+	oe9grCfJHkDnVRJ0EneaOjFFdKcOiZXrLhb/kvLQU
+X-Gm-Gg: AYBFou30EsgAoJrzjKFUNwCdzKM7TAhEpHe9RZLDHz5pTDRgJwVohcZo1vold5zfCNx
+	ZD+PrPViunf1fOTJUjybmKi7fhgtAgQoDPEx55q0T8+O73d2PdzLfJ+lWM+CZGbP2lubDhJVYI5
+	4fLprhDHI4/NdlxpDMSmBNTDx8uFMelfaRstFYgxCoxeM0lbABJm25qbcxqlb/VdBcBhjoi7uYX
+	bIIGOrBb6nQHqiy/lugJMwk05DKLK7ziSzVpsj3cY8MVWvCcr/9U0PqRkvzyg1Hf0+ngTSk7N6r
+	9k6LWwBLgTUFKiFjHtWTZ3xM2RgsGYWUmF3StbiehG0=
+X-Received: by 2002:a05:6402:5052:b0:6a6:32f5:b172 with SMTP id
+ 4fb4d7f45d1cf-6a633634602mr29431a12.16.1788123079816; Sun, 30 Aug 2026
+ 13:51:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260830142333.1741155-1-tristmd@gmail.com>
+In-Reply-To: <20260830142333.1741155-1-tristmd@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Sun, 30 Aug 2026 13:51:08 -0700
+X-Gm-Features: AcwNN1Xm1QyezA-JkdWtSZwOXWMjI9Yt2s6qRIxGaQ-qmcEpa_70-3k-yXY5nmg
+Message-ID: <CAHS8izPvuOBx08kGEp+sFR-VjCa=Ta4Ub=EVb1kBP+ROZOMYnQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: devmem: add missing permission check for bind-tx
+To: Tristan Madani <tristmd@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, 
+	stable@vger.kernel.org, Tristan Madani <tristan@talencesecurity.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Describe LANDLOCK_ACCESS_NET_BIND_MPTCP and
-LANDLOCK_ACCESS_NET_CONNECT_MPTCP in the userspace API documentation.
+On Sun, Aug 30, 2026 at 7:23=E2=80=AFAM Tristan Madani <tristmd@gmail.com> =
+wrote:
+>
+> From: Tristan Madani <tristan@talencesecurity.com>
+>
+> The bind-tx netlink command (NETDEV_CMD_BIND_TX) was introduced in commit
+> 8802087d20c0 ("net: devmem: TCP tx netlink api") without any permission
+> flags in the netlink spec. As a result, the generated genl code does not
+> enforce any capability check, allowing unprivileged users to bind
+> DMA-BUFs to network devices that support TX netmem.
+>
+> In contrast, the bind-rx command (NETDEV_CMD_BIND_RX) correctly requires
+> GENL_UNS_ADMIN_PERM (CAP_NET_ADMIN in the namespace's owning user
+> namespace). Both operations perform the same class of privileged DMA-BUF
+> binding, and bind-tx should require the same level of authorization.
+>
+> Add the uns-admin-perm flag to the bind-tx command in the netlink spec
+> and update the generated C code to enforce CAP_NET_ADMIN.
+>
+> Fixes: 8802087d20c0 ("net: devmem: TCP tx netlink api")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 
-Extend the tutorial to handle the new access rights.
+This is the second time some AI finds this 'bug'. It's intentional
+that rx needs permissions, and tx doesn't. rx bind takes ownership of
+an rx queue. tx does not.
 
-Describe MPTCP restrictions in "previous limitations".
-
-Signed-off-by: Günther Noack <gnoack3000@gmail.com>
----
- Documentation/userspace-api/landlock.rst | 27 +++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/userspace-api/landlock.rst b/Documentation/userspace-api/landlock.rst
-index 84cb7bf6b3ed..8bd99430514b 100644
---- a/Documentation/userspace-api/landlock.rst
-+++ b/Documentation/userspace-api/landlock.rst
-@@ -40,7 +40,7 @@ Filesystem rules
-     and the related filesystem actions are defined with
-     `filesystem access rights`.
- 
--Network rules (since ABI v4 for TCP and v10 for UDP)
-+Network rules (since ABI v4 for TCP, v10 for UDP, and v12 for MPTCP)
-     For these rules, the object is a TCP or UDP port,
-     and the related actions are defined with `network access rights`.
- 
-@@ -51,7 +51,7 @@ We first need to define the ruleset that will contain our rules.
- 
- For this example, the ruleset will contain rules that only allow some
- filesystem read actions and some specific UDP and TCP actions. Filesystem
--write actions and other TCP/UDP actions will be denied.
-+write actions and other TCP/UDP/MPTCP actions will be denied.
- 
- The ruleset then needs to handle all these kinds of actions.  This is
- required for backward and forward compatibility (i.e. the kernel and user
-@@ -83,7 +83,9 @@ to be explicit about the denied-by-default access rights.
-             LANDLOCK_ACCESS_NET_BIND_TCP |
-             LANDLOCK_ACCESS_NET_CONNECT_TCP |
-             LANDLOCK_ACCESS_NET_BIND_UDP |
--            LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP,
-+            LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP |
-+            LANDLOCK_ACCESS_NET_BIND_MPTCP |
-+            LANDLOCK_ACCESS_NET_CONNECT_MPTCP,
-         .scoped =
-             LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET |
-             LANDLOCK_SCOPE_SIGNAL,
-@@ -140,6 +142,12 @@ version, and only use the available subset of access rights:
-         ruleset_attr.handled_access_net &=
-             ~(LANDLOCK_ACCESS_NET_BIND_UDP |
-               LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP);
-+        __attribute__((fallthrough));
-+    case 10 ... 11:
-+        /* Removes LANDLOCK_ACCESS_NET_*_MPTCP for ABI < 12 */
-+        ruleset_attr.handled_access_net &=
-+            ~(LANDLOCK_ACCESS_NET_BIND_MPTCP |
-+              LANDLOCK_ACCESS_NET_CONNECT_MPTCP);
-     }
- 
- This enables the creation of an inclusive ruleset that will contain our rules.
-@@ -834,6 +842,19 @@ with ``LANDLOCK_RESTRICT_SELF_TSYNC``, no_new_privs is set on all threads
- of the process.  As explained in the tutorial above, leaving no_new_privs
- unset is risky even when Landlock does not require it.
- 
-+MPTCP bind and connect (ABI < 12)
-+---------------------------------
-+
-+Starting with the Landlock ABI version 12, it is possible to restrict MPTCP
-+bind and connect actions with the ``LANDLOCK_ACCESS_NET_BIND_MPTCP`` and
-+``LANDLOCK_ACCESS_NET_CONNECT_MPTCP`` access rights.
-+
-+Because MPTCP works on the same TCP port number space as plain TCP, it
-+is recommended that rulesets denying TCP operations should also deny
-+the equivalent MPTCP operations.  In particular, a listening port
-+created through an ``IPPROTO_MPTCP`` socket is compatible with plain
-+TCP clients as well.
-+
- .. _kernel_support:
- 
- Kernel support
--- 
-2.55.0
-
+--=20
+Thanks,
+Mina
