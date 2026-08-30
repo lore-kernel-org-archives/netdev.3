@@ -1,62 +1,62 @@
 Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176D5356754
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A37E358381
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788132141; cv=none; b=cLuoKuVIZXC2gkqsCBbmUnwvRw+m5e06LMtruCBPaBAnED7S1+So0pvE2LDupb1616yPCkMoLWBQAKcqwZVOvgK0a3OUuZxEDQTz0En8K4Jl+bA1bfR+qsAlsCFg9hjAOlQMOqVkzeQkZTjEnIG2ARQiW60Ga7tJI7UM7B7sJ8Q=
+	t=1788132145; cv=none; b=VlYWOr8ZvaUccSflEE/zYw2G3tK+e/DiPPNHyRuq7rN4sFOXLMiJWOz24yZL4TEkt5c/KHWwCMN8WgjD1bKFWp2ijDcQLrEDGin8mGYcnLTyFKd6YjkdXQDbjKG/hG622A0uj3UuOFG83WmKhGo/Xem0mSHkwUd7Wwhe412wI1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788132141; c=relaxed/simple;
-	bh=Vd7t/VCSbdHAy1kCjXH7yJArhfu/zvuWLMP+dsSFygo=;
+	s=arc-20240116; t=1788132145; c=relaxed/simple;
+	bh=lWdkSLVMrJME+IC4sl1WFmK4U1DvQrIT1XEOvyx3X9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnIgF6LSSuPfrFTUpHgznU3GNKSeSFbBOKo1NPvxWJktdAs502nLgZf3KmMeeA5yZLtNQnxM4J6fYaqePED4dev5xJyOX6A+mA2IboLL8Pt+9HanOxj66mAsNBf4qVp0jiSIalkc6KA+BJQ5GNa6HrnNDMqiLWVfijz2VOneTwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iE0qg5du; arc=none smtp.client-ip=209.85.128.181
+	 MIME-Version; b=l7nSD3wHE7ycZmt8Ri8h7PjqZmXDfZ+ch+OyAWcYnAXBLAbbRfU7BXLjkL/k2OcoVKA/id3qfYNUputVGsHbXLoQCYm1dcHCuSJiksSj5ZzmUPoNPrPcr5LNV5oaw+U3qPdvaomejBJkVdwVYuB0chHbuK48Lgi2GoEyaYidxYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTsrHMgF; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iE0qg5du"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8549a96e93cso15809487b3.3
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 16:22:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTsrHMgF"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8630c1503f2so5535847b3.1
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 16:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788132139; x=1788736939; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788132143; x=1788736943; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=V0uXGJNgPYreSiDYBBxdQJQqH0DPau7askhrNGDyNQM=;
-        b=iE0qg5duG2FHjiYohT99/cShNRhkZm0iwr0LTazbY+7t3b9/02VqF5lqZFDbH9FVIl
-         1jNm+etMm/huph6IHLrTYu8oWWwftiOQtItCftr3yavotrLJsehMmatcxJTWrtXq0Sx9
-         aVWQedlfiiDtxTmo4Q1Z4jT5ReXDMv1MRuQ3QtBaNMZmr22TByAmUgOqTYw8meHu2Zo5
-         CxVxmxOjCZJtlUO+FL2tzawdzj5vk0o4LIThCk76vAXJrH9FRa+4S7MGicOp0g/viVRM
-         mRZWu9R5rnrXNVAYlotxH9UKs64Z+A+y4u0XQ0bNX9yWe5gAgx8n60Nm1cT2T4NnVY8e
-         c8ag==
+        bh=oDyIKzL6PQfyOtcZdXIqJp7bl04CBybW0yg006Rr6/Q=;
+        b=JTsrHMgF3Sr0E2BdUIqgdWLqVBl6CGEQTO5CbSaBs5JvJ2yFHrUiD09jUGYgoMC/pg
+         13xtSMJQWrOhHGzDkjslSIH0EE3+sIfbw0rFkGQsJgXL3r5A122PbMhqJawjyY8Fb8yB
+         Ca+iVoLsE2Qe2WGMGjcQWQDmxpDeZ20DpALdaHKQfki05ocWiGc/Bf+DimAevTwS/TJu
+         WyJIkV65Mluvti/7D0EUhEkdwI46VilB2YbTNorWYesNQMGDlp2VSADvey7erA5GqEpN
+         SNJOT4spYvuJmDQeiG3zH7QJq8OOm7b8w2VQT7UkqZ9AxydW7kUwBUi3JWVnVzTvONGX
+         YLfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788132139; x=1788736939;
+        d=1e100.net; s=20251104; t=1788132143; x=1788736943;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V0uXGJNgPYreSiDYBBxdQJQqH0DPau7askhrNGDyNQM=;
-        b=Ly3tuvSMP6jA2eR87r63q5g3WUjxDhmpPOO98bFJZIiJ+e+N1jm4BUHl1ac+aY5T0W
-         pKFkIvNXGvGUg7kiA/6cs6yLNpL0SC5URpC2NeO2AXJsd0ZuzfLJlTdEctWl6sm/ttOW
-         ZtNj4dTNwXhTnwOK0le87WH54fwCvhJLf8pri5L09GrAMK6aWx5qk9Y4lBjp4iGyLQZj
-         5h2SHbifPmhRsmfSf/QTeO9VqMrEOuMEDKemksB4OrMbv3Jjt/AjY6ojsW4BqAo0V7qU
-         Eb78Qe198zr9BipNTryksF2h5nb1qR89151bw1HntVH7XOmuC7EuGhORzAz9R3Hp9Zds
-         nkEA==
-X-Gm-Message-State: AFuF++ldmsAAv39YKMuXw0/v2IWgj3E1zOjjoyAcRvnKnPqOvRxTC1Af
-	CY3Ge+5Hn4dyc/nHa4AFWvrhEOuUvGzmK5wpC8vgXbgB7whaooG08+tX
-X-Gm-Gg: AYBFou0LDfLGhOswMbYmC6P77EF5dQIpJV9YumxPSfCQxSr4xBcPOtmE03bR66FEI4y
-	rhAbMfmfDMx4XzJQrPTd0LyiwotdImKgY9FxUGW1mndKSlGl3+kDLmT8jVUGpuKYunhwrIj/tX+
-	R2ukRC0+KUc0575RQUNUAUdBzizR2vg6IfCgBJFOJpytxG+7sfFMCXfL1Wg/MtDtBYHwV0PyGUQ
-	vlP7rQA02b9exJRnm/LS9kCqUzQgyBBv6Rm8QCgJ0sPVEZp1KxBvYXF1LoAJVOXvkvKqkdz89cc
-	yAwF9o0wHC5w7JRWoGQzekQA/61X4YKHr6wMTge9fyCPdg68+upF9hHTtmNbMdPwfUyuchE68st
-	47bJkY2RjPuutSQcNGGPmvRf5AzuRRqLTPkH0GGN9y7LIU7F8nXKOaXMyL/YD2pqJyRxCP8xXOU
-	U1JBqJZg/jPICt5bdFepvMzNG02lL/TBbwt00mZicI
-X-Received: by 2002:a05:690c:6912:b0:858:d6fb:2b9f with SMTP id 00721157ae682-85d660db315mr76627717b3.5.1788132138950;
-        Sun, 30 Aug 2026 16:22:18 -0700 (PDT)
+        bh=oDyIKzL6PQfyOtcZdXIqJp7bl04CBybW0yg006Rr6/Q=;
+        b=FopXJs1/qiu1UikmyWsL+g7u94oh0Xqd+GCz5vS+TgoXF8zHXF6QlFA3aqsTL1jgTK
+         JQyEygDI4zGMDMQ+uhwA4XuE/nxQBsrmrZqELUYz9MwdFsaQASP+WGOf47s5T6Mg3vov
+         B+nJbcKSVoykx205XE4hJYvaNEjszTEcnF7LlVMIoFWlUOAB36MugztOwqV7NvWnCK2B
+         yjiZPtk2H/FHesynIYgi4chtv3Nl2pfv4QWfhydZsk10T+lprg5G6hMyJtgx8Fuq5BjG
+         XSwRp9t6eosaHEh6GyW+PSa0kRDuf3S+j8gOz1KLQ0Z8ZD0zAZTd98wuH7XAGWsKrEVN
+         +AcQ==
+X-Gm-Message-State: AFuF++lV3UUwsk6rG0LnvQKBE0B6XR/CYbKTHDg0PDdFkeuBYt9FXb/T
+	zKdBWOsPFNS/ZKeWi+Rt238JhGqjZn7wrePKiQd935q2Nt1Ti+eo9aVS
+X-Gm-Gg: AYBFou2upt8qIlql3zMSpRTQYALRRksKAFKPzOzrPbZ8AnvxCQZmR/ltoZG/gVVXAPy
+	yeRF5Aa1mlx+dASPp8+dwdBdkSl8+bDsNg6rrsxlo3kj/LZwMTBiHumF11GD7/974EBWDDQSRnF
+	xToAiKfr8JEM2l22HQgQUw7/OU0rdEHDBgNr1NRcZOA330LmEi9OfuLvxtygngWtlBtmQ6W8C5d
+	VIeoyKAuL33K5s/0uK82Hm5Y+X5xpdT26Rb/UTb58zxY1DmCq6xiDobogH3HzvkAOjweJ/27zU9
+	tvnXAsWLO1/R1WL/cwAJdKWdP6N6DSnX6K5whC68cJhpkysuoK3IRo6TddWDaBcuLwDaWyW6tnI
+	DIRhwCW1/RWvn3DT4aQ/6RhfemAgMu5X9c2hSJowLCva6OJSG21OON3Zw+9Npz9I6IMeciLcLsl
+	SYKXlc1n0MHZraOINfDJPjK1b2fX77lzdeui5dbkeLgrQlnKygSY0=
+X-Received: by 2002:a05:690c:e294:b0:862:65f4:c8c2 with SMTP id 00721157ae682-86726879df3mr283417b3.21.1788132143343;
+        Sun, 30 Aug 2026 16:22:23 -0700 (PDT)
 Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e677606aesm39025937b3.45.2026.08.30.16.22.16
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e677606aesm39025937b3.45.2026.08.30.16.22.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 16:22:18 -0700 (PDT)
+        Sun, 30 Aug 2026 16:22:22 -0700 (PDT)
 From: Matt Vollrath <tactii@gmail.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -73,10 +73,11 @@ Cc: netdev@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Matt Vollrath <tactii@gmail.com>
-Subject: [PATCH iwl-next 1/8] e1000e: add jumbo Rx CRC stripping
-Date: Sun, 30 Aug 2026 19:21:39 -0400
-Message-ID: <20260830232146.36948-2-tactii@gmail.com>
+	Matt Vollrath <tactii@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-next 2/8] e1000e: dump pages for jumbo Rx buffers
+Date: Sun, 30 Aug 2026 19:21:40 -0400
+Message-ID: <20260830232146.36948-3-tactii@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260830232146.36948-1-tactii@gmail.com>
 References: <20260830232146.36948-1-tactii@gmail.com>
@@ -88,59 +89,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the hardware is configured to not strip the FCS (CrcStripping=0),
-the jumbo Rx path would deliver frames with the FCS still attached.
-Follow the standard path's convention by stripping the FCS at EOP and
-leaving it out of the byte count.
+The jumbo Rx path keeps its data in buffer_info->page rather than the
+skb, which is only a shell. Previously data beyond the end of the skb
+allocation would be dumped. The jumbo path would at best dump useless
+garbage. At worst it would dump arbitrary kernel memory. This OOB read
+is only reachable when page size is >16K and MTU is >1518.
 
-The jumbo path was omitted when the CrcStripping feature was added.
-Since v3.3[1], the jumbo path has only been used where the page size is
-over 16K, which practically rules out LOMs, BMC sideband, and the need
-to leave FCS on frames. The bug is only reachable only by setting
-CrcStripping=0 on a platform with nothing that needs it.
-
-This change prepares for convergence of Rx onto the jumbo path in
-following patches. The set of h/w routed through this path will expand
-to include LOMs.
-
-[1] Commit 79d4e9087a6e ("e1000e: disable Early Receive DMA on ICH LOMs")
+Dump the page instead when it exists. Skip dumping the shell skb left
+behind when a jumbo slot is cleaned.
 
 Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Fixes: eb7c3adb1ca9 ("e1000e: fix IPMI traffic")
+Fixes: f0c5dadff3fb ("e1000e: fix panic while dumping packets on Tx hang with IOMMU")
+Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-5-fable
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 844f31ab37ad..599600ad695c 100644
+index 599600ad695c..47ff3c6ab451 100644
 --- a/drivers/net/ethernet/intel/e1000e/netdev.c
 +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -1631,13 +1631,23 @@ static bool e1000_clean_jumbo_rx_irq(struct e1000_ring *rx_ring, int *work_done,
- 			}
- 		}
+@@ -465,8 +465,23 @@ static void e1000e_dump(struct e1000_adapter *adapter)
+ 					(unsigned long long)buffer_info->dma,
+ 					buffer_info->skb, next_desc);
  
-+		/* strip the Ethernet CRC; it may span fragments */
-+		if (!(adapter->flags2 & FLAG2_CRC_STRIPPING) &&
-+		    !(netdev->features & NETIF_F_RXFCS))
-+			pskb_trim(skb, skb->len - 4);
-+
- 		/* Receive Checksum Offload */
- 		e1000_rx_checksum(adapter, staterr, skb);
- 
- 		e1000_rx_hash(netdev, rx_desc->wb.lower.hi_dword.rss, skb);
- 
--		/* probably a little skewed due to removing CRC */
- 		total_rx_bytes += skb->len;
-+		/* If configured to store CRC, keep the FCS bytes out of the
-+		 * total_rx_bytes counter
-+		 */
-+		if (!(adapter->flags2 & FLAG2_CRC_STRIPPING) &&
-+		    (netdev->features & NETIF_F_RXFCS))
-+			total_rx_bytes -= 4;
- 		total_rx_packets++;
- 
- 		/* eth type trans needs skb->data to point to something */
++				/* Jumbo buffers land in the page; a cleaned
++				 * jumbo slot keeps only its small shell skb
++				 * until it is refilled, so only dump an skb
++				 * that can hold a whole buffer.
++				 */
+ 				if (netif_msg_pktdata(adapter) &&
+-				    buffer_info->skb)
++				    buffer_info->page)
++					print_hex_dump(KERN_INFO, "",
++						       DUMP_PREFIX_ADDRESS, 16,
++						       1,
++						       page_address(buffer_info->page),
++						       adapter->rx_buffer_len,
++						       true);
++				else if (netif_msg_pktdata(adapter) &&
++					 buffer_info->skb &&
++					 skb_tailroom(buffer_info->skb) >=
++					 adapter->rx_buffer_len)
+ 					print_hex_dump(KERN_INFO, "",
+ 						       DUMP_PREFIX_ADDRESS, 16,
+ 						       1,
 -- 
 2.43.0
 
