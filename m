@@ -1,234 +1,121 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1209C2D0602
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 17:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788110500; cv=pass; b=kjqyoVZbmOLmi65E1ViFP/3NO0DzS44aCSrlb3cjVXZYX15DXz+V+IqYEZel3a9eOBfovYKYAO9IoHcVfEX/tVpnZfVXLpkdehDityiYUtvaG3bTVFIKOPRyf+UK//jmAqyfDldJQMkwbXxldkanCpbnXmcl9HSCEtUGXss9Xh0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788110500; c=relaxed/simple;
-	bh=rc2awGjfnIUiaTQDZSJVBQl0ApTrUMSoFAt6Grr06sc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OFoEmI8nQ5nozlJijS+VfZZ7sNy7M/lOxvCIVDfD0TGnPcEVJy9sXrdt7rgJbARixafh1PgGv7sXj7YC5KWbGQlT4TM9cK1F9yKhMjaTqocmf9kzVuCi6Luk8xsIvJe5hwyNiMAvtDZ0IvKphvqnjPlYaLj+IGQSGI6hm6PAUuU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YY28dlXv; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YY28dlXv"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-52eaeddc837so19028271cf.2
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 10:21:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788110498; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JGniQxMRE+jfSXKb31Esfjs/n2hUdFT+s5+bCdzVF00vy8Ml8jbKm60oyMVcl8kxYu
-         r5yb6YrY474TzzwIg5W98YQ4xkyeQ2rjPxkXAm4OI8NTSnmH9C10t951ng8hIzLlPdcy
-         2WvH/2QAbmMKFOw+mDYOVu3XWAvcx0lYaKYvlXYN6FuE1OWl5erCqDVCiCiZ8WlpOYUK
-         AjuN6eBouekTYh7naN0TOgkkpXNKZ+N/BHVz9l42QCAtfckHR92bkRm/A5jRYzkPVuKu
-         xXWhLFOe9jRDzdvYS/CpNo5jqiMWzI6NPz14dQzP3dEWEp+5N/eckZtNKUzFpXMI9O0Z
-         UQxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=d9l5qjCbxp2b2AbJBSOMN07vxCyH9AiUVcnCoSPaxqs=;
-        fh=ewaFLL0+CzhAHnakTqR3pAayIjcFrd/AHG5c9rAiTVg=;
-        b=jxLleV72jmFOEDNOQpewB9CJ+diSilzJ7N94TrXR79azQs9177UPA+Y1/B3LUaU8Up
-         cwYFbFSYHYK2PwmQGas4wRgMzXFlho5TAqpd2fYYqUe0sMOW20bk/30sr8p0bOAL0/0w
-         pQsnkvrTz2pTuuX5zzzJgfQd4JPwK2iuU6kfCPT+xtHGONQ+jq9FQ5aa4601Q94ZnTt0
-         aLT+0Ntf05NUR8YmkFZq8YrqddTqsPDzrGpF/RZTCmVgRTqYk8BK4VzXsWeEeb2Oqs8W
-         8oMdbfrTb4VTHmQwY4B0NPE0K0yyNy30OgQnAr9oONnR4GJGKVDngCGa+b71r8c5sIgV
-         Fn4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788110498; x=1788715298; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=d9l5qjCbxp2b2AbJBSOMN07vxCyH9AiUVcnCoSPaxqs=;
-        b=YY28dlXvlE9gBgl1pnVBLngIko74nQAwhHbzN7TpMa3rLduD/b1kc2fO58ei82/fyG
-         iRFkNFgBLOorVGlm8s04figXYqocaj0Pdw/7w9IlDkpdJqoOC9bCEy+vHesoQ1VU0Ewh
-         nV95kCk0Po6sIk7LkTf8l3AjKpNQChBAcLvlKcUeFSf1ts+tlwTSVQJkuQwOP1IPsLGP
-         wZkbmUWIS4BK52bR6UplbnTGNjNS6pzN1KG/Z5i8K7gYeWpV5gyEmP9//2G6sgTzH882
-         wz0uaPI35h+gPRk5O25ayRntxj/Tw1ygmVmOV2WugEfBEwzG6d11MaHiNoMaBcdGanlG
-         wZIw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3391383326
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 17:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788111514; cv=none; b=ikcA7wvjq0UIyZkm1f0zYAaVDbWW8Rqwqb5jjIZsidXmfh865fWFPqX+NnPHmeB7NGtjwYIINj0bHMXM7ZoRwcuFD6+AAIeDYnuIr66kgpBeBs+CdaYjE1jcEToZUa1VfgzMxTQqXz4YV1Dvh2zJ/3AgMjV3loZeerHGqOvHXLE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788111514; c=relaxed/simple;
+	bh=G8uudVDlmu6OBfesgS6iZ9rS4NwZkdL34dsSJd7B7bI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=Kgppa/5RJqAjVFVFAiTvhkDQdlgRcXUQO8RVqC5qxYeZ4VErxw+bwc3hRhS+888L9q+uHT3zhwoxUEZ/G8F5wapbUWd4qZg/46WUwYwJ66b8FIKYTsu3CsEfUW+hGd/i4tz/Osc03feyhA9jRF/JazJnzA1MFG9M6dmXvhg2/oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-464e69965b8so5912682fac.0
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 10:38:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788110498; x=1788715298;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d9l5qjCbxp2b2AbJBSOMN07vxCyH9AiUVcnCoSPaxqs=;
-        b=OvE448S27NbnhHr3JEvgiUbNP0rxIf0HcCMWO7Ep8drKNfHAHSSUyCpbVG3CNH6S9X
-         s73NpDRfbIcvKl/11CKpw8W0foINbT+pluxIWLQ7PAMoRm8Vnc/qkI5JswdVtlOAQuYI
-         uACQCgeRk99BSXjGG5/EkpKLcs+PuyWpF8Z3+efnFS51H/+4F2lAhzNLKLfagPG+NyUr
-         0PWci09eB6jxuWjkWfyql8+cP401442O2x6PPueh6XAVMSKKW9NQwRS47R0Y2pTnMklb
-         GrIJyIbg954vqtcaD9zJDuXIO/ClS2oTggXbyNgvu2YIjzfzI75JJEAA5IGt2n0ZV9/z
-         k5lA==
-X-Gm-Message-State: AFuF++koBIHxkIIDPsuVZ7JTt5WlNPdhEt8k6jQUPtt8oPoC7/yP17Bc
-	/0e4/UfD+y4lUDcwqngKxfPtc15bUPuK1qpzxTrk+9EGavX4IqM6i07H7v+Hcq2SWT342zXHmXZ
-	rr06NBo5GLRkKwliS6q5YB+3Cze3/pQ6mIh+cSAS8
-X-Gm-Gg: AR+sD122/1ccZTxmyON5tyn6N6L7iiIEPkd07liiQYO5faAtnpC4SuzoDDziKFhaaFT
-	Yo9ODIDdA1qWu515/bxtZFmqIrfUrzlpspLvNOnHCvrq6r5U46wS2+ez5QVRGre/0EzzszfAn/w
-	tuwGpKmDoVv2nw2sgRaPWPjSWgKfFjElZ1aSlDjdLf8IZPLgAmfIasqSCJfdX8sqWhTm7wgVLxZ
-	cO4ShHHSNrPMKrACMWIQe6mLtKKW3gFs53kMYX8XKTF3JWT0b/uNPw+CUHhxxOKrTPvhv77/trU
-	zLLhCUr4oBkwn96k3kulP5/KDlX5cSVgl0Bx4WrnmTe3LgkTRxXeG7Mfsis4ZmDciBGH9BP1In5
-	uSBe09kkiqVQDaZYY1lhq9nSvJEf5TYwviv9DEaOj6fpm7vAJ6PEhC5zP2m/YLGz3klFWQg==
-X-Received: by 2002:a05:622a:c15:b0:52d:82bf:d4cf with SMTP id
- d75a77b69052e-52fb94edecdmr263430201cf.16.1788110497192; Sun, 30 Aug 2026
- 10:21:37 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788111511; x=1788716311;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5VNzQWRFLebN1X6lVK2IUMMclgAeM+X4+PsLzs0+xtk=;
+        b=qnjOnw1RKXADz1+zIWVtIvxItmhQlNYGrtQAY2NOpdUBj4gRhGzi1tiIWO8MchGep8
+         4B4plKy+9h7IliKznkq5cnHRvvM+odsCOVH6RurX1u0vaBBQ8anIUXeRHdfzWgJyHc9t
+         kOjWd5dDut8ti3LbQFTAFcRN2qQeOrnk6Ka1bp6ekk7aaT6YLLqzfWTwQNoP4nrqYQ4I
+         zoIOdJDkocs6Hvhl1zj6jG7WaQZ80v4SNGnxPy6WMVt0zVMwXqtCX5POzYqi+7/3y4eC
+         Du/oXkP6uLTgsyzeo4Tm30/CtYJPRm3wHvk0za92A8eamXu2KN+GF51wmk9QFlivpmbv
+         SLTw==
+X-Forwarded-Encrypted: i=1; AHgh+RrhG+qa75h8aawdT6jB82zBmu+pf5AwenQ3+bgX/McroiYGwo2jK8S8a6PTDM/y7pmiuKi9pEo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lqdrM2Lm7fRHiFBbPlOZcdCXs2wMGQ1OSyvBy8yey0tIUdF89D
+	Rk4NpSkW6vlHk7037v2JcdZhSO8J25eVmIRBZKD/sLrwaTNLZp0jzzCts2P3/zFNCronzZjfoVL
+	Ichb3vIao9lmG/7s1ZLyJ5HLtZ036BHUZTgzRhxdTk7yBVU/n6CjDH8u403k=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260829132021.2096728-1-michael.cohen3@mail.huji.ac.il>
-In-Reply-To: <20260829132021.2096728-1-michael.cohen3@mail.huji.ac.il>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 30 Aug 2026 19:21:25 +0200
-X-Gm-Features: AcwNN1W6s1uE9MS_t7fNCyrorkyRYUBUhwzxmB4h-Fq3Y91o37CMSqTeZsbgjLw
-Message-ID: <CANn89iKip93AwhiXfhfaPszvP=t7Eaer=yHqQYcSWs-P2TYXUw@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: reject completely old segments during
- sequence validation
-To: Michael Cohen <michael.cohen3@mail.huji.ac.il>
-Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	Tamir Shahar <tamir.shahar1@gmail.com>, Amit Klein <amit.klein@mail.huji.ac.il>
+X-Received: by 2002:a05:6808:c145:b0:4b2:8d83:436e with SMTP id
+ 5614622812f47-4b59e7b66f2mr3077637b6e.8.1788111511597; Sun, 30 Aug 2026
+ 10:38:31 -0700 (PDT)
+Date: Sun, 30 Aug 2026 10:38:31 -0700
+In-Reply-To: <6a77c53d.01d0871a.3a0d52.0077.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a946a97.1d9ded08.62e62.0120.GAE@google.com>
+Subject: Re: [syzbot] [bluetooth?] kernel panic: kernel: panic_on_warn set ... (3)
+From: syzbot <syzbot+fe5ea83cdd7fc263f452@syzkaller.appspotmail.com>
+To: axboe@kernel.dk, io-uring@vger.kernel.org, krzk@kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	luiz.dentz@gmail.com, marcel@holtmann.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 29, 2026 at 3:20=E2=80=AFPM Michael Cohen
-<michael.cohen3@mail.huji.ac.il> wrote:
->
-> tcp_sequence() rejects an incoming segment when end_seq is before
-> rcv_wup. Since end_seq is one past the last sequence number consumed by
-> the segment, this misses the boundary case where end_seq is equal to
-> rcv_wup.
->
-> A segment that consumes sequence space and has end_seq equal to rcv_wup
-> is therefore allowed to reach later processing, including ACK handling,
-> even though it should be rejected as a completely old segment.
->
-> Reject this boundary case for segments without SYN or FIN, while
-> retaining the existing behavior for control segments and segments
-> that consume no sequence space.
->
-> One consequence of the early rejection is that, in some cases, a
-> completely old duplicate data segment will no longer reach
-> tcp_rcv_spurious_retrans(). For IPv6, this may prevent a retransmission
-> with a different flow label from triggering transmit-path rehashing.
->
-> We accept this trade-off because the segment is completely old and
-> outside the receive window, and therefore should be rejected before
-> normal ACK processing.
->
-> We consider preserving the RFC 793 and RFC 9293 sequence-acceptability
-> boundary for such data segments more important than preserving this
-> side effect of processing an otherwise unacceptable segment.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
-> Reported-by: Tamir Shahar <tamir.shahar1@gmail.com>
-> Reported-by: Amit Klein <amit.klein@mail.huji.ac.il>
-> Signed-off-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
-> ---
-> Changes in v2:
-> - Exclude SYN and FIN segments from the boundary-old check to preserve
->   existing SYN/FIN handling, including simultaneous connect
->   and retransmitted SYN+ACK AccECN processing.
->
-> Packetdrill reproducer:
->
-> // Off by one bug in tcp_sequence()
-> // the negative test before(end_seq, tp->rcv_wup) has off by one error, s=
-ince end_seq is SEG.SEQ+SEG.LEN,
-> // whereas the RFCs require SEG.SEQ+SEG.LEN-1 (their positive test is RCV=
-.NXT =3D< SEG.SEQ+SEG.LEN-1)
->
-> 0 socket(..., SOCK_STREAM, IPPROTO_TCP) =3D 3
-> +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
-> +0 bind(3, ..., ...) =3D 0
-> +0 listen(3, 1024) =3D 0
->
-> +0 < S 0:0(0) win 12345
-> +0 > S. 0:0(0) ack 1 <...>
-> +0 < . 1:1(0) ack 1 win 12345
-> +0 accept(3, ..., ...) =3D 4
->
-> // This is not mandatory for the phenomenon, we just do this to increment=
- SND.NXT (set SND.NXT=3D101, retain SND.UNA=3D1) so we can show
-> // later that the problematic segment is actually accepted (via the tcpi_=
-accepted_bytes count).
-> +0 send(4, ..., 100, 0) =3D 100
-> +0 > P. 1:101(100) ack 1
->
-> +0 < P. 1:1001(1000) ack 1 win 12345
-> +0 > . 101:101(0) ack 1001
->
-> // Now RCV.NXT=3D1001, so according to the RFC, a subsequent 1:1001 shoul=
-d be discarded.
-> // But in Linux, 1:1001 is accepted(!).
-> // Note that bytes_acked is incremented to the packet's ack number, which=
- shows the packet is accepted.
->
-> +0 < P. 1:1001(1000) ack 23 win 12345
-> // +0 < P. 1:1000(999) ack 23 win 12345   // if you use this instead, you=
- get an assertion error, as expected.
->
-> // this assert will succeed in the presence of the bug, but per the RFCs,=
- it should fail because the packet should have been discarded
-> +0 %{ assert(tcpi_bytes_acked=3D=3D22) }%
->
->  net/ipv4/tcp_input.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index daff93d51..1991285aa 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -4844,7 +4844,11 @@ static enum skb_drop_reason tcp_sequence(const str=
-uct sock *sk,
->         const struct tcp_sock *tp =3D tcp_sk(sk);
->         u32 seq_limit;
->
-> -       if (before(end_seq, tp->rcv_wup))
-> +       if (before(end_seq, tp->rcv_wup) ||
-> +           (end_seq =3D=3D tp->rcv_wup &&
-> +            seq !=3D end_seq &&
-> +            !th->syn &&
-> +            !th->fin))
->                 return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
+syzbot has found a reproducer for the following issue on:
 
-This is a minor RFC compliance issue, so please be cautious about
-added costs in TCP fast paths.
+HEAD commit:    08dbfad3f504 Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14f47379580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=fe5ea83cdd7fc263f452
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10c2a379580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16181e25580000
 
-Please?
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ddff5719ec3b/disk-08dbfad3.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4b5e39b20fa5/vmlinux-08dbfad3.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/eb1f70eed57f/bzImage-08dbfad3.xz
 
-Something like the following, perhaps, because this is a very unlikely case=
-,
-we should have a single test capturing the unlikely checks.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+fe5ea83cdd7fc263f452@syzkaller.appspotmail.com
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0f60a1dbf927468741f6f163e8d1b07687452c39..ebcb6d185443d49165a8a15672e=
-73bdef358a59a
-100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4844,9 +4844,12 @@ static enum skb_drop_reason tcp_sequence(const
-struct sock *sk,
-        const struct tcp_sock *tp =3D tcp_sk(sk);
-        u32 seq_limit;
+ <TASK>
+ process_one_work kernel/workqueue.c:3387 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+CPU: 1 UID: 0 PID: 5905 Comm: kworker/u9:5 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Workqueue: hci5 hci_conn_timeout
+Call Trace:
+ <TASK>
+ vpanic+0x56d/0xa60 kernel/panic.c:651
+ panic+0xc5/0xd0 kernel/panic.c:788
+ check_panic_on_warn kernel/panic.c:525 [inline]
+ __warn+0x315/0x4c0 kernel/panic.c:1104
+ __report_bug+0x276/0x570 lib/bug.c:254
+ report_bug+0x16b/0x220 lib/bug.c:286
+ handle_bug+0x9c/0x200 arch/x86/kernel/traps.c:436
+ exc_invalid_op+0x1a/0x50 arch/x86/kernel/traps.c:490
+ asm_exc_invalid_op+0x1a/0x20 arch/x86/include/asm/idtentry.h:593
+RIP: 0010:hci_conn_timeout+0xff/0x2c0 net/bluetooth/hci_conn.c:641
+Code: 48 89 df e8 e3 f5 09 00 eb 07 e8 ac 50 f1 f6 b0 13 0f b6 f0 48 89 df 5b 41 5c 41 5e 41 5f 5d e9 d7 9f fe ff e8 92 50 f1 f6 90 <0f> 0b 90 eb 8c 44 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 31 ff ff ff
+RSP: 0018:ffffc90003097ab0 EFLAGS: 00010293
+RAX: ffffffff8ad6630e RBX: ffff888079288000 RCX: ffff88802f728000
+RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
+RBP: 00000000ffffffff R08: ffff888079288013 R09: 1ffff1100f251002
+R10: dffffc0000000000 R11: ffffed100f251003 R12: dffffc0000000000
+R13: ffffffff818f95da R14: ffff888079288a50 R15: ffff888079288010
+ process_one_work kernel/workqueue.c:3387 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
--       if (before(end_seq, tp->rcv_wup))
--               return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
--
-+       if (unlikely(!after(end_seq, tp->rcv_wup))) {
-+               if (before(end_seq, tp->rcv_wup) ||
-+                   (seq !=3D end_seq &&
-+                    !(tcp_flag_byte(th) & (TCPHDR_SYN | TCPHDR_FIN))))
-+                       return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
-+       }
-        seq_limit =3D tp->rcv_nxt + tcp_max_receive_window(tp);
-        if (unlikely(after(end_seq, seq_limit))) {
-                /* Some stacks are known to handle FIN incorrectly; allow t=
-he
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
