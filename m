@@ -1,67 +1,67 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F169233932
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 08:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A1C39EF35
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 08:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788078597; cv=none; b=ATvhHMmweBLNuFuHBYv9jEzPrq+2tl5OasvlNxIzaGPKN/teBf+5dZh8O5YditonCOh0gwlJuBGNTgwb8zoXNCKIO8Swnu0SOGfasvqUT78COqSCNcGRBbIOez2p4Dd0eGv9yShz3i2y+hf0j3Il4U9eqfr+GZgQQRqrLO1Zqhs=
+	t=1788078916; cv=none; b=t/1KlvSxwKtmWTIQSSDUFXYClzg+kRJOaqM+nd73siPSgJsdHfZRz67W1A23/tchSrs4ifKoksCbQQMai/aY22unLudLlaj00ZPqXZRPHQ/kwMShD4jbr03LusmUqZHZpxH+w104lDlDLNoVABp0PA5aGz1/HINt9HKN4yQp9KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788078597; c=relaxed/simple;
-	bh=K7G9RCI0/tBJ3Upvcml4SlVmXmX54r23emAr8xKlBgI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bfIDf5TNzSpzttX2qtPfrhQJkWsHeCEiyvrulYGGM8hpoyyryublRE6NWCft1TyRh5+lwKbCfdXfcYTCpjagPMAoAbJ17kGANApyhCGmdXuxYamf6grXOke0yAO+zCZHrmQoQbEX+2/nKc9ZcDOVyXiPk3BZXVAhI1i43bqSyG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=FBvpVIMA; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1788078916; c=relaxed/simple;
+	bh=c96ZSUeJEjcxvGP7WpBQGII8OiT+vmcXUz7HcyhNHDY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=a67Szoosx3JVRb90aai47fYG5AzI5EjrSCFKD+eP8maV+/M3Y5NGFtQTErwKN8as0J6OPrIEpNhk6a6eMUzAibjtAaHgjDVx9Ld4GBNKYRC5XWmyrF27KYLoyjvulIhJ2hDnR+PrMb4Uc3nD3runiR6ZK4otqEz8PlWvycDA5FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=VoM/Sqek; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="FBvpVIMA"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso32322655e9.3
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 01:29:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="VoM/Sqek"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48431648f33so540698f8f.0
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 01:35:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788078593; x=1788683393; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
+        d=blackwall.org; s=google; t=1788078904; x=1788683704; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1bNOSJbklivuD8yC2PVBqkUNR9N+X/0O0I9jhmTrMxw=;
-        b=FBvpVIMAzY1/VbusPp6JxxMRolV/1e8NGI/TKz+SlvCfci4OHfcMZTT8/+DzVgDH+V
-         xgQ681V0RKU6rHaj2ovc0eg8nd4OWMKpJTKInbm5f/Z02nzd9SBwSmktSiFHHQWGp4g+
-         QUCtWs4bh+GBPiKEERIIHkQmzFbpmQ9ZnTJDvhcgLxxRFDHc9U5lYp6MOUi9mZh4+8i5
-         xAGYASuoGq4LQrGY6WuRX2T0dLLg1U+Qz0rcBAg6jCBdrzXIA1aTtJMPWpsvNI0Jb0ox
-         4B05gxqiLvHreDlDoH5n+xZ0yvy6ENKKSXzfT4xUAMzaHRMSEZl5TQ/3F4WBjKK0J6TY
-         e8fg==
+        bh=lPERQ4gNn92lOKV4sdrKZ2WIeiK7tfsawsRQ1ZqnsKg=;
+        b=VoM/Sqek1wdX2Uiko4C91WcBS4ollQ/LqPJKwI1GaEHQVtpx3skyL845CEY4XA8IEi
+         W2gmNpLZCX0QiY/RmK3oOe1P8sfaNYH4Euppb0G7xPtY+zZ1qUmFDVcA5XtURNiojfoS
+         Gmu2VLCTsurXeNp1Hubd5zblRUUBydYC6o0WPRd7isaxVLzfJhubXy0SoEJFeL3EcFZO
+         LENtUrWXLw0Qlma8E+Ny7jCG5aC1znkZZtAof/YHQnYzDyYqU4Niu1mvciuoDL+Nzhf2
+         1M3M+dQHx/rAC2QxQGRNEtr872J38g7soJHjakMwDOYYVeT12XMLk7UDNRFf41USLLcD
+         iLzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788078593; x=1788683393;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
+        d=1e100.net; s=20251104; t=1788078904; x=1788683704;
+        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1bNOSJbklivuD8yC2PVBqkUNR9N+X/0O0I9jhmTrMxw=;
-        b=jqMt26O7YGK+80BHq5HIfGYMoyA0aMp1vWCVBevx0mAWjZgWXtWuayAioDmuCvCEd1
-         ad1hHa5FyRW5dwGBFyBM7BLcgEPm3Pu+LrybL3/XFLtyQi2d2kpXbZOML7RPPV3SQ/Hr
-         9biheVdIjdt0R1EI5sRyXeR079MqXMmXmLbyQz+9xRMKE8ENAEOuzOh8vgKy2TBPuZkd
-         70MX40UzBbJS5/2CJo7B94vRqq2UDg87Zt5kvZAeN3BW0ShzMR7IDf9xW1IpBQxtdXCB
-         p6Z90xbR3JYEjLAVZX2MBxMUpZ9uV8svDZE2ElV9PHdJ17xglaBY6ljNXHHVIaWqzjQW
-         FFaQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5TFK9rf6FPBsc8zVtj8Iqr3kwI96Gi+66D8EfLb8j+kU3PcK6vrrH/c8iF1eYYCCIQOLGbz8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mEQSZNnE2S00hhFcM3dY2sl8WV2vpPD1PsRKNXqL/aHCC57FGj
-	4bX3WfOZFM/tpw+eOFyEJzU0urOc2VyY4pw+AIjJ5qRqoTMiSLM07ppV7MW0u1OPAQQ=
-X-Gm-Gg: AR+sD13q1OeBGHNOjwkrK3xfJEnBh/U9zmab/9faUyjDjFqMQ2NG3bDGByh6iwaVOSP
-	QT18exfQoNUrZWofmX9wUBEnTdf+Sn+qUAB/2tY7LXY4oRHhwhQ8wyfPbxUNye7j1n792WeGgNA
-	3crrC1OhfaYfwjMhHUTQBMxETtDDhipQQAuBcEMi3YqDyHOsWVyng/Nu1QElegq5TWt99LofTP9
-	ee33EqhyB0aFLpqWlNNqc9sxigm6WXZS5jFEXO9uqftop1nhzdJ9LqKVGqpUPeuosI8zlZR/xxU
-	sUkvm67gKGi4xV+XhZPaW7+GQU0vk7KVUzlwtbW0KSRKh4QpgL/pnkZA2fk439oosgW63YS+kaE
-	NeWcrbVsUZ4TCok9CgOkb9101IcTWgyDNRBp65tL9BTiUQZx4im6Gfl8m0rGpZGVs4yWlpEvSUl
-	aNUSxvaTvzVG7kShhvCMNFgKAjWVsvpvevpGBUazgVIuZUBckf/BTiQq57JpsJoMRsI3njEaH6q
-	sRy1l7nYn2Dkrvsapk=
-X-Received: by 2002:a05:600c:8b6b:b0:49b:c8e:8e6 with SMTP id 5b1f17b1804b1-49b91bd99b7mr294303225e9.0.1788078593038;
-        Sun, 30 Aug 2026 01:29:53 -0700 (PDT)
+        bh=lPERQ4gNn92lOKV4sdrKZ2WIeiK7tfsawsRQ1ZqnsKg=;
+        b=XayBUM+Bx2A0skLXIIr8RK5n+F7m0fpcVUgo76CfLho3avjaJ/45FXS0Lf2E/Bunsh
+         1fAvSMuLdN6hRyTXIPUZTEALfJwTKkKAw++vpLI6xlFjTP0HbkziAZ6kOni6KhnU1/sL
+         0H3UbGAQNXk0djobQJimaNJK6/oSZ1N6HV4Bb5tabo5y8NbTrAvyXAcG1NVLkkDc4Dpj
+         gHtxknNg5+XRbC2D0mEmj1fDCnjyZicSsBnX45LJaVuuNrlWnmoF9wrWSJMpMi2eFwW8
+         St3CilJiV84clwF1qafpyekmHqIej8KGNGU1xnCZ2+w2wJ//ZYphhXQvsr5BBeH8c7OD
+         KXaA==
+X-Forwarded-Encrypted: i=1; AHgh+RrtGmalbolcnc7TNgMo8npYKvjmqCcmooRWNhkmfQUWNkYf7Z1h8ROvFoHR7fe9B9aqZkEYnUo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mZjR0LUhOSlFeEoVhpscEhSc+/gxk6Bsuj6V82Y0jK+7pmNaBd
+	1OW+Ll+SUh1Wk8OKyJozusy8IbJW96AebLSESNJPpyj3B2vJNva5gp8tpVt7QTLhZU0=
+X-Gm-Gg: AR+sD13gE5nuxOuSp6T3zl/pQA4qIjILNhgMlAWwaL0fp3EvfajDZ1u5LP5UFVI+igb
+	JYRnA++JBL26iMcMk0WRTHwxwoTNbaucmlBLj1VwEehMKt14B1L+O34i40dKoFrK5+XnJ4bAwmU
+	s0QSDslYSaNOVc6vo8g9GUCCXn9OR2mu9zORhmWTNzAggkKC6MpcFLiFOUE2Y5TBKIAOTiB9EzW
+	4iTJNzL4PGw8zXSR9OuwE7TfGJuWehkdMljj/f6pUCrH52PfFFKg6Zv2ywhNmf9DK6lo8cU6aUS
+	uQB72mleefzPmS9r/G9GD+Dmzb3LTGyOXH2Z1cmIK95KiM3Hh5dc29E6WdJK+Ir5adEhe609WzE
+	OVCqQTnqv5g8erMmO03YPkIYiCYrF1/DfBQm5IV482sGALjoZZGPPCosRqVq5yXjNOy4azUCfdd
+	WeEwM+IpTCp0jPwencZXk+hkhvb6yd29GqjTlKXX/eSnpYOVmg/q5dB0gdcUDUaYsD2SYij4wlU
+	G3PQcQQZVDxCdL9gBQ=
+X-Received: by 2002:a05:600c:870f:b0:49b:8f5e:51fb with SMTP id 5b1f17b1804b1-49cd538cb5fmr21200585e9.3.1788078903667;
+        Sun, 30 Aug 2026 01:35:03 -0700 (PDT)
 Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b963c3c0asm313438015e9.10.2026.08.30.01.29.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b9617179asm85766775e9.2.2026.08.30.01.35.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Aug 2026 01:29:52 -0700 (PDT)
-Message-ID: <15fce8a9-9657-4efb-8308-921f8d498640@blackwall.org>
-Date: Sun, 30 Aug 2026 11:29:51 +0300
+        Sun, 30 Aug 2026 01:35:03 -0700 (PDT)
+Message-ID: <2ef6bf41-8626-40ce-8ba8-82dbd3f0c30e@blackwall.org>
+Date: Sun, 30 Aug 2026 11:35:02 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,162 +69,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] net: bridge: cfm: use a per-bridge frame type
+Subject: Re: [PATCH net v2] vxlan: mdb: Fix use-after-free in
+ vxlan_mdb_remote_src_del()
 Content-Language: en-US, bg
-To: Yuan Tan <yuantan098@gmail.com>
-Cc: Yilin Zhu <zylzyl2333@gmail.com>, Ren Wei <n05ec@lzu.edu.cn>,
- bridge@lists.linux.dev, netdev@vger.kernel.org, idosch@nvidia.com,
- horatiu.vultur@microchip.com, kuba@kernel.org,
- henrik.bjoernlund@microchip.com, yifanwucs@gmail.com,
- tomapufckgml@gmail.com, bird@lzu.edu.cn, ronbogo@outlook.com
-References: <cover.1778378864.git.zylzyl2333@gmail.com>
- <7198fe2845c30c60c6b3833dd78cead8c5966931.1778378864.git.zylzyl2333@gmail.com>
- <e1f1b080-cfde-4ea4-b444-b64d43778b2f@blackwall.org>
- <9263d4c1-0c57-4926-930b-1d701e1f17db@blackwall.org>
- <CAAAOPT8mBxW9Fd9Sr=xWAb-fa4MUHCqKaQf86-DFNqaB9Xvgng@mail.gmail.com>
- <7ffc7cdc-8140-4ea2-b3bd-c86abe6e6cff@blackwall.org>
- <6c1c6972-c212-4139-b629-4603a8801cbb@blackwall.org>
- <CAPuPA7KykYqE71P+7-7=1A50S1H3Ksi7ONk+kb_xR0Ep8HKBaw@mail.gmail.com>
 From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <CAPuPA7KykYqE71P+7-7=1A50S1H3Ksi7ONk+kb_xR0Ep8HKBaw@mail.gmail.com>
+To: Baul Lee <baul.lee@xbow.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, federico.kirschbaum@xbow.com
+References: <20260826173604.90158-1-baul.lee@xbow.com>
+ <c985ef2a-3e0d-48fc-9e21-33501bb92cf3@blackwall.org>
+In-Reply-To: <c985ef2a-3e0d-48fc-9e21-33501bb92cf3@blackwall.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 28/08/2026 22:44, Yuan Tan wrote:
-> On Fri, Aug 28, 2026 at 3:23 AM Nikolay Aleksandrov <razor@blackwall.org> wrote:
+On 26/08/2026 20:40, Nikolay Aleksandrov wrote:
+> On 26/08/2026 20:36, Baul Lee wrote:
+>> vxlan_mdb_is_valid_source(), which validates MDBE_ATTR_SOURCE and every
+>> MDBE_ATTR_SRC_LIST member, accepts the all-zeros address.
 >>
->> On 12/05/2026 11:09, Nikolay Aleksandrov wrote:
->>> On 12/05/2026 08:21, Yilin Zhu wrote:
->>>> On Sun, 10 May 2026 at 04:40, Nikolay Aleksandrov <razor@blackwall.org> wrote:
->>>>>
->>>>> On 10/05/2026 13:05, Nikolay Aleksandrov wrote:
->>>>>> On 10/05/2026 12:15, Ren Wei wrote:
->>>>>>> From: Yilin Zhu <zylzyl2333@gmail.com>
->>>>>>>
->>>>>>> CFM registers a bridge frame handler when the first MEP is created and
->>>>>>> unregisters it when the last MEP is deleted. The registered object also
->>>>>>> contains the hlist_node used by the bridge-local frame_type_list.
->>>>>>>
->>>>>>> The CFM frame type is currently global, so enabling CFM on multiple
->>>>>>> bridges links the same hlist_node into multiple bridge-local lists. A
->>>>>>> later unregister on one bridge can then operate on list state belonging
->>>>>>> to another bridge.
->>>>>>>
->>>>>>> Move the CFM frame type into struct net_bridge and register/unregister
->>>>>>> the bridge-owned object. This keeps frame handler list membership local
->>>>>>> to the bridge while preserving the existing first-MEP/last-MEP lifetime.
->>>>>>>
->>>>>>> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM
->>>>>>> frame RX added.")
->>>>>>> Cc: stable@kernel.org
->>>>>>> Reported-by: Yuan Tan <yuantan098@gmail.com>
->>>>>>> Reported-by: Yifan Wu <yifanwucs@gmail.com>
->>>>>>> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
->>>>>>> Reported-by: Xin Liu <bird@lzu.edu.cn>
->>>>>>> Co-developed-by: Peihan Liu <ronbogo@outlook.com>
->>>>>>> Signed-off-by: Peihan Liu <ronbogo@outlook.com>
->>>>>>> Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
->>>>>>> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
->>>>>>> ---
->>>>>>>     net/bridge/br_cfm.c     | 14 ++++++--------
->>>>>>>     net/bridge/br_private.h | 18 +++++++++++-------
->>>>>>>     2 files changed, 17 insertions(+), 15 deletions(-)
->>>>>>>
->>>>>>
->>>>>> I think MRP suffers from the same bug, but I also think we can contain the
->>>>>> fix within the packet type structure instead of making the already huge
->>>>>> struct net_bridge even bigger. Also, linking a struct within net_bridge
->>>>>> to a list within the same net_bridge looks weird.
->>>>>>
->>>>>> IMO br_add_frame should take a type & a frame_handler, allocate a br_frame_type
->>>>>> dynamically and link it, then br_del_frame should take a type instead of a ptr
->>>>>> and remove that frame type and free it with kfree_rcu. That would require
->>>>>> br_add_frame return value to be checked in the respective cfm/mrp functions.
->>>>>> Warnings for already existing types on add or missing types on del should be
->>>>>> added.
->>>>>>
->>>>>
->>>>> Actually I have a better idea since these handlers can be added only once per
->>>>> bridge, we can do away with a simple bitmask (e.g. use net_bridge's options
->>>>> which is in a Rx hot cache line) and even reduce net_bridge size while fixing
->>>>> these bugs, and also remove a conditional from the fast-path when CFM/MRP are
->>>>> not compiled in. Would you like me to prepare it or do you want to give it a go?
->>>>>
->>>>
->>>> Hi Nik,
->>>>
->>>> Thanks for the suggestion.
->>>>
->>>> I'll give it a go. IIUC, the idea is to remove the shared
->>>> br_frame_type list entries for CFM/MRP, track their per-bridge enable
->>>> state with bridge option bits, and dispatch the CFM/MRP handlers directly
->>>> from the receive path when the corresponding EtherType and option bit
->>>> match.
->>>>
->>>> I'll include MRP in v2.
->>>>
->>>> Thanks,
->>>> Yilin
->>>>
->>>
->>> Great, thank you. That should simplify the code and give us 8 bytes of Rx hot
->>> cache line back. The important point is that there haven't been any new
->>> handlers since these were added back in 2020, and also these are not
->>> common, so making their impact on the fast-path as small as possible
->>> while fixing the bug sounds good.
->>>
->>> A quick & dirty sketch of the fixes gives me:
->>> 5 files changed, 47 insertions(+), 66 deletions(-)
->>>
->>> That can probably be improved (i.e. more deletions).
->>>
->>> Just please make sure that if CFM/MRP are not enabled in .config, they
->>> would not affect the fast-path at all.
->>>
->>> Cheers,
->>>    Nik
->>>
+>> A source list is only accepted on a (*, G) entry, whose source is the
+>> all-zeros address, and for each member of the list an (S, G) entry is
+>> derived from it by substituting the source. Entries are keyed by a plain
+>> memcmp() of struct vxlan_mdb_entry_key, so if MDBE_ATTR_SOURCE is present
+>> and holds the all-zeros address and the source list holds it as well, the
+>> derived (S, G) key is byte-identical to the (*, G) key and resolves to the
+>> same entry. Omitting MDBE_ATTR_SOURCE is not equivalent, as the key is
+>> then left with a zero address family.
 >>
->> Hi Yilin,
->> Are you still considering fixing these problems? A few months passed since
->> we last spoke.
+>> vxlan_mdb_remote_src_del() removes the forwarding entry of a source before
+>> freeing the source entry:
 >>
->> Cheers,
->>    Nik
+>>     vxlan_mdb_remote_src_fwd_del(vxlan, group, remote, &ent->addr);
+>>     vxlan_mdb_remote_src_entry_del(ent);
 >>
+>> With the keys aliased, the first call deletes the remote of the entry that
+>> owns 'ent' instead of a separate (S, G) entry, and frees 'ent'. The second
+>> call then runs on the freed entry, and its hlist_del() reads ->pprev and
+>> ->next out of it and writes through them.
 >>
+>> Adding the (*, G) entry with NLM_F_REPLACE and no source list marks the
+>> all-zeros source for deletion and reaches this from the sweep at the end
+>> of vxlan_mdb_remote_srcs_replace().
+>>
+>>    BUG: KASAN: slab-use-after-free in __vxlan_mdb_add+0x1cd/0xd70
+>>    Read of size 8 at addr ffff888102852500 by task poc/84
+>>     __vxlan_mdb_add+0x1cd/0xd70
+>>     vxlan_mdb_add+0xc0/0x140
+>>     rtnl_mdb_add+0x157/0x2a0
+>>     rtnetlink_rcv_msg+0x207/0x5a0
+>>    Allocated by task 84:
+>>     __kmalloc_cache_noprof+0x153/0x360
+>>     vxlan_mdb_remote_srcs_add+0x2eb/0x440
+>>     __vxlan_mdb_add+0x803/0xd70
+>>    Freed by task 84:
+>>     kfree+0x14c/0x3b0
+>>     vxlan_mdb_remote_del+0x129/0x1a0
+>>     __vxlan_mdb_del+0x4f/0xe0
+>>     vxlan_mdb_remote_src_fwd_del.isra.0+0x162/0x1b0
+>>     __vxlan_mdb_add+0x1c5/0xd70
+>>
+>> The MDB operations are netns-scoped, so an unprivileged user can perform
+>> them in a new user and network namespace.
+>>
+>> Reject the all-zeros address in vxlan_mdb_is_valid_source(), which covers
+>> both call sites. A (*, G) entry is expressed by omitting the source, so
+>> nothing legitimate is refused.
+>>
+>> Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+>>
+>> Fixes: a3a48de5eade ("vxlan: mdb: Add MDB control path support")
+>> Signed-off-by: Baul Lee <baul.lee@xbow.com>
+>> ---
 > 
-> Hi Nik,
-> 
-> I’m very sorry for the long delay. Yilin has gone back to continue his
-> studies and unfortunately no longer has the time to finish this patch.
-> 
-> There was also an issue on my side in keeping track of this work, and
-> I failed to notice that the patch had been left without a follow-up
-> for so long. I apologize for that.
-> 
-> I can take over the patch, address the remaining feedback, and send a
-> new version. That said, I’m not sure whether it might actually be
-> easier for you to make the changes directly, if you are willing to do
-> so. I’ve heard from maintainers that reviewing and iterating on
-> someone else’s patch can sometimes take more effort than simply making
-> the fix themselves, so I wanted to ask which approach you would
-> prefer.
-> 
-> If you would prefer to fix the issue directly, could you please
-> include the following tags?
-> Reported-by: zylzyl2333@gmail.com
-> Reported-by: vega@nebusec.ai
-> 
-> Otherwise, I’m happy to take over and prepare the next revision.
-> What would you prefer?
-> 
-> Best,
-> Yuan
+> You should wait 24 hours before posting another version
 
-Please take over and do the next revision. Just make sure the new cfm/mrp
-option bits are checked together first and as an unlikely case.
-
-Thanks,
-  Nik
-
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
