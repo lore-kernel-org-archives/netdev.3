@@ -1,118 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD5439EF39;
-	Sun, 30 Aug 2026 08:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F169233932
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 08:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788077462; cv=none; b=F4veIyFg95dpASS7sWPpGvHv/yHgBLVE2iM67NvQOfQ1heBlZLnzH7KjJ9kShido9j4D6Ya/mMuUJxcecNdzMOq5Prlx1mA6sPEoe8IZGqsLzzwnNiZ2iH7MMlHAMftup6Hp3JiktRDVn9LnGuf5N9g4r44r1WVZR2i8StFb/nY=
+	t=1788078597; cv=none; b=ATvhHMmweBLNuFuHBYv9jEzPrq+2tl5OasvlNxIzaGPKN/teBf+5dZh8O5YditonCOh0gwlJuBGNTgwb8zoXNCKIO8Swnu0SOGfasvqUT78COqSCNcGRBbIOez2p4Dd0eGv9yShz3i2y+hf0j3Il4U9eqfr+GZgQQRqrLO1Zqhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788077462; c=relaxed/simple;
-	bh=hp8Mv9znBXG0owYcEsdy0ONGYwkVYXiBqvsLRzebEfw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TngBwlCmKfXta5XEmrWK5mVfFEomrxr6k1Ahge4pdJL2CZl9Kiz167TIM7sfoS6SNWFXHUM7ZSadNC/7+VfqoZhkYDLR0eLSoK4yZjXc0SUeAxQpN6UkCWDUZoJ3muCGy4oz5gvbIfdGQdMXh2ybBZyhScymAOOq8m6hE8Rjvvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQvyf6PN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788078597; c=relaxed/simple;
+	bh=K7G9RCI0/tBJ3Upvcml4SlVmXmX54r23emAr8xKlBgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bfIDf5TNzSpzttX2qtPfrhQJkWsHeCEiyvrulYGGM8hpoyyryublRE6NWCft1TyRh5+lwKbCfdXfcYTCpjagPMAoAbJ17kGANApyhCGmdXuxYamf6grXOke0yAO+zCZHrmQoQbEX+2/nKc9ZcDOVyXiPk3BZXVAhI1i43bqSyG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=FBvpVIMA; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQvyf6PN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8694B1F000E9;
-	Sun, 30 Aug 2026 08:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788077460;
-	bh=8L0DQGDXoOlsLX4qSHAjD9TzK8pF9McDUOUSa7CuY7A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gQvyf6PN3R9q93P8546a/NefC9aYrfJGhZBZdpjV6Fe3KOAasOetNmw2TYaKTIaWd
-	 ti9JZzWYYUJf25XhXJF7aw0PJbG9VTxfr9PXW1aPVAuYV6OCwdRidp5UtsJBXocH7b
-	 pwkLM2eskU8MTxCy51CulWv6QW3cQOT8/GPPLXzGp3P9LspNcN5B5u6tJjV6v4Ohl8
-	 9+AKGZNxMpWbcTaP7/ArMhsnOsBzCs83PzOlR/o2TTMC44Y85jBGh5cpjIdkpH5S//
-	 VpoNO+wsaqsn7AI+FJrQBIynEb9zdVELyRUKuEX9qJX1WsSKvPI8vgK61eeT2K36So
-	 3LLd3zSMFkfOg==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 30 Aug 2026 11:10:40 +0300
-Subject: [PATCH 4/4] USB: serial: wwan: replace __get_free_page() with
- kmalloc()
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="FBvpVIMA"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso32322655e9.3
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 01:29:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1788078593; x=1788683393; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1bNOSJbklivuD8yC2PVBqkUNR9N+X/0O0I9jhmTrMxw=;
+        b=FBvpVIMAzY1/VbusPp6JxxMRolV/1e8NGI/TKz+SlvCfci4OHfcMZTT8/+DzVgDH+V
+         xgQ681V0RKU6rHaj2ovc0eg8nd4OWMKpJTKInbm5f/Z02nzd9SBwSmktSiFHHQWGp4g+
+         QUCtWs4bh+GBPiKEERIIHkQmzFbpmQ9ZnTJDvhcgLxxRFDHc9U5lYp6MOUi9mZh4+8i5
+         xAGYASuoGq4LQrGY6WuRX2T0dLLg1U+Qz0rcBAg6jCBdrzXIA1aTtJMPWpsvNI0Jb0ox
+         4B05gxqiLvHreDlDoH5n+xZ0yvy6ENKKSXzfT4xUAMzaHRMSEZl5TQ/3F4WBjKK0J6TY
+         e8fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788078593; x=1788683393;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1bNOSJbklivuD8yC2PVBqkUNR9N+X/0O0I9jhmTrMxw=;
+        b=jqMt26O7YGK+80BHq5HIfGYMoyA0aMp1vWCVBevx0mAWjZgWXtWuayAioDmuCvCEd1
+         ad1hHa5FyRW5dwGBFyBM7BLcgEPm3Pu+LrybL3/XFLtyQi2d2kpXbZOML7RPPV3SQ/Hr
+         9biheVdIjdt0R1EI5sRyXeR079MqXMmXmLbyQz+9xRMKE8ENAEOuzOh8vgKy2TBPuZkd
+         70MX40UzBbJS5/2CJo7B94vRqq2UDg87Zt5kvZAeN3BW0ShzMR7IDf9xW1IpBQxtdXCB
+         p6Z90xbR3JYEjLAVZX2MBxMUpZ9uV8svDZE2ElV9PHdJ17xglaBY6ljNXHHVIaWqzjQW
+         FFaQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5TFK9rf6FPBsc8zVtj8Iqr3kwI96Gi+66D8EfLb8j+kU3PcK6vrrH/c8iF1eYYCCIQOLGbz8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mEQSZNnE2S00hhFcM3dY2sl8WV2vpPD1PsRKNXqL/aHCC57FGj
+	4bX3WfOZFM/tpw+eOFyEJzU0urOc2VyY4pw+AIjJ5qRqoTMiSLM07ppV7MW0u1OPAQQ=
+X-Gm-Gg: AR+sD13q1OeBGHNOjwkrK3xfJEnBh/U9zmab/9faUyjDjFqMQ2NG3bDGByh6iwaVOSP
+	QT18exfQoNUrZWofmX9wUBEnTdf+Sn+qUAB/2tY7LXY4oRHhwhQ8wyfPbxUNye7j1n792WeGgNA
+	3crrC1OhfaYfwjMhHUTQBMxETtDDhipQQAuBcEMi3YqDyHOsWVyng/Nu1QElegq5TWt99LofTP9
+	ee33EqhyB0aFLpqWlNNqc9sxigm6WXZS5jFEXO9uqftop1nhzdJ9LqKVGqpUPeuosI8zlZR/xxU
+	sUkvm67gKGi4xV+XhZPaW7+GQU0vk7KVUzlwtbW0KSRKh4QpgL/pnkZA2fk439oosgW63YS+kaE
+	NeWcrbVsUZ4TCok9CgOkb9101IcTWgyDNRBp65tL9BTiUQZx4im6Gfl8m0rGpZGVs4yWlpEvSUl
+	aNUSxvaTvzVG7kShhvCMNFgKAjWVsvpvevpGBUazgVIuZUBckf/BTiQq57JpsJoMRsI3njEaH6q
+	sRy1l7nYn2Dkrvsapk=
+X-Received: by 2002:a05:600c:8b6b:b0:49b:c8e:8e6 with SMTP id 5b1f17b1804b1-49b91bd99b7mr294303225e9.0.1788078593038;
+        Sun, 30 Aug 2026 01:29:53 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b963c3c0asm313438015e9.10.2026.08.30.01.29.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Aug 2026 01:29:52 -0700 (PDT)
+Message-ID: <15fce8a9-9657-4efb-8308-921f8d498640@blackwall.org>
+Date: Sun, 30 Aug 2026 11:29:51 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-usb-v1-4-aa349c302246@kernel.org>
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
-In-Reply-To: <20260830-usb-v1-0-aa349c302246@kernel.org>
-To: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Johan Hovold <johan@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
- Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- accessrunner-general@lists.sourceforge.net, 
- linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
-X-Mailer: b4 0.17-dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/1] net: bridge: cfm: use a per-bridge frame type
+Content-Language: en-US, bg
+To: Yuan Tan <yuantan098@gmail.com>
+Cc: Yilin Zhu <zylzyl2333@gmail.com>, Ren Wei <n05ec@lzu.edu.cn>,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, idosch@nvidia.com,
+ horatiu.vultur@microchip.com, kuba@kernel.org,
+ henrik.bjoernlund@microchip.com, yifanwucs@gmail.com,
+ tomapufckgml@gmail.com, bird@lzu.edu.cn, ronbogo@outlook.com
+References: <cover.1778378864.git.zylzyl2333@gmail.com>
+ <7198fe2845c30c60c6b3833dd78cead8c5966931.1778378864.git.zylzyl2333@gmail.com>
+ <e1f1b080-cfde-4ea4-b444-b64d43778b2f@blackwall.org>
+ <9263d4c1-0c57-4926-930b-1d701e1f17db@blackwall.org>
+ <CAAAOPT8mBxW9Fd9Sr=xWAb-fa4MUHCqKaQf86-DFNqaB9Xvgng@mail.gmail.com>
+ <7ffc7cdc-8140-4ea2-b3bd-c86abe6e6cff@blackwall.org>
+ <6c1c6972-c212-4139-b629-4603a8801cbb@blackwall.org>
+ <CAPuPA7KykYqE71P+7-7=1A50S1H3Ksi7ONk+kb_xR0Ep8HKBaw@mail.gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <CAPuPA7KykYqE71P+7-7=1A50S1H3Ksi7ONk+kb_xR0Ep8HKBaw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-usb_wwan_port_probe() allocates the transfer buffers for the read URBs.
+On 28/08/2026 22:44, Yuan Tan wrote:
+> On Fri, Aug 28, 2026 at 3:23 AM Nikolay Aleksandrov <razor@blackwall.org> wrote:
+>>
+>> On 12/05/2026 11:09, Nikolay Aleksandrov wrote:
+>>> On 12/05/2026 08:21, Yilin Zhu wrote:
+>>>> On Sun, 10 May 2026 at 04:40, Nikolay Aleksandrov <razor@blackwall.org> wrote:
+>>>>>
+>>>>> On 10/05/2026 13:05, Nikolay Aleksandrov wrote:
+>>>>>> On 10/05/2026 12:15, Ren Wei wrote:
+>>>>>>> From: Yilin Zhu <zylzyl2333@gmail.com>
+>>>>>>>
+>>>>>>> CFM registers a bridge frame handler when the first MEP is created and
+>>>>>>> unregisters it when the last MEP is deleted. The registered object also
+>>>>>>> contains the hlist_node used by the bridge-local frame_type_list.
+>>>>>>>
+>>>>>>> The CFM frame type is currently global, so enabling CFM on multiple
+>>>>>>> bridges links the same hlist_node into multiple bridge-local lists. A
+>>>>>>> later unregister on one bridge can then operate on list state belonging
+>>>>>>> to another bridge.
+>>>>>>>
+>>>>>>> Move the CFM frame type into struct net_bridge and register/unregister
+>>>>>>> the bridge-owned object. This keeps frame handler list membership local
+>>>>>>> to the bridge while preserving the existing first-MEP/last-MEP lifetime.
+>>>>>>>
+>>>>>>> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM
+>>>>>>> frame RX added.")
+>>>>>>> Cc: stable@kernel.org
+>>>>>>> Reported-by: Yuan Tan <yuantan098@gmail.com>
+>>>>>>> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+>>>>>>> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+>>>>>>> Reported-by: Xin Liu <bird@lzu.edu.cn>
+>>>>>>> Co-developed-by: Peihan Liu <ronbogo@outlook.com>
+>>>>>>> Signed-off-by: Peihan Liu <ronbogo@outlook.com>
+>>>>>>> Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+>>>>>>> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+>>>>>>> ---
+>>>>>>>     net/bridge/br_cfm.c     | 14 ++++++--------
+>>>>>>>     net/bridge/br_private.h | 18 +++++++++++-------
+>>>>>>>     2 files changed, 17 insertions(+), 15 deletions(-)
+>>>>>>>
+>>>>>>
+>>>>>> I think MRP suffers from the same bug, but I also think we can contain the
+>>>>>> fix within the packet type structure instead of making the already huge
+>>>>>> struct net_bridge even bigger. Also, linking a struct within net_bridge
+>>>>>> to a list within the same net_bridge looks weird.
+>>>>>>
+>>>>>> IMO br_add_frame should take a type & a frame_handler, allocate a br_frame_type
+>>>>>> dynamically and link it, then br_del_frame should take a type instead of a ptr
+>>>>>> and remove that frame type and free it with kfree_rcu. That would require
+>>>>>> br_add_frame return value to be checked in the respective cfm/mrp functions.
+>>>>>> Warnings for already existing types on add or missing types on del should be
+>>>>>> added.
+>>>>>>
+>>>>>
+>>>>> Actually I have a better idea since these handlers can be added only once per
+>>>>> bridge, we can do away with a simple bitmask (e.g. use net_bridge's options
+>>>>> which is in a Rx hot cache line) and even reduce net_bridge size while fixing
+>>>>> these bugs, and also remove a conditional from the fast-path when CFM/MRP are
+>>>>> not compiled in. Would you like me to prepare it or do you want to give it a go?
+>>>>>
+>>>>
+>>>> Hi Nik,
+>>>>
+>>>> Thanks for the suggestion.
+>>>>
+>>>> I'll give it a go. IIUC, the idea is to remove the shared
+>>>> br_frame_type list entries for CFM/MRP, track their per-bridge enable
+>>>> state with bridge option bits, and dispatch the CFM/MRP handlers directly
+>>>> from the receive path when the corresponding EtherType and option bit
+>>>> match.
+>>>>
+>>>> I'll include MRP in v2.
+>>>>
+>>>> Thanks,
+>>>> Yilin
+>>>>
+>>>
+>>> Great, thank you. That should simplify the code and give us 8 bytes of Rx hot
+>>> cache line back. The important point is that there haven't been any new
+>>> handlers since these were added back in 2020, and also these are not
+>>> common, so making their impact on the fast-path as small as possible
+>>> while fixing the bug sounds good.
+>>>
+>>> A quick & dirty sketch of the fixes gives me:
+>>> 5 files changed, 47 insertions(+), 66 deletions(-)
+>>>
+>>> That can probably be improved (i.e. more deletions).
+>>>
+>>> Just please make sure that if CFM/MRP are not enabled in .config, they
+>>> would not affect the fast-path at all.
+>>>
+>>> Cheers,
+>>>    Nik
+>>>
+>>
+>> Hi Yilin,
+>> Are you still considering fixing these problems? A few months passed since
+>> we last spoke.
+>>
+>> Cheers,
+>>    Nik
+>>
+>>
+> 
+> Hi Nik,
+> 
+> I’m very sorry for the long delay. Yilin has gone back to continue his
+> studies and unfortunately no longer has the time to finish this patch.
+> 
+> There was also an issue on my side in keeping track of this work, and
+> I failed to notice that the patch had been left without a follow-up
+> for so long. I apologize for that.
+> 
+> I can take over the patch, address the remaining feedback, and send a
+> new version. That said, I’m not sure whether it might actually be
+> easier for you to make the changes directly, if you are willing to do
+> so. I’ve heard from maintainers that reviewing and iterating on
+> someone else’s patch can sometimes take more effort than simply making
+> the fix themselves, so I wanted to ask which approach you would
+> prefer.
+> 
+> If you would prefer to fix the issue directly, could you please
+> include the following tags?
+> Reported-by: zylzyl2333@gmail.com
+> Reported-by: vega@nebusec.ai
+> 
+> Otherwise, I’m happy to take over and prepare the next revision.
+> What would you prefer?
+> 
+> Best,
+> Yuan
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+Please take over and do the next revision. Just make sure the new cfm/mrp
+option bits are checked together first and as an unlikely case.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
-
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
-
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
-
-While on it, allocate IN_BUFLEN bytes rather than a full page. IN_BUFLEN
-is the transfer_buffer_length of the read URBs, the page allocator was
-only used because IN_BUFLEN happens to equal PAGE_SIZE on x86.
-
-Replace use of __get_free_page() with kmalloc() and free_page() with
-kfree().
-
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Assisted-by: copilot:claude-opus
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- drivers/usb/serial/usb_wwan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/serial/usb_wwan.c b/drivers/usb/serial/usb_wwan.c
-index a183cc4515ed..a3929d3a3ec1 100644
---- a/drivers/usb/serial/usb_wwan.c
-+++ b/drivers/usb/serial/usb_wwan.c
-@@ -455,7 +455,7 @@ int usb_wwan_port_probe(struct usb_serial_port *port)
- 	init_usb_anchor(&portdata->delayed);
- 
- 	for (i = 0; i < N_IN_URB; i++) {
--		buffer = (u8 *)__get_free_page(GFP_KERNEL);
-+		buffer = kmalloc(IN_BUFLEN, GFP_KERNEL);
- 		if (!buffer)
- 			goto bail_out_error;
- 		portdata->in_buffer[i] = buffer;
-@@ -492,7 +492,7 @@ int usb_wwan_port_probe(struct usb_serial_port *port)
- bail_out_error:
- 	for (i = 0; i < N_IN_URB; i++) {
- 		usb_free_urb(portdata->in_urbs[i]);
--		free_page((unsigned long)portdata->in_buffer[i]);
-+		kfree(portdata->in_buffer[i]);
- 	}
- 	kfree(portdata);
- 
-@@ -510,7 +510,7 @@ void usb_wwan_port_remove(struct usb_serial_port *port)
- 
- 	for (i = 0; i < N_IN_URB; i++) {
- 		usb_free_urb(portdata->in_urbs[i]);
--		free_page((unsigned long)portdata->in_buffer[i]);
-+		kfree(portdata->in_buffer[i]);
- 	}
- 	for (i = 0; i < N_OUT_URB; i++) {
- 		usb_free_urb(portdata->out_urbs[i]);
-
--- 
-2.53.0
+Thanks,
+  Nik
 
