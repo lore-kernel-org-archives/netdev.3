@@ -1,157 +1,66 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07854763;
-	Sun, 30 Aug 2026 14:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529363B5F5D;
+	Sun, 30 Aug 2026 14:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788099930; cv=none; b=cXtbyVNC6Z9Qi2JO/Gf6fPGi2ex5fmF9u9gcZBiXtHp70n1sq7oLQ+FR8nIzujf3D5p5CzA3Q4Rg1TkkTsiQBHqVZuedAbdoPQ3ULVSzqfKT/h+vFVOIoIyx0d6XRO2l2Fb70iyxmwTDl3xGXjNQExuYZtvlUQ6u3mZOAE+KnxY=
+	t=1788100114; cv=none; b=qxkUtMUxWmmVjSGesDaah9pd0pT1B6x3fPUSG8JQrif1hUh68Y7pfxSsh/zZKyUxW5FVRyCl4tM37q6kZ+X6/lguMdFG40NrQkjbupKuqX+6Dw+oJIFQASbQ/VPrg/OGYV73909TH01DkswG5kEm2GEv8Q6Bun4nSEX+wMKA+Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788099930; c=relaxed/simple;
-	bh=HgaAyLZ07e4+mMArdnysZ2xRFD/5HdhMbxc4l4x8G/A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ox19CQPixXACl/0FbzHDOoDOgUOpVTIvfl5OMZV9Nur9O7qNHW+W1sVdwcZfN05KEyCEAmN90xpY/xTIqD8CgwVlBF0zEszM8y0Io7mGqqbGRuYXb0MDOVQFcoH51urLe7ukegZz9ddywt8s+yl56uBVBCbOiGpDeEEl7jRsOPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.241.250])
-	by APP-03 (Coremail) with SMTP id rQCowADX4D5MPZRqIbybBg--.18339S2;
-	Sun, 30 Aug 2026 22:25:16 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Alexander Duyck <alexanderduyck@fb.com>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	kernel-team@meta.com,
+	s=arc-20240116; t=1788100114; c=relaxed/simple;
+	bh=aSS1vwnZQkDnFZPChTBpfJfgS4KBdkySoPvVkNpgFjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YxL4xfq/TSS7MJZXHN9+xliT7TW2AOn6/tvfEVPvb1k8L+Fi/Og4ZBKnTv6qg7HwIhj0w2YKp6Kz1D9ToI5um18GycOBZzI9oHiVe8Q01xddJgDM577OAf21B/9Fcg7kkmsWkWSM5Eh/JvzjP//p8aEyPVp8q7wVii2MY3JXNP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bxdgRAJB; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bxdgRAJB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=y/TBokqSnSpDNiq/lWHPw6WpT3VNl1VVy97vWYqSOIs=; b=bxdgRAJBNn6LXsI9xHjpzxAUke
+	uuWRaiuuOrJUoD0kT8RijcQk7dKZDTWh4lo8GoR23gd0mUYRUWMYytgucj+RuxmXwU1+P29lmbu1h
+	72hFa/+0J/Fw/FPR8iAKXZaPPuV+A54oXKYx9v6FVJ+2MpTt+oRJpud4umHPmZHkL8yI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x0gW2-0022fp-9Q; Sun, 30 Aug 2026 16:28:10 +0200
+Date: Sun, 30 Aug 2026 16:28:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Elad Nachman <enachman@marvell.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: fbnic: validate mailbox TLV extents
-Date: Sun, 30 Aug 2026 22:24:58 +0800
-Message-ID: <20260830142516.38145-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: prestera: avoid overreading a short firmware tail
+Message-ID: <ccfa4dd8-7b5c-4417-86a7-14638dfd2aa4@lunn.ch>
+References: <20260830142404.37663-1-pengpeng@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADX4D5MPZRqIbybBg--.18339S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZFy3CFWDury7tr4xArW8Zwb_yoW5trW5pF
-	yUWa4Iva1rXw17Zan7Aw48u3Z0ka1a9FyUWFyrA34rZFnrZFy2k345KFWIqF45tr48Cry7
-	Kr4ay3y3JF4DZrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r
-	4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJb
-	IYCTnIWIevJa73UjIFyTuYvjfU5dgADUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260830142404.37663-1-pengpeng@iscas.ac.cn>
 
-The mailbox path warns when a message claims more bytes than the descriptor
-but still parses it. The attribute walkers also validate a child TLV before
-proving that its declared span fits in the parent remainder.
+On Sun, Aug 30, 2026 at 10:24:03PM +0800, Pengpeng Hou wrote:
+> prestera_ldr_send() writes the firmware in 32-bit words even when the final
+> chunk is not four-byte aligned. The last iteration then reads a full u32
+> from a one-to-three-byte tail.
+> 
+> Reserve the aligned ring space, use unaligned-safe full-word loads, and
+> zero-pad a partial final word without reading beyond the firmware image.
 
-Reject invalid mailbox message extents and bound each child attribute
-before type-specific validation.
+"What?" a patch does i can see by reading the code. So the commit
+message should explain "Why?" you want to make this change.
 
-Fixes: da3cde08209e ("eth: fbnic: Add FW communication mechanism")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+    Andrew
+
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c  |  9 ++++++---
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.c | 15 ++++++++++-----
- 2 files changed, 16 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-index 283d25fae79e7..ff1674eff7ad5 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-@@ -1677,16 +1677,19 @@ static void fbnic_mbx_process_rx_msgs(struct fbnic_dev *fbd)
- 		if (!length)
- 			goto next_page;
- 
--		/* Report descriptors with length greater than page size */
--		if (length > PAGE_SIZE) {
-+		/* Report descriptors with invalid message extents. */
-+		if (length < sizeof(msg->hdr) || length > PAGE_SIZE) {
- 			dev_warn(fbd->dev,
- 				 "Invalid mailbox descriptor length: %lld\n",
- 				 length);
- 			goto next_page;
- 		}
- 
--		if (le16_to_cpu(msg->hdr.len) * sizeof(u32) > length)
-+		if (!le16_to_cpu(msg->hdr.len) ||
-+		    le16_to_cpu(msg->hdr.len) * sizeof(u32) > length) {
- 			dev_warn(fbd->dev, "Mailbox message length mismatch\n");
-+			goto next_page;
-+		}
- 
- 		/* If parsing fails dump contents of message to dmesg */
- 		err = fbnic_tlv_msg_parse(fbd, msg, fbnic_fw_tlv_parser);
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c b/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c
-index c55d4f76a5fc0..639f90664d982 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_tlv.c
-@@ -427,9 +427,12 @@ int fbnic_tlv_attr_parse_array(struct fbnic_tlv_msg *attr, int len,
- 	/* Work through list of attributes, parsing them as necessary */
- 	while (len > 0) {
- 		u16 attr_id = attr->hdr.type;
--		u16 attr_len;
-+		u16 attr_len = FBNIC_TLV_MSG_SIZE(le16_to_cpu(attr->hdr.len));
- 		int err;
- 
-+		if (!attr_len || attr_len > len)
-+			return -EINVAL;
-+
- 		if (tlv_attr_id != attr_id)
- 			return -EINVAL;
- 
-@@ -443,7 +446,6 @@ int fbnic_tlv_attr_parse_array(struct fbnic_tlv_msg *attr, int len,
- 
- 		results[i++] = attr;
- 
--		attr_len = FBNIC_TLV_MSG_SIZE(le16_to_cpu(attr->hdr.len));
- 		len -= attr_len;
- 		attr += attr_len;
- 	}
-@@ -476,11 +478,15 @@ int fbnic_tlv_attr_parse(struct fbnic_tlv_msg *attr, int len,
- 
- 	/* Work through list of attributes, parsing them as necessary */
- 	while (len > 0) {
--		int err = fbnic_tlv_attr_validate(attr, tlv_index);
- 		u16 attr_id = attr->hdr.type;
--		u16 attr_len;
-+		u16 attr_len = FBNIC_TLV_MSG_SIZE(le16_to_cpu(attr->hdr.len));
-+		int err;
-+
-+		if (!attr_len || attr_len > len)
-+			return -EINVAL;
- 
- 		/* Stop parsing on full error */
-+		err = fbnic_tlv_attr_validate(attr, tlv_index);
- 		if (err < 0)
- 			return err;
- 
-@@ -493,7 +499,6 @@ int fbnic_tlv_attr_parse(struct fbnic_tlv_msg *attr, int len,
- 			results[attr_id] = attr;
- 		}
- 
--		attr_len = FBNIC_TLV_MSG_SIZE(le16_to_cpu(attr->hdr.len));
- 		len -= attr_len;
- 		attr += attr_len;
- 	}
-
-base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
--- 
-2.50.1
-
+pw-bot: cr
