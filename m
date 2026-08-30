@@ -1,263 +1,88 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73850381B0D
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 11:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22C93AAF41
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 12:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788090957; cv=none; b=D1TpmeBm5B4dsO6OHyTwLeIaivr8hpuGrg4v//RJOyAcCwSkUogUuJBYnZ+5Qb5tG8IikO/pKs+vBkAZITOgu9YwljQa+0guUwPPOPdUWcOJgGTJbIYjYIxl1lQDu4hk4rqWwgfenoeOdwGbBsqtKNtPEOX4mO/hl3x9V/weF08=
+	t=1788092926; cv=none; b=h3HBY3sHEVtD7wee/GLjSBEgnz//Kdk9VxUO12OAG6/y++r31keojHpnRrX9JVRdw1BqeV9GyR/W0FrTEujkehYddS+PbLjt9QRdGKnRoQAIWX6U4BRVgkiZAmFQtIQhbpSCAWpxGYRWdUcZSmyxgk1BD0K5vYoIjnZcuxTcHQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788090957; c=relaxed/simple;
-	bh=zmjm2TQIi7ZYcXFvX6kkbUarn5qiJfknxctpJ8rIKrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bo197HWb0ruxU51nG0IewbLmiRppMKM5Cexj3xIjtbqliZSBgR02WuDJwqXXEQSGZ8CUVHBRA1T0pbktgt1YvhvVHyc3Dqk4CgAOQ/JH/RDXvF/Mho+DGnHFa6+bD4TErirI2JqcABTtb7Smz8Le4oK0Yvasf10RJU+8/+GOrLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s6+bkj1y; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788092926; c=relaxed/simple;
+	bh=ycBhFtqGNFCr6uY9UYeVTe0XKNl1r2DQMWn2SP+mj3E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ojugq6XtJwdN+0uJFaGiorEZ90jgPrL1H4bmHegfoXkZZJwKX4Sw3I+6jejkkXpqYAY2YtlWcaxbwgvuMsZ5QUT7MBM4D5SOmMNSFc6ErRRyrJoL5dlHqgmR53ZJLNCVLexoTxuzOIGkjFHQYDeZfD0J2mR/wJiAr+vgEiLFJh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdPHKOW8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s6+bkj1y"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1a4c62804so2053490a12.3
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 04:55:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788090956; x=1788695756; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uXAVtdXqT4N3HaypUIR8DYqRj/FnDuduwp3EKXKiO+U=;
-        b=s6+bkj1yMu4crPPeSW8sKr0SV8OkTvZKH68rCp5XWuCs4tdGcIQKgrZFQSejdTjg8O
-         wMMw5SYpC9OHoq49CTCuaOh8hDpO/2B+wumrtriI0M+Vfg1fo13NpKkx7JzYovmhtnWI
-         w0ct4BLYnxpf3rl0PR8AQ3iaPZgixbvNbZp4vI1TajUB2unpgVQMQ+BUOMGheX5Dm2Ue
-         Mht8/byj7w1pDIENTDMfQDI13bJCj1AsG9lk9reAa2KHcljAf26d3HCRl3de5I41y5Bg
-         emUql6Z5mAvutQtWfEYAkLicaguK5lypowmQzzo7+UHg2pLVKV5Cu/j7tBlBgRgId/Fr
-         jz5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788090956; x=1788695756;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uXAVtdXqT4N3HaypUIR8DYqRj/FnDuduwp3EKXKiO+U=;
-        b=YpDMYCnBxwebh2gdRtF8lpDs7OT01J9LjMUomX4vENMhKB2UTrpuX3dn1AIO2CJbd8
-         x3WcRNF5esmXOHReqANn03DHpTHt5u8QQLvoAYxAov9h6iJCdle6LUrxTe2Ef+cqDoxP
-         2vmr5jJRLqguBnVlSr56Moa2SQtNfFRHumJcIF41BsdrHrnrk+Y6K877V0vvPxluFsQZ
-         FpJofg3x+ZLg2wymrSx3E6hd+ehq5HMGJBCGS4pkzc2dEoz4etKV4j8pNp0oxNZIcLm8
-         5E7OiEb5Mi96kTBZkNb977OiZ2FkobNslVX+sDeIDuJ4hT7+XWFssIFQwFCHNDuna0Xz
-         pDeA==
-X-Gm-Message-State: AFuF++k4LWiqnrkjwsrzdb6pp1lklkeBrtfpTuizofD1kfLc/0wV62LM
-	sbEWlv+IDteT3LYkNdaEjZu+5LEYh5RkGH+hy5DV8ZBl5D/Zsiwk43tywjsT6A==
-X-Gm-Gg: AR+sD10pwD2zP2wxeESb3ViRVgncueyM5Y24sBGd5dkJpMEPLWC9W4vu62xTkD4ZsrY
-	KbKxsZtTOQVdz+gy0BqvWAMmchqMvoirwzRVYtIFDylszUyFIfyoYJRoW+2F4XJil/DTdyO5+7N
-	ufp+dDPPihZCUaF8eFZoUIRubuER0Npkeh2kBrfwEPgn4/fwEoEYmzY/mWL4Qlq+xMSLGepYQkc
-	wa/8zhJo1g4IMNMj8Ew6/UtLLQDh+q06XpID525sqJyzxopfxf10KGZh3hskc3sbXXiNvoU9a62
-	BspsVIu3V98tOkdWCzUALhHhCiLWMRJa+3+zHPFsiijRdTxqPdxtK+fRw8ArgI/w0auMmmNEXaj
-	blmcQ7l3Gb9RVxWnQqY2s2EKNOauYrWFmeuXXStNAgxrB4LYJ90gTEF+eseyMwP1s7tZ4qGtCel
-	XZQacatS49Kl1whKn294Nwka8H2SC0/1m/+ZqGkA2qFDe/ka5rDUgf
-X-Received: by 2002:a05:6a21:115:b0:3cd:9f99:3381 with SMTP id adf61e73a8af0-3d262679aa2mr35624073637.0.1788090955588;
-        Sun, 30 Aug 2026 04:55:55 -0700 (PDT)
-Received: from homebox ([66.75.253.8])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0d1abbdsm19622929c88.2.2026.08.30.04.55.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 04:55:55 -0700 (PDT)
-From: Yuan Tan <yuantan098@gmail.com>
-To: netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	workflows@vger.kernel.org,
-	yuantan098@gmail.com,
-	frankw@nebusec.ai,
-	jhs@mojatatu.com,
-	ksummit@lists.linux.dev,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kerneljasonxing@gmail.com,
-	roman.gushchin@linux.dev,
-	jgg@nvidia.com,
-	mchehab+huawei@kernel.org,
-	torvalds@linux-foundation.org,
-	ben.copeland@linaro.org,
-	gregkh@linuxfoundation.org
-Subject: [ANNOUNCE] A Syzbot-style Platform for Verifying and Fixing LLM-reported Bugs
-Date: Sun, 30 Aug 2026 04:55:45 -0700
-Message-ID: <20260830115546.3942129-1-yuantan098@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdPHKOW8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38CD1F000E9;
+	Sun, 30 Aug 2026 12:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788092925;
+	bh=giq0ZKRP+1aIgx6E+QNEKTdfQEpdLDHpMpAo/DOA7+o=;
+	h=From:Date:Subject:To:Cc;
+	b=MdPHKOW8/AN3VNoICdI9/e84pyIxOt3M0yYc3aZ2H+YpGYwpc11bwEcJ5xmx4wpJT
+	 LNIPJjOBFA+9Xk94bDSr02Y+azPNY8s1tPFLu/8hrGzkVEJKwK0xnssn8L7aGSQFzT
+	 4Sevm2gU8775M2uMblhTVzkSJKG4vinfn2AQhCsadjOTFm55zf+9mhIOScKv8fmNUX
+	 IMXvbTK4Ze8yDDLPVbB2PtFQBb8LWHEnvnzDfRo3GvPE3a28XENhs2LlS2gxZDmFoE
+	 8ZCRBW/pJObTVLdXebvKboLnsievDAat4Ql/gnWACowVH22dFfGyB4CPLm5/lJiid6
+	 2UD/0eFdj/14g==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sun, 30 Aug 2026 14:28:27 +0200
+Subject: [PATCH net] net: airoha: enable RX_DONE interrupt for RX queue 31
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260830-airoha-rxdone-rxq31-v1-1-830a91503f2f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7TnAtKvpKdBDdci9aa0QQ/j3pN
+ Mxh5oVMwpRhbl4QujlzilWwbcAFG3dS7KuD0WbQU6eVZUnBKnl8ilRxdqgMeoebdQbHHmp5CG3
+ 8/NcFIl2wlvIBQxFW02oAAAA=
+X-Change-ID: 20260830-airoha-rxdone-rxq31-21dc1fac2174
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+X-Mailer: b4 0.14.3
 
+RX queue 31 has always been allocated and filled by airoha_qdma_init_rx()
+since RX_DONE_INT_MASK spans queues 0-31, but none of the RX_IRQ*
+_BANK_PIN_MASK values covered BIT(31). As a consequence the RX_DONE
+interrupt for queue 31 was never enabled, airoha_qdma_rx_process() never
+ran on that queue and its buffers were never reaped.
 
-Hi all,
+Route RX queue 31's RX_DONE interrupt to IRQ bank 1 so that the queue
+is drained and its buffers returned to the page pool.
 
-A month ago, I posted an RFC[1] to the mailing list proposing an automated
-platform that validates AI-reported bugs and prepares draft fixes, and
-later discussed the idea at the Netdev conference. After further
-development, it is finally ready.
+Fixes: f252493e1835 ("net: airoha: Enable multiple IRQ lines support in airoha_eth driver.")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-While preparing to send this email, I noticed that Roman has since started
-a related discussion:
-[MAINTAINERS SUMMIT] The place of AI code review in the Linux Kernel process
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index fa9a8edce22f..8277c1c87bb3 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -538,7 +538,7 @@ struct airoha_wdma_info {
+ 
+ /* RX queue to IRQ mapping: BIT(q) in IRQ(n) */
+ #define RX_IRQ0_BANK_PIN_MASK			0x839f
+-#define RX_IRQ1_BANK_PIN_MASK			0x7fe00000
++#define RX_IRQ1_BANK_PIN_MASK			0xffe00000
+ #define RX_IRQ2_BANK_PIN_MASK			0x20
+ #define RX_IRQ3_BANK_PIN_MASK			0x40
+ #define RX_IRQ_BANK_PIN_MASK(_n)		\
 
-It turns out this platform already addresses several of the needs raised
-there.
+---
+base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+change-id: 20260830-airoha-rxdone-rxq31-21dc1fac2174
 
-The platform is available at:
-https://bugtracker.nebusec.ai
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
-It is currently hosted under my company's domain for convenience. I would
-prefer to move it to a neutral, community-oriented domain once the project
-name is settled.
-Access is currently restricted to maintainers whose email addresses are
-listed in the Linux kernel MAINTAINERS file.
-For now, only bug reports from the net subsystem have been fully imported
-and processed.
-
--------------------------------------------------------------------------
-
-LLM-powered tools such as Sashiko and Claskiko produce a significant number
-of false positives. Pre-existing bugs uncovered by these tools are also not
-collected in one place and they remain scattered across individual review
-reports.
-
-To address this, like syzbot for fuzzer-found bugs, this platform provides
-an **automated** tracking layer for AI-reported bugs, but goes further by
-generating PoCs, running them in QEMU to produce crash logs, triaging
-severity, and drafting patches. This requires no extra effort from
-maintainers; instead, it may helps them understand and fix these bugs more
-efficiently.
-
-
-The platform offers the following capabilities:
-
-1. Collect and Deduplicate
-
-The platform ingests bug reports from multiple sources, including Sashiko,
-Claskiko, and others. It deduplicates them and monitors mailing lists and
-git history to track whether they have been fixed.
-
-It also provides visibility into the Sashiko/Claskiko ingestion queue, so
-users can see which reports are waiting to be collected and processed.
-
-
-2. Verify by generating PoC and running it in QEMU
-
-An agent attempts to generate a proof-of-concept for each bug to determine
-whether it is a false positive. According to paper Patch-to-PoC[2] and
-follow-up research, GPT-5.4 achieves up to a 95% success rate in generating
-PoCs for genuinely exploitable bugs.
-
-This makes PoC generation a strong signal: if a bug has no PoC, it is very
-likely a false positive. And even in cases where a real bug is missed, the
-difficulty of generating a PoC suggests it is unlikely to be practically
-exploitable.
-
-
-3. Draft Patch
-
-The platform produces a draft patch to give maintainers a starting point
-and suggested fix direction. These still require human review. Patches can
-be downloaded via b4 am.
-
-These patches are not sent to mailing lists to avoid adding AI-generated
-noise.
-
-
-4. Triage
-
-Based on the PoC, the agent evaluates the conditions required to trigger
-the bug, for example, whether it requires a namespace, root privileges, or
-can be triggered by an unprivileged user.
-
-Bugs that require root are generally less important, while those reachable
-by unprivileged users are more likely to have real security impact.
-
-If a bug can be triggered from namespace, it is still worth
-paying attention to.
-In particular, a bug should not be considered root-only merely because
-triggering it requires CAP_NET_ADMIN in a network namespace. On systems
-that allow unprivileged user namespaces, an ordinary user may be able to
-create a user namespace, create a network namespace owned by it, and obtain
-capabilities such as CAP_NET_ADMIN with respect to that namespace. Such
-bugs may therefore still be reachable by an otherwise unprivileged local
-user.
-
-For example, this configuration has historically been available by default
-on distributions such as Ubuntu 22.04 LTS and earlier.
-
-Jamal previously offered some suggestions on this severity classification
-scheme which I have not yet had time to implement; that will come in a
-future update.
-
-
-5. Chat with agent
-
-Each bug page includes a chat interface for discussing the bug and its fix
-with the agent.
-
-
-
-Based on earlier feedback, the system is not fully public. Only email
-addresses listed in the MAINTAINERS file are eligible to register, to
-prevent bugs with potential security impact from being exposed publicly.
-
-Jason’s idea of delegating fixes could also be implemented on this
-platform. This is essentially what my volunteer bug-fixing team and I have
-been doing over the past six months: anyone interested can pick up an issue
-and try to fix it. 
-Each subsystem’s maintainers could choose whether to make its issues
-public. Making them public would also let potential reporters check whether
-an issue is already known before submitting a new report.
-
-Bugs are also categorized by subsystem, so after logging in, maintainers
-see only the bugs relevant to the modules they maintain.
-
-
-Welcome any suggestions:)  I will continue maintaining this system and
-adding more features, not only out of personal interest, but also our
-bug-fixing volunteer team is using it too.
-
-We periodically burn tokens and run state-of-the-art models against the
-full kernel source code, with the goal of finding security vulnerabilities
-before attackers do. While I am not an expert in the net subsystem and
-cannot review patches myself at this time, I still hope this platform can
-be of help to the community.
-
-If this system proves genuinely useful, I am happy to transfer project
-ownership to the Linux Foundation or another neutral host.
-
-Going forward, the platform will expose a public API so that other bug
-finding research teams can submit their findings here for centralized
-processing. We also plan to ingest syzbot-found bugs to provide them with
-the same triage workflow.
-
-P.S. I have been struggling to come up with a good name for this platform. A
-few candidates I am considering are Palomar, Tengu, FixArc, and Ephemeris.
-If anyone has a preference or a better suggestion, I would love to hear it.
-
-
-Current Limitations
-
-- For a tracked bug, the system currently only knows that a fix exists; it
-does not yet distinguish between a patch that has been posted to the
-mailing list and one that has already been merged.
-
-- PoC generation and false-positive verification are not yet supported for
-driver-related bugs.
-
-- Unable to scrape Sashiko/Clashiko review reports that are still under embargo.
-
-- Only net subsystem bugs from Sashiko and Claskiko have been imported with
-a fully automated fix-detection pipeline so far. Bugs from other subsystems
-are shown but may already be fixed. If other subsystem maintainers are
-interested, I will prioritize adding support.
-
-
-[1] https://lore.kernel.org/all/20260708092247.4188498-1-yuantan098@gmail.com/
-[2] Juefei Pu, Xingyu Li, Zhengchuan Liang, et al. "Patch-to-PoC: A
-Systematic Study of Agentic LLM Systems for Linux Kernel N-Day
-Reproduction." arXiv:2602.07287, 2026. https://arxiv.org/abs/2602.07287
-
-
-Thanks,
-Yuan
