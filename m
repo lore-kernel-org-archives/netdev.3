@@ -1,295 +1,347 @@
-Received: from alln-iport-8.cisco.com (alln-iport-8.cisco.com [173.37.142.95])
+Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4919332EC5;
-	Sun, 30 Aug 2026 22:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435E730EF89;
+	Sun, 30 Aug 2026 23:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788128602; cv=none; b=uXF0cAbsu7BkFLpmKlZbcmrXmo8Mt7xmXIlqsNXqeirAui+rlKA3B0bXX4B3Epw2jeDa2hjJpwfpzN/dGMrIaw7ui5p0YORyP0Xb7cPTNcQs33Hs/EuKnwe99LfyLhEbLgxmlih1/uLyqX6pKQ2WAWpX1Vr8NRBS6ulHZDp/8R8=
+	t=1788131422; cv=none; b=DlSpe2/hSBv2/iDsx5PUP/uHvyac5slQpDC8zxlLERIIP71lJv2dv+wWz1xm4MFl9e5d196ii8YwRIRQiqw3ZxtzLy70GPofdimYQ64Q0HukMBQRHsvANz5+mMgNfgeW8s2qjXE5hJkJZbJm3+9QmpCFdtiIbcm580J7SCOI1+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788128602; c=relaxed/simple;
-	bh=i1WyAqKHuChmVuJSbSIFOGEDI+aWhCSjqWve5OCJ2Vk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WTmSznKR79ueLGNGVxg8ppDXEPk3KPwnWCZxPssuSxgDiX5cVa1sJYTsBQcSsa9ivO9bvvKt/Ikes7LUso04UmwIaMJ8Ia4tfjdAk4OnHq+fETUdVg4v+QNW1+KS2/rxSpIHBGlgJBES+iHlAjBJ/jQZD0LIfN82a0ZMImRqM8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=O6OPs13V; arc=none smtp.client-ip=173.37.142.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	s=arc-20240116; t=1788131422; c=relaxed/simple;
+	bh=Ntb372e/rWIeBr1J4NjUE3vuIDUZz1AUEM6kRXEBLvA=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=DNxN6ZRXTSRF6BSj5LSnd/NMQIHjoi8xch+9yUq/o0n2KyPhvW5M8k6q16VvuFcd+ifjHo6+ol92jEd2yWs+UJKRQAxbmWjw4YyyTLEY6Gjg2VykBeihmk/VuvU+n2LwW1+Qg5XLk7YufASniVqzEaQ8O4H6wJlp41yQpJ6hHGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=Qo6ieQvu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VPm/7Fhe; arc=none smtp.client-ip=202.12.124.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="O6OPs13V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=7459; q=dns/txt;
-  s=iport01; t=1788128596; x=1789338196;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=MqRHV3nTFK8S3MZK4loTZ+r73N0xwIu+cC0DrJqQVSU=;
-  b=O6OPs13VWvk8pnjzqdlhs/WASWfOuec7+2zMX3XwJYbwqCUa2h1xPa1h
-   ugBE4EHd4XcvJBHVsTsbKayH+feHJJNzw8shrm4QO2+kZC8zM5qX6mOpj
-   XZwtmtJqmEUQ4W06C8U9MiGh3sfSh2Y87/0eDbVXgGbIxfLBHQmHdPy4u
-   fRrT1RfnwGbUo+K47jfxzhnbEouJ7TdL5vNPhfu8NAJ4JWeqN5PjHkhGV
-   pyVk87cAcQ9tXIArO1O84bG3nmtxelVzHucx85dNoZjLQXYapWQBn2wDF
-   FdHkkIg4Sk3l9aamuzAsekcWa9yyg/bb443DKRe1l1hmSKb73rIWkLLPK
-   A==;
-X-CSE-ConnectionGUID: YRrpvF2YQQmHgBMaPJUxMg==
-X-CSE-MsgGUID: tk+CQD6KTPibTUV6j0WDCA==
-X-IPAS-Result: =?us-ascii?q?A0D+AgB0rJRq/5IQJK1aHgEBCxIMggULgleBUkNJhFePU?=
- =?us-ascii?q?oIhnh4UgWoPAQEBD1EEAQGFBQKNcwImNgcOAQIEAwIDAQEBAQEBAQEBAQELA?=
- =?us-ascii?q?QEFAQEBAgEHBYEOE4ZchlsCAQMjBAsBNBIQJQImAgJGEAYBEoMCgnUDwiV6f?=
- =?us-ascii?q?zOBAYR92UqBZgELFAGBCi6FcYJtAYFwhAg7hEEnG4FJRIEVgnpvhCqDdIJqB?=
- =?us-ascii?q?IMcEos5iEAJP4ECHANZLAFVEw0KCwcFYVIzAyAKCxISGBUCFC8PBBYyHXAMJ?=
- =?us-ascii?q?xIsFzVYGwYFgR19FAQThA8jGTZ6gQlegSspYAESF4EJgggCglqCBQIBSUMOB?=
- =?us-ascii?q?0dTCQQLGA1IESw3Bg8ZBD0BbgeOeh+BWmoHPVJ7MQEPD2snHCmSY4N+jkqBN?=
- =?us-ascii?q?Z9ahCiBZqAQM5dnkW6BF5kII6NPDwlQhGmBbwE0gVkzGggbFYMiUxkPjiwBF?=
- =?us-ascii?q?tAZJzI9AgcCBw4DC5MGYAEB?=
-IronPort-Data: A9a23:Kp7gKKpYSZwHFszHrssTrql74fteBmLZZBIvgKrLsJaIsI4StFCzt
- garIBmPafyLMGH9etpzO9iwpB8AsJLcm94wSVBupX81FHkW9OPIVI+TRqvS04x+DSFioGZPt
- Zh2hgzodZhsJpPkjk7zdOCn9j8kif3gqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvV0
- T/Ji5OZYgLNNwJcaDpOtfrT80s35ZwehRtB1rAATaET1LPhvyF94KI3fcmZM3b+S49IKe+2L
- 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVHT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
- I4lWapc5useFvakdOw1C3G0GszlVEFM0OevzXOX6aR/w6BaGpfh660GMa04AWEX0tdNG3lQ2
- 6YpEQkITh+pouuO4o+rb+Y506zPLOGzVG8eknhkyTecCbMtRorOBv2bo9RZxzw3wMtJGJ4yZ
- eJANmEpN0qGOkMJYwtJYH49tL/Aan3XaDREqUmVpqof6GnIxws327/oWDbQUozQGJ8LzxbG+
- goq+UzlAVIxDfDB6ga983iQu9GRn3vEdKk7QejQGvlCxQf7KnYoIBEfS1a+ifWwlEO7X9VRN
- woS9zZGhaU+6UmiXNThdxK/p3GAs1gXXN84O+4n4gilyafO5QudQG8eQVZpYdoqrsIpBjony
- lOEgfvtGDpp9raVIVqF/72ZqzKaIyUZLWYeIyQDSGMt59jlvZF2jR/VSNtnOLC6g8ezGjzqx
- T2O6i8kiN07i8MX26il1U7IjijqpZXTSAMxoALNUQqYAhhRbYqhYcmsrFPc9/sFdNffRViat
- 39CkM+bhAwTMayweOW2aL1lNNmUCzyta1UwXXYH80EdygmQ
-IronPort-HdrOrdr: A9a23:7YhOMaON+ofyP8BcTjejsMiBIKoaSvp037Dk7TEUdfUzSK2lfq
- GV8sjzuiWYtN98YhsdcJW7Scu9qBDnmqKdn7NwAV7KZmCP01dAbrsSjrcKqAeNJ8SRzJ856Y
- 5QN4VzF9H0C0F3loLZ7BnQKadY/PC3tI2lmuvayW5gVkVRa69m5xpkEQrzKDwReOA/P+tfKL
- OsouxaujGnZXMbKu6/BnUDQqz/guejruOfXfbDbCRXkjVnSliTmcXHLyQ=
-X-Talos-CUID: 9a23:j9ssVm+TJTGZiVJKxZWVv38uANg7XCfs9U7VA0CSLG9RaoCFbFDFrQ==
-X-Talos-MUID: =?us-ascii?q?9a23=3AvL5EXwxS6ydJWD/qpYimjNNN8TWaqLitS2s0vcs?=
- =?us-ascii?q?lh/GFPxBNBWmf1AubaaZyfw=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.25,252,1779148800"; 
-   d="scan'208";a="825269864"
-Received: from alln-l-core-09.cisco.com ([173.36.16.146])
-  by alln-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 30 Aug 2026 22:23:06 +0000
-Received: from [127.0.0.1] (unknown [10.25.129.245])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by alln-l-core-09.cisco.com (Postfix) with ESMTPS id 711F718000479;
-	Sun, 30 Aug 2026 22:23:04 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-Date: Sun, 30 Aug 2026 15:22:52 -0700
-Subject: [PATCH net 1/2] enic: preserve V2 VF carrier across netdev reopen
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="Qo6ieQvu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VPm/7Fhe"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id E9FB813001B0;
+	Sun, 30 Aug 2026 19:10:14 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sun, 30 Aug 2026 19:10:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1788131414; x=1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvE
+	EZwuJ7rQ=; b=Qo6ieQvuNCpEAFNGUhEaIGd1tM2qenglCvyZhQAtLYcKgEz5uZv
+	VBkmAHxWVjh7GITNYGQRuizAhYS66fu/QSC2e7UCmgPz4kXTk5AkzcfuRQnlVFRP
+	obCI4MlwXEShM2SHCHkmDlPo5XISgTzwCrpLP/3SjKxujKlWi9nqvG6db9p/iXJV
+	OpWFgdf4BeBSzTD8k+jOmUwdbzP/2FzRQ2JsA+NRYO/Wb8e+aEbOrBj5DJeqKV4F
+	mo0lR8bF74G8iO9YI3oa5e0UEi/LrPdRcv9f2BM5MbieoQLkdq9lj0/U9rjqixab
+	TWu+hSlLYlUN95axFhjHuP3dfSYVVt6XzGA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788131414; x=
+	1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvEEZwuJ7rQ=; b=V
+	Pm/7FheSQWTuf0BTxlWwZtt+3pYz2nhduLw4e4y8za/QfTSzRWzNLT9xWYuPmAIc
+	u2iScyJLSttTa87WeCPnCZXn/Gl2gPZabiNI/TusdTrg2rxoLAc/VMFiqpkhoR6S
+	LQ0iKTcxz3hk+DwmEohzGehsn/5Wh1AzucxvOgw+WnDShRgf/uBTnxZEvQeejUv4
+	uiy25ACTvijKoXphHgt82oizR4gYVdqyJePgq/uKO/Q8l7aBEXKtFaecz0P2KuDW
+	NPFfEanh10Tr4PIAw9/Ttp6lzVA7Tw5SgfgV5/JqbWCARVUi3EaZbxN01GMjB+kI
+	lCRwskirVvl7AMPYTRbWw==
+X-ME-Sender: <xms:UbiUap_MtTSeFpMNORlr4wTWDVh0aA6ScnON58j3rpFyccMpDXHIBQ>
+    <xme:UbiUahH2TNeUk63s7BMkgYDKvmxeqjrvmkBoHgCp0p_iRIhMT_WV7fRvdL5DfgV9Z
+    xV8KqlrCQaK0hplET15otnZI5BE2coA-O7f7PR3q4bp8VG_>
+X-ME-Received: <xmr:UbiUagJhhsp10jRM39PBdQWH_D435G2njFRNXy8dKyREtIAZmuZC2LqatWjo_-5YIsgSO4CAuvUBwdlLl9RmrRBi5dPRqwg>
+X-ME-Proxy-Cause: dmFkZTFOIUHJLQqborIagOgmNN+pPcupbVotrH4sXk/9BxNtfHYUJG+jOdd9lP23wPqSUQ
+    AUFqozauDGsFj2Fcxtj3sABYHvl0ph+0UXejznX6q1Xr1Xg/U0V2IT+Tk94c9p2xCxdGcm
+    a9fTqsnIiGGjKyH3aovg7Hbw39SYODzd4xSmoty3roVPn9gC8PR9IGrItxoJJkl5Z9SeqL
+    qN1gQzMRLAf1DVi5pqAy+RVGbsxy3biNw6Ht0LFpwq7yHA4P1bo1DCXcT6AbluvZMKn1Ad
+    6oUtTqY8wpxkXvPNqdcZVzXrArQI+dyTirjeQU9xaq2PAci/BLvZmkKdn6HOgCF/wiNDR5
+    9ypjS27kIioFVXtCK3cYVV4EX87YiMJFRv1YmG81V/CBOpPEVGlHijee21VZbsDPuWUWT2
+    eIkpdBbOecXlENZwKR/2eekW+LLYVEGcUat3eiQbHa7r5NCiXFUSvoh9n0m66Cfn6MPY8F
+    nn+/UAVo+bSz0lZ0FMnWAjcbwosDDLMUFcjHtb2oWyUdokurmOw1uyWf9PuZC23xX1bhno
+    M6fmT9hcOCYeC8ptuK39TgThobX4Z06It4CZvTdsheRb100K9ulRUQKwJiTqPv3ZqMrr5g
+    wtS1gF+w0PemKcSEjYqBuy5LHyuHib4TgEnaucnWv4jXuwuB92nJE5Nsi6mg
+X-ME-Proxy: <xmx:UbiUah47CBbO19kbrhNmEsPxHAHgpefoYPnpR5z-_ohOrh1cCgC-Dg>
+    <xmx:UbiUalPzSFg1nYeOw2R5sG3wTQxx6Y0zUwyNG3X2kHwPHQNKUtVYuw>
+    <xmx:UbiUaprYVwmp1o7kh4B5Ol26B9junaQQXQMqO5xX3y2ZMifwxkjWAA>
+    <xmx:UbiUaseNryne3JEtbfGoTy-pA0krO1YyMhJ9fCu36NsZC9i9Dd6f2g>
+    <xmx:VriUatkHi2UuWhglcFHVNe1ttc7HDvYZlla8FaR0rvxatg4WTOf727px>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 30 Aug 2026 19:09:27 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260830-b4-enic-v2-mbox-fixes-net-v1-1-23adf9bfd426@cisco.com>
-References: <20260830-b4-enic-v2-mbox-fixes-net-v1-0-23adf9bfd426@cisco.com>
-In-Reply-To: <20260830-b4-enic-v2-mbox-fixes-net-v1-0-23adf9bfd426@cisco.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Sesidhar Baddela <sebaddel@cisco.com>, 
- linux-kernel@vger.kernel.org, Satish Kharat <satishkh@cisco.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788128581; l=7623;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=i1WyAqKHuChmVuJSbSIFOGEDI+aWhCSjqWve5OCJ2Vk=;
- b=s76LEAvJ9/BAEdJyDbsw4p4l69AhQgbxcWVo/bumrmAxKzbLPMq5unztuzh2CsP76MWbJ1wPD
- HOm1D3wrF05D6y1l4z3PZKSSmxwgw9E//GGReciV371D+DMc6UAhWlA
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.245];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.245, [10.25.129.245]
-X-Outbound-Node: alln-l-core-09.cisco.com
+From: NeilBrown <neilb@ownmail.net>
+To: "Byungchul Park" <byungchul@sk.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+ kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+ hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+ jglisse@redhat.com, dennis@kernel.org, cl@linux.com, penberg@kernel.org,
+ rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, josef@toxicpanda.com,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
+ dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+ dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+ melissa.srw@gmail.com, hamohammed.sa@gmail.com, chris.p.wilson@intel.com,
+ gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de,  Liam.Howlett@oracle.com, rppt@kernel.org,
+ surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
+ ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
+ wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
+ dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org,
+ ziy@nvidia.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
+ usamaarif642@gmail.com, joel.granados@kernel.org,
+ richard.weiyang@gmail.com, geert+renesas@glider.be,
+ tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+In-reply-to: <20260825130843.GB23086@system.software.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+  <20260821042143.GA40890@system.software.com>
+  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
+  <20260825130843.GB23086@system.software.com>
+Date: Mon, 31 Aug 2026 09:09:23 +1000
+Message-id: <178813136354.3510150.4730256876703029797@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-A V2 VF receives carrier state only from PF MBOX notifications.
-enic_stop() forces carrier off, but enic_open() does not request a fresh
-notification or restore the previous one.  An ordinary down/up cycle
-therefore leaves the VF in NO-CARRIER and unable to pass traffic until the
-PF repeats the link-state command, even when the physical link remained
-up.
+On Tue, 25 Aug 2026, Byungchul Park wrote:
+> On Fri, Aug 21, 2026 at 07:48:40PM +1000, NeilBrown wrote:
+> > On Fri, 21 Aug 2026, David Hildenbrand (Arm) wrote:
+> > > [...]
+> > >
+> > > > Exactly.  That's why we use classification e.g. lock class - DEPT also
+> > > > makes use of the concept.
+> > > >
+> > > > DEPT doesn't use a full map in each page but uses a minimum space for=
+ a
+> > > > timestamp in each to track when each starts to wait so as to use the
+> > > > recorded timestamp when the event occurs e.g. folio_unlock().
+> > >
+> > > Thanks for that information!
+> > >
+> > > >
+> > > >> Given that lockdep is a debug feature, and we will at some point all=
+ocate struct
+> > > >> folio separately, I assume we could just squeeze a "struct lockdep_m=
+ap" in there
+> > > >> in such debug configs and the world would not collapse.
+> > > >
+> > > > That's a good news for lockdep.  (And even for DEPT :)
+> > >
+> > > He :) Where do you currently store the additional per-page information?
+> >=20
+> > lockdep doesn't need to store per-page information.  Possibly DEPT
+> > doesn't either.
+>=20
+> Class can be stored in global map, but DEPT needs to keep a timestamp
+> in each page to track when a potential-wait e.g. folio_lock() has been
+> started and to refer to the information on its event e.g. folio_unlock().
 
-Cache each valid PF link-state notification.  Serialize updates with the V2
-VF datapath running state.  Keep carrier off while the netdev is stopped.
-Restore the cached state after an ordinary open.  Before either internal
-reset reopens the datapath, invalidate the cache.  Carrier then remains off
-until re-registration receives a fresh PF link-state notification.
+A timestamp?  What does that do?
+There is a lot of detail in your cover letter, but I think there is a
+lot missing too.  I would like to understand how DEPT works, but I don't
+want to dig too hard.  The document in patch 25/40 helps a bit, but it
+is still a bit vague.
+Where is the document which would explain at a level that would help me
+understand this timestamp?
 
-Fixes: 72b65c94058e ("enic: add MBOX VF handlers for capability, register and link state")
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- drivers/net/ethernet/cisco/enic/enic.h      | 13 ++++++++++
- drivers/net/ethernet/cisco/enic/enic_main.c | 12 +++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.c | 37 +++++++++++++++++++++++++----
- drivers/net/ethernet/cisco/enic/enic_mbox.h |  2 ++
- 4 files changed, 59 insertions(+), 5 deletions(-)
+>=20
+> > lockdep needs one lockdep_map for each lock class.  It would make sense
+> > for all folio locks to use the same global lockdep_map.
+>=20
+> Exactly.  Only considering classes, you are right.
+>=20
+> > Each specific lock is known to lockdep as a task which holds the lock, a
+> > lockdep_map which represents the class of locks, and subclass number
+> > which allows a given task to hold multiple locks of the same class
+> > providing it declare (e.g. with spin_lock_nested() etc).
+>=20
+> Right, lockdep works that way.
+>=20
+> > > >> Doing that today (one "struct lockdep_map" in each "struct page") wo=
+uldn't work
+> > > >> as mm_zero_struct_page() would not expect such large "struct page". =
+But
+> > > >> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_=
+LOCK, maybe
+> > > >> that would already be ok and we could just do that (and optimize it =
+as we
+> > > >> allocate folios separately).
+> > > >
+> > > > Sounds great.
+> > > >
+> > > >> Not that it's ideal, but for a debug feature to at least check PG_lo=
+ck, probably
+> > > >> an easier way to achieve it than some completely new infrastructure.
+> > > >
+> > > > I understand what you are going to tell.
+> > > >
+> > > > However, it's worth noting that lockdep tracks dependencies basically
+> > > > based on **lock acqusition orders** in the system.  To make it track
+> > > > even rwlock and general synchronization mechanism as well, lockdep has
+> > > > no choice but to get more complicated.
+> > >
+> > > Well, yes, sure :)
+> > >
+> > > >
+> > > > Focusing on only the dependency checking, the most parts of lockdep a=
+re
+> > > > for the tricky things, so the reusable parts are not that big.
+> > > >
+> > > >> Now, Willy said "locking rules don't really apply to individual foli=
+os", I
+> > > >> wonder if that could just help to also let lockdep check PG_lock wit=
+h less
+> > > >> metadata? (didn't fully wrap my head around the implications)
+> > > >
+> > > > That's what DEPT did and what brought external wgen introduced in DEP=
+T.
+> > > > I was considering the exactly same thing :)
+> > > >
+> > > > Again, lockdep that tracks lock acquisition orders can't do that.
+> > > >
+> > > >> [1]
+> > > >> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?u=
+tm_source=3Dchatgpt.com
+> > > >>
+> > > >>
+> > > >> It's your guiding example, that's why I mention it. You do mention o=
+ther wait
+> > > >> cases here, I don't know anything about them, but for folios it's re=
+ally just
+> > > >> "we used a single bit so far" AFAIKs.
+> > > >
+> > > > It doesn't matter whether it's implemented using bit or not.  folio l=
+ock
+> > > > is quite special since it's allowed to be released other than the
+> > > > acquisition context that makes lockdep impossible to track them.
+> > >
+> > > Does that really make lockdep *impossible* to track them? IOW, there is=
+ no way
+> > > to extend lockdep to support lock release in different context?
+> >=20
+> > Yes and no....
+> >=20
+> > lockdep has no knowledge of control flows moving across threads in the
+> > way that I assume DEPT does.  But it should be possible to tell it.
+> >=20
+> > If you have some code that takes a lock and then hands it off to
+> > another thread, at the hand-off point you call
+> >    lock_map_release(&the_lock_map)
+> >=20
+> > This says "no task owns this lock any more".
+> >=20
+> > maybe you put the folio which is locked on a queue or an lru or
+> > whatever.
+> >=20
+> > There is no way to say "that queue owns this lock".  Maybe that could
+> > usefully be added - assuming coherent semantics can be designed.
+>=20
+> It's certainly useful to track who owns the lock, but the essence, when
+> it comes to deadlock detection, lies elsewhere.  DEPT is based on the
+> essence, that is, a deadlock comes from waits that are never awakened.
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 4a67947cfb9f..2822fbfb6474 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -137,6 +137,12 @@ struct enic_port_profile {
- 	u8 mac_addr[ETH_ALEN];
- };
- 
-+enum enic_vf_link_state {
-+	ENIC_VF_LINK_STATE_UNKNOWN,
-+	ENIC_VF_LINK_STATE_DOWN,
-+	ENIC_VF_LINK_STATE_UP,
-+};
-+
- /* enic_rfs_fltr_node - rfs filter node in hash table
-  *	@@keys: IPv4 5 tuple
-  *	@flow_id: flow_id of clsf filter provided by kernel
-@@ -312,6 +318,13 @@ struct enic {
- 	unsigned int admin_msg_count;	/* current depth of admin_msg_list */
- 	void (*admin_rq_handler)(struct enic *enic, void *buf,
- 				 unsigned int len);
-+	/* The PF is authoritative for a V2 VF's carrier.  Keep the last
-+	 * notification across an ordinary netdev close/open and serialize it
-+	 * against the open/stop carrier transition.
-+	 */
-+	spinlock_t vf_link_state_lock;
-+	enum enic_vf_link_state vf_link_state;
-+	bool vf_link_running;
- 
- 	/* MBOX protocol state — mbox_lock serializes admin WQ sends */
- 	struct mutex mbox_lock;
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 0baef7a120ec..48d16ef18c49 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -1800,6 +1800,8 @@ static int enic_open(struct net_device *netdev)
- 
- 	enic_notify_timer_start(enic);
- 	enic_rfs_timer_start(enic);
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_mbox_vf_link_state_set_running(enic, true);
- 
- 	return 0;
- 
-@@ -1853,7 +1855,10 @@ static int enic_stop(struct net_device *netdev)
- 	for (i = 0; i < enic->rq_count; i++)
- 		napi_disable(&enic->napi[i]);
- 
--	netif_carrier_off(netdev);
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_mbox_vf_link_state_set_running(enic, false);
-+	else
-+		netif_carrier_off(netdev);
- 	if (vnic_dev_get_intr_mode(enic->vdev) == VNIC_DEV_INTR_MODE_MSIX)
- 		for (i = 0; i < enic->wq_count; i++)
- 			napi_disable(&enic->napi[enic_cq_wq(enic, i)]);
-@@ -2271,6 +2276,8 @@ static void enic_reset(struct work_struct *work)
- 		enic_admin_channel_close(enic);
- 
- 	enic_stop(enic->netdev);
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_mbox_vf_link_state_reset(enic);
- 
- 	enic_dev_soft_reset(enic);
- 	enic_reset_addr_lists(enic);
-@@ -2315,6 +2322,8 @@ static void enic_tx_hang_reset(struct work_struct *work)
- 
- 	enic_dev_hang_notify(enic);
- 	enic_stop(enic->netdev);
-+	if (enic_is_sriov_vf_v2(enic))
-+		enic_mbox_vf_link_state_reset(enic);
- 
- 	enic_dev_hang_reset(enic);
- 	enic_reset_addr_lists(enic);
-@@ -3015,6 +3024,7 @@ static int enic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	enic = netdev_priv(netdev);
- 	enic->netdev = netdev;
- 	enic->pdev = pdev;
-+	spin_lock_init(&enic->vf_link_state_lock);
- 
- 	/* Setup PCI resources
- 	 */
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-index 2fb0f1e2ff50..ad79d3951f3d 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-@@ -396,25 +396,32 @@ static void enic_mbox_vf_handle_link_state(struct enic *enic, void *payload)
- {
- 	struct enic_mbox_pf_link_state_notif_msg *notif = payload;
- 	struct enic_mbox_pf_link_state_ack_msg ack = {};
-+	u32 link_state = le32_to_cpu(notif->link_state);
- 	int err;
- 
--	switch (le32_to_cpu(notif->link_state)) {
-+	spin_lock_bh(&enic->vf_link_state_lock);
-+	switch (link_state) {
- 	case ENIC_MBOX_LINK_STATE_ENABLE:
--		if (!netif_carrier_ok(enic->netdev))
-+		enic->vf_link_state = ENIC_VF_LINK_STATE_UP;
-+		if (enic->vf_link_running &&
-+		    !netif_carrier_ok(enic->netdev))
- 			netif_carrier_on(enic->netdev);
- 		netdev_dbg(enic->netdev, "MBOX: link state -> UP\n");
- 		break;
- 	case ENIC_MBOX_LINK_STATE_DISABLE:
--		if (netif_carrier_ok(enic->netdev))
-+		enic->vf_link_state = ENIC_VF_LINK_STATE_DOWN;
-+		if (enic->vf_link_running &&
-+		    netif_carrier_ok(enic->netdev))
- 			netif_carrier_off(enic->netdev);
- 		netdev_dbg(enic->netdev, "MBOX: link state -> DOWN\n");
- 		break;
- 	default:
- 		netdev_warn(enic->netdev, "MBOX: unknown link state %u\n",
--			    le32_to_cpu(notif->link_state));
-+			    link_state);
- 		ack.ack.ret_major = cpu_to_le16(ENIC_MBOX_ERR_GENERIC);
- 		break;
- 	}
-+	spin_unlock_bh(&enic->vf_link_state_lock);
- 
- 	err = enic_mbox_send_msg(enic, ENIC_MBOX_PF_LINK_STATE_ACK,
- 				 ENIC_MBOX_DST_PF, &ack, sizeof(ack));
-@@ -423,6 +430,28 @@ static void enic_mbox_vf_handle_link_state(struct enic *enic, void *payload)
- 			    "MBOX: failed to send link state ACK: %d\n", err);
- }
- 
-+void enic_mbox_vf_link_state_reset(struct enic *enic)
-+{
-+	spin_lock_bh(&enic->vf_link_state_lock);
-+	enic->vf_link_state = ENIC_VF_LINK_STATE_UNKNOWN;
-+	if (enic->vf_link_running && netif_carrier_ok(enic->netdev))
-+		netif_carrier_off(enic->netdev);
-+	spin_unlock_bh(&enic->vf_link_state_lock);
-+}
-+
-+void enic_mbox_vf_link_state_set_running(struct enic *enic, bool running)
-+{
-+	spin_lock_bh(&enic->vf_link_state_lock);
-+	enic->vf_link_running = running;
-+	if (running && enic->vf_link_state == ENIC_VF_LINK_STATE_UP) {
-+		if (!netif_carrier_ok(enic->netdev))
-+			netif_carrier_on(enic->netdev);
-+	} else if (netif_carrier_ok(enic->netdev)) {
-+		netif_carrier_off(enic->netdev);
-+	}
-+	spin_unlock_bh(&enic->vf_link_state_lock);
-+}
-+
- static bool enic_mbox_vf_payload_ok(struct enic *enic, u8 msg_type,
- 				    u16 payload_len, size_t min_len)
- {
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-index 15e30ee2b0ed..60409bad2f28 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -88,6 +88,8 @@ void enic_mbox_init(struct enic *enic);
- int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 		       void *payload, u16 payload_len);
- int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
-+void enic_mbox_vf_link_state_reset(struct enic *enic);
-+void enic_mbox_vf_link_state_set_running(struct enic *enic, bool running);
- int enic_mbox_vf_capability_check(struct enic *enic);
- int enic_mbox_vf_register(struct enic *enic);
- int enic_mbox_vf_unregister(struct enic *enic);
+I disagree.
+The "essence" of deadlock detection involves the interplay of ownership
+and waiting.
+In your cover letter "THE DEPT APPROACH" talks about [S] where and
+event context begins, and [E] where the even occurs.  This S-E section
+is exactly ownership.  During that time something "owns" the event.
+Maybe the terminology is different, but the concept is the same.
 
--- 
-2.43.0
+>=20
+> > Somewhere else some other task takes responsibility for that folio and
+> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
+> > locked page to some code.
+> > That code then calls
+> >    lock_map_acquire_try(&the_lock_map)
+> >=20
+> > This says "this task is now holding this lock" (or more accurately "now
+> > holding a lock of this class").
+> > Note the "_try" - that says that the task didn't have to wait for the
+> > lock, it just got it for free, which in fact it did.
+> >=20
+> > Now if that task takes some other lock, lockdep will see a dependency
+> > between the page lock and the new lock, and will accept or reject it as
+> > you would expect.
+>=20
+> It's an interesting approach if your goal is to track the owenership,
+> but if the goal is for tracking dependencies.. well.. I'm not sure.
 
+I am sure.  Dependencies are between waiters and owners.
+
+A strong theme in your cover letter is the need to add comprehensive
+annotation for DEPT to work.
+My position is that most of what we need for LOCKDEP to be able to
+detect exactly the same things is appropriate annotation.
+We need to annotate when ownership is handed off to another thread, and
+when the other thread takes on ownership.
+
+So what does your scheme provide that is clearly better?  Is the
+annotation easier?  Is some of it automatic?  Does if give better error
+reports?=20
+
+I had a look through dept.rst and it seems that if a lock is released by
+a different thread than the one which took the lock, then DEPT can
+detect that and do something useful.  That might be interesting.
+But how does it know when it first took ownership of that lock?  Or you
+use your terminology: how does it know when that lock first entered the
+context in that thread?
+
+Maybe when you see an "unlock", you assume the lock has been owned since
+the last time the context didn't hold hold any locks.  Would that be
+right?=20
+Surely it wouldn't the too hard to teach lockdep about that.
+i.e.  when a lock, which is allowed to migrate across threads, is
+released though it wasn't held - insert this lock at the top of the
+current context and re-assess all the wait points.
+
+How do you decide that a lock that was taken is no longer part of the
+current context?
+
+
+NeilBrown
