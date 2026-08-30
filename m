@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7381D39EB5B;
-	Sun, 30 Aug 2026 08:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8676639E9DE;
+	Sun, 30 Aug 2026 08:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788077454; cv=none; b=V9uv+Vahrzg2a+p7R5E1Rkw+epbO236Z/LlQsW0VL7HIZSG6/sG31q3lu6z2Ob6gtNz1DaPbXxIEeGnpYyk/AnWEVuj4FEYHcj+C2236+8zn5OyXo9pc9IKYny2sunkGUAz57S991+CQNW09jTC+2iFZ6kFPaorLhsMpyr0t21g=
+	t=1788077460; cv=none; b=pNE2t9HZD19vM181lrTq3ta1yniePUrTVNv5tuVxKS6nkhvyOeE86j2PzEIAkHTYVDFwZwCSt7AW1Aiw678vKuMkWnpkTzahGdzl5p+mPJuQGLHNojwu8sPk+gA0BkX1AL2OecjYOoeWIevP5uY6VtTQcvFBZKQgN4E0yEX/fmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788077454; c=relaxed/simple;
-	bh=TODqA+9vMbMUCTXUsV2+Vje1sot+/vIZvxDEvSzzoxU=;
+	s=arc-20240116; t=1788077460; c=relaxed/simple;
+	bh=51Iq21KEmwY2b/eHw0eax2G6n4JFK+f/r+vLOJ246mw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NYdVQDO6ZwjHOtOoj0x+NSaymeu0CseCFCTYBlW87U3nNnfbLxTsrVe6cma3rJwBZWKLRBUnnAUebNwtHY4jly+GQPR6cjInuWuctmkuVbstodA64W9j5O/VTCObyWsmg7leVI4haxOJfMkBbLNeMyhHzWUcAwURkG6WsGBEijM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XoUjINXM; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=g9s91N11+REVsEzxmdMqNcPOecg3cJxJEBXLtYD2h56CKthtzUEEQ+K2y/UTtIgW2j0VY+ikub+CzTtNmRmHgljlDU4Lcb8TfoKaxavgQpcLq1oqJKTMNryLl/b8BhwB0nPJ9/9RDdNCX5iF0PXO4J7KjuGOsXIivFntJT2q0nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIROzJlE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XoUjINXM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D921F000E9;
-	Sun, 30 Aug 2026 08:10:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIROzJlE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F3E1F00A3D;
+	Sun, 30 Aug 2026 08:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788077453;
-	bh=F0ab/FRyl7xwjV92cpw9DkLnKNb13jgD1FH/6y8ErV4=;
+	s=k20260515; t=1788077457;
+	bh=nOm9eBZiZjf8UMoAxzpiMIxa0Bir8gKmGDsW4008HnU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XoUjINXM1Y4uac2VQ5A3L22S2Gg3pNsrrS2hFECFKPp3OzSpF4FX4Y1BIxnhRO+vG
-	 R+V7nVfJB9UZ9GZanBQZNEpqRnktgaXbb+SX+uwrY4+p8tAqOlVX0N3XRFzc0BiV+q
-	 HsD2riN4MVuw1fkt0VSmb8AQXGHJ+4/HLFB0KxqkiQhoMjJqm+ZbFQme7ieCYbADx7
-	 +j6LQLKllK8zKsroDeAsT6iPmxOYelfZ7z3omirYLGaBFU4o7NAvGiCBSc9/VV9lPq
-	 FLftTs4vMlF3P6ufiC8VAjl0zqzx2aFqTvUsHH152ezS4xIvC/Kcux/mIOlobgLypK
-	 6b5ATDQZF93OA==
+	b=lIROzJlEfhe9fXXQpOEPInD3L5t2aTRzsfV9UdXXzCDPi7W2cE8UBPf37fFvWjYQk
+	 rCrWVvOSWFf1MGY+NG2XsmSU2+4zrmFZy5rS0+NKX3id4dcLkaRlhkC0G6NVYc5IrR
+	 X3kCd0YHNLYFzhlJ4Hbny1wOWbDi/TPHNbWoaaJ/8RArHJbyjT24E2QQ+KMa3ItzQK
+	 QdVfGyePaxH3c/pt9RxT2iVoXIFkX9DF0GQLhVvrRLgRPgoCwX9N0V1oPug2oha87a
+	 l5r92IFro7ZgEnUErpB3y45+eNIVtSfjOB/WNOuWl1by5KYRgXIYnwtgQvqHnl29YQ
+	 +ovxDN+LpS1gA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 30 Aug 2026 11:10:38 +0300
-Subject: [PATCH 2/4] USB: cxacru: replace __get_free_page() with kmalloc()
+Date: Sun, 30 Aug 2026 11:10:39 +0300
+Subject: [PATCH 3/4] USB: speedtch: replace __get_free_page() with
+ kmalloc()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-usb-v1-2-aa349c302246@kernel.org>
+Message-Id: <20260830-usb-v1-3-aa349c302246@kernel.org>
 References: <20260830-usb-v1-0-aa349c302246@kernel.org>
 In-Reply-To: <20260830-usb-v1-0-aa349c302246@kernel.org>
 To: Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>, 
@@ -51,12 +52,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.17-dev
 
-cxacru_fw() allocates a temporary buffer used to feed the firmware to the
-device and cxacru_bind() allocates the transfer buffers for the command
-URBs.
+speedtch_upload_firmware() allocates a temporary buffer used to feed the
+firmware to the device.
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
@@ -75,69 +75,31 @@ Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.co
 Assisted-by: copilot:claude-opus
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/usb/atm/cxacru.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/usb/atm/speedtch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index 636f7886fc26..75d87c31e81f 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -942,7 +942,7 @@ static int cxacru_fw(struct usb_device *usb_dev, enum cxacru_fw_request fw,
- 	int offd, offb;
- 	const int stride = CMD_PACKET_SIZE - 8;
+diff --git a/drivers/usb/atm/speedtch.c b/drivers/usb/atm/speedtch.c
+index 9d28c652bcd8..e5e021aafbd3 100644
+--- a/drivers/usb/atm/speedtch.c
++++ b/drivers/usb/atm/speedtch.c
+@@ -241,7 +241,7 @@ static int speedtch_upload_firmware(struct speedtch_instance_data *instance,
  
--	buf = (u8 *) __get_free_page(GFP_KERNEL);
-+	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+ 	usb_dbg(usbatm, "%s entered\n", __func__);
  
-@@ -978,7 +978,7 @@ static int cxacru_fw(struct usb_device *usb_dev, enum cxacru_fw_request fw,
+-	buffer = (unsigned char *)__get_free_page(GFP_KERNEL);
++	buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!buffer) {
+ 		ret = -ENOMEM;
+ 		usb_dbg(usbatm, "%s: no memory for buffer!\n", __func__);
+@@ -340,7 +340,7 @@ static int speedtch_upload_firmware(struct speedtch_instance_data *instance,
  	ret = 0;
  
- cleanup:
--	free_page((unsigned long) buf);
-+	kfree(buf);
+ out_free:
+-	free_page((unsigned long)buffer);
++	kfree(buffer);
+ out:
  	return ret;
  }
- 
-@@ -1146,13 +1146,13 @@ static int cxacru_bind(struct usbatm_data *usbatm_instance,
- 
- 	mutex_init(&instance->adsl_state_serialize);
- 
--	instance->rcv_buf = (u8 *) __get_free_page(GFP_KERNEL);
-+	instance->rcv_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!instance->rcv_buf) {
- 		usb_dbg(usbatm_instance, "cxacru_bind: no memory for rcv_buf\n");
- 		ret = -ENOMEM;
- 		goto fail;
- 	}
--	instance->snd_buf = (u8 *) __get_free_page(GFP_KERNEL);
-+	instance->snd_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!instance->snd_buf) {
- 		usb_dbg(usbatm_instance, "cxacru_bind: no memory for snd_buf\n");
- 		ret = -ENOMEM;
-@@ -1220,8 +1220,8 @@ static int cxacru_bind(struct usbatm_data *usbatm_instance,
- 	return 0;
- 
-  fail:
--	free_page((unsigned long) instance->snd_buf);
--	free_page((unsigned long) instance->rcv_buf);
-+	kfree(instance->snd_buf);
-+	kfree(instance->rcv_buf);
- 	usb_free_urb(instance->snd_urb);
- 	usb_free_urb(instance->rcv_urb);
- 	kfree(instance);
-@@ -1254,8 +1254,8 @@ static void cxacru_unbind(struct usbatm_data *usbatm_instance,
- 	usb_free_urb(instance->snd_urb);
- 	usb_free_urb(instance->rcv_urb);
- 
--	free_page((unsigned long) instance->snd_buf);
--	free_page((unsigned long) instance->rcv_buf);
-+	kfree(instance->snd_buf);
-+	kfree(instance->rcv_buf);
- 
- 	kfree(instance);
- 
 
 -- 
 2.53.0
