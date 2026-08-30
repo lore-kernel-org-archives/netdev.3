@@ -1,141 +1,263 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012002.outbound.protection.outlook.com [40.107.200.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F842D531;
-	Sun, 30 Aug 2026 11:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788089245; cv=fail; b=agHJ0MRKrRvIMXCTMHpQWq1jxgu0cRHbQG7VwZTFzwsME+MAg8DB90W7ymT1DY7vFfIjoGiKoJkChG6fubkXtGqBBUdc02H2R5BW8gusYRXOdwEBcUbWNrG2D8E8EkgpRIU0np+33RU15pFRj0aapYvZSa8n0C6tyhvuQoD47Lo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788089245; c=relaxed/simple;
-	bh=XbZdVycc0W2MIUByqhttHtw22nWTQtG9SYdKvDKy0Fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iADNAIrmdULQs6SURImRQKf0Ii29eFnn4ZEL7jjWpL3zAcVPI3JpryzGEb3nzZ3EuwnVMsIlrGHqklM7b0otnWZtL8yfHp64ZEENRB9y7Dvq6aEfFUGv0xL43/tTp65uNdk8LrXk8HZ//4bSnRZL7QXdfTu6M0dNPuhTQ+DE2Fo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Xp2c8GlD; arc=fail smtp.client-ip=40.107.200.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73850381B0D
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 11:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788090957; cv=none; b=D1TpmeBm5B4dsO6OHyTwLeIaivr8hpuGrg4v//RJOyAcCwSkUogUuJBYnZ+5Qb5tG8IikO/pKs+vBkAZITOgu9YwljQa+0guUwPPOPdUWcOJgGTJbIYjYIxl1lQDu4hk4rqWwgfenoeOdwGbBsqtKNtPEOX4mO/hl3x9V/weF08=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788090957; c=relaxed/simple;
+	bh=zmjm2TQIi7ZYcXFvX6kkbUarn5qiJfknxctpJ8rIKrI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bo197HWb0ruxU51nG0IewbLmiRppMKM5Cexj3xIjtbqliZSBgR02WuDJwqXXEQSGZ8CUVHBRA1T0pbktgt1YvhvVHyc3Dqk4CgAOQ/JH/RDXvF/Mho+DGnHFa6+bD4TErirI2JqcABTtb7Smz8Le4oK0Yvasf10RJU+8/+GOrLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s6+bkj1y; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Xp2c8GlD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lplCr1zSrYoxsmhZO3ZSVkZkhFbzA0KgFNgASVIE/uWBJMlzBToqwSiTEdNzY4uVMlnpIvcEwsfYffN9Bu76Bn/t9teqcs0er3MLvZ0MnRuiTkxIkqPMDxoek0atX9GEAjewpYKNsoNM0joc14PWlJzRwSNv9bbd2WV3lBRU2+M+Oy8pfcUELsVD54Ym2BC0cLs1SSXqAOj8lFHX7ADf4mjb7eFn41/peJ2vZvddXMyNP93hWlK5ynmySLv5pxtLdQZGZJZNCyQn93WI2zu+xxv07TcqQ97ygQ329bwn2Dw41Ns1oxs+JSHJ+6CIjtrBcRkr7Vh1AqV21cjlftbXgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yRoJg2HClmV5hOwWPY5CE3wJdBtjoW5HFyqEGtbxxv4=;
- b=pUwcRSTGlJchbeB7I3pi+6wO9mkr7aytjfATVlc+89T+3lRmlwkEzKJAM3COshjDad08xiqVWIDPMOlaMLR7wgjN+ZMmziSSpPUYnr5YN2sn52kctMjfitbOqGVuQWm7RKxJurBRD3G35uYkv+gt/OdV01Lk1ATu4A7pw4JujjpBC1BR2M+iQOpmDptE9s2wg8DxPF1sf7KdtD5uZVzXbymJMUZOX7fro0eavayTZFQVQ0OpZoBjKP4rL+C6g3MBa3bcGBNwXq9sUeluHyiArTPKWXJrfBFxwQJinL4P0zYqgBB9Y2wQ09zicbsiLw1ojuKaV1UDkZLYtSuOtts8Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yRoJg2HClmV5hOwWPY5CE3wJdBtjoW5HFyqEGtbxxv4=;
- b=Xp2c8GlDAOpo+xEk9RR/faTKVPJDfxnxM4/DyDFSOB/aB66lUFpkePZMs0/D5qLyQtWzX/osNuYAw3B+fIla784NJ0vXLZcJihEXUOZ4FWlBizLbHIIwXYg+uGwfsHUUeDQ4x03RgAFyV5vI0sfIzutVjDcNPDUwITAyfIcY0fmoInUSnR295iiJ0Fx+fSXwr/kLboXDMyMHPXuMp29+5JXi6isl2zGmlN016rPJLMoeTxtuNjEjV89VJ1CIv3KU7GTvS2508Z6l1OP9gEGwj0fI42SSp5eXjzoUm6dCN6em+fTUX2Zi/2LG+qUh+GCJgo91qSoNYtjpHBysuIxuPQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by PH0PR12MB8125.namprd12.prod.outlook.com (2603:10b6:510:293::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Sun, 30 Aug
- 2026 11:27:18 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Sun, 30 Aug 2026
- 11:27:18 +0000
-Date: Sun, 30 Aug 2026 14:27:09 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Lawrence Lee <lfqlee314@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Arun Ajith S <aajith@arista.com>,
-	Roopa Prabhu <roopa@nvidia.com>, Jaehee Park <jhpark1013@gmail.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC net-next] ipv6: update NUD_FAILED neighbors from NA messages
-Message-ID: <20260830112709.GA2879069@shredder>
-References: <20260813233344.445265-1-lfqlee314@gmail.com>
- <20260825115226.GA1338930@shredder>
- <DKY84BEFKL1S.1BZWGQTGRZLMU@gmail.com>
- <20260827090516.GA2014023@shredder>
- <DL0QFI20UBL6.3BM3CZWLDS1K3@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DL0QFI20UBL6.3BM3CZWLDS1K3@gmail.com>
-X-ClientProxiedBy: FR4P281CA0216.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e4::20) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s6+bkj1y"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1a4c62804so2053490a12.3
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 04:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788090956; x=1788695756; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uXAVtdXqT4N3HaypUIR8DYqRj/FnDuduwp3EKXKiO+U=;
+        b=s6+bkj1yMu4crPPeSW8sKr0SV8OkTvZKH68rCp5XWuCs4tdGcIQKgrZFQSejdTjg8O
+         wMMw5SYpC9OHoq49CTCuaOh8hDpO/2B+wumrtriI0M+Vfg1fo13NpKkx7JzYovmhtnWI
+         w0ct4BLYnxpf3rl0PR8AQ3iaPZgixbvNbZp4vI1TajUB2unpgVQMQ+BUOMGheX5Dm2Ue
+         Mht8/byj7w1pDIENTDMfQDI13bJCj1AsG9lk9reAa2KHcljAf26d3HCRl3de5I41y5Bg
+         emUql6Z5mAvutQtWfEYAkLicaguK5lypowmQzzo7+UHg2pLVKV5Cu/j7tBlBgRgId/Fr
+         jz5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788090956; x=1788695756;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uXAVtdXqT4N3HaypUIR8DYqRj/FnDuduwp3EKXKiO+U=;
+        b=YpDMYCnBxwebh2gdRtF8lpDs7OT01J9LjMUomX4vENMhKB2UTrpuX3dn1AIO2CJbd8
+         x3WcRNF5esmXOHReqANn03DHpTHt5u8QQLvoAYxAov9h6iJCdle6LUrxTe2Ef+cqDoxP
+         2vmr5jJRLqguBnVlSr56Moa2SQtNfFRHumJcIF41BsdrHrnrk+Y6K877V0vvPxluFsQZ
+         FpJofg3x+ZLg2wymrSx3E6hd+ehq5HMGJBCGS4pkzc2dEoz4etKV4j8pNp0oxNZIcLm8
+         5E7OiEb5Mi96kTBZkNb977OiZ2FkobNslVX+sDeIDuJ4hT7+XWFssIFQwFCHNDuna0Xz
+         pDeA==
+X-Gm-Message-State: AFuF++k4LWiqnrkjwsrzdb6pp1lklkeBrtfpTuizofD1kfLc/0wV62LM
+	sbEWlv+IDteT3LYkNdaEjZu+5LEYh5RkGH+hy5DV8ZBl5D/Zsiwk43tywjsT6A==
+X-Gm-Gg: AR+sD10pwD2zP2wxeESb3ViRVgncueyM5Y24sBGd5dkJpMEPLWC9W4vu62xTkD4ZsrY
+	KbKxsZtTOQVdz+gy0BqvWAMmchqMvoirwzRVYtIFDylszUyFIfyoYJRoW+2F4XJil/DTdyO5+7N
+	ufp+dDPPihZCUaF8eFZoUIRubuER0Npkeh2kBrfwEPgn4/fwEoEYmzY/mWL4Qlq+xMSLGepYQkc
+	wa/8zhJo1g4IMNMj8Ew6/UtLLQDh+q06XpID525sqJyzxopfxf10KGZh3hskc3sbXXiNvoU9a62
+	BspsVIu3V98tOkdWCzUALhHhCiLWMRJa+3+zHPFsiijRdTxqPdxtK+fRw8ArgI/w0auMmmNEXaj
+	blmcQ7l3Gb9RVxWnQqY2s2EKNOauYrWFmeuXXStNAgxrB4LYJ90gTEF+eseyMwP1s7tZ4qGtCel
+	XZQacatS49Kl1whKn294Nwka8H2SC0/1m/+ZqGkA2qFDe/ka5rDUgf
+X-Received: by 2002:a05:6a21:115:b0:3cd:9f99:3381 with SMTP id adf61e73a8af0-3d262679aa2mr35624073637.0.1788090955588;
+        Sun, 30 Aug 2026 04:55:55 -0700 (PDT)
+Received: from homebox ([66.75.253.8])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0d1abbdsm19622929c88.2.2026.08.30.04.55.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 04:55:55 -0700 (PDT)
+From: Yuan Tan <yuantan098@gmail.com>
+To: netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	workflows@vger.kernel.org,
+	yuantan098@gmail.com,
+	frankw@nebusec.ai,
+	jhs@mojatatu.com,
+	ksummit@lists.linux.dev,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kerneljasonxing@gmail.com,
+	roman.gushchin@linux.dev,
+	jgg@nvidia.com,
+	mchehab+huawei@kernel.org,
+	torvalds@linux-foundation.org,
+	ben.copeland@linaro.org,
+	gregkh@linuxfoundation.org
+Subject: [ANNOUNCE] A Syzbot-style Platform for Verifying and Fixing LLM-reported Bugs
+Date: Sun, 30 Aug 2026 04:55:45 -0700
+Message-ID: <20260830115546.3942129-1-yuantan098@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH0PR12MB8125:EE_
-X-MS-Office365-Filtering-Correlation-Id: bad8da0f-04c9-46bc-66fb-08df0689a6a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|23010399003|376014|366016|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	n+e3/NI4sCKlBw0LZz4WqXJ4WMWJUD7X6fv574MLyaE5NkYJL0EZ6KIzCrTp6XGxmEmq699oPFSQ7F4DoCn9Cxsk2xT/rRvbE6wty5CpH5Imx8osVT17YckSVkI6G3u7HFa9A27o0Gsy/0sHHzSpzEBvzrLn6kBj8+WJJk906cw/2WjyBGwanH53hnzi65IxsentriaRfk6bM3XP6IUzsRORCEI3YGpW5pqe9VnARpBNDAX/oVshKZsx4N5nb0Ewv5Pj9Y7eY97WrwD+VkTig8IyAzI3QoODktKMnu1nsjRRi3DO13Qr34qXb2Fm4SofRqj++jINF+yijSqhp+Vu44s92oMOcLH97HMlIefyLnRdTqzwGw4lCJeYNhCYu2AvlHKT0FYWZ/5OkQ9bLiz9NwvZPFKmRSCQ2SCXnADBYgopOH8zmjD1OgsoEAvzhk5AzmPkpytxQXc2YA/GrKbIkM6DpJyumyUxGvFcOnSK6Y3Mt0EMDDYCKOv0tR+CXGOeVOGmbcdp7KpWE5EFTPosTjD3jQETBUp8c2DfYaZRqZtvC3+SrRscGVZScZC0ruM0WHz5isJ/FShwvYrNmne4ghgryC4gONOWlcHsmbJLrnPH4WQIHi5tGG2bnnb9J43eNFru8dVESMuqWh57Rb48R9eQD4NbXcETSW1EinEqga4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(23010399003)(376014)(366016)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ohLR98yRY5a8PHl4wekhBPNO8jQe3nksXZ+JKVk/8yt2Mw7hDhLAZCV0sbPB?=
- =?us-ascii?Q?SjO/h8J4KcrG1nAYAm9w2CC+DoLS/N5kFt4vVv43kURVGJpAHfKsIjs44iMr?=
- =?us-ascii?Q?uPBsuEb2rRtdKqOPuFbRcSCbPi4IIKml78ReQVEVmRZspbSToZasaOFZHFuz?=
- =?us-ascii?Q?j7Qp7LjStOg8w1sVeqpeEVpBnLmzm9hcp/a0G2rYK3hbxQAN+x8NNn6mRSKu?=
- =?us-ascii?Q?24uiaR1RmFOloY6AGri+AQlCsp3RsqWWfIeL30hLeaISnHL46btLxc84Dv6T?=
- =?us-ascii?Q?+jsW8H6JCODfbimHoF7e2eAhqVqOBMeDm8ANdihjY7IRxPmJipFHxhTlLYKi?=
- =?us-ascii?Q?NZPNo7GHb72kBLdAI3+smjg04Fmb2ZE3AbCjhAGYDtI9qQoywds2UHCZm76y?=
- =?us-ascii?Q?9g+rMvfAn64qfBld9g6MzJGzyoCqgggIpuEag2Uc6VKf/2Iez9duyxnYf3vq?=
- =?us-ascii?Q?4xPUWW9DMrI1NOhI1XXUULWQfZG3HPTa3PNXiTjcDmTD19PWFMIU0Z9/F0No?=
- =?us-ascii?Q?8JMk1J7wJ47vKXUO7XWLAAod7odl0BN+j2IV1kUUsv79ugZsHO9atCqGCFMH?=
- =?us-ascii?Q?pfyrw1uPdn8lzBQWfh0WK/XBsQZTWvFjWHJm63PJUd/RyLph4iVbzI2xZ200?=
- =?us-ascii?Q?gwj5MT79eaQWVZAsPm/ONq5HPoAoQzAKDHogMJKvxwN7NR7N+7IXbsq5XNhj?=
- =?us-ascii?Q?8grAA0I2J3aOKMuaT8lyauX3UhtgyjZgxrgxMWqV4E5MDQUL5h0SYX+jhoji?=
- =?us-ascii?Q?hAgEcAbsvL+ZeMnLE+NyYSK7z7GEXFebANs7oIV7eq+5cq2XgEgLZ5sZw7xl?=
- =?us-ascii?Q?GtP1ikU4B+NqMkFaL0HPJIvW/i6/fbfFHSTfIRfYk8sOZBfzyEj4R1I5gdLX?=
- =?us-ascii?Q?iH5xwqzwbkbJOfisqtixGTDuyjLufODv8p/jg/6eXglUOEMx7SdfCzyJ5mQh?=
- =?us-ascii?Q?boFq0CA5v+LnevnvwrUxdqyZX1RakMx7J2HEKrt9T62isbjhOsGyi+eAzLEo?=
- =?us-ascii?Q?Sxptfniy0Fg+SEB/sir+d0n+TAFlo79MWCLyxj5GzY0CWMDqpl5zGfPWIbuY?=
- =?us-ascii?Q?vJgSC2Yqdedb/DTuhnnIudlGRGubll/X+E5QxIQb9iVjZc8DqUwTuruL2ub/?=
- =?us-ascii?Q?PNjcE4S/Hil3foZuPZRh4b64OO2H2iyTyKNfEWSv1RTRA2aWQQtRfsXG57Jy?=
- =?us-ascii?Q?bAWQM9n919id7xeiv+fUmKjm/mpwdHbN+ci8wfeGIAMYcw/+ijt6DMa2/kI9?=
- =?us-ascii?Q?8D+hww6/1gN6NbdIofW8nKt2er26kYz2IGksG9RkYaWLnhAp6rYDoSPvtGb1?=
- =?us-ascii?Q?I7nXqJ3UdM/8mWzG/ZZNCAjvBOpeOEz26AGOLWWMcXwNpTPqq+pV69fjUOmU?=
- =?us-ascii?Q?Cb5eHgK3nXwHswE2zs2I23sHHmElml5hAgyCS0PrzcOIbxtpXTU3ty5VWdpJ?=
- =?us-ascii?Q?pcW9IZDLGDr9bdhvHlD4IceGMlNmPxejTCatMlZBr7LkNMjNEnLFF8rAFjNj?=
- =?us-ascii?Q?mBsT8aJVYGlp+gFXZfRnf9rW4evNMdZ0tVz0D3dJMREGrcdvvT+AxEoqv+qa?=
- =?us-ascii?Q?LQiJb9RUyEFEAGlk9Pbhb0zeDKErXwbcBfIrgBFvDQ6P7KtP6Qaso2cmyqB9?=
- =?us-ascii?Q?4LuAM9CUXOd2vZp+RIIz620/JlpYjgxgz7Wu7SGTNKQNQODUNofbn6CbUd5N?=
- =?us-ascii?Q?GGmsWxYD5aIL6ffovyPgj7OO74A213MfLvectHQ/R5G30RuG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bad8da0f-04c9-46bc-66fb-08df0689a6a0
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2026 11:27:18.7001
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J5ZSow2qmb7ius9OTtSfLzHps6eV34FHQNWqIW8EYCjlQA/dKCfcMOtKsy0GppSbca8VYz7to8IirLHF0GoGww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8125
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 28, 2026 at 04:54:00PM +0000, Lawrence Lee wrote:
-> I will be sure to mention these points in the message. Is it appropriate 
-> to credit you with a 'Suggested-By' tag in the commit messages as well?  
 
-Not really: "A Suggested-by: tag indicates that the patch idea is
-suggested by the person named and ensures credit to the person for the
-idea" [1].
+Hi all,
 
-[1] Documentation/process/submitting-patches.rst
+A month ago, I posted an RFC[1] to the mailing list proposing an automated
+platform that validates AI-reported bugs and prepares draft fixes, and
+later discussed the idea at the Netdev conference. After further
+development, it is finally ready.
 
-> I'm not sure what the proper attribution convention is here for commit 
-> message content.
+While preparing to send this email, I noticed that Roman has since started
+a related discussion:
+[MAINTAINERS SUMMIT] The place of AI code review in the Linux Kernel process
 
-No need for attribution. Simply copy me on v2 and I will review it.
+It turns out this platform already addresses several of the needs raised
+there.
+
+The platform is available at:
+https://bugtracker.nebusec.ai
+
+It is currently hosted under my company's domain for convenience. I would
+prefer to move it to a neutral, community-oriented domain once the project
+name is settled.
+Access is currently restricted to maintainers whose email addresses are
+listed in the Linux kernel MAINTAINERS file.
+For now, only bug reports from the net subsystem have been fully imported
+and processed.
+
+-------------------------------------------------------------------------
+
+LLM-powered tools such as Sashiko and Claskiko produce a significant number
+of false positives. Pre-existing bugs uncovered by these tools are also not
+collected in one place and they remain scattered across individual review
+reports.
+
+To address this, like syzbot for fuzzer-found bugs, this platform provides
+an **automated** tracking layer for AI-reported bugs, but goes further by
+generating PoCs, running them in QEMU to produce crash logs, triaging
+severity, and drafting patches. This requires no extra effort from
+maintainers; instead, it may helps them understand and fix these bugs more
+efficiently.
+
+
+The platform offers the following capabilities:
+
+1. Collect and Deduplicate
+
+The platform ingests bug reports from multiple sources, including Sashiko,
+Claskiko, and others. It deduplicates them and monitors mailing lists and
+git history to track whether they have been fixed.
+
+It also provides visibility into the Sashiko/Claskiko ingestion queue, so
+users can see which reports are waiting to be collected and processed.
+
+
+2. Verify by generating PoC and running it in QEMU
+
+An agent attempts to generate a proof-of-concept for each bug to determine
+whether it is a false positive. According to paper Patch-to-PoC[2] and
+follow-up research, GPT-5.4 achieves up to a 95% success rate in generating
+PoCs for genuinely exploitable bugs.
+
+This makes PoC generation a strong signal: if a bug has no PoC, it is very
+likely a false positive. And even in cases where a real bug is missed, the
+difficulty of generating a PoC suggests it is unlikely to be practically
+exploitable.
+
+
+3. Draft Patch
+
+The platform produces a draft patch to give maintainers a starting point
+and suggested fix direction. These still require human review. Patches can
+be downloaded via b4 am.
+
+These patches are not sent to mailing lists to avoid adding AI-generated
+noise.
+
+
+4. Triage
+
+Based on the PoC, the agent evaluates the conditions required to trigger
+the bug, for example, whether it requires a namespace, root privileges, or
+can be triggered by an unprivileged user.
+
+Bugs that require root are generally less important, while those reachable
+by unprivileged users are more likely to have real security impact.
+
+If a bug can be triggered from namespace, it is still worth
+paying attention to.
+In particular, a bug should not be considered root-only merely because
+triggering it requires CAP_NET_ADMIN in a network namespace. On systems
+that allow unprivileged user namespaces, an ordinary user may be able to
+create a user namespace, create a network namespace owned by it, and obtain
+capabilities such as CAP_NET_ADMIN with respect to that namespace. Such
+bugs may therefore still be reachable by an otherwise unprivileged local
+user.
+
+For example, this configuration has historically been available by default
+on distributions such as Ubuntu 22.04 LTS and earlier.
+
+Jamal previously offered some suggestions on this severity classification
+scheme which I have not yet had time to implement; that will come in a
+future update.
+
+
+5. Chat with agent
+
+Each bug page includes a chat interface for discussing the bug and its fix
+with the agent.
+
+
+
+Based on earlier feedback, the system is not fully public. Only email
+addresses listed in the MAINTAINERS file are eligible to register, to
+prevent bugs with potential security impact from being exposed publicly.
+
+Jason’s idea of delegating fixes could also be implemented on this
+platform. This is essentially what my volunteer bug-fixing team and I have
+been doing over the past six months: anyone interested can pick up an issue
+and try to fix it. 
+Each subsystem’s maintainers could choose whether to make its issues
+public. Making them public would also let potential reporters check whether
+an issue is already known before submitting a new report.
+
+Bugs are also categorized by subsystem, so after logging in, maintainers
+see only the bugs relevant to the modules they maintain.
+
+
+Welcome any suggestions:)  I will continue maintaining this system and
+adding more features, not only out of personal interest, but also our
+bug-fixing volunteer team is using it too.
+
+We periodically burn tokens and run state-of-the-art models against the
+full kernel source code, with the goal of finding security vulnerabilities
+before attackers do. While I am not an expert in the net subsystem and
+cannot review patches myself at this time, I still hope this platform can
+be of help to the community.
+
+If this system proves genuinely useful, I am happy to transfer project
+ownership to the Linux Foundation or another neutral host.
+
+Going forward, the platform will expose a public API so that other bug
+finding research teams can submit their findings here for centralized
+processing. We also plan to ingest syzbot-found bugs to provide them with
+the same triage workflow.
+
+P.S. I have been struggling to come up with a good name for this platform. A
+few candidates I am considering are Palomar, Tengu, FixArc, and Ephemeris.
+If anyone has a preference or a better suggestion, I would love to hear it.
+
+
+Current Limitations
+
+- For a tracked bug, the system currently only knows that a fix exists; it
+does not yet distinguish between a patch that has been posted to the
+mailing list and one that has already been merged.
+
+- PoC generation and false-positive verification are not yet supported for
+driver-related bugs.
+
+- Unable to scrape Sashiko/Clashiko review reports that are still under embargo.
+
+- Only net subsystem bugs from Sashiko and Claskiko have been imported with
+a fully automated fix-detection pipeline so far. Bugs from other subsystems
+are shown but may already be fixed. If other subsystem maintainers are
+interested, I will prioritize adding support.
+
+
+[1] https://lore.kernel.org/all/20260708092247.4188498-1-yuantan098@gmail.com/
+[2] Juefei Pu, Xingyu Li, Zhengchuan Liang, et al. "Patch-to-PoC: A
+Systematic Study of Agentic LLM Systems for Linux Kernel N-Day
+Reproduction." arXiv:2602.07287, 2026. https://arxiv.org/abs/2602.07287
+
+
+Thanks,
+Yuan
