@@ -1,98 +1,139 @@
-Received: from mail.qrator.net (mx12.qrator.net [185.104.210.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADDA382385
-	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 18:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.104.210.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788114531; cv=none; b=Tp8X674Qe5e1fgtDuO4ONT9vO8nWVzMaR7486UZrCyo2Exejy5pIcK0IgBCn/mC1UfK88VseI64yDdylhDza2yDpHAEfFdTgZyiNPrmwKKbQPFxA+FQX2Gr9voRAiXm3XEkvDiWa3n5nL2u4YliySl+oJkz/nYWAw2Td30jeHF4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788114531; c=relaxed/simple;
-	bh=dJi+Unr+id373WAFNyHriWGCGZvOi2K1b/MVPuGqk5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gry4557ojwTGR6lyrL3VLfeDZBMRGUF4qDEwjOxhOkddxfGbCiK/Q0f3AsIy8ZvsX7hOSeL1R+VPgldzCSVKVyi527k9mCzwsg5xBA5JbcxavrtqOS1bAIygJRL+f0E+mgXaMdQtSZHPvgK0+NzxEJOcK/Bm2KEYq13oknT8S+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qrator.net; spf=pass smtp.mailfrom=qrator.net; dkim=pass (2048-bit key) header.d=qrator.net header.i=@qrator.net header.b=FEncgqXG; arc=none smtp.client-ip=185.104.210.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qrator.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qrator.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4663525F988
+	for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 18:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788114976; cv=pass; b=fDo1mduK9Z5RLXtt4V+RwpsJ/UemT3LzimTZx7etMfRX11vQ/ojsHp9j4CCkH4RcUtUF+hCU1mulYLV7sCJTw4fLH2uu72dpaogPH4FYSii4B9xiEqWPLJjXpFiMRsDmMh9aEsudekEbMEnQmHknZSTefzgewgXRXg7t/V5F3/Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788114976; c=relaxed/simple;
+	bh=Kvf+lrZRkjzxTsCjIQEa1qQ/ceDVmhK/wc53ZlrMtpw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CK1qdBlVC2GHAQCbZtetvxL4JMk1iFxTg3ZQX+dlh8X6zFoymMeX3cvA6Y+jSsYLK6tovvj6YNDNIL4bzb/5LRWPKHydb1IHjO+idm/e4dIvxBgfknPDxSRq+10+A3ZJteCdiTeJ7eHegeITyefEcrAAYq8QaHEF8ZjlC+/Ga64=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZPFYTC7q; arc=pass smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qrator.net header.i=@qrator.net header.b="FEncgqXG"
-Received: from mail.router (mail-postfixrouter-1.mail_default [10.0.5.10])
-	by mail.qrator.net (Postfix) with ESMTP id 33B6F6B28A79;
-	Sun, 30 Aug 2026 18:20:23 +0000 (UTC)
-Received: from enterprise.localdomain (unknown [10.0.5.1])
-	by mail.router (Postfix) with ESMTP id 06E936B28A73;
-	Sun, 30 Aug 2026 18:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=qrator.net; s=mx12;
-	t=1788114023; bh=dJi+Unr+id373WAFNyHriWGCGZvOi2K1b/MVPuGqk5c=;
-	h=From:To:Cc:Subject:Date;
-	b=FEncgqXGxj2lLJtcEjy5a7LykIS1UXJULmkgZoNFjeVP3te1fN5DGuFCpdvhmEBom
-	 L5Ko4GlzkZUyD7E+Nkm3JXZluP6cgfQrB8lShARuO5eROpGKy6ehvBR5b5Lcj3ZxVD
-	 Sc79zpdo2S07uhf7fP22wjryy3p2RUMUax6Z0Qg++CViSfHKHkAGufTJZWG60+/rfJ
-	 VvmB3DP04KTrPKx1XnUp1uajhgPj0Vq9Jq9V4az+wHrBlhNFA8LgZDAdqNI0iRl6ZM
-	 V93t/BakYUR7WmmFViMtmPrjq9tWVqcuc/EclwZKxh/IsJrAlbQHJupyU9Z48wJwAs
-	 PAfkEvd9rG0pA==
-Received: from localhost.localdomain (localhost [127.0.0.1])
-	by enterprise.localdomain (Postfix) with ESMTP id BD9B5B3A8ACE;
-	Sun, 30 Aug 2026 18:20:22 +0000 (UTC)
-From: Alexander Zubkov <green@qrator.net>
-To: netdev@vger.kernel.org,
-	Stephen Hemminger <stephen@networkplumber.org>
-Cc: Petr Machata <me@pmachata.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>
-Subject: [PATCH iproute2 0/2] ip: ipstats: Fix statistics split across netlink messages
-Date: Sun, 30 Aug 2026 20:19:47 +0200
-Message-ID: <20260830181949.1096-1-green@qrator.net>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZPFYTC7q"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc1c7364550so2841406a12.1
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 11:36:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788114974; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Qg+pNFcPdUPBY6PqiOformUZanyVkhXwwH0YVamuTKXVmFb3s4kLHaKd0DosntULqm
+         XoYcy5Qjh83fwV7nuwbv+IyDKk3C9rAGqPitmFq+9aupZ1ksXqotF0PEZ/LNAZJRh1u4
+         mUdWyX+YX85TE458Tw66ANUuK/SufhIk+32XdQUjqU/CFz0f3tKBaSQZ45LI6qZo6bwh
+         rjuUGwI6WGs2DJckF9+fggrU7aemProSMJt2IUXcIFNmvTUwGNqlOL65sskuv94FHb4x
+         Spr/accspn+nO1U3GYjIb3PF6jyvqJc2ZtD7XO0PL5WBhc35eDnHyQALrhHGgzsUSqwJ
+         AYFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yI65d1Pj+WBRmzGoc7MgKM40FI7afGWFtJ1MOWUd/LQ=;
+        fh=BJ1Fttd5BjIwH5XmjPYdfTUCvU1DlMPt2u/iPIpLG4E=;
+        b=s0MSH1QWctmzB8hoMP9pGIji9sRTY6C5Pvl5DK3kSRmk86sBgTBS7hOgvmJ/+cKcMp
+         8M5bgVeYnWqz8Nz1nIm7l3ul4gUKWWCXn9I16hmizNkyM7OOGjeqV8AJXami7rQUJhrO
+         JpVklngLcvBI6YiFy9nXZCJPoTTOBNG/gBICD9OKQIP8TjAJ+tusQkhxHznvfjaTdwaR
+         R31KFNnES/Zk1UTbbaMjWZHzAJXdZ0OW4DgNmVnHxVtWg0+fIJ5mzE7f7ZoUkvQ1RrMK
+         LJQHR4QdrwpBNRE2R+z2XL4U0NcQr5K8PVUxSgUjM3Dd290WTn2Nuq7ZI1SP9oIMdcyM
+         UEyA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788114974; x=1788719774; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yI65d1Pj+WBRmzGoc7MgKM40FI7afGWFtJ1MOWUd/LQ=;
+        b=ZPFYTC7qAws88ytbYnS3IAvnzA45aDjR69lkZ0W3KjFIam8KtpFR8+dj8OKaRNzRHP
+         KOvRJCQeP6zfBg4CE1O2ByHB9PZFfsoikaNJExOfJiXhqnmQFbicQw9u4fp60iD99DnJ
+         UbkzqWoUyCQ6mzqVvl0ht0WN1DE1bFvXkFi6jH1375eoCxks4tv3xDKI71aZFL61xctr
+         dos4ZNz6m+H5eBjZ3a6BJS5Lse0vgKjloDiSQzq5OYCpf+aKIPLtTgFVAvmKwNdTWxDm
+         KQoUqyxcwIup6aHSW6iN0E27T2yH/cBWfyl8jqfoGn0Gab0OfiQQq5Wgm+knjaSGxdoC
+         Jh3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788114974; x=1788719774;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yI65d1Pj+WBRmzGoc7MgKM40FI7afGWFtJ1MOWUd/LQ=;
+        b=YcRvjeyyA7spkiYxjpCOFT28+SPv7WtQeUVV58hyZZvrWN+wUV5xxDh5xAm43Ozcqn
+         MVZhXWBV88zHBE8tlwh8gXFWz+KljVlhkkNp53ucD1HbMxuvg/mA0nInYqAH8dJvZRIy
+         56mNuSq+aitwlH6GGGqqvI5muu3fAdNbY+H/3mE/7GuRPkBWBlpMqJvTwQlq6Ryr/bf0
+         U+YNk1ZtLApySUodNMPUKcrWN/z5OGlnUrIRpenCnMYBnWSr5htQqW8CkR55dSfmeWdJ
+         ahMjE8nMnzzHhUozzsw6RrlaHgIbSPNlXVvGkvgZMxQSaH9pzezYmKsVRTUAE9vnPaY1
+         Byvw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2U9Mu9xSoYMD0T0ZZk9KMlxCtKkpzLG6xaNTl1EZeJ2DKZT1nw9tIC7R1BDCoXODcY5cT/YQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kqOPquVakh4cvDhRl1BIeSJoMNHzBmamXvOib5s6PzC7J3bGG3
+	ewSdmcKhLxljdxSfhHhaGK2eh57Y9gpbzxdzGtR4KjIVwYgvOnOlOXWXIVDEZHwbO2KaFTvmVer
+	0/WNFvEHVV9d/sFNQflUgF5hqQfAVbmAdX3G3hBEZ
+X-Gm-Gg: AR+sD10LNVD6Bp57FW7bElaoXl1LoKEduVhh/LmjnY/CxXATt6cXR9QovsH3eygP01t
+	F/pufgd/ykUe4V2AHgFUiQFY/ZtvSqW6U75Kl+0PLQtLD2uCtrkpg0XjbL1KLlMWHblv0SHsZnN
+	IP9SSYwsd2hBDIDNpvyVYruH0sQHz2OkdPRqTz4fof3IKYtQ+b9/fvmqv6dfV5whQBL5d+NurHo
+	0Eklqi1jgQetWcpIG1cE8nRRGq6qf2VbPfIDsLuB7L2hh57Apt8hz39rZTYSRVO7J4d5D1+3LhF
+	sdlQQ8Y/zacQbeYHh/6WnqX7rSQ53vXDmKEmalqbxC05aQa6tsEJjruZUXOgjS+Ss9JCstJQS7d
+	E6ZdOfUSXFYFuCywL/lb9H9V3zp6mKCTy0i3fzY9nlafMj82FYUaB9vLa
+X-Received: by 2002:a05:6a20:72a3:b0:3c3:b57b:627d with SMTP id
+ adf61e73a8af0-3d2686a9adbmr31899025637.12.1788114974092; Sun, 30 Aug 2026
+ 11:36:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260830180915.260225-1-kuniyu@google.com> <CANn89iL9ujwPmw89acUsU-xQtu0_jUcJy+sRfuj=b0-k8Qagfg@mail.gmail.com>
+In-Reply-To: <CANn89iL9ujwPmw89acUsU-xQtu0_jUcJy+sRfuj=b0-k8Qagfg@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Sun, 30 Aug 2026 11:36:01 -0700
+X-Gm-Features: AcwNN1UndGN6l-q3d7y5nIkxwFRD_t3VEdJriJOHoNlfqxz9PalIbQujWLhqAvw
+Message-ID: <CAAVpQUAk8G50Gm1JYtZP3dAvJ-PMp_F4oZGfRW2AfGnR2BCQYw@mail.gmail.com>
+Subject: Re: [PATCH v1 net] af_packet: Don't cast tpacket_hdr.tp_len to int in tpacket_parse_header().
+To: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Johann Baudy <johann.baudy@gnu-log.net>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	syzbot+73df3f89e1e13089e466@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When dumping statistics, the kernel may split the statistics of a single
-interface across several netlink messages: if an attribute does not fit
-into the current skb, rtnl_fill_statsinfo() keeps the partial message and
-the dump is resumed at the same ifindex. "ip stats" formats every message
-on its own, so such an interface is reported twice and part of its
-statistics is lost. With "group offload subgroup l3_stats", which requests
-two attributes that the kernel emits one by one, this is easy to hit on a
-box with many netdevices:
+On Sun, Aug 30, 2026 at 11:25=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Sun, Aug 30, 2026 at 8:09=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
+com> wrote:
+> >
+> > syzbot reported BUG() in sock_sendmsg_nosec(). [0]
+> >
+> > The problem is that tpacket_parse_header() casts user-provided
+> > tpacket_hdr.tp_len, which is u32, to int.
+> >
+> > If the length is larger than INT_MAX, the following condition
+> > in tpacket_parse_header() passes,
+> >
+> >   if (unlikely(tp_len > size_max))
+> >
+> > and any negative value can be returned to the caller, up to
+> > sock_sendmsg_nosec().
+> >
+> > The repro set tpacket_hdr.tp_len to 0xfffffdef, which is cast
+> > to -EIOCBQUEUED (-529), triggering BUG() in sock_sendmsg_nosec().
+>
+> Patch looks good, I wonder why we still have this awful BUG_ON(ret =3D=3D
+> -EIOCBQUEUED) though.
 
-    109: vlan859: group offload subgroup l3_stats on used on
-
-    109: vlan859: group offload subgroup l3_stats
-
-The first record holds IFLA_OFFLOAD_XSTATS_HW_S_INFO, the second one
-holds IFLA_OFFLOAD_XSTATS_L3_STATS, and the counters are never shown.
-
-Patch 1 reassembles such messages before formatting them. Patch 2 is an
-unrelated hardening cleanup and can be dropped.
-
-The merge itself was also exercised out of tree against the two message
-shapes the kernel can split, offload xstats cut between HW_S_INFO and
-L3_STATS, and bridge per-VLAN xstats cut between two BRIDGE_XSTATS_VLAN
-entries, plus a layout that must be refused rather than merged.
-
-I faced the issue on kernel 7.1.5 / iproute2-7.0.0, mlxsw switch, with
-~120 netdevices. The split was visible in an strace as two RTM_NEWSTATS
-messages with the same ifindex, carrying IFLA_OFFLOAD_XSTATS_HW_S_INFO
-and IFLA_OFFLOAD_XSTATS_L3_STATS respectively. The further research,
-patches and supporting texts was prepared with the help of an AI
-assistant. I reviewed and tested the patches against iproute2-7.1.0, with
-the proposed patches the interface is correctly reported once, with its
-counters. Although the patches makes sense to me, I have little
-experience with netlink handling.
+I think we can remove one in sendmsg() at least, syzbot will
+catch the same issue by the same BUG_ON() in the write() path
+in fs/read_write.c.
 
 
-Alexander Zubkov (2):
-  ip: ipstats: Merge statistics split across several netlink messages
-  ip: ipstats: Do not hide HW statistics when hw_stats_info is missing
+>
+> Work done in 2014=E2=80=932015 by Al Viro and Christoph Hellwig was compl=
+eted
+> more than a decade ago.
+>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
 
- ip/ipstats.c | 285 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 280 insertions(+), 5 deletions(-)
-
--- 
-2.55.0
-
+Thanks !
