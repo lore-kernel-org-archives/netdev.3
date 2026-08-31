@@ -1,238 +1,538 @@
-Received: from mta0.migadu.com (out-36.mta0.migadu.com [91.218.175.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-193.mail.aliyun.com (out28-193.mail.aliyun.com [115.124.28.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E5B1C6FF5
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 01:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E014353EE0;
+	Mon, 31 Aug 2026 02:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788141084; cv=none; b=RZ27Th40mxcTplUT5TQoC2/hk58EJpItXYNotP8StaPZJyHJOO3FjknWKpYAvLYJAhbpMOFHQvFsYDrWVYUmbTiHHoZHsTWIhjEVOAM/AvD2Lyy0XOJQV+D87aWyJenbKSPJoxp7z1+JmZ6E0X3kRlqiJ0tFl0x/DQQYw1/XcSY=
+	t=1788142468; cv=none; b=tUX6gGOb3Ih7f4zirlPf2N+3rR2jImK6o/ocVzhzszXwlzghZuj2CSP327LO97j5pEiDm68C6sKnzgO2rKeuF1726IMyaFGYx0Jfs7pG0ZaxiWAIAKNEAd3tvRbjOoh+jdaArdAg+keUIPV6x5b4eJPg7kGUcWl/608ejUVsuJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788141084; c=relaxed/simple;
-	bh=ekLujLISHTeUuLWCvrCYMs8wrq6fjaWRhr8nJe6szX0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cI8QmVMTv6j6jFnndt5L/6/eC5E1718rDA5YljN+7GqGmkgSVHiZ6vqwkoGbuExzCrSkdj+EjLFvyKqYWBfvjQdUrbcP/uJ90NQ9yl6JKVnQHdPGrwzlUHnsatC9nu2wd1RKdyQGr07O0n2WuMbRd+hLmLlFsiLI+difT0KdQ0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RWsbk+dC; arc=none smtp.client-ip=91.218.175.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RWsbk+dC"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ekLujLISHTeUuLWCvrCYMs8wrq6fjaWRhr8nJe6szX0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788141080; v=1; x=1788745880;
- b=RWsbk+dChnPKpjJwQ+29g72KpJxMopLoxs3bwF9LeyZojC07SqLFnZdUhegjDLHhfKeI7WnT
- gB+m4f7TfGaIVkEb1uox6LjxZK7P1gNgc3UOP6qtPOKQbF1HY/fATwyaW3AQd8HE/+ajmjOCokZ
- FYDikPe2ikWzjHera1DqoCRs=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id bd47afa49e248a18;
-	Mon, 31 Aug 2026 01:51:20 +0000
-X-Mizu-Trace-ID: bd47afa49e248a18
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Mon, 31 Aug 2026 09:51:00 +0800
-Subject: [PATCH net v6 2/2] bonding: fix u32 overflow in compute_gap()
+	s=arc-20240116; t=1788142468; c=relaxed/simple;
+	bh=sB0PKbquyoGpd30fiiwzMHQB7i1uAAELj7R3XbXi29M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rG05gCEZubqeAqZqHZMX1rLoIfA1L3Cx+meJqiU4PO63I/tAshsKJAdnJlsbAwZN3suu48s6RgUKADw/FqNvphEj6HPTgFyS7qducXnxd6p/ie/+EqNUJeZXaQjS9B/OMd7nXoTjeGSi4PKb2V4P2JNLK6ZkL9iAWpOu3hjQffw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00369886-0.00174862-0.994552;FP=16600101634756461750|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033068005250;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.j0lvzVV_1788142452;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.j0lvzVV_1788142452 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 31 Aug 2026 10:14:13 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v26 net-next 02/10] net/nebula-matrix: add core driver architecture and HW layer initialization
+Date: Mon, 31 Aug 2026 10:13:53 +0800
+Message-ID: <20260831021408.2325-3-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260831021408.2325-1-illusion.wang@nebula-matrix.com>
+References: <20260831021408.2325-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-bond_overflow-v6-2-ffb0ed1f7268@kylinos.cn>
-References: <20260831-bond_overflow-v6-0-ffb0ed1f7268@kylinos.cn>
-In-Reply-To: <20260831-bond_overflow-v6-0-ffb0ed1f7268@kylinos.cn>
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-The TLB load-tracking fields tx_bytes, load_history, load, and
-unbalanced_load are all u32. At sustained throughput above ~3.2 Gbit/s
-over the 10-second rebalance interval the byte counters wrap, causing
-compute_gap() to produce incorrect gap values and mis-select slaves.
-Such speeds are common on modern NICs under heavy traffic.
+Add the fundamental driver architecture framework and Leonis hardware
+layer initialization for NBL NIC family.
 
-Widen these fields to u64. Use u64_stats_sync to protect the per-cpu
-unbalanced_load_stats against tearing on 32-bit architectures, and
-div_u64() for the 64-bit divisions. The tx_bytes and load_history
-are protected in spin_lock. Also protect the slave load writing in
-bond_alb_monitor() with spin_lock in case of tear on 32-bit.
+- nbl_adapter/nbl_core/nbl_common_info core device context
+- PCI probe/remove entry and basic device capability parsing
+- Leonis hardware BAR resource request and ioremap logic
 
-For compute_gap(), we still use s64 arithmetic throughout, so we can
-preserve the existing calculation logic. This order of magnitude is
-sufficiently large, there is no need to worry about overflow for now.
+This patch establishes the lowest HW layer and core infrastructure,
+preparing for subsequent device implementations.
 
-Detected by AI code review.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
 ---
- drivers/net/bonding/bond_alb.c | 46 ++++++++++++++++++++++++++++++------------
- include/net/bond_alb.h         | 11 +++++-----
- 2 files changed, 39 insertions(+), 18 deletions(-)
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   3 +-
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  18 +++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 152 ++++++++++++++++++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  14 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |  32 ++++
+ .../nbl/nbl_include/nbl_def_common.h          |  32 ++++
+ .../nbl/nbl_include/nbl_def_hw.h              |  17 ++
+ .../nbl/nbl_include/nbl_include.h             |   9 ++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  94 ++++++++++-
+ 9 files changed, 369 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index 0afed2c39231..bbe9a6985f90 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -6,6 +6,7 @@
- #include <linux/skbuff.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
-+#include <linux/ethtool.h>
- #include <linux/pkt_sched.h>
- #include <linux/spinlock.h>
- #include <linux/slab.h>
-@@ -74,8 +75,8 @@ static inline u8 _simple_hash(const u8 *hash_start, int hash_size)
- static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
- {
- 	if (save_load) {
--		entry->load_history = 1 + entry->tx_bytes /
--				      BOND_TLB_REBALANCE_INTERVAL;
-+		entry->load_history = 1 + div_u64(entry->tx_bytes,
-+				      BOND_TLB_REBALANCE_INTERVAL);
- 		entry->tx_bytes = 0;
- 	}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+index 6c14d1071c0c..cc060cf8bf75 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -3,4 +3,5 @@
  
-@@ -133,7 +134,7 @@ static int tlb_initialize(struct bonding *bond)
- 	if (!new_hashtbl)
- 		return -ENOMEM;
+ obj-$(CONFIG_NBL) := nbl.o
  
--	bond_info->unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
-+	bond_info->unbalanced_load = netdev_alloc_pcpu_stats(struct unbalanced_load_stats);
- 	if (!bond_info->unbalanced_load)
- 		goto out;
+-nbl-objs +=	nbl_main.o
++nbl-objs +=	nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
++		nbl_main.o
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+index a3d63c698aea..1cd6587a8fcb 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -6,8 +6,26 @@
+ #ifndef _NBL_CORE_H_
+ #define _NBL_CORE_H_
  
-@@ -170,8 +171,10 @@ static void tlb_deinitialize(struct bonding *bond)
- 
- static long long compute_gap(struct slave *slave)
- {
--	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
--	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
-+	u32 raw_speed = READ_ONCE(slave->speed);
++#include <linux/pci.h>
++#include "nbl_include/nbl_include.h"
++#include "nbl_include/nbl_def_common.h"
 +
-+	return ((s64)raw_speed << 20) - /* Convert to bits per sec */
-+	       ((s64)SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
- }
+ enum {
+ 	NBL_CAP_HAS_NET_BIT,
+ };
  
- static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
-@@ -1354,8 +1357,14 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
- 	if (!tx_slave) {
- 		/* unbalanced or unassigned, send through primary */
- 		tx_slave = rcu_dereference(bond->curr_active_slave);
--		if (bond->params.tlb_dynamic_lb)
--			this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
-+		if (bond->params.tlb_dynamic_lb) {
-+			struct unbalanced_load_stats *pcpu_load;
++struct nbl_core {
++	struct nbl_hw_mgt *hw_mgt;
++};
 +
-+			pcpu_load = this_cpu_ptr(bond_info->unbalanced_load);
-+			u64_stats_update_begin(&pcpu_load->syncp);
-+			u64_stats_add(&pcpu_load->tx_bytes, skb->len);
-+			u64_stats_update_end(&pcpu_load->syncp);
++struct nbl_adapter {
++	struct pci_dev *pdev;
++	struct nbl_core core;
++	struct nbl_common_info common;
++};
++
++struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
++				  struct nbl_init_param *param);
++void nbl_core_remove(struct nbl_adapter *adapter);
++
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+new file mode 100644
+index 000000000000..a67d1a674466
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+@@ -0,0 +1,152 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++#include <linux/device.h>
++#include <linux/pci.h>
++#include <linux/bits.h>
++#include <linux/io.h>
++#include <linux/spinlock.h>
++#include <linux/bitfield.h>
++#include "nbl_hw_leonis.h"
++
++/* Structure starts here, adding an op should not modify anything below */
++static struct nbl_hw_mgt *nbl_hw_setup_hw_mgt(struct nbl_common_info *common)
++{
++	struct device *dev = common->dev;
++	struct nbl_hw_mgt *hw_mgt;
++
++	hw_mgt = devm_kzalloc(dev, sizeof(*hw_mgt), GFP_KERNEL);
++	if (!hw_mgt)
++		return ERR_PTR(-ENOMEM);
++
++	hw_mgt->common = common;
++
++	return hw_mgt;
++}
++
++static int nbl_pcim_request_selected_bars(struct pci_dev *pdev, u32 mask,
++					  const char *name)
++{
++	int bar;
++	int ret;
++
++	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
++		if (!(mask & BIT(bar)))
++			continue;
++		ret = pcim_request_region(pdev, bar, name);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
++int nbl_hw_init_leonis(struct nbl_adapter *adapter)
++{
++	resource_size_t expect_sz = NBL_MEM_BAR_TOTAL_SIZE;
++	struct nbl_common_info *common = &adapter->common;
++	struct pci_dev *pdev = common->pdev;
++	struct nbl_hw_mgt *hw_mgt = NULL;
++	resource_size_t bar_len;
++	u32 bar_mask;
++	int ret;
++
++	hw_mgt = nbl_hw_setup_hw_mgt(common);
++	if (IS_ERR(hw_mgt)) {
++		ret = PTR_ERR(hw_mgt);
++		goto setup_mgt_fail;
++	}
++	bar_mask = BIT(NBL_MEMORY_BAR) | BIT(NBL_MAILBOX_BAR);
++	ret = nbl_pcim_request_selected_bars(pdev, bar_mask, NBL_DRIVER_NAME);
++	if (ret) {
++		dev_err(&pdev->dev,
++			"Request memory bar failed, err = %d\n",
++			ret);
++		goto setup_mgt_fail;
++	}
++
++	bar_len = pci_resource_len(pdev, NBL_MEMORY_BAR);
++	if (!(pci_resource_flags(pdev, NBL_MEMORY_BAR) & IORESOURCE_MEM)) {
++		dev_err(&pdev->dev, "MEMORY BAR is not memory resource\n");
++		ret = -EINVAL;
++		goto setup_mgt_fail;
++	}
++	if (common->has_ctrl) {
++		/*
++		 * Hardware layout: MEMORY BAR total size is 64M.
++		 * The tail NBL_RDMA_NOTIFY_LEN bytes of the 64M BAR are
++		 * reserved exclusively for RDMA notify hardware.
++		 * Ethernet driver must avoid mapping this reserved tail
++		 * to prevent x86 PAT aliasing conflict between eth net
++		 * mapping and RDMA driver WC mapping. Mapping starts
++		 * at BAR offset 0.
++		 *
++		 * Skip trailing NBL_RDMA_NOTIFY_LEN bytes at BAR tail.
++		 * Round size down to page boundary to avoid ioremap
++		 * rounding up and accidentally including RDMA reserved
++		 * region when PAGE_SIZE > 8KiB.
++		 */
++		if (bar_len < NBL_MEM_BAR_TOTAL_SIZE) {
++			dev_err(&pdev->dev,
++				"MEMORY BAR len %pr smaller than expected %pr\n",
++				&bar_len, &expect_sz);
++			ret = -EINVAL;
++			goto setup_mgt_fail;
 +		}
- 	}
++		hw_mgt->hw_size = PAGE_ALIGN_DOWN(NBL_MEM_BAR_TOTAL_SIZE -
++						 NBL_RDMA_NOTIFY_LEN);
++		hw_mgt->hw_addr =
++			pcim_iomap(pdev, NBL_MEMORY_BAR,
++				   hw_mgt->hw_size);
++	} else {
++		if (bar_len < NBL_REG_NET_ONLY_LEN) {
++			dev_err(&pdev->dev,
++				"MEMORY BAR len %pr too small for net only reg space\n",
++				&bar_len);
++			ret = -EINVAL;
++			goto setup_mgt_fail;
++		}
++		hw_mgt->hw_size = NBL_REG_NET_ONLY_LEN;
++		hw_mgt->hw_addr = pcim_iomap(pdev, NBL_MEMORY_BAR,
++					     hw_mgt->hw_size);
++	}
++	if (!hw_mgt->hw_addr) {
++		dev_err(&pdev->dev, "MEMORY BAR pcim_iomap failed\n");
++		ret = -EIO;
++		goto setup_mgt_fail;
++	}
++
++	bar_len = pci_resource_len(pdev, NBL_MAILBOX_BAR);
++	if (!(pci_resource_flags(pdev, NBL_MAILBOX_BAR) & IORESOURCE_MEM)) {
++		dev_err(&pdev->dev, "MAILBOX BAR is not memory resource\n");
++		ret = -EINVAL;
++		goto setup_mgt_fail;
++	}
++	if (bar_len == 0) {
++		dev_err(&pdev->dev, "MAILBOX BAR length is zero\n");
++		ret = -EINVAL;
++		goto setup_mgt_fail;
++	}
++	hw_mgt->mailbox_bar_hw_addr = pcim_iomap(pdev, NBL_MAILBOX_BAR,
++						 bar_len);
++	if (!hw_mgt->mailbox_bar_hw_addr) {
++		dev_err(&pdev->dev, "MAILBOX BAR pcim_iomap failed\n");
++		ret = -EIO;
++		goto setup_mgt_fail;
++	}
++	hw_mgt->mailbox_bar_size = bar_len;
++
++	adapter->core.hw_mgt = hw_mgt;
++
++	return 0;
++
++setup_mgt_fail:
++	return ret;
++}
++
++void nbl_hw_remove_leonis(struct nbl_adapter *adapter)
++{
++	/* All BAR mappings & PCI regions are managed by pcim/devres,
++	 * no manual iounmap / release required
++	 */
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+new file mode 100644
+index 000000000000..a3397f5be353
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_HW_LEONIS_H_
++#define _NBL_HW_LEONIS_H_
++
++#include <linux/types.h>
++
++#include "../../nbl_include/nbl_include.h"
++#include "../nbl_hw_reg.h"
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+new file mode 100644
+index 000000000000..5e9823e01d39
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_HW_REG_H_
++#define _NBL_HW_REG_H_
++
++#include <linux/types.h>
++
++#include "../nbl_include/nbl_def_hw.h"
++#include "../nbl_include/nbl_def_common.h"
++#include "../nbl_core.h"
++
++#define NBL_MEMORY_BAR				0
++#define NBL_MAILBOX_BAR				2
++#define NBL_RDMA_NOTIFY_LEN			(8ULL << 10)
++#define NBL_REG_NET_ONLY_LEN			(8ULL << 10)
++/*
++ * PCI MEMORY BAR total size: 64MiB.
++ */
++#define NBL_MEM_BAR_TOTAL_SIZE			(64ULL << 20)
++
++struct nbl_hw_mgt {
++	struct nbl_common_info *common;
++	u8 __iomem *hw_addr;
++	u8 __iomem *mailbox_bar_hw_addr;
++	resource_size_t hw_size;
++	resource_size_t mailbox_bar_size;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+new file mode 100644
+index 000000000000..da30244fe75d
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DEF_COMMON_H_
++#define _NBL_DEF_COMMON_H_
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/device.h>
++#include "nbl_include.h"
++
++struct nbl_common_info {
++	struct pci_dev *pdev;
++	struct device *dev;
++	u32 msg_enable;
++	u16 vsi_id;
++	u8 eth_id;
++	u8 logic_eth_id;
++	u8 eth_num;
++
++	u8 function;
++	u8 devid;
++	u8 bus;
++	u8 hw_bus;
++
++	u8 has_ctrl;
++	u8 has_net;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+new file mode 100644
+index 000000000000..ecbf440e4366
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026 Nebula Matrix Limited.
++ */
++
++#ifndef _NBL_DEF_HW_H_
++#define _NBL_DEF_HW_H_
++
++#include <linux/types.h>
++
++struct nbl_hw_mgt;
++struct nbl_adapter;
++
++int nbl_hw_init_leonis(struct nbl_adapter *adapter);
++void nbl_hw_remove_leonis(struct nbl_adapter *adapter);
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+index 16b10bcf1d36..14e7b19f9a4c 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -10,5 +10,14 @@
  
- 	if (tx_slave && bond_slave_can_tx(tx_slave)) {
-@@ -1539,21 +1548,27 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
- 	return bond_do_alb_xmit(skb, bond, tx_slave);
- }
+ /*  ------  Basic definitions  -------  */
+ #define NBL_DRIVER_NAME					"nbl"
++struct nbl_func_caps {
++	u32 has_ctrl:1;
++	u32 has_net:1;
++	u32 rsv:30;
++};
++
++struct nbl_init_param {
++	struct nbl_func_caps caps;
++};
  
--static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
-+static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+index 199626159a4c..f2552bc73293 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -8,16 +8,108 @@
+ #include <linux/module.h>
+ #include <linux/bits.h>
+ #include "nbl_include/nbl_include.h"
++#include "nbl_include/nbl_def_hw.h"
++#include "nbl_include/nbl_def_common.h"
+ #include "nbl_core.h"
+ 
++struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
++				  struct nbl_init_param *param)
++{
++	struct nbl_common_info *common;
++	struct nbl_adapter *adapter;
++	int ret;
++
++	adapter = devm_kzalloc(&pdev->dev, sizeof(*adapter), GFP_KERNEL);
++	if (!adapter)
++		return ERR_PTR(-ENOMEM);
++
++	adapter->pdev = pdev;
++	common = &adapter->common;
++
++	common->pdev = pdev;
++	common->dev = &pdev->dev;
++	common->has_ctrl = param->caps.has_ctrl;
++	common->has_net = param->caps.has_net;
++	common->function = PCI_FUNC(pdev->devfn);
++	common->devid = PCI_SLOT(pdev->devfn);
++	common->bus = pdev->bus->number;
++
++	ret = nbl_hw_init_leonis(adapter);
++	if (ret)
++		goto hw_init_fail;
++
++	return adapter;
++hw_init_fail:
++	return ERR_PTR(ret);
++}
++
++void nbl_core_remove(struct nbl_adapter *adapter)
++{
++	nbl_hw_remove_leonis(adapter);
++}
++
++static void nbl_get_func_param(struct pci_dev *pdev, kernel_ulong_t driver_data,
++			       struct nbl_init_param *param)
++{
++	param->caps.has_net = !!(driver_data & BIT(NBL_CAP_HAS_NET_BIT));
++
++	/*
++	 * Hardware fixed rule: physical PF0 is the only management PF with
++	 * global ctrl capability. All PFs share identical PCI device ID, so
++	 * distinguish control PF via physical function ID.
++	 *
++	 * Hardware & firmware design FORBID passing any PF through to virtual
++	 * machines, there is no scenario where a non-management PF appears
++	 * as Func 0 inside guest. Thus using PCI_FUNC(pdev->devfn) to identify
++	 *  control PF is safe on our platform.
++	 */
++	if ((PCI_FUNC(pdev->devfn) == 0) && !pdev->is_virtfn)
++		param->caps.has_ctrl = 1;
++}
++
+ static int nbl_probe(struct pci_dev *pdev,
+ 		     const struct pci_device_id *id)
  {
-+	u64 delta, tx_bytes, total_bytes = 0;
- 	struct unbalanced_load_stats *p;
--	u32 delta, total_bytes = 0;
-+	unsigned int start;
- 	int i;
- 
- 	for_each_possible_cpu(i) {
- 		p = per_cpu_ptr(bond_info->unbalanced_load, i);
--		total_bytes += READ_ONCE(p->tx_bytes);
-+		do {
-+			start = u64_stats_fetch_begin(&p->syncp);
-+			tx_bytes = u64_stats_read(&p->tx_bytes);
-+		} while (u64_stats_fetch_retry(&p->syncp, start));
+-	return -ENODEV;
++	struct nbl_init_param param = { { 0 } };
++	struct device *dev = &pdev->dev;
++	struct nbl_adapter *adapter;
++	int err;
 +
-+		total_bytes += tx_bytes;
- 	}
- 
- 	delta = total_bytes - bond_info->prev_total_unbalanced;
- 	bond_info->prev_total_unbalanced = total_bytes;
- 
--	return delta / BOND_TLB_REBALANCE_INTERVAL;
-+	return div_u64(delta, BOND_TLB_REBALANCE_INTERVAL);
++	err = pcim_enable_device(pdev);
++	if (err) {
++		dev_err(&pdev->dev, "Failed to enable PCI dev, err=%d\n", err);
++		return err;
++	}
++
++	nbl_get_func_param(pdev, id->driver_data, &param);
++	/* never return fail when DMA_BIT_MASK(64) */
++	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++
++	pci_set_master(pdev);
++
++	adapter = nbl_core_init(pdev, &param);
++	if (IS_ERR(adapter)) {
++		dev_err(dev, "Nbl adapter init fail: %pe\n", adapter);
++		err = PTR_ERR(adapter);
++		goto adapter_init_err;
++	}
++	pci_set_drvdata(pdev, adapter);
++	return 0;
++adapter_init_err:
++	pci_clear_master(pdev);
++	return err;
  }
  
- void bond_alb_monitor(struct work_struct *work)
-@@ -1597,8 +1612,13 @@ void bond_alb_monitor(struct work_struct *work)
- 	if (atomic_read(&bond_info->tx_rebalance_counter) >= BOND_TLB_REBALANCE_TICKS) {
- 		bond_for_each_slave_rcu(bond, slave, iter) {
- 			tlb_clear_slave(bond, slave, 1);
--			if (slave == rcu_access_pointer(bond->curr_active_slave))
--				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
-+			if (slave == rcu_access_pointer(bond->curr_active_slave)) {
-+				u64 new_load = reset_unbalanced_load(bond_info);
+ static void nbl_remove(struct pci_dev *pdev)
+ {
++	struct nbl_adapter *adapter = pci_get_drvdata(pdev);
 +
-+				spin_lock_bh(&bond->mode_lock);
-+				SLAVE_TLB_INFO(slave).load = new_load;
-+				spin_unlock_bh(&bond->mode_lock);
-+			}
- 		}
- 		atomic_set(&bond_info->tx_rebalance_counter, 0);
- 	}
-diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
-index 6fb09b4fc7e2..32f1981033e4 100644
---- a/include/net/bond_alb.h
-+++ b/include/net/bond_alb.h
-@@ -57,12 +57,12 @@ struct tlb_client_info {
- 				 * packets to a Client that the Hash function
- 				 * gave this entry index.
- 				 */
--	u32 tx_bytes;		/* Each Client accumulates the BytesTx that
-+	u64 tx_bytes;		/* Each Client accumulates the BytesTx that
- 				 * were transmitted to it, and after each
- 				 * CallBack the LoadHistory is divided
- 				 * by the balance interval
- 				 */
--	u32 load_history;	/* This field contains the amount of Bytes
-+	u64 load_history;	/* This field contains the amount of Bytes
- 				 * that were transmitted to this client by
- 				 * the server on the previous balance
- 				 * interval in Bps.
-@@ -118,19 +118,20 @@ struct tlb_slave_info {
- 			 * are the entries that were assigned to use this
- 			 * slave for transmit.
- 			 */
--	u32 load;	/* Each slave sums the loadHistory of all clients
-+	u64 load;	/* Each slave sums the loadHistory of all clients
- 			 * assigned to it
- 			 */
- };
++	if (!adapter)
++		return;
++	pci_set_drvdata(pdev, NULL);
++	nbl_core_remove(adapter);
++
++	pci_clear_master(pdev);
+ }
  
- struct unbalanced_load_stats {
--	u32			tx_bytes;
-+	u64_stats_t		tx_bytes;
-+	struct u64_stats_sync	syncp;
- };
- 
- struct alb_bond_info {
- 	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
- 	struct unbalanced_load_stats __percpu	*unbalanced_load;
--	u32			prev_total_unbalanced;
-+	u64			prev_total_unbalanced;
- 	atomic_t		tx_rebalance_counter;
- 	int			lp_counter;
- 	/* -------- rlb parameters -------- */
-
+ /*
 -- 
-2.55.0
+2.47.3
 
