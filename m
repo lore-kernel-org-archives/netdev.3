@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97354E56C3;
-	Mon, 31 Aug 2026 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0179A4E72CC;
+	Mon, 31 Aug 2026 13:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183605; cv=none; b=HB8GIHqYd2fqVUTy/IC2G+9dNyRTCdHKMiiaHuPgYkxup4GEn7P4E1nSZ88x5i6MDoCxd+tFOB9M12czIAWxuYRK0XJvgeseAhfXkDUpbVXb2FW3yMhymbS3okj02UMyyR6FelU307IAf6iyEG5nx8ETnsyqRLITMq5mH1oNKno=
+	t=1788183616; cv=none; b=Y++8YjqAQxLkUx8fd6vUFo81Z1SKx5SkFw4ZtMcTLheahfbjg/2VanwedRs2O38UggIfrWb2V6uFQ+nWFY2EcmDHgH6iuLiFZQYJWaVwQ/+5vrYLK+56iuTFgcqHfsNUuRQxU6OChTfzjY4NKPGvh4KtBOXitueyXjGHlFQCSgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183605; c=relaxed/simple;
-	bh=hq3LvVJbLSoVc9fDLeWev5a3+jV6a15QR+CehIr11S8=;
+	s=arc-20240116; t=1788183616; c=relaxed/simple;
+	bh=vkj8uX3eX6J+roaNRlRmqvE+e0tMqJtGQEBsIjdOc+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pnzACSbFk0XdzYGvC+WX5ZP5c9phKf/3iUyR2C8nUx3P9usqkAvbd4ylEPH4MKiHRN0bpN24/3IgRHrln9vI2LwphqZEskBLvIr6VYmEQXmMXDTQjJqQTAOTpLojwceuWEy8qbXWTCB8khmjQFTIkDaYpcYkTJGuqEbHUOHy69E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSCQDRm7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=aSZwisn3DzVmINtPyR6/y/puzSr09a2dMcFlqMOyLzIB2goyYVWiAmQJ1yzPMUuZYRQDVL+gLGoFNcXxnHMKUCtxCX9fonADQGn1eWWgTU2GmW8vdKFGwDu/JnFEYSv0O8qlRh25wjV55eAOGKstmx4H7ooJxSmAoqY65W6ngoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGLxyybF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSCQDRm7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769E91F00ACA;
-	Mon, 31 Aug 2026 13:40:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGLxyybF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE261F00ADB;
+	Mon, 31 Aug 2026 13:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183602;
-	bh=FRdDbvDICh6LQur0eYHl3aCIVvxP1IckkMD0ZJdShjQ=;
+	s=k20260515; t=1788183610;
+	bh=Yq6Mdxh0jkqBSFkAD2RA+4AJxPzQN+7r6ks3XffwD1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lSCQDRm7HtqaY68yuwyba87tbjcMjjvs0npUylx7FTDlV5tM4uenxk6bp854qyOUm
-	 HcOuAgXs5opXpeC9b5QLRcj7o0JbS/G+meT2IkoHuX9lak7nwdw3NYLTicBBnsAiMA
-	 LqUlBLNEeA3kAjTdqdvPG24Bc61c9NbPih4xETGYp42yL9Tw+QECmlZNMLSU449tGT
-	 8c3KSnc74PkxKT+VOsh2+NoUt2Oql3qkLg6owmZO4XpcxGCaCqzJy3Dzw6HNEZkM9f
-	 tmBmRKoMGSWxFnEdj5xIP6VQRgUI4Te2Cs80+EzPaeESf+b7tZsrZHaE/50KOC4ts9
-	 BVZU2pBrd39DA==
+	b=RGLxyybFJTfvebRFa0MqjNnYLe0kkmU55DhcRRJtypWCObZmSQsVS7CdTxsldeBcD
+	 7hne+H6ETHhyQkAggjqYzbdLjO5FzHAk+PuniLOtUdWxmRk5lhYcDJ8qwcEbjq0tbo
+	 qfLNnEd8C0j6RU7j2woIZVPR0zjBSjJQZfqH4WTEKZ8/7jh3i3KmjRreE7yoWStFdP
+	 ql1SaQgEpnIPxgdbwoFjglDTaBFQ9B63xJSrSL2oL9u0n+zJRFlx7g5X5SROU+exTZ
+	 v7cU7OTUeCNybm70xkGARwhN2nQjSDwBphBGVPpsm0W9ibiMvCI67G0jDJkwUvDsro
+	 dWV1QUwrtaX3w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jijie Shao <shaojijie@huawei.com>,
+Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shenjian15@huawei.com,
+	sgoutham@marvell.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] net: hns3: improve the unused_tuple parameter setting
-Date: Mon, 31 Aug 2026 09:23:41 -0400
-Message-ID: <20260831133314.4125787-193-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.1] net: thunderx: fix PTP device ref leak in nicvf_probe()
+Date: Mon, 31 Aug 2026 09:23:45 -0400
+Message-ID: <20260831133314.4125787-197-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -57,380 +58,366 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 1ad6f1ff3e96c7ee888475740c8acdaf822e0813 ]
+[ Upstream commit 2bcf59eefb9f00a2b1d426b639ee49c305a80695 ]
 
-Currently, when the tc tool is used to set flow table rules, the IP address
-and MAC address can be configured separately, for example, src_xx or dst_xx
-can be configured separately.
+cavium_ptp_get() acquires a reference to the PTP PCI device
+through pci_get_device(). If any initialization step fails
+after cavium_ptp_get(), the PTP PCI device reference is leaked.
+Add a common error path to release the PTP reference before
+returning from probe failures.
 
-Therefore, the driver needs to check whether the mask is all zero in
-keys, such as FLOW_DISSECTOR_KEY_IPV4_ADDRS, FLOW_DISSECTOR_KEY_IPV6_ADDRS,
-and FLOW_DISSECTOR_KEY_ETH_ADDRS.
-If the mask is all zero, the tuple is not configured.
-In this case, the driver adds the tuple to unused_tuple.
-
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260610060618.834987-3-shaojijie@huawei.com
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20260525082611.61817-1-lihaoxiang@isrc.iscas.ac.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit Message Forensics
+Connection lost, reconnecting to https://agentn.us.api5.cursor.sh
+(attempt 1)...
+Retry attempt 1...
+# Stable Backport Analysis: `net: thunderx: fix PTP device ref leak in
+nicvf_probe()`
 
-**Step 1.1 — Subject line**
-Record: `[net: hns3]` `[improve]` — improve `unused_tuple` handling when
-parsing tc flower match keys for MAC and IP addresses.
-
-**Step 1.2 — Tags**
-Record:
-- **Signed-off-by:** Jijie Shao `<shaojijie@huawei.com>` (author)
-- **Link:**
-  https://patch.msgid.link/20260610060618.834987-3-shaojijie@huawei.com
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (netdev
-  maintainer)
-- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-
-  by:`, or `Cc: stable@vger.kernel.org`
-
-Notable: maintainer merge (`kuba@kernel.org`), but no fuzzer or user bug
-report tags.
-
-**Step 1.3 — Body analysis**
-Record:
-- **Bug:** When `tc` installs flower rules with only `src_*` or only
-  `dst_*` for IP/MAC, the dissector key (`FLOW_DISSECTOR_KEY_ETH_ADDRS`,
-  `FLOW_DISSECTOR_KEY_IPV4_ADDRS`, `FLOW_DISSECTOR_KEY_IPV6_ADDRS`) can
-  be present while one side’s mask is all-zero.
-- **Symptom:** Driver fails to mark that tuple as unused; hardware flow-
-  director rules are programmed incorrectly instead of treating the
-  field as a wildcard.
-- **Root cause:** `hclge_get_cls_key_mac()` / `hclge_get_cls_key_ip()`
-  only set `unused_tuple` when the entire key is absent, not when an
-  individual mask is zero.
-
-**Step 1.4 — Hidden bug fix?**
-Record: **Yes.** Subject says “improve,” but this is a correctness fix
-for tc flower hardware offload, not a cosmetic cleanup.
+**Local tree:** `stable/linux-6.18.y` at `v6.18.44` (Makefile: 6.18.44)
 
 ---
 
-## Phase 2: Diff Analysis
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 2.1 — Inventory**
-Record:
-- **Files:** `drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c`
-  (+12 lines)
-- **Functions:** `hclge_get_cls_key_mac()`, `hclge_get_cls_key_ip()`
-- **Scope:** Single-file, surgical driver fix
+### Step 1.1: Subject line
+**Record:** `[net: thunderx]` `[fix]` — PTP PCI device reference leak in
+`nicvf_probe()` error paths.
 
-**Step 2.2 — Code flow change**
-Record:
-- **MAC hunk:** After copying eth addr keys/masks, if `match.mask->dst`
-  or `match.mask->src` is all-zero, set `INNER_DST_MAC` /
-  `INNER_SRC_MAC` in `unused_tuple`.
-- **IPv4 hunk:** If `match.mask->src` or `match.mask->dst` is zero, set
-  corresponding `INNER_SRC_IP` / `INNER_DST_IP`.
-- **IPv6 hunk:** If `ipv6_addr_any(&match.mask->src/dst)`, set
-  corresponding IP unused bits.
-- **Before:** Only the `else` branch (key fully absent) marked tuples
-  unused.
-- **After:** Per-field zero masks are also treated as unused, matching
-  ethtool-path behavior elsewhere in the same file.
+### Step 1.2: Tags
+**Record:**
+- **Link:** `https://patch.msgid.link/20260525082611.61817-1-
+  lihaoxiang@isrc.iscas.cn`
+- **Signed-off-by:** Haoxiang Li `<lihaoxiang@isrc.iscas.ac.cn>`
+  (author)
+- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer
+  merge)
+- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Cc:
+  stable@vger.kernel.org`, or syzbot links
 
-**Step 2.3 — Bug mechanism**
-Record: **Logic / correctness fix.** Category: incorrect hardware tuple
-programming.
+### Step 1.3: Body analysis
+**Record:**
+- **Bug:** `cavium_ptp_get()` takes a PCI device reference via
+  `pci_get_device()`. Any probe failure after a successful
+  `cavium_ptp_get()` returns without calling `cavium_ptp_put()`.
+- **Symptom:** PCI device reference leak on probe failure (not a crash
+  on the happy path).
+- **Root cause:** Missing shared error-path cleanup; success path stores
+  the ref in `nic->ptp_clock` and `nicvf_remove()` calls
+  `cavium_ptp_put()`, but error paths bypass that.
+- **Version info:** None in the message.
 
-When `unused_tuple` is **not** set, `hclge_fd_convert_tuple()` programs
-hardware using:
-
-```862:863:drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-#define calc_x(x, k, v) ((x) = ~(k) & (v))
-#define calc_y(y, k, v) ((y) = (k) & (v))
-```
-
-With mask `k = 0`, this yields `X = key`, `Y = 0` — not wildcard
-behavior. When `unused_tuple` **is** set, `hclge_fd_convert_tuple()`
-skips programming that tuple (wildcard). The ethtool path already does
-zero-mask checks (e.g. `hclge_fd_check_ether_tuple()`); the tc flower
-path did not.
-
-**Step 2.4 — Fix quality**
-Record: Obviously correct, minimal, mirrors existing driver logic. Low
-regression risk. Does not fix the same gap in `hclge_get_cls_key_port()`
-(ports), but that is a separate pre-existing issue.
+### Step 1.4: Hidden bug fix?
+**Record:** No — explicitly labeled a reference leak fix.
 
 ---
 
-## Phase 3: Git History Investigation
+## PHASE 2: DIFF ANALYSIS
 
-**Step 3.1 — Blame**
-Record: `hclge_get_cls_key_mac()` introduced in `0205ec041ec61` (“net:
-hns3: add support for hw tc offload of tc flower”, Dec 2020).
-`hclge_get_cls_key_ip()` mostly from same commit; signature extended in
-`e199a5b29f199` (2024).
+### Step 2.1: Inventory
+**Record:**
+- **File:** `drivers/net/ethernet/cavium/thunder/nicvf_main.c` (+4 / −2
+  lines)
+- **Function:** `nicvf_probe()`
+- **Scope:** Single-file, surgical probe error-path fix
 
-**Step 3.2 — Fixes: tag**
-Record: N/A — no `Fixes:` tag.
+### Step 2.2: Code flow change
+**Record:**
+- **Hunk 1 (pci_enable_device failure):** Before: `return
+  dev_err_probe(...)` leaked the PTP ref. After: `goto err_put_ptp`.
+- **Hunk 2 (shared error tail):** Before: `err_disable_device` returned
+  without releasing PTP. After: new `err_put_ptp:` calls
+  `cavium_ptp_put(ptp_clock)` before `return err`. All existing `goto
+  err_*` chains that reach `err_disable_device` now release the PTP
+  reference.
 
-**Step 3.3 — Related file history**
-Record: Commit `1ad6f1ff3e96c` is patch 2/6 of “enhance tc flow offload
-support” on master. Other series commits add actions, dissectors,
-debugfs, and file split — not required for this 12-line fix. Standalone.
+### Step 2.3: Bug mechanism
+**Record:**
+- **Category:** Resource / reference-count leak on probe error path
+- **Mechanism:** `cavium_ptp_get()` (lines 59–76 of `cavium_ptp.c`)
+  calls `pci_get_device()` and, on success, returns `ptp` without
+  `pci_dev_put()`. The caller must call `cavium_ptp_put()`, which does
+  `pci_dev_put(ptp->pdev)`. Error paths after a successful get never did
+  that; only `nicvf_remove()` did on the success path.
 
-**Step 3.4 — Author context**
-Record: Jijie Shao is an active hns3 contributor (FD/TC-related commits
-in this tree).
-
-**Step 3.5 — Dependencies**
-Record: None. Functions and structures exist unchanged in 6.18.y.
-Cherry-pick to current HEAD applies cleanly (auto-merge, exit 0).
-
----
-
-## Phase 4: Mailing List and External Research
-
-**Step 4.1 — Original discussion**
-Record: `b4 dig -c 1ad6f1ff3e96c` →
-https://patch.msgid.link/20260610060618.834987-3-shaojijie@huawei.com
-Series: V4 net-next 2/6. Revisions v1–v4 found via `b4 dig -a`. Lore
-direct fetch blocked by bot protection; thread retrieved via `b4 dig
--m`.
-
-**Step 4.2 — Reviewers**
-Record: `b4 dig -w` CC’d `davem@davemloft.net`, `kuba@kernel.org`,
-`pabeni@redhat.com`, `netdev@vger.kernel.org`, Huawei maintainers. No
-explicit stable nomination found in mbox grep.
-
-**Step 4.3 — Bug report**
-Record: No external bug report, syzbot, or user `Reported-by:`.
-
-**Step 4.4 — Series context**
-Record: Part of 6-patch enhancement series, but this patch only fixes
-existing cls-flower parsing; does not depend on new actions/dissectors
-from patches 3–6.
-
-**Step 4.5 — Stable list**
-Record: Not searched on lore stable (no stable nomination found in
-retrieved mbox). UNVERIFIED whether stable@ discussed this separately.
+### Step 2.4: Fix quality
+**Record:**
+- Fix is minimal and mirrors the remove path.
+- `cavium_ptp_put(NULL)` is safe (`if (!ptp) return;` in
+  `cavium_ptp.c:81–82`), so the `-ENODEV`/virtualized path (`ptp_clock =
+  NULL`) is handled.
+- Low regression risk; no API or locking changes.
 
 ---
 
-## Phase 5: Code Semantic Analysis
+## PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 5.1 — Key functions**
-Record: `hclge_get_cls_key_mac()`, `hclge_get_cls_key_ip()`, called from
-`hclge_parse_cls_flower()`.
+### Step 3.1: Blame
+**Record:**
+- `cavium_ptp_get()` in probe: `4a8755096466d` (Sunil Goutham,
+  2018-01-15) — `net: thunderx: add timestamping support`
+- `pci_enable_device` early return without cleanup: same era; later
+  changed to `dev_err_probe` in `52583c8d8b12f2` (2021) without adding
+  `cavium_ptp_put()`
+- Bug present since PTP support was added (~v4.16 era); present in this
+  6.18.y tree
 
-**Step 5.2 — Callers**
-Record: `hclge_parse_cls_flower()` ← `hclge_add_cls_flower()` ←
-`add_cls_flower` in `hnae3` ops ← `hns3_nic_setup_tc()`
-(`ndo_setup_tc`). Reachable from userspace via `tc` flower rules on HNS3
-NICs.
+### Step 3.2: Fixes: tag
+**Record:** N/A — no `Fixes:` tag. Introducing commit is
+`4a8755096466d`.
 
-**Step 5.3 — Callees**
-Record: `flow_rule_match_*`, `ether_addr_copy`, `ipv6_addr_be32_to_cpu`,
-`unused_tuple |= BIT(...)`.
+### Step 3.3: Related file history
+**Record:**
+- `42330a32933fb` — `net: thunderx: Fix missing destroy_workqueue of
+  nicvf_rx_mode_wq` (probe error-path fix in the same function; already
+  in 6.18.y)
+- `c1055b76ad00a` — mutex init ordering fix in same probe
+- `a7d40cbb24900` — `imply CAVIUM_PTP` build fix
+- Standalone one-commit fix; not part of a series
 
-**Step 5.4 — Reachability**
-Record: Userspace-triggered via `tc filter add ... flower ...` on
-HiSilicon HNS3 hardware with flow-director/tc-flower offload enabled
-(`CONFIG_HNS3`).
+### Step 3.4: Author context
+**Record:** Haoxiang Li has similar probe leak fixes in this tree
+(`715cce38424fb` liquidio BAR leak, `dc8347f263b21` ipa SMEM leak). Not
+the thunderx maintainer, but pattern matches accepted stable leak fixes.
 
-**Step 5.5 — Similar patterns**
-Record: Ethtool FD path in same file already checks zero masks
-(`hclge_fd_check_tcpip4_tuple()`, `hclge_fd_check_ether_tuple()`, etc.).
-tc flower path was inconsistent.
-
----
-
-## Phase 6: Cross-Reference Against Local Tree (6.18.y)
-
-**Step 6.1 — Buggy code present?**
-Record: **Yes.** Local tree is **v6.18.44** (`git describe HEAD`).
-`hclge_get_cls_key_mac()` and `hclge_get_cls_key_ip()` lack zero-mask
-checks. Commit `1ad6f1ff3e96c` is **not** an ancestor of HEAD (`NOT IN
-TREE`). Bug present since tc flower support landed (2020).
-
-**Step 6.2 — Backport complications**
-Record: Clean cherry-pick (auto-merge, no conflicts). Expected apply:
-**clean**.
-
-**Step 6.3 — Related fixes already present?**
-Record: No equivalent fix found in 6.18.y history for this specific
-issue.
+### Step 3.5: Dependencies
+**Record:** None. Uses existing `cavium_ptp_put()`; no structural
+prerequisites. Fix not yet merged (`err_put_ptp` absent in this tree).
 
 ---
 
-## Phase 7: Subsystem Context
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-**Step 7.1 — Subsystem / criticality**
-Record: `drivers/net/ethernet/hisilicon/hns3` — **IMPORTANT**
-(server/cloud NIC driver, tc offload data path).
+### Step 4.1: Original discussion
+**Record:** `b4 dig -c HEAD` did not match this patch (different
+commit). Lore/patch.msgid.link blocked by Anubis bot protection.
+**UNVERIFIED:** full review thread and any `Cc: stable` nominations.
 
-**Step 7.2 — Activity**
-Record: Actively maintained; recent TC/FD fixes in this file (e.g.
-`d7beeb64be5ca`, `6b36e5c4741f1`).
+### Step 4.2: Reviewers
+**Record:** **UNVERIFIED** (`b4 dig -w` not usable without commit hash).
 
----
+### Step 4.3: Bug report
+**Record:** No external bug report or syzbot link; found by code
+inspection.
 
-## Phase 8: Impact and Risk Assessment
+### Step 4.4: Related patches
+**Record:** Standalone; no series dependency.
 
-**Step 8.1 — Who is affected**
-Record: Users of HiSilicon HNS3 NICs with hardware tc flower offload,
-configuring rules with partial src/dst IP or MAC matching.
-
-**Step 8.2 — Trigger conditions**
-Record: Common — `tc flower` rules matching only source or only
-destination IP/MAC. Unprivileged users can install tc rules (with
-appropriate capabilities/namespace policy).
-
-**Step 8.3 — Failure mode / severity**
-Record: Incorrect hardware packet classification / queue steering; rules
-may not match intended traffic or may match too narrowly. **Severity:
-MEDIUM** — functional data-path bug, not kernel crash, deadlock, or
-memory corruption.
-
-**Step 8.4 — Risk vs benefit**
-Record:
-- **Benefit:** MEDIUM — fixes real mis-steering for standard tc usage on
-  production NICs
-- **Risk:** LOW — 12 lines, mirrors proven ethtool logic
-- **Ratio:** Favorable for stable
+### Step 4.5: Stable list
+**Record:** **UNVERIFIED** — lore stable search blocked.
 
 ---
 
-## Phase 9: Final Synthesis
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Evidence FOR backport:**
-- Real, verifiable logic bug in tc flower offload path
-- Bug present in 6.18.y since 2020
-- Small, self-contained, applies cleanly
-- Aligns tc path with existing ethtool FD logic in same driver
-- Userspace-reachable via `tc` on widely deployed server NICs
-- Maintainer-reviewed and merged
+### Step 5.1: Key functions
+**Record:** `nicvf_probe()`, `cavium_ptp_get()`, `cavium_ptp_put()`
 
-**Evidence AGAINST backport:**
-- No crash, security, or corruption angle
-- No user/fuzzer bug report
-- Part of larger net-next enhancement series (though patch itself is
-  independent)
-- Port matching has same class of bug but is not addressed here
+### Step 5.2: Callers
+**Record:** `nicvf_probe()` is the PCI driver probe (`module_pci_driver`
+path) — runs at device enumeration / module load for `THUNDER_NIC_VF`.
 
-**Stable rules checklist:**
-1. Obviously correct and tested? **PASS** — logic mirrors existing
-   driver patterns; no `Tested-by:` but change is straightforward
-2. Fixes a real bug affecting users? **PASS** — incorrect HW filtering
-   for partial tc flower matches
-3. Important issue? **PASS (borderline)** — incorrect packet steering on
-   production networking path; not crash-level but user-visible and
-   operationally significant
-4. Small and contained? **PASS** — 12 lines, 1 file
+### Step 5.3: Callees
+**Record:** `cavium_ptp_get()` → `pci_get_device()`; `cavium_ptp_put()`
+→ `pci_dev_put()`.
+
+### Step 5.4: Reachability
+**Record:** Triggered when `CONFIG_THUNDER_NIC_VF` + `CONFIG_CAVIUM_PTP`
+are enabled on Cavium ThunderX/Marvell 64-bit PCI systems and probe
+fails after PTP device is found. Not userspace-syscall reachable; driver
+probe error path only.
+
+### Step 5.5: Similar patterns
+**Record:** Same driver already had probe error-path gaps fixed
+(`42330a32933fb` workqueue). `07a2e1cf39818` fixed NULL deref in
+`cavium_ptp_put()`.
+
+---
+
+## PHASE 6: CROSS-REFERENCE WITH LOCAL TREE (6.18.y)
+
+### Step 6.1: Buggy code present?
+**Record:** **Yes.** Current tree at lines 2097–2108 and 2258–2262 shows
+`cavium_ptp_get()` followed by error returns/`goto` chains without
+`cavium_ptp_put()`. `err_put_ptp` not present.
+
+### Step 6.2: Backport complications
+**Record:** Clean apply expected — context matches the provided diff.
+
+### Step 6.3: Related fixes already present?
+**Record:** Other `nicvf_probe()` error-path fixes exist
+(`42330a32933fb`); this PTP ref leak fix is **not** present.
+
+---
+
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+
+### Step 7.1: Subsystem
+**Record:** `drivers/net/ethernet/cavium/thunder/` — ThunderX NIC VF
+driver. **Criticality: PERIPHERAL** (platform-specific
+datacenter/embedded hardware).
+
+### Step 7.2: Activity
+**Record:** Moderate recent activity (workqueue fix, XDP features, mutex
+ordering).
+
+---
+
+## PHASE 8: IMPACT AND RISK ASSESSMENT
+
+### Step 8.1: Who is affected
+**Record:** Users of Cavium ThunderX NIC VF with PTP (`THUNDER_NIC_VF` +
+`CAVIUM_PTP`). Not universal.
+
+### Step 8.2: Trigger conditions
+**Record:** Any `nicvf_probe()` failure after successful
+`cavium_ptp_get()` — e.g. `pci_enable_device`, `pci_request_regions`,
+DMA setup, `alloc_etherdev_mqs`, register setup, `register_netdev`
+failures. Uncommon in steady state; more likely during bring-up,
+hardware issues, or driver reload/debug. Not unprivileged-triggerable.
+
+### Step 8.3: Failure mode severity
+**Record:** PCI device reference leak per failed probe. Can prevent
+proper PTP device teardown, accumulate refs on repeated probe attempts,
+and interfere with module unload/reprobe. **Severity: MEDIUM** (resource
+leak, not crash/corruption/security).
+
+### Step 8.4: Risk-benefit
+**Record:**
+- **Benefit:** Correct probe error cleanup; aligns with prior thunderx
+  probe fixes in stable
+- **Risk:** Very low (4 lines, uses existing helper, NULL-safe)
+- **Ratio:** Moderate benefit for affected hardware, very low risk
+
+---
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: Evidence
+
+**FOR:**
+- Real, verifiable PCI ref leak on all post-`cavium_ptp_get()` error
+  paths
+- Bug since 2018; present in 6.18.y
+- Small, obviously correct fix
+- Precedent: `42330a32933fb` fixed a similar `nicvf_probe()` error-path
+  bug in this stable tree
+- Resource leaks are standard stable material per project norms
+- Merged by net maintainer (Jakub Kicinski)
+
+**AGAINST:**
+- Platform-specific (ThunderX only)
+- Only hits probe failure paths (rare in production)
+- MEDIUM severity — no crash, corruption, or security impact
+- No fuzzer/user reports
+
+**UNRESOLVED:**
+- Mailing list review details and stable nominations (lore blocked)
+
+### Step 9.2: Stable rules checklist
+1. Obviously correct and tested? **PASS** — logic is clear; no runtime
+   test cited
+2. Fixes a real bug? **PASS** — confirmed ref leak in code
+3. Important issue? **PASS (borderline/MEDIUM)** — resource leak, not
+   crash/corruption
+4. Small and contained? **PASS** — 4 net lines, one file
 5. No new features/APIs? **PASS**
-6. Can apply to local tree? **PASS** — verified clean cherry-pick
+6. Can apply to local tree? **PASS** — buggy code exists; clean apply
+   expected
 
-**Exception category:** None (not quirk/ID/DT/docs/build).
+### Step 9.3: Exception categories
+**Record:** None (not a quirk/DT/build/doc fix; standard probe error-
+path leak fix).
 
----
+### Step 9.4: Decision rationale
 
-## Problem Summary
-
-This commit fixes a long-standing inconsistency in the HNS3 driver’s tc
-flower offload path. When users install `tc flower` rules specifying
-only source or only destination IP/MAC addresses, the flow dissector
-includes the address key with a zero mask for the unspecified side. The
-driver must mark those tuples as unused so hardware treats them as
-wildcards. Without this fix, `unused_tuple` is not set, hardware is
-programmed with zero-mask tuple values, and flow-director rules behave
-incorrectly.
-
-For **Linux 6.18.y**, the buggy code is present, the fix is absent, the
-patch applies cleanly, and it is standalone. This is appropriate stable
-material: a small, low-risk driver correctness fix for a userspace-
-visible data-path bug.
+For **linux-6.18.y**, this is a valid stable backport: the leak has been
+present since PTP support was added, the fix is minimal and safe, and
+the same driver's probe function already received a comparable error-
+path fix in this tree. Impact is limited to ThunderX + PTP
+configurations and probe-failure scenarios, but the fix cost is
+negligible and prevents a real reference leak that can affect driver
+reload and device lifecycle management on affected systems.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed commit message and tags from provided diff and `git
-  show 1ad6f1ff3e96c`
-- [Phase 2] Analyzed diff: +12 lines in `hclge_get_cls_key_mac()` and
-  `hclge_get_cls_key_ip()`
-- [Phase 2] Verified `calc_x`/`calc_y` macros and
-  `hclge_fd_convert_tuple()` skip logic
-- [Phase 2] Verified ethtool path already has zero-mask checks
-  (`hclge_fd_check_ether_tuple()` etc.)
-- [Phase 3] `git blame`: buggy code from `0205ec041ec61` (2020)
-- [Phase 3] `git merge-base --is-ancestor 1ad6f1ff3e96c HEAD` → NOT IN
-  TREE
-- [Phase 3] Cherry-pick test: `git cherry-pick --no-commit
-  1ad6f1ff3e96c` → exit 0, auto-merge
-- [Phase 4] `b4 dig -c 1ad6f1ff3e96c` → lore URL found
-- [Phase 4] `b4 dig -a` → v1–v4 series revisions
-- [Phase 4] `b4 dig -w` → netdev maintainers CC’d
-- [Phase 4] `b4 dig -m` → cover letter retrieved; patch 2/6 context
-  confirmed
-- [Phase 5] Traced call chain: `hns3_nic_setup_tc` →
-  `hclge_add_cls_flower` → `hclge_parse_cls_flower`
-- [Phase 6] `git describe HEAD` → v6.18.44; Makefile 6.18.44
-- [Phase 6] Read current `hclge_main.c` — buggy code confirmed present
-  (no zero-mask checks in MAC/IP cls helpers)
-- [Phase 8] Assessed severity as MEDIUM functional data-path bug
-- UNVERIFIED: No direct lore stable-list discussion
-- UNVERIFIED: No runtime test evidence beyond maintainer merge
+- [Phase 1] Parsed subject, tags, body from provided commit message
+- [Phase 2] Read current `nicvf_probe()` at lines 2090–2263; confirmed
+  missing `cavium_ptp_put()` on error paths
+- [Phase 2] Read `cavium_ptp_get()`/`cavium_ptp_put()` in
+  `cavium_ptp.c:59–85`; confirmed refcount contract
+- [Phase 3] `git describe HEAD` → `v6.18.44`; branch
+  `stable/linux-6.18.y`
+- [Phase 3] `git blame -L 2095,2110` → PTP get added in `4a8755096466d`
+  (2018)
+- [Phase 3] `git show 4a8755096466d1` → original probe lacked
+  `cavium_ptp_put()` on `pci_enable_device` failure
+- [Phase 3] `git log -S "err_put_ptp"` → empty (fix not merged)
+- [Phase 3] `42330a32933fb` in tree — prior thunderx probe error-path
+  fix
+- [Phase 4] WebFetch lore/patch.msgid.link → blocked by Anubis
+  (**UNVERIFIED** review thread)
+- [Phase 4] `b4 dig -c HEAD` → no match for this patch
+- [Phase 5] `grep cavium_ptp_get` → only `nicvf_main.c` in thunder
+  drivers
+- [Phase 6] Confirmed buggy code at lines 2106–2108 (`return` without
+  put) and 2260–2262 (no `err_put_ptp`)
+- [Phase 6] `grep err_put_ptp` → not found
+- [Phase 7] Read `drivers/net/ethernet/cavium/Kconfig` —
+  `THUNDER_NIC_VF` implies `CAVIUM_PTP`
+- [Phase 8] Assessed severity MEDIUM (probe-only PCI ref leak on niche
+  hardware)
 
-**YES****Task result:** The branch search found commit `1ad6f1ff3e96c`
-on `master` — it matches the patch under review and is not in the local
-6.18.44 tree.
+**YES**The background git search finished. It didn’t find the PTP ref-
+leak fix (`err_put_ptp` isn’t in this tree), but it did turn up related
+`nicvf_probe()` work already on 6.18.y — the workqueue destroy fix
+(`42330a32933fb`), mutex init ordering (`c1055b76ad00a`), and the `imply
+CAVIUM_PTP` build fix (`a7d40cbb24900`).
 
-**Verdict (unchanged):** Backport **YES**. Small, standalone fix for
-incorrect tc flower hardware filtering when only src or dst IP/MAC is
-specified; applies cleanly to 6.18.y.
+That matches the earlier analysis: the PTP reference leak is still
+present in 6.18.44 and this patch should be backported.
 
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c  | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+**YES**
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 7f174453928c1..08f7bda4ef4c4 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7261,6 +7261,10 @@ static void hclge_get_cls_key_mac(const struct flow_rule *flow,
- 		ether_addr_copy(rule->tuples_mask.dst_mac, match.mask->dst);
- 		ether_addr_copy(rule->tuples.src_mac, match.key->src);
- 		ether_addr_copy(rule->tuples_mask.src_mac, match.mask->src);
-+		if (is_zero_ether_addr(match.mask->dst))
-+			rule->unused_tuple |= BIT(INNER_DST_MAC);
-+		if (is_zero_ether_addr(match.mask->src))
-+			rule->unused_tuple |= BIT(INNER_SRC_MAC);
- 	} else {
- 		rule->unused_tuple |= BIT(INNER_DST_MAC);
- 		rule->unused_tuple |= BIT(INNER_SRC_MAC);
-@@ -7309,6 +7313,10 @@ static int hclge_get_cls_key_ip(const struct flow_rule *flow,
- 		rule->tuples.dst_ip[IPV4_INDEX] = be32_to_cpu(match.key->dst);
- 		rule->tuples_mask.dst_ip[IPV4_INDEX] =
- 						be32_to_cpu(match.mask->dst);
-+		if (!match.mask->src)
-+			rule->unused_tuple |= BIT(INNER_SRC_IP);
-+		if (!match.mask->dst)
-+			rule->unused_tuple |= BIT(INNER_DST_IP);
- 	} else if (addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS) {
- 		struct flow_match_ipv6_addrs match;
+ drivers/net/ethernet/cavium/thunder/nicvf_main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/cavium/thunder/nicvf_main.c b/drivers/net/ethernet/cavium/thunder/nicvf_main.c
+index 1be2dc40a1a63..e4dfd5cc15802 100644
+--- a/drivers/net/ethernet/cavium/thunder/nicvf_main.c
++++ b/drivers/net/ethernet/cavium/thunder/nicvf_main.c
+@@ -2104,8 +2104,10 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	}
  
-@@ -7321,6 +7329,10 @@ static int hclge_get_cls_key_ip(const struct flow_rule *flow,
- 				      match.key->dst.s6_addr32);
- 		ipv6_addr_be32_to_cpu(rule->tuples_mask.dst_ip,
- 				      match.mask->dst.s6_addr32);
-+		if (ipv6_addr_any(&match.mask->src))
-+			rule->unused_tuple |= BIT(INNER_SRC_IP);
-+		if (ipv6_addr_any(&match.mask->dst))
-+			rule->unused_tuple |= BIT(INNER_DST_IP);
- 	} else {
- 		rule->unused_tuple |= BIT(INNER_SRC_IP);
- 		rule->unused_tuple |= BIT(INNER_DST_IP);
+ 	err = pci_enable_device(pdev);
+-	if (err)
+-		return dev_err_probe(dev, err, "Failed to enable PCI device\n");
++	if (err) {
++		err = dev_err_probe(dev, err, "Failed to enable PCI device\n");
++		goto err_put_ptp;
++	}
+ 
+ 	err = pci_request_regions(pdev, DRV_NAME);
+ 	if (err) {
+@@ -2259,6 +2261,8 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	pci_release_regions(pdev);
+ err_disable_device:
+ 	pci_disable_device(pdev);
++err_put_ptp:
++	cavium_ptp_put(ptp_clock);
+ 	return err;
+ }
+ 
 -- 
 2.53.0
 
