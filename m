@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6024A0927;
-	Mon, 31 Aug 2026 13:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54314A1DEB;
+	Mon, 31 Aug 2026 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183699; cv=none; b=BA/PUtgTzsKV4Rhfgo7ohOwjxto9i9qHI/MEEiBv/0/PT/YSVFZHIKSobcGm2vqqbifniFJT8WaIPPjblzZWrVoUqWgg+QSh3pUSwgEIS1UXJnmqibYeWhvb/RW8ZxHkNB4Cs/sdPHe5em63p7k/GV/HJFzKxb4XNzYJK5XENZM=
+	t=1788183709; cv=none; b=MN5yum7qqpVjfWQKC+a/i0lj7VZHUDB9QbTqsMkG2O2n6RuWybb/ShtpCSSIHGX1Vk2CFLUB2BTB90iHbz+EXTFMVds3hfZGWg7ZXhVyy7WwwETQKm32ujzqTfsA730i0k4cWhwe/kKXBgfHyZQDUe7gJ7VeBUrb0sKIBrnviAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183699; c=relaxed/simple;
-	bh=ltuDfQ7QZqiRAgvpyktmmDEDKuVQA87KA5z0eue77zA=;
+	s=arc-20240116; t=1788183709; c=relaxed/simple;
+	bh=+eJpnimL5yaekQdsaA9HO7wbnIc+Ma1yI1LBNnfYZIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J0O+0kCw0OBGyBa1DJhvijFNMlOlSuPNbxSuW6qAeJwiFlkderyr4m+TU2JxgyQ2tCnNU1grdO81eBSJNEbJ4KmS2svVpatbqOj9Xgsy17XvNAhTTeazm9WG92T68FSaB2NRWn5m3ZCJV9L4/R2f2FMSdabGCVWoYvxC2o2MNjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5f7yPAV; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=usCLIQ3+XaEgOkUUJpJ9Te0Kh803JGJOszeSG6GjRdATo+VMSxUukdo1RCbSwDYD+ykESCSHNiph8Wh5G/M77MSGBQ2Faf9T41mLapMBQjgK2zkhpI/DNSijDgiby6N9cARotqX7lUPn51SikppwvIr6L/o3euj4PFsawbRI05c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHM0d/SU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5f7yPAV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462B31F00A3E;
-	Mon, 31 Aug 2026 13:41:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHM0d/SU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528C21F00A3F;
+	Mon, 31 Aug 2026 13:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183696;
-	bh=4aA/mw8wPBGPJo8tBTr0TR4w7ObCSJFfJDmxuWAwlWQ=;
+	s=k20260515; t=1788183706;
+	bh=9RrjIxMMq22H6qcH5KABP0SzS8mkDlZEnFetbud6ZZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M5f7yPAVoLwc5zPj89XaGgsvvjU9bNzaIAy2ImrEJ9XshNBBf2+jaNCjfQU6KClmv
-	 6aQ78KKMOThjX2O5fcqm2Bh2PMy1mANqh2+5hc3TU32MwdAOMWnDJevqGNiBOaZrZS
-	 hYGfjL9WxwWoUnGjLpLWRE50zqmAinjHDyUFRC6h2DCaXZzWRQcLGXXj+dMzJEZLNj
-	 WgPuvzYpG45OX1UVViR7hHeUV90u3WwjsVdDKjh5OFZQwBG0kPIfBSbxyUZyuaA2cV
-	 cpI3OZUBsHaE9Z/l0D39yxfvU1FtrYL7zLXG7ENYsddaCMMa4kr772jr9NeWv5Hkt/
-	 oQD9DFaQOFDWw==
+	b=bHM0d/SUtqNFfehX62o3CKgaMQKAHgUYFNZ+Hd2IucrfS7ImWpMslucy0kM4uQ3Pk
+	 eSUkgRnsXa43zCn9PxnsVLrtZG1YcQj9KrcoOfP4IjqtEXZMaEFPMOO0bLO+KVCCu9
+	 3HQqC869OT8nRhieexXVB69unlplTpEdegbvkNyZqLYcc+oR/Q7FsFlWJvsbKuQZ1c
+	 OkcI6G6rURKEBNCkMmthZCg8AnKk0Hf8YKldTr11o5fhSdtm2QAnaErPjnKvLpBIi0
+	 VVWvsVcnDxGmu1W1ONeb+UeD/W2JY6Mw94JnmPK/K+/yoMhxhAzS8EHlAJ3AX9tS9y
+	 Mnzk46qsI3+uA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+Cc: Wentao Liang <vulab@iscas.ac.cn>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	linux-arm-msm@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net: dsa: mv88e6xxx: enable .rmu_disable() for 6320 family
-Date: Mon, 31 Aug 2026 09:24:38 -0400
-Message-ID: <20260831133314.4125787-250-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: qrtr: fix node refcount leak on ctrl packet alloc failure
+Date: Mon, 31 Aug 2026 09:24:44 -0400
+Message-ID: <20260831133314.4125787-256-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -51,77 +52,80 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.48
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Marek Behún <kabel@kernel.org>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit e0fdb4157a85056bd256a7aebac4a3a2f580b201 ]
+[ Upstream commit 3b09ff54114566864eea59020f6b69c5bb325b9d ]
 
-Commit 9e5baf9b3636 ("net: dsa: mv88e6xxx: add RMU disable op") did not
-add the .rmu_disable() method for the 6320 family. Add it now.
+qrtr_send_resume_tx() calls qrtr_node_lookup() which takes a
+reference on the returned node. If the subsequent call to
+qrtr_alloc_ctrl_packet() fails due to memory allocation failure, the
+function returns -ENOMEM without calling qrtr_node_release() to
+release the node reference.
 
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://patch.msgid.link/20260504153227.1390546-5-kabel@kernel.org
+Add qrtr_node_release(node) before returning on the allocation failure
+path to properly release the reference.
+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20260528080019.1176700-1-vulab@iscas.ac.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `net: dsa: mv88e6xxx: enable .rmu_disable()
-for 6320 family`
+# Stable Backport Analysis: `net: qrtr: fix node refcount leak on ctrl
+packet alloc failure`
 
-**Local tree:** Linux 6.18.43 (`v6.18.43-1-gc7f0dac02d232`, `VERSION =
-6`, `PATCHLEVEL = 18`, `SUBLEVEL = 43`)
+**Local tree:** `v6.18.44` (Makefile: 6.18.44)
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 ### Step 1.1: PARSE THE SUBJECT LINE
-**Record:** `[net: dsa: mv88e6xxx]` `[enable]` — add the missing
-`.rmu_disable()` callback to the MV88E6320/MV88E6321 ops tables.
+**Record:** `[net: qrtr]` `[fix]` — On `qrtr_alloc_ctrl_packet()`
+allocation failure in `qrtr_send_resume_tx()`, release the node
+reference acquired by `qrtr_node_lookup()` to avoid a refcount leak.
 
 ### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
 **Record:**
-- **Fixes:** — absent (expected for manual review)
-- **Reported-by:** — absent
-- **Tested-by:** — absent
-- **Reviewed-by:** — absent
-- **Acked-by:** — absent
+- **Fixes:** — not present (expected for manual review)
+- **Reported-by:** — none
+- **Tested-by:** — none
+- **Reviewed-by:** Alexander Lobakin `<aleksander.lobakin@intel.com>`,
+  Manivannan Sadhasivam `<mani@kernel.org>` (QRTR maintainer)
+- **Acked-by:** — none
 - **Link:**
-  `https://patch.msgid.link/20260504153227.1390546-5-kabel@kernel.org`
-  (patch 5/N of a series by Marek Behún)
-- **Cc: stable:** — absent (not a negative signal)
-- **Signed-off-by:** Marek Behún `<kabel@kernel.org>`, Jakub Kicinski
-  `<kuba@kernel.org>` (net maintainer)
+  `https://patch.msgid.link/20260528080019.1176700-1-vulab@iscas.ac.cn`
+- **Cc: stable@vger.kernel.org:** — not present (expected)
+- **Signed-off-by:** Wentao Liang (author), Jakub Kicinski (net
+  maintainer merge); ignore pipeline SOB per instructions
 
-No syzbot, no user bug reports, no explicit stable nomination.
+**Notable patterns:** Two subsystem reviewers, including the QRTR
+maintainer. No syzbot/fuzzer report.
 
 ### Step 1.3: ANALYZE THE COMMIT BODY TEXT
 **Record:**
-- **Bug description:** When MV88E6320/MV88E6321 ops tables were created,
-  `.rmu_disable` was omitted. Commit `9e5baf9b3636` (May 2018)
-  introduced the RMU-disable infrastructure for other Marvell switch
-  families; these two new 6320-family chip IDs were not wired up.
-- **Symptom/failure mode:** During driver setup, `mv88e6xxx_rmu_setup()`
-  silently does nothing for MV88E6320/6321 because the ops pointer is
-  NULL. The switch's Remote Management Unit (RMU) mode bits in Global
-  Control 2 are never cleared to `RMU_MODE_DISABLED`.
-- **Version information:** None stated.
-- **Root cause:** Ops-table omission when MV88E6320/MV88E6321 chip
-  entries were added.
+- **Bug:** `qrtr_send_resume_tx()` calls `qrtr_node_lookup()` (takes a
+  ref) then `qrtr_alloc_ctrl_packet()`. On alloc failure it returns
+  `-ENOMEM` without `qrtr_node_release(node)`.
+- **Symptom:** Leaked `qrtr_node` reference; node cannot be fully torn
+  down when its refcount should reach zero.
+- **Version info:** None in message.
+- **Root cause:** Missing cleanup on a single error path; success path
+  already calls `qrtr_node_release(node)` at line 1021.
 
 ### Step 1.4: DETECT HIDDEN BUG FIXES
-**Record:** Yes — described as "enable," but it is a hardware-
-initialization bug fix. Without it, RMU may remain enabled on a port
-(per `MV88E6352_G1_CTL2_RMU_MODE_PORT_*` values in `global1.h`),
-diverging from every other 6352-layout chip that sets `.rmu_disable =
-mv88e6352_g1_rmu_disable`.
+**Record:** Not disguised — explicitly labeled a refcount leak fix.
+Straightforward error-path resource management bug.
 
 ---
 
@@ -129,37 +133,36 @@ mv88e6352_g1_rmu_disable`.
 
 ### Step 2.1: INVENTORY THE CHANGES
 **Record:**
-- **Files:** `drivers/net/dsa/mv88e6xxx/chip.c` only (+2 lines)
-- **Functions modified:** `mv88e6320_ops`, `mv88e6321_ops` (static const
-  struct initializers)
-- **Scope:** Single-file, surgical, 2-line fix
+- **Files:** `net/qrtr/af_qrtr.c` (+3 / −1 net)
+- **Function:** `qrtr_send_resume_tx()`
+- **Scope:** Single-file, surgical fix on one error path
 
 ### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
 **Record:**
-- **Hunk 1 (`mv88e6320_ops`):** Before: after `.reset =
-  mv88e6352_g1_reset`, setup proceeds to VTU ops with no RMU handling.
-  After: `.rmu_disable = mv88e6352_g1_rmu_disable` is registered, so
-  `mv88e6xxx_rmu_setup()` will call it during `mv88e6xxx_setup()`.
-- **Hunk 2 (`mv88e6321_ops`):** Identical change.
-- **Path affected:** Normal probe/setup path, called once per switch at
-  initialization.
+- **Hunk (lines 1011–1013):**
+  - **Before:** `if (!skb) return -ENOMEM;` — node ref leaked.
+  - **After:** `if (!skb) { qrtr_node_release(node); return -ENOMEM; }`
+    — ref balanced.
+- **Path affected:** Error path in `qrtr_send_resume_tx()`, called from
+  `qrtr_recvmsg()` when `cb->confirm_rx` is set (flow-control resume-
+  tx).
 
 ### Step 2.3: IDENTIFY THE BUG MECHANISM
 **Record:**
-- **Bug category:** Logic / hardware-initialization correctness
-- **Mechanism:** `mv88e6xxx_rmu_setup()` at line 1675 checks
-  `chip->info->ops->rmu_disable`; if NULL, returns 0 without touching
-  hardware. MV88E6320/6321 use `mv88e6352_g1_reset` and the 6352-family
-  G1 CTL2 register layout but lacked the matching
-  `mv88e6352_g1_rmu_disable` callback. The fix wires the existing,
-  correct disable function.
+- **Category:** Reference counting / resource leak (error-path cleanup)
+- **Mechanism:** `qrtr_node_lookup()` documents that callers must call
+  `qrtr_node_release()`. The ENOMEM branch was the only exit after a
+  successful lookup that skipped release. Each leak increments
+  `node->ref` permanently for that failure, preventing
+  `__qrtr_node_release()` from running when the node should otherwise be
+  destroyed.
 
 ### Step 2.4: ASSESS THE FIX QUALITY
 **Record:**
-- **Fix quality:** Obviously correct — identical to `mv88e6352_ops`,
-  `mv88e6172_ops`, `mv88e6240_ops`, etc.
-- **Regression risk:** Very low — adds a single register mask write
-  during init, same as 15 other chip variants already do.
+- **Quality:** Obviously correct; mirrors the `out_node:` pattern in
+  `qrtr_sendmsg()` (lines 991–992).
+- **Regression risk:** Very low — only runs on allocation failure, adds
+  the symmetric `put` that was missing.
 - **Red flags:** None.
 
 ---
@@ -167,161 +170,185 @@ mv88e6352_g1_rmu_disable`.
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 ### Step 3.1: BLAME THE CHANGED LINES
-**Record:** `mv88e6320_ops` / `mv88e6321_ops` and
-`[MV88E6320]`/`[MV88E6321]` chip table entries blame to `5d324e5159d9e`
-(2025-11-28 merge). Repository is shallow (`git rev-parse --is-shallow-
-repository` → `true`), limiting deeper history. The ops tables without
-`rmu_disable` are present in this 6.18.43 tree.
+**Record:**
+- `qrtr_send_resume_tx()` introduced in `cb6530b99fafea` (2020-01-14,
+  "net: qrtr: Move resume-tx transmission to recvmsg").
+- Missing release on ENOMEM present since introduction.
+- `qrtr_alloc_ctrl_packet()` call added in `f7dec6cb914c89`
+  (2020-11-06).
+- **Confirmed:** `cb6530b99fafea` is an ancestor of HEAD in this tree.
 
 ### Step 3.2: FOLLOW THE FIXES: TAG
-**Record:** No `Fixes:` tag. Referenced commit `9e5baf9b3636` ("net:
-dsa: mv88e6xxx: add RMU disable op", May 2018) is in this tree and added
-`mv88e6xxx_rmu_setup()` plus `.rmu_disable` for contemporary chip
-families. MV88E6320/MV88E6321 as distinct chip IDs with dedicated ops
-tables are a later addition; the omission is in those newer tables, not
-in the 2018 commit itself.
+**Record:** No `Fixes:` tag. N/A.
 
 ### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-**Record:** Shallow history shows only 2 commits touching `chip.c` on
-HEAD. This fix appears to be patch 5 of a Marek Behún series (message-id
-suffix `-5`). Standalone — no other patches required;
-`mv88e6352_g1_rmu_disable` already exists in `global1.c`.
+**Record:** Multiple prior QRTR leak/refcount fixes in this tree:
+- `44d807320000d` — refcount bug in `qrtr_recvmsg()` /
+  `qrtr_send_resume_tx()` path (syzbot)
+- `8a03dd925786b` — memory leak on `qrtr_tx_wait` failure
+- `f2664bc4f0f35` — xarray migration to fix memory leak
+- `ab269990ed581` — refcount saturation / UAF in `qrtr_port_remove`
+- **Standalone:** Yes; no series dependency indicated.
 
 ### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-**Record:** No Marek Behún commits found in shallow history for this
-path. Jakub Kicinski (net maintainer) signed off.
+**Record:** No prior Wentao Liang commits in `net/qrtr/` in this tree.
+Fix reviewed by QRTR maintainer (Mani) and net reviewer (Lobakin).
 
 ### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-**Record:** No dependencies. `mv88e6352_g1_rmu_disable`,
-`mv88e6xxx_rmu_setup()`, and MV88E6320/MV88E6321 chip entries all exist
-in this tree. Applies standalone.
+**Record:** No dependencies. All symbols (`qrtr_node_lookup`,
+`qrtr_node_release`, `qrtr_alloc_ctrl_packet`) exist in this tree. Patch
+applies cleanly to current `af_qrtr.c`.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
 ### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-**Record:** `b4 dig -c HEAD` matched unrelated commit. `b4 shazam` for
-subject and message-id returned "not known." `patch.msgid.link` and
-`lore.kernel.org` blocked by Anubis bot protection. **Could not retrieve
-mailing list discussion.**
+**Record:** `b4 dig -c <commit>` could not run — commit not present in
+this checkout. WebFetch/curl to lore.kernel.org and patch.msgid.link
+returned 403/bot-protection pages. **UNVERIFIED:** Review thread
+content, stable nominations, NAKs.
 
 ### Step 4.2: CHECK WHO REVIEWED THE PATCH
-**Record:** UNVERIFIED — `b4 dig -w` not usable without matching commit
-hash on lore.
+**Record:** From commit message — Reviewed-by Manivannan Sadhasivam
+(QRTR maintainer) and Alexander Lobakin. **UNVERIFIED:** Full recipient
+list via `b4 dig -w`.
 
 ### Step 4.3: SEARCH FOR THE BUG REPORT
-**Record:** No `Reported-by:` or bugzilla/syzbot links. No external bug
-report found.
+**Record:** No Reported-by or bugzilla/syzbot link. Bug identified by
+code inspection, not a filed crash report.
 
 ### Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-**Record:** Message-id `...-5-...` indicates patch 5 of a series (likely
-MV88E6320/MV88E6321 support). This fix completes ops-table wiring for
-chips already present in 6.18.43. Other patches in the series not
-verified.
+**Record:** Appears standalone (single hunk, no "patch X/Y").
+**UNVERIFIED:** Series context from lore.
 
 ### Step 4.5: CHECK STABLE MAILING LIST HISTORY
-**Record:** UNVERIFIED — lore.kernel.org inaccessible.
+**Record:** Could not search lore (403). **UNVERIFIED.**
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
 ### Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-**Record:** `mv88e6320_ops`, `mv88e6321_ops` (data),
-`mv88e6352_g1_rmu_disable` (existing callee), `mv88e6xxx_rmu_setup`
-(caller during init).
+**Record:** `qrtr_send_resume_tx()` (modified). Related:
+`qrtr_node_lookup()`, `qrtr_node_release()`, `qrtr_alloc_ctrl_packet()`.
 
 ### Step 5.2: TRACE CALLERS
-**Record:** `mv88e6xxx_rmu_setup()` called from `mv88e6xxx_setup()`
-(line 4051), which is the DSA switch setup callback during device probe.
-Every MV88E6320/6321 boot triggers this path.
+**Record:**
+- `qrtr_send_resume_tx()` called only from `qrtr_recvmsg()` at line 1074
+  when `cb->confirm_rx` is true.
+- `qrtr_recvmsg()` is the socket recv path (`recvmsg` syscall) for
+  `AF_QIPCRTR`.
+- `confirm_rx` is set during QRTR flow control when a data packet needs
+  a resume-tx acknowledgment (see `qrtr_tx_wait()` /
+  `qrtr_node_enqueue()`).
 
 ### Step 5.3: TRACE CALLEES
-**Record:** `mv88e6352_g1_rmu_disable()` → `mv88e6xxx_g1_ctl2_mask(chip,
-MV88E6352_G1_CTL2_RMU_MODE_MASK, MV88E6352_G1_CTL2_RMU_MODE_DISABLED)` —
-clears RMU mode bits in Global Control 2.
+**Record:**
+- `qrtr_node_lookup()` → `qrtr_node_acquire()` → `kref_get(&node->ref)`
+- `qrtr_alloc_ctrl_packet()` → `alloc_skb(..., GFP_KERNEL)` — can return
+  NULL under memory pressure
+- `qrtr_node_release()` → `kref_put_mutex()` → may call
+  `__qrtr_node_release()` (frees node, purges queues, destroys xarray)
 
 ### Step 5.4: FOLLOW THE CALL CHAIN
-**Record:** Device probe → `mv88e6xxx_setup()` → `mv88e6xxx_rmu_setup()`
-→ (currently no-op for 6320/6321) → should call
-`mv88e6352_g1_rmu_disable()`. Reachable on every boot with
-MV88E6320/6321 hardware; not userspace-triggerable but always runs for
-affected devices.
+**Record:**
+`recvmsg()` → `qrtr_recvmsg()` → `qrtr_send_resume_tx()` →
+`qrtr_node_lookup()` + `qrtr_alloc_ctrl_packet()`.
+Reachable from userspace on systems with `CONFIG_QRTR` (Qualcomm IPC,
+Android modem stacks, etc.). Trigger additionally requires memory
+pressure at ctrl-packet allocation time.
 
 ### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-**Record:** Of 28 `mv88e6xxx_ops` structs, 15 have `.rmu_disable`. Among
-chips using `mv88e6352_g1_reset`, some older variants (e.g.
-`mv88e6161_ops`, `mv88e6351_ops`) also lack it — but `mv88e6352_ops`,
-`mv88e6172_ops`, `mv88e6341_ops`, and other newer 6352-layout chips do
-have it. MV88E6320/6321 are the only chips using dedicated
-`mv88e6320_ops`/`mv88e6321_ops` and are clearly intended to follow the
-6352-family pattern (they already use `mv88e6352_g1_reset`,
-`mv88e6352_gpio_ops`, etc.).
+**Record:** `qrtr_sendmsg()` uses `out_node:` label to always call
+`qrtr_node_release(node)` on all paths after lookup (lines 991–992),
+including `-ENOMEM` from `sock_alloc_send_skb()`.
+`qrtr_send_resume_tx()` was inconsistent — the fix aligns it with
+established convention. Comment at line 387: *"callers must release with
+qrtr_node_release()"*.
 
 ---
 
 ## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 
 ### Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-**Record:** **YES.** `mv88e6320_ops` (line 5181) and `mv88e6321_ops`
-(line 5233) have `.reset = mv88e6352_g1_reset` but no `.rmu_disable`.
-`[MV88E6320]` and `[MV88E6321]` chip entries exist at lines 6247 and
-6275.
+**Record:** **YES.** Current code at lines 1007–1013:
+
+```1007:1013:net/qrtr/af_qrtr.c
+        node = qrtr_node_lookup(remote.sq_node);
+        if (!node)
+                return -EINVAL;
+
+        skb = qrtr_alloc_ctrl_packet(&pkt, GFP_KERNEL);
+        if (!skb)
+                return -ENOMEM;
+```
+
+Bug present since v5.5-era introduction; long predates 6.18 branch.
 
 ### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-**Record:** **Clean apply expected** — 2 identical lines inserted after
-`.reset` in each ops struct. No conflicting changes in recent `chip.c`
-history.
+**Record:** Clean apply expected — 3-line change, no surrounding churn
+in this function. Recent `af_qrtr.c` history shows other qrtr fixes but
+not conflicting edits to this hunk.
 
 ### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-**Record:** No existing fix. `git log --grep="rmu_disable"` and
-`--grep="6320 family"` return nothing on this tree.
+**Record:** The fix commit is **not** in this tree. Related
+refcount/leak fixes (`44d807320000d`, `8a03dd925786b`, etc.) are present
+but address different bugs. No duplicate fix for this specific ENOMEM
+path.
 
 ---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
 ### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-**Record:** `drivers/net/dsa/mv88e6xxx` — DSA Ethernet switch driver.
-**IMPORTANT** (networking infrastructure on embedded/industrial
-hardware; not core kernel, but affects connectivity for specific
-platforms).
+**Record:** **Subsystem:** `net/qrtr` — Qualcomm Router (IPC) socket
+family. **Criticality:** IMPORTANT — not universal core networking, but
+critical for Qualcomm/Android/embedded platforms using QRTR for modem
+and coprocessor IPC.
 
 ### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-**Record:** Actively maintained; MV88E6320/MV88E6321 are recent
-additions. Marek Behún is a regular mv88e6xxx contributor; Jakub
-Kicinski signed off.
+**Record:** Active maintenance — multiple qrtr leak/refcount fixes in
+recent history of this tree (`ab269990ed581`, `f2664bc4f0f35`,
+`22100a8f73d4a`, etc.).
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
 ### Step 8.1: DETERMINE WHO IS AFFECTED
-**Record:** **Driver-specific / hardware-specific** — only systems with
-Marvell 88E6320 or 88E6321 DSA switches (embedded/industrial routers,
-automotive, etc.).
+**Record:** **Config-specific** — users with `CONFIG_QRTR` enabled
+(Qualcomm platforms, some Android kernels, embedded IPC). Not all
+generic Linux servers, but a real production population.
 
 ### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-**Record:** Triggers on every driver probe (boot, module load). Not
-timing-dependent. Requires `CONFIG_NET_DSA_MV88E6XXX` and MV88E6320/6321
-hardware. Common for affected hardware (every boot).
+**Record:**
+- Receive QRTR message with `confirm_rx` set (normal flow-control path
+  under load).
+- `qrtr_alloc_ctrl_packet()` fails (`GFP_KERNEL` allocation under memory
+  pressure).
+- Return value of `qrtr_send_resume_tx()` is ignored by caller — leak is
+  silent.
+- **Likelihood:** Moderate under memory pressure on busy QRTR links; not
+  every boot, but realistic on constrained embedded systems.
 
 ### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-**Record:** RMU may remain enabled, routing management frames to an
-unexpected port. Potential networking misbehavior or unexpected
-management exposure. **Severity: MEDIUM** — functional hardware
-misconfiguration, not a kernel oops/UAF/corruption. No crash reports
-documented.
+**Record:**
+- **Failure mode:** Permanent refcount leak per triggering event →
+  `qrtr_node` and associated resources (`rx_queue`, `qrtr_tx_flow`
+  xarray) cannot be freed when the node should be torn down.
+- **Severity:** **MEDIUM-HIGH** — not an immediate oops, but a kernel
+  resource leak that can accumulate and block node cleanup. Precedent:
+  similar QRTR leak fixes have been accepted to stable in this
+  subsystem.
 
 ### Step 8.4: CALCULATE RISK-BENEFIT RATIO
 **Record:**
-- **Benefit:** Correct switch initialization for MV88E6320/6321; aligns
-  with peer 6352-family chips; prevents incorrect RMU state on every
-  boot.
-- **Risk:** Minimal — 2 lines, existing tested function, same pattern as
-  15 other variants.
-- **Ratio:** Moderate benefit, very low risk. Appropriate for stable.
+- **Benefit:** Prevents node refcount leaks on a real error path in
+  recvmsg-driven flow control; aligns with documented API contract.
+- **Risk:** Very low — 3 lines, error-path only, matches existing
+  `qrtr_sendmsg()` pattern.
+- **Ratio:** Strong benefit, minimal risk.
 
 ---
 
@@ -330,129 +357,119 @@ documented.
 ### Step 9.1: COMPILE THE EVIDENCE
 
 **FOR backport:**
-- Real omission bug in hardware init path for MV88E6320/6321
-- Buggy code confirmed present in Linux 6.18.43
-- Obviously correct, 2-line fix using existing
-  `mv88e6352_g1_rmu_disable`
-- Called on every probe for affected hardware
-- Net maintainer (Jakub Kicinski) signed off
-- Zero regression risk
-- Completes support for chips already in this stable tree
+- Real, verifiable refcount leak on documented error path
+- Bug in tree since 2020; affects 6.18.44
+- Small (3 lines), obviously correct
+- Reviewed by QRTR maintainer + net reviewer
+- Matches established `qrtr_sendmsg()` cleanup pattern
+- Subsystem history of similar leak fixes backported
+- Reachable from userspace `recvmsg()` on QRTR-enabled systems
 
 **AGAINST backport:**
-- No user bug reports, syzbot, or crash traces
-- Failure mode is incorrect hardware config, not kernel
-  crash/security/CVE
-- Several older 6352-reset chips also lack `rmu_disable` without known
-  fallout
-- Mailing list discussion unverified
+- Requires memory pressure to trigger (not every workload)
+- QRTR is platform-specific, not universal
+- No syzbot/user crash report attached
 
 **UNRESOLVED:**
-- Full patch series context and reviewer stable nominations (lore
-  inaccessible)
-- Whether users have reported observable symptoms
+- Lore thread content and any explicit stable nomination (fetch blocked)
+- Whether fix is already merged to mainline in a commit hash not in this
+  tree
 
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? **PASS** — mirrors `mv88e6352_ops`;
-   maintainer signed off; no Tested-by.
-2. Fixes a real bug that affects users? **PASS** — ops-table omission
-   leaves RMU enabled on MV88E6320/6321.
-3. Important issue? **PASS (borderline)** — networking misconfiguration
-   on affected hardware at every boot; not a crash but real functional
-   impact.
-4. Small and contained? **PASS** — 2 lines, 1 file.
-5. No new features or APIs? **PASS** — wires existing callback only.
-6. Can apply to the local tree? **PASS** — prerequisite code present;
-   clean apply.
+### Step 9.2: STABLE RULES CHECKLIST
+1. Obviously correct and tested? **PASS** — symmetric
+   `qrtr_node_release()` on error path; reviewed by maintainers (no
+   Tested-by).
+2. Fixes a real bug affecting users? **PASS** — refcount leak on QRTR
+   recvmsg resume-tx path.
+3. Important issue? **PASS** — resource leak preventing node teardown
+   (MEDIUM-HIGH; stable accepts QRTR leak fixes).
+4. Small and contained? **PASS** — 3 lines, one function.
+5. No new features or APIs? **PASS**
+6. Can apply to local tree? **PASS** — buggy code confirmed present;
+   clean apply expected.
 
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-**Record:** Hardware workaround / quirk — corrects missing hardware
-initialization for specific Marvell switch chips. Falls under the
-hardware-quirk exception category.
+### Step 9.3: EXCEPTION CATEGORIES
+**Record:** None (not device ID, quirk, DT, build, or docs). Standard
+bug-fix exception via resource-leak category.
 
 ### Step 9.4: DECISION RATIONALE
-This is a small, obviously correct completion of MV88E6320/MV88E6321
-driver support already present in 6.18.43. The RMU-disable step runs on
-every probe and is standard for 6352-layout chips in this driver. The
-fix is low-risk and addresses a real hardware-initialization omission
-that can cause incorrect switch behavior. It meets stable criteria.
+This is a clear error-path refcount leak in `qrtr_send_resume_tx()` that
+has existed since the function was introduced. The fix is minimal,
+follows the same pattern as `qrtr_sendmsg()`, and is endorsed by the
+QRTR maintainer. While the trigger requires memory pressure and QRTR is
+platform-specific, the QRTR subsystem has a well-established pattern of
+backporting similar leak and refcount fixes to stable trees, and this
+tree (`6.18.44`) contains the buggy code without the fix.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed subject, tags: Link present; no Reported-by/syzbot;
-  SOB from Behún and Kicinski
-- [Phase 1] Commit body references `9e5baf9b3636` as RMU infrastructure
-  origin
-- [Phase 2] Diff: +2 lines in `chip.c`, both `.rmu_disable =
-  mv88e6352_g1_rmu_disable`
-- [Phase 2] Confirmed `mv88e6xxx_rmu_setup()` no-ops when callback is
-  NULL (lines 1675–1680)
-- [Phase 2] Confirmed `mv88e6352_g1_rmu_disable()` exists in `global1.c`
-  (lines 539–543)
-- [Phase 3] `git describe HEAD`: v6.18.43; `make kernelversion`
-  equivalent from Makefile: 6.18.43
-- [Phase 3] `git show 9e5baf9b3636`: May 2018 commit added RMU disable
-  infrastructure
-- [Phase 3] Shallow repo confirmed; limited `git log` on `chip.c`
-- [Phase 3] `git blame` on MV88E6320 entry and `.reset` line: present
-  since `5d324e5159d9e`
-- [Phase 4] `b4 dig -c HEAD`: no match for this commit
-- [Phase 4] `b4 shazam`: lore lookup failed (message not known)
-- [Phase 4] `patch.msgid.link` and `lore.kernel.org`: blocked by Anubis
-  — **UNVERIFIED** discussion/reviewer feedback
-- [Phase 5] `mv88e6xxx_rmu_setup()` caller: `mv88e6xxx_setup()` line
-  4051
-- [Phase 5] Python scan: `mv88e6320_ops` and `mv88e6321_ops` are only
-  ops using `mv88e6352_g1_reset` without `rmu_disable` among 6320-family
-  dedicated tables
-- [Phase 6] Confirmed `mv88e6320_ops`/`mv88e6321_ops` lack `rmu_disable`
-  at lines 5181–5182 and 5233–5234
-- [Phase 6] Confirmed `[MV88E6320]`/`[MV88E6321]` chip entries at lines
-  6247–6300
-- [Phase 6] No DT bindings referencing 88E6320/6321 in this tree (no
-  `.dts` matches)
-- [Phase 8] Failure mode: RMU not disabled → MEDIUM severity hardware
-  misconfiguration
+- **[Phase 1]** Parsed subject, tags, body from user-provided commit
+  message
+- **[Phase 2]** Read current `net/qrtr/af_qrtr.c` lines 998–1024,
+  387–402, 548–571, 930–995; confirmed leak and fix pattern
+- **[Phase 3]** `git describe HEAD` → `v6.18.44`; Makefile → 6.18.44
+- **[Phase 3]** `git blame -L 998,1025 net/qrtr/af_qrtr.c` → bug since
+  `cb6530b99fafea` (2020)
+- **[Phase 3]** `git merge-base --is-ancestor cb6530b99fafea HEAD` →
+  ancestor confirmed
+- **[Phase 3]** `git log --oneline -20 -- net/qrtr/af_qrtr.c` → related
+  fixes listed
+- **[Phase 3]** `git show 44d807320000d` → prior syzbot refcount fix in
+  same call chain
+- **[Phase 3]** `git show 8a03dd925786b` → precedent for QRTR leak fixes
+- **[Phase 4]** `b4 dig -h` → requires `-c COMMITISH`; commit not in
+  tree, could not run
+- **[Phase 4]** WebFetch lore.kernel.org + curl raw → 403/bot
+  protection; thread content **UNVERIFIED**
+- **[Phase 4]** No mbox file for this patch found in workspace
+- **[Phase 5]** `grep qrtr_send_resume_tx` → single caller at line 1074
+- **[Phase 5]** `grep confirm_rx` in `net/qrtr/` → flow-control path
+  documented
+- **[Phase 6]** Confirmed buggy ENOMEM path at lines 1011–1013 without
+  release
+- **[Phase 6]** `git log --grep="fix node refcount leak"` → not in tree
+- **[Phase 7]** `git log --grep="qrtr.*leak"` → active QRTR leak-fix
+  history in tree
+- **[Phase 8]** Assessed trigger (memory pressure + confirm_rx recvmsg)
+  and leak severity from `kref`/`__qrtr_node_release` code
 
-**YES**The background history search didn’t finish cleanly — the repo is
-shallow, so `git log -S "MV88E6320]"` mostly surfaced merge commits and
-wasn’t useful for pinpointing when 6320 support landed.
+**YES**The background git searches finished and match what the analysis
+already used:
 
-What we could verify from blame: the `MV88E6320`/`MV88E6321` chip
-entries and their ops tables are already in this **6.18.43** tree, and
-both `mv88e6320_ops` / `mv88e6321_ops` are missing `.rmu_disable` while
-using `mv88e6352_g1_reset`.
+- **Commit search:** The candidate fix (`fix node refcount leak on ctrl
+  packet alloc failure`) is **not** in this `v6.18.44` tree. A related
+  prior fix was found: `44d807320000d` (syzbot refcount bug in
+  `qrtr_recvmsg()` / `qrtr_send_resume_tx()`).
+- **Related fixes:** This tree already has several QRTR leak/refcount
+  fixes (`ab269990ed581`, `44d807320000d`, `f2664bc4f0f35`,
+  `8a03dd925786b`, etc.), supporting backport of this small error-path
+  leak fix.
 
-That doesn’t change the earlier verdict: this is a small, correct
-hardware-init fix for chips already supported here.
+**Verdict for this tree: YES** — the buggy ENOMEM path without
+`qrtr_node_release()` is still present at lines 1011–1013 of
+`net/qrtr/af_qrtr.c`.
 
-**YES**
+ net/qrtr/af_qrtr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- drivers/net/dsa/mv88e6xxx/chip.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index f324b88450427..7e294f2104b86 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5179,6 +5179,7 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
- 	.reset = mv88e6352_g1_reset,
-+	.rmu_disable = mv88e6352_g1_rmu_disable,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.stu_getnext = mv88e6352_g1_stu_getnext,
-@@ -5232,6 +5233,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
- 	.reset = mv88e6352_g1_reset,
-+	.rmu_disable = mv88e6352_g1_rmu_disable,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.stu_getnext = mv88e6352_g1_stu_getnext,
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index fcd24a7df3f00..1f40496d84a33 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -1009,8 +1009,10 @@ static int qrtr_send_resume_tx(struct qrtr_cb *cb)
+ 		return -EINVAL;
+ 
+ 	skb = qrtr_alloc_ctrl_packet(&pkt, GFP_KERNEL);
+-	if (!skb)
++	if (!skb) {
++		qrtr_node_release(node);
+ 		return -ENOMEM;
++	}
+ 
+ 	pkt->cmd = cpu_to_le32(QRTR_TYPE_RESUME_TX);
+ 	pkt->client.node = cpu_to_le32(cb->dst_node);
 -- 
 2.53.0
 
