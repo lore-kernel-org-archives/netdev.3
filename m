@@ -1,109 +1,162 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D12D330650
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 13:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B56D3314A1;
+	Mon, 31 Aug 2026 13:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788181841; cv=none; b=QzRYN7IQO966KtV3zGxfC/t/noLtoyue2MwSI6AjAwIXtx45T2SoSMU+jRpherLPiri8XDz3UdQqRa4ySbIRSUSlPFCuSz+/lgIGm07X20A1zwnbOffsWJvhw7TCmHn0ZjKP4z+hfp46g1AKl6T2175+UYwKMRQ2H3JaZTn5vM8=
+	t=1788181867; cv=none; b=fLJLlwuLQNsd/qe3gJsvpYJrRe3Z2ODTijbWDVe8DZbQvW/d3Kw5EGJmg856X+5mJstMzeZzAGp+gEq79rzquDx90R0nMUJiSl+5RyHCgTWyePYPdVRQxdP3hTWvJpLpdexnJybag9cX1AaXxLSRKMY1zojCF/uX1Tj0bI7uwYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788181841; c=relaxed/simple;
-	bh=+gxDmjotSf3LuBIiaiIjXvFNTGmFAUolGNFNkJv7du8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TOUgMRdqdD50ZOz9zaWm0beTBIZP7oy3di7iN5Y6dqsvK4QolAvxHJcKEzfqCfIgiim2luL5svySzZ3UENpCJa0wCMuYWU6KcFcz0q865i16/tFriKlAOhMt1ApH/jqzKcnpewsWyBHuoVsks4RF6hX2Mq4figfE0wcfZfrrkNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TjMC4n57; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1788181867; c=relaxed/simple;
+	bh=L263YCRQbRJuwPI85uN2CwZGOEKPOQYE86PpU/uWoG4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l8XeLi+55LfZHqhOZdAjmMpSPMZgJDYUkASn0RajxdN2sbbKaGtf8Kx9nFCfY6LJwGJSmcPgbu6KxepZpld5FhYNGXxHDAaC4U32/d7bZvHiKovtjs3+iDAonfemA2GefP4fLcBUKCguDaH7RWqf0l4/bHQ91YZGdIwU47WOcZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=MQ3Sy/bG; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TjMC4n57"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-482e4998d28so2396845f8f.2
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788181838; x=1788786638; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=39pREVZZ58PRD5IOFAIgDXEtV7Al6dYOwo9W4DadEPU=;
-        b=TjMC4n57JlICA+fZlm+EGQyz3aYVT7U84E/P32+mGr9FHcta1ZPhMEaCBV6HI0LT1h
-         fj0hywjfkoSZg6VX//Dind/AM9pjEqEaOSSChOx1OZAB6S6B3AFZvqb+c6kJe0d5WVSh
-         Yi4JY6UnoS1qM+5nUD2jj5mE7FCWhp3JGAbFjfSOUvmiBzrWl44GgUyI7aGpSJ21R+2y
-         2Y57zRu/s3witvJ1KMV/lmfCcuPQdPen1dJwEumn9XdNv+m1pQyST0tJkDYppYwTISFM
-         V4IlwVWHqKSFVdG+nzXIWnjL9eLs4qJQRS4TOJSqwY1+ttPwFp6E4VZBp6/oSek8Dza/
-         04iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788181838; x=1788786638;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=39pREVZZ58PRD5IOFAIgDXEtV7Al6dYOwo9W4DadEPU=;
-        b=jftHjJTPYNVGH/IcGr89M5WrKUAYbNTwAZiSraHgZYiynEhBGdc1wbh1/SiGr4BQRj
-         l0eO9YRhbiaVqpRIIPvNrQ6X4d/f4+RJPMGq0Wiut0Oai1ri9QzYpVQvLRimbGjGSyUD
-         EaGDaWpJzTRfe2A+4e0csu4L1iK04+GQa+0XSwtoWABlvsndynE0HRjz2w4xRExSOdRq
-         1jHpVAXEM1WbmoLA1yX4jC/kvplJpysT6t0OZCuVgARbW8D5OUSvooDMijauAkbMR9OM
-         n4eU8jkYQmOPWgXGaid4sJ8MR2hSOZcNOxoEpvaaZ2au6H/R/+QD7yiXfCa7v+yUaHLb
-         3IRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzO6fvyKo/n1/O+y+0ftdMQB8NfLPMniAIgMO6Fo4faLtrHvKAHYAkR4vvHRgasluQv1oxtnpg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mDN25igkQW7SMYYJPKtd/NRg9FlnyzmninKH4bAE4GA9FrH+3Q
-	8bbnXde005mWA3t1Li/AjT3zcQOhXmZVPQXu61tXqcwsucOrGA2plyR9dUMMo46bnJI=
-X-Gm-Gg: AYBFou0oMwPFe+ANmgBqJRytV6xhGTf4/h8vSvUTPrghNnMUZVvNL8KrS9JXK3UocCN
-	qm6GBEJ9JtcF83IYACuVwmNl+sxVyhEgSPmZgEmKz9hrmSEtr/Rqhpks/DrWzkVAAGNJH2fBEpI
-	+gE36Zl/+yYgCTkCqdSgpXEGKUzWlWuZ0L8c0Idaibr74RTbaMLWaE98mH6A0BU9K1zqL89WrdC
-	iID1RqxDzVeZfhcNHtTMF0l/5PZ56czBeRAMBRKuNUsKgu9F4926/uVzhsNptX43RHeUAXhmDAR
-	+e07YfzrLfb7zfVToERqzNuq/nXPpzW4WquBASh6eswZOKF3DSkU4vxtkl+LkWg0QYIkVhnkOGv
-	1nP1AEwrC/5NEIhgQbk1OxQppj6V141pFRjuz4nHUJabcJAY0O1xR4bRj261n9YuT18njRvIR3G
-	ZuJleQR7NIDJW+4oC35ymVMUCHbxE0EPfZFZDTMcUyLRDXTLDDeGnZMkEEBYjQ3W8Bt+9x8QrfX
-	uNsY7soFCfExNbZDp+MFG4su2Ky/yc=
-X-Received: by 2002:a05:6000:41e5:b0:484:338b:3bc1 with SMTP id ffacd0b85a97d-484338b3e17mr21271089f8f.27.1788181835254;
-        Mon, 31 Aug 2026 06:10:35 -0700 (PDT)
-Received: from ?IPV6:2a02:3033:283:b9b7:bec2:3dce:f757:ce06? ([2a02:3033:283:b9b7:bec2:3dce:f757:ce06])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482fbab3f22sm23547103f8f.2.2026.08.31.06.10.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 06:10:34 -0700 (PDT)
-Message-ID: <66a6f7fd-bb11-4c1d-9871-14046add019d@suse.com>
-Date: Mon, 31 Aug 2026 15:10:31 +0200
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="MQ3Sy/bG"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VBBjNY536782;
+	Mon, 31 Aug 2026 06:10:33 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=XbQdqAX54r/8rX0BrtKTbsz
+	NuH2BR4o+T1l2B2ynFo0=; b=MQ3Sy/bGkANYP1+TrJF9tSow4tXJ0CXyvElFS8I
+	VYRtQq0ET0PC8RNZKcGlgCZqFNXXWW2+tiuJUgBc7XxlXqU8sn3bufYoo/uk/pHZ
+	Mt/y/0ARLvh3T6b4ykLaJsYBLQpwpzpSzK5gv+FPa73vOkzv2Y8f5W6elWd+AA25
+	K2Gx+m2ayQdTgPGcI0DJV7biWjZ4naqRLk9dOl/0gDCuJm3VdD7s/1ZBd3NbZBZN
+	CWycQaFiw14en6AUbg/GGGHc3e9MxHfToTvZsJJMK4dRFrhGKf6NOfOXytEqSnPn
+	plWRjCK7PKbG3s6pH7CV+5sjS8mb02KOu2JY6MB5+1DigDg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gckp8jep7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 06:10:32 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 31 Aug 2026 06:10:31 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 31 Aug 2026 06:10:31 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 6329B3F7089;
+	Mon, 31 Aug 2026 06:10:26 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
+        <horms@kernel.org>, <jhs@mojatatu.com>, <jiri@resnulli.us>,
+        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <sdf@fomichev.me>, <sgoutham@marvell.com>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>
+Subject: [PATCH v10 net-next 0/2] octeontx2-pf: mqprio bandwidth offload for NIX TX schedulers
+Date: Mon, 31 Aug 2026 18:40:11 +0530
+Message-ID: <20260831131014.2639581-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: usb: ipheth: stop data URBs on ndo_stop
-To: raoxu <raoxu@uniontech.com>, andrew+netdev@lunn.ch
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, kuniyu@google.com, maciej.fijalkowski@intel.com,
- diego@giagio.com, agimenez@sysvalve.es, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <8DB5FB95051A2E5A+20260831093619.838403-1-raoxu@uniontech.com>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <8DB5FB95051A2E5A+20260831093619.838403-1-raoxu@uniontech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDExNCBTYWx0ZWRfX9BJdfqNMBfTe
+ sW4UXE5MafOldMj/QfirMsJgtppHuE1xR4IjOqtBDOfpzswL0Twj4fPlg2t6k3alujW/CdolTzg
+ JdH/b51cf2ymOxNoAxL7ArVPg+K+A7cgQ9GPsjF7ZkBm9Xr9YKDac33+TOYEA+9U2LhtoTBxD2k
+ rghG4srzqMeXKfZM/xXbmyIHEN9vCctfxxYX5UwP3Yypqluwai++Pl4yYQqfx2ctyywfhVKu8T/
+ dv9HZRNAcs6DQKFhiDTqegMgrBqlS9T1IJ4aTCLtPwJFlQpEXF0AbI6m2IhWhkUccuaAtnFQrtE
+ 8YUIijmAFx9to3r9djtXk+nW2JEIYv4dQMC8xQ/dESoYLiuKI207Dwh+yJ3E9qM/vVkrksZ4oQS
+ 3eY/Jz5nl0izYY8UN8altJWyyDdTqlWHqC+MLcdlrTfBZU11e8G/oP22afIVK55t2lMN4ShlSmc
+ wX8ESjJgyHEAHuyZZmQ==
+X-Proofpoint-GUID: JP7GND6UNhSNZWUfISyE5TXLaT5uGLmw
+X-Proofpoint-ORIG-GUID: JP7GND6UNhSNZWUfISyE5TXLaT5uGLmw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDExNCBTYWx0ZWRfX3NliO13DpWmu
+ z4VPERy2PcTZnPUCAC4uEmISxi9mZpXb6V5NOKGr2RPg3r3sRbCf7XcP6DnCQSmtPVUnLuRLt5m
+ HaxalccJqN5Yj6Abwdjqh3yjRtM6jRs=
+X-Authority-Analysis: v=2.4 cv=GLk41ONK c=1 sm=1 tr=0 ts=6a957d48 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=c92rfblmAAAA:8 a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8
+ a=C2uUxsRbeo5h9OizJ8YA:9 a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_04,2026-08-27_02,2025-10-01_01
 
+This series adds hardware offload for channel-mode mqprio with
+TC_MQPRIO_SHAPER_BW_RATE on Marvell octeontx2 PF devices. Each
+non-QoS transmit queue is shaped by programming MDQ CIR/PIR on the NIX TX
+scheduler. When bandwidth offload is enabled, the driver allocates one
+SMQ per queue, parents every MDQ under TL4[0], and applies each traffic
+class min/max rate to the queue(s) in that class. The TX scheduler
+hierarchy is reprogrammed through ndo_stop()/ndo_open() on every mqprio
+add, replace, or delete.
 
+Patch 1 is required for patch 2. The octeontx2 driver tracks committed
+mqprio configuration in snapshots keyed by the owning qdisc handle. That
+handle is needed to implement two behaviours that patch 2 relies on:
 
-On 31.08.26 11:36, raoxu wrote:
-> The disconnect path already kills the URBs after unregister_netdev(), so
-> unplug testing eventually quiesces the data path.  The gap is therefore
-> specific to an administrative close while the USB device remains
-> connected.
-> 
-> Kill the data URBs from ndo_stop as well.  Do this after disabling
-> carrier_work: ipheth_sndbulk_callback() schedules the work on TX URB
-> errors, while disable_delayed_work_sync() prevents a completion caused by
-> usb_kill_urb() from re-arming it.  usb_kill_urb() also waits for pending
-> completion handlers and prevents the RX completion from successfully
-> resubmitting its URB.
+  * tc qdisc replace installs the new mqprio and runs its offload setup
+    before tearing down the replaced instance. Without the handle, the
+    driver cannot tell a stale disable callback from the replaced qdisc
+    apart from teardown of the active configuration, and may clear
+    hardware shapers or netdev TC state while the new mqprio is being
+    committed.
 
-Hi,
+  * When replace fails after partial programming, the driver rolls back
+    from the previous snapshot. Matching setup and teardown callbacks to
+    the same qdisc instance requires the handle passed through the core
+    mqprio offload path.
 
-this also kills the transmit data path. The packets in that URB
-have already been reported back as successfully transmitted.
-Is this really the correct approach?
+Patch 1 extends struct tc_mqprio_qopt_offload with that handle and fills
+it from mqprio_enable_offload() and mqprio_disable_offload(). Patch 2
+consumes it in the octeontx2 PF mqprio offload path.
 
-	Regards
-		Oliver
+The driver rejects offload unless the interface is running and the
+device supports CIR+PIR shaping. Per-TC rates are rejected when a
+traffic class spans more than one queue, and concurrent PFC, XDP, or SDP
+rep use is blocked. Ethtool channel count changes are blocked while mqprio
+bandwidth offload is active.
 
+Ratheesh Kannoth (2):
+  net/sched: mqprio: pass qdisc handle to offload drivers
+  octeontx2-pf: add mqprio bandwidth offload for NIX TX schedulers
+
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   |   6 +-
+ .../marvell/octeontx2/nic/otx2_common.c       | 145 +++-
+ .../marvell/octeontx2/nic/otx2_common.h       |  27 +
+ .../marvell/octeontx2/nic/otx2_dcbnl.c        |   6 +
+ .../marvell/octeontx2/nic/otx2_ethtool.c      |   8 +
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  13 +
+ .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 696 ++++++++++++++++++
+ .../net/ethernet/marvell/octeontx2/nic/qos.c  |   3 +
+ include/net/pkt_sched.h                       |   1 +
+ net/sched/sch_mqprio.c                        |   5 +-
+ 10 files changed, 907 insertions(+), 3 deletions(-)
+
+---
+
+v9 -> v10: Addressed sashiko/jacub comments.
+	https://sashiko.dev/#/message/20260817032747.1765883-1-rkannoth%40marvell.com
+
+v8 -> v9: Addressed Sashiko comments
+	https://lore.kernel.org/netdev/aoJ6FhtWue0FHDQV@rkannoth-OptiPlex-7090/
+v7 -> v8: Addressed Sashiko comments
+	https://sashiko.dev/#/patchset/20260811085050.3212280-1-rkannoth%40marvell.com
+v6 -> v7: Addressed Sashiko comments
+	https://sashiko.dev/#/message/20260810034738.1786029-1-rkannoth%40marvell.com
+v5 -> v6: Addressed Sashiko comments
+	https://lore.kernel.org/netdev/20260806095434.1144397-1-rkannoth@marvell.com/
+v4 -> v5: Addressed sashiko comments
+	https://sashiko.dev/#/patchset/20260803042724.3380209-1-rkannoth%40marvell.com
+v3 -> v4: Addressed sashiko comments
+	https://lore.kernel.org/netdev/20260729105139.2302908-1-rkannoth@marvell.com/
+v2 -> v3: Addressed sashiko comments
+	https://lore.kernel.org/netdev/amnYX866mYx02cBe@rkannoth-OptiPlex-7090/T/#m67310cbec48b21c7720858ab3a1ea083a0f8dc10
+v1 -> v2: Addressed sashiko comments
+	https://lore.kernel.org/netdev/20260724075010.2665758-1-rkannoth@marvell.com/
+
+--
+2.43.0
