@@ -1,210 +1,183 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012014.outbound.protection.outlook.com [40.107.200.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD31D3E6386;
-	Mon, 31 Aug 2026 12:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788178959; cv=none; b=pojRzV0n7qXRJcX7pYQxbzbW5ACfCnQtoHvI5EAX258PAoybBvdOnAeDGHNUrIMTBBMWqYKZGCdMCk1ttz0g2My/HJXTZhy1ZWMwdMeYD7A5SL48nVpdqIEbxdECAJWUBkY+pN8ojJdbJpgTpoVGNo4gT4Vds0CwvAfrz/iJBGM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788178959; c=relaxed/simple;
-	bh=hQlF+RlBpsVwioFHHo5iBMWnnt4OLnHkD2guK0uNZVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pcSCSYauChQdh84MsmY+d7pqrtqfe/jEQyxX46GY1uVJvjkig5TIX4n/4ix/Fif1VHoIime0x0rzcGXRpD6sFsUYKTZdND/5QJQw9pkZ414eZKm0bs31CYGrZWem43lI6CQm8H23cIteXNLIWgPHXZdfw8Ej3AssmPw/CWOWgTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=OC/7SLOo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=j9D0w1XB; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=u3ligTMF; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=OsBoF80q; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9E22DB7BF;
+	Mon, 31 Aug 2026 12:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788179030; cv=fail; b=tQ/j8zBK0qG21nRVL0ArqrfP1M7TMCmdSssaZogUGpvLgsqoyTYkK4xwHWMMOSNchyloa8CnDLN0JUI8dFPFc89QQlPJA0JJSkCu1kh3Wr2qq5ORvH1CqllkSg24PvnWx/+/lZh5+TIQ+/dLe/WHWMeEfQH1+YP0Kxdkj3Vr2TE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788179030; c=relaxed/simple;
+	bh=PHUrRn5wGbVa9GBDr/8smct+JeqRt7N5tBFp0b9wkZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qaFHRCP2YvOAoNh/l1WbVxBeZliiEeGA/jP2NrBhNMUCKH1VfOFmYiUL+w13/bwZu1QzqTH/yxULg6ykIWyx3kxlbQ5WjXs/CZE/xJk254FVurUHsqxlwAcLIKJWdQ99bD4UtO/TZHMOWCT2nwTxFZYjWN+WLV+DKPL1NKq/Xhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=V68hSAHU; arc=fail smtp.client-ip=40.107.200.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="OC/7SLOo";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="j9D0w1XB";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="u3ligTMF";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="OsBoF80q"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A0111220C7;
-	Mon, 31 Aug 2026 12:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788178951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n+VyCKdP0D99p70cQubnM0W79HqKh5lLhDcWO7y/gC4=;
-	b=OC/7SLOoljo25hDoEt8sIbyfuHt3DRURPO+P3SQ74DHXv5PYaE5JrQYWRG5idUX0KO9SjE
-	zcEWgjUebO9oAdBReCa1LBkV3QuZMNTvSp4dUEdYvhqdypa4tvBAf6ipB7YVU5lEfXPa2h
-	7wxSoUqX8lhcQbZGDYaQpnO+zlrAz98=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788178951;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n+VyCKdP0D99p70cQubnM0W79HqKh5lLhDcWO7y/gC4=;
-	b=j9D0w1XBmH9s1twjFn6CY8tcrswaj2YdUnq2qjdfD8CyDIA6ahhzMNSvOLKAcjtk7u5ymL
-	gjNRAJmxshAgthDg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=u3ligTMF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OsBoF80q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788178947; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n+VyCKdP0D99p70cQubnM0W79HqKh5lLhDcWO7y/gC4=;
-	b=u3ligTMF8dv/vxkHJspOdKQKXYgtSnUNZfmdTT44jE+Kiq3XpDqdPX92gcTlm+R8Oi7iDc
-	0oyJoQZfkIv1Z4/XEXt5xunybT0W4bK9Xy/nMe45vmG2OJTM/f5M2IoiMB4tEfcdRtvXVi
-	hbAnWFHzzCy4Rsm12iEBV2WavpBbbqc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788178947;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n+VyCKdP0D99p70cQubnM0W79HqKh5lLhDcWO7y/gC4=;
-	b=OsBoF80qxWF0mjLTlizAu7ytXW/sC1OHCf7QDPWrrDFjQQPA7vBzG5hfkdzSWshYMtXqWT
-	2kMkU7zOwwHM+PCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7B4F213682;
-	Mon, 31 Aug 2026 12:22:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /mQZHgNylWpAfwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 12:22:27 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 10781A13B5; Mon, 31 Aug 2026 14:22:23 +0200 (CEST)
-Date: Mon, 31 Aug 2026 14:22:23 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	bcrl@kvack.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
-	yi.zhang@huawei.com, pmladek@suse.com, rostedt@goodmis.org, 
-	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, senozhatsky@chromium.org, 
-	akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, socketcan@hartkopp.net, mkl@pengutronix.de, 
-	kuniyu@google.com, willemb@google.com, jhs@mojatatu.com, jiri@resnulli.us, 
-	kees@kernel.org, cyphar@cyphar.com, tglx@kernel.org, liuhangbin@gmail.com, 
-	sdf@fomichev.me, nb@tipi-net.de, linux-fsdevel@vger.kernel.org, 
-	linux-aio@kvack.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-can@vger.kernel.org
-Subject: Re: [PATCH 04/11] fs: Use acquire/release for fdtable resize
- synchronization
-Message-ID: <cwsvkb2bqq5zvdgqyaz7qarprl6ca6sq54cjiqxtcvzmmm5vrk@bjeea4jm2jad>
-References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
- <20260825095422.3166067-5-ruanjinjie@huawei.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="V68hSAHU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XVqJZH5AHv2ENUAz4v18HPVOKkDSKvhiyVSOY4BRLGSefgoVTnsDJ/bm1x4ltainkd+N2AwOe8BF7Z1jcdiQpPbqXY5gp0jybjQOnaiyExCI4jeY8EnMgPHjL1zvPunyeZka2niyEWGqOW+zFwDxB0+KzgiOwgr2CEfRZJeiTwHRWVV6AGXkXINgAKIHbsZDwPDrYiCQyIB0x3iTClCLXFwHkeQmrdGWhnjmHC0ozzo+YoFrQdzBv7vslO+3NAw+TnZi8pPwxhUCX/qplJF9SfpcZvDqz46I2OvFC3JIyLRibEsdKvvsU7AIl/wqwRhGx5dypMxrrQxrlKcwm5sliA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j7ndMjWuKalxmuaKlrPvCqQ2sJOZ0hGesgk7M72UK+E=;
+ b=xLGGHp9vqyUJlepXZruh+CJRRYxju3HTu/bK/t2tvK/HeOqBez1PwmhriujbLlKiFw2h2MiLjvECns508Wn8GZTb+AxuGiDU/ow2JUWW5HLrU/bn7IT6I7v5iJqLJyWwXoD5t3hlLcPHIt8fZLTKdJZJgNzhuSua8BGzCle+fPZfE70T+nQ3ucOxMtxfMjDKnkWOtnpMCHGKgfD+IiNTVlPZVz0+wLctl66NL9saULNf9sMIaYVBLmPg6ldMfN1QiRLF8jwzTfe1lRCLa/EYkY5bisbh8EQj9ZKAAAbmgDnhLm3X1FqE0QBAFczh7ZnECinnLRXX+w0WhUkpb0xm1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j7ndMjWuKalxmuaKlrPvCqQ2sJOZ0hGesgk7M72UK+E=;
+ b=V68hSAHUz4RjL58SdFQ43YVHRlabnb7XBuNdApvEG3Lk2rBfY+zOOAd5UAeg8Juxmrn3/ydsCKPcyrlih1tWIRIuTd40rD6ygHcTfm1MLBVNrT9ZSD8vB8v8o+IUBe8ftQBat6LdfJC1vWmV5NSkenF8skj3oEX0GD2ACI55WmYEsKidqKnQqJCNfvYTD5y9E1bAV9LZr2+YZ97bmS5yZ+3B01bVhbGoEvGX1V7GnbVv5EpbN/FuGilXUxodlyX1M+fovoa+2+bUW/MDfH5NvCjuF1Rm2xvXhEUb8zfxR/oY7bmDa85heZaPgfjG0q7Pw/sPUlht4n+u42cTpfeZgw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CH3PR12MB7523.namprd12.prod.outlook.com (2603:10b6:610:148::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 12:23:42 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 12:23:42 +0000
+Date: Mon, 31 Aug 2026 09:23:41 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Konstantin Sinyuk <ksinyuk@kernel.org>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, Jiri Pirko <jiri@resnulli.us>,
+	dri-devel@lists.freedesktop.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jhs@mojatatu.com
+Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
+ infrastructure for scale-up accelerator interconnects
+Message-ID: <20260831122341.GG4157646@nvidia.com>
+References: <cover.1787552412.git.ksinyuk@kernel.org>
+ <apAsfOowcG0cTvT8@FV6GYCPJ69>
+ <apG3Gsk1TeMD-oCc@intel.com>
+ <20260828170301.GA4157646@nvidia.com>
+ <fabric-jason-reply.1788176463.ksinyuk@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fabric-jason-reply.1788176463.ksinyuk@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0433.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10d::13) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825095422.3166067-5-ruanjinjie@huawei.com>
-X-Spam-Score: -2.51
-X-Rspamd-Queue-Id: A0111220C7
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	TAGGED_RCPT(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLa77mm4gi8mw7uppieotozii3)];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,suse.com,goodmis.org,linux.intel.com,rasmusvillemoes.dk,chromium.org,linux-foundation.org,davemloft.net,google.com,redhat.com,hartkopp.net,pengutronix.de,mojatatu.com,resnulli.us,cyphar.com,fomichev.me,tipi-net.de,vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.cz:email]
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB7523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0fe18861-5a3f-46fb-1cd2-08df075ab1df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|18002099003|22082099003|3023799007|56012099006|5023799004|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	bpWt2Qud3Kb6njlPlvbd2QArpqdSs0LVYBjYPIV+IIDBMncoOhEC73BBMfAGbCrOBv5yMMoNLMGyMPweRG/3+bnYqxHr2CxnUAFVtVRnXlnAURMs+z9w4t4EAlAGnfwm2DDHrFz57dhjteUZo1P5j8s4M9bExkU6mCYDJMUPLj30IysYfteVjS9aX5KW2hPcIBsPr2LYs6c+5EDMxTuIFAf4BvM6OCBqkNZ63o2BSj9C0xcTPnXJeCEKPi3cFcVsOiHOUKyhsZeVms+4KABN6tBXzKO7ZbHAkHvjUq03rHAGlZSmsHL0N6EXzkP9T07CBk2JHXlyNrZhdYwo/IMpMib4UK5P4AAvrxTUwCGn/IAD7hCptBmGSgKLU9pAtHMzyo4ojYTiJ//jlOu50TVyeL0mNIweYX6IBAZRt3hHxYcyo1l6cBBwq6nOh0n0686Qi3aor8Sh7UkR/u26uJKMNoVmOGobATNxi90GQvOioyu69J0uIcieXcxAt6kI3ycDcKTQ67+Jb+OgKOJWwwdOvgSnZuHsV1hTaFB508Y9as2L4XM23fkwikJuRWGUKHTAIUmgWwjH+a6Eb6kj+5j/WE4sQiB+I7iLaG9sqvGu6NR2KdJPba7rxE6JHS2WG4lS6H9BoA+0xWJ/ExxKeyn6ZwVePyD1n00zbtMNKJ7k9Og=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(3023799007)(56012099006)(5023799004)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iWmGbay1kQGhyfKNqkuZoP9vbjgo5thSs/8e9ffDVDmc3u5+xl5eF+FbXhLp?=
+ =?us-ascii?Q?+xqANUl5TjBpP/89dpprtMtYYeKKRIvlw5SQ8R4z0giuSHE4ZPJjxlyC9B2H?=
+ =?us-ascii?Q?Pj4DB8UvCBJbhOUMzrm3lOGCmGSgSxulVh2+NJDdTVgXNh9PqDzl/4jr+E6/?=
+ =?us-ascii?Q?Z4iV9IguiXWB6fDPf4mXRZYOftxaMLhvdPDXYkhjkbi3jKhdOVL0x6Bdt40Q?=
+ =?us-ascii?Q?UDZJWpQmZ0b8DPblh6Usi2BeeZKKLeaXGdzX3o10YsHlLE3X0SDUFrUYi3xq?=
+ =?us-ascii?Q?OkepNnCCr6N7E6eOp+zzRNuYBl5ANAe4WWP+Es61ZJtHYyEXaQ/Rtow0YdCk?=
+ =?us-ascii?Q?lVLkPdygfRT3t5aVo84rD9b9ERPf9JkZVioZE7oJpDa2wc/BomMChQak4Pti?=
+ =?us-ascii?Q?4YCLxYlimZYdzMTmyRzFgkU3lQqckktNaggLRbrs9DcKuaXhkRp8kTYyJXvB?=
+ =?us-ascii?Q?0uHbJlar98SHoVaWObB7c4sEEqyNCBrtqTLXnJcbSVXt17M8mNY+QyHib2Zr?=
+ =?us-ascii?Q?gFkRsUHxJvtJE+uRVuXpwD+kwvWbEbkVKY4Z9wrNPFXelSzuCguiWUM0+vIC?=
+ =?us-ascii?Q?Kh3UPKRrZNPKqkp/Pxlq3W7X7uma0uTAv362ozpwSrgrfamY30Xw0QFc0ysH?=
+ =?us-ascii?Q?j8EFmYqYOw+l+AsHn/7Vm9xvnDAfC5JATovjdI/u1NPYXhc93eLb6exior1Y?=
+ =?us-ascii?Q?/jSRsSu0zUeKu8l2Ui6/sgZWUudnh03YKrB97ULL/s1n1MAGHq2/rsSckN8L?=
+ =?us-ascii?Q?yd+O01TpNFeVXFTqTCtlAQdiqWdt37i2B+eokjPr/KaiLlw46J5Zg+HBwyq0?=
+ =?us-ascii?Q?lBpW/HwxidHXbKNFYwEbKfIGlgGpUszckGN1wuE/ej/tI8u51VkbEQjwgG4y?=
+ =?us-ascii?Q?XPGianpArg1wCEfPq33HP6ZZbNuvEVgYNWS9KABojphWow02P8SVQoy3FsmM?=
+ =?us-ascii?Q?Zg4SF8sixRedA6k/ZUxSAz2ZHgziLsHPr4dN+u85sHVzGpweSA+uZugfjKng?=
+ =?us-ascii?Q?t8AY3T/VQewlmxW65aue4ofDsPL2JAEXSw9YIdB98G8hjNm1qpKGYgbDBqEm?=
+ =?us-ascii?Q?CE5uUiJlKC5Ot66VWxDQ5zC0ZMEQ9C+0SYzZexs3QaZB3sfeWyg17M8jhMyN?=
+ =?us-ascii?Q?VeRZPdgqAOcZBuku/CP5PG2kRFl4MgYPBWJqxprrmJnloqILnSx7NpDIOxPb?=
+ =?us-ascii?Q?uzXFR74Z03kUn6nirbsQeDP1tLeez/60IhCJP3tM5TrVbzV7zb/bnlrV6QtK?=
+ =?us-ascii?Q?NpIPMaKuId8rrAD1fZKW7pT+e8Hwx6DyQ9ck0CvJvH/7Nuqhg9I00t6vAxVl?=
+ =?us-ascii?Q?Hv2759Jw1YneiDOzfVQuOZl1yVX4OtrhIZRFd7ArkyXzKSqI3YHcCQiO00Lv?=
+ =?us-ascii?Q?1CJL1O3xFIApknRCGv6Y51lXPfhSIqPuC7H3fOhf/RE3uOfcdLqRDAKf9x9L?=
+ =?us-ascii?Q?ewFrtXDQeDVHjgcdt7GdDiCLVBAZKOIJJMe/vR4a7A4MBF/UgdvgJapVqH/+?=
+ =?us-ascii?Q?wbgGcRdYp/kWGx0qzck4k2CchVGDawn3M0Oj0xa8ncW5J9OwXwWmbviMVqE8?=
+ =?us-ascii?Q?zJhSiDd6DMlvH25Igil3HpIT+nO1AOwvRJlFaAY2lVaurMY7ap6W9Z16u/nM?=
+ =?us-ascii?Q?muT1GN6oEOjQ5qWhznZI6IxUPJg0xHUm3AZH5AAaSyFkzqvGVWpUo8rxH2L9?=
+ =?us-ascii?Q?9USb6GInNNHQ51izaA9O9Hq3aZ0jiCP/x76WO1xIhTLOgDrX?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fe18861-5a3f-46fb-1cd2-08df075ab1df
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 12:23:42.3502
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lKL1k6kwlkVbt1iZ5hXp8u9N5eLphBQGdAyCWei/NIOi/6HLWma+GpQjWx3ig2a3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7523
 
-On Tue 25-08-26 17:54:15, Jinjie Ruan wrote:
-> Replace the smp_wmb()/smp_rmb() barrier pair with
-> smp_store_release()/smp_load_acquire() on `files->resize_in_progress`.
-> The flag is the publish point for fdtable expansion: writers clear it
-> via release after rcu_assign_pointer(), readers check it via acquire
-> before rcu_dereference_sched(). Observing it clear guarantees the new
-> fdt pointer is visible.
+On Mon, Aug 31, 2026 at 02:45:05PM +0300, Konstantin Sinyuk wrote:
+> On Fri, Aug 28, 2026 at 02:03:01PM -0300, Jason Gunthorpe wrote:
+> > For something complex like this, if you can't concretetly tie the HW
+> > to a net namespace, and follow the net namespace rules for visibility,
+> > then it is going to be a painful choice. I speak from alot of rdma
+> > experiance where net namespaces have been consistently challenging.
 > 
-> This expresses the pattern more clearly and allows cheaper one-way
-> barriers on weakly-ordered architectures (e.g. arm64 STLR/LDAR vs
-> DMB ISHST/ISHLD).
-> 
-> Assisted-by: DeepSeek:DeepSeek-V3
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Agreed. The series does not provide meaningful namespace semantics; it
+> is host-global and confined to init_net. I would rather make that scope
+> explicit than invent per-netns fabric semantics that the hardware does
+> not have.
 
-Looks good. Feel free to add:
+For namespaces and permissions you need to decide on a granual of
+control. For something like this is probably one of:
+ - Whole machine/subsystem/fabric
+ - Per ASIC / end point
+ - Per ethernet port
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+I would kind of broadly guess you'd have one cdev for each fabric and
+one cdev per asic or port...
 
-								Honza
+Then you could shove a fabric into a container sensibly..
 
-> ---
->  fs/file.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/file.c b/fs/file.c
-> index 628ca07dc4b1..86c035d459f2 100644
-> --- a/fs/file.c
-> +++ b/fs/file.c
-> @@ -273,8 +273,6 @@ static int expand_fdtable(struct files_struct *files, unsigned int nr)
->  	rcu_assign_pointer(files->fdt, new_fdt);
->  	if (cur_fdt != &files->fdtab)
->  		call_rcu(&cur_fdt->rcu, free_fdtable_rcu);
-> -	/* coupled with smp_rmb() in fd_install() */
-> -	smp_wmb();
->  	return 0;
->  }
->  
-> @@ -313,7 +311,8 @@ static int expand_files(struct files_struct *files, unsigned int nr)
->  	/* All good, so we try */
->  	files->resize_in_progress = true;
->  	error = expand_fdtable(files, nr);
-> -	files->resize_in_progress = false;
-> +	/* coupled with smp_load_acquire() in fd_install() */
-> +	smp_store_release(&files->resize_in_progress, false);
->  
->  	wake_up_all(&files->resize_wait);
->  	return error;
-> @@ -685,13 +684,12 @@ void fd_install(unsigned int fd, struct file *file)
->  		return;
->  
->  	rcu_read_lock_sched();
-> -	if (unlikely(files->resize_in_progress)) {
-> +	/* coupled with smp_store_release() in expand_files() */
-> +	if (unlikely(smp_load_acquire(&files->resize_in_progress))) {
->  		rcu_read_unlock_sched();
->  		fd_install_slowpath(fd, file);
->  		return;
->  	}
-> -	/* coupled with smp_wmb() in expand_fdtable() */
-> -	smp_rmb();
->  	fdt = rcu_dereference_sched(files->fdt);
->  	VFS_BUG_ON(rcu_access_pointer(fdt->fd[fd]) != NULL);
->  	rcu_assign_pointer(fdt->fd[fd], file);
-> -- 
-> 2.34.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> against. I would not switch transports based on an early pre-RFC, but I
+> no longer consider the transport choice settled.
+
+It is a good moment to collaborate with Jiri so it can work out for
+this use case too.
+
+> Switches are the difficult case. A UALink switch is not a DRM device,
+> and complete Pod topology may involve information owned by the Pod
+> Controller and switch-management plane, not only accelerator drivers.
+> If that information has to be represented as first-class objects, DRM
+> may not be the right final home.
+
+Well this series looks like it is all about telling the kernel the
+routing and address map to presumably program into the HW. I guess
+there is a bunch more to actually do the network trafic to get the
+routing in the first place and some userspace to bridge beween the
+on-link protocol and the the kernel objects?
+
+Then there is probably another big swath to get metrics and monitoring
+out of the end ports..
+
+Jason
