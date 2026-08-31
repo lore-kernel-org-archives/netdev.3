@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EE93F12D0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CA63E4C94;
 	Mon, 31 Aug 2026 10:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788170891; cv=none; b=ieYZnR8taGtE+1Ogb1RUg1D43xcf/frAg+jt9Zf2YxfFlE3B2ldw3mWjGt0xfU2lmfMe1BXL/hYRSJxy3lb3aiuQZrkybR0yVGaqPWk7YfsqAmzbHHyZoPV9vddUhS/ykKUO3/znG8VN/YsinlmBXs2keQbbe8CqOTkJIxhHu1g=
+	t=1788170891; cv=none; b=VAB0NFMBp1Qw9kWcNOrLfdl3G2LDMEispLfI1MAJ2iyRV6J/4kz4hjPuE7P6lvfecoPxjgYzrFHxtKR0x3xtx4t1+T0kQ300QLbVUj65pR+AEyxRhiBGlfygiOJ+tkr5KAz7t9TO8ZTcwHuHmCED1rt6mIexUHSosOSUw97CZ34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788170891; c=relaxed/simple;
-	bh=Xt+4mBtUkIrJ36ZCTKcJkucyLloqg9n7ap1XhHTfnJk=;
+	bh=Fz2uf0tPnU/Y4m5DeWMKXkg3rFzA0IH7d6hBVf3YE8Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MciMVOBz74/HD0c/IUNvxNIygziqeSxOBUPthc2R8iZLztk7y0gjFeMwWqJcilYPZ6bdpiKtnLWsTJft8Clt0ebHn5Cz3WFCXw/aYmncEFSFa4Rx/MEn5OL1aFgZOll9QajO/DAiepe9GUrv1DEqTWLyRH5wQJ9hjvS1ahJPCQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=aECcNOOn; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Hw9WeGEY; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=dssAVt0nFSX2z43QkAhIty5IPqlNmiFRSAdoBN3p8rKmtjiplgXBNk61FJYxmxv8duO3DtG7xSeYWAwSac+DdRYfWPhktyXzlnmm1iDRYh/JwiEGPOdeCFEWYj0iwMvXheKQpyarl00C0msh7D44/X9+T3GK9LZ62miyMTQms+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=va2fxk+a; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=AjxUk8Uc; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="aECcNOOn";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Hw9WeGEY"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="va2fxk+a";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="AjxUk8Uc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788170340;
-	bh=Xt+4mBtUkIrJ36ZCTKcJkucyLloqg9n7ap1XhHTfnJk=;
+	s=default; t=1788170339;
+	bh=Fz2uf0tPnU/Y4m5DeWMKXkg3rFzA0IH7d6hBVf3YE8Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=aECcNOOnP29w0bCN8ziLcdGVSEJB8zgid0TSe8gRSzrUD81eH6JcJgVce1tAC9hXV
-	 CDVcn06M8kz+3fT4V/cmepLWQkP2dlhwz6KGfsXhMlEHCk7KQMdHbgByXKxgksp5Fw
-	 q11R61ShbcTtPukrpdQcbnFbRdYNwWEXzRSTsF9vGfCjIYJ4Urhpfm0CeZc+q3yjo/
-	 iT98eWlknICIuZnhZHeVwmsGhitifFdKECjqeJxZn25DQQ0nkHhVWYys04pSYpGeHw
-	 H0gjaDU0MnOigm2JjiCF2ZjexHsZOZ8qYrEzWvBVI9QAaNmdrHsH+tZ05CpcROjssF
-	 ftXJoF4WOLmQQ==
+	b=va2fxk+aqXfH85aihJt743i4t8WIRlljzIN1TR+6sa7my4ZQiAi/+9hayRccMgMNP
+	 5noVSMXU/xgNUs1wEVbi23K8aINULqDBHnaAOj2ZIphcvprF+QB7j5pWaiyM/0i8ge
+	 B0nhG6weRBNpgz5nEKdXsYd3rfslhq/477FiROHS2CibNVsMSzN+HiiMXGk7aKL5A1
+	 e5pfKCGiU6voPXZzxMFgW89xVixwpQc/L+qv3gtHtRN+i+nVRpEAQU0HJyOUFPLAAB
+	 qXKSLQl0NluNS9TiBeLglmIcTbrJzTN9IcxWeqUlVtcPTg4exruLSAWcqjx43wuiyE
+	 KQ2fh1g2z+fug==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 31B463EC9D; Mon, 31 Aug 2026 09:59:00 +0000 (UTC)
+	id 66EE83EC8A; Mon, 31 Aug 2026 09:58:59 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
 	s=default; t=1788170337;
-	bh=Xt+4mBtUkIrJ36ZCTKcJkucyLloqg9n7ap1XhHTfnJk=;
+	bh=Fz2uf0tPnU/Y4m5DeWMKXkg3rFzA0IH7d6hBVf3YE8Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Hw9WeGEYp+igaJhO5Qa/c7uSVv5tuAbnKbufQxQofd6VEw3HpnbeU7hNLQz9t5GoU
-	 RbafKzRFrOEgidV80YTE5KgeIZcYC7zxinFOUtTvoHNYh6ElkHuD7aGzP6m9uz7f+I
-	 7CAx2HWy6LACosG/SAqulsfMl7t2sx7un19WXGEuWytpgR4VKzh0QWrAl3XLXYN/MS
-	 AIXwq4EV50rIMS88Y97z2S+Z8lZELfDs5HvqszuMdOTv1R3w9mvOAZfLuhwi9me+vG
-	 bjafojGZ6dddO3KalqQ0fGyfZs+8pphLAneyKil5thRsBPk1Ugd4gd5p7WA97uePjI
-	 hwpJ2i0MqqLBA==
+	b=AjxUk8Ucc6y/XlJ588gJj6IRbLIMwfumgU1nhngGHkheV72IosQn/RbqP/Ticjb1L
+	 zZjyWv7YI4S+3UeUqIOYy507fFZr4R2+e9nJyv6F3WXBDKpweOT+pgd8xhT3jRGisv
+	 tZabHYDg4Zp1xTbvhF9TYvExa3aUB2eLO+ApmwaUpGiOMp1Bt9odCAidcsaPf4J0qO
+	 nOmqqAmLa9LVz/IWPVif6JqlrGJt5HEBVn+6JiNyAljeDdawBZOX4J8KyPsPmQ/GGG
+	 ZLPq/il9XWFUnHNhTNd6MCp2zN534a/YFcUiTlWqhXyKzc5tLtLLZbeuYfdsMcgeLl
+	 vDA3goVHnjiVw==
 Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 8DCFE3EC56;
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 2E2763EC4F;
 	Mon, 31 Aug 2026 09:58:57 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Mon, 31 Aug 2026 11:58:52 +0200
-Subject: [PATCH net-next v8 03/15] ax88179_178a: Fix endianness of pause
- watermark register
+Date: Mon, 31 Aug 2026 11:58:51 +0200
+Subject: [PATCH net-next v8 02/15] phylib: Add support for PHYs with broken
+ forced mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-ax88179a-v8-3-de905f2ee426@birger-koblitz.de>
+Message-Id: <20260831-ax88179a-v8-2-de905f2ee426@birger-koblitz.de>
 References: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
 In-Reply-To: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -68,48 +68,44 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Jianhui Xu <neuromoments@gmail.com>
 X-Mailer: b4 0.14.2
 
-The 16-bit pause watermark register is little endian as
-described in the ASIX 4.1.0 out-of-tree driver. Correct the
-register byte sequence but also swap the configuration values
-used in the code in order to keep the current behaviour.
-
-The endianness is relevant for 16-bit writes to the register.
+Add support for PHYs which only supported auto-negotiated
+speed modes. This prevents a kernel warning and stack-trace within the
+phy_state_machine when PHYs return -EOPNOTSUPP from config_aneg()
+because they do not support forced modes.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/ax88179_178a.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/phy/phy.c | 4 ++++
+ include/linux/phy.h   | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 98f899ea2e9462f1ba99281a875385241745458b..945c071dfd1d2f0816c779e1a401ac158adc8d99 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -32,8 +32,8 @@
- #define AX_ACCESS_EEPROM			0x04
- #define AX_ACCESS_EFUS				0x05
- #define AX_RELOAD_EEPROM_EFUSE			0x06
--#define AX_PAUSE_WATERLVL_HIGH			0x54
--#define AX_PAUSE_WATERLVL_LOW			0x55
-+#define AX_PAUSE_WATERLVL_LOW			0x54
-+#define AX_PAUSE_WATERLVL_HIGH			0x55
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index fce9bc7be3304b408c9f3ec9b5b95c76d3680a88..b83f938fe7c3bd619ae453434fd9582c0a055a57 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1190,6 +1190,10 @@ int phy_ethtool_ksettings_set(struct phy_device *phydev,
+ 	      duplex != DUPLEX_FULL)))
+ 		return -EINVAL;
  
- #define PHYSICAL_LINK_STATUS			0x02
- 	#define	AX_USB_SS		0x04
-@@ -1617,11 +1617,10 @@ static int ax88179_reset(struct usbnet *dev)
- 	dev->rx_urb_size = 1024 * 20;
++	if (autoneg == AUTONEG_DISABLE &&
++	    (phydev->drv->flags & PHY_BROKEN_FORCED))
++		return -EOPNOTSUPP;
++
+ 	mutex_lock(&phydev->lock);
+ 	phydev->autoneg = autoneg;
  
- 	*tmp = 0x34;
--	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_LOW, 1, 1, tmp);
-+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_HIGH, 1, 1, tmp);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 199a7aaa341bfd9b13731e996a8de7e1aea586ff..8169c0b0fd28f3a52d2905611820ec8954383587 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -64,6 +64,7 @@ extern const int phy_basic_ports_array[3];
+ #define PHY_RST_AFTER_CLK_EN	0x00000002
+ #define PHY_POLL_CABLE_TEST	0x00000004
+ #define PHY_ALWAYS_CALL_SUSPEND	0x00000008
++#define PHY_BROKEN_FORCED	0x00000010
+ #define MDIO_DEVICE_IS_PHY	0x80000000
  
- 	*tmp = 0x52;
--	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_HIGH,
--			  1, 1, tmp);
-+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_LOW, 1, 1, tmp);
- 
- 	/* Enable checksum offload */
- 	*tmp = AX_RXCOE_IP | AX_RXCOE_TCP | AX_RXCOE_UDP |
+ /**
 
 -- 
 2.47.3
