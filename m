@@ -1,225 +1,175 @@
-Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B753E073E
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 09:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC6B324B0A;
+	Mon, 31 Aug 2026 09:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788169770; cv=none; b=U8v/g4jDm0LxwbuXDwoeGdNXaK0rdCMH/S7Y+pnhSyhKedomX5Xlr+sWIFpLg04gEyH6+zUeHamKSkIgqujEIR2Fs5a420rQvNMGgc9LatgESXfxm7+qT3CWCZ9Ti3yHDNE4Jq+a8QHX5aAbN8RGSKOdbOAuvoNSYfs3KOCvBXU=
+	t=1788169991; cv=none; b=o5kATojcKRXiXlOYxyOXXDff9aZvGVdR156SwuCYxkF0FbZkfHuaWk0usyhg2JqWnX+E2wu2YAwrAU0PsqyLGMNhWZhNBB2u7C1oidp4WWdKA8ABhov5TqDhQGwXAK0FiCYf9jvBvBRU+BYntt3Ah65net2S6loMsn1QZIexPLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788169770; c=relaxed/simple;
-	bh=jFkDjmEyqyiWfrpYXxLtDdtA9fMSc4XIhiKy4OnakCk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UJnd+icwpzUJwci/Q2Xk0UoX8BEk0wjGhLQpkgtSnqK05ssGZddqVTFVF1cDlkpPvMDk1cOPzQXjljkaoTtUAX5TyS73vB29WpQ3RujWL3Oi9sQwS8zqHcpl2WDR0iiz3ty1ZeGjmEUqkz7V0os3QXNcWNHiMTR6H8hJATMwpJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a4492f5cd1so296084b6e.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 02:49:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788169768; x=1788774568;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Kb6/DvD2yhBb3DVkM1VqLGvfuN4hkrtvjLZBLuP8QX8=;
-        b=qvgF+mkTqOOTQGug4egwSHR4IS/vmzzl2MyCVCUin7VdyK4AVf8O1f6gBQYMEtvBGm
-         +w0igc9X8Sp027BJZwlPSwcrRWPdyj0Orbq4CwUOIvQUNy0jsrQRTBw5+9pDJnLmrJgZ
-         WNcUcgpVOw7ZnGr+Upwhw1KfEpugTuHeuyPnNptKmLuTSMOiAcAisRmdOH1qc8us5esA
-         AujbAMJV3w2Lw8CqTMC9Xlp4t516RPd2QURclwxHQNrA0Y0UPoqMXW0BzyBc8TX45huB
-         zH6prfP2D3pfWQbO3lpbGxhl+LdU9+tWvb1LHMCkP5b+G2pgYwKQHb0+MeLKrOasbK1B
-         ykJg==
-X-Forwarded-Encrypted: i=1; AHgh+RqQLaO9A0fFyEwY5qbiDfnCno7KEcN7RbvJp6OkWU3LAxKNlL0HHCnQVpQNYcK9D9pCbA0+fRk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kvkA9lbq7wySHackN194DE8gxpGwKo6avWkinqmgKebFHGrwU5
-	kpwxIB2T5n02311K9YsM6MyCR/iXjHHa38q5s8t7qRX7dBMQtmvFLUhrC8RLIlYD3Bo5Pe7ttxC
-	y+vr/eWvnEpk8BKKINz1/ldBdkyvjB2AUlD1KQQoXmIfhwIGcOYPsTkeZfH0=
+	s=arc-20240116; t=1788169991; c=relaxed/simple;
+	bh=NCRQHERr/U7EVQHV8IMGfKlB5b8/3P71llEPGxAFb28=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PiusL+qIVX9O21kV/iBZWszgJegBf4o3SREYWwQRuNU9xaNT4Y5eJfdxQVmqlBgF5OSroDBYdYCpKqZYv0M4clpLG64ByD91igF6bU/cbM2ed+vbxqJWYW15zTN9mfU+AL/IsXKIuklC8E5PxMwrGoZb/wTBs32J8qS61rC0y4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Eq7mb0Ev; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LOTfHHpw; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zRUC9Q83; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dWGD/V8d; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Eq7mb0Ev";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LOTfHHpw";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zRUC9Q83";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dWGD/V8d"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9BAA921EE5;
+	Mon, 31 Aug 2026 09:52:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788169983; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
+	b=Eq7mb0EvmfZ/l76Vx834DNYp4qZck+cmG0o40BcFCR6vHXE45ZUq/vTrIlrTzbC6YUhviD
+	Bc1tyYCtrqbrPgT2OeEJrC1KQqiHhTPk2zGJDK/oneHodUPzjcuucst+Gc2VI+PzAclw5d
+	gMXr0hH/j2l/5gstoVmlJtOXO+3h/Q4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788169983;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
+	b=LOTfHHpw3uljn6T2YkQ8YGnxaLXxymz2vTZeqNowxrTnxgKshH6GT8r1TXGE5ouLzSQZHM
+	3Np6UyGBnISrJcDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zRUC9Q83;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="dWGD/V8d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788169979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
+	b=zRUC9Q83B+qR4PqebgQjqzRCNcJ0bZAIZvohmYBYl2dIm7LLj8sXQ2hjRwNXagwSCRSX8i
+	et/NV9JbYCKEZK2qynACPhHe/Ug1+1UYwNxSuQHm4vLBmD/EjaE3AaoQZP1szKZ13TBEvD
+	k2Qo3SvYQ+4cg+Fto6MFCmhkSKVvLfs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788169979;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
+	b=dWGD/V8dILD+/klIiJ3Jskn4P+2MGnTGOkmC8vKAjoDgwmVqOwWdYcBydEOcWcwNBJn63+
+	ZFUk8cOFXm+n1nAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D056F13682;
+	Mon, 31 Aug 2026 09:52:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ToALMPpOlWqDagAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 31 Aug 2026 09:52:58 +0000
+Message-ID: <58a7834d-d095-47a1-99fc-fda4eea35079@suse.de>
+Date: Mon, 31 Aug 2026 11:52:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4f4b:b0:4b2:8e1c:5920 with SMTP id
- 5614622812f47-4b3981ace12mr24126505b6e.9.1788169767878; Mon, 31 Aug 2026
- 02:49:27 -0700 (PDT)
-Date: Mon, 31 Aug 2026 02:49:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a954e27.4d659fcc.734b4.0046.GAE@google.com>
-Subject: [syzbot] [bridge?] KASAN: use-after-free Read in skb_clone
-From: syzbot <syzbot+22c4f9a7026c86bcc3b8@syzkaller.appspotmail.com>
-To: bridge@lists.linux.dev, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	razor@blackwall.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/3] netlink: specs: rt-link: add
+ accept-ra-min-lft
+To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
+ Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Felix Maurer <fmaurer@redhat.com>,
+ Danielle Ratson <danieller@nvidia.com>, Gabriel Goller
+ <g.goller@proxmox.com>, Patrick Rohr <prohr@google.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260831093458.472180-1-ast@fiberby.net>
+ <20260831093458.472180-3-ast@fiberby.net>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260831093458.472180-3-ast@fiberby.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.01
+X-Rspamd-Queue-Id: 9BAA921EE5
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_TO(0.00)[fiberby.net,gmail.com,kernel.org];
+	TAGGED_RCPT(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fiberby.net:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:email,suse.de:mid,linux.dev:url];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
 
-Hello,
+On 8/31/26 11:34 AM, Asbjørn Sloth Tønnesen wrote:
+> Add missing enum member accept-ra-min-lft to ipv6-devconf.
+> 
+> In commit 1671bcfd76fd ("net: add sysctl accept_ra_min_rtr_lft")
+> the DEVCONF_* enum was extended with DEVCONF_ACCEPT_RA_MIN_RTR_LFT.
+> 
+> It was renamed to DEVCONF_ACCEPT_RA_MIN_LFT in commit 5027d54a9c30
+> ("net: change accept_ra_min_rtr_lft to affect all RA lifetimes").
+> 
+> Shortly thereafter, this spec was introduced in commit b2f63d904e72
+> ("doc/netlink: Add spec for rt link messages").
+> 
+> This pre-existing issue was detected by Sashiko, when reviewing the
+> first patch in this series.
+> 
+> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824103816.40040-1-ast%40fiberby.net
+> Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-syzbot found the following issue on:
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-HEAD commit:    1b78070aaef6 Merge tag 'net-7.3-rc1' of git://git.kernel.o..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=1535ce25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=22c4f9a7026c86bcc3b8
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+Thanks!
 
-Unfortunately, I don't have any reproducer for this issue yet.
+> ---
+>   Documentation/netlink/specs/rt-link.yaml | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+> index 00c915031efd..ab677801cde8 100644
+> --- a/Documentation/netlink/specs/rt-link.yaml
+> +++ b/Documentation/netlink/specs/rt-link.yaml
+> @@ -494,6 +494,8 @@ definitions:
+>           name: ndisc-evict-nocarrier
+>         -
+>           name: accept-untracked-na
+> +      -
+> +        name: accept-ra-min-lft
+>     -
+>       name: ifla-icmp6-stats
+>       enum-name:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9bf9d046731e/disk-1b78070a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/31e105356045/vmlinux-1b78070a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6087b1118967/bzImage-1b78070a.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+22c4f9a7026c86bcc3b8@syzkaller.appspotmail.com
-
-bridge0: received packet on bridge_slave_1 with own address as source address (addr:aa:aa:aa:aa:aa:1c, vlan:1)
-==================================================================
-BUG: KASAN: use-after-free in skb_zcopy include/linux/skbuff.h:1793 [inline]
-BUG: KASAN: use-after-free in skb_orphan_frags include/linux/skbuff.h:3435 [inline]
-BUG: KASAN: use-after-free in skb_clone+0x31d/0x3a0 net/core/skbuff.c:2107
-Read of size 1 at addr ffff88802ad30080 by task kworker/u8:15/7915
-
-CPU: 1 UID: 0 PID: 7915 Comm: kworker/u8:15 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Workqueue: events_unbound cfg80211_wiphy_work
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_address_description+0x55/0x1e0 mm/kasan/report.c:378
- print_report+0x58/0x70 mm/kasan/report.c:482
- kasan_report+0x117/0x150 mm/kasan/report.c:595
- skb_zcopy include/linux/skbuff.h:1793 [inline]
- skb_orphan_frags include/linux/skbuff.h:3435 [inline]
- skb_clone+0x31d/0x3a0 net/core/skbuff.c:2107
- deliver_clone net/bridge/br_forward.c:125 [inline]
- maybe_deliver net/bridge/br_forward.c:191 [inline]
- br_flood+0x3c3/0x8d0 net/bridge/br_forward.c:245
- br_handle_frame_finish+0x1119/0x1950 net/bridge/br_input.c:229
- nf_hook_bridge_pre net/bridge/br_input.c:313 [inline]
- br_handle_frame+0x81b/0x1510 net/bridge/br_input.c:442
- __netif_receive_skb_core+0x989/0x30c0 net/core/dev.c:6151
- __netif_receive_skb_one_core net/core/dev.c:6262 [inline]
- __netif_receive_skb net/core/dev.c:6377 [inline]
- process_backlog+0x727/0x18b0 net/core/dev.c:6728
- __napi_poll+0xaa/0x330 net/core/dev.c:7787
- napi_poll net/core/dev.c:7850 [inline]
- net_rx_action+0x61d/0xf50 net/core/dev.c:8007
- handle_softirqs+0x226/0x860 kernel/softirq.c:645
- do_softirq+0x77/0xd0 kernel/softirq.c:546
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x100/0x140 kernel/softirq.c:473
- spin_unlock_bh include/linux/spinlock.h:407 [inline]
- cfg80211_inform_single_bss_data+0x1491/0x1be0 net/wireless/scan.c:2426
- cfg80211_inform_bss_data+0x263/0x3cc0 net/wireless/scan.c:3266
- cfg80211_inform_bss_frame_data+0x3c7/0x840 net/wireless/scan.c:3358
- ieee80211_bss_info_update+0x791/0xa50 net/mac80211/scan.c:230
- ieee80211_rx_bss_info net/mac80211/ibss.c:1065 [inline]
- ieee80211_rx_mgmt_probe_beacon net/mac80211/ibss.c:1546 [inline]
- ieee80211_ibss_rx_queued_mgmt+0x1ce3/0x2c40 net/mac80211/ibss.c:1573
- ieee80211_iface_process_skb net/mac80211/iface.c:1769 [inline]
- ieee80211_iface_work+0x78a/0x1010 net/mac80211/iface.c:1823
- cfg80211_wiphy_work+0x29e/0x420 net/wireless/core.c:541
- process_one_work kernel/workqueue.c:3387 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88802ad36000 pfn:0x2ad30
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-raw: 00fff00000000000 ffffea0000a99c08 ffff8880b87417b0 0000000000000000
-raw: ffff88802ad36000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0x528c0(GFP_NOWAIT|__GFP_IO|__GFP_FS|__GFP_NORETRY|__GFP_COMP), pid 13508, tgid 13502 (syz.2.1942), ts 299754405803
- set_page_owner include/linux/page_owner.h:33 [inline]
- post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
- prep_new_page mm/page_alloc.c:1879 [inline]
- get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
- __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
- alloc_pages_mpol+0x21e/0x390 mm/mempolicy.c:2486
- alloc_frozen_pages_noprof mm/mempolicy.c:2557 [inline]
- alloc_pages_noprof+0xb1/0x2b0 mm/mempolicy.c:2577
- skb_page_frag_refill+0xf5/0x460 net/core/sock.c:3193
- tun_build_skb drivers/net/tun.c:1706 [inline]
- tun_get_user+0x1b32/0x44d0 drivers/net/tun.c:1856
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x612/0xba0 fs/read_write.c:687
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-page last free pid 7915 tgid 7915 ts 394412542880 stack trace:
- reset_page_owner include/linux/page_owner.h:26 [inline]
- __free_pages_prepare mm/page_alloc.c:1418 [inline]
- __free_frozen_pages+0xc93/0xd90 mm/page_alloc.c:2962
- skb_free_frag include/linux/skbuff.h:3559 [inline]
- skb_free_head net/core/skbuff.c:1093 [inline]
- pskb_expand_head+0x6d1/0x13a0 net/core/skbuff.c:2347
- __skb_cow include/linux/skbuff.h:3904 [inline]
- skb_cow_head include/linux/skbuff.h:3938 [inline]
- __vlan_insert_inner_tag include/linux/if_vlan.h:368 [inline]
- vlan_insert_inner_tag include/linux/if_vlan.h:441 [inline]
- vlan_insert_tag include/linux/if_vlan.h:468 [inline]
- vlan_insert_tag_set_proto include/linux/if_vlan.h:489 [inline]
- __vlan_hwaccel_push_inside include/linux/if_vlan.h:529 [inline]
- validate_xmit_vlan net/core/dev.c:3976 [inline]
- validate_xmit_skb+0x3aa/0x14f0 net/core/dev.c:4081
- __dev_queue_xmit+0xb04/0x3820 net/core/dev.c:4913
- dev_queue_xmit include/linux/netdevice.h:3461 [inline]
- vlan_dev_hard_start_xmit+0x201/0x420 net/8021q/vlan_dev.c:126
- __netdev_start_xmit include/linux/netdevice.h:5429 [inline]
- netdev_start_xmit include/linux/netdevice.h:5438 [inline]
- xmit_one net/core/dev.c:3937 [inline]
- dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3953
- __dev_queue_xmit+0x14c0/0x3820 net/core/dev.c:4926
- dev_queue_xmit include/linux/netdevice.h:3461 [inline]
- br_dev_queue_push_xmit+0x370/0x4b0 net/bridge/br_forward.c:53
- NF_HOOK+0x360/0x3f0 include/linux/netfilter.h:325
- br_forward_finish+0xd3/0x130 net/bridge/br_forward.c:66
- NF_HOOK+0x360/0x3f0 include/linux/netfilter.h:325
- __br_forward+0x397/0x540 net/bridge/br_forward.c:115
- deliver_clone net/bridge/br_forward.c:131 [inline]
- maybe_deliver net/bridge/br_forward.c:191 [inline]
- br_flood+0x3e6/0x8d0 net/bridge/br_forward.c:245
- br_handle_frame_finish+0x1119/0x1950 net/bridge/br_input.c:229
- nf_hook_bridge_pre net/bridge/br_input.c:313 [inline]
- br_handle_frame+0x81b/0x1510 net/bridge/br_input.c:442
- __netif_receive_skb_core+0x989/0x30c0 net/core/dev.c:6151
-
-Memory state around the buggy address:
- ffff88802ad2ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88802ad30000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff88802ad30080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                   ^
- ffff88802ad30100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88802ad30180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
