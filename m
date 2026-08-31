@@ -1,49 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB1749364E;
-	Mon, 31 Aug 2026 13:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EE9499F2B;
+	Mon, 31 Aug 2026 13:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183517; cv=none; b=slrazVZ2xcZ+4uzB7f2OcIyV3drxFvvWWshPX8eL7TJ+rKVyBWCNOstmWvLn/p9trTChUASHfNL0NFjb/q1UwdJX54kJJQ7uWh+nV3STW2h3EvrWQCZ9iTnxiadZk6bYWxK84Ha68o3asApvXkQjRNlTaF+iE5ki1/BUVI1iGbs=
+	t=1788183530; cv=none; b=rxZAQrLxwz5dfTF6mXbtsOsUb3KpzZmmm9xiHfRqaYMtRPhEZfB4sUlu05IyCBuKawM1ZrZTsLeID8LXqoUt0tzQSLC3N5lPzcxZa3mxN7lYFrjyrWKex422Ze+A+uWCkYeJeJf5aPv7EXTMZaKTiMMsS3cOG++yNJ0IX2JfiWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183517; c=relaxed/simple;
-	bh=X0S9VJPYgomhuh6NDT9ui5Te4gjngORA+t8bRFTWkhw=;
+	s=arc-20240116; t=1788183530; c=relaxed/simple;
+	bh=jTx1zry5rzdixxC0RgC2msoPn8d7KKD2kbIkXCNjnU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dR3nyLZsAcOt8Zy1FiRHbGnh91a9eJmB+p+cMGa6QtL5NDYcYco8N2BaTpV9uAKZ4iUEyAdbiUl44HPtfNiPeg5nKs8uZsgz4q0oK0gi2OsT6k9Lt6mkPRc1WJMRdCrJ2mUJGBbNBIDdURWZ4U2BjCM8bsPrUtxAcMOYujND2Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEUm8Hw2; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=IiJB09zmr56Ks9TOYyI9EKPZU0T54dmie+g5VM2VX6yL1aN3C1R9RtYM64dUZwjvXOtubnUUkjfYScijdn9M95wwQjQt4AmTaZbhwexVJ8Tr7rBARG8dZidvcZACFjM4eJenJ+Wq22hDHZHKPOJxZVxS2gGaVZoN31xWUDeHfV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrZfyaSQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEUm8Hw2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDA11F00A3E;
-	Mon, 31 Aug 2026 13:38:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrZfyaSQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8942E1F00ADE;
+	Mon, 31 Aug 2026 13:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183514;
-	bh=5W1QbP1606Aoj/2vjYKdbhDUtcNQ3Przr2ELO5Ow46Y=;
+	s=k20260515; t=1788183528;
+	bh=IXXvlLiatEpQKDiVZfBexoB5OaI/sRGWE1Z6th1AgUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QEUm8Hw2RgZ0LWOaCB4W2M2oz1pjNOQi+ClBTejq/wu9dNhhEF+pvCs45aApTTGyN
-	 gjSr0Jwh57yZO+WrrHrBQDwMPX3eIdvdpOAlFHcXItKje5URvqW77UQc4+n/nmeNLC
-	 RTM/NwV6+0QjlHHmyPOaY+L4vJuKf/SZy2VnFXNvT2GJXFN3tpGlsPRZeRJXOuBRUt
-	 A5Di5JyVk2RWnH0yMLlC8DaFYvNKy/2XIE7j8XIrgYt1kKHpRjsk4s6+YHY4rGW5d2
-	 lCLCSFyy/7c3PL+gZMdgMk36PwL3LK2M9LhfdknJwHcJz8/MNvT629gep8Bsg6V3bG
-	 uTT6+C/5xII3Q==
+	b=lrZfyaSQMpKJcyP1q0MRb7Xo5lylWUf4H0/gyaSMfUtIp/AgxyYRnJ0JhQy9u93+y
+	 lv3bxGJHtYDoRGsRsq6I8oSmtVwuny24HV/jHkRX6MSEH4IlZ9KgTchkupB/KQ97DI
+	 reFuQjFEwLNiwGgEc19Otj/xkF1ZEIW0vu4ZAHoNpms58tXoa6jaiR5vbZL0MZ4fjQ
+	 GmIIgNdmkqWZ7g13PUfsMyAlI2+UUggY8weYjSOeUMsifjv4q9aDb7B7WthkxS2n4q
+	 telKzQDUeKMtSS7JKwYua1Ptbi6GnH3jpjbIR/kPPjXJiAFEGbpMkQ9zgd2XSaV2s9
+	 MeMzL1/+SSP5A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	David Carlier <devnexen@gmail.com>,
+Cc: Shay Drory <shayd@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	horatiu.vultur@microchip.com,
-	UNGLinuxDriver@microchip.com,
+	saeedm@nvidia.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] net: lan966x: restore RX state on reload failure
-Date: Mon, 31 Aug 2026 09:22:50 -0400
-Message-ID: <20260831133314.4125787-142-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] net/mlx5: E-Switch, align disable sequence with switchdev-to-legacy transition
+Date: Mon, 31 Aug 2026 09:22:58 -0400
+Message-ID: <20260831133314.4125787-150-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -59,454 +60,423 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit aa97f11a76e545ed73cc455bcdd1ece4b480b507 ]
+[ Upstream commit b48b6308dfaeae49fcda61b4066773cb5e8a9ce8 ]
 
-lan966x_fdma_reload() backs up rx->page_pool and rx->fdma before
-reallocating the RX resources for the new MTU. If the allocation fails,
-the restore path puts these fields back before restarting RX.
+This patch align the eswitch disable sequence with the
+switchdev-to-legacy mode transition, where eswitch must be disabled
+before device detachment. The consistent ordering is required for proper
+SD LAG cleanup which depends on eswitch state during teardown.
 
-However, the reload path also updates rx->page_order and rx->max_mtu
-before calling lan966x_fdma_rx_alloc(). These fields are not restored on
-failure, so RX can be restarted with the old pages, old FDMA state and
-old page pool, but with the page geometry from the failed new MTU.
-
-This can make the XDP path advertise a frame size derived from the new
-page_order while the actual RX pages still come from the old allocation.
-For example, after a failed reload to a jumbo MTU, xdp_init_buff() may be
-called with a frame size larger than the restored RX pages.
-
-lan966x_fdma_rx_alloc_page_pool() also registers the newly allocated page
-pool with each port's XDP RXQ before fdma_alloc_coherent() is called. If
-fdma_alloc_coherent() fails, the new page pool is destroyed, but the
-rollback path does not restore the per-port XDP RXQ mem model
-registration either.
-
-Save and restore rx->page_order and rx->max_mtu, and restore the old page
-pool registration for each port's XDP RXQ before RX is started again.
-This keeps the restored RX state consistent after a failed reload.
-
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260607145747.1494514-1-lgs201920130244@gmail.com
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260531113954.395443-3-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit Message Forensics
+# Stable Backport Analysis: `net/mlx5: E-Switch, align disable sequence
+with switchdev-to-legacy transition`
 
-**Step 1.1 — Subject line**
-
-Record: `[net: lan966x] [restore] RX state on reload failure` —
-Microchip LAN966x Ethernet driver; restores incomplete RX state on
-failed buffer reload.
-
-**Step 1.2 — Tags**
-
-Record:
-- **Signed-off-by:** Guangshuo Li `<lgs201920130244@gmail.com>` (author)
-- **Reviewed-by:** David Carlier `<devnexen@gmail.com>` (reviewed
-  related lan966x stable fixes in this tree)
-- **Link:** https://patch.msgid.link/20260607145747.1494514-1-
-  lgs201920130244@gmail.com
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (netdev
-  maintainer)
-- No Fixes:, Reported-by:, Tested-by:, Cc: stable@vger.kernel.org
-  (absence expected per review pipeline)
-
-**Step 1.3 — Body analysis**
-
-Record:
-- **Bug:** `lan966x_fdma_reload()` updates `rx->page_order` and
-  `rx->max_mtu` before allocation, but the failure restore path only
-  restores `page_pool` and `fdma`.
-- **Symptom:** RX restarts with old pages/pool/FDMA but new page
-  geometry metadata.
-- **XDP impact:** `xdp_init_buff()` may use a frame size (`PAGE_SIZE <<
-  page_order`) larger than the restored RX pages → out-of-bounds access.
-- **Second bug:** `lan966x_fdma_rx_alloc_page_pool()` registers a new
-  page pool with each port's XDP RXQ before `fdma_alloc_coherent()`. On
-  coherent alloc failure, the new pool is destroyed but XDP RXQ still
-  references it.
-- **Root cause:** Incomplete rollback of all fields modified during
-  reload.
-- **Version info:** None in message.
-
-**Step 1.4 — Hidden bug fix?**
-
-Record: Yes. Despite "restore" wording, this fixes real memory-safety
-bugs: XDP buffer size mismatch (OOB) and stale XDP page-pool
-registration (UAF).
+**Local tree:** Linux **6.18.44** (`v6.18.44`, `VERSION=6 PATCHLEVEL=18
+SUBLEVEL=44`)
 
 ---
 
-## Phase 2: Diff Analysis
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 2.1 — Inventory**
+### Step 1.1: Subject line
+**Record:** `[net/mlx5: E-Switch] [align] — reorder eswitch disable to
+match switchdev-to-legacy teardown ordering`
 
-Record:
-- **File:** `drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c` (+20
-  lines, 0 removed)
-- **Function:** `lan966x_fdma_reload()`
-- **Scope:** Single-file, surgical error-path fix
+### Step 1.2: Tags
+**Record:**
+- **Signed-off-by:** Shay Drory `<shayd@nvidia.com>` (author)
+- **Reviewed-by:** Mark Bloch `<mbloch@nvidia.com>`
+- **Signed-off-by:** Tariq Toukan `<tariqt@nvidia.com>`
+- **Link:**
+  https://patch.msgid.link/20260531113954.395443-3-tariqt@nvidia.com
+  (patch **3/3** in a series)
+- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer)
+- No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, or syzbot
+  tags
+- Message-ID suffix `-3-` indicates this is the third patch in a series
 
-**Step 2.2 — Code flow per hunk**
+### Step 1.3: Body analysis
+**Record:**
+- **Bug:** E-switch disable runs too late in driver unload paths — after
+  `mlx5_detach_device()` / `mlx5_unregister_device()` — while the
+  switchdev-to-legacy transition disables eswitch **before** detachment.
+- **Symptom/failure mode:** Improper **SD LAG** (Socket Direct / shared-
+  FDB LAG) cleanup during teardown; commit does not include a crash
+  trace.
+- **Root cause (author):** SD LAG cleanup in `mlx5_eswitch_disable()`
+  depends on eswitch still being in the correct state and representors
+  still being present; detaching/unregistering auxiliary devices first
+  breaks that.
 
-Record:
-- **Hunk 1 (backup):** Before reload, save `page_order` and `max_mtu`
-  alongside existing `page_pool`/`fdma` backups.
-  - Before: only `page_pool` and `fdma` saved.
-  - After: all four fields saved.
-- **Hunk 2 (restore):** On `lan966x_fdma_rx_alloc()` failure:
-  - Before: restore `page_pool` + `fdma`, restart RX.
-  - After: also restore `page_order` + `max_mtu`, re-register old page
-    pool with each port's XDP RXQ via `xdp_rxq_info_unreg_mem_model()` /
-    `xdp_rxq_info_reg_mem_model()`, then restart RX.
-
-**Step 2.3 — Bug mechanism**
-
-Record:
-- **Category:** Memory safety / state consistency on error path.
-- **Mechanism 1:** Metadata mismatch — `page_order`/`max_mtu` reflect
-  failed (larger) MTU while hardware uses old (smaller) pages. XDP path
-  reads `page_order` directly in `lan966x_xdp_run()`.
-- **Mechanism 2:** Reference counting / UAF — XDP RXQ mem model points
-  to destroyed page pool after partial alloc failure.
-
-**Step 2.4 — Fix quality**
-
-Record:
-- Fix is minimal and mirrors existing backup/restore pattern.
-- Low regression risk: only runs on allocation failure, restores
-  previously valid state.
-- No API or behavioral changes on success path.
+### Step 1.4: Hidden bug fix?
+**Record:** Yes. Described as “align,” but it fixes a **teardown
+ordering bug** — same class as other mlx5 LAG/eswitch unload issues.
 
 ---
 
-## Phase 3: Git History Investigation
+## PHASE 2: DIFF ANALYSIS
 
-**Step 3.1 — Blame**
+### Step 2.1: Inventory
+**Record:**
+- **File:** `drivers/net/ethernet/mellanox/mlx5/core/main.c` only
+- **Scope:** ~3 lines moved (net zero lines); 3 functions touched
+- **Functions modified:** `mlx5_unload()`, `mlx5_uninit_one()`,
+  `mlx5_unload_one_devl_locked()`
+- **Classification:** Single-file, surgical reordering
 
-Record:
-- `lan966x_fdma_reload()` core logic from Horatiu Vultur (2022-04-08,
-  commit `2ea1cbac267e2a`).
-- `page_order`/`max_mtu` updates in reload from 2022 (`2ea1cbac`,
-  `11871aba`).
-- Recent UAF fix `92a6730199437` (David Carlier, Apr 2026) reworked
-  restore path but did not restore `page_order`/`max_mtu`.
-- Bug in reload restore has existed since 2022; XDP mem-model issue
-  since `77ddda44411c3` (Nov 2022).
+### Step 2.2: Code flow per hunk
 
-**Step 3.2 — Fixes: tag**
+**Hunk 1 — `mlx5_unload()`:**
+- **Before:** `mlx5_eswitch_disable()` was the first call in
+  `mlx5_unload()`.
+- **After:** Removed from `mlx5_unload()`.
 
-Record: No Fixes: tag. N/A.
+**Hunk 2 — `mlx5_uninit_one()`:**
+- **Before:** `mlx5_unregister_device()` → … → `mlx5_unload()` (which
+  disabled eswitch).
+- **After:** `mlx5_eswitch_disable()` → `mlx5_unregister_device()` → … →
+  `mlx5_unload()`.
 
-**Step 3.3 — Related file history**
+**Hunk 3 — `mlx5_unload_one_devl_locked()`:**
+- **Before:** `mlx5_detach_device()` → … → `mlx5_unload()` (which
+  disabled eswitch).
+- **After:** `mlx5_eswitch_disable()` → `mlx5_detach_device()` → … →
+  `mlx5_unload()`.
 
-Record:
-- `92a6730199437` — fix UAF/leak in `lan966x_fdma_reload()` — **already
-  in 6.18.44**
-- `22e1ee9f22b5c` — page pool leak in error paths — **in tree**
-- `b5dcb41ba891b` — page_pool IS_ERR check — **in tree**
-- `89ba464fcf548` — refactor buffer reload — **in tree**
-- This commit is a follow-up completing the restore path after the UAF
-  fix.
+**Record:** Both primary unload paths now disable eswitch **before**
+tearing down auxiliary devices.
 
-**Step 3.4 — Author context**
+### Step 2.3: Bug mechanism
+**Record:** **Teardown ordering / logic correctness bug**
+- `mlx5_eswitch_disable()` calls `mlx5_lag_disable_change()` →
+  `mlx5_disable_lag()`.
+- For shared-FDB LAG (`MLX5_LAG_MODE_FLAG_SHARED_FDB`),
+  `mlx5_disable_lag()` calls `mlx5_eswitch_reload_ib_reps()`, which
+  requires `esw->mode == MLX5_ESWITCH_OFFLOADS` and `REP_LOADED`
+  representors.
+- `mlx5_detach_device()` / `mlx5_unregister_device()` remove auxiliary
+  devices (including eswitch representors) **before** `mlx5_unload()`
+  ran, so SD LAG cleanup could not run correctly.
+- `mlx5_devlink_eswitch_mode_set()` already disables eswitch **before**
+  mode transition — the unload paths were inconsistent.
 
-Record: Guangshuo Li is a contributor; David Carlier (reviewer) authored
-the three Apr 2026 lan966x stable fixes already in this tree.
-
-**Step 3.5 — Dependencies**
-
-Record: Standalone. Requires `xdp_rxq_info_reg_mem_model()` (from
-`77ddda44411c3`, in tree) and post-UAF reload structure (from
-`92a6730199437`, in tree). No series dependencies.
-
----
-
-## Phase 4: Mailing List and External Research
-
-**Step 4.1 — Original discussion**
-
-Record:
-- **URL:** https://patch.msgid.link/20260607145747.1494514-1-
-  lgs201920130244@gmail.com
-- **Series:** v2 only (b4 dig -a)
-- **Review:** David Carlier ACK'd code, provided Reviewed-by. No NAKs.
-- **Stable nomination:** None in thread.
-
-**Step 4.2 — Reviewers**
-
-Record: CC'd netdev/bpf maintainers (Kicinski, Abeni, Miller, Dumazet,
-Starovoitov, Borkmann, Brouer). David Carlier reviewed.
-
-**Step 4.3 — Bug report**
-
-Record: No external bug report or syzbot link. Bug identified via code
-analysis of incomplete restore.
-
-**Step 4.4 — Related patches**
-
-Record: Follow-up to David Carlier's Apr 2026 lan966x reload fixes
-already backported to 6.18.y.
-
-**Step 4.5 — Stable list**
-
-Record: Not searched separately; no stable discussion found in patch
-thread.
+### Step 2.4: Fix quality
+**Record:**
+- Fix is minimal and mirrors the known-good
+  `mlx5_devlink_eswitch_mode_set()` ordering.
+- `mlx5_eswitch_disable()` requires devlink lock; both call sites
+  already hold `devl_lock()`.
+- **Regression risk:** Low for main unload paths. **Note:**
+  `mlx5_unload()` is still called from init error paths (`err_register`,
+  `err_attach`) without the new early `mlx5_eswitch_disable()` — those
+  paths typically run before switchdev/SD LAG is configured (unverified
+  for all edge cases).
 
 ---
 
-## Phase 5: Code Semantic Analysis
+## PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 5.1 — Key functions**
+### Step 3.1: Blame
+**Record:**
+- `mlx5_eswitch_disable()` in `mlx5_unload()`: added/moved to first
+  position by **85b47dc40bbc7** (Sep 2023, Jiri Pirko).
+- `mlx5_detach_device()` before `mlx5_unload()` in
+  `mlx5_unload_one_devl_locked()`: **72ed5d5624af3** (Jan 2023).
+- `mlx5_unregister_device()` before `mlx5_unload()` in
+  `mlx5_uninit_one()`: longstanding (Leon Romanovsky, 2020).
+- Original `mlx5_eswitch_disable` in unload: **f019679ea5f2a** (May
+  2022).
+- **Ordering mismatch has existed since ~2023** when detach was placed
+  before `mlx5_unload()` while eswitch disable remained inside
+  `mlx5_unload()`.
 
-Record: `lan966x_fdma_reload()`, `lan966x_fdma_rx_alloc()`,
-`lan966x_fdma_rx_alloc_page_pool()`, `lan966x_xdp_run()`.
+### Step 3.2: Fixes: tag
+**Record:** N/A — no `Fixes:` tag.
 
-**Step 5.2 — Callers**
+### Step 3.3: Related file history
+**Record:**
+- Shared-FDB LAG introduced **af8c0e25f249a** (Aug 2021) — present in
+  this tree.
+- Related crash fix **4b8eeed4fb105** (Mar 2025): bridge + shared-FDB
+  LAG teardown oops — same subsystem, similar LAG teardown sensitivity.
+- Patch appears standalone (only `main.c`); patches 1–2 of the series
+  were not found locally.
 
-Record:
-- `lan966x_fdma_reload()` ← `__lan966x_fdma_reload()` ←
-  `lan966x_fdma_change_mtu()` / `lan966x_fdma_reload_page_pool()`
-- `lan966x_fdma_change_mtu()` ← `lan966x_port_change_mtu()`
-  (`.ndo_change_mtu`)
-- `lan966x_fdma_reload_page_pool()` ← `lan966x_xdp_setup()` (XDP program
-  attach/detach)
-- `lan966x_xdp_run()` ← RX NAPI poll path when XDP program present
+### Step 3.4: Author context
+**Record:** Shay Drory is an active mlx5 contributor (eswitch, LAG,
+devlink). Reviewed by Mark Bloch (mlx5 maintainer). Committed via Jakub
+Kicinski (netdev).
 
-**Step 5.3 — Callees**
-
-Record: `lan966x_fdma_rx_alloc()` → `lan966x_fdma_rx_alloc_page_pool()`
-→ `page_pool_create()`, `xdp_rxq_info_reg_mem_model()`; then
-`fdma_alloc_coherent()`. On failure, `page_pool_destroy()`.
-
-**Step 5.4 — Reachability**
-
-Record:
-- Triggered by MTU change (`ip link set mtu`) or XDP program
-  load/unload.
-- Requires `CAP_NET_ADMIN`.
-- Failure path needs allocation failure (typically ENOMEM under memory
-  pressure during jumbo MTU or XDP reload).
-- XDP OOB requires XDP program loaded (`CONFIG_LAN966X` + BPF/XDP).
-
-**Step 5.5 — Similar patterns**
-
-Record: Same incomplete-restore pattern partially fixed by
-`92a6730199437` (pages/fdma/pool). This commit completes it for metadata
-and XDP registration.
+### Step 3.5: Dependencies
+**Record:** Self-contained for `main.c`. No structural/API prerequisites
+identified. Patches 1–2 of the series were **not found** in this
+workspace; this patch does not appear to depend on them functionally.
 
 ---
 
-## Phase 6: Cross-Reference Against Local Tree
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-**Step 6.1 — Buggy code present?**
+### Step 4.1: Original discussion
+**Record:** `b4 dig -c HEAD` did not match (commit not in tree). Lore
+search returned **403 Forbidden**. patch.msgid.link blocked by bot
+protection. **Could not retrieve mailing list thread.**
 
-Record: **Yes.** Local tree is **v6.18.44**. Current
-`lan966x_fdma_reload()` restore path (lines 856–865) lacks
-`page_order`/`max_mtu` restore and XDP mem-model re-registration. Commit
-`aa97f11a76e54` is on `master` but **not** an ancestor of HEAD.
+### Step 4.2: Reviewers
+**Record:** Mark Bloch (Reviewed-by). Jakub Kicinski merged. Full
+recipient list unavailable (b4 `-w` requires commit in tree).
 
-**Step 6.2 — Backport complications**
+### Step 4.3: Bug report
+**Record:** No external bug report, syzbot link, or crash trace in the
+commit message.
 
-Record: `git apply --check` passes cleanly against current tree. No
-conflicts expected.
+### Step 4.4: Series context
+**Record:** Message-ID indicates patch **3/3**; patches 1–2 not
+identified locally. This change is independently applicable.
 
-**Step 6.3 — Related fixes already present?**
-
-Record: UAF fix `92a6730199437` is present; this complementary fix is
-not. No duplicate fix found.
-
----
-
-## Phase 7: Subsystem and Maintainer Context
-
-**Step 7.1 — Subsystem**
-
-Record: `drivers/net/ethernet/microchip/lan966x/` — network driver
-(IMPORTANT, driver-specific).
-
-**Step 7.2 — Activity**
-
-Record: Active; three lan966x stable fixes landed in Apr 2026, plus
-additional fixes in this tree.
+### Step 4.5: Stable list history
+**Record:** Not searched (lore inaccessible). No stable nomination found
+in commit message.
 
 ---
 
-## Phase 8: Impact and Risk Assessment
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 8.1 — Who is affected**
+### Step 5.1: Key functions
+**Record:** `mlx5_eswitch_disable()`, `mlx5_unload()`,
+`mlx5_uninit_one()`, `mlx5_unload_one_devl_locked()`,
+`mlx5_detach_device()`, `mlx5_unregister_device()`,
+`mlx5_disable_lag()`, `mlx5_eswitch_reload_ib_reps()`
 
-Record: LAN966x switch users with FDMA enabled; XDP users for the
-primary severity path; embedded/industrial networking deployments.
+### Step 5.2: Callers of affected paths
+**Record:**
+- `mlx5_uninit_one()` ← `remove_one()` (module/PCI remove), SF driver
+  teardown
+- `mlx5_unload_one_devl_locked()` ← `mlx5_unload_one()` ← devlink
+  reload, firmware reset, health recovery, suspend/resume
+- Both are common operational paths for mlx5 users
 
-**Step 8.2 — Trigger conditions**
+### Step 5.3: Callees
+**Record:** `mlx5_eswitch_disable()` → `mlx5_lag_disable_change()` →
+`mlx5_disable_lag()` → (shared FDB) `mlx5_eswitch_reload_ib_reps()`;
+`mlx5_detach_device()` tears down auxiliary drivers in reverse order
 
-Record:
-- Admin-initiated MTU increase (especially jumbo) or XDP program change.
-- Allocation must fail mid-reload.
-- Unprivileged users cannot trigger directly; requires `CAP_NET_ADMIN`.
+### Step 5.4: Reachability
+**Record:** Triggered on driver remove, devlink reload, FW reset
+recovery — admin-initiated but routine in datacenter deployments.
+Requires **CONFIG_MLX5_ESWITCH**, switchdev mode, and multi-PF Socket
+Direct / shared-FDB LAG.
 
-**Step 8.3 — Failure mode severity**
-
-Record:
-- **XDP page_order mismatch:** `xdp_init_buff()` with oversized frame vs
-  actual page → **HIGH** (OOB / memory corruption).
-- **Stale XDP page pool:** use-after-free when XDP processes packets →
-  **HIGH**.
-- Non-XDP skb path uses restored `fdma->db_size`, so less directly
-  affected.
-
-**Step 8.4 — Risk-benefit**
-
-Record:
-- **Benefit:** Prevents memory corruption and UAF on a real error-
-  recovery path; completes fix started by already-backported
-  `92a6730199437`.
-- **Risk:** Very low — 20 lines, error-path only, mirrors existing
-  restore logic.
-- **Ratio:** Strong benefit, minimal risk.
+### Step 5.5: Similar patterns
+**Record:** `mlx5_devlink_eswitch_mode_set()` disables eswitch before
+cleanup (lines 3832–3866 in `eswitch_offloads.c`). Bridge+LAG crash fix
+**4b8eeed4fb105** shows mlx5 shared-FDB LAG teardown ordering can cause
+kernel oops.
 
 ---
 
-## Phase 9: Final Synthesis
+## PHASE 6: CROSS-REFERENCE WITH LOCAL TREE (6.18.44)
 
-**Step 9.1 — Evidence summary**
+### Step 6.1: Buggy code present?
+**Record:** **YES.** Current tree has:
+- `mlx5_eswitch_disable()` at line 1430 inside `mlx5_unload()`
+- `mlx5_detach_device()` at line 1623 **before** `mlx5_unload()` at line
+  1632
+- `mlx5_unregister_device()` at line 1539 **before** `mlx5_unload()` at
+  line 1550
 
-**FOR:**
-- Fixes real bugs (OOB in XDP, UAF from stale page pool registration).
-- Small, surgical, applies cleanly.
-- Reviewed by David Carlier (author of related stable fixes in this
-  tree).
-- Prerequisites present; buggy code confirmed in v6.18.44.
-- Complements already-backported `92a6730199437`.
+### Step 6.2: Backport complications
+**Record:** Expected **clean apply** with minor context adjustment (line
+ordering in `mlx5_unload()` differs slightly from the provided diff —
+`mlx5_vhca_event_stop` position — but the semantic change is identical).
 
-**AGAINST:**
-- Driver-specific (LAN966x only).
-- Requires allocation failure + admin action to trigger.
-- No syzbot/user crash report.
-- XDP path needed for worst-case OOB scenario.
+### Step 6.3: Related fixes already present?
+**Record:** **4b8eeed4fb105** (bridge LAG crash) is in tree. This
+specific eswitch-disable ordering fix is **not** present.
 
-**Unresolved:** No runtime crash report; severity inferred from code
-analysis (credible given direct `page_order` use in
-`lan966x_xdp_run()`).
+---
 
-**Step 9.2 — Stable rules checklist**
+## PHASE 7: SUBSYSTEM CONTEXT
 
-1. Obviously correct and tested? **PASS** — straightforward
-   save/restore; Reviewed-by from subsystem contributor.
-2. Fixes real bug? **PASS** — incomplete error-path rollback.
-3. Important issue? **PASS** — memory corruption / UAF (HIGH severity
-   for XDP users).
-4. Small and contained? **PASS** — 20 lines, one file.
-5. No new features/APIs? **PASS** — error-path state restoration only.
-6. Can apply to local tree? **PASS** — clean apply, all prerequisites
-   present.
+### Step 7.1: Subsystem criticality
+**Record:** `drivers/net/ethernet/mellanox/mlx5` — **IMPORTANT**
+(datacenter NIC driver, widely deployed on stable/LTS kernels)
 
-**Step 9.3 — Exception categories**
+### Step 7.2: Subsystem activity
+**Record:** Actively maintained; frequent mlx5 commits in 6.18.y.
 
-Record: None (not device ID, quirk, DT, build, or docs). Standard bug
-fix.
+---
 
-**Step 9.4 — Decision rationale**
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-This commit completes the error-recovery path in `lan966x_fdma_reload()`
-for the 6.18.44 tree. After the already-backported UAF fix deferred page
-freeing on failure, the remaining gap — unreverted
-`page_order`/`max_mtu` and stale XDP page-pool registration — leaves RX
-running in an inconsistent state that can cause XDP buffer overflows and
-use-after-free. The fix is minimal, well-reviewed, and directly
-applicable.
+### Step 8.1: Who is affected
+**Record:** Users of **Mellanox ConnectX multi-PF Socket Direct**
+configurations with **shared-FDB LAG** in **switchdev** mode —
+datacenter/cloud NIC deployments. Not universal; config-specific.
+
+### Step 8.2: Trigger conditions
+**Record:** Driver unload, devlink reload, FW-reset recovery, or suspend
+on configured SD LAG + switchdev. Admin-initiated but routine.
+Unprivileged users cannot directly trigger.
+
+### Step 8.3: Failure mode severity
+**Record:** Improper LAG/eswitch teardown;
+`mlx5_eswitch_reload_ib_reps()` silently skipped when reps already
+detached. Can leave inconsistent LAG state; related mlx5 LAG teardown
+bugs have caused **kernel oops** (4b8eeed4fb105). **Severity: MEDIUM-
+HIGH** for affected configs; **LOW** for typical single-PF users.
+
+### Step 8.4: Risk-benefit
+**Record:**
+- **Benefit:** MEDIUM for affected enterprise users; prevents broken SD
+  LAG teardown on common unload paths
+- **Risk:** LOW — 3-line reorder, mirrors existing mode-set path,
+  reviewed by subsystem maintainer
+- **Ratio:** Favorable for backport
+
+---
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: Evidence summary
+
+**FOR backport:**
+- Verified ordering bug: detach/unregister before eswitch disable in
+  both main unload paths
+- SD LAG cleanup (`mlx5_disable_lag` → `mlx5_eswitch_reload_ib_reps`)
+  requires eswitch/rep state that detach destroys
+- Matches proven-correct `mlx5_devlink_eswitch_mode_set()` ordering
+- Small, surgical, low regression risk
+- Bug present since ~2023; shared-FDB LAG in tree since 2021
+- Same subsystem had LAG teardown oops fixed for stable (4b8eeed4fb105)
+- NVIDIA maintainer review
+
+**AGAINST backport:**
+- No crash trace, syzbot report, or user bug report in commit message
+- Affects niche multi-PF Socket Direct + switchdev configuration
+- Patch 3/3 — series context unavailable
+- Init error paths (`err_register`/`err_attach`) still call
+  `mlx5_unload()` without early eswitch disable (likely low impact —
+  switchdev typically not configured at probe failure)
+
+**Unresolved:**
+- Full mailing list review thread (lore inaccessible)
+- Patches 1–2 of the series not found
+- No quantitative report of how often this causes visible failures
+
+### Step 9.2: Stable rules checklist
+1. Obviously correct and tested? **PASS** — ordering matches mode-set
+   path; Reviewed-by from mlx5 maintainer (no Tested-by)
+2. Fixes a real bug? **PASS** — verifiable teardown ordering violation
+3. Important issue? **PASS (MEDIUM)** — improper teardown on
+   unload/reload for SD LAG; related bugs caused oopses, though this one
+   lacks explicit crash report
+4. Small and contained? **PASS** — single file, ~3 lines moved
+5. No new features/APIs? **PASS**
+6. Can apply to local tree? **PASS** — code exists; clean/minor-context
+   apply expected
+
+### Step 9.3: Exception categories
+**Record:** None (not device ID, quirk, DT, build fix, or docs fix).
+Standard bug-fix backport.
+
+### Step 9.4: Decision rationale
+For **Linux 6.18.44**, the buggy ordering is present and the fix is
+minimal, obviously correct, and aligns unload paths with the already-
+correct switchdev-to-legacy transition. While the affected configuration
+(multi-PF Socket Direct + shared-FDB LAG + switchdev) is niche and the
+commit lacks a crash report, the mechanism is verified in code, the
+subsystem has a history of LAG teardown oopses, and the fix carries very
+low risk. This meets stable criteria for an important driver teardown
+correctness fix.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed commit `aa97f11a76e54` message and tags via `git
-  show`
-- [Phase 2] Diff analysis: +20 lines in `lan966x_fdma_reload()` restore
-  path
-- [Phase 3] `git blame -L 814,866`: reload from 2022, UAF fix
-  `92a6730199437` in Apr 2026
-- [Phase 3] `git log --oneline -20 -- lan966x_fdma.c`: related stable
-  fixes present
-- [Phase 3] `git merge-base --is-ancestor`: `89ba464fcf548`,
-  `92a6730199437`, `77ddda44411c3` all in tree; `aa97f11a76e54` not in
-  tree
-- [Phase 4] `b4 dig -c aa97f11a76e54`: lore URL found
-- [Phase 4] `b4 dig -a`: v2 only
-- [Phase 4] `b4 dig -w`: netdev/bpf maintainers CC'd
-- [Phase 4] `/tmp/lan966x_restore.mbx`: David Carlier Reviewed-by, ACK
-  on code
-- [Phase 5] `grep lan966x_xdp_run`: called from RX poll path line 422
-- [Phase 5] Read `lan966x_xdp.c:82`: `xdp_init_buff()` uses
-  `lan966x->rx.page_order`
-- [Phase 5] Read `lan966x_fdma.c:75-110`: page pool registered before
-  `fdma_alloc_coherent()`
-- [Phase 5] Read `lan966x_main.c:402-423`: MTU change calls reload
-- [Phase 5] Read `lan966x_xdp.c:30`: XDP setup calls reload
-- [Phase 6] `git describe HEAD`: v6.18.44
-- [Phase 6] Read current restore path lines 856-865: missing fix
-- [Phase 6] `git apply --check`: patch applies cleanly
-- [Phase 8] Failure mode: OOB/UAF on failed reload with XDP — severity
-  HIGH
+- **[Phase 1]** Parsed commit message and tags from user-provided diff
+- **[Phase 2]** Analyzed diff: 3 hunks in `main.c`, eswitch disable
+  moved from `mlx5_unload` to `mlx5_uninit_one` and
+  `mlx5_unload_one_devl_locked`
+- **[Phase 3]** `git describe HEAD` → `v6.18.44`; `Makefile` → 6.18.44
+- **[Phase 3]** `git blame` on lines 1428–1450, 1530–1558, 1618–1636 of
+  `main.c` — ordering history confirmed
+- **[Phase 3]** `git show 85b47dc40bbc7` — eswitch disable moved to
+  first in `mlx5_unload` (2023)
+- **[Phase 3]** `git show f019679ea5f2a` — original addition of eswitch
+  disable to unload (2022)
+- **[Phase 3]** `git show af8c0e25f249a` — shared-FDB LAG since Aug 2021
+- **[Phase 3]** `git show 4b8eeed4fb105` — related bridge+LAG oops fix
+  in tree
+- **[Phase 4]** `b4 dig -c HEAD` — no match (commit not in tree)
+- **[Phase 4]** Lore/patch.msgid.link fetch — blocked (403/bot
+  protection); thread not retrieved
+- **[Phase 4]** Workspace `.mbx` search for `align disable sequence` /
+  `395443` — not found
+- **[Phase 5]** Read `mlx5_eswitch_disable()` in `eswitch.c:1780–1790` —
+  calls `mlx5_lag_disable_change`
+- **[Phase 5]** Read `mlx5_disable_lag()` in `lag.c:900–937` — shared-
+  FDB path calls `mlx5_eswitch_reload_ib_reps`
+- **[Phase 5]** Read `mlx5_eswitch_reload_ib_reps()` in
+  `eswitch_offloads.c:3346–3368` — requires OFFLOADS mode and REP_LOADED
+- **[Phase 5]** Read `mlx5_detach_device()` in `dev.c:414–454` — removes
+  auxiliary devices before unload
+- **[Phase 5]** Read `mlx5_devlink_eswitch_mode_set()` in
+  `eswitch_offloads.c:3807–3890` — disables eswitch before mode change
+- **[Phase 5]** `grep mlx5_unload(` — callers: err_register,
+  mlx5_uninit_one, err_attach, mlx5_unload_one_devl_locked
+- **[Phase 6]** Read current `main.c:1428–1645` — buggy ordering
+  confirmed in 6.18.44
+- **[Phase 6]** `grep mlx5_eswitch_disable` — present in tree, not yet
+  reordered
+- **[Phase 8]** Confirmed SD = Socket Direct via `mlx5_get_sd()` usage
+  in `eswitch_offloads.c:3826–3828`
+- **UNVERIFIED:** Mailing list reviewer stable nominations; patches 1–2
+  of series; explicit user crash reports for this specific bug
 
 **YES**
 
- .../ethernet/microchip/lan966x/lan966x_fdma.c | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-index 646f3d65274e3..b13c60438b978 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -816,6 +816,7 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- 	struct page *(*old_pages)[FDMA_RX_DCB_MAX_DBS];
- 	struct page_pool *page_pool;
- 	struct fdma fdma_rx_old;
-+	int page_order, max_mtu;
- 	int err, i, j;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 22bdefe5696c9..42bc553d034b5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1427,7 +1427,6 @@ static int mlx5_load(struct mlx5_core_dev *dev)
  
- 	old_pages = kmemdup(lan966x->rx.page, sizeof(lan966x->rx.page),
-@@ -826,6 +827,8 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- 	/* Store these for later to free them */
- 	memcpy(&fdma_rx_old, &lan966x->rx.fdma, sizeof(struct fdma));
- 	page_pool = lan966x->rx.page_pool;
-+	page_order = lan966x->rx.page_order;
-+	max_mtu = lan966x->rx.max_mtu;
+ static void mlx5_unload(struct mlx5_core_dev *dev)
+ {
+-	mlx5_eswitch_disable(dev->priv.eswitch);
+ 	mlx5_devlink_traps_unregister(priv_to_devlink(dev));
+ 	mlx5_sf_dev_table_destroy(dev);
+ 	mlx5_sriov_detach(dev);
+@@ -1536,6 +1535,7 @@ void mlx5_uninit_one(struct mlx5_core_dev *dev)
  
- 	napi_synchronize(&lan966x->napi);
- 	napi_disable(&lan966x->napi);
-@@ -855,7 +858,24 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- 	return 0;
- restore:
- 	lan966x->rx.page_pool = page_pool;
-+	lan966x->rx.page_order = page_order;
-+	lan966x->rx.max_mtu = max_mtu;
- 	memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
-+	/*
-+	 * lan966x_fdma_rx_alloc_page_pool() registered the new pool with
-+	 * each port's XDP RXQ before the allocation failed. The new pool is
-+	 * destroyed by lan966x_fdma_rx_alloc(), so restore the old pool's
-+	 * registration before restarting RX.
-+	 */
-+	for (i = 0; i < lan966x->num_phys_ports; i++) {
-+		if (!lan966x->ports[i])
-+			continue;
-+
-+		xdp_rxq_info_unreg_mem_model(&lan966x->ports[i]->xdp_rxq);
-+		xdp_rxq_info_reg_mem_model(&lan966x->ports[i]->xdp_rxq,
-+					   MEM_TYPE_PAGE_POOL, page_pool);
-+	}
-+
- 	lan966x_fdma_rx_start(&lan966x->rx);
+ 	mlx5_hwmon_dev_unregister(dev);
+ 	mlx5_crdump_disable(dev);
++	mlx5_eswitch_disable(dev->priv.eswitch);
+ 	mlx5_unregister_device(dev);
  
- 	lan966x_fdma_wakeup_netdev(lan966x);
+ 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
+@@ -1620,6 +1620,7 @@ void mlx5_unload_one_devl_locked(struct mlx5_core_dev *dev, bool suspend)
+ 	devl_assert_locked(priv_to_devlink(dev));
+ 	mutex_lock(&dev->intf_state_mutex);
+ 
++	mlx5_eswitch_disable(dev->priv.eswitch);
+ 	mlx5_detach_device(dev, suspend);
+ 
+ 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
 -- 
 2.53.0
 
