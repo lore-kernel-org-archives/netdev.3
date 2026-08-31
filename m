@@ -1,105 +1,109 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEC33BED30;
-	Mon, 31 Aug 2026 16:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CADF434406;
+	Mon, 31 Aug 2026 16:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788192233; cv=none; b=i9qPGNU4fRh7700/Z0XkiOA0YOhUiF4i20HG9oEG9IVV+CSzSWQXfvu/eD4L5Ao/rJU8IQZxNVOTi+ufpOKtIjfvkeFueoQxnD4Wutb4+yysChLGw6UwTNNyI6wG9UOk2pszB+C3AvQ8AzGddp5fHxXS4UjZBSRRHw0yRdbsqzE=
+	t=1788192400; cv=none; b=BdFM4tWFcIbfoFVWghq99IPOuoI5O+OePXgHYzM7hRGJY50Z0LWQfTk1rPJghJpIpZQisXlEUP2xb5My8sO0+HW3325vVsvg14tWSkHG+hoJG/yqVmi3qil97bgkPhlLWK6JzMPH8es2bQ2XJMSG+SD5grbto9fX/t+IGtSoWYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788192233; c=relaxed/simple;
-	bh=iu2xRQDwbrZbuhsKydR44Ey/k/7LXVHvnC2Z96F7B20=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ty1PPsKpR+An0+3ujrc1UugFmoIBbf80I7e6KqiAwoClw/dUfaipclMXVuKz04z6V+HBM79NYdMNs4A99bb8Sfa2DXAg8NAsAxauQBTwrfscPZy4bn2aMb/7btd/HHM4nsAgeG+Df5IQi0QNa7o++FH4EnMAx/0WwV2h7OTHyKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=g+4h03cs; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=g+4h03cs; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1788192400; c=relaxed/simple;
+	bh=dInqbBwUod+Sa+lEygi1HhCFJ31GmSpVykqCR05UGjY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=duDn72mXvtXFMU+vhy2M/LrQProV14Yn+9pPKZWm5aZd+bRxl9mPYFPiuSHPBubwNIMlMvARZYK8cw7xK5oRLOy9adMG64ZZFNDFz6JlOMImP62TxAv5g8zuiy36ThydPeA1NEyIllBClO5oc8PkKOOV1KOJG36K3EPiVjgWUx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LP6Vpi6K; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="g+4h03cs";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="g+4h03cs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788192229;
-	bh=iu2xRQDwbrZbuhsKydR44Ey/k/7LXVHvnC2Z96F7B20=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g+4h03csre1RVWFtS1jpPRXdF/qBcvxfVCNFi5g0HujUtOQ4TT7IeDfAf0Zko8UDI
-	 8UFR6zoPOevDz2VCfyHF7spTUqXgbHsGxWM+14VtYAcB54PZhR9aA63iGvkXoFJurJ
-	 ne/LWR6WcXutRptR4pnTo5QHFWRUtVMvWhUpAWY7zoM14e2ZhceFIg47U/coMLSFvF
-	 ZaO/LOSaIOD3gpagQYGRRVZRyfJ/SGAYl58Foa2oFoPkNVuQOFc9YCpJAxwQ09kuIC
-	 B4qL0gVxIdz7avfK5xLHSefhnB8puy/s/fPuM8INfJBtI3glFO4e9Sle3MSHLBg4eG
-	 DbvhipXOFuQHA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id EB9F13ECAC; Mon, 31 Aug 2026 16:03:49 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788192229;
-	bh=iu2xRQDwbrZbuhsKydR44Ey/k/7LXVHvnC2Z96F7B20=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g+4h03csre1RVWFtS1jpPRXdF/qBcvxfVCNFi5g0HujUtOQ4TT7IeDfAf0Zko8UDI
-	 8UFR6zoPOevDz2VCfyHF7spTUqXgbHsGxWM+14VtYAcB54PZhR9aA63iGvkXoFJurJ
-	 ne/LWR6WcXutRptR4pnTo5QHFWRUtVMvWhUpAWY7zoM14e2ZhceFIg47U/coMLSFvF
-	 ZaO/LOSaIOD3gpagQYGRRVZRyfJ/SGAYl58Foa2oFoPkNVuQOFc9YCpJAxwQ09kuIC
-	 B4qL0gVxIdz7avfK5xLHSefhnB8puy/s/fPuM8INfJBtI3glFO4e9Sle3MSHLBg4eG
-	 DbvhipXOFuQHA==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id DF67D3EC8B;
-	Mon, 31 Aug 2026 16:03:48 +0000 (UTC)
-Message-ID: <540fabbf-2f28-48bc-b765-e865de854401@birger-koblitz.de>
-Date: Mon, 31 Aug 2026 18:03:48 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LP6Vpi6K"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B1C794E41471;
+	Mon, 31 Aug 2026 16:06:35 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7CDA460231;
+	Mon, 31 Aug 2026 16:06:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6B18A11C78AC8;
+	Mon, 31 Aug 2026 18:06:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788192394; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Iu8DxQ3dzl8wZqpvD364DVvQYiKdo2ESja+zACmBA7Q=;
+	b=LP6Vpi6K8cpGr0XmcFffIH8q5sJEkFlVjmad6wamz9RvpKEIsg2ouUm1Pn2LEDPqjW3VuW
+	EEDhaKKWOCPkAPez2zLN/n7fdDEC+JArgq5sc5ak8bil4UVk8htAqqVVYBSxOQlEtUDo8R
+	NeZFQRBWON8LKGcMGm+xhzg5UxzIMedPtLDT1JLbPl3NKDc5DWDZQSDIX/K14aUNf5lgSh
+	sGVza5M6ePqgTsolTzJIzP+s4P1BrPfhaI6Nninl4r3Xx/QHEkx716yDranwNs0KfudY5Z
+	ISlU71RT2r58TNAWCg6GJIsqi7vuCBYI21KGwKo1bauJEztiyVpvKP/hohEEZg==
+From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Subject: [PATCH 6.6.y 0/4] ipv4: start using dst_dev_rcu()
+Date: Mon, 31 Aug 2026 18:06:19 +0200
+Message-Id: <20260831-cve-2025-40074-6-6-v1-0-027e51b162a3@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 06/15] ax88179_178a: Add HW support for
- AX179A-based chips
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
-References: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
- <20260831-ax88179a-v8-6-de905f2ee426@birger-koblitz.de>
- <af3f05e6-f5dc-459f-ac2a-5e7aedbf8ba3@lunn.ch>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <af3f05e6-f5dc-459f-ac2a-5e7aedbf8ba3@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ6CQAxFr0K6tqQDTFGuYlwMQ9G6QDOjREO4u
+ xXyV+8n7y2QJalk6IoFksya9TEZuEMB8Ramq6AOxlBRxXSsHcZZ0MBjQ9Q2yLYQgm/rnk7sHZj
+ 4TDLqZ4uegUsuv3DZ7/zu7xJf/yCs6w8nlO8bfQAAAA==
+X-Change-ID: 20260831-cve-2025-40074-6-6-aaa573b09651
+To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Martin KaFai Lau <kafai@fb.com>, 
+ Wei Wang <weiwan@google.com>, David Ahern <dsahern@kernel.org>, 
+ Steffen Klassert <steffen.klassert@secunet.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ coreteam@netfilter.org, 
+ "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788192387; l=1484;
+ i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
+ bh=dInqbBwUod+Sa+lEygi1HhCFJ31GmSpVykqCR05UGjY=;
+ b=giRQwpY7Cb5C1FPQqhu+P9zUWdAfSfC3qeQGOhiwoW1C0DnP/0cAhGJ52t9VSaBQs9U38wNUr
+ fynR1Tazx+yC6o53qu2nAbb0Zo5Ipql2Lmiik2XZXlw/h3EUzmaz9h1
+X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
+ pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 31/08/2026 4:30 pm, Andrew Lunn wrote:
->> +static void ax88179a_status(struct usbnet *dev, struct urb *urb)
->> +{
->> +	struct ax88179_data *data = dev->driver_priv;
->> +	struct ax88179_int_data *event;
->> +	u32 link;
->> +
->> +	if (urb->actual_length < 8)
->> +		return;
->> +
->> +	event = urb->transfer_buffer;
->> +	le32_to_cpus((void *)&event->intdata1);
->> +
->> +	link = (((__force u32)event->intdata1) & AX_INT_PPLS_LINK) >> 16;
->> +
->> +	if (netif_carrier_ok(dev->net) != link) {
-> 
-> phylink will not like this. It is supposed to be in control of the
-> carrier.
-> 
->> +		usbnet_link_change(dev, link, 1);
-> 
-> This also seems to change the carrier under some conditions.
-> 
->> +		phylink_mac_interrupt(data->phylink);
-> 
-> Is this not sufficient to make phylink change the carrier once the
-> status has been read from the PHY?
-Yes, indeed. This is actually the only thing that needs to be done
-in ax88179a_status(). Will fix in the next round.
+Three other patches are required to be able to apply cleanly the final patch.
 
-Birger
+Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+---
+Eric Dumazet (4):
+      net: dst: add four helpers to annotate data-races around dst->dev
+      ipv4: adopt dst_dev, skb_dst_dev and skb_dst_dev_net[_rcu]
+      net: dst: introduce dst->dev_rcu
+      ipv4: start using dst_dev_rcu()
+
+ include/net/dst.h             | 34 ++++++++++++++++++++++++++++++----
+ include/net/inet_hashtables.h |  2 +-
+ include/net/ip.h              | 11 ++++++-----
+ include/net/route.h           |  2 +-
+ net/core/dst.c                |  4 ++--
+ net/core/sock.c               |  8 ++++----
+ net/ipv4/icmp.c               | 28 +++++++++++++++-------------
+ net/ipv4/igmp.c               |  2 +-
+ net/ipv4/ip_fragment.c        |  6 ++++--
+ net/ipv4/ip_output.c          |  4 ++--
+ net/ipv4/ip_vti.c             |  4 ++--
+ net/ipv4/ipmr.c               |  2 +-
+ net/ipv4/netfilter.c          |  4 ++--
+ net/ipv4/route.c              | 10 +++++-----
+ net/ipv4/tcp_fastopen.c       |  4 +++-
+ net/ipv4/tcp_ipv4.c           |  3 ++-
+ net/ipv4/tcp_metrics.c        |  8 ++++----
+ net/ipv4/xfrm4_output.c       |  2 +-
+ 18 files changed, 86 insertions(+), 52 deletions(-)
+---
+base-commit: a4a971135a2ff64382ae4235b3ae60503bb1036a
+change-id: 20260831-cve-2025-40074-6-6-aaa573b09651
+
+Best regards,
+--  
+Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 
