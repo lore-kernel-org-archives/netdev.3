@@ -1,83 +1,76 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA4739D6C8
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682A63AE701
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788212873; cv=none; b=Jced8FhqsD8qpS8cM08peMbP6HwG7iPkkul5ImFijVagq9qNobIxz0OU2nBeDN5nnmGLpH2qg0N80+HrDlm3HuWFxty9tDkeAGigjJxlQUEavV7B435IHqg6zs+rDf90qg+Ry1fCHqx0zZhAgFFCyja8qcQHxdOVDLIrozf5oOw=
+	t=1788213118; cv=none; b=kSPelRZOdAKKWd13+9ApuSmnzAj0A+8H1MWJX1PMSwFL8cPh7edby1LOhZ5P1hCj0mIRxVBeGWOv+kBxqUl03L4tDRYsfd2ErH5BBm74nsJOGaqe6CuhT8gLrXThPVstYjUYerSfAMIpeNeUGe1CIUSN6xsPFEssH3jCraliOHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788212873; c=relaxed/simple;
-	bh=ynypFeeMcVFHMmyNNm3Ko2CgLlcEE/Akeh1XxvChmQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJUkJU8IuwVPOauf9Epy5CAc44LGuvLQZPe/F0vhTvCDrdBTJb1MdnITMfTa8ooC6GFa39zXORneCGhkL8JZfq1H919tHxjx4auG3lhQAIgOVsh0Sx9Lark5uKCKu9bxdZAZyx382CjGwuiUJTb7TQU1DIIwYFmRKCOKOvkMNyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nxdnpo+V; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1788213118; c=relaxed/simple;
+	bh=wMZRcjI+OWyvem2irRl2drG2Q+YoShdAEnweMvtF1GI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=heHQb5cf8sAwrILy/zDnHXwNBuLU8evci+WAsKsB3vJIXzodQovNl6vtRGMZ9a3tuSUkhPf3Om2YnPcgYfpsARQ+ToodChq+5t0JNhn1B7hv//bpYxQxRDHWVPZRFmFQj9AWmGXgvMcHLpafISvqbkwhYctiiWp6JyStK8UgV7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qK7RUyO6; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nxdnpo+V"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-39c953950dfso40668661fa.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:47:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qK7RUyO6"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b4aff8e8c4so121899e87.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788212867; x=1788817667; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HR5w4wu2d/AdbodPVdlLXgyYzkKXoBfBxxBtTecxISQ=;
-        b=nxdnpo+Vjak8AQiAgFi4numunHqmLzcIH3ThaNDlmAuvcu6UpFx5Za6MaKngv24yaO
-         9/6P/Um1Qi9ZLxlxjIISUXTph6BdqZOZCFMNsvFf/4zBK5VSAj0ovmebbqCXLQ5j5S/D
-         pGt29061RqOuhShQaynnn+qmE6UwBLR5PeWoU9fdvUVnneziiHFVkyGvsZ7SgmIH4V+l
-         YHu36H/OmW63lOckPiEVBIPLmWjKw1Cm4WO2snhVIHH9q/W5mfRKX3Ke9Qu+OxUKoRBC
-         f6j9xSpZteWwVAcoSsM2bxAXm9Ym3VmDzvOzwLEpmtX2cxlTo+g0IIPVIUUZTyBK6hDK
-         +IbA==
+        d=gmail.com; s=20251104; t=1788213112; x=1788817912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cGKaO6KKnr5SuBGCN5zxoUeuXnRrk7kBjvDdBLu0U8g=;
+        b=qK7RUyO6LaPAyMU+uG42Wm+Sybo3RbgEekiOUcO3nW4Br4h5wi6tZ3OQX2g8nfghJe
+         AQN+27d0ewmNm/QsDg6KqTxkOIWxuzbcicq92Tj1g9j+3XQtZhfC3L+wJ1nGs5GO7dAe
+         XeQWnCsvv9yyC0XCUyz3l4ZoxArsGUYtdVPEU8j02dd0rSwx6TJ2GiZ0weT/oXhI99ib
+         GH5Qx5AOzK64bKLMnQyXhFuIlGw1AizzBF9cfIMcre042vvxh8KyyzQkjLh3lj++zES5
+         GpoAaEJbN+RyHD5DL0jBWBFkLknfW18NmdtIPA9b/46EgpUxi0Iz61z6ChLmfSxakWuN
+         KCwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788212867; x=1788817667;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HR5w4wu2d/AdbodPVdlLXgyYzkKXoBfBxxBtTecxISQ=;
-        b=bThRNs4HQ9y8+8Sz6CaUiAyPECKGOmh9lkgn6CXamx/R7hsUhtm05N7BQjNtzoYhgv
-         M20rIQG6+tOfmLUUJeSDfK0b8mpctfdijd6wIWo+4YxKcwelwQckbEnJ6RMhd64mHbI8
-         CTtQSQkJRN/EIxAYzDceX/T9aTBUrLmDx4IM6UC/HIpluHiKJUoWmNjFg0uDOBHadrio
-         TzmJDKYIVZ5aaOOSupA8OOwM/MLcFkdoEBqP+s0zkarKMbmXY852lzLXg6TBjPLKGAJc
-         qXKnTmb3lspb/RHE3cgwtksKAfANKOBVKCvm3WjlUYJpYaXAhiX9G5GbQknF5ISGITeF
-         iG5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxu43vtW96FCaIkePX2s9pjF3Hnw45577JCT5aoBogtlL29Mm1Zmedd1d8n3JM3erEgHzBK2Y8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nKAFrrtMWG54X5bCIicOOFVX24qXy92U7oRmRciEgD+Lv9mmDX
-	FXBnbIQViGoGUDb1koGDLovraJ4V8R+VfIJ9tkT1sYRY9SJb8BgVkSE=
-X-Gm-Gg: AYBFou0sAMMJWyzpE14N2MWma/cM04iZLeo7XeEO34+ssYcI+pnqh/Br9224Qz3v6Lw
-	dNFjdELpqr0uH8uwVrBxv8JcrotL4lozXS7H88VAVombxV+QWizlFeMoYJHWtPQmgbN75eq6B3S
-	CsY1Xpw8tWm9zqo2KQsDlh2IqoLGsCwRRK7pu8BXwzaCxgPPPTqNb/PawL8zuCwYBOpHWEJuDPO
-	TdHlewBz9O3T8cz2loF19fUQckE9eOYKEXNKRPUL3c/Dwp+qThPaDYkCJukmtZeVDMRu4BG6nOy
-	sFy5OMxjNt0U9IhP+YI3zWCDS1OCQcWEC1UOaomLpoW9t+0xvQdRW+M67qyvyn7WGLR7AACS6A1
-	thRW2WH1t/cB2T+uZlHcNmJgT28OQ2gfYBe1WSlJU9mk8sHGPsxs8ExiRQOZS15rIsmPzcxyP3H
-	oLFTBVfKfHYjkxVmbafIKqoeK3WmAH2zMfhFj5zaCxUGdhQkQkZQ==
-X-Received: by 2002:a05:651c:30c9:b0:3a1:ab57:ea2c with SMTP id 38308e7fff4ca-3a33948c4e0mr10050771fa.2.1788212866759;
-        Mon, 31 Aug 2026 14:47:46 -0700 (PDT)
-Received: from fedora ([92.36.9.2])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a31550cefbsm18299201fa.9.2026.08.31.14.47.44
+        d=1e100.net; s=20251104; t=1788213112; x=1788817912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cGKaO6KKnr5SuBGCN5zxoUeuXnRrk7kBjvDdBLu0U8g=;
+        b=iftMc4MIOFKuOLNKHMUmCbPtE4SVyBV3LMc7Qs/qaXsmGCBpax+jYclotQ6hFtWmzI
+         SLwjiKw2PiOairyCv0nk/dja12ZhMebeQVWjZ0dOaY010l+Cxn9Zhz6M7ZtfHleJyGrl
+         u3b4fkJ3LAM4vRxb4GLS/+8dCU2Yof85mvHB/kMkqJvJR8c4NspUZobCUItz3430Aqws
+         Mies7zwcIteqQaOxzjkBzhb1C6CDlkQ1mHadBwTSjrGUYmWaCAcsEyw2bPXUggw3NhRQ
+         krEmpN4WRSbU3K+NpA8XHQpdSP0MY7zEY/D5FZkMHBjZ+cKz0QeZPQKBQNkuAJ+0zVqp
+         75og==
+X-Gm-Message-State: AFuF++lfKrGbdmsfEGoOew8fnq+yBEuUreDiVA+pG4EAAr68YJ26uFzP
+	ksf03uVS39xeAkhwbdvqhBpN/ZXc8SNCHycicyWnRI1n3jTW/bfrDmgGLPQZS6tOBXk=
+X-Gm-Gg: AYBFou1SrU3XUMseCtTuvCgy4bVfwKljNWqsILHXoB9S+100Ix4VIR86TPi44LnVrVo
+	Ed46WzZJcbldbJ8ac+uEzdmzscxBOGILbRr+r2XGS83HqvFOR6x4dhJ8x9+kMfYLoQuJRTvt4OB
+	NtDyKoVTnfxzCFTOswEP3hdpw7awpBywHHP8jZiDyf4mHlato4Jlt//sDylzb+oCkkRmZNkFfFS
+	MNNh22E8QGx+SGJ218znpqM5NZTpMCAWoaQK9ZMw48ifxSjXz8VvQO/OrVkCUgaDT2ysI0UFSMt
+	9Y3653pPc0oRMBm6MEvvOZOZJS7MKNHJbJ+sCGp0C1Sp/pFhFmwd0LJP8lN66oihy/OyYL0a/XF
+	KOXRyjt8mWY5gaOedTiKsXQ8M2vKrcrRRTIP1FWuTetQfZGhD/dRDiRIc9xxUPJ2MKXkvqwaALk
+	gaFHa18iFBrz9gxyZB2dTF9He1II7iz1xKlCbqYIx0P5K9Or5P2dCj9w69+qfg+Ws/gI1SOp/v9
+	iX8ry4yXR9vcBFlNSsNss6QkWUeHd8UzQ==
+X-Received: by 2002:a05:6512:15a3:b0:5b4:a388:63a with SMTP id 2adb3069b0e04-5b5e68a73f1mr8750331e87.4.1788213112244;
+        Mon, 31 Aug 2026 14:51:52 -0700 (PDT)
+Received: from dau-home-pc.. ([212.35.184.237])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b5e8a06a77sm2388782e87.48.2026.08.31.14.51.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 14:47:46 -0700 (PDT)
-From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	netdev@vger.kernel.org
-Cc: upstream@airoha.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+        Mon, 31 Aug 2026 14:51:50 -0700 (PDT)
+From: Anton Danilov <littlesmilingcloud@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Vitaliy Sochnev <sochnev.v.74@gmail.com>
-Subject: [PATCH net v2 3/3] net: airoha: grow the small RX rings
-Date: Tue,  1 Sep 2026 00:47:01 +0100
-Message-ID: <20260831234701.206021-4-sochnev.v.74@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260831234701.206021-1-sochnev.v.74@gmail.com>
-References: <20260830095717.37218-1-sochnev.v.74@gmail.com>
- <20260831234701.206021-1-sochnev.v.74@gmail.com>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next 00/11] tunnels: add core and gre drop reasons
+Date: Tue,  1 Sep 2026 00:51:26 +0300
+Message-ID: <20260831215137.549324-1-littlesmilingcloud@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,45 +79,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Raise the RX_DSCP_NUM() fallback from 16 to 32, the vendor SDK default,
-and give ring 4 the 128 descriptors already used for rings 2/11/15.
+Only vxlan reports drop reasons among the tunnel drivers today.
+Everything else, on both the receive and the transmit side, ends in a
+plain kfree_skb(), so a packet that a tunnel throws away is invisible
+to dropwatch, drop_monitor and perf trace -e skb:kfree_skb. The device
+counters group the failures coarsely: rx_errors and tx_errors each
+cover half a dozen unrelated conditions.
 
-Ring 4 is the shared "force to CPU" ring that airoha_fe_vip_setup()
-routes BOOTP, PPPoE Discovery, PPP LCP/IPCP/CHAP/PAP/IPv6CP, ISAKMP,
-DHCPv6, SIP and LLDP onto, so it sees the same bursty non-hashed traffic
-as the rings already on 128 while sitting on the smallest allowance.
+This series covers the generic paths shared by ipip, sit, vti, gre and
+their IPv6 counterparts, plus the GRE specific parsing, on both
+directions. A later series will do the same for geneve, bareudp, fou
+and the remaining IP in IP drivers.
 
-At 16 descriptors the completion stall handled by the previous patch is
-readily reachable: on a Nokia XG-040G-MF the recovery fires roughly every
-35 s under repeated PPPoE dial-up, and negotiation never completes. At
-128 it did not trigger once across 500 forced PPPoE reconnects over 20 h.
+Patches 1-3 convert the generic receive paths, ip_tunnel_rcv() and
+__ip6_tnl_rcv(), and add a test for them. Two reasons are added:
 
-Ring 4 and the VIP classification feeding it are shared driver-wide, with
-no DT or hardware property distinguishing one variant's ring 4 from
-another's, so this is not scoped to a particular SoC.
+  IP_TUNNEL_CFG_OPTS_MISMATCH  the options a packet carries do not
+                               match the tunnel configuration
+  IP_TUNNEL_OLD_SEQ            the sequence number is older than the
+                               one the tunnel expects, next to the
+                               existing TCP_OLD_SEQUENCE
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
----
- drivers/net/ethernet/airoha/airoha_eth.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The second one has a failure mode worth naming: when a peer reboots,
+its outgoing sequence number restarts at zero and the receiver drops
+everything until its own counter catches up. That is indistinguishable
+from a misconfiguration by the counters alone.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index c195dad5ed58..0b7c90940272 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -41,9 +41,10 @@
- #define TX_DSCP_NUM			1024
- #define RX_DSCP_NUM(_n)			\
- 	((_n) ==  2 ? 128 :		\
-+	 (_n) ==  4 ? 128 :		\
- 	 (_n) == 11 ? 128 :		\
- 	 (_n) == 15 ? 128 :		\
--	 (_n) ==  0 ? 1024 : 16)
-+	 (_n) ==  0 ? 1024 : 32)
- 
- #define PSE_RSV_PAGES			128
- #define PSE_QUEUE_RSV_PAGES		64
+Patches 4-7 do the GRE specific receive path. gre_parse_header()
+returns -EINVAL for six different reasons, and the only detail its
+callers could get was a csum_err flag that none of them read: both
+ip_gre and ip6_gre declared it, passed it in and ignored it. It is
+replaced by a drop reason. Three reasons are added, mirroring vxlan:
+GRE_INVALID_HDR, GRE_CSUM and GRE_TUNNEL_NOT_FOUND.
+
+Patches 8-11 do the transmit side, about forty failure paths across
+ip_tunnel, ip_gre, ip6_tunnel and ip6_gre. One reason is added,
+IP_TUNNEL_ENCAP, for a failure to build the encapsulation header.
+
+The transmit side has its own case worth naming: tnl_update_pmtu()
+returns -E2BIG after it has already sent an ICMP fragmentation needed
+back, which is path MTU discovery working exactly as intended, yet the
+drop lands in tx_errors next to genuine failures. An MTU black hole
+cannot be told from a broken route by looking at the counters.
+
+Drop reasons on transmit are not new: vxlan already reports several
+from its xmit path, and ip_tunnel_core.c reports RECURSION_LIMIT.
+
+Tested under virtme-ng. The selftest checks twelve cases by the end
+of the series and passes, with no DEBUG_NET splat from the
+SKB_NOT_DROPPED_YET check in sk_skb_reason_drop(). Breaking the new
+mechanisms on purpose makes exactly the corresponding cases fail.
+
+Not covered by the test: GRE_CSUM, which veth cannot trigger since it
+hands the skb over with CHECKSUM_UNNECESSARY, and the NOMEM paths.
+
+Anton Danilov (11):
+  ip_tunnel: add drop reasons to the generic RX path
+  ip6_tunnel: add drop reasons to the generic RX path
+  selftests: net: add a test for the tunnel RX drop reasons
+  gre: make gre_parse_header() report a drop reason
+  ip_gre: add drop reasons to the RX path
+  ip6_gre: add drop reasons to the RX path
+  selftests: net: cover the GRE specific drop reasons
+  ip_tunnel: add drop reasons to the transmit path
+  ip_gre: add drop reasons to the transmit path
+  ip6_tunnel: add drop reasons to the transmit path
+  selftests: net: cover the tunnel transmit drop reasons
+
+ include/net/dropreason-core.h                 |  38 ++
+ include/net/gre.h                             |   2 +-
+ include/net/ip6_tunnel.h                      |   3 +-
+ net/ipv4/gre_demux.c                          |  51 ++-
+ net/ipv4/ip_gre.c                             | 144 +++++---
+ net/ipv4/ip_tunnel.c                          |  60 ++-
+ net/ipv6/ip6_gre.c                            | 163 ++++++---
+ net/ipv6/ip6_tunnel.c                         |  95 +++--
+ tools/testing/selftests/net/Makefile          |   1 +
+ tools/testing/selftests/net/config            |   1 +
+ .../selftests/net/tunnel_drop_reasons.sh      | 346 ++++++++++++++++++
+ 11 files changed, 762 insertions(+), 142 deletions(-)
+ create mode 100755 tools/testing/selftests/net/tunnel_drop_reasons.sh
+
 -- 
-2.55.0
+2.47.3
 
