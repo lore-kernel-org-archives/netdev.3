@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C6B47209F;
-	Mon, 31 Aug 2026 13:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3327524B0D;
+	Mon, 31 Aug 2026 13:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183844; cv=none; b=s09+6yLXZRNKwbC/mNLRteeYsLXmpdxGViARJqbVVn9Oo50pVr24meZPSFvraLphJ+B1MMxr63IKBwxzvPqIscMZfBqsL9Tf9jFuKHiuedSk2SOAmnnwf8nQUgxrT1GzDDtfVLLcZgjW0OkHTko9WCTnLZgI8ABId9Sf4lCgqsk=
+	t=1788183861; cv=none; b=aNE16RRD60MyD96OQ35PXv+vBxuZIn6GhIdXF1bpSfJse+Zpryi2vDRFA1JiGulizAvhabDwiLnpTaT78j9XTl2Q9dLcfA4cziXSDqjBiY5pMgBJxhrGbleecP08DCkYWHmPbMMrucpHYiMPsiFfSvaWpAYHtM2m0e8HjuTYkHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183844; c=relaxed/simple;
-	bh=bbo3ShUlx1xrXxxhLU53BULDHm4IZY6/UA4TjPkTGds=;
+	s=arc-20240116; t=1788183861; c=relaxed/simple;
+	bh=OZseUKhZwRVlbj1/1OsmDOimzc7BCHLoRTaWQt1CYXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DEsKTwfB2ru2YwVZfQ/Uly/z4zU4VKan+6Vo6stLnz7KtgdZ4P+qXy6lIbcsQIna72PeiZc2SWmdBuDxBiMSc63crcHueIlnORVC3J0L4x91tb22+v1r8Eq1i4Q6sWbMAYZOY0qr/s6O0m36xW6xZ6jh2GLpEcOLZ/I9/qfrc3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlL0SPPG; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=HCUqtbMRZHO14NErNaIp6A8pPY0XzDYmnymG7EByho+3yBZsG2zOKno/vlhZrQW15Mi+iG7SxLy3GRwqwTtFWcdU9hu46Iq/caRade3WR3h9UdMxMkjxE558szEk52WUbjRe9rXtaqGNV23vXZlnfnNlFOeRE9GIuEpX3bA32HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ihp/Ma7J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlL0SPPG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE4F1F00A3D;
-	Mon, 31 Aug 2026 13:44:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ihp/Ma7J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E671F00ADB;
+	Mon, 31 Aug 2026 13:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183842;
-	bh=eWzTYdlIPqanQMX1ite56ZRDgdr839ejioJhThETM14=;
+	s=k20260515; t=1788183858;
+	bh=SjSB3VUQZ+aGSf3a9gQmCHoW8bUyI2z57BnBPQlXIF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WlL0SPPGeXYTI8mqf+wHZfEfM3IM88UXL+bKZXxXi7Et6TI6NJmEoWqeL3lI17b4U
-	 AN7ba5X9kaiPnnCbVf+0Ex6ssayUc4tweGxNFsD0NCFx2lXwMgQBhYpFvA4iNjr7SR
-	 rE1pAEgPG/vw5DaBQOI3Yh0Nk/BWuu6iZExyKSznwTODHMHBqDDc04Mq4qKPA+Jubx
-	 6Kwuhz1uKypIuzIb5AvD7IrjJc+C5LIolsPRAKKiolxasFolUuLiN0RyIriYK4aD1g
-	 DhlT5DupZhdaCD2JmtvWw1Ka3VozqwDvqByAm2JaPzaHMRWw/9edTOsrmeCpcswMcA
-	 hjC5POI0xBvVA==
+	b=Ihp/Ma7J05v3G+Bnoa1CQpGcUXCeTtKeuejPd3MZd/Ldu0wZagZETZI/cxAv1/m+/
+	 07DZTOpvd/xdjKHhan4C2pg7Q4MdcsW/gOZ1p+u6rsDLLoBwwpEE34pqxtGDyrL+7w
+	 FLINvPvtp5owJdWIWMcDry95pcXS99RKcdLQeL79ZbGWpog9ZjWZMY2WIXGzPQt6QV
+	 1JsXUhLHSk3AlIdRdZcf8QCLNexOlu8WqTrrU0ycyaJliPCc03GOWiLp5WEpn9Tj0+
+	 7EJ1PHAETMI72IjmuilZg3kKAgpR8UUW/93yv+Dn17o7WKeryxUhQ16KGzjJ8YB91w
+	 yBJ8EyBVf1RJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	andrew@lunn.ch,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] net: ethtool: cmis_cdb: hold instance lock for ops locked devices
-Date: Mon, 31 Aug 2026 09:26:04 -0400
-Message-ID: <20260831133314.4125787-336-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: au1000: move free_irq out of the close-time spinlocked section
+Date: Mon, 31 Aug 2026 09:26:14 -0400
+Message-ID: <20260831133314.4125787-346-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -57,478 +57,387 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
 
-[ Upstream commit 1d3964e29e53b02a7c61ed6d6e4aeccba3275ebc ]
+[ Upstream commit f48763beab4eea41fc480c9702ec6eebe8d75e4f ]
 
-FW module flashing was written so that the flashing happens
-without holding rtnl_lock. This allows flashing multiple modules
-at once. Current drivers can handle that well, but we should
-let drivers depend on the netdev instance lock. Instance lock
-is per netdev, and so is the module so we won't break parallel
-updates.
+au1000_close() calls free_irq() while aup->lock is still held with
+spin_lock_irqsave(). free_irq() can sleep because it takes the IRQ
+descriptor request mutex, so it does not belong inside the close-time
+spinlocked section.
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20260603012840.2254293-3-kuba@kernel.org
+This was found by our static analysis tool and then confirmed by manual
+review of the in-tree au1000_close() .ndo_stop path. The reviewed path
+keeps aup->lock held across the MAC reset, queue stop and
+free_irq(dev->irq, dev).
+
+A directed runtime validation kept that ndo_stop carrier and the same
+free_irq(dev->irq, dev) operation under the driver lock. Lockdep reported
+"BUG: sleeping function called from invalid context" and "Invalid wait
+context" while free_irq() was taking desc->request_mutex, with
+au1000_close() and free_irq() on the stack.
+
+Drop aup->lock before freeing the IRQ. The protected close-time work still
+stops the device and queue before IRQ teardown, but the sleepable IRQ core
+path now runs outside the spinlocked section.
+
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260619151816.1144289-1-runyu.xiao@seu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `net: ethtool: cmis_cdb: hold instance lock
-for ops locked devices`
+# Stable Backport Analysis: `net: au1000: move free_irq out of the
+close-time spinlocked section`
 
-**Local tree:** `v6.18.44` (Linux 6.18.44)
+**Local tree:** Linux **6.18.44** (`v6.18.44-1-g2736c32da98b9`)
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject Line
-**Record:** `[net: ethtool: cmis_cdb]` — no explicit "fix" verb, but
-intent is locking correctness — `hold instance lock for ops locked
-devices` during CMIS module firmware flashing.
+### Step 1.1: Subject line
+**Record:** `[net: au1000]` `[move]` — relocate `free_irq()` out of a
+spinlocked section in `au1000_close()`.
 
-### Step 1.2: Commit Tags
+### Step 1.2: Commit message tags
 **Record:**
 | Tag | Value |
 |-----|-------|
-| Reviewed-by | Jakub Sitnicki \<jakub@cloudflare.com\> |
-| Acked-by | Stanislav Fomichev \<sdf@fomichev.me\> (ethtool/netdev
-locking maintainer) |
+| Signed-off-by | Runyu Xiao `<runyu.xiao@seu.edu.cn>` |
+| Reviewed-by | Simon Horman `<horms@kernel.org>` |
 | Link |
-https://patch.msgid.link/20260603012840.2254293-3-kuba@kernel.org |
-| Signed-off-by | Jakub Kicinski \<kuba@kernel.org\> |
-| Fixes: | **Absent** (expected for candidate review) |
-| Cc: stable | **Absent** (expected) |
-| Reported-by / Tested-by | **Absent** |
+https://patch.msgid.link/20260619151816.1144289-1-runyu.xiao@seu.edu.cn
+|
+| Signed-off-by | Jakub Kicinski `<kuba@kernel.org>` (committer) |
+| Fixes: | Not in final commit message (present in lore submission:
+`Fixes: 1da177e4c3f4`) |
+| Cc: stable | Present in lore submission (`Cc: stable@vger.kernel.org`)
+|
+| Reported-by / Tested-by | None |
+| syzbot | None |
 
-Notable: subsystem maintainer Acked-by; no user/fuzzer reports.
+**Notable:** Author nominated for stable in lore; subsystem reviewer
+approved.
 
-### Step 1.3: Body Analysis
+### Step 1.3: Body analysis
 **Record:**
-- **Bug described:** Module FW flashing runs without `rtnl_lock` (by
-  design, for parallel flashing on different netdevs), but ops-locked
-  drivers expect the per-netdev instance lock (`netdev_lock_ops`) during
-  ethtool callbacks.
-- **Symptom/failure mode:** Unsynchronized ethtool driver callbacks on
-  ops-locked netdevs during firmware flashing.
-- **Root cause:** `module_flash_fw_work()` calls
-  `ethtool_cmis_fw_update()` without holding `netdev_lock_ops()`, while
-  most other ethtool paths (added in commit `2bcf4772e45ad`) do hold it.
-- **Version info:** None explicit in message.
+- **Bug:** `au1000_close()` calls `free_irq()` while holding `aup->lock`
+  via `spin_lock_irqsave()`.
+- **Symptom:** Lockdep reports `"BUG: sleeping function called from
+  invalid context"` and `"Invalid wait context"` because `free_irq()`
+  takes `desc->request_mutex`.
+- **Trigger:** `ndo_stop` / netdev close path (`ifconfig down`, driver
+  unload).
+- **Root cause:** Sleepable IRQ teardown inside an atomic (spinlocked)
+  context.
+- **Fix:** Drop `aup->lock` before `free_irq()`; MAC reset and queue
+  stop remain protected.
 
-### Step 1.4: Hidden Bug Fix Detection
-**Record:** Yes — described as locking improvement, but it closes a real
-race: concurrent ethtool ops vs. module-flash work on the same ops-
-locked netdev.
+### Step 1.4: Hidden bug fix detection
+**Record:** Not disguised — this is an explicit locking-context bug fix,
+even though the subject uses "move" rather than "fix".
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Change Inventory
+### Step 2.1: Change inventory
 **Record:**
-| File | Changes |
-|------|---------|
-| `include/net/netdev_lock.h` | +6 lines — new
-`netdev_assert_locked_ops()` helper |
-| `net/ethtool/cmis_cdb.c` | +3 lines — include + 2 lockdep assertions |
-| `net/ethtool/cmis_fw_update.c` | +2 / -6 — reset path: lock acquire →
-assert |
-| `net/ethtool/module.c` | +2 lines — lock/unlock around fw update work
-|
+- **File:** `drivers/net/ethernet/amd/au1000_eth.c` (+1 line moved, net
+  ~2 lines changed)
+- **Function:** `au1000_close()`
+- **Scope:** Single-file, surgical fix
 
-**Functions modified:** `netdev_assert_locked_ops()` (new),
-`cmis_cdb_validate_password()`, `__ethtool_cmis_cdb_execute_cmd()`,
-`cmis_fw_update_reset()`, `module_flash_fw_work()`
-
-**Scope:** Single-subsystem, surgical (net +13 / -6).
-
-### Step 2.2: Code Flow Changes
+### Step 2.2: Code flow change
 **Record:**
-| Hunk | Before → After |
-|------|----------------|
-| `module_flash_fw_work()` | Calls `ethtool_cmis_fw_update()` unlocked →
-wrapped in `netdev_lock_ops()` / `netdev_unlock_ops()` |
-| `cmis_fw_update_reset()` | Acquires/releases lock internally → asserts
-lock already held by caller |
-| `__ethtool_cmis_cdb_execute_cmd()` / `cmis_cdb_validate_password()` |
-No lock check → `netdev_assert_locked_ops(dev)` before
-`set_module_eeprom_by_page()` |
-| `netdev_lock.h` | No ops-only assert helper → adds
-`netdev_assert_locked_ops()` (lockdep only when
-`netdev_need_ops_lock()`) |
+| Hunk | Before | After |
+|------|--------|-------|
+| `au1000_close()` | Hold `aup->lock` → reset MAC → stop queue →
+`free_irq()` → unlock | Hold lock → reset MAC → stop queue → **unlock**
+→ `free_irq()` |
 
-**Path affected:** Workqueue path for module firmware flashing (normal
-operation path, not error-only).
+Affected path: netdev `.ndo_stop` error/teardown path.
 
-### Step 2.3: Bug Mechanism
+### Step 2.3: Bug mechanism
+**Record:** **Category:** Synchronization / invalid context (sleeping
+while holding spinlock).
+
+`free_irq()` → `__free_irq()` → `mutex_lock(&desc->request_mutex)` in
+`kernel/irq/manage.c`. That is illegal while
+`spin_lock_irqsave(&aup->lock)` is held.
+
+### Step 2.4: Fix quality
 **Record:**
-- **Category:** Synchronization / race condition (missing lock)
-- **Mechanism:** After `2bcf4772e45ad` ("try to protect all callback
-  with netdev instance lock"), most ethtool entry points take
-  `netdev_lock_ops()` for drivers with `request_ops_lock=true`. The
-  deferred work path (`module_flash_fw_work`) was missed. It calls
-  `set_module_eeprom_by_page()` and `reset()` without the instance lock,
-  while other ethtool ops on the same netdev can run concurrently with
-  the lock held — two threads can enter driver ethtool callbacks
-  simultaneously on ops-locked drivers.
-
-### Step 2.4: Fix Quality
-**Record:**
-- **Quality:** Obviously correct — holds lock for entire fw-update
-  duration; moves redundant nested lock in `cmis_fw_update_reset()` to
-  assertion; adds lockdep checks at driver callback boundaries.
-- **Regression risk:** Very low. `netdev_lock_ops()` is a no-op when
-  `netdev_need_ops_lock()` is false. Per-netdev lock preserves parallel
-  flashing across different netdevs.
-- **Red flags:** None. No API changes, no refactoring.
+- **Obviously correct:** Yes — matches established netdev driver
+  pattern.
+- **Minimal:** Two-line reorder.
+- **Regression risk:** Low. MAC reset and `netif_stop_queue()` still run
+  under the lock. IRQ handler (`au1000_interrupt`) does not take
+  `aup->lock`; `au1000_rx()` / `au1000_tx_ack()` also do not use it.
+- **Precedent:** `net: macb: Move devm_{free,request}_irq() out of spin
+  lock area` (99405131d6edd) — same class of fix, backported to stable
+  with `Cc: stable@vger.kernel.org`.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 ### Step 3.1: Blame
-**Record:**
-- `module_flash_fw_work()` without outer lock: introduced in
-  `32b4c8b53ee77` (2024-06-27, "Add ability to flash transceiver
-  modules' firmware")
-- `cmis_fw_update_reset()` per-call locking: added in `2bcf4772e45ad`
-  (2025-03-05)
-- Recent related fixes already in 6.18.y: `9f5108f5ee273` (bitfield race
-  on `module_fw_flash_in_progress`), `9e70c8efb0caf` (validation under
-  rtnl)
+**Record:** Buggy `free_irq()` under spinlock dates to **2005**
+(`1da177e4c3f4`, Linux 2.6.12-rc2). Present in this 6.18.44 tree at
+lines 939–948.
 
-### Step 3.2: Fixes: Tag
-**Record:** N/A — no Fixes: tag in commit message.
+### Step 3.2: Fixes: tag
+**Record:** Lore submission has `Fixes: 1da177e4c3f4` — original import
+of this driver code. Bug has existed since driver introduction; fix is
+relevant to all trees that contain this driver.
 
-### Step 3.3: Related File History
-**Record:**
-- Module FW flash feature: `32b4c8b53ee77` (present in tree)
-- Netdev instance lock for ethtool: `2bcf4772e45ad` (present in tree)
-- Patch is part of net-next v2 02/11 series preparing ethtool to run
-  without rtnl, but **this patch is self-contained** — it does not
-  require other series patches to function.
+### Step 3.3: Related file history
+**Record:** Recent `au1000_eth.c` changes are cleanups (static
+annotations, platform remove callback). No related fix already applied.
+Fix is standalone (not part of a series).
 
-### Step 3.4: Author Context
-**Record:** Jakub Kicinski is networking maintainer; authored related
-module-flash fixes (`9f5108f5ee273`, `9e70c8efb0caf`) already backported
-to this tree.
+### Step 3.4: Author context
+**Record:** Runyu Xiao has submitted similar lock-context fixes (e.g.,
+`misc: nsm`, `mmc: vub300`). Simon Horman (Reviewed-by) is a networking
+maintainer.
 
 ### Step 3.5: Dependencies
-**Record:** Requires `netdev_lock_ops()` infrastructure and module FW
-flash code — both present. Standalone; no prerequisite commits from the
-broader rtnl-unlock series needed.
+**Record:** No prerequisites. Patch is self-contained and structurally
+identical to current tree code.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Original Discussion
-**Record:**
-- **URL:** https://lists.openwall.net/netdev/2026/06/03/31
-- **Series:** `[PATCH net-next v2 02/11]` — part of "make sure
-  __ethtool_get_link_ksettings() is ops-locked" prep series
-- **Revisions:** v1 (01/14) → v2 (02/11); committed version matches v2
-- **Reviewer feedback:** Naming discussion (netdev_assert_locked_ops vs
-  netdev_ops_assert_locked); no functional objections
-- **Stable nominations:** None found in thread
-- **NAKs:** None
+### Step 4.1: Original discussion
+**Record:** Lore thread fetched via `curl` from `https://lore.kernel.org
+/netdev/20260619151816.1144289-1-runyu.xiao@seu.edu.cn/t.mbox.gz`. `b4
+dig -c` could not be used (commit not in this checkout). Patch includes
+lockdep stack trace and `Cc: stable@vger.kernel.org`.
 
 ### Step 4.2: Reviewers
-**Record:** CC'd to netdev@, davem, edumazet, pabeni, andrew+netdev,
-driver maintainers. Reviewed-by Jakub Sitnicki; Acked-by Stanislav
-Fomichev.
+**Record:** To: netdev maintainers (Lunn, Miller, Dumazet, Kicinski,
+Abeni). Cc: `netdev@vger.kernel.org`, `stable@vger.kernel.org`.
+**Reviewed-by: Simon Horman**.
 
-### Step 4.3: Bug Reports
-**Record:** No syzbot, bugzilla, or user crash reports. Bug identified
-through code review as part of ethtool locking hardening.
+### Step 4.3: Bug report
+**Record:** Static analysis discovery, confirmed by manual review and
+runtime lockdep validation with reproduced stack trace in patch
+submission.
 
-### Step 4.4: Series Context
-**Record:** Patch 2/11 of rtnl-unlock prep series. This specific change
-is independently valuable — fixes fw-flash locking regardless of whether
-rtnl is dropped elsewhere.
+### Step 4.4: Related patches
+**Record:** macb IRQ-out-of-spinlock fix (99405131d6edd) is directly
+analogous and was stable-backported.
 
-### Step 4.5: Stable List History
-**Record:** No stable@ discussion found for this specific patch. Related
-module-flash fixes were already backported to 6.18.y.
+### Step 4.5: Stable list history
+**Record:** Author explicitly nominated `Cc: stable@vger.kernel.org` in
+submission. No objection found in fetched thread.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Key Functions
-**Record:** `module_flash_fw_work()`, `ethtool_cmis_fw_update()`,
-`__ethtool_cmis_cdb_execute_cmd()`, `cmis_cdb_validate_password()`,
-`cmis_fw_update_reset()`
+### Step 5.1: Key functions
+**Record:** `au1000_close()` (modified); related: `au1000_interrupt()`,
+`au1000_open()`, `au1000_reset_mac_unlocked()`.
 
 ### Step 5.2: Callers
-**Record:**
-- `module_flash_fw_work()` ← `schedule_work()` from
-  `module_flash_fw_schedule()` ← `ethnl_act_module_fw_flash()` (netlink
-  from userspace `ethtool --flash-module-firmware`)
-- `set_module_eeprom_by_page` called on drivers including **bnxt**
-  (`request_ops_lock=true`) and **mlxsw** (no ops lock — unaffected)
+**Record:** `au1000_close` is registered as `.ndo_stop` in
+`au1000_netdev_ops` (line 1051). Called from generic netdev core on
+interface down — user-reachable via `ioctl(SIOCSIFFLAGS)` / `ip link set
+down`.
 
 ### Step 5.3: Callees
-**Record:** Driver ethtool ops (`set_module_eeprom_by_page`, `reset`),
-CMIS CDB command execution, sleep/polling during FW transfer.
+**Record:** `phy_stop()`, `spin_lock_irqsave()`,
+`au1000_reset_mac_unlocked()`, `netif_stop_queue()`, `free_irq()`,
+`spin_unlock_irqrestore()`.
 
 ### Step 5.4: Reachability
-**Record:**
-- Triggered by privileged admin via netlink ethtool
-- Uncommon but real on datacenter NICs/switches with CMIS transceivers
-- Race window: entire FW flash duration (seconds to minutes) if
-  concurrent ethtool ops occur on same netdev
+**Record:** **Userspace-reachable** on systems with
+`CONFIG_MIPS_AU1X00_ENET` (depends on `MIPS_ALCHEMY`). Trigger: bringing
+interface down.
 
-### Step 5.5: Similar Patterns
-**Record:** All other ethtool paths in this tree use `netdev_lock_ops()`
-/ `netdev_ops_assert_locked()` — fw-flash work path is the outlier.
-
----
-
-## PHASE 6: CROSS-REFERENCE WITH LOCAL TREE (6.18.44)
-
-### Step 6.1: Buggy Code Present?
-**Record:** **YES.** Current `module_flash_fw_work()` at lines 229 calls
-`ethtool_cmis_fw_update()` without `netdev_lock_ops()`.
-`netdev_assert_locked_ops()` does not exist. Bug introduced when
-instance-lock protection was added (`2bcf4772e45ad`) without covering
-the workqueue path.
-
-### Step 6.2: Backport Complications
-**Record:** Minor context difference — local tree uses
-`netdev_ops_assert_locked` naming; patch base uses
-`netdev_assert_locked_ops_compat`. New helper
-`netdev_assert_locked_ops()` adds cleanly near existing helpers.
-Expected: **clean apply with possible trivial context adjustment**.
-
-### Step 6.3: Related Fixes Already Present?
-**Record:** Related module-flash race fixes (`9f5108f5ee273`,
-`9e70c8efb0caf`, `61848c83b9132`) are in tree. This specific locking fix
-is **not** yet applied.
+### Step 5.5: Similar patterns
+**Record:** `au1000_open()` already calls `free_irq()` **without**
+holding `aup->lock` on init failure (line 915) — the close path was
+inconsistent.
 
 ---
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
 
-### Step 7.1: Subsystem Criticality
-**Record:** `net/ethtool` — **IMPORTANT** (datacenter NICs, switches;
-admin-triggered but safety-critical during FW updates).
+### Step 6.1: Buggy code in tree?
+**Record:** **YES.** Current `au1000_close()` at lines 939–948 still
+calls `free_irq()` before `spin_unlock_irqrestore()`.
 
-### Step 7.2: Activity
-**Record:** Actively maintained — multiple module-flash fixes landed in
-2025–2026, several already backported to 6.18.y.
+### Step 6.2: Backport complications
+**Record:** **Clean apply expected** — only reordering unlock vs.
+`free_irq()` in unchanged function structure. No conflicting recent
+churn in this function.
+
+### Step 6.3: Related fixes already present?
+**Record:** **No.** Grep and `git log` show no prior au1000 free_irq
+lock-context fix in this tree.
+
+---
+
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+
+### Step 7.1: Subsystem criticality
+**Record:** **drivers/net/ethernet/amd** — **PERIPHERAL** (MIPS Alchemy
+embedded Ethernet). Niche hardware, but netdev close is a standard
+operational path.
+
+### Step 7.2: Subsystem activity
+**Record:** Low activity; driver is mature/legacy. Bug is long-standing,
+not recently introduced.
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: Who Is Affected
-**Record:** Users of ops-locked drivers (bnxt, mlx5, bnge) performing
-CMIS transceiver module firmware flashing. Config-specific: requires
-`CONFIG_ETHTOOL` and driver `set_module_eeprom_by_page` support.
+### Step 8.1: Who is affected
+**Record:** Users of **MIPS Alchemy (AU1X00) boards** with
+`CONFIG_MIPS_AU1X00_ENET=y/m`. Small population, but real embedded
+deployments.
 
-### Step 8.2: Trigger Conditions
-**Record:** Module FW flash in progress on ops-locked netdev **and**
-concurrent ethtool operation on same netdev. Uncommon but plausible in
-automated datacenter management. Privileged admin operation.
+### Step 8.2: Trigger conditions
+**Record:** Netdev close (`ifconfig down`, `ip link set down`, driver
+remove). **Common** operational action, not a rare init-only path.
+Unprivileged users can trigger if they can manage the interface.
 
-### Step 8.3: Failure Mode Severity
-**Record:** Concurrent unsynchronized driver ethtool callbacks →
-possible **CRITICAL/HIGH** (NIC misbehavior, kernel oops, transceiver FW
-corruption during update). No confirmed crash report, but consequences
-of FW-update races are severe.
-
-### Step 8.4: Risk-Benefit
+### Step 8.3: Failure mode severity
 **Record:**
-- **Benefit:** HIGH for affected hardware — correct locking on safety-
-  critical FW flash path
-- **Risk:** VERY LOW — ~20 lines, no-op on non-ops-locked drivers,
-  preserves parallel flash across netdevs
-- **Ratio:** Strongly favorable
+- With lockdep / `CONFIG_DEBUG_ATOMIC_SLEEP`: **BUG splat** on every
+  interface down.
+- Without debug: sleeping (`mutex_lock`) while holding spinlock risks
+  **deadlock / soft lockup** if the mutex blocks.
+- **Severity: MEDIUM-HIGH** (locking violation with realistic hang
+  potential; lockdep-confirmed).
+
+### Step 8.4: Risk-benefit
+**Record:**
+- **Benefit:** Eliminates invalid sleep-in-atomic on standard teardown
+  path; aligns with stable precedent (macb).
+- **Risk:** Very low — 2-line reorder, reviewed by maintainer, MAC/queue
+  still quiesced under lock before IRQ free.
+- **Ratio:** Favorable for backport.
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
+### Step 9.1: Evidence summary
 
 **FOR backport:**
-- Real locking hole on ops-locked drivers during module FW flash
-- Prerequisites (module flash + netdev ops lock) present in 6.18.44
-- Small, surgical, maintainer-reviewed fix
-- Related module-flash fixes already backported to this tree
-- Affects common datacenter drivers (bnxt with `request_ops_lock=true`)
-- Lockdep assertions catch future regressions
+- Real, verified locking bug (`free_irq` under spinlock)
+- Lockdep stack trace in lore submission
+- Small, surgical, obviously correct fix
+- Reviewed-by subsystem maintainer
+- Author nominated `Cc: stable`
+- Bug present since 2005, confirmed in 6.18.44 tree
+- Identical macb fix was stable-backported
+- User-triggerable netdev close path
 
 **AGAINST backport:**
-- Part of larger net-next rtnl-unlock series (but this patch is
-  standalone)
-- No user/fuzzer crash reports
-- Rare code path (admin FW flash only)
-- Naming context may need minor adjustment on backport
+- Obscure hardware (MIPS Alchemy only)
+- May only produce visible splats on debug kernels (though production
+  deadlock risk remains)
 
-**Unresolved:** No runtime crash evidence; impact inferred from code
-analysis and locking model.
+**Unresolved:** None material to the decision.
 
-### Step 9.2: Stable Rules Checklist
+### Step 9.2: Stable rules checklist
 | Criterion | Result |
 |-----------|--------|
-| 1. Obviously correct and tested? | **PASS** — reviewed/acked; lockdep
-assertions; logically sound |
-| 2. Fixes real bug? | **PASS** — missing instance lock on fw-flash work
-path |
-| 3. Important issue? | **PASS** — race on ops-locked drivers during FW
-update (HIGH severity) |
-| 4. Small and contained? | **PASS** — 4 files, ~20 lines |
-| 5. No new features/APIs? | **PASS** — locking only |
-| 6. Applies to local tree? | **PASS** — buggy code present;
-prerequisites in tree |
+| 1. Obviously correct and tested? | **PASS** — lockdep-validated;
+Reviewed-by maintainer |
+| 2. Fixes real bug? | **PASS** — invalid sleep context in
+`au1000_close()` |
+| 3. Important issue? | **PASS** — lockdep BUG / potential deadlock on
+netdev close |
+| 4. Small and contained? | **PASS** — 1 file, ~2 lines |
+| 5. No new features/APIs? | **PASS** |
+| 6. Can apply to local tree? | **PASS** — buggy code present; clean
+apply |
 
-### Step 9.3: Exception Categories
-**Record:** N/A — standard race-condition bug fix.
+### Step 9.3: Exception categories
+**Record:** None (not device ID, quirk, DT, build, or docs). Standard
+bug fix.
 
-### Step 9.4: Decision Rationale
-
-This commit closes a locking gap introduced when netdev instance-lock
-protection was extended to ethtool callbacks but the deferred module-
-firmware-flash workqueue path was overlooked. On ops-locked drivers like
-bnxt, concurrent ethtool operations during a firmware flash can enter
-driver callbacks without serialization — a real race with potentially
-severe consequences during transceiver FW updates. The fix is minimal,
-self-contained, does not depend on the rest of the rtnl-unlock series,
-and follows the same pattern as related module-flash fixes already
-backported to 6.18.y.
+### Step 9.4: Decision rationale
+This commit fixes a long-standing invalid-context bug in the AU1000
+Ethernet driver's netdev close path. `free_irq()` takes a mutex and must
+not run while holding a spinlock. The fix is minimal, reviewed, lockdep-
+confirmed, and follows the same pattern as the macb fix already accepted
+into stable. The buggy code is present in this 6.18.44 tree, the driver
+is built for MIPS Alchemy platforms, and the trigger (interface down) is
+routine. Benefit outweighs risk.
 
 ---
 
 ## Verification
 
-- [Phase 1] `git describe HEAD` → v6.18.44; parsed subject, tags
-  (Reviewed-by, Acked-by, Link), body
-- [Phase 2] Analyzed provided diff; read current `module.c:221-242`,
-  `cmis_fw_update.c:435-445`, `cmis_cdb.c:161-187,535-557`
-- [Phase 3] `git blame` on `module_flash_fw_work` → introduced
-  `32b4c8b53ee77`, lock gap since `2bcf4772e45ad`
-- [Phase 3] `git show 2bcf4772e45ad` → added lock to init path and
-  `cmis_fw_update_reset`, not work path
-- [Phase 3] `git merge-base --is-ancestor` → module flash YES, netdev
-  lock ethtool YES
-- [Phase 3] `git log --oneline -20` on ethtool module files → related
-  fixes present
-- [Phase 4] Fetched https://lists.openwall.net/netdev/2026/06/03/31 → v2
-  02/11 patch content confirmed
-- [Phase 4] Web search → series context, Fomichev Acked-by, naming
-  discussion
-- [Phase 4] `b4 dig -c 2bcf4772e45ad` → found related thread
-  (patch.msgid.link blocked by bot protection)
-- [Phase 5] `grep` call chain: `ethnl_act_module_fw_flash` →
-  `module_flash_fw_schedule` → `schedule_work` → `module_flash_fw_work`
-- [Phase 5] `grep request_ops_lock` → bnxt, mlx5, bnge set it; mlxsw
-  does not
-- [Phase 5] `grep set_module_eeprom_by_page` → bnxt, mlxsw implement it
-- [Phase 6] `grep netdev_assert_locked_ops` → not in tree (fix not
-  applied)
-- [Phase 6] Read current `module_flash_fw_work()` → missing outer
-  `netdev_lock_ops()`
-- [Phase 6] Read `include/net/netdev_lock.h` → `netdev_lock_ops()` no-op
-  when `!netdev_need_ops_lock()`
-- [Phase 7] Confirmed net/ethtool subsystem; recent backports
-  `9f5108f5ee273`, `9e70c8efb0caf` in tree
-- [Phase 8] Assessed severity from locking model + bnxt
-  `request_ops_lock=true` (no crash report)
+- **[Phase 1]** `git describe HEAD` + Makefile: tree is 6.18.44
+- **[Phase 1]** Parsed tags from commit message and lore mbox
+- **[Phase 2]** Read diff and `au1000_close()` in tree (lines 929–951)
+- **[Phase 2]** Confirmed `free_irq()` →
+  `mutex_lock(&desc->request_mutex)` in `kernel/irq/manage.c:1826`
+- **[Phase 3]** `git blame -L 939,948`: bug since `1da177e4c3f4` (2005)
+- **[Phase 3]** `git log --oneline -20 --
+  drivers/net/ethernet/amd/au1000_eth.c`: no prior fix
+- **[Phase 4]** `curl` lore mbox: found `Cc: stable`, lockdep trace,
+  `Reviewed-by: Simon Horman`
+- **[Phase 4]** `b4 dig -c`: N/A — commit not in checkout; used lore
+  curl instead
+- **[Phase 4]** `git show 99405131d6edd`: macb analogous fix stable-
+  backported
+- **[Phase 5]** Grep `aup->lock` in `au1000_eth.c`: IRQ path does not
+  use driver lock
+- **[Phase 5]** Confirmed `.ndo_stop = au1000_close` at line 1051
+- **[Phase 6]** Buggy code confirmed present at lines 946–948
+- **[Phase 6]** `CONFIG_MIPS_AU1X00_ENET` in
+  `drivers/net/ethernet/amd/Kconfig:104-111`
+- **[Phase 8]** Assessed severity from lockdep report and mutex-under-
+  spinlock semantics
+
+**YES**The background git search finished. It didn’t find this
+`free_irq` fix in the tree yet, and there’s no earlier au1000-specific
+backport for it.
+
+What did turn up:
+- `d04455fba3777` — unrelated `au1000_eth` cleanup
+- Several other `free_irq`/locking fixes from Runyu Xiao, but in other
+  drivers (nsm, brcmfmac, rt2x00, etc.)
+
+That matches the earlier conclusion: the bug is still present in
+6.18.44, and this patch should be backported.
 
 **YES**
 
- include/net/netdev_lock.h    | 6 ++++++
- net/ethtool/cmis_cdb.c       | 3 +++
- net/ethtool/cmis_fw_update.c | 8 ++------
- net/ethtool/module.c         | 2 ++
- 4 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/amd/au1000_eth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/netdev_lock.h b/include/net/netdev_lock.h
-index 3d3aef80beac1..849b91ab4e28b 100644
---- a/include/net/netdev_lock.h
-+++ b/include/net/netdev_lock.h
-@@ -80,6 +80,12 @@ netdev_ops_assert_locked_or_invisible(const struct net_device *dev)
- 		netdev_ops_assert_locked(dev);
- }
+diff --git a/drivers/net/ethernet/amd/au1000_eth.c b/drivers/net/ethernet/amd/au1000_eth.c
+index 9d35ac348ebe3..5a04056e38fa3 100644
+--- a/drivers/net/ethernet/amd/au1000_eth.c
++++ b/drivers/net/ethernet/amd/au1000_eth.c
+@@ -943,9 +943,10 @@ static int au1000_close(struct net_device *dev)
+ 	/* stop the device */
+ 	netif_stop_queue(dev);
  
-+static inline void netdev_assert_locked_ops(const struct net_device *dev)
-+{
-+	if (netdev_need_ops_lock(dev))
-+		netdev_assert_locked(dev);
-+}
++	spin_unlock_irqrestore(&aup->lock, flags);
 +
- static inline void netdev_lock_ops_compat(struct net_device *dev)
- {
- 	if (netdev_need_ops_lock(dev))
-diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
-index fe156991d0bec..b39c7d47580da 100644
---- a/net/ethtool/cmis_cdb.c
-+++ b/net/ethtool/cmis_cdb.c
-@@ -2,6 +2,7 @@
+ 	/* disable the interrupt */
+ 	free_irq(dev->irq, dev);
+-	spin_unlock_irqrestore(&aup->lock, flags);
  
- #include <linux/ethtool.h>
- #include <linux/jiffies.h>
-+#include <net/netdev_lock.h>
- 
- #include "common.h"
- #include "module_fw.h"
-@@ -179,6 +180,7 @@ cmis_cdb_validate_password(struct ethtool_cmis_cdb *cdb,
- 
- 	pe_pl = *((struct cmis_password_entry_pl *)page_data.data);
- 	pe_pl.password = params->password;
-+	netdev_assert_locked_ops(dev);
- 	err = ops->set_module_eeprom_by_page(dev, &page_data, &extack);
- 	if (err < 0) {
- 		if (extack._msg)
-@@ -546,6 +548,7 @@ __ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
- 	if (!page_data->data)
- 		return -ENOMEM;
- 
-+	netdev_assert_locked_ops(dev);
- 	err = ops->set_module_eeprom_by_page(dev, page_data, &extack);
- 	if (err < 0) {
- 		if (extack._msg)
-diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
-index 291d04d2776a5..dff83807e975c 100644
---- a/net/ethtool/cmis_fw_update.c
-+++ b/net/ethtool/cmis_fw_update.c
-@@ -435,13 +435,9 @@ cmis_fw_update_commit_image(struct ethtool_cmis_cdb *cdb,
- static int cmis_fw_update_reset(struct net_device *dev)
- {
- 	__u32 reset_data = ETH_RESET_PHY;
--	int ret;
- 
--	netdev_lock_ops(dev);
--	ret = dev->ethtool_ops->reset(dev, &reset_data);
--	netdev_unlock_ops(dev);
--
--	return ret;
-+	netdev_assert_locked_ops(dev);
-+	return dev->ethtool_ops->reset(dev, &reset_data);
+ 	return 0;
  }
- 
- void
-diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-index 9a11e7def0029..8a313c975e2f5 100644
---- a/net/ethtool/module.c
-+++ b/net/ethtool/module.c
-@@ -226,7 +226,9 @@ static void module_flash_fw_work(struct work_struct *work)
- 	module_fw = container_of(work, struct ethtool_module_fw_flash, work);
- 	dev = module_fw->fw_update.dev;
- 
-+	netdev_lock_ops(dev);
- 	ethtool_cmis_fw_update(&module_fw->fw_update);
-+	netdev_unlock_ops(dev);
- 
- 	module_flash_fw_work_list_del(&module_fw->list);
- 
 -- 
 2.53.0
 
