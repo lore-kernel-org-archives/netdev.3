@@ -1,155 +1,99 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1423739DBDB
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8F53A6B81
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788199811; cv=none; b=e432IWT/rkM6gueutofW8L7PJkkn5HsuS6WuZ77O1FsZNxAED1dG+JYEht7+er83ptdTInoNF0k/YxJXtPAdxLlBaMdT1kVUqnyaZftGDswby7pq2dtBx+cN/kCsYIsMsn031MwzDaJyfpVyjw21ftBVbd7BB+6T1ysmJdQ9Cv8=
+	t=1788199869; cv=none; b=k3vPRgijnPdGAeP+qLNHofj8UeKLlCH9Q6NmVY50b7bY460FcnqVAWH4+V1yLyEf5W9IW1onMqs09mW0AZCbFMgHU0oM5l+giuMIoADl1tTymGmKeEnLPFm4gBaJ9eSqAN/eJRA/YoccBO2iGl4qnQnp1649A5rlcTgGLR21J/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788199811; c=relaxed/simple;
-	bh=fAzFXr7QclcpE0D6XBc41/1tf7GsPHZBgP6i4rwO7jQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OKQvsAmxra8sqq6dyiGX/zmY4DmcqSgBc2qaDMeoItbpBNN+G1o+VVLyKrI0hrUxWzD50cCKdXayJm71Km3oaqKPlBl9YJoC80JpkM4jJbaHbH61vBgceRNL1xTX6lYA8edUkPj22jrk4Pz94i/5nj1kC7EFyXUov9/ZVugfg5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KYSloIK0; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788199869; c=relaxed/simple;
+	bh=TLkRZA3JuuPX07AMWLzAA/Lk8SLkA24CMGDMP7I7j68=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=upLqwsGm42+50GJBx671ECn2328MYiTchCbcXVBETteKo3pfr+QhR4p0Xt7Bdq4vIY7tmUfDiW67oPrUCDWKcQWJEsY6OSaVh4EPtfmMGSLrppoxvGgSmoc5bofHJ21PM7PkNTRW82v1YNUe6d8Hpw+FS48DVbYs5sHZrrdmbuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=ZUzA1243; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KYSloIK0"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c169ae1cb26so24386866b.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:10:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="ZUzA1243"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc1e1ff659bso82581a12.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:11:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788199808; x=1788804608; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ab3N2XZDk+KVNr1QDSMytkdAxt1gkHtn2AyrmPIO2uo=;
-        b=KYSloIK0DR+tyA1ZN74oYbVTbdHrxGvNnjWLCZwqC8x9BlzS3GZZheW+wccIHChOKr
-         HUUP3AsiHzVLYPXHeiv+tln5rN6qrCyx7LPxivrihXHPMVueh5h1KUUgNlYBBd6NJxL4
-         zilYyxlJav8+y0cUDeD6raTroIMcFdLClqyUCDwmGuL9puaut4568lfh515rjqWeOfaz
-         XAy/HWOLK4JjgeN+C4YXqoIgG+lBE0HWLs5tS0gu6AdoHe5Py8JCmT2SFHFozjRxHE6o
-         YALY1LE3Y002QUGCNUPGR9Iw0c2cth2REMNcm2PQJRqiIUfxHx5Flti6iTyZRcQBcWGt
-         OtlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788199808; x=1788804608;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=baylibre.com; s=google; t=1788199867; x=1788804667; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ab3N2XZDk+KVNr1QDSMytkdAxt1gkHtn2AyrmPIO2uo=;
-        b=aKJD+MhpjaLJKyR2yf68ib3kxr1trAj0usoORvoZjTG1xd25Vr0jiXoia0UQS9MIH+
-         ZgRex6T/SRHzZI0FzO5hND2yryzgthTrrF7rjs53K76c2f6XSTpr9UPMNkqUYJ7M7ATA
-         vS+7LWDTmH/zsxtdrfI9OP2w7qIT3wWTyn1B0tSOwgfR+A5fUokrxY4RgqpYqx+XPtG8
-         TwYI7qpRxrbu8rEC1To3ibffXFKpGNyXbDBoGo7NioZMKfr2cx0aFsRsi+mfaYeVs6dL
-         NbM0nysLSiYLRKxStIHRZ3BhlD/6QaUN/NM5f3x459gKj8Izrf49SbWHrUpBm5BWEjkP
-         ziLA==
-X-Forwarded-Encrypted: i=1; AKwUvBwKqGuWz2PWNP8soBDe9pg+GzgxZ8eNS0URgMyHqZZb6sgrMHTqQnIFINj8gsLAS9cQVWb0GyA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lLpC74D6axxVkIUqDxO8sDlQL1lG+Qu73AmXBYzCffBcL209op
-	HuD5Sqfo2ekhZsGfFtohFcohG02SNAqaVCV22zEFGpZzFAHOC1c1+OoA5dbPXY6o4WzExg==
-X-Gm-Gg: AR+sD118K89XGsjFFh+ct3fTkJlRun3p+fHoWZc82mmMl0axxGy6FTqHnVy7HZVNSYF
-	RFzmkNTAC8csSQkeqqt4AujRui7/GSQnFifJzZVlTEbsaSs8NfXrgQduaLS5AV4Q/d7iKKpkBFg
-	rI/noLUHctb6U7/u3UzjVMvxUWER0RTbIcEN7ZMvXo16iNNa5IgD+D6AszNpYzfbh15MrkKE2Au
-	k/Qt9GwAJxOwwPS3tqjAUOw4fFJOOvzkei17aCZPn5Ej1kodzakdA0o9LFTuV+KemgWMWpxJJ8S
-	JQSAp0kCczLvWJgmAIrmgEzrQ/UX/Wqm6npZ1EqDkEntSpovUMmb+8+eDbmGzN1s0FOfRWZA6l9
-	qIjdqOYkRPoOo+9I6Irag8cdahKtOOqU9w1UoD6wpRRFkY5erPUwo+GCVuC0vxJYww/PBmZc5gD
-	mtI2nfSRUlRM2Slb/6j0AK0y6Kof9dA2tscdgjN5xOb7a+qoKzlas9TcRMsjWghbtygxYyjN0hD
-	7rYCgS0jSFMACY=
-X-Received: by 2002:a17:907:6d0b:b0:c25:4ca3:dfd8 with SMTP id a640c23a62f3a-c25b90d496fmr5311966b.2.1788199807884;
-        Mon, 31 Aug 2026 11:10:07 -0700 (PDT)
-Received: from localhost (83-131-188-88.adsl.net.t-com.hr. [83.131.188.88])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee2872dsm484759766b.15.2026.08.31.11.10.07
+        bh=sFcVUeZvoh/RAPEBADc2aDhb1dFXKQ/OHpInFaT5ih8=;
+        b=ZUzA1243nHkT95cS6ODSQkln9ncxcrLdjKpbZW/CfLOrhQI3SBBEMddGJuFn6oWLC3
+         B5HjZbZseXaPuioyBg2IDmqGXZFvZBNpO7hLudPDY+ytcQnyvCchD5rwz2F2KSmkX0Nq
+         T0n2Fk09HGQGa8FoK2sxhEycao6wwyzxS//q719EtFJk47Tqr5rcunvlyJ1intZK2PAD
+         1+mSFqLxxRl1mz7zASS8uGUZTVZk1/3GCyvSr9wfouD2FnabPXzLBn7pWWIPX70vy8jQ
+         ec2Tga7kviG4qzev6b3gouO8KrQDCEPxgqEzGCESxao1vzMfMXa0Zcy2ApN0lTpLGzok
+         MGJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788199867; x=1788804667;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:to:from:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sFcVUeZvoh/RAPEBADc2aDhb1dFXKQ/OHpInFaT5ih8=;
+        b=Ac/w3qsAt8+mSa65IpXktmczf5DUeKE6pVt3/uqR5Fwg/7e+NR4f2zqJhx0kdxfn9j
+         pHSLlGII63zii2Nmr5HjPahFlwje5jev0joQNR8rmcb4q+dKnRlU8Sdb3sepIAwSt/Fm
+         SH9Ewc05MzHbmjaUdTTc9H3aMyGZFFYwOlhwh9ieMUr+ubt19tUd1NhZBxzn78TKuQ9O
+         HK0Vjg/Yj/EpJxiNBOTpYgeY+q+kuhjy2hm5QLY3+cWzaT+ZhlBhD5rqh/nxySvuRIx/
+         l8Z6UPvpvu+faxgy77KmhjROxS3VMEIR+3zwPn0GPAwjFt3ewKt8qJw/cBCmasIZzNAf
+         IvMg==
+X-Forwarded-Encrypted: i=1; AKwUvBx5w+lgMApeVUKaVvveZw/JP8C2a8f9Zjiz2j5iVO8Vx5DzCLuukWZX9C8pcAopb8UkJ2PHifE=@vger.kernel.org
+X-Gm-Message-State: AFuF++l88dPdKA6Cg06RPIFHd2dZscxVblz36rsOq02TQPDm8tWjfZwG
+	CH2BrT8IARwFDXtVHpUlEo6pGs2nMoYk4CyuDIYQ1k+C6F63V/nMbITTiYHveCBOaSY=
+X-Gm-Gg: AYBFou1S5HywvMYwuHVIiorVjjjiVQyJL3VEvB7Yr+8wruYBHFQ9f2/8bJ6HSgBIWqy
+	YXbtPcRCsGKoryHBadHn3yzr+vx4Tg3h2WdcBnEhFpUY1t2MyzRAF+SRaFjiBzd1Po1LvfE9CC2
+	F/y0zUPguYAqEgE1DcqbvXYtiKnvCRIUslSevMD3EsSlg9eD3hjBE7Jmz8f27lCtq0r2tj+FalA
+	sXiJTarnMCJuxxZkU9ETKl37Dx+LcwDhh0Xs1ky4UlO6sB7fBdfItNOZOIB1FPD/fq8denpLFn2
+	QgspKE+ZQgyarOGeXbFFuzYfGZ5Nuf+WQ9uVdSLTpuukVBBp5r9abRkt0uUkDTEnGUwm4bRhINe
+	pdB0higjox6TszM7Z9ZLTH9vjN06I8xL5hAyjc/a2pLUvyjBLvGH+7MK8Puh1hdAw19K6pX7jVa
+	Tmk4BXuEd4bimiYlBbYk/0dWDtPgk4YK6qMsDjzAhi8+0Xp5GdiLbV3l7vtg==
+X-Received: by 2002:a17:90b:388e:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-396d0eaabfamr38282859a91.1.1788199866927;
+        Mon, 31 Aug 2026 11:11:06 -0700 (PDT)
+Received: from localhost ([71.212.197.238])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3990d4ede7csm757637a91.13.2026.08.31.11.11.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 11:10:07 -0700 (PDT)
-From: Dmitry Sinyavin <sinyavin@gmail.com>
-To: Stephan Gerhold <stephan@gerhold.net>
-Cc: Dmitry Sinyavin <sinyavin@gmail.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: wwan: qcom_bam_dmux: account network packets
-Date: Mon, 31 Aug 2026 20:10:06 +0200
-Message-ID: <20260831181006.1382372-1-sinyavin@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Mon, 31 Aug 2026 11:11:06 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260706101815.341184-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260706101815.341184-2-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH] ARM: dts: ti: omap: Correct indentation
+Message-Id: <178819986613.2869653.4587463597728573985.b4-ty@b4>
+Date: Mon, 31 Aug 2026 11:11:06 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
 
-The BAM-DMUX data path does not update the network device packet and byte
-counters. As a result, userspace sees zero traffic even while packets are
-being transferred.
 
-Use the standard per-CPU software statistics helpers. Account transmitted
-packets after their DMA completion and received packets after removing the
-BAM-DMUX header and padding.
+On Mon, 06 Jul 2026 12:18:16 +0200, Krzysztof Kozlowski wrote:
+> Correct spaces or mix of tabs+spaces into proper tab-indented lines.
+> No functional impact (same DTB).
 
-Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-Signed-off-by: Dmitry Sinyavin <sinyavin@gmail.com>
----
-v2:
-- Read the TX payload length after unmapping the DMA buffer and combine the
-  network-device checks.
+Applied, thanks!
 
-v1: https://lore.kernel.org/netdev/20260830085400.2542956-1-sinyavin@gmail.com/
+[1/1] ARM: dts: ti: omap: Correct indentation
+      (no commit info)
 
-Build-tested for ARM with Clang and W=1 using allmodconfig and allyesconfig.
-Hardware-tested on Qualcomm MDM9607: three 32-byte IPv4 probes completed
-without loss and added three packets and 180 bytes in each direction.
-
- drivers/net/wwan/qcom_bam_dmux.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-index cc6ace8d6437..5bcac2ccaabd 100644
---- a/drivers/net/wwan/qcom_bam_dmux.c
-+++ b/drivers/net/wwan/qcom_bam_dmux.c
-@@ -177,8 +177,12 @@ static void bam_dmux_tx_callback(void *data)
- {
- 	struct bam_dmux_skb_dma *skb_dma = data;
- 	struct sk_buff *skb = skb_dma->skb;
-+	struct net_device *netdev = skb->dev;
- 
- 	bam_dmux_tx_done(skb_dma);
-+	if (netdev)
-+		dev_sw_netstats_tx_add(netdev, 1,
-+				       ((struct bam_dmux_hdr *)skb->data)->len);
- 	dev_consume_skb_any(skb);
- }
- 
-@@ -402,6 +406,7 @@ static const struct net_device_ops bam_dmux_ops = {
- 	.ndo_open	= bam_dmux_netdev_open,
- 	.ndo_stop	= bam_dmux_netdev_stop,
- 	.ndo_start_xmit	= bam_dmux_netdev_start_xmit,
-+	.ndo_get_stats64	= dev_get_tstats64,
- };
- 
- static const struct device_type wwan_type = {
-@@ -421,6 +426,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
- 	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
- 	dev->needed_tailroom = sizeof(u32); /* word-aligned */
- 	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
-+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
- 
- 	/* This perm addr will be used as interface identifier by IPv6 */
- 	dev->addr_assign_type = NET_ADDR_RANDOM;
-@@ -533,6 +539,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
- 		break;
- 	}
- 
-+	dev_sw_netstats_rx_add(netdev, skb->len);
- 	netif_receive_skb(skb);
- }
- 
-
-base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+Best regards,
 -- 
-2.53.0
+Kevin Hilman (TI) <khilman@baylibre.com>
+
