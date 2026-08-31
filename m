@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F2E455162;
-	Mon, 31 Aug 2026 14:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF0941D4E9;
+	Mon, 31 Aug 2026 14:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788187244; cv=none; b=LZVILTvJFJDcYvGuaeiPggLA9J1Tjd57ouYBdLTvDQQLhw7YMYMpImqzUhr3fJwH7xvMNbuPxstcv6aOlRWAtGR2QrzThhK3aRKtnaROcOpRWupDau0tSTUeMyu975NSj+JjAZv/3JoYZnf/lRu3wC/BFaGLaF45SD98T31AFRM=
+	t=1788187274; cv=none; b=jg6p5kVhiPSDdRJ4Skn/wn5Ar8J52jEArLhy3V6rUSxZAjdKvK3o8bBcClrivkpQkUqWUdTmQtEO1yhsCpwKU/QpHdQuhZs0qL3jT84kz2X1xyRjvD0GDalYHtZ+aG0KmfVhhaae9fBy2crJ7ql6JyNVCOyww7ssjhMjlLPNTaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788187244; c=relaxed/simple;
-	bh=XnYbv/lvSUhA3IIkJg1wTTbKCIckEW6sc1YJvlWOlDc=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=jPtjbtRW6G7LoVUY/uZi+yQjnO+FSTX6/tPozdaTebYJ0glT+1egPqXFxbwi2ZpgXZjjKeEY9XqVAYxrKcECKIaonY5L5N2fJLnc34VqAcTpDEJ353VCXIMyIbL2LTGTUl+l0p0fWyWM0d51Y4wTKs8cjhBeaegTpvK6NW8517w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfJBce/f; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788187274; c=relaxed/simple;
+	bh=LP4VHK+2DGWjV/VDKVwdCXHTI8uMRJT1fG21fDTw00o=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=RZlzftDLf8vs6iKzOzdjiriEGVj0+hlsYkBHyQI/+/fwfCUmHtwJj2T6DFOn/goM/IYrnt8ksqku/EAQ5rlsJor9TtZbFKeHxE0LrsI93TOmYi6yybcGoborFhQIJRCCvQAkioIEDietY+LmVpZcmbzMrv0y4rxwO95fYxu88qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DiSAVSFM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfJBce/f"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 769651F000E9;
-	Mon, 31 Aug 2026 14:40:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DiSAVSFM"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id D33251F000E9;
+	Mon, 31 Aug 2026 14:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788187243;
-	bh=glU5brsq9stFhaeEUTYuaXur4gpoMrHcD9Sa+u8+sdg=;
+	s=k20260515; t=1788187272;
+	bh=lONNy1SwbONmIsuWBz38jeNQ7nHKBLG1amF732KmUM8=;
 	h=From:To:Cc:Subject:Date;
-	b=hfJBce/fvMIR4mLQ4PXQ3TRh9fkfE4WBk2bYRVZ/iYYtplkxC3nwZMky4QTC5BLVI
-	 rPSzFKiGkQLoJ5WSVkzb9XC/I4n/OFEHTVNdKE8aaujzRwWgR154mDedpth9LTnhHv
-	 dizKdiUKcuNtNuqDIvaevQ7g94iF6667dQOy+kzY3qdiLiCSzWFfKJn8Mw3CVeiW6X
-	 lq7XAD0p/TzzLwGKcgVe4wmjr5Lcu5JPOpgmxAHTnjGKZhWTBKdjmsZQttCykmWI05
-	 apiXUI8LXhjQoiOGeVnZLxQKusOXa2e1MRslSbEXjll5ShMj3AGMecd9ZwCDWn5jce
-	 jU0CQydiPoXMQ==
+	b=DiSAVSFMg01JBloKBPTXcT6v5ysJLfMQgKgKhCPyw9rAEE3/J9p3oszdWWN0f14a+
+	 kT5hFULJ/OSR9F0tWg7si0bXrBerQ44UihaP1Dp+g0XfdCq7h2U5PxevbwKZBHPJ7u
+	 kBfrwnEt8Ega+wa8THPJi62j2ANJ9PXoMGJUnV4ZaZglCXqt0z6PvkKCZwF5tCUxkZ
+	 LOptNhSL+xyNzEZW9nrrW9sIkU56oP4cTDw7BfrStpGC9ZpXgmZfzTx0lnixjtyQiB
+	 Z6hlIjrItvrt4TVEjfoA43DGU8x1CUAmP/4aP51GjZ+Ln99Zyca8Kbcku3L6bmZZPK
+	 YWmxWoQxB9CRQ==
 From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, "Wang, Jie" <jie.wang@intel.com>, "Chas Williams" <3chas3@gmail.com>, <accessrunner-general@lists.sourceforge.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, <linux-atm-general@lists.sourceforge.net>, <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
-Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] usb: atm: cxacru: fix NULL pointer dereference on uninitialized atm_dev
-Message-ID: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
+To: syzkaller-bugs@googlegroups.com, Marco Elver <elver@google.com>, "David S. Miller" <davem@davemloft.net>, "David Howells" <dhowells@redhat.com>, "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, <linux-afs@lists.infradead.org>, "Marc Dionne" <marc.dionne@auristor.com>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
+Cc: horms@kernel.org, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+Subject: [PATCH] rxrpc: Fix use-after-free in rxrpc_destroy_all_peers()
+Message-ID: <5a786da9-f9cb-4957-938d-51000793a4a8@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,76 +38,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Date: Mon, 31 Aug 2026 14:40:42 +0000 (UTC)
+Date: Mon, 31 Aug 2026 14:41:11 +0000 (UTC)
 
-From: "Wang, Jie" <jie.wang@intel.com>
+From: Marco Elver <elver@google.com>
 
-The cxacru driver uses the usbatm framework, which defers the ATM device
-registration to a kernel thread (usbatm_do_heavy_init()) but immediately
-returns success from the USB probe. Because the probe returns success, the
-driver core creates sysfs attribute files (like adsl_state and
-adsl_config), making them accessible to userspace before the ATM device is
-fully initialized.
+During network namespace teardown, rxrpc_destroy_all_peers() iterates over
+the rxnet->peer_hash table to print leaked peers. However, it does so
+without holding rxnet->peer_hash_lock. This allows a race condition with
+asynchronous peer destruction, where RCU callbacks concurrently remove
+peers from the hash table and free them. When rxrpc_destroy_all_peers()
+accesses the freed peer, it results in a KASAN slab-use-after-free.
 
-If a user writes to these sysfs files before the initialization is complete
-or if it fails, the driver attempts to send a command to the device. If the
-command fails, the error handling path calls atm_err(), which
-unconditionally dereferences instance->usbatm->atm_dev. Since atm_dev is
-NULL, this leads to a NULL pointer dereference:
-
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-RIP: 0010:adsl_state_store+0x5cc/0x770 drivers/usb/atm/cxacru.c:359
+BUG: KASAN: slab-use-after-free in rxrpc_destroy_all_peers+0xcc/0x150
+net/rxrpc/peer_object.c:461
+Read of size 8 at addr ffff88811089e420 by task kworker/u8:1/13
 Call Trace:
  <TASK>
- kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x612/0xba0 fs/read_write.c:687
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ rxrpc_destroy_all_peers+0xcc/0x150 net/rxrpc/peer_object.c:461
+ rxrpc_exit_net+0x7f/0xc0 net/rxrpc/net_ns.c:114
+ ops_exit_list net/core/net_namespace.c:199 [inline]
+ ops_undo_list+0x43d/0x8d0 net/core/net_namespace.c:252
+ cleanup_net+0x572/0x810 net/core/net_namespace.c:702
+ process_one_work kernel/workqueue.c:3322 [inline]
+ process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
+ worker_thread+0x92d/0xe10 kernel/workqueue.c:3486
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
  </TASK>
 
-To fix this, add checks for instance->usbatm->atm_dev == NULL in
-adsl_state_store() and adsl_config_store(). This prevents the functions
-from proceeding and dereferencing the uninitialized atm_dev, consistent
-with how mac_address_show() handles the same race condition.
+To fix the slab-use-after-free, acquire rxnet->peer_hash_lock with
+spin_lock_bh() while iterating over rxnet->peer_hash in
+rxrpc_destroy_all_peers().
 
-Fixes: e605c30977bb ("USB: atm: cxacru: convert to use dev_groups")
+Additionally, insert rcu_barrier() in rxrpc_exit_net() prior to destroying
+peers and local endpoints. Without rcu_barrier(), rxrpc_destroy_all_peers()
+races with pending RCU callbacks that drop peer and local references,
+logging spurious leak warnings. Furthermore, this missing synchronization
+causes a downstream panic hazard in rxrpc_destroy_all_locals() because
+in-flight peer releases leave rxnet->local_endpoints populated. Calling
+rcu_barrier() ensures all pending RCU callbacks that drop peer and local
+references complete prior to leak checks and local endpoint destruction.
+
+Fixes: 17226f124038 ("rxrpc: Fix leak of rxrpc_peer objects")
 Assisted-by: Gemini:gemini-3.6-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b195c4f412ea5c4e56a
-Link: https://syzkaller.appspot.com/ai_job?id=b6352d63-d03a-4e87-92a4-b334c3ebcf97
-Signed-off-by: "Wang, Jie" <jie.wang@intel.com>
+Reported-by: syzbot+c876adfab6362679008c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c876adfab6362679008c
+Link: https://syzkaller.appspot.com/ai_job?id=7fecbeb2-cd9b-4ca2-8149-48663e20b153
+Signed-off-by: Marco Elver <elver@google.com>
 
 ---
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index 429ac20a8..dee15f7b7 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -347,7 +347,7 @@ static ssize_t adsl_state_store(struct device *dev,
- 		return -EINVAL;
- 	ret = 0;
+diff --git a/net/rxrpc/net_ns.c b/net/rxrpc/net_ns.c
+index 9a9834145..c00cddfd3 100644
+--- a/net/rxrpc/net_ns.c
++++ b/net/rxrpc/net_ns.c
+@@ -111,6 +111,11 @@ static __net_exit void rxrpc_exit_net(struct net *net)
+ 	timer_delete_sync(&rxnet->peer_keepalive_timer);
+ 	rxrpc_destroy_all_calls(rxnet);
+ 	rxrpc_destroy_all_connections(rxnet);
++	/*
++	 * Wait for pending RCU callbacks that drop peer and local
++	 * references to avoid spurious leak warnings and panics.
++	 */
++	rcu_barrier();
+ 	rxrpc_destroy_all_peers(rxnet);
+ 	rxrpc_destroy_all_locals(rxnet);
+ 	proc_remove(rxnet->proc_net);
+diff --git a/net/rxrpc/peer_object.c b/net/rxrpc/peer_object.c
+index fa9a406e1..32da76256 100644
+--- a/net/rxrpc/peer_object.c
++++ b/net/rxrpc/peer_object.c
+@@ -454,6 +454,12 @@ void rxrpc_destroy_all_peers(struct rxrpc_net *rxnet)
+ 	struct rxrpc_peer *peer;
+ 	int i;
  
--	if (instance == NULL)
-+	if (instance == NULL || instance->usbatm->atm_dev == NULL)
- 		return -ENODEV;
++	/*
++	 * The lock is needed to prevent use-after-free if a peer is being
++	 * destroyed concurrently by an RCU callback.
++	 */
++	spin_lock_bh(&rxnet->peer_hash_lock);
++
+ 	for (i = 0; i < HASH_SIZE(rxnet->peer_hash); i++) {
+ 		if (hlist_empty(&rxnet->peer_hash[i]))
+ 			continue;
+@@ -465,6 +471,8 @@ void rxrpc_destroy_all_peers(struct rxrpc_net *rxnet)
+ 			       &peer->srx.transport);
+ 		}
+ 	}
++
++	spin_unlock_bh(&rxnet->peer_hash_lock);
+ }
  
- 	if (mutex_lock_interruptible(&instance->adsl_state_serialize))
-@@ -444,7 +444,7 @@ static ssize_t adsl_config_store(struct device *dev,
- 	if (!capable(CAP_NET_ADMIN))
- 		return -EACCES;
- 
--	if (instance == NULL)
-+	if (instance == NULL || instance->usbatm->atm_dev == NULL)
- 		return -ENODEV;
- 
- 	pos = 0;
+ /**
 
 
-base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
 -- 
 See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
 The person who has signed off on the patch is responsible for
