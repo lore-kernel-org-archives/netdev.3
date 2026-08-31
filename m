@@ -1,69 +1,60 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD25364EAF
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3131E2EEE6C
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788203322; cv=none; b=QMoZjOt+R8zcQOjN7M6hspQ4p5NrdVWd34fce9T1vWyWo4AmiEh6PTA+Prhn/4vTQEbfHe/lQr8KEb3LxnCu8gnwTYzB2c23cgWt8LEkZ1CudFPUZZCKKrc8M2XMwKBU45S8KHLadkqzZvxozTklX8vCuuuYnvUCt+us0pq713A=
+	t=1788203486; cv=none; b=PmmaGO3yQE8XD2xxnAw5buVMn1wxq+8ZxmHEm15ZovZC0uNn9M6gTpTcatooyAE3vWtVGRVaDoFoHDpqJZKid1r90U4sIIy5AFphVIeB6ocKdjjPa1tNVvsjxaTBlEfVSGv3jjsoBqn4ClFyxLePyxpAREaRPpkILpO7yK6x0tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788203322; c=relaxed/simple;
-	bh=B/aJqUHjb5Z8xLiixk10fDLaupV71WOqcT+9CRHD1oo=;
+	s=arc-20240116; t=1788203486; c=relaxed/simple;
+	bh=Re1OwIvEK3L+saLQdnRRb+yeL6PpUddKAMsHe9D9ihY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oj+5gh0dZJooIYMWW0YXi/AcOaiY4FxyzlPPtkd6ul3++wYANJw7Vjcb/B+71aROMEuxmO0aS1CHcFhNUD5lD/5uAG4ixrYT5BkKFCYq6v8wsB8ABhPjB3Hgf44YFV/r1xbPTxjR0e8NyCcjcqWDIfc2AxnxumPxHcbloCF26/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtS4UsIY; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=FFD5nD8UnxBIN3iRKqYkelO0GqBPn+/5QmrOvOopYosPNK8AIE4kf2rcgG/thh+P6gk4uA/ppJXlaboj1dkXLngePLLOULfl18EvQuqiD9WaF2UOcB2v4T1riYQTYkHYfYmTX4Kr2vYAXdKv3WYMXy1UHuBRUPGrKK9ovefMqn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RzMMedsz; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtS4UsIY"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso43842785ad.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788203319; x=1788808119; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n+zodE8v2r1Ow4jiromcQ0qC+wD6QbMNqV6QEefK45Q=;
-        b=UtS4UsIY6BsxoAvs0/9dLIWYRz3sW/72AIeRYG+uWNKtrTO5glNog7os4ktZQphRQ0
-         60UWGgAqrwBHAoO6dvFomFAPzIB5uq7ZjZxqqMp7WgkDUrZyrIbhU6hVnOmI2sLKiCsg
-         awLugxR2cn0sDaN5nDWa8nsSTsDhE0JKi6iBW2SsH3wS+uAMSoeLJCPvz07gkOYPDShZ
-         znQYlCM8l7dWc8C8eLedYk5PKvr+2TnW9vap4MZsgakRNmoC7Xmp5G+aYNB1SgzbL2eE
-         8YHJurqjK0V2wE3pDnyazzzfXrGydvG0nEJ18HlTloH6jyEwDaKaaefEX04WtMuksEuR
-         rt/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788203319; x=1788808119;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=n+zodE8v2r1Ow4jiromcQ0qC+wD6QbMNqV6QEefK45Q=;
-        b=B6aPz6/hONItswS9fAwXK2a/Q28wnOXAOMvcMZGw9G4E8g/I1Q09iJqwaZQsRGzAdB
-         QZskoxR8Kn7OpGJmpaRUflZK6bHg+iqeHDCNcybrPBrWUD24eEXrfpsxM09PRrOLluKv
-         r64Cn7xjPHEewq2CIptTSAKuDbw77L+7xDtHcilNvqMFrPhmUK5ArchxeYWCyYIcb2+3
-         zgq8gseBbeTOG9FqWOmOWjvaAjIvC/UnK4iPxaJB+vxbyidugN08LqSSG297xfe6oPJO
-         ovdjCb2SH1MqOibm0GwiVn6jCtcxcdLh5SrV9AV3sAz+8/bPWk8Mv6dqSnLEVE5oPBP2
-         ABDg==
-X-Forwarded-Encrypted: i=1; AKwUvBz66hab0klLgcjOCO3IBjPVMF2pnyWLyecqmmpvI06xRLpGg8AlPk2O2LRi5tPtKSZCGc3+PrY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kY2kFzC6popUsUjdy2hE4FQhYQ7XzWLq8uHuThhiqMn74m/bvB
-	YaAFM8ryoOgs+pIFWaMh/A0MDTnoGnM2TWat9JzMqvpHPvecjsY1tv3+
-X-Gm-Gg: AYBFou10gw44/scPLHb3SVoxNWyJNrPHKEK9BNXlE18MQ/pbEASsUPIT1Hy2XrqSbz2
-	wTwB5TpcqvldZguuVJYk8hT1tYIqEUbO9Vcf7+psW8Ri6cRAuPJ0g5LPC841d3JW2SBrULvjLZ7
-	uTbfkVs/be7gtT0ah3/6wjImZO3NnKO1PxhEimb93By4aQary59qYXtEWUan5010eFXzF324hgI
-	KDa9DA5bKJXJid3IsLiwdKYFwtdP0CAn3U32l1nzalQUANbMD+RsVj+c+HYcUCr0lrCsXRpab80
-	0B9aoUUuIs+j/hMXIFcOgY7sM51apkX+UXpFuzCC088efbLS2M/MoSX6L4AFY2jRDaMuQ0mR4xE
-	BGQkRRhb0TLNS9yUJKYoH2Jkf6cIK9wHBd3332IqKrpIB1XLMLN/d6LWEs9Zm+fZ7w7u1pRB1yO
-	CyFX/GojyEnCaySXZMFhChokBAgAcFKt4NDflpRsPyTx8+AGzb0yaOaB4hB130W/MrWKoVPQ+6h
-	ANMNqRuutzm5nDLhShP831wpMHHhfUYH6x3LluwHjl4a4Wv
-X-Received: by 2002:a17:903:2f8b:b0:2d3:160b:c01f with SMTP id d9443c01a7336-2d74ddd684cmr400731515ad.6.1788203319368;
-        Mon, 31 Aug 2026 12:08:39 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f95a160sm31727994eec.18.2026.08.31.12.08.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 12:08:38 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <98d4603b-0559-46ea-8b76-1f0245b3b266@roeck-us.net>
-Date: Mon, 31 Aug 2026 12:08:37 -0700
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RzMMedsz"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VIVY8W1234903;
+	Mon, 31 Aug 2026 19:11:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=tDfrXH
+	3FbECqGftHJ31kqIWCcDEg8Crq8mIdsA7x2OM=; b=RzMMedszMaxMLY14eTqv6D
+	NFFgzgkVVaz0sgbMZ718cqKbA1115sqTqH7LM24iBPL/bG2OvGWicuDGg73hkh/P
+	aeF3oZOfx14OtoBBB5DOZnc194QncguPSWpUJnpEOKgC9ykRO9IUzUYpwO+Xd0P8
+	73r6EWQtkzmRtSi9ovu1GCLO6JwCymR760Qh6LjXEeAHeE+Sg2p+qawcpM8Hp3Mj
+	KtRArjVWrwDoEeh32hj2cuT2ETnYM8qBtS4QgHlHMzpAHv7LomGKMuRFPvP3qzpo
+	93OLcaDnDQjntY7GqTjqMycsj2bL9qmUqQqDwCDqvdbOD4dg2wogMSVswmUqckxQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq3r3af4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 19:11:08 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VIuK6B019217;
+	Mon, 31 Aug 2026 19:11:07 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rq7swt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 19:11:07 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VJB4n622676092
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Aug 2026 19:11:04 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DAB85805A;
+	Mon, 31 Aug 2026 19:11:04 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E488C5803F;
+	Mon, 31 Aug 2026 19:11:00 +0000 (GMT)
+Received: from [9.67.102.143] (unknown [9.67.102.143])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Aug 2026 19:11:00 +0000 (GMT)
+Message-ID: <243fb549-22d2-407c-8774-d3ade7882958@linux.ibm.com>
+Date: Mon, 31 Aug 2026 12:10:59 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,248 +62,637 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [ANNOUNCE] A Syzbot-style Platform for Verifying and Fixing
- LLM-reported Bugs
-To: Yuan Tan <yuantan098@gmail.com>, netdev@vger.kernel.org,
- netfilter-devel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
- frankw@nebusec.ai, jhs@mojatatu.com, ksummit@lists.linux.dev,
- kuba@kernel.org, pabeni@redhat.com, kerneljasonxing@gmail.com,
- roman.gushchin@linux.dev, jgg@nvidia.com, mchehab+huawei@kernel.org,
- torvalds@linux-foundation.org, ben.copeland@linaro.org,
- gregkh@linuxfoundation.org
-References: <20260830115546.3942129-1-yuantan098@gmail.com>
+Subject: Re: [PATCH net-next v5 10/15] ibmveth: Enable multi-queue RX receive
+ path
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+References: <20260814073642.24630-11-mmc@linux.ibm.com>
+ <20260818014731.3854329-1-kuba@kernel.org>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260830115546.3942129-1-yuantan098@gmail.com>
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260818014731.3854329-1-kuba@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=EIc2FVZC c=1 sm=1 tr=0 ts=6a95d1cd cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=XooLvho-Rdvj1YGKgw8A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDE2NCBTYWx0ZWRfXxRYBeDlQnKPY
+ oUTmkbRjYX1OCvSPWbdvWzjqLA6rn8OzJKFGKlQ5UgCLWvTiErtEtXtEhkvYiLHmM7vfLAW56cr
+ 0b0a3OtDcyAMnuqD5TUd6VVJdmqW5CBl843AcfbAQE6R2zQqq08pM9ya5ffvlUc57GUDDJY7ED2
+ W9fLglhK9ieFEikZ4IQg2MyrJY+5dolJqAZloUXufRATuBbBf8uHaksCKyBqN6SLXOj5xobVyPs
+ dFo3XfevmrJJ9Acf+y2h93uHpq/o5Ri1PbZ+VzkIYuT8LNT825f2zfd0IhYmtilio4cBKVPRoRx
+ WZDCyiPrkNivy52PqwW7/IsmfR983L6eSA1QS7YZmzHdtnjAkvD6s/rFtD2Wntq9lQ+77h6l3Kx
+ +MCyY/dwDclWL5Wk/bno0yUc52u/3g77uuxpsvxWbCXZ1V843zRs1SAoUbCcRtw8bzv7p+GhgvK
+ ooTThSzP3mTTVAvfafw==
+X-Proofpoint-GUID: 06V3egbzBvywCpXM9uIg2ohWi_W3gDLa
+X-Proofpoint-ORIG-GUID: hAaaq8i1j8Dp1JRD6mY19Ngba1PmW9UQ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDE2NCBTYWx0ZWRfX1JvDXKh4dTW1
+ amva9EjKE0l6f6+oLU4DWolH5hhCQtGBCGE7lI3jiFJZGdFn6bmB0elJr0Izk8ew3yth+icQZFx
+ zSmkUcUCeGA9isQq6YAFScPxRpPQd6g=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_06,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310164
 
-On 8/30/26 04:55, Yuan Tan wrote:
-> 
-> Hi all,
-> 
-> A month ago, I posted an RFC[1] to the mailing list proposing an automated
-> platform that validates AI-reported bugs and prepares draft fixes, and
-> later discussed the idea at the Netdev conference. After further
-> development, it is finally ready.
-> 
-> While preparing to send this email, I noticed that Roman has since started
-> a related discussion:
-> [MAINTAINERS SUMMIT] The place of AI code review in the Linux Kernel process
-> 
-> It turns out this platform already addresses several of the needs raised
-> there.
-> 
-> The platform is available at:
-> https://bugtracker.nebusec.ai
-> 
-> It is currently hosted under my company's domain for convenience. I would
-> prefer to move it to a neutral, community-oriented domain once the project
-> name is settled.
-> Access is currently restricted to maintainers whose email addresses are
-> listed in the Linux kernel MAINTAINERS file.
-> For now, only bug reports from the net subsystem have been fully imported
-> and processed.
-> 
-> -------------------------------------------------------------------------
-> 
-> LLM-powered tools such as Sashiko and Claskiko produce a significant number
 
-Is "Claskiko" misspelled ? I don't find a reference to it.
+On 8/17/26 6:47 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> ibmveth: Enable multi-queue RX receive path
+>
+> This turns on the multi-queue RX path when firmware reports
+> IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT, registering subordinate queues via
+> H_REG_LOGICAL_LAN_QUEUE and wiring per-queue IRQs and NAPI instances. It
+> also reworks open()/close() to walk every live RX queue, adds an
+> mq_fallback latch, and refreshes the VIO CMO entitlement at probe.
+>
+> A few questions below.
+>
+> Regarding this part of the changelog:
+>
+>    Up to IBMVETH_MAX_RX_QUEUES (16) remains available via ethtool -L.
+>
+> [Severity: Low]
+> Is that true at this commit?  ibmveth_get_channels() still does:
+>
+> 	channels->max_rx = netdev->real_num_rx_queues;
+> 	channels->rx_count = netdev->real_num_rx_queues;
+>
+> and ibmveth_set_channels() never reads channels->rx_count, so an
+> "ethtool -L <dev> rx N" returns success without changing anything, and 16
+> RX queues cannot be requested until the later get_channels/set_channels
+> patches land.  Could this sentence move to the patch that actually wires
+> rx_count up?
+No, not at this commit. get_channels still echoes real_num_rx_queues
+and set_channels is still TX-only, so ethtool -L rx N succeeds without
+changing RX.
 
-> of false positives. Pre-existing bugs uncovered by these tools are also not
-> collected in one place and they remain scattered across individual review
-> reports.
-> 
-> To address this, like syzbot for fuzzer-found bugs, this platform provides
-> an **automated** tracking layer for AI-reported bugs, but goes further by
-> generating PoCs, running them in QEMU to produce crash logs, triaging
-> severity, and drafting patches. This requires no extra effort from
-> maintainers; instead, it may helps them understand and fix these bugs more
-> efficiently.
-> 
-> 
-> The platform offers the following capabilities:
-> 
-> 1. Collect and Deduplicate
-> 
-> The platform ingests bug reports from multiple sources, including Sashiko,
-> Claskiko, and others. It deduplicates them and monitors mailing lists and
-> git history to track whether they have been fixed.
-> 
-> It also provides visibility into the Sashiko/Claskiko ingestion queue, so
-> users can see which reports are waiting to be collected and processed.
-> 
-> 
-> 2. Verify by generating PoC and running it in QEMU
-> 
-> An agent attempts to generate a proof-of-concept for each bug to determine
-> whether it is a false positive. According to paper Patch-to-PoC[2] and
-> follow-up research, GPT-5.4 achieves up to a 95% success rate in generating
-> PoCs for genuinely exploitable bugs.
-> 
-> This makes PoC generation a strong signal: if a bug has no PoC, it is very
-> likely a false positive. And even in cases where a real bug is missed, the
-> difficulty of generating a PoC suggests it is unlikely to be practically
-> exploitable.
-> 
+v6 drops that sentence here. Patch 14 is the one that reads
+channels->rx_count and calls resize. Patch 12 only reports the counts.
+Patch 15 finishes the down-path and caps max_rx once mq_fallback
+latches; it does not wire the setter.
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 86299c62d4ecf..36f0926711e60 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -503,7 +519,7 @@ static int
+>>   ibmveth_setup_rx_interrupts(struct ibmveth_adapter *adapter)
+>>   {
+>>   	struct net_device *netdev = adapter->netdev;
+>> -	int i, rc, num = adapter->num_rx_queues;
+>> +	int i, rc, num = ibmveth_get_num_rx_queues(adapter);
+>>   
+>>   	for (i = 0; i < num; i++) {
+>>   		if (!adapter->queue_irq[i]) {
+> [Severity: Low]
+> Now that this function can enable PHYP delivery on several queues, can the
+> err_disable_napi rollback leave a queue armed with no handler?
+>
+> The rollback masks the already-enabled queues and calls synchronize_irq(),
+> but synchronize_irq() does not wait for NAPI.  A poll already running for
+> one of those queues reaches:
+>
+> 	if (ibmveth_poll_stopping(netdev, napi))
+> 		goto out;
+>
+> 	rc = ibmveth_enable_irq(adapter, queue_index);
+>
+> ibmveth_poll_stopping() is "!netif_running(netdev) || napi_disable_pending()",
+> and __dev_open() sets __LINK_STATE_START before calling ndo_open, so it is
+> false here and the poll re-arms PHYP.  err_disable_napi then does:
+>
+> 	for (i = 0; i < num; i++)
+> 		napi_disable(&adapter->napi[i]);
+> 	for (i = 0; i < num; i++) {
+> 		if (adapter->queue_irq[i])
+> 			free_irq(adapter->queue_irq[i], &adapter->napi[i]);
+> 	}
+>
+> with no second mask pass, whereas ibmveth_cleanup_rx_interrupts()
+> deliberately masks again after napi_disable().  Should the rollback follow
+> the cleanup pattern and remask after napi_disable()?
+Yes. Without a second mask after napi_disable, a poll still running
+can re-arm PHYP after the first mask: poll_stopping is false during
+open because __LINK_STATE_START is already set.
 
-I think it is a mistake to claim that "Not exploitable / No PoC --> false
-positive". Not all bugs are vulnerabilities, much less exploitable ones.
+Already in patch 5: err_disable_napi remasks after napi_disable, same
+as cleanup_rx_interrupts. This patch does not add a second rollback.
 
-Guenter
+>> @@ -649,6 +665,24 @@ static bool ibmveth_schedule_rx_queue(struct ibmveth_adapter *adapter,
+>>   	return false;
+>>   }
+>>   
+>> +/**
+>> + * ibmveth_kick_rx_queue_if_pending - Schedule NAPI if PHYP posted while masked
+>> + * @adapter: ibmveth adapter
+>> + * @queue_index: RX queue index just unmasked
+>> + *
+>> + * After enable_irq() / MQ open unmask, descriptors may already be pending
+>> + * (buffers were posted while PHYP was masked). Use schedule_rx_queue() so
+>> + * PHYP is masked before NAPI runs — napi_schedule() then disable_irq() from
+>> + * process context can race a completing poll and leave the queue masked
+>> + * with NAPI idle.
+>> + */
+>> +static void
+>> +ibmveth_kick_rx_queue_if_pending(struct ibmveth_adapter *adapter,
+>> +				 int queue_index)
+>> +{
+>> +	if (ibmveth_rxq_pending_buffer(adapter, queue_index))
+>> +		ibmveth_schedule_rx_queue(adapter, queue_index);
+>> +}
+> [Severity: Low]
+> Does this commit build on its own?  ibmveth_kick_rx_queue_if_pending() is a
+> non-inline static function with no caller anywhere in the tree at this
+> commit (open() uses ibmveth_restart_rx_queue() instead), so gcc/clang emit
+> "defined but not used", which is fatal with the default CONFIG_WERROR=y.
+>
+> The first callers appear only in the later incremental resize patch.  Could
+> the helper be introduced there instead, to keep this commit bisectable?
+Yes. Unused static, fatal under CONFIG_WERROR. First-use: v6 deletes
+it here. Patch 14 calls restart_rx_queue() at both sites that would
+have used the helper, so there is nothing to move.
 
-> 
-> 3. Draft Patch
-> 
-> The platform produces a draft patch to give maintainers a starting point
-> and suggested fix direction. These still require human review. Patches can
-> be downloaded via b4 am.
-> 
-> These patches are not sent to mailing lists to avoid adding AI-generated
-> noise.
-> 
-> 
-> 4. Triage
-> 
-> Based on the PoC, the agent evaluates the conditions required to trigger
-> the bug, for example, whether it requires a namespace, root privileges, or
-> can be triggered by an unprivileged user.
-> 
-> Bugs that require root are generally less important, while those reachable
-> by unprivileged users are more likely to have real security impact.
-> 
-> If a bug can be triggered from namespace, it is still worth
-> paying attention to.
-> In particular, a bug should not be considered root-only merely because
-> triggering it requires CAP_NET_ADMIN in a network namespace. On systems
-> that allow unprivileged user namespaces, an ordinary user may be able to
-> create a user namespace, create a network namespace owned by it, and obtain
-> capabilities such as CAP_NET_ADMIN with respect to that namespace. Such
-> bugs may therefore still be reachable by an otherwise unprivileged local
-> user.
-> 
-> For example, this configuration has historically been available by default
-> on distributions such as Ubuntu 22.04 LTS and earlier.
-> 
-> Jamal previously offered some suggestions on this severity classification
-> scheme which I have not yet had time to implement; that will come in a
-> future update.
-> 
-> 
-> 5. Chat with agent
-> 
-> Each bug page includes a chat interface for discussing the bug and its fix
-> with the agent.
-> 
-> 
-> 
-> Based on earlier feedback, the system is not fully public. Only email
-> addresses listed in the MAINTAINERS file are eligible to register, to
-> prevent bugs with potential security impact from being exposed publicly.
-> 
-> Jason’s idea of delegating fixes could also be implemented on this
-> platform. This is essentially what my volunteer bug-fixing team and I have
-> been doing over the past six months: anyone interested can pick up an issue
-> and try to fix it.
-> Each subsystem’s maintainers could choose whether to make its issues
-> public. Making them public would also let potential reporters check whether
-> an issue is already known before submitting a new report.
-> 
-> Bugs are also categorized by subsystem, so after logging in, maintainers
-> see only the bugs relevant to the modules they maintain.
-> 
-> 
-> Welcome any suggestions:)  I will continue maintaining this system and
-> adding more features, not only out of personal interest, but also our
-> bug-fixing volunteer team is using it too.
-> 
-> We periodically burn tokens and run state-of-the-art models against the
-> full kernel source code, with the goal of finding security vulnerabilities
-> before attackers do. While I am not an expert in the net subsystem and
-> cannot review patches myself at this time, I still hope this platform can
-> be of help to the community.
-> 
-> If this system proves genuinely useful, I am happy to transfer project
-> ownership to the Linux Foundation or another neutral host.
-> 
-> Going forward, the platform will expose a public API so that other bug
-> finding research teams can submit their findings here for centralized
-> processing. We also plan to ingest syzbot-found bugs to provide them with
-> the same triage workflow.
-> 
-> P.S. I have been struggling to come up with a good name for this platform. A
-> few candidates I am considering are Palomar, Tengu, FixArc, and Ephemeris.
-> If anyone has a preference or a better suggestion, I would love to hear it.
-> 
-> 
-> Current Limitations
-> 
-> - For a tracked bug, the system currently only knows that a fix exists; it
-> does not yet distinguish between a patch that has been posted to the
-> mailing list and one that has already been merged.
-> 
-> - PoC generation and false-positive verification are not yet supported for
-> driver-related bugs.
-> 
-> - Unable to scrape Sashiko/Clashiko review reports that are still under embargo.
-> 
-> - Only net subsystem bugs from Sashiko and Claskiko have been imported with
-> a fully automated fix-detection pipeline so far. Bugs from other subsystems
-> are shown but may already be fixed. If other subsystem maintainers are
-> interested, I will prioritize adding support.
-> 
-> 
-> [1] https://lore.kernel.org/all/20260708092247.4188498-1-yuantan098@gmail.com/
-> [2] Juefei Pu, Xingyu Li, Zhengchuan Liang, et al. "Patch-to-PoC: A
-> Systematic Study of Agentic LLM Systems for Linux Kernel N-Day
-> Reproduction." arXiv:2602.07287, 2026. https://arxiv.org/abs/2602.07287
-> 
-> 
-> Thanks,
-> Yuan
+> Also, the blank line before the following comment block was dropped:
+>
+> 	+		ibmveth_schedule_rx_queue(adapter, queue_index);
+> 	+}
+> 	 /* setup the initial settings for a buffer pool */
+
+Ah, its back now.
+
+
+>> @@ -963,11 +997,21 @@ static int ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>>    * because there was not a buffer in the buffer list capable of holding
+>>    * the frame.
+>>    */
+>> -static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
+>> +static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter,
+>> +					int queue_index)
+>>   {
+>> -	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
+>> +	__be64 *p;
+>> +	u64 drops;
+>> +
+>> +	if (queue_index < 0 ||
+>> +	    queue_index >= ibmveth_get_num_rx_queues(adapter) ||
+>> +	    !adapter->buffer_list_addr[queue_index])
+>> +		return;
+>> +
+>> +	p = adapter->buffer_list_addr[queue_index] + 4096 - 8;
+>> +	drops = be64_to_cpup(p);
+>>   
+>> -	adapter->rx_no_buffer = be64_to_cpup(p);
+>> +	adapter->rx_no_buffer = drops;
+>>   }
+> [Severity: Low]
+> The function became queue-aware, but the store target is still the single
+> adapter-wide field exported by ethtool -S.  With several RX queues, does
+> rx_no_buffer end up being "whichever queue ran last", and can it decrease?
+>
+> Each queue reads its own absolute PHYP page counter and overwrites the same
+> scalar, from per-queue replenish paths that hold different replenish_locks,
+> plus the lock-free loop added in ibmveth_close():
+>
+> 	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++)
+> 		ibmveth_update_rx_no_buffer(adapter, i);
+>
+> The next patch in the series ("ibmveth: Add per-queue RX and TX statistics
+> collection") moves this to adapter->rx_qstats[queue_index] with a summing
+> helper, so only this intermediate commit reports the wrong value.  Could
+> the per-queue slot land together with the queue_index argument?
+Yes, last-writer-wins, and it can go backwards when a later queue
+stores a smaller PHYP page counter.
+
+The per-queue slot stays in patch 11 with the rest of qstats, next to
+the retired-queue carry so one queue owns both. Not here: this patch
+is the MQ switch.
+>> @@ -1033,6 +1077,7 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+>>   		dev_err_ratelimited(&adapter->netdev->dev,
+>>   				    "MQ buffer add H_FUNCTION (q=%d, batch=%u), reset\n",
+>>   				    queue_index, fail.batch);
+>> +		adapter->mq_fallback = true;
+>>   		schedule_work(&adapter->work);
+>>   	}
+> [Severity: High]
+> This isn't a bug introduced by this patch, but it adds another producer of
+> adapter->work while ibmveth_remove() still cancels the work before the
+> interface is unregistered:
+>
+> 	cancel_work_sync(&adapter->work);
+> 	...
+> 	unregister_netdev(netdev);
+> 	free_netdev(netdev);
+>
+> Can this sequence use freed memory?
+>
+> CPU0 (rmmod / DLPAR remove)
+>    ibmveth_remove()
+>      cancel_work_sync(&adapter->work);   /* returns */
+>
+> CPU1 (NAPI poll)
+>    ibmveth_replenish_task()
+>      adapter->mq_fallback = true;
+>      schedule_work(&adapter->work);      /* re-queued */
+>
+> CPU0
+>      unregister_netdev(netdev);          /* holds RTNL */
+>      free_netdev(netdev);                /* frees adapter + work_struct */
+>
+> The queued ibmveth_reset() blocks in rtnl_lock() while unregister_netdev()
+> runs, then derives adapter via container_of() on the freed work_struct and
+> touches adapter->netdev.  Would unregistering/quiescing first and calling
+> cancel_work_sync() after be safer?
+Yes, UAF at this commit: cancel returns, poll can schedule_work
+again, then unregister/free runs while the worker still takes RTNL
+and container_of on the freed work_struct.
+
+Unregister first, then cancel_work_sync, is the right order. Patch 11
+does that, and gates the worker on NETREG_REGISTERED so a reset that
+is already past cancel cannot close/open after unregister. This patch
+only adds the extra schedule_work producers.
+>> @@ -1052,6 +1097,30 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+>>   				     fail.filled, fail.lpar_rc, fail.batch);
+>>   }
+>>   
+>> +/**
+>> + * ibmveth_restart_rx_queue - Post buffers and ensure Q can take RX
+>> + * @adapter: ibmveth adapter
+>> + * @qindex: RX queue index
+>> + *
+>> + * SQ open leaves PHYP masked until the first poll. If schedule_prep fails,
+>> + * NAPI never runs and the queue stays masked (TX OK, RX/ARP dead) until
+>> + * reload. Replenish first so an enable_irq fallback can actually deliver.
+>> + * Also used after every open (SQ and MQ) and after scale-down so a
+>> + * queue is not left idle+masked.
+>> + */
+>> +static void ibmveth_restart_rx_queue(struct ibmveth_adapter *adapter,
+>> +				     int qindex)
+>> +{
+>> +	int rc;
+>> +
+>> +	ibmveth_replenish_task(adapter, qindex);
+>> +	if (ibmveth_schedule_rx_queue(adapter, qindex))
+>> +		return;
+>> +
+>> +	rc = ibmveth_enable_irq(adapter, qindex);
+>> +	WARN_ON(rc);
+>> +}
+> [Severity: Medium]
+> The enable_irq() fallback here is reached exactly when
+> napi_schedule_prep() failed, i.e. when a poll for that queue is already
+> scheduled or running.  In MQ mode ibmveth_setup_rx_interrupts() has already
+> unmasked PHYP before open() calls this helper, so a frame can arrive first:
+>
+>    ibmveth_interrupt(q)
+>      ibmveth_schedule_rx_queue(q)   /* masks PHYP, schedules NAPI */
+>
+>    ibmveth_open()
+>      ibmveth_restart_rx_queue(adapter, q)
+>        napi_schedule_prep() == false
+>        ibmveth_enable_irq(adapter, q);   /* re-arms PHYP mid-poll */
+>
+> Since ibmveth_schedule_rx_queue() masks PHYP only inside the successful
+> prep branch:
+>
+> 	if (napi_schedule_prep(napi)) {
+> 		rc = ibmveth_disable_irq(adapter, qindex);
+> 		WARN_ON(rc);
+> 		__napi_schedule(napi);
+> 		return true;
+> 	}
+> 	return false;
+>
+> can the handler still quiesce the source afterwards?  Each subsequent
+> interrupt returns IRQ_HANDLED without masking and sets NAPI_STATE_MISSED,
+> so napi_complete_done() keeps returning false and the queue stays unmasked
+> while traffic flows, giving an interrupt per frame on that queue.
+>
+> Related: this WARN_ON(rc) treats a failed unmask hcall as advisory, while
+> ibmveth_poll() treats the same failure as a hardware-state problem:
+>
+> 	rc = ibmveth_enable_irq(adapter, queue_index);
+> 	if (rc) {
+> 		netdev_err(...);
+> 		schedule_work(&adapter->work);
+> 		goto out;
+> 	}
+>
+> Should the two paths handle the failure the same way?
+>
+> Also, the comment says the helper is used "after scale-down", but no
+> scale-down caller exists at this commit; that path arrives with the later
+> resize patch.
+No, later IRQs cannot quiet the source once the enable_irq fallback
+has run: prep fails again, there is no mask, and you get IRQ_HANDLED
+plus NAPI_STATE_MISSED until poll finishes.
+
+That is the path we want. Mask-on-prep-fail raced poll and left RX
+dead in the lab (TX still OK). enable-on-prep-fail stays. Storm
+control is STOP plus poll no-rearm, not mask-on-fail.
+
+The two enable_irq failures should not do the same thing. Poll is the
+live path after complete_done; a failed unmask there is hardware-state
+and schedules reset. restart_rx_queue is open/scale kickstart only;
+scheduling reset from there nests close/open mid-open. v6 drops the
+WARN_ON; the helper already logs the firmware rc.
+
+The scale-down phrase is still in the kdoc. First caller is patch 14,
+and it uses this same helper, so the comment is the helper's job at
+
+the tip rather than a second function.
+
+
+>
+> [ ... ]
+>
+>> @@ -1556,10 +1757,12 @@ static void ibmveth_free_all_queues(struct ibmveth_adapter *adapter)
+>>    * @adapter: ibmveth adapter structure
+>>    * @mac_address: MAC address for device registration
+>>    *
+>> - * Registers queue 0 via ibmveth_register_logical_lan(). Subordinate queue
+>> - * registration is added when multi-queue RX is enabled.
+>> + * Registers queue 0 via ibmveth_register_logical_lan(), then subordinate
+>> + * queues 1..N when multi-queue mode is enabled.
+>>    *
+>> - * Return: 0 on success, -ENONET if queue 0 registration fails
+>> + * Return: 0 on success, -ENONET if queue 0 registration fails,
+>> + *         -EOPNOTSUPP if firmware rejects a subordinate queue (H_FUNCTION;
+>> + *         caller latches mq_fallback), -EIO on other subordinate failures
+> [Severity: Low]
+> The kernel-doc says the caller latches mq_fallback, but the function body
+> does it itself and ibmveth_open() only propagates rc.  Could the wording be
+> changed to say this function latches adapter->mq_fallback, so a future
+> change does not add a second latch or remove this one?
+Yes. v6 says this function latches mq_fallback on -EOPNOTSUPP. open()
+only propagates rc.
+>> @@ -1592,9 +1796,67 @@ ibmveth_register_rx_queues(struct ibmveth_adapter *adapter, u64 mac_address)
+>>   		return -ENONET;
+>>   	}
+>>   
+>> +	num = ibmveth_get_num_rx_queues(adapter);
+>> +	if (num == 1 || !adapter->multi_queue) {
+>> +		netdev_dbg(netdev,
+>> +			   "registered 1 RX queue with hypervisor (single-queue mode)\n");
+>> +		return 0;
+>> +	}
+>> +
+>> +	netdev_dbg(netdev, "Registering %d subordinate queues (1-%d)\n",
+>> +		   num - 1, num - 1);
+>> +
+>> +	for (i = 1; i < num; i++) {
+>> +		rc = ibmveth_register_single_rx_queue(adapter, i);
+>> +		if (rc) {
+>> +			/* Firmware MQ gone: fall back to SQ on next open. */
+>> +			if (rc == -EOPNOTSUPP)
+>> +				adapter->mq_fallback = true;
+>> +			goto err_unregister;
+>> +		}
+>> +	}
+> [Severity: High]
+> Who performs the "next open" that consumes the latched mq_fallback?
+>
+> The only automatic recovery path is the reset work:
+>
+>    ibmveth_reset()
+>      rtnl_lock();
+>      dev_close(adapter->netdev);
+>      dev_open(adapter->netdev, NULL);   /* return value discarded */
+>      rtnl_unlock();
+>
+> If firmware stops honouring H_REG_LOGICAL_LAN_QUEUE (the LPM case the code
+> comment describes), that dev_open() fails with -EOPNOTSUPP, mq_fallback is
+> set, nothing looks at the error, and no further open is attempted.  Does
+> the interface then stay administratively up but dead until an administrator
+> runs ifdown/ifup, even though the driver already knows the single-queue
+> retry would succeed?
+>
+> Would retrying single-queue inside open(), or re-arming the reset work when
+> dev_open() fails, match the intent stated in the changelog?
+apply_mq_fallback() runs at the start of open. The next successful
+ndo_open consumes the latch, from admin ifdown/ifup or from reset's
+dev_open when that open succeeds.
+
+Yes: if reset's dev_open fails with -EOPNOTSUPP, the latch stays set,
+the return is discarded, and the interface can stay administratively
+up but dead until ifdown/ifup. Single-queue was not applied on that
+failed open.
+
+No retry inside open(), and reset does not re-arm when that
+dev_open() fails. That is the "next open drops to SQ" rule, not a
+retry loop.
+
+> [ ... ]
+>
+>> @@ -2732,23 +3019,35 @@ static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev)
+>>   
+>>   	adapter = netdev_priv(netdev);
+>>   
+>> -	ret = IBMVETH_BUFF_LIST_SIZE + IBMVETH_FILT_LIST_SIZE;
+>> +	/* One buffer list page per RX queue; filter list is shared. */
+>> +	ret = IBMVETH_BUFF_LIST_SIZE * ibmveth_get_num_rx_queues(adapter) +
+>> +	      IBMVETH_FILT_LIST_SIZE;
+>>   	ret += IOMMU_PAGE_ALIGN(netdev->mtu, tbl);
+>>   	/* add size of mapped tx buffers */
+>>   	ret += IOMMU_PAGE_ALIGN(IBMVETH_MAX_TX_BUF_SIZE, tbl);
+> [Severity: Medium]
+> This is a pre-existing shortfall rather than something this patch created,
+> but since the function is being rewritten and its result now becomes the
+> probe-time CMO request, should the TX term scale with the TX queue count?
+>
+> ibmveth_alloc_tx_resources() maps one long-term buffer per TX queue:
+>
+> 	for (i = 0; i < netdev->real_num_tx_queues; i++) {
+> 		if (ibmveth_allocate_tx_ltb(adapter, i))
+> 			goto err_free_ltbs;
+> 	}
+>
+> with real_num_tx_queues defaulting to min(nr_cpus, 8), while the accounting
+> above adds exactly one IBMVETH_MAX_TX_BUF_SIZE.  Can the requested
+> entitlement be short by up to 7 x 64KB, so that dma_map_single() in
+> ibmveth_allocate_tx_ltb() fails at open on an entitlement-constrained
+> partition?  vio_cmo_set_dev_desired() returns void, so the shortfall is
+> silent.
+Yes. One IBMVETH_MAX_TX_BUF_SIZE against up to eight mapped LTBs can
+be short by 7×64KB; vio_cmo_set_dev_desired() is void, so the
+shortfall is silent and dma_map_single() can fail at open.
+
+Not in this patch. TX-term scaling is on the cover leftovers list
+with the rest of the CMO refresh.
+
+> [ ... ]
+>
+>> @@ -2895,16 +3206,29 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>>   		netdev->features |= NETIF_F_FRAGLIST;
+>>   	}
+>>   
+>> -	/* Initialize queue count - always 1 for now */
+>> -	adapter->multi_queue = 0;
+>> -	adapter->num_rx_queues = IBMVETH_DEFAULT_RX_QUEUES;
+>> +	if (ret == H_SUCCESS &&
+>> +	    (ret_attr & IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT)) {
+>> +		adapter->multi_queue = 1;
+>> +		ibmveth_publish_num_rx_queues(adapter,
+>> +					      min(num_online_cpus(),
+>> +						  IBMVETH_DEFAULT_QUEUES));
+>> +		netdev_dbg(netdev, "RX multi queue mode enabled: %d queues\n",
+>> +			   ibmveth_get_num_rx_queues(adapter));
+>> +	} else {
+>> +		adapter->multi_queue = 0;
+>> +		ibmveth_publish_num_rx_queues(adapter,
+>> +					      IBMVETH_DEFAULT_RX_QUEUES);
+>> +	}
+> [Severity: Medium]
+> Activating several RX NAPI instances makes a number of adapter-wide
+> counters multi-writer.  Can these lose increments?
+>
+> ibmveth_replenish_task() bumps a shared counter outside any lock:
+>
+> 	adapter->replenish_task_cycles++;
+>
+> 	spin_lock_irqsave(&rxq->replenish_lock, flags);
+>
+> and ibmveth_replenish_buffer_pool() updates shared counters under only the
+> queue-local lock:
+>
+> 	adapter->replenish_add_buff_success += filled;
+>
+> Per-queue replenish_locks give no mutual exclusion between different
+> queues, so plain read-modify-write on replenish_task_cycles,
+> replenish_add_buff_success/failure, replenish_no_mem and
+> hcall_stats.add_bufs_queue races.  At this commit rx_invalid_buffer,
+> rx_large_packets and netdev->stats.rx_packets/rx_bytes are in the same
+> situation; the following qstats patch moves those to per-queue storage, but
+> the replenish counters remain shared through the end of the series.  Should
+> they get per-queue slots as well?
+Yes. Plain u64 RMW can lose increments: replenish_task_cycles is
+outside any lock, and per-queue replenish_locks do not serialise
+different queues.
+
+Patch 11 moves replenish_* into the per-queue structs as plain u64,
+summed on the existing adapter-wide keys. Pools are already per
+queue, so that matches the lock. The eight hypercall counters are
+gone (patch 7); they are not ethtool keys. No atomics.
+
+>> @@ -2922,25 +3246,62 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>>   
+>>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+>>   		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+>> -		int error;
+>>   
+>>   		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
+>>   					 pool_count[i], pool_size[i],
+>>   					 pool_active[i]);
+>> -		error = kobject_init_and_add(kobj, &ktype_veth_pool,
+>> -					     &dev->dev.kobj, "pool%d", i);
+>> -		if (!error)
+>> -			kobject_uevent(kobj, KOBJ_ADD);
+>> +		rc = kobject_init_and_add(kobj, &ktype_veth_pool,
+>> +					  &dev->dev.kobj, "pool%d", i);
+>> +		if (rc) {
+>> +			dev_err(&dev->dev,
+>> +				"failed to create pool%d kobject: %d\n", i, rc);
+>> +			/* init_and_add takes a ref even on failure */
+>> +			kobject_put(kobj);
+>> +			ibmveth_put_pool_kobjs(adapter, pools_ready);
+>> +			dev_set_drvdata(&dev->dev, NULL);
+>> +			free_netdev(netdev);
+>> +			return rc;
+>> +		}
+>> +
+>> +		pools_ready++;
+>> +		kobject_uevent(kobj, KOBJ_ADD);
+>>   	}
+> [Severity: Low]
+> This is a pre-existing problem being repaired rather than a new one, but
+> propagating kobject_init_and_add() failure and putting already-created pool
+> kobjects before free_netdev() is a standalone fix for probe error handling
+> that predates the MQ work.  Could it be split into its own patch with a
+> Fixes: tag so it can be backported independently of this feature?
+Yes, pre-existing, and it predates MQ. The put-before-free stays in
+this series so a bisect does not leak. probe_cleanup lands in patch
+11. Happy to send a standalone to net the same way as the reopen
+unwind, if you would rather pick it up that way.
+
+> [Severity: Medium]
+> This isn't a bug introduced by this patch either (ibmveth_remove() already
+> does kobject_put() followed by free_netdev()), but the pattern is now
+> replicated in four new probe error paths.  Can these free memory that a
+> deferred kobject release still uses?
+>
+> ktype_veth_pool has no release callback:
+>
+> 	static const struct kobj_type ktype_veth_pool = {
+> 		.release        = NULL,
+> 		.sysfs_ops      = &veth_pool_ops,
+> 		.default_groups = veth_pool_groups,
+> 	};
+>
+> and the kobjects live inside netdev_priv().  With
+> CONFIG_DEBUG_KOBJECT_RELEASE=y, kobject_release() in lib/kobject.c does not
+> clean up synchronously:
+>
+> 	unsigned long delay = HZ + HZ * get_random_u32_below(4);
+> 	...
+> 	INIT_DELAYED_WORK(&kobj->release, kobject_delayed_cleanup);
+>
+> 	schedule_delayed_work(&kobj->release, delay);
+>
+> The delayed_work lives inside the kobject, so free_netdev() right after
+> kobject_put() leaves a queued work item in freed memory and
+> kobject_delayed_cleanup() dereferences a freed kobj 1-5 seconds later.
+> Would a no-op .release for ktype_veth_pool, or deferring free_netdev()
+> until the kobjects are really gone, avoid that?
+Yes. With CONFIG_DEBUG_KOBJECT_RELEASE=y, kobject_put() then
+free_netdev() can touch freed memory: the delayed_work lives inside
+the kobject in netdev_priv(). This patch copies the same pattern onto
+the probe error paths.
+
+A no-op .release or deferring free_netdev() would close it. Not in
+this series; it is on the cover leftovers list.
+
+>> +	/*
+>> +	 * VIO CMO entitlement was set before probe (netdev NULL → default).
+>> +	 * Recompute now that num_rx_queues and pool 0 metadata are known.
+>> +	 */
+>> +	if (firmware_has_feature(FW_FEATURE_CMO))
+>> +		vio_cmo_set_dev_desired(dev, ibmveth_get_desired_dma(dev));
+>> +
+>>   	rc = netif_set_real_num_tx_queues(netdev, min(num_online_cpus(),
+>>   						      IBMVETH_DEFAULT_QUEUES));
+>>   	if (rc) {
+>>   		netdev_dbg(netdev, "failed to set number of tx queues rc=%d\n",
+>>   			   rc);
+>> +		ibmveth_put_pool_kobjs(adapter, pools_ready);
+>> +		dev_set_drvdata(&dev->dev, NULL);
+>>   		free_netdev(netdev);
+>>   		return rc;
+>>   	}
+> [ ... ]
+>
+> Cross-instance finding from sashiko-gemini (91dce8e1ae8c5dfd96a2db94571e030c1951674452013e31a94e2df21bfc801b):
+> [Severity: Medium]
+> Missing `smp_rmb()` in `ibmveth_get_num_rx_queues` allows out-of-order reads of uninitialized queue data.
+v6 publishes with smp_store_release() and the getter uses
+smp_load_acquire(), instead of smp_wmb() plus WRITE_ONCE / READ_ONCE.
+
+That is the pair. No extra smp_rmb().
+
+Thanks,
+
+Mingming
 
