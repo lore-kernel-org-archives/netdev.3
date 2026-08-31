@@ -1,48 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68613391E59;
-	Mon, 31 Aug 2026 23:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62C233937B;
+	Mon, 31 Aug 2026 23:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788217718; cv=none; b=r6qBpSsWVe3KK1EfrpuPnllW5//znec4QDwzYEHBLAx4VnBU7/pc9JlGP8gXZ7aqAOocS7auJO8imhc4+Kib3RX1KyM0qB6LajWgt4tb9xIzYvlnWCQi1Lv/EbjTsUHvSX0cPZrtHa8H+LlafpAOBBLVU3QxzLeHaoQ61jRSLlM=
+	t=1788217872; cv=none; b=AS6/NXDi+r1pvwsc+OY1mnNcXAeTHL2hDEe/nUv60xnqr79UM6ofRD8BSC1Umq4SVc8yNZt0WfMLMDllvbTIHceHlODCGyBbO8sMUTtVIvwen+PNCvm96HRtfqJ5j8Sr2JI0WBS339gYV418HDiji2vYblJth3oAx03okYBvcrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788217718; c=relaxed/simple;
-	bh=si4nfzQKobwAWhCHXycCi+aHA+aJpvaIwHyzrOKQLUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRnK+LUvBx8ftQmQHYIn1uc7xYaQKSk2q4nNphhf/l30aZWw5Zk2ymqrRLOlVDEcU3/yE5Q1rGugXZ+14RbRX+we64e4traEgYZyyDhaArnAJDXQ1Vp4qjBySXcC9xtf3Pll3xCsLapHtzGyM/Q47tCIUlc/a+ty8GXTqahQbkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zg0Z/wH8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788217872; c=relaxed/simple;
+	bh=sqsS6BKl8STjFq7GfXiq8I9ZEFb74NVzMfV779gFsDo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=TDr1LBa4NXnqhXOuD2zJjqh+mV1Bk/rMweiKGjZn20OdVeuf200CsQfNKP5bxO1S7oZjyr96YzVzx6BcU8L9YIQNxhHAl/CLua1537QVGgna54nNuQBoKxwoPgtaWeJazWyULlBVfS5rzlUZc5EtH0ZSvmnGvNXZbw/SbgKwZQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oX6ODcHo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zg0Z/wH8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BF91F000E9;
-	Mon, 31 Aug 2026 23:08:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oX6ODcHo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9511F000E9;
+	Mon, 31 Aug 2026 23:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788217717;
-	bh=GtfBHxTIDD1ugdSqWBTJa3a6H0kN/BtZTPNQKhcmieY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zg0Z/wH8uVkGp+KS1iMUzY2mCcH4Pr4RMMw0hyFTFeeDsL26hHrVIdLBjxfRFy3b6
-	 rY5j6pJSKl3MvssWqGHl4U4YrYiK85Y4SW1sfQhE2zMf2AHPTW0t5rUZVC5C1q08vf
-	 pBoSNn3Bd8BierxA2uIii7sjfNryVDFfq2OOm0xAUD6qSsxOF20g/rjGd9536OKGKE
-	 sam11ICa2awX+MSFMsT2PM/1XzLeU8OInqZhF6n1deLuVZunrW5Xc5LDGqLIcNzu88
-	 d5jkOWiNH0SHh/EbHpMjnSgxfoU4NSISmGGnBHHmiOLMLjBIckPdaUMTs6bvpDINQK
-	 OMkZ1oVulmZGQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: springbreeze@stu.pku.edu.cn
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org,
-	fujita.tomonori@gmail.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3] rust: net: phy: fix off-by-one bit positions in device status accessors
-Date: Mon, 31 Aug 2026 16:08:35 -0700
-Message-ID: <20260831230835.1436976-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
-References: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
+	s=k20260515; t=1788217871;
+	bh=fTvMy9rkDvERCx3/039j8BN+T2TnfGQtKGFL2YL5wgg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=oX6ODcHo5Q0NUKFnMGRfwRkvOhR1nxoi7SYLAxbyYgxP/j4t/YYyoQh4UNLZ2FhMx
+	 qVJ9zweTIJbufmIVS9kbCkMDsg4vLvdgYa5EOyZy8wzTU481SRC+E7x0iHBeAlo/iJ
+	 OCLlbLMEeszsi0jvUyR4fx2HDOOu1MYuHJdtfkD2N+jh+d7/Yh0xDTGD8Lol3AmGpj
+	 pKkV0r/JsEHVdd86e7xgvtAOzABXFoNANmJbLSO/mr9DGgM9ishHt+NJmOFpJUyv9j
+	 bgqSzD43hVsjbBOiqY6C5V0qCVc7BhbF6E86jhmzQO0da5i3hQLKScLmmA4TSyu7Nr
+	 sAXGai2qQNS1w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BAE3924471;
+	Mon, 31 Aug 2026 23:10:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,124 +37,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v7 0/4] Fix to possible skb leak due to race condtion
+ in tx path
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178821781389.824292.6884805679994851550.git-patchwork-notify@kernel.org>
+Date: Mon, 31 Aug 2026 23:10:13 +0000
+References: 
+ <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
+In-Reply-To: 
+ <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
+To: Selvamani Rajagopal <selvamani.rajagopal@onsemi.com>
+Cc: parthiban.veerasooran@microchip.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ Selvamani.Rajagopal@onsemi.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Parthiban.Veerasooran@microchip.com,
+ andrew@lunn.ch
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-rust: net: phy: fix off-by-one bit positions in device status accessors
+Hello:
 
-This replaces the hand-written bitfield offsets in is_link_up(),
-is_autoneg_enabled() and is_autoneg_completed() with the bindgen-generated
-link(), autoneg() and autoneg_complete() accessors, so the Rust side no
-longer depends on hard-coded bit numbers for struct phy_device.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 956cda573ddba..14dd1e6cb3802 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -124,38 +124,30 @@ pub fn state(&self) -> DeviceState {
->      ///
->      /// It returns true if the link is up.
->      pub fn is_link_up(&self) -> bool {
-> -        const LINK_IS_UP: u64 = 1;
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> +        let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(14, 1) == LINK_IS_UP
-> +        unsafe { (*phydev).link() == 1 }
->      }
+On Mon, 24 Aug 2026 14:57:57 -0700 you wrote:
+> Now the traffic is handled in threaded IRQ, and the
+> disable_traffic flag is checked before handling the
+> data, new race condition is exposed, in which
+> buffer may leak, if threaded IRQ interrupts the
+> trasmit path midway.
+> 
+> With this change, disable_traffic and waiting_tx_skb
+> pointer are protected by spin lock/unlock pair.
+> 
+> [...]
 
-[Severity: Medium]
-Bindgen emits the bitfield getters with the signature
+Here is the summary with links:
+  - [net,v7,1/4] net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
+    https://git.kernel.org/netdev/net/c/5443d9c4f55d
+  - [net,v7,2/4] net: ethernet: oa_tc6: Improve the error recovery
+    https://git.kernel.org/netdev/net/c/172c974113bf
+  - [net,v7,3/4] net: ethernet: oa_tc6: Disable tx queues on fatal error
+    https://git.kernel.org/netdev/net/c/349c36636587
+  - [net,v7,4/4] net: ethernet: oa_tc6: Fix for the wrong data type
+    https://git.kernel.org/netdev/net/c/3cc2aa96b971
 
-  pub fn link(&self) -> ::core::ffi::c_uint
-
-so writing (*phydev).link() auto-refs the receiver and materializes a
-&bindings::phy_device covering the whole C struct, not just the bitfield
-storage unit that the previous code projected with
-&(*self.0.get())._bitfield_1.
-
-Is forming that whole-struct shared reference allowed here? The pointer
-comes from an Opaque, whose documented contract in rust/kernel/types.rs
-says:
-
-  /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on
-  ///   the Rust side.
-
-and the Opaque example reads fields through the raw pointer
-(unsafe { (*ptr).val }) instead of taking a reference.
-
-Concurrent C-side writes into the same allocation look possible while a
-PHY driver callback runs, none of them covered by phydev->lock:
-
-drivers/net/phy/phy.c:phy_interrupt() {
-	...
-		phydev->irq_rerun = 1;
-		disable_irq_nosync(irq);
-	...
-}
-
-That is a hard IRQ context write to a bitfield member without taking
-phydev->lock. In addition, the embedded state_queue delayed_work is written
-by the timer softirq and workqueue core, the embedded mdio.dev kref is
-bumped by get_device()/put_device() in phy_device.c, and the internals of
-phydev->lock itself (wait_lock, wait_list) are written by contending
-threads.
-
-Would reading the bits through a C __rust_helper accessor in rust/helpers/,
-or projecting to the bitfield unit via a raw-pointer path, keep the goal of
-dropping the hand-written offsets without forming a reference to the whole
-struct?
-
-Also, the retained SAFETY comments still say "we may access this field",
-which no longer matches what the code does. Should they be updated to
-describe the reference that is actually created?
-
->  
->      /// Gets the current auto-negotiation configuration.
->      ///
->      /// It returns true if auto-negotiation is enabled.
->      pub fn is_autoneg_enabled(&self) -> bool {
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> +        let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
-> +        unsafe { (*phydev).autoneg() == bindings::AUTONEG_ENABLE }
->      }
->  
->      /// Gets the current auto-negotiation state.
->      ///
->      /// It returns true if auto-negotiation is completed.
->      pub fn is_autoneg_completed(&self) -> bool {
-> -        const AUTONEG_COMPLETED: u64 = 1;
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> +        let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(15, 1) == AUTONEG_COMPLETED
-> +        unsafe { (*phydev).autoneg_complete() == 1 }
->      }
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but after the rewrite
-is_link_up(), is_autoneg_enabled() and is_autoneg_completed() are one-line
-forwarders to a binding call, and none of them carries #[inline].
-rust/kernel is an abstraction crate rather than a leaf driver, so the
-coding guidelines ask for #[inline] on small functions that just forward to
-a binding call.
-
-The neighbouring accessors in the same file (phy_id(), state(),
-set_speed(), set_duplex()) are equally unannotated, so this is the existing
-style of the file rather than something the patch changes. Would it be
-worth adding the annotation to the three touched functions here, or
-handling all of them in a separate cleanup?
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
