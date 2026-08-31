@@ -1,302 +1,252 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A76A3C1D48;
-	Mon, 31 Aug 2026 07:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788159711; cv=none; b=Cb9eOT0qMAN0pvu8Sy6v1ZgB6A+WSYesyzde9vFwJTsi7W1yP5e9Qhf95wVZiqxETXYD/1/AlVzqm+A2e7mrfcEvsy8jgg6yTexu8b0FVT6k2QvfzjTkBiaA9ZthBFUSFYGCB9d/BGhqlfTwJPsOv2GvV+eXuAbgsMEbrSOKUT8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788159711; c=relaxed/simple;
-	bh=vr16G4wN7hEj/Zto23NchPROMzUplCl5PfKrXcV1gd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFkuVxkiyA9mWUYqctUKDBYL08KLtIEC7ux86oGA3uXz6xo/b3jytrtPcR8OJINUtvyEnHz24FQL8gr3c4tPzOusaWy9PgWr7YTRrOaY2VfpXOnlpW8XpOdn4CsCT+BN+omPDLQMy1HZ0h/NneCfiG7AuTFzigEqO66c4fxArTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QmAmucBe; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5EB305664
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 07:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788159837; cv=pass; b=AW3wWgA77mK2Vwl4ljUNgXehV/KT2+VKA0T+uZmjSii+2ygHlCT/B/lEqOjPUH5XdeGOuBF///pmEcRNti+nETOIU+cnkaplmrof9sPOgny9+VvNdQKy9aBLG0pmp1JSG+xcPAnuTsORgouPxawHoN1U+Pvl2QQfdHyHGEYKHQ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788159837; c=relaxed/simple;
+	bh=0BE+dmVmXkFgYYDKS56uE9rGx92Afk5IK7Am6Q8j+xM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=buqyCwkf0LeeUExmEE2ktfLmj736hsI5xpTPBj1FCefDaFE2xZMKbIcQrbHA75+9sref9PjAror2MvWV0W2pFdkxSrt9922eJT+MiUsbMqeCFo5lk00eaG9Jg2buPARilm4lfyvmyUyUgiuDVj5xZP7dbMOUCpgrtTd26FIm80I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYur3Bm1; arc=pass smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QmAmucBe"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 9AF954E41466;
-	Mon, 31 Aug 2026 07:01:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6DA51601E1;
-	Mon, 31 Aug 2026 07:01:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F138611C78A06;
-	Mon, 31 Aug 2026 09:01:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788159706; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=juuyW3Kt/fpD/0ZCK+TZEpPZ+AIKb80yrzD5yjL1arI=;
-	b=QmAmucBeoad7CAsIQV1owfz7t1X9M7w0/cFKZwaq1BWL6Hdp+z7ZgHNRfb958CD4Hwh88m
-	O+gfR+1hGmHA0Um2cxJ2CoBKrhwYzvULC+3lN9NObaKaegXDcGg7tAei7f5ldV4wx8zbCI
-	Fi/Lq5Ft4voh03MRr/orqu7z61Z9aMpQglk6+zEiIwp5GokAcqN5W5C1+OOkDlQIQGX9W0
-	+8enFWGRMAI75thOjv1h7A746SUZo/K2Wt3wIvXq4Ivv23R1Bwg+rYfOPGOuDygzty8hKc
-	jfRyl5F29YAn2TuxpT76YRShohUmEVWbZfZimE38iZxIt7sKGa0OvMKhG1c6bw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH net-next 2/2] net: stmmac: dwmac4: Use the full perfect filter ability for UC filter
-Date: Mon, 31 Aug 2026 09:01:20 +0200
-Message-ID: <20260831070121.349778-3-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
-References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mYur3Bm1"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5b5607bd3b5so2731170e87.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 00:03:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788159834; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rVpjFUdbJVOXlDyL6T+KXasNUOIPDQ4n+BFXGFuymTBuCxh0Y8RcLPwbjUbJolpMkN
+         kQ/ldaMqZyQARp5aS5/YLGmfmexs2vO0ORvnqu/BVgDVwDVMbO459akCQfwSlZVfjiJo
+         vN6DgF8TxDwzstItwozPNNgkQAafdb/9ZyJfaktMwJGLSvf8p1lK9rPcCQJRSuoShSk1
+         3pFBPoBEWnn0K09LdvquJRCJQZiMUElQSjjTllMPzRsrtBSKTPBsCGQC5vEo/2sWc3/j
+         PieIwXkuzkRayZbDAu5VG353bNkjEiHKK2DYpqJISLXFilZGvtW6uwMgygUKMwGhqOpf
+         Czqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=deOLXjvMZIXVeNANpLpVuO42of2g4qJoxwxhsXOLKno=;
+        fh=d6ii4jHsM52CPPdNRcEeeBkSUoYk+QjCnHzbEL+M0hI=;
+        b=n+z2pYUUJ+MlY2jiAkAvjdz1EZeQQbi0hAchiORlb6p9SaJQeMQO87FhO6ZCVuf78t
+         5iI1aTJIZwcQDjxBbD7tPr0y3HBKTP6cG40bVKqrdvCsWDw0BhQ6az3qlp4xHp524AGo
+         OBWa4xdK0D1z1z19EfMffTZrETp7bhT/bdWVEpIvA0BXAmjFZ+OSTcrmWKT1ATebU6B3
+         rlq1cqIaCJovUYPo9p7ofTN5RjkpFz0F0DSEQVSbVlVpGyVSpAJ0XPvG+XqY+mcqof2O
+         40eE3z52abV798SDVOUdIdvWMTIAgkO14lyhKCC29hphSKxqgYZ4TxDP/p1RgrZ+14b8
+         A82g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788159834; x=1788764634; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=deOLXjvMZIXVeNANpLpVuO42of2g4qJoxwxhsXOLKno=;
+        b=mYur3Bm13RjuRWyCU/XB3bcup6MYfZq6Nl9+B8P0/mlrwc37YoP5PHrYMLErLOT2n8
+         FAU5ikeVLj/0aths0bZpWhP8LI2R+OfbNrvUqjLVCz+biWqZ8LcVaw4yw0+jrNgr9nMJ
+         RBukMTiWPG4AF4tJaqhTIBkYbcpio55O0F6FzgYWIkX9MYxb/CweVdIdFhoNAn1IWuPZ
+         0o/x3c6XcTP8mvUTA63bxC2zKZ9WV6WSdU/CbL+dny2OmE1hoz2Y7rGaygXRW3/bAXrU
+         pVZaGCsTuU7+2yywS6kE8rHCKjj3tIA42NWnOQvkT1hqQTqGd+xSsyeDsd+b/49r0Vj3
+         0tGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788159834; x=1788764634;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=deOLXjvMZIXVeNANpLpVuO42of2g4qJoxwxhsXOLKno=;
+        b=GwigmQlLa3XRn6H8GN8uRvNHUd3qXhmJxlxSp3wi127tJwmymmoyq3PcYdgyVV5eOt
+         3nuVoFtJdSRA5AjXHv0xRRqvMvC9P0TuoXBKT2QtC1uTwew5iugLOsUxymMzoLshd6n+
+         paY+qIQ728SXMPsWGR2uklRGDzzpgJWDbN3G53AIJ+vuTztPJ8EnIPuh3+I40C2LMgIw
+         FNyZr0DFk6kcoGWMiWQkccSoX2v1FWpjcgUnMKtwHIN0Y+cl28SWXHsZ2jdTYV0TGm22
+         vnb1EePAbAHVTsN45DOgffNxaEfm9RwIgjUJOtw7+uFnu3q4tVesQF5EraJjYQqVfAyk
+         kD1w==
+X-Gm-Message-State: AFuF++kgBi54eFYERHBvzo9D+WBdRuMSFF7VfDU0vvqMfo/YjNa4HRQj
+	3Dx32ZSydcdAkTM8BjsxEQ/3ASv+VzOca1kcVGlVrJMZlDOvpu1LV9GijMBJfomcWx/21hnm3GZ
+	VlmIr8Zl7GIFbYKQkFM94F7T+SvaPeRQ=
+X-Gm-Gg: AYBFou08O0WlamfhuUjjs8Mm992TzPmqp/lOznWZegEVTLldNqX9Ax6wCjTjks1BMtt
+	iu3tT0aTkEhGptnmdFyOaC7n6wQ2Wa/5syaKQFtZLZmUd88aKRfgC7LzFVEfLx3ZJA/iQVRf34C
+	i5Ar4jj5ORB5/DEAkxkLcAEEJR0MXSRYKam/2gtDaE3EAMFF6PP//zFH7Ve0Mkr5T13sYnzV17l
+	6VU7xvk0GaqTERinn39jSfrkOy0wgqjGRtCdnlcrDJa079MGiGGdfHW2VnZ2X/a2huAOSPu9eZ9
+	ZQQ6fhdYSCp4egedXC8kp/WI1ZLMtHQgMXbrBymqPyU=
+X-Received: by 2002:a05:6512:3050:b0:5ae:bbd3:27e3 with SMTP id
+ 2adb3069b0e04-5b5e689fb05mr7608311e87.5.1788159833464; Mon, 31 Aug 2026
+ 00:03:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
+ <12744a63-ac8e-4808-a559-f78fede30a40@amd.com>
+In-Reply-To: <12744a63-ac8e-4808-a559-f78fede30a40@amd.com>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Mon, 31 Aug 2026 10:03:26 +0300
+X-Gm-Features: AcwNN1XPOHnRAmLFiBiL9XpPMa9FXyfskqPKL5CI85UY29DSgAOGnONBrwV4igc
+Message-ID: <CAMuE1bHhsLnAOHkD85wrsJzZRvcZ4ib1fSfkcm_RYESRp+5_0g@mail.gmail.com>
+Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
+ which approach?
+To: "Gupta, Suraj" <suraj.gupta2@amd.com>
+Cc: Netdev <netdev@vger.kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Contrary to dwmac1000 that gets its number of perfect filter entries
-through the 'snps,perfect-filter-entries' property, dwmac4 allows
-reading the filter size from the HW features registers.
+On Sun, Aug 30, 2026 at 5:05=E2=80=AFPM Gupta, Suraj <suraj.gupta2@amd.com>=
+ wrote:
+>
+> Hi Maimon,
+>
+> On 8/20/2026 8:31 PM, Sagi Maimon wrote:
+> > Hi,
+> >
+> > Before posting patches I would like to check which of two approaches yo=
+u would
+> > prefer, since they differ a lot in how much code lands and where.
+> >
+> > The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx =
+AXI
+> > Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp =
+already
+> > supports. We want to expose that Ethernet port as a netdevice.
+> >
+>
+> Is AXI Ethernet being used for 1588 timestamping here?
+>
 
-Perfect filter is used for Unicast filtering, and can contain up to 128
-entries, each having its own set of registers to access it.
+No. The AXI Ethernet is a plain data path on this card. It does no 1588
+timestamping, and this series neither adds nor touches any timestamping
+support in axienet. It could be added later, as separate work.
 
-The registers are always at the same location in the map, regardless
-whether or not the entry is implemented in hardware. Accessing a register
-for an un-implemented entry just doesn't do anything.
+> Could you please share the role of axienet in the TimeCard architecture,
+> including:
+>
+> - Which timestamping device/IP is used
 
-The filter is made of one always-available entry, and 3 configurable
-banks :
+The FPGA clock/ToD block on the ptp_ocp side, disciplined by GNSS and the
+local oscillator, not by network packets. That block is the PHC that
+ptp_ocp registers. The MAC and AXI DMA sit at a separate register window
+with no timestamp unit between them.
 
- Entry 0 : Always implemented, stores the primary MAC address
+> - How timestamps are generated and handled
 
- Entry 1  \
-  ...     + -- Can contain between 0 and 31 entries. Number of available
- Entry 31 /    entries in HW_Features0[18:22].
+Not on this path at all -- there is no timestamp unit on the Ethernet
+datapath to generate them.
 
- Entry 32 \
-  ...     + -- Additional 32 entries, all or nothing. Availability is
- Entry 63 /    specified by HW_Features0[23]
+> - How the driver interacts with the timestamping mechanism
+>
 
- Entry 64  \
-  ...      + - Additional 64 entries, all or nothing. Availability is
- Entry 127 /   specified by HW_Features0[24].
+It doesn't, and there is nothing in axienet for it to use: no
+.get_ts_info, no .ndo_hwtstamp_get/set, and axienet_ioctl() only
+forwards to phylink_mii_ioctl(). I mention this explicitly because the
+Xilinx vendor tree's axienet does carry a hwtstamp/TSU path -- we are
+not using, porting or touching it.
 
-Each of the 3 configurable banks are independently selectable, meaning
-we can have gaps in the register banks.
+The scope here is only to expose the existing Ethernet port as a
+netdevice by reusing the in-tree driver, rather than duplicating the MAC
+and DMA logic inside ptp_ocp.
 
-For instance, a setup with 50 addresses enabled will have 17 entries in
-the first bank and the additional 32 bank enabled (50 = 32 + 17 + 1).
+Thanks,
+Sagi
 
-Another example with 70 addresses : 64 addr bank on, 5 addresses in the
-first bank (70 = 64 + 5 + 1).
-
-While I haven't seen HW with gaps in the banks, Synopsys confirmed this
-is a real possibility.
-
-Let's therefore introduce a dwmac4 helper to get the physical slot
-number of a given entry, allowing to configure the correct bank when
-populating the filter. As we need the HW feature-set to compute the
-index, store the bank info in the mac_device_info struct.
-
-The total number of available entries is computed based on the
-discovered parameters, instead of using the default value of 1.
-
-Results on HW that uses dwmac4 :
-
- - imx8mp   : goes from 1 entry to 64 (1 + 31 + 32)
- - stm32mp1 : goes from 1 entry to 4 (1 + 3)
- - jh7110   : goes from 1 entry to 9 (1 + 8)
- - yt6801   : goes from 1 entry to hum, 1 entry (no extra addresses)
-
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- drivers/net/ethernet/stmicro/stmmac/common.h  |  3 +
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h  |  2 -
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c | 60 +++++++++++++++----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 27 +++++++++
- 4 files changed, 80 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 77bd47a83357..1729fb29ece3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -629,6 +629,7 @@ struct mac_device_info {
- 	void __iomem *pcsr;     /* vpointer to device CSRs */
- 	unsigned int multicast_filter_bins;
- 	unsigned int unicast_filter_entries;
-+	unsigned int multi_addr;
- 	unsigned int mcast_bits_log2;
- 	unsigned int rx_csum;
- 	unsigned int num_vlan;
-@@ -637,6 +638,8 @@ struct mac_device_info {
- 	u8 vlan_fail_q;
- 	bool hw_vlan_en;
- 	bool reverse_sgmii_enable;
-+	bool additional_32_addr;
-+	bool additional_64_addr;
- 
- 	/* This spinlock protects read-modify-write of the interrupt
- 	 * mask/enable registers.
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-index 89368e34a388..696846531229 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-@@ -75,8 +75,6 @@
- #define GMAC_PACKET_FILTER_IPFE		BIT(20)
- #define GMAC_PACKET_FILTER_RA		BIT(31)
- 
--#define GMAC_MAX_PERFECT_ADDRESSES	128
--
- /* MAC RX Queue Enable */
- #define GMAC_RX_QUEUE_CLEAR(queue)	~(GENMASK(1, 0) << ((queue) * 2))
- #define GMAC_RX_AV_QUEUE_ENABLE(queue)	BIT((queue) * 2)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 18b357b257cc..fb5b96a43505 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -365,22 +365,63 @@ static void dwmac4_pmt(struct mac_device_info *hw, unsigned long mode)
- 	writel(pmt, ioaddr + GMAC_PMT);
- }
- 
-+/**
-+ * dwmac4_umac_addr_slot - Get the UC filter slot for the Nth MAC address
-+ * @hw: The MAC device info
-+ * @reg_n: The MAC address's index in the UC list
-+ *
-+ * On dwmac4 the slots available for Unicast MAC filtering are configured when
-+ * integrating the IP.
-+ *
-+ *  - Slot 0 is always available, used to store the primary MAC address
-+ *  - From 1 to 31, the number of implemented slots is set in hw->multi_addr
-+ *  - From 32 to 63, the range is available if hw->additional_32_addr
-+ *    is set
-+ *  - From 64 to 127, the range is available if hw->additional_64_addr is set
-+ *
-+ * All the ranges can be configured independently (e.g. 64 -> 127 can be
-+ * available, but not 32 -> 63)
-+ *
-+ * Returns: The physical slot index in the UC filter
-+ */
-+static unsigned int dwmac4_umac_addr_slot(struct mac_device_info *hw,
-+					  unsigned int reg_n)
-+{
-+	unsigned int empty_slots = 0;
-+
-+	/* reg_n is in the 1-31 bank : 1 to 1 mapping */
-+	if (reg_n < (hw->multi_addr + 1))
-+		return reg_n;
-+
-+	/* Gap between the last address in the 1->31 range and the next slot */
-+	if (hw->additional_32_addr)
-+		empty_slots = 32 - (hw->multi_addr + 1);
-+	else if (hw->additional_64_addr)
-+		empty_slots = 64 - (hw->multi_addr + 1);
-+
-+	return reg_n + empty_slots;
-+}
-+
- static void dwmac4_set_umac_addr(struct mac_device_info *hw,
- 				 const unsigned char *addr, unsigned int reg_n)
- {
- 	void __iomem *ioaddr = hw->pcsr;
-+	unsigned int slot;
- 
--	stmmac_dwmac4_set_mac_addr(ioaddr, addr, GMAC_ADDR_HIGH(reg_n),
--				   GMAC_ADDR_LOW(reg_n));
-+	slot = dwmac4_umac_addr_slot(hw, reg_n);
-+	stmmac_dwmac4_set_mac_addr(ioaddr, addr, GMAC_ADDR_HIGH(slot),
-+				   GMAC_ADDR_LOW(slot));
- }
- 
- static void dwmac4_get_umac_addr(struct mac_device_info *hw,
- 				 unsigned char *addr, unsigned int reg_n)
- {
- 	void __iomem *ioaddr = hw->pcsr;
-+	unsigned int slot;
- 
--	stmmac_get_mac_addr(ioaddr, addr, GMAC_ADDR_HIGH(reg_n),
--			    GMAC_ADDR_LOW(reg_n));
-+	slot = dwmac4_umac_addr_slot(hw, reg_n);
-+	stmmac_get_mac_addr(ioaddr, addr, GMAC_ADDR_HIGH(slot),
-+			    GMAC_ADDR_LOW(slot));
- }
- 
- static int dwmac4_set_lpi_mode(struct mac_device_info *hw,
-@@ -522,9 +563,6 @@ static void dwmac4_set_filter(struct mac_device_info *hw,
- 
- 	/* Handle multiple unicast addresses */
- 	if (netdev_uc_count(dev) + 1 > hw->unicast_filter_entries) {
--		/* Switch to promiscuous mode if more than 128 addrs
--		 * are required
--		 */
- 		value |= GMAC_PACKET_FILTER_PR;
- 	} else {
- 		struct netdev_hw_addr *ha;
-@@ -535,9 +573,11 @@ static void dwmac4_set_filter(struct mac_device_info *hw,
- 			reg++;
- 		}
- 
--		while (reg < GMAC_MAX_PERFECT_ADDRESSES) {
--			writel(0, ioaddr + GMAC_ADDR_HIGH(reg));
--			writel(0, ioaddr + GMAC_ADDR_LOW(reg));
-+		while (reg < hw->unicast_filter_entries) {
-+			unsigned int slot = dwmac4_umac_addr_slot(hw, reg);
-+
-+			writel(0, ioaddr + GMAC_ADDR_HIGH(slot));
-+			writel(0, ioaddr + GMAC_ADDR_LOW(slot));
- 			reg++;
- 		}
- 	}
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a885f8cfef21..80413ba8df55 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7492,6 +7492,33 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
- 		priv->plat->tx_fifo_size = priv->dma_cap.tx_fifo_size;
- 	}
- 
-+	/* On DWMAC4 we can get the exact number of perfect filter entries from
-+	 * the HW_Features.
-+	 */
-+	if (priv->plat->core_type == DWMAC_CORE_GMAC4) {
-+		priv->hw->multi_addr = priv->dma_cap.multi_addr;
-+		priv->hw->additional_32_addr =
-+			!!priv->dma_cap.additional_32_addr;
-+		priv->hw->additional_64_addr =
-+			!!priv->dma_cap.additional_64_addr;
-+
-+		/* We always have one slot for the primary MAC */
-+		priv->hw->unicast_filter_entries = 1;
-+
-+		/* How many slots in the 1 -> 31 range */
-+		priv->hw->unicast_filter_entries += priv->hw->multi_addr;
-+
-+		/* Additional 32 entries in the 32 -> 63 range */
-+		if (priv->hw->additional_32_addr)
-+			priv->hw->unicast_filter_entries += 32;
-+
-+		/* Additional 64 entries in the 64 -> 127 range, can be enabled
-+		 * independently of the 32 -> 63 range
-+		 */
-+		if (priv->hw->additional_64_addr)
-+			priv->hw->unicast_filter_entries += 64;
-+	}
-+
- 	priv->hw->vlan_fail_q_en =
- 		(priv->plat->flags & STMMAC_FLAG_VLAN_FAIL_Q_EN);
- 	priv->hw->vlan_fail_q = priv->plat->vlan_fail_q;
--- 
-2.55.0
-
+> Regards,
+> Suraj
+>
+> > Approach A - let xilinx_axienet drive it.
+> >
+> > ptp_ocp creates a platform device describing the two register windows a=
+nd the
+> > three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_o=
+cp
+> > already does for the Xilinx SPI and I2C cores on the same card, see
+> > ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
+> >
+> > There is no device tree, so a software node stands in for one: "phy-mod=
+e"
+> > replaces a phy-handle, since the MAC is wired to the fabric internally =
+with no
+> > MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/=
+s full
+> > duplex.
+> >
+> > This needs two things from xilinx_axienet:
+> >
+> >    1. Read its configuration through the generic device property API in=
+stead of
+> >       the OF-specific one, so it can be described by a software node. O=
+n a
+> >       device-tree system dev_fwnode() resolves to the OF fwnode and the=
+ reads
+> >       land in the same OF code as today, so this is a no-op for existin=
+g users.
+> >       It is also in line with the wider move from of_* to
+> >       device_property_*/fwnode_*.
+> >
+> >    2. A dma_dev in struct axienet_local. Descriptors and buffers must b=
+e mapped
+> >       against the device that masters the bus, which for a platform dev=
+ice
+> >       created by a PCIe parent is that parent - a platform device does =
+not
+> >       inherit its parent's DMA ops or IOMMU domain. For every existing =
+user
+> >       dma_dev would equal dev, so no behavioural change.
+> >
+> > That comes to about 50 changed lines in xilinx_axienet and about 180 ne=
+w lines
+> > in ptp_ocp.
+> >
+> > Approach B - a separate driver under drivers/ptp.
+> >
+> > Reimplement the descriptor rings, NAPI and ethtool support against the =
+same IP,
+> > roughly 2500 lines, and share xilinx_axienet's register definitions out=
+ of
+> > drivers/net/ethernet/xilinx/.
+> >
+> > We have both working. Approach A is tested on 7.0.0-rc1 with the card:
+> >
+> >    xilinx_axienet xilinx_axienet.512 eth0: configuring for
+> > fixed/internal link mode
+> >    xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
+> > flow control off
+> >
+> > ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way=
+ with
+> > zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and cl=
+ean
+> > module unload and reload.
+> >
+> > We would much rather do A than maintain a duplicate of an existing driv=
+er, so
+> > the questions are:
+> >
+> >    1. Is instantiating xilinx_axienet from a PCIe parent as a platform =
+device
+> >       acceptable, or would you prefer the driver split so the device ca=
+n be
+> >       created on the auxiliary bus? The platform device route keeps the=
+ change
+> >       to xilinx_axienet small and matches what ptp_ocp already does for=
+ the SPI
+> >       and I2C cores, but auxiliary bus is the more usual choice for sub=
+-devices
+> >       of a PCIe function and would make the DMA parent explicit.
+> >
+> >    2. For the dma_dev, we currently infer it by testing whether the par=
+ent is a
+> >       PCI device. That is concise but implicit; we are happy to pass it=
+ in
+> >       explicitly if you would prefer it were not inferred.
+> >
+> > I can post the series straight away if you would rather look at the cod=
+e.
+> >
+> > Thanks,
+> > Sagi Maimon
+>
