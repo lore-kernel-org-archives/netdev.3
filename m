@@ -1,307 +1,805 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5784E399D00
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788202682; cv=pass; b=BqapX28l315zyzcX3B+PvCd0V7TuO3UbqPup4ex21F4t9DGrTnNEWZsWaJuKYumzLIJ/ay+uODWXNp/ON7bQgkfyOxyflXRuXsXbCzVjCUh11C3mPHm3m4H9DO6ijqcqM01B3lDidS71XttqclJiBpLm461E3IbkGdqqY4YGZf0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788202682; c=relaxed/simple;
-	bh=wv794X0je2MXFrBUsCc89F7tpzsIhAnK5VsmtIF3URY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SZ9WsZ7BVNsHIxsTWUVsl/Y2AJfUuCWzIoXrP/SSjOST7rqcKtx/uIhVHwvYlwaaFI2ZySNSs27PE3kcDsz88fAm4kmalEEeBKYY6hIQidH/EkYXGfT/2rrp43X7XpY2suqUkniYTMaHlOI9sgksFQ1Wkhh3ey9EpYnClvkt2fo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nbbtYzOj; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73002CCC5
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788202887; cv=none; b=QsNYP9ptx3CGwqJWuKaKL3WSpzVF7+vJCQNyCXZf+E1PUvIR7/8YNUG0t0g4qsMQ8okRTjBQYws5MhlMzaAVAKFbxRghxdqipPQGlNWmxsFx1dmchV6uZVUk83Xe6uwveRTdu80vBVei6+JQHIcqQO2BDNe4lD27lA4mcjKz5gY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788202887; c=relaxed/simple;
+	bh=/EAJxWmf3ckZsZIHR68xpfKXdRQzXmX96maf7Zs32mY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lEsc7ezwc4f3OIdaY+B5VbnVIZq68J/rv6dtFPMdrp9AndSmpm/F6jwgIF7euybiXmwSrR0/fOcDgA1o/FIQcdg9nH2aGZmJL/ZQ/0jiKeFJfFQZsaZF+I1ycsBuHgLEhssrxw/kRhe1TKwcFs1CDxbTFxAsJuXmZaTqkbkt5TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GW2Yz4bO; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nbbtYzOj"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51bfe810293so646111cf.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:58:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788202679; cv=none;
-        d=google.com; s=arc-20260327;
-        b=M41P7/N27EzIo/EjG2pduoqaFVxPhcyVMeGOiiNn6+hZK+dwtAX7hUG7bVEKm52Ise
-         lq9MvrD8L5N8e1pLMR+ebHSsuBiNrGi7qCfIBUUHAG4Hnc9TP4EmkBwB88xt990f0wkI
-         hO1i7rCDyc1aj40GhMgm+b9Wc1VHBOyfeRzDeVMDIazm5gW+FWq4lSM+d/QLWLn4qggp
-         gcgEURGAtg6ZKJ8Lw8mzQJxC8XVfWik7iIpwmD33WodLilujCh3J248jO+28ZsRzm5JT
-         UujzvgK0l8PARmswBh3hKPjXgUxxy/6qG87L6PrHcwmyRqpK9NoJaUpILPp0G1kdxG6A
-         Af/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hXT4J+ER44UE5+XAWIQtyXWJsqWRzK2ug1m5A5TgmbA=;
-        fh=J82wm4NiDGfABEzzvOD+h/Y9/G79Z6qO3lmHXyMEFdM=;
-        b=RfdWPWjUw9mFQDrUFWTLL89eNoLLRjaOfWvxY6A265ujdXTRTwo7DEWc/NU2EHpAe6
-         TbrvAay2PmCUjwj5G+DLI+XUQqoDr8sTplSgIbajtpsvGu2Lh519uVsj5NlCgDmrY2V4
-         MdbWGDP8YlqRDhioik3a7EcAbAUiTZ3cjW6Wg8K8ay16MkM+S2k3wBP/V3u/wsSEr8nS
-         zq72a41byDElHfsKRwEWb6IWl+f2hmGX6wxy/axvi8Kpq3jZkII6yzOKKthUP5C8mwBa
-         PVGhZB1cgZNlthrupBEIGFamTZFIgQ2En3l7Uo6dxsTK/jgCN25OphzVarDCZAthbzLm
-         l1ew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788202679; x=1788807479; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hXT4J+ER44UE5+XAWIQtyXWJsqWRzK2ug1m5A5TgmbA=;
-        b=nbbtYzOjTvw9dkW8EjyOFduIwiiBOkFBUTKbt0rJbfkh2sbjUwYxwzr5qymj3UN/J3
-         VPk5yPkUgXzfOqvyh4VQDG1LTpiP7N1AX3mjlEfG2JyxKEdBUyZCZy1ReTqTqux62XWH
-         HIGELMc34ezon6wBSnPtUn2zAO9fuqIN7R7TWadAkzF6BSCXm1NDFu6JSf/Z9XdQbtuk
-         /n7Fv09x8v0+Dhlls9ojv0kIZvU8D+XQbSiEp8jBU6Z5Hvsc6zm53kq5jpQkb1pAcckf
-         WIT8EY0+7Jr4KO4cFtBERPRziT002HqzEBbX+E+VeJ7O8hV+OKNh22czbnrmccbLafWj
-         u+UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788202679; x=1788807479;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hXT4J+ER44UE5+XAWIQtyXWJsqWRzK2ug1m5A5TgmbA=;
-        b=HVqqK8Nuzj13o1O4NsqfvBfSaXhnJVWUNBlx9EzmtRSbq9NeweQeUJxlB9oa6i6xnP
-         gVX5coZv1eApOq08X46nYvjyqYReDc7JlhXIYgeyiqoRbiZaa3nQ04X0RhqZZwpg3S+9
-         ymi8xpOLSySA/rjAcFP0iyLYmjgxSJvD/YREmFjignL07AS2ITgpjS2uUfvJSwBAfKWQ
-         SWraX3XGYB4z57jgP4lT6QQZkNPb51Yf5PIkyblSj0nqLPN4bxzxThqtZmT1XdF7ifFG
-         1+StYudKr34mIWwFN2gX9pjKBKKsd1u0p0kVxTd/51oiYTZHQTjNDw74X6RJ3r/U/Svf
-         rlEA==
-X-Forwarded-Encrypted: i=1; AHgh+RpSFN7e7IDUQVxkP6ZbLoRcE+jl7Vtz/LB+SiD9C6enKnLmqXEIqZsT5aqVKsh9DD46c/LTOrs=@vger.kernel.org
-X-Gm-Message-State: AFuF++lYJKOndVhPzwUinufxR6SU8w9E3KoIWJgns4YlRct2iq0eiK2t
-	w87FoNEOP4CB5wsU/KFtq7CKiFf3KyNgpPJxgEFmzuwyslys5n1qah6e4CF9iJqEirbwQhGWnPo
-	IJlR4ylGvBlrlN0Jey+hgvn5+tjI7bRc+qWsGefPQ
-X-Gm-Gg: AR+sD13/p9DySHd7ng5XtzqXF+OWRQx7nBRkGiHMwBQxUIlrSTr/BJJnWfHqs1yc3X7
-	0nmLhQifVhZCUK6IqP6nPQzSNZ6xVPCLzOXS64JcAk4lIOZCkNDWhSMpxpZXahjMS4cOutnn49r
-	MVenw7Ic6rOKNMniTnGyGA/4yLvhNpxs2racu6nXEKS5yKdermlajHobve6WLqaIXfg9J8ssjn+
-	hMN4oLmoa7Wc/sBALKoxDhznYPqSzSvCeWL2g7AB4GzMcDN4x+Bbo4BJJikHvi/JyeDM6fR7jJ2
-	QMYzIcNhNo+ce0d25mMWDY6FMXmCMwlVsmtQlFXkNXhf1B/OUFQ4BLZ6w1gfYVp7eq0vBYrIsSt
-	mWb2hQxhdwRaynWmqi3/+pkw7md4KIzbAQRXzYTbTlpOhiO4G54iHQ1S2BA==
-X-Received: by 2002:a05:622a:10a:b0:52f:ae28:6aef with SMTP id
- d75a77b69052e-52fb973ea96mr323163081cf.36.1788202678235; Mon, 31 Aug 2026
- 11:57:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GW2Yz4bO"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VIW4Bw1980216;
+	Mon, 31 Aug 2026 19:01:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=lM1lz7
+	yRtrd5wKiw0ij3Vt94IQfuswlWHjpgo+PT4/A=; b=GW2Yz4bOvwYozSwkndU20J
+	qxChVXJhfUAxH0AB/cLBZIpOyT1xXV0i5LSirqtCSq3OEnzE4Fpdz0xcIhraWOLV
+	nJWyca/fJGhAxiLKxO7ipgfA1rodFwCa1jh1UYWqHb1LR85QBFOezMi9gyWC+Zfj
+	LX9N1eiuyNBrZpZqdj19lFISxux5djIE+dqljr2BjpHzj0Wc58hLrGZZTLqf0e8M
+	oLVdv7LM5wWrAuHOMxlJWQxnhUGSlXAd5dev5GVJ33xXoK5RlYim3w3/4MOC2t18
+	73ryjrgni0vKayqR9hx2AizW8yDe3kBiWDvqChccH1dM25fnoIZqDIVK/aXQpBpw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbnudk8tw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 19:01:06 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VIuIkL008477;
+	Mon, 31 Aug 2026 19:01:06 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcarjyk9f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 19:01:05 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VJ0xqi26936016
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Aug 2026 19:00:59 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A884158063;
+	Mon, 31 Aug 2026 19:00:59 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A7CCB5803F;
+	Mon, 31 Aug 2026 19:00:56 +0000 (GMT)
+Received: from [9.67.102.143] (unknown [9.67.102.143])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Aug 2026 19:00:56 +0000 (GMT)
+Message-ID: <f8baf2cd-3a0a-449d-b919-ab28395a1073@linux.ibm.com>
+Date: Mon, 31 Aug 2026 12:00:55 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <apWz9rPcGMgYCKOR@volt-roccet-vm>
-In-Reply-To: <apWz9rPcGMgYCKOR@volt-roccet-vm>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 31 Aug 2026 20:57:46 +0200
-X-Gm-Features: AcwNN1WWg46QB-7drA2zXTsJRUc8oYLjYohkpOQp9TQPqJ1M3OiEjm9XZbW9-Ow
-Message-ID: <CANn89iKaXghXPHTQU1sQdNEyfT3RA5AR_gY9+FrhKx59GUVOBQ@mail.gmail.com>
-Subject: Re: [PATCHv5 net-next] tcp: Add TCP ROCCET congestion control module.
-To: Tim Fuechsel <t.fuechsel@gmx.de>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, fmancera@suse.de, ebiggers@kernel.org, 
-	bpf@vger.kernel.org, Lukas Prause <lukas.prause@ikt.uni-hannover.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 08/15] ibmveth: Add queue-aware RX buffer
+ submit helper for MQ
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+References: <20260814073642.24630-9-mmc@linux.ibm.com>
+ <20260818014727.3854161-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260818014727.3854161-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: uMhsCOA3ypNTZX8T-QbF3KzjLLXYYk8x
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDE2MCBTYWx0ZWRfX8JPC5689LOnV
+ UeR0D/xnxwbp/YvzOw6IDy6FFJb07IvnVfrz1e32TGptRE992lnvFDoZY7p1cX15Y0nZ+/2H+E1
+ My1+xE0XhKzbG13LeV20zEHXu1TUivSSwu/J4vVosC7MgmKSk0dHhxYBdpIEJ+IHsu79f+Ze2wH
+ r0wKUQ1lz3Y1jXjVQzuDeFDGtcjv7d5sxNkIOQfj/7Y2qU3cYXTyMvxKBuzca9GJZHmjLZB6uq9
+ 2Rl394m3aBIU6ypljXh8mstC4e1PHQG0TOjoiJxwUe+M1mwtgNysWi9vBvaX6PjoUqBDAkXQOel
+ 0Tlxy91cOlo4TKW0BwY4IqpkizczwgI2JTu62itm2p/0xr+CE/53BN2Xmg+IUONFs1DJ80QJrmt
+ cKWdPEn4e2MOYQFa+nWYz6zPHRPhJ18T4KE9gj2TaGdELv0UHc8g+ANV8h5uMcLZ4msV+YnTiw4
+ AJLkQ4iUBX0aVurboQg==
+X-Proofpoint-ORIG-GUID: AJnFnwOsVYnXIx4PKPYuG_i-PAsCiArh
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDE2MCBTYWx0ZWRfX1RPM7PSOakY9
+ ujf5ETJKY55AYosLt8fJuI0JJrADnHOcWu5a3dR7tW4sQtahSYXvDbDIMs9fdhrVi28ED3kki2+
+ j+bcUuMoxI0mQ37YxJj5CHVvZcuiiHo=
+X-Authority-Analysis: v=2.4 cv=B92JFutM c=1 sm=1 tr=0 ts=6a95cf73 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=29qhAlKAZJUawYIANH4A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_06,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608310160
 
-On Mon, Aug 31, 2026 at 7:04=E2=80=AFPM Tim Fuechsel <t.fuechsel@gmx.de> wr=
-ote:
+
+On 8/17/26 6:47 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> ibmveth: Add queue-aware RX buffer submit helper for MQ
 >
-> TCP ROCCET is an new congestion control algorithm based on TCP CUBIC
-> that improves its overall performance in cellular networks. By its mode
-> of function, CUBIC causes bufferbloat while it tries to detect the
-> available throughput of a network path. This is particularly a problem
-> with large buffers in mobile networks. A more detailed description and
-> analysis of this problem caused by TCP CUBIC can be found in [1].
-> TCP ROCCET addresses the bufferbloat problem by adding two additional
-> metrics to detect bufferbloat. The first metric is the relative increase
-> in RTT from its minimum, the srRTT. Here, bufferbloat can be detected
-> when RTTs increase due to buffer filling. The second metric is the
-> acknowledgment arrival rate sampled over 100ms intervals. If CUBIC
-> increases the send rate or congestion window, and the acknowledgment
-> arrival rate stays on the same level, the connection is limited by the
-> bottleneck link's capacity. In such cases, ROCCET reduces the send rate
-> to prevent bufferbloat. ROCCET uses a modified version of slow start
-> rather than HyStart because HyStart is known to enter the congestion
-> avoidance phase too early when used in cellular networks [2]. Therefore,
-> ROCCET uses a combination of srRTT and the acknowledgment arrival rate to
-> determine when to exit slow start. For the congestion avoidance phase,
-> ROCCET relies on the srRTT and monitoring the send and received Bytes
-> to detect the filling of the bottleneck buffer.
+> This adds ibmveth_add_logical_lan_buffers() to pick between the legacy
+> single/multi buffer hcalls and the new per-queue H_ADD_LOGICAL_LAN_BUFFERS_QUEUE
+> hcall, threads queue_index through the RX replenish/poll helpers, and
+> introduces a per-queue replenish_lock plus deferred (post-unlock) failure
+> logging and reset scheduling.
 >
-> In real-world mobile 5G NR measurements, TCP ROCCET achieves better
-> performance than CUBIC and BBRv3, by maintaining similar throughput
-> while reducing the latency. In stationary 5G NR scenarios, the performanc=
-e
-> is similar to that of BBRv3. More information about TCP ROCCET and
-> measurement evaluations can be found here [3].
-> For the version (2026-07-21) we provide additional performance
-> evaluation regarding throughput, latency and bandwidth share [4].
+> A few questions below about the new locking scope and about some of the
+> error paths that changed behaviour.
 >
-> [1] https://doi.org/10.1109/VTC2023-Fall60731.2023.10333357
-> [2] https://doi.org/10.1109/WMNC.2016.7543932
-> [3] https://doi.org/10.23919/WONS68803.2026.11501781
-> [4] http://go.lu-h.de/roccet-2026-07-21
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 8519cad503225..58a639a962a67 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
 >
-> Signed-off-by: Lukas Prause <lukas.prause@ikt.uni-hannover.de>
-> Signed-off-by: Tim Fuechsel <t.fuechsel@gmx.de>
+>> @@ -262,6 +272,7 @@ ibmveth_alloc_rx_queues(struct ibmveth_adapter *adapter, int rxq_entries)
+>>   		adapter->rx_queue[i].index = 0;
+>>   		adapter->rx_queue[i].num_slots = rxq_entries;
+>>   		adapter->rx_queue[i].toggle = 1;
+>> +		spin_lock_init(&adapter->rx_queue[i].replenish_lock);
+> [Severity: Medium]
+> Is it safe to re-initialize replenish_lock here, given that
+> ibmveth_alloc_rx_queues() runs on every ndo_open?
+>
+> The driver restarts itself directly in several places, guarded only by
+> netif_running(), for example ibmveth_set_csum_offload():
+>
+> 	if (netif_running(dev)) {
+> 		restart = 1;
+> 		ibmveth_close(dev);
+> 	}
+> 	...
+> 	if (restart)
+> 		rc2 = ibmveth_open(dev);
+>
+> veth_pool_store() and the MTU change path do the same. Because
+> __LINK_STATE_START is never cleared on these paths, netpoll_poll_disable()
+> is never called, and netpoll_poll_dev() only bails out on !npinfo or a held
+> dev_lock (dev_lock is taken solely by netpoll_poll_disable() from
+> __dev_open/__dev_close_many).
+>
+> So can this sequence happen while netconsole is configured on this device?
+>
+> CPU0 (printk -> netconsole)
+>    ibmveth_poll_controller()
+>      ibmveth_replenish_task(adapter, 0)
+>        spin_lock_irqsave(&rxq->replenish_lock, flags);
+>
+> CPU1 (ethtool -K restart)
+>    ibmveth_open()
+>      ibmveth_alloc_rx_queues()
+>        spin_lock_init(&adapter->rx_queue[0].replenish_lock);
+>
+> That resets a held spinlock to unlocked, and the later unlock on CPU0 runs
+> against re-initialized state.
+Yes. v6 initialises the locks once in probe. open() does not touch
+them. netpoll_poll_disable() on the internal restarts is still the
+better general answer; it is not required for this race.
 
-Hi Lukas, Tim,
+> [ ... ]
+>
+>> -/* replenish the buffers for a pool.  note that we don't need to
+>> - * skb_reserve these since they are used for incoming...
+>> +/**
+>> + * ibmveth_add_logical_lan_buffers - Add receive buffers to hypervisor
+>> + * @adapter: ibmveth adapter structure
+>> + * @descs: array of buffer descriptors to add
+>> + * @filled: number of valid descriptors in the array
+>> + * @buff_size: size of each buffer (multi-queue mode only)
+>> + * @queue_index: RX queue index
+>> + *
+>> + * Return: hypervisor return code
+>>    */
+>> -static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>> -					  struct ibmveth_buff_pool *pool)
+>> +static long ibmveth_add_logical_lan_buffers(struct ibmveth_adapter *adapter,
+>> +					    union ibmveth_buf_desc *descs,
+>> +					    int filled,
+>> +					    unsigned long buff_size,
+>> +					    int queue_index)
+>> +{
+>> +	struct vio_dev *vdev = adapter->vdev;
+>> +	unsigned long rc;
+>> +
+>> +	if (adapter->multi_queue) {
+>> +		unsigned long buffersznum = (buff_size << 32) | filled;
+>> +		unsigned long ioba[IBMVETH_MAX_RX_PER_HCALL / 2] = {0};
+>> +		unsigned long handle = adapter->queue_handle[queue_index];
+>> +		int i;
+> [Severity: Low]
+> This call site passes adapter->queue_handle[queue_index], which includes
+> queue 0, but the kernel-doc of h_add_logical_lan_buffers_queue() in
+> ibmveth.h describes it as "Add buffers to subordinate queue" with
+> "@queue_handle: Queue handle from h_register_logical_lan_queue()", and its
+> Return section lists only H_SUCCESS/H_PARAMETER/H_HARDWARE.
+>
+> The queue 0 handle comes from h_register_logical_lan_with_handle(), whose
+> own doc says the handle is "needed in multi-queue mode to use
+> h_add_logical_lan_buffers_queue() for all queues including queue 0", and
+> ibmveth_replenish_buffer_pool() has dedicated recovery for H_FUNCTION from
+> this hcall.
+>
+> Could the h_add_logical_lan_buffers_queue() kernel-doc be updated to cover
+> the primary queue handle and H_FUNCTION?
+Yes. v6 widens @queue_handle to cover both register helpers and adds
+H_FUNCTION to the Return section. That is in the P01 kdoc.
+>
+> [ ... ]
+>
+>> +		rc = h_add_logical_lan_buffers_queue(vdev->unit_address,
+>> +						     handle,
+>> +						     buffersznum,
+>> +						     ioba[0], ioba[1], ioba[2],
+>> +						     ioba[3], ioba[4], ioba[5]);
+>> +		adapter->hcall_stats.add_bufs_queue++;
+>> +	} else if (filled == 1) {
+>> +		rc = h_add_logical_lan_buffer(vdev->unit_address,
+>> +					      descs[0].desc);
+>> +		adapter->hcall_stats.add_buf++;
+>> +	} else {
+>> +		rc = h_add_logical_lan_buffers(vdev->unit_address,
+>> +					       descs[0].desc, descs[1].desc,
+>> +					       descs[2].desc, descs[3].desc,
+>> +					       descs[4].desc, descs[5].desc,
+>> +					       descs[6].desc, descs[7].desc);
+>> +		adapter->hcall_stats.add_bufs++;
+>> +	}
+> [Severity: Low]
+> IBMVETH_MAX_RX_PER_HCALL changes from 8 to 12 in this patch, which resizes
+> descs[] and correlators[] in ibmveth_replenish_buffer_pool() to 12, but this
+> legacy branch still hands only descs[0..7] to the 8-descriptor
+> h_add_logical_lan_buffers(), and the caller then accounts all "filled"
+> descriptors as posted (consumer_index advanced, pool->available
+> incremented).
+>
+> The combination needed to hit that (multi_queue == 0 with
+> rx_buffers_per_hcall > 8) does not appear reachable, since probe now sets
+> IBMVETH_MAX_RX_REGULAR (8) or 1, and later in the series
+> ibmveth_apply_mq_fallback() clamps to IBMVETH_MAX_RX_REGULAR.
+>
+> Would a clamp on filled here, or a BUILD_BUG_ON tying the legacy branch to
+> IBMVETH_MAX_RX_REGULAR, be worth adding so the arity contract is enforced
+> rather than implied?
+>
+> Also, the 12-address MQ packing (ioba[4], ioba[5]) cannot be exercised at
+> this commit, since probe caps the batch at 8:
+>
+>> -		adapter->rx_buffers_per_hcall = IBMVETH_MAX_RX_PER_HCALL;
+>> +		adapter->rx_buffers_per_hcall = IBMVETH_MAX_RX_REGULAR;
+Unreachable with the REGULAR cap. v6 documents the legacy branch and
+static_asserts the two defines against the hand-written argument
+lists. No clamp.
 
-Here is a AI review of your patch. There are several architectural issues,
-race conditions, and logic bugs that need to be addressed.
+> [ ... ]
+>
+>> +/* Replenish the buffers for a pool.
+>> + * Caller must hold the per-queue replenish_lock. Do not printk here —
+>> + * netconsole on the same device can re-enter replenish_task.
+>> + */
+>> +static int ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>> +					 struct ibmveth_buff_pool *pool,
+>> +					 int queue_index,
+>> +					 struct ibmveth_replenish_fail *fail)
+>>   {
+> [Severity: High]
+> The "do not printk here" invariant is documented for this function, but can
+> code called from inside the critical section still printk indirectly?
+>
+> dma_map_single() in the fill loop goes through iommu_map_page() on pseries,
+> and the driver passes attrs = 0:
+>
+> arch/powerpc/kernel/iommu.c:iommu_map_page() {
+> 	...
+> 		if (!(attrs & DMA_ATTR_NO_WARN) && printk_ratelimit())  {
+> 			dev_info(dev, "iommu_alloc failed, tbl %p vaddr %p npages %d\n", ...);
+> 	...
+> }
+>
+> That is exactly the condition replenish hits (TCE table or CMO entitlement
+> exhausted under pressure). With netconsole on this device, the printk
+> recurses:
+>
+> 	printk -> write_msg -> netpoll_send_udp -> __netpoll_send_skb
+> 	  -> netpoll_poll_dev -> ibmveth_poll_controller
+> 	    -> ibmveth_replenish_task -> spin_lock_irqsave(&rxq->replenish_lock)
+>
+> Since the lock is already held on this CPU with interrupts disabled, does
+> this self-deadlock? The same re-entry also reaches
+> ibmveth_rxq_harvest_buffer() -> ibmveth_remove_buffer_from_pool(), which now
+> takes the same lock.
+Yes, it self-deadlocks: the iommu warning re-enters replenish (and
+harvest) while this CPU already holds the lock. v5 already moved the
+driver logs out of the CS; v6 passes DMA_ATTR_NO_WARN on that map so
+the iommu path cannot printk under it. Shortening the irqsave hold
+is still the real fix, so the invariant does not depend on auditing
+every callee. Not this series.
+> [ ... ]
+>
+>> @@ -883,21 +971,85 @@ static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
+>>   }
+>>   
+>>   /* replenish routine */
+>> -static void ibmveth_replenish_task(struct ibmveth_adapter *adapter)
+>> +static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
+>> +				   int queue_index)
+>>   {
+>> -	int i;
+>> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[queue_index];
+>> +	struct ibmveth_replenish_fail fail = {};
+>> +	unsigned long flags;
+>> +	int i, rc;
+>> +	int need_reset = 0;
+>> +	int batch_fallback = 0;
+>> +	int hcall_fail = 0;
+>> +
+>> +	if (queue_index >= adapter->num_rx_queues) {
+>> +		netdev_dbg(adapter->netdev,
+>> +			   "Skipping replenish for freed queue %d (num_queues=%d)\n",
+>> +			   queue_index, adapter->num_rx_queues);
+>> +		return;
+>> +	}
+>>   
+>>   	adapter->replenish_task_cycles++;
+> [Severity: Medium]
+> Several adapter-global fields are updated while holding only a per-queue
+> lock, or none at all. replenish_task_cycles++ here is outside the lock, and
+> inside ibmveth_replenish_buffer_pool() / ibmveth_add_logical_lan_buffers()
+> the following are adapter-wide:
+>
+> 	batch = adapter->rx_buffers_per_hcall;
+> 	...
+> 	adapter->rx_buffers_per_hcall = 1;
+> 	adapter->hcall_stats.add_buf/add_bufs/add_bufs_queue++;
+> 	adapter->replenish_add_buff_success/failure, replenish_no_mem
+>
+> Two queues replenishing on different CPUs hold different replenish_lock
+> instances, so the intersection of locks protecting these is empty. Can this
+> lose or tear the ethtool-visible hcall_stats and replenish_* counters? Today
+> it is already racy between ibmveth_poll_controller() and NAPI for
+> replenish_task_cycles++, which is incremented before the lock is taken.
+Yes. hcall_stats is gone (patch 7). replenish_* move per-queue in
+patch 11, plain u64 under that queue's lock, summed on ethtool read.
+No atomics. rx_buffers_per_hcall stays adapter-global; the batch-
+fallback write under one queue's lock still races another queue's
+read. It is a capability latch (1, 8, or 12), not a counter: on
+H_FUNCTION both queues write the same value (1), so the race is
+benign — one extra single-buffer replenish cycle at worst. Not
+fixed this series.
+>>   
+>> -	for (i = (IBMVETH_NUM_BUFF_POOLS - 1); i >= 0; i--) {
+>> -		struct ibmveth_buff_pool *pool = &adapter->rx_buff_pool[0][i];
+>> +	spin_lock_irqsave(&rxq->replenish_lock, flags);
+>>   
+>> -		if (pool->active &&
+>> -		    (atomic_read(&pool->available) < pool->threshold))
+>> -			ibmveth_replenish_buffer_pool(adapter, pool);
+>> +	for (i = (IBMVETH_NUM_BUFF_POOLS - 1); i >= 0; i--) {
+>> +		struct ibmveth_buff_pool *pool =
+>> +			&adapter->rx_buff_pool[queue_index][i];
+>> +
+>> +		if (pool->active && pool->free_map &&
+>> +		    (atomic_read(&pool->available) < pool->threshold)) {
+>> +			rc = ibmveth_replenish_buffer_pool(adapter, pool,
+>> +							   queue_index, &fail);
+> [Severity: High]
+> How long can interrupts stay disabled here?
+>
+> The lock is taken with spin_lock_irqsave() around the whole five-pool walk,
+> and ibmveth_replenish_buffer_pool() loops "while (remaining > 0)" doing
+> netdev_alloc_skb() plus dma_map_single() per buffer, then a hypercall per
+> batch. With pool_active { 1, 1, 0, 0, 1 } and pool_count { 256, 512, 256,
+> 256, 256 }, a cold start posts roughly 1024 buffers, including 256 of
+> buff_size 64 KB.
+>
+> ibmveth_open() hits this deterministically:
+>
+> 	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++)
+> 		ibmveth_replenish_task(adapter, i);
+>
+> So every ifup does on the order of a thousand GFP_ATOMIC allocations
+> (some high order), a thousand IOMMU mappings and ~128 hypercalls with local
+> interrupts off. Previously this ran with interrupts enabled and no lock.
+>
+> Can that trip the hard lockup watchdog or produce RCU stalls, and does
+> disabling BH/IRQ progress here also make the GFP_ATOMIC allocations more
+> likely to fail exactly when memory is tight? Since
+> ibmveth_remove_buffer_from_pool() now takes the same lock per received
+> packet, the NAPI consumer is also blocked for the whole region.
+>
+> The changelog notes "Defer adapter-global counter atomics and irqsave
+> critical-section shorten to cover follow-up" - would it be better to shorten
+> the region in this patch, since as merged the region exists?
 
-1. Concurrency data race on module parameters in socket init
-------------------------------------------------------------
-In roccettcp_init():
-    param_check(true);
-    param_precompute();
+Yes to all three: the window is wide enough to risk watchdog/RCU
+stalls, GFP_ATOMIC failures under pressure, and it blocks the NAPI
+consumer for the whole fill. The lock is necessary — poll_controller
+vs NAPI needs irqsave — but the window is wider than it needs to be.
+Prepare-outside or per-batch unlock would shorten it but both are
+lock-protocol rewrites, not a one-liner on this patch. Not this
+series.
 
-Both functions mutate global static variables (beta, bic_scale, beta_scale,
-cube_rtt_scale, cube_factor) that are marked __read_mostly.
-Calling this in roccettcp_init() on every socket creation causes unsynchron=
-ized
-concurrent writes across CPUs. Furthermore, param_check() calls pr_err() /
-pr_info(), which will spam the kernel log on every connection creation if a=
-n
-invalid parameter was configured.
+>
+> [ ... ]
+>
+>> +out_unlock:
+>>   	ibmveth_update_rx_no_buffer(adapter);
+> [Severity: Low]
+> This helper is now called per queue, but ibmveth_update_rx_no_buffer() still
+> reads queue 0's buffer-list page:
+>
+> 	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
+>
+> Each RX queue has its own buffer-list page whose last 8 bytes hold that
+> queue's no-buffer drop count, so rx_no_buffer would under-report queues
+> 1..N. This is addressed later in the series, where the helper takes
+> queue_index and uses buffer_list_addr[queue_index], and MQ is only turned on
+> by a later patch, so no wrong-page read looks reachable at this commit.
+> Would it be cleaner to make the helper queue-aware in the same patch that
+> makes its caller queue-aware?
+The helper becomes queue-aware in patch 10, with MQ enablement —
+the natural pairing since queue 0 is the only active queue until
+then.
+>> +
+>> +	spin_unlock_irqrestore(&rxq->replenish_lock, flags);
+>> +
+>> +	/* Log and schedule reset only after dropping replenish_lock. */
+>> +	if (need_reset == IBMVETH_REPLENISH_RESET_MAP) {
+>> +		netdev_info(adapter->netdev,
+>> +			    "Invalid RX free_map entry on queue %d, reset\n",
+>> +			    queue_index);
+>> +		schedule_work(&adapter->work);
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but the new schedule_work() sites
+> add more ways to arm adapter->work from NAPI context, and ibmveth_remove()
+> still cancels before it stops the device:
+>
+> 	cancel_work_sync(&adapter->work);
+> 	...
+> 	unregister_netdev(netdev);
+> 	free_netdev(netdev);
+>
+> RX activity between cancel_work_sync() and the ndo_close() done by
+> unregister_netdev() can re-queue the work, which may then run after
+> free_netdev(). The ordering is swapped later in this series
+> (unregister_netdev() first, then cancel_work_sync()), with a comment
+> describing exactly this window.
+Yes at this commit. Patch 11 swaps the order: unregister_netdev()
+first, then cancel_work_sync(), closing the window.
+>> +	} else if (need_reset == IBMVETH_REPLENISH_RESET_MQ) {
+>> +		dev_err_ratelimited(&adapter->netdev->dev,
+>> +				    "MQ buffer add H_FUNCTION (q=%d, batch=%u), reset\n",
+>> +				    queue_index, fail.batch);
+>> +		schedule_work(&adapter->work);
+>> +	}
+>> +
+>> +	if (batch_fallback)
+>> +		dev_warn_ratelimited(&adapter->netdev->dev,
+>> +				     "Legacy batch add H_FUNCTION (batch=%u), fallback\n",
+>> +				     fail.batch);
+>> +
+>> +	if (hcall_fail)
+>> +		dev_warn_ratelimited(&adapter->netdev->dev,
+>> +				     "RX %s failed: filled=%u, rc=%lu, batch=%u\n",
+>> +				     adapter->multi_queue ?
+>> +				     "h_add_logical_lan_buffers_queue" :
+>> +				     (fail.batch == 1 ?
+>> +				      "h_add_logical_lan_buffer" :
+>> +				      "h_add_logical_lan_buffers"),
+>> +				     fail.filled, fail.lpar_rc, fail.batch);
+>>   }
+> [Severity: Low]
+> Does this pick the wrong hcall name? The dispatch in
+> ibmveth_add_logical_lan_buffers() selects on filled, not batch:
+>
+> 	} else if (filled == 1) {
+> 		rc = h_add_logical_lan_buffer(vdev->unit_address, descs[0].desc);
+>
+> If batch is 8 and the fill loop breaks early after one buffer
+> (netdev_alloc_skb() or dma_mapping_error() failure), the failing call was
+> h_add_logical_lan_buffer(), but this prints h_add_logical_lan_buffers.
+> Should the selector be fail.filled == 1?
+>
+> Separately, one "struct ibmveth_replenish_fail fail" and the
+> batch_fallback/hcall_fail flags are shared by all five pool iterations, so a
+> later pool's failure overwrites an earlier pool's rc/filled/batch, and one
+> log line can mix values from two pools.
+Yes. Dispatch uses filled; the fail log still selects on fail.batch,
+so an early fill break can mis-name the single-buffer hcall, and one
+shared fail struct can mix two pools. Log-only. Not reshuffled here.
 
-Global scale factors should only be precomputed at module init time
-(roccettcp_register), or validated using kernel_param_ops.
+>>   
+>>   /* empty and free ana buffer pool - also used to do cleanup in error paths */
+>> @@ -932,6 +1084,14 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
+>>   		kfree(pool->skbuff);
+>>   		pool->skbuff = NULL;
+>>   	}
+>> +
+>> +	/*
+>> +	 * Keep probe/sysfs geometry (active, size, buff_size, threshold).
+>> +	 * Clearing active here was a v3 ifdown/up regression: open skips
+>> +	 * !active pools, so reopen posted no RX buffers (TX OK, ARP/RX
+>> +	 * dead) at any queue count, including RX=8 with no -L.
+>> +	 */
+>> +	atomic_set(&pool->available, 0);
+>>   }
+> [Severity: Low]
+> This comment describes a regression that does not exist in the tree: no
+> version of ibmveth_free_buffer_pool() ever cleared pool->active, and this
+> hunk is additive only. The same applies to the new comment in
+> ibmveth_rxq_correlator_valid() ("free_buffer_pool() clears skbuff but used
+> to leave size/active set").
+>
+> References to "v3" and to lab options like "RX=8 with no -L" aren't
+> meaningful to a reader of mainline. Could the comments be rewritten in terms
+> of the code as it stands, and could the functional change here
+> (atomic_set(&pool->available, 0)) be mentioned in the commit message? Since
+> ibmveth_alloc_buffer_pool() already zeroes available on reallocation, it is
+> hard to tell from the patch whether this is a fix or a no-op.
+Yes. v6 rewrote both comments. The message names the available=0
+clear: teardown must not leave a stale count.
 
+> [Severity: High]
+> This is a pre-existing race, but the new locking makes it look handled while
+> leaving it open. ibmveth_free_buffer_pool() kfrees pool->free_map,
+> pool->skbuff and pool->dma_addr without taking the per-queue
+> replenish_lock, while ibmveth_replenish_task() checks and uses those arrays
+> under that lock:
+>
+> 		if (pool->active && pool->free_map &&
+> 		    (atomic_read(&pool->available) < pool->threshold)) {
+>
+> So the check is a TOCTOU: replenish touches the pool arrays with
+> {rxq->replenish_lock} held, the free path touches and frees them with no
+> lock, giving an empty lock intersection.
+>
+> Reachable through a direct close, which does not run
+> netpoll_poll_disable():
+>
+> CPU0 (printk -> netconsole)
+>    ibmveth_poll_controller() -> ibmveth_replenish_task(adapter, 0)
+>      passes "pool->free_map != NULL", then dereferences
+>      pool->free_map / pool->skbuff / pool->dma_addr
+>
+> CPU1 (ethtool -K / veth_pool_store / MTU change)
+>    ibmveth_close() -> ibmveth_free_buffer_pools()
+>      -> kfree(pool->free_map)
+>
+> Can that produce a use-after-free of those arrays, and post freed buffers to
+> the hypervisor? Should ibmveth_free_buffer_pool() take replenish_lock (or
+> should the pool teardown otherwise be serialized against replenish)?
+Yes. The intersection is empty, so that TOCTOU is a UAF. A lock in
+free_buffer_pool() is the natural fix; it is not in this series.
+Taking it while replenish still holds irqsave across the whole fill
+needs the same lock-protocol rewrite as the CS shorten, and close
+still lacks netpoll_poll_disable. Doing the lock alone just moves
+the problem.
+> [ ... ]
+>
+>> +static bool ibmveth_rxq_correlator_valid(struct ibmveth_adapter *adapter,
+>> +					 int queue_index, u64 correlator)
+>> +{
+>> +	unsigned int pool = correlator >> 32;
+>> +	unsigned int index = correlator & 0xffffffffUL;
+>> +	struct ibmveth_buff_pool *bpool;
+>> +
+>> +	if (pool >= IBMVETH_NUM_BUFF_POOLS)
+>> +		return false;
+>> +
+>> +	bpool = &adapter->rx_buff_pool[queue_index][pool];
+>> +
+>> +	/* init_buffer_pool() sets size for inactive pools; free_buffer_pool()
+>> +	 * clears skbuff but used to leave size/active set. Require a live
+>> +	 * pool with allocated arrays before indexing.
+>> +	 */
+>> +	if (!bpool->active || !bpool->skbuff || !bpool->free_map)
+>> +		return false;
+>> +
+>> +	return index < bpool->size;
+>> +}
+> [Severity: Medium]
+> Do the in-tree KUnit cases still pass with the added
+> "!bpool->free_map" precondition? Neither
+> ibmveth_remove_buffer_from_pool_test() nor ibmveth_rxq_get_buffer_test()
+> allocates free_map - both only kunit_kcalloc() pool->skbuff.
+>
+> That makes validation fail before the skbuff[index] NULL check, so the two
+> -EFAULT expectations should now receive -EINVAL:
+>
+> 	correlator = (u64)0 | 0;
+> 	pool->skbuff[0] = NULL;
+> 	KUNIT_EXPECT_EQ(test, -EFAULT,
+> 			ibmveth_remove_buffer_from_pool(adapter,
+> 							correlator, 0, false));
+>
+> and the positive expectation in ibmveth_rxq_get_buffer_test() should receive
+> NULL:
+>
+> 	pool->skbuff[0] = skb;
+> 	adapter->rx_queue[0].queue_addr[0].correlator = (u64)0 << 32 | 0;
+> 	KUNIT_EXPECT_PTR_EQ(test, skb, ibmveth_rxq_get_buffer(adapter, 0));
+>
+> The index-out-of-range expectations also pass vacuously now, so the bound
+> check they were written for is no longer covered. The patch updates the
+> kernel-doc of both tests but not the fixtures - should the fixtures also
+> allocate free_map?
+Yes. Both fixtures allocate a dummy free_map in v6.
+>
+> [ ... ]
+>
+>>    * Return:
+>>    * * %0       - success
+>>    * * %-EINVAL - correlator maps to pool or index out of range
+>>    * * %-EFAULT - pool and index map to null skb
+>>    */
+>>   static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>> -					   u64 correlator, bool reuse)
+>> +					   u64 correlator, int queue_index,
+>> +					   bool reuse)
+>>   {
+> [Severity: Low]
+> The documented meaning of -EINVAL is now incomplete: via
+> ibmveth_rxq_correlator_valid() this function also returns -EINVAL for an
+> inactive pool and for a pool whose skbuff/free_map arrays are not
+> allocated, which is a different condition from "out of range". The new
+> ibmveth_rxq_harvest_buffer() kernel-doc reinforces the narrow reading by
+> telling callers that -EINVAL/-EFAULT mean a "corrupt slot" safe to skip.
+> Could the return-code documentation be extended to cover the not-live-pool
+> case?
+Fair. correlator_valid also rejects inactive and not-live pools, so
+-EINVAL is broader than “out of range.” Not extended in this series.
 
-2. Bypassing PRR and broken loss recovery via .cong_control
-----------------------------------------------------------
-By defining .cong_control =3D roccet_control, TCP core completely delegates
-congestion control and skips PRR (tcp_cwnd_reduction()).
+>> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[queue_index];
+>>   	unsigned int pool  = correlator >> 32;
+>>   	unsigned int index = correlator & 0xffffffffUL;
+>>   	unsigned int free_index;
+>>   	struct sk_buff *skb;
+>> +	unsigned long flags;
+>> +	int rc = 0;
+>>   
+>> -	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
+>> -	    WARN_ON(index >= adapter->rx_buff_pool[0][pool].size)) {
+>> -		schedule_work(&adapter->work);
+>> -		return -EINVAL;
+>> +	spin_lock_irqsave(&rxq->replenish_lock, flags);
+>> +
+>> +	if (!ibmveth_rxq_correlator_valid(adapter, queue_index, correlator)) {
+>> +		rc = -EINVAL;
+>> +		goto out_unlock;
+>>   	}
+>>   
+>> -	skb = adapter->rx_buff_pool[0][pool].skbuff[index];
+>> -	if (WARN_ON(!skb)) {
+>> -		schedule_work(&adapter->work);
+>> -		return -EFAULT;
+>> +	skb = adapter->rx_buff_pool[queue_index][pool].skbuff[index];
+>> +	if (!skb) {
+>> +		rc = -EFAULT;
+>> +		goto out_unlock;
+>>   	}
+> [ ... ]
+>
+>>   static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
+>> -				      bool reuse)
+>> +				      int queue_index, bool reuse)
+>>   {
+>> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[queue_index];
+>>   	u64 cor;
+>>   	int rc;
+>>   
+>> -	struct ibmveth_rx_q *rxq = &adapter->rx_queue[0];
+>> -
+>>   	cor = rxq->queue_addr[rxq->index].correlator;
+>> -	rc = ibmveth_remove_buffer_from_pool(adapter, cor, reuse);
+>> -	if (unlikely(rc))
+>> +	rc = ibmveth_remove_buffer_from_pool(adapter, cor, queue_index, reuse);
+>> +	if (unlikely(rc)) {
+>> +		/* Skip a corrupt slot without claiming pool ownership. */
+>> +		if (rc == -EINVAL || rc == -EFAULT)
+>> +			ibmveth_rxq_advance(rxq);
+>>   		return rc;
+>> -
+>> -	if (++adapter->rx_queue[0].index == adapter->rx_queue[0].num_slots) {
+>> -		adapter->rx_queue[0].index = 0;
+>> -		adapter->rx_queue[0].toggle = !adapter->rx_queue[0].toggle;
+>>   	}
+> [Severity: Medium]
+> The reset that previously repaired this state is gone -
+> ibmveth_remove_buffer_from_pool() no longer calls
+> schedule_work(&adapter->work) for -EINVAL/-EFAULT, and here the ring is just
+> advanced. Does that permanently retire the buffer the hypervisor already
+> consumed?
+>
+> On this path free_map does not regain the index, the
+> atomic_dec(&pool->available) is skipped, and pool->skbuff[index] plus its
+> DMA mapping stay owned by nobody.
+>
+> Since replenish is gated on available < threshold (size * 7 / 8):
+>
+> 		if (pool->active && pool->free_map &&
+> 		    (atomic_read(&pool->available) < pool->threshold)) {
+>
+> after roughly size/8 such events, does replenish stop for that pool
+> permanently, with the link still up and no recovery short of ifdown/up?
+>
+> The poll "recycling invalid buffer" path and ibmveth_drain_rx_queue() both
+> swallow these errors without escalating:
+>
+> 	/* -EINVAL/-EFAULT already advanced past the slot. */
+> 	if (rc == -EINVAL || rc == -EFAULT) {
+> 		drained++;
+> 		continue;
+> 	}
+>
+> At the end of the series only the get_buffer path escalates via
+> ibmveth_poll_skip_bad_correlator(), and that code's own comment ("Residual
+> stale slot after resize") suggests stale correlators do occur. Should the
+> recycle and drain paths also reconcile available or schedule a reset?
 
-However, in roccet_control():
-    if (!ca->is_in_recovery)
-        roccettcp_cong_avoid(sk, ack, rs->acked_sacked);
+Yes, a burst of bad slots can starve that pool permanently. Recycle
+and drain stay advance-only: a reset is not always the right
+recovery for invalid pool state, and drain runs during teardown.
+available is not reconciled either — stale count is an open
+limitation. Patch 9 skip_bad_correlator is the resize stale-slot
+path and does reset, because that case has a known recovery.
 
-During recovery (TCP_CA_Recovery), ROCCET does nothing to regulate cwnd or
-clock out retransmissions according to RFC 6937. Unless you have a full
-custom recovery engine (like BBR), you should stick to .cong_avoid so the
-stack handles PRR and loss recovery properly.
+> [ ... ]
+>
+>> @@ -2127,34 +2340,41 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
+>> -			skb = ibmveth_rxq_get_buffer(adapter);
+>> +			skb = ibmveth_rxq_get_buffer(adapter, queue_index);
+>>   			if (unlikely(!skb))
+>>   				break;
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but breaking out here leaves
+> rxq->index and rxq->toggle untouched, so the descriptor stays pending. The
+> tail of ibmveth_poll() then completes NAPI, re-enables the IRQ, and:
+>
+> 	if (ibmveth_rxq_pending_buffer(adapter, queue_index) &&
+> 	    napi_schedule(napi)) {
+> 		rc = ibmveth_disable_irq(adapter, queue_index);
+> 		WARN_ON(rc);
+> 		goto restart_poll;
+> 	}
+>
+> Can that spin on the same slot in softirq context when a VALID descriptor
+> has a correlator that fails validation, or whose pool->skbuff[index] is
+> NULL? The changelog says this lands with the poll harden patch ("Bad
+> queue_index poll path: napi_complete before return lands with poll
+> harden"), and later in the series
+> ibmveth_poll_skip_bad_correlator() schedules a reset and advances the ring.
+Harvest -EINVAL/-EFAULT already advances here. A VALID correlator with
+a NULL skb still breaks without advancing; P09 skip_bad closes that.
 
+> [ ... ]
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+>> index fae3473cc4985..d02444d5b3b89 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.h
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+>> @@ -259,7 +261,8 @@ static inline long h_illan_attributes(unsigned long unit_address,
+>>   #define IBMVETH_DEFAULT_QUEUES 8U
+>>   #define IBMVETH_MAX_RX_QUEUES 1U
+>>   #define IBMVETH_DEFAULT_RX_QUEUES 1U
+>> -#define IBMVETH_MAX_RX_PER_HCALL 8U
+>> +#define IBMVETH_MAX_RX_REGULAR 8U
+>> +#define IBMVETH_MAX_RX_PER_HCALL 12U
+> The change of IBMVETH_MAX_RX_PER_HCALL from 8 to 12 is described in the
+> commit message only as "up to 12 buffers" for the MQ hcall - could the
+> commit message also state that the existing constant is being redefined, so
+> that the descs[]/correlators[] resize in ibmveth_replenish_buffer_pool() and
+> the new IBMVETH_MAX_RX_REGULAR use in probe are easy to follow?
+Yes. v6 commit message did that.
+>> @@ -301,6 +304,7 @@ struct ibmveth_rx_q {
+>>       dma_addr_t queue_dma;
+>>       u32        queue_len;
+>>       struct ibmveth_rx_q_entry *queue_addr;
+>> +	spinlock_t	replenish_lock;	/* per-queue buffer replenish */
+>>   };
+> This isn't a bug, but the new member uses tabs while the surrounding members
+> in this struct use the older space-based alignment - was the mixed style
+> intentional?
 
-3. Broken .ssthresh callback and ignored ECN (TCP_CA_CWR)
----------------------------------------------------------
-roccettcp_ssthresh() simply returns tp->snd_ssthresh without recalculation:
-    static u32 roccettcp_ssthresh(struct sock *sk)
-    {
-        return tcp_sk(sk)->snd_ssthresh;
-    }
+Not intentional. Oh.. hmm, in v6; the new member still uses tabs
+while the surrounding struct members use spaces.
 
-The recalculation was moved to roccettcp_state(..., TCP_CA_Recovery).
-This breaks the TCP stack contract:
-a) tcp_init_cwnd_reduction() initializes PRR state using the return value o=
-f
-   icsk_ca_ops->ssthresh(sk). Returning the unreduced ssthresh corrupts PRR=
-.
-b) When ECN CE marks arrive, tcp_enter_cwr() transitions to TCP_CA_CWR and =
-calls
-   icsk_ca_ops->ssthresh(sk). Since roccettcp_state() only checks for Loss =
-and
-   Recovery, TCP_CA_CWR is completely ignored. Consequently, neither ssthre=
-sh
-   nor cwnd is ever reduced on ECN.
+Regards,
 
+Mingming
 
-4. Congestion avoidance starvation in ORBITER
----------------------------------------------
-In roccettcp_cong_avoid():
-    send =3D tp->snd_nxt - ca->interval_snd_seq_start;
-    received =3D tp->snd_una - ca->interval_una_seq_start;
-    send_more_than_acked =3D
-        send > received + ((tcp_snd_cwnd(tp) * tp->mss_cache) / 100);
-    ...
-    if (!tcp_is_cwnd_limited(sk) || send_more_than_acked)
-        return;
-
-During steady-state transmission, the in-flight byte count (send - received=
-)
-is approximately cwnd * mss. This is ~100x larger than the 1% guard space
-((cwnd * mss) / 100). Thus, send_more_than_acked evaluates to true on almos=
-t
-every ACK, returning before bictcp_update() or tcp_cong_avoid_ai() can run.
-Window growth in congestion avoidance is completely starved.
-
-
-5. curr_min_rtt poisoning and premature slow-start exit
--------------------------------------------------------
-In roccettcp_reset(), ca->curr_rtt is 0 and ca->curr_min_rtt is ~0U.
-In update_min_rtt():
-    if (ca->curr_rtt < ca->curr_min_rtt) {
-        ca->curr_min_rtt =3D max(ca->curr_rtt, 1);
-        ...
-
-If an ACK arrives before an RTT sample is collected (e.g. sample->rtt_us <=
-=3D 0),
-ca->curr_rtt is 0. ca->curr_min_rtt is set to max(0, 1) =3D 1 us.
-Because 1 us is smaller than any real path RTT, ca->curr_min_rtt remains st=
-uck
-at 1 us.
-Then in update_srrtt():
-    u32 rrtt =3D div_u64(100 * (u64)(ca->curr_rtt - ca->curr_min_rtt),
-                       ca->curr_min_rtt);
-For a 20 ms RTT (20000 us), rrtt evaluates to 1,999,900. curr_srrtt immedia=
-tely
-exceeds sr_rtt_upper_bound and terminates slow start on the very first samp=
-le.
-
-
-6. Perpetual min-RTT probe loop
--------------------------------
-In roccet_min_rtt_probe(), when the probe finishes:
-    ca->probe_min_rtt_until =3D 0;
-    ca->state =3D ORBITER;
-
-ca->next_min_rtt_probe is not updated when exiting the probe. If no new low=
-er
-RTT was found during the probe, next_min_rtt_probe remains in the past.
-On the next ACK, after(now, ca->next_min_rtt_probe) immediately evaluates t=
-o
-true, trapping the flow in a continuous probe loop and repeatedly halving c=
-wnd
-down to TCP_INIT_CWND.
-
-
-7. 71-minute timestamp wrap and permanent DRAIN state
------------------------------------------------------
-now is calculated via jiffies_to_usecs(tcp_jiffies32), which wraps every
-~71.5 minutes (2^32 us).
-
-In roccet_control():
-    else if ((s32)now - ca->roccet_last_event_time_us <=3D 100 * USEC_PER_M=
-SEC)
-        ca->state =3D DRAIN;
-
-ca->roccet_last_event_time_us is initialized to 0. When bit 31 of now is se=
-t
-(for 35.7 minutes out of every 71.5 minutes), (s32)now is negative, so
-(s32)now - 0 is negative and always <=3D 100000. Newly created connections =
-during
-that 35-minute window will immediately enter and remain permanently stuck i=
-n
-DRAIN state.
-
-Also, before() and after() from <net/tcp.h> are sequence number comparison
-macros (32-bit TCP seqno), not time comparison macros.
-
-
-8. Re-implementing tcp_update_pacing_rate()
--------------------------------------------
-roccet_control() duplicates the pacing rate calculation from tcp_input.c an=
-d
-hardcodes 100% pacing instead of honoring sysctl_tcp_pacing_ca_ratio. If yo=
-u
-switch to .cong_avoid, the core stack will manage pacing updates automatica=
-lly.
-
-
-9. Coding style & formatting
-----------------------------
-- Declarations after statements (ISO C90 violations) in roccettcp_init(),
-  update_srrtt(), roccettcp_acked(), and roccettcp_register().
-- C++ style comments (//) instead of /* ... */ in multiple places.
-- Commented-out dead code: //WRITE_ONCE(sk->sk_pacing_rate, 0);
-- Typos in comments ("sRrTT", "probeing", "has was idle", "defer", etc.)
-  and references to non-existent struct fields ("curr_min_rtt_timed.rtt").
-
-Thanks.
