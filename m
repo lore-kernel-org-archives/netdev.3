@@ -1,194 +1,332 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013066.outbound.protection.outlook.com [40.93.196.66])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540B53B14CE;
-	Mon, 31 Aug 2026 11:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CBA39FCCA
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788174422; cv=fail; b=FjZY1HGJmdVTrOlgXxiNHmNdjVqHTvacOf5YsnCn1gAX4VQ3p6N4qOfXu6wRf+mjx3p+ReV6h4gXyACxsB4szqK67SKF6YrGGm1nwHvdQjsuknpYhPXMhap3udULR4lydywSzRg2YLYzAutETStCUaSZACSF7IjymPTEXGu5iAU=
+	t=1788174586; cv=pass; b=n68pKFjDQLWTnimf22vVhUu+J9SHnLK/SmjdzsyK0n7YBXuPPRl8nRa96T7ktVXJajsgz0c4ZDVNBvIdZoeVuoA1fkaLKtaMi9tNYatEGDD0YLysRF3wk0OrVfact3vxwflLcnqmHwRr/BRAhkoy9U8eBjzccW/fjWI529x2uyA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788174422; c=relaxed/simple;
-	bh=NknlPhbuBD3l+3GHvDBRaonYX1IC7usUDqJXPtSy6HA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bfQrE49bVx7tDlC3NZVzIzv+tX/p7Lf3cfVXdzw7G5TiDsbYjcmdQNXZ0KGFsUB+3DO8ZQuZJIbPIg8pbf4ljP0LDRfNKSWyHUn1XsXdo2LiEmD7/FKR8uTmw6QjH9z5BYM89hiQfv+Ppr6+XYBCsfna0t8yFuDdLDYjNGI4H6A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Aoaea9Kd; arc=fail smtp.client-ip=40.93.196.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788174586; c=relaxed/simple;
+	bh=eNEEQlIjrSAO0DH2OmgK6lfFH24wmDnCRfFdxuXXBJs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HPTcdxVUJry6lgry59oPegNbrb12fWVkYo9MA00XGwZp15brO1FTUqjng1rPGSKQzT1spmg0afPgEpO9HvMFBNQttcUmcgLnGDXKJe2KO49vYdhLHEjan0SaCjtJ+sQVBCEUrkY9gd+qPF40uJrK0XqmKy0/8hpgi15fC/CS6KQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T8cVrp4b; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rJUtAZsX; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Aoaea9Kd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AMgdAlYcP0ZzhEU0ckpO5z3RDYfLrc1Vra8ASC3mffyxruewoLe2jTHTaodCZJ7ciiJvD5fp32ZWknq2u82/rstBa92VCxTWY/SUddtA+DhPM+FD6zfK0VYpmJwft+DQDZkNx/zM/hMLqGf0YvCIIVUJXO2NzIz4efGuX6C9SpDOC5uUsxsKWmTFwHvXDuMsjitUGBI2JUhwT8qGD8qbxStcYAGXSo9GYz57Q/nsKTnHMiGdwSb8xT4LyZHRZAMOwDUr4jrrtiL2CsuGSaFkyfqouwBmVfLxXbkOPpwwfA0RvumN5QtItOiS8ete8h5mKvI0tSZOqotUgHzrd5iG/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=94TldNeMmEuWmjKt2/LhugFGgxirPJsL2MwCJnO+GIE=;
- b=d5JEGx5O+QoV9w0w/Gbf6g30WBbgU0v9IzuIqJ4kFKFuyeXj3IY5+dB4OOM8zkUr3A9yAQQZb8VWOIrs4EjsI9arDndVWEuKMjj01TFoX4LviIGO9H4m5Rv7BJbXwpdr0Lx3U88VJaMrEiMtt+H4kx2KNTjO8hK3KhuljRalv997XlnEnFKtJgx6eXKYeWKMAqfj4THa/vzJg8EuicR7IdydpFUzrjwOPK30PmeCIcKKNgzzjd73KMc0L6KET6Mk1KqsDFRKyJwmKLlyRnDUYfwcslSUnpclfQb+WB/lvWCPCG70VOqzuKxe2cctsGxbH5AegP+J0l09ml5XLqsSpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=94TldNeMmEuWmjKt2/LhugFGgxirPJsL2MwCJnO+GIE=;
- b=Aoaea9KdDxNDCgm6JdQqtljmd6v37vzc2t+lCDY5SV1qBW4TzIsKqRxLqkGukey74sh7d8aSYijH0b2/pm5SbxSA+E6S0IN+k1AgtwRD0BbefrU1T0/G2xQTSWpbIix55Tlpk4ysOUkaYU6qDGo8qtUZWccF5EA0jXjWcr8RXsw+dEZlZtBfeAwCW1La52Wy9yf6SUw8qfDAdu7DFJli21YCQNZXkpB2QHgEmTGG8L2IwwZPc+wqSVXeFfB8I6Il7pSup5eZU4dpAidPSCBpXQscBwx8hg95y8R5r7SkL8O5wEfvCbbTubtoCUv9JEXgdSxNCEqCVtIPyuWe2kPpJA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by SA3PR12MB7805.namprd12.prod.outlook.com (2603:10b6:806:319::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 11:06:58 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 11:06:56 +0000
-Date: Mon, 31 Aug 2026 14:06:47 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Ahern <dsahern@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Patrick McHardy <kaber@trash.net>,
-	stable@vger.kernel.org, Vega <vega@nebusec.ai>
-Subject: Re: [PATCH net 1/1] ipv4: fib: avoid quadratic table ID lookup
-Message-ID: <20260831110647.GA3202627@shredder>
-References: <cover.1787982246.git.zihanx@nebusec.ai>
- <0a00492a13038b268c1e0a219c138d07cfab92b3.1787982246.git.zihanx@nebusec.ai>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a00492a13038b268c1e0a219c138d07cfab92b3.1787982246.git.zihanx@nebusec.ai>
-X-ClientProxiedBy: FR4P281CA0195.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ca::20) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8cVrp4b";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rJUtAZsX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788174584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+	b=T8cVrp4b/g4WlrVtGeBgt4olXjvF4Sw0Bqxk1BYFekOWIj2IeSfNQem7r2GLD0Ei7ZXANB
+	wfZMzTykuL0q8HMbWVP2b3FYAcfddu/4e098db3xMpPv8hcxQGMspTLikfgpVMu6mtx02n
+	T5fjMl5/Dt233kbUm8CJUEmw9W6PqCU=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-192-JoC1m-AYMAGhY1WVXPUcxw-1; Mon, 31 Aug 2026 07:09:42 -0400
+X-MC-Unique: JoC1m-AYMAGhY1WVXPUcxw-1
+X-Mimecast-MFC-AGG-ID: JoC1m-AYMAGhY1WVXPUcxw_1788174582
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-836c2b00bbaso45897367b3.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 04:09:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788174582; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WNFoTSdv8gndBDmWkEVtVBvYsCY5sHwwPCrI1KhrBDBHChYIGW4dsMPBmGkcHSXTEg
+         kO7D058EyT3fgbEUuFQ7GuG4MGKmtPLZ3ahwKB76irKpujuoo0BprH1gSV21bnZNy8Xb
+         259sLhnWAIOdBJqI2oKwI6LaswH5atmGQlganB3u2Zqobz4vcvi86ceCBn4QoAn4o1O5
+         q734oocrsWrFfN1LXYuKiQKPuOTAy3XdWTL4oZaV8Jyb++H9Q2atQBqg9nKo+DWb03Zx
+         hqkdhLI5VRqVmeH2I5Oyo3DynWM8C93Mh0AS1/WB6vw/JGPVsD+q/icFpIrSuFglenVh
+         jCmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+        fh=n0cVQoaTCZ0udzfrFt60FUp84gWDmhq5Hoz1cChBR9k=;
+        b=oQ++4iINAOdM0remeR9JOB7Wf5jelmjhAbrVGE6cdlD2PtMS4eydjMsUYqeeZgdd7o
+         kcXxhr0qtuOVxzMnRvN9aEqTBk+2bRWooHzaUsZ04k6NyzOwu7sKgHgjqf4XJnu5K5rm
+         snjOhMiVJQVT5Q6wV9kTSanWbCdn5pxC6nDcA4w8/z9JQ++G/lPMOJC/osM9X0ajX/gN
+         B83nLiLvBrBWTvABX0gpN0CXHVM5/jcKeTnosdY2yyFrXl274Ci7xMSIHutO09Mg0k9N
+         PDa7xAr69eq/wAcvFEjaM8jRo+97t5yb2v7UKXHKKBK1i3r+HtgTag1l/ss5qaNFczTi
+         GIWg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788174582; x=1788779382; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+        b=rJUtAZsXdtGTgU1G5jIWVW6DLV4vW+VKK0Q7Z7MBVGbXnabO5lLFHSOFdXItHfmSzt
+         3fTiXEymJ4I+WYGLTIBx/dvA9Jqw5YBHahhcbf4n3gDDlbpF6PwYWNyS9vUoZlk9Ye+Y
+         fP708RmOULS++4rsSsyDNVZL+6fqWMNAcLwijnPr5HivmuzMfnJaC1qIru9yD3hXajeH
+         08Pp6/aCrJiknhGldgoev/Ss9Y6XomHk5+T6b/hSOGvaNhDTrSAdLecSSwb1MhjYk6Ei
+         1hqM6kqTxxIgc7t25tT4PQVN5QIRUnR+C35DGm7ClqhCZEVI5Xlfm5nGGFqJUqLJKgwx
+         fH0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788174582; x=1788779382;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
+        b=oDRrj98IYKWIna+kGc/ZWuARL5EN51tJztJJWcnhX2j7ceua/zBjZBOiZab+526C1c
+         INpmiqq4mg2K9slGP9csvYdryBtILQaL1FqbCbK3e9LhexLf7hSTkIOktyWlPsJK2NqF
+         yo0IpTjDGYyfqB0h4RBpdiZnYQuJtuqkFBt0lbkksxG/63Srvj+IY1/adNMvXmR0UifJ
+         9pmsBzjV6WmrOT9kWtZAWgTlgEFDH58HRamsyC79dVVDhyJDgvN1B44JWZlVUSPgaA18
+         x/woSfmn++9H8qGM+sCYbeJuAgpwbHps1J+DXgVBgoFOly6121YAlUrbQqDVSuGurARH
+         REbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIzzRRLrFVzzxld2G6IuBuPCNkOF+0KKgJF6oDvyEZjlPuDiq8kycwlNRfsB2/03WctJJpP2A=@vger.kernel.org
+X-Gm-Message-State: AFuF++knHnMxE3Gp5/AFk5wrXGJaov5Ta7gslSpAQQkio4LVxlbu0WC9
+	NDa5SiLM8Iq4SqppGLCtEZgzLPUqVsHRU5350rB4Qjx2UjVF797qbi+GEo1uJ93D4KVR2IoXxMP
+	eNYFwwwLVunMTv1+1kMP2mMtbw8u4+KqmBcPWTgKKVCwmCLbUtJG2o3DP/5DLWYD2FqAR5szMtD
+	EpCXLL6V6bPpvqx+1THFLFkbmoxLXNvPop
+X-Gm-Gg: AYBFou0sRO4kAz/6DuohjH6W1L+l1PSWSA0QsvdpdLHnUBFEtorZpDk73iAoTcavfJb
+	ToWL6EcJw3n2P+crWP2uxIKSqZxmoYwzo3k8H9QEXppI/nnYS/1EmFO+uWx36Ffk27cnnFr5t6s
+	8UFmmR6MOwejPgcXvjusXH2036z2st6IifIvH3peSBZgQAMtOXIZth5pBnpnmva7l6WJpf9gbAu
+	/nJIxbFtFwhb15/1nqajHPTDiYCuS6Zl+GB6wjGSjrfRHFwJjlkVSSbKwY=
+X-Received: by 2002:a05:690c:c4f1:b0:81e:7d90:5673 with SMTP id 00721157ae682-85d6b84749cmr86908407b3.26.1788174581622;
+        Mon, 31 Aug 2026 04:09:41 -0700 (PDT)
+X-Received: by 2002:a05:690c:c4f1:b0:81e:7d90:5673 with SMTP id
+ 00721157ae682-85d6b84749cmr86908167b3.26.1788174580953; Mon, 31 Aug 2026
+ 04:09:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SA3PR12MB7805:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3a5985d-139a-455f-221c-08df074ff8a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|18002099003|22082099003|56012099006|6133799003|4143699003|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	9MFyhKxr76srEGdBfs6y51sNMXy97hQRqrVu5JWZOh4uenGW2o34mdxl7VIojHDT4/vpWMEbr+A1Xf2b4eC2j1p5dzw3Fm7KwsKdbCf47UPUPRjBdfiq70A+F7ROuRL+FkEjpFx9I6W73EZeOXTpCdNHqs0iiGbZMql64IJiioSMP9cfqiPeAC3/WvCuJhsFLq2PTYrVXIo+1Vtk8ZAOTcvtIvAT5jg43Vz/d2S7su+Hx95SlmLbv19tnbK0JDSkJPLE/6RPF8UGtqV9YledGqEm+JL6d4PlUhLhginZjll8at+Xr9t2sKJP/eQ+ls39efZNUIOAt8AIqfB3LhV4AeREdN9PZeglv0BWEM8xEl0rUdaZgGiaUPXGGIArSvTRaSF6YmmieWLMiuUOXFr3irpb0XjEalOWg7yF4wu8sBqjVWRoHnU1gto+Gj+2sk56AS7O50kqSKVcXEyynFhjBeZinTRAkMKmkEXVxQ3ssJL0m25bJSeOTeW7iEIbHVRPqW4gxwZC9pQo8Yx/GwX7RrsDYYVbxblfQbjIPunvvEKvoexyZvENKwdiTB+6gTMWlpaAPY0YIRl+6sZhdd6NmmsAbrmdBpYjOgEpFHS4lADWvkHUeyxYFV9W5ObaR8smG4vmUfg1DLosdUcG2YmVgibycoRDFuOtGldPKcUARsI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(56012099006)(6133799003)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kcIaSWuJowD6AIl6CZ8P4ppvdGOsJ15YbKeiov9CtlxLWdH+vLHzn7KqqV28?=
- =?us-ascii?Q?/1dx+mJE3UlN5OJcYaxQjXPt+Zzlo+S92KJPu/fFPhcbyMnCZVzGOHJ0VN/I?=
- =?us-ascii?Q?3TzVk0WJJ+SzD8Zc/bYUJxfjpPf4qa/eOTz36R6NWW9bqtgqUuVvwjz026yZ?=
- =?us-ascii?Q?litQj2G7BTNZTUnv7eAnT5eDmXNRlRq1WIvoh4QLbH20mbgljaKOdVSQCUzr?=
- =?us-ascii?Q?XJhxV0sBnbfr7R+Hb23gwwg/MY5UZtX+P2bg7UzOZbWsUYKp5x6AQo1luG0r?=
- =?us-ascii?Q?7WOafoNLcuTLSo4WerL7M3AV9zeVuoVTJJkNcr7NGoAszCsdoMOUxLmJ43Xo?=
- =?us-ascii?Q?9EPhWiwLbcdLG3nk6ZwQy4bwVYzaWN6HH9S+d0DBQb/DnjXfa3j7Lp/l/e+q?=
- =?us-ascii?Q?pZJ7qMVJdIkhV3VbElBsRuLVJ4ksHIiW3qTUjKxsFPb7bGXjWE7A9/FtBSUJ?=
- =?us-ascii?Q?+tpjQ5E7vkg6Mk/ByocjHow5Xg8BE3gZXy8F/wnLG/3660lneLiviZoQQg8N?=
- =?us-ascii?Q?QZ4dPqq8WukxzUZPNY2E7vdX4jEsPNWTf3hXtEmny7xMoDR7ie2NNgVWfhFT?=
- =?us-ascii?Q?OzkmCXPapZmImfQvV5c8rPIB/wjJ5+oP1kKGtRsxYrxMj0zXXp1T9KLNuNJ/?=
- =?us-ascii?Q?nsUX1Wq+D4xvdK6z9v3fuFMSAc9sfD6l1nSpMPh1lPNxWfxKd406PaN7TDsj?=
- =?us-ascii?Q?iCO/2TiFmZ39tNiPAsC7c26YqIHFTTPqIDgbO2TQuXDNMVNUNjYeWNecwVxO?=
- =?us-ascii?Q?Otmg1mLgPatMC0EolHLESO9xmnSVJrezTgHPGKq4tq2iiCs/BoDd1W/mlHKz?=
- =?us-ascii?Q?yjL4JaiVSr5cqGFGGiSJCSB4vOhjnsEM+ZxZ/87XgVg1YeHoFEOaD/JAvKLO?=
- =?us-ascii?Q?W6n903Ge+MA+/1EOP2H9R4TjHqmzDEDywnc5oMpoSHcE2j1n+4pyiMjAxXV8?=
- =?us-ascii?Q?BGBCryhVzUi/8jzPwCm+WlcOLJRM/gEDxw3Qitfv16ZBSVEPlKQ7B92e87yI?=
- =?us-ascii?Q?Ip+f8EzNQWPm4hM5KgvlDhI0iueZ6j5S09ecpsqVXppIfab/Gun+DYbqB6zZ?=
- =?us-ascii?Q?odJRs2baUOwglKRwl6hLXysgi6n8CxU3913h6g5G5LbPGP3yLigU3GTianyq?=
- =?us-ascii?Q?bpiut+K7yAH+tB301bZp3ueS7JUq356WNVpC999tcMcS11eVCPQ0nAqFyQDq?=
- =?us-ascii?Q?nqMIkg+poqFCnY0ToKGG1NM+AFkPRAQT/lhikiYQ2pI8187VKq8Rt+pbHlwr?=
- =?us-ascii?Q?yPuQ8RH/IeY9abUHvkhzVdlQTqtFYTJmA6bH3cvvwz4Ca4yvNBn05hyRxb8i?=
- =?us-ascii?Q?TyU2kpmbeCLyDSeGXnKx37P111hkr5KLFVHJeQ0fwRtrco/YAhQZAdmXbHnD?=
- =?us-ascii?Q?t/I57oAB3teDPxhGZEnzFD42YEJ2TtWMAXiQskmx0hcj8dxWsHb6U6DpLNtk?=
- =?us-ascii?Q?UBdloZb4v5YsEbmQwTz4W5Lx6rFPthI7e91ELXZL3ygszgNV22Y7mCwb5seo?=
- =?us-ascii?Q?dz6Bo6fu7+058SzGubwKhQKOYWx83SpiTXjcZgsSl2SMH0BI+6D6Oq/WsCYb?=
- =?us-ascii?Q?uLFr2cdytNNbAg1JSfIjftBcX79kVRxOFRD2xiIhbZiJ6Nogl7QCqWJ4Jk2z?=
- =?us-ascii?Q?JffBvMMNbl3xc1cPz0VVDeGK46f+yEiZHKqR232q38YoWtjtPlY8MzGS86Ao?=
- =?us-ascii?Q?a3fz4XHaRWyJzs0WP1Z1TLduYcJXeycWQaPaP09KZ8Yd3Eh+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3a5985d-139a-455f-221c-08df074ff8a1
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 11:06:56.6801
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MoWH9Z/yesE6wPpzA30IdyXYwLX6y44H6JwzqevGaPFhp0F85SZVasAKEWbOhT91p+FGrYp5HUEvKCxbJGXBxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7805
+References: <20260827055850.26951-1-physicalmtea@gmail.com>
+In-Reply-To: <20260827055850.26951-1-physicalmtea@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 31 Aug 2026 13:09:04 +0200
+X-Gm-Features: AcwNN1VgorMGLHjUu2yMfvgBMefLlEZdtOPgiCl06CVBpYpTFVo6Jeh18PCESXs
+Message-ID: <CAJaqyWfjjSe19z4TrPbJfBBQZJXuAzqE4H8bik6UAiSgogzfmQ@mail.gmail.com>
+Subject: Re: [PATCH] vhost/vsock: batch RX used-ring updates
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 29, 2026 at 06:24:57AM +0000, Zihan Xi wrote:
-> fib_empty_table() probes every table ID from 1 until it finds a free
-> one.  Since IPv4 tables are stored in a 256-bucket hash table, a dense
-> set of IDs makes the probes repeatedly walk growing hash chains while
-> RTNL is held.
-> 
-> Count the existing tables once and use a bitmap for the bounded range
-> that can contain the first free ID.  This keeps table-ID selection
-> linear in the number of tables instead of quadratic, without changing
-> the lowest-free-ID behavior.
+On Thu, Aug 27, 2026 at 7:59=E2=80=AFAM Jia Jia <physicalmtea@gmail.com> wr=
+ote:
+>
+> vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
+> buffer even though it delays the Guest signal until the worker finishes.
+> Each call publishes one used entry and updates the used index separately.
+>
+> Collect the completed buffer heads in the arrays already allocated for th=
+e
+> virtqueue and publish them with vhost_add_used_n().  Bound the batch by t=
+he
+> ring size, array capacity, and worker packet budget.  Flush before
+> re-enabling notifications or leaving the worker.
+>
+> Each used entry describes one completed RX buffer and keeps its actual us=
+ed
+> length, so set nheads to 1 for every entry.  This patch does not change
+> negotiated features or compress multiple buffers into one used entry.
+>
+> This patch is limited to the current skb-based vhost-vsock RX path.
+>
+> Performance:
+>
+> Tested with a QEMU/KVM guest on a host with 4 online CPUs, using 2 vCPUs
+> pinned to host CPUs 2 and 3, QEMU 10.2.1, q35, 1536 MiB, and Linux
+> 7.2.0-rc3-next-20260713-next-debug-kasan.  The vhost-vsock source is base=
+d
+> on linux-next master at 49362394dad7df66c274c867a271394c10ca2bb8.
+>
+> Current vhost-vsock does not implement VIRTIO_F_IN_ORDER or
+> VIRTIO_F_RING_PACKED, so both configurations used packed=3Doff and
+> in_order=3Doff:
+>
+>   baseline:                 RX batching=3Doff
+>   vhost-vsock RX batching:  RX batching=3Don
+>
+> The test used vsock_perf.  The Guest receiver was started with:
+>
+>   vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
+>
+> The Host sender was started with:
+>
+>   vsock_perf --sender 3 --port PORT --bytes BYTES \
+>       --buf-size SEND_BUF --vsk-size 64M
+>
+> Each workload transferred BYTES=3D1 GiB.  The SEND_BUF values were 256 B
+> (SEND_BUF=3D256), 512 B (SEND_BUF=3D512), 4 KiB (SEND_BUF=3D4K), and 64 K=
+iB
+> (SEND_BUF=3D64K).
+> Each state used a fresh Guest.  Each workload uses 20 paired runs, with 1=
+0
+> runs in each order.  The reported values are
+> Guest RX throughput in Gbits/s.  The baseline and batching columns are th=
+e
+> geometric means over the 20 runs; change is batching / baseline - 1,
+> computed from the unrounded values:
+>
+>   workload   baseline RX    batching RX   change   faster
+>   256 B      0.0795724      0.0831509      +4.497%  20/20
+>   512 B      0.1194885      0.1210297      +1.290%  14/20
+>   4 KiB      0.7208273      0.7242053      +0.469%  11/20
+>   64 KiB     2.1712797      2.1951941      +1.101%  13/20
+>
+> For reference, the table below gives the 95% normal-approximation interva=
+ls
+> obtained from the 20 paired log(batching / baseline) values:
+>
+>   workload   paired 95% interval
+>   256 B      +3.985% to +5.011%
+>   512 B      +0.206% to +2.385%
+>   4 KiB      -1.442% to +2.416%
+>   64 KiB     -1.474% to +3.745%
+>
+> All transfers passed byte-count checks, and no kernel errors were observe=
+d
+> in the logs.  The 256-byte workload improved in every pair.  The 512 B
+> workload was faster in 14 of 20 pairs, with a small gain.  The 4 KiB and
+> 64 KiB workloads showed no material throughput change; the difference
+> between their results may be due to scheduling and execution variation.
+>
+> Link: https://lore.kernel.org/r/20181214082146-mutt-send-email-mst@kernel=
+.org
+> Link: https://lore.kernel.org/r/20220901055434.824-4-qtxuning1999@sjtu.ed=
+u.cn
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> ---
+>  drivers/vhost/vsock.c | 41 +++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 39 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index 9aaab6bb8..d8050cca2 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -103,12 +103,37 @@ static bool vhost_transport_has_remote_cid(struct v=
+sock_sock *vsk, u32 cid)
+>         return found;
+>  }
+>
+> +static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
+> +                                  unsigned int *used_count)
+> +{
+> +       if (!*used_count)
+> +               return false;
+> +
+> +       vhost_add_used_n(vq, vq->heads, vq->nheads, *used_count);
+> +       *used_count =3D 0;
+> +       return true;
+> +}
+> +
 
-TBH, I wasn't even aware of this "table 0" functionality and I'm quite
-certain it's unused nowadays:
+I think that the used_count should be updated by the caller based on
+the boolean returned by this function.
 
-1. IPv4 specific:
+> +static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
+> +                                unsigned int *used_count,
+> +                                unsigned int head, unsigned int len)
+> +{
+> +       struct vring_used_elem *used =3D &vq->heads[*used_count];
+> +
+> +       used->id =3D cpu_to_vhost32(vq, head);
+> +       used->len =3D cpu_to_vhost32(vq, len);
+> +       vq->nheads[*used_count] =3D 1;
+> +       (*used_count)++;
+> +}
 
-# ip -6 rule add from 2001:db8:1::1 table 0
-Error: Invalid table.
+Same here, why pass it as an argument? The caller knows way better.
 
-2. Not documented in ip-rule man page:
+Other than that, the patch looks good to me,
 
-"
-table TABLEID
-       the routing table identifier to lookup if the rule selector
-       matches. It is also possible to use lookup instead of table.
-"
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-3. No kernel selftests despite ip-rule having good coverage.
+Thanks!
 
-4. Quirky. Requires dumping the rules or listening to netlink
-notifications to discover the allocated table ID.
-
-So, for now, I suggest bounding the maximum table ID that can be
-automatically allocated. Something like [1]. I will add a deprecation
-warning in net-next.
-
-FTR, I did consider storing the tables in something like xarray, but:
-
-1. We would still need to keep the hash table given the analysis Jakub
-shared in commit 759ab1edb56c ("net: store netdevs in an xarray").
-Xarray only starts being worthwhile at around 1k tables and most
-deployments never reach this number.
-
-2. It requires adding per-netns xarray for a functionality that is
-unlikely to be used today.
-
-[1]
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index 4edb0dca7be8..2e8629df34bb 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -214,6 +214,8 @@ INDIRECT_CALLABLE_SCOPE int fib4_rule_match(struct fib_rule *rule,
- 	return 1;
- }
- 
-+#define FIB_MAX_AUTO_TABLE_ID	4096
-+
- static struct fib_table *fib_empty_table(struct net *net)
- {
- 	u32 id = 1;
-@@ -222,7 +224,7 @@ static struct fib_table *fib_empty_table(struct net *net)
- 		if (!fib_get_table(net, id))
- 			return fib_new_table(net, id);
- 
--		if (id++ == RT_TABLE_MAX)
-+		if (id++ == FIB_MAX_AUTO_TABLE_ID)
- 			break;
- 	}
- 	return NULL;
+> +
+>  static void
+>  vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+>                             struct vhost_virtqueue *vq)
+>  {
+>         struct vhost_virtqueue *tx_vq =3D &vsock->vqs[VSOCK_VQ_TX];
+>         int pkts =3D 0, total_len =3D 0;
+> +       unsigned int used_count =3D 0;
+> +       unsigned int used_limit;
+>         bool added =3D false;
+>         bool restart_tx =3D false;
+>
+> @@ -120,6 +145,12 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsoc=
+k,
+>         if (!vq_meta_prefetch(vq))
+>                 goto out;
+>
+> +       used_limit =3D min_t(unsigned int, vq->num,
+> +                          min_t(unsigned int, vq->dev->iov_limit,
+> +                                vq->dev->weight));
+> +       if (unlikely(!used_limit))
+> +               goto out;
+> +
+>         /* Avoid further vmexits, we're already processing the virtqueue =
+*/
+>         vhost_disable_notify(&vsock->dev, vq);
+>
+> @@ -134,9 +165,13 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsoc=
+k,
+>                 u32 offset;
+>                 int head;
+>
+> +               if (used_count =3D=3D used_limit)
+> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
+);
+> +
+>                 skb =3D virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
+>
+>                 if (!skb) {
+> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
+);
+>                         vhost_enable_notify(&vsock->dev, vq);
+>                         break;
+>                 }
+> @@ -153,6 +188,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
+,
+>                         /* We cannot finish yet if more buffers snuck in =
+while
+>                          * re-enabling notify.
+>                          */
+> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
+);
+>                         if (unlikely(vhost_enable_notify(&vsock->dev, vq)=
+)) {
+>                                 vhost_disable_notify(&vsock->dev, vq);
+>                                 continue;
+> @@ -230,8 +266,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
+,
+>                  */
+>                 virtio_transport_deliver_tap_pkt(skb);
+>
+> -               vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
+> -               added =3D true;
+> +               vhost_vsock_add_used(vq, &used_count, head,
+> +                                    sizeof(*hdr) + payload_len);
+>
+>                 VIRTIO_VSOCK_SKB_CB(skb)->offset +=3D payload_len;
+>                 total_len +=3D payload_len;
+> @@ -264,6 +300,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
+,
+>                         virtio_transport_consume_skb_sent(skb, true);
+>                 }
+>         } while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
+> +       added |=3D vhost_vsock_flush_used(vq, &used_count);
+>         if (added)
+>                 vhost_signal(&vsock->dev, vq);
+>
+> --
+> 2.53.0
+>
 
