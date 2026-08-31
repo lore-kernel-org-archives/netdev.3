@@ -1,159 +1,299 @@
-Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBB239CCE9
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 02:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57BA3A75A3;
+	Mon, 31 Aug 2026 02:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788144280; cv=none; b=WGbSmjGLuCDZEhcbBdv/7e/NGNKkjYI9QZbuv3/e6BZjvil+NhWJKgZ6bf7k+M//hAfqMTqUdGGFyf5+1MqaxGddZKijEySUYcraaMO35WgzGIdaoi+c29XvOkINcbflIHnwYAPVLG3CnyYKw6xkx/aXs1hHK8B0LhZEFkIuXwM=
+	t=1788144768; cv=none; b=fko3AhezUV4+G0AkDCbab4+hAPyUJReXqEp+5DjnDhAR+tpAD9Wz2KfTgHYH5bhSJeorSlm+kC6Wdq51WgRmJgxALJ6P4pXY3qdOygd/07PaEnpLmxqwe0/pBjELzXxOZhB5BgvcytY48X/VJw17xmNfaX0MREuJPpU0A3mWS54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788144280; c=relaxed/simple;
-	bh=xzHTcgw2nMjUDgBj0+uyJveDyJtP6mufRVr3wzpc05U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWTN+WsDEc+knmlOwf4HJ9QbX09DVhyCrhdrMPZr5PT4YtQMqnmPFIAWYQEuTPqyryils9PZ9HgACxMhU9DeFy1Jx6kNrRTBAGnWTWPUKt2nTBRwtznUfk3Mj8q6RgMrnKAJ5cJ2IVDZL1OZWtcO4MEtpc291+QZrRxRCpA9jDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=M9WuP0VY; arc=none smtp.client-ip=209.85.214.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1788144768; c=relaxed/simple;
+	bh=jkyJ5ysUNY8S9FUlKYtCNX2ubGYV9IE+C4l7q8myHdY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OcnAODb4V4Fs59YyfpiuXYj50eX5mjg5Mfr8GGF0VfroeH4mZlQLXx6/FIslqybx8sVjlbNJiQzdZ2k2xOg8H5tLXbvG7WJcC2p2D4eM9dtiR1DL3VUfFdB2SAWdlpdlM42+Ki69fb446Y+XMprTvptdNd9ydlwuxvufzp5TboY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJcunut3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="M9WuP0VY"
-Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2d6d28aa26cso20236075ad.2
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 19:44:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788144276; x=1788749076;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HzL+apuHYW6JOK73HmlLGgbS4b6CpPn5sM6P/+ddn4I=;
-        b=REFcj6Nb6rmZaopxbGCnR9mEsieBf6v3alrPqf0le8g1WBFZR2WN6p57FE7Mg3j5/2
-         rtEICnlfWZ+VaCfznjbGcL3vxzLNgw5ATeWSOkc/w6Gx0kuqRsDLtE9U8mWhzbG/LduO
-         bvddeJxmQga8GQGltN8bZ0MAeUbgvhR3bmK/MAwBDR6MZkXKnjR5w7n2WEG2iCrnvHeR
-         YWoPCq4Av9h1cD8C4wV611V7K4/QMA2Q+YkHlWv164JFUQYutoi3mESTaXiYDvXjB927
-         3P2WqKIV2/nYavrqgaSSTNYJDQn9JJVt9f57GyLySqOPFMdleIof/pHZUZIvG3TN2gHw
-         IeRg==
-X-Gm-Message-State: AFuF++lKdtJtFezS4nblPH58DjJ4ONoNW1LnqfspLnjCXFOz9HQSWS0s
-	mVsL07fLEb7QxDTqpJE9yThLYfwF6q6OzXpjcwx3Bnu4QcnOZy53h6YcQ2rXB52dJdXzSRhGpMD
-	EFyJko8OL8MKzmKj7jqBs+g1mfTamxeKEVJtfZuMv5/wRLtgWeRwG3Ig4Pj4oD5Jn+v9WGWBS+5
-	zNkePx+9R5myS8Ib8VZd9Qy3QqywgOYO/wZA40BX3B0CILBl1lyOFg1d75XpL8oReWw+KNQVQ3J
-	cSnvdxCgz8=
-X-Gm-Gg: AYBFou3Cd84dhF68r36+n/Erl2vWwUP+yjsbxqEn51d+lgA9tpWgId3lBwYY14X66LY
-	QFe7rfEfjVDtJ3YZrTsub/kNVDs6SrTfsPzrtweQA9E1zMyUPcYylPIpktTMv8eMWERNWGCn/Th
-	z0RdyTkUp0ZcD9oF5FyyjuJ+bnP/l1Fcv/sxdDoQ3ZdWA0uoaBC1deDemfZAZZmHFdvDYJtax9O
-	zEi8uZTimmKCszTErLnTA9osfy1C08WWJy8WhYYqSyIgWjmvZALYfMc1c0FVPrxk+lcg/XN6wmi
-	tkp+vt9X04/ufVVPejDWgZpemenkWXgttnChdLeDjdPMSm1Tek0tAjAt4RgfV3zV/+Xe6wt0wRA
-	6Br9axtj3GwD49JO+AZUgMhO8sf6aPDxYXitDFPsPXyboBHh7XaeePATI6/ILew7FEL/+x/xEUV
-	qEqTiHXQA061Py4aZd4yYIBqeDvRGe1FPjbTA=
-X-Received: by 2002:a17:903:38c3:b0:2c8:f34c:82c0 with SMTP id d9443c01a7336-2d74dbe9f23mr417490925ad.2.1788144275955;
-        Sun, 30 Aug 2026 19:44:35 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2d7598db993sm981485ad.32.2026.08.30.19.44.35
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 30 Aug 2026 19:44:35 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6f73d0f89so48670195ad.0
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 19:44:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1788144274; x=1788749074; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HzL+apuHYW6JOK73HmlLGgbS4b6CpPn5sM6P/+ddn4I=;
-        b=M9WuP0VY5Jz9PYSyWSymUfDFIOVhC2tN6lDju1fJ2f8z0/AsNf0jwzSyLAy2PaIDDF
-         DdWyvQ2/wVUlIcTsdEe3EmANvoEQ9IXC2E6AqbU6npbGQvY9veoz8BvizJEMO6sq19Ut
-         TCwydVqQQi3NChe8QAcugzeptt3SEdLHWCDwc=
-X-Received: by 2002:a17:903:1b0e:b0:2d3:78c2:1f19 with SMTP id d9443c01a7336-2d74ddc6da3mr378056725ad.9.1788144274101;
-        Sun, 30 Aug 2026 19:44:34 -0700 (PDT)
-X-Received: by 2002:a17:903:1b0e:b0:2d3:78c2:1f19 with SMTP id d9443c01a7336-2d74ddc6da3mr378056135ad.9.1788144273675;
-        Sun, 30 Aug 2026 19:44:33 -0700 (PDT)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-328713b944bsm26421728eec.27.2026.08.30.19.44.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 19:44:32 -0700 (PDT)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Scott Branden <scott.branden@broadcom.com>
-Subject: [PATCH net 4/4] bnxt_en: Re-write the BARs following any type of PCIe errors
-Date: Sun, 30 Aug 2026 19:43:42 -0700
-Message-ID: <20260831024342.2161156-5-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260831024342.2161156-1-michael.chan@broadcom.com>
-References: <20260831024342.2161156-1-michael.chan@broadcom.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QJcunut3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486A31F000E9;
+	Mon, 31 Aug 2026 02:52:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788144764;
+	bh=xUBgiYYWjvm5yjSPg8f6OOHgAbkPIATum75OuDCh+M0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=QJcunut3t6MmYiRLrDBemrVFWEbSRpdgfAmLq19mHesJoaqCQEByQ8osf1S9pFTLj
+	 KmpWaYJ78ncMQdExJz3j3zD9CWxkciUuYH4feYL8Ydo8ybqbjPSfTBqCJU0Ywv0P8U
+	 W/wjRBdKU0yAHy96ZqmgMfpQ2OoF/PR52jUKwMMLhQnBb5P63qpZPi2gU8vE8BGR1Y
+	 zvxRorfIBTU0aMgcNngCjI3ly1pCC3KbO1ipsDposKQdEKnZmqfdplCTHE/xXZIrUz
+	 DkpoimMPPuEt7t6B13OZbD9NyUAswd3tkwDIZc3KYRresLBD3m3HCCYfLDF8h9ooJA
+	 q80mCrX+rpJVg==
+Message-ID: <514cfa94e605a2623a8850d1fd309d1c71cf5da6.camel@kernel.org>
+Subject: Re: [PATCH v2 net] net/rds: fix out-of-bounds write in
+ rds_conn_peer_gen_update()
+From: Allison Henderson <achender@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>, paula@bynar.io
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org,  netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com,  linux-kernel@vger.kernel.org
+Date: Sun, 30 Aug 2026 19:52:43 -0700
+In-Reply-To: <20260828230506.385788-1-kuba@kernel.org>
+References: <20260825120132.51636-1-pamoutafpro@gmail.com>
+	 <20260828230506.385788-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+On Fri, 2026-08-28 at 16:05 -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net/rds: fix out-of-bounds write in rds_conn_peer_gen_update()
+>=20
+> This clamps the peer-supplied RDS_EXTHDR_NPATHS value in
+> rds_recv_hs_exthdrs() to the number of rds_conn_path entries the transpor=
+t
+> actually allocated, and gives the loop in rds_conn_peer_gen_update() the
+> same bound instead of the fixed RDS_MPATH_WORKERS constant.
+>=20
+> Reference to the earlier posting:
+> [v1] https://lore.kernel.org/netdev/213829b7380f1fe12aed2f2ae9ba33c2870ad=
+dd5.camel@kernel.org/T/#t
+>=20
+> > diff --git a/net/rds/recv.c b/net/rds/recv.c
+> > index cf3884d879319..c7f575bad91c8 100644
+> > --- a/net/rds/recv.c
+> > +++ b/net/rds/recv.c
+> > @@ -133,15 +133,16 @@ static void rds_recv_rcvbuf_delta(struct rds_sock=
+ *rs, struct sock *sk,
+> >  static void rds_conn_peer_gen_update(struct rds_connection *conn,
+> >  				     u32 peer_gen_num)
+> >  {
+> > -	int i;
+> > +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+> >  	struct rds_message *rm, *tmp;
+> >  	unsigned long flags;
+> > +	int i;
+>=20
+> [Severity: High]
+> This isn't a bug introduced by this patch, but is
+> conn->c_trans->t_mp_capable really equivalent to the count used at the
+> allocation site?
+>=20
+> __rds_conn_create() derives npaths from the incoming trans, allocates
+> c_path plus one ordered workqueue per path, and only afterwards may repla=
+ce
+> the transport:
+>=20
+> net/rds/connection.c:__rds_conn_create() {
+> 	int npaths =3D (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+> 	...
+> 				trans =3D &rds_loop_transport;
+> 	...
+> 	conn->c_trans =3D trans;
+> 	for (i =3D 0; i < npaths; i++) {
+> 		...
+> 		cp->cp_wq =3D alloc_ordered_workqueue(...);
+>=20
+> For an outgoing TCP connection to a local non-loopback address
+> (rds_tcp_transport has t_prefer_loopback set) the conn therefore ends up
+> with 8 paths and 8 workqueues while conn->c_trans is rds_loop_transport,
+> which has t_mp_capable clear.
+>=20
+> rds_conn_destroy() recomputes the count exactly the way this hunk does:
+>=20
+> net/rds/connection.c:rds_conn_destroy() {
+> 	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+> 	...
+> 	for (i =3D 0; i < npaths; i++) {
+> 		cp =3D &conn->c_path[i];
+> 		rds_conn_path_destroy(cp);
+> 	...
+> 	kfree(conn->c_path);
+>=20
+> Does that leak the cp_wq workqueues belonging to paths 1..7 in this case?
+> Note rds_conn_path_destroy() also returns early before destroy_workqueue(=
+):
+>=20
+> net/rds/connection.c:rds_conn_path_destroy() {
+> 	if (!cp->cp_transport_data)
+> 		return;
+> 	...
+> 	if (cp->cp_wq !=3D rds_wq) {
+> 		destroy_workqueue(cp->cp_wq);
+>=20
+> so simply widening the destroy loop would not reach the workqueues either=
+.
+> The failure path in __rds_conn_create() uses the pre-swap npaths to destr=
+oy
+> all the workqueues, which suggests npaths, not the post-swap transport, i=
+s
+> the real allocation count.
+>=20
+> The derivation is harmless in this patch (1 is always <=3D the allocation=
+),
+> but would recording the allocated path count in struct rds_connection and
+> using that here avoid duplicating the derivation in a third place?
+>=20
+> > =20
+> >  	WARN_ON(conn->c_trans->t_type !=3D RDS_TRANS_TCP);
+> >  	if (peer_gen_num !=3D 0) {
+> >  		if (conn->c_peer_gen_num !=3D 0 &&
+> >  		    peer_gen_num !=3D conn->c_peer_gen_num) {
+> > -			for (i =3D 0; i < RDS_MPATH_WORKERS; i++) {
+> > +			for (i =3D 0; i < npaths; i++) {
+> >  				struct rds_conn_path *cp;
+> > =20
+> >  				cp =3D &conn->c_path[i];
+>=20
+> [Severity: High]
+> The new bound stops the walk past the end of c_path[], but does the rest =
+of
+> this function stay reachable from the same non-TCP peer described in the
+> changelog?
+>=20
+> rds_recv_incoming() dispatches to the handshake parser purely on
+> peer-supplied header fields, with no transport check:
+>=20
+> net/rds/recv.c:rds_recv_incoming() {
+> 	if (be16_to_cpu(inc->i_hdr.h_dport) =3D=3D  RDS_FLAG_PROBE_PORT &&
+> 	    inc->i_hdr.h_sport =3D=3D 0) {
+> 		rds_recv_hs_exthdrs(&inc->i_hdr, cp->cp_conn);
+>=20
+> and rds_recv_hs_exthdrs() calls rds_conn_peer_gen_update() unconditionall=
+y.
+> rds_ib_process_recv() hands the wire header straight to rds_recv_incoming=
+(),
+> and rds_ib_transport sets .t_type =3D RDS_TRANS_IB, so the WARN_ON above =
+is
+> true for every crafted probe on an IB connection.
+>=20
+> Can that flood dmesg from a remote peer, or panic the box on
+> panic_on_warn=3D1 kernels? Would ratelimiting it, or refusing handshake
+> extension headers on non mp-capable transports, be preferable?
+>=20
+> With npaths =3D=3D 1 the i =3D=3D 0 iteration is still executed. Two prob=
+es with
+> differing non-zero RDS_EXTHDR_GEN_NUM let the same peer reset
+> c_path[0].cp_next_tx_seq to 1 and cp_next_rx_seq to 0 and set RDS_MSG_FLU=
+SH
+> on every message queued on c_path[0].cp_retrans of a live IB connection.
+>=20
+> rds_send_probe() only ever emits these headers for t_mp_capable transport=
+s:
+>=20
+> net/rds/send.c:rds_send_probe() {
+> 	if (RDS_HS_PROBE(be16_to_cpu(sport), be16_to_cpu(dport)) &&
+> 	    cp->cp_conn->c_trans->t_mp_capable) {
+>=20
+> so on IB both NPATHS and GEN_NUM are always forged. Would an early return=
+ in
+> rds_recv_hs_exthdrs() for transports without t_mp_capable remove both the
+> WARN and the c_path[0] state mutation, and make the new bound here
+> unnecessary?
 
-Currently the driver zeroes the BARs only when fatal PCIe errors
-are reported so that pci_restore_state() restores it.  However
-firmware handles both fatal and non-fatal errors the same way when
-it sees the slot reset resulting from the PCI_ERS_RESULT_NEED_RESET
-return code from the driver.  This means that we must re-write the
-BARs post recovery even during non-fatal errors.  Otherwise we will
-see that every MMIO access returns all-ones and the firmware appears
-dead.
+I think this part can be corrected by porting the uek fix here:
+ https://github.com/oracle/linux-uek/commit/2fdeb0513f18
 
-Zero-out the BARs during PCIe error recovery regardless of type of
-PCIe error.
+That will gate both rds_recv_hs_exthdrs() call sites in the receive path on
+conn->c_trans->t_mp_capable which should resolve the complaint.
 
-Fixes: f75d9a0aa967 ("bnxt_en: Re-write PCI BARs after PCI fatal error.")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Scott Branden <scott.branden@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+Allison
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index c3d561ac53dc..09fed8784a2a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -17564,7 +17564,7 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
- 
- 	netdev_info(bp->dev, "PCI Slot Reset\n");
- 
--	if (test_bit(BNXT_STATE_PCI_CHANNEL_IO_FROZEN, &bp->state)) {
-+	if (test_and_clear_bit(BNXT_STATE_PCI_CHANNEL_IO_FROZEN, &bp->state)) {
- 		/* After DPC, the chip should return CRS when the vendor ID
- 		 * config register is read until it is ready.  On all chips,
- 		 * this is not happening reliably so add a 5-second delay as a
-@@ -17580,17 +17580,15 @@ static pci_ers_result_t bnxt_io_slot_reset(struct pci_dev *pdev)
- 			"Cannot re-enable PCI device after reset.\n");
- 	} else {
- 		pci_set_master(pdev);
--		/* Upon fatal error, our device internal logic that latches to
-+		/* Upon PCIe error, our device internal logic that latches to
- 		 * BAR value is getting reset and will restore only upon
- 		 * rewriting the BARs.
- 		 *
- 		 * As pci_restore_state() does not re-write the BARs if the
- 		 * value is same as saved value earlier, driver needs to
--		 * write the BARs to 0 to force restore, in case of fatal error.
-+		 * write the BARs to 0 to force restore.
- 		 */
--		if (test_and_clear_bit(BNXT_STATE_PCI_CHANNEL_IO_FROZEN,
--				       &bp->state))
--			bnxt_clear_bars(pdev);
-+		bnxt_clear_bars(pdev);
- 		pci_restore_state(pdev);
- 
- 		bnxt_inv_fw_health_reg(bp);
--- 
-2.51.0
-
+>=20
+> [Severity: Medium]
+> This is a pre-existing issue, but the compare-then-store of
+> conn->c_peer_gen_num in this function happens outside any lock =E2=80=94 =
+cp_lock
+> only covers the per-path queue walk:
+>=20
+> 	if (peer_gen_num !=3D 0) {
+> 		if (conn->c_peer_gen_num !=3D 0 &&
+> 		    peer_gen_num !=3D conn->c_peer_gen_num) {
+> 			...
+> 		conn->c_peer_gen_num =3D peer_gen_num;
+>=20
+> For a t_mp_capable conn each path has its own cp_wq and receive worker, s=
+o
+> two lanes can run rds_recv_hs_exthdrs(cp->cp_conn) for the same conn at t=
+he
+> same time. Can two probes carrying different generation numbers then eith=
+er
+> double-flush or skip the RDS_MSG_FLUSH marking entirely, leaving stale
+> cp_retrans messages after a peer restart?
+>=20
+> > @@ -210,6 +211,7 @@ static void rds_recv_hs_exthdrs(struct rds_header *=
+hdr,
+> >  	u32 new_peer_gen_num =3D 0;
+> >  	int new_npaths;
+> >  	bool fan_out;
+> > +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+>=20
+> [Severity: Low]
+> This isn't a bug, but the new declaration is the longest one in the block
+> and is placed last, which does not follow the reverse xmas tree ordering
+> netdev asks for. The first hunk of this patch moves int i; below
+> unsigned long flags; for exactly that reason, so the two hunks disagree.
+>=20
+> > =20
+> >  	new_npaths =3D conn->c_npaths;
+> > =20
+> > @@ -221,7 +223,7 @@ static void rds_recv_hs_exthdrs(struct rds_header *=
+hdr,
+> >  		/* Process extension header here */
+> >  		switch (type) {
+> >  		case RDS_EXTHDR_NPATHS:
+> > -			new_npaths =3D min_t(int, RDS_MPATH_WORKERS,
+> > +			new_npaths =3D min_t(int, npaths,
+> >  					   be16_to_cpu(buffer.rds_npaths));
+> >  			break;
+> >  		case RDS_EXTHDR_GEN_NUM:
+>=20
+> [Severity: Medium]
+> This is a pre-existing issue, but conn->c_npaths =E2=80=94 now the single
+> authoritative bound for rds_start_mprds() and rds_check_all_paths() =E2=
+=80=94 is
+> read, tested and published here with no lock, no atomics and no
+> READ_ONCE()/WRITE_ONCE():
+>=20
+> net/rds/recv.c:rds_recv_hs_exthdrs() {
+> 	new_npaths =3D conn->c_npaths;
+> 	...
+> 	if (new_npaths > 1 && new_npaths !=3D conn->c_npaths) {
+> 	...
+> 	conn->c_npaths =3D max_t(int, new_npaths, 1);
+>=20
+> Since each path of an mp-capable conn has its own receive worker, two lan=
+es
+> can be in this function for the same conn concurrently. Can one CPU publi=
+sh
+> c_npaths =3D 8 and take the fan-out branch while a second CPU, processing=
+ a
+> probe with no NPATHS extension, writes c_npaths =3D 1 and silently revert=
+s it
+> while lanes are still coming up?
+>=20
+> The lane mapping in rds_sendmsg() reads the same field with no
+> synchronisation:
+>=20
+> net/rds/send.c:rds_sendmsg() {
+> 		cpath =3D &conn->c_path[RDS_MPATH_HASH(rs, conn->c_npaths ? : 1)];
+>=20
+> so the local and peer lane hashing could disagree. Every stored value sti=
+ll
+> passes through max_t(int, new_npaths, 1) with new_npaths already clamped,=
+ so
+> this looks like a consistency problem rather than an indexing one =E2=80=
+=94 is that
+> the intended reading?
+>=20
+> The comment above rds_recv_hs_exthdrs() only promises serialisation again=
+st
+> other receives on "this specific conn", which for mprds is per-path. Woul=
+d
+> WRITE_ONCE()/READ_ONCE() plus per-conn serialisation of handshake
+> processing be the right follow-up?
