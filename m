@@ -1,48 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7760159B661;
-	Mon, 31 Aug 2026 13:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F69559E321;
+	Mon, 31 Aug 2026 13:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184310; cv=none; b=Df4U76uY5jeRUZH90h6dwJLFoX1uV1fL8sHjR7GmS4unHlAxyd0J54m84zrz6+Rr/QL1RnnlWVn0515HFA5wxyC1OyY8z95ib0xDZDsQXrg/QlUtSTgZQhzm7ptqJV1jUDRtrbKcz/u+AnkZH9JOWkJKr8kvtN99p1rsDsbKOYo=
+	t=1788184312; cv=none; b=DzPD7MgnT2vMWiY7MM+b5TmINryv5X3DLSgS/Ixp8B/YFUtUzqQIJs8x9Eu7aR22nGvWZqF0L7pKS6uAuhTuvjaPyGotG/cSvqTPcG9D4LUQbs3EzThXN0dusnu8Q6X5sO3BcUu/Fb341JN7Z1lPqyOmBfLZc+Ua+4riC+5Q1XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184310; c=relaxed/simple;
-	bh=0Lqvx76bAMS2OOgnmLJAHv86p3EVTdj6Q6+h8uCaaSA=;
+	s=arc-20240116; t=1788184312; c=relaxed/simple;
+	bh=ygCvytm3562N3Cc9b/Syye97edGOp6TLZ2ob6ssN+/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rkka351rl4TdlSuy7RQ4zjjha7Jm4+Sf87pyVxYJVDff+kQcJhKjUoDeDkP+wqZKdiverebhEjbNAfvegh4DwVvlGWCfOVa1fVnlcgJMQho4LZYD0klj/ZXT19/DYh2iJsT0cBD+6bEtt05LY+mxq2i5Qxx7IkIPZQfX2SP8YTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JO9FwyMq; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Ifkt2SJgvbDV95EWU1ateKXQ9Vs3e1QRKzh/Xl/p7H1oQUa/rHxWEzi0Uafo057nL+ISjbkA2771q7146kDmxNrbnkdV6KGZbY4Sq7hOYrEbyIXLezoI36MHPfS/vV7zQiSsJayuCActncaXEpS41dwJgo4q/Obd2SQt7PKB9+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AaXEyfzy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JO9FwyMq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99D11F00A3F;
-	Mon, 31 Aug 2026 13:51:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AaXEyfzy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DAD1F00A3D;
+	Mon, 31 Aug 2026 13:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184307;
-	bh=iKSMiXpkxJLEdJewUwowyjhE1Sbdpid/o/O6lPwwdgg=;
+	s=k20260515; t=1788184309;
+	bh=lKLM2OQ00SJcVK0Teqbvw6uSu3wkEfo88rjPxpxBCQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JO9FwyMqAHIGtw/o988Ugqpbx7RwW/8Ba8srRFb1MNwxp/eOnvioQO9kdimOg+Iu3
-	 XnIJ15RgxKeI4TM5KIHu0uXtFF98XVkYgu6AInct49pd7oSSkFh1npb11pEZZWdg4R
-	 v8cEuNB3+TNZf1Vq0pwOuZwBGAgNlAF/3kj21mxk9DVv5sbQFHtfpeBnAYfm14zkmy
-	 fdF5Zfk20Gjuh3AIOp8D7lRKURZe1ahlkuiNiHvAfZJZxAQAZQl3J/UQiWOdyyVQ/J
-	 zUV2MsHhVAizVWXAWZfs14CQJr3dTNz36pXY9A+w0U7STxcqwDDC1WxXJpd0N3NmOA
-	 Zw2+mYpFPw9JA==
+	b=AaXEyfzyHdvhumbCRLUDYj7dsGZjMcMOkzPNTOzJCEpDWcALTLfA9fe90J3vWmzFR
+	 8oSve45+mAWFVNs1XFsH4RcBn6vej+xX9KZ9mqEePRfMlHz1FqLi+GkSh38qRL0Rsh
+	 TNO0GmGEiLp9/XQeC4iocz5bfH+zY+Hv4Ggwxz0aI/Pk2PdOybtambqOOk67EtJuNp
+	 NGWBADz5VrNglckPthUz2+ZK8fOysDutlFSrKsxYFevFw0dNziXOrIavBVhkMFh9VZ
+	 FCzHa7ovrsakLSskywzxg5K73GtYtGCngFnfvgwKgxuTx7oX8MFfhgr0zJryrdIMMi
+	 pKnqAkFR6zpjA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jan Volckaert <janvolck@gmail.com>,
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	linux-omap@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net: usb: qmi_wwan: add MeiG SRM813Q
-Date: Mon, 31 Aug 2026 09:30:42 -0400
-Message-ID: <20260831133314.4125787-614-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: cpsw_new: unregister devlink on port registration failure
+Date: Mon, 31 Aug 2026 09:30:43 -0400
+Message-ID: <20260831133314.4125787-615-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -58,424 +59,385 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jan Volckaert <janvolck@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit 9758c11fc6c138a79a28a5659feeaa3abde7aa6a ]
+[ Upstream commit b64f763b607426ac97e44b114f0b8844ac3b86dd ]
 
-Add support for the Qualcomm Technology Snapdragon X35-based MeiG SRM813Q
-module.
+cpsw_probe() registers devlink before registering the CPSW ports.
 
-The module can be put in different modes via AT commands
-to enable/disable GPS functionality:
+If cpsw_register_ports() fails, the error path only unregisters the
+notifiers and then releases the lower level resources. It does not undo
+the successful cpsw_register_devlink() call, leaving the devlink instance
+and its parameters registered after probe has failed.
 
-MODEM - PPP mode(2dee:4d63): AT+SER=1,1
+Add a devlink cleanup label for the path where devlink registration has
+already succeeded, and use it when port registration fails.
 
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: MODEM
-If#= 3: AT
-
-P:  Vendor=2dee ProdID=4d63 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-NMEA mode(2dee:4d64): AT+SER=51,1
-
-If#= 0: RMNET
-If#= 1: DIAG/ADB
-If#= 2: NMEA
-If#= 3: AT
-
-P:  Vendor=2dee ProdID=4d64 Rev=05.15
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=1bd51f0e
-C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Jan Volckaert <janvolck@gmail.com>
-Link: https://patch.msgid.link/20260517153237.55995-2-janvolck@gmail.com
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260604043115.1409134-1-lgs201920130244@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit Message Forensics
+# Stable Backport Analysis: `net: cpsw_new: unregister devlink on port
+registration failure`
 
-### Step 1.1: Subject Line
-**Record:** `[net: usb: qmi_wwan]` `[add]` — Add USB device ID table
-entries for the MeiG SRM813Q LTE modem (Snapdragon X35-based) to the
-existing `qmi_wwan` driver.
-
-### Step 1.2: Commit Message Tags
-**Record:**
-- **Fixes:** — not present (expected for manual review)
-- **Reported-by:** — none
-- **Tested-by:** — none
-- **Reviewed-by:** — none
-- **Acked-by:** — none
-- **Link:**
-  `https://patch.msgid.link/20260517153237.55995-2-janvolck@gmail.com`
-  (patch 2/2 in series)
-- **Cc: stable@vger.kernel.org** — not present on this commit (the
-  companion `option.c` patch in this tree does have it)
-- **Signed-off-by:** Jan Volckaert `<janvolck@gmail.com>` (author),
-  Jakub Kicinski `<kuba@kernel.org>` (netdev maintainer)
-- **Notable:** Maintainer sign-off from Jakub Kicinski; detailed
-  `lsusb`-style descriptors for two USB product IDs (`2dee:4d63`,
-  `2dee:4d64`); patch 2 of 2 (companion is `USB: serial: option: add
-  MeiG SRM813Q`)
-
-### Step 1.3: Commit Body Analysis
-**Record:**
-- **Bug description:** Not a kernel crash/corruption bug. The MeiG
-  SRM813Q modem exposes its RMNET/QMI data interface on USB interface #0
-  (`Prot=50`, driver `qmi_wwan`), but without table entries the kernel
-  will not bind `qmi_wwan` to this device.
-- **Symptom:** Users with this modem get no `wwan0`/RMNET network
-  interface; cellular data does not work. Serial/DIAG/AT ports are
-  handled separately by the `option` driver.
-- **Root cause:** Missing `usb_device_id` entries in `qmi_wwan.c` for
-  vendor `0x2dee`, products `0x4d63` (Modem/PPP mode) and `0x4d64` (NMEA
-  mode).
-- **Version info:** None stated; hardware is new (Snapdragon X35, USB
-  3.20).
-
-### Step 1.4: Hidden Bug Fix Detection
-**Record:** Not a hidden bug fix. This is explicit **hardware
-enablement** — a new device ID addition to an existing driver. No error-
-path, locking, refcount, or memory-safety changes.
+**Local tree:** `v6.18.44` (6.18.44)
 
 ---
 
-## Phase 2: Diff Analysis
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 2.1: Change Inventory
+### Step 1.1: Subject line
+**Record:** `[net: cpsw_new]` `[unregister]` — On
+`cpsw_register_ports()` failure after successful devlink registration,
+unregister the devlink instance instead of leaking it.
+
+### Step 1.2: Tags
 **Record:**
-- **Files:** `drivers/net/usb/qmi_wwan.c` — +2 lines
-- **Functions modified:** `products[]` USB device ID table only (static
-  data, no function body changes)
-- **Scope:** Single-file, surgical device ID addition
+- **Reviewed-by:** Aleksandr Loktionov \<aleksandr.loktionov@intel.com\>
+- **Reviewed-by:** Alexander Sverdlin \<alexander.sverdlin@siemens.com\>
+  (reviewed prior stable-nominated error-path fixes in this driver)
+- **Signed-off-by:** Guangshuo Li \<lgs201920130244@gmail.com\>
+- **Link:** https://patch.msgid.link/20260604043115.1409134-1-
+  lgs201920130244@gmail.com
+- **Signed-off-by:** Jakub Kicinski \<kuba@kernel.org\>
+- No Fixes:, Reported-by:, Tested-by:, Cc: stable@vger.kernel.org, or
+  syzbot references
+- v2 notes: subject updated for net-next; Fixes tag dropped
 
-### Step 2.2: Code Flow Change
+### Step 1.3: Body analysis
 **Record:**
-- **Hunk (products[] table):** Before → device not matched by
-  `qmi_wwan`; QMI interface #0 left unbound. After → `qmi_wwan` binds to
-  interface #0 for `2dee:4d63` and `2dee:4d64`, using
-  `QMI_QUIRK_SET_DTR` (same pattern as Quectel, SIMCom, u-blox entries
-  on interface 0).
-- **Execution path:** USB device enumeration / driver probe at plug-in
-  time.
+- **Bug:** `cpsw_probe()` registers devlink before ports. If
+  `cpsw_register_ports()` fails, the error path unregisters notifiers
+  but not devlink.
+- **Symptom:** Orphaned devlink instance and registered devlink
+  parameters after a failed probe.
+- **Root cause:** Missing `cpsw_unregister_devlink()` on the port-
+  registration failure path.
+- **Version info:** None in the message; bug dates to devlink
+  introduction in 2019.
 
-### Step 2.3: Bug Mechanism
-**Record:** Category **h) Hardware workarounds / device ID addition**.
-Without entries, `qmi_wwan` never probes the RMNET interface. The
-`QMI_QUIRK_SET_DTR` flag ensures proper DTR/power management during bind
-(consistent with other Qualcomm-based modems lacking auto-DTR).
-
-### Step 2.4: Fix Quality
-**Record:** Obviously correct — interface #0 confirmed by commit message
-`lsusb` output (`Driver=qmi_wwan` on `If#= 0`). Minimal change.
-Regression risk very low: only affects devices with these specific
-VID/PID pairs that currently have no `qmi_wwan` binding at all.
+### Step 1.4: Hidden bug fix?
+**Record:** Yes. Described as cleanup, but it fixes a real resource-
+management bug: devlink allocated with `devlink_alloc()` (not devm) is
+never freed on this error path, and `dl_priv->cpsw` can dangle once devm
+frees `cpsw`.
 
 ---
 
-## Phase 3: Git History Investigation
+## PHASE 2: DIFF ANALYSIS
+
+### Step 2.1: Inventory
+**Record:**
+- **File:** `drivers/net/ethernet/ti/cpsw_new.c` (+3 / -1)
+- **Function:** `cpsw_probe()`
+- **Scope:** Single-file surgical fix in one error path
+
+### Step 2.2: Code flow change
+**Record:**
+- **Hunk 1 (line 2051):** `cpsw_register_ports()` failure: `goto
+  clean_unregister_notifiers` → `goto clean_unregister_devlink`
+- **Hunk 2 (lines 2063–2064):** New label `clean_unregister_devlink:`
+  calling `cpsw_unregister_devlink(cpsw)` before the existing notifier
+  cleanup chain
+
+**Before:** Port registration failure skipped devlink teardown.
+**After:** Port registration failure runs the same devlink cleanup as
+`cpsw_remove()`.
+
+### Step 2.3: Bug mechanism
+**Record:** **Category:** Error-path resource leak (and potential UAF).
+**Mechanism:** `cpsw_register_devlink()` calls `devlink_alloc()`,
+`devlink_params_register()`, and `devlink_register()`. On port failure,
+only notifiers were torn down. `cpsw` (devm) is freed on probe failure
+while devlink (non-devm) remains registered with `dl_priv->cpsw`
+pointing at freed memory.
+
+### Step 2.4: Fix quality
+**Record:** Obviously correct — mirrors `cpsw_remove()`. Minimal, no API
+changes. Very low regression risk; only affects the
+`cpsw_register_ports()` failure path.
+
+---
+
+## PHASE 3: GIT HISTORY INVESTIGATION
 
 ### Step 3.1: Blame
-**Record:** Insertion point is immediately after
-`{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)}` (MeiG SRM825L), introduced by
-commit `1ca645a2f74a4` (Aug 2024). The SRM813Q entries are new; no pre-
-existing buggy code to blame.
+**Record:** Buggy `goto clean_unregister_notifiers` after
+`cpsw_register_ports()` introduced in `ed3525eda4c49` (2019-11-20,
+"introduce cpsw switchdev based driver part 1 - dual-emac"). Present in
+this tree.
 
-### Step 3.2: Fixes: Tag
-**Record:** Not applicable — no `Fixes:` tag.
+### Step 3.2: Fixes: tag
+**Record:** N/A — no Fixes: tag (dropped in v2).
 
-### Step 3.3: Related File History
-**Record:** Recent `qmi_wwan.c` changes in this tree are predominantly
-similar device-ID additions (Telit, Quectel, Fibocom, MeiG SRM825L). The
-companion `option.c` patch (`38ba1a464c0d1`, upstream `7d2b37d3e42d`) is
-**already present** in this tree. The `qmi_wwan` half is **not yet** in
-this tree — creating a half-enabled state for SRM813Q users.
+### Step 3.3: Related file history
+**Record:** Recent related stable-nominated error-path fixes already in
+this tree:
+- `299b825716b82` — unnecessary netdev unregistration in `cpsw_probe()`
+  error path (Cc: stable)
+- `29739ec197ed6` — unregister of netdev not yet registered (Cc: stable)
 
-### Step 3.4: Author Context
-**Record:** Jan Volckaert submitted the companion `option.c` patch
-(already merged here with `Cc: stable@vger.kernel.org`). Jakub Kicinski
-(netdev maintainer) signed off on the `qmi_wwan` patch per commit
-message.
+Both fix `cpsw_probe()` error handling from the same original commit
+(`Fixes: ed3525eda4c49`). This patch is a third, complementary error-
+path fix.
+
+### Step 3.4: Author context
+**Record:** Guangshuo Li has no prior commits in `cpsw_new.c` in this
+tree. Reviewer Alexander Sverdlin reviewed the Kevin Hao stable fixes
+and this patch.
 
 ### Step 3.5: Dependencies
-**Record:** Part of a 2-patch series with `USB: serial: option: add MeiG
-SRM813Q`. The `option` half is already in v6.18.44. This `qmi_wwan`
-patch is standalone (applies independently) but functionally completes
-modem support. No structural/API prerequisites beyond existing
-`QMI_QUIRK_SET_DTR` macro and `qmi_wwan` driver.
+**Record:** Standalone. No series dependencies. Applies cleanly to this
+tree (verified with `git apply --check`).
 
 ---
 
-## Phase 4: Mailing List and External Research
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Original Discussion
-**Record:** Link points to `20260517153237.55995-2-janvolck@gmail.com`
-(patch 2/2). `b4 dig -c` could not match this commit (not yet in local
-git). `WebFetch` and `curl` to lore.kernel.org returned 403/bot
-protection — discussion content **unverified**. Patch series structure
-(2/2) confirmed from message ID.
+### Step 4.1: Original discussion
+**Record:** `b4 am 20260604043115.1409134-1-lgs201920130244@gmail.com`
+found v2 patch thread. Lore/patch.msgid.link blocked by bot protection;
+content retrieved from local mbox. No replies in mbox; b4 reported 14
+code-review trailers on lore (content not directly readable). No
+explicit stable nomination in the patch.
 
 ### Step 4.2: Reviewers
-**Record:** UNVERIFIED via b4 (commit not in tree). Jakub Kicinski
-Signed-off-by confirms netdev maintainer acceptance.
+**Record:** Reviewed-by from Aleksandr Loktionov (Intel) and Alexander
+Sverdlin (Siemens, prior reviewer of stable-nominated cpsw error-path
+fixes).
 
-### Step 4.3: Bug Report
-**Record:** No external bug report, syzbot, or user crash report.
-Hardware enablement driven by author testing with physical device
-(`lsusb` descriptors provided).
+### Step 4.3: Bug reports
+**Record:** None. No syzbot, bugzilla, or user reports.
 
-### Step 4.4: Related Patches
-**Record:** Patch 1/2 (`option.c`, commit `38ba1a464c0d1`) already in
-v6.18.44 with `Cc: stable@vger.kernel.org`. This patch 2/2 completes
-RMNET data path support.
+### Step 4.4: Related patches
+**Record:** Part of ongoing `cpsw_probe()` error-path hardening
+alongside Kevin Hao's v1 series (Feb 2026). Those fixes are already in
+6.18.44; this one is not yet.
 
-### Step 4.5: Stable List History
-**Record:** UNVERIFIED (lore access blocked). Companion `option.c` patch
-explicitly nominated for stable in this tree.
+### Step 4.5: Stable list history
+**Record:** Could not search lore stable list (bot protection).
+Precedent: related fixes in the same function were explicitly `Cc:
+stable@vger.kernel.org`.
 
 ---
 
-## Phase 5: Code Semantic Analysis
+## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Key Functions
-**Record:** Only `products[]` static table modified. Probe/bind handled
-by existing `qmi_wwan_probe()` → `qmi_wwan_bind()`.
+### Step 5.1: Key functions
+**Record:** `cpsw_probe()`, `cpsw_register_devlink()`,
+`cpsw_unregister_devlink()`, `cpsw_register_ports()`
 
 ### Step 5.2: Callers
-**Record:** USB core calls `qmi_wwan` probe during device enumeration
-when VID/PID/interface match `products[]`. Standard hot-plug path for
-USB modems.
+**Record:** `cpsw_probe()` is the `platform_driver.probe` callback for
+`cpsw_new` (TI CPSW on AM335x, AM4372, DRA7, etc.). Called during
+platform device enumeration / module load.
 
 ### Step 5.3: Callees
-**Record:** On bind with `QMI_QUIRK_SET_DTR`, existing code calls
-`qmi_wwan_manage_power()` and `qmi_wwan_change_dtr()` — well-established
-path for Qualcomm modems.
+**Record:** On failure path, fix adds `devlink_unregister()`,
+`devlink_params_unregister()`, `devlink_free()` via
+`cpsw_unregister_devlink()`.
 
 ### Step 5.4: Reachability
-**Record:** Triggered by plugging in MeiG SRM813Q USB modem. Common user
-operation for cellular connectivity. Not syscall-triggered, but standard
-device hotplug.
+**Record:** Triggered when `register_netdev()` fails inside
+`cpsw_register_ports()` during probe — uncommon but reachable on
+boot/module load (ENOMEM, registration failure, etc.). Not userspace-
+triggerable directly, but affects device bring-up.
 
-### Step 5.5: Similar Patterns
-**Record:** Dozens of identical-pattern entries in `products[]` (e.g.,
-`QMI_QUIRK_SET_DTR(0x2c7c, ...)`, `QMI_FIXED_INTF(0x2dee, 0x4d22, 5)`
-for sibling MeiG SRM825L). Telit/Quectel additions in this tree
-routinely carry `Cc: stable@vger.kernel.org`.
-
----
-
-## Phase 6: Cross-Reference Against Local Tree (v6.18.44)
-
-### Step 6.1: Buggy Code Exists?
-**Record:** Yes — the **absence** of entries is the issue.
-`drivers/net/usb/qmi_wwan.c` line 1454 has SRM825L (`0x2dee:0x4d22`) but
-**not** SRM813Q (`0x4d63`, `0x4d64`). Meanwhile
-`drivers/usb/serial/option.c` already has all six SRM813Q entries (lines
-2472–2476). Half-enabled state confirmed.
-
-### Step 6.2: Backport Complications
-**Record:** Clean apply — `git apply --check` succeeded with zero
-conflicts against current `qmi_wwan.c`.
-
-### Step 6.3: Related Fixes Already Present?
-**Record:** `option.c` SRM813Q support present (`38ba1a464c0d1`). No
-`qmi_wwan` SRM813Q fix present. No duplicate.
+### Step 5.5: Similar patterns
+**Record:** `am65-cpsw-nuss.c` has its own devlink registration with
+proper cleanup in remove; this fix addresses the parallel gap in
+`cpsw_new.c` only.
 
 ---
 
-## Phase 7: Subsystem and Maintainer Context
+## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
 
-### Step 7.1: Subsystem Criticality
-**Record:** `drivers/net/usb/` — IMPORTANT. USB WWAN/cellular modems
-used in laptops, routers, IoT, embedded. Not core-kernel, but critical
-for affected hardware users.
+### Step 6.1: Buggy code present?
+**Record:** **Yes.** In `cpsw_new.c` at lines 2049–2051:
 
-### Step 7.2: Subsystem Activity
-**Record:** Actively maintained — frequent device ID additions and bug
-fixes in `drivers/net/usb/` on this branch.
+```2049:2051:drivers/net/ethernet/ti/cpsw_new.c
+        ret = cpsw_register_ports(cpsw);
+        if (ret)
+                goto clean_unregister_notifiers;
+```
+
+`clean_unregister_devlink` does not exist; devlink is not unregistered
+on this path.
+
+### Step 6.2: Backport complications
+**Record:** Clean apply expected — `git apply --check` passed with no
+conflicts.
+
+### Step 6.3: Related fixes already present?
+**Record:** Kevin Hao's netdev error-path fixes (`299b825716b82`,
+`29739ec197ed6`) are in tree. This devlink cleanup fix is **not** yet
+applied.
 
 ---
 
-## Phase 8: Impact and Risk Assessment
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-### Step 8.1: Who Is Affected
-**Record:** Users of MeiG SRM813Q (Snapdragon X35) USB LTE modules.
-Config-dependent: `CONFIG_USB_NET_QMI_WWAN`. Currently broken for
-cellular data on v6.18.44 despite partial `option` driver support.
+### Step 7.1: Subsystem criticality
+**Record:** **drivers/net/ethernet/ti** — IMPORTANT for embedded TI
+platforms (AM33xx, AM4372, DRA7). `CONFIG_TI_CPSW_SWITCHDEV` / module
+`cpsw_new`.
 
-### Step 8.2: Trigger Conditions
-**Record:** Plug in MeiG SRM813Q modem. Deterministic, every time. No
-privilege required beyond normal USB device access.
+### Step 7.2: Subsystem activity
+**Record:** Active — multiple 2026 commits including error-path fixes
+for this same probe function.
 
-### Step 8.3: Failure Mode Severity
-**Record:** No kernel crash/oops. **Functional failure** — no
-RMNET/`wwan` network interface, no cellular data connectivity. Severity:
-**MEDIUM** for affected users (device unusable for its primary purpose),
-**LOW** globally (single modem model).
+---
 
-### Step 8.4: Risk-Benefit
+## PHASE 8: IMPACT AND RISK ASSESSMENT
+
+### Step 8.1: Who is affected
+**Record:** Users of TI CPSW (`cpsw_new`) on OMAP/AM33xx/AM4372/DRA7
+platforms with `CONFIG_TI_CPSW_SWITCHDEV` enabled.
+
+### Step 8.2: Trigger conditions
+**Record:** `cpsw_register_ports()` → `register_netdev()` fails during
+probe. Uncommon (boot/module-load error path). Not a normal runtime
+path.
+
+### Step 8.3: Failure mode severity
 **Record:**
-- **Benefit:** Enables cellular data on SRM813Q; completes support
-  started by already-merged `option.c` patch. Standard stable device-ID
-  backport.
-- **Risk:** Very low — 2 lines, only matches specific VID/PID, no
-  behavior change for any other device.
-- **Ratio:** High benefit for affected users, negligible risk.
+- **Primary:** Devlink memory leak; orphaned devlink registration and
+  sysfs entries after failed probe
+- **Secondary:** `dl_priv->cpsw` may point at devm-freed `cpsw` —
+  potential UAF if devlink is accessed after failed probe
+- **Severity:** **MEDIUM** — error-path only, rare trigger, but real
+  resource bug with UAF potential; not a hot-path crash
+
+### Step 8.4: Risk-benefit
+**Record:**
+- **Benefit:** MEDIUM — completes error-path cleanup already being fixed
+  in this driver for stable
+- **Risk:** VERY LOW — 3-line change, mirrors existing remove path
+- **Ratio:** Favorable for backport
 
 ---
 
-## Phase 9: Final Synthesis
+## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
+### Step 9.1: Evidence
 
 **FOR backport:**
-- Explicit stable exception: new USB device IDs to existing driver
-- 2-line, surgical, applies cleanly to v6.18.44
-- Companion `option.c` patch already in tree with `Cc: stable`
-- Without this, SRM813Q users lack `qmi_wwan`/RMNET — modem data path
-  non-functional
-- Maintainer (Jakub Kicinski) signed off
-- Identical pattern to other stable-nominated `qmi_wwan` device
-  additions in this tree
+- Real bug present since 2019 in this tree
+- Missing devlink cleanup on probe error path
+- Non-devm devlink allocation leaked; dangling pointer to devm-freed
+  `cpsw`
+- Trivial, obviously correct fix; applies cleanly
+- Reviewed by driver maintainers
+- Same `cpsw_probe()` error path already received stable-nominated fixes
+  in 6.18.44
+- Matches stable pattern for probe error-path resource leaks
 
 **AGAINST backport:**
-- Not a crash/security/corruption fix
-- Affects only one modem model (limited user population)
-- No explicit `Cc: stable` on this specific commit message
-- Mailing list discussion unverified
+- Only triggers on rare `register_netdev()` failure during probe
+- No user reports, syzbot, or CVE
+- Not a normal-operation crash
+- No explicit Cc: stable on this patch
 
-**UNRESOLVED:**
-- Full lore review thread content
-- Whether author tested RMNET connectivity end-to-end (descriptors
-  strongly support correctness)
+**Unresolved:** Full lore review thread content (bot-blocked); exact
+severity if devlink sysfs is accessed post-failed-probe is inferred from
+code, not reproduced.
 
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — descriptors match table
-   entries; maintainer SOB; established macro pattern
-2. Fixes real bug affecting users? **PASS** — hardware non-functional
-   for data without it; completes half-merged series
-3. Important issue? **PASS (MEDIUM)** — no crash, but primary device
-   function broken for affected users
-4. Small and contained? **PASS** — 2 lines, one file
-5. No new features/APIs? **PASS** — device ID table only (stable
-   exception category)
-6. Can apply to local tree? **PASS** — verified clean apply
+### Step 9.2: Stable rules checklist
+1. Obviously correct and tested? **PASS** — mirrors `cpsw_remove()`;
+   reviewed by two maintainers
+2. Fixes a real bug? **PASS** — devlink leak on probe failure
+3. Important issue? **PASS (MEDIUM)** — resource leak with UAF potential
+   on error path; not critical hot-path crash
+4. Small and contained? **PASS** — 3 lines, one file
+5. No new features/APIs? **PASS**
+6. Can apply to local tree? **PASS** — bug present; patch applies
+   cleanly
 
-### Step 9.3: Exception Category
-**Record:** **NEW DEVICE IDs** — adding USB VID/PID entries to the
-existing `qmi_wwan` driver. Textbook stable backport material.
+### Step 9.3: Exception categories
+**Record:** N/A — standard error-path bug fix, not device
+ID/quirk/build/doc exception.
 
-### Step 9.4: Decision Rationale
+### Step 9.4: Decision rationale
 
-For **v6.18.44**, this commit should be backported. It is a minimal
-device ID addition that enables RMNET/cellular data on the MeiG SRM813Q
-modem. The `qmi_wwan` driver and all required infrastructure already
-exist in this tree. The companion `option.c` patch is already merged
-here (with stable nomination), leaving users in a broken partial-support
-state until this `qmi_wwan` half is also applied. This matches the
-stable exception for new device IDs and follows the same pattern as
-other `qmi_wwan` modem additions routinely backported to stable.
+For **6.18.44**, the buggy code exists and has since devlink support
+landed in 2019. The fix is minimal, correct, and consistent with stable-
+nominated error-path fixes already merged for the same `cpsw_probe()`
+function. While the trigger is uncommon, leaving devlink registered
+after probe failure leaks resources and leaves a dangling `cpsw` pointer
+inside devlink private data. This is appropriate stable material for
+this tree.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed subject, tags, body from user-provided commit
-  message
-- **[Phase 1]** Confirmed patch 2/2 series structure from message ID
-  `55995-2`
-- **[Phase 2]** Diff analysis: +2 lines in `products[]`,
-  `QMI_QUIRK_SET_DTR(0x2dee, 0x4d63/0x4d64, 0)`
-- **[Phase 3]** `git describe HEAD` → `v6.18.44` (VERSION 6, PATCHLEVEL
-  18, SUBLEVEL 44)
-- **[Phase 3]** `git blame -L 1454,1454` → SRM825L added by
-  `1ca645a2f74a4` (Aug 2024)
-- **[Phase 3]** `git log --oneline -20 -- drivers/net/usb/qmi_wwan.c` →
-  recent device-ID additions confirmed
-- **[Phase 3]** `git show 38ba1a464c0d1` → companion `option.c` patch
-  present with `Cc: stable@vger.kernel.org`
-- **[Phase 3]** `git cat-file -t 7d2b37d3e42d` → upstream option commit
-  exists in tree
-- **[Phase 3]** `grep 0x4d63/0x4d64` in `qmi_wwan.c` → no matches (not
-  yet present)
-- **[Phase 4]** `b4 dig -c 1ca645a2f74a4` → found SRM825L lore link
-  (wrong commit, expected)
-- **[Phase 4]** `WebFetch`/`curl` lore.kernel.org → 403/bot blocked;
-  thread content UNVERIFIED
-- **[Phase 5]** Read `QMI_QUIRK_SET_DTR` macro and DTR quirk logic at
-  lines 821–825, 938–958
-- **[Phase 5]** `grep QMI_QUIRK_SET_DTR` → many similar entries confirm
-  pattern
-- **[Phase 6]** `grep SRM813Q/0x4d63` in `option.c` → 6 entries present
-  (lines 2472–2476)
-- **[Phase 6]** `grep SRM813Q/0x4d63` in `qmi_wwan.c` → only SRM825L
-  (`0x4d22`), not SRM813Q
-- **[Phase 6]** `git apply --check` on provided diff → applies cleanly
-- **[Phase 7]** `git log --oneline -20 -- drivers/net/usb/` → active
-  subsystem
-- **[Phase 8]** Confirmed failure mode: no `qmi_wwan` bind → no cellular
-  data (not a crash)
-- **[Phase 9]** `git show e81a7f65288c7` → similar Telit addition has
-  `Cc: stable@vger.kernel.org`
+- **[Phase 1]** Parsed commit message and tags from user query and mbox
+  file
+- **[Phase 1]** v2 changelog: Fixes tag dropped; subject updated for
+  net-next
+- **[Phase 2]** Diff: +3/-1 in `cpsw_probe()`; adds
+  `clean_unregister_devlink` label
+- **[Phase 2]** Read `cpsw_register_devlink()` /
+  `cpsw_unregister_devlink()` — non-devm `devlink_alloc()` with
+  `dl_priv->cpsw = cpsw`
+- **[Phase 3]** `git describe HEAD`: v6.18.44
+- **[Phase 3]** `git blame -L 2045,2051`: buggy path from
+  `ed3525eda4c49` (2019-11-20)
+- **[Phase 3]** `git log --oneline -20 -- cpsw_new.c`: related stable
+  fixes `299b825716b82`, `29739ec197ed6` present
+- **[Phase 3]** `git log -S cpsw_register_devlink`: introduced in
+  `ed3525eda4c49`
+- **[Phase 3]** `git apply --check`: patch applies cleanly
+- **[Phase 4]** `b4 am 20260604043115...`: found v2 patch; Reviewed-by
+  tags confirmed
+- **[Phase 4]** Lore/patch.msgid.link fetch: blocked by Anubis bot
+  protection
+- **[Phase 5]** Read `cpsw_register_ports()` — fails on
+  `register_netdev()` error
+- **[Phase 5]** `cpsw_remove()` calls `cpsw_unregister_devlink()` — fix
+  matches remove path
+- **[Phase 6]** Confirmed buggy `goto clean_unregister_notifiers` at
+  lines 2049–2051 in current tree
+- **[Phase 6]** `grep clean_unregister_devlink`: not present — fix not
+  yet applied
+- **[Phase 7]** Kconfig: `TI_CPSW_SWITCHDEV` selects `NET_DEVLINK`,
+  module `cpsw_new`
+- **[Phase 8]** UAF potential inferred from non-devm devlink + devm
+  `cpsw` — not runtime-tested
 
 **YES**
 
- drivers/net/usb/qmi_wwan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/cpsw_new.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 05acac10cd2ba..94cdb61dca83d 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1452,6 +1452,8 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
- 	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
- 	{QMI_FIXED_INTF(0x2dee, 0x4d22, 5)},    /* MeiG Smart SRM825L */
-+	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d63, 0)}, /* MeiG SRM813Q w/ Modem(PPP) */
-+	{QMI_QUIRK_SET_DTR(0x2dee, 0x4d64, 0)}, /* MeiG SRM813Q w/ NMEA */
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index c6cf7a0375e08..34c0e651e2da3 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -2048,7 +2048,7 @@ static int cpsw_probe(struct platform_device *pdev)
  
- 	/* 4. Gobi 1000 devices */
- 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+ 	ret = cpsw_register_ports(cpsw);
+ 	if (ret)
+-		goto clean_unregister_notifiers;
++		goto clean_unregister_devlink;
+ 
+ 	dev_notice(dev, "initialized (regs %pa, pool size %d) hw_ver:%08X %d.%d (%d)\n",
+ 		   &ss_res->start, descs_pool_size,
+@@ -2060,6 +2060,8 @@ static int cpsw_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
++clean_unregister_devlink:
++	cpsw_unregister_devlink(cpsw);
+ clean_unregister_notifiers:
+ 	cpsw_unregister_notifiers(cpsw);
+ clean_cpts:
 -- 
 2.53.0
 
