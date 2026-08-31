@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2D137DEB6;
-	Mon, 31 Aug 2026 23:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB87D37C11E;
+	Mon, 31 Aug 2026 23:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788219359; cv=none; b=TbvHjm/myT09TMx8y7aiI4xEqJKQt4J5LmFUTuDBDjY2uog/qXKrigZCVtqJ1vzD1qsCGcOBE7fAzDlGmcyZ9KKPo0XMlhW/FH3GLVUrtYjWseQ7q6ZZRXT27Eyfk5i8IaTOwmpw2R7Vuva0mwb0kMi5oycLrlIQ1leQtoEaj4g=
+	t=1788219811; cv=none; b=O5QxWS/tBNtCFX/ZY3nl31u7C0o19gDfYmr/3xk6SbBx58taEX+hLJXuaAxOlSjg0kNVLYdQPAVeCBVIzikSYZLPsX40i/mNjKor8vliuHms6QwVoGkyYkx4yOTTg/jApZD91QQfyG3Qrj+nDFGsEwU8BPqGDSTz0xd94gBnM+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788219359; c=relaxed/simple;
-	bh=5Kh15TIQ4q2oO9fggjqmUmr9jrHg5Tvqycn+erZTbTg=;
+	s=arc-20240116; t=1788219811; c=relaxed/simple;
+	bh=Dn9AysUH1VrFe+nloOlag9vnvl6F643sqcyGhZVFbwo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gMaMT8KmaHyWKKAz/a5MZn37SaI7/X0WrFU8WxoWxX8VmAMY3DXXorUAYzAOTdMhjSzqZcTrRtUhgVorvwpGQigblFGEYOHvfBbppCofgpJdsETziWIFNndH8clwKw9pfFpI9tU+x89ZB6K/BJPHujXnSkU6HwNyGQmNDoej7ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Suzkvii6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=HdWxsXtvkN2h89aTZtTbdu4FxUg/fH1CXqkG5w7aUinDLAhumeqRnf1x9uJsPiW7OlMpQYa41eb96ZFjGmADj6I4onev2pYIjzsl/12qy/TdW+Qg2N5gjXO3E5xJqgEv8iRUfACopqJlNWYfOtWJ7VASv2JAhqfQXjyRy8EnemA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VC9e6snb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Suzkvii6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1F21F000E9;
-	Mon, 31 Aug 2026 23:35:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VC9e6snb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371071F000E9;
+	Mon, 31 Aug 2026 23:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788219358;
-	bh=ELc74BelTUW/4ZB4DxoWxenDsLGFXeMjBoTFPOu58ys=;
+	s=k20260515; t=1788219810;
+	bh=Dn9AysUH1VrFe+nloOlag9vnvl6F643sqcyGhZVFbwo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Suzkvii6euSCJ2Z2TCWN+D/3JUDEzDn0VNpWK9ERnkeQrdH3psLlUawGjTKx0Qm9R
-	 Kz6FuxSlHA3yjvZxpMYutQVHr8XVTYfX+yHl9NeFD4rAFH88I6YfkICI/80U0eGxnP
-	 7H2yxWCBDXPrQJNBcKyIm7x6GDzvwu6c9asO6vN+TWw4j72yBkF7RZm8JJPaRFOWSE
-	 bTkcBg6o/QfWEs7XAoLdj7YDoL6WX0RPPEaAI89X+4EkOJbskwiroGBzcT7Hyv1MEP
-	 qMYbOVuG1xw8X4210rMVhslBItBJSUm/teSX4Su2HRxFowarDwbuLaRgDHtIPPHu03
-	 jn9po3nQ3o2Yw==
-Date: Mon, 31 Aug 2026 16:35:56 -0700
+	b=VC9e6snbLdIvE1BAb7foGj2WKAG/+ktLs8oA6/WNiYfE5wqU3gqj8mBo9ut2FaN5T
+	 y98ySuiCp1AH4l6tZ73f4a0Rg+0wB1VsZYLmgxlC1ggDFpaSDdNFKwpNJXFd7ieKLe
+	 4ZOd0g4v6hRBfrUEohie3stl+Byp/MevaNbXSlQhF4kjIF2SAXZf905mYHzBU9juEZ
+	 EYC0V7Zkqq7yi/EJ2bfyWrATL1/XmbBjhZJl3l7Anqdn7d7jKUMYJhzz/HIiXTm0BC
+	 ccqgwHXNl5+CalNAwjNEBx7iRwD+fsCj4RLvDkIvO8N6E2MGvkzGhTgm1i4yJLAqNN
+	 Z0ldwsHihYVcQ==
+Date: Mon, 31 Aug 2026 16:43:29 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>, edumazet@google.com, kuniyu@google.com
-Cc: davem@davemloft.net, pabeni@redhat.com, ncardwell@google.com,
- dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
- willemb@google.com, andrew+netdev@lunn.ch, kees@kernel.org,
- jiayuan.chen@linux.dev, kerneljasonxing@gmail.com, ij@kernel.org,
- martin.lau@kernel.org, shakeel.butt@linux.dev, matttbe@kernel.org,
- martineau@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 0/8] net: fixes for requests completing on a
- socket that no longer listens
-Message-ID: <20260831163556.54f89805@kernel.org>
-In-Reply-To: <20260824033331.1084971-1-imv4bel@gmail.com>
-References: <20260824033331.1084971-1-imv4bel@gmail.com>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, shuah@kernel.org,
+ joabreu@synopsys.com, jun.ann.lai@intel.com, yi.fang.gan@intel.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v3 0/5] net: stmmac: Fix double VLAN 802.1ad tag
+ handling
+Message-ID: <20260831164329.138dbf3b@kernel.org>
+In-Reply-To: <20260825164522.4244-1-ovidiu.panait.rb@renesas.com>
+References: <20260825164522.4244-1-ovidiu.panait.rb@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,23 +50,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 24 Aug 2026 12:32:44 +0900 Hyunwoo Kim wrote:
-> connect(AF_UNSPEC) and listen() move a socket back and forth between
-> listener and active session. IPV6_ADDRFORM on top of that turns an
-> AF_INET6 socket into an AF_INET one.
-> 
-> Two things follow. One is that what the socket had before the change is
-> left behind: requests still in the ehash, and parent fields a child
-> inherits. The other is that the socket is used while it is changing.
-> tcp_check_req() does not hold the listener lock, and tcp_v{4,6}_rcv()
-> reads sk_state twice without it on the listener path.
-> 
-> Patch 2 is neither. After a reuseport migration the listener that counted
-> a request and the listener the count is decremented on are not the same.
-> It goes with patch 3 because patch 3 needs it. Nothing ever resets that
-> count, so patch 3 on its own has a check that can be bypassed.
+On Tue, 25 Aug 2026 16:45:17 +0000 Ovidiu Panait wrote:
+> Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
+> hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
+> than using the actual protocol from the packet. Because of this, packets
+> that contain an 802.1ad outer tag are incorrectly passed up the stack as
+> having an 802.1Q tag.
 
-No reviews? Are people getting tired of the disconnect bugs?
-
-Hyunwoo Kim, can any of the fixes be simplified if we move more
-cleanup / responsibility to the disconnect path? Patch 6 perhaps?
+Test LGTM, let me apply just the test since it looks like the driver
+part will need a respin.
