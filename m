@@ -1,182 +1,163 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDF73F4856;
-	Mon, 31 Aug 2026 12:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1752EBB8D
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788178398; cv=none; b=JgwKST7sN9qgwxk3Y+9Cu8bALv9+9Ga+blYzOk6AsWHCrPFpjnX7lFgb2BJtVjf523VuqaUvJzjZPXEJl/+rPL/u3U/oYC4pKkWAMb65BydiQ1/AmRpMtB94obkmSGnNL6APC4Lp8tra878JXv1P9b3Q5Xq3BSyfynbs3pQwk7g=
+	t=1788178520; cv=none; b=pxSwb2DxqJ5kDMI6Acu8j+0hMKz0PkHxz0UYtIEsqfRVeofzn4+QfdKwOH+CfIBVT1zUhEM/h/mhC38ygGgIWITxpmOJrTo1G9Zf6+HTSjvs2Noj7J1pl6y47Cq5u8ESeOGbzSjF89z/QPUkNS0+EvzYkY0mH/7uhEaoOmZFq64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788178398; c=relaxed/simple;
-	bh=Oz8OhcXW3DGFgvrMTjcKnGfRhfl+uGoLHZ2JtGHNdKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GbsRGbZemjckvdnS3APmXp0AIPrq1Hls1venIJmlYubER7tL8KeO8efsIs0nYFypQeg8aVG4wh9/7wL7w20nDOAEvYELH967aj+1K/DnW8GSpOWzoaqnEgwsF6tZkyqa0tSG7NMYElwuR3nCzdko2VEvCDIOGTi4B15RVgv1lnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qMKq1Fns; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hZRKk0pK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ncQVYC8r; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nFbmib6W; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1788178520; c=relaxed/simple;
+	bh=LxUt+CnyDWGDMtzxg5Cjeq/z3ZUGbAwQZvmAAhj5b1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ma2y4aNIjoWziJbBleRfCE1QQrWvYKROPx3eUHEYn1NpNm16DFj7RroYjPB4pQMJmzVvDfpDcYfWdZ51eF/qtfSG5hpjzjx1y+5+zcSbl+PjjLPq51jVUiK6K1iaENnfQOcgLLNEsXvgzBuhoH2hr2nlgGzco3Jt+ZbIfLsIqv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x8s3e4Cn; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qMKq1Fns";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hZRKk0pK";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ncQVYC8r";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="nFbmib6W"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EA4D1FB3C;
-	Mon, 31 Aug 2026 12:13:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788178391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
-	b=qMKq1Fns+aGfqRiQHSqd7b0UaM0YFzWEwhKsvLKAEN5X0wd/fMXXAOLB+EtlFOXgXtXYhm
-	iOCt1RdxAmLFSeFXMlyYHR+0n82PWILo/SxXeqWydSVPquHNz8uQgUSeE/fzTM8ZBHlDBq
-	rwPZ2qSc/n3d7kBtrN/4pKvBpAHK78A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788178391;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
-	b=hZRKk0pKGytvYxDsW3kOGrd5G8SHtykGuNTpBk2Dkwi1hJ2HyfmgiVQLktn3CiEu7mr2bY
-	IaUwqp0GUDyEB5Cw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ncQVYC8r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nFbmib6W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788178387; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
-	b=ncQVYC8rPmkqS+GhkmGEkKRLsyKpLRoo07HY8FQnyQ+Cby2xbG7Fg+g6gExv3A1lWh+9XF
-	WkJQxVs3zO+1UzGiNA64fUr3F731aX3i1K2z+iVUFrv8z/ZPS4pZ6iKDiT5fog72ex26FZ
-	sgbHRsZTaKFrcOUhRE99LvN9RO3OkHY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788178387;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
-	b=nFbmib6WoD6TAY9gwCiogiAxcTgiIn1Chxj/tyz9wZROaRGWfznfF+b1aVBL0lM/gOWR3J
-	6dt3/2VlMqh868CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EF51B13685;
-	Mon, 31 Aug 2026 12:13:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vTtpOtJvlWqBdQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 12:13:06 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 8A753A13B5; Mon, 31 Aug 2026 14:13:06 +0200 (CEST)
-Date: Mon, 31 Aug 2026 14:13:06 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	bcrl@kvack.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
-	yi.zhang@huawei.com, pmladek@suse.com, rostedt@goodmis.org, 
-	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, senozhatsky@chromium.org, 
-	akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, socketcan@hartkopp.net, mkl@pengutronix.de, 
-	kuniyu@google.com, willemb@google.com, jhs@mojatatu.com, jiri@resnulli.us, 
-	kees@kernel.org, cyphar@cyphar.com, tglx@kernel.org, liuhangbin@gmail.com, 
-	sdf@fomichev.me, nb@tipi-net.de, linux-fsdevel@vger.kernel.org, 
-	linux-aio@kvack.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-can@vger.kernel.org
-Subject: Re: [PATCH 03/11] fs: aio: Use acquire/release for ring->tail
- publication
-Message-ID: <x75um7rluga7zvqhe4wdqj76hjnyazpaxqs4ugme4eaompfsf6@zzj5flkfcw26>
-References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
- <20260825095422.3166067-4-ruanjinjie@huawei.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x8s3e4Cn"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 04FF54E41491;
+	Mon, 31 Aug 2026 12:15:15 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CBC2F60231;
+	Mon, 31 Aug 2026 12:15:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB42B11C78B4C;
+	Mon, 31 Aug 2026 14:15:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788178509; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=MKHpfG9FXZBRRV2MzUmsKoBDMrVngBIFiVIQAk/+QT4=;
+	b=x8s3e4Cn2x+dOCKmc9hckekz+B0vlGLGChkHD95QauWurwh9rKYWr7JDXVdiLJVK4PwPcd
+	3WcNFco7+jtDi3/5GhWMW0/GFw6A6U/BCY4SR2MKIwNypKR/MDZw8DI54tdwiznnuETGWt
+	ldX3FC3niPA4g3xlFrgTkf3mOlYknS2lYYJRyK34uk2+xY+A2uR5uWDmj/Kn9Iq9AP9bRx
+	9hxwqEpIoTsKMHtXlE0vU8rK8/OIcf23jjAoBvJ2zSVzx7SgYn+wTpx6yJ6WzWMdRmSDSJ
+	EXB8hFmiy5SG7KKp6qnIHuqMEW+oTxirjDua4lzhoknscg1f56bmGy3GNAopkA==
+Message-ID: <480f15e2-e045-46b7-89af-1fbcefd3c4eb@bootlin.com>
+Date: Mon, 31 Aug 2026 14:15:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825095422.3166067-4-ruanjinjie@huawei.com>
-X-Spam-Score: -2.51
-X-Rspamd-Queue-Id: 1EA4D1FB3C
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLa77mm4gi8mw7uppieotozii3)];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,suse.com,goodmis.org,linux.intel.com,rasmusvillemoes.dk,chromium.org,linux-foundation.org,davemloft.net,google.com,redhat.com,hartkopp.net,pengutronix.de,mojatatu.com,resnulli.us,cyphar.com,fomichev.me,tipi-net.de,vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email]
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/2] net: stmmac: dwmac4: Read the UC filter size
+ from hardware capabilities
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+ <20260831070121.349778-2-maxime.chevallier@bootlin.com>
+ <2631c832d5aebc56e152628132494545@tipi-net.de>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <2631c832d5aebc56e152628132494545@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue 25-08-26 17:54:14, Jinjie Ruan wrote:
-> Replace the smp_wmb() + WRITE_ONCE(ring->tail) and READ_ONCE(ring->tail)
-> + smp_rmb() barrier pair with smp_store_release()/smp_load_acquire()
-> on `ring->tail`.
+
+
+On 8/31/26 14:04, Nicolai Buchwitz wrote:
+> Hi Maxime
 > 
-> This expresses the publish/subscribe pattern more clearly and allows
-> architectures with native acquire/release instructions (e.g. arm64's
-> STLR/LDAR) to avoid the cost of full one-way barriers (DMB ISHST/ISHLD).
+> On 31.8.2026 09:01, Maxime Chevallier wrote:
+>> dwmac4 has multiple banks of perfect filter entries, independently
+>> configurable during IP integration.
+>>
+>> The multi_addr bank reports a number between 0 and 31 corresponding to
+>> the actual number of entries in that bank, while the 32 and 64 banks
+>> are all-or-nothing.
+>>
+>> Expose these caps over debugfs as well.
+>>
+>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> ---
 > 
-> The release ensures event data written before updating ring->tail is
-> visible to readers that observe the new tail value via acquire, which
-> is exactly the ordering the barrier pair provided.
+>> [...]
 > 
-> No functional change intended.
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+>> index 6382836828ba..89368e34a388 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+>> @@ -176,7 +176,9 @@ enum power_event {
+>>
+>>  /* MAC HW features0 bitmap */
+>>  #define GMAC_HW_FEAT_SAVLANINS        BIT(27)
+>> -#define GMAC_HW_FEAT_ADDMAC        BIT(18)
+>> +#define GMAC_HW_FEAT_MACADR64SEL    BIT(24)
+>> +#define GMAC_HW_FEAT_MACADR32SEL    BIT(23)
+>> +#define GMAC_HW_FEAT_ADDMAC        GENMASK(22, 18)
+>>  #define GMAC_HW_FEAT_RXCOESEL        BIT(16)
+>>  #define GMAC_HW_FEAT_TXCOSEL        BIT(14)
+>>  #define GMAC_HW_FEAT_EEESEL        BIT(13)
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+>> index 23ffe1adcd0d..14ac3f0e51f7 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+>> @@ -388,6 +388,8 @@ static int dwmac4_get_hw_feature(void __iomem *ioaddr,
+>>      dma_cap->half_duplex = (hw_cap & GMAC_HW_FEAT_HDSEL) >> 2;
+>>      dma_cap->vlhash = (hw_cap & GMAC_HW_FEAT_VLHASH) >> 4;
+>>      dma_cap->multi_addr = (hw_cap & GMAC_HW_FEAT_ADDMAC) >> 18;
 > 
-> Assisted-by: DeepSeek:DeepSeek-V3
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Now that ADDMAC has grown from single bit to a mask, the hardcoded 18 has to match
+> dwmac4.h. So IMHO it would make sense to use FIELD_GET() here (like actphyif)?
 
-The patch looks good. Feel free to add:
+It's hardcoded all over, if you look at how all the other fields from the features
+are read. I can change it if you really think it's worth, however I'd rather
+do a proper cleanup of how all the properties are read at once :)
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> 
+>> +    dma_cap->additional_32_addr = (hw_cap & GMAC_HW_FEAT_MACADR32SEL) >> 23;
+>> +    dma_cap->additional_64_addr = (hw_cap & GMAC_HW_FEAT_MACADR64SEL) >> 24;
+>>      dma_cap->pcs = (hw_cap & GMAC_HW_FEAT_PCSSEL) >> 3;
+>>      dma_cap->sma_mdio = (hw_cap & GMAC_HW_FEAT_SMASEL) >> 5;
+>>      dma_cap->pmt_remote_wake_up = (hw_cap & GMAC_HW_FEAT_RWKSEL) >> 6;
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index f2fc89176654..a885f8cfef21 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> @@ -6580,6 +6580,18 @@ static int stmmac_dma_cap_show(struct seq_file *seq, void *v)
+>>          seq_printf(seq,
+>>                 "\tNumber of Additional MAC address registers: %d\n",
+>>                 priv->dma_cap.multi_addr);
+>> +    } else if (priv->plat->core_type == DWMAC_CORE_GMAC4) {
+>> +        seq_printf(seq,
+>> +               "\tNumber of MAC address registers (1-31): %d\n",
+>> +               priv->dma_cap.multi_addr);
+>> +        seq_printf(seq,
+>> +               "\tAdditional 32 MAC address registers (32-63): %s\n",
+>> +               priv->dma_cap.additional_32_addr ? "Y" : "N");
+>> +        seq_printf(seq,
+>> +               "\tAdditional 64 MAC address registers (64-127): %s\n",
+>> +               priv->dma_cap.additional_64_addr ? "Y" : "N");
+>> +        seq_printf(seq, "\tHash Filter: %s\n",
+>> +               (priv->dma_cap.hash_filter) ? "Y" : "N");
+> 
+> hash_filter seems to be only set in dwmac1000_dma.c? So on dwmac4 it would always print N?
 
-Just one nit below:
+Yeah but dwmac4 has a hash filter, but same as the UC filter it's just not plumbed
+in :/
 
-> diff --git a/fs/aio.c b/fs/aio.c
-> index d78acc69f487..4413c82688cc 100644
-> --- a/fs/aio.c
-> +++ b/fs/aio.c
-> @@ -1206,13 +1206,12 @@ static void aio_complete(struct aio_kiocb *iocb)
->  	/* after flagging the request as done, we
->  	 * must never even look at it again
->  	 */
-> -	smp_wmb();	/* make event visible before updating tail */
-> -
-> -	ctx->tail = tail;
-> +	WRITE_ONCE(ctx->tail, tail);
+Let's leave this flag here, hash filter addition for MC filtering is coming-up, so let's not
+drop it now only to re-enable it after, one of the other wonderful discoveries found by
+running the selftests...
 
-I don't thing ctx->tail is accessed anywhere outside of completion_lock so
-I think this WRITE_ONCE is pointless.
+> 
+>>      } else {
+>>          seq_printf(seq, "\tHash Filter: %s\n",
+>>                 (priv->dma_cap.hash_filter) ? "Y" : "N");
+> 
+> Thanks,
+> Nicolai
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Maxime
