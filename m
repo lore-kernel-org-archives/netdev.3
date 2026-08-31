@@ -1,77 +1,133 @@
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE6733938C
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D962C0294;
+	Mon, 31 Aug 2026 11:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788176586; cv=none; b=giZb87kR8h6mukMjZJqBa+mNeGnmRzrUNEUuuHTpOuJp1V8k7oTxQuqO5wckwPxP1RlKyBB4eeJ3YnPNZvrB+vwr1XtcUYfT3KUpqr+E9OXjEO4Ejr2rc3t6OmcFN3NAXzTCkx2yvlTyYs9M26W9GDRo7DUj4sasJNwm5zy6BKc=
+	t=1788176710; cv=none; b=IMwQjRM2Zdu0ZxW5jiZHr/pzFWQWi0l7SX6RR7Ca6nJb38vJtQ4y6LVdyBQ1hMvxY2ZbZXxgq+FuWlugkzcagSjhlQW0JdLMz3db+HcUSVKH43kp6EeWkeRyV+onq06A/b1aC/6Fu84a6VnEFbRY3S9w/fZjmfZVmiR63lqnapk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788176586; c=relaxed/simple;
-	bh=+WX7mQP25t2lxqDFB4cSfx5m9/A1ooQM8MrwPHsLMqE=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=YiFEfvHl7EeWHZ2N+sgyHd8ARnYmSYisBN+AjKiq4Ax8rmRSpx+Pi341f5X7FGrViARuGe/pJpBvwoVJc+3g8G4FbmWIGomhzstmmON5DEstfAAMCFNt3OYEkuiX5D8l4nz7bqTVv7KTHcxQ1oPm78OgZpli+ZN4aVwUEBW96g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e6b59d85dcso6400693a34.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 04:43:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788176583; x=1788781383;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=I5LM+0Pjsyiw43Y9OPRtVO7+pR519d5y9NI1syLmG3Y=;
-        b=WcwKvnCyWhaAdI4bvmKoPMBvstcQPmWSEgzXNMg0oyNYIefnXQis6UVVb76JeOuvhO
-         KxoW0zunGmshJV8/2cW0NL3iQBhgKRC2QtVruHIRo7kz1vIApo7f09HoU/xEhER16VaG
-         BomkxxyfNk07TFYmm+WoW3125FB9N/TPYaUaOtdaW7SJ7uWKQ6HfdVfgUv1HyfNxphnT
-         ObaDMcQRSu1SDjW1L5vdb2tyo7sJ0XGH6qTEz5sggYLGXPGsupdCS9MrJL3Bpn1eD4bw
-         Z0Ek/dksGDgB+PBXjFeHXpsiQIdzDGbnLtTln7lRATvaOTTDKiUE4RvfFsCmm9h2q2Up
-         2ItQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpfBAbT3QT5tcauXYNUdplsgsQ/s9YUWvSDIq7OSVatbFzx45zZPDIBJ59gYncHLoIgynvvA4g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lHVw2Yu5hv66PPXUNLdJAjGtKgoAJtG0nu/atIQlEdiQvUJT4d
-	jAIGfb6y5xH+T0y2bHLgBZYP5mdIZxOVDkcy3jXaGDBzzzIuw3cf2n0ATgqEzN8FA8BHRmLyKrR
-	xhoeWVbUU9O6O05wSuaP4pdaHYKD2/UtFumuEj/yhE2yyJmG19O4VSoi4VkY=
+	s=arc-20240116; t=1788176710; c=relaxed/simple;
+	bh=Pk2HuTXvrj04yvZHTloga/AzYqMYWnPBZNra2rviZCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type:Content-Disposition; b=FtcKl0P4kULUPiX8jsXPOJy5JVD0B6a9GixWBVRYWcQi2EXQO5ZyUU4/ZvnJDaQj1xaIY2uRTXf2IGb+Kzo16ayHiyCcwNn1jA5BKgE/ycqejJ45FFvGn6tAivw3qHYvvk73uakEeTc9AS6YPqyxsOf9tyLjRkPYWhBbXo027SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdUsfKde; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdUsfKde"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196E71F000E9;
+	Mon, 31 Aug 2026 11:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788176708;
+	bh=wGdIvMQDIWqxcyQAeKHe8ucGu5TZhv2BRT1ivpeEVSk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KdUsfKdewDSrrbHIxK3Dnxh1M5Y0JSMeTR7RaY42i0KCGoye7ktLqLHrO3SDqrF7z
+	 LVtu2OqTlRSk5UPoflgkTV4el+A0DFPR4uwHENHf3wsXCg3kmJMBQ/h4/DIZHeD5CT
+	 ilxoQ5bbmf3XrnN6JV1tG+4EP0DETlsslwFyLaFfutB/tiJjRVLMgWgPlsQ8yISWwv
+	 BjT04QENHaW+yBCysjSx8Rm2hKvmq5pdIRKRQDZGVa9oKgkIjFki92RytPJskZC3+p
+	 nZu7mDZWoIlqvT/8flz3bX2akFWmg5YZ+KGsc6wLrxOaTN2lRfoWRfezo5W+KZw2hj
+	 JzDIK7W5MgPKg==
+Date: Mon, 31 Aug 2026 14:45:05 +0300
+From: Konstantin Sinyuk <ksinyuk@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	dri-devel@lists.freedesktop.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jhs@mojatatu.com
+Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
+ infrastructure for scale-up accelerator interconnects
+Message-ID: <fabric-jason-reply.1788176463.ksinyuk@kernel.org>
+References: <cover.1787552412.git.ksinyuk@kernel.org>
+ <apAsfOowcG0cTvT8@FV6GYCPJ69>
+ <apG3Gsk1TeMD-oCc@intel.com>
+ <20260828170301.GA4157646@nvidia.com>
+In-Reply-To: <20260828170301.GA4157646@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:251a:b0:4b3:7c33:456 with SMTP id
- 5614622812f47-4b5b81720ddmr416388b6e.11.1788176583352; Mon, 31 Aug 2026
- 04:43:03 -0700 (PDT)
-Date: Mon, 31 Aug 2026 04:43:03 -0700
-In-Reply-To: <20260831084159.410474-1-junjie.cao@intel.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9568c7.a8e469d2.cbf3.5619.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
-From: syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, davem@davemloft.net, dvyukov@google.com, 
-	edumazet@google.com, elver@google.com, glider@google.com, horms@kernel.org, 
-	jannh@google.com, jhs@mojatatu.com, jiri@resnulli.us, junjie.cao@intel.com, 
-	kasan-dev@googlegroups.com, kuba@kernel.org, liam.howlett@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, pfalcato@suse.de, 
-	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vinicius.gomes@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On Fri, Aug 28, 2026 at 02:03:01PM -0300, Jason Gunthorpe wrote:
+> For something complex like this, if you can't concretetly tie the HW
+> to a net namespace, and follow the net namespace rules for visibility,
+> then it is going to be a painful choice. I speak from alot of rdma
+> experiance where net namespaces have been consistently challenging.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Agreed. The series does not provide meaningful namespace semantics; it
+is host-global and confined to init_net. I would rather make that scope
+explicit than invent per-netns fabric semantics that the hardware does
+not have.
 
-Reported-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
-Tested-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
+Generic Netlink was a practical starting point, and drm_ras established
+the pattern in DRM, but that is a simpler problem and does not settle
+the choice here. A device-fd model like Jiri's may fit visibility and
+access control better, since a global family has no descriptor to check
+against. I would not switch transports based on an early pre-RFC, but I
+no longer consider the transport choice settled.
 
-Tested on:
+> net/ is mainly focused on IP networking, it is where you should be
+> putting the ethernet layer at the bottom of the ua link over ethernet,
+> SUE, or whatever.
 
-commit:         1bb784eb Merge branch 'net-phy-fix-cleanup-after-probe..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=17e3be25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=171ebe25580000
+Agreed. Ethernet PHY, MAC, packet processing and switch routing belong
+in the networking stack, not in DRM or an accelerator driver.
 
-Note: testing is done by a robot and is best-effort only.
+Scale-up can reuse those layers where they fit. What differs is the
+accelerator-facing semantics, even when the underlying transport reuses
+Ethernet. From the accelerator side, a scale-up endpoint behaves more
+like another core in a tightly coupled system than an ordinary NIC.
+
+This series does not duplicate the networking layers. It models
+endpoints, ports, direct adjacency, membership and local state: no
+netdev, packet processing, Ethernet PHY management, route computation
+or switch forwarding.
+
+> There are so many variations of these "scale up" fabrics now, it would
+> probably be appropriate to have one subsystem that aims to work with
+> all of them. It is almost rdma but different enough it probably
+> wouldn't fit well.
+
+Worth testing. I would rather approach that through the minimum common
+object model than start by defining a complete subsystem.
+
+DRM is the current location because the initial providers are DRM and
+accel drivers, not because DRM should own the transport or must be the
+final home. The objects do not depend on GEM, scheduling, display or DRM
+memory semantics.
+
+Switches are the difficult case. A UALink switch is not a DRM device,
+and complete Pod topology may involve information owned by the Pod
+Controller and switch-management plane, not only accelerator drivers.
+If that information has to be represented as first-class objects, DRM
+may not be the right final home.
+
+There is no established common Linux answer for this class of fabric
+yet. I would rather start with the minimum topology objects, test them
+against direct-link and switched implementations, and review the model
+with multiple vendors before deciding its final scope and home.
+
+The LPC BoF is where I want the accelerator, networking and RDMA sides
+in the same room:
+
+  https://lpc.events/event/20/contributions/2412/
+
+Thanks,
+Konstantin
