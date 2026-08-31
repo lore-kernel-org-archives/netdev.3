@@ -1,36 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278E43E557B;
-	Mon, 31 Aug 2026 11:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9573E95B3;
+	Mon, 31 Aug 2026 12:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788177456; cv=none; b=qiU4IKS0LbqfTkWdFvzj//m7XTYxFJ5fUqCi/bdimK74WBZt0/JIcqxjvWy+mBd1g1R/7U0wvcNOSbnmEq1JEg/Eu9Ji3Q4oulo5vq3M+DOxYQNSlZzXdBZLI38vQ4SjZJSI8ixdUW+ow3QZUdwgiJ7EEFpxTIoIYe8L0hPlXpI=
+	t=1788177637; cv=none; b=nqmlzJZ0BfWuN8dFyblSkQk9N1tEoT6b4WAl+uYKNu7z6jVieXMVUGLNubavshPDWq6cgFSy0Ze3FPNrCaniTMED9h6lqRFOabcoxocpHsFnxQY14YbcYMzwfDI/4/cUp/mkxhQ6d1sCJ2HpF3HzkEaOfqaHrgegNJW337CD+d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788177456; c=relaxed/simple;
-	bh=DKcd3qP5aTbb6xzcZWi4DE81YdIlR6DchWbe0l64JC0=;
+	s=arc-20240116; t=1788177637; c=relaxed/simple;
+	bh=xAdhCc0paO/fytdIN1fc/MKKx/Rnq96c31nUcTqEQVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KjMG0ZtwgQeg7y++vkh4R6Wr5Mzy679QfWWn7VWe1PvAOtalj+Vkk+wP82gnIr/ltNSA2s1vNZJE8z0cptJqZdFL/+5hGTTxEV5mlHZo5bzAoTSBh8NUJM6l0MrmwS6S9THDmK3C98/W0UmA23ceEJvpCaCiie257OVmY/QUvBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnw60PBE; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=RtIhhaG+KbduDaOikaXcj0Nr5lB6x+Xr2Jn9BiZkK8Q1d1OhlRGRtomczi0J8rr/znLpxHI1Johts6I1GU7MC12Az91f/MqfDUwdtwZ+EJaj4G998Mqk7hHPZ/JTaetH1t8xIOHb/l5O25ZVZw6rOUnyVKDyVzlfFzhKbUHz7WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FQbhnm13; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnw60PBE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A131F000E9;
-	Mon, 31 Aug 2026 11:57:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1788177454;
-	bh=DKcd3qP5aTbb6xzcZWi4DE81YdIlR6DchWbe0l64JC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bnw60PBE826dBDUjT6a+KmUm/Sm3W4vGrj6tQzjfenA3paEWBf41bTW0LbCZn9Fd5
-	 +m+CCbzpa/w0S+vOL2b4wFKFiiuHmEfnTX/rnSPN51Z15L4Lzv/tMPx1YcGObdHIJ5
-	 GIfRr7dI/ON2RmH1bE8hbnWeNZHzZVims6C29r5s=
-Date: Mon, 31 Aug 2026 13:57:31 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexandre Bard <alexandre.bard@belden.com>
-Cc: stable@vger.kernel.org, sashal@kernel.org, justin.iurman@gmail.com,
-	kuba@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 6.12] net: ioam6: fix OOB and missing lock
-Message-ID: <2026083122-chalice-shading-bb56@gregkh>
-References: <20260825140732.220188-1-alexandre.bard@belden.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FQbhnm13"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=WAZal6+xHJOTQwuOWV0TumF+JZTtf0e2mPahMt/Ni5M=; b=FQbhnm1386Y9m1L/TOZuWY7xOy
+	vo/5ZJJBfyExb/b2EP/jFdCuO03pcnfNoaVEHgA9wi2C0L2qrRE0BV+D9wgr+L1MSQJGrAV5fjCQh
+	ryfAxVAjkIipeq8B6G4CQhWlfhtHXxZjUuDSP+1TDYCBpP66xth4mmWAKqgvez3FvYA4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x10gU-002AVq-Op; Mon, 31 Aug 2026 14:00:18 +0200
+Date: Mon, 31 Aug 2026 14:00:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: wei.fang@oss.nxp.com
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	olteanv@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 03/15] net: enetc: add link status message
+ support to PF driver
+Message-ID: <bd07a661-857f-421a-9ff0-e807aade9543@lunn.ch>
+References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
+ <20260831025441.635045-4-wei.fang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,11 +48,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260825140732.220188-1-alexandre.bard@belden.com>
+In-Reply-To: <20260831025441.635045-4-wei.fang@oss.nxp.com>
 
-On Tue, Aug 25, 2026 at 02:07:32PM +0000, Alexandre Bard wrote:
-> **********************************************************************
-> DISCLAIMER:
-> Privileged and/or Confidential information may be contained in this message. If you are not the addressee of this message, you may not copy, use or deliver this message to anyone. In such event, you should destroy the message and kindly notify the sender by reply e-mail. It is understood that opinions or conclusions that do not relate to the official business of the company are neither given nor endorsed by the company. Thank You.
+On Mon, Aug 31, 2026 at 10:54:29AM +0800, wei.fang@oss.nxp.com wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> Add link status message support to the PF driver using three command IDs
+> under message class 0x80 (ENETC_MSG_CLASS_ID_LINK_STATUS):
+> 
+> 1. ENETC_MSG_GET_CURRENT_LINK_STATUS (cmd_id 0)
+> The VF queries the current PF link status synchronously. This command is
+> not used by the Linux VF driver but is intended for DPDK-owned VFs.
+> 
+> 2. ENETC_MSG_REGISTER_LINK_CHANGE_NOTIFIER (cmd_id 1)
+> The VF registers for link change notification. Upon registration, the PF
+> immediately notifies the VF of the current link status via a PSI-to-VSI
+> message, and continues to do so on every subsequent link state change.
+> 
+> 3. ENETC_MSG_UNREGISTER_LINK_CHANGE_NOTIFIER (cmd_id 2)
+> The VF unregisters from link change notification.
+> 
+> For link status message, the PSI-to-VSI message is 16 bits wide: the
+> upper 8 bits carry the message class ID, and the lower 8 bits carry the
+> class code. Bit 0 of the class code indicates the link state (1 = link
+> down, 0 = link up), and bit 1 indicates whether TX PAUSE is enabled on
+> the PF (1 = enabled, 0 = disabled).
+> 
+> The TX PAUSE state is included because VF RX BD rings support congestion
+> mode, but whether the hardware can actually send PAUSE frames depends on
+> whether TX PAUSE is enabled on the PF. By conveying the PF TX PAUSE state
+> in the link status message, the VF can determine whether to enable
+> congestion mode on its RX BD rings.
 
-Now deleted.
+I see you have hit the 15 patch limit. Do you have a patch in the next
+series implementing ethtool get and set pause?
+
+	Andrew
