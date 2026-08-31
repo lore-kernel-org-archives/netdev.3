@@ -1,71 +1,82 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010064.outbound.protection.outlook.com [52.101.61.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975DA52BE5E
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 15:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788188932; cv=none; b=BWuSURB6EbJJccA938HCcinlABS+WnDWgJ6fEDmSZwQHaNsDQjAoesz6MYc1ni5h7UVyHuMXQz/dT97lTtwfkIC1YXbAxRtOtIAwf8eCwfsvLIRDvOqorh4iAOCWhdm0asWxWNtcrEZmUeY4hqhWijjDNlq7S4RXvNMp61wKrCs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788188932; c=relaxed/simple;
-	bh=ecmzfmpLA7v9AOguFs5px38N1o5JcKzN8AoLIphylZc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=seEQsHdufBkokhFtS30kaS/546EDMaOEmyt0FzCFNpOeukbuoAYFx63c9TNLAbUsrhvwCb1Ol/DQEymkZCpbVPiGEW5Fbe0MC9DrnWMNH5KqwUiicHMSkfX9BNWiSa412lgejfydexsrRPexc9NeKUYwOF7KHE6YrCAFQ2nAgec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rGVqgrr8; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C407424D75;
+	Mon, 31 Aug 2026 15:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788188936; cv=fail; b=otGme2tPFLPTVS0HZoTCgXUTtRj/m3j9rXqf9cpeD9mJNpYz7m0ImITfsMMk4Tqr1+ZnGPSkkQhgIiM4iK555r/KNm+fGJ6bdAT8EY8xGs8+PCl1+nwIu9qAgNqW1F0VU50dKnpvr0i56VysT6Ti65Af1ok/pUda6tclhqlJYek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788188936; c=relaxed/simple;
+	bh=VIX5ew6TeXbgJcm1xrlvnyFqXq7JOdeokaoToY1bFBY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=euREgL+NLO4JTWP87Zg9FGWido+oF9r2H726xMK1PQhdvyIXq6QdIDUGErWldwkpJVnhOotWmN806eMmQaSYHFuPzPTpiLr6G6RR4WZ/umSB4rQxdgrXyY8aBzrIJmJ7kysSlyh4dk/FOflfOqfJPjLBY2CQYNi1l3NgPWu1RWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2KpdFQJc; arc=fail smtp.client-ip=52.101.61.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rGVqgrr8"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VEZFwS2415072;
-	Mon, 31 Aug 2026 15:08:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=uqOm4tOKPbmm/mcSe
-	kaGkc7Pu4WJGbBsMyikMhEw9wM=; b=rGVqgrr8ZmO/RFiglc4Gq1+iiF4R8CgJd
-	tzfKwHKVoTIec7EnwntEgPRr/LuexXUyEYlUWvB/4I+Wqj7cYIwTdPHfcBfj8LKs
-	TrAVdZqI3XwYS1bZgLkvkkoKMX0waiXM8UowXcphyL0iOolisXhLumpiHsFKfVnv
-	tT75Jk9A6q6YzTNf2TwgIPKguolGO12da0OItpMjMHM4mEwH8DDLogc+p4F5oCNi
-	7EtEcG/lkhQyKACZW1JT4SLCCzxeldFKvriJJBR0JH0MwiJDAGeRJ096SW1cAhDL
-	804pBRauqjkJ7WzmPLgUpfK7Pj0uVt+98dutvC6IHzt1bd2kRC/WA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbmuhj8xw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:34 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VEuW2s005753;
-	Mon, 31 Aug 2026 15:08:34 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcb8h6g3w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:34 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VF8UE626608344
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 15:08:30 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AEE1D5805A;
-	Mon, 31 Aug 2026 15:08:30 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2DDF258051;
-	Mon, 31 Aug 2026 15:08:26 +0000 (GMT)
-Received: from 192.168.1.50 (unknown [9.67.102.143])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 15:08:25 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
-        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com, Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next v6 07/15] ibmveth: Add RX queue register helpers for MQ
-Date: Mon, 31 Aug 2026 08:07:18 -0700
-Message-Id: <7684dce6d5255707047bac2ad1ede2e638a99f69.1788102125.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <cover.1788102125.git.mmc@linux.ibm.com>
-References: <cover.1788102125.git.mmc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2KpdFQJc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=axzU6w+mWPNx2ZJYLZmjXGvqnirp4+5cCfBWssW1C2n44MLJoucj+n1/ixIdNpvbfwynD4/VY02ilDNkXH2GIiykyd6hYZZBC4fgNzBZCu5F8pkcGEzibJt9bduANXhDKtbeJp+4Wk3VACqPLkjpyKjn1nXryWjrVd5Ozp4YXe/a7iRUXJ8iNv0f/OnjcK6BejqnCYo7N9Xls2E87bjGuY9qMvvj9OuNjuqGEbQpmPZ7ItrsmhWxtZzH6fo1RIQfj+asiFtYysl3lFfydfzmSCdpquaJyuNaVUAuLR2ow+xx1dKpwiQebvFElvoYlbnlIfi0KkmwXDEFaKVQVWaBsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gT4nkNMlS/dPWW+UPepkc4Yl+dRYGFrp3zHyokX2lQQ=;
+ b=hsSq5fM6R3RAhNp9qUmXu/Zr4lzMXCmhxDPuYjUAd96RKs9ChiAQKLWjirViejHOu5T9ctvc/MH3b/PCx8q22wXcKjV1Y8M5kEgqGU9SmyVKxZXbGcE9OId1bsaKgMGoho186Zhg6jA3H7PpQPJ9TrwREASkvVCt3g4bv9bJGH8xk5j1FB15uDd6I6EeYGi2C61nPt/Ru+hN1GVD8o3tCRO1egUkEq4Q0r0tEZGSG31nA+A/3t++3WSGQqyRnlir0Es1Dt7FnVsvLtkA4Jf7/ZnABiPhwS217DFZa2OvDgF1/IMniVdiQUzxKsX9waRAnwjdoXIEncR6x6u5+B8s0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gT4nkNMlS/dPWW+UPepkc4Yl+dRYGFrp3zHyokX2lQQ=;
+ b=2KpdFQJcLe3JWkC5AdQu+sWCs8pPkw9hcZCzXPAaqVcN2+OFU8AJasmlm8zcoxwYR6phOxdNCt2rnBd+lpkM7zckKT4/QCk2d7V7vhYT0vpyeEnIGcNe999tuHunYtLF2UVr4DqoGu+7NxjBboDyRw2dUYEPxnGWB0Jp/W9C3PY=
+Received: from SJ0PR13CA0106.namprd13.prod.outlook.com (2603:10b6:a03:2c5::21)
+ by BN7PPFA8145BD40.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6de) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 15:08:49 +0000
+Received: from SJ5PEPF000001EF.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::77) by SJ0PR13CA0106.outlook.office365.com
+ (2603:10b6:a03:2c5::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Mon,
+ 31 Aug 2026 15:08:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001EF.mail.protection.outlook.com (10.167.242.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Mon, 31 Aug 2026 15:08:49 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
+ 2026 10:08:30 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
+ 2026 10:08:31 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Mon, 31 Aug 2026 10:08:26 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH net-next v3 2/6] dt-bindings: net: xlnx,xxv-ethernet: Add Xilinx XXV 10G/25G Ethernet
+Date: Mon, 31 Aug 2026 20:38:12 +0530
+Message-ID: <20260831150816.1020883-3-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260831150816.1020883-1-suraj.gupta2@amd.com>
+References: <20260831150816.1020883-1-suraj.gupta2@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,363 +84,177 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: bGBqVSqImYemRSWYYowK5CoQiSNrUQMP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfX/zF4cLlclfk4
- 6u9Ebh6cETL/AjMAha0I5IxDG484QVyf7pJcdFDQeRfuMj4fjc2A0yZyi6MU5S3Fh9rsChzHMk3
- vyZz4JEGhZY7gMTSDT687HQzy6uYbwTS1GkWCXjN1Ebf79dlKUpkmBKLFpcF4a9NKMSdsIv8sN/
- SfnwG+9Kk0/4VKS61qdAO/yHR6K2ZGBmBuUEpxpecvUbO1Gj1DZYj2Rsk6vkYKg4IFlPs5+Uz6b
- GleZ4YT/Oz4rQYaY1x3K04IfIkKqHJarPGwpusM6uQwd2O/33dgmigQqA6SMOFt3v5GhXE62Iek
- wpLlsYXVeSA6EG/VPRWT+ej+skVX6BsQB38crMv7hPWFWDAD5Sy7YC9M6wg3whXFpnWwq9gYs/+
- wcVPZWCtUAb8819VH4LKrOd3rNbOpcnimo6Ebj6fvzMDy0ij/R/L5IBUKW3qHYZB3i88S8jXHpn
- Z+9BsZgiZKZ9kAoPa2A==
-X-Authority-Analysis: v=2.4 cv=Osl/DS/t c=1 sm=1 tr=0 ts=6a9598f3 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=qhGsbuW5snZ5JCOQXLEA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfXyY8HyqhWXlOs
- G025AX2CYNAWgE1BCdirhSzyqdauQzD/dXKNYhnFrWRB2ZH5mwf8PLzsx5vhY3HBIApOFlP6heK
- 9wn9DSmBqEdKPtuBFMCSa4aluHccxEE=
-X-Proofpoint-ORIG-GUID: 2ek-muUrTHCs-5iVjkO8pTOiXIslfTQL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_05,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310130
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EF:EE_|BN7PPFA8145BD40:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c895dcc-b62f-4778-370a-08df0771c2f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|23010399003|36860700016|13003099007|921020|3023799007|56012099006|10067099003|22082099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	alebvt4q02tvjRjNMUoLOBk1hwdRdhg71bteeCb1UMOtaSGgUPfkKfGLhq/UmbgDae8S4iuIAwld2kpjoQDcvG9WDQJyAvFj7EQ7insNo7N1fz/50xbxHOS97iqkDi/stC6gPFaOw+EWe9tS2z/RcLPvuti8leaYLKz1ZTkft/NVRzuXagFRuF8KKeYin71kjXIMTkLNy+ICG65uet25/XeYoJDRiSnPHhx7dV5rGceqY0bUbPfUViCtJ5da8ODHb7zggj8d/zJWz3AuyH/zFEi9VNKCSteGxeRBvHX6jggJoKYKuQfzgq38jF1vFVuGvVjMlekk58NZq/law9DMUwo4LIgEQl0U/WVx5zscU9Ov4xF9WI1fHKcxbMNM6aP5AqAyuk/YPpVph5U4UG6PqCxqadqn1RuMVtZJD4q9EtFKCd6YX/XAxR0a1BduGzjumFPSWyuZKaoMrtb1WRa4vjHSJIHjNJEh5N8FOqmcjoMlQmdu3kekflO7pKntocPX56aWlaL7HxBVEn1RwtDI7a5UAf3nZLd+Cjeqo6a5CSDbsN/ma0oxagTds8qLjcAZwZcKbPoxlXrGn9XKoRZfYyyyb1QKudad28ByQy6XJ3NhZIiqCpFg2+3mBKu8OuiRCEVExrNSCVeMtiqFLy4up0GFzWFdr+KjsQDunJ23vCIYQ6NTV3b8dCvOiPne2+DWto/cPqQ7Absw0w9X0m6q6w==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(23010399003)(36860700016)(13003099007)(921020)(3023799007)(56012099006)(10067099003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	wETLs0F1nPKEH4vTJIz68h8msWCPRjtdgkwH5oXHF4/anp//6ZOFoK9Jf1Ilfow5jaq+hKhrlC4eEGqSZ56g6HZPJ8s1YjEyZH/Ch3rrsaGHniykLsSG8TMO4hIeGCF4dqQhqRvEQAx4QqFtAyiK+E+uylJbu4UmWW7LgZQSorKJVMPgQyNXvWY8YCuCQaSwN7xlQX7KvEWmWR6szexg6e7g4BNeXUndkLuNpemfcXv7MH0kb6OiVzPGBnDcb2SOs4lOXjczkOzTEpGNES7k8EeC+YOS4z6wpyn4ibuTK/0/l7HiTh2NWU1It6j4/fMw2GT0UUiQaoJ5ofWyv+ipu6f72EUvb6mlxYLhwcTJaAJ76zVXgsBgGCsyY58/FCPpZeA1QAMZr+PdrMrYUrpn1G09/mJZ02/vU154kM+CGKQ5QR6yTTssKQmKwKBuFXic
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 15:08:49.2357
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c895dcc-b62f-4778-370a-08df0771c2f4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001EF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFA8145BD40
 
-MQ RX changes the RX queue lifecycle from one adapter-level
-register/free pair into a mixed model: queue 0 is registered through
-h_register_logical_lan*(), queues 1..N through
-H_REG_LOGICAL_LAN_QUEUE. The queue-0 control plane that open() and
-close() use today has to come out into helpers first, so the
-subordinate paths have somewhere to attach when MQ RX is enabled.
+The XXV Ethernet IP integrates a 10G/25G Ethernet MAC with an in-core
+PCS/PMA driving a high-speed serial transceiver. Its payload is moved by
+an external AXI DMA (or multichannel DMA) controller referenced through
+the dmas/dma-names properties. Document the IP in a dedicated schema
+file.
 
-Extract logical LAN registration and queue teardown into dedicated
-helpers:
+Add the "xlnx,xxv-ethernet-1.0" compatible with the 10gbase-r and
+25gbase-r phy-modes, the rx_core/drp/s_axi clocks and the AXI DMA
+channel properties.
 
-  ibmveth_register_logical_lan()
-  ibmveth_register_rx_queues()
-  ibmveth_free_all_queues()
-
-Runtime stays single-queue here. adapter->multi_queue is still false
-until MQ RX is enabled, so queue 0 keeps the legacy
-h_register_logical_lan() flow, the with_handle arm is not yet
-reachable, and no subordinate queue is registered.
-
-ibmveth_register_logical_lan() registers queue 0 with PHYP. When
-multi-queue mode is active it uses h_register_logical_lan_with_handle()
-and stores the handle only on H_SUCCESS, so a failed attempt leaves no
-stale handle behind.
-ibmveth_register_rx_queues() is the open()-side entry point: it builds
-queue 0's buffer descriptor, records queue 0's virq in queue_irq[0],
-masks that IRQ before registration, and calls
-ibmveth_register_logical_lan(). It registers queue 0 only.
-ibmveth_free_all_queues() issues one H_FREE_LOGICAL_LAN and clears all
-queue handles. One hypercall is enough because H_FREE_LOGICAL_LAN is a
-full teardown: per PAPR/PHYP it drops the primary LAN and any
-subordinate queues registered under it. Close and the open-fail unwind
-both rely on that. Incremental scale-down cannot, and issues
-H_FREE_LOGICAL_LAN_QUEUE per queue instead; that path arrives with
-resize.
-
-open() allocates buffer pools before PHYP registration so a pool-fail
-path never has a live LAN. Post-register errors still unwind through
-ibmveth_free_all_queues().
-
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 ---
+ .../bindings/net/xlnx,xxv-ethernet.yaml       | 107 ++++++++++++++++++
+ MAINTAINERS                                   |   1 +
+ 2 files changed, 108 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
 
-Changes in v6:
-- drop the eight hypercall counters, struct ibmveth_hcall_stats, and
-  the adapter field. Only reg_lan and free_lan had writers here;
-  none of the eight had a reader. The ethtool -S keys v5 added in
-  patch 11 are gone with them. This patch no longer touches ibmveth.h
-- trace LAN registration and the free retry with netdev_dbg() (open/
-  close/resize, not per packet). Teardown already uses netdev_err()
-- document free_all_queues() log-and-continue in its kdoc, including
-  that queue_handle[] is cleared whatever the hypercall returned
-- noted: queue 0 handle is stored only on H_SUCCESS
-- noted: body drops the out_unregister_queues walk and the
-  unconditional PHYP-vs-pools guarantee
-
-Changes in v5:
-- Document H_FREE_LOGICAL_LAN full-teardown contract in kdoc/changelog:
-  one free_lan drops primary + any subordinate queues
-  (H_FREE_LOGICAL_LAN_QUEUE is for incremental scale-down only) - v4
-  helper text did not spell the subordinate semantics
-- Call out close() update_rx_no_buffer() before free_lan as intentional
-  last-glimpse accounting while the LAN is still registered (order
-  already in v4; v4 step list omitted it); NULL-safe per-queue form
-  lands with MQ enablement
-- opened / rx_irq_setup idempotent close is owned by the IRQ-helper
-  patch (same failed-reopen / second napi_disable hang raised here)
-- Poll re-arm during teardown not claimed here (same race as IRQ patch;
-  lands with poll harden)
-
-Changes in v4:
-- Introduce register/free helpers in the same patch that wires their
-  first open/close callers; keep subordinate-only helpers deferred
-  until MQ enablement.
-- Introduce adapter->hcall_stats here (first use); not in patch 2.
-- Correct open/close unwind so free_all_queues() precedes
-  free_buffer_pools().
-- Drop the orphaned big-bang "open/close pipeline" patch from v3; that
-  wiring is incremental across helper patches 3-7 instead.
-
- drivers/net/ethernet/ibm/ibmveth.c | 174 +++++++++++++++++++++--------
- 1 file changed, 128 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 7a420e1a41d5..465330464f91 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1289,9 +1289,14 @@ static void ibmveth_free_tx_resources(struct ibmveth_adapter *adapter)
- }
- 
- static int ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
--        union ibmveth_buf_desc rxq_desc, u64 mac_address)
-+					union ibmveth_buf_desc rxq_desc,
-+					u64 mac_address)
- {
- 	int rc, try_again = 1;
-+	unsigned long ua = adapter->vdev->unit_address;
-+	unsigned long buf_dma = adapter->buffer_list_dma[0];
-+	unsigned long filter_dma = adapter->filter_list_dma;
-+	unsigned long qh0;
- 
- 	/*
- 	 * After a kexec the adapter will still be open, so our attempt to
-@@ -1299,14 +1304,29 @@ static int ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
- 	 * try again, but only once.
- 	 */
- retry:
--	rc = h_register_logical_lan(adapter->vdev->unit_address,
--				    adapter->buffer_list_dma[0], rxq_desc.desc,
--				    adapter->filter_list_dma, mac_address);
-+	/* In multi-queue mode, obtain a queue handle for queue 0 so all RX
-+	 * queues can use the same per-queue buffer hypercalls.
-+	 */
-+	if (adapter->multi_queue) {
-+		rc = h_register_logical_lan_with_handle(ua, buf_dma,
-+							rxq_desc.desc,
-+							filter_dma,
-+							mac_address,
-+							&qh0);
-+		if (rc == H_SUCCESS)
-+			adapter->queue_handle[0] = qh0;
-+	} else {
-+		rc = h_register_logical_lan(ua, buf_dma, rxq_desc.desc,
-+					    filter_dma, mac_address);
-+	}
-+	netdev_dbg(adapter->netdev, "h_register_logical_lan%s rc=%d\n",
-+		   adapter->multi_queue ? "_with_handle" : "", rc);
- 
- 	if (rc != H_SUCCESS && try_again) {
- 		do {
- 			rc = h_free_logical_lan(adapter->vdev->unit_address);
- 		} while (H_IS_LONG_BUSY(rc) || (rc == H_BUSY));
-+		netdev_dbg(adapter->netdev, "h_free_logical_lan rc=%d\n", rc);
- 
- 		try_again = 0;
- 		goto retry;
-@@ -1315,14 +1335,97 @@ static int ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
- 	return rc;
- }
- 
-+/**
-+ * ibmveth_free_all_queues - Free all RX queues at once
-+ * @adapter: ibmveth adapter structure
-+ *
-+ * Issues one H_FREE_LOGICAL_LAN for full adapter teardown. Per PAPR/PHYP,
-+ * that drops the primary LAN and any subordinate queues registered under
-+ * it. Incremental scale-down uses H_FREE_LOGICAL_LAN_QUEUE per queue
-+ * instead; do not use this helper for partial live-set shrink.
-+ *
-+ * Used during interface close and registration error cleanup.
-+ *
-+ * Retries only H_BUSY and H_IS_LONG_BUSY. On other failures, logs and
-+ * returns; callers cannot observe hypercall status. queue_handle[] is
-+ * cleared regardless. Callers still run RX pool and DMA teardown
-+ * afterward (same as pre-helper close()).
-+ *
-+ * Clears queue handles only; queue_irq[] is released by
-+ * ibmveth_cleanup_rx_interrupts().
-+ */
-+static void ibmveth_free_all_queues(struct ibmveth_adapter *adapter)
-+{
-+	unsigned long lpar_rc;
-+	int i;
+diff --git a/Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
+new file mode 100644
+index 000000000000..2be3ade11d46
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
+@@ -0,0 +1,107 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/xlnx,xxv-ethernet.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	netdev_dbg(adapter->netdev, "freeing all RX queues at once\n");
++title: Xilinx XXV 10G/25G Ethernet Subsystem
 +
-+	do {
-+		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
-+	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
++maintainers:
++  - Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
++  - Suraj Gupta <suraj.gupta2@amd.com>
 +
-+	if (lpar_rc != H_SUCCESS) {
-+		netdev_err(adapter->netdev,
-+			   "h_free_logical_lan failed: %ld\n", lpar_rc);
-+	}
++description:
++  The Xilinx XXV Ethernet Subsystem implements a 10G/25G Ethernet MAC with an
++  in-core PCS/PMA driving a high-speed serial transceiver. It supports the
++  10GBASE-R and 25GBASE-R line rates, with 25G operation following the 25G
++  Ethernet Consortium specification. It has no external MDIO PHY, and its
++  payload is moved by an external AXI DMA (or multichannel DMA) controller
++  referenced through the "dmas" property.
 +
-+	for (i = 0; i < adapter->num_rx_queues; i++)
-+		adapter->queue_handle[i] = 0;
-+}
++properties:
++  compatible:
++    const: xlnx,xxv-ethernet-1.0
 +
-+/**
-+ * ibmveth_register_rx_queues - Register RX queues with hypervisor
-+ * @adapter: ibmveth adapter structure
-+ * @mac_address: MAC address for device registration
-+ *
-+ * Registers queue 0 via ibmveth_register_logical_lan(). Subordinate queue
-+ * registration is added when multi-queue RX is enabled.
-+ *
-+ * Return: 0 on success, -ENONET if queue 0 registration fails
-+ */
-+static int
-+ibmveth_register_rx_queues(struct ibmveth_adapter *adapter, u64 mac_address)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+	union ibmveth_buf_desc rxq_desc;
-+	unsigned long lpar_rc;
-+	int rc;
++  reg:
++    maxItems: 1
++    description: MAC control and status register space.
 +
-+	rxq_desc.fields.flags_len = IBMVETH_BUF_VALID |
-+				    adapter->rx_queue[0].queue_len;
-+	rxq_desc.fields.address = adapter->rx_queue[0].queue_dma;
-+	adapter->queue_irq[0] = netdev->irq;
++  clocks:
++    items:
++      - description: RX AXI4-Stream clock.
++      - description: GT DRP clock.
++      - description: AXI4-Lite register clock.
 +
-+	rc = ibmveth_disable_irq(adapter, 0);
-+	if (rc)
-+		netdev_dbg(netdev,
-+			   "Failed to disable IRQ for queue 0 before registration, rc=%d\n",
-+			   rc);
++  clock-names:
++    items:
++      - const: rx_core
++      - const: drp
++      - const: s_axi
 +
-+	lpar_rc = ibmveth_register_logical_lan(adapter, rxq_desc, mac_address);
-+	if (lpar_rc != H_SUCCESS) {
-+		netdev_err(netdev,
-+			   "h_register_logical_lan failed: %ld\n", lpar_rc);
-+		netdev_err(netdev,
-+			   "buffer TCE:0x%llx filter TCE:0x%llx rxq desc:0x%llx MAC:0x%llx\n",
-+			   adapter->buffer_list_dma[0],
-+			   adapter->filter_list_dma,
-+			   rxq_desc.desc, mac_address);
-+		return -ENONET;
-+	}
++  phy-mode:
++    enum:
++      - 10gbase-r
++      - 25gbase-r
 +
-+	netdev_dbg(netdev,
-+		   "registered 1 RX queue with hypervisor (single-queue mode)\n");
-+	return 0;
-+}
++  xlnx,rxmem:
++    description:
++      Size in bytes of the Rx/Tx packet buffer memory built into the IP. It is
++      fixed by the hardware design and bounds the largest frame (jumbo MTU) the
++      device can accept.
++    $ref: /schemas/types.yaml#/definitions/uint32
 +
- static int ibmveth_open(struct net_device *netdev)
- {
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
--	u64 mac_address;
-+	u64 mac_address = ether_addr_to_u64(netdev->dev_addr);
- 	int rxq_entries = 1;
--	unsigned long lpar_rc;
- 	int rc;
--	union ibmveth_buf_desc rxq_desc;
- 	int i;
++  dmas:
++    minItems: 2
++    maxItems: 32
++    description: TX and RX DMA channel phandle.
++
++  dma-names:
++    items:
++      pattern: "^[tr]x_chan([0-9]|1[0-5])$"
++    description:
++      Should be "tx_chan0", "tx_chan1" ... "tx_chan15" for DMA Tx channel and
++      "rx_chan0", "rx_chan1" ... "rx_chan15" for DMA Rx channel.
++    minItems: 2
++    maxItems: 32
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - phy-mode
++  - xlnx,rxmem
++  - dmas
++  - dma-names
++
++allOf:
++  - $ref: /schemas/net/ethernet-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  # Single AXI DMA channel pair
++  - |
++    ethernet@80000000 {
++        compatible = "xlnx,xxv-ethernet-1.0";
++        reg = <0x80000000 0x10000>;
++        clock-names = "rx_core", "drp", "s_axi";
++        clocks = <&rx_clk>, <&drp_clk>, <&axi_clk>;
++        dma-names = "tx_chan0", "rx_chan0";
++        dmas = <&axi_dma 0>, <&axi_dma 1>;
++        phy-mode = "25gbase-r";
++        xlnx,rxmem = <0x8000>;
++    };
++  # Multichannel DMA (MCDMA) with multiple Tx/Rx channels
++  - |
++    ethernet@80010000 {
++        compatible = "xlnx,xxv-ethernet-1.0";
++        reg = <0x80010000 0x10000>;
++        clock-names = "rx_core", "drp", "s_axi";
++        clocks = <&rx_clk>, <&drp_clk>, <&axi_clk>;
++        dma-names = "tx_chan0", "tx_chan1", "rx_chan0", "rx_chan1";
++        dmas = <&axi_mcdma 0>, <&axi_mcdma 1>,
++               <&axi_mcdma 16>, <&axi_mcdma 17>;
++        phy-mode = "10gbase-r";
++        xlnx,rxmem = <0x8000>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2d420d40782e..8160a8ddec65 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29557,6 +29557,7 @@ XILINX AXI ETHERNET DRIVER
+ M:	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
++F:	Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
+ F:	drivers/net/ethernet/xilinx/xilinx_axienet*
  
- 	netdev_dbg(netdev, "open starting\n");
-@@ -1338,37 +1441,23 @@ static int ibmveth_open(struct net_device *netdev)
- 	if (rc)
- 		goto out_free_filter_list;
- 
--	mac_address = ether_addr_to_u64(netdev->dev_addr);
--
--	rxq_desc.fields.flags_len = IBMVETH_BUF_VALID |
--					adapter->rx_queue[0].queue_len;
--	rxq_desc.fields.address = adapter->rx_queue[0].queue_dma;
--
--	adapter->queue_irq[0] = netdev->irq;
--	ibmveth_disable_irq(adapter, 0);
--
--	lpar_rc = ibmveth_register_logical_lan(adapter, rxq_desc, mac_address);
--
--	if (lpar_rc != H_SUCCESS) {
--		netdev_err(netdev, "h_register_logical_lan failed with %ld\n",
--			   lpar_rc);
--		netdev_err(netdev, "buffer TCE:0x%llx filter TCE:0x%llx rxq "
--			   "desc:0x%llx MAC:0x%llx\n",
--				     adapter->buffer_list_dma[0],
--				     adapter->filter_list_dma,
--				     rxq_desc.desc,
--				     mac_address);
--		rc = -ENONET;
-+	rc = ibmveth_alloc_buffer_pools(adapter);
-+	if (rc)
- 		goto out_free_queue_mem;
--	}
- 
--	rc = ibmveth_alloc_buffer_pools(adapter);
-+	rc = ibmveth_register_rx_queues(adapter, mac_address);
- 	if (rc)
--		goto out_unregister_lan;
-+		goto out_free_buffer_pools;
-+
-+	rc = netif_set_real_num_rx_queues(netdev, adapter->num_rx_queues);
-+	if (rc) {
-+		netdev_err(netdev, "failed to set number of rx queues\n");
-+		goto out_unregister_queues;
-+	}
- 
- 	rc = ibmveth_setup_rx_interrupts(adapter);
- 	if (rc)
--		goto out_unregister_lan;
-+		goto out_free_all_queues; /* setup already disposed IRQs */
- 
- 	netdev_dbg(netdev, "initial replenish cycle\n");
- 	ibmveth_schedule_rx_queue(adapter, 0);
-@@ -1386,10 +1475,12 @@ static int ibmveth_open(struct net_device *netdev)
- 
- out_cleanup_rx_interrupts:
- 	ibmveth_cleanup_rx_interrupts(adapter);
--out_unregister_lan:
--	do {
--		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
--	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
-+	goto out_free_all_queues; /* cleanup already disposed IRQs */
-+out_unregister_queues:
-+	ibmveth_dispose_subordinate_irq_mappings(adapter);
-+out_free_all_queues:
-+	ibmveth_free_all_queues(adapter);
-+out_free_buffer_pools:
- 	ibmveth_free_buffer_pools(adapter);
- out_free_queue_mem:
- 	ibmveth_cleanup_rx_resources(adapter);
-@@ -1402,7 +1493,6 @@ static int ibmveth_open(struct net_device *netdev)
- static int ibmveth_close(struct net_device *netdev)
- {
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
--	long lpar_rc;
- 
- 	/* Gate on opened, not IFF_UP: pool_store/change_mtu close+open can
- 	 * leave IFF_UP set after a failed reopen.
-@@ -1424,15 +1514,7 @@ static int ibmveth_close(struct net_device *netdev)
- 	synchronize_net();
- 
- 	ibmveth_update_rx_no_buffer(adapter);
--	/* Full LAN teardown (subordinates arrive with register helpers). */
--	do {
--		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
--	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
--	if (lpar_rc != H_SUCCESS) {
--		netdev_err(adapter->netdev,
--			   "h_free_logical_lan failed with %lx, continuing\n",
--			   lpar_rc);
--	}
-+	ibmveth_free_all_queues(adapter);
- 	/* Free TX LTBs after quiesce and after H_FREE_LOGICAL_LAN so xmit
- 	 * cannot touch unmapped bounce buffers while the LAN is live.
- 	 */
+ XILINX CAN DRIVER
 -- 
-2.50.1 (Apple Git-155)
+2.25.1
 
