@@ -1,47 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070823B71DF;
-	Mon, 31 Aug 2026 04:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454EE3AAF61
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 04:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788149347; cv=none; b=Sh3aP7SjJJ49uZ1FALH7VhdMggnHiCz4Sl1LR8MLQQdhQynJpPvSplYz9YjQkg6CPEYasH8pkMzERvGa0uW+SpKYFqHrsFEFRSIfeHSzcfbATw9/7QlZAaZYYAf6EDfKvE39MxOPusH1vjcntY7UYW+z+hXUwsZBGYFEivPjpc4=
+	t=1788150153; cv=none; b=WWMJYlGxCsoOEqwR73uJIiN6o0+omJbcFjNeAervFZyNx9g6jZICxHYyWoaQBve28XEsnZtgEeyUPfHRXIsYcjay6Qv1xuG3m0D5j8Hjm9CVF1Sgo1HvIVGzHQXTE9jm4h1ZP4TbG6+fP+YNPcwOpvADPDE8WSiWxh02VD/Y2rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788149347; c=relaxed/simple;
-	bh=SYLPKJwPVb8TOL1Tnw+rYAn2PAvvHlPtxwfP85MImHs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YqDHuQBrqZ1LMZhrSsiANx2leq1v3WTxvTNSWJYBlRmNSy8kn5z05DoZoXpU3xjOkDihKoaBpngzIBftDSIIs8nTUXw18pCuyI4GLMJPZe0G7SbzHS+40sAv/QuCnSdEispSln4JUiVZL3OmXc8hEiotJZaCtVdT5z4ohTw1/+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOnDKeaO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788150153; c=relaxed/simple;
+	bh=jF99/EO6lld/rF/a9EiyZEVSNAjllsY5+Q5svVHTm1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OoxH6lNVJUijMm2SXspnF68KF4zMCGo0uFA8mWWSXSPQ4lVW8PFx2gcfyQi1fbLudqbvgm75ehw+TWBhdT5Jg7ihTrKTkJhiYO5tWqNuDMbkfHsVhmIBLUdbvFzIkHaB7fu5bS4AP57e7L4/wSa8GoaV8zFHGSrJD56UAoEixpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pY64tpGG; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOnDKeaO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147071F00A3E;
-	Mon, 31 Aug 2026 04:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788149345;
-	bh=/ph9w7cuFjdMlI9pMSwhn/gmRZwiHl3sIDZaHz+Xc6Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OOnDKeaO4dBtt5gbCQXNC0+03hVmoc2n3c80kAeOrNZeUeD8fe/QLzoorm5Noxf0L
-	 qUuPpioWzCAx0SSwgL096WSDZcHWli8AXYfaJy9LA4vq0zy3EmMOgOB85MJ8aSqxqG
-	 scd27akD3Kjsi7+o6U1GLwZqjRn+T556bFch2xVZlrEIw8Hl+4pOidM0jRuKx20ehZ
-	 Z2w3YGObrYDS8A5EdmU8jEZ5UyQzk9MkfSZZqGtklpm2RIAqAS1NXKUAP1GSk1e3x0
-	 +SlkXhwdCAtKe/sHXAMPidw2UzzyKX1d91Ap53AtONPd95mKjHF5nZ3UDfvM0puGar
-	 E59fs7PVyzBRA==
-Message-ID: <c0bf0918bd97105ee50f1436e6ff729e84cedf03.camel@kernel.org>
-Subject: Re: [PATCH 3/6] landlock: Add MPTCP bind and connect access rights
-From: Geliang Tang <geliang@kernel.org>
-To: =?ISO-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>, 
- =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?=
-	 <mic@digikod.net>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
- <martineau@kernel.org>,  Mikhail Ivanov
- <ivanov.mikhail1@huawei-partners.com>, mptcp@lists.linux.dev,
- netdev@vger.kernel.org, 	linux-security-module@vger.kernel.org
-Date: Mon, 31 Aug 2026 12:09:00 +0800
-In-Reply-To: <20260830201650.67050-4-gnoack3000@gmail.com>
-References: <20260830201650.67050-1-gnoack3000@gmail.com>
-	 <20260830201650.67050-4-gnoack3000@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2-9 
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pY64tpGG"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=jF99/EO6lld/rF/a9EiyZEVSNAjllsY5+Q5svVHTm1o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788150149; v=1; x=1788754949;
+ b=pY64tpGGicPY82ZmATNSwl0LN7/rwtAnrUq59NTo9LAf2J/wEq0qTBjU5g+BxgVF9oqo9eNY
+ m00ALFiHnr1/TMWkyDI3jFxhVnlLVrQm8PG+PER9ysNmAXFJ44PwdSk/blRuzOyxZXGM2pzGQq/
+ lHhpTUM4NIryAc9SmoXAtwKA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 515f821b0dbb075c;
+	Mon, 31 Aug 2026 04:22:28 +0000
+X-Mizu-Trace-ID: 515f821b0dbb075c
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Petr Machata <petrm@nvidia.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] netdevsim: fix panic when NETIF_F_LOOPBACK is set on a VF port
+Date: Mon, 31 Aug 2026 12:22:20 +0800
+Message-ID: <20260831042221.137137-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,363 +51,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Günther,
+A netdevsim VF port cannot process incoming data.  It never runs
+nsim_queue_init(), so ns->rq is NULL, and nsim_vf_netdev_ops has no
+->ndo_open, so its NAPI is never set up either.
 
-On Sun, 2026-08-30 at 22:16 +0200, Günther Noack wrote:
-> MPTCP sockets have equivalent bind(2) and connect(2) operations as
-> TCP
-> sockets, but can not currently be restricted with Landlock without
-> explicit MPTCP access rights.  As MPTCP operates on the same TCP port
-> number space as TCP, this is a gap in Landlock's policies.
-> 
-> Add access rights for MPTCP bind(2) and connect(2) operations
-> and document them in the header.
-> 
-> Treat TCP Fast Open the same as done for plain TCP in
-> commit 33cb713db016 ("landlock: Fix TCP Fast Open connection bypass")
-> 
-> The port numbers used in MPTCP subflows are negotiated by the kernel
-> and therefore not subject to these access rights.
-> 
-> Bump the Landlock ABI version to 12.
-> 
-> Closes: https://github.com/landlock-lsm/linux/issues/54
-> Signed-off-by: Günther Noack <gnoack3000@gmail.com>
-> ---
->  include/linux/landlock.h                     |  5 +-
->  include/uapi/linux/landlock.h                | 24 +++++++
->  security/landlock/limits.h                   |  2 +-
->  security/landlock/net.c                      | 68 ++++++++++++++----
-> --
->  security/landlock/syscalls.c                 |  2 +-
->  tools/testing/selftests/landlock/base_test.c |  2 +-
->  6 files changed, 79 insertions(+), 24 deletions(-)
-> 
-> diff --git a/include/linux/landlock.h b/include/linux/landlock.h
-> index 004cbd0b9298..b04ffc7caa21 100644
-> --- a/include/linux/landlock.h
-> +++ b/include/linux/landlock.h
-> @@ -46,7 +46,10 @@
->  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_TCP,
-> "connect_tcp"), \
->  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_BIND_UDP,
-> "bind_udp"), \
->  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP, \
-> -			     "connect_send_udp")
-> +			     "connect_send_udp"), \
-> +	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_BIND_MPTCP,
-> "bind_mptcp"), \
-> +	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_MPTCP, \
-> +			     "connect_mptcp")
->  
->  #define _LANDLOCK_SCOPE_NAMES \
->  	_LANDLOCK_NAME_ENTRY(LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET, \
-> diff --git a/include/uapi/linux/landlock.h
-> b/include/uapi/linux/landlock.h
-> index cceda3b3b961..2a953ba7ce25 100644
-> --- a/include/uapi/linux/landlock.h
-> +++ b/include/uapi/linux/landlock.h
-> @@ -448,6 +448,9 @@ struct landlock_net_port_attr {
->   * - %LANDLOCK_ACCESS_NET_CONNECT_TCP: Connect TCP sockets to the
-> given
->   *   remote port. Support added in Landlock ABI version 4.
->   *
-> + * .. note:: These rights do not apply to MPTCP sockets, which have
-> their own
-> + *   access rights (see below).
-> + *
->   * And similarly for UDP port numbers:
->   *
->   * - %LANDLOCK_ACCESS_NET_BIND_UDP: Bind UDP sockets to the given
-> local
-> @@ -474,12 +477,33 @@ struct landlock_net_port_attr {
->   * .. note:: Sending datagrams to an ``AF_UNSPEC`` destination
-> address
->   *   family is not supported for IPv6 UDP sockets: you will need to
-> use a
->   *   ``NULL`` address instead.
-> + *
-> + * MPTCP sockets (created with ``IPPROTO_MPTCP``) use TCP port
-> numbers, but
-> + * they are controlled by their own access rights:
-> + *
-> + * - %LANDLOCK_ACCESS_NET_BIND_MPTCP: Bind MPTCP sockets to the
-> given local
-> + *   port. Support added in Landlock ABI version 12.
-> + * - %LANDLOCK_ACCESS_NET_CONNECT_MPTCP: Connect MPTCP sockets to
-> the given
-> + *   remote port. Support added in Landlock ABI version 12.
-> + *
-> + * .. note:: The TCP and the MPTCP access rights are independent,
-> even though
-> + *   they refer to the same port number space. Handling only
-> + *   %LANDLOCK_ACCESS_NET_BIND_TCP and
-> %LANDLOCK_ACCESS_NET_CONNECT_TCP leaves
-> + *   MPTCP sockets unrestricted, and vice versa. A sandbox that
-> wants to
-> + *   control all TCP-based traffic needs to handle both sets.
-> + *
-> + * .. note:: These MPTCP access rights restrict the ports passed to
-> + *   :manpage:`bind(2)` and :manpage:`connect(2)`. The ports used in
-> MPTCP
-> + *   subflows are negotiated in the MPTCP protocol by the kernel and
-> are not
-> + *   subject to these restrictions.
->   */
->  /* clang-format off */
->  #define LANDLOCK_ACCESS_NET_BIND_TCP			(1ULL << 0)
->  #define
-> LANDLOCK_ACCESS_NET_CONNECT_TCP			(1ULL << 1)
->  #define LANDLOCK_ACCESS_NET_BIND_UDP			(1ULL << 2)
->  #define LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP		(1ULL << 3)
-> +#define LANDLOCK_ACCESS_NET_BIND_MPTCP			(1ULL << 4)
-> +#define LANDLOCK_ACCESS_NET_CONNECT_MPTCP		(1ULL << 5)
->  /* clang-format on */
->  
->  /**
-> diff --git a/security/landlock/limits.h b/security/landlock/limits.h
-> index 1a7c5fb8f6fd..d25e056b7ca2 100644
-> --- a/security/landlock/limits.h
-> +++ b/security/landlock/limits.h
-> @@ -23,7 +23,7 @@
->  #define
-> LANDLOCK_MASK_ACCESS_FS		((LANDLOCK_LAST_ACCESS_FS << 1) - 1)
->  #define
-> LANDLOCK_NUM_ACCESS_FS		__const_hweight64(LANDLOCK_MASK_ACCESS_FS)
->  
-> -#define
-> LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP
-> +#define
-> LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_MPTCP
->  #define LANDLOCK_MASK_ACCESS_NET	((LANDLOCK_LAST_ACCESS_NET
-> << 1) - 1)
->  #define
-> LANDLOCK_NUM_ACCESS_NET		__const_hweight64(LANDLOCK_MASK_ACCESS_NET)
->  
-> diff --git a/security/landlock/net.c b/security/landlock/net.c
-> index 8f2aaac54b33..8541b0c07d64 100644
-> --- a/security/landlock/net.c
-> +++ b/security/landlock/net.c
-> @@ -11,6 +11,7 @@
->  #include <linux/net.h>
->  #include <linux/socket.h>
->  #include <net/ipv6.h>
-> +#include <net/mptcp.h>
->  
->  #include "common.h"
->  #include "cred.h"
-> @@ -53,6 +54,26 @@ int landlock_append_net_rule(struct
-> landlock_ruleset *const ruleset,
->  	return err;
->  }
->  
-> +static bool sk_is_mptcp_socket(const struct sock *sk)
-> +{
-> +	return sk_is_inet(sk) && sk->sk_type == SOCK_STREAM &&
-> +	       sk->sk_protocol == IPPROTO_MPTCP;
-> +}
+Since commit 358008f41d9b ("netdevsim: add loopback support") an outgoing
+netdevsim can also be the incoming device.  nsim_setup() is shared by PF
+and VF ports and offers NETIF_F_LOOPBACK to both, so the feature can be
+turned on for a VF; nsim_start_xmit() then takes ns as peer_ns and
+dereferences peer_ns->rq[], which panics.
 
-This helper should be placed in include/net/mptcp.h. I had already
-implemented one in [1], called sk_is_msk(), to differentiate it from
-sk_is_mptcp(). If you have no concerns with my implementation, please
-feel free to pick it up and use it in your series.
+Disable NETIF_F_LOOPBACK on VF ports.
 
-Thanks,
--Geliang
+Reproduce in qemu:
+  modprobe netdevsim
+  echo "90 1" > /sys/bus/netdevsim/new_device
+  echo 2 > /sys/bus/netdevsim/devices/netdevsim90/sriov_numvfs
+  devlink dev eswitch set netdevsim/netdevsim90 mode switchdev
+  ethtool -K eth2 loopback on   # eth2 is the vfnum 0 port
+  ip link set eth2 up
 
-[1]
-https://patchwork.kernel.org/project/mptcp/patch/e2727ba40084f261545f1cbb140a3fb9d295ba25.1765505775.git.tanggeliang@kylinos.cn/
+Panic:
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  CPU: 0 UID: 0 PID: 141 Comm: kworker/0:3 Not tainted 7.2.0+ #338 PREEMPT
+  Workqueue: mld mld_ifc_work
+  RIP: 0010:nsim_start_xmit (drivers/net/netdevsim/netdev.c:159)
+  dev_hard_start_xmit ( net/core/dev.c:3953)
+  sch_direct_xmit (net/sched/sch_generic.c:372)
+  __dev_queue_xmit (net/core/dev.c:4262 net/core/dev.c:4884)
+  neigh_resolve_output (net/core/neighbour.c:1616)
+  ip6_finish_output2 (net/ipv6/ip6_output.c:138)
+  ip6_finish_output (net/ipv6/ip6_output.c:221)
+  ip6_output (net/ipv6/ip6_output.c:248)
+  ......
 
-> +
-> +static bool is_connect_access(const access_mask_t access_request)
-> +{
-> +	return access_request == LANDLOCK_ACCESS_NET_CONNECT_TCP ||
-> +	       access_request == LANDLOCK_ACCESS_NET_CONNECT_MPTCP
-> ||
-> +	       access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP;
-> +}
-> +
-> +static bool is_bind_access(const access_mask_t access_request)
-> +{
-> +	return access_request == LANDLOCK_ACCESS_NET_BIND_TCP ||
-> +	       access_request == LANDLOCK_ACCESS_NET_BIND_MPTCP ||
-> +	       access_request == LANDLOCK_ACCESS_NET_BIND_UDP;
-> +}
-> +
->  static bool unmask_layers_net(const struct landlock_domain *const
-> domain,
->  			      const struct landlock_id id,
->  			      struct layer_masks *masks,
-> @@ -104,6 +125,7 @@ static int current_check_access_socket(struct
-> socket *const sock,
->  	switch (address->sa_family) {
->  	case AF_UNSPEC:
->  		if (access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_TCP ||
-> +		    access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_MPTCP ||
->  		    (access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP &&
->  		     connecting)) {
->  			/*
-> @@ -147,17 +169,15 @@ static int current_check_access_socket(struct
-> socket *const sock,
->  					});
->  				return -EACCES;
->  			}
-> -		} else if (access_request ==
-> LANDLOCK_ACCESS_NET_BIND_TCP ||
-> -			   access_request ==
-> LANDLOCK_ACCESS_NET_BIND_UDP) {
-> +		} else if (is_bind_access(access_request)) {
->  			/*
->  			 * Binding to an AF_UNSPEC address is
-> treated
->  			 * differently by IPv4 and IPv6 sockets. The
-> socket's
->  			 * family may change under our feet due to
->  			 * setsockopt(IPV6_ADDRFORM), but that's ok:
-> we either
-> -			 * reject entirely for IPv6 or require
-> -			 * %LANDLOCK_ACCESS_NET_BIND_TCP or
-> -			 * %LANDLOCK_ACCESS_NET_BIND_UDP for IPv4,
-> so it cannot
-> -			 * be used to bypass the policy.
-> +			 * reject entirely for IPv6 or require the
-> relevant bind
-> +			 * access right for IPv4, so it cannot be
-> used to bypass
-> +			 * the policy.
->  			 *
->  			 * IPv4 sockets map AF_UNSPEC to AF_INET for
->  			 * retrocompatibility for bind accesses,
-> only if the
-> @@ -204,12 +224,10 @@ static int current_check_access_socket(struct
-> socket *const sock,
->  		addr4 = (struct sockaddr_in *)address;
->  		port = addr4->sin_port;
->  
-> -		if (access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_TCP ||
-> -		    access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP) {
-> +		if (is_connect_access(access_request)) {
->  			audit_net.dport = port;
->  			audit_net.v4info.daddr = addr4-
-> >sin_addr.s_addr;
-> -		} else if (access_request ==
-> LANDLOCK_ACCESS_NET_BIND_TCP ||
-> -			   access_request ==
-> LANDLOCK_ACCESS_NET_BIND_UDP) {
-> +		} else if (is_bind_access(access_request)) {
->  			audit_net.sport = port;
->  			audit_net.v4info.saddr = addr4-
-> >sin_addr.s_addr;
->  		} else {
-> @@ -228,12 +246,10 @@ static int current_check_access_socket(struct
-> socket *const sock,
->  		addr6 = (struct sockaddr_in6 *)address;
->  		port = addr6->sin6_port;
->  
-> -		if (access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_TCP ||
-> -		    access_request ==
-> LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP) {
-> +		if (is_connect_access(access_request)) {
->  			audit_net.dport = port;
->  			audit_net.v6info.daddr = addr6->sin6_addr;
-> -		} else if (access_request ==
-> LANDLOCK_ACCESS_NET_BIND_TCP ||
-> -			   access_request ==
-> LANDLOCK_ACCESS_NET_BIND_UDP) {
-> +		} else if (is_bind_access(access_request)) {
->  			audit_net.sport = port;
->  			audit_net.v6info.saddr = addr6->sin6_addr;
->  		} else {
-> @@ -331,6 +347,8 @@ static int hook_socket_bind(struct socket *const
-> sock,
->  
->  	if (sk_is_tcp(sock->sk))
->  		access_request = LANDLOCK_ACCESS_NET_BIND_TCP;
-> +	else if (sk_is_mptcp_socket(sock->sk))
-> +		access_request = LANDLOCK_ACCESS_NET_BIND_MPTCP;
->  	else if (sk_is_udp(sock->sk))
->  		access_request = LANDLOCK_ACCESS_NET_BIND_UDP;
->  	else
-> @@ -349,6 +367,8 @@ static int hook_socket_connect(struct socket
-> *const sock,
->  
->  	if (sk_is_tcp(sock->sk))
->  		access_request = LANDLOCK_ACCESS_NET_CONNECT_TCP;
-> +	else if (sk_is_mptcp_socket(sock->sk))
-> +		access_request = LANDLOCK_ACCESS_NET_CONNECT_MPTCP;
->  	else if (sk_is_udp(sock->sk))
->  		access_request =
-> LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP;
->  	else
-> @@ -377,12 +397,20 @@ static int hook_socket_sendmsg(struct socket
-> *const sock,
->  	access_mask_t access_request;
->  	int ret = 0;
->  
-> -	if ((msg->msg_flags & MSG_FASTOPEN) && address &&
-> sk_is_tcp(sock->sk)) {
-> -		ret = current_check_access_socket(
-> -			sock, address, addrlen,
-> LANDLOCK_ACCESS_NET_CONNECT_TCP,
-> -			true);
-> -		if (ret != 0)
-> -			return ret;
-> +	if ((msg->msg_flags & MSG_FASTOPEN) && address) {
-> +		access_mask_t fastopen_access = 0;
-> +
-> +		if (sk_is_tcp(sock->sk))
-> +			fastopen_access =
-> LANDLOCK_ACCESS_NET_CONNECT_TCP;
-> +		else if (sk_is_mptcp_socket(sock->sk))
-> +			fastopen_access =
-> LANDLOCK_ACCESS_NET_CONNECT_MPTCP;
-> +
-> +		if (fastopen_access) {
-> +			ret = current_check_access_socket(
-> +				sock, address, addrlen,
-> fastopen_access, true);
-> +			if (ret != 0)
-> +				return ret;
-> +		}
->  	}
->  
->  	if (sk_is_udp(sock->sk))
-> diff --git a/security/landlock/syscalls.c
-> b/security/landlock/syscalls.c
-> index 1d02d57f4c48..cc54d4f1d502 100644
-> --- a/security/landlock/syscalls.c
-> +++ b/security/landlock/syscalls.c
-> @@ -172,7 +172,7 @@ static const struct file_operations ruleset_fops
-> = {
->   * If the change involves a fix that requires userspace awareness,
-> also update
->   * the errata documentation in Documentation/userspace-
-> api/landlock.rst .
->   */
-> -const int landlock_abi_version = 11;
-> +const int landlock_abi_version = 12;
->  
->  /**
->   * sys_landlock_create_ruleset - Create a new ruleset
-> diff --git a/tools/testing/selftests/landlock/base_test.c
-> b/tools/testing/selftests/landlock/base_test.c
-> index d20ab8f0862c..58fe322d8637 100644
-> --- a/tools/testing/selftests/landlock/base_test.c
-> +++ b/tools/testing/selftests/landlock/base_test.c
-> @@ -76,7 +76,7 @@ TEST(abi_version)
->  	const struct landlock_ruleset_attr ruleset_attr = {
->  		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_FILE,
->  	};
-> -	ASSERT_EQ(11, landlock_create_ruleset(NULL, 0,
-> +	ASSERT_EQ(12, landlock_create_ruleset(NULL, 0,
->  					     
-> LANDLOCK_CREATE_RULESET_VERSION));
->  
->  	ASSERT_EQ(-1, landlock_create_ruleset(&ruleset_attr, 0,
+Fixes: 358008f41d9b ("netdevsim: add loopback support")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ drivers/net/netdevsim/netdev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index b4a99f3ceac6..7bb72aea90a0 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -1113,6 +1113,14 @@ static int nsim_init_netdevsim_vf(struct netdevsim *ns)
+ 	int err;
+ 
+ 	ns->netdev->netdev_ops = &nsim_vf_netdev_ops;
++
++	/* nsim_setup() offers NETIF_F_LOOPBACK to every port, but a VF port
++	 * has neither queues nor NAPI, and looping a frame back means
++	 * receiving it.
++	 */
++	ns->netdev->hw_features &= ~NETIF_F_LOOPBACK;
++	ns->netdev->features &= ~NETIF_F_LOOPBACK;
++
+ 	rtnl_lock();
+ 	err = register_netdevice(ns->netdev);
+ 	rtnl_unlock();
+-- 
+2.43.0
+
