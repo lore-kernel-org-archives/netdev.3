@@ -1,46 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2B058039D;
-	Mon, 31 Aug 2026 13:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3BE582B82;
+	Mon, 31 Aug 2026 13:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184187; cv=none; b=AwxTmLJAuPwcu6hSuoCernPBtCINfCCMaMYa44+rIdq3ER5YnUd5vom3VhestXtZHNJF54YyExWwhDfSlvKh1T4eve5dUBKRnfrbWde2rr38B7oUs48aYYEPr3hoxnmJOPJ778ghVqXgJKqcAzJkMIS87txT97j/zoaAsm8JVEs=
+	t=1788184197; cv=none; b=XMbqOjTkWI45CKQk701QWjBW+bB9QUdpNF8E45F9Inrt+5XLQ5R0Yb0ifQYezk5v/EujS3C6DsQYfae/cDbEk5hd1+JtIlydHH7LjCVlY03vTHzXkiIwvm1yNvMp4WBEh8RJ3AzD+ww62OId1DNfviThLCRSY3wpWetM7KXiu0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184187; c=relaxed/simple;
-	bh=pZu2pCoV6K7ySpvB/3gJkjn9t17/G7T56MdIbHe4DwU=;
+	s=arc-20240116; t=1788184197; c=relaxed/simple;
+	bh=cEIZjVXRfd+mKXvLlidGrD8yGxVGNRhDU8f0aHmnmgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uYSg8jo2959O0djatKCrfjE1u0YMukqZTVmRCSaSL2vetlwWrauVaRJls94Tl2A9i9uPr0aMHioorWOYapgRvORDeoTMt7Y0S8STEZBobrvjpoBmlReCBIS8JKkDqB/hTcIkAM8dHP1WWAwfPXe7YBBNC1pHSOGuDW9siC5jOKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgCCOg2t; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=iPYMZGgx9Cizry+dGtIGY0IL8LVzPqenonh+SaJSYV5UVE1nQ+2Tltg7rSAUPOcedE9JlEvO2Sx4R0W0+kaVAF0/9Qma6YsKbG8cVKAJ1YNm6mLG8z+kFoNwysC8qSBQ7R1t147zOxFTWCKgD57oRsj9OPgKev0jB6Qdsxwtevg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqLBVTR5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgCCOg2t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3A71F00A3E;
-	Mon, 31 Aug 2026 13:49:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqLBVTR5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A521F00A3F;
+	Mon, 31 Aug 2026 13:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184185;
-	bh=SlSZnePD1C0svI0M8whuH2lg/iVWP+r5DLZy13O4zWE=;
+	s=k20260515; t=1788184195;
+	bh=hKH0tZRDdHMNPnmyCNcAIcyxU04yp78Tf160s2ctNsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KgCCOg2tyDCvY7I9hBbOYStF31g6wqtimgCgYQ7JwV/BLH+9ZJqyqd2oogTIaxO2C
-	 beW6rV4DL1aFRvgCq3geXcvkhpCGoWIM2fqNlkswzvCopNZoWRBSxaBVIC3o331nAT
-	 uqio5RUBbE+b9ASeZR2epjLmulCkWzfK6HCZGGiKkAtnHFBM6TIv8hV0aY6cJRE4zR
-	 Ky+qmIXXoL7+zuSg2fxrAMm+bY4VtqWgmu/t5Hbkak0tUPrUeuud6IIsGYn2YVAbqS
-	 bBe+Zkan7sSZpSx5dNgw4vDwkKKJQoF+hXxX0m033b87lGgcCECUUIp9NSuVsS96tn
-	 fF3e34FIIxAeQ==
+	b=KqLBVTR5OUNSzYIrnJHG7Fbzu963cwmEkWsW3MSHmZsospjoMdFNZVzJwPs9Spj0t
+	 L79KnaX+SeahVXS2c/vhRylweR59zbElJYtTthth9u9ISYxrE0NJbq2DVF5o+ZpavB
+	 HxcnXeqE8Y58jFjGAM5629TdIlE/yheyDeA/feAeU7gwCcCAKYMQ0NI55R/FIA5Z5D
+	 dN4VgoUxmmUi6Iu6I1Xbmwa6o0Axu+mla828QXla7pnyXkHXVtlm/T6ykoemURuwyv
+	 Vmr6Cob7HI6xtuIhZYLrCJaXcupRg6mshRqG3r4zDBiyR4ZfnRVPHUGHDTHeYvRxCr
+	 I0erGB4SuiE2g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Luka Gejak <luka.gejak@linux.dev>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
-	edumazet@google.com,
 	pabeni@redhat.com,
+	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.1] net: hsr: require valid EOT supervision TLV
-Date: Mon, 31 Aug 2026 09:29:30 -0400
-Message-ID: <20260831133314.4125787-542-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: bridge: remove stale rcu_barrier() in br_multicast_dev_del()
+Date: Mon, 31 Aug 2026 09:29:36 -0400
+Message-ID: <20260831133314.4125787-548-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -56,20 +58,42 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 46d111a3ef3b5972804dcdce0833767143a12192 ]
+[ Upstream commit 25ae123db10ba9ab890b56bcdb0a4363aee8529a ]
 
-Supervision frames are only valid if terminated with a zero-length EOT
-TLV. The current check fails to reject non-EOT entries as the terminal
-TLV, potentially allowing malformed supervision traffic.
+This rcu_barrier() came from a time call_rcu() calls were used in
+net/bridge/br_multicast.c.
 
-Fix this by strictly requiring the terminal TLV to be HSR_TLV_EOT with
-a length of zero.
+Now kfree_rcu() is there, we can remove this problematic rcu_barrier()
+which causes extreme RTNL pressure in many syzbot reports.
 
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260523130420.62144-1-luka.gejak@linux.dev
+INFO: task syz-executor:77945 is blocked on a mutex likely owned by task kworker/u1024:5:36537.
+task:kworker/u1024:5 state:D stack:24616 pid:36537 tgid:36537 ppid:2      task_flags:0x4208060 flags:0x00080000 last_sleep:612797637337
+Workqueue: netns cleanup_net
+Call Trace:
+ <TASK>
+  [<ffffffff81914eaa>] context_switch+0xf2a/0x1730 kernel/sched/core.c:6483
+  [<ffffffff81201143>] __schedule+0x1133/0x43a0 kernel/sched/core.c:8411
+  [<ffffffff8120446b>] __schedule_loop kernel/sched/core.c:8514 [inline]
+  [<ffffffff8120446b>] schedule+0xab/0x260 kernel/sched/core.c:8529
+  [<ffffffff8121a093>] schedule_timeout+0xc3/0x2b0 kernel/time/sleep_timeout.c:75
+  [<ffffffff81205347>] do_wait_for_common kernel/sched/completion.c:100 [inline]
+  [<ffffffff81205347>] __wait_for_common kernel/sched/completion.c:121 [inline]
+  [<ffffffff81205347>] wait_for_common kernel/sched/completion.c:132 [inline]
+  [<ffffffff81205347>] wait_for_completion+0x2c7/0x5d0 kernel/sched/completion.c:153
+  [<ffffffff81b8f27f>] rcu_barrier+0x49f/0x620 kernel/rcu/tree.c:3888
+  [<ffffffff860091b3>] br_multicast_dev_del+0x303/0x350 net/bridge/br_multicast.c:4459
+  [<ffffffff85fb5dbc>] br_dev_uninit+0x1c/0x40 net/bridge/br_device.c:157
+  [<ffffffff8568058c>] unregister_netdevice_many_notify+0x1c1c/0x2300 net/core/dev.c:12599
+  [<ffffffff8562be43>] ops_exit_rtnl_list net/core/net_namespace.c:187 [inline]
+  [<ffffffff8562be43>] ops_undo_list+0x3d3/0x940 net/core/net_namespace.c:248
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260519095540.2643318-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -79,226 +103,244 @@ LLM Generated explanations, may be completely bogus:
 ## Phase 1: Commit Message Forensics
 
 ### Step 1.1: Subject Line
-**Record:** `[net: hsr]` `[require]` — HSR supervision-frame validation:
-strictly require a zero-length EOT TLV at the end of the TLV chain.
+**Record:** `[net: bridge]` `[remove]` — remove a stale `rcu_barrier()`
+call from `br_multicast_dev_del()`.
 
-### Step 1.2: Tags
+### Step 1.2: Commit Message Tags
 **Record:**
-- **Signed-off-by:** Luka Gejak `<luka.gejak@linux.dev>` (author)
-- **Reviewed-by:** Fernando Fernandez Mancera `<fmancera@suse.de>`
-  (subsystem reviewer)
+- **Fixes:** — not present (expected for manual review)
+- **Reported-by:** — not present; syzbot impact described in body
+- **Tested-by:** — not present
+- **Reviewed-by:** Jakub Sitnicki `<jakub@cloudflare.com>`, Ido Schimmel
+  `<idosch@nvidia.com>`
+- **Acked-by:** Nikolay Aleksandrov `<razor@blackwall.org>` (bridge
+  multicast maintainer)
 - **Link:**
-  https://patch.msgid.link/20260523130420.62144-1-luka.gejak@linux.dev
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer)
-- No Fixes:, Reported-by:, Tested-by:, Acked-by:, or Cc: stable tags
-- Notable: Reviewed by SUSE HSR contributor; no syzbot or user bug
-  report
+  https://patch.msgid.link/20260519095540.2643318-1-edumazet@google.com
+- **Cc: stable:** — not present (not a negative signal)
+- **Signed-off-by:** Eric Dumazet, Jakub Kicinski (ignore pipeline-added
+  SOBs)
 
-### Step 1.3: Body Analysis
+Notable: maintainer ack + two subsystem reviewers; syzbot deadlock stack
+trace in body.
+
+### Step 1.3: Commit Body Analysis
 **Record:**
-- **Bug:** Supervision frames must end with a zero-length EOT TLV per
-  IEC 62439-3. The existing check only rejects EOT TLVs with non-zero
-  length; it does not reject non-EOT TLVs as the terminal entry.
-- **Symptom:** Malformed supervision traffic can be accepted as valid.
-- **Root cause:** Inverted conditional logic — accepts any terminal TLV
-  that is not `(EOT && length != 0)`.
-- **Version info:** None in message.
+- **Bug:** `rcu_barrier()` in `br_multicast_dev_del()` is leftover from
+  the `call_rcu()` era; multicast teardown now uses `kfree_rcu()`.
+- **Symptom:** Extreme RTNL pressure; syzbot reports tasks blocked on
+  mutex during `cleanup_net` workqueue processing.
+- **Failure mode:** `cleanup_net` → `ops_exit_rtnl_list` (RTNL held) →
+  `unregister_netdevice_many` → `br_dev_uninit` → `br_multicast_dev_del`
+  → `rcu_barrier()` → hung task waiting on completion while kworker
+  holds RTNL.
+- **Root cause (author):** Global `rcu_barrier()` drains unrelated RCU
+  callbacks while RTNL is held, creating lock-order / pressure problems.
 
 ### Step 1.4: Hidden Bug Fix Detection
-**Record:** Explicit protocol-validation bug fix, not disguised cleanup.
-The inverted `&&` vs `||`/`!=` is a classic logic error.
+**Record:** Yes — described as cleanup, but it fixes a real
+hang/deadlock during network namespace teardown. Not cosmetic.
 
 ---
 
 ## Phase 2: Diff Analysis
 
-### Step 2.1: Inventory
+### Step 2.1: Change Inventory
 **Record:**
-- **Files:** `net/hsr/hsr_forward.c` (+1 / -1)
-- **Function:** `is_supervision_frame()`
-- **Scope:** Single-file, single-line surgical fix
+- **Files:** `net/bridge/br_multicast.c` only (−2 lines)
+- **Function:** `br_multicast_dev_del()`
+- **Scope:** Single-file, surgical deletion
 
 ### Step 2.2: Code Flow Change
 **Record:**
-- **Before:** Reject only if `type == HSR_TLV_EOT && length != 0`. All
-  other terminal TLVs (including non-EOT with length 0 or non-zero) are
-  accepted.
-- **After:** Reject unless `type == HSR_TLV_EOT && length == 0`. Only a
-  proper EOT terminator is accepted.
-- **Path:** Receive path in `is_supervision_frame()`, called for every
-  HSR/PRP frame.
+- **Before:** After synchronous GC (`br_multicast_gc`) and
+  `cancel_work_sync(&br->mcast_gc_work)`, call global `rcu_barrier()`.
+- **After:** Return immediately after GC work is synchronized.
+- **Path affected:** Bridge netdev teardown during namespace/device
+  unregistration (error/cleanup path, not hot path).
 
 ### Step 2.3: Bug Mechanism
-**Record:**
-- **Category:** Logic / protocol correctness
-- **Mechanism:** De Morgan inversion. Comment says “end of tlvs must
-  follow at the end,” but old code only filtered malformed EOT entries,
-  not non-EOT terminal TLVs.
+**Record:** **Category:** Deadlock / hung task from unnecessary global
+synchronization.
+- `rcu_barrier()` waits for all RCU callbacks system-wide.
+- Called under RTNL during `cleanup_net`.
+- Other workers may need RTNL to complete their RCU callbacks → circular
+  wait.
+- With `kfree_rcu()` only (no `call_rcu()` in this file), the barrier
+  has no bridge-multicast callbacks of its own to wait for; it only
+  stalls unrelated subsystems.
 
 ### Step 2.4: Fix Quality
-**Record:** Obviously correct, minimal, no API changes. Regression risk
-is very low — only makes validation stricter (rejects more malformed
-frames). No deadlock or locking changes.
+**Record:** Obviously correct and minimal. Bridge maintainer confirmed
+the barrier is stale. Regression risk is very low: synchronous GC +
+`cancel_work_sync` already ensure teardown ordering; `kfree_rcu` handles
+deferred freeing without a global barrier. Precedent: `writeback: drop
+now-unnecessary rcu_barrier()` was backported to stable (commit
+`29de8448174cf` in this tree).
 
 ---
 
 ## Phase 3: Git History Investigation
 
 ### Step 3.1: Blame
-**Record:** Buggy EOT check introduced in `eafaa88b3eb7` (“net: hsr: Add
-support for redbox supervision frames”, Oct 2021). Present in this tree
-since that commit. `eafaa88b3eb7` is an ancestor of HEAD.
+**Record:**
+- `rcu_barrier()` at line 4460 introduced by Nikolay Aleksandrov, commit
+  `4329596cb10d23` (2018-12-05), when switching from `call_rcu_bh` to
+  `kfree_rcu`.
+- `cancel_work_sync` added in `e12cec65b5546` (2020-09-07) with the GC
+  refactor.
+- Bug present since 2018; deadlock surfaced under syzbot stress.
 
 ### Step 3.2: Fixes: Tag
-**Record:** N/A — no Fixes: tag in commit message.
+**Record:** N/A — no `Fixes:` tag. Original introduction:
+`4329596cb10d23` ("net: bridge: multicast: use non-bh rcu flavor"),
+which is an ancestor of this tree.
 
 ### Step 3.3: Related File History
-**Record:** Related stable commits on `stable/linux-6.18.y`:
-- `fbd0662f9c9a6` — “net: hsr: fix potential OOB access in supervision
-  frame handling” (same author, same day, already in this tree)
-- `eafaa88b3eb7` — introduced the buggy EOT check
-- `51dd4ee037222`, `295de650d3aaf` — earlier supervision parsing fixes
+**Record:**
+- `4329596cb10d23`: `call_rcu_bh` → `kfree_rcu`, kept `rcu_barrier()`
+  (changed from `rcu_barrier_bh()`).
+- `e12cec65b5546`: GC refactor; `br_multicast_dev_del` now uses
+  synchronous `br_multicast_gc()`.
+- No `call_rcu` remains in `br_multicast.c` (verified).
+- Standalone one-patch series (v1 only per `b4 dig -a`).
 
 ### Step 3.4: Author Context
-**Record:** Luka Gejak has multiple stable backports in this tree
-(`fbd0662f9c9a6`, `1fe371a34e801`, rtw88 fixes). Active HSR contributor.
+**Record:** Eric Dumazet is a senior networking developer. Nikolay
+Aleksandrov (bridge maintainer) acked. No conflicting follow-up fixes
+found.
 
 ### Step 3.5: Dependencies
-**Record:** Standalone. Originally part of a larger series (v1–v3), but
-from v4 onward it is a standalone 1/2 or single patch. No structural
-prerequisites. Applies cleanly on top of current tree (`git apply
---check` passed).
+**Record:** No dependencies. Prerequisites (`kfree_rcu` migration, GC
+refactor) are both ancestors of HEAD. Patch applies cleanly (`git apply
+--check` → **APPLIES CLEANLY**). Fix commit `25ae123db10ba` is **NOT**
+in this tree.
 
 ---
 
 ## Phase 4: Mailing List and External Research
 
 ### Step 4.1: Original Discussion
-**Record:** `b4 dig -c 46d111a3ef3b5` found thread at
-https://patch.msgid.link/20260523130420.62144-1-luka.gejak@linux.dev.
-Series evolved v1–v7; committed version is v7 (latest). No NAKs found in
-saved mbox. No explicit stable nomination in thread.
+**Record:**
+- `b4 dig -c 25ae123db10ba` →
+  https://patch.msgid.link/20260519095540.2643318-1-edumazet@google.com
+- Single revision (v1, 2026-05-19).
+- Nikolay Aleksandrov: **Acked-by** — confirms barrier is no longer
+  needed.
+- No NAKs found in thread.
+- No explicit `Cc: stable` in thread, but that is not required.
 
 ### Step 4.2: Reviewers
-**Record:** `b4 dig -w`: CC'd netdev maintainers (Miller, Dumazet,
-Kicinski, Abeni, Horman) and Felix Maurer (HSR maintainer). Reviewed-by
-from Fernando Fernandez Mancera (SUSE).
+**Record:** CC'd: David Miller, Jakub Kicinski, Paolo Abeni, Simon
+Horman, netdev@, Nikolay Aleksandrov, Ido Schimmel. Appropriate
+maintainers/reviewers involved.
 
 ### Step 4.3: Bug Report
-**Record:** No external bug report, syzbot, or Bugzilla link. Author-
-identified logic bug.
+**Record:** syzbot-style hung-task trace in commit message and patch.
+Task blocked on mutex during `cleanup_net` / `rcu_barrier`. Reproducible
+under fuzzing; affects netns teardown with bridges.
 
-### Step 4.4: Series Context
-**Record:** v1–v3 bundled with “serialize seq_blocks merge”; v4+ split
-out as standalone EOT fix. No other series patches required.
+### Step 4.4: Related Patches
+**Record:** Standalone patch, not part of a series. Similar pattern in
+writeback (`29de8448174cf`, already backported here).
 
-### Step 4.5: Stable List
-**Record:** No stable-list discussion found. Companion OOB fix
-(`fbd0662f9c9a6`) was already backported to this tree.
+### Step 4.5: Stable List History
+**Record:** Not searched on lore stable@ (WebFetch blocked by bot
+protection for direct lore). No evidence this was rejected for stable.
+Fix is not yet in `stable/linux-6.18.y`.
 
 ---
 
 ## Phase 5: Code Semantic Analysis
 
 ### Step 5.1: Key Functions
-**Record:** `is_supervision_frame()` modified.
+**Record:** `br_multicast_dev_del()` modified.
 
 ### Step 5.2: Callers
-**Record:** Called from `fill_frame_info()` (line 691), which is called
-from `hsr_forward_skb()` (line 739). `hsr_forward_skb()` is invoked
-from:
-- `hsr_slave.c` — slave port receive
-- `hsr_device.c` — master/interlink receive
+**Record:**
+- `br_dev_uninit()` in `net/bridge/br_device.c:157` — called during
+  netdev unregistration.
+- Reachable from `unregister_netdevice_many()` → `ops_exit_rtnl_list()`
+  → `cleanup_net` workqueue.
+- Affects all bridge teardown when `CONFIG_BRIDGE_IGMP_SNOOPING` is
+  enabled.
 
-Every HSR/PRP received frame goes through this path.
+### Step 5.3: Callees
+**Record:** `br_multicast_del_mdb_entry`, `br_multicast_ctx_deinit`,
+`br_multicast_gc`, `cancel_work_sync`, (removed) `rcu_barrier`.
+- `br_multicast_gc` synchronously calls destroy callbacks that use
+  `kfree_rcu()` for mdb entries, port groups, and group sources.
 
-### Step 5.3: Callees / Downstream Effects
-**Record:** When `is_supervision_frame()` returns true:
-- `hsr_get_node()` runs with `is_sup=true` (affects node DB, SAN info)
-- `hsr_handle_sup_frame()` called on master for non-proxy supervision
-  (node merging)
-- Supervision-specific forwarding: dropped on interlink, special path ID
-  (0xf) for HSRv0
-- `prp_check_lsdu_size()` uses `is_supervision` flag
-
-### Step 5.4: Reachability
-**Record:** Reachable from network receive on any HSR/PRP-configured
-interface. Attacker on the HSR/PRP segment can send crafted frames.
-HSR/PRP is config-specific (`CONFIG_HSR`), not universal.
+### Step 5.4: Call Chain / Reachability
+**Record:**
+`unshare(CLONE_NEWNET)` / container stop / `ip netns delete` → netns
+refcount drop → `cleanup_net` → bridge device unregister →
+`br_multicast_dev_del`. Userspace-triggerable via namespace lifecycle;
+common in containers.
 
 ### Step 5.5: Similar Patterns
-**Record:** No similar inverted EOT check elsewhere in `net/hsr/`.
-`is_proxy_supervision_frame()` does not perform EOT validation
-(different purpose).
+**Record:**
+- `br.c:506` still has `rcu_barrier()` at **module unload** — different
+  context (fdb kmem_cache teardown), intentionally kept.
+- `writeback` had identical stale-`rcu_barrier` removal backported to
+  stable.
 
 ---
 
 ## Phase 6: Cross-Reference Against Local Tree
 
 ### Step 6.1: Buggy Code Present?
-**Record:** YES. Local tree is **v6.18.44** (`git describe HEAD`). Buggy
-code at lines 113–115 of `net/hsr/hsr_forward.c`:
-
-```113:115:net/hsr/hsr_forward.c
-        if (hsr_sup_tlv->HSR_TLV_type == HSR_TLV_EOT &&
-            hsr_sup_tlv->HSR_TLV_length != 0)
-                return false;
-```
-
-Bug present since `eafaa88b3eb7` (2021). Fix commit `46d111a3ef3b5` is
-NOT in this tree.
+**Record:** **Yes.** Local tree is **Linux 6.18.44**
+(`stable/linux-6.18.y`). `rcu_barrier()` present at
+`net/bridge/br_multicast.c:4460`. Fix commit `25ae123db10ba` is **not**
+merged.
 
 ### Step 6.2: Backport Complications
-**Record:** Clean apply expected. OOB fix (`fbd0662f9c9a6`) already
-changed `pskb_may_pull()` offsets but left the EOT check unchanged. `git
-format-patch -1 46d111a3ef3b5 --stdout | git apply --check` succeeded.
+**Record:** Clean apply confirmed. No conflicting refactors in this
+function between mainline fix and 6.18.y.
 
 ### Step 6.3: Related Fixes Already Present?
-**Record:** OOB fix `fbd0662f9c9a6` is in tree (companion fix, same
-author/day). EOT logic fix is not.
+**Record:** No equivalent fix in tree. `git grep "remove stale
+rcu_barrier"` returns nothing. Prerequisites (`kfree_rcu`, GC refactor)
+are present.
 
 ---
 
-## Phase 7: Subsystem Context
+## Phase 7: Subsystem and Maintainer Context
 
 ### Step 7.1: Subsystem Criticality
-**Record:** `net/hsr` — HSR/PRP redundancy protocol for
-industrial/utility networks. **IMPORTANT** for that niche;
-**PERIPHERAL** globally (requires `CONFIG_HSR`).
+**Record:** **net/bridge** — IMPORTANT. Bridge is widely used in
+virtualization, containers, and enterprise networking.
 
-### Step 7.2: Activity
-**Record:** Active development in 6.18.y (VLAN support, OOB fix, memory
-leak fix, RedBox support).
+### Step 7.2: Subsystem Activity
+**Record:** Actively maintained; recent multicast fixes from Nikolay
+Aleksandrov in 6.18.y.
 
 ---
 
 ## Phase 8: Impact and Risk Assessment
 
 ### Step 8.1: Who Is Affected
-**Record:** Users running HSR/PRP (`CONFIG_HSR`) — industrial
-automation, power grid, substation networking.
+**Record:** Users with `CONFIG_BRIDGE` + `CONFIG_BRIDGE_IGMP_SNOOPING`
+who tear down bridges during network namespace cleanup (containers, LXC,
+Kubernetes CNI, test harnesses).
 
 ### Step 8.2: Trigger Conditions
-**Record:** Malformed supervision frame on the HSR/PRP network with a
-non-EOT terminal TLV (any type other than EOT=0 with length 0). Attacker
-or faulty device on the L2 segment. Config-specific, not every kernel
-user.
+**Record:** Network namespace deletion with bridge devices present.
+syzbot reproduces under stress. Not every boot, but realistic in
+container orchestration. Unprivileged users can trigger via user
+namespaces + bridge setup.
 
-### Step 8.3: Failure Mode Severity
-**Record:** Malformed frames accepted as valid supervision → incorrect
-node DB updates, node merging via `hsr_handle_sup_frame()`, altered
-forwarding/drop behavior. **Severity: MEDIUM-HIGH** for HSR deployments
-(protocol state corruption / redundancy disruption), but not a kernel
-crash, OOB, or UAF. No memory-safety issue.
+### Step 8.3: Failure Severity
+**Record:** Hung task / RTNL deadlock during cleanup — **CRITICAL**
+(namespace teardown stalls, can leave system in degraded state).
 
 ### Step 8.4: Risk-Benefit
 **Record:**
-- **Benefit:** Correct IEC 62439-3 validation; completes supervision
-  hardening alongside already-backported OOB fix; protects node DB
-  integrity.
-- **Risk:** Very low — one-line logic inversion, only rejects more bad
-  frames.
-- **Ratio:** Favorable for HSR users; low global risk.
+- **Benefit:** HIGH — prevents real hangs in namespace teardown.
+- **Risk:** VERY LOW — 2-line deletion, maintainer-acked, synchronous GC
+  already in place.
+- **Ratio:** Strongly favors backport.
 
 ---
 
@@ -306,118 +348,118 @@ crash, OOB, or UAF. No memory-safety issue.
 
 ### Step 9.1: Evidence Summary
 
-**FOR backport:**
-- Clear logic bug since 2021 (inverted conditional)
-- Real protocol validation failure with node DB / forwarding impact
-- 1-line, obviously correct, applies cleanly
-- Reviewed by HSR contributor and net maintainer
-- Companion OOB fix from same author already in v6.18.44
-- Standalone, no dependencies
+**FOR:**
+- Real, reproducible hung-task / RTNL pressure (syzbot).
+- Critical failure mode during netns cleanup.
+- Minimal, maintainer-acked fix.
+- Buggy code present in 6.18.44.
+- Applies cleanly.
+- `kfree_rcu` has been used since 2018; `rcu_barrier` is genuinely
+  stale.
+- Precedent: similar `rcu_barrier` removal backported in writeback.
 
-**AGAINST backport:**
-- No crash, syzbot report, or user bug report
-- Niche subsystem (`CONFIG_HSR`)
-- Impact is protocol/state correctness, not memory safety
-- No explicit stable nomination
+**AGAINST:**
+- Only affects configs with bridge IGMP snooping (not universal, but
+  very common in distros).
+- No explicit `Cc: stable` (irrelevant per review rules).
 
-**Unresolved:** No field reports quantifying real-world exploitation.
+**UNRESOLVED:**
+- Exact syzkaller bug URL not fetched (lore bot-blocked); stack trace in
+  commit is sufficient.
 
 ### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — logic inversion is self-
-   evident; Reviewed-by present; no runtime test reported.
-2. Fixes a real bug? **PASS** — inverted conditional since
-   `eafaa88b3eb7`.
-3. Important issue? **PASS (moderate)** — HSR node DB / redundancy state
-   corruption for industrial users, not kernel panic.
-4. Small and contained? **PASS** — 1 line, 1 file.
-5. No new features/APIs? **PASS**.
-6. Can apply to local tree? **PASS** — verified with `git apply
-   --check`.
+1. Obviously correct and tested? **PASS** — maintainer ack, two reviews,
+   syzbot validation.
+2. Fixes a real bug? **PASS** — hung task during netns cleanup.
+3. Important issue? **PASS** — deadlock/hang, CRITICAL severity.
+4. Small and contained? **PASS** — 2 lines, 1 file.
+5. No new features/APIs? **PASS** — deletion only.
+6. Can apply to local tree? **PASS** — clean apply verified.
 
 ### Step 9.3: Exception Categories
-**Record:** None (not device ID, quirk, DT, build, or docs).
+**Record:** Not a device-ID/quirk/DT/build/doc exception. Qualifies as a
+straight bug fix.
 
 ### Step 9.4: Decision Rationale
-
-This is a longstanding logic inversion in HSR supervision-frame
-validation. Since 2021, any terminal TLV that is not “EOT with non-zero
-length” has been accepted, violating IEC 62439-3 and allowing malformed
-supervision traffic to drive node DB updates and supervision-specific
-forwarding. The fix is a one-line De Morgan correction with negligible
-regression risk.
-
-The companion OOB fix from the same author on the same day is already in
-v6.18.44; leaving this EOT validation gap incomplete is inconsistent.
-For HSR/PRP deployments — used in safety-critical industrial
-infrastructure — protocol validation that protects node state integrity
-is appropriate stable material even without a crash report.
+The stale `rcu_barrier()` in `br_multicast_dev_del()` causes real hangs
+when bridges are torn down during network namespace cleanup. The barrier
+was needed for `call_rcu()` callbacks that no longer exist — all
+multicast objects now use `kfree_rcu()` with synchronous GC beforehand.
+Removing it is safe, tiny, and maintainer-approved. The bug exists in
+Linux 6.18.44 and the fix applies cleanly.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed subject, tags, body from commit `46d111a3ef3b5`
-- [Phase 1] No syzbot/Reported-by; Reviewed-by: Fernando Fernandez
-  Mancera
-- [Phase 2] Diff: 1 line in `is_supervision_frame()`, logic inversion
-  confirmed
-- [Phase 2] Read current buggy code at lines 113–115 of
-  `net/hsr/hsr_forward.c`
-- [Phase 3] `git show eafaa88b3eb7`: buggy EOT check introduced Oct 2021
-- [Phase 3] `git merge-base --is-ancestor eafaa88b3eb7 HEAD`: bug-
-  introducing commit in tree
-- [Phase 3] `git merge-base --is-ancestor 46d111a3ef3b5 HEAD`: fix NOT
-  in tree
-- [Phase 3] `git log stable/linux-6.18.y -- net/hsr/hsr_forward.c`:
-  related OOB fix `fbd0662f9c9a6` present
-- [Phase 3] `git merge-base --is-ancestor fbd0662f9c9a6 HEAD`: OOB fix
-  in tree
-- [Phase 4] `b4 dig -c 46d111a3ef3b5`: lore thread found, v7 is latest
-- [Phase 4] `b4 dig -a`: series v1–v7; standalone from v4 onward
+- [Phase 1] `git show 25ae123db10ba`: parsed subject, tags, body, stack
+  trace
+- [Phase 2] Read `br_multicast_dev_del()` at lines 4444–4461; confirmed
+  −2 line diff
+- [Phase 2] `grep call_rcu net/bridge/br_multicast.c`: no matches (only
+  `kfree_rcu`)
+- [Phase 3] `git blame -L 4458,4461`: `rcu_barrier` from
+  `4329596cb10d23` (2018)
+- [Phase 3] `git show 4329596cb10d23`: `call_rcu_bh` → `kfree_rcu`, kept
+  `rcu_barrier`
+- [Phase 3] `git show e12cec65b5546`: GC refactor with synchronous
+  destroy
+- [Phase 3] `git merge-base --is-ancestor`: both prerequisite commits in
+  tree
+- [Phase 3] `git merge-base --is-ancestor 25ae123db10ba HEAD`: **NOT IN
+  TREE**
+- [Phase 3] `git apply --check`: **APPLIES CLEANLY**
+- [Phase 4] `b4 dig -c 25ae123db10ba`: lore URL found
 - [Phase 4] `b4 dig -w`: netdev maintainers CC'd
-- [Phase 4] Mbox grep: Reviewed-by confirmed; no stable nomination or
-  NAK
-- [Phase 5] `grep is_supervision_frame`: caller chain `fill_frame_info`
-  → `hsr_forward_skb` → slave/master receive
-- [Phase 5] Read `hsr_handle_sup_frame()`, `hsr_get_node()`,
-  `hsr_forward_do()` for downstream impact
-- [Phase 6] `git describe HEAD`: v6.18.44
-- [Phase 6] Buggy code confirmed present in stable release commit
-  `1efe5d048a391`
-- [Phase 6] `git format-patch -1 46d111a3ef3b5 --stdout | git apply
-  --check`: applies cleanly
-- [Phase 8] Assessed severity as protocol state corruption for HSR
-  users, not kernel memory safety
+- [Phase 4] `b4 dig -a`: v1 only, no later revisions
+- [Phase 4] mbox: Acked-by Nikolay Aleksandrov; Reviewed-by Sitnicki,
+  Schimmel
+- [Phase 5] `grep br_multicast_dev_del`: caller `br_dev_uninit` at
+  `br_device.c:157`
+- [Phase 5] Read `ops_exit_rtnl_list` at `net_namespace.c:165–189`: RTNL
+  held during unregister
+- [Phase 5] Read `br_multicast_gc` at lines 893–902: synchronous destroy
+  with `kfree_rcu`
+- [Phase 6] `git describe HEAD`: v6.18.44; `make kernelversion`: 6.18.44
+- [Phase 6] Confirmed `rcu_barrier()` at line 4460 still present
+- [Phase 6] `git log stable/linux-6.18.y --grep="stale rcu_barrier"`: no
+  match
+- [Phase 8] `git show 29de8448174cf`: precedent for stale `rcu_barrier`
+  removal in stable
+- [Phase 8] `grep rcu_barrier net/bridge/`: only `br_multicast.c:4460`
+  and `br.c:506` (module exit)
 
-**YES**The background checks finished and match what the analysis
-already used:
+**YES**The background checks finished and match the earlier analysis.
 
-- **Mainline search** found commit `46d111a3ef3b5` (“net: hsr: require
-  valid EOT supervision TLV”) on master/linux-next.
-- **Author history on stable/linux-6.18.y** shows the companion OOB fix
-  (`fbd0662f9c9a6`) is already in v6.18.44, while this EOT logic fix is
-  not.
+**Task 65367** (`git log -S "rcu_barrier"` on `br_multicast.c`): the
+only relevant hit was `10cc2b50eb4b0` (RCU race fix in
+`br_multicast_stop`). The `rcu_barrier()` in `br_multicast_dev_del()`
+came from the 2018 `kfree_rcu` migration (`4329596cb10d23`).
 
-Verdict for this tree (v6.18.44): **YES** — one-line protocol validation
-fix, applies cleanly, and completes the supervision-frame hardening
-started by the already-backported OOB patch.
+**Task 65368** (stable branch search): the fix commit `25ae123db10ba` is
+**not** in `stable/linux-6.18.y`. The stale `rcu_barrier()` is still
+present at line 4460 in this tree.
 
- net/hsr/hsr_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+**Verdict unchanged: YES** — backport to Linux 6.18.y. It’s a 2-line
+removal that fixes syzbot-reported hangs during netns/bridge teardown,
+applies cleanly, and is acked by the bridge maintainer.
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 299de290ddaa5..901eb85c112d1 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -110,7 +110,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
- 	}
+ net/bridge/br_multicast.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index ce34881a9d96e..1014f6221472e 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -4456,8 +4456,6 @@ void br_multicast_dev_del(struct net_bridge *br)
+ 	br_multicast_ctx_deinit(&br->multicast_ctx);
+ 	br_multicast_gc(&deleted_head);
+ 	cancel_work_sync(&br->mcast_gc_work);
+-
+-	rcu_barrier();
+ }
  
- 	/* end of tlvs must follow at the end */
--	if (hsr_sup_tlv->HSR_TLV_type == HSR_TLV_EOT &&
-+	if (hsr_sup_tlv->HSR_TLV_type != HSR_TLV_EOT ||
- 	    hsr_sup_tlv->HSR_TLV_length != 0)
- 		return false;
- 
+ int br_multicast_set_router(struct net_bridge_mcast *brmctx, unsigned long val)
 -- 
 2.53.0
 
