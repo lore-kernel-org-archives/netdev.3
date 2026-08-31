@@ -1,166 +1,310 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450F4404BE8
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 09:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE393ED5B6;
+	Mon, 31 Aug 2026 10:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788170396; cv=none; b=FnNqVNrAUy+mee0aLiqvlmK+WEohqmaKa5LzrXPtMiFcXv/JkSt21sUdCvJ5fxDRNGVhFv6KtMCe8b7DVKG8qmE+j6IadXA9OfMucoPxyb4Miu00doNi/yERQKmdgWu11aL4XRLohDKIByaK/i3sKSeotr+z3riCF2VV3ujHgQ0=
+	t=1788170465; cv=none; b=FP+XtqXGK1uWNugePpWg41blVm3krZtePix0JOo1nU/HqdN5EKsI+UF2uQ6Lfq1XWawBG6jIsMlPY5HnwoLaYkE9CKCe1y+U3v4aWhca25TQwLDydY4QmfZRYB5oy2IlzEUADiv9YmaV6dY09yd5meOQ7oF8yQqOgZeq6wIIn7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788170396; c=relaxed/simple;
-	bh=B15RlXup8VNrbDY928345EvNUEtNMh/B6AZDUiwOnQ8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nlZQx4RjZogeWNbOoH67M6A7A6Y8yrHABbZxKSpNU+ISBEGcygEMeN0cgiSl45WH6ttYk/lq4M9AGUV/qHl61vNMFAeaHMt5Y2zqPTyaXUeMK+uwy/kOz0mYB0iW1zMFtP0kULDxhXADqHeclcTHklObhzuRFaa0YvNczfnl2+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aedL06qC; arc=none smtp.client-ip=209.85.222.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1788170465; c=relaxed/simple;
+	bh=UHXiK+2wPlvrPzjnQNVS7btV4PjfAxg2S3vPqZ7EJNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uzNfdKEQJ2vek3OfJRAoIx19hVtfT9MC33vcAfY2vG+j0neO/UAyyy0OpN0BtecyjuQwYymwvld87KsAmEjt03ygKKZaZswrngr7Bh+NseB+b9pC2Jx3quelcpGxv/pU1C/93lKpj9cK0fnsRGIorFI1iiZ1sZpCTL3wzUM4CcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=m+4BR36o; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aedL06qC"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93771aa0379so892936385a.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 02:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788170394; x=1788775194; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q6dY7yOVEqXJeUCiqCQC5RwlEiYvk4fl4crGEBWJBdw=;
-        b=aedL06qCjct+z5+ypoINGYP3Mg2IGImRk5vmk99CuaQQZg1TJ9mswPljcNJxXh4yG1
-         rQrCLBT21/0VuUy83VTfcIFPb41bpFy/nt0x1XIxqyIaQsfduwNo3OKpLQn0Mhidrwmf
-         KpypPkhxp9HZ/M6nQ43nZnhQoRa18ErOkOXCCnN+e9yyVP/JiJKNZbhlobsQ+Jv+X9Zi
-         G63es0ZDrADi9DhqFKju6BU8Vp0hUYhY8cdLQHfPqIi4BpMxaymSx+IkYzB44KQmeoLm
-         RAkbDSW4rPdbIos+DvTHRgui6rRH5vXjFFp65KgckXwiGpvb3T8d+fW7+jxcQg/9MjXS
-         IlDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788170394; x=1788775194;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q6dY7yOVEqXJeUCiqCQC5RwlEiYvk4fl4crGEBWJBdw=;
-        b=KbNoQkzUsR/l5U3s8G/W+Icye8+QKudv8SVQ6VIkyMDrWvMdTJJJJW9c8LrgPIN3vJ
-         BGGaCk6nMWQHhRBd15B1qKVy1OdDzqAQJH4QRxjK4eYjH+hL8erqrNMbRopgso4C8jcY
-         R4+1JE1SYNr+Deui8Dmo+r5UJsCUfAs7FMe0Nb/UnSQt4jA2YLSRjCZ0haucOkAiGeB9
-         aNm/Lw0zwZmpJG2J6G8WYS/wDUZz0bgiOBfwaVYCaNPFb/EO28oyooGewvf9Qeim5+Ec
-         wL52hf1ZJty8lx/ej6DmjC21l3neVRzNB+fx2BDs0p5X2mxiNN30ynRRedhE3xRQiFf7
-         rOXg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpoh3GpQNjHGAHuqhnnXr5PO2NnkMoUr5KHE5CI3ftn9jm2zzWlL3xAojQ9L3y/sVeABil7X2I=@vger.kernel.org
-X-Gm-Message-State: AFuF++mKXfHn24W60uGsDjrP+5L0C0i+vndn04KXgZwVWOgTQdF6x1lh
-	UfWsssnk9iPFuvFyvz6aqUGslGMalm2TbY8fyjfzi2H3NxU0L51qINMycb9O3jiv+1V3nFClq/Q
-	M8NTWY/KKhelq1g==
-X-Received: from qknvu23.prod.google.com ([2002:a05:620a:5617:b0:92e:512f:829a])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:390b:b0:936:57db:e761 with SMTP id af79cd13be357-939427fc52dmr171258085a.7.1788170393781;
- Mon, 31 Aug 2026 02:59:53 -0700 (PDT)
-Date: Mon, 31 Aug 2026 09:59:52 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="m+4BR36o"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V82P9B1640487;
+	Mon, 31 Aug 2026 10:00:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=dAonsd
+	otnxClF/j5+upZcKC3LgcUzP8274aPq8QRIY4=; b=m+4BR36ouEdJBzzv1YJ2Rd
+	nJwHhjFk/+Yo21DigpDrwDahRx5vQeHKDaNdhdlSTBxMCSvXY13rvY78welBnO8q
+	A3XcdyRd8rIUHeFsTER6RmMZB1rHey97Pw/v+h7CPiMT6Ujy5es9UKDNdvqGQue2
+	ZA0xd74l63PU6cWMfgz5gYiGF3lpAB674XCYBq+75d01Zqv+6Oi/JN5qC/wdGRy5
+	pniCIwXdBFls9BaM6oCSYxv16bBdZ7yE3ytApB7PbKdMKVpJd9tNUmlMjiRKVF3F
+	EfZeu/Y5DcG/IwSKPbDDChMBuEfTafSizI5ns20cmCfA6f0N7f3Nr9rgoFRVbOMQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbpx58ha0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 10:00:57 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67V9uOK4024984;
+	Mon, 31 Aug 2026 10:00:56 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gcbyg51n8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 10:00:56 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VA0twa33096432
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Aug 2026 10:00:55 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 848585805D;
+	Mon, 31 Aug 2026 10:00:55 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2128358059;
+	Mon, 31 Aug 2026 10:00:50 +0000 (GMT)
+Received: from [9.123.0.223] (unknown [9.123.0.223])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Aug 2026 10:00:49 +0000 (GMT)
+Message-ID: <37021811-78ac-4bdd-ab59-62fb089850f3@linux.ibm.com>
+Date: Mon, 31 Aug 2026 15:30:48 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260831095952.3385596-1-edumazet@google.com>
-Subject: [PATCH net] net: fix use-after-free in pskb_expand_head()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+22c4f9a7026c86bcc3b8@syzkaller.appspotmail.com, 
-	syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] module: init-failure path can free a module with live
+ try_module_get() users
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Tony Lu
+ <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Hidayath Khan <hidayath@linux.ibm.com>
+References: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
+ <8b6506a1-5bfc-4f9b-92fa-234c89afe9ad@suse.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <8b6506a1-5bfc-4f9b-92fa-234c89afe9ad@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=PPc/P/qC c=1 sm=1 tr=0 ts=6a9550d9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=Bmp3t_kZ57zNF6DfwVUA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: JuENR-MDDg3XZpXSo-5dKm2MmJNYow_B
+X-Proofpoint-ORIG-GUID: 0yzz6gdF7xbs_MNMZMpwgprYkX1NdiAp
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA4MiBTYWx0ZWRfX8J94zLdW4/eU
+ M0gJyy+lkUFSa0iAjGwHYLizGBCqhwBlp03aLR8OjQ7xBb5/IpdzKf6uFZqN0W8nWoHKnctd0x7
+ EqoJyf1YlFDH1nXUZ311zhd4vi45P50=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA4MiBTYWx0ZWRfXzr1mYNKb/Iov
+ VW6ZkGipP+5AKmYFt26gvqICJzuo0F9fUR5OVUCSAXwsb1TQuAd7N22gHyH5L1N7TsCQKcxsGV+
+ y4Jwy7svvS8C7WWDSJ5Ail96R2GLocTXSs/jvzXwcyMdMF3DvFWzwbEMCr8HYes2is29Be95UGR
+ ev8LCuETWuOuxKH1DejUntQCRFGn3nlm5SHDmRSFNEPVp+s/sfu0Z9fnpWVxTmoxKnHFYBI5ypK
+ gi+FXlL7yH6dLB5e6WWX37W0tYbJqz00dAagz4SzZqAfF3BpdNP/3JAd/99vfxYefJiVh9IJwnz
+ axrW/RO84AWq2sP9pMJL29e9iMLNUl5yEfM8GOo8TKryf4EMb/eauLPykRaI/TLJMC12MJ+8Hwu
+ QKzbUUoUVbUCW7QjyLe20JgYtrhkNriJ5vdpfIF9SWHtsVyOMjs8B/VJAMYTmnqdgya0pIV0Xhc
+ VXdkrpP2Yoq/rMKeV2g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_03,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608310082
 
-pskb_expand_head() and pskb_carve_inside_header() decide whether to drop
-the old head gracefully via skb_release_data() or directly free it via
-skb_free_head().
 
-Blamed commit replaced the check against dataref == delta with skb_cloned(skb).
 
-However, skb_cloned(skb) masks out the upper 16 bits (SKB_DATAREF_SHIFT)
-of dataref using SKB_DATAREF_MASK. For an skb with nohdr == 1 or a clone
-referencing a shared buffer where only one regular reference exists,
-skb_cloned(skb) evaluates to false even when dataref is shared with other
-skbs.
+On 28/08/26 5:33 pm, Petr Pavlu wrote:
+> On 8/24/26 8:13 AM, Mahanta Jambigi wrote:
+>> Hi Luis, Petr, Daniel, Sami, Aaron,
+>>
+>> I'm writing to ask about what looks like a generic module-init failure
+>> lifetime problem in the module loader. I ran into it while working on
+>> the SMC networking module (net/smc/), but after several patch
+>> iterations, it seems the root issue may belong in kernel/module/main.c
+>> rather than in SMC itself. I'd appreciate your guidance on whether this
+>> reading is correct, and if so, what fix direction would be preferred.
+>>
+>> THE ISSUE IN do_init_module()
+>> =============================
+>>
+>> include/linux/module.h has a long-standing FIXME in module_is_live():
+>>
+>>     /* FIXME: It'd be nice to isolate modules during init, too, so they
+>>        aren't used before they (may) fail. But presently too much code
+>>        (IDE & SCSI) require entry into the module during init. */
+>>     static inline bool module_is_live(struct module *mod)
+>>     {
+>>         return mod->state != MODULE_STATE_GOING;
+>>     }
+>>
+>> Because MODULE_STATE_COMING is not MODULE_STATE_GOING, try_module_get()
+>> can succeed once a module's __init is executing. If __init makes the
+>> module externally reachable partway through and then later fails, the
+>> failure path in do_init_module() appears to do:
+>>
+>>     fail:
+>>         mod->state = MODULE_STATE_GOING;
+>>         synchronize_rcu();
+>>         module_put(mod);
+>>         ...
+>>         free_module(mod);
+>>
+>> synchronize_rcu() waits for RCU readers, but not for threads that
+>> already obtained a module reference via try_module_get() and are still
+>> executing module text.
+>>
+>> By contrast, the normal unload path in try_stop_module() refuses to
+>> proceed while the refcount is non-zero.
+>>
+>> So the asymmetry seems to be that the normal unload path waits for
+>> references to drain, while the init-failure path does not.
+>>
+>> A concrete race would look like:
+>>
+>>   1. Module __init registers an externally reachable interface.
+>>   2. User space enters through that interface and try_module_get()
+>>      succeeds while the module is still COMING.
+>>   3. A later __init step fails.
+>>   4. do_init_module() frees the module.
+>>   5. The in-flight caller is still executing module text.
+>>
+>> SMC AS A CONCRETE EXAMPLE
+>> =========================
+>>
+>> In SMC, simply moving registration later does not appear to eliminate
+>> the window, because there are two separate registration points that can
+>> make the module reachable via socket():
+>>
+>>   1. sock_register(&smc_sock_family_ops)
+>>      After this, socket(AF_SMC, ...) can succeed and reach
+>>      try_module_get() via __sock_create().
+>>
+>>   2. smc_inet_init() -> inet_register_protosw()
+>>      After this, socket(AF_INET, SOCK_STREAM, IPPROTO_SMC) can succeed
+>>      and again reach try_module_get().
+>>
+>> Either registration point can succeed before a later init step fails.
+>>
+>> This may not be specific to SMC; other protocol modules that become
+>> reachable during init, such as Bluetooth, may have similar exposure and
+>> appear worth auditing as well.
+>>
+>> ON THE FIXME'S IDE/SCSI CONCERN
+>> ===============================
+>>
+>> The FIXME mentions IDE and SCSI as reasons not to isolate modules
+>> during init.
+>>
+>>   1. IDE was removed in Linux 5.14, so that half of the concern no
+>>      longer applies.
+>>
+>>   2. SCSI still appears to self-reference during init
+>>      (scsi_device_get() -> try_module_get(hostt->module) during
+>>      scsi_scan_host()), so a blanket wait-for-refcount-to-drain
+>>      approach in the failure path may deadlock there.
+>>
+>> Also, strong_try_module_get() already rejects MODULE_STATE_COMING with
+>> -EBUSY, so the infrastructure for refusing callers during init already
+>> exists in some form.
+>>
+>> QUESTIONS
+>> =========
+>>
+>> First, is my reading of this init-failure refcount/lifetime asymmetry
+>> correct?
+> 
+> Your analysis looks correct to me.
+> 
+>>
+>> If so, would one of the following directions be acceptable?
+>>
+>>   1. An opt-in mechanism (for example, a module flag) for modules that
+>>      are safe to isolate during init and whose init-failure path should
+>>      wait for external references to drain.
+> 
+> In general, it is preferred if the module loader handles all modules in
+> the same way.
+> 
+> I would say that the module loader should wait for external references
+> to drain after an init failure for all modules and that it should be the
+> responsibility of individual modules to ensure that this wait eventually
+> completes. Excluding some modules would mean that the module loader
+> could still free them while they are in use by the kernel.
+> 
+> Before such a wait, the module loader should cancel all idempotent
+> module loads. This is especially important during boot when several
+> udevd workers may be trying to insert the same module. In that case,
+> a failed module init function should block only a single udevd task, so
+> that the system can still boot properly.
+> 
+Thank you for the clear direction. I agree with both points — uniform
+handling for all modules, and unblocking concurrent loaders before the
+drain wait. Below is the proposed change with the rationale for each
+step. Proposed change to the fail: path in do_init_module().
 
-When pskb_expand_head() is called on such a buffer (e.g. during bridge
-flooding, generic XDP, or VLAN tag insertion), it falsely assumes the head
-is unshared and calls skb_free_head(skb) directly. This drops the underlying
-head/frag reference immediately, while other clones or references still
-point to it, causing a use-after-free in subsequent packet processing.
+fail_free_freeinit:
+	kfree(freeinit);
+fail:
+	/*
+	 * Mark dying so try_module_get() fails for all new callers.
+	 * synchronize_rcu() ensures this is visible on all CPUs before
+	 * we proceed; no new references can be taken after this point.
+	 */
+	mod->state = MODULE_STATE_GOING;
+	synchronize_rcu();
 
-Introduce skb_dataref_bias() and skb_data_is_shared() to accurately test
-if dataref is shared by checking atomic_read(&skb_shinfo(skb)->dataref) != bias.
+	/* Drop the loader's own reference taken in module_unload_init(). */
+	module_put(mod);
 
-Use skb_dataref_bias() in skb_data_unref() and skb_data_is_shared() in
-pskb_expand_head() and pskb_carve_inside_header().
+	/*
+	 * Unblock concurrent loaders before blocking on the drain below,
+	 * so that a failed init delays only this task, not every udevd
+	 * worker that raced to load the same module.
+	 *
+	 * Two dedup paths exist:
+	 *
+	 * - finit_module path: losers of the inode race sleep in
+	 *   idempotent_wait_for_completion(). They are unblocked by
+	 *   idempotent_complete() in idempotent_init_module(), which
+	 *   runs as do_init_module() returns — before we reach here.
+	 *   No action needed.
+	 *
+	 * - init_module path: callers sleep in module_patient_check_exists()
+	 *   on module_wq waiting for finished_loading(), which returns
+	 *   true once state == MODULE_STATE_GOING. wake_up_all() kicks
+	 *   them loose immediately.
+	 */
+	*wake_up_all*(&module_wq);
 
-Fixes: 3e24591a19bb ("skb: Drop "fastpath" variable for skb_cloned check in pskb_expand_head")
-Reported-by: syzbot+22c4f9a7026c86bcc3b8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a954e27.4d659fcc.734b4.0046.GAE@google.com/
-Reported-by: syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=128e9f5a0f85a51215b1
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- include/linux/skbuff.h | 13 ++++++++++++-
- net/core/skbuff.c      |  4 ++--
- 2 files changed, 14 insertions(+), 3 deletions(-)
+	/*
+	 * Drain async workers scheduled during __init (e.g. SCSI async
+	 * scan). MODULE_STATE_GOING is visible everywhere, so workers
+	 * that have not yet called try_module_get() will fail cleanly.
+	 * Workers already holding a reference complete and release it
+	 * naturally. Must run before free_module() regardless of
+	 * async_probe_requested.
+	 */
+	*async_synchronize_full*();
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 421f6fc454511ea6c7b83d5227481840a7c4bcc0..efeef148e1ba50cbb0d480975dc6c3c59acb98c7 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1295,6 +1295,11 @@ static inline bool skb_unref(struct sk_buff *skb)
- 	return true;
- }
- 
-+static inline int skb_dataref_bias(const struct sk_buff *skb)
-+{
-+	return skb->nohdr ? (1 << SKB_DATAREF_SHIFT) + 1 : 1;
-+}
-+
- static inline bool skb_data_unref(const struct sk_buff *skb,
- 				  struct skb_shared_info *shinfo)
- {
-@@ -1303,7 +1308,7 @@ static inline bool skb_data_unref(const struct sk_buff *skb,
- 	if (!skb->cloned)
- 		return true;
- 
--	bias = skb->nohdr ? (1 << SKB_DATAREF_SHIFT) + 1 : 1;
-+	bias = skb_dataref_bias(skb);
- 
- 	if (atomic_read(&shinfo->dataref) == bias)
- 		smp_rmb();
-@@ -2019,6 +2024,12 @@ static inline struct sk_buff *skb_get(struct sk_buff *skb)
-  * If users == 1, we are the only owner and can avoid redundant atomic changes.
-  */
- 
-+static inline bool skb_data_is_shared(const struct sk_buff *skb)
-+{
-+	return skb->cloned &&
-+	       atomic_read(&skb_shinfo(skb)->dataref) != skb_dataref_bias(skb);
-+}
-+
- /**
-  *	skb_cloned - is the buffer a clone
-  *	@skb: buffer to check
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 966af3beed94d0a9f0387cec70b5297eccfcf19f..f4c0645f98d3f2f0c8765403e0184769e928d7b0 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -2331,7 +2331,7 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 	 * is not we can just drop the old head and let the existing refcount
- 	 * be since all we did is relocate the values
- 	 */
--	if (skb_cloned(skb)) {
-+	if (skb_data_is_shared(skb)) {
- 		if (skb_orphan_frags(skb, gfp_mask))
- 			goto nofrags;
- 		if (skb_zcopy(skb))
-@@ -6855,7 +6855,7 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 	       skb_shinfo(skb),
- 	       offsetof(struct skb_shared_info,
- 			frags[skb_shinfo(skb)->nr_frags]));
--	if (skb_cloned(skb)) {
-+	if (skb_data_is_shared(skb)) {
- 		/* drop the old head gracefully */
- 		if (skb_orphan_frags(skb, gfp_mask)) {
- 			skb_kfree_head(data);
--- 
-2.55.0.897.gb25b4bd76c-goog
+	/*
+	 * Wait for references taken before MODULE_STATE_GOING became
+	 * visible. refcnt is monotonically decreasing from here; the
+	 * loop terminates provided the module's error path pairs every
+	 * __module_get() with a module_put(). The hung-task detector
+	 * catches violations.
+	 */
+	while (*module_refcount*(mod) != 0)
+		msleep(10);
 
+	blocking_notifier_call_chain(&module_notify_list,
+				     MODULE_STATE_GOING, mod);
+	klp_module_going(mod);
+	ftrace_release_mod(mod);
+	free_module(mod);
+
+	return ret;
+
+Does this direction look correct to you?
