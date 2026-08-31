@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A113911DD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E553905EF
 	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788187814; cv=none; b=hLfEL4YhPUcpEUQpHaRVj+Sqqe5Z7Q6k2tZpqulYoyXH1dBnbynA0ONHChAsHUat95/0RhYa8SL2nZGdkQK7H9dWj6iklKl2bg7muSx07+s5dqrnzAQsvuni1eVGHu4WObw07mXy5JJilqVomvogPIDsfVnBH0i4/sn61T7wpR8=
+	t=1788187814; cv=none; b=L/l0v0AThgppY9bsv+3jeNYavEJHzKteJY2cu/W0asKdzWgIhT4jUYvh+y4D7/08cOtsk6suxItS1ltciB70du5J4TZLH71oB98X2fUPikbcEo21jSHQREx9UNPIukGGftHIplemFTMzn/MNHaMG43bFd7NUvb1O7GdymebJwmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788187814; c=relaxed/simple;
-	bh=43Dndlf/CDKqyjeAZwN2WFq2Ipncl1WyxMlxacvQ3i0=;
+	bh=ZAybZuVwcDoGum5Ms2lssgsLXlQLiQTyVjGd/GvEhB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ticpAwwhnV8HK1DKh7AslnzkJrYtGVjqQRnY68NRo/eKcNaaMwsnwA0s/Jo8Vn6qjHadGWIm8jwQaUXUD85IszPCtn9cc0uNNQTEApuCUQxrvzCM7XRzF5Pznir/kQsHN4WKfnL5o8hfIGlx7x/xY/gYJlzWoFbRYw8tRYu6f6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RZnKFqiT; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=AOBd7AmyAonEasoR4dIcCrqj4YDCXhqwyuN0kkLXfeiEBSe2tp/VgidpaqrHBLZlXUnDn7RfCfQGNvprSl1e/kFymXrNv34HHIc0Eqa6Pfcmie4d6TZBdHSa1ng5PI1Mkri0dfsNduo24qDn/6Zq+shVWQym6id/ToVm0IIxQxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kX11HyHi; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RZnKFqiT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kX11HyHi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788187813; x=1819723813;
+  t=1788187812; x=1819723812;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=43Dndlf/CDKqyjeAZwN2WFq2Ipncl1WyxMlxacvQ3i0=;
-  b=RZnKFqiT3XeRnO6GyGQTEhVTmvazdL+BVR6INY+kBcy7QTLR4Zh1VURD
-   OKdHgI+uu1F9GBys9kXNjuneQU3FBLVYaggxcvg+dpKkXhbdLCE+/a0uT
-   meo2iwQPG+VsUYExPRGO8xQ7+Env6njhU9QhaUNGVYh65YPUg0R81epyI
-   G5gY44sLG8MARip306kLEtkUep9Y6DU2cJ0t5602JMOZZE8u0lXEqMv9E
-   ZS5LKLrQm1HQadHI48zPbfpRBA54/qG4gCpGqp1Xy4Uzue2/+O/v14n25
-   BP9F62eacl4FvEjEI3ZeNVx9eGxXPtWXUactR7s28M0rOh4jhXE3frk0j
-   g==;
-X-CSE-ConnectionGUID: N8kMlTthR42WsPn+gNrsig==
-X-CSE-MsgGUID: u6+PD0uoRsGlunCc9HMGIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="76144533"
+  bh=ZAybZuVwcDoGum5Ms2lssgsLXlQLiQTyVjGd/GvEhB8=;
+  b=kX11HyHisLBa3LXLL5CLHv8W8LUTnZkILvRUyQQ2jRUU79Na/Mo1Rgym
+   oG0iWUPAqLj3WKVsTOILPasm3ydTzMbcCD9xfDJFBX5iVcXU9s2nUE0jT
+   eL0cdYnJD1o5rQosd1MWhedCUtn3zZiC42eebzWQJ6Wezvz7zn/Zq22BB
+   Sj/ntQQhQXKLf3aLItj7o+3hb2keRb75no4gCMeGOs0Q1FslrPsa4AntY
+   EIJAP3iXeYGgJoZmTC2jcQpfVNvCjd7JlKb1K2HTeqad0mGHnvP5BCK20
+   y56zYAEB3/Is/Be2RBh1CLjO7CKU8wxjMQZJjIb4Q4JwJAJ7A3ACD5e24
+   A==;
+X-CSE-ConnectionGUID: cGiW42pYRNK9pfa1s/11Ag==
+X-CSE-MsgGUID: 7hI7BtXVRf+F4kNojqvV+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="76144530"
 X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
-   d="scan'208";a="76144533"
+   d="scan'208";a="76144530"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 07:50:12 -0700
-X-CSE-ConnectionGUID: VfIfyqhIRlyeNO7Ii5/lKA==
-X-CSE-MsgGUID: /YwqiRsURti3l9qmmUMb4g==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 07:50:11 -0700
+X-CSE-ConnectionGUID: p6wQqPYaSvCrPi1ypw+7tQ==
+X-CSE-MsgGUID: jYg+gAqaRK2IOvZeMnACvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
-   d="scan'208";a="273003707"
+   d="scan'208";a="273003701"
 Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
-  by orviesa005.jf.intel.com with ESMTP; 31 Aug 2026 07:50:11 -0700
+  by orviesa005.jf.intel.com with ESMTP; 31 Aug 2026 07:50:10 -0700
 From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next v5 4/6] ice: dpll: Check for bounds when updating the pin states
-Date: Mon, 31 Aug 2026 14:50:03 +0000
-Message-ID: <20260831145005.191040-5-sergey.temerkhanov@intel.com>
+Subject: [PATCH iwl-next v5 3/6] ice: dpll: Use switch statements to handle pin states
+Date: Mon, 31 Aug 2026 14:50:02 +0000
+Message-ID: <20260831145005.191040-4-sergey.temerkhanov@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831145005.191040-1-sergey.temerkhanov@intel.com>
 References: <20260831145005.191040-1-sergey.temerkhanov@intel.com>
@@ -60,107 +60,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add bounds checking code so that any potential out-of-bound
-array access is avoided
+Use switch statements to handle pin states to make the code more
+readable. This also makes this code more future-proof, should any
+new states appear.
+
+This also changes how direction-mismatched state requests are handled in
+ice_dpll_sma_pin_state_set(). Previously, requesting CONNECTED on an
+INPUT-direction SMA pin or SELECTABLE on an OUTPUT-direction pin would
+fall through to ice_dpll_pin_disable() and return success. After this
+change those requests return -EINVAL without issuing a firmware command.
+Because the DPLL netlink core does not filter pin states by direction
+before calling the driver, this is a user-visible netlink API change.
 
 Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 46 +++++++++++++----------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 72 ++++++++++++++++++-----
+ 1 file changed, 57 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 1c459a604acf..614e222327b3 100644
+index ac1a034b7353..1c459a604acf 100644
 --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -758,6 +758,8 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
- 			  struct netlink_ext_ack *extack)
- {
- 	u8 parent, port_num = ICE_AQC_SET_PHY_REC_CLK_OUT_CURR_PORT;
-+	enum dpll_pin_state eec_state = DPLL_PIN_STATE_DISCONNECTED;
-+	enum dpll_pin_state pps_state = DPLL_PIN_STATE_DISCONNECTED;
- 	int ret;
- 
- 	switch (pin_type) {
-@@ -769,26 +771,26 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
- 			goto err;
- 		if (ICE_AQC_GET_CGU_IN_CFG_FLG2_INPUT_EN & pin->flags[0]) {
- 			if (pin->pin) {
--				pin->state[pf->dplls.eec.dpll_idx] =
-+				eec_state =
- 					pin->pin == pf->dplls.eec.active_input ?
- 					DPLL_PIN_STATE_CONNECTED :
- 					DPLL_PIN_STATE_SELECTABLE;
--				pin->state[pf->dplls.pps.dpll_idx] =
-+				pps_state =
- 					pin->pin == pf->dplls.pps.active_input ?
- 					DPLL_PIN_STATE_CONNECTED :
- 					DPLL_PIN_STATE_SELECTABLE;
- 			} else {
--				pin->state[pf->dplls.eec.dpll_idx] =
--					DPLL_PIN_STATE_SELECTABLE;
--				pin->state[pf->dplls.pps.dpll_idx] =
--					DPLL_PIN_STATE_SELECTABLE;
-+				eec_state = DPLL_PIN_STATE_SELECTABLE;
-+				pps_state = DPLL_PIN_STATE_SELECTABLE;
+@@ -1338,10 +1338,12 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 	ret = -EINVAL;
+ 	switch (p->idx) {
+ 	case ICE_DPLL_PIN_SW_1_IDX:
+-		if (state == DPLL_PIN_STATE_CONNECTED) {
++		switch (state) {
++		case DPLL_PIN_STATE_CONNECTED:
+ 			data &= ~ICE_SMA1_MASK;
+ 			enable = true;
+-		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
++			break;
++		case DPLL_PIN_STATE_DISCONNECTED:
+ 			/* Skip if U.FL1 is not active, setting TX_EN
+ 			 * while DIR_EN is set would also deactivate
+ 			 * the paired SMA1 output.
+@@ -1352,18 +1354,21 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
  			}
+ 			data |= ICE_SMA1_TX_EN;
+ 			enable = false;
 -		} else {
--			pin->state[pf->dplls.eec.dpll_idx] =
--				DPLL_PIN_STATE_DISCONNECTED;
--			pin->state[pf->dplls.pps.dpll_idx] =
--				DPLL_PIN_STATE_DISCONNECTED;
++			break;
++		default:
+ 			goto unlock;
  		}
-+		/* Commit only after a successful read so lockless readers never
-+		 * observe a transient disconnected state.
-+		 */
-+		if (pf->dplls.eec.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
-+			pin->state[pf->dplls.eec.dpll_idx] = eec_state;
-+		if (pf->dplls.pps.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
-+			pin->state[pf->dplls.pps.dpll_idx] = pps_state;
+ 		target = p->output;
+ 		type = ICE_DPLL_PIN_TYPE_OUTPUT;
  		break;
- 	case ICE_DPLL_PIN_TYPE_OUTPUT:
- 		ret = ice_aq_get_output_pin_cfg(&pf->hw, pin->idx,
-@@ -799,20 +801,17 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
- 
- 		parent &= ICE_AQC_GET_CGU_OUT_CFG_DPLL_SRC_SEL;
- 		if (ICE_AQC_GET_CGU_OUT_CFG_OUT_EN & pin->flags[0]) {
--			pin->state[pf->dplls.eec.dpll_idx] =
--				parent == pf->dplls.eec.dpll_idx ?
-+			eec_state = parent == pf->dplls.eec.dpll_idx ?
- 				DPLL_PIN_STATE_CONNECTED :
- 				DPLL_PIN_STATE_DISCONNECTED;
--			pin->state[pf->dplls.pps.dpll_idx] =
--				parent == pf->dplls.pps.dpll_idx ?
-+			pps_state = parent == pf->dplls.pps.dpll_idx ?
- 				DPLL_PIN_STATE_CONNECTED :
- 				DPLL_PIN_STATE_DISCONNECTED;
+ 	case ICE_DPLL_PIN_SW_2_IDX:
+-		if (state == DPLL_PIN_STATE_SELECTABLE) {
++		switch (state) {
++		case DPLL_PIN_STATE_SELECTABLE:
+ 			data |= ICE_SMA2_DIR_EN;
+ 			data &= ~ICE_SMA2_UFL2_RX_DIS;
+ 			enable = true;
+-		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
++			break;
++		case DPLL_PIN_STATE_DISCONNECTED:
+ 			/* Skip if U.FL2 is not active, setting
+ 			 * UFL2_RX_DIS could also disable the paired
+ 			 * SMA2 input.
+@@ -1375,7 +1380,8 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 			}
+ 			data |= ICE_SMA2_UFL2_RX_DIS;
+ 			enable = false;
 -		} else {
--			pin->state[pf->dplls.eec.dpll_idx] =
--				DPLL_PIN_STATE_DISCONNECTED;
--			pin->state[pf->dplls.pps.dpll_idx] =
--				DPLL_PIN_STATE_DISCONNECTED;
++			break;
++		default:
+ 			goto unlock;
  		}
-+		if (pf->dplls.eec.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
-+			pin->state[pf->dplls.eec.dpll_idx] = eec_state;
-+		if (pf->dplls.pps.dpll_idx < ICE_DPLL_RCLK_NUM_MAX)
-+			pin->state[pf->dplls.pps.dpll_idx] = pps_state;
- 		break;
- 	case ICE_DPLL_PIN_TYPE_RCLK_INPUT:
- 		if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
-@@ -5180,6 +5179,13 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
+ 		target = p->input;
+@@ -1497,19 +1503,49 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 		return -EBUSY;
  
- 	de->dpll_idx = abilities.eec_dpll_idx;
- 	dp->dpll_idx = abilities.pps_dpll_idx;
-+	if (de->dpll_idx >= ICE_DPLL_RCLK_NUM_MAX ||
-+	    dp->dpll_idx >= ICE_DPLL_RCLK_NUM_MAX) {
-+		dev_err(ice_pf_to_dev(pf),
-+			"invalid dpll_idx in cgu abilities: eec=%u, pps=%u\n",
-+			de->dpll_idx, dp->dpll_idx);
-+		return -EINVAL;
+ 	mutex_lock(&pf->dplls.lock);
+-	if (!sma->active) {
+-		ret = ice_dpll_sma_direction_set(sma, sma->direction, extack);
+-		if (ret)
++	switch (state) {
++	case DPLL_PIN_STATE_SELECTABLE:
++		if (sma->direction == DPLL_PIN_DIRECTION_OUTPUT) {
++			enable = false;
++			ret = -EINVAL;
++			goto unlock;
++		}
++		enable = true;
++		break;
++	case DPLL_PIN_STATE_CONNECTED:
++		if (sma->direction == DPLL_PIN_DIRECTION_INPUT) {
++			enable = false;
++			ret = -EINVAL;
+ 			goto unlock;
++		}
++		enable = true;
++		break;
++	case DPLL_PIN_STATE_DISCONNECTED:
++		enable = false;
++		break;
++	default:
++		ret = -EINVAL;
++		goto unlock;
+ 	}
+-	if (sma->direction == DPLL_PIN_DIRECTION_INPUT) {
+-		enable = state == DPLL_PIN_STATE_SELECTABLE;
++
++	switch (sma->direction) {
++	case DPLL_PIN_DIRECTION_INPUT:
+ 		target = sma->input;
+ 		type = ICE_DPLL_PIN_TYPE_INPUT;
+-	} else {
+-		enable = state == DPLL_PIN_STATE_CONNECTED;
++		break;
++	case DPLL_PIN_DIRECTION_OUTPUT:
+ 		target = sma->output;
+ 		type = ICE_DPLL_PIN_TYPE_OUTPUT;
++		break;
++	default:
++		ret = -EINVAL;
++		goto unlock;
 +	}
- 	d->num_inputs = abilities.num_inputs;
- 	d->num_outputs = abilities.num_outputs;
- 	d->input_phase_adj_max = le32_to_cpu(abilities.max_in_phase_adj) &
++
++	if (!sma->active) {
++		ret = ice_dpll_sma_direction_set(sma, sma->direction, extack);
++		if (ret)
++			goto unlock;
+ 	}
+ 
+ 	if (enable)
+@@ -4917,7 +4953,8 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 		pin->prop.capabilities = caps;
+ 		pin->pf = pf;
+ 		pin->prop.board_label = ice_dpll_sw_pin_ufl[i];
+-		if (i == ICE_DPLL_PIN_SW_1_IDX) {
++		switch (i) {
++		case ICE_DPLL_PIN_SW_1_IDX:
+ 			pin->direction = DPLL_PIN_DIRECTION_OUTPUT;
+ 			pin_abs_idx = ICE_DPLL_PIN_SW_OUTPUT_ABS(i);
+ 			pin->prop.freq_supported =
+@@ -4927,7 +4964,8 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 			pin->prop.freq_supported_num = freq_supp_num;
+ 			pin->input = NULL;
+ 			pin->output = &d->outputs[pin_abs_idx];
+-		} else if (i == ICE_DPLL_PIN_SW_2_IDX) {
++			break;
++		case ICE_DPLL_PIN_SW_2_IDX:
+ 			pin->direction = DPLL_PIN_DIRECTION_INPUT;
+ 			pin_abs_idx = ICE_DPLL_PIN_SW_INPUT_ABS(i) +
+ 				      input_idx_offset;
+@@ -4940,6 +4978,10 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 			pin->prop.capabilities =
+ 				(DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |
+ 				 caps);
++			break;
++		default:
++			dev_err(ice_pf_to_dev(pf), "Invalid U.FL pin index: %d\n", i);
++			return -EINVAL;
+ 		}
+ 		pin->muxed = &d->sma[i];
+ 		ice_dpll_phase_range_set(&pin->prop.phase_range, phase_adj_max);
 -- 
 2.53.0
 
