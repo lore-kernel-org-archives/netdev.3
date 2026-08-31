@@ -1,261 +1,129 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0BE3A9856
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 08:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6F23BBA1A;
+	Mon, 31 Aug 2026 08:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788163598; cv=none; b=t9iY8xol5RJ70mAP3fVUhBkyvRd7uSnri9t8QwAY6+kQUl6+eaGfdJOLxKqOgmoOqTLSH+wdKh8q146W08FNTPXktXS9vdtZoS+Ns1AyzcOGce4k6cXlalipMQffqkq5+joRPOJ05txu7F13TD4/hMqoOrYx5hS+BAtIrzgUWK4=
+	t=1788163815; cv=none; b=ORjjCvkecUwOAZSaBKL4C71IDcsw5R1rPb9THmd2nmYohh97hkYAGflDTHgPXPDZzfgsxRPbOYKiU9z9p/i/RvqqxevcX2khUPiiOl1iei2GKv1GKlebadENK1br90NXoe+EVW1uZWqcjrXbldevM5F8lARIweUosLicHSg18QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788163598; c=relaxed/simple;
-	bh=8BRQlhI6CSykfwzXJJnS/Hu3ZpIG/9o66wIlyBmN9qU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jG2yFNapvqZIAE541vbj36rY2urJWGP60xYKM6wQIjUwEDx+JJIupzLRPQePFDm6XksgrEKKl8VO6sRcv7ffGtM0XDSsdqZxGrcLSUoPi7ueUwvocJZDRXYX6fDguPuwpWtJXxThROO0jAxe1Pcg3QyiRd5EdWceHFis5A/m3uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=oRTiyHDw; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1788163815; c=relaxed/simple;
+	bh=qYQr868TspaqhDv+OU2/m8jImwN84LFNUNtcGXo+i2c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DxElXESggrVV/mQmxge9NGLSLfknZphICa3jWOWbpmA3y3bZUev+8eMe8+pCFT8CtlUWl8TTM10WkcRqdEc6qGS9uqxBiHIkFe3E6v4owazhZ9lqHfbtFiiR8vCUFiTd99rck/5MqZgdkOPsRsEfTl6oc2SDJViHgbRNzo1zys0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KIC6t93O; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="oRTiyHDw"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc1cb472b76so2786882a12.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 01:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1788163595; x=1788768395; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yFKFbmtMt8kULTgC57DYAGg0UOmXOs2gF1gOFDlnuB8=;
-        b=oRTiyHDw85qMc5YcjjFEEtoCL5S0cIvUcXFu0a/0PKxpeE2REAUlcYAHzgGQLKP8+j
-         pkmPcmt+Y1BBLAkd30VCKlblxkBBxitnqND9kGksGdz746O0BVsmhWsnDaXeG/GjYK/6
-         EppswBj0Phf1wRnIZsFOJ/KjXU0lnA3cxO8FUDHhYPaoBLxKmeAUo1F4xe67k4wsXeWx
-         99IzpH2BGc7ShI22/xohdMd4h+iagU7IZflYrdwolxOIt4bcjn2HiSP3B9O1J//XPkUU
-         Tfggnfx2YDFgL1V7XazaK2wVPuhpDxvFVyY5lZym50IBUoU4KOOSjjSZ9LOaUFaPJX8E
-         buAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788163595; x=1788768395;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yFKFbmtMt8kULTgC57DYAGg0UOmXOs2gF1gOFDlnuB8=;
-        b=cv++zV0c49lWMYir4x9CfVm/+bmqGv/fCImDPBtIlENqHPTrlTMtLzfp2L39poWC1n
-         9/fA/sNtBg5UuaO5Y8pWNUGRleYKVBIOOl6PZak9YwvJb2cXBCSqEeKHADL0BSDe4Jua
-         VlHQC8vPji8yDTtu0kZi4zR1Cel68fKW99SA4opJG/KKLkMrptLMWmmzJqr3TG+QORGv
-         sYvG+AB1E8xLP5b2ZTUsDSLfxwl6PuNTGOdvIFfLEJEaB8W8uMcCQ86KrCEmz0rhtsiz
-         qc25VX8zcz0grH9Dnkw1rVdcIc8UR3Wjx9mCfpWGS0A6uXS3Um0N6jTqEsrxeUl+OiTR
-         Cfvg==
-X-Gm-Message-State: AFuF++lIM4BU5B83+eamR4xcCNI3DN5/sOaXriihLVJ0mvueHNTKyKTT
-	lFCWFlE4T7HYtVszOsjRTvFb1lkGzWoibgahIuBcOeB5anpIaKOmP0rvhM31LX3Bb2SCuzXuOJt
-	SLxGJIPlMKbmwdzMRuFpBrL7PP8b39XcY2MYY9q6ZW3UHwjbyJ4bic9+MEJhNj5gFBBw=
-X-Gm-Gg: AYBFou35+GHUDv2UXJra6C/MLNhhj8ms+gjwVuJAOsWtJzroYA947gUTNWaabGWgbnw
-	G0F3kK6ajogPF+aEBiDdoSIqBCVKPeDihMr3tsVNWOxPYjPhV0KSdDIWGpEnG6WmkMvI/6zWGEw
-	36VmLtD+lMOfrYA9lMTvtOTf8A/P3PeysFLmG0/bFd30VCzIo5lJjBaKd0mKV3xYoPPDiD+I1ft
-	96aULNH+h9KNWZ3SbLSns5WJktGw9RlMf2PXeBrTli9Fbppw9APEcuyvvFymGlrjo2W9hZmUfix
-	o2vZcRQJJbva0b7JocVYaNR7ZNhhsHQBL9TxkDosDTUv2AhwC36CSGZrpR7qxA0khEdKQMHgWZo
-	J5wQQUD2L1D4Epa/Iu+Nh67UFYmRtnQYOu9t6XnHNkk7twUNN+83vxrSxc9IdsfuqDZBJms3Q7r
-	Q5WsfbftnYcGPOwW3hBzGERFttGqVdTsb3dm2M+y734whq3xPiFjP5WHFAqsT+RiEHINPw2W3FM
-	g==
-X-Received: by 2002:a17:90b:5405:b0:38e:67e1:15b with SMTP id 98e67ed59e1d1-396d0de4c19mr36317818a91.6.1788163592978;
-        Mon, 31 Aug 2026 01:06:32 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.240])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286fa20e2fsm28099812eec.28.2026.08.31.01.06.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 01:06:32 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	keyong.sun@smartx.com,
-	Wang Zhan <wang.zhan@smartx.com>
-Subject: [PATCH net-next] net: sysfs: use ops lock for speed and duplex
-Date: Mon, 31 Aug 2026 16:06:23 +0800
-Message-ID: <20260831080623.1064001-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KIC6t93O"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3EFCC1A18E1;
+	Mon, 31 Aug 2026 08:10:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0F2AD601E1;
+	Mon, 31 Aug 2026 08:10:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9741511C783B9;
+	Mon, 31 Aug 2026 10:10:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788163809; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=lf+jAuf1c//A6wiIx7V+m8/CTg8Q5h73hWBJwaRjx8w=;
+	b=KIC6t93Oc9vRd95xZ1UTLfeTr8AjjKlziBcOI1lWZj/QypQKTcOiz3DFF4Kp07yRgeCUAs
+	wbz96RZP5lES02y4VTL5TlEWY/gHSfdeUXnt6nf3MJEB34HLf1IphwGRZt9IsS6LBoN6GU
+	7Ic+TPi7vkzKhuo1DlbRSsaozyKYOnXksYrpjv8dk8HA7W9GfrimAn9xAs1JtX4oMtfbG9
+	fDc6eordKKxHmZApiV3tu1LAxq78GuaK4EMMj5tkXiJRsAM4j2UPCHFt2LuzmoRrw0FnP1
+	S3/kPd5og766kN1BETi9Dw0vOOCcdVkwJVY9Xpc6U3o1oO+WhdhtlC+O4gj31w==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: linux-wpan@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  alex.aring@gmail.com,
+  stefan@datenfreihafen.org,  davem@davemloft.net,  edumazet@google.com,
+  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,  Xuanqiang Luo
+ <luoxuanqiang@kylinos.cn>
+Subject: Re: [PATCH net v1] mac802154: drain mac_wq before unregistering
+ interfaces
+In-Reply-To: <20260828101905.26865-1-xuanqiang.luo@linux.dev> (Xuanqiang Luo's
+	message of "Fri, 28 Aug 2026 18:19:05 +0800")
+References: <20260828101905.26865-1-xuanqiang.luo@linux.dev>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Mon, 31 Aug 2026 10:10:05 +0200
+Message-ID: <87jyp6btia.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Reading /sys/class/net/<dev>/{speed,duplex} takes rtnl_lock() before
-calling __ethtool_get_link_ksettings(). For ops-locked devices whose
-callbacks do not require RTNL, this unnecessarily serializes sysfs
-readers with rtnetlink users. On CPU-throttled hosts, a periodic reader
-such as node-exporter can keep RTNL held for hundreds of milliseconds
-while an mlx5 callback runs.
+On 28/08/2026 at 18:19:05 +08, Xuanqiang Luo <xuanqiang.luo@linux.dev> wrot=
+e:
 
-Ops-locked devices can run ethtool operations under the netdev instance
-lock. The ethtool netlink and ioctl paths use
-ETHTOOL_OP_NEEDS_RTNL_LINKSETTINGS to identify callbacks that still need
-RTNL, but the sysfs path currently does not. Apply the same rule to sysfs
-reads: call netif_get_link_ksettings() under netdev_lock_ops() when the
-callback does not require RTNL, and keep sysfs_rtnl_lock() for legacy
-devices and callbacks that opt in to RTNL.
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>
+> ieee802154_unregister_hw() unregisters the wpan netdevs before
+> destroying mac_wq. The RX path stores the receiving sub-interface
+> (sdata) in the queued MAC command descriptor without taking a
+> reference to the netdev.
+>
+> If mac802154_rx_mac_cmd_worker() runs after the netdev has been freed,
+> it dereferences the stale pointer and triggers a KASAN
+> slab-use-after-free:
+>
+>   BUG: KASAN: slab-use-after-free in mac802154_rx_mac_cmd_worker+0xc0/0x4=
+98 [mac802154]
+>   Read of size 8 at addr ffff0000c6db0ba8 by task kworker/u16:3/61
+>   ...
+>   Call trace:
+>    show_stack+0x20/0x38 (C)
+>    dump_stack_lvl+0x78/0x90
+>    print_address_description.constprop.0+0x88/0x398
+>    print_report+0xa8/0x278
+>    kasan_report+0xa8/0xf8
+>    __asan_load8+0x9c/0xc0
+>    mac802154_rx_mac_cmd_worker+0xc0/0x498 [mac802154]
+>    process_one_work+0x334/0x8b8
+>   ...
+>   Allocated by task 630:
+>    kasan_save_stack+0x2c/0x58
+>    kasan_save_track+0x20/0x40
+>    kasan_save_alloc_info+0x40/0x58
+>    __kasan_kmalloc+0xa0/0xb8
+>    __kvmalloc_node_noprof+0x1e8/0x588
+>    alloc_netdev_mqs+0x74/0x7f0
+>    ieee802154_if_add+0xac/0x630 [mac802154]
+>    ieee802154_register_hw+0x31c/0x3d0 [mac802154]
+>    fakelb_add_one+0x250/0x318 [fakelb]
+>   ...
+>   Freed by task 652:
+>    kasan_save_stack+0x2c/0x58
+>    kasan_save_track+0x20/0x40
+>    kasan_save_free_info+0x4c/0x78
+>    __kasan_slab_free+0x60/0x90
+>    kfree+0x194/0x478
+>    kvfree+0x44/0x60
+>    netdev_release+0x4c/0x68
+>    device_release+0xac/0x130
+>    kobject_cleanup+0x84/0x248
+>    kobject_put+0x98/0xf8
+>    netdev_run_todo+0x3a0/0x5e0
+>    rtnl_unlock+0x18/0x30
+>    ieee802154_unregister_hw+0x48/0x90 [mac802154]
+>    fakelb_remove+0xe8/0x148 [fakelb]
+>
+> After killing local->tasklet, drain mac_wq before calling
+> ieee802154_remove_interfaces() so pending work completes before the
+> interfaces are unregistered. Do this without holding rtnl because scan
+> and beacon workers acquire it themselves.
+>
+> Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Preserve the existing speed and duplex sysfs ABI, including -EINVAL for
-devices that are down or callbacks that fail.
+Missing Cc: stable.
 
-Assisted-by: LLM
-Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
----
- net/core/net-sysfs.c | 122 +++++++++++++++++++++++++------------------
- 1 file changed, 71 insertions(+), 51 deletions(-)
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 352173df75785..3e01e7f3cac79 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -118,6 +118,55 @@ static int sysfs_rtnl_lock(struct kobject *kobj, struct attribute *attr,
- 	return ret;
- }
- 
-+/*
-+ * Use the per-device ops lock without RTNL when the device supports it.
-+ * Legacy devices and callbacks which explicitly require RTNL retain the
-+ * existing locking.
-+ */
-+static int sysfs_get_link_ksettings(struct device *dev,
-+				    struct device_attribute *attr,
-+				    struct ethtool_link_ksettings *cmd)
-+{
-+	struct net_device *netdev = to_net_dev(dev);
-+	int ret = -EINVAL;
-+	bool need_rtnl;
-+
-+	/*
-+	 * The check is also done in netif_get_link_ksettings(); this helps
-+	 * returning early without hitting the locking section below.
-+	 */
-+	if (!netdev->ethtool_ops->get_link_ksettings)
-+		return ret;
-+
-+	need_rtnl = !netdev_need_ops_lock(netdev) ||
-+		    (netdev->ethtool_ops->op_needs_rtnl &
-+		     ETHTOOL_OP_NEEDS_RTNL_LINKSETTINGS);
-+	if (need_rtnl) {
-+		ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
-+		if (ret)
-+			return ret;
-+	}
-+	netdev_lock_ops(netdev);
-+
-+	ret = -EINVAL;
-+	if (!dev_isalive(netdev)) {
-+		ret = -ENODEV;
-+	} else if (netif_running(netdev)) {
-+		/*
-+		 * Keep the sysfs ABI: report any callback error as -EINVAL
-+		 * instead of propagating the driver's error code.
-+		 */
-+		if (!netif_get_link_ksettings(netdev, cmd))
-+			ret = 0;
-+	}
-+
-+	netdev_unlock_ops(netdev);
-+	if (need_rtnl)
-+		rtnl_unlock();
-+
-+	return ret;
-+}
-+
- /* use same locking rules as GIF* ioctl's */
- static ssize_t netdev_show(const struct device *dev,
- 			   struct device_attribute *attr, char *buf,
-@@ -332,27 +381,13 @@ static DEVICE_ATTR_RW(carrier);
- static ssize_t speed_show(struct device *dev,
- 			  struct device_attribute *attr, char *buf)
- {
--	struct net_device *netdev = to_net_dev(dev);
--	int ret = -EINVAL;
--
--	/* The check is also done in __ethtool_get_link_ksettings; this helps
--	 * returning early without hitting the locking section below.
--	 */
--	if (!netdev->ethtool_ops->get_link_ksettings)
--		return ret;
--
--	ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
--	if (ret)
--		return ret;
-+	struct ethtool_link_ksettings cmd;
-+	int ret;
- 
--	ret = -EINVAL;
--	if (netif_running(netdev)) {
--		struct ethtool_link_ksettings cmd;
-+	ret = sysfs_get_link_ksettings(dev, attr, &cmd);
-+	if (!ret)
-+		ret = sysfs_emit(buf, fmt_dec, cmd.base.speed);
- 
--		if (!__ethtool_get_link_ksettings(netdev, &cmd))
--			ret = sysfs_emit(buf, fmt_dec, cmd.base.speed);
--	}
--	rtnl_unlock();
- 	return ret;
- }
- static DEVICE_ATTR_RO(speed);
-@@ -360,41 +395,26 @@ static DEVICE_ATTR_RO(speed);
- static ssize_t duplex_show(struct device *dev,
- 			   struct device_attribute *attr, char *buf)
- {
--	struct net_device *netdev = to_net_dev(dev);
--	int ret = -EINVAL;
--
--	/* The check is also done in __ethtool_get_link_ksettings; this helps
--	 * returning early without hitting the locking section below.
--	 */
--	if (!netdev->ethtool_ops->get_link_ksettings)
--		return ret;
--
--	ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
--	if (ret)
--		return ret;
--
--	ret = -EINVAL;
--	if (netif_running(netdev)) {
--		struct ethtool_link_ksettings cmd;
--
--		if (!__ethtool_get_link_ksettings(netdev, &cmd)) {
--			const char *duplex;
-+	struct ethtool_link_ksettings cmd;
-+	const char *duplex;
-+	int ret;
- 
--			switch (cmd.base.duplex) {
--			case DUPLEX_HALF:
--				duplex = "half";
--				break;
--			case DUPLEX_FULL:
--				duplex = "full";
--				break;
--			default:
--				duplex = "unknown";
--				break;
--			}
--			ret = sysfs_emit(buf, "%s\n", duplex);
-+	ret = sysfs_get_link_ksettings(dev, attr, &cmd);
-+	if (!ret) {
-+		switch (cmd.base.duplex) {
-+		case DUPLEX_HALF:
-+			duplex = "half";
-+			break;
-+		case DUPLEX_FULL:
-+			duplex = "full";
-+			break;
-+		default:
-+			duplex = "unknown";
-+			break;
- 		}
-+		ret = sysfs_emit(buf, "%s\n", duplex);
- 	}
--	rtnl_unlock();
-+
- 	return ret;
- }
- static DEVICE_ATTR_RO(duplex);
-
-base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
--- 
-2.47.3
-
+Thanks,
+Miqu=C3=A8l
