@@ -1,144 +1,229 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08C23FF1AC
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746CC403B18;
+	Mon, 31 Aug 2026 12:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788179488; cv=none; b=pv33K3V+FtZhLYfd6eDzsX7pO85rHew0FeWYZMvpvFGHAhQqEF/Zlcq3uAjj3aH64qoq09/vAoGlApn7i0XuYB3P1/0flJpA+D4jf4yxZ9ZvpbT2W0gP3lJZY/Z50DKyxNlB3xxuQIHOT05ilOqEhASKM4klE8e0rjodOSGGwJ0=
+	t=1788179807; cv=none; b=PwSmqYY6ZVOHrP5z6BfG44x04qSDbay3kToN8Kwg9Yp0mUFYeOZ69rSnlU4XU9iUDG+vE85RyKVP7X0D3ZRVeRZzkW5Iuls21rv7mgRe1mX2xNErEwkWKRNCUthp7/y8Efkt7x//qf7HdvlpP0xD/xOjdH2FpkN8MKbLMBGtHs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788179488; c=relaxed/simple;
-	bh=Y0V/3uw6Dclec70rKLWcztfNr2TyqhPTDR3WmwbMJ+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m7IZ/aGaPX/9JzhwkHrDPBJGcbRi1uvUg9amKXh5L5IgfiaKmqfFlkiWGnOpPMo7jdOvJB6/8n2T/Zl01SHcE5NLsqw9xqLAL8UW2VtEGLxC8HiJe29PbU2CZLUhOUlrzuCxLj4GBTifw6inIhHYteGPncbWWd361c5mZ3z7zZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=NNosl1Dz; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="NNosl1Dz"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-482f2ee53e7so1551645f8f.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 05:31:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788179483; x=1788784283; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hMHSz/yOqpOw4BUuWyRgv2r2RwaD0GDIsQCXrSNiv3U=;
-        b=NNosl1DzqGLpOlTDQe8D+BCccEx98axZJQvw+gF2veEU5PkZtU58TjmK08mvY9Z2wz
-         /H2hdfaqMxsUcXjZN1uCaRUq4CRjBLWCDGj6Iwv8emX77/jThpxd+0OZWpsJh1XwYYwW
-         wTqJQGl2NMoTh6i3FmA+eRaLPMnrZOBS1fOIWem+NClN4gfgLo6Eh2GjXwimSI2y6z7s
-         Zxyr9OZCVzbe8TUFNDck2Cen4Txa7WZzXekYxB4OMPZEQUq0R6NulEl+elWeQkQ//jGW
-         anvZbRHIsYHkayEBiXpOrebTVBaOVJ5HFMaesvWnWMi0d1GbiCNU50uKyamFQBYv/tp/
-         kirw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788179483; x=1788784283;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hMHSz/yOqpOw4BUuWyRgv2r2RwaD0GDIsQCXrSNiv3U=;
-        b=Pnv9ndYFHkRQ5cwymqX5spQA5vjXnSeBMAo+yvynqY6RL6oExamj+1+QdTN1dQPLvL
-         aHLZtrQ5HoQY2Xk8P818JY9vNWysWUGUkh9fHlwCxJhPDgF27Oqq4Mk2rW1LUxucY14x
-         O5EOlXpOTBSqZP5k8qubZlEJWLDBw56EYwiCWoFhC12/FqyZHjTSKONF2lJGsoCyyr3L
-         oHKNsA98deWM/WuLKrGBgZCeVLlqoIhDOrInXXCuyyNJnUeXGk95VUAm7Jxf77xWhZga
-         ygxjkLO+uiQmjZqcUHSkni0F+MVgrecOSrihLYNx1k7zRCimsZ+eRhSN3zu9hvwScsDx
-         oTpw==
-X-Forwarded-Encrypted: i=1; AHgh+RrvQ/iJE+aVIkbuWb584Wpr9aT8Hb8X5WFw1BSv00dS0mL/WUg+aT7ehdvq6Qrupnm3ihxY12Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++lCl0+PjjuRUVL4ChxuvS/Gq0nTQksWgHzXPjGMg7JwANypP8vR
-	rYYeVDb/bj3z1MqBGn6K+rNtLeSAOvg/x1YMyHHvrnYwg7IOsi5X79KpKPKGqfF05wU=
-X-Gm-Gg: AR+sD11jdDyXTUKFpitNLvfhjEFpCHA6krE5scIlHDM/R9tO/jmF3vg12bzh/Dj7fYU
-	orOxuukeXZssqALnrxGZAqifcMTH+gF9WWEloHDeB2mpT+B4GsmTUVMwrK8KQl56NbSJTUo/pKv
-	IqqFwFUbX71Vyhcon8NYVPaUbd7ax2MfpC2C1Tp31VfzTlFRmAP5E9QtEatWxIIx9DnSsB/RKf+
-	IBOxXWn5G8ZbIKJhlzjn5BzNrbilNHxaI/pr1/WsD5GQZ3koMwU3d4PTPS/VMdP1zoYlBrxvcE4
-	WSD3sthUpgN2WkwTDHW4cDUoizrEw/7w1cHKWm5BYd458OFAHmfRoOHvR0KdiW8DlgfclNz50sp
-	Y/FWDAylJFwOgfnW2Osj7Ap5EmNChkuN/Qmuh7w3scHZEYATGvVRLOg0mUhh1UI4K2iIYFRUAWQ
-	XwS44b6fAIabAwVlVH8gduPT0iJxHq8/AveF/6Q8J8zk/A8G4K9rjWNQsJXq4tjvaYZFjbjG9Cy
-	fV191N3Ggbv6E7fdzQ=
-X-Received: by 2002:a05:600d:8498:20b0:499:dbae:86be with SMTP id 5b1f17b1804b1-49b91c4de9bmr308024275e9.14.1788179482535;
-        Mon, 31 Aug 2026 05:31:22 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ccae954f9sm216243985e9.13.2026.08.31.05.31.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 05:31:20 -0700 (PDT)
-Message-ID: <b30a2594-b154-4f52-9afd-2db0f9d78bb3@blackwall.org>
-Date: Mon, 31 Aug 2026 15:31:19 +0300
+	s=arc-20240116; t=1788179807; c=relaxed/simple;
+	bh=bWZYzoUkeCVFaOw6aIX8ZrlgzHm9ShTXB7JuQWG74XQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I5e02P3hmYqSfbfOwMtD4TeYsvU+1Jaz6EYoPkKAy4R6LaSs971AXd8O47jOqL99QwRrDdecMreTq83KHltD903gdQ8pWAKVlIoJWd6wg9v4gIgIKvFHfJh9vla8wRDd9f9UHHPnKCQmIUfPh5DGJLWnRvevUhabIL1kBkk9ukQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 490E4202476;
+	Mon, 31 Aug 2026 14:36:38 +0200 (CEST)
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1x11Fe-004G6Z-0Z;
+	Mon, 31 Aug 2026 14:36:38 +0200
+Received: from ore by dude04 with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1x11Fe-00000002nON-0PFS;
+	Mon, 31 Aug 2026 14:36:38 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Linus Walleij <linusw@kernel.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH net-next v3 2/3] net: dsa: realtek: rtl83xx: add support for enabling supplies
+Date: Mon, 31 Aug 2026 14:36:36 +0200
+Message-ID: <20260831123637.666457-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260831123637.666457-1-o.rempel@pengutronix.de>
+References: <20260831123637.666457-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bridge: skip generic XDP on locally re-injected
- packets
-Content-Language: en-US, bg
-To: Zhao ShiRong <shxzhaosr@163.com>, netdev@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- bridge@lists.linux.dev, syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
-References: <20260831113051.13072-1-shxzhaosr@163.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260831113051.13072-1-shxzhaosr@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 31/08/2026 14:30, Zhao ShiRong wrote:
-> Packets locally delivered by the bridge are re-injected into the
-> receive path via br_pass_frame_up() -> br_netif_receive_skb() ->
-> netif_receive_skb() with skb->dev set to the bridge device.  If the
-> bridge device has an XDP program attached, __netif_receive_skb_core()
-> runs do_xdp_generic() a second time on such packets.
-> 
-> A locally-delivered packet that was allocated on the TX path (e.g. an
-> MLD packet built by mld_newpack()) does not carry the
-> XDP_PACKET_HEADROOM that generic XDP requires, so
-> netif_skb_check_for_xdp() calls pskb_expand_head() and reallocates the
-> skb head buffer.  This frees the head that the bridge rx path
-> (br_handle_frame() / br_handle_frame_finish()) is still using, leading
-> to a use-after-free read in br_handle_frame():
-> 
->    BUG: KASAN: slab-use-after-free in is_multicast_ether_addr [inline]
->    BUG: KASAN: slab-use-after-free in is_valid_ether_addr [inline]
->    BUG: KASAN: slab-use-after-free in br_handle_frame+0xcfb/0x1510 net/bridge/br_input.c:349
-> 
-> netif_receive_generic_xdp() already refuses to run generic XDP on
-> reinjected packets by checking skb_is_redirected().  Reuse that marker:
-> set it right before the bridge re-injects the packet, so generic XDP is
-> skipped and the head buffer is left intact.
-> 
-> Reported-by: syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/all/6a6d4406.2d659fcc.1d46f5.01ad.GAE@google.com/T/
-> Signed-off-by: Zhao ShiRong <shxzhaosr@163.com>
-> ---
->   net/bridge/br_input.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-> --- a/net/bridge/br_input.c
-> +++ b/net/bridge/br_input.c
-> @@ -26,6 +26,12 @@ static int
->   br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
->   {
->   	br_drop_fake_rtable(skb);
-> +
-> +	/* Re-injected for local delivery: do not let generic XDP run on the
-> +	 * bridge device a second time, it could reallocate the head via
-> +	 * pskb_expand_head() and free a buffer still in use.
-> +	 */
-> +	skb_set_redirected_noclear(skb, false);
->   	return netif_receive_skb(skb);
->   }
->   
-> --
-> 2.43.0
-> 
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Nacked-by: Nikolay Aleksandrov <razor@blackwall.org>
+The power supplies powering the IC may not necessarily be enabled by the
+time the driver probes.  The binding describes the power rails, so enable
+them at probe with devm_regulator_bulk_get_enable(), before the reset line
+is requested and driven, so the chip is powered before its pins are driven.
 
-This is wrong on multiple levels, use your head for 2 seconds before blindly
-sending AI crap. This was sent ~2 hours after the report was sent, did you
-even test your patch or just hit send? Very disturbing practice anyway.
+Boards that do not describe these supplies fall back to dummy regulators
+(with a "supply not found" warning) and keep working as before.
 
-Perhaps we should clone the skb for passing it up to the bridge when a fwding
-helper is using it (i.e. when there are actually clones).
+A board that describes supplies but no reset line still needs to wait for
+the chip to boot before the first register access, so apply the existing
+start delay in that case too.
+
+Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+---
+Anticipated reviewer questions:
+
+Q: Why devm_regulator_bulk_get_enable() rather than a per-supply loop over
+   devm_regulator_get_enable_optional()?
+A: regulator_get_optional() must only be used for supplies that may be
+   physically absent; these rails are always physically present, so the
+   normal (non-optional) get is the correct API.  Boards that do not
+   describe the rails fall back to dummy regulators - a dummy-supply
+   message, not a functional change or a regression; many systems boot
+   with such messages.  Hiding the message with a per-supply _optional
+   loop would be a buggy use of the API.
+
+Q: On unbind or probe failure the devres unwind disables the rails after
+   the reset GPIO/control have been released, leaving the chip unpowered
+   with its reset pin still driven by the SoC - back-powering.  Should a
+   devm_add_action_or_reset() assert reset before the rails drop?
+A: Not in this patch.  Asserting reset on teardown reopens the decision of
+   commit 4f580e9aced1 ("net: dsa: realtek: do not assert reset on
+   remove"), which intentionally stopped doing it, and would have to be
+   gated so rtl8366rb - the chip that commit was about - is not changed.
+   It is also only a partial mitigation: the SoC keeps driving the
+   MDIO/RGMII pins regardless of the reset state.  And these rails are
+   usually fixed/always-on, so disabling them is a no-op; the window only
+   exists on a design that genuinely gates them, where power-down
+   sequencing is a board-level concern.  Teardown sequencing is out of
+   scope here and, if needed, belongs in a separate, dedicated change.
+
+Q: var->num_supplies is a per-variant constant (6 for every rtl8365mb), so
+   the start delay also fires on boards that describe no rails and fall
+   back to dummy regulators, where nothing was really powered.
+A: Intentional.  After enabling the rails - real or dummy - the driver has
+   no way to know the chip is ready, so it waits REALTEK_HW_START_DELAY
+   before the first register access.  The delay is harmless and only
+   closes a race; a variant that declares no supplies (num_supplies == 0)
+   is unaffected.
+
+Q: Why only rtl8365mb_variant, not rtl8366rb?
+A: The rail list is taken from the RTL8365MB datasheet.  rtl8366rb has a
+   different set and no in-tree board describes them, so it declares none
+   (num_supplies stays 0) and its probe/teardown are unchanged.  The
+   companion dt-bindings patch likewise restricts the *-supply properties
+   to the realtek,rtl8365mb compatible.
+
+Changes since v2:
+- No change
+
+Changes since v1:
+- Enable the rails with devm_regulator_bulk_get_enable() instead of a
+  per-supply loop over devm_regulator_get_enable_optional(); the optional
+  API is only for physically-absent supplies (Mark Brown), and undescribed
+  rails fall back to dummy regulators, which is expected rather than a
+  regression.
+- Describe the rails as a counted array (num_supplies) rather than a
+  NULL-terminated list, matching the bulk API.
+---
+ drivers/net/dsa/realtek/realtek.h        |  3 +++
+ drivers/net/dsa/realtek/rtl8365mb_main.c |  6 ++++++
+ drivers/net/dsa/realtek/rtl83xx.c        | 17 ++++++++++++++++-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/realtek/realtek.h b/drivers/net/dsa/realtek/realtek.h
+index 6e0148cee8d8..75a127545e5d 100644
+--- a/drivers/net/dsa/realtek/realtek.h
++++ b/drivers/net/dsa/realtek/realtek.h
+@@ -166,6 +166,9 @@ struct realtek_variant {
+ 	u8 cmd_read;
+ 	u8 cmd_write;
+ 	size_t chip_data_sz;
++	/* Regulator supplies to enable at probe, or NULL */
++	const char *const *supplies;
++	int num_supplies;
+ };
+ 
+ /* RTL8366 library helpers */
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+index 728231d8f94c..4c305756116c 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -3334,6 +3334,10 @@ static const struct realtek_ops rtl8365mb_ops = {
+ 	.phy_write = rtl8365mb_phy_write,
+ };
+ 
++static const char *const rtl8365mb_supplies[] = {
++	"avddh", "avddl", "dvddio", "dvddio1", "dvddl", "pllvddl",
++};
++
+ const struct realtek_variant rtl8365mb_variant = {
+ 	.ds_ops = &rtl8365mb_switch_ops,
+ 	.ops = &rtl8365mb_ops,
+@@ -3342,6 +3346,8 @@ const struct realtek_variant rtl8365mb_variant = {
+ 	.cmd_read = 0xb9,
+ 	.cmd_write = 0xb8,
+ 	.chip_data_sz = sizeof(struct rtl8365mb),
++	.supplies = rtl8365mb_supplies,
++	.num_supplies = ARRAY_SIZE(rtl8365mb_supplies),
+ };
+ 
+ static const struct of_device_id rtl8365mb_of_match[] = {
+diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
+index a96beea72ef5..d6d243131fd2 100644
+--- a/drivers/net/dsa/realtek/rtl83xx.c
++++ b/drivers/net/dsa/realtek/rtl83xx.c
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/module.h>
+ #include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/of_mdio.h>
+ #include <linux/if_bridge.h>
+ #include <linux/etherdevice.h>
+@@ -195,7 +196,16 @@ rtl83xx_probe(struct device *dev,
+ 	priv->leds_disabled = of_property_read_bool(dev->of_node,
+ 						    "realtek,disable-leds");
+ 
+-	/* TODO: if power is software controlled, set up any regulators here */
++	/* Enable the supplies before the reset line is requested and driven,
++	 * so the chip is powered before its pins are driven.
++	 */
++	if (var->num_supplies) {
++		ret = devm_regulator_bulk_get_enable(dev, var->num_supplies,
++						     var->supplies);
++		if (ret)
++			return dev_err_ptr_probe(dev, ret, "failed to enable supplies\n");
++	}
++
+ 	priv->reset_ctl = devm_reset_control_get_optional(dev, NULL);
+ 	if (IS_ERR(priv->reset_ctl))
+ 		return dev_err_cast_probe(dev, priv->reset_ctl,
+@@ -216,6 +226,11 @@ rtl83xx_probe(struct device *dev,
+ 		rtl83xx_reset_deassert(priv);
+ 		msleep(REALTEK_HW_START_DELAY);
+ 		dev_dbg(dev, "deasserted RESET\n");
++	} else if (var->num_supplies) {
++		/* Powered but no reset line: still wait for the chip to boot
++		 * before the first register access.
++		 */
++		msleep(REALTEK_HW_START_DELAY);
+ 	}
+ 
+ 	return priv;
+-- 
+2.47.3
+
