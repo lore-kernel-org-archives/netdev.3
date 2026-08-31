@@ -1,92 +1,115 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9BA41F5FC;
-	Mon, 31 Aug 2026 14:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F2E455162;
+	Mon, 31 Aug 2026 14:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788187134; cv=none; b=dZf+oVyxYdM2vDEh7e+LYVYL0Dhv7eyMOemtUQz4RBQ/NoPCN9M/rHN9kDIu61Pr3emfQ8+ykM7FkANXKDsYdF3zrcGIHBJNL2cTaFWWZP02njaHKi3hpjc/numue1mvJyBrxHjnCmO+oUF+F2ucaqTE3whgxgkygZDVFsRtjIQ=
+	t=1788187244; cv=none; b=LZVILTvJFJDcYvGuaeiPggLA9J1Tjd57ouYBdLTvDQQLhw7YMYMpImqzUhr3fJwH7xvMNbuPxstcv6aOlRWAtGR2QrzThhK3aRKtnaROcOpRWupDau0tSTUeMyu975NSj+JjAZv/3JoYZnf/lRu3wC/BFaGLaF45SD98T31AFRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788187134; c=relaxed/simple;
-	bh=QlPfg7iKgXp2OWZNXymyXQJbLxgt4ZSR0mrUH+rg4wI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LQfDT/xXHfKOjhRZqC5YBG+gmL0pw+0TlEoDsGY2Jrj7hOUW7rBv/qQEeNx2/cg03YTYTZYtvGnx2Txq7fZqBHWBr7CWn2gUO7YKxGs6MvtvbQOISNfJzOGpaDxBaOyf1H6HvZ5b3hUAWKp72leUVRoKzEMNVikYexbXr/P9S4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zipvUa5B; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788187244; c=relaxed/simple;
+	bh=XnYbv/lvSUhA3IIkJg1wTTbKCIckEW6sc1YJvlWOlDc=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=jPtjbtRW6G7LoVUY/uZi+yQjnO+FSTX6/tPozdaTebYJ0glT+1egPqXFxbwi2ZpgXZjjKeEY9XqVAYxrKcECKIaonY5L5N2fJLnc34VqAcTpDEJ353VCXIMyIbL2LTGTUl+l0p0fWyWM0d51Y4wTKs8cjhBeaegTpvK6NW8517w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfJBce/f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zipvUa5B"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=shDKICIJ+5eRL/D4OWRP003BHZKua/5oCOgJ/0Hv044=; b=zipvUa5BDU5twH2p/ittCQtc8/
-	686ftPMRy0daFDweNTI2vxKtlZgaJicrmyVbOEfc8gkyuc5BwfD76chuA9JEiKB6p6GV8EvPlMOeN
-	0bR2kOHIxo7z2ePS8ZcvKMlKr55soxScP6sWc1iJ0nRp28oh13soAp2pXWz7ogdBfRkA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x139m-002CKl-OT; Mon, 31 Aug 2026 16:38:42 +0200
-Date: Mon, 31 Aug 2026 16:38:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jianhui Xu <neuromoments@gmail.com>
-Subject: Re: [PATCH net-next v8 15/15] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-Message-ID: <505bb4bf-b910-4642-b4dd-d4b5fee8309d@lunn.ch>
-References: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
- <20260831-ax88179a-v8-15-de905f2ee426@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfJBce/f"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 769651F000E9;
+	Mon, 31 Aug 2026 14:40:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788187243;
+	bh=glU5brsq9stFhaeEUTYuaXur4gpoMrHcD9Sa+u8+sdg=;
+	h=From:To:Cc:Subject:Date;
+	b=hfJBce/fvMIR4mLQ4PXQ3TRh9fkfE4WBk2bYRVZ/iYYtplkxC3nwZMky4QTC5BLVI
+	 rPSzFKiGkQLoJ5WSVkzb9XC/I4n/OFEHTVNdKE8aaujzRwWgR154mDedpth9LTnhHv
+	 dizKdiUKcuNtNuqDIvaevQ7g94iF6667dQOy+kzY3qdiLiCSzWFfKJn8Mw3CVeiW6X
+	 lq7XAD0p/TzzLwGKcgVe4wmjr5Lcu5JPOpgmxAHTnjGKZhWTBKdjmsZQttCykmWI05
+	 apiXUI8LXhjQoiOGeVnZLxQKusOXa2e1MRslSbEXjll5ShMj3AGMecd9ZwCDWn5jce
+	 jU0CQydiPoXMQ==
+From: "syzbot" <syzbot@kernel.org>
+To: syzkaller-bugs@googlegroups.com, "Wang, Jie" <jie.wang@intel.com>, "Chas Williams" <3chas3@gmail.com>, <accessrunner-general@lists.sourceforge.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, <linux-atm-general@lists.sourceforge.net>, <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+Subject: [PATCH] usb: atm: cxacru: fix NULL pointer dereference on uninitialized atm_dev
+Message-ID: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831-ax88179a-v8-15-de905f2ee426@birger-koblitz.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Date: Mon, 31 Aug 2026 14:40:42 +0000 (UTC)
 
-> +/* AX88179A-based PHYs cannot access MMD registers via MII_MMD_CTRL/MII_MMD_DATA
-> + * Make sure to use c45 access instead.
-> + */
-> +static int asix_read_mmd(struct phy_device *phydev, int devnum, u16 reg)
-> +{
-> +	struct mii_bus *bus = phydev->mdio.bus;
-> +	int addr = phydev->mdio.addr;
-> +
-> +	return __mdiobus_c45_read(bus, addr, devnum, reg);
-> +}
-> +
-> +static int asix_write_mmd(struct phy_device *phydev, int devnum, u16 reg, u16 val)
-> +{
-> +	struct mii_bus *bus = phydev->mdio.bus;
-> +	int addr = phydev->mdio.addr;
-> +
-> +	return __mdiobus_c45_write(bus, addr, devnum, reg, val);
-> +}
+From: "Wang, Jie" <jie.wang@intel.com>
 
-Please see aa63217916e1818a28b711384a9340d965ad073f
+The cxacru driver uses the usbatm framework, which defers the ATM device
+registration to a kernel thread (usbatm_do_heavy_init()) but immediately
+returns success from the USB probe. Because the probe returns success, the
+driver core creates sysfs attribute files (like adsl_state and
+adsl_config), making them accessible to userspace before the ATM device is
+fully initialized.
 
-    net: phy: add generic helpers for direct C45 MMD access
-    
-    Some PHYs support direct C45 register access but not C22 indirect MMD
-    access (registers 0xD and 0xE). When discovered via C22, phylib routes
-    MMD access through the indirect path, which won't work on these
-    devices.
-    
-    Add genphy_read_mmd_c45() and genphy_write_mmd_c45() as read_mmd/
-    write_mmd callbacks that bypass the C22 indirect path and use the bus
-    C45 accessors directly.
+If a user writes to these sysfs files before the initialization is complete
+or if it fails, the driver attempts to send a command to the device. If the
+command fails, the error handling path calls atm_err(), which
+unconditionally dereferences instance->usbatm->atm_dev. Since atm_dev is
+NULL, this leads to a NULL pointer dereference:
 
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+RIP: 0010:adsl_state_store+0x5cc/0x770 drivers/usb/atm/cxacru.c:359
+Call Trace:
+ <TASK>
+ kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-    Andrew
+To fix this, add checks for instance->usbatm->atm_dev == NULL in
+adsl_state_store() and adsl_config_store(). This prevents the functions
+from proceeding and dereferencing the uninitialized atm_dev, consistent
+with how mac_address_show() handles the same race condition.
+
+Fixes: e605c30977bb ("USB: atm: cxacru: convert to use dev_groups")
+Assisted-by: Gemini:gemini-3.6-flash Gemini:gemini-3.1-pro-preview syzbot
+Reported-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9b195c4f412ea5c4e56a
+Link: https://syzkaller.appspot.com/ai_job?id=b6352d63-d03a-4e87-92a4-b334c3ebcf97
+Signed-off-by: "Wang, Jie" <jie.wang@intel.com>
 
 ---
-pw-bot: cr
+diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
+index 429ac20a8..dee15f7b7 100644
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
+@@ -347,7 +347,7 @@ static ssize_t adsl_state_store(struct device *dev,
+ 		return -EINVAL;
+ 	ret = 0;
+ 
+-	if (instance == NULL)
++	if (instance == NULL || instance->usbatm->atm_dev == NULL)
+ 		return -ENODEV;
+ 
+ 	if (mutex_lock_interruptible(&instance->adsl_state_serialize))
+@@ -444,7 +444,7 @@ static ssize_t adsl_config_store(struct device *dev,
+ 	if (!capable(CAP_NET_ADMIN))
+ 		return -EACCES;
+ 
+-	if (instance == NULL)
++	if (instance == NULL || instance->usbatm->atm_dev == NULL)
+ 		return -ENODEV;
+ 
+ 	pos = 0;
+
+
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+-- 
+See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
+The person who has signed off on the patch is responsible for
+addressing comments.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
