@@ -1,266 +1,146 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E833E348C75
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073213932E0
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788199437; cv=none; b=oATMp3VqeSFqzvYnMcfpEus4zBOFcW0AbbM2B6OWf7rflZWrtg2fpFL8yro3fP282zcj7vf/ktqQO0z3KHxJ+tGYutuiNSxpkOfb0tiOVnArx0DetzTnaiLJ+hQET5noZUp46OFKOgUpW5kIULZrqxh/NJOZCMc7EjrT4iqurxI=
+	t=1788199689; cv=none; b=J0n/Rcv1CpbcVh0o2AIoTT3wSBFbs22vgN855Wxx7eWt0qb9bItCY3F5KnR+nfLbsqiuJBOmvTAKQwNSy06Xfqy+U+AEYmf/3UZS2Zhtps8h3v4HS0/h0oRIG4XM2h7Lgm6MMBp8R+uGUn5UNbrvLKrMPFCMyJ04efti/1Tzg3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788199437; c=relaxed/simple;
-	bh=+JYwzIRbDWYa7VuQk5+Ww93PQbua+vTbbbIRFA9pYHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tx8g24nKWnLVIOrB8eBHkAIUsulfIEwB0c0+rwkeeXnahQePv5Fnm5KlO2PuQHj0Fu4wetD+wYSv7PPi+sBGzTzAimyNSzzQDqohfxp2v64b68nl3MknDytjriWLIcNhk8w9wO2YB+2mVwmsVqBgAIshA6rNwyh+HWwxmHCgc/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iophY4wb; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788199689; c=relaxed/simple;
+	bh=TNScjd8kr86i+OFJyz7elzpkHsuoD5X9vwkXPg3lt+w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FmPKiE2S8GWl8v99sHICZaoNnKCjG/7/Fl8qduRtHj1GX99GZoa/2noPHnVcNL7O2ZBEuMsZ/x9xXrskdJOii7pW0pujYmSVQVz6mFjkVNErsXRTIzqA+zAMEbRjp2jowhYmF/cF60pVNUOVeaWVoRgLHwGVmOxlo6DPUVaDtCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S8OvVoZW; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iophY4wb"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VG1ZYe871285;
-	Mon, 31 Aug 2026 18:03:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TNKG5y
-	XCiGBtAfrQMq+oIh2uD0QZ+Kp5mEN6GcktyAg=; b=iophY4wbnmPxTv02nSYyqj
-	6lVs0ag6Jeu3xZdYC9eBSH5WkNHHtKE8g/q7FvuKtHp6lmA407SW5Btn3QB83Bmi
-	SHc9E1Fw62zYjjRcWHKLI9JrBre/LUZfm5OKP3dWGisItVBlEKWsQzumRTBW9JSI
-	jMF6aBx+Wr4GEOxkpp70/ypnjiUlRZEWfle5JSrCkjHdiqZThfynBLyOuSL0Hn2d
-	hOlkQIF82VlbE6tlWtayHF6oWP7ctbLvsakQKx7yvHGCeIjYKbaWMLtkMk2ywGWL
-	AD6JpAD3YnL9LUsmsKvQVW+G4XAwt67wTEyL/gm6Cys56tV//BV91UD/fiaQWOdw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq3r30m8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 18:03:41 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VHuK9Q030184;
-	Mon, 31 Aug 2026 18:03:40 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcarjybxa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 18:03:40 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VI2sWP3539558
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 18:02:54 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16BC95805C;
-	Mon, 31 Aug 2026 18:03:35 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2320E58051;
-	Mon, 31 Aug 2026 18:03:32 +0000 (GMT)
-Received: from [9.67.102.143] (unknown [9.67.102.143])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 18:03:31 +0000 (GMT)
-Message-ID: <5c875704-7dbd-494a-bac7-23ced0470b5e@linux.ibm.com>
-Date: Mon, 31 Aug 2026 11:03:31 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S8OvVoZW"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so35633935e9.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788199686; x=1788804486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WB2wOYhNCQXSPlT46P6AGA0QA3CnchsnjHbaxZcMoTA=;
+        b=S8OvVoZWH1xp/DKHuDGfAhpgT06wMYRJnNWUuscnUJ72jDmOmkPAXRazrjVXSQGV4B
+         AkaDr+gmPNoIAJwUXIf8twSzGD8sEI4dINssobXZkkkiLPIqKHdi1NJaffyPxb3D5zTL
+         Ql1LjWd5awm3JBZ5he8B6a2JKlieQpZFWoVhofS0ydmsevvC6QRlXPALwQwQPP1/uiKy
+         /r0Zta9DDF+XX6tyqHD0CZk6aQvFXWQymCqAyUBJ6aNe/LNwkP1qI5n+owUhuRjWz+JX
+         /QCK1redtvTkKNjqcTdyQhbA828IfyfY3czY/7HGhQ/ltHFBKl1gOQBJF5/sNRVqpGsH
+         r3uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788199686; x=1788804486;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WB2wOYhNCQXSPlT46P6AGA0QA3CnchsnjHbaxZcMoTA=;
+        b=PxkmoFLMBPSa/Eunp3uKPohN8YIjk4M/2wDDBaHwkA8MMAeAByMiQmz9X9SxXuuGuV
+         sLXLOxiVT9EZM8+fQdiDoDK8ytWl+YdolrXkXFMKD5qsmpqRGl2AJnTvY3GiKyZXkXl1
+         MthRGTxTnu9fwyuB5kF9QfRVss0gU+h6UxdJJctwvMFDolAoyT6bFFqhAh22wA/TgCcB
+         avXXt7WUfVyANjArKB3TGAaQMFl+K2ez+1xv6XjNqARX7kgnDILoaIHraNlEaEjN88fL
+         F92+QXRq0JVBhg+gW6Mz/yh80+LmNr7BgFQfwykF40SckReQN5rqvSPKZKieVOPGy+LR
+         AX6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrLFrXx09Jc2amqge/wei+dNL+R5HGT+sJSjFw4jLIjngd/aXTJ9SR7KZXPrB7BP6FvLHm8kzE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nYHwATjuiVHy+rD+a3U+ibtlD9nfPJZfhYjWPgjcxNLV6lb85Q
+	0J7dU0jskmVp+gve/+6CVL6bRtKHnvMtzoF4QqprdfWVaSgjGQJnAj+g
+X-Gm-Gg: AR+sD11sZZNdoBhYrjLPr/+a8EpclKea5YPdVuRBjQLbbiC6LdOwMS1Cd4ta6ahTsHj
+	fpW3PnlbrWZ4VvQrgpPttV7eunI0wlsvDcIS9bCsyoNwzbstSCu9GqgbAjRuNJ2D2SOq5Mwm0Z7
+	dFL2Z88adfBRK7yx1Tq47yzj003lb9SV6MzhDHcSmKgIvgvFb4HERP62rBBi9dFpKMljFAcSVNf
+	k+iILacGsyFqOs/ZkiokRONIc6KtDOhq0dsEnaB1PPHRgOjVUHHfw9tG165NZTVxxUueajduwxv
+	3lytHMlhmFVV/bANNiVWWdFm9COPwFqQTOLBetnGFxqOb+CwoD41Y0X3ZNILidL8oswFd5ZHij+
+	0VbmRtqESmzu8OGITlInZyr8QGpGFzGG1OXTk4XOf7c6ua434336W/lAjofckv7gd4FDCK1Q+mY
+	ZzLduA0Kj4rn6jGPTDUu/y+X5d6l4wJ7+yjnI15QREmQWLUXaOvHuCJBlrJ5NFT/rDBfsDt8Co1
+	wleVW6cOG6yyKIt+h9LGDZgwHRm6QJ3lhzSz5vfhsuf1IT/LFRGk8xz7dV8osw0YEQBIWfWNfuF
+	hTkSkC1eSwnxbgBTnnANGZ3+ANklg4P8IIPc6GHUF4FyseUfHTHFLpHyKxEpe+8Qi0jS4wIyQhK
+	dnRKt
+X-Received: by 2002:a05:600c:6091:b0:49c:d60c:74e0 with SMTP id 5b1f17b1804b1-49cdc44a420mr51361575e9.13.1788199685909;
+        Mon, 31 Aug 2026 11:08:05 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-acb9-0201-68d0-34d2-ad1a-175a.310.pool.telefonica.de. [2a02:3100:acb9:201:68d0:34d2:ad1a:175a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b955e7906sm251817195e9.1.2026.08.31.11.08.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 31 Aug 2026 11:08:05 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vasily Averin <vasily.averin@linux.dev>,
+	Bin Lan <lanbincn@139.com>,
+	XiaoHua Wang <561399680@139.com>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y 6.6.y v2] netfilter: nf_tables: missing objects with no memcg accounting
+Date: Mon, 31 Aug 2026 20:07:31 +0200
+Message-Id: <a223903ab9e3b19f9b28ee39b338a49e3e8e6f5f.1788192676.git.kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <2026083125-bronze-stability-8fba@gregkh>
+References: <2026083125-bronze-stability-8fba@gregkh>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 02/15] ibmveth: Prepare MQ RX adapter data
- structures
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-References: <20260814073642.24630-3-mmc@linux.ibm.com>
- <20260818014717.3853945-1-kuba@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260818014717.3853945-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=EIc2FVZC c=1 sm=1 tr=0 ts=6a95c1fd cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=4HcSeIbklPDiGVuuh-cA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDE1NiBTYWx0ZWRfX0sa83CjK4MJN
- v/s5emdQ1k6s4lX1OVnRzqOflcpwBR8TcLQezzmH1HKP5jRU0XfvMcrb4JDeqVMQ9zeBSBdv2m/
- KbMg2EzRAcTgZaVxIvYH0cccNe/ry9BMx6ubT6Ry53xZt3GR9RDNt7ky4Tx58RP5DPqJv1KwTjt
- IykIdUJ62eXv8XJPxTBEBrWM17RLWtgX0F7+BP3igB4L27BcjuSAUR2ommCFT9lXe7QNZUwzW4d
- +Ly5eR1sirYBc+qWsWgf8kDph8Y7pxgziiyJtyjrSxX5mBMAOI7gVzRnYCLtnd0dhv71oQdaa0K
- d66ITe7udpIdw1l3A/Gtlcgbitps3XxHa3T0eK4iQ50F4E5O9ilGgPcDnuJC6+RZfVEZroaStkj
- uJug3J282YLyqoh6AdZsVX9YXYfnHUelZ2/mZ+3OSDhV8CUAEqMhm7UhH3AKM7FESoXsHZsxymH
- nEIyiUd5/+4s5zJxcHQ==
-X-Proofpoint-GUID: GcGy7p_QZBz8yyrjB1rGJy-J9IsKmgKH
-X-Proofpoint-ORIG-GUID: kJIo2ahoSdazUY79CNHLnaVToZyVYFK5
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDE1NiBTYWx0ZWRfX+VOP7URpxY5O
- BhAkVc1qqMm1XIS++7eAKqVomt2IZUoL9hSDd8eJ9jhkfVPKJvyxTZRQjKauuixNp8atRGYvWym
- vqrlqLKsKsahXb0MC3FHloIYyYZ11dA=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_05,2026-08-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310156
 
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-On 8/17/26 6:47 PM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ibmveth: Prepare MQ RX adapter data structures
->
-> This converts the single-instance RX state in struct ibmveth_adapter (napi,
-> buffer_list_addr/dma, rx_queue, rx_buff_pool) into queue-indexed arrays sized
-> by a new IBMVETH_MAX_RX_QUEUES, and adds queue_handle[]/queue_irq[] plus
-> multi_queue/num_rx_queues bookkeeping. All existing references are
-> mechanically retargeted to index 0, and IBMVETH_MAX_RX_QUEUES is kept at 1 so
-> behaviour is unchanged.
->
-> No Link: tags are present in the commit header.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 73e051d26b9d8..7cb828b476c1b 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> @@ -482,24 +486,24 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
->>   
->>   	mb();
->>   
->> -	atomic_dec(&(adapter->rx_buff_pool[pool].available));
->> +	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
->>   
->>   	return 0;
->>   }
-> [Severity: Low]
-> This isn't a bug, but the v5 change notes below the --- separator say the
-> "extra atomic_dec parentheses" nit from v4 was dropped, and that "this tip
-> patch keeps only the mechanical [0] retargeting".
->
-> The atomic_dec() in ibmveth_remove_buffer_from_pool() still drops the
-> redundant inner parentheses that the baseline had:
->
-> 	-	atomic_dec(&(adapter->rx_buff_pool[pool].available));
-> 	+	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
->
-> Should the changelog be adjusted, or the parentheses kept as-is so the hunk
-> really is index-only?
+[ Upstream commit 69e687cea79fc99a17dfb0116c8644b9391b915e ]
 
-The hunk is the [0] retarget plus dropping those parentheses. Keeping them
-fails checkpatch --strict (Unnecessary parentheses) because the retarget
-rewrites the line.
+Several ruleset objects are still not using GFP_KERNEL_ACCOUNT for
+memory accounting, update them. This includes:
 
->
-> [ ... ]
->
->> @@ -1876,6 +1886,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
->>   		netdev->features |= NETIF_F_FRAGLIST;
->>   	}
->>   
->> +	/* Initialize queue count - always 1 for now */
->> +	adapter->multi_queue = 0;
->> +	adapter->num_rx_queues = IBMVETH_DEFAULT_RX_QUEUES;
->> +
-> [Severity: Low]
-> At this commit these two assignments in ibmveth_probe() are the only accesses
-> to multi_queue and num_rx_queues, and queue_handle[]/queue_irq[] have neither
-> a reader nor a writer anywhere in the driver.
->
-> Combined with IBMVETH_MAX_RX_QUEUES being 1U, every array conversion in this
-> patch is a pure layout change with no behavioural effect.
->
-> Is it worth mentioning in the commit message which later patch first consumes
-> each of these fields? Reading the rest of the series, queue_irq[] and
-> queue_handle[] get their first users in ibmveth_toggle_irq() and
-> ibmveth_register_logical_lan_queue(), num_rx_queues is read through
-> ibmveth_get_num_rx_queues(), and IBMVETH_MAX_RX_QUEUES becomes 16U in
-> "ibmveth: Enable multi-queue RX receive path", so nothing is broken here.
-ch of these fields? Reading the rest of the series,
- > queue_irq[] and queue_handle[] get their first users in
- > ibmveth_toggle_irq() and ibmveth_register_logical_lan_queue(),
- > num_rx_queues is read through ibmveth_get_num_rx_queues(), and
- > IBMVETH_MAX_RX_QUEUES becomes 16U in "ibmveth: Enable multi-queue RX
- > receive path", so nothing is broken here.
+- catchall elements
+- compat match large info area
+- log prefix
+- meta secctx
+- numgen counters
+- pipapo set backend datastructure
+- tunnel private objects
 
-Yes. v6 names the first consumer of each field. Three of those are
-earlier than the map you sketched:
+Fixes: 33758c891479 ("memcg: enable accounting for nft objects")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ Karl Mehltretter: The original 6.1.y and 6.6.y backports omitted the
+  pipapo_realloc_mt() hunk. In these pre-refactor trees, the corresponding
+  mapping-table allocation is still part of pipapo_resize() and uses
+  GFP_KERNEL. A/B tests on 6.1.186 and 6.6.155 measured 524,288 additional
+  charged bytes for a 32,768-element two-field set. On 6.12.107, the
+  corresponding allocation was already accounted. ]
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+Changes in v2:
+- restore Pablo's authorship, original changelog, Fixes tag and sign-off
+- document the older-tree adaptation and exact A/B accounting result
 
-   num_rx_queues      RX resource-allocation patch
-   queue_irq[]             IRQ control patch (ibmveth_toggle_irq)
-   multi_queue           IRQ control patch (ibmveth_setup_rx_interrupts)
-   queue_handle[]       register-helpers patch, from
-                                 H_REGISTER_LOGICAL_LAN (queue 0), not
-                                 H_REG_LOGICAL_LAN_QUEUE
+v1: https://lore.kernel.org/stable/20260831043755.29692-1-kmehltretter@gmail.com/
 
->>   	if (ret == H_SUCCESS &&
->>   	    (ret_attr & IBMVETH_ILLAN_RX_MULTI_BUFF_SUPPORT)) {
->>   		adapter->rx_buffers_per_hcall = IBMVETH_MAX_RX_PER_HCALL;
->> @@ -1898,10 +1912,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
->>   		memcpy(pool_count, pool_count_cmo, sizeof(pool_count));
->>   
->>   	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
->> -		struct kobject *kobj = &adapter->rx_buff_pool[i].kobj;
->> +		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
->>   		int error;
->>   
->> -		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
->> +		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
->>   					 pool_count[i], pool_size[i],
->>   					 pool_active[i]);
->>   		error = kobject_init_and_add(kobj, &ktype_veth_pool,
-> [Severity: Low]
-> This is a pre-existing issue and is not introduced by this patch, which only
-> rewrites rx_buff_pool[i] to rx_buff_pool[0][i] on these lines.
->
-> The kobjects registered here live inside netdev_priv() memory, and the probe
-> failure paths after this loop call free_netdev() without a matching
-> kobject_del()/kobject_put():
->
-> 	rc = register_netdev(netdev);
-> 	if (rc) {
-> 		free_netdev(netdev);
-> 		return rc;
-> 	}
->
-> The only teardown loop is in ibmveth_remove():
->
-> 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-> 		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
->
-> which a failed probe never reaches, so a netif_set_real_num_tx_queues() or
-> register_netdev() failure leaves live .../poolN sysfs directories backed by
-> freed storage.
->
-> Worth noting this is addressed later in the same series: "ibmveth: Enable
-> multi-queue RX receive path" adds ibmveth_probe_cleanup(), which calls
-> ibmveth_put_pool_kobjs() before free_netdev() on both probe failure paths.
->
-> [ ... ]
-Yes. v6 notes that the leak predates this [0] retarget. Inline
-kobject_put on register failure starts in the MQ enablement patch;
-ibmveth_probe_cleanup() replaces it in the statistics patch.
+ net/netfilter/nft_set_pipapo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
->> index c0ef03cad9b9a..fc6a01e810c6e 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.h
->> +++ b/drivers/net/ethernet/ibm/ibmveth.h
->> @@ -257,6 +257,8 @@ static inline long h_illan_attributes(unsigned long unit_address,
->>   #define IBMVETH_MAX_TX_BUF_SIZE (1024 * 64)
->>   #define IBMVETH_MAX_QUEUES 16U
->>   #define IBMVETH_DEFAULT_QUEUES 8U
->> +#define IBMVETH_MAX_RX_QUEUES 1U
->> +#define IBMVETH_DEFAULT_RX_QUEUES 1U
->>   #define IBMVETH_MAX_RX_PER_HCALL 8U
-> [ ... ]
->
->> +	struct ibmveth_rx_q rx_queue[IBMVETH_MAX_RX_QUEUES];
->> +	u64 queue_handle[IBMVETH_MAX_RX_QUEUES];
->> +	unsigned int queue_irq[IBMVETH_MAX_RX_QUEUES];
->> +	int multi_queue;
->> +	unsigned int num_rx_queues;
-> [ ... ]
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 7c8d28a031ad..8ba76eea3eb1 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -705,7 +705,7 @@ static int pipapo_resize(struct nft_pipapo_field *f, int old_rules, int rules)
+ 		return -ENOMEM;
+ 	}
+ 
+-	new_mt = kvmalloc(rules * sizeof(*new_mt), GFP_KERNEL);
++	new_mt = kvmalloc(rules * sizeof(*new_mt), GFP_KERNEL_ACCOUNT);
+ 	if (!new_mt) {
+ 		kvfree(new_lt);
+ 		return -ENOMEM;
+-- 
+2.39.5 (Apple Git-154)
