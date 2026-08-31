@@ -1,71 +1,74 @@
-Received: from mx0a-00154904.pphosted.com (mx0a-00154904.pphosted.com [148.163.133.20])
+Received: from mx0b-00154904.pphosted.com (mx0b-00154904.pphosted.com [148.163.137.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C129D39CD18
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 10:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.133.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC38B3451C8
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 10:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.137.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788172902; cv=none; b=fCq3e8Gm0QnjVgtn/YxPe+RUNapW/fqH9H17O3S/DfSNrouaSWA8Q31mVb19DDc668M6QenRIAGHaHWAqnab+IYks+7agwKxXb+h1l4Rn3oKQSEPmvmpb0IKfx9CC/Ew0jVp/Ljx0+urLiiq20evH0mTMBqx51qJXn0CzkCp2SQ=
+	t=1788172904; cv=none; b=TJGH1LA18LUX5V5Z1aJUDto6iMuQm/sNvSL+5BpOENAqvPHgOzYlTiD8bNRz/ax/0hdQ8BzaUaSaTIQQXTO8mPF8rm0WUnL6JQXvuBai/QNR1NgBRm76SBMHARyyxqckG6PQUiV768EuQkmIPUD8rJEw9C6YJ6ogqZwXIeodfEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788172902; c=relaxed/simple;
-	bh=f6+xUQ7SHLWLiHx4D0H0IqIMuWBPQhXle2RFTKl6pEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qwV9Nj6ccD3QJXvLRt2EnLFyye93Go2TAUWwv/owF4a3UJtz9MfV5BwLn8KCX4LCy6r6paXTfcwEHrwQD9p80sQDydDJo3fDTwHoJNHPB6a76tsK9jDaQl1yiBCi0QiBB+iXIwp0/FdaItCHVjIvlVTDZ9ovf0IU8Psg9FHndiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com; spf=pass smtp.mailfrom=dell.com; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=VOy5ui4N; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=TRQ7/+a+; arc=none smtp.client-ip=148.163.133.20
+	s=arc-20240116; t=1788172904; c=relaxed/simple;
+	bh=rA3/PbU4WrXp7ee6LsL4DHwbyYzhAfrwPEfO635R8xg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rwR35b8IS2R/jQmDCW7Ah4WXWb4bpE3kgzq++btzg0l1XWxgbMrlPMk6oXH7plgWs8Cl4hC4TaEmjaw97i8jk7lCbgcp3ECDQn8OmnpEP91UdsvTFdtX8qcwL5YRvxzEUgtPZxoCZaiLGASNWLvuhZik1QP1TGouExVzPNCcrPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com; spf=pass smtp.mailfrom=dell.com; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=hdjHtiBr; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=N3RXD5Qi; arc=none smtp.client-ip=148.163.137.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="VOy5ui4N";
-	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="TRQ7/+a+"
-Received: from pps.filterd (m0170389.ppops.net [127.0.0.1])
-	by mx0a-00154904.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V7xPPY2642289
+	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="hdjHtiBr";
+	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="N3RXD5Qi"
+Received: from pps.filterd (m0170398.ppops.net [127.0.0.1])
+	by mx0b-00154904.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V7x38Q2499685
 	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=smtpout1; bh=GkhSXlgZrIdf5NYXatacXVyVIB4DX2rA6mTa
-	YIHrzCg=; b=VOy5ui4N2dtL7LGswqISQliPRb1Vh8rNGfcnWYtuUKjEtY74+jun
-	mQwqf2kdDE5lcpOpRutQ6B8z7JZswEe3DP2jDXyniZCyPbFECWgYoKcWDOeYuyw8
-	0pjB0LStJO09z+e/wgA4HsH6vV0V4p237uNyWam/ji2XRBdhZJUtsH34GrbxcPJ7
-	chaLJS1+Rsy6aszY6VGYRa1K1skNDoX9v2n2XjRWDLl3Rg/uiQ7eFvTiUEbWjgdk
-	1J9tYJuHTS/cmJ1g92imMVV3amx6avV2NFnYH9vq50dwsdgA2a8FR+B1AeMGiLJv
-	KKH4uax9GRz7YbkLlvRSSsWRBvcJ1rL2/w==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=smtpout1; bh=5HiRryrJYfJb
+	m/FHWrmjRvfzYk68dqF1E5JAqLyOhOY=; b=hdjHtiBrT7JQI36cW6B/OFqSFxGK
+	wUwV7OTbzlJZkUv19wUwEOoGkajk+0gyq44OGpUukMMouOgAabhJc6TSRyVJu+Kq
+	4WoazuZoBgyEakLeakU+zUOyNa769of73gnxQ7tDENJRzsQz2z7GtD/wAaXc4dmj
+	p0Rwq9yHPqK4J1iXIUsSSy1HKGgUlf4YvW9p/EOZIfajqWkR9tHLhwI8Epu4M43Z
+	1Hz+tz97BI3AKfcWLhJ13UOjiG+AHEv3wSQADEfACyVUjAQUEpxdogVLu+yuO1oI
+	XuO/Ql6kSvUfyoBkSnz02e/qA/W1Bh0FvTTrBY6UapP+YnjVWaM6rer8Gw==
 Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
-	by mx0a-00154904.pphosted.com (PPS) with ESMTPS id 4gbuedwa77-1
+	by mx0b-00154904.pphosted.com (PPS) with ESMTPS id 4gbtn4wfpj-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:40 -0400 (EDT)
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:41 -0400 (EDT)
 Received: from pps.filterd (m0393468.ppops.net [127.0.0.1])
-	by mx0a-00154901.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V96gSp1865631
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:40 -0400
+	by mx0a-00154901.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V96gSq1865631
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:41 -0400
 Received: from esapsmtplv07.us.dell.com (esapsmtplv07.us.dell.com [143.166.203.154])
-	by mx0a-00154901.pphosted.com (PPS) with ESMTPS id 4gcnjksb98-1
+	by mx0a-00154901.pphosted.com (PPS) with ESMTPS id 4gcnjksb98-2
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=FAIL)
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:39 -0400 (EDT)
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:40 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=dell.com; i=@dell.com; q=dns/txt; s=smtpdev1;
-  t=1788172899; x=1819708899;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=GkhSXlgZrIdf5NYXatacXVyVIB4DX2rA6mTaYIHrzCg=;
-  b=TRQ7/+a+vAtTbXjhlzDiywnHdc3215fDEXzNRT05m25kgWhCZCoiuOV6
-   z/oDOL3wvfTeO/2KXXEG4ISGgb4sdyg74Zi75wJHXgeKc3A3YQQ80/A9x
-   oDRVI+IN/CQrALf2MRcjhvr8x8ziL3jG/z9SeoreM4NbkIwAKpiueN94z
-   lt93AEsZ4AERMAjgpdH7raIPBem4UVGkwAQzlF72we30hUbCEObhZSTVN
-   S/kRoVFJE6wNyzl1fFGB+k+1cpT0hRIJXkkUH5mkC5FwOCIr/4eJPSll1
-   Fcx26yKp9ito93jHzpEjQrBWw52Irlx7VRiW8qsspzYirZppW5uxTjam5
+  t=1788172901; x=1819708901;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5HiRryrJYfJbm/FHWrmjRvfzYk68dqF1E5JAqLyOhOY=;
+  b=N3RXD5QiVRxrhGA0EUpbZB8AnhcXPWO1qdC+0KXaMOdx34DyenoA7IK3
+   q/LHkyIK3lHETQpT8zCpY/sL1ZYj38K2zcdwBbjkQDPbNMIbQp3XM/l5E
+   f9JaA5pl6CShVM/sIYsbWzd1uwZ6IsFNusNk3OyGsSLsEhB3dbWq+uONE
+   2oZCMfQJQ1BJL2/xxLMn4J0FKlBKpnVk47bw4+3aD6kAD/4yqG7jvwS3q
+   vvC/4hTEbhKSQcir5htOLLQl1e+BivvUWo6CcR8mj/EaI4JAu3AdK1903
+   1u40UTLZv+VwXsbzMoTn9gD0HpHkDmTOwqriWIA7Beb1CidZnVnEPPpy0
    A==;
-X-CSE-ConnectionGUID: U1VRVNziQoGP2qeDf/DFIw==
-X-CSE-MsgGUID: 9cOnkS0cSoO0/59YYSkfnw==
+X-CSE-ConnectionGUID: 0mpN6SevSGOqdglu6DeADA==
+X-CSE-MsgGUID: uOHaaCxqTzigO0hWxLze+A==
 X-LoopCount0: from 10.94.8.206
 X-MS-Exchange-CrossPremises-AuthAs: Internal
 Received: from w-96j1th4.apac.dell.com (HELO W-96J1TH4.blr.amer.dell.com) ([10.94.8.206])
-  by esapsmtplv07.us.dell.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 31 Aug 2026 10:41:37 +0000
+  by esapsmtplv07.us.dell.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 31 Aug 2026 10:41:39 +0000
 From: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
 To: netdev@vger.kernel.org
 Cc: Prabhakar Pujeri <prabhakar.pujeri@dell.com>,
         Michal Kubecek <mkubecek@suse.cz>
-Subject: [PATCH ethtool 0/2] fix RSS hash-function reply handling
-Date: Mon, 31 Aug 2026 10:41:31 +0000
-Message-ID: <20260831104133.2216-1-prabhakar.pujeri@dell.com>
+Subject: [PATCH ethtool 1/2] rss: bound hash function masks in text and JSON output
+Date: Mon, 31 Aug 2026 10:41:32 +0000
+Message-ID: <20260831104133.2216-2-prabhakar.pujeri@dell.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260831104133.2216-1-prabhakar.pujeri@dell.com>
+References: <20260831104133.2216-1-prabhakar.pujeri@dell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,42 +84,112 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  spamscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310091
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA5MiBTYWx0ZWRfX279PGR+TNquX
- tQkk6wKfKH1kqn1op434Y2ZdcHxqU+vl9qQ7pHweo0C5TPAbL3QJ1xNCN/cD6okNPZ4qjVQGH2K
- 1eCeMnNu8dCzanVQl3Cs5Zs6iTgBH9Y=
-X-Authority-Analysis: v=2.4 cv=FbUHAp+6 c=1 sm=1 tr=0 ts=6a955a65 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA5MiBTYWx0ZWRfX5+5uS2S7jBOy
+ 1CbY1BP0cTUBxs1YLtYmE4W+nkgqiXy5mSX4S2q2O8Yj94ZK5cKgyDXweq+dD6oHTbCGp1A0mcQ
+ heKx/5PIMSBIfwjKb+IZfhvRo+gGLAo=
+X-Proofpoint-ORIG-GUID: Aql-RXfs_D0kf428QoJNIn0yojdeyFHu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA5MiBTYWx0ZWRfX1BMEg+FXixNd
+ +PwSF54HlW3C5F+OCrrBH5Xm4JtOol2znwAJ41cTqf3TgL0FuT3HL8EIfl4VaSBo0/i+jVs4SWN
+ JCUVI0kvDLmHq1qGkWQ6VyvTIyzmZ/Qk8tzh2dC+D8DFgQdziRAYCQzohZxXFIv/dcDlQMEzNGx
+ g3DuE0piKm4ZhO0E3W1JjDomUlf6w69KuHix6hQDs6LfglpbRraEGS952oO1JMOa0vEljQ0/54d
+ CdlNs/W5aDPmbM7trDtzRqD+3sV9laKiuhgcaqnSdKYweBo78/CVuSF7VrL/i+0ySBCmGAVA2ip
+ /QbAxpXOcnJpLwQRtIUG7WC4wmUCYEkQui67UhjTozwkGiGHhJOHpKruVhXrfQDbeHBSCTKSX/3
+ 0j4HsTPqr3muak3U7mE0CD7eUH7EWyzbvdX+NReuFibxPXid0aSLiZawZ4e6VnKnMHmw7R2ODaa
+ bVDEc9dCxSL40W1oo7w==
+X-Authority-Analysis: v=2.4 cv=FMIrAeos c=1 sm=1 tr=0 ts=6a955a65 cx=c_pps
  a=Z2e5DKjA+8LiMDv5v6mwwA==:117 a=FlBIjDbFArVVlnHZBJJA7g==:17
  a=Sv0fKeRqtYgA:10 a=ke5jqHz-1hQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=6gNNCFAoQcIphELLPWWu:22 a=PpEg0BoV_A2aca28hXd0:22 a=Jwe_olJ0Zp3QmIFlM1sA:9
- a=hlJyneSgMmFPbskH-t2w:22
-X-Proofpoint-GUID: 8YSWg-j01vEsMHAhzQZb6N4lq6eZJyf5
-X-Proofpoint-ORIG-GUID: 8YSWg-j01vEsMHAhzQZb6N4lq6eZJyf5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA5MiBTYWx0ZWRfX9wu7/CSew0r0
- ZWyYIPmrVpEMZax88DPqHNKbMFaumH2xPUYNcY+xr4i3PAYqaZ1qLNTW/0HT2KmNtNncn+gCXaQ
- Gu5bVw3sJHtRUsMyhRPzspXd0Aj6YVrt69jsVdj0vVVsKMkAq0Z1ESrckgignvr9wlP4BFXExLl
- euyp7RAkWHls/U82sajxUGO7egUrPvZqs+xcMmuW/m/xeeBfYEi2cyRUjYbWRusOJEMRt10+CZ/
- EcBDGdaAHeKB8IN3ARk36VJNI/QHtLd6gqi6exB/WAExgvK7lqyWRh1dzjv9ntnaTHPB6gOva+5
- efH/GDgw9gqCCZTn5qo3A+Yx7ZzstPbbNyuWvT+Hkr9F5Z9p0gXS0VxlaFZFPMU3RoSweM6XIXZ
- 9eK5p0Yoe5u9fLyWh7UrTBDg+iNAvLt5GRmUQnMGfJtsqdDCQHhw6hmiGxjkcWyqQMFpoqdKvS4
- 1U0mGyOPszuHf/sJ4EQ==
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- phishscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ a=6gNNCFAoQcIphELLPWWu:22 a=vUAfKriDyi6VqHAKCLgX:22 a=iLNU1ar6AAAA:8
+ a=v2UsagvcdoPkTUP1N28A:9 a=hlJyneSgMmFPbskH-t2w:22
+X-Proofpoint-GUID: Aql-RXfs_D0kf428QoJNIn0yojdeyFHu
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 clxscore=1015 adultscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310092
 
-The first patch keeps RSS hash-function masks at their full 32-bit width
-and bounds shifts in both text and JSON output.  The second removes a
-duplicate parse of the same netlink reply.
+The RSS hash-function string set can contain more names than fit in the
+32-bit ETHTOOL_A_RSS_HFUNC mask.  Iterating over every name can therefore
+shift by 32 bits or more.  The JSON helper also accepts the mask as u8,
+which drops its upper 24 bits.
 
-Tested with make check in the default and --disable-netlink builds.
+Keep the JSON mask as u32, bound both output loops to the mask width, and
+use unsigned shifts so bit 31 is well-defined.
 
-Prabhakar Pujeri (2):
-  rss: bound hash function masks in text and JSON output
-  rss: drop duplicate attribute parsing in rss_reply_cb()
+Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
+---
+ netlink/rss.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
- netlink/rss.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
-
+diff --git a/netlink/rss.c b/netlink/rss.c
+index 83cc504..85c2bd9 100644
+--- a/netlink/rss.c
++++ b/netlink/rss.c
+@@ -21,11 +21,15 @@ struct cb_args {
+ 
+ void dump_json_rss_info(struct cmd_context *ctx, u32 *indir_table,
+ 			u32 indir_size, u8 *hkey, u32 hkey_size,
+-			const struct stringset *hash_funcs, u8 hfunc,
++			const struct stringset *hash_funcs, u32 hfunc,
+ 			u32 input_xfrm)
+ {
++	unsigned int hfunc_count = get_count(hash_funcs);
+ 	unsigned int i;
+ 
++	if (hfunc_count > sizeof(hfunc) * BITS_PER_BYTE)
++		hfunc_count = sizeof(hfunc) * BITS_PER_BYTE;
++
+ 	open_json_object(NULL);
+ 	print_string(PRINT_JSON, "ifname", NULL, ctx->devname);
+ 	if (indir_size) {
+@@ -43,15 +47,15 @@ void dump_json_rss_info(struct cmd_context *ctx, u32 *indir_table,
+ 	}
+ 
+ 	if (hfunc) {
+-		for (i = 0; i < get_count(hash_funcs); i++) {
+-			if (hfunc & (1 << i)) {
++		for (i = 0; i < hfunc_count; i++) {
++			if (hfunc & (1U << i)) {
+ 				print_string(PRINT_JSON, "rss-hash-function",
+ 					     NULL, get_string(hash_funcs, i));
+ 				break;
+ 			}
+ 		}
+ 
+-		if (i == get_count(hash_funcs))
++		if (i == hfunc_count)
+ 			print_uint(PRINT_JSON, "rss-hash-function-raw", NULL, hfunc);
+ 	}
+ 
+@@ -159,6 +163,8 @@ int rss_reply_cb(const struct nlmsghdr *nlhdr, void *data)
+ 				   hkey, hkey_bytes, hash_funcs, rss_hfunc,
+ 				   input_xfrm);
+ 	} else {
++		unsigned int hfunc_count = get_count(hash_funcs);
++
+ 		print_indir_table(nlctx->ctx, args->num_rings,
+ 				  indir_size, (u32 *)indir_table);
+ 		print_rss_hkey(hkey, hkey_bytes);
+@@ -167,10 +173,16 @@ int rss_reply_cb(const struct nlmsghdr *nlhdr, void *data)
+ 			printf("    Operation not supported\n");
+ 			return 0;
+ 		}
+-		for (unsigned int i = 0; i < get_count(hash_funcs); i++) {
++		/* rss_hfunc is a 32-bit mask; if the kernel reports more
++		 * hash function names than that, cap the loop to avoid
++		 * out-of-range shifts.
++		 */
++		if (hfunc_count > sizeof(rss_hfunc) * BITS_PER_BYTE)
++			hfunc_count = sizeof(rss_hfunc) * BITS_PER_BYTE;
++		for (unsigned int i = 0; i < hfunc_count; i++) {
+ 			printf("    %s: %s\n", get_string(hash_funcs, i),
+-			       (rss_hfunc & (1 << i)) ? "on" : "off");
+-			rss_hfunc &= ~(1 << i);
++			       (rss_hfunc & (1U << i)) ? "on" : "off");
++			rss_hfunc &= ~(1U << i);
+ 		}
+ 		if (rss_hfunc)
+ 			printf("    Unknown hash function: 0x%x\n", rss_hfunc);
 -- 
 2.55.0
+
