@@ -1,148 +1,134 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44FB30D41C
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788218395; cv=pass; b=F/CileyEbJxT2vWVLW7qCGNHqUCU7wxn+6imSEV9eHY9aOKjQ89d0Nl/sflbSg6uEImGAZaSnAFc+HbpjlXmPqra/tuMlO8agNSz1N5V+wEGnY6t0RlJ1aPws4ECn894cwdzMDnlvUalDoDDtCEzBzrtB/V8TVmbTJc0XURey2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788218395; c=relaxed/simple;
-	bh=FFESqevb09AMNF3WZSLfXKBb/pgBxiHfa4nhv+G8hgY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aXOiVZ4AHYF2Kwo+ldUUlA4VcL0LOojcOfilnqESt0PXXDRDRCDATw6qvykh5qS76n67EX7Vrmm14NDwFRx66hi27dBiekDosEAiGWpsrN5bb5Ot1zoDh/mPCD7bdBIWizhnqizY+ktePH9Qs/okiV0ahQx97e+iKWPwKLbwrkA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kz8n5QLw; arc=pass smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAF537DEBE
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788218963; cv=none; b=tIb6tAcfITn6hbp7OOxGR0C74/5tQ6w0RAuP+eT8D+uoP7MUQceUtdXDtw3AvVyiNElWsY33uqIFecZmZwOR5XR3n3EnYmrD7RLKtkhX9tI7xu5xp5DBU2i+rmazdbcyWMuKRUW1+TLrNTEYGGKPOUZz5wPC+x9EhEEVJj6I5OU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788218963; c=relaxed/simple;
+	bh=+i2m/TMTDSfo6u7b+++PuDvubIKwXr72/RqiL6m6Dis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N9S40lLwpuXPqGVVHLf0Wbo/eLfq4YKn1/Mc5hB1q11mdeiAnq1JIExTYyL2YIyNIqezJ0+eDF/Zs93vnDrSqcMOaoJxymDAE/Z0J1YjofZuWCutiMMpIhuoXQQyj4u/9diHSS6yMAxc+WxgrSwVwz8CZPtSFhEprS1rK3LOplA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CoUrpoGr; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kz8n5QLw"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c01c79467so133131cf.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 16:19:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788218392; cv=none;
-        d=google.com; s=arc-20260327;
-        b=j587aAsxKVVpeR1UXjl0ouOAKCaIAIHO8Wo92quCpCKBfiy/aEZeYSk0OuUjXgGZqP
-         fkcTar91kJw3N0PHRb8h01ZKk2CGqSnEsoc78FidqjDjlxI/BDPXFgrq1KZhiRNnHXks
-         YHd2H7WtazyUmbvc24xwYpzAMAr/eNETRPD67ORrFJDXBaNZGRCvTClIFTumsJ6aLtjy
-         UK1tG1PhGzHXns6LONLv6hdnTdMEhBwIfk2hQ1ofFr6lzgeavaSvNt9cClwl9dsqp9Ev
-         vpJO7O9Df8rsRacq/4YdgFyBXmI5SF+o2bCuRl55uvXAGmvqwiXKv2cv9s6EcNSd3xAd
-         AqFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zpVrf/9Ez6YwuJe0EFUGtSCTl6wqdMBrnuTW7EDRsDI=;
-        fh=ntb3DT78QI9Tu66c1BlyZ0xI6+yG+gCpoHz+wN4EQgM=;
-        b=QhHlTM5Kw2ksyMRUQXxUdKFYIA4HdYZK6UK3fHv+ngZk3G+qa1/gsRaCZlDjYRnImK
-         W6zNujZxPZlX7eBkWYxwmF1vYdQsJqg8Jmd8vdNMzSbTH8wJdvgsi7yLLAsi3Md9fnBp
-         tWG4b9c5v8ozLXHJtfRdbPAe6xeSFrugdWuo6JWzQ2ZJXfMWmKLM+ygCdvMcPl5I1nHK
-         LBeevFD8sEQ8zSjQnYLfAPi2dqsDIqnPb/WmZwg9pe9IId6rV4GUIGeRjwZcKPImUnDX
-         LMnEmdKMGDKFkWceZt34x1AAfShkDeke9YUPIC4NLmPXGjXdxRSdIeU7ePukfcnOIEqp
-         wGcQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CoUrpoGr"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d3b445a84fso23065ad.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 16:29:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788218392; x=1788823192; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zpVrf/9Ez6YwuJe0EFUGtSCTl6wqdMBrnuTW7EDRsDI=;
-        b=Kz8n5QLwWWh0jzSvd1xh5qSdVoqR5eIpciQGFQvGljq/MkP6ulv4HFamcKwNrzQpvZ
-         eR/amFREuij/IOGTCN7XGoS30ClElnzjEs5Xpyq39znPRG7ECEBTVmQXbgELpURsr4zh
-         dOSNfMoz91LgmJ6y/BRJRsx0JptfjqFh0jc1riK+gfYJSBvPTWNxFgQi9cc10A1PTVzs
-         0vmTSWn5x95Zmsc/+0cf+5gqLclvXTbuRfsWGbGobogDi6IfYy3tbc5VLQx8PoXqCJue
-         Mo2XYxx0yCo6ARgrqV1hDwoShf8ADbC7y1PTBUjwyHPfWWzy27ThlTiHYI24WhluPlRU
-         v0Fw==
+        d=google.com; s=20251104; t=1788218962; x=1788823762; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/n3fvUgG6MbykCjQ/yhTPU59M7rXcCUC3WVx+XsgKas=;
+        b=CoUrpoGrLQSGUX080qGjxFrjdRvsrDFUBXmb6ng5+9BHV7xh3Xd+uyrJmG8rCIANEW
+         i3YEN7QNpvAcAJcAXLFbqZNCz7YU6FvxfiTaCmVM+nxXu10sDg3IIJxbsLb0tCw3ITgS
+         bSaQnAY3ydYnZ9HJLZqTKehabxmR89Dw+TnmHrfS3abOKfm2bxTM8mmY5mB+i1MKp2qL
+         NGYvLPppKM+H4+6dSUtnh7WMqED2vR+i4/BZTBbg2O6mGWHYf5+b2NhhvRWy8rwF4IbA
+         1+fvphekifp/l7eTBmrPvc6PqbwO/AbPEVR4L076/1yyLnW1hUdJNzyQyVSMgbKT/tVi
+         s9Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788218392; x=1788823192;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zpVrf/9Ez6YwuJe0EFUGtSCTl6wqdMBrnuTW7EDRsDI=;
-        b=KgR0pC1U1W1/cqzxMPL8pswd7JuxRzjNEDAhDepZxrPZEMBWUk8j2N4nU/pHLeDpZZ
-         EROUH5BHq8+EXjjCI6vbTespsuDCBMXY79iw1h5ooHKarJx3ManA9zfJqH8FLkNKWQaN
-         hkzD08pWi0g+b/eYBal0dqoeFF2VS6BtZ+50ayN07wDGXjMhjWaCXIvshujOD20dw5lv
-         zbg70bXlf3g/LagZGYtJkKWKiIQIyUW9VIgDmojfmrv1vY+AGb7Td32pY3jnT8oU3EnT
-         Iwk03+v44lUz16m49bV72jNNqafvO5lDT/ygFOq5M7HWbHODeKlRButB+PFDxbnvDbiM
-         VO7w==
-X-Forwarded-Encrypted: i=1; AHgh+RoZD7eZMPVbcuEvLtsq/6Hw0YImReDlxQf8ejubeiYxqI6fdTaPuv0+0rbkyCcS8/b+l9fdA4s=@vger.kernel.org
-X-Gm-Message-State: AFuF++lMei5In2lXfqskvQX3r6JvtZb2PBcdjRjFAbD0NWuw+zR5dbBd
-	QgTGXH0R8gy5998LREeMlvZwph23Sl4n98nt9zBes4sIY+99gTWN4CrcTkxDbQSO2hpNNMNyC83
-	Gk7BKPmtwz7jWDzPUO3acaH/cqcmTmlHmjjPvkgbE
-X-Gm-Gg: AR+sD10fS++YTq6aD9RH/f2utg10D6XEdD/ZD12J6Ibsjjedwq+ldTaCSsz7gTjDCq3
-	qrkmTJWQZR1//ukv69FF4RKCS8gWToOqc5K5fUpePPMZ2mKhHf2eZNFYNtVEYZ/BYIaf58Y0XGd
-	qve3nzFDz0rUUV4zmOfcZW6NqPUCTJcLxBS3TxdVvu1cSY5cQL7b3qlXVP9iKkSABtZyeyi4AT/
-	r4Mu/NMObVs124odASya73H7r9wjqbDqxeCa3cvoGfi8pQDhj6pVtGpZg6Xp61W9fbuGMqlPQrK
-	wAhFTKfNGTS2q2RPqyeWokgkwh1hlotJcf2jEpJkNnA=
-X-Received: by 2002:a05:622a:1a8f:b0:517:6dc0:698d with SMTP id
- d75a77b69052e-53024b7b7d5mr6356891cf.0.1788218391797; Mon, 31 Aug 2026
- 16:19:51 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788218962; x=1788823762;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/n3fvUgG6MbykCjQ/yhTPU59M7rXcCUC3WVx+XsgKas=;
+        b=nOkqfOUR3ctIMH0jfkSBe4xa7H84TA3WLcKL0UaQIt1pXCxh+miZKRBDbZM409is6O
+         UcO5MmzXmfvbvojvISYdCs6mlX/5GN781WgRbsGqnPUEgnrYgjgN5XZFOfPCrSjpJJOv
+         8ZsZjDkAJSiPzPi8Tv5g5Wg99Ot3R9er/r51i4sNeR+bC9BrG3VwLSbZrsd6vxF1qChD
+         3Opsjh9cLVvwhsK2mhLNgTkZRX6ppit8IUPUq2ulH8aiKs+idy735tflJzO2Yj5vu7SG
+         KHqd9GzV46D0/yZgo58HKRB1p2+EfcHHfBELHTUdveZNdj48yOtORdcmaTW2auuWewaX
+         Y2PA==
+X-Forwarded-Encrypted: i=1; AKwUvBwqs0ZG5Vn2LsLmd8/30mzUkl2OgVNIcuSFWb3KRvI3J1hWJM40JzEkjVufNJODbORINnRJNDE=@vger.kernel.org
+X-Gm-Message-State: AFuF++mJllNMJIdphjgwj8SIOAF+12wL9lObB7FrxC8Q7mQ03Hy//KF0
+	uVJbpd5bsJ3sxmaUX3WxyZYddVmSar4QZ9fRY29j8TS+ofF3pvrvdaO5keUnNsUbkQ==
+X-Gm-Gg: AYBFou3JtRueO4C2PfCGDDbHI4wqiPflAlxNCktmcrpw5ogQQQGStBulLNfKKW/mS9x
+	Ddia793xCSrw7ipN8QNPveUZFe//1TcrlTTBQmmlw9U+ci8n6TyIpdbNLuzYJyI7x4hu0ZC3P1x
+	ifWI1iZjY0Ks06if7fstMIZt/POHnmrah7xVRIaEfbMIBPdGbiwE/UFeCFxsrG/RvDvIQfwuUav
+	88wxfgUhVjGuoxD9emZuN65mh+HSFU+5FD04D6XkcLQCKf0yQ595al2D0l9QkBZLIFtpzt98G9q
+	WzNDCo6n09/boc7YBXIKSPFtXj1jHvPpFA4NcR5LSs9Uis7q76kEPpLZ9nVQBieqnld6JiHPECB
+	1NgCfxpJpA4r3sB5TEgDTKXNAhNfCXrWock+eY/aQ/Q6G9zazRKEVLmhnnLi1iqZZbdLtWoWZPa
+	ShCV+USYFar3u6Q7qJoKsTWBqLMeJsLPS8k/SXJuJtWPa+VNUYUOF7nFt7liiJ1LvuixjbwWpP3
+	r7d4jaXmSzKhaz7Re9F/WUQ2dV0Kyho6Dl8ELW9Rt9dkBtLsGZiWngLp0skiiVD0ZcEckJUPYgv
+	qbmK9VFZ6nFSgG+YRw==
+X-Received: by 2002:a17:903:2290:b0:2c7:f688:f22f with SMTP id d9443c01a7336-2d959ba8671mr1247175ad.13.1788218961331;
+        Mon, 31 Aug 2026 16:29:21 -0700 (PDT)
+Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85be6377472sm154420b3a.19.2026.08.31.16.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 16:29:20 -0700 (PDT)
+Date: Mon, 31 Aug 2026 23:29:16 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com,
+	ljs@kernel.org, david@redhat.com, willy@infradead.org,
+	shakeel.butt@linux.dev, vbabka@kernel.org, jannh@google.com,
+	arve@android.com, christian@brauner.io, tkjos@android.com,
+	dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
+Message-ID: <apYOTPIBTsuQKUXE@google.com>
+References: <20260813193433.3318288-1-surenb@google.com>
+ <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
+ <apVhzM2501wSiGGg@google.com>
+ <apX_r59k4e-XiI-C@google.com>
+ <CAJuCfpEDgdC=N8__Ye1xP8rZtUwWrGhKhJ9Qnn0hdV+u5r+hJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813193433.3318288-1-surenb@google.com> <20260829185625.f5ee1b2931818843a78af88d@linux-foundation.org>
- <apVhzM2501wSiGGg@google.com> <apX_r59k4e-XiI-C@google.com>
-In-Reply-To: <apX_r59k4e-XiI-C@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 31 Aug 2026 16:19:39 -0700
-X-Gm-Features: AcwNN1WbsxWd5RxMUU7qZ6W1DDnViTQR6rdiBhuB5saanYC5DOsOmY_bHcB3Ii0
-Message-ID: <CAJuCfpEDgdC=N8__Ye1xP8rZtUwWrGhKhJ9Qnn0hdV+u5r+hJA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/5] mm: Unconditional per-VMA locks and cleanups
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org, 
-	david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, jannh@google.com, arve@android.com, christian@brauner.io, 
-	tkjos@android.com, dsahern@kernel.org, davem@davemloft.net, 
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpEDgdC=N8__Ye1xP8rZtUwWrGhKhJ9Qnn0hdV+u5r+hJA@mail.gmail.com>
 
-On Mon, Aug 31, 2026 at 3:27=E2=80=AFPM Carlos Llamas <cmllamas@google.com>=
- wrote:
->
-> On Mon, Aug 31, 2026 at 11:13:16AM +0000, Alice Ryhl wrote:
-> > On Sat, Aug 29, 2026 at 06:56:25PM -0700, Andrew Morton wrote:
-> > > On Thu, 13 Aug 2026 12:34:28 -0700 Suren Baghdasaryan <surenb@google.=
-com> wrote:
-> > >
-> > > > v2 version of this patchset [1] was written by Dave Hansen and per =
-his
-> > > > request, I'm taking over this series.
-> > > >
-> > > > tl;dr: Make per-VMA locks available in all configs. Simplify some
-> > > > of the per-VMA lock users now that they can rely on them being
-> > > > always available.
-> > >
-> > > It's been 2+ weeks so perhaps a refresh-and-remind would be helpful.
-> > >
-> > > But it applies well enough and is adequately reviewed so I put it in
-> > > there for testing, thanks.
-> > >
-> > > AI review might have found a couple of pre-existing binder bugs:
-> > >
-> > >     https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb@go=
-ogle.com
-> > >
-> > > and a small rusty thing which you might wish to attend to.
+On Mon, Aug 31, 2026 at 04:19:39PM -0700, Suren Baghdasaryan wrote:
+> On Mon, Aug 31, 2026 at 3:27 PM Carlos Llamas <cmllamas@google.com> wrote:
 > >
-> > The binder bug is not actually a bug. When using VM_MIXEDMAP and
-> > vm_insert_page(), the vma takes a refcount on the page, so there is no
-> > use-after-free even if free_page() is invoked without removing it from
-> > the vma.
->
-> Exactly! I agree the refcount on the page would prevent the UAF.
->
-> However, we should still reject mremap() because this leaves the page in
-> limbo since it is not given back to the shrinker and also binder can't
-> make use of it anymore. I'll send out a patch to fix this.
+> > On Mon, Aug 31, 2026 at 11:13:16AM +0000, Alice Ryhl wrote:
+> > > On Sat, Aug 29, 2026 at 06:56:25PM -0700, Andrew Morton wrote:
+> > > > On Thu, 13 Aug 2026 12:34:28 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+> > > >
+> > > > > v2 version of this patchset [1] was written by Dave Hansen and per his
+> > > > > request, I'm taking over this series.
+> > > > >
+> > > > > tl;dr: Make per-VMA locks available in all configs. Simplify some
+> > > > > of the per-VMA lock users now that they can rely on them being
+> > > > > always available.
+> > > >
+> > > > It's been 2+ weeks so perhaps a refresh-and-remind would be helpful.
+> > > >
+> > > > But it applies well enough and is adequately reviewed so I put it in
+> > > > there for testing, thanks.
+> > > >
+> > > > AI review might have found a couple of pre-existing binder bugs:
+> > > >
+> > > >     https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb@google.com
+> > > >
+> > > > and a small rusty thing which you might wish to attend to.
+> > >
+> > > The binder bug is not actually a bug. When using VM_MIXEDMAP and
+> > > vm_insert_page(), the vma takes a refcount on the page, so there is no
+> > > use-after-free even if free_page() is invoked without removing it from
+> > > the vma.
+> >
+> > Exactly! I agree the refcount on the page would prevent the UAF.
+> >
+> > However, we should still reject mremap() because this leaves the page in
+> > limbo since it is not given back to the shrinker and also binder can't
+> > make use of it anymore. I'll send out a patch to fix this.
+> 
+> Ok. Should that block this series or it will apply over it?
 
-Ok. Should that block this series or it will apply over it?
+The issue is pre-exiting and unrelated to this series. So I'll take care
+of this separately. Thanks!
 
->
-> Thanks,
-> --
-> Carlos Llamas
