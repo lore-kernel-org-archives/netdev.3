@@ -1,38 +1,37 @@
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp09.broadcom.com [192.19.166.228])
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543FD37F315;
-	Mon, 31 Aug 2026 18:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60AE2EF67A;
+	Mon, 31 Aug 2026 18:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788202171; cv=none; b=kdoGUzxtw9O5z4C7VTGoPhGwpBwQmWPKEolB5R7oOueUElHT53Sub2u1+sfFNTdbqgmZ59uvI2OtdgU+TA/Xsd7z0JliSEH7RtYYd6t5dvzEwy9YGJEcg4ayh6zUXZPbIaLNJabOJiX8LS50a3WuUj1Z5U2eKKLV+Zf5XcyneBs=
+	t=1788202305; cv=none; b=goasV1OrvI1WjaKBZJ6RGnHx8IMv43hmUSZdD4uJo2e+3vcdvgPPStjhQntQUcnnQYX1fH0GYYfU+N+rKQF/VR/YpRK+bzVfRi3PRp4F1GpSJyJVkP712ferkH3PiVWgmnDU2BiE/PabRfaCbO3KePBKK1m5YsYDPnndUDeFM/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788202171; c=relaxed/simple;
-	bh=pZJ4j05BtL3N67hpQm6LOcq+RJ7zhCJkckb/oHN9/x0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYb3/Hdqpe3lDHR/ZYxfeKKBY9OhDFpaOflawa2vf83l9Hbw8RPSeaALJIMRP65qKH0HN+1HxkhGOnPTQI3kKVStCQr6pd3qzHk+63/b8qxP84v60oro9hPVpONBuil9ghGoxtHMtbikG2oeuUfV6qlYuevqEci8lEZTVTlFU7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=qQpDm3PU; arc=none smtp.client-ip=192.19.166.228
+	s=arc-20240116; t=1788202305; c=relaxed/simple;
+	bh=bPni7hRX3VfpjtS18Tixz4pbM+1YxfRfagcWhgZ3xXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RdsEUXVrhep0td0RWy9oJnag+MYoEN5s511lLp/ChjuXj8ptXL4WTU0Edew7FzX+G6t1KHsRYgXgGsGPH9gr4/XOCoIxlxvFdk9sufE3bX7Bi8dxRma/wsYa1NbyF/I4XU+tem27jShltu7pLKyOP6H1I9DNRX1r9Y5jC76oM7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=pQHD2n0j; arc=none smtp.client-ip=192.19.166.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="qQpDm3PU"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="pQHD2n0j"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id D03B9C0000E5;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 3098EC0000CB;
 	Mon, 31 Aug 2026 11:42:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com D03B9C0000E5
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 3098EC0000CB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
 	s=dkimrelay; t=1788201759;
-	bh=pZJ4j05BtL3N67hpQm6LOcq+RJ7zhCJkckb/oHN9/x0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQpDm3PUYncJDVH71w0j99rZOdg39ieoP/WNvHItxRta7nDT8sF7e805gfpSrxEMH
-	 pk3dd7tWXDREXHfCuTTjMxdIzTKUZDJdiS2h6NJTcljcVcuA5Bm9bb4DGsCVP0pw/2
-	 pC7NpKcyyxGGsYHxcjFr3Ve4Wj/g+DaqWef8h/Kc=
+	bh=bPni7hRX3VfpjtS18Tixz4pbM+1YxfRfagcWhgZ3xXQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pQHD2n0j9N3S92X7oH9jgZaVZpjAa+U25mP/6W1lKTbXEXNj/r/zNv5v8InACY5kh
+	 4RpHJCMyF/rM4nEvx38SBCxYjm31zUBl6MRPhVn665n/g8/KskGC1Y/Bo1Eolj1MxK
+	 mBuQLT/1f0wC/DQXOGXlx7ZtcIyoaAGsoRt433dA=
 Received: from bse-build-07.ric.broadcom.net (unknown [10.136.28.187])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 426E9A9F;
-	Mon, 31 Aug 2026 11:42:39 -0700 (PDT)
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 96E9EA9A;
+	Mon, 31 Aug 2026 11:42:38 -0700 (PDT)
 From: Danesh Petigara <danesh.petigara@broadcom.com>
 To: justin.chen@broadcom.com,
 	florian.fainelli@broadcom.com,
@@ -46,12 +45,10 @@ Cc: horms@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Danesh Petigara <danesh.petigara@broadcom.com>
-Subject: [PATCH net 1/2] net: bcmasp: clear txcb->last before writing each descriptor
-Date: Mon, 31 Aug 2026 11:42:34 -0700
-Message-ID: <20260831184235.4133351-2-danesh.petigara@broadcom.com>
+Subject: [PATCH net 0/2] net: bcmasp: fix TX ring accounting bugs
+Date: Mon, 31 Aug 2026 11:42:33 -0700
+Message-ID: <20260831184235.4133351-1-danesh.petigara@broadcom.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260831184235.4133351-1-danesh.petigara@broadcom.com>
-References: <20260831184235.4133351-1-danesh.petigara@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,40 +57,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Justin Chen <justin.chen@broadcom.com>
+Two fixes for TX descriptor ring handling in the bcmasp driver:
 
-bcmasp_xmit() only wrote txcb->last = true for the final fragment
-of an SKB; non-final fragments left the field untouched.  If a
-descriptor slot was reused while it still held a stale true from
-a previous SKB (possible when tx_spb_ring_full() underreported
-fullness), bcmasp_tx_reclaim() would see last == true mid-SKB and
-call dev_consume_skb_any() prematurely, freeing the sk_buff while
-its remaining fragments were still in flight.
+  - tx_spb_ring_full() re-initialized next_index from
+    intf->tx_spb_index on every loop iteration instead of advancing
+    it, so it only ever checked a single descriptor slot regardless
+    of cnt. This let bcmasp_xmit() proceed even when the ring didn't
+    actually have enough free slots for the SKB's fragments.
 
-Unconditionally clear txcb->last before the conditional set so every
-descriptor slot starts from a known false state regardless of what a
-prior transmission left behind.
+  - bcmasp_xmit() only set txcb->last for the final fragment of an
+    SKB, leaving stale true values in reused descriptor slots from a
+    prior transmission. Combined with the ring-full miscount above,
+    this could cause bcmasp_tx_reclaim() to treat a mid-SKB
+    descriptor as the last one and free the sk_buff while later
+    fragments were still in flight.
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Assisted-by: Claude:claude-sonnet-4-6 vscode
-Signed-off-by: Danesh Petigara <danesh.petigara@broadcom.com>
----
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 1 +
- 1 file changed, 1 insertion(+)
+Patch 1 clears txcb->last unconditionally before it is set, and
+patch 2 fixes the ring-full slot check to advance through each
+candidate slot.
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index ed0977832ce4..2bd035f74fa2 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -301,6 +301,7 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
- 		txcb->bytes_sent = total_bytes;
- 		dma_unmap_addr_set(txcb, dma_addr, mapping);
- 		dma_unmap_len_set(txcb, dma_len, size);
-+		txcb->last = false;
- 		if (!i) {
- 			desc->flags |= DESC_SOF;
- 			if (csum_hw)
+Justin Chen (2):
+  net: bcmasp: clear txcb->last before writing each descriptor
+  net: bcmasp: fix tx_spb_ring_full() checking same slot cnt times
+
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
 -- 
 2.54.0
 
