@@ -1,99 +1,108 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A454A49BD;
-	Mon, 31 Aug 2026 17:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FC33DC857;
+	Mon, 31 Aug 2026 17:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788196471; cv=none; b=BDiPGVXg65U3gNO/1Qk+ZxxOzKfc+/J9cmHG+1uAzxUkDKDHjdi34JG82d94aEUfBNmmbk4Gp0EtYrfzG3AMKKG2wccqvG83W0vobuMZfyXGLzE6Y88wP1w6o58VfjfM+3j27+I3yRzg0K7Hvh+Ytrf3TUeGqKV+7+nZc4SdRWU=
+	t=1788197302; cv=none; b=CCPil4PicOWg6d9LduiMA84kjHTGyarI7D6MPEZTKdbZF0HyfNLqKR52QrLvk2TqEgc17hq9pyznbrbgZQzgaDoGluzSb9ffJJqmaFL6pZdFCjKBEw/iiKvwqcZQL4gbh2JJ6OkInXFsSNLkQYryPMd/8QqxV/efidDOocxyDPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788196471; c=relaxed/simple;
-	bh=EuYrqhbgzITCE3SQYpdNNeE4L189G9BPhKcSZqVreLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ki7eZV4Ef3LV5HxzNCCMmN8fjSzUdeK/dgYwYPTb0gnHEuFa2G+yuEW8gTi6mDKVIZcoIVp/KmRv1DAFSIV4IRS8oDGvpbD265+Dbzv9WKA6LapDJ4zO442AOGKZ4VPoXKvihmkwN7ysVnLqqG4DC6Cus8LkdIQ6X7hjGYDZ/Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ITG0MN6j; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788197302; c=relaxed/simple;
+	bh=74pdMq0RozvDUAtEQcEuMu2zmd7+AG51xLnJ13HaV4A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DoA6gvd2iDRFdEw8X6mujZj9fB+pJyqs2rivR0aRLtQyG6jjqr8EXaGCfZ3hEuMRpoJzcK5UmjXUeQlHUH+sxV5FwgnIyDs35qoFh3NpF1AWGBwGL0d1azzzdJy1afwHUTrEX0mQlIix0/F3+3XWSbAopnSTv9LvCMwb+NmrFFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=NobnzIPx; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=V9Cm4j7D; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ITG0MN6j"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Mg93C/BLYgHh/n0G+OklhbEZ69gCR/bdEIeH7kWAQMQ=; b=ITG0MN6jXzAjEeH42+oh9s8CZ0
-	fqpgRXe8s30hgWWZ2a6Fu05Z1F6PqiA1mP6iNK3XCjSlCpUXy8Wmi4ncnza3+G/jVDeW+qiUeuK9q
-	Xfp1OHPYdvwjJ+SmyOe6bph7E/LSnxpklT04hIkB/Tgqe3PAgEXRC1czEdPAmFLj1l+o=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x15aG-002EHW-IU; Mon, 31 Aug 2026 19:14:12 +0200
-Date: Mon, 31 Aug 2026 19:14:12 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>, linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 3/9] net: stmmac: qcom-ethqos: fix RGMII_ID mode to
- use DLL bypass
-Message-ID: <74541d4c-5090-454f-96ad-f6c5baa21b93@lunn.ch>
-References: <20260612-shikra_ethernet-v1-0-f0f4a1d19929@oss.qualcomm.com>
- <20260612-shikra_ethernet-v1-3-f0f4a1d19929@oss.qualcomm.com>
- <42355330-c22a-4fce-98ab-dc22b321ff16@lunn.ch>
- <ai93X/cNWHtEQsDt@oss.qualcomm.com>
- <82705420-771d-41bf-a4d9-ed94dff86ff0@lunn.ch>
- <ajF6q5eKz92ddqVl@oss.qualcomm.com>
- <apU8Yx08/PJiS9Xw@oss.qualcomm.com>
- <b36109c3-00e5-434e-a9b7-46049b0bff40@bootlin.com>
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="NobnzIPx";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="V9Cm4j7D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1788197299;
+	bh=74pdMq0RozvDUAtEQcEuMu2zmd7+AG51xLnJ13HaV4A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NobnzIPxK1IGCHP/Hof2GALf8dqLd4tjZd+RujYhqnd4qHKWFJiP5O8JozR7ydzgo
+	 ZmO6ZU3TDSTsIIwghmNMnVy6vD4dXJzUKfNztltinh7TQoMVbGB/muyTDAaCmkhBg4
+	 KibxElVFcC0NCCr+XuQWZR5Dq5ZIRhPn0txebso4bXNxKIFo7MOqXfu8JKvaLUYYO1
+	 R8wO4chxRxOitlREgZW8h6dmB/F+k0ryYCR0am1aztPBPs3IACijOw84xXDFJjqfy0
+	 fR1EowQ/O1Ozad8PNLv0qznQudNs2cLkadeihUVOSQ1g4vuxCRHGQcwQXo7uK3OBDo
+	 O4ab5gGta3eYQ==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 68DBB3ECAC; Mon, 31 Aug 2026 17:28:19 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1788197298;
+	bh=74pdMq0RozvDUAtEQcEuMu2zmd7+AG51xLnJ13HaV4A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=V9Cm4j7DA4bSdgmqqKw93qQhQvbu6pCmtbf42ch7oCJjsUiMwUXEuuaJFFdM6blAH
+	 05XLDw8PTMQwOpDCbD62dvluTAXqjxwF14VGWvN+p2jsUzOZknoPgri39UrAGTeIN+
+	 1GzortwXuf9WvTCLmatp6+fctvwsIbIDgkl4mQtkFwzWcgrjAsLRHSVlkDbXXeDBmm
+	 0t3zdhgv1K+D403psTfjYP/KM5UPZpnvvF+UYkDBlwubKRJnF2W554OTaw8TsGUPpg
+	 H9Rto601C42mZ3Bbvjkkv0o6mbHWaafAMk+f6v08+Fa4gfyxT6JrORUW8Vk84UkgTP
+	 JB7/O4vcqImcg==
+Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 5E92B3EC90;
+	Mon, 31 Aug 2026 17:28:18 +0000 (UTC)
+Message-ID: <e68251a2-defc-44da-bc30-3461e879c1a4@birger-koblitz.de>
+Date: Mon, 31 Aug 2026 19:28:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b36109c3-00e5-434e-a9b7-46049b0bff40@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 15/15] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+References: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
+ <20260831-ax88179a-v8-15-de905f2ee426@birger-koblitz.de>
+ <505bb4bf-b910-4642-b4dd-d4b5fee8309d@lunn.ch>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <505bb4bf-b910-4642-b4dd-d4b5fee8309d@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> > With this in mind, I was thinking of breaking up this patch series into
-> > separate ones to solve one problem at a time:
-> > 
-> >  1. Introduce support for "rgmii-id" using PHY-side delays rather than
-> >  MAC-provided delays. Also, issue a warning if any other phy-mode is
-> >  being used.
-> > 
-> >  2. Fix the DTS of the existing boards to use "rgmii-id".
-> > 
-> >  3. Once the DTS is fixed, remove the now-unused code handling non
-> >  RGMII-ID cases. This should also allow us to remove the whole
-> >  ethqos_emac_por code since it wouldn't be needed for RGMII-ID.
+On 31/08/2026 4:38 pm, Andrew Lunn wrote:
+>> +/* AX88179A-based PHYs cannot access MMD registers via MII_MMD_CTRL/MII_MMD_DATA
+>> + * Make sure to use c45 access instead.
+>> + */
+>> +static int asix_read_mmd(struct phy_device *phydev, int devnum, u16 reg)
+>> +{
+>> +	struct mii_bus *bus = phydev->mdio.bus;
+>> +	int addr = phydev->mdio.addr;
+>> +
+>> +	return __mdiobus_c45_read(bus, addr, devnum, reg);
+>> +}
+>> +
+>> +static int asix_write_mmd(struct phy_device *phydev, int devnum, u16 reg, u16 val)
+>> +{
+>> +	struct mii_bus *bus = phydev->mdio.bus;
+>> +	int addr = phydev->mdio.addr;
+>> +
+>> +	return __mdiobus_c45_write(bus, addr, devnum, reg, val);
+>> +}
 > 
-> I'm wondering if we should add some temporary very loud warning for
-> boards that use "rgmii" before changing this, or even just keep the
-> actual "rgmii" behaviour which inserts the delays, as there seems to
-> be lots of such users...
+> Please see aa63217916e1818a28b711384a9340d965ad073f
+> 
+>      net: phy: add generic helpers for direct C45 MMD access
+>      
+>      Some PHYs support direct C45 register access but not C22 indirect MMD
+>      access (registers 0xD and 0xE). When discovered via C22, phylib routes
+>      MMD access through the indirect path, which won't work on these
+>      devices.
+>      
+>      Add genphy_read_mmd_c45() and genphy_write_mmd_c45() as read_mmd/
+>      write_mmd callbacks that bypass the C22 indirect path and use the bus
+>      C45 accessors directly.
+Thanks for pointing this out, Andrew. Will use that helper function
+instead in the next round.
 
-We cannot break in tree users, and backwards compatibility with old
-mainline DT blobs is required. So for those, we need 'rgmii' to
-continue to work as is.
-
-So steps 1 and 2 are correct. But we cannot do 3. 
-
-We can however issue a warning when 'rgmii' is used, advising users to
-upgrade to a newer DT blob.
-
-	Andrew
+Birger
