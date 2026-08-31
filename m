@@ -1,46 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292D143636A;
-	Mon, 31 Aug 2026 13:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8117439F83;
+	Mon, 31 Aug 2026 13:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183214; cv=none; b=cr+jDawbArav4WjcWlJv3pCbKW4lMCdYS44noCXyr/FGwKs59P1gmZ6KIvbpxY57VpMzYE+7tCyiS5U7RxKWIpZAhrXg2Hrl/ZRc+2j2u5SoynPp2wrwp34GXx9i7YL0DUGfkih46g5sAOqewCzqvgiI2D/rewNkKyQu4IHKtes=
+	t=1788183219; cv=none; b=utmCBGYyuYe9g3lpiqBRwdT/BDq/L8GCFUJJaQXz+Ry/IjuKVUzf6ObHid90A8f1+UWEEXJCfljldeBoRUcmNJVoLrtCK7S8CA1zCp3dLe6dZv55U88QrxENohWA0D1DmYKJ0Q4Cq94qnIwvoGGo14yPMrBABPcorpMYYmGi8mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183214; c=relaxed/simple;
-	bh=GgoK44ToOxpQOb9pHrS0uWo5FrJYpbjz15udKZwiH4g=;
+	s=arc-20240116; t=1788183219; c=relaxed/simple;
+	bh=AM8PKwI9A0Nx7pJTy2BhPnlvxqcGOVjc0qnmTKZ8RgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n/Zjrd0JBwsmeGZtfqX0AkZgvuwIfm97JgsRp500eKBd6n4/W+lk6crxY5tDGCiztacKAWlKi9c/yZtqIYSRwOLXQ0gxctNHgyl3Vh4VdoExVRnn4PZpeVZyXqMqrQJvJbBDEyuD+OQBdUgzcZ/UVbIGQXuhYRzQI757tv8HO6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nAbybSi7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=eOaaH32ZRcduN90cAcuHaXLMzTonwAONve8ksWpoIm1hJkFnTcbEuVK3ox6xZG34vkF7f4HEkrz84LTkuUqviAwGSDHyAIIG5UJL/fCbY48HoE/VW0zEVQFSkt9WaCTVW4F5IgNJsa7QmAnfJqhwjC3s/ZtNh5i9ZspWiYxkH5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WUy5UOY3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nAbybSi7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDD91F00A3E;
-	Mon, 31 Aug 2026 13:33:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WUy5UOY3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5773A1F000E9;
+	Mon, 31 Aug 2026 13:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183211;
-	bh=vUpCbj518q8jGpORKgaCJbcqBE6unMNUixhJOVRkWu8=;
+	s=k20260515; t=1788183217;
+	bh=s2WzExxrbNaGa4Q4CVRnZE3JXWCu0m9Sj1QCKWehbB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nAbybSi7sayZdVEQOVempz2oG/rdHC0S7DwaBn7rQ2FpK6WkB1j9ETgV0N5Se8H/t
-	 K4s/jYZl/JEaKO/K5IaGyPHTthJfSTc6wt7xVKssMBzgRxBfIeTgNNYOciWESx0Xwb
-	 q0S18Uydpa6KNlPPEYCCz7Qxtk4Qb4eRhEv5kvdms6bML9upcQ4TjjsxBdP3sHhrJK
-	 ZasCqqmRfp1PlGfDRgX0BVFdFuU4E8nxFAcqdRsy+Sd5wAoth+xbKjnO4vKd7/0j8y
-	 dyRq59ZUdtamkgB/w5vPwXr83HbfXtK6Pepr2JAA+3iaXveBRyO8obnfX0YRcd7uWm
-	 aNQZNO4gNp8Eg==
+	b=WUy5UOY3h+1/ZdSD2JYEOQ5E3GnsevExIG3tmXuYYea5nUUnJc4RQZ+medCKI+hxB
+	 Fy4vj94zf1vZMJu0Sy/ZoYf7VsC4GVQ1YWi3lYMgfuoW7EK4zqC2WM1HoVV/S4zpiC
+	 EuCtOYW+D7EEj6QA5gDmzlcvpni4PSI77TMdkND2qRRioWhJ+Yn7q9FnOciJ/tY99a
+	 kHuVNY672ZkLjB1n5r1wM8kZeiN32D09FIhQoCuzJO8ThVhDnPnGIU2sYc6xaB4TTK
+	 pv760pg6+fa8U9UOV86zPyugvf9oIOTNwNv/54pC6egDJHdcLozz6xA+2RgmsMWNaT
+	 CEBA0m4DPCMTA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <nikolay@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
+	razor@blackwall.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
+	pabeni@redhat.com,
+	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] netconsole: take target_cleanup_list_lock in drop_netconsole_target()
-Date: Mon, 31 Aug 2026 09:20:39 -0400
-Message-ID: <20260831133314.4125787-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] bridge: Add missing READ_ONCE() annotations around FDB destination port
+Date: Mon, 31 Aug 2026 09:20:43 -0400
+Message-ID: <20260831133314.4125787-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -56,374 +58,464 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 91aeb87f052367a5a2743cc93777dfb4386f2f14 ]
+[ Upstream commit bcdfd9fb109e0c9d76c345b2346b6b75ed1f476d ]
 
-drop_netconsole_target() unlinks the target while only holding
-target_list_lock. However, when the underlying interface has been
-unregistered, netconsole_netdev_event() moves the target from
-target_list to target_cleanup_list, and netconsole_process_cleanups_core()
-walks that list under target_cleanup_list_lock only.
+When roaming, the FDB destination port can change without holding the
+bridge's hash lock. Therefore, add missing READ_ONCE() annotations in
+both RCU readers and readers that hold the lock. In the latter case, the
+annotation is not needed in places where the FDB entry was already
+validated to be a local entry since such entries cannot roam.
 
-If a user removes the configfs target at the same time the cleanup
-worker is iterating target_cleanup_list, list_del() can corrupt the list
-because the two paths take disjoint locks while operating on the same
-list node.
-
-Acquire target_cleanup_list_lock around the list_del() so the unlink is
-serialised against netconsole_process_cleanups_core() regardless of
-which list the target currently belongs to. The state transition that
-downgrades STATE_DEACTIVATED to STATE_DISABLED is left intact and is
-performed under the same combined locking, preserving the existing
-ordering with resume_target().
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260604-netcons_fix_before_move-v3-3-ab055b3a6aa5@debian.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260517115009.175163-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable backport analysis: `netconsole: take target_cleanup_list_lock
-in drop_netconsole_target()`
+# Stable Backport Analysis: `bridge: Add missing READ_ONCE() annotations
+around FDB destination port`
 
-**Local tree:** `v6.18.44` (Linux 6.18.44 stable)
-**Mainline commit:** `91aeb87f05236` (not present in this tree)
+**Local tree:** `v6.18.44` (Makefile: 6.18.44)
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject line
-**Record:** `[netconsole]` `[take/acquire lock]` — Serialize
-`drop_netconsole_target()` list unlink against
-`netconsole_process_cleanups_core()` by taking
-`target_cleanup_list_lock`.
+**Step 1.1 — Subject line**
 
-### Step 1.2: Tags
-**Record:**
-- **Signed-off-by:** Breno Leitao `<leitao@debian.org>` (author)
-- **Signed-off-by:** Paolo Abeni `<pabeni@redhat.com>` (netdev
-  committer)
-- **Link:** https://patch.msgid.link/20260604-netcons_fix_before_move-
-  v3-3-ab055b3a6aa5@debian.org
-- No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, `Reviewed-
-  by:`, `Tested-by:`
+Record: `[bridge]` `[add]` missing `READ_ONCE()` annotations around FDB
+destination port during concurrent roaming updates.
 
-Notable: netdev maintainer committed it; no syzbot/fuzzer report.
+**Step 1.2 — Tags**
 
-### Step 1.3: Body analysis
-**Record:**
-- **Bug:** `drop_netconsole_target()` unlinks a target under only
-  `target_list_lock`, while `netconsole_netdev_event()` can move the
-  target to `target_cleanup_list`, and
-  `netconsole_process_cleanups_core()` walks that list under only
-  `target_cleanup_list_lock`.
-- **Symptom:** Concurrent `list_del()` vs. list iteration can corrupt
-  the kernel linked list.
-- **Root cause:** Disjoint locks on the same list node.
-- **Fix:** Hold `target_cleanup_list_lock` around the `list_del()` path.
-- **Version info:** None in the message; bug exists wherever deferred
-  cleanup (`target_cleanup_list`) exists.
+Record:
+- `Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>` — bridge
+  maintainer ack
+- `Signed-off-by: Ido Schimmel <idosch@nvidia.com>` — bridge
+  maintainer/author
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` — networking tree
+  maintainer
+- `Link:
+  https://patch.msgid.link/20260517115009.175163-1-idosch@nvidia.com`
+- No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, `Tested-
+  by:`, or syzbot tags
 
-### Step 1.4: Hidden bug fix?
-**Record:** No — this is an explicit concurrency/list-corruption fix,
-not disguised cleanup.
+**Step 1.3 — Body analysis**
+
+Record:
+- **Bug:** `fdb->dst` can change during MAC roaming without holding
+  `br->hash_lock`.
+- **Symptom:** Readers can observe a changing destination port; without
+  `READ_ONCE()`, loads are not paired with existing `WRITE_ONCE()`
+  writers and may be inconsistent across a read/use sequence.
+- **Root cause:** `br_fdb_update()` updates `fdb->dst` locklessly on the
+  fast path (`WRITE_ONCE(fdb->dst, source)` at line 1030 in `br_fdb.c`),
+  while several readers still used plain `f->dst` / `dst->dst` loads.
+- **Version info:** None in the message.
+
+**Step 1.4 — Hidden bug fix?**
+
+Record: **Yes.** Although labeled as annotation work, this is a real
+concurrency correctness fix in the bridge forwarding and FDB management
+paths, completing an established `READ_ONCE`/`WRITE_ONCE` pattern for
+`fdb->dst`.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Inventory
-**Record:**
-- **Files:** `drivers/net/netconsole.c` (+2 lines on mainline; user's
-  diff shows +4 with surrounding context)
-- **Function:** `drop_netconsole_target()`
-- **Scope:** Single-file, surgical locking fix
+**Step 2.1 — Inventory**
 
-### Step 2.2: Code flow change
-**Record:**
-- **Before:** `list_del(&nt->list)` under `target_list_lock` only.
-- **After:** `mutex_lock(&target_cleanup_list_lock)` →
-  `spin_lock_irqsave(&target_list_lock)` → state handling + `list_del()`
-  → unlock spinlock → `mutex_unlock(&target_cleanup_list_lock)`.
-- **Path affected:** Configfs target removal (`drop_item` callback),
-  error/admin teardown path.
+Record:
+- `net/bridge/br_device.c`: 1 line changed (`br_dev_xmit`)
+- `net/bridge/br_input.c`: 1 line changed (`br_handle_frame_finish`)
+- `net/bridge/br_fdb.c`: 4 lines changed across 3 functions
+- **Total:** ~6 functional lines, 3 files, surgical scope
+- **Functions modified:** `br_dev_xmit`, `br_handle_frame_finish`,
+  `br_fdb_changeaddr`, `br_fdb_delete_by_port`, `br_fdb_clear_offload`
 
-### Step 2.3: Bug mechanism
-**Record:** **Category:** Race condition / list corruption.
-**Mechanism:** Two paths operate on the same `list_head` with non-
-overlapping locks (`target_list_lock` vs. `target_cleanup_list_lock`).
-Matches the locking pattern already used in `enabled_store()` (disable)
-and `netconsole_netdev_event()`.
+**Step 2.2 — Code flow changes**
 
-### Step 2.4: Fix quality
-**Record:** Obviously correct; mirrors existing lock ordering in the
-same file. Minimal regression risk; no API changes. On 6.18.44 the same
-mutex addition around `list_del()` is sufficient without
-`STATE_DEACTIVATED` logic (not in this tree).
+Record:
+| Location | Before | After |
+|---|---|---|
+| `br_dev_xmit` | `br_forward(dst->dst, ...)` after RCU FDB lookup |
+`br_forward(READ_ONCE(dst->dst), ...)` — single stable snapshot of
+roaming port |
+| `br_handle_frame_finish` | same pattern on receive/forward path | same
+fix |
+| `br_fdb_changeaddr` | `f->dst == p` under `hash_lock` |
+`READ_ONCE(f->dst) == p` |
+| `br_fdb_delete_by_port` | `f->dst != p` under `hash_lock` |
+`READ_ONCE(f->dst) != p` |
+| `br_fdb_clear_offload` | `f->dst == p` under `hash_lock` |
+`READ_ONCE(f->dst) == p` |
+
+**Step 2.3 — Bug mechanism**
+
+Record: **Race condition / data-race correctness fix.** Category (b)
+synchronization. `br_fdb_update()` changes `fdb->dst` without
+`hash_lock`:
+
+```1026:1031:net/bridge/br_fdb.c
+                        /* fastpath: update of existing entry */
+                        if (unlikely(source != READ_ONCE(fdb->dst) &&
+                                     !test_bit(BR_FDB_STICKY,
+&fdb->flags))) {
+                                br_switchdev_fdb_notify(br, fdb,
+RTM_DELNEIGH);
+                                WRITE_ONCE(fdb->dst, source);
+```
+
+Readers on hot forwarding paths and FDB iterators could observe a
+changing `dst` pointer. `br_forward()` handles `NULL` (`if
+(unlikely(!to))`), but a stale non-NULL port causes mis-forwarding
+during roam; FDB iterators can miss or mishandle entries during
+concurrent updates.
+
+**Step 2.4 — Fix quality**
+
+Record: **High quality, minimal, obviously correct.** Matches the
+existing subsystem convention from `3e19ae7c6fd62` and follow-up
+`5424e678f9b30`. Regression risk is very low — only adds documented
+single-load snapshots.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: Blame
-**Record:** `drop_netconsole_target()` list unlink dates to
-`0bcc1816188e57` (2007). The race was introduced when deferred cleanup
-was added in `97714695ef904` (2024-08-13, Breno Leitao). That commit is
-an ancestor of this tree.
+**Step 3.1 — Blame**
 
-### Step 3.2: Fixes: tag
-**Record:** N/A — no `Fixes:` tag. Bug introduced by `97714695ef904`
-("Defer netpoll cleanup to avoid lock release during list traversal").
+Record:
+- `br_device.c:110` and `br_input.c:226`: original code from 2016
+  (Nikolay Aleksandrov), predating `READ_ONCE` annotations
+- `br_fdb.c:473`: from 2019, also predating full annotation coverage
+- Buggy plain loads have been present since before `3e19ae7c6fd62`
+  (2021)
 
-### Step 3.3: Related file history
-**Record:** Recent netconsole fixes in this tree include race fixes
-(e.g. `00764aa5c9bbb` userdata locking). `STATE_DEACTIVATED` /
-`resume_wq` commits (`e8f4005ab2d48`, `220dbe3c76ed1`, `4cfcd6acc295c`)
-are on `master` only — **not** in 6.18.44.
+**Step 3.2 — Fixes: tag**
 
-### Step 3.4: Author context
-**Record:** Breno Leitao authored the deferred-cleanup infrastructure
-and this fix. Paolo Abeni committed both.
+Record: Not applicable — no `Fixes:` tag.
 
-### Step 3.5: Dependencies
-**Record:** Standalone for the cleanup-list race on 6.18.44. Mainline
-patch is v3 3/5 of a series, but this specific hunk does not require
-other series patches for the race described. `STATE_DEACTIVATED`
-handling in mainline is additional context not present here.
+**Step 3.3 — Related file history**
+
+Record:
+- `3e19ae7c6fd62` — introduced `READ_ONCE`/`WRITE_ONCE` for `fdb->dst`
+  broadly (in tree)
+- `5424e678f9b30` — “use a stable FDB dst snapshot in RCU readers”;
+  fixed `br_fdb_fillbuf`, `fdb_delete_local` writers, etc.; `Cc:
+  stable@vger.kernel.org` (in tree)
+- `17071fb5cb9c2` — annotated `fdb->{updated,used}` races (in tree)
+- This commit fills remaining gaps after those fixes
+- **Standalone:** yes, no series dependency
+
+**Step 3.4 — Author context**
+
+Record: Ido Schimmel is an active bridge maintainer (`Reviewed-by` on
+related stable-bound fix `5424e678`). Nikolay Aleksandrov acked.
+
+**Step 3.5 — Prerequisites**
+
+Record:
+- Requires `WRITE_ONCE(fdb->dst, ...)` writers — present since
+  `3e19ae7c6fd62`
+- Requires roaming fast path in `br_fdb_update()` — present
+- No additional commits required; patch dry-run applies cleanly
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Original discussion
-**Record:** `b4 dig -c 91aeb87f05236` → https://patch.msgid.link/2026060
-4-netcons_fix_before_move-v3-3-ab055b3a6aa5@debian.org
-Series: v1 (2026-05-29), v3 (2026-06-04, 5 patches). Applied version is
-latest v3.
+**Step 4.1 — Original discussion**
 
-### Step 4.2: Reviewers
-**Record:** `b4 dig -w`: CC'd netdev maintainers (Miller, Kicinski,
-Abeni, Dumazet, etc.) and `netdev@vger.kernel.org`.
+Record: **UNVERIFIED** — `b4 dig -c <commit>` could not be run (commit
+not present locally); lore.kernel.org and patch.msgid.link blocked by
+bot protection (Anubis).
 
-### Step 4.3: Bug report
-**Record:** No external bug report; issue found by code analysis during
-the netconsole fix series.
+**Step 4.2 — Reviewers**
 
-### Step 4.4: Series context
-**Record:** Part of "netconsole: Fix reported problems" (v3 0/5). This
-patch (3/5) is self-contained for the cleanup-list race.
+Record: **UNVERIFIED** via `b4 dig -w`. Commit message shows maintainer
+ack from Nikolay Aleksandrov and merge by Jakub Kicinski.
 
-### Step 4.5: Stable list history
-**Record:** No `Cc: stable` or stable-list discussion found in the
-downloaded mbox thread.
+**Step 4.3 — Bug report**
+
+Record: Not applicable — no `Reported-by:` or syzbot link.
+
+**Step 4.4 — Related patches**
+
+Record: Part of ongoing `fdb->dst` concurrency hardening; directly
+complements in-tree `5424e678f9b30`.
+
+**Step 4.5 — Stable list history**
+
+Record: **UNVERIFIED** — lore stable search inaccessible.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Key functions
-**Record:** `drop_netconsole_target()`,
-`netconsole_process_cleanups_core()`, `netconsole_netdev_event()`,
-`enabled_store()` (disable path).
+**Step 5.1 — Key functions**
 
-### Step 5.2: Callers
-**Record:**
-- `drop_netconsole_target` → configfs `drop_item` (admin removes target
-  via configfs)
-- `netconsole_process_cleanups_core` → `netconsole_process_cleanups()`
-  and directly from `netconsole_netdev_event()`
-- `netconsole_netdev_event` → netdev notifier (interface
-  unregister/release/join/changename)
+Record: `br_dev_xmit`, `br_handle_frame_finish`, `br_fdb_changeaddr`,
+`br_fdb_delete_by_port`, `br_fdb_clear_offload`
 
-### Step 5.3: Callees
-**Record:** `list_del()`, `list_move()`, `do_netpoll_cleanup()`,
-`mutex_lock`/`spin_lock_irqsave`.
+**Step 5.2 — Callers / reachability**
 
-### Step 5.4: Reachability
-**Record:** Requires `CONFIG_NETCONSOLE` + `CONFIG_NETCONSOLE_DYNAMIC`.
-Trigger: netdev unregister (or manual disable moving target to cleanup
-list) concurrent with configfs target removal. Admin/root configfs
-access required — not unprivileged userspace, but reachable in
-production netconsole setups.
+Record:
+- `br_dev_xmit` — bridge device transmit hot path (every locally
+  originated unicast frame)
+- `br_handle_frame_finish` — bridge receive/forward hot path (every
+  forwarded unicast frame)
+- `br_fdb_delete_by_port` — port removal/teardown
+- `br_fdb_changeaddr` — MAC address change on port
+- `br_fdb_clear_offload` — switchdev offload cleanup
 
-### Step 5.5: Similar patterns
-**Record:** All other paths that touch `target_cleanup_list` already
-take `target_cleanup_list_lock` first, then `target_list_lock`.
-`drop_netconsole_target()` is the outlier.
+All are reachable in normal bridge operation; forwarding paths are among
+the hottest networking code paths.
+
+**Step 5.3 — Callees**
+
+Record: `br_forward()` dereferences port and forwards skb;
+`br_fdb_find_rcu()` provides RCU-protected FDB entry; concurrent writer
+is `br_fdb_update()`.
+
+**Step 5.4 — User triggerability**
+
+Record: **Yes.** Any bridge with learned MACs that roam between ports
+triggers `br_fdb_update()` lockless `fdb->dst` changes while packets are
+being forwarded.
+
+**Step 5.5 — Similar patterns**
+
+Record: Most other `fdb->dst` readers in this tree already use
+`READ_ONCE()` — e.g. `br_fdb_fillbuf`, `br_fdb_test_addr`,
+`br_switchdev_fdb_notify`, `br_arp_nd_proxy.c`. The patched sites are
+the remaining outliers.
 
 ---
 
-## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (6.18.44)
+## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (v6.18.44)
 
-### Step 6.1: Buggy code present?
-**Record:** **Yes.** Current `drop_netconsole_target()` at lines
-1329–1331:
+**Step 6.1 — Buggy code present?**
 
-```1329:1331:drivers/net/netconsole.c
-        spin_lock_irqsave(&target_list_lock, flags);
-        list_del(&nt->list);
-        spin_unlock_irqrestore(&target_list_lock, flags);
-```
+Record: **Yes.** Verified missing annotations at:
+- `br_device.c:110`: `br_forward(dst->dst, ...)`
+- `br_input.c:226`: `br_forward(dst->dst, ...)`
+- `br_fdb.c:473`, `881`, `1663`: plain `f->dst` comparisons
 
-`target_cleanup_list` infrastructure is present (since `97714695ef904`).
-Bug present since Aug 2024 in this series.
+Roaming writer path is present (`br_fdb.c:1030`).
 
-### Step 6.2: Backport complications
-**Record:** **Needs rework** — literal mainline patch does not apply
-(`git apply --check` fails at line 1452; stable `drop_netconsole_target`
-is at ~1323). Adapted backport is trivial: add
-`mutex_lock/unlock(&target_cleanup_list_lock)` around the existing
-`list_del` block (2 lines).
+**Step 6.2 — Backport difficulty**
 
-### Step 6.3: Related fixes already present?
-**Record:** Fix `91aeb87f05236` is **not** in this tree (`git merge-base
---is-ancestor` confirms).
+Record: **Clean apply** — `patch --dry-run` succeeded with no conflicts.
+
+**Step 6.3 — Related fixes already present?**
+
+Record: Partial fix `5424e678f9b30` is already in this tree; this commit
+is the remaining coverage, not a duplicate.
 
 ---
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-### Step 7.1: Subsystem criticality
-**Record:** `drivers/net/netconsole.c` — **IMPORTANT** (network logging;
-used on servers for remote crash logs). Config-gated
-(`CONFIG_NETCONSOLE_DYNAMIC`).
+**Step 7.1 — Subsystem / criticality**
 
-### Step 7.2: Activity
-**Record:** Actively maintained; multiple netconsole fixes landed in
-6.18.y.
+Record: `net/bridge` — **IMPORTANT** (widely deployed in servers, VMs,
+containers, embedded networking).
+
+**Step 7.2 — Activity**
+
+Record: Actively maintained; recent stable-relevant bridge fixes in this
+tree (UAF, sleep-in-atomic, FDB snapshot).
 
 ---
 
 ## PHASE 8: IMPACT AND RISK
 
-### Step 8.1: Who is affected
-**Record:** Systems using dynamic netconsole (configfs-managed targets),
-especially during netdev teardown or target disable concurrent with
-configfs removal.
+**Step 8.1 — Who is affected**
 
-### Step 8.2: Trigger conditions
-**Record:** Interface unregister/disable moves target to
-`target_cleanup_list`; admin simultaneously removes configfs target.
-Uncommon but realistic during network reconfiguration or module unload.
-Requires root.
+Record: All systems using Linux bridge forwarding with dynamic FDB
+learning and MAC roaming.
 
-### Step 8.3: Failure mode
-**Record:** Kernel linked-list corruption → possible oops/panic.
-**Severity: HIGH** (crash); not a security issue for unprivileged users.
+**Step 8.2 — Trigger conditions**
 
-### Step 8.4: Risk-benefit
-**Record:**
-- **Benefit:** Prevents real list corruption in production netconsole
-  setups
-- **Risk:** Very low — 2-line lock addition matching established pattern
-- **Ratio:** Favorable
+Record: Host moves between bridge ports; concurrent forwarding while
+`br_fdb_update()` roams `fdb->dst`. Common in Wi-Fi/Ethernet mobility,
+VM migration, and active L2 networks.
+
+**Step 8.3 — Failure mode / severity**
+
+Record:
+- **Forwarding paths:** packet delivered to wrong port (connectivity bug
+  / potential traffic leakage) — **MEDIUM-HIGH**
+- **FDB management paths:** missed or incorrect entry handling during
+  concurrent roam — **MEDIUM**
+- **Kernel crash:** unlikely on these specific hunks (`br_forward()`
+  handles `NULL`); sibling fix `5424e678` addressed a confirmed NULL-
+  deref in sysfs path
+- **KCSAN/data-race:** definite without fix — **MEDIUM** for
+  CI/sanitizer builds
+
+**Step 8.4 — Risk/benefit**
+
+Record:
+- **Benefit:** HIGH for bridge users with roaming; completes an already-
+  stable-nominated fix family
+- **Risk:** VERY LOW — 6-line annotation-only change matching
+  established pattern
+- **Ratio:** strongly favors backport
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence summary
+**Step 9.1 — Evidence summary**
 
-**FOR backport:**
-- Real, verifiable race in existing 6.18.44 code
-- List corruption can crash the kernel
-- Fix is in mainline (`91aeb87f05236`)
-- Minimal, obviously correct, matches existing lock ordering
-- Bug introduced by code already in this tree (`97714695ef904`)
-- Same author who introduced the infrastructure
+**FOR:**
+- Real concurrency bug in hot forwarding path
+- Small, surgical, maintainer-acked
+- Prerequisites and related stable fix already in v6.18.44
+- Applies cleanly
+- Follows established subsystem convention since 2021
+- Complements already-backported `5424e678f9b30`
 
-**AGAINST backport:**
-- Narrow audience (`CONFIG_NETCONSOLE_DYNAMIC`)
-- Requires admin/configfs action
-- Literal patch does not apply cleanly (needs simple adaptation)
-- No user/fuzzer report
+**AGAINST:**
+- No syzbot/crash report for these exact sites
+- Primary user impact is mis-forwarding rather than panic
+- Mailing list/stable discussion not verified
 
-**Unresolved:** No runtime crash report; no explicit stable nomination
-in lore thread.
+**UNRESOLVED:**
+- Full lore review thread content
+- Whether reviewers explicitly nominated for stable
 
-### Step 9.2: Stable rules checklist
-1. Obviously correct and tested? **PASS** — lock ordering matches
-   sibling paths; committed to mainline by netdev maintainer.
-2. Fixes real bug affecting users? **PASS** — concrete list-corruption
-   race on configfs removal.
-3. Important issue? **PASS** — kernel crash (HIGH severity, niche
-   config).
-4. Small and contained? **PASS** — 2 lines effective change on this
-   tree.
-5. No new features/APIs? **PASS**
-6. Can apply to local tree? **PASS with adaptation** — core fix applies;
-   literal hunk does not (`git apply --check` fails).
+**Step 9.2 — Stable rules checklist**
 
-### Step 9.3: Exception categories
-**Record:** None (not device ID, quirk, DT, build, or docs).
+| Criterion | Result |
+|---|---|
+| 1. Obviously correct and tested? | **PASS** — pattern proven in-tree;
+maintainer ack |
+| 2. Fixes a real user-affecting bug? | **PASS** — roaming race in
+forwarding/FDB paths |
+| 3. Important issue? | **PASS** — forwarding correctness on common
+bridge deployments |
+| 4. Small and contained? | **PASS** — 6 lines, 3 files |
+| 5. No new features/APIs? | **PASS** — annotation only |
+| 6. Can apply to local tree? | **PASS** — clean dry-run apply; code and
+writers present |
 
-### Step 9.4: Decision rationale
-This is a real concurrency bug in code present in Linux 6.18.44 since
-deferred cleanup was added. The fix is minimal, follows the file's
-established locking discipline, and is already in mainline. While the
-audience is limited to dynamic-netconsole users, list corruption is a
-serious failure mode. The patch needs a small backport adjustment for
-6.18.44's simpler `drop_netconsole_target()`, but the fix itself is
-independent of the `STATE_DEACTIVATED` machinery that exists only on
-newer mainline.
+**Step 9.3 — Exception category**
+
+Record: Not a device-ID/quirk/DT/build/doc exception; qualifies as a
+standard concurrency correctness bug fix.
+
+**Step 9.4 — Problem statement for stable users**
+
+When a MAC address roams between bridge ports, `fdb->dst` is updated
+locklessly. The remaining unannotated readers in transmit/receive
+forwarding and FDB cleanup paths can observe a changing destination
+port, causing frames to be forwarded to the wrong port or FDB
+maintenance to behave incorrectly. This patch completes the
+`READ_ONCE`/`WRITE_ONCE` pairing already used throughout the rest of the
+bridge FDB code and in the recently backported `5424e678` fix.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed subject, tags, body from provided commit message
-  and `git show 91aeb87f05236`
-- **[Phase 2]** Diff analysis: +2 lines on mainline; race between
-  `drop_netconsole_target` and `netconsole_process_cleanups_core`
-- **[Phase 3]** `git describe HEAD` → v6.18.44
-- **[Phase 3]** `git blame` on `drop_netconsole_target`: base from 2007;
-  race introduced `97714695ef904` (2024-08-13)
-- **[Phase 3]** `97714695ef904` is ancestor of HEAD
-- **[Phase 3]** `STATE_DEACTIVATED` commits not in tree
-- **[Phase 3]** Fix `91aeb87f05236` not in tree
-- **[Phase 4]** `b4 dig -c 91aeb87f05236`: lore URL found
-- **[Phase 4]** `b4 dig -a`: v1 and v3 series; v3 is latest
-- **[Phase 4]** `b4 dig -w`: netdev maintainers CC'd
-- **[Phase 4]** Mbox thread: no stable nomination or Reviewed-by found
-- **[Phase 5]** `grep` confirmed all `target_cleanup_list_lock` users
-  except `drop_netconsole_target`
-- **[Phase 5]** Read `netconsole_netdev_event`, `enabled_store`,
-  `netconsole_process_cleanups_core`
-- **[Phase 6]** Buggy code confirmed at lines 1329–1331 in local tree
-- **[Phase 6]** `git apply --check` on mainline patch: **fails** (needs
-  adaptation)
-- **[Phase 6]** `git log --oneline -20 -- drivers/net/netconsole.c`:
-  active subsystem
-- **[Phase 8]** Failure mode: list corruption → crash, HIGH severity,
-  config-specific
-
----
+- [Phase 1] Parsed commit message and tags from user-provided diff
+- [Phase 2] Diff analysis: 6 lines across `br_device.c`, `br_input.c`,
+  `br_fdb.c`
+- [Phase 3] `git describe HEAD` → `v6.18.44`
+- [Phase 3] `git blame` on lines 110/226/473 → pre-2021 code missing
+  annotations
+- [Phase 3] `git show 3e19ae7c6fd62` → original `READ_ONCE`/`WRITE_ONCE`
+  introduction
+- [Phase 3] `git show 5424e678f9b30` → related stable-nominated FDB dst
+  snapshot fix, already in tree
+- [Phase 3] `git merge-base --is-ancestor` → both `3e19ae7` and
+  `5424e678` are ancestors of HEAD
+- [Phase 4] **UNVERIFIED:** lore.kernel.org and patch.msgid.link
+  blocked; `b4 dig` not usable without local commit hash
+- [Phase 5] `grep READ_ONCE.*dst` → most readers annotated; patched
+  sites are outliers
+- [Phase 5] Read `br_fdb_update()` → confirmed lockless
+  `WRITE_ONCE(fdb->dst, source)` roaming path
+- [Phase 5] Read `br_forward()` → confirmed `NULL` port handled safely
+- [Phase 6] Read current sources → buggy plain loads confirmed present
+- [Phase 6] `patch --dry-run` → applies cleanly
+- [Phase 8] Assessed failure mode as mis-forwarding during roam, not
+  typical kernel oops
 
 **YES**
 
- drivers/net/netconsole.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/br_device.c | 2 +-
+ net/bridge/br_fdb.c    | 7 ++++---
+ net/bridge/br_input.c  | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 06345487d6aac..fec111d64f611 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1326,9 +1326,11 @@ static void drop_netconsole_target(struct config_group *group,
- 	unsigned long flags;
- 	struct netconsole_target *nt = to_target(item);
+diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+index 525d4eccd194a..966fac7017225 100644
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -107,7 +107,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		else
+ 			br_flood(br, skb, BR_PKT_MULTICAST, false, true, vid);
+ 	} else if ((dst = br_fdb_find_rcu(br, dest, vid)) != NULL) {
+-		br_forward(dst->dst, skb, false, true);
++		br_forward(READ_ONCE(dst->dst), skb, false, true);
+ 	} else {
+ 		br_flood(br, skb, BR_PKT_UNICAST, false, true, vid);
+ 	}
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 6eb3ab69a5140..fe85c8f197e67 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -470,7 +470,8 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
+ 	spin_lock_bh(&br->hash_lock);
+ 	vg = nbp_vlan_group(p);
+ 	hlist_for_each_entry(f, &br->fdb_list, fdb_node) {
+-		if (f->dst == p && test_bit(BR_FDB_LOCAL, &f->flags) &&
++		if (READ_ONCE(f->dst) == p &&
++		    test_bit(BR_FDB_LOCAL, &f->flags) &&
+ 		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags)) {
+ 			/* delete old one */
+ 			fdb_delete_local(br, p, f);
+@@ -878,7 +879,7 @@ void br_fdb_delete_by_port(struct net_bridge *br,
  
-+	mutex_lock(&target_cleanup_list_lock);
- 	spin_lock_irqsave(&target_list_lock, flags);
- 	list_del(&nt->list);
- 	spin_unlock_irqrestore(&target_list_lock, flags);
-+	mutex_unlock(&target_cleanup_list_lock);
+ 	spin_lock_bh(&br->hash_lock);
+ 	hlist_for_each_entry_safe(f, tmp, &br->fdb_list, fdb_node) {
+-		if (f->dst != p)
++		if (READ_ONCE(f->dst) != p)
+ 			continue;
  
- 	/*
- 	 * The target may have never been enabled, or was manually disabled
+ 		if (!do_all)
+@@ -1660,7 +1661,7 @@ void br_fdb_clear_offload(const struct net_device *dev, u16 vid)
+ 
+ 	spin_lock_bh(&p->br->hash_lock);
+ 	hlist_for_each_entry(f, &p->br->fdb_list, fdb_node) {
+-		if (f->dst == p && f->key.vlan_id == vid)
++		if (READ_ONCE(f->dst) == p && f->key.vlan_id == vid)
+ 			clear_bit(BR_FDB_OFFLOADED, &f->flags);
+ 	}
+ 	spin_unlock_bh(&p->br->hash_lock);
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index 2cbae0f9ae1f0..470615675bdc0 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -223,7 +223,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 
+ 		if (now != READ_ONCE(dst->used))
+ 			WRITE_ONCE(dst->used, now);
+-		br_forward(dst->dst, skb, local_rcv, false);
++		br_forward(READ_ONCE(dst->dst), skb, local_rcv, false);
+ 	} else {
+ 		if (!mcast_hit)
+ 			br_flood(br, skb, pkt_type, local_rcv, false, vid);
 -- 
 2.53.0
 
