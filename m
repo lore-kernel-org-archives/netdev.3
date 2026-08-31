@@ -1,246 +1,231 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D1831B101
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78193370D61
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788203930; cv=none; b=mdxl/yJtz120wTq2vHx8XlFOEemqBmsZioeFNGkxi0y82CEFcnzGaOg8Tl10JqLn/ANOB98KfJbSOj2q3MvL40KXgDi8MK8xx724aGwk9e0HgVB+eFKnFFriwY9b2/qZQrG+Nl0MrefoQpiyRhCD3CLUzFHE5EojOnwyQyzkn/Y=
+	t=1788203999; cv=none; b=qaItoGG3C1TYkJJ6ZCajRazCTOZMBCcCsRMzDSBrANlJ2ZL4yngHzBh7IQbr8BzZlYxWxggL0/VjVe1zBBFzrmbiIkUaAvpewu1GGRqvJSKVe0Vf34cvPZu34eL0xcgiIQY910WKjYv+vAqygD22nssQl6NTzXcAzescaDxpFfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788203930; c=relaxed/simple;
-	bh=SUWAGf8sVHKWryZvJc2CRMyaoHq/CAf8ooTs1lQf5cA=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Sy7oHzaTtO2DBskDzE7upaNpFRmizAWZplvVtJCbFZcyp/FEhtT1beVvYmIUdKMazoETwqOLAIFl+KOlVwrOPqzIsubqnYWp+Uw9erPD5UAn7Ux6skgRvXQcBWqtiIHmjfLCAhaKUTCdUGZkRF7v4bErF4kxZhWCsINua6VpQYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S0gsBBh1; arc=none smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788203999; c=relaxed/simple;
+	bh=PxwlZ0r4oej93G4VhIYz/wrdJpd8giGrPWrKKIdnVoo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g6ATBnvzCkLpusOo3iTbMIKLeWZ+9SNgumtRa/qtKEDPB7IzFsI2t0DKAuudXGKXv2i6tsby4fOzO1Xx/h+8JbQnrScNjtcqojQIKCEl0MFG+5r/TRz0W958V/8zhG4LzUNJksYPwAzKrzVeFoKz5jaHZqwIZG8iAO14d9GtnbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WHNhgLds; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S0gsBBh1"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66f79f58123so1333631d50.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:18:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788203927; x=1788808727; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vyGggYc18dLYZvLE+3PHcbnS8L3cXtAXyIgurB3vQjg=;
-        b=S0gsBBh1Q8dxmt9Bh/gnTP65jBd1H3cjishr05Lpn3jyaP+5qr5ZT4UzpXZshlMVGE
-         3dQn/ChQNwYC1do7iGkNjyRonMVWD1rlFhSDIbVTH422OvPHtqWmKA+z1yWfSAxlT4sM
-         uIVgJ5jm9pU2MrOO6tFrshjBucYHJl3tNG9ndfNKJQWL+HWeAFRFjflXORJoiSveIc6y
-         Ox4cbGRKcnFbKJo91yVNJJWJ8CDA4HoGJIhvdjevP160RmP8jQm+7eXeIIlEgvowULMi
-         /hf+kUFlArlVsaXhAl+iDSDT9ovqX/3CRRJVfjtZLL6wVIPTTWb/k96QQYbPn0edn13j
-         9HpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788203927; x=1788808727;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vyGggYc18dLYZvLE+3PHcbnS8L3cXtAXyIgurB3vQjg=;
-        b=gB4+r2XwFQLntRH7FkMZpQyQGtgNVD2n+QvTERIt160eUjHwat7xoCeyiaduvk4Shh
-         xsqToKizeozDd/X6mdRQZimQPkjpmZAQQ14NGjU8nRYlWqnYy8kM5Wq/J4ihy0Nct/R4
-         7dtMMGGOWjY7+mAbmoA3fgLblC6fasG+6wc+W9kqEiM6RbjRgbxbFU8lpn/yryjY6iJR
-         qwHHJQuiilKDlB3ffxGWbeTXLxEkPIVBp1a8xvclIYImiquPw3BjOkHls+DPMaEKl4Mx
-         RcMsWPgTYy9mZDag6pt3V8syFtw+P/Y06YnjasAZCAk6tJBwDlVMd8wxstTbo1FY8ZlW
-         Oo1g==
-X-Forwarded-Encrypted: i=1; AKwUvBzyFgv87gIZAqFNU0XOE+3hnSw9N4f60GDM+PaY29Qqh/Iv8tOtzYc6LORx47gaXNE5xdv9bTA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lD3zxZ0htmPymrf/ZBRm8FBUH2hIEMqb3L3x++OnJGQoGKLwyj
-	HWWC6jza5ssZOy4l3a4JfMRTS+Bjx5k68fdYwQVvT8v4dXUeL+ubkbYZdx14Ag==
-X-Gm-Gg: AYBFou02GYUlSjLlFo5uBOqROxxxof+qeQoFyW4Ss2Na1t5gJQ4z/voCGjGIX9ENHkV
-	Hf0StpNhxa4yr8NlgHLIZ+1sL22Gm2MVBDY3Gsms6mkEcJYxlZlLTeTQ8Q3bYs0Wn8NViozdJrz
-	BMAYXpS/M8f8dmOqm1rXEeKMTLyiyRw1SnxMibH+LjtjSfvZuO498DMFwRzsBRSfUtyvpCrMBKV
-	poSAGQAm3k9cajB7MITh+WJOmCrD1DiJ9CVHqKIO3U1O2a+rmEv4DJWo6EWXBdkVpfPVJ3jVDl4
-	S/X1qgWvj/lxmzXriapCqf0bgEns78kqSItKfUEqhNcC6a/AMpP1EG9c4itQb14mVBrf/nAAbAJ
-	X2816nRK9XucXmDIH37q5TQScpxHCHcosn0DgxAwo/v3EBOYNT88c0xxQfh4QvenSYe/6jnFrlG
-	MqzCmgkMrbvFtjbOJZV/2y1HF1qL3hyN5yc5kCzh86/2d7NQe09AM2id7RT94aa7N+npQim1/ps
-	ck3t7lJqrnQsJa4XdCrSwk4+D24WvSwOrL0SEpdcQ==
-X-Received: by 2002:a53:e950:0:b0:66d:289f:6498 with SMTP id 956f58d0204a3-66f875c6a73mr824777d50.36.1788203926780;
-        Mon, 31 Aug 2026 12:18:46 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66e4ed2c78esm6675036d50.19.2026.08.31.12.18.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 12:18:46 -0700 (PDT)
-Date: Mon, 31 Aug 2026 15:18:45 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Junnan Zhang <zhangjn_dev@163.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, 
- "Michael S . Tsirkin" <mst@redhat.com>, 
- Hangbin Liu <liuhangbin@gmail.com>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- zhangjn_dev@163.com, 
- Junnan Zhang <zhangjn11@chinatelecom.cn>, 
- Shouxin Sun <sunshx@chinatelecom.cn>
-Message-ID: <willemdebruijn.kernel.2a4f4a498e1ff@gmail.com>
-In-Reply-To: <20260831072034.40044-1-zhangjn_dev@163.com>
-References: <20260831072034.40044-1-zhangjn_dev@163.com>
-Subject: Re: [PATCH net v2] net/packet: fix network header offset for non-VLAN
- raw packets
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WHNhgLds"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VIVbf73108068;
+	Mon, 31 Aug 2026 19:19:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=c3smvB
+	pR+kez9et3daTyXO8GKIAn8FN8WunaTgmMP5U=; b=WHNhgLdsxvgZ/Z97ilGFq4
+	d8yUKKlXWGMSudIDFaM99hFs5dTkYkSUT6b0lsuYDgbJye9SUPW8njaYbinMyHrZ
+	THimAvcj8fiUsB6AvUmn8UpaRI+jVdTjszOc/nfiN4+SMGQezuKg6lmUTReNdjWJ
+	ZLy8Yadigpk7M+Wuwsbey5mnhJ+debKYbIdmgVVJMecASjzDiV9TkFr/oqqG2g1p
+	iPHNCoIagq73qLejXnZgetoUQ4qIsH41Qkqmu1yLik6O3Y1mzUsp3fPMqq5FVb6d
+	0JS+VJYQVHFRb+IdijSOb5Q5jY97ZvqAIQ3D1xFVPuu8zorj/UpGULF4hHdrW3wg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq54kcft-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 19:19:41 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VJBO2Z007088;
+	Mon, 31 Aug 2026 19:19:40 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rq7txt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 19:19:40 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VJJc5l21889776
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Aug 2026 19:19:38 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EF84A5805A;
+	Mon, 31 Aug 2026 19:19:37 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 399955803F;
+	Mon, 31 Aug 2026 19:19:35 +0000 (GMT)
+Received: from [9.67.102.143] (unknown [9.67.102.143])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Aug 2026 19:19:35 +0000 (GMT)
+Message-ID: <99e8f07e-facf-40dd-a235-cec62270f981@linux.ibm.com>
+Date: Mon, 31 Aug 2026 12:19:34 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 12/15] ibmveth: Report MQ-aware RX counts in
+ ethtool get_channels
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+References: <20260814073642.24630-13-mmc@linux.ibm.com>
+ <20260818014735.3854400-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260818014735.3854400-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDE2NCBTYWx0ZWRfX+oxJG7GX5gti
+ kxLvMQ0IWquUPGRf7COsDOo8uUA83WmxTiIAvpyW6fGX+8xXYLSjYej5VdN2kl16zAcieO6Tv7X
+ TVDoShPKHkQjtcq5EaTOm4VNJtl6wvcHHVthOQlnVxZbD/CTSxP2hTQ8SrU+3BwAn75KFrTMweA
+ /nz6/qZebF3NYALukJqs+8dsgofPHt5dQQVUFtxDBUAddlTUbuWXyEyCczJZXZjBtkPmDeZMPn9
+ kghiTB5twKRAjL9y2PbdIIHO2j69DDVjGqzq7VFJEehgNT1FSqpp32dtLZrW5YL2TufXyNZ9Bp1
+ lvkUTV7ixwAWeT4cS7k+L9PO0UknhMiXA1ejrCICuq3Ur7/yeuQXt0lQdoXwdOxr/PZ4z8Zm8Xx
+ xcfno87yLRHCuWKskrkSteBasmsqM3PX+wLw32RCd4qUvScUUK6bhs5Z1pmhd4Z/AvFmJkfv/MN
+ IYEUKtFf0gUtFFafR7A==
+X-Proofpoint-ORIG-GUID: mysNC9mnh9qjFuDHIFGsYa_P5ZFDASYf
+X-Authority-Analysis: v=2.4 cv=CNgamxrD c=1 sm=1 tr=0 ts=6a95d3cd cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=Nf8FFmMjq70KbZWXPFMA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: OlT4raL7cZjpnBWU0oheLa17_-FWOSmj
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDE2NCBTYWx0ZWRfX55US76Vv4OcS
+ JFey6pPbOdP59FdwHGQ0YSKfq1iS+1dqAco0U7OpcmLcu+SqVxLDtdq46RaxNHVqqsJT4r2DSJj
+ SBV0QjXINsH6FNb0kbt0vBL39L2UJbY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_06,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 adultscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310164
 
-Junnan Zhang wrote:
-> AF_PACKET SOCK_RAW sets skb network_header to dev->hard_header_len in
-> packet_snd(). For Ethernet devices whose hard_header_len exceeds the
-> on-wire L2 header length (min_header_len = ETH_HLEN) -- e.g.
-> software-offload VLAN subinterfaces, where hard_header_len = ETH_HLEN +
-> VLAN_HLEN = 18 -- a non-VLAN SOCK_RAW frame still carries a standard
-> 14-byte Ethernet header, so its L3 header sits at min_header_len, not
-> hard_header_len.
-> 
-> packet_parse_headers() only corrects network_header for VLAN-tagged
-> frames. For non-VLAN frames it leaves network_header at hard_header_len,
-> so the IP header is found (hard_header_len - min_header_len) bytes too
-> late and inet_gso_segment() fails with -EINVAL.
-> 
-> Observed on a virtio_net NIC (KVM guest) that advertises
-> NETIF_F_HW_VLAN_CTAG_FILTER but not NETIF_F_HW_VLAN_CTAG_TX, so VLAN
-> subinterfaces use software tag insertion (hard_header_len = 18). An
-> AF_PACKET SOCK_RAW socket bound to the VLAN subinterface with
-> PACKET_VNET_HDR enabled sends a large IPv4/TCP frame exceeding the path
-> MTU, with gso_type set in the virtio-net header. The user frame is a
-> plain [ethhdr][IP...] layout without a VLAN tag; the VLAN subdevice
-> inserts the 802.1Q tag in vlan_dev_hard_start_xmit(). 
 
-Where does it do this? validate_xmit_vlan does this on the physical
-device I think.
-
-That adds a bigger problem that the extra needed headroom of
-(hard_header_len - min_header_len) is not reserved at the start of the
-frame.
-
-In packet_snd, reserve == hard_header_len, so the packet socket
-starts writing at the start of the buffer. When
-__vlan_insert_inner_tag inserts the tag, it tries to move the mac
-header back, leaving the network header in place. Which works fine if
-the network header was set correctly from the start, and the original
-mac started at network_header - min_header_len.
-
-This is all messy because before needed_headroom existed, legacy
-tunnels had to resort to increasing hard_header_len to reserve extra
-room for their outer headers.
-
-Long aside, and I don't expect to address/disentangle that in this bug
-fix targeting net. Will take a look whether we can safely do that in
-net-next.
-
-But please Link to this version of the patch (and thus the thread)
-when sending the next version.
-
-> With
-> network_header stuck at 18 while the real IP header is at ETH_HLEN (14),
-> inet_gso_segment() reads a misaligned ip_hdr(skb) and returns -EINVAL.
-> 
-> Set network_header to min_header_len for non-VLAN SOCK_RAW frames on
-> Ethernet devices whose hard_header_len exceeds min_header_len, so the
-> L3/L4 header positions match the actual on-the-wire frame.
-> 
-> This fix is placed before skb_probe_transport_header() so that both the
-> transport header probe (which uses skb_network_offset() as nhoff) and
-> subsequent GSO see the right L3/L4 offsets. It complements
-> commit 01fdecc0480d ("net: packet: fix wrong transport_header when sending VLAN-tagged frame")
-> which only covers VLAN-tagged frames.
-> 
-> Fixes: dfed913e8b55 ("net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO")
-> Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
-> Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
-> Signed-off-by: Junnan Zhang <zhangjn_dev@163.com>
+On 8/17/26 6:47 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
-> v2:
-> - Drop "on VLAN subinterfaces" from the subject and reword the scope to
->   Ethernet devices whose hard_header_len exceeds the on-wire L2 header
->   length (min_header_len). The min_header_len < hard_header_len test is
->   not VLAN-specific; it also covers Ethernet drivers that reserve extra
->   hard_header_len space for driver-internal wrapping.
-> - Restructure packet_parse_headers() to test dev->type once; replace
->   has_vlan, which mixed the device and packet tests, with the
->   packet-only is_vlan.
-> - Describe the header offset error generically as (hard_header_len -
->   min_header_len) bytes instead of hard-coding the 4-byte VLAN case.
-> - Document the reproducer: virtio_net advertising
->   NETIF_F_HW_VLAN_CTAG_FILTER but not NETIF_F_HW_VLAN_CTAG_TX, with
->   PACKET_VNET_HDR and GSO triggering the -EINVAL from
->   inet_gso_segment().
-> 
-> v1: https://lore.kernel.org/all/20260821085722.24036-1-zhangjn_dev@163.com/#t
-> ---
->  net/packet/af_packet.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 1168bd6b09cd..be5bf9db7ea1 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1935,6 +1935,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
->  static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
->  {
->  	int depth;
-> +	bool is_vlan = false;
->  
->  	/* On TX skb->data is the L2 header; anchor it for all socket types. */
->  	skb_reset_mac_header(skb);
-> @@ -1943,11 +1944,28 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
->  	    sock->type == SOCK_RAW)
->  		skb->protocol = dev_parse_header_protocol(skb);
->  
-> +	if (likely(skb->dev->type == ARPHRD_ETHER)) {
-> +		is_vlan = eth_type_vlan(skb->protocol);
-> +
-> +		/* For non-VLAN SOCK_RAW frames on Ethernet devices whose
-> +		 * hard_header_len exceeds the on-wire L2 header length
-> +		 * (min_header_len) -- e.g. software-offload VLAN subinterfaces,
-> +		 * or Ethernet drivers that reserve extra space in
-> +		 * hard_header_len for driver-internal wrapping -- the SOCK_RAW
-> +		 * send paths leave network_header at hard_header_len, while the
-> +		 * user frame's L3 sits at min_header_len. Move network_header
-> +		 * to the actual L2/L3 boundary so the transport header probe
-> +		 * below and subsequent GSO see the right L3.
-> +		 */
-> +		if (!is_vlan && sock->type == SOCK_RAW &&
-> +		    skb->dev->min_header_len < skb->dev->hard_header_len)
+> ibmveth: Report MQ-aware RX counts in ethtool get_channels
+>
+> The patch changes ibmveth_get_channels() to report max_rx as
+> IBMVETH_MAX_RX_QUEUES when the adapter has multi-queue firmware support
+> (else 1), and to report rx_count from the driver's published
+> num_rx_queues instead of netdev->real_num_rx_queues.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index 3202b657c9b8f..5d4ca4b3d3d07 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+>> @@ -2522,11 +2522,16 @@ static void ibmveth_get_ethtool_stats(struct net_device *dev,
+>>   static void ibmveth_get_channels(struct net_device *netdev,
+>>   				 struct ethtool_channels *channels)
+>>   {
+>> +	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+>> +
+>>   	channels->max_tx = ibmveth_real_max_tx_queues();
+>>   	channels->tx_count = netdev->real_num_tx_queues;
+>>   
+>> -	channels->max_rx = netdev->real_num_rx_queues;
+>> -	channels->rx_count = netdev->real_num_rx_queues;
+>> +	if (adapter->multi_queue)
+>> +		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
+>> +	else
+>> +		channels->max_rx = 1;
+>> +	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
+>>   }
+> [Severity: Medium]
+> At this point in the series, does raising max_rx here make RX channel
+> requests silently succeed without changing anything?
+>
+> ibmveth_set_channels() only derives its work from tx_count:
+>
+> 	unsigned int old = netdev->real_num_tx_queues,
+> 		     goal = channels->tx_count;
+> 	...
+> 	if (!(netdev->flags & IFF_UP))
+> 		return netif_set_real_num_tx_queues(netdev, goal);
+>
+> channels->rx_count is never read there.  The core validation in
+> ethtool_set_channels() only bounds the request by the driver-reported
+> maximum:
+>
+> 	if (channels.rx_count > curr.max_rx ||
+> 	    channels.tx_count > curr.max_tx ||
+>
+> so with max_rx now 16, "ethtool -L ethX rx N" for any N in 1..16 that
+> differs from the current RX count passes validation, enters
+> ibmveth_set_channels() with tx_count unchanged, runs no LTB loop
+> iterations, and returns 0.  The netlink path in ethnl_set_channels()
+> applies the same max_rx-only ceiling and maps the 0 return to success.
+>
+> Before this change max_rx equalled real_num_rx_queues, so an increase was
+> rejected with -EINVAL by the core; afterwards it is accepted and ignored,
+> and "ethtool -l" still shows the old rx_count.
+>
+> For the record, this appears to be resolved later in the same series: the
+> final patch "ibmveth: Wire ethtool set_channels to MQ RX queue resize"
+> makes ibmveth_set_channels() read channels->rx_count and apply it via
+> ibmveth_resize_rx_channels() with range validation of
+> 1..IBMVETH_MAX_RX_QUEUES, so the get/set pair agrees at the end of the
+> series.  Would it be worth ordering that patch before this one, or
+> mentioning the intermediate state in the changelog?
+Yes. At this commit set_channels still only looks at tx_count, so
+ethtool -L rx N can pass core validation and return success without
+changing RX. Raising max_rx here just widens that window from the
+live count to 16. v6 names the intermediate state in the commit
+message, which covers your second option.
 
-Instead of using min_header_len != hard_header_len to detect vlan devices,
-consider is_vlan_dev(). That does not have false positives for other
-protocols, and makes the code more self-descriptive.
+The reorder is not done: channel reporting stays reviewable on its
+own, separate from stats and from the resize. Patch 14 reads
+rx_count and calls resize; patch 15 finishes the down-path and caps
+max_rx once mq_fallback latches.
+> [Severity: Low]
+> A second, smaller point about the same lines: max_rx is derived only from
+> adapter->multi_queue and does not consult adapter->mq_fallback.  After
+> firmware refuses multi-queue, ibmveth_apply_mq_fallback() defers the
+> downgrade to the next open:
+>
+> 	if (!adapter->mq_fallback)
+> 		return;
+>
+> 	adapter->mq_fallback = false;
+> 	...
+> 	adapter->multi_queue = 0;
+> 	ibmveth_publish_num_rx_queues(adapter, 1);
+>
+> so between the firmware rejection and the next open, "ethtool -l" keeps
+> reporting max_rx = 16 and rx_count = 8 while the adapter is going to run
+> single-queue.  Should get_channels() also take mq_fallback into account?
+>
+> Also, at this patch the reported maximum of IBMVETH_MAX_RX_QUEUES (16) is
+> above anything the driver publishes, since ibmveth_probe() caps the RX
+> queue count:
+>
+> 		adapter->multi_queue = 1;
+> 		ibmveth_publish_num_rx_queues(adapter,
+> 					      min(num_online_cpus(),
+> 						  IBMVETH_DEFAULT_QUEUES));
+>
+> The end-of-series patch "ibmveth: Wire ethtool set_channels to MQ RX
+> queue resize" does make 1..IBMVETH_MAX_RX_QUEUES genuinely settable via
+> ibmveth_resize_rx_channels(), so this is only about the intermediate
+> state and the stale reporting while mq_fallback is latched.
 
-Unless we are certain that the same also exhibits for other devices that
-play hard_header_len games, such as GRE tunnels. But then the
-ARPHRD_ETHER check excludes those anyway. So for now I would focus on the
-VLAN issue only.
+Yes. While the latch is set, -l can still show MQ max_rx / rx_count
+until the next open applies fallback — apply_mq_fallback() runs at
+open entry, so get_channels() here still reads multi_queue and the
+published count only, not the latch directly. Not taken here:
+patch 15 consults the latch by capping max_rx at the live count,
+not by understating rx_count. Clamping rx_count would turn the next
+TX-only -L into a silent RX shrink.
 
-  if (sock->type == SOCK_RAW && !is_vlan_packet && is_vlan_dev(skb->dev))
-    skb_set_network_header(skb, skb->dev->min_header_len);
+Thanks,
 
-It sucks that we have to add another branch in the hot path for an edge
-case. Would be preferable if we can fix this in the vlan driver. But
-that will come too late for skb_probe_transport_header.
-
-> +			skb_set_network_header(skb, skb->dev->min_header_len);
-> +	}
-> +
->  	skb_probe_transport_header(skb);
->  
->  	/* Move network header to the right position for VLAN tagged packets */
-> -	if (likely(skb->dev->type == ARPHRD_ETHER) &&
-> -	    eth_type_vlan(skb->protocol) &&
-> +	if (is_vlan &&
->  	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
->  		skb_set_network_header(skb, depth);
->  }
-> -- 
-> 2.43.0
-> 
-
+Mingming
 
