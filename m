@@ -1,186 +1,146 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010010.outbound.protection.outlook.com [52.101.84.10])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2703D3BBA1A;
-	Mon, 31 Aug 2026 07:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788162423; cv=fail; b=X7oyYh63jlIXHygvj301FZ7mM8MvwZIrtorbe9UzrWO7aL1sc1Dlxgder+x7FXOaGnri7HapX2/Bxdb6Og87hc2ItKf/HLEy4eucmi/+cadzhkFMYo+zcrAkliL6V0bf4vs3z9s4JNJj9X4Y01Win0mKilLTatftMBjI3GUDFJE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788162423; c=relaxed/simple;
-	bh=rXJhxzkbY/c6COehKSOmdWo9PN9qANaxIOHUsfLyZLQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Lq+McsHLvBa+NSZ6VWXPsSLK3rsdSJs1ndgMbce5gjv3BUPehHD/Q0xnTqJgqC5MUEkmbv+H9K92ZbsZ5DkiegCAqQBsQd45lS6KqsmmZtblpkQ8BPFCkQKGWShk57wtcpxXziYxn2Uh7UcLxsXiwicLYGqmMjjMozt3oCVQcFc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=r7Wfgqzg; arc=fail smtp.client-ip=52.101.84.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E834F27E1DC;
+	Mon, 31 Aug 2026 07:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788162916; cv=none; b=mVG6LNEBeuAe3WnGGColk4Haxpi/hqUvCdsvMgCXjkfjTLWHiTzSrXnwRI8pBpmhz1udKf/QP+nh2Iqf1vmPC8cfCCj46d7WSdrAh3mVR+KnVfGFG8Ew0hlkU3mw89Ae8KeTLqn+XT1GnN3rL0Bfgeedai7d+eJW8KyeIIeBBU8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788162916; c=relaxed/simple;
+	bh=3BWAK6Evoz16e0emRVdrO0Y1UlyWZz0rq4ElYHd/Bz8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A06mm1sdwRr6S7I8CyJbtt7UCGoDdC3bX9lRTIJq0zvHni4jR2mvdguO4vW6orgt8m7+E8zc709QskXl3iKibVsJiK7p5umwNg0fKsRXQrE+YAHMr1h6UgXcFMXSbPtdSMvwqNrEZMSZgnXS46CNaagEKovQVJWoJ6UWNuqrJ9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=q6rJEfgB; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="r7Wfgqzg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SUx0t9UJ5chLGlZkcd9XQb6NskqPoxnJ7t8lhuZoD44WIsnR37kMYrUymccsVbtIF2lM4tS33MVXYLl9hZ0+mElIsdxqqn9fCqbXu2cQM+L5WiHrrhn6BezkjMKvR8L/FSIPzxWWWllwvPFpyhXS5mQPPSpbhihaM5jWZj3POZkIsJODm3/2iNbrxzGHH6UQZ12UR1vVSpm2XNJnTej24CdjrAqYHnnja/Yydgin9WaFwtmSyqCoz9l6kOn9zvnmW54jX+GGq5+ud/HbQs2AgwFdZzlkm8wWrcjw74X0YW3NI3Jc68c+Ys3y7OO7MSneFUUdULwVByLwImsm2xBSnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TBdNpBXNuPh1OT5YmLtCXnGeT2qC9KxEAwD/hVil500=;
- b=qG8HlKw3CLP8l+qyeC1nEil1n90yIZAQGhosBSoZkr3zPw4EWiESw6gul1IbuMeILzRHjX8q6uHtcfi0JwT4fueLcNae+4/rOlmI/vPr7OnhOKNo8TtMbGaz7KjBqoPGj4L9dhi7ELehYZX/oHnHCQITBnVeFXjzbBJC+u4u6eIuy45w0tPm5JNQC5CuAd68iZ2lmYgKoaR8pB+1N2BpNxMo6kbgyLvLH9nmHPWvxgWjzeLwIfGpmy2bbP3lJKADS8dM4VoJBQgSm9rxB4lwhvqH3p5p5L9mI6mrAqbWfPXaZpC603hIHB4wx0LtAS0Ybxkvsjk0YCWK65svLSKa5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TBdNpBXNuPh1OT5YmLtCXnGeT2qC9KxEAwD/hVil500=;
- b=r7WfgqzgF5dL3AsT9mnuUyOrI72tD19DfXeCDsj6VT9SsRaL8w09o3ecZ250EbJLy2wKG+610nKbF60wMj+RWPRv7PTVd1vM3oAhKHMbTq76EtvBJ5nnRZDbdWwNBzWBDwN6AL4GU+9p/b0rKx0asGJqJHCpg8KWvOG9bYc276Gh+uu07mpubDswaMWGxXl4AbOOjRtlqjo2nUtw15qfwKZA16tgCnIJvFQUTKjxJSAEqkUZZ/dTA+FX6W/HhXPaSRygD3NT9yl0oMe03upki/fRmdHSBzeEItmZpln8rNFB/dapixwLojvmusfZWYBLfyulMqtCw4X+9/KmD4Zvhw==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- AM7P189MB0790.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:121::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.13; Mon, 31 Aug 2026 07:46:58 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 07:46:58 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: David Laight <david.laight.linux@gmail.com>
-CC: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jon
- Maloy <jmaloy@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net] tipc: Dont send random pad bytes in RESET/ACTIVATE
- messages
-Thread-Topic: [PATCH net] tipc: Dont send random pad bytes in RESET/ACTIVATE
- messages
-Thread-Index: AQHdN621JLxzjATqykqDJ7VLHlMHtLa3yCmg
-Date: Mon, 31 Aug 2026 07:46:58 +0000
-Message-ID:
- <GV1P189MB198870CD8F066C7A17B927F1C6A92@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260829115813.188600-1-david.laight.linux@gmail.com>
-In-Reply-To: <20260829115813.188600-1-david.laight.linux@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|AM7P189MB0790:EE_
-x-ms-office365-filtering-correlation-id: c4e01a48-fb6d-49a3-8064-08df07340922
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|10067099003|6133799003|18002099003|22082099003|11063799006|56012099006|38070700021;
-x-microsoft-antispam-message-info:
- uLe6ZdaP2pisRcqPseOWWlYcr9YVfeMftSIvWBMggzieJ3i3aNAxaNcDt25syOolASmr9xvEh5o21AXShDPSweFTttizndUAliiec2UTOlWnCE7pbfE3ujLPLMnH5agbuZL/rO0xbh3Zml80sZWK9bWGjhIcg3NZiWl2O+H68MuYrept7BqHCFdE/bBylAbNct8H+Qg/nG6Pzn4l4mcDfDgDiNghrtfWvzHb24tWr+vl8+8HMhN7xbKZAB1bJfxahFR1VP8fhNa28CzV7tr5hza3p6woDvOGtSiChLxmC5V7jUSs7nvgVKH+yYxa/rwkPlyaRLmgYNuVrwVuJQEBpgyAL2KyUSk2/M9tibNnxwMWyQMpy7uS/Nq4RZs/NxAmCid2tuJ4H8PemmMrmoNH+eo3CegeQ8ALFSrW82mcrHonTyfH/AtRbCfFZsjoqeE++rvM0xuoluNx/KNilA/pD/uvbqXeLSET9y3Z3fsUzKb6XouGe8eNyit3rd+uQsp7VbJKYAUlwyK8qoDHPnDsHXzb69kwX8ubOzQCeyu4xzWN2fOgW/VtLsUCcmN4JB3U5SI2YD/d9YZij3s4mE0Gp38JM1JivAfQcSFpXbZMys2lvwJmax9vYIdXk8O+LPC4oszNbPx8FR1IF1XiIbRrvuKe3nRdC9rnpMnEq59x5N/4mkf32VfWUAjuv4/nBs0mMHKYA8NPP4oYs+GqAlwf7stacCMt2p0V+BZH31Yh/88=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(10067099003)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?rUD88C7+sexFVn7bcdjW+Unu3pf9QjVH9A/wWGmvw0Gn8aKP+PVxoOGgP2rn?=
- =?us-ascii?Q?qyF5vMS/rah81r7zusNuesl1n6bGUGkSm6jGoopR5lMOzyrbmISz3KR1eFx/?=
- =?us-ascii?Q?JqYA9eQMytqx1zVry5Ox+0rgngBtNcBbmta/yEBoWRLPxYlHymOWM8k0NrBw?=
- =?us-ascii?Q?GmJUTNfYZENrB0OiNzKM7GBcjGAlV0jg7TxoaitBd4PvQzQ+T58ZqkJj/ySC?=
- =?us-ascii?Q?MWaGHCyLBUahpDqsO1rTUez9tZW5HU0UBI3geFVyvCWZ5QPCGEdjc55nbEHH?=
- =?us-ascii?Q?R7pmKbdbBDg/81fJXqOFZI7gtVZNj6LDqxNlWxzz9aBZu/nhP8SLn0Z94IN1?=
- =?us-ascii?Q?PETyaq/Fxoo0LcE6BIOVo4X1MS915h6UeMnn+Mi3aykrRU0VSsLY+W5KTkzp?=
- =?us-ascii?Q?7CCXGMGVbOZJObSOOKwLBEJopggXBtcP/hzu9TfzlZCoZC9Ekb/EzqazxIut?=
- =?us-ascii?Q?bAsxXTy8jgJulcLFO6gIcj2yBqws2xfBll9reCalhXKsB9AYvlmxzlk90xWW?=
- =?us-ascii?Q?LGXtMF4Gf3L5Lg2R7w+KTYWGc5jGGm2ezYzS9lLnfIaCX/dWhYgaLs8X+xe2?=
- =?us-ascii?Q?xX/h5Y8xV1tORUnRSlmPhiIEclcE94NOA1NOau6fB9vZzYdcuHM7Ce065zmC?=
- =?us-ascii?Q?8LeALfwqt2vyln/KQ9NddqdGFqUROl7v5jwIWXLQMj9MV/JYjKb4pRk68/TK?=
- =?us-ascii?Q?OuZBt9M9gIStl4mCaScklI43JD4DWDwSq4xJ5hcXOcIUPA72x0v3ZlT8CYnr?=
- =?us-ascii?Q?cN6iOv8U5VzwnDyQGPhog/okA4cqQBIRqHZvHlZ/lFN6B+aXux+vl9avvR2c?=
- =?us-ascii?Q?YC0gSRcn+bvZS3kDAEVx4dcQNDYBkZP8AfZ5tMu1Hzy4ClMPD+bhkRK6NXed?=
- =?us-ascii?Q?Hs49GN5hLtcnzC4FA2BUqN3i4Xd9QuwhAz6klHVQ2E5tNICE2DVuNl9zr1HG?=
- =?us-ascii?Q?lI1TM/ILidX7Qe2lnX798xEPwKow4RcJktiRxi2Kz61QT5YtaRcG9jWzCIeN?=
- =?us-ascii?Q?WwkiqWBnbYc4zlVM31qMq+z0aJ3isXDQzbUAPcviS4J0NWCcDF3eDmDCa9J1?=
- =?us-ascii?Q?VluRL12xPo8tF48LRY+IjcL7hlFSTakPwayf/3ilBANM9XRXAy4xesJ2dl7B?=
- =?us-ascii?Q?Y4W6sxf1JrzmvEN8iqbriJyP5VHMeCSmsIxb6h/kO+LM9VR7oJR4s5cCcxJ9?=
- =?us-ascii?Q?XbgC2yy+dW1ryjUmVUKuessyDFN7WXwXmZaQY3niBB4TIooWoZV6kTcE2o/g?=
- =?us-ascii?Q?yIiLU32IOtoEUwUJfb2MPc4OA5oo15pg1Qo7aG3IWR4aQPww22LOFLGIBBhC?=
- =?us-ascii?Q?8Phgm6oylylWMQ0rG/BmtYZ85jsSGK7kZrlFGxsaM5TlQdyGqt1Sjhjz4W7Y?=
- =?us-ascii?Q?qBlCS0xU4soxO0UgFoGjKf9CWd1abdLp29BNyh4Rr2nk+pB9ru0+k3eBxqWb?=
- =?us-ascii?Q?A9Yjs3Etu72laxo2BtbPULJm0oA9Pbb7zBqUo7AOr6QDFdo8htIJjU9jIlRj?=
- =?us-ascii?Q?RbPdmWagyfTlO5+VRCaDt1ehWHe3AJ8BtHLHF+ObKlNU8BO7k+CB9GhvVOMq?=
- =?us-ascii?Q?Z2483n9HpS85V1gQI2nPizsGuCCHDg/sAAlPvgYN+jW6YDtiZEhtTKPmzx6o?=
- =?us-ascii?Q?Oik6DUiZh7xqQEf/gVrW6IuqI4uT9x0QGrCSZIWCvzdA4H+uHlws9URb88O0?=
- =?us-ascii?Q?v9TIrBY1Cyh5OUMkPUAFIZoGSZwhFhyWbvML4MeHiRpY3L5A0N21Ln/Dy5ZI?=
- =?us-ascii?Q?draeIL5hZg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="q6rJEfgB"
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1788162901;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DjjLFNmX/3fOBgo42kROds31DvH6tjSBbxlxYWmoLIE=;
+	b=q6rJEfgBeeA6xeLCF/qVZgA5U12XkuvnhtnztSSKW7oik9esBxQL5eODGlRr/AbXMhNFCT
+	HUBMUsUXugJSGgv/b849kFq/NU0+kuZC1AoT1inHP8OVNQH8DIg96226thoaKfFiHP0Rg8
+	aN3r32ulJU/kMzK6Ist7GAuRwwoejEU=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zero Day Initiative <zdi-disclosures@trendmicro.com>,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 5.10/5.15] ipv4: igmp: Fix potential UAF in igmp_gq_start_timer()
+Date: Mon, 31 Aug 2026 10:55:00 +0300
+Message-ID: <20260831075501.23006-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4e01a48-fb6d-49a3-8064-08df07340922
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Aug 2026 07:46:58.2279
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: c4vbwJN0UaAPou4ISWOJb539668eTYYGyU3pdyxrj3jV1tqNPW46D1OlnIO9gIutbRUOhrz+d2ghLq7PWeoYee802ptqALCjYD05YCku6Pw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7P189MB0790
+Content-Transfer-Encoding: 8bit
 
->Subject: [PATCH net] tipc: Dont send random pad bytes in RESET/ACTIVATE
->messages
->
->The interface name is passed in a fixed length (TIPC_MAX_IF_NAME) buffer.
->Replace the strcpy(data, l->if_name) with memcpy() so that the pad bytes a=
-re
->actually written (l->if_name[] is zero padded) rather than sending random
->bytes from the skb to the remote system.
->
->Replace two other strcpy() with strscpy().
->
->Fixes: e74a386d70c7 ("tipc: remove pre-allocated message header in link
->struct")
->Signed-off-by: David Laight <david.laight.linux@gmail.com>
->---
-> net/tipc/link.c | 6 +++---
-> 1 file changed, 3 insertions(+), 3 deletions(-)
->
->diff --git a/net/tipc/link.c b/net/tipc/link.c index 49dfc098d89b..6427c69=
-f8929
->100644
->--- a/net/tipc/link.c
->+++ b/net/tipc/link.c
->@@ -504,7 +504,7 @@ bool tipc_link_create(struct net *net, char *if_name,
->int bearer_id,
-> 	snprintf(l->name, sizeof(l->name), "%s:%s-%s:unknown",
-> 		 self_str, if_name, peer_str);
->
->-	strcpy(l->if_name, if_name);
->+	strscpy(l->if_name, if_name);
-> 	l->addr =3D peer;
-> 	l->peer_caps =3D peer_caps;
-> 	l->net =3D net;
->@@ -574,7 +574,7 @@ bool tipc_link_bc_create(struct net *net, u32
->ownnode, u32 peer, u8 *peer_id,
-> 		snprintf(l->name, sizeof(l->name), "%s:%s", tipc_bclink_name,
-> 			 peer_str);
-> 	} else {
->-		strcpy(l->name, tipc_bclink_name);
->+		strscpy(l->name, tipc_bclink_name);
-> 	}
-> 	trace_tipc_link_reset(l, TIPC_DUMP_ALL, "bclink created!");
-> 	tipc_link_reset(l);
->@@ -1898,7 +1898,7 @@ static void tipc_link_build_proto_msg(struct tipc_li=
-nk
->*l, int mtyp, bool probe,
-> 			msg_set_dest_session(hdr, l->peer_session);
-> 		}
-> 		msg_set_max_pkt(hdr, l->advertised_mtu);
->-		strcpy(data, l->if_name);
->+		memcpy(data, l->if_name, TIPC_MAX_IF_NAME);
-> 		msg_set_size(hdr, INT_H_SIZE + TIPC_MAX_IF_NAME);
-> 		skb_trim(skb, INT_H_SIZE + TIPC_MAX_IF_NAME);
-> 	}
->--
->2.39.5
->
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+From: Eric Dumazet <edumazet@google.com>
+
+commit 7b19c0f81ed1fdaec6bc522569be367199a9edf3 upstream.
+
+A race condition exists between device teardown (inetdev_destroy) and
+incoming IGMP query processing (igmp_rcv), leading to a Use-After-Free
+in the IGMP timer callback.
+
+During device destruction, inetdev_destroy() drops the primary reference
+to in_device, which can drop its refcount to 0. The actual freeing of
+in_device memory is deferred via RCU (using call_rcu()).
+
+Concurrently, igmp_rcv() runs under RCU read lock and obtains the
+in_device pointer. Because the memory is RCU-protected, CPU-0 can safely
+dereference in_device even if its refcount has hit 0.
+
+However, if CPU-0 calls igmp_gq_start_timer() and re-arms the timer, it
+attempts to acquire a reference using in_dev_hold(). This increments the
+refcount from 0 to 1, triggering a "refcount_t: addition on 0" warning.
+Since the in_device memory is still scheduled to be freed after the RCU
+grace period (as the free callback does not check the refcount again),
+the device is freed while the timer is still armed. When the timer
+expires, it accesses the freed memory, causing a kernel panic.
+
+Fix this by using refcount_inc_not_zero() (via a new helper
+in_dev_hold_safe()) to prevent acquiring a reference if the device is
+already being destroyed. If the refcount is 0, we do not arm the timer.
+
+A similar issue in IPv6 MLD is fixed in a subsequent patch.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260705181756.963063-2-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[Denis Arefev: adapted for 5.10/5.15: keep prandom_u32(),
+get_random_u32_below() not used here]
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+Backport fix for CVE-2026-72323 
+Link: https://nvd.nist.gov/vuln/detail/CVE-2026-72323 
+---
+ include/linux/inetdevice.h |  5 +++++
+ net/ipv4/igmp.c            | 14 +++++++++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/inetdevice.h b/include/linux/inetdevice.h
+index 3088d94684c1..6174930ae654 100644
+--- a/include/linux/inetdevice.h
++++ b/include/linux/inetdevice.h
+@@ -277,6 +277,11 @@ static inline void in_dev_put(struct in_device *idev)
+ #define __in_dev_put(idev)  refcount_dec(&(idev)->refcnt)
+ #define in_dev_hold(idev)   refcount_inc(&(idev)->refcnt)
+ 
++static inline bool in_dev_hold_safe(struct in_device *idev)
++{
++	return refcount_inc_not_zero(&idev->refcnt);
++}
++
+ #endif /* __KERNEL__ */
+ 
+ static __inline__ __be32 inet_make_mask(int logmask)
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index d2ea0d8e7a2f..5d87e912e1f2 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -232,16 +232,20 @@ static void igmp_gq_start_timer(struct in_device *in_dev)
+ 		return;
+ 
+ 	in_dev->mr_gq_running = 1;
+-	if (!mod_timer(&in_dev->mr_gq_timer, exp))
+-		in_dev_hold(in_dev);
++	if (in_dev_hold_safe(in_dev)) {
++		if (mod_timer(&in_dev->mr_gq_timer, exp))
++			in_dev_put(in_dev);
++	}
+ }
+ 
+ static void igmp_ifc_start_timer(struct in_device *in_dev, int delay)
+ {
+-	int tv = prandom_u32() % delay;
++	if (in_dev_hold_safe(in_dev)) {
++		int tv = prandom_u32() % delay;
+ 
+-	if (!mod_timer(&in_dev->mr_ifc_timer, jiffies+tv+2))
+-		in_dev_hold(in_dev);
++		if (mod_timer(&in_dev->mr_ifc_timer, jiffies + tv + 2))
++			in_dev_put(in_dev);
++	}
+ }
+ 
+ static void igmp_mod_timer(struct ip_mc_list *im, int max_delay)
+-- 
+2.43.0
+
