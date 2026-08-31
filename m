@@ -1,213 +1,338 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5613B1CD1E4;
-	Mon, 31 Aug 2026 12:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4742D3C108C
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788180230; cv=none; b=W1vdn8jtWxfy9nS+WjzKjEi5++MNcOrUkLh2mYhWgLJrXmyBnMQCcksOaS21INy4XNA/wnENpQY7EbUBj3FVPQ1EOXpANHagBpGYdorLBaRcHgGXojhs6MBXkVDMCz04R3JINbEzDZh7gQrP3GAsaaEtznZZOxhkd2fcP1qO1SY=
+	t=1788180293; cv=none; b=uNvVGxTapyDSft3Rir3YvdmDucAZeQNxMvQpHMBAMbD1xIAeKiEuqmgl8SaljisFWut0P2R+FcpPtZ/9GV3iylwBlk5P5sS9+a5B/6+rxrrMilTwqNDVknEkV9tMGQf5hKVEcAl2CCqN0DrG+9p5WDaKCyenIZ/89QbIIfivn5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788180230; c=relaxed/simple;
-	bh=Qon2GcefADdCTNebfMC59ZmH2icWwE8zU8HWAUX9vVM=;
+	s=arc-20240116; t=1788180293; c=relaxed/simple;
+	bh=Y+GcS7MKcJ9WAWTld827Ee0hYnv+7LO8P4Co49AR2Oc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UgSNjX1G1bAiv4n+Cr/q8f64pHfyhGi0HwyqzzpPpuTPYQGbveWHyW6+AD82sab/bmYDORWuRntoOXWkUDBfFw9xlKAoT8qU2COJhWHvIuV8zCgvj9OAvEoDRH3XLfnDC7e+EuWsdJ58aGsJk7UzgyGg63p/m0Wl9GY/hcaUZHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=fNaQ1HOA; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=dEfiXXCHWR3yROWxcyVVrB2AHk6gTpXi8jippV1UE18GGwiu9eCmnBlq0qA4zXXXbBIXL9XncgZrF/OmJ2SnvRWfxEGVvfS0yR6SYXS0viVE+zF3Iw2i1a/ygNe6pZBYhxSC6uq2PX0sd0YRPnut0Bb1PGEjO7kYNQ/KGScpbJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dqae6pdY; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="fNaQ1HOA"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788180219; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=UL2vDvxzkPaK73d2MOOzUisYqdbGkPmdsXRoPyCyMUk=;
-	b=fNaQ1HOA6R2MQTP/yNnpmsjir/NQBxLpT2/hVn8PadzGn9TV0FzqOajJImJDVQrw3q0GboTEYBhUcGItHNPT9clC4lQmSyDxSfSIf0/hr5n3JY9KRpvl4Xmc9V/EwBwD4uBDXDeiagTXuND+i2u+E6mAS8lLU3K2Yn4zLEJtl/I=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X9yvHlE_1788180217;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X9yvHlE_1788180217 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 31 Aug 2026 20:43:38 +0800
-Date: Mon, 31 Aug 2026 20:43:37 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
-	hidayath@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net/smc: serialize clcsock teardown in
- smc_accept_dequeue
-Message-ID: <apV2-XsGaE45KudZ@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260824065851.1070988-1-mjambigi@linux.ibm.com>
- <ao5bB9OCbJ5PQbEp@linux.alibaba.com>
- <bd56d983-e5bf-4343-910e-8965c3ff57dc@linux.ibm.com>
- <apBErK3BBw0KHd6Y@linux.alibaba.com>
- <d2b3f465-9ebb-4963-8dcd-3ec2969e9465@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dqae6pdY"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c25b3c641fbso5455366b.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 05:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788180285; x=1788785085; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+l/jYcEEQatfIkpil8/A0aHb7dyDh4iAxN5e3uvmv9w=;
+        b=Dqae6pdYS2n/1ija5OQhFQ2C+HJnd1GYvzGu2seIYGoD1As2C40jXggHi1KYWdxhs7
+         /up588NDSvIxZOzQhDbokQmSjLOxs3MHfqLyOmpRPzcf+G0bJKXJjdrV5/WWGksgsuvH
+         5OlioJrRYZtnOedrsPW4m/i/EKps6lZVsnZKdMHHLyZL8/QxD3HXEeM0GIl1q0anVHnO
+         RgUUfWT3E49PoL2S+A5onL4eekUSG2WBx4aBSz9J7k8r2CsQ45hu2+3DIPHC8180frrv
+         +NCd2n5mAcoSVSR01jfDVmWa2kY+wKiWxEPHm5YxmeB1NL1Uj6HPnOpGh4/Byd0JVHHJ
+         XEdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788180285; x=1788785085;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+l/jYcEEQatfIkpil8/A0aHb7dyDh4iAxN5e3uvmv9w=;
+        b=RnI2+YHu2DCbR1IQW0/6pKCfXB1cZLUPpxqk9uJun0bhnYZzUqj+bpst7lPTmz1aXS
+         h7L/BtyOFD2iINrvXxwry8W292ni4vWo0+gmFCzqQYSPd8zwHNXjJWxXi2CqcPq38niX
+         xCE5RQBjNfOznSTLZUl8fzo3H9ybNFHWxguUrig8NanR6HybhTqqIb4ai81XhxUlC+BH
+         giTqNJFMDPpAeYsl9k7R0X6epKptqLpVmEr3gfMRNCUK9Z7mqpxCnrQj80nE5ndHr8n6
+         hF7X9uZ4g2IPUMVYT/SSeRX0i5NFBwCapQRkCyiohMQcEbZqzTEA0cN/2Tve1P8mm9R5
+         SoOg==
+X-Forwarded-Encrypted: i=1; AHgh+RqSYEd0rX7EHRkwiIbYnzWBiDuRU85o3MgAgfN7sZW9sg212zPVd4hBO6qRjcAASf5jh5H/Ty0=@vger.kernel.org
+X-Gm-Message-State: AFuF++kXWdDFXzW52dFgHWkCsdjs3165dmNtP4zU2DkrIs5z2yvhZMcT
+	UQj3hxlLwMUbQ8BnVgNv+ouRDbywC+iRdJdM3AD8MGL5pzLkqR5nliTQ
+X-Gm-Gg: AR+sD10VCZszHfpRhXJVlIxcUnagqFHlC8DEZLSNh3gOu+NA6/Sspyx9hoOI33rifev
+	aJFjN95zVYXqO2QWA2vAIbriUIy84IcRTm+ReXmqUObXrU0gkLkPdaKBuQRUNTysXrHqt0wK4qB
+	nQaaR4H7nxUCVokrIU+7XeBehQpNbBkLmLOOL/fn81Labmht7C1RCopPc6c6q0TLILqW4KG5Tud
+	//shNDjnF3b26kR89UQmZKnh9QozvytqSjSnIBN3Wdc6LtHTt6uV0WjEQlYJxe0KDsSpOh+JYOT
+	OVGh2b3tb7VftFKkHrTLWX9NPg+PuJGxnqjVxM05ol4seGu2NrbclCzamgAHrRy2lYN/Nm922PP
+	/6Sn6MiF+2DWT6HBEYrM2DLJSbwKqfR3Py+vB18ZhICR614I65mNjbfTnXSuAhPLpldqE8qGK3M
+	YMWD9zhKWcpfZs9PP06udqv0GEowmp0782LXrUaxwRhzXObId/8t/fWQcheyfvSS9OINmu
+X-Received: by 2002:a17:907:9345:b0:c15:e8c8:340 with SMTP id a640c23a62f3a-c25b3df5160mr9312866b.23.1788180285109;
+        Mon, 31 Aug 2026 05:44:45 -0700 (PDT)
+Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee288afsm424015266b.23.2026.08.31.05.44.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 05:44:44 -0700 (PDT)
+Date: Mon, 31 Aug 2026 12:55:25 +0000
+From: Anton Protopopov <a.s.protopopov@gmail.com>
+To: bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
+	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+	kpsingh@kernel.org, matt@bobrowski.net, john.fastabend@gmail.com,
+	brauner@kernel.org, paul@paul-moore.com,
+	torvalds@linux-foundation.org, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, martin.lau@kernel.org, yonghong.song@linux.dev,
+	mason@kernel.org, ihor.solodrai@linux.dev
+Subject: Re: [PATCH bpf-next 5/7] selftests/bpf: Add netdevsim helper library
+Message-ID: <apV5ve1dvk5KUkCm@mail.gmail.com>
+References: <20260831110934.241898-6-a.s.protopopov@gmail.com>
+ <e2e1c4e876bd26ab17b88d70f0eb96cb56b81ed16358f3ef529a3b224324634f@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d2b3f465-9ebb-4963-8dcd-3ec2969e9465@linux.ibm.com>
+In-Reply-To: <e2e1c4e876bd26ab17b88d70f0eb96cb56b81ed16358f3ef529a3b224324634f@mail.kernel.org>
 
-On 2026-08-28 16:48:28, Mahanta Jambigi wrote:
->
->
->On 27/08/26 7:37 pm, Dust Li wrote:
->> On 2026-08-26 14:42:31, Mahanta Jambigi wrote:
->>>
->>>
->>> On 26/08/26 8:48 am, Dust Li wrote:
->>>> On 2026-08-24 08:58:51, Mahanta Jambigi wrote:
->>>>> smc_accept_dequeue() open-codes clcsock teardown for SMC_CLOSED child sockets
->>>>> without taking clcsock_release_lock:
->>>>>
->>>>>  new_sk->sk_prot->unhash(new_sk);
->>>>>  if (isk->clcsock) {
->>>>>      sock_release(isk->clcsock);
->>>>>      isk->clcsock = NULL;
->>>>>  }
->>>>>
->>>>> This bypasses the clcsock_release_lock discipline used elsewhere in SMC clcsock
->>>>> lifetime handling. In particular, other paths serialize clcsock access and
->>>>> updates with clcsock_release_lock, but this local teardown path does not.
->>>>>
->>>>> Fix it by taking clcsock_release_lock around the local teardown and by storing
->>>>> NULL before sock_release(), matching the established ordering used by other
->>>>> clcsock teardown paths.
->>>>>
->>>>> Fixes: 127f49705823 ("net/smc: release clcsock from tcp_listen_worker")
->>>>> Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
->>>>> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
->>>>> ---
->>>>> net/smc/af_smc.c | 12 ++++++++----
->>>>> 1 file changed, 8 insertions(+), 4 deletions(-)
->>>>>
->>>>> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
->>>>> index 00403175b740..bbf8269876ee 100644
->>>>> --- a/net/smc/af_smc.c
->>>>> +++ b/net/smc/af_smc.c
->>>>> @@ -1833,10 +1833,14 @@ struct sock *smc_accept_dequeue(struct sock *parent,
->>>>> 		smc_accept_unlink(new_sk);
->>>>> 		if (new_sk->sk_state == SMC_CLOSED) {
->>>>> 			new_sk->sk_prot->unhash(new_sk);
->>>>> -			if (isk->clcsock) {
->>>>> -				sock_release(isk->clcsock);
->>>>> -				isk->clcsock = NULL;
->>>>> -			}
->>>>> +			mutex_lock(&isk->clcsock_release_lock);
->>>>> +			if (isk->clcsock) {
->>>>> +				struct socket *clcsock = isk->clcsock;
->>>>> +
->>>>> +				isk->clcsock = NULL;
->>>>> +				sock_release(clcsock);
->>>>> +			}
->>>>> +			mutex_unlock(&isk->clcsock_release_lock);
->>>>
->>>> Why not call smc_clcsock_release() here ?
->>>
->>> I initially considered *smc_clcsock_release()*, but it unconditionally
->>> calls cancel_work_sync() for child sockets (since listen_smc is always
->>> set and current_work() != &smc->smc_listen_work is always true here).
->>> Even though smc_listen_work has already completed before
->>> smc_accept_enqueue() is called, cancel_work_sync() is not truly free on
->>> that path — it still acquires the worker pool spinlock and scans the
->>> executing-worker list before determining the work is idle. The inline
->>> open-coding avoids that overhead entirely.
->> 
->> OK
->
->For this patch specifically, the smc_accept_dequeue() path is a clear
->lock ordering violation that can cause a crash independently of the
->broader design issue — would you prefer I withdraw this patch and
->address everything together in the larger refactor, or keep this narrow
->fix and do the refactor separately?
+On 26/08/31 12:07PM, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+> > index b481b867f372e..c21f89dbe70c0 100644
+> > --- a/tools/testing/selftests/bpf/Makefile
+> > +++ b/tools/testing/selftests/bpf/Makefile
+> > @@ -862,6 +862,7 @@ TRUNNER_EXTRA_SOURCES := test_progs.c		\
+> >  			 unpriv_helpers.c 	\
+> >  			 sysctl_helpers.c	\
+> >  			 netlink_helpers.c	\
+> > +			 netdevsim_helpers.c	\
+> >  			 jit_disasm_helpers.c	\
+> >  			 io_helpers.c		\
+> >  			 test_loader.c		\
+> > diff --git a/tools/testing/selftests/bpf/netdevsim_helpers.c b/tools/testing/selftests/bpf/netdevsim_helpers.c
+> > new file mode 100644
+> > index 0000000000000..fbed7442b2e8d
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/bpf/netdevsim_helpers.c
+> > @@ -0,0 +1,176 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <errno.h>
+> > +#include <fcntl.h>
+> > +#include <linux/rtnetlink.h>
+> > +#include <poll.h>
+> > +#include <stdarg.h>
+> > +#include <stdio.h>
+> > +#include <string.h>
+> > +#include <sys/socket.h>
+> > +#include <time.h>
+> > +#include <unistd.h>
+> > +
+> > +#include "netdevsim_helpers.h"
+> > +
+> > +static int echo(const char *path, const char *fmt, ...)
+> > +{
+> > +	char buf[64];
+> > +	va_list ap;
+> > +	int fd, len, err = 0;
+> > +
+> > +	va_start(ap, fmt);
+> > +	len = vsnprintf(buf, sizeof(buf), fmt, ap);
+> > +	va_end(ap);
+> > +
+> > +	fd = open(path, O_WRONLY);
+> > +	if (fd < 0)
+> > +		return -errno;
+> > +	if (write(fd, buf, len) != len)
+> > +		err = -errno;
+> > +	close(fd);
+> > +
+> > +	return err;
+> > +}
+> 
+> A subsystem pattern flags this as potentially concerning: the guide
+> directs reporting when a test hand-rolls sysfs/file I/O instead of using
+> existing utilities that the subsystem already provides.
+> 
+> Looking at echo(), it implements the open(O_WRONLY)/write()/close()
+> sequence that write_sysctl() in test_progs.c already performs for BPF
+> selftests. Could this reuse that existing helper?
 
-I think you can keep this one for stable tree.
+Thanks robot, all comments here and below make sense.
+I will simplify this in v2.
 
->
->> 
->>>
->>>>
->>>> After looking deeper into this issue, I found smc_diag_msg_common_fill()/
->>>> smc_getname() and many other branches hasn't hold lock_sock() and may also
->>>> have the race issue ? For example, smc_getname() calling smc->clcsock->ops->getname()
->>>> while the other workqueue is releasing the clcsock.
->>>
->>> I am addressing the smc_diag_msg_common_fill() issue via a separate
->>> patch[1].
->> 
->> What about other places that dereference clcsock, like smc_getname()/smc_set_keepalive() ?
->
->Yes, smc_getname(), smc_set_keepalive(), and all other unprotected
->clcsock dereferences would be fixed as part of this refactor, and in
->fact they are the strongest argument for doing it.
->
->The reason they become safe is structural, not incremental: once
->sock_release(clcsock) is deferred to the SMC socket destructor, clcsock
->is guaranteed non-NULL for the entire observable lifetime of the SMC
->socket. Any caller that holds a sock reference — whether it is a syscall
->path, a workqueue, or a timer callback — is by definition executing
->before the destructor runs. So smc_getname(), smc_set_keepalive(),
->smc_poll(), smc_diag_msg_common_fill(), and every other reader can
->dereference clcsock directly with no lock and no NULL check, and all the
->if (smc->clcsock) guards become dead code that can be removed.
->
->clcsock_release_lock itself would also be removed entirely, along with
->all its lock/unlock sites, since the mutex only exists to coordinate
->multiple sock_release() callers — a problem that disappears when there
->is only one.
+> > +
+> > +void netdevsim_destroy(unsigned int id)
+> > +{
+> > +	echo("/sys/bus/netdevsim/del_device", "%u", id);
+> > +}
+> > +
+> > +static int create_new_device(void)
+> > +{
+> > +	unsigned int id;
+> > +	int err;
+> > +
+> > +	/* if 10K is not enough, then something is clearly not right */
+> > +	for (id = 0; id < 10000; id++) {
+> > +		err = echo("/sys/bus/netdevsim/new_device", "%u", id);
+> > +		if (!err)
+> > +			return id;
+> > +		if (err != -ENOSPC)
+> > +			return err;
+> > +	}
+> > +
+> > +	return -ENOSPC;
+> > +}
+> > +
+> > +static int open_link_socket(void)
+> > +{
+> > +	struct sockaddr_nl addr = {
+> > +		.nl_family = AF_NETLINK,
+> > +		.nl_groups = RTMGRP_LINK,
+> > +	};
+> > +	int fd;
+> > +
+> > +	fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE);
+> > +	if (fd < 0)
+> > +		return -errno;
+> > +	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr))) {
+> > +		int err = -errno;
+> > +
+> > +		close(fd);
+> > +		return err;
+> > +	}
+> > +
+> > +	return fd;
+> > +}
+> 
+> The subsystem guide also flags this pattern: open_link_socket() appears
+> to duplicate rtnl_open(&rth, RTMGRP_LINK) from netlink_helpers.c, which
+> does the same socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE)
+> plus bind() with nl_groups set to the subscriptions parameter.
+> 
+> In particular, it looks structurally similar to genl_open() in
+> netlink_helpers.c, which the immediately preceding commit in this series
+> (a1205972510b7 "selftests/bpf: Extract some helpers from tests to the
+> netlink library") added explicitly for sharing netlink plumbing.
+> 
+> The re-implementation also appears to omit the SO_RCVBUF = 1024 * 1024
+> setting that rtnl_open_byproto() sets in netlink_helpers.c, so the new
+> socket runs on the default net.core.rmem_default receive buffer.
+> 
+> Similarly, the receive/poll loop in recv_device_ifindex() appears to
+> hand-roll what rtnl_recvmsg()/__rtnl_recvmsg() in netlink_helpers.c
+> already do. Notably, those use MSG_PEEK | MSG_TRUNC to size the receive
+> buffer, whereas the new loop uses a fixed 16 KiB buffer with a plain
+> recv(fd, buf, sizeof(buf), 0) and no MSG_TRUNC check. Additionally,
+> __rtnl_recvmsg() retries on EINTR/EAGAIN where the implementation below
+> returns -errno.
+> 
+> The agent notes that functionally these hand-rolled versions are correct
+> for their specific use case, and this is selftest-only code. However,
+> could the new helpers reuse the existing netlink infrastructure?
+> 
+> > +
+> > +static int remaining_timeout_ms(const struct timespec *deadline)
+> > +{
+> > +	struct timespec now;
+> > +	long long remaining;
+> > +
+> > +	if (clock_gettime(CLOCK_MONOTONIC, &now))
+> > +		return -errno;
+> > +
+> > +	remaining = (deadline->tv_sec - now.tv_sec) * 1000 +
+> > +		    (deadline->tv_nsec - now.tv_nsec) / 1000000;
+> > +
+> > +	return remaining > 0 ? remaining : 0;
+> > +}
+> 
+> This isn't a bug, but since clock_gettime(CLOCK_MONOTONIC, ...) on a
+> valid stack timespec can't really fail, would it be simpler to have
+> remaining_timeout_ms() just return milliseconds? That way the timeout
+> check at the end of recv_device_ifindex() (which currently needs
+> `return timeout < 0 ? timeout : -ETIMEDOUT;` to forward the
+> clock_gettime error) could be a plain `return -ETIMEDOUT;`.
+> 
+> > +
+> > +static int recv_device_ifindex(int fd, unsigned int id, unsigned int *ifindex)
+> > +{
+> > +	char parent_name[32], buf[16 * 1024];
+> > +	struct pollfd pfd = {
+> > +		.fd = fd,
+> > +		.events = POLLIN,
+> > +	};
+> > +	struct timespec deadline;
+> > +	struct nlmsghdr *nlh;
+> > +	int len, ret, timeout;
+> > +
+> > +	snprintf(parent_name, sizeof(parent_name), "netdevsim%u", id);
+> > +	if (clock_gettime(CLOCK_MONOTONIC, &deadline))
+> > +		return -errno;
+> > +	deadline.tv_sec += 5;
+> > +
+> > +	for (timeout = remaining_timeout_ms(&deadline); timeout > 0;
+> > +	     timeout = remaining_timeout_ms(&deadline)) {
+> > +		ret = poll(&pfd, 1, timeout);
+> > +		if (ret < 0) {
+> > +			if (errno == EINTR)
+> > +				continue;
+> > +			return -errno;
+> > +		}
+> > +		if (!ret)
+> > +			return -ETIMEDOUT;
+> > +		if (!(pfd.revents & POLLIN))
+> > +			return -EIO;
+> > +
+> > +		len = recv(fd, buf, sizeof(buf), 0);
+> > +		if (len < 0)
+> > +			return -errno;
+> > +
+> > +		for (nlh = (struct nlmsghdr *)buf; NLMSG_OK(nlh, len);
+> > +		     nlh = NLMSG_NEXT(nlh, len)) {
+> > +			struct ifinfomsg *ifm;
+> > +			struct rtattr *attr;
+> > +			int attr_len;
+> > +
+> > +			if (nlh->nlmsg_type != RTM_NEWLINK)
+> > +				continue;
+> > +
+> > +			ifm = NLMSG_DATA(nlh);
+> > +			attr = IFLA_RTA(ifm);
+> > +			attr_len = IFLA_PAYLOAD(nlh);
+> > +			for (; RTA_OK(attr, attr_len);
+> > +			     attr = RTA_NEXT(attr, attr_len)) {
+> > +				if (attr->rta_type != IFLA_PARENT_DEV_NAME)
+> > +					continue;
+> > +				if (strcmp(RTA_DATA(attr), parent_name))
+> > +					continue;
+> > +
+> > +				*ifindex = ifm->ifi_index;
+> > +				return 0;
+> > +			}
+> > +		}
+> > +	}
+> > +
+> > +	return timeout < 0 ? timeout : -ETIMEDOUT;
+> > +}
+> > +
+> > +int netdevsim_create(unsigned int *ifindex)
+> > +{
+> > +	int fd, id, err;
+> > +
+> > +	fd = open_link_socket();
+> > +	if (fd < 0)
+> > +		return fd;
+> > +
+> > +	id = create_new_device();
+> > +	if (id < 0) {
+> > +		close(fd);
+> > +		return id;
+> > +	}
+> > +
+> > +	err = recv_device_ifindex(fd, id, ifindex);
+> > +	close(fd);
+> > +	if (err) {
+> > +		netdevsim_destroy(id);
+> > +		return err;
+> > +	}
+> > +
+> > +	return id;
+> > +}
+> 
+> [ ... ]
+> 
+> 
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> 
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33386073074
 
-Yeah, this is exactly what I expected for the refactor.
-
-
->
->>>>
->>>> Since SMC has long been plagued by this kind of locking issue, I think we
->>>> should consider a long-term solution to address it.
->>>>
->>>> What about stop releasing the clcsock early and tie its lifetime to the SMC
->>>> socket itself. The early paths don't really need to release it ??? a
->>>> kernel_sock_shutdown()/tcp_abort() is enough to stop it, and calling them more
->>>> than once is safe because the TCP layer already handles that.  sock_release()
->>>> is different: it frees the socket, so it must happen exactly once. If we move
->>>> this single release to the final teardown of the SMC socket, no user can exist
->>>> at that point anymore (fd users are gone after smc_release(), and every
->>>> work/accept-queue context holds a sock reference), which makes both
->>>> clcsock_release_lock and all the if (smc->clcsock) NULL checks removable.
->>>>
->>>> Ideas ?
->>>
->>> I agree, but it is a significant refactor touching every early-release
->>> path in af_smc.c, smc_close.c etc & it warrants its own patch series
->>> with careful ordering of changes.
->> 
->> Yes, that should be a bit refactor, are you interested in doing that ?
->
->Sure, I can take that up. It will need a bit of careful work — the close
->state machine has multiple paths that currently call
->smc_clcsock_release() early, and the smc_tcp_listen_work() error path
->where kernel_accept() creates a clcsock that is never assigned to an SMC
->socket will need special handling. I would plan to send it as a small
->series rather than a single patch.
-
-That's perfectly fine.
-
->
->I am currently occupied with a few other things so it may take some
->time, but I will pick it up once I have bandwidth. If you have any
->specific ideas on the approach or would like to co-develop it, I am very
->happy to collaborate — feel free to share your thoughts and we can work
->through the design together.
-
-I shared my thoughts with my agent and had it implement a draft version for
-me — let me send it over so you can take a look, and we can figure out how
-to move forward together.
-
-Best regards,
-Dust
