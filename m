@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF28577E5B;
-	Mon, 31 Aug 2026 13:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3489657980B;
+	Mon, 31 Aug 2026 13:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184154; cv=none; b=NwkUVChLWu9wX3dzgUaEZai6yBUNzPVhFlGN0N4fMxGnMD4DzZCndjRJDx7TV+kT5KldhFy9dOmskZutvnM7mbg9iM+oFF/UNJt59Bcjm5RK8rikSwnw5wxFLIILH81W+Lm3NhevTqQOJNjLRAy2CjgjbzXp2sYojoEOj0VRkX8=
+	t=1788184159; cv=none; b=UTsb34yAORgfxHPjTuwao4JoUsxnogKsDfUeQPUeHG8R54gM5M53sfdNlBE8up9k4XGjnXxub5e/JbuQ+c4cNo0Njae76HXLmyD550YyFA20ep4KRywLuAxsnmyQvY+/25Lj4gog7e9YT2gZ1Dzh1sYU6LA0qc4RAK2DRNG30LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184154; c=relaxed/simple;
-	bh=VHn9YVvx5plf2ISco8KuFSi5jqGC2ERCfz959S5nUHI=;
+	s=arc-20240116; t=1788184159; c=relaxed/simple;
+	bh=27AlrlHHQDrB37ocvfhmevcnlWC4/Vudw53uhZl9NRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZoqsiyFVfU4zbGkVnFlolNnlhgUOF07YaUkch6qa21B0Zyb31XVKY0joBUKKWAcWa5rDDDKm2bx1P9vLr+cLidn0dA5kic3X3F5jyX1p+eWQr1KcOnbOqsydXAHjKPbcn+f2xYcdO6RliIDVgUighfQYO+4zuko2XhoE0viu5Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQtzcMCo; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ObW/T5QoDxCwXl7SCA5YhIIyL+F6w0HfjASGPNeLEqUwtN74U3OS6V/jtd0eaj4HE94vCcfI62LaWoqOg3MvMo2E8uWUNQUJ3XdrCluDssgnIup74TsQN1whdaYIob7tp3EC0ZE9D9kH96WpjO0Iq+YqPkRKyayZQP34kQQgCuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfOd0979; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQtzcMCo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D301F00ACA;
-	Mon, 31 Aug 2026 13:49:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfOd0979"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534A11F00A3F;
+	Mon, 31 Aug 2026 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184152;
-	bh=s3tPMUy1E4mNNIXgwnKvp6pTDoiH5t/efg73Vm5728Q=;
+	s=k20260515; t=1788184157;
+	bh=SQpntyENqJTnNv3xaMo2fTwVx/dWGZvM4OiG2Xkio+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NQtzcMCoV5e9IMvrKjC6EhsfsJEFBOvtYhS89EfxTFLD9TXDYXiMR9OCKb1Vx27SJ
-	 0bfiyZbiqqDKsNOnXFWjrzqmpIxRfQHcyM8J72dmFF6vv4/gGcsGM1pYx8HBKVNxCh
-	 iVevJFd94tQnFNOKz3t5Q6IpEWfWkmPSjjeCn2HQmlIVvwyUGAfVQqpPVxu0v3vay7
-	 mrTSex0smrpQUAdxg2WZYDSzpHtLGa93Jk4c/rfuDk0lcAyUOEp+IrmIF4whG7sy8W
-	 UyVwlQkUXNxRerb/1F24vAqQGAGFm3GiWHS0NMT56O9mpUiqohd3WLoFyvr2DjS0bP
-	 R/2qhkrhd7ZDA==
+	b=GfOd0979ZQNaIGZR9AJ/FZxP79LmtmoCcYfUF6GgcvqQvUBaG9eQ8BYS6ZaBYDxKH
+	 /lbrWGDQt01NBR0trlYbjAr2FT74BfydIGw6kL1yy3a+P8ZMOwLN4Jq3CY8xl4lC0M
+	 iOUv99fl2hBU93Ngzi2zS86RhnVaiBBhdkCNQ3kPjjsbeuOwkCL+/iDxsZSBc0Loko
+	 EuffdqYWzy4iET1wJb9ZtuXlEvuimmSxrVKUZwtHKv8g4uZW1/I0TbgrZJJy5QAoGc
+	 5nAomLw/CTvGKUvLgFMndnGwg/26d9oeZaVKpVGMHPFmBj6wYRjiH3mUuCHHZVce+k
+	 hfm33nFN664Mg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>,
+	pablo@netfilter.org,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] net/rds: Don't sleep inside rds_ib_conn_path_shutdown
-Date: Mon, 31 Aug 2026 09:29:10 -0400
-Message-ID: <20260831133314.4125787-522-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] netfilter: nf_conntrack_expect: zero at allocation time
+Date: Mon, 31 Aug 2026 09:29:13 -0400
+Message-ID: <20260831133314.4125787-525-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -57,458 +58,417 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Allison Henderson <achender@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 16f48efaeb6991193fb7775c577f06f5b20b0c90 ]
+[ Upstream commit 241ccd2fed9051db443aadce248fc0ab30f55e97 ]
 
-New rds rdma self tests exposed a hang when tearing down
-the ib network configs.  This is caused by the shutdown worker
-thread sleeping on the wait_event call, which blocks other work
-items in the queue. Fix this by changing wait_event to
-wait_event timeout, and looping until the wait check succeeds.
+There are occasional LLM hints wrt. leaking uninitialized data to
+userspace via ctnetlink.  Just zero at allocation time,
+expectations are not frequently used these days.
 
-Signed-off-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260518012443.2629206-2-achender@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Intentionally keeps _init as-is because we could theoretically
+support re-init, so add the missing exp->dir there.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `net/rds: Don't sleep inside
-rds_ib_conn_path_shutdown`
+## Phase 1: Commit Message Forensics
 
-**Local tree:** `v6.18.44` (Makefile: 6.18.44)
-**Verdict target:** Should this commit be backported to **this** 6.18.y
-tree?
+**Step 1.1 — Subject line**
 
----
+Record: `[netfilter: nf_conntrack_expect]` `[zero]` — zero expectation
+objects at allocation time to avoid leaking uninitialized slab data.
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+**Step 1.2 — Tags**
 
-### Step 1.1: Parse the subject line
-**Record:** `[net/rds]` `[Don't sleep / fix]` — prevent indefinite
-sleeping in `rds_ib_conn_path_shutdown()` during IB connection teardown.
+Record:
+- Signed-off-by: Florian Westphal \<fw@strlen.de\>
+- No Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, Link:,
+  or Cc: stable tags
 
-### Step 1.2: Parse all commit message tags
-**Record:**
-- **Signed-off-by:** Allison Henderson `<achender@kernel.org>` (author)
-- **Link:** `https://patch.msgid.link/20260518012443.2629206-2-
-  achender@kernel.org` (patch 2 of a series, per Message-ID)
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (netdev
-  maintainer merge)
-- No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, `Tested-
-  by:`, or `Reviewed-by:` tags
-- Notable: no syzbot report; bug found by new RDS RDMA selftests
+Notable: no formal bug report or syzbot link; author cites “occasional
+LLM hints” about ctnetlink leaks.
 
-### Step 1.3: Analyze commit body
-**Record:**
-- **Bug:** Hang when tearing down IB network configs during new RDS RDMA
-  selftests
-- **Symptom:** System/workqueue stalls during teardown (not a
-  crash/oops)
-- **Root cause (author):** Shutdown worker sleeps on `wait_event`,
-  blocking other work items on the same queue
-- **Fix approach:** Replace `wait_event` with `wait_event_timeout` in a
-  loop; schedule send/recv tasklets on timeout to drive completion
+**Step 1.3 — Body analysis**
 
-### Step 1.4: Detect hidden bug fixes
-**Record:** Yes — despite not using "fix" in the subject, this is a real
-hang fix disguised as a sleep/workqueue interaction problem. The
-infinite `wait_event` in a single-threaded workqueue context is a
-classic teardown hang pattern.
+Record:
+- Bug: `nf_ct_expect_alloc()` uses non-zeroing `kmem_cache_alloc()`;
+  fields not explicitly initialized can retain stale slab contents and
+  be exposed to userspace via ctnetlink expectation dumps.
+- Symptom: spurious or stale data in netlink expectation dumps
+  (especially NAT-related attributes).
+- Root cause: per-field initialization is incomplete across allocation
+  paths; centralized zeroing at alloc is safer.
+- Author notes expectations are rarely used today; keeps
+  `nf_ct_expect_init()` behavior but adds missing `exp->dir`
+  initialization there.
+
+**Step 1.4 — Hidden bug fix?**
+
+Record: Yes. Despite the soft wording, this is a kernel heap
+information-leak fix, not a style change. The `kmem_cache_alloc` →
+`kmem_cache_zalloc` change and `exp->dir = 0` addition address
+uninitialized memory exposure.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 2: Diff Analysis
 
-### Step 2.1: Inventory changes
-**Record:**
-- **Files:** `net/rds/ib_cm.c` only (+15 lines net, ~1 function added, 1
-  function modified)
-- **Functions:** new `rds_ib_conn_path_shutdown_check_wait()`, modified
-  `rds_ib_conn_path_shutdown()`
-- **Scope:** Single-file surgical fix
+**Step 2.1 — Inventory**
 
-### Step 2.2: Code flow change per hunk
-**Record:**
+Record:
+- `net/netfilter/nf_conntrack_expect.c`: +2 / -1 (3 lines touched)
+- `net/netfilter/nf_conntrack_netlink.c`: +1 / -10 (11 lines removed)
+- Functions: `nf_ct_expect_alloc()`, `nf_ct_expect_init()`,
+  `ctnetlink_alloc_expect()`
+- Scope: small, two-file, surgical fix
 
-**Hunk 1 — new helper `rds_ib_conn_path_shutdown_check_wait()`:**
-- Before: N/A
-- After: Encapsulates the shutdown-ready condition (recv ring empty, no
-  signaled sends, FRWR segments released). Returns `0` when ready, non-
-  zero otherwise.
+**Step 2.2 — Code flow per hunk**
 
-**Hunk 2 — `rds_ib_conn_path_shutdown()`:**
-- Before: After `rdma_disconnect()` and `rds_ib_flush_mrs()`, blocks
-  forever on:
-  ```c
-  wait_event(rds_ib_ring_empty_wait, <all conditions true>);
-  ```
-- After: Loops with 1-second timeout; on timeout, explicitly schedules
-  `i_send_tasklet` and `i_recv_tasklet` to make progress, then re-checks
-  until conditions are met.
+Record:
+1. `nf_ct_expect_alloc()`: `kmem_cache_alloc` → `kmem_cache_zalloc` —
+   all struct fields start zeroed.
+2. `nf_ct_expect_init()`: adds `exp->dir = 0` under `CONFIG_NF_NAT`
+   alongside existing `saved_addr`/`saved_proto` zeroing.
+3. `ctnetlink_alloc_expect()`: removes redundant `else` branches that
+   zeroed `flags`, `expectfn`, and NAT fields — now handled by zalloc.
 
-### Step 2.3: Bug mechanism
-**Record:**
-- **Category:** Deadlock/hang in teardown path (workqueue + async
-  completion interaction)
-- **Mechanism:**
-  1. `rds_ib_conn_path_shutdown()` runs on `rds_wq` via
-     `rds_shutdown_worker()` → `rds_conn_shutdown()`
-  2. `rds_wq` is a **single-threaded** workqueue
-     (`create_singlethread_workqueue("krdsd")` in `threads.c:259`)
-  3. `wait_event()` puts that sole worker thread to sleep indefinitely
-  4. Wait conditions require send/recv ring draining and FRWR cleanup,
-     which depends on tasklet progress (`i_send_tasklet` /
-     `i_recv_tasklet`, normally kicked from CQ handlers at
-     `ib_cm.c:256,384`)
-  5. Without explicit tasklet scheduling, the worker can sleep forever
-     while also blocking all other `rds_wq` work — including other
-     connection shutdowns during IB config teardown
+**Step 2.3 — Bug mechanism**
 
-### Step 2.4: Fix quality assessment
-**Record:**
-- Fix is minimal and logically sound: same wait conditions, but bounded
-  sleep + explicit tasklet kicks
-- Still calls `tasklet_kill()` after the loop, preserving original
-  safety
-- Low regression risk: does not change teardown ordering or destroy IB
-  resources early
-- Minor style note: helper returns `msecs_to_jiffies(1000)` when not
-  ready, but only `== 0` is tested — harmless
+Record: **Uninitialized data / information leak (category 8)**. Slab
+reuse leaves stale kernel data in `struct nf_conntrack_expect` fields.
+`ctnetlink_exp_dump_expect()` reads `exp->flags`, and under
+`CONFIG_NF_NAT` emits `CTA_EXPECT_NAT` when `saved_addr`/`saved_proto`
+look non-zero, leaking stale addresses/ports/direction to userspace.
+
+**Step 2.4 — Fix quality**
+
+Record: Fix is obviously correct and minimal. `kmem_cache_zalloc` is the
+standard pattern for objects with many partially-initialized fields.
+Regression risk is very low; expectations are infrequent and zeroing
+cost is negligible.
 
 ---
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## Phase 3: Git History Investigation
 
-### Step 3.1: Blame changed lines
-**Record:**
-- `wait_event(rds_ib_ring_empty_wait, ...)` introduced in
-  `ec16227e14141` (Andy Grover, 2009) — RDS/IB transport
-- Signaled-sends condition: `f046011cd73c3` (2010)
-- `i_fastreg_inuse_count` wait: `3a2886cca703f` (Gerd Rausch, 2019) —
-  "Keep track of and wait for FRWR segments in use upon shutdown"
-- Buggy infinite wait has been present since at least 2019 in its
-  current form; newly exposed under concurrent IB teardown/selftests
+**Step 3.1 — Blame**
 
-### Step 3.2: Follow Fixes: tag
-**Record:** N/A — no `Fixes:` tag in commit message.
+Record: `kmem_cache_alloc(nf_ct_expect_cachep, GFP_ATOMIC)` dates to
+Patrick McHardy (2007). Bug has existed since expectations used a non-
+zeroing slab allocator. `nf_ct_expect_init()` has zeroed
+`saved_addr`/`saved_proto` since NAT support was added, but never
+`exp->dir`.
 
-### Step 3.3: File history for related changes
-**Record:**
-- Recent `ib_cm.c` changes in this tree are unrelated (IPv6 NULL deref,
-  setup unwind, ib_modify_qp removal)
-- RDS selftest infrastructure added in `3ade6ce1255e6` (Aug 2024) — TCP-
-  focused initially; new RDMA selftests triggered this hang
-- No conflicting recent refactor of the shutdown path in 6.18.y
+**Step 3.2 — Fixes: tag**
 
-### Step 3.4: Author's other commits
-**Record:**
-- Allison Henderson is an active RDS maintainer (Oracle)
-- Prior stability fix in this tree: `f1acf1ac84d2a` "net:rds: Fix
-  possible deadlock in rds_message_put" (syzbot-reported deadlock, 2024)
-- Same subsystem, same author pattern of fixing RDS teardown/concurrency
-  bugs
+Record: N/A — no Fixes: tag in this commit.
 
-### Step 3.5: Prerequisites / dependencies
-**Record:**
-- Message-ID indicates patch 2/2 of a series (likely selftests + this
-  fix)
-- **This fix is standalone** — it only modifies `ib_cm.c` shutdown
-  logic; does not depend on selftest patches to be correct
-- No structural/API prerequisites; applies cleanly to current 6.18.44
-  code
+**Step 3.3 — Related file history**
+
+Record: Related commit already in this tree:
+- `929f7a9a7aad9` — “netfilter: ctnetlink: zero expect NAT fields when
+  CTA_EXPECT_NAT absent” — targeted partial fix for the ctnetlink
+  userspace creation path only, with a concrete reproduction (kernel
+  test robot).
+
+This commit generalizes the fix to all allocation paths and removes the
+now-redundant ctnetlink `else` branches.
+
+**Step 3.4 — Author context**
+
+Record: Florian Westphal is an active netfilter contributor/maintainer.
+Similar leak fix `7e23965d44f06` (“nft_meta_bridge: fix
+NFT_META_BRI_IIFPVID stack leak”) is already in this 6.18.y tree.
+
+**Step 3.5 — Dependencies**
+
+Record: Standalone; no series prerequisites. `git apply --check` on
+commit `241ccd2fed905` succeeds cleanly against HEAD.
 
 ---
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## Phase 4: Mailing List and External Research
 
-### Step 4.1: Original patch discussion
-**Record:** **UNVERIFIED** — `b4 dig` requires a commit hash (commit not
-in this tree); lore.kernel.org and patch.msgid.link blocked by Anubis
-bot protection. Could not read thread discussion.
+**Step 4.1 — Original discussion**
 
-### Step 4.2: Reviewers
-**Record:** **UNVERIFIED** — `b4 dig -w` not possible without commit
-hash.
+Record: `b4 dig -c 241ccd2fed905` found v1 only at
+https://patch.msgid.link/20260625001356.16478-1-fw@strlen.de. Lore fetch
+blocked by bot protection; no reviewer replies retrieved.
 
-### Step 4.3: Bug report
-**Record:** Bug found by new RDS RDMA selftests during IB network config
-teardown. No external bugzilla/syzbot link. Selftests added separately
-(`3ade6ce1255e6` and follow-ups in this tree).
+**Step 4.2 — Reviewers**
 
-### Step 4.4: Related patches / series
-**Record:** Patch 2 of series per Message-ID (`...-2-achender@...`).
-Patch 1 likely adds RDMA selftests that expose the hang. Fix itself is
-independent.
+Record: `b4 dig -w` shows recipients: Florian Westphal, netfilter-
+devel@vger.kernel.org. No explicit maintainer Acked-by in commit.
 
-### Step 4.5: Stable mailing list
-**Record:** **UNVERIFIED** — could not search lore stable list due to
-bot protection.
+**Step 4.3 — Bug report**
 
----
+Record: No formal Reported-by in this commit. Related bug in
+`929f7a9a7aad9` was Reported-by: kernel test robot with demonstrated
+stale `CTA_EXPECT_NAT` emission.
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+**Step 4.4 — Series context**
 
-### Step 5.1: Key functions
-**Record:** `rds_ib_conn_path_shutdown()`,
-`rds_ib_conn_path_shutdown_check_wait()` (new), callers unchanged.
+Record: Single-patch series (v1 only). Not part of a multi-patch
+dependency chain.
 
-### Step 5.2: Trace callers
-**Record:**
-- `rds_ib_conn_path_shutdown` registered as `conn_path_shutdown` in
-  `ib.c:571`
-- Called from `rds_conn_shutdown()` (`connection.c:401`)
-- `rds_conn_shutdown()` called by `rds_shutdown_worker()`
-  (`threads.c:249`)
-- `rds_shutdown_worker` runs on `rds_wq` via `queue_work(rds_wq,
-  &cp->cp_down_w)` (`connection.c:905`)
-- Also reached via `rds_conn_path_destroy()` → `rds_conn_path_drop()` →
-  `flush_work(&cp->cp_down_w)` (`connection.c:457-458`)
-- Module exit: `rds_ib_exit()` → `rds_ib_destroy_nodev_conns()` →
-  `rds_conn_destroy()` → shutdown path
+**Step 4.5 — Stable list**
 
-### Step 5.3: Key callees
-**Record:** `rdma_disconnect()`, `rds_ib_flush_mrs()`,
-`wait_event`/`wait_event_timeout`, `tasklet_schedule()`,
-`tasklet_kill()`, `rdma_destroy_qp()`, `ib_destroy_cq()`
-
-### Step 5.4: Call chain / reachability
-**Record:**
-- Triggered during connection drop, module unload (`rds_ib_exit`), IB
-  device removal, network namespace teardown
-- Requires `CONFIG_RDS` + `CONFIG_RDS_RDMA` (tristate modules)
-- Reachable from admin operations (rmmod, IB config changes) — not a
-  random syscall path, but real production teardown scenarios (Oracle
-  RAC clusters using RDS over IB)
-
-### Step 5.5: Similar patterns
-**Record:** Prior RDS hang/deadlock fixes in history (`f1acf1ac84d2a`,
-`7b4b000951f09`, `9c79440e2c5e2`) confirm this subsystem has had stable-
-worthy concurrency/teardown issues before.
+Record: Not searched (lore blocked). Similar Westphal leak fix already
+accepted into this stable tree.
 
 ---
 
-## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
+## Phase 5: Code Semantic Analysis
 
-### Step 6.1: Does buggy code exist?
-**Record:** **YES.** Current `net/rds/ib_cm.c:1086-1090` still has the
-infinite `wait_event`. Fix is **not** present in v6.18.44.
+**Step 5.1 — Key functions**
 
-### Step 6.2: Backport complications
-**Record:** Clean apply expected — no recent refactor of this function
-in 6.18.y. File structure matches the patch context exactly.
+Record: `nf_ct_expect_alloc()`, `nf_ct_expect_init()`,
+`ctnetlink_alloc_expect()`, `ctnetlink_exp_dump_expect()`.
 
-### Step 6.3: Related fixes already present?
-**Record:** No equivalent timeout/tasklet-kick fix found. FRWR wait
-logic from `3a2886cca703f` is present (the conditions being waited on).
+**Step 5.2 — Callers**
 
----
+Record: `nf_ct_expect_alloc()` called from ~15 sites: protocol helpers
+(FTP, SIP, H.323, PPTP, TFTP, IRC, etc.), `nf_conntrack_broadcast.c`,
+`ctnetlink_alloc_expect()`, `nft_ct.c`, IPVS. Most call
+`nf_ct_expect_init()` afterward; broadcast manually sets fields without
+`nf_ct_expect_init()`.
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+**Step 5.3 — Callees**
 
-### Step 7.1: Subsystem criticality
-**Record:** `net/rds` — **IMPORTANT** for Oracle RAC / RDMA cluster
-users; **PERIPHERAL** for general Linux users (optional
-`CONFIG_RDS_RDMA` module).
+Record: `kmem_cache_zalloc`/`kmem_cache_alloc`, `refcount_set`, slab
+free via RCU. Dump path reads struct fields into netlink skb.
 
-### Step 7.2: Subsystem activity
-**Record:** Actively maintained — recent fixes in 6.18.y (IPv6 NULL
-deref, zerocopy pin failure, selftest infrastructure). Not a dead
-subsystem.
+**Step 5.4 — Reachability**
 
----
+Record: Leak is reachable when a privileged user dumps expectations via
+ctnetlink (`ctnetlink_exp_dump_expect()`). Creating expectations via
+broadcast helper (no NAT field init) and then dumping can expose stale
+NAT data — path exists in this tree.
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+**Step 5.5 — Similar patterns**
 
-### Step 8.1: Who is affected
-**Record:** Users with `CONFIG_RDS_RDMA` enabled — primarily enterprise
-cluster deployments (Oracle RAC). Not universal, but production-critical
-for that population.
-
-### Step 8.2: Trigger conditions
-**Record:**
-- IB connection teardown, especially multiple concurrent shutdowns (IB
-  network config teardown)
-- Module unload (`rds_ib_exit` / `rds_rdma_exit`)
-- Not easily triggered by unprivileged users; admin/module operations
-- Selftests reliably reproduce; production impact likely under similar
-  admin teardown scenarios
-
-### Step 8.3: Failure mode severity
-**Record:** **Hang** — single-threaded `rds_wq` worker blocked
-indefinitely; teardown never completes, `flush_work` may never return,
-module unload stalls. **Severity: HIGH** for affected configs
-(system/admin operation hangs); **LOW** for users without RDS/RDMA.
-
-### Step 8.4: Risk-benefit
-**Record:**
-- **Benefit:** HIGH for RDS/IB users — prevents teardown/module-unload
-  hangs
-- **Risk:** LOW — ~15 lines, same wait conditions, well-understood
-  tasklet kick pattern
-- **Ratio:** Favorable for backport to 6.18.y
+Record: `929f7a9a7aad9` fixed the same class of bug narrowly in
+ctnetlink. `nf_ct_expect_init()` already zeroes most fields on the
+packet path but omitted `dir`. Centralized zalloc is the comprehensive
+fix.
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 6: Cross-Reference Against Local Tree (v6.18.44)
 
-### Step 9.1: Evidence compile
+**Step 6.1 — Buggy code present?**
 
-**FOR backport:**
-- Real hang during connection/IB config teardown
-- Buggy code confirmed present in v6.18.44
-- Small, surgical, obviously correct fix
-- Runs on single-threaded workqueue — blocking sleep is a known anti-
-  pattern
-- Same maintainer (Allison Henderson) has prior stable-worthy RDS
-  deadlock fixes
-- Module unload path (`rds_ib_exit` → `rds_conn_destroy` → shutdown) is
-  affected
-- Fix does not require companion selftest patches
+Record: Yes. HEAD is `v6.18.44` on `stable/linux-6.18.y`. Current code
+still uses `kmem_cache_alloc` at line 307 of `nf_conntrack_expect.c`.
+Commit `241ccd2fed905` is **not** in this tree.
 
-**AGAINST backport:**
-- `CONFIG_RDS_RDMA` is niche/optional
-- No syzbot or widespread user reports — found by new selftests
-- Underlying `wait_event` pattern existed since 2009 (may indicate rare
-  production trigger)
-- Lore review/stable nomination not verified
+**Step 6.2 — Backport complications**
 
-**UNRESOLVED:**
-- Mailing list review discussion and any explicit stable nominations
+Record: Clean apply verified. Removes code added by in-tree
+`929f7a9a7aad9`; no structural conflicts.
 
-### Step 9.2: Stable rules checklist
-| Criterion | Result |
-|-----------|--------|
-| 1. Obviously correct and tested? | **PASS** — logic is sound;
-selftests found the bug |
-| 2. Fixes a real bug? | **PASS** — teardown hang |
-| 3. Important issue? | **PASS** — hang on admin teardown/module unload
-(HIGH for RDS/IB users) |
-| 4. Small and contained? | **PASS** — one file, ~15 lines |
-| 5. No new features/APIs? | **PASS** — behavior fix only |
-| 6. Can apply to local tree? | **PASS** — code present, clean apply
-expected |
+**Step 6.3 — Related fixes already present**
 
-### Step 9.3: Exception categories
-**Record:** None (not a device ID, quirk, DT, build, or docs fix).
-Qualifies on merit as a hang fix.
+Record: `929f7a9a7aad9` partially fixes ctnetlink NAT-field leak only.
+Does **not** cover `nf_conntrack_broadcast.c` and other paths that
+allocate without fully initializing NAT fields. This commit still adds
+value.
 
-### Step 9.4: Decision rationale
+---
 
-For **Linux 6.18.44**: the buggy `wait_event` in
-`rds_ib_conn_path_shutdown()` is present, the fix is small and self-
-contained, and it addresses a real hang during IB connection teardown on
-the single-threaded `rds_wq` workqueue. While RDS over IB is not
-universal, hangs during module unload or IB network reconfiguration are
-exactly the kind of issues stable trees should fix — especially with a
-low-risk, surgical patch from the subsystem maintainer.
+## Phase 7: Subsystem Context
+
+**Step 7.1 — Subsystem**
+
+Record: netfilter / nf_conntrack / ctnetlink. Criticality: **IMPORTANT**
+(networking core subsystem, widely deployed).
+
+**Step 7.2 — Activity**
+
+Record: Actively maintained; multiple recent expectation/ctnetlink fixes
+in this tree’s history.
+
+---
+
+## Phase 8: Impact and Risk Assessment
+
+**Step 8.1 — Who is affected**
+
+Record: Systems with `CONFIG_NF_CONNTRACK` and ctnetlink users (firewall
+managers, `conntrack` tools). Affects administrators/privileged tooling,
+not unprivileged users directly.
+
+**Step 8.2 — Trigger conditions**
+
+Record: Allocate expectation without full field initialization (slab
+reuse), then dump via ctnetlink. Moderately rare but reproducible
+(demonstrated for ctnetlink path in `929f7a9a7aad9`). Requires
+`CAP_NET_ADMIN` for dump.
+
+**Step 8.3 — Failure mode**
+
+Record: Kernel heap memory leaked to userspace via netlink attributes.
+Severity: **MEDIUM** (security information disclosure, not
+crash/corruption).
+
+**Step 8.4 — Risk/benefit**
+
+Record:
+- Benefit: Closes remaining leak paths beyond the partial ctnetlink fix;
+  defense-in-depth at the central allocator.
+- Risk: Very low — 14-line change, standard zalloc pattern, infrequent
+  code path.
+- Ratio: Favorable for stable inclusion.
+
+---
+
+## Phase 9: Final Synthesis
+
+**Step 9.1 — Evidence summary**
+
+FOR:
+- Real kernel memory info leak via ctnetlink
+- Partial fix (`929f7a9a7aad9`) already in tree leaves gaps (e.g.,
+  `nf_conntrack_broadcast.c` never initializes NAT fields)
+- Tiny, obviously correct, applies cleanly
+- Same author’s similar leak fixes already in 6.18.y
+- Adds missing `exp->dir` init in `nf_ct_expect_init()`
+
+AGAINST:
+- Requires privileged access to observe leak
+- Expectations are uncommon
+- Primary reported case partially addressed by existing stable commit
+- No syzbot/formal CVE; “LLM hints” only in this commit message
+
+UNRESOLVED:
+- Full lore review thread (bot-blocked)
+- No independent Tested-by on this specific commit
+
+**Step 9.2 — Stable rules checklist**
+
+1. Obviously correct and tested? **PASS** — zalloc is standard; related
+   leak class already reproduced in-tree via `929f7a9a7aad9`.
+2. Fixes a real bug affecting users? **PASS** — verified stale-data leak
+   path; broadcast path still vulnerable without this fix.
+3. Important issue? **PASS** — security information leak (medium
+   severity).
+4. Small and contained? **PASS** — 14 lines, 2 files.
+5. No new features/APIs? **PASS**.
+6. Can apply to local tree? **PASS** — `git apply --check` succeeded.
+
+**Step 9.3 — Exception category**
+
+Record: N/A (not device ID, quirk, DT, build, or docs fix — standard bug
+fix).
+
+**Step 9.4 — Decision rationale**
+
+This tree (6.18.44) still has the underlying allocator bug. While
+`929f7a9a7aad9` patched one ctnetlink-specific leak, `kmem_cache_zalloc`
+in `nf_ct_expect_alloc()` fixes all allocation paths comprehensively,
+including `nf_conntrack_broadcast.c` which never calls
+`nf_ct_expect_init()` and does not initialize NAT-related fields. The
+change is minimal, low-risk, and consistent with other netfilter leak
+fixes already accepted into this stable series.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed commit message: subject, tags, body; no
-  Fixes:/Reported-by:/Cc: stable
-- **[Phase 2]** Read diff and current `net/rds/ib_cm.c:1051-1092`;
-  confirmed `wait_event` → timeout loop + tasklet schedule change
-- **[Phase 3]** `git describe HEAD` → v6.18.44; `git blame -L 1086,1090`
-  → wait since 2009, FRWR conditions since 2019 (`3a2886cca703f`); `git
-  log --oneline -20 -- net/rds/ib_cm.c`
-- **[Phase 3]** `git show 3a2886cca703f` — FRWR shutdown wait
-  introduction
-- **[Phase 3]** `git show f1acf1ac84d2a` — prior RDS deadlock fix by
-  same author
-- **[Phase 4]** `b4 dig` — failed (commit not in tree, needs `-c
-  COMMITISH`)
-- **[Phase 4]** WebFetch/curl lore.kernel.org — blocked by Anubis;
-  **UNVERIFIED** mailing list review
-- **[Phase 5]** `grep rds_ib_conn_path_shutdown` — call chain through
-  `connection.c`, `threads.c`, `ib.c`
-- **[Phase 5]** Read `threads.c:257-263` — confirmed
-  `create_singlethread_workqueue("krdsd")`
-- **[Phase 5]** Read `connection.c:368-401, 905, 457-458` — shutdown
-  worker path
-- **[Phase 5]** Read `ib_cm.c:247-257, 375-385` — CQ handlers schedule
-  tasklets
-- **[Phase 5]** Read `ib_rdma.c:161-173, 524-537` — `rds_ib_flush_mrs()`
-  and destroy path
-- **[Phase 6]** `grep wait_event(rds_ib_ring_empty_wait` — buggy code at
-  `ib_cm.c:1086` in this tree
-- **[Phase 6]** `grep rds_ib_conn_path_shutdown_check_wait` — not
-  present (fix not applied)
-- **[Phase 7]** Read `net/rds/Kconfig` — CONFIG_RDS_RDMA is tristate,
-  depends on INFINIBAND
-- **[Phase 8]** Traced module exit: `ib.c:536-548` →
-  `rds_ib_destroy_nodev_conns()` → `rds_conn_destroy()`
-
-This commit should be backported to the local 6.18.y tree: it fixes a
-confirmed teardown hang with a minimal, low-risk change that applies
-cleanly to code already present in v6.18.44.
-
-**YES**The background searches finished. They didn’t turn up the commit
-itself in this tree (expected — the fix isn’t in v6.18.44 yet), but they
-did add useful context:
-
-- The `wait_event` shutdown logic traces back to the original RDS/IB
-  transport (2009), with the FRWR wait conditions added in
-  `3a2886cca703f` (2019).
-- Allison Henderson has other RDS stability fixes here, including
-  `f1acf1ac84d2a` (deadlock in `rds_message_put`).
-
-That supports the earlier analysis: the hang is in long-standing
-teardown code, and this is a small, maintainer-authored stability fix
-worth backporting to 6.18.y.
+- [Phase 1] Parsed commit `241ccd2fed905`: subject, body, only SOB from
+  Florian Westphal
+- [Phase 2] Diff analysis: 2 files, `kmem_cache_zalloc`, `exp->dir = 0`,
+  removed ctnetlink else branches
+- [Phase 3] `git describe HEAD`: v6.18.44; tree is stable/linux-6.18.y
+- [Phase 3] `git blame`: `kmem_cache_alloc` since 2007
+- [Phase 3] `929f7a9a7aad9` confirmed in tree via `git merge-base --is-
+  ancestor`
+- [Phase 3] `241ccd2fed905` confirmed NOT in tree
+- [Phase 3] `git apply --check` on patch: clean apply
+- [Phase 4] `b4 dig -c 241ccd2fed905`: found v1 at
+  patch.msgid.link/20260625001356.16478-1-fw@strlen.de
+- [Phase 4] `b4 dig -w`: netfilter-devel CC'd
+- [Phase 4] `b4 dig -a`: v1 only
+- [Phase 4] Lore thread fetch: blocked by Anubis (UNVERIFIED: reviewer
+  comments)
+- [Phase 5] `grep nf_ct_expect_alloc`: 15+ call sites; broadcast path
+  does not call `nf_ct_expect_init()`
+- [Phase 5] Read `ctnetlink_exp_dump_expect()`: dumps flags always; NAT
+  block when `saved_addr`/`saved_proto` non-zero
+- [Phase 5] Read `nf_conntrack_broadcast.c`: does not init
+  `saved_addr`/`saved_proto`/`dir`
+- [Phase 6] Current code at line 307: still `kmem_cache_alloc`
+- [Phase 6] `7e23965d44f06` similar Westphal leak fix present in tree
+- [Phase 8] Trigger requires CAP_NET_ADMIN for ctnetlink dump (standard
+  nfnetlink permission model)
 
 **YES**
 
- net/rds/ib_cm.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ net/netfilter/nf_conntrack_expect.c  |  3 ++-
+ net/netfilter/nf_conntrack_netlink.c | 11 +----------
+ 2 files changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
-index e50e01abb0799..d9b6c9d2f6791 100644
---- a/net/rds/ib_cm.c
-+++ b/net/rds/ib_cm.c
-@@ -1043,6 +1043,19 @@ int rds_ib_conn_path_connect(struct rds_conn_path *cp)
- 	return ret;
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index 8e943efbdf0a5..6266d4d2ffca4 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -304,7 +304,7 @@ struct nf_conntrack_expect *nf_ct_expect_alloc(struct nf_conn *me)
+ {
+ 	struct nf_conntrack_expect *new;
+ 
+-	new = kmem_cache_alloc(nf_ct_expect_cachep, GFP_ATOMIC);
++	new = kmem_cache_zalloc(nf_ct_expect_cachep, GFP_ATOMIC);
+ 	if (!new)
+ 		return NULL;
+ 
+@@ -386,6 +386,7 @@ void nf_ct_expect_init(struct nf_conntrack_expect *exp, unsigned int class,
+ #if IS_ENABLED(CONFIG_NF_NAT)
+ 	memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
+ 	memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
++	exp->dir = 0;
+ #endif
  }
+ EXPORT_SYMBOL_GPL(nf_ct_expect_init);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 3df7e5fc76c8b..e046281895743 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3559,8 +3559,6 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 	if (cda[CTA_EXPECT_FLAGS]) {
+ 		exp->flags = ntohl(nla_get_be32(cda[CTA_EXPECT_FLAGS]));
+ 		exp->flags &= ~NF_CT_EXPECT_USERSPACE;
+-	} else {
+-		exp->flags = 0;
+ 	}
+ 	if (cda[CTA_EXPECT_FN]) {
+ 		const char *name = nla_data(cda[CTA_EXPECT_FN]);
+@@ -3572,8 +3570,7 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 			goto err_out;
+ 		}
+ 		exp->expectfn = expfn->expectfn;
+-	} else
+-		exp->expectfn = NULL;
++	}
  
-+static unsigned long rds_ib_conn_path_shutdown_check_wait(struct rds_conn_path *cp)
-+{
-+	struct rds_connection *conn = cp->cp_conn;
-+	struct rds_ib_connection *ic = conn->c_transport_data;
-+
-+	return (!ic->i_cm_id ||
-+		(rds_ib_ring_empty(&ic->i_recv_ring) &&
-+		 (atomic_read(&ic->i_signaled_sends) == 0) &&
-+		 (atomic_read(&ic->i_fastreg_inuse_count)) == 0 &&
-+		 (atomic_read(&ic->i_fastreg_wrs) == RDS_IB_DEFAULT_FR_WR))) ? 0
-+		: msecs_to_jiffies(1000);
-+}
-+
- /*
-  * This is so careful about only cleaning up resources that were built up
-  * so that it can be called at any point during startup.  In fact it
-@@ -1083,11 +1096,13 @@ void rds_ib_conn_path_shutdown(struct rds_conn_path *cp)
- 		 * sends to complete we're ensured that there will be no
- 		 * more tx processing.
- 		 */
--		wait_event(rds_ib_ring_empty_wait,
--			   rds_ib_ring_empty(&ic->i_recv_ring) &&
--			   (atomic_read(&ic->i_signaled_sends) == 0) &&
--			   (atomic_read(&ic->i_fastreg_inuse_count) == 0) &&
--			   (atomic_read(&ic->i_fastreg_wrs) == RDS_IB_DEFAULT_FR_WR));
-+		while (!wait_event_timeout(rds_ib_ring_empty_wait,
-+					   rds_ib_conn_path_shutdown_check_wait(cp) == 0,
-+					   msecs_to_jiffies(1000))) {
-+			tasklet_schedule(&ic->i_send_tasklet);
-+			tasklet_schedule(&ic->i_recv_tasklet);
-+		}
-+
- 		tasklet_kill(&ic->i_send_tasklet);
- 		tasklet_kill(&ic->i_recv_tasklet);
- 
+ 	exp->class = class;
+ 	exp->master = ct;
+@@ -3592,12 +3589,6 @@ ctnetlink_alloc_expect(const struct nlattr * const cda[], struct nf_conn *ct,
+ 						 exp, nf_ct_l3num(ct));
+ 		if (err < 0)
+ 			goto err_out;
+-#if IS_ENABLED(CONFIG_NF_NAT)
+-	} else {
+-		memset(&exp->saved_addr, 0, sizeof(exp->saved_addr));
+-		memset(&exp->saved_proto, 0, sizeof(exp->saved_proto));
+-		exp->dir = 0;
+-#endif
+ 	}
+ 	return exp;
+ err_out:
 -- 
 2.53.0
 
