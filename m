@@ -1,285 +1,210 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FA73C0A0D;
-	Mon, 31 Aug 2026 06:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392EE3BD659
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788158803; cv=none; b=PCVdiSjR9qYwc8dAccf3qAKm0BucIIkHIcpZnV+bkCwWzGNq/75+tj9CNswpJ4yvsqoE9GAOL/9SgLNCEQJa56g0yMKTkbXiKh6K6CY+2m1OrtYoYL4cF06ztY09zCUGEPHGJLviSlGTPVopNk25ltw2vUdcOoaEms/3rwW/tvM=
+	t=1788158936; cv=none; b=BYPvB/NPFF9CfzFcWe8d/SrOKsKOzZWHZCa5H8EI2IszZbUOpr+W6ruOipW4esEks/APxxyukTbeBgsLxID5PiDhwW3h5ZLZqDbso7IxhRqm0BB/YuSZnF4aP5g5L8BpksuURqFl4Bq5AwffRiNwFZvEK1+JEakBIDtrwfe+iY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788158803; c=relaxed/simple;
-	bh=S65xMpGJL9bkVUyPMtjq9CbtZOcNsfYZY/7VKvy4As8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FwpCkEp+x4wISkhhEwDB1riF8TbMcZc1WEpjfwdnyrHy+RLFDkNVRSKiEMWrObFXsm62GUOwhEPlFWQ2ASWParemFVh92n2IiSQeMf1bK7uT0FkGzkJcesOflZfmeQoxLLkgVCesNITjpA4vtunrmNpsBB8t7u+F0lkRY4X8kxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=JNH1su60; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1788158936; c=relaxed/simple;
+	bh=OtlIa+OE0zWjsovZ1zYmvcmiIyq6+RX+bn+CJ2yq0es=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZBceQ+Pykvw24bsA9LDTTrYS75gUGHwEv1sVbtco4OSzRJCv1EiT9ynRPGme3TLb7iMSDsZflcJEgH94Va1vjpKMgiCvqDB+KsGBe4e0NtrX6hotoNU1oRpzkJav9knDB6pCQp77JyjDJ/QSJGkgufhXEzYWrvr/lBVrFRedi7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aV4zbXro; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=H2iWwuv/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="JNH1su60"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V52xln002500;
-	Sun, 30 Aug 2026 23:46:21 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aV4zbXro";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="H2iWwuv/"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V52bOW2061074
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:48:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=xLOGzF+TNKwCOEMuFRXCUiK
-	pdc/bkxrnbBY0jTOKxFM=; b=JNH1su60foSQHchUg6z+LZA8ia1ZpBw/uqt6cVH
-	0Kv+vd0ibWF9xHnHRR84RF2Ro3SHzFPreMSqiOHfrK02puF8zmW+3UTelIslq7zA
-	kSA8Ebtgt2747PVjjZlFun3/fAe3abASf0+aJn1hNqRUBNJ35M5aUIoVCP1t7pcw
-	znxktTwoHHbVTMbqwl9JiSw3UnLaTVE+AVRZ1mBIaWbWtmCaMkQWZGLT122Lk8X8
-	4qvok9xRCoAcHiAroHXr2Fxdm/r2nMDw4TPr9Irwm2VhMMkikmmhtlKQsgS/FVyT
-	UpeD7G2M19d3JzA9RVtXFlcEXFD/HxzyjFDHRABZZOZTclg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gcg68htrb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 30 Aug 2026 23:46:21 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 30 Aug 2026 23:46:19 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 30 Aug 2026 23:46:19 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id A572C3F7221;
-	Sun, 30 Aug 2026 23:26:06 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Naveen Mamindlapalli <naveenm@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya
-	<gakula@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        "Andrew Lunn" <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2] octeontx2-pf: Add NIXLF error and poison interrupt handlers
-Date: Mon, 31 Aug 2026 11:56:00 +0530
-Message-ID: <20260831062600.839203-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	:mime-version:subject:to; s=qcppdkim1; bh=tCbLbmKY4GcRljOMUqkVhV
+	dQxtRWJPaJL1JlyTIkcdw=; b=aV4zbXrozEosL8DrmQ+0jvVGDfuyw3jZCocJyt
+	xb5GkfnOo1qP0SFrco8JS3ED7ZJzrI7462EfjEf72ccSKIONm41Q4BGAf1O+mga7
+	p46gZjSFmZZ+tIaJfCPkmGm9t++UsBsk4Mhn7VNep+5mY66ud+hQdmP3eacCBIkq
+	FLtyKfZZ8Z5CF1mtVd5B6j/2Odeis9YH1MlSRHLOt+gydWPpEcxJAU0t1l2JLHwX
+	EEiKe2VVhxtIyndmdYnCGbU7qwlbE1LaEd2Fsv+v25ngkUy0yi67gMXMeTnezeHI
+	M9Kd6Bq/RbuKB+H2psZ1X1NeqLobor52alvW56jhnxBXrAog==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gbr6dvwre-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:48:54 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93494527488so525707885a.3
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:48:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1788158933; x=1788763733; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tCbLbmKY4GcRljOMUqkVhVdQxtRWJPaJL1JlyTIkcdw=;
+        b=H2iWwuv/qs5r5QMxN8R0LULXxb8oF2Dnn5BRkKLC0LlqEjCJ7u/qJMubEN2MrVXhMK
+         l9/bVYhAnm1IZPI66aMfhpxT7qnX9SS2QBbb44K3rWx/ngB4KEFMlju6sGJoE01MubP7
+         s7I/E8BmjaQfsaFbsYg+j9jnODoSmhmWnSFd8CZ8wt/i2GVn2rnldcNtVzpeuvlEFgeY
+         yD6yIpZF1T5nFVcpOXFGCnzw0jybYM2tETSV45SF7Fe+yyeh7DG49kxlc3nnD0IzIu3C
+         a3qs7ylNqW92UinIJSrMM7Zu+yRW0k0EBpslpFg5aCbwuz1UfkEeK8kHdTACIxlTQFGZ
+         kt7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788158933; x=1788763733;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=tCbLbmKY4GcRljOMUqkVhVdQxtRWJPaJL1JlyTIkcdw=;
+        b=d1iVcpdPSwIgsQj0b4m512Brc8svwN2cOqi+hdaYUn8FdaPYF0gaQigut5D/scKj4o
+         ACH1f7keQdmNN6WPIUqBWd730thGUV349qUmdjqv9tedqxxqP39/hTlKrtJqjXqbagW9
+         gX6JmfNT6l0Lz5BL1K2rNjjv2UNVLCC+hDdo8TMIksUHRmipWjoIn6fI7dviHUTAalo+
+         bwWyjPBnOz6ZkKTecGiZhOKnaEQvDds0cL1IZ9vGsGW/vUIZmmAGzI9gEzh9uku4VhPR
+         uq+TV7hPOeY6lLzp9bdxuzKojAertGP5+Pxhr+mqFDAGXyzej7edgCcoXDke8NB4V9fl
+         eg8w==
+X-Gm-Message-State: AFuF++ntwgUSvMwT8viqtZuvxU726JjEfvNfkyt3oxRV98o3SAuiH3qV
+	nId2XZR4SgzABT2VdwCyIsKX7msjHrm1GwRFPOBlRA0x8+EpI5vBVZONitnyB6/aBYDaJELpOvB
+	M72kFrI/zFpE8oHuO5hHMRbNocjxYHED+b8wqjAiUbJm+oNHBfq1gsLKN7QI=
+X-Gm-Gg: AR+sD11zoJYB4gilSGgyALCruH08osREO/Olfxkt91tzyeqcSriy9e5dkYU2WPCkn8m
+	YJ8ODytrP5h8TQlSAhYkbIRhKDXp6RYAlUBb7uE5kYgHhvX5sfKV49wRpbLoajvBq/ApEERC4Pj
+	l7EcIdtnZ1vwclJTrea1+wTzNz8ceMFCYgevfaOJEOhGdtU6WGUQbZOJN5Vs3BD1ASmmHL9up/u
+	rEVyphX1bVXPKVyhPZQznbVIPnj/AfqDjFMw1dW7c0d+jTzIEQFnYizvumvCA368aPxI9nNoZQ/
+	lRjDDer1O2P2kdg2jeUzLmb4Nk25XvQUtrhMH0f5ukjF2kQdaE4g36IsIdlRcqCvQ/NxvNxzzsB
+	IVvaJB3dPHPYcoA==
+X-Received: by 2002:a05:620a:318a:b0:936:9f46:cec8 with SMTP id af79cd13be357-939139040fbmr2328088985a.20.1788158933394;
+        Sun, 30 Aug 2026 23:48:53 -0700 (PDT)
+X-Received: by 2002:a05:620a:318a:b0:936:9f46:cec8 with SMTP id af79cd13be357-939139040fbmr2328086085a.20.1788158932910;
+        Sun, 30 Aug 2026 23:48:52 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b91c52fdbsm200870475e9.0.2026.08.30.23.48.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 23:48:52 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Mon, 31 Aug 2026 08:48:33 +0200
+Subject: [PATCH net-next v3] net: stmmac: drop the queue-0 pinning for GSO
+ frames
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: SEpjrpEmtzmCrLOu8r5FL6mMru54U1TN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA1NiBTYWx0ZWRfX4XSP3igv1jRf
- 9pWLnPmzla0YuCvastgdoCPYk0XU1Fn1OPz+jJmwZPl2ldlrEWghGJKLo9GPswj7C17sIcvdqE0
- 2BAqAQwPNu/+LFs6b9uqimpLkH+c8HTZMlz0SSA5oPa/y7cUVcZke50pDKfk3wi9IaU+vuUt2uo
- OGowfOWSKKEs2+f2+n/69r8VyeZDDl1JPCzY/qLTErdlkz5urk6f88vGdXLATTDpu8OioAdPJWK
- EuMtu4jmmpOm4aPo1W4Y3NsoakRf35ALSl7YeH9RuMHqMFnp9RvPgkMiCb7TQax7mrTCPXs1Lox
- UDGB68n/U1f8rKwgUZQyrBSDE6ILkN5RxF1zlE3FTFsTB6BJlVPg4XcJ+JVmTg8xueySvOPCX7J
- Knsixazm4KswU7i63XRSIiyg/fUxbMmRMDeshKyEfaio2XtKLPVqalhVidxJHGyzCnxLb3qYxMk
- T58UqnLe3BlybTm9fsA==
-X-Authority-Analysis: v=2.4 cv=fZedDUQF c=1 sm=1 tr=0 ts=6a95233d cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=ncu3KJG07k_EHxY4y7MA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: SEpjrpEmtzmCrLOu8r5FL6mMru54U1TN
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA1NiBTYWx0ZWRfX9Ni6OxGvzRhT
- y3syJMhcxme5WJ2TCywcAYf0s5BN3ZPFHe1mov4GuOISOL+b0/2sgME/d+u/toKbCChgdi9+OcU
- gN23HwcP6RdXll7NX3qFGXLVngjeDF8=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260831-stmmac_select_queue-tso-fix-v3-1-d9c215fe7a85@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43NQQqDMBAF0KtI1o3EqRrbVe9RisQ4rQFNqhPFI
+ t69IasuSulm4M+H9zdGOBkkdk42NuFiyDgbwvGQMN0p+0Bu2pAZCChFJSQnPwxK14Q9al+PM87
+ IPTl+NysXpdZFVba5AGBBeE4Y3lG/MoueW1w9u4WmM+Td9IqzSxb7vxaWjGc817msZKNaAc3FE
+ aXjrHrthiENJ/ILfJLVbxICWcpMFg2cpAT8Qu77/gbmu+z0KgEAAA==
+X-Change-ID: 20260807-stmmac_select_queue-tso-fix-06cc586d4022
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA1NyBTYWx0ZWRfX0dciiNl6k/JE
+ ehEDxOFMxiR68Bx4IjJ93OjYlTKgT72JFWPgAln1dqZPFdFgdSb7ymsVdFBgBR8GSMRYEjaaNyh
+ EJ9SAvjzXBj08Ih1SISrKzPQ1d1YfAOUI85BKdut7ddSIvNuK+lRyMGtqFlVIc84CIOkgoCQxaE
+ KJ2X6qjPtUkMtNi/H08sXXRmiG3MnmeTE/N4cijmFwglFWboNOLOct7K1Tpylu8Qae6JXAMZd9L
+ zBa+zze2E8q8gPXpgFjQ4upUiWe8BqBd3rw6VQvg2Spe8olKFUF/+mp91hJkMmD3b77nIRfD5HV
+ vKmdtOtQx+C6KPwIs5D1GEhpLY+slhvjIgmkY7z4c10fgWfE2Cmy0FSpmJJdVqcZkz/7E1dzdrq
+ X56r5EeYHr8nVtcfjBbFNWYgFWcJXkGKNMg8sLrvGWjdKYsWalnUyQ3NTtlL2RrihrxlnmAyc5/
+ 28INVPwATr28826yyvA==
+X-Proofpoint-GUID: DNcWsbl1VJK20sl2OGSyb3ju3DwJKr_u
+X-Authority-Analysis: v=2.4 cv=Zakt8MVA c=1 sm=1 tr=0 ts=6a9523d6 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=3NDt2XGU82yDlc6fJAcA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA1NyBTYWx0ZWRfXy/HZm/qBdLim
+ MoPq4JNyCDdT8hVyN8+42Z3jTzGiin/A4CypPTFHMhAUf/r+tRUW0AOJ8hHa8i8WsDoFnX1LjEv
+ ZgT1D9+M3H42Evyr5/QJ5Gf6JAqDEhk=
+X-Proofpoint-ORIG-GUID: DNcWsbl1VJK20sl2OGSyb3ju3DwJKr_u
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-31_02,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310057
 
-From: Naveen Mamindlapalli <naveenm@marvell.com>
+stmmac_select_queue() forces every GSO frame (TCPv4/TCPv6/UDP-L4) onto
+TX queue 0, relying on the legacy assumption that at least queue 0 is
+always TSO/USO capable. This is no longer needed since
+stmmac_features_check() already validates each GSO frame against the
+capabilities of the queue it is mapped to, clearing the checksum and GSO
+features for queues that cannot perform TSO (e.g. TBS queues or queues
+without TX checksum offload support).
 
-Register and handle the NIX LF error (NIX_LF_ERR_INT) and poison/RAS
-(NIX_LF_RAS) interrupt vectors, The handlers acknowledge the interrupt
-and log the status (ratelimited) to help debug NIX LF faults.
+Remove stmmac_select_queue() so GSO frames are selected through the
+regular queue selection path (XPS, flow hashing and priority mapping)
+and can be spread across all TX queues. This also fixes the case where
+queue 0 is not TSO-capable while other queues are, which previously
+forced all TSO traffic into software GSO. Non-GSO traffic is unaffected,
+since the core already falls back to netdev_pick_tx() when ndo_select_queue
+is not set.
 
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 ---
+Changes in v3:
+- Drop ndo_select_queue() callback and rely on network stack to select
+  the proper TX queue.
+- Link to v2: https://lore.kernel.org/r/20260808-stmmac_select_queue-tso-fix-v2-1-67175b29772e@oss.qualcomm.com
+
 Changes in v2:
-- Clamp VF qcount to OTX2_MAX_CQ_CNT to fix MSIX vector budget underflow on >64 CPU systems.
-- Skip ERR/POISON vector allocation for representors that don't register those handlers.
-- Fix stale comment and typo in otx2_realloc_msix_vectors().
+- Take into account when checksum offload is not supported.
+- Link to v1: https://lore.kernel.org/r/20260807-stmmac_select_queue-tso-fix-v1-1-4c4787bad02b@oss.qualcomm.com
 ---
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 88 ++++++++++++++++++-
- .../ethernet/marvell/octeontx2/nic/otx2_reg.h |  2 +
- .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  4 +-
- 3 files changed, 89 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c995f2900859..1f8cb78c1919 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1524,6 +1524,34 @@ irqreturn_t otx2_cq_intr_handler(int irq, void *cq_irq)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index f2fc89176654..2eb1c42a7c27 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6426,24 +6426,6 @@ static int stmmac_setup_tc(struct net_device *ndev, enum tc_setup_type type,
+ 	}
  }
- EXPORT_SYMBOL(otx2_cq_intr_handler);
  
-+static irqreturn_t otx2_nixlf_err_intr_handler(int irq, void *data)
-+{
-+	struct otx2_nic *pf = data;
-+	u64 regval;
-+
-+	/* Clear interrupt */
-+	regval = otx2_read64(pf, NIX_LF_ERR_INT);
-+	otx2_write64(pf, NIX_LF_ERR_INT, regval);
-+
-+	dev_err_ratelimited(pf->dev, "NIXLF Error Interrupt: 0x%llx\n", regval);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t otx2_nixlf_poison_intr_handler(int irq, void *data)
-+{
-+	struct otx2_nic *pf = data;
-+	u64 regval;
-+
-+	/* Clear interrupt */
-+	regval = otx2_read64(pf, NIX_LF_RAS);
-+	otx2_write64(pf, NIX_LF_RAS, regval);
-+
-+	dev_err_ratelimited(pf->dev, "NIXLF Poison Interrupt: 0x%llx\n", regval);
-+
-+	return IRQ_HANDLED;
-+}
-+
- void otx2_disable_napi(struct otx2_nic *pf)
+-static u16 stmmac_select_queue(struct net_device *dev, struct sk_buff *skb,
+-			       struct net_device *sb_dev)
+-{
+-	int gso = skb_shinfo(skb)->gso_type;
+-
+-	if (gso & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6 | SKB_GSO_UDP_L4)) {
+-		/*
+-		 * There is no way to determine the number of TSO/USO
+-		 * capable Queues. Let's use always the Queue 0
+-		 * because if TSO/USO is supported then at least this
+-		 * one will be capable.
+-		 */
+-		return 0;
+-	}
+-
+-	return netdev_pick_tx(dev, skb, NULL) % dev->real_num_tx_queues;
+-}
+-
+ static int stmmac_set_mac_address(struct net_device *ndev, void *addr)
  {
- 	struct otx2_qset *qset = &pf->qset;
-@@ -2080,6 +2108,34 @@ int otx2_open(struct net_device *netdev)
- 
- 	otx2_set_cints_affinity(pf);
- 
-+	/* Register NIXLF error IRQ handler */
-+	vec = pf->hw.nix_msixoff + NIX_LF_ERR_VEC;
-+	irq_name = &pf->hw.irq_name[vec * NAME_SIZE];
-+	snprintf(irq_name, NAME_SIZE, "%s-nixlf-err", pf->netdev->name);
-+	err = request_irq(pci_irq_vector(pf->pdev, vec),
-+			  otx2_nixlf_err_intr_handler, 0, irq_name, pf);
-+	if (err) {
-+		dev_err(pf->dev,
-+			"RVUPF%d: IRQ registration failed for NIXLF ERR vector\n",
-+			rvu_get_pf(pf->pdev, pf->pcifunc));
-+		goto err_free_cints;
-+	}
-+	otx2_write64(pf, NIX_LF_ERR_INT_ENA_W1S, NIX_LF_ERR_INT_MASK);
-+
-+	/* Register NIXLF POISON interrupt handler */
-+	vec = pf->hw.nix_msixoff + NIX_LF_POISON_VEC;
-+	irq_name = &pf->hw.irq_name[vec * NAME_SIZE];
-+	snprintf(irq_name, NAME_SIZE, "%s-nixlf-poison", pf->netdev->name);
-+	err = request_irq(pci_irq_vector(pf->pdev, vec),
-+			  otx2_nixlf_poison_intr_handler, 0, irq_name, pf);
-+	if (err) {
-+		dev_err(pf->dev,
-+			"RVUPF%d: IRQ registration failed for NIXLF POISON vector\n",
-+			rvu_get_pf(pf->pdev, pf->pcifunc));
-+		goto err_free_errint;
-+	}
-+	otx2_write64(pf, NIX_LF_RAS_ENA_W1S, NIX_LF_RAS_MASK);
-+
- 	if (pf->flags & OTX2_FLAG_RX_VLAN_SUPPORT)
- 		otx2_enable_rxvlan(pf, true);
- 
-@@ -2132,6 +2188,16 @@ int otx2_open(struct net_device *netdev)
- 	netif_tx_stop_all_queues(netdev);
- 	netif_carrier_off(netdev);
- 	pf->flags |= OTX2_FLAG_INTF_DOWN;
-+	/* free NIXLF POISON irq */
-+	vec = pci_irq_vector(pf->pdev,
-+			     pf->hw.nix_msixoff + NIX_LF_POISON_VEC);
-+	otx2_write64(pf, NIX_LF_RAS_ENA_W1C, NIX_LF_RAS_MASK);
-+	free_irq(vec, pf);
-+err_free_errint:
-+	vec = pci_irq_vector(pf->pdev,
-+			     pf->hw.nix_msixoff + NIX_LF_ERR_VEC);
-+	otx2_write64(pf, NIX_LF_ERR_INT_ENA_W1C, NIX_LF_ERR_INT_MASK);
-+	free_irq(vec, pf);
- err_free_cints:
- 	otx2_free_cints(pf, qidx);
- 	vec = pci_irq_vector(pf->pdev,
-@@ -2171,6 +2237,18 @@ int otx2_stop(struct net_device *netdev)
- 	/* Clear RSS enable flag */
- 	pf->hw.rss_info.enable = false;
- 
-+	/* Cleanup NIXLF Poison IRQ */
-+	vec = pci_irq_vector(pf->pdev,
-+			     pf->hw.nix_msixoff + NIX_LF_POISON_VEC);
-+	otx2_write64(pf, NIX_LF_RAS_ENA_W1C, NIX_LF_RAS_MASK);
-+	free_irq(vec, pf);
-+
-+	/* Cleanup NIXLF Error IRQ */
-+	vec = pci_irq_vector(pf->pdev,
-+			     pf->hw.nix_msixoff + NIX_LF_ERR_VEC);
-+	otx2_write64(pf, NIX_LF_ERR_INT_ENA_W1C, NIX_LF_ERR_INT_MASK);
-+	free_irq(vec, pf);
-+
- 	/* Cleanup Queue IRQ */
- 	vec = pci_irq_vector(pf->pdev,
- 			     pf->hw.nix_msixoff + NIX_LF_QINT_VEC_START);
-@@ -3006,11 +3084,15 @@ int otx2_realloc_msix_vectors(struct otx2_nic *pf)
- 	struct otx2_hw *hw = &pf->hw;
- 	int num_vec, err;
- 
--	/* NPA interrupts are inot registered, so alloc only
--	 * upto NIX vector offset.
-+	/* Skip NPA vectors. Representors only use CINT vectors, so limit
-+	 * the budget to that range. For PF/VF, allocate the full NIX LF
-+	 * interrupt range (QINT, CINT, GINT, ERR and POISON vectors).
- 	 */
- 	num_vec = hw->nix_msixoff;
--	num_vec += NIX_LF_CINT_VEC_START + hw->max_queues;
-+	if (pf->flags & OTX2_FLAG_REP_MODE_ENABLED)
-+		num_vec += NIX_LF_CINT_VEC_START + hw->max_queues;
-+	else
-+		num_vec += NIX_LF_POISON_VEC + 1;
- 
- 	otx2_disable_mbox_intr(pf);
- 	pci_free_irq_vectors(hw->pdev);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-index 1cd576fd09c5..c144fd2bbe51 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_reg.h
-@@ -121,10 +121,12 @@
- #define	NIX_LF_ERR_INT_W1S		(NIX_LFBASE | 0x228)
- #define	NIX_LF_ERR_INT_ENA_W1C		(NIX_LFBASE | 0x230)
- #define	NIX_LF_ERR_INT_ENA_W1S		(NIX_LFBASE | 0x238)
-+#define	NIX_LF_ERR_INT_MASK		GENMASK_ULL(31, 0)
- #define	NIX_LF_RAS			(NIX_LFBASE | 0x240)
- #define	NIX_LF_RAS_W1S			(NIX_LFBASE | 0x248)
- #define	NIX_LF_RAS_ENA_W1C		(NIX_LFBASE | 0x250)
- #define	NIX_LF_RAS_ENA_W1S		(NIX_LFBASE | 0x258)
-+#define	NIX_LF_RAS_MASK			GENMASK_ULL(10, 0)
- #define	NIX_LF_SQ_OP_ERR_DBG		(NIX_LFBASE | 0x260)
- #define	NIX_LF_MNQ_ERR_DBG		(NIX_LFBASE | 0x270)
- #define	NIX_LF_SEND_ERR_DBG		(NIX_LFBASE | 0x280)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-index b022f52c6845..eda4ed52a8d8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-@@ -554,7 +554,7 @@ static int otx2vf_realloc_msix_vectors(struct otx2_nic *vf)
- 	int num_vec, err;
- 
- 	num_vec = hw->nix_msixoff;
--	num_vec += NIX_LF_CINT_VEC_START + hw->max_queues;
-+	num_vec += NIX_LF_POISON_VEC + 1;
- 
- 	otx2vf_disable_mbox_intr(vf);
- 	pci_free_irq_vectors(hw->pdev);
-@@ -597,7 +597,7 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	pci_set_master(pdev);
- 
--	qcount = num_online_cpus();
-+	qcount = min_t(int, num_online_cpus(), OTX2_MAX_CQ_CNT);
- 	qos_txqs = min_t(int, qcount, OTX2_QOS_MAX_LEAF_NODES);
- 	netdev = alloc_etherdev_mqs(sizeof(*vf), qcount + qos_txqs, qcount);
- 	if (!netdev)
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+@@ -7298,7 +7280,6 @@ static const struct net_device_ops stmmac_netdev_ops = {
+ 	.ndo_eth_ioctl = stmmac_ioctl,
+ 	.ndo_get_stats64 = stmmac_get_stats64,
+ 	.ndo_setup_tc = stmmac_setup_tc,
+-	.ndo_select_queue = stmmac_select_queue,
+ 	.ndo_set_mac_address = stmmac_set_mac_address,
+ 	.ndo_vlan_rx_add_vid = stmmac_vlan_rx_add_vid,
+ 	.ndo_vlan_rx_kill_vid = stmmac_vlan_rx_kill_vid,
+
+---
+base-commit: c4a839e06d0036c9a4af756d24688e0d34a18ca2
+change-id: 20260807-stmmac_select_queue-tso-fix-06cc586d4022
+
+Best regards,
 -- 
-2.48.1
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
