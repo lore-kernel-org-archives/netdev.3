@@ -1,191 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D183D667F;
-	Mon, 31 Aug 2026 09:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67952D9EDB
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 09:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166813; cv=none; b=sLuVLJ8iiZI0OgHmPhK43V6KTTSJbxLre/6Qoix5+ERuEuofwMjCRjbuLttAmqCGJP9Z9aaCbjTc6+oOmqpmzfAbUrCTxx7iTX9v3TGagLv6zyD2yCw9adhqmgiOBY/mHl66NIXID2w6LL3HItgp9CxwblBK8Ry86ieFa9OrYJQ=
+	t=1788167381; cv=none; b=aC+MMioUuypMyejiUHba3ivTVco6KwMaMqv4LemM31ggmiyoJk21ugLJrJW4Im0aBXzVQ3cj1xpONw3ywRWJsH2Cya5VJTLfyM/TgEFzZrJOZv4lR7s1SkXw5PZZ67p0T+lODveG9a955EH/hQ0IeGiWAr892bPKwtoE87D4rQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166813; c=relaxed/simple;
-	bh=bO4QqOOkYtcqxtmXnzXLiG88iM1bk1BhGu3NaERD5H0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kCWq/wwhXMEldrrz+Z30oE1e7gQKBkzhb+5paIGBNRYu3IjXS3xXGlngZFjjMJdMVacbknQS34PqKbPfhYuOeHxNmiSfWDGSGkfPpId2A9tpTdzIFYIonWT/d1LIND6cX5sqAt3D4epaKYCKVH9tVD3aqCdj9+LvFRPQTDFuQyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YkZDhChP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788167381; c=relaxed/simple;
+	bh=QYxcDuJlHyn1WCmBCKp35EOPATCh0rELvVAEgRjvnhA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oohHJNP9gmoxpKjQ8/Es445dzteVXpgL0+kfqdBogMsRqp+FFy0QvKbsqhV+TDvM5+W9cCmXpttNbH/yvtJw6tf2JO7HeNI9m9lOLPvhJBGgEdY72bM/kcaQgcrdLJU8HG+hwBb6eQnNgwRphoCO0bFnlC5m9rm6MxfH+z55yzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pSe62wez; arc=none smtp.client-ip=209.85.222.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YkZDhChP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DFB1F000E9;
-	Mon, 31 Aug 2026 09:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788166810;
-	bh=LXOCjeN/czsMupSRW8p+erDIOXzY4m9iU1fz8tbYeI4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YkZDhChPm6So6Rc3TWcjOsLI51gc3n9liJ8g7iVVhapP7IQsoV9QsW9r8RN0kCQ/y
-	 m+ZK+N8kedI7ezw6LepHoGh9S53O928OYbM4hVS4mVgO30eTCn6w3aeJlI+nPWQpBD
-	 Hd283Hy7YUBkxKrX7fuFlvNginf47ciY3GXZLm/Zz5gKCW6l5RVvSSQSD4GAXpnfHR
-	 JS5m3CZ6hrMRRp4/eCYlFqyJcUOnJtU51Mm/yc65Lc7wkHQIpbtBJYPde/jbvXKl+m
-	 YZBNE0obQ4+r2pVVQD0kaiLCcqbX+F5pBBH1Jw0tMgf6MCcNyMef8sbk3+wR3G6zrA
-	 FRDdiMo+4vi6w==
-Message-ID: <8c7f834e-5701-4748-9a9a-fed78aa50198@kernel.org>
-Date: Mon, 31 Aug 2026 11:00:05 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pSe62wez"
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-933023a5980so670930485a.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 02:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788167378; x=1788772178; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=20fnpYTNp6hWZADg99Vs3quByt/23xw7wIlASlauUE8=;
+        b=pSe62wezzaWctsMl86+z0TQXL8UGOkOrjX4eX5yRQB2rbDzxbRkDvx/CNI38r9JWyQ
+         /2zlE8EoEXeDu4zA07GkiZISxQl216ypCpQaMb/eLB/3gkn+SvQId2edx3OU83FyHuvJ
+         zF9SsSZTaibbLWfat6UBYW6hK2oar++y4e+jvYurtFelHvHC7uNokVL9n5QZJK0OV/br
+         ZWqwRmC56yZSRImqH4wMIZBkUmXs/mnTJAnR58zOdpUIrC+Mf/O3BAWU4Ug/PCZbW3hD
+         vzznfoSoY9NJmQGnDmzE/d+k1hfWjY53EkUt8EDY9ltPHlfRhP7tpkzq/anJr/LzDFZE
+         O6aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788167378; x=1788772178;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=20fnpYTNp6hWZADg99Vs3quByt/23xw7wIlASlauUE8=;
+        b=l1k0ScPp/2p5RWc+9TcnGtFCueGaGBjaQZk7VEb8ksohnRHL/Nxp5Tq3MiRvua4fM1
+         vNRni4d08M2Viz4NoSBd86Jqv/mDVM5p/Id4keAbVTzCFc7l7lJayAxOT8qy8KeU5ui1
+         UUD6bKR96vUa0q/wURhSM/+EGfg9bBvuTE0/HlP2SSqtlGQ2OPXYcTKncDRO4e2LC7WC
+         j7A+Auy2VqepJipn0DzHMmH0Rw9RsadvZfb+V0e+P5OBgorFxscX/Zqaep0u7ZkMT3ZT
+         VnOSm1K1sAbavQGwH4JUuZX9OLgLkgeiS/HfHYhNF5INOPRqT8Hp6SOF/frIzKPms6U0
+         LZ8Q==
+X-Forwarded-Encrypted: i=1; AHgh+RraoakeQkZ+arup3ipbZ3yNC2esv6evSlMSNpJxCpK7OHI6X9O1HP2XZnzPJFzcuYKzbWYzAek=@vger.kernel.org
+X-Gm-Message-State: AFuF++miKSQji9fKqJjgNd/4pllvrMrDy5gAwAEeADEDghox+nS4P33T
+	VdlnwBiZkcSg9ux0dtSzyC41g9Kh1eQubho2Fa+/tFQGVnH3QN+bxeFuNGoTSkgNITFWHjVrZ1C
+	YBEQXHwjJW5ooJA==
+X-Received: from qknrh24.prod.google.com ([2002:a05:620a:8f18:b0:939:1ab:c025])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4889:b0:938:fc91:91ce with SMTP id af79cd13be357-939138c4d45mr2495272785a.20.1788167378339;
+ Mon, 31 Aug 2026 02:09:38 -0700 (PDT)
+Date: Mon, 31 Aug 2026 09:09:37 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] page_pool: keep frag_offset aligned for odd-sized
- requests
-To: Florian Schauer <florian@schauer.to>, ilias.apalodimas@linaro.org
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
- linyunsheng@huawei.com, Mina Almasry <almasrymina@google.com>
-References: <20260828060822.2628276-1-florian@schauer.to>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20260828060822.2628276-1-florian@schauer.to>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+Message-ID: <20260831090937.3342052-1-edumazet@google.com>
+Subject: [PATCH net] bonding: avoid ARP flood on RTNL contention in
+ active-backup mode
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Tonghao Zhang <tonghao@bamaicloud.com>, Hangbin Liu <liuhangbin@gmail.com>, 
+	Jay Vosburgh <jv@jvosburgh.net>
+Content-Type: text/plain; charset="UTF-8"
 
+Commit f1986b3a9f2e ("net: bonding: skip the 2nd trylock when first one
+fail") changed bond_activebackup_arp_mon() to reschedule arp_work in
+1 tick if the second rtnl_trylock() fails (for sending peer/slave
+notifications).
 
+However, by the time bond_activebackup_arp_mon() reaches this second lock
+check, bond_ab_arp_probe() has already been executed and sent an ARP probe.
+If RTNL remains contended, rescheduling every 1 tick causes
+bond_activebackup_arp_mon() to re-execute bond_ab_arp_probe() every jiffy,
+flooding the network with ARP probes at HZ frequency (e.g. 1000 pkts/sec)
+instead of respecting the configured arp_interval.
 
-On 28/08/2026 08.08, Florian Schauer wrote:
-> page_pool_alloc_frag_netmem() rounds the requested fragment size with
-> 
-> 	size = ALIGN(size, dma_get_cache_alignment());
-> 
-> dma_get_cache_alignment() returns 1 unless the architecture defines
-> ARCH_DMA_MINALIGN, which DMA-coherent architectures such as x86 do not.
-> There the ALIGN() is a no-op and pool->frag_offset advances by the raw,
-> unrounded size.
-> 
-> A single caller asking for an odd size then leaves frag_offset misaligned
-> for every fragment carved out of that page afterwards.  The pool is shared,
-> so the damage is not confined to the caller that caused it.
-> 
-> The per-cpu system_page_pool used by generic XDP hits this.
-> skb_pp_cow_data() allocates its fragments with the raw packet length:
-> 
-> 	size = min_t(u32, len, PAGE_SIZE);
-> 	truesize = size;
-> 	page = page_pool_dev_alloc(pool, &page_off, &truesize);
-> 
-> leaving frag_offset odd for whatever is carved out of that page next.  Its
-> own head allocation is already aligned -- SKB_HEAD_ALIGN(size) plus the
-> XDP_PACKET_HEADROOM its callers pass -- so it is a later user of the shared
-> pool that pays: page_pool_dev_alloc_va() returns a misaligned buffer,
-> napi_build_skb() installs it as skb->head, and skb_shinfo(skb) ==
-> skb->head + skb->end is misaligned with it.
-> 
-> skb_shinfo()->dataref is a 4-byte atomic_t at offset 0x20, so the
-> atomic_inc() in __skb_clone() straddles a cache line.  On x86 with split
-> lock detection -- fatal for kernel split locks by default -- this panics
-> the machine:
-> 
->    Oops: Split lock detected
->    RIP: 0010:skb_clone+0x154/0x1e0
->    Call Trace:
->     <IRQ>
->     raw_local_deliver+0x1ed/0x2c0
->     ip_protocol_deliver_rcu+0x54/0x1c0
->     ip_local_deliver_finish+0x85/0x100
->     ip_local_deliver+0x67/0x100
->     __netif_receive_skb_one_core+0x85/0xa0
->     process_backlog+0x87/0x130
-> 
-> Reproduced by attaching any generic-mode XDP program to loopback and
-> opening a RAW IPPROTO_UDP socket, which makes raw_local_deliver() clone
-> every locally delivered UDP packet; ordinary DNS traffic then triggers it,
-> roughly once per 2500 clones.  Observed on 6.12.101 and 7.1.8.
-> 
-> Tracing page_pool_alloc_frag_netmem() over one such run shows the
-> amplification -- two odd-sized requests, nine misaligned offsets:
-> 
->    requested size & 7:   0: 17035    5: 1    7: 1
->    frag_offset & 7:      0: 17028    3: 1    4: 1    5: 1    6: 1    7: 5
-> 
-> and skb_pp_cow_data() returning heads that were aligned on entry:
-> 
->    head 0xffff8f4c86aeac00 -> 0xffff8f4c53a9a9c4 (&7=4)
->    head 0xffff8f4d6a8a42c0 -> 0xffff8f4c4f7b7a45 (&7=5)
-> 
-> Round the fragment size up to at least the alignment struct skb_shared_info
-> requires, so fragments are always suitably aligned for the objects callers
-> build on them.  Architectures needing a larger DMA alignment keep it.
-> 
-> This also makes the remainder computed in page_pool_alloc_netmem(),
-> 
-> 	*size = max_size - *offset;
-> 
-> aligned, since max_size is a power of two -- which fixes the matching
-> misalignment of skb->end.
-> 
-> Verified with a controlled A/B under QEMU/KVM: same tree, same config,
-> same compiler, same rootfs and identical traffic, differing only by this
-> patch.  A SEC("xdp.frags") XDP_PASS program on lo plus UDP datagrams
-> larger than max_head_size drives skb_pp_cow_data()'s fragment loop, which
-> passes raw packet lengths to the pool.  Measured at the return of
-> skb_pp_cow_data():
-> 
->                            unpatched   patched
->    skb_pp_cow_data calls       40800     40800
->    misaligned skb->head         1120         0
->    dataref at line offset >60     80         0
-> 
-> The last row counts the accesses that actually fault:
-> skb_shinfo()->dataref sits at head+end+0x20 and is a 4-byte atomic, so
-> `lock incl` splits a 64-byte cache line only when that address lands at
-> offset 61..63.  All 80 occurrences were at offset 61; the panic reported
-> above was at offset 62.  Eliminating the misalignment removes every one
-> of them.
-> 
-> Same class of bug as commit 3bed3cc4156e ("net: Do not allocate page
-> fragments that are not skb aligned"), which fixed the older
-> netdev_alloc_frag()/napi_alloc_frag() allocators.
-> 
-> Fixes: 53e0961da1c7 ("page_pool: add frag page recycling support in page pool")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Florian Schauer <florian@schauer.to>
-> ---
-> v2:
->    - express the minimum alignment as __alignof__(struct skb_shared_info)
->      instead of sizeof(long), and drop the explanatory comment the previous
->      version carried, since the expression now states the requirement
->      directly (Eric Dumazet)
->    - no functional change vs v1 on 64-bit: the emitted code is identical
->    - Cc the maintainers and the blamed author that v1 missed
->    - correct two statements in the commit message: dataref is at offset 0x20
->      in struct skb_shared_info, not its first member, and skb_pp_cow_data()
->      allocates its head before the fragment loop, so the misaligned head
->      comes from an earlier user of the shared pool
-> v1: https://lore.kernel.org/netdev/20260826135252.3091193-1-florian@schauer.to/
-> 
->   net/core/page_pool.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 8f8956fb0..08d7f35cf 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -1073,7 +1073,8 @@ netmem_ref page_pool_alloc_frag_netmem(struct page_pool *pool,
->   	if (WARN_ON(size > max_size))
->   		return 0;
->   
-> -	size = ALIGN(size, dma_get_cache_alignment());
-> +	size = ALIGN(size, max_t(unsigned int, dma_get_cache_alignment(),
-> +				 __alignof__(struct skb_shared_info)));
->   	*offset = pool->frag_offset;
->   
->   	if (netmem && *offset + size > max_size) {
+If rtnl_trylock() fails at the second check, do not change delta_in_ticks
+to 1 so that the next ARP monitor execution is scheduled according to the
+configured arp_interval, matching the behavior in
+bond_loadbalance_arp_mon().
 
-On x86_64 __alignof__(struct skb_shared_info) returns 8. So, this should 
-work, to avoid getting the lock in skb_shared_info split across cache-lines.
+Fixes: f1986b3a9f2e ("net: bonding: skip the 2nd trylock when first one fail")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+Cc: Tonghao Zhang <tonghao@bamaicloud.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+---
+ drivers/net/bonding/bond_main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-
-Thanks for finding and fixing this bug!
---Jesper
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index ef9eb0c53c66..c23cf18a996a 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3871,10 +3871,8 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
+ 	rcu_read_unlock();
+ 
+ 	if (READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
+-		if (!rtnl_trylock()) {
+-			delta_in_ticks = 1;
++		if (!rtnl_trylock())
+ 			goto re_arm;
+-		}
+ 
+ 		if (bond->send_peer_notif)
+ 			bond_peer_notify_may_events(bond, true);
+-- 
+2.55.0.897.gb25b4bd76c-goog
 
