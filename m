@@ -1,71 +1,78 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011035.outbound.protection.outlook.com [40.107.208.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C1B52B1E5
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 15:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788188924; cv=none; b=Fzi0Ti2Exf/6lyUIABfGnklwA4X3j8H2WLTPTvI20yWJw2Qmb5h5M2vPlv8fWr6DNID9wn1+lKXYY5jb3pTYolg827jrKLApppQY3VH60gmAq0DvrQAg0vo+rfPOcbylCvlk/04eoZurgxPvQqLig67qy0xJ06N2CJ6rBjlF2f8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788188924; c=relaxed/simple;
-	bh=jjga+SQJ4jIvHbpbUTwpoKR0mYVUVJZdtVhU77QXSrc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hMIFrxGFo6r/FRH3us9gK5cltTgcWLvFxPStN9zUEcTZmmjN/u+TfYNLNUMTvXAz41LzvSgb2dGOd2mVSAm90Mi8xqj+bmif+1u+yEiNlykb236mGL2i5uzSGd/pnxO8cTeEFDSA40dyjQhc787krlvuRS2HGzupfZ4HgqOhVPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gH2TFCi5; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5364C424D75;
+	Mon, 31 Aug 2026 15:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788188925; cv=fail; b=hdUL/HcmPVGn52r1Wcd4NIFO8xVAeFAEF+60ZVpJeC/zsjOsZO6TCxVO065TINKETrqv/FSg5LUxnlIvUwmUY0eJ+TC8HSfcBckbE4yXEDLEuzBWuT7sdogj086+bXWBMDvMFc3ioSOtn64bfjTLj6MVHETnsg53L4NwFF7iAfg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788188925; c=relaxed/simple;
+	bh=NZXG35c8H5uRRWe4b1J5BA/X1XXitzy9kjdj3ZE+W3E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mB5wpvwuUM11SZ9CD0ew7WChKygUhpSpdhmrxfFBhwO530BdIxVyBnqUEKt3A2Z+/vwxNTyMhXD8x+nfapFe20pbtIDUQ9TQXXzAbr5ds9S7NzbzqlgL3dzJxiMttiSgB066LHJDM6wdRsaYr0K/EuMTvOienbvCIeilXiLPAPw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lKYwXRYS; arc=fail smtp.client-ip=40.107.208.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gH2TFCi5"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VEZEU12415005;
-	Mon, 31 Aug 2026 15:08:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/LYAeZK0zKc5FC29E
-	Rj2MS/6YaHH5eEKKxWpKG9SP1A=; b=gH2TFCi53t/WzK70UsmB9PC0zv8G7aH9/
-	0bsGvi0g7aU46z8INWEC02qvLkrIjyi+S/KpoJcVu0t4muGeWZzEsK74KpwR1XkI
-	sbLeWv4vueq85bbsJrb+NmhWmLNnp6khF7XiBlC/cKiFZ7Ttz6tmm1c7kInkBPhX
-	hAUGFdEv2VGvCKejzfGxyS3kpKTKjZGm9vRZHKkWlIzLe/Ab5w5/Yk8J+f73Skb8
-	ldYOLg9+VjGYmX5kSroD0+qD1JODP5kXZLaS8F089fRGFaDFykOE+dmW7TAeb/6c
-	xYbWUHzitDAHnc8DkvrNXOK9NWf/K3LRtpNjpFFecRpXSsN5igDzw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbmuhj8wn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:24 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VEuKje024293;
-	Mon, 31 Aug 2026 15:08:24 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcarjxjw0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:24 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VF8Jf964422230
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 15:08:20 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C46E858051;
-	Mon, 31 Aug 2026 15:08:19 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 018455805A;
-	Mon, 31 Aug 2026 15:08:16 +0000 (GMT)
-Received: from 192.168.1.50 (unknown [9.67.102.143])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 15:08:15 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
-        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com, Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next v6 05/15] ibmveth: Refactor RX interrupt control for MQ RX queues
-Date: Mon, 31 Aug 2026 08:07:16 -0700
-Message-Id: <8f989bb564874f041ac9648d871c6ff3e3014bb9.1788102125.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <cover.1788102125.git.mmc@linux.ibm.com>
-References: <cover.1788102125.git.mmc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lKYwXRYS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZQ5i/BKky3RZX+yIt2y7SvFTCw0ZvxrYoJ9+hw30ZJLmqUQNngoB1F4B2W2y989eAThMpqYqHm80zC1t1JZQlt8h4JxxHmWxcqJ8iE0XXvhDQgmQsq4vIY+1ZKSYx4Pr8Zm7NUApGmogzXyQJGcctIMwlOeU5zxtvH+D9Yt6c0M+l4Dw2WlW4T8ZUG8+Gu2yPVJdr4LmvQe5SoJ3DBEzyQVm1lnuP+FGNAz/goVMV/cbAG5xzcDhRqljAgPS8fr9HTxCLUCiHpuzc83dzPIEx4Adss155l/eHtxOlWL7HfzxDvX6j9esnlQJDPCaH1ilHk+aCruIJLNPAqviZc3PqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GT55Hvmm2/JZAOAZlYrRj07fOuazW0zYIN28WEzCJmA=;
+ b=StBvoh2xlDeKax8Tq4EL7AAC7b37Uqzo1AOhiHC+s214eVc/8FyFtA6b1kDTTZZ13UpA+9ihhStObWSkcl0iy8rWYRUBnU6Gr5Mhf1uatLbRTvLPv4v6NtR34G0MNlVEFgsZNH9r3e0/VYK+kQ66TWnt2krmF2JZVZpoqq+vekY29hOi4B3DcgtmOVI17W53wZLk9aldG+vcp75IxQcTm6VkOzYtwMRvEa+KUUdtMyUyp+n0HBrW/Zsn1ztUyNm6E4PQt70at7sq8ycbJbQa4Co4HL4weGnZ/gn0Tbs85wdN4nug4DsgqBHpPhShXhXz+amTsnOGCTT+w38DUZd0Jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GT55Hvmm2/JZAOAZlYrRj07fOuazW0zYIN28WEzCJmA=;
+ b=lKYwXRYSyRAhLRpfGYm7I2SOmpLc9v8mizqIlfs93NjVjKLkj64WIIo3mBtwqjH/xvt4dhkSbgS7GS2h2xOcJuSgItbl4bZhRDBj1alq5/p2qHBg4WV6MuBQq2U9DQwCMqBvlqCOwDADcgzEC1+UmiA50CiJ7pOwQIcXPq3q2Mk=
+Received: from BY3PR04CA0025.namprd04.prod.outlook.com (2603:10b6:a03:217::30)
+ by DS7PR12MB9552.namprd12.prod.outlook.com (2603:10b6:8:24f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 15:08:27 +0000
+Received: from SJ5PEPF000001E8.namprd05.prod.outlook.com
+ (2603:10b6:a03:217:cafe::4) by BY3PR04CA0025.outlook.office365.com
+ (2603:10b6:a03:217::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Mon,
+ 31 Aug 2026 15:08:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001E8.mail.protection.outlook.com (10.167.242.196) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Mon, 31 Aug 2026 15:08:26 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
+ 2026 10:08:25 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Mon, 31 Aug 2026 10:08:21 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH net-next v3 1/6] net: xilinx: axienet: Introduce axienet_config for MAC-specific ops
+Date: Mon, 31 Aug 2026 20:38:11 +0530
+Message-ID: <20260831150816.1020883-2-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260831150816.1020883-1-suraj.gupta2@amd.com>
+References: <20260831150816.1020883-1-suraj.gupta2@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,695 +80,750 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: nkqfGEvQQAj7nKO4wLoaataGid2eTO9y
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfXwNq77S/MmiN+
- 7PPCEgBIOp4gFwYHqQaGAe/sDiCjCC+K5Z4U2iI8Y84O8sdbSCZ5Xzdlz6JO6iiT8MZ/XK1odJ9
- Tjanhm6ygIrZxvWnyjZURBdNxCiXb8xTILAw9QzvC3p5AK0ws6sspMlV/o/ATGlT+zIdW69lxEy
- rP4BfGzJkCGEKqyaE1EMH98fH3bx5o9ltLsLGwz9f4wkRyEoMeF9wF7MulJX5S0KSro5dVdAE77
- 4irvliGya5TLUwVaUlySucBC/WSSAee5z3ixLcX7Bqam3r5SrEdhnyA+9nHBOFA1RIDoXyCt7bh
- HC/LU0SlB/v3HEE8T/sWKDyONEV/kogIhmOdZRPj+jLtSOAVrYBWgnW6THnfP/MxiELtajzYD6T
- Ge85OOdXv333ZH0ITP/8gpN+1XTECUyGFNtj9B71dyUUzoT/Jr6KrBpQg88O6fwJZSdUFkG6Agg
- AOeso1g7u8DYRhDp/Rg==
-X-Authority-Analysis: v=2.4 cv=Osl/DS/t c=1 sm=1 tr=0 ts=6a9598e9 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=9c5XYJHA5lSF3gzyfG0A:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfX5tn+FfUfZ77D
- 46afACpRroV5gtMvX2aysnKcukYDSl3A1ySrCYWpQe3K96G9ANO3f3+UQ3BsavdmUZ0giZly0Hf
- OOLt/l3BrTT+hudQFpd2UaSJkCxbVvU=
-X-Proofpoint-ORIG-GUID: mQTNTINw4L2Cx19CD7rAnUFkY0fp5Xce
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_05,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310130
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001E8:EE_|DS7PR12MB9552:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78b6c8e4-3c21-4e49-1e66-08df0771b556
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|7416014|376014|1800799024|921020|6133799003|10063799003|56012099006|10067099003|5023799004|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	9jcJ+1rcV4AG9M1qt0iefMN6qdWBWY8XxE+fhiQW15cT3TWYyI2pQPlAsQStSnCpzC1osNTBPr2L9Br0UjI7YmeVe/kIm6N0UZDxysgwgqoaA88B2OVBTfQGG5has1kOsYnf9LBgYp1agyzg2YjP8H5lb5gpyBzRrvycp+dbDqPXCaGvatDZbbse4W9cl2tDOgcF7kueyUdUMOqvDLRUK6b4NtGNcwNP6Z7dSM4/sgS4PaZBFEWwhdw8jqqONbBqw5Zs5qXJh8gWEKqw/Mh6bSgS06+Ru7sZU0wjxHR2Yl3TlsPFkaSEbRbMwOm8vjdoDTaCWDcJhKgr7qJYUv0MuwxZW1X6IwiFDrgWm4oLctakrxwsKboFjiHWDLeornCgNh1lwtZhWqxo+t7S7b2srFKnlOHq1IT5siAa8qxFl+Hxw9706Kfc7YqmPG+jj/b/zVnXLN5XD1zeFZM0ehmsTjJITF5p4v8wEg9my1YPlGpT7s6rgFm4SwJU7TGqnR1eXZcfSNQBxbpBfJRDLw6vwSHIGWM1lC7/Pw0pOXreQZ3T6fO54mLBwnuxLnVP7of2Oi64NI9giYqGSzNPmEWmgvYM10XjXl7MHlEazPpFD0+Oy8X3riANHyzjfBjzO9xZf0fITCvlD4mLWXakXfgA5AeheD5vxY3f/v5TI/ejn7L35HBZCpLQV8DmOKNzq8EZ+F4n/sP+RCPmobjhI8fbJG8qOqAtQqunUSr4msEIyBvP6eXmeKglg9Ct0pbwCTi7
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(7416014)(376014)(1800799024)(921020)(6133799003)(10063799003)(56012099006)(10067099003)(5023799004)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	SdhX2bz9BXp81MxTqvW5Ywjz/oQEy8ukYZM0SACEt7rGLC2gW5rhMZ1Fh0Fey5mXfnmB8dcGVmOGS+K7YKW6TsODuvgTzRoH4NBlDrgFjDAwCrkQy9xBuzD/F1+BMTIpdYh9Z5PFkY0zCrd6oZdQA4r61PQBiaun+mOVeiGfHWdshyW9WsksEwqWb7+ab3yGw5jjJIqXjwEJrDqB9n5zXBr60at4RvyaR/XvSv1tMXpUMNeVGmxqhI9cCMUdYhkHQIK3MSm6Q3eszrWZ/PKXOzvlaIQ15gNQ8GW+h2DTgNj8REDHIuSxEmI6H+GWVjZ0XdaeuY+nG5NTTKsVKNotJtuRaseyQfpEzuSxHArlEiVq6rKL+4KgA6cy8EVviN/6j9nzjEnvn7z4//30Sb5Y0B6ZAcIuo5MDMXg6xyqTVlNrnUJN24S6Ip8r69OFjAuD
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 15:08:26.4197
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78b6c8e4-3c21-4e49-1e66-08df0771b556
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001E8.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9552
 
-Queue 0 and subordinate RX queues use different interrupt control
-interfaces in PHYP:
+Introduce an axienet_config structure to abstract MAC-type-specific
+operations, preparing the driver for supporting additional MAC types
+beyond the existing 1G Ethernet.
 
-  - queue 0: h_vio_signal() after h_register_logical_lan()
-  - queue N: H_VIOCTL against the queue's mapped hwirq
+Add axienet_config with capability flags (mdio, mac_irq, legacy_dma,
+uc_filter, mc_filter, vlan, jumbo, dma_tx_csum, sw_padding, internal_pcs),
+the register-dump count and callbacks (clk_init, setoptions, probe_init,
+gt_reset, mac_init, mac_link_up, get_regs, phylink_set_caps, pcs_ops,
+stats_update), and populate it from the OF match table. Convert the
+common code to consult these capabilities and callbacks instead of
+open-coding 1G behavior, so a new MAC type can be added without adding
+MAC-specific conditionals to the shared paths.
 
-The current code is single-queue oriented and cannot safely scale to
-multiple RX queues in poll completion and open/close IRQ setup.
+No functional change intended for the existing 1G path.
 
-Introduce queue-indexed interrupt helpers and wire them into
-open()/close()/poll()/interrupt in the same patch:
-
-  ibmveth_toggle_irq() / enable_irq() / disable_irq()
-  ibmveth_setup_rx_interrupts() / ibmveth_cleanup_rx_interrupts()
-  ibmveth_schedule_rx_queue()
-
-These helpers centralize queue0-vs-subordinate dispatch.
-request_irq() uses &adapter->napi[i] as the per-queue cookie so the
-handler can resolve the queue index.
-
-Move napi_enable() into setup_rx_interrupts() (after LAN registration
-and buffer-pool allocation): request_irq -> napi_enable. In this
-single-queue tree, setup does not yet unmask PHYP; schedule_rx_queue()
-masks queue 0 and schedules NAPI, and ibmveth_poll() is what unmasks
-it on completion. That order matches the later scale-up rule (NAPI
-live before PHYP unmask), not an inverted window relative to it.
-
-Factor process-context RX kicks (open, resume, pool sysfs, netpoll)
-into ibmveth_schedule_rx_queue(); keep ibmveth_interrupt() as a thin
-IRQ-only wrapper.
-
-cleanup_rx_interrupts() masks PHYP and synchronizes IRQs before
-napi_disable, remasks and synchronizes again after it because an
-in-flight poll can re-arm, then free_irq. Close then proceeds to
-h_free_logical_lan(): free_irq before free_lan is intentional once
-PHYP delivery is masked.
-
-On setup_rx enable-fail (MQ path), if enable_irq() fails for queue i,
-remask+sync queues 0..i, including the one that failed, before
-napi_disable/free_irq; the rollback loop used while (--i) and skipped
-it. H_PARAMETER stays an error on enable, so PHYP may already be
-unmasked; an unmasked queue must not drive schedule_rx, which would
-prep-fail without mask during the napi_disable wait (STOP storm).
-err_disable_napi mirrors cleanup remask after napi_disable.
-
-opened / rx_irq_setup gate whether cleanup walks IRQ/NAPI state.
-Opened / rx_irq_setup also closes a pre-existing hang: after a
-failed reopen, a later ndo_stop used to napi_disable and free_irq
-a second time (rtnl spin + already-free IRQ). That depends on the
-helpers in this patch, so there is no standalone Fixes: tag.
-
-schedule_rx_queue() masks PHYP only when napi_schedule_prep() succeeds.
-Masking on prep failure can race a completing poll that already
-re-enabled PHYP and leave NAPI idle with the queue masked (TX OK, RX
-stalled until reload). Teardown storm control stays on STOP
-(disable_irq + synchronize_irq before napi_disable) and the
-poll_stopping() re-arm guard added in P09, not on the schedule helper
-failure path.
-
-IRQ helpers return 0 or negative errno only (never raw H_* to
-ethtool/resize). H_PARAMETER is folded to success only on disable
-(idempotent mask). On enable it remains an error so a stuck-masked
-queue stays visible to poll/resize recovery.
-
-Runtime remains single-queue (num_rx_queues is still 1).
-
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
 ---
+ drivers/net/ethernet/xilinx/xilinx_axienet.h  |  52 +++
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 391 ++++++++++++------
+ 2 files changed, 319 insertions(+), 124 deletions(-)
 
-Changes in v6:
-- setup_rx enable-fail remasks queues 0..i, including the one that
-  failed (the rollback used while (--i) and left queue i unmasked
-  across napi_disable); err_disable_napi remasks after napi_disable
-- drop WARN_ON() on enable/disable_irq() returns (schedule_rx and
-  poll); the helper already logs the hcall rc, and rate-limit that
-  print
-- reword schedule_rx_queue() kdoc: true means NAPI was scheduled and
-  the mask attempted; a failed disable_irq() does not change the
-  return, and an out-of-range qindex returns false
-- noted: pool-fail without h_free predates this; the opened gate
-  also drops the accidental h_free a later ndo_stop used to give.
-  P06/P07 close it
-- noted: set_channels() IFF_UP vs opened TX LTB window closes in P14/P15
-- noted: poll() takes queue_index in P08; range check / skip helpers
-  in P09
-
-Changes in v5:
-- Remask+sync after napi_disable in cleanup (in-flight poll can re-arm)
-- Interrupt: quiet IRQ_NONE on out-of-range qindex (no WARN storm)
-- Opened / rx_irq_setup gate cleanup so close after a failed open
-  cannot napi_disable / free_irq without a prior enable/request; set
-  opened on successful open; rx_irq_setup only on full setup success
-- H_PARAMETER fold disable-only; enable stays error (stuck-masked visible)
-- IRQ helpers return 0 / negative errno only (never raw H_* to ethtool)
-- Decision: keep open IRQ order request_irq -> napi_enable while PHYP
-  stays masked until schedule/enable (coherent with later scale-up)
-- schedule_rx_queue returns bool (napi_schedule_prep success)
-- Keep mask-only-on-prep-success (no else-mask; avoids idle+masked race)
-- Call out free_irq-before-free_lan as intentional once PHYP is masked
-- Poll re-arm during teardown lands with SQ poll-harden (not claimed here)
-- synchronize_net() after RX IRQ/NAPI teardown in close
-- Add subordinate IRQ dispose helpers (per-queue + bulk 1..N; bound to MAX)
-
-Changes in v4:
-- Include irq.h / irqdomain.h with first irq_dispose_mapping() use.
-- Introduce IRQ helpers in the same patch that wires open/close/poll
-  callers, instead of leaving unused statics.
-- Factor process-context RX kicks into ibmveth_schedule_rx_queue();
-  keep ibmveth_interrupt() as the IRQ-only wrapper.
-- On cleanup, mask PHYP and synchronize_irq before napi_disable
-  (storm-safety; not fully behavior-preserving vs classic close).
-- Leave queue_irq[0] set after cleanup (queue 0 uses netdev->irq;
-  next open reuses it). Only subordinate virqs are disposed.
-
- drivers/net/ethernet/ibm/ibmveth.c | 404 ++++++++++++++++++++++++++---
- drivers/net/ethernet/ibm/ibmveth.h |   4 +
- 2 files changed, 367 insertions(+), 41 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 37a6d13e603e..335712faaa42 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -21,6 +21,8 @@
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index fcd3aaef27fc..40f03c9eb382 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -545,6 +545,7 @@ struct skbuf_dma_descriptor {
+  * @tx_ring_tail: TX skb ring buffer tail index.
+  * @rx_ring_head: RX skb ring buffer head index.
+  * @rx_ring_tail: RX skb ring buffer tail index.
++ * @axienet_config: MAC-type specific configuration and operations.
+  */
+ struct axienet_local {
+ 	struct net_device *ndev;
+@@ -626,6 +627,57 @@ struct axienet_local {
+ 	int tx_ring_tail;
+ 	int rx_ring_head;
+ 	int rx_ring_tail;
++	const struct axienet_config *axienet_config;
++};
++
++/**
++ * struct axienet_config - MAC-type specific configuration and operations
++ * @mdio: MAC has an MDIO bus for external PHY management
++ * @mac_irq: MAC has a dedicated core interrupt
++ * @legacy_dma: MAC supports the legacy (non-dmaengine) DMA mode
++ * @uc_filter: MAC has unicast address filter registers
++ * @mc_filter: MAC has multicast address filter registers
++ * @vlan: MAC supports VLAN frames by default
++ * @jumbo: MAC supports jumbo frames
++ * @dma_tx_csum: MAC supports TX checksum offload
++ * @sw_padding: Short frames must be padded in software before transmit
++ * @internal_pcs: MAC always drives an internal PCS
++ * @regs_n: Number of MAC registers exposed through ethtool -d
++ * @clk_init: Callback to get and enable the MAC-specific clocks
++ * @setoptions: Callback to program MAC hardware options
++ * @probe_init: Callback for MAC-specific probe-time init, or NULL if unused
++ * @gt_reset: Callback to reset the serial transceiver (GT), or NULL if unused
++ * @mac_init: Callback for MAC-specific bring-up after the DMA reset
++ * @mac_link_up: Callback to program link speed and pause on link up, or NULL
++ * @get_regs: Callback to dump the MAC registers for ethtool -d
++ * @phylink_set_caps: Callback to set phylink MAC capabilities
++ * @pcs_ops: phylink PCS operations for this MAC, or NULL if unused
++ * @stats_update: Callback to latch/accumulate the periodic MAC counters
++ */
++struct axienet_config {
++	bool mdio;
++	bool mac_irq;
++	bool legacy_dma;
++	bool uc_filter;
++	bool mc_filter;
++	bool vlan;
++	bool jumbo;
++	bool dma_tx_csum;
++	bool sw_padding;
++	bool internal_pcs;
++	unsigned int regs_n;
++	int (*clk_init)(struct axienet_local *lp);
++	void (*setoptions)(struct net_device *ndev, u32 options);
++	void (*probe_init)(struct axienet_local *lp);
++	void (*gt_reset)(struct axienet_local *lp);
++	int (*mac_init)(struct net_device *ndev);
++	void (*mac_link_up)(struct net_device *ndev, int speed,
++			    bool tx_pause, bool rx_pause);
++	void (*get_regs)(struct axienet_local *lp, u32 *data);
++	void (*phylink_set_caps)(struct axienet_local *lp,
++				 struct phylink_config *config);
++	const struct phylink_pcs_ops *pcs_ops;
++	void (*stats_update)(struct axienet_local *lp);
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 67d1b8e91d68..5c59423bd778 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -33,6 +33,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
  #include <linux/skbuff.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/irqdomain.h>
- #include <linux/mm.h>
- #include <linux/pm.h>
- #include <linux/ethtool.h>
-@@ -338,6 +340,320 @@ ibmveth_cleanup_rx_resources(struct ibmveth_adapter *adapter)
+ #include <linux/math64.h>
+ #include <linux/phy.h>
+@@ -64,16 +65,6 @@
+ 
+ static void axienet_rx_submit_desc(struct net_device *ndev);
+ 
+-/* Match table for of_platform binding */
+-static const struct of_device_id axienet_of_match[] = {
+-	{ .compatible = "xlnx,axi-ethernet-1.00.a", },
+-	{ .compatible = "xlnx,axi-ethernet-1.01.a", },
+-	{ .compatible = "xlnx,axi-ethernet-2.01.a", },
+-	{},
+-};
+-
+-MODULE_DEVICE_TABLE(of, axienet_of_match);
+-
+ /* Option table for setting up Axi Ethernet hardware options */
+ static struct axienet_option axienet_options[] = {
+ 	/* Turn on jumbo packet support for both Rx and Tx */
+@@ -418,6 +409,9 @@ static void axienet_set_mac_address(struct net_device *ndev,
+ 	if (!is_valid_ether_addr(ndev->dev_addr))
+ 		eth_hw_addr_random(ndev);
+ 
++	if (!lp->axienet_config->uc_filter)
++		return;
++
+ 	/* Set up unicast MAC address filter set its mac address */
+ 	axienet_iow(lp, XAE_UAW0_OFFSET,
+ 		    (ndev->dev_addr[0]) |
+@@ -467,6 +461,9 @@ static void axienet_set_multicast_list(struct net_device *ndev)
+ 	u32 reg, af0reg, af1reg;
+ 	struct axienet_local *lp = netdev_priv(ndev);
+ 
++	if (!lp->axienet_config->mc_filter)
++		return;
++
+ 	reg = axienet_ior(lp, XAE_FMI_OFFSET);
+ 	reg &= ~XAE_FMI_PM_MASK;
+ 	if (ndev->flags & IFF_PROMISC)
+@@ -575,14 +572,25 @@ static void axienet_stats_update(struct axienet_local *lp, bool reset)
+ 	write_seqcount_end(&lp->hw_stats_seqcount);
+ }
+ 
++/**
++ * axienet_1g_stats_update - Refresh 1G MAC hardware statistics
++ * @lp:		Pointer to the axienet_local structure
++ */
++static void axienet_1g_stats_update(struct axienet_local *lp)
++{
++	axienet_stats_update(lp, false);
++}
++
+ static void axienet_refresh_stats(struct work_struct *work)
+ {
+ 	struct axienet_local *lp = container_of(work, struct axienet_local,
+ 						stats_work.work);
+ 
+-	mutex_lock(&lp->stats_lock);
+-	axienet_stats_update(lp, false);
+-	mutex_unlock(&lp->stats_lock);
++	if (lp->axienet_config->stats_update) {
++		mutex_lock(&lp->stats_lock);
++		lp->axienet_config->stats_update(lp);
++		mutex_unlock(&lp->stats_lock);
++	}
+ 
+ 	/* Just less than 2^32 bytes at 2.5 GBit/s */
+ 	schedule_delayed_work(&lp->stats_work, 13 * HZ);
+@@ -693,6 +701,32 @@ static void axienet_dma_stop(struct axienet_local *lp)
+ 	axienet_unlock_mii(lp);
+ }
+ 
++/**
++ * axienet_1g_mac_init - 1G MAC-specific bring-up after the DMA reset
++ * @ndev:	Pointer to the net_device structure
++ *
++ * Return: 0 on success or a negative error number otherwise.
++ */
++static int axienet_1g_mac_init(struct net_device *ndev)
++{
++	struct axienet_local *lp = netdev_priv(ndev);
++	u32 axienet_status;
++
++	axienet_status = axienet_ior(lp, XAE_RCW1_OFFSET);
++	axienet_status &= ~XAE_RCW1_RX_MASK;
++	axienet_iow(lp, XAE_RCW1_OFFSET, axienet_status);
++
++	axienet_status = axienet_ior(lp, XAE_IP_OFFSET);
++	if (axienet_status & XAE_INT_RXRJECT_MASK)
++		axienet_iow(lp, XAE_IS_OFFSET, XAE_INT_RXRJECT_MASK);
++	axienet_iow(lp, XAE_IE_OFFSET, lp->eth_irq > 0 ?
++		    XAE_INT_RECV_ERROR_MASK : 0);
++
++	axienet_iow(lp, XAE_FCC_OFFSET, XAE_FCC_FCRX_MASK);
++
++	return 0;
++}
++
+ /**
+  * axienet_device_reset - Reset and initialize the Axi Ethernet hardware.
+  * @ndev:	Pointer to the net_device structure
+@@ -708,19 +742,23 @@ static void axienet_dma_stop(struct axienet_local *lp)
+  */
+ static int axienet_device_reset(struct net_device *ndev)
+ {
+-	u32 axienet_status;
+ 	struct axienet_local *lp = netdev_priv(ndev);
+ 	int ret;
+ 
++	if (lp->axienet_config->gt_reset)
++		lp->axienet_config->gt_reset(lp);
++
+ 	lp->max_frm_size = XAE_MAX_VLAN_FRAME_SIZE;
+-	lp->options |= XAE_OPTION_VLAN;
++
++	if (lp->axienet_config->vlan)
++		lp->options |= XAE_OPTION_VLAN;
+ 	lp->options &= (~XAE_OPTION_JUMBO);
+ 
+ 	if (ndev->mtu > XAE_MTU && ndev->mtu <= XAE_JUMBO_MTU) {
+ 		lp->max_frm_size = ndev->mtu + VLAN_ETH_HLEN +
+ 					XAE_TRL_SIZE;
+ 
+-		if (lp->max_frm_size <= lp->rxmem)
++		if (lp->max_frm_size <= lp->rxmem && lp->axienet_config->jumbo)
+ 			lp->options |= XAE_OPTION_JUMBO;
+ 	}
+ 
+@@ -737,26 +775,18 @@ static int axienet_device_reset(struct net_device *ndev)
+ 		}
+ 	}
+ 
+-	axienet_status = axienet_ior(lp, XAE_RCW1_OFFSET);
+-	axienet_status &= ~XAE_RCW1_RX_MASK;
+-	axienet_iow(lp, XAE_RCW1_OFFSET, axienet_status);
+-
+-	axienet_status = axienet_ior(lp, XAE_IP_OFFSET);
+-	if (axienet_status & XAE_INT_RXRJECT_MASK)
+-		axienet_iow(lp, XAE_IS_OFFSET, XAE_INT_RXRJECT_MASK);
+-	axienet_iow(lp, XAE_IE_OFFSET, lp->eth_irq > 0 ?
+-		    XAE_INT_RECV_ERROR_MASK : 0);
+-
+-	axienet_iow(lp, XAE_FCC_OFFSET, XAE_FCC_FCRX_MASK);
++	ret = lp->axienet_config->mac_init(ndev);
++	if (ret)
++		return ret;
+ 
+ 	/* Sync default options with HW but leave receiver and
+ 	 * transmitter disabled.
+ 	 */
+-	axienet_setoptions(ndev, lp->options &
+-			   ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
++	lp->axienet_config->setoptions(ndev, lp->options &
++				       ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
+ 	axienet_set_mac_address(ndev, NULL);
+ 	axienet_set_multicast_list(ndev);
+-	axienet_setoptions(ndev, lp->options);
++	lp->axienet_config->setoptions(ndev, lp->options);
+ 
+ 	netif_trans_update(ndev);
+ 
+@@ -914,6 +944,13 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+ 	int sg_len;
+ 	int ret;
+ 
++	if (lp->axienet_config->sw_padding && eth_skb_pad(skb)) {
++		/* Pad short frames; the MAC does not append Ethernet padding. */
++		ndev->stats.tx_dropped++;
++		ndev->stats.tx_errors++;
++		return NETDEV_TX_OK;
++	}
++
+ 	dma_dev = lp->tx_chan->device;
+ 	sg_len = skb_shinfo(skb)->nr_frags + 1;
+ 	if (CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX) <= 1) {
+@@ -938,19 +975,21 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+ 		goto xmit_error_drop_skb;
+ 
+ 	/* Fill up app fields for checksum */
+-	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+-		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
+-			/* Tx Full Checksum Offload Enabled */
+-			app_metadata[0] |= 2;
+-		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
+-			csum_start_off = skb_transport_offset(skb);
+-			csum_index_off = csum_start_off + skb->csum_offset;
+-			/* Tx Partial Checksum Offload Enabled */
+-			app_metadata[0] |= 1;
+-			app_metadata[1] = (csum_start_off << 16) | csum_index_off;
++	if (lp->axienet_config->dma_tx_csum) {
++		if (skb->ip_summed == CHECKSUM_PARTIAL) {
++			if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
++				/* Tx Full Checksum Offload Enabled */
++				app_metadata[0] |= 2;
++			} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
++				csum_start_off = skb_transport_offset(skb);
++				csum_index_off = csum_start_off + skb->csum_offset;
++				/* Tx Partial Checksum Offload Enabled */
++				app_metadata[0] |= 1;
++				app_metadata[1] = (csum_start_off << 16) | csum_index_off;
++			}
++		} else if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
++			app_metadata[0] |= 2; /* Tx Full Checksum Offload Enabled */
+ 		}
+-	} else if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
+-		app_metadata[0] |= 2; /* Tx Full Checksum Offload Enabled */
+ 	}
+ 
+ 	dma_tx_desc = dma_dev->device_prep_slave_sg(lp->tx_chan, skbuf_dma->sgl,
+@@ -1738,8 +1777,8 @@ static int axienet_stop(struct net_device *ndev)
+ 	phylink_stop(lp->phylink);
+ 	phylink_disconnect_phy(lp->phylink);
+ 
+-	axienet_setoptions(ndev, lp->options &
+-			   ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
++	lp->axienet_config->setoptions(ndev, lp->options &
++				       ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
+ 
+ 	if (!lp->use_dmaengine) {
+ 		axienet_dma_stop(lp);
+@@ -1765,7 +1804,8 @@ static int axienet_stop(struct net_device *ndev)
+ 	}
+ 
+ 	netdev_reset_queue(ndev);
+-	axienet_iow(lp, XAE_IE_OFFSET, 0);
++	if (lp->axienet_config->mac_irq)
++		axienet_iow(lp, XAE_IE_OFFSET, 0);
+ 
+ 	if (lp->eth_irq > 0)
+ 		free_irq(lp->eth_irq, ndev);
+@@ -1934,30 +1974,18 @@ static void axienet_ethtools_get_drvinfo(struct net_device *ndev,
+  */
+ static int axienet_ethtools_get_regs_len(struct net_device *ndev)
+ {
+-	return sizeof(u32) * AXIENET_REGS_N;
++	struct axienet_local *lp = netdev_priv(ndev);
++
++	return sizeof(u32) * lp->axienet_config->regs_n;
+ }
+ 
+ /**
+- * axienet_ethtools_get_regs - Dump the contents of all registers present
+- *			       in AxiEthernet core.
+- * @ndev:	Pointer to net_device structure
+- * @regs:	Pointer to ethtool_regs structure
+- * @ret:	Void pointer used to return the contents of the registers.
+- *
+- * This implements ethtool command for getting the Axi Ethernet register dump.
+- * Issue "ethtool -d ethX" to execute this function.
++ * axienet_1g_get_regs - Dump 1G MAC registers for ethtool
++ * @lp:		Pointer to the axienet_local structure
++ * @data:	Buffer for register values (zeroed and sized by the caller)
+  */
+-static void axienet_ethtools_get_regs(struct net_device *ndev,
+-				      struct ethtool_regs *regs, void *ret)
++static void axienet_1g_get_regs(struct axienet_local *lp, u32 *data)
+ {
+-	u32 *data = (u32 *)ret;
+-	size_t len = sizeof(u32) * AXIENET_REGS_N;
+-	struct axienet_local *lp = netdev_priv(ndev);
+-
+-	regs->version = 0;
+-	regs->len = len;
+-
+-	memset(data, 0, len);
+ 	data[0] = axienet_ior(lp, XAE_RAF_OFFSET);
+ 	data[1] = axienet_ior(lp, XAE_TPF_OFFSET);
+ 	data[2] = axienet_ior(lp, XAE_IFGP_OFFSET);
+@@ -1998,6 +2026,31 @@ static void axienet_ethtools_get_regs(struct net_device *ndev,
  	}
  }
  
 +/**
-+ * ibmveth_toggle_irq - Common helper to enable/disable queue interrupts
-+ * @adapter: ibmveth adapter structure
-+ * @queue_index: Index of the queue (0 for primary, 1+ for subordinate)
-+ * @enable: true to enable, false to disable
++ * axienet_ethtools_get_regs - Dump the contents of all registers present
++ *			       in AxiEthernet core.
++ * @ndev:	Pointer to net_device structure
++ * @regs:	Pointer to ethtool_regs structure
++ * @ret:	Void pointer used to return the contents of the registers.
 + *
-+ * For queue 0 (primary), uses h_vio_signal() as it's registered via
-+ * h_register_logical_lan(). For subordinate queues (1+), uses H_VIOCTL
-+ * with H_ENABLE/DISABLE_VIO_INTERRUPT for per-queue interrupt control.
-+ *
-+ * Return: 0 on success, negative errno on failure (never raw H_*).
++ * This implements ethtool command for getting the Axi Ethernet register dump.
++ * Issue "ethtool -d ethX" to execute this function.
 + */
-+static int
-+ibmveth_toggle_irq(struct ibmveth_adapter *adapter, int queue_index,
-+		   bool enable)
++static void axienet_ethtools_get_regs(struct net_device *ndev,
++				      struct ethtool_regs *regs, void *ret)
 +{
-+	unsigned long h_rc;
-+	unsigned long irq = adapter->queue_irq[queue_index];
-+	const char *action = enable ? "enable" : "disable";
++	struct axienet_local *lp = netdev_priv(ndev);
++	u32 *data = (u32 *)ret;
++	size_t len;
 +
-+	if (queue_index == 0) {
-+		/* Primary queue: use h_vio_signal() */
-+		h_rc = h_vio_signal(adapter->vdev->unit_address,
-+				    enable ? VIO_IRQ_ENABLE : VIO_IRQ_DISABLE);
-+	} else {
-+		/* Subordinate queues: use H_VIOCTL with hardware IRQ */
-+		struct irq_data *irq_data = irq_get_irq_data(irq);
-+		irq_hw_number_t hwirq;
-+		u64 vioctl_cmd = enable ? H_ENABLE_VIO_INTERRUPT :
-+			H_DISABLE_VIO_INTERRUPT;
++	len = sizeof(u32) * lp->axienet_config->regs_n;
++	regs->version = 0;
++	regs->len = len;
 +
-+		if (!irq_data) {
-+			netdev_err(adapter->netdev,
-+				   "Failed to get IRQ data for queue %d (virq=%lu)\n",
-+				   queue_index, irq);
++	memset(data, 0, len);
++	lp->axienet_config->get_regs(lp, data);
++}
++
+ static void
+ axienet_ethtools_get_ringparam(struct net_device *ndev,
+ 			       struct ethtool_ringparam *ering,
+@@ -2634,13 +2687,9 @@ static void axienet_mac_link_down(struct phylink_config *config,
+ 	/* nothing meaningful to do */
+ }
+ 
+-static void axienet_mac_link_up(struct phylink_config *config,
+-				struct phy_device *phy,
+-				unsigned int mode, phy_interface_t interface,
+-				int speed, int duplex,
+-				bool tx_pause, bool rx_pause)
++static void axienet_1g_mac_link_up(struct net_device *ndev, int speed,
++				   bool tx_pause, bool rx_pause)
+ {
+-	struct net_device *ndev = to_net_dev(config->dev);
+ 	struct axienet_local *lp = netdev_priv(ndev);
+ 	u32 emmc_reg, fcc_reg;
+ 
+@@ -2677,6 +2726,19 @@ static void axienet_mac_link_up(struct phylink_config *config,
+ 	axienet_iow(lp, XAE_FCC_OFFSET, fcc_reg);
+ }
+ 
++static void axienet_mac_link_up(struct phylink_config *config,
++				struct phy_device *phy,
++				unsigned int mode, phy_interface_t interface,
++				int speed, int duplex,
++				bool tx_pause, bool rx_pause)
++{
++	struct net_device *ndev = to_net_dev(config->dev);
++	struct axienet_local *lp = netdev_priv(ndev);
++
++	if (lp->axienet_config->mac_link_up)
++		lp->axienet_config->mac_link_up(ndev, speed, tx_pause, rx_pause);
++}
++
+ static const struct phylink_mac_ops axienet_phylink_ops = {
+ 	.mac_select_pcs = axienet_mac_select_pcs,
+ 	.mac_config = axienet_mac_config,
+@@ -2694,7 +2756,6 @@ static const struct phylink_mac_ops axienet_phylink_ops = {
+ static void axienet_dma_err_handler(struct work_struct *work)
+ {
+ 	u32 i;
+-	u32 axienet_status;
+ 	struct axidma_bd *cur_p;
+ 	struct axienet_local *lp = container_of(work, struct axienet_local,
+ 						dma_err_task);
+@@ -2707,8 +2768,8 @@ static void axienet_dma_err_handler(struct work_struct *work)
+ 	napi_disable(&lp->napi_tx);
+ 	napi_disable(&lp->napi_rx);
+ 
+-	axienet_setoptions(ndev, lp->options &
+-			   ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
++	lp->axienet_config->setoptions(ndev, lp->options &
++				       ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
+ 
+ 	axienet_dma_stop(lp);
+ 	netdev_reset_queue(ndev);
+@@ -2753,29 +2814,114 @@ static void axienet_dma_err_handler(struct work_struct *work)
+ 
+ 	axienet_dma_start(lp);
+ 
+-	axienet_status = axienet_ior(lp, XAE_RCW1_OFFSET);
+-	axienet_status &= ~XAE_RCW1_RX_MASK;
+-	axienet_iow(lp, XAE_RCW1_OFFSET, axienet_status);
+-
+-	axienet_status = axienet_ior(lp, XAE_IP_OFFSET);
+-	if (axienet_status & XAE_INT_RXRJECT_MASK)
+-		axienet_iow(lp, XAE_IS_OFFSET, XAE_INT_RXRJECT_MASK);
+-	axienet_iow(lp, XAE_IE_OFFSET, lp->eth_irq > 0 ?
+-		    XAE_INT_RECV_ERROR_MASK : 0);
+-	axienet_iow(lp, XAE_FCC_OFFSET, XAE_FCC_FCRX_MASK);
++	lp->axienet_config->mac_init(ndev);
+ 
+ 	/* Sync default options with HW but leave receiver and
+ 	 * transmitter disabled.
+ 	 */
+-	axienet_setoptions(ndev, lp->options &
+-			   ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
++	lp->axienet_config->setoptions(ndev, lp->options &
++				       ~(XAE_OPTION_TXEN | XAE_OPTION_RXEN));
+ 	axienet_set_mac_address(ndev, NULL);
+ 	axienet_set_multicast_list(ndev);
+ 	napi_enable(&lp->napi_rx);
+ 	napi_enable(&lp->napi_tx);
+-	axienet_setoptions(ndev, lp->options);
++	lp->axienet_config->setoptions(ndev, lp->options);
+ }
+ 
++/**
++ * axienet_1g_phylink_set_caps - Set 1G phylink capabilities and interfaces
++ * @lp:		Pointer to the axienet_local structure
++ * @config:	Pointer to the phylink_config structure
++ */
++static void axienet_1g_phylink_set_caps(struct axienet_local *lp,
++					struct phylink_config *config)
++{
++	config->mac_capabilities |= MAC_10FD | MAC_100FD | MAC_1000FD;
++	__set_bit(lp->phy_mode, config->supported_interfaces);
++	if (lp->switch_x_sgmii) {
++		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
++			  config->supported_interfaces);
++		__set_bit(PHY_INTERFACE_MODE_SGMII,
++			  config->supported_interfaces);
++	}
++}
++
++/**
++ * axienet_1g_clk_init - Get and enable the 1G MAC clocks
++ * @lp:		Pointer to the axienet_local structure
++ *
++ * Return: 0 on success or a negative error number otherwise.
++ */
++static int axienet_1g_clk_init(struct axienet_local *lp)
++{
++	struct device *dev = lp->dev;
++	int ret;
++
++	lp->axi_clk = devm_clk_get_optional_enabled(dev, "s_axi_lite_clk");
++	if (!lp->axi_clk) {
++		/* For backward compatibility, if named AXI clock is not
++		 * present, treat the first clock specified as the AXI clock.
++		 */
++		lp->axi_clk = devm_clk_get_optional_enabled(dev, NULL);
++	}
++	if (IS_ERR(lp->axi_clk))
++		return dev_err_probe(dev, PTR_ERR(lp->axi_clk),
++				     "could not get AXI clock\n");
++
++	lp->misc_clks[0].id = "axis_clk";
++	lp->misc_clks[1].id = "ref_clk";
++	lp->misc_clks[2].id = "mgt_clk";
++
++	ret = devm_clk_bulk_get_optional_enable(dev, XAE_NUM_MISC_CLOCKS,
++						lp->misc_clks);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "could not get/enable misc. clocks\n");
++
++	return 0;
++}
++
++/**
++ * axienet_1g_probe_init - 1G MAC-specific probe-time initialization
++ * @lp:		Pointer to the axienet_local structure
++ */
++static void axienet_1g_probe_init(struct axienet_local *lp)
++{
++	if (axienet_ior(lp, XAE_ABILITY_OFFSET) & XAE_ABILITY_STATS)
++		lp->features |= XAE_FEATURE_STATS;
++}
++
++static const struct axienet_config axienet_1g_config = {
++	.mdio = true,
++	.mac_irq = true,
++	.legacy_dma = true,
++	.uc_filter = true,
++	.mc_filter = true,
++	.vlan = true,
++	.jumbo = true,
++	.dma_tx_csum = true,
++	.regs_n = AXIENET_REGS_N,
++	.clk_init = axienet_1g_clk_init,
++	.setoptions = axienet_setoptions,
++	.probe_init = axienet_1g_probe_init,
++	.mac_init = axienet_1g_mac_init,
++	.mac_link_up = axienet_1g_mac_link_up,
++	.get_regs = axienet_1g_get_regs,
++	.phylink_set_caps = axienet_1g_phylink_set_caps,
++	.pcs_ops = &axienet_pcs_ops,
++	.stats_update = axienet_1g_stats_update,
++};
++
++/* Match table for of_platform binding */
++static const struct of_device_id axienet_of_match[] = {
++	{ .compatible = "xlnx,axi-ethernet-1.00.a", .data = &axienet_1g_config },
++	{ .compatible = "xlnx,axi-ethernet-1.01.a", .data = &axienet_1g_config },
++	{ .compatible = "xlnx,axi-ethernet-2.01.a", .data = &axienet_1g_config },
++	{},
++};
++
++MODULE_DEVICE_TABLE(of, axienet_of_match);
++
+ /**
+  * axienet_probe - Axi Ethernet probe function.
+  * @pdev:	Pointer to platform device structure.
+@@ -2826,27 +2972,13 @@ static int axienet_probe(struct platform_device *pdev)
+ 	seqcount_mutex_init(&lp->hw_stats_seqcount, &lp->stats_lock);
+ 	INIT_DEFERRABLE_WORK(&lp->stats_work, axienet_refresh_stats);
+ 
+-	lp->axi_clk = devm_clk_get_optional_enabled(&pdev->dev,
+-						    "s_axi_lite_clk");
+-	if (!lp->axi_clk) {
+-		/* For backward compatibility, if named AXI clock is not present,
+-		 * treat the first clock specified as the AXI clock.
+-		 */
+-		lp->axi_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+-	}
+-	if (IS_ERR(lp->axi_clk))
+-		return dev_err_probe(&pdev->dev, PTR_ERR(lp->axi_clk),
+-				     "could not get AXI clock\n");
++	lp->axienet_config = device_get_match_data(&pdev->dev);
++	if (!lp->axienet_config)
++		return -ENODEV;
+ 
+-	lp->misc_clks[0].id = "axis_clk";
+-	lp->misc_clks[1].id = "ref_clk";
+-	lp->misc_clks[2].id = "mgt_clk";
+-
+-	ret = devm_clk_bulk_get_optional_enable(&pdev->dev, XAE_NUM_MISC_CLOCKS,
+-						lp->misc_clks);
++	ret = lp->axienet_config->clk_init(lp);
+ 	if (ret)
+-		return dev_err_probe(&pdev->dev, ret,
+-				     "could not get/enable misc. clocks\n");
++		return ret;
+ 
+ 	/* Map device registers */
+ 	lp->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &ethres);
+@@ -2857,9 +2989,6 @@ static int axienet_probe(struct platform_device *pdev)
+ 	/* Setup checksum offload, but default to off if not specified */
+ 	lp->features = 0;
+ 
+-	if (axienet_ior(lp, XAE_ABILITY_OFFSET) & XAE_ABILITY_STATS)
+-		lp->features |= XAE_FEATURE_STATS;
+-
+ 	ret = of_property_read_u32(pdev->dev.of_node, "xlnx,txcsum", &value);
+ 	if (!ret) {
+ 		switch (value) {
+@@ -2933,7 +3062,17 @@ static int axienet_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
+ 
++	if (lp->axienet_config->probe_init)
++		lp->axienet_config->probe_init(lp);
++
+ 	if (!of_property_present(pdev->dev.of_node, "dmas")) {
++		/* Non-dmaengine (legacy DMA) mode is only supported by some MACs */
++		if (!lp->axienet_config->legacy_dma) {
++			dev_err(&pdev->dev,
++				"Legacy DMA mode not supported by this MAC, use dmaengine\n");
 +			return -EINVAL;
 +		}
 +
-+		hwirq = irqd_to_hwirq(irq_data);
-+		h_rc = plpar_hcall_norets(H_VIOCTL,
-+					  adapter->vdev->unit_address,
-+					  vioctl_cmd,
-+					  hwirq, 0, 0);
-+
-+		/*
-+		 * H_PARAMETER is ambiguous (already in requested state vs bad
-+		 * args). Fold only on disable as an idempotent mask. On enable
-+		 * keep it an error so a stuck-masked queue stays visible to
-+		 * poll/resize recovery.
-+		 */
-+		if (h_rc == H_PARAMETER && !enable) {
-+			dev_warn_ratelimited(&adapter->netdev->dev,
-+					     "H_VIOCTL %s IRQ returned H_PARAMETER for queue %d (hwirq=%lu)\n",
-+					     action, queue_index, hwirq);
-+			return 0;
-+		}
-+	}
-+
-+	if (h_rc) {
-+		dev_err_ratelimited(&adapter->netdev->dev,
-+				    "Failed to %s IRQ for queue %d, rc=0x%lx\n",
-+				    action, queue_index, h_rc);
-+		return -EIO;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * ibmveth_disable_irq - Disable interrupt for a specific queue
-+ * @adapter: ibmveth adapter structure
-+ * @queue_index: Index of the queue (0 for primary, 1+ for subordinate)
-+ *
-+ * Return: 0 on success, negative errno on failure
-+ */
-+static int
-+ibmveth_disable_irq(struct ibmveth_adapter *adapter, int queue_index)
-+{
-+	return ibmveth_toggle_irq(adapter, queue_index, false);
-+}
-+
-+/**
-+ * ibmveth_enable_irq - Enable interrupt for a specific queue
-+ * @adapter: ibmveth adapter structure
-+ * @queue_index: Index of the queue (0 for primary, 1+ for subordinate)
-+ *
-+ * Return: 0 on success, negative errno on failure
-+ */
-+static int
-+ibmveth_enable_irq(struct ibmveth_adapter *adapter, int queue_index)
-+{
-+	return ibmveth_toggle_irq(adapter, queue_index, true);
-+}
-+
-+/**
-+ * ibmveth_dispose_subordinate_irq_mapping - Drop one subordinate virq mapping
-+ * @adapter: ibmveth adapter structure
-+ * @queue_idx: RX queue index (1..N)
-+ *
-+ * Subordinate queues get mappings from irq_create_mapping() during PHYP
-+ * registration. Queue 0 uses netdev->irq from device tree and is left alone.
-+ *
-+ * Bound against IBMVETH_MAX_RX_QUEUES, not num_rx_queues: a caller may
-+ * dispose a queue that is no longer in the published live set but still
-+ * owns a virq in queue_irq[]. Contrast with the bulk helper, which only
-+ * walks 1..num_rx_queues-1 (close / open-fail cleanup of the live set).
-+ *
-+ * Linux virq lifetime is owned by interrupt cleanup helpers. Call this only
-+ * after free_irq() when a handler was installed, or from registration failure
-+ * cleanup before request_irq().
-+ */
-+static void
-+ibmveth_dispose_subordinate_irq_mapping(struct ibmveth_adapter *adapter,
-+					int queue_idx)
-+{
-+	if (queue_idx <= 0 || queue_idx >= IBMVETH_MAX_RX_QUEUES)
-+		return;
-+
-+	if (adapter->queue_irq[queue_idx]) {
-+		irq_dispose_mapping(adapter->queue_irq[queue_idx]);
-+		adapter->queue_irq[queue_idx] = 0;
-+	}
-+}
-+
-+/**
-+ * ibmveth_dispose_subordinate_irq_mappings - Drop virq mappings for queues 1..N
-+ * @adapter: ibmveth adapter structure
-+ *
-+ * Bulk helper for close / open-fail cleanup of the published live set
-+ * (queues 1..num_rx_queues-1). Paths that need a retired or not-yet-published
-+ * queue must call ibmveth_dispose_subordinate_irq_mapping() directly.
-+ */
-+static void
-+ibmveth_dispose_subordinate_irq_mappings(struct ibmveth_adapter *adapter)
-+{
-+	int i;
-+
-+	for (i = 1; i < adapter->num_rx_queues; i++)
-+		ibmveth_dispose_subordinate_irq_mapping(adapter, i);
-+}
-+
-+/**
-+ * ibmveth_setup_rx_interrupts - Register IRQs and enable NAPI
-+ * @adapter: ibmveth adapter structure
-+ *
-+ * Registers interrupt handlers for all RX queues, enables NAPI, then
-+ * enables hypervisor interrupt delivery for multi-queue mode after
-+ * every queue has a Linux handler installed. For multi-queue open the
-+ * caller should replenish RX buffers before this helper so traffic
-+ * during open is not dropped (PHYP only interrupts after a successful
-+ * enqueue, which needs buffers). Single-queue open leaves PHYP masked
-+ * here and kicks NAPI afterward (classic path: first poll posts then
-+ * enables).
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+static int
-+ibmveth_setup_rx_interrupts(struct ibmveth_adapter *adapter)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+	int i, rc, num = adapter->num_rx_queues;
-+
-+	for (i = 0; i < num; i++) {
-+		if (!adapter->queue_irq[i]) {
-+			netdev_err(netdev, "queue %d has invalid IRQ (0)\n", i);
-+			rc = -EINVAL;
-+			goto err_free_irqs;
-+		}
-+
-+		rc = request_irq(adapter->queue_irq[i], ibmveth_interrupt,
-+				 0, netdev->name, &adapter->napi[i]);
-+		if (rc) {
-+			netdev_err(netdev,
-+				   "request_irq() failed for irq 0x%x queue %d: %d\n",
-+				   adapter->queue_irq[i], i, rc);
-+			goto err_free_irqs;
-+		}
-+	}
-+
-+	for (i = 0; i < num; i++)
-+		napi_enable(&adapter->napi[i]);
-+
-+	if (adapter->multi_queue && num > 1) {
-+		for (i = 0; i < num; i++) {
-+			rc = ibmveth_enable_irq(adapter, i);
-+			if (rc) {
-+				netdev_err(netdev,
-+					   "Failed to enable IRQ for queue %d, rc=%d\n",
-+					   i, rc);
-+				for (; i >= 0; i--) {
-+					ibmveth_disable_irq(adapter, i);
-+					synchronize_irq(adapter->queue_irq[i]);
-+				}
-+				rc = -EIO;
-+				goto err_disable_napi;
-+			}
-+		}
-+	}
-+
-+	/* Set only on full success; fail paths leave this false so a later
-+	 * close() / cleanup is a no-op.
-+	 */
-+	adapter->rx_irq_setup = true;
-+	return 0;
-+
-+err_disable_napi:
-+	/* STOP: remask after napi_disable; an in-flight poll can re-arm. */
-+	for (i = 0; i < num; i++)
-+		napi_disable(&adapter->napi[i]);
-+	for (i = 0; i < num; i++) {
-+		if (!adapter->queue_irq[i])
-+			continue;
-+		ibmveth_disable_irq(adapter, i);
-+		synchronize_irq(adapter->queue_irq[i]);
-+	}
-+	for (i = 0; i < num; i++) {
-+		if (adapter->queue_irq[i])
-+			free_irq(adapter->queue_irq[i], &adapter->napi[i]);
-+	}
-+	goto err_dispose_mappings;
-+
-+err_free_irqs:
-+	while (--i >= 0)
-+		free_irq(adapter->queue_irq[i], &adapter->napi[i]);
-+err_dispose_mappings:
-+	/* Both setup failure paths own subordinate virq disposal. */
-+	ibmveth_dispose_subordinate_irq_mappings(adapter);
-+	return rc;
-+}
-+
-+/**
-+ * ibmveth_cleanup_rx_interrupts - Mask PHYP IRQs, stop NAPI, and free IRQs
-+ * @adapter: ibmveth adapter structure
-+ *
-+ * Mask and synchronize each queue IRQ before napi_disable() so the handler
-+ * cannot miss a PHYP mask while NAPI is already dead. Remask after
-+ * napi_disable() in case an in-flight poll re-armed PHYP while we waited.
-+ * free_irq() runs only after that. Safe for close and for open failure after
-+ * setup_rx_interrupts() already unmasked PHYP. No-op if setup never
-+ * succeeded (avoids double napi_disable / free_irq after a failed close+open
-+ * while IFF_UP remains set).
-+ */
-+static void
-+ibmveth_cleanup_rx_interrupts(struct ibmveth_adapter *adapter)
-+{
-+	int i;
-+
-+	if (!adapter->rx_irq_setup)
-+		return;
-+
-+	for (i = 0; i < adapter->num_rx_queues; i++) {
-+		if (!adapter->queue_irq[i])
-+			continue;
-+		ibmveth_disable_irq(adapter, i);
-+		synchronize_irq(adapter->queue_irq[i]);
-+	}
-+
-+	for (i = 0; i < adapter->num_rx_queues; i++)
-+		napi_disable(&adapter->napi[i]);
-+
-+	for (i = 0; i < adapter->num_rx_queues; i++) {
-+		if (!adapter->queue_irq[i])
-+			continue;
-+		ibmveth_disable_irq(adapter, i);
-+		synchronize_irq(adapter->queue_irq[i]);
-+	}
-+
-+	for (i = 0; i < adapter->num_rx_queues; i++) {
-+		if (adapter->queue_irq[i])
-+			free_irq(adapter->queue_irq[i], &adapter->napi[i]);
-+	}
-+
-+	ibmveth_dispose_subordinate_irq_mappings(adapter);
-+
-+	/* Queue 0 uses netdev->irq; leave queue_irq[0] for next open. */
-+	adapter->rx_irq_setup = false;
-+}
-+
-+/**
-+ * ibmveth_schedule_rx_queue - Mask PHYP IRQ and schedule NAPI for one RX queue
-+ * @adapter: ibmveth adapter structure
-+ * @qindex: RX queue index
-+ *
-+ * Shared by the IRQ handler and process-context kick sites (open, resume,
-+ * pool sysfs, poll_controller).
-+ *
-+ * Return: true if napi_schedule_prep() succeeded and NAPI was scheduled.
-+ * Mask is attempted in that case; a failed disable_irq() is logged by the
-+ * helper and does not change the return (queue may still be unmasked).
-+ * false if the index is out of range or prep failed (including NAPI
-+ * already scheduled).
-+ */
-+static bool ibmveth_schedule_rx_queue(struct ibmveth_adapter *adapter,
-+				      int qindex)
-+{
-+	struct napi_struct *napi = &adapter->napi[qindex];
-+
-+	if (WARN_ON(qindex < 0 || qindex >= adapter->num_rx_queues))
-+		return false;
-+
-+	/*
-+	 * Only mask PHYP when NAPI will run. Masking on prep failure can
-+	 * race a completing poll that already re-enabled the queue, leaving
-+	 * NAPI idle with the IRQ masked (TX works, RX stalls) until reload.
-+	 * Storm prevention on teardown remains in cleanup/disable paths.
-+	 */
-+	if (napi_schedule_prep(napi)) {
-+		/* Failure is already logged with the hcall rc by the helper. */
-+		ibmveth_disable_irq(adapter, qindex);
-+		__napi_schedule(napi);
-+		return true;
-+	}
-+	return false;
-+}
-+
- /* setup the initial settings for a buffer pool */
- static void ibmveth_init_buffer_pool(struct ibmveth_buff_pool *pool,
- 				     u32 pool_index, u32 pool_size,
-@@ -954,8 +1270,6 @@ static int ibmveth_open(struct net_device *netdev)
+ 		/* Find the DMA node, map the DMA registers, and decode the DMA IRQs */
+ 		np = of_parse_phandle(pdev->dev.of_node, "axistream-connected", 0);
  
- 	netdev_dbg(netdev, "open starting\n");
+@@ -3013,7 +3152,10 @@ static int axienet_probe(struct platform_device *pdev)
+ 		struct xilinx_vdma_config cfg;
+ 		struct dma_chan *tx_chan;
  
--	napi_enable(&adapter->napi[0]);
--
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
- 		rxq_entries += adapter->rx_buff_pool[0][i].size;
+-		lp->eth_irq = platform_get_irq_optional(pdev, 0);
++		if (lp->axienet_config->mac_irq)
++			lp->eth_irq = platform_get_irq_optional(pdev, 0);
++		else
++			lp->eth_irq = -ENXIO;
+ 		if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO) {
+ 			return lp->eth_irq;
+ 		}
+@@ -3066,10 +3208,12 @@ static int axienet_probe(struct platform_device *pdev)
+ 	lp->tx_dma_cr = axienet_calc_cr(lp, XAXIDMA_DFT_TX_THRESHOLD,
+ 					XAXIDMA_DFT_TX_USEC);
  
-@@ -979,7 +1293,8 @@ static int ibmveth_open(struct net_device *netdev)
- 					adapter->rx_queue[0].queue_len;
- 	rxq_desc.fields.address = adapter->rx_queue[0].queue_dma;
+-	ret = axienet_mdio_setup(lp);
+-	if (ret)
+-		dev_warn(&pdev->dev,
+-			 "error registering MDIO bus: %d\n", ret);
++	if (lp->axienet_config->mdio) {
++		ret = axienet_mdio_setup(lp);
++		if (ret)
++			dev_warn(&pdev->dev,
++				 "error registering MDIO bus: %d\n", ret);
++	}
  
--	h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_DISABLE);
-+	adapter->queue_irq[0] = netdev->irq;
-+	ibmveth_disable_irq(adapter, 0);
- 
- 	lpar_rc = ibmveth_register_logical_lan(adapter, rxq_desc, mac_address);
- 
-@@ -1000,24 +1315,20 @@ static int ibmveth_open(struct net_device *netdev)
- 	if (rc)
- 		goto out_free_tx_ltb;
- 
--	netdev_dbg(netdev, "registering irq 0x%x\n", netdev->irq);
--	rc = request_irq(netdev->irq, ibmveth_interrupt, 0, netdev->name,
--			 netdev);
--	if (rc != 0) {
--		netdev_err(netdev, "unable to request irq 0x%x, rc %d\n",
--			   netdev->irq, rc);
-+	rc = ibmveth_setup_rx_interrupts(adapter);
-+	if (rc) {
- 		do {
- 			lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
- 		} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
--
- 		goto out_free_buffer_pools;
+ 	if (lp->phy_mode == PHY_INTERFACE_MODE_SGMII ||
+ 	    lp->phy_mode == PHY_INTERFACE_MODE_1000BASEX) {
+@@ -3093,23 +3237,21 @@ static int axienet_probe(struct platform_device *pdev)
+ 			goto cleanup_mdio;
+ 		}
+ 		of_node_put(np);
+-		lp->pcs.ops = &axienet_pcs_ops;
++		lp->pcs.ops = lp->axienet_config->pcs_ops;
++		lp->pcs.poll = true;
++	}
++
++	if (lp->axienet_config->internal_pcs) {
++		lp->pcs.ops = lp->axienet_config->pcs_ops;
+ 		lp->pcs.poll = true;
  	}
  
- 	netdev_dbg(netdev, "initial replenish cycle\n");
--	ibmveth_interrupt(netdev->irq, netdev);
-+	ibmveth_schedule_rx_queue(adapter, 0);
+ 	lp->phylink_config.dev = &ndev->dev;
+ 	lp->phylink_config.type = PHYLINK_NETDEV;
+ 	lp->phylink_config.mac_managed_pm = true;
+-	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+-		MAC_10FD | MAC_100FD | MAC_1000FD;
++	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
  
- 	netif_tx_start_all_queues(netdev);
- 
-+	adapter->opened = true;
- 	netdev_dbg(netdev, "open complete\n");
- 
- 	return 0;
-@@ -1031,7 +1342,6 @@ static int ibmveth_open(struct net_device *netdev)
- out_free_filter_list:
- 	ibmveth_free_filter_list(adapter);
- out:
--	napi_disable(&adapter->napi[0]);
- 	return rc;
- }
- 
-@@ -1041,27 +1351,32 @@ static int ibmveth_close(struct net_device *netdev)
- 	long lpar_rc;
- 	int i;
- 
--	netdev_dbg(netdev, "close starting\n");
-+	/* Gate on opened, not IFF_UP: pool_store/change_mtu close+open can
-+	 * leave IFF_UP set after a failed reopen.
-+	 */
-+	if (!adapter->opened)
-+		return 0;
- 
--	napi_disable(&adapter->napi[0]);
-+	adapter->opened = false;
-+
-+	netdev_dbg(netdev, "close starting\n");
- 
- 	netif_tx_stop_all_queues(netdev);
- 
--	h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_DISABLE);
-+	ibmveth_cleanup_rx_interrupts(adapter);
-+	/* Wait for softirq/poll that already passed shutdown checks. */
-+	synchronize_net();
- 
-+	ibmveth_update_rx_no_buffer(adapter);
-+	/* Full LAN teardown (subordinates arrive with register helpers). */
- 	do {
- 		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
- 	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
--
- 	if (lpar_rc != H_SUCCESS) {
--		netdev_err(netdev, "h_free_logical_lan failed with %lx, "
--			   "continuing with close\n", lpar_rc);
-+		netdev_err(adapter->netdev,
-+			   "h_free_logical_lan failed with %lx, continuing\n",
-+			   lpar_rc);
- 	}
--
--	free_irq(netdev->irq, netdev);
--
--	ibmveth_update_rx_no_buffer(adapter);
--
- 	ibmveth_free_buffer_pools(adapter);
- 	ibmveth_cleanup_rx_resources(adapter);
- 	ibmveth_free_filter_list(adapter);
-@@ -1705,7 +2020,7 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 			container_of(napi, struct ibmveth_adapter, napi[0]);
- 	struct net_device *netdev = adapter->netdev;
- 	int frames_processed = 0;
--	unsigned long lpar_rc;
-+	int rc;
- 	u16 mss = 0;
- 
- restart_poll:
-@@ -1805,15 +2120,14 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 	/* We think we are done - reenable interrupts,
- 	 * then check once more to make sure we are done.
- 	 */
--	lpar_rc = h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_ENABLE);
--	if (WARN_ON(lpar_rc != H_SUCCESS)) {
-+	rc = ibmveth_enable_irq(adapter, 0);
-+	if (rc) {
- 		schedule_work(&adapter->work);
- 		goto out;
- 	}
- 
- 	if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
--		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
--				       VIO_IRQ_DISABLE);
-+		ibmveth_disable_irq(adapter, 0);
- 		goto restart_poll;
- 	}
- 
-@@ -1823,16 +2137,20 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 
- static irqreturn_t ibmveth_interrupt(int irq, void *dev_instance)
- {
--	struct net_device *netdev = dev_instance;
-+	struct napi_struct *napi = dev_instance;
-+	struct net_device *netdev = napi->dev;
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
--	unsigned long lpar_rc;
-+	int qindex;
- 
--	if (napi_schedule_prep(&adapter->napi[0])) {
--		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
--				       VIO_IRQ_DISABLE);
--		WARN_ON(lpar_rc != H_SUCCESS);
--		__napi_schedule(&adapter->napi[0]);
+-	__set_bit(lp->phy_mode, lp->phylink_config.supported_interfaces);
+-	if (lp->switch_x_sgmii) {
+-		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+-			  lp->phylink_config.supported_interfaces);
+-		__set_bit(PHY_INTERFACE_MODE_SGMII,
+-			  lp->phylink_config.supported_interfaces);
 -	}
-+	qindex = napi - adapter->napi;
-+	/*
-+	 * Quiet on out-of-range: teardown can leave a residual IRQ after the
-+	 * live count drops. Do not WARN-storm; return IRQ_NONE until free_irq.
-+	 */
-+	if (qindex < 0 || qindex >= adapter->num_rx_queues)
-+		return IRQ_NONE;
-+
-+	ibmveth_schedule_rx_queue(adapter, qindex);
- 	return IRQ_HANDLED;
++	lp->axienet_config->phylink_set_caps(lp, &lp->phylink_config);
+ 
+ 	lp->phylink = phylink_create(&lp->phylink_config, pdev->dev.fwnode,
+ 				     lp->phy_mode,
+@@ -3152,7 +3294,8 @@ static void axienet_remove(struct platform_device *pdev)
+ 	if (lp->pcs_phy)
+ 		put_device(&lp->pcs_phy->dev);
+ 
+-	axienet_mdio_teardown(lp);
++	if (lp->mii_bus)
++		axienet_mdio_teardown(lp);
  }
  
-@@ -1937,8 +2255,10 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
- #ifdef CONFIG_NET_POLL_CONTROLLER
- static void ibmveth_poll_controller(struct net_device *dev)
- {
--	ibmveth_replenish_task(netdev_priv(dev));
--	ibmveth_interrupt(dev->irq, dev);
-+	struct ibmveth_adapter *adapter = netdev_priv(dev);
-+
-+	ibmveth_replenish_task(adapter);
-+	ibmveth_schedule_rx_queue(adapter, 0);
- }
- #endif
- 
-@@ -2351,8 +2671,8 @@ static ssize_t veth_pool_store(struct kobject *kobj, struct attribute *attr,
- 	}
- 	rtnl_unlock();
- 
--	/* kick the interrupt handler to allocate/deallocate pools */
--	ibmveth_interrupt(netdev->irq, netdev);
-+	/* kick RX processing to allocate/deallocate pools */
-+	ibmveth_schedule_rx_queue(adapter, 0);
- 	return count;
- 
- unlock_err:
-@@ -2392,7 +2712,9 @@ static struct kobj_type ktype_veth_pool = {
- static int ibmveth_resume(struct device *dev)
- {
- 	struct net_device *netdev = dev_get_drvdata(dev);
--	ibmveth_interrupt(netdev->irq, netdev);
-+	struct ibmveth_adapter *adapter = netdev_priv(netdev);
-+
-+	ibmveth_schedule_rx_queue(adapter, 0);
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-index 495269631323..c13240f0ea2e 100644
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -315,6 +315,10 @@ struct ibmveth_adapter {
- 	unsigned int queue_irq[IBMVETH_MAX_RX_QUEUES];
- 	int multi_queue;
- 	unsigned int num_rx_queues;
-+	/* Lifetime: true after successful ndo_open until close clears it. */
-+	bool opened;
-+	/* Lifetime: true while RX IRQ handlers / NAPI are installed. */
-+	bool rx_irq_setup;
- 	int rx_csum;
- 	int large_send;
- 	bool is_active_trunk;
+ static void axienet_shutdown(struct platform_device *pdev)
 -- 
-2.50.1 (Apple Git-155)
+2.25.1
 
