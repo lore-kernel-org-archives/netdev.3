@@ -1,48 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D049E5CB;
-	Mon, 31 Aug 2026 13:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A8444A3E9;
+	Mon, 31 Aug 2026 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183640; cv=none; b=fNOAVxvjyHq162XoYU0fwdE7eMSNVPo2v6k8dmfiHeGmKCWdnyJtu7JqkQ3iM204QZAY9whl7vagp7zY4J4WNFUaPcdTi4BdPmirKtjjLXHCM9PK+aOuti3bv4M3RL/y0vhzp262IwLN1w4jULRG8sV8Z6YPbhfATNJZM6+9cN4=
+	t=1788183653; cv=none; b=doyWcR+tyNR73Blc8S3B2Pz5Q9zwM7pitDw2qq585pBxDlXzA3T96YtgZkUvIscfpwEMPtamfo2dgRSao1vu7M78iovhtdZ2mNm7TonADe6Y1WMFADBaiS+8j6V055ODyJFgvWgfoc10OOvgVjwunFjc39KtMwSR5lyaUsRbO7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183640; c=relaxed/simple;
-	bh=2H75Q5WTF1kCro2MfHiy5dOsmOgvGOwONkC21k1X3ME=;
+	s=arc-20240116; t=1788183653; c=relaxed/simple;
+	bh=6uvHIYZ0OuuYQhd/KiCiNVhaUg+VCHXAL47togkkXNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uxfX9DLT2at4183tW5DtiY2mEZQ8mw5OthGRvdMkQk+3lTptKWITvJ9WTUYksEzb6sHAeMAkvuS2+9XbMdHZwW7sVTLik4c015nUVxzV1MIXbZzmLGbb5iTEfgSQ2vC0SoO52aJ0i3oVGV2o4Lgp15sm7uHIedUoN/yZbLI5OHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K63XpL49; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=UkCzUKIs/2neC7MAbFCwBV01O6iNIBCKvgwdqZa4db99YLy3D+1qQ66vgTx4wYN6TsZDjWyf+ytHeWEO2NLDP1/iUGzy+kS9kj/b97pWByXIOldsk0H75jghRbJwemjv8tg9g+yJ/2lnGwXwvVDynRf1ncbim/5BX5Cg0PnUtRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEZpYE7q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K63XpL49"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9461F00A3D;
-	Mon, 31 Aug 2026 13:40:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEZpYE7q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9841F00ACA;
+	Mon, 31 Aug 2026 13:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183637;
-	bh=mLH1mFgEoCag+jhcQrJJ6P7irHV75VnN7u7Kj0YD7V8=;
+	s=k20260515; t=1788183650;
+	bh=yFn7hFz+fOtKgGDmSp9TKQHGWgYyHAMSXyTmTS9UlHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K63XpL49IRnNMvPAxxKxIDGM0eAGgsJYE/6nfX9sd7bIx7zTKkVN64HU5Wt7vCg+R
-	 urY7zynlHUuoI7kFaUwx3hNJW6lDf4G/3Dm5G4Dy5tesCuhRM4w51cxrAhJLG+g3qS
-	 0hhF+XyJIf6k9kqemhkajhjTV0eK1oladiKxI9SBMZZGPnwo/6c1mE7BniD7SRqZsL
-	 7I2HDkJErr2UzFeFHzdU8pl5qntbEaAeVv8YuGN6Y6cprgPh0W5lNjzSqGiqTHD05W
-	 TqPOESptjytJ3JxOy8V1IN0E/xbz6K5DgSX66jtvHtaPEA/W5+3pYJlKHsPN2PBSUg
-	 rqF+4pbchahLA==
+	b=QEZpYE7qZkfK5Nmj86jt0giZ16M4WSbDr68Qhm1Bje4WeCyCORBV/S+u/0bQcZOVY
+	 1TyoiZ65uc9mOgIh1t66YjpNxaFnVEFRTe+2CveLe87J0khcodmatpNTV/S5cuu7si
+	 NTRjr3lSTMU1fe4WTsk//ehH85ocFU7B1V8KGQYIlNGXNInp5N7emDcfR8dqGK6grS
+	 9NF5DA2xYd6Iex+21fdvPsLuv5hvRJs6OpJxOYICOwwaR4ObljTYHA2fvTpEoOHSKu
+	 I6npjfJxePMdy/VCQUGs85ww/NepwLaw57sPeLK2NCOXzddluM1FdH3o2nFCWulzL6
+	 hw7ZEW31Cg4vQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>,
-	=?UTF-8?q?=C5=81ukasz=20Stelmach?= <steelman@post.pl>,
-	Ido Schimmel <idosch@nvidia.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dsahern@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
 	davem@davemloft.net,
-	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] ipv6: addrconf: fix temp address generation after prefix deprecation
-Date: Mon, 31 Aug 2026 09:24:00 -0400
-Message-ID: <20260831133314.4125787-212-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net/sched: sch_drr: make cl->quantum lockless
+Date: Mon, 31 Aug 2026 09:24:09 -0400
+Message-ID: <20260831133314.4125787-221-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -52,468 +50,419 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.48
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e20d8922aa8fe441d291364c96c2179a005b79ea ]
+[ Upstream commit a4d880b85089e12a5f2e8e2fee386310cec5b99a ]
 
-When a router temporarily deprecates an IPv6 prefix (either by sending a
-Router Advertisement with Preferred Lifetime = 0 or by letting the
-lifetime expire) and later restores it, the kernel permanently loses its
-ability to generate temporary privacy addresses (RFC 8981) for that
-prefix.
+cl->quantum does not need to be protected by RTNL or qdisc spinlock.
 
-This happens because the address worker attempts to generate a
-replacement temporary address when the current one nears expiration. As
-the base prefix is deprecated already, the generation fails after
-marking the temporary address as already having spawned a replacement
-(ifp->regen_count++).
-
-When the router eventually restores the prefix, the temporary address
-becomes active again. However, once it naturally expires, the address
-worker sees this temporary address already tried to generate one and
-skips the regeneration.
-
-Fix the issue by resetting the regen_count check of the latest temp
-address generated for the prefix updated by the incoming RA.
-
-Reported-by: Łukasz Stelmach <steelman@post.pl>
-Closes: https://lore.kernel.org/netdev/87340td30q.fsf%25steelman@post.pl/
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260523103811.3790-1-fmancera@suse.de
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260519094618.2632073-3-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Connection lost, reconnecting to https://agentn.us.api5.cursor.sh
-(attempt 1)...
-Retry attempt 1...
-# Stable Backport Analysis: `ipv6: addrconf: fix temp address generation
-after prefix deprecation`
+## Phase 1: Commit Message Forensics
 
-**Local tree:** `v6.18.44` (`stable/linux-6.18.y`, detached HEAD)
-**Mainline commit:** `e20d8922aa8fe` (not yet in this tree; `git merge-
-base --is-ancestor` returned 1)
+### Step 1.1: Parse the Subject Line
+**Record:** `[net/sched] [make] sch_drr: make cl->quantum lockless` —
+networking traffic-control subsystem; action is making `cl->quantum`
+access lockless (concurrency/synchronization change, not labeled "fix").
+
+### Step 1.2: Parse All Commit Message Tags
+**Record:**
+- **Signed-off-by:** Eric Dumazet `<edumazet@google.com>` (author)
+- **Link:** `https://patch.msgid.link/20260519094618.2632073-3-
+  edumazet@google.com` (patch 2/2 of series)
+- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer
+  merge)
+- **No** Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, or
+  Cc: stable tags
+- Notable: part of series titled **"net/sched: sch_drr: lockless
+  cl->deficit and cl->quantum"** (patches 1/2 and 2/2)
+
+### Step 1.3: Analyze Commit Body
+**Record:**
+- **Bug description:** `cl->quantum` does not need RTNL or qdisc
+  spinlock protection; access should be lockless with proper
+  annotations.
+- **Symptom/failure mode:** Not described — no crash, corruption, or
+  user report mentioned.
+- **Version info:** None in message.
+- **Root cause (author):** Quantum is read on fast paths without holding
+  `sch_tree_lock`; locking on write is unnecessary and inconsistent.
+
+### Step 1.4: Detect Hidden Bug Fixes
+**Record:** **Yes, likely a hidden concurrency bug fix.** Removing
+`sch_tree_lock()` around the write while fast-path readers
+(`drr_enqueue`, `drr_dequeue`, `drr_dump_class`) access `cl->quantum`
+without that lock means the old code had a writer-lock/reader-no-lock
+pattern. The fix adds `WRITE_ONCE`/`READ_ONCE` to make lockless
+concurrent access formally safe — same pattern as the already-backported
+companion patch for `cl->deficit`.
 
 ---
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+## Phase 2: Diff Analysis
 
-### Step 1.1: Subject line
-**Record:** `[ipv6: addrconf]` `[fix]` — restores temporary IPv6 privacy
-address generation after a prefix is deprecated and later restored via
-Router Advertisement.
-
-### Step 1.2: Tags
+### Step 2.1: Inventory the Changes
 **Record:**
-| Tag | Value |
-|-----|-------|
-| Reported-by | Łukasz Stelmach \<steelman@post.pl\> |
-| Closes |
-https://lore.kernel.org/netdev/87340td30q.fsf%25steelman@post.pl/ |
-| Suggested-by | Ido Schimmel \<idosch@nvidia.com\> |
-| Reviewed-by | Ido Schimmel \<idosch@nvidia.com\> |
-| Link | https://patch.msgid.link/20260523103811.3790-1-fmancera@suse.de
-|
-| Signed-off-by | Fernando Fernandez Mancera, Jakub Kicinski |
+- **File:** `net/sched/sch_drr.c` only
+- **Scope:** ~4 insertions, ~6 deletions (net −2 lines)
+- **Functions modified:** `drr_change_class`, `drr_dump_class`,
+  `drr_enqueue`, `drr_dequeue`
+- **Classification:** Single-file, surgical synchronization fix
 
-**Notable patterns:** Real user report; subsystem expert review; no
-`Fixes:` tag (expected for manual review); no `Cc: stable` (expected).
-
-### Step 1.3: Body analysis
+### Step 2.2: Code Flow Change (per hunk)
 **Record:**
-- **Bug:** After a router temporarily deprecates an IPv6 prefix (RA with
-  Preferred Lifetime = 0, or natural expiry) and later restores it, the
-  kernel permanently stops generating RFC 8981 temporary privacy
-  addresses for that prefix.
-- **Symptom:** Privacy extensions silently stop working for the affected
-  prefix until reboot or manual intervention.
-- **Root cause:** `addrconf_verify_rtnl()` increments `regen_count` on
-  the temporary address before attempting replacement generation. While
-  the prefix is deprecated, `ipv6_create_tempaddr()` fails, but
-  `regen_count` stays non-zero. When the prefix is restored,
-  `manage_tempaddrs()` updates lifetimes but never clears `regen_count`,
-  so future regeneration is permanently skipped (`!ifp->regen_count`
-  guard).
+1. **`drr_change_class`:** Before: update `cl->quantum` under
+   `sch_tree_lock`/`sch_tree_unlock`. After: `WRITE_ONCE(cl->quantum,
+   quantum)` with no tree lock.
+2. **`drr_dump_class`:** Before: plain `cl->quantum` read. After:
+   `READ_ONCE(cl->quantum)`.
+3. **`drr_enqueue`:** Before: `WRITE_ONCE(cl->deficit, cl->quantum)`.
+   After: `WRITE_ONCE(cl->deficit, READ_ONCE(cl->quantum))`.
+4. **`drr_dequeue`:** Before: `WRITE_ONCE(cl->deficit, cl->deficit +
+   cl->quantum)`. After: `WRITE_ONCE(cl->deficit, cl->deficit +
+   READ_ONCE(cl->quantum))`.
 
-### Step 1.4: Hidden bug fix?
-**Record:** No — this is an explicit, well-described functional bug fix,
-not disguised cleanup.
+### Step 2.3: Bug Mechanism
+**Record:** **Category: synchronization / data-race fix.** Fast-path
+enqueue/dequeue and `drr_dump_class` read `cl->quantum` without
+`sch_tree_lock`, while `drr_change_class` wrote it under that lock —
+ineffective protection against the actual concurrent readers. Fix uses
+`READ_ONCE`/`WRITE_ONCE` for defined lockless u32 access.
+
+### Step 2.4: Fix Quality
+**Record:** Fix is minimal, obviously correct, and mirrors the already-
+applied `cl->deficit` annotations. Regression risk is very low. Removing
+`sch_tree_lock` from the quantum-update path also reduces lock
+contention during `tc` class changes under load.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 3: Git History Investigation
 
-### Step 2.1: Inventory
+### Step 3.1: Blame Changed Lines
 **Record:**
-- **File:** `net/ipv6/addrconf.c` (+9 / −1 lines)
-- **Functions:** `ipv6_add_addr()`, `manage_tempaddrs()`
-- **Scope:** Single-file surgical fix
+- Quantum lock/unlock in `drr_change_class`: Patrick McHardy, 2008-11-20
+  (original DRR code).
+- `WRITE_ONCE` for deficit: Eric Dumazet, 2026-05-19 (`a88f6da618e8b`,
+  already in this tree).
+- Buggy pattern (lock on write, lockless reads on fast path) present
+  since DRR introduction (~2.6 era).
 
-### Step 2.2: Code flow per hunk
+### Step 3.2: Follow Fixes: Tag
+**Record:** No Fixes: tag in this commit. N/A for direct lookup.
+Companion patch 1/2 fixes `edb09eb17ed89` ("net: sched: do not acquire
+qdisc spinlock in qdisc/class stats dump"), which **is** in this tree.
 
-**Hunk 1 (`ipv6_add_addr`, ~line 1182):**
-- **Before:** Temp addresses added to head of `tempaddr_list` with no
-  comment.
-- **After:** Documents that `manage_tempaddrs()` depends on head
-  insertion order.
-- **Path:** Address creation for temporary addresses.
-
-**Hunk 2 (`manage_tempaddrs`, ~lines 2603–2648):**
-- **Before:** On RA lifetime update, temp address lifetimes/flags
-  updated; `regen_count` never reset.
-- **After:** Saves `orig_prefered_lft`; on first matching temp address
-  for the public prefix, if `orig_prefered_lft > 0`, resets
-  `ift->regen_count = 0`.
-- **Path:** Normal RA processing when prefix lifetimes are updated.
-
-### Step 2.3: Bug mechanism
-**Record:** **Logic / correctness fix** — stale `regen_count` state on
-temporary addresses after a failed regeneration attempt during prefix
-deprecation blocks all future regeneration. The fix clears that one-shot
-flag when a positive preferred lifetime is received, indicating the
-prefix is preferred again.
-
-### Step 2.4: Fix quality
+### Step 3.3: File History / Related Changes
 **Record:**
-- **Obviously correct:** Yes — resets stale state at the exact point
-  prefix restoration is signaled (incoming RA with `prefered_lft > 0`).
-- **Minimal:** Yes — 9 lines of functional change plus 1 comment.
-- **Regression risk:** Low — only resets `regen_count` on the most
-  recent temp address (list head, first `ifpub` match); new temp
-  addresses already have `regen_count == 0`; resetting `0 → 0` is a no-
-  op on normal RAs.
+- `a88f6da618e8b` — "annotate data-races around cl->deficit" (patch 1/2,
+  **already in 6.18.y**)
+- `edb09eb17ed89` — lockless stats dump infrastructure (prerequisite
+  context, in tree since 2016)
+- `f99a3fbf023e2` — double-list-add fix in DRR (unrelated)
+- This is patch **2/2** of a 2-patch series; patch 1/2 is already
+  backported here.
+
+### Step 3.4: Author's Other Commits
+**Record:** Eric Dumazet is a core networking maintainer. Related
+sch_drr work in this tree includes the deficit annotation backport and
+the 2016 lockless stats-dump series.
+
+### Step 3.5: Dependencies / Prerequisites
+**Record:** Patch 1/2 (`a88f6da618e8b`) is **already in this tree**.
+This patch applies standalone on top of that state. No other
+dependencies required. The tree currently has an **incomplete** 2-patch
+series: deficit annotated, quantum not.
 
 ---
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## Phase 4: Mailing List and External Research
 
-### Step 3.1: Blame
-**Record:** `manage_tempaddrs()` introduced in `53bd674915379` (Dec
-2013, IFA_F_MANAGETEMPADDR). `regen_count` logic dates to
-`291d809ba5c8d` (2005). Buggy interaction between deprecation and
-`regen_count` is in long-standing SLAAC/privacy code present since
-privacy extensions were integrated.
-
-### Step 3.2: Fixes: tag
-**Record:** N/A — no `Fixes:` tag. Bug is architectural (missing state
-reset), not introduced by a single recent commit.
-
-### Step 3.3: Related file history
-**Record:** Related prior fixes in this file:
-- `a11a7f71cac20` — fix generation of new temporary addresses (2017)
-- `778964f2fdf05` — fix timing bug in tempaddr regen
-- `69172f0bcb6a0` — fix mngtmpaddr deletion creating unwanted temp
-  addresses
-
-This fix is in the same problem domain and is standalone.
-
-### Step 3.4: Author context
-**Record:** Fernando Fernandez Mancera is an active ipv6/addrconf
-contributor (multiple recent sysctl and addrconf fixes in this tree).
-Ido Schimmel (reviewer) is a networking expert at NVIDIA.
-
-### Step 3.5: Dependencies
-**Record:** Part of a 2-patch series (`[PATCH 1/2]` fix, `[PATCH 2/2]`
-selftest). **The kernel fix is self-contained**; patch 2/2 is a
-`fib_tests` selftest and is not required for the fix to work. No
-structural or API prerequisites.
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1: Original discussion
-**Record:**
-- `b4 dig -c e20d8922aa8fe`:
-  https://patch.msgid.link/20260523103811.3790-1-fmancera@suse.de
-- Series went through v1–v5; committed version is latest (v5).
-- Applied to netdev/net-next by Jakub Kicinski (May 27, 2026).
-- Reporter Łukasz Stelmach replied with `Reviewed-by: Ido Schimmel`
-  confirmation in thread.
-- **No explicit `Cc: stable` nomination found** in thread.
-- **No NAKs found.**
+### Step 4.1: Original Patch Discussion
+**Record:** Series found via web search (lore fetch blocked by bot
+protection):
+- Cover: `[PATCH net-next 0/2] net/sched: sch_drr: lockless cl->deficit
+  and cl->quantum`
+- Patch 1/2: annotate data-races around `cl->deficit`
+- Patch 2/2: make `cl->quantum` lockless (this commit)
+- URL: https://www.spinics.net/lists/netdev/msg1188405.html
+- `b4 dig -c` could not be run (commit not in local repo). No NAKs found
+  in search results.
 
 ### Step 4.2: Reviewers
-**Record:** CC'd: netdev, linux-kselftest, Paolo Abeni, Eric Dumazet,
-David Miller, Ido Schimmel, David Ahern — appropriate maintainer
-coverage. Reviewed-by from Ido Schimmel.
+**Record:** CC list from syzbot CI series page includes `davem@`,
+`kuba@`, `netdev@`, `pabeni@`, `jhs@`, `victor@`. Patchwork-bot reported
+on cover letter (2026-05-21). Full reviewer thread not retrieved.
 
-### Step 4.3: Bug report
-**Record:** Original report at `Closes:` URL (lore.kernel.org blocked by
-bot protection in WebFetch). Reporter is also in-thread confirming the
-fix. Severity from reporter's perspective: permanent loss of privacy
-address capability — functional regression with privacy impact.
+### Step 4.3: Bug Reports
+**Record:** No Reported-by, no syzbot crash report, no bugzilla link.
+Syzbot CI
+(https://ci.syzbot.org/series/3c50e02b-b07f-4d23-a7d3-45d5a6e23096) ran
+build/boot/fuzz — all **passed**; no bug was filed against this series.
 
-### Step 4.4: Series context
-**Record:** Patch 2/2 adds selftest `fib_tests: add temporary IPv6
-address renewal test` — optional for stable; not a dependency.
+### Step 4.4: Related Patches / Series
+**Record:** 2-patch series. Patch 1/2 already backported to this 6.18.y
+tree (July 2026). This commit completes the series.
 
-### Step 4.5: Stable list history
-**Record:** UNVERIFIED — could not search lore stable list (bot
-protection). No stable nomination found in saved mbox thread.
+### Step 4.5: Stable Mailing List
+**Record:** Not searched (no stable-specific discussion found in
+available sources). Absence of Cc: stable is expected per instructions.
 
 ---
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+## Phase 5: Code Semantic Analysis
 
-### Step 5.1: Key functions
-**Record:** `ipv6_add_addr()`, `manage_tempaddrs()`, (bug trigger in)
-`addrconf_verify_rtnl()`, `ipv6_create_tempaddr()`
+### Step 5.1: Key Functions
+**Record:** `drr_change_class`, `drr_dump_class`, `drr_enqueue`,
+`drr_dequeue`
 
-### Step 5.2: Callers of `manage_tempaddrs()`
+### Step 5.2: Callers / Context
 **Record:**
-- `addrconf_prefix_rcv_add_addr()` — RA prefix processing (primary fix
-  path, line 2779)
-- Manual address add with `IFA_F_MANAGETEMPADDR` (line 3085)
-- Address modification path (line 4953)
+- `drr_enqueue`/`drr_dequeue`: packet scheduling fast path
+  (softirq/NAPI), high frequency.
+- `drr_change_class`: netlink `tc` class configuration (administrative).
+- `drr_dump_class`: `tc class show` dump via `cl_ops->walk` in
+  `tc_dump_tclass_qdisc` — **without** qdisc spinlock (same pattern as
+  stats dump after `edb09eb17ed89`).
 
-All are normal networking/SLAAC paths triggered by RAs or admin
-configuration.
-
-### Step 5.3: Key callees
-**Record:** `manage_tempaddrs()` may call `ipv6_create_tempaddr()`; uses
-`idev->lock`, per-address `ift->lock`; updates `valid_lft`,
-`prefered_lft`, `flags`.
+### Step 5.3: Callees
+**Record:** `WRITE_ONCE`, `READ_ONCE`, `sch_tree_lock`/`sch_tree_unlock`
+(removed from quantum path), `nla_put_u32`, `list_add_tail`,
+`qdisc_pkt_len`.
 
 ### Step 5.4: Reachability
+**Record:** All paths reachable — packet forwarding (every enqueued
+packet) and `tc` administration. Users with `CAP_NET_ADMIN` can trigger
+quantum changes; any traffic through a DRR qdisc reads quantum on
+enqueue/dequeue.
+
+### Step 5.5: Similar Patterns
+**Record:** Patch 1/2 applied the identical `READ_ONCE`/`WRITE_ONCE`
+pattern to `cl->deficit` in the same functions. `sch_htb.c` and
+`sch_ets.c` still use plain `cl->quantum` access (not part of this
+commit).
+
+---
+
+## Phase 6: Cross-Referencing Against the Local Tree
+
+### Step 6.1: Does the Buggy Code Exist?
+**Record:** **Yes.** Local tree is **v6.18.44** (`linux-6.18.y` stable).
+Current code at lines 100–103 still uses `sch_tree_lock` + plain
+`cl->quantum = quantum`; lines 365/406 read `cl->quantum` without
+`READ_ONCE` inside `WRITE_ONCE` deficit updates.
+`READ_ONCE`/`WRITE_ONCE` for quantum: **not present** (verified via
+grep).
+
+### Step 6.2: Backport Complications
+**Record:** **Clean apply expected.** Patch 1/2 already present; diff
+applies directly on current `sch_drr.c`. Minor context differences
+possible (e.g., `kzalloc` vs `kzalloc_obj`, `qstats_backlog_add` vs
+direct `sch->qstats` — user's diff shows mainline variants; stable tree
+may need trivial context adjustment only).
+
+### Step 6.3: Related Fixes Already Present?
+**Record:** Patch 1/2 (`a88f6da618e8b`, deficit annotations) **already
+backported** (2026-07-24). This quantum patch is the **missing half** of
+that series. No duplicate quantum fix found.
+
+---
+
+## Phase 7: Subsystem and Maintainer Context
+
+### Step 7.1: Subsystem Criticality
+**Record:** `net/sched` — **IMPORTANT** subsystem. DRR itself is a less-
+common qdisc, but the code path is standard packet scheduling
+infrastructure.
+
+### Step 7.2: Subsystem Activity
+**Record:** Moderately active; recent sch_drr changes include deficit
+annotations (2026), qlen_notify idempotency (2025), extack support.
+
+---
+
+## Phase 8: Impact and Risk Assessment
+
+### Step 8.1: Who Is Affected
+**Record:** Users of DRR qdisc (`sch_drr`) with concurrent `tc` class
+modification and traffic — config-specific, not universal. Google BwE-
+scale `tc` dumps were the original motivation for the broader lockless-
+stats work.
+
+### Step 8.2: Trigger Conditions
+**Record:** Concurrent `tc class change` (quantum update) while packets
+are enqueued/dequeued, or while `tc class show` dumps quantum. Requires
+DRR in use and concurrent admin + traffic. Not unprivileged-triggerable
+for the write side; reads happen on every packet.
+
+### Step 8.3: Failure Mode Severity
+**Record:** Without fix: C11/KCSAN data race; in practice, reading a
+slightly stale or mid-update `u32` quantum value. **Severity: LOW to
+MEDIUM** — may cause transient scheduling inaccuracy, not kernel crash,
+panic, memory corruption, or security escalation. No crash reports
+exist.
+
+### Step 8.4: Risk-Benefit
 **Record:**
-```
-Router Advertisement → addrconf_prefix_rcv() →
-addrconf_prefix_rcv_add_addr()
-  → manage_tempaddrs()  [fix resets regen_count here]
-
-Periodic timer → addrconf_verify_work() → addrconf_verify_rtnl()
-  → checks !ifp->regen_count → ipv6_create_tempaddr()  [bug: skips if
-stale]
-```
-**Userspace trigger:** Any host receiving IPv6 RAs with changing prefix
-lifetimes — common on enterprise/Wi-Fi/mobile networks. Requires
-`use_tempaddr > 0` (privacy extensions enabled; default sysctl is 0, but
-widely enabled by distributions).
-
-### Step 5.5: Similar patterns
-**Record:** `ifpub->regen_count = 0` is already reset in
-`addrconf_verify_rtnl()` before calling `ipv6_create_tempaddr()` (line
-4673), but the **temporary address's** `regen_count` was not reset on
-prefix restoration — asymmetric handling that this patch corrects.
+- **Benefit:** Completes data-race fix series already partially in tree;
+  consistent lockless access; slightly less lock contention on `tc`
+  changes; KCSAN-correct.
+- **Risk:** Very low — 10-line change, established
+  `READ_ONCE`/`WRITE_ONCE` idiom.
+- **Ratio:** Moderate benefit for DRR users; very low risk. Strongest
+  argument is **series completeness** after patch 1/2 was already
+  accepted for this tree.
 
 ---
 
-## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (6.18.y)
+## Phase 9: Final Synthesis
 
-### Step 6.1: Buggy code present?
-**Record:** **YES.** Current `manage_tempaddrs()` at lines 2608–2659 has
-no `regen_count` reset. `addrconf_verify_rtnl()` at line 4657 still
-gates on `!ifp->regen_count`. `list_add()` at line 1183 still adds to
-list head. Bug is present in v6.18.44.
-
-### Step 6.2: Backport complications
-**Record:** **Clean apply expected.** Tested with `git cherry-pick --no-
-commit e20d8922aa8fe` → `Auto-merging net/ipv6/addrconf.c` (no
-conflicts).
-
-### Step 6.3: Related fixes already present?
-**Record:** No equivalent fix in this tree. `git log --grep="prefix
-deprecation"` on addrconf.c returned no match for this fix.
-
----
-
-## PHASE 7: SUBSYSTEM CONTEXT
-
-### Step 7.1: Subsystem criticality
-**Record:** **net/ipv6/addrconf** — IMPORTANT (core IPv6 stack; affects
-all IPv6-capable systems with privacy extensions enabled).
-
-### Step 7.2: Activity
-**Record:** Actively maintained; multiple addrconf fixes in recent
-6.18.y history (sysctl error handling, UaF fixes, DAD fixes).
-
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: Who is affected
-**Record:** Systems with IPv6 privacy extensions enabled (`use_tempaddr
-> 0`) using SLAAC-managed temporary addresses, on networks where routers
-temporarily deprecate prefixes (maintenance, RA reconfiguration,
-lifetime expiry). Not universal (requires privacy extensions), but
-affects a meaningful production population.
-
-### Step 8.2: Trigger conditions
-**Record:**
-1. Prefix deprecated (Preferred Lifetime = 0 or expires)
-2. Temp address nears expiration → worker tries regeneration → fails →
-   `regen_count` stuck
-3. Prefix restored via RA with positive preferred lifetime
-4. Temp address eventually expires → no new temp address generated
-
-**Likelihood:** Realistic on managed networks. Not timing-dependent
-race.
-
-### Step 8.3: Failure severity
-**Record:** **MEDIUM-HIGH** — no crash, panic, or data corruption, but
-**permanent functional regression** of RFC 8981 privacy address
-generation for the affected prefix. Privacy/security degradation;
-outbound connections using temp addresses may fail after old addresses
-expire. Workaround requires reboot or toggling `use_tempaddr`.
-
-### Step 8.4: Risk-benefit
-**Record:**
-- **Benefit:** HIGH for affected users — restores correct privacy
-  address behavior after a common network event
-- **Risk:** LOW — 9-line surgical change, expert-reviewed, applies
-  cleanly
-- **Ratio:** Strong benefit, minimal risk
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-### Step 9.1: Evidence summary
+### Step 9.1: Evidence Summary
 
 **FOR backport:**
-- Real user-reported bug with clear reproduction scenario
-- Expert-reviewed (`Reviewed-by: Ido Schimmel`)
-- Small, surgical, obviously correct fix
-- Buggy code present in 6.18.y; patch applies cleanly
-- Restores RFC 8981 compliance — privacy-relevant
-- Similar temp-address generation fixes have historically been accepted
-  for stable
-- Standalone (selftest patch not required)
+- Completes 2-patch series; patch 1/2 already in 6.18.y
+- Fixes real data race on `cl->quantum` in fast path and dump path
+- Same author, same rationale as already-backported deficit fix
+- Small, surgical, obviously correct
+- Syzbot CI passed on full series
+- Prerequisites (`edb09eb17ed89`, patch 1/2) present in tree
 
 **AGAINST backport:**
-- Not a crash/Oops/deadlock/CVE — functional regression only
-- Requires privacy extensions enabled (`use_tempaddr > 0`)
-- Prefix deprecation/restoration cycle is not every-boot common (but
-  realistic)
+- No user crash reports, no syzbot bug, no CVE
+- Failure mode is benign (stale quantum value), not crash/corruption
+- Race existed since 2008; newly highlighted, not newly introduced
+  catastrophic bug
+- DRR is niche compared to HTB/fq_codel
+- Partially a performance improvement (removing unnecessary
+  `sch_tree_lock`)
 
-**Unresolved:** Original bug-report email body not readable (lore bot
-protection); no explicit stable nomination in thread.
+**Unresolved:** Full lore reviewer thread not retrieved; no explicit
+stable nomination found.
 
-### Step 9.2: Stable rules checklist
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **PASS** — idiomatic
+   `READ_ONCE`/`WRITE_ONCE`; syzbot CI green.
+2. Fixes a real bug? **PASS** — data race with concurrent lockless
+   readers; same class as already-backported patch 1/2.
+3. Important issue? **BORDERLINE PASS** — not crash/security level, but
+   correctness under concurrent `tc` + traffic; series completion after
+   partial backport.
+4. Small and contained? **PASS** — single file, ~10 lines.
+5. No new features/APIs? **PASS** — synchronization annotations only.
+6. Can apply to local tree? **PASS** — code present; patch 1/2
+   prerequisite satisfied.
 
-| Criterion | Result |
-|-----------|--------|
-| 1. Obviously correct and tested? | **PASS** — logic verified in code;
-selftest exists in mainline series (patch 2/2) |
-| 2. Fixes real bug affecting users? | **PASS** — user-reported,
-reproducible scenario |
-| 3. Important issue? | **PASS** — permanent privacy-address regression
-(functional + privacy impact) |
-| 4. Small and contained? | **PASS** — 10 lines, one file |
-| 5. No new features/APIs? | **PASS** — state-reset bug fix only |
-| 6. Can apply to local tree? | **PASS** — clean cherry-pick to v6.18.44
-|
+### Step 9.3: Exception Categories
+**Record:** None (not device ID, quirk, DT, build fix, or docs).
 
-### Step 9.3: Exception categories
-**Record:** N/A — standard bug fix, not device-ID/quirk/build/doc
-exception.
+### Step 9.4: Decision Rationale
 
-### Step 9.4: Decision rationale
-
-This commit fixes a longstanding logic error where a failed temporary-
-address regeneration during prefix deprecation leaves `regen_count` set,
-permanently blocking future regeneration after the prefix is restored.
-For 6.18.y users running IPv6 privacy extensions, this is a real, user-
-visible regression on a normal network event. The fix is minimal,
-reviewed, applies cleanly, and matches the pattern of prior accepted
-addrconf temp-address stable fixes.
+For **linux-6.18.y** specifically: patch 1/2 of this series is already
+backported, leaving `cl->deficit` properly annotated but `cl->quantum`
+still racy in the exact same functions (`drr_enqueue`, `drr_dequeue`,
+dump paths). Backporting this commit completes a maintainer-intended,
+already-half-applied concurrency fix with negligible risk. While the
+user-visible severity is low (no crashes reported), the technical merit
+and series consistency strongly favor inclusion in this tree.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** `git describe HEAD` → `v6.18.44`; parsed all commit
-  message tags
-- **[Phase 2]** Read `manage_tempaddrs()`, `addrconf_verify_rtnl()`,
-  `ipv6_create_tempaddr()` in `/home/sasha/linux-
-  autosel-7.0/net/ipv6/addrconf.c`; confirmed diff matches described
-  behavior
-- **[Phase 3]** `git blame -L 2608,2679` → `manage_tempaddrs` from 2013;
-  `git log -S'regen_count'` → introduced 2005; related commits
-  `a11a7f71cac20`, `778964f2fdf05` found
-- **[Phase 3]** `git merge-base --is-ancestor e20d8922aa8fe HEAD` → exit
-  1 (commit not in tree)
-- **[Phase 4]** `b4 dig -c e20d8922aa8fe` → lore URL found; `-a` → v1–v5
-  series; `-w` → netdev maintainers CC'd; `-m` → thread saved; no stable
-  CC or NAK in mbox
-- **[Phase 4]** WebFetch lore URLs → blocked by Anubis bot protection
-  (UNVERIFIED for original bug-report body)
-- **[Phase 5]** `grep manage_tempaddrs` → 3 call sites; traced RA →
-  `addrconf_prefix_rcv_add_addr()` → `manage_tempaddrs()` path; verified
-  `!ifp->regen_count` guard at line 4657 and `ifp->regen_count++` at
-  line 4667
-- **[Phase 5]** Verified `list_add()` at line 1183 adds to head
-  (supports "first match = most recent" logic)
-- **[Phase 6]** Confirmed buggy code present (no
-  `reset_done`/`orig_prefered_lft` in current tree)
-- **[Phase 6]** `git cherry-pick --no-commit e20d8922aa8fe` → auto-
-  merges cleanly
-- **[Phase 7]** `git log --oneline -15 -- net/ipv6/addrconf.c` → active
-  subsystem
-- **[Phase 8]** Assessed severity as MEDIUM-HIGH functional/privacy
-  regression (not crash)
+- [Phase 1] Parsed subject, tags, body from user-provided commit message
+- [Phase 2] Analyzed full diff (4 hunks, 1 file); classified as data-
+  race fix
+- [Phase 3] `git describe HEAD` → v6.18.44; `git blame` on lines
+  100–103, 365, 406
+- [Phase 3] `git log --oneline -20 -- net/sched/sch_drr.c` — found
+  `a88f6da618e8b` (patch 1/2)
+- [Phase 3] `git show a88f6da618e8b` — deficit annotations, Fixes
+  `edb09eb17ed89`, already in tree
+- [Phase 3] `git log --grep='quantum lockless'` / `'make cl->quantum'` —
+  **no results** (patch 2/2 absent)
+- [Phase 3] `git merge-base --is-ancestor edb09eb17ed89 HEAD` →
+  prerequisite present
+- [Phase 4] Web search found spinics.net series page and syzbot CI page;
+  lore fetch blocked
+- [Phase 4] Syzbot CI: build/boot/fuzz passed, no bug filed
+- [Phase 5] Read `net/sched/sch_drr.c` — confirmed current buggy state
+  (plain `cl->quantum` reads)
+- [Phase 5] `grep READ_ONCE(cl->quantum)` in `net/sched/` → **no
+  matches**
+- [Phase 5] Read `tc_dump_tclass_qdisc` in `sch_api.c` — dump walks
+  classes without spinlock
+- [Phase 6] Confirmed tree is 6.18.y stable; buggy code present; patch
+  1/2 backported July 2026
+- [Phase 8] Assessed severity as LOW-MEDIUM (scheduling inaccuracy, not
+  crash)
 
-**YES**The background checks finished and line up with the earlier
-analysis:
+**YES**The background check finished: **patch 1/2** (`a88f6da618e8b` —
+deficit `READ_ONCE`/`WRITE_ONCE` annotations) is already in this
+**6.18.44** tree, and **patch 2/2** (`make cl->quantum lockless`) is not
+— `git log --grep='quantum lockless'` and `--grep='make cl->quantum'`
+both came up empty.
 
-- **Commit not in 6.18.y** — `e20d8922aa8fe` is on `master` but not an
-  ancestor of the current `v6.18.44` tree.
-- **Buggy code is present** — no matching fix in this tree; related
-  history only shows older temp-address work (`778964f2fdf05`,
-  `00b5b7aab9e42`, etc.).
-- **Verdict stands: YES** — small, reviewed fix for a real privacy-
-  address regression; cherry-picks cleanly onto 6.18.y.
+That matches the earlier analysis: the series is only half-applied here,
+and backporting this commit would complete it. Verdict remains **YES**.
 
- net/ipv6/addrconf.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/sched/sch_drr.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index c98b1b919f18c..80706368a303c 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1180,6 +1180,7 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
- 	ipv6_link_dev_addr(idev, ifa);
+diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+index 44686fd1c2749..faafb29056259 100644
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -97,10 +97,8 @@ static int drr_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 			}
+ 		}
  
- 	if (ifa->flags&IFA_F_TEMPORARY) {
-+		/* manage_tempaddrs() relies on addresses being added to the head */
- 		list_add(&ifa->tmp_list, &idev->tempaddr_list);
- 		in6_ifa_hold(ifa);
+-		sch_tree_lock(sch);
+ 		if (tb[TCA_DRR_QUANTUM])
+-			cl->quantum = quantum;
+-		sch_tree_unlock(sch);
++			WRITE_ONCE(cl->quantum, quantum);
+ 
+ 		return 0;
  	}
-@@ -2610,8 +2611,10 @@ static void manage_tempaddrs(struct inet6_dev *idev,
- 			     __u32 valid_lft, __u32 prefered_lft,
- 			     bool create, unsigned long now)
- {
--	u32 flags;
-+	u32 orig_prefered_lft = prefered_lft;
- 	struct inet6_ifaddr *ift;
-+	bool reset_done = false;
-+	u32 flags;
+@@ -251,7 +249,7 @@ static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+ 	if (nest == NULL)
+ 		goto nla_put_failure;
+-	if (nla_put_u32(skb, TCA_DRR_QUANTUM, cl->quantum))
++	if (nla_put_u32(skb, TCA_DRR_QUANTUM, READ_ONCE(cl->quantum)))
+ 		goto nla_put_failure;
+ 	return nla_nest_end(skb, nest);
  
- 	read_lock_bh(&idev->lock);
- 	/* update all temporary addresses in the list */
-@@ -2646,6 +2649,11 @@ static void manage_tempaddrs(struct inet6_dev *idev,
- 			prefered_lft = max_prefered;
+@@ -362,7 +360,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  
- 		spin_lock(&ift->lock);
-+		/* the first match is the most recent temp address */
-+		if (!reset_done && orig_prefered_lft > 0) {
-+			ift->regen_count = 0;
-+			reset_done = true;
-+		}
- 		flags = ift->flags;
- 		ift->valid_lft = valid_lft;
- 		ift->prefered_lft = prefered_lft;
+ 	if (!cl_is_active(cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+-		WRITE_ONCE(cl->deficit, cl->quantum);
++		WRITE_ONCE(cl->deficit, READ_ONCE(cl->quantum));
+ 	}
+ 
+ 	sch->qstats.backlog += len;
+@@ -403,7 +401,7 @@ static struct sk_buff *drr_dequeue(struct Qdisc *sch)
+ 			return skb;
+ 		}
+ 
+-		WRITE_ONCE(cl->deficit, cl->deficit + cl->quantum);
++		WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
+ 		list_move_tail(&cl->alist, &q->active);
+ 	}
+ out:
 -- 
 2.53.0
 
