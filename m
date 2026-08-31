@@ -1,91 +1,112 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C9B37F331
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 20:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE8A376A07
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 20:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788206648; cv=none; b=OuiYxsFEMga76rYRQSbK5O55utrz+594qU9mYZN6dciknismF0/LgKq4o3AxlE4QIr79eOL8jIN9wcgTp9zD2coRs7aZ6RZ8ffxkAtOm1JSoy46/ltD1oKfUaZkB2W5aRe7AcTlUVLJKESXd7bG9n9XoJ9fQybzcS1cv4AxYF1Y=
+	t=1788207258; cv=none; b=Fud9eWiPgXw7CeSRun0DsO5Flr6xT/y77pq93HRLFFTTVBAEbmCZLsbW7ju3UMFDShS0QKVXOqPiAFuSwqBqHoaaAZxueXXNTqkJVEP4d+nw7JRFmfKdsEhrMSicTzd6r9UXyQvidIZR+Qfx9sNQxaPZ/GWB27sOsLi5dVl8n7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788206648; c=relaxed/simple;
-	bh=I4/G3HmEXJ4OVElGeCZxuKwSWS6iAiOY/MRgSX2ruGk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OnpoGkS4bbu41OC9I0CSmyyMgn+CiuBkoVTp0htzzkhWJiCYPJ0WzzeOjCCfQDLACUtaT3Yp6SWdjm3uu4beaJucayUffq3L+J8ZXum/rjFtnQFVpox2IUH46ARVfjbvHUWaL0VwEu8DfeHvW7VKecpTHrXIwmtldchvds7eAuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qgqzQ81z; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788207258; c=relaxed/simple;
+	bh=eAybLI14v6cx74Pmx8e3acei2cHO4ChMz7p+jR9Lq2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QrGzjcrFSjt/BjlWLL7V65E4Md+499YQ7Z0BzyDf0gVrndPQbdPEek90Hyh516qBCdIUyApJjwej5UgHw0rgSb07WJ0mCAsXjF5SwuUJpKYuXD9zs757OYOp6OHkqCP3WIxP6CZPs42PnW3jwJDokYPMukF7fyJvwfbv0nweS6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=wtzcP9rU; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qgqzQ81z"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so140067f8f.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 13:04:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="wtzcP9rU"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d72ae08fa1so33140105ad.2
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 13:14:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788206645; x=1788811445; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=I4/G3HmEXJ4OVElGeCZxuKwSWS6iAiOY/MRgSX2ruGk=;
-        b=qgqzQ81zhEJh2GPyiNOuPMkOGskPfeeAq0aULF0UsXs8suNQq3ozMHqKtz/JhIsT+7
-         g1UsvfbXT5zDCc+ykExEY304yR/LHc+X7kbNv+vGf9VN3ZnCV9XV2CClZ9SEXGuFPXyw
-         Yw3OUP+9AR5NdY74J/1iEt/WfSCXv9Y8XN44NWkN8rG55rpNN8Cl8bjC9TIh489pf6kG
-         N5dpOgy92t7+BS6Bc/KSyPEnGFbE088CEWbwueLYd/ixrVqneD98Raqp1GnrAofgQc71
-         IZZdKhH0Y7MV/aqGO1GGCeR91G9NzsuoQNT1PgyCVSbPv/jq5gYdvErmdRc6nxy68WBF
-         6Wyg==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788207256; x=1788812056; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=d5biOjO85upMuWLwPhpTINXHI0+y4flJcmn6189t5CE=;
+        b=wtzcP9rUntPU6b68m41Wz74cFovNJ2RoLdwbFlX3g/zcKpSztf4ZbroO7U2K/g8KyX
+         3XG8m+JXzMT3Sujrwx82fe8fbZkJm/WEHHCo5rlyMC2pSRmJ1prYbsd4l5zljKoE63Cw
+         US8VTRydoVme4uW3kmBbG1RYT79iSrFqC2Vv4q3C+d/0PooSWRjY2PQ31UB9skKO2tAT
+         yYNatx5Pq5DXoFqdEM0jhV9CSLPRAMC5U0ipNzJVUa9U6IQ2pijssA2IZL7hnKK4MbK5
+         WTb9rSbpWJu6CHlS6jb2u4NsIgSHqDUMfeDO7KEdQ5SWe+rXGxGmakcY1k6KEqbgV9Yl
+         Hvpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788206645; x=1788811445;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=I4/G3HmEXJ4OVElGeCZxuKwSWS6iAiOY/MRgSX2ruGk=;
-        b=RTKWTJZkxNTH9XP+4TuV9rBq8BOCGgM+PQLLl0LI95WdtVOvKrrR1cpueP4z9XeudU
-         kr/BaUdFf4o/9n6F/vv4fkE+Nac8IoH4rHjJ8pJ0F+/qVTJmQkBfeTKhQiKbQgLxMLxc
-         OZ1uJO11o2dlfuwxwl+cuUnyMiX3XkpO2vYxQFTp62UoSMZv/qNBRW5pa3+XkUA982G6
-         R24H8EikePkWGDf/kEWxnuiIhfLHpuR3DrVpIx9fDQ3xjntWguAPwb3J2VFhmK0WwcoG
-         6qnbV0CAhD+xL41kc8LAUvVibCeJyruqPgRHZ+//eKFw8Lve24kDxnSOvJa3D1ph4sEX
-         SmRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJomPfbtVebPFEwk7BIs3Y7pj35jPzWd+KVWs9IhyHjF30PmoEklPVx+Gfsst3VsYlVc55SGE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nrIkyFVfNaap8oXYcxWFH3FX+r6j/d8vV9IuPn0OD93pJU4Eu8
-	FjBTLnJW9MwoOfz2bWO1su60xdn2AHPIO1GTtTzZfX6VsPU04/69Hhdo
-X-Gm-Gg: AYBFou1YDiT+rgTQiViln2I1Vhlm98ChejFiL1bgdreMwjjr+0BfDkhjkgUkV8EwiOa
-	wlgnpJc8LgYnB6+ydIYDAwnB+O7YUlQwC+uZ/SWOsecd/4JaJ+U4sv5VGgAm+vyRplUdENgHu3J
-	F2ohwvPURAFAiLWsgHHRNyYn92cAdX/z94DmHHmj4WDVwuNbkLHtLnLKcYyjCKPIzA9ccfsBHT1
-	0JdV0pNyYt4CjtaVm7gzABgOA44BepW3VoTPz+KiO5C3IgHk3h5yK9fMNA1BLYdYF3snp/NTDkJ
-	96IE4FO9/xp1IzuhX/tZ6YG/RW7NJIAQhBO51ohj+RmhwnaNMl9+aUejYs50WOffHqSuN5421my
-	FBwP5/hA+lkmBy5ZL5NSQDLeF+q3mCcH3fvEeI8YvGv+FJ4DNzZNIpgDyMCAf3b2poPNyll/jYi
-	rmMHiv+X0W0C7jm8m0qV4FKpm/568hL14K7uVDtSHmrB2VtMpaCKSqQug0GPArGIgx8otEVxiMw
-	iuKg5XDNrHK/Lpc1as=
-X-Received: by 2002:a5d:5d86:0:b0:47f:773f:2d68 with SMTP id ffacd0b85a97d-482f79bac52mr39529891f8f.16.1788206644929;
-        Mon, 31 Aug 2026 13:04:04 -0700 (PDT)
-Received: from christian-ThinkPad-T470.. ([2a03:4460:170d:5700:b1a9:fd9c:45a3:43b7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d3d2eesm125783f8f.15.2026.08.31.13.04.03
+        d=1e100.net; s=20251104; t=1788207256; x=1788812056;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=d5biOjO85upMuWLwPhpTINXHI0+y4flJcmn6189t5CE=;
+        b=Qq6zys9bojbltRBA1AlZJMkhkquOC7kVbcKeOO9/F/4PMyzemiIbhfQ4uB/1ssN00S
+         IEcyzbExokOuFGhPcnaOvhvzV9JFHQPYQasPdrI+VoYhpkyMbNfSr/t8S9Zy5QJ/TWBv
+         /nqdatApVHtStRVgeBVNnDXYSr6IOEO44n4XByd/SAvcrmmkksRHeppoGkK4FnoeNjel
+         fIu03cC3gFof00FkD9t77NvjgmiB01HHwF3IagG/fqw8bjfYhk/qSmoJEKpcQezYi5+Y
+         F0rw8cNlHWbyn3sc/+rN9UamKQ+mwLJfd9TLuzqHkBNHDjtgl+b8rIAmTudvMTBox175
+         0ubA==
+X-Forwarded-Encrypted: i=1; AKwUvBzm6H39M1vmlhiMXFOp715XFSzCk3+0vKftDNRUUkJYGlBtRW6nEuHqfhc0qtAU5pLsBKctMq4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lGvZ5tjCMQXD+2dWjFWsO4eri3MEDA5fJoIyO3REibZpiKgJa3
+	mkxvGFdtd+drhXmPgBiA/rquPClf97cqAdhWX6YHGuEMYU1PRywGS68/xbyjL6Cj15k=
+X-Gm-Gg: AYBFou1SfrVC6+j0OMpAipQr0EGPTgtmPm8TTZwu1D9tEbNPkAzrtDaqJTY2pVufX/H
+	MmmnhjFCvshM5OIV1IREAugyJsgkSjVs4hxwN1BOhm1KIjkOnwRdMphE2c3gL21YjXTFpwhV054
+	ukH4SUJ+bXaUU/+PN8smpKjAJec70+8Rdb53GaK9ycdtSdRgPNPF8prMP7i4TRwxbGRcDrha80y
+	cjeLduhC7dPOZfS2qcXIQKl+XngR8b+ura2/Ie0m8p7D+aP8wieNJ+WChY2Htu7Q/4TZg4vq247
+	845w8yjZLL5TczVDBy5fON5V23p2giot9KJr279wxGqVqZiNmesviMsvSnOoecq97yJnZGoPIyT
+	2ClYQy6dvjunfe9ZYkklEFyerL8xLpzzTKEOy+x3pUzgS9zVSUCWYO8vMlbxmSCohi2ks7CqLIm
+	4iMlnnp1z+vr/InaIZdk9yYElRzTj3lQnZYASOazElfQ==
+X-Received: by 2002:a17:903:2acb:b0:2d9:1c02:5a19 with SMTP id d9443c01a7336-2d94a956b48mr37826955ad.22.1788207256475;
+        Mon, 31 Aug 2026 13:14:16 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:54::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d8f6a92239sm31370175ad.70.2026.08.31.13.14.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 13:04:04 -0700 (PDT)
-From: Christian Melendez <chrismelnu@gmail.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: netvsc.rst: is XDP_REDIRECT still actually unsupported?
-Date: Mon, 31 Aug 2026 22:03:57 +0200
-Message-Id: <20260831200357.45390-1-chrismelnu@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Mon, 31 Aug 2026 13:14:15 -0700 (PDT)
+Date: Mon, 31 Aug 2026 13:14:15 -0700
+From: Joe Damato <joe@dama.to>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Jay Vosburgh <jv@jvosburgh.net>
+Subject: Re: [PATCH net] bonding: alb: fix uninitialized transport header
+ access in alb_determine_nd()
+Message-ID: <apXgl2EwsQUWsucr@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Jay Vosburgh <jv@jvosburgh.net>
+References: <20260831194626.119371-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831194626.119371-1-edumazet@google.com>
 
-Hi Haiyang,
+On Mon, Aug 31, 2026 at 07:46:26PM +0000, Eric Dumazet wrote:
+> alb_determine_nd() uses icmp6_hdr(skb) to inspect ICMPv6 headers.
+> However, in xmit paths (e.g. packets sent via AF_PACKET / raw sockets
+> or forwarded packets), skb->transport_header is not guaranteed to be
+> initialized. While pskb_network_may_pull() ensures the packet data is
+> linear starting from the network header, it does not set or adjust the
+> transport header offset.
+> 
+> Dereferencing icmp6_hdr(skb) can therefore access out-of-bounds memory.
+> 
+> Fetch the icmp6hdr directly after ipv6hdr following pskb_network_may_pull(),
+> and reload ipv6hdr in case pskb_may_pull() reallocated skb->head.
+> Also remove the unused bond argument from alb_determine_nd().
+> 
+> Fixes: 0da8aa00bfcf ("net: bonding: Add support for IPV6 ns/na to balance-alb/balance-tlb mode")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> ---
+>  drivers/net/bonding/bond_alb.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+> 
 
-Documentation/networking/device_drivers/ethernet/microsoft/netvsc.rst
-still says "XDP_REDIRECT action is not yet supported," but
-netvsc_run_xdp() in netvsc_bpf.c seems to handle it fully -- calls
-xdp_do_redirect(), tracks stats, and netvsc_drv.c advertises
-NETDEV_XDP_ACT_REDIRECT. This looks like it's been true since your
-commit 1cb9d3b6185b.
-
-Is the doc just stale, or is there a caveat I'm missing? Happy to
-send a one-line fix, or feel free to just tweak it yourself if
-that's quicker.
-
-Thanks,
-Christian
+Reviewed-by: Joe Damato <joe@dama.to>
