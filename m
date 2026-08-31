@@ -1,141 +1,102 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A7C37F739
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B094C37FF6A
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788205762; cv=none; b=LOjkrSIlcsKwOIV1b9F0TFTvIm7CIFo3jz/ryJKXnlLcSRYi4YcHGBlRuSaKLgcIjz7M55KXOWBBjnz6D4RoMjB5OrbchnCMOHQQ7qYZ2uGMbEgb6cyaTIpYnK7SibWx0ONyga9uSFcvaN84a78BMwnKWGlwJ32nFXoGZUorSIo=
+	t=1788205979; cv=none; b=Y7HKRJs8pVUvNm6UyBVjl8mzkKmsbZsITMqCVoPCQuY3u3w02B2uRHtAjUIHJ8QlPiVNjVgXy8iVCA19PwHARthHO10HSSOzudLx3yH1UJEhihX62Bh53Am0JiAGZAd3AaQvtZevyavHJlHwj3DkxzJP3yYDBwrw/0lAwAiwyA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788205762; c=relaxed/simple;
-	bh=ewjMh7AeS7UxdW1t5ZVYR3mAJwTq3JM0H2t+6IKbq6k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hiAGczWCVqBxu6sMiWnKGNRdJItTthp3YyCIduMy6X8NjkAMRzqbufltfn0c7AFG2m0LPODvPVvVjFvzV2S5Bmx/8lZatSqLdzA+bgT9PIulFWazK0+xpeWSC0u/6QKFtuEEOBy3RdFyEgHXYdH7CBtpDZMCIZOK+0p8MnPaMv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N51IutvS; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788205979; c=relaxed/simple;
+	bh=/zl8wY6TVFp7LoblMONX5vOgUc8p+oWSg/xEnWuTjnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BQkDU/E58BVjdcPwyWBQ8btGZXA4Sbdd55qlYMCB21TP1+lLAwlAQkqhnk7zXsRFtJv91JQdHnY4kZxoih3FpcSmYwi2nBTI4gz8olMqvUyOkoSGnPMAy8ZtAgG/wUSbl/IS41pNxpBvFU5HL23Q0k2zNvbtwUrIGyaX3eHzv7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=UjAQUBpZ; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N51IutvS"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4843e397f74so245517f8f.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:49:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="UjAQUBpZ"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce98cb8165so2802415ad.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:52:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788205758; x=1788810558; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OAn07Obxp1A7Fjhw2ws5anTiu/0A5X6fpZK312Rn4vY=;
-        b=N51IutvSUIdl5bM7Rkbpc5Vh+u7yikq6F7deahFvfPSdSkcDrAnqHHeOtShQ0zHwk5
-         S6lbNXFOjLK2IpnMF7Cnm+Rw+SJ3UmnepbDacvkUFmOLc0Msff+wQRlNB7/lniKMCJoT
-         ugSAVmr2Wa6HVcb486xow08in994VGN62DuKDQziVxNLhp5bzhedjZyBAydf2h6VO/7f
-         rZoxBxBWjYUYvruflfj6Mjo638+IqqSNrNviUK03KgzaRPM5rDEVGJ+7YVhXsrJGyzkV
-         6khXHYPwmXH9LdKjd3AUtQtmIibOFifbBTeyePtmD+Q/Dn/8hR50xj31riWjUDhs1JSO
-         TnrA==
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788205977; x=1788810777; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GBtl123r0qPUkYpJ4sDiuLzxWfXta9JzxkaMn6Qm0cs=;
+        b=UjAQUBpZ8xUImRey/6SIa2+bQVuy35INcK+FFAfNgrG7kjlTSbf8aoPRaOHTnfIZV/
+         ZNLUqr9v+tPzCVgYsLOTsl5oeS3iMJGuyi40w6c/h12psSY3PwBiP6oDkAccHSpAfrFL
+         C+Fth0WjhndbOB7pQpxkwB9gIwMxq0yRau8dVuhll2TJRlCUfov0bHrq/NeTEiq3Cb3P
+         Dxztaw8lK5Qx1MuQYNCDvgBh87NAU837NHuqz43mLvTIxMIvcxxWUeiQZVjIXwKH9VYY
+         QUEXLbQ/OOzH0SKJBZmbT6gVhySDwP+dqLHzAkLAdQIrr5UpxhvQVMXUR1KE4KVINwXk
+         vlEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788205758; x=1788810558;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OAn07Obxp1A7Fjhw2ws5anTiu/0A5X6fpZK312Rn4vY=;
-        b=dvavh9lJBwDcbNZmjQheR4lGuRBmC1Y0kmO54Viji2JZB87VMBbMs6DGdYu2ZCM+sC
-         K536xhXbWDB5uMn4vI9VftDfjRmAKvSz45bOJCisWgnrqjdRjBrO4koMaIb47GCOre5L
-         eUubMEWe4C5Nd/ynpbIlnZOUEc7SKMUyjYmmWwWqPruBMU+CmwO/jwSrKrapYZp6a5WS
-         CHdFkGo+4S9Ua9KqVCqQO4l52vtapFraTfKjRCLWdSKMfkkqeUteaCJPDwP5/a5m6yVv
-         hP/mwAWme4j/Q0Cm4G0G5p9q2sRrIU6EMREDUrqx/yNKeN9sT8fro6S220a4UvUKZxjH
-         UdYg==
-X-Forwarded-Encrypted: i=1; AKwUvBwhcH68VK+eoKw2vkYcrV03fm7YybfgfCvq9xQtQwNTT4eQ6u7mbFyjvZUnzVH2MFMIT/VBoQs=@vger.kernel.org
-X-Gm-Message-State: AFuF++lwe+JDKY2pdfYlFeO2MKMVumJ/JJe2j1LcHfaTxgprOELS1hRz
-	rErrtscj8HzQ69IAQ9gWkZA8LCTQz6K6fIVTBgjiStr6gGWrtXZp4JsG
-X-Gm-Gg: AYBFou3iAL6iLmYR4afhEhTxwd5fdnxP4TbwdyhLvB12lBGHvJ4UH74Hv1mat2kTZfg
-	kU/NsBO0VLClz1ZrT5y1ejQ6bJMGnXmw194FhIGuveAFagM2lnNKwa1kR1Wdxd9UuALVcY5fO0t
-	l9Go6KQ/OyM0X6ECD+Cm7fZiABdw+cK9d8ZRYTxbyY7jfUtWQeksovXGGTFe7aDtVIq2O6Lgsz7
-	DnEpJbpvPF0gID0lNHjg13nYYTfQVWSxoR9h2YoX3tTLQWektiKnf10VX2PoL6NzGXbHRFaM6E3
-	n6rRVeqlFhgTYkdoKJbnSqfxLsYsAMkdLBCzmL/TLBkhqv7rWofmQhDcCgS/2rj0naqxIGUKulu
-	75qS/sAzNB3VljLIbj8dduu+c47vWxnql5l/V/NI3HEUMtmFPBdwBxN9N66J3L/B7ZTq20yC+DS
-	fNjOnz/7Q54nvQJ9KltDzGWjo6xbBD3kXzCgeQ/vksImpgiZ90ZBI26I+zIXscshsWbR7sS71cI
-	9toBwc2pYgaUucOq+q2q4O1UjkTPt6SCsLmVTsR5ZeqK/LGWHFCZccuPJC7HXkn92iwfKvZ32xP
-	mHaQUMuJvBdn3nUyeWt9i8uQeZqUbHNuEVqRjWqpMv8e3lm1ihKgHQZ6od3z/gRe8Q==
-X-Received: by 2002:a5d:5e8e:0:b0:484:35bf:af6f with SMTP id ffacd0b85a97d-484421d969dmr991971f8f.12.1788205758197;
-        Mon, 31 Aug 2026 12:49:18 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-acb9-0201-68d0-34d2-ad1a-175a.310.pool.telefonica.de. [2a02:3100:acb9:201:68d0:34d2:ad1a:175a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d6e8eesm1731f8f.18.2026.08.31.12.49.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 31 Aug 2026 12:49:17 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: stable@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Mukul Sikka <mukul.sikka@broadcom.com>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>,
-	Bin Lan <lanbincn@139.com>,
-	XiaoHua Wang <561399680@139.com>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1.y 6.6.y] netfilter: nft_set_pipapo: restore cloned mapping table memcg accounting
-Date: Mon, 31 Aug 2026 21:49:05 +0200
-Message-Id: <20260831194905.45045-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20251104; t=1788205977; x=1788810777;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=GBtl123r0qPUkYpJ4sDiuLzxWfXta9JzxkaMn6Qm0cs=;
+        b=eGb8C6iKWfvQ4sSW/eTI0NdsMwr8/5JN6XIfIUWTPifyUKBPGR2jMQ0JNWsF3Vf0VS
+         mV2A6FKOGDIuoNURXULm/2LUsS4oMBBF4OSUlRQ8DBBzntZixeiohW9Y1CwCLHoOI9cL
+         yC+VUT65iM02NoqhqNWDxNvsSSfafbGcamegwq+YPYo2Jyfw7zEbrEOgJQUTpK3YgMaW
+         PV8dTywQqfEX/VJf78Yn6l0ONrIjDtwClX5posLZzsVbg+HsjsV/wNK1oSeldvudlBh7
+         lC3WRt5EeY3TzxdTsAdxecuir8grY8p/p23IB7bYon4VKEh+fjwUs8Ut1W1ktj3GOwno
+         gUxg==
+X-Forwarded-Encrypted: i=1; AKwUvBzk9DGAISRohIUoYKE7yJS81xYREcRISr/DU+m831hEme5gUNe6x+wyuf/UOJ5AiU6e3lx+pvo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lsd5nnWRFpL0XJ52Mb+jM2aBnr+n5bz3PVq3h0bF/4/s7bwOE/
+	Q59x6KWh0BioM7UraINXHA1BzML0UoC+2RPLo2/lIc1TsuzJp59KUlpDaYFgDlcXAKo=
+X-Gm-Gg: AYBFou1Eh3B/LZMSQ2jr7DVWvPcEjXnRYEwIEWWQ2m4GOxW49guBgsh6KpR+b0FNLRI
+	/7S8hG9VVSFP76Oxw2sytw2TQsaYTBfrXcnULBtdWqkN4UZtqKZwgLR7MxP2+8rizZ6RliU8V4V
+	/nIVSUIjaKFrnnEB4KxmWehJ8FavhyZcOrqNFh4/7ss8p58Tj5aod62NCqSoeY+vX1IrdYzD8q4
+	kpC41w//EHClmWXSaNydJdeHfd9Yz1l6B9Nh47KbLMhvmBCZ76LypF0axGOs6WgN6sOJ/TIe+Bn
+	aWWlM9OJDtDTAY8hthcSh+XSbilfrnQpG3qO83ATBiJxmqbSTu7sFP/9uu79EYXkQ71Q8jIwpwa
+	zoq4qE4n452ZLDWQ4SOrSWDHVbXESsDTyVkCzKSS5+ZbDnzFP2Wa+/P7gyTTHA7WTnt4qkiI6OA
+	iGssnWM8YuR2epplte9Cn3rGCXfcU+5RZVTQmEhYpcgEYMddTfYKXrrQ==
+X-Received: by 2002:a17:903:2a8e:b0:2ce:b3cd:7539 with SMTP id d9443c01a7336-2d9527fcb10mr4767035ad.6.1788205977086;
+        Mon, 31 Aug 2026 12:52:57 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:40::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d8fdf63db8sm27557455ad.27.2026.08.31.12.52.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 12:52:56 -0700 (PDT)
+Date: Mon, 31 Aug 2026 12:52:55 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	shuah@kernel.org, willemb@google.com, petrm@nvidia.com,
+	linux-kselftest@vger.kernel.org, noren@nvidia.com
+Subject: Re: [PATCH net-next 1/3] selftests: drv-net: hw: rename gro_hw.py to
+ gro_stats.py
+Message-ID: <apXblw7gc6yZs9G6@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+	willemb@google.com, petrm@nvidia.com,
+	linux-kselftest@vger.kernel.org, noren@nvidia.com
+References: <20260831163734.1121891-1-kuba@kernel.org>
+ <20260831163734.1121891-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831163734.1121891-2-kuba@kernel.org>
 
-The 6.1.y and 6.6.y backports of commit 69e687cea79f
-("netfilter: nf_tables: missing objects with no memcg accounting")
-changed the pipapo_clone() mapping-table allocation to
-GFP_KERNEL_ACCOUNT.
+On Mon, Aug 31, 2026 at 09:37:32AM -0700, Jakub Kicinski wrote:
+> We need to free up the gro_hw.py name for the HW-GRO half of gro.py,
+> which we need to split by mode (sw / hw / lro). The file checks mostly
+> qstat counters, so name it after stats.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  tools/testing/selftests/drivers/net/hw/Makefile                 | 2 +-
+>  .../selftests/drivers/net/hw/{gro_hw.py => gro_stats.py}        | 0
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+>  rename tools/testing/selftests/drivers/net/hw/{gro_hw.py => gro_stats.py} (100%)
 
-Later stable backports of commit 07ace0bbe03b ("netfilter:
-nft_set_pipapo: do not rely on ZERO_SIZE_PTR") rewrote this allocation
-and changed the flag back to GFP_KERNEL. Upstream applied the
-ZERO_SIZE_PTR change before the memcg accounting change and retains
-GFP_KERNEL_ACCOUNT after both.
-
-nft_pipapo_deactivate() clones a populated set before looking up an
-element to delete. If the element is absent, priv->dirty remains false
-and the clone is retained. Its mapping tables therefore remain allocated
-without being charged to the requesting memory cgroup.
-
-Restore GFP_KERNEL_ACCOUNT for the cloned mapping table.
-
-For a 32,768-element two-field concatenation set, A/B tests on 6.1.186
-and 6.6.155 measured exactly 524,288 additional bytes charged to the
-memory cgroup after restoring the flag. An unmodified 6.12.107 control
-already accounted the corresponding allocation and showed the same
-accounting behavior.
-
-Fixes: a4983e89e3b1 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
-Fixes: 32bad10de347 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- net/netfilter/nft_set_pipapo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 7c8d28a031ad..4c3bb5d61a3b 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1465,7 +1465,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 				goto out_mt;
- 
- 			dst->mt = kvmalloc_array(src->rules, sizeof(*src->mt),
--						 GFP_KERNEL);
-+						 GFP_KERNEL_ACCOUNT);
- 			if (!dst->mt)
- 				goto out_mt;
- 
--- 
-2.39.5 (Apple Git-154)
-
+Reviewed-by: Joe Damato <joe@dama.to>
