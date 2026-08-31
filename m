@@ -1,67 +1,67 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C9C3B27E3
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963043A785C
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788157671; cv=none; b=lSXU5yEeOphNueyLDj38bpbJ0jJnOfudyFiGTDZHei8qBRN2bHcWIx+xIdxTh0tiG3iAXuHzCvD+jXn3d7/b/60oI+IBU3aL6YM/KWomoZ//r81d75hXSDOIvxqeUS9S3XrkZ9OGJhwWmFEho1WgwOarATLR07esUeg42lq/AxQ=
+	t=1788157673; cv=none; b=j8j9DgLq14aN2Z3P0tFCoREwUlnW40Y9kHk0BGSnKBqyERpBWZrFTDzpjxYgGBdLQ8fRs4htlyfqu08wfUt6FcIskEu/2XvQCDtfQKAKqdUqQQaTamM5lK/n5aIyq8nCiy5Xnq3e/5q0xpSyAnhWhZIchIiXzf637ObO2ZyXNxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788157671; c=relaxed/simple;
-	bh=uyz/iG22EQ1cE1shTE/tz55aLL5WmcZtVb0ryFqx3MI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=g3P9tF4ctoZTJQlYe7+QnLuQmbb+icbGdH+vQgjwEjhvcZ2FkwOU4BpE/CZmcKOoksC0Y+ctTxeBtBE2Thb4hkkRCQh247imI82hvQzdt09I495R0UdTnWFhjavlzYIUUx4eGuAEhmOqFshC8MSp4hos7f+PIid5ctjJLaR8Dq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=RwmwC4TZ; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1788157673; c=relaxed/simple;
+	bh=BVKzJmDOHWXqnK1KWCSiejwK6ubQnkmSh6PpBiqhigI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=atPmLnk7rVv9ofNSKwsbp36yEF0OsvF7V2QAuLbe592YIOPhwF+ah+j6qsuH5WpEELkH0JZzErF9ovsKZrBu67agg/1r3B7/pVjWhFjfET8sfgTHV0hBzTAVjsei16XtFnK33Nj1JmqMvv2tKKtIy1mg4fqX+UChRgimIckdR2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=CtY3FrVS; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="RwmwC4TZ"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2531f453eeso469132466b.3
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:27:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="CtY3FrVS"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-69f7fa1c548so4725613a12.2
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1788157668; x=1788762468; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KQDT/SFGyAqseQi8iwPfFYHbeuqX+da8RkpHa7uHvug=;
-        b=RwmwC4TZCzyD/aEggEOeCNJrCIdPueoejndUacQEdcrq9SZhnBsMI5kYyCgd92/puY
-         fqLGaDH5jFySAssK5e6chjzaf5G/5sgP1zeISQBWU5TrhzBy4ZhbUdsCMlJBzBWapqAe
-         jVxzqAELxZXSoiR/Tr5g5Mb9BhZEgKRSzOrXZP2Fx0OZ4Tc4SuMjhlOrWc3islAL4VXa
-         Hef+Y8vml8PhpT52Sc/p/aDk3jz0zQJmNSS0zUA2FL9E/KeTM4LlLceeQm4MRq3LIb9i
-         8MKbuZukk3VdV1ojAmoAwTUF9uIkRNMexci8eC36wA9C59bw2QnVgX3Jiel1auTTOAQX
-         v+3Q==
+        d=cloudflare.com; s=google09082023; t=1788157670; x=1788762470; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CbXcNrC9LsHQoj/JWtGUvNKuhQts0DTTYsFf8eexyzg=;
+        b=CtY3FrVSgtCcbZRWmZGHPdXjnvveqnXwEAlME21Q7WXNYkbGdp0wB+V0l+A2lim7QT
+         8UPZhrB9rtIGcs71hnlIN+pRCtTeScyv7acN30kuG6cJPjAb8QPjtHv7+1H8er7b8FNT
+         cJYkFM7dTV/dsDNS0hUvGiahj0laxXj9+AlViUuKrrso5XFbMOC+l5NPL20d02h7u/jv
+         RYl22vncfBBozIpdNR5UBZLMTEhZ3QoIn0GDIePrgZQlEq3xKZURWTsHu3KuFXgRL1i7
+         qz3HtmS540O4n6We1e5OZFLrymO+x/ZsI+j6Bd+rC2Az6OTFWV+Oz6bnRiXxP3XEyUzE
+         4yTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788157668; x=1788762468;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=KQDT/SFGyAqseQi8iwPfFYHbeuqX+da8RkpHa7uHvug=;
-        b=eiEpX5Sa8jGceNttxZm+fLoOJtycHzIDL2RIBF5sPmAr4XFNjUf3Xaau+sVBon0ntC
-         cwwIEGIKfshcwYVt93qYkMCfAis0bn9JOHGPvPRzAvlBrXI14eH+ciBWkh7S6yipCs+7
-         tngzG6fhxKojBYcqRTgun8uQa+8c3UsMQ9KcbIIOft9KxRQku1FfUhNuMh2WrxcbhHvd
-         tYuBOwgMeQtNkbek7/p5mn5PrVy4zSMMDFxWqPLk+TJnLxM+9QLC3ghYj1SrW4hC/Oi/
-         /WYxqcxXz8FN/E88WMSB81bEnrJGXi2E1Gja3br1jfSkuSeuMu9BCm3yrHmthC+JwQqa
-         slSw==
-X-Gm-Message-State: AFuF++kqic/ZidJZ1XtcG/AE1KeScV9lcbhOKYQRQaYH43lY6FGPb4+L
-	CCLrgKZgIDstj38fjh0Mwx3SgNRlO8xPG7a0nDjKwzzKChqWQSpgGlI8IlRAWn4mT/c=
-X-Gm-Gg: AR+sD12CjKoyNWKvTZfGvbWyqzmFs1bJP5CIhpEN9SlVBBTrQRGGq5g6Nf7m5DFp8b7
-	TlqZh+rVOiOdv6zZGvRD1RDjPnqK7i4Sy/EcdCgPZ84uEC2/YiLnP8iJ2jU+UZ0jPZPvA6SqPGl
-	qHp4IENVAsOgbaQ0U34ZPkYeTXj2grGMziwJi6VlGc8cO7S/GovzNMFqzfSx16lBuJKHwvIPImX
-	gcMh/AkcRVBEIXw7Pjs5CnhQhorkJdTdPlPd/6NtUCoi17iBZCDkzNLBILvYEQI2m3xecgLfYL+
-	MTdQL57lu4iyOU/8IRlLQ4wAZ0dQyGsEqCtyJgEibkCrvoLkk1zZjj97bO2wdydzi9oBDKmDYJX
-	fV3WTa7akOYa1XAOOJCPJbguoUteG4LOuMfgkMwDeKMjxrB+LpP8Kw5My6lIsJF5MX8dBvYcFTv
-	895JoO1u8CS0bBnjVwWChBYJWNEXyZ7HkelMJ7qEfpV/IZS9So/qIDV9o3vDF/GNS3hO97OmP00
-	GklX5FlAHVPmKIQ3qFEX+mAbnkGStoHA2BpsQ==
-X-Received: by 2002:a17:907:1c0d:b0:c25:8c05:902f with SMTP id a640c23a62f3a-c25ab453e48mr82721966b.13.1788157668444;
-        Sun, 30 Aug 2026 23:27:48 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788157670; x=1788762470;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CbXcNrC9LsHQoj/JWtGUvNKuhQts0DTTYsFf8eexyzg=;
+        b=qcIZHcsZUtLD95oVQ9d1toY2X6uCHfZyCzMFfOs0F3y4RBABSs9z50VecWK+pz0Llq
+         jB09F2WCuqiuLJfjqmaJB5f23u/1qQSK5uRAz/rFpa7AYItJ6gFJRQzx2q2J1nqppej1
+         KOSosfTIaXkHxTQ3mjD6nbHl/wYz9kjKgmkHIMGOvm0Bsjz379A5WbNrdcRauSjcTKG5
+         1loIP98qTa0O5YH/PR0eaJr0z+Xj67D9XgqN9WkjVBneFXI8zJ8kKcOPpctD3q738H9k
+         qIZ9SZ+VEKM9V5x31EJ0Z+NaVV1w8H33hiWHn5eFoth2fPtOSJ3X0hH6e/wKU8f0dC86
+         gkxQ==
+X-Gm-Message-State: AFuF++nnzllXUk39O58dsNAAffTX87Zu2GC6VY3IVKP3tA1yhXbwc/7B
+	okrOLwFp+UNuEWJ3K035HxcYFCt8OhmtQnzNqNsrhLXeP61+DsNaYhllR3L8KN7wfEk=
+X-Gm-Gg: AYBFou0Y1DTL9YZHaPdc1smuzZh5Ca+vKMebBY2qI/sW8KVRTWLKqfVTZnQYpcU+kI5
+	eFc2g39l2NeI5WJYP4I/LBuVCXcv3u9NpbgoEB5k2qxP90Y5uE3Dsvwl6gWbStWmjUvYWgfqNSs
+	lNJNsHNRQi4ylaOMTim+DDIFLgl7D6PRIWGTHQYElOpPaiW64yGfRJIR21jrlAWwEvgD03siJwI
+	btEL/yr8z6ivoSL1PSKIgrgRPkpaeJjQvbmcBsMVZBtdkEw6rdEOjqhJXBpEUzGkM7td1G0mkCE
+	4y6TrJrpR2FSBVzcIMwTdsaLOIQKHORFwVywR8AkmjnqkVx5ZKZVod4By95TfnfTZ7TqZqapxbv
+	d1pIwpxNfeM2ttU+6/xlvdg44XP6cMf93MT4FWOd2gV+34HTPmdWvaxyQYhVypMpk4OpplBoQrU
+	+qzw0vwBFg0G8PpL981qlzDWrM836gHzeWTS33mb0SrtxLSOKi+Hnxil6i6DYwZmiaQRRLwgpeq
+	EX2pVXjLXbqdYUEkjpouqa9aKPTgmUopB01BQ==
+X-Received: by 2002:a05:6402:501e:b0:6a6:15a1:6c38 with SMTP id 4fb4d7f45d1cf-6a615a16d92mr13500965a12.3.1788157669824;
+        Sun, 30 Aug 2026 23:27:49 -0700 (PDT)
 Received: from cloudflare.com (79.184.131.109.ipv4.supernova.orange.pl. [79.184.131.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2564e314a1sm353166466b.42.2026.08.30.23.27.47
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a61b158ff5sm2417202a12.26.2026.08.30.23.27.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 23:27:47 -0700 (PDT)
+        Sun, 30 Aug 2026 23:27:49 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Subject: [PATCH net-next 0/2] net: Prepare skb extensions for reuse across
- scrubs
-Date: Mon, 31 Aug 2026 08:27:37 +0200
-Message-Id: <20260831-skb-ext-prep-work-v1-0-ecc2a8542fd9@cloudflare.com>
+Date: Mon, 31 Aug 2026 08:27:38 +0200
+Subject: [PATCH net-next 1/2] net: Make skb_ext_put_sp() idempotent
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,10 +70,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANkelWoC/yWMQQ6CQBAEv0L67CTrCkT9iuHAwoAjyUJ2ViUh/
- N1Rj5Xqrg3KSVhxLTYkfonKHA2OhwLdvY0jk/TG8M7X7uwvpFMgXjMtiRd6z2kiN5yqsueqLUO
- A/cwMsv6aN0TOFG2P5m/0GR7c5W8S+/4BAzJaBX8AAAA=
-X-Change-ID: 20260829-skb-ext-prep-work-0f354de5a4bb
+Message-Id: <20260831-skb-ext-prep-work-v1-1-ecc2a8542fd9@cloudflare.com>
+References: <20260831-skb-ext-prep-work-v1-0-ecc2a8542fd9@cloudflare.com>
+In-Reply-To: <20260831-skb-ext-prep-work-v1-0-ecc2a8542fd9@cloudflare.com>
 To: netdev@vger.kernel.org, Florian Westphal <fw@strlen.de>, 
  Paolo Abeni <pabeni@redhat.com>
 Cc: "David S. Miller" <davem@davemloft.net>, 
@@ -84,31 +83,51 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  Herbert Xu <herbert@gondor.apana.org.au>, kernel-team@cloudflare.com
 X-Mailer: b4 0.16.0
 
-Following Florian's suggestion from the discussion in [1].
+The sec_path extension can be released either when it is deleted from an
+skb or when the last skb holding the extension block is freed. Make
+skb_ext_put_sp() safe to call from both paths by returning when
+sec_path->len is zero and clearing it after dropping the XFRM state
+references.
 
-The skb extension allocator retains the extension's offset after the
-extension is deleted. This, in theory, allows skb_ext_add() to reuse the
-existing storage instead of appending another copy when an extension is
-added again.  However, it also means that we can't rely on the offset as an
-indicator that the extension is present.
-
-Make the extension cleanup safe, even when the offset is already allocated
-and set, by making the individual extension put helpers idempotent, so that
-they can be called multiple times.
-
-This is preparatory work to support skb extension chunk area reuse after
-skb scrubbing, which would be needed to persist BPF metadata skb extension
-across scrubs [2].
-
-[1] https://lore.kernel.org/all/ao9UV9S7rUkyQ8jv@strlen.de/
-[2] https://lore.kernel.org/all/64365932-c765-472e-bf6c-b07c9ee25eaf@kernel.org/
+This will let __skb_ext_put() release the sec_path without checking whether
+the extension is present first, which is needed if we want to reuse skb_ext
+chunks area after skb scrubbing.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
-Jakub Sitnicki (2):
-      net: Make skb_ext_put_sp() idempotent
-      net: Make skb_ext_put_mctp() idempotent
+ net/core/skbuff.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- net/core/skbuff.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 966af3beed94..aa8b42c74f42 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -7236,8 +7236,12 @@ static void skb_ext_put_sp(struct sec_path *sp)
+ {
+ 	unsigned int i;
+ 
++	if (!sp->len)
++		return;
++
+ 	for (i = 0; i < sp->len; i++)
+ 		xfrm_state_put(sp->xvec[i]);
++	sp->len = 0;
+ }
+ #endif
+ 
+@@ -7260,10 +7264,8 @@ void __skb_ext_del(struct sk_buff *skb, enum skb_ext_id id)
+ #ifdef CONFIG_XFRM
+ 	} else if (id == SKB_EXT_SEC_PATH &&
+ 		   refcount_read(&ext->refcnt) == 1) {
+-		struct sec_path *sp = skb_ext_get_ptr(ext, SKB_EXT_SEC_PATH);
+ 
+-		skb_ext_put_sp(sp);
+-		sp->len = 0;
++		skb_ext_put_sp(skb_ext_get_ptr(ext, SKB_EXT_SEC_PATH));
+ #endif
+ 	}
+ }
+
+-- 
+2.43.0
 
