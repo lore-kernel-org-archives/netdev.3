@@ -1,707 +1,231 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCDA3B531A
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788213141; cv=none; b=uiMSF/TXiX+BFH2MXCWqtM9/AlD35vemNfaytwJWBaqCvueRmf5VKuQzxuDGptzmhTPcp84FnWPrJhgM2VNkgnbZFYdqkEhkf/LR7fALv4PuZ/9w5LiihzgItIkvpIU0l2y88n9JUf2HNxj21xLB5DsKJNxHAUTOWiVD6K+7Cj0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788213141; c=relaxed/simple;
-	bh=xc6RYFjM3qum/BpEYUDxAN8AqfURwHfuXiQv33zPfyc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZP+imdn1Xbkk22mm8lajLkXwIEpy0iutDuz/U1h3VbKPMzHKl+wWuH1ji9WR/yNmr70EpMXYyskn2ho6PcwhFQS1ZRTsjAOcDgK9o2vS+j9d5wqcn0Jb1FfajwK6ntbOue+HN+YeuOOaHewZRX+TxCiF3evyiigwq8d/ojveOfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U7AsM77q; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ABE37D12F;
+	Mon, 31 Aug 2026 21:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788213490; cv=fail; b=uNLmKe7Xny2hqjFmiyr3O+4R99I6rWCD6HWZsGsylJT+vnXQxzHaLDlD2ol7vT8y+wZKYoF0j4MFFZ5s4KurJYlE3W2I/GbV6/zlR94MqtKg2GLhzX+F+Fft3MKa26ub6QZTCG3LaBaJIg/U8UlzakYYtgHcoCXZDLSHk5/Idrc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788213490; c=relaxed/simple;
+	bh=2E22gummJcppUtsypUzp7HL09SwKGtEUqH6GNpy/YsY=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=PbVC0EYVO+lpCzuwU6VWSdEb/HhAfWUJrglaInpG7j7lUUvfa8WPt0QdUJFzC0zuevnZJo51SHpL2sdAjSctpQwsKS/2Bo6XKo2Enif+4kH2xWne6rE/swDV2l7z1SzVz/9hBa7vWF8yBqucUd2ikW1DwLkF3zmv5gqWyusjZyU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d++eSCI0; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U7AsM77q"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aeb98460c6so170299e87.2
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:52:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788213127; x=1788817927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S/AmrykVmQeKHyM0p+x7oceRSM+ptePxF2cOoh/jGjA=;
-        b=U7AsM77qtrToIWDE4qYhw8PTLVfkliWPz/SLh7MnNEmViC0Lgotzsj/AHEery2h25L
-         o0i9op6Wz/IQMJIs+pDdBBGhrKpSutB7xFisrPKJdgDygbll+ofUi9KSqVCRyJoh86HA
-         obj/9Y45UUxIn+EQnbi/8FaiOq4SaSt3nNU7W5HBfo9fRUpu5ZcpJtO2mcRNtM7yP+lf
-         +QQwIcw2ajpWsH4eDZFMy50FwdVkJPq24NGUj/+HDZNlEDwnS/Ef6mbfds1UbcizkC6p
-         qfdopw0jYtqT5sdKSsOc/lkRe921MOHzMXIXWmio/ifPJoaIm3vdfdTo/tzzGESEICli
-         MxQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788213127; x=1788817927;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S/AmrykVmQeKHyM0p+x7oceRSM+ptePxF2cOoh/jGjA=;
-        b=eoE3JLgSocIPaJrl4600Us2fG30vgFM6dhe68D3GzQoH6M5jbSyKKQIcFQIh/5Oeaz
-         jMey1W1Qqr/tXsa4tPL984Qb3uS+EvFBvyRrMRFo/N0fR7pcfnEqBc4fbaaoCIWtMKaC
-         dJNDjIqpEuW1XMt5jVc5nwwdMWy513Ci3IHMe1ZJ1p0ygXRvb83817ASkib3hHs5kzuy
-         C8zPb++CCYZ0zlp/8hQvD/ef3K0hJOSx1w7uDZTk1jD5P4dNfUokFcg3j1Si/dR9Ik/V
-         ahB3mWnI7LXfq+aKhAZtyKyqeeTL/C2zvcojGivJ/GFPtCGnthhdBQV7wt4RuDGxihXo
-         UUJQ==
-X-Gm-Message-State: AFuF++mfBHp0GaJc//LBR25A6WioQS7Nb4+xoXmt8Yv0sorR8d8NgF9K
-	IsLzFPsfGhI5HKgYWUqydgjBKJWIbKs55qX16GG4hIkbAHEGjkQmyVq7y5wZCMTgqBs=
-X-Gm-Gg: AYBFou1/ia/k0j0p7dF3eowD1twwNsqhBvmJbiZb6igze6d1mr5uFigF1snfg2QtRsn
-	wOAo1IXbVxlnLDCXaRFjjGYAQGkdoXo1t+8FULiC5jEYeB4w9UXZTPgX5LvxqAEm1d1bCjrT9lb
-	IKIai2jJg4Wfa0WBsD84vDmBcVzD6+DbiKsFf0jHgYRvQ1OrVe8fV6IcSd+F/hoiLxxs8zUT8so
-	MWsuPGjloinbVurkIsmcgV7npffMVvDyk3HJ1OecJZ5SUYDjSEBByg0hS/7WJI2CrvlHTcadV+V
-	diFsDJvIUO/Rjmezbq+x+iBg88y8UYETq5ve0/XAvb+HbCgt2MkEzKKLfu5lSxSzHNfX/xrYLS4
-	sdvQUBXXodBB0+e+ETj7X8IhR4SXYXTDvfNk95hnU6jzyaG6pl/79kSlbd8I+9IGs8KSpcg6I7p
-	rWyftJo96vNT2LhwJF39StvRthv6KBtCHgxJXFpr+m3sXiuMYat5c1/HERdZJ9ePgEZYObmUAmZ
-	9AquP5vxY7wpJWMKaKnjRkXjlFlj+QvMBs=
-X-Received: by 2002:a05:6512:3b86:b0:5b5:a8ac:6ac6 with SMTP id 2adb3069b0e04-5b5e6afc072mr8261606e87.21.1788213126478;
-        Mon, 31 Aug 2026 14:52:06 -0700 (PDT)
-Received: from dau-home-pc.. ([212.35.184.237])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b5e8a06a77sm2388782e87.48.2026.08.31.14.52.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 14:52:05 -0700 (PDT)
-From: Anton Danilov <littlesmilingcloud@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next 10/11] ip6_tunnel: add drop reasons to the transmit path
-Date: Tue,  1 Sep 2026 00:51:36 +0300
-Message-ID: <20260831215137.549324-11-littlesmilingcloud@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260831215137.549324-1-littlesmilingcloud@gmail.com>
-References: <20260831215137.549324-1-littlesmilingcloud@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d++eSCI0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788213488; x=1819749488;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=2E22gummJcppUtsypUzp7HL09SwKGtEUqH6GNpy/YsY=;
+  b=d++eSCI01Bk9ZCsVv8rlB48KvYABG5KEyUqHTW6PLsluqtPtrG+lgpt7
+   5imuKQ2KOQTKaqjAPislpV7pDjUyMjMAEnKMK7qN6H+KEjg3s1nat3VDo
+   F9NG6oeDtWaczPOZQvQ3w2slZsDTMYEku53fwQU8s6SrrV4IZI2ZoY4+3
+   GBi959yitp4XfZq+YVJ67ar4tcTu/i4MxnNPeTAj9/R1c+hvJJfOwZga5
+   aZWBkHaK0xCxxO5VIDuxYOHeiFABNVEd6yelGKldZo3P8fNzb9Dj8Rp4x
+   aSBvcfBUBu9u9XlYYb4K1rn7ajZt0bva6gOlWWkzSnxOWvBg+0qpyEsYk
+   A==;
+X-CSE-ConnectionGUID: ZjPLLjvIQ/qEu2SPEzPefg==
+X-CSE-MsgGUID: la5psdofSx23AP2vQBphgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92497682"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
+   d="scan'208";a="92497682"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 14:58:08 -0700
+X-CSE-ConnectionGUID: 1HBiqKBXS3CV0u0wy+UJwQ==
+X-CSE-MsgGUID: q6IlF3vEQvedvOpjJXw8OA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
+   d="scan'208";a="262773019"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 14:58:07 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 31 Aug 2026 14:58:06 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Mon, 31 Aug 2026 14:58:06 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.40) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 31 Aug 2026 14:58:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pXFjoaQmu1o5mTAf53a8gxTMXfXUgIPu9bO9bdwEAhKsKW5hhlrOh+eMP30Ok/+yKgY213XEq6N5UHPYnSot2YulmK0QzSlNB4LKMlnW3wnHlqT4eIfQMP5lVUCzXSZYGGoOn/XqtvLkCM9W3L3JzYrHZzNBTvXx8snkxRyi8F8e8vdhpG9kMXe5/KO4/EN4WGLVMpcCefsPmGZ6E4Upt+OsfPy2n4wzvDz3qMBUjNGUgMruteMAZgCD3Rq5CKDzR+KWfrHDZq8MgutZDa/pY+mM1gzmt+gTVy5deuhxgeFU2/5/sIIetyt8JsMxzsSJ8k8/FOeIpmW9jc/pi2Lo7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yzXlvMJodwDE/y8rjXcQ2+VzKwf4gA3OLf0evAqkxiM=;
+ b=EI0WaVFRBJmUYn76bZ/DznLOtQRHOm4KXYYpViKcRzn15eM6Q9Gfec5rlBF+XvOWlhYvZty2nOs8YIDiu+CqGxYOrDiMTTsu/KPPl3Z5ODBzUpJElPRi0KgEFL1e1XJDmFFavluLYDAIZ02lCw2ZH2DMMUGeBHyYBv1Giz3jxpbp6TOV3axSl0yjvlRCf5ZDNbq+tCDx/WQDX6jDmMM8quroZNMAl4lZSHtoZu9SxWP8cpsJoLIyNYLFBw0o70eTxcrwiEOiuQ8nXlSbnkPKArvSlJkDKwdSWc0y7RmZVsdEGXprs3qkVWxn3/jscdjl25bioXB/2uAiuzisRMXxdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by LV8PR11MB8771.namprd11.prod.outlook.com (2603:10b6:408:206::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 21:58:04 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 21:58:03 +0000
+Message-ID: <8ab343e6-1bb3-4213-9fad-fab43bf40362@intel.com>
+Date: Mon, 31 Aug 2026 14:58:01 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] iavf: add missing PTP adjustment callbacks
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Xuanqiang Luo
+	<xuanqiang.luo@linux.dev>, <netdev@vger.kernel.org>
+CC: <intel-wired-lan@lists.osuosl.org>, <richardcochran@gmail.com>,
+	<anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<ahmed.zaki@intel.com>, <mateusz.polchlopek@intel.com>,
+	<saikrishnag@marvell.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, Xuanqiang Luo
+	<luoxuanqiang@kylinos.cn>, <stable@vger.kernel.org>
+References: <20260828015837.2759-1-xuanqiang.luo@linux.dev>
+ <ddc21a8e-b2dc-41a7-8390-5642664f08ea@linux.dev>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <ddc21a8e-b2dc-41a7-8390-5642664f08ea@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR03CA0088.namprd03.prod.outlook.com
+ (2603:10b6:303:b6::33) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|LV8PR11MB8771:EE_
+X-MS-Office365-Filtering-Correlation-Id: d26fa58c-defc-4ce7-373b-08df07aaee60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|18002099003|22082099003|56012099006|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info: MVTOZOH7YGCxo92r/OHaHOt+Xy+DFuWzmL624GNbBHLOX5yYcTlS3O2T5sh65OyY6sZIY0t0z/FgfUIjHjoyC1VkqfCD7wl1kxSCVXUvt720UvV5Git2eLK0aDTB2TBftdO5Z339O5d+tbQ94nLHaLrxj4fp80nysXyEswsNC50YOGAm4PNLTLkWWEMvF3//3NLqCry3V44rKurKqPBkdxrP27uzGqmRyBArH9bSmJVtp7Xsyr6q7Y7iP2b3wXR+26Ea4Mqek6V7x4u19nl6yrYU51vKU9KkrkWzCnF9R2VOVU4mSuwsepk5OKw9q8OXy5IfTQNpmlkWICeyxsABIcu8YkgxsFM/HwICMWfpHJUh7rzRmduWxbFzNXmHqcwL2Up5ntyeFM9tFiG4iAkT33lev4bIjFhrNHWp0R61ZgXbl2iyeaARxeZ7pPHcBHnOZE2c9CQUA0mIdH6UwMJU+CmyFh2pXpUTjgHUxHPe/FJFAAMIoX/plODNtGVClOCTb/txLhdckLsZ56HD5qGkD1+qBBO/ram3yNHouegrtmYkbUuiG8DDSF1lKAaOr+XmW3VNzNYArnvSpJgXOdoBBYqUOB8R6x1ymu3esSd38IFVYkNtJMnIvWFcgjZJ2UNmfA08meWO3aJrcWCAO+fGQQkTgpmzQfcaMw34pjdFoD4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cm5JcWoxbzNNdGNuYVRxQ0F0SEpSNzhUY21SM0psZEo2d0JyY2ltdXZHdkl4?=
+ =?utf-8?B?Vk93Q004cE1VSFFLSVlQR2FERlF6TExRTm9SemlXeHhFWVpoMy9xSWZiMUtv?=
+ =?utf-8?B?Q0dwTEtJTERIdDMrZUZWeG9mdkxHa3dpWnpmV1ZRb0Q4bUh3Y0xoV2RGSlQx?=
+ =?utf-8?B?MzFMWW9vamhoQmFpOVBlc0dEZS9YRW1UYzVUSlhsVUkrbzlMSlpEbzNpY0lP?=
+ =?utf-8?B?WFplczZoQXVZVXpZeDZQYm40SmRqUGRINmJ5V0Z1Q2lvUklacHpyVEdXN3lu?=
+ =?utf-8?B?cXNXVFZtRzdDTm5MVVQ3TzdyRXhhR3FNaU5wZmhkNFdWM0h0SjMyek1iUnBT?=
+ =?utf-8?B?ZFEzc1o4R0NSbGlmaktsMkJZS2NZWE9QR1lBaW1QTjl5WWNrWVhiUHZuYlBV?=
+ =?utf-8?B?MFRJNGFTWnIrTXJzM0MyRTZkdFZKTmozUkJFUkM1a1pzMzJaSXY3V0dhc0Js?=
+ =?utf-8?B?ZDRJZmllenF5bStOZ2xvSUsrbU1semZveFQvakpSS3JPUVIzbVhPREYwd09T?=
+ =?utf-8?B?eStQZS80RVVhMlB6VlVrNzZGZFhvckNPaUJrbk4ranpYY2dUVkI1Nk5MU3hB?=
+ =?utf-8?B?N1RGSVBoVk9LTUtEUXBaeXkzaldRMUhCSGxhNzJoV2pudkF1QUErWDc2a0d3?=
+ =?utf-8?B?TkxOdDBkSi92S1dKZTlOai8ycnd0RlRCVlBpckpVZlRXY0dEaU11OVB0bzQ1?=
+ =?utf-8?B?eFVUQXo5OFBTV0NXOXN3VlNCUHBUTkxFYm1oK1FLalhIYTgyZ2lGVG02YjJy?=
+ =?utf-8?B?RHdTQ3hoQy9pUEdmWitGKytHNzNhTGdxSmFEWlpnZkFVTUU2Q1VTMUttMTZy?=
+ =?utf-8?B?bjY3Zi9MQ2xJdWh4a2lFVnlDWm1tcS9TblFvR3cyeFBncTBSWnBPK0pGUUdD?=
+ =?utf-8?B?SDZ0bzZKSGRWQk5SUGhJdkNLb0tjYXJTTTlSYjgwdEorc1djK1EvWmU5Ymg4?=
+ =?utf-8?B?ZzlhR01HRFdsTVZQUGl1S0dMd1VrNDBKTFJ6WE9aV2hyQnZiN2RDRDZJTmhm?=
+ =?utf-8?B?K3hzdHlvSDROMUpQTUF5V3dlZXhlOHptelBFRHRzbkdwdUVSYXdRalA5eWR0?=
+ =?utf-8?B?U2hPZHZmTW1EM01mc0ZhaEI3Qy8xbjVKVGhIT3BPU3BJSUs1MnVrekFSYktz?=
+ =?utf-8?B?NzcrYXQ4K2g3bmZHR0ZJa2YxYnlmZWFCQnR2ejRPN1NyODVsaVNXTkNteENo?=
+ =?utf-8?B?SnRyd2U2SUhkazNIQ2R2TUk5akpybjY3TzBOd200a3RJL2t5YytkQWR6VmZz?=
+ =?utf-8?B?citvUUh6bUdkOERRdW82M0hhYy9pUEFoMFp0RzVnWnZ6cE53RlVwWkpNUHkx?=
+ =?utf-8?B?R0NWVXZLeWpUcG5mQmt5VThtQ1BxRXlUcjN3RzFpQkx4OWJOUTdZSjkzc3NK?=
+ =?utf-8?B?V0srUVMwY1ZrZ0JKeU9zQ3YzL0dwT1lKMDYzKzFxWjBRZkpoaXVtcWhRUGUx?=
+ =?utf-8?B?VUlQTk14MVI0a254bjNFUU1zVXhCUDloemRzZkRBYmZyQk5XOE9waEEwcktw?=
+ =?utf-8?B?VVAxR0YyeHc4VVlzVnRsWG5tK1hSOFJoZm5RRGJDL0EvUHVWL2xrR1JJNmRt?=
+ =?utf-8?B?NFh2SWhoRHdIZ2hTUHpxOXJJWDYwQVhXZ1FNSk5Yd0x3aTBhNU5tbHZjMDA1?=
+ =?utf-8?B?b2JSNDY4emNucTRZWlNueDcwNXBoNVBZakQ4Nlo2alhXQ0VDVXVRdTRoSmVH?=
+ =?utf-8?B?S0FrWHMzSjhrRTBsdlNJVkt1SFFFNUZvT2FCZFc1cS9FMEI4Q2U1cUp6NnFS?=
+ =?utf-8?B?VlpkaXN5Vk5hQU1NelZrQ3JlNnJWZnlCZlI4UDZ2Mi9pSnEwNHVoc3hhN00v?=
+ =?utf-8?B?bjE4L09qUjVOUWxTZWhpdWRQTEQrNUpzL2pLN041TzA5VnlTSHRINVZzWE5v?=
+ =?utf-8?B?bnpCejlkcFVYOTV4VFRPVVpLUVlOK3VSUmQ2MnBDVUZHdzNjanZsczdWLzY2?=
+ =?utf-8?B?WXF2RWE2ZXpjeE1kdVlpQ1RRQmhLYXJ2dHdUay9lWXBlTkttWXp1OURlU2tE?=
+ =?utf-8?B?NGs0cXlMbWE2NzNMcmVJOTRVdXRZcktUZU1jN1dTRnJLdW10YnBaLzJCYTQv?=
+ =?utf-8?B?OURSYlNzVmV4RGhqK0RKYWJ2VEhDaDhZMEV2eUxVM0pmRVptM09TNm9BeU1t?=
+ =?utf-8?B?TzZBSFFWQUlTaVA2cVNtMndBMWt4Q2NRZDdjZjcxcDRJK1EzcC9lNjdtTWhO?=
+ =?utf-8?B?WldjeGFoY0VvT2cvQjNlRkg1aDZ3NDhrd2s4dTFaU01MU2I0WXYxc3ZtTVFM?=
+ =?utf-8?B?SS9mbEJLbGZzOU56eHZ5eVhoN0VXNkZHMTJmRmViT1R0UHl4STdySlVIMERl?=
+ =?utf-8?B?M1QzdVFlSWdzN2dWWlZXR29XM04zM0F3RnhBSXNlaDVwY1dZczZ4QT09?=
+X-Exchange-RoutingPolicyChecked: jiVQgPtUEQ4yBs+XDuonW1Dhaj6ACVel5pRFHaUoPqfndK9wBcavKYrTMICHdODCQqLaW9TeLdQhk7G8xkJ9nlBTPp0UEry85VcvLIsq1TrTL/qg0yB1vgEWYdV6ICW8LU3sZ6N2IJVWcqga/aRg5r23QMLw7pZMv0I8guagJqU30Kv+a3gNv2zkDRoGmvI/BkiJ5WPTxNRuMFgMV2IBHrYKM89uhG1foKTIKx2KX/RvgFS6v0RWvDOPj7IBGoPl6L/lc1MO6f9Y2sFIRwQQQYElFcl6GK1HAXmxHB5LDhgqjdKu2g4q8d46I95ulKO8ZgP2E30W8vwhWV0O5phf8A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d26fa58c-defc-4ce7-373b-08df07aaee60
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 21:58:03.6953
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 03+X7roaTpC38kR1iJqiqKSU6UbMi+73LwtfdwVj90CmmOqTG1E6QDN0Zf4gN2UyHb3Cy6FeQpBo8CqEKZSjN5T1nqzB9jpSSVCuRHtORHI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8771
+X-OriginatorOrg: intel.com
 
-Do for the IPv6 tunnels what the previous patches did for the IPv4 ones.
-The situation is the same, with one difference: ip6_tnl_xmit() does not
-free the packet itself, it returns an error and the callers do, so the
-reason has to travel with it.  Give it an output parameter, and pass it
-down through ipxip6_tnl_xmit(), __gre6_xmit() and the three
-ip6gre_xmit_*() helpers to the two places that actually drop.
+On 8/28/2026 2:10 AM, Vadim Fedorenko wrote:
+> On 28/08/2026 02:58, Xuanqiang Luo wrote:
+>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>
+>> The PTP hardware clock documentation requires drivers to implement all
+>> callbacks and return -EOPNOTSUPP for unsupported features.
+>>
+>> The iavf driver registers a PHC without adjtime or adjfine callbacks.
+>> A userspace clock_adjtime(2) request reaches ptp_clock_adjtime(), where
+>> ADJ_SETOFFSET calls adjtime and ADJ_FREQUENCY calls adjfine. The missing
+>> callbacks can therefore cause a NULL dereference.
+>>
+>> Provide both callbacks and return -EOPNOTSUPP for the unsupported
+>> operations.
+>>
+>> Fixes: d734223b2f0d ("iavf: add initial framework for registering PTP
+>> clock")
+>> Link: https://docs.kernel.org/driver-api/ptp.html#writing-clock-drivers
+>> Link: https://lore.kernel.org/all/20260826101004.100979-1-
+>> xuanqiang.luo@linux.dev/
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-ip6_gre is converted in the same patch because it calls ip6_tnl_xmit()
-and would not build otherwise.
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
 
-The reasons are the ones already used on the IPv4 side:
-SKB_DROP_REASON_PKT_TOO_BIG for a packet that exceeds the path MTU,
-SKB_DROP_REASON_IP_OUTNOROUTES for the route lookups,
-SKB_DROP_REASON_RECURSION_LIMIT for a route pointing back at the tunnel,
-SKB_DROP_REASON_NOMEM for the allocations, SKB_DROP_REASON_TUNNEL_TXINFO
-for the collect_md metadata checks and SKB_DROP_REASON_NEIGH_CREATEFAIL
-for the neighbour lookup.  Two more fit here:
-SKB_DROP_REASON_DEV_READY when ip6_tnl_xmit_ctl() refuses the transmit,
-and SKB_DROP_REASON_IPV6_BAD_EXTHDR when the tunnel encapsulation limit
-option leaves no room for another header.
-
-Assisted-by: Claude-Code:claude-opus-5
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
----
- include/net/ip6_tunnel.h |   3 +-
- net/ipv6/ip6_gre.c       | 121 ++++++++++++++++++++++++++++-----------
- net/ipv6/ip6_tunnel.c    |  72 +++++++++++++++++------
- 3 files changed, 141 insertions(+), 55 deletions(-)
-
-diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
-index b99805ee2fd1..95f6d12254df 100644
---- a/include/net/ip6_tunnel.h
-+++ b/include/net/ip6_tunnel.h
-@@ -143,7 +143,8 @@ int ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- int ip6_tnl_xmit_ctl(struct ip6_tnl *t, const struct in6_addr *laddr,
- 		     const struct in6_addr *raddr);
- int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
--		 struct flowi6 *fl6, int encap_limit, __u32 *pmtu, __u8 proto);
-+		 struct flowi6 *fl6, int encap_limit, __u32 *pmtu, __u8 proto,
-+		 enum skb_drop_reason *reason);
- __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw);
- __u32 ip6_tnl_get_cap(struct ip6_tnl *t, const struct in6_addr *laddr,
- 			     const struct in6_addr *raddr);
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 27fbe175beec..42a033640716 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -734,7 +734,8 @@ static struct ip_tunnel_info *skb_tunnel_info_txcheck(struct sk_buff *skb)
- static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 			       struct net_device *dev, __u8 dsfield,
- 			       struct flowi6 *fl6, int encap_limit,
--			       __u32 *pmtu, __be16 proto)
-+			       __u32 *pmtu, __be16 proto,
-+			       enum skb_drop_reason *reason)
- {
- 	struct ip6_tnl *tunnel = netdev_priv(dev);
- 	IP_TUNNEL_DECLARE_FLAGS(flags);
-@@ -758,8 +759,10 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 
- 		tun_info = skb_tunnel_info_txcheck(skb);
- 		if (IS_ERR(tun_info) ||
--		    unlikely(ip_tunnel_info_af(tun_info) != AF_INET6))
-+		    unlikely(ip_tunnel_info_af(tun_info) != AF_INET6)) {
-+			*reason = SKB_DROP_REASON_TUNNEL_TXINFO;
- 			return -EINVAL;
-+		}
- 
- 		key = &tun_info->key;
- 		memset(fl6, 0, sizeof(*fl6));
-@@ -777,8 +780,11 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 		ip_tunnel_flags_and(flags, flags, key->tun_flags);
- 		tun_hlen = gre_calc_hlen(flags);
- 
--		if (skb_cow_head(skb, dev->needed_headroom ?: tun_hlen + tunnel->encap_hlen))
-+		if (skb_cow_head(skb, dev->needed_headroom ?:
-+				 tun_hlen + tunnel->encap_hlen)) {
-+			*reason = SKB_DROP_REASON_NOMEM;
- 			return -ENOMEM;
-+		}
- 
- 		gre_build_header(skb, tun_hlen,
- 				 flags, protocol,
-@@ -788,8 +794,10 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 				 0);
- 
- 	} else {
--		if (skb_cow_head(skb, dev->needed_headroom ?: tunnel->hlen))
-+		if (skb_cow_head(skb, dev->needed_headroom ?: tunnel->hlen)) {
-+			*reason = SKB_DROP_REASON_NOMEM;
- 			return -ENOMEM;
-+		}
- 
- 		ip_tunnel_flags_copy(flags, tunnel->parms.o_flags);
- 
-@@ -801,10 +809,11 @@ static netdev_tx_t __gre6_xmit(struct sk_buff *skb,
- 	}
- 
- 	return ip6_tnl_xmit(skb, dev, dsfield, fl6, encap_limit, pmtu,
--			    NEXTHDR_GRE);
-+			    NEXTHDR_GRE, reason);
- }
- 
--static inline int ip6gre_xmit_ipv4(struct sk_buff *skb, struct net_device *dev)
-+static inline int ip6gre_xmit_ipv4(struct sk_buff *skb, struct net_device *dev,
-+				   enum skb_drop_reason *reason)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	int encap_limit = -1;
-@@ -821,11 +830,13 @@ static inline int ip6gre_xmit_ipv4(struct sk_buff *skb, struct net_device *dev)
- 
- 	err = gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
- 						t->parms.o_flags));
--	if (err)
-+	if (err) {
-+		*reason = SKB_DROP_REASON_NOMEM;
- 		return -1;
-+	}
- 
- 	err = __gre6_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
--			  skb->protocol);
-+			  skb->protocol, reason);
- 	if (err != 0) {
- 		/* XXX: send ICMP error even if DF is not set. */
- 		if (err == -EMSGSIZE)
-@@ -837,7 +848,8 @@ static inline int ip6gre_xmit_ipv4(struct sk_buff *skb, struct net_device *dev)
- 	return 0;
- }
- 
--static inline int ip6gre_xmit_ipv6(struct sk_buff *skb, struct net_device *dev)
-+static inline int ip6gre_xmit_ipv6(struct sk_buff *skb, struct net_device *dev,
-+				   enum skb_drop_reason *reason)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct ipv6hdr *ipv6h = ipv6_hdr(skb);
-@@ -847,19 +859,25 @@ static inline int ip6gre_xmit_ipv6(struct sk_buff *skb, struct net_device *dev)
- 	__u32 mtu;
- 	int err;
- 
--	if (ipv6_addr_equal(&t->parms.raddr, &ipv6h->saddr))
-+	if (ipv6_addr_equal(&t->parms.raddr, &ipv6h->saddr)) {
-+		*reason = SKB_DROP_REASON_RECURSION_LIMIT;
- 		return -1;
-+	}
- 
- 	if (!t->parms.collect_md &&
--	    prepare_ip6gre_xmit_ipv6(skb, dev, &fl6, &dsfield, &encap_limit))
-+	    prepare_ip6gre_xmit_ipv6(skb, dev, &fl6, &dsfield, &encap_limit)) {
-+		*reason = SKB_DROP_REASON_IPV6_BAD_EXTHDR;
- 		return -1;
-+	}
- 
- 	if (gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
--					      t->parms.o_flags)))
-+					      t->parms.o_flags))) {
-+		*reason = SKB_DROP_REASON_NOMEM;
- 		return -1;
-+	}
- 
- 	err = __gre6_xmit(skb, dev, dsfield, &fl6, encap_limit,
--			  &mtu, skb->protocol);
-+			  &mtu, skb->protocol, reason);
- 	if (err != 0) {
- 		if (err == -EMSGSIZE)
- 			icmpv6_ndo_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
-@@ -869,7 +887,8 @@ static inline int ip6gre_xmit_ipv6(struct sk_buff *skb, struct net_device *dev)
- 	return 0;
- }
- 
--static int ip6gre_xmit_other(struct sk_buff *skb, struct net_device *dev)
-+static int ip6gre_xmit_other(struct sk_buff *skb, struct net_device *dev,
-+			     enum skb_drop_reason *reason)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	int encap_limit = -1;
-@@ -879,14 +898,19 @@ static int ip6gre_xmit_other(struct sk_buff *skb, struct net_device *dev)
- 	int err;
- 
- 	if (!t->parms.collect_md &&
--	    prepare_ip6gre_xmit_other(skb, dev, &fl6, &dsfield, &encap_limit))
-+	    prepare_ip6gre_xmit_other(skb, dev, &fl6, &dsfield, &encap_limit)) {
-+		*reason = SKB_DROP_REASON_IPV6_BAD_EXTHDR;
- 		return -1;
-+	}
- 
- 	err = gre_handle_offloads(skb, test_bit(IP_TUNNEL_CSUM_BIT,
- 						t->parms.o_flags));
--	if (err)
-+	if (err) {
-+		*reason = SKB_DROP_REASON_NOMEM;
- 		return err;
--	err = __gre6_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu, skb->protocol);
-+	}
-+	err = __gre6_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
-+			  skb->protocol, reason);
- 
- 	return err;
- }
-@@ -894,26 +918,30 @@ static int ip6gre_xmit_other(struct sk_buff *skb, struct net_device *dev)
- static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
- 	struct net_device *dev)
- {
-+	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	__be16 payload_protocol;
- 	int ret;
- 
--	if (!pskb_inet_may_pull(skb))
-+	reason = pskb_inet_may_pull_reason(skb);
-+	if (reason)
- 		goto tx_err;
- 
--	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
-+	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr)) {
-+		reason = SKB_DROP_REASON_DEV_READY;
- 		goto tx_err;
-+	}
- 
- 	payload_protocol = skb_protocol(skb, true);
- 	switch (payload_protocol) {
- 	case htons(ETH_P_IP):
--		ret = ip6gre_xmit_ipv4(skb, dev);
-+		ret = ip6gre_xmit_ipv4(skb, dev, &reason);
- 		break;
- 	case htons(ETH_P_IPV6):
--		ret = ip6gre_xmit_ipv6(skb, dev);
-+		ret = ip6gre_xmit_ipv6(skb, dev, &reason);
- 		break;
- 	default:
--		ret = ip6gre_xmit_other(skb, dev);
-+		ret = ip6gre_xmit_other(skb, dev, &reason);
- 		break;
- 	}
- 
-@@ -926,7 +954,7 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
- 	if (!t->parms.collect_md || !IS_ERR(skb_tunnel_info_txcheck(skb)))
- 		DEV_STATS_INC(dev, tx_errors);
- 	DEV_STATS_INC(dev, tx_dropped);
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return NETDEV_TX_OK;
- }
- 
-@@ -937,6 +965,7 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct dst_entry *dst = skb_dst(skb);
- 	IP_TUNNEL_DECLARE_FLAGS(flags) = { };
-+	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	bool truncate = false;
- 	int encap_limit = -1;
- 	__u8 dsfield = false;
-@@ -946,18 +975,25 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 	__u32 mtu;
- 	int nhoff;
- 
--	if (!pskb_inet_may_pull(skb))
-+	reason = pskb_inet_may_pull_reason(skb);
-+	if (reason)
- 		goto tx_err;
- 
--	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
-+	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr)) {
-+		reason = SKB_DROP_REASON_DEV_READY;
- 		goto tx_err;
-+	}
- 
--	if (gre_handle_offloads(skb, false))
-+	if (gre_handle_offloads(skb, false)) {
-+		reason = SKB_DROP_REASON_NOMEM;
- 		goto tx_err;
-+	}
- 
- 	if (skb->len > dev->mtu + dev->hard_header_len) {
--		if (pskb_trim(skb, dev->mtu + dev->hard_header_len))
-+		if (pskb_trim(skb, dev->mtu + dev->hard_header_len)) {
-+			reason = SKB_DROP_REASON_NOMEM;
- 			goto tx_err;
-+		}
- 		truncate = true;
- 	}
- 
-@@ -977,8 +1013,10 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 			truncate = true;
- 	}
- 
--	if (skb_cow_head(skb, dev->needed_headroom ?: t->hlen))
-+	if (skb_cow_head(skb, dev->needed_headroom ?: t->hlen)) {
-+		reason = SKB_DROP_REASON_NOMEM;
- 		goto tx_err;
-+	}
- 
- 	IPCB(skb)->flags = 0;
- 
-@@ -992,8 +1030,10 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 
- 		tun_info = skb_tunnel_info_txcheck(skb);
- 		if (IS_ERR(tun_info) ||
--		    unlikely(ip_tunnel_info_af(tun_info) != AF_INET6))
-+		    unlikely(ip_tunnel_info_af(tun_info) != AF_INET6)) {
-+			reason = SKB_DROP_REASON_TUNNEL_TXINFO;
- 			goto tx_err;
-+		}
- 
- 		key = &tun_info->key;
- 		memset(&fl6, 0, sizeof(fl6));
-@@ -1005,10 +1045,14 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 
- 		dsfield = key->tos;
- 		if (!test_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
--			      tun_info->key.tun_flags))
-+			      tun_info->key.tun_flags)) {
-+			reason = SKB_DROP_REASON_TUNNEL_TXINFO;
- 			goto tx_err;
--		if (tun_info->options_len < sizeof(*md))
-+		}
-+		if (tun_info->options_len < sizeof(*md)) {
-+			reason = SKB_DROP_REASON_TUNNEL_TXINFO;
- 			goto tx_err;
-+		}
- 		md = ip_tunnel_info_opts(tun_info);
- 
- 		tun_id = tunnel_id_to_key32(key->tun_id);
-@@ -1026,6 +1070,7 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 					       truncate, false);
- 			proto = htons(ETH_P_ERSPAN2);
- 		} else {
-+			reason = SKB_DROP_REASON_UNHANDLED_PROTO;
- 			goto tx_err;
- 		}
- 	} else {
-@@ -1036,11 +1081,16 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 						 &dsfield, &encap_limit);
- 			break;
- 		case htons(ETH_P_IPV6):
--			if (ipv6_addr_equal(&t->parms.raddr, &ipv6_hdr(skb)->saddr))
-+			if (ipv6_addr_equal(&t->parms.raddr,
-+					    &ipv6_hdr(skb)->saddr)) {
-+				reason = SKB_DROP_REASON_RECURSION_LIMIT;
- 				goto tx_err;
-+			}
- 			if (prepare_ip6gre_xmit_ipv6(skb, dev, &fl6,
--						     &dsfield, &encap_limit))
-+						     &dsfield, &encap_limit)) {
-+				reason = SKB_DROP_REASON_IPV6_BAD_EXTHDR;
- 				goto tx_err;
-+			}
- 			break;
- 		default:
- 			memcpy(&fl6, &t->fl.u.ip6, sizeof(fl6));
-@@ -1059,6 +1109,7 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 					       truncate, false);
- 			proto = htons(ETH_P_ERSPAN2);
- 		} else {
-+			reason = SKB_DROP_REASON_UNHANDLED_PROTO;
- 			goto tx_err;
- 		}
- 
-@@ -1077,7 +1128,7 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 			dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
- 	}
- 	err = ip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
--			   NEXTHDR_GRE);
-+			   NEXTHDR_GRE, &reason);
- 	if (err != 0) {
- 		/* XXX: send ICMP error even if DF is not set. */
- 		if (err == -EMSGSIZE) {
-@@ -1096,7 +1147,7 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 	if (!IS_ERR(tun_info))
- 		DEV_STATS_INC(dev, tx_errors);
- 	DEV_STATS_INC(dev, tx_dropped);
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return NETDEV_TX_OK;
- }
- 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 85578fa125bc..ab45601b2a68 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1110,7 +1110,7 @@ EXPORT_SYMBOL_GPL(ip6_tnl_xmit_ctl);
- 
- int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 		 struct flowi6 *fl6, int encap_limit, __u32 *pmtu,
--		 __u8 proto)
-+		 __u8 proto, enum skb_drop_reason *reason)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct net *net = t->net;
-@@ -1143,13 +1143,17 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 			struct neighbour *neigh;
- 			int addr_type;
- 
--			if (!skb_dst(skb))
-+			if (!skb_dst(skb)) {
-+				*reason = SKB_DROP_REASON_NO_TX_TARGET;
- 				goto tx_err_link_failure;
-+			}
- 
- 			neigh = dst_neigh_lookup(skb_dst(skb),
- 						 &ipv6_hdr(skb)->daddr);
--			if (!neigh)
-+			if (!neigh) {
-+				*reason = SKB_DROP_REASON_NEIGH_CREATEFAIL;
- 				goto tx_err_link_failure;
-+			}
- 
- 			addr6 = (struct in6_addr *)&neigh->primary_key;
- 			addr_type = ipv6_addr_type(addr6);
-@@ -1162,8 +1166,10 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 		} else if (payload_protocol == htons(ETH_P_IP)) {
- 			const struct rtable *rt = skb_rtable(skb);
- 
--			if (!rt)
-+			if (!rt) {
-+				*reason = SKB_DROP_REASON_IP_OUTNOROUTES;
- 				goto tx_err_link_failure;
-+			}
- 
- 			if (rt->rt_gw_family == AF_INET6)
- 				memcpy(&fl6->daddr, &rt->rt_gw6, sizeof(fl6->daddr));
-@@ -1180,8 +1186,10 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	if (use_cache)
- 		dst = dst_cache_get(&t->dst_cache);
- 
--	if (!ip6_tnl_xmit_ctl(t, &fl6->saddr, &fl6->daddr))
-+	if (!ip6_tnl_xmit_ctl(t, &fl6->saddr, &fl6->daddr)) {
-+		*reason = SKB_DROP_REASON_DEV_READY;
- 		goto tx_err_link_failure;
-+	}
- 
- 	if (!dst) {
- route_lookup:
-@@ -1190,18 +1198,23 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 
- 		dst = ip6_route_output(net, NULL, fl6);
- 
--		if (dst->error)
-+		if (dst->error) {
-+			*reason = SKB_DROP_REASON_IP_OUTNOROUTES;
- 			goto tx_err_link_failure;
-+		}
- 		dst = xfrm_lookup(net, dst, flowi6_to_flowi(fl6), NULL, 0);
- 		if (IS_ERR(dst)) {
- 			err = PTR_ERR(dst);
- 			dst = NULL;
-+			*reason = SKB_DROP_REASON_IP_OUTNOROUTES;
- 			goto tx_err_link_failure;
- 		}
- 		if (t->parms.collect_md && ipv6_addr_any(&fl6->saddr) &&
- 		    ipv6_dev_get_saddr(net, ip6_dst_idev(dst)->dev,
--				       &fl6->daddr, 0, &fl6->saddr))
-+				       &fl6->daddr, 0, &fl6->saddr)) {
-+			*reason = SKB_DROP_REASON_NO_TX_TARGET;
- 			goto tx_err_link_failure;
-+		}
- 		ndst = dst;
- 	}
- 
-@@ -1211,6 +1224,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 		DEV_STATS_INC(dev, collisions);
- 		net_warn_ratelimited("%s: Local routing loop detected!\n",
- 				     t->parms.name);
-+		*reason = SKB_DROP_REASON_RECURSION_LIMIT;
- 		goto tx_err_dst_release;
- 	}
- 	mtu = dst6_mtu(dst) - eth_hlen - psh_hlen - t->tun_hlen;
-@@ -1225,6 +1239,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	if (skb->len - t->tun_hlen - eth_hlen > mtu && !skb_is_gso(skb)) {
- 		*pmtu = mtu;
- 		err = -EMSGSIZE;
-+		*reason = SKB_DROP_REASON_PKT_TOO_BIG;
- 		goto tx_err_dst_release;
- 	}
- 
-@@ -1247,12 +1262,16 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	 */
- 	max_headroom += LL_RESERVED_SPACE(tdev);
- 
--	if (skb_cow_head(skb, max_headroom))
-+	if (skb_cow_head(skb, max_headroom)) {
-+		*reason = SKB_DROP_REASON_NOMEM;
- 		goto tx_err_dst_release;
-+	}
- 
- 	if (t->parms.collect_md) {
--		if (t->encap.type != TUNNEL_ENCAP_NONE)
-+		if (t->encap.type != TUNNEL_ENCAP_NONE) {
-+			*reason = SKB_DROP_REASON_IP_TUNNEL_ENCAP;
- 			goto tx_err_dst_release;
-+		}
- 	} else {
- 		if (use_cache && ndst)
- 			dst_cache_set_ip6(&t->dst_cache, ndst, &fl6->saddr);
-@@ -1276,8 +1295,10 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	ip_tunnel_adj_headroom(dev, max_headroom);
- 
- 	err = ip6_tnl_encap(skb, t, &proto, fl6);
--	if (err)
-+	if (err) {
-+		*reason = SKB_DROP_REASON_IP_TUNNEL_ENCAP;
- 		return err;
-+	}
- 
- 	if (encap_limit >= 0) {
- 		init_tel_txopt(&opt, encap_limit);
-@@ -1306,7 +1327,7 @@ EXPORT_SYMBOL(ip6_tnl_xmit);
- 
- static inline int
- ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
--		u8 protocol)
-+		u8 protocol, enum skb_drop_reason *reason)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct ipv6hdr *ipv6h;
-@@ -1320,8 +1341,10 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
- 	int err;
- 
- 	tproto = READ_ONCE(t->parms.proto);
--	if (tproto != protocol && tproto != 0)
-+	if (tproto != protocol && tproto != 0) {
-+		*reason = SKB_DROP_REASON_UNHANDLED_PROTO;
- 		return -1;
-+	}
- 
- 	if (t->parms.collect_md) {
- 		struct ip_tunnel_info *tun_info;
-@@ -1329,8 +1352,10 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 		tun_info = skb_tunnel_info(skb);
- 		if (unlikely(!tun_info || !(tun_info->mode & IP_TUNNEL_INFO_TX) ||
--			     ip_tunnel_info_af(tun_info) != AF_INET6))
-+			     ip_tunnel_info_af(tun_info) != AF_INET6)) {
-+			*reason = SKB_DROP_REASON_TUNNEL_TXINFO;
- 			return -1;
-+		}
- 		key = &tun_info->key;
- 		memset(&fl6, 0, sizeof(fl6));
- 		fl6.flowi6_proto = protocol;
-@@ -1367,6 +1392,7 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
- 				if (tel->encap_limit == 0) {
- 					icmpv6_ndo_send(skb, ICMPV6_PARAMPROB,
- 							ICMPV6_HDR_FIELD, offset + 2);
-+					*reason = SKB_DROP_REASON_IPV6_BAD_EXTHDR;
- 					return -1;
- 				}
- 				encap_limit = tel->encap_limit - 1;
-@@ -1408,13 +1434,15 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
- 	fl6.flowi6_uid = sock_net_uid(dev_net(dev), NULL);
- 	dsfield = INET_ECN_encapsulate(dsfield, orig_dsfield);
- 
--	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6))
-+	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6)) {
-+		*reason = SKB_DROP_REASON_NOMEM;
- 		return -1;
-+	}
- 
- 	skb_set_inner_ipproto(skb, protocol);
- 
- 	err = ip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
--			   protocol);
-+			   protocol, reason);
- 	if (err != 0) {
- 		/* XXX: send ICMP error even if DF is not set. */
- 		if (err == -EMSGSIZE)
-@@ -1429,6 +1457,7 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
- 			default:
- 				break;
- 			}
-+		*reason = SKB_DROP_REASON_PKT_TOO_BIG;
- 		return -1;
- 	}
- 
-@@ -1438,11 +1467,13 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
- static netdev_tx_t
- ip6_tnl_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
-+	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	u8 ipproto;
- 	int ret;
- 
--	if (!pskb_inet_may_pull(skb))
-+	reason = pskb_inet_may_pull_reason(skb);
-+	if (reason)
- 		goto tx_err;
- 
- 	switch (skb->protocol) {
-@@ -1450,18 +1481,21 @@ ip6_tnl_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		ipproto = IPPROTO_IPIP;
- 		break;
- 	case htons(ETH_P_IPV6):
--		if (ip6_tnl_addr_conflict(t, ipv6_hdr(skb)))
-+		if (ip6_tnl_addr_conflict(t, ipv6_hdr(skb))) {
-+			reason = SKB_DROP_REASON_RECURSION_LIMIT;
- 			goto tx_err;
-+		}
- 		ipproto = IPPROTO_IPV6;
- 		break;
- 	case htons(ETH_P_MPLS_UC):
- 		ipproto = IPPROTO_MPLS;
- 		break;
- 	default:
-+		reason = SKB_DROP_REASON_UNHANDLED_PROTO;
- 		goto tx_err;
- 	}
- 
--	ret = ipxip6_tnl_xmit(skb, dev, ipproto);
-+	ret = ipxip6_tnl_xmit(skb, dev, ipproto, &reason);
- 	if (ret < 0)
- 		goto tx_err;
- 
-@@ -1470,7 +1504,7 @@ ip6_tnl_start_xmit(struct sk_buff *skb, struct net_device *dev)
- tx_err:
- 	DEV_STATS_INC(dev, tx_errors);
- 	DEV_STATS_INC(dev, tx_dropped);
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return NETDEV_TX_OK;
- }
- 
--- 
-2.47.3
+>> ---
+>>   drivers/net/ethernet/intel/iavf/iavf_ptp.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.c b/drivers/net/
+>> ethernet/intel/iavf/iavf_ptp.c
+>> index 87b97e09df14a..fcb273828bc1b 100644
+>> --- a/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+>> +++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
+>> @@ -252,6 +252,16 @@ static int iavf_ptp_gettimex64(struct
+>> ptp_clock_info *info,
+>>       return iavf_read_phc_indirect(adapter, ts, sts);
+>>   }
+>>   +static int iavf_ptp_adjfine(struct ptp_clock_info *info, long
+>> scaled_ppm)
+>> +{
+>> +    return -EOPNOTSUPP;
+>> +}
+>> +
+>> +static int iavf_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
+>> +{
+>> +    return -EOPNOTSUPP;
+>> +}
+>> +
+>>   static int iavf_ptp_settime64(struct ptp_clock_info *info,
+>>                     const struct timespec64 *ts)
+>>   {
+>> @@ -326,6 +336,8 @@ static int iavf_ptp_register_clock(struct
+>> iavf_adapter *adapter)
+>>            KBUILD_MODNAME, dev_name(dev));
+>>       ptp_info->owner = THIS_MODULE;
+>>       ptp_info->gettimex64 = iavf_ptp_gettimex64;
+>> +    ptp_info->adjfine = iavf_ptp_adjfine;
+>> +    ptp_info->adjtime = iavf_ptp_adjtime;
+>>       ptp_info->settime64 = iavf_ptp_settime64;
+>>       ptp_info->do_aux_work = iavf_ptp_do_aux_work;
+>>   
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
