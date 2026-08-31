@@ -1,302 +1,194 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C003EC830;
-	Mon, 31 Aug 2026 09:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDEC3FE650
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 09:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788170359; cv=none; b=PB+svEKv7A1eysnX6akj8r2WoM0UwOs/vW4cpjLPOSP5waPIOLKv2Xn+zt4rAviowzPZfW2RLKGgy/IooAlIt2lD9zLwateSIaZ4lCv48UWlhhND5Dn7L5mbxmVWUiTsG17w5/58rDz/PmYmzFOJRhhgtC4fOv6BJjW2bacIwVs=
+	t=1788170388; cv=none; b=quCSWKVGhkKEyDraG/3VWjzt7eGOSXUc2+aKIrZ6k1jqpf4M18iEi/IdpoNW7Fn9OrE4d41BKmlFf7fUT0LN2e19WImjR0vLzUlkCsfZbm9867cZe5cb3ZDjV7paAo5lqQaH+azW8lMwX2UJwIgUFJBxulBrFVu50GvRNzIkeUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788170359; c=relaxed/simple;
-	bh=w3lzvNl6rONbcFKhis7wyI0J2HM7sqT6p1Xm8GXP+jE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cGgjLFEvMD62Rvz6VxIoLmFWEkOqlea2104wnLps05YG0gE/DuBogldi9LqCqVFO8vpFtO+sufql7hFJ7qKNKLDmMq+izxCbNhuk0wzhpK4GZA1/9a8ZWys9d6d3Fo7HuEHkwVM234ECjoyL7ESs7sYeeLAocP861e1jC9qACy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=VC/ygUaA; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=BpvVscc6; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1788170388; c=relaxed/simple;
+	bh=X0lpMEawYdoHd9GcTJnYnzpmyil88Zxw8vihmUSzgXc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zlct9ztSbjjkbtQSsGyd58HmjgaeejrbevbXXban7UgDW5MHKYMmN/m3ZOMjG7UJL072QkKa5NmmVDiWquH/BYEpKzTSBiTphBZR8A81g6IaMBVxcp4GDsrWgda+Ks/eTSr5Aet1WnC2nnqtr03RSuc5xCEyeqJYiAleTwBxeQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2owBSYIG; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="VC/ygUaA";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="BpvVscc6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788170355;
-	bh=w3lzvNl6rONbcFKhis7wyI0J2HM7sqT6p1Xm8GXP+jE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VC/ygUaAEDIfeV+QsuNvkgftVAkaqjZrgqS0vE/3P/048OTL/srSmTBEOkVGW1mXC
-	 C/rmdKYWh+4adwK8V02SNWJEwTHpaEbVQyWtDxO9msB8G8io7HRTqd/Yklx2QvPz+7
-	 XdSBQE1cXMwx8N8qLlCGgcOUlIb8yAaxLwozvemJEEkM3kNosFBpfi1mw12AaZ4zhk
-	 HF8VjbSWj1hbtTpgW/p3kb2cjn1CS5C86DuWWN5kd7Soca9KfSATlSS2IzeZ+e+h/t
-	 rRZ9Rt5TFhS0uXzKqjPAtsABMwypUmd+RfBPxSsiYCiRcjiAvJ6DDYS9pCgrz50VXJ
-	 8y+FDuR0ZeFyw==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 53F263EC1C; Mon, 31 Aug 2026 09:59:15 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788170342;
-	bh=w3lzvNl6rONbcFKhis7wyI0J2HM7sqT6p1Xm8GXP+jE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BpvVscc6vBkR0nhMqIS4G8h5U7WkgPxe8reqOH1QTngzSyyk451W8isra9FVEb/gN
-	 cTkjNjrVoOIwUXQEu+8m6zo0L7ifpurlTaATMSvsqnhvziSSP/xHFEpXxclXJkGi3Z
-	 X45q8Z/NvGrU5f/eHnS4lVCfm+/YkzZcFdJCDPaq8h3gIQrA00zdkCyC9OrQ53YBGt
-	 TlbtPvKvWtG8wJGl7fGDkvXkRJ8Z1Etlp6O/ILx1C10fPeO6YYDbpJgineEPkciWe/
-	 XtEep6cKeoNNVTTUiZEBKCbxNiTxwtuDClrLlBD5FuhriXGzw6XOp/32d8IP32496B
-	 KsYOGJiPhnlxg==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 552F93EC5F;
-	Mon, 31 Aug 2026 09:59:02 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Mon, 31 Aug 2026 11:59:04 +0200
-Subject: [PATCH net-next v8 15/15] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2owBSYIG"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E43224E41441;
+	Mon, 31 Aug 2026 09:59:43 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B02CA60231;
+	Mon, 31 Aug 2026 09:59:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 327E311C78AE0;
+	Mon, 31 Aug 2026 11:59:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788170382; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=Fwbh1BauoCb6UctKkvdsUX/G9J4v4lYocRurXVp5kIo=;
+	b=2owBSYIG8csu/XHdXVOEV3A3VNcK+7wcll8Mn/J3qLuURYicsk2zVyfIdpaDDjPcUmV6JN
+	XEV6SQkh+YOhvhnVVLwz6rZB347mvWz7kKAQrwb2puAmuNa+GvgCwUp57lKT0UhERTMP92
+	HdAYtmbA84jgj6CESrFcLtyq9FQ8CsfdnGHj2ghfOY41tRVNz2szpUknTC0X0v8TnlQESl
+	U66NgVjUhYeZSm9NuE4VqfOL6MNoLET5xM6c72N4GFGxmVkJqfB9VQRVPO8UsD5/WpPZFf
+	/haFarr/vJ4WlW18fIK2celBXPq1UWXg5mI2wp0iuorBYjXfS8/X60+W827X6g==
+Message-ID: <e08b8438-e936-4575-a8b3-f33a1e4f9a37@bootlin.com>
+Date: Mon, 31 Aug 2026 11:59:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: stmmac: hold runtime PM reference in setup_tc
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20260827-stmmac-setup-tc-enable-pm-v2-1-a9b8a5948f41@oss.qualcomm.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260827-stmmac-setup-tc-enable-pm-v2-1-a9b8a5948f41@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-ax88179a-v8-15-de905f2ee426@birger-koblitz.de>
-References: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
-In-Reply-To: <20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>, 
- Jianhui Xu <neuromoments@gmail.com>
-X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
-2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
-same name.
+Hi,
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
----
- drivers/net/phy/ax88796b.c | 180 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 180 insertions(+)
+On 8/27/26 09:12, Lorenzo Bianconi wrote:
+> The qdisc offload callbacks invoked by stmmac_setup_tc() program
+> MTL/MAC registers, but they can be reached while the interface is down,
+> when stmmac_release() has dropped the runtime PM usage counter and the
+> device may be suspended with its clocks gated. Accessing the registers
+> in that state can trigger a bus error.
+> 
+> Hold a runtime PM reference while configuring the register-touching
+> qdisc offloads (mqprio, cbs and taprio) so the device is active, and its
+> clocks enabled, whenever the MTL/MAC registers are programmed.
+> 
+> The TC block callback stmmac_setup_tc_block_cb() programs the MTL/MAC
+> registers as well, but it runs asynchronously from stmmac_setup_tc(),
+> outside the runtime PM reference held there. Hold a runtime PM reference
+> for the whole stmmac_setup_tc_block_cb() call as well, covering the
+> cls_u32/cls_flower setup and the queue enable/disable accesses.
+> 
+> No reference is held for the TC_SETUP_BLOCK bookkeeping itself, the
+> TC_QUERY_CAPS query or the tc-etf path, since none of them touch the
+> registers synchronously. In particular the block bind/unbind must reach
+> flow_block_cb_setup_simple() even when the device is suspended, so the
+> driver never leaves a stale flow_block_cb on its block list.
+> 
+> Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
+> Fixes: 4dbbe8dde848 ("net: stmmac: Add support for U32 TC filter using Flexible RX Parser")
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
-index f20ddf64914993f7097070d1f56c1103ec1e40e8..587e147a36afcb7e9f6a8adb433bb86484ce865a 100644
---- a/drivers/net/phy/ax88796b.c
-+++ b/drivers/net/phy/ax88796b.c
-@@ -13,6 +13,19 @@
- #define PHY_ID_ASIX_AX88772A		0x003b1861
- #define PHY_ID_ASIX_AX88772C		0x003b1881
- #define PHY_ID_ASIX_AX88796B		0x003b1841
-+#define PHY_ID_ASIX_AX88772D		0x003b772d
-+#define PHY_ID_ASIX_AX88179A		0x003b179a
-+#define PHY_ID_ASIX_AX88279		0x003b2790
-+
-+#define AX_ADVERTISE_2500		0x1000
-+
-+/* MII Vendor registers */
-+#define AX_CTRL_STATUS			0x1d
-+#define AX_CTRL_STATUS_SPEED_MASK	0x0c
-+#define   AX_CTRL_STATUS_SPEED_10	0x0
-+#define   AX_CTRL_STATUS_SPEED_100	0x4
-+#define   AX_CTRL_STATUS_SPEED_1000	0x8
-+#define   AX_CTRL_STATUS_SPEED_2500	0xc
- 
- MODULE_DESCRIPTION("Asix PHY driver");
- MODULE_AUTHOR("Michael Schmitz <schmitzmic@gmail.com>");
-@@ -83,6 +96,122 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int asix_ax88279_read_status(struct phy_device *phydev)
-+{
-+	int ret, val;
-+
-+	ret = genphy_read_status(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* Read actual speed from vendor register */
-+	val = phy_read(phydev, AX_CTRL_STATUS);
-+	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
-+	case AX_CTRL_STATUS_SPEED_2500:
-+		phydev->speed = SPEED_2500;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_1000:
-+		phydev->speed = SPEED_1000;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_100:
-+		phydev->speed = SPEED_100;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_10:
-+		phydev->speed = SPEED_10;
-+	}
-+
-+	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
-+	 * the link-partner advertised 2500M if remotely AN succceded
-+	 * for link speed > 1000M and we locally have a link speed of
-+	 * 2500M
-+	 */
-+	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
-+	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-+				 phydev->lp_advertising,
-+				 phydev->speed == SPEED_2500);
-+	}
-+	/* Only supports full duplex */
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	/* PHY switches interface between 2.5GBit and slower modes */
-+	if (phydev->speed == SPEED_2500)
-+		phydev->interface = PHY_INTERFACE_MODE_2500BASEX;
-+	else
-+		phydev->interface = PHY_INTERFACE_MODE_SGMII;
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_aneg(struct phy_device *phydev)
-+{
-+	bool adv_2500;
-+	int ret;
-+
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	ret = genphy_config_aneg(phydev);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	adv_2500 = linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->advertising);
-+	ret = phy_modify(phydev, MII_ADVERTISE, AX_ADVERTISE_2500,
-+			 adv_2500 ? AX_ADVERTISE_2500 : 0);
-+
-+	return ret;
-+}
-+
-+static int asix_ax88279_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	linkmode_set_bit_array(phy_basic_ports_array, ARRAY_SIZE(phy_basic_ports_array),
-+			       phydev->supported);
-+
-+	ret = genphy_c45_pma_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88279 does not support reported 100baseT-half duplex mode */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, phydev->supported);
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_init(struct phy_device *phydev)
-+{
-+	__set_bit(PHY_INTERFACE_MODE_2500BASEX, phydev->possible_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, phydev->possible_interfaces);
-+
-+	return 0;
-+}
-+
-+/* AX88179A-based PHYs cannot access MMD registers via MII_MMD_CTRL/MII_MMD_DATA
-+ * Make sure to use c45 access instead.
-+ */
-+static int asix_read_mmd(struct phy_device *phydev, int devnum, u16 reg)
-+{
-+	struct mii_bus *bus = phydev->mdio.bus;
-+	int addr = phydev->mdio.addr;
-+
-+	return __mdiobus_c45_read(bus, addr, devnum, reg);
-+}
-+
-+static int asix_write_mmd(struct phy_device *phydev, int devnum, u16 reg, u16 val)
-+{
-+	struct mii_bus *bus = phydev->mdio.bus;
-+	int addr = phydev->mdio.addr;
-+
-+	return __mdiobus_c45_write(bus, addr, devnum, reg, val);
-+}
-+
- static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- {
- 	/* Reset PHY, otherwise MII_LPA will provide outdated information.
-@@ -94,6 +223,25 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- 	}
- }
- 
-+static int asix_ax88772D_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	ret = genphy_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88772D does not support reported 1000baseT mode */
-+	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, mask);
-+	linkmode_andnot(phydev->supported, phydev->supported, mask);
-+
-+	return 0;
-+}
-+
- static struct phy_driver asix_driver[] = {
- {
- 	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A),
-@@ -111,6 +259,35 @@ static struct phy_driver asix_driver[] = {
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- 	.soft_reset	= asix_soft_reset,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D),
-+	.name		= "Asix Electronics AX88772D",
-+	.flags		= PHY_IS_INTERNAL,
-+	.get_features	= asix_ax88772D_get_features,
-+	.read_mmd	= asix_read_mmd,
-+	.write_mmd	= asix_write_mmd,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A),
-+	.name		= "Asix Electronics AX88179A",
-+	.flags		= PHY_IS_INTERNAL,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+	.read_mmd	= asix_read_mmd,
-+	.write_mmd	= asix_write_mmd,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
-+	.name		= "Asix Electronics AX88279",
-+	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
-+	.get_features	= asix_ax88279_get_features,
-+	.read_status	= asix_ax88279_read_status,
-+	.config_aneg	= asix_ax88279_config_aneg,
-+	.config_init	= asix_ax88279_config_init,
-+	.read_mmd	= asix_read_mmd,
-+	.write_mmd	= asix_write_mmd,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
- }, {
- 	PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B),
- 	.name		= "Asix Electronics AX88796B",
-@@ -124,6 +301,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
- 	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
- 	{ }
- };
- 
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
--- 
-2.47.3
+Maxime
+
+> ---
+> Changes in v2:
+> - Return -EOPNOTSUPP in stmmac_setup_tc_block_cb() for unsupported TC
+>   blocks.
+> - Link to v1: https://lore.kernel.org/r/20260824-stmmac-setup-tc-enable-pm-v1-1-45172d241a4b@oss.qualcomm.com
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 35 ++++++++++++++++++++---
+>  1 file changed, 31 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index efa35cfecc4f..90753d5af6d6 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -6393,9 +6393,13 @@ static int stmmac_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
+>  				    void *cb_priv)
+>  {
+>  	struct stmmac_priv *priv = cb_priv;
+> -	int ret = -EOPNOTSUPP;
+> +	int ret;
+>  
+>  	if (!tc_cls_can_offload_and_chain0(priv->dev, type_data))
+> +		return -EOPNOTSUPP;
+> +
+> +	ret = pm_runtime_resume_and_get(priv->device);
+> +	if (ret < 0)
+>  		return ret;
+>  
+>  	__stmmac_disable_all_queues(priv);
+> @@ -6408,10 +6412,13 @@ static int stmmac_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
+>  		ret = stmmac_tc_setup_cls(priv, priv, type_data);
+>  		break;
+>  	default:
+> +		ret = -EOPNOTSUPP;
+>  		break;
+>  	}
+>  
+>  	stmmac_enable_all_queues(priv);
+> +	pm_runtime_put(priv->device);
+> +
+>  	return ret;
+>  }
+>  
+> @@ -6421,26 +6428,46 @@ static int stmmac_setup_tc(struct net_device *ndev, enum tc_setup_type type,
+>  			   void *type_data)
+>  {
+>  	struct stmmac_priv *priv = netdev_priv(ndev);
+> +	int ret;
+>  
+>  	switch (type) {
+>  	case TC_QUERY_CAPS:
+>  		return stmmac_tc_query_caps(priv, priv, type_data);
+>  	case TC_SETUP_QDISC_MQPRIO:
+> -		return stmmac_tc_setup_mqprio(priv, priv, type_data);
+> +		ret = pm_runtime_resume_and_get(priv->device);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = stmmac_tc_setup_mqprio(priv, priv, type_data);
+> +		break;
+>  	case TC_SETUP_BLOCK:
+>  		return flow_block_cb_setup_simple(type_data,
+>  						  &stmmac_block_cb_list,
+>  						  stmmac_setup_tc_block_cb,
+>  						  priv, priv, true);
+>  	case TC_SETUP_QDISC_CBS:
+> -		return stmmac_tc_setup_cbs(priv, priv, type_data);
+> +		ret = pm_runtime_resume_and_get(priv->device);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = stmmac_tc_setup_cbs(priv, priv, type_data);
+> +		break;
+>  	case TC_SETUP_QDISC_TAPRIO:
+> -		return stmmac_tc_setup_taprio(priv, priv, type_data);
+> +		ret = pm_runtime_resume_and_get(priv->device);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = stmmac_tc_setup_taprio(priv, priv, type_data);
+> +		break;
+>  	case TC_SETUP_QDISC_ETF:
+>  		return stmmac_tc_setup_etf(priv, priv, type_data);
+>  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+> +
+> +	pm_runtime_put(priv->device);
+> +
+> +	return ret;
+>  }
+>  
+>  static u16 stmmac_select_queue(struct net_device *dev, struct sk_buff *skb,
+> 
+> ---
+> base-commit: f967455fb2a5a2079b9eb5823e9ccf359174bf9f
+> change-id: 20260824-stmmac-setup-tc-enable-pm-149aa563d797
+> 
+> Best regards,
 
