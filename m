@@ -1,438 +1,610 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373DF36F917
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04E3806D8
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788204320; cv=none; b=lqncI/ByJQGVVm7uc5I0o44srlXLV6gFXGzqDu76x5wpGM3WA72rDBqf7iM+FSR9nED/PYZJ/uY8WaAeNMq+hAEmEhvrS4+tyxtVa0pEpkq1ZS2AHpRDxA632X4qphn7n2mseH7vTOlLTtgNrKpnCHCt36N0frSPOjipdy27oPI=
+	t=1788205533; cv=none; b=GTl37hqQwTpxfNnMHcT7spa1saA2uMirXgItfmvDEbd86NNvxOOBxSpIWU8w4fXrRzKAu9/cqE/J9DMnMh3Gout6muu7DS4Kh1M8LyZ2b/Zt80IDre4FjX2CyizCYyoQv3+LOkms4oPXfbSLCx9IlFrTdBr/GodXiIW5dNqyURM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788204320; c=relaxed/simple;
-	bh=6m4ZMYNE5eBW8fPoPUjszbuiAPLRjdvVsVdFf2PDp7Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fpVKDmVIAkN0Tj5cCiPJcGHMW4oixwmRI1Hc4r05l6GOs190OqBLTn5b6V7rTeVqOvkeWfckyFk45PifzhUSgqPWLwek/MUwPzia3dATIW1trvxXJ3eMpyBlcXNbx8tZsVCDU34DzX71tohNyleh1OmSUQMnRApI5HmMP9bQtfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oCV1l1PZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788205533; c=relaxed/simple;
+	bh=jVdei0Rg7M8oLZFSRfGW9XnF+mshv8r8ozZzIAmHsls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EU0u0nAcbOAChtqdWVFp8o7jZT98ppc6zUKWsG1y9M5fIlAIdt2yi/9vy9LODbofHzM8RICKQOzcRwpNgJLbdYIqbIqMDM3iDmwDX4WnypH20bgEq5GSfhsgouhLBCNZ1vHfkgvEP6q8midOzfQLwrtA73DaOEhH8CSKyz2j748=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T8XfXRtC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=V10pInHG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oCV1l1PZ"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VIVxx51980108;
-	Mon, 31 Aug 2026 19:25:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=17+nTm
-	ei7hPKeNu5+KXf7T5PswAQFOpGhYvjvFW4kNI=; b=oCV1l1PZfNYo8v5+pohagR
-	RGLzqFhBRu1jKbrPRL+Q6TRShAw6Cvf3fnxOcXDok+mG9+FKMy7xJxt5sv3y96dp
-	Re15AUz2kHGhqz09+Nq2yt8ttBdpYzi5FOSiuvLRvSfH2PI0qBB7161cV4eedJrU
-	MUnY0dsxbM19im0D0IDYuKAuZMOz+Tbb33MiflNmB9UF+UJrsPG2UhqXDpB1OzwT
-	qdKkrZPAA5Cg9Glgggnauixnp0PZSIQiqCa6aN48efKFMN/NXnxWorxSd1EmdeMW
-	65X5sTSS8hxaFYx0//Ri5/1lIVsNFOl8UqM4+fAS1yzwe3UiqicaPcQwRyzjWrug
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbnudkc8e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 19:24:59 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VJBRr9022330;
-	Mon, 31 Aug 2026 19:24:58 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gccexyf80-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 19:24:58 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VJOs8j33358396
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 19:24:54 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B7755805A;
-	Mon, 31 Aug 2026 19:24:54 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 884E65803F;
-	Mon, 31 Aug 2026 19:24:51 +0000 (GMT)
-Received: from [9.67.102.143] (unknown [9.67.102.143])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 19:24:51 +0000 (GMT)
-Message-ID: <9576ceac-04a7-4b43-99af-c2b390a3e02b@linux.ibm.com>
-Date: Mon, 31 Aug 2026 12:24:50 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8XfXRtC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="V10pInHG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788205529;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NgWO+kCWmKPkpmRGhL7IsCAqEBoZmPxyaHszjHBuAEU=;
+	b=T8XfXRtC+mcBaNt3oj0m2DrSd7HyzsNl1UtAHmG5QexDuDprUNNurgy2WwgHZJ1FBvdYbM
+	sq/cSL7BTOdTVbBNqPqbS9vgWDgYya9YDSCfiBU7vnMO8a55wm3fcnoiw3yZIVDVirqcxX
+	nbUl9AIaPaZq/r3DurZKwiKWKfWHE/Q=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-poGQtSQ8P6uTDIKlUWCqIw-1; Mon, 31 Aug 2026 15:45:28 -0400
+X-MC-Unique: poGQtSQ8P6uTDIKlUWCqIw-1
+X-Mimecast-MFC-AGG-ID: poGQtSQ8P6uTDIKlUWCqIw_1788205527
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-484337a63bbso1420121f8f.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:45:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788205527; x=1788810327; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NgWO+kCWmKPkpmRGhL7IsCAqEBoZmPxyaHszjHBuAEU=;
+        b=V10pInHGZbzsF6A9eHsNr5SNm0sRg9Ttg8ObYyzkWV3O9HuvNm1Q5Ma7AXN9kDIQtv
+         wxQOBxIIRxBqLKmDfkPg6qm+U53GBf1ETviitJKUVd9kphrhbTA24pZ7v7PR/fb3N5Mf
+         f5wixZdqs1des5nharbaP2UIkEUKa6ahtYiRBQX/bGwQZtpquq4PxLR95dgw//Ib1M90
+         nGRlGS0mkYfbAXLKRl8DraIfQjty7n7gzXUy3ra/YrJAkOm22xu3TZzVUIN8YoieuWBP
+         /jbnyB/Y3KkB0HQGFzo+Kv6WWhzRmtqvXK0A/RBnNCd1hoT58laVnn5IVRs73XmN3v1p
+         6dgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788205527; x=1788810327;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NgWO+kCWmKPkpmRGhL7IsCAqEBoZmPxyaHszjHBuAEU=;
+        b=Q/QI934hFrr6Lkt8kVnoB9agrqHf0l0SFzvWRShcRGgg1j/MOzbuHRJfI5Js7P1gd2
+         /YAK0T/HhxKd3FUM3Sz/EDYNczHucBjqrbS5IztbanZqtBJPVU0tpASiJCvdoKAkYCEt
+         M+trrLAyYS6pwufN1OE8JqzLk/ePVtQcxbsExm62wyHW9VkZH8+tWntXnHst4R/Ozp2v
+         hPw8E5p85k/uUAIWELf+GuFsNeJ1NfLm3QS5u+n4xDRtzxRswQy6KvhnTS69KdNS22HZ
+         ZwmFMX9hliV4mXL7ZHlg6+uzNUTJMR8b0SzRIe/Mbldbp/mIn/Yqg7fG/QstuY1mY1BG
+         DpyQ==
+X-Gm-Message-State: AFuF++nSW4N/HL+lsVkPwn51Vv5+sbhKw33rX5gAQvNXzFhEgKZRij6Q
+	Y9sjAvUazvOpPz9jHX0ieT0YnuceM+AyyrgK8SCVdCa9ZjjPPbHStankc+UjC8XoDs+/JK3l4/E
+	MGEEBL1JWFSFaJN1jIm5tyWTDKeTv6gaOUC94eh9CDJRoWg6VbmE5BUrmZg==
+X-Gm-Gg: AR+sD139fcPEfjF3DbAsuQjpABP+dMQ+73K1FTAUYjlIUBmMpFdPsOFoMH/emUpBik3
+	efNLAdqdqHTFw8izd2I4dv9acq+nvu6wdbcS1FMpYaEISKs1bduBK1P/H+yf7rmAJMvLD5B03b7
+	GRV3q2IPby1O3iZEdb7rhLuF0/rdbuU1mURYb3kOZ6c2DOcNPn+uEuO/Gv4VRL//E9tpLO3ZCYV
+	oPQpEbkfFhiZudKuX1jM1Hqqeb9+R8wYdOJ3G3IsjUHyA+MACumb7I4PhVYBGhi0azcrRqZq+PL
+	lDZGuVu5Vnzhu7Eg8aYlqtg+SRkmpBiyl9Zb0+Lofjl91ppnLRo3ahGkp3INrb4V9hEnIezsnLC
+	aO56RvNMazlkWdVFehPNsatg=
+X-Received: by 2002:a05:600c:3546:b0:499:bdf1:7578 with SMTP id 5b1f17b1804b1-49b91c19d68mr377178105e9.3.1788205526291;
+        Mon, 31 Aug 2026 12:45:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:3546:b0:499:bdf1:7578 with SMTP id 5b1f17b1804b1-49b91c19d68mr377177205e9.3.1788205525566;
+        Mon, 31 Aug 2026 12:45:25 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce0b456sm17414025e9.2.2026.08.31.12.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 12:45:24 -0700 (PDT)
+Date: Mon, 31 Aug 2026 15:45:20 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Shahar Shitrit <shshitrit@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
+	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, danielj@nvidia.com
+Subject: Re: [PATCH net-next v23 00/14] virtio_net: Add ethtool flow rules
+ support
+Message-ID: <20260831154514-mutt-send-email-mst@kernel.org>
+References: <20260831161109.2999926-1-shshitrit@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 15/15] ibmveth: Wire ethtool set_channels to
- MQ RX queue resize
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-References: <20260814073642.24630-16-mmc@linux.ibm.com>
- <20260818014739.3854502-1-kuba@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20260818014739.3854502-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: kpD_wZPNsCjK4gl32oOhIiAYK_IWTbGL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDE2NCBTYWx0ZWRfX4bVvSZInT0lN
- wrv40scQFCG/xL2hk8opGlRKOWW2o9QKdK6NwsznX7Sy/+HDBMsFC1aY1M9ZKnkMESUGLeZdfa0
- szYNXkeyqjdr7uDL8O5H+I4hWkqoOGcK2S0IrmDpFp3y41NRN3TA7fqY6enFn6nT+9X3FkLSJxU
- OZ/wduXMekO+DDkdCAdMmQ3TouQXG4Lyt3j4Uz2avAIaCLw7vjsy30bYzewygps28sfZeleL6MZ
- tQokfFd5mIecaRXbDrIo+C8ptij5OTDOGKq+PNT7GJHRtPD4w1So5RUqTSDgetkzWfbwNrtJY7j
- 3kdq+f/cNHiJbKIpZBBxCaE9h/m3X9TVDLLr6BIb0MXAYNgqfEr4goqgtDL5JsMIBJJWpzKKitm
- Hg/Dki/zH5oEe/yQykMYaUAJ+cIPSe2xGYvuQFKp7gMjgggEleslKKmjUST3PBHKX3K1KVbQg0S
- l3YtOyGQOYXvPuXUw/Q==
-X-Proofpoint-ORIG-GUID: cyVXZjvoyOeUjDRLUdyMdrJ1s0aXoHGO
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDE2NCBTYWx0ZWRfXwoovtAAIhWhd
- Xzz+nKzlj0TRLRccXNGYuvzNu31yC6JQnZQ4WCakLT/EfFrdxgXJbHRV9uCLPKr4C5LaSvNuy3m
- Sk/lv1tQwQHmDuNNMI1AE14AP00v4jk=
-X-Authority-Analysis: v=2.4 cv=B92JFutM c=1 sm=1 tr=0 ts=6a95d50c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=QYSiNEhSMYtYGmkakyMA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_06,2026-08-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 clxscore=1015 suspectscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608310164
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831161109.2999926-1-shshitrit@nvidia.com>
 
+On Mon, Aug 31, 2026 at 07:10:55PM +0300, Shahar Shitrit wrote:
+> This series implements ethtool flow rules support for virtio_net using the
+> virtio flow filter (FF) specification. The implementation allows users to
+> configure packet filtering rules through ethtool commands, directing
+> packets to specific receive queues, or dropping them based on various
+> header fields.
 
-On 8/17/26 6:47 PM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+> The series starts with infrastructure changes to expose virtio PCI admin
+> capabilities and object management APIs. It then creates the virtio_net
+> directory structure and implements the flow filter functionality with
+> support for:
+> 
+> - Layer 2 (Ethernet) flow rules
+> - IPv4 and IPv6 flow rules
+> - TCP and UDP flow rules (both IPv4 and IPv6)
+> - Rule querying and management operations
+> 
+> Setting, deleting and viewing flow filters, -1 action is drop, positive
+> integers steer to that RQ:
+> 
+> $ ethtool -u ens9
+> 4 RX rings available
+> Total 0 rules
+> 
+> $ ethtool -U ens9 flow-type ether src 1c:34:da:4a:33:dd action 0
+> Added rule with ID 0
+> $ ethtool -U ens9 flow-type udp4 dst-port 5001 action 3
+> Added rule with ID 1
+> $ ethtool -U ens9 flow-type tcp6 src-ip fc00::2 dst-port 5001 action 2
+> Added rule with ID 2
+> $ ethtool -U ens9 flow-type ip4 src-ip 192.168.51.101 action 1
+> Added rule with ID 3
+> $ ethtool -U ens9 flow-type ip6 dst-ip fc00::1 action -1
+> Added rule with ID 4
+> $ ethtool -U ens9 flow-type ip6 src-ip fc00::2 action -1
+> Added rule with ID 5
+> $ ethtool -U ens9 delete 4
+> $ ethtool -u ens9
+> 4 RX rings available
+> Total 5 rules
+> 
+> Filter: 0
+>         Flow Type: Raw Ethernet
+>         Src MAC addr: 1C:34:DA:4A:33:DD mask: 00:00:00:00:00:00
+>         Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+>         Ethertype: 0x0 mask: 0xFFFF
+>         Action: Direct to queue 0
+> 
+> Filter: 1
+>         Rule Type: UDP over IPv4
+>         Src IP addr: 0.0.0.0 mask: 255.255.255.255
+>         Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+>         TOS: 0x0 mask: 0xff
+>         Src port: 0 mask: 0xffff
+>         Dest port: 5001 mask: 0x0
+>         Action: Direct to queue 3
+> 
+> Filter: 2
+>         Rule Type: TCP over IPv6
+>         Src IP addr: fc00::2 mask: ::
+>         Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+>         Traffic Class: 0x0 mask: 0xff
+>         Src port: 0 mask: 0xffff
+>         Dest port: 5001 mask: 0x0
+>         Action: Direct to queue 2
+> 
+> Filter: 3
+>         Rule Type: Raw IPv4
+>         Src IP addr: 192.168.51.101 mask: 0.0.0.0
+>         Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+>         TOS: 0x0 mask: 0xff
+>         Protocol: 0 mask: 0xff
+>         L4 bytes: 0x0 mask: 0xffffffff
+>         Action: Direct to queue 1
+> 
+> Filter: 5
+>         Rule Type: Raw IPv6
+>         Src IP addr: fc00::2 mask: ::
+>         Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+>         Traffic Class: 0x0 mask: 0xff
+>         Protocol: 0 mask: 0xff
+>         L4 bytes: 0x0 mask: 0xffffffff
+>         Action: Drop
+> 
 > ---
-> ibmveth: Wire ethtool set_channels to MQ RX queue resize
->
-> This completes the RX side of ibmveth_set_channels(): while the device is
-> down the desired RX count is stashed, and while it is up RX is resized
-> first and the TX LTB stop/alloc/set_real_num_tx/free/wake path runs
-> afterwards.  It also adds up-front TX range validation and an RX rollback
-> when TX cannot reach the requested count.
->
-> A few questions on the new paths below.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 84f4a0deb0c55..35cbd2553e867 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> v2: https://lore.kernel.org/netdev/20250908164046.25051-1-danielj@nvidia.com/
+>   - Fix sparse warnings
+>   - Fix memory leak on subsequent failure to allocate
+>   - Fix some Typos
+> 
+> v3: https://lore.kernel.org/netdev/20250923141920.283862-1-danielj@nvidia.com/
+>   - Added admin_ops to virtio_device kdoc.
+> 
+> v4:
+>   - Fixed double free bug inserting flows
+>   - Fixed incorrect protocol field check parsing ip4 headers.
+>   - (u8 *) changed to (void *)
+>   - Added kdoc comments to UAPI changes.
+>   - No longer split up virtio_net.c
+>   - Added config op to execute admin commands.
+>       - virtio_pci assigns vp_modern_admin_cmd_exec to this callback.
+>   - Moved admin command API to new core file virtio_admin_commands.c
+> 
+> v5:
+>   - Fixed compile error
+>   - Fixed static analysis warning on () after macro
+>   - Added missing fields to kdoc comments
+>   - Aligned parameter name between prototype and kdoc
+> 
+> v6:
+>   - Fix sparse warning "array of flexible structures" Jakub K/Simon H
+>   - Use new variable and validate ff_mask_size before set_cap. MST
+> 
+> v7:
+>   - Change virtnet_ff_init to return a value. Allow -EOPNOTSUPP. Xuan
+>   - Set ff->ff_{caps, mask, actions} NULL in error path. Paolo Abini
+>   - Move for (int i removal hung back a patch. Paolo Abini
+> 
+> v8
+>   - Removed unused num_classifiers. Jason Wang
+>   - Use real_ff_mask_size when setting the selector caps. Jason Wang
+> 
+> v9:
+>   - Set err to -ENOMEM after alloc failures in virtnet_ff_init. Simon H
+> 
+> v10:
+>   - Return -EOPNOTSUPP in virnet_ff_init before allocing any memory.
+>     Jason Wang/Paolo Abeni
+> 
+> v11:
+>   - Return -EINVAL if any resource limit is 0. Simon Horman
+>   - Ensure we don't overrun alloced space of ff->ff_mask by moving the
+>     real_ff_mask_size > ff_mask_size check into the loop. Simon Horman
+> 
+> v12: Many comments by MST, thanks Michael. Only the most significant
+>      listed here:
+>   - Fixed leak of key in build_and_insert.
+>   - Fixed setting ethhdr proto for IPv6.
+>   - Added 2 byte pad to struct virtio_net_ff_cap_data.
+>   - Use and set rule_cnt when querying all flows.
+>   - Cleanup and reinit in freeze/restore path.
+> 
+> v13:
+>   - Add private comment for reserved field in kdoc. Jakub
+>   - Serveral comments from MST details in patches. Most significant:
+> 	- Fixed bug in ip4, check l3_mask vs mask when setting addrs.
+> 	- Changed ff_mask cap checking to not break on expanded
+> 	  selector types
+> 	- Changed virtio_admin_obj_destroy to return void.
+> 	- Check tos field for ip4.
+> 	- Don't accept tclass field for ip6.
+> 	- If ip6 only flow check that l4_proto isn't set.
+> 
+> v14:
+>   - Handle virtio_ff_init errors in freeze/restore. MST
+>   - Don't set proto in parse_ip4/6. The casted struct may not have that
+>     field, and the proto field was set explicitly anyway. Simon H/AI.
+> 
+> v15:
+>   - In virtnet_restore_up only call virtnet_close in err path if
+>     netif_running. AI
+> 
+> v16:
+>   - Return 0 from virtnet_restore_up if virtnet_init_ff return not
+>     supported. AI
+>   - Rebased over removing series to remove delayed refill.
+> 
+> v17:
+>   - Properly handle unaligned reads/writes. MST
+>   - Fix use after free if init fails during virtnet_restor. AI
+>   - Fix memory leak when validating the classifer vs caps fails. AI
+>   - Added missing includes. MSTA
+> 
+> v18:
+>   - Validate selector cap lengths, instead of just checking they don't
+>     exceed a max. AI
+>   - Add __count_by attribute to flexible arrays in UAPI definitions.
+>     Paolo A.
+> 
+> v19:
+>   - Style fixes. AI
+> 
+> v20:
+>   - Added missing include
+> 
+> v21:
+>   - Use le64_to_cpu() and BIT_ULL() instead of cpu_to_le64() for cap checking.
+>   - Don't use __counted_by on flexible array of flexible structs.
+>   - Replace UAPI header includes with kernel header includes.
+>   - Add missing includes for linux/types.h and linux/byteorder/generic.h.
+>   - Clamp the reported action count to the driver-supported maximum.
+>   - Clamp the reported selector count to the driver-supported maximum.
+>   - Validate sel->type is not 0.
+>   - Reduce selectors' count in case selector's type is invalid.
+>   - Move virtio_device_ready() before virtnet_ff_init() as the flow filter
+>     initialization requires the device to be in ready state to issue admin
+>     commands.
+>   - Remove forward declarations.
+>   - Validate action is supported before inserting rule.
+>   - Convert ring_cookie to vq before assigning ff_rule->vq_index.
+>   - reword a comment.
+>   - Introduce a new patch that moves flow_type_mask() to include/linux/ethtool.h.
+>   - Wrap __le32 limit fields in le32_to_cpu() to avoid sparse warnings.
+>   - Use put_unaligned() in parse_ip4() to avoid misaligned 32-bit stores on
+>     strict-alignment architectures.
+> 
+> v22:
+>   - Reword/fix typo in commit messages.
+>   - Remove include <uapi/linux/virtio_pci.h> from virtio_net.c.
+>   - Verify also selectors_per_classifier_limit in virtnet_ff_init().
+>   - Validate ff->ff_actions->count != 0.
+>   - Remove WARN_ON_ONCE() and replace -EINVAL with -EPROTO for errors on
+>     device side.
+>   - Use ff->ff_mask->count after it was initialized.
+>   - Add a patch to fix sleeping under spinlock in the admin command path.
+>   - Document that callers must zero-initialize the capability structure.
+>   - Convert macro VIRTIO_CAP_IN_LIST to be inline function.
+>   - Add WARN_ON_ONCE if allocation fails in virtio_admin_obj_destroy().
+>   - Change VIRTNET_FF_ETHTOOL_GROUP_PRIORITY to be 0.
+>   - Reject flow rules that require more selectors than the device supports
+>     (selectors_per_classifier_limit).
+>   - Report min(rules_limit, rules_per_group_limit) as the effective rule limit,
+>     since all rules reside in a single group.
+> 
+> v23:
+>   - Make virtio_admin_obj_destroy() return int instead of void + internal
+>     WARN_ON_ONCE, so callers can propagate the failure themselves.
+> 
+> Comments from internal Sashiko review:
+> > +int virtio_admin_obj_create(struct virtio_device *vdev,
+> > +			    u16 obj_type,
+> > +			    u32 obj_id,
+> > +			    u16 group_type,
+> > +			    u64 group_member_id,
+> > +			    const void *obj_specific_data,
+> > +			    size_t obj_specific_data_size)
+> > +{
 > [ ... ]
->
->> @@ -3175,28 +3176,75 @@ static int ibmveth_set_channels(struct net_device *netdev,
->>   				struct ethtool_channels *channels)
->>   {
->>   	struct ibmveth_adapter *adapter = netdev_priv(netdev);
->> -	unsigned int old = netdev->real_num_tx_queues,
->> -		     goal = channels->tx_count;
->> +	unsigned int old_rx = ibmveth_get_num_rx_queues(adapter);
->> +	unsigned int goal_rx = channels->rx_count;
->> +	unsigned int old_tx = netdev->real_num_tx_queues;
->> +	unsigned int goal_tx = channels->tx_count;
->> +	unsigned int want_tx = goal_tx;
->> +	int rxq_entries = adapter->rx_queue[0].num_slots;
->> +	bool rx_changed = false;
->>   	int rc, i;
->>   
->> -	/* Validate RX (and resize when opened) before the down-path early
->> -	 * return so MQ/range errors are not deferred to the wiring patch.
->> -	 * RX stash + CMO while down still lands with that patch.
->> -	 */
->> -	rc = ibmveth_resize_rx_channels(adapter, channels->rx_count);
->> +	if (goal_tx < 1 || goal_tx > ibmveth_real_max_tx_queues()) {
->> +		netdev_err(netdev,
->> +			   "Invalid TX queue count %u (must be 1-%u)\n",
->> +			   goal_tx, ibmveth_real_max_tx_queues());
->> +		return -EINVAL;
->> +	}
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the bound used here is
-> CPU-count dependent while the reported current value is not, so the two can
-> disagree.
->
-> ibmveth_get_channels() fills the reply from two different sources:
->
-> 	channels->max_tx = ibmveth_real_max_tx_queues();
-> 	channels->tx_count = netdev->real_num_tx_queues;
->
-> and ibmveth_real_max_tx_queues() is min(num_online_cpus(),
-> IBMVETH_MAX_QUEUES).  After configuring N TX queues and then offlining CPUs
-> so that num_online_cpus() < N, the reply advertises tx_count > max_tx.
->
-> Both ethtool entry points reject a request whose tx_count exceeds the
-> driver-advertised max_tx:
->
-> net/ethtool/ioctl.c:ethtool_set_channels() {
-> 	...
-> 	if (channels.rx_count > curr.max_rx ||
-> 	    channels.tx_count > curr.max_tx || ...)
-> 		return -EINVAL;
-> 	...
-> }
->
-> so even an RX-only change (which resubmits the current tx_count) fails with
-> -EINVAL until the CPUs come back online.  Should max_tx be latched from the
-> configured count instead, or should the new range check be against
-> IBMVETH_MAX_QUEUES?
-Yes, the pair can disagree after CPU hotplug. Pre-existing TX; left
-alone here. On the cover leftovers list.
->
->> +
->> +	/* RX range / MQ checks live in ibmveth_resize_rx_channels(). */
->> +	rc = ibmveth_resize_rx_channels(adapter, goal_rx);
->>   	if (rc)
->>   		return rc;
->>   
->> -	if (!adapter->opened)
->> -		return netif_set_real_num_tx_queues(netdev, goal);
->> +	/* If RX resources are not live (never opened, or close+open failed
->> +	 * while IFF_UP stayed set), only stash desired queue counts.
->> +	 */
->> +	if (!adapter->opened) {
->> +		/* Apply TX first so a failure leaves RX stash unchanged. */
->> +		rc = netif_set_real_num_tx_queues(netdev, goal_tx);
->> +		if (rc)
->> +			return rc;
->> +
->> +		/* Stash desired RX count; open() publishes it via
->> +		 * netif_set_real_num_rx_queues() after queue registration.
->> +		 * Refresh CMO now so open() can map the larger footprint;
->> +		 * open itself does not call vio_cmo_set_dev_desired.
->> +		 */
-> [Severity: Low]
-> Is this comment describing what the code does?  The block right below
-> publishes immediately rather than deferring to open():
-> ibmveth_publish_num_rx_queues() updates adapter->num_rx_queues and
-> netif_set_real_num_rx_queues() updates netdev->real_num_rx_queues, which
-> creates or removes the /sys/class/net/*/queues/rx-N entries while the
-> interface is down.  ibmveth_open() only re-applies the same value later:
->
-> 	rc = netif_set_real_num_rx_queues(netdev,
-> 					  ibmveth_get_num_rx_queues(adapter));
->
-> The commit message says the same thing:
->
->      - When down: set TX queues first, then stash the desired RX count
->        in adapter->num_rx_queues for the next open() (open publishes via
->        netif_set_real_num_rx_queues).
->
-> Could the comment and the changelog mention that real_num_rx_queues, the
-> rx-N sysfs entries and (below) the CMO entitlement all change immediately
-> on a down interface?
-Yes. The comment said stash; the code publishes immediately. The commit
-message now says that: real_num_rx_queues, rx-N sysfs and CMO desired
-all change while down.
->
->> +		if (goal_rx != ibmveth_get_num_rx_queues(adapter)) {
->> +			ibmveth_publish_num_rx_queues(adapter, goal_rx);
-> [Severity: Medium]
-> Can publishing a count with no allocated queues behind it let a lockless
-> reader take an uninitialized spinlock?
->
-> adapter->num_rx_queues is the only validity bound the RX readers use, and
-> rx_queue[i].replenish_lock is only spin_lock_init()'ed for queues that are
-> actually allocated (ibmveth_alloc_rx_queues() and
-> ibmveth_alloc_single_rx_queue()).
->
-> ibmveth_replenish_task() checks nothing else before locking:
->
-> 	if (queue_index >= ibmveth_get_num_rx_queues(adapter)) {
-> 		...
-> 		return;
-> 	}
-> 	...
-> 	spin_lock_irqsave(&rxq->replenish_lock, flags);
->
-> and ibmveth_poll_controller() has no adapter->opened check:
->
-> 	unsigned int num = ibmveth_get_num_rx_queues(adapter);
->
-> 	for (i = 0; i < num; i++)
-> 		ibmveth_replenish_task(adapter, i);
->
-> That is reachable in the state this branch targets: pool_store and
-> change_mtu call ibmveth_close()+ibmveth_open() directly, so IFF_UP can stay
-> set (netif_running() true, netpoll still attached) with adapter->opened
-> false.  An "ethtool -L ethX rx N" with N above any previously allocated
-> count then publishes N here, and the window stays open for as long as the
-> device is down.
->
-> ibmveth_publish_num_rx_queues() itself states the invariant:
->
-> 	/* Per-queue state must be visible before readers observe num. */
-> 	smp_wmb();
-> 	WRITE_ONCE(adapter->num_rx_queues, num);
->
-> Does this call site break it, given the per-queue state does not exist yet?
-The locks are initialised in probe for every slot (patch 8). The hole
-was walking rings that alloc_rx_queues() has not created. v6 returns
-from poll_controller() unless adapter->opened.
->> +			rc = netif_set_real_num_rx_queues(netdev, goal_rx);
->> +			if (rc) {
->> +				ibmveth_publish_num_rx_queues(adapter, old_rx);
->> +				return rc;
->> +			}
-> [Severity: Medium]
-> On this failure path, netdev->real_num_tx_queues was already moved to
-> goal_tx by the netif_set_real_num_tx_queues() call above, and only the RX
-> publish is undone.
->
-> netif_set_real_num_rx_queues() has a real failure path:
->
-> net/core/dev.c:netif_set_real_num_rx_queues() {
-> 	...
-> 	rc = net_rx_queue_update_kobjects(dev, dev->real_num_rx_queues, rxq);
-> 	if (rc)
-> 		return rc;
-> 	...
-> }
->
-> so ethtool can report failure while the TX count has permanently changed.
-> Should netif_set_real_num_tx_queues(netdev, old_tx) run here before
-> returning rc, and does the current code match the commit message claim
-> "Make TX/RX updates fail atomically"?
-It did leave TX moved. v6 restores the old TX real_num if down-path RX
-set_real fails. The commit message no longer says fail atomically.
-
->> +			if (firmware_has_feature(FW_FEATURE_CMO)) {
->> +				unsigned long dma;
->> +
->> +				dma = ibmveth_get_desired_dma(adapter->vdev);
->> +				vio_cmo_set_dev_desired(adapter->vdev, dma);
->> +			}
-> [Severity: Medium]
-> Is the entitlement raised here ever lowered again if the stashed count is
-> never realized?  The desired value is sized for goal_rx RX queues, but no
-> buffer lists, queue DMA or pools are mapped while down.
->
-> If the next open() fails for the larger count, or if it applies the MQ
-> fallback and drops the count back to 1, neither ibmveth_open(),
-> ibmveth_close() nor ibmveth_apply_mq_fallback() recomputes desired DMA, so
-> the partition keeps CMO entitlement reserved for RX resources that do not
-> exist until a later successful set_channels or change_mtu.
-No. Desired is a ceiling, not consumed pages, but it is still wrong.
-Same CMO leftover as TX still sizing one LTB. Cover leftovers.
->> +		}
->> +		return 0;
->> +	}
-> [Severity: Medium]
-> Can a request that returns 0 from this branch be silently discarded on the
-> next open()?
->
-> If firmware rejected MQ during a previous ibmveth_register_rx_queues(),
-> adapter->mq_fallback is latched while adapter->multi_queue is still
-> non-zero, so "ethtool -L ethX rx 8" passes the MQ check in
-> ibmveth_resize_rx_channels(), takes this !opened branch, publishes 8, sets
-> real_num_rx_queues = 8, raises CMO desired and returns success.
->
-> ibmveth_apply_mq_fallback() then runs first in ibmveth_open():
->
-> 	adapter->multi_queue = 0;
-> 	ibmveth_publish_num_rx_queues(adapter, 1);
->
-> with no error back to the user and no entitlement recompute, and
-> ibmveth_get_channels() afterwards reports:
->
-> 	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
->
-> which is 1, contradicting the request that returned 0.  Should the down
-> path reject (or at least warn about) goal_rx > 1 when mq_fallback is
-> latched?
-Yes. Patch 14 rejects rx > 1 with -EOPNOTSUPP once mq_fallback is set.
-This patch keeps reporting the live rx_count and caps max_rx at that
-count, so a TX-only -L is not a silent shrink and the core blocks
-growth.
->> +
->> +	if (goal_rx != old_rx)
->> +		rx_changed = true;
->>   
->>   	/* We have IBMVETH_MAX_QUEUES netdev_queue's allocated
->>   	 * but we may need to alloc/free the ltb's.
->>   	 */
->> +	if (goal_tx == old_tx)
->> +		return 0;
->> +
->>   	netif_tx_stop_all_queues(netdev);
->>   
->> -	/* Allocate any queue that we need */
->> -	for (i = old; i < goal; i++) {
->> +	/* Allocate any new TX LTBs. i starts at old_tx for the free walk
->> +	 * below when this loop body never runs (goal_tx == old_tx already
->> +	 * returned; goal_tx < old_tx is scale-down).
->> +	 */
->> +	i = old_tx;
->> +	for (; i < goal_tx; i++) {
-> [Severity: Low]
-> The commit message says:
->
->      Initialize the TX alloc loop bound so a scale-down path that never
->      allocates still has defined cleanup if set_real_num_tx_queues() fails.
->
-> Was there anything undefined before?  The removed line is:
->
-> 	for (i = old; i < goal; i++) {
->
-> whose initializer runs even when the body does not (old >= goal), so i was
-> already defined for the later "for (i = old; i > goal; i--)" free walk.
-> Could this be described as a readability change rather than a fix?
-Yes. i was already defined. The commit message now calls it
-readability.
->>   		if (adapter->tx_ltb_ptr[i])
->>   			continue;
->>   
->> @@ -3205,28 +3253,43 @@ static int ibmveth_set_channels(struct net_device *netdev,
+> > +	obj_create_data->hdr.type = cpu_to_le16(obj_type);
+> > +	obj_create_data->hdr.id = cpu_to_le32(obj_id);
+> > +	memcpy(obj_create_data->resource_obj_specific_data, obj_specific_data,
+> > +	       obj_specific_data_size);
+> Can this memcpy trigger undefined behavior if callers pass NULL for
+> obj_specific_data and 0 for obj_specific_data_size? In C, passing a NULL
+> pointer to memcpy is undefined behavior even if the size is 0, which could
+> cause UBSAN splats.
+> 
+> [SS] It's the caller responsibly not to pass NULL. Current callers don't pass NULL.
+> 
+> > +	sg_init_one(&data_sg, data, data_size);
+> > +
+> > +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_CREATE);
+> > +	cmd.group_type = cpu_to_le16(group_type);
+> > +	cmd.group_member_id = cpu_to_le64(group_member_id);
+> > +	cmd.data_sg = &data_sg;
+> > +
+> > +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
+> This isn't a bug introduced by this patch, but does this execution path sleep
+> while holding a spinlock with interrupts disabled?
+> If this calls into virtqueue_exec_admin_cmd() (for example via
+> vp_modern_admin_cmd_exec()), the call chain looks like:
+> virtqueue_exec_admin_cmd()
+>     spin_lock_irqsave(&admin_vq->lock, flags);
+>     virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
+> Since GFP_KERNEL allows direct reclaim and sleeping, can this cause a deadlock
+> or trigger a BUG if the virtqueue falls back to allocating indirect descriptors?
+> 
+> [SS] Right, but not related to this series. Can introduce a fix in a different patch.
+> 
+> > +void virtio_admin_obj_destroy(struct virtio_device *vdev,
+> > +			      u16 obj_type,
+> > +			      u32 obj_id,
+> > +			      u16 group_type,
+> > +			      u64 group_member_id)
+> > +{
+> > +	struct virtio_admin_cmd_resource_obj_cmd_hdr *data;
+> > +	struct virtio_admin_cmd cmd = {};
+> > +	struct scatterlist data_sg;
+> > +	int err;
+> > +
+> > +	if (!vdev->config->admin_cmd_exec)
+> > +		return;
+> > +
+> > +	data = kzalloc(sizeof(*data), GFP_KERNEL);
+> > +	if (!data)
+> > +		return;
+> If this kzalloc() fails, does this function return without sending the
+> destroy command to the hardware?
+> Since the return type is void, the caller has no way to detect this failure
+> and will likely free its local software tracking objects. Will this leave
+> the physical device and software tracking structures permanently
+> desynchronized, leaking the object on the virtio device?
+> 
+> [SS] Not much to do here. There could be a firmware error also,
+>      and then what we do? Destroy flow is best effort.
+> 
+> > +			break;
+> > +
+> > +		if (sel->length != get_mask_size(sel->type) ||
+> > +		    test_and_set_bit(sel->type, &sel_types)) {
+> > +			WARN_ON_ONCE(true);
+> Is it safe to use WARN_ON_ONCE() for validating device input? A malicious
+> or buggy virtio device could intentionally trigger this by providing an
+> invalid length or duplicate selector types, potentially leading to a kernel
+> panic if panic_on_warn is enabled. Would it be better to just return the
+> error without the warning?
+> > +			err = -EINVAL;
+> > +			goto err_ff_action;
+> > +		}
+> > +		real_ff_mask_size += sizeof(struct virtio_net_ff_selector) + sel->length;
+> > +		if (real_ff_mask_size > ff_mask_size) {
+> > +			WARN_ON_ONCE(true);
+> Similarly, could this WARN_ON_ONCE() be triggered by a malicious device
+> providing a larger size than expected, leading to a panic if panic_on_warn
+> is enabled?
+> 
+> [SS] These WARN_ON_ONCE() were requested by MST during review.
+> 
 > [ ... ]
->
->>   	netif_tx_wake_all_queues(netdev);
->>   
->> -	return rc;
->> +	if (netdev->real_num_tx_queues != want_tx) {
->> +		if (rx_changed) {
->> +			int rb;
->> +
->> +			rb = ibmveth_resize_rx_queues_incremental(adapter,
->> +								  old_rx,
->> +								  rxq_entries);
->> +			if (rb)
->> +				netdev_err(netdev,
->> +					   "Failed to roll back RX queues to %u after TX failure: %d\n",
->> +					   old_rx, rb);
->> +		}
->> +		return rc ? rc : -ENOMEM;
->> +	}
-> [Severity: Medium]
-> This rollback is best effort only, so the same "fail atomically" question
-> applies to the up path.  For "ethtool -L ethX rx <smaller> tx <larger>",
-> the RX scale-down has already destroyed queues; if
-> ibmveth_allocate_tx_ltb() then fails, the rollback here is a scale-up whose
-> own steps can fail too:
->
-> 	rc = ibmveth_alloc_single_rx_queue(adapter, i, rxq_entries);
-> 	if (rc) { ... goto cleanup_new_queues; }
->
-> and the same for ibmveth_register_single_rx_queue(),
-> ibmveth_setup_single_rx_interrupt(), ibmveth_enable_irq() and
-> netif_set_real_num_rx_queues().  Its cleanup path leaves RX at the reduced
-> count, and here that is only logged before returning an error.
->
-> Is there a way to order this so the destructive RX change happens only
-> after the TX LTB allocations have succeeded, so no partial state can be
-> left behind when the call reports failure?
-Not without holding both sets. Live path stays teardown-first with
-best-effort rollback. The commit message no longer says fail
-atomically.
-
-
-Regards,
-
-Mingming
+> > +static const struct ethtool_ops virtnet_ethtool_ops = {
+> [ ... ]
+> > +	.get_rxfh_fields = virtnet_get_hashflow,
+> > +	.set_rxfh_fields = virtnet_set_hashflow,
+> > +	.get_rx_ring_count = virtnet_get_rx_ring_count,
+> > +	.set_rxnfc = virtnet_set_rxnfc,
+> > +};
+> Does this also need an implementation of .get_rxnfc to prevent invalid
+> channel configurations?
+> When .get_rxnfc is missing, the ethtool core function
+> ethtool_get_max_rxnfc_channel() returns -EOPNOTSUPP. This causes
+> ethtool_check_max_channel() to silently skip validating the new channel
+> count against active flow rules.
+> If a user adds a flow rule targeting a specific RX queue, and then reduces
+> the active RX queues via ethtool -L, virtnet_set_channels() will update
+> the queue count without checking the active rules stored in
+> vi->ff.ethtool.rules.
+> Could this leave hardware rules pointing to disabled queues and cause
+> silent packet drops?
+> 
+> [SS] .get_rxnfc exists (introduced in a later patch).
+> 
+> > @@ -1258,6 +1259,7 @@ static const struct virtio_config_ops virtio_pci_config_ops = {
+> >  	.get_shm_region  = vp_get_shm_region,
+> >  	.disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+> >  	.enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> > +	.admin_cmd_exec = vp_modern_admin_cmd_exec,
+> >  };
+> This isn't a bug introduced by this patch, but by exposing this function to
+> general drivers, can a driver trigger a NULL pointer dereference or
+> use-after-free?
+> If a driver calls the newly exposed config->admin_cmd_exec() early in probe
+> before find_vqs(), or late in remove after del_vqs(),
+> virtqueue_exec_admin_cmd() unconditionally dereferences admin_vq->info:
+>     vq = admin_vq->info->vq;
+> In vp_del_vqs(), the info structure is freed via kfree(info), but
+> vp_dev->admin_vq.info is never set to NULL, leaving a dangling pointer.
+> 
+> [SS] Current code is written in correct order. Future callers are responsible
+>      to call this when VQs are initialized.
+> 
+> This isn't a bug introduced by this patch, but does this error path lead to
+> stack corruption?
+> In virtqueue_exec_admin_cmd(), if virtqueue_kick() fails, it returns -EIO
+> without waiting for completion or detaching the exposed buffer:
+>     if (!virtqueue_kick(vq))
+>             goto unlock_err;
+> If the hardware later processes the descriptor and triggers
+> vp_modern_avq_done(), it will call complete(&cmd->completion). Since the cmd
+> structure was likely allocated on the caller's stack, this can overwrite
+> out-of-scope stack memory.
+> 
+> [SS] The vq->broken flag set by virtqueue_notify() causes virtqueue_get_buf()
+>      to return NULL in vp_modern_avq_done(), so complete() is never called on
+>      the freed cmd. No stack corruption.
+> 
+> This isn't a bug introduced by this patch, but can this function return an
+> uninitialized variable?
+> virtqueue_exec_admin_cmd() returns cmd->ret at the end of the function:
+>     return cmd->ret;
+> However, on a successful command execution, vp_modern_avq_done() never
+> explicitly sets cmd->ret to 0. If a driver allocates struct virtio_admin_cmd
+> on the stack without zero-initializing it, could this return stack garbage
+> and erroneously indicate failure?
+> 
+> [SS] cmd is initialized in all callers struct with virtio_admin_cmd cmd = {};
+> 
+> If the device responds with fewer bytes than the driver's provided data
+> buffer, does this leave the rest of the output buffer uninitialized?
+> The wrapper discards cmd.result_sg_size without zero-initializing data and
+> returns 0, which could expose uninitialized memory to callers.
+> 
+> [SS] Caller's responsibility to initialize the buffer.
+> 
+> Second, if virtqueue_add_sgs() returns -ENOSPC, the code loops infinitely
+> with cpu_relax() without a timeout or sleep:
+> drivers/virtio/virtio_pci_modern.c:virtqueue_exec_admin_cmd() {
+> ...
+> 		if (ret == -ENOSPC) {
+> 			spin_unlock_irqrestore(&admin_vq->lock, flags);
+> 			cpu_relax();
+> 			goto again;
+> 		}
+> ...
+> }
+> Can this soft-lockup the CPU if the virtqueue remains full and the device is
+> unresponsive?
+> 
+> [SS] Pre-existing, not introduced by this series, and bounded in practice by
+>      the virtqueue_is_broken() check. Not something to fix here.
+> 
+> Third, if virtqueue_kick() fails, the code jumps to unlock_err without
+> detaching the buffer from the virtqueue:
+> drivers/virtio/virtio_pci_modern.c:virtqueue_exec_admin_cmd() {
+> ...
+> 	if (!virtqueue_kick(vq))
+> 		goto unlock_err;
+> 	spin_unlock_irqrestore(&admin_vq->lock, flags);
+> 	wait_for_completion(&cmd->completion);
+> 	return cmd->ret;
+> unlock_err:
+> 	spin_unlock_irqrestore(&admin_vq->lock, flags);
+> 	return -EIO;
+> ...
+> }
+> Does this leave a dangling pointer on the virtqueue?
+> If the device later processes the command or the virtqueue is torn down,
+> could it write to the freed heap memory and invoke complete() on a dangling
+> stack pointer?
+> 
+> [SS] Not a bug. vq->broken prevents complete() from firing.
+> 
+> > +	sg_init_one(&data_sg, data, sizeof(*data));
+> > +	sg_init_one(&result_sg, caps, cap_size);
+> > +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_DEVICE_CAP_GET);
+> > +	cmd.group_type = cpu_to_le16(VIRTIO_ADMIN_GROUP_TYPE_SELF);
+> > +	cmd.data_sg = &data_sg;
+> > +	cmd.result_sg = &result_sg;
+> > +
+> > +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
+> Similar to virtio_admin_cap_id_list_query above, does this execution discard
+> cmd.result_sg_size without zeroing the caps buffer, potentially returning
+> uninitialized memory to the caller on a short response?
+> 
+> [SS] Standard kernel API contract, caller owns the buffer, current callers
+>      handle it correctly.
+> 
+> > +	data->id = cpu_to_le16(id);
+> > +	memcpy(data->cap_specific_data, caps, cap_size);
+> If a caller invokes virtio_admin_cap_set() to enable a capability with no
+> extra data (cap_size == 0 and caps == NULL), will this unconditionally pass a
+> NULL pointer to memcpy(), invoking undefined behavior?
+> 
+> [SS] Caller's responsibility.
+> 
+> > +/**
+> > + * VIRTIO_CAP_IN_LIST - Check if a capability is supported in the capability list
+> > + * @cap_list: Pointer to capability list structure containing supported_caps array
+> > + * @cap: Capability ID to check
+> > + *
+> > + * The cap_list contains a supported_caps array of little-endian 64-bit integers
+> > + * where each bit represents a capability. Bit 0 of the first element represents
+> > + * capability ID 0, bit 1 represents capability ID 1, and so on.
+> > + *
+> > + * Return: 1 if capability is supported, 0 otherwise
+> > + */
+> > +#define VIRTIO_CAP_IN_LIST(cap_list, cap) \
+> > +	(!!(1 & (le64_to_cpu(cap_list->supported_caps[(cap) / 64]) >> (cap) % 64)))
+> Could this macro trigger an out-of-bounds read on the supported_caps array if
+> a caller passes a cap value greater than VIRTIO_ADMIN_MAX_CAP?
+> Additionally, could evaluating cap multiple times cause unexpected side effects
+> if passed an expression like cap++?
+> 
+> [SS] All callers use named cap constants defined in the uapi headers, which are all
+>      within bounds by construction. Passing side-effecting expressions to macros is
+>      standard caller responsibility. No fix needed.
+> 
+> >  static void virtnet_ff_cleanup(struct virtnet_ff *ff)
+> >  {
+> > +	struct virtnet_ethtool_rule *eth_rule;
+> > +	unsigned long i;
+> > +
+> >  	if (!ff->ff_supported)
+> >  		return;
+> >
+> > +	xa_for_each(&ff->ethtool.rules, i, eth_rule)
+> > +		destroy_ethtool_rule(ff, eth_rule);
+> > +
+> Will this cause user-configured flow filter rules to be permanently lost
+> across system suspend/resume or device migration?
+> During suspend, device reset, or device freeze, virtnet_freeze_down() calls
+> virtnet_ff_cleanup(). This loop iterates over all configured flow rules,
+> sends the destroy commands to the hardware, and then calls kfree() via
+> destroy_ethtool_rule(), permanently destroying the software representation of
+> the rules.
+> Upon resume, virtnet_restore_up() invokes virtnet_ff_init(), which
+> initializes the flow filters as completely empty. The driver appears to make
+> no attempt to retain the software state of the rules during suspend or
+> replay them to the device during restore, meaning users must manually
+> recreate all flow filter rules every time the system resumes or the device
+> is migrated.
+> 
+> [SS] This is intentional for now. Could be a follow up feature.
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> -- 
+> 2.49.0
 
