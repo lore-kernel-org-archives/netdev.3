@@ -1,69 +1,68 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D077939A4DC
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C31B370AE1
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 18:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788199791; cv=none; b=CDR67FenW+lX20Onfbel6Qtf34ExrdcuuGWfUdFgntGZo1aG9iicwlzPRvjI64QJzLXqJWwA0Vsbinkx9pXP6FkthtBooHJOmpEJVzTAvfegfd+vTC01/GdU0oO1EhynpXJ0Ora/red4WExrg3DgmTsXJjWqwasbKQ5eKXKKeJg=
+	t=1788199800; cv=none; b=Ixg8lLOcFEojcZNR853W2NkA/nkfOYlw67kozmyAyKb5dRtClSb3CQzT+kFozhs4Vm1ZESiAutuIxYov0+e3A7wSDZWy226xaNjn7TtUdCU2QhwYmQ/6vZ8c8il0Y8e9dZVANLClv/S0jH+mnpUze8MXGeQZL626GsdqmQJysV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788199791; c=relaxed/simple;
-	bh=UJIjx7Nd6UnwIEMkfyx4MKf4iq09kir0HcuQtcBrn2c=;
+	s=arc-20240116; t=1788199800; c=relaxed/simple;
+	bh=OUMY53HyrTCqQnkA8KrBjrrWVSQyECdBkTmSBNMfXJo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pN41Y4yQ4azaO7/91DVI0YUFIhqiPNB4rOMtMKcX75KXQckxfClBbV+GyvwvlWsG1rm8MBDuTRgtLneT3yXwO8/Yt9VtK7jkNoI1TxF8OdgsU19poiJuoDiQTx4212V1J9g3i8bULIMqqqUP2qHF/mF55hR9wIrckFCwvzWuYfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b=iVEvvpsU; arc=none smtp.client-ip=209.85.215.175
+	 In-Reply-To:Content-Type; b=TeDi90TLxN4vvUiOay77iDcFMbPU08ggOHcMmtYC52eBdLDdED5+ipW+IgSCs8vbLOuSyv3mmiTq0Klt/vU4NTTmdGyyNK8Uuxp6kt/OPERyserlGUkvnf050My2n6gujprCPPSmx+aaOknFgkh6EuWVytlpxeZNl8aTUsgZ030=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b=csx5e/cU; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b="iVEvvpsU"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc1c3d79b9bso3370494a12.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:09:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b="csx5e/cU"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-381b831d535so138525a91.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:09:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20251104.gappssmtp.com; s=20251104; t=1788199789; x=1788804589; darn=vger.kernel.org;
+        d=davidwei-uk.20251104.gappssmtp.com; s=20251104; t=1788199799; x=1788804599; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nC5kpux0BtJotabIv7/q6ESBCBij/ueWvvNCaE5KD0I=;
-        b=iVEvvpsUvxnmcRK29ZjpZSEpPEm2vClhvxxeTzdnVeei7KCow9+0xf8/AZjeIDHqDr
-         cLulgo2a4L0lBiTu7C0mdT7nnVVnnGI5Orp3ylhNsKQwwuHtfjEcfKaE1z91ACuS0V6P
-         rJnCZwnmiVF4oMzr7w/hoAZ+OmaVWpvyfyRXI1bXINhuLhsySUWx4/s21KjMeqGYbgZ+
-         I3OWQG+0HLe801ltuyrQAZr8dyJVrR/N2yU791z3NMzsFg69hfpIFFcs8NyQGxnDE0+Y
-         V56ktEZuxcFtxkbqLFzJwWbBWE1bkrBxqpfagWnqQ6ueOKA/6flMppmw8aOBZr19DpGz
-         tEuQ==
+        bh=uFdfHylOXjETtPhdnLAsv7jcCEOZVeZCY1hqt4pQN3M=;
+        b=csx5e/cUTC33Kr+U+h4jgBT5/yiteflcmuwWSHhkMWi9g0gM8tTHH9di6/lcLZYXkS
+         I1zWbRAXjoYsNWWZ8jelrHZr/MgXrRG4T8DJHiafUft88BhbYF+x6onvy+nEAnQJCXWn
+         IkNBv8kg5JcTux6hnulY8e+bNawzjj9xPJ+/0viInPRRzwsFqnrj5SYaYJob/PncA6o8
+         NBZScSGfJrvzhglcfyCUGjvu0noBtYxBjziFAV4pY1aFUswElpSB3I9VIkgCorjtF8TN
+         km+y1/Ma7dw1azRgBBjcPmsp0K/rfXGGYMnNDxAUFw/fK20avEGE0wMleTSBTu9Y1Rca
+         r5LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788199789; x=1788804589;
+        d=1e100.net; s=20251104; t=1788199799; x=1788804599;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nC5kpux0BtJotabIv7/q6ESBCBij/ueWvvNCaE5KD0I=;
-        b=mzINnZ7BlWJoDhE+8UvnPy8XSNFxYsyOgGpMbFLzFrf9qp2Q1kvg4w4Xpk8FHwg48C
-         z3H3KnSFN5ztVPbW5h/lx7ubGdeNmf0JUA6ybsAMJEePhuxkxJPOWCJ64QeRvvYr6PGT
-         1UOVU2zNxITja93vS33tsqfHhnNsPnxsA0XgWISmqRqleYFzGcJJwvgAjdU4WcrCNHa3
-         QzROTJ1h4PuZUypC2qmkDGF53gcZjNsKvDJoSE1GIWcC7WvXPOwOEJrEBPMjgPfKPPB/
-         gQq2uhhu0qKo8q3sPv+qI2w9PO1d9WSqoEumAnNkgjBFUTV0L/ytkFZevEzf8OnOWksh
-         ElfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxz6aR0fHJdmeoP1RNaWSothiV1UGGY/tDmZum+gaEVokL3xy+X75USUe06vKDhWgQul0DWj2g=@vger.kernel.org
-X-Gm-Message-State: AFuF++mPBAP/Hy7oH860hqOt1BUs3sezx76Hk5jn6FStqkpjZJCIb4E8
-	KS0QrEZSLfddYDLlW+B5UhpsV0A0J5rWoJg5uDBA/zpcRlQHOFfpWnNFRO9BLBw/ZICAf3/aLA6
-	qMiQbuh4=
-X-Gm-Gg: AYBFou2P+a1JXNOBxOaOpHoY4GM3NQNf8ocuKkYpo0TllOaXHaLfkGs7DCm4V8bjbDN
-	E4Empn3OmDecHRZFVMIbCSBL+ZYZlEdLH+02fKPtrafnt+kJyPbFloZDo3ZmxCXqgjTLs2cDNBb
-	xNutlumSa24WpJXbns0X/j5kmj2VotE532TndQJ2I/2J8XvLlAUr1jy2UHAUYTCHozTAS1YCjCz
-	OgISXZuG2bxt6sPUk2kxZc3xWq/4ZGZ89YtEmQ/WSlSC6xdl5PJIyNijFMGL7hh3U4wskBH0dQt
-	fBonaTc9iSVVPdJ5m56Suz5SqNyIb0BcIu1QxDF47/UiGudk7XQ2fmDO1K42r+RItJhMwJNbSay
-	iOnMF6BQeT6zdVtN6zYM/bbfN3yCG6ImmlHgh2iqzI3ednOOi+ip0DZyLqvbZqAiuIxZlI5RrQo
-	6BNzZiy+jUUCowVCYOBklyVj7CfLq1UcamAOCd7zX464tx762ej0AXhraIKUVPI4s6uOd3uotWp
-	l2VkurGgKBkTDGlO9BHuOB/BNwZnS6E75sjCG1Jb3MWEs1Hg1zLmPiw8TLpkA==
-X-Received: by 2002:a17:90b:2f4b:b0:398:a486:81ec with SMTP id 98e67ed59e1d1-39907b77747mr3516597a91.11.1788199789044;
-        Mon, 31 Aug 2026 11:09:49 -0700 (PDT)
+        bh=uFdfHylOXjETtPhdnLAsv7jcCEOZVeZCY1hqt4pQN3M=;
+        b=rl3GT0g5BDkwhEYV1wjyQXE22UVlv9+8qxsxbRAPKMywBpKCXaBmC2t6dAuQPr21Q8
+         evxDESsQGi4mDzGt395yDWmz5+XTHbEaWdnYB5LYoUGZ4rJMav7bD70R2Rpcv54f93xH
+         vdkDPK2FGIi9AN4A+D7/tTIF3LKd6Qk6le4opL6+ulqc0qLVovOQPX/b4oxCMgAZeBCJ
+         Gs+C6mP5mdwl9FfrGdPVirVDYft1go4ln8QLBXB73pllwAIIqxkaW6oKshXlqKVbsrKI
+         pCMlYLKogYuJUA5ck4fLIvz354pR8RQXIEe/nQjJ36sZQbn1mXGABArtRo94zpuRyZEq
+         GEiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxBrXd6RynV3119X+JGcq17CVP5vprQAXEOu9WDgX1tcbwjs8P827YAya469rvwuEEx6jG6lRA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kd1YvIsZRLHp0krmGvTezB6P2TR3QMF//GP2fPRwh+5vkUZ/iT
+	hD8eIoMvbDFcC8tCcAa/iF4Jgj1F+zQ99xJVDyQZS3q8udlk4K0a5T9LW/5gQl3+aq4=
+X-Gm-Gg: AYBFou0l5Cp18XCbp9T7xZLtA07BAhS+bvFjtE9ugRa4Ybs85ajpkG/vrBcs0M4TGym
+	icE4pPbfSxH7qnTIiuAaIjFZwVrHk7hc/VMuO4EqgFhbuHvfJiFhmNZD40kQKPlAZ5VvQyPPvij
+	F9DJrnTnvTi3UOjyiMZ0s5e/9LOMOB0nJhY/DsKEYbZj/a3uLSrCFw5eDDS+LWBIK3VuMaz9i0Q
+	ruaittQeM5aUKuDCEVOjplK2+xD8W5wHHUVnbJJACK2vC2Mn6cIJSLrMS3CJ26pgLYLhE43Hsvw
+	YcbyGLUwJxiuMeKFB8y4ysFtjdPjtkcTymU89w9oe6RiWsKgRltrEmm8Bbs8q8UAoMaKI7nVjv4
+	mxkYnrfmIG5sQWQ04i8hpMlZskqy/b4gaaeAhm8rW5d8sgLkI7wffN3ifxrQTzUvE0os1O52HP0
+	8lN5CtRNvvFohvRlmuCNwktHclOszEjtt6JfnQQDtip+j6EEKGmaKWfqmtMbBsKnas0MU3+X8EB
+	8xbdx9FI4PYCPpkc6u1Ytm7N+KxS3lY8HZYVC7ixWSOqF1kyKT2ydk1pO2vCw==
+X-Received: by 2002:a17:90b:5102:b0:38e:70d5:b12d with SMTP id 98e67ed59e1d1-396d0ea862fmr45975458a91.6.1788199798914;
+        Mon, 31 Aug 2026 11:09:58 -0700 (PDT)
 Received: from ?IPV6:2a03:83e0:1156:1:c8f:b917:4342:fa09? ([2620:10d:c090:500::7:1753])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f9e2a95sm30252869eec.23.2026.08.31.11.09.48
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0de4de3sm41695477c88.12.2026.08.31.11.09.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 11:09:48 -0700 (PDT)
-Message-ID: <25f25b5c-fbdc-4bd5-ba97-85248ea8d421@davidwei.uk>
-Date: Mon, 31 Aug 2026 11:09:47 -0700
+        Mon, 31 Aug 2026 11:09:58 -0700 (PDT)
+Message-ID: <4388edf9-7248-48e6-876d-daf3bff39e7c@davidwei.uk>
+Date: Mon, 31 Aug 2026 11:09:57 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,49 +70,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/6] selftests: net: fix
- get_refill_ring_size() to use its local variable
+Subject: Re: [PATCH net-next v6 2/6] selftests: net: remove unused variable in
+ process_recvzc()
 To: Juanlu Herrero <juanlu@fastmail.com>, netdev@vger.kernel.org
 Cc: io-uring@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org, kuba@kernel.org, asml.silence@gmail.com,
  pabeni@redhat.com, shuah@kernel.org
 References: <20260831-iou-zcrx-v6-0-02d1d012f0fd@fastmail.com>
- <20260831-iou-zcrx-v6-1-02d1d012f0fd@fastmail.com>
+ <20260831-iou-zcrx-v6-2-02d1d012f0fd@fastmail.com>
 Content-Language: en-US
 From: David Wei <dw@davidwei.uk>
-In-Reply-To: <20260831-iou-zcrx-v6-1-02d1d012f0fd@fastmail.com>
+In-Reply-To: <20260831-iou-zcrx-v6-2-02d1d012f0fd@fastmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2026-08-31 10:34, Juanlu Herrero wrote:
-> In preparation for multi-threaded rss selftests, fix
-> get_refill_ring_size() to use its local `size` variable instead of
-> assigning to the file-global `ring_size`.
+> Remove the unused `sqe` variable in preparation for the multiqueue rss
+> selftest changes to process_recvzc() in the following commits.
 > 
 > Assisted-by: Claude:claude-opus-4-8
 > Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
 > ---
->   tools/testing/selftests/drivers/net/hw/iou-zcrx.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   tools/testing/selftests/drivers/net/hw/iou-zcrx.c | 1 -
+>   1 file changed, 1 deletion(-)
 > 
 > diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-> index f6a8fc5fac24..df6b62204343 100644
+> index df6b62204343..c6dbd0ad5368 100644
 > --- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
 > +++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-> @@ -132,10 +132,10 @@ static inline size_t get_refill_ring_size(unsigned int rq_entries)
->   {
->   	size_t size;
->   
-> -	ring_size = rq_entries * sizeof(struct io_uring_zcrx_rqe);
-> +	size = rq_entries * sizeof(struct io_uring_zcrx_rqe);
->   	/* add space for the header (head/tail/etc.) */
-> -	ring_size += page_size;
-> -	return ALIGN_UP(ring_size, page_size);
-> +	size += page_size;
-> +	return ALIGN_UP(size, page_size);
->   }
->   
->   static void setup_zcrx(struct io_uring *ring)
+> @@ -269,7 +269,6 @@ static void process_recvzc(struct io_uring *ring, struct io_uring_cqe *cqe)
+>   	unsigned rq_mask = rq_ring.ring_entries - 1;
+>   	struct io_uring_zcrx_cqe *rcqe;
+>   	struct io_uring_zcrx_rqe *rqe;
+> -	struct io_uring_sqe *sqe;
+>   	uint64_t mask;
+>   	char *data;
+>   	ssize_t n;
 > 
 
 Reviewed-by: David Wei <dw@davidwei.uk>
