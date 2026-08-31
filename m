@@ -1,71 +1,75 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010036.outbound.protection.outlook.com [52.101.46.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A849529404
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 15:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788188908; cv=none; b=FOrR3dsBKxglq5nLgc59haQ3vYBBD9fNruoYT1+Lhqmx0K51StuBfyOhw8vNjJTMS4dd17xmV2sqVuB7NPDAnDZouWCzZqgisQVUFhJg2sM8a8xdiN93V2/aGzEA5kDGGwc+8Z8YFydhqHWZswzMbM8WscPWcD6I8eApeUZZxYE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788188908; c=relaxed/simple;
-	bh=ueq26UDR2NMNOwDy0+D9BCs5ofCsviG7GygHgyMKrV4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YYy+Phevg1tuuvYmuNVqJtfoiNsMRPG1TrURJB/537B4Qy0E4UL+VV3xwHin22NwlARbVcQ2TTOMl3l+FkvXQDq0X86psHXn8MzsAdbwlVVMC5oaBBVSMDOQ+8IskE3I9WM6PfObZZp2vamDAL5VmknBVjjSkNi2/7QpOyIOBzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QITO7yey; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3F75293F8;
+	Mon, 31 Aug 2026 15:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788188909; cv=fail; b=n35TmDR+pwWU0TtTGdUBPkiay37eLNR0Vno64jdSrL9G6us6gQapkTblwnsrFi+g9AVp8FWm7loxTh/3C+BwmiAT/mh15GGuf219yQNlNvvysARrz+Ic7HypXKIvjqft4WN0xblZ9cUK7oqVchfjM6DdwkIWhwvMohF8QT0rgps=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788188909; c=relaxed/simple;
+	bh=oio0HkZIrL1pznerRGIEqnL6VyWPa0YqhgO+e22CU5I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iaL0QJeMLmYSFaZjnMG6ukSKqqCOjRqxLktPM8E01zb41I5Vfnvhn7zdmTsb6upaLokiqk//N3bcToq8joAx/bcVb0QY0mQ6SAjBjxpRp0eZ3KOxSXGEbA/s9pXMU/1EOADpNbsiZy8XWWO5OzPeSQWBaGy+w3t4PMupmaVmRnc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ov/NuVxt; arc=fail smtp.client-ip=52.101.46.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QITO7yey"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VEZ4C22530227;
-	Mon, 31 Aug 2026 15:08:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=wur7Cn9MgC04C3YC0
-	Ci0+BxTeHQFVlSVsz2r1VNvbDU=; b=QITO7yeyxvbfKYj2LiVZr6ZWyXJG9fGlj
-	8Tb8+Hh8q0GxnqpHjLkmOpCoj27M9yiZbCb3wfsjpco/7iJDqcoz8Vl+1FsM1eFI
-	JMn5VMJW4WfdLLuwfHK9DCWW1vSJuew/MA3N2+rWwRai70OUtTTZT2qnmqWiThY6
-	ZEvtAylclOrNLbd8wSc0DScZ7MRZpvduNGiSSmGj07LY1whgFl+3GgxQzh7mo/Cd
-	BgP+XFYQvQMl3iTZ/i5Unrp/5X8sp8NcCQn7lf0ArVsIVJeZ3PMI3y9QypTpT1zD
-	GJ4QByhMqrnZPnqlUb4C2TGizfR91z5n2btjFbfsIAOvYuCdKvUcQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbpx5a4n5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VEuIvg004363;
-	Mon, 31 Aug 2026 15:08:06 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gca4vxn3s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:06 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VF84s629426422
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 15:08:04 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED36A5805C;
-	Mon, 31 Aug 2026 15:08:03 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10AF15805F;
-	Mon, 31 Aug 2026 15:08:00 +0000 (GMT)
-Received: from 192.168.1.50 (unknown [9.67.102.143])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 15:07:59 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
-        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com, Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next v6 02/15] ibmveth: Prepare MQ RX adapter data structures
-Date: Mon, 31 Aug 2026 08:07:13 -0700
-Message-Id: <7d399575e27fc5b965c38bffa6c4a77803f0bb6b.1788102125.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <cover.1788102125.git.mmc@linux.ibm.com>
-References: <cover.1788102125.git.mmc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ov/NuVxt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gFZF4bOsvngRZHlxHsGEq84XLw5KD2XwwAX27+JYQ8k0sLxFBfzPDY7F53hut94WkX3futx2lYFD1Fvu1xP3+8HpST6uCCdFDWpB2wn6PR2uqtkpF2Qa+FvZuuToZ8kaw6mt0oPQeOr2SI0VlrQ4ASXqQoWt5ajY0AKb2YMnzDxD5B4Bz4iTQcHmHIejWN3UEsXj0R9xutbuNQIb44y8v9q64jEuUudA8H/PA8oBfM4uI7nEoz+pslFnLa/8OMNDZfdBRNHVDc1SfgKgQaKuQg8sn/2HWPwFrDS12eFM7gzVlrR9AmHAzP/apDFvCL8iTzojBBR09trruA1NZjww/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hrdBpWaXJRHFD0U34k2w9fEW1QU2au7coORiVdz8l1E=;
+ b=oARjpBettGUq1HrUZhn43O1eNnArXWW8pBF/gzAq7X+WGoHkvCsDrgf0h7bClvmKP85AANJBx33GCxImoXB9yQMz6Hw4tPhQkBMDcosw6xj8gQOIfRsO4frmm+QNszGcTvD55q6pawov5lLAfGhPcZb0QUhx1Kt/VbG30z0XjPHiY1eRK9CV8a51jkqU+zU3sOzCZ7EyYLkaabth9+3IUuwsSuhScKQ1lufYlSI7eHdpkaMjqMCpiKctEpM4XL0d05izMIWdF8JFkrXpPx4Tb7MZh+3X8tSBz+j8+N7xAU7IjbUYyCerfM8/gzwE0C1MFWEW92Yvfysb8txGjPbCKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hrdBpWaXJRHFD0U34k2w9fEW1QU2au7coORiVdz8l1E=;
+ b=Ov/NuVxtg5TRvNwIlU6of/YK26E9WBGC/QCS50PFvfJ4BZ3Dm0GlU9fT2eikUGd3p0l/tWSYIsU++rK6S/ogxTXaLvYpFenv7V38wVbApo9xTH0UVktVQZZ1aimRfV2FgBROZ8K3FjyyOYXde/5ToHN1ifhKN+EFXy2V+h1iu1Q=
+Received: from BLAPR05CA0026.namprd05.prod.outlook.com (2603:10b6:208:335::8)
+ by CHBPR12MB497579.namprd12.prod.outlook.com (2603:10b6:610:33d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 15:08:23 +0000
+Received: from BN2PEPF0000A803.namprd02.prod.outlook.com
+ (2603:10b6:208:335:cafe::22) by BLAPR05CA0026.outlook.office365.com
+ (2603:10b6:208:335::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Mon,
+ 31 Aug 2026 15:08:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF0000A803.mail.protection.outlook.com (10.167.245.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Mon, 31 Aug 2026 15:08:22 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
+ 2026 10:08:21 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Mon, 31 Aug 2026 10:08:17 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH net-next v3 0/6] net: xilinx: axienet: Add 10G/25G (XXV) ethernet support
+Date: Mon, 31 Aug 2026 20:38:10 +0530
+Message-ID: <20260831150816.1020883-1-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,664 +77,104 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=PPc/P/qC c=1 sm=1 tr=0 ts=6a9598d8 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=f7--bhDSelbfdnkOmXoA:9
-X-Proofpoint-GUID: jHMg_klh8yl69capcVsmoChL61WIe_7D
-X-Proofpoint-ORIG-GUID: jY2fbOMd88eVK3DbWEyEht6ifAKdUbg9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfX3lp6vOoY3X0G
- 49LWm9zj5nap1rj0MflgXvGiDd5tDimYtVvUnNTSjwcfktjNtiJLBeFmfCpKz95ME0FuxvYRVCD
- hhh2MFMKi6/dOpTM8JH3h1bbOf9p+Tk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfX6z/ijfMes2/c
- nVm8ZZ34Adya/o0YtxAbOdqAtYC3wqRgHPUo0kvx7Fv5FoqUlNLUymXiLmRs29N7LTLx+f9dvol
- 6V1GybJGo/5Qq+3xjkZPhM8BharIA30SYHKdlhFzTUk0GmTkejLm5dLxQJqD2XlScpxBuMI8KBP
- TEDKFXnxGaXx29Wb6YYSRTkaQHr9zsjnTIg/RQMVUj2S7HulI/PWBaybt/qEtwAzQyGsVxXq0tj
- v/udxFvdMvSgBykMf/T1gmsOdo+Jq/fSnMaieY2z2xzZCr1MM8KFAyTgwAM2e9rzqg5gn8BkLNQ
- TJrnkLwglwLO/lB4vFmhfjCpzJ0sgI1lL6bZ1OambWv9gKORDg5kieXuapEuq4esZycmcao94hO
- t1wZ/uiqwFSsAq34uI6Bul87cJ0MMKkuQ1gX40DO3fhipUgXaVVq6jaZ0hFctXof0POrAiSiRkm
- MEP3iLTl4u3BmojEPog==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_05,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608310130
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A803:EE_|CHBPR12MB497579:EE_
+X-MS-Office365-Filtering-Correlation-Id: 133ddd02-7589-4ca2-d5ea-08df0771b326
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|23010399003|376014|7416014|921020|10067099003|11063799006|56012099006|18002099003|13003099007|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	+2ys7HKcvjEE4j+aYQEgdQbi7knMhhFgTIZFGJbOKLniZOSvF8fWJjZOMoSpAyvGqJ6JhP1Y6DdxefVipSeKSVtxSWCBCxxApFYEBZ+VezV+K6yeW3NN9MskDuGrxDcuB4XjpKXCPMAdDGkDPwcpNaoB7OV0803Xqide5aTVOGeFWiUu82QgzewObymyQl7aZl1P1AryO/0zDsg9BOsXDJ4dYvmmaBj4ikffvbVAx3n+joOK7p3/wnz0ER+TkGoPwiMyI6beu43E6cg6mE90Dwc24pYQbMeXkqauYTeW5HVaYY3ptUB/i7A8taT4ZTXgIayk1gilpaydoWl5Ng0QHDEJTwMoU0WPYthjT/2XV8kM5/B0D7ItCvja/ZoITTvHyDSmQ4egkop5jbmV/G2V4FsA+wTaPk7xyEr48nMWvc3G7/FhQJsorRtT7hVx+t7XoR7pevaZ0LwiS4nSzOfAeMNZIF5Z+g8CZp7zwpg4a9YyiepPVsfoDLiLM9f38b24hrCR/RttPbU2Y2JRtRJRRHGDIvKgydV2n9YfWzQPLEgsXQSAJiRznF/lvStmF6r53awHzup3d7tD3jPTpvIUMOlz+oZin0FjAfRBFx2U5hqHHYBRJi9xTiRS2lIuT3v3dQ+7wRhbj05jNGGNv75svhfRAeV4jBtRd8WFIvF88VL6v1np5HTwQwXmxBRiA7CkeTAIEUoh+Eo3R0k222z9kVH4PS1BnXkRzkyGjwOg61zrgSf7qHzuihtn8g+YYu2N
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(23010399003)(376014)(7416014)(921020)(10067099003)(11063799006)(56012099006)(18002099003)(13003099007)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JcTe+o83vkLAmS+rcTOSdY70MZIjibdcIk6Z3Hps0RoX9P88Y9ew2gAikBkt1eHU9nVs9vQQBLoV6FTw0hELDF5IpJnTE/VIFORLCIg+Wwi5CA+j5GbveTT3oN2XgxHbho5j/0evbNyr+Vjhj5iQJ4R4QF4p3AmMm+jGsSxUEY+/akclHA7l9FX4BKuve85+/rbB1EQkgPhs2qikRGf/Z/A5hROEJM5J4/TXC34fwIaebsZHrL4VE5PN0s8bRRbvyucD2a8E61YdYnT46/OvDWBs4BpGzQT5YwKlYw5jFIg5LToUml2BpbpheCYBlrP1jsOFzY1UFTJIA/muEFW+XutODYu1GmfUPejK509n+CViHhDanWe7/OUVfIfGgDSbhJGIoAHCS6pKiNpv6snW9I2VyBpfeKMkLiq9M4xiZcMm5nbUKdRnW0sY8jUwAvPd
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 15:08:22.7839
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 133ddd02-7589-4ca2-d5ea-08df0771b326
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF0000A803.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHBPR12MB497579
 
-MQ RX needs per-queue state for NAPI, queue handles/IRQs, RX rings,
-buffer-list DMA mappings, and buffer pools. The current driver stores
-most of this as single instances tied to queue 0.
+This patch series extends the AXI Ethernet driver to support the
+XXV Ethernet subsystem.
 
-Convert those fields to queue-indexed layouts sized by
-IBMVETH_MAX_RX_QUEUES:
+- Refactor through struct axienet_config so per-MAC behaviour is
+  expressed as capability flags and callbacks instead of runtime
+  MAC-type checks in the shared code.
 
-  rx_queue[]
-  napi[]
-  queue_handle[] / queue_irq[]
-  buffer_list_addr[] / buffer_list_dma[]
-  rx_buff_pool[queue][pool]
+- Document the XXV IP in Devicetree.
 
-and add multi_queue / num_rx_queues to track MQ capability and how
-many RX queues are active. Keep IBMVETH_MAX_RX_QUEUES at 1 for now so
-this remains a structural preparation patch; later enablement raises
-the limit when multi-queue RX is actually turned on.
+- Add support for the XXV Ethernet subsystem.
 
-This patch keeps behavior unchanged by mechanically switching existing
-references to index 0 (for example rx_queue -> rx_queue[0],
-rx_buff_pool[pool] -> rx_buff_pool[0][pool], napi -> napi[0]).
-open/poll/close still drive a single RX queue only.
+- Add a preparatory RMON cleanup, a statistics-ops refactor of
+  struct axienet_config, and ethtool / ndo_get_stats64 counter reporting
+  for XXV.
 
-First use of the new fields: queue_irq[] and multi_queue in the IRQ
-control patch; queue_handle[] in the register-helpers patch, which
-captures queue 0's handle from H_REGISTER_LOGICAL_LAN; num_rx_queues
-in the RX resource-allocation patch. multi_queue only begins
-selecting between code paths once enablement raises
-IBMVETH_MAX_RX_QUEUES above 1.
+Notes:
+- The devm_clk_bulk_get_enable() helper posted as patch 1/7 in v2 is now
+  in mainline as commit b698927accb1 ("clk: Add
+  devm_clk_bulk_get_enable()"), so it is dropped from this series.
+- This series depends on [1], which is sent as part of another series.
+  That change is required for this series to compile and is not included
+  here to avoid duplication.
+- Due to phylink limitations, we aren't able to advertise both 10G and
+  25G base-r interfaces and switch between them using ethtool.
+  We are open to suggestions on how to handle this.
 
-Probe kobject / drvdata cleanup on register failure is pre-existing.
-Inline kobject_put lands in the MQ enablement patch;
-ibmveth_probe_cleanup() in the statistics patch.
+[1]: https://lore.kernel.org/all/20260717090824.2364230-1-srinivas.neeli@amd.com/
 
-Queue-0 pool sysfs (poolN/) remains the shared geometry template for
-all RX queues: later patches clone that metadata per queue. Per-queue
-runtime visibility is added via debugfs later, not per-queue sysfs.
+Changes in v3:
+- Dropped patch 1/7 ("clk: Add devm_clk_bulk_get_enable()"); it has been
+  applied to mainline as commit b698927accb1.
+- Patch 2/6 (dt-bindings):
+  * Added Reviewed-by from Rob Herring. Thanks Rob!
+V2: https://lore.kernel.org/all/20260806181153.1213996-1-suraj.gupta2@amd.com/
 
-Per-queue statistics structs are introduced later with their first use
-(statistics collection); the replenish_* counters stay adapter-wide
-plain u64 here and move into them at that point.
+Changes in v2:
+- Patch 1/7:
+  * Add Reviewed-by: Brian Masney <bmasney@redhat.com>. Thanks Brian!
+- Patch 3/7:
+  * Split the XXV binding into its own schema file
+    (xlnx,xxv-ethernet.yaml) instead of extending xlnx,axi-ethernet.yaml
+    with if/then branches, per Rob Herring's review.
+  * Add a multichannel (MCDMA) example.
+- Patch 4/7:
+  * Require both GT Wizard reset-done bits in axienet_xxv_poll_link_ready()
+    so polling does not exit before both the TX and RX resets complete.
 
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
----
+V1: https://lore.kernel.org/all/20260723123838.125145-1-suraj.gupta2@amd.com/
 
-Changes in v5:
-- Drop unrelated style nits that v4 mixed into the index-0 conversion
-  (ibmveth_rxq_get_buffer() prototype reflow, get_desired_dma
-  "Return:" kdoc, blank line after rx_large_packets)
-- Document queue-0 poolN/ sysfs as the shared geometry/template for all
-  RX queues (buff_size/size/active); queues 1..N get no separate pool
-  sysfs in this series
-- Decision: keep full ibmveth_buff_pool per queue for this series
-  (unused embedded kobjects on rows 1..N); a config-vs-runtime layout
-  split is out of scope here
+Suraj Gupta (6):
+  net: xilinx: axienet: Introduce axienet_config for MAC-specific ops
+  dt-bindings: net: xlnx,xxv-ethernet: Add Xilinx XXV 10G/25G Ethernet
+  net: xilinx: axienet: Add 10G/25G (XXV) ethernet support
+  net: xilinx: axienet: Make axienet_rmon_ranges non-static for reuse
+  net: xilinx: axienet: Dispatch statistics through axienet_config ops
+  net: xilinx: axienet: Add statistics support for XXV ethernet
 
-Changes in v4:
-- Keep IBMVETH_MAX_RX_QUEUES at 1 until MQ enablement (same idea as v3,
-  but v3 also planted unused stats types here).
-- Layout-only: queue-indexed adapter fields only. Do not introduce
-  the rx/tx qstats here (first-use); they land with the per-queue
-  statistics patch.
-- Subject: "Prepare MQ RX adapter data structures" (was "...and
-  statistics structures" in earlier drafts).
+ .../bindings/net/xlnx,xxv-ethernet.yaml       | 107 ++++
+ MAINTAINERS                                   |   1 +
+ drivers/net/ethernet/xilinx/Makefile          |   3 +-
+ drivers/net/ethernet/xilinx/xilinx_axienet.h  |  90 +++
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 603 ++++++++++++------
+ .../net/ethernet/xilinx/xilinx_axienet_xxv.c  | 595 +++++++++++++++++
+ .../net/ethernet/xilinx/xilinx_axienet_xxv.h  | 141 ++++
+ 7 files changed, 1358 insertions(+), 182 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
+ create mode 100644 drivers/net/ethernet/xilinx/xilinx_axienet_xxv.c
+ create mode 100644 drivers/net/ethernet/xilinx/xilinx_axienet_xxv.h
 
- drivers/net/ethernet/ibm/ibmveth.c | 206 ++++++++++++++++-------------
- drivers/net/ethernet/ibm/ibmveth.h |  17 ++-
- 2 files changed, 124 insertions(+), 99 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 73e051d26b9d..7cb828b476c1 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -101,7 +101,9 @@ static struct ibmveth_stat ibmveth_stats[] = {
- /* simple methods of getting data from the current rxq entry */
- static inline u32 ibmveth_rxq_flags(struct ibmveth_adapter *adapter)
- {
--	return be32_to_cpu(adapter->rx_queue.queue_addr[adapter->rx_queue.index].flags_off);
-+	struct ibmveth_rx_q *rxq = &adapter->rx_queue[0];
-+
-+	return be32_to_cpu(rxq->queue_addr[rxq->index].flags_off);
- }
- 
- static inline int ibmveth_rxq_toggle(struct ibmveth_adapter *adapter)
-@@ -112,7 +114,7 @@ static inline int ibmveth_rxq_toggle(struct ibmveth_adapter *adapter)
- 
- static inline int ibmveth_rxq_pending_buffer(struct ibmveth_adapter *adapter)
- {
--	return ibmveth_rxq_toggle(adapter) == adapter->rx_queue.toggle;
-+	return ibmveth_rxq_toggle(adapter) == adapter->rx_queue[0].toggle;
- }
- 
- static inline int ibmveth_rxq_buffer_valid(struct ibmveth_adapter *adapter)
-@@ -132,7 +134,9 @@ static inline int ibmveth_rxq_large_packet(struct ibmveth_adapter *adapter)
- 
- static inline int ibmveth_rxq_frame_length(struct ibmveth_adapter *adapter)
- {
--	return be32_to_cpu(adapter->rx_queue.queue_addr[adapter->rx_queue.index].length);
-+	struct ibmveth_rx_q *rxq = &adapter->rx_queue[0];
-+
-+	return be32_to_cpu(rxq->queue_addr[rxq->index].length);
- }
- 
- static inline int ibmveth_rxq_csum_good(struct ibmveth_adapter *adapter)
-@@ -386,7 +390,7 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
-  */
- static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter)
- {
--	__be64 *p = adapter->buffer_list_addr + 4096 - 8;
-+	__be64 *p = adapter->buffer_list_addr[0] + 4096 - 8;
- 
- 	adapter->rx_no_buffer = be64_to_cpup(p);
- }
-@@ -399,7 +403,7 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter)
- 	adapter->replenish_task_cycles++;
- 
- 	for (i = (IBMVETH_NUM_BUFF_POOLS - 1); i >= 0; i--) {
--		struct ibmveth_buff_pool *pool = &adapter->rx_buff_pool[i];
-+		struct ibmveth_buff_pool *pool = &adapter->rx_buff_pool[0][i];
- 
- 		if (pool->active &&
- 		    (atomic_read(&pool->available) < pool->threshold))
-@@ -463,12 +467,12 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
- 	struct sk_buff *skb;
- 
- 	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
--	    WARN_ON(index >= adapter->rx_buff_pool[pool].size)) {
-+	    WARN_ON(index >= adapter->rx_buff_pool[0][pool].size)) {
- 		schedule_work(&adapter->work);
- 		return -EINVAL;
- 	}
- 
--	skb = adapter->rx_buff_pool[pool].skbuff[index];
-+	skb = adapter->rx_buff_pool[0][pool].skbuff[index];
- 	if (WARN_ON(!skb)) {
- 		schedule_work(&adapter->work);
- 		return -EFAULT;
-@@ -482,24 +486,24 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
- 		/* remove the skb pointer to mark free. actual freeing is done
- 		 * by upper level networking after gro_receive
- 		 */
--		adapter->rx_buff_pool[pool].skbuff[index] = NULL;
-+		adapter->rx_buff_pool[0][pool].skbuff[index] = NULL;
- 
- 		dma_unmap_single(&adapter->vdev->dev,
--				 adapter->rx_buff_pool[pool].dma_addr[index],
--				 adapter->rx_buff_pool[pool].buff_size,
-+				 adapter->rx_buff_pool[0][pool].dma_addr[index],
-+				 adapter->rx_buff_pool[0][pool].buff_size,
- 				 DMA_FROM_DEVICE);
- 	}
- 
--	free_index = adapter->rx_buff_pool[pool].producer_index;
--	adapter->rx_buff_pool[pool].producer_index++;
--	if (adapter->rx_buff_pool[pool].producer_index >=
--	    adapter->rx_buff_pool[pool].size)
--		adapter->rx_buff_pool[pool].producer_index = 0;
--	adapter->rx_buff_pool[pool].free_map[free_index] = index;
-+	free_index = adapter->rx_buff_pool[0][pool].producer_index;
-+	adapter->rx_buff_pool[0][pool].producer_index++;
-+	if (adapter->rx_buff_pool[0][pool].producer_index >=
-+	    adapter->rx_buff_pool[0][pool].size)
-+		adapter->rx_buff_pool[0][pool].producer_index = 0;
-+	adapter->rx_buff_pool[0][pool].free_map[free_index] = index;
- 
- 	mb();
- 
--	atomic_dec(&(adapter->rx_buff_pool[pool].available));
-+	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
- 
- 	return 0;
- }
-@@ -507,17 +511,18 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
- /* get the current buffer on the rx queue */
- static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter)
- {
--	u64 correlator = adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator;
-+	struct ibmveth_rx_q *rxq = &adapter->rx_queue[0];
-+	u64 correlator = rxq->queue_addr[rxq->index].correlator;
- 	unsigned int pool = correlator >> 32;
- 	unsigned int index = correlator & 0xffffffffUL;
- 
- 	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
--	    WARN_ON(index >= adapter->rx_buff_pool[pool].size)) {
-+	    WARN_ON(index >= adapter->rx_buff_pool[0][pool].size)) {
- 		schedule_work(&adapter->work);
- 		return NULL;
- 	}
- 
--	return adapter->rx_buff_pool[pool].skbuff[index];
-+	return adapter->rx_buff_pool[0][pool].skbuff[index];
- }
- 
- /**
-@@ -538,14 +543,16 @@ static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
- 	u64 cor;
- 	int rc;
- 
--	cor = adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator;
-+	struct ibmveth_rx_q *rxq = &adapter->rx_queue[0];
-+
-+	cor = rxq->queue_addr[rxq->index].correlator;
- 	rc = ibmveth_remove_buffer_from_pool(adapter, cor, reuse);
- 	if (unlikely(rc))
- 		return rc;
- 
--	if (++adapter->rx_queue.index == adapter->rx_queue.num_slots) {
--		adapter->rx_queue.index = 0;
--		adapter->rx_queue.toggle = !adapter->rx_queue.toggle;
-+	if (++adapter->rx_queue[0].index == adapter->rx_queue[0].num_slots) {
-+		adapter->rx_queue[0].index = 0;
-+		adapter->rx_queue[0].toggle = !adapter->rx_queue[0].toggle;
- 	}
- 
- 	return 0;
-@@ -595,7 +602,7 @@ static int ibmveth_register_logical_lan(struct ibmveth_adapter *adapter,
- 	 */
- retry:
- 	rc = h_register_logical_lan(adapter->vdev->unit_address,
--				    adapter->buffer_list_dma, rxq_desc.desc,
-+				    adapter->buffer_list_dma[0], rxq_desc.desc,
- 				    adapter->filter_list_dma, mac_address);
- 
- 	if (rc != H_SUCCESS && try_again) {
-@@ -623,14 +630,14 @@ static int ibmveth_open(struct net_device *netdev)
- 
- 	netdev_dbg(netdev, "open starting\n");
- 
--	napi_enable(&adapter->napi);
-+	napi_enable(&adapter->napi[0]);
- 
- 	for(i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
--		rxq_entries += adapter->rx_buff_pool[i].size;
-+		rxq_entries += adapter->rx_buff_pool[0][i].size;
- 
- 	rc = -ENOMEM;
--	adapter->buffer_list_addr = (void*) get_zeroed_page(GFP_KERNEL);
--	if (!adapter->buffer_list_addr) {
-+	adapter->buffer_list_addr[0] = (void *)get_zeroed_page(GFP_KERNEL);
-+	if (!adapter->buffer_list_addr[0]) {
- 		netdev_err(netdev, "unable to allocate list pages\n");
- 		goto out;
- 	}
-@@ -643,17 +650,18 @@ static int ibmveth_open(struct net_device *netdev)
- 
- 	dev = &adapter->vdev->dev;
- 
--	adapter->rx_queue.queue_len = sizeof(struct ibmveth_rx_q_entry) *
-+	adapter->rx_queue[0].queue_len = sizeof(struct ibmveth_rx_q_entry) *
- 						rxq_entries;
--	adapter->rx_queue.queue_addr =
--		dma_alloc_coherent(dev, adapter->rx_queue.queue_len,
--				   &adapter->rx_queue.queue_dma, GFP_KERNEL);
--	if (!adapter->rx_queue.queue_addr)
-+	adapter->rx_queue[0].queue_addr =
-+		dma_alloc_coherent(dev, adapter->rx_queue[0].queue_len,
-+				   &adapter->rx_queue[0].queue_dma, GFP_KERNEL);
-+	if (!adapter->rx_queue[0].queue_addr)
- 		goto out_free_filter_list;
- 
--	adapter->buffer_list_dma = dma_map_single(dev,
--			adapter->buffer_list_addr, 4096, DMA_BIDIRECTIONAL);
--	if (dma_mapping_error(dev, adapter->buffer_list_dma)) {
-+	adapter->buffer_list_dma[0] =
-+		dma_map_single(dev, adapter->buffer_list_addr[0],
-+			       4096, DMA_BIDIRECTIONAL);
-+	if (dma_mapping_error(dev, adapter->buffer_list_dma[0])) {
- 		netdev_err(netdev, "unable to map buffer list pages\n");
- 		goto out_free_queue_mem;
- 	}
-@@ -670,19 +678,21 @@ static int ibmveth_open(struct net_device *netdev)
- 			goto out_free_tx_ltb;
- 	}
- 
--	adapter->rx_queue.index = 0;
--	adapter->rx_queue.num_slots = rxq_entries;
--	adapter->rx_queue.toggle = 1;
-+	adapter->rx_queue[0].index = 0;
-+	adapter->rx_queue[0].num_slots = rxq_entries;
-+	adapter->rx_queue[0].toggle = 1;
- 
- 	mac_address = ether_addr_to_u64(netdev->dev_addr);
- 
- 	rxq_desc.fields.flags_len = IBMVETH_BUF_VALID |
--					adapter->rx_queue.queue_len;
--	rxq_desc.fields.address = adapter->rx_queue.queue_dma;
-+					adapter->rx_queue[0].queue_len;
-+	rxq_desc.fields.address = adapter->rx_queue[0].queue_dma;
- 
--	netdev_dbg(netdev, "buffer list @ 0x%p\n", adapter->buffer_list_addr);
-+	netdev_dbg(netdev, "buffer list @ 0x%p\n",
-+		   adapter->buffer_list_addr[0]);
- 	netdev_dbg(netdev, "filter list @ 0x%p\n", adapter->filter_list_addr);
--	netdev_dbg(netdev, "receive q   @ 0x%p\n", adapter->rx_queue.queue_addr);
-+	netdev_dbg(netdev, "receive q   @ 0x%p\n",
-+		   adapter->rx_queue[0].queue_addr);
- 
- 	h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_DISABLE);
- 
-@@ -693,7 +703,7 @@ static int ibmveth_open(struct net_device *netdev)
- 			   lpar_rc);
- 		netdev_err(netdev, "buffer TCE:0x%llx filter TCE:0x%llx rxq "
- 			   "desc:0x%llx MAC:0x%llx\n",
--				     adapter->buffer_list_dma,
-+				     adapter->buffer_list_dma[0],
- 				     adapter->filter_list_dma,
- 				     rxq_desc.desc,
- 				     mac_address);
-@@ -702,11 +712,11 @@ static int ibmveth_open(struct net_device *netdev)
- 	}
- 
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
--		if (!adapter->rx_buff_pool[i].active)
-+		if (!adapter->rx_buff_pool[0][i].active)
- 			continue;
--		if (ibmveth_alloc_buffer_pool(&adapter->rx_buff_pool[i])) {
-+		if (ibmveth_alloc_buffer_pool(&adapter->rx_buff_pool[0][i])) {
- 			netdev_err(netdev, "unable to alloc pool\n");
--			adapter->rx_buff_pool[i].active = 0;
-+			adapter->rx_buff_pool[0][i].active = 0;
- 			rc = -ENOMEM;
- 			goto out_free_buffer_pools;
- 		}
-@@ -738,9 +748,9 @@ static int ibmveth_open(struct net_device *netdev)
- 
- out_free_buffer_pools:
- 	while (--i >= 0) {
--		if (adapter->rx_buff_pool[i].active)
-+		if (adapter->rx_buff_pool[0][i].active)
- 			ibmveth_free_buffer_pool(adapter,
--						 &adapter->rx_buff_pool[i]);
-+						 &adapter->rx_buff_pool[0][i]);
- 	}
- out_unmap_filter_list:
- 	dma_unmap_single(dev, adapter->filter_list_dma, 4096,
-@@ -752,18 +762,18 @@ static int ibmveth_open(struct net_device *netdev)
- 	}
- 
- out_unmap_buffer_list:
--	dma_unmap_single(dev, adapter->buffer_list_dma, 4096,
-+	dma_unmap_single(dev, adapter->buffer_list_dma[0], 4096,
- 			 DMA_BIDIRECTIONAL);
- out_free_queue_mem:
--	dma_free_coherent(dev, adapter->rx_queue.queue_len,
--			  adapter->rx_queue.queue_addr,
--			  adapter->rx_queue.queue_dma);
-+	dma_free_coherent(dev, adapter->rx_queue[0].queue_len,
-+			  adapter->rx_queue[0].queue_addr,
-+			  adapter->rx_queue[0].queue_dma);
- out_free_filter_list:
- 	free_page((unsigned long)adapter->filter_list_addr);
- out_free_buffer_list:
--	free_page((unsigned long)adapter->buffer_list_addr);
-+	free_page((unsigned long)adapter->buffer_list_addr[0]);
- out:
--	napi_disable(&adapter->napi);
-+	napi_disable(&adapter->napi[0]);
- 	return rc;
- }
- 
-@@ -776,7 +786,7 @@ static int ibmveth_close(struct net_device *netdev)
- 
- 	netdev_dbg(netdev, "close starting\n");
- 
--	napi_disable(&adapter->napi);
-+	napi_disable(&adapter->napi[0]);
- 
- 	netif_tx_stop_all_queues(netdev);
- 
-@@ -795,22 +805,22 @@ static int ibmveth_close(struct net_device *netdev)
- 
- 	ibmveth_update_rx_no_buffer(adapter);
- 
--	dma_unmap_single(dev, adapter->buffer_list_dma, 4096,
-+	dma_unmap_single(dev, adapter->buffer_list_dma[0], 4096,
- 			 DMA_BIDIRECTIONAL);
--	free_page((unsigned long)adapter->buffer_list_addr);
-+	free_page((unsigned long)adapter->buffer_list_addr[0]);
- 
- 	dma_unmap_single(dev, adapter->filter_list_dma, 4096,
- 			 DMA_BIDIRECTIONAL);
- 	free_page((unsigned long)adapter->filter_list_addr);
- 
--	dma_free_coherent(dev, adapter->rx_queue.queue_len,
--			  adapter->rx_queue.queue_addr,
--			  adapter->rx_queue.queue_dma);
-+	dma_free_coherent(dev, adapter->rx_queue[0].queue_len,
-+			  adapter->rx_queue[0].queue_addr,
-+			  adapter->rx_queue[0].queue_dma);
- 
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
--		if (adapter->rx_buff_pool[i].active)
-+		if (adapter->rx_buff_pool[0][i].active)
- 			ibmveth_free_buffer_pool(adapter,
--						 &adapter->rx_buff_pool[i]);
-+						 &adapter->rx_buff_pool[0][i]);
- 
- 	for (i = 0; i < netdev->real_num_tx_queues; i++)
- 		ibmveth_free_tx_ltb(adapter, i);
-@@ -1448,7 +1458,7 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
- static int ibmveth_poll(struct napi_struct *napi, int budget)
- {
- 	struct ibmveth_adapter *adapter =
--			container_of(napi, struct ibmveth_adapter, napi);
-+			container_of(napi, struct ibmveth_adapter, napi[0]);
- 	struct net_device *netdev = adapter->netdev;
- 	int frames_processed = 0;
- 	unsigned long lpar_rc;
-@@ -1573,11 +1583,11 @@ static irqreturn_t ibmveth_interrupt(int irq, void *dev_instance)
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
- 	unsigned long lpar_rc;
- 
--	if (napi_schedule_prep(&adapter->napi)) {
-+	if (napi_schedule_prep(&adapter->napi[0])) {
- 		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
- 				       VIO_IRQ_DISABLE);
- 		WARN_ON(lpar_rc != H_SUCCESS);
--		__napi_schedule(&adapter->napi);
-+		__napi_schedule(&adapter->napi[0]);
- 	}
- 	return IRQ_HANDLED;
- }
-@@ -1645,7 +1655,7 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
- 	int need_restart = 0;
- 
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
--		if (new_mtu_oh <= adapter->rx_buff_pool[i].buff_size)
-+		if (new_mtu_oh <= adapter->rx_buff_pool[0][i].buff_size)
- 			break;
- 
- 	if (i == IBMVETH_NUM_BUFF_POOLS)
-@@ -1660,9 +1670,9 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
- 
- 	/* Look for an active buffer pool that can hold the new MTU */
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
--		adapter->rx_buff_pool[i].active = 1;
-+		adapter->rx_buff_pool[0][i].active = 1;
- 
--		if (new_mtu_oh <= adapter->rx_buff_pool[i].buff_size) {
-+		if (new_mtu_oh <= adapter->rx_buff_pool[0][i].buff_size) {
- 			WRITE_ONCE(dev->mtu, new_mtu);
- 			vio_cmo_set_dev_desired(viodev,
- 						ibmveth_get_desired_dma
-@@ -1720,12 +1730,12 @@ static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev)
- 
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
- 		/* add the size of the active receive buffers */
--		if (adapter->rx_buff_pool[i].active)
-+		if (adapter->rx_buff_pool[0][i].active)
- 			ret +=
--			    adapter->rx_buff_pool[i].size *
--			    IOMMU_PAGE_ALIGN(adapter->rx_buff_pool[i].
-+			    adapter->rx_buff_pool[0][i].size *
-+			    IOMMU_PAGE_ALIGN(adapter->rx_buff_pool[0][i].
- 					     buff_size, tbl);
--		rxqentries += adapter->rx_buff_pool[i].size;
-+		rxqentries += adapter->rx_buff_pool[0][i].size;
- 	}
- 	/* add the size of the receive queue entries */
- 	ret += IOMMU_PAGE_ALIGN(
-@@ -1844,7 +1854,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 	adapter->mcastFilterSize = be32_to_cpu(*mcastFilterSize_p);
- 	ibmveth_init_link_settings(netdev);
- 
--	netif_napi_add_weight(netdev, &adapter->napi, ibmveth_poll, 16);
-+	netif_napi_add_weight(netdev, &adapter->napi[0], ibmveth_poll, 16);
- 
- 	netdev->irq = dev->irq;
- 	netdev->netdev_ops = &ibmveth_netdev_ops;
-@@ -1876,6 +1886,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 		netdev->features |= NETIF_F_FRAGLIST;
- 	}
- 
-+	/* Initialize queue count - always 1 for now */
-+	adapter->multi_queue = 0;
-+	adapter->num_rx_queues = IBMVETH_DEFAULT_RX_QUEUES;
-+
- 	if (ret == H_SUCCESS &&
- 	    (ret_attr & IBMVETH_ILLAN_RX_MULTI_BUFF_SUPPORT)) {
- 		adapter->rx_buffers_per_hcall = IBMVETH_MAX_RX_PER_HCALL;
-@@ -1898,10 +1912,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 		memcpy(pool_count, pool_count_cmo, sizeof(pool_count));
- 
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
--		struct kobject *kobj = &adapter->rx_buff_pool[i].kobj;
-+		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
- 		int error;
- 
--		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
- 					 pool_count[i], pool_size[i],
- 					 pool_active[i]);
- 		error = kobject_init_and_add(kobj, &ktype_veth_pool,
-@@ -1949,7 +1963,7 @@ static void ibmveth_remove(struct vio_dev *dev)
- 	cancel_work_sync(&adapter->work);
- 
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
--		kobject_put(&adapter->rx_buff_pool[i].kobj);
-+		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
- 
- 	unregister_netdev(netdev);
- 
-@@ -2035,11 +2049,12 @@ static ssize_t veth_pool_store(struct kobject *kobj, struct attribute *attr,
- 			/* Make sure there is a buffer pool with buffers that
- 			   can hold a packet of the size of the MTU */
- 			for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
--				if (pool == &adapter->rx_buff_pool[i])
-+				if (pool == &adapter->rx_buff_pool[0][i])
- 					continue;
--				if (!adapter->rx_buff_pool[i].active)
-+				if (!adapter->rx_buff_pool[0][i].active)
- 					continue;
--				if (mtu <= adapter->rx_buff_pool[i].buff_size)
-+				if (mtu <=
-+				    adapter->rx_buff_pool[0][i].buff_size)
- 					break;
- 			}
- 
-@@ -2213,11 +2228,11 @@ static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
- 
- 	/* Set sane values for buffer pools */
- 	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
--		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
- 					 pool_count[i], pool_size[i],
- 					 pool_active[i]);
- 
--	pool = &adapter->rx_buff_pool[0];
-+	pool = &adapter->rx_buff_pool[0][0];
- 	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *), GFP_KERNEL);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
- 
-@@ -2225,7 +2240,7 @@ static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
- 	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
- 
--	correlator = ((u64)0 << 32) | adapter->rx_buff_pool[0].size;
-+	correlator = ((u64)0 << 32) | adapter->rx_buff_pool[0][0].size;
- 	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
- 	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
- 
-@@ -2258,30 +2273,33 @@ static void ibmveth_rxq_get_buffer_test(struct kunit *test)
- 
- 	INIT_WORK(&adapter->work, ibmveth_reset_kunit);
- 
--	adapter->rx_queue.queue_len = 1;
--	adapter->rx_queue.index = 0;
--	adapter->rx_queue.queue_addr = kunit_kzalloc(test, sizeof(struct ibmveth_rx_q_entry),
--						     GFP_KERNEL);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter->rx_queue.queue_addr);
-+	adapter->rx_queue[0].queue_len = 1;
-+	adapter->rx_queue[0].index = 0;
-+	adapter->rx_queue[0].queue_addr =
-+		kunit_kzalloc(test, sizeof(struct ibmveth_rx_q_entry),
-+			      GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter->rx_queue[0].queue_addr);
- 
- 	/* Set sane values for buffer pools */
- 	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
--		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
- 					 pool_count[i], pool_size[i],
- 					 pool_active[i]);
- 
--	pool = &adapter->rx_buff_pool[0];
-+	pool = &adapter->rx_buff_pool[0][0];
- 	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *), GFP_KERNEL);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
- 
--	adapter->rx_queue.queue_addr[0].correlator = (u64)IBMVETH_NUM_BUFF_POOLS << 32 | 0;
-+	adapter->rx_queue[0].queue_addr[0].correlator =
-+		(u64)IBMVETH_NUM_BUFF_POOLS << 32 | 0;
- 	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
- 
--	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | adapter->rx_buff_pool[0].size;
-+	adapter->rx_queue[0].queue_addr[0].correlator =
-+		(u64)0 << 32 | adapter->rx_buff_pool[0][0].size;
- 	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
- 
- 	pool->skbuff[0] = skb;
--	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | 0;
-+	adapter->rx_queue[0].queue_addr[0].correlator = (u64)0 << 32 | 0;
- 	KUNIT_EXPECT_PTR_EQ(test, skb, ibmveth_rxq_get_buffer(adapter));
- 
- 	flush_work(&adapter->work);
-diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-index 08504d1cafd5..495269631323 100644
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -260,6 +260,8 @@ static inline long h_illan_attributes(unsigned long unit_address,
- #define IBMVETH_MAX_TX_BUF_SIZE (1024 * 64)
- #define IBMVETH_MAX_QUEUES 16U
- #define IBMVETH_DEFAULT_QUEUES 8U
-+#define IBMVETH_MAX_RX_QUEUES 1U
-+#define IBMVETH_DEFAULT_RX_QUEUES 1U
- #define IBMVETH_MAX_RX_PER_HCALL 8U
- 
- static int pool_size[] = { 512, 1024 * 2, 1024 * 16, 1024 * 32, 1024 * 64 };
-@@ -296,18 +298,23 @@ struct ibmveth_rx_q {
- struct ibmveth_adapter {
- 	struct vio_dev *vdev;
- 	struct net_device *netdev;
--	struct napi_struct napi;
-+	struct napi_struct napi[IBMVETH_MAX_RX_QUEUES];
- 	struct work_struct work;
- 	unsigned int mcastFilterSize;
--	void *buffer_list_addr;
-+	void *buffer_list_addr[IBMVETH_MAX_RX_QUEUES];
- 	void *filter_list_addr;
- 	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
- 	unsigned int tx_ltb_size;
- 	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
--	dma_addr_t buffer_list_dma;
-+	dma_addr_t buffer_list_dma[IBMVETH_MAX_RX_QUEUES];
- 	dma_addr_t filter_list_dma;
--	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
--	struct ibmveth_rx_q rx_queue;
-+	struct ibmveth_buff_pool
-+		rx_buff_pool[IBMVETH_MAX_RX_QUEUES][IBMVETH_NUM_BUFF_POOLS];
-+	struct ibmveth_rx_q rx_queue[IBMVETH_MAX_RX_QUEUES];
-+	u64 queue_handle[IBMVETH_MAX_RX_QUEUES];
-+	unsigned int queue_irq[IBMVETH_MAX_RX_QUEUES];
-+	int multi_queue;
-+	unsigned int num_rx_queues;
- 	int rx_csum;
- 	int large_send;
- 	bool is_active_trunk;
+base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
 -- 
-2.50.1 (Apple Git-155)
-
+2.25.1
