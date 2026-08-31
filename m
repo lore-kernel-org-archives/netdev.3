@@ -1,135 +1,91 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5D3DCDBB
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 09:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788168898; cv=pass; b=RBINuMFvCgJO9nJQIbC1c787S0KtQMtYR6zZufzQtYa+Ur2XQTodzOAInyoMr2/3Zaa9XP6+3KQy9snGMEjprNsqxS02oI3X5OxFCiKlwkAfpFOvl5kHz4RpakNI4HP/ssahSw78qQt2p+i98CCDB7ef9THvCZxuAPpi9mEiz54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788168898; c=relaxed/simple;
-	bh=U9ebD4L8ITu2kaaAEQ6ddZIE2aJmclvAiH+k7ulDCFs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cZm59gZR/y8ZRvEinHESoxyKbq9UXx1/iPv91QUOocnRHPiP9RGHsH4Du+vbQXvRWzfduwH4tHHoeln0izStjHERDE9DYiPgAQgPLTKPwz349BrqS0RV/He6XWPMhEbZXLCajkrQArRgcp6zP/SGxSMafQRAdAApxypV6zb4EEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H06YN6Mv; arc=pass smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90903CF21D;
+	Mon, 31 Aug 2026 09:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788168980; cv=none; b=jWdhBB64EhNnOJIEX69IjC7WrmpeLFGlGgBb+Q9wApa2E5WZOwnwg5ru3UpIGPpo1TO6nWRkvy9mX1tA2okNQGttruKFPy1K6o/ujCS7lfVb/4xLFhL6lPAIRd5RGTzX3DXeNE2Fkb/xFDBROh/FVxPxUUe4z7VPWqkkqYAz4xw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788168980; c=relaxed/simple;
+	bh=0y9SYeJbQS6ps3heZr3eahrgdU0qiRAeZE0dDp2kUfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cwAhalo/JdMRQjjcX9tb7L485dTkfqZY0WcogZZWCUQUOpzes/mt5xhAkaV24/NeUQFEI+k0aup9twewGaJwCdowGdr0V9grBt9xSqMQX7cKYNYPjaUQdbRyp06Jz5b8BniinYxREYr4Pws8hIQS6GxYDVK3QCUTBVuffFcOcps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=jv2M2GhQ; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H06YN6Mv"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-861feb6d61bso11821287b3.2
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 02:34:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788168893; cv=none;
-        d=google.com; s=arc-20260327;
-        b=faiVTT78XIFC7r0bwAgLDaB/aUw43uQWipQ90tIdpYEOAtUxWO2899ITVY+S5jMKyL
-         36yV5A5r83U9b2dzfdMdWUGU2DGoomhaI/RPD+xvJstEs2Bmf66wmFVsg2ZfQ1NjNPe5
-         d3uftZnYUKmDk0+7/srLFwgKEoJoTXCmMcq9qWQf53/JWc9Ph7buTgsYxQcRBgsbhR/f
-         NFt+/LIJPIARugGpza4kBI5WVO+2qeII/eEoY2b+/IJ49Z5vH4rbYmXFAOUj4fhRXZHQ
-         w7INnXTAp/70w/U4+7Bjxb6fFVQWVinTe3A/IzHP5Yz6JF2rDShlKUQabadSNybR77WZ
-         Dcrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=U9ebD4L8ITu2kaaAEQ6ddZIE2aJmclvAiH+k7ulDCFs=;
-        fh=Ku33+IsVsjx6atH9cO+23PKzVggkkWT+Y+rgiXWWRbc=;
-        b=c1mrVib5xHTHlUXCsy9tWzkeVMUXxVAyEshOIOpr3PfdKvT+5bEEURq9Rx3dyBPVSt
-         nzqx7W/LJrvKj2CYAQTyOKj4suA8bps7E8OVFY3llLQXYlktUMFx046vRqPGaYLRonuS
-         N9Ll6LDV5J0vw1/mE7N1zeDYc73E76oL+kt90Zw7QNmrZYHxuauQxn7BBWqjj13NKL94
-         yysrjbcyWJ0C/D/J6h+rV1vO1JUjaIIKw1GRE8xqJQlGTkIXedzDCfY3IbhJZAU00kMZ
-         Wah2nNV5KnhlFQUy8le0Xkls2oohYYA6uWcC5yz/rUrwyhw2CwgCVCByzQdRrtP2hNF0
-         Kw7Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788168893; x=1788773693; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=U9ebD4L8ITu2kaaAEQ6ddZIE2aJmclvAiH+k7ulDCFs=;
-        b=H06YN6MvRIFECWkQwykHDVqQFQnID9wF8P/0OQ91bQj0tBeEwOz56AK/n0kstsi54x
-         o1FrlvRUCil7178fs8oYtiU23Ve9N6UkKr1Ev/xStCcsKgUno+qkoZAYBBeqQlwACJP5
-         HhTH+R/mZxg6R4rIBC2nz3pvC9JPyEZmtNmQELXVMPR3385/q4YLLVP5S7Z5ZWF/2Uj9
-         inNtM/eOpeS+54yUNBdVOJvXcE/wtKlGtjlMc6UWV08Y3+CqMWXlIs+lTw4OJkw1TwEU
-         1IpGnyvd4UTV7iTpRZx3/glr1QLiGBUqUogva9G0ZHnSzlr29yXP/uAS9qYy1OjUTAuZ
-         Gg8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788168893; x=1788773693;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U9ebD4L8ITu2kaaAEQ6ddZIE2aJmclvAiH+k7ulDCFs=;
-        b=SwtEt98+EuAvudCF0XuxLhEByhtY3EVAbjGZIRRKlnC48XB0TQuaHnzrS7TVBOeVBm
-         0aG3tQ7SYb47RrWeS92kQuWI7NskIxWWsgwUcqDUidmR7slI+B6eGohyv/IOI3gEGzSK
-         1GC0kEVOWaXitl0MyHemCiie/TEjR8+dQUo9olF2p9jIkUnC6yriHf0sqMbpNpoy4TgA
-         dYuTuO+kbzkFwa66b6ZwoMSJX1NZSPhWnh+hmcb7lD1LGIv4u/f+5d97oG07TUH/kGNv
-         QEhxry2Qbo+EC3O7HS7pueqHaKjyc3IQHbGRpuI3eqVE9DeSm5NfU1ImkIKXui6+XaB7
-         qpSw==
-X-Forwarded-Encrypted: i=1; AKwUvByIYrE1tzvvU+KmsNgxeOGRm2sn/OV7CLNAENCAHeSDJRlmn+OCpR2Z52kja0+GbANSrYosUSE=@vger.kernel.org
-X-Gm-Message-State: AFuF++n3hTcDe2tLook8keUe1DHvm7Ybh4y3cx1J/2xKSqeOdyczZG6+
-	g2t71TVPnbT658+OZOaOHdsqs+tnQ1+74x0d16aNMB5eFzs4u7u1404TzEWChaSfRc24ov75gxp
-	GQ00bDoM8S3rWcBSUDNe/IGf6F3eiTWM=
-X-Gm-Gg: AYBFou2/KfRqXagEq5f3Z2OVMV49n6v//NqiuTwjIIvG9iB8CySPR6Udfxh6qbcI7td
-	wEwUwAPfhIxwiZNed+yEX2Zs9Rogo2OAnjC+aE4C9TcMoXBN+D+/KN+6VvQw5M18NDt44gYUXYR
-	JaxKJ7FwpwXl2WDAuuAARdhLl91hJZIu8FR9hic2vrvwAjxnlbX1YL5T2jkYzvIyOhogotibSBW
-	6kA1Leyj/Eeyz3oNyKlMlictPejfrYUh5j09jgjkNlIQhn2MTb/3xWCZ+V3fe6iJR/pLG4xqUde
-	jkjyvqKzkDSf0W4KeeWpMpV0HvMJtXvSJhtdj0SXE03B0QWszK3V7xpqfCqlNboaRxJrzXJN3Wj
-	ckQUbcve3I8Ax+W2rAFSvBbstnPg6xEy0sbx1AZBDTb6hTN1ZOyQCp7wlXBvT39GCyWB8VJFXHe
-	VSH0j220We
-X-Received: by 2002:a05:690c:498f:b0:7db:ccda:a409 with SMTP id
- 00721157ae682-8678bd7cd25mr5510017b3.9.1788168893210; Mon, 31 Aug 2026
- 02:34:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="jv2M2GhQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1788168969;
+	bh=0y9SYeJbQS6ps3heZr3eahrgdU0qiRAeZE0dDp2kUfM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jv2M2GhQSgrThEx3K+IJFxa8sj9ubeXNcEVGSplUuGgVaLf/8fiIAgDIuIb99Vb8L
+	 nSCwES0wbbE68KrEQioAPMdViPkoeW24b5Qs9J6Bnw6+m7RAThLNZMla0r3Zcxg/tR
+	 TKe8W7XLVSJ+BW2FnNsw9HjmDyaLRrTJbbAApe8xFIQlYIz7J69utUtI4cRAVrzuGh
+	 oDGaT6m/K/CItC2t/8H+igijPTQvUKuzjgw2VmJWaUIc8O1wVt74L9StQRdre1Z9p9
+	 6Rlaze6ps95jJzidOBwB2REnCSL5TjzSYrNASfiWUEegucukErNk1VhyN1/+H9GjMg
+	 r61uwqzzFgfAQ==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id B0068600C1;
+	Mon, 31 Aug 2026 09:35:56 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id C62072014E6; Mon, 31 Aug 2026 09:35:07 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Gabriel Goller <g.goller@proxmox.com>,
+	Patrick Rohr <prohr@google.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/3] netlink: specs: rt-link: ipv6 devconf updates
+Date: Mon, 31 Aug 2026 09:34:52 +0000
+Message-ID: <20260831093458.472180-1-ast@fiberby.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831085217.391-1-strst.gs@gmail.com>
-In-Reply-To: <20260831085217.391-1-strst.gs@gmail.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Mon, 31 Aug 2026 11:34:41 +0200
-X-Gm-Features: AcwNN1VrKttLpgKWhAB8iBZiZxt-vHxYzhIUcbdaTqqJW999xYNsjruBpoWd7VA
-Message-ID: <CAOiHx=md28_BmsDOsNDp0XbUpfih=P+-+aDYb6tiWPJTCu1drg@mail.gmail.com>
-Subject: Re: [PATCH net v3 0/2] net: dsa: b53: fix 8021q uppers on standalone ports
-To: Semih Baskan <strst.gs@gmail.com>
-Cc: florian.fainelli@broadcom.com, andrew@lunn.ch, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+This series updates the doc-string for ifla-inet6-conf, and adds
+two missing ipv6-devconf enum values as identified by Sashiko
+during review of v1.
 
-On Mon, Aug 31, 2026 at 10:52=E2=80=AFAM Semih Baskan <strst.gs@gmail.com> =
-wrote:
->
-> Since v5.15, a standalone port on a bcm5301x b53 switch cannot receive
-> its own tagged traffic: the switch VID lookup is always active, an 8021q
-> upper's VID never reaches the VLAN table, and a tagged frame with a
-> missing VID is forwarded only toward the IMP0 management port, which the
-> in-tree bcm5301x topology leaves disabled, so it never reaches the CPU.
-> The common victim is a VLAN-tagged PPPoE WAN, where the PADI goes out
-> and the tagged PADO never reaches the CPU.
+Changes:
+v2:
+ - Update commit message for net-next, and renamed from
+   "netlink: specs: rt-link: fix ipv6 devconf doc"
+ - Add Reviewed-by from Fernando (Thanks).
+ - Sashiko comments:
+   - Added missing enum members accept-ra-min-lft and force-forwarding
+     as patch #2 and #3.
+   - Re: data types: as Jakub wrote in the original commit 720447bd0b24
+     ("netlink: specs: rt-link: remove implicit structs from devconf"):
+     "u32 is probably best we can do right now", as the reality is that
+     the sub-type varies per value.
+v1: https://lore.kernel.org/20260824103816.40040-1-ast@fiberby.net
 
-I really don't agree with the framing here. The subject essentially
-claims that uppers don't work in general, but that is not true at all.
-They don't work for devices with a *broken* device tree configuration.
+Asbjørn Sloth Tønnesen (3):
+  netlink: specs: rt-link: update ipv6 devconf doc
+  netlink: specs: rt-link: add accept-ra-min-lft
+  netlink: specs: rt-link: add force-forwarding
 
-So this is a work-around for broken configuration.
+ Documentation/netlink/specs/rt-link.yaml | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Also this is an incomplete fix, because it still won't work 100%, and
-there is no way to fix this from within the driver, the device tree
-needs to be fixed. E.g. with the (assumed) disabled EAP mode on
-stand-alone ports, you will have the issue that the switch will drop
-any frames with destination MACs that match a learned entry on a
-bridged port.
 
-I really think we should just fix up the in-tree device trees and then
-complain loudly about the broken configuration on probe in case there
-are out of tree device trees with the broken configuration. I mean it
-was broken since v5.15 and wasn't noticed until recently, so it
-doesn't seem affect many users.
+base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
+-- 
+2.55.0
 
-Best regards,
-Jonas
