@@ -1,252 +1,358 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5EB305664
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 07:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788159837; cv=pass; b=AW3wWgA77mK2Vwl4ljUNgXehV/KT2+VKA0T+uZmjSii+2ygHlCT/B/lEqOjPUH5XdeGOuBF///pmEcRNti+nETOIU+cnkaplmrof9sPOgny9+VvNdQKy9aBLG0pmp1JSG+xcPAnuTsORgouPxawHoN1U+Pvl2QQfdHyHGEYKHQ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788159837; c=relaxed/simple;
-	bh=0BE+dmVmXkFgYYDKS56uE9rGx92Afk5IK7Am6Q8j+xM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=buqyCwkf0LeeUExmEE2ktfLmj736hsI5xpTPBj1FCefDaFE2xZMKbIcQrbHA75+9sref9PjAror2MvWV0W2pFdkxSrt9922eJT+MiUsbMqeCFo5lk00eaG9Jg2buPARilm4lfyvmyUyUgiuDVj5xZP7dbMOUCpgrtTd26FIm80I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYur3Bm1; arc=pass smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6EC3BE652
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 07:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788160447; cv=none; b=plP6WWV5Z5mB3ThKR4VU8IMkumpRnXTXSr7nAmljdU3pS2/z2nHXJ4NSWcB7VLL9/UAXG2DTSjhza4YTSMyeSGDeHuqz/7eQlrRK7b5hzL3dj45UqBlSx+4IDJsdcrizQ1UZ6ckRvI3ZGgiJw7aFYQHFhQylrajDzVRKkcFf/lA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788160447; c=relaxed/simple;
+	bh=cDe6t6uSU0qTbd5SXGCuHJkpjoXknmbDdfHMRVyqOZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GUogTtlnSx2Z2yN+GzpfGECDHE3lCww/zO7rxx8HwGuSvPR18fo1AJmVCtAoULwJN5li6GrXGeNr6UWPsKtiTAzLgliKjxsLv9gPmHwonhZW39pRAelascfGoXJxrz4Eksf8NAUDRd0OORg3n1jsHd+9cInIEE0EDmR9vy8yuYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TmCatwwp; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mYur3Bm1"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5b5607bd3b5so2731170e87.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 00:03:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788159834; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rVpjFUdbJVOXlDyL6T+KXasNUOIPDQ4n+BFXGFuymTBuCxh0Y8RcLPwbjUbJolpMkN
-         kQ/ldaMqZyQARp5aS5/YLGmfmexs2vO0ORvnqu/BVgDVwDVMbO459akCQfwSlZVfjiJo
-         vN6DgF8TxDwzstItwozPNNgkQAafdb/9ZyJfaktMwJGLSvf8p1lK9rPcCQJRSuoShSk1
-         3pFBPoBEWnn0K09LdvquJRCJQZiMUElQSjjTllMPzRsrtBSKTPBsCGQC5vEo/2sWc3/j
-         PieIwXkuzkRayZbDAu5VG353bNkjEiHKK2DYpqJISLXFilZGvtW6uwMgygUKMwGhqOpf
-         Czqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=deOLXjvMZIXVeNANpLpVuO42of2g4qJoxwxhsXOLKno=;
-        fh=d6ii4jHsM52CPPdNRcEeeBkSUoYk+QjCnHzbEL+M0hI=;
-        b=n+z2pYUUJ+MlY2jiAkAvjdz1EZeQQbi0hAchiORlb6p9SaJQeMQO87FhO6ZCVuf78t
-         5iI1aTJIZwcQDjxBbD7tPr0y3HBKTP6cG40bVKqrdvCsWDw0BhQ6az3qlp4xHp524AGo
-         OBWa4xdK0D1z1z19EfMffTZrETp7bhT/bdWVEpIvA0BXAmjFZ+OSTcrmWKT1ATebU6B3
-         rlq1cqIaCJovUYPo9p7ofTN5RjkpFz0F0DSEQVSbVlVpGyVSpAJ0XPvG+XqY+mcqof2O
-         40eE3z52abV798SDVOUdIdvWMTIAgkO14lyhKCC29hphSKxqgYZ4TxDP/p1RgrZ+14b8
-         A82g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788159834; x=1788764634; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=deOLXjvMZIXVeNANpLpVuO42of2g4qJoxwxhsXOLKno=;
-        b=mYur3Bm13RjuRWyCU/XB3bcup6MYfZq6Nl9+B8P0/mlrwc37YoP5PHrYMLErLOT2n8
-         FAU5ikeVLj/0aths0bZpWhP8LI2R+OfbNrvUqjLVCz+biWqZ8LcVaw4yw0+jrNgr9nMJ
-         RBukMTiWPG4AF4tJaqhTIBkYbcpio55O0F6FzgYWIkX9MYxb/CweVdIdFhoNAn1IWuPZ
-         0o/x3c6XcTP8mvUTA63bxC2zKZ9WV6WSdU/CbL+dny2OmE1hoz2Y7rGaygXRW3/bAXrU
-         pVZaGCsTuU7+2yywS6kE8rHCKjj3tIA42NWnOQvkT1hqQTqGd+xSsyeDsd+b/49r0Vj3
-         0tGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788159834; x=1788764634;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=deOLXjvMZIXVeNANpLpVuO42of2g4qJoxwxhsXOLKno=;
-        b=GwigmQlLa3XRn6H8GN8uRvNHUd3qXhmJxlxSp3wi127tJwmymmoyq3PcYdgyVV5eOt
-         3nuVoFtJdSRA5AjXHv0xRRqvMvC9P0TuoXBKT2QtC1uTwew5iugLOsUxymMzoLshd6n+
-         paY+qIQ728SXMPsWGR2uklRGDzzpgJWDbN3G53AIJ+vuTztPJ8EnIPuh3+I40C2LMgIw
-         FNyZr0DFk6kcoGWMiWQkccSoX2v1FWpjcgUnMKtwHIN0Y+cl28SWXHsZ2jdTYV0TGm22
-         vnb1EePAbAHVTsN45DOgffNxaEfm9RwIgjUJOtw7+uFnu3q4tVesQF5EraJjYQqVfAyk
-         kD1w==
-X-Gm-Message-State: AFuF++kgBi54eFYERHBvzo9D+WBdRuMSFF7VfDU0vvqMfo/YjNa4HRQj
-	3Dx32ZSydcdAkTM8BjsxEQ/3ASv+VzOca1kcVGlVrJMZlDOvpu1LV9GijMBJfomcWx/21hnm3GZ
-	VlmIr8Zl7GIFbYKQkFM94F7T+SvaPeRQ=
-X-Gm-Gg: AYBFou08O0WlamfhuUjjs8Mm992TzPmqp/lOznWZegEVTLldNqX9Ax6wCjTjks1BMtt
-	iu3tT0aTkEhGptnmdFyOaC7n6wQ2Wa/5syaKQFtZLZmUd88aKRfgC7LzFVEfLx3ZJA/iQVRf34C
-	i5Ar4jj5ORB5/DEAkxkLcAEEJR0MXSRYKam/2gtDaE3EAMFF6PP//zFH7Ve0Mkr5T13sYnzV17l
-	6VU7xvk0GaqTERinn39jSfrkOy0wgqjGRtCdnlcrDJa079MGiGGdfHW2VnZ2X/a2huAOSPu9eZ9
-	ZQQ6fhdYSCp4egedXC8kp/WI1ZLMtHQgMXbrBymqPyU=
-X-Received: by 2002:a05:6512:3050:b0:5ae:bbd3:27e3 with SMTP id
- 2adb3069b0e04-5b5e689fb05mr7608311e87.5.1788159833464; Mon, 31 Aug 2026
- 00:03:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TmCatwwp"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B864A1A18E7;
+	Mon, 31 Aug 2026 07:14:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 83F7B601E1;
+	Mon, 31 Aug 2026 07:14:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B1C8511C783B9;
+	Mon, 31 Aug 2026 09:13:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788160437; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=qlPqoJPgIkCWBESIwo+W3ZhE4k1gInL1GY5y/IW8siY=;
+	b=TmCatwwpCK0wEnmc9d6A64/0qZSh/VPxzvBcIjz+siqfP/XJpNS6qnl0dUaSAOPSGzxrek
+	y7gE0GBH+VoX5tfA+ZJBZ7nYrZf60TEF/oPiDTrE3wJ/uzyd38Xi4k9uchdXfm28iFz0dX
+	CxXk68wLLkj0rTtYR5/d2023JxNSuW0pki6ac98rPp5eZGNurmsGQRjB6vvZJhCyznKb7A
+	P6jc8MSpziEIOApOp8qrfQP3uDJ4UHcnIxmAY+6tHLmSoTlvQBUxYHBl5BnzWznZ8zHbDR
+	1whYRe0MB2fk3P01cipdH0DLz3ScetGwPCxbzWYtg6FtsvFCGD3jLmquD4HMQw==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH net-next] net: stmmac: Remove ARP offload code
+Date: Mon, 31 Aug 2026 09:13:50 +0200
+Message-ID: <20260831071351.354255-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
- <12744a63-ac8e-4808-a559-f78fede30a40@amd.com>
-In-Reply-To: <12744a63-ac8e-4808-a559-f78fede30a40@amd.com>
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Mon, 31 Aug 2026 10:03:26 +0300
-X-Gm-Features: AcwNN1XPOHnRAmLFiBiL9XpPMa9FXyfskqPKL5CI85UY29DSgAOGnONBrwV4igc
-Message-ID: <CAMuE1bHhsLnAOHkD85wrsJzZRvcZ4ib1fSfkcm_RYESRp+5_0g@mail.gmail.com>
-Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
- which approach?
-To: "Gupta, Suraj" <suraj.gupta2@amd.com>
-Cc: Netdev <netdev@vger.kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, Aug 30, 2026 at 5:05=E2=80=AFPM Gupta, Suraj <suraj.gupta2@amd.com>=
- wrote:
->
-> Hi Maimon,
->
-> On 8/20/2026 8:31 PM, Sagi Maimon wrote:
-> > Hi,
-> >
-> > Before posting patches I would like to check which of two approaches yo=
-u would
-> > prefer, since they differ a lot in how much code lands and where.
-> >
-> > The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx =
-AXI
-> > Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp =
-already
-> > supports. We want to expose that Ethernet port as a netdevice.
-> >
->
-> Is AXI Ethernet being used for 1588 timestamping here?
->
+dwmac can do ARP offloading, where the HW replies to incoming ARP
+requests. This requires multiple steps to work well :
+ - Program the local IP address in a dedicated register
+ - Enable ARP offloading
 
-No. The AXI Ethernet is a plain data path on this card. It does no 1588
-timestamping, and this series neither adds nor touches any timestamping
-support in axienet. It could be added later, as separate work.
+This is halfway implemented in stmmac, as it's only ever used by
+selftests, and these selftests are failing on at least 2 platforms :
+stm32mp1, and jh7110.
 
-> Could you please share the role of axienet in the TimeCard architecture,
-> including:
->
-> - Which timestamping device/IP is used
+There have been some attempts in the past to support this feature, but
+this never made it upstream. Let's just remove the test and that code,
+until someone actually wants that to work. We should likely have a
+proper API for that so that drivers can use it.
 
-The FPGA clock/ToD block on the ptp_ocp side, disciplined by GNSS and the
-local oscillator, not by network packets. That block is the PHC that
-ptp_ocp registers. The MAC and AXI DMA sit at a separate register window
-with no timestamp unit between them.
+Let's also not mention ARP offload in the stmmac documentation.
 
-> - How timestamps are generated and handled
+Leave the defines in place and the capability detection, this doesn't
+hurt and gives some information about how the IP is synthesized.
 
-Not on this path at all -- there is no timestamp unit on the Ethernet
-datapath to generate them.
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ .../ethernet/stmicro/stmmac.rst               |   1 -
+ .../net/ethernet/stmicro/stmmac/dwmac4_core.c |  19 ---
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   |  18 ---
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |   3 -
+ .../stmicro/stmmac/stmmac_selftests.c         | 112 ------------------
+ 5 files changed, 153 deletions(-)
 
-> - How the driver interacts with the timestamping mechanism
->
+diff --git a/Documentation/networking/device_drivers/ethernet/stmicro/stmmac.rst b/Documentation/networking/device_drivers/ethernet/stmicro/stmmac.rst
+index 5d46e5036129..ea347b7e93a2 100644
+--- a/Documentation/networking/device_drivers/ethernet/stmicro/stmmac.rst
++++ b/Documentation/networking/device_drivers/ethernet/stmicro/stmmac.rst
+@@ -69,7 +69,6 @@ The following features are available in this driver:
+  - Pulse-Per-Second Output (PPS)
+  - MDIO Clause 22 / Clause 45 Interface
+  - MAC Loopback
+- - ARP Offloading
+  - Automatic CRC / PAD Insertion and Checking
+  - Checksum Offload for Received and Transmitted Packets
+  - Standard or Jumbo Ethernet Packets
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index fb5b96a43505..cd6c5d6f42b5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -819,22 +819,6 @@ static void dwmac4_sarc_configure(void __iomem *ioaddr, int val)
+ 	writel(value, ioaddr + GMAC_CONFIG);
+ }
+ 
+-static void dwmac4_set_arp_offload(struct mac_device_info *hw, bool en,
+-				   u32 addr)
+-{
+-	void __iomem *ioaddr = hw->pcsr;
+-	u32 value;
+-
+-	writel(addr, ioaddr + GMAC_ARP_ADDR);
+-
+-	value = readl(ioaddr + GMAC_CONFIG);
+-	if (en)
+-		value |= GMAC_CONFIG_ARPEN;
+-	else
+-		value &= ~GMAC_CONFIG_ARPEN;
+-	writel(value, ioaddr + GMAC_CONFIG);
+-}
+-
+ static int dwmac4_config_l3_filter(struct mac_device_info *hw, u32 filter_no,
+ 				   bool en, bool ipv6, bool sa, bool inv,
+ 				   u32 match)
+@@ -966,7 +950,6 @@ const struct stmmac_ops dwmac4_ops = {
+ 	.set_filter = dwmac4_set_filter,
+ 	.set_mac_loopback = dwmac4_set_mac_loopback,
+ 	.sarc_configure = dwmac4_sarc_configure,
+-	.set_arp_offload = dwmac4_set_arp_offload,
+ 	.config_l3_filter = dwmac4_config_l3_filter,
+ 	.config_l4_filter = dwmac4_config_l4_filter,
+ };
+@@ -1003,7 +986,6 @@ const struct stmmac_ops dwmac410_ops = {
+ 	.flex_pps_config = dwmac5_flex_pps_config,
+ 	.set_mac_loopback = dwmac4_set_mac_loopback,
+ 	.sarc_configure = dwmac4_sarc_configure,
+-	.set_arp_offload = dwmac4_set_arp_offload,
+ 	.config_l3_filter = dwmac4_config_l3_filter,
+ 	.config_l4_filter = dwmac4_config_l4_filter,
+ 	.fpe_map_preemption_class = dwmac5_fpe_map_preemption_class,
+@@ -1045,7 +1027,6 @@ const struct stmmac_ops dwmac510_ops = {
+ 	.flex_pps_config = dwmac5_flex_pps_config,
+ 	.set_mac_loopback = dwmac4_set_mac_loopback,
+ 	.sarc_configure = dwmac4_sarc_configure,
+-	.set_arp_offload = dwmac4_set_arp_offload,
+ 	.config_l3_filter = dwmac4_config_l3_filter,
+ 	.config_l4_filter = dwmac4_config_l4_filter,
+ 	.fpe_map_preemption_class = dwmac5_fpe_map_preemption_class,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index fc6ddb51c682..1a88cbaed70c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -1410,22 +1410,6 @@ static int dwxgmac2_config_l4_filter(struct mac_device_info *hw, u32 filter_no,
+ 	return 0;
+ }
+ 
+-static void dwxgmac2_set_arp_offload(struct mac_device_info *hw, bool en,
+-				     u32 addr)
+-{
+-	void __iomem *ioaddr = hw->pcsr;
+-	u32 value;
+-
+-	writel(addr, ioaddr + XGMAC_ARP_ADDR);
+-
+-	value = readl(ioaddr + XGMAC_RX_CONFIG);
+-	if (en)
+-		value |= XGMAC_CONFIG_ARPEN;
+-	else
+-		value &= ~XGMAC_CONFIG_ARPEN;
+-	writel(value, ioaddr + XGMAC_RX_CONFIG);
+-}
+-
+ const struct stmmac_ops dwxgmac210_ops = {
+ 	.core_init = dwxgmac2_core_init,
+ 	.irq_modify = dwxgmac2_irq_modify,
+@@ -1464,7 +1448,6 @@ const struct stmmac_ops dwxgmac210_ops = {
+ 	.sarc_configure = dwxgmac2_sarc_configure,
+ 	.config_l3_filter = dwxgmac2_config_l3_filter,
+ 	.config_l4_filter = dwxgmac2_config_l4_filter,
+-	.set_arp_offload = dwxgmac2_set_arp_offload,
+ 	.fpe_map_preemption_class = dwxgmac3_fpe_map_preemption_class,
+ };
+ 
+@@ -1519,7 +1502,6 @@ const struct stmmac_ops dwxlgmac2_ops = {
+ 	.sarc_configure = dwxgmac2_sarc_configure,
+ 	.config_l3_filter = dwxgmac2_config_l3_filter,
+ 	.config_l4_filter = dwxgmac2_config_l4_filter,
+-	.set_arp_offload = dwxgmac2_set_arp_offload,
+ 	.fpe_map_preemption_class = dwxgmac3_fpe_map_preemption_class,
+ };
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index 04dafec021b4..fe18f98fae45 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -407,7 +407,6 @@ struct stmmac_ops {
+ 	int (*config_l4_filter)(struct mac_device_info *hw, u32 filter_no,
+ 				bool en, bool udp, bool sa, bool inv,
+ 				u32 match);
+-	void (*set_arp_offload)(struct mac_device_info *hw, bool en, u32 addr);
+ 	int (*fpe_map_preemption_class)(struct net_device *ndev,
+ 					struct netlink_ext_ack *extack,
+ 					u32 pclass);
+@@ -491,8 +490,6 @@ struct stmmac_ops {
+ 	stmmac_do_callback(__priv, mac, config_l3_filter, __args)
+ #define stmmac_config_l4_filter(__priv, __args...) \
+ 	stmmac_do_callback(__priv, mac, config_l4_filter, __args)
+-#define stmmac_set_arp_offload(__priv, __args...) \
+-	stmmac_do_void_callback(__priv, mac, set_arp_offload, __args)
+ #define stmmac_fpe_map_preemption_class(__priv, __args...) \
+ 	stmmac_do_void_callback(__priv, mac, fpe_map_preemption_class, __args)
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+index 6372ec7c3f31..664d7cfde2f1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+@@ -215,24 +215,6 @@ static struct sk_buff *stmmac_test_get_udp_skb(struct stmmac_priv *priv,
+ 	return skb;
+ }
+ 
+-static struct sk_buff *stmmac_test_get_arp_skb(struct stmmac_priv *priv,
+-					       struct stmmac_packet_attrs *attr)
+-{
+-	__be32 ip_src = htonl(attr->ip_src);
+-	__be32 ip_dst = htonl(attr->ip_dst);
+-	struct sk_buff *skb = NULL;
+-
+-	skb = arp_create(ARPOP_REQUEST, ETH_P_ARP, ip_dst, priv->dev, ip_src,
+-			 NULL, attr->src, attr->dst);
+-	if (!skb)
+-		return NULL;
+-
+-	skb->pkt_type = PACKET_HOST;
+-	skb->dev = priv->dev;
+-
+-	return skb;
+-}
+-
+ struct stmmac_test_priv {
+ 	struct stmmac_packet_attrs *packet;
+ 	struct packet_type pt;
+@@ -1603,97 +1585,6 @@ static int stmmac_test_l4filt_sa_udp(struct stmmac_priv *priv)
+ 	return __stmmac_test_l4filt(priv, 0, dummy_port, 0, ~0, true);
+ }
+ 
+-static int stmmac_test_arp_validate(struct sk_buff *skb,
+-				    struct net_device *ndev,
+-				    struct packet_type *pt,
+-				    struct net_device *orig_ndev)
+-{
+-	struct stmmac_test_priv *tpriv = pt->af_packet_priv;
+-	struct ethhdr *ehdr;
+-	struct arphdr *ahdr;
+-
+-	ehdr = (struct ethhdr *)skb_mac_header(skb);
+-	if (!ether_addr_equal_unaligned(ehdr->h_dest, tpriv->packet->src))
+-		goto out;
+-
+-	ahdr = arp_hdr(skb);
+-	if (ahdr->ar_op != htons(ARPOP_REPLY))
+-		goto out;
+-
+-	tpriv->ok = true;
+-	complete(&tpriv->comp);
+-out:
+-	kfree_skb(skb);
+-	return 0;
+-}
+-
+-static int stmmac_test_arpoffload(struct stmmac_priv *priv)
+-{
+-	unsigned char src[ETH_ALEN] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
+-	unsigned char dst[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+-	struct stmmac_packet_attrs attr = { };
+-	struct stmmac_test_priv *tpriv;
+-	struct sk_buff *skb = NULL;
+-	u32 ip_addr = 0xdeadcafe;
+-	u32 ip_src = 0xdeadbeef;
+-	int ret;
+-
+-	if (!priv->dma_cap.arpoffsel)
+-		return -EOPNOTSUPP;
+-
+-	tpriv = kzalloc_obj(*tpriv);
+-	if (!tpriv)
+-		return -ENOMEM;
+-
+-	tpriv->ok = false;
+-	init_completion(&tpriv->comp);
+-
+-	tpriv->pt.type = htons(ETH_P_ARP);
+-	tpriv->pt.func = stmmac_test_arp_validate;
+-	tpriv->pt.dev = priv->dev;
+-	tpriv->pt.af_packet_priv = tpriv;
+-	tpriv->packet = &attr;
+-	dev_add_pack(&tpriv->pt);
+-
+-	attr.src = src;
+-	attr.ip_src = ip_src;
+-	attr.dst = dst;
+-	attr.ip_dst = ip_addr;
+-
+-	skb = stmmac_test_get_arp_skb(priv, &attr);
+-	if (!skb) {
+-		ret = -ENOMEM;
+-		goto cleanup;
+-	}
+-
+-	ret = stmmac_set_arp_offload(priv, priv->hw, true, ip_addr);
+-	if (ret) {
+-		kfree_skb(skb);
+-		goto cleanup;
+-	}
+-
+-	ret = dev_set_promiscuity(priv->dev, 1);
+-	if (ret) {
+-		kfree_skb(skb);
+-		goto cleanup;
+-	}
+-
+-	ret = dev_direct_xmit(skb, 0);
+-	if (ret)
+-		goto cleanup_promisc;
+-
+-	wait_for_completion_timeout(&tpriv->comp, STMMAC_LB_TIMEOUT);
+-	ret = tpriv->ok ? 0 : -ETIMEDOUT;
+-
+-cleanup_promisc:
+-	dev_set_promiscuity(priv->dev, -1);
+-cleanup:
+-	stmmac_set_arp_offload(priv, priv->hw, false, 0x0);
+-	dev_remove_pack(&tpriv->pt);
+-	kfree(tpriv);
+-	return ret;
+-}
+-
+ static int __stmmac_test_jumbo(struct stmmac_priv *priv, u16 queue)
+ {
+ 	struct stmmac_packet_attrs attr = { };
+@@ -1911,9 +1802,6 @@ static const struct stmmac_test {
+ 	}, {
+ 		.name = "L4 SA UDP Filtering        ",
+ 		.fn = stmmac_test_l4filt_sa_udp,
+-	}, {
+-		.name = "ARP Offload                ",
+-		.fn = stmmac_test_arpoffload,
+ 	}, {
+ 		.name = "Jumbo Frame                ",
+ 		.fn = stmmac_test_jumbo,
+-- 
+2.55.0
 
-It doesn't, and there is nothing in axienet for it to use: no
-.get_ts_info, no .ndo_hwtstamp_get/set, and axienet_ioctl() only
-forwards to phylink_mii_ioctl(). I mention this explicitly because the
-Xilinx vendor tree's axienet does carry a hwtstamp/TSU path -- we are
-not using, porting or touching it.
-
-The scope here is only to expose the existing Ethernet port as a
-netdevice by reusing the in-tree driver, rather than duplicating the MAC
-and DMA logic inside ptp_ocp.
-
-Thanks,
-Sagi
-
-> Regards,
-> Suraj
->
-> > Approach A - let xilinx_axienet drive it.
-> >
-> > ptp_ocp creates a platform device describing the two register windows a=
-nd the
-> > three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_o=
-cp
-> > already does for the Xilinx SPI and I2C cores on the same card, see
-> > ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
-> >
-> > There is no device tree, so a software node stands in for one: "phy-mod=
-e"
-> > replaces a phy-handle, since the MAC is wired to the fabric internally =
-with no
-> > MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/=
-s full
-> > duplex.
-> >
-> > This needs two things from xilinx_axienet:
-> >
-> >    1. Read its configuration through the generic device property API in=
-stead of
-> >       the OF-specific one, so it can be described by a software node. O=
-n a
-> >       device-tree system dev_fwnode() resolves to the OF fwnode and the=
- reads
-> >       land in the same OF code as today, so this is a no-op for existin=
-g users.
-> >       It is also in line with the wider move from of_* to
-> >       device_property_*/fwnode_*.
-> >
-> >    2. A dma_dev in struct axienet_local. Descriptors and buffers must b=
-e mapped
-> >       against the device that masters the bus, which for a platform dev=
-ice
-> >       created by a PCIe parent is that parent - a platform device does =
-not
-> >       inherit its parent's DMA ops or IOMMU domain. For every existing =
-user
-> >       dma_dev would equal dev, so no behavioural change.
-> >
-> > That comes to about 50 changed lines in xilinx_axienet and about 180 ne=
-w lines
-> > in ptp_ocp.
-> >
-> > Approach B - a separate driver under drivers/ptp.
-> >
-> > Reimplement the descriptor rings, NAPI and ethtool support against the =
-same IP,
-> > roughly 2500 lines, and share xilinx_axienet's register definitions out=
- of
-> > drivers/net/ethernet/xilinx/.
-> >
-> > We have both working. Approach A is tested on 7.0.0-rc1 with the card:
-> >
-> >    xilinx_axienet xilinx_axienet.512 eth0: configuring for
-> > fixed/internal link mode
-> >    xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
-> > flow control off
-> >
-> > ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way=
- with
-> > zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and cl=
-ean
-> > module unload and reload.
-> >
-> > We would much rather do A than maintain a duplicate of an existing driv=
-er, so
-> > the questions are:
-> >
-> >    1. Is instantiating xilinx_axienet from a PCIe parent as a platform =
-device
-> >       acceptable, or would you prefer the driver split so the device ca=
-n be
-> >       created on the auxiliary bus? The platform device route keeps the=
- change
-> >       to xilinx_axienet small and matches what ptp_ocp already does for=
- the SPI
-> >       and I2C cores, but auxiliary bus is the more usual choice for sub=
--devices
-> >       of a PCIe function and would make the DMA parent explicit.
-> >
-> >    2. For the dma_dev, we currently infer it by testing whether the par=
-ent is a
-> >       PCI device. That is concise but implicit; we are happy to pass it=
- in
-> >       explicitly if you would prefer it were not inferred.
-> >
-> > I can post the series straight away if you would rather look at the cod=
-e.
-> >
-> > Thanks,
-> > Sagi Maimon
->
