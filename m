@@ -1,222 +1,259 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECDD3AD52A;
-	Mon, 31 Aug 2026 08:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362A33C7E13
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 08:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788165772; cv=none; b=A2r+6U1fri0K+3LYfGmxmcWirmTalHDkHeYqB9tKh8vTyEw8d1fNvRE6no0s1sAK4418jrAdMK8TCG4tC4EZ4XywNNa5yPegPg1LdbyHROzIuLGJ8e15ureQQ3auBceWiI5znSjMu7WItnBVO54zxjZMg9WD7Ys86V8e0EodXTQ=
+	t=1788166063; cv=none; b=PPLxQ/Y3DRIKtlnO7EUzCQL0ZbyyHOtaKNS4oLqF+Xvn+igV1W8kk5GehghPWT0s6tuFciTNYxIi1zOGHm/1FbndCDoWWnv78oyxn4tYfzcY/i/djGYkOtob88JGQiKMrG6eWXLm7NM1QtSAoytNNkAZqE30XgRndTV12Q9rGZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788165772; c=relaxed/simple;
-	bh=lHmdDF02yFT66UBYvYHsfNddxjkgE25gdJ6h30WIAHM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2+EyVgKAXXmWSuID+f3SkDmqBYayWydel/ZrQ/DlieL7TLy9wQEAx9+HykDN9XrfYhwQWPN0cNL7nLq16Dw3hJ3BUGSO32S1ey7INZXiS0SRp9tyTaMPwlUxFGaPhOrdnFJIkZGKS/OR6j7lkIFHm1CzvzbfxNrDLhLX0NsSY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ejgsj7An; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788166063; c=relaxed/simple;
+	bh=qO/mY1lfUtaDHpwskTKeYLSEyKzXr8YSSWgWVeTZH+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xyqn6Eox+/Y/OW1TWZBgCZcu8AReYo1BWDKVISRB9QcSuoeg0Nli3AvkOdkxfdEoOU5mlxZwZpnzjSCh3YVdPWsD+tZ6OqfQ1B65or0TaLnLUkUvJ86oV7Ap/kVfgGyRr8FfVLhzzA41Lc+SxKQGYwUwoXM/JtTFIMWNu6EbuoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BZ5emLkU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FKLs+y5X; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ejgsj7An"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788165770; x=1819701770;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lHmdDF02yFT66UBYvYHsfNddxjkgE25gdJ6h30WIAHM=;
-  b=ejgsj7AnzOTjiw/ImQqqlLoMp/05a6T+cD4PbJqcyEb6bZcXXFSxwm95
-   rSu47XalKvWw4qKP/+JN7fkmqVW3M6ZTskJo20/WWwRk6+F+/31IqKcT0
-   F8CCJ+TP2oJgkXxMs3VpPQrnp07+HFNsHMAY421hquxujctmHYMfgvHJN
-   lhnR43nLJG0vQy0hsYFYNRmvskwS6inowvhAOxZOhQExSGwDvEP4qmo9J
-   RGEGyps5tbJw/ScbeaX/njD+jNgKPWB2a0zH4mNkw133lOGzDaaTUJhc9
-   PV7AFN40uEXmOWDVm8Jyy3C1Gy6CixvOTgA8Y+9CpJ7wGQ4q8fQ8CDI77
-   g==;
-X-CSE-ConnectionGUID: dTRn7YtlTw2Zk3CmjKBmag==
-X-CSE-MsgGUID: n7Wgd+kFQzmaP43qwePKxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88421090"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="88421090"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:42:10 -0700
-X-CSE-ConnectionGUID: 6+hsm4tSSCiMxbAeVSbiJA==
-X-CSE-MsgGUID: vBtDvO+CTbiJvfGMfKdOUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="269326248"
-Received: from junjie-desk-dev.bj.intel.com (HELO junjie-desk-dev.tail2c02c1.ts.net) ([10.238.152.71])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 01:42:05 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
-Cc: akpm@linux-foundation.org,
-	dvyukov@google.com,
-	elver@google.com,
-	glider@google.com,
-	jannh@google.com,
-	kasan-dev@googlegroups.com,
-	liam.howlett@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	netdev@vger.kernel.org,
-	pfalcato@suse.de,
-	syzkaller-bugs@googlegroups.com,
-	vbabka@suse.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	vinicius.gomes@intel.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
-Date: Mon, 31 Aug 2026 16:41:59 +0800
-Message-ID: <20260831084159.410474-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
-References: <6a934778.4d659fcc.734b4.002f.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BZ5emLkU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FKLs+y5X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788166060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=REKs3juXaUqDY91aw9czwxYsepaMH/aWl6qmQKLk4PU=;
+	b=BZ5emLkUouNRPhVYDwooWGd0U4Xzu1Eqfm9uiyPOPES55B5lzdeKxfj+W6Gf8TIIB+p+2E
+	Al6khnSjl9XxLD6VBbZsWmnXxHCiQGETYY11POoK6i/+XUSt0bD9ENyt3FHUoAvp+kJc4G
+	5o9xJNJhu17mBV7DXRnm5BrujanA59U=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-IXR1c0mGODGMJBWA4gq63Q-1; Mon, 31 Aug 2026 04:47:38 -0400
+X-MC-Unique: IXR1c0mGODGMJBWA4gq63Q-1
+X-Mimecast-MFC-AGG-ID: IXR1c0mGODGMJBWA4gq63Q_1788166057
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49b7c1dc61eso22775895e9.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 01:47:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788166057; x=1788770857; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=REKs3juXaUqDY91aw9czwxYsepaMH/aWl6qmQKLk4PU=;
+        b=FKLs+y5XGj5kdOt+ejL2IAt1/CIH5JnxUBdpakmCNJAIT/5kxNrWBpKplX53smyMbd
+         bF0CsDyeVxlOfMQm5FTyedLtYvYHxPCSpNJa63HAojbIyGwd71+2mgHeFVnZV4J/FdDy
+         dTZHFVKMHzvms9af9kcM2vnTqsMnBKyyvZvbWhYyBWYTx2h791/H0lecj7jVKdUWuWDC
+         UlDYMU3f/tRMiGgGjzcbe+1IlIEVHIkp4C31UO4xmHrDarGZytmGOQTCqxVsQy2avdCY
+         pH30VV5C1GhgK1KdVphy09y8Klfqe+QEqm4Ru01aB/svg3KUk07UYt5YjuslUjL/pTCL
+         zyfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788166057; x=1788770857;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=REKs3juXaUqDY91aw9czwxYsepaMH/aWl6qmQKLk4PU=;
+        b=p5Pv9Qaw8ANCCKvbBJGNkCf998yEs6qVJPekEAyYMVOUSgLHX21nuE7ctAnwU33Al6
+         vvIWyfvm+FtIVMV8WqtlBWS+3he0hM5vnza6bXoJKOmirG3y4fM/ag4Djk0ENt+6LJid
+         fujVwS+kSuqjuJ6sxih7l42Yuoxb+PBIVXX3hUbpzDBuXWGa4jJtzklkMP12Dd/z/v9t
+         wN1fLzrJazdofX6D8nIDxrX1nGqh/YaplXJz6mDpMD3/sGFWIHsJluvtRuOhKH+1PsTE
+         WjyhkT3uXlFXZkn1aEomumv8bu/AFHTd3ZfsZETux5kY26myQ4wcLBGHqIu7IBx3irbw
+         O6Iw==
+X-Gm-Message-State: AFuF++l5fvEhIMmP3LZmihHzdYt2ieiTLTr0ghIoJx7C/7fnc8w0BcCQ
+	eYJx5qlWzA9O/ynyrZ7wwYtiTb0MV0nvQ3nxv90ePyFrnqWL2V1jGeyC01oY8hha0wDgdNNrCjC
+	idLKIOGwz3pHukfT5ozBibokaUdCH0NHxHNpUP26eWJ4l1qZUnagiGujlVg==
+X-Gm-Gg: AR+sD13Kyoh9yKVVZOTjcUhT8ttvGdaE4awdZPY8xvD9P3fx8Y23DHGV7DLcP9dft+z
+	nJfK+oP1c4NHCyzMmlwhqQZZKLszFpfmeKYFze9GWLyybMTrKoAHgK0e0+izSHMGq56OUQ36uhT
+	xh8O0AnBTYMBNOijah+TQQhmRZExSRhvTQ8CmnIw/nI+yFlJP2nAInQNyIUVBT3icavtPX62vRD
+	JAvCkMSU7fU7jZrEvX5Zh97EF3FMZtTwTo6NylejokOsbmdJSVT1XfNjFDOPvgxbH3lSD+10qZU
+	UnVoapmi4e6NTBVkhNHJ9rEZdyT55h5cY2luiXOtHeaaMEYiAIK8ZNTedydxDP7GZ4WRZIMdyUN
+	b+v7Z3WGcnj3hTGu5YDydr0Y=
+X-Received: by 2002:a05:600c:1d08:b0:499:bf0e:95c8 with SMTP id 5b1f17b1804b1-49b91c2e145mr368384995e9.1.1788166057113;
+        Mon, 31 Aug 2026 01:47:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d08:b0:499:bf0e:95c8 with SMTP id 5b1f17b1804b1-49b91c2e145mr368384105e9.1.1788166056589;
+        Mon, 31 Aug 2026 01:47:36 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843310ab29sm13646829f8f.0.2026.08.31.01.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 01:47:36 -0700 (PDT)
+Date: Mon, 31 Aug 2026 04:47:33 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Shahar Shitrit <shshitrit@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
+	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, danielj@nvidia.com
+Subject: Re: [PATCH net-next v22 05/14] virtio: Expose object create and
+ destroy API
+Message-ID: <20260831044442-mutt-send-email-mst@kernel.org>
+References: <20260831075807.2891426-1-shshitrit@nvidia.com>
+ <20260831075807.2891426-6-shshitrit@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831075807.2891426-6-shshitrit@nvidia.com>
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
+On Mon, Aug 31, 2026 at 10:57:58AM +0300, Shahar Shitrit wrote:
+> From: Daniel Jurgens <danielj@nvidia.com>
+> 
+> Object create and destroy were implemented specifically for dev parts
+> device objects. Create general purpose APIs for use by upper layer
+> drivers.
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> ---
+>  drivers/virtio/virtio_admin_commands.c | 77 ++++++++++++++++++++++++++
+>  include/linux/virtio_admin.h           | 41 ++++++++++++++
+>  2 files changed, 118 insertions(+)
+> 
+> diff --git a/drivers/virtio/virtio_admin_commands.c b/drivers/virtio/virtio_admin_commands.c
+> index 60d92875da23..08b41f38baea 100644
+> --- a/drivers/virtio/virtio_admin_commands.c
+> +++ b/drivers/virtio/virtio_admin_commands.c
+> @@ -94,3 +94,80 @@ int virtio_admin_cap_set(struct virtio_device *vdev,
+>  	return err;
+>  }
+>  EXPORT_SYMBOL_GPL(virtio_admin_cap_set);
+> +
+> +int virtio_admin_obj_create(struct virtio_device *vdev,
+> +			    u16 obj_type,
+> +			    u32 obj_id,
+> +			    u16 group_type,
+> +			    u64 group_member_id,
+> +			    const void *obj_specific_data,
+> +			    size_t obj_specific_data_size)
+> +{
+> +	size_t data_size = sizeof(struct virtio_admin_cmd_resource_obj_create_data);
+> +	struct virtio_admin_cmd_resource_obj_create_data *obj_create_data;
+> +	struct virtio_admin_cmd cmd = {};
+> +	struct scatterlist data_sg;
+> +	void *data;
+> +	int err;
+> +
+> +	if (!vdev->config->admin_cmd_exec)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (check_add_overflow(data_size, obj_specific_data_size, &data_size))
+> +		return -EOVERFLOW;
+> +
+> +	data = kzalloc(data_size, GFP_KERNEL);
+> +	if (!data)
+> +		return -ENOMEM;
+> +
+> +	obj_create_data = data;
+> +	obj_create_data->hdr.type = cpu_to_le16(obj_type);
+> +	obj_create_data->hdr.id = cpu_to_le32(obj_id);
+> +	memcpy(obj_create_data->resource_obj_specific_data, obj_specific_data,
+> +	       obj_specific_data_size);
+> +	sg_init_one(&data_sg, data, data_size);
+> +
+> +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_CREATE);
+> +	cmd.group_type = cpu_to_le16(group_type);
+> +	cmd.group_member_id = cpu_to_le64(group_member_id);
+> +	cmd.data_sg = &data_sg;
+> +
+> +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
+> +	kfree(data);
+> +
+> +	return err;
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_admin_obj_create);
+> +
+> +void virtio_admin_obj_destroy(struct virtio_device *vdev,
+> +			      u16 obj_type,
+> +			      u32 obj_id,
+> +			      u16 group_type,
+> +			      u64 group_member_id)
+> +{
+> +	struct virtio_admin_cmd_resource_obj_cmd_hdr *data;
+> +	struct virtio_admin_cmd cmd = {};
+> +	struct scatterlist data_sg;
+> +	int err;
+> +
+> +	if (!vdev->config->admin_cmd_exec)
+> +		return;
+> +
+> +	data = kzalloc_obj(*data);
+> +	if (WARN_ON(!data))
+> +		return;
+> +
+> +	data->type = cpu_to_le16(obj_type);
+> +	data->id = cpu_to_le32(obj_id);
+> +	sg_init_one(&data_sg, data, sizeof(*data));
+> +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_DESTROY);
+> +	cmd.group_type = cpu_to_le16(group_type);
+> +	cmd.group_member_id = cpu_to_le64(group_member_id);
+> +	cmd.data_sg = &data_sg;
+> +
+> +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
+> +	kfree(data);
+> +
+> +	WARN_ON_ONCE(err);
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 39ac5b97aa3a..901dfd2484e1 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -83,6 +83,10 @@ struct sched_gate_list {
- 	s64 cycle_time;
- 	s64 cycle_time_extension;
- 	s64 base_time;
-+	/* min(cycle_time, sum of intervals): the software schedule restarts
-+	 * the list after the last entry even when cycle_time is not up yet.
-+	 */
-+	s64 period;
- };
- 
- struct taprio_sched {
-@@ -871,12 +875,13 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- }
- 
- static bool should_restart_cycle(const struct sched_gate_list *oper,
--				 const struct sched_entry *entry)
-+				 const struct sched_entry *entry,
-+				 ktime_t end_time)
- {
- 	if (list_is_last(&entry->list, &oper->entries))
- 		return true;
- 
--	if (ktime_compare(entry->end_time, oper->cycle_end_time) == 0)
-+	if (ktime_compare(end_time, oper->cycle_end_time) == 0)
- 		return true;
- 
- 	return false;
-@@ -925,8 +930,9 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	int num_tc = netdev_get_num_tc(dev);
- 	struct sched_entry *entry, *next;
- 	struct Qdisc *sch = q->root;
--	ktime_t end_time;
--	int tc;
-+	ktime_t end_time, next_start, now;
-+	int budget, tc;
-+	s64 behind;
- 
- 	spin_lock(&q->current_entry_lock);
- 	entry = rcu_dereference_protected(q->current_entry,
-@@ -952,23 +958,49 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 		goto first_run;
- 	}
- 
--	if (should_restart_cycle(oper, entry)) {
--		next = list_first_entry(&oper->entries, struct sched_entry,
--					list);
--		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
--						    oper->cycle_time);
--	} else {
--		next = list_next_entry(entry, list);
-+	now = hrtimer_cb_get_time(timer);
-+	end_time = entry->end_time;
-+	behind = ktime_sub(now, end_time);
-+
-+	/* Behind, e.g. delayed timer or stepped clock: skip whole periods
-+	 * arithmetically and walk at most one more to the entry covering
-+	 * now, instead of replaying the backlog one expiry at a time. The
-+	 * cap bounds the walk; a leftover is picked up by the next expiry.
-+	 */
-+	if (unlikely(behind >= oper->period)) {
-+		s64 jump = div64_s64(behind, oper->period) * oper->period;
-+
-+		end_time = ktime_add_ns(end_time, jump);
-+		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
- 	}
- 
--	end_time = ktime_add_ns(entry->end_time, next->interval);
--	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
-+	budget = 2 * oper->num_entries;
-+	do {
-+		if (should_restart_cycle(oper, entry, end_time)) {
-+			next = list_first_entry(&oper->entries,
-+						struct sched_entry, list);
-+			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
-+							    oper->period);
-+		} else {
-+			next = list_next_entry(entry, list);
-+		}
-+
-+		next_start = end_time;
-+		end_time = ktime_add_ns(next_start, next->interval);
-+		end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
-+		entry = next;
-+	} while (unlikely(ktime_compare(end_time, now) <= 0) && budget--);
- 
-+	/* next can be the entry already published as q->current_entry (a
-+	 * single-entry schedule, or a catch-up of whole periods), so the
-+	 * close times and budgets below are rewritten in place while
-+	 * taprio_dequeue_from_txq() may be reading them.
-+	 */
- 	for (tc = 0; tc < num_tc; tc++) {
- 		if (next->gate_duration[tc] == oper->cycle_time)
- 			next->gate_close_time[tc] = KTIME_MAX;
- 		else
--			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
-+			next->gate_close_time[tc] = ktime_add_ns(next_start,
- 								 next->gate_duration[tc]);
- 	}
- 
-@@ -1130,6 +1162,8 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 				 struct sched_gate_list *new,
- 				 struct netlink_ext_ack *extack)
- {
-+	struct sched_entry *entry;
-+	ktime_t cycle = 0;
- 	int err = 0;
- 
- 	if (tb[TCA_TAPRIO_ATTR_SCHED_SINGLE_ENTRY]) {
-@@ -1152,13 +1186,10 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 	if (err < 0)
- 		return err;
- 
--	if (!new->cycle_time) {
--		struct sched_entry *entry;
--		ktime_t cycle = 0;
--
--		list_for_each_entry(entry, &new->entries, list)
--			cycle = ktime_add_ns(cycle, entry->interval);
-+	list_for_each_entry(entry, &new->entries, list)
-+		cycle = ktime_add_ns(cycle, entry->interval);
- 
-+	if (!new->cycle_time) {
- 		if (cycle < 0 || cycle > INT_MAX) {
- 			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
- 			return -EINVAL;
-@@ -1172,6 +1203,7 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 		return -EINVAL;
- 	}
- 
-+	new->period = min(new->cycle_time, cycle);
- 	taprio_calculate_gate_durations(q, new);
- 
- 	return 0;
+Maybe pass err and let the caller do it? Some callers can't handle an error but
+others (ethtool delete) actually could propagate it to userspace.
+
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_admin_obj_destroy);
+> diff --git a/include/linux/virtio_admin.h b/include/linux/virtio_admin.h
+> index 1177c4a20e53..9095a0481495 100644
+> --- a/include/linux/virtio_admin.h
+> +++ b/include/linux/virtio_admin.h
+> @@ -86,4 +86,45 @@ int virtio_admin_cap_set(struct virtio_device *vdev,
+>  			 const void *caps,
+>  			 size_t cap_size);
+>  
+> +/**
+> + * virtio_admin_obj_create - Create an object on a virtio device
+> + * @vdev: the virtio device
+> + * @obj_type: type of object to create
+> + * @obj_id: ID for the new object
+> + * @group_type: administrative group type for the operation
+> + * @group_member_id: member identifier within the administrative group
+> + * @obj_specific_data: object-specific data for creation
+> + * @obj_specific_data_size: size of the object-specific data in bytes
+> + *
+> + * Creates a new object on the virtio device with the specified type and ID.
+> + * The object may require object-specific data for proper initialization.
+> + *
+> + * Return: 0 on success, -EOPNOTSUPP if the device doesn't support admin
+> + * operations or object creation, or a negative error code on other failures.
+> + */
+> +int virtio_admin_obj_create(struct virtio_device *vdev,
+> +			    u16 obj_type,
+> +			    u32 obj_id,
+> +			    u16 group_type,
+> +			    u64 group_member_id,
+> +			    const void *obj_specific_data,
+> +			    size_t obj_specific_data_size);
+> +
+> +/**
+> + * virtio_admin_obj_destroy - Destroy an object on a virtio device
+> + * @vdev: the virtio device
+> + * @obj_type: type of object to destroy
+> + * @obj_id: ID of the object to destroy
+> + * @group_type: administrative group type for the operation
+> + * @group_member_id: member identifier within the administrative group
+> + *
+> + * Destroys an existing object on the virtio device with the specified type
+> + * and ID.
+> + */
+> +void virtio_admin_obj_destroy(struct virtio_device *vdev,
+> +			      u16 obj_type,
+> +			      u32 obj_id,
+> +			      u16 group_type,
+> +			      u64 group_member_id);
+> +
+>  #endif /* _LINUX_VIRTIO_ADMIN_H */
+> -- 
+> 2.49.0
+
