@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59D0471402;
-	Mon, 31 Aug 2026 15:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38775471402;
+	Mon, 31 Aug 2026 15:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788190763; cv=none; b=IoTdJdb4c2mVLOrKTPND1cdUfOO/Cl3NBQNpVlO/4AOFJmitdLidgjqb9xuLvhBVLke1pUsJ+GfLHmL0ppm0xe/8NCI2N3Gqwv1QQePZuvvRAjldZGkfSdpmPxCPJriaXZLXUE0vQEwUCaqI3eC9i9lop9dLyPei+cRaeKLg/eM=
+	t=1788190775; cv=none; b=SRoD6A1wI8Og/q1hxSiTg3r2mpe60fWyIVMc4ymjX80PDXspwbsxXbDqAg6Y3tcyrQDSeeahLSMrC+hwHZDupglPBlTgmZKwKVcgaNwACTOYTvQ5KUE+d8Xq1l5N26ddoErfM6/9bKUjmJleFjwF6Rlf97YtunghnkJRwmLaTDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788190763; c=relaxed/simple;
-	bh=77160b1NKDDcIuV0gULE/FmnwELWE51bTnvgVU5WUKw=;
+	s=arc-20240116; t=1788190775; c=relaxed/simple;
+	bh=EcUEJ6EGoK/T832J77cMfiPAbE80gN41sRBCX+hQT3E=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDQrGJn9FX14aLZl8sOWVtTSNwCGf2CCFCofugP6yXI1TGah7etAFARr8jySdMMj6L7O+ksjnrOrx9DqWYg6tj3L8TEtXU6o3FeeroTsKfVwZECUXiJ/aRNdmQyghTi58czVgMRBv/SjOZqSa28sA+kvJJtPpsfpPu0aocpxi/o=
+	 Content-Type:Content-Disposition:In-Reply-To; b=XrueTZVElskQUB23E5e0Z1G5dwgbuLblEmw1l5k6SoMt2E8YXY8oRzpNA1A9zIb6UNVcyrUwl7wKKhSMDt3z7srB2TkhyeMN4B7UNUKRlWQ8WjwS5Rd0MXTjpWqLyIWZ3UaNnRk0aygSE6mx4Dfuzzs3M6pjvoZ5mJxcVNbeLAs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1x146O-000000007DC-1v6P;
-	Mon, 31 Aug 2026 15:39:16 +0000
-Date: Mon, 31 Aug 2026 16:39:13 +0100
+	id 1x146b-000000007Dl-0Vr2;
+	Mon, 31 Aug 2026 15:39:29 +0000
+Date: Mon, 31 Aug 2026 16:39:26 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
@@ -33,8 +33,9 @@ To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
 	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next v5 8/9] net: dsa: mt7530: implement port_fast_age
-Message-ID: <60f83ade0e371dfe2d974d5d192056935c3ab5c9.1788190568.git.daniel@makrotopia.org>
+Subject: [PATCH net-next v5 9/9] net: dsa: mt7530: implement
+ port_change_conduit op
+Message-ID: <cfc6a478a384a7f309f08d9f76be8fd029c1f202.1788190568.git.daniel@makrotopia.org>
 References: <cover.1788190568.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -46,88 +47,103 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1788190568.git.daniel@makrotopia.org>
 
-Implement the .port_fast_age DSA operation by flushing all non-static
-(dynamically learned) MAC address entries from the address table.
+Allow changing the CPU port affinity of user ports at runtime via the
+IFLA_DSA_CONDUIT netlink attribute. This updates the port matrix to
+forward to the new CPU port instead of the old one.
 
-The switch does not offer a combined "non-static AND per-port" match
-mode, so the flush is global and the port argument is not used. Unlike
-b53 and realtek, which flush the dynamic entries of the affected port
-only, an STP topology change on one port therefore also flushes the
-dynamically learned entries of the other ports; they are quickly
-relearned.
+Limit the operation to MT7531. There, trapped link-local frames follow
+the per-port affinity, as the MT7531_CPU_PMAP destination mask is
+further restricted by the port matrix. A conduit change is hence fully
+honoured by the hardware, for regular traffic as well as for trapped
+frames.
 
-Access the address table control register under priv->reg_mutex, as done
-by all other ATC users (FDB and MDB add/del/dump), to serialise the
-write-then-poll command sequence, and log a message should the command
-fail.
+The MT7530 switch, including the variant embedded in the MT7621 SoC,
+instead traps frames to the single CPU port set in the CPU_PORT field
+of the MFC register, regardless of the affinity of the inbound user
+port. With user ports affine to different CPU ports there is no
+correct value for that field, so per-port CPU affinity cannot be fully
+implemented for trapped frames. Routing a WAN port via the second SoC
+GMAC is conventionally covered by the PHY muxing feature on these
+switches, which bypasses the switch fabric and does not involve a CPU
+port at all.
+
+The switches on the MT7988, EN7581, AN7583 and EN7528 SoCs only have a
+single CPU port, leaving no other conduit to change to.
+
+As the op lives in the shared mt7530_switch_ops, populate the extack
+when rejecting the unsupported variants instead of returning a bare
+-EOPNOTSUPP. Also reject a conduit that belongs to a different switch
+in the tree, whose port index has no meaning in the local port matrix.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
 ---
-v5:
- * poll via regmap_read_poll_timeout()
- * check the ATC command write like the other command sequences do,
-   and report the error code
+v5: list EN7528, added by commit cf23fcc9437e ("net: dsa: mt7530: add
+    EN7528 support"), among the single-CPU-port switches
+v4: no changes
 v3:
- * take reg_mutex around the ATC flush and log on timeout
- * align the ATC_MAT_NON_STATIC_MAC define
- * correct the commit message which wrongly claimed per-port parity
-   with b53/realtek
-v2: no changes
+ * populate the netlink extack on rejection
+ * refuse a conduit that lives on a different switch
+v2: extend commit message
 ---
- drivers/net/dsa/mt7530.c | 21 +++++++++++++++++++++
- drivers/net/dsa/mt7530.h |  1 +
- 2 files changed, 22 insertions(+)
+ drivers/net/dsa/mt7530.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 4edb57676143..84e0e888f2d0 100644
+index 84e0e888f2d0..28f94cd25b95 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -188,6 +188,26 @@ mt7530_fdb_cmd(struct mt7530_priv *priv, enum mt7530_fdb_cmd cmd, u32 *rsp)
+@@ -3249,6 +3249,43 @@ static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
  	return 0;
  }
  
-+static void mt7530_port_fast_age(struct dsa_switch *ds, int port)
++static int
++mt753x_port_change_conduit(struct dsa_switch *ds, int port,
++			   struct net_device *conduit,
++			   struct netlink_ext_ack *extack)
 +{
++	struct dsa_port *new_cpu_dp = conduit->dsa_ptr;
++	struct dsa_port *dp = dsa_to_port(ds, port);
 +	struct mt7530_priv *priv = ds->priv;
-+	u32 val;
-+	int ret;
++
++	if (priv->id != ID_MT7531) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Changing DSA conduit is only supported on MT7531");
++		return -EOPNOTSUPP;
++	}
++
++	if (new_cpu_dp->ds != ds) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Cannot assign a conduit on a different switch");
++		return -EOPNOTSUPP;
++	}
 +
 +	mutex_lock(&priv->reg_mutex);
 +
-+	/* Flush all non-static MAC address entries */
-+	val = ATC_BUSY | ATC_MAT_NON_STATIC_MAC | MT7530_FDB_FLUSH;
-+	ret = regmap_write(priv->regmap, MT7530_ATC, val);
-+	if (!ret)
-+		ret = regmap_read_poll_timeout(priv->regmap, MT7530_ATC, val,
-+					       !(val & ATC_BUSY), 20, 20000);
-+	if (ret < 0)
-+		dev_err(priv->dev, "fast age failed: %d\n", ret);
++	/* dp->cpu_dp still points to the old CPU port */
++	priv->ports[port].pm &= ~PCR_MATRIX(BIT(dp->cpu_dp->index));
++	priv->ports[port].pm |= PCR_MATRIX(BIT(new_cpu_dp->index));
++	if (priv->ports[port].enable)
++		regmap_update_bits(priv->regmap, MT7530_PCR_P(port),
++				   PCR_MATRIX_MASK, priv->ports[port].pm);
 +
 +	mutex_unlock(&priv->reg_mutex);
++
++	mt7530_port_fast_age(ds, port);
++
++	return 0;
 +}
 +
  static void
- mt7530_fdb_read(struct mt7530_priv *priv, struct mt7530_fdb *fdb)
- {
-@@ -3358,6 +3378,7 @@ static const struct dsa_switch_ops mt7530_switch_ops = {
- 	.port_bridge_flags	= mt7530_port_bridge_flags,
- 	.port_bridge_join	= mt7530_port_bridge_join,
- 	.port_bridge_leave	= mt7530_port_bridge_leave,
-+	.port_fast_age		= mt7530_port_fast_age,
- 	.port_fdb_add		= mt7530_port_fdb_add,
- 	.port_fdb_del		= mt7530_port_fdb_del,
- 	.port_fdb_dump		= mt7530_port_fdb_dump,
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 6a148938c60f..2bbbe617b52e 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -166,6 +166,7 @@ enum mt753x_to_cpu_fw {
- #define  ATC_MAT_MASK			GENMASK(11, 8)
- #define  ATC_MAT(x)			FIELD_PREP(ATC_MAT_MASK, x)
- #define  ATC_MAT_MACTAB			ATC_MAT(0)
-+#define  ATC_MAT_NON_STATIC_MAC		ATC_MAT(4)
- 
- enum mt7530_fdb_cmd {
- 	MT7530_FDB_READ	= 0,
+ mt753x_conduit_state_change(struct dsa_switch *ds,
+ 			    const struct net_device *conduit,
+@@ -3361,6 +3398,7 @@ static const struct dsa_switch_ops mt7530_switch_ops = {
+ 	.setup			= mt753x_setup,
+ 	.teardown		= mt753x_teardown,
+ 	.preferred_default_local_cpu_port = mt753x_preferred_default_local_cpu_port,
++	.port_change_conduit	= mt753x_port_change_conduit,
+ 	.get_strings		= mt7530_get_strings,
+ 	.get_ethtool_stats	= mt7530_get_ethtool_stats,
+ 	.get_sset_count		= mt7530_get_sset_count,
 -- 
 2.55.0
