@@ -1,180 +1,607 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012011.outbound.protection.outlook.com [52.101.43.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9F3A4F4B;
-	Mon, 31 Aug 2026 08:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166081; cv=fail; b=P0ZmdMm/Y/BfC8p9SvRDNqm3mQpx37urL2pS40htinqTOhdKjrPjNsz1ryIxe1vvdX7yFKS0CC9uhRshOf2cTQzeMmyHwPnSQjSoVhIQEFwswgcz25R+GSjgqCi4ORcawwdYbJ52W44C7AcKfOFVKzoM6IoLzYf+fNqh8wYQIbU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166081; c=relaxed/simple;
-	bh=YDQz9xalNsJYc+0UsCxCHPPI4dn/CCANyBUqkgoTLiY=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ogKWcnROybFnji67M9UUnZcIU66rHjmgKLGho94Wq22iHk1nO4+3Gko2wqmClyHAhLyXXA/Ry5wE3uFbPc2xFicCRR7hY1fg7oQTRWig9o+MrxaW31l8KcpRmaS6fxc17yrRdh6+lb8s1e8oAiHdhOH/+5bnz5wbLauJqR1od7E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hGPoWO8r; arc=fail smtp.client-ip=52.101.43.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9033A4F4B
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 08:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788166106; cv=none; b=tuOEAXCHcHHo0rmVrTEzCxZERaPck+pdok4N4llHzYqkogmtV9iFu5ceArLQ6q/yXD8U8Zmz5ruYaGr/JzGaaFAaekS2zEr3s4WD+EEgKGMAMhmW+ubLdVINgD/IsjG/78CBZ+mQoT5KcjAXNzlPlaIcRq3kk+sgjN+RWXWjoKQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788166106; c=relaxed/simple;
+	bh=4X/eRuTlLoUvYkRT0LqmXbMH7szLL+iJkDV6PaK0myI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uzdFJIvMDCfHUTEvw4Uu/H0bEVEO5uPpKTUC13hPrjMRkTdoTpaYedZOYEuzZXaKXcrz9R22vPdM3gGpzu/fMxlvbPMrIGcYpSXp+3TpyDblT1dvnhVK+NhxPnaJQYzWs362SxaNKdQ7fYtWKUHMMi+yM++K9iyGuJ7o0sICDqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CFRLtdUr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HkZcBiIT; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hGPoWO8r"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n4R8EIV6M5tLGVqHKm79CAkKSbVNIL083lnzQmnRZ1lK5iMvx4dO8pf/6wg6Oy81yOhku+uuMyabr90Qcg0ZTBOLBW29RvarKEBjpbBensoFYGzqxJnFLNadWtYq4Od64akPOFzKogetCU2lq5+spNdoXcBXCITmL9cPA53zfM6EBrzhHb+ItdfE/+2+0dUEJ21Afg6bKt+4u0ogQW8CQuOgstfRGEal+1zECGZOe/q/nbVkGo/iczXMF5/upKdFizg621oYZEPb3GyMpHli+SVHidWicVByiACrsOdy80fsq27Ob5/gTWlAvmB8lzzmi3nXnn/OgTEvfGf4NH2Jlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0qunzlDVybyncnNMApW71pYFeTG3N7I8/5zQ+8rpicg=;
- b=FL5Z6cZw1xmWgjQ82XzYoiJTPaxA596IWJhDS4ilF93gY5bYLFLEjPHcnElpDWJpbBajkH9arrtMLayc9BnJTFrLYXkdEQlFLJmq9OHUuNrmrClgM98C9wVK2pLhPscT7nKnfxzstBcY/n3zcV2qHY3rwbUX6gmtaKbsGuhr67EYDb4NYxPVrPca8TgW1nZMCb2p/WkCVzgeOYrNtbsT/iZvXLljyn3fak8YPLtIiBmkoQJd/xgYPdB23u8u9Rmmio6tI3rzwd3PgglL6ovnRCEASyCXTF1cXvrGPHC0XUpXVFWKsY4+nTzkq/IicExhtWv7Cu2cgrzTRaIeAkdH+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0qunzlDVybyncnNMApW71pYFeTG3N7I8/5zQ+8rpicg=;
- b=hGPoWO8rA88CE4TFl0AUSzOdJj2u040k8kxov8olrhYBVhRx1DFSpaWBITLxJJah7G46+NfhTtwaIpLWbw7UVjrI/Kz5G936FlJmTqHs/CVSbMok+6qRixDhJo9YrmHj5bRWUAaYA/4RVi1oPOPSnveazyXm2ud8efKMChsyI2s1r8KWgH4G19hSD5myScmzYBk+pmTfn/Tfd6QtoDUnUJtCMC3sm2eZWFctR7CDYI/q3lyS8ERLZq2gHUKmMkdQVA2LoD5Yl7pgoD8aZQySS5pOTr7Z8wYRodk39uoUZBFebQbLQg+eqFQ/vgrSFvA82BG9nbFOA9ZBv6NXPNDKIQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
- by CH3PR12MB8329.namprd12.prod.outlook.com (2603:10b6:610:12e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 08:47:57 +0000
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 08:47:56 +0000
-Message-ID: <f5ca7380-7c23-4e99-9ec5-64a1a248775f@nvidia.com>
-Date: Mon, 31 Aug 2026 10:47:52 +0200
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] net/mlx5e: Order ICOSQ cc update after CQ doorbell
-To: lirongqing <lirongqing@baidu.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260820030821.1731-1-lirongqing@baidu.com>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <20260820030821.1731-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0040.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:92::7) To CH3PR12MB8728.namprd12.prod.outlook.com
- (2603:10b6:610:171::12)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CFRLtdUr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HkZcBiIT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788166102;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rW8A+A/yfAjOiGS31Vfj1zgVTI69lDiPeq7VS1I3fmY=;
+	b=CFRLtdUr9nOgXb8f2tYiQnBJ3A8Sqw76Iwync/t1pXQt1pfFnf1iW/a/NjTz0OPYJitMC0
+	03MwE+yKSG8fiAg29MkExrF/dNdNboJXOK8Wof2yU3YLvzWEhkOPJOLJfWEhCVOS6IP5Kt
+	/uv5/5vv1X7yiX/oJ5Eq36vTvJp6Mg4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-505-JPwjZUGKMjSatzrzJg51pQ-1; Mon, 31 Aug 2026 04:48:21 -0400
+X-MC-Unique: JPwjZUGKMjSatzrzJg51pQ-1
+X-Mimecast-MFC-AGG-ID: JPwjZUGKMjSatzrzJg51pQ_1788166100
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4843d9ab895so528716f8f.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 01:48:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788166100; x=1788770900; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rW8A+A/yfAjOiGS31Vfj1zgVTI69lDiPeq7VS1I3fmY=;
+        b=HkZcBiITYvk9uMJTAftxh7F6joSgeCixVnD5/KF/2Q/UxTWw7D/fiyzo1L9JRXwm0G
+         s5kIWzXgcyVUDGeqHS23fHkl1L+nYM81+Vt93JtRduURN5YmPWXWZZ14Gur2coCcqqb9
+         LvBC7Fi6Ml/2yV429AKyHhEUsfzMb5EFpnh/cuoQSiRTJTXOPh67G/aKpP/iwRmstRXA
+         zVnyOSb0ad0W9ZGU9s8pD5DTr2HjQfS1jP6ngWd7HxMJUDODjvXgEkgWtk7JMkbU5kef
+         ppATnT5V+KScZ/v950QUQPrbyXwYHO6/Zw9WFFyRkyi7ynASrnBZjUZUiK52rOceMc/h
+         famA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788166100; x=1788770900;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rW8A+A/yfAjOiGS31Vfj1zgVTI69lDiPeq7VS1I3fmY=;
+        b=DB9xTWimuqXQWYPLLcbeiQLD++rPC/wfQL1QoWJGqKiBB6DmZJYMdN5fHSbsiiETkA
+         Bt+vg55CiZIxKxD0NIRY4aUyKlgWc42f6X/GsCwpF5iLnuzjbth1r1qwWUuEyq0GF8AD
+         7TeRsbsWrviOj7pA5pP+zvfSuGu856Nw5iifusCixvcyOoXo82YfM5cWONUDeXindh4r
+         t6F3zZugGi66KTKcjd5OAmMJwnNIa3RpafA6vdErfFZpLlvEIt006xVEqhlqRg/ZRLp4
+         qdhLqtC/1dDfmZl3Y/2ppsz5VCuNvXuira026tmyBQwOeVP6qoLbcMW14jfImmstIjeF
+         aWwA==
+X-Gm-Message-State: AFuF++mnfvXgukPPAcRoJT6VMK/QaJwqfbqzgfGjAqLgtPm5FZxLt5aH
+	Gfzuqk5Ur6ZzKeBlTay/m0nFx7s6UQ76+r8/lPNvnuutJKwWsZc6+c+7qJuYK6OGK4g2wOHH/vl
+	LSwp1y6aRjEZ0njsdJau0qZSXGlKnIMkGU2sAJlroMCr+HCvji7qQXfcnEA==
+X-Gm-Gg: AYBFou3Xq0Yrth1icZ1hxsO2OiXKW/tqMQJf+lz9m68Uq0b6fweoxs1LpAWfuS+gyF3
+	F5CnwZQY2mPBcrlYHExsVx1T1kJfjnuXA2F84HONhM7nCX7c7tmxUeJ6n5xrOC4lG+g8pddNApQ
+	aFrbddvUOeL2YEpuDLkb9p6T4Q/Qd0943/S+blERhdu185/7HHz7rEf59G3zany34oAFMYYIuIn
+	xgD+T6jRhq6k+WswwfHOD0lMhQ7PjgiUP1eGCZmodUfDKtDrHISYoIJtgBQyl1l06GnnmoPX4Jy
+	2CgCF2t+cZDN86fDOSTZAcqS4zsG3BN3EngdXVrfUZ2Dx8Huz711cLBs0hdjdQbgCCTjYBliypo
+	DRlHv3N6D5cvcS+KLmG1P20M=
+X-Received: by 2002:a05:6000:27c1:b0:482:de48:c445 with SMTP id ffacd0b85a97d-482f79b36d4mr33812834f8f.11.1788166099550;
+        Mon, 31 Aug 2026 01:48:19 -0700 (PDT)
+X-Received: by 2002:a05:6000:27c1:b0:482:de48:c445 with SMTP id ffacd0b85a97d-482f79b36d4mr33812735f8f.11.1788166098936;
+        Mon, 31 Aug 2026 01:48:18 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48436b69537sm11288101f8f.26.2026.08.31.01.48.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 01:48:18 -0700 (PDT)
+Date: Mon, 31 Aug 2026 04:48:15 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Shahar Shitrit <shshitrit@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
+	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+	edumazet@google.com, danielj@nvidia.com
+Subject: Re: [PATCH net-next v22 00/14] virtio_net: Add ethtool flow rules
+ support
+Message-ID: <20260831044746-mutt-send-email-mst@kernel.org>
+References: <20260831075807.2891426-1-shshitrit@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|CH3PR12MB8329:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d09400f-71f7-4377-69d4-08df073c8d9d
-X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|7416014|366016|921020|11063799006|10067099003|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	qtq9DNNyMwn0h3uqjwQ/Mx9NjYRRA6m9/VPUrQhNRkiOIMIvvc24dCWZei3QEg0FGdWcdbjXE4xvC13AlFPsDPS73NZwlg2qetr+Sf+jMo5/42beyNYJVeM1h6owDxiDGGZCHDmhSgs+fZJoN3EUzTYZngzrFjvG631ZSjq3r2ktLqMVNZDT+TqIKTMRYyLA0J88JE9deGzBE1dcVL00lW52dcywqk0aZF+o+c/dmNC2Ig4RHJ2N96H3Thd7u4ca54TZz3RXhE01layO6GCPGpAOCPckG2mEzMynnG1Fs3fg0v51Q2mlPdgq8wcTM2pgozZYlCwU99iZ8HIj6Vj9tltOhPk5T1KLRbay/bXqPSgZkCTEZ358RgWPSQpnrkAwF4gCOdY/7BcM8rhmmeK7Q7o9Sv6jgBKNNZP5O2GXZSbDChkWs2EfNlXBMWoocTNoPj5eMENQNk3py/Ri1bCn68c46/gAR2sqSrIIftgnZYkds8QXWLnQBN4PRdYIo1MINemFxbMj8HsZJgKaw7jhGeBD4DyZX534+Qc4LeMviv0AegRgxqj0yMuffh96lt4IGafJjgvW3x4Xx6YFiCQEwj2pSi0xQoiUkGGAb5arMaDQaoQ0cFCFuI/+iJKQ/nlDUejeFk4RKTqCsgQkEd07yvqBTsyK5av94qU7wF/DtfTwPPnf9O98CxzEDnvqnSUdqGpryB2Uwt4y062Ur/0WVw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(7416014)(366016)(921020)(11063799006)(10067099003)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wk54U3kxZ2Y1K2VlekJyMjNnMG9Ud1Jra0o0QWJraVpLYkRqQUU4c1lGQkFG?=
- =?utf-8?B?OFVjckVHakpUU3ZHa0xRdmdCMkh1NlpaS3paU2x5NzZ2aURNVmt2VlJhdjJU?=
- =?utf-8?B?ZUhzd2xGa25abzBBM0xFajVkRGZjN2IxZmduUmh0aXdwTDd2TVNPa3ZXS2dr?=
- =?utf-8?B?SHU2R0htOFFtVUpMZ3NKNDk3MVcycnBzWWJ6WW1kbExrSklLZlNuVVJOUEF6?=
- =?utf-8?B?NzRDS2lXYXZBb0N0WUpXU3huOHFPbVY1NkZyVnFLblRuZDBRdGJCdW1JOXph?=
- =?utf-8?B?UFowRXBySUl2UU5MSlNkVWNFaG5WbVNmeEhPekZGanVUUXhudk9jMkwreTI5?=
- =?utf-8?B?Vi93TkdFa3hxZWJDdG9CQVNhci9FSEw1dUhrZFhmb0UwdENhL1B3T2QzSnZn?=
- =?utf-8?B?NHVFYlArVGpJYnJVNGJEU2ppU0dEaWVpSVlWd3dSRDJVNldOYzVUb0JEZ0do?=
- =?utf-8?B?ZHk3Z2RpK25CaVgyUGhHNTZEc1FZLzl3QUVvWWRxMSt4QXJiVkVQb0RNc2ho?=
- =?utf-8?B?WlE4dFVFdEsvSCtQZ3BjaER2T0pnOVRBVVA3Rzg3ZytWUVhldkEzUmlxRWlC?=
- =?utf-8?B?RE96MFI3bVpmWU5tdmVvWGp4OFFya1pkV1Ewa3c0TEFhb0xyVjVuekx5cG5M?=
- =?utf-8?B?TTFEV200aERaWldMTG5pMStMSHIvdStNZVVFTkdZdWwzQklHMDVjV3VRZ1k3?=
- =?utf-8?B?UVAvUVp5Nnh1eEF1OWtEd1JqeFJNTnIvYVZjcHIwZHNZVkY5a3NVQzdhZi9X?=
- =?utf-8?B?dEdpbnkzdW5VWnJacjdqOXRicDNzMUY5L01oUDBtUUVKMXdQazVCSVZjNFpj?=
- =?utf-8?B?aFZwekVwQjZOZ3pMY0xld21xaFhmQWhVZWNQdGdKd3dvY3V2ekNIQXBWR2x0?=
- =?utf-8?B?UHBsa2xxdndYMUtzNjR1QithK2dXVHJCa2FwU21ONS9MK2prOGM2YlhyVVBi?=
- =?utf-8?B?cFgwbGZyQ3dSTVhQN2QxR0lVbXdjQUl2UU9NR1ppZmw1alBMT293SkpXQU5r?=
- =?utf-8?B?Y3pEQWdPSEtWRGttYTdBY1BQZDY5YWhJbWlBQmMwS3lEMlJyMlFqM0JCNUR6?=
- =?utf-8?B?WlgvNGJKUEZnMHdSV3VlZWFVTTFYUUQ3YzdoY0VVVEVTL2VmQXFheFllOGI1?=
- =?utf-8?B?bkN6N2orcG5YbWtTc0t5UVhhRDhXdGZEQWZ1UEtxZ040VXozRnFBSDZUalNH?=
- =?utf-8?B?Mmx3R2VjcThiaDNtRjgzTVFJRjFCM0R2STJoUSttamJiam1vT0F4TFFyZzBP?=
- =?utf-8?B?dkZuemMrdGRwRCtKZGZnQXJBYmZadGpuanpqTmF5TWhFOTF0U1BESXp3SDBD?=
- =?utf-8?B?NXJNL3RVOVBKbFZZaHdUandBbzBjcE1CMlhLM3Exa2p1K01VRWgwTGVjeWhk?=
- =?utf-8?B?L2FuRmtCS2ZyWDJXZ3BlWDk3MVZjVkZxYjJHMXgwQW5wWGlIaEhHQUNXenZK?=
- =?utf-8?B?dlZObVJtMThmUjg5MUxDYURVOEhkaE1nOUFlU1JQYnh3cUhTbTBYa2Y1R3o0?=
- =?utf-8?B?VzMvTi9yOURxTUpNd2R4bTBjV2ptMStVUzZ1T0JDeXZENDhyNU1hd2FVSHlp?=
- =?utf-8?B?SlJWKzN0Y1hNN3dyV005WkhPeFlnWWtiSDN6NjJ1R28yT0djYkpibFprYXJr?=
- =?utf-8?B?SEpmVXpOUDZjVUliL1JhdjBCTk5pNTlrRjNHY3EwYktib0pmSituYk43anlW?=
- =?utf-8?B?WUtIZzZISXlGQ0pvc2szSjFoSFl3bVRtRGgxa0hkbkV5d1RkK0lRVlFQZGtt?=
- =?utf-8?B?ZTMvUWxuQUdqYWgzSk5pekl1SDZ0NU9YRWtTSVVydm1rSDNQMzRzanh1aTRQ?=
- =?utf-8?B?NlNpU2JzcmduSnFRZjJaazlqc0dPTlhmMW4zR2VDQzB1YVBMaDJ5TjZEWjFh?=
- =?utf-8?B?QzEzL3VpZFpzQnVHMUs3Z0FiTWI0WUZuSUtGOVVyejhuMUR1RWQxQ1B1T3or?=
- =?utf-8?B?ckdKL0VaK2JwTC9mVnlYbzBHdjNNcEJqaEhxdzQzWFA0TTJ1ZFZaSjMyMjdP?=
- =?utf-8?B?Smg3K0tqb3pmTjlldUR5bTFLMDJ4SFhCdXdSR2wwUHBwdnYrL1R1MXZnT3E3?=
- =?utf-8?B?MjRtUEFBTGZLMWV0NG43U3B0cmovUFRDTk8xOHN6WWlZYkNWanhUR1Q1aEQ2?=
- =?utf-8?B?Q044dDVXby9Oc2hSSTZHVkdna0xOM0FSRWVqSGE0MElRVjNBcTIxZ0w0N1lq?=
- =?utf-8?B?TVZxWVNReWwvcVRGWVpZVFlyRUt5TnJZdTlueWNEOW1iOTVRWmNwSnpTRW50?=
- =?utf-8?B?ZHp0TjZKUlp4TVVpZ0pFY0tpSWdWa0N6S0xVZXByNnIzOWZjWmY3bTNJZjdO?=
- =?utf-8?B?OTRUR2JZSFJoREFBNTdmbUxEL0tkOGtiV0xpbGtGcEgxMDJnTkgrdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d09400f-71f7-4377-69d4-08df073c8d9d
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 08:47:56.7519
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q2E1LbuvtxuZQpltGS37RM+ZsOeOA/T5Rh52yCSGmmgih9WUyMd9lyXY0uJ0VtOnyd6bY+NrjEMH0REb0GXrSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8329
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831075807.2891426-1-shshitrit@nvidia.com>
+
+On Mon, Aug 31, 2026 at 10:57:53AM +0300, Shahar Shitrit wrote:
+> This series implements ethtool flow rules support for virtio_net using the
+> virtio flow filter (FF) specification. The implementation allows users to
+> configure packet filtering rules through ethtool commands, directing
+> packets to specific receive queues, or dropping them based on various
+> header fields.
+> 
+> The series starts with infrastructure changes to expose virtio PCI admin
+> capabilities and object management APIs. It then creates the virtio_net
+> directory structure and implements the flow filter functionality with
+> support for:
+
+A small comment on patch 5, but it's minor. Besides that looks good!
 
 
-
-On 20.08.26 05:08, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
+> - Layer 2 (Ethernet) flow rules
+> - IPv4 and IPv6 flow rules
+> - TCP and UDP flow rules (both IPv4 and IPv6)
+> - Rule querying and management operations
 > 
-> mlx5e_poll_ico_cq() requires sq->cc to be updated only after
-> mlx5_cqwq_update_db_record(), otherwise a CQ overrun may occur.
+> Setting, deleting and viewing flow filters, -1 action is drop, positive
+> integers steer to that RQ:
 > 
-> The current implementation updates sq->cc before the CQ doorbell
-> record, violating this ordering requirement.
+> $ ethtool -u ens9
+> 4 RX rings available
+> Total 0 rules
 > 
-> Update the CQ doorbell record first and use dma_wmb() before updating
-> sq->cc. This ensures that the CQ space is released to the device
-> before the corresponding ICOSQ consumer index is updated by software.
+> $ ethtool -U ens9 flow-type ether src 1c:34:da:4a:33:dd action 0
+> Added rule with ID 0
+> $ ethtool -U ens9 flow-type udp4 dst-port 5001 action 3
+> Added rule with ID 1
+> $ ethtool -U ens9 flow-type tcp6 src-ip fc00::2 dst-port 5001 action 2
+> Added rule with ID 2
+> $ ethtool -U ens9 flow-type ip4 src-ip 192.168.51.101 action 1
+> Added rule with ID 3
+> $ ethtool -U ens9 flow-type ip6 dst-ip fc00::1 action -1
+> Added rule with ID 4
+> $ ethtool -U ens9 flow-type ip6 src-ip fc00::2 action -1
+> Added rule with ID 5
+> $ ethtool -U ens9 delete 4
+> $ ethtool -u ens9
+> 4 RX rings available
+> Total 5 rules
 > 
-> Fixes: fd9b4be8002c ("net/mlx5e: RX, Support multiple outstanding UMR posts")
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> Filter: 0
+>         Flow Type: Raw Ethernet
+>         Src MAC addr: 1C:34:DA:4A:33:DD mask: 00:00:00:00:00:00
+>         Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+>         Ethertype: 0x0 mask: 0xFFFF
+>         Action: Direct to queue 0
+> 
+> Filter: 1
+>         Rule Type: UDP over IPv4
+>         Src IP addr: 0.0.0.0 mask: 255.255.255.255
+>         Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+>         TOS: 0x0 mask: 0xff
+>         Src port: 0 mask: 0xffff
+>         Dest port: 5001 mask: 0x0
+>         Action: Direct to queue 3
+> 
+> Filter: 2
+>         Rule Type: TCP over IPv6
+>         Src IP addr: fc00::2 mask: ::
+>         Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+>         Traffic Class: 0x0 mask: 0xff
+>         Src port: 0 mask: 0xffff
+>         Dest port: 5001 mask: 0x0
+>         Action: Direct to queue 2
+> 
+> Filter: 3
+>         Rule Type: Raw IPv4
+>         Src IP addr: 192.168.51.101 mask: 0.0.0.0
+>         Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+>         TOS: 0x0 mask: 0xff
+>         Protocol: 0 mask: 0xff
+>         L4 bytes: 0x0 mask: 0xffffffff
+>         Action: Direct to queue 1
+> 
+> Filter: 5
+>         Rule Type: Raw IPv6
+>         Src IP addr: fc00::2 mask: ::
+>         Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+>         Traffic Class: 0x0 mask: 0xff
+>         Protocol: 0 mask: 0xff
+>         L4 bytes: 0x0 mask: 0xffffffff
+>         Action: Drop
+> 
 > ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> v2: https://lore.kernel.org/netdev/20250908164046.25051-1-danielj@nvidia.com/
+>   - Fix sparse warnings
+>   - Fix memory leak on subsequent failure to allocate
+>   - Fix some Typos
 > 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> index f6eff03..01867dd 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> @@ -905,10 +905,12 @@ int mlx5e_poll_ico_cq(struct mlx5e_cq *cq)
->  		} while (!last_wqe);
->  	} while ((++i < MLX5E_TX_CQ_POLL_BUDGET) && (cqe = mlx5_cqwq_get_cqe(&cq->wq)));
->  
-> -	sq->cc = sqcc;
-> -
->  	mlx5_cqwq_update_db_record(&cq->wq);
->  
-> +	/* ensure cq space is freed before enabling more cqes */
-> +	dma_wmb();
-> +
-> +	sq->cc = sqcc;
->  	return i;
->  }
->  
-Thanks for your patch. The patch looks good but we want to pass it through our
-internal regressions.
+> v3: https://lore.kernel.org/netdev/20250923141920.283862-1-danielj@nvidia.com/
+>   - Added admin_ops to virtio_device kdoc.
+> 
+> v4:
+>   - Fixed double free bug inserting flows
+>   - Fixed incorrect protocol field check parsing ip4 headers.
+>   - (u8 *) changed to (void *)
+>   - Added kdoc comments to UAPI changes.
+>   - No longer split up virtio_net.c
+>   - Added config op to execute admin commands.
+>       - virtio_pci assigns vp_modern_admin_cmd_exec to this callback.
+>   - Moved admin command API to new core file virtio_admin_commands.c
+> 
+> v5:
+>   - Fixed compile error
+>   - Fixed static analysis warning on () after macro
+>   - Added missing fields to kdoc comments
+>   - Aligned parameter name between prototype and kdoc
+> 
+> v6:
+>   - Fix sparse warning "array of flexible structures" Jakub K/Simon H
+>   - Use new variable and validate ff_mask_size before set_cap. MST
+> 
+> v7:
+>   - Change virtnet_ff_init to return a value. Allow -EOPNOTSUPP. Xuan
+>   - Set ff->ff_{caps, mask, actions} NULL in error path. Paolo Abini
+>   - Move for (int i removal hung back a patch. Paolo Abini
+> 
+> v8
+>   - Removed unused num_classifiers. Jason Wang
+>   - Use real_ff_mask_size when setting the selector caps. Jason Wang
+> 
+> v9:
+>   - Set err to -ENOMEM after alloc failures in virtnet_ff_init. Simon H
+> 
+> v10:
+>   - Return -EOPNOTSUPP in virnet_ff_init before allocing any memory.
+>     Jason Wang/Paolo Abeni
+> 
+> v11:
+>   - Return -EINVAL if any resource limit is 0. Simon Horman
+>   - Ensure we don't overrun alloced space of ff->ff_mask by moving the
+>     real_ff_mask_size > ff_mask_size check into the loop. Simon Horman
+> 
+> v12: Many comments by MST, thanks Michael. Only the most significant
+>      listed here:
+>   - Fixed leak of key in build_and_insert.
+>   - Fixed setting ethhdr proto for IPv6.
+>   - Added 2 byte pad to struct virtio_net_ff_cap_data.
+>   - Use and set rule_cnt when querying all flows.
+>   - Cleanup and reinit in freeze/restore path.
+> 
+> v13:
+>   - Add private comment for reserved field in kdoc. Jakub
+>   - Serveral comments from MST details in patches. Most significant:
+> 	- Fixed bug in ip4, check l3_mask vs mask when setting addrs.
+> 	- Changed ff_mask cap checking to not break on expanded
+> 	  selector types
+> 	- Changed virtio_admin_obj_destroy to return void.
+> 	- Check tos field for ip4.
+> 	- Don't accept tclass field for ip6.
+> 	- If ip6 only flow check that l4_proto isn't set.
+> 
+> v14:
+>   - Handle virtio_ff_init errors in freeze/restore. MST
+>   - Don't set proto in parse_ip4/6. The casted struct may not have that
+>     field, and the proto field was set explicitly anyway. Simon H/AI.
+> 
+> v15:
+>   - In virtnet_restore_up only call virtnet_close in err path if
+>     netif_running. AI
+> 
+> v16:
+>   - Return 0 from virtnet_restore_up if virtnet_init_ff return not
+>     supported. AI
+>   - Rebased over removing series to remove delayed refill.
+> 
+> v17:
+>   - Properly handle unaligned reads/writes. MST
+>   - Fix use after free if init fails during virtnet_restor. AI
+>   - Fix memory leak when validating the classifer vs caps fails. AI
+>   - Added missing includes. MSTA
+> 
+> v18:
+>   - Validate selector cap lengths, instead of just checking they don't
+>     exceed a max. AI
+>   - Add __count_by attribute to flexible arrays in UAPI definitions.
+>     Paolo A.
+> 
+> v19:
+>   - Style fixes. AI
+> 
+> v20:
+>   - Added missing include
+> 
+> v21:
+>   - Use le64_to_cpu() and BIT_ULL() instead of cpu_to_le64() for cap checking.
+>   - Don't use __counted_by on flexible array of flexible structs.
+>   - Replace UAPI header includes with kernel header includes.
+>   - Add missing includes for linux/types.h and linux/byteorder/generic.h.
+>   - Clamp the reported action count to the driver-supported maximum.
+>   - Clamp the reported selector count to the driver-supported maximum.
+>   - Validate sel->type is not 0.
+>   - Reduce selectors' count in case selector's type is invalid.
+>   - Move virtio_device_ready() before virtnet_ff_init() as the flow filter
+>     initialization requires the device to be in ready state to issue admin
+>     commands.
+>   - Remove forward declarations.
+>   - Validate action is supported before inserting rule.
+>   - Convert ring_cookie to vq before assigning ff_rule->vq_index.
+>   - reword a comment.
+>   - Introduce a new patch that moves flow_type_mask() to include/linux/ethtool.h.
+>   - Wrap __le32 limit fields in le32_to_cpu() to avoid sparse warnings.
+>   - Use put_unaligned() in parse_ip4() to avoid misaligned 32-bit stores on
+>     strict-alignment architectures.
+> 
+> v22:
+>   - Reword/fix typo in commit messages.
+>   - Remove include <uapi/linux/virtio_pci.h> from virtio_net.c.
+>   - Verify also selectors_per_classifier_limit in virtnet_ff_init().
+>   - Validate ff->ff_actions->count != 0.
+>   - Remove WARN_ON_ONCE() and replace -EINVAL with -EPROTO for errors on
+>     device side.
+>   - Use ff->ff_mask->count after it was initialized.
+>   - Add a patch to fix sleeping under spinlock in the admin command path.
+>   - Document that callers must zero-initialize the capability structure.
+>   - Convert macro VIRTIO_CAP_IN_LIST to be inline function.
+>   - Add WARN_ON_ONCE if allocation fails in virtio_admin_obj_destroy().
+>   - Change VIRTNET_FF_ETHTOOL_GROUP_PRIORITY to be 0.
+>   - Reject flow rules that require more selectors than the device supports
+>     (selectors_per_classifier_limit).
+>   - Report min(rules_limit, rules_per_group_limit) as the effective rule limit,
+>     since all rules reside in a single group.
+> 
+> Comments from internal Sashiko review:
+> > +int virtio_admin_obj_create(struct virtio_device *vdev,
+> > +			    u16 obj_type,
+> > +			    u32 obj_id,
+> > +			    u16 group_type,
+> > +			    u64 group_member_id,
+> > +			    const void *obj_specific_data,
+> > +			    size_t obj_specific_data_size)
+> > +{
+> [ ... ]
+> > +	obj_create_data->hdr.type = cpu_to_le16(obj_type);
+> > +	obj_create_data->hdr.id = cpu_to_le32(obj_id);
+> > +	memcpy(obj_create_data->resource_obj_specific_data, obj_specific_data,
+> > +	       obj_specific_data_size);
+> Can this memcpy trigger undefined behavior if callers pass NULL for
+> obj_specific_data and 0 for obj_specific_data_size? In C, passing a NULL
+> pointer to memcpy is undefined behavior even if the size is 0, which could
+> cause UBSAN splats.
+> 
+> [SS] It's the caller responsibly not to pass NULL. Current callers don't pass NULL.
+> 
+> > +	sg_init_one(&data_sg, data, data_size);
+> > +
+> > +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_CREATE);
+> > +	cmd.group_type = cpu_to_le16(group_type);
+> > +	cmd.group_member_id = cpu_to_le64(group_member_id);
+> > +	cmd.data_sg = &data_sg;
+> > +
+> > +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
+> This isn't a bug introduced by this patch, but does this execution path sleep
+> while holding a spinlock with interrupts disabled?
+> If this calls into virtqueue_exec_admin_cmd() (for example via
+> vp_modern_admin_cmd_exec()), the call chain looks like:
+> virtqueue_exec_admin_cmd()
+>     spin_lock_irqsave(&admin_vq->lock, flags);
+>     virtqueue_add_sgs(vq, sgs, out_num, in_num, cmd, GFP_KERNEL);
+> Since GFP_KERNEL allows direct reclaim and sleeping, can this cause a deadlock
+> or trigger a BUG if the virtqueue falls back to allocating indirect descriptors?
+> 
+> [SS] Right, but not related to this series. Can introduce a fix in a different patch.
+> 
+> > +void virtio_admin_obj_destroy(struct virtio_device *vdev,
+> > +			      u16 obj_type,
+> > +			      u32 obj_id,
+> > +			      u16 group_type,
+> > +			      u64 group_member_id)
+> > +{
+> > +	struct virtio_admin_cmd_resource_obj_cmd_hdr *data;
+> > +	struct virtio_admin_cmd cmd = {};
+> > +	struct scatterlist data_sg;
+> > +	int err;
+> > +
+> > +	if (!vdev->config->admin_cmd_exec)
+> > +		return;
+> > +
+> > +	data = kzalloc(sizeof(*data), GFP_KERNEL);
+> > +	if (!data)
+> > +		return;
+> If this kzalloc() fails, does this function return without sending the
+> destroy command to the hardware?
+> Since the return type is void, the caller has no way to detect this failure
+> and will likely free its local software tracking objects. Will this leave
+> the physical device and software tracking structures permanently
+> desynchronized, leaking the object on the virtio device?
+> 
+> [SS] Not much to do here. There could be a firmware error also,
+>      and then what we do? Destroy flow is best effort.
+> 
+> > +			break;
+> > +
+> > +		if (sel->length != get_mask_size(sel->type) ||
+> > +		    test_and_set_bit(sel->type, &sel_types)) {
+> > +			WARN_ON_ONCE(true);
+> Is it safe to use WARN_ON_ONCE() for validating device input? A malicious
+> or buggy virtio device could intentionally trigger this by providing an
+> invalid length or duplicate selector types, potentially leading to a kernel
+> panic if panic_on_warn is enabled. Would it be better to just return the
+> error without the warning?
+> > +			err = -EINVAL;
+> > +			goto err_ff_action;
+> > +		}
+> > +		real_ff_mask_size += sizeof(struct virtio_net_ff_selector) + sel->length;
+> > +		if (real_ff_mask_size > ff_mask_size) {
+> > +			WARN_ON_ONCE(true);
+> Similarly, could this WARN_ON_ONCE() be triggered by a malicious device
+> providing a larger size than expected, leading to a panic if panic_on_warn
+> is enabled?
+> 
+> [SS] These WARN_ON_ONCE() were requested by MST during review.
+> 
+> [ ... ]
+> > +static const struct ethtool_ops virtnet_ethtool_ops = {
+> [ ... ]
+> > +	.get_rxfh_fields = virtnet_get_hashflow,
+> > +	.set_rxfh_fields = virtnet_set_hashflow,
+> > +	.get_rx_ring_count = virtnet_get_rx_ring_count,
+> > +	.set_rxnfc = virtnet_set_rxnfc,
+> > +};
+> Does this also need an implementation of .get_rxnfc to prevent invalid
+> channel configurations?
+> When .get_rxnfc is missing, the ethtool core function
+> ethtool_get_max_rxnfc_channel() returns -EOPNOTSUPP. This causes
+> ethtool_check_max_channel() to silently skip validating the new channel
+> count against active flow rules.
+> If a user adds a flow rule targeting a specific RX queue, and then reduces
+> the active RX queues via ethtool -L, virtnet_set_channels() will update
+> the queue count without checking the active rules stored in
+> vi->ff.ethtool.rules.
+> Could this leave hardware rules pointing to disabled queues and cause
+> silent packet drops?
+> 
+> [SS] .get_rxnfc exists (introduced in a later patch).
+> 
+> > @@ -1258,6 +1259,7 @@ static const struct virtio_config_ops virtio_pci_config_ops = {
+> >  	.get_shm_region  = vp_get_shm_region,
+> >  	.disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+> >  	.enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> > +	.admin_cmd_exec = vp_modern_admin_cmd_exec,
+> >  };
+> This isn't a bug introduced by this patch, but by exposing this function to
+> general drivers, can a driver trigger a NULL pointer dereference or
+> use-after-free?
+> If a driver calls the newly exposed config->admin_cmd_exec() early in probe
+> before find_vqs(), or late in remove after del_vqs(),
+> virtqueue_exec_admin_cmd() unconditionally dereferences admin_vq->info:
+>     vq = admin_vq->info->vq;
+> In vp_del_vqs(), the info structure is freed via kfree(info), but
+> vp_dev->admin_vq.info is never set to NULL, leaving a dangling pointer.
+> 
+> [SS] Current code is written in correct order. Future callers are responsible
+>      to call this when VQs are initialized.
+> 
+> This isn't a bug introduced by this patch, but does this error path lead to
+> stack corruption?
+> In virtqueue_exec_admin_cmd(), if virtqueue_kick() fails, it returns -EIO
+> without waiting for completion or detaching the exposed buffer:
+>     if (!virtqueue_kick(vq))
+>             goto unlock_err;
+> If the hardware later processes the descriptor and triggers
+> vp_modern_avq_done(), it will call complete(&cmd->completion). Since the cmd
+> structure was likely allocated on the caller's stack, this can overwrite
+> out-of-scope stack memory.
+> 
+> [SS] The vq->broken flag set by virtqueue_notify() causes virtqueue_get_buf()
+>      to return NULL in vp_modern_avq_done(), so complete() is never called on
+>      the freed cmd. No stack corruption.
+> 
+> This isn't a bug introduced by this patch, but can this function return an
+> uninitialized variable?
+> virtqueue_exec_admin_cmd() returns cmd->ret at the end of the function:
+>     return cmd->ret;
+> However, on a successful command execution, vp_modern_avq_done() never
+> explicitly sets cmd->ret to 0. If a driver allocates struct virtio_admin_cmd
+> on the stack without zero-initializing it, could this return stack garbage
+> and erroneously indicate failure?
+> 
+> [SS] cmd is initialized in all callers struct with virtio_admin_cmd cmd = {};
+> 
+> If the device responds with fewer bytes than the driver's provided data
+> buffer, does this leave the rest of the output buffer uninitialized?
+> The wrapper discards cmd.result_sg_size without zero-initializing data and
+> returns 0, which could expose uninitialized memory to callers.
+> 
+> [SS] Caller's responsibility to initialize the buffer.
+> 
+> Second, if virtqueue_add_sgs() returns -ENOSPC, the code loops infinitely
+> with cpu_relax() without a timeout or sleep:
+> drivers/virtio/virtio_pci_modern.c:virtqueue_exec_admin_cmd() {
+> ...
+> 		if (ret == -ENOSPC) {
+> 			spin_unlock_irqrestore(&admin_vq->lock, flags);
+> 			cpu_relax();
+> 			goto again;
+> 		}
+> ...
+> }
+> Can this soft-lockup the CPU if the virtqueue remains full and the device is
+> unresponsive?
+> 
+> [SS] Pre-existing, not introduced by this series, and bounded in practice by
+>      the virtqueue_is_broken() check. Not something to fix here.
+> 
+> Third, if virtqueue_kick() fails, the code jumps to unlock_err without
+> detaching the buffer from the virtqueue:
+> drivers/virtio/virtio_pci_modern.c:virtqueue_exec_admin_cmd() {
+> ...
+> 	if (!virtqueue_kick(vq))
+> 		goto unlock_err;
+> 	spin_unlock_irqrestore(&admin_vq->lock, flags);
+> 	wait_for_completion(&cmd->completion);
+> 	return cmd->ret;
+> unlock_err:
+> 	spin_unlock_irqrestore(&admin_vq->lock, flags);
+> 	return -EIO;
+> ...
+> }
+> Does this leave a dangling pointer on the virtqueue?
+> If the device later processes the command or the virtqueue is torn down,
+> could it write to the freed heap memory and invoke complete() on a dangling
+> stack pointer?
+> 
+> [SS] Not a bug. vq->broken prevents complete() from firing.
+> 
+> > +	sg_init_one(&data_sg, data, sizeof(*data));
+> > +	sg_init_one(&result_sg, caps, cap_size);
+> > +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_DEVICE_CAP_GET);
+> > +	cmd.group_type = cpu_to_le16(VIRTIO_ADMIN_GROUP_TYPE_SELF);
+> > +	cmd.data_sg = &data_sg;
+> > +	cmd.result_sg = &result_sg;
+> > +
+> > +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
+> Similar to virtio_admin_cap_id_list_query above, does this execution discard
+> cmd.result_sg_size without zeroing the caps buffer, potentially returning
+> uninitialized memory to the caller on a short response?
+> 
+> [SS] Standard kernel API contract, caller owns the buffer, current callers
+>      handle it correctly.
+> 
+> > +	data->id = cpu_to_le16(id);
+> > +	memcpy(data->cap_specific_data, caps, cap_size);
+> If a caller invokes virtio_admin_cap_set() to enable a capability with no
+> extra data (cap_size == 0 and caps == NULL), will this unconditionally pass a
+> NULL pointer to memcpy(), invoking undefined behavior?
+> 
+> [SS] Caller's responsibility.
+> 
+> > +/**
+> > + * VIRTIO_CAP_IN_LIST - Check if a capability is supported in the capability list
+> > + * @cap_list: Pointer to capability list structure containing supported_caps array
+> > + * @cap: Capability ID to check
+> > + *
+> > + * The cap_list contains a supported_caps array of little-endian 64-bit integers
+> > + * where each bit represents a capability. Bit 0 of the first element represents
+> > + * capability ID 0, bit 1 represents capability ID 1, and so on.
+> > + *
+> > + * Return: 1 if capability is supported, 0 otherwise
+> > + */
+> > +#define VIRTIO_CAP_IN_LIST(cap_list, cap) \
+> > +	(!!(1 & (le64_to_cpu(cap_list->supported_caps[(cap) / 64]) >> (cap) % 64)))
+> Could this macro trigger an out-of-bounds read on the supported_caps array if
+> a caller passes a cap value greater than VIRTIO_ADMIN_MAX_CAP?
+> Additionally, could evaluating cap multiple times cause unexpected side effects
+> if passed an expression like cap++?
+> 
+> [SS] All callers use named cap constants defined in the uapi headers, which are all
+>      within bounds by construction. Passing side-effecting expressions to macros is
+>      standard caller responsibility. No fix needed.
+> 
+> >  static void virtnet_ff_cleanup(struct virtnet_ff *ff)
+> >  {
+> > +	struct virtnet_ethtool_rule *eth_rule;
+> > +	unsigned long i;
+> > +
+> >  	if (!ff->ff_supported)
+> >  		return;
+> >
+> > +	xa_for_each(&ff->ethtool.rules, i, eth_rule)
+> > +		destroy_ethtool_rule(ff, eth_rule);
+> > +
+> Will this cause user-configured flow filter rules to be permanently lost
+> across system suspend/resume or device migration?
+> During suspend, device reset, or device freeze, virtnet_freeze_down() calls
+> virtnet_ff_cleanup(). This loop iterates over all configured flow rules,
+> sends the destroy commands to the hardware, and then calls kfree() via
+> destroy_ethtool_rule(), permanently destroying the software representation of
+> the rules.
+> Upon resume, virtnet_restore_up() invokes virtnet_ff_init(), which
+> initializes the flow filters as completely empty. The driver appears to make
+> no attempt to retain the software state of the rules during suspend or
+> replay them to the device during restore, meaning users must manually
+> recreate all flow filter rules every time the system resumes or the device
+> is migrated.
+> 
+> [SS] This is intentional for now. Could be a follow up feature.
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> -- 
+> 2.49.0
 
-Thanks,
-Dragos
