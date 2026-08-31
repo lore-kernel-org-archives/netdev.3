@@ -1,104 +1,77 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B613E4506
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE6733938C
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788176188; cv=none; b=o4WHk9rhO8NduyVBltuNW7twPxqRpy9gE0wU6zwjQnAblV4VjsHZiPcBuVPWjKND9aUJD19ZgdsJvDKrpgm7h3xunL9MIczrk84a3Sr/x3uyPd1kyPTnyFSlnFr69jEX7Bx82jDBIMLgKn+d/kiRoNqB3r4tJ5rQ0my+K3hxnuE=
+	t=1788176586; cv=none; b=giZb87kR8h6mukMjZJqBa+mNeGnmRzrUNEUuuHTpOuJp1V8k7oTxQuqO5wckwPxP1RlKyBB4eeJ3YnPNZvrB+vwr1XtcUYfT3KUpqr+E9OXjEO4Ejr2rc3t6OmcFN3NAXzTCkx2yvlTyYs9M26W9GDRo7DUj4sasJNwm5zy6BKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788176188; c=relaxed/simple;
-	bh=upeTNwClNbq9B51NVl8i3ff1vl3WuTSp9/K3a/wxP0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F4hQVipXGRry/RstiDIg9E96CjWU+7WtnV0NJArIgHJb2KhYBiFiY9wAU70ZmsK7DbDNC9wqGOslwh+nk4WECjHWsQ738ReGTTOQi7F41+s8dWtm19TQU9lxJIh6OVrRMzp+95lEM3FmMeOkgT9Ww2ZDCNjGvLXdhyKTfz9bHPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pT49vniB; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pT49vniB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=kO
-	NEFvotTHHBnWnSbNumpgW0xqS+D7b4+hqKLYLOK8c=; b=pT49vniB6Kp5+x2HCw
-	qiCSF8qvnowzPTSSjtbptp8o2l0uKgpvzVvLJF9Ia2SmYDdhjKJGYJvXcUpMVEi3
-	fi8rdRmQkF8dIW8eznX4QGkgtTPRxi/tLBv59NbkhaOQ5wcKNd+atJUzJCwtUzHl
-	u/rn6AkiMpyHut5nse+XNzAtM=
-Received: from WIN-TOG0NDEIICD.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAnLpjwZpVqCttOSg--.5522S2;
-	Mon, 31 Aug 2026 19:35:13 +0800 (CST)
-From: Zhao ShiRong <shxzhaosr@163.com>
-To: netdev@vger.kernel.org
-Cc: Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	bridge@lists.linux.dev,
-	Zhao ShiRong <shxzhaosr@163.com>,
-	syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
-Subject: [PATCH net] bridge: skip generic XDP on locally re-injected packets
-Date: Mon, 31 Aug 2026 19:30:51 +0800
-Message-ID: <20260831113051.13072-1-shxzhaosr@163.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1788176586; c=relaxed/simple;
+	bh=+WX7mQP25t2lxqDFB4cSfx5m9/A1ooQM8MrwPHsLMqE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=YiFEfvHl7EeWHZ2N+sgyHd8ARnYmSYisBN+AjKiq4Ax8rmRSpx+Pi341f5X7FGrViARuGe/pJpBvwoVJc+3g8G4FbmWIGomhzstmmON5DEstfAAMCFNt3OYEkuiX5D8l4nz7bqTVv7KTHcxQ1oPm78OgZpli+ZN4aVwUEBW96g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e6b59d85dcso6400693a34.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 04:43:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788176583; x=1788781383;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=I5LM+0Pjsyiw43Y9OPRtVO7+pR519d5y9NI1syLmG3Y=;
+        b=WcwKvnCyWhaAdI4bvmKoPMBvstcQPmWSEgzXNMg0oyNYIefnXQis6UVVb76JeOuvhO
+         KxoW0zunGmshJV8/2cW0NL3iQBhgKRC2QtVruHIRo7kz1vIApo7f09HoU/xEhER16VaG
+         BomkxxyfNk07TFYmm+WoW3125FB9N/TPYaUaOtdaW7SJ7uWKQ6HfdVfgUv1HyfNxphnT
+         ObaDMcQRSu1SDjW1L5vdb2tyo7sJ0XGH6qTEz5sggYLGXPGsupdCS9MrJL3Bpn1eD4bw
+         Z0Ek/dksGDgB+PBXjFeHXpsiQIdzDGbnLtTln7lRATvaOTTDKiUE4RvfFsCmm9h2q2Up
+         2ItQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpfBAbT3QT5tcauXYNUdplsgsQ/s9YUWvSDIq7OSVatbFzx45zZPDIBJ59gYncHLoIgynvvA4g=@vger.kernel.org
+X-Gm-Message-State: AFuF++lHVw2Yu5hv66PPXUNLdJAjGtKgoAJtG0nu/atIQlEdiQvUJT4d
+	jAIGfb6y5xH+T0y2bHLgBZYP5mdIZxOVDkcy3jXaGDBzzzIuw3cf2n0ATgqEzN8FA8BHRmLyKrR
+	xhoeWVbUU9O6O05wSuaP4pdaHYKD2/UtFumuEj/yhE2yyJmG19O4VSoi4VkY=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnLpjwZpVqCttOSg--.5522S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CFWrXr43Gw1UZF17Kw17Wrg_yoW8uFW8pF
-	W5KF9xKrWkWr1Fvw4jyF18Zr13Ars3CFW5KFW5C34FvwnxGF4rGr92y34jgay5CFs5Wa1f
-	tr1DGr4fWF1DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRNo7LUUUUU=
-X-CM-SenderInfo: hvk06xhdrv2qqrwthudrp/xtbCxhPVFGqVZvPBzwAA3w
+X-Received: by 2002:a05:6808:251a:b0:4b3:7c33:456 with SMTP id
+ 5614622812f47-4b5b81720ddmr416388b6e.11.1788176583352; Mon, 31 Aug 2026
+ 04:43:03 -0700 (PDT)
+Date: Mon, 31 Aug 2026 04:43:03 -0700
+In-Reply-To: <20260831084159.410474-1-junjie.cao@intel.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9568c7.a8e469d2.cbf3.5619.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in __mmap_complete
+From: syzbot <syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, davem@davemloft.net, dvyukov@google.com, 
+	edumazet@google.com, elver@google.com, glider@google.com, horms@kernel.org, 
+	jannh@google.com, jhs@mojatatu.com, jiri@resnulli.us, junjie.cao@intel.com, 
+	kasan-dev@googlegroups.com, kuba@kernel.org, liam.howlett@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, pfalcato@suse.de, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, vinicius.gomes@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-Packets locally delivered by the bridge are re-injected into the
-receive path via br_pass_frame_up() -> br_netif_receive_skb() ->
-netif_receive_skb() with skb->dev set to the bridge device.  If the
-bridge device has an XDP program attached, __netif_receive_skb_core()
-runs do_xdp_generic() a second time on such packets.
+Hello,
 
-A locally-delivered packet that was allocated on the TX path (e.g. an
-MLD packet built by mld_newpack()) does not carry the
-XDP_PACKET_HEADROOM that generic XDP requires, so
-netif_skb_check_for_xdp() calls pskb_expand_head() and reallocates the
-skb head buffer.  This frees the head that the bridge rx path
-(br_handle_frame() / br_handle_frame_finish()) is still using, leading
-to a use-after-free read in br_handle_frame():
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-  BUG: KASAN: slab-use-after-free in is_multicast_ether_addr [inline]
-  BUG: KASAN: slab-use-after-free in is_valid_ether_addr [inline]
-  BUG: KASAN: slab-use-after-free in br_handle_frame+0xcfb/0x1510 net/bridge/br_input.c:349
+Reported-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
+Tested-by: syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com
 
-netif_receive_generic_xdp() already refuses to run generic XDP on
-reinjected packets by checking skb_is_redirected().  Reuse that marker:
-set it right before the bridge re-injects the packet, so generic XDP is
-skipped and the head buffer is left intact.
+Tested on:
 
-Reported-by: syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/6a6d4406.2d659fcc.1d46f5.01ad.GAE@google.com/T/
-Signed-off-by: Zhao ShiRong <shxzhaosr@163.com>
----
- net/bridge/br_input.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+commit:         1bb784eb Merge branch 'net-phy-fix-cleanup-after-probe..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=17e3be25580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=171ebe25580000
 
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -26,6 +26,12 @@ static int
- br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	br_drop_fake_rtable(skb);
-+
-+	/* Re-injected for local delivery: do not let generic XDP run on the
-+	 * bridge device a second time, it could reallocate the head via
-+	 * pskb_expand_head() and free a buffer still in use.
-+	 */
-+	skb_set_redirected_noclear(skb, false);
- 	return netif_receive_skb(skb);
- }
- 
---
-2.43.0
-
+Note: testing is done by a robot and is best-effort only.
