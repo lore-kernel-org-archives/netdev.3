@@ -1,210 +1,203 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012054.outbound.protection.outlook.com [40.93.195.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392EE3BD659
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788158936; cv=none; b=BYPvB/NPFF9CfzFcWe8d/SrOKsKOzZWHZCa5H8EI2IszZbUOpr+W6ruOipW4esEks/APxxyukTbeBgsLxID5PiDhwW3h5ZLZqDbso7IxhRqm0BB/YuSZnF4aP5g5L8BpksuURqFl4Bq5AwffRiNwFZvEK1+JEakBIDtrwfe+iY8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788158936; c=relaxed/simple;
-	bh=OtlIa+OE0zWjsovZ1zYmvcmiIyq6+RX+bn+CJ2yq0es=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZBceQ+Pykvw24bsA9LDTTrYS75gUGHwEv1sVbtco4OSzRJCv1EiT9ynRPGme3TLb7iMSDsZflcJEgH94Va1vjpKMgiCvqDB+KsGBe4e0NtrX6hotoNU1oRpzkJav9knDB6pCQp77JyjDJ/QSJGkgufhXEzYWrvr/lBVrFRedi7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aV4zbXro; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=H2iWwuv/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25283AE1A3;
+	Mon, 31 Aug 2026 06:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788159459; cv=fail; b=k7BjNmSmxl2mkRb6qb6twKeD7vl/fNBX7BXtrwP/ntYEcoE1kbuGUjpR/iU0JxM/WBYnHakquWbVd1gNyZH4M79yJARIlEp9/OyCh8wpbttHU8Cy8WBF2KCkm0VzNvtd1jQROuAGCfhkaaVylYhgRPXw0ZzI8rG0sQE8r+tMDB8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788159459; c=relaxed/simple;
+	bh=rjUySQc2YA/pLN2dO0WHicnpRwoTGvZdJIsUVr30I3M=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GLU5NRMcDaJQ5EnHd/ShQg5nZ2mnvm7slBIQwX1RVwmI8hbRUDi0NMCXk+YSs39p7VSx4R6WrdEFyyTMC+Bi9tv/cqmdy6kiKQLs8Eie5odqbuj2fkum7+UojciPYRGSulOGGHx6OBniYtrvwbLWxNfsPDuQm2fONYskOM5E5aQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ba4jdyMn; arc=fail smtp.client-ip=40.93.195.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aV4zbXro";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="H2iWwuv/"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V52bOW2061074
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:48:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=tCbLbmKY4GcRljOMUqkVhV
-	dQxtRWJPaJL1JlyTIkcdw=; b=aV4zbXrozEosL8DrmQ+0jvVGDfuyw3jZCocJyt
-	xb5GkfnOo1qP0SFrco8JS3ED7ZJzrI7462EfjEf72ccSKIONm41Q4BGAf1O+mga7
-	p46gZjSFmZZ+tIaJfCPkmGm9t++UsBsk4Mhn7VNep+5mY66ud+hQdmP3eacCBIkq
-	FLtyKfZZ8Z5CF1mtVd5B6j/2Odeis9YH1MlSRHLOt+gydWPpEcxJAU0t1l2JLHwX
-	EEiKe2VVhxtIyndmdYnCGbU7qwlbE1LaEd2Fsv+v25ngkUy0yi67gMXMeTnezeHI
-	M9Kd6Bq/RbuKB+H2psZ1X1NeqLobor52alvW56jhnxBXrAog==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gbr6dvwre-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:48:54 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93494527488so525707885a.3
-        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:48:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788158933; x=1788763733; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tCbLbmKY4GcRljOMUqkVhVdQxtRWJPaJL1JlyTIkcdw=;
-        b=H2iWwuv/qs5r5QMxN8R0LULXxb8oF2Dnn5BRkKLC0LlqEjCJ7u/qJMubEN2MrVXhMK
-         l9/bVYhAnm1IZPI66aMfhpxT7qnX9SS2QBbb44K3rWx/ngB4KEFMlju6sGJoE01MubP7
-         s7I/E8BmjaQfsaFbsYg+j9jnODoSmhmWnSFd8CZ8wt/i2GVn2rnldcNtVzpeuvlEFgeY
-         yD6yIpZF1T5nFVcpOXFGCnzw0jybYM2tETSV45SF7Fe+yyeh7DG49kxlc3nnD0IzIu3C
-         a3qs7ylNqW92UinIJSrMM7Zu+yRW0k0EBpslpFg5aCbwuz1UfkEeK8kHdTACIxlTQFGZ
-         kt7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788158933; x=1788763733;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=tCbLbmKY4GcRljOMUqkVhVdQxtRWJPaJL1JlyTIkcdw=;
-        b=d1iVcpdPSwIgsQj0b4m512Brc8svwN2cOqi+hdaYUn8FdaPYF0gaQigut5D/scKj4o
-         ACH1f7keQdmNN6WPIUqBWd730thGUV349qUmdjqv9tedqxxqP39/hTlKrtJqjXqbagW9
-         gX6JmfNT6l0Lz5BL1K2rNjjv2UNVLCC+hDdo8TMIksUHRmipWjoIn6fI7dviHUTAalo+
-         bwWyjPBnOz6ZkKTecGiZhOKnaEQvDds0cL1IZ9vGsGW/vUIZmmAGzI9gEzh9uku4VhPR
-         uq+TV7hPOeY6lLzp9bdxuzKojAertGP5+Pxhr+mqFDAGXyzej7edgCcoXDke8NB4V9fl
-         eg8w==
-X-Gm-Message-State: AFuF++ntwgUSvMwT8viqtZuvxU726JjEfvNfkyt3oxRV98o3SAuiH3qV
-	nId2XZR4SgzABT2VdwCyIsKX7msjHrm1GwRFPOBlRA0x8+EpI5vBVZONitnyB6/aBYDaJELpOvB
-	M72kFrI/zFpE8oHuO5hHMRbNocjxYHED+b8wqjAiUbJm+oNHBfq1gsLKN7QI=
-X-Gm-Gg: AR+sD11zoJYB4gilSGgyALCruH08osREO/Olfxkt91tzyeqcSriy9e5dkYU2WPCkn8m
-	YJ8ODytrP5h8TQlSAhYkbIRhKDXp6RYAlUBb7uE5kYgHhvX5sfKV49wRpbLoajvBq/ApEERC4Pj
-	l7EcIdtnZ1vwclJTrea1+wTzNz8ceMFCYgevfaOJEOhGdtU6WGUQbZOJN5Vs3BD1ASmmHL9up/u
-	rEVyphX1bVXPKVyhPZQznbVIPnj/AfqDjFMw1dW7c0d+jTzIEQFnYizvumvCA368aPxI9nNoZQ/
-	lRjDDer1O2P2kdg2jeUzLmb4Nk25XvQUtrhMH0f5ukjF2kQdaE4g36IsIdlRcqCvQ/NxvNxzzsB
-	IVvaJB3dPHPYcoA==
-X-Received: by 2002:a05:620a:318a:b0:936:9f46:cec8 with SMTP id af79cd13be357-939139040fbmr2328088985a.20.1788158933394;
-        Sun, 30 Aug 2026 23:48:53 -0700 (PDT)
-X-Received: by 2002:a05:620a:318a:b0:936:9f46:cec8 with SMTP id af79cd13be357-939139040fbmr2328086085a.20.1788158932910;
-        Sun, 30 Aug 2026 23:48:52 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b91c52fdbsm200870475e9.0.2026.08.30.23.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 23:48:52 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Mon, 31 Aug 2026 08:48:33 +0200
-Subject: [PATCH net-next v3] net: stmmac: drop the queue-0 pinning for GSO
- frames
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ba4jdyMn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JOkGwIO/eI0Bs6johF/R4UZ/pbUMAXnkkE8lz/Y7jzVNhF4PtDW6cE5EH8e2n/UH+JlcCFQ3ePqE+U3SXm1p80JnCNLeDv8oAjbnCzNNIt7rDI3yuQ5LQU3NRsUC44x4gjbwYokG0wYs1f5u3CGRlhqYIZkSd6lkJW6EmGdKFkUC/E0x4OzLKRfuIHqatF9mEACGRSbusACjqgreuuOPSwiXgX0pYpMyq7pXpYEu8kDYnMP5i4gaBSbkMGSIeEsXVbqp3hlalFMyGP2HmBDFV0cSjvylHG/VMhIvL+YmEuibcZV2lfMecR5ecOSkP/E/SH4hljqmpX1avM8ZK1ZbFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PrOxsmXc558oRTWrhvdFECvfCj6TDr/3GQ1tnhG2Cbs=;
+ b=lGrqJmqmM2tTHP5Gbfx1FepQuJQ+tI0bKFUaeUtvRDN0MlsTAfQP9p5+SwgU24j8CW/tqHjoGVDcw4Ry6+NOS69O4ZHSBzSqHlqENe0tft5daOdxzHpm0jzgusgz/k8J5Vsq1HWLWqdrtDZtHaEKNCsVVH82+Dfy5s3PFTZTPedBXgNxiVFEpJ/aF1DkaUKqTm7yG/8FNv5yt/5XgLznfkTPFhRgY1RKCDIP8BKZNL4xTyv3w0Y+GeyVRlzwgYr4nxjvl9AmrNDsYbvTfiBRAJQDN0pxY8KAxyFug754Sa3nd2Sa4zzm8J0DYL7S8FOtHUm9c+NQodEqaahdQTUnRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PrOxsmXc558oRTWrhvdFECvfCj6TDr/3GQ1tnhG2Cbs=;
+ b=ba4jdyMnL6f+Tkc2TNjnUgH/BRO+oSNEZTTGjGmVFONI/aVQqXlPDSI3rM6H1+V4stU44mmI5slhM0EbO0AsmwNz40Q93bZCgA2RVrjFVPjS+3yZVeQq1OGeX7wgEgFAHL9YOR9OqW/1LLgoPHbEKRplHi3nMhu//qMYFrpgXeM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
+ by MN6PR12MB8565.namprd12.prod.outlook.com (2603:10b6:208:47d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 06:57:22 +0000
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 06:57:22 +0000
+Message-ID: <19708df1-7f79-48c0-b026-3c69eb8c2034@amd.com>
+Date: Mon, 31 Aug 2026 12:27:15 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/4] net: macb: Rename MACB_CAPS_QBV to
+ MACB_CAPS_TC
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
+ Conor Dooley <conor@kernel.org>,
+ Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, git@amd.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
+ <20260807095012.640223-2-vineeth.karumanchi@amd.com>
+ <20260807-juggle-porcupine-71281d2d9041@spud>
+ <DKIX8UXQE9AW.3V3Y8P4USSJDR@bootlin.com>
+ <080ab679-cd69-48ed-b96d-c515741101ba@amd.com>
+ <DL0GSSXQPVDE.2O8IIQA60348U@bootlin.com>
+Content-Language: en-US
+From: "Karumanchi, Vineeth" <vineeth@amd.com>
+In-Reply-To: <DL0GSSXQPVDE.2O8IIQA60348U@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4PR01CA0039.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:277::6) To SJ2PR12MB8953.namprd12.prod.outlook.com
+ (2603:10b6:a03:544::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-stmmac_select_queue-tso-fix-v3-1-d9c215fe7a85@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43NQQqDMBAF0KtI1o3EqRrbVe9RisQ4rQFNqhPFI
- t69IasuSulm4M+H9zdGOBkkdk42NuFiyDgbwvGQMN0p+0Bu2pAZCChFJSQnPwxK14Q9al+PM87
- IPTl+NysXpdZFVba5AGBBeE4Y3lG/MoueW1w9u4WmM+Td9IqzSxb7vxaWjGc817msZKNaAc3FE
- aXjrHrthiENJ/ILfJLVbxICWcpMFg2cpAT8Qu77/gbmu+z0KgEAAA==
-X-Change-ID: 20260807-stmmac_select_queue-tso-fix-06cc586d4022
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA1NyBTYWx0ZWRfX0dciiNl6k/JE
- ehEDxOFMxiR68Bx4IjJ93OjYlTKgT72JFWPgAln1dqZPFdFgdSb7ymsVdFBgBR8GSMRYEjaaNyh
- EJ9SAvjzXBj08Ih1SISrKzPQ1d1YfAOUI85BKdut7ddSIvNuK+lRyMGtqFlVIc84CIOkgoCQxaE
- KJ2X6qjPtUkMtNi/H08sXXRmiG3MnmeTE/N4cijmFwglFWboNOLOct7K1Tpylu8Qae6JXAMZd9L
- zBa+zze2E8q8gPXpgFjQ4upUiWe8BqBd3rw6VQvg2Spe8olKFUF/+mp91hJkMmD3b77nIRfD5HV
- vKmdtOtQx+C6KPwIs5D1GEhpLY+slhvjIgmkY7z4c10fgWfE2Cmy0FSpmJJdVqcZkz/7E1dzdrq
- X56r5EeYHr8nVtcfjBbFNWYgFWcJXkGKNMg8sLrvGWjdKYsWalnUyQ3NTtlL2RrihrxlnmAyc5/
- 28INVPwATr28826yyvA==
-X-Proofpoint-GUID: DNcWsbl1VJK20sl2OGSyb3ju3DwJKr_u
-X-Authority-Analysis: v=2.4 cv=Zakt8MVA c=1 sm=1 tr=0 ts=6a9523d6 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=3NDt2XGU82yDlc6fJAcA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA1NyBTYWx0ZWRfXy/HZm/qBdLim
- MoPq4JNyCDdT8hVyN8+42Z3jTzGiin/A4CypPTFHMhAUf/r+tRUW0AOJ8hHa8i8WsDoFnX1LjEv
- ZgT1D9+M3H42Evyr5/QJ5Gf6JAqDEhk=
-X-Proofpoint-ORIG-GUID: DNcWsbl1VJK20sl2OGSyb3ju3DwJKr_u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_02,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310057
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|MN6PR12MB8565:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3490562d-131d-4086-3fe7-08df072d1aec
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|22082099003|18002099003|56012099006|6133799003|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	xIZRWBMloR8OKg1IgU83Wly9G42DLuMGkCy7azGFXzN1iUXSriMGLdOZ42zE05V0Wgx2NKGbF9u26dlPbVzieebre9XGWbUikTV+LiwZ7Lrow6Tux4iMfoTKi+6AcyTDMkyTJfM+erzo41+GimA/6LJ8LbieW6lvMuFUs2U9rF32oJCCIMh/EAm8qTXOUHQE278AH4SLTzuMtX0E+vHSzSiHJjUgQfA119AGFIF+/kuVQDkCpRBrP99sRHZiEjfQN2/zhAE+Zj12N3fbraUq+nWHDZ/7VbfP6tnfjiPyZTh6UPlAiZT+h8ejwpLoIf0esy+JmSGEUyWE1fLCDuK7Dldz4qC2FYFb92kd13buYBlnSg1BNuFnO4ZlDR4qqQ5eYJDiaQ/qwP9Ax/VqpFvYlsDJXN/MniA4tpTmxEFkESYatLI4oW91m8odBrJbX4lJOe8fCszVL5qBvSSZh7jFvgL101VgLe837b5isItcuoo+I8UbxqofSgVfXla5Hk8S6gploKsJk04SsVUhIv54YPxHLk6DxpOEEyCANvX28HITD9/B4HEtNWFgsD5i/G0FrrkV7FwEARLYhbF4d5eM+gVv3FwFLCtx/abx4Af+pOw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(56012099006)(6133799003)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dXlWQS81aHZMQmt2MFBPeFZwdnU5cURmVlF0VUZVa0l6d3B2NHJScjlCL2xl?=
+ =?utf-8?B?VllkTHZEdUNhT3FlRi9DejU0RnI0WFZiQ2NrVUIyZm5lYTBsbmpoNnN0MTlV?=
+ =?utf-8?B?TFFXbjd1eklnUHlMWGx2Rk15ODdhNmlvNS93MXprNE5DcVVINEtDQlNZWU11?=
+ =?utf-8?B?aUZCb3VraWZCZnIxK2V0U3hKNWFJVVpEcVhTQUswTm5BUm0xaklDbWt4RHhk?=
+ =?utf-8?B?UGJBN0l4c3BEMEJqMzJnVllxZ244NkdZckd1SGNDTlBFdGJ2Sm5kN2N4c0xh?=
+ =?utf-8?B?b2JwQzUwS2NPVld1RHk0eEJGd0FlYWVaOGdjSGQ3YTVCY1FvMFBBbTZLcVR1?=
+ =?utf-8?B?RWtPZU5xUHlTOUt5ZkRFK3FrMnd0dmlORHZFNjRMSElOZ0lYckZ0SmpWRE02?=
+ =?utf-8?B?UkdWTnNsS2NZMUNMTXluZmNtdmtyMW0zRGRVWitGOVcya2JwZUM1WEZQM1RX?=
+ =?utf-8?B?dHNydVB3RDRQYitVd0dyN3B5K3BHcnNHaXpLMmJlOHdaVXJ2MXZtYS94ejg1?=
+ =?utf-8?B?empsN0wzR0Y2TWszOE02VUJNQjRqQVNGaGI2TDdwM3FycUJPdFZUTW53QTFz?=
+ =?utf-8?B?SjBpRExZZElIak1YeEdEbGlxWWxBQWZHM2VhSWpzNUl3SzJrNUhHL3p4L3FU?=
+ =?utf-8?B?SDI1VXhmVnM5WkgrQkMweG94WlM0WXY2NWlzVUU1WEdGUloxVkx0SmpqU2sv?=
+ =?utf-8?B?SkkxeUc5RWhaVFAvN21vbERiN2tBLzdVdGlvTzlDN0ZyK2xxVjU2YlNwM2JP?=
+ =?utf-8?B?VE1yRG1GNGt4N2NKbmY4OElMS2dMY3AzNVlLMUhHQ2Y0Zlk1M2xrYVNmVjNU?=
+ =?utf-8?B?L3NDM09DZERtUXpCa0xaN3ZaYkFTMEdZdzlKb0RDQUdKN2VZRnJMdzBrWWZa?=
+ =?utf-8?B?bndadWhoSE9jTDBKekQyRmo0d1BCa1RJZmJWMVlvbkZ3a2Q2NWFLQXlXNVVy?=
+ =?utf-8?B?VEQ0RHJpMXhOekJoNFZCME11WVgvdG5iaTR2MGMzb21oaDJBNHRCcm1CcHZW?=
+ =?utf-8?B?bjNWMkdSY1VjTWgzY0M1dFB0UkcyK0ROVUpiSHp2OGZ2VU9VeG56MWxaZk80?=
+ =?utf-8?B?ekEyYTZoZWZiQU8vMlJZTnB2VUNTM3hDSElDYlFtbFlZUzBDa0d0RjJzRU44?=
+ =?utf-8?B?RkNyQ0pjcXhacHVJbFZNVXl1aXFNMkcyVFpkQitabEl6Y2k5cUVacHU5ZHda?=
+ =?utf-8?B?OTVyN1RlYUEyS1plQ3NHRHJYb3luaFhqS0llT001ZVFKdVE3Q1pKVkIxc2dN?=
+ =?utf-8?B?dGhjbERta0IyMlZ1VURiZ1dXeGVNRHpYNXZpTEQwVVR3SGNSUmlIZkNmMjFh?=
+ =?utf-8?B?S2JiNWtLcEF3MmM1NUJzWWU0a2V4cVhtNEtoUm4zMnVBN0g1cGdEUTdmVnRn?=
+ =?utf-8?B?ZC91TjlaMW50YU1Sd0crY3ZtcnRkejVPRWYvb2p6TlVOR2xPV2VnNzFqeVhT?=
+ =?utf-8?B?ZlVGV1FyVlFtV2o3SjdWNFdUUG5vUFJXYkFGRXNrdmhkbU1yOVM5UTVzUlox?=
+ =?utf-8?B?Z2c0alQ4VmdoaitKaEhienZ6VFZ5bjU4bEE0eUljdmJ2RzRlNFp4TkxXUkYz?=
+ =?utf-8?B?Y0RmeEVKa3FMTGoxY015SDl0cXpRd05WZ0k2M09MUTZLU3g5NnU4QmlQQ2wv?=
+ =?utf-8?B?R2V3bXNlcGJnNzdSWCt5eVp0SEhEQUNOclliTTQxdWd4V0N0Sjh4cXdXaUJV?=
+ =?utf-8?B?Z25lMERKMmZwZFV3QWdBeW42NlpodHpoOUtMZ2xkcmp6ZGErdUNMT2k1U2g1?=
+ =?utf-8?B?SmprRGlDcmJ3Vm1aUmRPdnBwYkZ2LzV0MWtlcVhvRk0zZWEzREhrQjNEaldB?=
+ =?utf-8?B?UXdsOHlXaEFqMEszb0g2c3lGQktJOTV5UlpjZzJ1b2lYeHFSenV0SFZGN2Ur?=
+ =?utf-8?B?UzJUUXZKMWU4UHY5d09sZWU2SlJMbHJGRElsRFRNTEpOUlQvUEZ6TnNMRHBH?=
+ =?utf-8?B?amFISDlNaEsyY2luMG1qclVVbVhvOVp1U0lsY2xIaFFPWEN0ZkFVMGRlRTAy?=
+ =?utf-8?B?dlRWdzdiMWp5SDNJanJsc0VoT21CempzUVVxNGYxblIxS3JTK1NDazIxeVVp?=
+ =?utf-8?B?U3VEa2xNa3pzLzQ5ZndGTEJzTGc4Zm44WEZEUVFlV3VCWkE0SHNMZXJxT0R6?=
+ =?utf-8?B?VkEyekdzN3hnTmwxcFJNZkszTmxROHlYa3RDR29VcnowenRaNEdUUEEwU2Y0?=
+ =?utf-8?B?SURuYjlqZ3Z1S2RwQ0huZzg3a3EzeEtuaU10QkVlSll6VUM5TElVczNzL1JI?=
+ =?utf-8?B?NUx5RDBsb1dmRG5TVzlGaGFsQWhVdTZvSzJ1ZG9TNllWNXdBNFJ2KytvMkFJ?=
+ =?utf-8?B?QWVSV0RMSHozMDlxUFhjSnlzV1lRQTFSMzVBLzhkdGRWNlhYNXNMZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3490562d-131d-4086-3fe7-08df072d1aec
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 06:57:21.9860
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8PSAkGP2qKA2VTkkYNFBhy1riR2YYPXI5KpEmSjlcUsWfuozhaX75N1xyOil1nj6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8565
 
-stmmac_select_queue() forces every GSO frame (TCPv4/TCPv6/UDP-L4) onto
-TX queue 0, relying on the legacy assumption that at least queue 0 is
-always TSO/USO capable. This is no longer needed since
-stmmac_features_check() already validates each GSO frame against the
-capabilities of the queue it is mapped to, clearing the checksum and GSO
-features for queues that cannot perform TSO (e.g. TBS queues or queues
-without TX checksum offload support).
+Hi Théo Lebrun,
 
-Remove stmmac_select_queue() so GSO frames are selected through the
-regular queue selection path (XPS, flow hashing and priority mapping)
-and can be spread across all TX queues. This also fixes the case where
-queue 0 is not TSO-capable while other queues are, which previously
-forced all TSO traffic into software GSO. Non-GSO traffic is unaffected,
-since the core already falls back to netdev_pick_tx() when ndo_select_queue
-is not set.
+On 8/28/2026 2:51 PM, Théo Lebrun wrote:
+> On Mon Aug 10, 2026 at 12:11 PM CEST, Karumanchi, Vineeth wrote:
+>> On 8/7/2026 11:56 PM, Théo Lebrun wrote:
+>>> On Fri Aug 7, 2026 at 7:09 PM CEST, Conor Dooley wrote:
+>>>> On Fri, Aug 07, 2026 at 03:20:09PM +0530, Vineeth Karumanchi wrote:
+>>>>> The MACB_CAPS_QBV capability flag was originally introduced to
+>>>>> gate TAPRIO/QBV support. However, GEM IP versions that support
+>>>>> QBV also implement multiple TSN clauses.
+>>>>>
+>>>>> Replace this with a generic capability flag that can be reused
+>>>>> by other TSN features. Rename MACB_CAPS_QBV to MACB_CAPS_TC to
+>>>>> better reflect its role as a general traffic-class offload capability.
+>>>>
+>>>> I'm not convinced that this is broadly correct, whether or not there's
+>>>> Qav support (which is what you're using the newly renamed flag for)
+>>>> depends on an IP configuration time define that I think is independent
+>>>> of whether or not there's Qbv support (gem_exclude_cbs).
+>>>>
+>>>> That said, the only platform that supports Qbv that I have the exact
+>>>> documentation for does not disable the CBS bits.
+>>>
+>>> EyeQ5 instances have both active qbv and cbs as well.>
+>>> I see two ways forward:
+>>>  - MACB_CAPS_TC aggregating the two, coming from match data
+>>>  - split and use runtime-detection, see DCFG1/0x0280 bits 1 and 24
+>>
+>> This was the initial plan for the QBV implementation.
+>>
+>> Quoting from
+>> https://lore.kernel.org/netdev/20250814071058.3062453-3-vineeth.karumanchi@amd.com/
+>>
+>> "The 'exclude_qbv' bit in the designcfg_debug1 register varies across
+>> MACB/GEM IP revisions, making direct probing unreliable for detecting
+>> QBV support. This patch introduces a capability-based approach for
+>> consistent QBV feature identification across the IP family."
+> 
+> This is surprising to me! What's the source? Do you have AMD hardware
+> where DCFG1-6 have diverging layouts?
 
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
-Changes in v3:
-- Drop ndo_select_queue() callback and rely on network stack to select
-  the proper TX queue.
-- Link to v2: https://lore.kernel.org/r/20260808-stmmac_select_queue-tso-fix-v2-1-67175b29772e@oss.qualcomm.com
+Yes. The source is the AMD register documentation for Zynq and ZynqMP
+devices. Some DCFG register layouts on these devices differ from those
+on newer devices.
 
-Changes in v2:
-- Take into account when checksum offload is not supported.
-- Link to v1: https://lore.kernel.org/r/20260807-stmmac_select_queue-tso-fix-v1-1-4c4787bad02b@oss.qualcomm.com
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+For example:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f2fc89176654..2eb1c42a7c27 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6426,24 +6426,6 @@ static int stmmac_setup_tc(struct net_device *ndev, enum tc_setup_type type,
- 	}
- }
- 
--static u16 stmmac_select_queue(struct net_device *dev, struct sk_buff *skb,
--			       struct net_device *sb_dev)
--{
--	int gso = skb_shinfo(skb)->gso_type;
--
--	if (gso & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6 | SKB_GSO_UDP_L4)) {
--		/*
--		 * There is no way to determine the number of TSO/USO
--		 * capable Queues. Let's use always the Queue 0
--		 * because if TSO/USO is supported then at least this
--		 * one will be capable.
--		 */
--		return 0;
--	}
--
--	return netdev_pick_tx(dev, skb, NULL) % dev->real_num_tx_queues;
--}
--
- static int stmmac_set_mac_address(struct net_device *ndev, void *addr)
- {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
-@@ -7298,7 +7280,6 @@ static const struct net_device_ops stmmac_netdev_ops = {
- 	.ndo_eth_ioctl = stmmac_ioctl,
- 	.ndo_get_stats64 = stmmac_get_stats64,
- 	.ndo_setup_tc = stmmac_setup_tc,
--	.ndo_select_queue = stmmac_select_queue,
- 	.ndo_set_mac_address = stmmac_set_mac_address,
- 	.ndo_vlan_rx_add_vid = stmmac_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid = stmmac_vlan_rx_kill_vid,
+GEM IP revision: r1p6f4  (revision_reg: 0x40070106)
+For this GEM revision, bit 1 of designcfg_debug1 is defined as
+"serdes", while bit 24 is reserved and reads as zero.
 
----
-base-commit: c4a839e06d0036c9a4af756d24688e0d34a18ca2
-change-id: 20260807-stmmac_select_queue-tso-fix-06cc586d4022
+> 
+> Thanks,
+> 
+> --
+> Théo Lebrun, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+> 
 
-Best regards,
+Thanks
 -- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+🙏 Vineeth
 
