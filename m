@@ -1,81 +1,81 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC6B324B0A;
-	Mon, 31 Aug 2026 09:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93A34B1A2;
+	Mon, 31 Aug 2026 09:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788169991; cv=none; b=o5kATojcKRXiXlOYxyOXXDff9aZvGVdR156SwuCYxkF0FbZkfHuaWk0usyhg2JqWnX+E2wu2YAwrAU0PsqyLGMNhWZhNBB2u7C1oidp4WWdKA8ABhov5TqDhQGwXAK0FiCYf9jvBvBRU+BYntt3Ah65net2S6loMsn1QZIexPLk=
+	t=1788170105; cv=none; b=HurdNcVRAFMjH2J2xqAYZ7PUPokg9lDNeIC3+W6bcrLm6SHwyffer9Rab8b1Ftyk2wyvQMJkhd6+NeezH8Kej+qZIxvK9cORIi82Lp8YhTgS8sIQ6BpZGGEYX50822V0vuq88YGHVbuZleRsLRq9h9uiOssmSrpLFixGXXQfOpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788169991; c=relaxed/simple;
-	bh=NCRQHERr/U7EVQHV8IMGfKlB5b8/3P71llEPGxAFb28=;
+	s=arc-20240116; t=1788170105; c=relaxed/simple;
+	bh=qlLQLnyCXGE9Hp11W4vB8dOZgiLIXNQqM5oc0Xd7VZM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PiusL+qIVX9O21kV/iBZWszgJegBf4o3SREYWwQRuNU9xaNT4Y5eJfdxQVmqlBgF5OSroDBYdYCpKqZYv0M4clpLG64ByD91igF6bU/cbM2ed+vbxqJWYW15zTN9mfU+AL/IsXKIuklC8E5PxMwrGoZb/wTBs32J8qS61rC0y4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Eq7mb0Ev; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LOTfHHpw; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zRUC9Q83; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dWGD/V8d; arc=none smtp.client-ip=195.135.223.130
+	 In-Reply-To:Content-Type; b=LyfrRtOU8PXWkpliFXzEv43XL6A6ZbsoUibhz+XVl4brkREq2lpR7N5NmyNhF1DEXnyXe6y2jwyvK3yCd8fQg7mdTz+yRwxpqQOPUh51DrP/1Pku0ZiFKdJ5yoLoYnYezP6b0YSccmPvWrop1Mpz/J1PkIBCL2No2M1yfRJWUuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=d3oIqSCP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TLP2rkyZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ui08yPzM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/OP5WXl6; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Eq7mb0Ev";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LOTfHHpw";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zRUC9Q83";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dWGD/V8d"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="d3oIqSCP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TLP2rkyZ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ui08yPzM";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/OP5WXl6"
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9BAA921EE5;
-	Mon, 31 Aug 2026 09:52:59 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id ADE7C1FBFA;
+	Mon, 31 Aug 2026 09:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788169983; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1788170069; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
-	b=Eq7mb0EvmfZ/l76Vx834DNYp4qZck+cmG0o40BcFCR6vHXE45ZUq/vTrIlrTzbC6YUhviD
-	Bc1tyYCtrqbrPgT2OeEJrC1KQqiHhTPk2zGJDK/oneHodUPzjcuucst+Gc2VI+PzAclw5d
-	gMXr0hH/j2l/5gstoVmlJtOXO+3h/Q4=
+	bh=H2BHp7IdEBTPw00fqiXSv3SREna7umalwnHvJepzYSM=;
+	b=d3oIqSCPgHoBy2frvH1j3NqgtVcIN63HZIuXXBW84cHlA0sT5bQK9t6QzkNFDgrY6dLq7l
+	KMh8ysQBfwUQkgSEe7TuONLneoti6hAXIbPJV4aVjdzvoqpHbx8Rak3EsLN5156seBroeb
+	o/x8OexpcFnFfrq9zEJzkXyanHS2sMA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788169983;
+	s=susede2_ed25519; t=1788170069;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
-	b=LOTfHHpw3uljn6T2YkQ8YGnxaLXxymz2vTZeqNowxrTnxgKshH6GT8r1TXGE5ouLzSQZHM
-	3Np6UyGBnISrJcDA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zRUC9Q83;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="dWGD/V8d"
+	bh=H2BHp7IdEBTPw00fqiXSv3SREna7umalwnHvJepzYSM=;
+	b=TLP2rkyZOf3VF+3tPj7dIViIVkgvV7GnZrX6chNlaVnbQ9cxk7oTyQWmTpcKtvtazB+gNZ
+	IJMhYgvy4uNXmNBg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ui08yPzM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/OP5WXl6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788169979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1788170065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
-	b=zRUC9Q83B+qR4PqebgQjqzRCNcJ0bZAIZvohmYBYl2dIm7LLj8sXQ2hjRwNXagwSCRSX8i
-	et/NV9JbYCKEZK2qynACPhHe/Ug1+1UYwNxSuQHm4vLBmD/EjaE3AaoQZP1szKZ13TBEvD
-	k2Qo3SvYQ+4cg+Fto6MFCmhkSKVvLfs=
+	bh=H2BHp7IdEBTPw00fqiXSv3SREna7umalwnHvJepzYSM=;
+	b=Ui08yPzMhqGUSTxWNIA2M7u4BKvMCEpKZ0CKty2XXF1ViUrA8XnK7k7v2HJQjakl7ukRKu
+	NyC1aDMGhx9+ZQoQT+GeRAagyjM2hUIlVjjrPwJLn7eJ3x9P3NVeXnUPHMo81II770GN7r
+	tqalzSG74plS7T8lf6p0adAM5RfJ09c=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788169979;
+	s=susede2_ed25519; t=1788170065;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rkqjE07mhBQ9ufIy6ol9Fa6xd8oOl8UHkfPiUnsE2Is=;
-	b=dWGD/V8dILD+/klIiJ3Jskn4P+2MGnTGOkmC8vKAjoDgwmVqOwWdYcBydEOcWcwNBJn63+
-	ZFUk8cOFXm+n1nAg==
+	bh=H2BHp7IdEBTPw00fqiXSv3SREna7umalwnHvJepzYSM=;
+	b=/OP5WXl6QO5MBpmlnY50XXDV6TN+ceC/nlJ+kW9ETXpYry8ksTqqUJxpslpiEc1Lbhu8Oh
+	KVJ2Opg67rJzerDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D056F13682;
-	Mon, 31 Aug 2026 09:52:58 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E465813685;
+	Mon, 31 Aug 2026 09:54:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ToALMPpOlWqDagAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 31 Aug 2026 09:52:58 +0000
-Message-ID: <58a7834d-d095-47a1-99fc-fda4eea35079@suse.de>
-Date: Mon, 31 Aug 2026 11:52:27 +0200
+	id ypPRNFBPlWpyawAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 31 Aug 2026 09:54:24 +0000
+Message-ID: <f47f6b03-4b48-4757-9ed5-006975a6b895@suse.de>
+Date: Mon, 31 Aug 2026 11:53:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/3] netlink: specs: rt-link: add
- accept-ra-min-lft
+Subject: Re: [PATCH net-next v2 3/3] netlink: specs: rt-link: add
+ force-forwarding
 To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
  Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -94,19 +94,19 @@ Cc: "David S . Miller" <davem@davemloft.net>,
  <g.goller@proxmox.com>, Patrick Rohr <prohr@google.com>,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260831093458.472180-1-ast@fiberby.net>
- <20260831093458.472180-3-ast@fiberby.net>
+ <20260831093458.472180-4-ast@fiberby.net>
 Content-Language: en-US
 From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260831093458.472180-3-ast@fiberby.net>
+In-Reply-To: <20260831093458.472180-4-ast@fiberby.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -3.01
-X-Rspamd-Queue-Id: 9BAA921EE5
+X-Rspamd-Queue-Id: ADE7C1FBFA
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	SUSPICIOUS_RECIPS(1.50)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
@@ -126,7 +126,7 @@ X-Spamd-Result: default: False [-3.01 / 50.00];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fiberby.net:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:email,suse.de:mid,linux.dev:url];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,linux.dev:url,fiberby.net:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
 	RCVD_COUNT_TWO(0.00)[2];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
@@ -134,16 +134,12 @@ X-Spamd-Result: default: False [-3.01 / 50.00];
 X-Spam-Flag: NO
 
 On 8/31/26 11:34 AM, Asbjørn Sloth Tønnesen wrote:
-> Add missing enum member accept-ra-min-lft to ipv6-devconf.
+> Add missing enum member force-forwarding to ipv6-devconf.
 > 
-> In commit 1671bcfd76fd ("net: add sysctl accept_ra_min_rtr_lft")
-> the DEVCONF_* enum was extended with DEVCONF_ACCEPT_RA_MIN_RTR_LFT.
-> 
-> It was renamed to DEVCONF_ACCEPT_RA_MIN_LFT in commit 5027d54a9c30
-> ("net: change accept_ra_min_rtr_lft to affect all RA lifetimes").
-> 
-> Shortly thereafter, this spec was introduced in commit b2f63d904e72
-> ("doc/netlink: Add spec for rt link messages").
+> In commit f24987ef6959 ("ipv6: add `force_forwarding` sysctl to
+> enable per-interface forwarding"), the DEVCONF_* enum was extended
+> with DEVCONF_FORCE_FORWARDING, however Gabriel forgot to add it
+> to the spec.
 > 
 > This pre-existing issue was detected by Sashiko, when reviewing the
 > first patch in this series.
@@ -160,15 +156,15 @@ Thanks!
 >   1 file changed, 2 insertions(+)
 > 
 > diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-> index 00c915031efd..ab677801cde8 100644
+> index ab677801cde8..61ebb9a2bad5 100644
 > --- a/Documentation/netlink/specs/rt-link.yaml
 > +++ b/Documentation/netlink/specs/rt-link.yaml
-> @@ -494,6 +494,8 @@ definitions:
->           name: ndisc-evict-nocarrier
->         -
+> @@ -496,6 +496,8 @@ definitions:
 >           name: accept-untracked-na
+>         -
+>           name: accept-ra-min-lft
 > +      -
-> +        name: accept-ra-min-lft
+> +        name: force-forwarding
 >     -
 >       name: ifla-icmp6-stats
 >       enum-name:
