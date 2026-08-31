@@ -1,105 +1,146 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD253CB2C7
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 07:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D7D27E1DC;
+	Mon, 31 Aug 2026 07:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788162923; cv=none; b=s58IDdU4NywmAhhRaj9m/SSGSwtpKH2DnEbDsroq+AxTC0AmuA7vg8O5mbbpwoJjyvKfejzTkgJhUDoH3JoJ6D68r2kN1gTajHmYcuOE0can3woFnFhfojtBpMOf/JsC99SxGUYbtVdYsOgh4M0ukzth+3aaHb3GXEmnRIgpv6g=
+	t=1788163040; cv=none; b=aBHQLtccpzdb97tRvVNZ3pGp72t4WcKyXf42owAWwOWJFS2AKKNoSS5TG0s+GEVToEcjFIFLfsf6MxStCqgAU/jpofhoW3oRAIZ6Vzf/5j0SxfLP/VHcnCXcZP13Pa2/9+hMaq2FkIeNxAUI8uVmulRWuoah8xdk8vpO+FUjuWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788162923; c=relaxed/simple;
-	bh=yjHoKaQwu9MgYW9EUKxF8zoK02BCi/g8yi49iqfsHIE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
-	 References:In-Reply-To; b=sUximKhQarvnGD2WwUt0sWaIZFZXcGo6DwZ/Tg0ZGjmQy7KXO79vnGMLYtwfchXBq+mbSMhiStY0C/McN7t6kU+j262n7tfKs6e+H8asywNV1lGO8aleEZ+9ToFDbWAXL0W1baZLd7Z26BesiwAYZgdyotIv4jVq/9FOW0IJT3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UMV/Z+VO; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788163040; c=relaxed/simple;
+	bh=kbOF8Xis1+b3XyY1U0EPpoTHxr+rl9dG1JOmrg5VWT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fUJxWz2eh7f8D9FpPdbtPxIe9XTVaCy3O/f6tCPkw/aMODhpONZHlLYl+p/w19Ww9ezGnyWzD72o/TPgid2dgbNykGb5eg1ek/ObxXytzv/AGbP9SLfMGFKQjLgPhADu3rB0fzW2fmiCQfzD4r8vpJJGhmaCwOtxv6tQzhtJ0bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=JI1zsoy9; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UMV/Z+VO"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 48FE51A18E2;
-	Mon, 31 Aug 2026 07:55:19 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 156DD601E1;
-	Mon, 31 Aug 2026 07:55:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9660C11C78A32;
-	Mon, 31 Aug 2026 09:55:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788162913; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=M/8EDX4ydfPxhtMVPvjbpWINZcbTB2snrWJzkNm34xw=;
-	b=UMV/Z+VOmoWGsLkG5B6EGFOkya3xBI/Y36knXvWQzT7G5vkUr6rCmmsaKYWMYsduzVhpbf
-	0Vued5LMKPpu2Q2K6WDXjGMwADCagI/5dU7kyO8A3nlPo1bS30ZE+3WA3kt4xECcnuudgV
-	9jsCGf/p/tAZwcXtvNL9kaOOr7ew4F9JczRIFeW6pq6BjWxXj3yAKpQ8zZ1eILU2dDxkq7
-	nA0NzU+2C7qHpH1MZ5X00Kc7ErEd8dhS/JgDKLDoeqBwbYr9DzV8cXo6dy4mpNmsTYQvre
-	SnnUz/8epyT25ZI2AsLKMGnjYu3/Juva39I2ey9pWVvfCVHmgb1pY/jvNe17Rg==
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="JI1zsoy9"
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1788163034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Xcfx++QT4NbKdTFPwcuiqKtrJuKRl9bSwmn5aqpMsu4=;
+	b=JI1zsoy94682tqy5LLnIsCiRyKhBnAEVE0MOBBzgAu9EgvA8U+ZwZcL9mx7cDLLVJLa2Oy
+	51IRllwWyg/u+eVe8Gp57qef/0vyoYXvFKjTeNPmGAc0vA6462a/mnHw/aREQ9op5/beK8
+	PWRJcDlrOk+6QLLaT72w2mEFHv05yVQ=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zero Day Initiative <zdi-disclosures@trendmicro.com>,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 6.1] ipv4: igmp: Fix potential UAF in igmp_gq_start_timer()
+Date: Mon, 31 Aug 2026 10:57:12 +0300
+Message-ID: <20260831075714.23091-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 09:55:09 +0200
-Message-Id: <DL2YUKA3J3CG.1GUS47SLVPRNX@bootlin.com>
-Subject: Re: [PATCH bpf-next v2] selftests/bpf: Track test_xdp_features DUT
- processes
-Cc: "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Jiayuan
- Chen" <jiayuan.chen@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
- "Jakub Kicinski" <kuba@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>,
- "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Emil Tsalapatis" <emil@etsalapatis.com>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Lorenzo
- Bianconi" <lorenzo@kernel.org>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Bochao Cao" <bochaolucky@gmail.com>, =?utf-8?q?Alexis_Lothor=C3=A9?=
- <alexis.lothore@bootlin.com>, "Daniel Borkmann" <daniel@iogearbox.net>,
- <bpf@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260812-xdp-dut-process-lifecycle-gmail-v2-1-b03ef2aa1b97@gmail.com> <d4be160e-703e-46bb-9509-d3d90f6bc34b@iogearbox.net> <DKX99ZAP7GZ8.23U5EOSFB4VPU@bootlin.com> <CAHKNYVXN0DAUzv2Lwm=oQ_K=zhi2iNyTO2e99s5F4M+Kr7u5tQ@mail.gmail.com> <CAHKNYVV8gn-L_unjsxUZV=E+Rx4ouDBJX613_n4hevXP1rivyg@mail.gmail.com>
-In-Reply-To: <CAHKNYVV8gn-L_unjsxUZV=E+Rx4ouDBJX613_n4hevXP1rivyg@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Aug 28, 2026 at 8:10 AM CEST, Bochao Cao wrote:
->  Thanks Daniel and Alexis.
->
->   Dropping the procps dependency is not the primary motivation for
->   this change. I agree that Debian can remove the dependency independentl=
-y.
->   The issue addressed by this patch is process isolation in the standalon=
-e
->   test. The current readiness check may observe an unrelated
->   concurrent xdp_features process, while cleanup may terminate every
-> xdp_features
->   process on the host. In addition, a DUT which exits before listening ca=
-n
-> leave the test waiting indefinitely.
->
->   Although this script is not currently run by the BPF CI, it remains
-> useful  for testing real hardware,
->   so these process lifecycle issues can still  affect users running the
-> test manually.
->
->   Would it be acceptable to fix these issues in the script's current
-> location?
->   If the preferred direction is to move it under
-> tools/testing/selftests/drivers/net/hw/,
->   should the move be submitted first, with this fix rebased on top?
+From: Eric Dumazet <edumazet@google.com>
 
-I have no strong feeling about whether it should be moved or kept here,
-I'll let BPF/netdev maintainers express their opinions here (Jakub
-already suggested in [1] that there are helpers in net testing helpers
-that could help making it move to the net tests). I've added Lorenzo in
-CC, who is the original author of the script.
+commit 7b19c0f81ed1fdaec6bc522569be367199a9edf3 upstream.
 
-Alexis
+A race condition exists between device teardown (inetdev_destroy) and
+incoming IGMP query processing (igmp_rcv), leading to a Use-After-Free
+in the IGMP timer callback.
 
-[1] https://lore.kernel.org/bpf/20240914063828.7bd73c5e@kernel.org/
+During device destruction, inetdev_destroy() drops the primary reference
+to in_device, which can drop its refcount to 0. The actual freeing of
+in_device memory is deferred via RCU (using call_rcu()).
 
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Concurrently, igmp_rcv() runs under RCU read lock and obtains the
+in_device pointer. Because the memory is RCU-protected, CPU-0 can safely
+dereference in_device even if its refcount has hit 0.
+
+However, if CPU-0 calls igmp_gq_start_timer() and re-arms the timer, it
+attempts to acquire a reference using in_dev_hold(). This increments the
+refcount from 0 to 1, triggering a "refcount_t: addition on 0" warning.
+Since the in_device memory is still scheduled to be freed after the RCU
+grace period (as the free callback does not check the refcount again),
+the device is freed while the timer is still armed. When the timer
+expires, it accesses the freed memory, causing a kernel panic.
+
+Fix this by using refcount_inc_not_zero() (via a new helper
+in_dev_hold_safe()) to prevent acquiring a reference if the device is
+already being destroyed. If the refcount is 0, we do not arm the timer.
+
+A similar issue in IPv6 MLD is fixed in a subsequent patch.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260705181756.963063-2-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[Denis Arefev: adapted for 6.1: keep prandom_u32_max(),
+get_random_u32_below() not used here]
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+Backport fix for CVE-2026-72323 
+Link: https://nvd.nist.gov/vuln/detail/CVE-2026-72323 
+---
+ include/linux/inetdevice.h |  5 +++++
+ net/ipv4/igmp.c            | 14 +++++++++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/inetdevice.h b/include/linux/inetdevice.h
+index ddb27fc0ee8c..c846c5e4be00 100644
+--- a/include/linux/inetdevice.h
++++ b/include/linux/inetdevice.h
+@@ -282,6 +282,11 @@ static inline void in_dev_put(struct in_device *idev)
+ #define __in_dev_put(idev)  refcount_dec(&(idev)->refcnt)
+ #define in_dev_hold(idev)   refcount_inc(&(idev)->refcnt)
+ 
++static inline bool in_dev_hold_safe(struct in_device *idev)
++{
++	return refcount_inc_not_zero(&idev->refcnt);
++}
++
+ #endif /* __KERNEL__ */
+ 
+ static __inline__ __be32 inet_make_mask(int logmask)
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index fd12b256e05d..ede991885b1f 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -232,16 +232,20 @@ static void igmp_gq_start_timer(struct in_device *in_dev)
+ 		return;
+ 
+ 	in_dev->mr_gq_running = 1;
+-	if (!mod_timer(&in_dev->mr_gq_timer, exp))
+-		in_dev_hold(in_dev);
++	if (in_dev_hold_safe(in_dev)) {
++		if (mod_timer(&in_dev->mr_gq_timer, exp))
++			in_dev_put(in_dev);
++	}
+ }
+ 
+ static void igmp_ifc_start_timer(struct in_device *in_dev, int delay)
+ {
+-	int tv = prandom_u32_max(delay);
++	if (in_dev_hold_safe(in_dev)) {
++		int tv = prandom_u32_max(delay);
+ 
+-	if (!mod_timer(&in_dev->mr_ifc_timer, jiffies+tv+2))
+-		in_dev_hold(in_dev);
++		if (mod_timer(&in_dev->mr_ifc_timer, jiffies + tv + 2))
++			in_dev_put(in_dev);
++	}
+ }
+ 
+ static void igmp_mod_timer(struct ip_mc_list *im, int max_delay)
+-- 
+2.43.0
 
