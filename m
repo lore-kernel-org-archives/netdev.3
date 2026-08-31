@@ -1,47 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175FE595741;
-	Mon, 31 Aug 2026 13:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D644B270D;
+	Mon, 31 Aug 2026 13:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184279; cv=none; b=TBiRrNcBApeIZGCFhx6UNuLIKOXPpj0puLjwfT9ZF8B3nd/hcgeUgEd/IsccQ3MieWPvYdKKEYSN8D03UOEo7E69f+5+ownO2Mb1I3Ipq+onrus3+yxQlbb8RHVtbL8vkp7wcO3iKUCJFHDRxR9dv8+lo7/yPNKjwq5eabaqUU0=
+	t=1788184290; cv=none; b=cemgsCqNwamPGHqG2qZ0XlutNEmDsfWZzUOlSR4gEJQsCV/GVPtKLQ17EdmVahZFYguVEQbxsyq36s3ixEs1vyR64ggikmfZLgFIzh+kLHikVwvn08EvECFgRzqfM9HmV50WKVYrEChOsNLC+PitdHh3dJEuI5vAC30hIgOVE5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184279; c=relaxed/simple;
-	bh=MFGo9wuqcFy1OaeTjRO8+XEpDfoOa0+pGig6UGW5TEM=;
+	s=arc-20240116; t=1788184290; c=relaxed/simple;
+	bh=4I1T4IkiZFyzlg+b2fsA4mXunk7EqSNP4qXNQxKxb0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k2adEaUNMXzeHaIJip3Xc0TRzdaViUIPMAuOey+Xwth65BEVFq+ARjsSf6t1BGbM8m/W9r+a8T6e7cFX2fjmdLejtvC+ydA9I4UcbnPhyjWZSLCQOghdoknRkLnRlN+5cQh7XQX/2+UIrQMU3C+FZ5sX3/7azkix3FPKs/LAzCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ajLWnB44; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=KVPzRlBLUuMyd/QCzDZgQ16rbr/di3c9cs/fTpA4YPeEPoDjrSRXXZgqTVwSfhcg3JN/OyidOL5pA5pf1Szrx3HIrR4Ta2YLVUdR+x3PDLvaxrRHP680idTbpMFVVTgXNyrkQOJ2EFF/BX1Qm1glxAcoljHFM8exdxMskootF8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnfLGql9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ajLWnB44"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59C61F00ADB;
-	Mon, 31 Aug 2026 13:51:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnfLGql9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191D51F00A3F;
+	Mon, 31 Aug 2026 13:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184276;
-	bh=utPV3/Hfyctc6H1HLah8UnMa23Eh18Ko5bEFsp5BTmE=;
+	s=k20260515; t=1788184286;
+	bh=Jc96r2kipm502LoiSjzQi2ZERDgZ5U3UbwJMjrtntN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ajLWnB4410jPFEKqGRgC37YkrVDG+4Zu9BvMHjs02iM0mluMHFbxwB0hehs2y50Tl
-	 KHhsExYkv2qNryhQWa0/oxHw3Rf4yQytyClGBNggqd3alOpXJA8fE7H+fRekx04ypA
-	 WBqc1MSVa048bFSNEAG/4zb10rzWrOyPt8+wSyMysn9WaYB2Riu8uNzlhgbl3VHDc1
-	 N4ajLbBTqjL6syuBf6wwDZrbdh8iGJMlSYg2OFwiCUJXziiuNK2cs+EjLM4RW6Cwqt
-	 6nzdGTtlKd+0KuVg9HjJ5Lv412HUEDV06rwdykl5l2qG8HzaQN+SNukOujqKvZPL00
-	 ibOAVyOatj/5A==
+	b=cnfLGql9+8W91F12RQPUNtbkfotby7RzYsHTRhAIaV0rL90moQzbtW/92VFNipM59
+	 1JRruVAgZvIuSlBr99HE5HT1NC7W/ayU1kRAm4BIVORQOdhrey7RslF+gHALgpONmG
+	 nyy0Nxmh/KoHTQGHHhDJLp9HJE9z5pByPLy29XmvpRmHt29Talc1jnfoZqF6nNVwpE
+	 +k4+CrWkMxCYIKrwt+ueXgMy+M2zM3hLUgvN6mK3YoCLz+bBQRvbpghDXCZcHdOn3a
+	 28W9batK4Wnzle/L+A52hFopDrHGo0IHJW9WLozUSOTGV7+rh6o6NmiB8FwFB9H2GZ
+	 Ypr6b4I4r0pJA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+Cc: Rosen Penev <rosenp@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
-	john.fastabend@gmail.com,
+	fw@strlen.de,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.1] tls: reject the combination of TLS and sockmap
-Date: Mon, 31 Aug 2026 09:30:24 -0400
-Message-ID: <20260831133314.4125787-596-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] netfilter: nf_conntrack: use get_unaligned_be32() in tcp_sack()
+Date: Mon, 31 Aug 2026 09:30:30 -0400
+Message-ID: <20260831133314.4125787-602-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -57,30 +60,23 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 460e6486617c17dd19abe8f3fc67d9a6fa25f8ca ]
+[ Upstream commit d3bf9eae486490832bd08fd62ab0ac601f346bd4 ]
 
-TLS and sockmap (BPF psock) integration hides a lot of latent bugs.
-Bugs which may be more or less relevant for real users but they
-are definitely exploitable.
+The timestamp-only fast path dereferences the option stream as
+*(__be32 *)ptr, which assumes 4-byte alignment that the TCP option
+stream does not guarantee. Use get_unaligned_be32() instead, which
+reads the value safely and already returns host byte order, so the
+htonl() on the comparison constant can be dropped.
 
-We could not find anyone actively using this integration so let's
-reject this config. Adding a TLS socket to a sockmap was already
-rejected by sk_psock_init() through the inet_csk_has_ulp() check.
-We need to reject the attempts to configure the TLS keys (rather
-than adding the ULP itself) because checking prior to the ULP
-installation is tricky without risking a race with sockmap getting
-added in parallel (sockmap does not hold the socket lock).
+This matches the existing get_unaligned_be32() use later in the same
+function.
 
-This patch is a minimal rejection of the feature. Subsequent patch
-in the series will do a light dead code removal. Full cleanup would
-require a major rewrite of the Tx path, we don't need skmsg any more.
-
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Assisted-by: Claude:Opus-4.7
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -88,364 +84,364 @@ LLM Generated explanations, may be completely bogus:
 
 ## Phase 1: Commit Message Forensics
 
-### Step 1.1: Subject line
-**Record:** `[tls]` / `reject` — reject the unsupported TLS + sockmap
-(BPF psock) configuration.
+**Step 1.1 — Subject line**
+- Record: `[netfilter: nf_conntrack]` `[use]` — replace unsafe aligned
+  32-bit dereference in `tcp_sack()` timestamp fast path with
+  `get_unaligned_be32()`.
 
-### Step 1.2: Tags
-**Record:**
-- **Reviewed-by:** Jakub Sitnicki `<jakub@cloudflare.com>`
-- **Reviewed-by:** Sabrina Dubroca `<sd@queasysnail.net>`
-- **Link:**
-  https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>`
-- No Fixes:, Reported-by:, Cc: stable@vger.kernel.org, or syzbot tags
-- Notable: two subsystem reviewers; commit explicitly calls bugs
-  “definitely exploitable”
+**Step 1.2 — Tags**
+- Record:
+  - `Assisted-by: Claude:Opus-4.7`
+  - `Signed-off-by: Rosen Penev <rosenp@gmail.com>`
+  - `Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>`
+  - `Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>` (subsystem
+    maintainer)
+  - No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, or
+    `Link:` tags
+  - Notable: maintainer review and commit; reviewer independently
+    spotted the same issue
 
-### Step 1.3: Body analysis
-**Record:**
-- **Bug:** TLS + sockmap integration has multiple latent, exploitable
-  bugs; only half of the mutual exclusion was enforced
-  (`sk_psock_init()` blocks TLS→sockmap, but not sockmap→TLS key setup).
-- **Symptom:** Reverse-order setup (sockmap first, then TLS key
-  configuration) reaches broken code paths (UAF, data corruption, kernel
-  BUG/panic — documented externally and in related stable fixes).
-- **Root cause:** `sk_psock_init()` checks `inet_csk_has_ulp()`, but
-  `do_tls_setsockopt_conf()` did not check for an existing psock;
-  checking earlier (at ULP install) is racy because sockmap does not
-  hold the socket lock.
-- **Version info:** None in the commit message; external report confirms
-  impact on 6.12.77 LTS.
+**Step 1.3 — Body**
+- Record:
+  - **Bug:** `*(__be32 *)ptr` in the timestamp-only fast path assumes
+    4-byte alignment of the TCP option stream
+  - **Symptom:** Unaligned memory access on architectures that require
+    alignment (kernel trap/oops); undefined behavior elsewhere
+  - **Root cause:** TCP options are not guaranteed 4-byte aligned;
+    `skb_header_pointer()` often returns a pointer directly into skb
+    linear data at a misaligned offset
+  - **Fix:** Use `get_unaligned_be32()`, matching the existing SACK
+    parsing code in the same function
 
-### Step 1.4: Hidden bug fix?
-**Record:** Yes. Although phrased as “reject this config,” this is
-security hardening that closes an exploitable attack/configuration path,
-not a cosmetic cleanup.
+**Step 1.4 — Hidden bug fix?**
+- Record: Yes — despite not using "fix" in the subject, this is a
+  correctness/memory-safety bug fix, not cleanup or optimization.
 
 ---
 
 ## Phase 2: Diff Analysis
 
-### Step 2.1: Inventory
-**Record:**
-- **Files:** `net/tls/tls_main.c` (+11 / -0)
-- **Function:** `do_tls_setsockopt_conf()`
-- **Scope:** Single-file, surgical change
+**Step 2.1 — Inventory**
+- Record:
+  - 1 file: `net/netfilter/nf_conntrack_proto_tcp.c` (+5/-5 lines)
+  - Function: `tcp_sack()`
+  - Scope: Single-file, surgical fix
 
-### Step 2.2: Code flow change
-**Record:**
-- **Before:** `do_tls_setsockopt_conf()` accepted `TLS_TX`/`TLS_RX`
-  crypto configuration on any socket, including one already in a
-  sockmap.
-- **After:** Under `rcu_read_lock()`, if `sk_psock(sk)` is non-NULL,
-  return `-EINVAL` before any crypto configuration proceeds.
-- **Path affected:** `setsockopt(SOL_TLS, TLS_TX/TLS_RX, ...)` error
-  path; called from `do_tls_setsockopt()` under `lock_sock()`.
+**Step 2.2 — Code flow**
+- Record:
+  - **Before:** Fast path for timestamp-only TCP options used `*(__be32
+    *)ptr == htonl(...)` — aligned 32-bit read
+  - **After:** Uses `get_unaligned_be32(ptr) == (...)` — safe unaligned
+    read; `htonl()` dropped because `get_unaligned_be32()` returns host
+    byte order
+  - **Path:** Hot path in `tcp_sack()` when `length ==
+    TCPOLEN_TSTAMP_ALIGNED` (12 bytes = NOP/NOP/TIMESTAMP option only)
 
-### Step 2.3: Bug mechanism
-**Record:**
-- **Category:** Logic/correctness + security hardening (unsupported
-  configuration reachable).
-- **Mechanism:** Sockmap-first, TLS-second (“reverse order”) bypasses
-  the existing `inet_csk_has_ulp()` guard in `sk_psock_init()`. TLS
-  RX/TX key setup arms strparser/send paths that corrupt TCP sequence
-  state and can trigger UAF (as in commit `1861d369efd62` already
-  present in this tree).
+**Step 2.3 — Bug mechanism**
+- Record:
+  - **Category:** Memory safety / unaligned access (same class as commit
+    `534f81a506879` from 2009 in the same function)
+  - **Mechanism:** `ptr` from `skb_header_pointer()` points at
+    `skb->data + dataoff + sizeof(tcphdr)`. For typical Ethernet+IPv4,
+    options start at offset 54 (54 % 4 = 2), so `*(__be32 *)ptr` is an
+    unaligned access when skb data is linear
 
-### Step 2.4: Fix quality
-**Record:**
-- Obviously correct: mirrors the existing one-way rejection in
-  `sk_psock_init()`.
-- Minimal and self-contained.
-- Low regression risk: only affects sockets already in a sockmap; author
-  states no known users of this combination.
-- Uses the same `sk_psock()` + `rcu_read_lock()` pattern already used
-  elsewhere in TLS code.
+**Step 2.4 — Fix quality**
+- Record:
+  - Obviously correct: mirrors the existing `get_unaligned_be32()` use
+    at line 442 in the same function
+  - Minimal, no unrelated changes
+  - Low regression risk: `get_unaligned_be32()` is already included via
+    `<linux/unaligned.h>` and used in this file
+  - Byte-order handling is correct (constant built in host order,
+    compared to host-order return value)
 
 ---
 
 ## Phase 3: Git History Investigation
 
-### Step 3.1: Blame
-**Record:** `do_tls_setsockopt_conf()` dates to 2017 (`Dave Watson`);
-the missing psock check has been present since the function existed.
-TLS+sockmap integration was added in `d3b18ad31f93` (2018, “tls: add bpf
-support to sk_msg handling”).
+**Step 3.1 — Blame**
+- Record:
+  - Fast path introduced in `9fb9cbb1082d6` (Nov 2005, nf_conntrack
+    subsystem creation)
+  - Aligned dereference `*(__be32 *)ptr` from `8f05ce91c8b801` (Mar
+    2007)
+  - Bug has been present since 2007 in this code path
 
-### Step 3.2: Fixes: tag
-**Record:** N/A — no Fixes: tag in this commit.
+**Step 3.2 — Fixes: tag**
+- Record: N/A — no `Fixes:` tag in commit message
 
-### Step 3.3: Related file history
-**Record:** Related stable-worthy fixes in this tree:
-- `1861d369efd62` — UAF when sockmap inserted before TLS RX (already in
-  6.18.44)
-- `54a3ecaeeeae8` — kernel BUG in `tls_sw_sendmsg` with sockmap
-- `4da6a196f93b1` — sockmap/TLS teardown infinite loop (syzbot, Cc:
-  stable)
-- Long history of TLS+sockmap fixes since 2019 “bpf-sockmap-tls-fixes”
-  merge
+**Step 3.3 — Related file history**
+- Record:
+  - `534f81a506879` (Mar 2009): fixed unaligned access in SACK option
+    parsing loop in the same `tcp_sack()` function (SPARC64 kernel
+    unaligned access reports) — fast path was missed
+  - `bb9fc37358ffa` (Aug 2011): fixed `TCPOLEN_TSTAMP_ALIGNED*4` typo so
+    the fast path actually runs
+  - Standalone single-patch series (v1 only); no prerequisites
 
-### Step 3.4: Author context
-**Record:** Jakub Kicinski is the networking maintainer; reviewers
-Sitnicki and Dubroca are active TLS/BPF contributors.
+**Step 3.4 — Author context**
+- Record: Rosen Penev is a regular netfilter contributor; patch
+  committed by Pablo Neira Ayuso (netfilter maintainer)
 
-### Step 3.5: Dependencies
-**Record:** Standalone. Part of a 5-patch net-next series (`461064-1`
-through `461064-5`); later patches remove dead code but are not required
-for this rejection to work. Cherry-pick to current HEAD applies cleanly.
+**Step 3.5 — Dependencies**
+- Record: None. `get_unaligned_be32()` and `<linux/unaligned.h>` already
+  present in this tree's version of the file.
 
 ---
 
 ## Phase 4: Mailing List and External Research
 
-### Step 4.1: Original discussion
-**Record:**
-- **b4 dig URL:**
-  https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
-- **Series:** v1 only (no later revisions found)
-- **Reviewers:** Sitnicki and Dubroca Reviewed-by in thread
-- No explicit stable nomination found in thread; no NAKs found
+**Step 4.1 — Original discussion**
+- Record:
+  - Lore URL:
+    https://patch.msgid.link/20260525215840.93217-1-rosenp@gmail.com
+  - Single v1 patch, no revisions
+  - Fernando Fernandez Mancera: independently spotted the same issue; "I
+    think this is for correctness too"; `Reviewed-by`
+  - Pablo Neira Ayuso: committed with humorous "Missing
+    put_unaligned_be32(), BTW." (read path only)
+  - No NAKs or objections
 
-### Step 4.2: Reviewers CC'd
-**Record:** netdev@vger.kernel.org, bpf@vger.kernel.org, davem,
-edumazet, pabeni, john.fastabend, sd@queasysnail.net — appropriate
-maintainer/reviewer coverage.
+**Step 4.2 — Reviewers**
+- Record: CC'd to netfilter-devel, netdev, Pablo Neira, Florian
+  Westphal, David S. Miller, Eric Dumazet, Jakub Kicinski, Paolo Abeni —
+  appropriate maintainers included
 
-### Step 4.3: Bug reports
-**Record:** oss-sec report (2026/q2/423) documents “reverse order”
-KTLS+sockmap UAF/data corruption:
-- Sockmap first, then enable KTLS
-- Bypass for CVE-2025-37756 mitigation
-- Confirmed on Linux 6.12.77 LTS
-- Requires `CAP_NET_ADMIN` + `CAP_BPF` (container/LPE context)
-- Recommends blocking reverse-order in `tls_main.c`
+**Step 4.3 — Bug report**
+- Record: No syzbot or user bug report for this specific fast-path
+  issue. Historical precedent: `534f81a506879` documented real SPARC64
+  unaligned-access kernel messages from the same function's SACK path.
 
-### Step 4.4: Series context
-**Record:** Patch 1/5 rejects the combination; patches 2–5 remove dead
-sockmap handling from TLS SW path and selftests. This patch is
-independently valuable without the cleanup series.
+**Step 4.4 — Related patches**
+- Record: Reviewer noted more unaligned-access audits may be needed
+  elsewhere; this patch is self-contained
 
-### Step 4.5: Stable list
-**Record:** No stable-list discussion found for this specific commit.
-Related UAF fix `1861d369efd62` was already backported to this 6.18.y
-tree.
+**Step 4.5 — Stable list**
+- Record: Could not search lore stable archive (bot protection). No
+  stable nomination found in the patch thread.
 
 ---
 
 ## Phase 5: Code Semantic Analysis
 
-### Step 5.1: Key functions
-**Record:** `do_tls_setsockopt_conf()`, called from
-`do_tls_setsockopt()` for `TLS_TX`/`TLS_RX`.
+**Step 5.1 — Key functions**
+- Record: `tcp_sack()` modified; callers unchanged
 
-### Step 5.2: Callers
-**Record:** `tls_setsockopt()` → `do_tls_setsockopt()` →
-`do_tls_setsockopt_conf()`. Reachable from userspace via `setsockopt()`
-on a TLS ULP socket.
+**Step 5.2 — Callers**
+- Record:
+  - `tcp_sack()` called from `tcp_in_window()` when `receiver->flags &
+    IP_CT_TCP_FLAG_SACK_PERM`
+  - `tcp_in_window()` called from `nf_conntrack_tcp_packet()` (line
+    1254)
+  - `nf_conntrack_tcp_packet()` is the main TCP conntrack packet handler
+    — invoked on every tracked TCP packet through netfilter hooks
 
-### Step 5.3: Callees
-**Record:** `sk_psock(sk)` (inline in `include/linux/skmsg.h`),
-`rcu_read_lock/unlock`, existing crypto validation path.
+**Step 5.3 — Callees**
+- Record: `skb_header_pointer()`, `get_unaligned_be32()` — standard
+  skb/conntrack helpers
 
-### Step 5.4: Reachability
-**Record:**
-1. Create TCP socket
-2. `bpf_map_update_elem()` to insert into sockmap (needs `CAP_BPF` +
-   `CAP_NET_ADMIN`)
-3. `setsockopt(TCP_ULP, "tls")`
-4. `setsockopt(SOL_TLS, TLS_RX/TLS_TX, ...)` — **blocked by this patch**
+**Step 5.4 — Reachability**
+- Record:
+  - Reachable from all netfilter conntrack TCP traffic (routers,
+    firewalls, NAT gateways, any `CONFIG_NF_CONNTRACK` system)
+  - Fast path triggers on timestamp-only TCP options (`length == 12`) —
+    very common on modern TCP stacks
+  - Requires SACK negotiation (`IP_CT_TCP_FLAG_SACK_PERM`) — also common
+  - Userspace can trigger via normal TCP connections through conntrack-
+    enabled systems
 
-Userspace-reachable with container-privileged capabilities.
-
-### Step 5.5: Similar patterns
-**Record:** Complementary guard already exists in `sk_psock_init()`:
-
-```758:761:net/core/skmsg.c
-        if (sk_is_inet(sk) && inet_csk_has_ulp(sk)) {
-                psock = ERR_PTR(-EINVAL);
-                goto out;
-        }
-```
-
-This patch completes the other direction.
+**Step 5.5 — Similar patterns**
+- Record: Same function already uses `get_unaligned_be32()` at line 442
+  for SACK blocks (fixed in 2009). The fast path was the remaining
+  unaligned dereference.
 
 ---
 
-## Phase 6: Cross-Reference Against Local Tree (6.18.44)
+## Phase 6: Cross-Reference Against Local Tree
 
-### Step 6.1: Buggy code present?
-**Record:** **Yes.** `git describe HEAD` → `v6.18.44-1-g2736c32da98b9`.
-`do_tls_setsockopt_conf()` at lines 610–624 has no `sk_psock()` check.
-Commit `460e6486617c` is **not** in HEAD history (`NOT in HEAD
-history`).
+**Step 6.1 — Buggy code in tree**
+- Record:
+  - Local tree: **v6.18.44** (`git describe HEAD`)
+  - Buggy code **present** at lines 408–412 of
+    `net/netfilter/nf_conntrack_proto_tcp.c`
+  - Bug present since 2007; not introduced after 6.18 branch point
 
-### Step 6.2: Backport complications
-**Record:** **Clean apply.** Test cherry-pick: `Auto-merging
-net/tls/tls_main.c`, +11 lines, no conflicts. `sk_psock()` available via
-`net/tls/tls.h` → `#include <linux/skmsg.h>`.
+**Step 6.2 — Backport complications**
+- Record: `git apply --check` and `git cherry-pick --no-commit` both
+  succeed — clean apply expected
 
-### Step 6.3: Related fixes already present?
-**Record:** `1861d369efd62` (UAF fix for sockmap-before-TLS-RX) is
-already in this tree. That fixes one specific failure mode; this commit
-prevents the configuration entirely and blocks additional exploitable
-paths the maintainers cite.
+**Step 6.3 — Related fixes already present**
+- Record:
+  - 2009 SACK-path unaligned fix (`534f81a506879`) is in tree
+  - This specific fast-path fix (`d3bf9eae48649`) is **not** in tree
+    (only on master)
 
 ---
 
 ## Phase 7: Subsystem Context
 
-### Step 7.1: Subsystem criticality
-**Record:** **IMPORTANT** — `net/tls` (kTLS) + BPF sockmap; affects
-container/cloud workloads using BPF socket policy and kTLS.
+**Step 7.1 — Subsystem**
+- Record: `net/netfilter` — nf_conntrack TCP tracker. Criticality:
+  **CORE/IMPORTANT** (widely deployed on servers, routers, embedded
+  systems with `CONFIG_NF_CONNTRACK`)
 
-### Step 7.2: Activity
-**Record:** Actively maintained; multiple TLS+sockmap fixes in
-2025–2026.
+**Step 7.2 — Activity**
+- Record: Actively maintained subsystem with frequent stable fixes in
+  this tree
 
 ---
 
 ## Phase 8: Impact and Risk Assessment
 
-### Step 8.1: Who is affected
-**Record:** Users with `CONFIG_TLS` + `CONFIG_BPF_SYSCALL` + sockmap
-enabled who can configure both subsystems (typical in
-container/K8s/service-mesh environments).
+**Step 8.1 — Who is affected**
+- Record: Systems with `CONFIG_NF_CONNTRACK` processing TCP traffic —
+  routers, firewalls, NAT, containers/VMs using conntrack. Not universal
+  (config-dependent), but very common in production networking.
 
-### Step 8.2: Trigger conditions
-**Record:** Deliberate reverse-order configuration: sockmap attach, then
-TLS key setup. Unlikely in production (no known users), but reachable
-and documented as exploitable.
+**Step 8.2 — Trigger conditions**
+- Record:
+  - Linear skb (common) where TCP options start at non-4-byte-aligned
+    offset
+  - Typical Ethernet+IPv4: options at offset 54 (mod 4 = 2) — verified
+    by calculation
+  - Timestamp-only option layout (length 12)
+  - SACK negotiated on connection
+  - **Likelihood:** High on affected architectures for normal TCP
+    traffic
 
-### Step 8.3: Failure mode severity
-**Record:** **CRITICAL** — UAF, kernel BUG/panic, data corruption;
-external report ties to privilege-escalation/container-escape class
-issues and CVE-2025-37756 bypass.
+**Step 8.3 — Failure mode**
+- Record:
+  - Strict-alignment architectures (SPARC, some ARM/MIPS): kernel
+    unaligned-access trap — severity **CRITICAL** (documented precedent
+    in same function, 2009)
+  - x86: usually tolerates unaligned access but technically undefined
+    behavior
+  - No data corruption path identified; primarily crash/trap risk
 
-### Step 8.4: Risk-benefit
-**Record:**
-- **Benefit:** High — closes exploitable security path; complements
-  existing one-way guard and partial UAF fix.
-- **Risk:** Very low — 11 lines, returns `-EINVAL` on unsupported
-  config, reviewed by TLS experts.
-- **Ratio:** Strongly favors backport.
+**Step 8.4 — Risk-benefit**
+- Record:
+  - **Benefit:** HIGH — prevents kernel faults on common TCP fast path
+    in widely deployed code
+  - **Risk:** VERY LOW — 5-line change, matches existing pattern in same
+    function, reviewed by subsystem developer and maintainer
+  - **Ratio:** Strong benefit, minimal risk
 
 ---
 
 ## Phase 9: Final Synthesis
 
-### Step 9.1: Evidence summary
+**Step 9.1 — Evidence summary**
 
-**FOR backport:**
-- Exploitable security issue (maintainer statement + oss-sec report)
-- Confirmed on 6.12.77 LTS; same integration exists in 6.18.44
-- Small, surgical, applies cleanly
-- Completes mutual exclusion already half-implemented
-- Reviewed by TLS subsystem experts
-- Prevents bypass of prior CVE mitigations
-- Related UAF already backported here — this is the upstream-preferred
-  prevention
+FOR backport:
+- Real unaligned memory access bug in hot conntrack path
+- Present since 2007; same function had identical-class fix in 2009 for
+  SACK path
+- Typical packet layouts place TCP options at 2-mod-4 offsets (verified)
+- Small, surgical, obviously correct fix
+- Reviewed by Fernando Fernandez Mancera; committed by netfilter
+  maintainer Pablo Neira
+- Applies cleanly to v6.18.44
+- No new APIs or features
 
-**AGAINST backport:**
-- Part of a larger removal series (subsequent dead-code cleanup not
-  needed for function)
-- Does not block `tls_init()` at TCP_ULP time (oss-sec suggested that);
-  blocks at key config instead — minor gap, but key config is where
-  dangerous paths arm
-- No known production users (low practical impact, but security still
-  matters)
+AGAINST backport:
+- No syzbot report or user crash report for this specific fast path
+- Only affects `CONFIG_NF_CONNTRACK` systems
+- Most severe on strict-alignment architectures (smaller user base than
+  x86)
+- Impact on x86 is lower (unaligned access usually works)
 
-**Unresolved:** No syzbot link in this specific commit; lore thread had
-no explicit stable nomination.
+UNRESOLVED:
+- No explicit stable nomination in mailing list thread
+- Lore stable archive search blocked
 
-### Step 9.2: Stable rules checklist
-1. Obviously correct and tested? **PASS** — simple guard, reviewed,
-   cherry-picks cleanly.
-2. Fixes real bug affecting users? **PASS** — closes documented
-   exploitable configuration path.
-3. Important issue? **PASS** — security/UAF/crash class.
-4. Small and contained? **PASS** — 11 lines, one file.
-5. No new features/APIs? **PASS** — restricts unsupported config only.
-6. Can apply to local tree? **PASS** — verified clean cherry-pick on
-   6.18.44.
+**Step 9.2 — Stable rules checklist**
+1. Obviously correct and tested? **PASS** — matches existing in-function
+   pattern; reviewed and committed by maintainers
+2. Fixes a real bug? **PASS** — unaligned dereference on non-guaranteed-
+   aligned data
+3. Important issue? **PASS** — kernel trap/oops on strict-alignment
+   arch; hot networking path
+4. Small and contained? **PASS** — 1 file, ~5 lines changed
+5. No new features/APIs? **PASS** — correctness fix only
+6. Can apply to local tree? **PASS** — verified clean apply to v6.18.44
 
-### Step 9.3: Exception category
-**Record:** Security hardening / unsupported-configuration rejection
-(similar to prior stable rejections of broken feature combinations).
+**Step 9.3 — Exception category**
+- Record: Not a device-ID/quirk/DT/docs exception; qualifies as a core
+  correctness/memory-safety fix
 
-### Step 9.4: Decision rationale
-This tree (6.18.44) still allows sockmap-first → TLS-key-configuration,
-a path with documented UAF and privilege-escalation potential. The fix
-is minimal, expert-reviewed, applies cleanly, and closes a gap left by
-the existing one-way `sk_psock_init()` check. Even though a related UAF
-was already fixed in `1861d369efd62`, maintainers state multiple
-exploitable bugs remain in this integration. Blocking the configuration
-is appropriate stable material.
+**Step 9.4 — Decision rationale**
+
+This commit completes the unaligned-access fix started in 2009 for
+`tcp_sack()`. The timestamp-only fast path — hit on very common TCP
+packets — still uses an aligned `*(__be32 *)` dereference on data that
+is typically 2-byte-aligned in standard Ethernet+IPv4 layouts. On
+strict-alignment architectures this can cause kernel faults; the same
+failure mode was already documented and fixed for the SACK parsing loop
+in this exact function. The fix is minimal, follows an established
+pattern already in the file, applies cleanly to the v6.18.44 tree, and
+has maintainer review.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed subject, tags, body; identified security-hardening
-  intent
-- [Phase 2] Diff: +11 lines in `do_tls_setsockopt_conf()`, adds
-  `sk_psock()` check under RCU
-- [Phase 3] `git blame`: function from 2017; TLS+sockmap since
-  `d3b18ad31f93` (2018)
-- [Phase 3] Related fixes verified: `1861d369efd62`, `54a3ecaeeeae8`,
-  `4da6a196f93b1` in tree history
-- [Phase 3] `git merge-base --is-ancestor 460e6486617c HEAD` → NOT in
-  HEAD history
-- [Phase 4] `b4 dig -c 460e6486617c`: lore URL found; v1 series only
-- [Phase 4] `b4 dig -w`: netdev, bpf lists and maintainers CC'd
-- [Phase 4] Web search: oss-sec 2026/q2/423 documents reverse-order UAF
-  on 6.12.77 LTS
-- [Phase 5] Call chain: `setsockopt` → `tls_setsockopt` →
-  `do_tls_setsockopt_conf`
-- [Phase 5] `sk_psock_init()` one-way guard verified at
-  `net/core/skmsg.c:758-761`
-- [Phase 6] `git describe HEAD` → v6.18.44; buggy code confirmed absent
-  of fix
-- [Phase 6] Cherry-pick test of `460e6486617c` → clean apply
-- [Phase 6] `1861d369efd62` confirmed ancestor of HEAD (UAF fix present)
-- [Phase 8] Failure mode: UAF/crash/security — CRITICAL severity
+- [Phase 1] Parsed commit message and tags from `git show d3bf9eae48649`
+- [Phase 2] Diff analysis: 5-line change in `tcp_sack()` fast path
+- [Phase 3] `git blame -L 407,413`: aligned dereference from 2007
+  (`8f05ce91c8b801`)
+- [Phase 3] `git show 534f81a506879`: prior SACK-path unaligned fix in
+  same function (SPARC64)
+- [Phase 3] `git show bb9fc37358ffa`: fast path length fix (2011)
+- [Phase 3] `git log --grep`: no duplicate fix for this fast path in
+  stable tree
+- [Phase 4] `b4 dig -c d3bf9eae48649`: lore thread found
+- [Phase 4] `b4 dig -w`: netdev/netfilter maintainers CC'd
+- [Phase 4] `b4 dig -a`: single v1 patch
+- [Phase 4] Mbox review: Reviewed-by from Fernando Fernandez Mancera;
+  maintainer commit
+- [Phase 5] `grep tcp_sack`: called from `tcp_in_window()` →
+  `nf_conntrack_tcp_packet()`
+- [Phase 5] Read `skb_header_pointer()` in `include/linux/skbuff.h`:
+  returns direct skb pointer when linear
+- [Phase 5] Python alignment calc: eth+ipv4 opts at offset 54 (mod 4 =
+  2)
+- [Phase 6] `git describe HEAD`: v6.18.44
+- [Phase 6] Read current file lines 408–412: buggy code still present
+- [Phase 6] `git apply --check` on patch: applies cleanly
+- [Phase 6] `git cherry-pick --no-commit d3bf9eae48649`: auto-merge
+  succeeds
+- [Phase 6] `get_unaligned_be32` already at line 442; `#include
+  <linux/unaligned.h>` at line 17
+- [Phase 8] Failure mode: unaligned access trap on strict-alignment arch
+  — CRITICAL severity class
 
-**YES****Verdict: YES** — backport to this tree (6.18.44).
+**YES**
 
-The commit (`460e6486617c`) adds an 11-line guard in
-`do_tls_setsockopt_conf()` to reject TLS key setup on sockets already in
-a sockmap. That closes the “reverse order” path (sockmap first, then
-TLS) that bypasses the existing `sk_psock_init()` check and has led to
-UAF/crash bugs; an oss-sec report documents this on 6.12.77 LTS.
+ net/netfilter/nf_conntrack_proto_tcp.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-The patch is not in HEAD yet, but it cherry-picks cleanly onto 6.18.44.
-It’s small, security-relevant, and reviewed by TLS maintainers.
-
- net/tls/tls_main.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 39a2ab47fe720..ab30f5de2c658 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -620,6 +620,17 @@ static int do_tls_setsockopt_conf(struct sock *sk, sockptr_t optval,
- 	int rc = 0;
- 	int conf;
+diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
+index e99ab1e88e9f8..4a23edf7107a5 100644
+--- a/net/netfilter/nf_conntrack_proto_tcp.c
++++ b/net/netfilter/nf_conntrack_proto_tcp.c
+@@ -405,11 +405,11 @@ static void tcp_sack(const struct sk_buff *skb, unsigned int dataoff,
+ 		return;
  
-+	/* TLS and sockmap are mutually exclusive. A socket already in a
-+	 * sockmap (i.e. with a psock attached) cannot be upgraded to TLS.
-+	 * sockmap rejects TLS sockets already (see sk_psock_init()).
-+	 */
-+	rcu_read_lock();
-+	if (sk_psock(sk)) {
-+		rcu_read_unlock();
-+		return -EINVAL;
-+	}
-+	rcu_read_unlock();
-+
- 	if (sockptr_is_null(optval) || (optlen < sizeof(*crypto_info)))
- 		return -EINVAL;
+ 	/* Fast path for timestamp-only option */
+-	if (length == TCPOLEN_TSTAMP_ALIGNED
+-	    && *(__be32 *)ptr == htonl((TCPOPT_NOP << 24)
+-				       | (TCPOPT_NOP << 16)
+-				       | (TCPOPT_TIMESTAMP << 8)
+-				       | TCPOLEN_TIMESTAMP))
++	if (length == TCPOLEN_TSTAMP_ALIGNED &&
++	    get_unaligned_be32(ptr) == ((TCPOPT_NOP << 24) |
++					(TCPOPT_NOP << 16) |
++					(TCPOPT_TIMESTAMP << 8) |
++					TCPOLEN_TIMESTAMP))
+ 		return;
  
+ 	while (length > 0) {
 -- 
 2.53.0
 
