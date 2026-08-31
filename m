@@ -1,89 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62C233937B;
-	Mon, 31 Aug 2026 23:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453383E1CE1
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788217872; cv=none; b=AS6/NXDi+r1pvwsc+OY1mnNcXAeTHL2hDEe/nUv60xnqr79UM6ofRD8BSC1Umq4SVc8yNZt0WfMLMDllvbTIHceHlODCGyBbO8sMUTtVIvwen+PNCvm96HRtfqJ5j8Sr2JI0WBS339gYV418HDiji2vYblJth3oAx03okYBvcrs=
+	t=1788218140; cv=none; b=Fi00E9WVC+PteUrPLdXbBxqOyQCrHO43qNqInN8xQmz37Uzdb1Rpp7BW8YfLTzMgwlYdHFVmDNaOlUBfKmYBG6u4F6QOnEXOXm8fviXKF7Sx1aYWLNi5C+6+2cBcTq5N8dvTOW78gk+5uQ8P5WMaV8Tklb8lKTBpZKMcOpMwUO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788217872; c=relaxed/simple;
-	bh=sqsS6BKl8STjFq7GfXiq8I9ZEFb74NVzMfV779gFsDo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TDr1LBa4NXnqhXOuD2zJjqh+mV1Bk/rMweiKGjZn20OdVeuf200CsQfNKP5bxO1S7oZjyr96YzVzx6BcU8L9YIQNxhHAl/CLua1537QVGgna54nNuQBoKxwoPgtaWeJazWyULlBVfS5rzlUZc5EtH0ZSvmnGvNXZbw/SbgKwZQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oX6ODcHo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788218140; c=relaxed/simple;
+	bh=nLjNT1G5JUYYPrhknY0eB9x0ZjckXKrDo9yhKokRjVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q7HVxYAOtZrpTQM+nkM/ODmtS9tSUgEYjMdueEQ8ZV2Agxbx0y2j+o7BZhYzz4Lj0LaC7vbWAXljRYT1PL+SZP5hHMnZ9CKGDjKO5FXx6Y9T74N+e/SfEVolY0mn7CGPWyrlCZ9g9XfyYNQIkRFJN9JjuGBUs1TeiG+RZI6wjoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NDowiLX+; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oX6ODcHo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9511F000E9;
-	Mon, 31 Aug 2026 23:11:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788217871;
-	bh=fTvMy9rkDvERCx3/039j8BN+T2TnfGQtKGFL2YL5wgg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oX6ODcHo5Q0NUKFnMGRfwRkvOhR1nxoi7SYLAxbyYgxP/j4t/YYyoQh4UNLZ2FhMx
-	 qVJ9zweTIJbufmIVS9kbCkMDsg4vLvdgYa5EOyZy8wzTU481SRC+E7x0iHBeAlo/iJ
-	 OCLlbLMEeszsi0jvUyR4fx2HDOOu1MYuHJdtfkD2N+jh+d7/Yh0xDTGD8Lol3AmGpj
-	 pKkV0r/JsEHVdd86e7xgvtAOzABXFoNANmJbLSO/mr9DGgM9ishHt+NJmOFpJUyv9j
-	 bgqSzD43hVsjbBOiqY6C5V0qCVc7BhbF6E86jhmzQO0da5i3hQLKScLmmA4TSyu7Nr
-	 sAXGai2qQNS1w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BAE3924471;
-	Mon, 31 Aug 2026 23:10:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NDowiLX+"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48431648f33so307898f8f.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 16:15:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788218137; x=1788822937; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4Cbbg1ZOVRL0U5f2uy8yCobIVDqIxQsXjzjOSTe5SUM=;
+        b=NDowiLX+9lFsVlgSpsbSBI75OdoGWkBcd3+W3sPqomHUJpEOngiZS3JDPCNK1zCk4D
+         PcT9p7Nna0HxKYETKWidlLgKKejGVXkefLQCYsmapqoXMMXjOwnN/bL19XZlsyqt44Ao
+         iAzD2ha+jTDygPTOv/mws4TcV37rJ4rQJo+0hg4NJn5xqvKQq9rqFtypGeCFvGNYL9yf
+         wL4rQSduJCopY8p2S0Oet+5tRnKQoH5kWpK4ERvz2J53riqnNK6rp+mSgeWsn6KLmSh8
+         4LbJUyeF8HWyWUKI6vTvLDaOC2J31Wmjjr7D0Bvn1WXm3mFpepcxRKG3saI/T19WDCC+
+         VQ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788218137; x=1788822937;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4Cbbg1ZOVRL0U5f2uy8yCobIVDqIxQsXjzjOSTe5SUM=;
+        b=q0gz5j+ZLMLcyEUm5PtUB8CrnEvGPUNj5G2RiTVd5YvDzHZfpA6kV09I33w0IxZ1df
+         gJUPx4NFvVXxijQ6y6Po3vXm3vbVL8C0c0rCFyyYhBuJSb3w3df/EFNn/lathugnFtTz
+         vPDP/CAUlv+gya61EVEZhkBMLlO0+l8Fc8eWBS4GqNjVMyQSFOsQGTtpj9LORNojQ0Zz
+         o/RHMoem6q7sHnwZipYUh9SEQ1MLT+DlOWnzoPE0h4PzvG4Bdmbhg6x/LiSk6wvo6HD2
+         7sS5aCuVLMu13rV24wnzJJzkvvS/9WwlO37BVlyVToYRynhCPslvhDVPUMqxz7mDWE7r
+         HEfg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp48JeaW1C7EmATdqIpuC9SboxABIPLoZtZqyGx+2NoAo/uWK0nCg/Emhn/sOEGP2wgZQZS34c=@vger.kernel.org
+X-Gm-Message-State: AFuF++m91tGkDphvQ5laoiQLfTcnVIOK2jw7SAQx2kVa4pVZ69Ia+OrA
+	3bwxloKOx9zELNAKedf+/O7BkPCwWKMooXQn9nPoD+emwNkgYXTv91wl
+X-Gm-Gg: AR+sD10gbGRzN2hbzsIRfi/pGAR3NqxGdZk8W00SvppQzc2jVV5CajGtAKXTZNWwFSy
+	DPOjAGbUoBYrUGP/yhgPb0CDPebdmptYnAxQqROeitK7kSxuqzPhSYGsGoaf71G+MnmrtvFc/Wg
+	KS/UQSobaacZf1MOTYSimRdqvUL5Go8hYadpvZH9cALVoiR5xZwbH9vBbbk3/lj/6qelllHOpCd
+	h9PUaf9ITXjzXgy9iWIrfhwRxA1RPTZpQzHV38byBG6zeWI2ZlmbIAMjlvL/berLOWb0sqjjqBM
+	gCfgnBfheLVBxvMHlHnGPZ/1n40N+ektl0nF+nA5ZH8TsI28H+EP0jL3WuwB/eWHeep0PC5PDsF
+	D0mYbu94x5vvR2UC72wXHIe7Fh1IaZI2epzP02BbFpR87R0TxfNFm61Zzwdr9S03JVN7c3LfMN5
+	Q6/Kl6EutECnkWMbnelRkUh7pKgqhrymcGXKzx/Zkyt/r/or6ECPr6PZgbzZQd9NVKXK4gTKsSd
+	brcVvhh/yYHhoFeGuxM64V1v4du17AHsj0LC/LdxgpZveZQv3ljuohdZbvSz4QdGMe4KBwGj+b5
+	8aCvsl2zp1zMfnbbDLJhRse4t54GxiDhA/Q6hgFLcq5sAkeSIOARqG7cMvzb0u4=
+X-Received: by 2002:a05:600c:6819:b0:493:f783:c46a with SMTP id 5b1f17b1804b1-49cdd41ca5amr23361785e9.6.1788218137195;
+        Mon, 31 Aug 2026 16:15:37 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-acb9-0201-68d0-34d2-ad1a-175a.310.pool.telefonica.de. [2a02:3100:acb9:201:68d0:34d2:ad1a:175a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d6e9cfsm957147f8f.22.2026.08.31.16.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 16:15:36 -0700 (PDT)
+Date: Tue, 1 Sep 2026 01:15:33 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: stable@vger.kernel.org, Florian Westphal <fw@strlen.de>, 
+	Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Mukul Sikka <mukul.sikka@broadcom.com>, Keerthana K <keerthana.kalyanasundaram@broadcom.com>, 
+	Stefano Brivio <sbrivio@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>, Bin Lan <lanbincn@139.com>, XiaoHua Wang <561399680@139.com>, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1.y 6.6.y] netfilter: nft_set_pipapo: restore cloned
+ mapping table memcg accounting
+Message-ID: <apYKQbvpIWvY8Jqi@gmail.com>
+References: <20260831194905.45045-1-kmehltretter@gmail.com>
+ <apX9AZoNkpVrBMIE@chamomile>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v7 0/4] Fix to possible skb leak due to race condtion
- in tx path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178821781389.824292.6884805679994851550.git-patchwork-notify@kernel.org>
-Date: Mon, 31 Aug 2026 23:10:13 +0000
-References: 
- <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
-In-Reply-To: 
- <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
-To: Selvamani Rajagopal <selvamani.rajagopal@onsemi.com>
-Cc: parthiban.veerasooran@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- Selvamani.Rajagopal@onsemi.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Parthiban.Veerasooran@microchip.com,
- andrew@lunn.ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apX9AZoNkpVrBMIE@chamomile>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 24 Aug 2026 14:57:57 -0700 you wrote:
-> Now the traffic is handled in threaded IRQ, and the
-> disable_traffic flag is checked before handling the
-> data, new race condition is exposed, in which
-> buffer may leak, if threaded IRQ interrupts the
-> trasmit path midway.
+On Tue, Sep 01, 2026 at 12:15:29AM +0100, Pablo Neira Ayuso wrote:
+> > 
+> > Fixes: a4983e89e3b1 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
+> > Fixes: 32bad10de347 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
 > 
-> With this change, disable_traffic and waiting_tx_skb
-> pointer are protected by spin lock/unlock pair.
-> 
-> [...]
+> This two Fixes: tag do not make any sense to me.
 
-Here is the summary with links:
-  - [net,v7,1/4] net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
-    https://git.kernel.org/netdev/net/c/5443d9c4f55d
-  - [net,v7,2/4] net: ethernet: oa_tc6: Improve the error recovery
-    https://git.kernel.org/netdev/net/c/172c974113bf
-  - [net,v7,3/4] net: ethernet: oa_tc6: Disable tx queues on fatal error
-    https://git.kernel.org/netdev/net/c/349c36636587
-  - [net,v7,4/4] net: ethernet: oa_tc6: Fix for the wrong data type
-    https://git.kernel.org/netdev/net/c/3cc2aa96b971
+The two Fixes tags are for the two stable branches:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+- a4983e89e3b1 is the 6.1.y backport
+- 32bad10de347 is the 6.6.y backport
 
+Both backports changed this allocation from GFP_KERNEL_ACCOUNT back to
+GFP_KERNEL, which introduced the regression. The accounting was correct
+before these commits.
 
+I used one Fixes tag for each target tree. I am not sure what the usual
+preference is here: one common patch with both Fixes tags, or separate
+patches for each tree. Which do you prefer?
+
+Thanks,
+Karl
