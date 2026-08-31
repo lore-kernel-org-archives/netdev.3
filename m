@@ -1,338 +1,129 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4742D3C108C
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAD23C7685;
+	Mon, 31 Aug 2026 12:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788180293; cv=none; b=uNvVGxTapyDSft3Rir3YvdmDucAZeQNxMvQpHMBAMbD1xIAeKiEuqmgl8SaljisFWut0P2R+FcpPtZ/9GV3iylwBlk5P5sS9+a5B/6+rxrrMilTwqNDVknEkV9tMGQf5hKVEcAl2CCqN0DrG+9p5WDaKCyenIZ/89QbIIfivn5c=
+	t=1788180379; cv=none; b=rZc39mOVeFTLkcYD5Dtz9octvQalIoe/C92S9uiceny2GcwR6bkMyE+lf5IbxKGhpoPdxHbL46DKovW+EDZBomY25ZPo4ivk24E63H1lyv/vbkP44YoStM5OA6qnj3iUHIbk42vHDdr7tkmcC37/OvXezSL64PAf1rKXDD+W66w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788180293; c=relaxed/simple;
-	bh=Y+GcS7MKcJ9WAWTld827Ee0hYnv+7LO8P4Co49AR2Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEfiXXCHWR3yROWxcyVVrB2AHk6gTpXi8jippV1UE18GGwiu9eCmnBlq0qA4zXXXbBIXL9XncgZrF/OmJ2SnvRWfxEGVvfS0yR6SYXS0viVE+zF3Iw2i1a/ygNe6pZBYhxSC6uq2PX0sd0YRPnut0Bb1PGEjO7kYNQ/KGScpbJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dqae6pdY; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788180379; c=relaxed/simple;
+	bh=AP9kz7HGy+8wQj+tsTGyt1b1AyOIKox0uGop4bIJMXY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eU7W3rKGuF7FCk4XiJ8jDSS3CLlJR/X5IbJcwHDgz7vJTXkrK0pjpJ99ccazY9SUdfjoC0dUKgEzm7X0MvsMg76EHuTp6Pm4DGj+m1tI0TbTQ7brNUFozVTKEGfNaYKk8Q5vYpij7qFBth+N1LRdhwmluuMaLgVM7bYivsTzI8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=clGR40LC; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dqae6pdY"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c25b3c641fbso5455366b.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 05:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788180285; x=1788785085; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+l/jYcEEQatfIkpil8/A0aHb7dyDh4iAxN5e3uvmv9w=;
-        b=Dqae6pdYS2n/1ija5OQhFQ2C+HJnd1GYvzGu2seIYGoD1As2C40jXggHi1KYWdxhs7
-         /up588NDSvIxZOzQhDbokQmSjLOxs3MHfqLyOmpRPzcf+G0bJKXJjdrV5/WWGksgsuvH
-         5OlioJrRYZtnOedrsPW4m/i/EKps6lZVsnZKdMHHLyZL8/QxD3HXEeM0GIl1q0anVHnO
-         RgUUfWT3E49PoL2S+A5onL4eekUSG2WBx4aBSz9J7k8r2CsQ45hu2+3DIPHC8180frrv
-         +NCd2n5mAcoSVSR01jfDVmWa2kY+wKiWxEPHm5YxmeB1NL1Uj6HPnOpGh4/Byd0JVHHJ
-         XEdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788180285; x=1788785085;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+l/jYcEEQatfIkpil8/A0aHb7dyDh4iAxN5e3uvmv9w=;
-        b=RnI2+YHu2DCbR1IQW0/6pKCfXB1cZLUPpxqk9uJun0bhnYZzUqj+bpst7lPTmz1aXS
-         h7L/BtyOFD2iINrvXxwry8W292ni4vWo0+gmFCzqQYSPd8zwHNXjJWxXi2CqcPq38niX
-         xCE5RQBjNfOznSTLZUl8fzo3H9ybNFHWxguUrig8NanR6HybhTqqIb4ai81XhxUlC+BH
-         giTqNJFMDPpAeYsl9k7R0X6epKptqLpVmEr3gfMRNCUK9Z7mqpxCnrQj80nE5ndHr8n6
-         hF7X9uZ4g2IPUMVYT/SSeRX0i5NFBwCapQRkCyiohMQcEbZqzTEA0cN/2Tve1P8mm9R5
-         SoOg==
-X-Forwarded-Encrypted: i=1; AHgh+RqSYEd0rX7EHRkwiIbYnzWBiDuRU85o3MgAgfN7sZW9sg212zPVd4hBO6qRjcAASf5jh5H/Ty0=@vger.kernel.org
-X-Gm-Message-State: AFuF++kXWdDFXzW52dFgHWkCsdjs3165dmNtP4zU2DkrIs5z2yvhZMcT
-	UQj3hxlLwMUbQ8BnVgNv+ouRDbywC+iRdJdM3AD8MGL5pzLkqR5nliTQ
-X-Gm-Gg: AR+sD10VCZszHfpRhXJVlIxcUnagqFHlC8DEZLSNh3gOu+NA6/Sspyx9hoOI33rifev
-	aJFjN95zVYXqO2QWA2vAIbriUIy84IcRTm+ReXmqUObXrU0gkLkPdaKBuQRUNTysXrHqt0wK4qB
-	nQaaR4H7nxUCVokrIU+7XeBehQpNbBkLmLOOL/fn81Labmht7C1RCopPc6c6q0TLILqW4KG5Tud
-	//shNDjnF3b26kR89UQmZKnh9QozvytqSjSnIBN3Wdc6LtHTt6uV0WjEQlYJxe0KDsSpOh+JYOT
-	OVGh2b3tb7VftFKkHrTLWX9NPg+PuJGxnqjVxM05ol4seGu2NrbclCzamgAHrRy2lYN/Nm922PP
-	/6Sn6MiF+2DWT6HBEYrM2DLJSbwKqfR3Py+vB18ZhICR614I65mNjbfTnXSuAhPLpldqE8qGK3M
-	YMWD9zhKWcpfZs9PP06udqv0GEowmp0782LXrUaxwRhzXObId/8t/fWQcheyfvSS9OINmu
-X-Received: by 2002:a17:907:9345:b0:c15:e8c8:340 with SMTP id a640c23a62f3a-c25b3df5160mr9312866b.23.1788180285109;
-        Mon, 31 Aug 2026 05:44:45 -0700 (PDT)
-Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee288afsm424015266b.23.2026.08.31.05.44.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 05:44:44 -0700 (PDT)
-Date: Mon, 31 Aug 2026 12:55:25 +0000
-From: Anton Protopopov <a.s.protopopov@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
-	kpsingh@kernel.org, matt@bobrowski.net, john.fastabend@gmail.com,
-	brauner@kernel.org, paul@paul-moore.com,
-	torvalds@linux-foundation.org, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, martin.lau@kernel.org, yonghong.song@linux.dev,
-	mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 5/7] selftests/bpf: Add netdevsim helper library
-Message-ID: <apV5ve1dvk5KUkCm@mail.gmail.com>
-References: <20260831110934.241898-6-a.s.protopopov@gmail.com>
- <e2e1c4e876bd26ab17b88d70f0eb96cb56b81ed16358f3ef529a3b224324634f@mail.kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="clGR40LC"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=qJxxsAivN8MHsK2efoQ9PRdDBLYPrZVK1pXp6XxoRTA=;
+	b=clGR40LC0wrhCmVUdcS1Q5jXpWyI57zv3NxbzMuR9xgAkovleCDLvAlwm+Xfu8UsgicAbvrG8
+	8WoNszDBuAq9mSgodGYrUmuMjqWxiNnWrNDbd3Y9Y9IX02tPHqwFqXzCidHH6BDfnJ3j7k64F41
+	EZVEeOxV405iLcbnwSV0QFA=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hYT3Z6DG4zcb4j;
+	Mon, 31 Aug 2026 20:35:22 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1CE1040575;
+	Mon, 31 Aug 2026 20:46:05 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 31 Aug 2026 20:46:02 +0800
+Message-ID: <0e26fbf2-3dfe-4c73-819e-8255289f7610@huawei.com>
+Date: Mon, 31 Aug 2026 20:46:01 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e2e1c4e876bd26ab17b88d70f0eb96cb56b81ed16358f3ef529a3b224324634f@mail.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/11] super: Use acquire for SB_BORN check in
+ super_cache_count()
+To: Jan Kara <jack@suse.cz>
+CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <bcrl@kvack.org>,
+	<tytso@mit.edu>, <adilger.kernel@dilger.ca>, <libaokun@linux.alibaba.com>,
+	<ojaswin@linux.ibm.com>, <ritesh.list@gmail.com>, <yi.zhang@huawei.com>,
+	<pmladek@suse.com>, <rostedt@goodmis.org>,
+	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
+	<senozhatsky@chromium.org>, <akpm@linux-foundation.org>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <socketcan@hartkopp.net>,
+	<mkl@pengutronix.de>, <kuniyu@google.com>, <willemb@google.com>,
+	<jhs@mojatatu.com>, <jiri@resnulli.us>, <kees@kernel.org>,
+	<cyphar@cyphar.com>, <tglx@kernel.org>, <liuhangbin@gmail.com>,
+	<sdf@fomichev.me>, <nb@tipi-net.de>, <linux-fsdevel@vger.kernel.org>,
+	<linux-aio@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-can@vger.kernel.org>
+References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
+ <20260825095422.3166067-7-ruanjinjie@huawei.com>
+ <2uxxlu75vyo7iayzz2udisjmu7dhyiyboiuodriksmorz37cha@3mzh2vwrmafw>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <2uxxlu75vyo7iayzz2udisjmu7dhyiyboiuodriksmorz37cha@3mzh2vwrmafw>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
 
-On 26/08/31 12:07PM, bot+bpf-ci@kernel.org wrote:
-> > diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-> > index b481b867f372e..c21f89dbe70c0 100644
-> > --- a/tools/testing/selftests/bpf/Makefile
-> > +++ b/tools/testing/selftests/bpf/Makefile
-> > @@ -862,6 +862,7 @@ TRUNNER_EXTRA_SOURCES := test_progs.c		\
-> >  			 unpriv_helpers.c 	\
-> >  			 sysctl_helpers.c	\
-> >  			 netlink_helpers.c	\
-> > +			 netdevsim_helpers.c	\
-> >  			 jit_disasm_helpers.c	\
-> >  			 io_helpers.c		\
-> >  			 test_loader.c		\
-> > diff --git a/tools/testing/selftests/bpf/netdevsim_helpers.c b/tools/testing/selftests/bpf/netdevsim_helpers.c
-> > new file mode 100644
-> > index 0000000000000..fbed7442b2e8d
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/bpf/netdevsim_helpers.c
-> > @@ -0,0 +1,176 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <errno.h>
-> > +#include <fcntl.h>
-> > +#include <linux/rtnetlink.h>
-> > +#include <poll.h>
-> > +#include <stdarg.h>
-> > +#include <stdio.h>
-> > +#include <string.h>
-> > +#include <sys/socket.h>
-> > +#include <time.h>
-> > +#include <unistd.h>
-> > +
-> > +#include "netdevsim_helpers.h"
-> > +
-> > +static int echo(const char *path, const char *fmt, ...)
-> > +{
-> > +	char buf[64];
-> > +	va_list ap;
-> > +	int fd, len, err = 0;
-> > +
-> > +	va_start(ap, fmt);
-> > +	len = vsnprintf(buf, sizeof(buf), fmt, ap);
-> > +	va_end(ap);
-> > +
-> > +	fd = open(path, O_WRONLY);
-> > +	if (fd < 0)
-> > +		return -errno;
-> > +	if (write(fd, buf, len) != len)
-> > +		err = -errno;
-> > +	close(fd);
-> > +
-> > +	return err;
-> > +}
-> 
-> A subsystem pattern flags this as potentially concerning: the guide
-> directs reporting when a test hand-rolls sysfs/file I/O instead of using
-> existing utilities that the subsystem already provides.
-> 
-> Looking at echo(), it implements the open(O_WRONLY)/write()/close()
-> sequence that write_sysctl() in test_progs.c already performs for BPF
-> selftests. Could this reuse that existing helper?
 
-Thanks robot, all comments here and below make sense.
-I will simplify this in v2.
 
-> > +
-> > +void netdevsim_destroy(unsigned int id)
-> > +{
-> > +	echo("/sys/bus/netdevsim/del_device", "%u", id);
-> > +}
-> > +
-> > +static int create_new_device(void)
-> > +{
-> > +	unsigned int id;
-> > +	int err;
-> > +
-> > +	/* if 10K is not enough, then something is clearly not right */
-> > +	for (id = 0; id < 10000; id++) {
-> > +		err = echo("/sys/bus/netdevsim/new_device", "%u", id);
-> > +		if (!err)
-> > +			return id;
-> > +		if (err != -ENOSPC)
-> > +			return err;
-> > +	}
-> > +
-> > +	return -ENOSPC;
-> > +}
-> > +
-> > +static int open_link_socket(void)
-> > +{
-> > +	struct sockaddr_nl addr = {
-> > +		.nl_family = AF_NETLINK,
-> > +		.nl_groups = RTMGRP_LINK,
-> > +	};
-> > +	int fd;
-> > +
-> > +	fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE);
-> > +	if (fd < 0)
-> > +		return -errno;
-> > +	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr))) {
-> > +		int err = -errno;
-> > +
-> > +		close(fd);
-> > +		return err;
-> > +	}
-> > +
-> > +	return fd;
-> > +}
+在 2026/8/31 20:29, Jan Kara 写道:
+> On Tue 25-08-26 17:54:17, Jinjie Ruan wrote:
+>> The active SB_BORN check in super_cache_count() pairs with the
+>> smp_store_release() in super_wake() when publishing a newly initialized
+>> superblock.
+>>
+>> Replace the historical independent smp_rmb() barrier with an acquire load
+>> on sb->s_flags. This expresses the publish-subscribe pattern more clearly
+>> and allows weakly-ordered architectures like arm64 to utilize efficient
+>> native instructions (e.g., LDAR) instead of a full one-way barrier.
+>>
+>> Also update the outdated comment to correctly point to super_wake().
+>>
+>> Assisted-by: Gemini:Gemini-3.1
+>> Assisted-by: DeepSeek:DeepSeek-V3
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > 
-> The subsystem guide also flags this pattern: open_link_socket() appears
-> to duplicate rtnl_open(&rth, RTMGRP_LINK) from netlink_helpers.c, which
-> does the same socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE)
-> plus bind() with nl_groups set to the subscriptions parameter.
+> Looks good. Just one nit below. With that addressed feel free to add:
 > 
-> In particular, it looks structurally similar to genl_open() in
-> netlink_helpers.c, which the immediately preceding commit in this series
-> (a1205972510b7 "selftests/bpf: Extract some helpers from tests to the
-> netlink library") added explicitly for sharing netlink plumbing.
+> Reviewed-by: Jan Kara <jack@suse.cz>
 > 
-> The re-implementation also appears to omit the SO_RCVBUF = 1024 * 1024
-> setting that rtnl_open_byproto() sets in netlink_helpers.c, so the new
-> socket runs on the default net.core.rmem_default receive buffer.
+>> diff --git a/fs/super.c b/fs/super.c
+>> index 05e443173038..5860daea6d40 100644
+>> --- a/fs/super.c
+>> +++ b/fs/super.c
+>> @@ -267,12 +267,11 @@ static unsigned long super_cache_count(struct shrinker *shrink,
+>>  	 * However, if we are currently mounting the superblock, the underlying
+>>  	 * filesystem might be in a state of partial construction and hence it
+>>  	 * is dangerous to access it.  super_trylock_shared() uses a SB_BORN check
+>> -	 * to avoid this situation, so do the same here. The memory barrier is
+>> -	 * matched with the one in mount_fs() as we don't hold locks here.
+>> +	 * to avoid this situation, so do the same here. The acquire is matched
+>> +	 * with the smp_store_release() in super_wake() as we don't hold locks here.
+>>  	 */
+>> -	if (!(sb->s_flags & SB_BORN))
+>> +	if (!(smp_load_acquire(&sb->s_flags) & SB_BORN))
+>>  		return 0;
 > 
-> Similarly, the receive/poll loop in recv_device_ifindex() appears to
-> hand-roll what rtnl_recvmsg()/__rtnl_recvmsg() in netlink_helpers.c
-> already do. Notably, those use MSG_PEEK | MSG_TRUNC to size the receive
-> buffer, whereas the new loop uses a fixed 16 KiB buffer with a plain
-> recv(fd, buf, sizeof(buf), 0) and no MSG_TRUNC check. Additionally,
-> __rtnl_recvmsg() retries on EINTR/EAGAIN where the implementation below
-> returns -errno.
+> We have super_flags() helper exactly for checks like this so it would be
+> good to use it here.
+
+Right! And we can just remove the outdated memory barrier comment, as
+the underlying super_flags() implementation already has a self-document.
+
 > 
-> The agent notes that functionally these hand-rolled versions are correct
-> for their specific use case, and this is selftest-only code. However,
-> could the new helpers reuse the existing netlink infrastructure?
+> 								Honza
 > 
-> > +
-> > +static int remaining_timeout_ms(const struct timespec *deadline)
-> > +{
-> > +	struct timespec now;
-> > +	long long remaining;
-> > +
-> > +	if (clock_gettime(CLOCK_MONOTONIC, &now))
-> > +		return -errno;
-> > +
-> > +	remaining = (deadline->tv_sec - now.tv_sec) * 1000 +
-> > +		    (deadline->tv_nsec - now.tv_nsec) / 1000000;
-> > +
-> > +	return remaining > 0 ? remaining : 0;
-> > +}
-> 
-> This isn't a bug, but since clock_gettime(CLOCK_MONOTONIC, ...) on a
-> valid stack timespec can't really fail, would it be simpler to have
-> remaining_timeout_ms() just return milliseconds? That way the timeout
-> check at the end of recv_device_ifindex() (which currently needs
-> `return timeout < 0 ? timeout : -ETIMEDOUT;` to forward the
-> clock_gettime error) could be a plain `return -ETIMEDOUT;`.
-> 
-> > +
-> > +static int recv_device_ifindex(int fd, unsigned int id, unsigned int *ifindex)
-> > +{
-> > +	char parent_name[32], buf[16 * 1024];
-> > +	struct pollfd pfd = {
-> > +		.fd = fd,
-> > +		.events = POLLIN,
-> > +	};
-> > +	struct timespec deadline;
-> > +	struct nlmsghdr *nlh;
-> > +	int len, ret, timeout;
-> > +
-> > +	snprintf(parent_name, sizeof(parent_name), "netdevsim%u", id);
-> > +	if (clock_gettime(CLOCK_MONOTONIC, &deadline))
-> > +		return -errno;
-> > +	deadline.tv_sec += 5;
-> > +
-> > +	for (timeout = remaining_timeout_ms(&deadline); timeout > 0;
-> > +	     timeout = remaining_timeout_ms(&deadline)) {
-> > +		ret = poll(&pfd, 1, timeout);
-> > +		if (ret < 0) {
-> > +			if (errno == EINTR)
-> > +				continue;
-> > +			return -errno;
-> > +		}
-> > +		if (!ret)
-> > +			return -ETIMEDOUT;
-> > +		if (!(pfd.revents & POLLIN))
-> > +			return -EIO;
-> > +
-> > +		len = recv(fd, buf, sizeof(buf), 0);
-> > +		if (len < 0)
-> > +			return -errno;
-> > +
-> > +		for (nlh = (struct nlmsghdr *)buf; NLMSG_OK(nlh, len);
-> > +		     nlh = NLMSG_NEXT(nlh, len)) {
-> > +			struct ifinfomsg *ifm;
-> > +			struct rtattr *attr;
-> > +			int attr_len;
-> > +
-> > +			if (nlh->nlmsg_type != RTM_NEWLINK)
-> > +				continue;
-> > +
-> > +			ifm = NLMSG_DATA(nlh);
-> > +			attr = IFLA_RTA(ifm);
-> > +			attr_len = IFLA_PAYLOAD(nlh);
-> > +			for (; RTA_OK(attr, attr_len);
-> > +			     attr = RTA_NEXT(attr, attr_len)) {
-> > +				if (attr->rta_type != IFLA_PARENT_DEV_NAME)
-> > +					continue;
-> > +				if (strcmp(RTA_DATA(attr), parent_name))
-> > +					continue;
-> > +
-> > +				*ifindex = ifm->ifi_index;
-> > +				return 0;
-> > +			}
-> > +		}
-> > +	}
-> > +
-> > +	return timeout < 0 ? timeout : -ETIMEDOUT;
-> > +}
-> > +
-> > +int netdevsim_create(unsigned int *ifindex)
-> > +{
-> > +	int fd, id, err;
-> > +
-> > +	fd = open_link_socket();
-> > +	if (fd < 0)
-> > +		return fd;
-> > +
-> > +	id = create_new_device();
-> > +	if (id < 0) {
-> > +		close(fd);
-> > +		return id;
-> > +	}
-> > +
-> > +	err = recv_device_ifindex(fd, id, ifindex);
-> > +	close(fd);
-> > +	if (err) {
-> > +		netdevsim_destroy(id);
-> > +		return err;
-> > +	}
-> > +
-> > +	return id;
-> > +}
-> 
-> [ ... ]
-> 
-> 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33386073074
+>> -	smp_rmb();
+>>  
+>>  	if (sb->s_op && sb->s_op->nr_cached_objects &&
+>>  	    super_fs_objects_eligible(sc))
+>> -- 
+>> 2.34.1
+>>
 
