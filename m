@@ -1,49 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D71A47253A;
-	Mon, 31 Aug 2026 13:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8EF4749FD;
+	Mon, 31 Aug 2026 13:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183319; cv=none; b=XK1qMVX7OAlKeJINPs6w5pqMTgewjmR8ozuCHO6sy6Ueo91xMx5BAxC8vNZ5fOy0u+dUat5fTz+NBhmp6HuaF9sUtEswdNUMXcy4LqNg95E4uVrn/5nF1Y8LiE1S/hV5EfkulbXhfYimhvhHnaui+4h8RoKDuD0uPXbBvW8pwQQ=
+	t=1788183329; cv=none; b=aqmD7cj1s5bvHvyHG8I7gNW+0IJU5/k6q6L/QoVno+sW/ohFaiRZoar+XChZOi1r4x0v44ct5MCrrc7PyyxWP+5qJ64pQsPGDGI+dmNnhK7mHXbjnstGAtMslbXTIR7F6gdYC65TjjDuhhosaKfDkdfgH4SV7HSxKSaJ/JS+al0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183319; c=relaxed/simple;
-	bh=Sv4s2m5IQ3UmBW0dexl0UO3KbKPH0DmEt3HrFT6Abnw=;
+	s=arc-20240116; t=1788183329; c=relaxed/simple;
+	bh=Um+Yywtq3mgBc4I/ppqwrBFLNpk9n+E7O6Xh+T4iosg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ic2JZMsA0NNfPHLdNgNObGZQd6ciSo5gvL8vlY5AyaIVIMOaNQlS9qMrjsEjOF1vZyvTyLcV5yWT5myjCIpUKeJIny/dw30EckuI89eTy4s6PmATvdXobouxO+cNhKiG2bYkZ8mjce8ijRyaT/3vApvKVKKIzejyfqTcs+QD/3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijIKlTNY; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=MichPg96l8lbHXSD+qGxzhKlVCpedxVpfraGdbUEKDzXKaoj1RDn22Neq2YAOurw5AsLANW5YYR+1CTddJ4ilwdvSZxoUzfNkoWAN5Zes6dhM/RRoc9DOjHjai/Lxz/0Wt6kUY4ew+/5S3RshjaIYQXiLsYfn35sNE6+2booIHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJPmKiCb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijIKlTNY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37551F00A3D;
-	Mon, 31 Aug 2026 13:35:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJPmKiCb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3012C1F000E9;
+	Mon, 31 Aug 2026 13:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183317;
-	bh=LIvU5vRo9fbm1kgLmtunAKbZmuCfn61AqCgbJ+/8XX4=;
+	s=k20260515; t=1788183327;
+	bh=zm9StJZEp4qD6VEDPXK6w2BZJySX2VKBZatzxTfHukg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ijIKlTNYTprTvyTaEMmCei3c/572LELkNTFVs4fm4NidNU+w/niacTUmiV/MvOugv
-	 giy8cCRDWzYtKgYW7NJFbnPi1PS5zU/00Oq1B74u7Pu+F8l3znyohDZtvO7D7mrSdo
-	 hu9CtAQUCeiaJ/M8jDdgXkbxx/Zl5tkCC+cJsdIMYnuXVIX+G2h59oSBr3mT0zJwj3
-	 a4M8mUXfy/fE8LeYZ5yHiTKszULf3Ybrp0AZYjYa42POgeeh6Qt3W+1AwWwV4KPgwi
-	 snpGu4rdhg25xKOgkgtZa8mZvWrwIyjO29UGlbmztVryJmV9ZpBsOWmf+3AR6NhKUj
-	 rtTDI4MAeRLtA==
+	b=nJPmKiCb85bKy6ejAWm++rISBQqDZSm20r1bBTS4TBAKYjYVuBC6r2a0jXkyQK5M6
+	 UJrChGU0atMkTMChRE2XuZiV9cgp5Cwc0boukKXgN7VtVIfifUOF7sIerTQIWKhzwc
+	 AUIS0WKFADlzdkJkbIz2Ze99gDQ2X6UieaYZbcxVMhR6UIeslt6utV3VqkfLDHhAQc
+	 tkUx86mKUjjuTdzjg4Uh8oVSUF2G7fAMzgd3aFbsiHRwuLAI/6jlByHMlfzBZgH/zV
+	 ki6LfDkPk+njqwWdJqmhaaB2Zw1TDCCP5na9dYR4qKOXrfbl4rW+ucVi+KGhcJ16nv
+	 7QCQN/Bg177Sw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+Cc: Maoyi Xie <maoyixie.tju@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] net: sfp: apply I2C adapter quirks to limit block size
-Date: Mon, 31 Aug 2026 09:21:44 -0400
-Message-ID: <20260831133314.4125787-76-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] hsr: broadcast netlink notifications in the device's net namespace
+Date: Mon, 31 Aug 2026 09:21:50 -0400
+Message-ID: <20260831133314.4125787-82-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -59,403 +56,426 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-[ Upstream commit f2a138abfb719a3bfd370ca79f00055ec81e4f59 ]
+[ Upstream commit a762fabd7ef9a6cc07258684138f9c3f078d0326 ]
 
-The SFP driver assumes all I2C adapters support reading and writing the
-pre-defined block size SFP_EEPROM_BLOCK_SIZE of 16 bytes. This constant
-was probably chosen based on good guesses and known limitations of a
-range of I2C adapters and SFP modules.
+The HSR generic netlink family sets .netnsok = true. HSR devices can
+live in network namespaces other than init_net.
 
-However, I2C adapters may even support less and usually need to specify
-this via I2C quirks. Theoretically, such an adapter may provide full
-functionality but only support a read and write length of e.g. 8 bytes.
-Currently, the SFP driver doesn't account for that.
+Two async notifiers broadcast events with genlmsg_multicast(). They
+are hsr_nl_ringerror() and hsr_nl_nodedown(). That helper delivers
+only on the default genl socket in init_net. So the events always land
+in init_net. The network namespace of the device does not matter.
 
-Add handling for I2C quirks in SFP I2C configuration taking the fields
-max_read_len and max_write_len in struct i2c_adapter_quirks into account
-to further limit the maximum block size if needed.
+This has two effects. A listener in the device's own namespace never
+sees its own ring error and node down events. A privileged listener in
+init_net receives events from HSR devices in other namespaces. The
+payload carries the peer node MAC (HSR_A_NODE_ADDR) and the slave port
+ifindex (HSR_A_IFINDEX).
 
-Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260614133418.2068201-2-jelonek.jonas@gmail.com
+Switch both callers to genlmsg_multicast_netns(). Other families with
+.netnsok = true already do this. Examples are gtp, ovpn, team,
+batman-adv, netdev-genl, ethtool and handshake.
+
+hsr_nl_ringerror() already has the slave port. It uses
+dev_net(port->dev). hsr_nl_nodedown() takes the namespace from the
+master port via hsr_port_get_hsr().
+
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+Link: https://patch.msgid.link/20260604054949.2999304-1-maoyixie.tju@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `net: sfp: apply I2C adapter quirks to limit
-block size`
+## Phase 1: Commit Message Forensics
 
-**Local tree:** `v6.18.44` (`6.18.44`, commit `2736c32da98b9`)
+**Step 1.1 — Subject line**
 
----
+Record: `[hsr]` `[broadcast]` — Route HSR generic-netlink multicast
+notifications into the HSR device's network namespace instead of always
+using `init_net`.
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+**Step 1.2 — Tags**
 
-### Step 1.1: Subject Line
-**Record:** `[net: sfp]` `[apply]` — Apply I2C adapter `max_read_len` /
-`max_write_len` quirks when configuring SFP EEPROM block size.
+Record:
+- **Reviewed-by:** Fernando Fernandez Mancera `<fmancera@suse.de>` (HSR
+  maintainer/contributor)
+- **Signed-off-by:** Maoyi Xie `<maoyixie.tju@gmail.com>` (author)
+- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer
+  merge)
+- **Link:** https://patch.msgid.link/20260604054949.2999304-1-
+  maoyixie.tju@gmail.com
+- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Cc: stable@` on the merged
+  commit (v3/net-next version)
+- Notable: A separate `[PATCH net]` stable nomination (2026-05-27)
+  included `Fixes: 09e91dbea0aa` and `Cc: stable@`
 
-### Step 1.2: Tags
-**Record:**
-- **Signed-off-by:** Jonas Jelonek, Jakub Kicinski (ignore pipeline SOB)
-- **Reviewed-by:** Maxime Chevallier (Bootlin; authored SFP SMBus
-  support in this tree)
-- **Link:** https://patch.msgid.link/20260614133418.2068201-2-
-  jelonek.jonas@gmail.com (patch 2 of a series)
-- **No** Fixes:, Reported-by:, Tested-by:, Cc: stable, syzbot, or CVE
-  tags
+**Step 1.3 — Body analysis**
 
-### Step 1.3: Body Analysis
-**Record:**
-- **Bug:** SFP driver hardcodes `SFP_EEPROM_BLOCK_SIZE` (16) without
-  checking `i2c_adapter_quirks`.
-- **Symptom:** On adapters declaring `max_read_len` or `max_write_len`
-  below 16, `i2c_transfer()` is rejected by I2C core quirk checks →
-  EEPROM read fails → SFP module probe fails (`failed to read EEPROM`).
-- **Root cause:** `sfp_i2c_configure()` ignores
-  `i2c->quirks->max_read_len` / `max_write_len`.
-- **Version info:** None in message; patch is dated June 2026, not yet
-  in this checkout.
+Record:
+- **Bug:** With `.netnsok = true`, HSR devices can live outside
+  `init_net`, but `hsr_nl_ringerror()` and `hsr_nl_nodedown()` use
+  `genlmsg_multicast()`, which always delivers to `init_net`.
+- **Symptom 1:** Listeners in the device's own namespace never receive
+  ring-error or node-down events.
+- **Symptom 2:** Privileged listeners in `init_net` receive events from
+  HSR devices in *all* namespaces, including peer MAC
+  (`HSR_A_NODE_ADDR`) and slave ifindex (`HSR_A_IFINDEX`).
+- **Root cause:** Incomplete namespace support when `.netnsok` was
+  enabled; other `.netnsok` families (team, gtp, ovpn, batman-adv, etc.)
+  already use `genlmsg_multicast_netns()`.
+- **Version info:** `.netnsok` added in 5.6 (commit `09e91dbea0aa3`);
+  bug latent since then.
 
-### Step 1.4: Hidden Bug Fix?
-**Record:** Yes. Despite “apply” wording, this is a hardware-
-compatibility bug fix: the driver issues I2C transfers larger than the
-adapter allows.
+**Step 1.4 — Hidden bug fix?**
 
----
-
-## PHASE 2: DIFF ANALYSIS
-
-### Step 2.1: Inventory
-**Record:**
-- **File:** `drivers/net/phy/sfp.c` (+8 / −2 lines)
-- **Function:** `sfp_i2c_configure()` only
-- **Scope:** Single-file surgical fix
-
-### Step 2.2: Code Flow Change
-**Record:**
-- **Before:** `i2c_max_block_size` set directly to 16 (I2C) or 1
-  (SMBus).
-- **After:** Compute `max_block_size`, then clamp with `min()` against
-  `i2c->quirks->max_read_len` and `max_write_len` if non-zero; assign to
-  `sfp->i2c_max_block_size` and `sfp->i2c_block_size`.
-- **Path:** Adapter configuration at probe (`sfp_i2c_get()` →
-  `sfp_i2c_configure()`), before any EEPROM access.
-
-### Step 2.3: Bug Mechanism
-**Record:**
-- **Category:** Logic / hardware-compatibility fix.
-- **Mechanism:** `sfp_i2c_read()` chunks reads using
-  `sfp->i2c_block_size`. With block size 16 on an adapter with
-  `max_read_len=12`, `i2c_check_quirks()` in `i2c-core-base.c` returns
-  `-EINVAL` (“msg too long”) before the transfer runs. Reducing block
-  size to 12 makes chunked reads succeed.
-
-### Step 2.4: Fix Quality
-**Record:**
-- **Quality:** High — same pattern as
-  `drivers/usb/typec/ucsi/ucsi_ccg.c` (lines 258–260).
-- **Risk:** Very low — only reduces transfer size; no API or locking
-  changes.
-- **Note:** `sfp_i2c_write()` does not chunk by block size, but SFP
-  writes are small (1–3 bytes); reads are the critical probe path.
+Record: **Yes.** Despite net-next framing as a "behavior change," this
+fixes (a) a cross-namespace information leak and (b) broken event
+delivery for namespaced HSR consumers.
 
 ---
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## Phase 2: Diff Analysis
 
-### Step 3.1: Blame
-**Record:** `sfp_i2c_configure()` introduced in `7662abf4db94`
-(2025-03-25, “Add support for SMBus module access” by Maxime
-Chevallier), which set `i2c_max_block_size = SFP_EEPROM_BLOCK_SIZE`.
-Related init fix `bef389a210e7d` (Jonas Jelonek, 2026-06-19) is already
-in this tree.
+**Step 2.1 — Inventory**
 
-### Step 3.2: Fixes: Tag
-**Record:** N/A — no Fixes: tag.
+Record:
+- **File:** `net/hsr/hsr_netlink.c` — ~7 insertions, ~2 deletions
+- **Functions:** `hsr_nl_ringerror()`, `hsr_nl_nodedown()`
+- **Scope:** Single-file, surgical fix
 
-### Step 3.3: Related Changes
-**Record:**
-- `bef389a210e7d` — initializes `i2c_block_size` in same function
-  (already in tree; Greg Kroah-Hartman signed stable copy).
-- `813c2dd78618f` — earlier `i2c_block_size` init at allocation.
-- Patch Link suffix `-2-` indicates series with `bef389a` as patch 1.
+**Step 2.2 — Code flow**
 
-### Step 3.4: Author Context
-**Record:** Jonas Jelonek authored `bef389a` (real soft-lockup fix, Cc:
-stable). Maxime Chevallier is the SFP SMBus author and reviewed this
-patch.
+Record:
+- **`hsr_nl_ringerror()`:** `genlmsg_multicast()` →
+  `genlmsg_multicast_netns(..., dev_net(port->dev), ...)`. `port` is
+  already available.
+- **`hsr_nl_nodedown()`:** Adds `rcu_read_lock()`, looks up master via
+  `hsr_port_get_hsr()`, then `genlmsg_multicast_netns(...,
+  dev_net(master->dev), ...)`, then `rcu_read_unlock()`. Matches
+  existing fail-path pattern.
 
-### Step 3.5: Dependencies
-**Record:** Standalone. Requires `struct i2c_adapter_quirks` (present
-since long before SFP SMBus support) and `sfp_i2c_configure()` with
-`bef389a` (present in this tree). No other commits needed.
+**Step 2.3 — Bug mechanism**
 
----
+Record: **Logic/correctness + namespace isolation bug.** Wrong netlink
+multicast target namespace. Category: functional defect + cross-
+namespace information disclosure (not crash/UAF).
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+**Step 2.4 — Fix quality**
 
-### Step 4.1: Original Discussion
-**Record:** Lore/patch.msgid.link blocked by bot protection (Anubis).
-`b4 dig -c` did not match this commit (not merged). Could not read
-thread.
-
-### Step 4.2: Reviewers
-**Record:** UNVERIFIED via b4 dig -w. Reviewed-by: Maxime Chevallier
-confirmed in commit message.
-
-### Step 4.3: Bug Reports
-**Record:** None. No Reported-by, syzbot, or Bugzilla links.
-
-### Step 4.4: Series Context
-**Record:** Patch 2 of Jonas Jelonek series; patch 1 (`bef389a`) already
-in this tree and nominated for stable.
-
-### Step 4.5: Stable List
-**Record:** UNVERIFIED — lore blocked. Patch 1 had explicit `Cc:
-stable@vger.kernel.org`; this patch does not.
+Record: **High.** Minimal change, follows team/gtp/handshake pattern.
+Low regression risk. v3 intentionally dropped NULL-master check (master
+guaranteed present on prune/notify paths per Fernando's review).
 
 ---
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+## Phase 3: Git History Investigation
 
-### Step 5.1: Key Functions
-**Record:** `sfp_i2c_configure()` (modified); `sfp_i2c_read()` (consumer
-of `i2c_block_size`).
+**Step 3.1 — Blame**
 
-### Step 5.2: Callers
-**Record:** `sfp_i2c_configure()` ← `sfp_i2c_get()` ← `sfp_probe()`.
-Runs once at platform device probe.
+Record: Buggy `genlmsg_multicast()` calls date to HSRv0 introduction
+(`f421436a591d3`, 2013). `.netnsok = true` added in `09e91dbea0aa3`
+(March 2020, landed in 5.6). Both are ancestors of this tree.
 
-### Step 5.3: Callees
-**Record:** `i2c_check_functionality()`, reads `i2c->quirks`. Downstream
-`sfp_i2c_read()` → `i2c_transfer()`.
+**Step 3.2 — Fixes: tag**
 
-### Step 5.4: Reachability
-**Record:** Triggered on every SFP cage probe with `i2c-bus` DT
-property. EEPROM reads happen on module insert (`sfp_sm_mod_probe()`
-reads `sizeof(id.base)` ≈ 128 bytes in chunks) and via `ethtool -m`
-(`sfp_module_eeprom()`).
+Record: N/A on merged commit. Stable nomination used `Fixes:
+09e91dbea0aa ("hsr: set .netnsok flag")`, which **is present** in this
+6.18.44 tree.
 
-### Step 5.5: Similar Patterns
-**Record:** `ucsi_ccg.c`, `vgxy61.c`, `i2c-core-base.c` quirk
-enforcement. SFP comment at lines 217–219 already notes I2C drivers may
-not tolerate reads > 16 bytes.
+**Step 3.3 — Related history**
 
----
+Record:
+- `c0178eec88842` (Oct 2025): Enforces HSR slaves must be in same netns
+  as HSR device — shows active netns work in HSR.
+- No prior fix for multicast namespace routing found.
 
-## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (6.18.44)
+**Step 3.4 — Author context**
 
-### Step 6.1: Buggy Code Present?
-**Record:** **Yes.** Current `sfp_i2c_configure()` at lines 806–824 sets
-`i2c_max_block_size = SFP_EEPROM_BLOCK_SIZE` (16) without checking
-quirks. Bug present since `7662abf4db94` (March 2025), which is in this
-tree.
+Record: Maoyi Xie is an active net contributor (multiple netns-security
+patches). Fernando Fernandez Mancera is the HSR reviewer/maintainer on
+this patch.
 
-### Step 6.2: Backport Complications
-**Record:** Clean apply expected — patch modifies the same function
-where `bef389a` already added `i2c_block_size` init. No structural
-conflicts.
+**Step 3.5 — Dependencies**
 
-### Step 6.3: Related Fixes Already Present?
-**Record:** `bef389a210e7d` (i2c_block_size init) is present. This
-quirks-handling fix is **not** present (grep shows no `max_read_len`
-usage in `sfp.c`).
+Record: **Standalone.** Requires only `genlmsg_multicast_netns()`
+(present since `134e63756d5f3` "genetlink: make netns aware") and
+`.netnsok = true`. Both exist in this tree. No series dependencies.
 
 ---
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## Phase 4: Mailing List and External Research
 
-### Step 7.1: Subsystem
-**Record:** `drivers/net/phy/sfp.c` — network / SFP cage driver.
-**Criticality: IMPORTANT** (affects SFP networking on embedded/router
-platforms).
+**Step 4.1 — Original discussion**
 
-### Step 7.2: Activity
-**Record:** Active — multiple SFP quirk/fix commits in 2025–2026 in this
-tree.
+Record:
+- Bug inquiry: https://lists.openwall.net/linux-kernel/2026/05/18/368
+  (2026-05-18, with PoC)
+- v1 stable nomination:
+  https://www.spinics.net/lists/stable/msg951996.html (2026-05-27, `Cc:
+  stable@`)
+- v2 net-next: https://www.spinics.net/lists/netdev/msg1192529.html
+  (author noted "behavior change," dropped stable tags)
+- v3 merged version: https://lkml.iu.edu/2606.0/07764.html (dropped
+  NULL-master check per Fernando)
+- `b4 dig -c <hash>`: **Could not run** — fix commit not yet in local
+  tree
+
+**Step 4.2 — Reviewers**
+
+Record: Fernando Fernandez Mancera provided `Reviewed-by`. CC list
+included netdev, linux-kernel, HSR maintainers. Jakub Kicinski merged.
+
+**Step 4.3 — Bug report**
+
+Record: PoC (`poc_hsr_pernet.c`) demonstrates:
+- Vanilla: `init_net` gets 2 notifications, child namespace gets 0
+- Fixed: each namespace gets only its own device's notification
+- Severity: namespace isolation violation + broken monitoring for
+  namespaced HSR
+
+**Step 4.4 — Series context**
+
+Record: v1→v3 evolution; final merged version is v3 (no NULL check, no
+stable tags). Functionally equivalent to stable nomination minus NULL
+check.
+
+**Step 4.5 — Stable list**
+
+Record: Explicit stable nomination exists (spinics stable msg951996).
+Fernando replied on stable thread (follow-up noted on spinics, full text
+not fetched).
 
 ---
 
-## PHASE 8: IMPACT AND RISK
+## Phase 5: Code Semantic Analysis
 
-### Step 8.1: Who Is Affected
-**Record:** Users with `CONFIG_SFP` and an I2C adapter that sets
-`max_read_len` or `max_write_len` < 16. In this tree, only `i2c-qcom-
-cci` (12/10) and `i2c-nvidia-gpu` (4) have `max_read_len` < 16; neither
-is a typical SFP bus, but any future or platform-specific adapter with
-such quirks would be affected.
+**Step 5.1 — Key functions**
 
-### Step 8.2: Trigger Conditions
-**Record:** SFP probe + module insertion + I2C adapter with quirks
-limiting transfer length below 16. Not userspace-triggerable for
-security; hardware/configuration dependent.
+Record: `hsr_nl_ringerror()`, `hsr_nl_nodedown()`
 
-### Step 8.3: Failure Mode
-**Record:** I2C transfer rejected → EEPROM read fails → SFP module not
-recognized, port dead. **Severity: HIGH** for affected hardware (total
-loss of SFP function); **MEDIUM** overall (narrow adapter set today).
+**Step 5.2 — Callers**
 
-### Step 8.4: Risk-Benefit
-**Record:**
-- **Benefit:** Restores SFP on limited I2C adapters; aligns with kernel
-  I2C quirk model.
-- **Risk:** Very low — 8-line clamp using established `min()` pattern.
-- **Ratio:** Favorable for backport.
+Record:
+- `hsr_nl_ringerror()`: `hsr_framereg.c:661` from `hsr_prune_nodes()`
+  timer (under `rcu_read_lock` when port exists)
+- `hsr_nl_nodedown()`: `hsr_framereg.c:668,702` from `hsr_prune_nodes()`
+  and `hsr_prune_proxy_nodes()` timers
+
+**Step 5.3 — Callees**
+
+Record: `genlmsg_new()`, `genlmsg_put()`, `nla_put()`, `genlmsg_end()`,
+`genlmsg_multicast[_netns]()`, `hsr_port_get_hsr()`, `dev_net()`
+
+**Step 5.4 — Reachability**
+
+Record: Triggered by HSR prune timers during normal HSR/PRP operation
+(node aging, link failures). Reachable whenever HSR is configured and
+nodes time out — not a rare error-only path. Requires `CONFIG_HSR=m/y`.
+
+**Step 5.5 — Similar patterns**
+
+Record: `drivers/net/team/team_core.c:2866`,
+`drivers/net/gtp.c:560,747`, `net/handshake/netlink.c:67` all use
+`genlmsg_multicast_netns()` with `dev_net(device->dev)`.
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 6: Cross-Reference Against Local Tree (6.18.44)
 
-### Step 9.1: Evidence Summary
+**Step 6.1 — Buggy code present?**
 
-**FOR:**
-- Provably broken code path when adapter quirks limit transfer size
-  (verified in `i2c-core-base.c`)
-- Complete SFP failure on affected hardware
-- Small, surgical, reviewed by SFP SMBus author
-- Matches established kernel pattern (`ucsi_ccg.c`)
-- Driver comment acknowledges I2C length limitations
-- Companion to `bef389a` (already in stable pipeline for this tree)
-- Zero regression risk on adapters without quirks or with limits ≥ 16
+Record: **Yes.** Local tree is `v6.18.44`.
+`net/hsr/hsr_netlink.c:242,279` still use `genlmsg_multicast()`.
+`.netnsok = true` at line 549. Fix not yet applied.
 
-**AGAINST:**
-- No user reports, syzbot, or crash/corruption
-- Commit message uses “Theoretically”
-- No in-tree adapter with `max_read_len` < 16 is commonly used for SFP
-  today
-- `sfp_i2c_write()` does not chunk (mitigated by small write sizes in
-  practice)
+**Step 6.2 — Backport complications**
 
-**UNRESOLVED:**
-- Mailing list discussion (lore blocked)
-- Whether reviewers nominated for stable
+Record: **Clean apply expected.** File structure matches diff hunks. No
+conflicting changes in recent history.
 
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — standard pattern; Reviewed-
-   by present; no Tested-by
-2. Fixes a real bug? **PASS** — I2C core rejects oversize transfers on
-   quirky adapters
-3. Important issue? **PASS** — complete SFP port failure on affected
-   hardware (HIGH per-platform)
-4. Small and contained? **PASS** — 8 lines, one function
-5. No new features/APIs? **PASS** — uses existing `i2c_adapter_quirks`
-6. Can apply to local tree? **PASS** — prerequisites present, clean
-   apply expected
+**Step 6.3 — Related fixes already present?**
 
-### Step 9.3: Exception Category
-**Record:** Hardware quirk/workaround category — respects adapter-
-declared I2C transfer limits.
+Record: **No.** No existing fix for HSR multicast namespace routing.
 
-### Step 9.4: Problem and Decision
+---
 
-**What it solves:** The SFP driver assumes all I2C adapters accept
-16-byte EEPROM read chunks. Adapters that declare lower limits via
-`i2c_adapter_quirks` cause `i2c_transfer()` to fail at the I2C core,
-breaking module probe and rendering the SFP cage unusable.
+## Phase 7: Subsystem Context
 
-**Why it matters for 6.18.y:** The buggy code (`7662abf4db94`) is in
-this tree. The fix is tiny, follows kernel conventions, and was reviewed
-by the SFP SMBus author. While no common SFP platform hits this today,
-the failure is total for any platform that does, and the driver’s own
-comments acknowledge I2C length constraints.
+**Step 7.1 — Subsystem**
 
-**Risk vs benefit:** Near-zero risk; meaningful benefit for affected
-embedded/network hardware; completes the i2c_block_size work started by
-`bef389a`.
+Record: `net/hsr` — networking, HSR/PRP industrial redundancy (IEC
+62439). **Criticality: IMPORTANT** (niche but used in power
+grid/industrial automation; namespace-aware deployments exist).
+
+**Step 7.2 — Activity**
+
+Record: Active development (netns enforcement Oct 2025, multiple
+2025–2026 bug fixes in this tree).
+
+---
+
+## Phase 8: Impact and Risk Assessment
+
+**Step 8.1 — Who is affected**
+
+Record: Users with `CONFIG_HSR` who run HSR/PRP devices in
+non-`init_net` network namespaces, or who rely on namespace isolation.
+
+**Step 8.2 — Trigger conditions**
+
+Record: Normal HSR operation — ring errors detected, nodes pruned after
+timeout. Common during link failures. Unprivileged users cannot directly
+trigger netlink delivery, but HSR operation in containers/namespaces is
+the affected scenario.
+
+**Step 8.3 — Failure mode severity**
+
+Record:
+- Cross-namespace info leak (MAC + ifindex to `init_net` listeners):
+  **MEDIUM-HIGH** (namespace isolation violation; requires
+  `CAP_NET_ADMIN` in `init_net`)
+- Missing events in device's namespace: **MEDIUM** (monitoring/alerting
+  broken for namespaced HSR)
+- No crash, corruption, or deadlock
+
+**Step 8.4 — Risk-benefit**
+
+Record:
+- **Benefit:** Restores correct `.netnsok` semantics; closes info leak;
+  enables monitoring in namespaced HSR deployments
+- **Risk:** Very low — ~7 lines, established pattern, reviewed by HSR
+  maintainer
+- **Ratio:** Favorable
+
+---
+
+## Phase 9: Final Synthesis
+
+**Step 9.1 — Evidence**
+
+FOR:
+- Real, demonstrated bug (PoC with before/after counts)
+- Cross-namespace information leak across an isolation boundary
+- Broken functionality for namespaced HSR consumers since `.netnsok` was
+  enabled
+- Small, obviously correct fix matching team/gtp/ethtool patterns
+- Reviewed by Fernando Fernandez Mancera
+- Explicit stable nomination existed
+- All prerequisites present in 6.18.44 tree
+- Clean apply expected
+
+AGAINST:
+- Author initially characterized net-next version as "behavior change"
+  (not a fix)
+- Latent since 5.6 without user reports until 2026
+- HSR is niche (`CONFIG_HSR` tristate)
+- Not a crash/corruption/deadlock
+- Theoretically could affect tools that relied on receiving all HSR
+  events in `init_net` (unintended behavior)
+
+**Step 9.2 — Stable rules checklist**
+
+1. Obviously correct and tested? **PASS** — PoC verified; pattern used
+   elsewhere; Reviewed-by from HSR maintainer
+2. Fixes a real bug affecting users? **PASS** — demonstrated with PoC;
+   affects namespaced HSR deployments
+3. Important issue? **PASS** — cross-namespace info leak (namespace
+   isolation) + broken event delivery for monitoring
+4. Small and contained? **PASS** — 1 file, ~9 lines
+5. No new features/APIs? **PASS** — corrects existing notification
+   delivery
+6. Can apply to local tree? **PASS** — buggy code and APIs present;
+   clean apply expected
+
+**Step 9.3 — Exception categories**
+
+Record: None (not device ID, quirk, DT, build, or docs). Standard bug-
+fix category.
+
+**Step 9.4 — Decision rationale**
+
+This commit completes the namespace support started by `.netnsok = true`
+in 2020. The current code violates network-namespace isolation by
+leaking HSR event data (peer MAC, slave ifindex) into `init_net`, while
+simultaneously failing to deliver events to listeners in the device's
+own namespace. For a 6.18.y tree where HSR namespace support is already
+enabled and netns enforcement was recently tightened (`c0178eec88842`),
+this is a warranted stable fix: small, low-risk, and addresses a real
+isolation defect with demonstrated reproduction.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed subject, tags, body from user-provided commit
-  message
-- **[Phase 2]** Read current `sfp_i2c_configure()`, `sfp_i2c_read()`,
-  `sfp_i2c_write()` in `drivers/net/phy/sfp.c`
-- **[Phase 2]** Verified `i2c_check_quirks()` rejects oversize messages
-  in `drivers/i2c/i2c-core-base.c:2216-2224`
-- **[Phase 3]** `git describe HEAD` → `v6.18.44`; `make kernelversion` →
-  `6.18.44`
-- **[Phase 3]** `git blame -L 806,825 drivers/net/phy/sfp.c` → function
-  from `7662abf4db94`
-- **[Phase 3]** `git show 7662abf4db94` → introduced hardcoded block
-  size
-- **[Phase 3]** `git show bef389a210e7d` → prerequisite already in tree;
-  `merge-base --is-ancestor` confirmed
-- **[Phase 3]** `git log --oneline -20 -- drivers/net/phy/sfp.c` →
-  recent SFP activity
-- **[Phase 4]** WebFetch lore/patch.msgid.link → blocked by Anubis bot
-  protection
-- **[Phase 4]** `b4 dig -c` → no match (commit not merged)
-- **[Phase 5]** Traced `sfp_i2c_configure()` ← `sfp_i2c_get()` ←
-  `sfp_probe()`; `sfp_i2c_read()` uses `i2c_block_size`
-- **[Phase 5]** Read `ucsi_ccg.c:258-260` for precedent pattern
-- **[Phase 6]** Grep `sfp.c` — no quirks handling present; buggy code at
-  lines 813/817
-- **[Phase 6]** Grep `struct i2c_adapter_quirks` in
-  `include/linux/i2c.h` — present
-- **[Phase 6]** Grep all `max_read_len` / `max_write_len` in
-  `drivers/i2c/` — only qcom-cci (12) and nvidia-gpu (4) < 16
-- **[Phase 6]** Verified `i2c-rtl9300.c` has `max_read_len = 16` (at
-  boundary, works today)
-- **[Phase 8]** Confirmed probe reads `sizeof(id.base)` via chunked
-  `sfp_i2c_read()` at line 2328
-- **UNVERIFIED:** Mailing list reviewer feedback and stable nominations
-- **UNVERIFIED:** Real-world SFP platform using adapter with quirks < 16
+- [Phase 1] Parsed commit message and tags from user-provided diff
+- [Phase 1] Confirmed no syzbot/Reported-by on merged commit; found
+  original bug inquiry (2026-05-18)
+- [Phase 2] Read `net/hsr/hsr_netlink.c:216-291` — confirmed buggy
+  `genlmsg_multicast()` at lines 242, 279
+- [Phase 2] Read `include/net/genetlink.h:508-530` — confirmed
+  `genlmsg_multicast()` hardcodes `init_net`
+- [Phase 3] `git describe HEAD` → `v6.18.44` / `6.18.44`
+- [Phase 3] `git blame` — multicast calls from 2013; `.netnsok` from
+  `09e91dbea0aa3` (2020)
+- [Phase 3] `git merge-base --is-ancestor 09e91dbea0aa3 HEAD` → IS
+  ancestor
+- [Phase 3] `git merge-base --is-ancestor 134e63756d5f3 HEAD` → IS
+  ancestor (`genlmsg_multicast_netns`)
+- [Phase 3] `git log --oneline -20 -- net/hsr/` — recent HSR activity
+  confirmed
+- [Phase 4] Fetched openwall bug report with PoC test results
+- [Phase 4] Fetched spinics stable nomination (Fixes: + Cc: stable@)
+- [Phase 4] Fetched v2/v3 netdev threads (Reviewed-by, behavior-change
+  discussion)
+- [Phase 4] `b4 dig -c <hash>` — UNVERIFIED (commit not in local tree)
+- [Phase 5] `grep hsr_nl_ringerror|hsr_nl_nodedown` — callers in
+  `hsr_framereg.c:661,668,702`
+- [Phase 5] Confirmed team/gtp use `genlmsg_multicast_netns()` pattern
+- [Phase 6] Buggy code confirmed present in 6.18.44 tree; fix not yet
+  applied
+- [Phase 6] Read `net/hsr/Kconfig` — HSR is tristate industrial protocol
+- [Phase 7] Subsystem activity confirmed via git log
+- [Phase 8] Assessed severity: namespace info leak + functional
+  monitoring defect
 
-**YES**The background `git log` search finished: there’s no match for
-“I2C adapter quirks” in this tree, and “limit block size” only turned up
-unrelated DRM commits — so this SFP patch isn’t merged here yet.
+**YES**
 
-That matches the earlier review of `6.18.44`: the buggy code is present
-in `sfp_i2c_configure()`, and the fix should apply cleanly after
-`bef389a210e7d`.
+ net/hsr/hsr_netlink.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-**YES** — still the right call for stable backport on this tree.
-
- drivers/net/phy/sfp.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 1c4340b3777f6..68aa8e6dd55c2 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -825,21 +825,29 @@ static int sfp_smbus_byte_write(struct sfp *sfp, bool a2, u8 dev_addr,
+diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+index c96b63adf96ff..50a8104e864e2 100644
+--- a/net/hsr/hsr_netlink.c
++++ b/net/hsr/hsr_netlink.c
+@@ -239,7 +239,8 @@ void hsr_nl_ringerror(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN],
+ 		goto nla_put_failure;
  
- static int sfp_i2c_configure(struct sfp *sfp, struct i2c_adapter *i2c)
- {
-+	size_t max_block_size;
-+
- 	sfp->i2c = i2c;
+ 	genlmsg_end(skb, msg_head);
+-	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
++	genlmsg_multicast_netns(&hsr_genl_family, dev_net(port->dev),
++				skb, 0, 0, GFP_ATOMIC);
  
- 	if (i2c_check_functionality(i2c, I2C_FUNC_I2C)) {
- 		sfp->read = sfp_i2c_read;
- 		sfp->write = sfp_i2c_write;
--		sfp->i2c_max_block_size = SFP_EEPROM_BLOCK_SIZE;
-+		max_block_size = SFP_EEPROM_BLOCK_SIZE;
- 	} else if (i2c_check_functionality(i2c, I2C_FUNC_SMBUS_BYTE_DATA)) {
- 		sfp->read = sfp_smbus_byte_read;
- 		sfp->write = sfp_smbus_byte_write;
--		sfp->i2c_max_block_size = 1;
-+		max_block_size = 1;
- 	} else {
- 		sfp->i2c = NULL;
- 		return -EINVAL;
- 	}
+ 	return;
  
-+	if (i2c->quirks && i2c->quirks->max_read_len)
-+		max_block_size = min(max_block_size, i2c->quirks->max_read_len);
-+	if (i2c->quirks && i2c->quirks->max_write_len)
-+		max_block_size = min(max_block_size, i2c->quirks->max_write_len);
-+
-+	sfp->i2c_max_block_size = max_block_size;
- 	sfp->i2c_block_size = sfp->i2c_max_block_size;
- 	return 0;
- }
+@@ -275,8 +276,12 @@ void hsr_nl_nodedown(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN])
+ 	if (res < 0)
+ 		goto nla_put_failure;
+ 
++	rcu_read_lock();
++	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	genlmsg_end(skb, msg_head);
+-	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
++	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
++				skb, 0, 0, GFP_ATOMIC);
++	rcu_read_unlock();
+ 
+ 	return;
+ 
 -- 
 2.53.0
 
