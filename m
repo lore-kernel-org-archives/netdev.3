@@ -1,254 +1,169 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4E43EA979
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 13:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31124156CE
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 13:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788181905; cv=none; b=JNPzf5inK6rWNvY2iirikIxVyG36P9zVOo4g9kgFzAWehoEzC7ccmhNOU6OBmMvHad1eExf9dUk03jRtOw8q8tCpPJtm9bL6ZnCwDAqG9gM+qNjgPa1apvCi5DWV9XQ7D9+cacf9wktAsnezNAbplJvut1jlaZEk8M/M0xD8jVw=
+	t=1788182236; cv=none; b=F15k831q3DhXYeeAo9z3WwbCrnb1rRlcf3XTXOotI30t7FA1ygZU5AKcDvcIgEuqbejlumZjuyap4CakuZKuqFvXaJd3vh0lj7qBVm/0JI/dP12UAfpm8YR6G2cuKZ1OdbIkCm+RIl2zn6OI2DlV4/CzJMUBD00qGPpr2muGsgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788181905; c=relaxed/simple;
-	bh=TxLbYFIeG32Cm5fP74PpnM0fvn+2ffrjC1dTaoyrSPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rIMa0b8WpOTc1WPYhbyWR6Av9O11fNwcAi7iobDoWp+YxHJ94ntFXJ5Rox7ECOCYeGdI9E7EaFPSc5jLN1Y8PpWRIrOIuLazDLRRuL6Qhq9yP9MK14n9Nutp4eLcwp70B8PESBoAYfKMp1UQIF/Gb551BCYoRt2akq9cErYH92s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hr5etj9c; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788182236; c=relaxed/simple;
+	bh=UyZnsIW8vAQ+WpI1yUMqM7v4Uwx9lmTtE4b7qftADUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j3frKERZtIUH1XFSJIiqCFKhVJmRYGq83HacLe0zKPu2qia3UbtESNmwL9546cG9Xrmg9w7gCT7RLbohSW331AbF3st23orCmtBBoPwBjfZxZUA73b6QZt7IuirbDUC474xhu/d2QC4dCjGv6ECDr2wYwaQiwQyju3iXVjkfzH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=UiLuqJzZ; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hr5etj9c"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-482e5733a5aso2070377f8f.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:11:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="UiLuqJzZ"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a5f1d0af69so5398798a12.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788181901; x=1788786701; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nCrwd5lomZyvZDnWJBN6PQm4ecAtoB1KVxGo2UFaw+g=;
-        b=hr5etj9cW5WosO66fkanOTAmSn6gsZaKx2FCvBJFyxcAF71RdbS0xPvTyxYFEFCUxg
-         9LBbFdV6rObp7M7TwmVhg7RJ158uxcCXGB3rgPSX8YwvxnH4An96degqjItQ2ONRAaHA
-         yzsdK58pfkXUUJUZoEFHHlgSP1D4rALya1jJeDSYnYoeHgrvtk64SHtGWfLLMTP/sSJc
-         8pq+7z0yxdRTxbpNhBG1YllxPrpstX81b3DiAmd6NKxcOXiqzN3abUFOBronIAnBCFl0
-         asHqJgkUjLUQ8tVpJNKRuJE3iq481xqvSzQUmfgGCkpeV2pRQo/3L8opqUPKxyKR2q1j
-         q/0A==
+        d=blackwall.org; s=google; t=1788182233; x=1788787033; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=twiibvfC7nbZ6wF/nnuatbNAQXyxSSZLrA3DNRZ8L2c=;
+        b=UiLuqJzZskEVFdORcy7falgLeEqlsRKgHTlholn52w2bNNZMIQff+NbDc8lT6s6/By
+         xBpA2fw2ETNyaIqb9ZEGGRYYKpA6oAkaH0DULTSOf77cKLr+CzYC8FWTGCAU/7Tm2JbH
+         +2YCdBqdGC6h3LPweTjNNjQD0bxD0MuDhvNse6NIJF1mcX2D6EHlZwXO4GFR/moV+LUr
+         AHow+xXfVaZ9lh51+N7QM3oH6zDgcYC6vj9MsR7NRIpVe5ASInVHNcOZWfmGbyKlwPB4
+         TBq+lhbhglBMgl3kP7QkGs40nItSgoYccb8t5GqZ9o7Q3VsIkjxK/Vqzi9itnOkF2qqi
+         LFAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788181901; x=1788786701;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nCrwd5lomZyvZDnWJBN6PQm4ecAtoB1KVxGo2UFaw+g=;
-        b=AB7rg7g2phVbfrME5QTa+9MwIraHWYAHUhliIdrxWiSMnYohhYzO8HCmqB97VaFMwu
-         WV86u9+7Q2tZJyqFgbGAmbyWOl/d0123y+AnRtsijBoAQzLrbnP8s2L0ihV7xdb/hdMO
-         zQBRqPQw1LgXQJmeGMw7eZ8/VbuSIqvXYDueHUCOcJ+fIu3J6vHcc5vYB8fUIkDuouYI
-         V7/QAShCv8SQYIS1e2H4B21JI9uQS6ZL8yyLIYzo9zPi82yDXhmdpACW2ei/tMGhnAn3
-         b6sYqMwiMSMQqzlOidfXmst7/xfRpfpnZrFQMl30esDIqoR2QcJrA9I6wYJVthxLtH/M
-         NEDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwCA/k5WoZLGdxu0WBZ2wNTfBkwtKa2Q436Q6W9BP+4mIfzk1a2ntIGKF5rv0qSMvGUdRM1bZQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++n+q3kKUTNK0WEuiv1aBY4s7wbtqBKbp/fxt2MSfz0ZJr2lAViY
-	JMRdLYQweX4DZe9reI1xJRIJFLc8M/+QAxBFoFH64MNFw2X2ktqf+cbY
-X-Gm-Gg: AYBFou1Eno1A3wVHSzrJsTRMTWChBvHxDcc9llFGYDMp2OwM0SxeJPIIIs2/377eQk+
-	uDm88cwqjzSdSVQeVfNhM4x3SC3TBV6whudb5Ng/BwlVZOjwP19x/dSWxK24lIYf9gCCrDe+dlI
-	8s02hdJqII6ZBSt6NRvFQBzTPlzEZUed3wCpHpNGdIxOYG0JHqiamqcspHzLei5qCREILqaDMEs
-	TJ3cwI4B9xs2YquEomuL7h02tADvRj6cs2mDbBSJiNMMz7zd2PyI2cQqqzv0mctofqzlVKhzT6+
-	tsy7kj9v+P0XvPXDaaAMFm9hO0bJ+RFdTI69Sc7Rt//W/VBFWtx1OG20aDH0CdYyygMJmokVetz
-	37WnuzQO9l1id7hLdJwCIAtbh7RTF74fqFiNiNFes7fw1qOr7sFAjc4kbBb9QwSY0lgMLU/giyW
-	/SbMw7xTf7IH5+KR1IY22qYUQlZCTY9ejNOONDviR3TReYJx0sJQ6hrQBWQnguP0i0UISO
-X-Received: by 2002:adf:e00c:0:10b0:47f:9096:3ef1 with SMTP id ffacd0b85a97d-48440fc78ebmr1222844f8f.9.1788181900425;
-        Mon, 31 Aug 2026 06:11:40 -0700 (PDT)
-Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843ce8b015sm5697604f8f.13.2026.08.31.06.11.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 06:11:39 -0700 (PDT)
-Date: Mon, 31 Aug 2026 13:22:20 +0000
-From: Anton Protopopov <a.s.protopopov@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
-	kpsingh@kernel.org, matt@bobrowski.net, john.fastabend@gmail.com,
-	brauner@kernel.org, paul@paul-moore.com,
-	torvalds@linux-foundation.org, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, martin.lau@kernel.org, yonghong.song@linux.dev,
-	mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 2/7] net, bpf: Add a generic netlink hook on
- msg_rcv
-Message-ID: <apWADDwqx4r2xEZU@mail.gmail.com>
-References: <20260831110934.241898-3-a.s.protopopov@gmail.com>
- <7396552568004928dc8c7d43c5a8b3de699e698f37f6fc555ea49312a5116a9f@mail.kernel.org>
+        d=1e100.net; s=20251104; t=1788182233; x=1788787033;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=twiibvfC7nbZ6wF/nnuatbNAQXyxSSZLrA3DNRZ8L2c=;
+        b=Oc870ASutsffmliGmBWlC3Y5UZXSavbZnMBgw6jw+X9wepZ7ApgTRh0AE82/bWvzHe
+         TkIXHcAPn2yK41djxHmgdfuYMfWhKIwQ6JOPlk6J1gevlI0RLHH++wlrr9sybnea3CDA
+         GHIMnf2VauGgFpfI5SVT27y+z3ueX1Lmj5Nq3cV06hPGYTZ+dqRt++gZ7yKzXb9GZcFw
+         gwFHDGARTT/zRtIZZTYaSg2FyX1W1vyFMgFoYTetjNc28P/WPkWNdajKDl4QKQ5+7jMf
+         YD7ZIckSjLdegmsbWw9dUMNrqb89dqknyxs8wKQbs84KjZULOl4gU0mCEM3UUkd0jcHe
+         Zpng==
+X-Gm-Message-State: AFuF++mtgASm9vB7ClfbTZdfhXO03h8JCe1sanudUGE3/VdwScT/fcYH
+	XtzfgWJFsyMlQ/PUmnIG/ew5Z082sqTua8C/6Ii3K6qXRK5Evh4bSQ6u/WchJKYvTSA=
+X-Gm-Gg: AYBFou3CF3BqjIdUUcbpaghtP7F+3jTbgTR0m2YlTFJu7beywDBo7Oh84OdHGD1r7Dl
+	wCEAmT7qBN1aUKsnQbiISfVb0Z4Fc8mJ79Q4RPzz2Mt6YnieyCS5ONBOYGWGJxsOl97vjkqRC5J
+	8x44u7TUQIKYFP30XwANQL70AHNjMBF9/3Qtdcds7noCS/gsDEyVwEzVK0oG+/xFqyYwtMPPXU0
+	5vBXXczppsVuxkDmzaoAUAkAbydFsoEVfd1oAbYPARS2xUL4ppqRMen/2QPpUvalOD3JIIzVQU8
+	Z+KD1+c4o6CpCE6dnlqHz6sMagGvV8BSE67XyjKtrUtFzjvDe6x8aD96b1rfw/MU3J+dC2Lci3C
+	jqBghiebZ4Qkr4GayzY/wb5Ztb+uGACbmnWhjI6hm3HilwWtrLPEaawHMWPT5ngsNQaEp68NEXa
+	E0v1608baLZ1fLjShe5G6Dt0IFPsoCTACzXbxhGCe6BZ1WuuQutY3T1bni8o1+VavDONM7VNoUb
+	jg8lwp+N9mlToq5aEU=
+X-Received: by 2002:a05:6402:304c:b0:6a5:f4cd:ae39 with SMTP id 4fb4d7f45d1cf-6a60d3905f7mr12657188a12.9.1788182232691;
+        Mon, 31 Aug 2026 06:17:12 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a611b5c3f7sm3637726a12.6.2026.08.31.06.17.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 06:17:11 -0700 (PDT)
+Message-ID: <8697e1c6-a401-4b62-b7e9-a3acaab272ec@blackwall.org>
+Date: Mon, 31 Aug 2026 16:17:09 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7396552568004928dc8c7d43c5a8b3de699e698f37f6fc555ea49312a5116a9f@mail.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?B?UmU6IOWbnuWkjTpSZTogW1BBVENIIG5ldF0gYnJpZGdlOiBza2lwIGdl?=
+ =?UTF-8?Q?neric_XDP_on_locally_re-injected_packets?=
+Content-Language: en-US, bg
+To: =?UTF-8?B?6LW15LiW6I2j?= <shxzhaosr@163.com>
+Cc: netdev@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, bridge@lists.linux.dev,
+ syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
+References: <20260831113051.13072-1-shxzhaosr@163.com>
+ <b30a2594-b154-4f52-9afd-2db0f9d78bb3@blackwall.org>
+ <15142192.95bb.1a057e13984.Coremail.shxzhaosr@163.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <15142192.95bb.1a057e13984.Coremail.shxzhaosr@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 26/08/31 12:07PM, bot+bpf-ci@kernel.org wrote:
-> > commit 18faf289d6ccb694a2ce1ae68f5c3cf881de2fd4
-> > Author: Anton Protopopov <a.s.protopopov@gmail.com>
-> >
-> >     net, bpf: Add a generic netlink hook on msg_rcv
-> >
-> >     Add a new bpf_lsm_genl_family_rcv_msg() BPF hook called from within
-> >     the genl_family_rcv_msg() function. The hook sees the genl family,
-> >     net, cmd, and nlmsg_flags.  As the hook receives all the information
-> >     pre-parsed, it is not put into the sleepable list.
-> >
-> >     There is already an existing LSM hook sitting right at netlink_send,
-> >     however, it looks to be too coarse-grained to be used directly. The
-> >     netlink_send hook sees the struct sock and struct skb, and thus must
-> >     duplicate all the parsing inside BPF. The messages can actually contain
-> >     multiple netlink datagrams, dynamic info (see e.g., selinux_nlmsg_lookup()
-> >     in context of generic netlink), etc.
-> >
-> >     The purpose of this hook is to mitigate, in a coarse-grained way,
-> >     CVEs reachable via the corresponding control path: genl recvmsg.
-> >     While looking at the recent CVEs, robots found ~300 CVEs reachable
-> >     via the genl_rcv. We can roughly split them as follows:
-> >
-> >       * Around 100 are ethtool-related. For more detailed information,
-> >         see the following commit which adds even more finer-grained
-> >         ethtool hooks.
-> >
-> >       * Around 100 of the remaining are fully dominated by the new hook.
-> >
-> >       * Around 100 remaining aren't fully mitigatable, as other control
-> >         paths, besides the genl, lead to the buggy code.
-> >
-> >     To be more precise, the following CVEs are properly mitigated by the
-> >     new hook:
-> >
-> >       * CVE-2021-47518 CVE-2021-47594 CVE-2021-47612 CVE-2022-48687
-> >         CVE-2022-49060 CVE-2022-49085 CVE-2022-49300 CVE-2022-49862
-> >         CVE-2022-49959 CVE-2022-50656 CVE-2022-50834 CVE-2022-50854
-> >         CVE-2023-52698 CVE-2023-52702 CVE-2023-52977 CVE-2023-53113
-> >         CVE-2023-53298 CVE-2023-53686 CVE-2023-53843 CVE-2024-26608
-> >         CVE-2024-26663 CVE-2024-26754 CVE-2024-26811 CVE-2024-26950
-> >         CVE-2024-27025 CVE-2024-27410 CVE-2024-36941 CVE-2024-38562
-> >         CVE-2024-43912 CVE-2024-45010 CVE-2024-46711 CVE-2024-49937
-> >         CVE-2024-50085 CVE-2025-21706 CVE-2025-21787 CVE-2025-21862
-> >         CVE-2025-21875 CVE-2025-21947 CVE-2025-22024 CVE-2025-38184
-> >         CVE-2025-38443 CVE-2025-40084 CVE-2025-68263 CVE-2025-68366
-> >         CVE-2026-23297 CVE-2026-23436 CVE-2026-43252 CVE-2026-43394
-> >         CVE-2026-53128 CVE-2026-53227 CVE-2026-53233 CVE-2026-53238
-> >         CVE-2026-53257
-> >
-> >     The following are mitigated as well, but, theoretically, could
-> >     benefit from a finer-grained hook, running after a deeper
-> >     parsing/taking locks (this is however out of scope for now to
-> >     add finer-grained hooks for each involved subsystems, as, unlike
-> >     ethtool, they are more-or-less evenly distributed):
-> >
-> >       * CVE-2021-47250 CVE-2021-47257 CVE-2021-47554 CVE-2022-48915
-> >         CVE-2022-49374 CVE-2022-49505 CVE-2022-50042 CVE-2022-50678
-> >         CVE-2023-52845 CVE-2023-53141 CVE-2023-53543 CVE-2023-53652
-> >         CVE-2023-54031 CVE-2024-26725 CVE-2024-26951 CVE-2024-42073
-> >         CVE-2024-42154 CVE-2024-46676 CVE-2024-47687 CVE-2024-50028
-> >         CVE-2025-21973 CVE-2025-38020 CVE-2025-38628 CVE-2025-40254
-> >         CVE-2025-40321 CVE-2025-68785 CVE-2025-71091 CVE-2025-71297
-> >         CVE-2026-23321 CVE-2026-31707 CVE-2026-31744 CVE-2026-43012
-> >         CVE-2026-43467 CVE-2026-43481 CVE-2026-45840 CVE-2026-52978
-> >         CVE-2026-52979 CVE-2023-53570 CVE-2024-42114 CVE-2024-53189
-> >         CVE-2024-56663 CVE-2025-21909 CVE-2026-53182
-> >
-> >     Policies for selected CVEs are added in the corresponding
-> >     selftests patch.
-> >
-> >     Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+On 31/08/2026 15:52, 赵世荣 wrote:
 > 
-> This isn't a bug, but would it be worth trimming the two CVE enumerations
-> or pointing at where the classification lives so the coarse-grained-vs-
-> netlink_send rationale is not outnumbered roughly 3:1 by bare IDs?
+> Agreed, Eric's patch fixes the root cause properly. Please disregard
+> my patch.
 > 
-> The selftests patch is already referenced for the policies. The tail of
-> the second CVE list also breaks the ascending order it starts with
-> (CVE-2026-52979 is followed by CVE-2023-53570).
+> Apologies for the noise. I'll review the mailing list and verify the
+> root cause before sending next time.
+> 
+> Thanks,
+> Zhao ShiRong
+> 
+> 
 
-Yeah, thanks, I will consider this.
+Also don't top post on netdev@, reply below.
+
+Thanks,
+  Nik
 
 > 
-> > diff --git a/include/linux/bpf_lsm.h b/include/linux/bpf_lsm.h
-> > index 1e54c7cca27ad..452b9d1d7c494 100644
-> > --- a/include/linux/bpf_lsm.h
-> > +++ b/include/linux/bpf_lsm.h
-> > @@ -12,6 +12,8 @@
-> >  #include <linux/bpf_verifier.h>
-> >  #include <linux/lsm_hooks.h>
-> >
-> > +struct genl_family; /* for the bpf_lsm_genl_family_rcv_msg hook */
-> > +
-> >  #ifdef CONFIG_BPF_LSM
-> >
-> >  extern bool bpf_lsm_initialized __ro_after_init;
-> > diff --git a/include/linux/bpf_lsm_hook_defs.h b/include/linux/bpf_lsm_hook_defs.h
-> > index 29bc0b514d168..3f57022744a31 100644
-> > --- a/include/linux/bpf_lsm_hook_defs.h
-> > +++ b/include/linux/bpf_lsm_hook_defs.h
-> > @@ -4,3 +4,10 @@
-> >   * This is a set of BPF LSM hooks, which are _not_ fully implemented
-> >   * as LSM hooks. Thus, they only can be used by BPF LSM programs.
-> >   */
-> > +
-> > +#ifdef CONFIG_NET
-> > +
-> > +LSM_HOOK(int, 0, genl_family_rcv_msg, const struct genl_family *family,
-> > +	 const struct net *net, u32 cmd, u16 nlmsg_flags)
-> > +
-> > +#endif /* CONFIG_NET */
-> > diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-> > index 0da39eaed255f..12b4f49c72534 100644
-> > --- a/net/netlink/genetlink.c
-> > +++ b/net/netlink/genetlink.c
-> > @@ -17,6 +17,7 @@
-> >  #include <linux/skbuff.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/bitmap.h>
-> > +#include <linux/bpf_lsm.h>
-> >  #include <linux/rwsem.h>
-> >  #include <linux/idr.h>
-> >  #include <net/sock.h>
-> > @@ -1161,6 +1162,7 @@ static int genl_family_rcv_msg(const struct genl_family *family,
-> >  	struct genlmsghdr *hdr = nlmsg_data(nlh);
-> >  	struct genl_split_ops op;
-> >  	int hdrlen;
-> > +	int err;
-> >  	u8 flags;
-> 
-> This isn't a bug, but would int err sit better after u8 flags so the
-> declaration block stays longest-to-shortest, per the reverse xmas tree
-> ordering in Documentation/process/maintainer-netdev.rst?
-
-yes
-
-> 
-> [ ... ]
-> 
-> > @@ -1187,6 +1189,10 @@ static int genl_family_rcv_msg(const struct genl_family *family,
-> >  	    !netlink_ns_capable(skb, net->user_ns, CAP_NET_ADMIN))
-> >  		return -EPERM;
-> >
-> > +	err = bpf_lsm_hook(genl_family_rcv_msg, family, net, hdr->cmd, nlh->nlmsg_flags);
-> > +	if (err)
-> > +		return err;
-> > +
-> 
-> This isn't a bug, but could the bpf_lsm_hook() call be wrapped the way
-> the genl_family_rcv_msg_dumpit() / _doit() calls just below it are, so
-> it stays under 80 columns like the rest of the file?
-
-ok
-
-> 
-> >  	if (flags & GENL_CMD_CAP_DUMP)
-> >  		return genl_family_rcv_msg_dumpit(family, skb, nlh, extack,
-> >  						  &op, hdrlen, net);
 > 
 > 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33386073074
+> At 2026-08-31 20:31:19, "Nikolay Aleksandrov" <razor@blackwall.org> wrote:
+>>On 31/08/2026 14:30, Zhao ShiRong wrote:
+>>> Packets locally delivered by the bridge are re-injected into the
+>>> receive path via br_pass_frame_up() -> br_netif_receive_skb() ->
+>>> netif_receive_skb() with skb->dev set to the bridge device.  If the
+>>> bridge device has an XDP program attached, __netif_receive_skb_core()
+>>> runs do_xdp_generic() a second time on such packets.
+>>> 
+>>> A locally-delivered packet that was allocated on the TX path (e.g. an
+>>> MLD packet built by mld_newpack()) does not carry the
+>>> XDP_PACKET_HEADROOM that generic XDP requires, so
+>>> netif_skb_check_for_xdp() calls pskb_expand_head() and reallocates the
+>>> skb head buffer.  This frees the head that the bridge rx path
+>>> (br_handle_frame() / br_handle_frame_finish()) is still using, leading
+>>> to a use-after-free read in br_handle_frame():
+>>> 
+>>>    BUG: KASAN: slab-use-after-free in is_multicast_ether_addr [inline]
+>>>    BUG: KASAN: slab-use-after-free in is_valid_ether_addr [inline]
+>>>    BUG: KASAN: slab-use-after-free in br_handle_frame+0xcfb/0x1510 net/bridge/br_input.c:349
+>>> 
+>>> netif_receive_generic_xdp() already refuses to run generic XDP on
+>>> reinjected packets by checking skb_is_redirected().  Reuse that marker:
+>>> set it right before the bridge re-injects the packet, so generic XDP is
+>>> skipped and the head buffer is left intact.
+>>> 
+>>> Reported-by: syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
+>>> Link: https://lore.kernel.org/all/6a6d4406.2d659fcc.1d46f5.01ad.GAE@google.com/T/
+>>> Signed-off-by: Zhao ShiRong <shxzhaosr@163.com>
+>>> ---
+>>>   net/bridge/br_input.c | 6 ++++++
+>>>   1 file changed, 6 insertions(+)
+>>> 
+>>> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+>>> --- a/net/bridge/br_input.c
+>>> +++ b/net/bridge/br_input.c
+>>> @@ -26,6 +26,12 @@ static int
+>>>   br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
+>>>   {
+>>>   	br_drop_fake_rtable(skb);
+>>> +
+>>> +	/* Re-injected for local delivery: do not let generic XDP run on the
+>>> +	 * bridge device a second time, it could reallocate the head via
+>>> +	 * pskb_expand_head() and free a buffer still in use.
+>>> +	 */
+>>> +	skb_set_redirected_noclear(skb, false);
+>>>   	return netif_receive_skb(skb);
+>>>   }
+>>>   
+>>> --
+>>> 2.43.0
+>>> 
+>>
+>>Nacked-by: Nikolay Aleksandrov <razor@blackwall.org>
+>>
+>>This is wrong on multiple levels, use your head for 2 seconds before blindly
+>>sending AI crap. This was sent ~2 hours after the report was sent, did you
+>>even test your patch or just hit send? Very disturbing practice anyway.
+>>
+>>Perhaps we should clone the skb for passing it up to the bridge when a fwding
+>>helper is using it (i.e. when there are actually clones).
 
