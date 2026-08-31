@@ -1,168 +1,245 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF8B3E51E4;
-	Mon, 31 Aug 2026 11:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3963B14CE;
+	Mon, 31 Aug 2026 11:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788177039; cv=none; b=EcM7pY/UriqaqIR/aG9zd3c1qiuIJJW5Ke4tyobZjhCAbv16CCiN7triqZXe/8ez5xGBkf4BVutd69iM3zefN526k2mRZwFJszftWL5KWS5tz+KbguKcGb+vSkENT4uUTaZMRtUp8PfXVumnnFVhsog7f7QomB5mStZPSfox3jk=
+	t=1788177246; cv=none; b=enm5e1RHwOGxe96L8cWtplFntuWd0MfA9gXRxprfm/xb5vXJ7mtv5TgMfGtatDKtmP4yJQrIhku9J1Wmi56qYJOnHKgd8Z9N/0ecUP6Q0NWFr76/AJ3GYUu0s5xm38ieH1QNHWzN2VL/zaEJF3ZyC8AyCrn0qLVuQc8/IjTvM5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788177039; c=relaxed/simple;
-	bh=cfWBcOASOzKuRqammOALbQZ2Ne8/rzaU7Fz5ETt1BMc=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=YObAZFNOTZzvPqhDgw/C+ZxoxKlHDcK3bGupaMk7m/tzgJb+XnSjh0xrCfbAx0p0tiPsEPxGHHBWcC/Ym/xuGeYXrzkeb+Atcj9l9af7/gEjbf8osyiE/4hW6WMir1uy/CM2OsWiA8dE0DEALbjghhKFjSnXeRL5VgW488NpoYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exXUEbYM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788177246; c=relaxed/simple;
+	bh=+O8q1PFFVuZ04wk0IQ4Bd37i7S8NTmE+vIVAH0LPoo8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tK6yjzrOxSIvH1Zg86WuEjenDPFPhHJ0z6xQQV/78OpFPo53dR53Cg2mTKYGf+FC4nQ3A1EMj9lQ7+5tRmCXWnDRi1aWU2x8/UPpKPiLYKZTCvYAUoqd8oKk2dFiPGr1Z6pTI2YAchnNnJcXGXHe4BACUvsm7Nr0L9dsojZDLeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=IMdQX0Rk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vtUsLCXv; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=195sPZLp; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=k20UFPZ9; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exXUEbYM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2271F000E9;
-	Mon, 31 Aug 2026 11:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788177036;
-	bh=/qki8Ak/UpGyTQ0kiXEyNF6XoCNkLdUSr1yKapMlqxs=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=exXUEbYMQXVA3wnlJs96Gq0o9ZhiDmGCMXGWSmVe6vBpdqgMxoNvIJtBKpikb7q1P
-	 x+82n/19h3EtGt/Mq8qDaJhxnzLNHnt6SLJrhAeF98sHTSRB6N7RUWKRNkdo99HIV/
-	 5aDtkmtc4GdANcbNQiLNFrp7ZviNXe+3hXKtiYy1/koN1dLzwBoAutIN4kCXjEPR5a
-	 HU0HjMTxvdmHaOocG/sUhJ9Q0mxrHrovsGrxuYJCv5GdlNaH02Lavz4/OgNMTgmuJ8
-	 Qgz++OCg/EwQZ32zgg6fnraiaeSypRdtKK+fEyEDiB8DmeR2YXBBuu/pXsMAiDYim4
-	 /1Qd3eyOlgsYw==
-Content-Type: multipart/mixed; boundary="===============5687862971082144044=="
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="IMdQX0Rk";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vtUsLCXv";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="195sPZLp";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="k20UFPZ9"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4FDC0224D0;
+	Mon, 31 Aug 2026 11:53:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788177238; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+RKXp8acbmEZB92DNdU3vfC31X8afmpyUT6QYHPcLNU=;
+	b=IMdQX0Rknx81REbKQMLryWJUlv3le8cvNfq2jsljR3lyYozvKOMjLRhAco4Ho+eVnD/Y0I
+	2UhPtxTTF9QOveY9vAjfmoCV9GGK72D6PCtHLmdfNNk7QxT7TJbfqHhOC5+7wL8dx6069b
+	eVhrm147WdcP1E6Peqf9t8wtxHFy7X0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788177238;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+RKXp8acbmEZB92DNdU3vfC31X8afmpyUT6QYHPcLNU=;
+	b=vtUsLCXv9zDoJW9hr/GXW1I1h3Mjpa53UNOz8J+8lpsTEjad3KmGdaJkNXRYEgURPFrTBZ
+	oAI+6OQ0YOsA/cCw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788177234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+RKXp8acbmEZB92DNdU3vfC31X8afmpyUT6QYHPcLNU=;
+	b=195sPZLp5vxtLk6MPAl7ckwEWrkhoI+V8HAAma0AzFU3PLQZGSDKhWfvB0xWB2L6KPziW6
+	7l6nkMzvBCrVzSVEV1kblZv3jIdTbmWs4LX9Sa/xoHxOoiJbbAzaaYzqRekkAN4SiXQ0U6
+	n7M4ARNqAqSFFFf5RfET2yNjZSdJdW8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788177234;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+RKXp8acbmEZB92DNdU3vfC31X8afmpyUT6QYHPcLNU=;
+	b=k20UFPZ928t7n4ASR8ntGEhWHQ/ljeHXihrjD0QxYUxk/WN0cZdApli1WA7oHjrEE35vXQ
+	p997v4OwWz1hR9DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A42FD13515;
+	Mon, 31 Aug 2026 11:53:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id me8PKFFrlWrEYgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 11:53:53 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EC102A13B5; Mon, 31 Aug 2026 13:53:52 +0200 (CEST)
+Date: Mon, 31 Aug 2026 13:53:52 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	bcrl@kvack.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
+	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
+	yi.zhang@huawei.com, pmladek@suse.com, rostedt@goodmis.org, 
+	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, senozhatsky@chromium.org, 
+	akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, socketcan@hartkopp.net, mkl@pengutronix.de, 
+	kuniyu@google.com, willemb@google.com, jhs@mojatatu.com, jiri@resnulli.us, 
+	kees@kernel.org, cyphar@cyphar.com, tglx@kernel.org, liuhangbin@gmail.com, 
+	sdf@fomichev.me, nb@tipi-net.de, linux-fsdevel@vger.kernel.org, 
+	linux-aio@kvack.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-can@vger.kernel.org
+Subject: Re: [PATCH 07/11] ext4: Convert group-count barrier protocol to
+ acquire/release
+Message-ID: <vzwmgjfapapzrbwdo6nangrihpk4prlj7rlm3tipmmiumb3l7j@cffw5odvv6g5>
+References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
+ <20260825095422.3166067-8-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <32309c5bdc0ed0566f6c7f8d133b4cbf781236c0d4fa76bdd43d0805224f89eb@mail.kernel.org>
-In-Reply-To: <20260831110934.241898-2-a.s.protopopov@gmail.com>
-References: <20260831110934.241898-2-a.s.protopopov@gmail.com>
-Subject: Re: [PATCH bpf-next 1/7] bpf: Allow BPF LSM programs to attach to more hooks
-From: bot+bpf-ci@kernel.org
-To: a.s.protopopov@gmail.com,bpf@vger.kernel.org,linux-security-module@vger.kernel.org,netdev@vger.kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,kpsingh@kernel.org,matt@bobrowski.net,john.fastabend@gmail.com,brauner@kernel.org,paul@paul-moore.com,torvalds@linux-foundation.org,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com
-Cc: a.s.protopopov@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Mon, 31 Aug 2026 11:50:35 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825095422.3166067-8-ruanjinjie@huawei.com>
+X-Spam-Score: -2.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[40];
+	TAGGED_RCPT(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	R_RATELIMIT(0.00)[to_ip_from(RLmzfjx67n53eyz9asjm8u3pcw)];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,suse.com,goodmis.org,linux.intel.com,rasmusvillemoes.dk,chromium.org,linux-foundation.org,davemloft.net,google.com,redhat.com,hartkopp.net,pengutronix.de,mojatatu.com,resnulli.us,cyphar.com,fomichev.me,tipi-net.de,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,imap1.dmz-prg2.suse.org:helo,suse.com:email]
+X-Spam-Flag: NO
 
---===============5687862971082144044==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue 25-08-26 17:54:18, Jinjie Ruan wrote:
+> During an online resize, reading s_groups_count and s_blockfile_groups
+> requires strict ordering against subsequent initialized block group
+> metadata.
+> 
+> Replace the historical smp_wmb()/smp_rmb() pairs with smp_store_release()
+> and smp_load_acquire(). This formalizes the publish-subscribe pattern
+> and allows weakly-ordered architectures (e.g., arm64) to utilize native
+> STLR/LDAR instructions instead of full DMB fences.
+> 
+> Update the documentation in resize.c and ext4.h accordingly.
+> 
+> Assisted-by: Gemini:Gemini-3.1
+> Assisted-by: DeepSeek:DeepSeek-V3
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 460cb72688450..d01dd1f096fc1 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5035,6 +5035,7 @@ L:	bpf@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/bpf/prog_lsm.rst
->  F:	include/linux/bpf_lsm.h
-> +F:	include/linux/bpf_lsm_hook_defs.h
->  F:	kernel/bpf/bpf_lsm.c
->  F:	kernel/bpf/bpf_lsm_proto.c
->  F:	kernel/trace/bpf_trace.c
+Looks good. Feel free to add:
 
-[ ... ]
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-> diff --git a/include/linux/bpf_lsm.h b/include/linux/bpf_lsm.h
-> index dda272d78f013..1e54c7cca27ad 100644
-> --- a/include/linux/bpf_lsm.h
-> +++ b/include/linux/bpf_lsm.h
-> @@ -16,9 +16,19 @@
->
->  extern bool bpf_lsm_initialized __ro_after_init;
->
-> +/*
-> + * Technically, checking bpf_lsm_initialized is not necessary.
-> + * But if it is off, then this means that all security_* calls
-> + * do not call BPF, and it doesn't look reasonable to enable
-> + * only "non-LSM" bpf hooks...
-> + */
-> +#define bpf_lsm_hook(NAME, ...) \
-> +	(bpf_lsm_initialized ? bpf_lsm_##NAME(__VA_ARGS__) : 0)
+								Honza
 
-Does the new bpf_lsm_hook() macro constrain what hook declarations
-can appear in bpf_lsm_hook_defs.h? The macro hardcodes 0 as the return
-value in two places:
-
-1. When bpf_lsm_initialized is false, the ternary returns 0, but when
-   it is true with no program attached, the __weak nop returns the hook's
-   declared DEFAULT. This means LSM_HOOK(int, 0, ...) behaves consistently,
-   but LSM_HOOK(int, -EOPNOTSUPP, ...) would return different values
-   depending on whether 'bpf' appears in lsm= - 0 before initialization,
-   -EOPNOTSUPP after.
-
-2. Because of the ternary, LSM_HOOK(void, ...) cannot compile at call
-   sites, since the expression `cond ? void_expr : 0` is invalid.
-
-3. The CONFIG_BPF_LSM=n stub at line 128:
-
-   #define bpf_lsm_hook(NAME, ...) 0
-
-   discards its arguments entirely, so call-site argument checking only
-   happens on =y builds. Does this create a risk that =n configurations
-   would fail to catch type mismatches or side-effect issues?
-
->  #define LSM_HOOK(RET, DEFAULT, NAME, ...) \
->  	RET bpf_lsm_##NAME(__VA_ARGS__);
->  #include <linux/lsm_hook_defs.h>
-> +#include <linux/bpf_lsm_hook_defs.h>
->  #undef LSM_HOOK
-
-[ ... ]
-
-> diff --git a/include/linux/bpf_lsm_hook_defs.h b/include/linux/bpf_lsm_hook_defs.h
-> new file mode 100644
-> index 0000000000000..29bc0b514d168
-> --- /dev/null
-> +++ b/include/linux/bpf_lsm_hook_defs.h
-> @@ -0,0 +1,6 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +/*
-> + * This is a set of BPF LSM hooks, which are _not_ fully implemented
-> + * as LSM hooks. Thus, they only can be used by BPF LSM programs.
-> + */
-> diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
-> index 82c5988417a0c..add344ea26914 100644
-> --- a/kernel/bpf/bpf_lsm.c
-> +++ b/kernel/bpf/bpf_lsm.c
-> @@ -28,11 +28,13 @@ __weak noinline RET bpf_lsm_##NAME(__VA_ARGS__)	\
+> ---
+>  fs/ext4/ext4.h    | 10 +++-------
+>  fs/ext4/mballoc.c |  6 ++----
+>  fs/ext4/resize.c  | 19 +++++++++++--------
+>  3 files changed, 16 insertions(+), 19 deletions(-)
+> 
+> diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+> index 724a27e8be61..d70b9cb09155 100644
+> --- a/fs/ext4/ext4.h
+> +++ b/fs/ext4/ext4.h
+> @@ -3542,16 +3542,12 @@ static inline void ext4_isize_set(struct ext4_inode *raw_inode, loff_t i_size)
 >  }
->
->  #include <linux/lsm_hook_defs.h>
-> +#include <linux/bpf_lsm_hook_defs.h>
->  #undef LSM_HOOK
->
->  #define LSM_HOOK(RET, DEFAULT, NAME, ...) BTF_ID(func, bpf_lsm_##NAME)
->  BTF_SET_START(bpf_lsm_hooks)
->  #include <linux/lsm_hook_defs.h>
-> +#include <linux/bpf_lsm_hook_defs.h>
->  #undef LSM_HOOK
->  BTF_SET_END(bpf_lsm_hooks)
-
-The patch adds bpf_lsm_hook_defs.h to three of the four BPF-owned
-LSM_HOOK expansion sites, but not the fourth. Does this need updating?
-
-Updated:
-  include/linux/bpf_lsm.h (prototypes, lines 30-31)
-  kernel/bpf/bpf_lsm.c (__weak nop definitions, lines 30-31)
-  kernel/bpf/bpf_lsm.c (bpf_lsm_hooks BTF set, lines 36-37)
-
-Not updated:
-  kernel/bpf/bpf_lsm.c (void_lsm_hooks BTF set, further down in the file)
-
-The void_lsm_hooks set is consumed by bpf_lsm_hook_returns_errno() in
-bpf_lsm.c, which feeds cgroup_lsm_atype[i].returns_errno. If a hook
-declared as LSM_HOOK(void, ...) appeared in the new header, wouldn't it
-be omitted from void_lsm_hooks and incorrectly reported as errno-returning?
-
-This is latent today because the four hooks added later in the series all
-return int, but is there a reason the fourth site shouldn't include the
-new header, or should the header document that it only supports int hooks?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33386073074
---===============5687862971082144044==--
+>  
+>  /*
+> - * Reading s_groups_count requires using smp_rmb() afterwards.  See
+> - * the locking protocol documented in the comments of ext4_group_add()
+> - * in resize.c
+> + * Reading s_groups_count uses acquire semantics.
+>   */
+>  static inline ext4_group_t ext4_get_groups_count(struct super_block *sb)
+>  {
+> -	ext4_group_t	ngroups = EXT4_SB(sb)->s_groups_count;
+> -
+> -	smp_rmb();
+> -	return ngroups;
+> +	/* Pairs with smp_store_release() in ext4_update_super() */
+> +	return smp_load_acquire(&EXT4_SB(sb)->s_groups_count);
+>  }
+>  
+>  static inline ext4_group_t ext4_flex_group(struct ext4_sb_info *sbi,
+> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+> index 06171a11db12..a15285224cdf 100644
+> --- a/fs/ext4/mballoc.c
+> +++ b/fs/ext4/mballoc.c
+> @@ -899,10 +899,8 @@ static ext4_group_t ext4_get_allocation_groups_count(
+>  
+>  	/* non-extent files are limited to low blocks/groups */
+>  	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
+> -		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
+> -
+> -	/* Pairs with smp_wmb() in ext4_update_super() */
+> -	smp_rmb();
+> +		/* Pairs with smp_store_release() in ext4_update_super() */
+> +		ngroups = smp_load_acquire(&EXT4_SB(ac->ac_sb)->s_blockfile_groups);
+>  
+>  	return ngroups;
+>  }
+> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+> index 2c5b851c552a..5e3ad8393cf8 100644
+> --- a/fs/ext4/resize.c
+> +++ b/fs/ext4/resize.c
+> @@ -1462,11 +1462,11 @@ static void ext4_update_super(struct super_block *sb,
+>  	 *
+>  	 * The precise rules we use are:
+>  	 *
+> -	 * * Writers must perform a smp_wmb() after updating all
+> -	 *   dependent data and before modifying the groups count
+> +	 * * Writers must use a release store when updating the groups count
+> +	 *   after all dependent data has been updated
+>  	 *
+> -	 * * Readers must perform an smp_rmb() after reading the groups
+> -	 *   count and before reading any dependent data.
+> +	 * * Readers must use an acquire load when reading the groups
+> +	 *   count before reading any dependent data.
+>  	 *
+>  	 * NB. These rules can be relaxed when checking the group count
+>  	 * while freeing data, as we can only allocate from a block
+> @@ -1474,12 +1474,15 @@ static void ext4_update_super(struct super_block *sb,
+>  	 * only then free after serialising in turn against that
+>  	 * allocation.
+>  	 */
+> -	smp_wmb();
+>  
+>  	/* Update the global fs size fields */
+> -	sbi->s_groups_count += flex_gd->count;
+> -	sbi->s_blockfile_groups = min(sbi->s_groups_count,
+> -			(EXT4_MAX_BLOCK_FILE_PHYS / EXT4_BLOCKS_PER_GROUP(sb)));
+> +	/* Pairs with smp_load_acquire() in ext4_get_groups_count() */
+> +	smp_store_release(&sbi->s_groups_count,
+> +			  sbi->s_groups_count + flex_gd->count);
+> +	/* Pairs with smp_load_acquire() in ext4_get_allocation_groups_count() */
+> +	smp_store_release(&sbi->s_blockfile_groups,
+> +			  min(sbi->s_groups_count,
+> +			      (EXT4_MAX_BLOCK_FILE_PHYS / EXT4_BLOCKS_PER_GROUP(sb))));
+>  
+>  	/* Update the reserved block counts only once the new group is
+>  	 * active. */
+> -- 
+> 2.34.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
