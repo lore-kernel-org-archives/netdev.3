@@ -1,247 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34FA3A5435;
-	Mon, 31 Aug 2026 05:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788155707; cv=fail; b=qq54CnDFyn3mFS1Nh0IEVTCkS97f2LJF8IGh4HYw+KHEfaFfMN669OmkM5suLYIxtflDSA2TaHZ++JvOMc5PxAidXKZZ9+9eAK+jyg/DDWG662L9+Q6usQy12CRLXBOTRXbWitPTOU5ejo1uwyqTUdlM7ZFz+eYkVGoXdVfcocQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788155707; c=relaxed/simple;
-	bh=OpL2Y2lRNPBkayrOZ0xRpzHYewWgPgVd+GzgqOcVaS0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Lpp1IEDZghO805TIYDlAUPwG6yvujizUbAXAKBw7fDIG2FH2eT9USOOgNddjsVMIMivYfS2R8d8ZDGW/OxUoT4anc+aJHk63lbvor7xUYVTr0vrdIHO+2/0YFCocGlJOqQ4P6oFZOgxydebJ0xZMoodCk3KsPSdaj+O75xdypJI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gkZPg5dI; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C9C3B27E3
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788157671; cv=none; b=lSXU5yEeOphNueyLDj38bpbJ0jJnOfudyFiGTDZHei8qBRN2bHcWIx+xIdxTh0tiG3iAXuHzCvD+jXn3d7/b/60oI+IBU3aL6YM/KWomoZ//r81d75hXSDOIvxqeUS9S3XrkZ9OGJhwWmFEho1WgwOarATLR07esUeg42lq/AxQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788157671; c=relaxed/simple;
+	bh=uyz/iG22EQ1cE1shTE/tz55aLL5WmcZtVb0ryFqx3MI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=g3P9tF4ctoZTJQlYe7+QnLuQmbb+icbGdH+vQgjwEjhvcZ2FkwOU4BpE/CZmcKOoksC0Y+ctTxeBtBE2Thb4hkkRCQh247imI82hvQzdt09I495R0UdTnWFhjavlzYIUUx4eGuAEhmOqFshC8MSp4hos7f+PIid5ctjJLaR8Dq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=RwmwC4TZ; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gkZPg5dI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788155706; x=1819691706;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=OpL2Y2lRNPBkayrOZ0xRpzHYewWgPgVd+GzgqOcVaS0=;
-  b=gkZPg5dI1nsbsip8Ak1VkWUIvmUTNju2MauZvzvhH7QC8bTBBWWtInNu
-   3vLTLOwzihm7vF8vH/AcvDhtkxdIoyJa43OV8iTDPCFQtx7FMu8TCAWbD
-   oBR/PpuQB6Kms/hUkKOoTYnlRJVO6pQc006AvxnPjTAhqs+kO/6URYfhd
-   8hgjdh63vSXveE4pV7M7VEts7QE+svdZWF/ze3mMSJwNe4gINJ3eNac4m
-   4glPaHMEgr+eOuoeDuODuPSOYAh94PGIpo8WSAuJLvMOuBCIAc7xzrAN0
-   KmVmKmnNa0OSs7ddxi4gspSIPT9ms0g+tx9IwxCf7HYfnFn4uzVxNRZLJ
-   A==;
-X-CSE-ConnectionGUID: 6XaB1urbSrqkPMiAWAS+5A==
-X-CSE-MsgGUID: ISvDxhumTSiqWE2UI+iBew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="92363824"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="92363824"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 22:55:04 -0700
-X-CSE-ConnectionGUID: ID03gijoTtueWtXMz6vhSw==
-X-CSE-MsgGUID: VbeDbNo7SmSGzfZRBWPXQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; 
-   d="scan'208";a="268136225"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2026 22:55:04 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 30 Aug 2026 22:55:03 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Sun, 30 Aug 2026 22:55:03 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.8) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 30 Aug 2026 22:55:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wWWDp6NqYEet5c00PSYn0Ska/dBnS3X/n52AyVeHPnds7P/i0tRT0wAHUJNxGW5FZ+Ifc1mFg1/qYa1URvdzTMSkoG8QbZPtsuFwgQgdSNmBUADbfc3f+2njAv76dVFBQY5ncW7YkQM7S9eTH2XLav5oG/OA2kKVrgQCDCoXwNpkaKZ478O8+4Jm+S9FWCthMlaLt46/6rId5NIWhXQ9imgtE4cILwaogv0QMf5WjoNFS289wZRQzEsDnPBsikOvKuA85BTajO+7K0+m5Oh4xhg0LQOQLsX2sn3Dgi4A06PW3nJDCptFQzwhCMPeRskhbjZD9KfrQMUP3z9416E5gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4LhLowcjceiBOleNX3vMjuY1OAZiNdOE8dnPp3LdqSU=;
- b=eXVeeCD9QjDCVBKJ3kHjmKDhBmImK+xawgz4P+flwM4xI2eweFWClqB7ZMpPaPIFi/UOCov5hirr8xz4YXSVPRGcn6GsrXWyJPATXR5XQ/dW7XMKURRiPEjbMkaMYugE5SOoSCPXrlDq1fsfJbmpMwrGLXpVNxujE/ozWW3AQrFoU8zq5xBycKERCXJ63Ts5CameYbPZBThVivxKRXV+4/fNyYY+49Qvur8ehu4DaYBO9MMkmc/u7SxZAWGskdIVQK3TOSWgYVLE3v5EVkIMJYspuuc/iNMo21pl0dT7N/3kav8QKXDou6e/Qsuak/5yXY/oEEUlcKB17TPINbhOTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by DSVPR11MB9765.namprd11.prod.outlook.com (2603:10b6:8:351::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 05:54:55 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 05:54:55 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Matt Vollrath <tactii@gmail.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Lobakin, Aleksander"
-	<aleksander.lobakin@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
-	<skhan@linuxfoundation.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH iwl-next 1/8] e1000e: add jumbo Rx CRC stripping
-Thread-Topic: [PATCH iwl-next 1/8] e1000e: add jumbo Rx CRC stripping
-Thread-Index: AQHdONZzI5p1SKTGpUCDhu0YiM0U5ra3qKEg
-Date: Mon, 31 Aug 2026 05:54:54 +0000
-Message-ID: <IA3PR11MB8986FC61317321A94128B4C6E5A92@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260830232146.36948-1-tactii@gmail.com>
- <20260830232146.36948-2-tactii@gmail.com>
-In-Reply-To: <20260830232146.36948-2-tactii@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|DSVPR11MB9765:EE_
-x-ms-office365-filtering-correlation-id: fa8fe2fd-943f-485e-30c5-08df072461c6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|38070700021|4143699003|10067099003|5023799004|11063799006|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info: B37VMlX8sZ0Jxm3HYI2yO/YT5Smb019N6b1tPiDRTC3z5gYhBRNXE5YhE1jdQHHH2RncwSraI1Stl7yV2IwDmO7cQwV44MDQ1bOzfOLLnEPbaOcI/UyW/V4gAdmIGM92PzRtjDzY7YR945QwnzcnD905x5ZUAjmEKEP5EYqG3TM/9kk0AZv5m5jQJUp5kmFci4ymkNw7iju1Zp2UYhTFpFpmiZ7vkikBck6O75NHlNOrODdP0hSQCjH0dnZjpbiO6eBQPRIQJXCjfh+xmMqUSLBetN4Cx9rHF0DpL4/e8ge3btr26V2V/eE0ky8D60u9JeLHwGeOYUo8j1AtGH6vKq+MOX0xIociqhoR5iteJq89pCOAL/5P68jB+IUaDU9lWEhr1mCAEK1kveWmeqfBIS5CqTtWTakfZoLguIeXRg1oUeKXSnG6A97qSzFTyOpiKbSRwihrxOwagmekhUks4B4Xla1cAseGDP7cxrnx+N53knGy4Wkjc67oHKoHdPaogYdWpPmM+RzjgSB1lg4rAYO7QBM2IXRpXOm6UjLMzH/4s3hhAOaiSusIyqNt+43UX4zk+O5HUqiQvpeV4jaqA3qg7c/QMdhRMnYXBMhMlHYTqfo82YORkl0+ljqbRtGaX9NZZXP+HHovqWKmXYb88eYh2mO0cEga9HNO0Zc92Rjz7dWa7zbqihblVBVQK922le0iERPBkp0b+ZlLdMlZx8S9+NKCl98b+OqLs7UfJ64=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(38070700021)(4143699003)(10067099003)(5023799004)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?im/mLS05h+eUfvvFvgehc7kEW0dZX8rfZlIBE06YZY3WO9LB1yhihm16h36P?=
- =?us-ascii?Q?ALsSD4vEjWShBuluD8UrX4ZMbF+zu/30amUcehynpEZAEtKZFofR/MjHUOwq?=
- =?us-ascii?Q?wN0nFJ7EI7i9ySNIhuDnMuB5uVCFtwkkFaHzqyvjR9el4NZwWPZkyhZ0HFQQ?=
- =?us-ascii?Q?+rSsRaVULFnbEFuVHiAXib2Np9Mwx94Qo+V5iTV+EGbvRI79Yl5SmVVGRo+u?=
- =?us-ascii?Q?i38nHpde7dvYHSqAwFQGbzXbTT3wY2QWZyLICT9x1ik4LlZgrRyzbBf6EO5r?=
- =?us-ascii?Q?98BoVyqy6zQhhr3+K8ifVxdJRD/+5+gNsAuicwGFQLEFKEWNJQ/4n72XglDr?=
- =?us-ascii?Q?MCS5+bGkB8o6yCKt5rILh2NrDqiC1wdkTxTPKQJbE/r3fj3mqJAykzvodKeo?=
- =?us-ascii?Q?hFp0JdMmmNQ96sTcY2DfLwrBOx0iBZBCdH10UnAyWe/miVOme8jY1cn0HD7a?=
- =?us-ascii?Q?+xzD0PfuiHIFt/BxqsRm2HiIigoWwUB71GzVTaQxjGybjoH6Glvz/9frGxga?=
- =?us-ascii?Q?81556lPx6idIRUdbLYaiW37e9zs7pFdhtGPsGgGTaO1hTL1DcbNuhUa7G/Pt?=
- =?us-ascii?Q?FuHwByGxge3arl2hJReHZd6hnVSQul6uFzo0h3aYL2PQLziWv4mThX5vReo9?=
- =?us-ascii?Q?CuVLp7MuXOLbSk0PDjzOV0vAM5gEAmB4zklRi1/cmO9v6dqE/7CxAA/ZOfHf?=
- =?us-ascii?Q?BlNt+dy2A9NR9H44cgHKsZvuRTewdKLFoDdJtBlB+aqcvaxWi+ZlgYPO/u28?=
- =?us-ascii?Q?yePC3sxhXjqEACpkMASLVWKIv+Vrea8S57afENaWFMsn6EtwwXZwGvfd4NnX?=
- =?us-ascii?Q?7uaGWH72Xa/03Dn30d86lIEjO8T6bqWVECvCkKQ7g4X3zv6fNnfPjAeFE64i?=
- =?us-ascii?Q?HQXeB3MV6SF2BTIqGd0dIRf+2OyldWku0zT+HoTzQ6BfONxKgC03wW6HolQt?=
- =?us-ascii?Q?OUoDyJ7OmjSOS9y4nAHmh5xVTppm9JHYXJ973CtNI5VJsCq1+VSlJJ7sNXRJ?=
- =?us-ascii?Q?wLzfimkNcezjxpLj9a9mZ0MPUWTiibs/Hn41X3IOrU4Tdjlo+DDFgpJAE9+2?=
- =?us-ascii?Q?ArKotZp9Y5Hq6hslgvHJh7ASjEx+a8TJDfFl737rMG/EFW0kTOengw5NSOvz?=
- =?us-ascii?Q?i1KfuTAhs85TuhuY2BwtufBS4aG8nFW3Onqy3wmLiLc8DG9jKxEKiwVydxks?=
- =?us-ascii?Q?ok6yq2bhcBTD8q40Ck/FNKNtJbsUaxIF7sPTFmqJY+puKdtKNEmsqDEtbNJX?=
- =?us-ascii?Q?DfFZ4PDsbfWVJB0HPCEvEglIHi94OKLexfTbDtLjVXIV5ZSzItYFvx6Ikj6j?=
- =?us-ascii?Q?aR9q9xseEAPmaSgF07Gb/Y03rxsrQ0J2BBWiL/XtVfI/o5lKslOl5Fb94GGj?=
- =?us-ascii?Q?1+MT3xtDsodEgNYGjblgLiRPzzlTl+6ZTrK08ZZ0vTUQgpDrBoBBzlrXIalO?=
- =?us-ascii?Q?ZFFLbhH0Bh7SBXhC35ooQTXL+YA/xf5oXXCP3bWeQ2VFqHwu5koOGhYM6De6?=
- =?us-ascii?Q?lnECYQEzlQMOu8ABaFqxbo3RhP4Yml8PN7VMJidYTGrVbkvTF1SlYcRgh9a3?=
- =?us-ascii?Q?FAQ3YIiUCacu69tCH2IRL7wP8+eAVBscYlFD/bEABzz2LQjnWlBu3MQZ12ic?=
- =?us-ascii?Q?Pq0EufQ/MhBvgbttMQqwqJv7VIou4688/O4ZStjlA2h5PxIQqaPTbpMtn+NK?=
- =?us-ascii?Q?eNK3U04YZyGaTA1xtUoMrEWYBmkJddEeMqoEPLoJuyO78jJ0Ae0oNerk9hDc?=
- =?us-ascii?Q?a/KLXGdUH9AUxbXV2kOBtKCiXY2u2bo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="RwmwC4TZ"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2531f453eeso469132466b.3
+        for <netdev@vger.kernel.org>; Sun, 30 Aug 2026 23:27:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1788157668; x=1788762468; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KQDT/SFGyAqseQi8iwPfFYHbeuqX+da8RkpHa7uHvug=;
+        b=RwmwC4TZCzyD/aEggEOeCNJrCIdPueoejndUacQEdcrq9SZhnBsMI5kYyCgd92/puY
+         fqLGaDH5jFySAssK5e6chjzaf5G/5sgP1zeISQBWU5TrhzBy4ZhbUdsCMlJBzBWapqAe
+         jVxzqAELxZXSoiR/Tr5g5Mb9BhZEgKRSzOrXZP2Fx0OZ4Tc4SuMjhlOrWc3islAL4VXa
+         Hef+Y8vml8PhpT52Sc/p/aDk3jz0zQJmNSS0zUA2FL9E/KeTM4LlLceeQm4MRq3LIb9i
+         8MKbuZukk3VdV1ojAmoAwTUF9uIkRNMexci8eC36wA9C59bw2QnVgX3Jiel1auTTOAQX
+         v+3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788157668; x=1788762468;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KQDT/SFGyAqseQi8iwPfFYHbeuqX+da8RkpHa7uHvug=;
+        b=eiEpX5Sa8jGceNttxZm+fLoOJtycHzIDL2RIBF5sPmAr4XFNjUf3Xaau+sVBon0ntC
+         cwwIEGIKfshcwYVt93qYkMCfAis0bn9JOHGPvPRzAvlBrXI14eH+ciBWkh7S6yipCs+7
+         tngzG6fhxKojBYcqRTgun8uQa+8c3UsMQ9KcbIIOft9KxRQku1FfUhNuMh2WrxcbhHvd
+         tYuBOwgMeQtNkbek7/p5mn5PrVy4zSMMDFxWqPLk+TJnLxM+9QLC3ghYj1SrW4hC/Oi/
+         /WYxqcxXz8FN/E88WMSB81bEnrJGXi2E1Gja3br1jfSkuSeuMu9BCm3yrHmthC+JwQqa
+         slSw==
+X-Gm-Message-State: AFuF++kqic/ZidJZ1XtcG/AE1KeScV9lcbhOKYQRQaYH43lY6FGPb4+L
+	CCLrgKZgIDstj38fjh0Mwx3SgNRlO8xPG7a0nDjKwzzKChqWQSpgGlI8IlRAWn4mT/c=
+X-Gm-Gg: AR+sD12CjKoyNWKvTZfGvbWyqzmFs1bJP5CIhpEN9SlVBBTrQRGGq5g6Nf7m5DFp8b7
+	TlqZh+rVOiOdv6zZGvRD1RDjPnqK7i4Sy/EcdCgPZ84uEC2/YiLnP8iJ2jU+UZ0jPZPvA6SqPGl
+	qHp4IENVAsOgbaQ0U34ZPkYeTXj2grGMziwJi6VlGc8cO7S/GovzNMFqzfSx16lBuJKHwvIPImX
+	gcMh/AkcRVBEIXw7Pjs5CnhQhorkJdTdPlPd/6NtUCoi17iBZCDkzNLBILvYEQI2m3xecgLfYL+
+	MTdQL57lu4iyOU/8IRlLQ4wAZ0dQyGsEqCtyJgEibkCrvoLkk1zZjj97bO2wdydzi9oBDKmDYJX
+	fV3WTa7akOYa1XAOOJCPJbguoUteG4LOuMfgkMwDeKMjxrB+LpP8Kw5My6lIsJF5MX8dBvYcFTv
+	895JoO1u8CS0bBnjVwWChBYJWNEXyZ7HkelMJ7qEfpV/IZS9So/qIDV9o3vDF/GNS3hO97OmP00
+	GklX5FlAHVPmKIQ3qFEX+mAbnkGStoHA2BpsQ==
+X-Received: by 2002:a17:907:1c0d:b0:c25:8c05:902f with SMTP id a640c23a62f3a-c25ab453e48mr82721966b.13.1788157668444;
+        Sun, 30 Aug 2026 23:27:48 -0700 (PDT)
+Received: from cloudflare.com (79.184.131.109.ipv4.supernova.orange.pl. [79.184.131.109])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2564e314a1sm353166466b.42.2026.08.30.23.27.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Aug 2026 23:27:47 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Subject: [PATCH net-next 0/2] net: Prepare skb extensions for reuse across
+ scrubs
+Date: Mon, 31 Aug 2026 08:27:37 +0200
+Message-Id: <20260831-skb-ext-prep-work-v1-0-ecc2a8542fd9@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 5imZQ4GMP4CgmnpFWSaiM5I68ChxWATVO2Bhx5k/UpHXLwFQm1uEbPUm3D2Qezfdd/ftBjFM8Jr6seYrnheFQ3fCec5wdw1D9k67qMUirdT75r+u377y078o7xKxWPRQy8jLLeJVjUZjE74g1PhINgyB9CgB38aoeC/fyyeEHcytVvBCsi8bRi7LJ18CM91XfON896+S9PIjSuNNt3QohAbypHAMk7X9ru/VbDimH107auVdeGNQEqOmORsRKeu8J4Imigzxt/Xn0OQYHz3wSEG7gFnspFuhbAvEGESsWFGafaUGEFPxBatasXht0p0l0+JSZnvM9upkRdRm1lwR3Q==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa8fe2fd-943f-485e-30c5-08df072461c6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Aug 2026 05:54:54.9984
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lTHBRKg0tmuMhmbZozxKxu6tQ5HEtcfUMdobNwyr1KM4ySccYM/rzLfc+jRfvqlY3wugYP+tqSGPbqrAuF7bKB+fKXElxlq5teBqnq66A3Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR11MB9765
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANkelWoC/yWMQQ6CQBAEv0L67CTrCkT9iuHAwoAjyUJ2ViUh/
+ N1Rj5Xqrg3KSVhxLTYkfonKHA2OhwLdvY0jk/TG8M7X7uwvpFMgXjMtiRd6z2kiN5yqsueqLUO
+ A/cwMsv6aN0TOFG2P5m/0GR7c5W8S+/4BAzJaBX8AAAA=
+X-Change-ID: 20260829-skb-ext-prep-work-0f354de5a4bb
+To: netdev@vger.kernel.org, Florian Westphal <fw@strlen.de>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, Jeremy Kerr <jk@codeconstruct.com.au>, 
+ Matt Johnston <matt@codeconstruct.com.au>, 
+ Steffen Klassert <steffen.klassert@secunet.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, kernel-team@cloudflare.com
+X-Mailer: b4 0.16.0
 
+Following Florian's suggestion from the discussion in [1].
 
+The skb extension allocator retains the extension's offset after the
+extension is deleted. This, in theory, allows skb_ext_add() to reuse the
+existing storage instead of appending another copy when an extension is
+added again.  However, it also means that we can't rely on the offset as an
+indicator that the extension is present.
 
-> -----Original Message-----
-> From: Matt Vollrath <tactii@gmail.com>
-> Sent: Monday, August 31, 2026 1:22 AM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Lobakin, Aleksander
-> <aleksander.lobakin@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> David S . Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Jonathan Corbet
-> <corbet@lwn.net>; Shuah Khan <skhan@linuxfoundation.org>; linux-
-> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Matt Vollrath
-> <tactii@gmail.com>
-> Subject: [PATCH iwl-next 1/8] e1000e: add jumbo Rx CRC stripping
->=20
-> When the hardware is configured to not strip the FCS (CrcStripping=3D0),
-> the jumbo Rx path would deliver frames with the FCS still attached.
-> Follow the standard path's convention by stripping the FCS at EOP and
-> leaving it out of the byte count.
->=20
-> The jumbo path was omitted when the CrcStripping feature was added.
-> Since v3.3[1], the jumbo path has only been used where the page size
-> is over 16K, which practically rules out LOMs, BMC sideband, and the
-> need to leave FCS on frames. The bug is only reachable only by setting
-"only" is duplicated
+Make the extension cleanup safe, even when the offset is already allocated
+and set, by making the individual extension put helpers idempotent, so that
+they can be called multiple times.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+This is preparatory work to support skb extension chunk area reuse after
+skb scrubbing, which would be needed to persist BPF metadata skb extension
+across scrubs [2].
 
-> CrcStripping=3D0 on a platform with nothing that needs it.
->=20
-> This change prepares for convergence of Rx onto the jumbo path in
-> following patches. The set of h/w routed through this path will expand
-> to include LOMs.
->=20
-> [1] Commit 79d4e9087a6e ("e1000e: disable Early Receive DMA on ICH
-> LOMs")
->=20
-> Signed-off-by: Matt Vollrath <tactii@gmail.com>
-> Fixes: eb7c3adb1ca9 ("e1000e: fix IPMI traffic")
-> Assisted-by: Claude:claude-5-fable
-> ---
->  drivers/net/ethernet/intel/e1000e/netdev.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c
-> b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 844f31ab37ad..599600ad695c 100644
-> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
-> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> @@ -1631,13 +1631,23 @@ static bool e1000_clean_jumbo_rx_irq(struct
-> e1000_ring *rx_ring, int *work_done,
->  			}
->  		}
->=20
-> +		/* strip the Ethernet CRC; it may span fragments */
-> +		if (!(adapter->flags2 & FLAG2_CRC_STRIPPING) &&
-> +		    !(netdev->features & NETIF_F_RXFCS))
-> +			pskb_trim(skb, skb->len - 4);
-> +
->  		/* Receive Checksum Offload */
->  		e1000_rx_checksum(adapter, staterr, skb);
->=20
->  		e1000_rx_hash(netdev, rx_desc->wb.lower.hi_dword.rss,
-> skb);
->=20
-> -		/* probably a little skewed due to removing CRC */
->  		total_rx_bytes +=3D skb->len;
-> +		/* If configured to store CRC, keep the FCS bytes out of
-> the
-> +		 * total_rx_bytes counter
-> +		 */
-> +		if (!(adapter->flags2 & FLAG2_CRC_STRIPPING) &&
-> +		    (netdev->features & NETIF_F_RXFCS))
-> +			total_rx_bytes -=3D 4;
->  		total_rx_packets++;
->=20
->  		/* eth type trans needs skb->data to point to something
-> */
-> --
-> 2.43.0
+[1] https://lore.kernel.org/all/ao9UV9S7rUkyQ8jv@strlen.de/
+[2] https://lore.kernel.org/all/64365932-c765-472e-bf6c-b07c9ee25eaf@kernel.org/
+
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+---
+Jakub Sitnicki (2):
+      net: Make skb_ext_put_sp() idempotent
+      net: Make skb_ext_put_mctp() idempotent
+
+ net/core/skbuff.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
