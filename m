@@ -1,119 +1,182 @@
-Received: from mail.w14.tutanota.de (mail.w14.tutanota.de [185.205.69.214])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB44E282F1E
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 10:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.205.69.214
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788172376; cv=none; b=FGx8snr1nA2V/6u83N+XCzd4ItDqxHwnl4MqMLqh6CyWzfMqh1XYYwXrzEXHQ9h/6wZk1QWqyE9GUP9fkTMKfTy1ehfwzowpAwXw4/6OhE6x+MmanPDlUmouycXBcepf2UF2dTWk/nM+YZhGXvFLnOcjXxoIwbeUlbvMyImTl0Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788172376; c=relaxed/simple;
-	bh=jyLmSLhSq4w8mYax0r97CS4BX3pLU4DQ57ciOPhVbNc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=LTsRiRqYscl4QiYuy5wX8E3V5kRU1bcJ0RR/BKyk9XO7sVHi2Bd65e+U8REqTgj8Z856/U5s2ObYLm8LCogPOVYp9PJwpKots+RhR4vzu1F5gjO5kQhdS/ucCzur2J8kgWerj98IjjYcvEi047k32SjLP0ZBV1uQEoRyrzX1wzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=well-founded.dev; spf=pass smtp.mailfrom=well-founded.dev; dkim=pass (2048-bit key) header.d=well-founded.dev header.i=@well-founded.dev header.b=OW6XnJ73; arc=none smtp.client-ip=185.205.69.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=well-founded.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=well-founded.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65422D781B
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 10:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788172563; cv=pass; b=hVwRk2my3Hk+LZ+JzRv2gGwJ6mR4t5Rn6pnEl/umx9Aw4jb8+5VEkn/37sNmgVwNxN2reoWodKzV/43SLVvJrqFzTajpg3URXDWOyhM32krbx0jMKD6WcHjmH5e7eDO1fF2qXkk7s9DcPSG68MfG3xvIn7X6DboF6gn0LWlOLBE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788172563; c=relaxed/simple;
+	bh=17Uuc3zfGpTlIOpd4zndbkf7riqcWXLmLpdagq3nZF4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uFSg3V8ZiilBvflE3K8OPkbroUuoDKvlIUgDZ4+qpP+WBm0OknleFp+tpat357FDOpiHoss0msBFkyQSerjoeE2X7ShLYgCGE4MQT5mUDHMG1O6e7Z4wkD+OooKotgyER76bTpWdOn9ebQxEYNC1cMSPiqWWZ5AgHvVjAjKXQzg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EOlHi2Sk; arc=pass smtp.client-ip=209.85.219.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=well-founded.dev header.i=@well-founded.dev header.b="OW6XnJ73"
-Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
-	by mail.w14.tutanota.de (Postfix) with ESMTP id 9F58E17B03FFA
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:24:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788171855;
-	s=s1; d=well-founded.dev;
-	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
-	bh=3a/1tLM258+XX6sFATstRDA/BXsqthctD9Jmbcf7QLk=;
-	b=OW6XnJ73rMHhix5m/I8qylskUIhn+n7eSE+Ef+6jHLS9yNU7JFjmZ2yGTlvJHoKj
-	smfnlH1jlkwXeE8bnVuAQagSCarq9EcmKGvk3lmXDELY4MXnTOFLufZiqCOh7lPjmQC
-	npY1alQOXViJavLNAqaN8+3kQoXBbM7RcCAkpl3OgKeLyIshWudNGnmXFoU3IKvWkZQ
-	4URHP1QhmECB1/yTI0JLGYiD9ALvLARlRBrLtL6lW+KKR0SzC/yPujH+WWA59g5sBLE
-	BAcVgVx91ll8px6Gfn4B7KvQ06RXNeAvumld+rMB6kNJoUKh6oEaGL+61lXxMXIb8+D
-	MSSEXJbNYA==
-Date: Mon, 31 Aug 2026 12:24:15 +0200 (CEST)
-From: Ramses <ramses@well-founded.dev>
-To: "Jason A. Donenfeld" <jason@zx2c4.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Martin KaFai Lau <kafai@fb.com>,
-	Wireguard <wireguard@lists.zx2c4.com>,
-	Netdev <netdev@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Message-ID: <P0MLDmd--F-9@well-founded.dev>
-In-Reply-To: <apT0H7qIwFW-JCLn@zx2c4.com>
-References: <20260827-wg-tstamp-v1-1-4acfebb855ef@well-founded.dev> <apT0H7qIwFW-JCLn@zx2c4.com>
-Subject: Re: [PATCH net] wireguard: queueing: preserve tstamp_type in
- wg_reset_packet()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EOlHi2Sk"
+Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-902e4af2d9dso39844386d6.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 03:36:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788172561; cv=none;
+        d=google.com; s=arc-20260327;
+        b=s8wfMOOMDmYOoAZ5zHR+/7X2iLP+AaUaeKIoqgTNs7fmUfvUeS400eqfo3nSKA77uw
+         q2R1Y42wfXmRzeq16can9xZqtBlxVLLbeTVA7I1k2OJ2dSkt0ejKWlmOQb3lgCP9Y0DO
+         OJMfUZIyN4tSADNME082spqSisJt4usaYXw5ccjLSJ36F1aY3iagosb8qRONYAUjxswX
+         tIpYP07PkKGc8sQvc0MdDMzD1QhKChT3O8z+2K0b4jR53O59ETVutxDEfOZPuG/AVTJx
+         XgmdKVb0ncH3/buTJDExNt80nV3CqIrQM4MpYvUBmZRrHa+BfPsbIW7xkP0oTS0xUIFz
+         TS4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aZRb6ZzJARtkhDdjsBstTG/eFPsTXUA4jzflrKRt3fs=;
+        fh=IVFLBzEcJCqAdE0yYPMviKUQVAcG3l6SC4L72O+UmcQ=;
+        b=a2CfOiBAV6rLNz6cSZ0vuU2GlfubofyAOexlfRi3UE8fR3Bp457aODT8dgS9lVNHNG
+         miR15/IO9zy4LkkDroB332KbtLUm7DU9zV3QdU6EplCvItJb4qHhQreuKTUs9De8WS+h
+         2NHP8qbe0PBvn8YNGLGJXAVROVIHXRIiVIBxAxOIWDAgj5n343XlCIUAxR1NtA/XGq+H
+         4ejLx9NwRoOu8PH7yHmiGcytavFoPlc+FtvUFk2YYwP0so7Iwu1JMvD58zjiAZy/Vfir
+         y1l57gXB5IBKsfgnQYFPggwXMQ6RomCvQ9F7fTUniIQ6+Hmf7mTMB+F+wR/2MVvSV2Yr
+         /0kw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788172561; x=1788777361; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aZRb6ZzJARtkhDdjsBstTG/eFPsTXUA4jzflrKRt3fs=;
+        b=EOlHi2SkBhQaMGr1iJydQnac5i8kIxFcoR0Ht8VWhGI0fEZDmGqm7DWxel1DriZk22
+         HBbexj9bgWmQl4N/nbn9Pm0UgqxZNLY1gzbSfGOEOOl7YZgYYM7e5K7ZcqdErvu0UGeP
+         6WGCl7N+hIq0Y4eUcYteDIwbzsx3t9M22yq8VY5m1uwlMibTMKHXcWPNHuH0p8Pl78W8
+         GbiOJDwgZwrK0GAD/PDaZtIMYV2X4BwRTBbFwToQBvrYZSKnZ1xJbD+pIeIO5et+nWFo
+         P3/1Fq2xZXht+JuXFLCuaA0DSqGkRvSrpB8RGWUB0No0oBVtwb+QbLZwsOe8ele73sRm
+         trXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788172561; x=1788777361;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aZRb6ZzJARtkhDdjsBstTG/eFPsTXUA4jzflrKRt3fs=;
+        b=hsFPj+vgfzX9Kl4+rklBHPn7w3os6T31+cSYvsznySH9I75tmGateHOZKF2nUIvpzm
+         ZAy92Cr79FB3FEph0S4fZo/63TrixF0/leXNEMmN3uJLNlyybgGLC/OrSQszB0yaZ2yU
+         BM2KlHxZ+isRSBghuPgK9zBghjpKNc4JpWDGiKrGDMg3HRmBu4gIGNIgdC3vrHCsn6A7
+         UihrG7NNDxVsVqLJRIw2t2knxvGR7LSIdvObHH/zvrF1OTy+tgKu6pIL/2tammJheHEK
+         AhhY6+xmpx1dvwrhWGh5Dt/7VRNv3JVja92SSYkRcFY7pd7vDQlm9SoohhELzqW5P+0T
+         Gn/g==
+X-Forwarded-Encrypted: i=1; AKwUvByta+XQhk+czkn7LHu4tvuLWGmD4CR0jS5fkfhO+cD+zu/rKW9ybXHI83A1/9xvOeyVYdern7s=@vger.kernel.org
+X-Gm-Message-State: AFuF++n1yNdG8vQthA0eUJ2/2PkshIqZkpvroJSHXI+JK/oUsX3JSgnn
+	80acBn9Ie9kg6oN4ihuqM6GMGyzejCUMofcNVHIBXOrWtwWcVbdANzGywcKZmbqpgTjTTXaHJZw
+	rPX9W4Gkiqoyu0S/0YnV21kjFhQexa7E=
+X-Gm-Gg: AYBFou0Efs5Q6MrfKAOOR4lv8TctuN4S0Cus7hsGwLcax1Egi38enSo1ulfSeAVwfE6
+	7Lzbji/J6pvN4GHIz4tyw+s8IktyKo/gAIVb5dS5yRU8F1S6OCLF7GaJmlpCtaxOIpUxpYVEvGf
+	g3cf7CrQvsaddKNdTtq9tRR3cE4OX8qLAAFD38lypPC/aXUE/dMeeDQ5pPyd6Y1JkhuyfOnJoqJ
+	HVNlSd8x+kUmLOWGN730pNoRc6AHb0pk1uns7ctJ4IDP+qlQVv0HZI5nN7s0j4xJ5DrPnQVM4vg
+	BB/dk5SH7SMit3cNUopr/nRMDSTgyuXYfetx472j0Tovew==
+X-Received: by 2002:a05:6214:5403:b0:90c:e18f:3759 with SMTP id
+ 6a1803df08f44-90e8702b5e8mr87775236d6.3.1788172560578; Mon, 31 Aug 2026
+ 03:36:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Feedback-ID: 0163e381fa67fa966160938ffa017803050e57578bb1735d37cd25d20463a96a9bb3a550250bbc5eaa94bfdfd8cf3defcf1aa43859ae980630826bb8230f264e7f:TurnOnPrivacy!:tutamail
+References: <cover.1787499036.git.petalzu987@gmail.com> <99ba13458fbcff6d646ee223f0b70847b790777d.1787499036.git.petalzu987@gmail.com>
+ <20260830063647.GA2725797@shredder>
+In-Reply-To: <20260830063647.GA2725797@shredder>
+From: Zixuan Chai <petalzu987@gmail.com>
+Date: Mon, 31 Aug 2026 18:35:49 +0800
+X-Gm-Features: AcwNN1V74AfiRmziext4S43Wk_FVqFV0DfQQ61ksC7DgrA1ssCqfDJsI7GOm4yo
+Message-ID: <CADTzadJaJ_N=chKso3R8dXiOzhQARkjNE1tGpJmi5uW6qwG4QQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/1] ip6_tunnel: snapshot encap in xmit
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Ren Wei <weir@nebusec.ai>, iprintercanon@gmail.com, netdev@vger.kernel.org, 
+	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, tom@herbertland.com, vega@nebusec.ai, 
+	enjou1224z@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Aug 31, 2026, 05:25 by Jason@zx2c4.com:
+Sashiko/Clashiko: the report is useful.
 
-> Hi Ramses,
->
-> On Thu, Aug 27, 2026 at 01:52:56PM +0200, Ramses de Norre via B4 Relay wrote:
->
->> From: Ramses de Norre <ramses@well-founded.dev>
->>
->> Sending traffic through a wireguard tunnel on a host using the fq
->> qdisc fills the log with:
->>
->>  fq: likely mono tstamp with tstamp_type 0
->>
->> An skb carries a timestamp in skb->tstamp and, separately, a
->> skb->tstamp_type field recording which clock that timestamp came from.
->> The two have to agree.
->>
->> When wireguard encapsulates a packet it calls wg_reset_packet(), which
->> clears the fields that must not leak from the inner packet into the
->> tunnel packet. It does so in two steps:
->>
->>  skb_scrub_packet(skb, true);
->>  memset(&skb->headers, 0, sizeof(skb->headers));
->>
->> skb_scrub_packet() deliberately keeps skb->tstamp when it holds a
->> monotonic timestamp: that value is the time the packet is scheduled to
->> be sent, and the qdisc still needs it. The memset then zeroes
->> skb->tstamp_type, because that field sits inside the headers group
->> while skb->tstamp does not. The packet therefore leaves wireguard
->> carrying a monotonic timestamp labelled as a realtime one.
->>
->> Nothing noticed until commit c4f796c4f16b ("net_sched: sch_fq: convert
->> skb->tstamp if not monotonic"): fq used to assume every timestamp was
->> monotonic. It now consults tstamp_type, spots the mismatch, warns, and
->> falls back to treating the value as monotonic. Pacing still ends up
->> correct, so the log spam is the actual problem.
->>
->> Save tstamp_type before the memset and restore it when encapsulating,
->> next to the hash fields that are already carried over this way. When
->> decapsulating it stays zeroed, which is right: an incoming packet's
->> timestamp is a realtime receive timestamp.
->>
->> Fixes: de799101519a ("net: Add skb_clear_tstamp() to keep the mono delivery_time")
->> Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
->>
->
-> Thanks for this. I've queued this up in the wireguard tree.
->
-> One thing I'm wondering is whether your Fixes: line is correct. Would
-> c4f796c4f16b be a better candidate than de799101519a? Or maybe even
-> 4d25ca2d6801 is best?
->
-> Jason
->
-Hi Jason
+I will update the fix in the next version to use a consistent
+encapsulation snapshot in ip6_tnl_xmit().
 
-I think you are right, but I think d98d58a00261 is actually the commit that introduced the issue then (but no warnings were logged yet at that point).
-The patch doesn't apply cleanly to that version though, I think it only applies starting from 6.11 because of a rename, so we can't backport all the way back. It's probably fine though, since the warnings weren't being logged yet at that point.
-Do you want me to send an updated patch, or will you just fix this up in your tree?
+Thanks.
 
-Thanks,
-Ramses
-
+Ido Schimmel <idosch@nvidia.com> =E4=BA=8E2026=E5=B9=B48=E6=9C=8830=E6=97=
+=A5=E5=91=A8=E6=97=A5 14:37=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Tue, Aug 25, 2026 at 03:29:49PM +0800, Ren Wei wrote:
+> > From: Zixuan Chai <petalzu987@gmail.com>
+> >
+> > ip6_tnl_changelink() can update encapsulation parameters while the
+> > netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
+> > headroom with t->encap_hlen and later build an encapsulation header fro=
+m
+> > the live t->encap. A concurrent update can change the encapsulation
+> > header between these accesses and make skb_push() underflow the skb hea=
+d.
+> >
+> > Take a local snapshot of t->encap before calculating the encapsulation
+> > header length. Use that same snapshot for headroom accounting, metadata
+> > validation, and build_header(). This keeps all encapsulation decisions
+> > for an skb consistent even if changelink updates the live configuration=
+.
+> >
+> > Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation=
+")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Assisted-by: Codex:gpt-5.4
+> > Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
+>
+> The comment from Sashiko [1] (which I asked to review multiple times
+> [2][3]) looks valid. We need something like the diff below. The helper
+> can then be used in the IPv4 code.
+>
+> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+> index 7c9aadfe8fe3..97f3e9e3ccf5 100644
+> --- a/include/net/ip_tunnels.h
+> +++ b/include/net/ip_tunnels.h
+> @@ -522,6 +522,15 @@ skb_vlan_inet_prepare(struct sk_buff *skb, bool inne=
+r_proto_inherit)
+>         return SKB_NOT_DROPPED_YET;
+>  }
+>
+> +static inline void ip_tunnel_encap_snapshot(struct ip_tunnel_encap *dst,
+> +                                           const struct ip_tunnel_encap =
+*src)
+> +{
+> +       dst->type =3D READ_ONCE(src->type);
+> +       dst->flags =3D READ_ONCE(src->flags);
+> +       dst->sport =3D READ_ONCE(src->sport);
+> +       dst->dport =3D READ_ONCE(src->dport);
+> +}
+> +
+>  static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
+>  {
+>         const struct ip_tunnel_encap_ops *ops;
+> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+> index 63c524b080dd..6ca373d6205a 100644
+> --- a/net/ipv6/ip6_tunnel.c
+> +++ b/net/ipv6/ip6_tunnel.c
+> @@ -1205,8 +1205,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_de=
+vice *dev, __u8 dsfield,
+>                 goto tx_err_dst_release;
+>         }
+>
+> -       /* Can tear, but hlen and build_header() use the same snapshot. *=
+/
+> -       ipencap =3D data_race(t->encap);
+> +       ip_tunnel_encap_snapshot(&ipencap, &t->encap);
+>         encap_hlen =3D ip6_encap_hlen(&ipencap);
+>         if (unlikely(encap_hlen < 0))
+>                 goto tx_err_dst_release;
+>
+> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/99ba13458fbcff6d6=
+46ee223f0b70847b790777d.1787499036.git.petalzu987%40gmail.com
+> [2] https://lore.kernel.org/netdev/20260812120827.GA3410841@shredder/
+> [3] https://lore.kernel.org/netdev/20260817064250.GA196908@shredder/
