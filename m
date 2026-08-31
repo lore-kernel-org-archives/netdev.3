@@ -1,332 +1,431 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CBA39FCCA
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788174586; cv=pass; b=n68pKFjDQLWTnimf22vVhUu+J9SHnLK/SmjdzsyK0n7YBXuPPRl8nRa96T7ktVXJajsgz0c4ZDVNBvIdZoeVuoA1fkaLKtaMi9tNYatEGDD0YLysRF3wk0OrVfact3vxwflLcnqmHwRr/BRAhkoy9U8eBjzccW/fjWI529x2uyA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788174586; c=relaxed/simple;
-	bh=eNEEQlIjrSAO0DH2OmgK6lfFH24wmDnCRfFdxuXXBJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HPTcdxVUJry6lgry59oPegNbrb12fWVkYo9MA00XGwZp15brO1FTUqjng1rPGSKQzT1spmg0afPgEpO9HvMFBNQttcUmcgLnGDXKJe2KO49vYdhLHEjan0SaCjtJ+sQVBCEUrkY9gd+qPF40uJrK0XqmKy0/8hpgi15fC/CS6KQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T8cVrp4b; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rJUtAZsX; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8cVrp4b";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rJUtAZsX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788174584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
-	b=T8cVrp4b/g4WlrVtGeBgt4olXjvF4Sw0Bqxk1BYFekOWIj2IeSfNQem7r2GLD0Ei7ZXANB
-	wfZMzTykuL0q8HMbWVP2b3FYAcfddu/4e098db3xMpPv8hcxQGMspTLikfgpVMu6mtx02n
-	T5fjMl5/Dt233kbUm8CJUEmw9W6PqCU=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-JoC1m-AYMAGhY1WVXPUcxw-1; Mon, 31 Aug 2026 07:09:42 -0400
-X-MC-Unique: JoC1m-AYMAGhY1WVXPUcxw-1
-X-Mimecast-MFC-AGG-ID: JoC1m-AYMAGhY1WVXPUcxw_1788174582
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-836c2b00bbaso45897367b3.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 04:09:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788174582; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WNFoTSdv8gndBDmWkEVtVBvYsCY5sHwwPCrI1KhrBDBHChYIGW4dsMPBmGkcHSXTEg
-         kO7D058EyT3fgbEUuFQ7GuG4MGKmtPLZ3ahwKB76irKpujuoo0BprH1gSV21bnZNy8Xb
-         259sLhnWAIOdBJqI2oKwI6LaswH5atmGQlganB3u2Zqobz4vcvi86ceCBn4QoAn4o1O5
-         q734oocrsWrFfN1LXYuKiQKPuOTAy3XdWTL4oZaV8Jyb++H9Q2atQBqg9nKo+DWb03Zx
-         hqkdhLI5VRqVmeH2I5Oyo3DynWM8C93Mh0AS1/WB6vw/JGPVsD+q/icFpIrSuFglenVh
-         jCmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
-        fh=n0cVQoaTCZ0udzfrFt60FUp84gWDmhq5Hoz1cChBR9k=;
-        b=oQ++4iINAOdM0remeR9JOB7Wf5jelmjhAbrVGE6cdlD2PtMS4eydjMsUYqeeZgdd7o
-         kcXxhr0qtuOVxzMnRvN9aEqTBk+2bRWooHzaUsZ04k6NyzOwu7sKgHgjqf4XJnu5K5rm
-         snjOhMiVJQVT5Q6wV9kTSanWbCdn5pxC6nDcA4w8/z9JQ++G/lPMOJC/osM9X0ajX/gN
-         B83nLiLvBrBWTvABX0gpN0CXHVM5/jcKeTnosdY2yyFrXl274Ci7xMSIHutO09Mg0k9N
-         PDa7xAr69eq/wAcvFEjaM8jRo+97t5yb2v7UKXHKKBK1i3r+HtgTag1l/ss5qaNFczTi
-         GIWg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788174582; x=1788779382; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
-        b=rJUtAZsXdtGTgU1G5jIWVW6DLV4vW+VKK0Q7Z7MBVGbXnabO5lLFHSOFdXItHfmSzt
-         3fTiXEymJ4I+WYGLTIBx/dvA9Jqw5YBHahhcbf4n3gDDlbpF6PwYWNyS9vUoZlk9Ye+Y
-         fP708RmOULS++4rsSsyDNVZL+6fqWMNAcLwijnPr5HivmuzMfnJaC1qIru9yD3hXajeH
-         08Pp6/aCrJiknhGldgoev/Ss9Y6XomHk5+T6b/hSOGvaNhDTrSAdLecSSwb1MhjYk6Ei
-         1hqM6kqTxxIgc7t25tT4PQVN5QIRUnR+C35DGm7ClqhCZEVI5Xlfm5nGGFqJUqLJKgwx
-         fH0w==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9553AFCE9
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 11:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788174727; cv=none; b=Cv0w4twr/sXgApxielUu60oV5/syKGMRxKBhDGTFUdo+Rl5lASJvWs1NqXNJ6jkTbK10AFdXG1aCZ+7+JKIQ0D2vFzlFj2oxxeiU9/9YtIC9PQ6YAXEyVTfE53MxQZVrxpzrQQehy9T7QO1GROWYnr1nIgwQkso+AwU1kgsclps=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788174727; c=relaxed/simple;
+	bh=jx6m7TDAy3n2H1KmnOT50dstkrbrIEfHThU3enjgJ+s=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=AQXtY9101SOej1eHUbeJUV0Mfy/SlI84f5fIsupj67Q2bv0G60E2u3TQKWRnjVDJr+mJatRrzN74wG9i/rB9OqDExJVvla9nne1SgkfS7BTdVV5VN/mJWLBo2VHh7YiLwTf6LQ9SY8muUg5pRE0JmPPVHEinHvxpvdPKnmsXD8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4b37733badcso5667127b6e.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 04:12:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788174582; x=1788779382;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gGVDSMHx5ugj+9ChPGD41hmHDHU/4Z3alFYnki4dZYo=;
-        b=oDRrj98IYKWIna+kGc/ZWuARL5EN51tJztJJWcnhX2j7ceua/zBjZBOiZab+526C1c
-         INpmiqq4mg2K9slGP9csvYdryBtILQaL1FqbCbK3e9LhexLf7hSTkIOktyWlPsJK2NqF
-         yo0IpTjDGYyfqB0h4RBpdiZnYQuJtuqkFBt0lbkksxG/63Srvj+IY1/adNMvXmR0UifJ
-         9pmsBzjV6WmrOT9kWtZAWgTlgEFDH58HRamsyC79dVVDhyJDgvN1B44JWZlVUSPgaA18
-         x/woSfmn++9H8qGM+sCYbeJuAgpwbHps1J+DXgVBgoFOly6121YAlUrbQqDVSuGurARH
-         REbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxIzzRRLrFVzzxld2G6IuBuPCNkOF+0KKgJF6oDvyEZjlPuDiq8kycwlNRfsB2/03WctJJpP2A=@vger.kernel.org
-X-Gm-Message-State: AFuF++knHnMxE3Gp5/AFk5wrXGJaov5Ta7gslSpAQQkio4LVxlbu0WC9
-	NDa5SiLM8Iq4SqppGLCtEZgzLPUqVsHRU5350rB4Qjx2UjVF797qbi+GEo1uJ93D4KVR2IoXxMP
-	eNYFwwwLVunMTv1+1kMP2mMtbw8u4+KqmBcPWTgKKVCwmCLbUtJG2o3DP/5DLWYD2FqAR5szMtD
-	EpCXLL6V6bPpvqx+1THFLFkbmoxLXNvPop
-X-Gm-Gg: AYBFou0sRO4kAz/6DuohjH6W1L+l1PSWSA0QsvdpdLHnUBFEtorZpDk73iAoTcavfJb
-	ToWL6EcJw3n2P+crWP2uxIKSqZxmoYwzo3k8H9QEXppI/nnYS/1EmFO+uWx36Ffk27cnnFr5t6s
-	8UFmmR6MOwejPgcXvjusXH2036z2st6IifIvH3peSBZgQAMtOXIZth5pBnpnmva7l6WJpf9gbAu
-	/nJIxbFtFwhb15/1nqajHPTDiYCuS6Zl+GB6wjGSjrfRHFwJjlkVSSbKwY=
-X-Received: by 2002:a05:690c:c4f1:b0:81e:7d90:5673 with SMTP id 00721157ae682-85d6b84749cmr86908407b3.26.1788174581622;
-        Mon, 31 Aug 2026 04:09:41 -0700 (PDT)
-X-Received: by 2002:a05:690c:c4f1:b0:81e:7d90:5673 with SMTP id
- 00721157ae682-85d6b84749cmr86908167b3.26.1788174580953; Mon, 31 Aug 2026
- 04:09:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788174724; x=1788779524;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :in-reply-to:date:mime-version:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6AHpiCqC3lUjekaa7pzFDioIiCAl1doBUmmbvzVJYRo=;
+        b=VBP+HXmrahLbqozE4OwOdPoaHFvIVHGK7W+2+YfCULabAWnB3uc0Vs03YjcBzqR5LD
+         r0l3UzZAkFMYGiqQKaVtGCdLslYQt1IG7UUjX+eGVZdwGhgzPDuQiM8NVU7WdlIczt6J
+         JuBARX1E+69IKFYfypBawBbuEGEDOt2miFwsTPk85Gi+gVozeIx+1tY00zAh7P1JKLY/
+         aXytkaoiQSlOe5ubWmsjHfq3b4b+yzqPs2juEhNDTjxycYwvpytOOZ8u0By1s/3YazgT
+         A5Jm7qmz9iqHzXuv3jW+knq4I3SeVVDHcKwdrcfGpR6Uc1FmW6p5e/y6Bf/ZzOO1eC/e
+         Xxfg==
+X-Forwarded-Encrypted: i=1; AHgh+RohL4wF5apJHEComp7vnpmXcJF74rTl35HX/kKphlKWt4Y1nnHxouqFngWCJH+TGFNhd6EQ3zU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nH0f5ecmNiSOIffSktNd8TvBdTNh4ARGUNEWyKbBeM54sJsvuj
+	pWy1kgN7gddnUGQSFKC0DLa6TiSFqYzCvZUmF2tZHe/Skl/WG+v0ULRLQsdh31Ag24OD/duPf9B
+	LMJvb7lWCbZBTwKsXV62nx0AnVCMMbfGOofHpPaz9DiIt00ma7O9Zed8Kj2Q=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260827055850.26951-1-physicalmtea@gmail.com>
-In-Reply-To: <20260827055850.26951-1-physicalmtea@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 31 Aug 2026 13:09:04 +0200
-X-Gm-Features: AcwNN1VgorMGLHjUu2yMfvgBMefLlEZdtOPgiCl06CVBpYpTFVo6Jeh18PCESXs
-Message-ID: <CAJaqyWfjjSe19z4TrPbJfBBQZJXuAzqE4H8bik6UAiSgogzfmQ@mail.gmail.com>
-Subject: Re: [PATCH] vhost/vsock: batch RX used-ring updates
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+X-Received: by 2002:a05:6808:4f47:b0:4b2:21e2:82c6 with SMTP id
+ 5614622812f47-4b3982a9a00mr26600352b6e.10.1788174724066; Mon, 31 Aug 2026
+ 04:12:04 -0700 (PDT)
+Date: Mon, 31 Aug 2026 04:12:04 -0700
+In-Reply-To: <20260831084131.410457-1-junjie.cao@intel.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a956184.4d659fcc.734b4.004d.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
+From: syzbot <syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, cgroups@vger.kernel.org, davem@davemloft.net, 
+	edumazet@google.com, hannes@cmpxchg.org, hdanton@sina.com, horms@kernel.org, 
+	jackmanb@google.com, jhs@mojatatu.com, jiri@resnulli.us, junjie.cao@intel.com, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mhocko@kernel.org, mhocko@suse.com, muchun.song@linux.dev, 
+	netdev@vger.kernel.org, pabeni@redhat.com, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, surenb@google.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@suse.cz, vinicius.gomes@intel.com, ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 27, 2026 at 7:59=E2=80=AFAM Jia Jia <physicalmtea@gmail.com> wr=
-ote:
->
-> vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
-> buffer even though it delays the Guest signal until the worker finishes.
-> Each call publishes one used entry and updates the used index separately.
->
-> Collect the completed buffer heads in the arrays already allocated for th=
-e
-> virtqueue and publish them with vhost_add_used_n().  Bound the batch by t=
-he
-> ring size, array capacity, and worker packet budget.  Flush before
-> re-enabling notifications or leaving the worker.
->
-> Each used entry describes one completed RX buffer and keeps its actual us=
-ed
-> length, so set nheads to 1 for every entry.  This patch does not change
-> negotiated features or compress multiple buffers into one used entry.
->
-> This patch is limited to the current skb-based vhost-vsock RX path.
->
-> Performance:
->
-> Tested with a QEMU/KVM guest on a host with 4 online CPUs, using 2 vCPUs
-> pinned to host CPUs 2 and 3, QEMU 10.2.1, q35, 1536 MiB, and Linux
-> 7.2.0-rc3-next-20260713-next-debug-kasan.  The vhost-vsock source is base=
-d
-> on linux-next master at 49362394dad7df66c274c867a271394c10ca2bb8.
->
-> Current vhost-vsock does not implement VIRTIO_F_IN_ORDER or
-> VIRTIO_F_RING_PACKED, so both configurations used packed=3Doff and
-> in_order=3Doff:
->
->   baseline:                 RX batching=3Doff
->   vhost-vsock RX batching:  RX batching=3Don
->
-> The test used vsock_perf.  The Guest receiver was started with:
->
->   vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
->
-> The Host sender was started with:
->
->   vsock_perf --sender 3 --port PORT --bytes BYTES \
->       --buf-size SEND_BUF --vsk-size 64M
->
-> Each workload transferred BYTES=3D1 GiB.  The SEND_BUF values were 256 B
-> (SEND_BUF=3D256), 512 B (SEND_BUF=3D512), 4 KiB (SEND_BUF=3D4K), and 64 K=
-iB
-> (SEND_BUF=3D64K).
-> Each state used a fresh Guest.  Each workload uses 20 paired runs, with 1=
-0
-> runs in each order.  The reported values are
-> Guest RX throughput in Gbits/s.  The baseline and batching columns are th=
-e
-> geometric means over the 20 runs; change is batching / baseline - 1,
-> computed from the unrounded values:
->
->   workload   baseline RX    batching RX   change   faster
->   256 B      0.0795724      0.0831509      +4.497%  20/20
->   512 B      0.1194885      0.1210297      +1.290%  14/20
->   4 KiB      0.7208273      0.7242053      +0.469%  11/20
->   64 KiB     2.1712797      2.1951941      +1.101%  13/20
->
-> For reference, the table below gives the 95% normal-approximation interva=
-ls
-> obtained from the 20 paired log(batching / baseline) values:
->
->   workload   paired 95% interval
->   256 B      +3.985% to +5.011%
->   512 B      +0.206% to +2.385%
->   4 KiB      -1.442% to +2.416%
->   64 KiB     -1.474% to +3.745%
->
-> All transfers passed byte-count checks, and no kernel errors were observe=
-d
-> in the logs.  The 256-byte workload improved in every pair.  The 512 B
-> workload was faster in 14 of 20 pairs, with a small gain.  The 4 KiB and
-> 64 KiB workloads showed no material throughput change; the difference
-> between their results may be due to scheduling and execution variation.
->
-> Link: https://lore.kernel.org/r/20181214082146-mutt-send-email-mst@kernel=
-.org
-> Link: https://lore.kernel.org/r/20220901055434.824-4-qtxuning1999@sjtu.ed=
-u.cn
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> ---
->  drivers/vhost/vsock.c | 41 +++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 39 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index 9aaab6bb8..d8050cca2 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -103,12 +103,37 @@ static bool vhost_transport_has_remote_cid(struct v=
-sock_sock *vsk, u32 cid)
->         return found;
->  }
->
-> +static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
-> +                                  unsigned int *used_count)
-> +{
-> +       if (!*used_count)
-> +               return false;
-> +
-> +       vhost_add_used_n(vq, vq->heads, vq->nheads, *used_count);
-> +       *used_count =3D 0;
-> +       return true;
-> +}
-> +
+Hello,
 
-I think that the used_count should be updated by the caller based on
-the boolean returned by this function.
+syzbot tried to test the proposed patch but the build/boot failed:
 
-> +static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
-> +                                unsigned int *used_count,
-> +                                unsigned int head, unsigned int len)
-> +{
-> +       struct vring_used_elem *used =3D &vq->heads[*used_count];
-> +
-> +       used->id =3D cpu_to_vhost32(vq, head);
-> +       used->len =3D cpu_to_vhost32(vq, len);
-> +       vq->nheads[*used_count] =3D 1;
-> +       (*used_count)++;
-> +}
+ 2.992004][    T1] Mandatory Access Control activated.
+[    2.993509][    T1] pnp: PnP ACPI init
+[    3.023863][    T1] pnp: PnP ACPI: found 6 devices
+[    3.105394][    T1] clocksource: acpi_pm: mask: 0xffffff max_cycles: 0xf=
+fffff, max_idle_ns: 2085701024 ns
+[    3.113910][    T1] NET: Registered PF_INET protocol family
+[    3.116610][    T1] IP idents hash table entries: 131072 (order: 8, 1048=
+576 bytes, vmalloc)
+[    3.128889][    T1] tcp_listen_portaddr_hash hash table entries: 4096 (o=
+rder: 7, 294912 bytes, vmalloc)
+[    3.130899][    T1] Table-perturb hash table entries: 65536 (order: 6, 2=
+62144 bytes, vmalloc)
+[    3.133075][    T1] TCP established hash table entries: 65536 (order: 7,=
+ 524288 bytes, vmalloc)
+[    3.144444][    T1] TCP bind hash table entries: 65536 (order: 12, 94371=
+84 bytes, vmalloc hugepage)
+[    3.151706][    T1] TCP: Hash tables configured (established 65536 bind =
+65536)
+[    3.155107][    T1] MPTCP token hash table entries: 8192 (order: 8, 7208=
+96 bytes, vmalloc)
+[    3.158207][    T1] UDP hash table entries: 4096 (order: 8, 1048576 byte=
+s, vmalloc)
+[    3.161213][    T1] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    3.166692][    T1] RPC: Registered named UNIX socket transport module.
+[    3.167740][    T1] RPC: Registered udp transport module.
+[    3.168610][    T1] RPC: Registered tcp transport module.
+[    3.169492][    T1] RPC: Registered tcp-with-tls transport module.
+[    3.170446][    T1] RPC: Registered tcp NFSv4.1 backchannel transport mo=
+dule.
+[    3.187812][    T1] NET: Registered PF_XDP protocol family
+[    3.189221][    T1] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 windo=
+w]
+[    3.190367][    T1] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff windo=
+w]
+[    3.191848][    T1] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bff=
+ff window]
+[    3.193134][    T1] pci_bus 0000:00: resource 7 [mem 0xc0000000-0xfebfef=
+ff window]
+[    3.195979][    T1] pci 0000:00:00.0: Limiting direct PCI/PCI transfers
+[    3.197272][    T1] PCI: CLS 0 bytes, default 64
+[    3.198358][    T1] PCI-DMA: Using software bounce buffering for IO (SWI=
+OTLB)
+[    3.199469][    T1] software IO TLB: mapped [mem 0x00000000b4400000-0x00=
+000000b8400000] (64MB)
+[    3.201954][    T1] ACPI: bus type thunderbolt registered
+[    3.211140][    T1] RAPL PMU: API unit is 2^-32 Joules, 0 fixed counters=
+, 10737418240 ms ovfl timer
+[    3.216011][   T61] kworker/u8:1 (61) used greatest stack depth: 27880 b=
+ytes left
+[    3.236610][    T1] kvm_amd: CPU 0 isn't AMD or Hygon
+[    3.236649][    T1] clocksource: tsc: mask: 0xffffffffffffffff max_cycle=
+s: 0x285d5483c8d, max_idle_ns: 440795228937 ns
+[    3.239738][    T1] clocksource: Switched to clocksource tsc
+[    3.247879][   T67] kworker/u8:3 (67) used greatest stack depth: 27160 b=
+ytes left
+[    3.274579][    T1] Initialise system trusted keyrings
+[    3.278300][    T1] workingset: timestamp_bits=3D40 (anon: 35) max_order=
+=3D21 bucket_order=3D0 (anon: 0)
+[    3.286066][    T1] DLM installed
+[    3.291910][    T1] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    3.299536][    T1] NFS: Registering the id_resolver key type
+[    3.299710][    T1] Key type id_resolver registered
+[    3.299721][    T1] Key type id_legacy registered
+[    3.299981][    T1] nfs4filelayout_init: NFSv4 File Layout Driver Regist=
+ering...
+[    3.300091][    T1] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Drive=
+r Registering...
+[    3.304030][    T1] smbdirect: subsystem loading...
+[    3.312200][    T1] smbdirect: subsystem loaded
+[    3.342789][    T1] Key type cifs.spnego registered
+[    3.343043][    T1] Key type cifs.idmap registered
+[    3.346819][    T1] ntfs3: Enabled Linux POSIX ACLs support
+[    3.346847][    T1] ntfs3: Read-only LZX/Xpress compression included
+[    3.347118][    T1] jffs2: version 2.2. (NAND) (SUMMARY)  =C2=A9 2001-20=
+06 Red Hat, Inc.
+[    3.349230][    T1] romfs: ROMFS MTD (C) 2007 Red Hat, Inc.
+[    3.349425][    T1] QNX4 filesystem 0.2.3 registered.
+[    3.349531][    T1] qnx6: QNX6 filesystem 1.0.0 registered.
+[    3.350763][    T1] fuse: init (API version 7.46)
+[    3.354681][    T1] orangefs_debugfs_init: called with debug mask: :none=
+: :0:
+[    3.355943][    T1] orangefs_init: module version upstream loaded
+[    3.356821][    T1] JFS: nTxBlock =3D 8192, nTxLock =3D 65536
+[    3.369044][    T1] SGI XFS with ACLs, security attributes, realtime, sc=
+rub, repair, quota, no debug enabled
+[    3.378590][    T1] 9p: Installing v9fs 9p2000 file system support
+[    3.380623][    T1] NILFS version 2 loaded
+[    3.381303][    T1] befs: version: 0.9.3
+[    3.382815][    T1] ocfs2: Registered cluster interface o2cb
+[    3.384592][    T1] ocfs2: Registered cluster interface user
+[    3.386061][    T1] OCFS2 User DLM kernel interface loaded
+[    3.408890][    T1] gfs2: GFS2 installed
+[    3.423843][    T1] ceph: loaded (mds proto 32)
+[    3.437963][    T1] NET: Registered PF_ALG protocol family
+[    3.439495][    T1] async_tx: api initialized (async)
+[    3.440455][    T1] Key type asymmetric registered
+[    3.441477][    T1] Asymmetric key parser 'x509' registered
+[    3.442418][    T1] Asymmetric key parser 'pkcs8' registered
+[    3.443295][    T1] Key type pkcs7_test registered
+[    3.444626][    T1] Block layer SCSI generic (bsg) driver version 0.4 lo=
+aded (major 239)
+[    3.448227][    T1] io scheduler mq-deadline registered
+[    3.449247][    T1] io scheduler kyber registered
+[    3.450679][    T1] io scheduler bfq registered
+[    3.452609][    T1] raid6: skipped pq benchmark and selected avx512x4
+[    3.470190][    T1] input: Power Button as /devices/platform/LNXPWRBN:00=
+/input/input0
+[    3.473842][    T1] ACPI: button: Power Button [PWRF]
+[    3.477749][    T1] input: Sleep Button as /devices/platform/LNXSLPBN:00=
+/input/input1
+[    3.480757][    T1] ACPI: button: Sleep Button [SLPF]
+[    3.501883][    T1] ioatdma: Intel(R) QuickData Technology Driver 5.00
+[    3.538986][    T1] ACPI: \_SB_.LNKC: Enabled at IRQ 11
+[    3.540120][    T1] virtio-pci 0000:00:03.0: virtio_pci: leaving for leg=
+acy driver
+[    3.573242][    T1] ACPI: \_SB_.LNKD: Enabled at IRQ 10
+[    3.574257][    T1] virtio-pci 0000:00:04.0: virtio_pci: leaving for leg=
+acy driver
+[    3.611123][    T1] ACPI: \_SB_.LNKB: Enabled at IRQ 10
+[    3.612311][    T1] virtio-pci 0000:00:06.0: virtio_pci: leaving for leg=
+acy driver
+[    4.026288][  T629] kworker/u8:6 (629) used greatest stack depth: 26904 =
+bytes left
+[    4.103079][    T1] N_HDLC line discipline registered with maxframe=3D40=
+96
+[    4.105350][    T1] Serial: 8250/16550 driver, 4 ports, IRQ sharing enab=
+led
+[    4.114516][    T1] 00:02: ttyS0 I/O:0x3f8 (irq =3D 4, base_baud =3D 115=
+200) is a 16550A
+[    4.129686][    T1] 00:03: ttyS1 I/O:0x2f8 (irq =3D 3, base_baud =3D 115=
+200) is a 16550A
+[    4.144792][    T1] 00:04: ttyS2 I/O:0x3e8 (irq =3D 6, base_baud =3D 115=
+200) is a 16550A
+[    4.169157][    T1] 00:05: ttyS3 I/O:0x2e8 (irq =3D 7, base_baud =3D 115=
+200) is a 16550A
+[    4.206372][    T1] Non-volatile memory driver v1.3
+[    4.228763][    T1] usbcore: registered new interface driver xillyusb
+[    4.234701][    T1] ACPI: bus type drm_connector registered
+[    4.245698][    T1] [drm] Initialized vgem 1.0.0 for vgem on minor 0
+[    4.252028][    T1] ------------[ cut here ]------------
+[    4.252067][    T1] [PLANE:35:plane-0] pixel format with alpha exposed b=
+ut blend mode not setup
+[    4.252085][    T1] WARNING: drivers/gpu/drm/drm_mode_config.c:872 at dr=
+m_mode_config_validate+0xfb4/0x1be0, CPU#0: swapper/0/1
+[    4.256488][    T1] Modules linked in:
+[    4.257080][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syz=
+kaller #0 PREEMPT(full)=20
+[    4.258850][    T1] Hardware name: Google Google Compute Engine/Google C=
+ompute Engine, BIOS Google 08/05/2026
+[    4.260606][    T1] RIP: 0010:drm_mode_config_validate+0xfbb/0x1be0
+[    4.261603][    T1] Code: 00 49 8b 57 18 48 89 f8 48 c1 e8 03 0f b6 04 2=
+8 84 c0 74 08 3c 03 0f 8e 00 0b 00 00 48 8d 3d 5c 1f 7e 0b 41 8b b7 c8 00 0=
+0 00 <67> 48 0f b9 3a e9 fa fd ff ff 48 8b 5c 24 20 e8 d1 aa 39 fc 48 8d
+[    4.264757][    T1] RSP: 0000:ffffc90000067c18 EFLAGS: 00010246
+[    4.265631][    T1] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000=
+0000000000000
+[    4.266846][    T1] RDX: ffff88802708ff80 RSI: 0000000000000023 RDI: fff=
+fffff91504ba0
+[    4.268445][    T1] RBP: dffffc0000000000 R08: 0000000000000001 R09: 000=
+0000000000000
+[    4.269744][    T1] R10: 0000000000000001 R11: 0000000000000000 R12: fff=
+fed1004ea1e23
+[    4.270879][    T1] R13: ffffed1004ea1e24 R14: 0000000000000001 R15: fff=
+f88802750f028
+[    4.272125][    T1] FS:  0000000000000000(0000) GS:ffff888123b65000(0000=
+) knlGS:0000000000000000
+[    4.273520][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    4.274598][    T1] CR2: ffff88823ffff000 CR3: 000000000eb96000 CR4: 000=
+00000003526f0
+[    4.275805][    T1] Call Trace:
+[    4.276304][    T1]  <TASK>
+[    4.276744][    T1]  drm_dev_register+0x56e/0x7b0
+[    4.277432][    T1]  vkms_create+0x491/0x5b0
+[    4.278450][    T1]  ? __pfx_vkms_init+0x10/0x10
+[    4.279187][    T1]  vkms_init+0x98/0xe0
+[    4.279870][    T1]  do_one_initcall+0x11c/0x6f0
+[    4.280657][    T1]  ? __pfx_do_one_initcall+0x10/0x10
+[    4.281473][    T1]  ? kernel_init_freeable+0x4ca/0x7b0
+[    4.282372][    T1]  kernel_init_freeable+0x6ea/0x7b0
+[    4.283205][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.283952][    T1]  kernel_init+0x21/0x1e0
+[    4.284623][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.285469][    T1]  ret_from_fork+0x730/0xd60
+[    4.286179][    T1]  ? __pfx_ret_from_fork+0x10/0x10
+[    4.286964][    T1]  ? __switch_to+0x800/0x10f0
+[    4.288061][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.288883][    T1]  ret_from_fork_asm+0x1a/0x30
+[    4.289745][    T1]  </TASK>
+[    4.290229][    T1] Kernel panic - not syncing: kernel: panic_on_warn se=
+t ...
+[    4.291328][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syz=
+kaller #0 PREEMPT(full)=20
+[    4.292619][    T1] Hardware name: Google Google Compute Engine/Google C=
+ompute Engine, BIOS Google 08/05/2026
+[    4.294006][    T1] Call Trace:
+[    4.294490][    T1]  <TASK>
+[    4.294982][    T1]  dump_stack_lvl+0x100/0x190
+[    4.295673][    T1]  vpanic+0x553/0x970
+[    4.296729][    T1]  ? __pfx_vpanic+0x10/0x10
+[    4.297560][    T1]  panic+0xd1/0xe0
+[    4.297698][    T1]  ? __pfx_panic+0x10/0x10
+[    4.297698][    T1]  check_panic_on_warn.cold+0x19/0x34
+[    4.297698][    T1]  ? drm_mode_config_validate+0xfb4/0x1be0
+[    4.297698][    T1]  __warn.cold+0x191/0x318
+[    4.297698][    T1]  __report_bug+0x30f/0x440
+[    4.297698][    T1]  ? drm_mode_config_validate+0xfb4/0x1be0
+[    4.297698][    T1]  ? __pfx___report_bug+0x10/0x10
+[    4.297698][    T1]  ? reacquire_held_locks+0xdd/0x1f0
+[    4.297698][    T1]  report_bug_entry+0xe2/0x290
+[    4.297698][    T1]  ? drm_mode_config_validate+0xfbb/0x1be0
+[    4.297698][    T1]  handle_bug+0x1cd/0x2a0
+[    4.297698][    T1]  exc_invalid_op+0x17/0x50
+[    4.297698][    T1]  asm_exc_invalid_op+0x1a/0x20
+[    4.297698][    T1] RIP: 0010:drm_mode_config_validate+0xfbb/0x1be0
+[    4.297698][    T1] Code: 00 49 8b 57 18 48 89 f8 48 c1 e8 03 0f b6 04 2=
+8 84 c0 74 08 3c 03 0f 8e 00 0b 00 00 48 8d 3d 5c 1f 7e 0b 41 8b b7 c8 00 0=
+0 00 <67> 48 0f b9 3a e9 fa fd ff ff 48 8b 5c 24 20 e8 d1 aa 39 fc 48 8d
+[    4.297698][    T1] RSP: 0000:ffffc90000067c18 EFLAGS: 00010246
+[    4.297698][    T1] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000=
+0000000000000
+[    4.297698][    T1] RDX: ffff88802708ff80 RSI: 0000000000000023 RDI: fff=
+fffff91504ba0
+[    4.297698][    T1] RBP: dffffc0000000000 R08: 0000000000000001 R09: 000=
+0000000000000
+[    4.297698][    T1] R10: 0000000000000001 R11: 0000000000000000 R12: fff=
+fed1004ea1e23
+[    4.297698][    T1] R13: ffffed1004ea1e24 R14: 0000000000000001 R15: fff=
+f88802750f028
+[    4.297698][    T1]  ? drm_mode_config_validate+0xf76/0x1be0
+[    4.297698][    T1]  drm_dev_register+0x56e/0x7b0
+[    4.297698][    T1]  vkms_create+0x491/0x5b0
+[    4.297698][    T1]  ? __pfx_vkms_init+0x10/0x10
+[    4.297698][    T1]  vkms_init+0x98/0xe0
+[    4.297698][    T1]  do_one_initcall+0x11c/0x6f0
+[    4.297698][    T1]  ? __pfx_do_one_initcall+0x10/0x10
+[    4.297698][    T1]  ? kernel_init_freeable+0x4ca/0x7b0
+[    4.297698][    T1]  kernel_init_freeable+0x6ea/0x7b0
+[    4.297698][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.297698][    T1]  kernel_init+0x21/0x1e0
+[    4.297698][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.297698][    T1]  ret_from_fork+0x730/0xd60
+[    4.297698][    T1]  ? __pfx_ret_from_fork+0x10/0x10
+[    4.297698][    T1]  ? __switch_to+0x800/0x10f0
+[    4.297698][    T1]  ? __pfx_kernel_init+0x10/0x10
+[    4.297698][    T1]  ret_from_fork_asm+0x1a/0x30
+[    4.297698][    T1]  </TASK>
+[    4.297698][    T1] Kernel Offset: disabled
+[    4.297698][    T1] Rebooting in 86400 seconds..
 
-Same here, why pass it as an argument? The caller knows way better.
 
-Other than that, the patch looks good to me,
+syzkaller build log:
+go env (err=3D<nil>)
+AR=3D'ar'
+CC=3D'gcc'
+CGO_CFLAGS=3D'-O2 -g'
+CGO_CPPFLAGS=3D''
+CGO_CXXFLAGS=3D'-O2 -g'
+CGO_ENABLED=3D'1'
+CGO_FFLAGS=3D'-O2 -g'
+CGO_LDFLAGS=3D'-O2 -g'
+CXX=3D'g++'
+GCCGO=3D'gccgo'
+GO111MODULE=3D'auto'
+GOAMD64=3D'v1'
+GOARCH=3D'amd64'
+GOAUTH=3D'netrc'
+GOBIN=3D''
+GOCACHE=3D'/syzkaller/.cache/go-build'
+GOCACHEPROG=3D''
+GODEBUG=3D''
+GOENV=3D'/syzkaller/.config/go/env'
+GOEXE=3D''
+GOEXPERIMENT=3D''
+GOFIPS140=3D'off'
+GOFLAGS=3D''
+GOGCCFLAGS=3D'-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=3D0=
+ -ffile-prefix-map=3D/tmp/go-build1798266567=3D/tmp/go-build -gno-record-gc=
+c-switches'
+GOHOSTARCH=3D'amd64'
+GOHOSTOS=3D'linux'
+GOINSECURE=3D''
+GOMOD=3D'/syzkaller/jobs-2/linux/gopath/src/github.com/google/syzkaller/go.=
+mod'
+GOMODCACHE=3D'/syzkaller/jobs-2/linux/gopath/pkg/mod'
+GONOPROXY=3D''
+GONOSUMDB=3D''
+GOOS=3D'linux'
+GOPATH=3D'/syzkaller/jobs-2/linux/gopath'
+GOPRIVATE=3D''
+GOPROXY=3D'https://proxy.golang.org,direct'
+GOROOT=3D'/usr/local/go'
+GOSUMDB=3D'sum.golang.org'
+GOTELEMETRY=3D'local'
+GOTELEMETRYDIR=3D'/syzkaller/.config/go/telemetry'
+GOTMPDIR=3D''
+GOTOOLCHAIN=3D'auto'
+GOTOOLDIR=3D'/usr/local/go/pkg/tool/linux_amd64'
+GOVCS=3D''
+GOVERSION=3D'go1.26.0'
+GOWORK=3D''
+PKG_CONFIG=3D'pkg-config'
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+git status (err=3D<nil>)
+HEAD detached at 4cb2b096987
+nothing to commit, working tree clean
 
-Thanks!
 
-> +
->  static void
->  vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
->                             struct vhost_virtqueue *vq)
->  {
->         struct vhost_virtqueue *tx_vq =3D &vsock->vqs[VSOCK_VQ_TX];
->         int pkts =3D 0, total_len =3D 0;
-> +       unsigned int used_count =3D 0;
-> +       unsigned int used_limit;
->         bool added =3D false;
->         bool restart_tx =3D false;
->
-> @@ -120,6 +145,12 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsoc=
-k,
->         if (!vq_meta_prefetch(vq))
->                 goto out;
->
-> +       used_limit =3D min_t(unsigned int, vq->num,
-> +                          min_t(unsigned int, vq->dev->iov_limit,
-> +                                vq->dev->weight));
-> +       if (unlikely(!used_limit))
-> +               goto out;
-> +
->         /* Avoid further vmexits, we're already processing the virtqueue =
-*/
->         vhost_disable_notify(&vsock->dev, vq);
->
-> @@ -134,9 +165,13 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsoc=
-k,
->                 u32 offset;
->                 int head;
->
-> +               if (used_count =3D=3D used_limit)
-> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
-);
-> +
->                 skb =3D virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
->
->                 if (!skb) {
-> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
-);
->                         vhost_enable_notify(&vsock->dev, vq);
->                         break;
->                 }
-> @@ -153,6 +188,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
-,
->                         /* We cannot finish yet if more buffers snuck in =
-while
->                          * re-enabling notify.
->                          */
-> +                       added |=3D vhost_vsock_flush_used(vq, &used_count=
-);
->                         if (unlikely(vhost_enable_notify(&vsock->dev, vq)=
-)) {
->                                 vhost_disable_notify(&vsock->dev, vq);
->                                 continue;
-> @@ -230,8 +266,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
-,
->                  */
->                 virtio_transport_deliver_tap_pkt(skb);
->
-> -               vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
-> -               added =3D true;
-> +               vhost_vsock_add_used(vq, &used_count, head,
-> +                                    sizeof(*hdr) + payload_len);
->
->                 VIRTIO_VSOCK_SKB_CB(skb)->offset +=3D payload_len;
->                 total_len +=3D payload_len;
-> @@ -264,6 +300,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock=
-,
->                         virtio_transport_consume_skb_sent(skb, true);
->                 }
->         } while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
-> +       added |=3D vhost_vsock_flush_used(vq, &used_count);
->         if (added)
->                 vhost_signal(&vsock->dev, vq);
->
-> --
-> 2.53.0
->
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+go list -f '{{.Stale}}' -ldflags=3D"-s -w -X github.com/google/syzkaller/pr=
+og.GitRevision=3D4cb2b096987c8122dc6b37eb51200b1ca7991e0f -X github.com/goo=
+gle/syzkaller/prog.gitRevisionDate=3D20260727-130118"  ./sys/syz-sysgen | g=
+rep -q false || go install -ldflags=3D"-s -w -X github.com/google/syzkaller=
+/prog.GitRevision=3D4cb2b096987c8122dc6b37eb51200b1ca7991e0f -X github.com/=
+google/syzkaller/prog.gitRevisionDate=3D20260727-130118"  ./sys/syz-sysgen
+make .descriptions
+tput: No value for $TERM and no -T specified
+tput: No value for $TERM and no -T specified
+Makefile:31: run command via tools/syz-env for best compatibility, see:
+Makefile:32: https://github.com/google/syzkaller/blob/master/docs/contribut=
+ing.md#using-syz-env
+bin/syz-sysgen
+touch .descriptions
+GOOS=3Dlinux GOARCH=3Damd64 go build -ldflags=3D"-s -w -X github.com/google=
+/syzkaller/prog.GitRevision=3D4cb2b096987c8122dc6b37eb51200b1ca7991e0f -X g=
+ithub.com/google/syzkaller/prog.gitRevisionDate=3D20260727-130118"  -o ./bi=
+n/linux_amd64/syz-execprog github.com/google/syzkaller/tools/syz-execprog
+mkdir -p ./bin/linux_amd64
+g++ -o ./bin/linux_amd64/syz-executor executor/executor.cc \
+	-m64 -O2 -pthread -Wall -Werror -Wparentheses -Wunused-const-variable -Wfr=
+ame-larger-than=3D16384 -Wno-stringop-overflow -Wno-array-bounds -Wno-forma=
+t-overflow -Wno-unused-but-set-variable -Wno-unused-command-line-argument -=
+static-pie -std=3Dc++17 -I. -Iexecutor/_include   -DGOOS_linux=3D1 -DGOARCH=
+_amd64=3D1 \
+	-DHOSTGOOS_linux=3D1 -DGIT_REVISION=3D\"4cb2b096987c8122dc6b37eb51200b1ca7=
+991e0f\"
+/usr/bin/ld: /tmp/ccZHlTeq.o: in function `Connection::Connect(char const*,=
+ char const*)':
+executor.cc:(.text._ZN10Connection7ConnectEPKcS1_[_ZN10Connection7ConnectEP=
+KcS1_]+0x386): warning: Using 'gethostbyname' in statically linked applicat=
+ions requires at runtime the shared libraries from the glibc version used f=
+or linking
+./tools/check-syzos.sh 2>/dev/null
+
+
+Error text is too large and was truncated, full error text is at:
+https://syzkaller.appspot.com/x/error.txt?x=3D14ce4349580000
+
+
+Tested on:
+
+commit:         a8455260 ipvlan: unregister upper devices outside pnod..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.gi=
+t
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D9cc692b98d9b4fd=
+b
+dashboard link: https://syzkaller.appspot.com/bug?extid=3D2642f347f7309b488=
+0dc
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Deb=
+ian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=3D11aef3795800=
+00
 
