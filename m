@@ -1,48 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9EB51B69E;
-	Mon, 31 Aug 2026 13:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A17351C332;
+	Mon, 31 Aug 2026 13:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183822; cv=none; b=WlSkQFsjGTptWfE74IftYl7X9p92F/GAXHWPVA0sknGwBwR+cXYRisaELeEjzjYmYkz2/Gd0XHBq3hYBCb0M3ZWbMkg8j2Z7kiZ3UnISnpQa+2csCAMPoAsqfvdM8h5VBp0M7jYOjxBP6c/Y9p5kbUbQV1mkd1j+4qsk2KcCF18=
+	t=1788183824; cv=none; b=YRE/TD4xc7AIpr13fwYYTAAOscLuDcj1F6GxcJYff47IN8/eIfss67JvN4v2G0bA4hZ+Lfk0TDIsi5/xLm5rZvN651xLtl+0IfVZKUv31XWzTh//zAfXO7Kg2ovu2CZPe9fztX9JLjlauG3nmM8XxSQWOm/xaz5NrgeeIHVQo9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183822; c=relaxed/simple;
-	bh=AK5eEeUqSYLZGKXY59wrC7so5WGOE+BQ4ONDzCjij/0=;
+	s=arc-20240116; t=1788183824; c=relaxed/simple;
+	bh=aaEB/ngM1EH8gBogQG13NFmZoEJbsi6KVCEb8t276DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ADyqSGxJPYui8QpJHS3JSc0Tp5/g+BMCuwUWV0+9SP7bQoLrvvFfDQADkflusqVVdf5clC7bwMXTy861V8ZLqlhAeY3KiYMF3lHmQEmbkyLbsZoXv3ya/C2xwinGhr6NtGN3fiZMzxSC783q9wLEgbyrOwqz+2YdOpCYndcDyAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUxDeY8B; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=lPpXzz6zjDVs8e7fDJCaX6tBca47k8x/NHTRX4aHGZ414aoBpUKk/BSau/mB6mdIl0xrZA90IQgtGXUWIFHXqC2un3mnCArEEkgOXmagNIQ1392/Jz5SthRS4vMppykQ5LBFx9hA8YvKiKoBFkREw4iKL43Q/76wnHrCq+dzm7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zx1r5P6L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUxDeY8B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E631F00A3E;
-	Mon, 31 Aug 2026 13:43:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zx1r5P6L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1311F00A3D;
+	Mon, 31 Aug 2026 13:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183819;
-	bh=7LJkG+kpjZ9ez0s1sDn0OcuhmsrHl/cKaBP3A3vLls4=;
+	s=k20260515; t=1788183822;
+	bh=J7qa3P0tM7aM6Wz+KWaE0ziDUJ4FAegbpIf/DfL6C04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iUxDeY8B7f0QE71fZ4VUF81k5TKl46PmGrMJ/gPUyNedLaLxMsc+lIdWfU0UtYN/u
-	 ckkeJOpa05mTNbOuQmq2HIgrCgQKTeeaGrycsPBRjvFyDKlH4Lo7uk29CY4ox7u0OR
-	 jLtcVoR8+ok1I6dXfR+DSTqggSgIcI/gGKDG2q+NYAs9Lq5r7pdM7afl1/D0E3d9Ot
-	 VjoyFU7PBUF9rAnHrcoxBN1PGBI6gqvZTmGsSr3B2ql3cwqX0FTXzQy5ECBPlvV5ai
-	 wJSNqVYvGOoVBiTRzVG92S4u8i704c3kd8hAse+rl2hnlIGzBVBeOC2m75r1l5J1SA
-	 hOeLPYRgf5CBA==
+	b=Zx1r5P6LciBSlxYbSZzaL2BvB+6w+CYF5xR//kLOYABgfD2LsG0FWuiAB0NOmS5QM
+	 Z+WYDKkxp4rd+D0DE/jsJdUT260qBWmjkkZKMEJbC99r7nuo/jb7KSGIkoAvMPJY7R
+	 b2JhsgSMwp0VmQdR+Y/dybAyz/CIdz+bQT2mGu8HePeQfGV+TrUdd+zpxupHPhvoxn
+	 3GLnT8CHGrAovDnf918dR48gRixxPyYHzICdiP8Pwcv0gA92ZTobzk26WMaqGBShTj
+	 Gq8zv/V2jWopcI54pkP1FEt2Qr0GEE/WNOilZ7cN/LaMBp4Gf1oGCtnv3SGaRcCPGv
+	 JRv+SrDWyIxOg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
+Cc: Agalakov Daniil <ade@amicon.ru>,
+	Iskhakov Daniil <dish@amicon.ru>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	vladimir.oltean@nxp.com,
-	UNGLinuxDriver@microchip.com,
-	andrew@lunn.ch,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] net: mscc: ocelot: validate netdev belongs to switch in .netdev_to_port()
-Date: Mon, 31 Aug 2026 09:25:52 -0400
-Message-ID: <20260831133314.4125787-324-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] e1000e: limit endianness conversion to boundary words
+Date: Mon, 31 Aug 2026 09:25:53 -0400
+Message-ID: <20260831133314.4125787-325-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -58,21 +61,32 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: David Yang <mmyangfl@gmail.com>
+From: Agalakov Daniil <ade@amicon.ru>
 
-[ Upstream commit ea07514700f7a5125db67c9d1cbfb06e65c30a07 ]
+[ Upstream commit a5ecafcfb27baf2dba766c4fd99dbb947f4e85d8 ]
 
-The .netdev_to_port() currently takes only a net_device and returns the
-port index, without verifying the netdev actually belongs to the switch
-being operated on. This can cause flower rule parsing to silently
-resolve to a wrong port on the local hardware.
+[Why]
+In e1000_set_eeprom(), the eeprom_buff is allocated to hold a range of
+words. However, only the boundary words (the first and the last) are
+populated from the EEPROM if the write request is not word-aligned.
+The words in the middle of the buffer remain uninitialized because they
+are intended to be completely overwritten by the new data via memcpy().
 
-Update both implementations felix_netdev_to_port() and
-ocelot_netdev_to_port() to validate ownership. Also update the callers
-in ocelot_flower.c to pass through the ocelot context.
+The previous implementation had a loop that performed le16_to_cpus()
+on the entire buffer. This resulted in endianness conversion being
+performed on uninitialized memory for all interior words.
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Link: https://patch.msgid.link/20260606125247.305167-1-mmyangfl@gmail.com
+Fix this by converting the endianness only for the boundary words
+immediately after they are successfully read from the EEPROM.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Agalakov Daniil <ade@amicon.ru>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260609213559.178657-14-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -83,41 +97,50 @@ LLM Generated explanations, may be completely bogus:
 
 **Step 1.1 — Subject line**
 
-Record: `[net: mscc: ocelot] [validate] validate netdev belongs to
-switch in .netdev_to_port()`
+Record: `[e1000e] [limit] — limit endianness conversion to boundary
+words in EEPROM write path`
 
 **Step 1.2 — Tags**
 
 Record:
-- **Signed-off-by:** David Yang `<mmyangfl@gmail.com>` (author)
-- **Link:**
-  https://patch.msgid.link/20260606125247.305167-1-mmyangfl@gmail.com
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (committer)
-- No Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, or Cc:
-  stable@vger.kernel.org
-- Notable: no syzbot/reporter tags; no explicit stable nomination
+- **Fixes:** — none
+- **Reported-by:** — none (found by SVACE static analysis, not a
+  user/syzbot report)
+- **Tested-by:** Avigail Dahan `<avigailx.dahan@intel.com>`
+- **Reviewed-by:** — not in commit message (present in pull-request
+  thread)
+- **Acked-by:** — none
+- **Link:** https://patch.msgid.link/20260609213559.178657-14-
+  anthony.l.nguyen@intel.com
+- **Cc: stable@vger.kernel.org:** — absent (expected for manual review;
+  not a negative signal)
+- **Signed-off-by:** Iskhakov Daniil, Agalakov Daniil, Tony Nguyen,
+  Jakub Kicinski (ignore pipeline-added SOBs)
+- **Co-developed-by:** Iskhakov Daniil
+- Notable: static-analysis finding (SVACE / Linux Verification Center),
+  Intel Tested-by
 
 **Step 1.3 — Body analysis**
 
 Record:
-- **Bug:** `.netdev_to_port()` maps a `net_device` to a port index
-  without checking that netdev belongs to the `ocelot` switch instance
-  being configured.
-- **Symptom:** tc-flower rule parsing can **silently** resolve to the
-  wrong port on the local switch hardware.
-- **Root cause:** Both `felix_netdev_to_port()` (DSA) and
-  `ocelot_netdev_to_port()` (standalone) accept any netdev of the
-  correct driver type, regardless of which switch instance owns it.
-- **Fix approach:** Pass `struct ocelot *` into both implementations and
-  validate ownership (`dp->ds != ds` for Felix; `priv->port.ocelot !=
-  ocelot` for standalone ocelot); update `ocelot_ops` callback and
-  `ocelot_flower.c` callers.
+- **Bug:** In `e1000_set_eeprom()`, `eeprom_buff` is `kmalloc()`’d
+  (uninitialized). For unaligned EEPROM writes, only boundary words are
+  read from hardware; interior words stay uninitialized until `memcpy()`
+  fills them. The old code ran `le16_to_cpus()` over the entire word
+  range, touching uninitialized interior words.
+- **Symptom:** Undefined behavior / uninitialized-memory use (SVACE
+  finding). No crash, oops, or corruption described in the commit
+  message.
+- **Root cause:** Endianness conversion loop was broader than the set of
+  words actually read from EEPROM.
+- **Version info:** None in message; blame shows buggy loop dates to
+  driver introduction (2007).
 
 **Step 1.4 — Hidden bug fix?**
 
-Record: **Yes.** Despite “validate” wording rather than “fix”, this is a
-real logic/correctness bug in hardware offload parsing, not cosmetic
-cleanup.
+Record: **Yes.** Although phrased as limiting conversion scope, this
+fixes uninitialized-memory use (KMSAN/SVACE class) and tightens per-read
+error handling (`goto out` immediately after failed `e1000_read_nvm()`).
 
 ---
 
@@ -126,43 +149,41 @@ cleanup.
 **Step 2.1 — Inventory**
 
 Record:
-- **Files:** 6 files, +12 / −8 lines
-- **Functions modified:** `felix_netdev_to_port()`,
-  `ocelot_netdev_to_port()`, `ocelot_flower_parse_egress_port()`,
-  `ocelot_flower_parse_indev()`
-- **Headers:** `ocelot_ops.netdev_to_port` signature changed
-- **Scope:** Single-subsystem, surgical fix
+- **File:** `drivers/net/ethernet/intel/e1000e/ethtool.c` (+12 / −7, 19
+  lines touched)
+- **Function:** `e1000_set_eeprom()`
+- **Scope:** Single-file, surgical fix
 
 **Step 2.2 — Code flow per hunk**
 
 Record:
-- **`felix_netdev_to_port()`:** Before: any DSA user port netdev → port
-  index. After: rejects netdevs belonging to a different `dsa_switch`
-  (`dp->ds != ds`).
-- **`ocelot_netdev_to_port()`:** Before: any netdev with
-  `ocelot_port_netdev_ops` → port index. After: also requires
-  `priv->port.ocelot == ocelot`.
-- **`ocelot_flower_parse_egress_port()`:** Before:
-  `netdev_to_port(a->dev)`. After: `netdev_to_port(ocelot, a->dev)` so
-  validation is switch-scoped.
-- **`ocelot_flower_parse_indev()`:** Same change for ingress-ifindex
-  matching.
+- **Hunk 1 (first boundary word):** Before — read NVM, advance `ptr`,
+  defer all endianness work. After — on read failure, `goto out`; on
+  success, `le16_to_cpus()` only on `eeprom_buff[0]`, then advance
+  `ptr`.
+- **Hunk 2 (last boundary word):** Before — conditional second read
+  gated on `!ret_val`; shared error check later. After — unconditional
+  check for odd end alignment; read, fail-fast `goto out`, then
+  `le16_to_cpus()` only on the last boundary index.
+- **Removed:** Full-buffer `le16_to_cpus()` loop over `last_word -
+  first_word + 1` words.
+- **Unchanged:** `memcpy()` of user data, full-buffer `cpu_to_le16s()`
+  loop, `e1000_write_nvm()`.
 
 **Step 2.3 — Bug mechanism**
 
-Record: **Logic / correctness fix** in tc-flower hardware offload path.
-On systems with multiple Ocelot/Felix switches, a rule installed on
-switch A referencing a netdev from switch B could return switch B’s port
-index and program switch A’s VCAP hardware with that index — wrong
-redirect, mirror, or ingress-port match.
+Record: **Category (e) — initialization / memory safety.** `kmalloc()`
+leaves interior buffer words uninitialized; old loop called
+`le16_to_cpus()` on them before `memcpy()` overwrote them. Secondary
+improvement: **error-path correctness** — fail immediately after each
+NVM read instead of batching error checks.
 
 **Step 2.4 — Fix quality**
 
-Record: Fix is obviously correct and minimal. Regression risk is very
-low: single-switch systems always pass the new checks. The internal
-`ocelot_ops` signature change is fully contained within this patch (all
-implementations and callers updated). No deadlock or hot-path
-performance concern.
+Record: **Obviously correct and minimal.** Interior words are fully
+supplied by `memcpy()` and only need `cpu_to_le16s()` before write;
+boundary words that were EEPROM-read need `le16_to_cpus()` right after
+read. Regression risk is very low.
 
 ---
 
@@ -170,32 +191,36 @@ performance concern.
 
 **Step 3.1 — Blame**
 
-Record: `ocelot_netdev_to_port()` introduced in `319e4dd11a207`
-(2020-10-02, “introduce conversion helpers between port and netdev”).
-The missing ownership check has been present since introduction.
-`priv->port.ocelot` field exists in `struct ocelot_port` since the port
-structure was defined.
+Record: Buggy full-buffer loop introduced in `bc7f75fa9788` (Auke Kok,
+2007-09-17) — original e1000e driver. Present in this tree at lines
+599–601.
 
 **Step 3.2 — Fixes: tag**
 
-Record: Not applicable — no Fixes: tag in commit message.
+Record: **N/A** — no `Fixes:` tag in commit message.
 
 **Step 3.3 — Related file history**
 
-Record: `ocelot_flower.c` has active tc-flower development (mirred-to-
-foreign-interfaces in `49a09073cb23e`, control-flag validation, etc.).
-This fix is standalone — not part of a multi-patch series.
+Record: Related recent commits in this tree:
+- `90fb7db49c6db` — `e1000e: fix heap overflow in e1000_set_eeprom` (Cc:
+  stable, already in 6.18.44)
+- `7e93136459ddf` — cast cleanup in same file
+- Fix commit `a5ecafcfb27ba` is on `origin/master` but **not** in
+  current HEAD (`v6.18.44`)
 
 **Step 3.4 — Author context**
 
-Record: David Yang; subsystem maintainers (Vladimir Oltean, Andrew Lunn,
-netdev maintainers) were CC’d on submission per `b4 dig -w`. No other
-commits from this author in the mscc/ocelot paths in this tree.
+Record: Agalakov Daniil also authored `e1000: check return value of
+e1000_read_eeprom` (`70b85c1773446`). Tony Nguyen (Intel wired LAN
+maintainer) committed this via the Intel pull request. Patch was part of
+a 15-patch Intel queue, but this hunk is self-contained.
 
 **Step 3.5 — Dependencies**
 
-Record: No prerequisites. Commit is self-contained. `git show
-ea07514700f7a | git apply --check` succeeds on this tree.
+Record: **Standalone.** No prerequisite commits required; `git apply
+--check` on `a5ecafcfb27ba` against current tree succeeds cleanly.
+Sibling fix exists for legacy `e1000` (`4cc8566ae0d16`) but is
+independent.
 
 ---
 
@@ -204,34 +229,35 @@ ea07514700f7a | git apply --check` succeeds on this tree.
 **Step 4.1 — Original discussion**
 
 Record:
-- **URL:**
-  https://patch.msgid.link/20260606125247.305167-1-mmyangfl@gmail.com
-- **Series:** v2 only (v1 referenced at
-  https://lore.kernel.org/r/20260603024234.66603-1-mmyangfl@gmail.com)
-- **Review feedback:** Thread contains only the patch and patchwork-bot
-  “applied to net-next” notice — no human review replies, no stable
-  nominations, no NAKs in saved mbox
+- `b4 dig -c a5ecafcfb27ba` → https://patch.msgid.link/20260609213559.17
+  8657-14-anthony.l.nguyen@intel.com
+- Earlier revisions in series v1–v3 (March–April 2026) for `e1000`
+  variant; committed version is from June 2026 Intel pull request (patch
+  13/15).
+- Applied to netdev/net-next by Jakub Kicinski.
 
-**Step 4.2 — Reviewers**
+**Step 4.2 — Reviewers (b4 dig -w)**
 
-Record: CC list includes Vladimir Oltean (NXP ocelot maintainer), Andrew
-Lunn, Jakub Kicinski, netdev list. No Reviewed-by/Acked-by in final
-commit.
+Record: CC’d netdev maintainers (davem, kuba, pabeni, edumazet,
+andrew+netdev). Thread contains multiple `Reviewed-by:` tags from Intel
+engineers (Loktionov, Kitszel, Ruinskiy) and netdev reviewers (Joe
+Damato, Paul Menzel, Simon Horman, Dan Carpenter).
 
-**Step 4.3 — Bug reports**
+**Step 4.3 — Bug report**
 
-Record: No external bug report, syzbot link, orbugzilla reference. Bug
-identified by code inspection.
+Record: No syzbot/bugzilla link. Found by **Linux Verification Center /
+SVACE** static analysis — same defect class as KMSAN uninitialized-
+memory reports, but no runtime reproducer cited.
 
-**Step 4.4 — Related patches**
+**Step 4.4 — Series context**
 
-Record: v1 also fixed `ocelot_netdev_to_port()`; v2 is the committed
-version. Standalone one-patch fix.
+Record: One patch in a larger Intel driver update series; this change
+does not depend on other patches in that series.
 
-**Step 4.5 — Stable list**
+**Step 4.5 — Stable list history**
 
-Record: Not searched on lore stable list (no indicators in thread). No
-prior stable discussion found.
+Record: No `Cc: stable` in patch or thread grep results. Contrast: the
+related heap-overflow fix (`90fb7db`) explicitly requested stable.
 
 ---
 
@@ -239,61 +265,58 @@ prior stable discussion found.
 
 **Step 5.1 — Key functions**
 
-Record: `felix_netdev_to_port()`, `ocelot_netdev_to_port()`,
-`ocelot_flower_parse_egress_port()`, `ocelot_flower_parse_indev()`,
-`ocelot_cls_flower_replace()` (caller chain entry)
+Record: `e1000_set_eeprom()` (modified); registered via
+`ethtool_ops.set_eeprom` at line 2340.
 
 **Step 5.2 — Callers**
 
 Record:
-- `netdev_to_port` is only invoked via `ocelot->ops->netdev_to_port()`
-  from `ocelot_flower.c` (2 call sites).
-- Flower offload reached from userspace via `ndo_setup_tc` →
-  `ocelot_setup_tc_cls_flower()` → `ocelot_cls_flower_replace()`
-  (`ocelot_net.c:197-209`) and Felix DSA `felix_port_setup_tc()` →
-  `ocelot_cls_flower_replace()` (`felix.c:1961`).
-- Requires `CAP_NET_ADMIN` for tc rule installation.
+- `net/ethtool/ioctl.c:ethtool_set_eeprom()` → `ops->set_eeprom()`
+- Invoked from `ETHTOOL_SEEPROM` ioctl case (line 3364)
+- Requires `CAP_NET_ADMIN` (default branch at line 3299)
 
 **Step 5.3 — Callees**
 
-Record: `dsa_port_from_netdev()`, `ocelot_netdevice_dev_check()`,
-`netdev_priv()`, port-index extraction.
+Record: `kmalloc()`, `e1000_read_nvm()`, `le16_to_cpus()`, `memcpy()`,
+`cpu_to_le16s()`, `e1000_write_nvm()`, `e1000e_update_nvm_checksum()`,
+`kfree()`.
 
 **Step 5.4 — Reachability**
 
-Record: Userspace `tc filter add` / netlink FLOW_CLS_REPLACE on an
-ocelot/Felix port netdev → flower parse → `netdev_to_port()`. Reachable
-on any system with MSCC ocelot or Felix DSA hardware and tc-flower
-offload enabled.
+Record: Reachable from userspace via `ethtool` EEPROM write ioctl, but
+only by **privileged** (`CAP_NET_ADMIN`) users on interfaces using
+`CONFIG_E1000E`. Uncommon path (manual EEPROM/NVM programming), but real
+and intentional.
 
 **Step 5.5 — Similar patterns**
 
-Record: `port_to_netdev()` already takes `struct ocelot *` and is
-switch-scoped; `netdev_to_port()` was the asymmetric missing half.
-`ocelot_netdevice_dev_check()` only validates driver type (same
-`netdev_ops` for all instances), which is why cross-instance netdevs
-were accepted.
+Record: Same bug/fix pattern exists in legacy `e1000` driver
+(`4cc8566ae0d16`). Prior e1000e fixes for uninitialized data exist
+(`61114910a5f6a`, `24ad2a9209a0b`) showing maintainer attention to this
+class of issue in the driver.
 
 ---
 
-## Phase 6: Cross-Referencing Against Local Tree
+## Phase 6: Cross-Reference Against Local Tree (6.18.44)
 
 **Step 6.1 — Buggy code present?**
 
-Record: **Yes.** Local tree is **Linux 6.18.44** (`git describe HEAD` →
-`v6.18.44`). Commit `ea07514700f7a` is **not** in this tree (`git merge-
-base --is-ancestor` returns false). Buggy code confirmed at
-`ocelot_net.c:987-996`, `felix.c:2382-2390`, `ocelot_flower.c:237,583`.
+Record: **Yes.** Current tree at
+`drivers/net/ethernet/intel/e1000e/ethtool.c:599-601` still has the
+full-buffer `le16_to_cpus()` loop. Bug present since 2007 in this
+driver.
 
 **Step 6.2 — Backport complications**
 
-Record: **Clean apply expected** — verified with `git apply --check`. No
-conflicting refactors in these functions between this tree and mainline
-patch.
+Record: **Clean apply expected.** Verified with `git show a5ecafcfb27ba
+| git apply --check` — success. Local tree already has `90fb7db` bounds
+checking (`check_add_overflow`); patch context still matches.
 
 **Step 6.3 — Related fixes already present?**
 
-Record: No equivalent ownership validation found in this tree.
+Record: Heap overflow fix `90fb7db49c6db` is already in 6.18.44. The
+endianness/uninitialized-memory fix `a5ecafcfb27ba` is **not** present
+(`git merge-base --is-ancestor` confirms).
 
 ---
 
@@ -301,15 +324,14 @@ Record: No equivalent ownership validation found in this tree.
 
 **Step 7.1 — Subsystem criticality**
 
-Record: **IMPORTANT** — MSCC Ocelot / NXP Felix DSA Ethernet switch
-drivers. Not core kernel, but hardware datapath offload for managed
-switches used in embedded/industrial/TSN (NXP Layerscape boards,
-Microchip switches).
+Record: **IMPORTANT** — `e1000e` Intel onboard Ethernet driver, widely
+deployed on laptops/desktops/servers. Not core kernel, but common
+hardware.
 
 **Step 7.2 — Subsystem activity**
 
-Record: Actively maintained in 6.18.y (recent commits: lock protection
-in xmit, FDMA paths, timestamping, mirred support).
+Record: Actively maintained — recent commits include PTP cleanup, DMA
+leak fix, power-gating fix, EEPROM overflow fix (Aug–2025+).
 
 ---
 
@@ -317,249 +339,161 @@ in xmit, FDMA paths, timestamping, mirred support).
 
 **Step 8.1 — Who is affected**
 
-Record: **Driver-specific, config-specific** — users of MSCC ocelot or
-Felix DSA hardware with **multiple switch instances** on one system who
-install **tc-flower hardware offload rules** referencing netdevs
-(redirect, mirror, or `ingress_ifindex` match).
+Record: Users of `CONFIG_E1000E` who perform ethtool EEPROM writes
+(admin tooling, manufacturing, lab setups). Not universal, but real
+hardware population.
 
 **Step 8.2 — Trigger conditions**
 
-Record:
-- Install tc-flower rule on switch A’s port
-- Rule references a netdev belonging to switch B (another ocelot/Felix
-  instance)
-- Common in multi-switch automotive/industrial boards; uncommon on
-  generic servers
-- Requires root/CAP_NET_ADMIN; not unprivileged trigger
+Record: Unaligned EEPROM write spanning more than one word via
+`ETHTOOL_SEEPROM`. Requires `CAP_NET_ADMIN`. Not everyday traffic, but
+deliberately triggerable by root.
 
 **Step 8.3 — Failure mode severity**
 
 Record:
-- **Failure mode:** Silent misprogramming of VCAP hardware filters —
-  traffic redirected/mirrored to wrong port, or ingress matching on
-  wrong port index
-- **Severity: MEDIUM-HIGH** for affected deployments (wrong datapath
-  behavior, broken network policy/isolation), but **not CRITICAL** (no
-  kernel oops, hang, or memory corruption)
+- **UB / uninitialized read:** le16_to_cpus on garbage interior words —
+  **MEDIUM** as defect class (sanitizer/UB), but on the success path
+  those words are fully overwritten by `memcpy()` before NVM write, so
+  **no demonstrated EEPROM corruption**.
+- **No crash, deadlock, or info leak to userspace** identified.
+- Error-path behavior unchanged in outcome (still aborts on read
+  failure).
 
 **Step 8.4 — Risk-benefit**
 
 Record:
-- **Benefit:** Prevents insidious silent hardware offload errors on
-  multi-switch systems; bug present since 2020
-- **Risk:** Very low — ~20 lines, no behavior change for correct single-
-  switch configurations
-- **Ratio:** Good benefit/risk for affected users; limited benefit for
-  typical single-switch deployments
+- **Benefit:** Eliminates longstanding UB; aligns code with actual data
+  flow; very low-risk correctness fix; Intel-tested.
+- **Risk:** Very low — 12 lines of localized logic, no API changes.
+- **Ratio:** Moderate benefit (correctness/sanitizer hygiene, not user-
+  visible failure) vs very low risk.
 
 ---
 
 ## Phase 9: Final Synthesis
 
-**Step 9.1 — Evidence compile**
+**Step 9.1 — Evidence summary**
 
 **FOR backport:**
-- Real, verifiable logic bug in hardware offload path
-- Silent wrong port programming — “oh, that’s not good” per stable-
-  kernel-rules.rst
-- Bug present since 2020 in this 6.18.44 tree
-- Small (20 lines), obviously correct, applies cleanly
-- Zero regression risk on single-switch systems
-- Affects production embedded/TSN multi-switch deployments (Felix on NXP
-  SoCs)
+- Real bug (uninitialized memory access) present since 2007
+- Small, surgical, Intel-tested, multi-reviewer
+- Applies cleanly to 6.18.44
+- Same function as heap-overflow fix already in stable
+- Uninitialized-memory defects are explicitly high-priority in stable
+  guidance
+- Improves fail-fast error handling after NVM reads
 
 **AGAINST backport:**
-- No user reports, syzbot, or CVE
-- Requires uncommon multi-switch + tc-flower configuration
-- No kernel crash/oops/memory corruption
-- Niche driver subsystem
-- No reviewer stable nomination
+- No runtime crash, corruption, or security exploit demonstrated
+- Static analysis only (SVACE), not syzbot/KMSAN runtime report
+- Privileged, rare ethtool EEPROM path
+- Interior words are overwritten by `memcpy()` before NVM write —
+  functional outcome appears correct even with the bug
+- Author did not Cc: stable (unlike the related overflow fix)
 
-**Unresolved:** No reproduction report from a deployed system; exact
-prevalence of multi-switch Felix/Ocelot configs in 6.18.y production is
-unverified.
+**Unresolved:** No runtime reproducer or user report confirming
+observable misbehavior on production kernels.
 
 **Step 9.2 — Stable rules checklist**
 
-1. Obviously correct and tested? **PASS** — logic is straightforward; no
-   Tested-by but maintainer merged to netdev
-2. Fixes a real bug affecting users? **PASS** — silent wrong hardware
-   port mapping on multi-switch tc-flower offload
-3. Important issue? **PASS (borderline)** — wrong datapath steering /
-   broken offload policy; not crash-level but serious functional
-   incorrectness for affected users
-4. Small and contained? **PASS** — 6 files, 20 lines net
-5. No new features or APIs? **PASS** — internal callback signature
-   change only
-6. Can apply to local tree? **PASS** — `git apply --check` succeeds
+1. Obviously correct and tested? **PASS** (Intel Tested-by; logic
+   verified)
+2. Fixes a real bug? **PASS** (UB on uninitialized heap memory)
+3. Important issue? **PASS (borderline)** — uninitialized-memory defect
+   class, but no crash/corruption/security impact demonstrated
+4. Small and contained? **PASS** (1 file, ~19 lines)
+5. No new features/APIs? **PASS**
+6. Can apply to local tree? **PASS** (clean apply verified)
 
-**Step 9.3 — Exception categories**
+**Step 9.3 — Exception category**
 
-Record: None (not device ID, quirk, DT, build fix, or docs fix).
+Record: Not a device ID, quirk, DT, build, or docs fix. Standard bug-fix
+category.
 
-**Step 9.4 — Decision rationale**
+**Step 9.4 — Decision rationale for 6.18.44**
 
-This commit fixes a longstanding correctness bug where tc-flower
-hardware offload on one Ocelot/Felix switch can silently program the
-wrong port when a rule references a netdev from a different switch
-instance. The failure mode is insidious mis-steering of traffic rather
-than a kernel crash, but for managed-switch deployments relying on
-hardware offload for redirect, mirror, or ingress-port matching, that is
-a serious functional defect. The fix is minimal, self-contained, applies
-cleanly to Linux 6.18.44, and is zero-risk for the common single-switch
-case.
+The buggy code is present in this tree, the fix is minimal and verified,
+and it removes undefined behavior in a reachable (though privileged)
+userspace-triggered path. While there is no demonstrated user-visible
+failure on the success path—interior words are overwritten before the
+NVM write—the defect is genuine, longstanding, and in the same critical
+function as a prior stable-nominated overflow fix. The backport risk is
+negligible and the correctness improvement is clear.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed commit message tags from provided diff and `git show
-  ea07514700f7a`
-- [Phase 2] Diff analysis: 6 files, +12/−8; ownership checks in
-  `felix_netdev_to_port` and `ocelot_netdev_to_port`
-- [Phase 3] `git blame` on `ocelot_net.c:987-997`: introduced
-  `319e4dd11a207` (2020-10-02)
-- [Phase 3] `git show 319e4dd11a207`: original commit introducing
-  helpers without ownership check
-- [Phase 3] `git show ea07514700f7a | git apply --check`: patch applies
-  cleanly
-- [Phase 3] `git merge-base --is-ancestor ea07514700f7a HEAD`: exit 1 —
-  fix NOT in 6.18.44
-- [Phase 4] `b4 dig -c ea07514700f7a`: lore URL found
-- [Phase 4] `b4 dig -c ea07514700f7a -a`: v2 series only
-- [Phase 4] `b4 dig -c ea07514700f7a -w`: maintainers CC’d (Oltean,
-  Lunn, Kicinski, netdev)
-- [Phase 4] `b4 dig -m /tmp/ocelot_netdev.mbox`: thread has patch + bot
-  apply notice only; no stable nomination
-- [Phase 5] `grep netdev_to_port`: only 2 call sites in
-  `ocelot_flower.c`; ops table assignments in felix/ocelot drivers
-- [Phase 5] Read `ocelot_net.c:197-216`: userspace tc path via
-  `ndo_setup_tc`
-- [Phase 5] Read `felix.c:1961,2023`: DSA tc-flower path
-- [Phase 5] Read `ocelot_flower.c:231-254,550-593`: egress
-  redirect/mirror and ingress-ifindex parse paths
-- [Phase 6] `git describe HEAD`: v6.18.44
-- [Phase 6] Read current buggy code at `ocelot_net.c:987-996`,
-  `felix.c:2382-2390`
-- [Phase 6] Verified `priv->port.ocelot` field in
-  `include/soc/mscc/ocelot.h:772-773`
-- [Phase 8] Failure mode: silent wrong VCAP port programming, severity
-  MEDIUM-HIGH for multi-switch offload users
+- **[Phase 1]** Parsed commit `a5ecafcfb27ba` message and tags via `git
+  show`
+- **[Phase 2]** Analyzed diff via `git show a5ecafcfb27ba` and read
+  current `ethtool.c:547-626`
+- **[Phase 3]** `git blame -L 599,601` → `bc7f75fa9788` (2007)
+- **[Phase 3]** `git log --oneline -20 --
+  drivers/net/ethernet/intel/e1000e/ethtool.c`
+- **[Phase 3]** `git merge-base --is-ancestor a5ecafcfb27ba HEAD` → NOT
+  in HEAD
+- **[Phase 3]** `git apply --check` on patch → clean apply
+- **[Phase 4]** `b4 dig -c a5ecafcfb27ba -a -w` → lore URL and reviewer
+  CC list
+- **[Phase 4]** `b4 dig -m /tmp/e1000e_endian.mbox`; grep for
+  stable/Reviewed-by
+- **[Phase 4]** WebFetch of lore URL blocked by bot protection (Anubis)
+- **[Phase 5]** `grep e1000_set_eeprom` → ethtool ops registration at
+  line 2340
+- **[Phase 5]** Read `net/ethtool/ioctl.c:2037-2078, 3299-3364` for call
+  chain and CAP_NET_ADMIN
+- **[Phase 6]** `git describe HEAD` → `v6.18.44-1-g2736c32da98b9`; `make
+  kernelversion` → `6.18.44`
+- **[Phase 6]** Confirmed buggy loop at lines 599-601 in current tree
+- **[Phase 7]** `git log --oneline -20 --
+  drivers/net/ethernet/intel/e1000e/`
+- **[Phase 8]** Traced data flow: interior words uninitialized → old
+  `le16_to_cpus` → `memcpy` overwrite → `cpu_to_le16s` → NVM write
 
 **YES**
 
- drivers/net/dsa/ocelot/felix.c            | 6 ++++--
- drivers/net/dsa/ocelot/felix.h            | 2 +-
- drivers/net/ethernet/mscc/ocelot.h        | 2 +-
- drivers/net/ethernet/mscc/ocelot_flower.c | 4 ++--
- drivers/net/ethernet/mscc/ocelot_net.c    | 4 +++-
- include/soc/mscc/ocelot.h                 | 2 +-
- 6 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/e1000e/ethtool.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-index 20ab558fde247..c4f1b6b335a24 100644
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -2379,12 +2379,14 @@ struct net_device *felix_port_to_netdev(struct ocelot *ocelot, int port)
- }
- EXPORT_SYMBOL_GPL(felix_port_to_netdev);
- 
--int felix_netdev_to_port(struct net_device *dev)
-+int felix_netdev_to_port(struct ocelot *ocelot, struct net_device *dev)
- {
-+	struct felix *felix = ocelot_to_felix(ocelot);
-+	struct dsa_switch *ds = felix->ds;
- 	struct dsa_port *dp;
- 
- 	dp = dsa_port_from_netdev(dev);
--	if (IS_ERR(dp))
-+	if (IS_ERR(dp) || dp->ds != ds)
- 		return -EINVAL;
- 
- 	return dp->index;
-diff --git a/drivers/net/dsa/ocelot/felix.h b/drivers/net/dsa/ocelot/felix.h
-index a657b190c5d7b..19addcfd62bec 100644
---- a/drivers/net/dsa/ocelot/felix.h
-+++ b/drivers/net/dsa/ocelot/felix.h
-@@ -104,6 +104,6 @@ int felix_register_switch(struct device *dev, resource_size_t switch_base,
- 			  enum dsa_tag_protocol init_tag_proto,
- 			  const struct felix_info *info);
- struct net_device *felix_port_to_netdev(struct ocelot *ocelot, int port);
--int felix_netdev_to_port(struct net_device *dev);
-+int felix_netdev_to_port(struct ocelot *ocelot, struct net_device *dev);
- 
- #endif
-diff --git a/drivers/net/ethernet/mscc/ocelot.h b/drivers/net/ethernet/mscc/ocelot.h
-index e50be508c1663..42d2c456f7128 100644
---- a/drivers/net/ethernet/mscc/ocelot.h
-+++ b/drivers/net/ethernet/mscc/ocelot.h
-@@ -92,7 +92,7 @@ int ocelot_mact_learn(struct ocelot *ocelot, int port,
- int ocelot_mact_forget(struct ocelot *ocelot,
- 		       const unsigned char mac[ETH_ALEN], unsigned int vid);
- struct net_device *ocelot_port_to_netdev(struct ocelot *ocelot, int port);
--int ocelot_netdev_to_port(struct net_device *dev);
-+int ocelot_netdev_to_port(struct ocelot *ocelot, struct net_device *dev);
- 
- int ocelot_probe_port(struct ocelot *ocelot, int port, struct regmap *target,
- 		      struct device_node *portnp);
-diff --git a/drivers/net/ethernet/mscc/ocelot_flower.c b/drivers/net/ethernet/mscc/ocelot_flower.c
-index 986b1f150e3b3..e80ede65f81ad 100644
---- a/drivers/net/ethernet/mscc/ocelot_flower.c
-+++ b/drivers/net/ethernet/mscc/ocelot_flower.c
-@@ -233,8 +233,8 @@ ocelot_flower_parse_egress_port(struct ocelot *ocelot, struct flow_cls_offload *
- 				const struct flow_action_entry *a, bool mirror,
- 				struct netlink_ext_ack *extack)
- {
-+	int egress_port = ocelot->ops->netdev_to_port(ocelot, a->dev);
- 	const char *act_string = mirror ? "mirror" : "redirect";
--	int egress_port = ocelot->ops->netdev_to_port(a->dev);
- 	enum flow_action_id offloadable_act_id;
- 
- 	offloadable_act_id = mirror ? FLOW_ACTION_MIRRED : FLOW_ACTION_REDIRECT;
-@@ -580,7 +580,7 @@ static int ocelot_flower_parse_indev(struct ocelot *ocelot, int port,
- 		return -ENOENT;
+diff --git a/drivers/net/ethernet/intel/e1000e/ethtool.c b/drivers/net/ethernet/intel/e1000e/ethtool.c
+index 8e40bb50a01e1..77f3e7991e75c 100644
+--- a/drivers/net/ethernet/intel/e1000e/ethtool.c
++++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
+@@ -585,20 +585,25 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 		/* need read/modify/write of first changed EEPROM word */
+ 		/* only the second byte of the word is being modified */
+ 		ret_val = e1000_read_nvm(hw, first_word, 1, &eeprom_buff[0]);
++		if (ret_val)
++			goto out;
++
++		/* Device's eeprom is always little-endian, word addressable */
++		le16_to_cpus(&eeprom_buff[0]);
++
+ 		ptr++;
  	}
+-	if (((eeprom->offset + eeprom->len) & 1) && (!ret_val))
++	if ((eeprom->offset + eeprom->len) & 1) {
+ 		/* need read/modify/write of last changed EEPROM word */
+ 		/* only the first byte of the word is being modified */
+ 		ret_val = e1000_read_nvm(hw, last_word, 1,
+ 					 &eeprom_buff[last_word - first_word]);
++		if (ret_val)
++			goto out;
  
--	ingress_port = ocelot->ops->netdev_to_port(indev);
-+	ingress_port = ocelot->ops->netdev_to_port(ocelot, indev);
- 	if (ingress_port < 0) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "Can only offload an ocelot ingress port");
-diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
-index 1b82693204640..4d45e136f08f5 100644
---- a/drivers/net/ethernet/mscc/ocelot_net.c
-+++ b/drivers/net/ethernet/mscc/ocelot_net.c
-@@ -984,7 +984,7 @@ static bool ocelot_netdevice_dev_check(const struct net_device *dev)
- 	return dev->netdev_ops == &ocelot_port_netdev_ops;
- }
+-	if (ret_val)
+-		goto out;
+-
+-	/* Device's eeprom is always little-endian, word addressable */
+-	for (i = 0; i < last_word - first_word + 1; i++)
+-		le16_to_cpus(&eeprom_buff[i]);
++		/* Device's eeprom is always little-endian, word addressable */
++		le16_to_cpus(&eeprom_buff[last_word - first_word]);
++	}
  
--int ocelot_netdev_to_port(struct net_device *dev)
-+int ocelot_netdev_to_port(struct ocelot *ocelot, struct net_device *dev)
- {
- 	struct ocelot_port_private *priv;
+ 	memcpy(ptr, bytes, eeprom->len);
  
-@@ -992,6 +992,8 @@ int ocelot_netdev_to_port(struct net_device *dev)
- 		return -EINVAL;
- 
- 	priv = netdev_priv(dev);
-+	if (priv->port.ocelot != ocelot)
-+		return -EINVAL;
- 
- 	return priv->port.index;
- }
-diff --git a/include/soc/mscc/ocelot.h b/include/soc/mscc/ocelot.h
-index 48d6deb3efd71..05a8191b148e9 100644
---- a/include/soc/mscc/ocelot.h
-+++ b/include/soc/mscc/ocelot.h
-@@ -650,7 +650,7 @@ struct device_node;
- 
- struct ocelot_ops {
- 	struct net_device *(*port_to_netdev)(struct ocelot *ocelot, int port);
--	int (*netdev_to_port)(struct net_device *dev);
-+	int (*netdev_to_port)(struct ocelot *ocelot, struct net_device *dev);
- 	int (*reset)(struct ocelot *ocelot);
- 	u16 (*wm_enc)(u16 value);
- 	u16 (*wm_dec)(u16 value);
 -- 
 2.53.0
 
