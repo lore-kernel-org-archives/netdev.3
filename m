@@ -1,47 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F0C54EEB3;
-	Mon, 31 Aug 2026 13:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6F74AC2D0;
+	Mon, 31 Aug 2026 13:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184007; cv=none; b=qP9PSvzL90Aj73NmkS3fVI7np6Fc9HgAjTQ2diBIgCjKDwXNPOCePm5f5e5zGsuvAiSc23LNbUjz2APCH3PgzVzy9tR2XYcpzhi65c+vvrqGGbcyd3xItSbqI397lKGabbxOoUar2IHjvuL6CRUzX2QCgE7ZvYc++Rf+5tXbSwo=
+	t=1788184024; cv=none; b=SG9PAgmRvTAHojUuMejdDXY7R7fT8tWQwBJT65w3Do/eJ896ptxPK+D5uga97CNInZVTzovIWV2g4cy/EYu05JMfz6vzyXS/nr+kM1Z9YF8bGFfXhA8MgPjcvaTqXMCbmZxNgaXCD9y7aw6DUB2eN5UItywAChikU9X77RzQgAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184007; c=relaxed/simple;
-	bh=UYPJPppqzkAMCqdP1xVBlIiqDkd+p3fS238jn3O7YIM=;
+	s=arc-20240116; t=1788184024; c=relaxed/simple;
+	bh=4Ugd7NZthPGB7/aS8BHE5sDi+bHMactzDm59QVZV/M0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kATYGioGyKzKivFmXxF/QnYhvGSxyt8qvLpzsAJeTz7nfMKZjBhbAwVB8OTsCxSZMkfvgaEL08/DXQuvaKyPqC1gi8qgMIZ81c3Ptf6RVhzH4LOngUOBKwQKdj867j0bKSY2FJRf9TVCSsYLyQIUVHun0b2S3Pt0RsoTRhvHAK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGgWTQzh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YmPk+I8tE7uuNcemvQH7Xe95lViRynB+KFTsU/cfJZzvJZwcnIedCLhWpAU/u4wlXuEMSWJ9AuwfgSZ2AY9iyu/8I5DgO4DKjmQ9sQz7gbudJ0mIDNvfJn2UaxC8wQ5YJ/Hbs1GXZ47U/Y5vEkdyrRhkqRj64IxxNApxmLTROVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEHEExPq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGgWTQzh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D81A1F00A3D;
-	Mon, 31 Aug 2026 13:46:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEHEExPq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AD51F00ADB;
+	Mon, 31 Aug 2026 13:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184003;
-	bh=vI53VAL6FJZXcfe47IL/ARawN3+1DnQrfMdNqhIh9IE=;
+	s=k20260515; t=1788184020;
+	bh=5pyJ96Qnm8dDNN9ZwyaQBPz/6YRx72SlNJlQ0MsCvAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YGgWTQzhpAqWX9mF5W7DYNffLDDwFK0qiVrhbJWXgoLBc+TbL4EQ1Iiju2ZD3Hyz+
-	 7UWtz7A1nny+KDyQYydv6XmwqJK5OF3suWC0091hph+3PtKTf4fO5cICbdsUunt/g0
-	 uNymmgE13zdY7V6j2P4JFKzhMwRw0oF3JDbEeptzl2CI5f9WihlkqFeAUpd1aOolse
-	 j4Q/EwKrVg6pf03XXgc6DuwQ8ZilB3MrAECZyCCWUwGAJahvYPvCnO/eBzQE1umZi9
-	 mwaqEpLolR6RioC3+TQ/q4cWkMAqqkgKuQip9/P0rK2DyUaAHVjNspT100+1a0OXoC
-	 grutJjcFAu+sg==
+	b=GEHEExPq8hXWHWAheueGRRGnMwsvTX1IlvuEuQeuzQnjfEKq/sC6tF/W+C4B6UNPp
+	 tE/T7z/Eo7ATvNkEDB1Jaw70f8v5654hK8qiL/NcyVVfV4IBKigH5eNezPEuKd3Ckr
+	 9NrRIqCuqEkB1WV5L+cKWQAKdC7iMMhPF/MC0DzoKDOuZ9SouYxKCtzUqk3/wfwIkH
+	 /09jnGuLHrVkWwua4GYcUOFn4vKdvstDCaE4GYi+iniVsN20KkkEJOQjcpZvsCTocp
+	 SSywt+YJyOaTym2FkTX+59kdOxBoI/lifpipeYF1R27xZEnCShY8EplcOqQwd4C79k
+	 GFai0ehVLpNHw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Paul Moore <paul@paul-moore.com>,
+Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	linux-hyperv@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] netlabel: fix IPv6 unlabeled address add error handling
-Date: Mon, 31 Aug 2026 09:27:40 -0400
-Message-ID: <20260831133314.4125787-432-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.12] net: mana: hardening: Reject zero max_num_queues from MANA_QUERY_VPORT_CONFIG
+Date: Mon, 31 Aug 2026 09:27:50 -0400
+Message-ID: <20260831133314.4125787-442-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -57,66 +62,69 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 56872b930feee7ae07b9720ca950dd9fa65596ee ]
+[ Upstream commit 93ca1575dd1f43e24ad85663305e13114f9acdf1 ]
 
-netlbl_unlhsh_add_addr6() always returned zero after
-netlbl_af6list_add(), masking failures such as duplicate
-IPv6 static label entries.
+As a part of MANA hardening for CVM, validate that max_num_sq and
+max_num_rq returned by MANA_QUERY_VPORT_CONFIG are not zero. These
+values flow into apc->num_queues, which is used as an allocation count
+and loop bound. A zero value would result in zero-size allocations and
+incorrect driver behavior.
 
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20260522022910.398416-1-zhaochenguang@kylinos.cn
+Return -EPROTO if either value is zero.
+
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260430085638.1875400-1-ernis@linux.microsoft.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `netlabel: fix IPv6 unlabeled address add
-error handling`
+# Stable Backport Analysis: `net: mana: hardening: Reject zero
+max_num_queues from MANA_QUERY_VPORT_CONFIG`
 
-**Local tree:** `v6.18.44` (`stable/linux-6.18.y`, `VERSION = 6`,
-`PATCHLEVEL = 18`, `SUBLEVEL = 44`)
+**Local tree:** Linux **6.18.43** (`v6.18.43-1-gc7f0dac02d232`)
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject line
-**Record:** `[netlabel]` `[fix]` — IPv6 unlabeled address add error
-handling was broken; failures from `netlbl_af6list_add()` were masked.
+### Step 1.1: Subject Line
+**Record:** `[net: mana]` `[hardening/validate]` — Reject zero
+`max_num_sq` / `max_num_rq` from `MANA_QUERY_VPORT_CONFIG` firmware
+response.
 
 ### Step 1.2: Tags
 **Record:**
-- **Signed-off-by:** Chenguang Zhao `<zhaochenguang@kylinos.cn>`
-  (author)
-- **Acked-by:** Paul Moore `<paul@paul-moore.com>` (netlabel maintainer
-  — strong quality signal)
-- **Link:** https://patch.msgid.link/20260522022910.398416-1-
-  zhaochenguang@kylinos.cn
+- **Signed-off-by:** Erni Sri Satya Vennela
+  `<ernis@linux.microsoft.com>` (author)
 - **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (committer)
-- No `Fixes:` tag (expected for manual review)
-- No `Reported-by:` / syzbot
-- No `Cc: stable@vger.kernel.org` in submission
-- Ignore pipeline `Signed-off-by: Sasha Levin`
+- **Link:** https://patch.msgid.link/20260430085638.1875400-1-
+  ernis@linux.microsoft.com
+- **No** Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, Cc:
+  stable@vger.kernel.org
+- Notable: Same author (Erni) as the already-backported MANA CVM TOCTOU
+  fix (`09ec063d87c2d`) in this tree.
 
-### Step 1.3: Body analysis
+### Step 1.3: Body Analysis
 **Record:**
-- **Bug:** `netlbl_unlhsh_add_addr6()` always returned `0` after
-  `netlbl_af6list_add()`, even when that call failed.
-- **Symptom:** Duplicate IPv6 static unlabeled label adds appear
-  successful to callers.
-- **Root cause:** Copy/paste oversight — IPv4 sibling
-  `netlbl_unlhsh_add_addr4()` correctly returns `ret_val`; IPv6 path
-  hard-coded `return 0`.
-- **Version info:** None in message.
+- **Bug:** Firmware may return `max_num_sq == 0` or `max_num_rq == 0`
+  from `MANA_QUERY_VPORT_CONFIG`.
+- **Symptom:** Values flow into `apc->num_queues` (via
+  `mana_init_port()`), used as allocation count and loop bound → zero-
+  size allocations and incorrect driver behavior.
+- **Fix:** Return `-EPROTO` if either value is zero.
+- **Context:** CVM (Confidential VM) hardening — firmware/hypervisor
+  responses treated as untrusted.
+- **Root cause:** Missing input validation on firmware-reported queue
+  limits.
 
-### Step 1.4: Hidden bug fix?
-**Record:** Not disguised — explicitly labeled a fix. Error-path
-`kfree(entry)` was already present; the bug is return-value propagation
-and downstream effects, not a leak.
+### Step 1.4: Hidden Bug Fix?
+**Record:** Yes. Labeled "hardening" but is a real input-validation bug
+fix. Without it, zero queue counts propagate into driver state and cause
+broken device behavior.
 
 ---
 
@@ -124,285 +132,330 @@ and downstream effects, not a leak.
 
 ### Step 2.1: Inventory
 **Record:**
-- **Files:** `net/netlabel/netlabel_unlabeled.c` (+1 / -1)
-- **Function:** `netlbl_unlhsh_add_addr6()`
-- **Scope:** Single-file, single-line surgical fix
+- **File:** `drivers/net/ethernet/microsoft/mana/mana_en.c` (+6 lines)
+- **Function:** `mana_query_vport_cfg()`
+- **Scope:** Single-file, surgical validation in one function.
 
-### Step 2.2: Code flow change
+### Step 2.2: Code Flow Change
 **Record:**
-- **Before:** On `netlbl_af6list_add()` failure (e.g. `-EEXIST`), entry
-  is freed, but function returns `0`.
-- **After:** Returns actual `ret_val` from `netlbl_af6list_add()`.
-- **Path affected:** IPv6 static unlabeled address add error path
-  (admin/LSM configuration).
+- **Hunk (lines ~1263–1268):**
+  - **Before:** Accept any `max_num_sq`/`max_num_rq` from firmware after
+    status check.
+  - **After:** Reject zero values with `netdev_err()` + `-EPROTO`.
+- **Path affected:** Port initialization during `mana_init_port()` →
+  `mana_probe_port()` probe path.
 
-### Step 2.3: Bug mechanism
-**Record:**
-- **Category:** Logic / correctness — incorrect error propagation.
-- **Mechanism:** `netlbl_af6list_add()` returns `-EEXIST` for duplicate
-  address/mask (`net/netlabel/netlabel_addrlist.c:193`). IPv6 wrapper
-  discarded that and reported success. IPv4 path at lines 252–254
-  already does the right thing.
+### Step 2.3: Bug Mechanism
+**Record:** **Input validation / logic correctness bug.**
+- `mana_init_port()` computes `max_queues = min(max_txq, max_rxq)` and
+  clamps `apc->num_queues` down to that value.
+- With zero firmware values, `apc->num_queues` becomes 0.
+- `kcalloc(0, ...)` returns `ZERO_SIZE_PTR` (non-NULL), passing `!ptr`
+  checks.
+- `netif_set_real_num_tx_queues(ndev, 0)` and
+  `netif_set_real_num_rx_queues(ndev, 0)` both require `txq/rxq >= 1`
+  and return `-EINVAL`.
+- Probe can still register a netdev with carrier on before queue setup
+  fails on attach.
 
-### Step 2.4: Fix quality
-**Record:**
-- Obviously correct — mirrors IPv4 and function documentation (“On
-  success zero is returned, otherwise a negative value”).
-- Minimal risk; no locking/API changes.
-- No regression risk identified.
+### Step 2.4: Fix Quality
+**Record:** Obviously correct, minimal, mirrors existing `-EPROTO` usage
+for bad firmware status. No API changes. Very low regression risk — only
+rejects values that are fundamentally invalid (a NIC cannot have zero
+TX/RX queues).
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 ### Step 3.1: Blame
-**Record:** Buggy `return 0;` at line 298 in current tree; blame points
-to `e664048784506` (file introduction in this tree). IPv4 `return
-ret_val;` at line 254 present alongside it from the same introduction.
+**Record:** Lines `*max_sq = resp.max_num_sq` / `*max_rq =
+resp.max_num_rq` blame to `19eef1d98eeda` (tree import). MANA driver and
+`mana_query_vport_cfg()` exist in this 6.18.43 tree. Fix not yet
+present.
 
-### Step 3.2: Fixes: tag
-**Record:** N/A — no `Fixes:` tag.
+### Step 3.2: Fixes: Tag
+**Record:** N/A — no Fixes: tag in commit message.
 
-### Step 3.3: Related file history
-**Record:**
-- `0c4bb32ad7fdc` — same author, separate netlabel validation fix
-  already in this tree.
-- Upstream fix: `56872b930feee` (mainline, May 25 2026); stable backport
-  exists as `642d90c85b137` on `autosel` branch.
-- Fix is **not** in current `HEAD` (`v6.18.44`).
+### Step 3.3: Related File History
+**Record:** Recent MANA fixes in this tree include CVM/security-oriented
+patches:
+- `09ec063d87c2d` — TOCTOU fix in `hw_channel.c` (CVM, same author Erni)
+- `6d13eaa13341a` — RX packet length validation (untrusted NIC data,
+  backported with Cc: stable)
+- `da87896f34e0a` — NULL guards to prevent panic on attach failure
+Standalone fix; no "patch X/Y" series indicator.
 
-### Step 3.4: Author context
-**Record:** Chenguang Zhao has multiple netlabel fixes; Paul Moore
-(maintainer) Acked this patch.
+### Step 3.4: Author Context
+**Record:** Erni Sri Satya Vennela is an active MANA contributor with
+multiple probe/teardown/CVM fixes already in this tree.
 
 ### Step 3.5: Dependencies
-**Record:** Standalone one-liner; no series prerequisites. Applies
-cleanly (`return 0` → `return ret_val` at line 298; upstream diff
-context matches aside from unrelated `kzalloc` vs `kzalloc_obj` naming
-elsewhere).
+**Record:** None. Uses existing `mana_query_vport_cfg_resp` struct
+(`include/net/mana/mana.h`), `netdev_err()`, and `-EPROTO`. Applies
+standalone.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Original discussion
-**Record:**
-- `b4 dig -c 56872b930feee`: https://patch.msgid.link/20260522022910.398
-  416-1-zhaochenguang@kylinos.cn
-- Single v1 submission; applied to netdev/net-next by Jakub Kicinski.
-- Paul Moore replied with **Acked-by** in thread.
+### Step 4.1: Patch Discussion
+**Record:** `b4 dig -c <sha>` not possible (commit not in local tree).
+`b4 dig` with message-id failed (wrong syntax). WebFetch of
+patch.msgid.link blocked by bot protection. **UNVERIFIED:** Full lore
+review thread content.
 
 ### Step 4.2: Reviewers
-**Record:** `b4 dig -w`: CC'd Paul Moore, David Miller, netdev
-maintainers, `linux-security-module@vger.kernel.org`.
+**Record:** **UNVERIFIED** — could not fetch mailing list thread.
 
-### Step 4.3: Bug report
-**Record:** No external bug report or syzbot link — author-found logic
-bug.
+### Step 4.3: Bug Report
+**Record:** No Reported-by or bugzilla/syzbot links. Bug identified
+through CVM hardening code review, not a user crash report.
 
-### Step 4.4: Series context
-**Record:** Standalone 1-patch series; no dependencies.
+### Step 4.4: Related Series
+**Record:** Part of broader MANA CVM hardening effort (same author as
+TOCTOU fix). No evidence this is one patch of a multi-patch dependency
+chain.
 
-### Step 4.5: Stable list
-**Record:** No `Cc: stable` discussion found in mbox thread.
+### Step 4.5: Stable List Discussion
+**Record:** **UNVERIFIED** — could not search lore stable list. No Cc:
+stable in commit message (expected for manual review candidates).
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Key functions
-**Record:** `netlbl_unlhsh_add_addr6()`, `netlbl_af6list_add()`,
-`netlbl_unlhsh_add()`.
+### Step 5.1: Key Functions
+**Record:** `mana_query_vport_cfg()` (modified), callers:
+`mana_init_port()`.
 
 ### Step 5.2: Callers
 **Record:**
-- `netlbl_unlhsh_add()` → `netlbl_unlhsh_add_addr6()` (line 423)
-- `netlbl_unlhsh_add()` called from:
-  - `netlbl_unlabel_staticadd()` / `netlbl_unlabel_staticadddef()`
-    (Generic Netlink admin)
-  - `netlbl_cfg_unlbl_static_add()` (kernel API, used e.g. from
-    `security/smack/smackfs.c`)
+- `mana_init_port()` → called from `mana_probe_port()` (probe) and
+  `mana_attach()` (attach/resume)
+- Triggered during MANA vPort probe/attach on Azure VMs with
+  CONFIG_MICROSOFT_MANA.
 
 ### Step 5.3: Callees
-**Record:** `kzalloc()`, `netlbl_af6list_add()` (can return `-EEXIST`),
-`kfree()` on failure.
+**Record:** `mana_send_request()`, `mana_verify_resp_hdr()`,
+`netdev_err()`.
 
 ### Step 5.4: Reachability
-**Record:** Reachable from userspace via Netlink (`CAP_NET_ADMIN`) and
-from LSM code configuring static labels. IPv6 path requires
-`CONFIG_IPV6`.
+**Record:** Reachable during PCI probe / netdev attach of MANA devices.
+Not userspace-triggerable directly, but firmware/hypervisor can return
+bad `MANA_QUERY_VPORT_CONFIG` data (especially relevant in CVM where DMA
+memory is shared/unencrypted per `hw_channel.c` comments).
 
-### Step 5.5: Similar patterns
-**Record:** IPv4 `netlbl_unlhsh_add_addr4()` correctly returns `ret_val`
-— confirms this is an IPv6-only regression/typo.
-
----
-
-## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE
-
-### Step 6.1: Buggy code present?
-**Record:** **YES** — line 298 in `/home/sasha/linux-
-autosel-7.0/net/netlabel/netlabel_unlabeled.c` is `return 0;` while line
-254 (IPv4) is `return ret_val;`.
-
-### Step 6.2: Backport complications
-**Record:** Clean one-line apply expected; no structural conflicts in
-this file.
-
-### Step 6.3: Related fixes already present?
-**Record:** Related validation fix `0c4bb32ad7fdc` is present; this
-error-handling fix is **not**.
+### Step 5.5: Similar Patterns
+**Record:** Driver already validates indirection table size (warn +
+default). `gdma_main.c` clamps `gc->max_num_queues` against firmware
+limits but does not explicitly reject zero at vport level.
+`mana_rss_table_alloc()` already rejects `indir_table_sz == 0`. This
+adds the analogous check for queue counts.
 
 ---
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
 
-### Step 7.1: Subsystem criticality
-**Record:** `net/netlabel` — **IMPORTANT** (LSM integration: SELinux,
-Smack; MAC labeling and audit).
+### Step 6.1: Buggy Code Present?
+**Record:** **Yes.** `drivers/net/ethernet/microsoft/mana/mana_en.c`
+lines 1263–1264 assign firmware values without zero check.
+`mana_query_vport_cfg_resp` struct exists in `include/net/mana/mana.h`.
+MANA driver fully present in 6.18.43.
+
+### Step 6.2: Backport Complications
+**Record:** **Clean apply.** Verified patch context matches local file
+exactly (`python3` context check: `old found: True`). No conflicting
+changes in the hunk area.
+
+### Step 6.3: Related Fixes Already Present?
+**Record:** Related MANA CVM/security fixes present (TOCTOU, packet
+length validation). This specific zero-queue validation is **not**
+present (`git log --grep="Invalid max queues"` — no match).
+
+---
+
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+
+### Step 7.1: Subsystem
+**Record:** `drivers/net/ethernet/microsoft/mana/` — network driver
+(Microsoft Azure Network Adapter). **Criticality: IMPORTANT**
+(production Azure VM networking, including CVM deployments).
 
 ### Step 7.2: Activity
-**Record:** Recent activity in this tree (validation fix June 2026);
-netlabel touched in 6.18.y.
+**Record:** Actively maintained — 10+ MANA commits in recent history of
+`mana_en.c` alone, including multiple stable-worthy bug fixes.
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-### Step 8.1: Who is affected
-**Record:** Systems using NetLabel IPv6 static unlabeled labels with
-SELinux/Smack (or other LSM consumers of
-`netlbl_cfg_unlbl_static_add()`). Config-specific (`CONFIG_NETLABEL`,
-`CONFIG_IPV6`).
+### Step 8.1: Who Is Affected
+**Record:** Azure VM users with MANA NICs (`CONFIG_MICROSOFT_MANA`).
+Most acute for CVM (SEV-SNP/TDX) where firmware responses are explicitly
+untrusted.
 
-### Step 8.2: Trigger conditions
-**Record:** Adding a duplicate IPv6 static unlabeled label (same
-address/mask). Requires admin capability. Duplicate-add is a realistic
-admin/script mistake, not exotic.
+### Step 8.2: Trigger Conditions
+**Record:** Firmware/hypervisor returns `max_num_sq == 0` or `max_num_rq
+== 0` in `MANA_QUERY_VPORT_CONFIG`. Not a normal operational case;
+requires buggy or malicious firmware. In CVM, malicious host is in
+threat model.
 
-### Step 8.3: Failure mode severity
+### Step 8.3: Failure Mode Severity
+**Record:** Without fix:
+1. `apc->num_queues` set to 0
+2. `kcalloc(0, ...)` returns `ZERO_SIZE_PTR` (passes NULL checks)
+3. `mana_probe_port()` can succeed through `register_netdev()` +
+   `netif_carrier_on()`
+4. Queue allocation fails later with `-EINVAL` from
+   `netif_set_real_num_*_queues()`
+5. Results in broken/unusable netdev rather than clean probe failure
+
+**Severity: MEDIUM-HIGH** — not a demonstrated kernel panic, but real
+incorrect driver state and CVM input-validation gap. Consistent with
+other MANA hardening already accepted into this stable tree.
+
+### Step 8.4: Risk-Benefit
 **Record:**
-1. Userspace receives success (`0`) instead of `-EEXIST`.
-2. `netlbl_unlhsh_add()` incorrectly executes
-   `atomic_inc(&netlabel_mgmt_protocount)` (lines 434–435).
-3. Audit records `res=1` (success) on failure (line 444).
-4. **Protocount skew:** duplicate “success” inflates count; after
-   removing the real entry, `netlabel_mgmt_protocount` can remain `> 0`
-   with zero entries, leaving `netlbl_enabled()` true
-   (`net/netlabel/netlabel_kapi.c:960`). SELinux uses `netlbl_enabled()`
-   in netfilter hooks (`security/selinux/hooks.c:6004, 6021`).
-
-**Severity:** **MEDIUM-HIGH** for affected deployments — not a crash,
-but incorrect security subsystem state and audit integrity.
-
-### Step 8.4: Risk-benefit
-**Record:**
-- **Benefit:** Correct errno, accurate audit, correct
-  protocount/`netlbl_enabled()` behavior.
-- **Risk:** Very low (one line, maintainer-acked, mirrors working IPv4
-  path).
-- **Ratio:** Strong benefit, negligible risk.
+- **Benefit:** Fail fast at config query; prevent broken netdev
+  registration; CVM input validation aligned with existing MANA stable
+  backports.
+- **Risk:** Very low — 6 lines, only rejects impossible values.
+- **Ratio:** Favorable for backport.
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence summary
+### Step 9.1: Evidence Summary
 
 **FOR backport:**
-- Clear, real bug (IPv6-only; IPv4 correct)
-- Maintainer Acked-by (Paul Moore)
-- One-line, obviously correct fix
-- Affects LSM/security admin path and audit logs
-- Protocount inflation can leave NetLabel “enabled” after entries
-  removed
-- Bug confirmed present in `v6.18.44`
-- Upstream already merged (`56872b930feee`)
+- Real validation bug with verified code path in this tree
+- Causes broken driver state (registered netdev with 0 queues)
+- CVM security hardening — same category as TOCTOU fix already in
+  6.18.43
+- Small, surgical, obviously correct
+- Clean apply to local tree
+- Same subsystem already receiving similar stable backports (`6d13eaa`,
+  `09ec063d87c2d`)
 
 **AGAINST backport:**
-- No crash, UAF, or memory corruption
-- Only failure mode from `netlbl_af6list_add()` is `-EEXIST`
-  (duplicates)
-- Niche subsystem (NetLabel + IPv6 static labels)
-- No syzbot/user crash reports
+- No crash report, syzbot, or CVE cited
+- Requires abnormal firmware response
+- Without fix, failure is degraded functionality rather than kernel oops
+- No explicit Cc: stable or maintainer stable nomination visible
+- Mailing list review unverified
 
-**Unresolved:** None material to the decision.
+**UNRESOLVED:**
+- Full lore review thread content
+- Whether reviewers explicitly nominated for stable
 
-### Step 9.2: Stable rules checklist
-1. Obviously correct and tested? **PASS** — mirrors IPv4; maintainer
-   ack; trivial change.
-2. Fixes a real bug affecting users? **PASS** — wrong errno, audit, and
-   protocount on duplicate IPv6 adds.
-3. Important issue? **PASS** — security subsystem correctness and audit
-   integrity (MEDIUM-HIGH).
-4. Small and contained? **PASS** — 1 line, 1 file.
-5. No new features/APIs? **PASS**.
-6. Can apply to local tree? **PASS** — buggy code present; clean apply.
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **PASS** — logic is trivial; no Tested-
+   by but pattern is standard.
+2. Fixes real bug affecting users? **PASS** — broken netdev state on
+   invalid firmware response.
+3. Important issue? **PASS** — CVM input validation / broken device
+   state (MEDIUM-HIGH; precedented in this tree's MANA backports).
+4. Small and contained? **PASS** — 6 lines, one function.
+5. No new features/APIs? **PASS** — validation only.
+6. Can apply to local tree? **PASS** — context verified, code present.
 
-### Step 9.3: Exception categories
-**Record:** N/A (not device ID, quirk, DT, build, or docs fix).
+### Step 9.3: Exception Categories
+**Record:** None directly (not device ID, DT, build fix, or docs).
+Qualifies as driver hardening/input-validation bug fix.
 
-### Step 9.4: Decision rationale
-This is a straightforward error-handling bug in the NetLabel IPv6 admin
-path. While it does not cause a kernel oops, it corrupts security-
-relevant state: callers, audit subsystem, and
-`netlabel_mgmt_protocount`/`netlbl_enabled()` all behave incorrectly on
-a realistic duplicate-add scenario. The fix is trivial, maintainer-
-reviewed, and the bug is present in this `6.18.44` tree.
+### Step 9.4: Decision Rationale
+This tree (6.18.43) already carries MANA CVM hardening fixes from the
+same team. The buggy code is present, the patch applies cleanly, and the
+failure mode (zero queues propagating into driver state, potentially
+registering a broken netdev) is a real correctness bug. While not as
+severe as buffer overflow or UAF, it meets stable criteria for this tree
+given established precedent and the CVM threat model where firmware
+responses must not be trusted.
 
 ---
 
 ## Verification
 
-- [Phase 1] `git describe HEAD` → `v6.18.44`; parsed subject, tags, body
-  from provided commit message
-- [Phase 1] Read current `netlbl_unlhsh_add_addr6()` — confirmed `return
-  0` bug at line 298
-- [Phase 2] Read diff — single line `return 0` → `return ret_val`
-- [Phase 2] Read `netlbl_af6list_add()` — returns `-EEXIST` on duplicate
-  (line 193)
-- [Phase 2] Compared IPv4 `netlbl_unlhsh_add_addr4()` — returns
-  `ret_val` (line 254)
-- [Phase 3] `git blame -L 290,305` — buggy line attributed to file
-  introduction
-- [Phase 3] `git show 56872b930feee` — upstream fix commit confirmed
-- [Phase 3] `git merge-base --is-ancestor 56872b930feee HEAD` → fix NOT
-  in HEAD
-- [Phase 3] `git show 642d90c85b137` — stable backport commit exists on
-  `autosel` branch
-- [Phase 4] `b4 dig -c 56872b930feee -w` — lore URL and recipient list
-  retrieved
-- [Phase 4] `b4 dig -c 56872b930feee -a` — single v1 revision
-- [Phase 4] `b4 dig -m /tmp/netlabel_ipv6_fix.mbox` — Paul Moore Acked-
-  by confirmed; no stable Cc in thread
-- [Phase 5] `grep netlbl_unlhsh_add` — traced callers to Netlink and
-  `netlbl_cfg_unlbl_static_add()`
-- [Phase 5] `grep netlbl_enabled` — SELinux hooks depend on protocount
-- [Phase 6] Read lines 248–299 and 364–447 — buggy code and downstream
-  `atomic_inc`/audit impact verified
-- [Phase 6] `git log --oneline -20 -- net/netlabel/netlabel_unlabeled.c`
-  — fix not yet in tree
-- [Phase 8] Traced protocount inflation scenario through add/remove
-  paths (lines 434–435, 664–666, 960)
+- **[Phase 1]** Parsed commit message: subject, tags (SOB x2, Link),
+  body text analyzed
+- **[Phase 1]** Confirmed no Fixes:/Reported-by:/Cc: stable tags
+- **[Phase 2]** Read diff: +6 lines in `mana_query_vport_cfg()`, adds
+  zero-check returning `-EPROTO`
+- **[Phase 2]** Read `mana_init_port()` (lines 3122–3162): `max_queues =
+  min(max_txq, max_rxq)` clamps `apc->num_queues`
+- **[Phase 2]** Read `mana_init_port_context()` (line 1010):
+  `kcalloc(apc->num_queues, ...)`
+- **[Phase 2]** Read `mana_create_txq()` (line 2373):
+  `kcalloc(apc->num_queues, ...)`
+- **[Phase 2]** Read `netif_set_real_num_tx_queues()` (line 3190): `txq
+  < 1` returns `-EINVAL`
+- **[Phase 2]** Read `netif_set_real_num_rx_queues()` (line 3240): `rxq
+  < 1` returns `-EINVAL`
+- **[Phase 2]** Read `mana_probe_port()` (lines 3415–3446): probe can
+  succeed to `register_netdev()` + `netif_carrier_on()` before queue
+  setup
+- **[Phase 3]** `git describe HEAD`: v6.18.43-1-gc7f0dac02d232
+- **[Phase 3]** `git blame -L 1263,1264`: lines exist since tree import
+  `19eef1d98eeda`
+- **[Phase 3]** `git log --grep="Invalid max queues"`: no match — fix
+  not in tree
+- **[Phase 3]** `git show 09ec063d87c2d`: CVM TOCTOU fix from same
+  author, already in tree
+- **[Phase 3]** `git show 6d13eaa13341a`: packet length validation
+  backported with Cc: stable
+- **[Phase 3]** `git log --author="ernis" --
+  drivers/net/ethernet/microsoft/mana/`: multiple MANA fixes
+- **[Phase 4]** `b4 dig` with message-id: failed (syntax/args)
+- **[Phase 4]** WebFetch patch.msgid.link: blocked by bot protection —
+  **UNVERIFIED** lore content
+- **[Phase 5]** Grep callers: `mana_query_vport_cfg` called only from
+  `mana_init_port()`
+- **[Phase 5]** Read `hw_channel.c` line 278: CVM DMA sharing comment
+  confirms threat model
+- **[Phase 5]** Read `include/net/mana/mana.h` lines 704–713:
+  `mana_query_vport_cfg_resp` struct confirmed
+- **[Phase 6]** `git describe HEAD`: 6.18.43 tree confirmed
+- **[Phase 6]** Read current `mana_en.c` lines 1263–1264: buggy code
+  present (no zero check)
+- **[Phase 6]** Python context check: patch hunks match local file (`old
+  found: True`)
+- **[Phase 6]** `git log --oneline -10 --
+  drivers/net/ethernet/microsoft/mana/mana_en.c`: active MANA
+  maintenance
+- **[Phase 8]** Traced failure path: zero queues → broken probe state →
+  `-EINVAL` on queue setup
 
-**YES**
+**YES**The background history search finished successfully: `git log -S`
+found **no commits** in this tree containing `"Invalid max queues from
+vPort config"` or `"max_sq == 0"` in `mana_en.c`, which confirms the
+zero-queue validation fix is **not** already present locally.
 
- net/netlabel/netlabel_unlabeled.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That matches the earlier analysis — the buggy code is still in the
+6.18.43 tree, the patch applies cleanly, and the backport recommendation
+remains **YES**.
 
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index 2237a5261dd2a..0dfbb63d513ce 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -295,7 +295,7 @@ static int netlbl_unlhsh_add_addr6(struct netlbl_unlhsh_iface *iface,
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index adf25acb0d46f..b61da240ac1bb 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1262,6 +1262,12 @@ static int mana_query_vport_cfg(struct mana_port_context *apc, u32 vport_index,
  
- 	if (ret_val != 0)
- 		kfree(entry);
--	return 0;
-+	return ret_val;
- }
- #endif /* IPv6 */
- 
+ 	*max_sq = resp.max_num_sq;
+ 	*max_rq = resp.max_num_rq;
++
++	if (*max_sq == 0 || *max_rq == 0) {
++		netdev_err(apc->ndev, "Invalid max queues from vPort config\n");
++		return -EPROTO;
++	}
++
+ 	if (resp.num_indirection_ent > 0 &&
+ 	    resp.num_indirection_ent <= MANA_INDIRECT_TABLE_MAX_SIZE &&
+ 	    is_power_of_2(resp.num_indirection_ent)) {
 -- 
 2.53.0
 
