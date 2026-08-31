@@ -1,484 +1,165 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012060.outbound.protection.outlook.com [52.101.43.60])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45955440627
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 16:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788192714; cv=fail; b=kqcVrxJUttprfe2xiIoQznATmHj82AG67rRAQ0/YUIskg7zyaKgtifG/j9iOuiI44qJggjwzusRwyFR0q/xr3X/970pbna1B0Rnpmalr0YlZSnXk8Hw05nuB+1wyU4YqUNeN+fXrNKgrE46BKDtad18Q92In9AcAZ7aq6ymSZ6E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788192714; c=relaxed/simple;
-	bh=df3WBi3Pg4Q8VUL1coHc9QLMtq2pKVOj2gsCu1LUEJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HT0o4MI1H7oL6EHsxtVgTyA5ML9vVImCCOBpiLghDUgRyRhKqHgNjoBLMKnAU5vMlWFwpYo7JwaP7D2pYlOOyDlvZcSkuztfHNGBuaw3SxfL67qdW1ZkFcD3YyxiUre4RE6h+qtSM2CAaEdYyaY5Mxo88nCoNlooVYp/nAPQqhs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ILId3kHH; arc=fail smtp.client-ip=52.101.43.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23DE35F5E4;
+	Mon, 31 Aug 2026 16:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788192938; cv=none; b=bMDvNktbS7JXUjQZrNofqBqUXrK5xxi0z0a9KmjooEXSSe+B4E3ov1kCZPXfcBRcMhBwJNNr7DBMA+BRVrn0sjQcyixDQIAHwk75ADtwSI8/NzZjXSR5oIZCza/rGtbMmxx/Z6ZnJARyeTNh+efNrhMyk4Phd33P5e0ODtdWFjE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788192938; c=relaxed/simple;
+	bh=QAGP/pNts3HKwJWpnuBWM4rH7U5GpfDlzxNgBzphlz4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jXdyo+byUuCkX0rrex1yFJjBVsPJpjQWTPStNoB7VeYbwq4uzcHxVsME78ExjGCMF6DVevtm+GP+3iH7QQNSLnQN6QxOhkf60ZRlXnlHtC/l/OWcDCF0kKjJ2ZuWI5qv0PmX1HQOSIs0ekSVsnE2u7jzIhv8zuBTRt14JSuNoJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOQCyAMs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ILId3kHH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OhHTJWm76u1uDx7psYZAFx6WOrA0hIhh6Pvjb0zryf4ntU4YyV0tYEovKwGA9dAU3f+MSa8cSRN71k83sYhJjVunjdNjpl5iROGhldpmUvDz32LgcPDWXOp/67KeGLkv2gGKctcrlTUiHr4DXnf5pK6vCKmvUWGDX45dNur+aCa8Z65k/5NNmf2ie2d+Yfd4WEggZI/XqCbTYCJgsu/1QW/LyQmpHJrb+f0XrAik64RepiFn2qgYy+piejQjEAXXLzZF5Aljoloq9QXcdArMKcsYbEKWmYscfR8oT/IsbQi5UPGFihlQ7D/4e4SYniciuueurml4Y+Qf/M+321rTfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l67GkKmIUYrVoPwKqJozBQIqAMANJcfSAE0v09pQXx4=;
- b=fDjFPcaKsVmq28LBrng93yZRtWjFWZTIjpaBmkFnztyUZKrJNb+SlNVB+xrYxnAED8r2zXI33LSSlTa0bq7IzdOxwh7pDuNSf/R86vrrlncUW/mfbIwrz/frxkEGF/cZWAZTsXx6O3tsvIuFlCADUbwhcH6+YV1VXJMKP6u4Gywn/APmGFQXBCuI4Jit3nYNVklTNr/gJb++5M/t8Eum4n1ZT4Oixb14BK/fIoyzs77WDq9F5zptAN5P87lfNc2ND6Pg4hG1Um/rNGmZpB+m/0SEVpxq7p9nJ2+dvh4sM3oUUHJKwctu9G1ylldFxFkAmyjeCUgamnJHi5qY6Nao/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l67GkKmIUYrVoPwKqJozBQIqAMANJcfSAE0v09pQXx4=;
- b=ILId3kHHA/2fnNpCL/m+6OOfc6/PkUf0uzyrrkavoEytrUzXbuHZOTnoiI+/D+eKNvianE6iOmaxQS+MuDKcRA9bKA2DLuDODYIOo+nTBrRgKMosUCIgqVKlqehJ7SYP2jgLV5bOLnvN3cxzPzLHlsmhe21fQPPjE0FWg9nxD1OiWaXDaNs8VGJpvGdS/iD52Y3fhltMqXBZKMmrQ89T+6AFwpu3C3boNiPmSJtjSlMEPO8dNoB4Tq7EE9DxegmBnO7/qmeShqb/TbSgpQDFhJKQOzCrz6OwqHD9LEiAllSO8/VBauYzMgry1lVsVvA9WtslLXwvk8QfUM91PLJzHw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB5505.namprd12.prod.outlook.com (2603:10b6:208:1ce::7)
- by LV3PR12MB9353.namprd12.prod.outlook.com (2603:10b6:408:21b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 16:11:39 +0000
-Received: from BL0PR12MB5505.namprd12.prod.outlook.com
- ([fe80::9329:96cf:507a:eb21]) by BL0PR12MB5505.namprd12.prod.outlook.com
- ([fe80::9329:96cf:507a:eb21%3]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 16:11:39 +0000
-From: Shahar Shitrit <shshitrit@nvidia.com>
-To: netdev@vger.kernel.org,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	pabeni@redhat.com
-Cc: virtualization@lists.linux.dev,
-	parav@nvidia.com,
-	shshitrit@nvidia.com,
-	yohadt@nvidia.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	jgg@ziepe.ca,
-	kevin.tian@intel.com,
-	kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	danielj@nvidia.com
-Subject: [PATCH net-next v23 13/14] virtio_net: Add support for TCP and UDP ethtool rules
-Date: Mon, 31 Aug 2026 19:11:08 +0300
-Message-ID: <20260831161109.2999926-14-shshitrit@nvidia.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260831161109.2999926-1-shshitrit@nvidia.com>
-References: <20260831161109.2999926-1-shshitrit@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TL0P290CA0002.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::10) To BL0PR12MB5505.namprd12.prod.outlook.com
- (2603:10b6:208:1ce::7)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOQCyAMs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D341F000E9;
+	Mon, 31 Aug 2026 16:15:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788192937;
+	bh=7tWoQZ79h9sJLCSvK9G/4oz2RxwI9/ppYTFxwZXymWQ=;
+	h=From:Subject:Date:To:Cc;
+	b=IOQCyAMsWkbgv2EPGIxS7lSkkQYjmOwjHbKnklZtXXrkQNaW9AWFhjH67NbqprC1G
+	 sf7VS7+xmLxLlcSvulQT1H2wHrPIyJDszLeBMAnpjhrd/o8BH9AtpnHnemxsdSYynM
+	 UMPkraNCBbjE2YXBDYlu0CgU9i6qRJ6fnvGi2Q50AbAactHVs0xvyWSzjse3RMF1g/
+	 I6Wbg6f/8MRS1oMfL0HLmn/3hKs1ujFPtVCbWNYdr90El2SIUM5gWEvCLOva87hVkB
+	 Q7juf7tPyKKUadBam8eFefNCydHq7IuYCWR97Ewgd2yoCMhhmkai6VpIYG9YPQPk4J
+	 J/Z6V6nNXf11Q==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v4 00/14] nfsd/sunrpc: harden the netlink listener set
+ interface
+Date: Mon, 31 Aug 2026 12:14:42 -0400
+Message-Id: <20260831-nfsd-nl-hang-v4-0-0f4e89139409@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB5505:EE_|LV3PR12MB9353:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b1250a2-394f-4156-e6d7-08df077a89bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|10067099003|3023799007|56012099006|11063799006|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	BXE2ke0x96g0rs+yht8w/AV4KgrgH1Px3GjrDA38nHu6IkI1HpdjPQViaXNDvq6+BuXyPF24kZazfZu4up2bMjeyLFFWcOy6pbO3t6uVsBt/xMeSNea11Lhsmp7jNx9cQCqTgZvUduufjLPyWRHS7AEDYFs3fD/0ockDdLlQQe1VD6tNuEd4C2BU4z2DSUDOZYg1pCGNOYpcsVeYToLbE04ge+cAOzvrAQjchYcCe2BHzW6KPG6iA3kGVQiuDNb4XPOb8nFiTkD3ntaCfs78IVenZHi7mi68Gbkvfk/ihLl0dlTfzD7ujTuURsckbwuTTz3U/z7VjJwolIteSjlOeHusQ4xZgIE61JUC0Nr/EvV0mpKEIi+PpIVrDOPkfhF1/QSIV35AmoarDbMSYBgFgqxFuwvEyDKUYlvxPYjerne/wYtkrcnuze1rVGGV603RJBQpEEGC2kSl8BGuHGPRPQxSzrPRY1FTu4eQWRufa7uudjy+Zdjo3dsFVW2ejqa+Q41zcdnYYiDzOvi2QEwKH+wEPKsL6w+kpkudbHad7xKVQVdB3C6LPIuexmbR1hAPDn/EZ3y1jVqZwMLY5uQVjmloWRYlVa8uE9J22d1hRCVWnwxo2Ar9tTaSPJ8OAQOw4+UZzKmyCrO403S1awrpliLZSnW6weafGq7gryq3d8k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB5505.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(10067099003)(3023799007)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?N4DkG83+y9tae34iWM3PmbXHAOz0sm45VN3JJZB5p0aeBWb9sYz65gVxblvI?=
- =?us-ascii?Q?OO4u+CSn5ZZCXU848QFdUhiS+DRyLNwM6h3RuYb+egwAw6dy8gdf7pvm1vVE?=
- =?us-ascii?Q?qnBIYVqOlatHILvCz5bY7iCV96UTUhHt8dcH6emrQ0IqSD3Gjrkj2Zbe671C?=
- =?us-ascii?Q?5O9XAWroiv89qusloqGXu5AE0VL8Vn4xt6DqrLU/0i7ULlkNX35OILotsqPh?=
- =?us-ascii?Q?YVgSxUlxpzFK67T0NY0bzZJmoFzv5NFOA+M4uM5bUzWKtaaJAF1QulN04S4v?=
- =?us-ascii?Q?yg8jkTc7bBOnDKzKlZCYKKYDEQK5OnaxKglEnH+2JLeVAhgqJB1g6YvFRZTv?=
- =?us-ascii?Q?OgasOsDP2i/QRMcFDEtzc8GBXlND8iAk9EoqHasKyelYfRDfzlZq/29eBEAE?=
- =?us-ascii?Q?JOLya81O71zzkBR6lGyxvARRSmMTn9V+wCD9JEFES3OkblkoY651nsA+yOrM?=
- =?us-ascii?Q?TieUgWa+qkwwJK93Ld7dELXNT4XybdJie1Zwwnsr4xDKbgAVEadKGj+f9pnS?=
- =?us-ascii?Q?Kpc2y6952TcIMrFFwZsSin8vCQSIKw+0/AL3pjC5HVkyHbRGByR0S5rl2jI2?=
- =?us-ascii?Q?aA45dxGCm2VB3BbVSNa/mQJvgut/BfUJLTWwr1ze4rzM0CfY2O5Y0MbpuYjG?=
- =?us-ascii?Q?EMEpAfNZL94ch5JX+An+F3PlGBxjlva8hOkeW0/7M5v8emUehWWqck5RAJQq?=
- =?us-ascii?Q?Cpq/tx527STVTYTN9XY7F3yQ53q3fSBavZhKEjXwsn+b6nTlwqbhLgRsz7x5?=
- =?us-ascii?Q?W6+zBMTXJeWeYjhiFiIYdgoYF+LkMH+OWPBrOCGrF2vbIj6dVjND6PxN+ZK/?=
- =?us-ascii?Q?VAtla9Z1zIgUH0OQ91ehC5w2NwNisoBRHzz23x1UL9UGzjxREWnZ2GwZUZte?=
- =?us-ascii?Q?NdOka77TUfQDpFSEtmF4dXIXhcp7pQlqgXuPOVWp1jtEZuaZwjk6GiDOE3lW?=
- =?us-ascii?Q?2/WxIVpzTjinuxKZZa9QsHWc5wetQVYb2JRlSVF0m7ywSVRH1el6WdQ/b5bt?=
- =?us-ascii?Q?2IH551x7rgXeFnam9G0lRyld0QH/v6KnpRfLXtJvq5+mTMZWOWJSOLGhIDjh?=
- =?us-ascii?Q?VrtTZL5LfNhnZM/U+5wCn7qfcBNUtN7SABqaJlCvQfTpvnizphx3rQ+NJULd?=
- =?us-ascii?Q?ggRgOxbVgK0qsSJ/sW/RJh4C822wLQMASn3cZxDK2C5X1iRgVSZAlLeI2s1F?=
- =?us-ascii?Q?fwT4HdBagICSf15FCLflUENfrMQcJTbAn82/QSm9MY33z4A4N8HH4ZrWZAow?=
- =?us-ascii?Q?aA84YblcRhDnqkJSYKjVVCJNnLgYK+/c47IhGE7NvHj00VGnPUHeXqFxnn/g?=
- =?us-ascii?Q?jbxEbxJqXA9M4ijnOWnYGBjVZ6qdt6mZFHbox9pOxkDOtzpDIQ4bMt7Fc0qj?=
- =?us-ascii?Q?xpolL93P50bqAjZQOT8BbYVOAwz0TXG2MeMw5t3es2NRAbtkw6SFBpJ9P/uj?=
- =?us-ascii?Q?zHZwe0I1wC5CEZLDJLIfBqvoibjiI23IS6Da60zO4ZavBs2bH5M+rJGCWo+a?=
- =?us-ascii?Q?0MLswxzT/s83Gt5D6O4gsjGnNFUvyBDopwIMYH1BthD5JTfTFYGFhQRTm5xk?=
- =?us-ascii?Q?yOjsba8XXuCDQS78e/pjF5qFkbmQspYF+8jZbn0uSrot6ftQGT/pFtNrmgUh?=
- =?us-ascii?Q?ab3JFpdFKC6r/eSc/RZ4jb7QD61D6dXbmDja/Opp1gxcVplK0NW8GSmK2QUd?=
- =?us-ascii?Q?VJs3VLd+KxuGSaWG2lM1OwBbLPMlhos28vrPBGMRT11AWQz6qPPWevmMm0uC?=
- =?us-ascii?Q?9arkSzbD0A=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b1250a2-394f-4156-e6d7-08df077a89bb
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB5505.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 16:11:38.9987
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 93BxZKZZ4PbZpzK86SUdIhrS/2FanOEBRLkuKDec0Xbj/2p1YeKsbzZ6RZgQs1Tir0PVvqFlGrDNWG3sxJ/Ndg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9353
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XMTQ7CIBCG4asY1mKAkf648h7GBYWhJTbUgCGap
+ neX1k1bl99MnnckEYPDSC6HkQRMLrrB53E+HojulG+ROpM3EUwUrOQl9TYa6ns6PylnChrAGqx
+ QJJNnQOveS+52z7tz8TWEz1JPfL7+QhVn21DilFEheW2NkY3m6vrA4LE/DaElcymJteY7LbLWT
+ NeigVqChj8NKy2qnYaspcy/opK6lGajp2n6Aghrq+QlAQAA
+X-Change-ID: 20260717-nfsd-nl-hang-10a3b3e93f2a
+To: Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>, 
+ Anna Schumaker <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: Slawomir Stepien <sst@poczta.fm>, linux-nfs@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Trond Myklebust <trondmy@gmail.com>, linux-kselftest@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4846; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=QAGP/pNts3HKwJWpnuBWM4rH7U5GpfDlzxNgBzphlz4=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqlaiWJxzbe9SBQEdHgzOVbgjgnsjjvAjUppleu
+ mgTrsJLlGuJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCapWolgAKCRAADmhBGVaC
+ FbiSD/4y930WW53/S7uT/di9w/UDXW1Ee8oXR6yFXYbEA7TElLlnjisihURzxVJ5xjL3hSmMoFA
+ JNSBHib8Q1fl4LEosazFKJ43f0goMG2gyYRYbymsKAoOsKVw/9H3LnvX/sBJiwLCpAzyoROY2SX
+ gCbXQvlD0etkPZF3EJmW6GbIM7N4gAWsnSJctGFg/qCDvhqC9V0K9ICyvbXX1gd2DRnFQj44P9J
+ imigEItCoT3IaizFRRPwHaY8XUzoioRiS6YKPuXujCj7zlqDqv5XOrU3SPnAwfkjLxPVedsyvZE
+ ZAiwpZzHn/yiOO6207F3nTJDaMHM+vXGodDdRQ0Yt3Pt/fCv95UjBQRu1V2gKTdfwz1dM/x/9/P
+ vTql63B79FMjIgL9PJBWt4pagaMusnN4M8dYjFtEE6g3Yjmd0FwP9PJwquhjbC2+9EEkI52eUY2
+ XbDZ45FJLXt87y/FfXCdr/xkOq2SK1gPYc6hDGxUXHSpSDTeo7KFx3lpkZzmQjRCU5jH/7N37KM
+ kIpgWL2KspxZz4XmGBTRTAi90+4Z5ozHyToORKd85QI2RM4afCjhkn5OIPyS8cI41eLRYhetO8n
+ Bd3lfofUtC4lixNLFmJ1RT4yLp6MBCbFMGT4KRdjXUo4+A06X0YswUskec6mFX43x9eusguvPA/
+ 6+ojblgEkHwg7Mg==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-From: Daniel Jurgens <danielj@nvidia.com>
+This version just fixes up some errno handling confusion that was in v3
+that Chuck pointed out. This version also drops ENAVAIL as a special
+error code -- we can use EIO for that instead.
 
-Implement TCP and UDP V4/V6 ethtool flow types.
+Please consider these for v7.4.
 
-Examples:
-$ ethtool -U ens9 flow-type udp4 dst-ip 192.168.5.2 dst-port\
-4321 action 20
-Added rule with ID 4
-
-This example directs IPv4 UDP traffic with the specified address and
-port to queue 20.
-
-$ ethtool -U ens9 flow-type tcp6 src-ip 2001:db8::1 src-port 1234 dst-ip\
-2001:db8::2 dst-port 4321 action 12
-Added rule with ID 5
-
-This example directs IPv6 TCP traffic with the specified address and
-port to queue 12.
-
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- drivers/net/virtio_net.c | 223 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 209 insertions(+), 14 deletions(-)
+Changes in v4:
+- Use EIO instead of ENAVAIL to represent an unrecoverable rpcbind error
+- Link to v3: https://lore.kernel.org/r/20260828-nfsd-nl-hang-v3-0-55026685c75d@kernel.org
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index bfe8f0bc2581..a1e042f356f5 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -31,6 +31,8 @@
- #include <net/ipv6.h>
- #include <net/ip.h>
- #include <uapi/linux/virtio_net_ff.h>
-+#include <linux/tcp.h>
-+#include <linux/udp.h>
- #include <linux/xarray.h>
- #include <linux/refcount.h>
- #include <linux/unaligned.h>
-@@ -5877,6 +5879,52 @@ static bool validate_ip6_mask(const struct virtnet_ff *ff,
- 	return true;
- }
- 
-+static bool validate_tcp_mask(const struct virtnet_ff *ff,
-+			      const struct virtio_net_ff_selector *sel,
-+			      const struct virtio_net_ff_selector *sel_cap)
-+{
-+	bool partial_mask = !!(sel_cap->flags & VIRTIO_NET_FF_MASK_F_PARTIAL_MASK);
-+	struct tcphdr *cap, *mask;
-+
-+	cap = (struct tcphdr *)&sel_cap->mask;
-+	mask = (struct tcphdr *)&sel->mask;
-+
-+	if (get_unaligned(&mask->source) &&
-+	    !check_mask_vs_cap(&mask->source, &cap->source,
-+			       sizeof(cap->source), partial_mask))
-+		return false;
-+
-+	if (get_unaligned(&mask->dest) &&
-+	    !check_mask_vs_cap(&mask->dest, &cap->dest,
-+			       sizeof(cap->dest), partial_mask))
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool validate_udp_mask(const struct virtnet_ff *ff,
-+			      const struct virtio_net_ff_selector *sel,
-+			      const struct virtio_net_ff_selector *sel_cap)
-+{
-+	bool partial_mask = !!(sel_cap->flags & VIRTIO_NET_FF_MASK_F_PARTIAL_MASK);
-+	struct udphdr *cap, *mask;
-+
-+	cap = (struct udphdr *)&sel_cap->mask;
-+	mask = (struct udphdr *)&sel->mask;
-+
-+	if (get_unaligned(&mask->source) &&
-+	    !check_mask_vs_cap(&mask->source, &cap->source,
-+			       sizeof(cap->source), partial_mask))
-+		return false;
-+
-+	if (get_unaligned(&mask->dest) &&
-+	    !check_mask_vs_cap(&mask->dest, &cap->dest,
-+			       sizeof(cap->dest), partial_mask))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool validate_mask(const struct virtnet_ff *ff,
- 			  const struct virtio_net_ff_selector *sel)
- {
-@@ -5894,11 +5942,47 @@ static bool validate_mask(const struct virtnet_ff *ff,
- 
- 	case VIRTIO_NET_FF_MASK_TYPE_IPV6:
- 		return validate_ip6_mask(ff, sel, sel_cap);
-+
-+	case VIRTIO_NET_FF_MASK_TYPE_TCP:
-+		return validate_tcp_mask(ff, sel, sel_cap);
-+
-+	case VIRTIO_NET_FF_MASK_TYPE_UDP:
-+		return validate_udp_mask(ff, sel, sel_cap);
- 	}
- 
- 	return false;
- }
- 
-+static void set_tcp(struct tcphdr *mask, struct tcphdr *key,
-+		    __be16 psrc_m, __be16 psrc_k,
-+		    __be16 pdst_m, __be16 pdst_k)
-+{
-+	/* mask/key may be unaligned; use memcpy */
-+	if (psrc_m) {
-+		memcpy(&mask->source, &psrc_m, sizeof(mask->source));
-+		memcpy(&key->source, &psrc_k, sizeof(key->source));
-+	}
-+	if (pdst_m) {
-+		memcpy(&mask->dest, &pdst_m, sizeof(mask->dest));
-+		memcpy(&key->dest, &pdst_k, sizeof(key->dest));
-+	}
-+}
-+
-+static void set_udp(struct udphdr *mask, struct udphdr *key,
-+		    __be16 psrc_m, __be16 psrc_k,
-+		    __be16 pdst_m, __be16 pdst_k)
-+{
-+	/* mask/key may be unaligned; use memcpy */
-+	if (psrc_m) {
-+		memcpy(&mask->source, &psrc_m, sizeof(mask->source));
-+		memcpy(&key->source, &psrc_k, sizeof(key->source));
-+	}
-+	if (pdst_m) {
-+		memcpy(&mask->dest, &pdst_m, sizeof(mask->dest));
-+		memcpy(&key->dest, &pdst_k, sizeof(key->dest));
-+	}
-+}
-+
- static void parse_ip4(struct iphdr *mask, struct iphdr *key,
- 		      const struct ethtool_rx_flow_spec *fs)
- {
-@@ -5940,12 +6024,26 @@ static void parse_ip6(struct ipv6hdr *mask, struct ipv6hdr *key,
- 
- static bool has_ipv4(u32 flow_type)
- {
--	return flow_type == IP_USER_FLOW;
-+	return flow_type == TCP_V4_FLOW ||
-+	       flow_type == UDP_V4_FLOW ||
-+	       flow_type == IP_USER_FLOW;
- }
- 
- static bool has_ipv6(u32 flow_type)
- {
--	return flow_type == IPV6_USER_FLOW;
-+	return flow_type == TCP_V6_FLOW ||
-+	       flow_type == UDP_V6_FLOW ||
-+	       flow_type == IPV6_USER_FLOW;
-+}
-+
-+static bool has_tcp(u32 flow_type)
-+{
-+	return flow_type == TCP_V4_FLOW || flow_type == TCP_V6_FLOW;
-+}
-+
-+static bool has_udp(u32 flow_type)
-+{
-+	return flow_type == UDP_V4_FLOW || flow_type == UDP_V6_FLOW;
- }
- 
- static int setup_classifier(struct virtnet_ff *ff,
-@@ -6086,6 +6184,10 @@ static bool supported_flow_type(const struct ethtool_rx_flow_spec *fs)
- 	case ETHER_FLOW:
- 	case IP_USER_FLOW:
- 	case IPV6_USER_FLOW:
-+	case TCP_V4_FLOW:
-+	case TCP_V6_FLOW:
-+	case UDP_V4_FLOW:
-+	case UDP_V6_FLOW:
- 		return true;
- 	}
- 
-@@ -6138,6 +6240,12 @@ static void calculate_flow_sizes(struct ethtool_rx_flow_spec *fs,
- 			size += sizeof(struct iphdr);
- 		else if (has_ipv6(fs->flow_type))
- 			size += sizeof(struct ipv6hdr);
-+
-+		if (has_tcp(fs->flow_type) || has_udp(fs->flow_type)) {
-+			++(*num_hdrs);
-+			size += has_tcp(fs->flow_type) ? sizeof(struct tcphdr) :
-+							 sizeof(struct udphdr);
-+		}
- 	}
- 
- 	BUG_ON(size > 0xff);
-@@ -6177,7 +6285,8 @@ static void setup_eth_hdr_key_mask(struct virtio_net_ff_selector *selector,
- 
- static int setup_ip_key_mask(struct virtio_net_ff_selector *selector,
- 			     u8 *key,
--			     const struct ethtool_rx_flow_spec *fs)
-+			     const struct ethtool_rx_flow_spec *fs,
-+			     int num_hdrs)
- {
- 	struct ipv6hdr *v6_m = (struct ipv6hdr *)&selector->mask;
- 	struct iphdr *v4_m = (struct iphdr *)&selector->mask;
-@@ -6189,27 +6298,99 @@ static int setup_ip_key_mask(struct virtio_net_ff_selector *selector,
- 		selector->length = sizeof(struct ipv6hdr);
- 
- 		/* exclude tclass, it's not exposed directly in struct ipv6hdr */
--		if (fs->h_u.usr_ip6_spec.l4_4_bytes ||
--		    fs->m_u.usr_ip6_spec.l4_4_bytes ||
--		    fs->h_u.usr_ip6_spec.tclass ||
-+		if (fs->h_u.usr_ip6_spec.tclass ||
- 		    fs->m_u.usr_ip6_spec.tclass ||
--		    fs->h_u.usr_ip6_spec.l4_proto ||
--		    fs->m_u.usr_ip6_spec.l4_proto)
-+		    (num_hdrs == 2 && (fs->h_u.usr_ip6_spec.l4_4_bytes ||
-+				      fs->m_u.usr_ip6_spec.l4_4_bytes ||
-+				      fs->h_u.usr_ip6_spec.l4_proto ||
-+				      fs->m_u.usr_ip6_spec.l4_proto)))
- 			return -EINVAL;
- 
- 		parse_ip6(v6_m, v6_k, fs);
-+
-+		if (num_hdrs > 2) {
-+			v6_m->nexthdr = 0xff;
-+			if (has_tcp(fs->flow_type))
-+				v6_k->nexthdr = IPPROTO_TCP;
-+			else
-+				v6_k->nexthdr = IPPROTO_UDP;
-+		}
- 	} else {
- 		selector->type = VIRTIO_NET_FF_MASK_TYPE_IPV4;
- 		selector->length = sizeof(struct iphdr);
- 
--		if (fs->h_u.usr_ip4_spec.l4_4_bytes ||
--		    fs->h_u.usr_ip4_spec.ip_ver != ETH_RX_NFC_IP4 ||
--		    fs->m_u.usr_ip4_spec.l4_4_bytes ||
--		    fs->m_u.usr_ip4_spec.ip_ver ||
--		    fs->m_u.usr_ip4_spec.proto)
-+		if (num_hdrs == 2 &&
-+		    (fs->h_u.usr_ip4_spec.l4_4_bytes ||
-+		     fs->h_u.usr_ip4_spec.ip_ver != ETH_RX_NFC_IP4 ||
-+		     fs->m_u.usr_ip4_spec.l4_4_bytes ||
-+		     fs->m_u.usr_ip4_spec.ip_ver ||
-+		     fs->m_u.usr_ip4_spec.proto))
- 			return -EINVAL;
- 
- 		parse_ip4(v4_m, v4_k, fs);
-+
-+		if (num_hdrs > 2) {
-+			v4_m->protocol = 0xff;
-+			if (has_tcp(fs->flow_type))
-+				v4_k->protocol = IPPROTO_TCP;
-+			else
-+				v4_k->protocol = IPPROTO_UDP;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int setup_transport_key_mask(struct virtio_net_ff_selector *selector,
-+				    u8 *key,
-+				    struct ethtool_rx_flow_spec *fs)
-+{
-+	struct tcphdr *tcp_m = (struct tcphdr *)&selector->mask;
-+	struct udphdr *udp_m = (struct udphdr *)&selector->mask;
-+	const struct ethtool_tcpip6_spec *v6_l4_mask;
-+	const struct ethtool_tcpip4_spec *v4_l4_mask;
-+	const struct ethtool_tcpip6_spec *v6_l4_key;
-+	const struct ethtool_tcpip4_spec *v4_l4_key;
-+	struct tcphdr *tcp_k = (struct tcphdr *)key;
-+	struct udphdr *udp_k = (struct udphdr *)key;
-+
-+	if (has_tcp(fs->flow_type)) {
-+		selector->type = VIRTIO_NET_FF_MASK_TYPE_TCP;
-+		selector->length = sizeof(struct tcphdr);
-+
-+		if (has_ipv6(fs->flow_type)) {
-+			v6_l4_mask = &fs->m_u.tcp_ip6_spec;
-+			v6_l4_key = &fs->h_u.tcp_ip6_spec;
-+
-+			set_tcp(tcp_m, tcp_k, v6_l4_mask->psrc, v6_l4_key->psrc,
-+				v6_l4_mask->pdst, v6_l4_key->pdst);
-+		} else {
-+			v4_l4_mask = &fs->m_u.tcp_ip4_spec;
-+			v4_l4_key = &fs->h_u.tcp_ip4_spec;
-+
-+			set_tcp(tcp_m, tcp_k, v4_l4_mask->psrc, v4_l4_key->psrc,
-+				v4_l4_mask->pdst, v4_l4_key->pdst);
-+		}
-+
-+	} else if (has_udp(fs->flow_type)) {
-+		selector->type = VIRTIO_NET_FF_MASK_TYPE_UDP;
-+		selector->length = sizeof(struct udphdr);
-+
-+		if (has_ipv6(fs->flow_type)) {
-+			v6_l4_mask = &fs->m_u.udp_ip6_spec;
-+			v6_l4_key = &fs->h_u.udp_ip6_spec;
-+
-+			set_udp(udp_m, udp_k, v6_l4_mask->psrc, v6_l4_key->psrc,
-+				v6_l4_mask->pdst, v6_l4_key->pdst);
-+		} else {
-+			v4_l4_mask = &fs->m_u.udp_ip4_spec;
-+			v4_l4_key = &fs->h_u.udp_ip4_spec;
-+
-+			set_udp(udp_m, udp_k, v4_l4_mask->psrc, v4_l4_key->psrc,
-+				v4_l4_mask->pdst, v4_l4_key->pdst);
-+		}
-+	} else {
-+		return -EOPNOTSUPP;
- 	}
- 
- 	return 0;
-@@ -6252,6 +6433,7 @@ static int build_and_insert(struct virtnet_ff *ff,
- 	struct virtio_net_ff_selector *selector;
- 	struct virtnet_classifier *c;
- 	size_t classifier_size;
-+	size_t key_offset;
- 	int num_hdrs;
- 	u8 key_size;
- 	u8 *key;
-@@ -6284,11 +6466,24 @@ static int build_and_insert(struct virtnet_ff *ff,
- 	setup_eth_hdr_key_mask(selector, key, fs, num_hdrs);
- 
- 	if (has_ipv4(fs->flow_type) || has_ipv6(fs->flow_type)) {
-+		key_offset = selector->length;
- 		selector = next_selector(selector);
- 
--		err = setup_ip_key_mask(selector, key + sizeof(struct ethhdr), fs);
-+		err = setup_ip_key_mask(selector, key + key_offset,
-+					fs, num_hdrs);
- 		if (err)
- 			goto err_classifier;
-+
-+		if (has_udp(fs->flow_type) || has_tcp(fs->flow_type)) {
-+			key_offset += selector->length;
-+			selector = next_selector(selector);
-+
-+			err = setup_transport_key_mask(selector,
-+						       key + key_offset,
-+						       fs);
-+			if (err)
-+				goto err_classifier;
-+		}
- 	}
- 
- 	err = validate_classifier_selectors(ff, classifier, num_hdrs);
+Changes in v3:
+- Dropped v2's patch 4, the svc_register() unwind. rpcbind matches an UNSET
+  on [program, version, netid], and the v2 fallback ignores the protocol
+  completely. The unwind could therefore clear entries that belong to other
+  live listeners. Chuck Lever found that.
+- A failed registration stays fatal. Patch 3 makes CONFIG_NFS_LOCALIO=y
+  agree with CONFIG_NFS_LOCALIO=n on that point.
+- Tests: sem_register_refused now reads the listener set back, because
+  -EACCES alone does not show that no listener was created.
+  sem_create_failure_extack is new. The netlink socket now asks for
+  NETLINK_EXT_ACK and NETLINK_CAP_ACK, so that a test can read the extack.
+- Tests: FIXTURE_TEARDOWN removes any listener or thread that a test left
+  behind. Those pinned the netns.
+- Stop attempting to register any more listeners when the first
+  svc_register() call fails.
+- Bound the unregistration side the same way. svc_register(),
+  svc_unregister() and the per-listener teardown in svc_delete_xprt() all
+  give up once the local rpcbind stops answering, so one listener_set pays
+  one timeout in each direction rather than one per listener.
+- Link to v2: https://lore.kernel.org/r/20260811-nfsd-nl-hang-v2-0-c0c92b3953c3@kernel.org
+
+Changes in v2:
+- New patch 4: when a later registration failed, svc_register() left the
+  entries that it had already set in rpcbind. Those entries pointed at a
+  port that the caller then closed.
+- Tests: behavioural fixes for several tests. Several assertions checked
+  only an errno that both the fixed kernel and the broken kernel return.
+  val_bad_transport() now also requires that the rpcbind stub saw no
+  traffic. val_second_entry_bad() requires that no listener started.
+  func_empty_destroys requires that the kernel dropped the local rpcbind
+  client and then connected again. The two -EBUSY tests require that the
+  listener set does not change. find_listener() now matches the address
+  too.
+- Tests: the stub read the revents of a newly accepted pollfd that poll()
+  had not written. The stub could therefore start a blocking read with no
+  readiness event.
+- Tests: the config fragment now includes NAMESPACES, SHMEM, TMPFS and
+  UNIX. Without them, every test skipped.
+- Link to v1: https://lore.kernel.org/r/20260810-nfsd-nl-hang-v1-0-2519fdd5bc1a@kernel.org
+
+---
+Jeff Layton (14):
+      NFSD: cap the number of listeners accepted in listener_set
+      NFSD: validate transport name in listener_set before serv creation
+      SUNRPC: keep the first error in svc_register()
+      SUNRPC: bound the local rpcbind client timeout to 1s
+      NFSD: report listener creation failures through extack
+      SUNRPC: report local rpcbind calls that get no answer
+      SUNRPC: stop svc_register() once rpcbind stops answering
+      SUNRPC: stop the svc_unregister() sweep once rpcbind stops answering
+      SUNRPC: stop unregistering listeners once rpcbind stops answering
+      NFSD: stop registering with rpcbind after a failure in listener_set
+      selftests/nfsd: exercise listener_set request validation
+      selftests/nfsd: add a per-netns rpcbind stub and the listener round-trips
+      selftests/nfsd: check that listener_set asks rpcbind once
+      selftests/nfsd: check that listener removal asks rpcbind once
+
+ MAINTAINERS                                        |    1 +
+ fs/nfsd/nfsctl.c                                   |   87 +-
+ include/linux/sunrpc/clnt.h                        |    3 +-
+ include/linux/sunrpc/svc.h                         |    7 +-
+ net/sunrpc/rpcb_clnt.c                             |   33 +-
+ net/sunrpc/svc.c                                   |   65 +-
+ net/sunrpc/svc_xprt.c                              |   20 +
+ tools/testing/selftests/Makefile                   |    1 +
+ tools/testing/selftests/nfsd/.gitignore            |    1 +
+ tools/testing/selftests/nfsd/Makefile              |    6 +
+ tools/testing/selftests/nfsd/config                |    8 +
+ .../testing/selftests/nfsd/nfsd_netlink_listener.c | 1328 ++++++++++++++++++++
+ tools/testing/selftests/nfsd/settings              |    1 +
+ 13 files changed, 1540 insertions(+), 21 deletions(-)
+---
+base-commit: e247236b7ffa1e0940f834787feade8570c5db91
+change-id: 20260717-nfsd-nl-hang-10a3b3e93f2a
+
+Best regards,
 -- 
-2.49.0
+Jeff Layton <jlayton@kernel.org>
 
