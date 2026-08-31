@@ -1,51 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE50A45629A;
-	Mon, 31 Aug 2026 13:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45430470EAF;
+	Mon, 31 Aug 2026 13:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183276; cv=none; b=NU+YHcbrQbvF2xAVSm+KDcssGx8Xkx/ILT5sYqlOwdpOp38oDEfzEaTrKPSLnfdqemnVjL7tgKwFNGI8vugMm+9Oc2OUHwgLMLHIMIUoaopu7FLacutqmj8ojabeJCs+KNpRfEu+ux94FjOLBLKFoDs/OQ/V8FLAtYPUWpjtfMk=
+	t=1788183312; cv=none; b=NGNv4e5ipY9R4RtD4sOFeBho9/IrfmyATNTfGAhcz/3pPIZG6/ei1qgsaTrxjsM84HuclJPLCuBMD98AYshx/7FEdLlgOAXh3x5lRh8x2nzJuu76iNCskbJobQWyUWLV6K3Q1T6DGTBEBtK78S5xoqzvIsPvb3DGH6vpwM/TVSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183276; c=relaxed/simple;
-	bh=XTlDyMPjqqpGEJ0fRTilMvCe868kWUmjSD8KnH9twIU=;
+	s=arc-20240116; t=1788183312; c=relaxed/simple;
+	bh=7wMyDMBZA6HeL/s6hth1FV4f65Mhk0LhZD2XLqkH9qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TuLBIqvAjUOjKClxeFVIjhL12LhRVDH2WzoVhgpsd3eTUc9oHoVr9TEzCcpHIioEX18DLwospblMNPx1Kud2lnuvcFRI3Il+4+uZ48YptCJPEtuwp9eVMa7dBBFcA9n4VW8Nku8X73H55Z68I1zTwXf+vlBxpawW0Owh0dtdi50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmX/6qrJ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=gSC6H34C45ukfqiELN+Ix5mph//t1LmhOWEogSn/NqE5kCdE3iyAVlowclkqhl5skVfxWD4Pk+oMlkHZ9qNfO/YEnhDmPX6+zmI7Kjyen07nMqy6rGgtA1NSjmW5I7YtqfR5cL9VykBIHHLjCd0AgyWXU8mZFov+ac2+xYwdn8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUjYrnQA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmX/6qrJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E7B1F00A3E;
-	Mon, 31 Aug 2026 13:34:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUjYrnQA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94881F00A3D;
+	Mon, 31 Aug 2026 13:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183274;
-	bh=A7UcETNau9qk8awitJqCLxjvw7lf1xGvDC5YSGu0tas=;
+	s=k20260515; t=1788183310;
+	bh=Lz9orBHvHMuo2dDSot13uNApdhTqMMfYVzL1h6ipsZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TmX/6qrJINgTk7nytiuaxkO2Lt0RwH+HWBISgrmUPqkJDDs+0wLeWMbSYpnesghsF
-	 1C4077MyJzTrnH5i67HJNuqjNbwr2xPShLB+zRMXTsqYE/bSGrle+OKXm/rcmKMDel
-	 40pcuIeeQtwLgF1JBT8TKEyxeZNIpPbcd/iFNjpKL9qN4k2InZ3OHt2VlNml6E+F17
-	 o586pQZaYgIx7Lo+DRxzFeGCpAvOSgLpoqdOjS+Ku0eWIkz5q+h+vaHn1OI52njYE+
-	 fAwepYOH8CvNXP3D2zgvrlOUdEGUOjO40t8ZJKjrVbBDeWeXveuPAIhlPIHgGWdknm
-	 gNUJHg7fyfglA==
+	b=QUjYrnQAKW/ksUfF7byGAmxb+Uj9pht8eHYxDSjj+Cw6wFHqEWxnyF1NuOoN8R6wf
+	 hU15rhFVb/2LafJewl2iNCsDB5L2DMnz/lV7lVvh2ifuWZ2Inj3qWFSRd8geKDr73P
+	 bltSRHC0ezufihdGOHfg0NqmvMpAuxqf7BVXcJ+09c3sX/UjJccDzOC+0NHqakIrgg
+	 X+yq52NDNY5WpWCs1WtCtQU1lrI1HnCKFVNHhelgvZRichzRow2dwa2UQmCOA/Wv6r
+	 kZ2ZxKVSydaLY0dZlPdXSgpZ4FWZkUDpwBalzckWJgM/xzubjPgrpWieT0kwzUAV+C
+	 jlT2joRtwaDeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+Cc: Minhong He <heminhong@kylinos.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
+	courmisch@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.1] eth: mlx5: fix macsec dependency
-Date: Mon, 31 Aug 2026 09:21:17 -0400
-Message-ID: <20260831133314.4125787-49-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] phonet: check register_netdevice_notifier() error in phonet_device_init()
+Date: Mon, 31 Aug 2026 09:21:40 -0400
+Message-ID: <20260831133314.4125787-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -61,400 +56,431 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Minhong He <heminhong@kylinos.cn>
 
-[ Upstream commit 87ab8276ed24d688febfef4d0c1794896e778192 ]
+[ Upstream commit d1ff66b66151c14b084e88040512a064b1c1e493 ]
 
-Configurations with mlx5 built-in but macsec=m fail to link:
+phonet_device_init() registers a netdevice notifier before calling
+phonet_netlink_register(), but does not check whether notifier
+registration succeeded. On failure, netlink setup still proceeds and
+init may return success without the notifier in place.
 
-x86_64-linux-ld: drivers/infiniband/hw/mlx5/macsec.o: in function `mlx5r_add_gid_macsec_operations':
-macsec.c:(.text+0x77d): undefined reference to `macsec_netdev_is_offloaded'
-x86_64-linux-ld: drivers/infiniband/hw/mlx5/macsec.o: in function `mlx5r_del_gid_macsec_operations':
-macsec.c:(.text+0xe81): undefined reference to `macsec_netdev_is_offloaded'
+Also, the existing phonet_netlink_register() failure path called
+phonet_device_exit(), which runs rtnl_unregister_all() even though
+rtnl_register_many() already unwound any partial registration. Calling
+the full exit helper on a partial init is not correct.
 
-Fix the dependency so this configuration cannot happen.
+Check each registration error, including proc_create_net(), and unwind
+only the steps that have succeeded so far, in reverse order.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260622124229.2444502-1-arnd@kernel.org
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Link: https://patch.msgid.link/20260721093956.162617-1-heminhong@kylinos.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `eth: mlx5: fix macsec dependency`
+## Phase 1: Commit Message Forensics
 
-**Local tree:** Linux **6.18.44** (`git describe HEAD` →
-`v6.18.44-1-g2736c32da98b9`)
+**Step 1.1 — Subject line**
 
----
+Record: `[phonet]` `[check]` — Add missing error checking in
+`phonet_device_init()` for notifier/proc registration and fix partial-
+init unwind.
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+**Step 1.2 — Tags**
 
-### Step 1.1: Subject Line
-**Record:** `[eth: mlx5]` `[fix]` — Correct a Kconfig dependency for
-mlx5 MACsec offload so invalid build configurations cannot be selected.
+Record:
+- `Signed-off-by: Minhong He <heminhong@kylinos.cn>` (author)
+- `Link:
+  https://patch.msgid.link/20260721093956.162617-1-heminhong@kylinos.cn`
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` (netdev maintainer)
+- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Cc:
+  stable@vger.kernel.org`, or syzbot tags
 
-### Step 1.2: Tags
-**Record:**
-- **Signed-off-by:** Arnd Bergmann `<arnd@arndb.de>` (author)
-- **Reviewed-by:** Sabrina Dubroca `<sd@queasysnail.net>`
-- **Link:**
-  https://patch.msgid.link/20260622124229.2444502-1-arnd@kernel.org
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer
-  merge)
-- No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, or `Tested-
-  by:` tags
-- Notable: Reviewed by a netdev reviewer; merged by net maintainer. No
-  syzbot report.
+**Step 1.3 — Body analysis**
 
-### Step 1.3: Body Analysis
-**Record:**
-- **Bug:** Kernel configurations with `MLX5_CORE=y` (built-in) and
-  `MACSEC=m` (module) can enable `MLX5_MACSEC=y`, but linking fails with
-  undefined references to `macsec_netdev_is_offloaded` from
-  `drivers/infiniband/hw/mlx5/macsec.c`.
-- **Symptom:** Link-time failure (`undefined reference to
-  'macsec_netdev_is_offloaded'`) during kernel build — not a runtime
-  crash.
-- **Root cause:** `MLX5_MACSEC` depends only on `MACSEC` (any tristate
-  value), which does not prevent built-in mlx5 from referencing symbols
-  exported only by a modular MACsec driver.
-- **Author note (from lore):** Bug likely old; first noticed on
-  `next-20260615`; rare in randconfig due to other dependency
-  constraints.
+Record:
+- **Bug:** `phonet_device_init()` registers a netdevice notifier and
+  proc entry without checking return values. If notifier registration
+  fails, netlink setup still runs and init can return success without
+  the notifier.
+- **Second bug:** On `phonet_netlink_register()` failure,
+  `phonet_device_exit()` is called, which runs `rtnl_unregister_all()`
+  even though `rtnl_register_many()` already unwound partial
+  registrations.
+- **Symptom:** Partially initialized Phonet subsystem reported as
+  successfully loaded; incorrect teardown on failure paths.
+- **Root cause:** Missing error checks and use of full exit helper
+  instead of reverse-order partial unwind.
 
-### Step 1.4: Hidden Bug Fix?
-**Record:** No — this is an explicit build-fix, not disguised cleanup.
-Same class of fix Arnd has done before for mlx5 (TLS, psample).
+**Step 1.4 — Hidden bug fix?**
+
+Record: **Yes.** Despite no "fix" in the subject, this is init error-
+path correctness: unchecked registration failures and improper cleanup
+on failure.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 2: Diff Analysis
 
-### Step 2.1: Inventory
-**Record:**
-- **Files:** `drivers/net/ethernet/mellanox/mlx5/core/Kconfig` — 1 line
-  changed (+1/-1)
-- **Functions modified:** None (Kconfig only)
-- **Scope:** Single-file, surgical Kconfig fix
+**Step 2.1 — Inventory**
 
-### Step 2.2: Code Flow Change
-**Record:**
-- **Before:** `MLX5_MACSEC` selectable whenever `MACSEC` is enabled at
-  any tristate value (`y` or `m`), even when `MLX5_CORE=y` and
-  `MACSEC=m`.
-- **After:** `MLX5_MACSEC` only selectable when `MACSEC=y` (built-in) OR
-  `MACSEC=MLX5_CORE` (MACsec built as module only when mlx5 core is also
-  a module).
-- **Affected path:** Kconfig resolution at build configuration time;
-  prevents a configuration that cannot link.
+Record:
+- **File:** `net/phonet/pn_dev.c` (~18 lines added, ~6 removed)
+- **Functions:** `phonet_device_init()`, `phonet_device_exit()`
+- **Scope:** Single-file, surgical init/exit fix
 
-### Step 2.3: Bug Mechanism
-**Record:** **Build/configuration bug (h).** Built-in mlx5
-(`MLX5_CORE=y`) links `macsec.o` into `mlx5_ib` when
-`CONFIG_MLX5_MACSEC=y`, calling `macsec_netdev_is_offloaded()` from
-`drivers/net/macsec.c`. With `MACSEC=m`, that symbol lives in a loadable
-module and is unavailable at link time for built-in code.
+**Step 2.2 — Code flow changes**
 
-### Step 2.4: Fix Quality
-**Record:**
-- **Obviously correct:** Yes — mirrors the established mlx5 pattern used
-  for TLS (`TLS=y || MLX5_CORE=m` at line 162) and psample (`PSAMPLE=y
-  || PSAMPLE=n || MLX5_CORE=m` at line 115).
-- **Minimal:** One-line change, no unrelated edits.
-- **Regression risk:** Very low — only removes an invalid Kconfig
-  combination; does not change runtime behavior for configurations that
-  already built successfully.
+Record:
+- **Hunk 1 (`phonet_device_init`):** Before — `proc_create_net()` and
+  `register_netdevice_notifier()` called with ignored return values;
+  netlink failure calls full `phonet_device_exit()`. After — each step
+  checked; labeled error paths unwind only completed steps in reverse
+  order (`err_notifier` → `err_proc` → `err_pernet`).
+- **Hunk 2 (`phonet_device_exit`):** Before —
+  `unregister_pernet_subsys()` before `remove_proc_entry()`. After —
+  `remove_proc_entry()` before `unregister_pernet_subsys()`, matching
+  reverse of init order.
 
----
+**Step 2.3 — Bug mechanism**
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+Record:
+- **Category:** Error-path / resource-leak / logic correctness
+- **Mechanism 1:** Ignored `register_netdevice_notifier()` failure →
+  init can return 0 with no notifier; `phonet_device_notify()` never
+  runs for `NETDEV_REGISTER`/`NETDEV_UNREGISTER`.
+- **Mechanism 2:** Ignored `proc_create_net()` failure → silent loss of
+  `/proc/net/pnresource`.
+- **Mechanism 3:** `phonet_device_exit()` on netlink-only failure calls
+  `rtnl_unregister_all(PF_PHONET)` after `__rtnl_register_many()`
+  already unwound via `__rtnl_unregister_many()` (documented in
+  `net/core/rtnetlink.c` lines 523–526).
 
-### Step 3.1: Blame
-**Record:**
-- `depends on MACSEC` introduced by **8ff0ac5be14469** (Lior Nahmanson,
-  2022-09-05) — `net/mlx5: Add MACsec offload Tx command support`
-- `config MLX5_MACSEC` symbol added by **7390762a07374** (Patrisious
-  Haddad, 2022-11-29)
-- RoCE MACsec code calling `macsec_netdev_is_offloaded()` added in
-  **758ce14aee825** (2022-05-03) and expanded in **58dbd6428a681**
-  (2023-04-13)
-- `macsec_netdev_is_offloaded()` itself added in **f132fdd9dc81e**
-  (2023-08-20)
-- Bug has been latent since RoCE MACsec started referencing the MACsec
-  core symbol with insufficient Kconfig constraints
+**Step 2.4 — Fix quality**
 
-### Step 3.2: Fixes: Tag
-**Record:** N/A — no `Fixes:` tag in commit message.
-
-### Step 3.3: Related File History
-**Record:**
-- **c3cd281e2bc8d** (2018): `net/mlx5e: fix TLS dependency` — identical
-  class of fix by same author
-- **7a7dd5114f538** (2021): `mlx5: fix psample_sample_packet link error`
-  — same author, same Kconfig file
-- **96c34151d1577** (2020): mlx5 Kconfig weak-dependency conversion
-  after kconfig `imply` semantics change
-- Standalone one-patch fix, not part of a series
-
-### Step 3.4: Author Context
-**Record:** Arnd Bergmann is a long-standing contributor who routinely
-fixes Kconfig/link-dependency issues across the kernel. Multiple prior
-mlx5 Kconfig fixes from him are already in this tree.
-
-### Step 3.5: Dependencies
-**Record:** No prerequisite commits. Uses `MACSEC=MLX5_CORE` Kconfig
-symbol-equality syntax, which is already present elsewhere in this
-6.18.44 tree (e.g., `BACKLIGHT_CLASS_DEVICE=FB_RIVA`,
-`HID=SND_SOC_SDCA`). Applies standalone.
+Record: Fix is minimal, follows established netdev init patterns
+(compare `mctp_device_init()` in this tree). Low regression risk; no API
+changes.
 
 ---
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## Phase 3: Git History Investigation
 
-### Step 4.1: Original Discussion
-**Record:**
-- **URL:** https://lists.openwall.net/linux-kernel/2026/06/22/987
-- **Series revisions:** v1 only (single patch)
-- **Reviewer feedback:** No NAKs found; `Reviewed-by: Sabrina Dubroca`
-- **Stable nomination:** None in thread
-- **Author context:** Notes bug is probably old, first seen on
-  next-20260615
+**Step 3.1 — Blame**
 
-### Step 4.2: Reviewers
-**Record:** To: mlx5 maintainers (Saeed Mahameed, Leon Romanovsky,
-etc.), netdev maintainers (Andrew Lunn, David Miller, Jakub Kicinski,
-Paolo Abeni, Eric Dumazet). Cc: netdev@, linux-rdma@, linux-kernel@.
-Reviewed-by from Sabrina Dubroca (netdev).
+Record: Current buggy lines in `phonet_device_init()` are at
+`net/phonet/pn_dev.c:351–372`. `git blame` attributes them to merge
+`5d324e5159d9e` (2025-11-28); shallow stable history shows `pn_dev.c`
+added in that merge, but file content dates to 2008 Phonet code.
 
-### Step 4.3: Bug Report
-**Record:** No external bug report or syzbot link. Failure documented
-via reproducible linker error in commit message and lore submission.
-Syzbot CI skipped the patch as having no functional/runtime impact
-(Kconfig-only).
+**Step 3.2 — Fixes: tag**
 
-### Step 4.4: Related Patches
-**Record:** No multi-patch series. Direct precedent: TLS and psample
-mlx5 Kconfig fixes already in tree.
+Record: N/A — no `Fixes:` tag in commit message.
 
-### Step 4.5: Stable List History
-**Record:** No stable@ discussion found. Not searched exhaustively on
-lore stable@, but absence is not a negative signal per review
-guidelines.
+**Step 3.3 — Related file history**
 
----
+Record:
+- `52b8f5ef82c88` — phonet RCU UAF fix (already in this tree, `Cc:
+  stable`)
+- Other recent phonet stable backports: `a48a889b60f73` (pep UAF), skb
+  overflow fixes
+- **This commit is NOT yet in the tree**
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+**Step 3.4 — Author's other commits**
 
-### Step 5.1: Key Functions
-**Record:** No C functions modified. Affected symbols at build time:
-- `mlx5r_add_gid_macsec_operations()` /
-  `mlx5r_del_gid_macsec_operations()` in
-  `drivers/infiniband/hw/mlx5/macsec.c` (call
-  `macsec_netdev_is_offloaded()`)
-- `macsec_netdev_is_offloaded()` in `drivers/net/macsec.c`
-  (EXPORT_SYMBOL_GPL)
+Record: Same author (Minhong He) has two nearly identical fixes
+**already backported to this 6.18.44 tree**:
+- `391a23c503856` — `mctp: check register_netdevice_notifier() error in
+  mctp_device_init()`
+- `50edffd0854fe` — `can: isotp: check register_netdevice_notifier()
+  error in module init()`
 
-### Step 5.2: Callers
-**Record:** `mlx5r_add/del_gid_macsec_operations()` called from
-`drivers/infiniband/hw/mlx5/main.c` during RoCE GID add/delete. Only
-compiled when `CONFIG_MLX5_MACSEC=y`. `mlx5_ib-$(CONFIG_MLX5_MACSEC) +=
-macsec.o` in `drivers/infiniband/hw/mlx5/Makefile`.
+**Step 3.5 — Dependencies**
 
-### Step 5.3: Callees
-**Record:** `macsec_netdev_is_offloaded()` checks whether a netdevice
-has MACsec offload enabled — exported GPL symbol from MACsec core
-driver.
-
-### Step 5.4: Reachability
-**Record:** Bug is reachable at **build time** when a user/distro
-selects `MLX5_CORE=y`, `MACSEC=m`, `MLX5_MACSEC=y`. Not a runtime
-userspace trigger, but blocks kernel compilation entirely for that
-config.
-
-### Step 5.5: Similar Patterns
-**Record:** Same Kconfig dependency pattern already used in this file:
-- `MLX5_EN_TLS`: `depends on TLS=y || MLX5_CORE=m` (line 162)
-- `MLX5_TC_SAMPLE`: `depends on PSAMPLE=y || PSAMPLE=n || MLX5_CORE=m`
-  (line 115)
+Record: Standalone; no series or prerequisite commits required. All
+symbols exist in this tree.
 
 ---
 
-## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE (6.18.44)
+## Phase 4: Mailing List and External Research
 
-### Step 6.1: Does Buggy Code Exist?
-**Record:** **YES.** Current tree at
-`drivers/net/ethernet/mellanox/mlx5/core/Kconfig:146` still has `depends
-on MACSEC`. RoCE MACsec code and `macsec_netdev_is_offloaded()`
-references are present. Fix commit is **not yet applied** to this
-checkout.
+**Step 4.1–4.5**
 
-### Step 6.2: Backport Complications
-**Record:** **Clean apply expected.** Single-line change.
-`MACSEC=MLX5_CORE` syntax is supported in 6.18.44 Kconfig (verified via
-grep of other `=SYMBOL` patterns in tree). No conflicting recent churn
-on this Kconfig block.
+Record: **Could not verify** — `b4 dig` requires a commit hash not
+present in this tree; lore.kernel.org and patch.msgid.link blocked by
+bot protection (Anubis). No local mbox found for this patch.
 
-### Step 6.3: Related Fixes Already Present?
-**Record:** TLS and psample mlx5 Kconfig link fixes are present. No
-equivalent MACsec fix found (`git log --grep="macsec dependency"`
-returns nothing in this tree).
+UNVERIFIED: Reviewer stable nominations, NAKs, or thread discussion.
 
 ---
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+## Phase 5: Code Semantic Analysis
 
-### Step 7.1: Subsystem
-**Record:** **drivers/net/ethernet/mellanox/mlx5** +
-**drivers/infiniband/hw/mlx5** (RDMA/RoCE MACsec). Criticality:
-**IMPORTANT** — affects Mellanox ConnectX users building custom or
-distro kernels with MACsec offload; not universal core-path but affects
-a widely deployed NIC family.
+**Step 5.1 — Key functions**
 
-### Step 7.2: Activity
-**Record:** mlx5 Kconfig actively maintained; recent commits include PSP
-offload, VXLAN co-dependency removal, HWS support. MACsec Kconfig
-dependency has been unchanged since 2022.
+Record: `phonet_device_init()`, `phonet_device_exit()`,
+`phonet_device_notify()` (indirectly affected)
 
----
+**Step 5.2 — Callers**
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+Record: `phonet_device_init()` called from `phonet_init()` in
+`net/phonet/af_phonet.c:501` during `module_init`. Only runs when
+`CONFIG_PHONET` module is loaded.
 
-### Step 8.1: Who Is Affected
-**Record:** Kernel builders (distro maintainers, embedded vendors,
-advanced users) configuring `MLX5_CORE=y` + `MACSEC=m` +
-`MLX5_MACSEC=y`. Hardware-specific (Mellanox/NVIDIA ConnectX with RoCE
-MACsec offload).
+**Step 5.3 — Callees**
 
-### Step 8.2: Trigger Conditions
-**Record:** Selecting the invalid Kconfig combination during `make
-menuconfig` / defconfig customization. Uncommon but explicitly allowed
-by current Kconfig. Not user-triggerable at runtime.
+Record: `register_pernet_subsys()`, `proc_create_net()`,
+`register_netdevice_notifier()`, `phonet_netlink_register()` →
+`rtnl_register_many()`, and corresponding unregister/remove helpers.
 
-### Step 8.3: Failure Mode Severity
-**Record:** **Build failure** — linker error, kernel cannot be built.
-Per `Documentation/process/stable-kernel-rules.rst` line 19, build
-errors are explicitly listed as valid stable material (excluding
-CONFIG_BROKEN). Severity for stable purposes: **qualifying build
-error**.
+**Step 5.4 — Reachability**
 
-### Step 8.4: Risk-Benefit
-**Record:**
-- **Benefit:** Unblocks valid-intent builders; prevents wasted build
-  time hitting link failure; aligns Kconfig with link requirements
-- **Risk:** Minimal — one-line Kconfig constraint, proven pattern
-- **Ratio:** High benefit, very low risk
+Record: Triggered at module load time under resource pressure (e.g.
+`-ENOMEM` from notifier chain registration). Not userspace-syscall
+reachable directly, but affects module load success semantics.
+
+**Step 5.5 — Similar patterns**
+
+Record: `phonet_init_net()` at line 325 already checks
+`proc_create_net()` for the per-net `"phonet"` entry;
+`phonet_device_init()` inconsistently does not check the `"pnresource"`
+entry. Same notifier-check pattern fixed in `net/mctp/device.c` and
+`net/can/isotp.c` in this tree.
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 6: Cross-Reference Against Local Tree (6.18.44)
 
-### Step 9.1: Evidence Summary
+**Step 6.1 — Buggy code present?**
 
-**FOR backport:**
-- Fixes a real, reproducible linker failure
-- Explicitly listed stable category: build error
-- One-line, obviously correct fix
-- Same author fixed identical mlx5 Kconfig class before (TLS, psample) —
-  those are in this tree
-- Reviewed-by from netdev reviewer; merged by net maintainer
-- Buggy code confirmed present in 6.18.44
-- Clean backport expected
+Record: **Yes.** Current code at `net/phonet/pn_dev.c:357–362`:
 
-**AGAINST backport:**
-- Rare configuration (author notes randconfig rarely hits it)
-- No runtime/user-visible crash — build-time only
-- No explicit stable nomination or user bug reports
+```351:363:net/phonet/pn_dev.c
+int __init phonet_device_init(void)
+{
+        int err = register_pernet_subsys(&phonet_net_ops);
+        if (err)
+                return err;
 
-**Unresolved:** Whether any distro actually ships this broken config
-combination in practice (unverified; not needed for decision — build
-errors are stable-worthy regardless).
+        proc_create_net("pnresource", 0, init_net.proc_net,
+&pn_res_seq_ops,
+                        sizeof(struct seq_net_private));
+        register_netdevice_notifier(&phonet_device_notifier);
+        err = phonet_netlink_register();
+        if (err)
+                phonet_device_exit();
+        return err;
+}
+```
 
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — proven Kconfig pattern,
-   Reviewed-by present
-2. Fixes real bug affecting users? **PASS** — reproducible link failure
-   blocks kernel build
-3. Important issue? **PASS** — build error per stable-kernel-rules.rst
-4. Small and contained? **PASS** — 1 line, 1 file
-5. No new features/APIs? **PASS** — Kconfig constraint only
-6. Can apply to local tree? **PASS** — buggy code present, syntax
-   supported, clean apply
+**Step 6.2 — Backport complications**
 
-### Step 9.3: Exception Category
-**Record:** **Build fix** — Kconfig dependency correction preventing
-link failure.
+Record: **Clean apply expected** — no conflicting changes; only
+`phonet_device_init()`/`phonet_device_exit()` affected.
 
-### Step 9.4: Decision Rationale
+**Step 6.3 — Related fixes already present?**
 
-For **Linux 6.18.44**, this commit should be backported. The tree still
-has the insufficient `depends on MACSEC` constraint while RoCE MACsec
-code unconditionally references `macsec_netdev_is_offloaded()` when
-`CONFIG_MLX5_MACSEC=y`. The fix is a one-line Kconfig change using an
-established mlx5 pattern and syntax already supported in 6.18.y. It
-meets all stable kernel criteria, including the explicit allowance for
-build errors in `stable-kernel-rules.rst`.
+Record: MCTP and CAN isotp notifier-check fixes present; phonet
+equivalent absent. Phonet RCU/UAF fixes present, showing maintainers
+accept phonet stable fixes.
+
+---
+
+## Phase 7: Subsystem Context
+
+**Step 7.1 — Subsystem and criticality**
+
+Record: `net/phonet` — **PERIPHERAL** (Nokia Phonet protocol;
+`CONFIG_PHONET` tristate, niche hardware). However, this tree actively
+backports phonet fixes.
+
+**Step 7.2 — Activity**
+
+Record: Multiple phonet stable backports in recent history (UAF, skb
+overflow, RCU).
+
+---
+
+## Phase 8: Impact and Risk Assessment
+
+**Step 8.1 — Who is affected**
+
+Record: Users who build/load the `phonet` kernel module (cellular modem
+/ legacy Nokia platforms).
+
+**Step 8.2 — Trigger conditions**
+
+Record: Failure of `register_netdevice_notifier()` or
+`proc_create_net()` during module init — typically memory pressure
+(`-ENOMEM`). Uncommon but possible.
+
+**Step 8.3 — Failure mode severity**
+
+Record:
+- **Partial success:** Module appears loaded but notifier missing →
+  `phonet_device_notify()` never handles `NETDEV_UNREGISTER`, so
+  `phonet_device_destroy()` and `phonet_route_autodel()` are skipped →
+  **resource leaks and stale route state** (see `pn_dev.c:296–309`).
+- **Wrong cleanup:** Redundant/incorrect `rtnl_unregister_all()` on
+  netlink registration failure.
+- **Severity: MEDIUM** — not a hot-path crash, but real correctness bug
+  with leak potential; module reports success when broken.
+
+**Step 8.4 — Risk vs benefit**
+
+Record:
+- **Benefit:** MEDIUM for Phonet users; prevents silently broken module
+  load and improves failure-path correctness
+- **Risk:** VERY LOW — ~25 lines, mirrors already-accepted mctp/isotp
+  backports in this tree
+- **Ratio:** Favorable
+
+---
+
+## Phase 9: Final Synthesis
+
+**Evidence FOR backport:**
+- Real init error-handling bug with partial-init-success path
+- Missing notifier can skip unregister cleanup (`phonet_device_destroy`,
+  `phonet_route_autodel`)
+- Small, obviously correct, netdev-maintainer-reviewed
+- Same author, same bug class, already backported here for MCTP and CAN
+  isotp
+- Phonet subsystem receives other stable fixes in this tree
+- Applies cleanly to 6.18.44
+
+**Evidence AGAINST:**
+- Niche subsystem, few users
+- Only triggers on init failure under resource pressure
+- No syzbot/user reports
+- Impact is correctness/leak, not demonstrated crash in production
+
+**Stable rules checklist:**
+1. Obviously correct and tested? **PASS** (pattern proven in-tree for
+   mctp/isotp)
+2. Fixes a real bug? **PASS**
+3. Important issue? **PASS** (partial init success + cleanup bugs;
+   MEDIUM severity)
+4. Small and contained? **PASS**
+5. No new features/APIs? **PASS**
+6. Can apply to local tree? **PASS**
+
+**Exception category:** None (standard init error-path fix).
+
+---
+
+## What This Fix Does and Why It Matters
+
+`phonet_device_init()` can currently return success when the netdevice
+notifier was never registered. Without that notifier, Phonet never
+reacts to network device registration/unregistration events —
+autoconfiguration is skipped and unregister cleanup
+(`phonet_device_destroy`, `phonet_route_autodel`) never runs, leaving
+leaked state in a module that appeared to load correctly.
+
+The patch also adds the missing `proc_create_net()` check (consistent
+with `phonet_init_net()` elsewhere in the same file) and replaces the
+blunt `phonet_device_exit()` call on netlink failure with proper step-
+by-step unwind.
+
+For stable 6.18.44 users who enable Phonet, this is a low-risk
+correctness fix in the same vein as two commits already accepted into
+this tree from the same author.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** `git describe HEAD` → v6.18.44; parsed commit message
-  tags from user query and lore
-- **[Phase 1]** WebFetch lore: https://lists.openwall.net/linux-
-  kernel/2026/06/22/987 — confirmed patch content and author notes
-- **[Phase 2]** Read `Kconfig` lines 143–165 — confirmed current
-  `depends on MACSEC` and TLS precedent at line 162
-- **[Phase 2]** Grep `macsec_netdev_is_offloaded` — found in
-  `drivers/infiniband/hw/mlx5/macsec.c:246,332` and
-  `drivers/net/macsec.c:4355`
-- **[Phase 3]** `git blame` on Kconfig:143-150 — `depends on MACSEC`
-  from 8ff0ac5be14469 (2022-09-05)
-- **[Phase 3]** `git show 8ff0ac5be14469`, `758ce14aee825`,
-  `58dbd6428a681` — MACsec Kconfig and RoCE MACsec introduction
-- **[Phase 3]** `git show c3cd281e2bc8d`, `7a7dd5114f538` — prior Arnd
-  mlx5 Kconfig link fixes
-- **[Phase 3]** `git log --oneline -20 --
-  drivers/net/ethernet/mellanox/mlx5/core/Kconfig` — recent file history
-- **[Phase 3]** `git show f132fdd9dc81e` — `macsec_netdev_is_offloaded`
-  added 2023-08-20
-- **[Phase 4]** b4 dig requires commit hash; commit not in local tree —
-  used WebFetch lore instead
-- **[Phase 4]** WebSearch — found lore URL, GitHub commit 87ab827,
-  syzbot CI skip (no runtime test needed)
-- **[Phase 5]** Read `drivers/infiniband/hw/mlx5/Makefile:33` —
-  `mlx5_ib-$(CONFIG_MLX5_MACSEC) += macsec.o`
-- **[Phase 5]** Grep `=MLX5_CORE` and `=SYMBOL` patterns —
-  `MACSEC=MLX5_CORE` syntax supported in 6.18.44 tree
-- **[Phase 6]** Grep confirmed fix NOT present (`depends on MACSEC`
-  without `MACSEC=y || MACSEC=MLX5_CORE`)
-- **[Phase 6]** `git log --grep="macsec dependency"` — no fix already in
-  tree
-- **[Phase 7]** Read `Documentation/process/stable-kernel-rules.rst:19`
-  — build errors explicitly allowed
-- **[Phase 8]** Confirmed failure mode is link-time build failure, not
-  runtime crash
+- [Phase 1] Parsed commit message from user query; tags listed above
+- [Phase 2] Read diff and current `net/phonet/pn_dev.c:351–372`;
+  confirmed unchecked calls and `phonet_device_exit()` on netlink
+  failure
+- [Phase 2] Read `phonet_device_notify()` at `pn_dev.c:296–309`;
+  confirmed unregister cleanup depends on notifier
+- [Phase 2] Read `__rtnl_register_many()` at `rtnetlink.c:523–526`;
+  confirmed partial unwind on failure
+- [Phase 3] `git blame -L 351,372 net/phonet/pn_dev.c` → all lines from
+  `5d324e5159d9e`
+- [Phase 3] `git log --oneline -20 -- net/phonet/pn_dev.c` → 2 commits
+  visible
+- [Phase 3] `git show 391a23c503856`, `git show 50edffd0854fe` → same-
+  author notifier fixes already in tree with `Signed-off-by: Sasha
+  Levin`
+- [Phase 3] `git log --oneline --grep="phonet"` → multiple phonet stable
+  backports present; this fix absent
+- [Phase 4] UNVERIFIED: lore/patch.msgid.link blocked; `b4 dig` needs
+  commit hash not in tree
+- [Phase 5] `grep phonet_device_init` → caller `af_phonet.c:501`
+- [Phase 5] Read `register_netdevice_notifier()` at `dev.c:1961–1999`;
+  can return error with rollback
+- [Phase 6] `git describe HEAD` → `v6.18.44-2-g1b9e1abadee04`; `make
+  kernelversion` → `6.18.44`
+- [Phase 6] Buggy code confirmed present; fix not yet applied
+- [Phase 8] Compared with backported `mctp_device_init()` fix at
+  `net/mctp/device.c:536–556`
 
 **YES**
 
- drivers/net/ethernet/mellanox/mlx5/core/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/phonet/pn_dev.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-index 3c3e84100d5aa..925ee25d05b47 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
-@@ -143,7 +143,7 @@ config MLX5_CORE_IPOIB
- config MLX5_MACSEC
- 	bool "Connect-X support for MACSec offload"
- 	depends on MLX5_CORE_EN
--	depends on MACSEC
-+	depends on MACSEC=y || MACSEC=MLX5_CORE
- 	default n
- 	help
- 	  Build support for MACsec cryptography-offload acceleration in the NIC.
+diff --git a/net/phonet/pn_dev.c b/net/phonet/pn_dev.c
+index ec9363c337a9f..4bf8f63d45a9a 100644
+--- a/net/phonet/pn_dev.c
++++ b/net/phonet/pn_dev.c
+@@ -350,16 +350,34 @@ static struct pernet_operations phonet_net_ops = {
+ /* Initialize Phonet devices list */
+ int __init phonet_device_init(void)
+ {
+-	int err = register_pernet_subsys(&phonet_net_ops);
++	int err;
++
++	err = register_pernet_subsys(&phonet_net_ops);
+ 	if (err)
+ 		return err;
+ 
+-	proc_create_net("pnresource", 0, init_net.proc_net, &pn_res_seq_ops,
+-			sizeof(struct seq_net_private));
+-	register_netdevice_notifier(&phonet_device_notifier);
++	if (!proc_create_net("pnresource", 0, init_net.proc_net,
++			     &pn_res_seq_ops, sizeof(struct seq_net_private))) {
++		err = -ENOMEM;
++		goto err_pernet;
++	}
++
++	err = register_netdevice_notifier(&phonet_device_notifier);
++	if (err)
++		goto err_proc;
++
+ 	err = phonet_netlink_register();
+ 	if (err)
+-		phonet_device_exit();
++		goto err_notifier;
++
++	return 0;
++
++err_notifier:
++	unregister_netdevice_notifier(&phonet_device_notifier);
++err_proc:
++	remove_proc_entry("pnresource", init_net.proc_net);
++err_pernet:
++	unregister_pernet_subsys(&phonet_net_ops);
+ 	return err;
+ }
+ 
+@@ -367,8 +385,8 @@ void phonet_device_exit(void)
+ {
+ 	rtnl_unregister_all(PF_PHONET);
+ 	unregister_netdevice_notifier(&phonet_device_notifier);
+-	unregister_pernet_subsys(&phonet_net_ops);
+ 	remove_proc_entry("pnresource", init_net.proc_net);
++	unregister_pernet_subsys(&phonet_net_ops);
+ }
+ 
+ int phonet_route_add(struct net_device *dev, u8 daddr)
 -- 
 2.53.0
 
