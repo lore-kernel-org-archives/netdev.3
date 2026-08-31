@@ -1,195 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA68416872
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E614189C5
 	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 13:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788182832; cv=none; b=VJEU7x6SbJu8K72e54PG8xIQodG5kQyfvgHs/49wa6j1TqtDD4eYvv2BKnkoCKlu3U/tsc7L6GRtkH1Roz3TZxcnettN+NwOc8AzmAIWRIpyxK2zxW6koQExfIvSL2eu27rXHyyUtt5IERQ7Q9JCOXrSAVNpoMNWKgs2cM/YYCI=
+	t=1788182833; cv=none; b=llBe0mDhdKNxQ7nHZ5buVJGG1RwKnNrzoYPLITY1dNkuymQeYYL4W5fs13Vn2xN8+NHH00ASxKVH5jugoLDZOvpznIRJ+obT1smhtipfGokBO60AmmeN+3Az0ZPPh9nKiwx26r3eFd8G3HULKa78YcJn8nyRNAXr8REYTLXm9HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788182832; c=relaxed/simple;
-	bh=YgO1TA2tC1JeAml1vHpe8422wxLZ300rZQ8VSHUADNA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dfw+DDwhw+PQszcUotUr29HSMUkuSNZYqJyyWnZIGZaCuIFiN/CI8m9axuzI4LVhBRTHEpPX3waBLWbQ3RAE3+R4Ghud6/xjcHX7BxMoaaC6O0eqzWaj+bPlzvdbxtkjJLuAkFICdo+6H/vYCncx08WFECf3WiDZ4sI18+QWmoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f162S1Zu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YfuyWL4h; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788182833; c=relaxed/simple;
+	bh=IL49NG86hmpfz8FoyuNmWr2L4LF6fI/1jpdmfWoBgdQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nfx4zXbn7tB6UrmyHz+gX7vD9hZdyo7rOhxqKnOBpqKWHpg/1KVa2hTPeS8IROhjm4nzamcPUnjaD8P6X7JIxX8ZP1OxMzXy/TfwQLBBH7cDdVQUQ//FLXbO+zbroaHl0J+Brk1MUxhhgMC1LRRvKrWz9vx6xEJIpNv/H85bnLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LQ8/cE6O; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f162S1Zu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YfuyWL4h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788182830;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Py6OFfoOKlM8NbLLcVAPnrT66pPlw+lxtIko4RUMq0c=;
-	b=f162S1ZuH6tCh6IdbKrVgOTTQVud8lsmzwCB8EGUm2SEV4w0ahGlUQDa/Ii6KiSxhediWP
-	5Fc5/f2zbA5dmr4DfQ61r+Ui3VpkqmK/rw2JrvlmPUBeuaCZrHtohkCn4RqI+0S4o/EXuy
-	u9+oG01OzCRxGN7+ZtzWAG//y0BMr40=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-301-v-VS1suPMGCWeNvCc0828g-1; Mon, 31 Aug 2026 09:27:08 -0400
-X-MC-Unique: v-VS1suPMGCWeNvCc0828g-1
-X-Mimecast-MFC-AGG-ID: v-VS1suPMGCWeNvCc0828g_1788182827
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b0d7a07acso34047225e9.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:27:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LQ8/cE6O"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so10737655e9.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:27:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788182827; x=1788787627; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1788182830; x=1788787630; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Py6OFfoOKlM8NbLLcVAPnrT66pPlw+lxtIko4RUMq0c=;
-        b=YfuyWL4hYDTHKb4AjzVwhksRfnw+zYKNBM3AnkEPzVvPemdIMvlmfHMtGqQ9/7nnyk
-         RRBHZ14BY1SrQfrS2+iHbZEeCncVqXurwfZLLAugoe3/6tttJKgmwas5ALx4ih591TlP
-         1/nbhi+8rvacuuX+oNiHpi/KmAGgUN9ChuagUWJ5ca5Fxv6uO8h/nSys9t1c1pz4nPD3
-         C/s8zdFfa7wR3UnzlMCV7neXY/D2IGhN8R4pIGcAa1LdGYwbyJKinWgi97b8e+Kn+MFz
-         KlQx/sqpWC8H/xqw8X0Il779CwzwFQCK3IGc7Do9zqiFmCpjC9DkADSiRfV0CLtUUnyH
-         OjMw==
+        bh=9dJl19p/pVq6YV4fVMLMZrL500AfikOykyPbafsX3fM=;
+        b=LQ8/cE6ODIOl50xgcmqVQbiXieHe63vFArtlgOw0ODWqbotYupC+39rjCZvnS0PkPK
+         TUf3/rgD+qpgOqkD5a6s2kKs8OHPpaaEady3TO6cPu636201k9ox0wwpiVTxS9Iah6Df
+         JaW9KpeiAUF94Qk9EjS1jxYoKKcG7pktWsh81RgJsoTiPnXqIHX4XAxraydaOR5O+zdO
+         2Pkoc61yEPPFc905PLq43x5ay+8VNBpG6uRLMr6eobMGRRxWw1c5jLDpTxCFM4xHm1yx
+         QNTpeu0p92QsynUxvZDlZ+3CZhfemZkoxbd6Zx3uyHlz9wuBXmkeQT6ljqR9heYGQUaD
+         jatw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788182827; x=1788787627;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Py6OFfoOKlM8NbLLcVAPnrT66pPlw+lxtIko4RUMq0c=;
-        b=LaM7dZQEVJtjcPvveTp5GL/icFoU3nu7RSEiSOJ+D+2ud5/9yOS7D9Wfr1NBwgZThF
-         vGY7vwep8BIP6FS72UPYE9fVvEJBfyCQdgsd7LYmS5wFplcXwp8lOA+tPunUQ4P++h2W
-         lYcDGwgBAUwzAkk/M/tAo7asQq7+zsyQP0BLM0VXKnyQoQSi8IePgwW976Yg6yEK4Djx
-         UliXtO50KZzFOmqkdgAKpsZDoBQupPVxM08Dbhmq3l8GUhcFI8MhRMha/9aMCKfMrsca
-         LtDTjaZm4dOEx5G2MpbU7Z6ygEH9Bgzvo1EkFx/g+xXQUUrBfMQLBhUTuGJIETxC2CoC
-         y00A==
-X-Forwarded-Encrypted: i=1; AHgh+Rqn0Oph1ibqGkdfSPX0477zklKJcD2rxUm+vIHOjsb9Y9og80HVhWJTHZjBhJaGm8lb5hhDsxM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mV4sPJXXlOU0loejQ4wTkvyxmx1gxbAcwGJ/VHWp64CzZ9iA3q
-	rtSSDJjqvKFqeBuI8mXO7VkSfxG+VDEim0Uau3foXL7G1rssLzlPGy2CDrXN/bAxkjrjI3erCdp
-	pWNDJ9GmNvvpRvgKcLkoQKut+DhLWwcnn+xTBfIzYM4JUe9BgD5N34el+eQ==
-X-Gm-Gg: AR+sD13l9iWPfiDeqHSjtSyvvn2kM1wQ43LC1Tb1zyNvfVJSiq2UeciW1ZsKzea2cDh
-	CtHucSN2Fx9sLVmVXc3czPUFLnlkN96VKwasUoEq8LUKmn9dSgVc57eT5q5TcGElImsJdLviCCc
-	bwlJ5cq9yg3alfoGTRKUR+dbRURIKZXvovL9c9F/4kUblv/TvQX8kbfLUsGpLuYWukkmImenBfh
-	deALs2qeRVCkr8HDXOUkJqiJCoZbJgQu2SYG7q4pWBnwpNy2uVe4VryZ1Tpv/T3vQFD6wj1kji/
-	EszOiyytsbyyvpPdNf/n6+hGmBPTAeLUDrJ5E1TSVj2PzidlIYZ7n526vPlyCugcmFI4AaQ35VP
-	Vi34JJSAKouFDgyAAQAoxb3ps
-X-Received: by 2002:a05:600c:8b86:b0:499:8ff5:8ecc with SMTP id 5b1f17b1804b1-49b91c5446emr398325255e9.15.1788182827047;
-        Mon, 31 Aug 2026 06:27:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b86:b0:499:8ff5:8ecc with SMTP id 5b1f17b1804b1-49b91c5446emr398324345e9.15.1788182826619;
-        Mon, 31 Aug 2026 06:27:06 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b94dd2517sm290839185e9.7.2026.08.31.06.27.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 06:27:06 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 345C997C44C; Mon, 31 Aug 2026 15:27:05 +0200 (CEST)
-From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH bpf-next v2 1/4] libbpf: Move section-defined program flags to prog_flags
-Date: Mon, 31 Aug 2026 15:26:41 +0200
-Message-ID: <20260831132648.65843-1-toke@redhat.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1788182830; x=1788787630;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9dJl19p/pVq6YV4fVMLMZrL500AfikOykyPbafsX3fM=;
+        b=E50D34TrBkN53EqNBvwKQYF52byvKunmLopHb/w9TBv4N0IRGil0oJ4oGatXozdjw0
+         S9RmudzPFvDamrZfiOm2jZP4ADtttVAwSp4S+kJvd4aPVgHIuCv6cq+Vt4/Tm8208Add
+         ojR5ZW+6xdrjcI2+a9FzZwVHTrIg5yA4IGW+u/ly42Ib3J2NHlFDvtx1I082/wMEe1Tc
+         XLk1NQwkttQqG9Aso7dRyrjSMSpjWrHU9rNtyLRCsRDeaNvi1mV32pqLaU7sx6Ll+iac
+         iDVmFjpl/aNoBbpBC3qArEUl0J0G4s214SMq0IsJVmAUmD4hCBVTgQYUok4B3ZvT6AIn
+         Whbg==
+X-Forwarded-Encrypted: i=1; AHgh+RrGLrP/yJtzzYhU5nzhC3/71dfSw3Eg1ufsaqVey7jm8Fcr/iqe737kvFby3tWytinvNgKWCCM=@vger.kernel.org
+X-Gm-Message-State: AFuF++li00Er8VvFO4PMUUzAT3+HdkAhhd+/tznjJeTPgPMYOrSXZ/cY
+	67VC97qNgXHQqSel6TorY116hgyHlE6o6mVqvMKgnVonWKUc55twv+A84ak63X2hNUuQJ6wFZ25
+	l5545DeU=
+X-Gm-Gg: AR+sD11vvdPcis5zsL4/tuIRZqQiJaDz9gPKvtdB9+IDy8s9498zOoD9JDKS/roLacY
+	mmc+etAC9/v3V7HwLc3u2R/JgxTFmvUu4FpKNUBTNMvjyfiJOhbk9zVWLi6d1Bo9359ChiKyQ+N
+	veUXLCOPoF7i2NPm6UmK5WMZpa/Fzc8qNlIPVUbxnFLX/lXjmSnvX+AUe0KWV6yIh0nL+IvN0ek
+	dYyHHoFP1wJ+27v9qSVCWFVlqAJYIRP3HtoNzHCO7amT8celggK2GWLPjIQwpUQJgs5Y2bk+LgZ
+	yQEKC69kkq6DlvzOuO1mveXq7Fxf4anBxhWTakl4zJflYLOAd/ohGzSB9bMnsx1UKu/2nDhfLPe
+	oI9FFddgVLhIqNAg/WyIz8wJRsdLtpaL4wbkd7KYL5NtJ9SdMGV9lCWmMVn+nboQJIEdSMksX8E
+	yshIUmam+VLbjRDqRjHr6mEoeRZu9G/5vrYTkUeFXozViP4iVQnMtT3pSrHyXJRD/cwVS6P7RZo
+	CEH494fcpSrZ8miRBQSdEBqFiDvu0c=
+X-Received: by 2002:a05:600c:3511:b0:499:adb4:a922 with SMTP id 5b1f17b1804b1-49b91c4bab5mr295369375e9.12.1788182829769;
+        Mon, 31 Aug 2026 06:27:09 -0700 (PDT)
+Received: from ?IPV6:2a02:3033:283:b9b7:bec2:3dce:f757:ce06? ([2a02:3033:283:b9b7:bec2:3dce:f757:ce06])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ccea6b814sm176057695e9.0.2026.08.31.06.27.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 06:27:09 -0700 (PDT)
+Message-ID: <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
+Date: Mon, 31 Aug 2026 15:27:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johan Hovold <johan@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ accessrunner-general@lists.sourceforge.net,
+ linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+ <20260830-usb-v1-1-aa349c302246@kernel.org>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20260830-usb-v1-1-aa349c302246@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The libbpf section definition modifiers for XDP frags support and
-sleepable programs stores the flags bits only in the private section
-definition cookie from object open to load time. This has the
-unfortunate consequence that API consumers cannot see (or manipulate)
-the flag between object open and program load.
+On 30.08.26 10:10, Mike Rapoport (Microsoft) wrote:
+> do_proc_control() allocates a temporary buffer for the data stage of a
+> control transfer issued from userspace.
+> 
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
 
-In particular, libxdp has special handling of frags-enabled programs to
-make them compatible with the dispatcher. This doesn't work on XDP
-programs that enable frags through the 'xdp.frags' section definition
-because the flag is not visible through bpf_program__flags()[0].
+You are breaking the calculation. A page has a size of exactly
+PAGE_SIZE. A kmalloced object of PAGE_SIZE is larger. That is
+a bad idea.
 
-Fix this by changing how libbpf loads the program flags from section
-definitions: instead of using the private section definition cookie, add
-a setup function to the default section definitions that stores the
-flags for sleepable and XDP frags programs in the prog_flags field of
-struct bpf_program.
-
-Exposing the flags this way means that any use of
-bpf_program__set_flags() will override the flags unless the caller takes
-care of updating flags in a non-destructive way. This is unavoidable
-with the set-only API, and any user setting flags unconditionally is
-already broken in the sense that they will also override any other
-current and future flags. A subsequent patch fixes up all in-tree users
-of the API.
-
-[0] https://github.com/xdp-project/xdp-tools/issues/587
-
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
-v2:
-  - Use a generic section setup function that also applies to BPF_F_SLEEPABLE
-
- tools/lib/bpf/libbpf.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index b749c01742ee..27779b4cddd0 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -7879,6 +7879,19 @@ static int tracing_multi_mod_fd(struct bpf_program *prog, int *btf_obj_fd)
- 	return 0;
- }
- 
-+static int libbpf_setup_prog_flags(struct bpf_program *prog, long cookie)
-+{
-+	enum sec_def_flags def = cookie;
-+
-+	if (def & SEC_SLEEPABLE)
-+		prog->prog_flags |= BPF_F_SLEEPABLE;
-+
-+	if (def & SEC_XDP_FRAGS)
-+		prog->prog_flags |= BPF_F_XDP_HAS_FRAGS;
-+
-+	return 0;
-+}
-+
- /* this is called as prog->sec_def->prog_prepare_load_fn for libbpf-supported sec_defs */
- static int libbpf_prepare_prog_load(struct bpf_program *prog,
- 				    struct bpf_prog_load_opts *opts, long cookie)
-@@ -7889,12 +7902,6 @@ static int libbpf_prepare_prog_load(struct bpf_program *prog,
- 	if ((def & SEC_EXP_ATTACH_OPT) && !kernel_supports(prog->obj, FEAT_EXP_ATTACH_TYPE))
- 		opts->expected_attach_type = 0;
- 
--	if (def & SEC_SLEEPABLE)
--		opts->prog_flags |= BPF_F_SLEEPABLE;
--
--	if (prog->type == BPF_PROG_TYPE_XDP && (def & SEC_XDP_FRAGS))
--		opts->prog_flags |= BPF_F_XDP_HAS_FRAGS;
--
- 	/* special check for usdt to use uprobe_multi link */
- 	if ((def & SEC_USDT) && kernel_supports(prog->obj, FEAT_UPROBE_MULTI_LINK)) {
- 		/* for BPF_TRACE_UPROBE_MULTI, user might want to query expected_attach_type
-@@ -10099,6 +10106,7 @@ int bpf_program__clone(struct bpf_program *prog, const struct bpf_prog_load_opts
- 	.prog_type = BPF_PROG_TYPE_##ptype,				    \
- 	.expected_attach_type = atype,					    \
- 	.cookie = (long)(flags),					    \
-+	.prog_setup_fn = libbpf_setup_prog_flags,			    \
- 	.prog_prepare_load_fn = libbpf_prepare_prog_load,		    \
- 	__VA_ARGS__							    \
- }
--- 
-2.55.0
+	Regards
+		Oliver
 
