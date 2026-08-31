@@ -1,259 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012011.outbound.protection.outlook.com [52.101.43.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362A33C7E13
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 08:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788166063; cv=none; b=PPLxQ/Y3DRIKtlnO7EUzCQL0ZbyyHOtaKNS4oLqF+Xvn+igV1W8kk5GehghPWT0s6tuFciTNYxIi1zOGHm/1FbndCDoWWnv78oyxn4tYfzcY/i/djGYkOtob88JGQiKMrG6eWXLm7NM1QtSAoytNNkAZqE30XgRndTV12Q9rGZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788166063; c=relaxed/simple;
-	bh=qO/mY1lfUtaDHpwskTKeYLSEyKzXr8YSSWgWVeTZH+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xyqn6Eox+/Y/OW1TWZBgCZcu8AReYo1BWDKVISRB9QcSuoeg0Nli3AvkOdkxfdEoOU5mlxZwZpnzjSCh3YVdPWsD+tZ6OqfQ1B65or0TaLnLUkUvJ86oV7Ap/kVfgGyRr8FfVLhzzA41Lc+SxKQGYwUwoXM/JtTFIMWNu6EbuoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BZ5emLkU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FKLs+y5X; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9F3A4F4B;
+	Mon, 31 Aug 2026 08:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788166081; cv=fail; b=P0ZmdMm/Y/BfC8p9SvRDNqm3mQpx37urL2pS40htinqTOhdKjrPjNsz1ryIxe1vvdX7yFKS0CC9uhRshOf2cTQzeMmyHwPnSQjSoVhIQEFwswgcz25R+GSjgqCi4ORcawwdYbJ52W44C7AcKfOFVKzoM6IoLzYf+fNqh8wYQIbU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788166081; c=relaxed/simple;
+	bh=YDQz9xalNsJYc+0UsCxCHPPI4dn/CCANyBUqkgoTLiY=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ogKWcnROybFnji67M9UUnZcIU66rHjmgKLGho94Wq22iHk1nO4+3Gko2wqmClyHAhLyXXA/Ry5wE3uFbPc2xFicCRR7hY1fg7oQTRWig9o+MrxaW31l8KcpRmaS6fxc17yrRdh6+lb8s1e8oAiHdhOH/+5bnz5wbLauJqR1od7E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hGPoWO8r; arc=fail smtp.client-ip=52.101.43.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BZ5emLkU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FKLs+y5X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788166060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=REKs3juXaUqDY91aw9czwxYsepaMH/aWl6qmQKLk4PU=;
-	b=BZ5emLkUouNRPhVYDwooWGd0U4Xzu1Eqfm9uiyPOPES55B5lzdeKxfj+W6Gf8TIIB+p+2E
-	Al6khnSjl9XxLD6VBbZsWmnXxHCiQGETYY11POoK6i/+XUSt0bD9ENyt3FHUoAvp+kJc4G
-	5o9xJNJhu17mBV7DXRnm5BrujanA59U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-IXR1c0mGODGMJBWA4gq63Q-1; Mon, 31 Aug 2026 04:47:38 -0400
-X-MC-Unique: IXR1c0mGODGMJBWA4gq63Q-1
-X-Mimecast-MFC-AGG-ID: IXR1c0mGODGMJBWA4gq63Q_1788166057
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49b7c1dc61eso22775895e9.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 01:47:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788166057; x=1788770857; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=REKs3juXaUqDY91aw9czwxYsepaMH/aWl6qmQKLk4PU=;
-        b=FKLs+y5XGj5kdOt+ejL2IAt1/CIH5JnxUBdpakmCNJAIT/5kxNrWBpKplX53smyMbd
-         bF0CsDyeVxlOfMQm5FTyedLtYvYHxPCSpNJa63HAojbIyGwd71+2mgHeFVnZV4J/FdDy
-         dTZHFVKMHzvms9af9kcM2vnTqsMnBKyyvZvbWhYyBWYTx2h791/H0lecj7jVKdUWuWDC
-         UlDYMU3f/tRMiGgGjzcbe+1IlIEVHIkp4C31UO4xmHrDarGZytmGOQTCqxVsQy2avdCY
-         pH30VV5C1GhgK1KdVphy09y8Klfqe+QEqm4Ru01aB/svg3KUk07UYt5YjuslUjL/pTCL
-         zyfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788166057; x=1788770857;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=REKs3juXaUqDY91aw9czwxYsepaMH/aWl6qmQKLk4PU=;
-        b=p5Pv9Qaw8ANCCKvbBJGNkCf998yEs6qVJPekEAyYMVOUSgLHX21nuE7ctAnwU33Al6
-         vvIWyfvm+FtIVMV8WqtlBWS+3he0hM5vnza6bXoJKOmirG3y4fM/ag4Djk0ENt+6LJid
-         fujVwS+kSuqjuJ6sxih7l42Yuoxb+PBIVXX3hUbpzDBuXWGa4jJtzklkMP12Dd/z/v9t
-         wN1fLzrJazdofX6D8nIDxrX1nGqh/YaplXJz6mDpMD3/sGFWIHsJluvtRuOhKH+1PsTE
-         WjyhkT3uXlFXZkn1aEomumv8bu/AFHTd3ZfsZETux5kY26myQ4wcLBGHqIu7IBx3irbw
-         O6Iw==
-X-Gm-Message-State: AFuF++l5fvEhIMmP3LZmihHzdYt2ieiTLTr0ghIoJx7C/7fnc8w0BcCQ
-	eYJx5qlWzA9O/ynyrZ7wwYtiTb0MV0nvQ3nxv90ePyFrnqWL2V1jGeyC01oY8hha0wDgdNNrCjC
-	idLKIOGwz3pHukfT5ozBibokaUdCH0NHxHNpUP26eWJ4l1qZUnagiGujlVg==
-X-Gm-Gg: AR+sD13Kyoh9yKVVZOTjcUhT8ttvGdaE4awdZPY8xvD9P3fx8Y23DHGV7DLcP9dft+z
-	nJfK+oP1c4NHCyzMmlwhqQZZKLszFpfmeKYFze9GWLyybMTrKoAHgK0e0+izSHMGq56OUQ36uhT
-	xh8O0AnBTYMBNOijah+TQQhmRZExSRhvTQ8CmnIw/nI+yFlJP2nAInQNyIUVBT3icavtPX62vRD
-	JAvCkMSU7fU7jZrEvX5Zh97EF3FMZtTwTo6NylejokOsbmdJSVT1XfNjFDOPvgxbH3lSD+10qZU
-	UnVoapmi4e6NTBVkhNHJ9rEZdyT55h5cY2luiXOtHeaaMEYiAIK8ZNTedydxDP7GZ4WRZIMdyUN
-	b+v7Z3WGcnj3hTGu5YDydr0Y=
-X-Received: by 2002:a05:600c:1d08:b0:499:bf0e:95c8 with SMTP id 5b1f17b1804b1-49b91c2e145mr368384995e9.1.1788166057113;
-        Mon, 31 Aug 2026 01:47:37 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d08:b0:499:bf0e:95c8 with SMTP id 5b1f17b1804b1-49b91c2e145mr368384105e9.1.1788166056589;
-        Mon, 31 Aug 2026 01:47:36 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843310ab29sm13646829f8f.0.2026.08.31.01.47.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 01:47:36 -0700 (PDT)
-Date: Mon, 31 Aug 2026 04:47:33 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shahar Shitrit <shshitrit@nvidia.com>
-Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
-	virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
-	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
-	edumazet@google.com, danielj@nvidia.com
-Subject: Re: [PATCH net-next v22 05/14] virtio: Expose object create and
- destroy API
-Message-ID: <20260831044442-mutt-send-email-mst@kernel.org>
-References: <20260831075807.2891426-1-shshitrit@nvidia.com>
- <20260831075807.2891426-6-shshitrit@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hGPoWO8r"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n4R8EIV6M5tLGVqHKm79CAkKSbVNIL083lnzQmnRZ1lK5iMvx4dO8pf/6wg6Oy81yOhku+uuMyabr90Qcg0ZTBOLBW29RvarKEBjpbBensoFYGzqxJnFLNadWtYq4Od64akPOFzKogetCU2lq5+spNdoXcBXCITmL9cPA53zfM6EBrzhHb+ItdfE/+2+0dUEJ21Afg6bKt+4u0ogQW8CQuOgstfRGEal+1zECGZOe/q/nbVkGo/iczXMF5/upKdFizg621oYZEPb3GyMpHli+SVHidWicVByiACrsOdy80fsq27Ob5/gTWlAvmB8lzzmi3nXnn/OgTEvfGf4NH2Jlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0qunzlDVybyncnNMApW71pYFeTG3N7I8/5zQ+8rpicg=;
+ b=FL5Z6cZw1xmWgjQ82XzYoiJTPaxA596IWJhDS4ilF93gY5bYLFLEjPHcnElpDWJpbBajkH9arrtMLayc9BnJTFrLYXkdEQlFLJmq9OHUuNrmrClgM98C9wVK2pLhPscT7nKnfxzstBcY/n3zcV2qHY3rwbUX6gmtaKbsGuhr67EYDb4NYxPVrPca8TgW1nZMCb2p/WkCVzgeOYrNtbsT/iZvXLljyn3fak8YPLtIiBmkoQJd/xgYPdB23u8u9Rmmio6tI3rzwd3PgglL6ovnRCEASyCXTF1cXvrGPHC0XUpXVFWKsY4+nTzkq/IicExhtWv7Cu2cgrzTRaIeAkdH+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0qunzlDVybyncnNMApW71pYFeTG3N7I8/5zQ+8rpicg=;
+ b=hGPoWO8rA88CE4TFl0AUSzOdJj2u040k8kxov8olrhYBVhRx1DFSpaWBITLxJJah7G46+NfhTtwaIpLWbw7UVjrI/Kz5G936FlJmTqHs/CVSbMok+6qRixDhJo9YrmHj5bRWUAaYA/4RVi1oPOPSnveazyXm2ud8efKMChsyI2s1r8KWgH4G19hSD5myScmzYBk+pmTfn/Tfd6QtoDUnUJtCMC3sm2eZWFctR7CDYI/q3lyS8ERLZq2gHUKmMkdQVA2LoD5Yl7pgoD8aZQySS5pOTr7Z8wYRodk39uoUZBFebQbLQg+eqFQ/vgrSFvA82BG9nbFOA9ZBv6NXPNDKIQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by CH3PR12MB8329.namprd12.prod.outlook.com (2603:10b6:610:12e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 08:47:57 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 08:47:56 +0000
+Message-ID: <f5ca7380-7c23-4e99-9ec5-64a1a248775f@nvidia.com>
+Date: Mon, 31 Aug 2026 10:47:52 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] net/mlx5e: Order ICOSQ cc update after CQ doorbell
+To: lirongqing <lirongqing@baidu.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260820030821.1731-1-lirongqing@baidu.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260820030821.1731-1-lirongqing@baidu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0040.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::7) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831075807.2891426-6-shshitrit@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|CH3PR12MB8329:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d09400f-71f7-4377-69d4-08df073c8d9d
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|7416014|366016|921020|11063799006|10067099003|18002099003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	qtq9DNNyMwn0h3uqjwQ/Mx9NjYRRA6m9/VPUrQhNRkiOIMIvvc24dCWZei3QEg0FGdWcdbjXE4xvC13AlFPsDPS73NZwlg2qetr+Sf+jMo5/42beyNYJVeM1h6owDxiDGGZCHDmhSgs+fZJoN3EUzTYZngzrFjvG631ZSjq3r2ktLqMVNZDT+TqIKTMRYyLA0J88JE9deGzBE1dcVL00lW52dcywqk0aZF+o+c/dmNC2Ig4RHJ2N96H3Thd7u4ca54TZz3RXhE01layO6GCPGpAOCPckG2mEzMynnG1Fs3fg0v51Q2mlPdgq8wcTM2pgozZYlCwU99iZ8HIj6Vj9tltOhPk5T1KLRbay/bXqPSgZkCTEZ358RgWPSQpnrkAwF4gCOdY/7BcM8rhmmeK7Q7o9Sv6jgBKNNZP5O2GXZSbDChkWs2EfNlXBMWoocTNoPj5eMENQNk3py/Ri1bCn68c46/gAR2sqSrIIftgnZYkds8QXWLnQBN4PRdYIo1MINemFxbMj8HsZJgKaw7jhGeBD4DyZX534+Qc4LeMviv0AegRgxqj0yMuffh96lt4IGafJjgvW3x4Xx6YFiCQEwj2pSi0xQoiUkGGAb5arMaDQaoQ0cFCFuI/+iJKQ/nlDUejeFk4RKTqCsgQkEd07yvqBTsyK5av94qU7wF/DtfTwPPnf9O98CxzEDnvqnSUdqGpryB2Uwt4y062Ur/0WVw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(7416014)(366016)(921020)(11063799006)(10067099003)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Wk54U3kxZ2Y1K2VlekJyMjNnMG9Ud1Jra0o0QWJraVpLYkRqQUU4c1lGQkFG?=
+ =?utf-8?B?OFVjckVHakpUU3ZHa0xRdmdCMkh1NlpaS3paU2x5NzZ2aURNVmt2VlJhdjJU?=
+ =?utf-8?B?ZUhzd2xGa25abzBBM0xFajVkRGZjN2IxZmduUmh0aXdwTDd2TVNPa3ZXS2dr?=
+ =?utf-8?B?SHU2R0htOFFtVUpMZ3NKNDk3MVcycnBzWWJ6WW1kbExrSklLZlNuVVJOUEF6?=
+ =?utf-8?B?NzRDS2lXYXZBb0N0WUpXU3huOHFPbVY1NkZyVnFLblRuZDBRdGJCdW1JOXph?=
+ =?utf-8?B?UFowRXBySUl2UU5MSlNkVWNFaG5WbVNmeEhPekZGanVUUXhudk9jMkwreTI5?=
+ =?utf-8?B?Vi93TkdFa3hxZWJDdG9CQVNhci9FSEw1dUhrZFhmb0UwdENhL1B3T2QzSnZn?=
+ =?utf-8?B?NHVFYlArVGpJYnJVNGJEU2ppU0dEaWVpSVlWd3dSRDJVNldOYzVUb0JEZ0do?=
+ =?utf-8?B?ZHk3Z2RpK25CaVgyUGhHNTZEc1FZLzl3QUVvWWRxMSt4QXJiVkVQb0RNc2ho?=
+ =?utf-8?B?WlE4dFVFdEsvSCtQZ3BjaER2T0pnOVRBVVA3Rzg3ZytWUVhldkEzUmlxRWlC?=
+ =?utf-8?B?RE96MFI3bVpmWU5tdmVvWGp4OFFya1pkV1Ewa3c0TEFhb0xyVjVuekx5cG5M?=
+ =?utf-8?B?TTFEV200aERaWldMTG5pMStMSHIvdStNZVVFTkdZdWwzQklHMDVjV3VRZ1k3?=
+ =?utf-8?B?UVAvUVp5Nnh1eEF1OWtEd1JqeFJNTnIvYVZjcHIwZHNZVkY5a3NVQzdhZi9X?=
+ =?utf-8?B?dEdpbnkzdW5VWnJacjdqOXRicDNzMUY5L01oUDBtUUVKMXdQazVCSVZjNFpj?=
+ =?utf-8?B?aFZwekVwQjZOZ3pMY0xld21xaFhmQWhVZWNQdGdKd3dvY3V2ekNIQXBWR2x0?=
+ =?utf-8?B?UHBsa2xxdndYMUtzNjR1QithK2dXVHJCa2FwU21ONS9MK2prOGM2YlhyVVBi?=
+ =?utf-8?B?cFgwbGZyQ3dSTVhQN2QxR0lVbXdjQUl2UU9NR1ppZmw1alBMT293SkpXQU5r?=
+ =?utf-8?B?Y3pEQWdPSEtWRGttYTdBY1BQZDY5YWhJbWlBQmMwS3lEMlJyMlFqM0JCNUR6?=
+ =?utf-8?B?WlgvNGJKUEZnMHdSV3VlZWFVTTFYUUQ3YzdoY0VVVEVTL2VmQXFheFllOGI1?=
+ =?utf-8?B?bkN6N2orcG5YbWtTc0t5UVhhRDhXdGZEQWZ1UEtxZ040VXozRnFBSDZUalNH?=
+ =?utf-8?B?Mmx3R2VjcThiaDNtRjgzTVFJRjFCM0R2STJoUSttamJiam1vT0F4TFFyZzBP?=
+ =?utf-8?B?dkZuemMrdGRwRCtKZGZnQXJBYmZadGpuanpqTmF5TWhFOTF0U1BESXp3SDBD?=
+ =?utf-8?B?NXJNL3RVOVBKbFZZaHdUandBbzBjcE1CMlhLM3Exa2p1K01VRWgwTGVjeWhk?=
+ =?utf-8?B?L2FuRmtCS2ZyWDJXZ3BlWDk3MVZjVkZxYjJHMXgwQW5wWGlIaEhHQUNXenZK?=
+ =?utf-8?B?dlZObVJtMThmUjg5MUxDYURVOEhkaE1nOUFlU1JQYnh3cUhTbTBYa2Y1R3o0?=
+ =?utf-8?B?VzMvTi9yOURxTUpNd2R4bTBjV2ptMStVUzZ1T0JDeXZENDhyNU1hd2FVSHlp?=
+ =?utf-8?B?SlJWKzN0Y1hNN3dyV005WkhPeFlnWWtiSDN6NjJ1R28yT0djYkpibFprYXJr?=
+ =?utf-8?B?SEpmVXpOUDZjVUliL1JhdjBCTk5pNTlrRjNHY3EwYktib0pmSituYk43anlW?=
+ =?utf-8?B?WUtIZzZISXlGQ0pvc2szSjFoSFl3bVRtRGgxa0hkbkV5d1RkK0lRVlFQZGtt?=
+ =?utf-8?B?ZTMvUWxuQUdqYWgzSk5pekl1SDZ0NU9YRWtTSVVydm1rSDNQMzRzanh1aTRQ?=
+ =?utf-8?B?NlNpU2JzcmduSnFRZjJaazlqc0dPTlhmMW4zR2VDQzB1YVBMaDJ5TjZEWjFh?=
+ =?utf-8?B?QzEzL3VpZFpzQnVHMUs3Z0FiTWI0WUZuSUtGOVVyejhuMUR1RWQxQ1B1T3or?=
+ =?utf-8?B?ckdKL0VaK2JwTC9mVnlYbzBHdjNNcEJqaEhxdzQzWFA0TTJ1ZFZaSjMyMjdP?=
+ =?utf-8?B?Smg3K0tqb3pmTjlldUR5bTFLMDJ4SFhCdXdSR2wwUHBwdnYrL1R1MXZnT3E3?=
+ =?utf-8?B?MjRtUEFBTGZLMWV0NG43U3B0cmovUFRDTk8xOHN6WWlZYkNWanhUR1Q1aEQ2?=
+ =?utf-8?B?Q044dDVXby9Oc2hSSTZHVkdna0xOM0FSRWVqSGE0MElRVjNBcTIxZ0w0N1lq?=
+ =?utf-8?B?TVZxWVNReWwvcVRGWVpZVFlyRUt5TnJZdTlueWNEOW1iOTVRWmNwSnpTRW50?=
+ =?utf-8?B?ZHp0TjZKUlp4TVVpZ0pFY0tpSWdWa0N6S0xVZXByNnIzOWZjWmY3bTNJZjdO?=
+ =?utf-8?B?OTRUR2JZSFJoREFBNTdmbUxEL0tkOGtiV0xpbGtGcEgxMDJnTkgrdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d09400f-71f7-4377-69d4-08df073c8d9d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 08:47:56.7519
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q2E1LbuvtxuZQpltGS37RM+ZsOeOA/T5Rh52yCSGmmgih9WUyMd9lyXY0uJ0VtOnyd6bY+NrjEMH0REb0GXrSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8329
 
-On Mon, Aug 31, 2026 at 10:57:58AM +0300, Shahar Shitrit wrote:
-> From: Daniel Jurgens <danielj@nvidia.com>
+
+
+On 20.08.26 05:08, lirongqing wrote:
+> From: Li RongQing <lirongqing@baidu.com>
 > 
-> Object create and destroy were implemented specifically for dev parts
-> device objects. Create general purpose APIs for use by upper layer
-> drivers.
+> mlx5e_poll_ico_cq() requires sq->cc to be updated only after
+> mlx5_cqwq_update_db_record(), otherwise a CQ overrun may occur.
 > 
-> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-> Reviewed-by: Parav Pandit <parav@nvidia.com>
-> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+> The current implementation updates sq->cc before the CQ doorbell
+> record, violating this ordering requirement.
+> 
+> Update the CQ doorbell record first and use dma_wmb() before updating
+> sq->cc. This ensures that the CQ space is released to the device
+> before the corresponding ICOSQ consumer index is updated by software.
+> 
+> Fixes: fd9b4be8002c ("net/mlx5e: RX, Support multiple outstanding UMR posts")
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
 > ---
->  drivers/virtio/virtio_admin_commands.c | 77 ++++++++++++++++++++++++++
->  include/linux/virtio_admin.h           | 41 ++++++++++++++
->  2 files changed, 118 insertions(+)
+>  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/virtio/virtio_admin_commands.c b/drivers/virtio/virtio_admin_commands.c
-> index 60d92875da23..08b41f38baea 100644
-> --- a/drivers/virtio/virtio_admin_commands.c
-> +++ b/drivers/virtio/virtio_admin_commands.c
-> @@ -94,3 +94,80 @@ int virtio_admin_cap_set(struct virtio_device *vdev,
->  	return err;
->  }
->  EXPORT_SYMBOL_GPL(virtio_admin_cap_set);
-> +
-> +int virtio_admin_obj_create(struct virtio_device *vdev,
-> +			    u16 obj_type,
-> +			    u32 obj_id,
-> +			    u16 group_type,
-> +			    u64 group_member_id,
-> +			    const void *obj_specific_data,
-> +			    size_t obj_specific_data_size)
-> +{
-> +	size_t data_size = sizeof(struct virtio_admin_cmd_resource_obj_create_data);
-> +	struct virtio_admin_cmd_resource_obj_create_data *obj_create_data;
-> +	struct virtio_admin_cmd cmd = {};
-> +	struct scatterlist data_sg;
-> +	void *data;
-> +	int err;
-> +
-> +	if (!vdev->config->admin_cmd_exec)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (check_add_overflow(data_size, obj_specific_data_size, &data_size))
-> +		return -EOVERFLOW;
-> +
-> +	data = kzalloc(data_size, GFP_KERNEL);
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	obj_create_data = data;
-> +	obj_create_data->hdr.type = cpu_to_le16(obj_type);
-> +	obj_create_data->hdr.id = cpu_to_le32(obj_id);
-> +	memcpy(obj_create_data->resource_obj_specific_data, obj_specific_data,
-> +	       obj_specific_data_size);
-> +	sg_init_one(&data_sg, data, data_size);
-> +
-> +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_CREATE);
-> +	cmd.group_type = cpu_to_le16(group_type);
-> +	cmd.group_member_id = cpu_to_le64(group_member_id);
-> +	cmd.data_sg = &data_sg;
-> +
-> +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
-> +	kfree(data);
-> +
-> +	return err;
-> +}
-> +EXPORT_SYMBOL_GPL(virtio_admin_obj_create);
-> +
-> +void virtio_admin_obj_destroy(struct virtio_device *vdev,
-> +			      u16 obj_type,
-> +			      u32 obj_id,
-> +			      u16 group_type,
-> +			      u64 group_member_id)
-> +{
-> +	struct virtio_admin_cmd_resource_obj_cmd_hdr *data;
-> +	struct virtio_admin_cmd cmd = {};
-> +	struct scatterlist data_sg;
-> +	int err;
-> +
-> +	if (!vdev->config->admin_cmd_exec)
-> +		return;
-> +
-> +	data = kzalloc_obj(*data);
-> +	if (WARN_ON(!data))
-> +		return;
-> +
-> +	data->type = cpu_to_le16(obj_type);
-> +	data->id = cpu_to_le32(obj_id);
-> +	sg_init_one(&data_sg, data, sizeof(*data));
-> +	cmd.opcode = cpu_to_le16(VIRTIO_ADMIN_CMD_RESOURCE_OBJ_DESTROY);
-> +	cmd.group_type = cpu_to_le16(group_type);
-> +	cmd.group_member_id = cpu_to_le64(group_member_id);
-> +	cmd.data_sg = &data_sg;
-> +
-> +	err = vdev->config->admin_cmd_exec(vdev, &cmd);
-> +	kfree(data);
-> +
-> +	WARN_ON_ONCE(err);
-
-Maybe pass err and let the caller do it? Some callers can't handle an error but
-others (ethtool delete) actually could propagate it to userspace.
-
-> +}
-> +EXPORT_SYMBOL_GPL(virtio_admin_obj_destroy);
-> diff --git a/include/linux/virtio_admin.h b/include/linux/virtio_admin.h
-> index 1177c4a20e53..9095a0481495 100644
-> --- a/include/linux/virtio_admin.h
-> +++ b/include/linux/virtio_admin.h
-> @@ -86,4 +86,45 @@ int virtio_admin_cap_set(struct virtio_device *vdev,
->  			 const void *caps,
->  			 size_t cap_size);
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> index f6eff03..01867dd 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> @@ -905,10 +905,12 @@ int mlx5e_poll_ico_cq(struct mlx5e_cq *cq)
+>  		} while (!last_wqe);
+>  	} while ((++i < MLX5E_TX_CQ_POLL_BUDGET) && (cqe = mlx5_cqwq_get_cqe(&cq->wq)));
 >  
-> +/**
-> + * virtio_admin_obj_create - Create an object on a virtio device
-> + * @vdev: the virtio device
-> + * @obj_type: type of object to create
-> + * @obj_id: ID for the new object
-> + * @group_type: administrative group type for the operation
-> + * @group_member_id: member identifier within the administrative group
-> + * @obj_specific_data: object-specific data for creation
-> + * @obj_specific_data_size: size of the object-specific data in bytes
-> + *
-> + * Creates a new object on the virtio device with the specified type and ID.
-> + * The object may require object-specific data for proper initialization.
-> + *
-> + * Return: 0 on success, -EOPNOTSUPP if the device doesn't support admin
-> + * operations or object creation, or a negative error code on other failures.
-> + */
-> +int virtio_admin_obj_create(struct virtio_device *vdev,
-> +			    u16 obj_type,
-> +			    u32 obj_id,
-> +			    u16 group_type,
-> +			    u64 group_member_id,
-> +			    const void *obj_specific_data,
-> +			    size_t obj_specific_data_size);
+> -	sq->cc = sqcc;
+> -
+>  	mlx5_cqwq_update_db_record(&cq->wq);
+>  
+> +	/* ensure cq space is freed before enabling more cqes */
+> +	dma_wmb();
 > +
-> +/**
-> + * virtio_admin_obj_destroy - Destroy an object on a virtio device
-> + * @vdev: the virtio device
-> + * @obj_type: type of object to destroy
-> + * @obj_id: ID of the object to destroy
-> + * @group_type: administrative group type for the operation
-> + * @group_member_id: member identifier within the administrative group
-> + *
-> + * Destroys an existing object on the virtio device with the specified type
-> + * and ID.
-> + */
-> +void virtio_admin_obj_destroy(struct virtio_device *vdev,
-> +			      u16 obj_type,
-> +			      u32 obj_id,
-> +			      u16 group_type,
-> +			      u64 group_member_id);
-> +
->  #endif /* _LINUX_VIRTIO_ADMIN_H */
-> -- 
-> 2.49.0
+> +	sq->cc = sqcc;
+>  	return i;
+>  }
+>  
+Thanks for your patch. The patch looks good but we want to pass it through our
+internal regressions.
 
+Thanks,
+Dragos
