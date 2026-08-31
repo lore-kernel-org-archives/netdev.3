@@ -1,52 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6F74AC2D0;
-	Mon, 31 Aug 2026 13:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE1559C8C;
+	Mon, 31 Aug 2026 13:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184024; cv=none; b=SG9PAgmRvTAHojUuMejdDXY7R7fT8tWQwBJT65w3Do/eJ896ptxPK+D5uga97CNInZVTzovIWV2g4cy/EYu05JMfz6vzyXS/nr+kM1Z9YF8bGFfXhA8MgPjcvaTqXMCbmZxNgaXCD9y7aw6DUB2eN5UItywAChikU9X77RzQgAM=
+	t=1788184037; cv=none; b=I0WOh5Q2nA88vfr9mpPMLYOUSs4aMQYT+f6qItQxewjiaBHP4fbLSQd4UkyoLFgbAUMQCPji2F3wGsO8eNjs0FiBUSq5HpTWc9QadNbwzBxE7NGtqZMDhpqG31BEw8fDJIRZoO3pcoiDola3kGA77blLrhg803CvMpY6cbKYHD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184024; c=relaxed/simple;
-	bh=4Ugd7NZthPGB7/aS8BHE5sDi+bHMactzDm59QVZV/M0=;
+	s=arc-20240116; t=1788184037; c=relaxed/simple;
+	bh=OGBNe6Of555E3cMhokYzTCprUdg5piyVluzuP1eNiMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YmPk+I8tE7uuNcemvQH7Xe95lViRynB+KFTsU/cfJZzvJZwcnIedCLhWpAU/u4wlXuEMSWJ9AuwfgSZ2AY9iyu/8I5DgO4DKjmQ9sQz7gbudJ0mIDNvfJn2UaxC8wQ5YJ/Hbs1GXZ47U/Y5vEkdyrRhkqRj64IxxNApxmLTROVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEHEExPq; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bMFvt7/LoKyWwHJ1OCU/bmHxzaj5ZCmvfM1m91DOtupjCtzOFq6X136jPsPj7jM/Dnpv+xFiz4s63k1FZQO0CTCjbUd0wUGxKdD1tmcmRVa+uqJjut4VG/vmhaB6SIvSxmX0BGGGNnppizxpwfoxQjigSW+WhsU7wbAEhIZB7Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEeFzdGZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEHEExPq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AD51F00ADB;
-	Mon, 31 Aug 2026 13:46:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEeFzdGZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC05A1F00ACF;
+	Mon, 31 Aug 2026 13:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184020;
-	bh=5pyJ96Qnm8dDNN9ZwyaQBPz/6YRx72SlNJlQ0MsCvAk=;
+	s=k20260515; t=1788184035;
+	bh=Mt5YSHE4bKinXdaYDMwvfpUDb934LVODG8gkA2CRJLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GEHEExPq8hXWHWAheueGRRGnMwsvTX1IlvuEuQeuzQnjfEKq/sC6tF/W+C4B6UNPp
-	 tE/T7z/Eo7ATvNkEDB1Jaw70f8v5654hK8qiL/NcyVVfV4IBKigH5eNezPEuKd3Ckr
-	 9NrRIqCuqEkB1WV5L+cKWQAKdC7iMMhPF/MC0DzoKDOuZ9SouYxKCtzUqk3/wfwIkH
-	 /09jnGuLHrVkWwua4GYcUOFn4vKdvstDCaE4GYi+iniVsN20KkkEJOQjcpZvsCTocp
-	 SSywt+YJyOaTym2FkTX+59kdOxBoI/lifpipeYF1R27xZEnCShY8EplcOqQwd4C79k
-	 GFai0ehVLpNHw==
+	b=EEeFzdGZscG7bUIgFAY+id07Din3hIFNbtyaZsMmrrDVVv81WMwzGsKVdnu7l5u82
+	 LuR9fgyhPlPK6CfwMi/XkarjO05dm5p4UL+npuQIYQgZv44K4ISGKVuPyWZyZXP2IN
+	 LSONJMZPbo3mQJgE/Z8OGqxVFHj4/yPaD0YbkT/BGov5exG2NWTLR5DB5hchDAai3f
+	 JCtejl2D3XHRID+YxlxX3EC+iwd1SAuoavbOqRnyJoyej35Qg5NxaRAPnNclQx5hK8
+	 DJ4chb/DcXLoK9N7e4Smrl/gFrNUZOmhB8Dj1PmU9pMAUv7WyDEKF3Wfu/mbV/cPkU
+	 KLDl7UxvwqUBA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Rosen Penev <rosenp@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-hyperv@vger.kernel.org,
+	kuba@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] net: mana: hardening: Reject zero max_num_queues from MANA_QUERY_VPORT_CONFIG
-Date: Mon, 31 Aug 2026 09:27:50 -0400
-Message-ID: <20260831133314.4125787-442-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] net: ibm: emac: Reserve VLAN header in MJS limit
+Date: Mon, 31 Aug 2026 09:28:00 -0400
+Message-ID: <20260831133314.4125787-452-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -62,400 +56,389 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 93ca1575dd1f43e24ad85663305e13114f9acdf1 ]
+[ Upstream commit 0906c117f81c2ae6e6dbfa82719f79c75e1c9325 ]
 
-As a part of MANA hardening for CVM, validate that max_num_sq and
-max_num_rq returned by MANA_QUERY_VPORT_CONFIG are not zero. These
-values flow into apc->num_queues, which is used as an allocation count
-and loop bound. A zero value would result in zero-size allocations and
-incorrect driver behavior.
+The IBM EMAC programs its Maximum Jumbo Size (MJS) drop
+threshold from ndev->mtu directly. The hardware sizes the threshold
+against the L2 frame minus the ethernet header, but does not
+discount the 802.1Q tag, so a frame carrying a VLAN tag and a full
+1500-byte payload exceeds MJS by exactly 4 bytes and is dropped.
 
-Return -EPROTO if either value is zero.
+This is normally hidden because JPSM (and therefore the MJS check)
+only engages when the MTU is raised above ETH_DATA_LEN.  With the
+qca8k DSA tagger the conduit MTU is bumped by QCA_HDR_LEN to 1502
+during dsa_conduit_setup(), which is enough to enable JPSM and
+expose the off-by-VLAN-tag in the limit.
 
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Link: https://patch.msgid.link/20260430085638.1875400-1-ernis@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Pad MJS by VLAN_HLEN so a VLAN-tagged full-MTU frame passes.
+
+Reported on Meraki MX60 (qca8k switch): tagged VLAN
+traffic drops at 1500-byte payload, while 1496 bytes works
+and untagged 1500 bytes works.
+
+Assisted-by: Claude:Opus-4.7
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20260526202247.13823-1-rosenp@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `net: mana: hardening: Reject zero
-max_num_queues from MANA_QUERY_VPORT_CONFIG`
-
-**Local tree:** Linux **6.18.43** (`v6.18.43-1-gc7f0dac02d232`)
-
----
-
-## PHASE 1: COMMIT MESSAGE FORENSICS
+## Phase 1: Commit Message Forensics
 
 ### Step 1.1: Subject Line
-**Record:** `[net: mana]` `[hardening/validate]` — Reject zero
-`max_num_sq` / `max_num_rq` from `MANA_QUERY_VPORT_CONFIG` firmware
-response.
+**Record:** `[net: ibm: emac]` `[Reserve]` — Reserve VLAN header space
+in the Maximum Jumbo Size (MJS) hardware limit.
 
 ### Step 1.2: Tags
 **Record:**
-- **Signed-off-by:** Erni Sri Satya Vennela
-  `<ernis@linux.microsoft.com>` (author)
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (committer)
-- **Link:** https://patch.msgid.link/20260430085638.1875400-1-
-  ernis@linux.microsoft.com
-- **No** Fixes:, Reported-by:, Tested-by:, Reviewed-by:, Acked-by:, Cc:
-  stable@vger.kernel.org
-- Notable: Same author (Erni) as the already-backported MANA CVM TOCTOU
-  fix (`09ec063d87c2d`) in this tree.
+- **Link:**
+  https://patch.msgid.link/20260526202247.13823-1-rosenp@gmail.com
+- **Assisted-by:** Claude:Opus-4.7
+- **Signed-off-by:** Rosen Penev \<rosenp@gmail.com\>
+- **Signed-off-by:** Paolo Abeni \<pabeni@redhat.com\> (net maintainer,
+  committer)
+- No Fixes:, Reported-by:, Cc: stable@vger.kernel.org, Tested-by:, or
+  Reviewed-by: in commit message
+- Notable: Real-world hardware report in body (Meraki MX60); maintainer
+  ack on commit
 
 ### Step 1.3: Body Analysis
 **Record:**
-- **Bug:** Firmware may return `max_num_sq == 0` or `max_num_rq == 0`
-  from `MANA_QUERY_VPORT_CONFIG`.
-- **Symptom:** Values flow into `apc->num_queues` (via
-  `mana_init_port()`), used as allocation count and loop bound → zero-
-  size allocations and incorrect driver behavior.
-- **Fix:** Return `-EPROTO` if either value is zero.
-- **Context:** CVM (Confidential VM) hardening — firmware/hypervisor
-  responses treated as untrusted.
-- **Root cause:** Missing input validation on firmware-reported queue
-  limits.
+- **Bug:** IBM EMAC APM821xx programs MJS from `ndev->mtu`. Hardware
+  compares frame size minus Ethernet header against MJS but does not
+  account for the 802.1Q VLAN tag (4 bytes).
+- **Symptom:** VLAN-tagged frames with a 1500-byte payload are dropped;
+  1496-byte payloads and untagged 1500-byte payloads work.
+- **Trigger:** JPSM/MJS only engages when MTU > `ETH_DATA_LEN` (1500).
+  With qca8k DSA, `dsa_conduit_setup()` sets conduit MTU to
+  `ETH_DATA_LEN + QCA_HDR_LEN` = 1502, enabling JPSM and exposing the
+  off-by-4 bug.
+- **Root cause:** MJS threshold is 4 bytes too small for VLAN-tagged
+  full-MTU frames.
+- **Version info:** None explicit; bug latent since jumbo/MJS support
+  was added (2012).
 
 ### Step 1.4: Hidden Bug Fix?
-**Record:** Yes. Labeled "hardening" but is a real input-validation bug
-fix. Without it, zero queue counts propagate into driver state and cause
-broken device behavior.
+**Record:** No — this is an explicit hardware-limit bug fix, not
+disguised cleanup.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 2: Diff Analysis
 
 ### Step 2.1: Inventory
 **Record:**
-- **File:** `drivers/net/ethernet/microsoft/mana/mana_en.c` (+6 lines)
-- **Function:** `mana_query_vport_cfg()`
-- **Scope:** Single-file, surgical validation in one function.
+- **File:** `drivers/net/ethernet/ibm/emac/core.c` (+2, -1 functional;
+  +1 include)
+- **Functions modified:** `emac_iff2rmr()`
+- **Scope:** Single-file surgical fix
 
 ### Step 2.2: Code Flow Change
 **Record:**
-- **Hunk (lines ~1263–1268):**
-  - **Before:** Accept any `max_num_sq`/`max_num_rq` from firmware after
-    status check.
-  - **After:** Reject zero values with `netdev_err()` + `-EPROTO`.
-- **Path affected:** Port initialization during `mana_init_port()` →
-  `mana_probe_port()` probe path.
+- **Hunk 1 (include):** Adds `#include <linux/if_vlan.h>` for
+  `VLAN_HLEN`.
+- **Hunk 2 (`emac_iff2rmr`):**
+  - **Before:** `EMAC4_RMR_MJS(ndev->mtu)` — MJS equals netdev MTU.
+  - **After:** `EMAC4_RMR_MJS(ndev->mtu + VLAN_HLEN)` — MJS includes
+    4-byte VLAN headroom.
+  - **Path:** Runs when `EMAC_APM821XX_REQ_JUMBO_FRAME_SIZE` is set,
+    during `emac_configure()` and multicast updates.
 
 ### Step 2.3: Bug Mechanism
-**Record:** **Input validation / logic correctness bug.**
-- `mana_init_port()` computes `max_queues = min(max_txq, max_rxq)` and
-  clamps `apc->num_queues` down to that value.
-- With zero firmware values, `apc->num_queues` becomes 0.
-- `kcalloc(0, ...)` returns `ZERO_SIZE_PTR` (non-NULL), passing `!ptr`
-  checks.
-- `netif_set_real_num_tx_queues(ndev, 0)` and
-  `netif_set_real_num_rx_queues(ndev, 0)` both require `txq/rxq >= 1`
-  and return `-EINVAL`.
-- Probe can still register a netdev with carrier on before queue setup
-  fails on attach.
+**Record:**
+- **Category:** Logic/correctness — hardware workaround
+- **Mechanism:** Hardware MJS check ignores VLAN tag size; driver must
+  pad MJS by `VLAN_HLEN` (4) so tagged full-MTU frames pass.
 
 ### Step 2.4: Fix Quality
-**Record:** Obviously correct, minimal, mirrors existing `-EPROTO` usage
-for bad firmware status. No API changes. Very low regression risk — only
-rejects values that are fundamentally invalid (a NIC cannot have zero
-TX/RX queues).
+**Record:**
+- Fix is minimal and matches the described hardware behavior.
+- Low regression risk: only affects APM821xx EMAC with jumbo/MJS enabled
+  (MTU > 1500).
+- Slightly more permissive MJS is safe; the alternative is incorrect
+  drops.
 
 ---
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## Phase 3: Git History Investigation
 
 ### Step 3.1: Blame
-**Record:** Lines `*max_sq = resp.max_num_sq` / `*max_rq =
-resp.max_num_rq` blame to `19eef1d98eeda` (tree import). MANA driver and
-`mana_query_vport_cfg()` exist in this 6.18.43 tree. Fix not yet
-present.
+**Record:**
+- Buggy MJS line introduced in `ae5d33723e3253` (2012-03-05):
+  "powerpc/44x: Add more changes for APM821XX EMAC driver"
+- Present in this tree at `drivers/net/ethernet/ibm/emac/core.c:460`
 
 ### Step 3.2: Fixes: Tag
-**Record:** N/A — no Fixes: tag in commit message.
+**Record:** N/A — no Fixes: tag.
 
 ### Step 3.3: Related File History
-**Record:** Recent MANA fixes in this tree include CVM/security-oriented
-patches:
-- `09ec063d87c2d` — TOCTOU fix in `hw_channel.c` (CVM, same author Erni)
-- `6d13eaa13341a` — RX packet length validation (untrusted NIC data,
-  backported with Cc: stable)
-- `da87896f34e0a` — NULL guards to prevent panic on attach failure
-Standalone fix; no "patch X/Y" series indicator.
+**Record:**
+- Fix commit: `0906c117f81c2` on `all-next` (2026-06-01), not in current
+  HEAD (6.18.44)
+- Recent emac changes on 6.18.y include UAF and NULL-deref fixes; no
+  prior MJS/VLAN fix
+- Standalone single patch (v1 only, no series)
 
 ### Step 3.4: Author Context
-**Record:** Erni Sri Satya Vennela is an active MANA contributor with
-multiple probe/teardown/CVM fixes already in this tree.
+**Record:** Rosen Penev — active networking contributor (DSA/Meraki-
+related work). Committer Paolo Abeni is a net maintainer.
 
 ### Step 3.5: Dependencies
-**Record:** None. Uses existing `mana_query_vport_cfg_resp` struct
-(`include/net/mana/mana.h`), `netdev_err()`, and `-EPROTO`. Applies
-standalone.
+**Record:**
+- No patch-series dependencies
+- Exposure path requires `dsa_conduit_setup()` MTU bump — present in
+  this tree since `6ca80638b90ce` (2023-10-24)
+- Applies cleanly: `git apply --check` on `0906c117f81c2` succeeds
 
 ---
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## Phase 4: Mailing List and External Research
 
-### Step 4.1: Patch Discussion
-**Record:** `b4 dig -c <sha>` not possible (commit not in local tree).
-`b4 dig` with message-id failed (wrong syntax). WebFetch of
-patch.msgid.link blocked by bot protection. **UNVERIFIED:** Full lore
-review thread content.
+### Step 4.1: Original Discussion
+**Record:**
+- **URL:**
+  https://patch.msgid.link/20260526202247.13823-1-rosenp@gmail.com
+- **Revisions:** v1 only (2026-05-26)
+- **Key feedback:** Jacob Keller noted dropped packets are user-visible.
+  Paolo Abeni replied it is not a regression ("never worked"), suitable
+  for net-next to enable DSA support. Jacob Keller gave Reviewed-by.
+- **Stable nomination:** None in thread
+- **NAKs:** None
 
 ### Step 4.2: Reviewers
-**Record:** **UNVERIFIED** — could not fetch mailing list thread.
+**Record:** netdev@vger.kernel.org, Andrew Lunn, David S. Miller, Eric
+Dumazet, Jakub Kicinski, Paolo Abeni CC'd. Reviewed-by: Jacob Keller.
 
 ### Step 4.3: Bug Report
-**Record:** No Reported-by or bugzilla/syzbot links. Bug identified
-through CVM hardening code review, not a user crash report.
+**Record:** Meraki MX60 with qca8k switch — tagged VLAN traffic drops at
+1500-byte payload. Severity: functional networking breakage (silent
+packet loss).
 
-### Step 4.4: Related Series
-**Record:** Part of broader MANA CVM hardening effort (same author as
-TOCTOU fix). No evidence this is one patch of a multi-patch dependency
-chain.
+### Step 4.4: Related Patches
+**Record:** Standalone; no multi-patch series.
 
-### Step 4.5: Stable List Discussion
-**Record:** **UNVERIFIED** — could not search lore stable list. No Cc:
-stable in commit message (expected for manual review candidates).
+### Step 4.5: Stable List History
+**Record:** Not searched separately; no stable discussion found in the
+patch thread.
 
 ---
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+## Phase 5: Code Semantic Analysis
 
 ### Step 5.1: Key Functions
-**Record:** `mana_query_vport_cfg()` (modified), callers:
-`mana_init_port()`.
+**Record:** `emac_iff2rmr()` — builds Receive Mode Register including
+MJS field.
 
 ### Step 5.2: Callers
 **Record:**
-- `mana_init_port()` → called from `mana_probe_port()` (probe) and
-  `mana_attach()` (attach/resume)
-- Triggered during MANA vPort probe/attach on Azure VMs with
-  CONFIG_MICROSOFT_MANA.
+- `emac_configure()` (line 668) — device init/reconfigure, link setup,
+  TX reset
+- `__emac_set_multicast_list()` (line 949) — multicast/promisc flag
+  changes
+- `emac_configure()` called from `emac_reinitialize()`,
+  `emac_full_tx_reset()`, and MTU resize path when jumbo mode toggles
 
 ### Step 5.3: Callees
-**Record:** `mana_send_request()`, `mana_verify_resp_hdr()`,
-`netdev_err()`.
+**Record:** `emac_has_feature()`, `EMAC4_RMR_MJS()` macro, netdev
+flag/multicast helpers.
 
 ### Step 5.4: Reachability
-**Record:** Reachable during PCI probe / netdev attach of MANA devices.
-Not userspace-triggerable directly, but firmware/hypervisor can return
-bad `MANA_QUERY_VPORT_CONFIG` data (especially relevant in CVM where DMA
-memory is shared/unencrypted per `hw_channel.c` comments).
+**Record:**
+- **Call chain:** DSA setup → `dsa_conduit_setup()` →
+  `dev_set_mtu(1502)` → EMAC jumbo/MJS enabled → tagged VLAN frames at
+  1500 payload hit hardware MJS drop
+- **Userspace reachable:** Yes — normal bridged/VLAN traffic on affected
+  hardware
+- **Config:** `ibm,emac-apm821xx` + qca8k DSA conduit (e.g. Meraki MX60)
 
 ### Step 5.5: Similar Patterns
-**Record:** Driver already validates indirection table size (warn +
-default). `gdma_main.c` clamps `gc->max_num_queues` against firmware
-limits but does not explicitly reject zero at vport level.
-`mana_rss_table_alloc()` already rejects `indir_table_sz == 0`. This
-adds the analogous check for queue counts.
+**Record:** No similar MJS/VLAN padding elsewhere in emac driver; this
+is the only MJS programming site.
 
 ---
 
-## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
+## Phase 6: Cross-Reference Against Local Tree
 
-### Step 6.1: Buggy Code Present?
-**Record:** **Yes.** `drivers/net/ethernet/microsoft/mana/mana_en.c`
-lines 1263–1264 assign firmware values without zero check.
-`mana_query_vport_cfg_resp` struct exists in `include/net/mana/mana.h`.
-MANA driver fully present in 6.18.43.
+### Step 6.1: Buggy Code in Tree?
+**Record:** **Yes.** Local tree is **Linux 6.18.44**
+(`stable/linux-6.18.y`). Buggy line at `core.c:460`:
+`EMAC4_RMR_MJS(ndev->mtu)`. Bug present since 2012 APM821xx jumbo
+support. Fix commit `0906c117f81c2` is **not** in HEAD.
 
 ### Step 6.2: Backport Complications
-**Record:** **Clean apply.** Verified patch context matches local file
-exactly (`python3` context check: `old found: True`). No conflicting
-changes in the hunk area.
+**Record:** Clean apply expected — `git apply --check` passed with no
+conflicts.
 
 ### Step 6.3: Related Fixes Already Present?
-**Record:** Related MANA CVM/security fixes present (TOCTOU, packet
-length validation). This specific zero-queue validation is **not**
-present (`git log --grep="Invalid max queues"` — no match).
+**Record:** None for this MJS/VLAN issue.
 
 ---
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+## Phase 7: Subsystem and Maintainer Context
 
-### Step 7.1: Subsystem
-**Record:** `drivers/net/ethernet/microsoft/mana/` — network driver
-(Microsoft Azure Network Adapter). **Criticality: IMPORTANT**
-(production Azure VM networking, including CVM deployments).
+### Step 7.1: Subsystem Criticality
+**Record:** `drivers/net/ethernet/ibm/emac` — **PERIPHERAL** driver
+(PowerPC APM821xx), but networking correctness on real production
+hardware (Meraki MX60).
 
-### Step 7.2: Activity
-**Record:** Actively maintained — 10+ MANA commits in recent history of
-`mana_en.c` alone, including multiple stable-worthy bug fixes.
+### Step 7.2: Subsystem Activity
+**Record:** Moderately active — recent UAF/NULL-deref fixes in 6.18.y;
+DSA conduit infrastructure actively maintained.
 
 ---
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+## Phase 8: Impact and Risk Assessment
 
 ### Step 8.1: Who Is Affected
-**Record:** Azure VM users with MANA NICs (`CONFIG_MICROSOFT_MANA`).
-Most acute for CVM (SEV-SNP/TDX) where firmware responses are explicitly
-untrusted.
+**Record:** Users of **ibm,emac-apm821xx** (APM821xx SoC) with **qca8k
+DSA** conduit and **VLAN-tagged** traffic at standard MTU. Meraki MX60
+is a confirmed case. Driver already contains Meraki MX60-specific MDIO
+workaround (line 2451).
 
 ### Step 8.2: Trigger Conditions
-**Record:** Firmware/hypervisor returns `max_num_sq == 0` or `max_num_rq
-== 0` in `MANA_QUERY_VPORT_CONFIG`. Not a normal operational case;
-requires buggy or malicious firmware. In CVM, malicious host is in
-threat model.
+**Record:**
+- MTU > 1500 (automatically 1502 with qca8k DSA via
+  `dsa_conduit_setup()`)
+- VLAN-tagged frames with payload at MTU−4 boundary (1500 bytes with MTU
+  1502 conduit overhead accounting)
+- **Likelihood:** High on affected configs for standard enterprise VLAN
+  usage
+- **Unprivileged trigger:** Yes — normal network traffic
 
 ### Step 8.3: Failure Mode Severity
-**Record:** Without fix:
-1. `apc->num_queues` set to 0
-2. `kcalloc(0, ...)` returns `ZERO_SIZE_PTR` (passes NULL checks)
-3. `mana_probe_port()` can succeed through `register_netdev()` +
-   `netif_carrier_on()`
-4. Queue allocation fails later with `-EINVAL` from
-   `netif_set_real_num_*_queues()`
-5. Results in broken/unusable netdev rather than clean probe failure
-
-**Severity: MEDIUM-HIGH** — not a demonstrated kernel panic, but real
-incorrect driver state and CVM input-validation gap. Consistent with
-other MANA hardening already accepted into this stable tree.
+**Record:** Silent **packet drops** for VLAN traffic at full MTU. Not a
+crash or data corruption, but breaks standard VLAN networking.
+**Severity: MEDIUM-HIGH** (functional breakage, silent loss).
 
 ### Step 8.4: Risk-Benefit
 **Record:**
-- **Benefit:** Fail fast at config query; prevent broken netdev
-  registration; CVM input validation aligned with existing MANA stable
-  backports.
-- **Risk:** Very low — 6 lines, only rejects impossible values.
-- **Ratio:** Favorable for backport.
+- **Benefit:** Restores correct VLAN forwarding on affected hardware;
+  trivial 3-line fix
+- **Risk:** Very low — scoped to APM821xx jumbo path only
+- **Ratio:** Strong benefit for affected users, minimal risk
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 9: Final Synthesis
 
 ### Step 9.1: Evidence Summary
 
 **FOR backport:**
-- Real validation bug with verified code path in this tree
-- Causes broken driver state (registered netdev with 0 queues)
-- CVM security hardening — same category as TOCTOU fix already in
-  6.18.43
-- Small, surgical, obviously correct
-- Clean apply to local tree
-- Same subsystem already receiving similar stable backports (`6d13eaa`,
-  `09ec063d87c2d`)
+- Real user-reported bug (Meraki MX60)
+- Silent packet drops on standard VLAN/MTU traffic
+- Minimal, obviously correct hardware workaround
+- Buggy code and exposure path (DSA conduit MTU bump) both exist in
+  6.18.44
+- Applies cleanly
+- Reviewed on mailing list; maintainer committed
+- Falls under hardware quirk/workaround exception
 
 **AGAINST backport:**
-- No crash report, syzbot, or CVE cited
-- Requires abnormal firmware response
-- Without fix, failure is degraded functionality rather than kernel oops
-- No explicit Cc: stable or maintainer stable nomination visible
-- Mailing list review unverified
+- Narrow hardware scope (APM821xx + qca8k DSA)
+- Not a regression — latent since 2012
+- Paolo routed to net-next as non-regression fix
+- Packet drops, not crash/security/corruption
 
-**UNRESOLVED:**
-- Full lore review thread content
-- Whether reviewers explicitly nominated for stable
+**Unresolved:** No independent Tested-by on target hardware in commit
+message.
 
 ### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — logic is trivial; no Tested-
-   by but pattern is standard.
-2. Fixes real bug affecting users? **PASS** — broken netdev state on
-   invalid firmware response.
-3. Important issue? **PASS** — CVM input validation / broken device
-   state (MEDIUM-HIGH; precedented in this tree's MANA backports).
-4. Small and contained? **PASS** — 6 lines, one function.
-5. No new features/APIs? **PASS** — validation only.
-6. Can apply to local tree? **PASS** — context verified, code present.
+1. Obviously correct and tested? **PASS** — logic matches hardware
+   behavior; reviewed on list
+2. Fixes real bug affecting users? **PASS** — Meraki MX60 report,
+   reproducible symptoms
+3. Important issue? **PASS** — silent packet loss on standard VLAN
+   traffic (MEDIUM-HIGH)
+4. Small and contained? **PASS** — 3 lines, one file
+5. No new features/APIs? **PASS** — hardware limit correction only
+6. Can apply to local tree? **PASS** — clean apply verified
 
-### Step 9.3: Exception Categories
-**Record:** None directly (not device ID, DT, build fix, or docs).
-Qualifies as driver hardening/input-validation bug fix.
+### Step 9.3: Exception Category
+**Record:** Hardware quirk/workaround — EMAC hardware does not account
+for VLAN tag in MJS calculation.
 
 ### Step 9.4: Decision Rationale
-This tree (6.18.43) already carries MANA CVM hardening fixes from the
-same team. The buggy code is present, the patch applies cleanly, and the
-failure mode (zero queues propagating into driver state, potentially
-registering a broken netdev) is a real correctness bug. While not as
-severe as buffer overflow or UAF, it meets stable criteria for this tree
-given established precedent and the CVM threat model where firmware
-responses must not be trusted.
+
+For **Linux 6.18.44**, this fix should be backported. The buggy MJS
+programming and the DSA conduit MTU bump that exposes it are both
+present. On Meraki MX60-class hardware, standard VLAN traffic at
+1500-byte payload is silently dropped — a real, user-visible networking
+failure. The fix is a 3-line hardware workaround with verified clean
+apply and negligible regression risk. Paolo's net-next routing reflects
+that this is not a regression, not that the fix lacks stable merit.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed commit message: subject, tags (SOB x2, Link),
-  body text analyzed
-- **[Phase 1]** Confirmed no Fixes:/Reported-by:/Cc: stable tags
-- **[Phase 2]** Read diff: +6 lines in `mana_query_vport_cfg()`, adds
-  zero-check returning `-EPROTO`
-- **[Phase 2]** Read `mana_init_port()` (lines 3122–3162): `max_queues =
-  min(max_txq, max_rxq)` clamps `apc->num_queues`
-- **[Phase 2]** Read `mana_init_port_context()` (line 1010):
-  `kcalloc(apc->num_queues, ...)`
-- **[Phase 2]** Read `mana_create_txq()` (line 2373):
-  `kcalloc(apc->num_queues, ...)`
-- **[Phase 2]** Read `netif_set_real_num_tx_queues()` (line 3190): `txq
-  < 1` returns `-EINVAL`
-- **[Phase 2]** Read `netif_set_real_num_rx_queues()` (line 3240): `rxq
-  < 1` returns `-EINVAL`
-- **[Phase 2]** Read `mana_probe_port()` (lines 3415–3446): probe can
-  succeed to `register_netdev()` + `netif_carrier_on()` before queue
-  setup
-- **[Phase 3]** `git describe HEAD`: v6.18.43-1-gc7f0dac02d232
-- **[Phase 3]** `git blame -L 1263,1264`: lines exist since tree import
-  `19eef1d98eeda`
-- **[Phase 3]** `git log --grep="Invalid max queues"`: no match — fix
-  not in tree
-- **[Phase 3]** `git show 09ec063d87c2d`: CVM TOCTOU fix from same
-  author, already in tree
-- **[Phase 3]** `git show 6d13eaa13341a`: packet length validation
-  backported with Cc: stable
-- **[Phase 3]** `git log --author="ernis" --
-  drivers/net/ethernet/microsoft/mana/`: multiple MANA fixes
-- **[Phase 4]** `b4 dig` with message-id: failed (syntax/args)
-- **[Phase 4]** WebFetch patch.msgid.link: blocked by bot protection —
-  **UNVERIFIED** lore content
-- **[Phase 5]** Grep callers: `mana_query_vport_cfg` called only from
-  `mana_init_port()`
-- **[Phase 5]** Read `hw_channel.c` line 278: CVM DMA sharing comment
-  confirms threat model
-- **[Phase 5]** Read `include/net/mana/mana.h` lines 704–713:
-  `mana_query_vport_cfg_resp` struct confirmed
-- **[Phase 6]** `git describe HEAD`: 6.18.43 tree confirmed
-- **[Phase 6]** Read current `mana_en.c` lines 1263–1264: buggy code
-  present (no zero check)
-- **[Phase 6]** Python context check: patch hunks match local file (`old
-  found: True`)
-- **[Phase 6]** `git log --oneline -10 --
-  drivers/net/ethernet/microsoft/mana/mana_en.c`: active MANA
-  maintenance
-- **[Phase 8]** Traced failure path: zero queues → broken probe state →
-  `-EINVAL` on queue setup
+- [Phase 1] `git show 0906c117f81c2`: parsed subject, tags, body
+- [Phase 2] Read diff and `core.c:438-464`: confirmed
+  `EMAC4_RMR_MJS(ndev->mtu)` → `+ VLAN_HLEN`
+- [Phase 3] `git blame -L 458,461`: buggy code from `ae5d33723e3253`
+  (2012)
+- [Phase 3] `git merge-base --is-ancestor 0906c117f81c2 HEAD`:
+  NOT_IN_HEAD
+- [Phase 3] `git apply --check` on `0906c117f81c2`: passes
+- [Phase 3] `git describe HEAD` / `make kernelversion`: 6.18.44
+- [Phase 4] `b4 dig -c 0906c117f81c2`: found lore thread
+- [Phase 4] `b4 dig -a`: v1 only
+- [Phase 4] `b4 dig -w`: netdev maintainers CC'd
+- [Phase 4] `/tmp/emac_vlan_thread.mbox`: Keller review, Abeni net-next
+  rationale
+- [Phase 5] `grep emac_iff2rmr`: callers at lines 668, 949
+- [Phase 5] Read `net/dsa/conduit.c:419-445`: MTU = `ETH_DATA_LEN +
+  dsa_tag_protocol_overhead()`
+- [Phase 5] Read `net/dsa/tag_qca.c:118`: `needed_headroom =
+  QCA_HDR_LEN` (2)
+- [Phase 5] Read `include/linux/if_vlan.h:16`: `VLAN_HLEN = 4`
+- [Phase 6] `grep EMAC4_RMR_MJS`: buggy code at `core.c:460`
+- [Phase 6] `git merge-base --is-ancestor 6ca80638b90ce HEAD`:
+  conduit_in_tree (2023-10-24)
+- [Phase 6] `git show 6ca80638b90ce:net/dsa/conduit.c`: MTU bump present
+  from introduction
+- [Phase 7] `core.c:2869-2872`: APM821xx feature flag assignment
+  confirmed
+- [Phase 7] `core.c:2451`: existing Meraki MX60 reference in driver
 
-**YES**The background history search finished successfully: `git log -S`
-found **no commits** in this tree containing `"Invalid max queues from
-vPort config"` or `"max_sq == 0"` in `mana_en.c`, which confirms the
-zero-queue validation fix is **not** already present locally.
+**YES****Verdict: YES** for backport to Linux 6.18.44.
 
-That matches the earlier analysis — the buggy code is still in the
-6.18.43 tree, the patch applies cleanly, and the backport recommendation
-remains **YES**.
+The commit (`0906c117f81c2` on `all-next`) pads the IBM EMAC APM821xx
+MJS limit by `VLAN_HLEN` so VLAN-tagged full-MTU frames aren’t dropped.
+It isn’t in the current 6.18.y tree yet, but the buggy code and the
+qca8k DSA conduit MTU bump that exposes it are both present, and the
+patch applies cleanly.
 
- drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Worth backporting: small hardware workaround for a real Meraki MX60 bug
+(silent VLAN packet loss at 1500-byte payload).
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index adf25acb0d46f..b61da240ac1bb 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1262,6 +1262,12 @@ static int mana_query_vport_cfg(struct mana_port_context *apc, u32 vport_index,
+ drivers/net/ethernet/ibm/emac/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+index e1047915e101e..f48568140480e 100644
+--- a/drivers/net/ethernet/ibm/emac/core.c
++++ b/drivers/net/ethernet/ibm/emac/core.c
+@@ -30,6 +30,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/crc32.h>
+ #include <linux/ethtool.h>
++#include <linux/if_vlan.h>
+ #include <linux/mii.h>
+ #include <linux/bitops.h>
+ #include <linux/of.h>
+@@ -457,7 +458,7 @@ static inline u32 emac_iff2rmr(struct net_device *ndev)
  
- 	*max_sq = resp.max_num_sq;
- 	*max_rq = resp.max_num_rq;
-+
-+	if (*max_sq == 0 || *max_rq == 0) {
-+		netdev_err(apc->ndev, "Invalid max queues from vPort config\n");
-+		return -EPROTO;
-+	}
-+
- 	if (resp.num_indirection_ent > 0 &&
- 	    resp.num_indirection_ent <= MANA_INDIRECT_TABLE_MAX_SIZE &&
- 	    is_power_of_2(resp.num_indirection_ent)) {
+ 	if (emac_has_feature(dev, EMAC_APM821XX_REQ_JUMBO_FRAME_SIZE)) {
+ 		r &= ~EMAC4_RMR_MJS_MASK;
+-		r |= EMAC4_RMR_MJS(ndev->mtu);
++		r |= EMAC4_RMR_MJS(ndev->mtu + VLAN_HLEN);
+ 	}
+ 
+ 	return r;
 -- 
 2.53.0
 
