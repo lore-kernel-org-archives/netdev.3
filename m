@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8EF4749FD;
-	Mon, 31 Aug 2026 13:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DFC477280;
+	Mon, 31 Aug 2026 13:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183329; cv=none; b=aqmD7cj1s5bvHvyHG8I7gNW+0IJU5/k6q6L/QoVno+sW/ohFaiRZoar+XChZOi1r4x0v44ct5MCrrc7PyyxWP+5qJ64pQsPGDGI+dmNnhK7mHXbjnstGAtMslbXTIR7F6gdYC65TjjDuhhosaKfDkdfgH4SV7HSxKSaJ/JS+al0=
+	t=1788183341; cv=none; b=ke/PQuJLWPSJq41JHWH7n6tsCOa0eth4PY4Wc5i5Q55L0G3xtufSJCrpYh2DUXNBdrI1Yu0hokQ+0Y/zf0ojTMQTTc55PVJisZRxMc3+VWaMW/qJUIwlqFBcA44Jn/S6wPP49411wVqNM6+71YNVQMrt+mjTj8/VvpLWPvXpoZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183329; c=relaxed/simple;
-	bh=Um+Yywtq3mgBc4I/ppqwrBFLNpk9n+E7O6Xh+T4iosg=;
+	s=arc-20240116; t=1788183341; c=relaxed/simple;
+	bh=zCwVNMWm9AJarhUGZuV8079zSkn5F2Ic6om4TiPHmW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MichPg96l8lbHXSD+qGxzhKlVCpedxVpfraGdbUEKDzXKaoj1RDn22Neq2YAOurw5AsLANW5YYR+1CTddJ4ilwdvSZxoUzfNkoWAN5Zes6dhM/RRoc9DOjHjai/Lxz/0Wt6kUY4ew+/5S3RshjaIYQXiLsYfn35sNE6+2booIHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJPmKiCb; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=fUjv8kgBj8xivrv5bC2akJp5RZ6/qBeEE6RgcW4SD/fnPc6QZmnYs5K288M26u8zyurWH5K1JhSXGPy3Wck83wGZcDHjjJlSUAlplHWKkUD9Her+G20dnNuYr9gclv9VMBypoPjc1vqZUM05MbuuJcEOFES6m2yaX61vY+rVxnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpWI9G5q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJPmKiCb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3012C1F000E9;
-	Mon, 31 Aug 2026 13:35:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpWI9G5q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1499D1F00A3F;
+	Mon, 31 Aug 2026 13:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183327;
-	bh=zm9StJZEp4qD6VEDPXK6w2BZJySX2VKBZatzxTfHukg=;
+	s=k20260515; t=1788183339;
+	bh=kKb26iVImiPGyTnZ71DQ0DY1f9MALfzVnRrVOZzO4mM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nJPmKiCb85bKy6ejAWm++rISBQqDZSm20r1bBTS4TBAKYjYVuBC6r2a0jXkyQK5M6
-	 UJrChGU0atMkTMChRE2XuZiV9cgp5Cwc0boukKXgN7VtVIfifUOF7sIerTQIWKhzwc
-	 AUIS0WKFADlzdkJkbIz2Ze99gDQ2X6UieaYZbcxVMhR6UIeslt6utV3VqkfLDHhAQc
-	 tkUx86mKUjjuTdzjg4Uh8oVSUF2G7fAMzgd3aFbsiHRwuLAI/6jlByHMlfzBZgH/zV
-	 ki6LfDkPk+njqwWdJqmhaaB2Zw1TDCCP5na9dYR4qKOXrfbl4rW+ucVi+KGhcJ16nv
-	 7QCQN/Bg177Sw==
+	b=JpWI9G5quEyUvQ6URcmYRXV3Hkax89IhAXL2g70duB7A5J6c7Njkrnjm/dfzl4nDb
+	 jDoWcj8tOoVOPjweHX1I0exa2yxfEI9GdMh3I+y2WNVc4//EZr4G6KHQ1wjFXwSF3e
+	 BYwAR/Xsnhbv7ppj+kPKpxBCqOP50SDqCO+2JWlqSkl0nmtuPfLEapnTbnEnIRXalP
+	 u+xWGaRvNc6YqCnnR+3VvIsvdeuLvX8wyRNwsrJ6T2gU+h+AJnNsjeMeJG2sDKrv8t
+	 u6hPE5c10sg9inlGkRFdszMoPI33IUHL0M5+ULDaN/GF1XUO5a32fkTrwMnq1k3aiX
+	 XAy1E8UVtdrFw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Maoyi Xie <maoyixie.tju@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Jia Jia <physicalmtea@gmail.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
+	jasowangio@gmail.com,
+	michael.christie@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] hsr: broadcast netlink notifications in the device's net namespace
-Date: Mon, 31 Aug 2026 09:21:50 -0400
-Message-ID: <20260831133314.4125787-82-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-5.10] vhost-scsi: flush backend after device ioctls
+Date: Mon, 31 Aug 2026 09:21:57 -0400
+Message-ID: <20260831133314.4125787-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -56,36 +56,26 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Jia Jia <physicalmtea@gmail.com>
 
-[ Upstream commit a762fabd7ef9a6cc07258684138f9c3f078d0326 ]
+[ Upstream commit 22598f55a4c2b510b3df5e69e563387a963222ae ]
 
-The HSR generic netlink family sets .netnsok = true. HSR devices can
-live in network namespaces other than init_net.
+vhost-scsi translates guest response descriptors into userspace iovecs
+when commands are submitted.  Target-core completes those commands
+asynchronously, so VHOST_SET_MEM_TABLE can replace the memory table while
+an in-flight command still retains response iovecs translated through the
+old table.
 
-Two async notifiers broadcast events with genlmsg_multicast(). They
-are hsr_nl_ringerror() and hsr_nl_nodedown(). That helper delivers
-only on the default genl socket in init_net. So the events always land
-in init_net. The network namespace of the device does not matter.
+If the old mapping is reused after VHOST_SET_MEM_TABLE returns, command
+completion can write the response to an unrelated userspace object.
 
-This has two effects. A listener in the device's own namespace never
-sees its own ring error and node down events. A privileged listener in
-init_net receives events from HSR devices in other namespaces. The
-payload carries the peer node MAC (HSR_A_NODE_ADDR) and the slave port
-ifindex (HSR_A_IFINDEX).
+Flush the vhost-scsi backend after vhost_dev_ioctl() handles a device
+ioctl.  This waits for in-flight commands that can still use the old
+response iovecs before the ioctl returns.
 
-Switch both callers to genlmsg_multicast_netns(). Other families with
-.netnsok = true already do this. Examples are gtp, ovpn, team,
-batman-adv, netdev-genl, ethtool and handshake.
-
-hsr_nl_ringerror() already has the slave port. It uses
-dev_net(port->dev). hsr_nl_nodedown() takes the namespace from the
-master port via hsr_port_get_hsr().
-
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-Link: https://patch.msgid.link/20260604054949.2999304-1-maoyixie.tju@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20260724060919.1569170-1-physicalmtea@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -93,389 +83,443 @@ LLM Generated explanations, may be completely bogus:
 
 ## Phase 1: Commit Message Forensics
 
-**Step 1.1 — Subject line**
+**Step 1.1 – Subject line**
 
-Record: `[hsr]` `[broadcast]` — Route HSR generic-netlink multicast
-notifications into the HSR device's network namespace instead of always
-using `init_net`.
+Record: `[vhost-scsi] [flush] Flush backend after device ioctls to
+prevent stale response-iovec writes after memory table changes.`
 
-**Step 1.2 — Tags**
-
-Record:
-- **Reviewed-by:** Fernando Fernandez Mancera `<fmancera@suse.de>` (HSR
-  maintainer/contributor)
-- **Signed-off-by:** Maoyi Xie `<maoyixie.tju@gmail.com>` (author)
-- **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>` (net maintainer
-  merge)
-- **Link:** https://patch.msgid.link/20260604054949.2999304-1-
-  maoyixie.tju@gmail.com
-- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Cc: stable@` on the merged
-  commit (v3/net-next version)
-- Notable: A separate `[PATCH net]` stable nomination (2026-05-27)
-  included `Fixes: 09e91dbea0aa` and `Cc: stable@`
-
-**Step 1.3 — Body analysis**
+**Step 1.2 – Tags**
 
 Record:
-- **Bug:** With `.netnsok = true`, HSR devices can live outside
-  `init_net`, but `hsr_nl_ringerror()` and `hsr_nl_nodedown()` use
-  `genlmsg_multicast()`, which always delivers to `init_net`.
-- **Symptom 1:** Listeners in the device's own namespace never receive
-  ring-error or node-down events.
-- **Symptom 2:** Privileged listeners in `init_net` receive events from
-  HSR devices in *all* namespaces, including peer MAC
-  (`HSR_A_NODE_ADDR`) and slave ifindex (`HSR_A_IFINDEX`).
-- **Root cause:** Incomplete namespace support when `.netnsok` was
-  enabled; other `.netnsok` families (team, gtp, ovpn, batman-adv, etc.)
-  already use `genlmsg_multicast_netns()`.
-- **Version info:** `.netnsok` added in 5.6 (commit `09e91dbea0aa3`);
-  bug latent since then.
+- **Fixes:** none
+- **Reported-by:** none
+- **Tested-by:** none
+- **Reviewed-by:** none in commit message
+- **Acked-by:** none in commit message
+- **Link:** none
+- **Cc: stable:** none (expected for pipeline candidates)
+- **Signed-off-by:** Jia Jia `<physicalmtea@gmail.com>`, Michael S.
+  Tsirkin `<mst@redhat.com>` (ignore pipeline-added SOBs)
+- **Message-ID:** `<20260724060919.1569170-1-physicalmtea@gmail.com>`
+  (v2 submission)
 
-**Step 1.4 — Hidden bug fix?**
+Notable: Signed-off-by from vhost maintainer (mst) is a strong quality
+signal. No syzbot/fuzzer report; this is a logic/lifetime bug.
 
-Record: **Yes.** Despite net-next framing as a "behavior change," this
-fixes (a) a cross-namespace information leak and (b) broken event
-delivery for namespaced HSR consumers.
+**Step 1.3 – Body analysis**
+
+Record:
+- **Bug:** `vhost_scsi_setup_resp_iovs()` copies guest response
+  descriptor addresses (translated userspace HVAs) into per-command
+  `tvc_resp_iovs` at submit time. Target-core completes SCSI commands
+  asynchronously. `VHOST_SET_MEM_TABLE` can replace the memory table
+  while commands still hold iovecs from the old table.
+- **Symptom:** After the ioctl returns and old mappings are reused,
+  async completion via `copy_to_iter()` can write the virtio-scsi
+  response into unrelated userspace memory → **host memory corruption**.
+- **Versions:** Not specified; mechanism has existed since the 2012 TODO
+  was added.
+- **Root cause:** Missing synchronization barrier between device-wide
+  ioctls (especially `VHOST_SET_MEM_TABLE`) and in-flight async
+  completions using stale response iovecs.
+
+**Step 1.4 – Hidden bug fix?**
+
+Record: **Yes.** Although the subject says "flush" rather than "fix",
+this closes a long-standing correctness hole marked by a `/* TODO: flush
+backend after dev ioctl. */` comment since 2012. It is not cosmetic
+cleanup.
 
 ---
 
 ## Phase 2: Diff Analysis
 
-**Step 2.1 — Inventory**
+**Step 2.1 – Inventory**
 
 Record:
-- **File:** `net/hsr/hsr_netlink.c` — ~7 insertions, ~2 deletions
-- **Functions:** `hsr_nl_ringerror()`, `hsr_nl_nodedown()`
+- **File:** `drivers/vhost/scsi.c` (+2 / -1 lines net)
+- **Function:** `vhost_scsi_ioctl()` default branch
 - **Scope:** Single-file, surgical fix
 
-**Step 2.2 — Code flow**
+**Step 2.2 – Code flow change**
 
 Record:
-- **`hsr_nl_ringerror()`:** `genlmsg_multicast()` →
-  `genlmsg_multicast_netns(..., dev_net(port->dev), ...)`. `port` is
-  already available.
-- **`hsr_nl_nodedown()`:** Adds `rcu_read_lock()`, looks up master via
-  `hsr_port_get_hsr()`, then `genlmsg_multicast_netns(...,
-  dev_net(master->dev), ...)`, then `rcu_read_unlock()`. Matches
-  existing fail-path pattern.
+- **Before:** After `vhost_dev_ioctl()`, unknown ioctls fall through to
+  `vhost_vring_ioctl()` on `-ENOIOCTLCMD`; no flush for handled device
+  ioctls (`VHOST_SET_MEM_TABLE`, etc.).
+- **After:** On any non-`-ENOIOCTLCMD` result from `vhost_dev_ioctl()`,
+  call `vhost_scsi_flush(vs)` before returning. Vring ioctls still
+  bypass this flush (they return `-ENOIOCTLCMD` and go to
+  `vhost_vring_ioctl()`).
+- **Path affected:** Control-plane ioctl path only; data path unchanged.
 
-**Step 2.3 — Bug mechanism**
+**Step 2.3 – Bug mechanism**
 
-Record: **Logic/correctness + namespace isolation bug.** Wrong netlink
-multicast target namespace. Category: functional defect + cross-
-namespace information disclosure (not crash/UAF).
+Record: **Memory safety / lifetime bug (stale pointer use).**
+- `vhost_get_vq_desc()` → `translate_desc()` builds `vq->iov[]` using
+  current `dev->umem` mappings.
+- `vhost_scsi_setup_resp_iovs()` copies those pointers into
+  `cmd->tvc_resp_iovs`.
+- Completion in `vhost_scsi_complete_cmd_work()` writes via those stored
+  iovecs:
 
-**Step 2.4 — Fix quality**
+```721:723:drivers/vhost/scsi.c
+                iov_iter_init(&iov_iter, ITER_DEST, cmd->tvc_resp_iovs,
+                              cmd->tvc_resp_iovs_cnt, sizeof(v_rsp));
+                ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
+```
 
-Record: **High.** Minimal change, follows team/gtp/handshake pattern.
-Low regression risk. v3 intentionally dropped NULL-master check (master
-guaranteed present on prune/notify paths per Fernando's review).
+- `vhost_set_memory()` replaces `d->umem` and frees the old IOTLB
+  without waiting for in-flight completions using old HVAs.
+
+**Step 2.4 – Fix quality**
+
+Record:
+- **Obviously correct:** Matches the established pattern in `vhost-net`
+  and `vhost-vsock`:
+
+```1827:1835:drivers/vhost/net.c
+        default:
+                mutex_lock(&n->dev.mutex);
+                r = vhost_dev_ioctl(&n->dev, ioctl, argp);
+                if (r == -ENOIOCTLCMD)
+                        r = vhost_vring_ioctl(&n->dev, ioctl, argp);
+                else
+                        vhost_net_flush(n);
+                mutex_unlock(&n->dev.mutex);
+                return r;
+```
+
+- **Minimal:** 3-line change; removes TODO, adds `else
+  vhost_scsi_flush(vs)`.
+- **Regression risk:** Low. Flush only on rare device-wide control
+  ioctls; vring hot-path ioctls explicitly excluded.
+  `vhost_scsi_flush()` already used in set/clear endpoint paths and
+  requires `dev.mutex` (held here).
 
 ---
 
 ## Phase 3: Git History Investigation
 
-**Step 3.1 — Blame**
+**Step 3.1 – Blame**
 
-Record: Buggy `genlmsg_multicast()` calls date to HSRv0 introduction
-(`f421436a591d3`, 2013). `.netnsok = true` added in `09e91dbea0aa3`
-(March 2020, landed in 5.6). Both are ancestors of this tree.
+Record: TODO introduced in `935cdee7ee1595` (Dec 2012, Michael S.
+Tsirkin, "vhost: avoid backend flush on vring ops"). Default ioctl
+branch dates to `057cbf49a1f082` (Jul 2012). Buggy gap present ~14
+years.
 
-**Step 3.2 — Fixes: tag**
+**Step 3.2 – Fixes: tag**
 
-Record: N/A on merged commit. Stable nomination used `Fixes:
-09e91dbea0aa ("hsr: set .netnsok flag")`, which **is present** in this
-6.18.44 tree.
+Record: N/A — no Fixes: tag.
 
-**Step 3.3 — Related history**
+**Step 3.3 – Related file history**
 
 Record:
-- `c0178eec88842` (Oct 2025): Enforces HSR slaves must be in same netns
-  as HSR device — shows active netns work in HSR.
-- No prior fix for multicast namespace routing found.
+- `vhost_scsi_flush()` introduced/evolved through inflight refcount
+  mechanism (commits like `25b98b64e2842`, `31fbea3ab94ea`).
+- `vhost_scsi_setup_resp_iovs()` added in `9d8960672d63d` (2024) — makes
+  explicit per-command storage of response iovecs, but the race predates
+  this.
+- Fix is **standalone**; not part of a multi-patch dependency series for
+  this specific change.
 
-**Step 3.4 — Author context**
+**Step 3.4 – Author context**
 
-Record: Maoyi Xie is an active net contributor (multiple netns-security
-patches). Fernando Fernandez Mancera is the HSR reviewer/maintainer on
-this patch.
+Record: Jia Jia submitted v2 (Jul 2026); Michael S. Tsirkin Signed-off-
+by. Author also submitted related vhost-scsi hardening patches in the
+same timeframe.
 
-**Step 3.5 — Dependencies**
+**Step 3.5 – Prerequisites**
 
-Record: **Standalone.** Requires only `genlmsg_multicast_netns()`
-(present since `134e63756d5f3` "genetlink: make netns aware") and
-`.netnsok = true`. Both exist in this tree. No series dependencies.
+Record: **None required.** `vhost_scsi_flush()` exists in this tree.
+Patch applies to current `vhost_scsi_ioctl()` structure. No new APIs or
+structures.
 
 ---
 
 ## Phase 4: Mailing List and External Research
 
-**Step 4.1 — Original discussion**
+**Step 4.1 – Original discussion**
 
 Record:
-- Bug inquiry: https://lists.openwall.net/linux-kernel/2026/05/18/368
-  (2026-05-18, with PoC)
-- v1 stable nomination:
-  https://www.spinics.net/lists/stable/msg951996.html (2026-05-27, `Cc:
-  stable@`)
-- v2 net-next: https://www.spinics.net/lists/netdev/msg1192529.html
-  (author noted "behavior change," dropped stable tags)
-- v3 merged version: https://lkml.iu.edu/2606.0/07764.html (dropped
-  NULL-master check per Fernando)
-- `b4 dig -c <hash>`: **Could not run** — fix commit not yet in local
-  tree
+- Thread found via web search (lore.kernel.org blocked by bot
+  protection):
+  - https://www.spinics.net/lists/netdev/msg1207854.html
+  - https://lists.openwall.net/netdev/2026/07/21/81
+  - v2: Message-ID `<20260724060919.1569170-1-physicalmtea@gmail.com>`
+- Author explains flush is control-plane only; vring ioctls
+  intentionally excluded per 2012 design.
+- Mike Christie reviewed (Jul 22); author responded Jul 23 with detailed
+  lifetime analysis.
+- **b4 dig:** Could not run — commit hash not present in this checkout;
+  `b4 dig -c` requires a commitish.
 
-**Step 4.2 — Reviewers**
+**Step 4.2 – Reviewers**
 
-Record: Fernando Fernandez Mancera provided `Reviewed-by`. CC list
-included netdev, linux-kernel, HSR maintainers. Jakub Kicinski merged.
+Record: CC'd netdev, kvm, virtualization; Paolo Bonzini, Stefan
+Hajnoczi, Eugenio Pérez, Mike Christie, Jason Wang area. mst Signed-off-
+by on committed version.
 
-**Step 4.3 — Bug report**
+**Step 4.3 – Bug report**
 
-Record: PoC (`poc_hsr_pernet.c`) demonstrates:
-- Vanilla: `init_net` gets 2 notifications, child namespace gets 0
-- Fixed: each namespace gets only its own device's notification
-- Severity: namespace isolation violation + broken monitoring for
-  namespaced HSR
+Record: No external bugzilla/syzbot report. Bug identified through code
+analysis of the 2012 TODO and async completion path.
 
-**Step 4.4 — Series context**
+**Step 4.4 – Related patches**
 
-Record: v1→v3 evolution; final merged version is v3 (no NULL check, no
-stable tags). Functionally equivalent to stable nomination minus NULL
-check.
+Record: Author has related vhost-scsi patches (feature-change rejection,
+T10-PI lifecycle) but this flush fix is independent.
 
-**Step 4.5 — Stable list**
+**Step 4.5 – Stable list history**
 
-Record: Explicit stable nomination exists (spinics stable msg951996).
-Fernando replied on stable thread (follow-up noted on spinics, full text
-not fetched).
+Record: No stable-list discussion found (lore blocked). Not used as
+negative signal.
 
 ---
 
 ## Phase 5: Code Semantic Analysis
 
-**Step 5.1 — Key functions**
+**Step 5.1 – Key functions**
 
-Record: `hsr_nl_ringerror()`, `hsr_nl_nodedown()`
+Record: `vhost_scsi_ioctl()`, `vhost_scsi_flush()`, `vhost_dev_ioctl()`,
+`vhost_scsi_setup_resp_iovs()`, `vhost_scsi_complete_cmd_work()`,
+`vhost_set_memory()`.
 
-**Step 5.2 — Callers**
+**Step 5.2 – Callers**
 
 Record:
-- `hsr_nl_ringerror()`: `hsr_framereg.c:661` from `hsr_prune_nodes()`
-  timer (under `rcu_read_lock` when port exists)
-- `hsr_nl_nodedown()`: `hsr_framereg.c:668,702` from `hsr_prune_nodes()`
-  and `hsr_prune_proxy_nodes()` timers
+- `vhost_scsi_ioctl()` — userspace via `/dev/vhost-scsi` ioctl
+  (QEMU/vhost owner process).
+- `vhost_scsi_flush()` — already called from
+  `vhost_scsi_set_endpoint()`, `vhost_scsi_clear_endpoint()`.
+- Trigger ioctl `VHOST_SET_MEM_TABLE` — userspace during guest memory
+  layout changes (hotplug, migration prep).
 
-**Step 5.3 — Callees**
+**Step 5.3 – Callees**
 
-Record: `genlmsg_new()`, `genlmsg_put()`, `nla_put()`, `genlmsg_end()`,
-`genlmsg_multicast[_netns]()`, `hsr_port_get_hsr()`, `dev_net()`
+Record: `vhost_scsi_flush()` → `vhost_scsi_init_inflight()`,
+`kref_put()` on old generation, `vhost_dev_flush()`,
+`wait_for_completion()` on old inflight completions.
 
-**Step 5.4 — Reachability**
+**Step 5.4 – Reachability**
 
-Record: Triggered by HSR prune timers during normal HSR/PRP operation
-(node aging, link failures). Reachable whenever HSR is configured and
-nodes time out — not a rare error-only path. Requires `CONFIG_HSR=m/y`.
+Record: **Reachable from userspace** with `CONFIG_VHOST_SCSI`. Requires
+active vhost-scsi endpoint with in-flight SCSI I/O concurrent with
+`VHOST_SET_MEM_TABLE`. Realistic in virtualization workloads.
 
-**Step 5.5 — Similar patterns**
+**Step 5.5 – Similar patterns**
 
-Record: `drivers/net/team/team_core.c:2866`,
-`drivers/net/gtp.c:560,747`, `net/handshake/netlink.c:67` all use
-`genlmsg_multicast_netns()` with `dev_net(device->dev)`.
+Record: `vhost_net_flush()` and `vhost_vsock_flush()` already follow
+identical ioctl pattern. vhost-scsi is the outlier with an unfilled
+TODO.
 
 ---
 
 ## Phase 6: Cross-Reference Against Local Tree (6.18.44)
 
-**Step 6.1 — Buggy code present?**
+**Step 6.1 – Buggy code present?**
 
-Record: **Yes.** Local tree is `v6.18.44`.
-`net/hsr/hsr_netlink.c:242,279` still use `genlmsg_multicast()`.
-`.netnsok = true` at line 549. Fix not yet applied.
+Record: **YES.** Local tree is `v6.18.44` / `6.18.44`. Current code
+still has the TODO and no flush:
 
-**Step 6.2 — Backport complications**
+```2431:2438:drivers/vhost/scsi.c
+        default:
+                mutex_lock(&vs->dev.mutex);
+                r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
+                /* TODO: flush backend after dev ioctl. */
+                if (r == -ENOIOCTLCMD)
+                        r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
+                mutex_unlock(&vs->dev.mutex);
+                return r;
+```
 
-Record: **Clean apply expected.** File structure matches diff hunks. No
-conflicting changes in recent history.
+Fix not yet applied (`git log --grep='vhost-scsi: flush backend'`
+returned empty).
 
-**Step 6.3 — Related fixes already present?**
+**Step 6.2 – Backport complications**
 
-Record: **No.** No existing fix for HSR multicast namespace routing.
+Record: **Clean apply expected.** Identical structure to vhost-net fix;
+no refactoring conflicts in recent `drivers/vhost/scsi.c` history.
+
+**Step 6.3 – Related fixes already present?**
+
+Record: **No.** No alternative fix for this race found in this tree.
 
 ---
 
-## Phase 7: Subsystem Context
+## Phase 7: Subsystem and Maintainer Context
 
-**Step 7.1 — Subsystem**
+**Step 7.1 – Subsystem**
 
-Record: `net/hsr` — networking, HSR/PRP industrial redundancy (IEC
-62439). **Criticality: IMPORTANT** (niche but used in power
-grid/industrial automation; namespace-aware deployments exist).
+Record: **drivers/vhost** (virtio host backends). Criticality:
+**IMPORTANT** for virtualization (KVM/QEMU with kernel virtio-scsi
+target). Not universal like mm/net core, but data corruption in host
+userspace is serious.
 
-**Step 7.2 — Activity**
+**Step 7.2 – Activity**
 
-Record: Active development (netns enforcement Oct 2025, multiple
-2025–2026 bug fixes in this tree).
+Record: vhost-scsi actively maintained in 6.18 (logging, resource
+handling, bug fixes in recent commits).
 
 ---
 
 ## Phase 8: Impact and Risk Assessment
 
-**Step 8.1 — Who is affected**
+**Step 8.1 – Who is affected**
 
-Record: Users with `CONFIG_HSR` who run HSR/PRP devices in
-non-`init_net` network namespaces, or who rely on namespace isolation.
+Record: Users of `CONFIG_VHOST_SCSI` — QEMU/KVM setups using kernel
+vhost-scsi with target-core backend.
 
-**Step 8.2 — Trigger conditions**
+**Step 8.2 – Trigger conditions**
 
-Record: Normal HSR operation — ring errors detected, nodes pruned after
-timeout. Common during link failures. Unprivileged users cannot directly
-trigger netlink delivery, but HSR operation in containers/namespaces is
-the affected scenario.
+Record: `VHOST_SET_MEM_TABLE` (or other `vhost_dev_ioctl()` handlers)
+while SCSI commands are in flight. Moderately rare (control-plane) but
+normal during memory hotplug/migration. Unprivileged users cannot
+directly ioctl vhost-scsi without device access, but VM operators can
+trigger it.
 
-**Step 8.3 — Failure mode severity**
+**Step 8.3 – Failure mode severity**
 
-Record:
-- Cross-namespace info leak (MAC + ifindex to `init_net` listeners):
-  **MEDIUM-HIGH** (namespace isolation violation; requires
-  `CAP_NET_ADMIN` in `init_net`)
-- Missing events in device's namespace: **MEDIUM** (monitoring/alerting
-  broken for namespaced HSR)
-- No crash, corruption, or deadlock
+Record: **Stale HVA write on async completion → host userspace memory
+corruption.** Severity: **CRITICAL** (data corruption, potential
+security impact in multi-tenant/host scenarios).
 
-**Step 8.4 — Risk-benefit**
+**Step 8.4 – Risk-benefit**
 
 Record:
-- **Benefit:** Restores correct `.netnsok` semantics; closes info leak;
-  enables monitoring in namespaced HSR deployments
-- **Risk:** Very low — ~7 lines, established pattern, reviewed by HSR
-  maintainer
-- **Ratio:** Favorable
+- **Benefit:** HIGH — prevents real corruption bug present since 2012.
+- **Risk:** LOW — 3-line change, mirrors proven net/vsock pattern, flush
+  infrastructure already exists and is tested in endpoint paths.
+- **Ratio:** Strongly favors backport.
 
 ---
 
 ## Phase 9: Final Synthesis
 
-**Step 9.1 — Evidence**
+**Step 9.1 – Evidence summary**
 
-FOR:
-- Real, demonstrated bug (PoC with before/after counts)
-- Cross-namespace information leak across an isolation boundary
-- Broken functionality for namespaced HSR consumers since `.netnsok` was
-  enabled
-- Small, obviously correct fix matching team/gtp/ethtool patterns
-- Reviewed by Fernando Fernandez Mancera
-- Explicit stable nomination existed
-- All prerequisites present in 6.18.44 tree
-- Clean apply expected
+**FOR backport:**
+- Real memory-corruption bug with clear mechanism
+- Long-standing known gap (TODO since 2012)
+- Surgical 3-line fix, obviously correct
+- Matches existing vhost-net/vhost-vsock behavior
+- vhost maintainer Signed-off-by
+- Reviewed on netdev list with technical discussion
+- All prerequisites (`vhost_scsi_flush`) present in 6.18.44
+- Buggy code confirmed present in this tree
 
-AGAINST:
-- Author initially characterized net-next version as "behavior change"
-  (not a fix)
-- Latent since 5.6 without user reports until 2026
-- HSR is niche (`CONFIG_HSR` tristate)
-- Not a crash/corruption/deadlock
-- Theoretically could affect tools that relied on receiving all HSR
-  events in `init_net` (unintended behavior)
+**AGAINST backport:**
+- Affects only `CONFIG_VHOST_SCSI` users (narrower than core subsystems)
+- No fuzzer/user bug report (theoretical until triggered — but mechanism
+  is concrete, not speculative)
+- Flush adds latency on rare control ioctls (acceptable; same as vhost-
+  net)
 
-**Step 9.2 — Stable rules checklist**
+**Unresolved:** Could not access lore.kernel.org directly; relied on
+spinics/openwall mirrors. Commit hash not in local tree for `b4 dig -c`.
 
-1. Obviously correct and tested? **PASS** — PoC verified; pattern used
-   elsewhere; Reviewed-by from HSR maintainer
-2. Fixes a real bug affecting users? **PASS** — demonstrated with PoC;
-   affects namespaced HSR deployments
-3. Important issue? **PASS** — cross-namespace info leak (namespace
-   isolation) + broken event delivery for monitoring
-4. Small and contained? **PASS** — 1 file, ~9 lines
-5. No new features/APIs? **PASS** — corrects existing notification
-   delivery
-6. Can apply to local tree? **PASS** — buggy code and APIs present;
-   clean apply expected
+**Step 9.2 – Stable rules checklist**
 
-**Step 9.3 — Exception categories**
+| Criterion | Result |
+|-----------|--------|
+| 1. Obviously correct and tested? | **PASS** — mirrors net/vsock; mst
+SOB; list review |
+| 2. Fixes real bug affecting users? | **PASS** — stale-iovec corruption
+on mem table update |
+| 3. Important issue? | **PASS** — data corruption, severity CRITICAL |
+| 4. Small and contained? | **PASS** — 3 lines, one function |
+| 5. No new features/APIs? | **PASS** — uses existing
+`vhost_scsi_flush()` |
+| 6. Can apply to local tree? | **PASS** — clean apply to current
+`scsi.c` |
 
-Record: None (not device ID, quirk, DT, build, or docs). Standard bug-
-fix category.
+**Step 9.3 – Exception categories**
 
-**Step 9.4 — Decision rationale**
+Record: Not a device-ID/quirk/DT/build/docs exception. Qualifies as a
+**real bug fix** under stable rules.
 
-This commit completes the namespace support started by `.netnsok = true`
-in 2020. The current code violates network-namespace isolation by
-leaking HSR event data (peer MAC, slave ifindex) into `init_net`, while
-simultaneously failing to deliver events to listeners in the device's
-own namespace. For a 6.18.y tree where HSR namespace support is already
-enabled and netns enforcement was recently tightened (`c0178eec88842`),
-this is a warranted stable fix: small, low-risk, and addresses a real
-isolation defect with demonstrated reproduction.
+**Step 9.4 – Decision rationale**
+
+This commit closes a genuine control-plane synchronization hole in
+vhost-scsi that can cause host memory corruption when
+`VHOST_SET_MEM_TABLE` races with asynchronously completing SCSI
+commands. The bug exists in Linux 6.18.44, the fix is minimal and
+follows an established pattern in sibling vhost drivers, and all
+infrastructure is already present in this tree.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed commit message and tags from user-provided diff
-- [Phase 1] Confirmed no syzbot/Reported-by on merged commit; found
-  original bug inquiry (2026-05-18)
-- [Phase 2] Read `net/hsr/hsr_netlink.c:216-291` — confirmed buggy
-  `genlmsg_multicast()` at lines 242, 279
-- [Phase 2] Read `include/net/genetlink.h:508-530` — confirmed
-  `genlmsg_multicast()` hardcodes `init_net`
-- [Phase 3] `git describe HEAD` → `v6.18.44` / `6.18.44`
-- [Phase 3] `git blame` — multicast calls from 2013; `.netnsok` from
-  `09e91dbea0aa3` (2020)
-- [Phase 3] `git merge-base --is-ancestor 09e91dbea0aa3 HEAD` → IS
-  ancestor
-- [Phase 3] `git merge-base --is-ancestor 134e63756d5f3 HEAD` → IS
-  ancestor (`genlmsg_multicast_netns`)
-- [Phase 3] `git log --oneline -20 -- net/hsr/` — recent HSR activity
-  confirmed
-- [Phase 4] Fetched openwall bug report with PoC test results
-- [Phase 4] Fetched spinics stable nomination (Fixes: + Cc: stable@)
-- [Phase 4] Fetched v2/v3 netdev threads (Reviewed-by, behavior-change
-  discussion)
-- [Phase 4] `b4 dig -c <hash>` — UNVERIFIED (commit not in local tree)
-- [Phase 5] `grep hsr_nl_ringerror|hsr_nl_nodedown` — callers in
-  `hsr_framereg.c:661,668,702`
-- [Phase 5] Confirmed team/gtp use `genlmsg_multicast_netns()` pattern
-- [Phase 6] Buggy code confirmed present in 6.18.44 tree; fix not yet
-  applied
-- [Phase 6] Read `net/hsr/Kconfig` — HSR is tristate industrial protocol
-- [Phase 7] Subsystem activity confirmed via git log
-- [Phase 8] Assessed severity: namespace info leak + functional
-  monitoring defect
+- [Phase 1] Parsed subject, tags, body; identified corruption bug and
+  mst SOB
+- [Phase 1] Confirmed no Fixes:/Reported-by:/syzbot tags
+- [Phase 2] Read diff: removes TODO, adds `else vhost_scsi_flush(vs)` in
+  `vhost_scsi_ioctl()` default branch
+- [Phase 2] Traced completion path: `vhost_scsi_setup_resp_iovs()` →
+  `copy_to_iter()` at lines 721-723
+- [Phase 2] Traced mem table update: `vhost_set_memory()` replaces
+  `d->umem`, frees old IOTLB at lines 2021-2032
+- [Phase 2] Confirmed `translate_desc()` builds userspace HVAs from
+  memory table at lines 2646-2688
+- [Phase 3] `git blame -L 2431,2438`: TODO from `935cdee7ee1595` (Dec
+  2012)
+- [Phase 3] `git show 935cdee7ee1595`: original commit added TODO when
+  splitting vring vs dev ioctl flush
+- [Phase 3] `git log --grep='vhost-scsi: flush backend'`: empty — fix
+  not in tree
+- [Phase 3] `git log -S 'vhost_scsi_flush'`: flush infrastructure
+  present since inflight mechanism
+- [Phase 4] Web search found netdev thread (spinics/openwall); author v2
+  Jul 24 2026; Mike Christie review Jul 22
+- [Phase 4] lore.kernel.org fetch: **FAILED** (403/bot protection)
+- [Phase 4] `b4 dig -c`: **NOT RUN** — commit hash unavailable in
+  checkout
+- [Phase 5] Confirmed `vhost_scsi_flush()` at lines 1855-1876 uses
+  inflight generation + `vhost_dev_flush()` + wait
+- [Phase 5] Confirmed inflight refcount on cmd alloc/release (lines 768,
+  454)
+- [Phase 5] Compared with `vhost_net_flush` pattern at net.c:1827-1835
+  and vsock.c:883-891
+- [Phase 6] `git describe HEAD`: v6.18.44
+- [Phase 6] `make -s kernelversion`: 6.18.44
+- [Phase 6] Confirmed buggy TODO still present at scsi.c:2434
+- [Phase 6] Expected clean backport — no conflicting changes in ioctl
+  path
+- [Phase 8] Failure mode: host userspace memory corruption; severity
+  CRITICAL
+- [Phase 8] Affected population: CONFIG_VHOST_SCSI virtualization users
 
-**YES**
+**YES**The background checks finished: `git log --grep='vhost-scsi:
+flush backend'` returned nothing, so this fix is **not** in the local
+**6.18.44** tree yet. The `/* TODO: flush backend after dev ioctl. */`
+comment is still in `drivers/vhost/scsi.c`.
 
- net/hsr/hsr_netlink.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+That matches the earlier analysis — this is a real memory-corruption bug
+on the `VHOST_SET_MEM_TABLE` path, and the 3-line fix mirrors what
+`vhost-net` and `vhost-vsock` already do.
 
-diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
-index c96b63adf96ff..50a8104e864e2 100644
---- a/net/hsr/hsr_netlink.c
-+++ b/net/hsr/hsr_netlink.c
-@@ -239,7 +239,8 @@ void hsr_nl_ringerror(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN],
- 		goto nla_put_failure;
- 
- 	genlmsg_end(skb, msg_head);
--	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
-+	genlmsg_multicast_netns(&hsr_genl_family, dev_net(port->dev),
-+				skb, 0, 0, GFP_ATOMIC);
- 
- 	return;
- 
-@@ -275,8 +276,12 @@ void hsr_nl_nodedown(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN])
- 	if (res < 0)
- 		goto nla_put_failure;
- 
-+	rcu_read_lock();
-+	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	genlmsg_end(skb, msg_head);
--	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
-+	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
-+				skb, 0, 0, GFP_ATOMIC);
-+	rcu_read_unlock();
- 
- 	return;
- 
+**YES** — it should be backported to this tree.
+
+ drivers/vhost/scsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 98e4f68f4e3cb..e369f57ce1679 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -2431,9 +2431,10 @@ vhost_scsi_ioctl(struct file *f,
+ 	default:
+ 		mutex_lock(&vs->dev.mutex);
+ 		r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
+-		/* TODO: flush backend after dev ioctl. */
+ 		if (r == -ENOIOCTLCMD)
+ 			r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
++		else
++			vhost_scsi_flush(vs);
+ 		mutex_unlock(&vs->dev.mutex);
+ 		return r;
+ 	}
 -- 
 2.53.0
 
