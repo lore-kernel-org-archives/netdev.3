@@ -1,138 +1,141 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563E6363097
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A7C37F739
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788205590; cv=none; b=gzK45ehMNiKt3PoL7QcK4jN4y0jbJYVhSIVunpetXEtdcfSZwn8bDRSgPzb56D+74zUKakg+sFYK07TuAK5F5D3lzWa9eotKrU9h2ggVxcWuNmMbDTMkONtT3kF4QgA0TWWyzWtXUDVjV4FQXMloYxChMnYTlPknbN+233/DJTc=
+	t=1788205762; cv=none; b=LOjkrSIlcsKwOIV1b9F0TFTvIm7CIFo3jz/ryJKXnlLcSRYi4YcHGBlRuSaKLgcIjz7M55KXOWBBjnz6D4RoMjB5OrbchnCMOHQQ7qYZ2uGMbEgb6cyaTIpYnK7SibWx0ONyga9uSFcvaN84a78BMwnKWGlwJ32nFXoGZUorSIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788205590; c=relaxed/simple;
-	bh=Re3FEq9QGggKSm98Ro8MAdNh+ALER15Rg3B8nWrg3iY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=i/XSqtqlPostIa86xTsccdSemvfVF+FstilhtEzwRvr3DUnd2N11eBuRt5tGb2ZPdBoVLOavgCU0eYp+H/9zwLe3R8PB1wbvPEQjMtzyv+N8DSO+8j/bTzaCKyZl7XwjUqBwMOzgg0caDHX9jxIJUORc1l3eN+iH018WbN4MFjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FPF9u2Zf; arc=none smtp.client-ip=209.85.222.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1788205762; c=relaxed/simple;
+	bh=ewjMh7AeS7UxdW1t5ZVYR3mAJwTq3JM0H2t+6IKbq6k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hiAGczWCVqBxu6sMiWnKGNRdJItTthp3YyCIduMy6X8NjkAMRzqbufltfn0c7AFG2m0LPODvPVvVjFvzV2S5Bmx/8lZatSqLdzA+bgT9PIulFWazK0+xpeWSC0u/6QKFtuEEOBy3RdFyEgHXYdH7CBtpDZMCIZOK+0p8MnPaMv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N51IutvS; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FPF9u2Zf"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-936aa34873bso19460285a.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:46:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N51IutvS"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4843e397f74so245517f8f.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:49:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788205588; x=1788810388; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=L8WgGAXGH8xTW9laYYHYVOy3cGdfh/tRDSqucBl7R44=;
-        b=FPF9u2ZfCYygbgDUBXMYt0lfjNgbzPLeO6lNznVocgNl8iLCK4nKjm8K7YBWsz4erf
-         dgcG12yWDuBAkv633H2xpJorxSg5nVnUaOHDNH8BGdu7K1VGzgCOho9tGGHm8e/k2PTm
-         tqkVoizB7fAdOuDt4velmeKCJF8YhzxY4Kd0lIrpVoJQBt1uOE7c4etiawsHtq2CYxlq
-         A2SLY1zDMxSU74lQT5zANiKDmI+/el1VYY2nV30115T5diEA+p0MDw+mlyJtkiyU/IGT
-         Yb7sJsA5FihH0EZdknwSv/IA3zCwQ/OyZnjtvZ91QBlBb9HX0WnUh/zQuXRkGP0J7xyJ
-         WMow==
+        d=gmail.com; s=20251104; t=1788205758; x=1788810558; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OAn07Obxp1A7Fjhw2ws5anTiu/0A5X6fpZK312Rn4vY=;
+        b=N51IutvSUIdl5bM7Rkbpc5Vh+u7yikq6F7deahFvfPSdSkcDrAnqHHeOtShQ0zHwk5
+         S6lbNXFOjLK2IpnMF7Cnm+Rw+SJ3UmnepbDacvkUFmOLc0Msff+wQRlNB7/lniKMCJoT
+         ugSAVmr2Wa6HVcb486xow08in994VGN62DuKDQziVxNLhp5bzhedjZyBAydf2h6VO/7f
+         rZoxBxBWjYUYvruflfj6Mjo638+IqqSNrNviUK03KgzaRPM5rDEVGJ+7YVhXsrJGyzkV
+         6khXHYPwmXH9LdKjd3AUtQtmIibOFifbBTeyePtmD+Q/Dn/8hR50xj31riWjUDhs1JSO
+         TnrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788205588; x=1788810388;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L8WgGAXGH8xTW9laYYHYVOy3cGdfh/tRDSqucBl7R44=;
-        b=TWu2KoIyDxal9U+aYXmWslr5ezgh0RRwi1la+JOV8qfV1QQ5hxiHergH4ICZlOfRe3
-         xecGcUZbzv5acmkWk157lV6uXlhcN+0yVOPyucKg+SP+1adgw/92oz8O9vuqFfY2pQTu
-         /xQ1dkkjHrlREskjlfMnQBfBausFIeQqznWDzYh/Hs41yArltvbTOCUqUU0C4+QD9Rht
-         4pT99LPy2dm6kJbVDraaHqFLHg71FGuTbQr7OLszAr1Z0AHCQcQfSojbx7YypgJXMT7S
-         ecj3OVXBeOTVNiwtOzo4JAII2V/4M5GJ7c7WvUi/HJJ/yKt6vFFTZ4pjeuG+7dGUrtQD
-         i1Cw==
-X-Forwarded-Encrypted: i=1; AHgh+RpEfQWk07iCZxKsMNPNzlcV5T5dwqxB4J+xV7EKXljKgP6P6ppUJ09iW5+hJA+6Tz09xkAIimA=@vger.kernel.org
-X-Gm-Message-State: AFuF++kc8wt9B4BBMM3J1UNjLEtXahRWEoX0HIfuzXD6O2gIFplK0J7s
-	hfDNDtoyG7wadqKz4twsx85nwPnaHlKZV3ZnXZBqKyul9E/LA/3t+QIDg1gvfWw7tfu6thQkEeY
-	gdWaEiWC+d/XcAw==
-X-Received: from qkjb14.prod.google.com ([2002:a05:620a:cce:b0:936:e858:f658])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4402:b0:939:1acd:7d9 with SMTP id af79cd13be357-9391acd0d2fmr2239145285a.4.1788205587480;
- Mon, 31 Aug 2026 12:46:27 -0700 (PDT)
-Date: Mon, 31 Aug 2026 19:46:26 +0000
+        d=1e100.net; s=20251104; t=1788205758; x=1788810558;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OAn07Obxp1A7Fjhw2ws5anTiu/0A5X6fpZK312Rn4vY=;
+        b=dvavh9lJBwDcbNZmjQheR4lGuRBmC1Y0kmO54Viji2JZB87VMBbMs6DGdYu2ZCM+sC
+         K536xhXbWDB5uMn4vI9VftDfjRmAKvSz45bOJCisWgnrqjdRjBrO4koMaIb47GCOre5L
+         eUubMEWe4C5Nd/ynpbIlnZOUEc7SKMUyjYmmWwWqPruBMU+CmwO/jwSrKrapYZp6a5WS
+         CHdFkGo+4S9Ua9KqVCqQO4l52vtapFraTfKjRCLWdSKMfkkqeUteaCJPDwP5/a5m6yVv
+         hP/mwAWme4j/Q0Cm4G0G5p9q2sRrIU6EMREDUrqx/yNKeN9sT8fro6S220a4UvUKZxjH
+         UdYg==
+X-Forwarded-Encrypted: i=1; AKwUvBwhcH68VK+eoKw2vkYcrV03fm7YybfgfCvq9xQtQwNTT4eQ6u7mbFyjvZUnzVH2MFMIT/VBoQs=@vger.kernel.org
+X-Gm-Message-State: AFuF++lwe+JDKY2pdfYlFeO2MKMVumJ/JJe2j1LcHfaTxgprOELS1hRz
+	rErrtscj8HzQ69IAQ9gWkZA8LCTQz6K6fIVTBgjiStr6gGWrtXZp4JsG
+X-Gm-Gg: AYBFou3iAL6iLmYR4afhEhTxwd5fdnxP4TbwdyhLvB12lBGHvJ4UH74Hv1mat2kTZfg
+	kU/NsBO0VLClz1ZrT5y1ejQ6bJMGnXmw194FhIGuveAFagM2lnNKwa1kR1Wdxd9UuALVcY5fO0t
+	l9Go6KQ/OyM0X6ECD+Cm7fZiABdw+cK9d8ZRYTxbyY7jfUtWQeksovXGGTFe7aDtVIq2O6Lgsz7
+	DnEpJbpvPF0gID0lNHjg13nYYTfQVWSxoR9h2YoX3tTLQWektiKnf10VX2PoL6NzGXbHRFaM6E3
+	n6rRVeqlFhgTYkdoKJbnSqfxLsYsAMkdLBCzmL/TLBkhqv7rWofmQhDcCgS/2rj0naqxIGUKulu
+	75qS/sAzNB3VljLIbj8dduu+c47vWxnql5l/V/NI3HEUMtmFPBdwBxN9N66J3L/B7ZTq20yC+DS
+	fNjOnz/7Q54nvQJ9KltDzGWjo6xbBD3kXzCgeQ/vksImpgiZ90ZBI26I+zIXscshsWbR7sS71cI
+	9toBwc2pYgaUucOq+q2q4O1UjkTPt6SCsLmVTsR5ZeqK/LGWHFCZccuPJC7HXkn92iwfKvZ32xP
+	mHaQUMuJvBdn3nUyeWt9i8uQeZqUbHNuEVqRjWqpMv8e3lm1ihKgHQZ6od3z/gRe8Q==
+X-Received: by 2002:a5d:5e8e:0:b0:484:35bf:af6f with SMTP id ffacd0b85a97d-484421d969dmr991971f8f.12.1788205758197;
+        Mon, 31 Aug 2026 12:49:18 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-acb9-0201-68d0-34d2-ad1a-175a.310.pool.telefonica.de. [2a02:3100:acb9:201:68d0:34d2:ad1a:175a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d6e8eesm1731f8f.18.2026.08.31.12.49.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 31 Aug 2026 12:49:17 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: stable@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Mukul Sikka <mukul.sikka@broadcom.com>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>,
+	Bin Lan <lanbincn@139.com>,
+	XiaoHua Wang <561399680@139.com>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y 6.6.y] netfilter: nft_set_pipapo: restore cloned mapping table memcg accounting
+Date: Mon, 31 Aug 2026 21:49:05 +0200
+Message-Id: <20260831194905.45045-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260831194626.119371-1-edumazet@google.com>
-Subject: [PATCH net] bonding: alb: fix uninitialized transport header access
- in alb_determine_nd()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Jay Vosburgh <jv@jvosburgh.net>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-alb_determine_nd() uses icmp6_hdr(skb) to inspect ICMPv6 headers.
-However, in xmit paths (e.g. packets sent via AF_PACKET / raw sockets
-or forwarded packets), skb->transport_header is not guaranteed to be
-initialized. While pskb_network_may_pull() ensures the packet data is
-linear starting from the network header, it does not set or adjust the
-transport header offset.
+The 6.1.y and 6.6.y backports of commit 69e687cea79f
+("netfilter: nf_tables: missing objects with no memcg accounting")
+changed the pipapo_clone() mapping-table allocation to
+GFP_KERNEL_ACCOUNT.
 
-Dereferencing icmp6_hdr(skb) can therefore access out-of-bounds memory.
+Later stable backports of commit 07ace0bbe03b ("netfilter:
+nft_set_pipapo: do not rely on ZERO_SIZE_PTR") rewrote this allocation
+and changed the flag back to GFP_KERNEL. Upstream applied the
+ZERO_SIZE_PTR change before the memcg accounting change and retains
+GFP_KERNEL_ACCOUNT after both.
 
-Fetch the icmp6hdr directly after ipv6hdr following pskb_network_may_pull(),
-and reload ipv6hdr in case pskb_may_pull() reallocated skb->head.
-Also remove the unused bond argument from alb_determine_nd().
+nft_pipapo_deactivate() clones a populated set before looking up an
+element to delete. If the element is absent, priv->dirty remains false
+and the clone is retained. Its mapping tables therefore remain allocated
+without being charged to the requesting memory cgroup.
 
-Fixes: 0da8aa00bfcf ("net: bonding: Add support for IPV6 ns/na to balance-alb/balance-tlb mode")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Restore GFP_KERNEL_ACCOUNT for the cloned mapping table.
+
+For a 32,768-element two-field concatenation set, A/B tests on 6.1.186
+and 6.6.155 measured exactly 524,288 additional bytes charged to the
+memory cgroup after restoring the flag. An unmodified 6.12.107 control
+already accounted the corresponding allocation and showed the same
+accounting behavior.
+
+Fixes: a4983e89e3b1 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
+Fixes: 32bad10de347 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
-Cc: Jay Vosburgh <jv@jvosburgh.net>
----
- drivers/net/bonding/bond_alb.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index 839f7482dc18..5073aeeba6c9 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -1281,10 +1281,10 @@ static int alb_set_mac_address(struct bonding *bond, void *addr)
- }
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 7c8d28a031ad..4c3bb5d61a3b 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1465,7 +1465,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 				goto out_mt;
  
- /* determine if the packet is NA or NS */
--static bool alb_determine_nd(struct sk_buff *skb, struct bonding *bond)
-+static bool alb_determine_nd(struct sk_buff *skb)
- {
--	struct ipv6hdr *ip6hdr;
--	struct icmp6hdr *hdr;
-+	const struct ipv6hdr *ip6hdr;
-+	const struct icmp6hdr *hdr;
+ 			dst->mt = kvmalloc_array(src->rules, sizeof(*src->mt),
+-						 GFP_KERNEL);
++						 GFP_KERNEL_ACCOUNT);
+ 			if (!dst->mt)
+ 				goto out_mt;
  
- 	if (!pskb_network_may_pull(skb, sizeof(*ip6hdr)))
- 		return true;
-@@ -1296,7 +1296,8 @@ static bool alb_determine_nd(struct sk_buff *skb, struct bonding *bond)
- 	if (!pskb_network_may_pull(skb, sizeof(*ip6hdr) + sizeof(*hdr)))
- 		return true;
- 
--	hdr = icmp6_hdr(skb);
-+	ip6hdr = ipv6_hdr(skb);
-+	hdr = (const struct icmp6hdr *)(ip6hdr + 1);
- 	return hdr->icmp6_type == NDISC_NEIGHBOUR_ADVERTISEMENT ||
- 		hdr->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION;
- }
-@@ -1381,7 +1382,7 @@ struct slave *bond_xmit_tlb_slave_get(struct bonding *bond,
- 	if (!is_multicast_ether_addr(eth_data->h_dest)) {
- 		switch (skb->protocol) {
- 		case htons(ETH_P_IPV6):
--			if (alb_determine_nd(skb, bond))
-+			if (alb_determine_nd(skb))
- 				break;
- 			fallthrough;
- 		case htons(ETH_P_IP):
-@@ -1467,7 +1468,7 @@ struct slave *bond_xmit_alb_slave_get(struct bonding *bond,
- 			break;
- 		}
- 
--		if (alb_determine_nd(skb, bond)) {
-+		if (alb_determine_nd(skb)) {
- 			do_tx_balance = false;
- 			break;
- 		}
 -- 
-2.55.0.970.g62bdec98f9-goog
+2.39.5 (Apple Git-154)
 
