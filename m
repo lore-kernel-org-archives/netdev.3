@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8117439F83;
-	Mon, 31 Aug 2026 13:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CA0440644;
+	Mon, 31 Aug 2026 13:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183219; cv=none; b=utmCBGYyuYe9g3lpiqBRwdT/BDq/L8GCFUJJaQXz+Ry/IjuKVUzf6ObHid90A8f1+UWEEXJCfljldeBoRUcmNJVoLrtCK7S8CA1zCp3dLe6dZv55U88QrxENohWA0D1DmYKJ0Q4Cq94qnIwvoGGo14yPMrBABPcorpMYYmGi8mA=
+	t=1788183231; cv=none; b=FPZX1w+uiWWEVE9tXGeRWozdReTx16EkpgWc3dNsMOfWas95sSvtk4ol8gosFCulPil39RELFcJK6tucbgdh0wUYykdhWhwLOQHsqQuYztNqg96oy8QmEJuN+183TsqA25esaUHXEsKh/6938yC+etga8naZSI81VOuuJB0wzEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183219; c=relaxed/simple;
-	bh=AM8PKwI9A0Nx7pJTy2BhPnlvxqcGOVjc0qnmTKZ8RgI=;
+	s=arc-20240116; t=1788183231; c=relaxed/simple;
+	bh=YfnjULeoCIyTH+gFVKi8rUa87evviCfdX3+NyNtMil8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eOaaH32ZRcduN90cAcuHaXLMzTonwAONve8ksWpoIm1hJkFnTcbEuVK3ox6xZG34vkF7f4HEkrz84LTkuUqviAwGSDHyAIIG5UJL/fCbY48HoE/VW0zEVQFSkt9WaCTVW4F5IgNJsa7QmAnfJqhwjC3s/ZtNh5i9ZspWiYxkH5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WUy5UOY3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bJwxik5sLclTnS5kIH05hDq9oWGU1deceI4kw9duTBQYfgCKBQipX4/8+7eSi0q0TlNrwCNjijZp6Xydf4Wt9IZWPu6vwZY0TBjYIiqiMWFVG6YpxMGIZ0u0wbUQuw76wd24s5aEKnfyNjbXFPkt4kYKt9VvN1UIwQ7nKO23E8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4Viux0a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WUy5UOY3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5773A1F000E9;
-	Mon, 31 Aug 2026 13:33:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4Viux0a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C061F00ACA;
+	Mon, 31 Aug 2026 13:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183217;
-	bh=s2WzExxrbNaGa4Q4CVRnZE3JXWCu0m9Sj1QCKWehbB8=;
+	s=k20260515; t=1788183228;
+	bh=HJcpBxG0WxAHgLKFkKvOzBL2KDDtVHpZPlJTJFGdmsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WUy5UOY3h+1/ZdSD2JYEOQ5E3GnsevExIG3tmXuYYea5nUUnJc4RQZ+medCKI+hxB
-	 Fy4vj94zf1vZMJu0Sy/ZoYf7VsC4GVQ1YWi3lYMgfuoW7EK4zqC2WM1HoVV/S4zpiC
-	 EuCtOYW+D7EEj6QA5gDmzlcvpni4PSI77TMdkND2qRRioWhJ+Yn7q9FnOciJ/tY99a
-	 kHuVNY672ZkLjB1n5r1wM8kZeiN32D09FIhQoCuzJO8ThVhDnPnGIU2sYc6xaB4TTK
-	 pv760pg6+fa8U9UOV86zPyugvf9oIOTNwNv/54pC6egDJHdcLozz6xA+2RgmsMWNaT
-	 CEBA0m4DPCMTA==
+	b=f4Viux0a0H9cGo8COU+TD6QHnPrl0UJ6P5jz98GSMOWnMJU6MRF2AfZkZ5nDZddFC
+	 GNZOromcnGBfGVBr3WJXAxD0iAmi+pp6khlt5mxOFfsSJZhzPc/fzsHZiSMHO9lUfj
+	 zL2bKldJ0caBbLupYSazSIl6GDZj/Lb2F8ZE7SsoYes3JXUIul4Nj8uHmXk0w0+aLr
+	 k/9SEHN8smmIwR8lcrIoV8H5I0j6Tvx2mnzpjtdfRAl4+KYzXHjfs7uALNW4QOf06P
+	 C3Euc1tOHyJ3fgmYN5rpMc7ovprcR6eaL3s4cv3lZw3L/XHilTAj9iVqpZe/cyvO7x
+	 EWy5ZmOwiI8Fg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
+Cc: "chunzhi.lin" <linchunzhi0@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	razor@blackwall.org,
+	Frank.Sae@motor-comm.com,
+	hkallweit1@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.6] bridge: Add missing READ_ONCE() annotations around FDB destination port
-Date: Mon, 31 Aug 2026 09:20:43 -0400
-Message-ID: <20260831133314.4125787-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] net: phy: motorcomm: use device properties for firmware tuning
+Date: Mon, 31 Aug 2026 09:20:50 -0400
+Message-ID: <20260831133314.4125787-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -58,464 +58,586 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: "chunzhi.lin" <linchunzhi0@gmail.com>
 
-[ Upstream commit bcdfd9fb109e0c9d76c345b2346b6b75ed1f476d ]
+[ Upstream commit fffedfece2b46bb99b00740697f6c0c874de3cf4 ]
 
-When roaming, the FDB destination port can change without holding the
-bridge's hash lock. Therefore, add missing READ_ONCE() annotations in
-both RCU readers and readers that hold the lock. In the latter case, the
-annotation is not needed in places where the FDB entry was already
-validated to be a local entry since such entries cannot roam.
+The Motorcomm PHY driver reads optional firmware properties via
+of_property_read_*() from phydev->mdio.dev.of_node. This works for
+Device Tree based systems, but causes ACPI platforms to ignore the same
+properties when they are supplied through _DSD.
 
-Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260517115009.175163-1-idosch@nvidia.com
+As a result, ACPI-described Motorcomm PHY devices fall back to default
+settings instead of applying firmware-provided tuning such as
+rx/tx internal delay, drive strength, clock output frequency, and
+optional boolean controls like auto-sleep-disabled,
+keep-pll-enabled, and tx clock inversion.
+
+Switch these lookups to device_property_read_*() so the driver uses the
+generic firmware node interface and can consume the same property names
+from either Device Tree or ACPI.
+
+This keeps the existing DT behavior unchanged while allowing ACPI
+platforms to honor PHY configuration from firmware.
+
+We have completed testing on Sophgo RISC-V architecture server SD3-10.
+This server has a 64-core Thead C920 CPU whose DWMAC is connected to
+Motorcomm's PHY YT8531. This server supports UEFI boot and it would like
+to use the ACPI table.
+
+Signed-off-by: chunzhi.lin <linchunzhi0@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260507040221.3679454-2-linchunzhi0@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `bridge: Add missing READ_ONCE() annotations
-around FDB destination port`
+# Stable Backport Analysis: `net: phy: motorcomm: use device properties
+for firmware tuning`
 
-**Local tree:** `v6.18.44` (Makefile: 6.18.44)
+**Local tree:** Linux **6.18.43** (`v6.18.43-1-gc7f0dac02d232`)
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 1.1 — Subject line**
+### Step 1.1: Subject line
+**Record:** `[net: phy: motorcomm]` `[use]` — Switch Motorcomm PHY
+firmware property lookups from Open Firmware–only APIs to the generic
+device property interface so ACPI `_DSD` properties are honored.
 
-Record: `[bridge]` `[add]` missing `READ_ONCE()` annotations around FDB
-destination port during concurrent roaming updates.
+### Step 1.2: Tags
+**Record:**
+| Tag | Value |
+|-----|-------|
+| Signed-off-by | chunzhi.lin \<linchunzhi0@gmail.com\> (author) |
+| Reviewed-by | Andrew Lunn \<andrew@lunn.ch\> (PHY maintainer) |
+| Link |
+https://patch.msgid.link/20260507040221.3679454-2-linchunzhi0@gmail.com
+|
+| Signed-off-by | Jakub Kicinski \<kuba@kernel.org\> (net maintainer
+merge) |
 
-**Step 1.2 — Tags**
+**Notable patterns:** Maintainer review present. No `Fixes:`, `Reported-
+by:`, `Cc: stable`, or syzbot tags (absence of stable tag is expected
+per pipeline rules).
 
-Record:
-- `Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>` — bridge
-  maintainer ack
-- `Signed-off-by: Ido Schimmel <idosch@nvidia.com>` — bridge
-  maintainer/author
-- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>` — networking tree
-  maintainer
-- `Link:
-  https://patch.msgid.link/20260517115009.175163-1-idosch@nvidia.com`
-- No `Fixes:`, `Reported-by:`, `Cc: stable@vger.kernel.org`, `Tested-
-  by:`, or syzbot tags
+### Step 1.3: Body analysis
+**Record:**
+- **Bug:** Driver reads optional PHY tuning properties via
+  `of_property_read_*()` on `phydev->mdio.dev.of_node`, which is NULL on
+  ACPI systems; ACPI `_DSD` properties are never seen.
+- **Symptom:** ACPI-described Motorcomm PHYs ignore firmware tuning
+  (RGMII internal delays, drive strength, clock output frequency, auto-
+  sleep, keep-PLL, TX clock inversion) and use driver defaults.
+- **Failure mode:** Incorrect or missing PHY configuration; on ACPI
+  platforms that depend on non-default tuning, Ethernet may fail to link
+  or be unreliable.
+- **Root cause:** OF-only property access instead of generic
+  `device_property_*()` via `dev->fwnode`.
+- **Testing:** Verified on Sophgo SD3-10 (64-core RISC-V, YT8531 PHY,
+  UEFI/ACPI boot).
+- **Version info:** None stated; ACPI impact is platform-specific.
 
-**Step 1.3 — Body analysis**
-
-Record:
-- **Bug:** `fdb->dst` can change during MAC roaming without holding
-  `br->hash_lock`.
-- **Symptom:** Readers can observe a changing destination port; without
-  `READ_ONCE()`, loads are not paired with existing `WRITE_ONCE()`
-  writers and may be inconsistent across a read/use sequence.
-- **Root cause:** `br_fdb_update()` updates `fdb->dst` locklessly on the
-  fast path (`WRITE_ONCE(fdb->dst, source)` at line 1030 in `br_fdb.c`),
-  while several readers still used plain `f->dst` / `dst->dst` loads.
-- **Version info:** None in the message.
-
-**Step 1.4 — Hidden bug fix?**
-
-Record: **Yes.** Although labeled as annotation work, this is a real
-concurrency correctness fix in the bridge forwarding and FDB management
-paths, completing an established `READ_ONCE`/`WRITE_ONCE` pattern for
-`fdb->dst`.
+### Step 1.4: Hidden bug fix?
+**Record:** Yes. Although phrased as an interface switch, this is a
+functional bug fix: firmware-provided board configuration is silently
+dropped on ACPI, which can break networking on affected hardware.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-**Step 2.1 — Inventory**
+### Step 2.1: Inventory
+**Record:**
+- **File:** `drivers/net/phy/motorcomm.c` only (~30 lines changed)
+- **Scope:** Single-file, surgical mechanical replacement
+- **Functions modified:**
+  - `ytphy_get_delay_reg_value()`
+  - `yt8531_set_ds()`
+  - `yt8521_probe()` (removes unused `node`)
+  - `yt8531_probe()`
+  - `yt8521_config_init()`
+  - `yt8531_config_init()`
+  - `yt8531_link_change_notify()`
+- **Include change:** `#include <linux/of.h>` → `#include
+  <linux/property.h>`
 
-Record:
-- `net/bridge/br_device.c`: 1 line changed (`br_dev_xmit`)
-- `net/bridge/br_input.c`: 1 line changed (`br_handle_frame_finish`)
-- `net/bridge/br_fdb.c`: 4 lines changed across 3 functions
-- **Total:** ~6 functional lines, 3 files, surgical scope
-- **Functions modified:** `br_dev_xmit`, `br_handle_frame_finish`,
-  `br_fdb_changeaddr`, `br_fdb_delete_by_port`, `br_fdb_clear_offload`
-
-**Step 2.2 — Code flow changes**
-
-Record:
+### Step 2.2: Code flow per hunk
+**Record:**
 | Location | Before | After |
-|---|---|---|
-| `br_dev_xmit` | `br_forward(dst->dst, ...)` after RCU FDB lookup |
-`br_forward(READ_ONCE(dst->dst), ...)` — single stable snapshot of
-roaming port |
-| `br_handle_frame_finish` | same pattern on receive/forward path | same
-fix |
-| `br_fdb_changeaddr` | `f->dst == p` under `hash_lock` |
-`READ_ONCE(f->dst) == p` |
-| `br_fdb_delete_by_port` | `f->dst != p` under `hash_lock` |
-`READ_ONCE(f->dst) != p` |
-| `br_fdb_clear_offload` | `f->dst == p` under `hash_lock` |
-`READ_ONCE(f->dst) == p` |
+|----------|--------|-------|
+| All property reads | `of_property_read_*(&phydev->mdio.dev.of_node,
+...)` | `device_property_read_*(&phydev->mdio.dev, ...)` |
+| DT systems | Reads from `of_node` | `dev_fwnode()` prefers `of_node`
+when present — same source |
+| ACPI systems | `of_node == NULL` → read fails → defaults |
+`dev->fwnode` (ACPI `_DSD`) consulted → firmware values applied |
 
-**Step 2.3 — Bug mechanism**
+Affected paths: PHY probe and `config_init` during device bring-up;
+`link_change_notify` on link/speed changes.
 
-Record: **Race condition / data-race correctness fix.** Category (b)
-synchronization. `br_fdb_update()` changes `fdb->dst` without
-`hash_lock`:
+### Step 2.3: Bug mechanism
+**Record:** **Category:** Logic/correctness — firmware configuration
+path bug.
 
-```1026:1031:net/bridge/br_fdb.c
-                        /* fastpath: update of existing entry */
-                        if (unlikely(source != READ_ONCE(fdb->dst) &&
-                                     !test_bit(BR_FDB_STICKY,
-&fdb->flags))) {
-                                br_switchdev_fdb_notify(br, fdb,
-RTM_DELNEIGH);
-                                WRITE_ONCE(fdb->dst, source);
-```
+On ACPI, `of_property_read_u32(NULL, ...)` returns `-EINVAL` (via
+`of_find_property()` on NULL node), so optional properties are skipped
+and defaults used. Properties supplied through ACPI `_DSD` are on
+`dev->fwnode`, reachable only through `device_property_read_*()`.
 
-Readers on hot forwarding paths and FDB iterators could observe a
-changing `dst` pointer. `br_forward()` handles `NULL` (`if
-(unlikely(!to))`), but a stale non-NULL port causes mis-forwarding
-during roam; FDB iterators can miss or mishandle entries during
-concurrent updates.
+Properties affected include `rx-internal-delay-ps`, `tx-internal-delay-
+ps`, `motorcomm,clk-out-frequency-hz`, `motorcomm,rx-clk-drv-microamp`,
+`motorcomm,rx-data-drv-microamp`, `motorcomm,auto-sleep-disabled`,
+`motorcomm,keep-pll-enabled`, and TX clock inversion properties.
 
-**Step 2.4 — Fix quality**
-
-Record: **High quality, minimal, obviously correct.** Matches the
-existing subsystem convention from `3e19ae7c6fd62` and follow-up
-`5424e678f9b30`. Regression risk is very low — only adds documented
-single-load snapshots.
+### Step 2.4: Fix quality
+**Record:**
+- **Correctness:** High — matches established PHY subsystem pattern
+  (`adin.c`, `dp83822.c`, `nxp-c45-tja11xx.c`, `phy_device.c`).
+- **Minimal:** Pure API substitution; no logic changes.
+- **Regression risk:** Very low for DT (verified: `dev_fwnode()` returns
+  OF fwnode when `of_node` is set).
+- **Red flags:** None — no API changes, no refactoring, no cross-
+  subsystem impact.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 3.1 — Blame**
+### Step 3.1: Blame
+**Record:** Changed lines in `ytphy_get_delay_reg_value()` trace to
+`5d324e5159d9e` (v6.18 merge base, Nov 2025). All 13
+`of_property_read_*` uses are present in current tree. Bug present since
+property support was added to this driver revision.
 
-Record:
-- `br_device.c:110` and `br_input.c:226`: original code from 2016
-  (Nikolay Aleksandrov), predating `READ_ONCE` annotations
-- `br_fdb.c:473`: from 2019, also predating full annotation coverage
-- Buggy plain loads have been present since before `3e19ae7c6fd62`
-  (2021)
+### Step 3.2: Fixes: tag
+**Record:** N/A — no `Fixes:` tag in commit message.
 
-**Step 3.2 — Fixes: tag**
+### Step 3.3: Related file history
+**Record:**
+- `git log --oneline -- drivers/net/phy/motorcomm.c` shows 2 commits in
+  this tree: merge base + `d441696397088` (LED duplex fix, Jan 2026).
+- Candidate commit is **not** in this tree yet.
+- Standalone one-patch fix; not part of a multi-patch series.
 
-Record: Not applicable — no `Fixes:` tag.
+### Step 3.4: Author context
+**Record:** Author chunzhi.lin has no other commits in this tree's
+motorcomm history. Patch reviewed by Andrew Lunn (PHY maintainer).
 
-**Step 3.3 — Related file history**
-
-Record:
-- `3e19ae7c6fd62` — introduced `READ_ONCE`/`WRITE_ONCE` for `fdb->dst`
-  broadly (in tree)
-- `5424e678f9b30` — “use a stable FDB dst snapshot in RCU readers”;
-  fixed `br_fdb_fillbuf`, `fdb_delete_local` writers, etc.; `Cc:
-  stable@vger.kernel.org` (in tree)
-- `17071fb5cb9c2` — annotated `fdb->{updated,used}` races (in tree)
-- This commit fills remaining gaps after those fixes
-- **Standalone:** yes, no series dependency
-
-**Step 3.4 — Author context**
-
-Record: Ido Schimmel is an active bridge maintainer (`Reviewed-by` on
-related stable-bound fix `5424e678`). Nikolay Aleksandrov acked.
-
-**Step 3.5 — Prerequisites**
-
-Record:
-- Requires `WRITE_ONCE(fdb->dst, ...)` writers — present since
-  `3e19ae7c6fd62`
-- Requires roaming fast path in `br_fdb_update()` — present
-- No additional commits required; patch dry-run applies cleanly
+### Step 3.5: Dependencies
+**Record:** No dependencies. `device_property_read_*()` and
+`<linux/property.h>` exist in 6.18. Patch applies cleanly as a
+mechanical substitution. Self-contained.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-**Step 4.1 — Original discussion**
+### Step 4.1: Original discussion
+**Record:** `b4 dig -c HEAD` matched an unrelated Qualcomm commit (wrong
+target). Subject-based `b4 dig` returned empty. Link fetch to
+patch.msgid.link and lore.kernel.org blocked by Anubis bot protection.
+**Could not read mailing list thread.**
 
-Record: **UNVERIFIED** — `b4 dig -c <commit>` could not be run (commit
-not present locally); lore.kernel.org and patch.msgid.link blocked by
-bot protection (Anubis).
+### Step 4.2: Reviewers
+**Record:** Commit message includes `Reviewed-by: Andrew Lunn`. `b4 dig
+-w` not usable without valid commitish in tree.
 
-**Step 4.2 — Reviewers**
+### Step 4.3: Bug report
+**Record:** No external bug report linked. Author reports real-hardware
+testing on Sophgo SD3-10 ACPI server.
 
-Record: **UNVERIFIED** via `b4 dig -w`. Commit message shows maintainer
-ack from Nikolay Aleksandrov and merge by Jakub Kicinski.
+### Step 4.4: Related patches
+**Record:** No series indicated. Single patch.
 
-**Step 4.3 — Bug report**
-
-Record: Not applicable — no `Reported-by:` or syzbot link.
-
-**Step 4.4 — Related patches**
-
-Record: Part of ongoing `fdb->dst` concurrency hardening; directly
-complements in-tree `5424e678f9b30`.
-
-**Step 4.5 — Stable list history**
-
-Record: **UNVERIFIED** — lore stable search inaccessible.
+### Step 4.5: Stable list history
+**Record:** Lore search blocked. No stable-list discussion verified.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1 — Key functions**
+### Step 5.1: Key functions
+**Record:** `ytphy_get_delay_reg_value`, `yt8531_set_ds`,
+`yt8521_probe`, `yt8531_probe`, `yt8521_config_init`,
+`yt8531_config_init`, `yt8531_link_change_notify`.
 
-Record: `br_dev_xmit`, `br_handle_frame_finish`, `br_fdb_changeaddr`,
-`br_fdb_delete_by_port`, `br_fdb_clear_offload`
+### Step 5.2: Callers
+**Record:**
+- `yt8521_probe` / `yt8531_probe` — PHY driver `.probe` during MDIO
+  enumeration
+- `yt8521_config_init` / `yt8531_config_init` — `.config_init` during
+  PHY initialization
+- `ytphy_rgmii_clk_delay_config` → called from `config_init` paths
+- `yt8531_link_change_notify` — `.link_change_notify` on link state
+  changes
+- All are standard PHY bring-up paths for YT8521/YT8531 hardware
 
-**Step 5.2 — Callers / reachability**
+### Step 5.3: Callees
+**Record:** Property reads via `fwnode_property_read_*` through
+`dev_fwnode()`; PHY register modify helpers unchanged.
 
-Record:
-- `br_dev_xmit` — bridge device transmit hot path (every locally
-  originated unicast frame)
-- `br_handle_frame_finish` — bridge receive/forward hot path (every
-  forwarded unicast frame)
-- `br_fdb_delete_by_port` — port removal/teardown
-- `br_fdb_changeaddr` — MAC address change on port
-- `br_fdb_clear_offload` — switchdev offload cleanup
+### Step 5.4: Reachability
+**Record:** Triggered during kernel boot / network interface bring-up on
+systems with Motorcomm YT8521/YT8531 PHYs. ACPI path reachable on
+UEFI/ACPI servers (e.g., Sophgo SD3-10). Not userspace-triggered, but
+affects every boot on affected hardware.
 
-All are reachable in normal bridge operation; forwarding paths are among
-the hottest networking code paths.
-
-**Step 5.3 — Callees**
-
-Record: `br_forward()` dereferences port and forwards skb;
-`br_fdb_find_rcu()` provides RCU-protected FDB entry; concurrent writer
-is `br_fdb_update()`.
-
-**Step 5.4 — User triggerability**
-
-Record: **Yes.** Any bridge with learned MACs that roam between ports
-triggers `br_fdb_update()` lockless `fdb->dst` changes while packets are
-being forwarded.
-
-**Step 5.5 — Similar patterns**
-
-Record: Most other `fdb->dst` readers in this tree already use
-`READ_ONCE()` — e.g. `br_fdb_fillbuf`, `br_fdb_test_addr`,
-`br_switchdev_fdb_notify`, `br_arp_nd_proxy.c`. The patched sites are
-the remaining outliers.
+### Step 5.5: Similar patterns
+**Record:** Multiple PHY drivers in this tree already use
+`device_property_read_*()` instead of `of_property_read_*()` on
+`of_node`. `motorcomm.c` is inconsistent with subsystem practice.
 
 ---
 
-## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (v6.18.44)
+## PHASE 6: CROSS-REFERENCE WITH LOCAL TREE (6.18.43)
 
-**Step 6.1 — Buggy code present?**
+### Step 6.1: Buggy code present?
+**Record:** **Yes.** Verified 13 `of_property_read_*` calls on
+`phydev->mdio.dev.of_node` in `drivers/net/phy/motorcomm.c`. Zero
+`device_property_read_*` calls. Fix not yet applied.
 
-Record: **Yes.** Verified missing annotations at:
-- `br_device.c:110`: `br_forward(dst->dst, ...)`
-- `br_input.c:226`: `br_forward(dst->dst, ...)`
-- `br_fdb.c:473`, `881`, `1663`: plain `f->dst` comparisons
+### Step 6.2: Backport complications
+**Record:** **Clean apply expected.** Mechanical replacement in one
+file. No conflicting changes in recent motorcomm history. Only post-
+merge change is unrelated LED duplex fix (`d441696397088`).
 
-Roaming writer path is present (`br_fdb.c:1030`).
-
-**Step 6.2 — Backport difficulty**
-
-Record: **Clean apply** — `patch --dry-run` succeeded with no conflicts.
-
-**Step 6.3 — Related fixes already present?**
-
-Record: Partial fix `5424e678f9b30` is already in this tree; this commit
-is the remaining coverage, not a duplicate.
+### Step 6.3: Related fixes already present?
+**Record:** No equivalent fix found. `git log --grep="device propert" --
+drivers/net/phy/motorcomm.c` returns nothing.
 
 ---
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-**Step 7.1 — Subsystem / criticality**
+### Step 7.1: Subsystem criticality
+**Record:** `drivers/net/phy/` — **IMPORTANT** (network PHY driver).
+Affects Ethernet connectivity on platforms using Motorcomm PHYs.
 
-Record: `net/bridge` — **IMPORTANT** (widely deployed in servers, VMs,
-containers, embedded networking).
-
-**Step 7.2 — Activity**
-
-Record: Actively maintained; recent stable-relevant bridge fixes in this
-tree (UAF, sleep-in-atomic, FDB snapshot).
+### Step 7.2: Subsystem activity
+**Record:** Active — recent stable commits in PHY subsystem include
+marvell, realtek, sfp, micrel fixes. Motorcomm driver is mature with
+extensive property support documented in
+`Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml`.
 
 ---
 
-## PHASE 8: IMPACT AND RISK
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1 — Who is affected**
+### Step 8.1: Who is affected
+**Record:** **Platform-specific** — systems booting with ACPI (not DT)
+that have Motorcomm YT8521/YT8531 PHYs with `_DSD` property tables.
+Known case: Sophgo SD3-10 RISC-V server. DT-based systems are unaffected
+(behavior unchanged).
 
-Record: All systems using Linux bridge forwarding with dynamic FDB
-learning and MAC roaming.
+### Step 8.2: Trigger conditions
+**Record:**
+- **Trigger:** Boot with ACPI firmware describing Motorcomm PHY
+  properties via `_DSD`
+- **Likelihood:** Uncommon globally, but deterministic on affected ACPI
+  platforms
+- **Unprivileged trigger:** No — hardware/platform configuration issue,
+  not a syscall attack vector
 
-**Step 8.2 — Trigger conditions**
+### Step 8.3: Failure mode severity
+**Record:**
+- **Failure:** Wrong RGMII internal delays, drive strength, clock
+  output, or power-management settings → link failure, unreliable
+  Ethernet, or incorrect clock output to dependent hardware
+- **Severity:** **HIGH** for affected ACPI platforms (complete loss of
+  network functionality possible); **NONE** for DT platforms
 
-Record: Host moves between bridge ports; concurrent forwarding while
-`br_fdb_update()` roams `fdb->dst`. Common in Wi-Fi/Ethernet mobility,
-VM migration, and active L2 networks.
-
-**Step 8.3 — Failure mode / severity**
-
-Record:
-- **Forwarding paths:** packet delivered to wrong port (connectivity bug
-  / potential traffic leakage) — **MEDIUM-HIGH**
-- **FDB management paths:** missed or incorrect entry handling during
-  concurrent roam — **MEDIUM**
-- **Kernel crash:** unlikely on these specific hunks (`br_forward()`
-  handles `NULL`); sibling fix `5424e678` addressed a confirmed NULL-
-  deref in sysfs path
-- **KCSAN/data-race:** definite without fix — **MEDIUM** for
-  CI/sanitizer builds
-
-**Step 8.4 — Risk/benefit**
-
-Record:
-- **Benefit:** HIGH for bridge users with roaming; completes an already-
-  stable-nominated fix family
-- **Risk:** VERY LOW — 6-line annotation-only change matching
-  established pattern
-- **Ratio:** strongly favors backport
+### Step 8.4: Risk-benefit
+**Record:**
+- **Benefit:** HIGH for affected ACPI hardware; enables firmware-
+  intended PHY operation
+- **Risk:** VERY LOW — small, reviewed, DT behavior preserved via
+  `dev_fwnode()` semantics
+- **Ratio:** Favorable for backport to this tree
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Step 9.1 — Evidence summary**
+### Step 9.1: Evidence summary
 
-**FOR:**
-- Real concurrency bug in hot forwarding path
-- Small, surgical, maintainer-acked
-- Prerequisites and related stable fix already in v6.18.44
-- Applies cleanly
-- Follows established subsystem convention since 2021
-- Complements already-backported `5424e678f9b30`
+**FOR backport:**
+- Real bug: ACPI `_DSD` properties unreachable via `of_node`
+- Can break Ethernet on ACPI Motorcomm platforms (tested Sophgo server)
+- Small, surgical, maintainer-reviewed fix
+- Matches established PHY driver pattern in this tree
+- Zero DT regression risk (verified `dev_fwnode()` behavior)
+- Documented properties in `motorcomm,yt8xxx.yaml` should work on all
+  firmware types
+- Buggy code confirmed present in 6.18.43
 
-**AGAINST:**
-- No syzbot/crash report for these exact sites
-- Primary user impact is mis-forwarding rather than panic
-- Mailing list/stable discussion not verified
+**AGAINST backport:**
+- Not a crash, security, corruption, or deadlock
+- Affects niche hardware population (ACPI + Motorcomm PHY)
+- Properties are optional with documented defaults — some boards may
+  work without fix
+- Could be framed as ACPI enablement rather than universal bug fix
+- Mailing list discussion not verified (lore blocked)
 
-**UNRESOLVED:**
-- Full lore review thread content
-- Whether reviewers explicitly nominated for stable
+**Unresolved:** Full reviewer thread content; extent of other ACPI
+Motorcomm deployments beyond Sophgo.
 
-**Step 9.2 — Stable rules checklist**
+### Step 9.2: Stable rules checklist
 
 | Criterion | Result |
-|---|---|
-| 1. Obviously correct and tested? | **PASS** — pattern proven in-tree;
-maintainer ack |
-| 2. Fixes a real user-affecting bug? | **PASS** — roaming race in
-forwarding/FDB paths |
-| 3. Important issue? | **PASS** — forwarding correctness on common
-bridge deployments |
-| 4. Small and contained? | **PASS** — 6 lines, 3 files |
-| 5. No new features/APIs? | **PASS** — annotation only |
-| 6. Can apply to local tree? | **PASS** — clean dry-run apply; code and
-writers present |
+|-----------|--------|
+| 1. Obviously correct and tested? | **PASS** — standard API, maintainer
+reviewed, hardware tested |
+| 2. Fixes real bug affecting users? | **PASS** — ACPI firmware config
+silently ignored |
+| 3. Important issue? | **PASS** — network failure on affected ACPI
+servers (HIGH for those users) |
+| 4. Small and contained? | **PASS** — one file, ~30 lines |
+| 5. No new features/APIs? | **PASS** — same property names, same
+behavior on DT |
+| 6. Can apply to local tree? | **PASS** — buggy code present, clean
+apply expected |
 
-**Step 9.3 — Exception category**
+### Step 9.3: Exception categories
+**Record:** Closest match: **hardware workaround / platform
+configuration fix** — firmware-provided PHY tuning (RGMII delays, drive
+strength) is board-specific configuration analogous to documented
+quirk/workaround fixes accepted in stable.
 
-Record: Not a device-ID/quirk/DT/build/doc exception; qualifies as a
-standard concurrency correctness bug fix.
-
-**Step 9.4 — Problem statement for stable users**
-
-When a MAC address roams between bridge ports, `fdb->dst` is updated
-locklessly. The remaining unannotated readers in transmit/receive
-forwarding and FDB cleanup paths can observe a changing destination
-port, causing frames to be forwarded to the wrong port or FDB
-maintenance to behave incorrectly. This patch completes the
-`READ_ONCE`/`WRITE_ONCE` pairing already used throughout the rest of the
-bridge FDB code and in the recently backported `5424e678` fix.
+### Step 9.4: Decision rationale
+For **Linux 6.18.43**, the Motorcomm PHY driver with full property
+support is present and uses OF-only property reads that definitively
+fail on ACPI (`of_node == NULL`). This prevents firmware from supplying
+board-critical RGMII timing and electrical tuning, which can render
+Ethernet non-functional on ACPI platforms such as the tested Sophgo
+server. The fix is minimal, maintainer-reviewed, follows existing PHY
+subsystem conventions, and poses negligible regression risk to DT users.
+While the affected population is smaller than a core-kernel crash fix,
+the functional impact on those platforms is severe (no networking),
+meeting stable criteria for an important hardware-configuration bug.
 
 ---
 
 ## Verification
 
-- [Phase 1] Parsed commit message and tags from user-provided diff
-- [Phase 2] Diff analysis: 6 lines across `br_device.c`, `br_input.c`,
-  `br_fdb.c`
-- [Phase 3] `git describe HEAD` → `v6.18.44`
-- [Phase 3] `git blame` on lines 110/226/473 → pre-2021 code missing
-  annotations
-- [Phase 3] `git show 3e19ae7c6fd62` → original `READ_ONCE`/`WRITE_ONCE`
-  introduction
-- [Phase 3] `git show 5424e678f9b30` → related stable-nominated FDB dst
-  snapshot fix, already in tree
-- [Phase 3] `git merge-base --is-ancestor` → both `3e19ae7` and
-  `5424e678` are ancestors of HEAD
-- [Phase 4] **UNVERIFIED:** lore.kernel.org and patch.msgid.link
-  blocked; `b4 dig` not usable without local commit hash
-- [Phase 5] `grep READ_ONCE.*dst` → most readers annotated; patched
-  sites are outliers
-- [Phase 5] Read `br_fdb_update()` → confirmed lockless
-  `WRITE_ONCE(fdb->dst, source)` roaming path
-- [Phase 5] Read `br_forward()` → confirmed `NULL` port handled safely
-- [Phase 6] Read current sources → buggy plain loads confirmed present
-- [Phase 6] `patch --dry-run` → applies cleanly
-- [Phase 8] Assessed failure mode as mis-forwarding during roam, not
-  typical kernel oops
+- **[Phase 1]** Parsed subject, tags, body from provided commit message
+- **[Phase 1]** Confirmed Reviewed-by: Andrew Lunn; no Fixes:/Reported-
+  by:/Cc: stable
+- **[Phase 2]** Diff analysis: 13 `of_property_read_*` →
+  `device_property_read_*` in 7 functions, one file
+- **[Phase 2]** Verified include swap: `linux/of.h` → `linux/property.h`
+- **[Phase 3]** `git describe HEAD`: v6.18.43-1-gc7f0dac02d232; Makefile
+  VERSION=6 PATCHLEVEL=18 SUBLEVEL=43
+- **[Phase 3]** `git blame -L 845,855`: buggy lines from 5d324e5159d9e
+- **[Phase 3]** `git log --oneline -- drivers/net/phy/motorcomm.c`: 2
+  commits; fix not present
+- **[Phase 3]** `git log -S 'of_property_read_u32' --
+  drivers/net/phy/motorcomm.c`: present since merge base
+- **[Phase 4]** `b4 dig -c HEAD`: returned unrelated Qualcomm URL (no
+  valid commitish in tree)
+- **[Phase 4]** `b4 dig` by subject: empty result
+- **[Phase 4]** WebFetch patch.msgid.link and lore.kernel.org: blocked
+  by Anubis — **UNVERIFIED** mailing list discussion
+- **[Phase 5]** `grep of_property_read_ drivers/net/phy/motorcomm.c`: 13
+  matches confirmed
+- **[Phase 5]** `grep device_property_read_
+  drivers/net/phy/motorcomm.c`: 0 matches (fix absent)
+- **[Phase 5]** `grep device_property_read_ drivers/net/phy/`: 10 other
+  PHY files use same pattern
+- **[Phase 5]** Read `drivers/base/property.c`:
+  `device_property_read_u32` →
+  `fwnode_property_read_u32(dev_fwnode(dev), ...)`
+- **[Phase 5]** Read `dev_fwnode()`: prefers `of_node` when CONFIG_OF
+  and of_node set; else `dev->fwnode`
+- **[Phase 5]** Read `of_find_property_value_of_size()`: NULL np →
+  `-EINVAL`
+- **[Phase 5]** Traced PHY driver ops table:
+  probe/config_init/link_change_notify on YT8521/YT8531
+- **[Phase 6]** Confirmed buggy code exists in local tree at lines 851,
+  1000, 1017, 1100, 1172, 1679, 1687, 1807, 1816, 1851, 1857, 1859, 1861
+- **[Phase 6]** Read
+  `Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml`:
+  documents all affected properties with defaults
+- **[Phase 6]** `git log --grep` for related fix in motorcomm.c: none
+  found
+- **[Phase 8]** Failure mode: ACPI property ignore → wrong PHY config →
+  potential link failure; severity HIGH for affected platforms
 
 **YES**
 
- net/bridge/br_device.c | 2 +-
- net/bridge/br_fdb.c    | 7 ++++---
- net/bridge/br_input.c  | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/phy/motorcomm.c | 41 ++++++++++++++++++-------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 525d4eccd194a..966fac7017225 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -107,7 +107,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 		else
- 			br_flood(br, skb, BR_PKT_MULTICAST, false, true, vid);
- 	} else if ((dst = br_fdb_find_rcu(br, dest, vid)) != NULL) {
--		br_forward(dst->dst, skb, false, true);
-+		br_forward(READ_ONCE(dst->dst), skb, false, true);
- 	} else {
- 		br_flood(br, skb, BR_PKT_UNICAST, false, true, vid);
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index b49897500a592..b76011b227c46 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -10,7 +10,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/phy.h>
+-#include <linux/of.h>
++#include <linux/property.h>
+ 
+ #define PHY_ID_YT8511		0x0000010a
+ #define PHY_ID_YT8521		0x0000011a
+@@ -843,12 +843,12 @@ static u32 ytphy_get_delay_reg_value(struct phy_device *phydev,
+ 				     u16 *rxc_dly_en,
+ 				     u32 dflt)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device *dev = &phydev->mdio.dev;
+ 	int tb_size_half = tb_size / 2;
+ 	u32 val;
+ 	int i;
+ 
+-	if (of_property_read_u32(node, prop_name, &val))
++	if (device_property_read_u32(dev, prop_name, &val))
+ 		goto err_dts_val;
+ 
+ 	/* when rxc_dly_en is NULL, it is get the delay for tx, only half of
+@@ -992,12 +992,12 @@ static int yt8531_get_ds_map(struct phy_device *phydev, u32 cur)
+ 
+ static int yt8531_set_ds(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device *dev = &phydev->mdio.dev;
+ 	u32 ds_field_low, ds_field_hi, val;
+ 	int ret, ds;
+ 
+ 	/* set rgmii rx clk driver strength */
+-	if (!of_property_read_u32(node, "motorcomm,rx-clk-drv-microamp", &val)) {
++	if (!device_property_read_u32(dev, "motorcomm,rx-clk-drv-microamp", &val)) {
+ 		ds = yt8531_get_ds_map(phydev, val);
+ 		if (ds < 0)
+ 			return dev_err_probe(&phydev->mdio.dev, ds,
+@@ -1014,7 +1014,7 @@ static int yt8531_set_ds(struct phy_device *phydev)
+ 		return ret;
+ 
+ 	/* set rgmii rx data driver strength */
+-	if (!of_property_read_u32(node, "motorcomm,rx-data-drv-microamp", &val)) {
++	if (!device_property_read_u32(dev, "motorcomm,rx-data-drv-microamp", &val)) {
+ 		ds = yt8531_get_ds_map(phydev, val);
+ 		if (ds < 0)
+ 			return dev_err_probe(&phydev->mdio.dev, ds,
+@@ -1047,7 +1047,6 @@ static int yt8531_set_ds(struct phy_device *phydev)
+  */
+ static int yt8521_probe(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
+ 	struct device *dev = &phydev->mdio.dev;
+ 	struct yt8521_priv *priv;
+ 	int chip_config;
+@@ -1097,7 +1096,7 @@ static int yt8521_probe(struct phy_device *phydev)
+ 			return ret;
  	}
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 6eb3ab69a5140..fe85c8f197e67 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -470,7 +470,8 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
- 	spin_lock_bh(&br->hash_lock);
- 	vg = nbp_vlan_group(p);
- 	hlist_for_each_entry(f, &br->fdb_list, fdb_node) {
--		if (f->dst == p && test_bit(BR_FDB_LOCAL, &f->flags) &&
-+		if (READ_ONCE(f->dst) == p &&
-+		    test_bit(BR_FDB_LOCAL, &f->flags) &&
- 		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags)) {
- 			/* delete old one */
- 			fdb_delete_local(br, p, f);
-@@ -878,7 +879,7 @@ void br_fdb_delete_by_port(struct net_bridge *br,
  
- 	spin_lock_bh(&br->hash_lock);
- 	hlist_for_each_entry_safe(f, tmp, &br->fdb_list, fdb_node) {
--		if (f->dst != p)
-+		if (READ_ONCE(f->dst) != p)
- 			continue;
+-	if (of_property_read_u32(node, "motorcomm,clk-out-frequency-hz", &freq))
++	if (device_property_read_u32(dev, "motorcomm,clk-out-frequency-hz", &freq))
+ 		freq = YTPHY_DTS_OUTPUT_CLK_DIS;
  
- 		if (!do_all)
-@@ -1660,7 +1661,7 @@ void br_fdb_clear_offload(const struct net_device *dev, u16 vid)
+ 	if (phydev->drv->phy_id == PHY_ID_YT8521) {
+@@ -1165,11 +1164,11 @@ static int yt8521_probe(struct phy_device *phydev)
  
- 	spin_lock_bh(&p->br->hash_lock);
- 	hlist_for_each_entry(f, &p->br->fdb_list, fdb_node) {
--		if (f->dst == p && f->key.vlan_id == vid)
-+		if (READ_ONCE(f->dst) == p && f->key.vlan_id == vid)
- 			clear_bit(BR_FDB_OFFLOADED, &f->flags);
+ static int yt8531_probe(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device *dev = &phydev->mdio.dev;
+ 	u16 mask, val;
+ 	u32 freq;
+ 
+-	if (of_property_read_u32(node, "motorcomm,clk-out-frequency-hz", &freq))
++	if (device_property_read_u32(dev, "motorcomm,clk-out-frequency-hz", &freq))
+ 		freq = YTPHY_DTS_OUTPUT_CLK_DIS;
+ 
+ 	switch (freq) {
+@@ -1661,7 +1660,7 @@ static int yt8521_resume(struct phy_device *phydev)
+  */
+ static int yt8521_config_init(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device *dev = &phydev->mdio.dev;
+ 	int old_page;
+ 	int ret = 0;
+ 
+@@ -1676,7 +1675,7 @@ static int yt8521_config_init(struct phy_device *phydev)
+ 			goto err_restore_page;
  	}
- 	spin_unlock_bh(&p->br->hash_lock);
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 2cbae0f9ae1f0..470615675bdc0 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -223,7 +223,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
  
- 		if (now != READ_ONCE(dst->used))
- 			WRITE_ONCE(dst->used, now);
--		br_forward(dst->dst, skb, local_rcv, false);
-+		br_forward(READ_ONCE(dst->dst), skb, local_rcv, false);
- 	} else {
- 		if (!mcast_hit)
- 			br_flood(br, skb, pkt_type, local_rcv, false, vid);
+-	if (of_property_read_bool(node, "motorcomm,auto-sleep-disabled")) {
++	if (device_property_read_bool(dev, "motorcomm,auto-sleep-disabled")) {
+ 		/* disable auto sleep */
+ 		ret = ytphy_modify_ext(phydev, YT8521_EXTREG_SLEEP_CONTROL1_REG,
+ 				       YT8521_ESC1R_SLEEP_SW, 0);
+@@ -1684,7 +1683,7 @@ static int yt8521_config_init(struct phy_device *phydev)
+ 			goto err_restore_page;
+ 	}
+ 
+-	if (of_property_read_bool(node, "motorcomm,keep-pll-enabled")) {
++	if (device_property_read_bool(dev, "motorcomm,keep-pll-enabled")) {
+ 		/* enable RXC clock when no wire plug */
+ 		ret = ytphy_modify_ext(phydev, YT8521_CLOCK_GATING_REG,
+ 				       YT8521_CGR_RX_CLK_EN, 0);
+@@ -1797,14 +1796,14 @@ static int yt8521_led_hw_control_get(struct phy_device *phydev, u8 index,
+ 
+ static int yt8531_config_init(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device *dev = &phydev->mdio.dev;
+ 	int ret;
+ 
+ 	ret = ytphy_rgmii_clk_delay_config_with_lock(phydev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (of_property_read_bool(node, "motorcomm,auto-sleep-disabled")) {
++	if (device_property_read_bool(dev, "motorcomm,auto-sleep-disabled")) {
+ 		/* disable auto sleep */
+ 		ret = ytphy_modify_ext_with_lock(phydev,
+ 						 YT8521_EXTREG_SLEEP_CONTROL1_REG,
+@@ -1813,7 +1812,7 @@ static int yt8531_config_init(struct phy_device *phydev)
+ 			return ret;
+ 	}
+ 
+-	if (of_property_read_bool(node, "motorcomm,keep-pll-enabled")) {
++	if (device_property_read_bool(dev, "motorcomm,keep-pll-enabled")) {
+ 		/* enable RXC clock when no wire plug */
+ 		ret = ytphy_modify_ext_with_lock(phydev,
+ 						 YT8521_CLOCK_GATING_REG,
+@@ -1840,7 +1839,7 @@ static int yt8531_config_init(struct phy_device *phydev)
+  */
+ static void yt8531_link_change_notify(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
++	struct device *dev = &phydev->mdio.dev;
+ 	bool tx_clk_1000_inverted = false;
+ 	bool tx_clk_100_inverted = false;
+ 	bool tx_clk_10_inverted = false;
+@@ -1848,17 +1847,17 @@ static void yt8531_link_change_notify(struct phy_device *phydev)
+ 	u16 val = 0;
+ 	int ret;
+ 
+-	if (of_property_read_bool(node, "motorcomm,tx-clk-adj-enabled"))
++	if (device_property_read_bool(dev, "motorcomm,tx-clk-adj-enabled"))
+ 		tx_clk_adj_enabled = true;
+ 
+ 	if (!tx_clk_adj_enabled)
+ 		return;
+ 
+-	if (of_property_read_bool(node, "motorcomm,tx-clk-10-inverted"))
++	if (device_property_read_bool(dev, "motorcomm,tx-clk-10-inverted"))
+ 		tx_clk_10_inverted = true;
+-	if (of_property_read_bool(node, "motorcomm,tx-clk-100-inverted"))
++	if (device_property_read_bool(dev, "motorcomm,tx-clk-100-inverted"))
+ 		tx_clk_100_inverted = true;
+-	if (of_property_read_bool(node, "motorcomm,tx-clk-1000-inverted"))
++	if (device_property_read_bool(dev, "motorcomm,tx-clk-1000-inverted"))
+ 		tx_clk_1000_inverted = true;
+ 
+ 	if (phydev->speed < 0)
 -- 
 2.53.0
 
