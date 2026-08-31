@@ -1,191 +1,190 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C8D3B2FF8;
-	Mon, 31 Aug 2026 12:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39CA3F823B;
+	Mon, 31 Aug 2026 12:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788179205; cv=none; b=GtjqJ2+ZDlRh7ZEm8+nu3Lp+X1hhnoeOXk1ywnnrD2lnrxRjKELjBEZy78MBbFoh7u4zhWhbDq+8ZLMe/EBDZ5ehYIVisQd7saimEDQNVX1dHxXD5IZfTKHV6SGKNv6Gpcdm1atbvzbILDA0so26PQ/Ddlx3jxdnpirMeCZBj6M=
+	t=1788179367; cv=none; b=DyGewluXTPO4wF71xy1mNtabmzsXcgsHCirxJXsG92fS2tkwjgQP3S2CRrA1g14undOhMM1B6Hj4cA4Sl3HdGdyHG3UI1ZL/N/m4AaBI6nSw0rLiZeC/0IhljLb92XXMXwTYqNkYu+EpuQ1Yamxoc4wAhqQM2aj3NwF/ETUxyXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788179205; c=relaxed/simple;
-	bh=g50xTyETgllwrG9mYQLSwrYP8LHnZFN7SDTKKIzChvc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=bziKVvL+IPmWklBSDCPUu6MH5UP3VIJLpaV+hPL9oDfiDbaw0xVdSPtKaHe8JCXfV73ug7H6epurMtozD4raVQX0CO4z5Jsc/IioOWU1ng+OLJ/UiWU+IoxNPue0vShrW9BE7AaqY66AZcTFUCw4mnV3NlQ9rvu5Ic+Y/6f12AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Qiu1W9Bi; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1788179367; c=relaxed/simple;
+	bh=DFkJpUZEWAW9BJPnwyOAQHf7LJ6Rk9xntxzJvQ/4czs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VmBNQBTfsrzI065s12moBfIEhaLgGqiODbu6qt1wmgyZld0ZZiFBnAOhO4oiUnO954xBob46sGSm4R5vd5j/HgA7az3W5Y+3BU/4h1sOk+hikDktqzNasFYc7A6COoJBrYANDCw7DXLIERzFEYYV4NGk7vf1f50HLELZz1/rFUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=aVEiJFeT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CH9Pd1oW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HhUjh8su; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=yzcaWSrI; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Qiu1W9Bi"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3EA7A3C01;
-	Mon, 31 Aug 2026 14:26:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1788179199; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=M8qwEVOrCnuxFS57aOl0YCGu5dSb4p68XufXY5WyeXU=;
-	b=Qiu1W9BiZBvUrURamh+SrkfApZPN33wZIgQckXKwFgAz+cttmbo16fspc0Qv2MOv1kI6iG
-	J7iNcnYqS7oFa3cyTEWfheR2yuu6GxdoanoLLeS47DgaJx57nnJe1U2DvvzwP3KY4cHisF
-	CgcwVr32KXGb6LGT8QQkXw5vFPZVLoWOAyInWC2vRY9+gJwgi3VzgT4a9QyHUFtwUcuOYF
-	p60pMClSaYxuBlPDMdwMi6ilGTz328T/pkuEIra4u+qzXw7eaIlRGkX88sVN0svUwy2/aj
-	6W7Jse/u71ADqgxVCFTyF3TT/CYb/TR0jxzpktm6eC/Gn3GdrqTk0NN8KpD7Vg==
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="aVEiJFeT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CH9Pd1oW";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HhUjh8su";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="yzcaWSrI"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 159651FB39;
+	Mon, 31 Aug 2026 12:29:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788179359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbWgY87j/d9NiS7ZSbVa7xB4CC/5QPllXRdJV3hDcsc=;
+	b=aVEiJFeT+t1s2S47ujw0YI/Div6Swla/I4tZCATUTy45pu0P7TpoLL5VoBKN/+buiaahnd
+	CUOmyrrn4RzXB5ta0LeCRdBmdjVWjN/Miy1uZyV7pfPzr0fPv+xYCt/BupnS1TUpjRsmze
+	CKaJ0W3dpfSrHuM5KDyJ6f1PhrsIvVE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788179359;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbWgY87j/d9NiS7ZSbVa7xB4CC/5QPllXRdJV3hDcsc=;
+	b=CH9Pd1oWK4NkWZW/SQ6EG+9GZ7+s6pLQlSxuzT6gTnDKC1aMGKlOUi8tBRmSX82MGOaPCY
+	2IlSDnPOB/0EeDBg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HhUjh8su;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yzcaWSrI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788179355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbWgY87j/d9NiS7ZSbVa7xB4CC/5QPllXRdJV3hDcsc=;
+	b=HhUjh8suurFkjDIJrsBtEaL4CywbuFDOz8fIYi5N8BoSHoyD52GI43aBmERYGJiEP4oNHV
+	PzM6W0+LS9ohLjI3gxu3GtAnpEf3bO7ZUf3ayv9gTZi+QVMJQ+vqEZDTZ9l0JBOUA+D/1H
+	TOjJvVCtnr8fY9aXpyQyoiGRZaN2044=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788179355;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbWgY87j/d9NiS7ZSbVa7xB4CC/5QPllXRdJV3hDcsc=;
+	b=yzcaWSrICnGXVbvebQlYFw8YDAJAGphO8IxOvPGP47Y0fi8NHDZpJ4yF+BoB6SRamw48nt
+	4hry/T/EuP4v1UCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4D3A13682;
+	Mon, 31 Aug 2026 12:29:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KMzZN5pzlWreBgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 12:29:14 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 79EF2A13B5; Mon, 31 Aug 2026 14:29:14 +0200 (CEST)
+Date: Mon, 31 Aug 2026 14:29:14 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	bcrl@kvack.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
+	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
+	yi.zhang@huawei.com, pmladek@suse.com, rostedt@goodmis.org, 
+	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, senozhatsky@chromium.org, 
+	akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, socketcan@hartkopp.net, mkl@pengutronix.de, 
+	kuniyu@google.com, willemb@google.com, jhs@mojatatu.com, jiri@resnulli.us, 
+	kees@kernel.org, cyphar@cyphar.com, tglx@kernel.org, liuhangbin@gmail.com, 
+	sdf@fomichev.me, nb@tipi-net.de, linux-fsdevel@vger.kernel.org, 
+	linux-aio@kvack.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-can@vger.kernel.org
+Subject: Re: [PATCH 06/11] super: Use acquire for SB_BORN check in
+ super_cache_count()
+Message-ID: <2uxxlu75vyo7iayzz2udisjmu7dhyiyboiuodriksmorz37cha@3mzh2vwrmafw>
+References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
+ <20260825095422.3166067-7-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 31 Aug 2026 14:26:36 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
- thomas.petazzoni@bootlin.com, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
- <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next 1/2] net: stmmac: dwmac4: Read the UC filter size
- from hardware capabilities
-In-Reply-To: <480f15e2-e045-46b7-89af-1fbcefd3c4eb@bootlin.com>
-References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
- <20260831070121.349778-2-maxime.chevallier@bootlin.com>
- <2631c832d5aebc56e152628132494545@tipi-net.de>
- <480f15e2-e045-46b7-89af-1fbcefd3c4eb@bootlin.com>
-Message-ID: <495059f3c43a20a48cc8c0e114ba4cc5@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825095422.3166067-7-ruanjinjie@huawei.com>
+X-Spam-Score: -2.51
+X-Rspamd-Queue-Id: 159651FB39
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[40];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLa77mm4gi8mw7uppieotozii3)];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,suse.com,goodmis.org,linux.intel.com,rasmusvillemoes.dk,chromium.org,linux-foundation.org,davemloft.net,google.com,redhat.com,hartkopp.net,pengutronix.de,mojatatu.com,resnulli.us,cyphar.com,fomichev.me,tipi-net.de,vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.cz:email,huawei.com:email,suse.com:email]
+X-Spam-Flag: NO
 
-On 31.8.2026 14:15, Maxime Chevallier wrote:
-> On 8/31/26 14:04, Nicolai Buchwitz wrote:
->> Hi Maxime
->> 
->> On 31.8.2026 09:01, Maxime Chevallier wrote:
->>> dwmac4 has multiple banks of perfect filter entries, independently
->>> configurable during IP integration.
->>> 
->>> The multi_addr bank reports a number between 0 and 31 corresponding 
->>> to
->>> the actual number of entries in that bank, while the 32 and 64 banks
->>> are all-or-nothing.
->>> 
->>> Expose these caps over debugfs as well.
->>> 
->>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
->>> ---
->> 
->>> [...]
->> 
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h 
->>> b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
->>> index 6382836828ba..89368e34a388 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
->>> @@ -176,7 +176,9 @@ enum power_event {
->>> 
->>>  /* MAC HW features0 bitmap */
->>>  #define GMAC_HW_FEAT_SAVLANINS        BIT(27)
->>> -#define GMAC_HW_FEAT_ADDMAC        BIT(18)
->>> +#define GMAC_HW_FEAT_MACADR64SEL    BIT(24)
->>> +#define GMAC_HW_FEAT_MACADR32SEL    BIT(23)
->>> +#define GMAC_HW_FEAT_ADDMAC        GENMASK(22, 18)
->>>  #define GMAC_HW_FEAT_RXCOESEL        BIT(16)
->>>  #define GMAC_HW_FEAT_TXCOSEL        BIT(14)
->>>  #define GMAC_HW_FEAT_EEESEL        BIT(13)
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c 
->>> b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
->>> index 23ffe1adcd0d..14ac3f0e51f7 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
->>> @@ -388,6 +388,8 @@ static int dwmac4_get_hw_feature(void __iomem 
->>> *ioaddr,
->>>      dma_cap->half_duplex = (hw_cap & GMAC_HW_FEAT_HDSEL) >> 2;
->>>      dma_cap->vlhash = (hw_cap & GMAC_HW_FEAT_VLHASH) >> 4;
->>>      dma_cap->multi_addr = (hw_cap & GMAC_HW_FEAT_ADDMAC) >> 18;
->> 
->> Now that ADDMAC has grown from single bit to a mask, the hardcoded 18 
->> has to match
->> dwmac4.h. So IMHO it would make sense to use FIELD_GET() here (like 
->> actphyif)?
+On Tue 25-08-26 17:54:17, Jinjie Ruan wrote:
+> The active SB_BORN check in super_cache_count() pairs with the
+> smp_store_release() in super_wake() when publishing a newly initialized
+> superblock.
 > 
-> It's hardcoded all over, if you look at how all the other fields from 
-> the features
-> are read. I can change it if you really think it's worth, however I'd 
-> rather
-> do a proper cleanup of how all the properties are read at once :)
-
-Perfectly fine for me. Ran into a similar, but unrelated issue recently, 
-so I just
-wanted to flag it (for the future) :)
-
+> Replace the historical independent smp_rmb() barrier with an acquire load
+> on sb->s_flags. This expresses the publish-subscribe pattern more clearly
+> and allows weakly-ordered architectures like arm64 to utilize efficient
+> native instructions (e.g., LDAR) instead of a full one-way barrier.
 > 
->> 
->>> +    dma_cap->additional_32_addr = (hw_cap & 
->>> GMAC_HW_FEAT_MACADR32SEL) >> 23;
->>> +    dma_cap->additional_64_addr = (hw_cap & 
->>> GMAC_HW_FEAT_MACADR64SEL) >> 24;
->>>      dma_cap->pcs = (hw_cap & GMAC_HW_FEAT_PCSSEL) >> 3;
->>>      dma_cap->sma_mdio = (hw_cap & GMAC_HW_FEAT_SMASEL) >> 5;
->>>      dma_cap->pmt_remote_wake_up = (hw_cap & GMAC_HW_FEAT_RWKSEL) >> 
->>> 6;
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c 
->>> b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->>> index f2fc89176654..a885f8cfef21 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->>> @@ -6580,6 +6580,18 @@ static int stmmac_dma_cap_show(struct seq_file 
->>> *seq, void *v)
->>>          seq_printf(seq,
->>>                 "\tNumber of Additional MAC address registers: %d\n",
->>>                 priv->dma_cap.multi_addr);
->>> +    } else if (priv->plat->core_type == DWMAC_CORE_GMAC4) {
->>> +        seq_printf(seq,
->>> +               "\tNumber of MAC address registers (1-31): %d\n",
->>> +               priv->dma_cap.multi_addr);
->>> +        seq_printf(seq,
->>> +               "\tAdditional 32 MAC address registers (32-63): 
->>> %s\n",
->>> +               priv->dma_cap.additional_32_addr ? "Y" : "N");
->>> +        seq_printf(seq,
->>> +               "\tAdditional 64 MAC address registers (64-127): 
->>> %s\n",
->>> +               priv->dma_cap.additional_64_addr ? "Y" : "N");
->>> +        seq_printf(seq, "\tHash Filter: %s\n",
->>> +               (priv->dma_cap.hash_filter) ? "Y" : "N");
->> 
->> hash_filter seems to be only set in dwmac1000_dma.c? So on dwmac4 it 
->> would always print N?
+> Also update the outdated comment to correctly point to super_wake().
 > 
-> Yeah but dwmac4 has a hash filter, but same as the UC filter it's just 
-> not plumbed
-> in :/
+> Assisted-by: Gemini:Gemini-3.1
+> Assisted-by: DeepSeek:DeepSeek-V3
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+
+Looks good. Just one nit below. With that addressed feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+> diff --git a/fs/super.c b/fs/super.c
+> index 05e443173038..5860daea6d40 100644
+> --- a/fs/super.c
+> +++ b/fs/super.c
+> @@ -267,12 +267,11 @@ static unsigned long super_cache_count(struct shrinker *shrink,
+>  	 * However, if we are currently mounting the superblock, the underlying
+>  	 * filesystem might be in a state of partial construction and hence it
+>  	 * is dangerous to access it.  super_trylock_shared() uses a SB_BORN check
+> -	 * to avoid this situation, so do the same here. The memory barrier is
+> -	 * matched with the one in mount_fs() as we don't hold locks here.
+> +	 * to avoid this situation, so do the same here. The acquire is matched
+> +	 * with the smp_store_release() in super_wake() as we don't hold locks here.
+>  	 */
+> -	if (!(sb->s_flags & SB_BORN))
+> +	if (!(smp_load_acquire(&sb->s_flags) & SB_BORN))
+>  		return 0;
+
+We have super_flags() helper exactly for checks like this so it would be
+good to use it here.
+
+								Honza
+
+> -	smp_rmb();
+>  
+>  	if (sb->s_op && sb->s_op->nr_cached_objects &&
+>  	    super_fs_objects_eligible(sc))
+> -- 
+> 2.34.1
 > 
-> Let's leave this flag here, hash filter addition for MC filtering is 
-> coming-up, so let's not
-> drop it now only to re-enable it after, one of the other wonderful 
-> discoveries found by
-> running the selftests...
-
-Also fine with me.
-
-> 
->> 
->>>      } else {
->>>          seq_printf(seq, "\tHash Filter: %s\n",
->>>                 (priv->dma_cap.hash_filter) ? "Y" : "N");
->> 
->> Thanks,
->> Nicolai
-> 
-> Maxime
-
-With both comments addressed and agreed to keep it as is until a cleanup 
-in the future:
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks,
-Nicolai
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
