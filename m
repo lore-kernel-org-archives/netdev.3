@@ -1,62 +1,64 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119504CCDE5
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA7337189C
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788211362; cv=none; b=u+2IQRzpHO7n2CfICCrz7KoWqLPcmQO080U5Sh+SX4MmPeGP6GtmQK3wxqQyzU/J8Foy3yffUcU33AamJdQexkB+0MHIQEwwnMFFhF2nptpkcYQobDRvCCf48xUp048DIRVhoWTxvAjgw9Iu1tkVvMvZBIVyTwEF9oAcGH+qqyE=
+	t=1788211363; cv=none; b=SzZWtfd//FkTRyhsLyCxSCsL3Vh+d5qeZ04m6YEcsMBvDXSq+vmK2StpJbBGHTqaDRJ0se9gSSAxJhTZsyT47O+YQ6F31gO0wUvk3JLHsiKmvhQeKt8iqg+AKQjxdhJSZITnXG1p0iqdpTaRumIWQZ/a/OEC/VDzg+sYSk/e9vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788211362; c=relaxed/simple;
-	bh=j+4P5I1w7yupkjtI1aHIdS2EV8F3BTV+hCLwZ4e00/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DG15UlSNwQ1EP/+/I914Wbo3vPcv9fbERllVwNgrsX3yYpDCv3Bgp0P0FvGQDa8s/9DUwRhO7EJtFdjankoEkTgga1a4wpcuhMsPyfwG6cad5nLHm7/WJB1LcI05gwiI+vfmkQj6eA8FOG/hAQeIF9RgwLf/zg94L/GXCneRVTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqaRKwV7; arc=none smtp.client-ip=209.85.216.54
+	s=arc-20240116; t=1788211363; c=relaxed/simple;
+	bh=Vi3BmT7ZDkiqyokg+wo6JFBFy7A29xrg2kuZJqXCm60=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BKChO//t2Vgbb0sAD57+9MEp8MdGNvEgyBBcR9bersY78WT2PTG7u0kq77cQwZMPzAzkSP2KmOrWirz1lEASSCe+FulfKDAyBmg61OIGuxwlIJRynZq8Ot/8tRSLI3VjN3CQXMbXXRQW71VrhIC28kdQBosOEWU6127bASaL+1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cg0VjcUA; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqaRKwV7"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-398e9698a70so281369a91.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:22:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cg0VjcUA"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc11a905ba5so209424a12.2
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:22:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788211359; x=1788816159; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tAf9E7CenHe6l5YzESk+eJosOnuoeSazKjhyH+9ql1Q=;
-        b=mqaRKwV7gzP3vr0Gb29m9Q6UjUcqfOmdhGLENM3ypRBGi1cIaU42yiz+8+OE8YVqmP
-         y3J+3HJ34+CZSBPDyf5v27g2z8D+S9llW+g2udUGRnCmi1gz00Z5yjOME3g4JJCjExf+
-         crxYmIeDDEKN6cb9tEEEisSB8RRlzlNmyMqpJ5CnaNvQokJbZ6wDmt8TW0k3jBfZuyeN
-         CjKttedYveaNoX2nh06YxKdfMLXURfLB9w54N8a73s3Mu/nqBQgrvb4xJz08giZZSWrk
-         59P0Ya/GWsf/84WKACPpaKtJyeGY3Kd8IfQPtDykRK06rUViYPKC/csfJnAYEl3Y/Grm
-         LiTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788211359; x=1788816159;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788211361; x=1788816161; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tAf9E7CenHe6l5YzESk+eJosOnuoeSazKjhyH+9ql1Q=;
-        b=RmjWwbpNCiWxWXGvedZrcoVw7SGk2ug8BX6485Kp72gTCTjCfXCmlgcBBNoG8/SRp8
-         p4nH3AbKUkIPIR5sYEW7G6njYO6unwb0K7jyRqQBFR7lONBmZqYHloUEbJ9PRYXUniMj
-         lxFIpHh4IPhschxh5+28jaMDdI/FpBDrNTgRwfV8kJGET21jDXMl1/dism/LcP2EL30M
-         5Z1/X0v9K3NTJ+C3ZvuU9xBKzdDenmQtSmHqPwymJpXAh85JES16RrJExsErYbPbgJEf
-         61VUtaR/qpRUzEWw4UvkPrcLYbU2KPx1T5qD+aSwuDo3Oh4glDXgchZUnPKg5HxF13+e
-         CSJA==
-X-Forwarded-Encrypted: i=1; AKwUvBwSOwDJ8Wf43ZCsUMSeBtkxJrldsHIy8LBPzHWIfWW4Kh0G4IjSdjV9fkj6WldcayiZ1v3mSlQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nNF3jvc3BZc17MbFGlq9w1VN6pZkp0KGDfivEJ0dxQ9zDA2yH1
-	Odfi6Nc2uulPCNGzfRaqEsOoEO1Yz8BIOlpC/vxALP48UFKYxdepC+nvjCT81g==
-X-Gm-Gg: AYBFou0ZgIQ5agru69ADwqCtRToUNwcHQrq2k6lBNNm3EAsg/0q6qyHBnPoU726r11p
-	6ZG7/aoan5ACBSWMJZQs3/YcCtrJSDAt/KUkpWBPpJhZJrVbkscH0f8l/HQOeXY3qEC7fDdgFEU
-	LSu0UnbV2I0Ww4BUccSiriBlrjdIp0D+GF6bCLzq+QCdPsH9s5Db81Ezo/iB4iEIPw0bA0+JuMT
-	QhCaNDertxLn1L3ly9CEbZ0+Qoaixb/tnDVDfruBSL46RhGf5acj9c54QUXXke5WLQeYsDLuflH
-	QQ1CnMaN9QJgP/BqAYloukRtPQ0ryeUmatpTJsLiM8ETOCPdQVbPwueHVurrsTU2K8JDku0BoHe
-	M3XPS3EIQiyaQi71B6dz0y2NvwrErdaOCT3ye5zb38cwjpaaC7mLA0JHsGYxM3O3r8/MYo0u1kx
-	NF53LEChN/WI+JZI+F5Zw7hHBDWp9T52lRrXn4uriCVfpA8oK2fQNtOejn7WWeyPa4mFUgVNC66
-	G5aFQ==
-X-Received: by 2002:a17:90b:588f:b0:398:bf7e:b267 with SMTP id 98e67ed59e1d1-398bf7eb378mr22481809a91.2.1788211359423;
-        Mon, 31 Aug 2026 14:22:39 -0700 (PDT)
+        bh=sfnOswr7eo1XQosDaF0vBD6HXJXxp8BEfMaGl2218a4=;
+        b=cg0VjcUA3pLPu9JrlwsAekoYNmHvnS0VVpBiV1/xrFmBYrEcnPOHo03hjd5HelaJ0S
+         o9FZJo3zHuyFJXGLfOXLgpmA5mSV7ShPfsuCkrXX4lRkUoMTlBGxw1z/bPlBcRW7Oyao
+         HhG8hN/6G8FI0vfjq2cdykgX/lxyLR+fELXxiztq6breemxMQRZ60Qk0WKLcjhZQle4Q
+         nsW/XgmVuDXdLgFhG3tOEp6vkEC8+ig5sWCd0xSw3r2y6ZrZ2Bw60rv/rFKZhx2QEFzB
+         N25fRIYj6gNYEOs4S1gEpb7yf2tnZydx0Zr73z3SRKKjz0nicu4DmJhCGC/6Cr6mPGnV
+         +oJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788211361; x=1788816161;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sfnOswr7eo1XQosDaF0vBD6HXJXxp8BEfMaGl2218a4=;
+        b=sIe16Gje5dHL+Uypsf3W5jbMcuA2dRXIvtoDLI++sQVtkOiNhv5GsqmhXSYM0FsIg/
+         xgAI3SVS/Ze/oPfH9yvm1B+uTBzT9yHBH8H6K4fq7UHMsqVhpIav7nvD7TobXBU7y0tH
+         vGjz+lU0XyyVRLfoYgey37R0X/5masVNCVUSpm1zKGOTUQwbw9ApiT/X99MpIjGFbVdv
+         JbGwYlncs3WYWWGqEKl9euk+1fkjs7knOq2CtMHKxkL67I67ifCkvxw9XfCDbtUZQa8C
+         MBnQiFB1i6Mv1XGuUTAFd7Xzj9te/nXtw/pw/nvswaVpw03hR82783ezbg/wWTSeKMlB
+         vo/g==
+X-Forwarded-Encrypted: i=1; AHgh+RoN094BYIhPYiHDhj6SgH0+sSAEX10j/NjqzEBghjTT6dfscnzHEgNqaNhCodBd+WwkXBRvEvg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lOm9RvsCjPZpwDUXQjHgN23diL5BFp6SG3M33TGlUiz4rGMQ0h
+	XeEBzsNmrpqqFrWCl438jVKd+KqL8TQSfMoCxFRjw6Kx1yCrlm2PYIFs
+X-Gm-Gg: AR+sD1215bOkQ99MJACmtrxBqVZ3Lc0Dwf16OendOafgzr/GYHmNTwAQSfJvFIV/vDe
+	iYJOZR4J4DqERtsCCfyS826pFH6kV/QQeZLE+j/wakeW28LCjFrm9x8iY7hArrOH0MewU6DYxM4
+	BpLyztxzp8EE5vSukLoBG3fwyQnJGcYA2S8iVAnbVI9j9EqHSeO+3YM7hAQ0/6yyk3QxpL2W9Pw
+	NupqjMhnXzszaZzKF+Gyd2LaK2V3aHb/A0b6t4LiuSIWb3yx0mZPITAlxVi8540tgTzN4/LJ1J1
+	Qy8lerQ3EAY8t9c5DmugLh7GfRmbhFKoT+X3cUrci1zpOR4SRr6FjzXt1Q9lVVDT2iSxKbD+CRK
+	Fmq5ss2Od/3Hex4ba6sppAs58o67RRRijlKdmBSjqUTOHCTQAzgOZOpLtmFwiLpj15tZe4CXsj3
+	IYkEwTGgZOQnamWBTO1DY2ZCLSq2ynaWtchDrxjZOmQS9zXXutPdPS3bX6MxotY6CAp+kROPdMd
+	NI9eg==
+X-Received: by 2002:a05:6a21:8901:b0:3d3:adbf:777c with SMTP id adf61e73a8af0-3d3adbf8147mr26713171637.24.1788211361126;
+        Mon, 31 Aug 2026 14:22:41 -0700 (PDT)
 Received: from localhost ([2620:10d:c090:500::6:bac7])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0bf8a13sm45871957c88.0.2026.08.31.14.22.38
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f9e2a95sm31080594eec.23.2026.08.31.14.22.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 14:22:38 -0700 (PDT)
+        Mon, 31 Aug 2026 14:22:40 -0700 (PDT)
 From: Zinc Lim <limzhineng2@gmail.com>
 To: alexanderduyck@fb.com,
 	kuba@kernel.org,
@@ -73,10 +75,12 @@ Cc: kernel-team@meta.com,
 	linux-hwmon@vger.kernel.org,
 	zinclim@meta.com,
 	limzhineng2@gmail.com
-Subject: [PATCH net-next v2 0/6] eth: fbnic: expand hwmon sensor support
-Date: Mon, 31 Aug 2026 14:22:28 -0700
-Message-ID: <20260831212234.1212971-1-limzhineng2@gmail.com>
+Subject: [PATCH net-next v2 1/6] eth: fbnic: move sensor read logic out of fbnic_mac
+Date: Mon, 31 Aug 2026 14:22:29 -0700
+Message-ID: <20260831212234.1212971-2-limzhineng2@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260831212234.1212971-1-limzhineng2@gmail.com>
+References: <20260831212234.1212971-1-limzhineng2@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,47 +89,178 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fbnic currently exposes only the raw temperature and voltage readings
-(temp1_input, in0_input) via hwmon. This series builds that out into a
-complete sensor interface and hardens the read path.
+The sensor read lived behind the fbnic_mac get_sensor op, but it is only
+ever used by the hwmon subsystem. Move the read into fbnic_hwmon.c and
+call it directly there, closer to where it is used, and drop the
+now-unused get_sensor op from struct fbnic_mac. No functional change.
 
-The firmware capability response already carries per-board sensor
-thresholds, and the firmware can asynchronously report when a sensor
-crosses one of them. This series surfaces both to userspace and cleans
-up the supporting plumbing:
+Signed-off-by: Zinc Lim <limzhineng2@gmail.com>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c | 56 ++++++++++++++++++-
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 55 ------------------
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  2 -
+ 3 files changed, 54 insertions(+), 59 deletions(-)
 
- - Move the sensor read logic out of fbnic_mac, closer to its only
-   caller in the hwmon code, and drop the now-unused get_sensor op.
- - Expose all hwmon attributes unconditionally as read-only (0444).
- - Cache the temperature and voltage readings for the current jiffy so
-   a burst of attribute reads issues a single firmware round-trip.
- - Parse and expose the temperature (min/max/crit) and voltage
-   (min/max) thresholds. Thresholds the firmware did not populate read
-   back as -ENODATA.
- - Add the corresponding alarm attributes, computed by comparing a live
-   reading against the stored thresholds.
- - Translate the firmware's sensor-threshold-exceeded message into an
-   hwmon event so userspace is notified on the relevant attribute.
-
-Changes from v1:
- - Addressed Jakub's patch 6 feedback on including a
-   if (!IS_REACHABLE(CONFIG_HWMON)) return; guard.
-
-Zinc Lim (6):
-  eth: fbnic: move sensor read logic out of fbnic_mac
-  eth: fbnic: expose all hwmon attributes unconditionally as read-only
-  eth: fbnic: cache hwmon sensor readings
-  eth: fbnic: report temperature and voltage thresholds via hwmon
-  eth: fbnic: report temperature and voltage alarms via hwmon
-  eth: fbnic: firmware notifies hwmon on sensor threshold events
-
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   8 +
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    |  75 +++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  30 ++
- drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c | 263 ++++++++++++++++--
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   |  55 ----
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |   2 -
- 6 files changed, 349 insertions(+), 84 deletions(-)
-
---
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+index def8598aceec..6c8c66ab86c1 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+@@ -28,15 +28,67 @@ static umode_t fbnic_hwmon_is_visible(const void *drvdata,
+ 	return 0;
+ }
+ 
++static int fbnic_hwmon_sensor_read(struct fbnic_dev *fbd, int id, long *val)
++{
++	struct fbnic_fw_completion *fw_cmpl;
++	int err = 0;
++	s32 *sensor;
++
++	fw_cmpl = fbnic_fw_alloc_cmpl(FBNIC_TLV_MSG_ID_TSENE_READ_RESP);
++	if (!fw_cmpl)
++		return -ENOMEM;
++
++	switch (id) {
++	case FBNIC_SENSOR_TEMP:
++		sensor = &fw_cmpl->u.tsene.millidegrees;
++		break;
++	case FBNIC_SENSOR_VOLTAGE:
++		sensor = &fw_cmpl->u.tsene.millivolts;
++		break;
++	default:
++		err = -EINVAL;
++		goto exit_free;
++	}
++
++	err = fbnic_fw_xmit_tsene_read_msg(fbd, fw_cmpl);
++	if (err) {
++		dev_err(fbd->dev,
++			"Failed to transmit TSENE read msg, err %d\n",
++			err);
++		goto exit_free;
++	}
++
++	if (!wait_for_completion_timeout(&fw_cmpl->done, 10 * HZ)) {
++		dev_err(fbd->dev, "Timed out waiting for TSENE read\n");
++		err = -ETIMEDOUT;
++		goto exit_cleanup;
++	}
++
++	/* Handle error returned by firmware */
++	if (fw_cmpl->result) {
++		err = fw_cmpl->result;
++		dev_err(fbd->dev, "%s: Firmware returned error %d\n",
++			__func__, err);
++		goto exit_cleanup;
++	}
++
++	*val = *sensor;
++exit_cleanup:
++	fbnic_mbx_clear_cmpl(fbd, fw_cmpl);
++exit_free:
++	fbnic_fw_put_cmpl(fw_cmpl);
++
++	return err;
++}
++
+ static int fbnic_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 			    u32 attr, int channel, long *val)
+ {
+ 	struct fbnic_dev *fbd = dev_get_drvdata(dev);
+-	const struct fbnic_mac *mac = fbd->mac;
+ 	int id;
+ 
+ 	id = fbnic_hwmon_sensor_id(type);
+-	return id < 0 ? id : mac->get_sensor(fbd, id, val);
++	return id < 0 ? id : fbnic_hwmon_sensor_read(fbd, id, val);
+ }
+ 
+ static const struct hwmon_ops fbnic_hwmon_ops = {
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
+index 53b7a938b4c2..fba2e2efaeb8 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
+@@ -899,60 +899,6 @@ fbnic_mac_get_rmon_stats(struct fbnic_dev *fbd, bool reset,
+ 			    TMI_STAT_TX_PACKET_9217_MAX_BYTES);
+ }
+ 
+-static int fbnic_mac_get_sensor_asic(struct fbnic_dev *fbd, int id,
+-				     long *val)
+-{
+-	struct fbnic_fw_completion *fw_cmpl;
+-	int err = 0;
+-	s32 *sensor;
+-
+-	fw_cmpl = fbnic_fw_alloc_cmpl(FBNIC_TLV_MSG_ID_TSENE_READ_RESP);
+-	if (!fw_cmpl)
+-		return -ENOMEM;
+-
+-	switch (id) {
+-	case FBNIC_SENSOR_TEMP:
+-		sensor = &fw_cmpl->u.tsene.millidegrees;
+-		break;
+-	case FBNIC_SENSOR_VOLTAGE:
+-		sensor = &fw_cmpl->u.tsene.millivolts;
+-		break;
+-	default:
+-		err = -EINVAL;
+-		goto exit_free;
+-	}
+-
+-	err = fbnic_fw_xmit_tsene_read_msg(fbd, fw_cmpl);
+-	if (err) {
+-		dev_err(fbd->dev,
+-			"Failed to transmit TSENE read msg, err %d\n",
+-			err);
+-		goto exit_free;
+-	}
+-
+-	if (!wait_for_completion_timeout(&fw_cmpl->done, 10 * HZ)) {
+-		dev_err(fbd->dev, "Timed out waiting for TSENE read\n");
+-		err = -ETIMEDOUT;
+-		goto exit_cleanup;
+-	}
+-
+-	/* Handle error returned by firmware */
+-	if (fw_cmpl->result) {
+-		err = fw_cmpl->result;
+-		dev_err(fbd->dev, "%s: Firmware returned error %d\n",
+-			__func__, err);
+-		goto exit_cleanup;
+-	}
+-
+-	*val = *sensor;
+-exit_cleanup:
+-	fbnic_mbx_clear_cmpl(fbd, fw_cmpl);
+-exit_free:
+-	fbnic_fw_put_cmpl(fw_cmpl);
+-
+-	return err;
+-}
+-
+ static const struct fbnic_mac fbnic_mac_asic = {
+ 	.init_regs = fbnic_mac_init_regs,
+ 	.get_link = fbnic_mac_get_link,
+@@ -966,7 +912,6 @@ static const struct fbnic_mac fbnic_mac_asic = {
+ 	.get_rmon_stats = fbnic_mac_get_rmon_stats,
+ 	.link_down = fbnic_mac_link_down_asic,
+ 	.link_up = fbnic_mac_link_up_asic,
+-	.get_sensor = fbnic_mac_get_sensor_asic,
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.h b/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
+index 10f30e0e8f69..bde2daa65645 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
+@@ -137,8 +137,6 @@ struct fbnic_mac {
+ 
+ 	void (*link_down)(struct fbnic_dev *fbd);
+ 	void (*link_up)(struct fbnic_dev *fbd, bool tx_pause, bool rx_pause);
+-
+-	int (*get_sensor)(struct fbnic_dev *fbd, int id, long *val);
+ };
+ 
+ int fbnic_mac_init(struct fbnic_dev *fbd);
+-- 
 2.53.0-Meta
+
