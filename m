@@ -1,78 +1,101 @@
-Received: from mta0.migadu.com (out-122.mta0.migadu.com [91.218.175.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8921CC71
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 01:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0349A7260D;
+	Mon, 31 Aug 2026 01:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788139438; cv=none; b=PsBPM8cMHaSTzE0Z+zRvqKkoxgr541i9okc+tpKxi7Nhw/QB2wFOMioNqKJApVYLE5qGeJUo9e6GUrIeEQhsWo0SLUwOVw33veJmxcgXgDok2mZJS1w7K1O6i6vUL5tnqCu38mlwg80O6u18ETZ2XxEzPgqmkShmjU+vV+1rHyQ=
+	t=1788140093; cv=none; b=utar+AvPe8q7mJVLzbO3zvYrVwNZ9/qHCmnlShRRrY25ldXJSdpzAjBihfg1XxWPaOTHjTaxYcDZVXCN5xafqYn/yNNqNuwlZefnRrXBmxX+TobRSdghUCC3iBoD2RadpNFM2zxYSbG/mQLB0e5yhbRQhocEJGyI8a35ONXu5/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788139438; c=relaxed/simple;
-	bh=cTeEuccT2PKVpzCvAuCxC2zeJqk0NMGvrpNIIWSN0oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acb3fv1Td8kmSjt56+0A5M9RVbXaHlfZPQZKk1sElTaI+XFI4YveXpUqQ1d/ZmrnAEaWom6UyeLFN7621v8uWkW/yuC49aQjgJ3Ai2eDzWVFLV+dvqq/98CuzpCO8zV/VsyVluYqFn9MsB9irlCB0qq0AM3MZMVvxGHDEZT+xiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HiV4aecM; arc=none smtp.client-ip=91.218.175.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788140093; c=relaxed/simple;
+	bh=XAQhw2DAELXbMhOtLuwXtBEHurz/vLsnJyUpShH7ldU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=II/c/RQ31kL8TLPqGeKvWmAeggT2QMrzSIYjWfEkmfjxRtus6PhfA1eUyQmhJu5UFIQA/6Yj4d1+VM4DXx7iqtIw7qozZihEa4OQarclhCXvqnG7sGbiQq2GM4LLvqB+YiroUQ3CLtLBUUw6TTr+9sNw5wDsyk/kEbENP9nu6f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V0kLDHcI; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HiV4aecM"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=cTeEuccT2PKVpzCvAuCxC2zeJqk0NMGvrpNIIWSN0oY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788139433; v=1; x=1788744233;
- b=HiV4aecM6qdnxoPXzmlQRBPTkbnQQsWJqXz5ERUESAwCEXp+TShp/c5XJD5X3bbwV6pcMqbe
- hxpC0my/juuXjy5LyRNElzVV7EKfi1WQzMRMEpgVyZBJUJEA/RbLPyL2OVNLSqaTfjVcOU6XlOF
- 9sfjtD/AUTUI0nuH3zZsDP3I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id f1b9064f72c984e7;
-	Mon, 31 Aug 2026 01:23:43 +0000
-X-Mizu-Trace-ID: f1b9064f72c984e7
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 31 Aug 2026 09:23:31 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V0kLDHcI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=z1
+	9ziYzlRKZx6zie0RnE6wXWzn/6qa4EAc4MT1IdAEg=; b=V0kLDHcIupiy3orZaR
+	oZGDxyzjO6gelF8yMPF1VR9+1hkU0BohQYLgXhBSOoaMgo6saVfvNKCOYiZCt3WK
+	6hlE5KeZCmx3Lzbe8iV+nrxGnteID0kGbMfnTqp0j6VGbQ71a+Gy3+KJgzb9rJoK
+	aL3ugPdmECvAP3Sa/hHq/BtaE=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDnf4Tb2ZRqdfBMSg--.60465S2;
+	Mon, 31 Aug 2026 09:33:17 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net v5 2/2] bonding: fix u32 overflow in compute_gap()
-Message-ID: <apTXkxseTr_1to2u@fedora>
-References: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
- <20260825-bond_overflow-v5-2-7a800de133f1@kylinos.cn>
- <20260827192048.39ea95e6@pumpkin>
- <9e71daf9-aad4-4c8b-9fc4-7429f62130c7@blackwall.org>
- <20260827215611.1cb9f252@pumpkin>
- <31228099-41a8-4976-acc3-9b320a5012ea@blackwall.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Phil Sutter <phil@nwl.cc>,
+	Simon Horman <horms@kernel.org>,
+	Jing Min Zhao <zhaojignmin@hotmail.com>,
+	Patrick McHardy <kaber@trash.net>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH nf-next] netfilter: nf_conntrack_h323: fix double cursor advance in decode_int()
+Date: Mon, 31 Aug 2026 09:33:15 +0800
+Message-Id: <20260831013315.95231-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <31228099-41a8-4976-acc3-9b320a5012ea@blackwall.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnf4Tb2ZRqdfBMSg--.60465S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kry7Wr13KF1kuF1rZr1rXrb_yoW8Wr45pr
+	ZxK3y7Gr9rXF4Ska1jga97Ary7J395Gr43WryrtrWFk398JFWUWFW5K34YgFy7Jr4kJFyD
+	ZF15ZF47Aa1kZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbAwsUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3R1tsWqU2d2ZvgAA3B
 
-On Fri, Aug 28, 2026 at 12:19:47PM +0300, Nikolay Aleksandrov wrote:
-> > > How is that relevant to these patches?
-> > > And how does that help at all if today that is done at about 10 second interval?
-> > 
-> > The 10 seconds is almost certainly completely arbitrary.
-> > It is relevant because the 64bit divide is significantly expensive on 32bit.
-> > 
-> > David
-> > 
-> 
-> Yeah, that is clear. But currently that recalculation is done once every 10
-> seconds, such optimizations will be noise. Regardless of that, these changes
-> are unrelated to the problem he is fixing with the set.
+From: Qing Luo <luoqing@kylinos.cn>
 
-+1.
+In the CONS case of decode_int(), when the field is actually decoded
+(base is not NULL and the field carries the DECODE attribute),
+get_uint() already advances the bitstream cursor by 'len' bytes.  The
+subsequent unconditional "bs->cur += len" then advances the cursor a
+second time over the same data, so the parser skips 'len' extra bytes.
 
-Thanks
-Hangbin
+All fields following such an integer are decoded from a wrong bit
+position.  This affects the timeToLive field in RAS
+RegistrationRequest/RegistrationConfirm messages: subsequent fields
+(e.g. transport addresses) end up being parsed from arbitrary offsets
+inside the message, so the helper may create expectations based on
+bogus addresses/ports.
+
+Only advance the cursor manually when get_uint() was not called, so
+that the value bytes are consumed exactly once in either case.
+
+Assisted-by: LLM
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ net/netfilter/nf_conntrack_h323_asn1.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index 6830c9da3507..a51275cc4d0f 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -336,8 +336,9 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
+ 			unsigned int v = get_uint(bs, len) + f->lb;
+ 			PRINT(" = %u", v);
+ 			*((unsigned int *)(base + f->offset)) = v;
++		} else {
++			bs->cur += len;
+ 		}
+-		bs->cur += len;
+ 		break;
+ 	case UNCO:
+ 		BYTE_ALIGN(bs);
+-- 
+2.25.1
+
