@@ -1,163 +1,189 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1752EBB8D
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788178520; cv=none; b=pxSwb2DxqJ5kDMI6Acu8j+0hMKz0PkHxz0UYtIEsqfRVeofzn4+QfdKwOH+CfIBVT1zUhEM/h/mhC38ygGgIWITxpmOJrTo1G9Zf6+HTSjvs2Noj7J1pl6y47Cq5u8ESeOGbzSjF89z/QPUkNS0+EvzYkY0mH/7uhEaoOmZFq64=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788178520; c=relaxed/simple;
-	bh=LxUt+CnyDWGDMtzxg5Cjeq/z3ZUGbAwQZvmAAhj5b1E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ma2y4aNIjoWziJbBleRfCE1QQrWvYKROPx3eUHEYn1NpNm16DFj7RroYjPB4pQMJmzVvDfpDcYfWdZ51eF/qtfSG5hpjzjx1y+5+zcSbl+PjjLPq51jVUiK6K1iaENnfQOcgLLNEsXvgzBuhoH2hr2nlgGzco3Jt+ZbIfLsIqv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x8s3e4Cn; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16F5330D29
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788178566; cv=pass; b=SYYTLd58dkBNpNuxxnAWPv7wGXhw8LPI9m5g4/wLZBH0ImhimIF15xT5TC+8irgWyA3R72DY7bs3fMs9KZnPZBpEUq/HCFIejz3moUpFH+R6k6o2F6CDI2DDHc9mbHjd9bBXo09Wwww3DJFU80mFfZnVU9kg6E28m83LsquOCeM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788178566; c=relaxed/simple;
+	bh=mmERPczqrfVQh8tUhnvaPBll2oUM/xpRVzVN+xWRmPc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JzUqEelU4s9zAkoPl0MmRto3u8P6r47OsebsEVKEmz/E8It8l4FLF8iWi8uP8cDQRXhC0oSUFAHGQh6xavKMKEtoiIz5VnKAgf3jBY/VARG+U9E/SsR3XuI/eUzf7GLxeMXCPocJfuYCE/X4xuK9eb78XeH4sobg7h5E1bFx+a8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=YhdV+TDM; arc=pass smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x8s3e4Cn"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 04FF54E41491;
-	Mon, 31 Aug 2026 12:15:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CBC2F60231;
-	Mon, 31 Aug 2026 12:15:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB42B11C78B4C;
-	Mon, 31 Aug 2026 14:15:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788178509; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=MKHpfG9FXZBRRV2MzUmsKoBDMrVngBIFiVIQAk/+QT4=;
-	b=x8s3e4Cn2x+dOCKmc9hckekz+B0vlGLGChkHD95QauWurwh9rKYWr7JDXVdiLJVK4PwPcd
-	3WcNFco7+jtDi3/5GhWMW0/GFw6A6U/BCY4SR2MKIwNypKR/MDZw8DI54tdwiznnuETGWt
-	ldX3FC3niPA4g3xlFrgTkf3mOlYknS2lYYJRyK34uk2+xY+A2uR5uWDmj/Kn9Iq9AP9bRx
-	9hxwqEpIoTsKMHtXlE0vU8rK8/OIcf23jjAoBvJ2zSVzx7SgYn+wTpx6yJ6WzWMdRmSDSJ
-	EXB8hFmiy5SG7KKp6qnIHuqMEW+oTxirjDua4lzhoknscg1f56bmGy3GNAopkA==
-Message-ID: <480f15e2-e045-46b7-89af-1fbcefd3c4eb@bootlin.com>
-Date: Mon, 31 Aug 2026 14:15:04 +0200
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="YhdV+TDM"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3a1981228f8so29090171fa.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 05:16:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788178563; cv=none;
+        d=google.com; s=arc-20260327;
+        b=k4RjoZ8H2Y6NtIKl0UEbpW3yilny49GtAOfpgIi8NQWy5FHBKdKmm0wkJFMra5Tq5b
+         f6/zXqDSvYEEaKRf02uYZk8T26owMb2Vlv04MYYuzZN0HoGIEihPTgWceBxMSamhwk4u
+         Y//GagdVCxmI6XbOc4yVRI/ZKSM/WNNXp7QHWG9cC7GxdL/RputQZ2hy1vomyHP1AIe9
+         Cbs4grE+OqjbdDpYl2AmOY7uLMGwumosuEJN4DoBQ0B+VuUAvqUt9b7kHPpsF9y7U1AR
+         ztra8WYr0qbzn1CskzssdyYlnfZTQfwsp0TsfyPCtKMJuYV8jYDKeM7Pord4kem+CnaR
+         x7jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=E2fspwe7pTek3z4ZZ2gaIFnlooj5wzCDQHD2ngploqQ=;
+        fh=l/pSApOOsWwB10+wh17lpy1DzqlF6UGlTZpGCEGHc8Y=;
+        b=kjyZtt66RSNiqgA+hQny0e1EyNfC3u0IoLl4eKiGBjkP4yKd3gom/BRTaf4ZXbSBSC
+         coG60qb1l9pOED1kOOZWn50FXf0iQIIfErpOQobIRNq+CiliiqMn4ucf72H8aus1UgyE
+         v3TVzL0OTrFnyut6cZxXwEJU7dmcDcTytWekFDRsJfr7kJl5zyDL4MJ9v+3GsVcpwDYM
+         x9T7Fa8wqI9bTpmDjGP0gh4bajZ4FBhn4xsYXOLqGdCMxbCCAWjKMgO/fBwrz3nKQdKl
+         QXsYiBGWSLxQIc7rbOBECNN7OOb7SJiFcLNyAhQmPX0DeBpRV2wje8i/r+9Urv9P6Lyi
+         1WdA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788178563; x=1788783363; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=E2fspwe7pTek3z4ZZ2gaIFnlooj5wzCDQHD2ngploqQ=;
+        b=YhdV+TDMZOi2hS/Llj4tvZ9jvMK1ld9JgNg6+80IHzXcRLiualv+0rKV92iA+Wmllw
+         NcPPvumaPEm8ucBHgYYTBZBrfFgEaa9Xi1iEEr7mqt2Qs0A9efZTLOeP2Gq6v7fofVDi
+         g3TdE+oKZiHoPCJGHZpLEzTdRvkOGSnPAecNeQGagdfQb54lvQjyRgkg/Kdj8eODbGD+
+         W2fNT8o6KM7tkrX/LP+b07Sn7zz05dpPfXv1Nwf44eIheQRTK1mIosex4YfcTa4q7AXF
+         b3mlUtjQLGOFSQXRpFc5KWs5MBp5VsQrTjGvsCGzsV8nz5AhrFaKd6cnpsnM6wgScdoU
+         0O0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788178563; x=1788783363;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=E2fspwe7pTek3z4ZZ2gaIFnlooj5wzCDQHD2ngploqQ=;
+        b=HEstOflfXsUrhQjKPILCUNAi9OonU8MyHyrDlFPdMkcPKuh3HA7ajOp8aBYlrwkN7Y
+         Fsc7BCwEcy5nDmJF6bc4IdvE6ZO59jtQVICZUlB6o4q8U5jZEptlb+z8S6oiEJt9lAz2
+         xeTnOa07x/+JAcqux0mYQwSCqcv71CZ3D+XuUHpgEx3/0hvqntoV9bjSLWgl4JPoz1cI
+         2eZ7EnSbktILmsRdjRMKtEd6d2XNvKtnDQzV/xWhtWiU47ki/ku0PdvusNmIPpLLX8TS
+         nIpjoFclqsCsWOuOejNxDt2cwrgq3kVld52H4IQs7k4i6Vo0i9Kirm/XO74W/LF99p26
+         XVxQ==
+X-Gm-Message-State: AFuF++lakLYGgYneKtjOdMoNo40ThNR3Knm/eA0dZCnr6Gjr0sjF1iJm
+	ToWe3Nn/whuOZ5Q3N4weFGrM5rJ7Rhs8fw3QBVYXFpwEGidMVNp+++sw7ccbnz3G0iNvggR/oJ8
+	Kx0sn0bf0VuyWZzvKO+Xas15KODfu+Kw3uLR8pcsnojc=
+X-Gm-Gg: AYBFou3dn4rNx9UxkA0IxbDIGLA7BD2O4weTstKNTbmWZ9GGtra0wQW0JL2XxHsrUid
+	EvFhif0SbwRaFDV+woE+EPWJn3fOhzr3FAhtN1z5Imq9oWGd3VXyE5J2IauOqpX78ezUG197Q3d
+	Mi6NUIqjfwewx+DShYhPtmt1IF4IbyJlNuU5TMzPdZKqR4U33wwpqywRH53vjuHnYLIe3zq+WvI
+	9g0lzJAeGyd1cPX9Iht/v/3x8YlOBWLNBnkiVN8mtwZj5H+/f3QgO3YDXjhxpRxMHOuHoNWq5Hy
+	E8s4+M+RVsm1jMDJdj932e0N4Qwd2QAULO5pFb/u9CS2UBg2I7W+bEtTgAmp63HwLHdowqRj9BQ
+	F
+X-Received: by 2002:a2e:a550:0:b0:3a3:476:2e37 with SMTP id
+ 38308e7fff4ca-3a304764657mr47943831fa.6.1788178562237; Mon, 31 Aug 2026
+ 05:16:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/2] net: stmmac: dwmac4: Read the UC filter size
- from hardware capabilities
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
- <20260831070121.349778-2-maxime.chevallier@bootlin.com>
- <2631c832d5aebc56e152628132494545@tipi-net.de>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <2631c832d5aebc56e152628132494545@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <cover.1787982246.git.zihanx@nebusec.ai> <0a00492a13038b268c1e0a219c138d07cfab92b3.1787982246.git.zihanx@nebusec.ai>
+ <20260831110647.GA3202627@shredder>
+In-Reply-To: <20260831110647.GA3202627@shredder>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Mon, 31 Aug 2026 20:15:49 +0800
+X-Gm-Features: AcwNN1VxMrcdoN8MorTbHscYSmLJXYJbfD7TkDzZUF5Xn6YLbbDtN9fpaNcxbz4
+Message-ID: <CAANe3eSrMbEiuBEeanOHomSGt=y+m58pwVyHGBfe4GaG0mXOCA@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] ipv4: fib: avoid quadratic table ID lookup
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Ahern <dsahern@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Patrick McHardy <kaber@trash.net>, stable@vger.kernel.org, 
+	Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Aug 31, 2026 at 7:07=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
+>
+> On Sat, Aug 29, 2026 at 06:24:57AM +0000, Zihan Xi wrote:
+> > fib_empty_table() probes every table ID from 1 until it finds a free
+> > one.  Since IPv4 tables are stored in a 256-bucket hash table, a dense
+> > set of IDs makes the probes repeatedly walk growing hash chains while
+> > RTNL is held.
+> >
+> > Count the existing tables once and use a bitmap for the bounded range
+> > that can contain the first free ID.  This keeps table-ID selection
+> > linear in the number of tables instead of quadratic, without changing
+> > the lowest-free-ID behavior.
+>
+> TBH, I wasn't even aware of this "table 0" functionality and I'm quite
+> certain it's unused nowadays:
+>
+> 1. IPv4 specific:
+>
+> # ip -6 rule add from 2001:db8:1::1 table 0
+> Error: Invalid table.
+>
+> 2. Not documented in ip-rule man page:
+>
+> "
+> table TABLEID
+>        the routing table identifier to lookup if the rule selector
+>        matches. It is also possible to use lookup instead of table.
+> "
+>
+> 3. No kernel selftests despite ip-rule having good coverage.
+>
+> 4. Quirky. Requires dumping the rules or listening to netlink
+> notifications to discover the allocated table ID.
+>
+> So, for now, I suggest bounding the maximum table ID that can be
+> automatically allocated. Something like [1]. I will add a deprecation
+> warning in net-next.
+>
 
+Thanks for the review and the suggested patch.
 
-On 8/31/26 14:04, Nicolai Buchwitz wrote:
-> Hi Maxime
-> 
-> On 31.8.2026 09:01, Maxime Chevallier wrote:
->> dwmac4 has multiple banks of perfect filter entries, independently
->> configurable during IP integration.
->>
->> The multi_addr bank reports a number between 0 and 31 corresponding to
->> the actual number of entries in that bank, while the 32 and 64 banks
->> are all-or-nothing.
->>
->> Expose these caps over debugfs as well.
->>
->> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
->> ---
-> 
->> [...]
-> 
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
->> index 6382836828ba..89368e34a388 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
->> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
->> @@ -176,7 +176,9 @@ enum power_event {
->>
->>  /* MAC HW features0 bitmap */
->>  #define GMAC_HW_FEAT_SAVLANINS        BIT(27)
->> -#define GMAC_HW_FEAT_ADDMAC        BIT(18)
->> +#define GMAC_HW_FEAT_MACADR64SEL    BIT(24)
->> +#define GMAC_HW_FEAT_MACADR32SEL    BIT(23)
->> +#define GMAC_HW_FEAT_ADDMAC        GENMASK(22, 18)
->>  #define GMAC_HW_FEAT_RXCOESEL        BIT(16)
->>  #define GMAC_HW_FEAT_TXCOSEL        BIT(14)
->>  #define GMAC_HW_FEAT_EEESEL        BIT(13)
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
->> index 23ffe1adcd0d..14ac3f0e51f7 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
->> @@ -388,6 +388,8 @@ static int dwmac4_get_hw_feature(void __iomem *ioaddr,
->>      dma_cap->half_duplex = (hw_cap & GMAC_HW_FEAT_HDSEL) >> 2;
->>      dma_cap->vlhash = (hw_cap & GMAC_HW_FEAT_VLHASH) >> 4;
->>      dma_cap->multi_addr = (hw_cap & GMAC_HW_FEAT_ADDMAC) >> 18;
-> 
-> Now that ADDMAC has grown from single bit to a mask, the hardcoded 18 has to match
-> dwmac4.h. So IMHO it would make sense to use FIELD_GET() here (like actphyif)?
+I wasn't aware how unused this automatic table-0 assignment is either.
+I'll drop the bitmap rewrite and send a v2 that just caps the
+automatically allocated ID at 4096 as you proposed.
 
-It's hardcoded all over, if you look at how all the other fields from the features
-are read. I can change it if you really think it's worth, however I'd rather
-do a proper cleanup of how all the properties are read at once :)
+> FTR, I did consider storing the tables in something like xarray, but:
+>
+> 1. We would still need to keep the hash table given the analysis Jakub
+> shared in commit 759ab1edb56c ("net: store netdevs in an xarray").
+> Xarray only starts being worthwhile at around 1k tables and most
+> deployments never reach this number.
+>
+> 2. It requires adding per-netns xarray for a functionality that is
+> unlikely to be used today.
+>
 
-> 
->> +    dma_cap->additional_32_addr = (hw_cap & GMAC_HW_FEAT_MACADR32SEL) >> 23;
->> +    dma_cap->additional_64_addr = (hw_cap & GMAC_HW_FEAT_MACADR64SEL) >> 24;
->>      dma_cap->pcs = (hw_cap & GMAC_HW_FEAT_PCSSEL) >> 3;
->>      dma_cap->sma_mdio = (hw_cap & GMAC_HW_FEAT_SMASEL) >> 5;
->>      dma_cap->pmt_remote_wake_up = (hw_cap & GMAC_HW_FEAT_RWKSEL) >> 6;
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->> index f2fc89176654..a885f8cfef21 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->> @@ -6580,6 +6580,18 @@ static int stmmac_dma_cap_show(struct seq_file *seq, void *v)
->>          seq_printf(seq,
->>                 "\tNumber of Additional MAC address registers: %d\n",
->>                 priv->dma_cap.multi_addr);
->> +    } else if (priv->plat->core_type == DWMAC_CORE_GMAC4) {
->> +        seq_printf(seq,
->> +               "\tNumber of MAC address registers (1-31): %d\n",
->> +               priv->dma_cap.multi_addr);
->> +        seq_printf(seq,
->> +               "\tAdditional 32 MAC address registers (32-63): %s\n",
->> +               priv->dma_cap.additional_32_addr ? "Y" : "N");
->> +        seq_printf(seq,
->> +               "\tAdditional 64 MAC address registers (64-127): %s\n",
->> +               priv->dma_cap.additional_64_addr ? "Y" : "N");
->> +        seq_printf(seq, "\tHash Filter: %s\n",
->> +               (priv->dma_cap.hash_filter) ? "Y" : "N");
-> 
-> hash_filter seems to be only set in dwmac1000_dma.c? So on dwmac4 it would always print N?
+Agreed, bounding the auto-allocation is the simpler fix here.
 
-Yeah but dwmac4 has a hash filter, but same as the UC filter it's just not plumbed
-in :/
+Thanks,
+Zihan
 
-Let's leave this flag here, hash filter addition for MC filtering is coming-up, so let's not
-drop it now only to re-enable it after, one of the other wonderful discoveries found by
-running the selftests...
-
-> 
->>      } else {
->>          seq_printf(seq, "\tHash Filter: %s\n",
->>                 (priv->dma_cap.hash_filter) ? "Y" : "N");
-> 
-> Thanks,
-> Nicolai
-
-Maxime
+> [1]
+> diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+> index 4edb0dca7be8..2e8629df34bb 100644
+> --- a/net/ipv4/fib_rules.c
+> +++ b/net/ipv4/fib_rules.c
+> @@ -214,6 +214,8 @@ INDIRECT_CALLABLE_SCOPE int fib4_rule_match(struct fi=
+b_rule *rule,
+>         return 1;
+>  }
+>
+> +#define FIB_MAX_AUTO_TABLE_ID  4096
+> +
+>  static struct fib_table *fib_empty_table(struct net *net)
+>  {
+>         u32 id =3D 1;
+> @@ -222,7 +224,7 @@ static struct fib_table *fib_empty_table(struct net *=
+net)
+>                 if (!fib_get_table(net, id))
+>                         return fib_new_table(net, id);
+>
+> -               if (id++ =3D=3D RT_TABLE_MAX)
+> +               if (id++ =3D=3D FIB_MAX_AUTO_TABLE_ID)
+>                         break;
+>         }
+>         return NULL;
+>
