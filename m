@@ -1,182 +1,155 @@
-Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00154904.pphosted.com (mx0b-00154904.pphosted.com [148.163.137.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65422D781B
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 10:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788172563; cv=pass; b=hVwRk2my3Hk+LZ+JzRv2gGwJ6mR4t5Rn6pnEl/umx9Aw4jb8+5VEkn/37sNmgVwNxN2reoWodKzV/43SLVvJrqFzTajpg3URXDWOyhM32krbx0jMKD6WcHjmH5e7eDO1fF2qXkk7s9DcPSG68MfG3xvIn7X6DboF6gn0LWlOLBE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788172563; c=relaxed/simple;
-	bh=17Uuc3zfGpTlIOpd4zndbkf7riqcWXLmLpdagq3nZF4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uFSg3V8ZiilBvflE3K8OPkbroUuoDKvlIUgDZ4+qpP+WBm0OknleFp+tpat357FDOpiHoss0msBFkyQSerjoeE2X7ShLYgCGE4MQT5mUDHMG1O6e7Z4wkD+OooKotgyER76bTpWdOn9ebQxEYNC1cMSPiqWWZ5AgHvVjAjKXQzg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EOlHi2Sk; arc=pass smtp.client-ip=209.85.219.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01B13033FB
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 10:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.137.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788172866; cv=none; b=d2cpUFm81L8zcVgLlkfogTiSFcC5/VH8v5k4NRm56EOGkFredMu0vYzCiRvGKrjS07XyBJbvM8CEyhk5izZNiDS8y4NiJPBqpZYKX9sVvOW0eII+xSW3SHNfJ7w+uyW39GloNHkhnAzxhEtaGq2BhdR7wMw8TXiEMYCqcDtHPxs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788172866; c=relaxed/simple;
+	bh=cERD+dbdGL460TMFadVUM7NP3jO7pBApMAZ/P0Z8G3o=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=u4KBNCjW+TPPe5g3G+yBNppzDGb1jnW1+J8Lt9ajZYo1KpuWrkk24hoWS0bBSE3l3HGIGryFv2LidQ51GzYl5A9qAszOUtOoOb80yDxILjKm9sAtxM5OztNXkfWF9HrIEpTRJQWR70niVDQB7jljGLbZ57NzJcRgOj1Du2xu9r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com; spf=pass smtp.mailfrom=dell.com; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=sQ2dbMu1; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=m04kISHb; arc=none smtp.client-ip=148.163.137.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EOlHi2Sk"
-Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-902e4af2d9dso39844386d6.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 03:36:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788172561; cv=none;
-        d=google.com; s=arc-20260327;
-        b=s8wfMOOMDmYOoAZ5zHR+/7X2iLP+AaUaeKIoqgTNs7fmUfvUeS400eqfo3nSKA77uw
-         q2R1Y42wfXmRzeq16can9xZqtBlxVLLbeTVA7I1k2OJ2dSkt0ejKWlmOQb3lgCP9Y0DO
-         OJMfUZIyN4tSADNME082spqSisJt4usaYXw5ccjLSJ36F1aY3iagosb8qRONYAUjxswX
-         tIpYP07PkKGc8sQvc0MdDMzD1QhKChT3O8z+2K0b4jR53O59ETVutxDEfOZPuG/AVTJx
-         XgmdKVb0ncH3/buTJDExNt80nV3CqIrQM4MpYvUBmZRrHa+BfPsbIW7xkP0oTS0xUIFz
-         TS4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aZRb6ZzJARtkhDdjsBstTG/eFPsTXUA4jzflrKRt3fs=;
-        fh=IVFLBzEcJCqAdE0yYPMviKUQVAcG3l6SC4L72O+UmcQ=;
-        b=a2CfOiBAV6rLNz6cSZ0vuU2GlfubofyAOexlfRi3UE8fR3Bp457aODT8dgS9lVNHNG
-         miR15/IO9zy4LkkDroB332KbtLUm7DU9zV3QdU6EplCvItJb4qHhQreuKTUs9De8WS+h
-         2NHP8qbe0PBvn8YNGLGJXAVROVIHXRIiVIBxAxOIWDAgj5n343XlCIUAxR1NtA/XGq+H
-         4ejLx9NwRoOu8PH7yHmiGcytavFoPlc+FtvUFk2YYwP0so7Iwu1JMvD58zjiAZy/Vfir
-         y1l57gXB5IBKsfgnQYFPggwXMQ6RomCvQ9F7fTUniIQ6+Hmf7mTMB+F+wR/2MVvSV2Yr
-         /0kw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="sQ2dbMu1";
+	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="m04kISHb"
+Received: from pps.filterd (m0170395.ppops.net [127.0.0.1])
+	by mx0b-00154904.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V7x07w3191543
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=smtpout1; bh=TBU+cV57Oya/PGh0vLS3CJxUUQOBy0He92S6
+	zE2ldDo=; b=sQ2dbMu1QWbg++lsQ4rWvIEK08IP/yJ8CgLUSH/RKfgPmLSKmlww
+	1mvU5qlPj6+o5pb2C2Z5UeEDHWcsHtJZjIK/d4nnQ+lpfm0iNEkdv9Ad2D8/xvnr
+	3XDhGnSJ6YFaU7U4xIfg3+zZDzkywUAWaTK93TmQ5+N8GZUb7JeGLFNxh2T8XLVx
+	uqZJL2ja9u/XtAwpheggo8L6uichOSmOV8LhwvlHV5gCPrq5q+BtNHRuy/vElMnz
+	vn6COV3LeUVUCV7hRsQfuFz/3r2bhWcLV+TZj3lSSp0PbEGFNPf2A/Vk5FGw+xiv
+	LMlvdp/fC8xr4iZB3ykcPRtR9/tzU9tn0A==
+Received: from mx0b-00154901.pphosted.com (mx0b-00154901.pphosted.com [67.231.157.37])
+	by mx0b-00154904.pphosted.com (PPS) with ESMTPS id 4gbv3g57be-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:03 -0400 (EDT)
+Received: from pps.filterd (m0144103.ppops.net [127.0.0.1])
+	by mx0b-00154901.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67V817lC2674620
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:03 -0400
+Received: from esapsmtpat02.us.dell.com (esapsmtpat02.us.dell.com [143.166.211.150])
+	by mx0b-00154901.pphosted.com (PPS) with ESMTPS id 4gd5ebstdb-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=FAIL)
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 06:41:02 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788172561; x=1788777361; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aZRb6ZzJARtkhDdjsBstTG/eFPsTXUA4jzflrKRt3fs=;
-        b=EOlHi2SkBhQaMGr1iJydQnac5i8kIxFcoR0Ht8VWhGI0fEZDmGqm7DWxel1DriZk22
-         HBbexj9bgWmQl4N/nbn9Pm0UgqxZNLY1gzbSfGOEOOl7YZgYYM7e5K7ZcqdErvu0UGeP
-         6WGCl7N+hIq0Y4eUcYteDIwbzsx3t9M22yq8VY5m1uwlMibTMKHXcWPNHuH0p8Pl78W8
-         GbiOJDwgZwrK0GAD/PDaZtIMYV2X4BwRTBbFwToQBvrYZSKnZ1xJbD+pIeIO5et+nWFo
-         P3/1Fq2xZXht+JuXFLCuaA0DSqGkRvSrpB8RGWUB0No0oBVtwb+QbLZwsOe8ele73sRm
-         trXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788172561; x=1788777361;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aZRb6ZzJARtkhDdjsBstTG/eFPsTXUA4jzflrKRt3fs=;
-        b=hsFPj+vgfzX9Kl4+rklBHPn7w3os6T31+cSYvsznySH9I75tmGateHOZKF2nUIvpzm
-         ZAy92Cr79FB3FEph0S4fZo/63TrixF0/leXNEMmN3uJLNlyybgGLC/OrSQszB0yaZ2yU
-         BM2KlHxZ+isRSBghuPgK9zBghjpKNc4JpWDGiKrGDMg3HRmBu4gIGNIgdC3vrHCsn6A7
-         UihrG7NNDxVsVqLJRIw2t2knxvGR7LSIdvObHH/zvrF1OTy+tgKu6pIL/2tammJheHEK
-         AhhY6+xmpx1dvwrhWGh5Dt/7VRNv3JVja92SSYkRcFY7pd7vDQlm9SoohhELzqW5P+0T
-         Gn/g==
-X-Forwarded-Encrypted: i=1; AKwUvByta+XQhk+czkn7LHu4tvuLWGmD4CR0jS5fkfhO+cD+zu/rKW9ybXHI83A1/9xvOeyVYdern7s=@vger.kernel.org
-X-Gm-Message-State: AFuF++n1yNdG8vQthA0eUJ2/2PkshIqZkpvroJSHXI+JK/oUsX3JSgnn
-	80acBn9Ie9kg6oN4ihuqM6GMGyzejCUMofcNVHIBXOrWtwWcVbdANzGywcKZmbqpgTjTTXaHJZw
-	rPX9W4Gkiqoyu0S/0YnV21kjFhQexa7E=
-X-Gm-Gg: AYBFou0Efs5Q6MrfKAOOR4lv8TctuN4S0Cus7hsGwLcax1Egi38enSo1ulfSeAVwfE6
-	7Lzbji/J6pvN4GHIz4tyw+s8IktyKo/gAIVb5dS5yRU8F1S6OCLF7GaJmlpCtaxOIpUxpYVEvGf
-	g3cf7CrQvsaddKNdTtq9tRR3cE4OX8qLAAFD38lypPC/aXUE/dMeeDQ5pPyd6Y1JkhuyfOnJoqJ
-	HVNlSd8x+kUmLOWGN730pNoRc6AHb0pk1uns7ctJ4IDP+qlQVv0HZI5nN7s0j4xJ5DrPnQVM4vg
-	BB/dk5SH7SMit3cNUopr/nRMDSTgyuXYfetx472j0Tovew==
-X-Received: by 2002:a05:6214:5403:b0:90c:e18f:3759 with SMTP id
- 6a1803df08f44-90e8702b5e8mr87775236d6.3.1788172560578; Mon, 31 Aug 2026
- 03:36:00 -0700 (PDT)
+  d=dell.com; i=@dell.com; q=dns/txt; s=smtpdev1;
+  t=1788172863; x=1819708863;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TBU+cV57Oya/PGh0vLS3CJxUUQOBy0He92S6zE2ldDo=;
+  b=m04kISHb4lOczMfAyQsqVaQkhtAzIpuftxeHCNTPWWqVG1z1SIWxqtCD
+   EvAqJIMhgPxENq8bmyK/MpCP4CFliR5qjV1TcV+NFHNxRV1OpsXw8DKK3
+   ciBE33pfOqvdxTQnooaiZZfgJMcONnXvnoasLoVcz8+wDOGe9IJPWAdll
+   K7kSMkNp9XZ4EH+QymoGiPD72lGQ84O4Oxa/e50rMZhmfrY5CwJSHI9dZ
+   4c0kCaVfQBouEFcJKSG/Wq31FlaMXavCd/sNjTG0+qOH88gHMh7fp7klJ
+   2hkyYOfnijpSRYat6q2mUhgNv9T7zkfP6PGy7BP9ARh/+vefD2YPu0FJT
+   Q==;
+X-CSE-ConnectionGUID: Pk2boAo8TQW2Ht/k7p6XyQ==
+X-CSE-MsgGUID: I1dZO9pnTeayajprt27RzA==
+X-LoopCount0: from 10.94.8.206
+X-MS-Exchange-CrossPremises-AuthAs: Internal
+Received: from w-96j1th4.apac.dell.com (HELO W-96J1TH4.blr.amer.dell.com) ([10.94.8.206])
+  by esapsmtpat02.us.dell.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 31 Aug 2026 10:41:02 +0000
+From: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
+To: prabhakar.pujeri@dell.com, netdev@vger.kernel.org
+Subject: [PATCH iproute2] u32: fix IPv6 port match pretty printing
+Date: Mon, 31 Aug 2026 10:40:57 +0000
+Message-ID: <20260831104057.2176-1-prabhakar.pujeri@dell.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1787499036.git.petalzu987@gmail.com> <99ba13458fbcff6d646ee223f0b70847b790777d.1787499036.git.petalzu987@gmail.com>
- <20260830063647.GA2725797@shredder>
-In-Reply-To: <20260830063647.GA2725797@shredder>
-From: Zixuan Chai <petalzu987@gmail.com>
-Date: Mon, 31 Aug 2026 18:35:49 +0800
-X-Gm-Features: AcwNN1V74AfiRmziext4S43Wk_FVqFV0DfQQ61ksC7DgrA1ssCqfDJsI7GOm4yo
-Message-ID: <CADTzadJaJ_N=chKso3R8dXiOzhQARkjNE1tGpJmi5uW6qwG4QQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/1] ip6_tunnel: snapshot encap in xmit
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Ren Wei <weir@nebusec.ai>, iprintercanon@gmail.com, netdev@vger.kernel.org, 
-	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, tom@herbertland.com, vega@nebusec.ai, 
-	enjou1224z@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-31_03,2026-08-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1031 phishscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310091
+X-Proofpoint-ORIG-GUID: bzbEaQxgid9cmBU9XsiK6i8sixWuRUct
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDA5MSBTYWx0ZWRfX3BZkueCXuspn
+ 3AaqOFPTA6PPJDqy1G/qE4ud1nFb6FTDvWG3jmJdwu66FNlkw/CI4K0xxqJkfOCXDNNQzw30dPw
+ BaFMzsbjmXgH2MtFV5MuntBajcwIoseS6zjBvIRlJ53y3pyCBWITvXAvoXzj17Bj8jk2o3uONXX
+ qV/+ivBGDI4qKFvhDm21Dhc9i/RB1jo7wgMuWllvKAJz6gHe+vvBCiNhiaUTmRwMw+zsI+5Zpbi
+ XEEXpEHXqlvVOHXAOVw7qTgixy9qPy9rbf5ynjYsmuJhFcdIqKwdV+TVh2dBj3k06/X/MjYtJm0
+ 4ooPmLcVfKQ9UW6Uo7HjOxXsS99WPFjq8MH1I6rMHx/ZxwvWMalnfRIvY9u2Q/hhROXU5r6yYpj
+ 03FNvFE48f8nML6uoAxLn52uYJrbWs0jCGhcWJ4V3xe+JCHdo8h80Yn5NMrIR4wwzUPuqWQTnLZ
+ myU5r64aIAv351Dwgnw==
+X-Proofpoint-GUID: bzbEaQxgid9cmBU9XsiK6i8sixWuRUct
+X-Authority-Analysis: v=2.4 cv=B7SJFutM c=1 sm=1 tr=0 ts=6a955a3f cx=c_pps
+ a=Z2e5DKjA+8LiMDv5v6mwwA==:117 a=i8a7nF7jFa3EbZrjgrQYpA==:17
+ a=Sv0fKeRqtYgA:10 a=ke5jqHz-1hQA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=6gNNCFAoQcIphELLPWWu:22 a=Qy6CKLcU0MZ4grw4BCWD:22 a=iLNU1ar6AAAA:8
+ a=kPxjs7EtMyOY6NC3-IAA:9 a=hlJyneSgMmFPbskH-t2w:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDA5MSBTYWx0ZWRfX1zcviuZ4k3Zn
+ vm9iveroYvJ0IRJd80HKZ3PMPqha3w4POmIoJuaMJbuCfS2VH1w4STPduNntF/uCAmbleFatJy5
+ GTZrXzUgUHqfWLc2YHwBU6eoS1awvb0=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1031
+ suspectscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608310091
 
-Sashiko/Clashiko: the report is useful.
+parse_ip6() stores source and destination ports in the 32-bit key at
+offset 40.  print_ipv6() checks offset 20 instead, so it does not print
+the decoded port fields.  The source and destination labels in that case
+are also reversed relative to the layout produced by pack_key16().
 
-I will update the fix in the next version to use a consistent
-encapsulation snapshot in ip6_tnl_xmit().
+Handle offset 40 and use the source label for the high half and the
+destination label for the low half.  This matches the parser and the
+equivalent IPv4 printer in both text and JSON output.
 
-Thanks.
+Fixes: d13cee6d598d ("Add IPV6 match pretty print")
+Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
+---
+ tc/f_u32.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Ido Schimmel <idosch@nvidia.com> =E4=BA=8E2026=E5=B9=B48=E6=9C=8830=E6=97=
-=A5=E5=91=A8=E6=97=A5 14:37=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Tue, Aug 25, 2026 at 03:29:49PM +0800, Ren Wei wrote:
-> > From: Zixuan Chai <petalzu987@gmail.com>
-> >
-> > ip6_tnl_changelink() can update encapsulation parameters while the
-> > netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
-> > headroom with t->encap_hlen and later build an encapsulation header fro=
-m
-> > the live t->encap. A concurrent update can change the encapsulation
-> > header between these accesses and make skb_push() underflow the skb hea=
-d.
-> >
-> > Take a local snapshot of t->encap before calculating the encapsulation
-> > header length. Use that same snapshot for headroom accounting, metadata
-> > validation, and build_header(). This keeps all encapsulation decisions
-> > for an skb consistent even if changelink updates the live configuration=
-.
-> >
-> > Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation=
-")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: Codex:gpt-5.4
-> > Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> > Signed-off-by: Ren Wei <enjou1224z@gmail.com>
->
-> The comment from Sashiko [1] (which I asked to review multiple times
-> [2][3]) looks valid. We need something like the diff below. The helper
-> can then be used in the IPv4 code.
->
-> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-> index 7c9aadfe8fe3..97f3e9e3ccf5 100644
-> --- a/include/net/ip_tunnels.h
-> +++ b/include/net/ip_tunnels.h
-> @@ -522,6 +522,15 @@ skb_vlan_inet_prepare(struct sk_buff *skb, bool inne=
-r_proto_inherit)
->         return SKB_NOT_DROPPED_YET;
->  }
->
-> +static inline void ip_tunnel_encap_snapshot(struct ip_tunnel_encap *dst,
-> +                                           const struct ip_tunnel_encap =
-*src)
-> +{
-> +       dst->type =3D READ_ONCE(src->type);
-> +       dst->flags =3D READ_ONCE(src->flags);
-> +       dst->sport =3D READ_ONCE(src->sport);
-> +       dst->dport =3D READ_ONCE(src->dport);
-> +}
-> +
->  static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
->  {
->         const struct ip_tunnel_encap_ops *ops;
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index 63c524b080dd..6ca373d6205a 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -1205,8 +1205,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_de=
-vice *dev, __u8 dsfield,
->                 goto tx_err_dst_release;
->         }
->
-> -       /* Can tear, but hlen and build_header() use the same snapshot. *=
-/
-> -       ipencap =3D data_race(t->encap);
-> +       ip_tunnel_encap_snapshot(&ipencap, &t->encap);
->         encap_hlen =3D ip6_encap_hlen(&ipencap);
->         if (unlikely(encap_hlen < 0))
->                 goto tx_err_dst_release;
->
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/99ba13458fbcff6d6=
-46ee223f0b70847b790777d.1787499036.git.petalzu987%40gmail.com
-> [2] https://lore.kernel.org/netdev/20260812120827.GA3410841@shredder/
-> [3] https://lore.kernel.org/netdev/20260817064250.GA196908@shredder/
+diff --git a/tc/f_u32.c b/tc/f_u32.c
+index ae285146..304fbfa8 100644
+--- a/tc/f_u32.c
++++ b/tc/f_u32.c
+@@ -948,22 +948,22 @@ static void print_ipv6(const struct tc_u32_key *key)
+ 		}
+ 		break;
+ 
+-	case 20:
++	case 40:
+ 		switch (ntohl(key->mask)) {
+ 		case 0x0000ffff:
+ 			print_nl();
+-			print_uint(PRINT_ANY, "sport", "  match sport %u",
++			print_uint(PRINT_ANY, "dport", "  match dport %u",
+ 				   ntohl(key->val) & 0xffff);
+ 			break;
+ 		case 0xffff0000:
+-			print_uint(PRINT_ANY, "dport", "match dport %u",
++			print_uint(PRINT_ANY, "sport", "match sport %u",
+ 				   ntohl(key->val) >> 16);
+ 			break;
+ 		case 0xffffffff:
+ 			print_nl();
+-			print_uint(PRINT_ANY, "sport", "  match sport %u, ",
++			print_uint(PRINT_ANY, "dport", "  match dport %u, ",
+ 				   ntohl(key->val) & 0xffff);
+-			print_uint(PRINT_ANY, "dport", "match dport %u",
++			print_uint(PRINT_ANY, "sport", "match sport %u",
+ 				   ntohl(key->val) >> 16);
+ 
+ 			break;
+-- 
+2.55.0
+
