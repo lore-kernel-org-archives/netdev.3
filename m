@@ -1,35 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90903CF21D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90103A7F7A;
 	Mon, 31 Aug 2026 09:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788168980; cv=none; b=jWdhBB64EhNnOJIEX69IjC7WrmpeLFGlGgBb+Q9wApa2E5WZOwnwg5ru3UpIGPpo1TO6nWRkvy9mX1tA2okNQGttruKFPy1K6o/ujCS7lfVb/4xLFhL6lPAIRd5RGTzX3DXeNE2Fkb/xFDBROh/FVxPxUUe4z7VPWqkkqYAz4xw=
+	t=1788168981; cv=none; b=QCKU9XsAeI5VxnXNOvSDac5oZ8fEjO9mexG4tzST9RWWDR6yP5WBYlVV+SDQqJvYH+vL1UGWv9ToEWxNd+9eQe7Yi3H3XC3NUsdHYdsEuJKn029V8Mw/pHACEeFw8GTDV9KiBpshFKoMKtlk718nddaC5e6c95Z2ltlQqP4CJlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788168980; c=relaxed/simple;
-	bh=0y9SYeJbQS6ps3heZr3eahrgdU0qiRAeZE0dDp2kUfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cwAhalo/JdMRQjjcX9tb7L485dTkfqZY0WcogZZWCUQUOpzes/mt5xhAkaV24/NeUQFEI+k0aup9twewGaJwCdowGdr0V9grBt9xSqMQX7cKYNYPjaUQdbRyp06Jz5b8BniinYxREYr4Pws8hIQS6GxYDVK3QCUTBVuffFcOcps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=jv2M2GhQ; arc=none smtp.client-ip=193.104.135.124
+	s=arc-20240116; t=1788168981; c=relaxed/simple;
+	bh=UvRgcT/OPw+gHUkrCJqWGI3xRb1ZOVjluHGpT6Ut4Rk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ni1YCX6C5isDvo1Zk9m4k3mkhdlu/tuwfi6EAd4djyvnkghBtHBhe9wSeUjeZ8J54tAe8Qex1Mda4Q2QskhC7OxOnIHeEMXXuA6SqHDcVhV/NqOEaDZ726ZUj/lXXKqP+n1t735J7sJZVnZIXp3e7sd6qXmq0rl+WymRleAlTsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=OehNvAAG; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="jv2M2GhQ"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="OehNvAAG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1788168969;
-	bh=0y9SYeJbQS6ps3heZr3eahrgdU0qiRAeZE0dDp2kUfM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jv2M2GhQSgrThEx3K+IJFxa8sj9ubeXNcEVGSplUuGgVaLf/8fiIAgDIuIb99Vb8L
-	 nSCwES0wbbE68KrEQioAPMdViPkoeW24b5Qs9J6Bnw6+m7RAThLNZMla0r3Zcxg/tR
-	 TKe8W7XLVSJ+BW2FnNsw9HjmDyaLRrTJbbAApe8xFIQlYIz7J69utUtI4cRAVrzuGh
-	 oDGaT6m/K/CItC2t/8H+igijPTQvUKuzjgw2VmJWaUIc8O1wVt74L9StQRdre1Z9p9
-	 6Rlaze6ps95jJzidOBwB2REnCSL5TjzSYrNASfiWUEegucukErNk1VhyN1/+H9GjMg
-	 r61uwqzzFgfAQ==
+	bh=UvRgcT/OPw+gHUkrCJqWGI3xRb1ZOVjluHGpT6Ut4Rk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OehNvAAGBIN8F5mH5ZCTcQxMkOQah7TM6KdbDuG6YbG9LAjmv14in9XgBZhUFIajw
+	 gDhlmiQa9sWUHr+tMfLzaHxKgmSew/b2IZVPV3PXegVdkBbA0+KQ/Yu518ZzbCDdKw
+	 Hq3g8n/FcHPE56/+8FszZbdV/AqxwntMEoIoszZnJYkZwakr2ic49PGSeE+mErNhS/
+	 u3dr4rUnC3718KLWiSNDfup1LsQL9UORSSNXl2EEUa2meC05SN5UBUIVNNteyPT1ts
+	 9ZUNK1m4mFeaVI/fC6TliHMsNuRk6MaAbcWC2+lhHd2EWMQAFqOQZK/ZmYT2uQ4gpa
+	 +hyvQI2v/vDAw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id B0068600C1;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 40383600BF;
 	Mon, 31 Aug 2026 09:35:56 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id C62072014E6; Mon, 31 Aug 2026 09:35:07 +0000 (UTC)
+	id BBA8C204668; Mon, 31 Aug 2026 09:35:26 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
@@ -45,10 +46,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Patrick Rohr <prohr@google.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 0/3] netlink: specs: rt-link: ipv6 devconf updates
-Date: Mon, 31 Aug 2026 09:34:52 +0000
-Message-ID: <20260831093458.472180-1-ast@fiberby.net>
+Subject: [PATCH net-next v2 3/3] netlink: specs: rt-link: add force-forwarding
+Date: Mon, 31 Aug 2026 09:34:55 +0000
+Message-ID: <20260831093458.472180-4-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260831093458.472180-1-ast@fiberby.net>
+References: <20260831093458.472180-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,34 +61,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series updates the doc-string for ifla-inet6-conf, and adds
-two missing ipv6-devconf enum values as identified by Sashiko
-during review of v1.
+Add missing enum member force-forwarding to ipv6-devconf.
 
-Changes:
-v2:
- - Update commit message for net-next, and renamed from
-   "netlink: specs: rt-link: fix ipv6 devconf doc"
- - Add Reviewed-by from Fernando (Thanks).
- - Sashiko comments:
-   - Added missing enum members accept-ra-min-lft and force-forwarding
-     as patch #2 and #3.
-   - Re: data types: as Jakub wrote in the original commit 720447bd0b24
-     ("netlink: specs: rt-link: remove implicit structs from devconf"):
-     "u32 is probably best we can do right now", as the reality is that
-     the sub-type varies per value.
-v1: https://lore.kernel.org/20260824103816.40040-1-ast@fiberby.net
+In commit f24987ef6959 ("ipv6: add `force_forwarding` sysctl to
+enable per-interface forwarding"), the DEVCONF_* enum was extended
+with DEVCONF_FORCE_FORWARDING, however Gabriel forgot to add it
+to the spec.
 
-Asbjørn Sloth Tønnesen (3):
-  netlink: specs: rt-link: update ipv6 devconf doc
-  netlink: specs: rt-link: add accept-ra-min-lft
-  netlink: specs: rt-link: add force-forwarding
+This pre-existing issue was detected by Sashiko, when reviewing the
+first patch in this series.
 
- Documentation/netlink/specs/rt-link.yaml | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824103816.40040-1-ast%40fiberby.net
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+---
+ Documentation/netlink/specs/rt-link.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
-base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index ab677801cde8..61ebb9a2bad5 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -496,6 +496,8 @@ definitions:
+         name: accept-untracked-na
+       -
+         name: accept-ra-min-lft
++      -
++        name: force-forwarding
+   -
+     name: ifla-icmp6-stats
+     enum-name:
 -- 
 2.55.0
 
