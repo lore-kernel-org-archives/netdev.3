@@ -1,157 +1,180 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC7833987E;
-	Mon, 31 Aug 2026 14:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788188278; cv=none; b=aNOy4hGvuv6Gdgh2H4G68td4Cn6JWPaVXreyf09I8hzCwEKShDHtHsZKvHxGRbIojcWDiyXXq7WMONhdTxuMyuG5xtYsk0rg+kHswVGZlXB5FiV8OlCK9k+rRUrfODFUKrpx6KPurjkKoF4O9zTuCDfqjAmsvMZh+EP115/gzps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788188278; c=relaxed/simple;
-	bh=HO5kmOtNwuKp9RdzryBYT5mTV1ZJaA3grxXdS9DNCL0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hk0iqV+von0kteDNPVHihTCNzbx+T0lTgwoRbkxxa/iGDNT9e6D2v/N+wu/4+KM/CvG1lKGySPIuAMFbg0SJ9aivHsq3xNjSlVWSNvPQNkf4ZSE9sk4Z5oIbEGKYqRP1k3kiJrzPlyBp+5rArjMqtuMSOpFxFs7a0Yhv43U5mc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=l6I71WtC; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837C04F55C3
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 15:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788188409; cv=pass; b=kLP2WMAZR2+wsvlF9JypFLBDaYZFuqKUTGxw1vwqUSEv3pX47r1zZBlK81EL9qUubKSJorzUvdmLzYX7HhqqgnWVhnTl1DWOEuFsLPBxhGBo0ttsGiOuLst1tH5YPGUHu6QJD1i5lYR7ZMA0x5qUMik/9+pRvwe3LeDtCfeq5nw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788188409; c=relaxed/simple;
+	bh=wJfBEfLv+Rwg7Tjw7PXm4/IPo+26W/5qnu3XOen5aCs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h1UqCJ3Q+PvfkZIPXDEP5gRaryST4dtPrjmOeJOdAGXQ0fFpemUCJMiMR0jXVrr4DTEIMOw64atKvnc5il35TWsJNHpY07qM1vDilJ9WBQGs++fnvHi5HvD+b3rmkRznQhjZ7pmyJmQCUSPTdBKALm/sTcKCa5DkHEB3WnkeFdA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P79wDAX5; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="l6I71WtC"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VEZ9Eu2582944;
-	Mon, 31 Aug 2026 14:57:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hZIcpU
-	H15T+9a96dE7EJP8l8tHDu5cwRhyicisjUOWw=; b=l6I71WtCmB/p7U+Ds+zf0H
-	svcttTrIyLnfU2yGLysxRVR3+acrdhK4Q7NNb9RQO0neWeLF8ir6bMVUgAhrG9PX
-	gQXNv6rw9VW8e4rjbiiIZFNEDt/gvxZd+u8RHrcJUWUJeiZTjhIkPli8Q/PlgFq2
-	RXmH9QIs3SoIL7C56GeZsMFF9vvf6WQqTAsNmIC8j/+oSj674NLG2R25iIurbgNL
-	iqNsZzn5nacPV3F9V4Y3mhS1s2hQ0gZDgrmOzn6wm5e0i7bUr5k2nCGTuzp4NEV8
-	YoV/p1DHAZnH8PKgnMEA5T5DY9I2uoSry+4AQMVdPsueXDJGqaWSvtXpoP7EhZUw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2t1usv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 14:57:48 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VEuM1Q003228;
-	Mon, 31 Aug 2026 14:57:47 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rq6nqy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 14:57:47 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VEvjnJ29032960
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 14:57:46 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D8BEA5805A;
-	Mon, 31 Aug 2026 14:57:45 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 64FE458051;
-	Mon, 31 Aug 2026 14:57:40 +0000 (GMT)
-Received: from [9.124.217.200] (unknown [9.124.217.200])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 14:57:40 +0000 (GMT)
-Message-ID: <4f303f9f-fd20-475a-8004-1a670dfd34df@linux.ibm.com>
-Date: Mon, 31 Aug 2026 20:27:38 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P79wDAX5"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51bfad59921so35190301cf.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 08:00:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788188406; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dwII2lvBr+IW8fXDHsa5WzgQJ1EBPBRJS6ENKHpltwpjZ0Yjq6mWzmMCP9lK5YztZJ
+         dCT9vI3a0yGen3ydAzWoPeGfpHBWXbRFmJjNmfF4opYAW8UD8rL8qL4IN5v/RAcEBkYm
+         F2KjFiMToOP9T4AwGs7NinQeOIyl5DJnNZFhsX9xmQAm6nY1AP87zOIlmONsMQMZRrc9
+         MK2xuBSzqIELS6JxTAgohzTo2u3Rtiy5WuvQmcpWsAKljWRZvZg/BlrHLQEMQ67BOWCA
+         877R/IwKM1dWMaZfaaeF91j3TsD5ZNXF+0MvJuSiXNqp9QxKp+blcCn8Z2ghVinojm2l
+         wBZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ieLlYx0vyeXO3RjHlzi38YD4dkPfW6u9uvQpCQ5tCDY=;
+        fh=ZVaoLUP1BokF3HHgrklcbBmbAVBcTXaszSpSd6H8cTs=;
+        b=LHC7s2AsybAMij7CjUXTo9ZU4RR4qvYusd6dmZuwwnIzAs5me+tw3NVm3NdQWo/f6y
+         gnLta9bTIdKTavlJR85NaqT09GBVpqc2E7kxtgmLBNGY1dYXYlvP0f8saTXofcFhQ6/J
+         2BQZs11zL8WjVZlhRrwa3kKNnJwH+fv2E7McoUIrw8iVsSjaof3rgjMDMci/tqUypgXd
+         O0DET3q7EC0AhGU6x+3eE0QAlLhEm6PxhdRDxe5Hij74XWcPNw8Jk67YT5t4SZTxsqIn
+         886U4t59tBCjFD6TeJlcUIZgTU07TaZZm1NzgiNGm1pDDKj0Kl80u0JQXAiWNMuIiOSq
+         zwRA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788188406; x=1788793206; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ieLlYx0vyeXO3RjHlzi38YD4dkPfW6u9uvQpCQ5tCDY=;
+        b=P79wDAX53bYBYWUXDZ2VsNAg102RCtC0qfkqJcxkXHMHfl/MlUW3MaUlp5GQSRgI7O
+         AQRITMc6tCwwAzaT/gAX1pXOQV01XuPESk0Y6n/o1AlI+BgC4QD5+5QcTxvaP9YqaOh5
+         87F+5fiBTcMzma5MyguEOYxdIjzGpfpCyce7sAI3EpyfNYk8787vd+S5btzW2Av3sO51
+         FVkNMZiS4TqKXqMa6E+/ecy8R/wCBZKvlX1iXI0crAY0YpCXbjkQSic6rq6Fx9L2q1kY
+         /P9jG/Qt5uLaFMRa4w+ANb4jTd26ncW7/GQzDClxU/B2Y5vAMILdRqWNsZTokl5PA27c
+         wBPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788188406; x=1788793206;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ieLlYx0vyeXO3RjHlzi38YD4dkPfW6u9uvQpCQ5tCDY=;
+        b=oJk8Y38EIP1n7+KDCrzuFO9KZp66vUeptRP+sai1BcyiJ0Sr6PAiM23mZ3bvOMRO2W
+         bJjnxEy0+qPF3PrWrUYNFrCmo8ThvO324TE9bBdPy3Rm6ADS4e0BTSxiGSgAwZHlRI/S
+         nh+LTvKyqyeKCYeWE0gKsUZy0m2fgwtijsYSdGWCbhTWI0DvE4XNAenuQ+HZlAFsoVxg
+         m0IeX6j82siHhbJROIXVqEl1iYWta0P97sG6X0nH66nO29Cvd3W614R8pOAE6b0kwXMf
+         scDi2uQilTuI9cJXIKclJYuQqigBYTUIGvnP3HZ5XjDmA77IyDMQZYk21F4tni6EaP4a
+         SGwg==
+X-Forwarded-Encrypted: i=1; AHgh+RpxmAt4lp/w9wO3NccTU3L/dxP7kHvr+rkD28WwViEyEF+rTYSvKX45uxJ4TsOI0GzV43y+q0I=@vger.kernel.org
+X-Gm-Message-State: AFuF++lzoxveVzHScEIB7X70e8wzFYwJtuEfixGUDLCKVrb92/lahHlg
+	SPz4oAFnT5icRP2CK8RTGcrth2cZ3fqCDkAzXW/kcYAuxleUM4L6cr2lFM194+Wd0Ckc6DcZuI9
+	wEJOs8+kZDs03QflV/Yd7uzuXSXZ0t6HPU1MwKICQ
+X-Gm-Gg: AR+sD12jgJrHpTEW5JTveQJS2H+edrKtFHOtLBeNTQ03YipPACXhw2hPZHCwCmK+xmV
+	oDH4D4/fJMnY+CAMfypLe//YrsEZuqenoID4AefVissrjE3emxi1ZZ5+4gzIsT/s1HaCjue9K/z
+	Jo/wuTCJiBIzawNiXw7ZwUByjtoUgmBWLFHlM+146TT3Qzh5xKf8XsifwHZJqe4inQun47W7tq5
+	rgVcIWsnHqm9jMhiVh41I/B0GWaBWJlMJlQvw2ML2mF3QtKg26Clpty7NQ4qKZ3Jb4diiT/40wx
+	mwfg7UTJ2PyOQrWp1OF4hwEZTQU1n/sYIrfprvvzvJaRku9IOlYwC2J+1CpxUQcCcO3EyqxKG/8
+	8un2o1536of7Kid4ro3Ay4KDugyW+Yj+YqdP2Bp9sdI4jRgQQ9khFEfTgqw==
+X-Received: by 2002:a05:622a:2512:b0:530:4ed:c251 with SMTP id
+ d75a77b69052e-53021b9e3b4mr18674631cf.12.1788188404846; Mon, 31 Aug 2026
+ 08:00:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 0/2] net/smc: fix diag dump lifetime races
-To: dust.li@linux.alibaba.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, stable@vger.kernel.org,
-        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-References: <20260828065439.3582783-1-mjambigi@linux.ibm.com>
- <apWEzobrZ3QR3IfN@linux.alibaba.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <apWEzobrZ3QR3IfN@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a95966d cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=neV5QV29Z2xUnIvzB3QA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDEyNSBTYWx0ZWRfX3jatAELW01r8
- IBsHyfuWmKzKlrrsPpmLWStI0L5JzZ6mAoFqYdXrKpkY1gY5EcmnC+C89V/yvumt+nD579JoVZy
- cd5V/I5RGFnTkZrQmmAbxPVesriFqbs=
-X-Proofpoint-ORIG-GUID: -N3OhC-74rvQlZ18lWypARTHJR5EsbdS
-X-Proofpoint-GUID: FuhQQLgOjlbMbPyeWDkx0JCxXzKpsuHu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDEyNSBTYWx0ZWRfX1BEnnsm/caeS
- 4Zm+r+nSzbH8zYKALGBHgo4e1HUzmIy5JgZgtGiL3+qEmxQ1T4cTcv0lJDaHsGJ7uOrQgNTWsnN
- ugNMvWZvLaXWvA7K8MOk1l+hV1lrc4/ljhNQHjEwCiJR+AqyZiOtNJ1pTm7yqxfQ4cWWmIgocrc
- Cz7jqRw/lsLjx8zoG+BF5C9YE02KzVuZVfL1lw1PrGraErKarWCv/OXe9nEIV9atZMLyNDilNgv
- uq7loBpuaiESTN0jnJjymaqIyO13iAantT1qdnUyyyBYBIuVXnWqxn3+USLFdZ0/yqsqEOhS3NL
- NuzMvJz1rm/3FZJdg4102Yc/o5hQ4JDpUE4MbWSuY6BLAFbMw5ZUrmFIGJgmj8IfSolwbNTVz6C
- 5CJst40H+KMyyZ0fKTyEHVCpIqudLQmDHiBKQ30xpS+BKTVcgzAVoDf1++C1r1dhLtRXCVILPBZ
- im2b8U60kYMnxhDS8DA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_05,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608310125
+References: <5a786da9-f9cb-4957-938d-51000793a4a8@mail.kernel.org>
+In-Reply-To: <5a786da9-f9cb-4957-938d-51000793a4a8@mail.kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 31 Aug 2026 16:59:51 +0200
+X-Gm-Features: AcwNN1Vj061KqWNnfn0-xipzLG7ZbvfYcBi0Wps-v1a38_YeDBMpkiOsYiD2FwY
+Message-ID: <CANn89i+FVuGcPv=uBhYMrHfmMpkEnPTcLX=joWbZtBiqLSN-gg@mail.gmail.com>
+Subject: Re: [PATCH] rxrpc: Fix use-after-free in rxrpc_destroy_all_peers()
+To: syzbot <syzbot@kernel.org>
+Cc: syzkaller-bugs@googlegroups.com, Marco Elver <elver@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, David Howells <dhowells@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, linux-afs@lists.infradead.org, 
+	Marc Dionne <marc.dionne@auristor.com>, netdev@vger.kernel.org, 
+	Paolo Abeni <pabeni@redhat.com>, horms@kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Aug 31, 2026 at 4:41=E2=80=AFPM syzbot <syzbot@kernel.org> wrote:
+>
+> From: Marco Elver <elver@google.com>
+>
+> During network namespace teardown, rxrpc_destroy_all_peers() iterates ove=
+r
+> the rxnet->peer_hash table to print leaked peers. However, it does so
+> without holding rxnet->peer_hash_lock. This allows a race condition with
+> asynchronous peer destruction, where RCU callbacks concurrently remove
+> peers from the hash table and free them. When rxrpc_destroy_all_peers()
+> accesses the freed peer, it results in a KASAN slab-use-after-free.
+>
+> BUG: KASAN: slab-use-after-free in rxrpc_destroy_all_peers+0xcc/0x150
+> net/rxrpc/peer_object.c:461
+> Read of size 8 at addr ffff88811089e420 by task kworker/u8:1/13
+> Call Trace:
+>  <TASK>
+>  rxrpc_destroy_all_peers+0xcc/0x150 net/rxrpc/peer_object.c:461
+>  rxrpc_exit_net+0x7f/0xc0 net/rxrpc/net_ns.c:114
+>  ops_exit_list net/core/net_namespace.c:199 [inline]
+>  ops_undo_list+0x43d/0x8d0 net/core/net_namespace.c:252
+>  cleanup_net+0x572/0x810 net/core/net_namespace.c:702
+>  process_one_work kernel/workqueue.c:3322 [inline]
+>  process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
+>  worker_thread+0x92d/0xe10 kernel/workqueue.c:3486
+>  kthread+0x388/0x470 kernel/kthread.c:436
+>  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+>
+> To fix the slab-use-after-free, acquire rxnet->peer_hash_lock with
+> spin_lock_bh() while iterating over rxnet->peer_hash in
+> rxrpc_destroy_all_peers().
+>
+> Additionally, insert rcu_barrier() in rxrpc_exit_net() prior to destroyin=
+g
+> peers and local endpoints. Without rcu_barrier(), rxrpc_destroy_all_peers=
+()
+> races with pending RCU callbacks that drop peer and local references,
+> logging spurious leak warnings. Furthermore, this missing synchronization
+> causes a downstream panic hazard in rxrpc_destroy_all_locals() because
+> in-flight peer releases leave rxnet->local_endpoints populated. Calling
+> rcu_barrier() ensures all pending RCU callbacks that drop peer and local
+> references complete prior to leak checks and local endpoint destruction.
+>
+> Fixes: 17226f124038 ("rxrpc: Fix leak of rxrpc_peer objects")
+> Assisted-by: Gemini:gemini-3.6-flash Gemini:gemini-3.1-pro-preview syzbot
+> Reported-by: syzbot+c876adfab6362679008c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dc876adfab6362679008c
+> Link: https://syzkaller.appspot.com/ai_job?id=3D7fecbeb2-cd9b-4ca2-8149-4=
+8663e20b153
+> Signed-off-by: Marco Elver <elver@google.com>
+>
+> ---
+> diff --git a/net/rxrpc/net_ns.c b/net/rxrpc/net_ns.c
+> index 9a9834145..c00cddfd3 100644
+> --- a/net/rxrpc/net_ns.c
+> +++ b/net/rxrpc/net_ns.c
+> @@ -111,6 +111,11 @@ static __net_exit void rxrpc_exit_net(struct net *ne=
+t)
+>         timer_delete_sync(&rxnet->peer_keepalive_timer);
+>         rxrpc_destroy_all_calls(rxnet);
+>         rxrpc_destroy_all_connections(rxnet);
+> +       /*
+> +        * Wait for pending RCU callbacks that drop peer and local
+> +        * references to avoid spurious leak warnings and panics.
+> +        */
+> +       rcu_barrier();
 
+Hi Marco.
 
-On 31/08/26 7:12 pm, Dust Li wrote:
-> On 2026-08-28 08:54:37, Mahanta Jambigi wrote:
->> This series fixes multiple lifetime races in the SMC diag dump path.
->>
->> The first patch adds the basic infrastructure needed to synchronize diag readers
->> against connection-owned conn->lgr/conn->lnk updates. It introduces a
->> per-connection spinlock and uses it in the link switch and connection free
->> handoff paths. conn->lgr and conn->lnk are NULLed under the lock before the
->> borrowed references are released, so a non-NULL conn->lgr seen under the lock
->> guarantees the lgr object is alive. The diag reader can rely on this invariant
->> without borrowing any extra reference.
->>
->> The second patch fixes two races in smc_diag itself:
->>
->> - serialize clcsock field access against smc_clcsock_release() with
->>  mutex_trylock()
->> - take conn->lgr_lnk_lock when reading conn->lgr and conn->lnk; use
->>  smc_conn_lgr_valid() inside the lock to check that the connection is
->>  still registered, then snapshot all required fields and call nla_put()
->>  after releasing the lock
-> 
-> Hi Mahanta,
-> 
-> As discussed in the other thread, I think we should defer the release of
-> smc->clcsock and remove clcsock_release_lock.
-> 
-> In that case, we should no longer need these two patches. Also,
-> introducing more locks in SMC is the last thing I want to do :)
+This rcu_barrier() is a pretty big hammer as you might guess.
 
-Thanks for the new series "[RFC net-next 0/7] net/smc: tie clcsock
-lifetime to the smc socket and remove clcsock_release_lock" — once it
-lands, we can drop the mutex_trylock() fix for Race 1 (clcsock).
+Please ask your LLM to use pre_exit method in truct pernet_operations
+rxrpc_net_ops
+(split existing rxrpc_exit_net(struct net *net) in two parts)
 
-However, Race 2 remains open. Your series does not touch smc_core.c or
-smc_cdc.c, so smc_conn_free(), smc_switch_link_and_count(), and
-smc_cdc_msg_validate() still write conn->lgr/conn->lnk with no
-synchronization against the diag reader.
-
-On the lock concern — lgr_lnk_lock is a per-connection spinlock. It is
-taken in smc_conn_free() (teardown), smc_switch_link_and_count() (link
-failover), smc_cdc_msg_validate() (failover validation branch only, not
-the normal CDC data path), and the diag reader. None of these are on the
-per-message send/receive hot path. Could you explain what specifically
-concerns you — lock ordering, memory footprint, or something else? That
-would help us understand whether you have a different mechanism in mind.
+pw-bot: cr
