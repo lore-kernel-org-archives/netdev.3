@@ -1,391 +1,182 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BD73E1681
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 12:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDF73F4856;
+	Mon, 31 Aug 2026 12:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788178341; cv=none; b=cFD07TmIB8O5CtIesRkF3BBdi0EQkBAlXfT/e23E7+Ockp/GgveYH9WOwBH+onKEqH6uyQvFxAaw2V9y0F+vPvSW6WSY5yRFawpyvPs+0lDSFvjk1ludcrIEPKzojLt6GyWLMU8CIxTqXwv6WYmZ0oblZDsjvienWM/eeA052Go=
+	t=1788178398; cv=none; b=JgwKST7sN9qgwxk3Y+9Cu8bALv9+9Ga+blYzOk6AsWHCrPFpjnX7lFgb2BJtVjf523VuqaUvJzjZPXEJl/+rPL/u3U/oYC4pKkWAMb65BydiQ1/AmRpMtB94obkmSGnNL6APC4Lp8tra878JXv1P9b3Q5Xq3BSyfynbs3pQwk7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788178341; c=relaxed/simple;
-	bh=P4UI4r9U8+0A/lz0cD753YKPKkVDryKpPXsda1kdsMY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I62cR2HKmEbZYNYI5H+HXU3nzF04inca6TU/ya37pq15AdvYawELTZQ1hwrBX8KLKiacjg7zkUzzFjd7LbhHkNnyzKT73gE+GJ5VQaPxPjH3JQxq07V2tvYldRL/xIkTua5Rc5inflI7L4+mTPST30SAhzg42lrt4c2ZjQYd8B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=Xy1tqnIA; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1788178398; c=relaxed/simple;
+	bh=Oz8OhcXW3DGFgvrMTjcKnGfRhfl+uGoLHZ2JtGHNdKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GbsRGbZemjckvdnS3APmXp0AIPrq1Hls1venIJmlYubER7tL8KeO8efsIs0nYFypQeg8aVG4wh9/7wL7w20nDOAEvYELH967aj+1K/DnW8GSpOWzoaqnEgwsF6tZkyqa0tSG7NMYElwuR3nCzdko2VEvCDIOGTi4B15RVgv1lnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qMKq1Fns; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hZRKk0pK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ncQVYC8r; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nFbmib6W; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="Xy1tqnIA"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c2020421077so505478566b.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 05:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788178338; x=1788783138; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IdHlUEflbKe66wiG2HC6SK0wPoPdW7zv/s3LzgjChYk=;
-        b=Xy1tqnIAEXIVJERc17vgNC/j2Acfu2lSK3Xd0onTNnRsgLQTvkv4WvhepN/e6v+M+Z
-         kp0pNPOMcUf0gfRyD1q9Cf0f0/fJ9omvso9ZWfpEfFDBg9GM8DpAftW8SXzSqWOLeRvs
-         z0CqXpbugIyoLV4dz3OKnQ9htjqnyViJHHCuGBzyfV6fIqi+dvciUsoxGy98KsRo16bs
-         IsquIiRSbENJFf37AlA033CMf0DO/mgRdUaoWnbqjmsHLmgN4xF0Fpsm+mqgUSZrt6Lu
-         ufoxsFFpmT+I+ccYk1Dxa+v04FQGkYse8nh63hu4wqgmtdQ/RTuWYRqqlQ9403IZsXPC
-         Yv4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788178338; x=1788783138;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IdHlUEflbKe66wiG2HC6SK0wPoPdW7zv/s3LzgjChYk=;
-        b=AzEiee8tPr+RLUYxw3EyRZVjiGplNXtseSZAr9ouTgRnN2jLQQJyQkaFWVTKVuPPzn
-         g/Gznwh/VFn1RgtAMxnseRckIitqFhX61bZ5My3NE/KKt23NR/f+nhDhNKm0BNoKbwcg
-         rRcxwc3QXMX5WLkT4wQ/D2EBWkUNVB+av6LXeB3UxnvPkkC910DLwssA2ggjH7nuRmGB
-         NKfAwzcSTsdP/5vHkyc6+dtYder+zhAQYYgkhInOJn/24RtYedtBc8SSgsd/XAwFaZvj
-         Yim3klA17mdlg267qE0ofU7oHf1XM8CiZLmrr0gDU22uWu7LA9v+41cMv6kOkqwjDTz0
-         VtzQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roloeo0/qdbpmrl6FrpF+XOpvqJkAShE7hKB9dF4KQLbbNDUG4guEq2brufIrvZh7QGtQrEyD4=@vger.kernel.org
-X-Gm-Message-State: AFuF++m6agjvUKBMBls7wmoLjWSJ5AI+EnQa28VVO/iVm8kaBYkdbV5J
-	FCYBd6VtzF7lcOuvDNCMyGHQpur3O6JTvhXohSPuIEOle2e2uGRCHcC0W0NaOKj77fY=
-X-Gm-Gg: AR+sD13urOtzl7txsb2X9Y4hDNXgSpyrEsLx6QZ/raWl0EWrz/hDspPDXBLqhpgNZ8Z
-	hth/A5q0dpQBlXtfBO3gHAzMOt4NaEZOrRAUXMAUYvg1/WpI3kWq+iT0xJYxV6ve/a3aRQaQLUk
-	fPjKrqKyPLtScAcOjlVKRbJLvQKfD0bEn6tWeVi0kWvmKmgKhVeNld7CPx412gnalB3baORRZIY
-	WLADLAop9px2id96d084Hv7v4qnZXApfMSpPCRqsJ9rdMep/AohxTmapvo1l78/gJG7D/eBXh5e
-	WzfUdmq+6UIYveFHH4h1VovlN/i99KGYg8oF9/qJ8cwcXr0Jb52KynQi4oshibI0XsueukHtPN2
-	5hdFKCdy+nQyYv4USMe/6+Kd7NrgnFxp1H6MimXGxSzCRxEWhI2SP5U8HxZIkUyUaN7uzVeXcPi
-	BynWZ+E7/lBKPgqwPl8cJ1WHCUwEjfgwPUe+WQeq7TaOce/RLVfJ8r0sSwJLjZ9Di4HiiuDE8rY
-	9jQ54pnTmeO+/soKF0=
-X-Received: by 2002:a17:907:5c3:b0:c16:4df6:176b with SMTP id a640c23a62f3a-c255741620bmr1691027466b.20.1788178337380;
-        Mon, 31 Aug 2026 05:12:17 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1b2049sm440887666b.36.2026.08.31.05.12.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Aug 2026 05:12:16 -0700 (PDT)
-Message-ID: <168acc7a-521c-4620-a81d-ebafae94e146@blackwall.org>
-Date: Mon, 31 Aug 2026 15:12:15 +0300
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qMKq1Fns";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hZRKk0pK";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ncQVYC8r";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="nFbmib6W"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EA4D1FB3C;
+	Mon, 31 Aug 2026 12:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788178391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
+	b=qMKq1Fns+aGfqRiQHSqd7b0UaM0YFzWEwhKsvLKAEN5X0wd/fMXXAOLB+EtlFOXgXtXYhm
+	iOCt1RdxAmLFSeFXMlyYHR+0n82PWILo/SxXeqWydSVPquHNz8uQgUSeE/fzTM8ZBHlDBq
+	rwPZ2qSc/n3d7kBtrN/4pKvBpAHK78A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788178391;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
+	b=hZRKk0pKGytvYxDsW3kOGrd5G8SHtykGuNTpBk2Dkwi1hJ2HyfmgiVQLktn3CiEu7mr2bY
+	IaUwqp0GUDyEB5Cw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ncQVYC8r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nFbmib6W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788178387; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
+	b=ncQVYC8rPmkqS+GhkmGEkKRLsyKpLRoo07HY8FQnyQ+Cby2xbG7Fg+g6gExv3A1lWh+9XF
+	WkJQxVs3zO+1UzGiNA64fUr3F731aX3i1K2z+iVUFrv8z/ZPS4pZ6iKDiT5fog72ex26FZ
+	sgbHRsZTaKFrcOUhRE99LvN9RO3OkHY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788178387;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GajAddIu1c2jqUsPJn9Xf2Jd5zQ/sfmJIO2W+gMIJFc=;
+	b=nFbmib6WoD6TAY9gwCiogiAxcTgiIn1Chxj/tyz9wZROaRGWfznfF+b1aVBL0lM/gOWR3J
+	6dt3/2VlMqh868CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EF51B13685;
+	Mon, 31 Aug 2026 12:13:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vTtpOtJvlWqBdQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 31 Aug 2026 12:13:06 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 8A753A13B5; Mon, 31 Aug 2026 14:13:06 +0200 (CEST)
+Date: Mon, 31 Aug 2026 14:13:06 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	bcrl@kvack.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
+	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
+	yi.zhang@huawei.com, pmladek@suse.com, rostedt@goodmis.org, 
+	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, senozhatsky@chromium.org, 
+	akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, socketcan@hartkopp.net, mkl@pengutronix.de, 
+	kuniyu@google.com, willemb@google.com, jhs@mojatatu.com, jiri@resnulli.us, 
+	kees@kernel.org, cyphar@cyphar.com, tglx@kernel.org, liuhangbin@gmail.com, 
+	sdf@fomichev.me, nb@tipi-net.de, linux-fsdevel@vger.kernel.org, 
+	linux-aio@kvack.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-can@vger.kernel.org
+Subject: Re: [PATCH 03/11] fs: aio: Use acquire/release for ring->tail
+ publication
+Message-ID: <x75um7rluga7zvqhe4wdqj76hjnyazpaxqs4ugme4eaompfsf6@zzj5flkfcw26>
+References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
+ <20260825095422.3166067-4-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/1] net: bridge: use option bits for CFM/MRP frame
- handlers
-Content-Language: en-US, bg
-To: Zhiling Zou <zhilinz@nebusec.ai>, bridge@lists.linux.dev,
- netdev@vger.kernel.org
-Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, horatiu.vultur@microchip.com,
- henrik.bjoernlund@microchip.com, vega@nebusec.ai, zylzyl2333@gmail.com
-References: <cover.1788159904.git.zhilinz@nebusec.ai>
- <a43fdd12ad2fbb708c090dc4ead60f3e4aa8c0ac.1788159904.git.zhilinz@nebusec.ai>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <a43fdd12ad2fbb708c090dc4ead60f3e4aa8c0ac.1788159904.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825095422.3166067-4-ruanjinjie@huawei.com>
+X-Spam-Score: -2.51
+X-Rspamd-Queue-Id: 1EA4D1FB3C
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[40];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLa77mm4gi8mw7uppieotozii3)];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,suse.com,goodmis.org,linux.intel.com,rasmusvillemoes.dk,chromium.org,linux-foundation.org,davemloft.net,google.com,redhat.com,hartkopp.net,pengutronix.de,mojatatu.com,resnulli.us,cyphar.com,fomichev.me,tipi-net.de,vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email]
+X-Spam-Flag: NO
 
-On 31/08/2026 14:20, Zhiling Zou wrote:
-> CFM and MRP register a global br_frame_type whose hlist_node is linked
-> into the per-bridge frame_type_list when the first MEP/MRP instance is
-> created. Enabling the protocol on multiple bridges therefore inserts the
-> same node into multiple lists. Unregistering it on one bridge then
-> corrupts list state belonging to another.
+On Tue 25-08-26 17:54:14, Jinjie Ruan wrote:
+> Replace the smp_wmb() + WRITE_ONCE(ring->tail) and READ_ONCE(ring->tail)
+> + smp_rmb() barrier pair with smp_store_release()/smp_load_acquire()
+> on `ring->tail`.
 > 
-> These handlers can only be installed once per bridge, and they are
-> uncommon. Track their per-bridge enable state with net_bridge option
-> bits, which already live on the Rx hot cache line, and dispatch the
-> matching handler directly from the receive path. Check both bits
-> together first as an unlikely case.
+> This expresses the publish/subscribe pattern more clearly and allows
+> architectures with native acquire/release instructions (e.g. arm64's
+> STLR/LDAR) to avoid the cost of full one-way barriers (DMB ISHST/ISHLD).
 > 
-> Remove the generic frame_type_list and br_frame_type helpers, which
-> have had no other users since CFM and MRP were added. That shrinks
-> struct net_bridge by 8 bytes and drops the list walk from the fast
-> path. When neither protocol is compiled in, the new checks are compiled
-> out completely.
+> The release ensures event data written before updating ring->tail is
+> visible to readers that observe the new tail value via acquire, which
+> is exactly the ordering the barrier pair provided.
 > 
-> Fixes: 90c628dd47ff ("net: bridge: extend the process of special frames")
-> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM frame RX added.")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
-> Co-developed-by: Yilin Zhu <zylzyl2333@gmail.com>
-> Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> ---
-> changes in v2:
->    - Replace the per-bridge br_frame_type object with net_bridge option
->      bits.
->    - Dispatch CFM/MRP handlers from the receive path. Check both option
->      bits together first as an unlikely case.
->    - Cover MRP, which has the same shared hlist_node bug.
->    - Remove frame_type_list so CFM/MRP do not affect the fast path when
->      they are disabled in .config.
->    - v1 Link: https://lore.kernel.org/all/7198fe2845c30c60c6b3833dd78cead8c5966931.1778378864.git.zylzyl2333@gmail.com/
+> No functional change intended.
 > 
+> Assisted-by: DeepSeek:DeepSeek-V3
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-Hi,
-I might've been a bit overzealous on the fast-path comments, so these options will
-almost always be enabled by distros, that's what they usually do. So a few minor
-changes would make the code more readable below...
+The patch looks good. Feel free to add:
 
->   net/bridge/br_cfm.c     | 11 +++--------
->   net/bridge/br_device.c  |  1 -
->   net/bridge/br_input.c   | 44 ++++++++++++++++++++---------------------
->   net/bridge/br_mrp.c     | 13 +++---------
->   net/bridge/br_private.h | 15 ++++----------
->   5 files changed, 32 insertions(+), 52 deletions(-)
-> 
-> diff --git a/net/bridge/br_cfm.c b/net/bridge/br_cfm.c
-> index dea56fffa1c19..9dcc97d63a6fc 100644
-> --- a/net/bridge/br_cfm.c
-> +++ b/net/bridge/br_cfm.c
-> @@ -367,7 +367,7 @@ static u32 ccm_tlv_extract(struct sk_buff *skb, u32 index,
->   }
->   
->   /* note: already called with rcu_read_lock */
-> -static int br_cfm_frame_rx(struct net_bridge_port *port, struct sk_buff *skb)
-> +int br_cfm_frame_rx(struct net_bridge_port *port, struct sk_buff *skb)
->   {
->   	u32 mdlevel, interval, size, index, max;
->   	const struct br_cfm_common_hdr *hdr;
-> @@ -489,11 +489,6 @@ static int br_cfm_frame_rx(struct net_bridge_port *port, struct sk_buff *skb)
->   	return 1;
->   }
->   
-> -static struct br_frame_type cfm_frame_type __read_mostly = {
-> -	.type = cpu_to_be16(ETH_P_CFM),
-> -	.frame_handler = br_cfm_frame_rx,
-> -};
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+Just one nit below:
+
+> diff --git a/fs/aio.c b/fs/aio.c
+> index d78acc69f487..4413c82688cc 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -1206,13 +1206,12 @@ static void aio_complete(struct aio_kiocb *iocb)
+>  	/* after flagging the request as done, we
+>  	 * must never even look at it again
+>  	 */
+> -	smp_wmb();	/* make event visible before updating tail */
 > -
->   int br_cfm_mep_create(struct net_bridge *br,
->   		      const u32 instance,
->   		      struct br_cfm_mep_create *const create,
-> @@ -559,7 +554,7 @@ int br_cfm_mep_create(struct net_bridge *br,
->   	INIT_DELAYED_WORK(&mep->ccm_tx_dwork, ccm_tx_work_expired);
->   
->   	if (hlist_empty(&br->mep_list))
-> -		br_add_frame(br, &cfm_frame_type);
-> +		br_opt_toggle(br, BROPT_CFM_ENABLED, true);
->   
->   	hlist_add_tail_rcu(&mep->head, &br->mep_list);
->   
-> @@ -588,7 +583,7 @@ static void mep_delete_implementation(struct net_bridge *br,
->   	kfree_rcu(mep, rcu);
->   
->   	if (hlist_empty(&br->mep_list))
-> -		br_del_frame(br, &cfm_frame_type);
-> +		br_opt_toggle(br, BROPT_CFM_ENABLED, false);
->   }
->   
->   int br_cfm_mep_delete(struct net_bridge *br,
-> diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-> index ff55dab736326..e01c44a90d84b 100644
-> --- a/net/bridge/br_device.c
-> +++ b/net/bridge/br_device.c
-> @@ -503,7 +503,6 @@ void br_dev_setup(struct net_device *dev)
->   	spin_lock_init(&br->lock);
->   	INIT_LIST_HEAD(&br->port_list);
->   	INIT_HLIST_HEAD(&br->fdb_list);
-> -	INIT_HLIST_HEAD(&br->frame_type_list);
->   #if IS_ENABLED(CONFIG_BRIDGE_MRP)
->   	INIT_HLIST_HEAD(&br->mrp_list);
->   #endif
-> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-> index d87a5f9fa92b7..72892e5b40439 100644
-> --- a/net/bridge/br_input.c
-> +++ b/net/bridge/br_input.c
-> @@ -317,20 +317,33 @@ static int nf_hook_bridge_pre(struct sk_buff *skb, struct sk_buff **pskb)
->   	return RX_HANDLER_CONSUMED;
->   }
->   
-> +#if IS_ENABLED(CONFIG_BRIDGE_CFM) || IS_ENABLED(CONFIG_BRIDGE_MRP)
-> +/* CFM/MRP are uncommon; test both enable bits together first. */
+> -	ctx->tail = tail;
+> +	WRITE_ONCE(ctx->tail, tail);
 
-drop the #if and the comment
+I don't thing ctx->tail is accessed anywhere outside of completion_lock so
+I think this WRITE_ONCE is pointless.
 
-> +#define BR_CFM_MRP_OPTS \
-> +	((IS_ENABLED(CONFIG_BRIDGE_CFM) ? BIT(BROPT_CFM_ENABLED) : 0UL) | \
-> +	 (IS_ENABLED(CONFIG_BRIDGE_MRP) ? BIT(BROPT_MRP_ENABLED) : 0UL))
-
-always define this
-
-> +
->   /* Return 0 if the frame was not processed otherwise 1
->    * note: already called with rcu_read_lock
->    */
->   static int br_process_frame_type(struct net_bridge_port *p,
->   				 struct sk_buff *skb)
->   {
-> -	struct br_frame_type *tmp;
-> -
-> -	hlist_for_each_entry_rcu(tmp, &p->br->frame_type_list, list)
-> -		if (unlikely(tmp->type == skb->protocol))
-> -			return tmp->frame_handler(p, skb);
-> +	struct net_bridge *br = p->br;
->   
-> +#if IS_ENABLED(CONFIG_BRIDGE_CFM)
-
-drop the #if
-> +	if (skb->protocol == htons(ETH_P_CFM) &&
-> +	    br_opt_get(br, BROPT_CFM_ENABLED))
-> +		return br_cfm_frame_rx(p, skb);
-> +#endif
-> +#if IS_ENABLED(CONFIG_BRIDGE_MRP)
-
-and this one
-
-> +	if (skb->protocol == htons(ETH_P_MRP) &&
-> +	    br_opt_get(br, BROPT_MRP_ENABLED))
-> +		return br_mrp_process(p, skb);
-> +#endif
-
-instead follow what others are doing and make these functions noops in the headers
-if these options are not defined, there are plenty of examples in br_private.h
-The compiler should prune these when they're noops.
-
->   	return 0;
->   }
-> +#endif
->   
->   /*
->    * Return NULL if skb is handled
-> @@ -425,8 +438,11 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
->   		}
->   	}
->   
-> -	if (unlikely(br_process_frame_type(p, skb)))
-> +#if IS_ENABLED(CONFIG_BRIDGE_CFM) || IS_ENABLED(CONFIG_BRIDGE_MRP)
-
-drop this #if
-
-> +	if (unlikely((p->br->options & BR_CFM_MRP_OPTS) &&
-
-always do the check, but read p->br->options with READ_ONCE because it might change
-in case none of the options are defined we get & 0 so the compiler will prune the
-branch entirely, otherwise we have a single fast check (we already had that with the list
-anyway, but here it's better because this is in a hot cache line)
-
-> +		     br_process_frame_type(p, skb)))
->   		return RX_HANDLER_PASS;
-> +#endif
->   
->   forward:
->   	if (br_mst_is_enabled(p))
-> @@ -467,19 +483,3 @@ rx_handler_func_t *br_get_rx_handler(const struct net_device *dev)
->   
->   	return br_handle_frame;
->   }
-> -
-> -void br_add_frame(struct net_bridge *br, struct br_frame_type *ft)
-> -{
-> -	hlist_add_head_rcu(&ft->list, &br->frame_type_list);
-> -}
-> -
-> -void br_del_frame(struct net_bridge *br, struct br_frame_type *ft)
-> -{
-> -	struct br_frame_type *tmp;
-> -
-> -	hlist_for_each_entry(tmp, &br->frame_type_list, list)
-> -		if (ft == tmp) {
-> -			hlist_del_rcu(&ft->list);
-> -			return;
-> -		}
-> -}
-> diff --git a/net/bridge/br_mrp.c b/net/bridge/br_mrp.c
-> index ef16d07039241..dce6efa96c4c6 100644
-> --- a/net/bridge/br_mrp.c
-> +++ b/net/bridge/br_mrp.c
-> @@ -6,13 +6,6 @@
->   static const u8 mrp_test_dmac[ETH_ALEN] = { 0x1, 0x15, 0x4e, 0x0, 0x0, 0x1 };
->   static const u8 mrp_in_test_dmac[ETH_ALEN] = { 0x1, 0x15, 0x4e, 0x0, 0x0, 0x3 };
->   
-> -static int br_mrp_process(struct net_bridge_port *p, struct sk_buff *skb);
-> -
-> -static struct br_frame_type mrp_frame_type __read_mostly = {
-> -	.type = cpu_to_be16(ETH_P_MRP),
-> -	.frame_handler = br_mrp_process,
-> -};
-> -
->   static bool br_mrp_is_ring_port(struct net_bridge_port *p_port,
->   				struct net_bridge_port *s_port,
->   				struct net_bridge_port *port)
-> @@ -486,7 +479,7 @@ static void br_mrp_del_impl(struct net_bridge *br, struct br_mrp *mrp)
->   	kfree_rcu(mrp, rcu);
->   
->   	if (hlist_empty(&br->mrp_list))
-> -		br_del_frame(br, &mrp_frame_type);
-> +		br_opt_toggle(br, BROPT_MRP_ENABLED, false);
->   }
->   
->   /* Adds a new MRP instance.
-> @@ -536,7 +529,7 @@ int br_mrp_add(struct net_bridge *br, struct br_mrp_instance *instance)
->   	rcu_assign_pointer(mrp->s_port, p);
->   
->   	if (hlist_empty(&br->mrp_list))
-> -		br_add_frame(br, &mrp_frame_type);
-> +		br_opt_toggle(br, BROPT_MRP_ENABLED, true);
->   
->   	INIT_DELAYED_WORK(&mrp->test_work, br_mrp_test_work_expired);
->   	INIT_DELAYED_WORK(&mrp->in_test_work, br_mrp_in_test_work_expired);
-> @@ -1241,7 +1234,7 @@ static int br_mrp_rcv(struct net_bridge_port *p,
->    * normal forwarding.
->    * note: already called with rcu_read_lock
->    */
-> -static int br_mrp_process(struct net_bridge_port *p, struct sk_buff *skb)
-> +int br_mrp_process(struct net_bridge_port *p, struct sk_buff *skb)
->   {
->   	/* If there is no MRP instance do normal forwarding */
->   	if (likely(!test_bit(BR_MRP_AWARE_BIT, &p->flags)))
-> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-> index d337b1cfb980d..afe7c0b4f8fa7 100644
-> --- a/net/bridge/br_private.h
-> +++ b/net/bridge/br_private.h
-> @@ -495,12 +495,13 @@ enum net_bridge_opts {
->   	BROPT_MST_ENABLED,
->   	BROPT_MDB_OFFLOAD_FAIL_NOTIFICATION,
->   	BROPT_FDB_LOCAL_VLAN_0,
-> +	BROPT_CFM_ENABLED,
-> +	BROPT_MRP_ENABLED,
->   };
->   
->   struct net_bridge {
->   	spinlock_t			lock;
->   	spinlock_t			hash_lock;
-> -	struct hlist_head		frame_type_list;
->   	struct net_device		*dev;
->   	unsigned long			options;
->   	/* These fields are accessed on each packet */
-> @@ -932,16 +933,6 @@ int nbp_backup_change(struct net_bridge_port *p, struct net_device *backup_dev);
->   int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb);
->   rx_handler_func_t *br_get_rx_handler(const struct net_device *dev);
->   
-> -struct br_frame_type {
-> -	__be16			type;
-> -	int			(*frame_handler)(struct net_bridge_port *port,
-> -						 struct sk_buff *skb);
-> -	struct hlist_node	list;
-> -};
-> -
-> -void br_add_frame(struct net_bridge *br, struct br_frame_type *ft);
-> -void br_del_frame(struct net_bridge *br, struct br_frame_type *ft);
-> -
->   static inline bool br_rx_handler_check_rcu(const struct net_device *dev)
->   {
->   	return rcu_dereference(dev->rx_handler) == br_get_rx_handler(dev);
-> @@ -2080,6 +2071,7 @@ int br_mrp_parse(struct net_bridge *br, struct net_bridge_port *p,
->   bool br_mrp_enabled(struct net_bridge *br);
->   void br_mrp_port_del(struct net_bridge *br, struct net_bridge_port *p);
->   int br_mrp_fill_info(struct sk_buff *skb, struct net_bridge *br);
-> +int br_mrp_process(struct net_bridge_port *p, struct sk_buff *skb);
->   #else
->   static inline int br_mrp_parse(struct net_bridge *br, struct net_bridge_port *p,
->   			       struct nlattr *attr, int cmd,
-> @@ -2111,6 +2103,7 @@ int br_cfm_parse(struct net_bridge *br, struct net_bridge_port *p,
->   		 struct nlattr *attr, int cmd, struct netlink_ext_ack *extack);
->   bool br_cfm_created(struct net_bridge *br);
->   void br_cfm_port_del(struct net_bridge *br, struct net_bridge_port *p);
-> +int br_cfm_frame_rx(struct net_bridge_port *port, struct sk_buff *skb);
->   int br_cfm_config_fill_info(struct sk_buff *skb, struct net_bridge *br);
->   int br_cfm_status_fill_info(struct sk_buff *skb,
->   			    struct net_bridge *br,
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
