@@ -1,104 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-62.mta1.migadu.com [95.215.58.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AF63AB286;
-	Mon, 31 Aug 2026 03:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3971137A822
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 03:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788146733; cv=none; b=l0WwdHyor7vWnRauZEhfsVb6hz1LlBtQBVYBnZPPC1KjPjekFDQLqCe/dnMEbdrs6NAwW0dtVUfq+/6nCOB89orORW/U2SG/qKc7FO+fAwYNr+kcCvo/8VGZin1zEvNyhDv/zFEZkYUCRI4p46a/fbHmBxGAH2PWmlqX3H8j3Vc=
+	t=1788146907; cv=none; b=JEp9OrhmnXsfkLTHqQ3rHv02Pt41dhpKSv/NHpPFagY69OOYxQWcV1CeYbBQCrKYgwM3YYB/Frx4fBx15IW6nr56o+/HrgyohQRUnOM7hk7X9xP9WItFu2QyB59yFKtGKpVNvpyz0QWZJfvGkm9bB5lS1itcJJWwUOP6e7Az7C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788146733; c=relaxed/simple;
-	bh=iCQdk9RaoT2kCMVj56PSH/WYTAj5LwSA7yUm9XDxF2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plG4F56YHz877CjEk9JUhak3pr62O3GqUJG7HKx22uzDBYSWj8hEdDbhgOI46uirwY3s3+Vgs4shYFAcZyBBfwCO5oZGqa/nhl0MDS44WpO0XFkvxicgiXmCoGH6pI4GdNPngvhp6E3zouN8geovbz59CqKH42aElhoR/dAMlmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=lQjT3/OM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788146907; c=relaxed/simple;
+	bh=jAOrbLrdXQ+N4YivWaxIg6hnKxFaGB/TEE/75vyRlWs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tQrEaE6P4lRcljqLNQfrabYBbrzmBE7TaZIezPBsSc8xtdS8lqngl5vTAgYimx5IUung0hnsLmZVNZ4o2Dpfk4SZX8UgmVW2EB6mK4EOL7oh31EIdreUilK/z5ZAeOgCnZtc6zlzUEI7+l372XY+qN8CYh5xgHbv8q19zcZhoNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=K01ryZVO; arc=none smtp.client-ip=95.215.58.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="lQjT3/OM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92581F000E9;
-	Mon, 31 Aug 2026 03:25:29 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=lQjT3/OM
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1788146728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zKdZAmn445qhRZS0uBj1MCk1GVoADURg/5nlTEd0BLA=;
-	b=lQjT3/OMWfWDv8gCGmA/N+ykEVDspz9O/ynOIboDnKKeyxfvtj+3xMeA9vntKgcdiGqF2Z
-	FFTxC0+aqs/QKcYEyYloI1EcfTsgfpu5RIG2k2tUROfWL68bY/u5VXLQBt9+xIP9vNT0/6
-	uoW+58rDkA+0IngiguWFA3CaOsSrD6A=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 3f46e57b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Mon, 31 Aug 2026 03:25:27 +0000 (UTC)
-Date: Sun, 30 Aug 2026 21:25:19 -0600
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: ramses@well-founded.dev
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Martin KaFai Lau <kafai@fb.com>, wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] wireguard: queueing: preserve tstamp_type in
- wg_reset_packet()
-Message-ID: <apT0H7qIwFW-JCLn@zx2c4.com>
-References: <20260827-wg-tstamp-v1-1-4acfebb855ef@well-founded.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="K01ryZVO"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=jAOrbLrdXQ+N4YivWaxIg6hnKxFaGB/TEE/75vyRlWs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788146902; v=1; x=1788751702;
+ b=K01ryZVOSkx5hF68tM2kdz3nJoHSTzQ2c40k+AZfsMaQTbcY7REh1P9BmaDVevouWFVaT0lz
+ 1K5rMQQl8cr7a96YexO2tmfZ1KcxpLspDei+VzVrzLm4DBZjDA1oT+iYQFxj32pwcaz+0AzoREx
+ 9JcEp0u8vIpCgR77I0OpnwSk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 15f0edf12327b7e6;
+	Mon, 31 Aug 2026 03:28:22 +0000
+X-Mizu-Trace-ID: 15f0edf12327b7e6
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Subject: [PATCH net-next 0/2] netdevsim: add link speed support
+Date: Mon, 31 Aug 2026 11:28:09 +0800
+Message-Id: <20260831-nsim_speed-v1-0-7a651ee65738@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260827-wg-tstamp-v1-1-4acfebb855ef@well-founded.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQpAQBRG4VfRXZuamZC8iiTMj7twaa6k5N1Nl
+ t/inIcUkaHUZA9FXKy8S4LLM5rWQRYYDsnkra9s7Z0R5a3XAwgmVA7lVLhytJ5ScETMfP+zlgS
+ nEdwnde/7AUS8PchmAAAA
+X-Change-ID: 20260821-nsim_speed-d61e5c415b02
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-Hi Ramses,
+Add link speed support for netdevsim, so users could test different‑speed
+NICs. Currently, I am still using max speed 5000. Maybe we should increase
+the max speed in the future.
 
-On Thu, Aug 27, 2026 at 01:52:56PM +0200, Ramses de Norre via B4 Relay wrote:
-> From: Ramses de Norre <ramses@well-founded.dev>
-> 
-> Sending traffic through a wireguard tunnel on a host using the fq
-> qdisc fills the log with:
-> 
->   fq: likely mono tstamp with tstamp_type 0
-> 
-> An skb carries a timestamp in skb->tstamp and, separately, a
-> skb->tstamp_type field recording which clock that timestamp came from.
-> The two have to agree.
-> 
-> When wireguard encapsulates a packet it calls wg_reset_packet(), which
-> clears the fields that must not leak from the inner packet into the
-> tunnel packet. It does so in two steps:
-> 
->   skb_scrub_packet(skb, true);
->   memset(&skb->headers, 0, sizeof(skb->headers));
-> 
-> skb_scrub_packet() deliberately keeps skb->tstamp when it holds a
-> monotonic timestamp: that value is the time the packet is scheduled to
-> be sent, and the qdisc still needs it. The memset then zeroes
-> skb->tstamp_type, because that field sits inside the headers group
-> while skb->tstamp does not. The packet therefore leaves wireguard
-> carrying a monotonic timestamp labelled as a realtime one.
-> 
-> Nothing noticed until commit c4f796c4f16b ("net_sched: sch_fq: convert
-> skb->tstamp if not monotonic"): fq used to assume every timestamp was
-> monotonic. It now consults tstamp_type, spots the mismatch, warns, and
-> falls back to treating the value as monotonic. Pacing still ends up
-> correct, so the log spam is the actual problem.
-> 
-> Save tstamp_type before the memset and restore it when encapsulating,
-> next to the hash fields that are already carried over this way. When
-> decapsulating it stays zeroed, which is right: an incoming packet's
-> timestamp is a realtime receive timestamp.
-> 
-> Fixes: de799101519a ("net: Add skb_clear_tstamp() to keep the mono delivery_time")
-> Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
- 
-Thanks for this. I've queued this up in the wireguard tree.
+The 2nd patch adds a simple selftest for the speed feature.
 
-One thing I'm wondering is whether your Fixes: line is correct. Would
-c4f796c4f16b be a better candidate than de799101519a? Or maybe even
-4d25ca2d6801 is best?
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+Hangbin Liu (2):
+      netdevsim: add link speed support
+      selftests: netdevsim: add speed testing
 
-Jason
+ drivers/net/netdevsim/dev.c                        |  6 ----
+ drivers/net/netdevsim/ethtool.c                    | 30 ++++++++++++++++++++
+ drivers/net/netdevsim/netdevsim.h                  |  8 ++++++
+ .../selftests/drivers/net/netdevsim/Makefile       |  1 +
+ .../drivers/net/netdevsim/ethtool-speed.sh         | 33 ++++++++++++++++++++++
+ 5 files changed, 72 insertions(+), 6 deletions(-)
+---
+base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
+change-id: 20260821-nsim_speed-d61e5c415b02
+
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@kylinos.cn>
+
