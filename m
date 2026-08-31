@@ -1,116 +1,78 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67952D9EDB
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 09:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A483A3826;
+	Mon, 31 Aug 2026 09:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788167381; cv=none; b=aC+MMioUuypMyejiUHba3ivTVco6KwMaMqv4LemM31ggmiyoJk21ugLJrJW4Im0aBXzVQ3cj1xpONw3ywRWJsH2Cya5VJTLfyM/TgEFzZrJOZv4lR7s1SkXw5PZZ67p0T+lODveG9a955EH/hQ0IeGiWAr892bPKwtoE87D4rQg=
+	t=1788167464; cv=none; b=OIgfEHdc2rp2XAsXbnuum8J8bhSUVQDD5afXQYCnBob1aTgR6b4cByzRASKH9Vt6DcwB02HvsMbty8qP9rXp4YHHEtRGG9vFq1vk80sdmp0X6GZfaKd1dPXWTioE4NfUTgyZ0tQn692fPs3HwdzWZjwwZ0BhCXaToMT9gGhP4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788167381; c=relaxed/simple;
-	bh=QYxcDuJlHyn1WCmBCKp35EOPATCh0rELvVAEgRjvnhA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oohHJNP9gmoxpKjQ8/Es445dzteVXpgL0+kfqdBogMsRqp+FFy0QvKbsqhV+TDvM5+W9cCmXpttNbH/yvtJw6tf2JO7HeNI9m9lOLPvhJBGgEdY72bM/kcaQgcrdLJU8HG+hwBb6eQnNgwRphoCO0bFnlC5m9rm6MxfH+z55yzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pSe62wez; arc=none smtp.client-ip=209.85.222.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1788167464; c=relaxed/simple;
+	bh=SY4YikWVvQ6SCXsDVFu7kxZPLs48OZPoQ/Mjs9I0oIE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=WKvrgllfg8dOFIM5Duyuhvp+6FYrnhAGaIElQ5Fw8UApJyKLwZTwMEHlr4zPKvSu/c2bvY5F7uFNbuQ+0LVv5sFrOtXOESLOxH0vFA2aDk1byQaG5sLiQW/S3vMWk6E+cfksqjNngyEljFOj9P1e2wMFiDdYIu7CDXYxAEGtER0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHIE2X3/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pSe62wez"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-933023a5980so670930485a.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 02:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788167378; x=1788772178; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=20fnpYTNp6hWZADg99Vs3quByt/23xw7wIlASlauUE8=;
-        b=pSe62wezzaWctsMl86+z0TQXL8UGOkOrjX4eX5yRQB2rbDzxbRkDvx/CNI38r9JWyQ
-         /2zlE8EoEXeDu4zA07GkiZISxQl216ypCpQaMb/eLB/3gkn+SvQId2edx3OU83FyHuvJ
-         zF9SsSZTaibbLWfat6UBYW6hK2oar++y4e+jvYurtFelHvHC7uNokVL9n5QZJK0OV/br
-         ZWqwRmC56yZSRImqH4wMIZBkUmXs/mnTJAnR58zOdpUIrC+Mf/O3BAWU4Ug/PCZbW3hD
-         vzznfoSoY9NJmQGnDmzE/d+k1hfWjY53EkUt8EDY9ltPHlfRhP7tpkzq/anJr/LzDFZE
-         O6aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788167378; x=1788772178;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=20fnpYTNp6hWZADg99Vs3quByt/23xw7wIlASlauUE8=;
-        b=l1k0ScPp/2p5RWc+9TcnGtFCueGaGBjaQZk7VEb8ksohnRHL/Nxp5Tq3MiRvua4fM1
-         vNRni4d08M2Viz4NoSBd86Jqv/mDVM5p/Id4keAbVTzCFc7l7lJayAxOT8qy8KeU5ui1
-         UUD6bKR96vUa0q/wURhSM/+EGfg9bBvuTE0/HlP2SSqtlGQ2OPXYcTKncDRO4e2LC7WC
-         j7A+Auy2VqepJipn0DzHMmH0Rw9RsadvZfb+V0e+P5OBgorFxscX/Zqaep0u7ZkMT3ZT
-         VnOSm1K1sAbavQGwH4JUuZX9OLgLkgeiS/HfHYhNF5INOPRqT8Hp6SOF/frIzKPms6U0
-         LZ8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RraoakeQkZ+arup3ipbZ3yNC2esv6evSlMSNpJxCpK7OHI6X9O1HP2XZnzPJFzcuYKzbWYzAek=@vger.kernel.org
-X-Gm-Message-State: AFuF++miKSQji9fKqJjgNd/4pllvrMrDy5gAwAEeADEDghox+nS4P33T
-	VdlnwBiZkcSg9ux0dtSzyC41g9Kh1eQubho2Fa+/tFQGVnH3QN+bxeFuNGoTSkgNITFWHjVrZ1C
-	YBEQXHwjJW5ooJA==
-X-Received: from qknrh24.prod.google.com ([2002:a05:620a:8f18:b0:939:1ab:c025])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4889:b0:938:fc91:91ce with SMTP id af79cd13be357-939138c4d45mr2495272785a.20.1788167378339;
- Mon, 31 Aug 2026 02:09:38 -0700 (PDT)
-Date: Mon, 31 Aug 2026 09:09:37 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHIE2X3/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BD11F000E9;
+	Mon, 31 Aug 2026 09:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788167462;
+	bh=C9+3ntl6gDf30XDx2u7J2NbyAz1jSEmLDZfvwZVBLwU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=VHIE2X3/y5s+RNmglpJcHTiFSgs9HwBOir2rTiNVIV21HX5ZWsn2yeqE/LRn8TVPw
+	 L2vCgnq0g9lGB4gsuHtQmBwzrBh0DQeRLl3p4iPvSBdT3jsoQJ8TLjXiZcSmOobxOU
+	 3+ylcLxemDJek8TTiur+D9QoV1zw8nfElSg9v9zK01OcFuEDM4jHaZB2LRXeDtS9HQ
+	 Q29p+8I0AaJvAxzXYBXs0peKENd63nYdAhGe1AOLIciFannbUDUQO80DaiUAGG+cfG
+	 DzCNSYvf5SZ4CymZe8PMoKhIEncYVfcK+E2TavawQ1E5vFLiXEjMcNNlyAGYtY05ck
+	 Dbq/QZpiMG8wA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A69380DBE7;
+	Mon, 31 Aug 2026 09:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260831090937.3342052-1-edumazet@google.com>
-Subject: [PATCH net] bonding: avoid ARP flood on RTNL contention in
- active-backup mode
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
-	Tonghao Zhang <tonghao@bamaicloud.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Jay Vosburgh <jv@jvosburgh.net>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] octeontx2-af: fix CN20K default MCAM rule removal on
+ port
+ cleanup
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178816740590.4159632.8782205699345652438.git-patchwork-notify@kernel.org>
+Date: Mon, 31 Aug 2026 09:10:05 +0000
+References: <20260825051725.3732440-1-rkannoth@marvell.com>
+In-Reply-To: <20260825051725.3732440-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, sgoutham@marvell.com, kirankumark@marvell.com
 
-Commit f1986b3a9f2e ("net: bonding: skip the 2nd trylock when first one
-fail") changed bond_activebackup_arp_mon() to reschedule arp_work in
-1 tick if the second rtnl_trylock() fails (for sending peer/slave
-notifications).
+Hello:
 
-However, by the time bond_activebackup_arp_mon() reaches this second lock
-check, bond_ab_arp_probe() has already been executed and sent an ARP probe.
-If RTNL remains contended, rescheduling every 1 tick causes
-bond_activebackup_arp_mon() to re-execute bond_ab_arp_probe() every jiffy,
-flooding the network with ARP probes at HZ frequency (e.g. 1000 pkts/sec)
-instead of respecting the configured arp_interval.
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-If rtnl_trylock() fails at the second check, do not change delta_in_ticks
-to 1 so that the next ARP monitor execution is scheduled according to the
-configured arp_interval, matching the behavior in
-bond_loadbalance_arp_mon().
+On Tue, 25 Aug 2026 10:47:25 +0530 you wrote:
+> From: Kiran Kumar K <kirankumark@marvell.com>
+> 
+> npc_mcam_free_all_entries() disables every MCAM entry mapped to a
+> port before freeing it.  On CN20K, that also disables the default
+> broadcast, multicast, promiscuous, and unicast rules, which causes
+> packet drops when all rules are removed per port.
+> 
+> [...]
 
-Fixes: f1986b3a9f2e ("net: bonding: skip the 2nd trylock when first one fail")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-Cc: Tonghao Zhang <tonghao@bamaicloud.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>
----
- drivers/net/bonding/bond_main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Here is the summary with links:
+  - [net] octeontx2-af: fix CN20K default MCAM rule removal on port cleanup
+    https://git.kernel.org/netdev/net/c/1376afc7660b
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index ef9eb0c53c66..c23cf18a996a 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3871,10 +3871,8 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
- 	rcu_read_unlock();
- 
- 	if (READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
--		if (!rtnl_trylock()) {
--			delta_in_ticks = 1;
-+		if (!rtnl_trylock())
- 			goto re_arm;
--		}
- 
- 		if (bond->send_peer_notif)
- 			bond_peer_notify_may_events(bond, true);
+You are awesome, thank you!
 -- 
-2.55.0.897.gb25b4bd76c-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
