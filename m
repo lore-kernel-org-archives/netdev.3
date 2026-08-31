@@ -1,71 +1,82 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012061.outbound.protection.outlook.com [40.107.209.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8CE52ED32
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 15:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788188944; cv=none; b=dp1MIrRJthAkTyfl4UX2AzEa/15QZ5hI/yHewfT+UBeXEFLV/H+aN9gaNZrzs3zkshtPBBWARaahXgT0qSqNVc3SXwbSfWwDvRs5RLwWdMAxxyE0JDRT7rjQ2WJ1yqRQvRt6JE48PiBFPEX3kujd4h+2+WwxWQ9/9ED3ZLKCITk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788188944; c=relaxed/simple;
-	bh=CphTbPMj8QWmaHti+kgIgTfjA3jn3Av9KZENw06qwWs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P3MNP2zZDZC/mwkqB+/S89eZ95mhrBh2xkIG+JodiJWzFgB2+Fido9fX1ch5/CQw9yV/+9giIfcPIU+usVMxRTlexQ3Joj+9wtGDFJprNm6IMH2PdEu/bh+PJjMRFr0S7i+i0HabcHkTUCZReMndWAP4bYLEfMHEfKXWbZ25xHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CUv8R5Au; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B020852ED4D;
+	Mon, 31 Aug 2026 15:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788188945; cv=fail; b=pHhDrTNWHGFydRjHqwIsirXbohdBTx8K4+/c7gIhiaLyMpori4P8rWYXalMci4tbiLXOM4H1N3n3LZM+h298/hsogqG5RnrErdX1msk7jXWiP5vS81FE0vO1ctFq5ItDYu2ABiatKfK4dDmCBvVYv2MWnnUfQqzqqH/WODuKx/8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788188945; c=relaxed/simple;
+	bh=UmcKNJjcpQo04U88CulqXHN5wLnBfMmTce8MmY16LN8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eCsr20zP6tO7Qr9NxE2hYSZ6Othe4IcC12Wx9Wnf7CxtFd43YH72X5nHez9WayMah8tGBWjfMvvfCfmyT5Yr37+1G4ujCut9wyPbC/oLKD6mDK9pGG8wZMs+a9uFra3gFth/ZXrXsuJPfXca81zR8+dliMjGUpwL+1qMK9GxIAM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fJPjMhSi; arc=fail smtp.client-ip=40.107.209.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CUv8R5Au"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67VEZ9EA2582941;
-	Mon, 31 Aug 2026 15:08:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=12LuiWce1pilLLMgy
-	akrOUu92AAzqKjgRVMRzvRw9rU=; b=CUv8R5AuVspmfvzMBZsmlSv6spfNi7KGq
-	CAaQE9fL+hz9fClbN4d78zDI+cwUcAP/+7DKdwwN3LbJGmWRYJKVdfNjeEWRxvf8
-	qVc9iQMwHLQz4/ggrq+rb9kqMxNclRJM2w/gtLv1OiKttxT0rPf1bCC7Y22+4XVd
-	FXaLq/ylViZojTx6FUnbpvtMBM4hmuny7RdEgE1sUzLvz9arBTnBMeMu1kdGl10E
-	w8xePz4uGBJmLRiXgFnG4vgWLcKYYRByWZfCfC3p/LQYfJZc09eA5nQWJBUdmH0H
-	zblRxwPZgtaermw1pjpKPd+SvcSXJNJS9iZO3eAD+NcGhbC8fIvPQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2t1x5t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:45 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67VEuHvi017137;
-	Mon, 31 Aug 2026 15:08:44 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gccexxbbg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Aug 2026 15:08:44 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67VF8fw427001582
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Aug 2026 15:08:41 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 992B25805E;
-	Mon, 31 Aug 2026 15:08:41 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41E3B58051;
-	Mon, 31 Aug 2026 15:08:37 +0000 (GMT)
-Received: from 192.168.1.50 (unknown [9.67.102.143])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 31 Aug 2026 15:08:37 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
-        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com, Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next v6 09/15] ibmveth: Harden RX poll path with helpers
-Date: Mon, 31 Aug 2026 08:07:20 -0700
-Message-Id: <2c0302ff17e945a742d0f0b79265ee556e3bf66a.1788102125.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <cover.1788102125.git.mmc@linux.ibm.com>
-References: <cover.1788102125.git.mmc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fJPjMhSi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K33ptnL8bmLWrGGsEyPAKD2FnEsUFf+dcBBURfX17wHTAd33IsgtkwBpbU2b6WN1qykwY0jov2boHqPPIu8znJSNTg2Sn6f01JKqcR8cfRgvSxPKEYDWudNZzwImuB/gOvq4R1sSsNQD888wl7lx+lEAez4XhmRTk+pNLEveiIAgdc9yUzHIrXSMlx5DZYFgJCUiS1jX09ln1hy7k0Ty78+TM0jtbgs8q4dpj5djCQo9Nf8kcGvCl4omAhJKWgOs9F+So6PZ7hAVgEPS2ZPDKTQew67rX63h9wH5whcv/gf4IknNAsxjRzmlseTDXgyCSdNmdtGeC4tdQPdFhqYekQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TmcDYc7H0S6bH9oEkvwHBJoAArjFlGnTjn1pOTdkzQg=;
+ b=GwfiDGNOdASdaugMg+C3mvoFOz36CciJEQxz14Vr1gzECO0CcJDqxYgRvzqNmD3miCV79f8KK4XzRZONodxu3ZtYFsl27dyfCaKA+HlOm2U6dSVncwuQ8c2lIZwv2UaEsD2hbIty3KgSu0q0ANzE9YdLZBHeGBYX7H8wDuC64gVugnj4iUUAzIhoF41FhstLl0huyKqKkAooO/5GDlbN7GMpjP9xuVqEuGGxMi3xbmKsRUXr9BXGYtWBKwsmFT4ZHwh+BXW5g/ftG8OgaoWYEVaXLDIpC7s/BeOXUDG12BUKRTfOwcJAYqVsASziCym+ViSFB6pQ4KQ9fJ5wmS//Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TmcDYc7H0S6bH9oEkvwHBJoAArjFlGnTjn1pOTdkzQg=;
+ b=fJPjMhSivhq1tWsdJBzU+0UIpqsPIxHLjsgZusBtnEabF3NgOdNnRI2BcSQ491SpCd9XGWeQWQY+gTdvWgPOEsmJgAWLO9k++aMaqGbwt0Am1a4rH6QPAZVj3KTaxQ83MT2kav6WgUimhryQYE4kz97n+Pb2XBudpbLFIqFFCnQ=
+Received: from BY3PR03CA0020.namprd03.prod.outlook.com (2603:10b6:a03:39a::25)
+ by SA3PR12MB7877.namprd12.prod.outlook.com (2603:10b6:806:31b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 15:08:56 +0000
+Received: from SJ5PEPF000001EC.namprd05.prod.outlook.com
+ (2603:10b6:a03:39a:cafe::a7) by BY3PR03CA0020.outlook.office365.com
+ (2603:10b6:a03:39a::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Mon,
+ 31 Aug 2026 15:08:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001EC.mail.protection.outlook.com (10.167.242.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Mon, 31 Aug 2026 15:08:56 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
+ 2026 10:08:43 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 31 Aug
+ 2026 10:08:44 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Mon, 31 Aug 2026 10:08:39 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH net-next v3 5/6] net: xilinx: axienet: Dispatch statistics through axienet_config ops
+Date: Mon, 31 Aug 2026 20:38:15 +0530
+Message-ID: <20260831150816.1020883-6-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260831150816.1020883-1-suraj.gupta2@amd.com>
+References: <20260831150816.1020883-1-suraj.gupta2@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,446 +84,389 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a9598fd cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=ZnO335mD0f2ZzhB7t6kA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfXwC4mJwdLiT2W
- CX0QwraRI3hcqEMhg/FRwLMHTNr6OwPBubIrjrGF69ZhdaQ1WYLr6Z5mtFV6LZENKesUUnuA6a8
- TxTZ8nBBe0AH7L5dCLB+N6cI7qJ4qx4=
-X-Proofpoint-ORIG-GUID: 7-nf8Y2BmWiZFPMEgcX2m76aR0QqA7yG
-X-Proofpoint-GUID: GN_2_UZQ3_PktTedT9GUFrJ_j7AMWv7p
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODMxMDEzMCBTYWx0ZWRfX4keKL+qDqFpm
- Kua+hWeoHt71XRkJVSwuKfNwN7co7HmehgltJ9fWK8vvZqO7WNtncy9UMIZ2tlL+U4d2lxIq9wV
- vYrsJLJpcv/fVh7WfRDzn7bo+WQg1YPsaNrduvIGu3zOIhIvxxL0AFod7dYtXmSh6wUuJYrj4Uf
- uZrQpF8S16+ueAD86gWwb7fAXgS59r/zTvLbjhTGRltH5FUvE37BzLzcphukLBFkXBzB/HFloc8
- 4b/q/PjVm3yUF5aKqwcxv4wTnujm0ytpmwLYWdygrBW3T29sKbqA60aHxgBL35HOCFswe7ThkNi
- /sadDy24+k7i14zlIbMKh91mUOKF5BCrpImcGNHJQal0wo6c7qOKQvtLMVycGxPAFRWX5qVoJZs
- /AvETqCq5/z4O9gNlWw98sIdkNPXdlLRmlvqxB/guQwaJwog8HE+Q9hg9Bf3pfJx9wT4HrlXuhK
- gwhPna9t7E0f3HRyueg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-31_05,2026-08-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608310130
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EC:EE_|SA3PR12MB7877:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ac8846d-420f-4b7e-8a85-08df0771c754
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|36860700016|376014|82310400026|10067099003|6133799003|18002099003|22082099003|11063799006|56012099006|921020;
+X-Microsoft-Antispam-Message-Info:
+	LEdmGx9nNypp9/bzi2dy7/LoQfzNk/smEj3LrTxOLb/7JoJz9qBZMwTnDO/dZnYdDRZzKJBlpkpjrK+t6/Le8ULxjvVKp5vebytJ7+l6XxN33xkeiTv7tC62vXTApNDe+P2yf0EIRfgURmXgl1Q2/nNLfB5oXUYMn/VuNauhXTBVgBaNs06v3H6aqYsrocUCZQJCDNKDZmSOijzL/HLsgKh39MVX7kiSTPpIILpQgUVWZRVVDr0y+r0mS/SDVdZZ0yZVRnYUB7Fse5CKiGEH5K9Vojc6Q4B6gMclMY1HwlwcxB6Qsm4TmLrHB9jfcS7/2Dqv2d2qkkNjh83vKEpGi4FctVjK5G61I7h8M50webBorZQjHLWq7xepxwLW6Ex1qsRzgX/fTZ43H/qNq0v2ypkHz0LkDZwK/2exfr2MFg//UDBxQOYz42IF+CpCf9N5Lhnylm4l8EFd8xJilWTzOMagLlTcgBMKRn8YHDKqT6G4FkjjFlflUOhpi6eKbOybnzGf2XI3+RyRAmT2dAe4ai9gARApF/eSsSdjZ90HuU2Kh9QJSi/fqg4FUTb09DtxEQIKXvPh4ajieHgBWm4y4N8fnOxtG7jQ7e97Rmpx21E2PyF0NpJhUv13q3rkpehbiHlbyLBPXl0crHvksDLgxtLPq+Pf/6DjpcOLi0G8+MKDV3RSdI1CvE3wcrIUclSDU3BOUPOn1JhdqRmYjPRE1dP6W75v2vFFllR4YtgaZKAjFuzpF+8oCMReZLG0x1aw
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(36860700016)(376014)(82310400026)(10067099003)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YetvgdU5XsZ4cIlTX9LdC2GYSpOdgFyvCGjstGloWPXNaTy9Gd0eXUbjnCwq3Mp/d+4f8q4y4EjknTs/XTh5w+IhjBHeb8xiPgURlgiDjhMysehzYuLQnP0T2LH70n/Ny0uDyNvFYxUAJPMm1WPHWOtwNL08Kz+pdTqn7TOn7tH3XZ8QqpImnAsARxdB1RD/IfJjglOS9I4a6ii5Q329kD5fnxzV5mrvzpmzkKyM/KFJElP+wA3BZ6dfGz7XXhioD655x86iSN1eeswJaj1uckUR6rKER03hGxL+geJ/4yoOWMIBIUNaZVGIcngq5K3xjTwm7gWWn1Uskxq04taZQDdU/FjnbQ8yIDjOCSSHcCFkF0yea0NhHh92LG55/F1zzkut2VGr6ACO0bCd5fPsxr4/6j0PHBgZCMvrpLx2d5UXves6gMZHTzLIYrf73nS9
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 15:08:56.6157
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ac8846d-420f-4b7e-8a85-08df0771c754
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001EC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7877
 
-ibmveth_poll() must handle several distinct skip/fail outcomes on each
-RX slot, not only the happy path:
+The ndo_get_stats64() and ethtool statistics callbacks read the 1G MAC
+hardware counters directly. Supporting a second MAC type this way would
+require an "if (mactype == ...)" dispatch branch in each of the eight
+statistics callbacks.
 
-  - interface close / napi_disable must not re-arm PHYP delivery
-  - bad correlators and harvest errors must not look like successful GRO
-  - oversize or wrap-around offset+length must not skb_put() past the
-    buffer
-  - an out-of-range queue index must napi_complete_done rather than
-    fall through and keep polling
+Add statistics operation function pointers to struct axienet_config and
+route get_stats64, get_ethtool_stats, get_strings, get_sset_count,
+get_pause_stats, get_eth_mac_stats, get_eth_ctrl_stats and
+get_rmon_stats through them. Factor the existing 1G counter reads into
+axienet_1g_*() helpers and populate axienet_1g_config with them.
 
-Doing all of that inline turns the NAPI callback into a deeply nested
-switchyard. Split each outcome into a small helper so ibmveth_poll()
-stays a thin budget loop:
+A NULL op means the MAC does not expose that statistics group, so a MAC
+without control-frame counters simply leaves get_eth_ctrl_stats unset
+instead of open-coding the special case in the callback.
 
-  ibmveth_poll_stopping()
-  ibmveth_poll_harvest_slot() / recycle_invalid / skip_bad_correlator
-  ibmveth_poll_drop_oversize()
-  ibmveth_poll_deliver_frame()
-  ibmveth_poll_bump_invalid()
+No functional change intended.
 
-Not pure motion: ibmveth_poll_bump_invalid() also counts oversize
-frames and skipped slots (intentional). skip_bad_correlator escalates
-a valid correlator with a NULL skb (-EFAULT) to reset, not only an
-out-of-range correlator. Deliver also rejects a PHYP offset+length
-that would skb_put() past the buffer. Skipped and dropped slots do not
-count against the NAPI budget; only a delivered frame does.
-
-Two further behaviour changes come with the split. On the rx_copybreak
-path a harvest failure, after the frame has already been copied into
-new_skb, used to break out of the loop and leak that skb;
-deliver_frame() kfree_skb()s it before returning an error. And mss
-becomes a local of deliver_frame() rather than living across
-ibmveth_poll()'s whole budget loop; it was never read stale, because
-ibmveth_rx_mss_helper() only uses it under lrg_pkt, so that part is
-scoping hygiene and not a fix.
-
-Drop schedule_work from rxq_get_buffer() (skip_bad_correlator owns
-reset escalation). ibmveth_poll_stopping() ensures close/napi_disable
-does not re-arm PHYP. Runtime is still single-queue: helpers are defined
-and called from the existing SQ poll path in this same patch (first
-use). The next patch turns on MQ and reuses this loop; subordinate
-register helpers stay there.
-
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
 ---
+ drivers/net/ethernet/xilinx/xilinx_axienet.h  |  23 +++
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 171 +++++++++++++-----
+ 2 files changed, 146 insertions(+), 48 deletions(-)
 
-Changes in v6:
-- read the IPv4 header check through skb->data, as mainline does.
-  v5 used ip_hdr(), which reads the network header offset that
-  eth_type_trans() does not set on this path
-- do not complete NAPI or consume budget when budget is 0. That is
-  the netpoll case, where v5 completed and returned budget - 1,
-  underflowing to -1
-- noted: the split is not pure motion; the body lists what changed
-
-Changes in v5:
-- Wrap poll_stopping return after complete so it stays under 80 cols
-- On poll_stopping after the budget loop: return < budget after
-  napi_complete_done (was frames_processed-1 even when under budget)
-- New in v5: peel SQ poll harden + helpers before MQ enable so tip P10
-  stays bring-up focused (mailed v4 09/14 MQ enable -> tip P10; also
-  14->15). Kitchen-sink / enable-path poll fixes land here on the live
-  single-queue path first.
-- After napi_complete_done, check poll_stopping again before enable_irq
-  (avoid re-arm while resize/close waits on napi_disable)
-
- drivers/net/ethernet/ibm/ibmveth.c | 289 ++++++++++++++++++++---------
- 1 file changed, 199 insertions(+), 90 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 46f68f5b52e7..f726d1e3f0b1 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1374,10 +1374,8 @@ ibmveth_rxq_get_buffer(struct ibmveth_adapter *adapter,
- 	unsigned int pool = correlator >> 32;
- 	unsigned int index = correlator & 0xffffffffUL;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index a1d15b4797ce..f286c428343f 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -658,6 +658,15 @@ struct axienet_local {
+  * @phylink_set_caps: Callback to set phylink MAC capabilities
+  * @pcs_ops: phylink PCS operations for this MAC, or NULL if unused
+  * @stats_update: Callback to latch/accumulate the periodic MAC counters
++ * @get_stats64: Callback to read MAC counters into rtnl_link_stats64
++ * @get_ethtool_stats: Callback to read MAC counters for ethtool -S
++ * @get_strings: Callback to fill the ethtool -S statistic name strings
++ * @get_sset_count: Callback returning the number of ethtool -S statistics
++ * @get_pause_stats: Callback to read MAC pause-frame counters
++ * @get_eth_mac_stats: Callback to read IEEE 802.3 MAC counters
++ * @get_eth_ctrl_stats: Callback to read MAC-control frame counters, or NULL
++ *			if the MAC exposes no control-frame counters
++ * @get_rmon_stats: Callback to read RMON counters and histogram ranges
+  */
+ struct axienet_config {
+ 	bool mdio;
+@@ -683,6 +692,20 @@ struct axienet_config {
+ 				 struct phylink_config *config);
+ 	const struct phylink_pcs_ops *pcs_ops;
+ 	void (*stats_update)(struct axienet_local *lp);
++	void (*get_stats64)(struct axienet_local *lp,
++			    struct rtnl_link_stats64 *stats);
++	void (*get_ethtool_stats)(struct axienet_local *lp, u64 *data);
++	void (*get_strings)(u8 *data);
++	int (*get_sset_count)(void);
++	void (*get_pause_stats)(struct axienet_local *lp,
++				struct ethtool_pause_stats *pause_stats);
++	void (*get_eth_mac_stats)(struct axienet_local *lp,
++				  struct ethtool_eth_mac_stats *mac_stats);
++	void (*get_eth_ctrl_stats)(struct axienet_local *lp,
++				   struct ethtool_eth_ctrl_stats *ctrl_stats);
++	void (*get_rmon_stats)(struct axienet_local *lp,
++			       struct ethtool_rmon_stats *rmon_stats,
++			       const struct ethtool_rmon_hist_range **ranges);
+ };
  
--	if (!ibmveth_rxq_correlator_valid(adapter, queue_index, correlator)) {
--		schedule_work(&adapter->work);
-+	if (!ibmveth_rxq_correlator_valid(adapter, queue_index, correlator))
- 		return NULL;
--	}
- 
- 	return adapter->rx_buff_pool[queue_index][pool].skbuff[index];
+ static inline struct axienet_local *pcs_to_axienet_local(struct phylink_pcs *pcs)
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 19fe2fd81f3a..198de353372a 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1874,29 +1874,11 @@ static int axienet_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+ 	return phylink_mii_ioctl(lp->phylink, rq, cmd);
  }
-@@ -2382,125 +2380,236 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
- 	}
- }
  
-+static void ibmveth_poll_bump_invalid(struct ibmveth_adapter *adapter,
-+				      int queue_index)
-+{
-+	adapter->rx_invalid_buffer++;
-+}
-+
-+static bool ibmveth_poll_stopping(struct net_device *netdev,
-+				  struct napi_struct *napi)
-+{
-+	return !netif_running(netdev) || napi_disable_pending(napi);
-+}
-+
-+static bool ibmveth_poll_harvest_slot(struct ibmveth_adapter *adapter,
-+				      int queue_index, bool reuse)
-+{
-+	int rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, reuse);
-+
-+	return !rc || rc == -EINVAL || rc == -EFAULT;
-+}
-+
-+static bool ibmveth_poll_recycle_invalid(struct net_device *netdev,
-+					 struct ibmveth_adapter *adapter,
-+					 int queue_index)
-+{
-+	netdev_dbg(netdev, "recycling invalid buffer\n");
-+	ibmveth_poll_bump_invalid(adapter, queue_index);
-+	return ibmveth_poll_harvest_slot(adapter, queue_index, true);
-+}
-+
-+static bool ibmveth_poll_skip_bad_correlator(struct net_device *netdev,
-+					     struct ibmveth_adapter *adapter,
-+					     int queue_index)
-+{
-+	if (net_ratelimit())
-+		netdev_err(netdev,
-+			   "bad correlator on queue %d, skipping slot\n",
-+			   queue_index);
-+	/* Residual stale slot after resize: recover via reset rather
-+	 * than spinning forever. Always escalate; only the log is
-+	 * rate-limited.
-+	 */
-+	schedule_work(&adapter->work);
-+	ibmveth_poll_bump_invalid(adapter, queue_index);
-+	return ibmveth_poll_harvest_slot(adapter, queue_index, true);
-+}
-+
-+static bool ibmveth_poll_drop_oversize(struct net_device *netdev,
-+				       struct ibmveth_adapter *adapter,
-+				     int queue_index, unsigned int off,
-+				     unsigned int len, unsigned int room)
-+{
-+	if (net_ratelimit())
-+		netdev_err(netdev,
-+			   "RX frame %u+%u exceeds buffer %u on queue %d, dropping\n",
-+			   off, len, room, queue_index);
-+	ibmveth_poll_bump_invalid(adapter, queue_index);
-+	return ibmveth_poll_harvest_slot(adapter, queue_index, true);
-+}
-+
-+/**
-+ * ibmveth_poll_deliver_frame - Build SKB from one valid RX slot and GRO it
-+ * @napi: NAPI context for this RX queue
-+ * @adapter: ibmveth adapter
-+ * @netdev: net_device for @adapter
-+ * @queue_index: RX queue index
-+ *
-+ * Return: 1 frame delivered, 0 if the slot was skipped cleanly, -1 on error.
-+ */
-+static int ibmveth_poll_deliver_frame(struct napi_struct *napi,
-+				      struct ibmveth_adapter *adapter,
-+				      struct net_device *netdev,
-+				      int queue_index)
-+{
-+	struct sk_buff *skb, *new_skb;
-+	unsigned int room, off, len;
-+	int length, offset, csum_good, lrg_pkt;
-+	__sum16 iph_check = 0;
-+	u16 mss = 0;
-+	int rc;
-+
-+	length = ibmveth_rxq_frame_length(adapter, queue_index);
-+	offset = ibmveth_rxq_frame_offset(adapter, queue_index);
-+	csum_good = ibmveth_rxq_csum_good(adapter, queue_index);
-+	lrg_pkt = ibmveth_rxq_large_packet(adapter, queue_index);
-+
-+	skb = ibmveth_rxq_get_buffer(adapter, queue_index);
-+	if (unlikely(!skb)) {
-+		if (!ibmveth_poll_skip_bad_correlator(netdev, adapter,
-+						      queue_index))
-+			return -1;
-+		return 0;
-+	}
-+
-+	room = skb_tailroom(skb);
-+	off = offset;
-+	len = length;
-+	if (unlikely(off >= room || len > room - off)) {
-+		if (!ibmveth_poll_drop_oversize(netdev, adapter, queue_index,
-+						off, len, room))
-+			return -1;
-+		return 0;
-+	}
-+
-+	if (lrg_pkt) {
-+		__be64 *rxmss = (__be64 *)(skb->data + 8);
-+
-+		mss = (u16)be64_to_cpu(*rxmss);
-+	}
-+
-+	new_skb = NULL;
-+	if (length < rx_copybreak)
-+		new_skb = netdev_alloc_skb(netdev, length);
-+
-+	if (new_skb) {
-+		skb_copy_to_linear_data(new_skb, skb->data + offset, length);
-+		if (rx_flush)
-+			ibmveth_flush_buffer(skb->data, length + offset);
-+		rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, true);
-+		if (unlikely(rc)) {
-+			kfree_skb(new_skb);
-+			return -1;
-+		}
-+		skb = new_skb;
-+	} else {
-+		rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, false);
-+		if (unlikely(rc))
-+			return -1;
-+		skb_reserve(skb, offset);
-+	}
-+
-+	skb_put(skb, length);
-+	skb->protocol = eth_type_trans(skb, netdev);
-+
-+	if (skb->protocol == cpu_to_be16(ETH_P_IP))
-+		iph_check = ((struct iphdr *)skb->data)->check;
-+
-+	if ((length > netdev->mtu + ETH_HLEN) || lrg_pkt ||
-+	    iph_check == 0xffff) {
-+		ibmveth_rx_mss_helper(skb, mss, lrg_pkt);
-+		adapter->rx_large_packets++;
-+	}
-+
-+	if (csum_good) {
-+		skb->ip_summed = CHECKSUM_UNNECESSARY;
-+		ibmveth_rx_csum_helper(skb, adapter);
-+	}
-+
-+	napi_gro_receive(napi, skb);
-+
-+	netdev->stats.rx_packets++;
-+	netdev->stats.rx_bytes += length;
-+
-+	return 1;
-+}
-+
- static int ibmveth_poll(struct napi_struct *napi, int budget)
+-static void
+-axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
++static void axienet_1g_get_stats64(struct axienet_local *lp,
++				   struct rtnl_link_stats64 *stats)
  {
- 	struct net_device *netdev = napi->dev;
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
- 	int frames_processed = 0;
- 	int queue_index, rc;
--	u16 mss = 0;
+-	struct axienet_local *lp = netdev_priv(dev);
+ 	unsigned int start;
  
- 	queue_index = napi - adapter->napi;
+-	netdev_stats_to_stats64(stats, &dev->stats);
+-
+-	do {
+-		start = u64_stats_fetch_begin(&lp->rx_stat_sync);
+-		stats->rx_packets = u64_stats_read(&lp->rx_packets);
+-		stats->rx_bytes = u64_stats_read(&lp->rx_bytes);
+-	} while (u64_stats_fetch_retry(&lp->rx_stat_sync, start));
+-
+-	do {
+-		start = u64_stats_fetch_begin(&lp->tx_stat_sync);
+-		stats->tx_packets = u64_stats_read(&lp->tx_packets);
+-		stats->tx_bytes = u64_stats_read(&lp->tx_bytes);
+-	} while (u64_stats_fetch_retry(&lp->tx_stat_sync, start));
+-
+-	if (!(lp->features & XAE_FEATURE_STATS))
+-		return;
+-
+ 	do {
+ 		start = read_seqcount_begin(&lp->hw_stats_seqcount);
+ 		stats->rx_length_errors =
+@@ -1924,6 +1906,33 @@ axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
+ 	} while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
+ }
  
-+	if (WARN_ON(queue_index < 0 ||
-+		    queue_index >= adapter->num_rx_queues)) {
-+		if (budget)
-+			napi_complete_done(napi, 0);
-+		return 0;
-+	}
++static void
++axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
++{
++	struct axienet_local *lp = netdev_priv(dev);
++	unsigned int start;
 +
-+	if (ibmveth_poll_stopping(netdev, napi)) {
-+		if (budget)
-+			napi_complete_done(napi, 0);
-+		return 0;
-+	}
++	netdev_stats_to_stats64(stats, &dev->stats);
 +
- restart_poll:
- 	while (frames_processed < budget) {
-+		if (ibmveth_poll_stopping(netdev, napi))
-+			break;
++	do {
++		start = u64_stats_fetch_begin(&lp->rx_stat_sync);
++		stats->rx_packets = u64_stats_read(&lp->rx_packets);
++		stats->rx_bytes = u64_stats_read(&lp->rx_bytes);
++	} while (u64_stats_fetch_retry(&lp->rx_stat_sync, start));
 +
- 		if (!ibmveth_rxq_pending_buffer(adapter, queue_index))
- 			break;
++	do {
++		start = u64_stats_fetch_begin(&lp->tx_stat_sync);
++		stats->tx_packets = u64_stats_read(&lp->tx_packets);
++		stats->tx_bytes = u64_stats_read(&lp->tx_bytes);
++	} while (u64_stats_fetch_retry(&lp->tx_stat_sync, start));
++
++	if (!(lp->features & XAE_FEATURE_STATS))
++		return;
++
++	if (lp->axienet_config->get_stats64)
++		lp->axienet_config->get_stats64(lp, stats);
++}
++
+ static const struct net_device_ops axienet_netdev_ops = {
+ 	.ndo_open = axienet_open,
+ 	.ndo_stop = axienet_stop,
+@@ -2356,11 +2365,8 @@ static int axienet_ethtools_nway_reset(struct net_device *dev)
+ 	return phylink_ethtool_nway_reset(lp->phylink);
+ }
  
- 		smp_rmb();
- 		if (!ibmveth_rxq_buffer_valid(adapter, queue_index)) {
- 			wmb(); /* suggested by larson1 */
--			adapter->rx_invalid_buffer++;
--			netdev_dbg(netdev, "recycling invalid buffer\n");
--			rc = ibmveth_rxq_harvest_buffer(adapter,
--							queue_index, true);
--			if (unlikely(rc))
-+			if (!ibmveth_poll_recycle_invalid(netdev, adapter,
-+							  queue_index))
- 				break;
- 		} else {
--			struct sk_buff *skb, *new_skb;
--			int length = ibmveth_rxq_frame_length(adapter,
--							      queue_index);
--			int offset = ibmveth_rxq_frame_offset(adapter,
--							      queue_index);
--			int csum_good = ibmveth_rxq_csum_good(adapter,
--							      queue_index);
--			int lrg_pkt = ibmveth_rxq_large_packet(adapter,
--							       queue_index);
--			__sum16 iph_check = 0;
--
--			skb = ibmveth_rxq_get_buffer(adapter, queue_index);
--			if (unlikely(!skb))
-+			rc = ibmveth_poll_deliver_frame(napi, adapter, netdev,
-+							queue_index);
-+			if (rc < 0)
- 				break;
--
--			/* if the large packet bit is set in the rx queue
--			 * descriptor, the mss will be written by PHYP eight
--			 * bytes from the start of the rx buffer, which is
--			 * skb->data at this stage
--			 */
--			if (lrg_pkt) {
--				__be64 *rxmss = (__be64 *)(skb->data + 8);
--
--				mss = (u16)be64_to_cpu(*rxmss);
--			}
--
--			new_skb = NULL;
--			if (length < rx_copybreak)
--				new_skb = netdev_alloc_skb(netdev, length);
--
--			if (new_skb) {
--				skb_copy_to_linear_data(new_skb,
--							skb->data + offset,
--							length);
--				if (rx_flush)
--					ibmveth_flush_buffer(skb->data,
--							     length + offset);
--				rc = ibmveth_rxq_harvest_buffer(adapter,
--								queue_index,
--								true);
--				if (unlikely(rc))
--					break;
--				skb = new_skb;
--			} else {
--				rc = ibmveth_rxq_harvest_buffer(adapter,
--								queue_index,
--								false);
--				if (unlikely(rc))
--					break;
--				skb_reserve(skb, offset);
--			}
--
--			skb_put(skb, length);
--			skb->protocol = eth_type_trans(skb, netdev);
--
--			/* PHYP without PLSO support places a -1 in the ip
--			 * checksum for large send frames.
--			 */
--			if (skb->protocol == cpu_to_be16(ETH_P_IP)) {
--				struct iphdr *iph = (struct iphdr *)skb->data;
--
--				iph_check = iph->check;
--			}
--
--			if ((length > netdev->mtu + ETH_HLEN) ||
--			    lrg_pkt || iph_check == 0xffff) {
--				ibmveth_rx_mss_helper(skb, mss, lrg_pkt);
--				adapter->rx_large_packets++;
--			}
--
--			if (csum_good) {
--				skb->ip_summed = CHECKSUM_UNNECESSARY;
--				ibmveth_rx_csum_helper(skb, adapter);
--			}
--
--			napi_gro_receive(napi, skb);	/* send it up */
--
--			netdev->stats.rx_packets++;
--			netdev->stats.rx_bytes += length;
--			frames_processed++;
-+			if (rc > 0)
-+				frames_processed++;
- 		}
+-static void axienet_ethtools_get_ethtool_stats(struct net_device *dev,
+-					       struct ethtool_stats *stats,
+-					       u64 *data)
++static void axienet_1g_get_ethtool_stats(struct axienet_local *lp, u64 *data)
+ {
+-	struct axienet_local *lp = netdev_priv(dev);
+ 	unsigned int start;
+ 
+ 	do {
+@@ -2377,6 +2383,17 @@ static void axienet_ethtools_get_ethtool_stats(struct net_device *dev,
+ 	} while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
+ }
+ 
++static void axienet_ethtools_get_ethtool_stats(struct net_device *dev,
++					       struct ethtool_stats *stats,
++					       u64 *data)
++{
++	struct axienet_local *lp = netdev_priv(dev);
++
++	if (lp->features & XAE_FEATURE_STATS &&
++	    lp->axienet_config->get_ethtool_stats)
++		lp->axienet_config->get_ethtool_stats(lp, data);
++}
++
+ static const char axienet_ethtool_stats_strings[][ETH_GSTRING_LEN] = {
+ 	"Received bytes",
+ 	"Transmitted bytes",
+@@ -2389,12 +2406,26 @@ static const char axienet_ethtool_stats_strings[][ETH_GSTRING_LEN] = {
+ 	"User Defined Counter 2",
+ };
+ 
++static void axienet_1g_get_strings(u8 *data)
++{
++	memcpy(data, axienet_ethtool_stats_strings,
++	       sizeof(axienet_ethtool_stats_strings));
++}
++
++static int axienet_1g_get_sset_count(void)
++{
++	return ARRAY_SIZE(axienet_ethtool_stats_strings);
++}
++
+ static void axienet_ethtools_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+ {
++	struct axienet_local *lp = netdev_priv(dev);
++
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+-		memcpy(data, axienet_ethtool_stats_strings,
+-		       sizeof(axienet_ethtool_stats_strings));
++		if (lp->features & XAE_FEATURE_STATS &&
++		    lp->axienet_config->get_strings)
++			lp->axienet_config->get_strings(data);
+ 		break;
  	}
+ }
+@@ -2405,24 +2436,20 @@ static int axienet_ethtools_get_sset_count(struct net_device *dev, int sset)
  
- 	ibmveth_replenish_task(adapter, queue_index);
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+-		if (lp->features & XAE_FEATURE_STATS)
+-			return ARRAY_SIZE(axienet_ethtool_stats_strings);
++		if (lp->features & XAE_FEATURE_STATS &&
++		    lp->axienet_config->get_sset_count)
++			return lp->axienet_config->get_sset_count();
+ 		fallthrough;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+ }
  
-+	if (ibmveth_poll_stopping(netdev, napi)) {
-+		/* budget 0 is netpoll, which must not complete NAPI.
-+		 * Otherwise returning budget after completing would ask
-+		 * NAPI to reschedule, so cap the return at budget - 1.
-+		 */
-+		if (budget) {
-+			napi_complete_done(napi, frames_processed);
-+			return min(frames_processed, budget - 1);
-+		}
-+		return 0;
-+	}
+-static void
+-axienet_ethtools_get_pause_stats(struct net_device *dev,
+-				 struct ethtool_pause_stats *pause_stats)
++static void axienet_1g_get_pause_stats(struct axienet_local *lp,
++				       struct ethtool_pause_stats *pause_stats)
+ {
+-	struct axienet_local *lp = netdev_priv(dev);
+ 	unsigned int start;
+ 
+-	if (!(lp->features & XAE_FEATURE_STATS))
+-		return;
+-
+ 	do {
+ 		start = read_seqcount_begin(&lp->hw_stats_seqcount);
+ 		pause_stats->tx_pause_frames =
+@@ -2433,15 +2460,23 @@ axienet_ethtools_get_pause_stats(struct net_device *dev,
+ }
+ 
+ static void
+-axienet_ethtool_get_eth_mac_stats(struct net_device *dev,
+-				  struct ethtool_eth_mac_stats *mac_stats)
++axienet_ethtools_get_pause_stats(struct net_device *dev,
++				 struct ethtool_pause_stats *pause_stats)
+ {
+ 	struct axienet_local *lp = netdev_priv(dev);
+-	unsigned int start;
+ 
+ 	if (!(lp->features & XAE_FEATURE_STATS))
+ 		return;
+ 
++	if (lp->axienet_config->get_pause_stats)
++		lp->axienet_config->get_pause_stats(lp, pause_stats);
++}
 +
- 	if (frames_processed == budget)
- 		goto out;
- 
- 	if (!napi_complete_done(napi, frames_processed))
- 		goto out;
- 
--	/* We think we are done - reenable interrupts,
--	 * then check once more to make sure we are done.
-+	/*
-+	 * napi_disable() sets DISABLE then waits for this poll. Without a
-+	 * second stopping check here, enable_irq() can re-arm PHYP after
-+	 * resize already masked the queue; late IRQs then hit the handler
-+	 * after num_rx_queues was published lower (lab WARN at interrupt).
- 	 */
-+	if (ibmveth_poll_stopping(netdev, napi))
-+		goto out;
++static void axienet_1g_get_eth_mac_stats(struct axienet_local *lp,
++					 struct ethtool_eth_mac_stats *mac_stats)
++{
++	unsigned int start;
 +
- 	rc = ibmveth_enable_irq(adapter, queue_index);
- 	if (rc) {
- 		netdev_err(netdev,
+ 	do {
+ 		start = read_seqcount_begin(&lp->hw_stats_seqcount);
+ 		mac_stats->FramesTransmittedOK =
+@@ -2478,15 +2513,24 @@ axienet_ethtool_get_eth_mac_stats(struct net_device *dev,
+ }
+ 
+ static void
+-axienet_ethtool_get_eth_ctrl_stats(struct net_device *dev,
+-				   struct ethtool_eth_ctrl_stats *ctrl_stats)
++axienet_ethtool_get_eth_mac_stats(struct net_device *dev,
++				  struct ethtool_eth_mac_stats *mac_stats)
+ {
+ 	struct axienet_local *lp = netdev_priv(dev);
+-	unsigned int start;
+ 
+ 	if (!(lp->features & XAE_FEATURE_STATS))
+ 		return;
+ 
++	if (lp->axienet_config->get_eth_mac_stats)
++		lp->axienet_config->get_eth_mac_stats(lp, mac_stats);
++}
++
++static void
++axienet_1g_get_eth_ctrl_stats(struct axienet_local *lp,
++			      struct ethtool_eth_ctrl_stats *ctrl_stats)
++{
++	unsigned int start;
++
+ 	do {
+ 		start = read_seqcount_begin(&lp->hw_stats_seqcount);
+ 		ctrl_stats->MACControlFramesTransmitted =
+@@ -2498,6 +2542,19 @@ axienet_ethtool_get_eth_ctrl_stats(struct net_device *dev,
+ 	} while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
+ }
+ 
++static void
++axienet_ethtool_get_eth_ctrl_stats(struct net_device *dev,
++				   struct ethtool_eth_ctrl_stats *ctrl_stats)
++{
++	struct axienet_local *lp = netdev_priv(dev);
++
++	if (!(lp->features & XAE_FEATURE_STATS))
++		return;
++
++	if (lp->axienet_config->get_eth_ctrl_stats)
++		lp->axienet_config->get_eth_ctrl_stats(lp, ctrl_stats);
++}
++
+ const struct ethtool_rmon_hist_range axienet_rmon_ranges[] = {
+ 	{   64,    64 },
+ 	{   65,   127 },
+@@ -2510,16 +2567,12 @@ const struct ethtool_rmon_hist_range axienet_rmon_ranges[] = {
+ };
+ 
+ static void
+-axienet_ethtool_get_rmon_stats(struct net_device *dev,
+-			       struct ethtool_rmon_stats *rmon_stats,
+-			       const struct ethtool_rmon_hist_range **ranges)
++axienet_1g_get_rmon_stats(struct axienet_local *lp,
++			  struct ethtool_rmon_stats *rmon_stats,
++			  const struct ethtool_rmon_hist_range **ranges)
+ {
+-	struct axienet_local *lp = netdev_priv(dev);
+ 	unsigned int start;
+ 
+-	if (!(lp->features & XAE_FEATURE_STATS))
+-		return;
+-
+ 	do {
+ 		start = read_seqcount_begin(&lp->hw_stats_seqcount);
+ 		rmon_stats->undersize_pkts =
+@@ -2563,6 +2616,20 @@ axienet_ethtool_get_rmon_stats(struct net_device *dev,
+ 	*ranges = axienet_rmon_ranges;
+ }
+ 
++static void
++axienet_ethtool_get_rmon_stats(struct net_device *dev,
++			       struct ethtool_rmon_stats *rmon_stats,
++			       const struct ethtool_rmon_hist_range **ranges)
++{
++	struct axienet_local *lp = netdev_priv(dev);
++
++	if (!(lp->features & XAE_FEATURE_STATS))
++		return;
++
++	if (lp->axienet_config->get_rmon_stats)
++		lp->axienet_config->get_rmon_stats(lp, rmon_stats, ranges);
++}
++
+ static const struct ethtool_ops axienet_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_MAX_FRAMES |
+ 				     ETHTOOL_COALESCE_USECS |
+@@ -2914,6 +2981,14 @@ static const struct axienet_config axienet_1g_config = {
+ 	.phylink_set_caps = axienet_1g_phylink_set_caps,
+ 	.pcs_ops = &axienet_pcs_ops,
+ 	.stats_update = axienet_1g_stats_update,
++	.get_stats64 = axienet_1g_get_stats64,
++	.get_ethtool_stats = axienet_1g_get_ethtool_stats,
++	.get_strings = axienet_1g_get_strings,
++	.get_sset_count = axienet_1g_get_sset_count,
++	.get_pause_stats = axienet_1g_get_pause_stats,
++	.get_eth_mac_stats = axienet_1g_get_eth_mac_stats,
++	.get_eth_ctrl_stats = axienet_1g_get_eth_ctrl_stats,
++	.get_rmon_stats = axienet_1g_get_rmon_stats,
+ };
+ 
+ /* Match table for of_platform binding */
 -- 
-2.50.1 (Apple Git-155)
+2.25.1
 
