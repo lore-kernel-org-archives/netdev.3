@@ -1,75 +1,82 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0244838399A
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119504CCDE5
+	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788210103; cv=none; b=UYXq1M8oKOKK6bnhm0qq0fpkXfh8+hIXsuwofvp0JCNS8WieDviPNVp1z04wMAxXPKBM9r+pGMEXN7Ihqnkt2UOE8XHAOs26u9D6Seu0YjPCASUOGvr18ncXaJhVkl/hvOmnQ7+bP7vTuvoW2GtfoONjd2Ee+DMgT+TgQNlLFVQ=
+	t=1788211362; cv=none; b=u+2IQRzpHO7n2CfICCrz7KoWqLPcmQO080U5Sh+SX4MmPeGP6GtmQK3wxqQyzU/J8Foy3yffUcU33AamJdQexkB+0MHIQEwwnMFFhF2nptpkcYQobDRvCCf48xUp048DIRVhoWTxvAjgw9Iu1tkVvMvZBIVyTwEF9oAcGH+qqyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788210103; c=relaxed/simple;
-	bh=0eTCPLGUMKlpiwgW5xNdX+fHOISCOT3c4nyXTCafW0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aNeR2mHiSba4rA3usR1ojjkJK3utfJrbG4AjAQ+6/hC+t/zmpP8cTL+C5ABXWnkF531mX9BUxgRXth+IZvQjWN3Dt7T1RfIka4FodYuAJfTuRMZrnfpjklzaMIcSCwu91XX45vv7qTEKWajoeKkdKxTwFydjfdWEJZ4UV2fukgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GeTQxrIs; arc=none smtp.client-ip=209.85.128.175
+	s=arc-20240116; t=1788211362; c=relaxed/simple;
+	bh=j+4P5I1w7yupkjtI1aHIdS2EV8F3BTV+hCLwZ4e00/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DG15UlSNwQ1EP/+/I914Wbo3vPcv9fbERllVwNgrsX3yYpDCv3Bgp0P0FvGQDa8s/9DUwRhO7EJtFdjankoEkTgga1a4wpcuhMsPyfwG6cad5nLHm7/WJB1LcI05gwiI+vfmkQj6eA8FOG/hAQeIF9RgwLf/zg94L/GXCneRVTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqaRKwV7; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GeTQxrIs"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-861f30636f9so30007927b3.0
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:01:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqaRKwV7"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-398e9698a70so281369a91.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 14:22:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788210101; x=1788814901; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788211359; x=1788816159; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JpMLFP66XwStzGb+FjoQT89DvlrGxwIbqnFlE8RyomU=;
-        b=GeTQxrIs/DDPNyttn34lAICgWLeNF1zZg56xSfIRHw1mtQGPmtBe3/ns4wcDUkqSv6
-         Vb1l15J965v8wSfPkds7xqqk7HlzgmJqj5zl1HkH4TYkNrB9qfjHLlZ2JOvlIgIav84l
-         tLR9ApQVWRmMk+jyjjrCh0LPhvnxSlwlmXmXVk4oN53/FFVM1qXx59oUiki57wckTk7F
-         cTpUQ8KlwxNfjl6s7MYZOSdvVSqYl9Q0ahnPDXQkBspLhzr4x+DbJsHpWVGQ7TQbtC5o
-         P1YA3rUbEFOtYQvz6MZi7tDPBQuNlAeCVnNCzxXqgI7PRMkMTxFwASAX3mm3xtvfc7hj
-         c3pA==
+        bh=tAf9E7CenHe6l5YzESk+eJosOnuoeSazKjhyH+9ql1Q=;
+        b=mqaRKwV7gzP3vr0Gb29m9Q6UjUcqfOmdhGLENM3ypRBGi1cIaU42yiz+8+OE8YVqmP
+         y3J+3HJ34+CZSBPDyf5v27g2z8D+S9llW+g2udUGRnCmi1gz00Z5yjOME3g4JJCjExf+
+         crxYmIeDDEKN6cb9tEEEisSB8RRlzlNmyMqpJ5CnaNvQokJbZ6wDmt8TW0k3jBfZuyeN
+         CjKttedYveaNoX2nh06YxKdfMLXURfLB9w54N8a73s3Mu/nqBQgrvb4xJz08giZZSWrk
+         59P0Ya/GWsf/84WKACPpaKtJyeGY3Kd8IfQPtDykRK06rUViYPKC/csfJnAYEl3Y/Grm
+         LiTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788210101; x=1788814901;
+        d=1e100.net; s=20251104; t=1788211359; x=1788816159;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JpMLFP66XwStzGb+FjoQT89DvlrGxwIbqnFlE8RyomU=;
-        b=VzfavtAK6/OBysN0PJZrW2GoUi50QCq7MZ/BvOmIAN+kERSdSJV7Qdc3i/CIQMbUd+
-         /b8IOO2uOvE0kByjkQfIccjtMWP+ccnWgsdSOv/9c3TrFvHWYB2PM6OhoeQlNtkVgTUV
-         TjA8XdIKPShyz3VYx/wTfFrCVJYLvEIaSTkIt+RN0o2jVw5uLOYZrY87JvPSpMcGJZFw
-         eD/zqvquNHcMM75C0pO/4RzUrMXrhNEaa5AQadi1NSDuNKjP81MW5Gc6cRHVWkPdOqH2
-         d43kMSi/5Zi299C1u0zylbRYtICRXXHsf8qSUw504TgXT81inu4ly/RDH0n0ezuo6a2s
-         08EQ==
-X-Gm-Message-State: AFuF++nnCI05AgzT6rc2jJaXGKKm5CZpqlR+BUNVMgOzVEF1DGDEbBtS
-	LtSQmOQNA9o9g5cSupkoY53SyrtKBIRdZRQsalO2yQVuM0IiWu6C+/PafAKQ1w==
-X-Gm-Gg: AYBFou2aBJrr+QwFDT2S/KAkDsHXmwuJ5ODfwr0iViPnOnjxz18WoBKrs5ewlohgt7H
-	7JGy14L5X5su/IMnHgjOborX1ACJ8sld+o2zudz6WOmmaUw15I/PkoNxgUvJxovZ+IBF68A/cWa
-	fDZ688R74Jf96Y5g9JeOAkzTYqGrFnRk1quQz08lGccT5hZUPo+xuasWtB4BHlZWJYJwDtPDW7q
-	A26+zGuA7PFkirqux2TXIJ/8n503vY1xOG8YOGDRrJIQMH6cA+ficnQaWbBlwnhWVQQYQtXQv7b
-	7gFZ+k+sz7c1IfttDnN7s1rqVQ/I0aFlUKV/fU4/6B3HDXvMHTLQOLmc1AEmctxT4xdmDi/bEy3
-	ua2v1MdbxjLLLmUh1H3enTauRhRIe/GhK1l7wjD1NU0WqblXKjM1FHlLngxrUYww6M5VHeZqdDw
-	SWc/J5b0wM8MtFiYvwzpqSaGu6iT9yVWiX7QsWmcK1WQgG7z2Zg1Y5fICYPw3LtIYDe17dcMlGJ
-	2e+5SGTNcq53os/l8ebIR4Ujbokkuai+W4kCEjaG2EPrFCDuE4maKbQSi+pFSov
-X-Received: by 2002:a05:690c:60c1:b0:81e:7dfa:b799 with SMTP id 00721157ae682-85d6b179defmr101761427b3.24.1788210096102;
-        Mon, 31 Aug 2026 14:01:36 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e65f146f8sm60528687b3.29.2026.08.31.14.01.34
+        bh=tAf9E7CenHe6l5YzESk+eJosOnuoeSazKjhyH+9ql1Q=;
+        b=RmjWwbpNCiWxWXGvedZrcoVw7SGk2ug8BX6485Kp72gTCTjCfXCmlgcBBNoG8/SRp8
+         p4nH3AbKUkIPIR5sYEW7G6njYO6unwb0K7jyRqQBFR7lONBmZqYHloUEbJ9PRYXUniMj
+         lxFIpHh4IPhschxh5+28jaMDdI/FpBDrNTgRwfV8kJGET21jDXMl1/dism/LcP2EL30M
+         5Z1/X0v9K3NTJ+C3ZvuU9xBKzdDenmQtSmHqPwymJpXAh85JES16RrJExsErYbPbgJEf
+         61VUtaR/qpRUzEWw4UvkPrcLYbU2KPx1T5qD+aSwuDo3Oh4glDXgchZUnPKg5HxF13+e
+         CSJA==
+X-Forwarded-Encrypted: i=1; AKwUvBwSOwDJ8Wf43ZCsUMSeBtkxJrldsHIy8LBPzHWIfWW4Kh0G4IjSdjV9fkj6WldcayiZ1v3mSlQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nNF3jvc3BZc17MbFGlq9w1VN6pZkp0KGDfivEJ0dxQ9zDA2yH1
+	Odfi6Nc2uulPCNGzfRaqEsOoEO1Yz8BIOlpC/vxALP48UFKYxdepC+nvjCT81g==
+X-Gm-Gg: AYBFou0ZgIQ5agru69ADwqCtRToUNwcHQrq2k6lBNNm3EAsg/0q6qyHBnPoU726r11p
+	6ZG7/aoan5ACBSWMJZQs3/YcCtrJSDAt/KUkpWBPpJhZJrVbkscH0f8l/HQOeXY3qEC7fDdgFEU
+	LSu0UnbV2I0Ww4BUccSiriBlrjdIp0D+GF6bCLzq+QCdPsH9s5Db81Ezo/iB4iEIPw0bA0+JuMT
+	QhCaNDertxLn1L3ly9CEbZ0+Qoaixb/tnDVDfruBSL46RhGf5acj9c54QUXXke5WLQeYsDLuflH
+	QQ1CnMaN9QJgP/BqAYloukRtPQ0ryeUmatpTJsLiM8ETOCPdQVbPwueHVurrsTU2K8JDku0BoHe
+	M3XPS3EIQiyaQi71B6dz0y2NvwrErdaOCT3ye5zb38cwjpaaC7mLA0JHsGYxM3O3r8/MYo0u1kx
+	NF53LEChN/WI+JZI+F5Zw7hHBDWp9T52lRrXn4uriCVfpA8oK2fQNtOejn7WWeyPa4mFUgVNC66
+	G5aFQ==
+X-Received: by 2002:a17:90b:588f:b0:398:bf7e:b267 with SMTP id 98e67ed59e1d1-398bf7eb378mr22481809a91.2.1788211359423;
+        Mon, 31 Aug 2026 14:22:39 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:500::6:bac7])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e0bf8a13sm45871957c88.0.2026.08.31.14.22.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 14:01:35 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+        Mon, 31 Aug 2026 14:22:38 -0700 (PDT)
+From: Zinc Lim <limzhineng2@gmail.com>
+To: alexanderduyck@fb.com,
 	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
+	linux@roeck-us.net,
 	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next] selftests: net: csum: filter packets by source address and port
-Date: Mon, 31 Aug 2026 17:01:12 -0400
-Message-ID: <20260831210128.1359978-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+	mohsin.bashr@gmail.com
+Cc: kernel-team@meta.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	zinclim@meta.com,
+	limzhineng2@gmail.com
+Subject: [PATCH net-next v2 0/6] eth: fbnic: expand hwmon sensor support
+Date: Mon, 31 Aug 2026 14:22:28 -0700
+Message-ID: <20260831212234.1212971-1-limzhineng2@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,95 +85,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+fbnic currently exposes only the raw temperature and voltage readings
+(temp1_input, in0_input) via hwmon. This series builds that out into a
+complete sensor interface and hardens the read path.
 
-The receiver process uses a PF_PACKET socket to verify incoming packets
-and test hardware checksum offload. While the socket filter matches the
-protocol and destination port, packet verification did not validate the
-packet source address or source port.
+The firmware capability response already carries per-board sensor
+thresholds, and the firmware can asynchronously report when a sensor
+crosses one of them. This series surfaces both to userspace and cleans
+up the supporting plumbing:
 
-If background traffic arrives at the destination port from an unrelated
-sender, the receiver attempts to verify it. During tests expecting an
-invalid checksum (-E), any legitimate background packet with a valid
-checksum causes the receiver to report a checksum error and fail the test.
+ - Move the sensor read logic out of fbnic_mac, closer to its only
+   caller in the hwmon code, and drop the now-unused get_sensor op.
+ - Expose all hwmon attributes unconditionally as read-only (0444).
+ - Cache the temperature and voltage readings for the current jiffy so
+   a burst of attribute reads issues a single firmware round-trip.
+ - Parse and expose the temperature (min/max/crit) and voltage
+   (min/max) thresholds. Thresholds the firmware did not populate read
+   back as -ENODATA.
+ - Add the corresponding alarm attributes, computed by comparing a live
+   reading against the stored thresholds.
+ - Translate the firmware's sensor-threshold-exceeded message into an
+   hwmon event so userspace is notified on the relevant attribute.
 
-Add source address and source port verification in recv_verify_packet_*:
-Non-matching packets return -1 and are skipped.
+Changes from v1:
+ - Addressed Jakub's patch 6 feedback on including a
+   if (!IS_REACHABLE(CONFIG_HWMON)) return; guard.
 
-Also
-- add an inter-packet delay to avoid drops from bursts.
-- remove a comment that is no longer correct.
+Zinc Lim (6):
+  eth: fbnic: move sensor read logic out of fbnic_mac
+  eth: fbnic: expose all hwmon attributes unconditionally as read-only
+  eth: fbnic: cache hwmon sensor readings
+  eth: fbnic: report temperature and voltage thresholds via hwmon
+  eth: fbnic: report temperature and voltage alarms via hwmon
+  eth: fbnic: firmware notifies hwmon on sensor threshold events
 
-Fixes: 91a7de85600d ("selftests/net: add csum offload test")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
----
- tools/testing/selftests/net/lib/csum.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |   8 +
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c    |  75 +++++
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  30 ++
+ drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c | 263 ++++++++++++++++--
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   |  55 ----
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |   2 -
+ 6 files changed, 349 insertions(+), 84 deletions(-)
 
-diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
-index e28884ce3ab3..139465054f85 100644
---- a/tools/testing/selftests/net/lib/csum.c
-+++ b/tools/testing/selftests/net/lib/csum.c
-@@ -2,8 +2,7 @@
- 
- /* Test hardware checksum offload: Rx + Tx, IPv4 + IPv6, TCP + UDP.
-  *
-- * The test runs on two machines to exercise the NIC. For this reason it
-- * is not integrated in kselftests.
-+ * The test runs on two machines to exercise the NIC.
-  *
-  *     CMD=$((./csum -[46] -[tu] -S $SADDR -D $DADDR -[RT] -r 1 $EXTRA_ARGS))
-  *
-@@ -620,6 +619,9 @@ static int recv_verify_packet_tcp(void *th, int len)
- 	if (len < sizeof(*tcph) || tcph->dest != htons(cfg_port_dst))
- 		return -1;
- 
-+	if (tcph->source != htons(cfg_port_src))
-+		return -1;
-+
- 	return recv_verify_csum(th, len, ntohs(tcph->source), tcph->check);
- }
- 
-@@ -647,6 +649,9 @@ static int recv_verify_packet_udp(void *th, int len)
- 		return recv_verify_packet_udp_encap(udph + 1,
- 						    len - sizeof(*udph));
- 
-+	if (!cfg_zero_sum && udph->source != htons(cfg_port_src))
-+		return -1;
-+
- 	return recv_verify_csum(th, len, ntohs(udph->source), udph->check);
- }
- 
-@@ -659,6 +664,9 @@ static int recv_verify_packet_ipv4(void *nh, int len)
- 	if (len < sizeof(*iph) || iph->protocol != proto)
- 		return -1;
- 
-+	if (iph->saddr != cfg_saddr4.sin_addr.s_addr)
-+		return -1;
-+
- 	ip_len = ntohs(iph->tot_len);
- 	if (ip_len > len || ip_len < sizeof(*iph))
- 		return -1;
-@@ -680,6 +688,9 @@ static int recv_verify_packet_ipv6(void *nh, int len)
- 	if (len < sizeof(*ip6h) || ip6h->nexthdr != proto)
- 		return -1;
- 
-+	if (memcmp(&ip6h->saddr, &cfg_saddr6.sin6_addr, sizeof(ip6h->saddr)))
-+		return -1;
-+
- 	payload_len = ntohs(ip6h->payload_len);
- 	if (payload_len > len - sizeof(*ip6h))
- 		return -1;
-@@ -940,6 +951,9 @@ static void do_tx(void)
- 			cfg_payload_len = rand() % MAX_PAYLOAD_LEN;
- 			buf = build_packet(_buf, sizeof(_buf), &len);
- 		}
-+
-+		/* avoid bursting */
-+		usleep(20);
- 	}
- 
- 	if (close(fd))
--- 
-2.55.0.897.gb25b4bd76c-goog
-
+--
+2.53.0-Meta
