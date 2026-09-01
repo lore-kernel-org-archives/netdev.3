@@ -1,44 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DAB477285
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 22:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B2A2D12F3
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 23:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788303595; cv=none; b=sN930Li/4XdeYJOod9F3h6yTLNBrW0sS6AMVcy7QtroDbtQ7OQTCCW+S/0A1YcfooMK8yzoDeUb60ZOb1jT8CQp15/1C/gxWW8FnVyLpmI4mscyNvjFIjEF6JXTfRQqhvxH6v1WFJHqVT1kxk+ILArUvCd9SlR8voVUlRZ5dHK4=
+	t=1788304691; cv=none; b=Ek5EtV1w1crrCSUpjw8zVgWAn+MuP2I0PMr+OoA9v6i9NM7LDcGwH4119qsWE4q+AivSykN7HPxSXpy0bi+RtB3ci0GvkqnI1WB2T7SQnIysprdLCt+f+Of+QqkVJOr5hQvxucwLbusX1pjrttxgW7qpTF9nWoMI6XP58pwoHQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788303595; c=relaxed/simple;
-	bh=c18F6yK9QQALIK8vJ9HFY7VBM32lgpTfpHbGKOYt99U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G3uCKotlWs63dXaT13HsKBLlhwXW9QYRyF1sWsk1f41rghSZkr8+ucTEPI3egfiTnL2PyUGlZh+GuJxhN1l6KRI4lAqANTOMCTF3OlWPajXEnaQxiGXzLsOtyI1FFWOx/KDgGagwScWY7A2cHioua2g/XvZPtnZRqwGQhDRu5pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OUtB35LT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788304691; c=relaxed/simple;
+	bh=U6koZ9AqIWil86Nvd1k2QWwJYqf5sb/va8y04/LnJM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=LAgB/5iDEvVrhJHzlGLqG5aTDP9kCSZ2S31nQms0nDOTUQhwzEuMImxPU2PSIjSR8AD4/189JzwcE8wED40aeYw0Eevzj1kDxVFdDvf9umSxeON2dFiX5miIqCeMxYBR5/kHr4kmsG4NY7ywgQiXFZqni/PwpKz59srAWE+WENc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ort9WEpq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OUtB35LT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509A91F00A3A;
-	Tue,  1 Sep 2026 22:59:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ort9WEpq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8891F000E9;
+	Tue,  1 Sep 2026 23:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788303594;
-	bh=i9A5bcOobHTmbIMqYGFGYBa+fEB6nmE3jD+Uixfyvds=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OUtB35LTUGDe6xuKexifpmmNt3ZGDlzMAbH7YxF6wiP7UJF78jNr32qBG3JCT00hj
-	 8qSWt5/o8drSYnRkPNvr+ZyoEDLa6/fHCJ4W0bvAq51zXxetvHpV7/AG3IFFYScCPc
-	 ipqPHbTroq/I8IkXV/kHB8c25w6QaLrxtOjpURn44c12TD/LUTuwwRroS9KM41lnhT
-	 EMmpQe/I3QRKrg6ec0RqXdlCEVkhMqgF9eH4EG2m/9Ee77Kc6npZRjDLEPLcayBP7/
-	 doZgbCOQTUIeISBLeFAGiN+qg3OfdyQzT24VZm55u9wthfn5HB7G+hVxvQM/hg8i64
-	 VHbfWDEggfOFQ==
-Date: Tue, 1 Sep 2026 15:59:53 -0700
+	s=k20260515; t=1788304690;
+	bh=1PKxczNzT9SihUt4yRoWDWWzKK2V+GNwtVRJxz1y2CE=;
+	h=Date:From:To:Cc:Subject;
+	b=ort9WEpq0gwTwkvVD2O//6KD8PUA/vYl6RoMMqArbgMRKT2sE4tCJnY2BM45VJJR3
+	 2HiQwWxvta1p8dgyCFnO9bgaYRsyOOyvZlkY8k/O7uXfGcNbsWnSs4fPsuro8gCpvU
+	 /vCCwj/tBjRK1p+dWhImJEDRAtP7Uzu3VDagb3HE5dTog1AHFAd4uBtDG2g8cLQgE8
+	 0jpXwt84bIDmSJa9SuWZIKaleIeybCySmLY9CATDSJCDbvm+0udT2+SyzWaqIh+OiL
+	 CTf81bppyaX/MVSGav9968KgnbVqztiDvuDPai/mCX4SVdtqebyhECsmnOLWFl3BNt
+	 cS+EisFFbW+Kg==
+Date: Tue, 1 Sep 2026 16:18:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net,
- edumazet@google.com, jhs@mojatatu.com, jiri@resnulli.us, horms@kernel.org,
- vega@nebusec.ai, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/sched: cls_route: free emptied bucket on filter
- move
-Message-ID: <20260901155953.77160c65@kernel.org>
-In-Reply-To: <CA+NMeC95jnvqA-m7zTyUX4qmuWqDL-w=Ftx4GaAmXig_2uPjxA@mail.gmail.com>
-References: <20260829205422.854785-1-victor@mojatatu.com>
-	<20260901095101.124563-1-pabeni@redhat.com>
-	<CA+NMeC95jnvqA-m7zTyUX4qmuWqDL-w=Ftx4GaAmXig_2uPjxA@mail.gmail.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: [ANN] AI reviews are getting emailed out now
+Message-ID: <20260901161809.0608949b@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,25 +40,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 1 Sep 2026 18:50:00 -0300 Victor Nogueira wrote:
-> > Does that leave two filters carrying handle 0x10002 in the same chain?
-> > [...]
-> > The comparison itself predates this patch, but this patch is what turns the
-> > renumbering/bucket-move path into a supported, leak-free operation, and it
-> > adds code immediately after the faulty comparison.  Would
-> > "fp->handle == nhandle && fp != fold", or rejecting the handle mismatch for
-> > existing filters as well, belong in the same change?  
-> 
-> This is a pre-existing issue.
-> It is a bug, but I think it's more orthogonal than Clashiko suggests.
-> I see 2 separate issues:
-> 
-> - The leak (which this patch fixes)
-> - Duplicate handles
-> 
-> I don't think this patch makes the example Clashiko described
-> "supported", it just fixes the leak but leaves the duplicate handles
-> issue unaddressed.
-> I believe fixing both in the same patch would make it look confusing.
+Hi!
 
-Let's fix it in the same series.
+As mentioned previously we were trying to get false positive rate low
+enough to start sending AI reviews out automatically.
+
+According to the stats for the last 3 weeks 70-80% of the patches we
+are applying have no issue with severity higher than Low (50-60% are
+completely clean). Only around 20% of patches we mark as Changes
+Requested are have issues <Low. Let's call that good enough.
+
+The embargo on the reviews and time when review is emailed out follows
+the same timeline as maintainer reviews. Delays are added if author
+does not review other people's patches and if CI finds issues.
+Paolo explained this a bit at netdev.conf.
+
+Please let us know if you have any feedback, especially if you are 
+a reviewer.
