@@ -1,132 +1,114 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2747DF84;
-	Tue,  1 Sep 2026 09:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AB8345ECC;
+	Tue,  1 Sep 2026 09:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788255837; cv=none; b=s87hiB975z6fJ7O57eiWh0k16M6aFwfKRwOEV1ILAkGgQ/jKH7VZ0S4fPMlAoPN5HpWfQvfdLk686yRNWCDR9gPnqcrzscZfHyYatd2KK07Vd3uDzO0uVOBtVK5NcVGS1atf811xuybsJU++SpLWyrTbF3XvwMZ7171GMUCTWRk=
+	t=1788255994; cv=none; b=glYV4rMAgNiu562b683PwlHhGeP0+UPARy8SmbDtZXXyM8UUZCDZVQMzw4/bhGa1/0ZssWwY7OBuoRhsVvO/WrxzaL2ZIMzhIoo0RX2RT7KXQt1WHDdKqFqfyL7m7TPnfhJMI9NmTonQY739Y4/0YVPIlgBoOfb8kuRlWcyYr2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788255837; c=relaxed/simple;
-	bh=TT8ytgeQNFbfItaG3H6JI0HNZJJDURAAqlJT7GfiwuE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mKikwF+6v/DLiu5R1K4rb45ZDrbTx3gq9JuHRWYLXU522X7JuDbostFPEy5ZQUniRaSV+JWhZ+DmG+6ZF3Ff7BJs4FwLVzgCaUQns/OQ554tdmzGZGj5wgbJe4BFbJLDu4sIlhbsKVeTCbBol1uyzojKwfQjMcnesaE3GV/64n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LoWsgHDq; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1788255994; c=relaxed/simple;
+	bh=+F9qcpRQ2xx8OGt9xdtHAgLH1Gh10ZPI0nZVwh3KzEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JhgqO/mSbiqtrXlB8TjQ4XQxfkiNI4tXQlSggrsoqT4/tYFPZVO+VFVBzZSZM9farB5ImSnKD9Yc2WRbO8bXJPzwooW+NfWECcZJso1jd3/GZlLYNpf9mHzT1MUVw6j72AByYFUTXS7XVin1rtvR2WRWtYtg+Y+ks/AHu4QaKCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epU7N6dQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LoWsgHDq"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6817Cgcd2833071;
-	Tue, 1 Sep 2026 02:43:29 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=z3j+QQ6TUFD75XCFp3GSs5M
-	ycaCILNwA+w6md5MDGU4=; b=LoWsgHDqaL58YxU3MkuY/Vh+5g/rM5cAhUjLZI3
-	siQ88mcnBqwjtj5NIkZXsR15kbY3zMXlxfcowf9T7qyRlv24ISbpKqm4Epzf3lS9
-	TurIBEIYxXWHYHLfQv2SUDcX61cjBigQ2OkouzbhzGEKuHheVPs02Fa3Gf3+VIcJ
-	S5N1qQDanJAmqOpm4JwhwiNC40iF0b9qmNzKx9nQVcTGp/wAgnnmxO1loDJaqNOB
-	O+OB+r63TNrsy/ulwq4K3dQm4B5tqWmg2nFHwMLcrSW2lAltM0e32siX1HQ7IDz+
-	xkF+HRxrhYwLRXhvf12et8siLpZIA0SDPZTpGLEUl0pWt7w==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gdmvqs97s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Sep 2026 02:43:28 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 1 Sep 2026 02:43:27 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 1 Sep 2026 02:43:27 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 529995B6928;
-	Tue,  1 Sep 2026 02:43:23 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Viswajith Murali <viswajithm@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Vamsi
- Attunuru" <vattunuru@marvell.com>
-Subject: [PATCH net] octeontx2-af: mcs: Clear stale X2P calibration state before calibration
-Date: Tue, 1 Sep 2026 15:13:17 +0530
-Message-ID: <20260901094318.1395356-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epU7N6dQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9499D1F00A3D;
+	Tue,  1 Sep 2026 09:46:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788255991;
+	bh=wZKKgkQ31MHVRumwADkBEX70RvL+WEBmXOVQxzkxRno=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=epU7N6dQia5Jqw9SLTjUTTJCbS7xO4YgCBo11x5J9KSSGukCXFZ+U0p4nKBDf52PL
+	 /E3uz0CpmPgPOis91by81oKl4m9OFu3XwCO4OHQKSiYlYtC1WC1oOHp6kOh9uTx/MI
+	 UyoTA551QN3LQBqiSBsTUgoPXoA1+Ub3apQmPiZeEZ8EaX4vng26XFf65EYHjETZxV
+	 EJUzlaFBvkgUKdeCNx238SisbwZI2DX59UqYXs01JfxBP0HTnuM9saF3lpnASHTTfi
+	 OpzzRaqh4f7G0TtQwusir+p9SBgCcMckPHgdj57O7+gTb+Jomt11Ar7x9TVmnqmKzO
+	 lHWjEkC4WVX6Q==
+Date: Tue, 1 Sep 2026 11:46:18 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Chris Lew <christopher.lew@oss.qualcomm.com>, Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+Subject: Re: [PATCH v2] net: qrtr: Send HELLO message on endpoint register
+Message-ID: <cywl4rb677vgm3is4pqvb7tgj6r67jnroxpjzruntiyis33j3n@ni5o4tjkg22e>
+References: <20260807-qrtr-hello-on-ep-register-v2-1-a7f265a42f7e@oss.qualcomm.com>
+ <6smj6xbr4gumprpplrrw46lhe6wj63wbmcfe3nadcyp6om5cbb@tk6xtwtfz55r>
+ <fc1c54e2-719a-4fda-a1f6-df1754046235@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA4NiBTYWx0ZWRfX07ekvOFvu0A9
- PVXgoHGrt5QZH8VXsgt2Ns5SNiV45oNtbbvbLTzIwSTBqZAEiAO9kmS7jUNUr+rZlLrxiwyvTYJ
- G7YHX8DKHwrMs/w5Ol9Ey1gG8a3TIWFSqNX87SrLDHrzuby6iwpewL+uTFh9byUiQbf299OG6Ta
- eT/UnipjtP8+5Lh6qx+zR7LuXPUUR9k8aHLu7lsBiQ8GHnitTYyy7MZ6pyMEPXe+Id3GfBhC5AV
- gD7qb4sHtkqn80z+A3ZiG257Bot0Jt92a92roK0Z1PV0xPhD6nq0AD5nf0vlNN2J216ol3x4vsU
- S6472HT1bGblJm95Nx3tTj6D1QhpKO3v4g3wNYO1A771Bc6r2BQPYaKdLuASpGUv839zSb/rLk+
- yJKRPPC+p159+WlupJA9KhZKvGGrMU/TIhzzxyPnrkuEosvgm4BNmDaPnwDKGxV9FrYi2aGZPhG
- ehBkvwTlouvTEVx5Ieg==
-X-Authority-Analysis: v=2.4 cv=HYQkiCE8 c=1 sm=1 tr=0 ts=6a969e40 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=z7qG03HmhJMYOIuxF80A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: aX8XOteanw9NAVXe1ClDkZStSdv13aU4
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA4NiBTYWx0ZWRfX3696O8RsQX+H
- aLXLxnLWbxyFw6CsnRoKnaFC8aBvHNgp4FGrzfEfPv1lNv9iPb4Yw4Q74tD+Ui7BeNeQlJbdFIC
- B9L1LzaE2AmAP7J9w9BwFfToV4MltlM=
-X-Proofpoint-GUID: aX8XOteanw9NAVXe1ClDkZStSdv13aU4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_02,2026-08-31_01,2025-10-01_01
+In-Reply-To: <fc1c54e2-719a-4fda-a1f6-df1754046235@oss.qualcomm.com>
 
-From: Viswajith Murali <viswajithm@marvell.com>
+On Thu, Aug 20, 2026 at 12:05:54PM +0530, Pranav Mahesh Phansalkar wrote:
+> 
+> On 8/18/2026 3:24 PM, Manivannan Sadhasivam wrote:
+> > On Fri, Aug 07, 2026 at 07:23:04PM +0530, Pranav Mahesh Phansalkar wrote:
+> > > From: Chris Lew <christopher.lew@oss.qualcomm.com>
+> > > 
+> > > HELLO is currently handled entirely by the name server (NS): it is
+> > > sent once as a broadcast when the NS initializes, and again as a
+> > > reply whenever the NS receives an inbound HELLO from a remote.
+> > > 
+> > > In a slave model, neither endpoint initiates a HELLO on its own;
+> > What is a 'slave model'? Explain please.
+> 
+> Some chipsets attached over MHI operate as slaves: they wait for the
+> host to send HELLO first and never initiate. Since the host cannot tell
+> which remotes behave this way, if the host also only replies, both
+> sides wait on each other indefinitely and no HELLO is ever exchanged.
+> 
+> > 
+> > > each side only replies to one it receives. Since both sides are waiting
+> > > on the other to speak first, no HELLO is ever sent, stalling further
+> > > communication.
+> > > 
+> > What about the 'say_hello()' called during qrtr_ns_init()?
+> 
+> That call fires once during qrtr module init, before any transport (mhi/smd/tun)
+> can register an endpoint, so qrtr_all_nodes is empty and it reaches no remote peer.
+> We have reviewed it and agree it can be removed as dead code in this series.
+> 
+> > 
+> > > To fix this:
+> > > - Transfer HELLO handshake ownership to the core layer.
+> > > - Schedule a work item on endpoint registration to send a HELLO once
+> > >    the name server is bound, retrying on failure.
+> > > - Enforce HELLO-first ordering by dropping non-HELLO packets until
+> > >    the HELLO is confirmed sent, using bool hello_sent guarded by
+> > >    ep_lock to make the gate check atomic with xmit().
+> > > - Skip nodes with nid == QRTR_EP_NID_AUTO in bcast_enqueue().
+> > > - Remove say_hello() from the name server's ctrl_cmd_hello() handler;
+> > >    the core layer is now the sole sender of the outbound HELLO.
+> > > 
+> >  From the internal QMUX documentation, I can see that a node acting as a slave
+> > should only send HELLO packet only as a response to a HELLO packet, which
+> > contradicts with that this patch is doing.
+> > 
+> > Since the driver cannot differentiate between master/slave mode, it currently
+> > broadcasts HELLO during initialization and sends HELLO as a response to the
+> > HELLO packet received.
+> 
+> Agreed — that is exactly why we are moving to sending HELLO at every
+> endpoint registration instead of relying on the one-time NS-init
+> broadcast or reply-on-receipt, neither of which reliably reaches a
+> slave-mode remote like the MHI WLAN case.
+> 
 
-Some firmware versions leave MCSX_MIL_GLOBAL bit 5 set on boot.
-If the bit is already set when the driver attempts X2P calibration,
-the hardware sees no rising edge and calibration never triggers.
-Clear the bit and wait briefly before starting calibration to ensure
-a clean rising edge.
+Ok. Then I hope you'll send next version removing the say_hello() instance
+mentioned above.
 
-Fixes: ca7f49ff8846 ("octeontx2-af: cn10k: Introduce driver for macsec block.")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Viswajith Murali <viswajithm@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/mcs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+- Mani
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-index a07e0b3d8d00..211c10aa5880 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-@@ -1417,6 +1417,16 @@ static int mcs_x2p_calibration(struct mcs *mcs)
- 	int i, err = 0;
- 	u64 val;
- 
-+	/* Clear any stale calibration state left by firmware/bootloader.
-+	 * Some firmware versions may leave MCSX_MIL_GLOBAL bit 5 set,
-+	 * preventing the hardware from detecting the rising edge needed to
-+	 * trigger X2P calibration.
-+	 */
-+	val = mcs_reg_read(mcs, MCSX_MIL_GLOBAL);
-+	val &= ~BIT_ULL(5);
-+	mcs_reg_write(mcs, MCSX_MIL_GLOBAL, val);
-+	usleep_range(100, 200);
-+
- 	/* set X2P calibration */
- 	val = mcs_reg_read(mcs, MCSX_MIL_GLOBAL);
- 	val |= BIT_ULL(5);
 -- 
-2.48.1
-
+மணிவண்ணன் சதாசிவம்
