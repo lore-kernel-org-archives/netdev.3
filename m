@@ -1,151 +1,259 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7F03C4174
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788266307; cv=none; b=uxV8JiA4bRH7WOxRP0wq7IaXIHRwDOVFawpntXni+Y9uWEPDXBv4Z3Ofm7QZ3JGWH4osryVeSSd4sa1LMlgDP0DnsFCvnUdphASimMJISbLVWZoTGioXwjzi3NFJGeU6YT6//viqBC6L7dCjLNEiEkFxhEFceYdSAjbTqY+obkc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788266307; c=relaxed/simple;
-	bh=vruKC89nk4zaiMLwDl5SIvX2XA+mwQsDJ/NYJL65OA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwrJGZ9l51dXz/CUlbDfyKO+qhiJAoS7cJ98Vajc9isfw6m2P90DtAnSi9N3o5KvbVImypWwaNiWZvOunw8yLIMTzxSrPyaWjnX8Q95Kg/Z6W4uogBzXpGHdtJTcLO5JSHwmzmKYgVGm+//gVX1J3H6EsltRXMAa44bjm/W6r0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CB9W0V8X; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3E92F3C18
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788266495; cv=fail; b=JSqr4Ygav7y9yuTaHzuWkJJO0g21yk773BEWN8suriSzv69+zRGjGtCF1IdHXRJollhNbgqJ8y0/aE5oKkBpqzIib85Crxeb0e/HGPFSCG/VUQrS28RdZynhccmiOHizGMCMW+H7nWhGm1Q22HUNnoshg4THTLeJ8lvIyA8XHWs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788266495; c=relaxed/simple;
+	bh=4zYRdq6jGGm1rJcnFmhNYOAUTA30/pablK4AoPSc3Io=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LvwJyrmdiB2/3v1kIxdHGdLTQqKyFlRWvDHthwJSaSq4f8U+hzWFW/ye5UL35yuns5dxBHF2LHC2tauvlNh/IIjA+yc+iVYPJ0S1BiRz3+7OU12q9qNn/pgWNZgfCuvyBBawEGJs3oI6oqir59lEQObVxr7TQC5D4mo7vs6VjJM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FCrM+j6O; arc=fail smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CB9W0V8X"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-499b0908c66so3054435e9.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:38:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788266303; x=1788871103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cLf1s6Y9d7Zvfbu7ZXvz8xHKdpLKgc9er+6NC48ncbQ=;
-        b=CB9W0V8XPQNZh91DkGEmr2Kwe2SiTiapgsmSACd5fEi1sk1RJBzfxpKEMnp4LwitS6
-         KsCs3TK8Gbrzar4xfltug4vhmxip9xnxq2i2/dX/NlUNfMD1DfwnmNSN3sT5aT8iRnQ1
-         rySrt4L3fLC3yQabKDGQe5t6a72wwbGoajyi0oqpKRxof7SMnondmF3tNcBDA0IbGOS9
-         DOIAnVdViGo8UeY1hYLrvZJu5MMnEVquYf/iOMFBLULRuACWo0O3KN1gKJLzLnhAMjHr
-         8rJ8c3e0cP9mRXuS7rKLZue+FKdXEGApkk/rZIrB7bOH/7MpWfrlRNPIe8D75ehZQ4N9
-         OFUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788266303; x=1788871103;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cLf1s6Y9d7Zvfbu7ZXvz8xHKdpLKgc9er+6NC48ncbQ=;
-        b=aQkRPshe2wlDM+AXHmjiDTA7XEAxwQN1AL2Jnf4QzNzNGjc88WWgBZFt+507JJ1FWd
-         qsKYogkr2aos+7dSKaCKdg6+0AL3zN14dAhIDD4LIiI5ylbHT5GbVtOcAsKlXYEj761P
-         qgo2op9cq/wWDmQZuyzdWFIp5nuEaHpc5TNrk6LyvoV0PCOkg0WEM+C/4gd+zu4atNB0
-         LoUfJ7w+3SUJj27zV0GKQ7GwZwYZEF9Vm9ymngd7OuKMlL/n3pwb7GtnU5K4Me6UY0K8
-         ca/xPDEn+qVMQFIuVdO/n9b0ru5TwwU1Qt0FN72xuIEqd537OrRMoMQ5HDD9qQotUwR4
-         HsUA==
-X-Gm-Message-State: AFuF++ntwKMFtmC1n60gRzv44NrQH+8GmW00ZOM9Oq6BYxerfaZipWqi
-	GW7lTv2VK68pbzh6JBQQfReATZnwFYd8RNZ/JjLxBcEV62GW5emhNE+PQ5JP7NS9+AI=
-X-Gm-Gg: AR+sD11Y7I6nLXuDTBmjkMwFo6LC53kNtHI6R3cqzgguDCwwfHg6jx1cxfhGUAJVbRy
-	GGzriFd/rmkgFu78bDC6FoUTVyIY/vxwlN4NPW+yLVa22kYaK71wZajPUNvOuY0EUEy0+8QgUJo
-	iujuedgilse1CEc78x1bEIegc1235hd7Dh7Klpmn5xlTIb+bKs9gSnklJCq20mBD0pXiachTQ/Y
-	9Rh7H+D6T8RR3IU0JitfKiEi4dpXViNCUtXdPo6HR400VPcCOZ92stIbGF9Y7eWoqNOB+Wwj55b
-	TPir0YjQi/XKdgxCxNw7kbsqt6vqsukRxv4y9YK4tUEOtXnNmCq3T3+NphD7ggkkOA2mrmXy9mo
-	yy9+TO8BN5IZXgTkbOaicyiHVh7Zep0I+PzzsagH15oY0MpSrD5O11AGUnDOyLa/1ynmX3ZjnfN
-	ICZIiS7YtQUYyF0irb62e2AIX/B5S/g+rjwPvmcMFtdj6iQW0rqSK21O+7OX4QfZ3J/LWMmZhUC
-	eYcqT5IM+48E2KvBY1GU7Z9FeyeQDRPz+y1NiRY6F7BsmnkCpWJR5+pMbpcKGFTxBw7yYzJhqUx
-	xRVwpTDigfnl7NkfKheSNtCg
-X-Received: by 2002:a05:600c:3511:b0:49b:916a:e553 with SMTP id 5b1f17b1804b1-49b91bd790cmr275499345e9.0.1788266303178;
-        Tue, 01 Sep 2026 05:38:23 -0700 (PDT)
-Received: from pop-os.. (98.102.222.87.dynamic.jazztel.es. [87.222.102.98])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce1025asm63961915e9.6.2026.09.01.05.38.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 05:38:21 -0700 (PDT)
-From: Miguel Garcia <miguelgarciaroman8@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Miguel Garcia <miguelgarciaroman8@gmail.com>,
-	andrew@lunn.ch,
-	jacob.e.keller@intel.com,
-	syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Subject: [PATCH net v3] devlink: use direct firmware requests for flash updates
-Date: Tue,  1 Sep 2026 14:38:19 +0200
-Message-ID: <20260901123819.2035064-1-miguelgarciaroman8@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260830111700.1799255-1-miguelgarciaroman8@gmail.com>
-References: <20260830111700.1799255-1-miguelgarciaroman8@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FCrM+j6O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788266493; x=1819802493;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=4zYRdq6jGGm1rJcnFmhNYOAUTA30/pablK4AoPSc3Io=;
+  b=FCrM+j6OnK6SAiOOWqQ6a/kb+EhDFSmn9fPMBlsUmJ4+CT4GQOxwENTv
+   IoefHWJDAB6Pi2j+89SvxhczlboyC5VK5rs90R+16SX1IZ0mgUazBnspU
+   pkhTR/pNxXE8axdR7N9x+i4jnDvbyjGfHeNjX4kgsL7zQtfm1RWqPLYtN
+   tf94lx/oxUaQ9OyBQ22SYX0kveh6J8c6C9Z2WwHYEh6eQSk6YKFhWygdb
+   JL6ckQvRUE1Wu0gNMvKVlFkfbqe4nYPPk9SCs/xD5JRhEho6tnV5a4BBg
+   ohR38B37gMupv7pcDka+eHglNyGNt9aDkTXGuiXP8bTFm4OusDGv8JFcG
+   A==;
+X-CSE-ConnectionGUID: NubDG3/yRumBZatd41VrLw==
+X-CSE-MsgGUID: dTYjEURfTwy99M3k9NbPMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="99853669"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
+   d="scan'208";a="99853669"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 05:41:24 -0700
+X-CSE-ConnectionGUID: ebTu0NBER4qwmBALPmhydw==
+X-CSE-MsgGUID: R62VWQirSzeuYbYMMvNIkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; 
+   d="scan'208";a="293921064"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 05:41:23 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 1 Sep 2026 05:41:23 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 1 Sep 2026 05:41:23 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.12) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 1 Sep 2026 05:41:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sEpUeHJI9azFJ6TBFRV2SGbXI/BcWe5s4nBOCqvjIHRY3ZGYapjQW7CLl5bkhLMXC0AnhA0TgnC937PhKLyCHc5kRw1I8GktQXGeBf75pXgY4eL8oUqcPphI5cp2ze0C4FkeuUEFUoBG1vlE4W/NjrSG56O09hqkpfsqsedL3TzB0TDjyL35GO0pSPFsGNLdevkILsh5dZo+xOR2HEzp3eNgzK69fTIp87b7Ex01DhN/pVLKxzl/jHgzWYe9rBq3nSZJjISujRyiVgNh4KOCtgkrrk/IEYbTCGWhormEM9GCvuhPJ0f/vXkS2OFPNa2DthS8twQVgPExZh7QGTE2+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w4G4cgi+8vs8xfoR5aQxsAFdVHXfm1TzR/WG8az1H0U=;
+ b=twYOeQmwSJyahf5j8Jj+k3oAna2LxlUEa204Lbf+Sp+WXboOh5braeqRVpVgfFmDRE/7GeAPNDyb7AtnLBD1M+bSl/XP+O/OTv2aeRryKt6l2Zd8zy7dUCAgqu2u45QYPiHALxCidhgt1I4INW1COxYSOIECX8x++eOVlHYiHcIDHhJjkssX64Fiu8Ckrn1HVc6YMr3REjf+hXeFJcZwlRReOvO71dajHWgk17jM8zcPufD5UQQDA4gMPP2KKPFdE1uU0A+AfQG/TUPmAPZYgch8gE9ZgugWziBEHFQtOrIbLtpyF2Ab+QpnBAoc4zx+uWZV7pZ791M3Vcbn8KyyYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by BL1PR11MB6003.namprd11.prod.outlook.com (2603:10b6:208:387::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
+ 2026 12:41:17 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
+ 12:41:17 +0000
+Message-ID: <db7fbcb4-743b-4ae6-9893-0e09caca15a9@intel.com>
+Date: Tue, 1 Sep 2026 14:43:36 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v4 1/3] ice: Convert ctrl_pf pointer in struct
+ ice_adapter to RCU
+To: Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>
+References: <20260831161100.216773-1-sergey.temerkhanov@intel.com>
+ <20260831161100.216773-2-sergey.temerkhanov@intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260831161100.216773-2-sergey.temerkhanov@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VIUP296CA0126.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:350::7) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|BL1PR11MB6003:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec500ca6-2df2-4ec8-b422-08df0826512d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|11063799006|56012099006|4143699003|10067099003|5023799004|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 3teOKJ8vSMNbcR+xT9cPLBGwRWLTuk6CjgomvV0nNb0gkyTgMlYW1fcrUq7toXufNHWAfiT0+gUYQ2WWFiQUzvIB+F+LUVZsISjtEA7676q4kQpjKHqelC8lU1QNZd2PrGfj60ethdg4BvSRNugi/VUuYTG3I/oMsVdXHLJ4RHRhaDLIYA/KV5FkK/7IaaiPjmUsrZNkiaq/DWFqDMmZCUOi08Wfjt7TVTGLOrNBGcOHFhKdN3xnipYS/+IIBuS+CGK0qK0ykYLWOxZCpmLod8C5Gr/xrPptZt3+xyWywybLLLnWMrLSCLXMOqchmGd9DaQ5Q3xBjoLNcLqqQc977hyVFzHgh2kFjkWmO6FLb5NZ0X8XZ6WH1v8OVwSL1qraxLWDO3X5TIlMnG+7xFBHvC3egrwJv+9tK42s0mCuDRtIB0CS1LdTOLvBqRp7zA/824GnPE07RCwkG+2XR0RXvGrwoo8owB/GVCF/B34vXH+upbefWjL6MoFZG3Z+5skNuc+dyOec49UomAgwlwhEMf+QJhyb+QYLrjoqa39xf3itaRaryMlgPVdIZfg4A31qrbl0ZOna6xkPxVTowECit1wI9yUsBSlzm2F7V6tlKtfjFSxvAICFqSgxXtF/KVXdDA1orcPD9AiN+cu8ebOueQQnxMO859yfEwMCgFL4J6k=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(11063799006)(56012099006)(4143699003)(10067099003)(5023799004)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZjUxTGZ4YlV1ZzdEQS9Db1pWbVgvQUhtKzJpL0RWTlJPS29VNGo1dVA3TGN0?=
+ =?utf-8?B?UHpPa2pSdkQrT20yRGJTMTVNcmV5aG5zeUpSY3gzM2lsci9BekJRTEF2cVZB?=
+ =?utf-8?B?NjdkVXUwdWlDWS9pZjN1OW5wSTZIR3Fqai9yeTRFSndTTGNQSVZUYmRIMnNK?=
+ =?utf-8?B?RGxEdXRoOVNoYjhLeGI3WjA3amhnYU4zejltTFdNc2ZVQVdUTVEzT2diYVF6?=
+ =?utf-8?B?Y0VuMnI5YlltMGpZY1pVU1ZrSlIvU3BxbURlOUFheW1Bejk3Nmwxa3Z1amNo?=
+ =?utf-8?B?MVdLS2VGeGtQUnZGTkFPdldVTitlM3NVand6V0lHZnhUdklIR2JiN2I0N3dD?=
+ =?utf-8?B?cDJ2ZVl6dG94aDlFYStTR0w1YjU4cktaMFMxWkpmazNEcVR0eGF2bitHU2pB?=
+ =?utf-8?B?Nmd0S043UWZrZ3IwbFozWkhPcTE0bDFDV1kvNnFuZnhzOXJxZG96clYrQVR6?=
+ =?utf-8?B?djBVeXYzTUdKWFMrNFJiMkVRTU9xaUFhTkRGU0hGbE1CT0U1Z1docXk2bEZy?=
+ =?utf-8?B?dFFKR2dyQnI2SXI3djB6T1BJOUJtZUFsQWhMTnR4bmZ6UjF0d3BWOXppTUpj?=
+ =?utf-8?B?TldodldNd3BZeFZPbDh2c0hBYmxGMG0wYlFVdkJWMWdlUGI4QzEvUVpHTTNM?=
+ =?utf-8?B?OXBiNEVUQXBzVmdtQTBqSElrMUhpNEVQQUNKSGRkVG5udGxxcStudXVWZlMy?=
+ =?utf-8?B?Ulk1VVNEQzJmZkFGaWp4M2daNUV6cW9tN05WR3lETG5sVmxtSXM1WnQzQ0Mv?=
+ =?utf-8?B?bisrRzQ1UzE4RHkvNGRya0M0N21mS0RFNGFKK1hvL0VFNjFDR0dEZHJ6dEI1?=
+ =?utf-8?B?a0Zqd3pkaVlhSlZ2K0swUjdqbklsb0ZZWjVNUGdqZDRSUFJFUU1NYUVJRmls?=
+ =?utf-8?B?bTBDNGlYZnhFbEdPSmp3YU9DOGl3c0xyNGNLbFV1b1NIV2xHbVV6YjA1VS9q?=
+ =?utf-8?B?SmxFelkyL3dtK3RtTFpHaUt6ekpTVExYejJ0N2RCZ0pMNXgxWmNXV2g1VDlJ?=
+ =?utf-8?B?YnBHMHFRVEw0dlJ5Ni94c0JncjBtZ2JObzVUdURjbUFySmVlcXprTVZmbFQx?=
+ =?utf-8?B?VDM2SCs5ajNTYkpTT3lDeUxZaE9TcDBlckVTbXhFYXJRbGExNVJ6NUlRTWZi?=
+ =?utf-8?B?a3RQeGZxbW1zYXNobE4zdTdNblA4d21DdWV4c3FWL0JIZ3VUZXo4NkU2Z1dB?=
+ =?utf-8?B?MVBQeGl1NGdnUWQzaUNoeGEwK1VFTGtZSHBOdUJmdWhlMlN3ajhhbU9nbnpz?=
+ =?utf-8?B?M09UQ1hoOU1kRjZMdVE5aWVXeG5wMlI0R2l0Zkc3L1VFVWg3S0dFR2N2VFJJ?=
+ =?utf-8?B?L2cvaGsrYkQvRSt5a2NzNFlKMVNlajM1MTZNMDJQNXhCb2NjaGx2YzdkRVov?=
+ =?utf-8?B?R2REeklqUHJ0eTJBcjFadnhybnVlY1VqOFBLR2hLcWhBWmVBY3Fuc2VPbjA0?=
+ =?utf-8?B?VDFBRC9NaHR3UE1zMk5HYUNmSm9sd1ZITDFxbXNCQm5pNjlnRWtVR0hENDJz?=
+ =?utf-8?B?bnBJbjZrTVBpSjBTQndpN2NSRHdYR3BYOTl1NnBjSzQ0ZjRqWWxEQlNqekpC?=
+ =?utf-8?B?OUU2dktEM3pQTEN0S0s1b08raXJ6cHR3cUVqRDhKOGZRQnA4SW8zWmlOUDVX?=
+ =?utf-8?B?WUtZMXlJcTlra0I3d2pDNlBoZUxmSzVPNlgxS3hHQUVOMzdLN0FUWXpiVmdB?=
+ =?utf-8?B?Z2kyVWFvZnBDRDZkM1d3Ym5vanBFdTM4R0Jua2hoSlVxRndNeXdEaXpFK09q?=
+ =?utf-8?B?aytPQW5DNSsvVG5JNDZST0c1SjQ3RzhTQUdNa3g1STB4SjQwekN4SXZUc0M5?=
+ =?utf-8?B?a3g0bTZmdFNUUktPZXh6bWZWQ1MvWUhSMGdERUp5ZFlrWEVuSHI0ck82KzNU?=
+ =?utf-8?B?UW5VRU82RzZiS1FyNjdZMFpHbVlReDZ4R0tFNDB1bFRqaG8weWpUQUYyV3lo?=
+ =?utf-8?B?Z0dLd0FpVUhiemlTT1Y4NWJSWlFWazdDdnVFL1Mrb1oyblBuNFZqZGdaSERz?=
+ =?utf-8?B?bVorRlpIUW8yL0tGY3VPcGltekJTTFlzRnpNWU96VFBpU0NEYUxaNHhwQ1dV?=
+ =?utf-8?B?cmh1N052eWlCQUgxWmR6Vys0ZE9SSTZ4cy9OUU8yNUpyN3hPNmVJK0NJb201?=
+ =?utf-8?B?RytRM3draktwZTVUMForY0xWRmptSU9WU1UzenRIRGNXWVZMS0FrUTNieUJ3?=
+ =?utf-8?B?N2tDaHRkSnY3S2pObHJJZ3VxeDBLK1QzcXVKYXhSUGllQnVXbUpsR21RQ1A3?=
+ =?utf-8?B?QzFxYUs0ak02YkpZYzNET01NZ1VRYkU2RXFLWkM0TGU3Qyt5RzFFWldqOFFy?=
+ =?utf-8?B?WExNemZWN0V2RVZBM256WklYeXhPNTc4TUkxcWIxSjNsWEFGZjBuUllsV25s?=
+ =?utf-8?Q?IFqdkcE7wIkrtiIs=3D?=
+X-Exchange-RoutingPolicyChecked: rYBZl2JWsBURYkiAH2GOyqnAJG+BeFQ8u9WbolGnVewCNM4L+jnBD89RJdVsaVQR+5zg8dVwK6xub2q0vxgZS1f9icKphdZixQHdnsoAlydaiGmqSRKrGqcDaf0IfnVPkoX35+M/FFlsQcmOTJzDK4zhumTiMInB4XdNri+77Cb1Krn0r7qlfLlTgWwkNEtKkGAWR/f2Zpt5l1/gerJSqrbvSV4xhzw1mNusOvk+HF2k9XGVunTZJgRq5WV89v8mrQi0RT7ndAftIPEZ6BRgW3/F2zDa/W9P5EEtMrl3Ytm0mWkzpDs9iAXcuq/4cnMeOv5izIxlSIcmNbNCGQm9Jg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec500ca6-2df2-4ec8-b422-08df0826512d
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 12:41:17.5764
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vP54Vlw5b0DXXG8wzkJgAQIQUvXht5U9tLV7sI/THnnH2r5ueyYwd4eFJaC0QOxps2AX+AQ1CfiqYYqgwTQvEy1X7rVqvyN3Z7X1jXVhGwk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6003
+X-OriginatorOrg: intel.com
 
-request_firmware() may enter the sysfs fallback and call
-try_to_freeze(). Devlink invokes it while holding the instance lock,
-causing syzbot to report:
+On 8/31/26 18:10, Sergey Temerkhanov wrote:
+> Use RCU to ensure the consistent state of the control PF global
+> pointer contained in struct ice_adapter. Enforce RCU usage on
+> the callers.
+> 
+> Fix a potential invalid pointer return due a TOCTOU issue
 
-  WARNING: syz-executor/... still has locks held!
+this is rather convincing/self explanatory
+but the rule is "Fixes tags are for actual bug fixes, not theoretical
+ones". (same comment for other patches).
 
-Firmware flash requests already name a file provided by userspace.
-Use request_firmware_direct() in both flash update paths so a missing
-file fails immediately instead of entering the sysfs fallback. This
-keeps the normal devlink locking intact.
+Would be best if you could describe how to trigger the bug.
+Or just drop the tag (since you target next- anyway).
 
-On systems with CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y, devlink flash
-can no longer obtain a missing image through that fallback. Callers still
-receive the existing error result, and netlink users retain the extack
-message.
+> 
+> Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
+> Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+> Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+> Tested-by: Frederick Lawler <fred@cloudflare.com>
 
-Fixes: b44cfd4f5b91 ("devlink: move request_firmware out of driver")
-Reported-by: syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=372a7d84708b07f64d9b
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Miguel Garcia <miguelgarciaroman8@gmail.com>
----
-Changes in v3:
-- Use request_firmware_direct() instead of dropping the devlink instance
-  lock, as suggested by Jakub Kicinski.
-- Document the resulting sysfs fallback behavior.
-- Rebase onto net/main at bc93419130bb.
+[...]
 
-Changes in v2:
-- Cc Jacob Keller, author of b44cfd4f5b91, as requested by Andrew Lunn.
-- Keep only b44cfd4f5b91 as the Fixes tag; ed539ba614a0 provides the
-  registration check but did not introduce the locking bug.
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> @@ -1,6 +1,7 @@
+>   // SPDX-License-Identifier: GPL-2.0
+>   /* Copyright (C) 2021, Intel Corporation. */
+>   
+> +#include <linux/cleanup.h>
+>   #include <linux/delay.h>
+>   #include <linux/iopoll.h>
+>   #include "ice_common.h"
+> @@ -335,6 +336,8 @@ void ice_ptp_src_cmd(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
+>   	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
+>   	u32 cmd_val = ice_ptp_tmr_cmd_to_src_reg(hw, cmd);
+>   
+> +	guard(rcu)();
+> +
+>   	if (!ice_is_primary(hw))
+>   		hw = ice_get_primary_hw(pf);
+>   
+> @@ -353,6 +356,8 @@ static void ice_ptp_exec_tmr_cmd(struct ice_hw *hw)
+>   {
+>   	struct ice_pf *pf = container_of(hw, struct ice_pf, hw);
+>   
+> +	guard(rcu)();
+> +
+>   	if (!ice_is_primary(hw))
+>   		hw = ice_get_primary_hw(pf);
+>   
+> @@ -2004,6 +2009,8 @@ static int ice_read_phy_and_phc_time_eth56g(struct ice_hw *hw, u8 port,
+>   		zo = rd32(hw, GLTSYN_SHTIME_0(tmr_idx));
+>   		lo = rd32(hw, GLTSYN_SHTIME_L(tmr_idx));
+>   	} else {
+> +		guard(rcu)();
+> +
+>   		zo = rd32(ice_get_primary_hw(pf), GLTSYN_SHTIME_0(tmr_idx));
+>   		lo = rd32(ice_get_primary_hw(pf), GLTSYN_SHTIME_L(tmr_idx));
+>   	}
+> @@ -2173,6 +2180,8 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+>   		lo = rd32(hw, GLTSYN_INCVAL_L(tmr_idx));
+>   		hi = rd32(hw, GLTSYN_INCVAL_H(tmr_idx));
+>   	} else {
+> +		guard(rcu)();
+> +
+>   		lo = rd32(ice_get_primary_hw(pf), GLTSYN_INCVAL_L(tmr_idx));
+>   		hi = rd32(ice_get_primary_hw(pf), GLTSYN_INCVAL_H(tmr_idx));
+>   	}
 
-v2: https://lore.kernel.org/r/20260830111700.1799255-1-miguelgarciaroman8@gmail.com
-v1: https://lore.kernel.org/r/20260829142525.3900565-1-miguelgarciaroman8@gmail.com
+guard() looks well suited for your use cases
 
- net/devlink/dev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> @@ -215,15 +221,18 @@ int ice_txclk_set_clk(struct ice_pf *pf, enum ice_e825c_ref_clk clk)
+>   void ice_txclk_update_and_notify(struct ice_pf *pf)
+>   {
+>   	struct ice_ptp_port *ptp_port = &pf->ptp.port;
+> -	struct ice_pf *ctrl_pf = ice_get_ctrl_pf(pf);
+>   	struct dpll_pin *old_pin = NULL;
+>   	struct dpll_pin *new_pin = NULL;
+> +	struct ice_pf *ctrl_pf;
 
-diff --git a/net/devlink/dev.c b/net/devlink/dev.c
-index 55959b0ff..b85bb02a9 100644
---- a/net/devlink/dev.c
-+++ b/net/devlink/dev.c
-@@ -1169,7 +1169,7 @@ int devlink_nl_flash_update_doit(struct sk_buff *skb, struct genl_info *info)
- 
- 	nla_file_name = info->attrs[DEVLINK_ATTR_FLASH_UPDATE_FILE_NAME];
- 	file_name = nla_data(nla_file_name);
--	ret = request_firmware(&params.fw, file_name, devlink->dev);
-+	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
- 	if (ret) {
- 		NL_SET_ERR_MSG_ATTR(info->extack, nla_file_name,
- 				    "failed to locate the requested firmware file");
-@@ -1245,7 +1245,7 @@ int devlink_compat_flash_update(struct devlink *devlink, const char *file_name)
- 		goto out_unlock;
- 	}
- 
--	ret = request_firmware(&params.fw, file_name, devlink->dev);
-+	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
- 	if (ret)
- 		goto out_unlock;
- 
--- 
-2.43.0
+RCT rule counts whole line length, including assignement.
+
+>   	struct ice_hw *hw = &pf->hw;
+>   	enum ice_e825c_ref_clk clk;
+>   	bool notify_dpll = false;
+>   	int err;
+>   	u8 phy;
+>   
+> +	guard(rwsem_read)(&pf->adapter->ctrl_pf_lock);
+> +	ctrl_pf = ice_get_ctrl_pf(pf);
+> +
+>   	phy = ptp_port->port_num / hw->ptp.ports_per_phy;
+>   
+>   	/* Hold txclk_notify_rwsem for read across the entire critical
+
