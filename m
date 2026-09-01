@@ -1,63 +1,63 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC378480DE0
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 16:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667CE371887
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 16:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788280410; cv=none; b=IxKyIIJDLRDh4QiiZD4rcr7Vk+TsRDLOFF9MXu1rzNbM63mWh8hGNWvYFm6dlWe9/QIRev6OS46jhgPVM1GPwuaR4bxB00FugVLFnB8rpq3tqza1hrxMCr2iAa8ZYNwkT2+/9Kdj3wkc0QqCaACD80CqiyFhT6J45xqUnVA/C30=
+	t=1788280417; cv=none; b=ouHzHsDy3IvTj20pLZcvMh8q10ZMo1FLcZaIU6EBPNw2FIlyvcZFA3Do618bNV/0BKQxopkuGq/JLGo1uVObn+O2Sey6BsPCH2jRdeBT0/UdmiwIcgi570tRY/i8stBxlL/+Z3yhs1nGBob8Bme5EIX3lyT1NUuMQ5MFrEbHqxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788280410; c=relaxed/simple;
-	bh=/NtC7onuMLJTqq24KflS9c9O/xJJwH3ox2ObOEN2/lM=;
+	s=arc-20240116; t=1788280417; c=relaxed/simple;
+	bh=ckWizvcSwZhlI6rKng/yD9FrZW5unymXwuDsJRPA9Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYWtC0/wqwMfa7xD94N3gQPtP90bMJ56M1eqIf8Oqsa3spD0YxITxc3eix6r/BZktFzFJ59JcHQGESYZ0yNZp+wlk/aBsxaNvfB8Z4aTe/9HH9p4gpAcGekyIbAEPrLWImUm2EnVZVVzc/6EHi1juma+AK5fb9dUoA2iVMTx20c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0C+Bk4K; arc=none smtp.client-ip=209.85.208.174
+	 MIME-Version; b=VuI1MIZ4RbrOT/240IFIxbHCxcVGvpb4+WzjrE2fZbxjaD+YiQBOhMg8Am4tt+9lLlRaIi123sMf88GWOZAurR5PJwdv05Zdid2A9o/wwOXq31b8jdRhZsxKN++SdlQo7wkT4+JbhwnStbGjjdsc99Ksq7beLr6IYqUyiy3RhHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SzDO6CGt; arc=none smtp.client-ip=209.85.208.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0C+Bk4K"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3a2e9851ed7so206011fa.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 09:33:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SzDO6CGt"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3a20f56876eso72901fa.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 09:33:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788280406; x=1788885206; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788280413; x=1788885213; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ama4vcz/XSYo4+pHJyqT2hFXL9IvS3KsjPeWoufTaYE=;
-        b=I0C+Bk4Ky63fOsKBnIBTPKArrA7tMJJ+UJ4rgUGF6Hik5RK0qJ5J51o8R7f6QMHZs9
-         By5CnEQDI43mkclFWkC0HNK/ixtJQ2SDojtrDcgAJCKUMAg8nKcTThGsgXRQ4U0RHa6G
-         BG6TR4oUwO7/LXJ9K0cKt/zfxh/swiIxiIjy8uv/KgiZJTZhszqhfZcR6W4H22FffGt2
-         LvxsHBtIbC7i3+30TSA71UW6W4j+v7W7Usy8SHbBDfPr+ZJYGrNADQy2Kq3SRAx65KZF
-         8opCwaX0tAfAXNLoltS1zACS3CnBd3CnVbqxJgEETmDcouCX6rzoYSFsjnG3/r3bRoxW
-         66aQ==
+        bh=T+2f2XHv+af68YmdwG7YdmU8mGG4BCpNERxEZlAskTc=;
+        b=SzDO6CGtm6sO9n38ZJUTexwllFyYxnWnAri9Urk/8URoOoaZtNBxp6r36zeOXJfyHz
+         HDHJ9N459Gd66A8B35LWH6cA1sYrar92wYUjYdBnrbc9xdTFDB3q6uUNSwKwONKOYmlf
+         HzwW5EyiyME3NAPc6cmgkFC01d+H+UJK/WNE7X3qB+n+b5ge897gQ/QtuGcSyDNkh17C
+         k/DVr5GfoHkejAmcXEOhYJqo/6r3REJ2njS0qzYXBmg4faHR99iC2wHk6+HlgMr2HbPN
+         aOJnlAhyNrSHVCCM/vcftkddKA+6eVp0KDVRUvtjZPz0QbcM+f0g3f+k8tsPlQb9iT1f
+         cdOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788280406; x=1788885206;
+        d=1e100.net; s=20251104; t=1788280413; x=1788885213;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ama4vcz/XSYo4+pHJyqT2hFXL9IvS3KsjPeWoufTaYE=;
-        b=mfdwwqijcyIUfSPnJX0cXk43B192/buClqwy42bjJonP0GLETsx2F3ZvvOLLRww0kl
-         UQ4Cfft40iasSKhOXROog1aDTboGSGCcxfrYtF+rJJ5Wttvq4xcmZ1nzhlQ4xQjZArXo
-         F8gSlPWSSAeawMfmrjC4jVxni00KnEbseKwa5hgYrNVIt429aotMo5pQ/iq3QRE+fpOq
-         kzHgtp/BN79U2Y5td20iVyedzkqCNvh/abN7bKVYAT9iZsK0mu2a0KXwplPwUTS0CZWH
-         4LtbNfTSanpDW2kIAphcrQWUA4hqt/vZk2GfICnoEqrbxyScxnqCgy2kdbRtAeB7mRpU
-         IPZg==
-X-Forwarded-Encrypted: i=1; AKwUvByuJYW32ruDEd/95d4IVGDRlGnf42UOLzFiLzOQExI9HHLgHx3mjR+CyeNxaSvt601Ez15EEBg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mknQ7ltqL0rTJ4FFyCUYpJYBWatssjiA77OKhuuXv1Gn1dtOxK
-	aBIKqzOLLc5rO14S3bIEUTw1hZQ2KATL3oKIkGuPXXwIfWfoI6Aphqc=
-X-Gm-Gg: AYBFou3+HqHQQxXcxHKcwPnr0gEiJxvQgjDejs9qw1ti3z3m+6qrOMwogPS2gET8C1y
-	GiYgIeG0LAexwG1dqMeSkbuNFHdqMZq+E9apEbV1vAu+txClAANwS2g98rkHdtzr9a9CQR8cyJt
-	8t0OJ5I+C5lNtwBaxzRsTcJ3gQBYo2dmPU/BOz9QsWy0Tg4EhRbVEjhpTRgkFDpr3yFSMpXDKdd
-	iW52U/nU0taLcfAtdyMFIb1l30in665ZiYCFfSvT5mKGP7V9fzmABj9toLUJzfo5ppwD8A/C/T0
-	fEWAYaQZcAUe9RXu3cq3oj4FRa/3vR4ab0oSYqqR5iBD92CbDjhHjnl1Q8KatA5mvXyilvHOw5D
-	0WUAOf1NjIa8vIFJUnpqiz/1vkkFVwDhBYBjO/XqgUWe8M0pQ6ubvK10wQWn0CHQsDYFmpw6Sab
-	omb6DM4A7ojQEmROE2VsImKlOxaz8Na/zZOPa48VqVuCtQxp5DA9+gty2ijSQoPXc=
-X-Received: by 2002:a05:651c:31d7:b0:39b:128e:ae68 with SMTP id 38308e7fff4ca-3a30175c52amr67573001fa.0.1788280405342;
-        Tue, 01 Sep 2026 09:33:25 -0700 (PDT)
+        bh=T+2f2XHv+af68YmdwG7YdmU8mGG4BCpNERxEZlAskTc=;
+        b=Zdihinhph/LdEisN/OZ46NrXqszkEMbJxlk7W9WhGIONucT7hGv1QJHK7cBvWp0hLk
+         PbmBtzesfpdLWd/zwBHHN27v2t8qnLJezAi401dziy9c2mwphQWAaATbxfCfMwmYpand
+         h85r0ZRHArXTGdQ0xazX9cr6rPiOTmQ4Ib0jYHf+LFfwgv9PpJ7mPT0mgdkZhZcdSaeE
+         Y4plm1/ZdGgxAsGVDE12LHW5a/aGxYMKQVNiFfkHHCcUYDFtTV+D0JoxZ/18js1mLMUp
+         GhqwkH25N6KxwZW7bMibC+LqupVE5p2lpkJ6sWCVm/Ihkjowo9H8sE2GH9m5sCUblrR6
+         6BHw==
+X-Forwarded-Encrypted: i=1; AKwUvByhQ/tFKqk9Bp3O9YTAl94HLhwHqYGiQjy/aNQ1EcBG/lYIT/lnKpZkW/YNRpSc6nXCuZ0Xhjc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKtPzmj2V0NDMMGh2WlEx9T7bQt4wNNSggCAh4WkRu53CCjBIq
+	f0gArYVimdY8xb0H3x5GLzjql8R7kG04dTswdPudrcF8m41n6aCv0ls=
+X-Gm-Gg: AYBFou0dbuIqOHwb+o5DK9YvxLs+OY/LS31AeHAhwyyTPyMK1mibystHrDrjlWGDrrF
+	EsTZntVGH3HbDjw8AGDhzk/ZXkcZeGy6LVruk1L78YksGINoCMU2k1auTYSpsN3HCUooSXDn/xC
+	/DbDdbA73nzDnxOZ6eHPGfKv6I5g81tQh7wC6l7C8pgifiphKlCTOq50XIdfTvxOy6ML3HNe/fe
+	JJMfQUfMqniGxGJ1rrEQ6+j/CSLZx43lUQ3xWT5tGPSsqCo4vmJCdHsJsrJi+L4QfBf7reVxOlt
+	jaVZzfeKeZuOSliqYLoWSrrMSylj+begxFuh4HNJgPH6Mk5loPXyy6TdnHbcLy09jM9EBtoBR5B
+	q2NwL3jkWs7X/diliGC9njqwp8UPfWHbJFtHgByAuqdKmWo54ywnqPZwDWmgkIGuti8Vtfg5yin
+	PF290y7It/IZfDugaRqLbI3LkIOuWZFGBslbLYJI0+1bkAO0GZ5qGk
+X-Received: by 2002:a05:651c:41d8:b0:39d:b5b9:f0f4 with SMTP id 38308e7fff4ca-3a301abb820mr82093501fa.10.1788280412821;
+        Tue, 01 Sep 2026 09:33:32 -0700 (PDT)
 Received: from fedora ([92.36.3.203])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a34a8ed967sm678251fa.7.2026.09.01.09.33.24
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a34a8ed967sm678251fa.7.2026.09.01.09.33.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:33:24 -0700 (PDT)
+        Tue, 01 Sep 2026 09:33:32 -0700 (PDT)
 From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	netdev@vger.kernel.org
@@ -71,12 +71,12 @@ Cc: upstream@airoha.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Vitaliy Sochnev <sochnev.v.74@gmail.com>
-Subject: [PATCH net v3 0/2] net: airoha: fix silent RX loss on the shared CPU ring
-Date: Tue,  1 Sep 2026 19:32:52 +0100
-Message-ID: <cover.1788286284.git.sochnev.v.74@gmail.com>
+Subject: [PATCH net v3 1/2] net: airoha: handle RX_NO_CPU_DSCP interrupt, not just RX_DONE
+Date: Tue,  1 Sep 2026 19:32:53 +0100
+Message-ID: <17f1beec505b87a4acf16557386a978c98f94b97.1788286284.git.sochnev.v.74@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260831234701.206021-1-sochnev.v.74@gmail.com>
-References: <20260831234701.206021-1-sochnev.v.74@gmail.com>
+In-Reply-To: <cover.1788286284.git.sochnev.v.74@gmail.com>
+References: <20260831234701.206021-1-sochnev.v.74@gmail.com> <cover.1788286284.git.sochnev.v.74@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,44 +85,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-v3: dropped the RX ring stall recovery (v2 2/3) as asked [1]. At 128 the
-stall does not occur - 500 forced PPPoE reconnects over 20 h with the
-detector compiled in and armed, zero triggers - and it did not fix the
-bug on its own anyway. I will resend it if the stall turns up at the
-larger ring.
+airoha_qdma_hw_init() unmasks the per-ring NO_CPU_DSCP interrupt, which
+fires when an RX ring runs out of free CPU descriptors, but
+airoha_irq_handler() only extracts the RX_DONE bits from the same status
+word. The NO_CPU_DSCP bits are acknowledged and dropped.
 
-2/2 keeps its code and its Acked-by; the commit message changed. It now
-cites the register capture taken with no recovery in the tree instead of
-numbers from builds carrying it, states that 1/2 does not cover this
-failure, and quantifies what the bigger rings cost in memory.
+Once a ring is drained to zero posted descriptors no further RX_DONE can
+fire for it - nothing is left for hw to receive into - so NAPI is never
+rescheduled, airoha_qdma_fill_rx_queue() is never called again, and the
+ring stays dead until the interface is reconfigured.
 
-v2 [2] answered the v1 review: DONE-bit overwrite hypothesis disproven,
-QDMA_DESC_DROP_MASK never set, RX_DSCP_NUM default raised to the vendor
-SDK's 32.
+This is reachable on RX ring 4, which airoha_fe_vip_setup() force-routes
+~15 VIP-classified protocols onto (BOOTP, PPPoE Discovery, ISAKMP,
+DHCPv6, SIP, LLDP, PPP LCP/IPCP/CHAP/PAP/IPv6CP, ...) while it sits on
+the 16-descriptor RX_DSCP_NUM() default. A DHCP renewal or a PPPoE
+negotiation burst drains it faster than the CPU reposts, after which all
+of those protocols silently stop being received.
 
-Still open for the airoha folks: in 2/2 hw set DONE on descriptor 15
-while 0-14 were untouched and the driver's consumer sat at 0. Is
-out-of-order completion within an RX ring expected, or is the driver
-violating a constraint on RX_CPU_IDX by leaving one descriptor unposted?
-Growing the ring avoids the symptom; the rule behind it is still unknown.
+Treat NO_CPU_DSCP like RX_DONE for scheduling NAPI:
+airoha_qdma_rx_process() already calls airoha_qdma_fill_rx_queue()
+unconditionally at the end of every poll, so scheduling NAPI is enough
+to make an emptied ring refill itself. Re-enable the bit alongside
+RX_DONE in airoha_qdma_rx_napi_poll() so it is not left masked after
+first use.
 
-Tested on Nokia XG-040G-MF (AN7583) on a live PPPoE line. These two
-patches without the recovery are what ran longest here: 508 forced
-reconnects over 20 h 32 min, zero rx_dropped/rx_errors across 39158
-samples.
+Whether NO_CPU_DSCP re-latches while the ring is still empty is not
+documented. If it does, a ring that cannot be refilled (page_pool
+returning NULL) keeps reasserting it. Masking it until a refill succeeds
+is worse: a starved ring never fires RX_DONE either, so it would stay
+dead after the memory pressure clears.
 
-[1] https://lore.kernel.org/netdev/apaA5jDYH71F0JaS@lore-desk/
-[2] https://lore.kernel.org/netdev/20260831234701.206021-1-sochnev.v.74@gmail.com/
-
-Vitaliy Sochnev (2):
-  net: airoha: handle RX_NO_CPU_DSCP interrupt, not just RX_DONE
-  net: airoha: grow the small RX rings
-
+Fixes: f252493e1835 ("net: airoha: Enable multiple IRQ lines support in airoha_eth driver.")
+Link: https://github.com/openwrt/openwrt/issues/24715
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+---
  drivers/net/ethernet/airoha/airoha_eth.c  | 16 +++++++++++-----
- drivers/net/ethernet/airoha/airoha_eth.h  |  3 ++-
  drivers/net/ethernet/airoha/airoha_regs.h |  2 ++
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 64619e9a704d..c59201aded26 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -784,13 +784,16 @@ static int airoha_qdma_rx_napi_poll(struct napi_struct *napi, int budget)
+ 		int i, qid = q - &qdma->q_rx[0];
+ 		int intr_reg = qid < RX_DONE_HIGH_OFFSET ? QDMA_INT_REG_IDX1
+ 							 : QDMA_INT_REG_IDX2;
++		u32 irq_id = qid % RX_DONE_HIGH_OFFSET;
++		u32 intr_mask = BIT(irq_id) |
++				BIT(irq_id + RX_NO_CPU_DSCP_LOW_OFFSET);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(qdma->irq_banks); i++) {
+ 			if (!(BIT(qid) & RX_IRQ_BANK_PIN_MASK(i)))
+ 				continue;
+ 
+ 			airoha_qdma_irq_enable(&qdma->irq_banks[i], intr_reg,
+-					       BIT(qid % RX_DONE_HIGH_OFFSET));
++					       intr_mask);
+ 		}
+ 	}
+ 
+@@ -1468,16 +1471,19 @@ static irqreturn_t airoha_irq_handler(int irq, void *dev_instance)
+ 	if (!test_bit(DEV_STATE_INITIALIZED, &qdma->eth->state))
+ 		return IRQ_NONE;
+ 
+-	rx_intr1 = intr[1] & RX_DONE_LOW_INT_MASK;
++	rx_intr1 = intr[1] & (RX_DONE_LOW_INT_MASK | RX_NO_CPU_DSCP_LOW_INT_MASK);
+ 	if (rx_intr1) {
+ 		airoha_qdma_irq_disable(irq_bank, QDMA_INT_REG_IDX1, rx_intr1);
+-		rx_intr_mask |= rx_intr1;
++		rx_intr_mask |= (rx_intr1 & RX_DONE_LOW_INT_MASK) |
++				RX_NO_CPU_DSCP_INT_RX1_MASK(rx_intr1);
+ 	}
+ 
+-	rx_intr2 = intr[2] & RX_DONE_HIGH_INT_MASK;
++	rx_intr2 = intr[2] & (RX_DONE_HIGH_INT_MASK | RX_NO_CPU_DSCP_HIGH_INT_MASK);
+ 	if (rx_intr2) {
+ 		airoha_qdma_irq_disable(irq_bank, QDMA_INT_REG_IDX2, rx_intr2);
+-		rx_intr_mask |= (rx_intr2 << 16);
++		rx_intr_mask |= ((rx_intr2 & RX_DONE_HIGH_INT_MASK) <<
++				 RX_DONE_HIGH_OFFSET) |
++				(rx_intr2 & RX_NO_CPU_DSCP_HIGH_INT_MASK);
+ 	}
+ 
+ 	for (i = 0; rx_intr_mask && i < ARRAY_SIZE(qdma->q_rx); i++) {
+diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+index 442b48c9b991..bde3d599d8b7 100644
+--- a/drivers/net/ethernet/airoha/airoha_regs.h
++++ b/drivers/net/ethernet/airoha/airoha_regs.h
+@@ -549,6 +549,8 @@
+ #define INT_RX1_MASK(_n)							\
+ 	((((_n) << RX_NO_CPU_DSCP_LOW_OFFSET) & RX_NO_CPU_DSCP_LOW_INT_MASK) |	\
+ 	 (RX_DONE_LOW_INT_MASK & (_n)))
++#define RX_NO_CPU_DSCP_INT_RX1_MASK(_n)					\
++	(((_n) & RX_NO_CPU_DSCP_LOW_INT_MASK) >> RX_NO_CPU_DSCP_LOW_OFFSET)
+ 
+ /* QDMA_CSR_INT_ENABLE3 */
+ #define RX31_NO_CPU_DSCP_INT_MASK	BIT(31)
 -- 
 2.55.0
 
