@@ -1,58 +1,58 @@
 Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47A74756D4;
-	Tue,  1 Sep 2026 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D50C472084;
+	Tue,  1 Sep 2026 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788268933; cv=pass; b=qBUN8Z8ffcUsURl4n1rMSsWGmzdpvsEDwI83nhvNp9ZhSFo6dCf4WZOfsn2npGDdU8texo2Ppd1B/evR7XQ3B71Mk/6CikSxkRZapn6xNFGefEebG4elb9pasUmXo5d4bgjKRCpRDg4lIY8xzR9bZU/HKNSXsfvvcox0pj2MNlk=
+	t=1788268939; cv=pass; b=LqY26fBymOiyRUvLwfa7D2VX1ninOCbreWwrW9JGbob95EfQlQGcUJ/mShB/lVLieP7VOB07aSTqldOPIphnBrxF49l+5XerRWeWEMOibvg1ayvc9uRHSdN2srE3siIyXndz5mBxJTERO0ABDMX1KX9dk4FFpDGy9fefbH9tPYs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788268933; c=relaxed/simple;
-	bh=rxPegwfWsbhaXnaOfXAiSIbv8UqPN8bqJ9GM2VU5AGA=;
+	s=arc-20240116; t=1788268939; c=relaxed/simple;
+	bh=I6+6D5NMypTbm/L4XqjdnDGV4qktEPqHN7NLR96bzNM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YFllT6RE0qwSuNbcPImY+T3hVM2f5SlhTpIctZKvSM4BidJgLkT2GufIISk4D4TtZiR+8poxb8Mutm6Txt43r7ZBI28u7ooSIAwQvBN2wN69aKFaTprX7Uao+lO0zonccfPKUwRK0BDsCGnfTEm8f2RiE97KXla//hUerMjzapU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=IwsTI6JM; arc=pass smtp.client-ip=185.185.170.37
+	 MIME-Version; b=UfxBVJajeXNFregAtNl4Kij9wKYSE4dNjPEu868HByQgqxOCwbRvnDGiFvsHU8q5tcbxUkqCT2RJKu1Sj3GvIbq41bAu+DifxVZXf5o40EcN3tmz776R3JbaihGEuCDJS/qzcNi6KRLQ78rvqIXu6gkA86mnTlW9UNVYq7f+j+E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=RuEimtTv; arc=pass smtp.client-ip=185.185.170.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="IwsTI6JM"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="RuEimtTv"
 Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ630586dz49QPY;
-	Tue, 01 Sep 2026 16:22:04 +0300 (EEST)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ6383qPmz49QNp;
+	Tue, 01 Sep 2026 16:22:12 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788268924;
+	t=1788268932;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v8dnLpIuawa/T5WKzmKQT35hCSn6pD7KsZ9UF2NkcKc=;
-	b=IwsTI6JMHbpC5lca9qH4KN3Q4gbZhwcXEolhHVNy2Zst00xH+QEheODmdjP8eLnGqgnbTP
-	pA/D5B+83ftSYYfeqXU3hCiwdtCncCE4ns2cnTvtJW9sQZeumVyz7zLP9fRROnOqFqcIZT
-	/MbHHhTpL3w72uMBIl+u+K6WT06bdG3tVxgfnNjZkLoPq+2Ghj298By0v1vsMMpQ5WF+bb
-	v3wl4zr8C4yGKAxSNOMO3/51dFyPbDKu5DshKAxzVDgoqn5HcudMJg1oMexwSpDw8uqJSB
-	jRcWB82xpfKRVWMv4Sb8eRplTxo1qMFzQilN3IBCyPjvv20Ij/f+kzBJH1DDpQ==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268924;
-	b=p0OqZ6mKstN6Pc6ycLMqQnre8mvHLj+YEhdw9y7tXOaG2fxHFg8a2qaLfT7/yWSAN7XxmN
-	h/Qr99Qjn4tV7klCzKBKSxMvlV3X/dZM0ovlA/Y1S/cA46YBk80ZRe23TL+qIFEGvt3S6Y
-	cd4BHZytD1RnX4y2fh8ys+BpnEcdVhj6l0i5qmdmslzGLubRUG4DBY1YG04D33izHEzKvG
-	nb3VyamOFjDCG248eFmM7zRBbRf6LEGM56pbrI3fvMPZtqx0MU50uQjOOfpOm55LliQkKu
-	2OJTgGMGV5wNP4NSPJ4aC28Ce7QH0bRnG4CsCvpXrHGEY9Vp3JWGQ1RDmNLIVw==
+	bh=PEUjQjjsFci1enYBM15zd0rVQmDzTx8erkfzrvkeXzI=;
+	b=RuEimtTvH2oxN+JjDSCVkH/Tlvg7OReTX5147N9nNJEtapAmiFYHTkkA31yzm9INcm8pL9
+	m1ZS6YHgHf8HcQRUhWQZpkt6rQMEPCw8Fn1SqldgAIs99e0Jlsn/ZhQdfjJnRit71kBbas
+	F/yAUBCNZNbi2GTJHn1LB/mkAMyb/IFQuaNJ1w92ahj6YybFhUnkHMMW1+fmx1QSPhC4yy
+	zedEJlDGGnQOPKUt1EjcjLfRcYZMNNCIXQSdsfkCqoE0udwKRYSOBmiXiVSj7xiMu5VozI
+	rcx4pNcwm+aqvU4Ux5Z2k2FyLNQ3Neh39nQ6sDQEriiZ4Rezt3wVjglxBaYx5g==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268932;
+	b=wNFe60L9TLBCl7gTDxp+mZRv7lxWcefjmVCEjwxRnltEwV+jByQJ14i7zFtv8IjLccrMkA
+	j23OvDQfNzQsC1KDxU6y1DDszzZscg/myzcP5w38xax7T4xQxJSAFK1eow58VPhdRj7SVc
+	MTmh5wdg7q1O4QPhDXPk8JAn9Fwn74BJikMNe7Dgi9VeVQ8zlfeHp9S3Bh4BWUFOPQkIrW
+	dQRHZ4pLhu+PwFiSoQ4X3H6Dty1Ms8siijGTD+5YLO1neCKU/45u6bKXOECN9TyNkggAOe
+	iqttiWE+pykslDZRajj6CsXg/X5Je1EgErR4t80sUrfjyUrnXFAkJMdQeEwXwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788268924;
+	s=lahtoruutu; t=1788268932;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v8dnLpIuawa/T5WKzmKQT35hCSn6pD7KsZ9UF2NkcKc=;
-	b=WN7tBA5/prja7Bo4RDEJyZCsNSruqbMwlHCAu4vE3CmE8E8hmW/NZXN0a8IGWapTUX3AAB
-	eghX1Gr1Z6964uhCa3OorP0IVB7NOS07FwbG/hC/LzcXE5/GrTZqH/ijq1Et0Sf7M3HqPi
-	hFwDC0ajHhfm6W84Y4+5I4cdT3bTLvUdVCbK83bI/NXzdcPzUuUab/GJqYS8jgoM94X5bN
-	a7TkjL6zTXi/rnWq6f78su2qTxYpmhYVnPT2NPOeAI5jF254O32EsHdIoiLIglrIczHzP5
-	JTQxIqqeNrGk79kSsWd8551TochjnhRrTN5frDUbb1oCoOv/GoGRp5S5PoIxfQ==
+	bh=PEUjQjjsFci1enYBM15zd0rVQmDzTx8erkfzrvkeXzI=;
+	b=hZMGYfUykUXDwPZJxxkmDZ3v7MWapGf82YB5NH9/FLwdhMYABGYXiHnHeA7HCLXGhpg+o+
+	y8IMcRrNWPXrYkDBn6fAQah4zqeVdf+Mh/vWQqhT1tSmKF5tbxFd3REJWhMUaHYBJNTJnb
+	2ewLk53b/eMv2fmIa6SoRlzwEYxEXHT1C17KB1Le3Ynhli9p3k07nwj99xGI+uD/jvpCD7
+	OMq9sHhW6TSbcfQJ5bnONfQq+4eQI4h8YbyowXUYxXXQGwdKnL7y+dnFyCqQGyqwvThbpv
+	swSFeTOiQb1rcXzzD2LAu1gsK9/bcIi18v7QRaCTnGikaHm6HfFlw79ikm6zSA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
@@ -73,9 +73,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v6 12/15] net: qrtr: mhi: Report endpoint id in sysfs
-Date: Tue,  1 Sep 2026 16:19:31 +0300
-Message-Id: <20260901131934.225991-13-juha-matti.tilli@iki.fi>
+Subject: [PATCH v6 13/15] net: qrtr: limit endpoint range to 16 bits on 32-bit machines
+Date: Tue,  1 Sep 2026 16:19:32 +0300
+Message-Id: <20260901131934.225991-14-juha-matti.tilli@iki.fi>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
 References: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
@@ -87,60 +87,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Denis Kenzior <denkenz@gmail.com>
+On 64-bit machines, use the full range for endpoint ids, but on 32-bit
+machines, use only 16 bits. This gives plenty of endpoints, 65534 to
+be specific, apart from the invalid zero value and the local endpoint.
 
-Add a read-only 'endpoint' sysfs entry that contains the qrtr endpoint
-identifier assigned to this mhi device.  Can be used to direct / receive
-qrtr traffic only from a particular MHI device.
+This should fix any issues where a long-running system with lots of
+allocations might allocate an endpoint id bigger than 65535 on a 32-bit
+system. The node id, the secondary part, is already combined with port
+id into a value that is potentially 32 bits in existing old code.
 
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
-Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
-Reviewed-by: Andy Gross <agross@kernel.org>
-Signed-off-by: Mihai Moldovan <ionic@ionic.de>
+NOTE: please don't merge yet. This commit will have to be either
+squashed or removed.
+
 Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
 ---
- net/qrtr/mhi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/qrtr/af_qrtr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
-index 3990da1a65dc4..630ce0da060e5 100644
---- a/net/qrtr/mhi.c
-+++ b/net/qrtr/mhi.c
-@@ -106,6 +106,16 @@ static int qcom_mhi_qrtr_queue_dl_buffers(struct mhi_device *mhi_dev)
- 	return 0;
- }
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index b27c5a659795d..f1601c0701fdb 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -22,7 +22,11 @@
+ #define QRTR_MAX_EPH_SOCKET 0x7fff
+ #define QRTR_EPH_PORT_RANGE \
+ 		XA_LIMIT(QRTR_MIN_EPH_SOCKET, QRTR_MAX_EPH_SOCKET)
++#if BITS_PER_LONG >= 64
+ #define QRTR_ENDPOINT_RANGE XA_LIMIT(qrtr_local_nid + 1, INT_MAX)
++#else
++#define QRTR_ENDPOINT_RANGE XA_LIMIT(qrtr_local_nid + 1, UINT16_MAX)
++#endif
  
-+static ssize_t endpoint_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
-+{
-+	struct qrtr_mhi_dev *qdev = dev_get_drvdata(dev);
-+
-+	return sprintf(buf, "%u\n", qdev->ep.id);
-+}
-+
-+static DEVICE_ATTR_RO(endpoint);
-+
- static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
- 			       const struct mhi_device_id *id)
- {
-@@ -135,6 +145,9 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
- 	if (rc)
- 		goto err_unregister;
+ #define QRTR_PORT_CTRL_LEGACY 0xffff
  
-+	if (device_create_file(&mhi_dev->dev, &dev_attr_endpoint) < 0)
-+		dev_err(qdev->dev, "Failed to create endpoint attribute\n");
-+
- 	dev_dbg(qdev->dev, "Qualcomm MHI QRTR driver probed\n");
- 
- 	return 0;
-@@ -151,6 +164,7 @@ static void qcom_mhi_qrtr_remove(struct mhi_device *mhi_dev)
- {
- 	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
- 
-+	device_remove_file(&mhi_dev->dev, &dev_attr_endpoint);
- 	qrtr_endpoint_unregister(&qdev->ep);
- 	mhi_unprepare_from_transfer(mhi_dev);
- 	dev_set_drvdata(&mhi_dev->dev, NULL);
 -- 
 2.34.1
 
