@@ -1,188 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010012.outbound.protection.outlook.com [52.101.56.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEF635E1BC;
-	Tue,  1 Sep 2026 03:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788232774; cv=none; b=YjlIlPVv1AsKo/2Q1Cna62fvYcK7CuNXgXLiZm00sN/9REYMIjRwH8C8r7N2zYu7ohkr2qxGBQ1ffsiBfGDjGy9oFWJL+h6kjTMSocVCcUixJitfE9pML2IJ+IZ36lHxZjhCEaodnzFAif8kdx32Vzqkri0DuIYgIPoiWcIBaSQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788232774; c=relaxed/simple;
-	bh=RhwQGauGUHP11xbppaMXraitbUJEn804pviFbnUcZKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frs+qrfGGkXZT+NXrTRzPrnEEE9yuqJADH7GHtx2zQlb089PRWaKYNU9vWHUxjxu5l3GJ7L77NjEKRWtlESs7Q0mcOcb1UnpJZB320BywiNOLEoTYRvg7t5DaUMcBcWDZjRGlnvBwH4W432pM5JVNg/V/J5ZN2FcMBiH+EwrvB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I9GA7KCs; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA0A306B3D;
+	Tue,  1 Sep 2026 03:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788233249; cv=fail; b=dzKggxeQC2JRAUkMMyO98wHvp+1vLQWsE/ZXyfGEn6zzRD/jSAptZ/xRh8UoanZzT5cz4JrWuIw/hAkOixvuLIvnrZUy5SpiouBXz6ugul7vprUl4bn9j2KmYLOY5ZyDaO4LUTr3qBK1VmStC/Z/ZrLy7tppSX6Pu0pmV0kbm9A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788233249; c=relaxed/simple;
+	bh=q58WDDo+a7HY2exvo5rE4ancGw5LCZecrw/x9diG9XU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gwSTGDeMGvX6KYnHG4yqTvrlRDyPoxRFcCacSJaagFpDrxrQ+9F1M/eeIAD8W3A7xaqFPRiNj2r+yC4heUwnTYVImeHnINSbgCxqSDPLAkB1YsB6VVXSte5/N3bJW/6qFQcCjUUFhzqjX+kMKaUn40u9gZX2jdH56Pm3NxP94sA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mJS/o3Al; arc=fail smtp.client-ip=52.101.56.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I9GA7KCs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ACF1F000E9;
-	Tue,  1 Sep 2026 03:19:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788232773;
-	bh=WG3XF7Kw0LabU5DuitR2Zj4YR6z32AQ/YJ3tPqdXMWA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I9GA7KCsXSam4+UW9drNTSEeYGvKiETi7QjZ68G+0x1DouxKYZMikQKpLpNQLpx1Z
-	 wkivMwUOaYOrfWr1gdbYL6BUYfabc0pMq/u8H3nwyeB5PNrC5+goJ+nOwcDBGkLysS
-	 eUFYO0zQTEB5GFm1JQ+2zLTGce6usU6tAQuqGOkEM6LWkXeGFXzfeGvozTmRkrU47k
-	 prBt2llramvWx0/60qBOCzm676+mqwBBUo751TQ7dKwLe+kaqn8RDj/qUrKJanl+8t
-	 VFC0OD59YZKcZEPJy245gH3q/PWv8wrY64u/zB/Voc8gtwJFHeXWwfMou4bcljv1wt
-	 OOckOkyDufU+w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jiayuan.chen@linux.dev
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	john.fastabend@gmail.com,
-	sd@queasysnail.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	wilfred.mallawa@wdc.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tls: fix TX context confusion in the max payload size setsockopt
-Date: Mon, 31 Aug 2026 20:19:31 -0700
-Message-ID: <20260901031931.1636980-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260831025607.62927-1-jiayuan.chen@linux.dev>
-References: <20260831025607.62927-1-jiayuan.chen@linux.dev>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mJS/o3Al"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xzkjz4I6I0g7JALWgYX9U0LcUjmE3OxriUG6i5tKTglcLkinbrnYlZIDOwW9bTPZgCbQvQWmNgDa4W0agU7o5DuDOfv7k1d8wBi39GhMyt8z+PMPMqheDA1AJnUbFRhEWORmiCetHHGAZJaZAILc2xXmBtfNxmlWX5FMcWbWkDB4l4Pzk2RbTPfVT9yGfr4VcL5IzrCCt4HCu+o27S8hROYAoCD9Ep3HCQUkf7hFcR2itJHpstZzC03wKPEYhHwcqmRO9ZpMm4YKUu6GqiNlKFIbEuIqJZfR1Ri6i/ZpT3jRcKPOnAVhiSP4f3SaqImA391fPHJCrawFDsrSLsCLyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LNXd4maFwM6ymhq7DSnfwltUs9/RBRUkD4BiMNRlYTQ=;
+ b=TjqOpuSQV9yhHt9WXG8f2dnmvLTXMDa2vvbyGeqfDfMdJ7kFCAKVhcy7zoUE6TI0Lyfeb1r82TsDvdTUesZFsXeHXOhoStfzz3UVL1BWS9hY+dHNMCGmpJnStaUZG0eMUJikbG717LM/r1viad5kdyP5Fc0DHcLRsuOH5zD4PLWsr47brPxlrsKD0XCQpiietkE9uqgDpttEoMnJCGkKrLm6a1QRGIHFeS60CshYdSHLx4g7Pc5X2Niz2OlmDbz0w+4q++8SjU8CY2jN0bkCtEhJKIvMY2eVNMbXeeupUqChp6TEJKhcZaHQciMTmyxIHfz1i3qsigtM2MvHcCUyNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LNXd4maFwM6ymhq7DSnfwltUs9/RBRUkD4BiMNRlYTQ=;
+ b=mJS/o3Al6WEA9560KJO7Js2GLwdB67N/uF0ycgSUZgA3FxfFFfOEh4LOr69y/9NkVlcxP88GTVK1t5CE6QgPyu+CsZ+fukMBekFWUR8kFAImMwj6zB4T6XfDOCk1xVN2HlrFgq8/y5T63CKlLzicsSSo4qPLRSTnt4fkFcDnCTU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22)
+ by MN0PR12MB5906.namprd12.prod.outlook.com (2603:10b6:208:37a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
+ 2026 03:27:25 +0000
+Received: from SA1PR12MB6798.namprd12.prod.outlook.com
+ ([fe80::e317:e4a3:6ae9:8c54]) by SA1PR12MB6798.namprd12.prod.outlook.com
+ ([fe80::e317:e4a3:6ae9:8c54%2]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
+ 03:27:25 +0000
+Message-ID: <29d0926a-415d-4111-8378-7d7bc4087a04@amd.com>
+Date: Tue, 1 Sep 2026 08:57:15 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 3/6] net: xilinx: axienet: Add 10G/25G (XXV)
+ ethernet support
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20260831150816.1020883-1-suraj.gupta2@amd.com>
+ <20260831150816.1020883-4-suraj.gupta2@amd.com>
+ <fe83c236-ce55-4c33-aa1f-23028e978696@lunn.ch>
+Content-Language: en-US
+From: "Gupta, Suraj" <suraj.gupta2@amd.com>
+In-Reply-To: <fe83c236-ce55-4c33-aa1f-23028e978696@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4PR01CA0040.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:277::10) To SA1PR12MB6798.namprd12.prod.outlook.com
+ (2603:10b6:806:25a::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB6798:EE_|MN0PR12MB5906:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae1c4db7-1783-40f7-30bb-08df07d8f0e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	bNuJJbiikpszoLLJt4USC161xCRHYcNAjpIDGuAKaBCX5cyo42ehGGxIycxcZb3FMrk0M9aw8lSOeKseE1yJjt/c+gkMqjn9SfTPTPddlhN6tO9jQouV7eQh3XYh3JZxkHlJa0La1SpbWau9dY63Wuo4mKFc+fNGdi6XBOfLgpPjYMnCRrloOqrfqRD7m4RwsiBzScFxcZz/xGFhdLq7LjSDAIhRPW24mpY3AImj+esWq38twykAw6fO+FpNbX93erQMq2r06Q+mdCFa/8w2t+bV59BknUTJndJrt4MZy5eyQ6sHsCMH3RT9Uu1kSTqD+S1WbV1tR1vKM83kSYlDzke7o+rt+4vlz5pwZwmn+0TEAegerMil83iFlLyowE87BU6raPiViyDbW5OLX9ig2VK2WUE9wgDIiCFTyNXWCHKbiUBgRRis9yLQnzXyN7R4BxLwJsnK32rhJpm1kgwQKqiuaM93GxMEVv9NbK2lx/8FJSkc3Sy9bGFpm8F7kDR0LBYJML8bWByHHZJw3aUL4a+CnbiIWJvsAmMIRR1fIyDAU7fu91TjzzKG9WTRsb+TTIYXTiGOfzpsnt9ySUyMtVr5g+srNwJ8w5ZlpadayqHZbf7jn+0W6flNNEtAgB+nm2iIQt7U1xLpNTjl7WPh16PCfESlUJ5lC4wevjdMlFY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB6798.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZldGMkNnMS9veDdkeWUxSFNodEVpZ092TUZnQ3k4aWQzeDZjSnFOcXVMNCti?=
+ =?utf-8?B?YTZoMWpJdjRneW4vcmZtaDlmR295U3dBWnMzRkNUbk8wd1BKQ1N5SmZsay9D?=
+ =?utf-8?B?UUtzZVpLWnRIUFplVGNpdUtraTBHeC82RTNZRmRUMHdvaUthUmduT0hvK09t?=
+ =?utf-8?B?K1pvc0FuRzZzdzlCdjVHUGZrME1ZanZxcTVSbjVjVEFVRGV0Y0hLT2RJL29w?=
+ =?utf-8?B?UHZjTVNsK1dkU2c4YXRrTC83WG1zeU1OeGlmd05hdmxkdUtaWHlsL3BxcW1x?=
+ =?utf-8?B?dWJseGhsZVFCanBVN2xIWUJEZ3BtN2dvdWlndDQyUmNJYm9rcXdUUjNoL0Nm?=
+ =?utf-8?B?UEdFTUZHOG5TQTN0RmxZRVN3eWVGWnE0VElldWlzcCs5aWtUb3JiejMrampm?=
+ =?utf-8?B?TWZJeWJQQW1QamVIVUc0K0hmdERnVkk0bFZmR2xWeWwyNFNkTGN2QXltVDlL?=
+ =?utf-8?B?UUpmdzczOHZLaTBscUdFNnBQU3hqMzJZNTVSNWtpeXBJUm5aWGV3TzZiM3Bu?=
+ =?utf-8?B?bzQyRXRnUVUydDhmR1hnM2hyWkVGMXNQTXZ6WTFJcGVwVksvQkpwektscWVP?=
+ =?utf-8?B?Y292RzJra0JpcGJIYUIwKzZUVjF5QkNVU3dpSEJsWmdtQm1vRXhDMGNTenVk?=
+ =?utf-8?B?d3dDcGYrK1cwV3RIcTVmWVovMEhaUnVrWGVEalVxUkpXRUxmRlhmamRMWWs2?=
+ =?utf-8?B?L084U1VET2didTI1MDZPYTkwSHlSU3htSmNoMXI4MzdZM201UldWOFF0UXJZ?=
+ =?utf-8?B?YnBmL0xFejZqelB2L3JPdUZESWJsWWg5aUJQemo5TWZ5ZUxBdG1rbEFLOHoy?=
+ =?utf-8?B?N0VWZlMvZE05cmoyWGlZVUdtVE8vMGNVMGc2Y3puK1JwcHpiWXZoYXNYMjFI?=
+ =?utf-8?B?T1VrR0hQYkhiM1cwZHdnWWUrV1duOWxoeWh4SDIwWVN4SXlaVWdSTDlUbldG?=
+ =?utf-8?B?WFBnZUNGUEgzTE9mVUExUTJnY2xvdm4xbTh4MlZSS2NTTGlBOGpkNVBGRlhy?=
+ =?utf-8?B?S0E3ZnVuVjZJeXEzZE9xSkVKVktBSitzZXFsTVE0NTlWY3BVSmlMNFVWb2pj?=
+ =?utf-8?B?SHM0K2tqdkJEcUZBaElqRzdJZmhSVXhxaFRDcWNkdXRaL2RrZFc5L2J3Smd1?=
+ =?utf-8?B?VlNGVTZ4c1FpNjRBcHQzVHVRWEs3QmRNSGZ2NGQ5U1BDUFVEQWR2QzFVbWdn?=
+ =?utf-8?B?bzZHbmpFalJLVjNiV0oycm5ld2RhTlNuazdwWnNqQ3VacE5HeHZkSUc5RUwz?=
+ =?utf-8?B?TXZ5bGhkeFdGNlZoTWRSa2lCL05wYk4rUTQxaUZXRWFzQzBjb0hFR2lJK2ZJ?=
+ =?utf-8?B?ZW9kYmJBWklETHFUM3UyWDBOd0I4TGVyUDc5Sk1YT2k5cHlHeElXZUhxb0Ey?=
+ =?utf-8?B?S1N4RFVROHZkMlRZdE0vYmpwNitYWmZKVmxtM3p0cTFsUE9qOWt0bnRSUFB0?=
+ =?utf-8?B?QmMyWU1RamlSaFZnZ0wwZkJTKzVKVGFUTUhjdVFVVDJzTFZMQ1FWcDV3MUFu?=
+ =?utf-8?B?MDJkakRtOXB3V0p1RExkLzErQmJYWkw1clhzdEdwcGJ2ODU2U3hJYTZ3RDN6?=
+ =?utf-8?B?bjdFRkpVQ0tHcFU2WkJTd2JrYUJQMFhHZ3FjSU50RWZqQlV3QnhsK1BKR1ZN?=
+ =?utf-8?B?M292L1BVTGtPbDgxVE12RlluSm44OVduSVFQNmczRm0wRHFqT1FaVnlzYlNS?=
+ =?utf-8?B?emw2aCtybTZkaFAzZ2IxcmFqbjNhWUh6eEYrMkM5Z1ZXQzdJVEo5eVRVYU01?=
+ =?utf-8?B?RnNsWmtGcW93N085aHlmQWxLT2d2ZFptejlBMVMxQ3UyWXVHbmRyNGoyVGdD?=
+ =?utf-8?B?aVdNN0JMWUx6V1Fhdy93TGdLbWp5Wjh2Ym14N3I0SkpKa3FmSzcyREtyVDBu?=
+ =?utf-8?B?MHFEMStpOFF2aGEydnhSWmlDMEtlMDdtUzVjbUpHcTR4RTN3L2hOdUNldjl6?=
+ =?utf-8?B?NU5DNWRuUWhqMlpYUXBkYzV5ZzRHQmpQODF5bUtZc2NRT1kzUTVvbmNEQWVI?=
+ =?utf-8?B?dXlCSnhIK1FNNXdEVlV4c3BYcmN1c0EyeDV3RmhiYVlPSml2NGlXTzdVWlVS?=
+ =?utf-8?B?K05VVW9vM1IrMEcrV24wQnh2K2xsR0RCU2ZXeUdSNHpSVlk0eFJFZWMvd2lL?=
+ =?utf-8?B?WDVzVDdJZ3ZKYThtMW9kOWhIdnNYK2ZJR1YyTlJsS0N6V0h2ZTJFbmxSUFQv?=
+ =?utf-8?B?aWVIeS9jV3NPM2hsQjdXSmI2ejhUU3dQQkJkL3V5MkRVV2hXWlIxZjhyMHc3?=
+ =?utf-8?B?SEIrRWxPTExUbU9Iemh5d2JNQUpiSlVDQnlYbExJaXcrdTlURktGSENVcGJr?=
+ =?utf-8?B?Z0RXQjhIMGo1SmNTcGxoeVdNQk12S3FwVmcwblo2NXlORW5LT2V5UT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae1c4db7-1783-40f7-30bb-08df07d8f0e1
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB6798.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 03:27:24.8875
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mWxjQdPIUdQLxit8Z1DlDBq8N4nziRNZUgfWICCgfGLBTxwOcTC5LyMkAaQeTGoeZnZHP9ZMiuGpdq95Ta2p1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5906
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-    tls: fix TX context confusion in the max payload size setsockopt
 
-The patch replaces the unchecked tls_sw_ctx_tx() dereference in
-do_tls_setsockopt_tx_payload_len() with a new helper,
-tls_tx_record_is_open(), that dispatches on ctx->tx_conf so the TLS_HW
-path looks at tls_offload_ctx_tx(ctx)->open_record instead of a field of
-the wrong structure.  The rest of the option handling is unchanged.
 
-> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-> index fbb274287aa5..e4f288c1fa34 100644
-> --- a/net/tls/tls_main.c
-> +++ b/net/tls/tls_main.c
-> @@ -833,15 +833,29 @@ static int do_tls_setsockopt_no_pad(struct sock *sk, sockptr_t optval,
->  	return rc;
->  }
->
-> +/* priv_ctx_tx holds a different structure on each TX path, so tx_conf has to
-> + * say which open record to look at.
-> + */
-> +static bool tls_tx_record_is_open(struct tls_context *ctx)
-> +{
-> +	switch (ctx->tx_conf) {
-> +	case TLS_SW:
-> +		return !!tls_sw_ctx_tx(ctx)->open_rec;
-> +	case TLS_HW:
-> +		return !!tls_offload_ctx_tx(ctx)->open_record;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
->  static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
->  					    unsigned int optlen)
->  {
->  	struct tls_context *ctx = tls_get_ctx(sk);
-> -	struct tls_sw_context_tx *sw_ctx = tls_sw_ctx_tx(ctx);
->  	u16 value;
->  	bool tls_13 = ctx->prot_info.version == TLS_1_3_VERSION;
->
-> -	if (sw_ctx && sw_ctx->open_rec)
-> +	if (tls_tx_record_is_open(ctx))
->  		return -EBUSY;
+On 9/1/2026 8:22 AM, Andrew Lunn wrote:
+>> +	/* This error handler runs only for the legacy embedded-DMA (1G) path,
+>> +	 * whose mac_init() cannot fail, so its return value is not checked.
+>> +	 */
+> 
+> Is legacy the correct word here. Have you stopped licensing the 1G
+> MAC?
+> 
+> 	Andrew
 
-[Severity: High]
-For the TLS_HW arm, is open_record enough to tell that no record is being
-built?  do_tls_setsockopt() calls this helper with only the socket lock
-held:
+By "legacy embedded-DMA (1G) path", I meant the legacy non-dmaengine 
+flow in the driver. This path does not use the dmaengine framework and 
+therefore does not communicate with the Xilinx DMAEngine driver; 
+instead, the AXI Ethernet driver handles the DMA programming directly.
 
-net/tls/tls_main.c:do_tls_setsockopt() {
-	case TLS_TX_MAX_PAYLOAD_LEN:
-		lock_sock(sk);
-		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
-		release_sock(sk);
-}
+I agree that "legacy embedded-DMA" could be confusing here. I'll rename 
+it to "non-dmaengine flow" in the next revision.
 
-but the offload TX path is serialized by ctx->tx_lock, and it drops the
-socket lock at a point where open_record is already NULL:
+Thanks,
+Suraj
 
-net/tls/tls_device.c:tls_push_record() {
-	offload_ctx->open_record = NULL;
-	...
-	return tls_push_sg(sk, ctx, offload_ctx->sg_tx_data, 0, flags);
-}
 
-tls_push_sg() calls tcp_sendmsg_locked(), which for a blocking sendmsg()
-with a full send buffer waits in sk_stream_wait_memory() and releases the
-socket lock there.  tls_push_data() has a second such wait on the
-tls_do_allocation() failure path.
-
-So can a concurrent setsockopt() see open_record == NULL, take the "not
-open" branch and publish a smaller ctx->tx_max_payload_len while a sender
-is parked mid-sendmsg holding tx_lock?
-
-If so, does the offload path then keep using the old limit for the rest of
-that sendmsg?  tls_push_data() latches it once, before the loop, and never
-refreshes it:
-
-net/tls/tls_device.c:tls_push_data() {
-	max_open_record_len = tls_ctx->tx_max_payload_len +
-			      prot->prepend_size;
-	do {
-		...
-		copy = min_t(size_t, size, max_open_record_len - record->len);
-}
-
-That would mean setsockopt returns 0 while records larger than the new
-limit continue to go out, which does not match what
-Documentation/networking/tls.rst says about TLS_TX_MAX_PAYLOAD_LEN ("the
-kernel enforces the specified limit on all outgoing TLS records.  No
-plaintext fragment will exceed this size").
-
-There is a follow-on question about the next call.  If the sender leaves a
-record open across the syscall (MSG_MORE with record->num_frags <
-MAX_SKB_FRAGS - 1), the next tls_push_data() latches the new, smaller
-max_open_record_len while record->len is still the old, larger value.
-max_open_record_len is u32 and record->len is int, so does
-
-	copy = min_t(size_t, size, max_open_record_len - record->len);
-
-wrap around here and drop the record-size clamp entirely, letting
-tls_append_frag() grow the record past the 2^14 plaintext maximum before
-"record->len >= max_open_record_len" closes it?
-
-Note that tls_sw_sendmsg_locked() re-reads the limit on every iteration:
-
-net/tls/tls_sw.c:tls_sw_sendmsg_locked() {
-		record_room = tls_ctx->tx_max_payload_len - msg_pl->sg.size;
-}
-
-so the latched offload value looks like the odd one out.
-
-Would it be better to serialize the check and the store against the lock
-that actually protects record building?  Since tls_device_sendmsg() takes
-tx_lock before lock_sock:
-
-net/tls/tls_device.c:tls_device_sendmsg() {
-	mutex_lock(&tls_ctx->tx_lock);
-	lock_sock(sk);
-}
-
-tx_lock is the outer lock, so taking it inside the already socket-locked
-helper is not an option; the acquisition in do_tls_setsockopt() would have
-to be reordered (or the helper made to wait for in-flight senders, as
-tls_sk_proto_cleanup() does on sk_write_pending).
-
-One smaller point: the plain read of tls_ctx->tx_max_payload_len in
-tls_push_data() against the plain write in
-do_tls_setsockopt_tx_payload_len() is an unannotated data race that KCSAN
-would flag.
--- 
-pw-bot: cr
