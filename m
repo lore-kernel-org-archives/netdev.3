@@ -1,111 +1,148 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B183BE636;
-	Tue,  1 Sep 2026 07:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A36546D577;
+	Tue,  1 Sep 2026 07:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788249181; cv=none; b=aqvmIKuQqTcfrQRZCgfrVRctkT79f0mbvEKEQY522hw/ZCTge9ws14+iw6gA0zIiQAtmWXRQTVvHtl0XIOBE64s/1SPs01pl/FhXk7tAivzTWroj1Z4vnDoJef28qshClM7J3RnsuvTp6Crsjr9s0XIP7m0rUDqSq2KMbMD+3XQ=
+	t=1788249486; cv=none; b=QhAczmVpnWUsk1WUeBjKzUjyg/dtR98H0lmWsN0xsbjgKq/bpogCIZyA/3h7K08EiiZlbhDPb0eS1Cui6Mz2uT8oLaYYqXh4BM3vX+r6bmhHz6Xr0ltrsaKZzagxdZ6iOz/IpilPYyjlzEB3KG1xIQmd+YITDhBb4CbOys3MEQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788249181; c=relaxed/simple;
-	bh=hL/XQOVhcpwJxaLDyfLduwot2HfVj4twuEV49mSg/hQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5SZm85W/6X9+3SZw9lsaiUmPJMUqcHk4X3V0RW/j0JnJtFW2QAAzggwjnR/bVOpeikdqFVx7uHUSCO61FJzD4xBli0u4dckEQw3r1PS5ASamEdCqNYdsy7w3nw0+6zeeOQYAsdIs1Yae31K4T9LleakZiW2tE3bYbUifcLQvC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lgDGvNnH; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788249486; c=relaxed/simple;
+	bh=OF4PmkLvY5GSsd7Src3ioGuPiipTbXPvzKRpbMVQZ/g=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=msAxfRKJFnYyEm3A2wRbq7OG4wwF3OdMjVrHdRWtX6v7CVMLmC7JqJn/y18uHYFKIejSqjxi3QIjMlTqtdZl2pFHwAnEgHhgeCN4pPFX6Id6Cufa5rbiXQ1AR36zeyQxzfzMb4/ldanRhC8Hj4/95ZWryaUl2CMEy34YZAJwhik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ehLYtvLC; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lgDGvNnH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=j1
-	wX6j3KRN+jGC0a4HA2yiq8U30rykpl0nv7aozNAy0=; b=lgDGvNnH9+vnYpAJUy
-	zhCY10RVLIAAO8ABxHjHwWGk2zJFrB/NuYRmdhJc3fHhJiIjBx7tE55TMewS2ycQ
-	Kv/VXsaS1Q2L7x0/+UzQekk/G8e0xugD9CdaTESQXijPmZoZpd/zqFaHxfaAC7LH
-	+ucMOUg2vLegwF/G/ND6sJIOQ=
-Received: from sky.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDX9QoyhJZqMCC5TQ--.47153S2;
-	Tue, 01 Sep 2026 15:52:18 +0800 (CST)
-From: Junnan Zhang <zhangjn_dev@163.com>
-To: willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	liuhangbin@gmail.com,
-	mst@redhat.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sunshx@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn,
-	zhangjn_dev@163.com
-Subject: Re: [PATCH net v2] net/packet: fix network header offset for non-VLAN raw packets
-Date: Tue,  1 Sep 2026 15:52:18 +0800
-Message-ID: <20260901075218.58914-1-zhangjn_dev@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <willemdebruijn.kernel.2a4f4a498e1ff@gmail.com>
-References: <willemdebruijn.kernel.2a4f4a498e1ff@gmail.com>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ehLYtvLC"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id C2D3F206E9;
+	Tue,  1 Sep 2026 09:50:37 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id A28iTAiBBD1T; Tue,  1 Sep 2026 09:50:37 +0200 (CEST)
+Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 214A7205CF;
+	Tue,  1 Sep 2026 09:50:37 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 214A7205CF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788249037;
+	bh=fuzmQA8uJ6nVSzIQSJCnaHiz/M3SxDKCF5x/oJzAl/Y=;
+	h=Date:From:To:CC:Subject:Reply-To:References:In-Reply-To:From;
+	b=ehLYtvLChJQjKw2Egvoir8hyDbwWL5u+t0s4EsvEXHBHStzYqyBVFLawC2wxQhJht
+	 Gzcv0b0tUO09tN3g+FNTSc29zgeoI+cnyr9TI6VZvaSgYbk9tJHfWOxMg26Ur+JlI8
+	 6nn1Dh7YqnxKJoqPmeXIbPPGbSkM76jEQmUAQy7iZplfBZp63USyzc3ieVHsPFfJUR
+	 JVZLP8SwlJeKtu/LTExmvt1UqCmwOkhlt0Cr6rFs1j/Go5VaIlZ0OgQEFgnvOH9D4H
+	 xLGxw8EfxsUkAMeMqscspRjKV600v3AXuVLWGOkvATVaiXuwqtrORIRWURFvxj8r6l
+	 GN72blANBmE8w==
+Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
+ (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 1 Sep
+ 2026 09:50:35 +0200
+Date: Tue, 1 Sep 2026 09:50:28 +0200
+From: Antony Antony <antony.antony@secunet.com>
+To: Sasha Levin <sashal@kernel.org>, Steffen Klassert
+	<steffen.klassert@secunet.com>
+CC: <patches@lists.linux.dev>, <stable@vger.kernel.org>, Antony Antony
+	<antony.antony@secunet.com>, Yan Yan <evitayan@google.com>, Sabrina Dubroca
+	<sd@queasysnail.net>, Steffen Klassert <steffen.klassert@secunet.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.18-5.10] xfrm: allow migration from UDP
+ encapsulated to non-encapsulated ESP
+Message-ID: <apaDxC5gBw7G2zMc@moon.secunet.de>
+Reply-To: <antony.antony@secunet.com>
+References: <20260831133314.4125787-1-sashal@kernel.org>
+ <20260831133314.4125787-428-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX9QoyhJZqMCC5TQ--.47153S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KF18GrWfGr4kZrWDKrW5Awb_yoW8Cw1Dp3
-	WUCFZrtrs8GF1Sqrs7XF47AF4FyFs5G3W3X3s8Jryvvws8ua4fXFWxtFsIkFWjqr4kJ34U
-	Zr1UZFyakaykZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUasjUUUUUU=
-X-CM-SenderInfo: x2kd0wxmqbvvry6rljoofrz/xtbC7hJtA2qWhDK1xgAA3r
+In-Reply-To: <20260831133314.4125787-428-sashal@kernel.org>
+Precedence: first-class
+Priority: normal
+Organization: secunet
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-02.secunet.de
+ (10.32.0.172)
 
-Hi Willem,
+Hi,
 
-Thanks for the detailed review.
+I am thinking of not to back port this patch.
+As it may become a surprise behavior change on older kernels.
 
-> Where does it do this? validate_xmit_vlan does this on the physical
-> device I think.
+I vote not to backport!  Anyone vote to be back port it?
 
-You're right. vlan_dev_hard_start_xmit() only attaches the tag metadata
-via __vlan_hwaccel_put_tag(); the actual tag bytes are inserted later by
-validate_xmit_vlan() on the physical device via
-__vlan_hwaccel_push_inside(). I've corrected this in the v3 commit
-message.
+-antony
 
-> That adds a bigger problem that the extra needed headroom of
-> (hard_header_len - min_header_len) is not reserved at the start of
-> the frame.
-
-Understood. In this case it happens to work because
-LL_RESERVED_SPACE_EX() rounds the reservation up, so enough headroom
-remains in front of the MAC header for __vlan_insert_inner_tag() to
-push the tag inside, and with the fix the MAC header correctly sits at
-network_header - min_header_len. Agreed that disentangling the legacy
-hard_header_len usage is beyond this bug fix targeting net; happy to
-help test if you look at it for net-next.
-
-> Instead of using min_header_len != hard_header_len to detect vlan
-> devices, consider is_vlan_dev(). [...] So for now I would focus on
-> the VLAN issue only.
-
-Done in v3: the condition is now
-
-	if (sock->type == SOCK_RAW && !is_vlan_packet && is_vlan_dev(skb->dev))
-
-and I renamed is_vlan to is_vlan_packet to avoid confusion with
-is_vlan_dev(). You're also right that the ARPHRD_ETHER check excluded
-the other hard_header_len cases anyway, so I scoped the subject and
-commit message back to VLAN subinterfaces.
-
-> It sucks that we have to add another branch in the hot path for an
-> edge case. Would be preferable if we can fix this in the vlan driver.
-> But that will come too late for skb_probe_transport_header.
-
-Agreed - the correction has to happen before skb_probe_transport_header()
-in packet_snd(), so the VLAN driver xmit path is too late.
-
-v3 sent as a new thread with a Link to v2.
-
-Thanks,
-Junnan
-
+On Mon, Aug 31, 2026 at 09:27:36 -0400, Sasha Levin wrote:
+> From: Antony Antony <antony.antony@secunet.com>
+> 
+> [ Upstream commit b8addb8884f2dc1b13cf3e4fa0265ecd0bc58b69 ]
+> 
+> The current code prevents migrating an SA from UDP encapsulation to
+> plain ESP. This is needed when moving from a NATed path to a non-NATed
+> one, for example when switching from IPv4+NAT to IPv6.
+> 
+> Only copy the existing encapsulation during migration if the encap
+> attribute is explicitly provided.
+> 
+> Note: PF_KEY's SADB_X_MIGRATE always passes encap=NULL and never
+> supported encapsulation in migration. PF_KEY is deprecated and was
+> in feature freeze when UDP encapsulation was added to xfrm.
+> 
+> Tested-by: Yan Yan <evitayan@google.com>
+> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+> Signed-off-by: Antony Antony <antony.antony@secunet.com>
+> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> 
+> LLM Generated explanations, may be completely bogus:
+> 
+> The branch check finished. Commit `b8addb8884f2d` is in mainline and
+> several `-next` trees (via the `ipsec-next-2026-06-12` merge), but not
+> in `stable/linux-6.18.y` — which matches the earlier analysis.
+> 
+> **Summary:** Backport to 6.18.y is warranted. The buggy encap-
+> inheritance code is still present, the adapted patch applies cleanly on
+> top of the already-backported `b64120d`, and this completes the MOBIKE
+> NAT→non-NAT migration fix that partial stable work started.
+> 
+> **YES**
+> 
+>  net/xfrm/xfrm_state.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index b9049c2297bd5..0a629fce0a00f 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -2017,14 +2017,8 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
+>  	}
+>  	x->props.calgo = orig->props.calgo;
+>  
+> -	if (encap || orig->encap) {
+> -		if (encap)
+> -			x->encap = kmemdup(encap, sizeof(*x->encap),
+> -					GFP_KERNEL);
+> -		else
+> -			x->encap = kmemdup(orig->encap, sizeof(*x->encap),
+> -					GFP_KERNEL);
+> -
+> +	if (encap) {
+> +		x->encap = kmemdup(encap, sizeof(*x->encap), GFP_KERNEL);
+>  		if (!x->encap)
+>  			goto error;
+>  		x->mapping_maxage = orig->mapping_maxage;
+> -- 
+> 2.53.0
+> 
