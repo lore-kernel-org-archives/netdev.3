@@ -1,108 +1,187 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9348CD5E
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 18:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3BC49C4D7;
+	Tue,  1 Sep 2026 18:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788286737; cv=none; b=huVQ/e0fpcvGrBvH+CjEmO4KFQFCagT3rASaFQHHXM3yo4wFvWGyIFrXJsFeTaSkrK+mRQxoqZti5LI54JJaHblsSBU0Jy6Mvr0T2t1Dq3tQ6OVynyU9uD/FU7/zvhgPExz6W8eJEfv9DRD/q/hzB86bkHdS0Q1J2K8Ce7tFM3E=
+	t=1788287539; cv=none; b=Ky7wHIk0l5g+ZivCskgO5N98BvYNBIF9wc0rpjwZQ1q1ogtJDTVppdlkJIP9gBHeUmBY/cm2lE6xfdc9Vg1q5T0n3/nsRMSMfWC7M/04K+7gX5R/pwSlhUjd9vCIOjxO9eJmut3J1hfI2gFaKuF65g5ghgHCKd5TazJGPY9QNTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788286737; c=relaxed/simple;
-	bh=YXqEs328TowbEf5G0SPaV4v6Nvx2fFTpdEhShmlp9ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g2O31hO+RBg6H9zH2A/jv1QFWQokWHOtAxaWt44sXdtqhR/u9gSHYcZnWWayCDMAHz60inu07DTBxyy3Uu2zzZLSB7nRrbEXpSU1HAFkBYTNXycNRkq5D25XCTuvDIx1F/NbCst2E1ZkDy2X0Vte0Eh25RrkSg28/chxRsXJN1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=w6oxEPr/; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1788287539; c=relaxed/simple;
+	bh=8reCUJxOb/qiB+cku2vUyWN31+NCse2ORArB6WC5hQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ups9ZKWq3GiWf+/yal+Uk3o2oZkAMvxadGf1sfnf4wJpOyUQvs5mEdQMGv1+vmt5in9uJOHyk1FHYgqzrnqfNeJRvH5xttvfRZSTt31GdyiIGmGCEt520vZgjmy6KVkB04JEHoSJUCMyqy1x6wpMCwbBIRAqC0VHtMfwgiHStBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=F5u3BfXZ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="w6oxEPr/"
-Received: by dvalin.narfation.org (Postfix) id DE591203D9;
-	Tue, 01 Sep 2026 18:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1788286730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RsvuI7lZ0TZRrrGE3s3xeWRxZcspgFKVyXkTwnTErr8=;
-	b=w6oxEPr/yLRyLmoykG/ykaHijXj0AhyZBNcWzrmpqWYwgCYNIgyPYGOvxMh1VuXjSSQZ21
-	A4RfgfOkuBqHGMBS5ojfaO51H5LstcswzWF457owhmo+pUsOrmche2kPh2f/UP68fswJ6f
-	PUBqkS5MmknD+2NfATqmWr0rNCW0k08=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 10/15] batman-adv: tt: simplify NEW flag transition code
-Date: Tue, 01 Sep 2026 20:18:47 +0200
-Message-ID: <5146131.31r3eYUQgx@sven-desktop>
-In-Reply-To: <20260831135117.574836-11-sw@simonwunderlich.de>
-References:
- <20260831135117.574836-1-sw@simonwunderlich.de>
- <20260831135117.574836-11-sw@simonwunderlich.de>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="F5u3BfXZ"
+Received: from localhost.localdomain (unknown [52.172.102.253])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8739B20B7166;
+	Tue,  1 Sep 2026 11:31:25 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8739B20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1788287500;
+	bh=g8biAfnBAtHVVulWCEtHx8nTG/a9ja9DfpALIQzmWfg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=F5u3BfXZ87uNS3bobSRml73sveXDPb5RnEMM1gloYl+AjLQbCerFws86e9vVLGDrX
+	 tYmSkWQbhR4QRyAf9hXJsVDxN33I2vgXJ4AEgN9spUwxME1GFXDc+W1krYTZ+DNe9h
+	 vUM+7nqW6XwuWahY5DwUDd61HmRDoUdWTuxvZV6E=
+From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	m.xhonneux@gmail.com,
+	dlebrun@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+Subject: [PATCH bpf] bpf: Fix non-linear SRH access in bpf_update_srh_state()
+Date: Tue,  1 Sep 2026 14:31:51 -0400
+Message-ID: <20260901183151.16648-1-cenzhang@linux.microsoft.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4778182.LvFx2qVVIh";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart4778182.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Tue, 01 Sep 2026 20:18:47 +0200
-Message-ID: <5146131.31r3eYUQgx@sven-desktop>
-In-Reply-To: <20260831135117.574836-11-sw@simonwunderlich.de>
-MIME-Version: 1.0
+bpf_update_srh_state() locates an SRH with ipv6_find_hdr() and caches
+skb->data + srhoff in the per-CPU SEG6 BPF state. This assumes that the
+returned offset is within the skb linear head.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1=
-=2Dsw%40simonwunderlich.de?part=3D10
+That assumption is wrong because ipv6_find_hdr() uses skb_header_pointer()
+and can locate an SRH in non-linear data. The direct srh->hdrlen read and
+the cached SRH pointer can therefore access memory outside the linear area.
 
-[...]
-> Discovered by: opus-5, sonnet-5 =C2=B7 Missed by: gpt-5-6-sol, sashiko-ge=
-mini
->=20
-> This isn't a bug introduced by this patch, since the removed
-> batadv_tt_local_set_flags() did the same unlocked read-modify-write under
-> rcu_read_lock(), but it may be worth noting for the rewritten loop in
-> batadv_tt_local_transition_new().
->=20
-> The loop only holds rcu_read_lock(), so it takes neither the hash bucket
-> list_lock nor any per-entry lock while doing:
->=20
-> 	tt_common_entry->flags &=3D ~BATADV_TT_CLIENT_NEW;
->=20
-> Can this store be lost against a concurrent RMW on the same u16 from
-> batadv_tt_local_add() or batadv_tt_local_set_pending() on another CPU, for
-> example one that is OR-ing BATADV_TT_CLIENT_PENDING or
-> BATADV_TT_CLIENT_ROAM into the same word?
-[...]
+BUG: KASAN: slab-use-after-free in bpf_update_srh_state+0x1bc/0x200
+ net/core/filter.c:7027 bpf_update_srh_state()
+ bpf_lwt_seg6_action()
+ input_action_end_bpf()
+ seg6_local_input()
+ ipv6_rthdr_rcv()
 
-Out-of-scope for this patch. And handled in the patch
-"batman-adv: tt: transition NEW local entries only under lock"
+Fix this by using seg6_get_srh(), which pulls and validates the complete
+SRH and reloads its pointer afterwards. Pulling can reallocate skb->head,
+so refresh the BPF data pointers inside bpf_update_srh_state() immediately
+after the call.
 
-Regards,
-	Sven
+For End.DT6, make the inner IPv6 base header linear before removing the
+outer headers. Pulling only the outer headers can leave the inner header in
+non-linear data, while ipv6_find_hdr() and the nexthop lookup access it
+directly. Clear the cached SRH pointer and refresh the BPF data pointers if
+the pull fails.
 
---nextPart4778182.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+End.B6 and End.B6.Encap can modify or reallocate the skb before a later
+nexthop lookup returns an error. Rebuild the SRH state regardless of the
+action result instead of assuming that an error leaves the skb unchanged.
 
------BEGIN PGP SIGNATURE-----
+Fixes: 486cdf21583e ("bpf: add End.DT6 action to bpf_lwt_seg6_action helper")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
+Assisted-by: Copilot:gpt-5.6-sol
+---
+Please queue this fix for stable kernels.
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCapcXBwAKCRBND3cr0xT1
-y8GTAP9pYtgQ53GhxqBDk6erQWp+KbSDdLPShU2KxvHj7228rQEApSyZSKDsN0tA
-BBvtJ/3BubEGdI0/mkrs3pHOpE3++Aw=
-=mchY
------END PGP SIGNATURE-----
+Testing:
+- Static checks only: checkpatch.pl, diff --check and patch replay.
+- No targeted selftest was added. BPF LWT test-run does not support
+  non-linear skbs, and the existing SEG6 netns test does not create a
+  split inner IPv6 header for End.DT6.
 
---nextPart4778182.LvFx2qVVIh--
+ net/core/filter.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 61940e753552..1dd3a685d1b8 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7018,15 +7018,16 @@ static void bpf_update_srh_state(struct sk_buff *skb)
+ {
+ 	struct seg6_bpf_srh_state *srh_state =
+ 		this_cpu_ptr(&seg6_bpf_srh_states);
+-	int srhoff = 0;
++	struct ipv6_sr_hdr *srh;
+ 
+-	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0) {
+-		srh_state->srh = NULL;
+-	} else {
+-		srh_state->srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
+-		srh_state->hdrlen = srh_state->srh->hdrlen << 3;
+-		srh_state->valid = true;
+-	}
++	srh = seg6_get_srh(skb, 0);
++	bpf_compute_data_pointers(skb);
++	srh_state->srh = srh;
++	if (!srh)
++		return;
++
++	srh_state->hdrlen = srh->hdrlen << 3;
++	srh_state->valid = true;
+ }
+ 
+ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+@@ -7059,15 +7060,18 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ 
+ 		if (ipv6_find_hdr(skb, &hdroff, IPPROTO_IPV6, NULL, NULL) < 0)
+ 			return -EBADMSG;
+-		if (!pskb_pull(skb, hdroff))
++		if (!pskb_may_pull(skb, hdroff + sizeof(struct ipv6hdr))) {
++			srh_state->srh = NULL;
++			bpf_compute_data_pointers(skb);
+ 			return -EBADMSG;
++		}
++		__skb_pull(skb, hdroff);
+ 
+ 		skb_postpull_rcsum(skb, skb_network_header(skb), hdroff);
+ 		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		skb->encapsulation = 0;
+ 
+-		bpf_compute_data_pointers(skb);
+ 		bpf_update_srh_state(skb);
+ 		return seg6_lookup_nexthop(skb, NULL, *(int *)param);
+ 	case SEG6_LOCAL_ACTION_END_B6:
+@@ -7075,8 +7079,7 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ 			return -EBADMSG;
+ 		err = bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6_INLINE,
+ 					  param, param_len);
+-		if (!err)
+-			bpf_update_srh_state(skb);
++		bpf_update_srh_state(skb);
+ 
+ 		return err;
+ 	case SEG6_LOCAL_ACTION_END_B6_ENCAP:
+@@ -7084,8 +7087,7 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ 			return -EBADMSG;
+ 		err = bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6,
+ 					  param, param_len);
+-		if (!err)
+-			bpf_update_srh_state(skb);
++		bpf_update_srh_state(skb);
+ 
+ 		return err;
+ 	default:
 
-
+base-commit: 28d75dd3eb60812b3a87cbdf0d52c42f51b28a78
+-- 
+2.55.0
