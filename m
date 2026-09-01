@@ -1,156 +1,246 @@
-Received: from mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD1345D5D9
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED4E3793BD;
+	Tue,  1 Sep 2026 07:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788247785; cv=none; b=qv4LLm4MfQ68lfhEAIh8B/yV474AqsHP2FyGJ3lJe0xypSr8BL2PH0y+u7QHF8/aYoJVxJ6OP4A5bOK/5VOo5SUvRcyy2/pHmaDJgC1yppK+mM6KdmQ8AqsjQW1lG6DVyyFObOFQZxWBpZYEJK2NK1bjIF9hliwrCSAgwWQ+jVs=
+	t=1788247813; cv=none; b=X+W8sZRjoTJ5kVM+hnJ5QOP95vzQxT4G/h81o0haS1o8Wgd6XtEewR0eptHaAHgyvZAe1HbwMUI9Aw4xELaqrND/2RaX37NLQ4VfaPqzl6HYDI5m/RJHxCIe4iJLs4BPi09EcSvWHngywnUVCjyzXQChgb1vKR99nKmG0MlTqYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788247785; c=relaxed/simple;
-	bh=i1xoBqdCaWtGTV0cIIyem6V7efWtFcemLh92s2fwpYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hZOolzPWCFXHXzn3wra1ty4yo/1appxBVnYoekZ/ILNE82+bRhOFR98UTJI7OpGSPtG+x6BsRnez4RlGUAaifU6ItcBCp/4eydUXeY0cdJRUbfpDMwTOwk00KH5ltSrrlu+J3hquWUHpFHRtPXabctj7g0F2cML4mQkeOdNmm/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jS4/WqQ4; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788247813; c=relaxed/simple;
+	bh=yuVw8jJaWyaYoo2TEizSlBwCGt1hZUIKhJjMOgpl+y0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n61zifdEizcIYtbJ1jsQ7KqllzGGUxlSSqYj3PAAMp7llxENJlaElnaSuz9dzKRlonrDVPoXnoaqm2SwIerenqOi6vdx8umsTyk0oVR11nSwrUj3qhtmAkJtGsBGLCb6xFrRXsCX181vHpuPGQgnoBSSJcks5RptSlo0Rw1SjHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ju3mnYyB; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jS4/WqQ4"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=i1xoBqdCaWtGTV0cIIyem6V7efWtFcemLh92s2fwpYM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788247780; v=1; x=1788852580;
- b=jS4/WqQ46DDYmrAfFjt4XJZtjnEzC0xMRXlAAm/3KjjzKawCHuzE34de3GyYM5r92TFxe9H8
- 69L+15URtp76AXpucnHarSHcHj1eY/9ADKXUDaiQUlO0KBWuBaZLYrBWVCA7Z972+noypfMkqBc
- aoxkDJCKgUCSnvybBd1Q6MsE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c873ab9b9223b804;
-	Tue, 01 Sep 2026 07:29:40 +0000
-X-Mizu-Trace-ID: c873ab9b9223b804
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] tls: fix the open record check in the max payload size setsockopt
-Date: Tue,  1 Sep 2026 15:29:26 +0800
-Message-ID: <20260901072927.128688-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ju3mnYyB"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3E5E11A192B;
+	Tue,  1 Sep 2026 07:30:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0672C6053C;
+	Tue,  1 Sep 2026 07:30:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 50EAE11C78C5E;
+	Tue,  1 Sep 2026 09:29:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788247800; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=SusLD2LJRuGl/EM1pa68AofUX9dK45Px9vTM6WPxfNY=;
+	b=ju3mnYyBlBA49ik61v0qwK2BAK3AnHW/nkCQh90vS7pobAOCGmGw9xiqTnGWGYYQ0FMBIv
+	RTpke5CvTPKds58wsCQoj9GKc8kVwZ6/663+Mivtjnz5LtY2vibecJb8eehBNIjtwu6xbi
+	H2V0V8rR85Rn/m026MnSngUolJviOnv1Qm68oNxXXIwe8C9ZZO+o424C7RVNjfyGMk8Njv
+	WDCrrfT/yv8CBww/KsPoPxqkQnYD908ulBdv5Q8qXrwneiXuF7DNEjL3HHh8wtttq+xLHD
+	zw3fm4nfZArVvDWExfLZlV6FckehdnWcLsiJeuC3K/FK31mCa5vaCIdJ/UpG/g==
+Message-ID: <49620860-9bd5-48fb-bbaf-55da377e9018@bootlin.com>
+Date: Tue, 1 Sep 2026 09:29:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Add UltraRISC DP1000 GMAC
+ support
+To: Jia Wang <wangjia@ultrarisc.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20260901-dwmac-ultrarisc-v1-0-f19454814bcf@ultrarisc.com>
+ <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-do_tls_setsockopt_tx_payload_len() refuses to resize records while one is
-open, but the check is broken in two ways.
+Hello,
 
-It reaches for the open record through tls_sw_ctx_tx(), an unchecked cast
-of ctx->priv_ctx_tx.  Under device offload that pointer is a
-tls_offload_context_tx, so the check reads a field of the wrong struct: it
-returns EBUSY on whatever happens to be there, and never sees the record
-that really is open.  Dispatch on tx_conf.
+On 9/1/26 03:27, Jia Wang wrote:
+> The DP1000 GMAC integration provides fixed TX and RX RGMII clock delays
+> that cannot be disabled. For boards without PCB delays, "rgmii-id"
+> describes the link, but passing that mode unchanged to the PHY would enable
+> a second set of delays.
+> 
+> Use phy_fix_phy_mode_for_mac_delays() to translate "rgmii-id" to "rgmii"
+> before attaching the PHY. Reject other RGMII modes because the fixed MAC
+> delays cannot be combined with them without duplicating or omitting a
+> delay.
+> 
+> Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
 
-The socket lock alone is also not enough to tell no sender is in flight.
-The device tx path drops it in sk_stream_wait_memory() after
-tls_push_record() cleared open_record, so setsockopt can slip in
-mid-sendmsg and shrink the limit.  tls_push_data() latches the limit once
-per call, and a record left open by MSG_MORE can then be bigger than the
-new limit, making the u32 subtraction in the copy clamp wrap around and
-build an oversized record.  Take tx_lock like the sendmsg paths do so
-setsockopt waits for in-flight senders.  Re-reading the limit inside the
-tls_push_data() loop could close the wrap too, but a parked sender would
-still finish with the old limit, so serializing on tx_lock is simpler.
+Simple enough, this is nice :)
 
-Fixes: 82cb5be6ad64 ("net/tls: support setting the maximum payload size")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
-v1 -> v2:
-  - also take tx_lock in setsockopt, the socket lock alone can't stop a
-    device sender parked in sk_stream_wait_memory() (AI review on v1)
-v1: https://lore.kernel.org/netdev/20260831025607.62927-1-jiayuan.chen@linux.dev/
+One thing, I'm going to start requiring this for new glue drivers, can you give
+the output of "ethtool -t eth0" on your device with this new glue driver ?
 
-base on my netdevsim + tls (in progress)
-https://lore.kernel.org/netdev/20260728125658.390500-1-jiayuan.chen@linux.dev/
+You'll have to enable CONFIG_STMMAC_SELFTESTS
 
-Previous finding:
-b17cf742eaad ("tls: device: fix out-of-bounds write in tls_append_frag()")
----
- net/tls/tls_main.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+As this is is a 5.20, I'm expecting you'll get something like :
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index fbb274287aa5..114e5113bafd 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -833,15 +833,29 @@ static int do_tls_setsockopt_no_pad(struct sock *sk, sockptr_t optval,
- 	return rc;
- }
- 
-+/* priv_ctx_tx holds a different structure on each TX path, so tx_conf has to
-+ * say which open record to look at.
-+ */
-+static bool tls_tx_record_is_open(struct tls_context *ctx)
-+{
-+	switch (ctx->tx_conf) {
-+	case TLS_SW:
-+		return !!tls_sw_ctx_tx(ctx)->open_rec;
-+	case TLS_HW:
-+		return !!tls_offload_ctx_tx(ctx)->open_record;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
- 					    unsigned int optlen)
- {
- 	struct tls_context *ctx = tls_get_ctx(sk);
--	struct tls_sw_context_tx *sw_ctx = tls_sw_ctx_tx(ctx);
- 	u16 value;
- 	bool tls_13 = ctx->prot_info.version == TLS_1_3_VERSION;
- 
--	if (sw_ctx && sw_ctx->open_rec)
-+	if (tls_tx_record_is_open(ctx))
- 		return -EBUSY;
- 
- 	if (sockptr_is_null(optval) || optlen != sizeof(value))
-@@ -862,6 +876,7 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
- static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
- 			     unsigned int optlen)
- {
-+	struct tls_context *ctx;
- 	int rc = 0;
- 
- 	switch (optname) {
-@@ -881,9 +896,17 @@ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
- 		rc = do_tls_setsockopt_no_pad(sk, optval, optlen);
- 		break;
- 	case TLS_TX_MAX_PAYLOAD_LEN:
-+		/* Take tx_lock like the sendmsg paths do, the socket lock is
-+		 * dropped while a sender waits for memory, with no record open.
-+		 */
-+		ctx = tls_get_ctx(sk);
-+		rc = mutex_lock_interruptible(&ctx->tx_lock);
-+		if (rc)
-+			break;
- 		lock_sock(sk);
- 		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
- 		release_sock(sk);
-+		mutex_unlock(&ctx->tx_lock);
- 		break;
- 	default:
- 		rc = -ENOPROTOOPT;
--- 
-2.43.0
+ 1. MAC Loopback                 0
+ 2. MMC Counters                 0
+ 3. EEE                          -95
+ 4. Hash Filter MC               0
+ 5. Perfect Filter UC            0
+ 6. MC Filter                    0
+ 7. UC Filter                    0
+ 8. Flow Control                 -95
+ 9. RSS                          -95
+10. VLAN Filtering               -110
+11. VLAN Filtering (perf)        -110
+12. Double VLAN Filter           -110
+13. Double VLAN Filter (perf)    -110
+14. Flexible RX Parser           -95
+15. SA Insertion (desc)          0
+16. SA Replacement (desc)        0
+17. SA Insertion (reg)           0
+18. SA Replacement (reg)         0
+19. VLAN TX Insertion            -110
+20. SVLAN TX Insertion           -95
+21. L3 DA Filtering              -95
+22. L3 SA Filtering              -95
+23. L4 DA TCP Filtering          -95
+24. L4 SA TCP Filtering          -95
+25. L4 DA UDP Filtering          -95
+26. L4 SA UDP Filtering          -95
+27. ARP Offload                  -110
+28. Jumbo Frame                  0
+29. Multichannel Jumbo           -95
+30. Split Header                 -95
+31. TBS (ETF Scheduler)          -95
+
+-95 (-EOPNOTSUP) and 0 are OK, watch for any other values.
+
+If ARP Offload and any VLAN selftest (insertion and filtering), this is a known
+issue and you can ignore :)
+
+Maxime
+
+
+> ---
+>  MAINTAINERS                                        |  1 +
+>  drivers/net/ethernet/stmicro/stmmac/Kconfig        | 11 +++++
+>  drivers/net/ethernet/stmicro/stmmac/Makefile       |  1 +
+>  .../net/ethernet/stmicro/stmmac/dwmac-ultrarisc.c  | 54 ++++++++++++++++++++++
+>  4 files changed, 67 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3b96ff0734e6..aacbab369b51 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -28008,6 +28008,7 @@ ULTRARISC DP1000 DWMAC GLUE LAYER
+>  M:	Jia Wang <wangjia@ultrarisc.com>
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/net/ultrarisc,dp1000-gmac.yaml
+> +F:	drivers/net/ethernet/stmicro/stmmac/dwmac-ultrarisc.c
+>  
+>  ULTRARISC DP1000 PINCTRL DRIVER
+>  M:	Jia Wang <wangjia@ultrarisc.com>
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> index e3dd5adda5ac..ab3c4cf96423 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> @@ -319,6 +319,17 @@ config DWMAC_THEAD
+>  	  the stmmac device driver. This driver is used for T-HEAD TH1520
+>  	  ethernet controller.
+>  
+> +config DWMAC_ULTRARISC
+> +	tristate "UltraRISC DWMAC support"
+> +	default ARCH_ULTRARISC
+> +	depends on OF && (ARCH_ULTRARISC || COMPILE_TEST)
+> +	help
+> +	  Support for the Ethernet controller on the UltraRISC DP1000 SoC.
+> +
+> +	  This selects the UltraRISC platform specific glue layer support
+> +	  for the stmmac device driver. This driver is used for the DP1000
+> +	  GMAC Ethernet controller.
+> +
+>  config DWMAC_IMX8
+>  	tristate "NXP IMX8 DWMAC support"
+>  	default ARCH_MXC
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
+> index a1cea2f57252..b16a456b730e 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/Makefile
+> +++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
+> @@ -36,6 +36,7 @@ obj-$(CONFIG_DWMAC_SUNXI)	+= dwmac-sunxi.o
+>  obj-$(CONFIG_DWMAC_SUN8I)	+= dwmac-sun8i.o
+>  obj-$(CONFIG_DWMAC_SUN55I)	+= dwmac-sun55i.o
+>  obj-$(CONFIG_DWMAC_THEAD)	+= dwmac-thead.o
+> +obj-$(CONFIG_DWMAC_ULTRARISC)	+= dwmac-ultrarisc.o
+>  obj-$(CONFIG_DWMAC_DWC_QOS_ETH)	+= dwmac-dwc-qos-eth.o
+>  obj-$(CONFIG_DWMAC_INTEL_PLAT)	+= dwmac-intel-plat.o
+>  obj-$(CONFIG_DWMAC_LOONGSON1)	+= dwmac-loongson1.o
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-ultrarisc.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-ultrarisc.c
+> new file mode 100644
+> index 000000000000..4bdda2665338
+> --- /dev/null
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-ultrarisc.c
+> @@ -0,0 +1,54 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * UltraRISC DWMAC platform driver
+> + *
+> + * Copyright (C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/phy.h>
+> +#include <linux/platform_device.h>
+> +
+> +#include "stmmac_platform.h"
+> +
+> +static int ultrarisc_dwmac_probe(struct platform_device *pdev)
+> +{
+> +	struct plat_stmmacenet_data *plat_dat;
+> +	struct stmmac_resources stmmac_res;
+> +	struct device *dev = &pdev->dev;
+> +	int ret;
+> +
+> +	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to get resources\n");
+> +
+> +	plat_dat = devm_stmmac_probe_config_dt(pdev, stmmac_res.mac);
+> +	if (IS_ERR(plat_dat))
+> +		return dev_err_probe(dev, PTR_ERR(plat_dat), "failed to parse DT parameters\n");
+> +
+> +	plat_dat->phy_interface =
+> +		phy_fix_phy_mode_for_mac_delays(plat_dat->phy_interface, true, true);
+> +	if (plat_dat->phy_interface == PHY_INTERFACE_MODE_NA)
+> +		return dev_err_probe(dev, -EINVAL, "unsupported phy interface mode\n");
+> +
+> +	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
+> +}
+> +
+> +static const struct of_device_id ultrarisc_dwmac_match[] = {
+> +	{ .compatible = "ultrarisc,dp1000-gmac" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, ultrarisc_dwmac_match);
+> +
+> +static struct platform_driver ultrarisc_dwmac_driver = {
+> +	.probe = ultrarisc_dwmac_probe,
+> +	.driver = {
+> +		.name = "ultrarisc-dwmac",
+> +		.pm = &stmmac_pltfr_pm_ops,
+> +		.of_match_table = ultrarisc_dwmac_match,
+> +	},
+> +};
+> +module_platform_driver(ultrarisc_dwmac_driver);
+> +
+> +MODULE_DESCRIPTION("UltraRISC DWMAC platform driver");
+> +MODULE_LICENSE("GPL");
+> 
 
