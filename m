@@ -1,158 +1,155 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9459F44A416
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 19:58:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9835345560D;
+	Tue,  1 Sep 2026 20:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788292737; cv=none; b=MolnM+Yfg8/6qkblKCuEklsgm+WCvmlTDiWVuYcdjOfNoen5BOxeydMLkBs8DFYnVAhWQYmqGX9i6FAN22ObV6a1+rgSqlI5/xcR2g4CRiLaicyTDaSx3ZHFaScVVabcWZ1M1E97jetIiobgvyMSbp18TG3z1KTTzYmwqLRvDko=
+	t=1788292867; cv=none; b=bhRFWE3XC45+p/HP9nAm53gGNLowVJH+sDHpMlpFkZJVYMcL0qqDZg1mo8T0175tgL+I1YLArNxDxuxkXJXlIJQKHIjleMI34V3Oo55zJaY8KtrosplX6QT4BHa1+8oWRxK0rtWDCI6PTgRye1qxrgiHhQ51LgBPCasUDfkVHa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788292737; c=relaxed/simple;
-	bh=MGdskzSxiD/sw5yijXuFD+ea1ERwLtruXpAWf4rJoKw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=DZr16eT5DPCKPnuLZAiXLH8JJYX/58Kdf4nRwZBwavsyHTBuxNueIIzZ2E3rqkGUgSb0PP1eRGU0mKji6gAS1ICypnzHJMj9MfJNIW1e6TIaF8ZAmRfqOvHKLokFRkRkLjrGkYxDjbnzUZzHGe2KuYfiHe3g4hMtTsqnm/z9Sdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=S8+Wf7Th; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mYsXmG1f; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="S8+Wf7Th";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mYsXmG1f"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfout.stl.internal (Postfix) with ESMTP id 953B51D0004B;
-	Tue,  1 Sep 2026 15:58:53 -0400 (EDT)
-Received: from ams-imap-19 ([10.64.2.39])
-  by ams-compute-01.internal (MEProxy); Tue, 01 Sep 2026 15:58:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788292732;
-	 x=1788379132; bh=HtBurZwaMJiQvnqDWg1tU15j20OMcl43cDl3tYDzqnM=; b=
-	S8+Wf7ThrHIK+esmrlnat2sh/nk72Ag7bHCTQxQL11LTmLTuFn5CO2jcdCFeCvmk
-	J9nL7YSGSN920AGOn90p82DBq3vCpPOdyA6xZPzwkMRE6prf9q3UF6NACiNUxjGj
-	nDpF5yam8vYB5eeo1uYnSbtss/1dEVoaqXs0XtCwDQI5Lf6m0Tfb9xvSMYFnd51H
-	9LGdPHZTntXDofKVzFIHxcn+DUJB6tTBNqmpJcRyvBuROk7iw7EdiI5A8riUMjkO
-	QEF4y+SogoW0eLWr9fbVctJHno0CkdqOtkI1NGRzhE08duybG78MGMmFbuhdCglC
-	ZZp7eavEdyDzYXt4/5AiDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788292732; x=
-	1788379132; bh=HtBurZwaMJiQvnqDWg1tU15j20OMcl43cDl3tYDzqnM=; b=m
-	YsXmG1f15cQjiMJxSD19Ptajvuwi0tzeTgzgFPPnz8aM3zLp+U2bT4j5J+zDcUYn
-	MtIb/cxu6vjq64RRLbOoIXGTBEx0UDOv77sa8JBNVjJP5vTL7O4XLsqq3ZoY9FVQ
-	tJiTShelMIdZ5dL2u2fcvSegZKgyqCKXCIVIme5FnegrqqpSeWwejrZjTTzGKlya
-	1L+Vl7OI0cUcCdU0uE2MY/D/K2QQAVFjcs3QulRaUyhynfDJMZAiqSj0ctobF1fB
-	2QB088dF40Nj8fmAiDPpBsudWYZwhW17xgXUUHqLZghwW4aP1jwvB6hLyqLRqFBv
-	fi2ouxUQikeYPvUN67XJg==
-X-ME-Sender: <xms:dy6XamYamL1OoTQTFdUnjTaN18mB2oFUCp42EM3dMdTQnAv14PWvag>
-    <xme:dy6XakO1EQdFCzrUOEwIBZdzra_IHYhg33gBpSgagi_p-W6bX1tvm9YuSrTHLIUj2
-    rVVkN_47hkqR8fhmebC1NnJFNF7Z-SZ8hnpKbdc5kZrtXsNzz4OINcw>
-X-ME-Proxy-Cause: dmFkZTFIHQXSi4Mh6AHi8Mqru8yFrihET0luYnl2VjfLYDmNlqPiiN3ud+DyjDTr5iKVoU
-    gIXQJaLXLPyJIrtnZm1RZgw9LS3UN37nNKIza0+tjEqL+8piH4cK50rmi8GfYkOmyxSTYP
-    LNGCO3tM55AcJZSUkKAvg+tBY0KY0xqarZyfhQ+hIq6jy8brwpBYejZL9a2HFtwfgdGfTd
-    FcZj1bbP6KqXtTYSP0pXlgFs0nYlzEWWD8qeH7MLW151G7laNuoONSX1mkEgO9NbDGIxLH
-    4VjySY0K0NJgOXoKKct1Yyz+CleLFGKml7JjK+ibgxpIxTWE0qIW1cgieKouQT+XWwElUL
-    xQkQ781rJzPFfkRN6Bv6zEPRtabk2FCa3LRb7Kvdjp17TeiwoDv3PjtxzuuXPW6Sq90+6h
-    qMd/U57jjwTP6+w/Pc8J9e0ej6V+AlxdrhJCNRI5NM+a8RedHYnm9JwZvEq88uwiXVI74w
-    VfSOLq2Uo8UH2m/V/Gy74VV7hZpsG++n5Gk1vHezPxXANmmFw1ZmEWGO43G/2jSt7N9SKU
-    IWxJFjmI73u1LbeDnLFKe+LVo8uhLu8rQsdXQSRJAsMiYuRvXluTQ44Tx4neIQ/4WuIaeu
-    uAzkReH6aiRHqemcUZXa5yFwFBR4ITVbiKKsnU3A2mtdR/1tkk3RLZp1W4WA
-X-ME-Proxy: <xmx:eS6Xaiq4aMYQNwYEwwuRfAZp8Lj94XgXaQSwwDevIktEybixMXg7rQ>
-    <xmx:eS6XanLFMSijjP5Cn-CjYWhxpKrRvgmDcI2lL0yrwqbfW5CGSTcwHg>
-    <xmx:eS6XalOIl06E-IsWyEYTnsJH0ltdkCihRVdnzzv_oS6cIPQjB_ey8w>
-    <xmx:eS6XakrpLU_4gCxQVc1ygai8KHDsn94QX24V543mkDwR1-yID4_oMw>
-    <xmx:fC6Xal0mONOwPSTyNh5B4cGlChZezN9XsUuhT0nwvbIkH8Rz9XQ-x9Wn>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id ED4892F8003D; Tue,  1 Sep 2026 15:58:46 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1788292867; c=relaxed/simple;
+	bh=KHoqP4WNh378MH1e2xQZFd7aitAGYyEJiGcs1HzscKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=flzovBHPlj6FjtdTDMZuQ9HQr0jFlfe3IDZmGBBqwuHOinwoMSSlGLG51ZvZa+p46Cs44Aur0t9ojg6qaQHPm3uvUAMfxHWf032cCpGtrTFCRSpe0HkpN3zfVPd/Wg+kJs/WZm7Af9rkYJGbCjVTDzZGiB4CJXVYJ5jBaoVltds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 3A29220B7166; Tue,  1 Sep 2026 13:00:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3A29220B7166
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org,
+	shirazsaleem@microsoft.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4 0/4] net: mana: concurrent HWC requests and dynamic queue depth
+Date: Tue,  1 Sep 2026 13:00:12 -0700
+Message-ID: <20260901200018.3194525-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AQCaIXmGAEe7
-Date: Tue, 01 Sep 2026 22:58:26 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Jakub Kicinski" <kuba@kernel.org>,
- "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
-Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "Paolo Abeni" <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>,
- "Hannes Frederic Sowa" <hannes@stressinduktion.org>,
- "Vadim Fedorenko" <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
- "Alice Mikityanska" <alice@isovalent.com>
-Message-Id: <b9144a73-a079-4442-91a5-bd5a5557dd0a@app.fastmail.com>
-In-Reply-To: <e01d7fc0-cc3f-4a52-a587-f9087f1c787d@app.fastmail.com>
-References: <20260825200215.90326-1-alice.kernel@fastmail.im>
- <20260825200215.90326-4-alice.kernel@fastmail.im>
- <willemdebruijn.kernel.3645a45d69737@gmail.com>
- <20260827122856.4b6eeb96@kernel.org>
- <e01d7fc0-cc3f-4a52-a587-f9087f1c787d@app.fastmail.com>
-Subject: Re: [PATCH net v4 3/4] selftests: net: Test UDP length overflow with PMTU
- discover and big MTU
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 28, 2026, at 23:35, Alice Mikityanska wrote:
-> On Thu, Aug 27, 2026, at 22:28, Jakub Kicinski wrote:
->> On Wed, 26 Aug 2026 13:18:18 -0400 Willem de Bruijn wrote:
->>> > +def check_dmesg_clean(func: str) -> bool:
->>> > +    with subprocess.Popen(['dmesg'], stdout=subprocess.PIPE) as dmesg:
->>> > +        res = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout, check=False)
->>> > +    return res.returncode != 0 and dmesg.returncode == 0
->>> > +
->>> > +
->>> > +@contextmanager  
->>> 
->>> Interesting approach. In ksft the built-in defer() mechanism may be
->>> preferred. Not sure.
->>
->> +1 small preference towards defer() if Alice is willing.
->> It's be more idiomatic for our selftests
->
-> No problem, I can switch to defer, thanks for the suggestion.
+The MANA Hardware Channel (HWC) is the control path the driver uses to
+talk to the device.  It is created at a fixed depth of one outstanding
+request, so every management command serialises behind the previous one.
+This series lets several commands be in flight and raises the queue depth
+to what the device reports.
 
-I replaced try-finally with defer, but I also kept dummy_netdev() with
-@contextmanager, because otherwise it leads to code repetition between
-the two tests (even if I put ip setup into a function) and increases
-indent by two levels (because it would be no longer possible to compact
-these four with statements into one). I.e.:
+Patches 1-2 are preparation and change no behaviour on their own.  Patch 1
+records whether mana_smc_setup_hwc() got as far as handing the queue
+addresses to the PF, which the reinit path in patch 4 needs in order to
+know whether the device may still be using the queues.  Patch 2 gives each
+message slot its own lock, refcount and completion state, which is what
+makes more than one slot usable at a time.
 
-    with (
-        NetNS() as ns,
-        dummy_netdev(ns, 65556 + 20 * ipv6, ipv6),
-        NetNSEnter(ns),
-        socket.socket(af, socket.SOCK_DGRAM) as fd,
-    ):
+Patch 3 makes the channel actually concurrent: a per-queue lock around
+mana_gd_post_and_ring(), a bounded wait for a free slot, and a teardown
+that drains in-flight senders before freeing the HWC.
 
-vs
+Patch 4 bootstraps the HWC at depth 1, queries the device maximum and, if
+it is larger, tears the queues down and rebuilds them at that depth.  The
+device-reported dimensions are validated before they size DMA allocations,
+and the dynamic-depth capability is advertised so firmware enables it only
+for drivers that support it.
 
-    with NetNS() as ns:
-        ip('link add dummy type dummy', ns=ns)    # this repeats
-        with defer(ip, 'link del dummy', ns=ns):  # and this
-            ip_setup(ns, 65556 + 20 * ipv6, ipv6)
-            with (
-                NetNSEnter(ns),
-                socket.socket(af, socket.SOCK_DGRAM) as fd,
-            ):
+None of the four carries a Fixes: tag; the bug fixes that used to be part
+of this series are being handled separately (see below).
 
-I think the first one is better. And yes, I need to scope defer with
-with, otherwise it's scheduled after ns is deleted. I haven't found any
-other selftest that would do that, but I see this functionality is
-implemented in the defer class. Hope that works for you, respinnning :)
+Changes since v2:
 
->> More importantly ruff check and pylink --disable=R have to be clean
->> for new tests. The test cases need a docstring explaining what they are
->> trying to test. The helpers can probably get a _ prefix to mark them
->> as private and silence the warning.
->
-> Got it, will do. I thought it was OK, because all tests I saw didn't
-> have docstrings.
->
->> -- 
->> pw-bot: cr
+ - Split the series.  v2 mixed five Fixes:-tagged bug fixes with the two
+   feature patches and targeted net-next.  Per review feedback [1] the
+   fixes now go via the net tree on their own, and this series carries
+   only the feature work.  It no longer depends on that series: it
+   applies to net-next as it stands today.
+
+ - Because the fixes are no longer in front of them, the two feature
+   patches were reworked rather than rebased.  The groundwork they used
+   to inherit is now provided by the two preparation patches 1-2, which
+   are deliberately not fixes and carry no Fixes: tag.
+
+ - patch 3: the slot admission was reworked.  Acquisition uses
+   down_timeout() so a caller expires rather than blocking on a slot
+   that a timed-out request is still holding, and channel_up is
+   re-checked under the bitmap lock once a permit is held so teardown
+   cannot be missed.
+
+ - patch 3: a slot whose request timed out is no longer released back to
+   the pool -- only the matching response, or teardown, reclaims it.
+   Releasing it early let a late response land on whichever command had
+   since reused the slot.  mlx5 gates its command slots the same way
+   ("only real completion can free the cmd slot", drivers/net/ethernet/
+   mellanox/mlx5/core/cmd.c).
+
+ - patch 4: validate the device-reported dimensions before they size DMA
+   allocations -- require the negotiated message sizes to match the
+   bootstrap ones, bound the depth by HW_CHANNEL_MAX_QUEUE_DEPTH, check
+   that q_depth * max_msg_size plus alignment fits in u32, and carry the
+   depth as u32 since the device field is 24-bit and truncating to u16
+   could wrap a large value to a small depth.
+
+ - patch 4: refuse the channel if the initialisation handshake did not
+   supply a doorbell, rather than letting INVALID_DOORBELL reach
+   mana_gd_ring_doorbell().
+
+ - patch 4: a device that refuses the larger-depth establish now falls
+   back to a working bootstrap channel instead of failing probe, but
+   only once a retried DESTROY_HWC has confirmed the queue mappings are
+   gone.
+
+Testing on Azure hardware, with the series applied on net-next:
+
+ - 17518 HWC commands, all completing successfully, with up to 2 in
+   flight at once (the bootstrap channel can only ever have 1).
+ - PCI remove/rescan x3: the reinit path runs every time, and the
+   channel comes back at the larger depth.
+ - iperf3 -P16: 1.24 TBytes at 182 Gbit/s, no taint and no splats.
+ - Fault injection: with every HWC response dropped so that all slots
+   end up held by timed-out requests, callers return -ETIMEDOUT in
+   sub-millisecond time instead of blocking, no hung tasks, and the
+   driver recovers once responses resume.
+
+[1] https://lore.kernel.org/all/7108c005-6b8d-4dda-82cc-e665cbe3b6a4@redhat.com/
+
+ - v2: https://lore.kernel.org/all/20260721234339.1476932-1-longli@microsoft.com/
+ - v1: https://lore.kernel.org/netdev/20260715032942.3945317-1-longli@microsoft.com/
+
+Long Li (4):
+  net: mana: track when the HWC has been handed to the PF
+  net: mana: give each HWC message slot its own completion state
+  net: mana: support concurrent HWC requests
+  net: mana: add dynamic HWC queue depth with reinit path
+
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  63 +-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 763 ++++++++++++++++--
+ .../net/ethernet/microsoft/mana/shm_channel.c |  11 +-
+ include/net/mana/gdma.h                       |  19 +
+ include/net/mana/hw_channel.h                 |  64 +-
+ include/net/mana/shm_channel.h                |   2 +-
+ 6 files changed, 862 insertions(+), 60 deletions(-)
+
+
+base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
+-- 
+2.43.0
+
