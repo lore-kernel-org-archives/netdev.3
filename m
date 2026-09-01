@@ -1,213 +1,240 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B3F35CBD6
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788249920; cv=none; b=T8BuQqZZFgNFF4mYvW/s1ioXpgLPGdyOhXGQiLTUS4fW9929jqYl+n7QXk8OUvhGkBhDH9Cr3eL4urRvv98IxsvIHiZ/FDydlu/uiONDc5dOdG3sXx/5Xsk/Ode7zZKOml4ujL8nMNChyycUxraWZU4lDQ5TVJT33GZcggCqmFc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788249920; c=relaxed/simple;
-	bh=2OP2L7SzkBrg/QvLyKIZXfRlLBLWuoclJ+HmnVt54lk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QISvBZdqJ7y9Ewlkbedcgt3fOHDcttFTi/flg3jPVB3nZ91TE7GVfFzcivcFQNyuXq1S3xh0Ezlpzb22gWLFR2eKpHk70WLwIf7q9nTyCYF/HcfOA2RRYtUUKIxnxdm9ZvGznU4pI/wBdlhRzQ28ESqYNvDHztelXpA3u91mQKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AMt8h4vZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Un1bKO4Z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8583B6370
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788250123; cv=pass; b=R6eSj4Xt7DmjLHQByicB2di9jZJpHihWXTgYojRjOboj+PBHS9DPysCTjciZ2AyDzhkM/m9JF7BNcImfFqQlv3AD9fglYG7uERGpCG8me8uAH1k3NijRkvd2SoC5DRIALbd3e/Y2xgOzP0nAJmvxHV2b5OE3A7o+Ke1A1B70Ayw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788250123; c=relaxed/simple;
+	bh=gTWI4BcWGvGEt450M4Ez2b9tan7P4TWcMjFJL2RZnHc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KtSu5drvwcPLj9aaxMAEVGwBmPrXHnEpYnKtIzZyPB70zDJNvvtSk0CP2ip0vZhbOV9fzRAOB31AGGFpV5CNYk3Vws2YY/0Crn/eOJ49HoqrBlnBuQxYfhJgz5ctAuCy6Nd3Lz+UXUxTdhPr+WWOJOs2FQYuoR1toCv/zCjmPI4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S1XtT6Dc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Y3/bgCg8; arc=pass smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AMt8h4vZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Un1bKO4Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788249918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c6II7OJOvbSf1qn4a78SQvZqHlqlRqW3TztU7vrsw3A=;
-	b=AMt8h4vZgBCYZ0e61qRc3NW9IpYm/Cb1Toxf1LGt/3KmaZ6aAQ7Ditf1OWX4hDouTKTf1h
-	BHAsIGm8k7Jr6nWN0MSqFmGDiOOIGtiBJG/xnRaVbUgP65hQKt+Lnh+nVvUgw9A71YwQJB
-	3Fm84RDdzmJISzlj8u0vASbGz7ydeT4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-bGgIw3IXOrmQmjyCqifGPg-1; Tue, 01 Sept 2026 04:05:07 -0400
-X-MC-Unique: bGgIw3IXOrmQmjyCqifGPg-1
-X-Mimecast-MFC-AGG-ID: bGgIw3IXOrmQmjyCqifGPg_1788249906
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4994cf6cdb9so31321245e9.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 01:05:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S1XtT6Dc";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Y3/bgCg8"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68179Jss1335422
+	for <netdev@vger.kernel.org>; Tue, 1 Sep 2026 08:08:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ulHqb7cE1CIcN7Qr2Yem28jNDTGlPMQf8e+dXPDEHi8=; b=S1XtT6DcnRt2ncR5
+	Ed1KGoJXkVE95bjqMOdjZ/m8mXLDxO1J2H01oc32wKzDM07kiKoIOBUtyGyUC5IZ
+	RSRnmiVrcdK4NAknwdnT5NbZgUWwzSL8XW0F97ix3+YcpvRzR2ymELBlpc/06oAA
+	5nZY077nEinIRvaj9mf7/b5hq+IPXvGlkL03YvpQqSFNQw3HDGivzW2xPwCVvJYm
+	0F8hUQmDiVjHihE21dce7danVCDGerazQQ1KYDUtKHakjBQkkY+UqUiXRjlt2V/d
+	qDi8xZSQQTuTWrFDaH8QIX+BqUtooKxOJXfpbUmQjorRDlKWCaLkN3Y9Czip6ePU
+	2/339w==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gdjtx21k3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 08:08:41 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93494cce712so802426985a.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 01:08:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788250120; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rmcwPNjHVvfTlI0PybMOHtY/HwDGVaROikvVq8965mZnMvwhkdPJHtTNR18kQVCWtW
+         JZB7ZrZHzZtId21HlyIXs5rF8T8n9DK02WyYTPPlGhHMl2BNpXKttPrbjPdXfIJgoqNt
+         kkQSZqJUclD2lWOlv8LOqrCay+6mpNCRAIPygWcDiIEdlLMHhzhAh3nHdtL89sjmDrmK
+         HoEWgvMLyL5muy6azb26rxer6yEyYRnyfNUGpR+XIITvZxS+Gw0muGUUv0w8KnIqCJsD
+         LHa1rQWRC8a1bVEQZke16kHOj7z5B9yb7eMHDzIB5ZwpdQ2B1VhZY1Vh7L1GAcQ8PAJz
+         K1zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ulHqb7cE1CIcN7Qr2Yem28jNDTGlPMQf8e+dXPDEHi8=;
+        fh=Vo/PYT/ShsMSf3lfzChTxGrKh5IN8VAiBF8yzLKdrSE=;
+        b=neSO+V7dH3nGcm1yIEWOH/mVlXVi8AnLo9OmNaKjWK0t8W3smJ9mE+uNe0V8T8B07p
+         wgrTJh1osY+1cpQizqi4nLdnS3T28DXyXVSl5zsKTDj6JeNlvh8PJlS2jnwvonTEWCCG
+         NDtnei8JrJzaIz1GJsoEK/VRLI1Ip7rm/6NX6SyAL7lRtHBaiwhjy5lkae+OEf/O1URV
+         K78nA9Wlim6dp1eTMChsOidHp9mQVinvyOtLuMXb1zfmaQJAhgrhDf1JyQ1x6a2K5bcf
+         QME51CXbZd1N2bp9jifoCV24oGjSR1co9empcHWSBtbUxvR+37S5bYblxxRQVwLtw62w
+         DITA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788249906; x=1788854706; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=c6II7OJOvbSf1qn4a78SQvZqHlqlRqW3TztU7vrsw3A=;
-        b=Un1bKO4Z9incYEUKrW3iYSYnkZR/XqLYk3VknH7xvFbkYeR4ajOSje0PywTKPfhaoT
-         SYH9b0ws6Lh8yfgBeZIF0ciB9t10lH/bSB8fYQ05aYhj363O47DQwm6pihGtKVq51MpL
-         o790vpEXdFhXKu+M2z9d04VJKmgl2jiMepU7wls9Qt8BNprfaUCKHYBzs2Be4w2HgRML
-         nA8SgyL70W7wTA0nlcuwgeJMHy/GabKov4hXr6jeTX+46pao8E8/QQzEuO6sR6lyAK3p
-         ZFOvrBTJsY4R2wUGbQsFnFDL8yRL4Z7RxMVx+Z/TJp8SkIws8XB3BfwMY1SOXt1++6pz
-         dtvw==
+        d=oss.qualcomm.com; s=google; t=1788250120; x=1788854920; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ulHqb7cE1CIcN7Qr2Yem28jNDTGlPMQf8e+dXPDEHi8=;
+        b=Y3/bgCg8y7aBFLA76RqHRfditkYuXVfaPLiWdyG23d9jEwxkAWcPoqQLMLdZtLg6gA
+         l5kz0WiJM49sIrmzQYmV4FyTNaknd4IehYUXpCqxKYINCusyApXh5k9T91Vfb4RRaeoX
+         WgJpqPNPkoSn0MyOiDcZZg9H5CycCkE3JPXOfQwHrud2XcYlPYIHyi2Ykqf3wG3aziUP
+         VBl9o5rWWUdkap6T1fN3mU1ua8dqyovXd6oAzUWAxNpnmmlCTctEQG1fHwL7ZjoL6FYB
+         iiz+rR/hZxwwXhJ5vrsiqXlAQ5jLKrmkGqzkScG4pv3990brBkHxTZVYux1GwOtVShgx
+         Cnog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788249906; x=1788854706;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=c6II7OJOvbSf1qn4a78SQvZqHlqlRqW3TztU7vrsw3A=;
-        b=IkL44R28kT+gqlXk89A8x14tKZncDt3uXOopAQG3MyKjnTkqU7r4W+LqnN5q84vPb/
-         5JiYkZBmAJbEfOS29oGE7ziHrs8boSFzkFGrgGph0dK/BzHr2586fpiXu7A4aJvICkTH
-         WVW+OvbQ2cwIE/gFIibj4iOHvopUoKxly4adkEp3mTOhFjFmy4hqL1mjdXf1HQfrp1/K
-         JsPNshNR5DiLLA1SkGTjlTrRtvxr26/1w3WjFitscbV6SUskx0szV5bGbHjK13y3X9ZT
-         Cg6PLjGUqGTYeiek6SAqjtH5u/skE/gxQFO9B0nvBF8MCJWadbV0PlS8QiinY8CHCSY8
-         MzRg==
-X-Forwarded-Encrypted: i=1; AHgh+RpXjgwlGfd06eEQhY/aHM2wKnX3ej/T0BB0I+mp3VK8zr58bl1CC87YDjKQMcszNLfh4BVaOTk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kQgrfI+Bg1AYaeITsUW7c3rJ/qcVyDREw0t9n0LNMVNMvvSSNk
-	sbkfc8h17gD8Y+9ZY/zVA897v6W5HZvMAUQPZU8vqYSCxtH6zK9KDPeGkQzK1FtqCnLuw4WHJQ2
-	naZXY4xVibh7YlZO68fx03BBZOUEaTBwN7sbOfmMD5xzkU7QJUaGdHwVguQ==
-X-Gm-Gg: AR+sD13PelO52UmFWv2h0OI5zkLmp3YAn4UPFnby6EJqtyYknRAJmv32pKz+eCXw4el
-	E4kzx479OJO2VnFhB9E3XvweXrwiCKq0iUKyC++lwW4zoLPBfd7ZRiYu8M/KWVTWlcONhsG8BaW
-	59va59WpZLZC3NMKGP+dIEK1NenvhHf66U8meliBWQ1AWar6XiqZYhllrPBEXDg7a1syZmjAuUJ
-	8L6fFsq+tJ/LbvjA+Kb+xZsppgLWRKh6D2Y8+gQ02FC9v+gSmkCxl/KJgfs6rZ3wyO+QLjKp6ks
-	S6oZLM0Ltc9OPRnvEgJ4GTpROOlcnxtO37yxbjGQZjHlQ/8NjSYUDQ+TbWRMU5kP3W/cwtILT8R
-	ezOFa5lNfX+/oNjqWKCEV0lIAF2jmS42392aH8hClfqhv3auB2PaHAE3gAHp/vRWka6DslyWtFg
-	==
-X-Received: by 2002:a05:600c:a012:b0:49c:d818:8764 with SMTP id 5b1f17b1804b1-49cd81887aemr179668715e9.11.1788249879377;
-        Tue, 01 Sep 2026 01:04:39 -0700 (PDT)
-X-Received: by 2002:a05:600c:a012:b0:49c:d818:8764 with SMTP id 5b1f17b1804b1-49cd81887aemr179602105e9.11.1788249844819;
-        Tue, 01 Sep 2026 01:04:04 -0700 (PDT)
-Received: from [192.168.188.103] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce08862sm49860305e9.1.2026.09.01.01.04.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 01:04:03 -0700 (PDT)
-Message-ID: <e121d343-9a4a-4f93-86c1-c96dd37f1ae1@redhat.com>
-Date: Tue, 1 Sep 2026 10:03:51 +0200
+        d=1e100.net; s=20251104; t=1788250120; x=1788854920;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ulHqb7cE1CIcN7Qr2Yem28jNDTGlPMQf8e+dXPDEHi8=;
+        b=gVfF04zV26TJ6G1DbrIbMfdYQJebjxRLd890ujQISOReL0oDI6uV4giVpdWdvAVuer
+         5XVwyXKgZExR3zVcl5ETUT6QLSBu6zWRGlPyCXHNxF3Y8CRpRir4jyMQheoW53DAs62+
+         FQSiKnD7hcOdhjnVeFw1CaQqzcMG3Rsbsv6pQDen+H2jk6ufoe/Qddq6qVTXooS+Tzxs
+         higeMLh4cxHabTBCE8xq5+5gHV04YIkYiQNlziIZfkhhENcCiHO9w9tGCvorm3Pz6IyY
+         1T3Bfbf5ltRUWCSUSiBGSvDSVLZLZfrz8YhUuRhmHjrYzgXogXXBgkSFaFEz8KaTBKrb
+         7s6w==
+X-Forwarded-Encrypted: i=1; AHgh+RqYXxYYZFIHCxkdrEpTwCK+98tnfkUUCJohkQGOhrTcwbuEhXfF4KZPYFgQmHI1WOLZb/Povzg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nlR5BtDMz/SOYqScq6ttmNLnj1GIRDLFZsVJPdgCBkK53MuVwC
+	bPDsT7MyEhJD40LMgNhi+vc5OgKqDvoXnnZlaZAVzvH9rRSPwwifRpxVvd+fQYkNBgrioOxGp7+
+	6SOiNtN/GhE7mx1N8YTLcDnKO9jOs/Pcuj1XbXxXog/OYAdqyrruUFjNjtQ5Kzr6N4nI8KcstLs
+	Yljz6usOVkMtAxbxishwiIqvxpBnBhBSXUGg==
+X-Gm-Gg: AR+sD13WJG82QO9/RBam5CzAkH51M7WNdAxaNmq9fagOdC7G0IMdKX/5bMYHljVJxu2
+	Vy/i+tlNKsy+u3v/MCwsuwAoCksmQQIPAv9hI9v2j+Gwvm+/kn0mRUUMlrs+EEEmI1PBVbsJk9U
+	UUyV0S42JJN6Qsd94pcLQTSw9uO2Hzr497P4I2iGoKE0a2MBOQr/TLRFjRTRJr+YfoSultLMqYj
+	BfmgaRWc/M05iWCsQVkV6qq9TeZDaoZezTlMtzt/nZnHqGqe33qhBiWEC1JoyIKhUz3LI+d01o=
+X-Received: by 2002:a05:620a:700d:b0:938:fdde:b578 with SMTP id af79cd13be357-93947f3bd5fmr771933285a.6.1788250120189;
+        Tue, 01 Sep 2026 01:08:40 -0700 (PDT)
+X-Received: by 2002:a05:620a:700d:b0:938:fdde:b578 with SMTP id
+ af79cd13be357-93947f3bd5fmr771926685a.6.1788250119639; Tue, 01 Sep 2026
+ 01:08:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 6/8] tcp: fix use-after-free in the lockless
- listener path
-To: Hyunwoo Kim <imv4bel@gmail.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, ncardwell@google.com,
- dsahern@kernel.org, idosch@nvidia.com, kuniyu@google.com, horms@kernel.org,
- willemb@google.com, andrew+netdev@lunn.ch, kees@kernel.org,
- jiayuan.chen@linux.dev
-Cc: kerneljasonxing@gmail.com, ij@kernel.org, martin.lau@kernel.org,
- shakeel.butt@linux.dev, matttbe@kernel.org, martineau@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260824033331.1084971-1-imv4bel@gmail.com>
- <20260824033331.1084971-7-imv4bel@gmail.com> <apaAskNL-IvdcR7h@v4bel>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <apaAskNL-IvdcR7h@v4bel>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260831181006.1382372-1-sinyavin@gmail.com>
+In-Reply-To: <20260831181006.1382372-1-sinyavin@gmail.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Tue, 1 Sep 2026 10:08:27 +0200
+X-Gm-Features: AcwNN1Xi38vf5viBcQ5z7AYY8-XgrmmkXTpAo5QbZdv9r8lQS_qPsi3OqhYuNxY
+Message-ID: <CAFEp6-1Ne2SmyGGLBMMtiXtXXmzEySX0ZgzijNn4-QtN+KFhmw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: wwan: qcom_bam_dmux: account network packets
+To: Dmitry Sinyavin <sinyavin@gmail.com>
+Cc: Stephan Gerhold <stephan@gerhold.net>,
+        Stephan Gerhold <stephan.gerhold@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, linux-arm-msm@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=K78S2SWI c=1 sm=1 tr=0 ts=6a968809 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_K5XuSEh1TEqbUxoQ0s3:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=FNx5MMyy-2ZDTin-KYsA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA3MSBTYWx0ZWRfX4xAC3cVyfDw/
+ HiuxqW1KDsqUs4x3oqWtfy6ne7SVtCHw47shGKFzUDuQyg/GqetZUJTpJaxlAiZfUIDWOIj469m
+ h/D9rRie4g+haApTdgWi7Vvc8NWph7U=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA3MSBTYWx0ZWRfX4D+3HDqrVbXV
+ TCKli1HMufXqXfHisKzyzuiOIN3SSBgLCyYkHjJHL6iEbInNlXZOd0nwAfrPCCc2TL2zjMp8gKe
+ bFyPswS+0GX900bPcX8M5NR1vklscQ3eadMeC403doDauov1pXTj4TN3l5obgr8qsayLmNi/lH5
+ pLzwXVFfcFVNu6F+VRjQfzQLIwckJYoLpQUkymhvkSKvnj4Y9zlkZjb01NJZYS1FzfYtdNuA7ET
+ 8+VABpBxZcA+B4c2bNphE4FWWvlUQNduq1pL/HjgCI7vb1zY3hze4M5N9EecZLlx3cotiX9Q4o2
+ zutVVeUqWhTpQOaAb2RtO/shJfpOfaGMvAdlUX3Q342iilChUGVvsgFMH7jG6ymMBE7VoHj88BK
+ 3T+mGnrgf541ZndH1Tge2PWUVPnThlez1fYF2eW8UC3fZhtkpF8bvM7S0EPkKoLMUfsWp42TZr5
+ bICaJGKOcuMagWiYSyA==
+X-Proofpoint-GUID: NCvVEhiYbOtxm3_sgLvp6gI4jN9LlAzD
+X-Proofpoint-ORIG-GUID: NCvVEhiYbOtxm3_sgLvp6gI4jN9LlAzD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_02,2026-08-31_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 bulkscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609010071
 
-On 9/1/26 9:37 AM, Hyunwoo Kim wrote:
-> On Mon, Aug 24, 2026 at 12:32:50PM +0900, Hyunwoo Kim wrote:
->> tcp_v{4,6}_rcv() calls tcp_v{4,6}_do_rcv() without holding the socket
->> lock when sk->sk_state is TCP_LISTEN. Every other path into
->> tcp_v{4,6}_do_rcv() holds it.
->>
->> tcp_v{4,6}_do_rcv() and tcp_rcv_state_process() below it read
->> sk->sk_state again. A listener can leave TCP_LISTEN through
->> connect(AF_UNSPEC), and if that happens in between, the second read
->> returns a different state.
->>
->> tcp_rcv_established() or tcp_rcv_state_process() then runs without the
->> lock. If the second read returns TCP_SYN_SENT, the incoming SYN is
->> treated as a crossed SYN and reaches tcp_send_synack(). When the SYN skb
->> at the head of the retransmit queue is skb_cloned(), that function
->> replaces it with a copy and releases the original with
->> tcp_rtx_queue_unlink_and_free().
->>
->> The original is the skb that a thread on another CPU is transmitting
->> right now in __tcp_transmit_skb(). skb_cloned() is true because the
->> clone made for that transmit is still alive. Once the transmit returns,
->> tcp_update_skb_after_send() calls list_move_tail() on the skb's
->> tcp_tsorted_anchor.
->>
->> In short:
->>
->>   socket(AF_INET) -> bind() -> listen()   // the socket that changes state
->>   socket(AF_INET) -> bind() -> listen()   // the peer
->>
->>   Several threads keep opening new sockets and connecting to the first
->>   socket's address.
->>
->>   Another thread repeats this on the first socket:
->>     connect(AF_UNSPEC)      // TCP_LISTEN -> TCP_CLOSE
->>     connect(peer address)   // TCP_CLOSE -> TCP_SYN_SENT
->>                             // another CPU still sees a listener, handles
->>                             // one of those SYNs without the lock and
->>                             // releases the SYN skb that this connect()
->>                             // is transmitting
->>                             // -> use-after-free
->>     connect(AF_UNSPEC)
->>     listen()                // TCP_LISTEN again
->>
->> KASAN log:
->>
->>   BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0x14/0x140
->>   Read of size 8 at addr ffff88800a5d1460 by task poc/125
->>   ...
->>   Call Trace:
->>    __list_del_entry_valid_or_report+0x14/0x140
->>    tcp_update_skb_after_send+0x62/0x170
->>    __tcp_transmit_skb+0xe33/0x1e40
->>    tcp_connect+0x1b67/0x2490
->>    tcp_v4_connect+0x998/0xab0
->>    __inet_stream_connect+0x22c/0x700
->>    inet_stream_connect+0x48/0x70
->>    __sys_connect+0x101/0x130
->>   ...
->>   Allocated by task 125:
->>    __alloc_skb+0xd1/0x370
->>    tcp_stream_alloc_skb+0x2d/0x2b0
->>    tcp_connect+0x72d/0x2490
->>    tcp_v4_connect+0x998/0xab0
->>    __inet_stream_connect+0x22c/0x700
->>    inet_stream_connect+0x48/0x70
->>    __sys_connect+0x101/0x130
->>   ...
->>   The buggy address belongs to the object at ffff88800a5d1400
->>    which belongs to the cache skbuff_fclone_cache of size 472
->>
->> Instead of taking the lock, keep the lockless path from reading
->> sk->sk_state again to decide how to process the packet. Move the
->> TCP_LISTEN handling out of tcp_rcv_state_process() into
->> tcp_rcv_listen_state_process(), and let the TCP_LISTEN branch of
->> tcp_v{4,6}_rcv() call a new tcp_v{4,6}_rcv_listen(). Listener processing
->> does not change. The TCP_LISTEN arm of tcp_v{4,6}_do_rcv() is left
->> alone, because a socket can finish listen() after the state check and a
->> backlogged skb is then processed there.
->>
->> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> 
-> Looking at this further, unhashing the listener and then calling
-> synchronize_net() lets the disconnect path handle it. MPTCP needs a fix
-> too, though, because it closes and reuses the first subflow directly
-> without going through tcp_disconnect().
+On Mon, Aug 31, 2026 at 8:10=E2=80=AFPM Dmitry Sinyavin <sinyavin@gmail.com=
+> wrote:
+>
+> The BAM-DMUX data path does not update the network device packet and byte
+> counters. As a result, userspace sees zero traffic even while packets are
+> being transferred.
+>
+> Use the standard per-CPU software statistics helpers. Account transmitted
+> packets after their DMA completion and received packets after removing th=
+e
+> BAM-DMUX header and padding.
+>
+> Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network drive=
+r")
+> Signed-off-by: Dmitry Sinyavin <sinyavin@gmail.com>
 
-This looks like a more palatable approach: this patch in the current
-format looked way too invasive to me.
+Looks good to me. Since you're touching the statistics accounting, it
+would also make sense to update the drop statistics, for example by
+incrementing the TX drop counter in the xmit drop path.
 
-> This also closes the trigger path for patches 4, 5 and 8. I would still
-> keep those, since they add no work to the fast path and they remove the
-> root cause itself. Their changelogs would have to change though.
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-I'm unsure accepting new connections is not fast-path: the connection
-per second rate is a relevant metric for a sever, even if the additional
-cleanup is possibly not visible in most benchmarks.
 
-Still I would avoid additional unneeded patches.
-
-Thanks,
-
-Paolo
-
+> ---
+> v2:
+> - Read the TX payload length after unmapping the DMA buffer and combine t=
+he
+>   network-device checks.
+>
+> v1: https://lore.kernel.org/netdev/20260830085400.2542956-1-sinyavin@gmai=
+l.com/
+>
+> Build-tested for ARM with Clang and W=3D1 using allmodconfig and allyesco=
+nfig.
+> Hardware-tested on Qualcomm MDM9607: three 32-byte IPv4 probes completed
+> without loss and added three packets and 180 bytes in each direction.
+>
+>  drivers/net/wwan/qcom_bam_dmux.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam=
+_dmux.c
+> index cc6ace8d6437..5bcac2ccaabd 100644
+> --- a/drivers/net/wwan/qcom_bam_dmux.c
+> +++ b/drivers/net/wwan/qcom_bam_dmux.c
+> @@ -177,8 +177,12 @@ static void bam_dmux_tx_callback(void *data)
+>  {
+>         struct bam_dmux_skb_dma *skb_dma =3D data;
+>         struct sk_buff *skb =3D skb_dma->skb;
+> +       struct net_device *netdev =3D skb->dev;
+>
+>         bam_dmux_tx_done(skb_dma);
+> +       if (netdev)
+> +               dev_sw_netstats_tx_add(netdev, 1,
+> +                                      ((struct bam_dmux_hdr *)skb->data)=
+->len);
+>         dev_consume_skb_any(skb);
+>  }
+>
+> @@ -402,6 +406,7 @@ static const struct net_device_ops bam_dmux_ops =3D {
+>         .ndo_open       =3D bam_dmux_netdev_open,
+>         .ndo_stop       =3D bam_dmux_netdev_stop,
+>         .ndo_start_xmit =3D bam_dmux_netdev_start_xmit,
+> +       .ndo_get_stats64        =3D dev_get_tstats64,
+>  };
+>
+>  static const struct device_type wwan_type =3D {
+> @@ -421,6 +426,7 @@ static void bam_dmux_netdev_setup(struct net_device *=
+dev)
+>         dev->needed_headroom =3D sizeof(struct bam_dmux_hdr);
+>         dev->needed_tailroom =3D sizeof(u32); /* word-aligned */
+>         dev->tx_queue_len =3D DEFAULT_TX_QUEUE_LEN;
+> +       dev->pcpu_stat_type =3D NETDEV_PCPU_STAT_TSTATS;
+>
+>         /* This perm addr will be used as interface identifier by IPv6 */
+>         dev->addr_assign_type =3D NET_ADDR_RANDOM;
+> @@ -533,6 +539,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma=
+ *skb_dma)
+>                 break;
+>         }
+>
+> +       dev_sw_netstats_rx_add(netdev, skb->len);
+>         netif_receive_skb(skb);
+>  }
+>
+>
+> base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+> --
+> 2.53.0
