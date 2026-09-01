@@ -1,225 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B95233721;
-	Tue,  1 Sep 2026 01:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9A7275B03;
+	Tue,  1 Sep 2026 01:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788227003; cv=none; b=PgIURGZcAOQgZF/68J2IM/SpauK9/xCq0OKXhiQEUj1iWGWhH0O4L3LJd116e+KQeWngQR/S6WIo1fSLeYg9plw5Z1u0NFv6TRalYWgjwEMBgxylfzpcDcWyzGu/yJ7uhxsya4+Dsqjkf9vSZMou4Ofd+YIkcsDtky8++b3IMYc=
+	t=1788227055; cv=none; b=ePQiIvYMEcueDIV45xEVjja6pGwmd8/kfKRNdMIxyRfGIqUdc1hUH2PmSfvzTNI2WY3O9O6hBTQDcFqvzhQTAoHErNIROEDdkZyQQF/smhA0gHRaEH7NMIgUgNgkVPXrpm5tQzbpdzZ4KBBPur6tEzdVr4Y1mmU9Z2Up4vgzLMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788227003; c=relaxed/simple;
-	bh=RtYKfymBNp9KvWTyDmEZgzY+yJgX+7+dkVBS2iKKpbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCzebmH+MqKAkix45OChST4tAg7mG2BpEqpUV/W25FgH7JlabPxpmZO3f60ErwbmNfAYFSwzZnr3khi+JVlEQITOwuiXWoJlji5V6uyRuHMPNdTFwCpJHy6yzBc6LO0p7JhNqBS+oisNrXjbIY6gr9YRUI8kgyFyBuONdJxL7T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OxuXNRoZ; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788227055; c=relaxed/simple;
+	bh=TB6RZD/pt7Gz8TU3lj3c6JpMlbDlwhfy9NYrF5ISpKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=EpDYS2IJYud1dLcUO3ThbBGViA1eKIre7+ZlkIWNdizKU1IoLAQtmOqcby2JgtJKyNUAa+/EHV0IPO3i+i68b0Gg9EAruUPQmer+WUfwgl1HLQY8F7wKRu1jqUvW4ZyuCW2rUE4SwHNjC+md1C1Xbw+cd2gFppwXiWKp4wg/qrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=tlNmZK3x; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OxuXNRoZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788227000; x=1819763000;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RtYKfymBNp9KvWTyDmEZgzY+yJgX+7+dkVBS2iKKpbg=;
-  b=OxuXNRoZbeMhHzlxYC81ZkjH9pDwzsc8K4NekhGfKXAgP24SJrAxjKA8
-   1Gm9o1qt/0TKLTOv0i+FtG0TNX5LR0xNQufjqb0BZcNOJ50Gouz3Z2Hc1
-   cMQl5gbQzelJKzo8vwnjRcuzj3WtdXUqDp7ZbGJI71WJaSqyOHvZSyWEc
-   hFAdZ+Md+n8qclUSIXHfLtreCUxHs6uCF71NnuPo1L4AuMaA+19x6lCtT
-   TVnrrUVfyTZsqnLQNFns4rAn3Lll4CHG+WUmvD8Cy/CHQf/MUxNiHQRS7
-   2nHec3RxN4YE6Jwk0fQ1ssbjtYn4mn0hBNgMs2kO0XsC6w0P4sMolcYAj
-   A==;
-X-CSE-ConnectionGUID: VB0LFxPFQxSTGdrDgCBxbA==
-X-CSE-MsgGUID: HR5wpLpATyav5a8px76fHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="106164298"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="106164298"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 18:43:19 -0700
-X-CSE-ConnectionGUID: qBb9qxWMQLydzmJilke+1g==
-X-CSE-MsgGUID: JA2nDKJhT02Nus7N07a2Tg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="273136121"
-Received: from junjie-desk-dev.bj.intel.com ([10.238.152.71])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 18:43:11 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
-Cc: akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	netdev@vger.kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	syzkaller-bugs@googlegroups.com,
-	vbabka@suse.cz,
-	ziy@nvidia.com,
-	hdanton@sina.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	vinicius.gomes@intel.com
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
-Date: Tue,  1 Sep 2026 09:43:03 +0800
-Message-ID: <20260901014303.417027-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
-References: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="tlNmZK3x"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=N36HLPGcjsZJzfg6qhBaQf589Afsp8pwfdoIrnl6OtA=;
+	b=tlNmZK3xuIYt4C3tGPgcR0z1kNZ2XiMu/JKnt0zt7LX2UBANk4iDBPWxJ0taIS6DcddFlkp38
+	MBPfYalEna/PP9C9nlRSF/MTe5TClD4SW7jDtl4G2ZUABZ1gBfookUXwnNB1lfM9RM/EBZAXuqL
+	3zN37a05cU3rci5OdZA4N4g=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hYpJY2gH6z1T4JN;
+	Tue,  1 Sep 2026 09:32:45 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1014F202E6;
+	Tue,  1 Sep 2026 09:44:05 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 1 Sep 2026 09:44:02 +0800
+Message-ID: <c9e5f38c-d067-494a-8eaa-b1f2c2ee305f@huawei.com>
+Date: Tue, 1 Sep 2026 09:44:01 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/11] fs: aio: Use acquire/release for ring->tail
+ publication
+To: Jan Kara <jack@suse.cz>
+CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <bcrl@kvack.org>,
+	<tytso@mit.edu>, <adilger.kernel@dilger.ca>, <libaokun@linux.alibaba.com>,
+	<ojaswin@linux.ibm.com>, <ritesh.list@gmail.com>, <yi.zhang@huawei.com>,
+	<pmladek@suse.com>, <rostedt@goodmis.org>,
+	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
+	<senozhatsky@chromium.org>, <akpm@linux-foundation.org>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <socketcan@hartkopp.net>,
+	<mkl@pengutronix.de>, <kuniyu@google.com>, <willemb@google.com>,
+	<jhs@mojatatu.com>, <jiri@resnulli.us>, <kees@kernel.org>,
+	<cyphar@cyphar.com>, <tglx@kernel.org>, <liuhangbin@gmail.com>,
+	<sdf@fomichev.me>, <nb@tipi-net.de>, <linux-fsdevel@vger.kernel.org>,
+	<linux-aio@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-can@vger.kernel.org>
+References: <20260825095422.3166067-1-ruanjinjie@huawei.com>
+ <20260825095422.3166067-4-ruanjinjie@huawei.com>
+ <x75um7rluga7zvqhe4wdqj76hjnyazpaxqs4ugme4eaompfsf6@zzj5flkfcw26>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <x75um7rluga7zvqhe4wdqj76hjnyazpaxqs4ugme4eaompfsf6@zzj5flkfcw26>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git abdf623ddb75b24659018d3952d8f61937306ae5
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 39ac5b97aa3a..901dfd2484e1 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -83,6 +83,10 @@ struct sched_gate_list {
- 	s64 cycle_time;
- 	s64 cycle_time_extension;
- 	s64 base_time;
-+	/* min(cycle_time, sum of intervals): the software schedule restarts
-+	 * the list after the last entry even when cycle_time is not up yet.
-+	 */
-+	s64 period;
- };
- 
- struct taprio_sched {
-@@ -871,12 +875,13 @@ static struct sk_buff *taprio_dequeue(struct Qdisc *sch)
- }
- 
- static bool should_restart_cycle(const struct sched_gate_list *oper,
--				 const struct sched_entry *entry)
-+				 const struct sched_entry *entry,
-+				 ktime_t end_time)
- {
- 	if (list_is_last(&entry->list, &oper->entries))
- 		return true;
- 
--	if (ktime_compare(entry->end_time, oper->cycle_end_time) == 0)
-+	if (ktime_compare(end_time, oper->cycle_end_time) == 0)
- 		return true;
- 
- 	return false;
-@@ -925,8 +930,9 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	int num_tc = netdev_get_num_tc(dev);
- 	struct sched_entry *entry, *next;
- 	struct Qdisc *sch = q->root;
--	ktime_t end_time;
--	int tc;
-+	ktime_t end_time, next_start, now;
-+	int budget, tc;
-+	s64 behind;
- 
- 	spin_lock(&q->current_entry_lock);
- 	entry = rcu_dereference_protected(q->current_entry,
-@@ -952,23 +958,49 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 		goto first_run;
- 	}
- 
--	if (should_restart_cycle(oper, entry)) {
--		next = list_first_entry(&oper->entries, struct sched_entry,
--					list);
--		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
--						    oper->cycle_time);
--	} else {
--		next = list_next_entry(entry, list);
-+	now = hrtimer_cb_get_time(timer);
-+	end_time = entry->end_time;
-+	behind = ktime_sub(now, end_time);
-+
-+	/* Behind, e.g. delayed timer or stepped clock: skip whole periods
-+	 * arithmetically and walk at most one more to the entry covering
-+	 * now, instead of replaying the backlog one expiry at a time. The
-+	 * cap bounds the walk; a leftover is picked up by the next expiry.
-+	 */
-+	if (unlikely(behind >= oper->period)) {
-+		s64 jump = div64_s64(behind, oper->period) * oper->period;
-+
-+		end_time = ktime_add_ns(end_time, jump);
-+		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
- 	}
- 
--	end_time = ktime_add_ns(entry->end_time, next->interval);
--	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
-+	budget = 2 * oper->num_entries;
-+	do {
-+		if (should_restart_cycle(oper, entry, end_time)) {
-+			next = list_first_entry(&oper->entries,
-+						struct sched_entry, list);
-+			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
-+							    oper->period);
-+		} else {
-+			next = list_next_entry(entry, list);
-+		}
-+
-+		next_start = end_time;
-+		end_time = ktime_add_ns(next_start, next->interval);
-+		end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
-+		entry = next;
-+	} while (unlikely(ktime_compare(end_time, now) <= 0) && budget--);
- 
-+	/* next can be the entry already published as q->current_entry (a
-+	 * single-entry schedule, or a catch-up of whole periods), so the
-+	 * close times and budgets below are rewritten in place while
-+	 * taprio_dequeue_from_txq() may be reading them.
-+	 */
- 	for (tc = 0; tc < num_tc; tc++) {
- 		if (next->gate_duration[tc] == oper->cycle_time)
- 			next->gate_close_time[tc] = KTIME_MAX;
- 		else
--			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
-+			next->gate_close_time[tc] = ktime_add_ns(next_start,
- 								 next->gate_duration[tc]);
- 	}
- 
-@@ -1130,6 +1162,8 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 				 struct sched_gate_list *new,
- 				 struct netlink_ext_ack *extack)
- {
-+	struct sched_entry *entry;
-+	ktime_t cycle = 0;
- 	int err = 0;
- 
- 	if (tb[TCA_TAPRIO_ATTR_SCHED_SINGLE_ENTRY]) {
-@@ -1152,13 +1186,10 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 	if (err < 0)
- 		return err;
- 
--	if (!new->cycle_time) {
--		struct sched_entry *entry;
--		ktime_t cycle = 0;
--
--		list_for_each_entry(entry, &new->entries, list)
--			cycle = ktime_add_ns(cycle, entry->interval);
-+	list_for_each_entry(entry, &new->entries, list)
-+		cycle = ktime_add_ns(cycle, entry->interval);
- 
-+	if (!new->cycle_time) {
- 		if (cycle < 0 || cycle > INT_MAX) {
- 			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
- 			return -EINVAL;
-@@ -1172,6 +1203,7 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 		return -EINVAL;
- 	}
- 
-+	new->period = min(new->cycle_time, cycle);
- 	taprio_calculate_gate_durations(q, new);
- 
- 	return 0;
+
+在 2026/8/31 20:13, Jan Kara 写道:
+> On Tue 25-08-26 17:54:14, Jinjie Ruan wrote:
+>> Replace the smp_wmb() + WRITE_ONCE(ring->tail) and READ_ONCE(ring->tail)
+>> + smp_rmb() barrier pair with smp_store_release()/smp_load_acquire()
+>> on `ring->tail`.
+>>
+>> This expresses the publish/subscribe pattern more clearly and allows
+>> architectures with native acquire/release instructions (e.g. arm64's
+>> STLR/LDAR) to avoid the cost of full one-way barriers (DMB ISHST/ISHLD).
+>>
+>> The release ensures event data written before updating ring->tail is
+>> visible to readers that observe the new tail value via acquire, which
+>> is exactly the ordering the barrier pair provided.
+>>
+>> No functional change intended.
+>>
+>> Assisted-by: DeepSeek:DeepSeek-V3
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> 
+> The patch looks good. Feel free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> 
+> Just one nit below:
+> 
+>> diff --git a/fs/aio.c b/fs/aio.c
+>> index d78acc69f487..4413c82688cc 100644
+>> --- a/fs/aio.c
+>> +++ b/fs/aio.c
+>> @@ -1206,13 +1206,12 @@ static void aio_complete(struct aio_kiocb *iocb)
+>>  	/* after flagging the request as done, we
+>>  	 * must never even look at it again
+>>  	 */
+>> -	smp_wmb();	/* make event visible before updating tail */
+>> -
+>> -	ctx->tail = tail;
+>> +	WRITE_ONCE(ctx->tail, tail);
+> 
+> I don't thing ctx->tail is accessed anywhere outside of completion_lock so
+> I think this WRITE_ONCE is pointless.
+
+I agree with that. I'll drop the unnecessary WRITE_ONCE in v2.
+
+> 
+> 								Honza
+
