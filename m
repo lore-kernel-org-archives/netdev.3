@@ -1,107 +1,82 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-72.mta1.migadu.com [95.215.58.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43E1476CF9;
-	Tue,  1 Sep 2026 09:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAA34CCDFF
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788254069; cv=none; b=frH3XmGfcnRkSeW0AaQRXY3E3cgzDOVFZ1Q3rSOCr8LJoCfD9kTIMPGx01lUS2qfCoTvEHY5Pn+EEb9jWqJKJqYnLUQUEKIAPs0h98312dIQDRu8Aff32YvjESvX62a61gSMWih+twet1E88fNmM10NJhULGrCARBexlr30Xfa8=
+	t=1788254129; cv=none; b=EbCCt/jQzbfXtFRit9RrhS5xBboelisHX2fFX1sciDDihb+oISBIWXO7N6BWImS8sqzTtAV5uzMWtzlyfb3OTYO3IXg7JlNmrvNeqZn2T4kRmGiTjC3/fNgjZYrbCveMnLM1K4KUEcFFnmGanzGj8bCrvkieABrFOYXMeSCkUkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788254069; c=relaxed/simple;
-	bh=HrEzVi6UC+nKW4y6u+K3vXWwGQzLfaoB/qItWJAy7j8=;
+	s=arc-20240116; t=1788254129; c=relaxed/simple;
+	bh=CBSwalXu4jLN5MBpEKJgBaaMK9d1xJw+lzFyFc4Tq7g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QYosPGn2Iqscz3Bb1oY2COH6/IVFvAQF8oTlNgzs+GFpftF3lpcmjAK8rqOEkxq5bsLr4vbLWD9Kjda6qrBVbOAj++lrVjLBBwmv5ALss8WODnnm7buk1qjPily2w9qTAEZ3Lt9F4+N7NTDnllpxDGjl/wWQ8rWM6NRKiF7MwK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=YcUhEONm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Y34DdxnQ; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioXQjUjMG1cZojIEuUJrTeJCRyqn1iKtgEwUL2HR9tLrW9jGhG8YeQ9L3NB6xFYXUO5GTWboD9qt4EymT9UAozHLKfyAU9v0W0Zm1rvQpiELWIpkXJugDELLGW+lxTmXKwHqJgQDiOqhiJC7zYD/KWcsNfynrNMpldteRxVFaI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EQHW0EwU; arc=none smtp.client-ip=95.215.58.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="YcUhEONm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y34DdxnQ"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 79A171D000C2;
-	Tue,  1 Sep 2026 05:14:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 01 Sep 2026 05:14:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1788254065; x=
-	1788340465; bh=GzQVU5iQI7iMD57zVYoJAsEQ7likp2NttqMBLMHDxAI=; b=Y
-	cUhEONm69jDX20LXtmjhUSlV1wFGk28emaJiENiYeWWaXhnxZrWNPnawUAlr+siE
-	sc8r8ENnzBD9zS6i6MQ4YuBFOghBX9M6L36tTT2EVanYvwP7/z6g+2ONDWE1MD15
-	y7gDY8RX89zLamvtMck5DPeslwHKjPTPaZpK8aTo5/NYqyjcAd/OYgmda3TlmYoJ
-	+WYzInfLHflRLxLNN0AGDnsCPu5Dw8HMDvsEuz2/PGvYhNBdopJFKmzOX7kN/89T
-	jsRaAjiI/qcRwWowmxfvn4sypLYTxqlpPFbWvOURSLQbA4Wwu3RTDktsLpH+WHev
-	cqxPp4/h6RflY+ZmMXjTw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1788254065; x=1788340465; bh=GzQVU5iQI7iMD57zVYoJAsEQ7likp2NttqM
-	BLMHDxAI=; b=Y34DdxnQqmQ74j4LWx9jtmcGe2qBS8EpbFE4HzdD/0cpQjqNuSq
-	So2/gNd7CuQG+s4yyZm2F1atWcuKZT9lq93bBfEva3gJf0xvuj8ZFomMTaC/tiA0
-	92R47GGqpf/wVtgtVO5+TXtDZHT3nnupTTakBOqbA3lKJr+ZRzfbhVf7s78YLcah
-	jrROfrr2eqRMTiUkePjfvmzFd33jxQU3mrIlDn9xDJPvwi0suqIAggqrBxizZicA
-	5F58AickYZuTcRZxjYfIoX7s5VJwh5h+Mgfgj8LFbnKWzTZF9leEkjobDphATDrW
-	SOO3sMFATVeokfJXOd9lYHsVgPmBVJxk3UQ==
-X-ME-Sender: <xms:cJeWapeuvzf-SbdGxJLooGmsPQLsZkiLh8hOLgc9p9tLdJiwAJIV1Q>
-    <xme:cJeWatl-FyujeueOVXO1mYl9y5Az8MLPnbrBaMJX-6SABk1kslDIxtSSPyAP92ZnR
-    aRX6GCsNaKzvgLChiuQ-onE3mVEpOB6em1X3zBmQwQFBZ4D3i3POVgR>
-X-ME-Received: <xmr:cJeWauwZ9A8lJ7JvuY6Saa4ZI8AlbDVYD4CI3GuAK0nAgsJJ5rS4i3whGfU>
-X-ME-Proxy-Cause: dmFkZTGxrwGyHjpR3lkAS7F3IAuECdv+NuVNkUwKf4xDHT4SEKAEMF9ZKNI0sX3ji/4APE
-    Lk+z2rtPMrY4RLr8mW2i2hLOUlPnr1/5POFWOug8uYDoXQZ5hOjt237hp4vbWdJYnlaTUs
-    LVcvXsR4zQXPDGT3UIJmm/TdJY9ujmY+mU1/4ft5HQnDbUn5ohrPhHAaJ2wdBFaRLIEbSV
-    8lMkXrzqaF4V+FzHbTGP26IKYKwWtJ08BsGhjABnAGDg5MYVv6+YZJoo3F4JCJ73auFj2w
-    v+yPTmEmRqjZ9bqEBx8nr3pZAryH4HqUpPhecIz//oJw0cyxERje42YvYHr4ReDUWniQqB
-    qp8MPX0iuEu6/75mYH9q2MdS5/YcanbZ9v0sJpTbjcIi6+mbisXvp0Whyg/EBvas0nnkzc
-    KvYiMThBo6e7lq0eWRao+yDtsvfhjmLIvVv2XqzsZFDhRvljFXUi9QZjWI3tCvukBlbfvm
-    xx+Bh8WFNqXzgdRAsJAZSwk4J8jJHdKvOz1EoKD/l34ONrK4sLJ4sZZExcLJrtjTWmXukj
-    Jqv72h6A7O44+ivfG9XJKMyuiUOUp8vM+0K1ioooExCKBQMdsXXII37QyARc7yduXRqFqy
-    NXJsWba9mvTL+JNJrHTYdutZMlrxDzKROqNsJFWVBI/WZeGpeNfGqSTfs2nA
-X-ME-Proxy: <xmx:cJeWagyxNg0WFaSR_5p6pfFAG8BJk7BqQMKoB4NYeB9n1DmWaSAOXQ>
-    <xmx:cJeWauU0VPtK8vMRQqEOr6At4O6XtpX9eG_CXGKEgYi2ai6DtFQeNA>
-    <xmx:cJeWanSPJhElvSaDVfLwnP5eaHBB-jRIbIADNF9C0ESxVlQkFkJ3RQ>
-    <xmx:cJeWamQvK0NLRPYp8Ezsxn0BA1I31R89P6MO3LvKwsebTYTiP6QiEg>
-    <xmx:cZeWalzLSdk82DgTunCsEQH_wRSXzXcw5OgtvHB2dUJio7ufD2O-g_4y>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Sep 2026 05:14:24 -0400 (EDT)
-Date: Tue, 1 Sep 2026 11:14:22 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antony Antony <antony.antony@secunet.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	patches@lists.linux.dev, stable@vger.kernel.org,
-	Yan Yan <evitayan@google.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.18-5.10] xfrm: allow migration from UDP
- encapsulated to non-encapsulated ESP
-Message-ID: <apaXbsED5LwoaZSs@krikkit>
-References: <20260831133314.4125787-1-sashal@kernel.org>
- <20260831133314.4125787-428-sashal@kernel.org>
- <apaDxC5gBw7G2zMc@moon.secunet.de>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EQHW0EwU"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=CBSwalXu4jLN5MBpEKJgBaaMK9d1xJw+lzFyFc4Tq7g=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788254125; v=1; x=1788858925;
+ b=EQHW0EwUz0nVsyUvHQ9xNLh2/5YM7egZFTrGMUfCC04ifitU+IZQvfDQcNUzOoJ6gBALrKQb
+ WtFQwsWchO3SrTCWUwtm2/lb4VC9HpupY/1tnXuMNz4lmcqAzo1Ykb8XW3+neFXkqSedAdEkwvp
+ dTS/dL0B3JWjiSyL7X8VFsDI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id fba90716fc2f014e;
+	Tue, 01 Sep 2026 09:15:24 +0000
+X-Mizu-Trace-ID: fba90716fc2f014e
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 1 Sep 2026 17:15:14 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	daniel@iogearbox.net, razor@blackwall.org, bobbyeshleman@meta.com,
+	sdf@fomichev.me
+Subject: Re: [PATCH net-next v2 2/3] netdev: avoid skipping objects on race
+ with device disappearance
+Message-ID: <apaXopeQGUR-xku2@fedora>
+References: <20260831164159.1124679-1-kuba@kernel.org>
+ <20260831164159.1124679-3-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apaDxC5gBw7G2zMc@moon.secunet.de>
+In-Reply-To: <20260831164159.1124679-3-kuba@kernel.org>
 
-2026-09-01, 09:50:28 +0200, Antony Antony wrote:
-> Hi,
+On Mon, Aug 31, 2026 at 09:41:57AM -0700, Jakub Kicinski wrote:
+> If the currently dumped device disappears while we were mid-dump
+> we will get the next device without resetting the sub-object ID.
+> This is quite unlikely, it was reported by an AI tool not a real
+> user. Let's fix it for better dump consistency.
 > 
-> I am thinking of not to back port this patch.
-> As it may become a surprise behavior change on older kernels.
+> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  net/core/netdev-genl.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
 > 
-> I vote not to backport!  Anyone vote to be back port it?
+> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+> index 04dcd7fc614e..e427bab4c4d2 100644
+> --- a/net/core/netdev-genl.c
+> +++ b/net/core/netdev-genl.c
+> @@ -312,11 +312,14 @@ int netdev_nl_napi_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>  			err = -ENODEV;
+>  		}
+>  	} else {
+> +		unsigned long start_ifindex = ctx->ifindex;
 
-Yeah, I'm also not convinced that this should go to stable. It's more
-a "feature" than a "bug fix" for me.
+The NETDEV_A_QUEUE_IFINDEX policy is u32. And all ifindex getting/setting
+in 6b6171db7fc8 ("netdev-genl: Add netlink framework functions for queue")
+is u32. Why the ifindex is defined to unsigned long?
 
--- 
-Sabrina
+Thanks
+Hangbin
