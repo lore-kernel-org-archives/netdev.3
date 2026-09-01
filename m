@@ -1,217 +1,224 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013056.outbound.protection.outlook.com [40.107.159.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281DD38DC5C
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788245190; cv=fail; b=HSQa4oY5aeYzxxkwzldoVjfLdiNkKOg7GINyqgwwQnzWq529sXNCIDVOXD5JTlEa3xAt2OZblx7Rn31w8zE20oW9dtym3cyw3KAGxWYfSMfC8mE8dAmA2H7GkE+JLSeN1GDuPD/pqk4rd6vpmrtakdcvGdnRWWzohsnIBmr6c2k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788245190; c=relaxed/simple;
-	bh=bNATLOdRiolvCYTVyKNGyCDNn3e+TVF/7rhhpjIbqhQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=eVr5Ro9AMv4R+x6bCf5y1Jm7/5Huy4Gy2htXCyq7QRCfvkx0M7DeEzD7xYz9CTAvfgfxpUBge+SsLKTI16eJGlRVc69dn0QZuubrCncPEU38skxUdCibU7AyrApj7uBt87zAhUAlUYUoC16fC+VdJ1GSJ3eOUt2oR/eP3DMlV3o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=h6UNcxlP; arc=fail smtp.client-ip=40.107.159.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BF436EA88
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788245470; cv=none; b=KXDdxWMPUd+hW+1MmAZyiPXOK58uP/SZaQEQ2D13rS7Pi/FTNiVCV2NEZhMuG7JZk7jQN8LiNbM8GizQM4sLFy6kEajhxqT887u31vqVPKEroX57ZjUPHKR/aNj9+7aKAjyC01jNEAYRFZorI02nQdpVsGe24pH83veV6Y/3OLw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788245470; c=relaxed/simple;
+	bh=LGdH6U9mAH6qxn/ShC1rVe7Dyu68vZHEmVilFJFaPo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rCIvLYqXWPyhCPzEmzlla/QSSSUiW/ux/zwrZHABFqa5B8skRIOukOh9yrv6VTaVcKYhefQ5s9jvcPSA9STYQtN5dkTlisiVCv7jDGDSH18/QDcneF5JvjGd0+F4DQiiodJNFG3xbfCH+sTVeN7f6JDyRhQnDPjwQ+DuhyAWP88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnoC3mTq; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="h6UNcxlP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tOMZye4UXHgz0c9WhpmyFvdLZo2DGTERlwGUhRLWD0uJ37+Zv39uhbduZ87h6b9TN11eQHAm7+bsFLD6vbZwbwhKT3WAr+RQY2rd5wNVFWMiiQ3mGLjpZZ+pGB84+21cEGCt07NHM8vPYMIMkfgq8rahhmK2yrb9d6CZSYM6i/rgxj21O4pSC9n3EbdCGG11Fp2Y/Jl8p554A9R/g1t3+qFHe0KuKwtZ0XzVUYEMKNSsqlsBYKlMBjydT+2afGgtcOEVyYKKGYWHhs+blMKpkvZZhbI+qwCC6WEVAxPNtYwzAKqOM1qcfOAcrNyGUQkNuntnvlIL8PSFDctADXKDaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bNATLOdRiolvCYTVyKNGyCDNn3e+TVF/7rhhpjIbqhQ=;
- b=a3Kl+XJXLC6F7c16lHMIvofDj2czYGxbzrmv2hLteBw1MWI/YRxcSrpCndc6gxAo+N0/lNwG9w6H3yJwuU4ZP/UIjMRrfRFIQtQMJUTmUIF+7Y9+u8adIEcEpdMUzZOmKo8mj6HcNb2chqOMZXtPvUDzhRduea1AzFA06swttb560BUK7FLvL1fqLqK25E3FM4NJhynwssWjKsu8FjlVgyWH5Zor+F3rd9j2G6R/ifMNtpc3T5+t4cez724M67T5TH3ovIHrdEmRAKX0tmQ8BM5XgFS645E5AFnGkncmDv4BdBVPZ0/5G7Vgi9o4jWvRZP1Y9CyspfSjeI4fJ9Xztw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bNATLOdRiolvCYTVyKNGyCDNn3e+TVF/7rhhpjIbqhQ=;
- b=h6UNcxlPCVSz7TPINd/TReAs7ivJGk3c2vNQdNKxKP43U47owFhNswyFCu3tbpnB9Lh56UEEFY19AXe/7z2Blcu2w2scKqDO5KYrQHJIR+KwzfgnPrKBV3lUPghnr2uVKrUyKge+wXIIqsRtbiSa5x6fICpz/SGMaLlfuLH+UOT2GbQbFYRJ8k/+0Q1OF6X8+pPb/ZL/yiuKNEDE3Gxk1XRUAzvOq6yA5pe97enzGQMIeS6462pgVBBrZOJY5n7HWX+5QDhWzvYsCJLcYfPv9ikQLox4j9bPx96PJDuIykHPNnukGlCMItBlENC5ImsiYsHeO+1jmL0xZMaOhblKMw==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by VI0PR04MB11954.eurprd04.prod.outlook.com
- (2603:10a6:800:31f::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 06:46:20 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 06:46:19 +0000
-From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-CC: "Frank.Li@kernel.org" <Frank.Li@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, Netdev <netdev@vger.kernel.org>
-Subject: RE: [PATCH v3 net-next 03/15] net: enetc: add link status message
- support to PF driver
-Thread-Topic: [PATCH v3 net-next 03/15] net: enetc: add link status message
- support to PF driver
-Thread-Index: AQHdOPf5rPAr6++Cq0ud6wQBTmAapLa5ELeAgAA4huA=
-Date: Tue, 1 Sep 2026 06:46:19 +0000
-Message-ID:
- <GV2PR04MB1173957C7D083D4293AB60DB588A82@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
- <20260831025441.635045-4-wei.fang@oss.nxp.com>
- <20260901032359.788A11F00A3E@smtp.kernel.org>
-In-Reply-To: <20260901032359.788A11F00A3E@smtp.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|VI0PR04MB11954:EE_
-x-ms-office365-filtering-correlation-id: c492c95c-3de2-47ab-0232-08df07f4badc
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|23010399003|376014|1800799024|366016|38070700021|56012099006|10067099003|5023799004|4143699003|11063799006|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- SBzUwON2JmA1k5obDiUJxmBt/jKaqdD1HYvn2eGSgYtrxR87jDiypboD2JVfXwqa2zaKvvCvDQTVCDTT2N5XdKQSq99vfYk+opF4xgOQjhqYaNkq5PxcVEaVA1Yn6BMH6hc3RJgMd53koHmAsQgFaL00Lj/9VegMbuWatcppPf2MnVm1xVHX63p26DleAJFt0IqawJmbILI7E9sPqjIbyOPEzV/ce2hhW4/h6UwGFdd/F1CwTkAhvayLyZylnnW42BXJm8/c4Pexz98L+QIXthMaBE85Hfd0sDaMdyg/FJVBlcSbTy6mY0UzCDklSFuAvZiyTYwH5s82eIPmj02G/E7Z97H6FO4wmbD0bJtcP3UxyzKd87JOP4NGQCYNpiI4AWrrkk417jEO0lb83ay765Epii0oLiIItAXvO6x2jZS5sk1Qct5Ioqf6SezRAwySb+2a/p0O92Jw4zDveVvc+YvuST3rot4bQckufMUDS4CpAzrXU+hujvGu4l2Q2hzDmTU+ICeYhLXg+bFXfpbxSuOJYlYMVyhSsbS3JmYC/PbeuEp46+NdEFeFkh8YgcGwsR9hl88zqk2DK+4kTSwKCjVw8YkCDhyqRtej77IePHrpHAnAHI8iUkGZ6khuCAjOrdfxYZx2A+48CIfW/f/91worz2/TWgwW4oJOTl6/ggdojwxwc8WTCWE+fGrkFJVqjMwcbLw/JaYJOXlXykt78DGtmepEshMOU0yX6CSxEws=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(376014)(1800799024)(366016)(38070700021)(56012099006)(10067099003)(5023799004)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?cHZRL3YvZkNaclpURFAzUTNTbEc5aFZGWjJ6Nmo4YjgxWWpLclRseUppUDQ5?=
- =?utf-8?B?Q0RtcEdBdDVWV2NEU01zSUt6OHJvang0YTdWUHE0YjVoeXJUbSs4MTJpdFZE?=
- =?utf-8?B?ZGduaEtLeHlUR2xJalBPUWdRcGZPeVFtOGN5bWIySmVzVlk4ZUlXTTNIWXhs?=
- =?utf-8?B?MmVXdE9wSnJYbXh3S3hzbHVwM3l0NTZBMGRsOVl4Vk5TTm41bnhlOG1oa1ZB?=
- =?utf-8?B?Wjlrc09EbHRzeVdWZXVOcTNKQ0lPVWFsWDVvaVNFdWpHMWhkV0U4bHNHZDdp?=
- =?utf-8?B?TW9keUtyZXVTT2RxalNLVCtmek9PVXlqaFpsdkFXSisvVWc1VlQzMGpYUGU2?=
- =?utf-8?B?RFpzRlhCdlExZzFpV1RySmhRdlZGMHg5Y1NSWW9tVDJMcEVNU0NVRTdoeUNW?=
- =?utf-8?B?SkMwYmpEL2tKRis4R0w0V1NXb3NSK3NWOC9VZVVOMDVVWHQ2bjRVUG1iaEds?=
- =?utf-8?B?WVRTbFBQUlhaUVpIWEhhckt0S25NZnBBV0w2cDNoTU43K0ZXWXpqY2Q1YzZl?=
- =?utf-8?B?NVEyT2RLVEF0N0RUV3ZNT3UxRFpoVC9hQ0ZqZzc1Y1UxNDA0VXdaWmFNMzZt?=
- =?utf-8?B?Q1hKOFJITndzSThiZHNaSkxGODNqZmV1VmNxQjZiRnYycWtHT0l4SVdZTTBR?=
- =?utf-8?B?aVdRTWRnSzZyYWErdEtncDZXVCtBTFpMeEt1ckFDK1BsV1JrSDN6c2pPaVdO?=
- =?utf-8?B?WVI0b1l2MlRqOXBURnIwTy90b0F1MmpYVWN3N1kvZGVZVTFlKzZ3VFVqOUl0?=
- =?utf-8?B?TCtLOWhVZUs5OVUrOE5nWDJKdjNkMUVCdkJJUlZxRzFLanZtWkxpUEpJc25u?=
- =?utf-8?B?QlM3bE05aGFjVzFWOTdkV0c2Z1Q4dkhSUDhLTENvdElrOEkwdlZTQTgwWW92?=
- =?utf-8?B?ZGdQRk1PeEQrcWQzK0JEZkNzbklzOTlsYm01Y2dtQzRibjVhTWdsOXlDYjNw?=
- =?utf-8?B?SEtTSzhGS0dtQXhibWdnN01MaXBjQU8zL244QTBKWkptSXQvM2Exd2g4YzRC?=
- =?utf-8?B?Ty9zd09jWjRNQlNENitEdnhUekQvQzkzRElKMUJoeENkMGtGc0oxTDJJZ3dv?=
- =?utf-8?B?SXVlUnN0KzhDMm1QVzlXUDNlTWtGTmdIMHlJdS9QWTF1QURwKzNkc2lJNXNE?=
- =?utf-8?B?LzRHTGdjZUExMWZKT2Z0YUo1ODFtN01zd0JnWGw4WThTQ2xlSC8yb01OYnNX?=
- =?utf-8?B?cWQzaHo4aFFoVW1aYUFLZGN0aGxqM1YvdzlvWnZ5MkQ1N1I4ejVXSlpxUDQ0?=
- =?utf-8?B?YUtWTEt2TjVqcHRoc2tHYTVaYUR5aFZkSlBnMkZpWE5UYk9yTlFPV3BIN0Y3?=
- =?utf-8?B?YklmQytPNTNxUFVsekNlTllMME9iaGFxODNzU1VUdVBOOEhCVDR2ZUNtclNv?=
- =?utf-8?B?NjNFSSswakF4alp2WTRPUlZoZXRrbFZVNXBmMi9SUGZzOFRFTys2eE1aSU12?=
- =?utf-8?B?ZnpuK0ZqaThpZmFGMkczanhhcWkrY3h1WHo2NmE0RHRYVy9UM1UxQzBXSllN?=
- =?utf-8?B?cFNQbldScllhbEpPZjZlYlVPZEd3RnJ5OENFaFVlZElpQ2oyOE1MazQ1RTRq?=
- =?utf-8?B?eVl6cFcwK1Z0ZFNJclpFTXhEbGdDZEU2ZXJMa1pWYXJ6Y00yelFRMWdTVnlS?=
- =?utf-8?B?KzBEWExXbzB2UWh3TWh2NzdiSjAzUk9adm5uMWo5ajBUcjc0blVMUXNVQUNn?=
- =?utf-8?B?eFRjL2JoV2d3ZkxxQWptVWk2NVdNaS9xeFowTjE3dFgwT1h0a2FYZ2Yzc2Ji?=
- =?utf-8?B?Qzh2M2lpdmpiSER1bi9Sd0VVRWt1VndQYS9PUFV0UDRPVHdWVjlUdWZYQXRB?=
- =?utf-8?B?SUIwT0pBNzh3OXIvazhDY3NnbHUwU0RqaFRkTDdzOUl3eTdsZmZFaE5sSEpW?=
- =?utf-8?B?c0JHTVUrQ2FOc3pmdkpGbXpTNC9FSG1MekptT1ZVcG91dHlFK2NWY2tkUWp4?=
- =?utf-8?B?RmVJdStNQ2dCbW14eGgrdmtMSTdPQlRLWENGS2lmOGRwQ01HVG1pNytTczdD?=
- =?utf-8?B?aWE2c3VhUHFYRTJTSmxtdlFNRmtlS3FCc3JlM3VmZHlMTWkzT2h3TDdQTjlt?=
- =?utf-8?B?NElxRUlDKytoa2FHOU4rdlpBVlYra0pFNXNzY1l3ZUk2SEU3cGg2L2FwT2do?=
- =?utf-8?B?ZVdEd1VTbnpQVXNCYnArVHNDNjV6cXV5ZVJleUUveHdpbXZ2cUdOaVJQRjh3?=
- =?utf-8?B?MzNRYjY2OEV0cm9uaVhRUlpLY0Y3ZzhkQW9kSzdNOWJkSUxXMm9aOHRNaFRk?=
- =?utf-8?B?d1QvMkRCV0ExZ3FEY3F1TzRVY2JSZEpLOFZjV0VZYi9aUkhUdGdQVU5leFhG?=
- =?utf-8?Q?7XEcesEyGJPDBa4zHB?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnoC3mTq"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-499ac87c92bso5463965e9.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:51:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788245467; x=1788850267; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4SkfTWln0lL0sRW6IjxX7ZdRkCrrTOmOoXec0R/G5A0=;
+        b=lnoC3mTqoFvZRDw+AJEowY34XSZjKfNpgozFcoA/HRwIm6DGb7ZzSCbB4s21ZH2aUo
+         esIXEkfCGxKPzPoqj1fXYGZt7RX9ag9Q2Y9FGYrlDbBpDr6eF9snwhH1q74kAQtuNeSA
+         kQqH/N7j9nY0NX9RSJD+3Ob8H5w5Fe1pitLHUvgPzSzkZhQsLj0OUQTWfq8XtISHT4Kg
+         Py5eJgCFLmLr4upiYd8Otu6mS9BiPW9R7l0WbGCnNz+8pfXDuJ2QD9eyU9F4llb7AKsE
+         Vql5DW3KYc3yKlH5JIMe8nA1lVoOR6aPHZe9iTcpZuxk1zl5QkyomOTCIPH2rMCclHjw
+         mSbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788245467; x=1788850267;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4SkfTWln0lL0sRW6IjxX7ZdRkCrrTOmOoXec0R/G5A0=;
+        b=lC3ho3+jDPgHhgSPi1Luf4j8JayMZSGCtKQcuxgXjh48XJloyJkxe6IctUriO5hYMp
+         B0TAgKUVAYliIOkCc6UTaUqFXJnzRfRWlRjeFMbX6ru1hz3HZAKgaggOxZSAOzdQtDDE
+         NL9dXndm9jqjZBMbVh8zYbSlLklXEqhIuqNvbk+vMrEXITb83TJ1ROzh5ipJXTfWICCX
+         fzHoLVFUE4TK+MBVBIPEjJVHjYINJOKzR/aptivJIAPsuYhKnZs/bjuWTFune8otaMBo
+         YmFzpaODxxnlQwtxMiktsDlkG5P+jcvnrJ54QJA0yz9Tym2Iz2cEj9z/qbSXRBrUPWQI
+         dN/g==
+X-Gm-Message-State: AFuF++n0QMKgA1tZXzqsFMX4eQunE/ywiCS5q9TjBqdjxSlMJGJUFfRx
+	9wVc2sAjLvv/BwgaG2Jfcnb1Ua8HKgFaXUGMuDMk+KphIfjGddrBq4DR/LOos5SX
+X-Gm-Gg: AR+sD11/ca9eP9FV8gTp6GIM+/8wmntaGAORpsaBvlJTF7rjqPQZCqVnNKjk+9iA/ro
+	r0qwuzu2lq2lXZ6vwOHxtbKL5rKzBYK40JJV8vV3y3kA4QiF8o8OQgqLqf2XqHjlFYQbY04n6Fm
+	VZkf3IvWCtOpMqQ2CR6smqTpAg/1KWFA4BKKQLmBpyh7WLwAtYGFJKuxLs8zzY7RR20MSGmjIiq
+	AGPn6lt2KUyuC2RbCJIlM3gqdzKp6dW2Z6XXjWP+WY/9xjWdixj12tzoIYHfGvbBOudcnCxbtX7
+	Lo+4XLZAmC2x8GedS9RBHxr3shHE1cO+3knZ/e1e0RFh2wvp+GOqnRt9SrLid8A9e3q8Qo4vtM3
+	IvfoWccBoviiDTgRurunY7TXZGwKH2Jjw1RfNJ5xuy5gp+lLOxvZYmYIejYkF2YycgZvN63euEl
+	g4UyiHYmPNELJEvSurTZAxf6XFD0ZOXqphCHWbEkToSNXuxMidWD5g9w6j/NBSj1wrv4xmzFTnk
+	Qn14pVmNXENeVTYXIA0OBWZmXZ8OceFmSMmpQ==
+X-Received: by 2002:a05:600c:1393:b0:49b:12c2:104f with SMTP id 5b1f17b1804b1-49b91c2660amr443895025e9.1.1788245466246;
+        Mon, 31 Aug 2026 23:51:06 -0700 (PDT)
+Received: from gandalf.schnuecks.de (p5b2e278a.dip0.t-ipconnect.de. [91.46.39.138])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce199aasm47339235e9.11.2026.08.31.23.51.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 23:51:05 -0700 (PDT)
+Received: by gandalf.schnuecks.de (Postfix, from userid 500)
+	id 36698331E063; Tue, 01 Sep 2026 08:51:05 +0200 (CEST)
+Date: Tue, 1 Sep 2026 08:51:05 +0200
+From: Simon Baatz <gmbnomis@gmail.com>
+To: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
+	kuniyu@google.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org,
+	Tamir Shahar <tamir.shahar1@mail.huji.ac.il>,
+	Amit Klein <amit.klein@mail.huji.ac.il>
+Subject: Re: [PATCH net v3] tcp: reject completely old segments during
+ sequence validation
+Message-ID: <apZ12fl9ShgXBAGD@gandalf.schnuecks.de>
+References: <20260831205611.2439538-1-michael.cohen3@mail.huji.ac.il>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c492c95c-3de2-47ab-0232-08df07f4badc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2026 06:46:19.8091
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WfGjFY8LXqp+xKxRRSwp/RrxGcpF2YDY+qe91Kh/XdTIHvp2+AD+FBkl6X2kO8Z0w3FtDEnjLb3NoupDY2+tRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11954
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831205611.2439538-1-michael.cohen3@mail.huji.ac.il>
 
-PiA+ICtzdGF0aWMgaW50IGVuZXRjX3BmX3NlbmRfbXNnKHN0cnVjdCBlbmV0Y19wZiAqcGYsIHUz
-MiBtc2dfY29kZSwgdTE2DQo+IG1zX21hc2spDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBlbmV0Y19o
-dyAqaHcgPSAmcGYtPnNpLT5odzsNCj4gPiArCXUxNiBvbGRfbXNfbWFzayA9IG1zX21hc2s7DQo+
-ID4gKwl1MTYgbXNfc3RhdHVzOw0KPiA+ICsJdTMyIHZhbDsNCj4gPiArDQo+ID4gKwkvKiBUaGUg
-TVMgYml0IGlzIHNldCwgaW5kaWNhdGluZyB0aGF0IHRoZSBjb3JyZXNwb25kaW5nIFZGIGhhcyBu
-b3QNCj4gPiArCSAqIHJlYWQgdGhlIGxhc3QgbWVzc2FnZSwgUEYgY2Fubm90IHNlbmQgbmV3IG1l
-c3NhZ2UgdG8gdGhlIFZGLiBUbw0KPiA+ICsJICogYXZvaWQgc2VuZGluZyBtZXNzYWdlcyB0byBz
-dWNoIGEgVkYsIHRoZSBiaXQgY29ycmVzcG9uZGluZyB0byBWRg0KPiA+ICsJICogaXMgY2xlYXJl
-ZCBmcm9tIG1zX21hc2suIEJlY2F1c2UgdGhlIE1TIGJpdCBjYW4gb25seSBiZSB3cml0dGVuDQo+
-ID4gKwkgKiBhcyAxLCB3cml0aW5nIGEgMCBoYXMgbm8gZWZmZWN0LiBXcml0aW5nIGEgMSB3aGVu
-IHRoZSBiaXQgaXMNCj4gPiArCSAqIGFscmVhZHkgc2V0IGlzIHVuZGVmaW5lZC4NCj4gPiArCSAq
-Lw0KPiA+ICsJbXNfc3RhdHVzID0gZW5ldGNfcmQoaHcsIEVORVRDX1BTSU1TR1NSKSAmIDB4ZmZm
-ZjsNCj4gPiArCW1zX21hc2sgJj0gfm1zX3N0YXR1czsNCj4gPiArCWlmICghbXNfbWFzaykNCj4g
-PiArCQlyZXR1cm4gLUVJTzsNCj4gDQo+IFtTZXZlcml0eTogSGlnaF0NCj4gRG9lcyB0aGlzIGxv
-Z2ljIGludHJvZHVjZSBhIHRpbWUtb2YtY2hlY2sgdG8gdGltZS1vZi11c2UgcmFjZSBjb25kaXRp
-b24/DQo+IA0KPiBJZiBhIFZGIGFja25vd2xlZGdlcyBhIHByZXZpb3VzIG1lc3NhZ2UgYnkgY2xl
-YXJpbmcgaXRzIE1TIGJpdCBpbW1lZGlhdGVseQ0KPiBhZnRlciBtc19zdGF0dXMgaXMgcmVhZCwg
-dGhlIG1hc2sgd2lsbCByZW1haW4gemVybyBhbmQgdGhpcyBlYXJseSByZXR1cm4NCj4gd2lsbCBw
-cmV2ZW50IHRoZSBsaW5rIHN0YXRlIGZyb20gYmVpbmcgdXBkYXRlZC4NCj4gDQo+IEJlY2F1c2Ug
-dGhlIGVhcmx5IHJldHVybiBwcmV2ZW50cyB0aGUgc2hhcmVkIE1DIHBheWxvYWQgZnJvbSBiZWlu
-ZyB1cGRhdGVkDQo+IGluIGhhcmR3YXJlLCBhbmQgdGhlcmUgaXMgbm8gcmV0cnkgbG9naWMsIHdp
-bGwgdGhlIFZGIHJlY2VpdmUgdGhlIG9sZCBsaW5rDQo+IHN0YXRlIHdoZW4gaXQgZXZlbnR1YWxs
-eSByZWFkcyB0aGUgcmVnaXN0ZXIgYW5kIGJlIGxlZnQgcGVybWFuZW50bHkgb3V0IG9mDQo+IHN5
-bmMgd2l0aCB0aGUgUEY/DQoNClRoaXMgaXNzdWUgc3RlbXMgZnJvbSB0aGUgaGFyZHdhcmUgbGlt
-aXRhdGlvbiwgdGhlIHNvZnR3YXJlIGNhbm5vdCBndWFyYW50ZWUNCnRoYXQgdGhlIGhhcmR3YXJl
-IHdvbid0IGNsZWFyIHRoZSBNUyBiaXQgYWZ0ZXIgdGhlIGNoZWNrIGlzIGNvbXBsZXRlLiBIb3dl
-dmVyLA0KdGhpcyBwcm9ibGVtIGlzIGhpZ2hseSB1bmxpa2VseSB0byBvY2N1ciwgYXMgbWFpbGJv
-eCBtZXNzYWdlcyBhcmUgaW5mcmVxdWVudCwgYW5kDQpWRiBoYXMgYW1wbGUgdGltZSB0byBwcm9j
-ZXNzIHRoZW0uIElmIHRoaXMgc2l0dWF0aW9uIGRvZXMgYXJpc2UsIGl0IGluZGljYXRlcyB0aGF0
-DQpWRiBpdHNlbGYgaXMgYWxyZWFkeSBtYWxmdW5jdGlvbmluZywgbWFraW5nIHJldHJpZXMgcG9p
-bnRsZXNzLiBUaGVyZWZvcmUsIEkgYmVsaWV2ZQ0KdGhhdCBhZGRpbmcgYSByZXRyeSBtZWNoYW5p
-c20gdG8gYWRkcmVzcyB0aGlzIHRoZW9yZXRpY2FsIGlzc3VlIGlzIHVubmVjZXNzYXJ5LA0KYXMg
-aXQgd291bGQgb25seSBjb21wbGljYXRlIHRoZSBjb2RlIGxvZ2ljIGFuZCBpbnRyb2R1Y2UgbmV3
-IHByb2JsZW1zLg0KDQo+IA0KPiA+ICsNCj4gPiArCWlmIChtc19tYXNrICE9IG9sZF9tc19tYXNr
-KQ0KPiA+ICsJCWRldl93YXJuX3JhdGVsaW1pdGVkKCZwZi0+c2ktPnBkZXYtPmRldiwNCj4gPiAr
-CQkJCSAgICAgIlBGIGNhbm5vdCBzZW5kIG1lc3NhZ2UgdG8gVkYocykgMHgleFxuIiwNCj4gPiAr
-CQkJCSAgICAgbXNfbWFzayBeIG9sZF9tc19tYXNrKTsNCj4gPiArDQo+ID4gKwllbmV0Y193ciho
-dywgRU5FVENfUFNJTVNHU1IsDQo+ID4gKwkJIEZJRUxEX1BSRVAoUFNJTVNHU1JfTUMsIG1zZ19j
-b2RlKSB8IG1zX21hc2spOw0KPiA+ICsNCj4gPiArCXJldHVybiByZWFkX3BvbGxfdGltZW91dChl
-bmV0Y19yZCwgdmFsLCAhKHZhbCAmIG1zX21hc2spLCAxMDAwLA0KPiA+ICsJCQkJIDIwMDAwMCwg
-ZmFsc2UsIGh3LCBFTkVUQ19QU0lNU0dTUik7DQo+IA0KPiBbU2V2ZXJpdHk6IEhpZ2hdDQo+IENh
-biBhbiB1bnRydXN0ZWQgVkYgdXNlIHRoaXMgc3luY2hyb25vdXMgcG9sbGluZyB0byBpbnRlbnRp
-b25hbGx5IHN0YWxsIHRoZQ0KPiBQRidzIGV4ZWN1dGlvbiB0aHJlYWQ/DQo+IA0KPiBUaGlzIGJs
-b2NrcyBmb3IgdXAgdG8gMjAwbXMgd2FpdGluZyBmb3IgdGhlIFZGIHRvIGFja25vd2xlZGdlIHRo
-ZSBtZXNzYWdlLg0KPiBTaW5jZSB0aGlzIGlzIHJlYWNoYWJsZSBieSB1bnRydXN0ZWQgVkZzIChl
-LmcuLCBydW5uaW5nIGluIGEgVk0pLCBjYW4gYQ0KPiBtYWxpY2lvdXMgVkYgaWdub3JlIHRoZSBt
-ZXNzYWdlIGFuZCB0aWUgdXAgdGhlIFBGIHRocmVhZD8NCg0KVGhlIGBlbmV0Y19wZl9zZW5kX21z
-ZygpYCBmdW5jdGlvbiBpcyBjdXJyZW50bHkgb25seSB1c2VkIHRvIG5vdGlmeSBsaW5rDQpzdGF0
-dXMsIGFuZCBtZXNzYWdlcyBvbmx5IG9jY3VyIHdoZW4gdGhlIGxpbmsgc3RhdHVzIGNoYW5nZXMs
-IG1ha2luZyBpdHMNCmZyZXF1ZW5jeSBleHRyZW1lbHkgbG93LiBFdmVuIGlmIG5ldyBtZXNzYWdl
-cyBhcmUgYWRkZWQgaW4gdGhlIGZ1dHVyZSwNCnRoZXkgd2lsbCBzdGlsbCBiZSB2ZXJ5IGluZnJl
-cXVlbnQuIEkgZG9uJ3QgYmVsaWV2ZSB0aGF0IG1hbGljaW91cyBWRg0KaW50ZW50aW9uYWxseSBi
-bG9ja2luZyBmb3IgMjAwbXMgd291bGQgaGF2ZSBhbnkgaW1wYWN0LCBzbyB0aGVyZSdzIG5vdGhp
-bmcNCnRvIGZpeC4NCg0KPiANCj4gWyAuLi4gXQ0KPiA+ICtzdGF0aWMgdm9pZCBlbmV0Y19tc2df
-cmVnaXN0ZXJfbGlua19zdGF0dXNfbm90aWZpZXIoc3RydWN0IGVuZXRjX3BmICpwZiwNCj4gPiAr
-CQkJCQkJICAgIGludCB2Zl9pZCkNCj4gPiArew0KPiA+ICsJdTE2IHBmX21zZyA9IEZJRUxEX1BS
-RVAoRU5FVENfUEZfTVNHX0NMQVNTX0lELA0KPiA+ICsJCQkJRU5FVENfTVNHX0NMQVNTX0lEX0NN
-RF9TVUNDRVNTKTsNCj4gPiArDQo+ID4gKwltdXRleF9sb2NrKCZwZi0+bXNnX2xvY2spOw0KPiA+
-ICsNCj4gPiArCWVuZXRjX3BmX3JlcGx5X21zZygmcGYtPnNpLT5odywgdmZfaWQsIHBmX21zZyk7
-DQo+ID4gKw0KPiA+ICsJLyogU1ItSU9WIGlzIGJlaW5nIGRpc2FibGVkIGlmIHBmLT5zcmlvdl9l
-bmFibGVkIGlzIGZhbHNlLCBzbyBubw0KPiA+ICsJICogbmVlZCB0byBzZXQgbGlua19zdGF0dXNf
-bXNfbWFzayBhbmQgbm90aWZ5IHRoZSBsaW5rIHN0YXR1cy4NCj4gPiArCSAqLw0KPiA+ICsJaWYg
-KCFwZi0+c3Jpb3ZfZW5hYmxlZCkNCj4gPiArCQlnb3RvIG1zZ191bmxvY2s7DQo+ID4gKw0KPiA+
-ICsJcGYtPmxpbmtfc3RhdHVzX21zX21hc2sgfD0gUFNJTVNHU1JfTVModmZfaWQpOw0KPiA+ICsN
-Cj4gPiArCS8qIE5vdGlmeSBWRiB0aGUgY3VycmVudCBsaW5rIHN0YXR1cyAqLw0KPiA+ICsJZW5l
-dGNfbXNnX25vdGlmeV92Zl9saW5rX3N0YXR1cyhwZiwgUFNJTVNHU1JfTVModmZfaWQpKTsNCj4g
-DQo+IFtTZXZlcml0eTogSGlnaF0NCj4gRG9lcyBjYWxsaW5nIGVuZXRjX21zZ19ub3RpZnlfdmZf
-bGlua19zdGF0dXMoKSBoZXJlIGJsb2NrIG90aGVyIG1haWxib3gNCj4gb3BlcmF0aW9ucz8NCj4g
-DQo+IEJlY2F1c2UgZW5ldGNfbXNnX25vdGlmeV92Zl9saW5rX3N0YXR1cygpIGV2ZW50dWFsbHkg
-Y2FsbHMNCj4gZW5ldGNfcGZfc2VuZF9tc2coKSB3aGljaCBjYW4gcG9sbCBmb3IgMjAwbXMsIGFu
-ZCB3ZSBhcmUgaG9sZGluZw0KPiBwZi0+bXNnX2xvY2ssIHdpbGwgYSBzbG93IG9yIG1hbGljaW91
-cyBWRiBibG9jayBhbGwgb3RoZXIgVkYgbWFpbGJveA0KPiBvcGVyYXRpb25zIGFuZCBsaW5rIHN0
-YXRlIHByb2Nlc3NpbmcgZm9yIHRoaXMgUEY/DQo+IA0KDQpNYWlsYm94IG1lc3NhZ2VzIGFyZSBp
-bmZyZXF1ZW50LCBhbmQgbGluayBzdGF0dXMgbWVzc2FnZXMgYXJlIG9ubHkNCmdlbmVyYXRlZCB3
-aGVuIHRoZSBsaW5rIHN0YXR1cyBjaGFuZ2VzLiBUaGVyZWZvcmUsIHRoaXMgdGhlb3JldGljYWwN
-CnByb2JsZW0gaXMgbm90IHdvcnRoIGZpeGluZy4gRXZlbiBpZiBpdCBkb2VzIG9jY3VyLCBpdCB3
-b24ndCBjYXVzZSBhbnkNCmlzc3VlcyBvdGhlciBWRnMgd2lsbCBzaW1wbHkgZXhwZXJpZW5jZSB0
-aW1lb3V0IGVycm9ycy4NCg0K
+Hi Michael,
+
+On Mon, Aug 31, 2026 at 11:56:11PM +0300, Michael Cohen wrote:
+> tcp_sequence() rejects an incoming segment when end_seq is before
+> rcv_wup. Since end_seq is one past the last sequence number consumed by
+> the segment, this misses the boundary case where end_seq is equal to
+> rcv_wup.
+> 
+> A segment that consumes sequence space and has end_seq equal to rcv_wup
+> is therefore allowed to reach later processing, including ACK handling,
+> even though it should be rejected as a completely old segment.
+> 
+> Reject this boundary case for segments without SYN or FIN, while
+> retaining the existing behavior for control segments and segments
+> that consume no sequence space.
+> 
+> One consequence of the early rejection is that, in some cases, a
+> completely old duplicate data segment will no longer reach
+> tcp_rcv_spurious_retrans(). For IPv6, this may prevent a retransmission
+> with a different flow label from triggering transmit-path rehashing.
+> 
+> We accept this trade-off because the segment is completely old and
+> outside the receive window, and therefore should be rejected before
+> normal ACK processing.
+> 
+> We consider preserving the RFC 793 and RFC 9293 sequence-acceptability
+> boundary for such data segments more important than preserving this
+> side effect of processing an otherwise unacceptable segment.
+
+I think the RFC rationale needs tightening: RFC 9293's acceptability
+test uses RCV.NXT and RCV.WND. It has no rcv_wup equivalent.
+
+Strictly speaking, whenever rcv_wup < RCV.NXT Linux already accepts
+more than the RFC check (and not just at the off-by-one boundary
+this patch targets).  I take it that's deliberate: a segment can be
+"completely old" as data and still carry fresh control data.
+
+But that's equally true in the rcv_wup == rcv_nxt case, and it is
+exactly what lets a non-SACK receiver reach
+tcp_rcv_spurious_retrans().  For example, before the patch:
+
+1. peer sends 1:1001, we ACK 1001; now rcv_nxt == rcv_wup == 1001
+2. ACK is lost (e.g. a reverse path failure)
+3. after RTO the peer retransmits 1:1001; the segment passes
+   tcp_sequence() and tcp_rcv_spurious_retrans() is called from
+   tcp_data_queue()
+
+So the "unacceptable segment" isn't an obscure corner case.  It may
+be the ordinary retransmission of the last segment, which is the
+event tcp_rcv_spurious_retrans() is supposed to react to.  What makes
+us confident that we may just drop that functionality?
+
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+> Reported-by: Tamir Shahar <tamir.shahar1@mail.huji.ac.il>
+> Reported-by: Amit Klein <amit.klein@mail.huji.ac.il>
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Michael Cohen <michael.cohen3@mail.huji.ac.il>
+> ---
+> Changes in v3:
+> - Group the old-segment checks behind a single unlikely() branch to
+>   avoid adding unnecessary cost to the TCP fast path.
+> 
+> Changes in v2:
+> - Exclude SYN and FIN segments from the boundary-old check to preserve
+>   existing SYN/FIN handling, including simultaneous connect
+>   and retransmitted SYN+ACK AccECN processing.
+> 
+> Packetdrill reproducer:
+> 
+> // Off by one bug in tcp_sequence()
+> // the negative test before(end_seq, tp->rcv_wup) has off by one error, since end_seq is SEG.SEQ+SEG.LEN,
+> // whereas the RFCs require SEG.SEQ+SEG.LEN-1 (their positive test is RCV.NXT =< SEG.SEQ+SEG.LEN-1)
+> 
+> 0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
+> +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+> +0 bind(3, ..., ...) = 0
+> +0 listen(3, 1024) = 0
+> 
+> +0 < S 0:0(0) win 12345
+> +0 > S. 0:0(0) ack 1 <...>
+> +0 < . 1:1(0) ack 1 win 12345
+> +0 accept(3, ..., ...) = 4
+> 
+> // This is not mandatory for the phenomenon, we just do this to increment SND.NXT (set SND.NXT=101, retain SND.UNA=1) so we can show
+> // later that the problematic segment is actually accepted (via the tcpi_accepted_bytes count).
+> +0 send(4, ..., 100, 0) = 100
+> +0 > P. 1:101(100) ack 1
+> 
+> +0 < P. 1:1001(1000) ack 1 win 12345
+> +0 > . 101:101(0) ack 1001
+> 
+> // Now RCV.NXT=1001, so according to the RFC, a subsequent 1:1001 should be discarded.
+> // But in Linux, 1:1001 is accepted(!).
+> // Note that bytes_acked is incremented to the packet's ack number, which shows the packet is accepted.
+> 
+> +0 < P. 1:1001(1000) ack 23 win 12345   
+> // +0 < P. 1:1000(999) ack 23 win 12345   // if you use this instead, you get an assertion error, as expected.
+> 
+> // this assert will succeed in the presence of the bug, but per the RFCs, it should fail because the packet should have been discarded
+> +0 %{ assert(tcpi_bytes_acked==22) }% 
+> 
+>  net/ipv4/tcp_input.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index daff93d51..10e49e6e1 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -4844,8 +4844,12 @@ static enum skb_drop_reason tcp_sequence(const struct sock *sk,
+>  	const struct tcp_sock *tp = tcp_sk(sk);
+>  	u32 seq_limit;
+>  
+> -	if (before(end_seq, tp->rcv_wup))
+> -		return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
+> +	if (unlikely(!after(end_seq, tp->rcv_wup))) {
+
+In a connection that sends unidirectionally, this condition is
+unlikely only on the receiving side.  On the sending side, all incoming
+segments (pure ACKS) fulfill rcv_wup == rcv_nxt == seq == end_seq and
+this becomes the likely case. Do we rely on header prediction
+filtering out this case here? (this may be worth a comment if so)
+
+> +		if (before(end_seq, tp->rcv_wup) ||
+> +		    (seq != end_seq &&
+> +		     !(tcp_flag_byte(th) & (TCPHDR_SYN | TCPHDR_FIN))))
+> +			return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
+> +	}
+>  
+>  	seq_limit = tp->rcv_nxt + tcp_max_receive_window(tp);
+>  	if (unlikely(after(end_seq, seq_limit))) {
+> -- 
+> 2.43.0
+> 
+> 
+
+-- 
+Simon Baatz <gmbnomis@gmail.com>
