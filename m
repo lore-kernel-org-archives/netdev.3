@@ -1,114 +1,99 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E703220687;
-	Tue,  1 Sep 2026 12:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB247CC75;
+	Tue,  1 Sep 2026 12:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788265154; cv=none; b=ds6vJXKR50AAF1DC3yeK6PJmJsCQM1AaAq8zQlVlSYfHyeGmC6IFZLdsHIsjurSQRWdO/isUc3qn2vwYNPH+w+lxSjGUxiJyLc7NtwDwLuoBieXxwut/j6Uhws51uTGEH04bA+DgNLTr6KBM3JHAS2LWg+gMgCWB2aCI2UstKtQ=
+	t=1788265235; cv=none; b=otc9MLVv7Onba48/AHKcQTCbHHeAqnZ6nsCXewGtqm2BnUXbMN3476+QDhffNpQqO+CKnIeWT8LGQ0ikdqiSgoWN235/wij6SCC2/kNcIqDEXF1gf8z4naFA0ZkirVfdoWUnKScnj5dqJeu7+ZrhUC0NPskndoL+4JOcjBw1Ris=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788265154; c=relaxed/simple;
-	bh=NQYQLBBoAiiCGBr+b14hRW1oV2++VtwdOjDRFyDTa/M=;
+	s=arc-20240116; t=1788265235; c=relaxed/simple;
+	bh=Ms5yUYYVIUCMr7+Dx214kheiE7jKpBdWV1rFqMcG+C0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wr+dJKKnXPPDrfYzQpcgU4kUixiwn0qNYbMOmPT/p6cnTYXH83n1ARwsDEzyz10XWkTGjmXoQ/q9cVLq4/ErrQSN5PeRMqXxI8wQuJo81kQFvgnU0ZECu9oh3PcevQlotskUo7bxhgLAt9wFCIFRs7oJScIiJ1IbcxWiJW3w3nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=inr+6Ohl; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=BB78j5yoe0zeIy8lEXyA3SXddm03SINcKNt7hOqwkpkPHAOc8Ms68jUL476Ur6L5nbE3t+egElockKeak40cg1tEB00WXlSVBCOOEJJdyKkO1+mMUU8X+rAg30c/Mp0dO3SxYM+nvyrJ6v2KRuTRuWudXVlBvrnWKvlpyy/3EEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzVCDtES; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="inr+6Ohl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=tTg7Bo2wbjcRAUaxL1UEgGC/z6y7gvvxxIrjwzhUMXw=; b=inr+6Ohlz4RN7rLPYiLjzI4aYf
-	4TVsOlrxoOmr6Zx7CKUnmemKhTUkxJIBfi4hNvs9yerdiHWTBkvh8sgbBGkBy3PHfgWzGsKWDLTXm
-	jRYbOQAgAiG8YFBmEt5a3T8TO4X5cxzOLji/CUfrK5+m34t7Pz1uyrVhwwuNfx6iS8vg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1NRr-002Lx0-P9; Tue, 01 Sep 2026 14:18:43 +0200
-Date: Tue, 1 Sep 2026 14:18:43 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: guoqi0226 <guoqi0226@163.com>
-Cc: Frank <Frank.Sae@motor-comm.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	cuiguoqi@kylinos.cn
-Subject: Re: [PATCH] net: phy: motorcomm: keep chip delay defaults when
- firmware provides none
-Message-ID: <0dc278ab-c370-4e13-a727-a5e92f18703d@lunn.ch>
-References: <20260901061915.3410228-1-guoqi0226@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzVCDtES"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD52B1F000E9;
+	Tue,  1 Sep 2026 12:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788265234;
+	bh=knqgEaQ3Nt/j1kgI3GiULCfkTBJyPDx6YekcweuXbC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XzVCDtES9FvYRwTEGc9GrdSsXkl6cVu5UXSDTum7lXO3LWqCLtN+EXaqrgdN6hcuP
+	 3OrxkBXK3RjdrJeeLI/0bMQBaJ+ENpefSMLaVjuocWSFwmZ6GMfxx7oDYWyv8N0zBE
+	 G45G+qxb1zudvuGlCeaVk39PiCS9L2W1Wcgfl5qkR8CtuoJXn906kmVLfHXv1XLXyq
+	 tCGGUrHonlTdH81NrBePv0pYG0mZO3XmPN42ul1VU0dzC8Y8ut+6TaO4jfz0wI1G9a
+	 1Hm3Q4YEeZnZ0BA7vHLJ6seqCgz4sMz34z4XDxfvDIEy5PrHcznAPOfFcyS+RhwLuR
+	 8Lmr/WfajOQFw==
+Date: Tue, 1 Sep 2026 14:20:21 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Peter Hunt <peter.hunt@opengear.com>
+Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, 
+	johannes@sipsolutions.net, netdev@vger.kernel.org, mhi@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5 0/3] net: wwan: support DTR/RTS on AT ports
+ via MHI IP_CTRL
+Message-ID: <zjafvc6ndpkmavogxwmqj5gpefpj4ymefn5obed6cvjot7wnwa@pmrfl5tixa72>
+References: <20260819224927.2274790-1-peter.hunt@opengear.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260901061915.3410228-1-guoqi0226@163.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260819224927.2274790-1-peter.hunt@opengear.com>
 
-On Tue, Sep 01, 2026 at 02:19:15PM +0800, guoqi0226 wrote:
-> From: cuiguoqi <cuiguoqi@kylinos.cn>
+On Thu, Aug 20, 2026 at 08:49:24AM +1000, Peter Hunt wrote:
+> Qualcomm/Sierra SDX55/SDX65 modems (e.g. EM9291) withhold unsolicited AT
+> result codes until the host asserts DTR.  The in-tree mhi_wwan_ctrl driver
+> exposed AT ports but never signalled DTR, so URCs never reached userspace.
 > 
-> ytphy_rgmii_clk_delay_config() unconditionally programs the YT8521
-> RGMII delay registers. When firmware describes neither
-> rx-internal-delay-ps nor tx-internal-delay-ps,
-> ytphy_get_delay_reg_value() falls back to the default 1950 ps values
-> and those are still written into CCR and RC1R, overwriting the chip
-> strap/OTP settings. With phy-mode "rgmii-rxid" this clears the RX
-> internal delay the MAC relies on, causing CRC errors, packet loss and
-> link training failures at gigabit speed until the link falls back to
-> 100M.
+> Patch 1 extends the wwan core with an optional ->dtr_rts(port, mdmbits) port
+> op.  The TIOCM bitmask state is tracked entirely in the wwan core; drivers
+> receive the full bitmask so they can drive DTR and RTS independently.  The
+> core raises DTR/RTS on first open of any AT port whose driver implements
+> ->dtr_rts and drops them on last close, mirroring TTY semantics.  In the
+> ioctl path mdmbits is re-read under data_lock inside ops_lock so the value
+> passed always reflects the committed state and concurrent ioctls are
+> correctly ordered.  wwan_remove_port() also de-asserts on hot-unplug.
 > 
-> The fallback only supplies a value and does not skip the register
-> write, so the check belongs in the caller. Since the hardware links
-> cleanly at gigabit with the chip defaults untouched, return early when
-> firmware provides neither delay property. Delays supplied via DT or
-> ACPI _DSD are still honored.
+> Patch 2 enables the IP_CTRL MHI channel in the Sierra PCI table so that
+> the IP_CTRL driver (patch 3) is actually bound on those controllers.
 > 
-> Since commit fffedfece2b4 ("net: phy: motorcomm: use device properties
-> for firmware tuning") switched the driver to the generic device
-> property API, this applies to both DT and ACPI platforms.
+> Patch 3 adds a second mhi_driver that binds the IP_CTRL channel and
+> registers a ->dtr_rts op so that the wwan core's open/close DTR raise/drop
+> and userspace TIOCMSET calls both reach the modem.  A single recycled sink
+> buffer keeps the IP_CTRL DL ring live so the modem's transmit path does not
+> stall.  The existing AT/QMI/MBIM data path is untouched.
+> 
+> v4: https://lore.kernel.org/netdev/20260816121705.858013-1-peter.hunt@opengear.com/
+> 
+> v5:
+> - Change ->dtr_rts from bool to unsigned int mdmbits (patch 1 + 3): DTR and
+>   RTS are now driven independently; fixes RTS inversion when TIOCMBIS/BIC
+>   changed RTS with DTR in the opposite state
+> - Re-read mdmbits inside ops_lock in the ioctl path (patch 1): closes a
+>   concurrent-ioctl ordering race where two racing TIOCM ioctls could leave
+>   the modem line state inconsistent with TIOCMGET
+> - Add ->dtr_rts(port, 0) call in wwan_remove_port() (patch 1): ensures
+>   DTR/RTS are de-asserted when a port is removed while an fd is still open
+> - Update kernel-doc to note ->dtr_rts is AT-only and describe mdmbits (patch 1)
+> - Pre-queue RX sink buffer in mhi_wwan_dtr_probe(), requeue in dl_xfer_cb
+>   (patch 3): prevents IP_CTRL DL ring from running empty and stalling the
+>   modem MHI transmit path
+> 
+> Peter Hunt (3):
+>   net: wwan: core: propagate modem control signals to port drivers
+>   bus: mhi: host: pci_generic: enumerate IP_CTRL channel for Sierra
+>     EM919x/EM929x
 
-This seems wrong.
+FYI, this patch got applied to MHI tree.
 
-phydev->interface describes the basic actions.
-PHY_INTERFACE_MODE_RGMII means no delays are added by the
-PHY. PHY_INTERFACE_MODE_RGMII_ID means delays are added for both RX
-and TX, by PHY.
+- Mani
 
-rx-internal-delay-ps and tx-internal-delay-ps are about how big the
-delays are. The RGMII standard says the delays should be 2ns, so if
-these properties are not present, if delays should be added, 2ns
-should be added.
-
-The chips strapping does not matter, the PHY should do what it is told
-to do, via phydev->interface.
-
-So, does your PCB have extra long clock lines? That decides on the
-phy-mode value, you are describing the hardware.
-
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
-
-You say "rgmii-rxid". That would be a very odd value, it means you
-have an extra long clock line for one, and a regular clock line for
-the other. It does happen, but it is very unusual.
-
-If you really want to have the PHY not touch the delay configuration:
-
-/**
- * enum phy_interface_t - Interface Mode definitions
- *
- * @PHY_INTERFACE_MODE_NA: Not Applicable - don't touch
-
-and you need to patch ytphy_rgmii_clk_delay_config() to support this.
-
-    Andrew
-
----
-pw-bot: cr
+-- 
+மணிவண்ணன் சதாசிவம்
