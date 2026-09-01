@@ -1,167 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF33493641;
-	Tue,  1 Sep 2026 18:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9348CD5E
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 18:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788286702; cv=none; b=SecvtPOGe7b1dcaTlLNz7IVfRXrmJlL8vbuT8K+6skrf+iPJvb7cRAVVVqQWCbVM9+GC/Hl8J22w+yRuy/6cvCiuQ7I1viJyk2G8jvL5u47Oclr6f6TU83MCy7A8TjMKZfQN3rViEM3uCuQ5P1blXN1SW7B6NPDxUtqp0u2qecU=
+	t=1788286737; cv=none; b=huVQ/e0fpcvGrBvH+CjEmO4KFQFCagT3rASaFQHHXM3yo4wFvWGyIFrXJsFeTaSkrK+mRQxoqZti5LI54JJaHblsSBU0Jy6Mvr0T2t1Dq3tQ6OVynyU9uD/FU7/zvhgPExz6W8eJEfv9DRD/q/hzB86bkHdS0Q1J2K8Ce7tFM3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788286702; c=relaxed/simple;
-	bh=5ImQQ52FAHqZCA1SNnsWFLZKjtygQfBjRMkGGXfKTSc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bqwqhDH282az0pfB54q/P1vCnkXWvd+z2sVoDrTV11TB1rQR5RrKmOeRa/3DG8Tt7YKqim0/R4EF5njXycMyxhIDuR9Un92MZcPdlk5VjXvnI63jjrScro4hxiF2sbttQDQkuzGkA3LD79iGGKH0TGdiQ3hyO3K2cXZQ7NFPmeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJqmD7CP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1788286737; c=relaxed/simple;
+	bh=YXqEs328TowbEf5G0SPaV4v6Nvx2fFTpdEhShmlp9ms=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g2O31hO+RBg6H9zH2A/jv1QFWQokWHOtAxaWt44sXdtqhR/u9gSHYcZnWWayCDMAHz60inu07DTBxyy3Uu2zzZLSB7nRrbEXpSU1HAFkBYTNXycNRkq5D25XCTuvDIx1F/NbCst2E1ZkDy2X0Vte0Eh25RrkSg28/chxRsXJN1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=w6oxEPr/; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJqmD7CP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0DF8FC2BCF4;
-	Tue,  1 Sep 2026 18:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788286702;
-	bh=5ImQQ52FAHqZCA1SNnsWFLZKjtygQfBjRMkGGXfKTSc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=DJqmD7CPvuHRXv9H0ocWvSmx5bdvpRaMRKPSIVhoNtbSObthH2L8DYC4rK9yN1NsR
-	 +l/CoMHR7WlZ3r8Nux8fBy5kBs0WzvlVD10BTeBCy+7BEaX2xvxHWdU2TGxmg0e1Ss
-	 k8oOULu/Y4A3IPjqVgrATFmpHhrxHazSvfK/SP05GFo6QLUu9PDt9QNY0LYp1lHTnI
-	 qBP2o0gMk/e6O3eN8SFqJxgZ3db5j9rogMPb6Fz1y5ZqnBD2WNvwr/nus3V6VKjIV7
-	 0ydqMzNzNpFM509hV362WZ0PxtyJPxV8LCb/Jgj1dwCTioZ8Bx+QoNstx7hPSLRU3w
-	 uYfWNfCNGaPlQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBE2EC61DD6;
-	Tue,  1 Sep 2026 18:18:21 +0000 (UTC)
-From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Tue, 22 Sep 2026 21:40:33 +0200
-Subject: [PATCH net-next v2] net: pcs: lynx: add support for 25GBASE-R
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="w6oxEPr/"
+Received: by dvalin.narfation.org (Postfix) id DE591203D9;
+	Tue, 01 Sep 2026 18:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1788286730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RsvuI7lZ0TZRrrGE3s3xeWRxZcspgFKVyXkTwnTErr8=;
+	b=w6oxEPr/yLRyLmoykG/ykaHijXj0AhyZBNcWzrmpqWYwgCYNIgyPYGOvxMh1VuXjSSQZ21
+	A4RfgfOkuBqHGMBS5ojfaO51H5LstcswzWF457owhmo+pUsOrmche2kPh2f/UP68fswJ6f
+	PUBqkS5MmknD+2NfATqmWr0rNCW0k08=
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
+Subject:
+ Re: [PATCH net-next 10/15] batman-adv: tt: simplify NEW flag transition code
+Date: Tue, 01 Sep 2026 20:18:47 +0200
+Message-ID: <5146131.31r3eYUQgx@sven-desktop>
+In-Reply-To: <20260831135117.574836-11-sw@simonwunderlich.de>
+References:
+ <20260831135117.574836-1-sw@simonwunderlich.de>
+ <20260831135117.574836-11-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-for-upstream-lynx-25gbaser-v1-v2-1-1e6cf79c7b52@free.fr>
-X-B4-Tracking: v=1; b=H4sIALDZsmoC/42NQQqDMBBFryKz7pQkrY3pqvcoLqyZaKBNZJKKI
- t69wRMU/ubx4P0NErGnBPdqA6bZJx9DAXWqoB+7MBB6WxiUUDfRqBpdZPxOKTN1H3yvYUFVD6+
- uZHCWeBHCaGuEscJAaUxMzi9H/wmBMgZaMrTFjD7lyOtxPMvD//lRJtFZLftGXLU2zcMx0dkxt
- Pu+/wBOo3+Q0gAAAA==
-To: Ioana Ciornei <ioana.ciornei@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Vincent Jardin <vjardin@free.fr>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790106068; l=3594;
- i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=bmf6B3F6ohB69HA6ZyITfXa57iK/cRlvOW+wygkEdRw=;
- b=ezUeCvdgVgzuSEY24djbVTGKsQyeB2ZhpUeAe4SYXcES261DGvI5h1+9nh3ozxA5sXv2A3fWa
- MfS04tacPR0CdceNxpv9IrYnMaJt0hF2JLuWYKEWuCxEKdCfzvOdUiR
-X-Developer-Key: i=vjardin@free.fr; a=ed25519;
- pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
-X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
- auth_id=871
-X-Original-From: Vincent Jardin <vjardin@free.fr>
-Reply-To: vjardin@free.fr
+Content-Type: multipart/signed; boundary="nextPart4778182.LvFx2qVVIh";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-From: Vincent Jardin <vjardin@free.fr>
+--nextPart4778182.LvFx2qVVIh
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Date: Tue, 01 Sep 2026 20:18:47 +0200
+Message-ID: <5146131.31r3eYUQgx@sven-desktop>
+In-Reply-To: <20260831135117.574836-11-sw@simonwunderlich.de>
+MIME-Version: 1.0
 
-The Lynx PCS never supported 25GBASE-R. Add it, so that a 25G DPMAC on
-LX2160A can be driven by phylink.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1=
+=2Dsw%40simonwunderlich.de?part=3D10
 
-The SerDes side had the mode since the commit
-  1cab8fba5073 ("phy: lynx-28g: add support for 25GBASER")
-and dpaa2-mac maps DPMAC_ETH_IF_CAUI to PHY_INTERFACE_MODE_25GBASER,
-but the PCS never handled it, so phylink_validate() failed with the
-interface.
+[...]
+> Discovered by: opus-5, sonnet-5 =C2=B7 Missed by: gpt-5-6-sol, sashiko-ge=
+mini
+>=20
+> This isn't a bug introduced by this patch, since the removed
+> batadv_tt_local_set_flags() did the same unlocked read-modify-write under
+> rcu_read_lock(), but it may be worth noting for the rewritten loop in
+> batadv_tt_local_transition_new().
+>=20
+> The loop only holds rcu_read_lock(), so it takes neither the hash bucket
+> list_lock nor any per-entry lock while doing:
+>=20
+> 	tt_common_entry->flags &=3D ~BATADV_TT_CLIENT_NEW;
+>=20
+> Can this store be lost against a concurrent RMW on the same u16 from
+> batadv_tt_local_add() or batadv_tt_local_set_pending() on another CPU, for
+> example one that is OR-ing BATADV_TT_CLIENT_PENDING or
+> BATADV_TT_CLIENT_ROAM into the same word?
+[...]
 
-25GBASE-R is a serial mode without clause-37 in-band autonegotiation,
-exactly like 10GBASE-R: it does not needs any configuration, its state
-is read with phylink_mii_c45_pcs_get_state(), and it reports
-LINK_INBAND_DISABLE.
+Out-of-scope for this patch. And handled in the patch
+"batman-adv: tt: transition NEW local entries only under lock"
 
-phylink_mii_c45_pcs_get_state() is extended in the same patch because
-without it the link comes up reporting Unknown/Unknown.
+Regards,
+	Sven
 
-Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Co-developed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Vincent Jardin <vjardin@free.fr>
----
-Repost of the RFC now that net-next has reopened, rebased on net-next.
----
-Changes in v2:
-- Reword: this adds 25GBASE-R support, it does not fix a regression
-  (Ioana Ciornei)
-- Squash in the phylink_mii_c45_pcs_get_state() 25GBASER case, without
-  which the link comes up as Unknown/Unknown (Ioana Ciornei)
-- Link to v1: https://lore.kernel.org/r/20260825-for-upstream-lynx-25gbaser-v1-v1-1-fd71c8047798@free.fr
----
- drivers/net/pcs/pcs-lynx.c | 6 +++++-
- drivers/net/phy/phylink.c  | 5 +++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+--nextPart4778182.LvFx2qVVIh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
-index a92081560e641..da4f99059eef7 100644
---- a/drivers/net/pcs/pcs-lynx.c
-+++ b/drivers/net/pcs/pcs-lynx.c
-@@ -46,6 +46,7 @@ static unsigned int lynx_pcs_inband_caps(struct phylink_pcs *pcs,
- 		return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
- 
- 	case PHY_INTERFACE_MODE_10GBASER:
-+	case PHY_INTERFACE_MODE_25GBASER:
- 		return LINK_INBAND_DISABLE;
- 
- 	case PHY_INTERFACE_MODE_USXGMII:
-@@ -97,6 +98,7 @@ static void lynx_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
- 		lynx_pcs_get_state_usxgmii(lynx->mdio, state);
- 		break;
- 	case PHY_INTERFACE_MODE_10GBASER:
-+	case PHY_INTERFACE_MODE_25GBASER:
- 		phylink_mii_c45_pcs_get_state(lynx->mdio, state);
- 		break;
- 	default:
-@@ -188,7 +190,8 @@ static int lynx_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 		return lynx_pcs_config_usxgmii(lynx->mdio, ifmode, advertising,
- 					       neg_mode);
- 	case PHY_INTERFACE_MODE_10GBASER:
--		/* Nothing to do here for 10GBASER */
-+	case PHY_INTERFACE_MODE_25GBASER:
-+		/* Nothing to do here for 10GBASER and 25GBASER */
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -279,6 +282,7 @@ static const phy_interface_t lynx_interfaces[] = {
- 	PHY_INTERFACE_MODE_1000BASEX,
- 	PHY_INTERFACE_MODE_2500BASEX,
- 	PHY_INTERFACE_MODE_10GBASER,
-+	PHY_INTERFACE_MODE_25GBASER,
- 	PHY_INTERFACE_MODE_USXGMII,
- 	PHY_INTERFACE_MODE_10G_QXGMII,
- };
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 3ec3bb4391095..ff4375f1e9108 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -4360,6 +4360,11 @@ void phylink_mii_c45_pcs_get_state(struct mdio_device *pcs,
- 		state->duplex = DUPLEX_FULL;
- 		break;
- 
-+	case PHY_INTERFACE_MODE_25GBASER:
-+		state->speed = SPEED_25000;
-+		state->duplex = DUPLEX_FULL;
-+		break;
-+
- 	default:
- 		break;
- 	}
+-----BEGIN PGP SIGNATURE-----
 
----
-base-commit: c8ea08ba34f2a2e9bfb18ff3d69eb2d69b324f49
-change-id: 20260825-for-upstream-lynx-25gbaser-v1-30097d909d09
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCapcXBwAKCRBND3cr0xT1
+y8GTAP9pYtgQ53GhxqBDk6erQWp+KbSDdLPShU2KxvHj7228rQEApSyZSKDsN0tA
+BBvtJ/3BubEGdI0/mkrs3pHOpE3++Aw=
+=mchY
+-----END PGP SIGNATURE-----
 
-Best regards,
--- 
-Vincent Jardin <vjardin@free.fr>
+--nextPart4778182.LvFx2qVVIh--
+
 
 
