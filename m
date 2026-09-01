@@ -1,41 +1,87 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9463C3CE0A2;
-	Tue,  1 Sep 2026 14:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E664360EF5
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788273890; cv=none; b=GglTUN8b8salaTGNc1Jpoq75rl7Eejkjhdt59xGyvxaGnrpPO1wujGaplb1OKWVKCUVEbLe8+C6q7Bbh8jX6/MKt0SkwXqKwVGzIFS7HMEjq9u0IMSyadL1m2uHvyTB+h+kbwEvo1rDelTkOMsGOiRaocPQnczcawbBL83tOKf8=
+	t=1788274077; cv=none; b=MXEToZgLHdXYymb1oAWL184mnxQjtsxl4QrUwYN0YXX39o/0XVlv0wjJX9zpBW+mhkvbqZwdioNFnpGfHOBjM/b2VN5eTDPak39bUeaJGoih5BJZG5GJ2h9uzrvlQJ7/53rdNQPKru1rq4YNdt6tsDdOOWsRgHUFBLHBWC7ZFHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788273890; c=relaxed/simple;
-	bh=7bUFsheFHPtm3yDKXYBmcObqQS+gfp0xLZLH0BrdbMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr8CgdTOTZWSgD6m6ZB3VIcjb7bY2uEnDrCY7gXn9LhX/fx38U80v7LdWTR1T4aukxXLDJTK8f/4Oi5UQWKfVC3na5hk/eyhnW3UfN3OKRdA+1Xaoowhdx02o9EVEwWjEzU4HkEy1oJUltUrpZWCGyAYX5V66FUNfaw7MY/+eE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=JyBYOaUs; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	s=arc-20240116; t=1788274077; c=relaxed/simple;
+	bh=bqnDidL0h/ZcQFW836nIF9vhE8xMk4iT7WurfKQvwcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bg6cJ2ADX4gadPuA2wcb9zi4lnwvtUXgU9dcbGbDfTXh2QAGgDXz2NPpjfCPfkoUmzVE751qSBdFO6zd2xYNOB/NIHnaeIxuQs/CtP0YSGzMxySSF4itAQaH9GZLhujnh1T33sHQ/Lhujz+beSgGRKSQS083mAUtvd170YGq7f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=ude4K045; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="JyBYOaUs"
-Received: from localhost.localdomain (unknown [106.120.124.5])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4c2113c96;
-	Tue, 1 Sep 2026 22:44:35 +0800 (GMT+08:00)
-From: Chunfeng Song <springbreeze@stu.pku.edu.cn>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="ude4K045"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d560775ca2so36039815ad.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788274075; x=1788878875; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hXcMG77ozJuXk/Ixzm8x0lK3YDKIcZWH78CeLX8unbw=;
+        b=ude4K045JsbqAOmMb6CI4wtFRbgoLVP2kpyDF56PHLcp702uKhALrFEMEQHhaOXXRF
+         YdtUdGtifbyJeehKatkvXLcqvf+RdTQSygO8ZgxVa3VRrsEEZml070JlGd/OipBG/VOb
+         ls+UY9vg13qSgOn/xg4dvYRUFyWbStOYZeUFgQyGPfjXmLvdRHjaDIvRnIJeXOSPjnPA
+         1rFSYAPW6SONBL6kAmJ2Wj/4VMErFJniWff+iCwPunfjnYbEX4fi1y3dqWWq+3uQdM/I
+         BgONaufYeQFTgRQyR1kdk+yyippZeE+rZN2pd8rICmT95c7Rh8wC00J/kb81PWi/4jMg
+         L39A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788274075; x=1788878875;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hXcMG77ozJuXk/Ixzm8x0lK3YDKIcZWH78CeLX8unbw=;
+        b=oA1DnvlxUBCobJ8j+KL7OSHoloKSooJB9TPmMdgKyiyFdH05bVWOjvKB2a9YuLvH7N
+         PmG3KAfOrpCJ1h50O/k68onWs5V5uE+Yii02RbPUN/k6udE7Y5QD3NNudxo09FZOMmEJ
+         maeJE8DOvYWHmTqd6j1fn7AWAOmG5WvO6YYEwPOhZgZa359/YqBD8HobwI3t/E0JQUSL
+         KJ9b/LWM09aE/ApTvyY+t7utMDW4r6q1QFdMLfZzwtYJcn/rTj8335UT5EUk4cLAnC9B
+         yZ6ajyo9QKdhZa9DUPShxN7r0aJiB+o6yj2mTVLorzI8MdKW94yjL5oOqo1QJzNab5B8
+         GsMA==
+X-Forwarded-Encrypted: i=1; AKwUvByviRzVrYMQFTD64r7QUtXOag2P0CB2CB7tH89EnHC5KCd243gtAp3txBWK5uykgTH+GyTK8U8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nVPtE04dRKdC8nLi5dUuKahToCnzleHhTOe8NrUduto7NpJCaN
+	SUIXoVHADvqpuIwzWwqWcetBR8eCEFe6d3Nz2ouwWCUNcwanKZH4Qu4k0qLbq65CEzZG
+X-Gm-Gg: AYBFou1zr+tYNnGqrfrCLgeSx/+b6sTfOg68UBdn3LvEmsXNrdpoSJyHIifrdGc+fVc
+	xLCUT6lACBQ4S+6zj+jXiAHxvBtCdE0ewsoxUkefP8QTUe6Ng1SRZ4CLE2esRE6boxrhCQR4eUc
+	Fftq9PGK1+/DEWbWZsdZ6JqkZm4ndc9ecZbzP1RNK0z5sGGHLVy009bo0iyGIka9NmkIsga0pFu
+	2gR92lYln1X4tIQpAztDMNWklnHy+T21VlatZFwCkPp6WeI52umAfTkovGp/uNyn5SzYoubKA3W
+	ctliCzH+mZtD495YQo9hIWxCPDWqLBESitdn77YMUpleJYswnpGXXaW+choJJ4h7DIek5nNDFeL
+	u+rBSCKVyvpo5/9NAc3xe89/52oRo5KU9d+AuNxb9mV6paJmPslGKQPdPEpx53VXnof9/1LGiU2
+	P3jbHZeUKy5U/K9HYlYEc0eoZhoJwaB0bGFDwFEvJpuLys4nbfBejZyJCFKuBazPMeSnkbeUei
+X-Received: by 2002:a17:903:2c9:b0:2d9:6db:9fcb with SMTP id d9443c01a7336-2d906dba09cmr306818265ad.11.1788274075242;
+        Tue, 01 Sep 2026 07:47:55 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd35da91sm245975ad.15.2026.09.01.07.47.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 07:47:53 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: oe-linux-nfc@lists.linux.dev,
 	netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	fujita.tomonori@gmail.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	hkallweit1@gmail.com
-Subject: Re: [PATCH net v4] rust: net: phy: fix off-by-one bit positions in device status accessors
-Date: Tue,  1 Sep 2026 14:44:21 +0000
-Message-ID: <20260901144433.143989-1-springbreeze@stu.pku.edu.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CANiq72m=CJ7ngSBrnteyt07fHNRJ63J7m+=LY7UDHLmwYKjCJg@mail.gmail.com>
-References: <CANiq72m=CJ7ngSBrnteyt07fHNRJ63J7m+=LY7UDHLmwYKjCJg@mail.gmail.com>
+	horms@kernel.org
+Cc: david@ixit.cz,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	error27@gmail.com,
+	kees@kernel.org,
+	pengpeng@iscas.ac.cn,
+	raoxu@uniontech.com,
+	rosenp@gmail.com,
+	dddddd@hust.edu.cn,
+	joe@dama.to,
+	ian.ray@gehealthcare.com,
+	kuniyu@google.com,
+	linma@zju.edu.cn,
+	vega@nebusec.ai,
+	rakukuip@gmail.com,
+	weir@nebusec.ai
+Subject: [PATCH net v2 0/1] net: nfc: Fix use-after-free in general bytes retrieval
+Date: Tue,  1 Sep 2026 22:47:31 +0800
+Message-ID: <cover.1788157545.git.rakukuip@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,32 +89,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa05d6dd5a403a1kunmcc180acd1735a8
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQ0pNVkoYSB5IS01NSklNGVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS01VSklLVUpJT1VOWVdZFhoPEhUdFFlBWU9LSFVKS0lITk
-	NDVUpLS1VLWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=JyBYOaUsA3BI+q+LS7qGY9gbB49B1h+/q2mTwohbUvnkoR+pKTaDhZPK/Z33lOPJWSVgjlDhH+fjzj4yQ1Tlrtw87TJz/JqkZQGK99nLGQQvV9sJfbytAU01dbxPYV8QoUjqLswO/TAkhMT4G+gd7eyYe+tk1c13PnKJXIZTK5s=; s=default; c=relaxed/relaxed; d=stu.pku.edu.cn; v=1;
-	bh=ZfGR6A58caZrclbKg7yjSuAeg0+r/xLnJ4mISlTUfTg=;
-	h=date:mime-version:subject:message-id:from;
 
-Thanks for the guidance, all applied in v5:
+From: Luxiao Xu <rakukuip@gmail.com>
 
-  - Cc: stable is now scoped to 7.1.y and later, and the commit message
-    notes the bindgen 0.71 dependency:
+Hi,
 
-      Cc: stable@vger.kernel.org # Only 7.1.y and later (requires bindgen's
-      raw pointer accessors).
+This patch fixes a use-after-free (UAF) bug in nfc_get_local_general_bytes()
+where the local structure could be freed prematurely by nfc_llcp_local_put()
+before the returned pointer was accessed by callers.
 
-  - The comparison is moved out of the `unsafe` block so that only the
-    raw accessor call stays inside, in all three methods.
+The fix refactors nfc_llcp_general_bytes() and nfc_get_local_general_bytes()
+to accept a caller-provided destination buffer and copies the general bytes
+safely before decrementing the reference count.
 
-For the older stable branches that contain 2796ff1e3dca but whose
-minimum bindgen predates the raw accessors, I'll send a separate
-backport that fixes the hand-written offsets directly, once this lands
-in mainline.
+Changes in v2:
+ - Fix GCC -Waddress compiler warning in nfc_llcp_general_bytes() by removing
+   the redundant nullness check on 'local->gb' array.
+ - Fix line wrap indentation and column width across modified driver files to
+   conform to the 80-column limit.
+v1 Link: https://lore.kernel.org/netdev/cover.1786029423.git.rakukuip@gmail.com/
 
-Cheers,
-Chunfeng
+Thanks,
+Ren
+Luxiao Xu
+
+Luxiao Xu (1):
+  net: nfc: fix use-after-free in nfc_get_local_general_bytes
+
+ drivers/nfc/microread/microread.c |  6 +++---
+ drivers/nfc/pn533/pn533.c         | 14 ++++++++------
+ drivers/nfc/pn533/pn533.h         |  2 +-
+ drivers/nfc/pn544/pn544.c         |  7 +++----
+ drivers/nfc/st21nfca/core.c       |  8 ++++----
+ include/net/nfc/hci.h             |  2 +-
+ include/net/nfc/nfc.h             |  3 ++-
+ net/nfc/core.c                    | 15 +++++++--------
+ net/nfc/digital_dep.c             |  8 ++++----
+ net/nfc/llcp_core.c               | 17 +++++++++++++----
+ net/nfc/nci/core.c                | 16 +++++++---------
+ net/nfc/nfc.h                     |  3 ++-
+ 12 files changed, 55 insertions(+), 46 deletions(-)
+
+-- 
+2.43.0
