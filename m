@@ -1,128 +1,113 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCA3C09EC
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 03:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9623CC7DF;
+	Tue,  1 Sep 2026 03:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788231822; cv=none; b=D7Wog8WKzRFvIUiZCc/nLZRD7/kht0d+6UOUzu3QafrVM+T1LkWFP8B65uFkfaWuq+EXv7Jx+UF96NqLcY4gwITO34K6FO3f+riSRE9o63MOKeuAiVuarOjOexzthEjILfuadSs/7e6jKZ6tLN5+gh48SaEZVbKmDweC4NQDz0A=
+	t=1788231962; cv=none; b=HdkJ3a7QxXxZ+4ewIFmNmHwDB+DwqwAjXRDm1qO4iuOG3hh1Tu0pYYYEI4GkMSpBb9xRMbCnPEQVq2Ky23jN0am3/H6okc6C3ejVtrayYt0LboBtaVldT4+7t2j7BuER4Fnq1yFCSk5Zai1lQT1xFPhkX7bQpi84IWu3VkG5F2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788231822; c=relaxed/simple;
-	bh=QMjMCPTpdsCRoTAyCq7iY2dZzfbVHms6j3EXWfMOAPI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=S3CQHFBAqvfpeWD/XY/KHNLbEfaiJB6EIcWJmwaiOyU/0OnJ8KGIq+sj72lHn17lyFG7ibzjkzhzBNruT32kQCcT9EEOpEkiodN1YB/a/lITSnEHGFW38hfIQB2EUrY9s8QKTQeEE6fr+gpuwmKBFqOMIOJmAhTU/09K1eIVIhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRAGazp5; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788231962; c=relaxed/simple;
+	bh=ABZFUwYhFhIoHEraEjchVne7McbVBhnaI/sZtZckc70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e0j7GrYUZ5nAnr3bZTfx7ulYVW/2k2sf/Qlo7W96PcHWqhs9H+l9q6JXSj3cHO8YK55763r33hwKrb8P4GxxETtULN/cuXWhXWc2qjiokapNWfkKlKaXz+ZngkFxS7DFA/2O3wuOUmfSYefCTsaULlTY/qgoecQX5njxWofQZbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jMI6fJ/S; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRAGazp5"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8630c1503f2so20393687b3.1
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 20:03:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788231819; x=1788836619; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=5+eVI0mQz7KwBX8ylebIXjGIn2MepFoVALYcchUmiwY=;
-        b=LRAGazp5sKuwz8l6nbuobcsOMZqemShEOa0Fpnkil2odIOYfXvkqosUxYYgPg6kBnl
-         1Ec4YKms2cLL0D+eGsXgGIDHJLvqSM0C/d1bPBfhILwZR3HpMBxT89ao97cXkaC09+Ev
-         yW/ktaJp9hLVwh3TwZ/zyk+UCSzEJnjCy5HVbQAeTvngi7aAQ/6aHu26V2fK0SkvvRhz
-         kLBZU81T79BCweIpLr4rWJM02rsmxewuoON4mNDJpFLWH5km36sfPsGOLjzQ4EtU5cSg
-         cto2zS49FJyKIXdJA6saE0Q3sps0Edh3DIwRYJ0BiHca/8kpTNC1tTFkF319BMmdZQR+
-         cm0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788231819; x=1788836619;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5+eVI0mQz7KwBX8ylebIXjGIn2MepFoVALYcchUmiwY=;
-        b=c5lxyeCM0neERrpIS4PAsXMjsRUAmb+IKJiNphfP1rDAlu7QhGgSJZay6dKHYVaFbr
-         MqHW/f7YocXizycQahIPjP/tGUVz1NfgzQmxP13bamAgipq8CB6clFn/NG9f8GjYeK3z
-         YjE/Tfl9AqE/MF+3yBe1fmVvh3oMvXgthHXgk8If2GBEc7svhZCAzRIgi4VJBFtvX+60
-         XZcb6huqnjRZQY9EAmPK/WIaGHxTHOTzw0XbYohsMY76WDhG/8+z5jhZGGeiOel5zVEu
-         +p5wXpBDoMiBZrXNBWKp3w/X1f5jbXB6hKy9YW7ngXFCEZz2mHdtM/xGOQl5PVA6Axui
-         /r1A==
-X-Forwarded-Encrypted: i=1; AKwUvBwpweFwVYwhoc+aSyuvfdzMWuselfgGj1QTVPisLeiX4VvVnIAz5RFmCawxDfdC3eBhZiR25+Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++kVndZZ62QweddY9r9NvUwW+CxM48dE1HT/bzrLBE++bUD2ACut
-	D0/SoMy8CLxTn+S6VWeWH158rm/fH3FRAeA6OI1LlXmANy0Y97TG2hO3
-X-Gm-Gg: AYBFou2/FRhSAVG7vr+6mKCCyUaePlEY620jrgZ4ANL7YR9ae2AkMj+e7QTLRigcqdZ
-	jRZdS8uFqAAiKrOpa1Z8VB9SgDKGsh9Drs4pEhJOVdT4lCYRpdB8yAPUzQDAV3cQ8Wa7HSUghpN
-	DJXB0F2GcQJTs1ogBwfUV/Ru61cnRfiuym+1H4oG8VVLmCP8H7htZZtz6PSq9P/6v/l7poL1Oea
-	tyQIu9o+P1ABm6DJrFBHRbmEvk6zg1e7EVRCE5wRkZ9NoU87Nr2QQK5hp+jMjkFew5/sBgn1p2L
-	NrnVKBK085ulBhc6JVmAHIMhXWXu5xTFl2hpwmyOMoEtfu7U7gxslmqnrNAmBFhE2lRDSB1Bq6A
-	m1EPTe3Xtnn0cBXC1qxxk7inzaMmMdF73Hg8MAFswUbByoKAIQ/nzTrI4KCva4MJknEQJX86dF0
-	xQfgIKBgcezbt8TMEf5uO0XTnq5tTbXSVt8L2MjOX72u0OGUctKOIO4iUHApHSOPdXHNv2f2FPV
-	00W3xg5EDns/YbwlNYAdBC7GcTkzuneefg2JcNBLA==
-X-Received: by 2002:a05:690c:4017:b0:859:9c98:b8b4 with SMTP id 00721157ae682-86875b7b5a6mr25036897b3.31.1788231818693;
-        Mon, 31 Aug 2026 20:03:38 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-862e2335134sm43186607b3.28.2026.08.31.20.03.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 20:03:38 -0700 (PDT)
-Date: Mon, 31 Aug 2026 23:03:37 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew+netdev@lunn.ch, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.2d4ddab147812@gmail.com>
-In-Reply-To: <20260831213221.1370774-7-willemdebruijn.kernel@gmail.com>
-References: <20260831213221.1370774-1-willemdebruijn.kernel@gmail.com>
- <20260831213221.1370774-7-willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next v7 6/6] selftests: drv-net: extend so_txtime with
- hw offload
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jMI6fJ/S"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=k84NDGMsq/Kto9RzKtWIVCVX3P/YTWj6KJ7tWB1oRjo=; b=jMI6fJ/SkQfRbUomapZSzpP1h9
+	n4ujLooQNjPdcWzpKNHt17/fz3ChFKXlHlp3w+3z6H5nIPUIOMqFot6u8fiwJBfYRVbtQeLtyONcI
+	0PGbPDTRnWzdDs3ekl+VMBwsVHBv3IDHOZ56D7MXywj7z5NuVVkQpehYXqCFfBpaG1WQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1Eon-002IGK-9E; Tue, 01 Sep 2026 05:05:49 +0200
+Date: Tue, 1 Sep 2026 05:05:49 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"olteanv@gmail.com" <olteanv@gmail.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 net-next 03/15] net: enetc: add link status message
+ support to PF driver
+Message-ID: <123a8343-9912-4b57-a402-08bc18748ff7@lunn.ch>
+References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
+ <20260831025441.635045-4-wei.fang@oss.nxp.com>
+ <bd07a661-857f-421a-9ff0-e807aade9543@lunn.ch>
+ <GV2PR04MB117396D2988C68C961868A8F388A82@GV2PR04MB11739.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PR04MB117396D2988C68C961868A8F388A82@GV2PR04MB11739.eurprd04.prod.outlook.com>
 
-Willem de Bruijn wrote:
-> From: Willem de Bruijn <willemb@google.com>
+On Tue, Sep 01, 2026 at 02:31:21AM +0000, Wei Fang wrote:
+> > > Add link status message support to the PF driver using three command IDs
+> > > under message class 0x80 (ENETC_MSG_CLASS_ID_LINK_STATUS):
+> > >
+> > > 1. ENETC_MSG_GET_CURRENT_LINK_STATUS (cmd_id 0)
+> > > The VF queries the current PF link status synchronously. This command is
+> > > not used by the Linux VF driver but is intended for DPDK-owned VFs.
+> > >
+> > > 2. ENETC_MSG_REGISTER_LINK_CHANGE_NOTIFIER (cmd_id 1)
+> > > The VF registers for link change notification. Upon registration, the PF
+> > > immediately notifies the VF of the current link status via a PSI-to-VSI
+> > > message, and continues to do so on every subsequent link state change.
+> > >
+> > > 3. ENETC_MSG_UNREGISTER_LINK_CHANGE_NOTIFIER (cmd_id 2)
+> > > The VF unregisters from link change notification.
+> > >
+> > > For link status message, the PSI-to-VSI message is 16 bits wide: the
+> > > upper 8 bits carry the message class ID, and the lower 8 bits carry the
+> > > class code. Bit 0 of the class code indicates the link state (1 = link
+> > > down, 0 = link up), and bit 1 indicates whether TX PAUSE is enabled on
+> > > the PF (1 = enabled, 0 = disabled).
+> > >
+> > > The TX PAUSE state is included because VF RX BD rings support congestion
+> > > mode, but whether the hardware can actually send PAUSE frames depends on
+> > > whether TX PAUSE is enabled on the PF. By conveying the PF TX PAUSE state
+> > > in the link status message, the VF can determine whether to enable
+> > > congestion mode on its RX BD rings.
+> > 
+> > I see you have hit the 15 patch limit. Do you have a patch in the next
+> > series implementing ethtool get and set pause?
+> > 
 > 
-> Add two pacing hardware offload variants
-> 
-> 1. one that uses FQ to safely offload when within bounds.
-> 2. one that uses pfifo_fast and thus forwards all packets.
-> 
-> Verify that the packets are paced in hardware with new flag '-H'.
-> 
-> Also increase rcvtimeout significantly to reduce flakiness. Especially
-> for the new beyond_hw_horizon test, which is close to the 100ms limit.
-> But update recv_verify_empty to take MSG_DONTWAIT. That last empty
-> check must not delay each testcase by the receive timeout.
-> 
-> Hardware pacing offload can complete packets out of order. So the
-> reverse_order test is expected to pass with pfifo_fast too.
-> 
-> Do not test ETF, which does not change its dequeue behavior based on
-> pacing_offload_horizon.
-> 
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> No, we do not have the patch to support ethtool get and set pause for VF.
+> The link is controlled by the PF, including TX PAUSE-related configurations
+> (ON/OFF/refresh threshold and PAUSE Quanta). The VF can only passively
+> decide whether to enable congestion mode based on the actual link status.
+> Adding an ethtool set pause interface to the VF is meaningless because it
+> cannot control the link or configure TX PAUSE, , or rather, it shouldn't control
+> these.
 
-> +@ksft_variants(_test_variants_fq())
-> +def test_so_txtime_pfifofast_mono_hw(cfg, ipver, args_tx, args_rx):
-> +    """Run all variants of monotonic tests, without fq pacing sw backup."""
-> +    cfg.require_ipver(ipver)
-> +    cfg.require_nsim(nsim_test=False)
-> +
-> +    _dev_setup_pacing_offload(cfg)
-> +    _qdisc_setup(cfg.ifname, "pfifo_fast")
-> +
-> +    # Expect all tests to pass, except beyond_hw_horizon without sw fallback.
-> +    # It will send immediately, failing the receiver arrival bounds check.
-> +    expect_pass = not args_tx == "a,70"
+Well, get will return what is actually happening. That could be
+useful.
 
-Will fix a style warning
+And from what you described, it sounds like the VF has the option to
+not enable congestion mode, i.e. not send pause frames. So you can
+implement a limited set, returning -EOPNOTSUPP under many conditions,
+but still allow some control. But it might not be worth it.
 
-> +    test_so_txtime(cfg, "mono", ipver, f"-H {args_tx}", args_rx, expect_pass)
+
+      Andrew
