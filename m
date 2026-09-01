@@ -1,64 +1,64 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410573C09E5
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8612D33F8B2
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788264465; cv=none; b=QyWkSL8v8jGhZVdM3+F5+P6rqWbNVQYwotqlpPxCuDu9MUMgFTB5hDUbFtKVPW2bEZp6ULfYs7VXNMl6/m3DccYfCtI7okWmZ7cWwI7+vR3IC+WEaOpR3OQ7XHWSTRTJkghojr+RCW6fqW8XsjniW1lkFjgbEoG0bnT/XDhglAA=
+	t=1788264465; cv=none; b=XaCcsdv9ogRphBNHQ8S+N//OuxkSL6TOvAT5ERPP5exzZiB9OPVusQGivA6QT6jndKgLdAxjVXRUER9w+Pnih3I7bwcZZ+mTtHLmukFkDCinCyGTsc060UmrqskHAmNCli6HGUdvDNh8NIJJUnrlg/mMUzMmzAi1o65opFH1iUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788264465; c=relaxed/simple;
-	bh=vDHm7CkTNErA2+VH4D/qGhWbmoMxmNZSOesyPx+peIM=;
+	bh=tdJiRvngwBZJEFqckMVh5CbVJMAJJT/FEcsuLmpJ9ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnItp5/upWgSvrpVDdge4e4dtg/x4X7G0j8WpFhyrjDLCQyR8Go9WYK5HQ6CpyLfribqtaiwp5OGHe+lAcEMPgwJrQPtQzhTWyBXTQUH7TJMrgUgXjfnsMDZF/xoYU+LfW8abVIYXwF5hnvmel/bValGU1u8o4bb6Ckoj4r4OXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=cjiMJ9Mx; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=CKxBDag9lATgFGAlL6ws12rZE+Xd4C90afite1bov6MIcsg5BFpfEMC1w5d+LJSEXWpZKd1WGjpFh7JjL/MblbF0KYlUYiLNCQF7zxVOhLPw6kTER1EGVeaq4IRPlv2ygWCypcStaxm37oXywkNoKFNnNLrsIRjqSzNGcSUzDf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=ST3uQuzJ; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="cjiMJ9Mx"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49b8e527d63so8931925e9.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:07:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="ST3uQuzJ"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-482fc3327fdso538455f8f.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:07:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788264460; x=1788869260; darn=vger.kernel.org;
+        d=blackwall.org; s=google; t=1788264462; x=1788869262; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=R+TeBJucdheuLQOVi4XpjZrYuesJgF3ndjF41LXDZJI=;
-        b=cjiMJ9Mxw6Joo+F0MsX0vqTp+rQb7XCt4peRHwbacc/+YWbLojdsvMCxhrcytNFMnA
-         l84bR58fKaKdxzBgcf9e38PfGcmK7Vpjroqx2I07h7IDkUGebBmp7r7jNHTzxaB8/eNh
-         xWtM8G4ucRIK5IT3dgq/vcoZZRgTOECCMtBBBHk0yycMI4z+lKQ+SWj/hNs2gfhW6siF
-         9ksis85L9sD+ohLkxG722elMvkubVbSePIlkYu0ih9IASEavEJAco25MEkzNAV8kBAeE
-         cP/lTE67rkkrXxgIgkCy1ZNixHmmulXh37XTOjvguKEmXGZNRUlQMCL7z3zpl4AHpKMB
-         E+1A==
+        bh=HMMQOAlRYAextL0wqVjD4N5g4g594G9DLp/sV2LJqQE=;
+        b=ST3uQuzJVIvCikCIqfHkjRxGsZq7uOUXWj/2V/S9yZoG3YUXxGNocEKc56kxtmX1yG
+         14QubPtMn/Q08E0zu1fWlm/rz9m3CHoT+h/uvZHYKiDPgDWJ78LV7mQGWRSthV3zCy1l
+         QfwloAKOXCVgefzjrJpKOpeOcwvJhZoPN0Ip+n0gDxbkP1EOdLOjp2hzl9w5NxsdAHqU
+         lthz+EvCs0t/ChUgxElmoSZ7HKVBeeFoqgkHuLf4CTEWVLdqvbNmMN3fIxMNUH9EmjcW
+         g8RGrGowMKrRjzTfcsZ0+y6r7Q+uScavmlxcJAEiyuBPV/khFRoBW7M3h97JNAFY+7ss
+         Ql8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788264460; x=1788869260;
+        d=1e100.net; s=20251104; t=1788264462; x=1788869262;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R+TeBJucdheuLQOVi4XpjZrYuesJgF3ndjF41LXDZJI=;
-        b=S/motf8XNrr/31L+5GRXqZ2cYAMb1Uevm5VglXhAF4AaGHldTelB5GqxsUEMoPyXGU
-         Hl75ylM/RZvApqjdkjEV4pHYQEn4wVYR5+n/yeESKQLNFIIPPv/B4evrqK282IKywAAA
-         I2O0KVNDPyocEE69Q4+PrnuBILxJXBT9HKD4Ab/cRZ2qxL55XHTe0L7vSQg+8lGgeXcf
-         VxYvEELmq+n62qnpq+L7ft1lRfghVJwix+lYpr3G2D5ZzrBONFfAKfMw9sFw2Os678rN
-         WTkwQLqTEmeKTUwyXavByCj8kD1HSEH39zjjS6gZIfKKWhCIEmhab7KsjVZXw87nPtbb
-         9D+Q==
-X-Gm-Message-State: AFuF++nxDUrPz0uNFN9nsv3qzvgbnEGyCqNwTL2DRCIQjgrCGeKwDT8X
-	1hguOm2lpwU9R2tmfrGcyD3rm1eil2e+/wZqpckTtcLKe01CFRQi6PTHFwSunmQE9tI/9DaVhp3
-	v3PPuAo6N2Q==
-X-Gm-Gg: AR+sD12VFVI/VeeY30OEu3WTgTgrbOzlR0Ble4TrZLtIXqVeLml6Y8Hq/I2E8VhS0mI
-	nbluWLckQmEiFm8co/vaa8IG0OCQ+aN5AIuptbpIxdG68rCbP2KPfKjs+C75aIlzNxWmqePO3RP
-	c7jFbaKxOlocNDSneuZnfimOHi8aH3PToHEG/7aBkFoST9T4EP2SPhCADPiaGPXc7pNwgDFgNil
-	N3k7Oa01lalTNKbNEwnLbflLcRU7LAMN4XuhfVZ3Yh88lfL2x16wNFJRrnEA8Bz1M9iBeYLUlIR
-	L3C5Ol/IEnOSweCbVY0/PRZT28RLmo2iLdcTK8MyHd8h6YwPmjdvSCYggc/JIPodTme+/0x7xX9
-	WfsPxhs50XPVgx+oVtyt7OiSRMygdeZyy0AjNoewWenBfyZ8JHI5lb0YbfZ8v30n7cJYdtZ9fcX
-	q+NpKh1kEK0VmcDZRt6NNCz0hRrjlPj8FAo3fNleRRaYwweYCKsYnyes9kqWmUDTxDbKFDQ3gza
-	GG+RdKJ//8=
-X-Received: by 2002:a05:600c:4fcb:b0:499:db27:7b1 with SMTP id 5b1f17b1804b1-49b91c62d9bmr504091125e9.15.1788264459996;
-        Tue, 01 Sep 2026 05:07:39 -0700 (PDT)
+        bh=HMMQOAlRYAextL0wqVjD4N5g4g594G9DLp/sV2LJqQE=;
+        b=PNFYlr/2sz8BLb/I+ipB6Ha2ovbpIGktG/IXCB0nq5WoIaldknuFH6NtVQN85sMVcF
+         PD1L+uWMPY2MB8BFJoZA00ziVFp/0p6o7HHijviuVXPDcTmLh2uG8YClhXYliSGg9Hc+
+         yv299gE7bmnqYXcal6NwlQgFTBRZe3I+a7N3gRH/wJM7pcRKcjlnm/lTwf22NAjUXA/x
+         pJqINivj2CuspoDUAHHU1kZ9FBwO4DZLArSq2C+uWfUjMqFJoOpgufFniGp4b2zWwFwh
+         ANSP5Nd2NHwBxQ5idndKtV9XBvzVmEGidKBTFeK8jvNdp+blGMqbLKlyPKOU35UuYxjZ
+         OqZw==
+X-Gm-Message-State: AFuF++n2TdvWei3BZ+jUxEjK6B14lHTDBHf7LEBcyQ30lQ9mpCnM5Iyp
+	SqM0ZnFtXj4UE3fAk4BCa5r7lIxfYe1z99kBJFmX3JuavaN6NDrmY7WDhLGIhlXlP91OdnEx7m6
+	hrFTfy1wUbg==
+X-Gm-Gg: AYBFou0CqfHoWfMzNGIxi8ZpapeCwXT6X0BtQdyvfl9i0dye7pPtejw8FKMluQ0vwai
+	omFChHgsbhhZZ4wB6q32XTFR0PvNZlBMtF0Xi8qakywY7vmtkGVmjsvh2EmR8dOZF46sNuN0kz3
+	ViGrZofVCDw03kIozuaG36MNVgcRQAlB4U8x8m9iJQfgd6la434ah+/FxGKI9Xp/akoNlt4XbMb
+	R7cLGy7FoC98wI+drW9G5nekMN9eoQdpHv+6UpYBqDEYyGiDbFb3UTpNW0txffwv2ny30ggH1x2
+	0qR/bAdJV6tiHbTDtP6R90GUYSZKYA4Ln6cBA0c85qPeIZfX7w/2bZBt38BiOd1/n421fYZfRlT
+	yQWOHp7w3V8OkICXO3I3zMhmtd63xAG8Mc0Kr0Hra1MDgtgekP49JE8wMfnupUPElyt4bMUN4pj
+	c6t3IgS9vyRlSn+PxeaL3PIM9w3kRiX/C+ah+aPbJiC28T2CZRrryM4TrpuuK43uNrq1b7RLd3R
+	DLhECJw7zkm
+X-Received: by 2002:a05:6000:4305:b0:47f:8ac0:ccb4 with SMTP id ffacd0b85a97d-4843faa7301mr15041009f8f.10.1788264461602;
+        Tue, 01 Sep 2026 05:07:41 -0700 (PDT)
 Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48442d78444sm5107623f8f.25.2026.09.01.05.07.38
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48442d7e452sm4251154f8f.35.2026.09.01.05.07.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 05:07:39 -0700 (PDT)
+        Tue, 01 Sep 2026 05:07:40 -0700 (PDT)
 From: Nikolay Aleksandrov <razor@blackwall.org>
 To: netdev@vger.kernel.org
 Cc: idosch@nvidia.com,
@@ -69,9 +69,9 @@ Cc: idosch@nvidia.com,
 	horms@kernel.org,
 	bridge@lists.linux.dev,
 	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 3/9] net: bridge: mst: use br_get_pvid helper
-Date: Tue,  1 Sep 2026 15:07:15 +0300
-Message-ID: <20260901120721.747908-4-razor@blackwall.org>
+Subject: [PATCH net-next 4/9] net: bridge: vlan: annotate lockless vlan flags use
+Date: Tue,  1 Sep 2026 15:07:16 +0300
+Message-ID: <20260901120721.747908-5-razor@blackwall.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260901120721.747908-1-razor@blackwall.org>
 References: <20260901120721.747908-1-razor@blackwall.org>
@@ -83,27 +83,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The only place that accessed pvid directly outside of the bridge vlan code
-was mst, change it to use the br_get_pvid helper.
+Annotate vlan flags data races, they can be read lockless.
 
 Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/bridge/br_mst.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_multicast.c |  2 +-
+ net/bridge/br_netlink.c   |  6 +++---
+ net/bridge/br_private.h   |  4 ++--
+ net/bridge/br_vlan.c      | 19 +++++++++++--------
+ 4 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
-index 43a300ae6bfa..95e49ec8065e 100644
---- a/net/bridge/br_mst.c
-+++ b/net/bridge/br_mst.c
-@@ -86,7 +86,7 @@ static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
- 	if (br_vlan_get_state(v) == state)
- 		return;
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 3ef5d8bbf552..bbcaedf15ca1 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -912,7 +912,7 @@ static void __br_multicast_query_handle_vlan(struct net_bridge_mcast *brmctx,
+ 	else if (br_multicast_ctx_is_vlan(brmctx))
+ 		vlan = brmctx->vlan;
  
--	if (v->vid == vg->pvid)
-+	if (v->vid == br_get_pvid(vg))
- 		br_vlan_set_pvid_state(vg, state);
+-	if (vlan && !(vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED)) {
++	if (vlan && !(READ_ONCE(vlan->flags) & BRIDGE_VLAN_INFO_UNTAGGED)) {
+ 		u16 vlan_proto;
  
- 	br_vlan_set_state(v, state);
+ 		if (br_vlan_get_proto(brmctx->br->dev, &vlan_proto) != 0)
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index b2cd4e39326d..62ce96d9ba32 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -41,7 +41,7 @@ static int __get_num_vlan_infos(struct net_bridge_vlan_group *vg,
+ 		if (v->vid == pvid)
+ 			flags |= BRIDGE_VLAN_INFO_PVID;
+ 
+-		if (v->flags & BRIDGE_VLAN_INFO_UNTAGGED)
++		if (READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_UNTAGGED)
+ 			flags |= BRIDGE_VLAN_INFO_UNTAGGED;
+ 
+ 		if (vid_range_start == 0) {
+@@ -385,7 +385,7 @@ static int br_fill_ifvlaninfo_compressed(struct sk_buff *skb,
+ 		if (v->vid == pvid)
+ 			flags |= BRIDGE_VLAN_INFO_PVID;
+ 
+-		if (v->flags & BRIDGE_VLAN_INFO_UNTAGGED)
++		if (READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_UNTAGGED)
+ 			flags |= BRIDGE_VLAN_INFO_UNTAGGED;
+ 
+ 		if (vid_range_start == 0) {
+@@ -437,7 +437,7 @@ static int br_fill_ifvlaninfo(struct sk_buff *skb,
+ 		if (v->vid == pvid)
+ 			vinfo.flags |= BRIDGE_VLAN_INFO_PVID;
+ 
+-		if (v->flags & BRIDGE_VLAN_INFO_UNTAGGED)
++		if (READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_UNTAGGED)
+ 			vinfo.flags |= BRIDGE_VLAN_INFO_UNTAGGED;
+ 
+ 		if (nla_put(skb, IFLA_BRIDGE_VLAN_INFO,
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 0efd2e79e255..96554d293d22 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -665,13 +665,13 @@ static inline int br_is_root_bridge(const struct net_bridge *br)
+ /* check if a VLAN entry is global */
+ static inline bool br_vlan_is_master(const struct net_bridge_vlan *v)
+ {
+-	return v->flags & BRIDGE_VLAN_INFO_MASTER;
++	return READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_MASTER;
+ }
+ 
+ /* check if a VLAN entry is used by the bridge */
+ static inline bool br_vlan_is_brentry(const struct net_bridge_vlan *v)
+ {
+-	return v->flags & BRIDGE_VLAN_INFO_BRENTRY;
++	return READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_BRENTRY;
+ }
+ 
+ /* check if we should use the vlan entry, returns false if it's only context */
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index a53054fcc093..c8b2e3bfd42d 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -60,6 +60,7 @@ static bool __vlan_flags_update(struct net_bridge_vlan *v, u16 flags,
+ 				bool commit)
+ {
+ 	struct net_bridge_vlan_group *vg;
++	u16 vlan_flags;
+ 	bool change;
+ 
+ 	if (br_vlan_is_master(v))
+@@ -68,8 +69,9 @@ static bool __vlan_flags_update(struct net_bridge_vlan *v, u16 flags,
+ 		vg = nbp_vlan_group(v->port);
+ 
+ 	/* check if anything would be changed on commit */
++	vlan_flags = v->flags;
+ 	change = !!(flags & BRIDGE_VLAN_INFO_PVID) == !!(vg->pvid != v->vid) ||
+-		 ((flags ^ v->flags) & BRIDGE_VLAN_INFO_UNTAGGED);
++		 ((flags ^ vlan_flags) & BRIDGE_VLAN_INFO_UNTAGGED);
+ 
+ 	if (!commit)
+ 		goto out;
+@@ -80,9 +82,10 @@ static bool __vlan_flags_update(struct net_bridge_vlan *v, u16 flags,
+ 		__vlan_delete_pvid(vg, v->vid);
+ 
+ 	if (flags & BRIDGE_VLAN_INFO_UNTAGGED)
+-		v->flags |= BRIDGE_VLAN_INFO_UNTAGGED;
++		vlan_flags |= BRIDGE_VLAN_INFO_UNTAGGED;
+ 	else
+-		v->flags &= ~BRIDGE_VLAN_INFO_UNTAGGED;
++		vlan_flags &= ~BRIDGE_VLAN_INFO_UNTAGGED;
++	WRITE_ONCE(v->flags, vlan_flags);
+ 
+ out:
+ 	return change;
+@@ -413,7 +416,7 @@ static int __vlan_del(struct net_bridge_vlan *v)
+ 	}
+ 
+ 	if (br_vlan_should_use(v)) {
+-		v->flags &= ~BRIDGE_VLAN_INFO_BRENTRY;
++		WRITE_ONCE(v->flags, v->flags & ~BRIDGE_VLAN_INFO_BRENTRY);
+ 		vg->num_vlans--;
+ 	}
+ 
+@@ -522,7 +525,7 @@ struct sk_buff *br_handle_vlan(struct net_bridge *br,
+ 	 * hardware on each egress port as appropriate. So only strip the VLAN
+ 	 * header if forwarding offload is not being used.
+ 	 */
+-	if (v->flags & BRIDGE_VLAN_INFO_UNTAGGED &&
++	if (READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_UNTAGGED &&
+ 	    !br_switchdev_frame_uses_tx_fwd_offload(skb))
+ 		__vlan_hwaccel_clear_tag(skb);
+ 
+@@ -753,7 +756,7 @@ static int br_vlan_add_existing(struct net_bridge *br,
+ 		}
+ 
+ 		refcount_inc(&vlan->refcnt);
+-		vlan->flags |= BRIDGE_VLAN_INFO_BRENTRY;
++		WRITE_ONCE(vlan->flags, vlan->flags | BRIDGE_VLAN_INFO_BRENTRY);
+ 		vg->num_vlans++;
+ 		*changed = true;
+ 		br_multicast_toggle_one_vlan(vlan, true);
+@@ -1489,7 +1492,7 @@ int br_vlan_fill_forward_path_mode(struct net_bridge *br,
+ 	if (!v || !br_vlan_should_use(v))
+ 		return -EINVAL;
+ 
+-	if (!(v->flags & BRIDGE_VLAN_INFO_UNTAGGED))
++	if (!(READ_ONCE(v->flags) & BRIDGE_VLAN_INFO_UNTAGGED))
+ 		return 0;
+ 
+ 	if (path->bridge.vlan_mode == DEV_PATH_BR_VLAN_TAG)
+@@ -1550,7 +1553,7 @@ int br_vlan_get_info_rcu(const struct net_device *dev, u16 vid,
+ 		return -ENOENT;
+ 
+ 	p_vinfo->vid = vid;
+-	p_vinfo->flags = v->flags;
++	p_vinfo->flags = READ_ONCE(v->flags);
+ 	if (vid == br_get_pvid(vg))
+ 		p_vinfo->flags |= BRIDGE_VLAN_INFO_PVID;
+ 	return 0;
 -- 
 2.47.3
 
