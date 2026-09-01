@@ -1,116 +1,118 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D126A3845BC
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 05:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788240509; cv=none; b=AH2tZDUIjuvi8I2T90DoTuy6lZ4JAVCTmRRYn91rG3FrpCjkrqEgBcCziCjsJALmQlZULeGJlDgMHpmux2h9MxZ7Y5K4T9RlAQlTGtGhBijAxaD6Zn6RB7w3BxN8aGR3IZTthFWBWSUARi1+BdGZfOHhSCBKEaYXX0Uy7BGe2JE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788240509; c=relaxed/simple;
-	bh=W7Q8xg8BSAYA2tpHUW+AynBJ9lC5DWh80C8PRS4kSR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0QFBz7o07X6TH+yBC0xSOf/DgBmZOVBdEWfgqBS+v3Faw7rUxbD/T+9d3ZxSguH1htaGtOdHKRdj0xf6wSUM6DttgtyVEdxqfUgtf+B91ZpsF9DXx+d9magcpZ80iR8nJ5HZRqebzkFOI8F5/Tr9i/1E2wg61HvWZCAmMS04Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mw/5LzLC; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C4034B1B0
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 05:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788240558; cv=pass; b=QgKgxiospdMLBPX71KjGQeSl3pqI4eLbLOVplIW6xSE7I+Hud7YXdLaYyIAeNMfn20QP+OBF9dHIcFQMpxt3gasO7i7Vk7B17KwlGKCAIQUSBAAgDIqt0o3p7kFbD3VdI7bieJEff3zxPiw8RBxeT4BaLV6loN4sBUl9bD9DTKI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788240558; c=relaxed/simple;
+	bh=GwctvFwVAkHjOBx4vb1TrJmuUy6f2b/bl2DeLQJ1Qkg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CtKAu8nXvW2BGMwo3flbmzSVGMH1HpDE9ysi+qu9TIsKx0MTE0tn04LuoeZAhDR74hU79UpoPgm+L4qOPedZXd2BWkjTcXI40J2l1UW6bT0tAJMbLeIXZBTulNqhYYyxMePUCtrGsOAp2u8JwUSTCVebLOqVsJHDb8Nod5g0TDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YLum7CxT; arc=pass smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mw/5LzLC"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49b392ccaacso60903825e9.2
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 22:28:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLum7CxT"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-398c1101c1bso2590987a91.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 22:29:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788240556; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Jd+S2FpcteF+UUts4hx5qfqnOf0hoJkFTE+Uahck1gEZRyVQb3Nb3KwwwKrqBvbyfT
+         pCAL+0qPEXLpJbAM69n+JWz8r8xq6GB5JzvqUsCuCH5t9vADdMju5FcQrr+0kixj6YrU
+         3tZQDcgxw7wilHRVqXckPbT8EUyJ7d8DCR37AyUXn1NPDOXPuTx787HNPCjoPM/fL3x1
+         MNRvXruUu740iBb3SBrt0IpQ/KA2Ock6NvAq0rtOGDR6SXsh5UQzQlfaeF3X4VwyGVZQ
+         Vhm/R97B0swQjPTB9waISMqi73Jb3gOkJADzdCQN4MAT6MW5wyrPIC3/pG9+2mUmvor5
+         yJgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=GwctvFwVAkHjOBx4vb1TrJmuUy6f2b/bl2DeLQJ1Qkg=;
+        fh=jIVrljIstUHQXcWgNK0aHnNJmDK3aIFTwjZvYj6Y+z8=;
+        b=cINTBXF+3K5e7R3rDSSx7XHTF3DAoPYZt8QlUXBGkdzBM3ec4gaTGFxG3F143NztTO
+         A82zQ/FHMLj/HfoGOBHDUcGaUX4wL6zVX3eGWWgIUSCzBxkqYcAiSSp4T3QzR+6ca6M5
+         Gt2swIH/f4ko7xPEb1hgi+1VxleLdqj9Jwbq36a9MkGJO7L3Oz9iWKYWRKZjqe621STu
+         6s6AsEKCge4lmx26KQ96tP6zw0chdT3SGE09AyI1mxwu7qRj9gKULgtRKtxRpCnSjtgT
+         mWIJ6qLISVVnRrEfKY1iPL68/J7T6qnFhtVW0UoQapW+IbhRUn+XIFyu9wMR8yIH0+1Z
+         17BA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788240506; x=1788845306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W7Q8xg8BSAYA2tpHUW+AynBJ9lC5DWh80C8PRS4kSR0=;
-        b=Mw/5LzLCzbYfkO9cFPvCiEqpRFxM9o0QArFK+sAPSbBonMM4mGhvT5+QrE4N5GerAZ
-         5mkg/qPAl6C5gYKmIrYFV4eKFr+7aJYMy6Eh+X+8/ma/G+4GbKKfWDy6HCJGLeF4aO+M
-         5VCbtcope+RPL4XfvwZ9xeCdDkyakwIKzTWF7v6EUanez8v6YKt9PJ+dikMHU6z5e92O
-         AVPh671sq+hYHpK474d2daYWRMcEaohSquAQTsmJ/G7aQwhCwp1K0/SdE6w1SQXWsI6G
-         yT8l4k69nLhJ3TBK+Sj1AN/+3d3Dzg7Y3zzsLwR5JNHb5RYVzLmpD7QeCLNP+lxSzAWI
-         vXBw==
+        d=gmail.com; s=20251104; t=1788240556; x=1788845356; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GwctvFwVAkHjOBx4vb1TrJmuUy6f2b/bl2DeLQJ1Qkg=;
+        b=YLum7CxTRINirvmrxLuNbnKa8zV1npR9BdkWNXS8DGFuJfD188YQ6MagcUydcr2Bql
+         CtKdEr595+Zyj5uZUC+Wy1s12/X0k3ri6b5J5FoumC4OxtkyME5H0v1orex6bmrx47vV
+         JhUQye88UnH6yHtIgKWt+xWpZfet+EBP25fCcUj6uHqNEemLARKUJqc5LcQhfoEYvSQY
+         4ozWsC0SjtcqpXffQ3lk6srV5XD7SdiKfrvdQNfrZlK9If+9kZA6wQSXIBq0Me8blu6D
+         2RBNRuDbGnC8xMjYuB9tyVMgzvOeyfQWXiTB6jw7f6vuiBdhdWyrEUUNk4Fm5RYG0RA4
+         yOow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788240506; x=1788845306;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W7Q8xg8BSAYA2tpHUW+AynBJ9lC5DWh80C8PRS4kSR0=;
-        b=aG/LhjT8u/UCEuQyaOGQ8u8H3IIBQxKmRk9MIjYxnyzct3Hn+cGg1rOoUipfgZx2Cj
-         XdvI6BAzCCE1wmUsgPlyX7CK9cPpzSp3gPoZxYLZbMc3QcC3dEAAGA7ntukqT0hWBQZd
-         sbeGLExZs5KJF/xkpsVdheKlp8VzCJGbobSFdcxY/QNCiDpqMf7UWu3+zKn58Rrwpw4t
-         rsmz+g8HBv4t6VrnHKL0qnDMMZXLJBk8qwByDuNpe08FSNogTjygBt9UZX6q8VsAOkWY
-         qf/2KPZhBrLeFTaLitwAMS5uxSgITe4UuBLR7BKeUIAPanHvukjavIIP2MYItCFSWoFh
-         GH1Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqiSzv6bM1zdlhpHDdl/eF0YaDy9I4CtzXt+L75YJbNOsPT3wEbuUR17qChjuOz4dOQytA9T9Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++nlJfqJRJdSwx9KUYZ2rD8bhKkn52cyDE64FDokHZbR9nph4wy7
-	gWluxx9B+VEtzlJjARzxEtJ1deeqgRiam7FGTBaRcBeDBxnzSOjumxPc
-X-Gm-Gg: AR+sD11UrR9BMeA74JDgD3xqqIsH9Nr0vbtlBOTNJla5vK6DPs/70gaHEKvBmQUqz8D
-	DHIVw+DcHCdj2Dl4i6xbG9HJDHMg+U972QIFGquYYwStwym6GdtkJihnc7k3ogo4imaLa1A8BcH
-	SsQfhppbfX+LdXuyOrj/Eb5NeFLcPE0jjNAGRrR7r72zrRM4YaNZGGHC89KsW+8ABerr5ltx7eQ
-	RR66t7pNVTLU7ybaop2BxwpfjeHERtL6dXxMXM88ZGtFVd3fEqwlCfDWeKrsn4N/EXEQexnvZZv
-	QKPIZTIKPREcWErqpOkfjxW+NvfB3C2woFKuPPZO6ev6lEZ+e/CIF8cXy0z+6QtygaK5gNfl4qq
-	YdYzDNJhd0w02wfdZ4tcqrkq/SATBEedYa3LVJNPiQnZpUGdNsp7gX32vGBmkTDHtCzDWpa5fn/
-	oq7FyWePn3NcMlkymr1y+zF9F7qPWduP6cc1QkSlNDO5RBFkk7I0KUKfBdMWaq0wIFw9BEGPDAp
-	52FePgyDQCyIlpglThHjtCZbfBGfWktxKKU73GWNIqFXiF1Urq4QH0KbSgYu4Od
-X-Received: by 2002:a05:600c:3e18:b0:49a:77c1:d246 with SMTP id 5b1f17b1804b1-49b91c4e073mr525091595e9.15.1788240505850;
-        Mon, 31 Aug 2026 22:28:25 -0700 (PDT)
-Received: from localhost.localdomain (ip-89-176-136-191.bb.vodafone.cz. [89.176.136.191])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cd8b9a2efsm140752035e9.3.2026.08.31.22.28.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 22:28:24 -0700 (PDT)
-From: Petr Wozniak <petr.wozniak@gmail.com>
-To: sashal@kernel.org
-Cc: patches@lists.linux.dev,
-	stable@vger.kernel.org,
-	maxime.chevallier@bootlin.com,
-	kuba@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Petr Wozniak <petr.wozniak@gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.18-6.1] net: phy: sfp: probe for RollBall I2C-to-MDIO bridge in mdio-i2c
-Date: Tue,  1 Sep 2026 07:28:16 +0200
-Message-ID: <20260901052816.3815-1-petr.wozniak@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260831133314.4125787-466-sashal@kernel.org>
-References: <20260831133314.4125787-466-sashal@kernel.org>
+        d=1e100.net; s=20251104; t=1788240556; x=1788845356;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GwctvFwVAkHjOBx4vb1TrJmuUy6f2b/bl2DeLQJ1Qkg=;
+        b=CqmBNHtsFYkQ7Ze8a7BSUXWlHJ47tXpk13LuZww9OlQDFn3Fb9R2DWPl2FyPYDeCjy
+         6Jm2xwXkwO1eqHoBYT51E8iveP7xGeO7zO8yfOqweLOsg7ZXtRzWGGtV/L6meYNhRn7g
+         PKB3eEq92qoRl5LX9jeXdyhjMZs4RT1nCSy5pKxmEo7YqlUV/+P57ftKBqgvtarzYreS
+         coneiX90w18gM+vd2Fbc8gopCYsL4ypYzDpGIKguxW1Xltx9SDDQMwXHI32wLrgYVh4r
+         4Dne3V9bf8jL9zR1yneeS1/a5TWcMqQ6Lwea1o6teyAKQ3tNb0uc/+YVltuUSEwIercq
+         27xA==
+X-Forwarded-Encrypted: i=1; AKwUvByWx2NiXmO06efpODyzjqdk0gR/rpEqrKXdTFweJx3s0ZB5P0kuzf1eKmj9r9TJjUF/NC8fdCk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kB7/uRy9QMRzD1JUgP1zpgWkXqFGZoFoqDnyXRP05QWlEHtTSK
+	lIdHhLVJbWnQ/izUBHC6EnN0gvPiiBn2d0Nkd49eJDc76UsX+ABk2c4xfs124mITCzxROjAG1vx
+	S2X/kowvuoQkIDjHLi4XqRmI9m244pMJsEOX0oMQ=
+X-Gm-Gg: AYBFou1F6Xz8bX4iHnrUEI20UKX7E++j4HcyjvLlrTIjYOJgDbu3l6XAc3W/A3qDDIL
+	rrJ4Qc2AchAui6PE+jkKBbfbgEMF7S/661S+Z1udXCBdE4tHp9ejo7C40hFEvBbyuZkMbbKLpef
+	tQJO1QeX/CBvCt80RBkVpUGTIMzHL112md+UWZE96n34WgtmSUXKTcLWOFWMoSdVmNTCkigPH9c
+	53q3IPw71aAchrGidNO4RsQGmx1RjOfqP9ViVzFyeOID/MS3bk//QoGwLlquLkl4kcw0W6gnNuW
+	ykONpkiK3wtHnWn8JwRYoGBALfDsE7dkX1y7boGT7uzpzxKAmsm3OL4Jnbwj73GFf6J62OvFMcL
+	NyCTHsw2s2CWRc+OCd4QXsa/4qTI=
+X-Received: by 2002:a17:90b:3910:b0:398:9beb:5c17 with SMTP id
+ 98e67ed59e1d1-3989beb6373mr29600132a91.18.1788240556415; Mon, 31 Aug 2026
+ 22:29:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260831085217.391-1-strst.gs@gmail.com> <CAOiHx=md28_BmsDOsNDp0XbUpfih=P+-+aDYb6tiWPJTCu1drg@mail.gmail.com>
+ <CAAsRjRktqEx+-CLDO_q6rLUBe1dtRQPH1NkX4xy7ichx79yGPQ@mail.gmail.com> <739079cd-dc83-4b53-a3a9-a7e610379d19@broadcom.com>
+In-Reply-To: <739079cd-dc83-4b53-a3a9-a7e610379d19@broadcom.com>
+From: Semih Baskan <strst.gs@gmail.com>
+Date: Tue, 1 Sep 2026 08:29:05 +0300
+X-Gm-Features: AcwNN1UEeHd9ZRjJ0HoaeursBIRKyHkxNHGprx228jpqMq4BYYExnIVM06ec9EU
+Message-ID: <CAAsRjRn8AFBN7k3i4TMLpLsyFQc5DSL-a9u+OieFyVtYgD6x4w@mail.gmail.com>
+Subject: Re: [PATCH net v3 0/2] net: dsa: b53: fix 8021q uppers on standalone ports
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Jonas Gorski <jonas.gorski@gmail.com>, andrew@lunn.ch, olteanv@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	vladimir.oltean@nxp.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Please drop this one from AUTOSEL.
+Hi Florian,
 
-8fe125892f40 was reverted upstream on 2026-06-29 in b521003c27eb
-("Revert "net: phy: sfp: probe for RollBall I2C-to-MDIO bridge in
-mdio-i2c""), so it is no longer in mainline.
+On Tue, Sep 1, 2026 at 3:24 AM Florian Fainelli
+<florian.fainelli@broadcom.com> wrote:
+> But you control exact how the DTS gets distributed in OpenWrt, why not
+> just fix all of the DTSes there and have the users confirm that using
+> port 8 as the IMP works?
+>
+> Don't get me wrong, I am very appreciative that you spent a decent
+> amount of time trying to come up with some sort of solution.
 
-The probe it added runs in SFP_S_INIT, before genuine RollBall modules
-have finished initialising their bridge, so the bridge does not answer
-CMD_READ/CMD_DONE within the 200 ms window. mdio_protocol is then set
-to MDIO_I2C_NONE and PHY detection is skipped for modules that worked
-before the commit. Maxime Chevallier and Aleksander Bajkowski both
-confirmed that on hardware.
+Thank you. Yes, that is what I am planning to do. Port 8 as the IMP
+is already confirmed on my board, tagged RX and PPPoE come back with
+no driver changes. Next week I will start with my own board in
+OpenWrt and hope owners of the other bcm53xx devices can confirm
+theirs.
 
-The timing is per-module rather than per-PHY: the FLYPRO
-SFP-10GT-CS-30M they tested carries the same AQR113C as a module here
-that answers within 200 ms, but needs seconds to load its PHY firmware
-from SPI. A fixed probe window cannot cover both, which is why the
-commit was reverted rather than adjusted. A proper fix needs per-module
-init timing, and per SFF-8472 the host must wait at least 300 ms after
-insertion in any case.
-
-Backporting this to stable would reintroduce that regression on
-hardware that works there today.
-
-Thanks,
-Petr
+Best regards,
+Semih
