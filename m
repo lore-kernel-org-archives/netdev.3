@@ -1,260 +1,159 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346D347ECC2;
-	Tue,  1 Sep 2026 13:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788269148; cv=pass; b=dCnTtgTAyJTlwvq9UKh1GaocF+lykxpum2ZDjn91StbnD5sqkwyTbuE30+q5z+ELoqmYiS2YkBAwqRp3Fx6vOdJUeOnNKwQWSoJlm/l21ggmNFZCJwuYuo+Jb2xlre02hZGgd1YMjzq5oWFzZPc0Ir9qL+/W832L77U1Nv15WY0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788269148; c=relaxed/simple;
-	bh=p5UnzM+3CyPXissVjrfNNF7wPx3GF9eMt//3kM8cW+o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LwyML4gu0bDlCBFtXAnDVTfShJFJcWOAd9SpYKO0D71ZACx8wsdAJLr5BHPa8bidtRn5oglFT37K5PiEfzd2N3gVq1qOOcEmuuBOwXVIcDd3Dl8Eib2RkF5oupIpZPyUC7yQXMFlEBxuzyBCqLaHcEZpEoh5aR9LatwN49B4TIw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=rq/UGbeW; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7B1472543
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 13:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788269180; cv=none; b=PS7qQkkC+pq1snHINCUXBUiBwM16gBKJOQPHKqoIO5Ao9VU75FRYinoV0zhw6wN60Tqld/5aPGHgRDOQ8ea2uly9yqlGDIFRc04LplmyLyILf1zuTqhtbS87eM/2lKv57lvki4VBCClzlzy+rFQqB1VwM+ihpzZs+YgF0S1uFQ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788269180; c=relaxed/simple;
+	bh=Rn9/tcknkMhoBJMoT/vDX/T84MaINb69k5oYE5QTRas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MiTWDhVnCq5NX/Pk1DWAc63XVFooJP1HF29fvWSGRiAkkCk4bpvX7abAKXt1xQLhtgOnuUit6TpeiSL9LGKrmZANBKDPfoq9WdkHAjQ9yTWM0UZqV0EkSa3Kxen4x7c6uAX7/7lUB8yWtpPMl5lFYnIjWdkdChgL0MG5ACIDaqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MmLmJrFU; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="rq/UGbeW"
-Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ61017D5z49Px3;
-	Tue, 01 Sep 2026 16:20:19 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788268821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U/5+tF95qlb0i4WOja94VWT0wSoYK/3EZmn5Pucqagk=;
-	b=rq/UGbeW9wsW/o36VwEpcGwXMT0GwuOfHoLO4ohZwLZuttMo6f+lWFe5QpVYzrAqgLf/1H
-	eLaVF92GBxqQDuqRzhY8WCXaFNBz/SaJifHySzXtF0FQZ//sL+JRp5tVvjK5R/xxKPsXTJ
-	I5siDVVyfSHu573LxyD7vIWP/P1RM3LEsaSi5o/DVj7JINsg779cw7NHNhaTEyPsA5Qyeg
-	aaImveoAYByRJfIzgMS2M1AxKSiBJpiYIMckdyToVGCgJ6aDuXxVOzouHuU6CBWPX3ZsYE
-	FbzsBkud1xVDljhteYbjVcUeJ72dUCUSxuAHQ2XuGkQA1fZcGT9antVTDuQ8EQ==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268821;
-	b=mIlYlMM/2c8UJLlYkmbZLUyFZdqxIbT8D1Vk+aDS7B3y37d3z5mHHjbFfwzV6g4qLx9fLW
-	qPrGk2aIyDa9p4+ZwLljx25OUUeSEDzghnl8kG2vcMca/U//n8t62rqNdsI9ArdSNh5PkZ
-	sKicN7H2fhaoG7FWIaKrlKg4SyjcMF+EEHzD0AX/mvWxWz4ekVXAIz6NRWcktiGxuGSMZ2
-	STBw07hyw6aSyD4T1i/lUeWPizPNpB3EvoTqNd5hyoe9p5tRTcFXsZasxZYPy3XD0D5dXi
-	5jVOqXGJ+3Z/RsJQZa9NbNo/NwPFIiEEd9VoBbCNfbIwV3L6M74WlhTkfrpg6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788268821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U/5+tF95qlb0i4WOja94VWT0wSoYK/3EZmn5Pucqagk=;
-	b=bEuNfE77WCoKkhklO35kRn2s5oMyxpX6ok0GjyNf8GymPusJ3VCjySgjBL1LDzCzUH7SSF
-	3l7zSXKgzmmgxHfNfqP0eM0JfcfhykHgUvUgTxA0UIxerSUBgzfwle26RlPQcZl37nWakn
-	7t0KbjmnmxmHhADZGEkJHHEh7OJeSy5uFV4QbbZbhyuJKo5pjI0A5Urw/HYpiEp/vFapKj
-	zdka2vEZt+Ml4xUhw8oO+MBcrpGayu7fV5HhIHagSuB5A6V+ZUfXAyz7l9k7BBq4YgRFq0
-	McEWF2nWUpSlGHu/AfvA4khOI1Xdy4LdrI6SFf7iMU3wyE2KEDe1rApW+Ji1Ww==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-From: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-To: linux-arm-msm@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Andy Gross <agross@kernel.org>,
-	Mihai Moldovan <ionic@ionic.de>,
-	Denis Kenzior <denkenz@gmail.com>,
-	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH v6 00/15] QRTR Multi-endpoint support
-Date: Tue,  1 Sep 2026 16:19:19 +0300
-Message-Id: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MmLmJrFU"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b4ab40d839so4612865e87.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 06:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788269176; x=1788873976; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5YQ2NkdYE1UkDQmtG4k56tSGp0dI9qqzV8dhPz8o8Qo=;
+        b=MmLmJrFUY+prIRyTONU+oFVHyOs92yM2LiDDdexmu11edZB8c/MwbOvXoPluCI9onV
+         V6tt7E5kd1jXAglceOgm4r4Gt1R3GoawaWepLpC06FSFKPmCgpkdZHL6CD0P0IT2HRtb
+         ULbgcbMjPpDlfEQ60BjH4ZVeBCSqwGPYw0ZmOrn8DsPZnF8KUqUgRjkZhIe0Q0Z3iPV6
+         oYMsGUZtjgfS7A5ZHjUGTTY+gnql7DzvNcl0/45HgAG5qS2NDxdUSPbpJIP6711Y7sAb
+         SNcANDd/MMKJMnd4X2P+j+b5V8+N0p7JtcJLvZabaWScKywLQsupMmPuEwgwBqN+OYdE
+         ZiUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788269176; x=1788873976;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5YQ2NkdYE1UkDQmtG4k56tSGp0dI9qqzV8dhPz8o8Qo=;
+        b=dHV47i62L9IBu3M5IzYyMdq8ofcmK4Qz361VFWTEAEhJtc9O6uFyUJSQDdy4Wzia+Q
+         haQDhE9dWeW62QRxk+RJxXfxgaqTc63mlLNGk8sHuhkcIgSaAFPHJkveI6nwOtXX7x0Q
+         9StA7aojDBlWhYRSktmtmUSLu03EOaPSAOcdwx3DqKiNuQ/Jg2jOgh7cvGyf3qsQFY0k
+         7KUrORFLuzxnz8WdzsHHfbpqXimMOdKhWpyiVKiuM0P6xojmmke3KpKZ5sECmKI1SrD4
+         1sRV6phZ/N6rtINxrTvoBx1zDbDma+sIj2E+2pXnuwnDdjrOsJhbbYDrwJ5b5kvvPhuy
+         oiHw==
+X-Forwarded-Encrypted: i=1; AKwUvBwPh9gh3/HTnIGLsdFefc6aJJ4w922PMUkzfQ1WWHyILeg82sD5CBjtiQY/8n4S9LEoNafPr3s=@vger.kernel.org
+X-Gm-Message-State: AFuF++lCSjm3yADwRH7qusl5B5sGsGBA1r6UVFcxuJQlFRfdFawcO1XS
+	JvQ9no3xg95CRAI0iUbj5iqbR/UMxSHX+xLMAzVhgRDFxRxxArmUpq5h
+X-Gm-Gg: AYBFou2MP2SL21ymoPrduTYPIs1No+zUqhIAy8W8yUPITxiNJSP0DUliStRhF+qDOQE
+	YMg9N47SegBEE4+Cc8YPR1qHz2hC44tS9Qr1COZSNR8BHF4u7zZRDB7gk6YSX88kBcT8PPDKdRy
+	r/ejsBnxTHAFK9cgUJVcFHIJ9xkARlXEJkT03tfLQb3L+IPNN5azOy5XmvOwqmFvMTC7T1W919X
+	xvJP/PuFB/cljqZkwvczX2OXOgUiwMuTeGxOakHNOtNjKjNUqngp8K8a6oZPXYbHPRcfVq7T7sn
+	Rtlg6Zx6qrqpEcpDIesZC0sYtPKKduvM0Dv8Ie2bDDqiOd7gEsVGNLlHAIYnyv6w0xGtMTv/N+D
+	2J2xt9/cg0E1IvNcfyc2ZIpR40xu8QX0atw7YVSmELg/Ab8adKc1Bkz63QXfeUhto4iGZ3Xgt92
+	X9JySTXixu85EFlUG3y6+P9nAIAc/qsxbd7R5jRWBes5aSeHXnfoIg7WJ7qv+bu9HRwaVMrCz8B
+	PljPcQ=
+X-Received: by 2002:a05:6512:3985:b0:5b4:b03e:b17 with SMTP id 2adb3069b0e04-5b5fe0914e3mr3071911e87.4.1788269175321;
+        Tue, 01 Sep 2026 06:26:15 -0700 (PDT)
+Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b5e8a18422sm2841927e87.76.2026.09.01.06.26.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 06:26:14 -0700 (PDT)
+Date: Tue, 1 Sep 2026 13:36:51 +0000
+From: Anton Protopopov <a.s.protopopov@gmail.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>,
+	netdev <netdev@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH bpf-next 1/7] bpf: Allow BPF LSM programs to attach to
+ more hooks
+Message-ID: <apbU8-fpioNIwUA8@mail.gmail.com>
+References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
+ <20260831110934.241898-2-a.s.protopopov@gmail.com>
+ <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
 
-Hello,
+On 26/08/31 06:42PM, Paul Moore wrote:
+> On Mon, Aug 31, 2026 at 6:59 AM Anton Protopopov
+> <a.s.protopopov@gmail.com> wrote:
+> >
+> > The BPF LSM programs are allowed to attach to LSM hooks, all of which
+> > are defined in the <lsm_hook_defs.h> header file.  From BPF's point
+> > of view the set of attachment points is defined in the bpf_lsm_hooks
+> > BTF set. By analogy with existing code, add a new header file
+> > <bpf_lsm_hook_defs.h> which will also be included in the bpf_lsm_hooks
+> > BTF set.
+> >
+> > This change allows attaching BPF LSM programs to more functions.
+> > The actual hooks are added in subsequent commits.
+> >
+> > Each BPF hook calls a [__weak] noinline function each time a hook is
+> > reached. This may be too expensive for hot paths if a BPF program is
+> > not attached. A future commit will optimize this by adding a per-hook
+> > static key and inc/dec it on attach/detach. This way disabled hooks
+> > will be bypassed efficiently.
+> >
+> > Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+> > ---
+> >  MAINTAINERS                       |  1 +
+> >  include/linux/bpf_lsm.h           | 12 ++++++++++++
+> >  include/linux/bpf_lsm_hook_defs.h |  6 ++++++
+> >  kernel/bpf/bpf_lsm.c              |  2 ++
+> >  4 files changed, 21 insertions(+)
+> >  create mode 100644 include/linux/bpf_lsm_hook_defs.h
+> 
+> Adding new BPF hooks in the kernel is one thing, but adding new BPF
+> LSM hooks outside of the LSM framework is likely to be problematic as
+> these new hooks operate disconnected from the LSM framework (callback
+> and LSM kernel object state management).  We've seen bugs in the past
+> caused by the BPF LSM trying to operate independently of the LSM
+> framework, something like this will only make that worse.
 
-First, I would like to thank Denis Kenzior and Mihai Moldovan for
-initially creating this patchset. Without their efforts, there wouldn't
-be any progress towards supporting multiple identical ath11k or ath12k
-modules on a single Linux host.
+Could you please point me to some of the bugs you mention, such that
+I understand exactly what you mean? I am not really seeing how the
+real LSM hooks differ from the ones added here (from BPF point of
+view, and the objects it can access via kfuncs/maps). We provide the
+same "sleepable", "untrusted", etc. guarantees with the new hooks,
+as for normal ones.
 
-As you may know, if you put two identical Qualcomm Atheros ath11k or
-ath12k WLAN modules on the same Linux host, they will conflict and
-neither works. This is a massive issue in routers, and to solve it, we
-need QRTR multi-endpoint support.
+The main reason (for now) to specifically create a new list of BPF-only LSM
+hooks is (pcmoore/lsm.git/tree/README.md):
 
-I contacted Mihai Moldovan who posted v5 and he said he's been busy and
-can't provide an estimate of when he'll post v6. So I picked up his
-work, ported it over ath-next and solved the issue of cramming two
-32-bit numbers into an unsigned long that can be 32 bits on a 32-bit
-architecture. Mihai said he doesn't have any corporate backing and
-doesn't care who implements multi-ath11k/ath12k support as long as it
-"just works". Since it's been over a year from the previous activity and
-since Mihai has been and is busy and said he doesn't care who eventually
-implements this, I decided to "steal" the responsibility of posting a v6
-to myself since I fortunately have corporate backing. If Mihai so
-decides, I'm willing to hand over this patchset back to him.
+  """New LSM hooks must demonstrate their usefulness by providing a meaningful
+  implementation for at least one in-kernel LSM.  The goal is to demonstrate the
+  purpose and expected semantics of the hooks.  Out of tree kernel code, and pass
+  through implementations, such as the BPF LSM, are not eligible for LSM hook
+  reference implementations."""
 
-Some of the patches may need dropping/squashing. For example, "fit node
-ID + port number combination into unsigned long" fixes one bug on 32-bit
-architectures but introduces another. This needs careful review. I tried
-to adjust the behavior to my tastes in "use only low 16 bits of
-node/port in 32-bit systems", and this needs careful review, too. Both
-of these are candidates for dropping from this patch series.
+And for the hooks added in this series
 
-Furthermore, "validate msglen before ctrl_pkt use", although it seems to
-fix a real bug, seems to be orthogonal to this patchset, and could be a
-candidate for posting separately.
+  a) BPF satisfies our needs, as we can precisely analyse what the
+     calls are trying to do with good granularity
 
-Also, "limit endpoint range to 16 bits on 32-bit machines", "use nid
-modulo 65536 in 32-bit lookups" and "solve the 32-bit unsafe use in
-endpoints" are candidates for squashing together. I didn't squash them
-yet, since I want to keep my options open at this point, to be able to
-easily adapt to any possible code review comments such as squashing or
-dropping commits.
+  b) I am not sure how to actually express this in any in-tree LSMs
 
-Someone could complain that using a "radix tree of radix trees" approach
-on 64-bit machines is overkill since a single 64-bit key is enough.
-However, this doesn't work on 32-bit machines, and having entirely
-different code on 32-bit and 64-bit machines would be a testing
-nightmare.
+Can't BPF be considered enough to demonstrate usefulness?
 
-I have tested qrtr with all of these changes, and with Mihai Moldovan's
-patches to actually have two identical ath11k or ath12k modules on the
-same system. Our limited CPU has issues with ath12k, so I have instead
-tested it with two identical ath11k modules. However, Mihai Moldovan
-created the ath11k/ath12k patchset in a somewhat non-optimal way,
-leaking memory in some use cases, with an O(n) algorithm for looking up
-the endpoint id where n is the amount of leaked memory. So I guess I'll
-have to rework that entire patchset which should be doable. That's
-future work, as none of the leaky O(n) stuff is in this patchset.
-
-But first, before merging the multi-ath11k/ath12k patches, this first
-patch set of QRTR multi-endpoint support needs to be merged.
-
-Original description:
-
-The current implementation of QRTR assumes that each entity on the QRTR
-IPC bus is uniquely identifiable by its node/port combination, with
-node/port combinations being used to route messages between entities.
-
-However, this assumption of uniqueness is problematic in scenarios
-where multiple devices with the same node/port combinations are
-connected to the system.  A practical example is a typical consumer PC
-with multiple PCIe-based devices, such as WiFi cards or 5G modems, where
-each device could potentially have the same node identifier set.  In
-such cases, the current QRTR protocol implementation does not provide a
-mechanism to differentiate between these devices, making it impossible
-to support communication with multiple identical devices.
-
-This patch series addresses this limitation by introducing support for
-a concept of an 'endpoint.' Multiple devices with conflicting node/port
-combinations can be supported by assigning a unique endpoint identifier
-to each one.  Such endpoint identifiers can then be used to distinguish
-between devices while sending and receiving messages over QRTR sockets.
-
-The patch series maintains backward compatibility with existing clients:
-the endpoint concept is added using auxiliary data that can be added to
-recvmsg and sendmsg system calls.  The QRTR socket interface is extended
-as follows:
-
-- Adds QRTR_ENDPOINT auxiliary data element that reports which endpoint
-  generated a particular message.  This auxiliary data is only reported
-  if the socket was explicitly opted in using setsockopt, enabling the
-  QRTR_REPORT_ENDPOINT socket option.  SOL_QRTR socket level was added
-  to facilitate this.  This requires QRTR clients to be updated to use
-  recvmsg instead of the more typical recvfrom() or recv() use.
-
-- Similarly, QRTR_ENDPOINT auxiliary data element can be included in
-  sendmsg() requests.  This will allow clients to route QRTR messages
-  to the desired endpoint, even in cases of node/port conflict between
-  multiple endpoints.
-
-- Finally, QRTR_BIND_ENDPOINT socket option is introduced.  This allows
-  clients to bind to a particular endpoint (such as a 5G PCIe modem) if
-  they're only interested in receiving or sending messages to this
-  device.
-
-NOTE: There is 32-bit unsafe use of radix_tree_insert in this patch set.
-This follows the existing usage inside net/qrtr/af_qrtr.c in
-qrtr_tx_wait(), qrtr_tx_resume() and qrtr_tx_flow_failed().  This was
-done deliberately in order to keep the changes as minimal as possible
-until it is known whether the approach outlined is generally acceptable.
-
-v6:
-  - rebased against current ath-next
-  - finally solve the 32-bit unsafe use by "radix tree of radix trees"
-  - remove checks of node/port being in 16-bit range (they may not be)
-  - Link to v5: https://msgid.link/cover.1754962436.git.ionic@ionic.de
-
-v5:
-  - fix typos in commit message
-  - Link to v4: https://msgid.link/cover.1753720934.git.ionic@ionic.de
-
-v4:
-  - fixed issues found in previous review round:
-    o lock without unlock
-    o wrong return value
-  - Link to v3: https://msgid.link/cover.1753312999.git.ionic@ionic.de
-
-v3:
-  - rebased against current master
-  - fix checkpatch.pl warnings
-  - fix overflow issues with unsigned long radix tree keys by using the
-    upper half of the storage space for one element and the lower half
-    of storage for the other element, making sure that the elements fit
-    into their respective storage space
-  - Link to v2: https://msgid.link/cover.1752947108.git.ionic@ionic.de
-
-v2:
-  - rebased against current master
-  - fixed most issues found in first review round (see individual
-    commits), minus the 32-bit long unsafe use
-
-v1 link: https://msgid.link/20241018181842.1368394-1-denkenz@gmail.com
-
-BR, Juha-Matti
-
-Denis Kenzior (10):
-  net: qrtr: ns: validate msglen before ctrl_pkt use
-  net: qrtr: allocate and track endpoint ids
-  net: qrtr: support identical node ids
-  net: qrtr: Report sender endpoint in aux data
-  net: qrtr: Report endpoint for locally generated messages
-  net: qrtr: Allow sendmsg to target an endpoint
-  net: qrtr: allow socket endpoint binding
-  net: qrtr: Drop remote {NEW|DEL}_LOOKUP messages
-  net: qrtr: ns: support multiple endpoints
-  net: qrtr: mhi: Report endpoint id in sysfs
-
-Juha-Matti Tilli (4):
-  net: qrtr: use only low 16 bits of node/port in 32-bit systems
-  net: qrtr: limit endpoint range to 16 bits on 32-bit machines
-  net: qrtr: use nid modulo 65536 in 32-bit lookups
-  net: qrtr: solve the 32-bit unsafe use in endpoints
-
-Mihai Moldovan (1):
-  net: qrtr: fit node ID + port number combination into unsigned long
-
- include/linux/socket.h    |   1 +
- include/uapi/linux/qrtr.h |   7 +
- net/qrtr/af_qrtr.c        | 461 ++++++++++++++++++++++++++++++++------
- net/qrtr/mhi.c            |  14 ++
- net/qrtr/ns.c             | 316 ++++++++++++++++----------
- net/qrtr/qrtr.h           |  14 ++
- 6 files changed, 627 insertions(+), 186 deletions(-)
-
--- 
-2.34.1
-
+> 
+> -- 
+> paul-moore.com
