@@ -1,136 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AA24734D0;
-	Tue,  1 Sep 2026 09:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52042931CD;
+	Tue,  1 Sep 2026 09:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788256458; cv=none; b=UtFsntDXwyBn4VpbTUv5wcwfc/OJyPgfuVNaaPgUZ02wjvQFm7M88fuGiRMggTFVW+bA7l4F75hXMURh9pecbmeXshQGBS0bwtHCEuJJPec+ebGenQs5+KmkZu34rxMJq6tiXptZlH+aiZ9SBJJXY4zgK1nsbgU5snW3Y12eBmo=
+	t=1788256710; cv=none; b=AXbccTa/PSfLPmRntObA8u2bheAx5/v1G/rPnfUZH+657PU5eqYhwXtz2N8MFmgIc6zogu0IXV8vSeaqdoRmRIyEzYbTneCwv8koEVmfGGX2/Qw9/9/tlwfREHuh6glvRGOOyKvRgUWBx1Rxry0LV9CSg5NH9apxYxPWHyVENLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788256458; c=relaxed/simple;
-	bh=Ile7kTUi57swMXIyWhgZMTRiwCfLcDArXeDmL9zIFNc=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=D3QGzceOUzE5e4bGE8Ar/ThD4vqef9Za9i3eoCzZ+Q3r7BQBYEmOwe2MUMmG2TFZhsjtEkJwqvSRjwXdUUXU81wE0VyuyBJl6w5OaheYDDPLF2Ow//4aO3hHyp4ZViiMktogB6Wo/Av59yGQNdlTA2ST3FCEsO9hnpZnsIghhYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dk+gOFZi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788256710; c=relaxed/simple;
+	bh=ZzkvxlCG1ixPz8vK6bTV71Hau8woza5bw54+xcqOBIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oJnpcXsvOdfb9sx0mSU63mNJKh2Upob48mlnhp1DrNnyvTnsKqh6KHJbR8UUKOHD1h4xmOuwD1jL6zW8ImMbM8n0Nt+R7+h2KNyltbqxXSC5d12ADyXuWagHg2awP4e3fBZ3EMEbcD0bten6uoElf4xj9aY/sxHSi58/aPahIZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqYfG65D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dk+gOFZi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1A61F00A3D;
-	Tue,  1 Sep 2026 09:54:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqYfG65D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD141F000E9;
+	Tue,  1 Sep 2026 09:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788256457;
-	bh=nwB6y/u7us3tN3IaUgCp0jfclCoh9XAOe815MX3+oOI=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Dk+gOFZiy7LZV9IZjXtm2L+5QNN5Z/IJLx5huaYBZCtbeuplJUmiSHlErh7hDWiem
-	 qaSinF4ekDCjEliekQQeAxOb1SXZuYpp+2WeVqXq2QT6cVxOsns0nT17v6hOLr7Nx4
-	 W5MADL92ScWQV1yuey7GLT+2+EnCE0OLBzazF4hLll8bVYm7KahqGSEDuahCreq1fQ
-	 krUSTeOXKaVvfl3yc+dOXgRc9ufMJSlQDO0/OPeLCyMZup5LC2+5WqfP8EQi8jpQ2J
-	 2y3uIyeUtiP3OrY75dYwHgZNQ8nmpH68dQS/y1JysYN0G9K7eHDjasEL5vlnHs8+aJ
-	 cNMvhZC//JYgQ==
-Content-Type: multipart/mixed; boundary="===============7831815785475501820=="
+	s=k20260515; t=1788256709;
+	bh=cig5EAB1yC6y3NFERncxBWChwEjQLbYEzPejDmotQJg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XqYfG65DREwMaiMkAcjZzAXcPhrGYZ7dkf8rODdAGiFi0tudGi8LYNHJI5+o+UAeh
+	 zcH/Lc4dgarJejrsMBlH7v9cr+1hFlMG/NcvJcMNSqyqyxRMX5e9cNr/qznbz3d3V7
+	 IkE2e/ZO4qUC0E1Ww8pxm78JGSIRNlqR1k9OPAprU7fSS0ePmSjGAwQ5OTmU3YHQjA
+	 kGz3f92LSyRQpuC3R0jtwyBFoBu3/DI61OPF3aZZgziVEyRGAd0TU0eYBd7kEKBIUi
+	 b1NV200BlGuEQSCwndZ26limqQGKFx0f6qx0uF6/t7f1hO5mJOO4LA9zVswX4IKegp
+	 OrK6MUyUrnigw==
+Date: Tue, 1 Sep 2026 11:58:25 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Arthur Crepin Leblond <arthur@marmottus.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v6 2/3] dt-bindings: net: wiznet,w5100: add link
+ status interrupt
+Message-ID: <20260901-busy-lorikeet-of-piety-bda3a1@quoll>
+References: <20260831-wiznet-link-gpio-v6-0-abee6c5c966e@marmottus.net>
+ <20260831-wiznet-link-gpio-v6-2-abee6c5c966e@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <140ef9fa6dc454d62eaf49b168850890f1617fba462dcc37288747f6fbc7dae8@mail.kernel.org>
-In-Reply-To: <20260901-libbpf-frags-flags-v3-3-4eb6f14968b0@redhat.com>
-References: <20260901-libbpf-frags-flags-v3-3-4eb6f14968b0@redhat.com>
-Subject: Re: [PATCH bpf-next v3 3/4] libbpf: Move section-defined program flags to prog_flags
-From: bot+bpf-ci@kernel.org
-To: toke@redhat.com,qmo@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,larysa.zaremba@intel.com,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,lorenzo@kernel.org
-Cc: bpf@vger.kernel.org,netdev@vger.kernel.org,toke@redhat.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue,  1 Sep 2026 09:54:16 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260831-wiznet-link-gpio-v6-2-abee6c5c966e@marmottus.net>
 
---===============7831815785475501820==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Aug 31, 2026 at 02:53:35PM +0200, Arthur Crepin Leblond wrote:
+> Add an optional link status interrupt which can be connected to the
+> LINKLED pin on the device to detect link status changes.
+> 
+> Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
+> 
+> ---
+> v6:
+> - Fix DT error: use minItems
+> - Remove conditional properties
 
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index f09cbfd8e729d..c036e8a91ed88 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
-> @@ -7879,6 +7879,19 @@ static int tracing_multi_mod_fd(struct bpf_program *prog, int *btf_obj_fd)
->  	return 0;
->  }
->
-> +static int libbpf_setup_prog_flags(struct bpf_program *prog, long cookie)
-> +{
-> +	enum sec_def_flags def = cookie;
-> +
-> +	if (def & SEC_SLEEPABLE)
-> +		prog->prog_flags |= BPF_F_SLEEPABLE;
-> +
-> +	if (def & SEC_XDP_FRAGS)
-> +		prog->prog_flags |= BPF_F_XDP_HAS_FRAGS;
-> +
-> +	return 0;
-> +}
-> +
->  /* this is called as prog->sec_def->prog_prepare_load_fn for libbpf-supported sec_defs */
->  static int libbpf_prepare_prog_load(struct bpf_program *prog,
->  				    struct bpf_prog_load_opts *opts, long cookie)
-> @@ -7889,12 +7902,6 @@ static int libbpf_prepare_prog_load(struct bpf_program *prog,
->  	if ((def & SEC_EXP_ATTACH_OPT) && !kernel_supports(prog->obj, FEAT_EXP_ATTACH_TYPE))
->  		opts->expected_attach_type = 0;
->
-> -	if (def & SEC_SLEEPABLE)
-> -		opts->prog_flags |= BPF_F_SLEEPABLE;
-> -
-> -	if (prog->type == BPF_PROG_TYPE_XDP && (def & SEC_XDP_FRAGS))
-> -		opts->prog_flags |= BPF_F_XDP_HAS_FRAGS;
-> -
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Does this change break bpf_program__clone() when the caller passes
-non-zero opts.prog_flags?
+Best regards,
+Krzysztof
 
-Before this patch, libbpf_prepare_prog_load() OR'd in the section flags
-after the caller's override:
-
-    /* in bpf_program__clone() */
-    attr.prog_flags = OPTS_GET(opts, prog_flags, 0) ?: prog->prog_flags;
-    ...
-    prog->sec_def->prog_prepare_load_fn(prog, &attr, ...);
-
-    /* in libbpf_prepare_prog_load() */
-    if (def & SEC_SLEEPABLE)
-        opts->prog_flags |= BPF_F_SLEEPABLE;
-
-So a caller doing:
-
-    LIBBPF_OPTS(bpf_prog_load_opts, opts, .prog_flags = BPF_F_TEST_STATE_FREQ);
-    fd = bpf_program__clone(prog, &opts);
-
-would get TEST_STATE_FREQ | SLEEPABLE for a program in SEC("fentry.s/...").
-
-After this patch, the flags live only in prog->prog_flags, and the `?:`
-in bpf_program__clone() discards prog->prog_flags entirely when the
-caller passes non-zero opts.prog_flags:
-
-    attr.prog_flags = OPTS_GET(opts, prog_flags, 0) ?: prog->prog_flags;
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                      returns TEST_STATE_FREQ, prog->prog_flags is ignored
-
-So the same caller now gets only TEST_STATE_FREQ without SLEEPABLE. For
-sleepable-only helpers like bpf_copy_from_user, this produces a verifier
-rejection. For BPF_PROG_TYPE_SYSCALL, which requires prog->sleepable,
-it fails at load. For xdp.frags programs, BPF_F_XDP_HAS_FRAGS is lost.
-
-Looking at the pattern immediately below in the same function:
-
-    if (attr.token_fd)
-        attr.prog_flags |= BPF_F_TOKEN_FD;
-
-should the section flags be OR'd in unconditionally, or should the
-caller-override `?:` be removed for prog_flags? The commit message
-mentions bpf_program__set_flags() and bpf_program__set_type() as
-affected APIs but doesn't mention bpf_program__clone().
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33489985893
---===============7831815785475501820==--
