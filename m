@@ -1,156 +1,153 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88BF411665;
-	Tue,  1 Sep 2026 16:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788281836; cv=pass; b=aJLvAHXUqNoxVq3fNP3qUMigFGsKmIuSur1+TzHMyzVmaV3aLJHJMIf7v5VZvWl7lZnAe7y01jkGQIBIdwlQLjm07OBAbmhNkcyYLD2Kj3TKcpX2Aylkdeyw8Q21Ob54CcvNhEBFa0q1xdKQXBvpuvVb1gf0NN+8kbXkOSy3ChE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788281836; c=relaxed/simple;
-	bh=2o50ioaSos31AQffpyMEqKbixGBDTkL88GZUNPuz45c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lXAUcKryGrYJEtPI7Z7eR67zrYLT2FKHCvlsJZNs9YjFiKmPx04tPHdMcWpsJLfLQNx9YYtHA90CkyVCAOn8F/WBqwE2M3Z87SySsrx7EgFYbWunrESjDjc8T+CAIDfIBtg1TMbpntw3UJ3DJM3hAnU627NGW13bLNNmCIQy8dQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=bd4mBydR; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18305483BF2
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 16:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788281925; cv=none; b=GBCXLAQqzJ+gL4LCCrA6xY7BkD6QfodC9dyykW7ay1Exrm4Wa/Hy59N/TdfOYF6zdhL6fijABVgy5RpFBtV9GhB/wRlY6DzL4XpxzjNRpt89tvxgOqJkoTzcrHrCWRUct5ot+kePnfBQx2bfK/u6iPlMiOWpeeQd7oCNvK8CGe4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788281925; c=relaxed/simple;
+	bh=zHfBMTxRqkaPOBK226KbK5Bs6Zd5qsfNptK1yMeOWjw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cV2FwlttzZ+/wUJmbgqVfnwo0FkzK1F9Hlo8HpL81qWhx6WaOh4JCBvnZrfwstyv5DyCCnc7qSPUL4BlrOJsq4+v39q5o8TM561OPIr9Pzs6C0pQ1M9sImnUMn0v5/NDlm9zPESUzXWOVmZgw5cR0iBXynkDn05Y+ll7N0qDBrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=1gZ9qniC; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="bd4mBydR"
-ARC-Seal: i=1; a=rsa-sha256; t=1788281795; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YxlD8eKZdzvGSCqLTBceHoCcn8xAgVPXM/40YpkDNQdDqYbBZI5p4jgIaZIoiqm8wA6vL7alnU6p4zQk3PB1DxcP6jbAXmDbkgtwu3FWROr0Iigg9y2hOd12OIv3hf4CI1GdjJFJVP5Ex6xmIIrlTGQyX/oucYfGT6poobskD94=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788281795; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=EIjF6irFWof5iYX8mJ+DqBBduW8CEQHKF360pseUiV0=; 
-	b=IqS4WrCY3h/7bfvUq2WivzRAAquuGJzHGfEpVpT/XcAlvJXDoMN/fSKCfPfa3ybzutv68teVg2lKQMD2GcbjN4aBI3yyi08NC4iVDCH+A/MzqbmPsezP9jclGkVJIj4nxHo9F2+ocxGr48ZIKsm5x515CGhy8sxxkTGEXpMji6s=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788281795;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=EIjF6irFWof5iYX8mJ+DqBBduW8CEQHKF360pseUiV0=;
-	b=bd4mBydR/1IVcYtyruTb9J+DesuhtHF1J1VU+wP8TkFSFTZdkLSjKxSlwwjffUW8
-	qP4x8W2yRwyQaYxMN+PhciVIZoiZtkZuTESGwliZWFgkvVE1hSIYV3M6MffgM+gYYI+
-	ROmd0NqRHgujNwBHDp0mUzfGsU/qfPD46DPH/fO4=
-Received: by mx.zohomail.com with SMTPS id 1788281791276114.8959116523572;
-	Tue, 1 Sep 2026 09:56:31 -0700 (PDT)
-Date: Tue, 1 Sep 2026 16:56:16 +0000
-From: Yao Zi <me@ziyao.cc>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, Yao Zi <me@ziyao.cc>,
-	Frank <Frank.Sae@motor-comm.com>
-Cc: thomas.petazzoni@bootlin.com,
-	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next 3/3] net: phy: motorcomm: Enable analog frontend
- on YT8531S
-Message-ID: <apcDsF_P9fDDiOn6@pie>
-References: <20260831073747.361482-1-maxime.chevallier@bootlin.com>
- <20260831073747.361482-4-maxime.chevallier@bootlin.com>
- <17e50070-46c9-46dd-8109-95007a4f681f@redhat.com>
- <3053bd10-50c0-4a4e-bfe3-7c2479bad560@bootlin.com>
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="1gZ9qniC"
+Received: by dvalin.narfation.org (Postfix) id C19D72043A;
+	Tue, 01 Sep 2026 16:58:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1788281917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OKUWbeHCL4+HuZrAgf7m2Euvx5NSGOwv6Pqkpgugprw=;
+	b=1gZ9qniCkWTSOAwLZmX0offKwfcEC2JcNq2HsvE4VL7w1Aeot9dVhrRawsTSoLlrh51E9A
+	/RkV+OC912ZHybOdoJQjdfyTxRs8WPkvD9IAWFYPT1Gls0xp7BPf3qJ4PzQp6Rix12kiNM
+	CSsdBp20Mgie/npf0v8msxjq8BakSPY=
+From: Sven Eckelmann <sven@narfation.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: antonio@mandelbit.com, marek.lindner@mailbox.org, sw@simonwunderlich.de,
+ netdev@vger.kernel.org
+Subject:
+ Re: [PATCH net-next 12/15] batman-adv: tt: use protected flag modifications
+Date: Tue, 01 Sep 2026 18:58:35 +0200
+Message-ID: <2369228.iZASKD2KPV@sven-desktop>
+In-Reply-To: <20260901140003.62B041F000E9@smtp.kernel.org>
+References:
+ <20260831135117.574836-1-sw@simonwunderlich.de>
+ <20260831135117.574836-13-sw@simonwunderlich.de>
+ <20260901140003.62B041F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3053bd10-50c0-4a4e-bfe3-7c2479bad560@bootlin.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/288.256.78
-X-ZohoMailClient: External
+Content-Type: multipart/signed; boundary="nextPart2056107.PYKUYFuaPT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-On Tue, Sep 01, 2026 at 04:21:36PM +0200, Maxime Chevallier wrote:
-> 
-> 
-> On 9/1/26 15:59, Paolo Abeni wrote:
-> > On 8/31/26 9:37 AM, Maxime Chevallier wrote:
-> >> The YT6801 PCIe NIC includes the dwmac-motorcomm IP for the MAC part, as
-> >> well as a YT8531S PHY, configured in GMII mode.
-> >>
-> >> It seems this PHY requires the Analog Front-end (AFE) DAC clock to be
-> >> enabled for link to reliably establish, otherwise the link just doesn't
-> >> come up.
-> >>
-> >> Let's enable it at config_init().
-> >>
-> >> This logic has been extracted from the vendor driver provided by
-> >> Motorcomm.
-> >>
-> >> It's really unclear if this is specific to the integrated version of
-> >> that PHY, and how this potentially interacts with the fiber mode this
-> >> PHY supports, so this configuration is only enabled when the interface
-> >> is GMII, i.e. the PHY is integrated.
-> >>
-> >> With this, the PHY reliably establishes link and the YT6801 PCIe card
-> >> becomes fully functional.
-> >>
-> >> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> >> ---
-> >>  drivers/net/phy/motorcomm.c | 14 +++++++++++++-
-> >>  1 file changed, 13 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> >> index 36c229460a77..90a4f86f2758 100644
-> >> --- a/drivers/net/phy/motorcomm.c
-> >> +++ b/drivers/net/phy/motorcomm.c
-> >> @@ -144,6 +144,11 @@
-> >>  #define YT8521_CLOCK_GATING_REG			0xC
-> >>  #define YT8521_CGR_RX_CLK_EN			BIT(12)
-> >>  
-> >> +/* Analog front-end control register 3 */
-> >> +#define YT8531S_EXT_AFE_CTRL3			0x12
-> >> +/* Analog front-end DAC clock enable */
-> >> +#define YT8531S_AFE_CTRL3_CLKDAC_AON		BIT(13)
-> >> +
-> >>  #define YT8521_EXTREG_SLEEP_CONTROL1_REG	0x27
-> >>  #define YT8521_ESC1R_SLEEP_SW			BIT(15)
-> >>  #define YT8521_ESC1R_PLLON_SLP			BIT(14)
-> >> @@ -1740,8 +1745,15 @@ static int yt8531s_config_init(struct phy_device *phydev)
-> >>  	if (ret)
-> >>  		goto err_restore_page;
-> >>  
-> >> -	if (phy_interface_is_rgmii(phydev))
-> >> +	if (phy_interface_is_rgmii(phydev)) {
-> >>  		ret = yt8531_set_ds(phydev);
-> >> +		if (ret)
-> >> +			goto err_restore_page;
-> >> +	}
-> >> +
-> >> +	if (phydev->interface == PHY_INTERFACE_MODE_GMII)
-> >> +		ret = ytphy_modify_ext(phydev, YT8531S_EXT_AFE_CTRL3,
-> >> +				       0, YT8531S_AFE_CTRL3_CLKDAC_AON);
-> > 
-> > Sashiko suspects this will not survive a suspend/resume:
-> > 
-> > https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831073747.361482-1-maxime.chevallier%40bootlin.com
-> 
-> hmm sashiko may be right, worth adding right now as it seems there are
-> some discussions already on motorcomm suspend/resume issues, let me spin
-> a V2
-> 
-> Thanks !
+--nextPart2056107.PYKUYFuaPT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: sashiko-reviews@lists.linux.dev
+Date: Tue, 01 Sep 2026 18:58:35 +0200
+Message-ID: <2369228.iZASKD2KPV@sven-desktop>
+In-Reply-To: <20260901140003.62B041F000E9@smtp.kernel.org>
+MIME-Version: 1.0
 
-Yes, suspend/resume already works for some time on devices unaffected
-by the issue under discussion. It looks good to me apart from this.
-I'll call some guys to test for regressions on devices proven to work
-before.
-
-> Maxime
+On Tuesday, 1 September 2026 16:00:02 CEST sashiko-bot@kernel.org wrote:
+[...]
+> > @@ -1351,10 +1391,17 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
+> >  	}
+> >  
+> >  	if (!(tt_local_entry->common.flags & BATADV_TT_CLIENT_NEW)) {
+> > -		batadv_tt_local_set_pending(bat_priv, tt_local_entry, flags,
+> > -					    message);
+> > +		tt_local_entry->common.flags |= BATADV_TT_CLIENT_PENDING;
+> > +		pending = true;
+> > +	}
+> > +	spin_unlock_bh(&tt_local_entry->common.flags_lock);
+> > +
+> > +	if (pending) {
+> > +		batadv_tt_local_set_pending_event(bat_priv, tt_local_entry, flags,
+> > +						  message);
 > 
+> [Severity: High]
+> Does detaching the DEL event emission from the flag update create a
+> split-brain routing state?
+> 
+> By setting the BATADV_TT_CLIENT_PENDING flag under the flags_lock but
+> delaying the emission of the DEL event (via
+> batadv_tt_local_set_pending_event) until after the lock is released,
+> there is a window where concurrent operations can interleave.
+> 
+> If a concurrent batadv_tt_local_add() executes within this window, it
+> will clear the PENDING flag and queue an ADD event:
+> 
+> CPU1: batadv_tt_local_remove()
+>     tt_local_entry->common.flags |= BATADV_TT_CLIENT_PENDING;
+>     spin_unlock_bh(&tt_local_entry->common.flags_lock);
+>     // Preempted
+> 
+> CPU2: batadv_tt_local_add()
+>     tt_local->common.flags &= ~BATADV_TT_CLIENT_PENDING;
+>     spin_unlock_bh(&tt_local->common.flags_lock);
+>     batadv_tt_local_event(bat_priv, tt_local, BATADV_NO_FLAGS); // Queues ADD
+> 
+> If the OGM worker runs now, it broadcasts the ADD.
+> 
+> CPU1: batadv_tt_local_remove() (resumes)
+>     batadv_tt_local_set_pending_event(..., BATADV_TT_CLIENT_DEL, ...);
+> 
+> The next OGM broadcasts the DEL event. The local node considers the MAC
+> active (because PENDING was cleared), but the rest of the mesh drops it
+> due to the DEL event, leading to persistent split-brain routing.
 
-Best regards,
-Yao Zi
+This is not how TT works. The events are a best effort in informing other 
+originators. But it is not the source of all truth.
+
+And this is not changed by this patch.
+
+> > @@ -1394,21 +1441,37 @@ static void batadv_tt_local_purge_list(struct batadv_priv *bat_priv,
+[...]
+> > -		batadv_tt_local_set_pending(bat_priv, tt_local_entry,
+> > -					    BATADV_TT_CLIENT_DEL, "timed out");
+> > +		batadv_tt_local_set_pending_event(bat_priv, tt_local_entry,
+> > +						  BATADV_TT_CLIENT_DEL, "timed out");
+> 
+> [Severity: High]
+> Can this sequence similarly cause a split-brain state?
+> 
+> Like in batadv_tt_local_remove(), this delays the DEL event emission
+> until after the lock is dropped. A concurrent batadv_tt_local_add()
+> could interleave during this window, resulting in the local node
+> keeping the entry active while the rest of the mesh removes it.
+
+This is not how TT works. The events are a best effort in informing other 
+originators. But it is not the source of all truth.
+
+And this is not changed by this patch.
+
+Regards,
+	Sven
+--nextPart2056107.PYKUYFuaPT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCapcEOwAKCRBND3cr0xT1
+y+ypAPwNsBB8875SiRiAf9g792ominFBw/KSJHrVUEPeJ2iqcgD/Y3ZrDN5RaMQh
+8YOzJMln1ALipilC8XKlI0c51l+wSQA=
+=1RgT
+-----END PGP SIGNATURE-----
+
+--nextPart2056107.PYKUYFuaPT--
+
+
+
