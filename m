@@ -1,242 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2D9384CCE
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900463A9DA3;
+	Tue,  1 Sep 2026 09:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788256276; cv=none; b=b9mJHDMDKoSHLy+Ushp2BhxJGgYA8qCN+nIOobtdLikczEUh4Gnsn76o6+tzdPF3Ggl/Is1PAgz80FiMp4ooQa7A3k8lsbNIC3xYRw7X71pStvLZqGWY7ffFx2eL0lHX3Y2sqtRvP+fKP/JyLEPBMplimqlIqdhrX63etUSNhOE=
+	t=1788256456; cv=none; b=sHEJnjd/V9/DKGr59Fvt4XrES+kimZ0dVZxS0GsnWBOWVbciBontEy8A2/zqmS1BKLcrBLv7oguKI9oDB044oPpv3KDjPnrTdkGMh0YPcWlq7U7hRWanXiXIehATDSSzOWDgjDO7nGaJm7aqMQYTERwjdbLUpRe7t/LikOVtXbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788256276; c=relaxed/simple;
-	bh=PqcS43Kz0L3EIY3rHu337RGN1e3vUqPXpU2wBPTMRq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzT/G8L+FLluE8mR21L6RAApVED+bvb5TF3P/zVtb/TekL0iZI6wPrjcv0XdxWUKZCcoRduyfGjK73yuANTSqME6tARJw2ovPkEAH+lE3RDZ19neosDuPf8LfzdJEgDgu9/gBP89eibls7C8MP0BFY0Ymj9LJ5gecdwMZ3Q2nXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fEAKTK2k; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788256456; c=relaxed/simple;
+	bh=z9EicMUOaM3rG+OWnmtcrvc3BRTPXZG1G9KroAoYslY=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=NupvsLscueM3T9BcQp7wPHfavOa8ZnydfxrZ8LOLvgxEiBB+cuzhhmgWFwn1sNdfRJZYcabN21NzOLz6/Eq9HialmsIPZ13etT3KOWSCXg9fAOkNhOnVnDCt9/sYkNoa5EpM2chF6In9LWyM+qvl20cwliMJ82DeTnrKcr2CQsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUttv6/A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fEAKTK2k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788256273;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RGPYUUj4p3YEROI4nFlvU0VDeo3swndiRIwBv/4inAw=;
-	b=fEAKTK2kL9bp5owuqIDb9eyxaQKnj+XeU3FUiQC4ie8fGfL9L9p122GgrCy7d0dR+gwRJA
-	hzk1AcOVtY8Ft64/ijDMWupjbZ1pE4elc5OvbV8A3TUPY2mf7QB5U+/nok5PVpl4EwQfsw
-	IHi7HU3+rRH5G/WO4P4SthdrbORyfXc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-47--0Sj_pLAOxW15zvqP7Zvxg-1; Tue,
- 01 Sept 2026 05:51:10 -0400
-X-MC-Unique: -0Sj_pLAOxW15zvqP7Zvxg-1
-X-Mimecast-MFC-AGG-ID: -0Sj_pLAOxW15zvqP7Zvxg_1788256268
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 59CC21944E42;
-	Tue,  1 Sep 2026 09:51:08 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.49.14])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EFC9F1955F7C;
-	Tue,  1 Sep 2026 09:51:04 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: victor@mojatatu.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/sched: cls_route: free emptied bucket on filter move
-Date: Tue,  1 Sep 2026 11:51:01 +0200
-Message-ID: <20260901095101.124563-1-pabeni@redhat.com>
-In-Reply-To: <20260829205422.854785-1-victor@mojatatu.com>
-References: <20260829205422.854785-1-victor@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUttv6/A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988D91F000E9;
+	Tue,  1 Sep 2026 09:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788256454;
+	bh=LCH2ISJTlcWYHeY0eL7rdA0nk83xdfl2ZZrDBciLubw=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=NUttv6/AQLctgoMt0WD7hQebMJr4hHnDqCOPjFk5XHsVz6UZsRMuTZp8/55YAbhG8
+	 8+ArYI00aLFhMx5IoWXB/n2dC4Yk8cDCYZzlyY6ZHQD09rx2daexHTidhEGyS1zHar
+	 yC7kp+XcWkm0sl+wYlZ2YPS5Vdgimfk7kzZSUcp9lrWBlewBc8zYpRSt54O+E/1LUB
+	 A9rAj5ZPDu/kXyzTKbvGgUmdalJDn8XJCyOk0QZtgiqdZiZgh3gkQiTao8QGoqHlk2
+	 rN8W4MfxgpR8DYSs7pc9m7Kxwh2jbty2RwxxuPaSrfQ1UFGrZISb77h34+Z+GHrDNn
+	 DWdWu2CNeoD3A==
+Content-Type: multipart/mixed; boundary="===============2756755987579157109=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Message-Id: <486e478d8eeaec63726c1284ce5f60ddd3a1f7c24fa467317b77979ad38bd306@mail.kernel.org>
+In-Reply-To: <20260901-libbpf-frags-flags-v3-2-4eb6f14968b0@redhat.com>
+References: <20260901-libbpf-frags-flags-v3-2-4eb6f14968b0@redhat.com>
+Subject: Re: [PATCH bpf-next v3 2/4] selftests/bpf: Set BPF program flags non-destructively
+From: bot+bpf-ci@kernel.org
+To: toke@redhat.com,qmo@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,larysa.zaremba@intel.com,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,lorenzo@kernel.org
+Cc: bpf@vger.kernel.org,netdev@vger.kernel.org,toke@redhat.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue,  1 Sep 2026 09:54:13 +0000 (UTC)
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-net/sched: cls_route: free emptied bucket on filter move
+--===============2756755987579157109==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This adds a refcount of the filters linked into a route4_bucket so the
-bucket can be dropped from head->table[] and freed as soon as the last
-filter leaves it, replacing the open coded scan in route4_delete().  It
-also reworks the fold unlink path in route4_change() to use fold->bkt
-directly instead of looking the bucket up by to_hash(fold->handle).
+> diff --git a/tools/testing/selftests/bpf/prog_tests/attach_probe.c b/tools/testing/selftests/bpf/prog_tests/attach_probe.c
+> index e8c1a619e330e..7dadb90e7b689 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/attach_probe.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/attach_probe.c
+> @@ -543,8 +543,10 @@ static void test_kprobe_sleepable(void)
+>  		return;
+>
+>  	/* sleepable kprobe test case needs flags set before loading */
+> -	if (!ASSERT_OK(bpf_program__set_flags(skel->progs.handle_kprobe_sleepable,
+> -		BPF_F_SLEEPABLE), "kprobe_sleepable_flags"))
+> +	if (!ASSERT_OK(bpf_program__set_flags(
+> +			       skel->progs.handle_kprobe_sleepable,
+> +			       bpf_program__flags(skel->progs.handle_kprobe_sleepable) | BPF_F_SLEEPABLE),
+> +		       "kprobe_sleepable_flags"))
+>  		goto cleanup;
 
-> diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-> index 0d1324c90583..17b0ebb76662 100644
-> --- a/net/sched/cls_route.c
-> +++ b/net/sched/cls_route.c
+This isn't a bug, but would a local like
+`struct bpf_program *prog = skel->progs.handle_kprobe_sleepable;` let
+this keep the original one-line ASSERT_OK() shape? The read-modify-write
+now names the skeleton field twice in one expression, pushing the line
+to 106 columns. The other sites in this patch (bpf_verif_scale.c,
+xdp_metadata.c, xdp_hw_metadata.c) already have a short prog local and
+read as one clean line.
 
 [ ... ]
 
-> @@ -459,6 +452,7 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
->  		if (b == NULL)
->  			return -ENOBUFS;
->  
-> +		refcount_set(&b->filters_ref, 1);
->  		rcu_assign_pointer(head->table[h1], b);
->  	} else {
->  		unsigned int h2 = from_hash(nhandle >> 16);
-> @@ -468,6 +462,8 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
->  		     fp = rtnl_dereference(fp->next))
->  			if (fp->handle == f->handle)
->  				return -EEXIST;
-> +
-> +		refcount_inc(&b->filters_ref);
->  	}
+> diff --git a/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c b/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+> index 2e0ddef77ba51..ed3fd0a88dab6 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+> @@ -362,7 +362,7 @@ static void test_attach_api_fails(void)
+>  	sl_skel->bss->user_ptr = sl_skel;
+>
+>  	err = bpf_program__set_flags(sl_skel->progs.handle_kprobe_multi_sleepable,
+> -				     BPF_F_SLEEPABLE);
+> +				     bpf_program__flags(sl_skel->progs.handle_kprobe_multi_sleepable) | BPF_F_SLEEPABLE);
+>  	if (!ASSERT_OK(err, "sleep_skel_set_flags"))
+>  		goto cleanup;
 
-[Severity: Medium]
-Should this duplicate scan compare against nhandle rather than f->handle?
+This isn't a bug, but could the program pointer be pulled into a local
+here so the flags update stays inside the 100-column limit? Repeating
+the 44-character skeleton field name inside its own argument list pushes
+this line to 121 columns.
 
-The destination bucket and chain are selected from nhandle:
 
-net/sched/cls_route.c:route4_set_parms() {
-	...
-	h1 = to_hash(nhandle);
-	b = rtnl_dereference(head->table[h1]);
-	...
-		unsigned int h2 = from_hash(nhandle >> 16);
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-		for (fp = rtnl_dereference(b->ht[h2]);
-		     fp;
-		     fp = rtnl_dereference(fp->next))
-			if (fp->handle == f->handle)
-				return -EEXIST;
-	...
-	f->handle = nhandle;
-}
-
-but for a change route4_change() has copied the old handle into f before
-calling here:
-
-net/sched/cls_route.c:route4_change() {
-	...
-	if (fold) {
-		f->id = fold->id;
-		f->iif = fold->iif;
-		f->handle = fold->handle;
-	...
-}
-
-and f->handle is only set to nhandle further down, after this loop.
-
-Taking the reproducer from the changelog one step further on the patched
-tree:
-
-  tc filter add ... route from 1 to 1     -> handle 0x10001, bucket 1
-  tc filter add ... route from 1 to 2     -> handle 0x10002, bucket 2
-  tc filter change ... handle 0x10001 route from 1 to 2
-
-nhandle becomes 0x10002 and new is false, so the mismatch check under
-"if (handle && new)" is skipped.  Bucket 2 exists, so the scan above walks
-ht[1], finds the filter with handle 0x10002, compares it to f->handle
-(still 0x10001), does not match, and the new refcount_inc() is taken.
-
-Does that leave two filters carrying handle 0x10002 in the same chain?
-route4_get() returns the first match only:
-
-net/sched/cls_route.c:route4_get() {
-	...
-		for (f = rtnl_dereference(b->ht[h2]);
-		     f;
-		     f = rtnl_dereference(f->next))
-			if (f->handle == handle)
-				return f;
-	...
-}
-
-so get, change, delete and dump would resolve the handle by list order.
-
-The mirror case looks affected too: an in-place change that keeps the same
-to/from computes nhandle == fold->handle, the scan then finds fold itself
-in the chain and returns -EEXIST, rejecting the change.
-
-The comparison itself predates this patch, but this patch is what turns the
-renumbering/bucket-move path into a supported, leak-free operation, and it
-adds code immediately after the faulty comparison.  Would
-"fp->handle == nhandle && fp != fold", or rejecting the handle mismatch for
-existing filters as well, belong in the same change?
-
-The refcount accounting itself looks exact in the duplicate case, since each
-linked filter contributed one reference, so no premature free follows from
-this.
-
-Also, the changelog says the handle-mismatch check being gated on the 'new'
-flag is what allows the move, but it does not mention that the filter's
-handle visible to userspace changes as a result.  Could that be spelled out?
-
-> @@ -560,17 +556,20 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
->  	rcu_assign_pointer(*fp, f);
->  
->  	if (fold) {
-> -		th = to_hash(fold->handle);
-> +		b = fold->bkt;
->  		h = from_hash(fold->handle >> 16);
-> -		b = rtnl_dereference(head->table[th]);
-> -		if (b) {
-> -			fp = &b->ht[h];
-> -			for (pfp = rtnl_dereference(*fp); pfp;
-> -			     fp = &pfp->next, pfp = rtnl_dereference(*fp)) {
-> -				if (pfp == fold) {
-> -					rcu_assign_pointer(*fp, fold->next);
-> -					break;
-> +		fp = &b->ht[h];
-> +		for (pfp = rtnl_dereference(*fp); pfp;
-> +		     fp = &pfp->next, pfp = rtnl_dereference(*fp)) {
-> +			if (pfp == fold) {
-> +				rcu_assign_pointer(*fp, fold->next);
-> +				if (refcount_dec_and_test(&b->filters_ref)) {
-> +					unsigned int th = to_hash(fold->handle);
-> +
-> +					RCU_INIT_POINTER(head->table[th], NULL);
-> +					kfree_rcu(b, rcu);
->  				}
-> +				break;
->  			}
->  		}
->  	}
-
-[Severity: Low]
-Could a tdc case be added for the cross-bucket move this fixes?
-
-tools/testing/selftests/tc-testing/tc-tests/filters/route.json has exactly
-one test touching the replace path, "b042" ("Try to delete class referenced
-by route after a replace"):
-
-  $TC filter add dev $DEV1 parent 10: prio 1 route from 10 classid 10:1 action ok
-  $TC filter replace dev $DEV1 parent 10: prio 1 route from 5 classid 10:1 action drop
-
-With TCA_ROUTE4_TO absent, route4_set_parms() builds nhandle as
-0x8000 | id << 16, so the handles are 0xA8000 and 0x58000, and to_hash() is
-256 for both.  Both filters land in the same top-level bucket, and the
-replaced handle 0x58000 does not exist, so *arg is NULL and the fold path
-above is never entered.
-
-That leaves both new free sites untested: this refcount_dec_and_test() plus
-kfree_rcu(b, rcu) in route4_change(), and the equivalent one in
-route4_delete().  Neither a return of the leak nor a premature bucket free
-introduced by the new refcounting would be caught.
-
-The reproducer in the changelog (add "from 1 to 1", change to "from 1 to 2",
-delete 0x10002, then count the remaining filters) maps directly onto a tdc
-case in route.json.
--- 
-This is an AI-generated review.
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33489985893
+--===============2756755987579157109==--
