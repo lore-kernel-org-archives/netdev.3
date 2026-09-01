@@ -1,58 +1,58 @@
 Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62D47CA73;
-	Tue,  1 Sep 2026 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F43547ACEB;
+	Tue,  1 Sep 2026 13:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788268882; cv=pass; b=pT3v6rijgqOUzm2zDi3P95Z7xjInuOaLJuJl8pEh0BEtwEDPOKGruPBlAtEkYst4LxAQ04B0sQF98ju09rZm9hRwZxeOJTxDUvX7IrEqIrLkAkvBh+7he051FYjyuq7Z7fv9kDUHAQLvEzG/JWsptuH4ix9fpfaHEmrcV42Ze+8=
+	t=1788268890; cv=pass; b=Sc69/EuAvDUqafyERjK7gMYwQcPdCelUiMc/XPt6KqCfc7U/Izd3uF3kxd4S+1LmukmelhvMx0p2WyOoJAauACyZu1ggjKmGrL40Ccd3RX0vrsvBUzKtPQCiHHazvDpnURZI/xGlz/A94lFL2fn3IslU4kTXSRP5WcCHIQy/j80=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788268882; c=relaxed/simple;
-	bh=G2u4QUEtPn+JuaH/1d7NVY9ZHJgje1rLs5v7TkeoLG8=;
+	s=arc-20240116; t=1788268890; c=relaxed/simple;
+	bh=hdtkGhRfz8rVbNwgtAd+nE20hxvZoyBIqJKmY7rY+Oo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cv6m2WlqfUfo3/MEyh5el554svEyDp2EZ9WgxuJFCX8P+JURgSBtAL4wAnUoOlUMUI+E728PoUUJPKiCy2IS+3cHmqdlxTwwwO1uC+WluVBXQBXhMou/HZa/OTwlDogK7P62jkCKO/yuRrq83T7G326MCDu2h8k/ODL5u2//FlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=rwa5gCl7; arc=pass smtp.client-ip=185.185.170.37
+	 MIME-Version; b=hlVsVqYdymlw0My962cCzWour+i4/X6O2xEZBgDC27m3hTXMOztze1eRawfevr3be3k8xIc1kGVEtR2DcSVq8gXItNqvCpkv5/Q4CEVX5GFQLsKXfHZdjmR/n+KRebYNed9RLV3TiB50VOa/yENGXn4RH1lqpBomKmcXuSdb/cw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=ja0E7aCX; arc=pass smtp.client-ip=185.185.170.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="rwa5gCl7"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="ja0E7aCX"
 Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ62322Pgz49QLK;
-	Tue, 01 Sep 2026 16:21:15 +0300 (EEST)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ62C23bVz49QMM;
+	Tue, 01 Sep 2026 16:21:23 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788268875;
+	t=1788268883;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wU+Nh/TTGuJHWO4OvCj1HpjL1997pFYAxqIp0Rc3JXU=;
-	b=rwa5gCl7Jt+BZksWFiIuihBwdTw0a63tcwWhSrz7lwV8PSTdXKYdHL8YZyLCXAN4e4/NWm
-	mrKwudi8h9aMKL+GqBx6J8c5aH7Ldj0FaRvmrQ5RPEUa5UDi5O3tshnidtFgawypj8LNGO
-	cosL39WSPlznhVOG98b5IdudnhIixnUjDUJ53A1e+tW1/E4c3jrj6Q8U578wBW0Wwxmt16
-	48B7HRIuuDVA0CXd/3iVZNuDnOAtbnE3pTBsZi8o7RFPyhZaE6xiMOkkxkDUss2Psno/R8
-	r61veAj8JRCZhx27iMCo5LkXIji+w0Z0b/eLDagrFdTT//FDfdiTimdppvPnnA==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268875;
-	b=isavcQ37mQE3U/tAwkk9expHSb0X0jJNL7XcHL+LCmnPEYh8fzOjS6K/B/oqafxi2VTSbS
-	VT8Btb9HP55Mq5H5Mb0HkrKNlLTcDs+a/7cXKWK85ifSU2PmhGCpq4CM9E5t4mpPNJg3Dt
-	JsCMe/BSWsndhuAHn1SywFStKlxarNzjRhwHbPrAVRve06bIc2ifr/D5LnVPAU9ZzKvTsK
-	c8sVyJ40p4x/JtRUhQ7bUXkAMvAxmf4khAfJ1b6Xe4herM1VnDC1gFurB3cKh41HY2Y+V5
-	LD6A2DwyMy2sy/43zCa7BBPEyMiCaR3KTzuMcpGRJu43jth6x0um8fjLITqR8Q==
+	bh=RWGOLefIcCK3uanL/TxDzRS8ZuMg1qk19zGuow0Q++k=;
+	b=ja0E7aCXsx65M3CEogzj5PxpGwtApRqeURdbZNmShDsU5ykmnOH5gWgGcNzYH/JPco+vp7
+	XxvYJhak+o+sVe8NHA4OVHSjsTAAj9ykVJgo2UeKLfj7Cm5xABzvb6ot7+xrlKvr41/N6P
+	qk2QtPIW8ci24rClKAiQLgi5EQPhNIOQbgjH3ZLZZN3+Pja/DnN2WFMHEYXF8NEAd6FwK7
+	aS/YUfRgFmjcGOEQ2STcz6Tv/e8dkAfGIaG690VUwcYx5S1m6esEugTxOFsx9u9gYNvfoh
+	r79g3GdiEBzGaOMowWCVn/Ihums3/9qXhDpxiupFqr2YM54ccTlVa5wmPQnQ/g==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268883;
+	b=tjmAINtLrn4uIKfkv/f6tAa8d2cc90S40eYq4bufElEpdhx2tKfHVDZK3IPzeFmKEpTdma
+	ULBuZBTiEW3w5gjp5YGpSfcD3S46reFRlhtgpcvpZxb+y4R2RE+dpc8b3rV06I6tF3w6gH
+	QYe19Ssc6sSL8Dd6/p3XOwYqTqDFoamsaLYOvj9zlTeBiFw2KGy6/qB1lo1vvwcfShyfpX
+	rZzYiBQ8UjZIS/yffrsP7+D9Utmd9xipIdsOvyv5AhPd1xs9WS47JiNfuLkr70FOnIPD+F
+	fNOVRPPw4hVZKNr+x2AUHQyHFpuxRQdNJTS21m9Ifnt7+iGeDDV98QF37jv76g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788268875;
+	s=lahtoruutu; t=1788268883;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wU+Nh/TTGuJHWO4OvCj1HpjL1997pFYAxqIp0Rc3JXU=;
-	b=nKxYQdty38Ai/PdbRNZiIwrWGmfUc75oArf2SXAwjbtqPyMcKZqpk2L3PI9kXNqLSxVxFg
-	JBLC2kjFJjN95jwJUwzJnXGln7insxMXeWeCVtUmGPgcdIKdkmqOpLx4C24+aRSSrFgiWI
-	GszJH3rqpta7DzsvBfipdr9QH/3jmrOvdy0/jKh/c2/Os8tCXd43giLsRv3+CefPmqbWor
-	UDNzoDE8FCuWdsfSFdFGp31tpNEASKbr7+avkA4YCpfX4+0e2uADEHX2TTzqxQ1CO9bP9M
-	LNvZxwuhL3QgWejUEEZKhH8aICno/4DD6P7Qrpn4if4beD3/eVQh/rOLCTYlxg==
+	bh=RWGOLefIcCK3uanL/TxDzRS8ZuMg1qk19zGuow0Q++k=;
+	b=PAvaqLXxMrPauBpRe6KzZZQehEKL2c4+14sso0qJcamFDEQtoVHqLJ8kTvGn7TVL1yw+lB
+	uDSFAUerPDf4y0g8Aq+k8UT5U3r38cI0BHHnudr1tQc//TntmdThgl6KLlTIMCwBala/MX
+	VgWdmIhwpEdunxhxn21/q/lceWs6ttBPcmYYTyS86ZSgELr71gMIkbiTFAYy4B10HjiHg0
+	K8OTKy6Pv6g64VvPg3qf0VEBk9gwwN9RWxyTv+mtDjPpru4wiAgcR8l0Wqbx9tn2O04p66
+	VjjhL7ip+1+hmrnSgOPCMOsnzQJj1dYwFKHovct7ChLul7rIICz+wbj2IoZ39g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
@@ -73,9 +73,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v6 06/15] net: qrtr: Report sender endpoint in aux data
-Date: Tue,  1 Sep 2026 16:19:25 +0300
-Message-Id: <20260901131934.225991-7-juha-matti.tilli@iki.fi>
+Subject: [PATCH v6 07/15] net: qrtr: Report endpoint for locally generated messages
+Date: Tue,  1 Sep 2026 16:19:26 +0300
+Message-Id: <20260901131934.225991-8-juha-matti.tilli@iki.fi>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
 References: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
@@ -89,16 +89,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Denis Kenzior <denkenz@gmail.com>
 
-Introduce support for reporting the remote endpoint that generated a
-given QRTR message to clients using AF_QIPCRTR family sockets. This is
-achieved by including QRTR_ENDPOINT auxiliary data, which carries the
-endpoint identifier of the message sender.  To receive this auxiliary
-data, clients must explicitly opt-in by using setsockopt with the
-QRTR_REPORT_ENDPOINT option enabled.
-
-Implementation of getsockopt and setsockopt is provided.  An additional
-level 'SOL_QRTR' is added to socket.h for use by AF_QIPCRTR family
-sockets.
+For messages generated by the local endpoint destined
+to the local endpoint, report the local endpoint identifier.  Same
+QRTR_ENDPOINT auxiliary data and QRTR_REPORT_ENDPOINT socket option
+semantics apply as for messages generated by remote endpoints.
 
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
@@ -106,175 +100,129 @@ Reviewed-by: Andy Gross <agross@kernel.org>
 Signed-off-by: Mihai Moldovan <ionic@ionic.de>
 Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
 ---
- include/linux/socket.h    |  1 +
- include/uapi/linux/qrtr.h |  6 +++
- net/qrtr/af_qrtr.c        | 77 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 84 insertions(+)
+ net/qrtr/af_qrtr.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/socket.h b/include/linux/socket.h
-index 2a8d7b14f1d11..4af1dd816dc35 100644
---- a/include/linux/socket.h
-+++ b/include/linux/socket.h
-@@ -400,6 +400,7 @@ struct ucred {
- #define SOL_MCTP	285
- #define SOL_SMC		286
- #define SOL_VSOCK	287
-+#define SOL_QRTR	288
- 
- /* IPX options */
- #define IPX_TYPE	1
-diff --git a/include/uapi/linux/qrtr.h b/include/uapi/linux/qrtr.h
-index f7e2fb3d752b5..6d0911984a050 100644
---- a/include/uapi/linux/qrtr.h
-+++ b/include/uapi/linux/qrtr.h
-@@ -46,4 +46,10 @@ struct qrtr_ctrl_pkt {
- 	};
- } __packed;
- 
-+/* setsockopt / getsockopt */
-+#define QRTR_REPORT_ENDPOINT 1
-+
-+/* CMSG */
-+#define QRTR_ENDPOINT 1
-+
- #endif /* _LINUX_QRTR_H */
 diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 43e48b89b5cb6..897ecc8dc304d 100644
+index 897ecc8dc304d..da7ccf19c6851 100644
 --- a/net/qrtr/af_qrtr.c
 +++ b/net/qrtr/af_qrtr.c
-@@ -26,6 +26,10 @@
+@@ -184,9 +184,11 @@ struct qrtr_tx_flow {
+ #define QRTR_TX_FLOW_LOW	5
  
- #define QRTR_PORT_CTRL_LEGACY 0xffff
+ static int qrtr_local_enqueue(struct qrtr_node *node, struct sk_buff *skb,
++			      u32 endpoint_id,
+ 			      int type, struct sockaddr_qrtr *from,
+ 			      struct sockaddr_qrtr *to);
+ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
++			      u32 endpoint_id,
+ 			      int type, struct sockaddr_qrtr *from,
+ 			      struct sockaddr_qrtr *to);
+ static struct qrtr_sock *qrtr_port_lookup(int port);
+@@ -393,6 +395,7 @@ static int qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
  
-+enum {
-+	QRTR_F_REPORT_ENDPOINT,
-+};
-+
- /**
-  * struct qrtr_hdr_v1 - (I|R)PCrouter packet header version 1
-  * @version: protocol version
-@@ -79,6 +83,7 @@ struct qrtr_cb {
- 	u32 src_port;
- 	u32 dst_node;
- 	u32 dst_port;
-+	u32 endpoint_id;
- 
- 	u8 type;
- 	u8 confirm_rx;
-@@ -92,6 +97,7 @@ struct qrtr_sock {
- 	struct sock sk;
- 	struct sockaddr_qrtr us;
- 	struct sockaddr_qrtr peer;
-+	unsigned long flags;
- };
- 
- static inline struct qrtr_sock *qrtr_sk(struct sock *sk)
-@@ -567,6 +573,8 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	if (cb->dst_port == QRTR_PORT_CTRL_LEGACY)
- 		cb->dst_port = QRTR_PORT_CTRL;
- 
-+	cb->endpoint_id = ep->id;
-+
- 	if (!size || size > len || len != ALIGN(size, 4) + hdrlen)
- 		goto err;
- 
-@@ -1130,6 +1138,7 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
- 			size_t size, int flags)
+ /* Pass an outgoing packet socket buffer to the endpoint driver. */
+ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
++			     u32 endpoint_id,
+ 			     int type, struct sockaddr_qrtr *from,
+ 			     struct sockaddr_qrtr *to)
  {
- 	DECLARE_SOCKADDR(struct sockaddr_qrtr *, addr, msg->msg_name);
-+	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
- 	struct sock *sk = sock->sk;
- 	struct sk_buff *skb;
- 	struct qrtr_cb *cb;
-@@ -1155,6 +1164,10 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
- 		msg->msg_flags |= MSG_TRUNC;
+@@ -744,7 +747,8 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
+ 		skb = qrtr_alloc_ctrl_packet(&pkt, GFP_ATOMIC);
+ 		if (skb) {
+ 			pkt->cmd = cpu_to_le32(QRTR_TYPE_BYE);
+-			qrtr_local_enqueue(NULL, skb, QRTR_TYPE_BYE, &src, &dst);
++			qrtr_local_enqueue(NULL, skb, endpoint_id,
++					   QRTR_TYPE_BYE, &src, &dst);
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
+@@ -809,8 +813,8 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 		pkt->client.port = cpu_to_le32(ipc->us.sq_port);
+ 
+ 		skb_set_owner_w(skb, &ipc->sk);
+-		qrtr_bcast_enqueue(NULL, skb, QRTR_TYPE_DEL_CLIENT, &ipc->us,
+-				   &to);
++		qrtr_bcast_enqueue(NULL, skb, qrtr_local_nid,
++				   QRTR_TYPE_DEL_CLIENT, &ipc->us, &to);
  	}
  
-+	if (cb->endpoint_id && test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags))
-+		put_cmsg(msg, SOL_QRTR, QRTR_ENDPOINT,
-+			 sizeof(cb->endpoint_id), &cb->endpoint_id);
-+
- 	rc = skb_copy_datagram_msg(skb, 0, msg, copied);
- 	if (rc < 0)
- 		goto out;
-@@ -1300,6 +1313,68 @@ static int qrtr_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 	return rc;
- }
+ 	if (port == QRTR_PORT_CTRL)
+@@ -950,6 +954,7 @@ static int qrtr_bind(struct socket *sock, struct sockaddr_unsized *saddr, int le
  
-+static int qrtr_setsockopt(struct socket *sock, int level, int optname,
-+			   sockptr_t optval, unsigned int optlen)
-+{
-+	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
-+	unsigned int val = 0;
-+	int rc = 0;
-+
-+	if (level != SOL_QRTR)
-+		return -ENOPROTOOPT;
-+
-+	if (optlen >= sizeof(val) &&
-+	    copy_from_sockptr(&val, optval, sizeof(val)))
-+		return -EFAULT;
-+
-+	switch (optname) {
-+	case QRTR_REPORT_ENDPOINT:
-+		assign_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags, val);
-+		break;
-+	default:
-+		rc = -ENOPROTOOPT;
-+	}
-+
-+	return rc;
-+}
-+
-+static int qrtr_getsockopt(struct socket *sock, int level, int optname,
-+			   char __user *optval, int __user *optlen)
-+{
-+	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
-+	unsigned int val;
-+	int len;
-+	int rc = 0;
-+
-+	if (level != SOL_QRTR)
-+		return -ENOPROTOOPT;
-+
-+	if (get_user(len, optlen))
-+		return -EFAULT;
-+
-+	if (len < sizeof(val))
-+		return -EINVAL;
-+
-+	switch (optname) {
-+	case QRTR_REPORT_ENDPOINT:
-+		val = test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags);
-+		break;
-+	default:
-+		rc = -ENOPROTOOPT;
-+	}
-+
-+	if (rc)
-+		return rc;
-+
-+	len = sizeof(int);
-+
-+	if (put_user(len, optlen) ||
-+	    copy_to_user(optval, &val, len))
-+		rc = -EFAULT;
-+
-+	return rc;
-+}
-+
- static int qrtr_release(struct socket *sock)
+ /* Queue packet to local peer socket. */
+ static int qrtr_local_enqueue(struct qrtr_node *node, struct sk_buff *skb,
++			      u32 endpoint_id,
+ 			      int type, struct sockaddr_qrtr *from,
+ 			      struct sockaddr_qrtr *to)
  {
- 	struct sock *sk = sock->sk;
-@@ -1347,6 +1422,8 @@ static const struct proto_ops qrtr_proto_ops = {
- 	.shutdown	= sock_no_shutdown,
- 	.release	= qrtr_release,
- 	.mmap		= sock_no_mmap,
-+	.setsockopt	= qrtr_setsockopt,
-+	.getsockopt	= qrtr_getsockopt,
- };
+@@ -967,6 +972,7 @@ static int qrtr_local_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+ 	cb = (struct qrtr_cb *)skb->cb;
+ 	cb->src_node = from->sq_node;
+ 	cb->src_port = from->sq_port;
++	cb->endpoint_id = endpoint_id;
  
- static struct proto qrtr_proto = {
+ 	if (sock_queue_rcv_skb(&ipc->sk, skb)) {
+ 		qrtr_port_put(ipc);
+@@ -981,6 +987,7 @@ static int qrtr_local_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+ 
+ /* Queue packet for broadcast. */
+ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
++			      u32 endpoint_id,
+ 			      int type, struct sockaddr_qrtr *from,
+ 			      struct sockaddr_qrtr *to)
+ {
+@@ -992,11 +999,11 @@ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+ 		if (!skbn)
+ 			break;
+ 		skb_set_owner_w(skbn, skb->sk);
+-		qrtr_node_enqueue(node, skbn, type, from, to);
++		qrtr_node_enqueue(node, skbn, endpoint_id, type, from, to);
+ 	}
+ 	mutex_unlock(&qrtr_node_lock);
+ 
+-	qrtr_local_enqueue(NULL, skb, type, from, to);
++	qrtr_local_enqueue(NULL, skb, endpoint_id, type, from, to);
+ 
+ 	return 0;
+ }
+@@ -1004,12 +1011,15 @@ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ {
+ 	DECLARE_SOCKADDR(struct sockaddr_qrtr *, addr, msg->msg_name);
+-	int (*enqueue_fn)(struct qrtr_node *, struct sk_buff *, int,
+-			  struct sockaddr_qrtr *, struct sockaddr_qrtr *);
++	int (*enqueue_fn)(struct qrtr_node *node, struct sk_buff *skb,
++			  u32 endpoint_id, int type,
++			  struct sockaddr_qrtr *from,
++			  struct sockaddr_qrtr *to);
+ 	__le32 qrtr_type = cpu_to_le32(QRTR_TYPE_DATA);
+ 	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
+ 	struct sock *sk = sock->sk;
+ 	struct qrtr_node *node;
++	u32 endpoint_id = qrtr_local_nid;
+ 	struct sk_buff *skb;
+ 	size_t plen;
+ 	u32 type;
+@@ -1093,7 +1103,7 @@ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ 	}
+ 
+ 	type = le32_to_cpu(qrtr_type);
+-	rc = enqueue_fn(node, skb, type, &ipc->us, addr);
++	rc = enqueue_fn(node, skb, endpoint_id, type, &ipc->us, addr);
+ 	if (rc >= 0)
+ 		rc = len;
+ 
+@@ -1127,7 +1137,8 @@ static int qrtr_send_resume_tx(struct qrtr_cb *cb)
+ 	pkt->client.node = cpu_to_le32(cb->dst_node);
+ 	pkt->client.port = cpu_to_le32(cb->dst_port);
+ 
+-	ret = qrtr_node_enqueue(node, skb, QRTR_TYPE_RESUME_TX, &local, &remote);
++	ret = qrtr_node_enqueue(node, skb, cb->endpoint_id,
++				QRTR_TYPE_RESUME_TX, &local, &remote);
+ 
+ 	qrtr_node_release(node);
+ 
 -- 
 2.34.1
 
