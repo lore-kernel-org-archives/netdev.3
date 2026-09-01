@@ -1,257 +1,489 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B44C476075
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523E44756C6;
+	Tue,  1 Sep 2026 09:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788253494; cv=none; b=P5sIDwUPxEkZgmuVDPYuilB7yIMbXJ8ADpu5IQpMTewtG+nyScjWmMIr5FFy+M6kj5EnKPqbaQ2uH98NlPEgr7C0r9eqP7W56ertEju4Vj9F7EKF5ddGKQlMiCr6cq3c1DOwtWSc8+hKN63+zaoTBhj0RXyaHsOBNpWBn21o7K8=
+	t=1788253506; cv=none; b=V11SXM3lUBgu04QsGpBEQhErWn3GqAxajiKto0vV43zIxqlMVK6CZWP7cFx9VJbt5RqLUC5glOwwISY7daoNK4anHpc7LEkr3F2LCqC7Ho8pD2uqoh7TMPeJL9tAQj/BhHTqISFytdN8dHt49BGGiMND5LF+dcyu0emE8FrFETg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788253494; c=relaxed/simple;
-	bh=aR05XSKkL3b3y4Zjj9QVy6cakyTIpzNdOUr+meAo6/g=;
+	s=arc-20240116; t=1788253506; c=relaxed/simple;
+	bh=1apKicgNeJwBbNYxwCIxIgOZ0YrTss/jXfuo/icvPgk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iNuNLCvE2IkYr9Vn2Ycxon/SuBIt2dJbtbpQ2DlajsO5SJe9ev4NcyiZcGfd57qOOtr1jiyjtRB4/D2amIxAWg7nj/grzqUjxKuM1afcbFwtt2Rt18gnQg0gKSry6b73zcWhqZN7LOzhz8L62JWAgZutrbMNjpMJShtj+Hrd3/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PbZNgYUe; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=P2UNoRUGdaF0XJMg8v6tQN3plMExl+Yyg0teX7k2YQTiMaELKvNu63W7SF0Bw1yX9tUQYOezOmQ7z3O9gATsxJ2AQtdbvMumgbzbRLFxOzy2at4tOLY2hPm5ylEnkXoMN//cWE7UZef2NXepMBelj4tAKnYx24Fkwp3HgMNfyuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FzGXZv8j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PbZNgYUe"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e041ea211so4293058a91.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 02:04:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788253492; x=1788858292; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rQqAf7khM3cl6pZ04M6I5XPDq13U9kFDsHdlwrXDb4E=;
-        b=PbZNgYUempJC4/ILvHlMOky/mwSoKjG9/WFNPjOLKQahDPcICQvzwd0DrOPzO4Xodi
-         ZREzYYxAdtOMYIxvq2a4riLZ2fhw3Rmd+UtBPxHo3y3WqiwSpQ7h3TDDMdbYkECoGR+2
-         jwIBJ2cXFh1cU30qhOOJTz7t1Id+n2jpPH2WrcfeflHH27pZ0aY/4D6ONhGnFK5RK7jO
-         GM/n0rnT8SimPnWIxv9VHL1kGc7gB9nqtKvoF/7s7SPuguxpGnuYPIWh82F+Ol06Xycp
-         zMIxqMNZ65YxycVR79GlJDoVVScSjCpR6RvRfnffm/z9wWXl7BW+6bDrwqQ6Sqtoztsz
-         5WwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788253492; x=1788858292;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rQqAf7khM3cl6pZ04M6I5XPDq13U9kFDsHdlwrXDb4E=;
-        b=IlxWtgXrqvrRB31yxfBKpXpVmjzbhyu6No19/haM5koa8qK3cRyVRoQllVD8A3j7/B
-         J8oY4wEaj/NmciowiLyLGsTF7UpzoAzI3Kzlxy3qcrvkQlVf8umaKhMOyZVlHbTyT/B4
-         dUgB+bKs6vxL0Zq13p2DuF7AVJD8EC2AiDPj44JRcCDdmm56C+208JQFeDqT8ramenHk
-         TdhW+Arzv5lUCL+jeJtFK1NSnaFlFNuy+Wp8zr+HP5Pm+yBuIStdENEOKXO7y9k4m2cz
-         0RAWUa0VHci8/F3//zPEZJyw2aDdn9P9P/AnDOrM2CfxA27N2FB51Cra8ZLh1caBjOFW
-         1u1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzbKZ9ogx0lnl1vfltJGH2l3/OQEZ7TN57gjpLwscUsFU1B1iJhc6SYDMUEzo6AbOMtyOPoP8M=@vger.kernel.org
-X-Gm-Message-State: AFuF++naThnI413IjOGDt7aZoiYK12rMpOSr10LF4na8vxVWAttn1nOv
-	UBnr7cCVBYrqcrCKCLYpP+jU8TnnAbL9at3C6VL5PTe01r5G+/A4mu5O
-X-Gm-Gg: AYBFou1SIIkCtZwu2pk6e764nBuF3kDadfYDyLzYFITWNiciRlXgvi7AwCpbwb87buX
-	pkFWvafljqk29whyJucrWgdYSwrDPEcq062qT+mhlUXTjK4wA3IJztGYARE9Gr0JDHyEK5SKVlq
-	rw343AcUJIhT6eudJ+HAnFPAnRsDmvdssS0JpNwL4fGAflYNRSP/ODjket+4itqKu2G16lfzP6R
-	XKUROku8L5QO1U/Wf4biZB8mWdZEYHm7BdFj2i2yhjhG5ezLEyaR6JmYpu45xaLyn0SP0jqy710
-	Otmq46lD721PyWb5xMn4YsvdoCKSWk5wijWHtRTcwSlZ6Vv//QSVQXwt+zj8XZvPyAsuPlMxOuO
-	Moc4pfZXdjtgKBJWH9aHc6X0i2PMQU4uBQCFe4SHulbwf/t2f883Bq6i0QHdwzgJTNtHAMsA6hu
-	yRRgFrh2017kai0oXNrYcQpOEHw4Hx0FskadgLn5Q3CrjkWaLgdUxvC83mIiz864G8UR+ynqVB3
-	6/PRdAl
-X-Received: by 2002:a17:90b:224d:b0:36d:9e0b:3801 with SMTP id 98e67ed59e1d1-39907b17a40mr9025465a91.8.1788253492086;
-        Tue, 01 Sep 2026 02:04:52 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d6d29de3sm6463240a91.2.2026.09.01.02.04.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 02:04:51 -0700 (PDT)
-Date: Tue, 1 Sep 2026 18:04:45 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, ncardwell@google.com, dsahern@kernel.org,
-	idosch@nvidia.com, kuniyu@google.com, horms@kernel.org,
-	willemb@google.com, andrew+netdev@lunn.ch, kees@kernel.org,
-	jiayuan.chen@linux.dev
-Cc: kerneljasonxing@gmail.com, ij@kernel.org, martin.lau@kernel.org,
-	shakeel.butt@linux.dev, matttbe@kernel.org, martineau@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v2 6/8] tcp: fix use-after-free in the lockless
- listener path
-Message-ID: <apaVLS6Srsa7SQhJ@v4bel>
-References: <20260824033331.1084971-1-imv4bel@gmail.com>
- <20260824033331.1084971-7-imv4bel@gmail.com>
- <apaAskNL-IvdcR7h@v4bel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FzGXZv8j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B78C1F000E9;
+	Tue,  1 Sep 2026 09:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788253504;
+	bh=/XMj8SB7gF2EzcHa4UQlSJcjIjR+l9jYO95LCw91uhs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FzGXZv8j3P4BqKRQXZ37BjqGQosZ4OaRTqzEC5znSXt7EUYIUgAOLCof/73jdGGA6
+	 kVC98QGDcYMKPvFV9y8pF3/HggS12Bo9AgkUhbpEoxKY5c6hDaqoI+MakeQkgPNHdn
+	 wOGSXlTyndyheuL3UOKbzXVjo7c/86ZBwYJ0A7wMCgtFcQzc8UvwpXyCFSyONY6CNz
+	 xfXkC6gSgrObCP0g+CXcrg9jqeG5ozqIfWwXTLaX+Xgi12C1oZ+u/mTL9pH6v1NiUd
+	 s5avXjsgaQ4949w+D2mJjuyE5yAPLzQtatODAEg6bJw9BBpZyJxkhUalepi2R5GhhE
+	 X7jZkxY/PAuLg==
+Date: Tue, 1 Sep 2026 11:05:02 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [PATCH net-next v15 12/12] net: airoha: add phylink support
+Message-ID: <apaVPm0HtTMQoB_o@lore-desk>
+References: <20260901083001.8044-1-ansuelsmth@gmail.com>
+ <20260901083001.8044-13-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="i6rpTGEmhUZoEfIr"
+Content-Disposition: inline
+In-Reply-To: <20260901083001.8044-13-ansuelsmth@gmail.com>
+
+--i6rpTGEmhUZoEfIr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apaAskNL-IvdcR7h@v4bel>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 01, 2026 at 04:37:22PM +0900, Hyunwoo Kim wrote:
-> On Mon, Aug 24, 2026 at 12:32:50PM +0900, Hyunwoo Kim wrote:
-> > tcp_v{4,6}_rcv() calls tcp_v{4,6}_do_rcv() without holding the socket
-> > lock when sk->sk_state is TCP_LISTEN. Every other path into
-> > tcp_v{4,6}_do_rcv() holds it.
-> > 
-> > tcp_v{4,6}_do_rcv() and tcp_rcv_state_process() below it read
-> > sk->sk_state again. A listener can leave TCP_LISTEN through
-> > connect(AF_UNSPEC), and if that happens in between, the second read
-> > returns a different state.
-> > 
-> > tcp_rcv_established() or tcp_rcv_state_process() then runs without the
-> > lock. If the second read returns TCP_SYN_SENT, the incoming SYN is
-> > treated as a crossed SYN and reaches tcp_send_synack(). When the SYN skb
-> > at the head of the retransmit queue is skb_cloned(), that function
-> > replaces it with a copy and releases the original with
-> > tcp_rtx_queue_unlink_and_free().
-> > 
-> > The original is the skb that a thread on another CPU is transmitting
-> > right now in __tcp_transmit_skb(). skb_cloned() is true because the
-> > clone made for that transmit is still alive. Once the transmit returns,
-> > tcp_update_skb_after_send() calls list_move_tail() on the skb's
-> > tcp_tsorted_anchor.
-> > 
-> > In short:
-> > 
-> >   socket(AF_INET) -> bind() -> listen()   // the socket that changes state
-> >   socket(AF_INET) -> bind() -> listen()   // the peer
-> > 
-> >   Several threads keep opening new sockets and connecting to the first
-> >   socket's address.
-> > 
-> >   Another thread repeats this on the first socket:
-> >     connect(AF_UNSPEC)      // TCP_LISTEN -> TCP_CLOSE
-> >     connect(peer address)   // TCP_CLOSE -> TCP_SYN_SENT
-> >                             // another CPU still sees a listener, handles
-> >                             // one of those SYNs without the lock and
-> >                             // releases the SYN skb that this connect()
-> >                             // is transmitting
-> >                             // -> use-after-free
-> >     connect(AF_UNSPEC)
-> >     listen()                // TCP_LISTEN again
-> > 
-> > KASAN log:
-> > 
-> >   BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0x14/0x140
-> >   Read of size 8 at addr ffff88800a5d1460 by task poc/125
-> >   ...
-> >   Call Trace:
-> >    __list_del_entry_valid_or_report+0x14/0x140
-> >    tcp_update_skb_after_send+0x62/0x170
-> >    __tcp_transmit_skb+0xe33/0x1e40
-> >    tcp_connect+0x1b67/0x2490
-> >    tcp_v4_connect+0x998/0xab0
-> >    __inet_stream_connect+0x22c/0x700
-> >    inet_stream_connect+0x48/0x70
-> >    __sys_connect+0x101/0x130
-> >   ...
-> >   Allocated by task 125:
-> >    __alloc_skb+0xd1/0x370
-> >    tcp_stream_alloc_skb+0x2d/0x2b0
-> >    tcp_connect+0x72d/0x2490
-> >    tcp_v4_connect+0x998/0xab0
-> >    __inet_stream_connect+0x22c/0x700
-> >    inet_stream_connect+0x48/0x70
-> >    __sys_connect+0x101/0x130
-> >   ...
-> >   The buggy address belongs to the object at ffff88800a5d1400
-> >    which belongs to the cache skbuff_fclone_cache of size 472
-> > 
-> > Instead of taking the lock, keep the lockless path from reading
-> > sk->sk_state again to decide how to process the packet. Move the
-> > TCP_LISTEN handling out of tcp_rcv_state_process() into
-> > tcp_rcv_listen_state_process(), and let the TCP_LISTEN branch of
-> > tcp_v{4,6}_rcv() call a new tcp_v{4,6}_rcv_listen(). Listener processing
-> > does not change. The TCP_LISTEN arm of tcp_v{4,6}_do_rcv() is left
-> > alone, because a socket can finish listen() after the state check and a
-> > backlogged skb is then processed there.
-> > 
-> > Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> 
-> Looking at this further, unhashing the listener and then calling
-> synchronize_net() lets the disconnect path handle it. MPTCP needs a fix
-> too, though, because it closes and reuses the first subflow directly
-> without going through tcp_disconnect().
+> Add phylink support for each GDM port. For GDM1 add the internal interface
+> mode as the only supported mode. For GDM2/3/4 add the required
+> configuration of the PCS to make the external PHY or attached SFP cage
+> work.
+>=20
+> These needs to be defined in the GDM port node using the pcs-handle
+> property.
+>=20
+> Update and provide a .get/set_link_ksettings function that use phylink
+> for ethtool OPs now that we fully support phylink.
+>=20
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-...and tcp_abort() needs a fix too.
+Just a nit inline. Anyway:
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b4237d0e994d6f..ce8e76052fe376 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -5139,6 +5139,9 @@ int tcp_abort(struct sock *sk, int err)
+> ---
+>  drivers/net/ethernet/airoha/Kconfig       |   2 +
+>  drivers/net/ethernet/airoha/airoha_eth.c  | 199 +++++++++++++++++++++-
+>  drivers/net/ethernet/airoha/airoha_eth.h  |   5 +
+>  drivers/net/ethernet/airoha/airoha_regs.h |  12 ++
+>  4 files changed, 215 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/Kconfig b/drivers/net/ethernet/a=
+iroha/Kconfig
+> index 1f6640a15fc9..5c54a07d2a76 100644
+> --- a/drivers/net/ethernet/airoha/Kconfig
+> +++ b/drivers/net/ethernet/airoha/Kconfig
+> @@ -20,6 +20,8 @@ config NET_AIROHA
+>  	depends on NET_DSA || !NET_DSA
+>  	select NET_AIROHA_NPU
+>  	select PAGE_POOL
+> +	select PCS_AIROHA
+> +	select PHYLINK
+>  	help
+>  	  This driver supports the gigabit ethernet MACs in the
+>  	  Airoha SoC family.
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 64619e9a704d..c3827bf9791b 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/of.h>
+>  #include <linux/of_net.h>
+>  #include <linux/of_reserved_mem.h>
+> +#include <linux/pcs/pcs.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/tcp.h>
+>  #include <linux/u64_stats_sync.h>
+> @@ -1915,10 +1916,18 @@ static int airoha_dev_open(struct net_device *net=
+dev)
+>  	struct airoha_qdma *qdma;
+>  	int err;
+> =20
+> +	err =3D phylink_of_phy_connect(dev->phylink, netdev->dev.of_node, 0);
+> +	if (err) {
+> +		netdev_err(netdev, "could not attach PHY: %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	phylink_start(dev->phylink);
+> +
+>  	netif_tx_start_all_queues(netdev);
+>  	err =3D airoha_set_vip_for_gdm_port(dev, true);
+>  	if (err)
+> -		return err;
+> +		goto err_phy_stop;
+> =20
+>  	qdma =3D airoha_qdma_deref(dev);
+>  	if (netdev_uses_dsa(netdev))
+> @@ -1938,6 +1947,13 @@ static int airoha_dev_open(struct net_device *netd=
+ev)
+>  				    pse_port);
+> =20
+>  	return 0;
+> +
+> +err_phy_stop:
+> +	netif_tx_stop_all_queues(netdev);
 
-        if (sk->sk_state == TCP_LISTEN) {
-                tcp_set_state(sk, TCP_CLOSE);
-+               /* TCP BPF iterators run with RCU read-side protection. */
-+               if (!has_current_bpf_ctx())
-+                       synchronize_net();
-                inet_csk_listen_stop(sk);
-        }
+nit: we do not need netif_tx_stop_all_queues() since if ndo_open() fails,
+     the stack will clear __LINK_STATE_START. Please fix it just if you nee=
+d to
+     repost.
 
-> 
-> This also closes the trigger path for patches 4, 5 and 8. I would still
-> keep those, since they add no work to the fast path and they remove the
-> root cause itself. Their changelogs would have to change though.
-> 
-> 
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index b4237d0e994d6f..ae6ab3b22beb53 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -3373,6 +3373,8 @@ int tcp_disconnect(struct sock *sk, int flags)
-> 
->  	/* ABORT function of RFC793 */
->  	if (old_state == TCP_LISTEN) {
-> +		/* Wait for lockless listener receive paths to finish. */
-> +		synchronize_net();
->  		inet_csk_listen_stop(sk);
->  	} else if (unlikely(tp->repair)) {
->  		WRITE_ONCE(sk->sk_err, ECONNABORTED);
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index b474d03620a75d..e41a5e1bf8dbf3 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -3432,7 +3432,7 @@ static __poll_t mptcp_check_readable(struct sock *sk)
->  	return mptcp_epollin_ready(sk) ? EPOLLIN | EPOLLRDNORM : 0;
+Regards,
+Lorenzo
+
+> +	phylink_stop(dev->phylink);
+> +	phylink_disconnect_phy(dev->phylink);
+> +
+> +	return err;
 >  }
-> 
-> -static void mptcp_check_listen_stop(struct sock *sk)
-> +static void mptcp_check_listen_stop(struct sock *sk, bool sync_net)
->  {
->  	struct sock *ssk;
-> 
-> @@ -3446,6 +3446,9 @@ static void mptcp_check_listen_stop(struct sock *sk)
-> 
->  	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
->  	tcp_set_state(ssk, TCP_CLOSE);
-> +	if (sync_net)
-> +		/* Wait for lockless listener receive paths to finish. */
-> +		synchronize_net();
->  	mptcp_subflow_queue_clean(sk, ssk);
->  	inet_csk_listen_stop(ssk);
->  	mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
-> @@ -3462,7 +3465,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
->  	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
-> 
->  	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)) {
-> -		mptcp_check_listen_stop(sk);
-> +		mptcp_check_listen_stop(sk, false);
->  		mptcp_set_state(sk, TCP_CLOSE);
->  		goto cleanup;
->  	}
-> @@ -3593,7 +3596,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
->  	if (msk->fastopening)
->  		return -EBUSY;
-> 
-> -	mptcp_check_listen_stop(sk);
-> +	mptcp_check_listen_stop(sk, true);
->  	mptcp_set_state(sk, TCP_CLOSE);
-> 
->  	mptcp_stop_rtx_timer(sk);
-> 
-> 
-> Best regards,
-> Hyunwoo Kim
+> =20
+>  static int airoha_dev_stop(struct net_device *netdev)
+> @@ -1945,6 +1961,8 @@ static int airoha_dev_stop(struct net_device *netde=
+v)
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+>  	struct airoha_gdm_port *port =3D dev->port;
+> =20
+> +	phylink_stop(dev->phylink);
+> +
+>  	netif_tx_disable(netdev);
+>  	airoha_set_vip_for_gdm_port(dev, false);
+> =20
+> @@ -1954,6 +1972,9 @@ static int airoha_dev_stop(struct net_device *netde=
+v)
+>  		airoha_set_gdm_port_fwd_cfg(dev->eth,
+>  					    REG_GDM_FWD_CFG(port->id),
+>  					    FE_PSE_PORT_DROP);
+> +
+> +	phylink_disconnect_phy(dev->phylink);
+> +
+>  	return 0;
+>  }
+> =20
+> @@ -2509,6 +2530,24 @@ airoha_ethtool_get_rmon_stats(struct net_device *n=
+etdev,
+>  	} while (u64_stats_fetch_retry(&dev->stats.syncp, start));
+>  }
+> =20
+> +static int
+> +airoha_ethtool_get_link_ksettings(struct net_device *netdev,
+> +				  struct ethtool_link_ksettings *cmd)
+> +{
+> +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> +
+> +	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
+> +}
+> +
+> +static int
+> +airoha_ethtool_set_link_ksettings(struct net_device *netdev,
+> +				  const struct ethtool_link_ksettings *cmd)
+> +{
+> +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> +
+> +	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
+> +}
+> +
+>  static int airoha_qdma_set_chan_tx_sched(struct net_device *netdev,
+>  					 int channel, enum tx_sched_mode mode,
+>  					 const u16 *weights, u8 n_weights)
+> @@ -3353,7 +3392,8 @@ static const struct ethtool_ops airoha_ethtool_ops =
+=3D {
+>  	.get_drvinfo		=3D airoha_ethtool_get_drvinfo,
+>  	.get_eth_mac_stats      =3D airoha_ethtool_get_mac_stats,
+>  	.get_rmon_stats		=3D airoha_ethtool_get_rmon_stats,
+> -	.get_link_ksettings	=3D phy_ethtool_get_link_ksettings,
+> +	.get_link_ksettings	=3D airoha_ethtool_get_link_ksettings,
+> +	.set_link_ksettings	=3D airoha_ethtool_set_link_ksettings,
+>  	.get_link		=3D ethtool_op_get_link,
+>  };
+> =20
+> @@ -3409,6 +3449,155 @@ bool airoha_is_valid_gdm_dev(struct airoha_eth *e=
+th,
+>  	return false;
+>  }
+> =20
+> +/* Nothing to do in MAC, everything is handled in PCS */
+> +static void airoha_mac_config(struct phylink_config *config, unsigned in=
+t mode,
+> +			      const struct phylink_link_state *state)
+> +{
+> +}
+> +
+> +static void airoha_mac_link_up(struct phylink_config *config, struct phy=
+_device *phy,
+> +			       unsigned int mode, phy_interface_t interface,
+> +			       int speed, int duplex, bool tx_pause, bool rx_pause)
+> +{
+> +	struct airoha_gdm_dev *dev =3D container_of(config, struct airoha_gdm_d=
+ev,
+> +						  phylink_config);
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct airoha_eth *eth =3D dev->eth;
+> +	u32 frag_size_tx, frag_size_rx;
+> +
+> +	/* TX/RX frag is configured only for GDM4 */
+> +	if (port->id !=3D AIROHA_GDM4_IDX)
+> +		return;
+> +
+> +	switch (speed) {
+> +	case SPEED_10000:
+> +	case SPEED_5000:
+> +		frag_size_tx =3D 8;
+> +		frag_size_rx =3D 8;
+> +		break;
+> +	case SPEED_2500:
+> +		frag_size_tx =3D 2;
+> +		frag_size_rx =3D 1;
+> +		break;
+> +	default:
+> +		frag_size_tx =3D 1;
+> +		frag_size_rx =3D 0;
+> +		break;
+> +	}
+> +
+> +	mutex_lock(&port->link_lock);
+> +
+> +	/* Configure TX/RX frag based on speed */
+> +	if (dev->nbq =3D=3D 1) {
+> +		airoha_fe_rmw(eth, REG_FE_GDM4_TMBI_FRAG,
+> +			      GDM4_SGMII1_TX_FRAG_SIZE_MASK,
+> +			      FIELD_PREP(GDM4_SGMII1_TX_FRAG_SIZE_MASK,
+> +					 frag_size_tx));
+> +
+> +		airoha_fe_rmw(eth, REG_FE_GDM4_RMBI_FRAG,
+> +			      GDM4_SGMII1_RX_FRAG_SIZE_MASK,
+> +			      FIELD_PREP(GDM4_SGMII1_RX_FRAG_SIZE_MASK,
+> +					 frag_size_rx));
+> +	} else {
+> +		airoha_fe_rmw(eth, REG_FE_GDM4_TMBI_FRAG,
+> +			      GDM4_SGMII0_TX_FRAG_SIZE_MASK,
+> +			      FIELD_PREP(GDM4_SGMII0_TX_FRAG_SIZE_MASK,
+> +					 frag_size_tx));
+> +
+> +		airoha_fe_rmw(eth, REG_FE_GDM4_RMBI_FRAG,
+> +			      GDM4_SGMII0_RX_FRAG_SIZE_MASK,
+> +			      FIELD_PREP(GDM4_SGMII0_RX_FRAG_SIZE_MASK,
+> +					 frag_size_rx));
+> +	}
+> +
+> +	mutex_unlock(&port->link_lock);
+> +}
+> +
+> +/* Nothing to do in MAC, everything is handled in PCS */
+> +static void airoha_mac_link_down(struct phylink_config *config, unsigned=
+ int mode,
+> +				 phy_interface_t interface)
+> +{
+> +}
+> +
+> +static const struct phylink_mac_ops airoha_phylink_ops =3D {
+> +	.mac_config =3D airoha_mac_config,
+> +	.mac_link_up =3D airoha_mac_link_up,
+> +	.mac_link_down =3D airoha_mac_link_down,
+> +};
+> +
+> +static int airoha_fill_available_pcs(struct phylink_config *config,
+> +				     struct phylink_pcs **available_pcs,
+> +				     unsigned int num_possible_pcs)
+> +{
+> +	struct device *dev =3D config->dev;
+> +
+> +	return fwnode_phylink_pcs_parse(dev_fwnode(dev), available_pcs,
+> +					num_possible_pcs);
+> +}
+> +
+> +static int airoha_setup_phylink(struct net_device *netdev)
+> +{
+> +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> +	struct device_node *np =3D netdev->dev.of_node;
+> +	struct airoha_gdm_port *port =3D dev->port;
+> +	struct phylink_config *config;
+> +	phy_interface_t phy_mode;
+> +	struct phylink *phylink;
+> +	int err;
+> +
+> +	err =3D of_get_phy_mode(np, &phy_mode);
+> +	if (err) {
+> +		dev_err(&netdev->dev, "incorrect phy-mode\n");
+> +		return err;
+> +	}
+> +
+> +	config =3D &dev->phylink_config;
+> +	config->dev =3D &netdev->dev;
+> +	config->type =3D PHYLINK_NETDEV;
+> +
+> +	/*
+> +	 * GDM1 only supports internal for Embedded Switch
+> +	 * and doesn't require a PCS.
+> +	 */
+> +	if (port->id =3D=3D AIROHA_GDM1_IDX) {
+> +		config->mac_capabilities =3D MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> +					   MAC_10000FD;
+> +
+> +		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
+> +			  config->supported_interfaces);
+> +	} else {
+> +		config->mac_capabilities =3D MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> +					   MAC_10 | MAC_100 | MAC_1000 |
+> +					   MAC_2500FD | MAC_5000FD | MAC_10000FD;
+> +
+> +		config->num_possible_pcs =3D fwnode_phylink_pcs_count(dev_fwnode(confi=
+g->dev));
+> +		config->fill_available_pcs =3D airoha_fill_available_pcs;
+> +
+> +		__set_bit(PHY_INTERFACE_MODE_SGMII,
+> +			  config->supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> +			  config->supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> +			  config->supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_10GBASER,
+> +			  config->supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_USXGMII,
+> +			  config->supported_interfaces);
+> +
+> +		phy_interface_copy(config->pcs_interfaces,
+> +				   config->supported_interfaces);
+> +	}
+> +
+> +	phylink =3D phylink_create(config, of_fwnode_handle(np),
+> +				 phy_mode, &airoha_phylink_ops);
+> +	if (IS_ERR(phylink))
+> +		return PTR_ERR(phylink);
+> +
+> +	dev->phylink =3D phylink;
+> +
+> +	return 0;
+> +}
+> +
+>  static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+>  				   struct airoha_gdm_port *port,
+>  				   int nbq, struct device_node *np)
+> @@ -3474,7 +3663,7 @@ static int airoha_alloc_gdm_device(struct airoha_et=
+h *eth,
+>  	dev->nbq =3D nbq;
+>  	port->devs[index] =3D dev;
+> =20
+> -	return 0;
+> +	return airoha_setup_phylink(netdev);
+>  }
+> =20
+>  static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+> @@ -3510,6 +3699,7 @@ static int airoha_alloc_gdm_port(struct airoha_eth =
+*eth,
+> =20
+>  	port->id =3D id;
+>  	spin_lock_init(&port->stats_lock);
+> +	mutex_init(&port->link_lock);
+>  	eth->ports[p] =3D port;
+> =20
+>  	err =3D airoha_metadata_dst_alloc(port);
+> @@ -3706,6 +3896,8 @@ static int airoha_probe(struct platform_device *pde=
+v)
+>  			netdev =3D netdev_from_priv(dev);
+>  			if (netdev->reg_state =3D=3D NETREG_REGISTERED)
+>  				unregister_netdev(netdev);
+> +			if (dev->phylink)
+> +				phylink_destroy(dev->phylink);
+>  			of_node_put(netdev->dev.of_node);
+>  		}
+>  		airoha_metadata_dst_free(port);
+> @@ -3744,6 +3936,7 @@ static void airoha_remove(struct platform_device *p=
+dev)
+> =20
+>  			netdev =3D netdev_from_priv(dev);
+>  			unregister_netdev(netdev);
+> +			phylink_destroy(dev->phylink);
+>  			of_node_put(netdev->dev.of_node);
+>  		}
+>  		airoha_metadata_dst_free(port);
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index fa9a8edce22f..83daec003257 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -595,6 +595,9 @@ struct airoha_gdm_dev {
+>  	 * QDMA migration.
+>  	 */
+>  	spinlock_t txq_lock[AIROHA_NUM_NETDEV_TX_RINGS];
+> +
+> +	struct phylink *phylink;
+> +	struct phylink_config phylink_config;
+>  };
+> =20
+>  struct airoha_gdm_port {
+> @@ -604,6 +607,8 @@ struct airoha_gdm_port {
+> =20
+>  	/* protect concurrent hw_stats accesses */
+>  	spinlock_t stats_lock;
+> +	/* protect concurrent GDM4 register access */
+> +	struct mutex link_lock;
+> =20
+>  	struct metadata_dst *dsa_meta[AIROHA_MAX_DSA_PORTS];
+>  };
+> diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethe=
+rnet/airoha/airoha_regs.h
+> index 442b48c9b991..4ea89057b560 100644
+> --- a/drivers/net/ethernet/airoha/airoha_regs.h
+> +++ b/drivers/net/ethernet/airoha/airoha_regs.h
+> @@ -357,6 +357,18 @@
+>  #define IP_FRAGMENT_PORT_MASK		GENMASK(8, 5)
+>  #define IP_FRAGMENT_NBQ_MASK		GENMASK(4, 0)
+> =20
+> +#define REG_FE_GDM4_TMBI_FRAG		0x2028
+> +#define GDM4_SGMII1_TX_WEIGHT_MASK	GENMASK(31, 26)
+> +#define GDM4_SGMII1_TX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> +#define GDM4_SGMII0_TX_WEIGHT_MASK	GENMASK(15, 10)
+> +#define GDM4_SGMII0_TX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> +
+> +#define REG_FE_GDM4_RMBI_FRAG		0x202c
+> +#define GDM4_SGMII1_RX_WEIGHT_MASK	GENMASK(31, 26)
+> +#define GDM4_SGMII1_RX_FRAG_SIZE_MASK	GENMASK(25, 16)
+> +#define GDM4_SGMII0_RX_WEIGHT_MASK	GENMASK(15, 10)
+> +#define GDM4_SGMII0_RX_FRAG_SIZE_MASK	GENMASK(9, 0)
+> +
+>  #define REG_MC_VLAN_EN			0x2100
+>  #define MC_VLAN_EN_MASK			BIT(0)
+> =20
+> --=20
+> 2.53.0
+>=20
+
+--i6rpTGEmhUZoEfIr
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCapaVPgAKCRA6cBh0uS2t
+rBVQAQCmjTLkJUdTbYTkUnn1MmLnK6T/b/g0Oc0cPGNFOJfepwEAgsyqen1FSjft
+sznuegT+i6FACzC7OAMI680COfjUBgg=
+=YjnW
+-----END PGP SIGNATURE-----
+
+--i6rpTGEmhUZoEfIr--
