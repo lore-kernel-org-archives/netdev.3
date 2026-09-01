@@ -1,142 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9613AC0FD
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B874756D4
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788264613; cv=none; b=M7pdPGoqnGboYcxu9CRr3bQrBsZWVyb+Q6hW0MZcus7swxF61SLS8uZ/jOJS+VEdkeGZqQTfZiI8qAdrVVinGWQ/EbU96LnnXkcioxrw2O/c2fbQ4sgLw75E75IhczSMCO5szjLdVBbkzxJ21MZefXzfOYZH4pqZoCCTJruspX4=
+	t=1788265124; cv=none; b=uCrEZ+RAuJxxa76ah9RuWqlFyOkDk2Ws4kRdy58jLzwOPLEcA5OHfjC3IZL7IpPo9d6yq13YoKl2HCJuhZ4BOo95GWV9TQsEhRZ8qFUvKI4NVcymysOVJyD7WMYZ/k5QYpeOWMKv+YjzJFSuVL3ZXROnxgyUYVh4+8N3fJmcJlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788264613; c=relaxed/simple;
-	bh=pUAQhpIylhH03veS5v2pJ5187OFtExWloOWxSlrMTWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Riw8njPDiSYzaEigcYyS5KrrnkrdjRbnBZM/DLheowRIX7G+JwNjgprzTeaD24V7QDVy+Xtt69oLS0oNiT3lTckyVeYaq9zEgtah795D4NZjnjo+K41xX0kN9eEKdVrhbZWyqMDX+hilAxRwMFueCeJCFurjYQEjcdkwJ98m71Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L0WL+qMs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MlypWCcK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788265124; c=relaxed/simple;
+	bh=qW1HlWkiOh12WtBJNB4SoIzKTvcqx/5szKKI3A5OMMg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iN701rQMh7QR2vFqoE891oerJGZAe5ZkPaJcwG/p7p+cLFJ6d/ven6I2KFH7eGPvt/kj/DKPiqNnfaHZ8Pu1Vi6DYXGhl4fTKs8iD5SzqoxHgyz5r4mwO0T9noPPCalKx854QGcA8Erl/fI7QgO3CdtJi6oYKyYMtFHM6FTd4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmMov3ZT; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L0WL+qMs";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MlypWCcK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788264611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8fwOGFXieQl813ckc/IUkjGRGe4UDJCJhqZtMy1/kp8=;
-	b=L0WL+qMs21h4npjxV39ddsGKirXhBC2Cl/FZGOJIh/G5FNwtWwU95SHLrPTnhGFSJ8HsI5
-	besD1hBDa6xLZ3wpkGDuLqMLFferqTRwhMiy5aYqJkNa1o4rVlYTsg3deFRy9asVXwNi+X
-	u0DP9Jb7LNrfdvNDT3kv4xhZhkG7ngs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-TJ0WPoW5PiWk94PH_69Qug-1; Tue, 01 Sept 2026 08:10:08 -0400
-X-MC-Unique: TJ0WPoW5PiWk94PH_69Qug-1
-X-Mimecast-MFC-AGG-ID: TJ0WPoW5PiWk94PH_69Qug_1788264607
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-482f763db88so2573555f8f.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:10:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmMov3ZT"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4957eefd361so6505355e9.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:18:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788264607; x=1788869407; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8fwOGFXieQl813ckc/IUkjGRGe4UDJCJhqZtMy1/kp8=;
-        b=MlypWCcKSfGjZY9Eqt5KulJUqs2foa19Ey6tTuqKHzbs+XTIrn6Kff89D6VhhxGpwx
-         Pk+QaqxVW2hC/fK5ecRMrEC21EERvDF4Ah8c6IElLrmyTz0lYXuNYIkze1t+xHojUZ1q
-         UtgcDDEMTtEmutpZKssgUNSjrDU6dG42m/2PnUaJEMCXDo444Z0+SwccPKAFdp80Lu9G
-         +hnraQ4ZPgwgBep6EPjPnoxYv5gg5THpqr6GO1FXat17cBgpfCub+dF4Fj78sfeZvRl3
-         BFLNhNO7qPAPnAACXnfrZ6iO79oKZsBHFt3EP1d1XX1btxpP5qVQ9D+a7XmqlzxAmGNI
-         OnRA==
+        d=gmail.com; s=20251104; t=1788265121; x=1788869921; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=07yu7OM3o+Uy1/uNfXCagmF0K1rKdP2PBdLVsuiyQAY=;
+        b=CmMov3ZTjRs97mVGVc9iquLr4HNrjx62amAkHwHQV7dJvCAL3IUwU14rWEW0b3FM6p
+         PPzcTBm74kCLQkdGkcqDbhfHOA4ZaW27gOATjmSOoHrbhEWJe9bEVIHG43tbbiguF/+B
+         PATEzEXyziJrhinG/67UvjERQRn5rB70uAfQ4eyR66VbJupCGnVqz0qFazdIcvGUX94Q
+         U8yKBQobV4BAmX1ASPyptemY9plmMGc+V531bDh3/N0FGHMbY8ZS9pdPH1NhW5kdV0a9
+         3c8lKHc2NYa4BOMir8gQRh+mXASx9W5ImpaPfmJjVvwSZ0/zZV+536criacceJ48g43Z
+         RPGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788264607; x=1788869407;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8fwOGFXieQl813ckc/IUkjGRGe4UDJCJhqZtMy1/kp8=;
-        b=CZOLOdaidEdr33gwOi9aRZPdoNz4C+Og/vor2CCAmREol61sXFyuzKfLDiJzMPjkEx
-         7jMd7ET9/bAkadtkcGOZLpbTqbkBJKIwf9su5cLCEWUXQhIeyERfq2L/dk3usP+X/zhU
-         GBcysP725FXYP0vxRLp2re3uOCTufEckBWDekxHgF3ymIV2JbXtRoiToh1E0c2Hu7YXt
-         6Gyln48vMk7eQFucf9/zX7vrmpkDMVDjHfFbaGoPHrCPF6Aamaha7Pxahy51rKWr/NRX
-         85fgAD9J6v+qKRL+cMKRNU0vXplOnjxnqaxYbFGD2oVhyfYN6Q4WcVJn79Xa/YeRoGxM
-         L1sA==
-X-Forwarded-Encrypted: i=1; AKwUvByDbDjokV4DiedLykDwoW2cFEdCEFjaeNk9IvUOZZaTIaJYEnHjhkVCFFVqgd0a0KDAQcM8/bY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kqYJl5efPnL67DJt5jDh7ZQcwIot322vkUBxx7vh8YYGiirxGp
-	tudwzDBjfmf2KfGPTqN9gsSYN42js4exytTE9/L3V9psFBPJ+NPciE4a6gkBfNFdjSdmHNV9xaW
-	pYKlu18xyVZBkTEBBVCd99codHQy7w6WvtcuDgIhMFicO8rPeA2j83QFZZKbsnyK99g==
-X-Gm-Gg: AYBFou2XRHCuZGf+pzofvdF52KFHCLK8h2hz+p7/N11hmUlpq4EkBY/m60m604WAoOu
-	VmUjTGgW16CfdDXrw3AGA9InrxgxmensV7mJcltkIsb32jLU2MXsmtW1Z1vA3mJ9Ce3Yjgp5iJw
-	TQDowfwrvx/wGOuqOtdbG30fsX+DH9Z2IzJkC4vXYsH0fX1TLG13T8oWrnbqb1aHpukUYeMcCAq
-	bZ/syNIqASbu9+Vsex9AwQIr6imjCbwHXxOAcgMLbSWOtIFyHtV1N+hbU1RMp5D9pRIUK+oiJg1
-	hhyYGm1hyFp2NK6zuS63MWMV1OU3ln+GHhbkv9qWHsqMldlJ3ekdevaYueOUI3wuyBs1pEv582J
-	cB0pyDDgp0AhhVbFU6BUaEJ73UI6XCQD+pFZBo0x1vDpXa/fK/NCe1MqQoiSHakFAkkokcM0fUg
-	==
-X-Received: by 2002:a05:6000:1ac5:b0:484:3785:210e with SMTP id ffacd0b85a97d-4844103cd55mr13006994f8f.25.1788264607266;
-        Tue, 01 Sep 2026 05:10:07 -0700 (PDT)
-X-Received: by 2002:a05:6000:1ac5:b0:484:3785:210e with SMTP id ffacd0b85a97d-4844103cd55mr13006886f8f.25.1788264606789;
-        Tue, 01 Sep 2026 05:10:06 -0700 (PDT)
-Received: from [192.168.188.218] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d36e9csm4881021f8f.3.2026.09.01.05.10.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 05:10:05 -0700 (PDT)
-Message-ID: <b8b6db7b-353d-4d6a-b0b6-3b5e1be22008@redhat.com>
-Date: Tue, 1 Sep 2026 14:10:04 +0200
+        d=1e100.net; s=20251104; t=1788265121; x=1788869921;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=07yu7OM3o+Uy1/uNfXCagmF0K1rKdP2PBdLVsuiyQAY=;
+        b=hZMiZQDk/BOr3P7ciwdnlk7E8oJjcWelsI7WNZ3klHjSrJsHZsuEPvNmDfEa1TVtHg
+         4I56YydEOEvaVv3iF1AflfVr8m9SZMp2ivFBquNlq7ar7RqTuntxXVnxO/zRcdSn687T
+         DJvS9wnEZux4hhixQ0q+ld/NRKxIGbxJTWmXvDRhl6KZmnqV1n+ZiIREiZpxJjisBtLh
+         enSjMP4Y4In50SN6BZfSt7D1cv02LCVTv9seswoc/ApZSH650DXXPjVIHgEsAGTxTRXB
+         brNVqDNIKd1O1VFPvrv7yj0SP4r1Us5wjgEk45XM0Z1hZ0imRrg0dIpZMe7tORRiSJxm
+         yG8g==
+X-Forwarded-Encrypted: i=1; AHgh+RprBRrmKuhn3reOTKqOfjNjkubN7xeB0VzhGYj0MRs7/kwMG+3VKy9pMxTciCG+wVRsyAJ2yyg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kXSgkzpGDOLuSdZrjKyPXm/3rfhdti6GunP/Dcc3c+Wl6dLBCQ
+	icsafGrfxiS9/tiZfVmfFg40Qu89Zoy2JFLQ15sI+QCJuKQqiYLL4PDO
+X-Gm-Gg: AR+sD11h2h/e+4aORZtt6vjVJ+lgEt+sObI+6ugsJR1OI2V5AdprI+E7lgwCe6LeqAV
+	/3Ja9bTg1CkwkQZa2/aNgCdaTWS0JfO3PgNfWdvSbkoO/Uz9hhuEPHXwO99BD2mbgGprV9pAKZ1
+	YtzMEVnevGfJ5NbpdQdEbtgIL14KFA54DuxbQ1RotNf/PzNAox8bFEjBE25Pseuf8l7MIrctkKj
+	etkE6WdsSD/39DraOyDviYLubcANeF06O0LHUBVC7kOK4ZUupV/4Dh0hx2gML7noHOIe9MOT3WM
+	E2uYWd6XmK3esU2VnzHfhVW5gE5R3jlGbFYiUW1WhANYEBpD0MLoRv21HknVZW8egvMxCEWAIOp
+	hFCL/EQKYL6D61KjBpou0/yQMbDFnFZviKIdYPkL+Safi7A9Cn2sgAIJy8hc4vuhF8M409JHnAe
+	KcPgp5aE4v22La4lR+3sIbm6ZkXkvR0QIpJG8jt4DNdsSd5mhz2JGSDquXZ04CungwpcYM
+X-Received: by 2002:a05:600c:a00d:b0:49c:e1ed:26b1 with SMTP id 5b1f17b1804b1-49ce1ed26eamr30445615e9.16.1788265118063;
+        Tue, 01 Sep 2026 05:18:38 -0700 (PDT)
+Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce44ea9sm60262685e9.14.2026.09.01.05.18.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 05:18:37 -0700 (PDT)
+Date: Tue, 1 Sep 2026 12:29:15 +0000
+From: Anton Protopopov <a.s.protopopov@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>,
+	netdev <netdev@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH bpf-next 0/7] Add new way to add BPF LSM hooks
+Message-ID: <apbFG4WKaZNsURo8@mail.gmail.com>
+References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
+ <20260831153456.5a7d6937@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] bnxt_en: Bound SW TPA IDs to prevent crashes
-To: Joe Damato <joe@dama.to>, netdev@vger.kernel.org,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
- Rukhsana Ansari <rukhsana.ansari@broadcom.com>, horms@kernel.org,
- colin.winegarden@broadcom.com, linux-kernel@vger.kernel.org,
- raphaelcf@meta.com, stable@vger.kernel.org, llvm@lists.linux.dev
-References: <20260828190900.1767611-1-joe@dama.to>
- <1c87458d-7d76-4da4-9981-51756cef391b@redhat.com>
- <apa9qofhuatqGTra@devvm20253.cco0.facebook.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <apa9qofhuatqGTra@devvm20253.cco0.facebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831153456.5a7d6937@kernel.org>
 
-On 9/1/26 1:57 PM, Joe Damato wrote:
-> On Tue, Sep 01, 2026 at 10:16:54AM +0200, Paolo Abeni wrote:
->> On 8/28/26 9:08 PM, Joe Damato wrote:
->>>   - Moved bp->max_tpa_roundup_size init out of the early return path and
->>>     documented that TPA is unsupported there, as suggested by Michael.
->>
->> Clashiko quite convincingly elaborates that the above is not enough:
->>
->> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828190900.1767611-1-joe%40dama.to
->>
->> Could you please have a look?
-[...]
-> 3.) "The new assignment sits after the max_tpa_v2 == 0 early return, so on a P5+
-> device whose firmware reports max_aggs_supported == 0, does
-> bp->max_tpa_roundup_size stay 0 while BNXT_FLAG_TPA is set? ..."
+On 26/08/31 03:34PM, Jakub Kicinski wrote:
+> On Mon, 31 Aug 2026 11:09:25 +0000 Anton Protopopov wrote:
+> > The BPF LSM programs are allowed to attach to LSM hooks. This enables
+> > operators to mitigate known bugs without a need to reboot or livepatch
+> > machines.  BPF has shown very useful to create such runtime policies.
+> > However, many APIs and parts of kernel aren't covered by existing LSM
+> > hooks and this would be beneficial to extend the coverage.
 > 
-> Michael commented in the v3 that this is a false positive, hence why I changed
-> the code from what it was in the v3 to this.
+> Dunno. Do you have any reason to believe that any of the CVEs your LLM
+> gathered for you here are actually getting exploited? Spot checking 
+> a few they seem to be mostly driver bugs. What security model do you
+> have in mind? Untrusted/malicious users with physical NIC access?
 
-This is the comment I referred to.
+For the untrusted part, here are some existing examples:
 
-AFAICS the problem is that the driver sets
+  * old untrusted bugs: CVE-2022-50651, CVE-2025-40255
+  * "namespace CAP_NET_ADMIN" bugs: CVE-2024-43836, CVE-2025-21921
 
-	bp->dev->hw_features |= NETIF_F_LRO;
+Also, the recent copy-fail is a stronger example (though not generic
+netlink-related).
 
-regardless of the supported capabilities, and that seams to disagree
-with Michael.
+The general idea is that we gate the common de-multiplexors such that
+not only known bugs, but mainly those which will appear in future are
+covered. Rough numbers for coverage: around 5% of known cves are
+covered with existing LSM hooks. Another ~5-7% can be covered if we
+add netlink-related hooks [this series + net/sched, nftables,
+rtnetlink, others smaller]. So, statistically, we know where
+bugs had appeared in the past, so we can "predict" where new
+will appear. Some of them might be severe, so this would be
+good to have hooks in place to be able to "mitigate" them.
 
-/P
-
+Just in case, to test this patch locally, I've found around 10 new
+ethtool-related bug candidates. I've sent a fix to one, d09c98a6da21
+("virtio_net: Fix resize of the RX ring"), which was easy to
+reproduce in a VM. Others require specific hardware, though popular,
+so I can try to reproduce some, and was planning to do this later.
+Of those findings one is unprivileged, it triggers a OOB read.
