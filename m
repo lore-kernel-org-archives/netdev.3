@@ -1,173 +1,140 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C75F38399A
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F0536B906
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788271798; cv=none; b=X7jFo8qeYOcbAdNXrx+aWdhvtp4yxjGTEoLGLLSjB+FBswH8msr4dU19kyMkPe1H/3ZHhMpZstvLBDI0/uWlFhsxqg62nJv2ZUt0vFrTakVUu/t0xG9lAy1jySmgsqAtMycVz0Z11vIY5x5L3bKG0o8YIdlFA2wt2+DA9Kz5xOw=
+	t=1788271865; cv=none; b=WeF6qe3UxXm6F6V5f9hW+yKy+/fHt6m0kZZ5ARYYKv55yv8Rh20jZohBVqcjFS66XvH3kM8VXuVwAfdJgd9HYtIjZxtUCKUwhYJICC3ID+nHThqNEYhAKRwXYkkrSihsIbi/KCBvwOnzL3WERmYvJXTtYBRLrXLcQN6ubsxPd9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788271798; c=relaxed/simple;
-	bh=UprTbNUUvXH99g2NCx2ct2QD9UMqg+J0yXIvULzVEkw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tQjDLwHr3Kafd9htEnT3GNoHkfUKfQMbfXio4/y4mc7oz9pxJ27O/Bsy5OYCvOGZTM1atHKeD9sKwJr9pfURdqg5PNTQiKVfHyyUMFvTADDL+ZhHSuvwNTsefmNAt9Bu6VM0eGg9IKP5OxUcg+/FA+igNbaiR8JA0zOSLk0m1uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=mgV5xqH+; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net
+	s=arc-20240116; t=1788271865; c=relaxed/simple;
+	bh=wmPMHC1jQw44i1T64FaGGEqSLUNX3bHOWA29+TTe87Q=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=IEU42FgGrL41KlHGMyySMo4PFxZXrJZ0dK9cE2Pdpa2YxJH10zra3zZvbz+HBiEacmXrm2ZPixQoT/EslkA4vZAuv4LRjgTb2cs0HN1+Q9xg7u2gv75G2gavM4o61KiWwbEyASnx9euLJRlPWZsG6NEyN+hPY28Hx4KASI/PP44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jv2gXnRK; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="mgV5xqH+"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7ee37dc91f5so2729291a34.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:09:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jv2gXnRK"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-81f3b227a4aso12200797b3.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788271862; x=1788876662; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HxeaBvDlKAqKYcHDBk+Xfrsk7n+I0JQxkCoAoHuqNkY=;
+        b=jv2gXnRKtv8Efll3v+KfvtOq3NaHFg4BnQuJSuvHAuQW8fWCDYZvy2kEcVx4hy3+4u
+         1RPLIMQMjJqC4XdoU7IstCiIX13+zXOkvUNSbHIkpeBYq5r0Zl2JgTUCMAb6TUUH1J/h
+         82BmbnpcD2FOpVJHJ2Lv4M6apGuRbGi11dM/xD/sDuGLnQAnufUCPIB6163Su4cGTuZ+
+         dVnBGfP8Hy+QlLaHYAVG9L15iypGZDQqkRhlG0RJrlhV/jwvUtdHvYHDZjX+McN0qyPF
+         xnYrCc8IccL4PYEmRCYMCc266ZJsaeMoy+6ldsUkglaKFG8JoIpOEI5Ny+5cm+wgpZmx
+         eivA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788271793; x=1788876593;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:dkim-signature:x-gm-gg
+        d=1e100.net; s=20251104; t=1788271862; x=1788876662;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=klux3Px16MgfpuFL4Thl1laPfvZCFrqMR76ZeHwaoNE=;
-        b=dvSTBo2m6OGgS54PAafF93fMI/92Bp4xP8GyUok4LH8t60GS3QomGp75plNCiOfuDi
-         tK/XjjtbXneoDPVrGFKajLH4EMWyEBg2fIM6HK+hdnwt3/pURF+/2K19CGxd7OjvIOQy
-         iaKGbStFX7caohg969VF11LoJo5v/fFp4Bu0B/Aw4CRE/BEH5uKwCYtqCKivdEn+QXAz
-         sS3zt7JMwn66s0N/CpZ6IK3pUWc/0jd9xDpc1bqQ6vlCn1zrvE8AaL/BmdNV39bETa76
-         xFw/vsKI/37DuQ8PcgRAf2obGcxoxotk8+CqU+DMtZMEaBLgj+spgbo0pUP+c1Y3VWqL
-         MMog==
-X-Gm-Message-State: AFuF++mps08PvIVvE13Vv14I0EBDjyAEbqXaKm4LHY8L5huElbjNTU46
-	t7p/JmPWmNtf0QQTr5NRsR+kAGNAe3VPlaf92odtr/CcgKMVHhJ0mqj4
-X-Gm-Gg: AR+sD11F4pij8JXsrBQYlx4WoGIs+nldk9clGMfm9fFnRhhNLRKmr9pc4vZe34N+IxR
-	fJmSF/fF9VUsyLuyFqey0dsdMM622U2FsyBA+wKNshCLpSp9YaNANfSjPdrgVlJvd+JcykoHwl/
-	PcsDysEQOKl71i+XFLkrPE6r8lYEgbxihUZHJ5J6elb2r4DUdUxJPcg+1satcqqCb+Tv0Gc+SI9
-	1qvq9svtQWi4BvBE9AiRNVmigFcM1mkH7Sj1xVbmfiqmAKo6RaCt9PSdqviM6LUG/G9eRj/6IXs
-	zs5Ne/gXAuvAziuITm63dVhFtws6g3JfbFBhCq1DX8868Qa7kFn0KXxkvb7afXQ7Rtt0AqaqVS0
-	u4qAzikzl2CpjW8TnDVmaC5k8Xl5LVuKFVb6aASLcuE2Ihlt0PVzobucjrrb9NpmmnIj4XPYuiL
-	MSr0Vy3tpC94SCI0tUsSwdTiQRZS3J10AcMqOKQXkhyCfs2Aktny0AFiTWt/fbjaNX4doToTcCG
-	xjhD4I27zt/EKBSIQq8BCoukh6SwfwBjtvFsW7tzM0JvYVRqKiwPeL7rlhdKu6UKw==
-X-Received: by 2002:a4a:de54:0:b0:6b1:bb82:f7a3 with SMTP id 006d021491bc7-6b1c6493d32mr23982278eaf.5.1788271793018;
-        Tue, 01 Sep 2026 07:09:53 -0700 (PDT)
-Received: from mail.marliere.net (137.65.66.34.bc.googleusercontent.com. [34.66.65.137])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f4fa96ce3dsm11066967a34.18.2026.09.01.07.09.51
+        bh=HxeaBvDlKAqKYcHDBk+Xfrsk7n+I0JQxkCoAoHuqNkY=;
+        b=Vkldu6HsM3hVkgAAUOx66oDXghOJLDYDYGqLZgAVPT30Q1rgWSP4cGX+tk21P87Z0D
+         gSvFRGlU4PADa2TW3Y2coWG2o/qCTXS0sKhPiYJZb1ruGxCYHxc3968zh+yFMAyhbyGW
+         C8Zj6lN+fV41vkSrglDpWsMw6WbjarQAqd7bCQmmlWirumXFsrKVcj8ZFRNIF2zdaTJR
+         rQK4P9rXLTMK1BR+zCRg6qD0l4NuIzo8yFQSwsNte5dPWUMS82jhGqHPaSG/LYJKcv76
+         oek1QI6wLZPC/7/EUHFdnl2AZmGTPrORLMLwLsoL0ez6k7Hw3LoSTel0/7WlNb+DJ1lu
+         wUvg==
+X-Forwarded-Encrypted: i=1; AKwUvBwVgiJHgDBu8lHsRuRC/Zyv5MjEDLLK/COpuzhefcHhwlDZ4IFa/phoXUEDW3X1cHC7NLnArr8=@vger.kernel.org
+X-Gm-Message-State: AFuF++kqWNny/2nQ7tqCinqB4JhrQlpt9m2ywBg3epgQyLAc6is1/QCE
+	xwhtOMOXwd1gF7U0YIhVDRA7VXq0IzjUtI/Faa9bU/wJPOu0WGNKh8/6
+X-Gm-Gg: AYBFou23xhurI45F6fraLL8oW7QXGm1dFQE2fK+vZp+pNyqTs0iXDaqZb16Re6Kdykt
+	FMIPlaRGvjUcoUvcEoo9r53/4oFPgjxV62q7s8Q/6acZiBchhYYVyYEiQ8Re9PckAh0Uv4kW37V
+	yhQuSUvZnXQmQH5CFDJ/zgdQMLqzu3eImjQ9gGoNCAiwdEG+bhlG8AUzil5qURijzG6j0t7cBDZ
+	chAMwF3gfuAOY8Rof5/n+32romfSp2RKnX5N/2Pkl3V8YGXMMerEbh3/JhfUoFOr6Et0LoDZ99x
+	aXH9LY3UlbC/qiaImk9eMohI5167ukfYrr0qAcdI9L51nOeRWGB8eO8PdzMvkDHNJJlKeTZVayo
+	8+FtMgahg/Ru+3V6FmulvvsFu7UeCTtF34aEvRUcNwNgV0YViu7g+gSO1dKDUK3N19xFr8bkBql
+	HRahFqJ/S1eD7NoTjn2X+82FikM5MIJf3c/z+3tsvAuoNqRwVVf2wKkKU+9Z7ksynF8+kqmL7TR
+	ZrMvy9kQn8m700TRHAX34MZTb5ttCRWxgin7zoGPQ==
+X-Received: by 2002:a05:690c:386:b0:855:2d6d:2db5 with SMTP id 00721157ae682-85d69e03e9cmr131893827b3.12.1788271861366;
+        Tue, 01 Sep 2026 07:11:01 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e65f146edsm76395397b3.32.2026.09.01.07.11.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 07:09:52 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4AB2060B50;
-	Tue,  1 Sep 2026 14:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=dkim; t=1788271790;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=klux3Px16MgfpuFL4Thl1laPfvZCFrqMR76ZeHwaoNE=;
-	b=mgV5xqH+k13vCIzrWoRJdltr88WENTmx5T41hD1GXD49M4oSnj9xQaafgJGIu0Rire71sl
-	ktRbAYwC/tL/54WqR+JxjtkxtD9Z4mx2PJlv1BgM+EmIsCcjjAaX0PY/CQOU4dnZOyuZcx
-	huIQymEZrXMpFko8idN1Oe45Jfu45rfs+sOoDIS++y5jTjEtMpOZONGjB7FmrPnrpAVWol
-	FqKbmL+5H9RB5goLkP8jMVe3f6CkGTM/tzvQrd4PaXA4nMYfLPVMbm72emn+DW8+W+nfWi
-	cdHGrh09sfLHMYwozXH02K7UIM81S+PUkjSQKlhGvC6lvHTud6YgciL0MyR9LA==
-From: =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
-Date: Tue, 01 Sep 2026 11:09:37 -0300
-Subject: [PATCH net] selftests/net: Fix icmp.sh race between ping and
- tcpdump startup
+        Tue, 01 Sep 2026 07:11:00 -0700 (PDT)
+Date: Tue, 01 Sep 2026 10:11:00 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: zhaoping.shu@mediatek.com, 
+ edumazet@google.com, 
+ ncardwell@google.com, 
+ kuniyu@google.com, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ matthias.bgg@gmail.com, 
+ angelogioacchino.delregno@collabora.com, 
+ dsahern@kernel.org, 
+ willemb@google.com, 
+ netdev@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org
+Cc: haijun.liu@mediatek.com, 
+ xiayu.zhang@mediatek.com, 
+ lambert.wang@mediatek.com, 
+ Iven.Yang@mediatek.com, 
+ nbd@nbd.name, 
+ HW He <hw.he@mediatek.com>, 
+ Zhaoping Shu <zhaoping.shu@mediatek.com>
+Message-ID: <willemdebruijn.kernel.4214410e062b@gmail.com>
+In-Reply-To: <20260901082312.14596-1-zhaoping.shu@mediatek.com>
+References: <20260901082312.14596-1-zhaoping.shu@mediatek.com>
+Subject: Re: [PATCH net v5] net: gro: Fix nesting of TCP GSO SKBs in
+ skb_gro_receive_list()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260901-selftests-net-icmp_race-v1-1-0b2a27e91a0c@marliere.net>
-X-B4-Tracking: v=1; b=H4sIAKDclmoC/yWMUQqDMBAFryL73VANJWivUorE+NQtNcpuWgri3
- RvbzxnmvY0UwlC6FhsJ3qy8xAzVqaAw+TjCcJ+ZbGld2ZSVUTyHBE1qIpLhMK+t+ADjrKv7unb
- 20oDyehUM/Pk93yindP9LfXUPhHR8HlnnFaYTH8N0qEV45HievSYI7fsXh/uIqKAAAAA=
-X-Change-ID: 20260901-selftests-net-icmp_race-6268d886249e
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, David Ahern <dsahern@kernel.org>, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1788271786; l=3118;
- i=ricardo@marliere.net; h=from:subject:message-id;
- bh=UprTbNUUvXH99g2NCx2ct2QD9UMqg+J0yXIvULzVEkw=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgguRCc5X8/UX9M40lkMnr//aFGOhce
- x5ezt8MFNUFlqYAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QEU5ZNtbO6jMIJnt/iaiBCRbVaf0TWZ09i/vgrknAQj2sJC+7NF0An791bEYL4SJaoSawW7WMkp
- CkMm10Zglrg8=
-X-Developer-Key: i=ricardo@marliere.net; a=openssh;
- fpr=SHA256:pzhe0fJpYLz+3cZ33FFPhIfaUElk9CXPFFXmalIH+1g
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-icmp.sh backgrounds ping and then starts tcpdump, with no synchronization
-between the two. If tcpdump is not capturing yet by the time the ICMP
-unreachable replies come back, the test fails even though the kernel
-behaved correctly:
+zhaoping.shu@ wrote:
+> From: HW He <hw.he@mediatek.com>
+> 
+> Fraglist GRO and hardware GRO can create an fraglist of
+> HW-GRO packets. This cannot be segmented back into
+> the original form on TCP tethering scenario.
+> 
+> Avoid constructing such a GSO packet, by flushing an already
+> built fraglist GRO packet if a hardware GRO packet arrives.
+> 
+> Scenario (Tethering/Forwarding):
+> 1.Driver submits a single TCP packet, P1. P1 is kept in the
+> gro_list as the first packet.
+> 
+> 2. The driver submits a TCP GSO skb, P2. P2 has already aggregated
+> multiple TCP packets by HW_GRO, and its non-linear data is stored in
+> frags[].
+> 
+> 3. P1 and P2 match the GRO rules, and since there is no local socket,
+> they are aggregated by skb_gro_receive_list(). The resulting skb,
+> P3, has a frag_list entry that still contains frags[]:
+> P3: [ Linear Data ] -> frag_list -> [ Linear Data ]
+>                                     [ frag[1] ]
+>                                     [ frag[2] ]
+>                                     ...
+> 4. Later, tcp4_gso_segment() or tcp6_gso_segment() calls
+> skb_segment_list() to segment P3. However, skb_segment_list() only
+> segments the entries in frag_list. It does not segment the frags[]
+> inside P2, so P3 is not restored to the original packets, which leads
+> to IP fragmentation or packet drop in the following path.
+> 
+> Check skb_is_gso(skb) and current GRO method, make sure fraglist GRO
+> applies to consecutive non-GSO skb, others adopt regular GRO path.
+> 
+> Fixes: 8d95dc474f85 ("net: add code for TCP fraglist GRO")
+> Signed-off-by: Zhaoping Shu <zhaoping.shu@mediatek.com>
+> Signed-off-by: HW He <hw.he@mediatek.com>
 
-  FAIL - got ICMP response from , should be 192.0.0.8
-
-The empty address is misleading: it means the capture matched nothing
-before its 10s timeout, not that the reply had a wrong source address.
-NS1's Icmp InDestUnreachs counter still increments across such a failure,
-so the replies were generated and did reach NS1. Ping sends several probes
-over its 3s deadline, so losing every one of them takes a multi-second
-stall in tcpdump startup, which does happen on loaded CI hosts [1].
-
-Fix it with the idiom already used by broadcast_ether_dst.sh and
-macvlan_mcast_shared_mac.sh: start tcpdump first and wait for its
-"listening" banner via slowwait() before sending traffic.
-
-Fixes: 7e9838b7915e ("selftests/net: Add icmp.sh for testing ICMP dummy address responses")
-Link: https://openqa.opensuse.org/tests/5907626/logfile?filename=icmp_sh.tap.txt#line-2 [1]
-Signed-off-by: Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
----
- tools/testing/selftests/net/icmp.sh | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/net/icmp.sh b/tools/testing/selftests/net/icmp.sh
-index 824cb0e35eff..593d5f3abcae 100755
---- a/tools/testing/selftests/net/icmp.sh
-+++ b/tools/testing/selftests/net/icmp.sh
-@@ -28,10 +28,11 @@ RT2=172.16.0.0/24
- H2_IP6=2001:db8:1::2
- 
- TMPFILE=$(mktemp)
-+TCPDUMP_ERR=$(mktemp)
- 
- cleanup()
- {
--    rm -f "$TMPFILE"
-+    rm -f "$TMPFILE" "$TCPDUMP_ERR"
-     cleanup_ns $NS1 $NS2
- }
- 
-@@ -53,11 +54,21 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
- # Make sure ns2 will respond with ICMP unreachable
- ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
- 
--# Run the test - a ping runs in the background, and we capture ICMP responses
--# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
--# in case something goes wrong
-+# Run the test - start tcpdump and wait for it to be capturing before
-+# sending any traffic. -c 1 means it should exit on the first ping, but add
-+# a timeout in case something goes wrong
-+ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 \
-+    'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>$TCPDUMP_ERR &
-+TCPDUMP_PID=$!
-+if ! slowwait 3 grep -qs "listening" "$TCPDUMP_ERR"; then
-+    echo "FAIL - tcpdump did not start listening"
-+    cat "$TCPDUMP_ERR"
-+    exit 1
-+fi
-+
- ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
--ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
-+
-+wait $TCPDUMP_PID
- 
- # Parse response and check for dummy address
- # tcpdump output looks like:
-
----
-base-commit: 786262be6048deab760f68c8acc2c85607165894
-change-id: 20260901-selftests-net-icmp_race-6268d886249e
-
-Best regards,
---  
-Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
