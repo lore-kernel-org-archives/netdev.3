@@ -1,122 +1,258 @@
-Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6454848D860;
-	Tue,  1 Sep 2026 18:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788286303; cv=pass; b=LXieOKv25fobsyMyib91/PV8nyO9fp66ilDbPDY3NTy66ksawTYXveddMYPflUOJMDGZX7fhL5E31cm6hUC/EFwQtcjJK7qhFeeNqTQGQMTW00edquXPYfuWs9bN+qXOWTGFdjwR4ZLcbEOnukC4Iia2yHSeXqA5OiKYQI/yRc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788286303; c=relaxed/simple;
-	bh=0AXEy5KeefClAqrLkM2xK+utd+ujlnIlxIBgrEFv0Kk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oi0A++Bcvlo2SVeKx+t+xQ4BO9AMyqXovHhmiltm01RHWYoB0H0ISLelJmy12m8sqIW6puI12ssTb7zNbAtcZg4STp0a0igms/hS+zLEE5iv+VOsx5EhD+Gw2DXjO86pORWum+gDlhSmSIPR/5ZoEXXLRvZhTalczUDb5gdZvnE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=ORtW3soV; arc=pass smtp.client-ip=165.173.180.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C454A48D860
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 18:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788286315; cv=none; b=pGYYrU+pqophfKyY1v2vBXbrM1/MSlxYCqLnWJF3sOEoyguX6IATOkTYe457mPXG7Tio/bYWGaeXIthcbfElDaxYo2FpSWCdXxvC7k3juJrRT3OBRQ/uP6lHN4ckRDNRnUN1UKB+3NmpXih0aLmzmS7qw4c1MAKkUAjvTjFLZ04=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788286315; c=relaxed/simple;
+	bh=Ud7td6sw3OSdgK7e2a7wTy6ZUUDWqEjs6KqwAeqUj2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hBJ8sjDCV7/+9xtzIGQ22p1WTe0AMJ4AXmaUmtzYlclF1ehijHK20qPNaLwnLn7o149BMXsBISJ0ikk5gbLzLdr559M03r0LMaFte08UEpsYT9LhrV+mudeBIgu9wkqDzudc4XyuSpV28IwFYz+t/QnNXxbpG4WApakylX+lZMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=SgNwWBcg; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="ORtW3soV"
-ARC-Seal: i=1; a=rsa-sha256; t=1788286255; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MCk4MCHQPr1w6mcvkXeKDSZt+7FCe74OjXvB1HzdkrL27A/BlQY/iQjNgn2lUfwSofWV7WnGsYRAR/qn33K+umcCWKp6RQTnpbNFUxFyDS0kED1lu9OihMaxxpyqUtb5HElaIKlhON9bN9rWciDNC0f+Tb1STlhq1VsN7b/V5iM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788286255; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4Mtz/AFM80jv4Dc2UsakzXZvBkH2sDnyNjioBHCW4Ms=; 
-	b=YMuayuKbkVdG7ouKJBSUIV46MC31W8dOloeBncxOvaTg4wO91w46gkFMsGqnwOIVk0y5mjmyJxjXGiewvkxEGUprklEBNVlQ+MRIkbDGlPLDl0BE9oooURUIBaouRiMF7naVuC5xS+RCHhVMDxcAiCfZdWgWdITQU8tSiYeZKTg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788286255;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=4Mtz/AFM80jv4Dc2UsakzXZvBkH2sDnyNjioBHCW4Ms=;
-	b=ORtW3soVbFlTo1XUW14e0bnycwZtA77jIh+Tq/5ySeYGnDevIXbnrj/sN9aq6cgC
-	jV8rPRpq7q88I6ZmV3KqbQvcjbNSdji4Jsab6ckgzO7uOw76NaAxJ3+CKO3+DuKcTk7
-	BvmtHyLSaLLZhfRAvCteud1OwzIr3wpSHjm12VxcO6Gz6JU9ZtJvbMe/OSOkRXascfD
-	TpC9ddIUzX9do7lFeWxFCEgWUISwRrran2bCUqNhvXRVnZJBmk8CFPe/pMTK1BvMdcE
-	FC0N4h2g9qvl972MDpccn9YJz/5VwXK4WY+TghmeARPk5y4zpVVhumCKbkLt7Reielv
-	LgmFYjc48A==
-Received: by mx.zohomail.com with SMTPS id 1788286254124334.97358507758634;
-	Tue, 1 Sep 2026 11:10:54 -0700 (PDT)
-From: Rong Zhang <i@rong.moe>
-Date: Wed, 02 Sep 2026 02:09:20 +0800
-Subject: [PATCH v6 01/12] leds: class: Always protect brightness_show()
- with led_access
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="SgNwWBcg"
+Received: by dvalin.narfation.org (Postfix) id 132CE20514;
+	Tue, 01 Sep 2026 18:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1788286307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DrZVg5yyugsh3pnXFYR7mWnNWLEs9A/k+0uGr3hUOXY=;
+	b=SgNwWBcgO4kqz4kuYVLWAvVI8yaHAIJke8J9HVluHBgTETC6ZxM4ue0AUsNNn1rmQhnK5P
+	/0gwcqILNkJZ4bIXUd/oMV2t/1BmssYey+5rsZTOXA1wykwiLFu7tqKsVukbnjbifApXW3
+	SaSXzzJDVcEuD23Jjc2k9F2C5bInyf4=
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
+Subject:
+ Re: [PATCH net-next 08/15] batman-adv: tt: remove only the entry which was
+ looked up from the hash
+Date: Tue, 01 Sep 2026 20:11:44 +0200
+Message-ID: <2206929.KlZ2vcFHjT@sven-desktop>
+In-Reply-To: <20260831135117.574836-9-sw@simonwunderlich.de>
+References:
+ <20260831135117.574836-1-sw@simonwunderlich.de>
+ <20260831135117.574836-9-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-leds-trigger-hw-changed-v6-1-55693cd78877@rong.moe>
-References: <20260902-leds-trigger-hw-changed-v6-0-55693cd78877@rong.moe>
-In-Reply-To: <20260902-leds-trigger-hw-changed-v6-0-55693cd78877@rong.moe>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
- =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
- Mark Pearson <mpearson-lenovo@squebb.ca>, 
- "Derek J. Clark" <derekjohn.clark@gmail.com>, 
- Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Ike Panhc <ikepanhc@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
- Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, 
- linux-leds@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- Rong Zhang <i@rong.moe>
-X-Mailer: b4 0.17-dev-1f2f7
-X-ZohoMailClient: External
+Content-Type: multipart/signed; boundary="nextPart2773984.k3LOHGUjKi";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-The led_classdev_register_ext() protects transient states when
-registering with the led_access mutex and relies on all sensitive sysfs
-attribute callbacks holding the mutex to prevent exposing transient
-states.
+--nextPart2773984.k3LOHGUjKi
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+Date: Tue, 01 Sep 2026 20:11:44 +0200
+Message-ID: <2206929.KlZ2vcFHjT@sven-desktop>
+In-Reply-To: <20260831135117.574836-9-sw@simonwunderlich.de>
+MIME-Version: 1.0
 
-The Fixes: commit broke this as it accessed trigger_lock without holding
-led_access. Fix it by protecting brightness_show() with led_access in
-all code paths.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1=
+=2Dsw%40simonwunderlich.de?part=3D8
 
-Fixes: b819dc7d8fb2 ("leds: core: Report ENODATA for brightness of hardware controlled LED")
-Signed-off-by: Rong Zhang <i@rong.moe>
----
-Changes in v6:
-- New patch in the series to address a concern from Sashiko
-  - https://sashiko.dev/#/patchset/20260821-leds-trigger-hw-changed-v5-0-3e00d6c4a936@rong.moe?part=7
----
- drivers/leds/led-class.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+[...]
+> > So when the looked up entry was already unlinked by another context and=
+ a
+> > new entry for the same client was added in the meantime, these two
+> > functions unlink that new entry instead.
+>=20
+> Discovered by: gpt-5-6-sol, opus-5 =C2=B7 Missed by: sashiko-gemini
+> Should this carry a Fixes: tag?  The two converted call sites had this
+> defect since the refcount handling around batadv_hash_remove() was
+> introduced, and the sibling fixes for the very same call sites did use
+> Fixes: tags:
+>=20
+>   ef72706a0543 ("batman-adv: protect tt_local_entry from concurrent delete
+>   events") is the Fixes: target of 3d65b9accab4 for the local path
+>=20
+>   7683fdc1e886 ("batman-adv: protect the local and the global trans-tables
+>   with rcu") is the Fixes: target of f131a56880d1 for the global path
+>=20
+> Both of those commits already noted that batadv_hash_remove() may delete
+> "an entry ... which is not the same object as the needle" and only repair=
+ed
+> the reference accounting, which is the part this patch completes.  Without
+> a trailer, stable tooling has no hint that this is a functional fix rather
+> than part of the surrounding cleanup.
 
-diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-index a51b0ed53886..4259533dafa1 100644
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -43,13 +43,13 @@ static ssize_t brightness_show(struct device *dev,
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
- 	unsigned int brightness;
- 
--	if (led_trigger_is_hw_controlled(led_cdev))
--		return -ENODATA;
-+	scoped_guard(mutex, &led_cdev->led_access) {
-+		if (led_trigger_is_hw_controlled(led_cdev))
-+			return -ENODATA;
- 
--	mutex_lock(&led_cdev->led_access);
--	led_update_brightness(led_cdev);
--	brightness = led_cdev->brightness;
--	mutex_unlock(&led_cdev->led_access);
-+		led_update_brightness(led_cdev);
-+		brightness = led_cdev->brightness;
-+	}
- 
- 	return sysfs_emit(buf, "%u\n", brightness);
- }
+I am not allowed to add Fixes: lines for patches targeting net-next. See
+https://lore.kernel.org/all/7d73cd74-b040-4a3d-9d78-4ad8fc0a01f4@redhat.com/
 
--- 
-2.55.0
+>=20
+> > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/transl=
+ation-table.c
+> > index 88aeefa97db6..66456a2d45e2 100644
+> > --- a/net/batman-adv/translation-table.c
+> > +++ b/net/batman-adv/translation-table.c
+> > @@ -95,6 +95,26 @@ static bool batadv_compare_tt(const struct hlist_nod=
+e *node, const void *data2)
+> >  	return (tt1->vid =3D=3D tt2->vid) && batadv_compare_eth(data1, data2);
+> >  }
+> > =20
+> > +/**
+> > + * batadv_compare_tt_entry() - check if a hash node is a specific TT e=
+ntry
+> > + * @node: the list element pointer of the TT entry stored in the bucket
+> > + * @data2: pointer to the tt_common_entry which is looked for
+> > + *
+> > + * Unlike batadv_compare_tt(), this only matches the very object which=
+ is
+> > + * passed as @data2 and not just any entry for the same TT client. It =
+is meant
+> > + * for batadv_hash_remove() callers which must not unlink an entry the=
+y did not
+> > + * look up themselves.
+> > + *
+> > + * Return: true if @node belongs to @data2, false otherwise
+> > + */
+> > +static bool batadv_compare_tt_entry(const struct hlist_node *node,
+> > +				    const void *data2)
+> > +{
+> > +	const struct batadv_tt_common_entry *tt =3D data2;
+> > +
+> > +	return node =3D=3D &tt->hash_entry;
+> > +}
+> > +
+>=20
+> Discovered by: gpt-5-6-sol, opus-5 =C2=B7 Missed by: sashiko-gemini
+> This isn't a bug introduced by this patch, but was the identical pattern =
+in
+> batadv_bla_del_claim() (net/batman-adv/bridge_loop_avoidance.c) considered
+> for the same treatment?  It still looks a claim up by key via
+> batadv_claim_hash_find() and then removes by key:
+
+Out of scope. And it is missing the completely different promises by this=20
+function. It would make the code a little bit cleaner but it is definitely=
+=20
+nothing missing it this patch. A ticket for a potential improvement can be=
+=20
+found in https://www.open-mesh.org/issues/471.
+
+[...]
+> Discovered by: gpt-5-6-sol =C2=B7 Missed by: opus-5, sashiko-gemini =C2=
+=B7 Confirmed by: opus-5
+> This is a pre-existing issue, but should the kernel-doc of
+> batadv_hash_remove() in net/batman-adv/hash.h be corrected while these
+> callers are being touched?  It says:
+>=20
+>  * Return: returns pointer to data on success, so you can remove the used
+>  * structure yourself, or NULL on error
+>=20
+> while the implementation returns the matched hash node:
+>=20
+> 		data_save =3D node;
+> 		hlist_del_rcu(node);
+>=20
+> This patch drops the hlist_entry() conversions that used to make the
+> node-ness of the return value obvious at both tt call sites, so the only
+> remaining hint is the tt_removed_node variable name.
+
+Out-of-scope for this patch. Follow up patch was submitted
+https://patch.msgid.link/20260901-kdoc-hash_del-return-type-v1-1-07b9c26e8d=
+f3@narfation.org
+
+>=20
+> Discovered by: gpt-5-6-sol =C2=B7 Missed by: opus-5, sashiko-gemini =C2=
+=B7 Confirmed by: opus-5
+> This isn't a bug introduced by this patch either, but is the caller side =
+of
+> batadv_tt_global_free() still racy in a way the identity compare cannot
+> help with?  batadv_tt_global_del() tests the orig_list emptiness after
+> batadv_tt_global_del_orig_node() has already dropped
+> tt_global_entry->list_lock:
+>=20
+> 		batadv_tt_global_del_orig_node(bat_priv, tt_global_entry,
+> 					       orig_node, message);
+>=20
+> 		if (hlist_empty(&tt_global_entry->orig_list))
+> 			batadv_tt_global_free(bat_priv, tt_global_entry,
+> 					      message);
+>=20
+> Meanwhile batadv_tt_global_orig_entry_add() can add an originator for the
+> very same object under that lock:
+>=20
+> 	spin_lock_bh(&tt_global->list_lock);
+> 	...
+> 	hlist_add_head_rcu(&orig_entry->list, &tt_global->orig_list);
+> 	atomic_inc(&tt_global->orig_list_count);
+>=20
+> Since the emptiness decision and the hash removal are not atomic, can a
+> global entry that has just regained a valid originator still be unlinked?
+> The new comparator matches here because it is the same object.  The
+> hlist_empty() read also happens outside the lock that the orig_list is
+> documented to be protected by.
+
+Outside the scope of this patch. For interested contributors
+https://www.open-mesh.org/issues/473
+
+
+[...]
+> Discovered by: gpt-5-6-sol, opus-5 =C2=B7 Missed by: sashiko-gemini
+> With the identity compare, batadv_hash_remove() can now fail while a
+> different, live local entry for the same MAC and VLAN is still linked in
+> bat_priv->tt.local_hash.  The BATADV_TT_CLIENT_DEL change event is queued
+> before the removal and is not undone on that new failure path.
+>=20
+> batadv_tt_local_event() coalesces purely by MAC and VLAN:
+[...]
+> Can the stale DEL then cancel the pending ADD of the surviving entry?
+>=20
+> CPU A: batadv_tt_local_remove() (or the purge work) unlinks entry E
+> CPU B: batadv_tt_local_add() inserts E' for the same addr/vid; the
+>        batadv_hash_add() happens before its ADD event is queued at
+>        the add_event label
+> CPU A: having looked E up earlier via batadv_tt_local_hash_find(), with no
+>        lock spanning lookup, event and removal, queues DEL and then finds
+>        no node equal to &E->common.hash_entry
+>=20
+> Either ordering ends with both the ADD and the DEL removed from
+> bat_priv->tt.changes_list, so E' stays in the local hash with
+> BATADV_TT_CLIENT_NEW set and no queued change.
+[...]
+> Would it make sense to queue the event only after a successful unlink, or=
+ to
+> re-queue the ADD when the removal fails?  The ordering is still the same =
+at
+> the end of the series, in "batman-adv: tt: decrement count for committed
+> client on local_remove".
+
+This is not the only way something like this could happen. But ok, submitte=
+d a=20
+patch
+
+https://patch.msgid.link/20260901-tt-del-event-queue-late-v1-1-fc28ca54c342=
+@narfation.org
+
+Regards,
+	Sven
+--nextPart2773984.k3LOHGUjKi
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCapcVYAAKCRBND3cr0xT1
+y9+YAP98+C/Ht+TGUGUg5X1M2wYPZsunrJTzg6j7O2pV3FUflwD+MerFlOPHwuVB
+O7VGSmyyN1uSBe51q1iXVDfLOkyiyQE=
+=XWNn
+-----END PGP SIGNATURE-----
+
+--nextPart2773984.k3LOHGUjKi--
+
+
 
