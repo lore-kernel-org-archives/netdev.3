@@ -1,141 +1,87 @@
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-105.mta0.migadu.com [91.218.175.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8333955C3;
-	Tue,  1 Sep 2026 09:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0313D476CC0
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788253463; cv=none; b=P+F1FfgMz/JqiQP6S3aXRfPnzJt5XydVq9Cw/QCmJL9ShcHLjDpRj6mvmcZZ8L09ZW406R/noxXVbxewD1mGCodasvzhyI11rZjUaQaAgAVSioGhzgpTLJm399Kqp+kBIylWJUJbQaxIyDrURR85DHAFMvPIENZ9sNzLKqgF720=
+	t=1788253492; cv=none; b=YGA55sJJMo6wBH4bsTZ2//8aqobIAPcH86W8qKUM9P57sP6DMzHGL7/82ar+RY7l1hSiCJXWal+HEaQjqkuZdZup9zbdnMEuKVEXgOPw116P9qrOcrXBm8PRzL0z/PIYC9OnEb5hPEGnzntrmMBsHQYG7lkW8iXV2sWDM6ZFkls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788253463; c=relaxed/simple;
-	bh=LTI8q0Epg6Ut8DoCocYaTVrkvbZWppAJSxZWpWWifWE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cb6lR8FMO37ggKwj/kUEynKQqh3v3X27pqcmPmDjJMK4/I6zZAu1dvWLh5RpLgnvwQ6x382lUdHhAEVZ+QGw0MaR9jLMjpeu1jxXBnevylmp2XjUCzkaOHcYNkhBVin7cnghureFdGzcFhKfteEVOa00UUxl5mu9C6bXvov44gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=bdXY9cRu; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+	s=arc-20240116; t=1788253492; c=relaxed/simple;
+	bh=K5adOlBiMa0yYmMZJxP73c0SVwU2yadNCgQ5ECt6Exg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n4IMzElI3A47tTnsuUhV2TWuN26sJrZH19DRWyIgAF+rJB2EavWF6w9OXUfg93SWxgPis4sQYpWyqyKQENg9SFL1cJagphU7lUTuvmOgmyKEyqwGt2FffKvAjTmI4ANJ14PRRBgg628PlTrxVW5d/N9K+NKQSSpN9Ei1v0cFj3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AmHSDqKi; arc=none smtp.client-ip=91.218.175.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="bdXY9cRu"
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1788253448;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5RrptSmK1QMQpguF6j6YC9fFHhdiNT6BCnOECykAPBI=;
-	b=bdXY9cRux1f0eydM3Nho/qef0dC9qkFezjTeFlVfdr1tMHx8v/kScmmEzjvf8svAd+s/mZ
-	nu2SKTmB20PJUeGZM6Yna2bsoPnAXvZdO/fEHG1BmoWX6hjpXrmlIs2ufoWOP5SrY9082c
-	Onx9Obp55ivVZcprhXvcG2JsnQevNfc=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Wolfgang Grandegger <wg@grandegger.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Sebastian Haas <haas@ems-wuensche.com>,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10] can: ems_usb: validate CPC message lengths
-Date: Tue,  1 Sep 2026 12:04:06 +0300
-Message-ID: <20260901090408.10353-1-arefev@swemel.ru>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AmHSDqKi"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=K5adOlBiMa0yYmMZJxP73c0SVwU2yadNCgQ5ECt6Exg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788253486; v=1; x=1788858286;
+ b=AmHSDqKiyQnNoP3nOzui06pUEckABybku0hhy8gwPSMry/zytXPkZwIcMQaV17zjQW4zCA53
+ GwmSMcAx9Lai/6UAE6U6H3b9TWnrBfp8cD+lBJ0RDrWX5ZNyWzDbAOIY4pr+DiV4suTKEJ+3tSa
+ P8iRQxdhcKkihrHBpGmV5iek=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5353e1dd7fab9237;
+	Tue, 01 Sep 2026 09:04:46 +0000
+X-Mizu-Trace-ID: 5353e1dd7fab9237
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 1 Sep 2026 17:04:38 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>, Bongsu Jeon <bongsu.jeon@samsung.com>,
+	Shuah Khan <shuah@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: nci: Fix uninitialized family ID on missing
+ attribute
+Message-ID: <apaVJjXnwJLZLwq2@fedora>
+References: <20260901070618.3299012-1-nagachaithanya9911@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901070618.3299012-1-nagachaithanya9911@gmail.com>
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+On Tue, Sep 01, 2026 at 07:06:18AM +0000, Chaithanya Lagisetty wrote:
+> get_family_id() walks the generic netlink CTRL_CMD_GETFAMILY reply
+> looking for the CTRL_ATTR_FAMILY_ID attribute and returns the parsed
+> value in the local variable "id". If the reply does not carry that
+> attribute, the parsing loop never assigns "id" and the function returns
+> an indeterminate stack value, which the caller stores in self->fid and
+> uses for subsequent netlink requests.
+> 
+> Initialize "id" to 0 so a missing attribute yields a deterministic
+> (invalid) family ID instead of a garbage value.
+> 
+> Fixes: f595cf1242f3 ("selftests: Add nci suite")
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>  tools/testing/selftests/nci/nci_dev.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/nci/nci_dev.c b/tools/testing/selftests/nci/nci_dev.c
+> index 312f84ee0444..ed306ec23895 100644
+> --- a/tools/testing/selftests/nci/nci_dev.c
+> +++ b/tools/testing/selftests/nci/nci_dev.c
+> @@ -182,7 +182,7 @@ static int get_family_id(int sd, __u32 pid, __u32 *event_group)
+>  	} ans;
+>  	struct nlattr *na;
+>  	int resp_len;
+> -	__u16 id;
+> +	__u16 id = 0;
+>  	int len;
+>  	int rc;
+>  
+> -- 
+> 2.43.0
+> 
 
-commit 02925f51377f2a42a6724f00549167499c9302e5 upstream.
-
-ems_usb_read_bulk_callback() walks CPC messages packed in one USB
-receive buffer.
-
-Check that each declared message fits in the URB payload. Also require the
-type-specific payload to cover the fields used by the CAN, state, error and
-overrun handlers.
-
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260706092752.79600-1-pengpeng@iscas.ac.cn
-Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-[Denis Arefev: adapted for 5.10: use get_can_dlc() instead of
- can_cc_dlc2len(), the latter was introduced in 6.x along with
- include/linux/can/length.h; get_can_dlc() has identical semantics
- for classic CAN frames (min(dlc, CAN_MAX_DLEN))]
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-Backport fix for CVE-2026-74460 
-Link: https://nvd.nist.gov/vuln/detail/CVE-2026-74460
----
- drivers/net/can/usb/ems_usb.c | 43 +++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
-
-diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
-index 65aa1100e894..a645962da37a 100644
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -402,6 +402,40 @@ static void ems_usb_rx_err(struct ems_usb *dev, struct ems_cpc_msg *msg)
- 	netif_rx(skb);
- }
- 
-+static bool ems_usb_rx_msg_len_valid(struct ems_cpc_msg *msg)
-+{
-+	size_t len = msg->length;
-+	size_t can_len;
-+
-+	switch (msg->type) {
-+	case CPC_MSG_TYPE_CAN_STATE:
-+		return len >= sizeof(msg->msg.can_state);
-+
-+	case CPC_MSG_TYPE_CAN_FRAME:
-+	case CPC_MSG_TYPE_EXT_CAN_FRAME:
-+	case CPC_MSG_TYPE_RTR_FRAME:
-+	case CPC_MSG_TYPE_EXT_RTR_FRAME:
-+		if (len < CPC_CAN_MSG_MIN_SIZE)
-+			return false;
-+
-+		if (msg->type == CPC_MSG_TYPE_RTR_FRAME ||
-+		    msg->type == CPC_MSG_TYPE_EXT_RTR_FRAME)
-+			return true;
-+
-+		can_len = get_can_dlc(msg->msg.can_msg.length & 0xf);
-+		return len >= CPC_CAN_MSG_MIN_SIZE + can_len;
-+
-+	case CPC_MSG_TYPE_CAN_FRAME_ERROR:
-+		return len >= sizeof(msg->msg.error);
-+
-+	case CPC_MSG_TYPE_OVERRUN:
-+		return len >= sizeof(msg->msg.overrun);
-+
-+	default:
-+		return true;
-+	}
-+}
-+
- /*
-  * callback for bulk IN urb
-  */
-@@ -444,6 +478,15 @@ static void ems_usb_read_bulk_callback(struct urb *urb)
- 			}
- 
- 			msg = (struct ems_cpc_msg *)&ibuf[start];
-+			if (msg->length >
-+			    urb->actual_length - start - CPC_MSG_HEADER_LEN) {
-+				netdev_err(netdev, "format error\n");
-+				break;
-+			}
-+			if (!ems_usb_rx_msg_len_valid(msg)) {
-+				netdev_err(netdev, "format error\n");
-+				break;
-+			}
- 
- 			switch (msg->type) {
- 			case CPC_MSG_TYPE_CAN_STATE:
--- 
-2.43.0
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
