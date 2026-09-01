@@ -1,35 +1,35 @@
 Received: from smtpdh18-1.aruba.it (smtpdh18-1.aruba.it [62.149.155.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D6443B6D4
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 15:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39FC43B3E6
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 15:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.155.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788277112; cv=none; b=IO2mkBmTNZfl3sXwQHwNW0mIXTFwJo7e76a754PRLbvv1JaR0q+uXbtFFn0dwQ8p6oirelq16T0QMSX8kr5ysHfdlfiJfOWq2RR8990J6EjOKX2TnuSO6SKlOC2hgxbk2iUA5xuyc4FXUPnrbTg66FpGpqdl/O6x913P7xqIR5I=
+	t=1788277114; cv=none; b=DfsrWn3pDkOzy4p7t33KNu7mekAx5bQjl6sTiNZvM3Tc9Tql/NQqFTzhRxSywvnW0mlZhaKq1cBzVZhNNpgb0B/0/NYHOJZd5vzn6pPjlU/TjgGmvOa68k6PlATTxQAirPsPJllHieMXgtChR7i4Q/oKH9Uo5nFUi0gGqPgXQp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788277112; c=relaxed/simple;
-	bh=icHhi8LMg3aQsejnv9tHFEAqc5mNze1gn55TAzmJq9s=;
+	s=arc-20240116; t=1788277114; c=relaxed/simple;
+	bh=CtvXr8a0hzuXnlh4CTFTRbXjuma9IhrIxcX4uxpMyNc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jYG5/3UmTHXfEHfSQIFiBvzNgyUOioAis4VzD2iKiQFxmXo38aJYtKriL5vstlUzlu/qMkGC48bDOVNjO+8bR0Dx03cKebcla0Phr+InsLkAs/HzITGVdXw5O8MpwK9ch/wPJF04aF3BzKfmGOccCC8sD6MigJMNuI9Q2n0tHi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=ZJrQyesz; arc=none smtp.client-ip=62.149.155.132
+	 In-Reply-To:Content-Type; b=ffUaDPzz84NIiqov+DQMdKI2iAycefxYYDb6SjN2k3LZ6iYv0imR8vdT0+ez5SYwISdR3lmGmdzlZM42cyJOTFGa0b98HiZw4FfnsO/leuMABlnbrsmwncsz4rnHL8T4X/oi41nDzPiU4l7UKHYBgt4sET2XhN4EqZSdswwfJuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=ghDllCN4; arc=none smtp.client-ip=62.149.155.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="ZJrQyesz"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="ghDllCN4"
 Received: from [192.168.0.186] ([101.57.122.26])
 	by Aruba SMTP with ESMTPSA
-	id 1QWHxKgtH5Ste1QWHxBgj0; Tue, 01 Sep 2026 17:35:29 +0200
+	id 1QW3xKghu5Ste1QWAxBgfK; Tue, 01 Sep 2026 17:35:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1788276929; bh=icHhi8LMg3aQsejnv9tHFEAqc5mNze1gn55TAzmJq9s=;
+	t=1788276922; bh=CtvXr8a0hzuXnlh4CTFTRbXjuma9IhrIxcX4uxpMyNc=;
 	h=Date:MIME-Version:Subject:To:From:Content-Type;
-	b=ZJrQyeszBevxlf6nGwPUNIT7nmNIQU7t88VAPvezvTcpKZewM4+ektkUhCORL7VLB
-	 7yIoRTrsuuMK+Z71Ky4XXYeDrSxTlBdRIQnwrMVzXRU6M8DicxjtGSLfV3HAo0O8UB
-	 EzURKc6xfrbPjBmAsVxtWifpiI/jq9cdEijkK7WEbvPyG1LXyOtYtp9i4PY8/RKpp9
-	 zaGT7YDn16H0tX/l2oSX/q2F20pF9PcYIZTN/5k9cmSGXWuH/lFt3Tj4n5RD0w3LGq
-	 40JFxcV7JkQ6tzqK7NADQQ49CgUcxB3uJKtJlTP2gngf83EOdfC4CipmehxgecoMZt
-	 zFCcj+XDlCVtQ==
-Message-ID: <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
-Date: Tue, 1 Sep 2026 17:35:29 +0200
+	b=ghDllCN4+h8JJ2BAehCEljT9cPbnWg5jGvh2xiyV5ybIeg33KmzagJ5kOR5mU5eRi
+	 drcgw2+L8tOIHeQvFY5+qxbhZmpezIoRKUJCaZ9B9QU6enSVMO/KGYCM+6rY84E7yz
+	 49T9BlObOe/z1Er1yOIf2t+1FEBBtIJ7IPYLTGK0xuB48pI9g9LpWfZ8SUEgHiQulj
+	 fhsXuj5bPomRiOfPLtM+QX/xDFewLfCzXO/mSQMy1gLDN5Neg/sYRaL7XPArmXGEF4
+	 +K6lSda/iUJHipAnlrFd0C4VF6b9JnbizfFECzW1xbpOs69L+/KJrJFI1fTKV1j/CK
+	 Fk3j0CCmvfXZQ==
+Message-ID: <f6e90a49-8c68-42e6-bdff-ea9b3ecbaf7b@enneenne.com>
+Date: Tue, 1 Sep 2026 17:35:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,8 +37,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
- pps_get_ts()
+Subject: Re: [PATCH v4 2/4] pps: Drop the !NO_HZ_COMMON dependency from
+ NTP_PPS
 Content-Language: en-US
 To: David Woodhouse <dwmw2@infradead.org>,
  Richard Cochran <richardcochran@gmail.com>,
@@ -51,57 +51,55 @@ To: David Woodhouse <dwmw2@infradead.org>,
  Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: David Woodhouse <dwmw@amazon.co.uk>
 References: <20260829210041.40649-1-dwmw2@infradead.org>
- <20260829210041.40649-4-dwmw2@infradead.org>
+ <20260829210041.40649-3-dwmw2@infradead.org>
 From: Rodolfo Giometti <giometti@enneenne.com>
-In-Reply-To: <20260829210041.40649-4-dwmw2@infradead.org>
+In-Reply-To: <20260829210041.40649-3-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfPYvX0rybfqI6NqftGha7UFGR1ICXr+Kh9mAAobozR/eSq9+SrNf3t2VjS6SwzLvWHU/TUFvFdbR2mboRIi42eoUKKyFJ/H0UryoaOo3dEFK6gkDPyXo
- u8j1nnGysGu/D9CPl8AN5r4CD8N/pM6dnAaOiEDqqnNrXqUZyy1uDgl8nLx7tDt6GXEMdILq8AmgZOnbSHZWghtKgDuIfPnBHgj75rZgUAdrInGhqirOlGeU
- uFF/b3DAsOcMuztrDgFL9KVHYvES0plQJxpuZK2mL5Y62SVVH6YDJKogieuNyZlST+Ghwn89OMLrfOsx4fP7eXEAyojAjf38U2WYAAq7taVrJXF8RRpu7jCk
- XVKlZJOmtRPp583zuVmA5Aots/RL+oMruWcffl/nfihEd/qlqc1ekpoDIkXz+OP7hlYzAMFnYcslKhRXPb2cyxX8DRmgkZ7G9kiZQe8c6VJ1Wo+RcmUTHfHE
- 749ljUfY3353e353QhbCp2iWBXxHaQVATwRCNMMFoqJC6q++XgzV6d62eVr9QqiKXd6RekZi1VdEpT2eKiXZubqN42DQAYj8Z3MS984NNplhII51MXfZshnu
- F0nXLGSkjNhKiTUg/CbM4mXg59GPSFjZZCUOaSsOqVgRNQ==
+X-CMAE-Envelope: MS4xfENi9vL/3aKBLYaZ1CYQnY1dZHqqsCgRbq7woLVVqr0PXdIvi+gOU1KxLES32S5HZAwxSqpzHU8dkLkRBpvjT+ZdzU4RnosaNGGToDq7ikoOEtBPKDtp
+ SVhigB4hLbwMgVRpgyCjBRAOQipMkYoBFHvWDcAP0nU3/ZxucRwMwL011fHEKcO4BHCbWIqjVGpvVs3EPpxwy734TN98LxcpfttdSM2syAaIANHh7p0eh08Z
+ O0WQAfbXMYYQsB9ZiS9Iqw8aadzguhBtbXEF7bvGfKq1H6MqQ6KcFbPYY2Abux2nLprDReZackr4AuusMTR1hAq7+xXvXxYoBVAqlwrrjl1fShSLbl2Q4sFY
+ hxFP9LD+lESr5QtapJBhIVbiQcL4GJGHjLbgDAFNPw3oEPE6pW3njb6Ffgd360VViOQzeDq+MZAydeUcj0eZ2IIUdjw9EwzWOseQrXyVT+AdYWUBO4XprNtD
+ n4TthjeWARHPG+cMS0nVauwLIOaaGllK7mbzj+fLYAK96SV9aVkHFtXkg10KqiQE5psmYmgBSi6LmIlsuVT2RIC0B/4wN0y9SsL5iJCX1y/4/CoIu2ts33nB
+ sHLwggalUg8eKkXmKmnjEV1nD+XIOMhlDqKnCyYEFcVfgg==
 
 On Sat, 2026-08-29 at 21:57 +0100, David Woodhouse wrote:
-> Rather than using that more accurate timestamp *only* in the case where
-> CONFIG_NTP_PPS is enabled, do so unconditionally.
->
->  static inline void pps_get_ts(struct pps_event_time *ts)
->  {
-> -#ifdef CONFIG_NTP_PPS
->  	struct system_time_snapshot snap;
->  
->  	ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
->  	ts->ts_real = ktime_to_timespec64(snap.systime);
-> +#ifdef CONFIG_NTP_PPS
->  	ts->ts_raw = ktime_to_timespec64(snap.monoraw);
-> -#else
-> -	ktime_get_real_ts64(&ts->ts_real);
->  #endif
->  }
+> Whatever the original reasons were, the only *remaining* reason seems to
+> have been that the accuracy of the time captured by pps_get_ts() was poor
+> on tickless kernels due to the kernel's per-tick timekeeping mechanism.
 
-Why are you removing ktime_get_real_ts64()?
+"Whatever the original reasons were" and "seems to have been" is not
+enough to drop a dependency that has been there for fifteen years. The
+old comment is useless, I agree. But then we have to say what breaks
+and what does not, not guess.
 
-The commit message says you are using the more accurate timestamp
-unconditionally. What the diff does is delete the !CONFIG_NTP_PPS
-branch. Those are not the same thing, and the second one changes an
-ABI: ts_real reaches userspace through PPS_FETCH on /dev/ppsN and
-through /sys/class/pps/ppsX/assert, documented in
-Documentation/ABI/testing/sysfs-pps and unchanged since 2008. Until
-now it came from ktime_get_real_ts64(), the same clock userspace reads
-with clock_gettime(CLOCK_REALTIME). After your patch it does not.
+First a structural point. This is the only patch of the four that
+applies to mainline, and it has no build dependency on the rest. It is
+a three-line Kconfig delete that compiles on its own. That worries me:
+a small "pps:" patch that applies cleanly is exactly what gets picked
+up alone. Then NTP_PPS becomes selectable on tickless kernels without
+1/4, and we are worse off than today. Reorder it last, or say in the
+commit message that it must not be applied without 1/4.
 
-That needs a good reason and the commit message does not give one.
-Give me that first. Until then the details do not matter.
+> A recent change to ktime_get_snapshot_id() which is used by pps_get_ts()
+> has fixed that problem, by applying a correction to the ::systime field
 
-Separately: are we sure that calling ktime_get_snapshot_id() does not
-introduce much larger delays than ktime_get_real_ts64()? pps_get_ts()
-runs in hard IRQ, and in pps-gpio it is the first statement of the
-handler. Whatever it costs sits between the edge and the timestamp,
-and that is the one thing PPS has to keep short.
+That "recent change" is 1/4 of this series, and it is in no tree yet.
+Reading this, one assumes the groundwork already landed. Say "the
+previous patch". Same wording in 3/4.
 
-I would like to see that measured on something other than an x86 VM
-with a TSC. A small 32-bit ARM board is what I worry about.
+About the test. The pulse comes from 4/4, which derives it from the
+same counter the timekeeping reads. No independent reference anywhere.
+
+Before I ack this I want to see:
+
+   - a real source, pps-gpio with a GPS receiver, where pulse and system
+     clock are independent;
+   - NO_HZ_FULL, not only NO_HZ_IDLE;
+   - a run that goes through a long idle period, not just a busy system.
+
+That is more work than a three-line delete suggests, I know. But those
+three lines unlock a configuration people will run against real
+receivers and then trust.
 
 Rodolfo
