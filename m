@@ -1,92 +1,81 @@
-Received: from server2.schools365.in (server2.schools365.in [103.139.75.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95763515E9
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.139.75.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5AE1A5B8C;
+	Tue,  1 Sep 2026 00:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788220584; cv=none; b=RIK0aoxy2ARSGzb0caNHHwpQ16cpuLEWALOeDwViX7xMU/x3E17U1Wj5jmtXq40cm1NY4lAESln9hUcy6PHHq4Yxmh18glG8CTnHYdn7Yegsi8Lqgi78CEhccAgEEIsMutDb25IaiyBKPAcT/11hUHEAi7Z9TUaFQVsZjDvIjhs=
+	t=1788220869; cv=none; b=aOh7EE0w3eQ62x843ts8GYM1MGEy5/nGMZSVvEVAub2MtZMRblsbeKN1vwqfxmKc0GceXxnjycBLA/USE1FjznBWOcwsSmiSzZq21eIFjO7LeVIlqmdrosbvSM7yLROXjMjbXnSUqKmSHnqQVDoPLWTcbRLftmF2vYpV7r+Jpmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788220584; c=relaxed/simple;
-	bh=mShPhHJtnpn0hEQKAJF0kUyYgFMhjGsUn6Fx8rb1DbA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mhnfh/Lyvp9MTMorLWj/SgDXN+0zqzMwBO/j8LjS7nXGcjQfOjHDzxpMEY4ZrIo5vNmT8Ahdhfw1spmCxTHQA674cYlPYWegOSeEkNbmn/Th60o5eHWztAajd2soylU/iqS2YhzFUYNUWtUD7XF9T/IB93wslKlhhoL2/OhI4F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pulsesports.in; spf=pass smtp.mailfrom=pulsesports.in; arc=none smtp.client-ip=103.139.75.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pulsesports.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pulsesports.in
-Received: from ip255.ip-213-32-95.eu (ip255.ip-213-32-95.eu [213.32.95.255])
-	by server2.schools365.in (Postfix) with ESMTPSA id EE96A190A34
-	for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:28:45 +0000 (UTC)
-Reply-To: info@kztoo.xyz
-From: SMIT EVRASIYA - KZ <anish@pulsesports.in>
-To: netdev@vger.kernel.org
-Subject: Products Offer 
-Date: 31 Aug 2026 16:28:44 -0700
-Message-ID: <20260831162842.955BCC37BBB820B2@pulsesports.in>
+	s=arc-20240116; t=1788220869; c=relaxed/simple;
+	bh=F3BV/S6M68LleNMlJ7LaSIcMlEk1oo/MZ49HA8HvT04=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=I2OpkmHFFto6GQ+qYDSHUoLAtkNhSnlFXGS5vKo+asmNYMBpI6F9oA0BDow+1KBY9qUQhTgX1QHGo7c9stNejLCs4w220L5bqujMOBlLvI3/5hy+BS15FLzxixE4mOx1oJBTazxXSN2ONTWKdnZf3Ix7hwOaDDbN/nIRIYsIYDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z66Ms5Yy; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z66Ms5Yy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5231F000E9;
+	Tue,  1 Sep 2026 00:01:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788220868;
+	bh=Qw3RqNtN77+Ds2okqCPu4wUjPF1qz1+DraeC9q0xAvI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Z66Ms5YyfdGHoEcoSfIqJoW10iQoln/9ofP7T/5u28Yz4sXXxNNMF9g/iZ7j3qsPJ
+	 hiCTbMCYPEfi+kBQ6slo1b55JQS+hxz3x2wdzG+2bsyIiVH1p7ewNz+n6w5P2OjiAJ
+	 g5H6H1xGVitz/j35r/gMTKOl/uYeRRBOids5htNWixlRGnZjGaRTB7/BlJED69kpiw
+	 c4S4GDfhsZi5I0x901Kz6mBdGR6G+CC4vK4Eyl1dwCZ9HzsqXKpbAM+81+0Ni4uske
+	 NWcj3zcAP4PorczXG5etg7CaYscu6b484p3Jt0i2jyBi59BK93OkPGu/CneGfqXqP3
+	 KHjc4+BlU3K6w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198DB392447E;
+	Tue,  1 Sep 2026 00:00:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] page_pool: keep frag_offset aligned for odd-sized
+ requests
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178822081064.841883.3266545254539695421.git-patchwork-notify@kernel.org>
+Date: Tue, 01 Sep 2026 00:00:10 +0000
+References: <20260828060822.2628276-1-florian@schauer.to>
+In-Reply-To: <20260828060822.2628276-1-florian@schauer.to>
+To: Florian Schauer <florian@schauer.to>
+Cc: hawk@kernel.org, ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ sdf@fomichev.me, linyunsheng@huawei.com
 
-    Hello netdev
+Hello:
 
-    It is our pleasure to make good business with you. Am sure=20
-you
-    understand that this actually is very serious. It is not in=20
-our
-    interest to work with someone who intends to waste our time,=20
-as
-    such creating an unpleasant atmosphere for us. There are=20
-several
-    Oil and Gas Refineries with more than 20 years of plausible
-    records, reliability, and trustworthiness, that we are=20
-connected
-    with. Simply put, we are directly linked to End Sellers. It
-    surely will make deals much more fluid, easy and swift,=20
-without
-    the broker's involvement and interference. We are pleased to
-    present some strong Offers with suitable Procedures and
-    Negotiable prices. Which I am positive will be of interest to
-    you.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-    The following products are available and all can be supplied
-    mostly on FOB ROTTERDAM/HOUSTON PORT,
-    1. Commodity: JP54 or JP A1
-    2. Commodity: Diesel GAS OIL D2
-    3. Commodity: Mazut M100
-    4. Commodity: D6 Virgin Fuel Oil
-    5. Commodity: Diesel EN590 10ppm / 50ppm
-    6. Commodity: Petcoke
-    7. Commodity: LNG / LPG
-    8. Commodity: Diesel AGO
+On Fri, 28 Aug 2026 08:08:22 +0200 you wrote:
+> page_pool_alloc_frag_netmem() rounds the requested fragment size with
+> 
+> 	size = ALIGN(size, dma_get_cache_alignment());
+> 
+> dma_get_cache_alignment() returns 1 unless the architecture defines
+> ARCH_DMA_MINALIGN, which DMA-coherent architectures such as x86 do not.
+> There the ALIGN() is a no-op and pool->frag_offset advances by the raw,
+> unrounded size.
+> 
+> [...]
 
-    Quotas from our various Refineries/End Seller for our=20
-different
-    buyers who are interested in Spot/Urgent transactions on FOB
-    deliveries to any safe world port (ASWP) are ensured/secured.=20
-Our
-    Refineries have their products both at  Rotterdam port, and
-    Houston Port. If interested and/or have a reliable buyer of=20
-the
-    products mentioned above or similar, with the real intention=20
-for
-    business. Please, indicate the particular Product wanted, the
-    Volumes desired and Destination it should be delivered. We=20
-will
-    immediately send an Official Soft Corporate Offer (SCO). A
-    straightforward proceeding is assured if we agree on terms.
+Here is the summary with links:
+  - [net,v2] page_pool: keep frag_offset aligned for odd-sized requests
+    https://git.kernel.org/netdev/net/c/dc0df5a0c62c
 
-    We look forward to hearing from you.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-
-
-    REPRESENTATIVE: ORAZALIEV ADILBEK RASHIDUL
-    SMIT EVRASIYA - KZ
-    POSITION: DIRECTOR
-    Email: info@kztoo.xyz
-    Phone: +7 778 395 2331
