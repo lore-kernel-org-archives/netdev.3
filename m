@@ -1,207 +1,137 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A56147D929
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAFD476CC6;
+	Tue,  1 Sep 2026 09:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788254803; cv=none; b=B6rOzSDEJVgdS1tE1M/rJBiA9XSVXT9zBYQybSj8ULV2RvIcH+6fNh5aJn9yGRVqLM5ufgOUvUhSatM9SDH1Hnn+GMGFTadhSXay0+co3Tm/bnHzuZ11MhnyB9WK5pSp3k5Iq7ouDHGY//GPwVAS9yyyKuVnDFOK7dww2FOSGkM=
+	t=1788254947; cv=none; b=Vd8dAvqNooURmpn2JxwwGmnKujc85sXM/kuhLhMCnqvKMCm9sBrO+Uk07rDEuXBOwa1ZT6nf1CN49liNxYRLNMbP5LTJskEmx3IY/Hg5Ds4VYytey7wFY36w6OTbgGe/G75hHDDhjQc9MWfqbzdBtckS5MREKutRQZ0NVmoOIPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788254803; c=relaxed/simple;
-	bh=486JyvxoR2eg9x09oSX4uB43Q8gO3J5bOat7K487kfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TyiJFRFPvVGxCtQ2yH5yEhNUlLUqcfvnPUYkH1Sh61NQQQlClS4O+QroWxdkUHZyfcgQd+kHT5LptRVnJCKgLQm2CJ+UOXQ9RBbVuMb65PnPEOXy7GNw3P72kMHtU3RUx244/p0uux8Tos/o9iX89OZjiKlVW6TB6IJpO0H1OSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=qOrJRXdB; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="qOrJRXdB"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2531f453eeso691871866b.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 02:26:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1788254799; x=1788859599; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W02+miOc40enO8Kk7fWVAuXmWTmU4/GB4n7lg/BSofo=;
-        b=qOrJRXdB3HevmYq39yGXrM7ck8HCbpJ1c9eIxEPRGaxZlJ0Ezsmh0YH9LhCcuZAtBA
-         RMw8pYaT1/FGIf+fQ8DWDWGMabT9eIS0kX5RDP3Hkp5j3/AWignHYUZFBqEGGt6gBOOs
-         ijwBmOZIiakVWW5j7pjbjPLYFbC5xNfAAYgKYVQVLIPL0eRwo7lRDoFEYyCA3f/gKrVd
-         iCMe26eb2xzVyJxRXa5ioBrFe0c8TPuZoH42YLe0isoZfZsu4g28tln0CVda3SCFMsdP
-         HvE/nSHzg4Au2RdpVreOs9CX2riK1Khr2U+9mMoq4TRAQsDCdSElbkG6TXr7PODkEOF1
-         CFkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788254799; x=1788859599;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W02+miOc40enO8Kk7fWVAuXmWTmU4/GB4n7lg/BSofo=;
-        b=K/pNelGWo7KI+Wl99u2zdlUzgM0FhJ475JjJ2qm+k0Su1iM1LSB+RGBcqWJu5jezeN
-         //KTqKpL115F54bTuCDaXlQJtUXHWm1GrnEbcbsCLYAVj9Kf64gfRYA473t7IzN6Uork
-         c5eOV/l+pCZIyh8g5g5Zl3lWq+JCgmKimnsflr9CN/0h3wvgofJX3MVrdNnIoZtl+buQ
-         lojvegZ6O4WODfhOuLL9+8Du6mGWCePVt/sucL96jmqynmPol3lX8V67uCnDowvQLKL8
-         EKHc5ZFMla1eiO9JyPRBvAh2/GtqEKy64hyF+XgcaVOXkU41jJCfAFfoOeRDKHBFi9V6
-         fYzQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqUYStL4ugMMy5tGQicvtHqtllo8DsT0eSOaO3Mcrqbv/Uj/aY9hXBSi3/6BkdT1Pj4T6sAWpo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mmcqYh6oq73WqVXYV8ji1y+byryJCakitxQxI0xTGjv7nooMX3
-	5uGjyf2G1drHajHnEUrVVm3NV4tEV0vJpjJeeUZ5p/dby6BJiQ2BzA1+QiJK3iUscw==
-X-Gm-Gg: AR+sD13/31AQ/S82yAaaTKpJOKuXtU9qJHn9XKOowlUi3y7TR9iFbE1N5d14KfPJ4j2
-	QaFI3CkH9HdwzQl/QN28VpEl/pK3jPEDdbC1pATCXD4k+3rEXs6PWXehsAWCBhKrE83IQC3rC8W
-	9W89ixZjU31paoIOt5esyRVm+mOvXRa17NYsmdBd9o27i9tj5/FwVg+/6BGN3aC3aBafysA8o65
-	JluwSe8zsCMx1noCC+TyRHFvas/4oUPM317L6iyFICdpinN9P/JLYvpG1VYsmbJ0L5KiqgcWq2c
-	tOen+SfAeQlGZrHWjShIf/XRwnyy7AHWLpnKZFRca+gxVsbfzGAYkkWhNqrZyCBDrcpkoAWbvUX
-	lt5t2qK6NUAlqvuub0H2F8Wu9uoTt/WsW00btjniblHRItD7h3LwX45Xkx/luJoAq60FdeSUqrh
-	RJJO12DFLOblaE+IToABJlA3n3l2/8X0ShQWX5QaIC9Mmp2bVFqRS8c7uvMx5imE/6iPOAZNN5O
-	D0ax1SnnLWAE9IfGuA0mc4yDHsmcwN/duLW51wt3NImTneuaMyuvazNotca1nU1EpCqOj/nvhZF
-	OM5PAU+GjAdN8fYqQSh6fT5NliQeTQ57jWd/Qzsh9sC0nxDTQuKolBIYw7nOBQM10xrjqHd1fXR
-	8TB68hi+aDaJIeVgerK8b9ZQgFE+Ia7LojVAGIWtPkanck84PiNNxAi2hk/xZJAmdc6Q7WCsa
-X-Received: by 2002:a17:907:1c28:b0:c25:2d27:5652 with SMTP id a640c23a62f3a-c25b3cc9a35mr447457466b.11.1788254799343;
-        Tue, 01 Sep 2026 02:26:39 -0700 (PDT)
-Received: from Desktop.fritz.box ([185.181.129.92])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1fb965sm574724766b.49.2026.09.01.02.26.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 02:26:38 -0700 (PDT)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH nf-next] netfilter: flowtable: carry a priority into the offload
-Date: Tue,  1 Sep 2026 11:26:32 +0200
-Message-ID: <20260901092632.369248-1-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1788254947; c=relaxed/simple;
+	bh=Dfys3I4aIMPKtf0lDoOBlnhZJxVXG3dQk+fTqsF80D0=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=P9CsmTa4C6X/28aQz9AroS61LqxupPUA+DXdbqP18AwuBNM49zyvBd0J3ChqiNX2kzho3zeE8D8WAs9U+mEbp1+MM0Vf0Ah+1iR5q8OstPxsQQCHlcXVl+aMdgwzeAZOXZ95ytSsJpkbwJWMPwohuOqXCYiHdEQL/0637OWDOkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hZ0t62ftBz4yjjP;
+	Tue, 01 Sep 2026 17:29:02 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 6819Sm7I087688;
+	Tue, 1 Sep 2026 17:28:48 +0800 (+08)
+	(envelope-from he.peilin@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid31;
+	Tue, 1 Sep 2026 17:28:51 +0800 (CST)
+X-Zmail-TransId: 2af96a969ad3c03-70ef9
+X-Mailer: Zmail v1.0
+Message-ID: <20260901172851033O5o7viiEDPAm8g6Mkqe-G@zte.com.cn>
+Date: Tue, 1 Sep 2026 17:28:51 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+From: <he.peilin@zte.com.cn>
+To: <maxime.chevallier@bootlin.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <vbridgers2013@gmail.com>,
+        <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Cc: <jiang.kun2@zte.com.cn>, <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4IG5leHQgdjNdIG5ldDogc3RtbWFjOiByZW1vdmUgc29mdHdhcmUgVkxBTiB0YWcgc3RyaXBwaW5n?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6819Sm7I087688
+X-TLS: YES
+X-ENVELOPE-SENDER: he.peilin@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 01 Sep 2026 17:29:02 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A969ADE.001/4hZ0t62ftBz4yjjP
 
-A flow rule handed to a driver describes NAT, encapsulation and the
-output device, but not how the flow should be treated on the way out,
-so hardware with priority queues can only fall back on the DSCP the
-packet carries.
+The software VLAN stripping logic in stmmac_rx_vlan() was originally
+introduced in 2014 by commit b93819854d6e ("stmmac: Add vlan rx for
+better GRO performance.") as a workaround to improve GRO performance,
+since at that time GRO could not handle frames with VLAN tags. However,
+this limitation was resolved in 2015 by commit 66e5133f19e9 ("vlan: Add
+GRO support for non hardware accelerated vlan"), which added GRO support
+for non-hardware-accelerated VLAN frames. Keeping a software fallback
+path for VLAN stripping is no longer necessary and only adds complexity.
 
-Carry skb->priority of the packet that created the flow and emit it as
-FLOW_ACTION_PRIORITY, the action act_skbedit already emits on the tc
-path. "meta priority set" before "flow add" then reaches the hardware.
-A flow without a priority emits no action; mtk and airoha, the two
-in-tree consumers of these rules, ignore the new one as they do
-FLOW_ACTION_CSUM.
-
-The flowtable holds one flow for both directions and the expression
-runs once, so the priority applies to both; per-direction
-classification is not carried.
-
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+Fixes: b93819854d6e ("stmmac: Add vlan rx for better GRO performance.")
+Signed-off-by: Peilin He <he.peilin@zte.com.cn>
+Reviewed-by: xu xin <xu.xin16@zte.com.cn>
+Reviewed-by: Jiang Kun <jiang.kun2@zte.com.cn>
 ---
-The consumer of the emitted action is a DSA driver for the IPQ8074 PPE,
-maintained in OpenWrt; measured there, "meta priority set" ahead of
-"flow add" places offloaded flows in the port's hardware priority
-queues. The mtk and airoha hunks are compile-tested only. The new field
-grows struct flow_offload by eight bytes on 64-bit; the entry allocates
-from its own kmem_cache, so no allocation-class change.
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 28 ++-----------------
+ 1 file changed, 2 insertions(+), 26 deletions(-)
 
- drivers/net/ethernet/airoha/airoha_ppe.c        |  1 +
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c |  1 +
- include/net/netfilter/nf_flow_table.h           |  1 +
- net/netfilter/nf_flow_table_offload.c           | 11 +++++++++++
- net/netfilter/nft_flow_offload.c                |  7 +++++++
- 5 files changed, 21 insertions(+)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b2b7d0242dd3..2e3b0cf10d66 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5021,24 +5021,6 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
+ 	return vlan_features_check(skb, features);
+ }
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 92611802801e..2afce76ad131 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -1161,6 +1161,7 @@ static int airoha_ppe_flow_offload_replace(struct airoha_eth *eth,
- 		case FLOW_ACTION_REDIRECT:
- 			odev = act->dev;
- 			break;
-+		case FLOW_ACTION_PRIORITY:
- 		case FLOW_ACTION_CSUM:
- 			break;
- 		case FLOW_ACTION_VLAN_PUSH:
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index 99b28aaa7cc4..4ee99e8e4a34 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -378,6 +378,7 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
- 		case FLOW_ACTION_REDIRECT:
- 			odev = act->dev;
- 			break;
-+		case FLOW_ACTION_PRIORITY:
- 		case FLOW_ACTION_CSUM:
- 			break;
- 		case FLOW_ACTION_VLAN_PUSH:
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index f2e2771f188f..23218c8cbc3d 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -202,6 +202,7 @@ struct flow_offload {
- 	unsigned long				flags;
- 	u16					type;
- 	u32					timeout;
-+	u32					priority;
- 	struct rcu_head				rcu_head;
- };
- 
-diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-index 801a3dd9ceea..caaadffc2563 100644
---- a/net/netfilter/nf_flow_table_offload.c
-+++ b/net/netfilter/nf_flow_table_offload.c
-@@ -696,6 +696,17 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
- 	    flow_offload_eth_dst(net, flow, dir, flow_rule) < 0)
- 		return -1;
- 
-+	if (flow->priority) {
-+		struct flow_action_entry *entry;
+-static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
+-{
+-	struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
+-	__be16 vlan_proto = veth->h_vlan_proto;
+-	u16 vlanid;
+-
+-	if ((vlan_proto == htons(ETH_P_8021Q) &&
+-	     dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
+-	    (vlan_proto == htons(ETH_P_8021AD) &&
+-	     dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
+-		/* pop the vlan tag */
+-		vlanid = ntohs(veth->h_vlan_TCI);
+-		memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
+-		skb_pull(skb, VLAN_HLEN);
+-		__vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
+-	}
+-}
+-
+ /**
+  * stmmac_rx_refill - refill used skb preallocated buffers
+  * @priv: driver private structure
+@@ -5407,9 +5389,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+ 	if (priv->hw->hw_vlan_en)
+ 		/* MAC level stripping. */
+ 		stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+-	else
+-		/* Driver level stripping. */
+-		stmmac_rx_vlan(priv->dev, skb);
 +
-+		entry = flow_action_entry_next(flow_rule);
-+		if (!entry)
-+			return -1;
-+
-+		entry->id = FLOW_ACTION_PRIORITY;
-+		entry->priority = flow->priority;
-+	}
-+
- 	tuple = &flow->tuplehash[dir].tuple;
- 
- 	for (i = 0; i < tuple->encap_num; i++) {
-diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
-index 32b4281038dd..dd3ac2b9c963 100644
---- a/net/netfilter/nft_flow_offload.c
-+++ b/net/netfilter/nft_flow_offload.c
-@@ -117,6 +117,13 @@ static void nft_flow_offload_eval(const struct nft_expr *expr,
- 	if (tcph)
- 		flow_offload_ct_tcp(ct);
- 
-+	/* Whatever classified this packet before it reached the flowtable also
-+	 * describes every packet the hardware will forward in its place, so
-+	 * carry it into the offload rather than losing it with the software
-+	 * path.
-+	 */
-+	flow->priority = pkt->skb->priority;
-+
- 	__set_bit(NF_FLOW_HW_BIDIRECTIONAL, &flow->flags);
- 	ret = flow_offload_add(flowtable, flow);
- 	if (ret < 0)
+ 	skb->protocol = eth_type_trans(skb, priv->dev);
 
-base-commit: 91ec2035134982b98fab0609a9fd8480e8217dc1
+ 	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+@@ -5901,9 +5881,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 		if (priv->hw->hw_vlan_en)
+ 			/* MAC level stripping. */
+ 			stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+-		else
+-			/* Driver level stripping. */
+-			stmmac_rx_vlan(priv->dev, skb);
+
+ 		skb->protocol = eth_type_trans(skb, priv->dev);
+
+@@ -7964,9 +7941,8 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	ndev->features |= ndev->hw_features | NETIF_F_HIGHDMA;
+ 	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
+ #ifdef STMMAC_VLAN_TAG_USED
+-	/* Both mac100 and gmac support receive VLAN tag detection */
+-	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
+ 	if (dwmac_is_xmac(priv->plat->core_type)) {
++		ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
+ 		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
+ 		priv->hw->hw_vlan_en = true;
+ 	}
 -- 
-2.53.0
-
+2.27.0
