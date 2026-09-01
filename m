@@ -1,219 +1,184 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-oa2-f10.google.com (mail-oa2-f10.google.com [74.125.231.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F273189F43;
-	Tue,  1 Sep 2026 13:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9080734EF04
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 13:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788270940; cv=none; b=P55HpyBm4cLXD7h667a2kUu9TNzARhkls/SvOX0TpwixmXkR2Z0sclp2htFF86pM1+yx6VEzjRwhp0Yi8yFqEqiCRN89Gzy4gbEUx/1iUTUhyAcuViY86WoW5SohBUK7WF4ot3XsqX4uehmKt29UIA3VtyIaG/RuJmAnrKDAxcE=
+	t=1788271112; cv=none; b=Kn1cELroQYKHPnEpVnzU5UN5v3VrB4rkbwOrdT3mu4u4VxZZNv++vnFWEG0EnSzk2Z1WuI5ds85nAGPQAIE0gArzzg3Ba7EDmTYWH0iq/cbvpJSa+y8rZT68tNJaetxW4zVCVqru+ZifWDa5EBKYvLrI6BD1RfVJVs7HGlTgXGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788270940; c=relaxed/simple;
-	bh=+lv3JU9YTFJRgUVSopnnbVbsgjFo1rzZBz1rfXXsuCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dOR2uQELNJDCzb5p3ANu5eqopCjPY1Z5uxabJurbEyEGLgs5G87srxh8b+MfTQPX7frj2jGtMn8dkjwPWDSuUqd+n4vDAOncSY8g9o2OIC58vKZd6rH9S49E6ITCKADDDeYuzTMoQ0+ECe31NLOtz/O303PqYebDhFRrwhqNFW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DG1vdoEv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=bJPNBMR6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=SsGE3c2V; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4vjzU0at; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DG1vdoEv";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="bJPNBMR6";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="SsGE3c2V";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4vjzU0at"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 021CD1F456;
-	Tue,  1 Sep 2026 13:55:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788270932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MjO7b8BiqciaFISpoTL+zOgGR0VbUuS8pqnqjH6vazg=;
-	b=DG1vdoEv/Qe0Ufw2JayuTZr02OWvgr7G423SHFU/Kairm9U5Z+f5HBz/mQId3jru3N7Lzf
-	37fkOReTNLktpXlWP9d+IUoGmWhi0q/k8aJWab0axtTF4wCtnFOHl6voPtK3taoodHnOMl
-	7R+rcwY014S+Yl23vWANLg3dztg0yN8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788270932;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MjO7b8BiqciaFISpoTL+zOgGR0VbUuS8pqnqjH6vazg=;
-	b=bJPNBMR6zsGmB2AdER/JH3+bPrI75g1+0FGhZCra2N06UiwchyGorohCU1VvB3bVyVuTDj
-	SOHi6E1tjNUAFeAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SsGE3c2V;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4vjzU0at
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1788270928; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MjO7b8BiqciaFISpoTL+zOgGR0VbUuS8pqnqjH6vazg=;
-	b=SsGE3c2VCZ1i7jOMs8iGzU1GV2o4dM408bGlh0CwvF3X2RHyIdUs77ToeVcMQhqUl2A38+
-	RNHiPLqRAh9x3sjmR1Ak7M0nfPe5cBM9Li2ctePCmhL3IeeeH78eQHoKnfhPRWZg1IGq9o
-	4BeOY6g/ttzlzRqdMLLYLVGeIS2aerM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1788270928;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MjO7b8BiqciaFISpoTL+zOgGR0VbUuS8pqnqjH6vazg=;
-	b=4vjzU0atSAzEHkYExz/OGYJLWXLKKYe4QdD8eI9iaqYPpBam7W0AtCOiCgffvpR5P1zj7i
-	PnBnC53fXpDyUzAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D20FD136A2;
-	Tue,  1 Sep 2026 13:55:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eYk7M0/ZlmoaUQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 01 Sep 2026 13:55:27 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6AF7BA13B2; Tue, 01 Sep 2026 15:55:23 +0200 (CEST)
-Date: Tue, 1 Sep 2026 15:55:23 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	bcrl@kvack.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
-	yi.zhang@huawei.com, sforshee@kernel.org, pmladek@suse.com, rostedt@goodmis.org, 
-	andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk, senozhatsky@chromium.org, 
-	akpm@linux-foundation.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com, 
-	jhs@mojatatu.com, jiri@resnulli.us, kees@kernel.org, cyphar@cyphar.com, 
-	tglx@kernel.org, sdf@fomichev.me, nb@tipi-net.de, liuhangbin@gmail.com, 
-	da-x@monatomic.org, jeff@garzik.org, linux-fsdevel@vger.kernel.org, 
-	linux-aio@kvack.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 07/12] ext4: Fix out-of-bounds read in
- ext4_get_group_info()
-Message-ID: <stftjabhlylnomnoc445lfa6cio4fdtdtjlo6awia4xczfpum6@vmnfqv3omqfc>
-References: <20260901024234.135119-1-ruanjinjie@huawei.com>
- <20260901024234.135119-8-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1788271112; c=relaxed/simple;
+	bh=ENIdvHRw1IiFMIzhFtYNWAzVUTCe7z0d5NvRi0XN0lQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ImXuV55fGhs9X/qdRxscfGwHWkGcT1AizGkJj+aK/PD2oWWZvgxJjDrDOvsbMrMfiIquRVwurE9X1can26gBsjPvm/Rzqp397WjPmXqlC0d8lGhs4zlsOcq3RqQ/zkC9sB/5vfe0toUJzSqtU8wJf95EyXF9nercnEFF5pZNTV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa2-f10.google.com with SMTP id 586e51a60fabf-46abf222dc3so400718fac.0
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 06:58:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788271109; x=1788875909;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oSScl9b39LFhA6dCrI2VzC9NEUldGRGWmrst0p3B1xs=;
+        b=rCwTFx9z3Mf3RktRUg5ypaGkAAuWNQ/ZELfASARhjrWQSRd5k2RD3lWEHI9mVkhjV7
+         e06REi89Apni88uqgeM0pWcglLjOhpDK+E1qCIyhLC+C9gCqWm1qb4HQ6mvlBVeGDlc+
+         7e+dQ7dsGeuJzmdnMcCBPovUqF1VYscT8RHbEpcpxphgzYBRhlNBphrBlGtxXSzynjBu
+         n3vCsRf2ZIgxb9FED+dYtFuB5JNAK2L483YFahJGKzhMl/pMGq8B+x0CxHn1exU1KeKG
+         4OE9jf8/MdLSRpt91eznRtE8YTfQ74m2KHi9LfdsHBGKNyX2EwMUj2Ywdk2oS6mFkYZG
+         spRw==
+X-Forwarded-Encrypted: i=1; AHgh+RortAKdAeEku70Vc+gisaagWmTEP66+x3r7II5TNxHBCqjuJyxypao2nRoWB11iVihKkVU9dNw=@vger.kernel.org
+X-Gm-Message-State: AFuF++n5cdNlsze0hu03wEWZHh7IDJoy+CvBVnk+gxzrz966/aLne3sQ
+	p4zWG1D/urvZpg0vE90PMx30NiyoSsG4OZsBFK3ZVLG+wYcCJuRo0BjIUL76+X4T86CZD0o2NcE
+	M36JC3Ff1dCOFT1444Z0+rADz81VEwBjwObP8LOPOAUdTBMixMB+tulBYevI=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901024234.135119-8-ruanjinjie@huawei.com>
-X-Spam-Score: -2.51
-X-Rspamd-Queue-Id: 021CD1F456
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[40];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,kvack.org,mit.edu,dilger.ca,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,suse.com,goodmis.org,linux.intel.com,rasmusvillemoes.dk,chromium.org,linux-foundation.org,davemloft.net,google.com,redhat.com,mojatatu.com,resnulli.us,cyphar.com,fomichev.me,tipi-net.de,monatomic.org,garzik.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLa77mm4gi8mw7uppieotozii3)];
-	MISSING_XM_UA(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Flag: NO
+X-Received: by 2002:a05:6820:60b:b0:6b3:bb82:2736 with SMTP id
+ 006d021491bc7-6b3bb82372amr1185072eaf.17.1788271109452; Tue, 01 Sep 2026
+ 06:58:29 -0700 (PDT)
+Date: Tue, 01 Sep 2026 06:58:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a96da05.08473e0e.15b4ac.0001.GAE@google.com>
+Subject: [syzbot] [sctp?] WARNING: refcount bug in sctp_generate_timeout_event (4)
+From: syzbot <syzbot+f5baf1a1df3261c2ad8d@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue 01-09-26 10:42:29, Jinjie Ruan wrote:
-> A plain read of s_groups_count in ext4_get_group_info() allows CPU
-> load-load reordering. On weak memory models, speculative prefetch of
-> s_group_info prior to the boundary check could lead to an out-of-bounds
-> read if a concurrent online resize expands the array and increments
-> s_groups_count.
-> 
-> The data race occurs between the ioctl configuration path (holding the
-> resize lock via ext4_resize_begin) and the lockless metadata lookup path:
-> 
->    CPU 0 (Writer, Resize Lock)                CPU 1 (Reader, Lockless)
->    ---------------------------                ------------------------
->    ext4_ioctl()
->      [EXT4_IOC_GROUP_ADD]
->      ext4_ioctl_group_add()
->        ext4_resize_begin() // Takes lock
->        ext4_group_add()
->          ext4_mb_alloc_groupinfo()
->            // Publishes expanded array via RCU
->            rcu_assign_pointer(s_group_info, ...)
-> 
->          ext4_flex_group_add()
->            ext4_update_super()
->                                               ext4_get_group_info()
->                                                 // Speculative / out-of-order read
->                                                 [Loads old/smaller s_group_info pointer]
->              [Plain C store / smp_wmb()]
->              sbi->s_groups_count += ...;
->                                                 // Reads new s_groups_count,
->                                                 // boundary check passes
->                                                 if (group >= s_groups_count)
-> 
->                                                 // Out-of-bounds array access!
->                                                 sbi_array_rcu_deref(..., s_group_info)
-> 
-> Fix this by using ext4_get_groups_count() to enforce acquire semantics.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: "Theodore Ts'o" <tytso@mit.edu>
-> Cc: Andreas Dilger <adilger.kernel@dilger.ca>
-> Cc: Baokun Li <libaokun@linux.alibaba.com>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-> Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-> Cc: Zhang Yi <yi.zhang@huawei.com>
-> Fixes: 5354b2af3406 ("ext4: allow ext4_get_group_info() to fail")
-> Link: https://sashiko.dev/#/patchset/20260825095422.3166067-1-ruanjinjie%40huawei.com
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Hello,
 
-Looks good. Feel free to add:
+syzbot found the following issue on:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+HEAD commit:    bf1079577a11 Merge tag 'sched_ext-for-7.3-rc1-fixes' of gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17d06d9e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=f5baf1a1df3261c2ad8d
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-								Honza
+Unfortunately, I don't have any reproducer for this issue yet.
 
-> ---
->  fs/ext4/balloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-> index 52f4c5169f91..778fe8788f06 100644
-> --- a/fs/ext4/balloc.c
-> +++ b/fs/ext4/balloc.c
-> @@ -329,7 +329,7 @@ struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
->  	struct ext4_group_info **grp_info;
->  	long indexv, indexh;
->  
-> -	if (unlikely(group >= EXT4_SB(sb)->s_groups_count))
-> +	if (unlikely(group >= ext4_get_groups_count(sb)))
->  		return NULL;
->  	if (unlikely(!EXT4_SB(sb)->s_group_info))
->  		return NULL;
-> -- 
-> 2.34.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c52dc60311d3/disk-bf107957.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/37591d96a65b/vmlinux-bf107957.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/729e80af6e39/bzImage-bf107957.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f5baf1a1df3261c2ad8d@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x9f/0x110 lib/refcount.c:25, CPU#1: syz.0.2220/13955
+Modules linked in:
+CPU: 1 UID: 0 PID: 13955 Comm: syz.0.2220 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
+RIP: 0010:refcount_warn_saturate+0x9f/0x110 lib/refcount.c:25
+Code: eb 66 85 db 74 3e 83 fb 01 75 4c e8 6b d2 e9 fc 48 8d 3d f4 46 a7 0b 67 48 0f b9 3a eb 4a e8 58 d2 e9 fc 48 8d 3d f1 46 a7 0b <67> 48 0f b9 3a eb 37 e8 45 d2 e9 fc 48 8d 3d ee 46 a7 0b 67 48 0f
+RSP: 0018:ffffc90000a18c28 EFLAGS: 00010246
+RAX: ffffffff84dde548 RBX: 0000000000000002 RCX: ffff88807715be80
+RDX: 0000000000000100 RSI: 0000000000000100 RDI: ffffffff90852c40
+RBP: 0000000000000000 R08: ffff88807715be80 R09: 0000000000000005
+R10: 0000000000000004 R11: 0000000000000100 R12: dffffc0000000000
+R13: 0000000000000001 R14: ffff888020fde004 R15: ffff888020fde640
+FS:  00007f4a87be06c0(0000) GS:ffff888124dda000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff55dd92eb8 CR3: 000000005800b000 CR4: 0000000000350ef0
+Call Trace:
+ <IRQ>
+ sctp_generate_timeout_event+0x1c8/0x390 net/sctp/sm_sideeffect.c:284
+ call_timer_fn+0x18d/0x5f0 kernel/time/timer.c:1748
+ expire_timers kernel/time/timer.c:1799 [inline]
+ __run_timers kernel/time/timer.c:2374 [inline]
+ __run_timer_base+0x652/0x8b0 kernel/time/timer.c:2386
+ run_timer_base kernel/time/timer.c:2395 [inline]
+ run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ __do_softirq kernel/softirq.c:679 [inline]
+ invoke_softirq kernel/softirq.c:519 [inline]
+ __irq_exit_rcu+0xcb/0x220 kernel/softirq.c:767
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:784
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+RIP: 0010:lock_acquire+0x232/0x350 kernel/locking/lockdep.c:5913
+Code: ff ff ff e8 a0 a9 40 0a f7 44 24 10 00 02 00 00 0f 84 38 ff ff ff 65 48 8b 05 f2 44 f1 11 48 3b 44 24 50 75 33 fb 48 83 c4 58 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 ba 25 6d ff cc 48 8d 3d 77 31 da
+RSP: 0018:ffffc9000dabfac8 EFLAGS: 00000282
+RAX: b29753db72d85c00 RBX: 0000000000000001 RCX: 8000000000000001
+RDX: 00000000b866b3b2 RSI: ffffffff8e6fc28f RDI: ffffffff8c6d9380
+RBP: ffff88807715be80 R08: 8c00000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: ffff888066f6e418 R12: ffff888066f6e418
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000246
+ __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
+ spin_lock include/linux/spinlock.h:347 [inline]
+ __io_cq_lock io_uring/io_uring.c:484 [inline]
+ __io_submit_flush_completions+0x85/0x10d0 io_uring/io_uring.c:1133
+ io_submit_flush_completions io_uring/io_uring.h:253 [inline]
+ io_submit_state_end io_uring/io_uring.c:1939 [inline]
+ io_submit_sqes+0x1cec/0x2310 io_uring/io_uring.c:2063
+ __do_sys_io_uring_enter io_uring/io_uring.c:2637 [inline]
+ __se_sys_io_uring_enter+0x35b/0x1bb0 io_uring/io_uring.c:2586
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4a86d9e159
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4a87bdff38 EFLAGS: 00000246 ORIG_RAX: 00000000000001aa
+RAX: ffffffffffffffda RBX: 0000200000000340 RCX: 00007f4a86d9e159
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000009
+RBP: 0000000000000a12 R08: 0000000000000000 R09: 0000000000000008
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000200000000940
+R13: 0000200000000948 R14: 0000000000000e26 R15: 0000000000000002
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	eb 66                	jmp    0x68
+   2:	85 db                	test   %ebx,%ebx
+   4:	74 3e                	je     0x44
+   6:	83 fb 01             	cmp    $0x1,%ebx
+   9:	75 4c                	jne    0x57
+   b:	e8 6b d2 e9 fc       	call   0xfce9d27b
+  10:	48 8d 3d f4 46 a7 0b 	lea    0xba746f4(%rip),%rdi        # 0xba7470b
+  17:	67 48 0f b9 3a       	ud1    (%edx),%rdi
+  1c:	eb 4a                	jmp    0x68
+  1e:	e8 58 d2 e9 fc       	call   0xfce9d27b
+  23:	48 8d 3d f1 46 a7 0b 	lea    0xba746f1(%rip),%rdi        # 0xba7471b
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	eb 37                	jmp    0x68
+  31:	e8 45 d2 e9 fc       	call   0xfce9d27b
+  36:	48 8d 3d ee 46 a7 0b 	lea    0xba746ee(%rip),%rdi        # 0xba7472b
+  3d:	67                   	addr32
+  3e:	48                   	rex.W
+  3f:	0f                   	.byte 0xf
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
