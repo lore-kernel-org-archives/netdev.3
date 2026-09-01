@@ -1,179 +1,254 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF537245012;
-	Tue,  1 Sep 2026 23:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D0E245012;
+	Tue,  1 Sep 2026 23:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788306911; cv=none; b=eVzdYhhEfNprfcaIUatTRRxv1K+7pYD5LwhFoAoFbJfEa5O4RdYdBGewZyLsrn3SeaPDwxa5tEHzYNE60TC9D4NTg+0U9UyhEPvjQqckqnKv76DmBZN+nzIzp/PsNCSZhhI+z/c6E43yXmEO687YYv8+fugV5aoE2TgL0xAzTto=
+	t=1788307048; cv=none; b=cIjveMVztpoNJVa3k+k1JAYkkcaFvvmfJWjDg6ohLvy6KvKZvSwJb2D6KihlqlSlRPVt7cATcE2PQo9SK8haizacv3yoxcRdAGernlmqqzlZQ3mswie4WCSwjBUcrOWO5UiovshSaodyaJmw54Ekv0PrdShlvoQBInNzEiayeew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788306911; c=relaxed/simple;
-	bh=ctItrf/cfcjXOq0Ai16mP2Pl6ePJ26E5prZIjEr0Sss=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=kezU/3p+zDTAOmkDFfxdvGHea6/urZOEDaiO0KNZUpCuTlgPKL0z7SYwWuHLEh0pOsnhazYo3whULrUYk/+B44MZYLqiTI9jqyGkqdMRzuMI57BINuzVMob9RndTAwRSuSNI+Gfte2khvvskVapVND/z62dleEn6zNEudx+l1Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=Q0FwJKoO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BXZWoSa8; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1788307048; c=relaxed/simple;
+	bh=+AYzORvlm/BNpkeEMWLJEZAkuODB/gX68fNHFf7FzBQ=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Cbuppeelva50ctHJdcYHyNrrGV5Ry3N/hVrA2Ae+d1x2uJgfjhCJQy7kN0biN+G5goDAK7IRicAozDN1FHmmm/Br5+obtk16Z/BM+/YgisSyceWsaGgyoG2JtcOtzOJOB+YBLMZPLoIuuZabGL30AVJP3c9hkvdp6GuNNTzvcwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=atil5T13; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="Q0FwJKoO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BXZWoSa8"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id C02357A00BD;
-	Tue,  1 Sep 2026 19:55:08 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 01 Sep 2026 19:55:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1788306908; x=1788393308; bh=9Y2/hLnEimnfLdBSR04KDsBy2hua8nue
-	O1JMg1a2Evo=; b=Q0FwJKoO7QJnx6RsMTriFxFP2u6XWYYAw8sjRZYnAJ+cXs26
-	Ryyod9yaE3bpRNEjSyVzAxDDhrN3Kxhp92SKMNcALZOtoibmMtyoZUQVWclAUENz
-	HtSipC9onAHatAlDoaH4btclb0DsAiGQcnhgiS4ah71ZsCbCIhRH5RgmupFdXp0E
-	vSRwTbDIjPYLoHEGi1v5jyzE0tpxwH8z2clhMFA6pgn5DxFNRMqRdfBS/Top8IrH
-	mzlITC7YalJ5LQAST7IuOiVWHKU2kR1LZKe9ECuE8S2XoN10rOm0D2Wgctd0+1+q
-	vnw/DdhTHTUnyqGFWmpPlO/ANyG1hYAUqQEApA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788306908; x=
-	1788393308; bh=9Y2/hLnEimnfLdBSR04KDsBy2hua8nueO1JMg1a2Evo=; b=B
-	XZWoSa8RQBb7Qbmv66eZJ4L1fPsX++GdEcgM7PQIjX8WkXNm0j8NMEbYtHPCoZDW
-	2V8+FWyK3cenoZK1AMsttAGqbgavgkDKNuCpvGNWd+DqUqwC89ox1Zv1U1/OkTfU
-	dO5g7xGFPFUJr8PPutZu7Q9ik45O9NuRPTNKoJX5fAcMEwY8ju2s30Ts9KbYa+wL
-	7b04GzcOnPx6QKYFUeVNGiyK5EqmiLOmUBGP8B2aLLawLinfLB77ibocMhuBD1YO
-	X1wZutmwNHSoHV0GT4wQp2TxqHgV/GM6rk70HkUlBYOVPNUjxzmco4vbRkkbqZM6
-	eat8NR2QP/HcQZ6MfolHQ==
-X-ME-Sender: <xms:3GWXahZFwOkzDUCAFF1vYM5rULB_RS_-MihwK0YJ5WyFT35wJ57VDA>
-    <xme:3GWXamq0r2uqf_D6Ivu0fyLsXVXJx_q_y4AGaf3wad-F_DSmM-7S-MgC79gtWjVDJ
-    z09uqRzlZ109tobDIttNYy6JrTkIpRPEq7YwGSMqN2TBKrjc725-yLM>
-X-ME-Received: <xmr:3GWXatRQ7erqtXCgChQcJQxdiLTIbauoi6kl7SQSPZOWpFDH26rJuDpRiZw43ZMZZH_PKA>
-X-ME-Proxy-Cause: dmFkZTEF5G9dHS2y8j69yQlY/Cc2henMgbR6Ho4Oa11gnKiFvRfOsHVO14a26394OoW67b
-    Sp+hFqKDYv3nVowJFwoAv7Q9YoKSh/BgxAMYCjsXHPYS7b3n8ixaj+VIKjkNP2K5YhcniK
-    0A4iVJxa3qSf/NJaEyQS3oGGdXp43Sk6uAdVAR/LKxk3BGkhx3q4hf0efX3rJH1SQmk6/e
-    nSZ/GrfrB+fG0+G4JDQ5GYc/oSj7C4rdDqh8MUs87MiznBXZyY8bMdm1UJbnkxZUwUte9y
-    o8u6JtRXqALg0wal14QKGz4J0IXZIJ6QeKTG/KEvFh1sn4GaNHr+P+MaJSZJvXvohH/ZKv
-    ocEc85J2e9b40KtvWQi49C1DQCCJ8qIJhaaGs1vcfTx9Gzrym5cEGaNhajrGIyFz5sZI6L
-    vqn6sM3uJ7ewt894SEvv7W50hX7+BXS7rgIR4CioJVD9XHRwoykw5CHlJ608Pxl/wfPaV6
-    Q7wS+5nRAFczMXbXSBYd7f8I2s4pVePADA6yEx7NqUAsxSmslLHHXRt7Ori7g0r8R1R3p2
-    /58mIjr2GPYhbldHOMXwTFKiI+BoJB4ygNDjXpNGkAXqREgeDiC9oLjZITcHdYz+p7Jfxz
-    OJQx9tEQUVsPnp8P98ZqWt0q9jNadWPGynYlbcCMcTQHIRedyvzg+5A4xXWQ
-X-ME-Proxy: <xmx:3GWXaiq1_o8JxoNdEtjZSNzBnbN6IyAq0qRNgk7z65nXjZ1yt77JBQ>
-    <xmx:3GWXav35uWRx28a4D3n9PG5OCbQGgfW52I1PXJcxcDJShcwXCsjuUw>
-    <xmx:3GWXap4pNpK8xmxMR11coXz2O6-jBvXcAX-RRmBt85-j3a4do8NZjg>
-    <xmx:3GWXarTlbBSVyrdsqGh2yVWwSGxwpHsLDxYe8vxXjJDEGb-qMHyL-A>
-    <xmx:3GWXamQjj7R3zKNbslTfvqJ0oD_wleelkrOR2jmrAde4G7zWD4ReUziR>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Sep 2026 19:55:08 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id EF5329FC75; Tue,  1 Sep 2026 16:55:06 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id EE6559FC41;
-	Tue,  1 Sep 2026 16:55:06 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Eric Dumazet <edumazet@google.com>
-cc: Jiale Yao <yaojiale02@163.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-    Alexander Aring <alex.aring@gmail.com>,
-    Marcel Holtmann <marcel@holtmann.org>, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org,
-    Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: Re: [PATCH] bonding: reject IEEE 802.15.4 devices in bond_enslave
-In-reply-to: <CANn89iJthuCa-BZD9vik7LUw1to8aqTFKRgQfmOGozGvMeLanw@mail.gmail.com>
-References: <20260831140710.469576-1-yaojiale02@163.com> <CANn89iJthuCa-BZD9vik7LUw1to8aqTFKRgQfmOGozGvMeLanw@mail.gmail.com>
-Comments: In-reply-to Eric Dumazet <edumazet@google.com>
-   message dated "Mon, 31 Aug 2026 16:20:58 +0200."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="atil5T13"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=F2pUamGclC2rpmeXbHBKIv+yRXdSgUNe5Y9hZMTo4wg=; b=atil5T134RoTVBnAj6iOyUFgCE
+	KN071v/+7DhtaJm1iyIJUPtczjGykbv5pjYGucT/CGzJK5ZhUXyn+vQHi9F9+iq+V6xAlEXtx3zyn
+	WvdVd2rXCPNRi93QV0Jlc/aLUO97j8GKRIABTKsPTqai8WbEthboWuz7GmneyqV82+sYMAP3EEmJb
+	QA3ADlPW30MmHYZSAJcxSYBRB510r0FIoQak7gWN8HOySqw9RMWyjnZQEz2G39ygpC72E3gtoiDtn
+	LWJ/Wca/o/qY3B1mRskxvqccu5/D6xREh9NRVvLptZydSRFEDxqtrJri17pw+EaHMpPeCHgjYtMf0
+	tzIc6v6w==;
+Received: from [2001:8b0:10b:5:d943:510:b128:832d] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x1YLt-00000005xIS-0071;
+	Tue, 01 Sep 2026 23:57:17 +0000
+Message-ID: <bc429684e92a3fed3effab039b3b3c8f90b0c347.camel@infradead.org>
+Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
+ pps_get_ts()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Rodolfo Giometti <giometti@enneenne.com>, Richard Cochran	
+ <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, John Stultz
+ <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,  Stephen Boyd
+ <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
+ linux-kernel@vger.kernel.org, 	netdev@vger.kernel.org, Alexander Gordeev
+ <agordeev@linux.ibm.com>
+Date: Wed, 02 Sep 2026 00:56:56 +0100
+In-Reply-To: <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+	 <20260829210041.40649-4-dwmw2@infradead.org>
+	 <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-FF7WWY51tBUZK59kGipG"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-FF7WWY51tBUZK59kGipG
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 01 Sep 2026 16:55:06 -0700
-Message-ID: <588055.1788306906@famine>
 
-Eric Dumazet <edumazet@google.com> wrote:
+On Tue, 2026-09-01 at 17:35 +0200, Rodolfo Giometti wrote:
+> On Sat, 2026-08-29 at 21:57 +0100, David Woodhouse wrote:
+> > Rather than using that more accurate timestamp *only* in the case where
+> > CONFIG_NTP_PPS is enabled, do so unconditionally.
+> >=20
+> > =C2=A0 static inline void pps_get_ts(struct pps_event_time *ts)
+> > =C2=A0 {
+> > -#ifdef CONFIG_NTP_PPS
+> > =C2=A0=C2=A0	struct system_time_snapshot snap;
+> > =C2=A0=20
+> > =C2=A0=C2=A0	ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
+> > =C2=A0=C2=A0	ts->ts_real =3D ktime_to_timespec64(snap.systime);
+> > +#ifdef CONFIG_NTP_PPS
+> > =C2=A0=C2=A0	ts->ts_raw =3D ktime_to_timespec64(snap.monoraw);
+> > -#else
+> > -	ktime_get_real_ts64(&ts->ts_real);
+> > =C2=A0 #endif
+> > =C2=A0 }
+>=20
+> Why are you removing ktime_get_real_ts64()?
 
->On Mon, Aug 31, 2026 at 4:07=E2=80=AFPM Jiale Yao <yaojiale02@163.com> wro=
-te:
->>
->> Bonding already refuses CAN devices because their protocol-specific state
->> is incompatible with the bonding model. IEEE 802.15.4 devices have the
->> same constraint: they keep protocol-specific state in
->> dev->ieee802154_ptr and do not use Ethernet link-layer semantics.
->>
->> Extend the existing check to reject ARPHRD_IEEE802154 and
->> ARPHRD_IEEE802154_MONITOR devices before bonding changes their link-layer
->> settings.
->>
->> Link: https://lore.kernel.org/netdev/aohMHTTH4VqqgZA7@fedora/
->> Link: https://lore.kernel.org/netdev/6001bd73-ef68-4820-8371-a22775fb820=
-a@hartkopp.net/
->> Fixes: d5ae67bacd96 ("ieee802154: rework interface registration")
->> Suggested-by: Oliver Hartkopp <socketcan@hartkopp.net>
->> Signed-off-by: Jiale Yao <yaojiale02@163.com>
->> ---
->>  drivers/net/bonding/bond_main.c | 6 ++++--
->>  1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_=
-main.c
->> index 522eab060f9e..c716336c5172 100644
->> --- a/drivers/net/bonding/bond_main.c
->> +++ b/drivers/net/bonding/bond_main.c
->> @@ -1894,9 +1894,11 @@ int bond_enslave(struct net_device *bond_dev, str=
-uct net_device *slave_dev,
->>         struct sockaddr_storage ss;
->>         int res =3D 0, i;
->>
->> -       if (slave_dev->type =3D=3D ARPHRD_CAN) {
->> +       if (slave_dev->type =3D=3D ARPHRD_CAN ||
->> +           slave_dev->type =3D=3D ARPHRD_IEEE802154 ||
->> +           slave_dev->type =3D=3D ARPHRD_IEEE802154_MONITOR) {
->>                 BOND_NL_ERR(bond_dev, extack,
->> -                           "CAN devices cannot be enslaved");
->> +                           "CAN and IEEE 802.15.4 devices cannot be ens=
-laved");
->>                 return -EPERM;
->>         }
->
->What about ARPHRD_6LOWPAN ?
->
->I think it is due time to use an allowlist in bonding (and team) to
->stop applying bandaids.
->
->Plan of action:
->
->1) Add:
->
->static inline bool netdev_type_is_lag_compatible(unsigned short type)
->{
->      return type =3D=3D ARPHRD_ETHER || type =3D=3D ARPHRD_INFINIBAND;
->}
->
->2) And use it in bond_enslave() and team_port_add()
+Because it's inaccurate.
 
-	Agreed, although the list might need to be more than just ETHER
-and INFINIBAND.  I recall that folks in the past have bonded ethernet
-with wifi; does wifi show up as ARPHRD_ETHER or ARPHRD_IEEE80211?  A
-quick grep suggests that most of them are ETHER, but not all.
+> The commit message says you are using the more accurate timestamp
+> unconditionally. What the diff does is delete the !CONFIG_NTP_PPS
+> branch. Those are not the same thing, and the second one changes an
+> ABI: ts_real reaches userspace through PPS_FETCH on /dev/ppsN and
+> through /sys/class/pps/ppsX/assert, documented in
+> Documentation/ABI/testing/sysfs-pps and unchanged since 2008. Until
+> now it came from ktime_get_real_ts64(), the same clock userspace reads
+> with clock_gettime(CLOCK_REALTIME). After your patch it does not.
 
-	Dummy interfaces are used a lot in the tests, but those should
-be ETHER.
+Hm? After the patch it still reports CLOCK_REALTIME. Just more
+accurately. Which is exactly what the commit message was trying to say.
 
-	-J
+> That needs a good reason and the commit message does not give one.
+> Give me that first. Until then the details do not matter.
 
->Thanks.
->
->pw-bot: cr
+ktime_get_real_ts64() returns an approximate value of CLOCK_REALTIME
+which is limited by the quantisation of the multiplier in the kernel's
+core timekeeping. ktime_get_snapshot_id(CLOCK_REALTIME) returns a value
+which is *corrected* for that drift.
 
----
-	-Jay Vosburgh, jv@jvosburgh.net
+> Separately: are we sure that calling ktime_get_snapshot_id() does not
+> introduce much larger delays than ktime_get_real_ts64()? pps_get_ts()
+> runs in hard IRQ, and in pps-gpio it is the first statement of the
+> handler. Whatever it costs sits between the edge and the timestamp,
+> and that is the one thing PPS has to keep short.
 
+The critical measure here is the time from the edge to the actual
+tk_clock_read() or tk_clock_read_snapshot() call which captures the
+hardware counter value which is converted into the CLOCK_REALTIME
+reading.
+
+ktime_get_snapshot_id() is what's been called in the CONFIG_NTP_PPS
+case for a very long time =E2=80=94 we're just making it use that same path
+unconditionally. The difference between that and ktime_get_real_ts64()
+is tiny, but non-zero =E2=80=94 it's about 2ns to the snapshot on my x86 te=
+st
+host.
+
+Even ktime_get_real_ts64() is doing things before the snapshot that
+perhaps it needn't (setting ts->tv_sec), and could save us a couple of
+cycles. If this is a real concern, we could certainly look at putting
+the clock snapshot as early as possible and optimising the common case
+of clock_id =3D=3D CLOCK_REALTIME.=20
+
+> I would like to see that measured on something other than an x86 VM
+> with a TSC. A small 32-bit ARM board is what I worry about.
+
+Ack. I'll take a look.
+
+--=-FF7WWY51tBUZK59kGipG
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+wyFTh9XQVplgJPdk6KtH874AAAAAAAA=
+
+
+--=-FF7WWY51tBUZK59kGipG--
