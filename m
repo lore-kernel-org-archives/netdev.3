@@ -1,152 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C76426435;
-	Tue,  1 Sep 2026 17:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD816422E24;
+	Tue,  1 Sep 2026 17:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788283968; cv=none; b=PHqVlh1mZcarVX6GkbZqUTVaoFXzGBI0gTaKavnqBIv51/SN1zKqX1egubNEZC1V/FKOQ75O1JNpQpVBzYehKoFU2XZvqQ9KsVUM1pDLatT7HnIx07Td9S53Iu4lFMm3tXZC79DGIL+PBnoE2GAX13n48UPJH6ErEDBzBkjsaAg=
+	t=1788284377; cv=none; b=MBcbZccF/zluJI7ZTsAbTrPK5Io63mf0JJzmK1pEHQ/b/1L0HMjEsXuSjEE0nUIT6KTJ/r4REqmSTPqR/GOX8AdF64jHTnSai5kxcR3LFcOw1cMdmYLqFsoVifM39m4Upvh3EgqdeCqn9K7wgsm5IeTgHT2jrtDHBUBEFfvAC5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788283968; c=relaxed/simple;
-	bh=Rr9DcnzGfDniKnZu6uk7mKcWGKvoO3lnrvTegD8f/CI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sgE0zrBSKKpBrOHVL1kr3ejkDQci6rEFM6h9XzLGeqIaLvniVwAKitIB224Fb2Z8eKFhrksk9j4L1yjMmHHTKQE+vFPa64xkIXy7eWOGOcSF5d6mBNGC7Va019D0fkvRMmzWrJnCYws2q/PJVq7C1ZvOhBZYep/YcoSP7o+o6dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8deQ515; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788284377; c=relaxed/simple;
+	bh=brRgzf3Ss+Y5Pn8Ig7krN1Wiwxb17pE/jkPm9QUAUU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PKV7M9yuetQTsJFY/+zCEqSNy0ST6eFnOzl7fCSSRoOWschDgc16En9h1lEguWhezFFpFBY81kl+AwKuVpDi8zfCGywlklAEoGipQO0MSzXtJsEo97gyKzteWLds+O/ltuJorbzhtHtO1ks/tk4bE9Oh+4gYR4HSDUuP6Z5qGAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Q3mD/obx; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8deQ515"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BE31F000E9;
-	Tue,  1 Sep 2026 17:32:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788283967;
-	bh=XoQplwBUo06+4jP2MEzgMvoeNOiIgnXEwceMs0KQWlw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=W8deQ515tV42TIWvnAqfpAs96P3VW2gXrOcbXv0Q6pbPqf6oeFXSiI2ZS+0vP06JM
-	 e2EnOhNgJeMyLN8hTP/p0E0qxrHlqIZSEMGP9dQwkawCce5YDaEPC2Zthk4plcW58G
-	 G98+BPggJbSN/NKesSKo8AefkhJNXvbRYgTRal5NXvVmMVUehaVnx0UwFY4YZrKd86
-	 JHEMM94tyVzoxe82SwV9BgtgNvCVDmcNJOpl9P8CAW+zQDeC/7Nv4z1x4XWpc4NA5P
-	 ePDBvtbE2Pa4qx8EWafNKDQvzLyakSerpD7+2C9ARXDBYORhzL1jukMagmpgvT9RdB
-	 9EEcdO3tTJJkg==
-Message-ID: <3d8ef804-efc1-46c7-bbb4-f1a6c26fed8b@kernel.org>
-Date: Tue, 1 Sep 2026 19:32:34 +0200
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Q3mD/obx"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C1A6F11CBE4;
+	Tue, 01 Sep 2026 19:39:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1788284369; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=yaYTcMwqtVa0M3yBiLEIENksGgWSisux8D+DJ66BhD4=;
+	b=Q3mD/obxohhoQhJx1+DWjTpFtl+CbFlJA6miIe2cUUTHHESUbF3nFo9vuetc8Lyscg90jY
+	7aN5IE50F9pf6hz1IpweuXGok78zqbmK3be4P46aPxLv1HCN88cW9CJDy2vCFP9kohQyha
+	auLBsDr17PGILLLOu7629EsIUWt1yrEG6DRur/R/VZjdmqozuTNeYy0H3G69lozgxp/tVZ
+	Rj0gHqpCQB5ersro1kOYlc5MqoWojd6frrwSLFmM0BtgLbns7US14QUDi/bCJmtuuoAcCF
+	zDpQgLDCbcIODQ8P6TSyAPAZN3LaY5SsBFodf1DXw+fJDfdVYGUpB7Wml6ITbA==
+From: Marek Vasut <marex@nabladev.com>
+To: netdev@vger.kernel.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Yicong Hui <yiconghui@gmail.com>,
+	kernel@dh-electronics.com,
+	linux-kernel@vger.kernel.org
+Subject: [net,PATCH v1] net: ks8851: Fix receiver error in 100BASE-TX mode following software power-down
+Date: Tue,  1 Sep 2026 19:39:14 +0200
+Message-ID: <20260901173925.96183-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] net/ipv6: don't route packets with unknown source
- address
-Content-Language: fr
-To: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@riseup.net>,
- David Ahern <dsahern@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Neal Cardwell <ncardwell@google.com>, Ido Schimmel <idosch@nvidia.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Phil Sutter <phil@nwl.cc>, Daniel Borkmann <daniel@iogearbox.net>,
- Fernando Fernandez Mancera <fmancera@suse.de>,
- Alexei Starovoitov <ast@kernel.org>, Junseo Lim <zirajs7@gmail.com>,
- Leon Hwang <leon.hwang@linux.dev>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
- Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>,
- Qi Tang <tpluszz77@gmail.com>, Jeff Layton <jlayton@kernel.org>,
- Joe Damato <joe@dama.to>, Breno Leitao <leitao@debian.org>,
- Li RongQing <lirongqing@baidu.com>, "open list:VRF"
- <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
- "open list:NETFILTER" <coreteam@netfilter.org>,
- "open list:BPF [MISC] :Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>
-References: <20260901115021.50057-1-ihuguet@riseup.net>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260901115021.50057-1-ihuguet@riseup.net>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Íñigo,
+KSZ8851 errata sheet DS80000716D-page 4 Module 3 [1] states that,
+when issuing a software power-down (PMECR[1:0] = 10) followed by a
+power-on (PMECR[1:0] = 00), the receiver circuit can fail to start
+properly preventing communication. The Transmitter will still send
+data, but no data will be received.
 
-On 01/09/2026 13:50, Íñigo Huguet wrote:
-> Don't allow routing packets with a source address that is not configured
-> in the host. Allow it only in certain cases like when using a
-> transparent socket, by setting the ANYSRC flag in flowi_flags.
-> 
-> Until now, it was possible to send such a packet if a route can be found
-> in the routing table for it. For example:
-> 1. Configure an address 1:2::3:4/64 and a static route 1:2::/64
-> 2. Establish a TCP connection to 1:2::3:4
-> 3. Remove the address from the interface, but keep the route.
-> 4. Packets are still sent out by the TCP connection because of
->    the static route. No incoming packets are accepted, though.
-> 
-> This patch prevents the outgoing packets to be sent in normal
-> circumnstances.
-> 
-> This aligns the behaviour with the IPv4 stack. To determine the places
-> where the ANYSRC needs to be set, I set the flag in the same places as
-> the IPv4 stack does.
-> 
-> Apart from consolidating the behaviour of both stacks, there is a more
-> important reason why this is needed. RFC 4862 states that "an invalid
-> address MUST NOT be used as the source address of outbound packets".
-> Therefore, sending packets with a source address considered "invalid",
-> like an expired address, is disallowed.
+The errata sheet also includes a workaround, which states that,
+it is recommended that the software power-down feature not be used.
 
-Thank you for looking at this, but I think your patch is causing
-multiple KASAN warnings, e.g.
+Implement that workaround and drop the entry into software power-down
+mode. The ks8851_write_mac_addr() calls entry into normal power-on
+mode at the very beginning of the function, therefore dropping the
+second call to enter software power-down mode is sufficient here.
+The ks8851_net_stop() can only be called after ks8851_net_start()
+was already called, and ks8851_net_start() also makes the MAC enter
+normal power-on mode, therefore it is also fine to drop the call to
+enter software power-down mode from ks8851_net_stop().
 
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-extra-dbg/results/804584/24-connect-deny-ipv6/stderr
+This will lead to slight increase in power consumption, but it also
+fixes a sporadic problem which occurs at least on KSZ8851-16MLL, on
+which this fix is tested.
 
-And a few more, see:
+[1] https://ww1.microchip.com/downloads/en/DeviceDoc/80000716D.pdf
 
-https://netdev.bots.linux.dev/branch_deltas/net-next-2026-09-01--15-01.html
+Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Yicong Hui <yiconghui@gmail.com>
+Cc: kernel@dh-electronics.com
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/ethernet/micrel/ks8851_common.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Cheers,
-Matt
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 4afbb40bc0e4a..cd8dfca22720b 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -139,17 +139,14 @@ static int ks8851_write_mac_addr(struct net_device *dev)
+ 	ks8851_set_powermode(ks, PMECR_PM_NORMAL);
+ 
+ 	for (i = 0; i < ETH_ALEN; i += 2) {
+ 		val = (dev->dev_addr[i] << 8) | dev->dev_addr[i + 1];
+ 		ks8851_wrreg16(ks, KS_MAR(i), val);
+ 	}
+ 
+-	if (!netif_running(dev))
+-		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
+-
+ 	ks8851_unlock(ks);
+ 
+ 	return 0;
+ }
+ 
+ /**
+  * ks8851_read_mac_addr - read mac address from device registers
+@@ -502,16 +499,14 @@ static int ks8851_net_stop(struct net_device *dev)
+ 	ks8851_lock(ks);
+ 	/* shutdown RX process */
+ 	ks8851_wrreg16(ks, KS_RXCR1, 0x0000);
+ 
+ 	/* shutdown TX process */
+ 	ks8851_wrreg16(ks, KS_TXCR, 0x0000);
+ 
+-	/* set powermode to soft power down to save power */
+-	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
+ 	ks8851_unlock(ks);
+ 
+ 	/* ensure any queued tx buffers are dumped */
+ 	while (!skb_queue_empty(&ks->txq)) {
+ 		struct sk_buff *txb = skb_dequeue(&ks->txq);
+ 
+ 		netif_dbg(ks, ifdown, ks->netdev,
 -- 
-pw-bot: cr
+2.53.0
 
