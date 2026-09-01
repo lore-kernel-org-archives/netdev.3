@@ -1,58 +1,58 @@
 Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9285247ACEB;
-	Tue,  1 Sep 2026 13:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFA247ACEB;
+	Tue,  1 Sep 2026 13:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788268898; cv=pass; b=jiPaTfz97vEA/xOY7HgLsR5mS4wLoxA4zaQ36D31jzwJ99K/dUcICBJZp6xXDEhfK+v6G45jLeUSR7uzqhqgQYi5aQ07x0ELBPKw5zAKOhzlNWR6X3qeZ7mZgRccbDweDBx0gMKDUdwLtZQDNnLRoKfD5UlFgbHRY7P39uVKHw0=
+	t=1788268905; cv=pass; b=oCnDZzg+s95OCAsbLgxNTq2MiSe+qz0ufFqtB2bg6+msytZYc27UVDbF2JTdhGsVMlaCxC3OfExi3Ob+QOGhp1ze53V5YXqJM57CjpeAOoz7VdQF/cW70259FBZtW6vkhhyssiyGrQS7ATI3Dpl65ffKme120+MJFqg7/PeqUa8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788268898; c=relaxed/simple;
-	bh=QY1A8D3fH5Ocg0eZmlF5oy360Of+P5EZpl0ZY75wxxc=;
+	s=arc-20240116; t=1788268905; c=relaxed/simple;
+	bh=tKWTf1cazHWaXntnYsiXxrJYnrU+iW5fvyj/sDkCDtc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fgTPGADhSakiK0Pwi1wnIX/Y4GHb8O2+B0yTXT49N0O3PBNMJeXhgR1vPzLBwD6oQSlM4l4y1tFJ6cca4E52XEa87rm6/grxaF5lP4ngZEOFArx+507Q+U4Ke8HkdmGjzaE/6WHDBDRrn3Kl7Y+QNJXi3+fBJMyXkCy3EAnWRX0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=ny2k5K6I; arc=pass smtp.client-ip=185.185.170.37
+	 MIME-Version; b=Hy4hm/1fMk/HL76m2TpYo3i4HqpiCRVfypp270BNqWfbkxdg9KoQIc5DEkK3I9v8pUGrkjmsU2pBL2Crp3VqRpc63CB/13M2+qr8v4PAPqnYcdsf7IbBvaY0F7BfDXX2xvWr0N8vyBlTT2CtVtCrjMJSxQJA3Qz+0IUMqd/Y5EA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=RgFq6W1E; arc=pass smtp.client-ip=185.185.170.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="ny2k5K6I"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="RgFq6W1E"
 Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ62L4YKVz49QNC;
-	Tue, 01 Sep 2026 16:21:30 +0300 (EEST)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ62V0lG1z49QNp;
+	Tue, 01 Sep 2026 16:21:38 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788268890;
+	t=1788268898;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LAv/+3HXe4Wk5FPqWwSHvR9+eMlqhJUTF/4hhmmGEYo=;
-	b=ny2k5K6IZlZwNnLUOSQ7kr6uu3bc8x2auRaysFsxg1uTAtxUxI8ijBUDFHNeFh4x/lidi6
-	b3TL4bQNBP7/XIm4qM626BACSRy69ykUwHa7X6CqJeo4bsfDegV4bMAYxvgGURwVaIej+b
-	OmXKR2gI9siifxnelmlMFxSsnBCU6HU+uuxXFeiGf3Dj9VkXeoCgXj7FQlqEVWilJUm81f
-	CIYZ/IR8zBOgpAWQQLCCDF1Qrd8dAy6h+Ls8Hbqx9DVmSBLFpa6Nkor4SoxOZ/IoJgNox0
-	gZw4xjqVkqE9XWCTylpmq1BTpIFSEKSBziOGU8dpAGr+gYIKh6M3EHVyoyCYOA==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268890;
-	b=SV97+SH80+8/H9DpiiFhIYeNqmslZAfXnXut01MZHzTUbwkN2VXzE/6yLFbmsXAw653kbS
-	RrhCc89XA6djrj0FZ2afzbB1JKwELBWwKWsjIq4aqKOO/aBgvCpr4rYwL4ZJBEhPkF05tv
-	enzBlLwsElnmK+x5SC7qOnc8my/KIJo8VXZCWkaVz8+40PAQP/+0tT5zTeiWwZnZNvWGBK
-	OyfvaYrj7Pp4VS6TNIjFo5RCDhMgHBA15a775l1v+CreJBOdjmAnamyiumb6hC8PdrL3SB
-	5VadtlWg4lfPztQ5/H3jUyJAnH9J1ayZmQtbBx0doVgj+f2c1OwgfN4aEnsCTw==
+	bh=+1zGVynj9H5SONi5WNNQRZuKnULVYkGJU/Lsk8iTgW0=;
+	b=RgFq6W1EfHAeDT9HqtDjC82r1ZHuxvqQmLJTQ3kU4Uhk4gLOujgMpbf4zRDCEA6zJkJS/p
+	VwrjenzmZoGbU8sEOeUW4BugUBoBGDcXrAXhrHkQTPIPVAV6PJuykns1D0kSqXIskDv6S1
+	IdyuXTNSPi3/pwR0lneJlaQf5YRbT2+S/fU7YyVIfYOYdnteeeK+o/TzzPkW+mmA6mAET/
+	RvV8fWc+7KmZRIODIF0tCOVvv+pjzpAYyu8eTFANkwyoUhpwbJ4yMpKdQ3WvzHGoOrWW7T
+	0ibDpC6MOyE/y86+YV3Ht7z4d7iwr4Q8pK7OZqX7p9Khzy1yVCQ+tC+dDsHbTQ==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268898;
+	b=K1xB4FoD+661Ioa4HZ4tX3wRK9++BYIClgyXRKo0OuMtRN1L842IsB1tyWtcR0QfyASAAq
+	wnHj/Xw33817rXH7EwCO3z+mEnt0rzzaDyKUPV97xw1a9PUG2keKP0ZlDAoto50MgZMxMd
+	X3JsNPdHbcV1j3tEhJyOWzw8rLWzllcSia340cgKparfSz1bIDA80uN901t9QCM08i903X
+	EOg2gBQsBe11ynw6T9OjQfo2FTyl+5kzK3CHnjwbrfv/ga0Exq4IkUguuHattZUtNBQ3cY
+	fg9B/I3PVvDgJr1w17ZfyqxUvE6lNnebgixFPHzfhFL9/B+kaixMmky8naLy8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788268890;
+	s=lahtoruutu; t=1788268898;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LAv/+3HXe4Wk5FPqWwSHvR9+eMlqhJUTF/4hhmmGEYo=;
-	b=sLM2JSmWztX45pxU8z1tlQ3ZFTcxxiLvmT9Ae+QdMceeH9KvYbolT227jKamaw9a/+N2CW
-	jRnpCziVwEDwIy5G7f4t8TKZZ7IQgcEPMm7SC2U//9sx4yPRVq9aYI5XvAo0aywwlL9C3/
-	4ve/4CdSDXmDDrTTWy5nkYkg9/11PKOJVI1S+tPOWzDKGopHLGJ41wuGJH8B+5tJuH9y3n
-	sIjhoDnwFzzc1r+v2SY0Kuyx2oxUD55GiJh/BnPzr2zvdmWj5NO0L2xyrG3cMUPzJtzrkm
-	koF6x8XmuLTbkFa6dPu3t8DQID0KBTTdogkOSruDxgkTl4sFmxhb47tBVF5rwQ==
+	bh=+1zGVynj9H5SONi5WNNQRZuKnULVYkGJU/Lsk8iTgW0=;
+	b=Nxu7K3lAPpg1lB8EJxLsyMAu6QiY4tobSGKZAyHXCNRZZAZPuUX/kMHn25kAp3W2q1LEom
+	Mglkqr7+1JT9Omuo8ZasSOrXBp9J1uKvtu6Ky7CHyQZFG0+rPGCUBJLD1nSkIYRChmX5n1
+	8y7YYRemuOWtWb0gyMgbHKN+D/MsSfZ4e+/n3eQi84x2XEALNwfoqzsc1Te1MOCtWXCw4e
+	g3z+enJLv2HbRfUnjquQpiKzQV2WqmxkfQcY03Ug4yXDzLGKNkl2EjrAoggQXKlenP3j4N
+	kDdqeMtpSKjvRWchRWfqff7n8BaYefEgiQ/NB0JMnPHgaZmSmm2sj+JOh407jA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
@@ -73,9 +73,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v6 08/15] net: qrtr: Allow sendmsg to target an endpoint
-Date: Tue,  1 Sep 2026 16:19:27 +0300
-Message-Id: <20260901131934.225991-9-juha-matti.tilli@iki.fi>
+Subject: [PATCH v6 09/15] net: qrtr: allow socket endpoint binding
+Date: Tue,  1 Sep 2026 16:19:28 +0300
+Message-Id: <20260901131934.225991-10-juha-matti.tilli@iki.fi>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
 References: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
@@ -89,15 +89,19 @@ Content-Transfer-Encoding: 8bit
 
 From: Denis Kenzior <denkenz@gmail.com>
 
-Allow QIPCRTR family sockets to include QRTR_ENDPOINT auxiliary data
-as part of the sendmsg system call.  By including this parameter, the
-client can ask the kernel to route the message to a given endpoint, in
-situations where multiple endpoints with conflicting node identifier
-sets exist in the system.
+Introduce the ability to bind a QIPCRTR family socket to a specific
+endpoint.  When a socket is bound, only messages from the bound
+endpoint can be received, and any messages sent from the socket are
+by default directed to the bound endpoint.  Clients can bind a socket
+by using the setsockopt system call with the QRTR_BIND_ENDPOINT option
+set to the desired endpoint binding.
 
-For legacy clients, or clients that do not include QRTR_ENDPOINT data,
-the endpoint is looked up, as before, by only using the node identifier
-of the destination qrtr socket address.
+A previously set binding can be reset by setting QRTR_BIND_ENDPOINT
+option to zero.  This behavior matches that of SO_BINDTOIFINDEX.
+
+This functionality is useful for clients that need to communicate
+with a specific device (i.e. endpoint), such as a PCIe-based 5G modem,
+and are not interested in messages from other endpoints / nodes.
 
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
@@ -105,182 +109,136 @@ Reviewed-by: Andy Gross <agross@kernel.org>
 Signed-off-by: Mihai Moldovan <ionic@ionic.de>
 Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
 ---
- net/qrtr/af_qrtr.c | 89 ++++++++++++++++++++++++++++++++++------------
- net/qrtr/qrtr.h    |  2 ++
- 2 files changed, 68 insertions(+), 23 deletions(-)
+ include/uapi/linux/qrtr.h |  1 +
+ net/qrtr/af_qrtr.c        | 56 ++++++++++++++++++++++++++++-----------
+ 2 files changed, 41 insertions(+), 16 deletions(-)
 
+diff --git a/include/uapi/linux/qrtr.h b/include/uapi/linux/qrtr.h
+index 6d0911984a050..0a8667b049c3d 100644
+--- a/include/uapi/linux/qrtr.h
++++ b/include/uapi/linux/qrtr.h
+@@ -48,6 +48,7 @@ struct qrtr_ctrl_pkt {
+ 
+ /* setsockopt / getsockopt */
+ #define QRTR_REPORT_ENDPOINT 1
++#define QRTR_BIND_ENDPOINT 2
+ 
+ /* CMSG */
+ #define QRTR_ENDPOINT 1
 diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index da7ccf19c6851..d4a472f0ac4d1 100644
+index d4a472f0ac4d1..ccfa3ed33a996 100644
 --- a/net/qrtr/af_qrtr.c
 +++ b/net/qrtr/af_qrtr.c
-@@ -106,6 +106,36 @@ static inline struct qrtr_sock *qrtr_sk(struct sock *sk)
- 	return container_of(sk, struct qrtr_sock, sk);
+@@ -98,6 +98,7 @@ struct qrtr_sock {
+ 	struct sockaddr_qrtr us;
+ 	struct sockaddr_qrtr peer;
+ 	unsigned long flags;
++	u32 bound_endpoint;
+ };
+ 
+ static inline struct qrtr_sock *qrtr_sk(struct sock *sk)
+@@ -656,10 +657,14 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+ 			goto err;
+ 		}
+ 
+-		ret = sock_queue_rcv_skb(&ipc->sk, skb);
+-		if (ret) {
+-			qrtr_port_put(ipc);
+-			goto err;
++		/* Sockets bound to an endpoint only rx from that endpoint */
++		if (!ipc->bound_endpoint ||
++		    ipc->bound_endpoint == cb->endpoint_id) {
++			ret = sock_queue_rcv_skb(&ipc->sk, skb);
++			if (ret) {
++				qrtr_port_put(ipc);
++				goto err;
++			}
+ 		}
+ 
+ 		qrtr_port_put(ipc);
+@@ -999,29 +1004,41 @@ static int qrtr_local_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+ {
+ 	struct qrtr_sock *ipc;
+ 	struct qrtr_cb *cb;
++	int ret = -ENODEV;
+ 
+ 	ipc = qrtr_port_lookup(to->sq_port);
+-	if (!ipc || &ipc->sk == skb->sk) { /* do not send to self */
+-		if (ipc)
+-			qrtr_port_put(ipc);
+-		kfree_skb(skb);
+-		return -ENODEV;
+-	}
++	if (!ipc)
++		goto done;
++
++	if (&ipc->sk == skb->sk) /* do not send to self */
++		goto done;
++
++	/*
++	 * Filter out unwanted packets that are not on behalf of the bound
++	 * endpoint.  Certain special packets (such as an empty NEW_SERVER
++	 * packet that serves as a sentinel value) always go through.
++	 */
++	if (endpoint_id && ipc->bound_endpoint &&
++	    ipc->bound_endpoint != endpoint_id)
++		goto done;
+ 
+ 	cb = (struct qrtr_cb *)skb->cb;
+ 	cb->src_node = from->sq_node;
+ 	cb->src_port = from->sq_port;
+ 	cb->endpoint_id = endpoint_id;
+ 
+-	if (sock_queue_rcv_skb(&ipc->sk, skb)) {
+-		qrtr_port_put(ipc);
+-		kfree_skb(skb);
+-		return -ENOSPC;
+-	}
++	ret = -ENOSPC;
++	if (sock_queue_rcv_skb(&ipc->sk, skb))
++		goto done;
+ 
+ 	qrtr_port_put(ipc);
+ 
+ 	return 0;
++done:
++	if (ipc)
++		qrtr_port_put(ipc);
++	kfree_skb(skb);
++	return ret;
  }
  
-+int qrtr_msg_get_endpoint(struct msghdr *msg, u32 *out_endpoint_id)
-+{
-+	struct cmsghdr *cmsg;
-+	u32 endpoint_id = 0;
-+
-+	for_each_cmsghdr(cmsg, msg) {
-+		if (!CMSG_OK(msg, cmsg))
-+			return -EINVAL;
-+
-+		if (cmsg->cmsg_level != SOL_QRTR)
-+			continue;
-+
-+		if (cmsg->cmsg_type != QRTR_ENDPOINT)
-+			return -EINVAL;
-+
-+		if (cmsg->cmsg_len < CMSG_LEN(sizeof(u32)))
-+			return -EINVAL;
-+
-+		/* Endpoint ids start at 1 */
-+		endpoint_id = *(u32 *)CMSG_DATA(cmsg);
-+		if (!endpoint_id)
-+			return -EINVAL;
-+	}
-+
-+	if (out_endpoint_id)
-+		*out_endpoint_id = endpoint_id;
-+
-+	return 0;
-+}
-+
- static unsigned int qrtr_local_nid = 1;
- 
- /* for node ids */
-@@ -448,14 +478,23 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
-  *
-  * callers must release with qrtr_node_release()
-  */
--static struct qrtr_node *qrtr_node_lookup(unsigned int nid)
-+static struct qrtr_node *qrtr_node_lookup(unsigned int endpoint_id,
-+					  unsigned int nid)
- {
--	struct qrtr_node *node;
-+	struct qrtr_node *node = NULL;
- 	unsigned long flags;
-+	unsigned long key = 0;
-+
-+	if (endpoint_id > QRTR_INDEX_HALF_UNSIGNED_MAX ||
-+	    nid > QRTR_INDEX_HALF_UNSIGNED_MAX)
-+		return node;
-+
-+	key = ((unsigned long)(endpoint_id) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(nid) & QRTR_INDEX_HALF_UNSIGNED_MAX);
- 
- 	mutex_lock(&qrtr_node_lock);
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
--	node = radix_tree_lookup(&qrtr_nodes, nid);
-+	node = radix_tree_lookup(&qrtr_nodes, key);
- 	node = qrtr_node_acquire(node);
- 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
- 	mutex_unlock(&qrtr_node_lock);
-@@ -1019,6 +1058,7 @@ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
- 	struct sock *sk = sock->sk;
- 	struct qrtr_node *node;
-+	u32 msg_endpoint_id;
- 	u32 endpoint_id = qrtr_local_nid;
- 	struct sk_buff *skb;
- 	size_t plen;
-@@ -1031,46 +1071,48 @@ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 	if (len > 65535)
- 		return -EMSGSIZE;
- 
-+	rc = qrtr_msg_get_endpoint(msg, &msg_endpoint_id);
-+	if (rc < 0)
-+		return rc;
-+
- 	lock_sock(sk);
- 
- 	if (addr) {
--		if (msg->msg_namelen < sizeof(*addr)) {
--			release_sock(sk);
--			return -EINVAL;
--		}
-+		rc = -EINVAL;
- 
--		if (addr->sq_family != AF_QIPCRTR) {
--			release_sock(sk);
--			return -EINVAL;
--		}
-+		if (msg->msg_namelen < sizeof(*addr))
-+			goto release_sock;
-+
-+		if (addr->sq_family != AF_QIPCRTR)
-+			goto release_sock;
- 
- 		rc = qrtr_autobind(sock);
--		if (rc) {
--			release_sock(sk);
--			return rc;
--		}
-+		if (rc)
-+			goto release_sock;
- 	} else if (sk->sk_state == TCP_ESTABLISHED) {
- 		addr = &ipc->peer;
- 	} else {
--		release_sock(sk);
--		return -ENOTCONN;
-+		rc = -ENOTCONN;
-+		goto release_sock;
- 	}
- 
- 	node = NULL;
- 	if (addr->sq_node == QRTR_NODE_BCAST) {
- 		if (addr->sq_port != QRTR_PORT_CTRL &&
- 		    qrtr_local_nid != QRTR_NODE_BCAST) {
--			release_sock(sk);
--			return -ENOTCONN;
-+			rc = -ENOTCONN;
-+			goto release_sock;
- 		}
- 		enqueue_fn = qrtr_bcast_enqueue;
+ /* Queue packet for broadcast. */
+@@ -1107,7 +1124,8 @@ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
  	} else if (addr->sq_node == ipc->us.sq_node) {
  		enqueue_fn = qrtr_local_enqueue;
  	} else {
--		node = qrtr_node_lookup(addr->sq_node);
-+		endpoint_id = msg_endpoint_id;
-+
-+		node = qrtr_node_lookup(endpoint_id, addr->sq_node);
+-		endpoint_id = msg_endpoint_id;
++		endpoint_id = msg_endpoint_id ?
++			      msg_endpoint_id : ipc->bound_endpoint;
+ 
+ 		node = qrtr_node_lookup(endpoint_id, addr->sq_node);
  		if (!node) {
--			release_sock(sk);
--			return -ECONNRESET;
-+			rc = endpoint_id ? -ENXIO : -ECONNRESET;
-+			goto release_sock;
- 		}
- 		enqueue_fn = qrtr_node_enqueue;
+@@ -1385,6 +1403,9 @@ static int qrtr_setsockopt(struct socket *sock, int level, int optname,
+ 	case QRTR_REPORT_ENDPOINT:
+ 		assign_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags, val);
+ 		break;
++	case QRTR_BIND_ENDPOINT:
++		WRITE_ONCE(ipc->bound_endpoint, val);
++		break;
+ 	default:
+ 		rc = -ENOPROTOOPT;
  	}
-@@ -1109,6 +1151,7 @@ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 
- out_node:
- 	qrtr_node_release(node);
-+release_sock:
- 	release_sock(sk);
- 
- 	return rc;
-@@ -1123,7 +1166,7 @@ static int qrtr_send_resume_tx(struct qrtr_cb *cb)
- 	struct sk_buff *skb;
- 	int ret;
- 
--	node = qrtr_node_lookup(remote.sq_node);
-+	node = qrtr_node_lookup(cb->endpoint_id, remote.sq_node);
- 	if (!node)
- 		return -EINVAL;
- 
-diff --git a/net/qrtr/qrtr.h b/net/qrtr/qrtr.h
-index 11b897af05e67..22fcecbf8de23 100644
---- a/net/qrtr/qrtr.h
-+++ b/net/qrtr/qrtr.h
-@@ -34,4 +34,6 @@ int qrtr_ns_init(void);
- 
- void qrtr_ns_remove(void);
- 
-+int qrtr_msg_get_endpoint(struct msghdr *msg, u32 *out_endpoint_id);
-+
- #endif
+@@ -1413,6 +1434,9 @@ static int qrtr_getsockopt(struct socket *sock, int level, int optname,
+ 	case QRTR_REPORT_ENDPOINT:
+ 		val = test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags);
+ 		break;
++	case QRTR_BIND_ENDPOINT:
++		val = READ_ONCE(ipc->bound_endpoint);
++		break;
+ 	default:
+ 		rc = -ENOPROTOOPT;
+ 	}
 -- 
 2.34.1
 
