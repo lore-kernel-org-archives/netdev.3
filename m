@@ -1,189 +1,108 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010005.outbound.protection.outlook.com [52.101.69.5])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05B834B1B0
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 05:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788239897; cv=fail; b=tKHBflTat0Dr41AZh5u4xtp1HV0Gn/xWe7nBXIWEfu53v4O7MGg27mK44PemDYLDBh7hhQul9wUQmmNv/Nva8vmJZ0K5d7BkCsiikOEtfHveuisKCRB0ZhXtO6SZEQYd15BWTDMBxQ8rMzVVpBkefJ+DWiLV/eIe0v1qTGrRT6s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788239897; c=relaxed/simple;
-	bh=KEw+G8oGtMRtCxTmTHx9oI1DuRIUpvBsRi9s3uqb8Cs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LvRbmZqY/fKXcUOeXNRUhtgdP2nT4+IZsVk5cOEFgsDxbLfin+tPuNRyEzOHREOXBq/MSfjGGcts+i2TCLOf6JD6njpH4yhNy/t07SEQ9p82KgFeJegDsDL4P9MoUpS6G3Bx7U3skI2KM9NuKXSqpDyHXN4Z3BmQ/BdJOJQY1CA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia.com; spf=fail smtp.mailfrom=nokia.com; dkim=pass (2048-bit key) header.d=nokia.com header.i=@nokia.com header.b=UUJN7t79; arc=fail smtp.client-ip=52.101.69.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2D537E5C2
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 05:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788240361; cv=none; b=C9SPYzFVbx2rVo94WdpREmpRkFhDg9ztAoxEZSPtC6NpK43ERe0c6ieOPAytlMYAtO9RCro/FH8gLVZdg3kD86Vx+KBYqYi3q4wb6Em0UfzaQ5T3+xQffZUesHz9wVaiH2s0OkMDFcAAhcxi2Pb8dKTMa/1LH9zNyE6b/VSIAhc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788240361; c=relaxed/simple;
+	bh=AVFONoS/BfTAS9rsCJGqnKvi4dokM9XuDnnzAy7kYRo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OlUFd0Vjx9Buw+58E0l1R2WLaR8L9RmY9DijVi8AsbMdf7o5RI0XKueexWHOGVgyyRHgw3CoxpADmT1UEqMBsGHCK+cRMTz2rtsuWqtTwwuCUzoYDXrP3mIXpdbXAvuokctXnq0wCgDUnDK3FJkHthy1Pf0ig3jgbf4NFy0Q/mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=R3hVkKWO; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia.com header.i=@nokia.com header.b="UUJN7t79"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UO/sD9fqdSMx7jejK14LML9eMAS4nk5qU8P0SCH6OR79JDIs2EjZIHsxyTL6FDBAOHuvcBxJBamjIuldGQsKHXs0boeP8vaCi5Jl2/7bOHvL+RfGuL11R664rzI2vu03+aX/adDGKpSiE3t7Z2NGrEZGmsefui4nWfiSLtpdR8Y2OpWAt9UvBxgQO16lrdi+o9U59+wxk3+Bpg27+zB2g5khXm/JmWi09B6yR6CWMqP+z4e5gL+P+BDffzoCaBMUcZcqk9CJZm1tksd1diTdtGvz8M8D+AhXMBOT+A3XS7MNO+HZrMY/USXRoE1eJXwbqZLM2E1dXlb0P0l6TpZZfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hyCF29lOzi0C+/SwKgaJrdkJqh28OVU1fsfGsPv5ADo=;
- b=YucH4pHQy+BGcOccDibu6bexeaGShuJzeFO7SNN0CYndwYvc5ylwNyEnd+5JMo3tVhtcAcwjiPhjIcVSI1QDTyjd533XO/MSRLSZRSBZkPX8x5/Muzk/JgbG8qNyTNZUthhnc28NvjGHB9j8OChPEoTW4YV4COywX8GX1HMVnTJmicebDpuJbRAMzpA7vaccoOqnpsA/YFHxxXXOq344mkLLzuE/zPiwkpUZTidKvRjaQihonjgcVT3e6YvPDr0S2KYJyCJP+IMIAwFq1ff5png8kpN9zUo0aTh6jm8h9lOd0z3eeIM0IW1D+rB8IRxLKYPOQ+GiMBVEJ79Up1luzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 131.228.2.241) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nokia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nokia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hyCF29lOzi0C+/SwKgaJrdkJqh28OVU1fsfGsPv5ADo=;
- b=UUJN7t79YHOrScl/nV2skuDNjhHrWgyvTu3m1EQKKtRl4P5vv8XUb4s0v2qcSTJtN3cGhhNE8OYMf021WAcBh7tgMrnbMnJK2gvSIa0OXkBc/CZc+epKOJh+WIICa2KVaigN9goMS7tuDQGYRMuReebOnWhTBCAWhHCLnrlXMOVuxyEmbsAHY9+BSE09zGHuksLZciacCqpiHUAifHjGfxqkWecPby3JRtxz74hTi9lw+FsammkNvwhd4NzGPeM5quieRtMMghuhsxGyXdAS4QsyhrGg6XtxGHCmzZ1zsRhm8Xn9DBei15m67BweHihv9ojOqz1JuZO5SBV9M0WWpQ==
-Received: from PA7P264CA0110.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:34c::16)
- by PAXPR07MB7949.eurprd07.prod.outlook.com (2603:10a6:102:138::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Tue, 1 Sep
- 2026 05:18:11 +0000
-Received: from MI3PEPF00008490.eurprd03.prod.outlook.com
- (2603:10a6:102:34c:cafe::a6) by PA7P264CA0110.outlook.office365.com
- (2603:10a6:102:34c::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Tue, 1
- Sep 2026 05:18:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.241)
- smtp.mailfrom=nokia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nokia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nokia.com designates
- 131.228.2.241 as permitted sender) receiver=protection.outlook.com;
- client-ip=131.228.2.241; helo=fihe3nok0734.emea.nsn-net.net; pr=C
-Received: from fihe3nok0734.emea.nsn-net.net (131.228.2.241) by
- MI3PEPF00008490.mail.protection.outlook.com (10.167.240.151) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.8
- via Frontend Transport; Tue, 1 Sep 2026 05:18:11 +0000
-Received: from updev-hifix-1-5g.devops-fwk.dynamic.nsn-net.net (10-175-3-186.he-pi-os-dhn-100.nesc.nokia.net [10.175.3.186])
-	by fihe3nok0734.emea.nsn-net.net (Postfix) with ESMTP id 8AB7D20177;
-	Tue,  1 Sep 2026 08:18:10 +0300 (EEST)
-From: Juuso Rinta <juuso.rinta@nokia.com>
-Date: Tue, 01 Sep 2026 08:17:36 +0300
-Subject: [PATCH net-next] octeontx2: use dev_err_probe() for deferred probe
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="R3hVkKWO"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6810oqHo2737088;
+	Mon, 31 Aug 2026 22:25:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=AVFONoS/BfTAS9rsCJGqnKvi4
+	dokM9XuDnnzAy7kYRo=; b=R3hVkKWOrjCTw7SIbMY1sh/+5Byjkfhq6D5JoN1qr
+	eevYUtpMjp/oDKEPMXn5dNzYhn5CNtVbi3sJlhFnUrMAD+wpfzBdRWTNd6XnqZTI
+	Kq8txC8G+y9eFWFpOMT8tZQjUCwniKJ2j4W/5Fes8EYdV3t01NDTQ8UKjyDMHGrw
+	YllqJgPPZNIwmqvF6Zmdc87eTjjVdR/uFpoHMsKZ5Y0e8JG6Kb+2UKhir4jicOg1
+	1mtAM0uHQ31bGhIiOwjKk/zlPOyuNVSZWdGspm+KSIoY4yJnU3uit6A45QKUF18d
+	fHaw1H9BcvEGFMOtY3QU4ZsDDsYoMzGKe0U8jf2bHoiyQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gdcy1agcy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Aug 2026 22:25:48 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 31 Aug 2026 22:25:48 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 31 Aug 2026 22:25:47 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 957C15B692A;
+	Mon, 31 Aug 2026 22:25:44 -0700 (PDT)
+Date: Tue, 1 Sep 2026 10:55:38 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Juuso Rinta <juuso.rinta@nokia.com>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya
+	<gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Bharat Bhushan
+	<bbhushan2@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S.
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next] octeontx2: use dev_err_probe() for deferred
+ probe
+Message-ID: <apZh0hMqUJp2i5XD@rkannoth-OptiPlex-7090>
+References: <20260901-octeontx2-dev-err-probe-v1-1-1b5e1affb994@nokia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-octeontx2-dev-err-probe-v1-1-1b5e1affb994@nokia.com>
-X-B4-Tracking: v=1; b=H4sIAO9flmoC/yWMwQ6CMBAFf4Xs2U2gRkR/xXiw5RXXQ0u2hTQh/
- LtVjpPJzEYJKkh0bzZSrJIkhgrdqSH3foUJLGNlMq3p2+HccXQZMeRieMTKUOVZowXfvL9aDPa
- C3lGtZ4WX8j8/KCBzQMn0PExa7Acu/8a0719k7/xbhQAAAA==
-X-Change-ID: 20260831-octeontx2-dev-err-probe-9ff7be8b5e6c
-To: Sunil Goutham <sgoutham@marvell.com>, 
- Geetha sowjanya <gakula@marvell.com>, 
- Ratheesh Kannoth <rkannoth@marvell.com>, 
- Subbaraya Sundeep <sbhatta@marvell.com>, 
- Bharat Bhushan <bbhushan2@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Juuso Rinta <juuso.rinta@nokia.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788239890; l=2637;
- i=juuso.rinta@nokia.com; s=20260428; h=from:subject:message-id;
- bh=KEw+G8oGtMRtCxTmTHx9oI1DuRIUpvBsRi9s3uqb8Cs=;
- b=Psy4B9SF7mBNkBs/Iio5WJHw6KPOZdd9HfJ02QN2GO8xZ5WK2WNFHv63qzZnhTl3wJ6pp6TKU
- Zgc16nyl5qsAnOUuIoKY8i3QbrbpfeCWUEiYVqU9kv8rhq9gkMltcee
-X-Developer-Key: i=juuso.rinta@nokia.com; a=ed25519;
- pk=CnH7U1WPlQ4t8gHpzhFvPnTjoealqDnbmbLMYEd5GDQ=
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI3PEPF00008490:EE_|PAXPR07MB7949:EE_
-X-MS-Office365-Filtering-Correlation-Id: 510d8480-463a-4b37-d3da-08df07e86a8f
-X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|82310400026|23010399003|7416014|376014|36860700016|10067099003|18002099003|56012099006|11063799006|921020;
-X-Microsoft-Antispam-Message-Info:
- eZQ0S8/76qtb7FrWaFAhZ5fbLgDY/vB7koq0tV2BvRgRt4Hk8oiqFoZZTkbJlYI3UrmPhta5gsmP4Ne9JGYCPEc555tfXQBa6cuW+nR/LexWL1yj2hBk7g+eaTn3jFrrhLnrqqWsZ6upuZ1jzuQAbWfWYw5L631THx31MBYbRc2FM1CREvvyly8NfB5eLCHIUnerAVufOiYYNI1BTJpGqIxctX8rwGYD5f4njUs3Cr+A3yFQZLECDfTsKfytjXkR039We30AuSLvtnLZZvJYEn9ooid35dspG61yXmq/m1HCnFFqOQjPCByHyHDghxr2Ovq/CuHGR7WSKD1GTRLQ/AUySsAfNwY7tuwMMaGsHSfE3RVJ8ftu4TN3bAVu/aVlkbO9xveX77aSaXL4jIpvns72BOPLtQUV6heyPdcnrQtgITHt99Iy4Is8qllWBBdpggoJ+PNzCxZ0lnC2dBdqeDUWiJhi//9BuOFYi1XDnaQupeWw8xzIn/Ns53RgbwqzXfQ0+tWbGBXdkNXTopf2L/j6QhS2hx7OztELWpcOuOUiBvMapvVgLjvAP+sQ5iNoYrKPrLzyPapD6W2JgA9AN8Fa1WsNJrKRe73p2xJops+Bk5CixnDkPpfNksWZD4eyxR0p2vVQZlg+LxcESxupeStnQ7sfpGGp1l6eDx2OSAcmi6BTQ/7f+38HVZ9AvG1OOzdshbhE0voCBA+KqgDg7qoCoDaMFny1cwf4Zmgec6AF6q5VC+deuPzcYYWTXZVH
-X-Forefront-Antispam-Report:
- CIP:131.228.2.241;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0734.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(7416014)(376014)(36860700016)(10067099003)(18002099003)(56012099006)(11063799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- ICeqQ1Hoc0nIGl7ZosG1a58e5n54ZrgMjDvHHkuK6m0bQboZZ1XAVf8tWK0nSfo/VdspohgZ5siZ/Gsypl3iGQOSD41OA/PV68lFLqKgfhTM9yGt7HSdYzrnw311FL5DW9Ia6JVAxo2ruXykiGu7GbUaFVHBTVlvcsMMW0wmm9CERRSSwETexo3aFtJuDmbZ+YR4xrum1bilmpWe0GBMGavwQzLASE+kHHGLexaf7ALfzLp8g6DfK8X2N/XSCrphGeHDIz9AtTqQdMXwmMXYv6JnXjZvU738qhUSZ9mLvDS6O8ZwpUuwYHnxvnO7bg/TuJt7uPU5sr4Q3qxYnNBZKg1dvfTGZ8A9eBb5AxEPmdQhHtkm2j9Ts3UUFHadHbmrieWc5V1AbiroOB7uDwt3DAcTtyr4hjfkbRGCv7QAQUofZ7khDLxGXZ+ezI4Sm4ei
-X-Exchange-RoutingPolicyChecked:
-	1SUK9CHtyxr5bGofcNNfTZab2wEe3PuqF18uHC8LjPmmYFRjFDtR8lDbtCCRFwRKq6DQpRoq82X3hE1o78G8CJBhZn7/hPoIU7DsJqqbgizjCJaiMg8nM/UtAt4t41eoaWxHhdpyN3+as4B439vRBQs+9/KU2e0/DrDHmcC6qGu+E/B8a4jAK2lIe5a3ijOSjqJmdzC0RxKe1L/DtcAXxgYB+f9IKeZJBSaEO+l7Kd5MedPckr4fXP8dnGe9Xqd/Fp8qlsovzn/z0B2qK+SVTaL5+RufP+J0n2CdJCtXfs5vlzE+UHnw7U3WsXhQVlObEdVL3WKNHGuOhwmhEyhmLQ==
-X-OriginatorOrg: nokia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 05:18:11.0376
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 510d8480-463a-4b37-d3da-08df07e86a8f
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.241];Helo=[fihe3nok0734.emea.nsn-net.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-MI3PEPF00008490.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR07MB7949
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260901-octeontx2-dev-err-probe-v1-1-1b5e1affb994@nokia.com>
+X-Authority-Analysis: v=2.4 cv=W9MIkxWk c=1 sm=1 tr=0 ts=6a9661dc cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=9qxNCY_qAAAA:8
+ a=M5GUcnROAAAA:8 a=3g68egSbajkMjAmWKiQA:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: E8MY2hdFM1AJLrJh93nMVD1Gvnv3uPp-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA0NiBTYWx0ZWRfX64gw/kcW3GjZ
+ y9QvFU9yOSM5mjWvHXKxGfLG2AUxC4PKRVAjPdndTJZ/LHFrWWjA1H2VdUW53DYpPQmL6U4scIl
+ 0TaWr0tEzRbpwLD9qD9lnoLwHlRWC26gdNGqKtL1kW3S7aX4W+NWCIZHWPBUMjUALIYeF2Pch5u
+ Y8/tq28to8/nxklIuoeVWPtMkYhaws2OfFdezszd3PmJ2IrpKlOkQ8edR7EMO2Tq9NmYMfP6xeu
+ niAQ+mI9lrpBV+VXpqMT34gljWW+JpHVF78EsVyXTl9DS0ek+Ij3b1W9SUEMW8nxvjXIcugRo6c
+ tw5zbTz04bfRrfLdezvbrdCzYWTXpnA6xPMeu6Y5ERAcIH+r0gH/rX+1h+4FBTyn8Jn/X1FKtzR
+ LSmmYhlHqPR3Pf24MLYV4QVTDWGjpSYZnDRpwgZS0wIMQooxFkJdBqpxxwaHyr601xdBY5PBdkn
+ ew+wnvFzqt5FnZsvTQA==
+X-Proofpoint-ORIG-GUID: E8MY2hdFM1AJLrJh93nMVD1Gvnv3uPp-
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA0NiBTYWx0ZWRfXzBCPzlqlzIe1
+ XiIz3L5ows1XmJd5/+RzU4drlujROUXK1hUDzOTlXM391hY+JFNLCaftdOs/HlWxhPMblzXMK0x
+ g+/6Ay1yvFhEsGhaPTKd1mgnHHnMamA=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_01,2026-08-31_01,2025-10-01_01
 
-The PF and VF drivers warn and return -EPROBE_DEFER when the AF has
-not programmed the RVUM revision or does not answer the mailbox READY
-message. That is expected until rvu_af has finished initializing, so
-the warning is repeated on every deferred retry.
-
-Use dev_err_probe() instead of dev_warn() so the expected deferral is
-not printed at warning level. -EPROBE_DEFER is logged at debug level
-and the reason is recorded in devices_deferred.
-
-Signed-off-by: Juuso Rinta <juuso.rinta@nokia.com>
----
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 11 ++++-------
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c |  5 ++---
- 2 files changed, 6 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c995f2900..529040f3e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1167,10 +1167,9 @@ int otx2_register_mbox_intr(struct otx2_nic *pf, bool probe_af)
- 	}
- 	err = otx2_sync_mbox_msg(&pf->mbox);
- 	if (err) {
--		dev_warn(pf->dev,
--			 "AF not responding to mailbox, deferring probe\n");
- 		otx2_disable_mbox_intr(pf);
--		return -EPROBE_DEFER;
-+		return dev_err_probe(pf->dev, -EPROBE_DEFER,
-+			 "AF not responding to mailbox, deferring probe\n");
- 	}
- 
- 	return 0;
-@@ -2993,11 +2992,9 @@ int otx2_check_pf_usable(struct otx2_nic *nic)
- 	 * otherwise this driver probe should be deferred
- 	 * until AF driver comes up.
- 	 */
--	if (!rev) {
--		dev_warn(nic->dev,
-+	if (!rev)
-+		return dev_err_probe(nic->dev, -EPROBE_DEFER,
- 			 "AF is not initialized, deferring probe\n");
--		return -EPROBE_DEFER;
--	}
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-index fcdf891f9..a02267978 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-@@ -297,10 +297,9 @@ static int otx2vf_register_mbox_intr(struct otx2_nic *vf, bool probe_pf)
- 
- 	err = otx2_sync_mbox_msg(&vf->mbox);
- 	if (err) {
--		dev_warn(vf->dev,
--			 "AF not responding to mailbox, deferring probe\n");
- 		otx2vf_disable_mbox_intr(vf);
--		return -EPROBE_DEFER;
-+		return dev_err_probe(vf->dev, -EPROBE_DEFER,
-+			 "AF not responding to mailbox, deferring probe\n");
- 	}
- 	return 0;
- }
-
----
-base-commit: 25c1f6111034aef7fc06cfbdcf1e4f0d6e5ee74b
-change-id: 20260831-octeontx2-dev-err-probe-9ff7be8b5e6c
-
-Best regards,
---  
-Juuso Rinta <juuso.rinta@nokia.com>
-
+On 2026-09-01 at 10:47:36, Juuso Rinta (juuso.rinta@nokia.com) wrote:
+> The PF and VF drivers warn and return -EPROBE_DEFER when the AF has
+> not programmed the RVUM revision or does not answer the mailbox READY
+> message. That is expected until rvu_af has finished initializing, so
+> the warning is repeated on every deferred retry.
+>
+> Use dev_err_probe() instead of dev_warn() so the expected deferral is
+> not printed at warning level. -EPROBE_DEFER is logged at debug level
+> and the reason is recorded in devices_deferred.
+>
+> Signed-off-by: Juuso Rinta <juuso.rinta@nokia.com>
+Acked-by: Ratheesh Kannoth <rkannoth@marvell.com>
