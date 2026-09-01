@@ -1,65 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBC647CC67
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 11:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8419947206C
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 11:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788260672; cv=none; b=FxxsTGni1kmElyIuFXxdT4TW+mZeqCArlTSSoCulP0bHGOk39RQerXyrtCu1rzzEczx5pUX/kdBqrwMQWm0XVYU71UcD/Bto6TqJ1jpEIlBvZYkjB/8nj5Y4Mum71rg963fPy7LfL6BugHHOcBp6IJbVGPb3BydC7bqwgwMM+wA=
+	t=1788261019; cv=none; b=ugovk0M8oTTc8hmgxLDcKJVdp521YUYfhc9NQIW9gj24AEP+MtPy3hXnuUCzhyMIWphf6O8jah+BKurbBRmJwQSEgvHgvpRg3T6ZiiftDqoAqViO2uSyLz3ZNINudsGm7Bb46fU1NWEigs8Ryj44ySGwyJyzGWfOBDIFuBEJvNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788260672; c=relaxed/simple;
-	bh=kLCPJHfnPYk6jxIxd56fZeydQCtMBIcUA041uVwy4s8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=muvKaOCQLK4MfeWGabQnPco+p/tdMjPL4K4FQW80Vfjt7fHrmtYtNeGw5b60w3pzWTvUZ5g9b8lXtwB/co+HZmj73AbL72nHbaFpzJxvTQMQxfe/nKsmKTCKHGpADyVL16E2S6ltueg8bDrFM0xjyvkNPMKLmvJ/QSiVvb/fHyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JbN2o7/4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788261019; c=relaxed/simple;
+	bh=L8Hrqvz6GFMoSEhRyzIorG1PWvffPNsLFlZwtdXw7FQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ax5f1XlWDBuq1EFaZaE5POQMeWGcCPDQ6U4khjpe7kDzJz/QgLeby20c48fM9XSqV0JMH/ow9Y/4tmkTHum16UFSsCGZHgKEIxlTZZqPdTWls4HVqXGsbYNcd8SvIYTQfG/x/RHJu4nMeyi6dZUaqvMUOA+iKQLUXHZv2xCVcTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6vNaZuf; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JbN2o7/4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788260667;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XRv81smlVWxNb1A0Cr9qAtGJQ8qZ9KnUs2NstCo31Yc=;
-	b=JbN2o7/4atHHvwd6IafHyJyyLN6OLLtmO2ONmJLw8QQHALCLHC7UJroLPK8/cg4+LtKFgx
-	tPa+jIZWHrtkiOXm9/ZawmXV5hU/H/2eNO/RLTDvqrafMffaCpgljSksEBRLjNeqPS/hiI
-	/20TPP+tYkaDZ2+Yt8rEQTkMyLwUx7k=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-plUwejrXP9aoqQnNbURvgw-1; Tue,
- 01 Sept 2026 07:04:18 -0400
-X-MC-Unique: plUwejrXP9aoqQnNbURvgw-1
-X-Mimecast-MFC-AGG-ID: plUwejrXP9aoqQnNbURvgw_1788260650
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 122801845530;
-	Tue,  1 Sep 2026 11:04:10 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.49.14])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 40A8E423;
-	Tue,  1 Sep 2026 11:04:06 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: johnathan.browall@topgolf.com
-Cc: michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	pontus.hallstedt@topgolf.com
-Subject: Re: [PATCH net v2] bnxt_en: avoid redundant RX mask updates in UC overflow state
-Date: Tue,  1 Sep 2026 13:04:01 +0200
-Message-ID: <20260901110401.153294-1-pabeni@redhat.com>
-In-Reply-To: <20260828-bnxt-uc-overflow-v2-1-faddc16b0ea0@topgolf.com>
-References: <20260828-bnxt-uc-overflow-v2-1-faddc16b0ea0@topgolf.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6vNaZuf"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so811222a91.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 04:10:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788261018; x=1788865818; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IgO2ob95gg6fumjWiN+mfIqaFjC/9ud8+iboIR5TNwg=;
+        b=Q6vNaZuf9iWDfxOuNNZVl/lZ9P5DuJDi8HR4nRMaGyutWmCKO+oiiEfJ+mHZT/ZAzA
+         Xf+5AMiXbEIitwvjcH4ommzo4p63jCnXuySLMBsDSsIklqtV+EFAjee2oUN39neScvTe
+         fNiZ1tyG+aiYTuNPbegKzvw8FX16RiTlvxd8R2Y4JyNNu7CsKIQdJD/oe6viYLIXi5Sv
+         E3ohQZcdlrt22asYt95ApGLBKiGRHydTW3ibvD1+FtduNvdvu+BQ0SdKj0Wz3TM5ibBD
+         +vpfTIyKU2eL3ZSfxO5WjTxC019WYetG6G8g2blOsRIObTEoX5Em4LZi7Ad2ref4YOXU
+         VUvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788261018; x=1788865818;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IgO2ob95gg6fumjWiN+mfIqaFjC/9ud8+iboIR5TNwg=;
+        b=swcrh+dVrfBLoA80akzxCbVpTARSuzAE3ZHgI8A3vbMeZzgMWtDRbcKdiz+qXIskLF
+         3qvd/KL+C67LuIkyXv7JumUwjW/N6JY5tMLhTfQ5vFrGyxtn/GJzlJLOnzMGab4lHxiG
+         t1VvJBVb+vvR0COqAGbdkjiV5OrFjUdAcBq4dZZ/hlN433sP/eNSOOnPQHCnfjk4263z
+         a6ksscOaaSyU824ouC3qzgZCNktIpcLlck4sxw9avvzzMLhHAEkqV3tjbEKkJUsKGxDF
+         us79DmzlhgeeAjxls580cb08GC1Fx3FLreRhmyvKCcD6mkzrfM/jpPlKUvWmX48oi+Fb
+         zb+Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwYdbY42XuRC6t7n4EStkwhvW2ZfskXZ9KQFqk3CzJDSdDdzwbAmPF4c5NCM/NZi8BKtmqq5fA=@vger.kernel.org
+X-Gm-Message-State: AFuF++laR5+82VPYgnTEX3E7MWo7c5jeee3/MdTVVYqiFsLlJBjVRmUD
+	i83zgZXf+mUuj30EhXhvkCk9nhHRFaCZ8pNQJQI8hY/LHpM4mIfJgH2Z
+X-Gm-Gg: AYBFou3j0FzmAh+B9ESjbfgxNuGisT1LjKHCeinI0dWaNAp3+rypQqM95INUuNgnf3s
+	33KEboMCkqrZ2Euadzx0Dtkzt0Qtx/3YpaCJTw06283IuUe3P9JA40Z6MbMOspiCigus6ty9g75
+	TmLa35LUvhupAo36BuzlAerDM7Gl2Zl6ZLyfJM4yZQwZCI2Sy1vl1l6iJW2DCa9RPxYYitBTtBc
+	nbLEBKJ6Ms/v/COi2gVewxu/OZ45VGVIeJvYzPz3OhZnY5A1DDM/tTOLmVQ6NXhpCRgLp6ERERj
+	IyDz5GMKrHI7RjXR8sV7s4PqLsQPwagVe9LClKxKLM3vzlbCDufLXnVmCbZnOM2FSsrdfnD1gz1
+	QtEyUlwluL7pbX0r+H9/fT+puFpkGw6cwywFFku69S2b1aetBrqeNXhojX6kkNtVV+fgS/FfLKj
+	tMtNOQgg7zI+kDwYUpJipYsRTTR/h0v+mRl0yDtIlVjCJI8CnBHqaQp6Fz
+X-Received: by 2002:a17:90b:3c8a:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-396d10076e9mr49352310a91.13.1788261017551;
+        Tue, 01 Sep 2026 04:10:17 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d777c329sm7452644a91.2.2026.09.01.04.10.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 04:10:16 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Veerasenareddy Burru <vburru@marvell.com>,
+	Sathesh Edara <sedara@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] octeon_ep: remove redundant memset in octep_setup_pfvf_mbox()
+Date: Tue,  1 Sep 2026 20:09:11 +0900
+Message-ID: <20260901110913.977745-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,160 +77,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+vzalloc() returns zeroed memory, so the memset after the allocation is
+redundant.
+
+No functional change.
+
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
-bnxt_en: avoid redundant RX mask updates in UC overflow state
+ drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-The patch records the unicast filter overflow condition in a new vnic flag
-so that bnxt_uc_list_updated() stops reporting the UC list as changed while
-the list is too long for the available L2 filters, and so that
-bnxt_set_rx_mode() keeps the promiscuous bit in the mask it computes.  The
-goal is to stop resending an identical HWRM_CFA_L2_SET_RX_MASK on every
-rx-mode callback.
-
-Link: https://patch.msgid.link/20260827-bnxt-uc-overflow-v1-1-f20d48864fe9@topgolf.com
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 9c2cc50276a59..d960cf942e99e 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -13791,6 +13791,16 @@ static bool bnxt_uc_list_updated(struct bnxt *bp,
->  	struct netdev_hw_addr *ha;
->  	int off = 0;
->  
-> +	/* In the overflow state all unicast is accepted through the
-> +	 * promiscuous RX mask and no secondary L2 filters are in use,
-> +	 * so the list only needs reprogramming once it fits the
-> +	 * available filters again.  Reporting an update here would
-> +	 * resend an identical SET_RX_MASK on every callback, which
-> +	 * causes brief RX packet loss on some chips.
-> +	 */
-> +	if (vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG)
-> +		return netdev_hw_addr_list_count(uc) <= (BNXT_MAX_UC_ADDRS - 1);
-> +
-
-[Severity: High]
-
-Can this early return defeat the rx-mode retry after a failed
-SET_RX_MASK?
-
-In bnxt_cfg_rx_mode() the overflow branch now latches both the flag and the
-cached promiscuous bit before bnxt_hwrm_cfa_l2_set_rx_mask() has installed
-anything, and after the secondary L2 filters have already been freed:
-
-	for (i = 1; i < vnic->uc_filter_count; i++) {
-		struct bnxt_l2_filter *fltr = vnic->l2_filters[i];
-
-		bnxt_hwrm_l2_filter_free(bp, fltr);
-		bnxt_del_l2_filter(bp, fltr);
-	}
-
-	vnic->uc_filter_count = 1;
-	...
-	if (netdev_hw_addr_list_count(uc) > (BNXT_MAX_UC_ADDRS - 1)) {
-		vnic->rx_mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
-		vnic->flags |= BNXT_VNIC_UC_PROMISC_FLAG;
-
-If the subsequent HWRM fails, the only reaction is the MCAST fallback plus a
-log message, and nothing clears the flag or the cached bit:
-
-	rc = bnxt_hwrm_cfa_l2_set_rx_mask(bp, 0);
-	if (rc && (vnic->rx_mask & CFA_L2_SET_RX_MASK_REQ_MASK_MCAST)) {
-		...
-	}
-	if (rc)
-		netdev_err(bp->dev, "HWRM cfa l2 rx mask failure rc: %d\n",
-			   rc);
-
-	return rc;
-
-The MCAST fallback does not fire when MASK_MCAST is absent, i.e. with
-IFF_ALLMULTI, with an MC list above BNXT_MAX_MC_ADDRS, or with no MC
-addresses at all.
-
-On the retry, bnxt_set_rx_mode() strips PROMISC and immediately re-adds it
-from the new flag, so mask equals the already-committed vnic->rx_mask, and
-bnxt_uc_list_updated() now returns false through the hunk above, so the
-guard is skipped entirely:
-
-	if (mask != vnic->rx_mask || uc_update || mc_update) {
-		vnic->rx_mask = mask;
-
-		return bnxt_cfg_rx_mode(bp, uc, uc_update);
-	}
-
-	return 0;
-
-netif_rx_mode_run() in net/core/dev_addr_lists.c treats that zero return as
-success and drops the retry state:
-
-		if (err)
-			netif_rx_mode_schedule_retry(dev);
-		else
-			dev->rx_mode_retry_count = 0;
-
-At that point the hardware has neither the secondary L2 filters (freed) nor
-the promiscuous bit (never installed), so traffic for the secondary unicast
-addresses is dropped until the UC list shrinks below the filter limit, the
-rx flags or the MC list change, or the interface is brought down and up.
-
-bnxt_init_chip() depends on the same retry:
-
-	rc = bnxt_cfg_rx_mode(bp, &bp->dev->uc, true);
-	if (rc == -EAGAIN) {
-		netif_rx_mode_schedule_retry(bp->dev);
-		rc = 0;
-	} else if (rc) {
-		goto err_out;
-	}
-
-so a transient -EAGAIN or -ENODEV on open with more than
-BNXT_MAX_UC_ADDRS - 1 unicast addresses would leave the interface up with
-no unicast filtering path at all.
-
-Before this patch, the overflow state left vnic->uc_filter_count == 1 with a
-non-empty UC list, so bnxt_uc_list_updated() returned true on every callback
-and the mask was re-sent until it succeeded.  Would it work to latch the
-flag and the cached promiscuous bit only after bnxt_hwrm_cfa_l2_set_rx_mask()
-returns success, or to clear them again on failure so the retry still
-programs the mask?
-
->  	if (netdev_hw_addr_list_count(uc) != (vnic->uc_filter_count - 1))
->  		return true;
->  
-> @@ -13826,6 +13836,13 @@ static int bnxt_set_rx_mode(struct net_device *dev,
->  	if (dev->flags & IFF_PROMISC)
->  		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
->  
-> +	/* Keep the promiscuous bit while the UC list is longer than the
-> +	 * available L2 filters, so that an unchanged rx mode is not
-> +	 * treated as a mask change.
-> +	 */
-> +	if ((vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG) && bnxt_promisc_ok(bp))
-> +		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
-> +
->  	uc_update = bnxt_uc_list_updated(bp, uc);
->  
->  	if (dev->flags & IFF_BROADCAST)
-> @@ -13869,7 +13886,12 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
->  	netif_addr_lock_bh(dev);
->  	if (netdev_hw_addr_list_count(uc) > (BNXT_MAX_UC_ADDRS - 1)) {
->  		vnic->rx_mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
-> +		vnic->flags |= BNXT_VNIC_UC_PROMISC_FLAG;
->  	} else {
-> +		vnic->flags &= ~BNXT_VNIC_UC_PROMISC_FLAG;
-> +		if (!(dev->flags & IFF_PROMISC))
-> +			vnic->rx_mask &=
-> +				~CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
->  		netdev_hw_addr_list_for_each(ha, uc) {
->  			memcpy(vnic->uc_list + off, ha->addr, ETH_ALEN);
->  			off += ETH_ALEN;
-
-[ ... ]
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+index 0867fab61b19..e4175d5bdb3b 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+@@ -274,7 +274,6 @@ int octep_setup_pfvf_mbox(struct octep_device *oct)
+ 		if (!oct->mbox[ring])
+ 			goto free_mbox;
+ 
+-		memset(oct->mbox[ring], 0, sizeof(struct octep_mbox));
+ 		memset(&oct->vf_info[i], 0, sizeof(struct octep_pfvf_info));
+ 		mutex_init(&oct->mbox[ring]->lock);
+ 		INIT_WORK(&oct->mbox[ring]->wk.work, octep_pfvf_mbox_work);
 -- 
-This is an AI-generated review.
+2.43.0
 
