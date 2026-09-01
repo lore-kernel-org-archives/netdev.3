@@ -1,59 +1,62 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C09B38AC8D
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 21:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF65738D3E6
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 21:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788298787; cv=none; b=PVWdrwmIInCyuVBHd391QGmL3p5ylHQQbumERGuVk8DwM2vDZZWu0q29YDzhqx1458JVdNZH2VTnaDhmq+rsDdSSJpUJrO6AhBg2QZUHu6fXhc9F9yFpC3B6Hdyl26IERorTVzGpul+tHM50D/wBf27LeDoSsmpYuYkD9qZM7lw=
+	t=1788298789; cv=none; b=Vksm6UmEC5xGMeA8Mc4DBMnRPe2UIlbL9JqhDRZ3HTIFQAHc4p3bpYFuHaqVGEbIm887LluOLFQJow8cEEG/0nPTTpI5VCggV7o8GGhF8ojFC3RQVooV1nuLEjzBPinP75iRWxPMvqKzJshjOmMdH7hnUlezZqv5hrgZwhkzBw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788298787; c=relaxed/simple;
-	bh=G+JjWQQ1tgd6npjQ9GEGcrac5ZKqPWDiAdAriHjhwEY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f5zv8rnq/LbowSKp4leXRh1XHBZlh/Kt/xZ6fLfF6C/uq8kJVTdQ2awtdbxtxjyAVdyPW8jBz+OUZdzd6fZf41JZHKl82I41orZTJ1CeHcvzNPgHzbyO7B8tarv/mas67A+3oxVOKJiMEXW5L/8WnYzLpBftSkzxExCk1ZWlJz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Cm5wgqwj; arc=none smtp.client-ip=209.85.219.41
+	s=arc-20240116; t=1788298789; c=relaxed/simple;
+	bh=2ddqiTEDH4Ta1MooLBoc1WUptDiklqVuz8HBikj+VvQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZzmIRNTM5BcZtQOOi1bPltTrziyPdFhrLZEhMClVBDjdRpGn8ags/Qaqgm8qhaq0f5tyAjnxEq/aLo+s3vmqMfhnFgeMjKjtfcFETwCIEG07SnXHsOsqxwMJPVHY8DqY4Gxl0mOagiAySDUMK7v9aikxYLVdshu7fA7VXrnfxzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=hqRm4edU; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Cm5wgqwj"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90cd7ad71a9so4736286d6.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 14:39:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="hqRm4edU"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-90cdffe8e3eso3467876d6.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 14:39:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788298785; x=1788903585; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7HTmDoLr2gVrR4KXlsYIyT7LORLTTblGYb6jNqqivbo=;
-        b=Cm5wgqwjfJJyvnZe+/9DpjstdFgSkV7OkhEiInrL9QG/f3A4Gr/ZcEt5EspUKCQ/ME
-         OTKVNosykpazTVXQLjum15f8I3fBP/SvuijwM0eylY4sWam9A7wHnKjo+ywTg6ycDlzO
-         0Pr9ySVUJ6F6ZgXI+duK4nUspRMAfmIOd0IBI=
+        d=mojatatu.com; s=google; t=1788298786; x=1788903586; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7201ng31aKZQYzOiUDKw0qHurnoMGdllcWS6SyTHPr0=;
+        b=hqRm4edUFhuEe/0kq6tDwa0VRtVDrshhsrzfBu6nug+C0aHWRgQzTL9UxJxnpG9iUn
+         iij9T56BVHPJbpyXk1agKppfPGSkVO9ID6hlMpuQm7E849WFA3UTn3yhKRQGrCRMuftK
+         x+rxG8+U/iP2XKdWf/eM0YoV2xMX6hVeRCEG8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788298785; x=1788903585;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7HTmDoLr2gVrR4KXlsYIyT7LORLTTblGYb6jNqqivbo=;
-        b=qPD/E5iesz67/RHYSSHJW7OV95ZfKVaehde7ZL4ATU65ShHPRipeV6x9Z1rsMELMjB
-         w98PjAnepLrXyihf4XDnl7gxMcl5CnjJQLJKU17hYx6N54vTI5NkXRKCmbRWztyCcRsJ
-         WjfbEQj43t9e9tSMrArAkcOlhNOuDTM+3mfoGceTfrfxNXJDeypRa6Gzc3sLIyQwPDjx
-         9Fs4ZtYE9O3+XAu+/6XhJzRSiGWjVgCNQLEWNCYKoIFtFfURXcjKQ3S5COIAWlfG9yjL
-         CK4VPhFYubCNkttE5ET+yqHRGqcKm79jYJjjkFxviUO1u+kO9NQ9XryDfz171jCXDMWg
-         K4Mw==
-X-Gm-Message-State: AFuF++lkbh+bVwqKXOkpAshKVCcpd8recQH5qGFrC3Ttgd3sDj0bpm6c
-	0eBAKxIbMCzR79IxAJv+ifzEA2lzdfFaizOcY4zrzfUWpB5KEzrB48xsr57ncVmMrBUI2zwdTu7
-	yZ2GC/A==
-X-Gm-Gg: AR+sD13DWrjIXZbXgTZcA08RV9mSGPlvv77bX/tv9xLIRCN+VnqqDDsgUoRNTs+KZtu
-	Rf29Yo+Jf/GylXSTYYH7KekSMZjhij0lQzMUI8x/eP50uIV0qjQfd+Y3uvGYRLtL+2Pq87CkOj4
-	xUl6EHDnR4glQ6k/HfVis7XrNUicKyqDyB4H4+XTa598QzFHdqRkw5ZQ0I6LCt33i47pSfGlsJD
-	AbWKsvZaq/U9JB242okPtWTa4s6GfyB3rF04tcXI8FBEhvibF+4JLlv1UVQfcs/y+1uSBiGqyl/
-	hx02CBdOXfiYgRPNpoFJZ46NBC8lytTPRM/AxB4tzEOlQarclXrJCoUB4ZALxvdrCXvRZUtK0GV
-	FNdU4rFwYy3MwGV9KtmCAOieTRu+9KrrmaIar4veOkQAv8GXAavxeMYXMUc2CzuzWwHLRMKAAvJ
-	Yxiri2QWN1MoWSrw/svLLp3BYnJy5zWFCClp3tTzQMgzV4Y5E2XtinphlT0fcYShBzyksUZ3/P7
-	D0PU/F7edlVqGbZeLGX3n5P8fzRFsEu0gh0KHE=
-X-Received: by 2002:a05:6214:5298:b0:90e:7cee:3c84 with SMTP id 6a1803df08f44-90eca3a9527mr9787726d6.28.1788298784953;
-        Tue, 01 Sep 2026 14:39:44 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788298786; x=1788903586;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7201ng31aKZQYzOiUDKw0qHurnoMGdllcWS6SyTHPr0=;
+        b=ombRTuzQWfQWnLkmiCqVgmnUanulsufso2Q8P6oGJRIf/KuJwk3ZdQzVjSs48uWJFI
+         /7/rfB5Sko8TK8gsBhcJVI+KJqXrXsXNdAtoyEmKJY8LdyBjUFozJJExQXeXrAJ8ZN2m
+         YepyofwKKQqtVjxAzMRevZuaO0QCBQxp1Efa0zcv+8DD00gt/A80i6y6XF5lOvJIbS/L
+         ddMYT1Wxf5MWKpb+0yPS3xCZIBftuJmBQc6Uk5+NnC39SQdDXRJcpH9YMF8xctgLw5I7
+         C4BgFl4dPE/ca2EjP5r5Y2WtH8qYNPIYPvt5EJocJPtBYsZi+IKjuUFxpgt3X7u1Y7u/
+         cVBw==
+X-Gm-Message-State: AFuF++k6EAjaomfUjxSFfa0kWK1iDZ2nk85o77aTJP/aeN2XqGoQO9cx
+	nbK9YeCoD1Nlmfb2NKnfC8qt14WCtTKGtA9+FgUKpK4vLOnOdsKB7x5wJk85aKsWfp9pXUzt2T9
+	ZD6aUWQ==
+X-Gm-Gg: AYBFou1MpEA1INeOK6H3ld25nMTUJTUPK9GEn7bHLQ2GCGd4bBeR01hSh8fEFUwH0jF
+	TK8pM6pKE9xWQO7qDeUUisx+5ZWVz3rCGXvax/q7UKeezMNDOQ8JXAhZSJeJIcoUmyiMtQoY4IF
+	Krkps/7gj8+VEwSmS01OTwPxtq6iLq83zRNs1dI/nJaAs9IpU7sj/c0XKXas3FQxefjboA29x99
+	maontmERJhov+4HeZE3cgvnAUEqxATEGl2gmkQV6Jc/TpcswtAG1QmAna7VCB6IpkSpl5plxe8M
+	frMljjmrL6syFaPZ9HPiYbninFrkPKuZWUurig53Uk+FQEzp3LttByb9mA6S+7HDnEp+/pSGezv
+	ZnCyxcYxnELU8ou+pAjltmw2uYLmTRD5HXdd9j0DLqq5H95o92IwgRAwoMWcilDXcJSpY6eEiLx
+	nUvpDJIa2E9+wyitwebgt3LQfqr4YQpfLLhyCNF2AHQExJpwodQgbSwzFukcagP2rGca8KI4Izz
+	nuZb2TptLvIXq19ewf8IHVpP3bdXaNN7DDcjQ==
+X-Received: by 2002:a05:6214:2e47:b0:90c:e762:1f86 with SMTP id 6a1803df08f44-90ebabba9bamr10387966d6.30.1788298786590;
+        Tue, 01 Sep 2026 14:39:46 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm3458426d6.2.2026.09.01.14.39.43
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm3458426d6.2.2026.09.01.14.39.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 14:39:43 -0700 (PDT)
+        Tue, 01 Sep 2026 14:39:45 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -67,94 +70,89 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Vega <vega@nebusec.ai>,
 	stable@vger.kernel.org,
 	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
 	Vijay Subramanian <subramanian.vijay@gmail.com>,
-	Petr Machata <petrm@nvidia.com>
-Subject: [PATCH net v3 0/9] net/sched: clamp quantum/psched_mtu in change paths
-Date: Tue,  1 Sep 2026 17:39:21 -0400
-Message-Id: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
+	Petr Machata <petrm@nvidia.com>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH net v3 1/9] net/sched: fq: clamp quantum and initial_quantum in change path
+Date: Tue,  1 Sep 2026 17:39:22 -0400
+Message-Id: <QDISC-0CFC.v3.20260901204856@mojatatu.com.2>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
+References: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is a followup to commit 709f34f7c28d ("net/sched: fq: add overflow
-bounds to quantum and initial quantum").
+The fq change path accepts TCA_FQ_QUANTUM in [1, INT_MAX] and
+TCA_FQ_INITIAL_QUANTUM up to INT_MAX, while fq_init() already clamps to
+[1, 1<<20]. A user can override the init clamp via tc qdisc change,
+restoring the small-quantum deficit spin that the init clamp prevents.
 
-The quantum_backlog_overflow series and the five siblings that followed
-clamped the init-path quantum in fq, fq_codel, fq_pie, hhf, sfq. The
-change() paths were not clamped but it is the same pattern, same writer
-of q->quantum, same privilege level (CAP_NET_ADMIN in a user namespace).
-A user can override the init clamp via tc qdisc change, restoring the
-small-quantum deficit spin that the init clamp was meant to prevent.
+Narrow iq_range.max to 1<<20 so TCA_FQ_INITIAL_QUANTUM is rejected at
+parse time. Clamp TCA_FQ_QUANTUM to [256, 1<<20] in fq_change() and
+fq_init() quantum to [256, 1<<20] for tiny-MTU devices.
 
-This series also covers two siblings that were missed entirely by the
-original series: sch_dualpi2 and sch_pie call psched_mtu() without any
-clamp at all. With a crafted size table qdisc_pkt_len reaches ~2 GiB,
-so quantum=1 (or a zero psched_mtu on a headerless device) makes the
-deficit-refill loop spin ~2^31 times under the qdisc lock (a soft
-lockup / denial of service).
+Conditions to recreate the bug:
+  CONFIG_NET_SCH_FQ=y. Requires CAP_NET_ADMIN (namespace-local via
+  unshare -Urn suffices).
 
-Each patch fixes one qdisc with its own Fixes: tag so they can be
-backported independently - the commits they fix shift differently in
-the git tree.
+  tc qdisc add dev dummy0 root fq
+  tc qdisc change dev dummy0 root fq quantum 1 stab data 32768 size_log 15 cell_log 0
 
-Patch 1: fq - clamp TCA_FQ_QUANTUM and TCA_FQ_INITIAL_QUANTUM in change
-Patch 2: fq_pie - clamp quantum in change path
-Patch 3: sfq - clamp quantum and reject > 1<<20 in change path
-Patch 4: hhf - clamp quantum in change and init paths
-Patch 5: dualpi2 - clamp psched_mtu at all 3 call sites
-Patch 6: pie - clamp psched_mtu in pie_drop_early
-Patch 7: drr - clamp quantum in change class
-Patch 8: ets - clamp quantum in parse and fallback paths
-Patch 9: selftests - update ETS test 41f5 for clamped quanta
+Fixes: 709f34f7c28d ("net/sched: fq: add overflow bounds to quantum and initial quantum")
+Reported-by: Vega <vega@nebusec.ai>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/sched/sch_fq.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-Conditions to recreate (applies to all): create the qdisc, then
-tc qdisc change ... quantum 1 with a STAB size table inflating
-qdisc_pkt_len. Requires CAP_NET_ADMIN in a user namespace (unshare -Urn).
-
-Sashiko links:
-- v1: https://sashiko.dev/#/patchset/20260826074056.7873-1-jhs@mojatatu.com
-- v2: https://sashiko.dev/#/patchset/20260829081229.81708-1-jhs@mojatatu.com
-
-v2 -> v3:
-- Add patch 9/9: update tdc case 41f5 (ETS offload quanta wrap test) -
-  the [256, 1<<20] clamp in ets_quantum_parse() rejects/normalises the
-  wrapping quanta 41f5 asserts verbatim, so the tc executor run failed
-  (Jakub). 41f5 now matches the clamped values (quanta 1048576 256 256)
-  and its name reflects the new behavior.
-- No kernel-code changes; patches 1-8 are identical to v2.
-
-v1 -> v2:
-- Split the single monolithic patch into 8 per-qdisc patches, each with
-  its own Fixes: tag, so stable backports can cherry-pick individually.
-- Add cover letter.
-- ETS: move 256 floor into ets_quantum_parse() so explicit quanta are
-  clamped, not just the fallback path (Sashiko gemini + nipa gpt-5-6-sol-1-7).
-- DRR: add upper bound clamp_t(u32, quantum, 256, 1<<20) matching sfq
-  (Sashiko nipa gpt-5-6-sol-3-19).
-- ETS: add upper bound clamp in ets_quantum_parse() and fallback path.
-- sch_fq: add 256 floor in fq_change() for TCA_FQ_QUANTUM and clamp
-  fq_init() quantum to [256, 1<<20] for tiny-MTU devices
-  (Sashiko gemini + nipa main-1-1).
-- hhf: clamp hhf_init() to [256, 1<<20] matching siblings
-  (Sashiko gemini + nipa gpt-5-6-sol-6-24).
-- Add Fixes: dcc68b4d8084 for ETS (Sashiko nipa gpt-5-6-sol-1-8).
-- Re-add Toke's Reviewed-by from v1 (kept since v2 only splits the patch,
-  the code Toke reviewed is unchanged in approach).
-
-Jamal Hadi Salim (9):
-  net/sched: fq: clamp quantum and initial_quantum in change path
-  net/sched: fq_pie: clamp quantum in change path
-  net/sched: sfq: clamp quantum in change path
-  net/sched: hhf: clamp quantum in change and init paths
-  net/sched: dualpi2: clamp psched_mtu at all call sites
-  net/sched: pie: clamp psched_mtu in pie_drop_early
-  net/sched: drr: clamp quantum in change class
-  net/sched: ets: clamp quantum in parse and fallback paths
-  selftests: tc-testing: update ETS test 41f5 for clamped quanta
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index 6144b5686f13..35f940b2205d 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -980,7 +980,7 @@ static int fq_resize(struct Qdisc *sch, u32 log)
+ }
+ 
+ static const struct netlink_range_validation iq_range = {
+-	.max = INT_MAX,
++	.max = 1 << 20,
+ };
+ 
+ static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
+@@ -1106,14 +1106,10 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
+ 			   nla_get_u32(tb[TCA_FQ_FLOW_PLIMIT]));
+ 
+ 	if (tb[TCA_FQ_QUANTUM]) {
+-		u32 quantum = nla_get_u32(tb[TCA_FQ_QUANTUM]);
++		u32 quantum = clamp_t(u32, nla_get_u32(tb[TCA_FQ_QUANTUM]),
++				     256, 1 << 20);
+ 
+-		if (quantum > 0 && quantum <= (1 << 20)) {
+-			WRITE_ONCE(q->quantum, quantum);
+-		} else {
+-			NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+-			err = -EINVAL;
+-		}
++		WRITE_ONCE(q->quantum, quantum);
+ 	}
+ 
+ 	if (tb[TCA_FQ_INITIAL_QUANTUM])
+@@ -1232,7 +1228,7 @@ static int fq_init(struct Qdisc *sch, struct nlattr *opt,
+ 	sch->limit		= 10000;
+ 	q->flow_plimit		= 100;
+ 	mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
+-	q->quantum		= min_t(u32, 2 * mtu, 1 << 20);
++	q->quantum		= clamp_t(u32, 2 * mtu, 256, 1 << 20);
+ 	q->initial_quantum	= min_t(u32, 10 * mtu, 1 << 20);
+ 	q->flow_refill_delay	= msecs_to_jiffies(40);
+ 	q->flow_max_rate	= ~0UL;
+-- 
+2.43.0
 
