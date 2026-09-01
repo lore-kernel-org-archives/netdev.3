@@ -1,133 +1,355 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABEC3AE195;
-	Tue,  1 Sep 2026 11:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D479363C46;
+	Tue,  1 Sep 2026 11:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788263307; cv=none; b=sznfQd/ZsZYCFO5kYLb8TZmHjZj7RBtdJHd7S+l0l1Z3w75U8q3qayfWpvxgKPjwH2gm03FMdlLAizc9xqlq/uZj7Dp03og+zlUzpVkBwCa6OsmrnBRXoWyyvjLZ2+QZH4nRtL52LYndkr7UpbGb+wuKzHfFMDfGhOddJfAVMzQ=
+	t=1788263463; cv=none; b=FNl8RjxKlvBZINCwOGINytuS2V2UzCEIooHhMFuq/ovPJSemv7WQdzojsMz+Rth2ZlcKSAVloiC08xddS3NFmRPF/o39aaQ8Zwe5TwzGz9erW3Bl+TwQrjxJmhalZHsmuZcmCyOIJ1MIav8aSdYdgfhPTrdX9VWUyXrjiDhRMyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788263307; c=relaxed/simple;
-	bh=S/SRet3qeBwN+oQWR3doE93E6/qESJhQ4jEYrrLt4D4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fYKYSkqd9TXZLNbtsQokPU7kyH/6heZBP5yg0S1Rbw4Y4qHJs5gYkQdiSbY1TG/lHIKERvnWrXnBxo0LqTxpXu1oQnWDxcGoXJbPUmrJrpNIW9wKp1lvnxkOS0Gfb8esBsVlGYamE1M3Exac1nnGXqRTUMSBCvg28+7Ya9vuFJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Pqgi8KVu; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1788263463; c=relaxed/simple;
+	bh=zqdUYV1yNctxuRi2ceiURU5QKjQzKpJ/jpsDnKflsTc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fYQsbJ1BNim9ufD0x1LI4lcsCt2eFvQQ0+qtL61SKDS7l6+xv/b6CkWFzAoCmH08T4hWzMpkGOOGNSRTsiaqDNlAQx9ncfRUDY3qO6OWahLzKmzcBF1Gc4ptqrgqIpiOFf0O5p+odme8Yc+a2YCG4oQ+xVRpsEpf12JmYBSZDg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=VfUylumr; arc=none smtp.client-ip=198.252.153.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Pqgi8KVu"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681AL0fq3167664;
-	Tue, 1 Sep 2026 04:48:17 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=9Uibh/DA52PFA/piBtPl0uK
-	X8OgmgMslK1Dh1GZW2I0=; b=Pqgi8KVup1jawP4X0VVxbpsr9Acb1eTSzEZN8fB
-	7bBAFHQ1FvC54K9c1dLuRL7i0sw4fg+ZcGKDGSOaCanAsQWNpkw68OHjJmITeDjH
-	0iJSpLM5VILRC+oor1eB6adJz76jJv44uQm0O2hsc1FMTZfAX9JWwjerj+UEZjSq
-	csQcDqYwQRMU359UqcYsZCG4AWi4Ytm1/9rR/8ri1GS6y+NTB5tBKJ47Jw9z7qFN
-	JHiJMHSWJdZJaTTr+D/Wq6RfnSGQ8STiBzoWswUDkqHm+wSdJQud0PLkyIL1ohGn
-	yKyfJtIS8Oj/0+zXL7j+tEk26Lb0qY3A0mKVV/jzHOgBMbw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gdmvqsjfm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Sep 2026 04:48:17 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 1 Sep 2026 04:48:15 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 1 Sep 2026 04:48:15 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 144265B6928;
-	Tue,  1 Sep 2026 04:48:10 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Roy Franz <rfranz@marvell.com>, Nitin Shetty J <nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        Subbaraya Sundeep
-	<sbhatta@marvell.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric
- Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Simon Horman
-	<horms@kernel.org>
-Subject: [PATCH net v2] octeontx2-pf: Fix ethtool timestamping capabilities for SDP representors
-Date: Tue, 1 Sep 2026 17:18:07 +0530
-Message-ID: <20260901114808.1701352-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="VfUylumr"
+Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4hZ41b1B0tzDqhC;
+	Tue,  1 Sep 2026 11:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=riseup.net; s=squak;
+	t=1788263454; bh=IPswc6Cjd8p7WwVezZA2g6UODoR/ie6W2jlz9aPTgYY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VfUylumrcmaQjvyhXLkMyiR9wENqWf4nTKiGtdP8Yvs/Q5OqprQU4gIcKq0gKOIok
+	 46FJYz5quOY4S4XLDs53bNJwcZ1+mtizdi3Q3gCrvScbu94Bxzoh9HCltv1nydkw0V
+	 m/yoim5TLMIg2q0i6yXrsZWZucC3RsqmJXC0zyQA=
+X-Riseup-User-ID: E5F8F7D98D2829322768F754E05AE5AE62A09FBC44B70DAB5A0A24EA938CE3A6
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4hZ41Q1d1Sz1xpZ;
+	Tue,  1 Sep 2026 11:50:34 +0000 (UTC)
+From: =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@riseup.net>
+To: David Ahern <dsahern@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@riseup.net>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Junseo Lim <zirajs7@gmail.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Willem de Bruijn <willemb@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	Breno Leitao <leitao@debian.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	netdev@vger.kernel.org (open list:VRF),
+	linux-kernel@vger.kernel.org (open list),
+	netfilter-devel@vger.kernel.org (open list:NETFILTER),
+	coreteam@netfilter.org (open list:NETFILTER),
+	bpf@vger.kernel.org (open list:BPF [MISC]:Keyword:(?:\b|_)bpf(?:\b|_))
+Subject: [PATCH net] net/ipv6: don't route packets with unknown source address
+Date: Tue,  1 Sep 2026 13:50:07 +0200
+Message-ID: <20260901115021.50057-1-ihuguet@riseup.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDEwNCBTYWx0ZWRfX48WomyWztRvF
- jAosileGDxcjivMwcJ78BzsnmAsf7V/pQYi3JWdJcY5kIcKSgnQDT2FVZmZHkwXMNEWQLM7qqHq
- xs/hO5E1bzUPiVX49R9iQGHANX5nyB3pyxipZUH+DzwdbeSZ11G8t1LjN8hMtNc9QmZ6zW7XCAB
- n616Kl28xmMAheEqtcrbbjYU/sC1FAyWrPts3MvloSgiPKb3OABOyMq7IU3Misbrot9SEQ7XZ80
- QRnv8U13ABwOE2uq7yl8hARzk78/d87ASCQgofhiwA1hbF2lzBAiPtRD3thG3ngvpzxF0FEYoKo
- V8ZCqrZr9MnPs5JzRMq1m3rUAAldCnQISpWsRkC12919VzPbeJlOtrZWBhwZqYPW282MviIBhrA
- xNrhtzewbMlMtVZnnm6Pi38//0JOiUKIFbUXw3phJ3XrfbeQ1j5JzZRSKB10NMhGdF566CT7JHc
- U6YGeEC5kEQ3J6o2YYw==
-X-Authority-Analysis: v=2.4 cv=HYQkiCE8 c=1 sm=1 tr=0 ts=6a96bb81 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=ylu_Mql_jpgZ7cmvgmoA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: o0jraw87Xo5DHm2Uc_7ZB2T330rrqY9D
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDEwNCBTYWx0ZWRfXzdvu2PtCBWz3
- XtZjBpk7sloiF+6yVmZKsC0CHJFUoKU0n8IjSx27IZRKcFVHP3G+iyIkr+lvVOSvBNz/pV+NRKB
- bWeWyrw3rQsTJz4c806WwKd1ODrCQqw=
-X-Proofpoint-GUID: o0jraw87Xo5DHm2Uc_7ZB2T330rrqY9D
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_03,2026-08-31_01,2025-10-01_01
 
-From: Roy Franz <rfranz@marvell.com>
+Don't allow routing packets with a source address that is not configured
+in the host. Allow it only in certain cases like when using a
+transparent socket, by setting the ANYSRC flag in flowi_flags.
 
-SDP representors do not support hardware timestamping. The current
-implementation of otx2_get_ts_info incorrectly advertises hardware
-timestamping capabilities and a PHC index to userspace for these
-interfaces.
+Until now, it was possible to send such a packet if a route can be found
+in the routing table for it. For example:
+1. Configure an address 1:2::3:4/64 and a static route 1:2::/64
+2. Establish a TCP connection to 1:2::3:4
+3. Remove the address from the interface, but keep the route.
+4. Packets are still sent out by the TCP connection because of
+   the static route. No incoming packets are accepted, though.
 
-Fix this by checking if the device is an SDP representor and returning
-the default software timestamping capabilities instead.
+This patch prevents the outgoing packets to be sent in normal
+circumnstances.
 
-Fixes: 2f7f33a09516 ("octeontx2-pf: Add representors for sdp MAC")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Roy Franz <rfranz@marvell.com>
+This aligns the behaviour with the IPv4 stack. To determine the places
+where the ANYSRC needs to be set, I set the flag in the same places as
+the IPv4 stack does.
+
+Apart from consolidating the behaviour of both stacks, there is a more
+important reason why this is needed. RFC 4862 states that "an invalid
+address MUST NOT be used as the source address of outbound packets".
+Therefore, sending packets with a source address considered "invalid",
+like an expired address, is disallowed.
+
+Signed-off-by: Íñigo Huguet <ihuguet@riseup.net>
+
 ---
-v2:
-- Disable PTP initialization for SDP representors to cover both
-  ethtool capabilities and hwtstamp ioctl handling.
----
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-index 95b0a1e7c936..7b0a51f453ce 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-@@ -386,7 +386,7 @@ int otx2_ptp_init(struct otx2_nic *pfvf)
- 	struct ptp_req *req;
+Testing: tested with a manual reproducer executing the steps described
+above. Tested also with transparent sockets to ensure that the packets
+are sent in that case. Also executed the following selftests to prevent
+potential regressions: fcnal-ipv6, fib_tests, fib-onlink-tests,
+nft_nat, nft_tproxy_tcp, nft_tproxy_udp.
+
+The change in the netfilter's ip6_route_me_harder function is the one
+that I'm more unsure about. It was not clear to me the reason why it was
+done like this in the IPv4 counterpart. Please review carefully.
+---
+ drivers/net/vrf.c                |  1 +
+ net/core/lwt_bpf.c               |  1 +
+ net/ipv6/af_inet6.c              |  1 +
+ net/ipv6/datagram.c              |  1 +
+ net/ipv6/inet6_connection_sock.c |  2 ++
+ net/ipv6/ip6_output.c            | 28 ++++++++++++++++++++++++++++
+ net/ipv6/netfilter.c             | 10 ++++++++--
+ net/ipv6/ping.c                  |  1 +
+ net/ipv6/raw.c                   |  1 +
+ net/ipv6/syncookies.c            |  1 +
+ net/ipv6/tcp_ipv6.c              |  2 ++
+ net/ipv6/udp.c                   |  1 +
+ net/l2tp/l2tp_ip6.c              |  2 ++
+ 13 files changed, 50 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index a0557a3a7026..6c09d5f46d6b 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -432,6 +432,7 @@ static netdev_tx_t vrf_process_v6_outbound(struct sk_buff *skb,
+ 	fl6.flowlabel = ip6_flowinfo(iph);
+ 	fl6.flowi6_mark = skb->mark;
+ 	fl6.flowi6_proto = iph->nexthdr;
++	fl6.flowi6_flags = FLOWI_FLAG_ANYSRC;
+ 
+ 	dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
+ 	if (IS_ERR(dst) || dst == dst_null)
+diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
+index da49364ec63d..e8b954282689 100644
+--- a/net/core/lwt_bpf.c
++++ b/net/core/lwt_bpf.c
+@@ -233,6 +233,7 @@ static int bpf_lwt_xmit_reroute(struct sk_buff *skb)
+ 		fl6.flowi6_mark = skb->mark;
+ 		fl6.flowi6_uid = sock_net_uid(net, sk);
+ 		fl6.flowlabel = ip6_flowinfo(iph6);
++		fl6.flowi6_flags = FLOWI_FLAG_ANYSRC;
+ 		fl6.flowi6_proto = iph6->nexthdr;
+ 		fl6.daddr = iph6->daddr;
+ 		fl6.saddr = iph6->saddr;
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index 282912a11999..e55a36372ab2 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -820,6 +820,7 @@ int inet6_sk_rebuild_header(struct sock *sk)
+ 	fl6->fl6_dport = inet->inet_dport;
+ 	fl6->fl6_sport = inet->inet_sport;
+ 	fl6->flowi6_uid = sk_uid(sk);
++	fl6->flowi6_flags = inet_sk_flowi_flags(sk);
+ 	security_sk_classify_flow(sk, flowi6_to_flowi_common(fl6));
+ 
+ 	ip6_ecmp_set_mp_hash(sock_net(sk), fl6, sk->sk_txhash);
+diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
+index 38d7b4845281..0773bfa0342d 100644
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -52,6 +52,7 @@ static void ip6_datagram_flow_key_init(struct flowi6 *fl6,
+ 	fl6->flowi6_mark = sk->sk_mark;
+ 	fl6->fl6_dport = inet->inet_dport;
+ 	fl6->fl6_sport = inet->inet_sport;
++	fl6->flowi6_flags = inet_sk_flowi_flags(sk);
+ 	fl6->flowlabel = ip6_make_flowinfo(np->tclass, np->flow_label);
+ 	fl6->flowi6_uid = sk_uid(sk);
+ 
+diff --git a/net/ipv6/inet6_connection_sock.c b/net/ipv6/inet6_connection_sock.c
+index 3e4ce8cb478e..f295f3efe243 100644
+--- a/net/ipv6/inet6_connection_sock.c
++++ b/net/ipv6/inet6_connection_sock.c
+@@ -45,6 +45,7 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
+ 	fl6->flowi6_mark = ireq->ir_mark;
+ 	fl6->fl6_dport = ireq->ir_rmt_port;
+ 	fl6->fl6_sport = htons(ireq->ir_num);
++	fl6->flowi6_flags = inet_sk_flowi_flags(sk);
+ 	fl6->flowi6_uid = sk_uid(sk);
+ 	security_req_classify_flow(req, flowi6_to_flowi_common(fl6));
+ 
+@@ -71,6 +72,7 @@ struct dst_entry *inet6_csk_route_socket(struct sock *sk,
+ 	fl6->daddr = sk->sk_v6_daddr;
+ 	fl6->saddr = np->saddr;
+ 	fl6->flowlabel = np->flow_label;
++	fl6->flowi6_flags = inet_sk_flowi_flags(sk);
+ 	IP6_ECN_flow_xmit(sk, fl6->flowlabel);
+ 
+ 	if (sk->sk_protocol == IPPROTO_TCP)
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 8fc4766c8da9..57eebe347902 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1191,6 +1191,34 @@ static int ip6_dst_lookup_tail(struct net *net, const struct sock *sk,
+ 	if (err)
+ 		goto out_err_release;
+ 
++	/* Routing packets with a source address not present in the host is
++	 * disallowed unless the ANYSRC flag is set (i.e. with transparent sockets).
++	 * The source address must be in the same L3 domain as the destination device.
++	 */
++	if (!ipv6_addr_any(&fl6->saddr) &&
++	    !(fl6->flowi6_flags & FLOWI_FLAG_ANYSRC)) {
++		struct net_device *oif_dev;
++
++		rcu_read_lock();
++		/* For local routes, (*dst)->dev can be 'lo', which has no l3mdev
++		 * master, so that the L3 domain wouldn't match if the source
++		 * address is in a VRF-enslaved device. To avoid that, check the
++		 * outgoing interface from the flowi6 structure instead.
++		 */
++		if (fl6->flowi6_oif)
++			oif_dev = dev_get_by_index_rcu(net, fl6->flowi6_oif);
++		else
++			oif_dev = (*dst)->dev;
++
++		if (!ipv6_chk_addr_and_flags(net, &fl6->saddr, oif_dev,
++					     1, 1, IFA_F_TENTATIVE))
++			err = -ENETUNREACH;
++		rcu_read_unlock();
++
++		if (err)
++			goto out_err_release;
++	}
++
+ #ifdef CONFIG_IPV6_OPTIMISTIC_DAD
+ 	/*
+ 	 * Here if the dst entry we've looked up
+diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
+index a7025ec87035..7c19ecbec112 100644
+--- a/net/ipv6/netfilter.c
++++ b/net/ipv6/netfilter.c
+@@ -26,11 +26,11 @@ int ip6_route_me_harder(struct net *net, struct sock *sk_partial, struct sk_buff
+ 	const struct ipv6hdr *iph = ipv6_hdr(skb);
+ 	struct sock *sk = sk_to_full_sk(sk_partial);
+ 	struct net_device *dev = skb_dst_dev(skb);
++	int daddr_type = ipv6_addr_type(&iph->daddr);
+ 	struct flow_keys flkeys;
+ 	unsigned int hh_len;
+ 	struct dst_entry *dst;
+-	int strict = (ipv6_addr_type(&iph->daddr) &
+-		      (IPV6_ADDR_MULTICAST | IPV6_ADDR_LINKLOCAL));
++	int strict = daddr_type & (IPV6_ADDR_MULTICAST | IPV6_ADDR_LINKLOCAL);
+ 	struct flowi6 fl6 = {
+ 		.flowi6_l3mdev = l3mdev_master_ifindex(dev),
+ 		.flowi6_mark = skb->mark,
+@@ -41,6 +41,12 @@ int ip6_route_me_harder(struct net *net, struct sock *sk_partial, struct sk_buff
+ 	};
  	int err;
  
--	if (is_otx2_lbkvf(pfvf->pdev)) {
-+	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev)) {
- 		pfvf->ptp = NULL;
- 		return 0;
- 	}
++	fl6.flowi6_flags = sk ? inet_sk_flowi_flags(sk) : 0;
++	if (daddr_type & (IPV6_ADDR_UNICAST | IPV6_ADDR_LINKLOCAL))
++		fl6.flowi6_flags |= FLOWI_FLAG_ANYSRC;
++	else
++		fl6.saddr = in6addr_any;
++
+ 	if (sk && sk->sk_bound_dev_if)
+ 		fl6.flowi6_oif = sk->sk_bound_dev_if;
+ 	else if (strict)
+diff --git a/net/ipv6/ping.c b/net/ipv6/ping.c
+index 6e90d0bf9f3d..d0964396c2c5 100644
+--- a/net/ipv6/ping.c
++++ b/net/ipv6/ping.c
+@@ -140,6 +140,7 @@ static int ping_v6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	fl6.flowi6_proto = IPPROTO_ICMPV6;
+ 	fl6.saddr = np->saddr;
+ 	fl6.daddr = *daddr;
++	fl6.flowi6_flags = inet_sk_flowi_flags(sk);
+ 	fl6.flowi6_mark = ipc6.sockc.mark;
+ 	fl6.flowi6_uid = sk_uid(sk);
+ 	fl6.fl6_icmp_type = user_icmph.icmp6_type;
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index b965258cf9e5..ef5ddbe7ac10 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -887,6 +887,7 @@ static int rawv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		fl6.flowi6_oif = READ_ONCE(np->ucast_oif);
+ 	security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
+ 
++	fl6.flowi6_flags = inet_sk_flowi_flags(sk);
+ 	if (hdrincl)
+ 		fl6.flowi6_flags |= FLOWI_FLAG_KNOWN_NH;
+ 
+diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
+index b581cb1ee2e8..3d665e93fcac 100644
+--- a/net/ipv6/syncookies.c
++++ b/net/ipv6/syncookies.c
+@@ -242,6 +242,7 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
+ 		fl6.flowi6_mark = ireq->ir_mark;
+ 		fl6.fl6_dport = ireq->ir_rmt_port;
+ 		fl6.fl6_sport = inet_sk(sk)->inet_sport;
++		fl6.flowi6_flags = inet_sk_flowi_flags(sk);
+ 		fl6.flowi6_uid = sk_uid(sk);
+ 		security_req_classify_flow(req, flowi6_to_flowi_common(&fl6));
+ 
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index df9c29eb5c1f..401a1297e7db 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -268,6 +268,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	fl6->flowi6_mark = sk->sk_mark;
+ 	fl6->fl6_dport = usin->sin6_port;
+ 	fl6->fl6_sport = inet->inet_sport;
++	fl6->flowi6_flags = inet_sk_flowi_flags(sk);
+ 	if (IS_ENABLED(CONFIG_IP_ROUTE_MULTIPATH) && !fl6->fl6_sport)
+ 		fl6->flowi6_flags = FLOWI_FLAG_ANY_SPORT;
+ 	fl6->flowi6_uid = sk_uid(sk);
+@@ -979,6 +980,7 @@ static void tcp_v6_send_response(const struct sock *sk, struct sk_buff *skb, u32
+ 	fl6.fl6_dport = t1->dest;
+ 	fl6.fl6_sport = t1->source;
+ 	fl6.flowi6_uid = sock_net_uid(net, sk && sk_fullsock(sk) ? sk : NULL);
++	fl6.flowi6_flags = sk ? inet_sk_flowi_flags(sk) : 0;
+ 	security_skb_classify_flow(skb, flowi6_to_flowi_common(&fl6));
+ 
+ 	/* Pass a socket to ip6_dst_lookup either it is for RST
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 93478d1ad576..5154d445ba9c 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1656,6 +1656,7 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	if (ipv6_addr_any(&fl6->saddr) && !ipv6_addr_any(&np->saddr))
+ 		fl6->saddr = np->saddr;
+ 	fl6->fl6_sport = inet->inet_sport;
++	fl6->flowi6_flags = inet_sk_flowi_flags(sk);
+ 
+ 	if (cgroup_bpf_enabled(CGROUP_UDP6_SENDMSG) && !connected) {
+ 		err = BPF_CGROUP_RUN_PROG_UDP6_SENDMSG_LOCK(sk,
+diff --git a/net/l2tp/l2tp_ip6.c b/net/l2tp/l2tp_ip6.c
+index bdaae1b64d25..22ae5bc2669a 100644
+--- a/net/l2tp/l2tp_ip6.c
++++ b/net/l2tp/l2tp_ip6.c
+@@ -633,6 +633,8 @@ static int l2tp_ip6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	else if (!fl6.flowi6_oif)
+ 		fl6.flowi6_oif = READ_ONCE(np->ucast_oif);
+ 
++	fl6.flowi6_flags = inet_sk_flowi_flags(sk);
++
+ 	security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
+ 
+ 	fl6.flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6.flowlabel);
 -- 
-2.48.1
+2.54.0
 
