@@ -1,146 +1,152 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1DE488211
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 17:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C76426435;
+	Tue,  1 Sep 2026 17:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788283577; cv=none; b=Iz/DeXnPcq67oEyx59ywFS28PkQ75Sj6kybuPY4PGPnKuumjh3uO3C6IUSdvrlwtQb3txaZBUD7LZa8bZmY/bw1EIqKhsxmVACSIXCsgxwUxkwzx0hNLlHMkdLLL2btsjrGsZdnxkq+2vEJKu+VEZJlrKVuIvgMSELgmCVgzkao=
+	t=1788283968; cv=none; b=PHqVlh1mZcarVX6GkbZqUTVaoFXzGBI0gTaKavnqBIv51/SN1zKqX1egubNEZC1V/FKOQ75O1JNpQpVBzYehKoFU2XZvqQ9KsVUM1pDLatT7HnIx07Td9S53Iu4lFMm3tXZC79DGIL+PBnoE2GAX13n48UPJH6ErEDBzBkjsaAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788283577; c=relaxed/simple;
-	bh=Wpb4O6T/xyA+5eJiRg7lEIMxsNKuDpjIIJqJ6MLZCK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hb/8PVF29XL52XGKdR/XK0FM0EZYMyHyqGlguzXsP+CbrtvRmJRTikZe8941HTPLvcMrK7neycoipBfbjx+NSDrL4rudy4AuNSXMeC1rpVjbRVPABR4vDJWymvkWnoCSVxm0iX7kraWr1rkSV7zyVSaiftHuR7cN0Od7OGNAO6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayImy4gS; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788283968; c=relaxed/simple;
+	bh=Rr9DcnzGfDniKnZu6uk7mKcWGKvoO3lnrvTegD8f/CI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sgE0zrBSKKpBrOHVL1kr3ejkDQci6rEFM6h9XzLGeqIaLvniVwAKitIB224Fb2Z8eKFhrksk9j4L1yjMmHHTKQE+vFPa64xkIXy7eWOGOcSF5d6mBNGC7Va019D0fkvRMmzWrJnCYws2q/PJVq7C1ZvOhBZYep/YcoSP7o+o6dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8deQ515; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayImy4gS"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc1cc97b84bso125725a12.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 10:26:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788283576; x=1788888376; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Wpb4O6T/xyA+5eJiRg7lEIMxsNKuDpjIIJqJ6MLZCK0=;
-        b=ayImy4gS60tAKn5zDNGMxB+uyyQEGmwPuhuIAnQOGhfpEcUjaeo7HWUgxbfk4C9nwO
-         o2KYNKwkNuaIJ8L+mlhY7QgIhBGbFGeM05x10FZk4zuENKjyNuzHBg9Ko2hnaMN8w2Lc
-         7H/ny9b/CJ2SL4PLdlYTt+4UzxYrKovuO+FmqN0MovQR+slyE9GDUzdLxEYHlo6/cCVQ
-         Vhr51RbMH9BBbrTIjNK8amAARvfvp0wpHldLP8nm8yJ7apEOmEvgUaV/hytNsTkqmHXl
-         VzgelCIraNrKPpSwV4uPxv0nsvqS0AcP3PctfzCgyyGHxDGxyhWgxyNPmFKlmg/3N6Ch
-         mBwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788283576; x=1788888376;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Wpb4O6T/xyA+5eJiRg7lEIMxsNKuDpjIIJqJ6MLZCK0=;
-        b=Lfv7p3TVWZBSogUMx4ol14k5MdvdeN8dJ4x8zwyc7mJRN4ZyJJj5f+UFDdU83Fgzsi
-         ipQrJo1DriCmrBcVz5GqtcNK4QIRZoMxI4ibyr8otMcEnGNNJX/9GZ8+eiFizoeFgyhQ
-         kVNvxAPTiO9w5teOfUvedVaqFwE56X1pwN60ikDcz7xTzhs/5Tq3h2nCl56tHkjJgfDO
-         pD8AE1F9RhFUEHKwR3ymYDy8wcxiB1N8Ri/uV1JCDk1ATzi1kQ9VuEJb+DV1xQb+WufY
-         7aIDE3MixVtTaHEsj8hjGpAo3J+F1+0E8ItdwgblhlHgsUA0cmTofNNCWfY8WQ7LYXxA
-         W0FQ==
-X-Forwarded-Encrypted: i=1; AKwUvByno0/aA5NU1cD8RrrjM9CAHPx8TcSfp6lGd74Ji/2v/gi9K34enPjW3L8EUBBoguNjpksBcHA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mQ+W1sQ48WBtfXmJEKcOsH1MqYPwm5gv36ZJugkujSDDfX5Hhj
-	4Hjn2W+YXTInjO3kuYKbj298T+kt4LOMdZ3rtwPTXL7/Lcy7mH7NKS0C
-X-Gm-Gg: AYBFou1CDQtya0gbV8dnVBgPQ4FYzYwoRrPRSBf1k0UrWptgaPg162QW1IHQyN1sEgU
-	83Jfb78i5eQs/Rfxw7BQ7LqapiPVJOMQVyHRZaSJ/sZykxZN3c4Ds2uq6F1ILlU6rUr+4zzOV0Q
-	OFsmeA3AjWxD7/FbQ/K96zVuffeCxv7+R5bwryykhq7z0Nhqbj4QtlmZSV4Sr4QjItp3vTtZlSQ
-	Mf7hVTQMiaWJm0vE4DLvQXHEUOU8gITm5AKuV22WBkUi43mn2JFn6Sam2JCAKcR+JEgKFMzKdP2
-	H8iQo0jZ4iJVK+Zfp0WEz2MAHPEgTZJixeS3gf3LBgW50EW0pFzk8dlHJt5NeQhFL5NDmh3hfCS
-	5oEEql+xZbaoTvHyiPFCc65UxIQjCZYaSpBx3Cs9wSLojnsT+TnR/8qK0t/IKHHfzQGRMFo+Q0W
-	qw6dXO6gAOaZbKY7LWDOykQrujS5IAKa/I8Ezab1G8Z827ICtu3lGCbtSrfZezWB9BnmGcTx91q
-	UULYz0z9uNBgWMGJSIog/YmaUtrhyfizYaM0THb8qWjf9DEBdQOOYgS5wkX2Ut9TvA=
-X-Received: by 2002:a17:90b:4a02:b0:37f:fdc8:71b4 with SMTP id 98e67ed59e1d1-39907ab0960mr12275784a91.2.1788283575571;
-        Tue, 01 Sep 2026 10:26:15 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:246e:2cba:1e3e:e617])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1430ea0b459sm158262c88.5.2026.09.01.10.26.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 10:26:15 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: horms@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	hemendranaik@gmail.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	tahiliani@nitk.edu.in,
-	vishy0777@gmail.com
-Subject: Re: [PATCH net-next v4 1/3] net/sched: sch_fq_pie: add per-flow statistics via class ops
-Date: Tue,  1 Sep 2026 22:55:24 +0530
-Message-Id: <20260901172524.39650-1-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260731095635.GG51943@horms.kernel.org>
-References: <20260727164056.106203-1-hemendranaik@gmail.com> <20260727164056.106203-2-hemendranaik@gmail.com> <20260731095635.GG51943@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8deQ515"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BE31F000E9;
+	Tue,  1 Sep 2026 17:32:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788283967;
+	bh=XoQplwBUo06+4jP2MEzgMvoeNOiIgnXEwceMs0KQWlw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=W8deQ515tV42TIWvnAqfpAs96P3VW2gXrOcbXv0Q6pbPqf6oeFXSiI2ZS+0vP06JM
+	 e2EnOhNgJeMyLN8hTP/p0E0qxrHlqIZSEMGP9dQwkawCce5YDaEPC2Zthk4plcW58G
+	 G98+BPggJbSN/NKesSKo8AefkhJNXvbRYgTRal5NXvVmMVUehaVnx0UwFY4YZrKd86
+	 JHEMM94tyVzoxe82SwV9BgtgNvCVDmcNJOpl9P8CAW+zQDeC/7Nv4z1x4XWpc4NA5P
+	 ePDBvtbE2Pa4qx8EWafNKDQvzLyakSerpD7+2C9ARXDBYORhzL1jukMagmpgvT9RdB
+	 9EEcdO3tTJJkg==
+Message-ID: <3d8ef804-efc1-46c7-bbb4-f1a6c26fed8b@kernel.org>
+Date: Tue, 1 Sep 2026 19:32:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] net/ipv6: don't route packets with unknown source
+ address
+Content-Language: fr
+To: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@riseup.net>,
+ David Ahern <dsahern@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Neal Cardwell <ncardwell@google.com>, Ido Schimmel <idosch@nvidia.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Phil Sutter <phil@nwl.cc>, Daniel Borkmann <daniel@iogearbox.net>,
+ Fernando Fernandez Mancera <fmancera@suse.de>,
+ Alexei Starovoitov <ast@kernel.org>, Junseo Lim <zirajs7@gmail.com>,
+ Leon Hwang <leon.hwang@linux.dev>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+ Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>,
+ Qi Tang <tpluszz77@gmail.com>, Jeff Layton <jlayton@kernel.org>,
+ Joe Damato <joe@dama.to>, Breno Leitao <leitao@debian.org>,
+ Li RongQing <lirongqing@baidu.com>, "open list:VRF"
+ <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
+ "open list:NETFILTER" <coreteam@netfilter.org>,
+ "open list:BPF [MISC] :Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>
+References: <20260901115021.50057-1-ihuguet@riseup.net>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260901115021.50057-1-ihuguet@riseup.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Simon,
+Hi Íñigo,
 
-Thanks for the review and for the Sashiko pointer. We have been through
-all six findings and are working on v5. For each item below, a short note
-on what was raised, then what we plan to do:
+On 01/09/2026 13:50, Íñigo Huguet wrote:
+> Don't allow routing packets with a source address that is not configured
+> in the host. Allow it only in certain cases like when using a
+> transparent socket, by setting the ANYSRC flag in flowi_flags.
+> 
+> Until now, it was possible to send such a packet if a route can be found
+> in the routing table for it. For example:
+> 1. Configure an address 1:2::3:4/64 and a static route 1:2::/64
+> 2. Establish a TCP connection to 1:2::3:4
+> 3. Remove the address from the interface, but keep the route.
+> 4. Packets are still sent out by the TCP connection because of
+>    the static route. No incoming packets are accepted, though.
+> 
+> This patch prevents the outgoing packets to be sent in normal
+> circumnstances.
+> 
+> This aligns the behaviour with the IPv4 stack. To determine the places
+> where the ANYSRC needs to be set, I set the flag in the same places as
+> the IPv4 stack does.
+> 
+> Apart from consolidating the behaviour of both stacks, there is a more
+> important reason why this is needed. RFC 4862 states that "an invalid
+> address MUST NOT be used as the source address of outbound packets".
+> Therefore, sending packets with a source address considered "invalid",
+> like an expired address, is disallowed.
 
-(1) [High] Filter attachment and TC_ACT_CONSUMED — Sashiko noted that
-adding cl_ops with .tcf_block would let users attach tc filters to fq_pie
-for the first time, but fq_pie_classify() has no TC_ACT_CONSUMED case
-(risk of double-free if an action like ct consumes the skb).
+Thank you for looking at this, but I think your patch is causing
+multiple KASAN warnings, e.g.
 
-We will remove .tcf_block, .bind_tcf, and .unbind_tcf from cl_ops.
-We only need walk/dump for tc -s class show; filter attach to fq_pie
-should stay disabled as before v1.
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-extra-dbg/results/804584/24-connect-deny-ipv6/stderr
 
-(2) [Medium] tc_fq_pie_xstats layout — Sashiko asked whether appending
-type/class fields after the nine qdisc counters breaks userspace, compared
-to fq_codel's type-first union layout.
+And a few more, see:
 
-We plan no struct change. fq_pie already shipped a flat 36-byte struct;
-we will keep appending after those counters so old tc binaries keep
-working. Class stats still need the matching iproute2 update.
+https://netdev.bots.linux.dev/branch_deltas/net-next-2026-09-01--15-01.html
 
-(3) [Low] Empty tc_fq_pie_xqd_stats placeholder — Sashiko flagged the
-empty placeholder struct and unused union arm in pkt_sched.h.
+Cheers,
+Matt
+-- 
+pw-bot: cr
 
-We will remove the placeholder and the union; class_stats will be a
-direct member.
-
-(4) [Low] Class handle at flows 65536 — Sashiko noted that with
-flows_cnt == 65536, fq_pie_dump_class() uses TC_H_MIN(cl) and the last
-flow's handle wraps to minor 0 in userspace.
-
-We will cap flows at 65535 in fq_pie_change() and update selftest 83be
-to expect flows 65536 to fail.
-
-(5) [Medium] Selftest case 83c0 — Sashiko noted v4 used matchCount 0
-with no traffic, so the test passes even without class ops and never
-checks per-flow stats output.
-
-We will rewrite 83c0 with real traffic (TBF + fq_pie, ping on $DUMMY)
-and matchCount 1 on tc -s class show (prob/delay/deficit).
-
-(6) [Low] tools/ UAPI mirror — Sashiko noted patch 3/3 also touched
-tools/include/uapi/linux/pkt_sched.h, but that copy is already stale in
-layout; comment-only edits there do not help.
-
-We will drop the tools/include hunk from patch 3/3 and touch only
-include/uapi/linux/pkt_sched.h there.
-
-We will post v5 with these changes once ready.
-
-Thanks,
-Hemendra
