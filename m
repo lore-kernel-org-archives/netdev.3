@@ -1,38 +1,38 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ECC426EB7;
-	Tue,  1 Sep 2026 02:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7305436BF4;
+	Tue,  1 Sep 2026 02:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788230551; cv=none; b=YcXLtDvX1ngRWhSJXoh3FQrzgWYPjXaK0q8ecZ+pMQvlSvPE+hmyiO1uf0vd0q0/2AM20Wjg0ypBrQBh+d1QkWQkkhMFwKfJed0x8jH+yKnynrVexU6PCE7F9AWGHpeO+kADa52ifFWOVukDGBgDxu8k/+J6RgAAyzJbWlu0i+c=
+	t=1788230575; cv=none; b=nyyKU1Ewd36sgAjbedCHpJRFear0TnBcaKSzCvdJKiCebQNI5jSjOc/nhAl3lFqsxOFUuKaUzmHTVUcn2GGaacTRuvmQYlnr6aO+xY4PElogYpXMGyyZdoysY2AU8bn3+k7T5Lsli/yjob0TMU58wshK5BtGujuAJFzkDLbmoUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788230551; c=relaxed/simple;
-	bh=Q4IHSqNTta6ZY/efVhCtaRjHjKcMWUomiKRMpYUCKlw=;
+	s=arc-20240116; t=1788230575; c=relaxed/simple;
+	bh=qTOa/SXotA6a3UX1CtQJnoWqsy2a0tld+krDqavWCrU=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JByEnaDUReboLHNdNXca9QxVoIb0ribKpHjZcjtfhE+xQ7Q2YgmkmbyVN9SIBNCHHngkof0gdwbWdGs7nMdWjjtZoc1JpwhqIO/uzy3C8cxOtURvbhavT7jDb1Fi6QHgGAGkKi4kjfxl2K2F7rzpOuDAjGMfB1RfsHhIoaeasgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=3MN1y82A; arc=none smtp.client-ip=113.46.200.220
+	 MIME-Version:Content-Type; b=QqDpkIknx560xRaYgkXVojLMmHYVUDJGoccBzK1YI9UwQok17ufL1DFOtwiNqRjgkrS6S4ftToIuLMu4qxwOMzUJhxbqcrKSRnqAnV0f6bBRwf6en52E8Mdrqm623Jpjl0Df6WSOCzFzyyo09066yk2dlj21Z1KHcEHo4ZouVrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FxCl1y1c; arc=none smtp.client-ip=113.46.200.224
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="3MN1y82A"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FxCl1y1c"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=HpnC7rLdz/iDoVhcUnqYIGvEK4UiEp8j2qFTrzFFI14=;
-	b=3MN1y82AyUB+uSVGkpsEtn46gwJl3yuhLHq+APy7OksLo3azZvR0HlLyg/DfR5RZ8YBYprGfD
-	IfPDFzpbKdgaKYr4CjKFT7GcHHN6kXtOvwv+26okjTS7wgzucRQEAXul44jF7TxYxkACO6gDi6m
-	2HM8XEE4+uMal1dtnRg0FhE=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hYqbd3nwvz12LHt;
-	Tue,  1 Sep 2026 10:30:53 +0800 (CST)
+	bh=B4nkOSyrKXpYTqmMmhRGx9fcZpl8Ig3qwoqs/6YnVlI=;
+	b=FxCl1y1c/qQJ+0Tb1ZFYoM/2vqeeozEIe48eoyUhQz2YNxplZ4JVrma92Up0t0/bcJJKqNmXz
+	adFsXQLrfS5iQtE8NTYRkFGNfWj59kSXfwW1xaM5J/2OsbROIRtSYZNtGWCpDn4cUCkRGnNNH/D
+	LQxJ3jNZlXNQHb49u+GbXlU=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hYqcC3frsz1cyVL;
+	Tue,  1 Sep 2026 10:31:23 +0800 (CST)
 Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8DF7B40561;
-	Tue,  1 Sep 2026 10:42:10 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1011C4057C;
+	Tue,  1 Sep 2026 10:42:12 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
  (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 1 Sep
- 2026 10:42:09 +0800
+ 2026 10:42:10 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
 	<bcrl@kvack.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
@@ -50,9 +50,9 @@ To: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
 	<linux-fsdevel@vger.kernel.org>, <linux-aio@kvack.org>,
 	<linux-kernel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
 	<netdev@vger.kernel.org>
-Subject: [PATCH v2 10/12] net: sched: act_gact: use acquire/release for tcfg_ptype
-Date: Tue, 1 Sep 2026 10:42:32 +0800
-Message-ID: <20260901024234.135119-11-ruanjinjie@huawei.com>
+Subject: [PATCH v2 11/12] 8021q: Fix data race when publishing vlan net_device pointers
+Date: Tue, 1 Sep 2026 10:42:33 +0800
+Message-ID: <20260901024234.135119-12-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260901024234.135119-1-ruanjinjie@huawei.com>
 References: <20260901024234.135119-1-ruanjinjie@huawei.com>
@@ -67,72 +67,85 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  dggpemf500011.china.huawei.com (7.185.36.131)
 
-Replace the smp_wmb()/smp_rmb() barrier pair with
-smp_store_release()/smp_load_acquire() on gact->tcfg_ptype.
-tcf_gact_init() publishes tcfg_ptype via release after writing
-tcfg_pval/tcfg_paction; tcf_gact_act() acquires it before
-dispatching to gact_net_rand()/gact_determ(), ensuring the probability
-parameters are visible.
+A plain C read and assignment of the net_device pointer
+in the vlan_devices_arrays leaf entries lack proper atomicity
+and ordering barriers. A concurrent lockless reader on the packet
+receive fast-path could observe a torn or partially initialized
+net_device pointer, leading to a potential out-of-bounds read or kernel
+panic.
 
-No functional change intended.
+The data race occurs between the netlink/ioctl configuration paths
+(holding the per-netns rtnl_nets_lock or RTNL lock) and the softirq
+receive fast-path (holding rcu_read_lock()):
 
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
+  CPU 0 (Writer, rtnl_nets_lock/RTNL)      CPU 1 (Reader, rcu_read_lock())
+  -----------------------------------      -------------------------------
+   rtnetlink_rcv_msg()
+     // RTM_NEWLINK handler with RTNL_FLAG_DOIT_PERNET
+     rtnl_newlink()
+       ops->newlink() == vlan_newlink()
+   OR
+   vlan_ioctl_handler()
+     [ADD_VLAN_CMD] -> register_vlan_device()
+
+     register_vlan_dev()
+       vlan_group_set_device()
+                                      netif_receive_skb_core()
+                                          vlan_do_receive()
+                                              vlan_find_dev()
+                                                 __vlan_group_get_device()
+                                                  // Speculative / torn read
+                                                  [Loads bad net_device *]
+           [Plain C store]
+           array[vlan_id] = dev;
+                                                  // Dereferences bad pointer
+                                                  // during device status check
+                                                  vlan_dev->flags (PANIC!)
+
+Fix this by using rcu_assign_pointer() in vlan_group_set_device()
+and rcu_dereference_raw() in __vlan_group_get_device() to enforce
+proper ordering and memory atomicity for the leaf entry traversal.
+
+Cc: stable@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Eric Dumazet <edumazet@google.com>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>
-Assisted-by: DeepSeek:DeepSeek-V3
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Dan Aloni <da-x@monatomic.org>
+Cc: Jeff Garzik <jeff@garzik.org>
+Fixes: 5c15bdec5c38 ("[VLAN]: Avoid a 4-order allocation.")
+Link: https://sashiko.dev/#/patchset/20260825095422.3166067-1-ruanjinjie%40huawei.com
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- net/sched/act_gact.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/8021q/vlan.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_gact.c b/net/sched/act_gact.c
-index 565860cccba6..d4f39f98e2cf 100644
---- a/net/sched/act_gact.c
-+++ b/net/sched/act_gact.c
-@@ -25,7 +25,6 @@ static struct tc_action_ops act_gact_ops;
- #ifdef CONFIG_GACT_PROB
- static int gact_net_rand(struct tcf_gact *gact)
- {
--	smp_rmb(); /* coupled with smp_wmb() in tcf_gact_init() */
- 	if (get_random_u32_below(gact->tcfg_pval))
- 		return gact->tcf_action;
- 	return gact->tcfg_paction;
-@@ -35,7 +34,6 @@ static int gact_determ(struct tcf_gact *gact)
- {
- 	u32 pack = atomic_inc_return(&gact->packets);
+diff --git a/net/8021q/vlan.h b/net/8021q/vlan.h
+index c41caaf94095..8030d616cb16 100644
+--- a/net/8021q/vlan.h
++++ b/net/8021q/vlan.h
+@@ -62,7 +62,7 @@ static inline struct net_device *__vlan_group_get_device(struct vlan_group *vg,
+ 	/* paired with smp_wmb() in vlan_group_prealloc_vid() */
+ 	smp_rmb();
  
--	smp_rmb(); /* coupled with smp_wmb() in tcf_gact_init() */
- 	if (pack % gact->tcfg_pval)
- 		return gact->tcf_action;
- 	return gact->tcfg_paction;
-@@ -133,11 +131,8 @@ static int tcf_gact_init(struct net *net, struct nlattr *nla,
- 	if (p_parm) {
- 		gact->tcfg_paction = p_parm->paction;
- 		gact->tcfg_pval    = max_t(u16, 1, p_parm->pval);
--		/* Make sure tcfg_pval is written before tcfg_ptype
--		 * coupled with smp_rmb() in gact_net_rand() & gact_determ()
--		 */
--		smp_wmb();
--		gact->tcfg_ptype   = p_parm->ptype;
-+		/* Pairs with smp_load_acquire() in tcf_gact_act(). */
-+		smp_store_release(&gact->tcfg_ptype, p_parm->ptype);
- 	}
- #endif
- 	spin_unlock_bh(&gact->tcf_lock);
-@@ -160,7 +155,8 @@ TC_INDIRECT_SCOPE int tcf_gact_act(struct sk_buff *skb,
+-	return array ? array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN] : NULL;
++	return array ? rcu_dereference_raw(array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN]) : NULL;
+ }
  
- #ifdef CONFIG_GACT_PROB
- 	{
--	u32 ptype = READ_ONCE(gact->tcfg_ptype);
-+	/* Pairs with smp_store_release() in tcf_gact_init() */
-+	u32 ptype = smp_load_acquire(&gact->tcfg_ptype);
+ static inline struct net_device *vlan_group_get_device(struct vlan_group *vg,
+@@ -88,7 +88,7 @@ static inline void vlan_group_set_device(struct vlan_group *vg,
+ 		return;
+ 	array = vg->vlan_devices_arrays[pidx]
+ 				       [vlan_id / VLAN_GROUP_ARRAY_PART_LEN];
+-	array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN] = dev;
++	rcu_assign_pointer(array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN], dev);
+ }
  
- 	if (ptype)
- 		action = gact_rand[ptype](gact);
+ /* Must be invoked with rcu_read_lock or with RTNL. */
 -- 
 2.34.1
 
