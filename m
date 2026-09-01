@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230A649DBB5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F398449DBAA
 	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 18:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788287614; cv=none; b=PbcesMQH9YKSyXJ6Kl7YaHfa+VkGylujimUry/RZqMMo9ITs/gaBu+4fBRJeXhC9Ka1YIqYs1j8+bUgrll35GKO7AFltNotJFlyb08qyoBeJ9jRp/WVfxvUUHfKztbAwX5/7kLca9DGPbcs9i/RT2ioLsauh8vox2VslC4QvsY0=
+	t=1788287615; cv=none; b=uKhU1OJLpdaAC5Nf0K9SWKsx2ONHXx8LZZgdh1jPzZzoIM94XT8tsjFDW3NaUggI4F/08yBU/lAHnJ5ZI9EsgRgixZ+d1t1FHmqzM9rhad+mm0LCgp4/jbtGL48vwnqxnpjT//oS0PJTyUdC/uBME3bUPuAWqY3n9GpBO51Z9cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788287614; c=relaxed/simple;
-	bh=naOE/kKgwuhK1DO18nPWl0WuOz5XB+aU7yA6TdqE2XQ=;
+	s=arc-20240116; t=1788287615; c=relaxed/simple;
+	bh=mbc0habY+J+4HHbaAr3RQdyZpKJnTeNJabzk/LAzIKA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LK7HjQ5uK/kNtQi8uto+iWNRXKV7T2xiVaog6lBEVGZEtm1SWs5ElseGnn4tXBhGjwwdDEgVaNnqDo80ulFnRTto2/veo59KKC+WWpO6zfvsdNb0Gsr0nf+1k4h9gBlOp6FptOwy5jhORkQPol3UovUNVdn7bCyWuQqFwDICPEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HtBBAMFh; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=l2yetHgvxV9n6catwsfoNqQZca8jzVkywWPBk6LieL6+JIzXtMUu180ADN85iY9/9ZvmAN1h36AmqRrpQ35notlPNcAu7OnXTnAayOa4kTppM0OVfZYtzpG81AcxT3AnHFH/SfpF5Hnm/x3hbQCbsc7VVt07Y3DI6rAdnAlTJH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HKH6Athr; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HtBBAMFh"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d94a158dc8so1574335ad.2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HKH6Athr"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb835525b10so242681a12.2
         for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 11:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788287612; x=1788892412; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788287613; x=1788892413; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ekkoaOWou/iH2sA4C78iEPiTxi9oGZ2jZj4xSiHWhzo=;
-        b=HtBBAMFhz7NkrbgSxVXzri6xgKDr7MwK0tf2+wDNQUg/U2qKDiNKA5Ux3196qlKwmx
-         tVLLjnPSeVkeXn/0ZJaLZ1mhEKwkct8Ewf6BrisF5UaSs2QQwDqp+lQRYy71j5q5lzmg
-         KGhcNdqxIS1nID8+N9pf2Tw23Eti4JU1KggLNYTTvcpVVPqLPdGNcfXAtHW6fhgTnYeq
-         +JEAPN3/1JYZv5lszGC9v/+9dGExv5KCVLSHu608FJ0f5Z14x+6fZy34C12h0seN2OGM
-         /iVd15t5or186mF9cRoJiwswxBXkdtvopyxAoSiFfizv6LhowlqK3p8Jd7t65vCI4HJz
-         GG0A==
+        bh=dFJjRdoSd/aYOAGz+d0Mf+LQais5f7F02HwpUM8/wYk=;
+        b=HKH6AthrpDNwlBURT6JAlt0ucuSsUBWc4ClfEpI+2gwQFNOIRvWEmYAMzYYDA3VfZm
+         IGrWhrqX0rt7NTLXUSnAoMuQBEgHGHjYjQJOK3SegitBSS5tLDxCWaaolzVpDGwUSG6p
+         u+nTyePN3aWugVp5abPXfN2QcTAUgIyo3MsoYMBvyeW1AWQJTk/qPKHVXYREv/w9Z0UE
+         jcpKH5wT/EKhvYU87wKAY9d8rqMjn93Bma14uzF5fTfh1C98EYcJO/mh8Fwvq5dz199o
+         hJM6qzoau7kCgzMS26ILkA1eBef/vTqYrrD9f4PiZjy+Nh93311s72PKYcJQSiKAzIlB
+         GSJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788287612; x=1788892412;
+        d=1e100.net; s=20251104; t=1788287613; x=1788892413;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ekkoaOWou/iH2sA4C78iEPiTxi9oGZ2jZj4xSiHWhzo=;
-        b=UDXtyRX77E3SLiccupM3CDQXLHkuadMPp97pCVe4zlbv6MipeT50nDBUv8V92XMMzu
-         8aecDGNWK7D09pOKtp74AJ7JUEoJJgrXMhMPSijzTmNPabZOW11tZ52jCvYl4jTjQRq3
-         T8FKBCHrg4/rvT6kyltmSrPCwQFJqlSgEbXal7UjL/FSCkM/dcpQxZPgUqGumaxHcxlk
-         ORyz+ZHAXLud0eTPGkfLnPBdAs/2wCo4+w+z+cku24+GK7zzCOy3KnOMFJyZhFpIEXxB
-         99kumy+DskhiYzt41rN7/nl0LOcWCZ50HpcSK2rL8WNuZfGFpD2JZvn37ki4Ndp5bol1
-         Yiag==
-X-Forwarded-Encrypted: i=1; AKwUvByl39oMw1Ad3UrkaXGGusVP65pIc4d5gTLxykjm3HiGf9MUhfGPvd0S+jNNxY7aSLbCEqI3O54=@vger.kernel.org
-X-Gm-Message-State: AFuF++mT5shNU9EhxSlH4R9ZG2brRg3L5Oa+KtGEPfr1fpz4VdGdDEN2
-	X0PEymjEa9U6obytUNQHQMcJS/qkprHWo6WG2BiDN2fdzOVvF0Ycqu6bcR5U3TjaVfzgU8++bxx
-	PjNgm2w==
-X-Received: from pjbgp17.prod.google.com ([2002:a17:90a:df11:b0:398:a4ca:11c0])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3143:b0:396:d28e:bd8
- with SMTP id 98e67ed59e1d1-39ae824c132mr103274a91.3.1788287612259; Tue, 01
- Sep 2026 11:33:32 -0700 (PDT)
-Date: Tue,  1 Sep 2026 18:32:52 +0000
+        bh=dFJjRdoSd/aYOAGz+d0Mf+LQais5f7F02HwpUM8/wYk=;
+        b=eaww3XgjEYemc1UZLuDOOOJDhqEHQN8P5/HKWCijn1lDxsvzsBDtugxLqgvij1YWvi
+         n/7wvLi644HzKYNLyQZGGu0q6eYAE2ZmEcY34SdOrgZDawszsUDEMQ3AJYdcsuVHkRmx
+         Xc0w8vPtU1OLpEAFxHQHUPit0CZLe2e/SPtASosRFIQRu/wRG9D6L/ucb4PUzhCQ1kPq
+         ODP+IVJLDcQnlnC15B9FOu1v7b4j4FNkOfWdPsUX2T4z5ziqZ94lUEfMjxPBOP7gCnFp
+         7t2YlpcBjGnmNyfiFQ6vlbia3rwTeTTtw45Y7whSblSGo0XcPaGQDRQhwVNFVW5AscTt
+         wRLg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8sEblp122vHfeN5Oz2IkoLxS1V8REG+wdSQxM4c4kSlbr70GuVEyH42gTHM15fV1Yt3b+mU0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nVaAzjdxD1mTsKQisl1pNKFWblHbBw0fQiHCMZsYEatm1REaZI
+	jckILlqi4phm4yywmBo2m7d4roPpm/8WTweXYW9Q0Esaq038L00hGzp7GONPS8LgL9kkkLJxcHE
+	WULuLCA==
+X-Received: from pgam10.prod.google.com ([2002:a05:6a02:2b4a:b0:cc1:b85e:b029])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3ca8:b0:3c4:4272:b400
+ with SMTP id adf61e73a8af0-3d984562d03mr37673637.18.1788287613049; Tue, 01
+ Sep 2026 11:33:33 -0700 (PDT)
+Date: Tue,  1 Sep 2026 18:32:53 +0000
 In-Reply-To: <20260901183327.3332855-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260901183327.3332855-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260901183327.3332855-4-kuniyu@google.com>
-Subject: [PATCH v5 net-next 03/15] neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
+Message-ID: <20260901183327.3332855-5-kuniyu@google.com>
+Subject: [PATCH v5 net-next 04/15] neighbour: Remove unnecessary EXPORT_SYMBOL().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -71,107 +71,162 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>
 Content-Type: text/plain; charset="UTF-8"
 
-__neigh_update() could call neigh_update_gc_list() and
-neigh_update_managed_list().
+Commit 1bf20cc62a54 ("neighbour: remove obsolete EXPORT_SYMBOL()")
+unexported some functions in neighbour.c because IPv6 is no longer
+built as module.
 
-Both of them acquire neigh->tbl->lock and neigh->lock, check
-neigh->dead, perform link operations, and release the locks.
+Since it unexported neigh_table_init(), no module can register
+neigh_table dynamically.
 
-Let's remove the lock dance.
-
-Note that neigh->dead is always marked under neigh->tbl->lock.
+Let's unexport a few more functions.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/core/neighbour.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ net/core/neighbour.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 69a5f9dfa851..13eea09721c6 100644
+index 13eea09721c6..6fda0052027b 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -135,6 +135,8 @@ EXPORT_SYMBOL(neigh_rand_reach_time);
+@@ -131,7 +131,6 @@ unsigned long neigh_rand_reach_time(unsigned long base)
+ {
+ 	return base ? get_random_u32_below(base) + (base >> 1) : 0;
+ }
+-EXPORT_SYMBOL(neigh_rand_reach_time);
  
  static void neigh_mark_dead(struct neighbour *n)
  {
-+	lockdep_assert_held(&n->tbl->lock);
-+
- 	n->dead = 1;
- 	if (!list_empty(&n->gc_list)) {
- 		list_del_init(&n->gc_list);
-@@ -148,11 +150,6 @@ static void neigh_update_gc_list(struct neighbour *n)
+@@ -1539,7 +1538,6 @@ int neigh_update(struct neighbour *neigh, const u8 *lladdr, u8 new,
  {
- 	bool on_gc_list, exempt_from_gc;
+ 	return __neigh_update(neigh, lladdr, new, flags, nlmsg_pid, NULL);
+ }
+-EXPORT_SYMBOL(neigh_update);
  
--	spin_lock_bh(&n->tbl->lock);
--	write_lock(&n->lock);
--	if (n->dead)
--		goto out;
--
- 	/* remove from the gc list if new state is permanent or if neighbor is
- 	 * externally learned / validated; otherwise entry should be on the gc
- 	 * list
-@@ -169,20 +166,12 @@ static void neigh_update_gc_list(struct neighbour *n)
- 		list_add_tail(&n->gc_list, &n->tbl->gc_list);
- 		atomic_inc(&n->tbl->gc_entries);
+ /* Update the neigh to listen temporarily for probe responses, even if it is
+  * in a NUD_FAILED state. The caller has to hold neigh->lock for writing.
+@@ -1557,7 +1555,6 @@ void __neigh_set_probe_once(struct neighbour *neigh)
+ 			jiffies + max(NEIGH_VAR(neigh->parms, RETRANS_TIME),
+ 				      HZ/100));
+ }
+-EXPORT_SYMBOL(__neigh_set_probe_once);
+ 
+ struct neighbour *neigh_event_ns(struct neigh_table *tbl,
+ 				 u8 *lladdr, void *saddr,
+@@ -1570,7 +1567,6 @@ struct neighbour *neigh_event_ns(struct neigh_table *tbl,
+ 			     NEIGH_UPDATE_F_OVERRIDE, 0);
+ 	return neigh;
+ }
+-EXPORT_SYMBOL(neigh_event_ns);
+ 
+ /* called with read_lock_bh(&n->lock); */
+ static void neigh_hh_init(struct neighbour *n)
+@@ -1623,7 +1619,6 @@ int neigh_resolve_output(struct neighbour *neigh, struct sk_buff *skb)
+ 	kfree_skb_reason(skb, SKB_DROP_REASON_NEIGH_HH_FILLFAIL);
+ 	goto out;
+ }
+-EXPORT_SYMBOL(neigh_resolve_output);
+ 
+ /* As fast as possible without hh cache */
+ 
+@@ -1740,7 +1735,6 @@ void pneigh_enqueue(struct neigh_table *tbl, struct neigh_parms *p,
+ 	mod_timer(&tbl->proxy_timer, sched_next);
+ 	spin_unlock(&tbl->proxy_queue.lock);
+ }
+-EXPORT_SYMBOL(pneigh_enqueue);
+ 
+ static inline struct neigh_parms *lookup_neigh_parms(struct neigh_table *tbl,
+ 						      struct net *net, int ifindex)
+@@ -1788,7 +1782,6 @@ struct neigh_parms *neigh_parms_alloc(struct net_device *dev,
  	}
--out:
--	write_unlock(&n->lock);
--	spin_unlock_bh(&n->tbl->lock);
+ 	return p;
  }
+-EXPORT_SYMBOL(neigh_parms_alloc);
  
- static void neigh_update_managed_list(struct neighbour *n)
+ static void neigh_rcu_free_parms(struct rcu_head *head)
  {
- 	bool on_managed_list, add_to_managed;
- 
--	spin_lock_bh(&n->tbl->lock);
--	write_lock(&n->lock);
--	if (n->dead)
--		goto out;
--
- 	add_to_managed = n->flags & NTF_MANAGED;
- 	on_managed_list = !list_empty(&n->managed_list);
- 
-@@ -190,9 +179,6 @@ static void neigh_update_managed_list(struct neighbour *n)
- 		list_del_init(&n->managed_list);
- 	else if (add_to_managed && !on_managed_list)
- 		list_add_tail(&n->managed_list, &n->tbl->managed_list);
--out:
--	write_unlock(&n->lock);
--	spin_unlock_bh(&n->tbl->lock);
+@@ -1811,7 +1804,6 @@ void neigh_parms_release(struct neigh_table *tbl, struct neigh_parms *parms)
+ 	netdev_put(parms->dev, &parms->dev_tracker);
+ 	call_rcu(&parms->rcu_head, neigh_rcu_free_parms);
  }
+-EXPORT_SYMBOL(neigh_parms_release);
  
- static void neigh_update_flags(struct neighbour *neigh, u32 flags, int *notify,
-@@ -1523,10 +1509,23 @@ static int __neigh_update(struct neighbour *neigh, const u8 *lladdr,
+ static struct lock_class_key neigh_table_proxy_queue_class;
  
- 	write_unlock_bh(&neigh->lock);
+@@ -3398,7 +3390,6 @@ void *neigh_seq_start(struct seq_file *seq, loff_t *pos, struct neigh_table *tbl
  
--	if (((new ^ old) & NUD_PERMANENT) || gc_update)
--		neigh_update_gc_list(neigh);
--	if (managed_update)
--		neigh_update_managed_list(neigh);
-+	gc_update |= !!((new ^ old) & NUD_PERMANENT);
-+	if (gc_update || managed_update) {
-+		spin_lock_bh(&neigh->tbl->lock);
-+
-+		if (!neigh->dead) {
-+			write_lock(&neigh->lock);
-+
-+			if (gc_update)
-+				neigh_update_gc_list(neigh);
-+			if (managed_update)
-+				neigh_update_managed_list(neigh);
-+
-+			write_unlock(&neigh->lock);
-+		}
-+
-+		spin_unlock_bh(&neigh->tbl->lock);
-+	}
+ 	return *pos ? neigh_get_idx_any(seq, pos) : SEQ_START_TOKEN;
+ }
+-EXPORT_SYMBOL(neigh_seq_start);
  
- 	if (notify)
- 		call_netevent_notifiers(NETEVENT_NEIGH_UPDATE, neigh);
+ void *neigh_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+@@ -3425,7 +3416,6 @@ void *neigh_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 	++(*pos);
+ 	return rc;
+ }
+-EXPORT_SYMBOL(neigh_seq_next);
+ 
+ void neigh_seq_stop(struct seq_file *seq, void *v)
+ 	__releases(tbl->lock)
+@@ -3437,7 +3427,6 @@ void neigh_seq_stop(struct seq_file *seq, void *v)
+ 	spin_unlock_bh(&tbl->lock);
+ 	rcu_read_unlock();
+ }
+-EXPORT_SYMBOL(neigh_seq_stop);
+ 
+ /* statistics via seq_file */
+ 
+@@ -3561,7 +3550,6 @@ void neigh_app_ns(struct neighbour *n)
+ {
+ 	neigh_notify(n, RTM_GETNEIGH, NLM_F_REQUEST, 0);
+ }
+-EXPORT_SYMBOL(neigh_app_ns);
+ 
+ #ifdef CONFIG_SYSCTL
+ static int unres_qlen_max = INT_MAX / SKB_TRUESIZE(ETH_FRAME_LEN);
+@@ -3657,7 +3645,6 @@ int neigh_proc_dointvec(const struct ctl_table *ctl, int write, void *buffer,
+ 	neigh_proc_update(ctl, write);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(neigh_proc_dointvec);
+ 
+ int neigh_proc_dointvec_jiffies(const struct ctl_table *ctl, int write, void *buffer,
+ 				size_t *lenp, loff_t *ppos)
+@@ -3667,7 +3654,6 @@ int neigh_proc_dointvec_jiffies(const struct ctl_table *ctl, int write, void *bu
+ 	neigh_proc_update(ctl, write);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(neigh_proc_dointvec_jiffies);
+ 
+ static int neigh_proc_dointvec_userhz_jiffies(const struct ctl_table *ctl, int write,
+ 					      void *buffer, size_t *lenp,
+@@ -3687,7 +3673,6 @@ int neigh_proc_dointvec_ms_jiffies(const struct ctl_table *ctl, int write,
+ 	neigh_proc_update(ctl, write);
+ 	return ret;
+ }
+-EXPORT_SYMBOL(neigh_proc_dointvec_ms_jiffies);
+ 
+ static int neigh_proc_dointvec_unres_qlen(const struct ctl_table *ctl, int write,
+ 					  void *buffer, size_t *lenp,
+@@ -3894,7 +3879,6 @@ int neigh_sysctl_register(struct net_device *dev, struct neigh_parms *p,
+ err:
+ 	return -ENOBUFS;
+ }
+-EXPORT_SYMBOL(neigh_sysctl_register);
+ 
+ void neigh_sysctl_unregister(struct neigh_parms *p)
+ {
+@@ -3905,7 +3889,6 @@ void neigh_sysctl_unregister(struct neigh_parms *p)
+ 		kfree(t);
+ 	}
+ }
+-EXPORT_SYMBOL(neigh_sysctl_unregister);
+ 
+ #endif	/* CONFIG_SYSCTL */
+ 
 -- 
 2.55.0.966.g6673acef38-goog
 
