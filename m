@@ -1,152 +1,156 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020095.outbound.protection.outlook.com [52.101.69.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1E345D5D2;
-	Tue,  1 Sep 2026 07:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.95
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788247692; cv=fail; b=MsvRQE0vro9RlQWp6CoOAFHCPXYoNNvz7yLMURmMKCyu+jjTaZ61AcP6o32jlSBFoWpnicuh2MlCCnnev8nsCqLl2+bb4dG6ATl5k6R+Nf+6R3f6+tzwjQgCRmOcG5bzWJc1cxRf1mC8E0NxYA/+1vDBgDDJxabbrXprzmbu/Fw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788247692; c=relaxed/simple;
-	bh=0t7DaziZncJ21Vl96jkoE7bw2Lmcr0UCA0V3jQHU6Us=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=rLUOE7M/Tda8zacKi7WokjeXsR5+La3iA+i9R5qqerWQu1FnGAO+6PRTFv78glTSF49s8o5tHbXd2dGOUlDHsdXyaQGiQ5uBU7vwUNMEGbtQ2vqn4CucnkOwRYJeS7dZir+akHHxG+ZwnSdo9pNX2CI7JmN/6J5PImxaHpf6fds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=zmK6KOy5; arc=fail smtp.client-ip=52.101.69.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD1345D5D9
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788247785; cv=none; b=qv4LLm4MfQ68lfhEAIh8B/yV474AqsHP2FyGJ3lJe0xypSr8BL2PH0y+u7QHF8/aYoJVxJ6OP4A5bOK/5VOo5SUvRcyy2/pHmaDJgC1yppK+mM6KdmQ8AqsjQW1lG6DVyyFObOFQZxWBpZYEJK2NK1bjIF9hliwrCSAgwWQ+jVs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788247785; c=relaxed/simple;
+	bh=i1xoBqdCaWtGTV0cIIyem6V7efWtFcemLh92s2fwpYM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hZOolzPWCFXHXzn3wra1ty4yo/1appxBVnYoekZ/ILNE82+bRhOFR98UTJI7OpGSPtG+x6BsRnez4RlGUAaifU6ItcBCp/4eydUXeY0cdJRUbfpDMwTOwk00KH5ltSrrlu+J3hquWUHpFHRtPXabctj7g0F2cML4mQkeOdNmm/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jS4/WqQ4; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="zmK6KOy5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p9UYx4OqceM7D4c9DYeDMBaLemYlJV6k5msvtoQO6n7oyg1KoRAC0Ux21ADwsjxUjCVAJl+8lb54lLhOXJNIgesIwYTqukAS2kTGdXeBGvt9grcnca0R1eJuZxpSpo/Rz1ZaAFBwJs/xgOYOjZVe5r/3Nwc/4aasMCm6UOMfo6/su3kmxFJySl+L9b7s+N92YK+wJ0As7V56vPujaVopqB2Gu44y1dKaaQCCjrO/uTlRBBWF4gsWlJTRP4Pi8nz5mgJy+1oHsXP22SRsSm8x+hIc0N/KEO0YpzR3O02zp00rivwaQNxs1j1Cqn9S3d9Jmn91mQ+Nhd9JPY6bs+eR4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0t7DaziZncJ21Vl96jkoE7bw2Lmcr0UCA0V3jQHU6Us=;
- b=di35pFLpL0bxpPqKhGES/MCb9/nWXgoq3cV+CCUSBgKPaSm0nEc2rnxuIehqdwCRjpz/Liu9wVbwicjMQVmOo5HXc+lcc9MkznZVedAxv7K6c4N4k0S+EMYTYMd7zlRAvfouRWjcZ3oLT0caVKl8cZgMyGGpKpFybJx3/THgNQoyG0opU10NN/vE6rZIX5k0mqoNMXLUPEeA857/rMQ0SpFXPc19onFGr431UNVqWqne0T0trs7J6n1jLoJ5a1HxdlrL9ycY2cUtj9PJow5iio7GF/jIb8+vV739BUvnfeybmQ7WTelxS79bXeSJak8b78UlbZDruK3MEVnNyKjbGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0t7DaziZncJ21Vl96jkoE7bw2Lmcr0UCA0V3jQHU6Us=;
- b=zmK6KOy5Fw7gc6pc7FtSR8jZCXtT2ppYYKyq5ra4dYo1LVPaLM/jsUSTC/sJViSlPSvT/JmIdO4YqyYWmEtsRYVXBj0rllZ3w7FS6A8PvnvNbZL4uAgA10WUSV9l0f0FfvAy4mJU22LsfG2vvG3xHEn+CQJqpPfVJdNwftGU1IMKBMzJ3qKXr7Kemu78URdxYnyvsIULo7dpQMgC2sHwAIGO3UkyXKWNTH5Sz6DUUhfCmgGoSj6S5Gklzu3dzP3Iyc76wacK0LKXF0p9DyWC4WjJndhvJXKTjF1giXpSvGX7VWdCCmWl+QhBhRyxcQJHRGSgE+obnj+2uSNoX7p7zg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AM9PR06MB7907.eurprd06.prod.outlook.com (2603:10a6:20b:3a6::23)
- by DB9PR06MB8092.eurprd06.prod.outlook.com (2603:10a6:10:291::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 07:27:59 +0000
-Received: from AM9PR06MB7907.eurprd06.prod.outlook.com
- ([fe80::a597:33a7:d4e2:1b17]) by AM9PR06MB7907.eurprd06.prod.outlook.com
- ([fe80::a597:33a7:d4e2:1b17%3]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 07:27:59 +0000
-Message-ID: <e2feeb88-8e4d-4b00-93db-2305a59b77ce@vaisala.com>
-Date: Tue, 1 Sep 2026 10:27:57 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net: dsa: microchip: enable the SGMII port of
- the KSZ9897S
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Tristram Ha <tristram.ha@microchip.com>, Nicolai Buchwitz <nb@tipi-net.de>,
- Jerry Ray <Jerry.Ray@microchip.com>
-References: <20260831-ksz9897-sgmii-port-v3-1-2376aa4edf11@vaisala.com>
-Content-Language: en-US
-From: Tapio Reijonen <tapio.reijonen@vaisala.com>
-In-Reply-To: <20260831-ksz9897-sgmii-port-v3-1-2376aa4edf11@vaisala.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: OL1P279CA0008.NORP279.PROD.OUTLOOK.COM
- (2603:10a6:e10:12::13) To AM9PR06MB7907.eurprd06.prod.outlook.com
- (2603:10a6:20b:3a6::23)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jS4/WqQ4"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=i1xoBqdCaWtGTV0cIIyem6V7efWtFcemLh92s2fwpYM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788247780; v=1; x=1788852580;
+ b=jS4/WqQ46DDYmrAfFjt4XJZtjnEzC0xMRXlAAm/3KjjzKawCHuzE34de3GyYM5r92TFxe9H8
+ 69L+15URtp76AXpucnHarSHcHj1eY/9ADKXUDaiQUlO0KBWuBaZLYrBWVCA7Z972+noypfMkqBc
+ aoxkDJCKgUCSnvybBd1Q6MsE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c873ab9b9223b804;
+	Tue, 01 Sep 2026 07:29:40 +0000
+X-Mizu-Trace-ID: c873ab9b9223b804
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] tls: fix the open record check in the max payload size setsockopt
+Date: Tue,  1 Sep 2026 15:29:26 +0800
+Message-ID: <20260901072927.128688-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR06MB7907:EE_|DB9PR06MB8092:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1072fe86-1dec-4256-f516-08df07fa8cab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|10067099003|22082099003|18002099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	zsTzAwJdQUPY7o1COU2ZiGcLbkFXqZ+QTw+21N3ZtERL8jvxX5zndxBjUswBVBytCo4DTyDrYEviy0VUqTX6/obfQKUOJg6e9v1hDFI3YyysIvW8vIz1gSZmSdTbo465/FmBpyWHUWIVFFNaUbDqdY95KJjreqFf3vueG08WDtN58IXlJDjkBUaMZF4PsHV1gFSonKbd5bp6dKl9/Hbp3koi7C8YmczS9E4MtBEzqkTuraHfx5Y4NhuM08tMgIhzklxJM1xQ8g7fxQR97KRD+sCcqhuBz9/hWsatg9fGz9we4uHdQtvMyuOm00FtrjpJVGpnrLhNaEgxeihEtNZRmDg8WY2a8yZ4JdqdBulOFWPDXrzwdPODBh7M7+eM5Y8lQ9IauHg/Y1JQDNpXmVlj6YyNxA9pHKBh8qdzRIjzi+LQFcoVL9BSFoYEaeqAS/XiWyMSeqgJ33ii51fXmMcUxZ9JniPfTrRsBm3RMZPhFzBzizFk1xfH1Mr7rQPZiQKiMc9um9tZFPwIZCzPvtFh8hJ7x1H6peE9JR3GOWCUFpW7L/vISip1n7TaPrQ8unMMm2Zl9dVk28Xj8Jr5tvpS6bv8P+y2lsrx4pEM6WMsfJ/2Z6jYJ4pX0myUdvN4YZx7Dgxld/8c1trFs17kI47OkHJ1P094uxccyfV5d6Gp3ys=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR06MB7907.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(10067099003)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VHJ6YXFhWmN4c21acjByNDZ5YVlxR2Z2WmVOS1kyT09PalZZd20vYkFuOXEx?=
- =?utf-8?B?ZTAvMmlHdmtsWnZlRURYUjd1WWNlc3BXUUpkQ2dScEdtdkFMMis3dmhSRHhp?=
- =?utf-8?B?dHpQaVBSL3kzdGEyR3RFdVQ0Kzg4bHNJZWJGb1BBMnVuU2ZvTWN6dUNVWmY3?=
- =?utf-8?B?UVVjbVFZblNpdmJhTU1OMHpXSWtQSFRXcUpKM3RxV3hPOEVUaE1pQUF6clNx?=
- =?utf-8?B?N214U0VkdTBac0JpaDVUUUJpRklick5UZjhqUTRaUjZNb0dpc3pVLzN5ZDJv?=
- =?utf-8?B?NXJxQ0pVMnlQY3YycHo4bUVmRzFNUXdpQnRKYUxVYlVoZzQxdWMxVjdFNm1s?=
- =?utf-8?B?SUdDSVFBRkkxZEsweENOZ3daMkhIWkNHYjUzRlZIS3VIZGpjMklwNVZiblp1?=
- =?utf-8?B?T1ZaR1RibDBVN0lNNTVoUHh1bkZiWHN4Ym5BWGNCTUc4VDM3V3AxeE45WGZU?=
- =?utf-8?B?RlZPTjR5M3pmRUtHd0pMTTZ6QkltelMvMnlEb0ljRDBmbWFzb3lXMHd3ZEF0?=
- =?utf-8?B?cnA0bnc3MStTRms3NFByZ2xVQWpuWlU4VmxLcVpPaG1HNHJJOU83M0VHS0hw?=
- =?utf-8?B?L2Rnc0JBMldLZnk1S3JoSmpuNVoxcWk0UDN1YVE3eE1nUHQxSHlkY1EwN0tw?=
- =?utf-8?B?eThNQ3Zxb1Y3eDJ3UXZkTStOSWY4MktnS3ZkNnUxekpnUnhSRTg4UzdpN2Yr?=
- =?utf-8?B?Tzh3SkU3eit5ajhqUjh5dEorQWxFZFNqaERIOEplYit2M2hGOTh3eHVkaUNT?=
- =?utf-8?B?QTRHbEtyTTBxd1B0YnIzWlhKT05obnd4RG8rYlVQcVRKWGhDZFk5dzQ1d0VD?=
- =?utf-8?B?cFpYREZoQVc5M2F6TFdKcHpBUlFHK05TNnl0dkJicm5nWmRjdUQ0RnZaRVpl?=
- =?utf-8?B?Y1REWjZRdUZiWDdaYmlTTXNyWE9sNlBveDNNWEk0MURudERJZ3czRkJjamtj?=
- =?utf-8?B?blhuVmx2TnFwYlV1aFJXUWNHNm0xK0lsRnIxRHBTRk8xT24ySDR0M1p5eHpL?=
- =?utf-8?B?NUo0NlV3eTh2V2VQZEFrbWhMd3VOek9xc3Y0L0V2V0xaKzZYeEJ0S2piU0Rt?=
- =?utf-8?B?NCswMmpnak1ZUG5wNDFvRllJeUd1NG96NjdNTVFyZEdzcnowRnd1VTJMTUpt?=
- =?utf-8?B?cTFCZDU1aFNGeXRia2I2OFhUYTA1Q2xHakZJTTR2K0tMMFR4eEkxcmVkb3Y5?=
- =?utf-8?B?UlRYNzFpaVFDODJnT0IybnB1YmpTeUVxU2Z6SEM4S1hqM0I5TXh5RmZTUTc1?=
- =?utf-8?B?OWxKQXFOOWNXL2RIR3FFdXEzYS9WbFo5aGkya1hpU3FLb0xkeDlGUWhoTGg2?=
- =?utf-8?B?ZHpYRTk1c2s0SDRxVkJxOVBrSlBnalBpbXd0MXF2ejVrRi9hbzlTMmpnRjlO?=
- =?utf-8?B?ckI2Z1plVVNuSURCektoUnhDREI4UEpWQUFpdGtxdHc0MGloempoNldHdFNI?=
- =?utf-8?B?S0FsN2pDcHhLV1RHSmhFd1BwQjV1Z0pSM2FCYlVibWZMa0p4VFlsNEQ5VTly?=
- =?utf-8?B?VTIwZGJQaVkxT1NzUkdaYkNUajRUdUNqazNOMnQ0Um5sVGZCN2VNY2tIUWpR?=
- =?utf-8?B?QVFJeFB6WWRyVklNK21XU3NmVEE1NXlRN1VEUVVpNzY2VDE2cmtRdmtod1ZE?=
- =?utf-8?B?RVRoMkNjZHE2dEdqeGxCTXFRbHROQ1hFeXozK29GOXJITU5pVm1pTGxaazM4?=
- =?utf-8?B?NEJjTU0vNmUrZnhKN1F1Z2RmNmkzV09iWHduWWVWclNDT2lHK0dKdmw5NUVD?=
- =?utf-8?B?NjNkN0N5eEU4VTd3YjliYWZMcTIvR2pmeUgwdFlIOFEydmVIV2YwUlYxTXhB?=
- =?utf-8?B?RUZEQ01CVVNUa2ZHWWVKcDZNRS9CZkNPczg2ZVlQTXdNd3F3Rlc1WDl3azBY?=
- =?utf-8?B?VG1pdTdoSWhES25KNTQ2ZHV3emJWaEtUU2hkYi9RYVJIcjIxYzQ3RmIyTVcw?=
- =?utf-8?B?eFdSQjI4Zlc5bGFQT09CZXZ5YzhTb0JwQU1EcXNMQUNTQnNpRnJ4dks3M0FE?=
- =?utf-8?B?eGdMcmpmOVlldGJPakpqZWJLOW9JNWplSmtlWmlZaXVqZHJwekZNS1NsUnRw?=
- =?utf-8?B?amtwSDNlek5aN3hWOXZnbmpHWEdLcnZCOEsxUE8vODRCcWVROGVzdlRFM3JP?=
- =?utf-8?B?ZVdCZUpvOW9RNldINjViWEE5LzJ5cThXUXhpS1huajdwOE5oWEw1eVVvaTE3?=
- =?utf-8?B?dlNTcmtkV3pZc0xWeGlYVjI0anh3TmxaaHZoVFRmMzExMm4zdllJVFRYNTdk?=
- =?utf-8?B?NXpBRlVWV1BYR1pqdUgzUUJUT0Z0MDdkYVZORS93cXVZQnFuYkdqU1RhWVla?=
- =?utf-8?B?eTR4QnRqbVV0UEsrcklVbHhwZjVqOUlmdUg1K0pTbzU0RXZvN0FJQ2Nsanlm?=
- =?utf-8?Q?c8qm2Y/rESNWQ8Ic=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1072fe86-1dec-4256-f516-08df07fa8cab
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR06MB7907.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 07:27:59.4080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: raNxRLmZVifZDod1cWkakfjf1jMhtgDo9ozdzMpSXJV2uCKYuEdSsephEL2wldEGhaP4tRklklnTPKsy0KV44bPocvFZI70N4FUEpeQA5Xs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR06MB8092
+Content-Transfer-Encoding: 8bit
 
+do_tls_setsockopt_tx_payload_len() refuses to resize records while one is
+open, but the check is broken in two ways.
 
+It reaches for the open record through tls_sw_ctx_tx(), an unchecked cast
+of ctx->priv_ctx_tx.  Under device offload that pointer is a
+tls_offload_context_tx, so the check reads a field of the wrong struct: it
+returns EBUSY on whatever happens to be there, and never sees the record
+that really is open.  Dispatch on tx_conf.
 
-On 8/31/26 08:10, Tapio Reijonen wrote:
-> The variants do differ in the read-only bit 7 of the port 7 XMII control
-> 0 register, which reads one on the KSZ9897S and zero on the KSZ9897R.
+The socket lock alone is also not enough to tell no sender is in flight.
+The device tx path drops it in sk_stream_wait_memory() after
+tls_push_record() cleared open_record, so setsockopt can slip in
+mid-sendmsg and shrink the limit.  tls_push_data() latches the limit once
+per call, and a record left open by MSG_MORE can then be bigger than the
+new limit, making the u32 subtraction in the copy clamp wrap around and
+build an oversized record.  Take tx_lock like the sendmsg paths do so
+setsockopt waits for in-flight senders.  Re-reading the limit inside the
+tls_push_data() loop could close the wrap too, but a parked sender would
+still finish with the old limit, so serializing on tx_lock is simpler.
 
-Microchip support have now confirmed this with their internal team:
-register 0x7300 reads 0xF8 on the KSZ9897S and 0x78 on the KSZ9897R.
-The two values differ in bit 7 only, which is the bit this patch tests.
+Fixes: 82cb5be6ad64 ("net/tls: support setting the maximum payload size")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+v1 -> v2:
+  - also take tx_lock in setsockopt, the socket lock alone can't stop a
+    device sender parked in sk_stream_wait_memory() (AI review on v1)
+v1: https://lore.kernel.org/netdev/20260831025607.62927-1-jiayuan.chen@linux.dev/
 
-That closes the one gap in my testing. I have no KSZ9897R sample, so the
-"this does not break the R" half was reasoned from the two data sheets
-and the driver code; it is now confirmed by the vendor.
+base on my netdevsim + tls (in progress)
+https://lore.kernel.org/netdev/20260728125658.390500-1-jiayuan.chen@linux.dev/
 
-Tapio
+Previous finding:
+b17cf742eaad ("tls: device: fix out-of-bounds write in tls_append_frag()")
+---
+ net/tls/tls_main.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index fbb274287aa5..114e5113bafd 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -833,15 +833,29 @@ static int do_tls_setsockopt_no_pad(struct sock *sk, sockptr_t optval,
+ 	return rc;
+ }
+ 
++/* priv_ctx_tx holds a different structure on each TX path, so tx_conf has to
++ * say which open record to look at.
++ */
++static bool tls_tx_record_is_open(struct tls_context *ctx)
++{
++	switch (ctx->tx_conf) {
++	case TLS_SW:
++		return !!tls_sw_ctx_tx(ctx)->open_rec;
++	case TLS_HW:
++		return !!tls_offload_ctx_tx(ctx)->open_record;
++	default:
++		return false;
++	}
++}
++
+ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+ 					    unsigned int optlen)
+ {
+ 	struct tls_context *ctx = tls_get_ctx(sk);
+-	struct tls_sw_context_tx *sw_ctx = tls_sw_ctx_tx(ctx);
+ 	u16 value;
+ 	bool tls_13 = ctx->prot_info.version == TLS_1_3_VERSION;
+ 
+-	if (sw_ctx && sw_ctx->open_rec)
++	if (tls_tx_record_is_open(ctx))
+ 		return -EBUSY;
+ 
+ 	if (sockptr_is_null(optval) || optlen != sizeof(value))
+@@ -862,6 +876,7 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 			     unsigned int optlen)
+ {
++	struct tls_context *ctx;
+ 	int rc = 0;
+ 
+ 	switch (optname) {
+@@ -881,9 +896,17 @@ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		rc = do_tls_setsockopt_no_pad(sk, optval, optlen);
+ 		break;
+ 	case TLS_TX_MAX_PAYLOAD_LEN:
++		/* Take tx_lock like the sendmsg paths do, the socket lock is
++		 * dropped while a sender waits for memory, with no record open.
++		 */
++		ctx = tls_get_ctx(sk);
++		rc = mutex_lock_interruptible(&ctx->tx_lock);
++		if (rc)
++			break;
+ 		lock_sock(sk);
+ 		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
+ 		release_sock(sk);
++		mutex_unlock(&ctx->tx_lock);
+ 		break;
+ 	default:
+ 		rc = -ENOPROTOOPT;
+-- 
+2.43.0
+
