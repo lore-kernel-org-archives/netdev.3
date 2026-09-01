@@ -1,186 +1,128 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pf1-f228.google.com (mail-pf1-f228.google.com [209.85.210.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9821249E5C1
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 18:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775C049483A
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 19:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788287624; cv=none; b=gp8oPkNqCJbfxZ63XU0QRDrsirrqWzsZDiCzJgsA8JpfxGVW23t2vmKS4Oeu4NA0Snwv50ANKijes4MmRUadI/8Wg660HzT8akQCcI1+kxTmod57AAP3PXFkUV325x1qi1WqgPsGQTDgO7pa3KRKEOZDqhRNp9vq7cWaagMUimY=
+	t=1788290289; cv=none; b=iFS9i0o74s7PKoRbcMgb0ltE5bSrpANB+l38OidmP6JqTszUnyM4R8B0RYCcuIuzoSF29jS/YPDTP389K5mcudNuTKl05RBHEVuCL8/naYtDD13H1YWIl/SxWbiXqiKlIdtPnEumoyYnYEwyG3SST7XvYyNr4pDp4JE/rSKNTTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788287624; c=relaxed/simple;
-	bh=CT7aZm8l2zrchORHs3XVfcnW0XfzcF46CR0gQ1gSaZ0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uS6VpE6PwcqAPI7JYsvFx8FOFHOPUtkL2l8XjYtE3QetR2E0t04VHoXureaUDdFRQ8iGHqd5BIXqYTHZfZ2z014HeOH9Van/SokYOyGyiNVHNexz8G9F4tQqro9wrmxbvYXPaI2tynNxz7mn6rXGM8+uR5Kajq+Su9F3Dd5BRd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SxBaUGHo; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1788290289; c=relaxed/simple;
+	bh=+UFpASiuqIKcMdnDWDzTtA4Cae69jKZXqzdxrdR7kpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iEOd9ZdyeFqJcJ9bvYoo8taKULHQiBpkUvHTeb1n3cxIXbw/0IZ4GeYV6SVdBn1xP15bKn39ZC3h4V3RcGPc2OF1MJYsm/n+2vfYR1vfI1p89CmBWqmiMKHBz9HgWEMXvih3PVSPneG6w/lRmWCzcVGE2WSv9d+KZwCW89osy58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HNrdFwvV; arc=none smtp.client-ip=209.85.210.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SxBaUGHo"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc11b5dd54dso372120a12.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 11:33:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788287622; x=1788892422; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fOlaIEXUvHQikpLOlYZUo580R3fRoHuCIQ4/2h3QdjM=;
-        b=SxBaUGHof2Uq6uN2xpBHtQeDpywyHe1MzUdWZaTndvZ29v/yuc1D4cF7Se0wEOpu/Q
-         2WekdPL8OvdBJTURNoEdwgEPcYOIfNh7nF0Dr2h/hnw2QJF+O/b6apTIRvCL2QM/PYkL
-         imuXKVOdpLiikpBPiV9LOOnmSW3hSlN7eIlII42BMLC9/iiyIS1jHoDf4qplhZgwmNbR
-         xaZw5aXoFMcCn3FkGebkI5pdXyTEi2iBAYt2/WZ5/r+yoqDYDd4aEk3UBe4b2GN8SjQB
-         2dX0AlP167kzEhyhTwnIZAnO6XB85JGuX1FbCUKuQ4wacnIVa2GZmphu/LwQa2ISz8/H
-         8lRA==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HNrdFwvV"
+Received: by mail-pf1-f228.google.com with SMTP id d2e1a72fcca58-853c401326eso128060b3a.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 12:18:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788287622; x=1788892422;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fOlaIEXUvHQikpLOlYZUo580R3fRoHuCIQ4/2h3QdjM=;
-        b=To5iIpkNKNQiAEm9/MeNOdv9qsMHUqv8fTJhbdmxHB1OPmou9mGnjrmBpDx1I5qaV3
-         Fxeqj7QosQt23nrbwQjqmDED9TOfLOgYfUPCFs5SF5UlMrg+rlhe9F5lU024QAW2g8Do
-         YD9B6uyKSqnHGtu+vYVbO4XETW99GdDh0OienzcE/DeWWd8f/CGeTB4WMxrNr8TxeOrd
-         oeKW7zaKDU9Osgp7kConi9LmqebPzrsVrHPFS/4tfmWNLxNHjghNrAVExDpZ1Hxo+Stl
-         Qw1mEhjbmG2S8YHNde3v1fX2zSL7QcKgZcDKuQT97X8KMD54sS4CBoHzIysGKrn2h7mx
-         1vSg==
-X-Forwarded-Encrypted: i=1; AHgh+RpV6fA/b5CJaNZPMqtL7ogIfnjZHVD24CK3hGTGVu+KRWwx0l6Aujh+9DcsTxrmlDSqoiFGKNg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nFnUNrYkQRhfNwwnRiBtr7OBwH6GtLYaMXuWEQi2XJJU5irOrC
-	34jP1ZqAbmAaSjGNBtyjlxFAhqjvnIz+UFJUGQx+/0J7GfoAyP74uYF3abB98BXzDGsPrzoV5im
-	2DvGj3w==
-X-Received: from pgca19-n1.prod.google.com ([2002:a05:6a02:6393:10b0:cbe:e160:452d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e97:b0:3cc:3d08:da39
- with SMTP id adf61e73a8af0-3d26246fa2dmr62855854637.0.1788287621885; Tue, 01
- Sep 2026 11:33:41 -0700 (PDT)
-Date: Tue,  1 Sep 2026 18:33:04 +0000
-In-Reply-To: <20260901183327.3332855-1-kuniyu@google.com>
+        d=1e100.net; s=20251104; t=1788290288; x=1788895088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=h1fswLlcr3+9E5T/YNE7zD1XKjJ+1SuKp8Rk5qajcJg=;
+        b=pWz8vgBnOfXNM4oksSRqfGNxvwX1QYNGHaprVvGdjvF5nZegpvwdIH1aR8L+Ffik0M
+         YGu/5iSN/BveZr+CcZ3YWBNxSTyqB26B6X75qtMwtSevAmPo2NO9WVgUBJyMbAWdvi5s
+         puFtoufWAl3S+EPWm17LFj1Y6gyL917aSvl9c02LNScpiZocpl/APdt1YAQ54LM637nt
+         AkTSOkI4m+SHJA0HWSv5MqJxFAI412J1iReCG0499/FE1KAxLFtodzrCPL8efbiKDOBf
+         p0QfJUFkqSXBNreDl5emo48KcKxGAXGZuRtOdgeNN71oalFnabD6sBrluawiw5BHGHp9
+         s3Dg==
+X-Gm-Message-State: AFuF++lESc969N26O80se+Wgesg8eo+jRMR+QmXsxj3nOCkypyzsI5bz
+	CovyMd/lqNb56WXGAEupMd4W7ahWSqNLejyLDmi7CaG5+uVc/HQ6B36egqqJfP937nSueM+KB8Y
+	6NpccIpslIxboAX4M2ZALpbKnK7vsxy0HC0yJgMRWxVkuJIhBGPheWRw58k3UrtySDUDoGxGMUL
+	kCjNoQg9mkJkBImw6WtnZXWg0W3mIgBHTRICImULt4j+udVZ53oCo+aRXP+uYAMFvf8CS7j8s1h
+	lIgez61GB8VgoE60A==
+X-Gm-Gg: AR+sD11IuFPIfQxWtOakU+26wjdbXVWY4uLcfoMp5Ktq5kGsS84p4W3K1u/sJIO3gGB
+	pmmM+5lR6jPJLBmEN/Yc/OK1w25tWgEf21CgXyHHUsrF7nqo0Vxq2twMl2GG0rDIzpQGdWY9S6O
+	btoTXOJ5p0i2KIm1pa+LyVBVhrubwquka/GGjZstnbhyLLCkO477R+Z/FwiTl/+XQli5DRo5X0p
+	RVqn/stQiXVv1t5KTdj8qeAggXg1kO7c39oljtPvbk9DMMm+9+mY0c9emDmggOCa0G+GO73VX7L
+	tqUWPzPt5fc5+TH1z1cp7sFMH9WqO/AkbmYM5KSp5T6ajb7HsOfcOg1CCZp6lf5yj63ebQk4/Ne
+	sNsUm2EkjFvopzMm4REZgmPsJBO24CTU0tC4lpwFZHB7ocUl9upQ2u0x030eHYVODZL+p8sF/6O
+	faxgvNDjMWWrg3fLTmZJ27AjjOlQIymerI6wFYW7YAJw==
+X-Received: by 2002:a05:6a00:288a:b0:845:e440:d0ca with SMTP id d2e1a72fcca58-85ed26e524amr71161b3a.8.1788290287654;
+        Tue, 01 Sep 2026 12:18:07 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-85dbfc50ea0sm176996b3a.7.2026.09.01.12.18.07
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 01 Sep 2026 12:18:07 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d02df2bf09so1478555ad.0
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 12:18:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1788290286; x=1788895086; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h1fswLlcr3+9E5T/YNE7zD1XKjJ+1SuKp8Rk5qajcJg=;
+        b=HNrdFwvVfOIVWfRepMIYF4wSBz+sg70WCDdyfLvn5AIuvCQQVghTC5G1arA3h04ehH
+         N7bvmP/j/SUA2j2ONEdiTQnKjrQLB3Zj7XXwVcNSqay1OcPaiLlYU6QJbDFOP38PZRgp
+         7gEeuesNJmpsVnjKO0ziUNOT1hK4NezaL26Ng=
+X-Received: by 2002:a17:902:fc84:b0:2d8:d4d3:da4c with SMTP id d9443c01a7336-2d94a90e1d2mr152890285ad.16.1788290285784;
+        Tue, 01 Sep 2026 12:18:05 -0700 (PDT)
+X-Received: by 2002:a17:902:fc84:b0:2d8:d4d3:da4c with SMTP id d9443c01a7336-2d94a90e1d2mr152889605ad.16.1788290285320;
+        Tue, 01 Sep 2026 12:18:05 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f07b79cf9sm186440eec.18.2026.09.01.12.18.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 12:18:04 -0700 (PDT)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	vikas.gupta@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [PATCH net-next 0/7] bnge: Support async events while down 
+Date: Wed,  2 Sep 2026 00:47:21 +0530
+Message-ID: <20260901191728.643212-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260901183327.3332855-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260901183327.3332855-16-kuniyu@google.com>
-Subject: [PATCH v5 net-next 15/15] selftest: net: Specify netns for ip ntable
- in test_neigh.sh.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Nikolay Aleksandrov <razor@blackwall.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-test_neigh.sh configures the following attributes in the root
-netns, but now these can be set per netns.
+Hi,
 
-  * NDTA_THRESH1 / NDTA_THRESH2 / NDTA_THRESH3
-  * NDTPA_BASE_REACHABLE_TIME
+This series lets the bnge driver keep processing firmware async events
+while the interface is administratively down, by keeping one notification
+queue (NQ0) active across close/open instead of tearing it down and
+rebuilding it every time the interface is brought down and up.
 
-Let's specify netns for "ip ntable".
+This persistent NQ0 setup lays the groundwork for additional async events
+in future patches.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
----
-v3: Remove stale comments
----
- tools/testing/selftests/net/test_neigh.sh | 41 ++++++++++++-----------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+Bhargava Marreddy (7):
+  bnge: Extract bnapi allocation and cleanup into helpers
+  bnge: Extract per-NQ ring allocation and init helpers
+  bnge: Move bnapi and ring_grp allocation to probe/remove
+  bnge: Drop obsolete bn->bnapi NULL checks in open/close paths
+  bnge: Quiesce NQ0 around ring teardown in bnge_free_core()
+  bnge: Create NQ0 during probe and keep active across open/close
+  bnge: Process async events while administratively down
 
-diff --git a/tools/testing/selftests/net/test_neigh.sh b/tools/testing/selftests/net/test_neigh.sh
-index 447423713266..e70e31edf633 100755
---- a/tools/testing/selftests/net/test_neigh.sh
-+++ b/tools/testing/selftests/net/test_neigh.sh
-@@ -240,9 +240,6 @@ extern_valid_common()
- 	# Check that an "extern_valid" entry survives a forced garbage
- 	# collection. Add an entry, wait 5 seconds and add more entries than
- 	# "thresh3" so that forced garbage collection will run.
--	#
--	# Note that the garbage collection thresholds are global resources and
--	# that changes in the initial namespace affect all the namespaces.
- 	local forced_gc_runs_t0
- 	local forced_gc_runs_t1
- 	local orig_thresh1
-@@ -250,18 +247,23 @@ extern_valid_common()
- 	local orig_thresh3
- 
- 	run_cmd "ip -n $ns1 neigh flush dev veth0"
--	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
--	orig_thresh2=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh2")) | .["thresh2"]')
--	orig_thresh3=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh3")) | .["thresh3"]')
--	run_cmd "ip ntable change name $tbl_name thresh3 10 thresh2 9 thresh1 8"
-+	orig_thresh1=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh1")) | .["thresh1"]')
-+	orig_thresh2=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh2")) | .["thresh2"]')
-+	orig_thresh3=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh3")) | .["thresh3"]')
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh3 10 thresh2 9 thresh1 8"
- 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
- 	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
- 	run_cmd "sleep 5"
--	forced_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
-+	forced_gc_runs_t0=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | \
-+				jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
- 	for i in {1..20}; do
- 		run_cmd "ip -n $ns1 neigh add ${subnet}$((i + 4)) nud none dev veth0"
- 	done
--	forced_gc_runs_t1=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
-+	forced_gc_runs_t1=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | \
-+				jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
- 	if [[ $forced_gc_runs_t1 -eq $forced_gc_runs_t0 ]]; then
- 		check_err 1 "Forced garbage collection did not run"
- 	fi
-@@ -272,7 +274,8 @@ extern_valid_common()
- 
- 	log_test "$af_str \"extern_valid\" flag: Forced garbage collection"
- 
--	run_cmd "ip ntable change name $tbl_name thresh3 $orig_thresh3 thresh2 $orig_thresh2 thresh1 $orig_thresh1"
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name \
-+		thresh3 $orig_thresh3 thresh2 $orig_thresh2 thresh1 $orig_thresh1"
- 
- 	RET=0
- 
-@@ -284,10 +287,6 @@ extern_valid_common()
- 	# collection. Add an "extern_valid" entry, add more than "thresh1"
- 	# regular entries, wait "base_reachable" (longer than "gc_stale")
- 	# seconds and check that the "extern_valid" entry was not deleted.
--	#
--	# Note that the garbage collection thresholds and "base_reachable" are
--	# global resources and that changes in the initial namespace affect all
--	# the namespaces.
- 	local periodic_gc_runs_t0
- 	local periodic_gc_runs_t1
- 	local orig_base_reachable
-@@ -296,10 +295,13 @@ extern_valid_common()
- 	local timeout
- 
- 	run_cmd "ip -n $ns1 neigh flush dev veth0"
--	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
--	orig_base_reachable=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["base_reachable"]')
--	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable $base_reachable"
--	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | jq '.[]["gc_stale"]')
-+	orig_thresh1=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh1")) | .["thresh1"]')
-+	orig_base_reachable=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+				jq '.[] | select(has("thresh1")) | .["base_reachable"]')
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh1 10 base_reachable $base_reachable"
-+	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | \
-+			jq '.[]["gc_stale"]')
- 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale 1000"
- 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
- 	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
-@@ -325,7 +327,8 @@ extern_valid_common()
- 	log_test "$af_str \"extern_valid\" flag: Periodic garbage collection"
- 
- 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale $orig_gc_stale"
--	run_cmd "ip ntable change name $tbl_name thresh1 $orig_thresh1 base_reachable $orig_base_reachable"
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name \
-+		thresh1 $orig_thresh1 base_reachable $orig_base_reachable"
- }
- 
- extern_valid_ipv4()
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.c |   2 +-
+ .../net/ethernet/broadcom/bnge/bnge_link.c    |   3 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 483 ++++++++++++++----
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |  11 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.c    |  26 +-
+ .../net/ethernet/broadcom/bnge/bnge_rmem.h    |   4 +-
+ .../net/ethernet/broadcom/bnge/bnge_txrx.c    |  15 +
+ 7 files changed, 440 insertions(+), 104 deletions(-)
+
 -- 
-2.55.0.966.g6673acef38-goog
+2.47.3
 
