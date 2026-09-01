@@ -1,148 +1,132 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996CC30F924;
-	Tue,  1 Sep 2026 09:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2747DF84;
+	Tue,  1 Sep 2026 09:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788255419; cv=none; b=LDShSgDrwW+6qDSc2DBiQXAJV1T4d0472qlWnpghBcTRLCBfexcrhoszvfvUg6kqqZynU7HxrYjTU4wUDUao23Lam4mZeT6XMUXDQHoOqIzsFCs5YpD7KihdAe9ONcK+ewLq/U/+bYG3XtXPvXoA+WJjEgeLMRQG1RUW3p3H8Bc=
+	t=1788255837; cv=none; b=s87hiB975z6fJ7O57eiWh0k16M6aFwfKRwOEV1ILAkGgQ/jKH7VZ0S4fPMlAoPN5HpWfQvfdLk686yRNWCDR9gPnqcrzscZfHyYatd2KK07Vd3uDzO0uVOBtVK5NcVGS1atf811xuybsJU++SpLWyrTbF3XvwMZ7171GMUCTWRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788255419; c=relaxed/simple;
-	bh=PEWzitqT1v12vigw6Xw4rm05tYiA9pI41FiezO8JMdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bAI67Ke9r8I99wsTdfL6wbZ34P2kyTSp7jmGUwWPZ4ZKzZHFKKmku5mKc036532UalC7GQwNH8Z5eV4OM63wd3UzHxZOtcJKfmsYNGkKOXERfMNcuetLLugufl9oY7OSHRB0bOmqJoicDZU2FKFZI0kSO046Ff3SpSFQNJOx6ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=PNDBA02k; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OBEdQ0rP; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1788255837; c=relaxed/simple;
+	bh=TT8ytgeQNFbfItaG3H6JI0HNZJJDURAAqlJT7GfiwuE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mKikwF+6v/DLiu5R1K4rb45ZDrbTx3gq9JuHRWYLXU522X7JuDbostFPEy5ZQUniRaSV+JWhZ+DmG+6ZF3Ff7BJs4FwLVzgCaUQns/OQ554tdmzGZGj5wgbJe4BFbJLDu4sIlhbsKVeTCbBol1uyzojKwfQjMcnesaE3GV/64n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LoWsgHDq; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="PNDBA02k";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OBEdQ0rP"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.stl.internal (Postfix) with ESMTP id 3A21B1D000B5;
-	Tue,  1 Sep 2026 05:36:34 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 01 Sep 2026 05:36:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1788255394; x=1788341794; bh=F3soTVpgk+I32+/X1XRas5lmoapMmWr2
-	KZFitMfUEA4=; b=PNDBA02k83dYZ9xHAcbJ4Mcu0+n+1AXc1TZKacNJYO1HgwEU
-	kTkwMLb1rkei759ILgP/73TW8tT9JTaMw0+XRTMNP+/nZxxzCSc7l7QeVp0gtYDJ
-	LNGz917cIGegGDxp2VoxB758N0MtPG0kcWSpEqQaPFNHGshni5sR8eSAHThV74bX
-	Nt6xzdj2jtgtcnPXRhf3r8ZrpzBYNwS2CVobDIMNR2vazuoZizPkN0bX635KwfOL
-	L0ysUuURTJnQChmiB7IZhNfEa/0YGwMrRxRRVY6aVDpGux9Y1we66MzPD61otJX5
-	7ZKAFHWxUaIvbwtNXfxOaJ/tNFu+Z6tvc+CRaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788255394; x=
-	1788341794; bh=F3soTVpgk+I32+/X1XRas5lmoapMmWr2KZFitMfUEA4=; b=O
-	BEdQ0rPKLkD/gi5BDWY0OSa4/whynDZg5AQPcaa/D2C3E1CCzuRlN5UStjtQTTi9
-	0XpfUty4LdTgZua4g8Vw4Y/R7OdeZTIUKHGul1OczJfLq5PU94nkcfv4JqpZdY2G
-	Q4mNAdYFDP8bP/oU8BU8KJrb4FwqxOcWc0khoYEAf6QBpROACHt0dV3fd7SQfjRU
-	b2ANHQldhAay7Ktkwbf1OvUGNsmeqkyYD3pRI84fdcnJSacmQG1esg63eEAGYmYF
-	iEJuFbBr6HqYlqUHPYj/InOd+XnQ9oHXTmJg04WBhEMgGCxjHpvCO8sm9zWQvrLp
-	wWmUfyGZYYHSa/lbSLTXA==
-X-ME-Sender: <xms:oZyWatczOkIak00p_nsog4z0RusxvlGNoxI40rZM_ot0kHy6iL7Rgg>
-    <xme:oZyWanCnwHbUc3PsIIo2nRiXa2TOVfAGTehSfgCnHGS2foTXs-B551pavtpGvSFXy
-    njJb1ckA-MCqUYct0LxM6w5AIULCjtMOyLXtr0iNml9xi3hrV1rIqYu>
-X-ME-Received: <xmr:oZyWah4kB-p18HNsM5BAr8a8k6io-V9-jQ5BRDK7EJIx0PKSdX3B206jcQs>
-X-ME-Proxy-Cause: dmFkZTEMlaE8QXW3F9NNy7+L387hDqgbtUuldLBmUpJNAB/i2C65ypqft4VZ464icipY/B
-    7g96MAIYMfbfOx4dOV54fCGPYsnUwzpnt+B5tglu5IWrlYr4D+vyy6nktRctov7dQ7WZ7d
-    t91iK7zINnFriGdXddQCKBeeiOo8D5wKrA6krmb6bOtzuDORQO8Ny5ZIjhFQqSeVWAYlZm
-    8vt7EIapFnsOJ9741qLyBl+LsiO9YlQ0Bx9mNlTcMTg/OglX9Q/157hHeMvnBrzGadG2Q/
-    RxwWlQw2RjpszWz2LPL/HaKKpvUNGrK6yN+qioyGZGP0f0p8c3BEkfFJdFLwzHur5BJ2na
-    JM8YLbeJV++HMZKDPYhyTqjQkgh4rakAlM8DtsnbdVk8ZNFXt//IjqC/x+7u83S+NZKspa
-    ZEqKvY9TmAWX2fMg6T5MUuu/K0pv8cGF5wCrSkUXBjEAyOlTaeGK9AJWdYcyu1D5tAx0Jh
-    fGzvH6W4oupNoghVy3aMwg2bEOhQ6WO6J9jI7OMnf6ohOd85WljCysxXjqY+ZldegYHajq
-    P8OCZJmiNQCBqv3VVnBP4zndz5TGKFao3IUcyHvO9U16CANPBt7BFYkaZqGpPY7/zLMmiV
-    UUs5gTPlaQaLt9nLnj3QULb6tERs63i06xiXRCIrSBz8v3S6/a1Oa6/BXMaA
-X-ME-Proxy: <xmx:oZyWageS05GHQmd5be-E9NP6wWPKxFOQEJoxhM-XJ9YwWSwRsJMW1w>
-    <xmx:oZyWansNRiOkHLkHFmVwNdeJmAApIEIGk-WSyEheCKh7iVj_DSK1yQ>
-    <xmx:oZyWagkRUzfh0iG5yeRLZxcd7n7k7h4iDhT-S34HbJDnMXEsTxCpGA>
-    <xmx:oZyWaqRkkXsN7QXokmkjE2YolPE6y9qCfPfDA7ckA8_bUxxLThoDMQ>
-    <xmx:opyWakCeQVwreItFLd1e9DzWaaas2-9sTVBmL2KpSz-_bUeKuWIVE0cO>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Sep 2026 05:36:33 -0400 (EDT)
-Date: Tue, 1 Sep 2026 11:36:31 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>, john.fastabend@gmail.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.18-6.1] tls: reject the combination of TLS and
- sockmap
-Message-ID: <apacn0u4092axmXy@krikkit>
-References: <20260831133314.4125787-1-sashal@kernel.org>
- <20260831133314.4125787-596-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LoWsgHDq"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6817Cgcd2833071;
+	Tue, 1 Sep 2026 02:43:29 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=z3j+QQ6TUFD75XCFp3GSs5M
+	ycaCILNwA+w6md5MDGU4=; b=LoWsgHDqaL58YxU3MkuY/Vh+5g/rM5cAhUjLZI3
+	siQ88mcnBqwjtj5NIkZXsR15kbY3zMXlxfcowf9T7qyRlv24ISbpKqm4Epzf3lS9
+	TurIBEIYxXWHYHLfQv2SUDcX61cjBigQ2OkouzbhzGEKuHheVPs02Fa3Gf3+VIcJ
+	S5N1qQDanJAmqOpm4JwhwiNC40iF0b9qmNzKx9nQVcTGp/wAgnnmxO1loDJaqNOB
+	O+OB+r63TNrsy/ulwq4K3dQm4B5tqWmg2nFHwMLcrSW2lAltM0e32siX1HQ7IDz+
+	xkF+HRxrhYwLRXhvf12et8siLpZIA0SDPZTpGLEUl0pWt7w==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gdmvqs97s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Sep 2026 02:43:28 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 1 Sep 2026 02:43:27 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 1 Sep 2026 02:43:27 -0700
+Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
+	by maili.marvell.com (Postfix) with ESMTP id 529995B6928;
+	Tue,  1 Sep 2026 02:43:23 -0700 (PDT)
+From: <nshettyj@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Viswajith Murali <viswajithm@marvell.com>,
+        Nitin Shetty J
+	<nshettyj@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "Vamsi
+ Attunuru" <vattunuru@marvell.com>
+Subject: [PATCH net] octeontx2-af: mcs: Clear stale X2P calibration state before calibration
+Date: Tue, 1 Sep 2026 15:13:17 +0530
+Message-ID: <20260901094318.1395356-1-nshettyj@marvell.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260831133314.4125787-596-sashal@kernel.org>
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA4NiBTYWx0ZWRfX07ekvOFvu0A9
+ PVXgoHGrt5QZH8VXsgt2Ns5SNiV45oNtbbvbLTzIwSTBqZAEiAO9kmS7jUNUr+rZlLrxiwyvTYJ
+ G7YHX8DKHwrMs/w5Ol9Ey1gG8a3TIWFSqNX87SrLDHrzuby6iwpewL+uTFh9byUiQbf299OG6Ta
+ eT/UnipjtP8+5Lh6qx+zR7LuXPUUR9k8aHLu7lsBiQ8GHnitTYyy7MZ6pyMEPXe+Id3GfBhC5AV
+ gD7qb4sHtkqn80z+A3ZiG257Bot0Jt92a92roK0Z1PV0xPhD6nq0AD5nf0vlNN2J216ol3x4vsU
+ S6472HT1bGblJm95Nx3tTj6D1QhpKO3v4g3wNYO1A771Bc6r2BQPYaKdLuASpGUv839zSb/rLk+
+ yJKRPPC+p159+WlupJA9KhZKvGGrMU/TIhzzxyPnrkuEosvgm4BNmDaPnwDKGxV9FrYi2aGZPhG
+ ehBkvwTlouvTEVx5Ieg==
+X-Authority-Analysis: v=2.4 cv=HYQkiCE8 c=1 sm=1 tr=0 ts=6a969e40 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=z7qG03HmhJMYOIuxF80A:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: aX8XOteanw9NAVXe1ClDkZStSdv13aU4
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA4NiBTYWx0ZWRfX3696O8RsQX+H
+ aLXLxnLWbxyFw6CsnRoKnaFC8aBvHNgp4FGrzfEfPv1lNv9iPb4Yw4Q74tD+Ui7BeNeQlJbdFIC
+ B9L1LzaE2AmAP7J9w9BwFfToV4MltlM=
+X-Proofpoint-GUID: aX8XOteanw9NAVXe1ClDkZStSdv13aU4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-01_02,2026-08-31_01,2025-10-01_01
 
-2026-08-31, 09:30:24 -0400, Sasha Levin wrote:
-> From: Jakub Kicinski <kuba@kernel.org>
-> 
-> [ Upstream commit 460e6486617c17dd19abe8f3fc67d9a6fa25f8ca ]
-> 
-> TLS and sockmap (BPF psock) integration hides a lot of latent bugs.
-> Bugs which may be more or less relevant for real users but they
-> are definitely exploitable.
-> 
-> We could not find anyone actively using this integration so let's
-> reject this config. Adding a TLS socket to a sockmap was already
-> rejected by sk_psock_init() through the inet_csk_has_ulp() check.
-> We need to reject the attempts to configure the TLS keys (rather
-> than adding the ULP itself) because checking prior to the ULP
-> installation is tricky without risking a race with sockmap getting
-> added in parallel (sockmap does not hold the socket lock).
-> 
-> This patch is a minimal rejection of the feature. Subsequent patch
-> in the series will do a light dead code removal. Full cleanup would
-> require a major rewrite of the Tx path, we don't need skmsg any more.
-> 
-> Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-> Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-> Link: https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> LLM Generated explanations, may be completely bogus:
+From: Viswajith Murali <viswajithm@marvell.com>
 
-330L... wow.
+Some firmware versions leave MCSX_MIL_GLOBAL bit 5 set on boot.
+If the bit is already set when the driver attempts X2P calibration,
+the hardware sees no rising edge and calibration never triggers.
+Clear the bit and wait briefly before starting calibration to ensure
+a clean rising edge.
 
-> ## Phase 1: Commit Message Forensics
-> 
-> ### Step 1.1: Subject line
-> **Record:** `[tls]` / `reject` — reject the unsupported TLS + sockmap
-> (BPF psock) configuration.
-> 
-> ### Step 1.2: Tags
-> **Record:**
-> - **Reviewed-by:** Jakub Sitnicki `<jakub@cloudflare.com>`
-> - **Reviewed-by:** Sabrina Dubroca `<sd@queasysnail.net>`
-> - **Link:**
->   https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
-> - **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>`
-> - No Fixes:, Reported-by:, Cc: stable@vger.kernel.org, or syzbot tags
+Fixes: ca7f49ff8846 ("octeontx2-af: cn10k: Introduce driver for macsec block.")
+Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
+Signed-off-by: Viswajith Murali <viswajithm@marvell.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/mcs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Yes, this was intentionally sent to net-next without a Fixes tag,
-because it's a "feature-level" change, so it kind of feels wrong to
-send that to stable (even if it's removing a feature that nobody seems
-to be using). OTOH the code is broken and not really fixable...
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
+index a07e0b3d8d00..211c10aa5880 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
+@@ -1417,6 +1417,16 @@ static int mcs_x2p_calibration(struct mcs *mcs)
+ 	int i, err = 0;
+ 	u64 val;
+ 
++	/* Clear any stale calibration state left by firmware/bootloader.
++	 * Some firmware versions may leave MCSX_MIL_GLOBAL bit 5 set,
++	 * preventing the hardware from detecting the rising edge needed to
++	 * trigger X2P calibration.
++	 */
++	val = mcs_reg_read(mcs, MCSX_MIL_GLOBAL);
++	val &= ~BIT_ULL(5);
++	mcs_reg_write(mcs, MCSX_MIL_GLOBAL, val);
++	usleep_range(100, 200);
++
+ 	/* set X2P calibration */
+ 	val = mcs_reg_read(mcs, MCSX_MIL_GLOBAL);
+ 	val |= BIT_ULL(5);
 -- 
-Sabrina
+2.48.1
+
