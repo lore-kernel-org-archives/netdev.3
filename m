@@ -1,86 +1,67 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012011.outbound.protection.outlook.com [52.101.66.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11F146AA95
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788247904; cv=none; b=KI+2Dft6IncfWC7VDZygNEI4Npw9mabmbsahct23nTwFFxJruDRfsKvu5BSGvf/DPvDUJKdyG0fFt9QobO7MniXvG2kuaHoiErgTHld+WZT1vaFMcdU1pAPeLcq0Ndz1EHSeaNYUp5QRi5XMvdkR2dSI7YOSDF2ARDT1BnPTxm0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788247904; c=relaxed/simple;
-	bh=zGhJ9HaYyZ7K+ijAn1Ufy6dOppFjBPbx8iBoOPASPKI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t2R8ygKUEjaPBieHI+27+mDn4b+UBwTjWYd7lfvdjpKfrH0XEQIC4qn1Ned3kg+ekD1YzxnEY91ynNbSGLM07xCEvlAu5Bsesq8OIslHWOnQ2NvyVsUvGpf7MUD4mhxX8/jTubnRjcAUbMW/32o1xiiHaIWmHJOo4t/EQcQebAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RzgKZERY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uAWSDE9g; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD28143846E;
+	Tue,  1 Sep 2026 07:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788248023; cv=fail; b=Yi2YcGuq5zeCopNIvBPt04tMatMZC7EhpFXmJhFiXoLBhJdGtNJ0RHhedAMlPA6+6M80zP3xJM4jh7/URlHtdCtsnRiZ9r9Mc3QwczqXIWfdh31klmiaRMglj12XlNhJbcptYG9CQjya+9QELjB26OWf3lkb8YoqnoirqKgkDrI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788248023; c=relaxed/simple;
+	bh=ewuZGCzM8B3C0daPN9oyAEDZBkgtTR8Uv6CIX+0mbfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=l+fWttZ+EutU5eIyujlv9ZEi8YH6m916S9I0aoM2DXF4BIx1FbZS8ZUXCc/0pzcuxsvTR53u49frnOVf9YDnkMqLlp3YO0kL9b5OO8woyLYPqTVyhbF3URSKsuKNzMihsixLFMgImLVQVYLCRC5TR/dE0d5v+8WjRd02EzGGLIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Jy/x9OO2; arc=fail smtp.client-ip=52.101.66.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RzgKZERY";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uAWSDE9g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788247900;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=996Do7cli1wrzMhcoRVI4Dpnoxul8kFICpQpjRm0D38=;
-	b=RzgKZERYlM4x/o0dIbfSWC+joLNqR8x+fJ/CuTIOR00iJ7eIRrx5Qow0ViQa77BjtP/4q3
-	95ENdDiS2xeBFc/FR4Vb6OTt806vR3zH2TaZE2Nbo36W0LZgCaK8Mkjqv0ntUKP5qFDP4z
-	dhIBNPRvIeduTfd5y2J7n/6L0gCZxH4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-MXTfo6nvOYi3hH7KIPy5pw-1; Tue, 01 Sept 2026 03:31:39 -0400
-X-MC-Unique: MXTfo6nvOYi3hH7KIPy5pw-1
-X-Mimecast-MFC-AGG-ID: MXTfo6nvOYi3hH7KIPy5pw_1788247898
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-499913d1a79so24513915e9.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:31:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788247898; x=1788852698; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=996Do7cli1wrzMhcoRVI4Dpnoxul8kFICpQpjRm0D38=;
-        b=uAWSDE9gTZaCtnNjCrRa0Cp47o69hAPjgpwpRhd8C2/bR+KAgqqz7raR/BZM7Jbsyv
-         BWtFfQC5338IXnkaEic7YAJzCm82mqAlnpiBIQ//c6jR+Uh1JilL08lYdWmN5ZDitxsI
-         AmaLSgRSGnzvub/8fDyf4Px/Z/bYEKZrNzKlWEckYOMh60C3/Y5Go6jMUxGml1pC1ryY
-         lTydfSpNi+A/P264j2WdTIptcgLHVTyzLPCbV+/WeBfTGH2BNdMj+Rrx+fZ8ZZ/eC8E/
-         154YD0uuMjrCy2ZuX17aNQ0Ga4YCgnfJ9e5qssVfeYxknrmnTrETQdcKM21EdMJW2X74
-         OYIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788247898; x=1788852698;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=996Do7cli1wrzMhcoRVI4Dpnoxul8kFICpQpjRm0D38=;
-        b=IFJ0YJYLA8zBPPz2/kl+GW8/oNxZoJSnJGqj1PaqiWwUqIPQvX22KCABbHiZu776hb
-         Wormp2+VWn4Ap5U9EtpL5o6AaWK/B8ivr0iTTHbhqKjO3KfMdCaqRVnfdLotjE252e3T
-         j5BiNo10kLksNB/e//2Mtpqy2mAY0tQm/6tY6HyrPz0HdWKRyZ9hcGRtMHuDTR+ap4Ok
-         7dU+Dn4LociXyCpJRtgVmTYBvM34BPlpszsVSf1YjC64GgyULOWqkRE5UbX8+aOIJYaD
-         WL29WMgJEkslNoo6pFESuNY1xrlrMwCkJXQaJCWREMRQlt/qU19bahvzMOwkmQesHPGq
-         8kQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RohHOvb0zHfEmuGxxfQaeifDhnS436qt3TpCji+Chn0lYcx/G0BZ+xNVeZcWyCgRGCe6Wf9qq8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nwTyCFmrOTAWUfwQAU5J7gbZMuMVUJ81Bf8eA4WCnyMBQLMdZv
-	y2H1EUKxX5uJ0lErn+LfXfRk95zYAdM6X7/e+zaQ4G0A2z48bewdp72zsxB9SU/m/XhbDS9ojsK
-	5qAMPTA4m8RGE+xmqRDqKZ4+9nBVS+gFbz909u+OlvYjtFlD4p3oEnrgPKQ==
-X-Gm-Gg: AR+sD132y37OaTPbCFgp6aXXlUCHl2RzIvFEhRBHZOhxstH9W7oEFLHs8zezA4obK6Q
-	f1oJ3n5m9TYCSHhrunRE8g0CryOLBaCJnT1QfiS6Gy5syslqZPR+EV09G+D/flSAS8Ywq3/x6pc
-	82mGaUhVEHR8M0OVfzPzSvVnLYpLyjLvna3J8qPjZpmkKIOG8o+j2nefT+rfwBhzroY01PKT95c
-	PWTBzpq9nBeVGMl8HeCt5fpmdQeTEUPxCr3TrU72PESPmYA6M5uA3+Pw1pEMXx6RV7zbB5mX7lj
-	SuTXmYwUQhtUunyBGyMMItPffFCs3F16vVHO/ke2w00k6vwTE3wWPeFsVqnc0dBJl7mNYtHRkF7
-	3ryiShBalalpUgEj3LMmxZ3WE8x2bg/06yBWRQH3DcF2VeD3sujakU5EKNo0cdF+a/XpD5xtIVQ
-	==
-X-Received: by 2002:a05:600c:a114:b0:49b:9438:7785 with SMTP id 5b1f17b1804b1-49cdc429f02mr92591465e9.4.1788247892921;
-        Tue, 01 Sep 2026 00:31:32 -0700 (PDT)
-X-Received: by 2002:a05:600c:a114:b0:49b:9438:7785 with SMTP id 5b1f17b1804b1-49cdc429f02mr92579265e9.4.1788247886584;
-        Tue, 01 Sep 2026 00:31:26 -0700 (PDT)
-Received: from [192.168.188.103] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce10f08sm49011395e9.7.2026.09.01.00.31.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 00:31:25 -0700 (PDT)
-Message-ID: <3b647dc9-6653-4a75-b0f9-d934337ac2ef@redhat.com>
-Date: Tue, 1 Sep 2026 09:31:24 +0200
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Jy/x9OO2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fh4P82hZ9ufqgQa7OHtSFMnbcDQ2EK+8RFEir8SkYyfBE25N0g1Mx7DLsqYmLE6cKUUQLES8ckHIQLoclSRjrrHfUOGAUOihLxcRA1/ypfRZ0a/FDBKrfUP1dv2Vzl8/dz3t7SIuBXy9b6OJm0AophaSMYZZml4Io/kZcc/QZ4sHmSfls6E9vZzhb0fjoBeXCE7XjgX8M3SirVbScrwOFkT8RI7ZGRTvv+mgx6H+4An1JrRBgjszfNyc8PnIyTJYq7aSCmyoyCALin3gasJDsN5oDPrNhvnXDJgUCFRoDsIbzqRa62HYedB7gTkIdvvHT6bsvJIgGWj5b3s061gKIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GPgVgyUxOXuHj9KnGx3BV8CxHTqn5InN3T6v8yMqnhA=;
+ b=y7LI6ukY8vu2NOV4v47+RTMbjjJfHM9RTIF8Ad99d9xr6D/2LGJG/sFPBpzKItbZZcjG6Or2oCtBQk/m0l2TYd+YjrabtQrRQc1nZtc03DGZmrKEsvMfQ189W4EmBPT4ApqLiopyXxwjLYnu8J8gS4NJOiJi/wA0aCwkBsfVr54Pjrg3bksAaxDaglayGnMOOS+T4G0I6aMQ1g1hGKaUrREXdX0Cxn7YRAiA9ufOgFPLFIdbtoS7TvAycAmly9Lr8AW5cUuQOpQgRF+tsF3rFj74Uv49KaoNSXmRC4pNJ/Qge/W8A0KYOxAa7B4PyoKm708FWbDibodl3AEYcPtKfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.88) smtp.rcpttodomain=kernel.org smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GPgVgyUxOXuHj9KnGx3BV8CxHTqn5InN3T6v8yMqnhA=;
+ b=Jy/x9OO2LVRmEkVQk4NJXvKQYJ5ugp0o9+oDIdxbXcUsq2wmNDg/zDGEyetPTpkzk/cutGJIB92pA0bInAJn6Gkw5Cn2OO+KBZLNhRcOby6NbDoVIesMoU2G8/GRVImEpk05vyfUogm6mTqqRtjWjKmX7GxuinMpxFpONRbR9SVlqSm8tUX92TjrMylltlViKx87KU1TCtsEmNyrzrULIm1PGv+Dan37808E/0VbIcZV5wHs+8mZ9IUMb33eRNWAvUfDD4Ggk4sT0mS7O4o7Y/67UDrk7gYOT0XJrC5t9W5fbcOTaNQqlZzjcVPNrQI59K2LJt4snvlTm4fkOFGQxA==
+Received: from AS4P191CA0012.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:5d5::11)
+ by DB4PR10MB6920.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:3fc::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
+ 2026 07:33:36 +0000
+Received: from AM4PEPF00027A6C.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5d5:cafe::31) by AS4P191CA0012.outlook.office365.com
+ (2603:10a6:20b:5d5::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Tue, 1
+ Sep 2026 07:33:36 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.88)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.88 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.88; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.88) by
+ AM4PEPF00027A6C.mail.protection.outlook.com (10.167.16.90) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Tue, 1 Sep 2026 07:33:36 +0000
+Received: from ENXDAG1NODE4.st.com (10.75.129.197) by smtpo365.st.com
+ (10.250.44.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 1 Sep
+ 2026 09:30:54 +0200
+Received: from [10.48.87.85] (10.48.87.85) by ENXDAG1NODE4.st.com
+ (10.75.129.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 1 Sep
+ 2026 09:33:34 +0200
+Message-ID: <3326ff38-75c3-4218-b537-17077f3faa4e@foss.st.com>
+Date: Tue, 1 Sep 2026 09:33:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,32 +69,110 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [ANNOUNCE] A Syzbot-style Platform for Verifying and Fixing
- LLM-reported Bugs
-To: Guenter Roeck <linux@roeck-us.net>, Yuan Tan <yuantan098@gmail.com>,
- netdev@vger.kernel.org, netfilter-devel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
- frankw@nebusec.ai, jhs@mojatatu.com, ksummit@lists.linux.dev,
- kuba@kernel.org, kerneljasonxing@gmail.com, roman.gushchin@linux.dev,
- jgg@nvidia.com, mchehab+huawei@kernel.org, torvalds@linux-foundation.org,
- ben.copeland@linaro.org, gregkh@linuxfoundation.org
-References: <20260830115546.3942129-1-yuantan098@gmail.com>
- <98d4603b-0559-46ea-8b76-1f0245b3b266@roeck-us.net>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <98d4603b-0559-46ea-8b76-1f0245b3b266@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [net-next,PATCH v2 1/5] dt-bindings: net: add phy-supply property
+ for stm32
+To: Rob Herring <robh@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	<linusw@kernel.org>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20260812091122.566439-1-christophe.roullier@foss.st.com>
+ <20260812091122.566439-2-christophe.roullier@foss.st.com>
+ <20260812195828.GA724768-robh@kernel.org>
+Content-Language: fr
+From: Christophe ROULLIER <christophe.roullier@foss.st.com>
+In-Reply-To: <20260812195828.GA724768-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To ENXDAG1NODE4.st.com
+ (10.75.129.197)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00027A6C:EE_|DB4PR10MB6920:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb82eb40-2125-446c-c93a-08df07fb5576
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|23010399003|376014|7416014|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	ia9RuAsjnKd+F7/pwoGdZmzqJIYzluSdPV68mho0wlAE/OLnV2UJQtWHHCXr5G1dIH/NgXgVebW6FdgdSNiGhvsU43xiPR/u0LgR8WAJDwwI40UxwKP3k6kfgYqNuut7UGtAj/+7i+TwChGW6t9HPpaCXT4aZD64JCkYRcczcp5T5HlyUyNjdtrsJ6XkoxOL56wXLVGle5+smbCWLbZEbjTwXFrpyL+5wHviUQh7XLx+nxlMrnObk9oKPVJVeVsEf3hJLjqSOA6fOK9zQGKoSUmD0C4lfouDdZS01Q8LjBxUBK0m8keRLoFYCwkd2uJwEA9D7IgbfruORfTGN5EwRDXxmy/9eKNwkWMkcFSz1O1x7AuNLwhlyixIBTVGX83wl2TC2cVnsasD4UVzdMipaNBgMVJo3ccQr2TQnFMLq6s3Xo8zMm6HasTvzD5x6iNjY4/cCd54d+LvDjliZoJPnR1MVKmhztSPnnvO9W0OUqNlVFd2syegY5v8G1UvG6OWjmb3mU+FtoWquZaR5HWr8pcvSp7guI61gPCU3V45Hl2ZMd+2Mvt/j/4vk89f7Mk66aVVvpp8fthRNadBSfUFpxjtVwDfhrv/9nLAMyy5WVjD2eJg31N4umZ4JC2t0OpJ8X9uTI24crk9mF1leQjQ8WdZpg2/LU3Z5gZ+3MHOI5X72xEfKT1Crf+UiYNURE0S
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.88;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(376014)(7416014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	mXu6N9bKxnX9QAMh6vGLaLCEOvVcLv9kFFtI04S5GZoFkyTykcbVkVx2kkA+MbxQQIBT6ZCxoy+bOORxO1j9poFTTdRN3Vn/uDNf5OrHuAyq0kChE+w/r/aSS/DcDG/+gx9LZRDgBbHF0eQQCpYjP/+IGodD6AxdcFC25ipTwxp4wOSaCswjhsXiAzE+2p169DW+9aGRo6x8wq0zH7kM0J119U7wbDB7cb66qZJLpGvvq1EQrqWLSAmLmAZvMvkDaNX+uIuxScUIplaH40DkOMIcmaMBPcfiJcu0dtO8Xft49ZfOgNTSWQ7VN40ZSx9Fshz5lRunPRoAVKygNrP7yp7m3HvGcAx4qkneLEPPLbimf09JJNfOudb1YQgRehu4cbMHPNse2o5/IIBkiUd5ohYwEKYBEUcQLTggO6FXP3I+E9kM5L/nHI6cYcAXqVue
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 07:33:36.1128
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb82eb40-2125-446c-c93a-08df07fb5576
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.88];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A6C.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR10MB6920
 
-On 8/31/26 9:08 PM, Guenter Roeck wrote:
-> On 8/30/26 04:55, Yuan Tan wrote:
->> LLM-powered tools such as Sashiko and Claskiko produce a significant number
-> 
-> Is "Claskiko" misspelled ? I don't find a reference to it.
-Clashiko is the "informal" name for the sashiko instance running on the
-networking subsystem CI. Since it's ongoing under constant improvements
-and changes due to a lot of effort from Jakub, there is no formal
-documentation on it.
 
-/P
+Le 12/08/2026 à 21:58, Rob Herring a écrit :
+> On Wed, Aug 12, 2026 at 11:11:18AM +0200, Christophe Roullier wrote:
+>> Phandle to a regulator that provides power to the PHY. This
+>> regulator will be managed during the PHY power on/off sequence.
+>>
+>> Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+>> ---
+>>   Documentation/devicetree/bindings/net/stm32-dwmac.yaml | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+>> index 987254900d0da..0c7eb1ccadd47 100644
+>> --- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+>> +++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
+>> @@ -99,6 +99,9 @@ properties:
+>>         encompases the glue register, the offset of the control register and
+>>         the mask to set bitfield in control register
+>>   
+>> +  phy-supply:
+>> +    description: PHY regulator
+> Which phy? There can be multiple for ethernet. In any case, doesn't
+> really matter because either is wrong. The supply(ies) for a device go
+> in that device's DT node. This node is not a PHY.
+>
+> Rob
+
+Hi Rob,
+
+Ok I will update my description with :   "Regulator that powers the 
+Ethernet PHY."
+
+To manage this regulator on Ethernet glue, I based my work on the 
+examples of :
+
+   - allwinner,sun4i,
+
+   - allwinner,sun7i
+
+   - allwinner,sun8i
+
+   - fsl,fec
+
+   - rockchip-dwmac
+
+   - rockchip,emac
+
+For me it is normal that PHY Ethernet regulator is managed by MAC glue 
+because it is mandatory to power ON Ethernet PHY chip BEFORE MDIO scan.
+
+Let me know if that works for you
+
+Regards,
+
+Christophe.
+
+
 
