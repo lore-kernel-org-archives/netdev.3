@@ -1,95 +1,96 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775B4470446
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 20:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45854A2618;
+	Tue,  1 Sep 2026 20:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788294823; cv=none; b=aGjZUU6rRjcskMi5WfRp6DpNJ95eDOZaamRDkGYqvoF7615UPNCTkZVSM/Kq6KhB0jfGXP12sCWKZtKuhYrl37mJCarVECS8d6pFHuGWa4ZgUsqv1TAQ/fK4f+0H7TevNYtZazIEOcjmJO1lh/15qLMLI5rqJhk/jSnRI+L2lts=
+	t=1788295576; cv=none; b=VnTX0MNuKwtLcirUIPW9Y+CJ2S2S5+Hj6dhb6viiP+p6XQiA0Iyizd1T9VdndO9xWlUG+lDRKI3LGYzdL6egwLjq2J8YUxqlBEQqb5VEKUVZSJcTkKCuPBh8QL4MPseh731t6ayC+NbBQ+oTMTbq4GvDhZjLxGkl5/wZwkw70Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788294823; c=relaxed/simple;
-	bh=oyZYl9MQ0GluBPsgfa4OVS8Mfkb5JX4A/AK+ieJ9ZRI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=mIusRy4AYU/zZT3loy7PWIpZqUpVXRwEgwiNkQBC4XWT09j5u9uEFaN5MwwG2SPduKgN8QMt3D6ftd+4yU8RviMh0MaBNCGvGX3yc9lPDjzT211yQDGNbDL22VUt2DFK/d7nmg7YnKSBko8Sr+bVKqDQgjcKy5nV7AHzkc7dbvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-49aa4525b82so379645b6e.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 13:33:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788294821; x=1788899621;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x3I+bTSA/CeCOeSpygGOdoVt5Vie1ImeZql69enoaeU=;
-        b=M0F9sRLJLtqBnxoC02X2NjDzNdOx1MT/yJuVOnVwDjGp7s+mxYBI1GMm/yiv+FOzr2
-         NZpMOIIpB6ya9VbrdwSxtksJrGDa3ynsA+oTdV5Hq7f1VS5cF4SVM6I33bbQChd1/FYr
-         wymq8ISShZ5XhYHd3C0DEOt39dH8RSXUq9uTmWx+FjRTeB6Bqq3nNYb9PzNs/xHQv7GK
-         n/lL6jbIWytCMbrcG8zWW5Z8GXmf3ftELqd7C71DFt+kwAX7bb1Y/Q8W0G01kCWr1fkb
-         s/l1KhNyhGXXxpivvQIZpuCV/M9Yw9ql6wAH9aYI8exB9/EWBvCUFGCBwuYpYVYDWm5N
-         LDow==
-X-Forwarded-Encrypted: i=1; AHgh+RrscLfWNb2KIW0uy9HBKXGUJv/2BwqoGKk0Ph3FyocszZNaMuwc8kQIGyzQM2HWxMg7YWsYCpQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mOHp1dasysvUyfO/OohcSmHs/NOk8aqLgCZigIQH5ilqgAAbft
-	/847MMEE0BWxHv0jalbMA8ii8ht/MX1llHox1XWLZJ8At3MIexUqtaiUtpILQ7FLDBVtcP+97yG
-	BmhDBVlPK5z4mKioMY3nU3fIuOA1CbTHP29Nwld/OLsP7TBFktWYlElssKQY=
+	s=arc-20240116; t=1788295576; c=relaxed/simple;
+	bh=hE4+SPOGmeF19I5cgkeM4CEcAfGK4ngHuqQY73C1MbI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P1jfztv16IacxdcZb199RKw+zdjuJpbwWoABk1Ow48rtra55/hmMRCjOgiHbyzz/Lb0CxhCX0CMVXENhmxllqFVfZmgNSH90xgs1tpvX3Ktqcpc/N4L0wLBsa8Z4zBBQhzB94mvyCMirs04Dfsi4mwEQY9XtcezosDW5NfpnGTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I5Fzug9E; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I5Fzug9E"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DB6A54E414B0;
+	Tue,  1 Sep 2026 20:46:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A6AF06053C;
+	Tue,  1 Sep 2026 20:46:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92B6911C7923D;
+	Tue,  1 Sep 2026 22:45:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788295565; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=pZM2UOlcGE150UsArFPxPN+mf8W/SUHrCqlcfGC3EK4=;
+	b=I5Fzug9ERsUVFV8ucoMdE1WRTV52JlwBudAvA2F2Wx93f4CsOssv5ChVCkGdt1edKOq/AG
+	9L7ZqFs0MMDLxVYgbD1DY03L0WaoiH6NPAxykI+Vah9kFjiMb6h+VkwAW9MCCQlZ/9hzsX
+	Eld8rh0K6c+5FcCQPwwnjsteBTGOo1P3z4/47LWUsL/XzAwE+cAFb8SaLd1FDePCkalXjc
+	H0LZQOlzIETD15qLBuQOXm/KJ1yQXTCFLs9W6ChgbEQiwqdZ0Y1nUnvxBMqKzpdSVjcl6m
+	HOTGP0yYO1CDdmsSN0oxwbg0XsDMzeFMziq5lTb5e8vOTGwPFdRdWvj3qNGrxQ==
+Message-ID: <20631f9a-1a2f-4ef5-a4c5-e1948e55dd78@bootlin.com>
+Date: Tue, 1 Sep 2026 22:45:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:6902:b0:4a3:3108:866a with SMTP id
- 5614622812f47-4b5b8265377mr10846805b6e.17.1788294821575; Tue, 01 Sep 2026
- 13:33:41 -0700 (PDT)
-Date: Tue, 01 Sep 2026 13:33:41 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9736a5.e163c37b.143a1.0002.GAE@google.com>
-Subject: [syzbot] Monthly netfilter report (Sep 2026)
-From: syzbot <syzbot+listf5b787023d22ee928c14@syzkaller.appspotmail.com>
-To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/2] selftests: drv-net: Use cross-compilation
+ environment for the io_uring check
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>
+References: <20260901164200.1124343-1-maxime.chevallier@bootlin.com>
+ <20260901164200.1124343-3-maxime.chevallier@bootlin.com>
+ <a42cdc44-efaf-44ff-9ace-f08e0c3b9856@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <a42cdc44-efaf-44ff-9ace-f08e0c3b9856@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello netfilter maintainers/developers,
+Hi Matthieu,
 
-This is a 31-day syzbot report for the netfilter subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfilter
+On 9/1/26 19:24, Matthieu Baerts wrote:
+> Hi Maxime,
+>> +# Set CC for the io_uring check
+>> +CC := $(CROSS_COMPILE)gcc
+> 
+> Could we have something similar to
+> tools/testing/selftests/riscv/cfi/Makefile:
+> 
+>   # Set CC for the io_uring check done before including lib.mk
+>   ifeq ($(LLVM)$(CC),cc)
+>   CC := $(CROSS_COMPILE)gcc
+>   endif
+> 
+> WDYT?
 
-During the period, 0 new issues were detected and 1 were fixed.
-In total, 12 issues are still open and 199 have already been fixed.
-There are also 2 low-priority issues.
+Ah this is better indeed IMO, I'll use that in V2 then, thanks for
+the tips.
 
-Some of the still happening issues:
+Initially I considered doing a larger rework of extracting the logic
+in lib.mk that sets CC to the right value base on CROSS_COMPILE, LLVM
+and ARCH into a dedicated .mk file that we would include at the top,
+but at that time it seemed to be too big of a rework for just the
+io_uring check.
 
-Ref Crashes Repro Title
-<1> 119     Yes   INFO: rcu detected stall in rescuer_thread (2)
-                  https://syzkaller.appspot.com/bug?extid=d5f7a5097c24c7c2dbbb
-<2> 10      Yes   WARNING in nf_ct_bridge_post
-                  https://syzkaller.appspot.com/bug?extid=a8ba738fe2db6b4bb27f
-<3> 7       No    KASAN: invalid-free in rcu_free_sheaf
-                  https://syzkaller.appspot.com/bug?extid=60332fd095f8bb2946ad
-<4> 1977    Yes   INFO: task hung in addrconf_dad_work (5)
-                  https://syzkaller.appspot.com/bug?extid=82ccd564344eeaa5427d
-<5> 706     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
-                  https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
-<6> 176     Yes   INFO: rcu detected stall in br_handle_frame (6)
-                  https://syzkaller.appspot.com/bug?extid=f8850bc3986562f79619
-<7> 148     Yes   INFO: rcu detected stall in NF_HOOK (2)
-                  https://syzkaller.appspot.com/bug?extid=34c2df040c6cfa15fdfe
-<8> 82      Yes   INFO: task hung in nfnetlink_rcv_msg (5)
-                  https://syzkaller.appspot.com/bug?extid=c4b20b80ee6a7a2f5012
+It lead to some headache about double-inclusions and relative paths lookups
+that far exceeded my Makefile skills :(
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Thanks for the review,
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+Maxime
