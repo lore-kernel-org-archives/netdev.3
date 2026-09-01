@@ -1,96 +1,122 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45854A2618;
-	Tue,  1 Sep 2026 20:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7627286D4D;
+	Tue,  1 Sep 2026 21:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788295576; cv=none; b=VnTX0MNuKwtLcirUIPW9Y+CJ2S2S5+Hj6dhb6viiP+p6XQiA0Iyizd1T9VdndO9xWlUG+lDRKI3LGYzdL6egwLjq2J8YUxqlBEQqb5VEKUVZSJcTkKCuPBh8QL4MPseh731t6ayC+NbBQ+oTMTbq4GvDhZjLxGkl5/wZwkw70Lo=
+	t=1788296590; cv=none; b=OMjZ0VqaYnFHYtp2dbo8rIMRflSCIM31D4T99dSDoUvu2X5PdTl+x+NMNo00MBJD0P9g8LImPnPPJFQplVB3Q+53KNZKZ641UEQn90/RbKBl5sr639pFGvyfPkrK59wlynvpdxIMYpwtAg9cglaQ5KqrmnMTbqg+KhPqxEN/cdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788295576; c=relaxed/simple;
-	bh=hE4+SPOGmeF19I5cgkeM4CEcAfGK4ngHuqQY73C1MbI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P1jfztv16IacxdcZb199RKw+zdjuJpbwWoABk1Ow48rtra55/hmMRCjOgiHbyzz/Lb0CxhCX0CMVXENhmxllqFVfZmgNSH90xgs1tpvX3Ktqcpc/N4L0wLBsa8Z4zBBQhzB94mvyCMirs04Dfsi4mwEQY9XtcezosDW5NfpnGTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I5Fzug9E; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788296590; c=relaxed/simple;
+	bh=1ycvHY9jrwxBEJiElS9KgXcZkwTdzcGWMI9WMUwOVpI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DGJyzXcQsBZp4KlLPKLWAYTxSOZc+s2Wy4+QOPsbmcExl+F4Ch7Nf/yR5SYYenw+V34urXdXXnkx4+ATQ4Or+ZzXFATc1gyIOuhbhr76c2Raz3ScKEEJS/6tG7LZ6ELzlnWgR8iyb+MMdJagKRWJb2DcttKDps+fNxN2bI/tDWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyoBuXey; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I5Fzug9E"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id DB6A54E414B0;
-	Tue,  1 Sep 2026 20:46:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A6AF06053C;
-	Tue,  1 Sep 2026 20:46:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92B6911C7923D;
-	Tue,  1 Sep 2026 22:45:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788295565; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=pZM2UOlcGE150UsArFPxPN+mf8W/SUHrCqlcfGC3EK4=;
-	b=I5Fzug9ERsUVFV8ucoMdE1WRTV52JlwBudAvA2F2Wx93f4CsOssv5ChVCkGdt1edKOq/AG
-	9L7ZqFs0MMDLxVYgbD1DY03L0WaoiH6NPAxykI+Vah9kFjiMb6h+VkwAW9MCCQlZ/9hzsX
-	Eld8rh0K6c+5FcCQPwwnjsteBTGOo1P3z4/47LWUsL/XzAwE+cAFb8SaLd1FDePCkalXjc
-	H0LZQOlzIETD15qLBuQOXm/KJ1yQXTCFLs9W6ChgbEQiwqdZ0Y1nUnvxBMqKzpdSVjcl6m
-	HOTGP0yYO1CDdmsSN0oxwbg0XsDMzeFMziq5lTb5e8vOTGwPFdRdWvj3qNGrxQ==
-Message-ID: <20631f9a-1a2f-4ef5-a4c5-e1948e55dd78@bootlin.com>
-Date: Tue, 1 Sep 2026 22:45:47 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyoBuXey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2521F00A3E;
+	Tue,  1 Sep 2026 21:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788296588;
+	bh=o4y3Au5yahfVgXckmce7YK44RkvqJlP5g7zCQkT9ths=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lyoBuXeyZGkvBx5inPWIcsXUqabNkkahs7Qu6n4Y6dPU/G/Y/Zkl2qr9TY+xnVoel
+	 EW4B5FP4T7BuKgfMi2GxOqrdLgyH9fWpun+30euwgIqkmLmJXuPkK6OnKixVjA3wAA
+	 0J9G3treuHzt435yhD/vmNSKd29swxZI7Ksmi1pjLNtA01XfwEoT5lqFcLLpg+7hbD
+	 cKOmWJh8S1+YFzumfGn4J6btnUPGlP0tAel8Zai8/MfE10WQYyB/zH00Cm6ZdaYFlL
+	 3m0OX3HV4ubaj7FNIQpAfsv0wlE1D+OZKj4ZAqmgyPMFXtz3LiuWDOuQorTWT/UigS
+	 rNLZDumwHeORQ==
+From: Kees Cook <kees@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Tim Bird <tim.bird@sony.com>,
+	Zihan Xi <zihanx@nebusec.ai>,
+	linux-kernel@vger.kernel.org,
+	syzbot+628f93722c08dc5aabe0@syzkaller.appspotmail.com,
+	netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH net-next 2/3] llc: report a closed connection for out of service sockets
+Date: Tue,  1 Sep 2026 14:03:04 -0700
+Message-Id: <20260901210308.1173180-2-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260901210300.i.590-kees@kernel.org>
+References: <20260901210300.i.590-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] selftests: drv-net: Use cross-compilation
- environment for the io_uring check
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>
-References: <20260901164200.1124343-1-maxime.chevallier@bootlin.com>
- <20260901164200.1124343-3-maxime.chevallier@bootlin.com>
- <a42cdc44-efaf-44ff-9ace-f08e0c3b9856@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <a42cdc44-efaf-44ff-9ace-f08e0c3b9856@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2459; i=kees@kernel.org; h=from:subject; bh=1ycvHY9jrwxBEJiElS9KgXcZkwTdzcGWMI9WMUwOVpI=; b=owGbwMvMwCVmps19z/KJym7G02pJDFnTbTuWGu9cHBXJv8pmf2fjlcflyZNPLmbWm7u0My5Ls P9N9QXZjlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIkwTWZkeFd/W9V6puyNs163 s5S01aV/zevpEW3dNqkykre+8bB3MCPD0YB/O28vfcwUHnPTi6GI4+2ObTo6NbMCD/b+4Iw7xCv DDQA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-Hi Matthieu,
+An unsolicited frame can move a bound PF_LLC socket from
+LLC_CONN_STATE_ADM to LLC_CONN_OUT_OF_SVC while the socket stays open
+from userspace's point of view. Both upper layer entry points handle
+that badly:
 
-On 9/1/26 19:24, Matthieu Baerts wrote:
-> Hi Maxime,
->> +# Set CC for the io_uring check
->> +CC := $(CROSS_COMPILE)gcc
-> 
-> Could we have something similar to
-> tools/testing/selftests/riscv/cfi/Makefile:
-> 
->   # Set CC for the io_uring check done before including lib.mk
->   ifeq ($(LLVM)$(CC),cc)
->   CC := $(CROSS_COMPILE)gcc
->   endif
-> 
-> WDYT?
+ - llc_establish_connection() has no state check at all, so with the
+   state machine now refusing the event, connect(2) would return the
+   state machine's "1" failure indication as a positive syscall return
+   value.
 
-Ah this is better indeed IMO, I'll use that in V2 then, thanks for
-the tips.
+ - llc_build_and_send_pkt() special cases LLC_CONN_STATE_ADM as
+   -ECONNABORTED but falls through to -EBUSY for LLC_CONN_OUT_OF_SVC.
+   -EBUSY describes a connection that is momentarily unable to send, not
+   one that no longer exists.
 
-Initially I considered doing a larger rework of extracting the logic
-in lib.mk that sets CC to the right value base on CROSS_COMPILE, LLVM
-and ARCH into a dedicated .mk file that we would include at the top,
-but at that time it seemed to be too big of a rework for just the
-io_uring check.
+Report -ECONNABORTED from both.
 
-It lead to some headache about double-inclusions and relative paths lookups
-that far exceeded my Makefile skills :(
+There is deliberately no Fixes: tag here. The connect(2) return value
+only becomes observable once the previous patch makes the state machine
+refuse the event, and the llc_build_and_send_pkt() change is a
+long-standing errno inaccuracy with no memory safety impact. Backporting
+this on its own would fix nothing.
 
-Thanks for the review,
+Build tested ARCH=x86_64 net/llc/ with GCC 14.2.0, CONFIG_LLC2=y and =m.
 
-Maxime
+Assisted-by: Claude:claude-opus-5[1m]
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+ net/llc/llc_if.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/net/llc/llc_if.c b/net/llc/llc_if.c
+index 1514362e613d..f1a3f3372c4f 100644
+--- a/net/llc/llc_if.c
++++ b/net/llc/llc_if.c
+@@ -41,7 +41,8 @@ int llc_build_and_send_pkt(struct sock *sk, struct sk_buff *skb)
+ 	int rc = -ECONNABORTED;
+ 	struct llc_sock *llc = llc_sk(sk);
+ 
+-	if (unlikely(llc->state == LLC_CONN_STATE_ADM))
++	if (unlikely(llc->state == LLC_CONN_STATE_ADM ||
++		     llc->state == LLC_CONN_OUT_OF_SVC))
+ 		goto out_free;
+ 	rc = -EBUSY;
+ 	if (unlikely(llc_data_accept_state(llc->state) || /* data_conn_refuse */
+@@ -82,6 +83,15 @@ int llc_establish_connection(struct sock *sk, const u8 *lmac, u8 *dmac, u8 dsap)
+ 	struct llc_sock *llc = llc_sk(sk);
+ 	struct sock *existing;
+ 
++	/*
++	 * A socket parked in LLC_CONN_OUT_OF_SVC has no state machine to run,
++	 * so there is nothing to establish. Report it as a closed connection
++	 * rather than handing llc_conn_state_process() an event it can only
++	 * throw away.
++	 */
++	if (unlikely(llc->state == LLC_CONN_OUT_OF_SVC))
++		return -ECONNABORTED;
++
+ 	laddr.lsap = llc->sap->laddr.lsap;
+ 	daddr.lsap = dsap;
+ 	memcpy(daddr.mac, dmac, sizeof(daddr.mac));
+-- 
+2.34.1
+
