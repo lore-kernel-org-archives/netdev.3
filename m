@@ -1,135 +1,150 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F1C3BE659
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D30E3A8745
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788271643; cv=none; b=fSNTgb9MawmEkauIpFjXfyblJr/BxteIhKO1boyLXFJiuaQ109WMBpiK1GsnjFraoAml/xYdr2ZYW89ZonP08JpgBTp9zZBki5z5gqQRJ7vMwAgofxp7/JFf7t2LgFJ1D4xGnMkiiEfnvk9IiFtWD3YRnnlNjLMft7Iy/mefdV4=
+	t=1788271761; cv=none; b=VIn4fvy5Z8dsFjr2f+wJVQHiYQ2f8Uc3DHaaL21u2Vfn9TrDDA5lpnc07KaEunuOApNPvszRUJpAjhuFA56pm00DLGjutlJCMwCGFxud44r71qlPMfhLeqlwWBPjoWZqDT9lEMp6Qi/BSCUFKZ8sBJdDR6md8FglLBNHcRkmaQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788271643; c=relaxed/simple;
-	bh=0Pwx3Hc37IzwLO80eSQXq/W0rIj/++qSYLDeySdhkw0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=KEbWLxIGJEsPYRgNO0o3sOT7+Tj1I4fEaZmbvUU1ZCo/VthbH89tcB1mbzQDJBbK6SUlAj7hmJNUk9EbbLyZu8L5EuzJwM/hEyJQLnRWbc+oCKk0gE9fqZypxQGdR/ZFy6MMaC+9tz53E2H+4QHLfZb6cmMCOL5ocqz+hmiidkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z2tUAyQp; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788271761; c=relaxed/simple;
+	bh=C66dzNAiLxzxkCBjY2wVJtqAWhkFkdYcJ7WYBjNLEpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aKpMD/asYVG+5qU0HEEsFD6ExFRtu1+4vRQ83VaXBgdC3LA9SXZ2tjmLWHAPcF7IYH+FHAJFewqlzfM/XdbKvGH96sTcKumhfZuVeqJ6iBijcuS++60uWGDLLRvLbevQ2BRRkf74aagZG14HmYqiAEowJrs7RQ2pAqG/K94K/38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ci6WrtA+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=To7Qgh6o; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z2tUAyQp"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-855de2d0d4dso16082077b3.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:07:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ci6WrtA+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="To7Qgh6o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788271759;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b9vPZOgd6NLyUWZKoe/EId/qc/H8rWYiebMVzAAsIXQ=;
+	b=ci6WrtA+cT4ORP24QlBjUDVlHyUZI/uSTeJUJu8cvptsFkhXLxtguxymYWUFNp89B7tocj
+	7AD8FP3kMn5kqgp22bWyFsO9FYsorN6iB6jzTTbClmLxchw3NNko4OGzR/PzjEGdeES80t
+	Ha9bcyHY/0l0BYzyynhtyGpNSOYQBzk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-uoBvhoOHPy6lKRdIR_t2jg-1; Tue, 01 Sept 2026 10:09:18 -0400
+X-MC-Unique: uoBvhoOHPy6lKRdIR_t2jg-1
+X-Mimecast-MFC-AGG-ID: uoBvhoOHPy6lKRdIR_t2jg_1788271757
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48437090e74so694620f8f.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:09:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788271641; x=1788876441; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ZpnRHfRMFzEAWLvemeBKEVpeIxRl4kUoq6EWJEKG1u8=;
-        b=Z2tUAyQpjVHmYHIACH2obA1yvS74UvLMNOmzvhxyId/proVm7vacQDaQyP6PHS/zpc
-         KhnGCQDErfMSCuVBqdeKDVkTHs+L80Wc3ItPD0Glhb2j34ZgN6K7fu7JKUIT7FTG220r
-         VDs+qS2aMgrH7eiKoimErZnaH4ohK/rwgV8ZFSdfRfWECzh5r6RpIyGNXvxA/cRRSotR
-         myt0aSZ720HyKSFA/OfRYZngNoPoDtZV1fR6ke1SqPp9AU01V6NUI9Tt334yt7WdO5IF
-         N68qD5V+61mACQ4V/VOF15C0Un0w3P1VzvWmAmfqg7PGXnnTqjZeNfPXAiZXca6AMmzb
-         5J0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788271641; x=1788876441;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1788271757; x=1788876557; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZpnRHfRMFzEAWLvemeBKEVpeIxRl4kUoq6EWJEKG1u8=;
-        b=biu/bJcK0f+Stw1ZnW5k1sB1wykh4Y52jIGO+2LtQl1uBYK7NUUVheSCZO7b1kyZye
-         ibyn4kWLuilBcW3QwFi3rCyFLXKFdK9rQICONXMD8htAc3ZWsinNm32Mze95rt943JWd
-         k/yR5U7vz7N72Z3938i45pUn/ngSslRfAolDppTofZ7iLlagEJn4UYVCtbCsmfX4Eo76
-         2YgCwAFikniygMfryg+7Is3hfTswwlkp2QbDjV7IV3Ivq7La4QYwPIyuPfNpR6Ik+Mw2
-         o7TjKwpOsP+MtqASwXK7zAJCvd90pZTbiyowohNHCkcmuz3ZhbgiuE8W7vKf8q2iFWCa
-         nYRQ==
-X-Gm-Message-State: AFuF++mcafTdf7PQUaTbLCEGDlj2XUmTjV2yli3SeMAnbF9cR2REtZki
-	+j/FaN3gxpIf5v+5STAS/RmRAECdSHWEZpOOpzfHEIVVu6DqAWKhvvUdKObZ0w==
-X-Gm-Gg: AYBFou3U5j2RvqxVmJ/DIB2g73v4pPfZWsGq6eUD4cOd48EZeILBbI34ifH8saiy+hD
-	DS4Li3pnhQHwmRN+iWvKsICKoRaflOiPG2gjKQ42/B8dLimgm2r6n0xP7ylhSYHLEUHoIDN1DtN
-	DiVPOyjvxmfBPQgWZvA1/MQRB22bNZbMVDlV0SSDvWwfATBAB78xzMGn/Ab3e+jjrAtjqFwtlMW
-	TWMzOftV3WjbEER1a3oXmtstHLDzWoLH39yOMCDYtlV5Gr6wb9ntw5PE04Bg3Ry7PeXfPP8aijq
-	CprUpmjnhgVMJnD9XAEze+9BMNiHTKN9f3b53d0Sdwq8V2O3QGHWCFU62grQrJJFz1EnwANvnDg
-	Rj58/2Hv4i46p9FFsyCBAvn8A0cXMhs90tBPi+XyDF+39NsUuO2ElA6B97bU7VOIQ3Q2QZPVLzy
-	0jz6HhuMmWgRVTtw7YlBxPk4lPzyUmaM7GwAn5TOxrZEAm/puMrufTzmMcJ8osaER9fi5TJafll
-	rx1/ZuilJb4vdyZdNQ3IOCa1YMa/4VvmM3m9lSmd7SkqUWQ2AK3
-X-Received: by 2002:a05:690c:6:b0:80c:16ad:2f16 with SMTP id 00721157ae682-8694a045dbfmr25369617b3.8.1788271640592;
-        Tue, 01 Sep 2026 07:07:20 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e5ed19446sm74640317b3.14.2026.09.01.07.07.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 07:07:19 -0700 (PDT)
-Date: Tue, 01 Sep 2026 10:07:19 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Nimrod Oren <noren@nvidia.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- davem@davemloft.net
-Cc: netdev@vger.kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- andrew+netdev@lunn.ch, 
- horms@kernel.org, 
- shuah@kernel.org, 
- willemb@google.com, 
- petrm@nvidia.com, 
- linux-kselftest@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1bd3bafef8eb0@gmail.com>
-In-Reply-To: <4804ad0f-ff5d-4b74-8285-9595c0c6732d@nvidia.com>
-References: <20260831163734.1121891-1-kuba@kernel.org>
- <4804ad0f-ff5d-4b74-8285-9595c0c6732d@nvidia.com>
-Subject: Re: [PATCH net-next 0/3] selftests: drv-net: split up gro.py
+        bh=b9vPZOgd6NLyUWZKoe/EId/qc/H8rWYiebMVzAAsIXQ=;
+        b=To7Qgh6o32tahncczO4jcO+dcvNd2BcxpbUbhLpasdNU87m2mlpYif2H1qDhfMo+lY
+         bidk4auBiSOBNhgAYBsOfIEfVPCKq1G/yR3UFobNpfrABjgFVaAlHCqlGFuURoJ5svJn
+         +kJoMtxVlZpRdH26I3PSy0ZIwByA6WCHgnvBnZLWFp6rjmnvnKysDc5pgspzfjD9FsKm
+         SWeoWigxN5OItEJrer5WFh/bHn9hZ1moEQ7xDmFXs1ooSqf+tHI0dv3R4a8kL44HCJ0D
+         +4Hx1TKcnQc2DV+75Cw11GDCUQk1CYRcGZnFIhPrNeod8Rsi5gKsuLjNOcMkcphg/x7j
+         91rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788271757; x=1788876557;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b9vPZOgd6NLyUWZKoe/EId/qc/H8rWYiebMVzAAsIXQ=;
+        b=gvf9HNy+x/9NEpaMjgA/AY6EPfZR6ykm+GEpK6qwpCToe9apJ3QsrV0MaUSGuirnbP
+         kvbDhlgKkUbQtnTv3M43RWQUS4BOVtbBON1j+LtkNpvDfC7qU5D525eUEQ9tQkNUJnhL
+         1CclSuxqRoF5yZjHTk4+41oeHPcOFhsobJxSe9YxpjqtCI+XcXK5MUFVXq89YuO37djX
+         lZn74YnPpES0np0A7L7S91W0seLmDyq22Vo2as4C8D6tFGi+rVVsVRZzOQnXRQjHi/oB
+         SzVQCNlobNG4hzRcL9MPa+0KGHaWPnKHfBxfxBZWK++XRDGTK3yGLUFihUJQklvJsJe7
+         eDqw==
+X-Forwarded-Encrypted: i=1; AKwUvByae4YHIJmBzwWUsSWiix6YunFfkagVUH3vyiUo2YZ+w3rcdo2tDkcaL6neNCO6Dv/UG1cr98Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++m1Cqx4MqdG1GUkTvNxHibQYgL0dEH/8A9oBDdwfiXfb5l0Ss0k
+	6PDNo1ptFZXHfqGve/rVj5R2hiWiCe6E+cjlj73v51DdM4vYjPHi/+n0pr1SMXJtfpiIYd4ZwvF
+	FFvCQfeNGEiAMBpzjWpE9D5CSXxblGsEK7/klRwkFmIkSxMzWJyTvxxNqhA==
+X-Gm-Gg: AYBFou2U2y0ra+m1+JT/LC6s7C4pOg/5DMUWRyXRIfHFQd8NUWnzSVHISpIvIE1Cw27
+	tfebbCjbAz+JngO6ylbRe6mCdSJWisH/L+FawYpWxQWGzKIbzWidaPz2A9vaPU5UYzRtpq0LMOV
+	cERmvZVI1hIHW9qALqG2300vf/kVguLuMpUl24m0VBFRSlzZjKOi7jqo4US0k1LhneBQKPe74zy
+	BBLwIKsyeBfckZEtyaYTQBxJ7DW9hdVRsz/hDfwwBkMhY7gI3yqRxrUPgNXJMwlpX8eai6hY9Lr
+	YXhplYwyLjQ3UFMD1OEGw9WRgAWaGUCVXLpFNfqi9aTpQIJbCme5c20mVQRqqQekK1J8GrjgVdV
+	d8VRE6coIVkCdG2xsELFENXoqruStXqWR5rmJ7ovvZDeiwYPg4Z5jYQeSBGPSY/o11kYSUlA1bg
+	==
+X-Received: by 2002:a5d:5e01:0:b0:482:e2f2:19c9 with SMTP id ffacd0b85a97d-482f7987c40mr51900099f8f.2.1788271756603;
+        Tue, 01 Sep 2026 07:09:16 -0700 (PDT)
+X-Received: by 2002:a5d:5e01:0:b0:482:e2f2:19c9 with SMTP id ffacd0b85a97d-482f7987c40mr51899930f8f.2.1788271756069;
+        Tue, 01 Sep 2026 07:09:16 -0700 (PDT)
+Received: from [192.168.188.218] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d7ec2esm5063012f8f.37.2026.09.01.07.09.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Sep 2026 07:09:14 -0700 (PDT)
+Message-ID: <a86aa34a-8bea-46d2-a785-6c423ac00b1d@redhat.com>
+Date: Tue, 1 Sep 2026 16:09:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] udp: revalidate socket family before publishing an
+ IPv6 cork
+To: Daehyeon Ko <4ncienth@gmail.com>, netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Vladislav Yasevich <vyasevic@redhat.com>, linux-kernel@vger.kernel.org
+References: <20260829132125.1160893-1-4ncienth@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260829132125.1160893-1-4ncienth@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Nimrod Oren wrote:
-> On 31/08/2026 19:37, Jakub Kicinski wrote:
-> > gro.py runs its full set of cases three times over - against SW GRO,
-> > HW GRO and LRO. It's our test with the longest runtime. The 318 cases
-> > take 12m30s on mlx5 with a debug kernel.
-> > 
-> > We will likely add more subcases here as the time goes on, so it's
-> > time to start splitting it up. Long runtime wastes time on retries
-> > (if any of the 300+ cases fails we try to check if it's a real failure
-> > or flake an re-run the whole thing). It also forces us to increase
-> > timeout for the whole test suite.
-> > 
-> > Jakub Kicinski (3):
-> >   selftests: drv-net: hw: rename gro_hw.py to gro_stats.py
-> >   selftests: drv-net: split gro.py into one test per coalescing mode
-> >   selftests: drv-net: bump the timeout to 15min
-> > 
-> >  tools/testing/selftests/drivers/net/Makefile  |  9 ++-
-> >  .../testing/selftests/drivers/net/hw/Makefile |  2 +-
-> >  tools/testing/selftests/drivers/net/gro_hw.py | 14 ++++
-> >  .../drivers/net/{gro.py => gro_lib.py}        | 68 +++++++++----------
-> >  .../testing/selftests/drivers/net/gro_lro.py  | 15 ++++
-> >  tools/testing/selftests/drivers/net/gro_sw.py | 14 ++++
-> >  .../net/hw/{gro_hw.py => gro_stats.py}        |  0
-> >  .../selftests/drivers/net/pppoe_gro.py        | 46 +++++++++++++
-> >  tools/testing/selftests/drivers/net/settings  |  2 +-
-> >  .../selftests/net/lib/ksft_setup_loopback.sh  |  2 +-
-> >  10 files changed, 131 insertions(+), 41 deletions(-)
-> >  create mode 100755 tools/testing/selftests/drivers/net/gro_hw.py
-> >  rename tools/testing/selftests/drivers/net/{gro.py => gro_lib.py} (92%)
-> >  mode change 100755 => 100644
-> >  create mode 100755 tools/testing/selftests/drivers/net/gro_lro.py
-> >  create mode 100755 tools/testing/selftests/drivers/net/gro_sw.py
-> >  rename tools/testing/selftests/drivers/net/hw/{gro_hw.py => gro_stats.py} (100%)
-> >  create mode 100755 tools/testing/selftests/drivers/net/pppoe_gro.py
-> > 
+On 8/29/26 3:21 PM, Daehyeon Ko wrote:
+> udpv6_sendmsg() prepares the IPv6 flow and route before taking the socket
+> lock when a datagram is corked.  IPV6_ADDRFORM takes the same lock, but it
+> can convert the socket to AF_INET while the send path is doing that
+> lockless preparation because no cork has been published yet.
 > 
-> For the series:
-> Reviewed-by: Nimrod Oren <noren@nvidia.com>
+> If the conversion wins the race, udpv6_sendmsg() later publishes an
+> AF_INET6 cork on an AF_INET socket.  Uncorking through the IPv4 socket
+> operations then interprets the IPv6 cork as IPv4 state.  The IPv4
+> finalizer writes a 20-byte IPv4 header into the 40-byte IPv6 header
+> reservation while the retained IPv6 dst routes the skb through
+> ip6_output().  ip6_finish_output2() consequently consumes the unwritten
+> 20-byte tail.
 > 
+> An unprivileged reproducer triggered the mixed state on 12 of 10,000
+> sockets.  KMSAN reported an uninitialized-value read in
+> ip6_finish_output2() on three fresh boots, with the allocation origin in
+> __alloc_skb() through __ip6_append_data().  The same process recovered the
+> 20-byte region from the TX timestamp error queue; one of three fresh boots
+> contained recognizable stale heap data.
+> 
+> The route prepared by the racing send is not published in the socket dst
+> cache.  An implicit send on the IPv4-mapped peer required by ADDRFORM
+> delegates to udp_sendmsg() before the IPv6 lookup.  An explicit native IPv6
+> destination reaches the lookup, but leaves connected false and therefore
+> cannot call ip6_sk_dst_store_flow().  Conversely, a native connected send
+> can publish an IPv6 dst, but ADDRFORM rejects that peer with EADDRNOTAVAIL.
+> The same reasoning covers the non-corking explicit send path.
+> 
+> After taking the lock, revalidate that IPV6_ADDRFORM has not changed the
+> socket family before publishing the cork.  The existing error path releases
+> the invocation's prepared dst, flowlabel, and transmit-option references;
+> there is no socket dst cache entry from this send to reset.  With this
+> change, the serialized controls retain their existing results and the
+> forbidden mixed state occurred zero times across 20,000 sockets.
 
-For the series:
+I understand that with the above you intend address sashiko concerns
+WRT cached dst:
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260829132125.1160893-1-4ncienth%40gmail.com
+
+but I tend to agree with sashiko that the race is still present.
+
+/P
 
