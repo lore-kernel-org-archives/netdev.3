@@ -1,94 +1,141 @@
-Received: from mta1.migadu.com (out-233.mta1.migadu.com [95.215.58.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF824749FA
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8333955C3;
+	Tue,  1 Sep 2026 09:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788253089; cv=none; b=QZkHvx1pRsvzDaU0lP62z8LnWIdOmk4qmIg8T1Uu1EjfJ9a0lkYvUD+wZnkghz44fZOlqtQ0d3XKjnQrisxSvEogoMZrwKkllM62ChrPVrRuTTq1HMXNzB7eaLMqX3zO4GmWvR4i0h5dctYoXJ8gyo4cYCgpn0bB9AOTxlKYqBw=
+	t=1788253463; cv=none; b=P+F1FfgMz/JqiQP6S3aXRfPnzJt5XydVq9Cw/QCmJL9ShcHLjDpRj6mvmcZZ8L09ZW406R/noxXVbxewD1mGCodasvzhyI11rZjUaQaAgAVSioGhzgpTLJm399Kqp+kBIylWJUJbQaxIyDrURR85DHAFMvPIENZ9sNzLKqgF720=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788253089; c=relaxed/simple;
-	bh=ZIso4ptPNJGZpWJKew4ZgsGdgqmT/6zdPCg7vUXSiE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CnuT6QnvT7KKLhDDK/sivos7we29RDEE4unhRwSbelXInScGGKcrp/+awYG7/N7/iAsbfoolquNi0MwqElbALDXO3sl5DCLPcytERlKPvUTRdtr56FCZMKLpl4/sUxxkuW4QgtN7WHI03kXtNyYXQn/cKIYLbgCz8h//GN/uICo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eF56NYny; arc=none smtp.client-ip=95.215.58.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788253463; c=relaxed/simple;
+	bh=LTI8q0Epg6Ut8DoCocYaTVrkvbZWppAJSxZWpWWifWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cb6lR8FMO37ggKwj/kUEynKQqh3v3X27pqcmPmDjJMK4/I6zZAu1dvWLh5RpLgnvwQ6x382lUdHhAEVZ+QGw0MaR9jLMjpeu1jxXBnevylmp2XjUCzkaOHcYNkhBVin7cnghureFdGzcFhKfteEVOa00UUxl5mu9C6bXvov44gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=bdXY9cRu; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eF56NYny"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ZIso4ptPNJGZpWJKew4ZgsGdgqmT/6zdPCg7vUXSiE4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788253083; v=1; x=1788857883;
- b=eF56NYnyHMor6wFUfG+fSaVZRaqdoPjXT2s+LdZawzq86hAV+G2LIJe2C573DDNHEJJ8CX1d
- Afb2ZYF+LroSRIll/knFWk0UDiZxmULVUKlJtKCg9dMQYKEgyusc9Iona+0XLHT3W01/Yf3kv5s
- 7/i7h6wIrJtPiqkvCP0J6ZWA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 682b157fd764c229;
-	Tue, 01 Sep 2026 08:58:03 +0000
-X-Mizu-Trace-ID: 682b157fd764c229
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 1 Sep 2026 16:57:52 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: net: ipmr: Avoid memcpy() from NULL in
- nl_add_rtattr()
-Message-ID: <apaTkG5SLsnbbcAR@fedora>
-References: <20260901071353.3302900-1-nagachaithanya9911@gmail.com>
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="bdXY9cRu"
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1788253448;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5RrptSmK1QMQpguF6j6YC9fFHhdiNT6BCnOECykAPBI=;
+	b=bdXY9cRux1f0eydM3Nho/qef0dC9qkFezjTeFlVfdr1tMHx8v/kScmmEzjvf8svAd+s/mZ
+	nu2SKTmB20PJUeGZM6Yna2bsoPnAXvZdO/fEHG1BmoWX6hjpXrmlIs2ufoWOP5SrY9082c
+	Onx9Obp55ivVZcprhXvcG2JsnQevNfc=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Wolfgang Grandegger <wg@grandegger.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Sebastian Haas <haas@ems-wuensche.com>,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10] can: ems_usb: validate CPC message lengths
+Date: Tue,  1 Sep 2026 12:04:06 +0300
+Message-ID: <20260901090408.10353-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901071353.3302900-1-nagachaithanya9911@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 01, 2026 at 07:13:53AM +0000, Chaithanya Lagisetty wrote:
-> nl_add_rtattr() unconditionally does memcpy(RTA_DATA(rta), data, len).
-> For zero-length attributes the callers pass data == NULL and len == 0,
-> for example the RTA_PREFSRC attribute added for proxy MFC entries:
-> 
-> 	if (mfc_attr->proxy)
-> 		rta = nl_add_rtattr(nlmsg, rta, RTA_PREFSRC, NULL, 0);
-> 
-> Passing a NULL pointer to memcpy() is undefined behaviour even when the
-> length is zero, because its source parameter is marked
-> __attribute__((nonnull)); it is flagged by fortify/-Wnonnull.
-> 
-> Only call memcpy() when len is non-zero.
-> 
-> Fixes: 05068eaa67b2 ("selftest: net: Add basic functionality tests for ipmr.")
-> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-> ---
->  tools/testing/selftests/net/forwarding/ipmr.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/net/forwarding/ipmr.c b/tools/testing/selftests/net/forwarding/ipmr.c
-> index 9cd9f70de132..d3e26341821c 100644
-> --- a/tools/testing/selftests/net/forwarding/ipmr.c
-> +++ b/tools/testing/selftests/net/forwarding/ipmr.c
-> @@ -120,7 +120,8 @@ static struct rtattr *nl_add_rtattr(struct nlmsghdr *nlmsg, struct rtattr *rta,
->  
->  	rta->rta_type = type;
->  	rta->rta_len = RTA_LENGTH(len);
-> -	memcpy(RTA_DATA(rta), data, len);
-> +	if (len)
-> +		memcpy(RTA_DATA(rta), data, len);
->  
->  	nlmsg->nlmsg_len += NLMSG_ALIGN(rta->rta_len);
->  
-> -- 
-> 2.43.0
-> 
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+commit 02925f51377f2a42a6724f00549167499c9302e5 upstream.
+
+ems_usb_read_bulk_callback() walks CPC messages packed in one USB
+receive buffer.
+
+Check that each declared message fits in the URB payload. Also require the
+type-specific payload to cover the fields used by the CAN, state, error and
+overrun handlers.
+
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260706092752.79600-1-pengpeng@iscas.ac.cn
+Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+[Denis Arefev: adapted for 5.10: use get_can_dlc() instead of
+ can_cc_dlc2len(), the latter was introduced in 6.x along with
+ include/linux/can/length.h; get_can_dlc() has identical semantics
+ for classic CAN frames (min(dlc, CAN_MAX_DLEN))]
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+Backport fix for CVE-2026-74460 
+Link: https://nvd.nist.gov/vuln/detail/CVE-2026-74460
+---
+ drivers/net/can/usb/ems_usb.c | 43 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
+index 65aa1100e894..a645962da37a 100644
+--- a/drivers/net/can/usb/ems_usb.c
++++ b/drivers/net/can/usb/ems_usb.c
+@@ -402,6 +402,40 @@ static void ems_usb_rx_err(struct ems_usb *dev, struct ems_cpc_msg *msg)
+ 	netif_rx(skb);
+ }
+ 
++static bool ems_usb_rx_msg_len_valid(struct ems_cpc_msg *msg)
++{
++	size_t len = msg->length;
++	size_t can_len;
++
++	switch (msg->type) {
++	case CPC_MSG_TYPE_CAN_STATE:
++		return len >= sizeof(msg->msg.can_state);
++
++	case CPC_MSG_TYPE_CAN_FRAME:
++	case CPC_MSG_TYPE_EXT_CAN_FRAME:
++	case CPC_MSG_TYPE_RTR_FRAME:
++	case CPC_MSG_TYPE_EXT_RTR_FRAME:
++		if (len < CPC_CAN_MSG_MIN_SIZE)
++			return false;
++
++		if (msg->type == CPC_MSG_TYPE_RTR_FRAME ||
++		    msg->type == CPC_MSG_TYPE_EXT_RTR_FRAME)
++			return true;
++
++		can_len = get_can_dlc(msg->msg.can_msg.length & 0xf);
++		return len >= CPC_CAN_MSG_MIN_SIZE + can_len;
++
++	case CPC_MSG_TYPE_CAN_FRAME_ERROR:
++		return len >= sizeof(msg->msg.error);
++
++	case CPC_MSG_TYPE_OVERRUN:
++		return len >= sizeof(msg->msg.overrun);
++
++	default:
++		return true;
++	}
++}
++
+ /*
+  * callback for bulk IN urb
+  */
+@@ -444,6 +478,15 @@ static void ems_usb_read_bulk_callback(struct urb *urb)
+ 			}
+ 
+ 			msg = (struct ems_cpc_msg *)&ibuf[start];
++			if (msg->length >
++			    urb->actual_length - start - CPC_MSG_HEADER_LEN) {
++				netdev_err(netdev, "format error\n");
++				break;
++			}
++			if (!ems_usb_rx_msg_len_valid(msg)) {
++				netdev_err(netdev, "format error\n");
++				break;
++			}
+ 
+ 			switch (msg->type) {
+ 			case CPC_MSG_TYPE_CAN_STATE:
+-- 
+2.43.0
+
