@@ -1,242 +1,161 @@
-Received: from mail-pz2-f10.google.com (mail-pz2-f10.google.com [74.125.228.10])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B23B421EFB
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 15:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FB543712D
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 15:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788275011; cv=none; b=d6jFV8KprZJpoLaBVttCYtdQV/xb6U2SkQ3q2eyUf5SheQGkibvyeItZXuxas9QiBjtqo845J6lP20nJHAfAYm4mUU46kkF6eA8kLPemYwPEYwopILRcpwMTmKFNKz4G1csF0TraBVciGNe0tqe1lAEiIy2i0ETg8Je/4PhAXuQ=
+	t=1788275038; cv=none; b=nXN4sHiUWBHf0uGP1TtH2yyZuG71jBCnfL0Qt+MYQfjKp/qBqwNk2OIdnjhsyvvj2Yr80jQLUwuFdjb0ucFa/R0QTm/c0rG8tRPmw1lYB4PHjKuKs+tM/5tAuvTtYIyZYeAJxTNR5mBiANWkIG0dbAmOrexAHrglb7JIvMU/j54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788275011; c=relaxed/simple;
-	bh=Pbqc17ixdKV04mbPvez2/xb4avNWEBnmgCndr6ae4z0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5aIarTaRI7tGPVi7vox5Glezpe9jAiXpz1gXCnIiS4Je4E8XskyTuedDV2rZnAl2kDiuohP9rMNFpVWHzsPsxSamE7Hk01Gzibel5/7kaGkQbLgqlFRR4MVVkho66tS2YyiEunwLT6nIcQrPQ/Rr/dWQvqPx91i2+g8Et2JmRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p+RXE0bp; arc=none smtp.client-ip=74.125.228.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788275038; c=relaxed/simple;
+	bh=EV0luyxrE4VBTkjaX8NMlEgGp6/Xt54MDGLWoiypEoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H97vVPGMhzDoBCjTdh7JF8Q8+WanzF15bd6+GQ39EdtQjlUJXfDMMIgCBesAbwjJS++8oORBAIwkLC675ncLGq7i0HdnO1Up+7RC/QRM8IGazP29Vq4sE3dIarz7WV+X+uTx0nLXsqFkod4aDM3y4R+x4EgHDK16jLaTXoUgMTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Wc/NGc2k; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p+RXE0bp"
-Received: by mail-pz2-f10.google.com with SMTP id 41be03b00d2f7-cc1c753b1bbso1221174a12.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 08:03:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Wc/NGc2k"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc1cc1b42b5so5232578a12.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 08:03:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788275009; x=1788879809; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2srrqsfvZcRiNitfhUr7DhaIgxeXboMwTknQApvQL7A=;
-        b=p+RXE0bpL3+o4Lw3WrP7+HU4iGx0qwT/vSMITaGgptxH3XfAdpuWVov0LoVrFj1vD3
-         sSroPXV9z+hO8tJ4gJ2zG113VLfY3Ovc/Wm2A7g0xYd6YrOPq0nhtdcuxPtNBgfvvNLd
-         gT9FViRjd6y8Zj3BCVFbYrOMzXwCS+08wRJbY7Y0J/dXQxBqnxjdimPyCANXva+t7M0J
-         fx7FcBrZiBWw0nC9Z2w/EqTo3KC0INrIUX8C2QHnC6ArY9/2aa67BmRqHnYlBDOU9aAl
-         CbiJFvTkRJTLb03QVDMPNmd7awBTI2vcqZKTHhbujzrUKAoap7xJfFxFKZCr1TNnb81m
-         1o6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788275009; x=1788879809;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788275036; x=1788879836; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2srrqsfvZcRiNitfhUr7DhaIgxeXboMwTknQApvQL7A=;
-        b=TgX7y8P7znwJ0+aQNC4UskEhcqYycpdjDIkGXSBdCGzO6rk+jbFXYYmlDFzYNn1yQ/
-         Q78MJiqVcLx56kJv/Tr7xbIu65L88CYrNCMpqXfNJgnHmEiv9sLObrOkOKoWGsVXBNgH
-         k1h2TCerfk/HwGDB+mBIhjgEbkuvubBrj1rmdJ+VJTmVKpoEqm8uLHHSFrbv78ORF2cI
-         APQV7ARnRh58r4AlA/AhfFBW1PbePM+zRv6S6FwX0gH9sBVJoJoD0geIm3Ri8b8/9Wta
-         7DgPPNogBH9nUo/PXlBfk9pNLfvmEvoAjeCE1Hg3Q/5CRNQ7G5W1mIW00czO3JGh8STr
-         YEkw==
-X-Forwarded-Encrypted: i=1; AHgh+RpseR8hm6Rs7dSvpEhKvj0WJ26qLHN1eD/eqsStgijRfQOKOEWoFOVlnTYQYonuJElEzJNXzw4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kvo/X0vsz9f8fWtVgxMYlvWEuwKs1WQBjZ/eWg7/ig7pJmjEMp
-	3ExgmoWOcCbZeolvHQEfjtnLYCVqvddFss1iruE4ZWeU50aHK1Xe20My
-X-Gm-Gg: AR+sD13aejXHUnOju55hNRmtSC54vekijs0w6QDk2+nLkOH8x7/CaK7dHL6v8QOAORb
-	ZVriBzaZW0XTaX41H6qxOVWnleK2nh7jwL0i63SMmt06UTun9eTLVh3RGcUYg3D3+bE40GzeT43
-	WQxmav5tVV47zFtxDcQFFEhRlUzwZ42wNUueiBXGWYKnfZ3weM65XE9nVMhwQB4ScHDklyLsFX7
-	VWerr8/C3xeZUvE8D1rIi2bRSWMNbTvw0g0iOBUQHgn8J/qJooQAqI2UA+ZnN8Gy1Ug1jURlRuo
-	7+HiV/PlvIt3JAGTOHEQJVEYcawB/v6Lut7V+K/v87djBSAsuInc0cE9f3MHInE3JvGEcvfTYOX
-	0dfvruvJEpXPaSsWVf55DNiIxUco4mWN0FnHsxsrmkgut+cX7Irz3Ti+6KCk6DWjCZW//I0LvL/
-	WI+8hXmxYZTlPrrUVKhPLScwPz6dFRYQsvqUnRlm71EQeT9A5/Nr/Mm9gr0Mo=
-X-Received: by 2002:a05:6a00:a213:b0:848:2ab3:ddeb with SMTP id d2e1a72fcca58-85b5b324108mr11831442b3a.14.1788275008779;
-        Tue, 01 Sep 2026 08:03:28 -0700 (PDT)
-Received: from server.lan ([150.230.217.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85dc0716846sm27914b3a.45.2026.09.01.08.03.19
+        bh=nYjWdRobMhFwnScsH6QAuV5nfOH/dqs6pUr1givzmCo=;
+        b=Wc/NGc2kO0hzZ56egklVW7Bp/A+N/J5dMOx8cO+Fat/8MGLbBhMCxs25SAk+snlk24
+         GrEvL15mi8KVN3ghZCWWW4yN2zro9/mYHvgvXsVUv+gCPUPnlbxmVGZFfnmY9bvJD0XQ
+         VHX+SyydAbVZ+QR2RNX4kF+HeMpFuCWgR9iiPOBibCtYqgbymHit+hu3Q0rZOWprBtDU
+         JXW0c4xh8EI4QVDmwsKfBGGxFOYpQodICoYS5E8QyVDprYHy68f1cZMDLldKDLGLWb4W
+         wNyRL2G8tcbFv48TtwC9mPIm6ahqYgRZWLoxfzNdtdLVsuZQaou/7ovWS8SBus8OwFaJ
+         N07A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788275036; x=1788879836;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=nYjWdRobMhFwnScsH6QAuV5nfOH/dqs6pUr1givzmCo=;
+        b=MwUvQ0Az5uBJnt5/rB/x5dvOeG9R6wVu47Mk/ucI94O50t2KP9+Oz6jZ+2Ey4/9M85
+         sZgY3N+m7Q2UXZRwMfFfsFCFPYD7uErKZOKkpO3RTAu71JVv6pWMEWVRye93eH6MAE+m
+         sYEqGsCvwsNM8GDRQi2xjynxfGGxKUZzCRfESFqTTCtB9K0ezIXOO4K0W2v+Rz5TITP3
+         bWco4fNMJt3kS117E09q8bwiBRhjVVSMqmufoX4jyDdu7HMNAM+DzrrF6l8KVxokwa03
+         MYLBVevZq/ZrdzMiD1RCMxZtCtvPk+kuj+SDwsh5Kz8txD7INFqg2OrJqrkzAfG6XEkl
+         fDhg==
+X-Gm-Message-State: AFuF++ngrq9EOAef3rdbLU52mtXq0t0jd78sB6SV2jiZ/7Slz00q6QI1
+	Z9FdLeKyx8kOG1bfN1gop/XhfKttBfYMsXtlI1IkL6A/PZUY/nX1JMpHH9q3hCQTymDLKyY4hj+
+	UHj6N5ms=
+X-Gm-Gg: AR+sD13H8OnOFY6J3zweb5Kq+2puzd7icw+ZK/hqzIK/S8WytioCPNonqBbFXEQ6/iX
+	0cQMZlbsVZfo2PIzjJbu1/w7/DRbycZMNRuapdu8eLBOTU+iB8oCcH/pCDc24gknxoEJIcSq8n3
+	Cud0/EXyuRt+KtVLRWrA9oQg0qf7guwPmACYxr3efBhZ5Crsqw7JfB8KKoVtEeqR0PR7+fiWp7G
+	ks/i5a5vSE2BTXo+Pj/4sjMdl9ViJtXZ7FVnu1eAJ7FfictwMJfzccWJyNhC9c3ZLNb4DuwmDwg
+	nu7sKBKmQsq7Ewjc6QZtRSKKaV3unmsVzHwchiGYH9xpAS6vo5XldPto7O9/IZ4ozTUmk6Jvput
+	zDYGSV/WoOgNkRQiYOUETBVzEftbai1RuhCRjnpDW/9/shtGK/WyET8/dTycEPHc2j+wNDU8S9U
+	flhhMarBQCB5mdEyAAjfWy55UZHRihpBXWSHr8jnL2J4o=
+X-Received: by 2002:a05:6a21:a0a:b0:3d0:abdb:de03 with SMTP id adf61e73a8af0-3d7ad788edbmr15943018637.2.1788275035650;
+        Tue, 01 Sep 2026 08:03:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4c::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f32f727bsm6432687a12.7.2026.09.01.08.03.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 08:03:28 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+        Tue, 01 Sep 2026 08:03:54 -0700 (PDT)
+Date: Tue, 1 Sep 2026 08:03:54 -0700
+From: Joe Damato <joe@dama.to>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Coia Prant <coiaprant@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH net-next v3 09/10] arm64: dts: rockchip: rk3568-photonicat: enable SGMII LAN port
-Date: Tue,  1 Sep 2026 23:01:09 +0800
-Message-ID: <20260901150111.141037-10-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260901150111.141037-1-coiaprant@gmail.com>
-References: <20260901150111.141037-1-coiaprant@gmail.com>
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>, horms@kernel.org,
+	colin.winegarden@broadcom.com, linux-kernel@vger.kernel.org,
+	raphaelcf@meta.com, stable@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH net v4] bnxt_en: Bound SW TPA IDs to prevent crashes
+Message-ID: <apbpWrfu3VQu+CUz@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>, horms@kernel.org,
+	colin.winegarden@broadcom.com, linux-kernel@vger.kernel.org,
+	raphaelcf@meta.com, stable@vger.kernel.org, llvm@lists.linux.dev
+References: <20260828190900.1767611-1-joe@dama.to>
+ <1c87458d-7d76-4da4-9981-51756cef391b@redhat.com>
+ <apa9qofhuatqGTra@devvm20253.cco0.facebook.com>
+ <b8b6db7b-353d-4d6a-b0b6-3b5e1be22008@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b8b6db7b-353d-4d6a-b0b6-3b5e1be22008@redhat.com>
 
-The Ariaboard Photonicat has a Motorcomm YT8521SC Gigabit Ethernet PHY
-connected to GMAC0 via XPCS SGMII.  Enable the necessary nodes to make
-this port functional.
+On Tue, Sep 01, 2026 at 02:10:04PM +0200, Paolo Abeni wrote:
+> On 9/1/26 1:57 PM, Joe Damato wrote:
+> > On Tue, Sep 01, 2026 at 10:16:54AM +0200, Paolo Abeni wrote:
+> >> On 8/28/26 9:08 PM, Joe Damato wrote:
+> >>>   - Moved bp->max_tpa_roundup_size init out of the early return path and
+> >>>     documented that TPA is unsupported there, as suggested by Michael.
+> >>
+> >> Clashiko quite convincingly elaborates that the above is not enough:
+> >>
+> >> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828190900.1767611-1-joe%40dama.to
+> >>
+> >> Could you please have a look?
+> [...]
+> > 3.) "The new assignment sits after the max_tpa_v2 == 0 early return, so on a P5+
+> > device whose firmware reports max_aggs_supported == 0, does
+> > bp->max_tpa_roundup_size stay 0 while BNXT_FLAG_TPA is set? ..."
+> > 
+> > Michael commented in the v3 that this is a false positive, hence why I changed
+> > the code from what it was in the v3 to this.
+> 
+> This is the comment I referred to.
+>
+> AFAICS the problem is that the driver sets
+> 
+> 	bp->dev->hw_features |= NETIF_F_LRO;
+> 
+> regardless of the supported capabilities, and that seams to disagree
+> with Michael.
 
-Enable combphy2 with rockchip,sgmii-mac-sel = <0> to route the SGMII
-interface to GMAC0.  Enable the xpcs node and its port 0 sub-node,
-referencing combphy2 as the SerDes PHY.
+OK, after re-reading this here's what I see: NETIF_F_LRO gets added with no
+capability check and bnxt_fix_features() won't strip it afterwards. I think
+the fix there is to add a BNXT_SUPPORTS_TPA() test, as a Fixes for
+f0aa6a37a3db ("eth: bnxt: always recalculate features after XDP clearing, fix
+null-deref").
 
-Add the mdio0 node with the YT8521SC PHY at address 3, including its
-reset GPIO and LED configuration.  Also add LED configuration for the
-existing RGMII PHY on mdio1 for consistency.
+I can send a separate patch for that, but it is unrelated to this patch which
+fixes a crash on boot for Thor2 devices.
 
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- .../boot/dts/rockchip/rk3568-photonicat.dts   | 74 ++++++++++++++++++-
- 1 file changed, 72 insertions(+), 2 deletions(-)
+Maybe you want me to spin a v5 that rewords the comment Michael asked me to
+add which is currently technically incorrect, but will be correct after the
+separate bug mentioned above is fixed?
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-index 58c1052ba8ef3..25caa44198843 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-@@ -3,6 +3,7 @@
- /dts-v1/;
- 
- #include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
- #include <dt-bindings/pinctrl/rockchip.h>
- #include <dt-bindings/soc/rockchip,vop2.h>
- #include "rk3568.dtsi"
-@@ -242,6 +243,7 @@ &combphy1 {
- 
- &combphy2 {
- 	status = "okay";
-+	rockchip,sgmii-mac-sel = <0>;
- };
- 
- &cpu0 {
-@@ -260,9 +262,18 @@ &cpu3 {
- 	cpu-supply = <&vdd_cpu>;
- };
- 
--/* Motorcomm YT8521SC LAN port (require SGMII) */
-+/* Motorcomm YT8521SC LAN port */
- &gmac0 {
--	status = "disabled";
-+	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>;
-+	assigned-clock-parents = <&xpcs_gmac0_clk>;
-+	pcs-handle = <&xpcs_mii0>;
-+	managed = "in-band-status";
-+	phy-handle = <&sgmii_phy>;
-+	phy-mode = "sgmii";
-+	phy-supply = <&vcc_3v3>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gmac0_miim>;
-+	status = "okay";
- };
- 
- /* Motorcomm YT8521SC WAN port */
-@@ -341,6 +352,36 @@ &i2s0_8ch {
- 	status = "okay";
- };
- 
-+&mdio0 {
-+	sgmii_phy: ethernet-phy@3 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <0x3>;
-+		max-speed = <1000>;
-+		reset-assert-us = <20000>;
-+		reset-deassert-us = <100000>;
-+		reset-gpios = <&gpio3 RK_PC6 GPIO_ACTIVE_LOW>;
-+
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@1 {
-+				reg = <1>;
-+				color = <LED_COLOR_ID_AMBER>;
-+				function = LED_FUNCTION_LAN;
-+				default-state = "keep";
-+			};
-+
-+			led@2 {
-+				reg = <2>;
-+				color = <LED_COLOR_ID_GREEN>;
-+				function = LED_FUNCTION_LAN;
-+				default-state = "keep";
-+			};
-+		};
-+	};
-+};
-+
- &mdio1 {
- 	rgmii_phy: ethernet-phy@3 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
-@@ -350,6 +391,25 @@ rgmii_phy: ethernet-phy@3 {
- 		reset-gpios = <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
- 		rx-internal-delay-ps = <1500>;
- 		tx-internal-delay-ps = <1500>;
-+
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@1 {
-+				reg = <1>;
-+				color = <LED_COLOR_ID_AMBER>;
-+				function = LED_FUNCTION_WAN;
-+				default-state = "keep";
-+			};
-+
-+			led@2 {
-+				reg = <2>;
-+				color = <LED_COLOR_ID_GREEN>;
-+				function = LED_FUNCTION_WAN;
-+				default-state = "keep";
-+			};
-+		};
- 	};
- };
- 
-@@ -586,3 +646,13 @@ &xin32k {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&clk32k_out1>;
- };
-+
-+&xpcs {
-+	status = "okay";
-+	phys = <&combphy2 PHY_TYPE_SGMII>;
-+	phy-names = "serdes";
-+};
-+
-+&xpcs_mii0 {
-+	status = "okay";
-+};
--- 
-2.47.3
+In other words respin this to make a v5 that changes the comment to:
 
+  /* TPA is not supported at all, so there is nothing to
+   * allocate.
+   */
+
+And then when a fixes for the above commit is proposed, the comment can be
+re-expanded?
+
+Can you let me know what I am missing here?
