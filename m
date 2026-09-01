@@ -1,58 +1,55 @@
 Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DD7429CF3;
-	Tue,  1 Sep 2026 13:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346D347ECC2;
+	Tue,  1 Sep 2026 13:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788268953; cv=pass; b=LGdejCNKDaNfWmt78vB0K8uBfmyG6k5+8F06XKLyeexj85KExPE/DBg37yfqDaV1fgfNwhqsjPFRrsqzkz5qNpP5gMJV5y9UuOo/Ci9Rfy+rapLRYhXX9qyUKteK8Ro4vekkzq8iRsYnPYvDtbw63HWuaTXlyLAH5cxZat+Dyiw=
+	t=1788269148; cv=pass; b=dCnTtgTAyJTlwvq9UKh1GaocF+lykxpum2ZDjn91StbnD5sqkwyTbuE30+q5z+ELoqmYiS2YkBAwqRp3Fx6vOdJUeOnNKwQWSoJlm/l21ggmNFZCJwuYuo+Jb2xlre02hZGgd1YMjzq5oWFzZPc0Ir9qL+/W832L77U1Nv15WY0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788268953; c=relaxed/simple;
-	bh=+uxsxkXjN3Bxpg0NC5tRARwWPNMwOUh37H41hx1uM4A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b9lAgb5/G80Pc7+Dnxrk+BSGvAiULaYYti3hqzNXb7BjuJ3PIMcw0FPTaobe7oRmihFgktq6Covk5OgG14xm1M4HPT+eb8l5K/deR5y14VKggVd4V+6LgI144WrHIx9+j/SLy96bWgmY/UniHfDTrJcjFC8Ua5Ietjv0Nv83zhc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=d4xmIgLY; arc=pass smtp.client-ip=185.185.170.37
+	s=arc-20240116; t=1788269148; c=relaxed/simple;
+	bh=p5UnzM+3CyPXissVjrfNNF7wPx3GF9eMt//3kM8cW+o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LwyML4gu0bDlCBFtXAnDVTfShJFJcWOAd9SpYKO0D71ZACx8wsdAJLr5BHPa8bidtRn5oglFT37K5PiEfzd2N3gVq1qOOcEmuuBOwXVIcDd3Dl8Eib2RkF5oupIpZPyUC7yQXMFlEBxuzyBCqLaHcEZpEoh5aR9LatwN49B4TIw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=rq/UGbeW; arc=pass smtp.client-ip=185.185.170.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="d4xmIgLY"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="rq/UGbeW"
 Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ63N4gDLz49QPH;
-	Tue, 01 Sep 2026 16:22:24 +0300 (EEST)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ61017D5z49Px3;
+	Tue, 01 Sep 2026 16:20:19 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788268944;
+	t=1788268821;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HlPgQr/GMs2WGlgIquCEJmPpzMZAme2mzXsO0aoLbe8=;
-	b=d4xmIgLYsZVEAasGsN+hlxLJBwyXjvmTf/UBRKPtEt1L+8ZKatA/aYV5ikd6zJ40V65MvW
-	DXgkpmQfRE1B/jd/IYdoar1M3YzLJorVvcgqNVBRD+QRlu7nTeD5NVgyXT8tNYkc3XXRSk
-	lKRRVfK1/i9ah6MkfJZ9U5mR1tYD7NQnmAz5ZrKsshXUE7Bx+eELqxdCVOcso6pbonivTI
-	BlzPEtMNZFuV97dahY2b3LxeyZO7qLqy0hmKLDut6SlgtKYHS6XttmuD30FJR5BKUUocnt
-	2LvoIqU2JwOCdAhPK9yXVi6PGMR2frG5b5nHBQn4g+xDM2DoWKs9ylcENEUhWg==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268944;
-	b=hgAMc9tA73oZKHrfFRbuBb/8gscmCCWFWo3KGknAE2ENI9w7Rd/O1EmmB2ccLsRBvMROqz
-	yGE8wnIZSogP3z+giLa5Dfj3oAiahlRRoVIZ8i4qDSHgz/A+3AbwhSDqX4ghzMgntb2905
-	Xmb2c0eCGK1SJkmQm96X7Z7LW/CRy/L0OQwVy7b54KuYDjQeOiKWLi1sxeBNLf2N3jUF5B
-	Xth0vi0pD/Qd0Vm+WRV7AtsMZlNug+IBgf6Hae6Ia6ossYeKNTjv3iqAZdjsw7PKENIS/H
-	2KczkB6ZncwOOQc4Dc0whS/ZemhIPyY0zlpLrtqhyu4zjVW7NBZquZwJ1IqFxA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U/5+tF95qlb0i4WOja94VWT0wSoYK/3EZmn5Pucqagk=;
+	b=rq/UGbeW9wsW/o36VwEpcGwXMT0GwuOfHoLO4ohZwLZuttMo6f+lWFe5QpVYzrAqgLf/1H
+	eLaVF92GBxqQDuqRzhY8WCXaFNBz/SaJifHySzXtF0FQZ//sL+JRp5tVvjK5R/xxKPsXTJ
+	I5siDVVyfSHu573LxyD7vIWP/P1RM3LEsaSi5o/DVj7JINsg779cw7NHNhaTEyPsA5Qyeg
+	aaImveoAYByRJfIzgMS2M1AxKSiBJpiYIMckdyToVGCgJ6aDuXxVOzouHuU6CBWPX3ZsYE
+	FbzsBkud1xVDljhteYbjVcUeJ72dUCUSxuAHQ2XuGkQA1fZcGT9antVTDuQ8EQ==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268821;
+	b=mIlYlMM/2c8UJLlYkmbZLUyFZdqxIbT8D1Vk+aDS7B3y37d3z5mHHjbFfwzV6g4qLx9fLW
+	qPrGk2aIyDa9p4+ZwLljx25OUUeSEDzghnl8kG2vcMca/U//n8t62rqNdsI9ArdSNh5PkZ
+	sKicN7H2fhaoG7FWIaKrlKg4SyjcMF+EEHzD0AX/mvWxWz4ekVXAIz6NRWcktiGxuGSMZ2
+	STBw07hyw6aSyD4T1i/lUeWPizPNpB3EvoTqNd5hyoe9p5tRTcFXsZasxZYPy3XD0D5dXi
+	5jVOqXGJ+3Z/RsJQZa9NbNo/NwPFIiEEd9VoBbCNfbIwV3L6M74WlhTkfrpg6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788268944;
+	s=lahtoruutu; t=1788268821;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HlPgQr/GMs2WGlgIquCEJmPpzMZAme2mzXsO0aoLbe8=;
-	b=YVu/z//M0WaOqBEevb0odnG/IR0cY8rOwE4qRJHIgIIYJFpqUDbxptHGHfG/qhMeyDFsS7
-	QgZmhCarb3Dh6UMWOzd+UXpRGTHVVWClgZjzOQ36BdLmy5vFT+/7bii1TAvQp2/LFqg0B6
-	t/Zrb/jGmj05WYp4KHyUDqQQRcdr/2jRuVfmsOdhP+/rmPxeFSJL9shMrKYy9QU2xTywTR
-	8JtZ4wD+41r/bYw2xmOx02+/eKKvBFtOupWadsrCuQv2w49GmZwqNq63uNMZKsG2+vhHtn
-	qHglb2GkMEmXQQWKIIGNM9nbhmqSUkLWnBSZ1ioYR6oin/C522lUm4D46XD+TA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U/5+tF95qlb0i4WOja94VWT0wSoYK/3EZmn5Pucqagk=;
+	b=bEuNfE77WCoKkhklO35kRn2s5oMyxpX6ok0GjyNf8GymPusJ3VCjySgjBL1LDzCzUH7SSF
+	3l7zSXKgzmmgxHfNfqP0eM0JfcfhykHgUvUgTxA0UIxerSUBgzfwle26RlPQcZl37nWakn
+	7t0KbjmnmxmHhADZGEkJHHEh7OJeSy5uFV4QbbZbhyuJKo5pjI0A5Urw/HYpiEp/vFapKj
+	zdka2vEZt+Ml4xUhw8oO+MBcrpGayu7fV5HhIHagSuB5A6V+ZUfXAyz7l9k7BBq4YgRFq0
+	McEWF2nWUpSlGHu/AfvA4khOI1Xdy4LdrI6SFf7iMU3wyE2KEDe1rApW+Ji1Ww==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
@@ -73,12 +70,10 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v6 15/15] net: qrtr: solve the 32-bit unsafe use in endpoints
-Date: Tue,  1 Sep 2026 16:19:34 +0300
-Message-Id: <20260901131934.225991-16-juha-matti.tilli@iki.fi>
+Subject: [PATCH v6 00/15] QRTR Multi-endpoint support
+Date: Tue,  1 Sep 2026 16:19:19 +0300
+Message-Id: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
-References: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,288 +82,179 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In 32-bit architectures, a single radix tree can have at most 32 bit
-keys. We're cramming 64 bits in there. To solve this, use a radix tree
-of radix trees. First, the endpoint is looked up. Secondly, the node is
-looked up based on the endpoint.
+Hello,
 
-Theoretically, there could be the option of skipping the "tree of trees"
-approach if long is 64 bits. However, this has the drawback that the
-code would be entirely different on 32-bit and 64-bit architectures, and
-could create subtle bugs where someone commits and tests modifications
-on a 64-bit architecture, and suddenly those who use a 32-bit
-architecture would see them break.
+First, I would like to thank Denis Kenzior and Mihai Moldovan for
+initially creating this patchset. Without their efforts, there wouldn't
+be any progress towards supporting multiple identical ath11k or ath12k
+modules on a single Linux host.
 
-This has been tested on a 32-bit ARM machine with two identical ath11k
-modules, using patches by Mihai Moldovan to allow multiple modules to
-work in parallel.
+As you may know, if you put two identical Qualcomm Atheros ath11k or
+ath12k WLAN modules on the same Linux host, they will conflict and
+neither works. This is a massive issue in routers, and to solve it, we
+need QRTR multi-endpoint support.
 
-Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-Tested-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
----
- net/qrtr/af_qrtr.c | 118 ++++++++++++++++++++++++++++++---------------
- net/qrtr/qrtr.h    |  10 ++++
- 2 files changed, 89 insertions(+), 39 deletions(-)
+I contacted Mihai Moldovan who posted v5 and he said he's been busy and
+can't provide an estimate of when he'll post v6. So I picked up his
+work, ported it over ath-next and solved the issue of cramming two
+32-bit numbers into an unsigned long that can be 32 bits on a 32-bit
+architecture. Mihai said he doesn't have any corporate backing and
+doesn't care who implements multi-ath11k/ath12k support as long as it
+"just works". Since it's been over a year from the previous activity and
+since Mihai has been and is busy and said he doesn't care who eventually
+implements this, I decided to "steal" the responsibility of posting a v6
+to myself since I fortunately have corporate backing. If Mihai so
+decides, I'm willing to hand over this patchset back to him.
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 960e6e816be41..7c50d32b11015 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -22,11 +22,7 @@
- #define QRTR_MAX_EPH_SOCKET 0x7fff
- #define QRTR_EPH_PORT_RANGE \
- 		XA_LIMIT(QRTR_MIN_EPH_SOCKET, QRTR_MAX_EPH_SOCKET)
--#if BITS_PER_LONG >= 64
- #define QRTR_ENDPOINT_RANGE XA_LIMIT(qrtr_local_nid + 1, INT_MAX)
--#else
--#define QRTR_ENDPOINT_RANGE XA_LIMIT(qrtr_local_nid + 1, UINT16_MAX)
--#endif
- 
- #define QRTR_PORT_CTRL_LEGACY 0xffff
- 
-@@ -186,6 +182,9 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
- #define QRTR_INDEX_HALF_SIGNED_MAX ((long)(QRTR_INDEX_HALF_UNSIGNED_MAX) >> 1)
- #define QRTR_INDEX_HALF_SIGNED_MIN ((long)(-1) - QRTR_INDEX_HALF_SIGNED_MAX)
- 
-+/* endpoint not defined, i.e. endpoint 0 */
-+static struct qrtr_node_lookup_helper helper0;
-+
- /**
-  * struct qrtr_node - endpoint node
-  * @ep_lock: lock for endpoint management and callbacks
-@@ -245,9 +244,11 @@ static void __qrtr_node_release(struct kref *kref)
- {
- 	struct qrtr_node *node = container_of(kref, struct qrtr_node, ref);
- 	struct radix_tree_iter iter;
-+	struct radix_tree_iter iter2;
- 	struct qrtr_tx_flow *flow;
- 	unsigned long flags;
- 	void __rcu **slot;
-+	void __rcu **slot2;
- 	unsigned long index;
- 
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
-@@ -255,8 +256,18 @@ static void __qrtr_node_release(struct kref *kref)
- 	 * multiple entries pointing to our released node, delete them all.
- 	 */
- 	radix_tree_for_each_slot(slot, &qrtr_nodes, &iter, 0) {
--		if (*slot == node)
-+		struct qrtr_node_lookup_helper *helper = *slot;
-+
-+		if (!helper)
-+			continue;
-+		radix_tree_for_each_slot(slot2, &helper->nodes, &iter2, 0) {
-+			if (*slot2 == node)
-+				radix_tree_iter_delete(&helper->nodes, &iter2, slot2);
-+		}
-+		if (helper != &helper0 && radix_tree_empty(&helper->nodes)) {
- 			radix_tree_iter_delete(&qrtr_nodes, &iter, slot);
-+			helper->added = 0;
-+		}
- 	}
- 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
- 
-@@ -494,22 +505,14 @@ static struct qrtr_node *qrtr_node_lookup(unsigned int endpoint_id,
- 					  unsigned int nid)
- {
- 	struct qrtr_node *node = NULL;
-+	struct qrtr_node_lookup_helper *helper = NULL;
- 	unsigned long flags;
--	unsigned long key = 0;
--
--	/* nid is chosen by device firmware and is generally a single
--	 * and small number. If firmware chooses otherwise, use it
--	 * modulo 65536 in 32-bit systems.
--	 */
--	if (endpoint_id > QRTR_INDEX_HALF_UNSIGNED_MAX)
--		return node;
--
--	key = ((unsigned long)(endpoint_id) << QRTR_INDEX_HALF_BITS) |
--	      ((unsigned long)(nid) & QRTR_INDEX_HALF_UNSIGNED_MAX);
- 
- 	mutex_lock(&qrtr_node_lock);
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
--	node = radix_tree_lookup(&qrtr_nodes, key);
-+	helper = radix_tree_lookup(&qrtr_nodes, endpoint_id);
-+	if (helper)
-+		node = radix_tree_lookup(&helper->nodes, nid);
- 	node = qrtr_node_acquire(node);
- 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
- 	mutex_unlock(&qrtr_node_lock);
-@@ -527,33 +530,45 @@ static struct qrtr_node *qrtr_node_lookup(unsigned int endpoint_id,
- static int qrtr_node_assign(struct qrtr_node *node, unsigned int nid)
- {
- 	unsigned long flags;
--	unsigned long key;
-+	int rc = 0;
-+	int did_insert0 = 0;
- 
- 	if (nid == QRTR_EP_NID_AUTO)
- 		return 0;
- 
--	/* nid is chosen by device firmware and is generally a single
--	 * and small number. If firmware chooses otherwise, use it
--	 * modulo 65536 in 32-bit systems.
--	 */
--	if (node->ep->id > QRTR_INDEX_HALF_UNSIGNED_MAX)
--		return -EINVAL;
--
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
- 
--	/* Always insert with the endpoint_id + node_id */
--	key = ((unsigned long)(node->ep->id) << QRTR_INDEX_HALF_BITS) |
--	      ((unsigned long)(nid) & QRTR_INDEX_HALF_UNSIGNED_MAX);
--	radix_tree_insert(&qrtr_nodes, key, node);
--
--	if (!radix_tree_lookup(&qrtr_nodes, nid))
--		radix_tree_insert(&qrtr_nodes, nid, node);
-+	if (!radix_tree_lookup(&helper0.nodes, nid)) {
-+		rc = radix_tree_insert(&helper0.nodes, nid, node);
-+		if (rc)
-+			goto err_lock;
-+		did_insert0 = 1;
-+	}
-+	if (!node->ep->helper.added) {
-+		INIT_RADIX_TREE(&node->ep->helper.nodes, GFP_ATOMIC);
-+		rc = radix_tree_insert(&qrtr_nodes, node->ep->id,
-+				       &node->ep->helper);
-+		if (rc)
-+			goto err_insert0;
-+		node->ep->helper.added = 1;
-+	}
-+	rc = radix_tree_insert(&node->ep->helper.nodes, nid, node);
-+	if (rc && rc != -EEXIST)
-+		goto err_insert0; // Don't revert helper insertion
- 
- 	if (node->nid == QRTR_EP_NID_AUTO)
- 		node->nid = nid;
- 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
- 
- 	return 0;
-+
-+err_insert0:
-+	if (did_insert0)
-+		radix_tree_delete(&helper0.nodes, nid);
-+
-+err_lock:
-+	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
-+	return rc;
- }
- 
- /**
-@@ -773,6 +788,7 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
- 	mutex_unlock(&qrtr_node_lock);
- 	ep->node = node;
- 	ep->id = endpoint_id;
-+	ep->helper.added = 0;
- 
- 	return 0;
- free_node:
-@@ -791,12 +807,14 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
- 	struct sockaddr_qrtr src = {AF_QIPCRTR, node->nid, QRTR_PORT_CTRL};
- 	struct sockaddr_qrtr dst = {AF_QIPCRTR, qrtr_local_nid, QRTR_PORT_CTRL};
- 	struct radix_tree_iter iter;
-+	struct radix_tree_iter iter2;
- 	struct qrtr_ctrl_pkt *pkt;
- 	struct qrtr_tx_flow *flow;
- 	struct sk_buff *skb;
- 	unsigned long flags;
- 	unsigned long index;
- 	void __rcu **slot;
-+	void __rcu **slot2;
- 	u32 endpoint_id;
- 
- 	mutex_lock(&node->ep_lock);
-@@ -807,16 +825,28 @@ void qrtr_endpoint_unregister(struct qrtr_endpoint *ep)
- 	/* Notify the local controller about the event */
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
- 	radix_tree_for_each_slot(slot, &qrtr_nodes, &iter, 0) {
--		if (*slot != node)
-+		struct qrtr_node_lookup_helper *helper = *slot;
-+
-+		if (!helper)
- 			continue;
--		src.sq_node = iter.index;
--		skb = qrtr_alloc_ctrl_packet(&pkt, GFP_ATOMIC);
--		if (skb) {
--			pkt->cmd = cpu_to_le32(QRTR_TYPE_BYE);
--			qrtr_local_enqueue(NULL, skb, endpoint_id,
--					   QRTR_TYPE_BYE, &src, &dst);
-+		radix_tree_for_each_slot(slot2, &helper->nodes, &iter2, 0) {
-+			if (*slot2 != node)
-+				continue;
-+			src.sq_node = iter.index;
-+			skb = qrtr_alloc_ctrl_packet(&pkt, GFP_ATOMIC);
-+			if (skb) {
-+				pkt->cmd = cpu_to_le32(QRTR_TYPE_BYE);
-+				qrtr_local_enqueue(NULL, skb, endpoint_id,
-+						   QRTR_TYPE_BYE, &src, &dst);
-+			}
- 		}
- 	}
-+	if (ep->helper.added) {
-+		radix_tree_for_each_slot(slot, &ep->helper.nodes, &iter, 0)
-+			radix_tree_iter_delete(&ep->helper.nodes, &iter, slot);
-+		radix_tree_delete(&qrtr_nodes, ep->id);
-+		ep->helper.added = 0;
-+	}
- 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
- 
- 	/* Wake up any transmitters waiting for resume-tx from the node */
-@@ -1593,8 +1623,17 @@ static int __init qrtr_proto_init(void)
- 	if (rc)
- 		goto err_sock;
- 
-+	rc = radix_tree_insert(&qrtr_nodes, 0, &helper0);
-+	if (rc)
-+		goto err_ns;
-+
-+	INIT_RADIX_TREE(&helper0.nodes, GFP_ATOMIC);
-+	helper0.added = 1;
-+
- 	return 0;
- 
-+err_ns:
-+	qrtr_ns_remove();
- err_sock:
- 	sock_unregister(qrtr_family.family);
- err_proto:
-@@ -1605,6 +1644,7 @@ postcore_initcall(qrtr_proto_init);
- 
- static void __exit qrtr_proto_fini(void)
- {
-+	radix_tree_delete(&qrtr_nodes, 0);
- 	qrtr_ns_remove();
- 	sock_unregister(qrtr_family.family);
- 	proto_unregister(&qrtr_proto);
-diff --git a/net/qrtr/qrtr.h b/net/qrtr/qrtr.h
-index b4f50336ae75a..affc24f426c64 100644
---- a/net/qrtr/qrtr.h
-+++ b/net/qrtr/qrtr.h
-@@ -9,6 +9,15 @@ struct sk_buff;
- /* endpoint node id auto assignment */
- #define QRTR_EP_NID_AUTO (-1)
- 
-+/**
-+ * struct qrtr_node_lookup_helper - node lookup helper, stored in qrtr_nodes
-+ * @nodes: nodes, indexed by node_id
-+ */
-+struct qrtr_node_lookup_helper {
-+	int added;
-+	struct radix_tree_root nodes;
-+};
-+
- /**
-  * struct qrtr_endpoint - endpoint handle
-  * @xmit: Callback for outgoing packets
-@@ -21,6 +30,7 @@ struct qrtr_endpoint {
- 	int (*xmit)(struct qrtr_endpoint *ep, struct sk_buff *skb);
- 	/* private: not for endpoint use */
- 	struct qrtr_node *node;
-+	struct qrtr_node_lookup_helper helper;
- 	u32 id;
- };
- 
+Some of the patches may need dropping/squashing. For example, "fit node
+ID + port number combination into unsigned long" fixes one bug on 32-bit
+architectures but introduces another. This needs careful review. I tried
+to adjust the behavior to my tastes in "use only low 16 bits of
+node/port in 32-bit systems", and this needs careful review, too. Both
+of these are candidates for dropping from this patch series.
+
+Furthermore, "validate msglen before ctrl_pkt use", although it seems to
+fix a real bug, seems to be orthogonal to this patchset, and could be a
+candidate for posting separately.
+
+Also, "limit endpoint range to 16 bits on 32-bit machines", "use nid
+modulo 65536 in 32-bit lookups" and "solve the 32-bit unsafe use in
+endpoints" are candidates for squashing together. I didn't squash them
+yet, since I want to keep my options open at this point, to be able to
+easily adapt to any possible code review comments such as squashing or
+dropping commits.
+
+Someone could complain that using a "radix tree of radix trees" approach
+on 64-bit machines is overkill since a single 64-bit key is enough.
+However, this doesn't work on 32-bit machines, and having entirely
+different code on 32-bit and 64-bit machines would be a testing
+nightmare.
+
+I have tested qrtr with all of these changes, and with Mihai Moldovan's
+patches to actually have two identical ath11k or ath12k modules on the
+same system. Our limited CPU has issues with ath12k, so I have instead
+tested it with two identical ath11k modules. However, Mihai Moldovan
+created the ath11k/ath12k patchset in a somewhat non-optimal way,
+leaking memory in some use cases, with an O(n) algorithm for looking up
+the endpoint id where n is the amount of leaked memory. So I guess I'll
+have to rework that entire patchset which should be doable. That's
+future work, as none of the leaky O(n) stuff is in this patchset.
+
+But first, before merging the multi-ath11k/ath12k patches, this first
+patch set of QRTR multi-endpoint support needs to be merged.
+
+Original description:
+
+The current implementation of QRTR assumes that each entity on the QRTR
+IPC bus is uniquely identifiable by its node/port combination, with
+node/port combinations being used to route messages between entities.
+
+However, this assumption of uniqueness is problematic in scenarios
+where multiple devices with the same node/port combinations are
+connected to the system.  A practical example is a typical consumer PC
+with multiple PCIe-based devices, such as WiFi cards or 5G modems, where
+each device could potentially have the same node identifier set.  In
+such cases, the current QRTR protocol implementation does not provide a
+mechanism to differentiate between these devices, making it impossible
+to support communication with multiple identical devices.
+
+This patch series addresses this limitation by introducing support for
+a concept of an 'endpoint.' Multiple devices with conflicting node/port
+combinations can be supported by assigning a unique endpoint identifier
+to each one.  Such endpoint identifiers can then be used to distinguish
+between devices while sending and receiving messages over QRTR sockets.
+
+The patch series maintains backward compatibility with existing clients:
+the endpoint concept is added using auxiliary data that can be added to
+recvmsg and sendmsg system calls.  The QRTR socket interface is extended
+as follows:
+
+- Adds QRTR_ENDPOINT auxiliary data element that reports which endpoint
+  generated a particular message.  This auxiliary data is only reported
+  if the socket was explicitly opted in using setsockopt, enabling the
+  QRTR_REPORT_ENDPOINT socket option.  SOL_QRTR socket level was added
+  to facilitate this.  This requires QRTR clients to be updated to use
+  recvmsg instead of the more typical recvfrom() or recv() use.
+
+- Similarly, QRTR_ENDPOINT auxiliary data element can be included in
+  sendmsg() requests.  This will allow clients to route QRTR messages
+  to the desired endpoint, even in cases of node/port conflict between
+  multiple endpoints.
+
+- Finally, QRTR_BIND_ENDPOINT socket option is introduced.  This allows
+  clients to bind to a particular endpoint (such as a 5G PCIe modem) if
+  they're only interested in receiving or sending messages to this
+  device.
+
+NOTE: There is 32-bit unsafe use of radix_tree_insert in this patch set.
+This follows the existing usage inside net/qrtr/af_qrtr.c in
+qrtr_tx_wait(), qrtr_tx_resume() and qrtr_tx_flow_failed().  This was
+done deliberately in order to keep the changes as minimal as possible
+until it is known whether the approach outlined is generally acceptable.
+
+v6:
+  - rebased against current ath-next
+  - finally solve the 32-bit unsafe use by "radix tree of radix trees"
+  - remove checks of node/port being in 16-bit range (they may not be)
+  - Link to v5: https://msgid.link/cover.1754962436.git.ionic@ionic.de
+
+v5:
+  - fix typos in commit message
+  - Link to v4: https://msgid.link/cover.1753720934.git.ionic@ionic.de
+
+v4:
+  - fixed issues found in previous review round:
+    o lock without unlock
+    o wrong return value
+  - Link to v3: https://msgid.link/cover.1753312999.git.ionic@ionic.de
+
+v3:
+  - rebased against current master
+  - fix checkpatch.pl warnings
+  - fix overflow issues with unsigned long radix tree keys by using the
+    upper half of the storage space for one element and the lower half
+    of storage for the other element, making sure that the elements fit
+    into their respective storage space
+  - Link to v2: https://msgid.link/cover.1752947108.git.ionic@ionic.de
+
+v2:
+  - rebased against current master
+  - fixed most issues found in first review round (see individual
+    commits), minus the 32-bit long unsafe use
+
+v1 link: https://msgid.link/20241018181842.1368394-1-denkenz@gmail.com
+
+BR, Juha-Matti
+
+Denis Kenzior (10):
+  net: qrtr: ns: validate msglen before ctrl_pkt use
+  net: qrtr: allocate and track endpoint ids
+  net: qrtr: support identical node ids
+  net: qrtr: Report sender endpoint in aux data
+  net: qrtr: Report endpoint for locally generated messages
+  net: qrtr: Allow sendmsg to target an endpoint
+  net: qrtr: allow socket endpoint binding
+  net: qrtr: Drop remote {NEW|DEL}_LOOKUP messages
+  net: qrtr: ns: support multiple endpoints
+  net: qrtr: mhi: Report endpoint id in sysfs
+
+Juha-Matti Tilli (4):
+  net: qrtr: use only low 16 bits of node/port in 32-bit systems
+  net: qrtr: limit endpoint range to 16 bits on 32-bit machines
+  net: qrtr: use nid modulo 65536 in 32-bit lookups
+  net: qrtr: solve the 32-bit unsafe use in endpoints
+
+Mihai Moldovan (1):
+  net: qrtr: fit node ID + port number combination into unsigned long
+
+ include/linux/socket.h    |   1 +
+ include/uapi/linux/qrtr.h |   7 +
+ net/qrtr/af_qrtr.c        | 461 ++++++++++++++++++++++++++++++++------
+ net/qrtr/mhi.c            |  14 ++
+ net/qrtr/ns.c             | 316 ++++++++++++++++----------
+ net/qrtr/qrtr.h           |  14 ++
+ 6 files changed, 627 insertions(+), 186 deletions(-)
+
 -- 
 2.34.1
 
