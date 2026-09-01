@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7614C17C203;
-	Tue,  1 Sep 2026 00:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2001D220687;
+	Tue,  1 Sep 2026 00:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788221114; cv=none; b=EGqhjEk1hZyvZ15W5eUbnMi6FJsyWlSftC32u0R0XDvRMb0aikyHqw5PKEfH0wzwaymqG3StNuz5OsN6bXIF5FaDX3UnHNBKWcA+jr9Vu4Sk+hjywfqzkO44VzCWZdbvsalLD820G8cXwLKJvnB3/IR4DuBkdTWWuRaeIP1aQcA=
+	t=1788221343; cv=none; b=cRd9xG9ev55gM80bmunSDypqFmZYWl3pfxteniw4iZE0Ms8eqfZ5Vc16fsHbccDkV4sl2buYGeMiHoigdds56X+B2+Q3Q8UZ8F4UoZ3SRZ71J7Li8bNAa/piICj8/eEq3b4JcauTVtGtbzCJWF4Fv/Us1FICDS5wxKdVWtp1zvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788221114; c=relaxed/simple;
-	bh=hO77X3TyTYs/OnkTOB73UN2FUv0AHhg7sZiNSWI7sZo=;
+	s=arc-20240116; t=1788221343; c=relaxed/simple;
+	bh=AdhwX4+AlUR+yOn+TZD8JoDBz3Hdlh5o1W72Ag9ocjU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZckAwRqKlnyPMocZM/2F5KIJMCMQwvNwDQf7oNDKdxoRJmqYk0wtllFJZluh49VD9TCCEW7LBncr3U93X1zyIKdgYZ7p/o2Dj5lBx/M1Ato39RX86fQ4jx8XyH2h4EEOyMfo+01AoQ/fAEMaPbG4PwpoX15y50XiQhpY2lI0VAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrhEWBGx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=nMpnC+IR/WHLeDStLaqkdBMF57KhFCrRBg7Y9JFHlWKJQUbZIcg90Wx046EnfmyjX1Wqyq2iBXGH6Bcb5KsFgBajT0FvOsGdA58F60UG+4ecn7H89GIGt3m5McfW/FeQjHYk+GEJionkDMbZU9bjxI+whj4Uk36Nhc0/bwACnS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TX3AkNbq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FrhEWBGx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0661F000E9;
-	Tue,  1 Sep 2026 00:05:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TX3AkNbq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4AA1F000E9;
+	Tue,  1 Sep 2026 00:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788221113;
-	bh=FUpcsGsbA02Y7d3jqN5GtM9Hh4BPN5PWXSI2d8YVpjE=;
+	s=k20260515; t=1788221341;
+	bh=MOCnMiWwuAqeY7230RPEeGlPmrcMUY6HdWpI0w4hMDA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FrhEWBGxqcGwspjWh1k3Igcoxs3GHdUaopeeioX+qhAlV8Wj9m4sIxvBkKCdSPnfo
-	 Y+z3m5R6H0FPYQcYfAZHIG/3PUqiwtxCrbO70T9lEhcOBvrFYIxmNP7hWlsnW1Uol3
-	 hW21yWpK6FJJ+ccH/Pet+YYIDYITsfz2ZskvfF6+ttjJ+ziOCzwTIq6wz8r3l0icnQ
-	 AFZNdbd/kV9/ftepmoNLeJjQSZ37VsvgLPjextGJEjx6CIhdMdc7qyXz37In0+gm+S
-	 tWgMzhiHthZCzqnKnnHrqS+9bLQYkjD3h8AHSgMVZOpl8uKmAq6nFD+rHE39iERpM6
-	 ptnQSBvTU32cg==
-Date: Mon, 31 Aug 2026 17:05:12 -0700
+	b=TX3AkNbqanYf/UIUjrymI1W/9kEbYODsuEKCcVac0QFQGRRXvMVN2a6k4ib+zl02L
+	 4dp09cP7ahoQGjNCsqXtcXaFrithQUTh04xQeBPXot8wQCv9TS8AwMYLKarPmDo4wf
+	 JQpgQ3Qy5IbFW8obwGz+bkp8TYO8cE7Mlakf4hRnFAy62uK+fa+Zje7SPRSWjqiDGy
+	 ikBThDDtZowX62erg0MYRdiH0H7OXM3w4c78GKFzWXvBeB/0sFmAq4TaEK3ZhfTL9e
+	 moJ7m4a/a9eh0cWXOfpftQRl6gOiefrDNjJt0fpGwooDyr+QDzn0IJ9l06O+6lpFsg
+	 laXtW67OdYyeg==
+Date: Mon, 31 Aug 2026 17:08:58 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>, Esben
- Haabendal <esben@geanix.com>, linux-arm-kernel@lists.infradead.org
- (moderated list:ARM/ZYNQ ARCHITECTURE), linux-kernel@vger.kernel.org (open
+Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>, Imre Kaloz
+ <kaloz@openwrt.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org (moderated
+ list:ARM/INTEL IXP4XX ARM ARCHITECTURE), linux-kernel@vger.kernel.org (open
  list)
-Subject: Re: [PATCH net] net: ll_temac: Return actual error from
+Subject: Re: [PATCH net] net: ixp4xx_eth: handle probe deferral from
  of_get_mac_address()
-Message-ID: <20260831170512.416ab382@kernel.org>
-In-Reply-To: <20260827012439.162651-1-rosenp@gmail.com>
-References: <20260827012439.162651-1-rosenp@gmail.com>
+Message-ID: <20260831170858.7e23643e@kernel.org>
+In-Reply-To: <20260827013634.167932-1-rosenp@gmail.com>
+References: <20260827013634.167932-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,14 +49,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 26 Aug 2026 18:24:39 -0700 Rosen Penev wrote:
->  		rc = of_get_mac_address(temac_np, addr);
->  		if (rc) {
->  			dev_err(&pdev->dev, "could not find MAC address\n");
+On Wed, 26 Aug 2026 18:36:34 -0700 Rosen Penev wrote:
+> ixp4xx_of_get_platdata() returns NULL on failure, which the probe converts
+> to -ENODEV, discarding the real cause of the failure. Return ERR_PTR()
+> with the appropriate error so callers can distinguish cases such as
+> missing DT properties (-EINVAL) and, importantly, handle -EPROBE_DEFER
+> from of_get_mac_address().
 
-dev_err_probe() if you're trying to handle rc == -EPROBE_DEFER
+Doesn't seem like this should be treated as a fix, AI says:
 
-> -			return -ENODEV;
-> +			return rc;
--- 
-pw-bot: cr
+Can a device tree that actually reaches this new code path pass
+dtbs_check? -EPROBE_DEFER out of of_get_mac_address() only comes from
+the nvmem lookup:
+
+net/core/of_net.c:of_get_mac_address() {
+	...
+	return of_get_mac_address_nvmem(np, addr);
+}
+
+which needs nvmem-cells and nvmem-cell-names = "mac-address" in the node.
+Documentation/devicetree/bindings/net/intel,ixp4xx-ethernet.yaml ends with
+additionalProperties: false and pulls in ethernet-controller.yaml only via
+allOf/$ref, re-listing just phy-mode, phy-handle and fixed-link. It never
+lists nvmem-cells, nvmem-cell-names, mac-address or local-mac-address.
+
+Should the binding gain those properties (or switch to
+unevaluatedProperties: false) so the configuration this patch handles
+can be described?
+
+
+And if this goes to net-next there's a bunch of pre-existing
+bugs in the area which will conflict, so frankly let's just leave 
+this be.
