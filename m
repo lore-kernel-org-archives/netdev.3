@@ -1,133 +1,146 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55455489885
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 17:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1DE488211
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 17:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788283469; cv=none; b=VEk/Oa9OnEC8/qV4Leg303Kseh61GCuqNPNorvDmsig/Gaop9CvZN0IipM4Z8xYJFShNuMh+iOmjeskidplM8nZN1KCBF+XdbkeyM3hTokajIr9z+zAsNxQMj4eOAVitwZNKb0Wx/fdbsuUyRNebOpbtZFW9shb4esQ4lFUGy3o=
+	t=1788283577; cv=none; b=Iz/DeXnPcq67oEyx59ywFS28PkQ75Sj6kybuPY4PGPnKuumjh3uO3C6IUSdvrlwtQb3txaZBUD7LZa8bZmY/bw1EIqKhsxmVACSIXCsgxwUxkwzx0hNLlHMkdLLL2btsjrGsZdnxkq+2vEJKu+VEZJlrKVuIvgMSELgmCVgzkao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788283469; c=relaxed/simple;
-	bh=V++8RJKAhD9jmXsN2ra2GRlz6ByXsfCKxRtHy1+D76g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xrv5kIlSRNE0i/dfYM3vNRM6LtnUr1BHtNUfKELrNgA6hvDmaKcjJfCnsmYXAlU4YunqFMaN/c7mJez9G2MvXC+Ei5KuYGIDemfktnPaCFH+fqQeUaj4vc06+WcF7oXIvRAEEE3mMNb0c/H95GnvDVlgVuFaZpIYZul4Dk+KEZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=eEKWGOGD; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1788283577; c=relaxed/simple;
+	bh=Wpb4O6T/xyA+5eJiRg7lEIMxsNKuDpjIIJqJ6MLZCK0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hb/8PVF29XL52XGKdR/XK0FM0EZYMyHyqGlguzXsP+CbrtvRmJRTikZe8941HTPLvcMrK7neycoipBfbjx+NSDrL4rudy4AuNSXMeC1rpVjbRVPABR4vDJWymvkWnoCSVxm0iX7kraWr1rkSV7zyVSaiftHuR7cN0Od7OGNAO6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayImy4gS; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="eEKWGOGD"
-Received: by dvalin.narfation.org (Postfix) id 0DF0E1FE7E;
-	Tue, 01 Sep 2026 17:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1788283462;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X1ppzOEJMSS7dm9q753kJPAR6gmpcAyyraBBvCv4WzM=;
-	b=eEKWGOGD99etOq6BW66ReYBKdbCCj5IZuQTpKzuD6ewCo8I2JcmlNFi6tC4mqLfNynVI5X
-	5hqHk2DXvNVszm719u/p/UZ7DEfV54BdKdvrRPbpn8TdFsWXyGXXblEz08Sw9NjkBfjpaa
-	y486llneMYZKQ7rptIr7w/7AbQZIOHc=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 07/15] batman-adv: ensure u16 aligned mac address in
- structs
-Date: Tue, 01 Sep 2026 19:24:14 +0200
-Message-ID: <2932049.BEx9A2HvPv@sven-desktop>
-In-Reply-To: <20260831135117.574836-8-sw@simonwunderlich.de>
-References:
- <20260831135117.574836-1-sw@simonwunderlich.de>
- <20260831135117.574836-8-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayImy4gS"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc1cc97b84bso125725a12.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 10:26:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788283576; x=1788888376; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Wpb4O6T/xyA+5eJiRg7lEIMxsNKuDpjIIJqJ6MLZCK0=;
+        b=ayImy4gS60tAKn5zDNGMxB+uyyQEGmwPuhuIAnQOGhfpEcUjaeo7HWUgxbfk4C9nwO
+         o2KYNKwkNuaIJ8L+mlhY7QgIhBGbFGeM05x10FZk4zuENKjyNuzHBg9Ko2hnaMN8w2Lc
+         7H/ny9b/CJ2SL4PLdlYTt+4UzxYrKovuO+FmqN0MovQR+slyE9GDUzdLxEYHlo6/cCVQ
+         Vhr51RbMH9BBbrTIjNK8amAARvfvp0wpHldLP8nm8yJ7apEOmEvgUaV/hytNsTkqmHXl
+         VzgelCIraNrKPpSwV4uPxv0nsvqS0AcP3PctfzCgyyGHxDGxyhWgxyNPmFKlmg/3N6Ch
+         mBwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788283576; x=1788888376;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Wpb4O6T/xyA+5eJiRg7lEIMxsNKuDpjIIJqJ6MLZCK0=;
+        b=Lfv7p3TVWZBSogUMx4ol14k5MdvdeN8dJ4x8zwyc7mJRN4ZyJJj5f+UFDdU83Fgzsi
+         ipQrJo1DriCmrBcVz5GqtcNK4QIRZoMxI4ibyr8otMcEnGNNJX/9GZ8+eiFizoeFgyhQ
+         kVNvxAPTiO9w5teOfUvedVaqFwE56X1pwN60ikDcz7xTzhs/5Tq3h2nCl56tHkjJgfDO
+         pD8AE1F9RhFUEHKwR3ymYDy8wcxiB1N8Ri/uV1JCDk1ATzi1kQ9VuEJb+DV1xQb+WufY
+         7aIDE3MixVtTaHEsj8hjGpAo3J+F1+0E8ItdwgblhlHgsUA0cmTofNNCWfY8WQ7LYXxA
+         W0FQ==
+X-Forwarded-Encrypted: i=1; AKwUvByno0/aA5NU1cD8RrrjM9CAHPx8TcSfp6lGd74Ji/2v/gi9K34enPjW3L8EUBBoguNjpksBcHA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQ+W1sQ48WBtfXmJEKcOsH1MqYPwm5gv36ZJugkujSDDfX5Hhj
+	4Hjn2W+YXTInjO3kuYKbj298T+kt4LOMdZ3rtwPTXL7/Lcy7mH7NKS0C
+X-Gm-Gg: AYBFou1CDQtya0gbV8dnVBgPQ4FYzYwoRrPRSBf1k0UrWptgaPg162QW1IHQyN1sEgU
+	83Jfb78i5eQs/Rfxw7BQ7LqapiPVJOMQVyHRZaSJ/sZykxZN3c4Ds2uq6F1ILlU6rUr+4zzOV0Q
+	OFsmeA3AjWxD7/FbQ/K96zVuffeCxv7+R5bwryykhq7z0Nhqbj4QtlmZSV4Sr4QjItp3vTtZlSQ
+	Mf7hVTQMiaWJm0vE4DLvQXHEUOU8gITm5AKuV22WBkUi43mn2JFn6Sam2JCAKcR+JEgKFMzKdP2
+	H8iQo0jZ4iJVK+Zfp0WEz2MAHPEgTZJixeS3gf3LBgW50EW0pFzk8dlHJt5NeQhFL5NDmh3hfCS
+	5oEEql+xZbaoTvHyiPFCc65UxIQjCZYaSpBx3Cs9wSLojnsT+TnR/8qK0t/IKHHfzQGRMFo+Q0W
+	qw6dXO6gAOaZbKY7LWDOykQrujS5IAKa/I8Ezab1G8Z827ICtu3lGCbtSrfZezWB9BnmGcTx91q
+	UULYz0z9uNBgWMGJSIog/YmaUtrhyfizYaM0THb8qWjf9DEBdQOOYgS5wkX2Ut9TvA=
+X-Received: by 2002:a17:90b:4a02:b0:37f:fdc8:71b4 with SMTP id 98e67ed59e1d1-39907ab0960mr12275784a91.2.1788283575571;
+        Tue, 01 Sep 2026 10:26:15 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:246e:2cba:1e3e:e617])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1430ea0b459sm158262c88.5.2026.09.01.10.26.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 10:26:15 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: horms@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	hemendranaik@gmail.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	tahiliani@nitk.edu.in,
+	vishy0777@gmail.com
+Subject: Re: [PATCH net-next v4 1/3] net/sched: sch_fq_pie: add per-flow statistics via class ops
+Date: Tue,  1 Sep 2026 22:55:24 +0530
+Message-Id: <20260901172524.39650-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260731095635.GG51943@horms.kernel.org>
+References: <20260727164056.106203-1-hemendranaik@gmail.com> <20260727164056.106203-2-hemendranaik@gmail.com> <20260731095635.GG51943@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart15835535.tv2OnDr8pf";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
---nextPart15835535.tv2OnDr8pf
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Tue, 01 Sep 2026 19:24:14 +0200
-Message-ID: <2932049.BEx9A2HvPv@sven-desktop>
-In-Reply-To: <20260831135117.574836-8-sw@simonwunderlich.de>
-MIME-Version: 1.0
+Hi Simon,
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1=
-=2Dsw%40simonwunderlich.de?part=3D7
+Thanks for the review and for the Sashiko pointer. We have been through
+all six findings and are working on v5. For each item below, a short note
+on what was raised, then what we plan to do:
 
-> > An u8 array in structures have a natural alignment of only 1 byte. An
-> > u8[ETH_ALEN] array must therefore be assumed to only be 1 byte aligned.=
- But
-> > many etherdevices.h functions are requiring a 2 byte (u16) alignment.
-> >
-> > All these addresses were either on the start of a struct or after a str=
-uct
-> > member which required at least an alignment of 2 byte. Still, annote all
-> > u8[ETH_ALEN] arrays on the stack as __aligned(2) to make sure that this
-> > assumption isn't broken by other modifications inside the structs.
->=20
-> Discovered by: gpt-5-6-sol, opus-5 =C2=B7 Missed by: sashiko-gemini
-> Should "arrays on the stack" read "arrays in structs" here?
+(1) [High] Filter attachment and TC_ACT_CONSUMED — Sashiko noted that
+adding cl_ops with .tcf_block would let users attach tc filters to fq_pie
+for the first time, but fq_pie_classify() has no TC_ACT_CONSUMED case
+(risk of double-free if an action like ct consumes the skb).
 
-Yes, copy+paste error. Minor for this PR
+We will remove .tcf_block, .bind_tcf, and .unbind_tcf from cl_ops.
+We only need walk/dump for tc -s class show; filter attach to fq_pie
+should stay disabled as before v1.
 
-> > diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-> > index 99667f632d4d..c42a4aa8f41a 100644
-> > --- a/net/batman-adv/types.h
-> > +++ b/net/batman-adv/types.h
->=20
-> [ ... ]
->=20
-> > @@ -634,12 +634,12 @@ struct batadv_hardif_neigh_node {
-> >  	struct hlist_node list;
-> > =20
-> >  	/** @addr: the MAC address of the neighboring interface */
-> > -	u8 addr[ETH_ALEN];
-> > +	u8 addr[ETH_ALEN] __aligned(2);
-> > =20
-> >  	/**
-> >  	 * @orig: the address of the originator this neighbor node belongs to
-> >  	 */
-> > -	u8 orig[ETH_ALEN];
-> > +	u8 orig[ETH_ALEN] __aligned(2);
->=20
-> Discovered by: gpt-5-6-sol, opus-5 =C2=B7 Missed by: sashiko-gemini
-> Is the claim "All these addresses were either on the start of a struct or
-> after a struct member which required at least an alignment of 2 byte"
-> accurate for batadv_hardif_neigh_node.orig?
->=20
-> That member directly follows u8 addr[ETH_ALEN], which only requires 1 byte
-> alignment; orig ends up on an even offset because ETH_ALEN happens to be
-> even, not because the preceding member forces 2 byte alignment.  Would it
-> be worth rewording that sentence?
+(2) [Medium] tc_fq_pie_xstats layout — Sashiko asked whether appending
+type/class fields after the nine qdisc counters breaks userspace, compared
+to fq_codel's type-first union layout.
 
-But the struct member required indirectly an aligned of 2 bytes
+We plan no struct change. fq_pie already shipped a flat 36-byte struct;
+we will keep appending after those counters so old tc binaries keep
+working. Class stats still need the matching iproute2 update.
 
-Regards,
-	Sven
---nextPart15835535.tv2OnDr8pf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+(3) [Low] Empty tc_fq_pie_xqd_stats placeholder — Sashiko flagged the
+empty placeholder struct and unused union arm in pkt_sched.h.
 
------BEGIN PGP SIGNATURE-----
+We will remove the placeholder and the union; class_stats will be a
+direct member.
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCapcKPgAKCRBND3cr0xT1
-y4a4AQCjFk+sHDBBtfBPMvaF9V3OJlOI2QTKV2YLoSyrTCPdTQD9HKjKrKBqT+eF
-+cEhLzSLSqF5uZjv7X/hyPhVLG1+vQg=
-=9UEE
------END PGP SIGNATURE-----
+(4) [Low] Class handle at flows 65536 — Sashiko noted that with
+flows_cnt == 65536, fq_pie_dump_class() uses TC_H_MIN(cl) and the last
+flow's handle wraps to minor 0 in userspace.
 
---nextPart15835535.tv2OnDr8pf--
+We will cap flows at 65535 in fq_pie_change() and update selftest 83be
+to expect flows 65536 to fail.
 
+(5) [Medium] Selftest case 83c0 — Sashiko noted v4 used matchCount 0
+with no traffic, so the test passes even without class ops and never
+checks per-flow stats output.
 
+We will rewrite 83c0 with real traffic (TBF + fq_pie, ping on $DUMMY)
+and matchCount 1 on tc -s class show (prob/delay/deficit).
 
+(6) [Low] tools/ UAPI mirror — Sashiko noted patch 3/3 also touched
+tools/include/uapi/linux/pkt_sched.h, but that copy is already stale in
+layout; comment-only edits there do not help.
+
+We will drop the tools/include hunk from patch 3/3 and touch only
+include/uapi/linux/pkt_sched.h there.
+
+We will post v5 with these changes once ready.
+
+Thanks,
+Hemendra
