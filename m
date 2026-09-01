@@ -1,138 +1,174 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010036.outbound.protection.outlook.com [40.93.198.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241DF38D3F2
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 04:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788237770; cv=fail; b=RXXi8N/GqPKyWR3Mvb6RiU5vu49Yjdy0aeE4+NR5u9/61RW4PYHsiwZb8mMnE0Gch2ljkzpD7FlvFAXlQgskZFLLuuRQUTH7D37fHClyfyxiD9YiwWORbFXXjqhnzJBpEbH1z2rDA57OqwLvOhU50oBMQ39uFCFxThxJlKeN1CU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788237770; c=relaxed/simple;
-	bh=cMiFTP4Fr9fcVP/v9Q1MpNZ7/xCCFFfpwOXtZJuTaQo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cN3hgygfyVbDBnIET0WkFQcQp1IDpocsmkJvAjiW/f4FIREWxg1c0rhUltf8cgg4kd0874pzjOTpfrRWUU3hTwI/3Z2HaSmZ9GsgEYkoTA5p7SdEMkuRxhF+xhe1UXFn7PKClzIMmNfzlIgsdFhs5sr4uOgyjPriTdpn64ExToo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mXwng0pH; arc=fail smtp.client-ip=40.93.198.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D34B2E8897
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 04:48:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788238114; cv=none; b=JyVydmGOSycPGPQnWu+YSFN7weuNX7iMSe83uS9qc7VBL8kpJ5wWgGosSRNPLw7iDrBId2xiESLvCpG6rPsBFspbPlLH7G23psqCVFOoRWMeBZP8a6NE12zaYt4qElsJWoH6FOSWwaFYG8oLsmpcXHJtAO0hb90QADuB4AoDbgg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788238114; c=relaxed/simple;
+	bh=C+0ddwuvO2vIogDhotUfHV8WF2M4ei1FdzwnctaAwRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MMiJ0ZtC66eb0haR87Pfxs2ipPKP+IRYKBPCO/XXYV9rG6BY9p9/BJbnhdZGcdQJ//MQXRR6/9k5aO5/FahXE+fpCHt+fj8+CHRZOXhdEJVwA7FnicQwIy/mf1QOIJjLcHeAn+55FGciYB0gV8uEiA/OWxntyNzD6Nw3HBHfSpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=Y7kjr5zB; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mXwng0pH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pkolXjHzE6DMX1h8HdHHCn8nwooQ9m3A+tdJ/DMLlqHLCaHgR1wUKIOnAcyE9/Z70w5pb+S0Zf9NPE1Y4/0DNeOm0t98UjKVB2t+QCYPhpLRE05R8KYDe+mJUbftayTGY3ZOp6uFSw8o/3XX0k4Y9gh9eTHpm5fx5/gOZdAeWy4Txf63yDjsI4R+2jp1aqImFZBw2z/tDzyWA67ygBKvIQ9+r8qONRr+3gH9rQ6H9Dk6ohVTMWqL7ExsZT7T+Hb49kLdnUGPYPApmBXMTGRPsOAHbWs+0BX5B3sgsmbtsnxqVN1zUl+xstKzDQV8EGmlCkIkrVwu9qC7h3uIHtLfZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xh3UAyvnAqMyAXAaxFPjmTWuhAxIsMcNqqaCtntGXNc=;
- b=fSKmvaedEf5KYqvro9emZI1TG5ErBPlfbUzpKZf48dnJwkUhdMuUGQd5rEZ9XS/rRs27Yr92TFSbs9qLeBe40tU83RmPYI33W1eozSqQzrLe5w2LAbnOD+prev0c68wHQ20Gsyb6xlKoa4YG+j3DhXNv1EUdpIXGvMNZHyoOuTmrmvZZGIgBm8Nq+FQr2IfAhKHg1OopB9t2ZjavZeP3dUwU/x/5JfvFgrnSjkAUXglI4wNW53m49xUNF/iJg6lUhOP1A01gUtXkEBPZO+74cRxFAu2VjBI/0PzeY3t1J3t/KguOcWBMOhTNiraPfG36jBroVJ4mzD7H3NC++5npug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xh3UAyvnAqMyAXAaxFPjmTWuhAxIsMcNqqaCtntGXNc=;
- b=mXwng0pHmL3jaGD0kZSrLHaQG1k7DkZCkNstz25FW6XJCrJU4zhnwPI9RI2bHjh/Dhwhhi39q7QkV5eriJWo73tkGYTI+RzIqL1PX2Y5XYAhNQz5hYSKy0Djk7Y9Q92cxdrjlEJqFjZ16BeYMd298g8C0yMmRyZlRXniU8pGxAQ=
-Received: from SJ0PR13CA0022.namprd13.prod.outlook.com (2603:10b6:a03:2c0::27)
- by CH3PR12MB8972.namprd12.prod.outlook.com (2603:10b6:610:169::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 04:42:43 +0000
-Received: from MWH0EPF000C618B.namprd02.prod.outlook.com
- (2603:10b6:a03:2c0:cafe::33) by SJ0PR13CA0022.outlook.office365.com
- (2603:10b6:a03:2c0::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Tue, 1
- Sep 2026 04:42:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000C618B.mail.protection.outlook.com (10.167.249.123) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Tue, 1 Sep 2026 04:42:40 +0000
-Received: from lab223.rund-run.pensando.io (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 31 Aug 2026 23:42:34 -0500
-From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-To: <netdev@vger.kernel.org>
-CC: <kuba@kernel.org>, <pabeni@redhat.com>, <brett.creeley@amd.com>,
-	<eric.joyner@amd.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>
-Subject: [PATCH net v3 3/3] pds_core: check info_regs in the identity debugfs reader
-Date: Tue, 1 Sep 2026 04:42:19 +0000
-Message-ID: <20260901044219.1361466-4-nikhil.rao@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260901044219.1361466-1-nikhil.rao@amd.com>
-References: <20260901044219.1361466-1-nikhil.rao@amd.com>
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="Y7kjr5zB"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8568e3ed034so401108b3a.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 21:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1788238111; x=1788842911; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pQihIClwMZKkNvnNiMJcB5e3740T0qh3xP69Rw/Yuao=;
+        b=Y7kjr5zB+h2ayuFxKEfHN9hteaP2TIwlbOq4M06hUxyh7L9+KYq/Cz9y/3WvvMl2sm
+         3y6i/bLDs6CFuyms8s+N6bZ8pu7Au2GBqJpW+Q+AyDTUPsJSqIc4R0+FwOoqNzU0cBxW
+         a1sYopdAB8Cti4enyMSeoWMqQ0FnC5Df9tJdKnQQpKjvTWwS/ziwNG3NnEwFrtgavkve
+         FO+3QFR9kppVOFiqm/XLmGr0n8zoFQ5iLnsPQPnSSFy44d+U7lAjTEFiU0vHDZYf6lYX
+         cmXe/Ckig/a7TbbcJkgHVnJ75xnFvb2ZqBHIt5HyBt8KVplXBVJZfa1RC0YlT6rToyFy
+         Kcqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788238111; x=1788842911;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pQihIClwMZKkNvnNiMJcB5e3740T0qh3xP69Rw/Yuao=;
+        b=J7RWhva7n55Sf43fJSSyU881+R+DbsllHxW2dLcWfPFgblN2/Ahp0C2se7PYP8rAhc
+         A67bHntHtN0BeVeb5GYRWR/jFQaDq3HAfAlT7FXWEuebIc+JLI0cGq6Z//mENptOkGnV
+         siiSkIduRq0FWBQ3L7j4UEQehlwW+3O10v9Re8ANYa3zRkgb9fhHiePYJGa6uYA3qJE7
+         yNPV+BZAjs42mzIl9IS+Xgv09ESWh+FYltDbKuhWYkoayU1iPbOY6wQUWu2IY0B5FOIR
+         POSR+R0g8mmGFU4MlIScQxp5GrAxznrnKwTTPpq3euuwZiSDS5krUHBVriSa4BGT9hR7
+         nuyg==
+X-Gm-Message-State: AFuF++mXeu1vkYvqqiHvWqjLiiNHOSLMIbl5Lz4UiyPuoWBlGWfySwi/
+	wqk0OnUowI0AzAbPmMNYDIllu4HYasrRXLsqntooWbOpqJQGgABG3NN4yW5LL2SEhkRIUntzIKS
+	WDCvJ
+X-Gm-Gg: AR+sD13NZm2OJ5P9JS3rvAXKXJ3lt+Dib2vNc9SM5Qupwdzyz/LtknaC9TfqgC6x28/
+	n28Qfqjy+ns2IAUB7o0WSSf3Na5Tb6BlkXkaNvYRQamwBjQqXheDkqub8k3lO7L68A2IzVR7Fky
+	/31qyesGZUyCHab7UqSqAiU3ZSIoap++AuLNLP2H/QJ+lx+74ebyDEa4nhBVjAYfYtxLQak/zj6
+	ODhvngjJ6RhIBHKpf+/pcJ8ILztnzKPuFuT/lPRanfXymceh93u2KUTo5Nu5Y/N146jJxMzXETk
+	IPMBsDO2RIpkiGyh6OR8yfcGf7nGx1yycZNuIZhlV2t2MS8lMq92qyIQsVGRRa+ENxEhSWdFaIY
+	UcwdCVu1iwfQG3SBVACgdClAFkPcuZ3/80qEqgnfAJSQvRWeAPoKEbYcxDVN4LsUsCX5W5F1/Rs
+	6PrdqFFU5wiWxiwZOBTjFybs00aGIe7v7SO1DIry3L9mlL4ThG3DUKRet8zmXESLuf4CvrQk4Af
+	iqTBjxhIXDCbJQYAoF5g3qztFIqaHs=
+X-Received: by 2002:a05:6a00:9512:b0:848:2eac:bfb2 with SMTP id d2e1a72fcca58-8562ba7dbdcmr44318429b3a.13.1788238111439;
+        Mon, 31 Aug 2026 21:48:31 -0700 (PDT)
+Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85be934a18csm419288b3a.51.2026.08.31.21.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 21:48:31 -0700 (PDT)
+Date: Mon, 31 Aug 2026 21:48:15 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Alexander Zubkov <green@qrator.net>
+Cc: netdev@vger.kernel.org, Petr Machata <me@pmachata.org>, Ido Schimmel
+ <idosch@nvidia.com>
+Subject: Re: [PATCH 1/2] ip: ipstats: Merge statistics split across several
+ netlink messages
+Message-ID: <20260831214815.49754d76@phoenix.local>
+In-Reply-To: <20260830181949.1096-2-green@qrator.net>
+References: <20260830181949.1096-1-green@qrator.net>
+	<20260830181949.1096-2-green@qrator.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000C618B:EE_|CH3PR12MB8972:EE_
-X-MS-Office365-Filtering-Correlation-Id: e69bc870-83de-42f3-4c40-08df07e374e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|1800799024|10067099003|11063799006|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	wu0++/QowjW4YbrQgwQsAZ3PYqhiRrq0992vFXRuDJ8AwCzaKHh96fkOGcO5yrUqU/JL8beTcALMl+rLZhYwrM1OJUd36t/ABkS6d7GYdr2nJhq6OZSfQdJHz8Yx5qJpVemw5p27JInoGsNGNLJbMrqNzg0GSwKcCqqXOU6P/s9xeDPDmes/WPEn2wF1dacaaiJ7dn6aJAu1LNYvb+QtvKlCrvjgv00ZvpgQXtfsmzyBSlBQnxzkAVEtninGcnw3to6Y42T6XRZSK7Riql51tHyM9gzeeXDnzHPgjp7IaEGrcJTHqeHP/77k/vGaDs0NEPrdw6Bj1PNkAWgw5EWDka0iG30HnV8Vku1FRoOxrbT3/wEm8nbnZe/Mlk1aI9h8zPJpO/nn9dOUj2nHmg/JrY3en2nxdOvae/Bth+V6HG8yq3eCz2Q0A+VMoTE8L8U4/EtCy4oACWYAc/dQ5THvrOBEXFpsWhq9r/7b0LOHCs/GrOnkA1XXmCMwAJLqZZYvhSmF/cR0NOx2Y06gwz+IQ4xyoIcjwhOAPwcsawiUEiegw+B8sx27Yk7UZitbTaKGKC/d1erBe5JXiBlYD40gSOVFqk0dwzWmBhceaHJU0SgZYE2vgdvxZ8VzhfI3XgM8RiQuYjGg8jxawhziG3Bo/A==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(1800799024)(10067099003)(11063799006)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Tc2K1OEelQZ20NQvQA+RnjltUMtydpKUSwc3vLX/m7JGUU85vWX1Jmg2ARkzOy7wDDUB+w3I0gU5bfDjoS1UOY21YJI9qIs30e5wPoZCarNy0CRdktiuNAbpKGbWWp6ryIE5kc//ii6SAPNVSIyk23kw4iLygvvCzdnAQ02hGxqSf2HF/Mg5+T+uUKJ824v141mGTiHwu+4wJDD7+wgHND6qfHYFJlgA8FnzNphWFEiHGbF/BhQyggoEyJdsqNBWayHce4h9VFcqpB2nngmZHuZ8WQUuOJ+8kg6Ehfc+zQjz8uOZRpnVHFzhiGGlXkPNhA/CpbsSN9MHSB8XnQyn+NTqw7T5Y2Q+Xo8/M8eevwwuXhoQXi82+hJphTNzTy1+VBZgzoXgiuMvpuhH8fijHBUwW3Ke158tMRWok3QWaYLkgsedDnYD48n3HHW1/KWG
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 04:42:40.8719
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e69bc870-83de-42f3-4c40-08df07e374e5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000C618B.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8972
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-identity_show() reads fw_heartbeat from info_regs with no NULL check,
-unlike every other reader of that register. pdsc_unmap_bars() sets
-info_regs to NULL on reset and on remove, and the identity file survives
-a reset.
+On Sun, 30 Aug 2026 20:19:48 +0200
+Alexander Zubkov <green@qrator.net> wrote:
 
-Fixes: e96094c1d11c ("pds_core: Clear BARs on reset")
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260804235946.177762-1-nikhil.rao%40amd.com
-Assisted-by: Claude:claude-opus-4.8
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
----
- drivers/net/ethernet/amd/pds_core/debugfs.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> A netlink dump can split the statistics of a single interface across
+> several messages. When an attribute does not fit into the current skb,
+> rtnl_fill_statsinfo() keeps the partial message, records how far it got
+> in idxattr/prividx, and the dump is resumed at the same ifindex, with
+> the remaining attributes emitted in the next message.
+> 
+> "ip stats show group offload subgroup l3_stats" requests both
+> IFLA_OFFLOAD_XSTATS_HW_S_INFO and IFLA_OFFLOAD_XSTATS_L3_STATS, and
+> rtnl_offload_xstats_fill() emits them one by one, so a dump over a
+> sufficient number of netdevices regularly ends up cut in between the
+> two. Each message is currently formatted on its own, which yields two
+> bogus records instead of one, and, because ipstats_show_hw_stats() bails
+> out when the HW_S_INFO attribute is missing, the counters carried by the
+> second message are dropped:
+> 
+>     109: vlan859: group offload subgroup l3_stats on used on
+> 
+>     109: vlan859: group offload subgroup l3_stats
+> 
+> Postpone formatting until the whole object has been received: keep the
+> message around, merge into it any immediately following message that
+> carries the same ifindex, and format the result once a message for
+> another ifindex arrives or the dump ends. At most one interface worth of
+> statistics is buffered at a time.
+> 
+> Merging the two messages means merging the nests that were open when the
+> first one was cut short and that got reopened in the second one. Netlink
+> does not mark nests reliably here -- nla_nest_start_noflag() is used --
+> so they are recognized by the message layout instead: a reopened nest
+> appears exactly once in either message, and at the outer level is known
+> to be a nest by ipstats_stat_ifla_max[]. That knowledge only reaches as
+> deep as ipstats.c parses the message, so merging stops at the group
+> nests and their contents are appended in the order they arrived, which
+> is correct both for a deeper nest reopened between two of its children
+> and for an array of same-type attributes, as bridge per-VLAN xstats are.
+> 
+> A layout that does not fit the above cannot be told apart from an array
+> of same-type attributes, and reassembling it would corrupt the result.
+> Such a message pair is refused with -EOPNOTSUPP and the two halves are
+> formatted separately, as before this patch. Failures to allocate or to
+> build the merged message are not papered over that way and terminate the
+> dump.
+> 
+> Fixes: 54d82b0699a0 ("ip: Add a new family of commands, "stats"")
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Alexander Zubkov <green@qrator.net>
+> ---
+>  ip/ipstats.c | 280 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 276 insertions(+), 4 deletions(-)
+> 
+> diff --git a/ip/ipstats.c b/ip/ipstats.c
+> index 8a2ac85e..c531885f 100644
+> --- a/ip/ipstats.c
+> +++ b/ip/ipstats.c
+> @@ -850,12 +850,225 @@ ipstats_show_one(int ifindex, struct ipstats_stat_enabled *enabled)
+>  	return err;
+>  }
+>  
+> -static int ipstats_dump_one(struct nlmsghdr *n, void *arg)
+> +/* A netlink dump can split the statistics of one interface across several
+> + * messages: when an attribute does not fit into the current skb, the kernel
+> + * ends the message and resumes the dump at the same ifindex, emitting the
+> + * remaining attributes in the next message. See rtnl_fill_statsinfo() and
+> + * rtnl_offload_xstats_fill() in the kernel.
+> + *
+> + * Reassembling the two messages means merging the nests that were open when
+> + * the first message was cut short and got reopened in the second one. Netlink
+> + * does not mark nests reliably -- nla_nest_start_noflag() is used here -- so
+> + * they are recognized by the message layout instead: a nest that was reopened
+> + * appears exactly once in either message, and, at the outer level, is known to
+> + * be a nest by ipstats_stat_ifla_max[].
+> + *
+> + * That knowledge only reaches as deep as ipstats.c parses the message, so
+> + * merging stops at the group nests, and their contents are appended in the
+> + * order they arrived. Appending is the right thing to do whether a deeper nest
+> + * was reopened between two of its children or the children are just an array
+> + * of same-type attributes, as bridge per-VLAN xstats are. It does the wrong
+> + * thing only if a kernel splits a nest that ipstats.c does not know how to
+> + * show either, in which case the merge is not the first thing that needs
+> + * updating.
+> + */
+> +
 
-diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
-index ef0a1b7d159b..c458e6758959 100644
---- a/drivers/net/ethernet/amd/pds_core/debugfs.c
-+++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
-@@ -38,8 +38,9 @@ static int identity_show(struct seq_file *seq, void *v)
- 
- 	ident = &pdsc->dev_ident;
- 
--	seq_printf(seq, "fw_heartbeat:     0x%x\n",
--		   ioread32(&pdsc->info_regs->fw_heartbeat));
-+	if (pdsc->info_regs)
-+		seq_printf(seq, "fw_heartbeat:     0x%x\n",
-+			   ioread32(&pdsc->info_regs->fw_heartbeat));
- 
- 	seq_printf(seq, "nlifs:            %d\n",
- 		   le32_to_cpu(ident->nlifs));
--- 
-2.43.0
+The patch makes sense but please stop with the AI text spew in comments and
+commit message. This is garbage. If you insist on using AI to write stuff,
+then tell it to be terse and succinct. We don't need three paragraphs here.
+One sentence will do fine.
 
+Try again
