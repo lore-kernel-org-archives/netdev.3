@@ -1,83 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B69925785C;
-	Tue,  1 Sep 2026 00:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25C220D4E9;
+	Tue,  1 Sep 2026 00:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788221465; cv=none; b=Ym9ekCOQKDdREx4WO0SI7vzAeEc700k0ifYxKijYpXdWRqSXkQAEz0VJOMoLN34geHK48d/f/D5Gms/hlj/a0IHI078JIPU/4EjZ5O787oHiCVUwkG3P5qy5JIymtTpJMhRq2/uifAHk9jRLm19poLewIWht8IJzWwIGyh1jCOo=
+	t=1788221543; cv=none; b=Wn7lNHJWIAPAucGKRFKS01AYMZjms5HRVdl+fKQvi28Rhfcu3ai+ym5dWlShli4uYd5+CpYEZwBZSw8pJYt2BCLTyVh5q0eIs1eT/brmoeqjG5uE8S/engnbDKtltsAft7Uzd/rfNYh7+mK5YCVGcV1knNFz57isHgTJFS8ugMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788221465; c=relaxed/simple;
-	bh=9esIzLKSES/yTdoEcda0vaqHuRZpq97fmWwlGWB51j4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HM2OShwdPq6S0IHQci/ooPwa0fbpvliYSxznhBJMRjAvbfZJpa40qxSbqxX+oxAplkeZEYRsQ9oXjwmomVJvJYMc/uQL4NjouAeFODNYBZPDsPg4VNIkVDvQnVIGPkgmPjEHRsaLSxKq4EUGL/KY37/9yyZULW/u4XLK6gQvqAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBoLkeLu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788221543; c=relaxed/simple;
+	bh=UFQAt9s9CJ1zIjyWk1tji4LFj3JnoQKqSEK+6TyznVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ar7X+js8CPMxYI0mN+gZljwZBDjXYDzs1+wA3yLFCY+/hmbxWskgoa0D0Nj2q5zg0HQx6VXrpqTzGjVHr7Z5WnCohSFXxcHy4U45FRxVzLFk2v8kvJlCaRoNi7uE+DwI8pfCZkjSlrPKeHk2jl+kNzH7yWWElZxEBvm9TMZpbc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=n5Lop7Hs; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBoLkeLu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8411F000E9;
-	Tue,  1 Sep 2026 00:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788221463;
-	bh=yY/MvTn5HAr9uHWC85Z7jzROzj6u4LMopObzrNVoizk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CBoLkeLuq20yTEipfjjarH/B7d/kh86ajvnVI+U/WOZRqrTkHgptl1+FpYuxQXrQ9
-	 9o/Cd8z1FfRtFSM2Oj6KTCJMaCeGVepiyH0ieknyQBoBK0yclv+4I2FX+baRP1suI6
-	 0SaZfFvoFiSGhoTKlk1M4LiDoMnh9Qdj0aKm9E1VENJYypAg2VQ4w/NFTp94qcdg+j
-	 YKZ77sv+v5cOsy0Px2/K93iYvQWqnrOWGHht/rcAwXOG6YMBp9GRn4ezSF/Nky9nkr
-	 NBa+S11HF5LSQkM0rUhpBQ0nEeGK4sxz6Sd4qkPMnS4V/sYZQ7gwNqu0bo4tKBNwuV
-	 wkNpg+/g8CjKQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B62392447E;
-	Tue,  1 Sep 2026 00:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="n5Lop7Hs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=drnZj9ls+Re3u3xWFMdJ9ITFaJJVUQr1ILP70Ur9h/g=; b=n5Lop7Hs9qzLRTh6aTMexZHCFM
+	59wIXe05Amg7DeRdLCJpXJyIS2O+ud5/qQ60GugK50PpLZIDOWHXpazK0xx8Xo++m9JhzY02KEeDt
+	xu3g9vlUwiH29QQ8JiTqsBfJUi5K56kVYs/RLCxS2m65LxMK5Sd1LcV1b43UTh9qU4OM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1C6k-002H9w-SC; Tue, 01 Sep 2026 02:12:10 +0200
+Date: Tue, 1 Sep 2026 02:12:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
+	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next 2/2] net: stmmac: dwmac4: Use the full perfect
+ filter ability for UC filter
+Message-ID: <285c8969-2f0d-46de-b098-60ff10f30cf6@lunn.ch>
+References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+ <20260831070121.349778-3-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/sched: cls_flower: validate mask pointer after
- nla_next()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178822140665.844764.11759804128837139787.git-patchwork-notify@kernel.org>
-Date: Tue, 01 Sep 2026 00:10:06 +0000
-References: <20260826025123.62758-1-ljp1205831794@gmail.com>
-In-Reply-To: <20260826025123.62758-1-ljp1205831794@gmail.com>
-To: Aohan Mei <ljp1205831794@gmail.com>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, cong.wang@bytedance.com, kerneljasonxing@gmail.com,
- henrymei@tencent.com, corvus@tencent.com, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831070121.349778-3-maxime.chevallier@bootlin.com>
 
-Hello:
+On Mon, Aug 31, 2026 at 09:01:20AM +0200, Maxime Chevallier wrote:
+> Contrary to dwmac1000 that gets its number of perfect filter entries
+> through the 'snps,perfect-filter-entries' property, dwmac4 allows
+> reading the filter size from the HW features registers.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Does dwmac4 take any notice of "snps,perfect-filter-entries"? Should
+it be marked deprecated?
 
-On Wed, 26 Aug 2026 10:51:20 +0800 you wrote:
-> From: Aohan Mei <henrymei@tencent.com>
-> 
-> fl_set_enc_opt() iterates the key's nested tunnel-option attributes
-> with nla_for_each_attr() while advancing a single mask pointer via
-> nla_next() at the bottom of each loop, so the mask cursor is driven
-> by the number of key attributes rather than by the mask's own
-> attributes.  The nla_ok() added by commit c96adff956191 ("cls_flower:
-> call nla_ok() before nla_next()") only validates the mask pointer
-> that was just consumed; the pointer produced by nla_next() is used by
-> the next iteration (fl_set_geneve_opt() and siblings) without any
-> validation.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net/sched: cls_flower: validate mask pointer after nla_next()
-    https://git.kernel.org/netdev/net/c/fee10655709c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+   Andrew
