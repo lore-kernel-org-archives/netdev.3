@@ -1,63 +1,63 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FC0480DF5
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 16:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEDF371887
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 16:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788280422; cv=none; b=m9vtvEjbUIeiocls/B5LZc91MAmGG1SMWMzuE91GnnFbwMAAbsDc4kbEPnetwlvNkmSRbcLxcwxGNPxVrMan5v1e2/VeT4+DdPjtnhqw+7Xz6mCc9JvSh0kohbFKl1HxEPzck4Yqoq8UFXDQYb5NJ3yyLks3hjFRDc3C76AxSh0=
+	t=1788280458; cv=none; b=HWDROed0WDv6RXACwvdxEcTCXkR8GlxawQInSLQIahU6vB4OB+9pImEwQ1yQ1xVCm980o2shbkHleNsRoLwQHe5CT1LLdWsAqUghFQF1EZsS5LV2MJXulFUhLLkd7f4DJABPM8cD8f0Ieflb7J1CFBwdXDRruW4RinR9eRH/5EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788280422; c=relaxed/simple;
-	bh=HkHzt3ZwUXXr8ahJIwDVgHcwAO0rAKRD8jm7cGTsBcQ=;
+	s=arc-20240116; t=1788280458; c=relaxed/simple;
+	bh=eQ+b0FuUbkgk3GjbjUprpVwWlSOMhpS2zwmbdYuf/ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fU5O1B2O0Bj6O+paUq8Ai8rUul7X6LHv5irmvasMbUZeKbMYIgFNZ8uhUzWp8sCWnuc5bY9avsBmF4HavakbNN6LV1ZpYcw+WDJ0YW9oaGmylvIZ+w+AFGgHgmnGatByMClZ0W1CePnp6tnPnpA1capTCOOFz3IDViJGrDtJYSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RyEC7HDy; arc=none smtp.client-ip=209.85.208.173
+	 MIME-Version; b=MCJQNwyLipS6OBzGA+dNn754rNHmhDnk/dExSeh+qhtchBOjNktA2HHyG7t44bUfTqh+Wzw1NI82Z3Yn2WNw/gbKxjDoOYPeFqmgTO8/6MsR6PQwmM73FXFIpMWp8kokmOp0zFvX6Pb8QJFEvAy3KhlVoVdMSbVYRW4K5T9R/qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i/P4F2lD; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RyEC7HDy"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3a2b4743936so180101fa.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 09:33:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i/P4F2lD"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-39da69c5ba3so103041fa.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 09:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788280417; x=1788885217; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788280455; x=1788885255; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8SPDGoSTl4FqMo3J2GRF/g+R9eIi+flZl02DefvrWrw=;
-        b=RyEC7HDyKUNjeOkOFrBDsB3j8tqS1OXXOdSka6LiHnLyJaWVb2l/Gsm7jxfWF0lZde
-         PseWB2UDTw8PQJcKUV17nJELnP+xD2pWxfpL7PA1EzgRiX1CtLdZzFo/sDdBq8vKin6j
-         nhwWToDwCPzTA5Ga9jB8ebV6lIdrYBLNTNdk4mP2nwZ/tvb4A3afUk6tENJxkoFkKQTv
-         FXAmg26TeCi39twr//p2GoRxx/73lYqK7zqTR3TkRIoN0kg5wAapIV5gdshfFUrzgTm8
-         O8YHYImJgijtaQiXgtrVJ5JC6n0AUCoo6wS55ow4KSdww/iy7/t1Y3MrI55VJWQuM2pm
-         4Ugg==
+        bh=eQ+b0FuUbkgk3GjbjUprpVwWlSOMhpS2zwmbdYuf/ow=;
+        b=i/P4F2lD2dVhRH03OWaNIxcaZ0qGEbhnQcHJ/PA0eeuxUfggZOr0UCwJgbPfYmo5FG
+         IiJW4Pmx9tc/y+hECvKmvSN0uL+kuQL+1Eoyij6kFyGagr/U5RsxL2vZzOVg4C6u1Fz8
+         C2fOwaphgDK1ABS3Hm6hzs2dcIel6fcMEs5RvPPksS53j7fDpgdEQpC1cTHhEIr4C0EM
+         ljSo5frBBJka6EfgWMhhq//O15I70mO0ZJ5IMLgRYdpPrcEj/OgYnaK+xWez0fquckMc
+         9dPAHpmmMLtWlSkQbsYZcpPLu2RZCrDrsMt1UauGorSPAYTvcVDQ+NvjbzX6eaNhlApT
+         JWww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788280417; x=1788885217;
+        d=1e100.net; s=20251104; t=1788280455; x=1788885255;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8SPDGoSTl4FqMo3J2GRF/g+R9eIi+flZl02DefvrWrw=;
-        b=IVA4G7PJf1gc5I41/sNerLGCj3RGyZsoDxCsylXfAC3w6S/kAsA1qv/rBBGjYzHwju
-         CsbHwjN4FwgLqWg/7lew2N58oIiZbWuXFfcFr+vQc1tb7ivkAlM4H4mmeGXT99QgD3te
-         xMdf8YVFxnfFn5rjawiiUrQfpx041lvMn6hNmeD7LQwVBe0ilk5as/jg3FB001KoHSW9
-         Zcgq14uDDn0xVv2iSCM0rzYi6D2PETflp8o84SRWbBvqYYlg6sOxeYgCZoWlCCXa4S/h
-         BPKFdTLn8M22oV/OsdipGe5q56HcpVeO0uTeYOXf/wL9juiWOq5nnZ0a38rxdCT2XuOD
-         g5xg==
-X-Forwarded-Encrypted: i=1; AKwUvBwR4CFTRd5PGizFW//q70rl6HnQUXDDaCcQyk92PpdxKL+NvG9/lGpCSywuEBLkJ8lIR+fOPng=@vger.kernel.org
-X-Gm-Message-State: AFuF++nh1drns89sD8WsADAKojbl7rCNGCX+ORyG5xVoPBBeeeE6YDGP
-	On2mcvSD0hkieJvhqa0s/4ZREc2W0CpxsG4ZcxIWIVChXy6EsXayRf8=
-X-Gm-Gg: AYBFou2pCyjSQm0A2eEAQ3MhktHYRvhEpdkGlYgDRN7yumIhrKrmXyhCyDA76ce5Lw8
-	MV9x4KFiNoAim3aLBNsysrVJdRLhrR16N/yjQxohM/hYU4TD4rMugRplm8wXjRhW3tAlECCmjvi
-	14LF9V2L+OyYEZ4mG/7HakN/ej0r5qq/cNrdHOFty2g/jWWgRLPHRcsdSZRxfpO6M3+q4IpLgAh
-	rPpo84bup3N3Fyc+7PQc1/wHrVIAQMeIPT2F+mrzF/wTy7yooB2kZAwszJGx9HLLtElmVtkW4vq
-	5KHk+ig1rxGb5B4jtUbv1BRT/HWoipUH4ZKK9ZGoZxqZGc70iNj1lhswhm2HbGQ3oeKPdHjMBLK
-	JeIqBBH8JNOmWKV3/Kj8J6Ctj5vOlrAy0ORgIgQ5WM+hrVOJ9ORtxY3C8mvpQleQMudW0QA6KDW
-	dR8bsHjSxR87nV+WcteDbLPJcfB6iXfgUkZeEvAZ5H65+euEKYVQEe
-X-Received: by 2002:a05:651c:2224:b0:3a3:368:fb9f with SMTP id 38308e7fff4ca-3a30368fbfemr67836761fa.13.1788280417031;
-        Tue, 01 Sep 2026 09:33:37 -0700 (PDT)
+        bh=eQ+b0FuUbkgk3GjbjUprpVwWlSOMhpS2zwmbdYuf/ow=;
+        b=MoFUbxWAP7KVIaFENp6LiKsL/vw7jTaBRztQb/nICbD5eOMXOBmpnJS2alK4+tX9ug
+         cTk2Ir6ctunc1RLNu1XFtSb/LdIkGpeTBw1bkuIvHwK9c2wN8AKhfzozBi2y/hJmIH0w
+         JwugocjuYUuXsDY4EAR2K+AQqiCDxkM85VfHziHDwC9vffV85Npu9qaTL1BUpLHR731X
+         2hz6UOVR8P26jmprREHIO1uk5xxNVWfuQEzBNfgM/zyPWa97OisBlsaiDL4WHpnzYqMs
+         EI9Qj458UvzRSJGn5RA2ffiXjSzPuZc+wQHmIpraO40gQcJTvimlVhT3mFYRZUbmk7wW
+         sKPQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx16vklkF9jMftbFZjkBneWkm4r3rvOLOi3wPHzZGdM5rMQTakXy1x/iJuJfiY3jH3lLMrNL2w=@vger.kernel.org
+X-Gm-Message-State: AFuF++kEIOMorEXZ2oKUlgGPjv9RedNwDGNBrIxaP+dOIq57oRfPv0YB
+	8QfwQcEJ9VhInJc/6p1Dfv871rMOBWgmGbGSTJKg8X8Tu0CwC3PKf90=
+X-Gm-Gg: AYBFou1ApdC8SMSazWuNHdwoJpZ4zbFfvKbg7ngbjRCg2bnoU5rnCEHpUX63ZvvZ8Ru
+	A9OZlVT8fGON2HS6F2dWR0ytvFTNYnegXNDnJbUXWMRCsNFagWOmtCGQFaEX0P5uNpacAacdGXo
+	F5CU1kZKIN/yfaWbPV9GLiV5z+EAM6/Spx03J74b+5hPt/Ox8IFiieZkkEQD2lybtIOPhTHv2iq
+	j1kWicb8n0iazinohNuVIm/qhqITBbIQp6+KDCbswiAxdOKBjWMlse41DLmLM2MGR8jd6VlTMBK
+	JGpL6cA9eq47KU+nXd0gdL7kktd9N6ljwW9CCbeH+VdxYvGykH+8OH5+D3PpUP+/UCWSvaOzqxE
+	dkr1UwG8bUcb1Utl+oPYxfhK60oMcHP10od8yFs4FAvlbjXqT4XQxThP/2EYZCBYXCsgq4618g3
+	YssC7Buaaeh/3/QBu6oxNpd3/nTwp2RO4yK3KeekHQsXBs4WN99QPI
+X-Received: by 2002:a2e:a554:0:b0:3a2:fd1:8a8 with SMTP id 38308e7fff4ca-3a3018ba808mr78554981fa.1.1788280454464;
+        Tue, 01 Sep 2026 09:34:14 -0700 (PDT)
 Received: from fedora ([92.36.3.203])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a34a8ed967sm678251fa.7.2026.09.01.09.33.35
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a34a8f03fasm688001fa.9.2026.09.01.09.34.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:33:36 -0700 (PDT)
+        Tue, 01 Sep 2026 09:34:14 -0700 (PDT)
 From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	netdev@vger.kernel.org
@@ -71,12 +71,12 @@ Cc: upstream@airoha.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Vitaliy Sochnev <sochnev.v.74@gmail.com>
-Subject: [PATCH net v3 2/2] net: airoha: grow the small RX rings
-Date: Tue,  1 Sep 2026 19:32:54 +0100
-Message-ID: <978fe95e4c5ddb05ceb7d8c4d00ea2d2203b79d0.1788286284.git.sochnev.v.74@gmail.com>
+Subject: Re: [PATCH net v2 2/3] net: airoha: recover RX ring after hw completion stall
+Date: Tue,  1 Sep 2026 19:33:48 +0100
+Message-ID: <20260901183348.40949-1-sochnev.v.74@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1788286284.git.sochnev.v.74@gmail.com>
-References: <20260831234701.206021-1-sochnev.v.74@gmail.com> <cover.1788286284.git.sochnev.v.74@gmail.com>
+In-Reply-To: <apaA5jDYH71F0JaS@lore-desk>
+References: <20260830095717.37218-1-sochnev.v.74@gmail.com> <20260831234701.206021-1-sochnev.v.74@gmail.com> <20260831234701.206021-3-sochnev.v.74@gmail.com> <apaA5jDYH71F0JaS@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,58 +85,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Raise the RX_DSCP_NUM() fallback from 16 to 32, the vendor SDK default,
-and give ring 4 the 128 descriptors already used for rings 2/11/15.
+> IIUC increasing the ring size the issue never occurs again (correct?). If so, I
+> would drop this patch for the moment and add it if it is really necessary.
 
-Ring 4 is the shared "force to CPU" ring that airoha_fe_vip_setup()
-routes BOOTP, PPPoE Discovery, PPP LCP/IPCP/CHAP/PAP/IPv6CP, ISAKMP,
-DHCPv6, SIP and LLDP onto, so it sees the same bursty non-hashed traffic
-as the rings already on 128 while sitting on the smallest allowance.
-Both CDMs forward to it: REG_CDM_FWD_CFG(1) and (2) each set
-CDM_VIP_QSEL_MASK to 4.
+Correct. At 128 the stall never occurred: 500 forced PPPoE reconnects
+over 20 h, ~37500 samples, zero triggers, plus ~994 cycles in earlier
+runs. This detector was compiled in and armed throughout, so that is a
+measured absence, not just the absence of a visible symptom.
 
-The NO_CPU_DSCP fix does not cover this. With it in place, at 16
-descriptors the ring still dies during PPPoE negotiation on a Nokia
-XG-040G-MF: over 6455 devmem samples in 60 s, REG_RX_DMA_IDX advanced
-0x2c -> 0x52 while REG_RX_CPU_IDX stayed at 15, descriptor 15 had DONE
-set on a 60-byte frame, descriptors 0-14 were empty, and q->tail was 0.
-Hw had completed a descriptor the strictly sequential consumer in
-airoha_qdma_rx_process() cannot reach, and negotiation never completes.
-At 16 DHCP still works while PPPoE does not: a dial-up bursts Discovery,
-LCP, IPCP and CHAP where DHCP sends one packet every ~150 s. With this
-series, 508 forced reconnects over 20 h saw no recurrence.
+It is also not sufficient on its own: at 16 descriptors the recovery
+fires roughly every 35 s and PPPoE still never completes, since each
+recovery flushes the ring and negotiation restarts. The ring size is
+what fixes the bug - and the other two patches on their own are what
+ran the longest here: 508 forced reconnects over 20 h 32 min, zero
+rx_dropped/rx_errors across 39158 samples.
 
-RX_DONE_INT_MASK covers all 32 rings on both QDMA instances, so this
-costs 544 more descriptors per instance, 1088 in total: 2.1 MiB of RX
-buffers at PAGE_SIZE/2 each, plus 34 KiB of coherent descriptor memory.
+Dropped in v3, just sent. I will resend this one with evidence if the
+stall ever turns up at the larger ring.
 
-Ring 4 and the VIP classification feeding it are shared driver-wide, with
-no DT or hardware property distinguishing one variant's ring 4 from
-another's, so this is not scoped to a particular SoC.
+Thanks for the review.
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
----
- drivers/net/ethernet/airoha/airoha_eth.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index fa9a8edce22f..7fc37f159d2b 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -41,9 +41,10 @@
- #define TX_DSCP_NUM			1024
- #define RX_DSCP_NUM(_n)			\
- 	((_n) ==  2 ? 128 :		\
-+	 (_n) ==  4 ? 128 :		\
- 	 (_n) == 11 ? 128 :		\
- 	 (_n) == 15 ? 128 :		\
--	 (_n) ==  0 ? 1024 : 16)
-+	 (_n) ==  0 ? 1024 : 32)
- 
- #define PSE_RSV_PAGES			128
- #define PSE_QUEUE_RSV_PAGES		64
--- 
-2.55.0
-
+Vitaliy
