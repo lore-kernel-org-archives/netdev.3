@@ -1,93 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93A742DA3D;
-	Tue,  1 Sep 2026 15:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461734248C6
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 15:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788276362; cv=none; b=EXkcoQmfFiof36wpupmWzTZFZsXW8dRKY5HwymS3v9cs+1BHJInEDOk+tkXeZDtzeIK3uzEDvHUQy/m4YJBd73RBdjQXl4W02LOcxhMrtNuNhg/lwBPpU0NlOUX83/n2mvObF7nWM17ZfrovekcvEPrtvge4a8Rx1U9bGhaQii4=
+	t=1788276860; cv=none; b=o8dAzKN1Cs7saAfYtLORrhmAmkZrKbtzPoCTMvuso5Px0pZPr61P+6TL2xa/LJ8ktnVIT3rwQAl71lq3OCh934tvC2B9hgxZYNLwRTg3jDPyw8wy0GmfJeccJKlKAgR4rVaylIwrS8WeKAoUEB3Msl49O64Fo23r9G88sEd/dXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788276362; c=relaxed/simple;
-	bh=EPJ8RSWJB5URu3++h0cPK6xaFqxgLUn6Sbl44l6V/sQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i+FhLtjDwMJVoXkWmnaNqAUtkZ9TQ5VedxCR2xIzYS0VOSM6RS9zxadtXkCwimZzkvIiI1bhfy9a7F7Rsx6dVe2I0VwXNO6NXXM4uiSYz8mpeRh7TslnDvAX89AyKuYOAASJlO8F37v3eLzIrD5BVKRqxQb6eJTmTlGdLJqyx2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/wyDOkm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1788276860; c=relaxed/simple;
+	bh=iKD8ulE/7j+UTASizItruNbYincTMOqWILEWStCXBq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AsK/9JoMkJdAKX790UwBwQt/hLF1KClnQE9hnr+ODoKZ/mlFDBcJavajXwc1wSGsXAfwW1I/Tf1i3kS7vNpcAcvBT47iHDbd+Rki1/QUsYMyzTWMg8mUUW3smsIkYfWUvdmiT9kUdQhgA/tZMkd7Fkto9w5b1/Z8DEiFBvy4teY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=qqMjHbWa; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/wyDOkm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4F72AC2BCF4;
-	Tue,  1 Sep 2026 15:26:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788276362;
-	bh=EPJ8RSWJB5URu3++h0cPK6xaFqxgLUn6Sbl44l6V/sQ=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=L/wyDOkmbaEci6BMrVNxEceHI4YfUxB/605n+MuMEoMqk4j55zSaiv2g8dIBehJ9A
-	 JnDZMFxSyhPzKJcRt3tDpgbOIUZp2KneyXxHNUMenl1h1UzSmvJu9msQF2SFfDuEV4
-	 DBQ2T96OB4aenTDruPfSw/6VqfA8QW1EWolSxc6c/92ojbipJbMODYi8yidClKMHIg
-	 ++RB8MPKApdQAs9nRk/0rfgJllcODGgnA2hcUFmy73JSIurgzoxnDXgWBpJoFEFT4U
-	 wVyERIQVKxEoRh0vxFsM2H9MwJ5az0yZmtiL4BTkS0RqptZ0XGOeHsbD3suBF39llr
-	 nS/2Tjs20E9Ew==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29576C624D3;
-	Tue,  1 Sep 2026 15:26:02 +0000 (UTC)
-From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
-Subject: [PATCH v2 0/2] net: pcs: rzn1-miic: Fix config array
- initialization
-Date: Tue, 01 Sep 2026 08:25:12 -0700
-Message-Id: <20260901-rzn1-miic-fix-array-v2-0-3e907049e770@reliablecontrols.com>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="qqMjHbWa"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d9db539a54so3536435ad.0
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 08:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788276858; x=1788881658; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tXnScza6YsSOijKy2kCYJ4+3czNea5Mz9Jc+EvPjn4U=;
+        b=qqMjHbWaSN/JwOsM1TrtG409Y9rK7KlGz8wudN60+jbOef/FTEUJRUePrQF1REROdQ
+         0tStiUPDUkrkNinhPo7DYnOArZRT7xleNxrYbvzp2eppIlczslElBrGDrk9UKjB1ry50
+         3pzesgWzijXF1McdrUwmn0aun7Nr+VhYgs1Bk2JgOPWKr41ikROMU7mFnLqavniVKblN
+         hrtmEXQZ9JK81JaJcWGfZGAIwSiggUMB5h6p4JqOinc9alM66A0yDCbO5eJd6+QJr/cK
+         iWL1HdU9OsiWDqhIFxPFvIpBT6PHqSx9Ky6BZD0NiPmbBwuojr8voBvyxq2jlKcQ7oRH
+         5d2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788276858; x=1788881658;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tXnScza6YsSOijKy2kCYJ4+3czNea5Mz9Jc+EvPjn4U=;
+        b=pJiW8lrxxELrlZ/TSG9oGWzRhqtq2rwjuwFI56SBQXeVSc0wJT0QwhYACNtIibiJLv
+         TSOnvwIfWvn869xdxLOdcfoSuGCmtfuPM47j3Yld7x8Srso2yGZ/KsHc4tQiDF8xJ+1p
+         SKgCLQtCuQ6CiXKXOPM+nx7as5JQ8BZEtNS5tsF6ztMaziZx4/+bYuaqMQOKsGvT/g1t
+         YBVUKVQF6BFp3yiOEPGOf09QazML/hl1R3Ky4wpfmND8b+PRRbynDbbpQZWubmQcxVMX
+         1SEfEiFQKXbW6PYcF8j+twArfC61EaktV1RTyPNQyJu8gPuwDNebAedM6Ke0BNrdkxUo
+         p6XA==
+X-Forwarded-Encrypted: i=1; AKwUvByWcI9A/VPQjLQo9KdqpWnVb0ItU8ZOQ3iPGaP98/mfEpWE78mk4gJQmGcEvx6ExgZeoplfj6A=@vger.kernel.org
+X-Gm-Message-State: AFuF++mHl7HJz8rZqTA/8R1d74cI0sOAtA3uWjD19Wtj6qit12G5QFLh
+	gVzeo+N9RljEUbXfvUBVAjeFTMj8QflnUcx5iA5gO5b9kpd7ld41D/7e3yj3M6BNmX4=
+X-Gm-Gg: AYBFou2+rk0o05eGC+1n/+KEw5wAkZqccV2VwjRD/h6aapNjW3mq5uhAvoSYsibw6T+
+	P5fn/NdUoBFpn6Y+PLQACq4kJwkABBDLVeQRD3BKdw3UZ96+VYYkkpa9aXVQ0uR0ilChL3XP+LK
+	NdLhggv18O40ljBi7c3iOJJG/SIdEfNCP9E2tbTXpkev7oaO9pA/dQOtX7H6u0dQbTSUt1fbhp+
+	jlDVSaWUQtrVWXSNoGvaqfCCb4rwXmBg1OU9iCIOKnobVAQPDbf/weU+5/6ABI/mSy6VSRHAq6p
+	SphJ+dncnUg2Zj1nHBmegAY8lqhqQKUSCHPxI28oqU2u9XJK6x7QkC/HwZLMTryHj0KpY+SZ2bX
+	aAtn8oa0mqUGto9d9p7EF56gH2hSorjA8uG6ZnxFXf3tD9gTGqJoa1ojf/cNowqqIC1bb8vBZyL
+	pkODBnwr+64d+oUotTdGAn0N4UGOnA3tHXgk2EqOzeqQ==
+X-Received: by 2002:a17:903:1b30:b0:2d8:d4d3:da4e with SMTP id d9443c01a7336-2d94a90efd6mr156260925ad.18.1788276858223;
+        Tue, 01 Sep 2026 08:34:18 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:73::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd39e9cfsm974055ad.34.2026.09.01.08.34.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 08:34:17 -0700 (PDT)
+Date: Tue, 1 Sep 2026 08:34:16 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	shuah@kernel.org, willemb@google.com, petrm@nvidia.com,
+	linux-kselftest@vger.kernel.org, noren@nvidia.com
+Subject: Re: [PATCH net-next 2/3] selftests: drv-net: split gro.py into one
+ test per coalescing mode
+Message-ID: <apbweF6mzkEXLPbu@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+	willemb@google.com, petrm@nvidia.com,
+	linux-kselftest@vger.kernel.org, noren@nvidia.com
+References: <20260831163734.1121891-1-kuba@kernel.org>
+ <20260831163734.1121891-3-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFjulmoC/32NSw6CQBBEr2JmbRt65Kcr72FYDG0jncCM6SFEJ
- NzdkQO4fFWpV6uJrMLRXA+rUZ4lSvAJ7PFgqHf+ySCPxMZmtsxqPIN+PMIoQtDJG5yqW4BLx3l
- eWMqwMmn5Uk7lbr03iXuJU9BlP5nxl/73zQgIbVGT64guWPFNeRDXDkzBTxqGeKIwmmbbti/U8
- GtVwQAAAA==
-To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kyle Hendry <khendry@reliablecontrols.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788276361; l=762;
- i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
- bh=EPJ8RSWJB5URu3++h0cPK6xaFqxgLUn6Sbl44l6V/sQ=;
- b=GRVjUws+n7JiTBA1xv1VApzL+tvpJYMGPHb01yIf4+srgprXaovjBiDvePLVijKaXwhp5lkif
- 1kV4edyqKvZANoRBQ3mE+xAk1egjvwsFIyMLuH9wgG0sYjL6RhgIHUf
-X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
- pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
-X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
- with auth_id=946
-X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
-Reply-To: khendry@reliablecontrols.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831163734.1121891-3-kuba@kernel.org>
 
-Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
----
-Fix issues when populating dt_val array from device tree values
+On Mon, Aug 31, 2026 at 09:37:33AM -0700, Jakub Kicinski wrote:
+> gro.py runs its full set of cases three times over - against SW GRO,
+> HW GRO and LRO. It's our test with the longest runtime. The 318 cases
+> take 12m30s on mlx5 with a debug kernel.
+> 
+> Bumping the timeout for all tests feels wrong when we can so easily
+> split the GRO test by execution mode. Shorter runtime also helps retry
+> just the failing portion / mode (we retry failing tests to try to
+> detect flakes vs real failures).
+> 
+> Move the main logic to gro_lib.py and add one program per mode -
+> gro_sw.py, gro_hw.py and gro_lro.py, 102 cases each. Move PPPoE to
+> a dedicated test. It has been tacked onto the tests in an ugly way,
+> and it only runs against SW GRO anyway.
+> 
+> Note that unfortunately this will case a rename of all test cases.
+> The mode moves from the case name to the test name
+> 
+>   gro.py test.sw_ipv4_data_same
+> 
+> becomes
+> 
+>   gro_sw.py test.ipv4_data_same
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> We also saw 20min runs on gve, but those may have been errors.
+> The GVE runner is very flaky and even when it runs it doesn't seem
+> to execute the gro test. Perhaps because the test times out?
+> ---
+>  tools/testing/selftests/drivers/net/Makefile  |  9 ++-
+>  tools/testing/selftests/drivers/net/gro_hw.py | 14 ++++
+>  .../drivers/net/{gro.py => gro_lib.py}        | 68 +++++++++----------
+>  .../testing/selftests/drivers/net/gro_lro.py  | 15 ++++
+>  tools/testing/selftests/drivers/net/gro_sw.py | 14 ++++
+>  .../selftests/drivers/net/pppoe_gro.py        | 46 +++++++++++++
+>  .../selftests/net/lib/ksft_setup_loopback.sh  |  2 +-
+>  7 files changed, 129 insertions(+), 39 deletions(-)
+>  create mode 100755 tools/testing/selftests/drivers/net/gro_hw.py
+>  rename tools/testing/selftests/drivers/net/{gro.py => gro_lib.py} (92%)
+>  mode change 100755 => 100644
+>  create mode 100755 tools/testing/selftests/drivers/net/gro_lro.py
+>  create mode 100755 tools/testing/selftests/drivers/net/gro_sw.py
+>  create mode 100755 tools/testing/selftests/drivers/net/pppoe_gro.py
+> 
 
-Changes in v2:
- * Use a more correct array size in memset
- * Ensure that write to dt_val is in range
-
-Link to v1: https://lore.kernel.org/r/20260813-rzn1-miic-fix-array-v1-1-b58cafcc917e@reliablecontrols.com
-
----
-Kyle Hendry (2):
-      net: pcs: rzn1-miic: Fix config array initialization
-      net: pcs: rzn1-miic: Verify port number from dtb
-
- drivers/net/pcs/pcs-rzn1-miic.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
----
-base-commit: 1376afc7660bad2a1a5ee0876898312a486cf8bd
-change-id: 20260813-rzn1-miic-fix-array-e6ae4452c017
-
-Best regards,
--- 
-Kyle Hendry <khendry@reliablecontrols.com>
-
-
+Reviewed-by: Joe Damato <joe@dama.to>
