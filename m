@@ -1,137 +1,82 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAFD476CC6;
-	Tue,  1 Sep 2026 09:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCDE472F9A;
+	Tue,  1 Sep 2026 09:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788254947; cv=none; b=Vd8dAvqNooURmpn2JxwwGmnKujc85sXM/kuhLhMCnqvKMCm9sBrO+Uk07rDEuXBOwa1ZT6nf1CN49liNxYRLNMbP5LTJskEmx3IY/Hg5Ds4VYytey7wFY36w6OTbgGe/G75hHDDhjQc9MWfqbzdBtckS5MREKutRQZ0NVmoOIPQ=
+	t=1788255072; cv=none; b=X+s870eqWnynWk0Yt2rjVeFy7M5JZM9yOC4rEhuUYU/8p0VH74H8OFm6sGM1RHVdHWKt8MXKb2sO8ojFFktqG0+szaCvutYdZKnG+GnszMCkZXrwEHoIVC5qo0+BnAFzori1G/9iAWy0nYke7FAoADPJO7+qVtFiiTbsou5XCv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788254947; c=relaxed/simple;
-	bh=Dfys3I4aIMPKtf0lDoOBlnhZJxVXG3dQk+fTqsF80D0=;
-	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=P9CsmTa4C6X/28aQz9AroS61LqxupPUA+DXdbqP18AwuBNM49zyvBd0J3ChqiNX2kzho3zeE8D8WAs9U+mEbp1+MM0Vf0Ah+1iR5q8OstPxsQQCHlcXVl+aMdgwzeAZOXZ95ytSsJpkbwJWMPwohuOqXCYiHdEQL/0637OWDOkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hZ0t62ftBz4yjjP;
-	Tue, 01 Sep 2026 17:29:02 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 6819Sm7I087688;
-	Tue, 1 Sep 2026 17:28:48 +0800 (+08)
-	(envelope-from he.peilin@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid31;
-	Tue, 1 Sep 2026 17:28:51 +0800 (CST)
-X-Zmail-TransId: 2af96a969ad3c03-70ef9
-X-Mailer: Zmail v1.0
-Message-ID: <20260901172851033O5o7viiEDPAm8g6Mkqe-G@zte.com.cn>
-Date: Tue, 1 Sep 2026 17:28:51 +0800 (CST)
+	s=arc-20240116; t=1788255072; c=relaxed/simple;
+	bh=ySarOAj2Ngtg8dGv3Zc0vmJS/Jel86X5L65TDiwzrT4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GWTTiSSVrQpdFIXdzMe8NIzih3P0iggtHrMNP7QepjgSQ2BQ4VlU+FLPTzfxRcm9ns6QYHw2soDwom1/dey7mkQawv65rb4Li00rBFn5Irsro2VV2eZNhSEtsSXTBAcjSyIEVr7uLkyqBPbEPIX2IFuorT/8LyCWVJINeWEZi5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QuY8WXLU; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QuY8WXLU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331391F00A3D;
+	Tue,  1 Sep 2026 09:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788255063;
+	bh=PN3YfDnfO1n/4y3BUgaBKZa7e5TfnlqNDUTvPDXiRxs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=QuY8WXLUtuRqh3tPpRH98v4tavsTDOGqCY3ePm1nVXxlzOGIbVAVf5p/JF/Zbxi/Z
+	 vAJhScsTftF6nII41ProNHxdOFMc1HIgZYcFSilLHVi0Tn/UwjhJXwgtJliJfHdBsA
+	 CF0DB4+WZc7A2b/hDi/GYXLD5LdeuykdWyXwFFpv/SEGNbi+vDrBo4DoSV/0imVyx6
+	 Kse0k5+7WYXH/ml/OwB8o2aAKVXUzxWkkxHjhqWaIgNrh/38fgTrq3DfSnUIvjqjav
+	 2UCVC0vpLGccZ3vLKRnUuxlukG7vstJCmg3YVcA+KYnysS8O8WgpmtKePblZEP3Nqh
+	 RPRVAQVYZ2U1g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1990B3924FCF;
+	Tue,  1 Sep 2026 09:30:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <he.peilin@zte.com.cn>
-To: <maxime.chevallier@bootlin.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@foss.st.com>, <vbridgers2013@gmail.com>,
-        <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Cc: <jiang.kun2@zte.com.cn>, <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4IG5leHQgdjNdIG5ldDogc3RtbWFjOiByZW1vdmUgc29mdHdhcmUgVkxBTiB0YWcgc3RyaXBwaW5n?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6819Sm7I087688
-X-TLS: YES
-X-ENVELOPE-SENDER: he.peilin@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 01 Sep 2026 17:29:02 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A969ADE.001/4hZ0t62ftBz4yjjP
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4] mac802154: fix data race and NULL deref on
+ local->assoc_dev
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178825500565.1063663.12153518921874047714.git-patchwork-notify@kernel.org>
+Date: Tue, 01 Sep 2026 09:30:05 +0000
+References: <20260829230551.1787432-1-skwkevin@mail.ustc.edu.cn>
+In-Reply-To: <20260829230551.1787432-1-skwkevin@mail.ustc.edu.cn>
+To: Kaiwen Shi <skwkevin@mail.ustc.edu.cn>
+Cc: alex.aring@gmail.com, stefan@datenfreihafen.org,
+ miquel.raynal@bootlin.com, linux-wpan@vger.kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ xuanqiang.luo@linux.dev, stable@vger.kernel.org
 
-The software VLAN stripping logic in stmmac_rx_vlan() was originally
-introduced in 2014 by commit b93819854d6e ("stmmac: Add vlan rx for
-better GRO performance.") as a workaround to improve GRO performance,
-since at that time GRO could not handle frames with VLAN tags. However,
-this limitation was resolved in 2015 by commit 66e5133f19e9 ("vlan: Add
-GRO support for non hardware accelerated vlan"), which added GRO support
-for non-hardware-accelerated VLAN frames. Keeping a software fallback
-path for VLAN stripping is no longer necessary and only adds complexity.
+Hello:
 
-Fixes: b93819854d6e ("stmmac: Add vlan rx for better GRO performance.")
-Signed-off-by: Peilin He <he.peilin@zte.com.cn>
-Reviewed-by: xu xin <xu.xin16@zte.com.cn>
-Reviewed-by: Jiang Kun <jiang.kun2@zte.com.cn>
----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 28 ++-----------------
- 1 file changed, 2 insertions(+), 26 deletions(-)
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b2b7d0242dd3..2e3b0cf10d66 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5021,24 +5021,6 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
- 	return vlan_features_check(skb, features);
- }
+On Sun, 30 Aug 2026 07:05:51 +0800 you wrote:
+> local->assoc_dev is shared between the association path and the
+> association-response worker without common synchronization.
+> 
+> mac802154_perform_association() stores the coordinator pointer and waits
+> for a response. Its timeout and error paths clear the pointer and return
+> to mac802154_associate(), which may then free the coordinator object.
+> Meanwhile, mac802154_rx_mac_cmd_worker() may observe the associating bit
+> and enter mac802154_process_association_resp(), which dereferences
+> assoc_dev.
+> 
+> [...]
 
--static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
--{
--	struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
--	__be16 vlan_proto = veth->h_vlan_proto;
--	u16 vlanid;
--
--	if ((vlan_proto == htons(ETH_P_8021Q) &&
--	     dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
--	    (vlan_proto == htons(ETH_P_8021AD) &&
--	     dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
--		/* pop the vlan tag */
--		vlanid = ntohs(veth->h_vlan_TCI);
--		memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
--		skb_pull(skb, VLAN_HLEN);
--		__vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
--	}
--}
--
- /**
-  * stmmac_rx_refill - refill used skb preallocated buffers
-  * @priv: driver private structure
-@@ -5407,9 +5389,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
- 	if (priv->hw->hw_vlan_en)
- 		/* MAC level stripping. */
- 		stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
--	else
--		/* Driver level stripping. */
--		stmmac_rx_vlan(priv->dev, skb);
-+
- 	skb->protocol = eth_type_trans(skb, priv->dev);
+Here is the summary with links:
+  - [net,v4] mac802154: fix data race and NULL deref on local->assoc_dev
+    https://git.kernel.org/netdev/net/c/c037915f80c4
 
- 	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
-@@ -5901,9 +5881,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 		if (priv->hw->hw_vlan_en)
- 			/* MAC level stripping. */
- 			stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
--		else
--			/* Driver level stripping. */
--			stmmac_rx_vlan(priv->dev, skb);
-
- 		skb->protocol = eth_type_trans(skb, priv->dev);
-
-@@ -7964,9 +7941,8 @@ static int __stmmac_dvr_probe(struct device *device,
- 	ndev->features |= ndev->hw_features | NETIF_F_HIGHDMA;
- 	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
- #ifdef STMMAC_VLAN_TAG_USED
--	/* Both mac100 and gmac support receive VLAN tag detection */
--	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
- 	if (dwmac_is_xmac(priv->plat->core_type)) {
-+		ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
- 		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
- 		priv->hw->hw_vlan_en = true;
- 	}
+You are awesome, thank you!
 -- 
-2.27.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
