@@ -1,62 +1,61 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F547013F
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 21:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD5B471D0B
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 21:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788298803; cv=none; b=YsYWZJTr6gLAXMjPfiYE9eWsVpD5jZORzotk2VCDbwyfImv5LDqdaZRIcjR73KPOET6Q5mNI2NMm5/8kcCfEJkfNk268FY4ED86Ye8COClPa4dkz5K1Lz8O6lTOFsD6eIjMNkQN88lNnRVZwAZsVM6BJvHY2suRXsjWQFFL5zBE=
+	t=1788298805; cv=none; b=Oz1r2AJqvQFTVeGgAxTgJ5zOmbGaSh6BxdXl6DM4Zfju6aXV1dAPfmOATQ+h46TPzlJ1xLtsnge2h0aFmOz5+rBw+nSd1Kp1Z5sdG356IdWXzmk8PKCX352dnJeWnrwGGZkvF1Vkdt9DQHbqS+JHvOWgE76VONitfKGITAjS2mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788298803; c=relaxed/simple;
-	bh=TpQNl9DbT737cmBgBP6QZeX0edXbQA8wj1Wl5gCqB00=;
+	s=arc-20240116; t=1788298805; c=relaxed/simple;
+	bh=eyE60TegcdJMhcfWpYEF1SbVB3JqDiX4LAJmDhQCurs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bq6B5NNYxyI44JbNp2IoHyEPGHP34RIIi+rPPgrTlBUelImaKD6VNPuDH5iPQ9oRWvZNXr9Zn6knSbAmmzbYwknOw9fFSnLh8Q378LlqSpDShQHtsErTb1N4w8nm9F0TlqRezpRI1H2YtdBq5AjTqWOivHRezlGNSNe0NO3R38g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=W2EDEpmM; arc=none smtp.client-ip=209.85.219.44
+	 MIME-Version; b=bOM/1PeQ6/8ilJ774wG9pNVu7jtWHWypA7GqtvZyBHwhqSOeICVk3FWHH3lvRrwHZMXHdhO5jTO2yHN6NF5iPEIVk+gSW0qmiVIQDDU7xvIsy0Eqr9MnNnH2Pp/Dzdl277dxAcTwQWPK1sIv4Ua3tO3AP5o+bTISf7O/emlH6J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=euX+NJAl; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="W2EDEpmM"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-90ccb6102a1so2990596d6.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 14:40:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="euX+NJAl"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-90cc372d6b2so4498636d6.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 14:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788298800; x=1788903600; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fvsUEmfZ2TKaJs5KGDPg2m5xcrkKd2d3jmYqxtr6okk=;
-        b=W2EDEpmM+/NBqx4HuujJJH5JV+ZnHGMYM56kmVh8BhLEx5Q1JTLsZyr/Ouf2VCU8x4
-         U7PLv3aaEaL6yhDfC1oUe6SF3c/YraUN4qKFuVSOd4wpi16gwQva7KM5vaz1YkJn1gQf
-         Y1l7vE+sIEi0oL2EeRY8y1QoGMpLEL4UyJZeo=
+        d=mojatatu.com; s=google; t=1788298802; x=1788903602; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Wr78r6eU22ImOp3LoEBgktlcoV8p3UrAuZPj6+yVHc4=;
+        b=euX+NJAl65/31QpOZiiLkhfJIglVogQ+OpybY2S5ECOwIA1sIZKIcyvqD6kDBQoqlu
+         4knXPz6AxN9sA9mhlmEC7g0nZaOQFfffIQCIJLW9CioqlY6ElNUdvyNUTZBCsxus2XlD
+         tmnRMwm6PQfJmnrbVeNf9sbdWoFRVUhg9UcNo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788298800; x=1788903600;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fvsUEmfZ2TKaJs5KGDPg2m5xcrkKd2d3jmYqxtr6okk=;
-        b=fyikJAKYZC0ldX9vsb/MQhFX+irc69UEngdcycghiYxtmJBaZKsMHZtSmiAjqW1iiN
-         GKnETkQg98wz8SKUbzSrLI3rvMm6nK11Wfh/ySH2uH8V6oPFZVh+9KEbinilmDasfiXO
-         bSsi+nT1Z6Wvi+3HQa/taalM750XsMFfoDPCHs6a05i0yS9PV3tmFwOIa+xcugXwcB3F
-         83fHpKTV8Mbue0pOx5GqTD66rf9/JenCgKqHu3yFIAL2HrVKJzKi8cto2wcaMm+DpkVD
-         a00Hyt5dLFm8CPGbpxDBkW1Pl0RuokSetgTxUdje72Ojm09RDqOI3x78Nl4OXtu1zAD8
-         Nh7Q==
-X-Gm-Message-State: AFuF++nVpVhiNZ02um3NTvWj51OR5gMIuAccz5WJJ0S+zC7x4XW4bzoR
-	dasMikItys1Mgp3yMWJ/h6EwmNFG5GPvRGGGIZinj9II7hr+HGYCU7sIlaSdXbvQ9DAqfZdJ0jD
-	GxCm6eA==
-X-Gm-Gg: AYBFou1q9eEIRnrrnj1reW9RZ4RK46vFMhk1uqxAaHSvqaih7uFaImfS+9LnnqU145y
-	7YynYHWhcZBe5XODCRAd4ZANTQXLUm+kAsOgJUgOyOo4XsgPz+GzirnoI1UrL1AVcDsMvx4nEpA
-	9jMo8jau4ERH0WzLLVCbMj9REvK8P8dQfM78wh8bzsjOjdCIkrn8Row+Abu9iqimvObgm7VFbS8
-	yCgcOMmqcbCi0ZoQomUgihi40AnktWiJqkROAUKuzP1twcP3RnTdHtdDJFBfGJcWdaiiJcbU6sK
-	4TpuFJqZncJDP9pvcP+ixl0h4CWLrwnh08DKuYZSu6kUXEixFOWdqmSZS8Uot4umGrUXBFm8EUg
-	Pm8UZ2ZMo9jsPM0+nLf71gh8AenZFiurxKI2kl8jg4Oq1t62x5JITiyFlcf1P0Z3xCcNOfcnR0s
-	CfmXRliR/96LzvbMlZ/JyNZWixBo+n0wswZfM0Bhv1yXD+ygWgVg7KscLeQ+L5eZmH272yK89gO
-	3D75bwK9SWLlyutEiwg5tHLJRmec2cHRUtFrA==
-X-Received: by 2002:a05:6214:4a89:b0:90e:7fdb:8583 with SMTP id 6a1803df08f44-90e9f248577mr11782106d6.8.1788298799909;
-        Tue, 01 Sep 2026 14:39:59 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788298802; x=1788903602;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Wr78r6eU22ImOp3LoEBgktlcoV8p3UrAuZPj6+yVHc4=;
+        b=mxj63IJYAXpcMnB+OHYaCMmunUHLF2UFpHpP2zMPK8nkDpm229xhaIBEDVy1z0jEVF
+         nLLOIusipME+gBtyUuC9Khq3zzRBjwuYgQgBTifKFHznl10EkmnUK/1WE4JBaNX6fZVL
+         lLTZMl98D6jaU3CrHSzKrzLUzUH+Td1Y9sCeIbc5bKdWofF82Oy1fRjg6wMhEptIVHzC
+         4g+KQWfaDBrrxpXgt/6JoPF/DHza2PjrYa5NhN/z0MQTHlxVro7Mgb+QVu6hpEvUduDt
+         88Tcr4YJ0hVM++485Qnkkgk9kFLQFfHqDjUWtNtnuCztIXwyDOiUTrmcZJAYhfhSOa/u
+         WwLg==
+X-Gm-Message-State: AFuF++lDl85H3PoRcNkXtx8jpaLmSdZOvtWdiWRO+lKrZ6eYomVSs0Kn
+	s8VzJBK3YyMMstqNQf/0pvmDmH0QGJvp594U2p5TX3yqFNvCyAP+VQsK6FtPgxAtWZmGn1mRjPM
+	BTJDVvg==
+X-Gm-Gg: AR+sD10KaPV8uX1NRBKl3kRdInUzAyhZSPmdaty4klsyyKO+xjr7YsfgurllChWtOb9
+	+BlZ05e9BvZUtgGcGC9IRgrhkGDfBrVJTvW4q/FSY5RjeoDkK+KkSYq+a1aezwhe1rZAsx1G0hs
+	oyfYilOf4do+cbYvgcKOU+Weq2wTudG7ZGUFgLHqe7OYFDETc6pqlXDuUdu56+t3U+3dDIKFbWC
+	oA3emoO4KfDwe5x+CJRwRpXP2IEI2NMR1a8Cn0Duu2fGI8/Od0pEYdML+q4ZtQ9zpcxSjOBSiNq
+	KF/Hsh7UYn8gjNNxhWkUyr13gDZLFNlkvhm8TRPZguuiWiueaAifpPaCS8w44OectwsmB4f9UFh
+	gYMDKM5ZJgaI7RStUHN8z31g0HvSrtKrIBZ9JMz1+fiTsIN+JH9yWD942/AxZMWES+ETGmmYf58
+	TrCwM9uMINEX7mTAkQudhb7OQE491Rbi0OutdiF/Q5jmbC8VzgrLAXLEtIr93PJDTswy7Qrrzh8
+	jNJw3dVdJr+dKpx/EFxROBRtfiargcyRIVWog==
+X-Received: by 2002:a05:6214:4993:b0:90e:9d05:b757 with SMTP id 6a1803df08f44-90e9f253f0fmr11350796d6.0.1788298801772;
+        Tue, 01 Sep 2026 14:40:01 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm3458426d6.2.2026.09.01.14.39.58
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm3458426d6.2.2026.09.01.14.40.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 14:39:58 -0700 (PDT)
+        Tue, 01 Sep 2026 14:40:00 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -68,14 +67,12 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Simon Horman <horms@kernel.org>,
 	Victor Nogueira <victor@mojatatu.com>,
 	Vega <vega@nebusec.ai>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Vijay Subramanian <subramanian.vijay@gmail.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH net v3 8/9] net/sched: ets: clamp quantum in parse and fallback paths
-Date: Tue,  1 Sep 2026 17:39:29 -0400
-Message-Id: <QDISC-0CFC.v3.20260901204856@mojatatu.com.9>
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Subject: [PATCH net v3 9/9] selftests: tc-testing: update ETS test 41f5 for clamped quanta
+Date: Tue,  1 Sep 2026 17:39:30 -0400
+Message-Id: <QDISC-0CFC.v3.20260901204856@mojatatu.com.10>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
 References: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
@@ -85,65 +82,48 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-ets_qdisc_change() falls back to psched_mtu() with no floor for bands
-without an explicit quantum. With a crafted size table qdisc_pkt_len
-reaches ~2 GiB, so a zero psched_mtu on a headerless device makes the
-deficit-refill loop spin under the qdisc lock.
+Commit "net/sched: ets: clamp quantum in parse and fallback paths"
+moved the quantum floor into ets_quantum_parse(), so every explicitly
+configured quantum is now clamped to [256, 1 << 20], not just the
+psched_mtu() fallback.
 
-Move the floor into ets_quantum_parse() so explicitly configured quanta
-are also clamped to [256, 1<<20], not just the fallback path.
+Test 41f5 passes "quanta 4294967294 1 1" and matches the values back
+verbatim, so all three bands now differ from what it expects:
 
-Conditions to recreate the bug:
-  CONFIG_NET_SCH_ETS=y. Requires CAP_NET_ADMIN (namespace-local via
-  unshare -Urn suffices).
+  before: bands 3 quanta 4294967294 1 1
+  after:  bands 3 quanta 1048576 256 256
 
-  tc qdisc add dev dummy0 root ets bands 3 strict 2 quanta 1 1
+Update the match pattern accordingly.
 
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Vega <vega@nebusec.ai>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/sch_ets.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 25fcf4079fec..6cc902a03838 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -83,11 +83,7 @@ static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
- 			     unsigned int *quantum,
- 			     struct netlink_ext_ack *extack)
- {
--	*quantum = nla_get_u32(attr);
--	if (!*quantum) {
--		NL_SET_ERR_MSG(extack, "ETS quantum cannot be zero");
--		return -EINVAL;
--	}
-+	*quantum = clamp_t(u32, nla_get_u32(attr), 256, 1 << 20);
- 	return 0;
- }
- 
-@@ -632,11 +628,13 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 			return err;
- 	}
- 	/* If there are more bands than strict + quanta provided, the remaining
--	 * ones are ETS with quantum of MTU. Initialize the missing values here.
-+	 * ones are ETS with quantum of max(MTU, 256). Initialize the missing
-+	 * values here.
- 	 */
- 	for (i = nstrict; i < nbands; i++) {
- 		if (!quanta[i])
--			quanta[i] = psched_mtu(qdisc_dev(sch));
-+			quanta[i] = clamp_t(u32, (u32)psched_mtu(qdisc_dev(sch)),
-+					    256, 1 << 20);
- 	}
- 
- 	/* Before commit, make sure we can allocate all new qdiscs */
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
+index ee09e6d6fdf3..d2eab61c099a 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
+@@ -987,7 +987,7 @@
+     },
+     {
+         "id": "41f5",
+-        "name": "ETS offload where the sum of quanta wraps u32",
++        "name": "ETS offload with out-of-range quanta clamped",
+         "category": [
+             "qdisc",
+             "ets"
+@@ -1002,7 +1002,7 @@
+         "cmdUnderTest": "$TC qdisc add dev $ETH root ets quanta 4294967294 1 1",
+         "expExitCode": "0",
+         "verifyCmd": "$TC qdisc show dev $ETH",
+-        "matchPattern": "qdisc ets .*bands 3 quanta 4294967294 1 1",
++        "matchPattern": "qdisc ets .*bands 3 quanta 1048576 256 256",
+         "matchCount": "1",
+         "teardown": [
+             "echo \"1\" > /sys/bus/netdevsim/del_device"
 -- 
 2.43.0
 
