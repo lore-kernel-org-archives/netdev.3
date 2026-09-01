@@ -1,99 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB247CC75;
-	Tue,  1 Sep 2026 12:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA4A47DFAF;
+	Tue,  1 Sep 2026 12:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788265235; cv=none; b=otc9MLVv7Onba48/AHKcQTCbHHeAqnZ6nsCXewGtqm2BnUXbMN3476+QDhffNpQqO+CKnIeWT8LGQ0ikdqiSgoWN235/wij6SCC2/kNcIqDEXF1gf8z4naFA0ZkirVfdoWUnKScnj5dqJeu7+ZrhUC0NPskndoL+4JOcjBw1Ris=
+	t=1788265324; cv=none; b=UZH0YYlXdUuXRXrUjfBN00uzMZevQaMCcFccS8zZ/dSGYyoH1Uni3ibYQ9FiMz/TjGJxPmCs9zE8DOBBCc2l0PEw+sdXQgqiCdfdfFBwTJ5ne9owdykhdBqvlLJA7dTO9Qj/aRM/x6GxaztLZmVMsAzaWfa3bQ/aU9Jnf14B7dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788265235; c=relaxed/simple;
-	bh=Ms5yUYYVIUCMr7+Dx214kheiE7jKpBdWV1rFqMcG+C0=;
+	s=arc-20240116; t=1788265324; c=relaxed/simple;
+	bh=jguE+jBNVdn2uoYwoeLueg6h98XsLE2+XBGA/50gzoU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BB78j5yoe0zeIy8lEXyA3SXddm03SINcKNt7hOqwkpkPHAOc8Ms68jUL476Ur6L5nbE3t+egElockKeak40cg1tEB00WXlSVBCOOEJJdyKkO1+mMUU8X+rAg30c/Mp0dO3SxYM+nvyrJ6v2KRuTRuWudXVlBvrnWKvlpyy/3EEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzVCDtES; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=lmFd/Jh7mW3LMu27LEK6uy11EmEfu6y2+zHnG4T9VeqMFsoxAgDNCgYSBGm5DSv4gTqtTTJUBPluRWeEF6fc/2cysiwwnHqrR0sdse1eMJHiCMKDimMKHN0mrbyaRRRXXSEwG6kxx+jmZRJ0p53FZNufUr/YDCdIHMZttu/J6+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wIYwJysD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzVCDtES"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD52B1F000E9;
-	Tue,  1 Sep 2026 12:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788265234;
-	bh=knqgEaQ3Nt/j1kgI3GiULCfkTBJyPDx6YekcweuXbC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XzVCDtES9FvYRwTEGc9GrdSsXkl6cVu5UXSDTum7lXO3LWqCLtN+EXaqrgdN6hcuP
-	 3OrxkBXK3RjdrJeeLI/0bMQBaJ+ENpefSMLaVjuocWSFwmZ6GMfxx7oDYWyv8N0zBE
-	 G45G+qxb1zudvuGlCeaVk39PiCS9L2W1Wcgfl5qkR8CtuoJXn906kmVLfHXv1XLXyq
-	 tCGGUrHonlTdH81NrBePv0pYG0mZO3XmPN42ul1VU0dzC8Y8ut+6TaO4jfz0wI1G9a
-	 1Hm3Q4YEeZnZ0BA7vHLJ6seqCgz4sMz34z4XDxfvDIEy5PrHcznAPOfFcyS+RhwLuR
-	 8Lmr/WfajOQFw==
-Date: Tue, 1 Sep 2026 14:20:21 +0200
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Peter Hunt <peter.hunt@opengear.com>
-Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, 
-	johannes@sipsolutions.net, netdev@vger.kernel.org, mhi@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 0/3] net: wwan: support DTR/RTS on AT ports
- via MHI IP_CTRL
-Message-ID: <zjafvc6ndpkmavogxwmqj5gpefpj4ymefn5obed6cvjot7wnwa@pmrfl5tixa72>
-References: <20260819224927.2274790-1-peter.hunt@opengear.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wIYwJysD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=HdWnpN5iGKqOjiVIG1o47AbqSjEI69XYYtz2Z3ole4A=; b=wIYwJysDRjxZNe5mlKoAshLsC2
+	PGC67MswfnqliG2iCZ95UIO8R4sNNbOsVYb46auguwyTiUI0Da3FoVY+EyrkoWI1XybrcrkBovnn0
+	9DD6ZjySSPtjJpRsFLjXVEOFyD2MbWsA58IFoADS8g+uup2dUBBEHh6frpxKs2hss8h8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1NUu-002Lya-1S; Tue, 01 Sep 2026 14:21:52 +0200
+Date: Tue, 1 Sep 2026 14:21:52 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
+	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next 2/2] net: stmmac: dwmac4: Use the full perfect
+ filter ability for UC filter
+Message-ID: <c7819431-d33d-4e9c-ab36-be55b94d29f4@lunn.ch>
+References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+ <20260831070121.349778-3-maxime.chevallier@bootlin.com>
+ <285c8969-2f0d-46de-b098-60ff10f30cf6@lunn.ch>
+ <493afde2-8603-41e8-b6ce-f8e399c53275@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260819224927.2274790-1-peter.hunt@opengear.com>
+In-Reply-To: <493afde2-8603-41e8-b6ce-f8e399c53275@bootlin.com>
 
-On Thu, Aug 20, 2026 at 08:49:24AM +1000, Peter Hunt wrote:
-> Qualcomm/Sierra SDX55/SDX65 modems (e.g. EM9291) withhold unsolicited AT
-> result codes until the host asserts DTR.  The in-tree mhi_wwan_ctrl driver
-> exposed AT ports but never signalled DTR, so URCs never reached userspace.
+On Tue, Sep 01, 2026 at 08:37:20AM +0200, Maxime Chevallier wrote:
+> Hi,
 > 
-> Patch 1 extends the wwan core with an optional ->dtr_rts(port, mdmbits) port
-> op.  The TIOCM bitmask state is tracked entirely in the wwan core; drivers
-> receive the full bitmask so they can drive DTR and RTS independently.  The
-> core raises DTR/RTS on first open of any AT port whose driver implements
-> ->dtr_rts and drops them on last close, mirroring TTY semantics.  In the
-> ioctl path mdmbits is re-read under data_lock inside ops_lock so the value
-> passed always reflects the committed state and concurrent ioctls are
-> correctly ordered.  wwan_remove_port() also de-asserts on hot-unplug.
+> On 9/1/26 02:12, Andrew Lunn wrote:
+> > On Mon, Aug 31, 2026 at 09:01:20AM +0200, Maxime Chevallier wrote:
+> >> Contrary to dwmac1000 that gets its number of perfect filter entries
+> >> through the 'snps,perfect-filter-entries' property, dwmac4 allows
+> >> reading the filter size from the HW features registers.
+> > 
+> > Does dwmac4 take any notice of "snps,perfect-filter-entries"? Should
+> > it be marked deprecated?
 > 
-> Patch 2 enables the IP_CTRL MHI channel in the Sierra PCI table so that
-> the IP_CTRL driver (patch 3) is actually bound on those controllers.
+> It's only used on :
 > 
-> Patch 3 adds a second mhi_driver that binds the IP_CTRL channel and
-> registers a ->dtr_rts op so that the wwan core's open/close DTR raise/drop
-> and userspace TIOCMSET calls both reach the modem.  A single recycled sink
-> buffer keeps the IP_CTRL DL ring live so the modem's transmit path does not
-> stall.  The existing AT/QMI/MBIM data path is untouched.
+>   "st,spear600-gmac"
+>   "snps,dwmac-3.50a"
+>   "snps,dwmac-3.70a"
+>   "snps,dwmac-3.72a"
+>   "snps,dwmac"
 > 
-> v4: https://lore.kernel.org/netdev/20260816121705.858013-1-peter.hunt@opengear.com/
+> So, dwmac1000.
 > 
-> v5:
-> - Change ->dtr_rts from bool to unsigned int mdmbits (patch 1 + 3): DTR and
->   RTS are now driven independently; fixes RTS inversion when TIOCMBIS/BIC
->   changed RTS with DTR in the opposite state
-> - Re-read mdmbits inside ops_lock in the ioctl path (patch 1): closes a
->   concurrent-ioctl ordering race where two racing TIOCM ioctls could leave
->   the modem line state inconsistent with TIOCMGET
-> - Add ->dtr_rts(port, 0) call in wwan_remove_port() (patch 1): ensures
->   DTR/RTS are de-asserted when a port is removed while an fd is still open
-> - Update kernel-doc to note ->dtr_rts is AT-only and describe mdmbits (patch 1)
-> - Pre-queue RX sink buffer in mhi_wwan_dtr_probe(), requeue in dl_xfer_cb
->   (patch 3): prevents IP_CTRL DL ring from running empty and stalling the
->   modem MHI transmit path
+> I'd say, we can definitely deprecate on IPs that don't match these.
 > 
-> Peter Hunt (3):
->   net: wwan: core: propagate modem control signals to port drivers
->   bus: mhi: host: pci_generic: enumerate IP_CTRL channel for Sierra
->     EM919x/EM929x
+> Interestingly, there are _some_ dwmac4 devicetrees out there that use
+> this property. It achieves nothing, and even worse, doesn't match what
+> the HW reports :
+> 
+> In arch/riscv/boot/dts/starfive/jh7110.dtsi for example :
+> 
+> gmac1: ethernet@16040000 {                                            
+> 	compatible = "starfive,jh7110-dwmac", "snps,dwmac-5.20";
+> 	[...]
+> 	snps,perfect-filter-entries = <256>;
+> }
 
-FYI, this patch got applied to MHI tree.
+So another thing for the TODO list, extend the YAML description to
+make properties conditional on the IP core version, so the validator
+tools will pick this up.
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+	Andrew
