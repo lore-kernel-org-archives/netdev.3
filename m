@@ -1,150 +1,173 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D30E3A8745
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C75F38399A
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 14:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788271761; cv=none; b=VIn4fvy5Z8dsFjr2f+wJVQHiYQ2f8Uc3DHaaL21u2Vfn9TrDDA5lpnc07KaEunuOApNPvszRUJpAjhuFA56pm00DLGjutlJCMwCGFxud44r71qlPMfhLeqlwWBPjoWZqDT9lEMp6Qi/BSCUFKZ8sBJdDR6md8FglLBNHcRkmaQ4=
+	t=1788271798; cv=none; b=X7jFo8qeYOcbAdNXrx+aWdhvtp4yxjGTEoLGLLSjB+FBswH8msr4dU19kyMkPe1H/3ZHhMpZstvLBDI0/uWlFhsxqg62nJv2ZUt0vFrTakVUu/t0xG9lAy1jySmgsqAtMycVz0Z11vIY5x5L3bKG0o8YIdlFA2wt2+DA9Kz5xOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788271761; c=relaxed/simple;
-	bh=C66dzNAiLxzxkCBjY2wVJtqAWhkFkdYcJ7WYBjNLEpY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aKpMD/asYVG+5qU0HEEsFD6ExFRtu1+4vRQ83VaXBgdC3LA9SXZ2tjmLWHAPcF7IYH+FHAJFewqlzfM/XdbKvGH96sTcKumhfZuVeqJ6iBijcuS++60uWGDLLRvLbevQ2BRRkf74aagZG14HmYqiAEowJrs7RQ2pAqG/K94K/38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ci6WrtA+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=To7Qgh6o; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788271798; c=relaxed/simple;
+	bh=UprTbNUUvXH99g2NCx2ct2QD9UMqg+J0yXIvULzVEkw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tQjDLwHr3Kafd9htEnT3GNoHkfUKfQMbfXio4/y4mc7oz9pxJ27O/Bsy5OYCvOGZTM1atHKeD9sKwJr9pfURdqg5PNTQiKVfHyyUMFvTADDL+ZhHSuvwNTsefmNAt9Bu6VM0eGg9IKP5OxUcg+/FA+igNbaiR8JA0zOSLk0m1uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=mgV5xqH+; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ci6WrtA+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="To7Qgh6o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788271759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b9vPZOgd6NLyUWZKoe/EId/qc/H8rWYiebMVzAAsIXQ=;
-	b=ci6WrtA+cT4ORP24QlBjUDVlHyUZI/uSTeJUJu8cvptsFkhXLxtguxymYWUFNp89B7tocj
-	7AD8FP3kMn5kqgp22bWyFsO9FYsorN6iB6jzTTbClmLxchw3NNko4OGzR/PzjEGdeES80t
-	Ha9bcyHY/0l0BYzyynhtyGpNSOYQBzk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-uoBvhoOHPy6lKRdIR_t2jg-1; Tue, 01 Sept 2026 10:09:18 -0400
-X-MC-Unique: uoBvhoOHPy6lKRdIR_t2jg-1
-X-Mimecast-MFC-AGG-ID: uoBvhoOHPy6lKRdIR_t2jg_1788271757
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48437090e74so694620f8f.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:09:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788271757; x=1788876557; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b9vPZOgd6NLyUWZKoe/EId/qc/H8rWYiebMVzAAsIXQ=;
-        b=To7Qgh6o32tahncczO4jcO+dcvNd2BcxpbUbhLpasdNU87m2mlpYif2H1qDhfMo+lY
-         bidk4auBiSOBNhgAYBsOfIEfVPCKq1G/yR3UFobNpfrABjgFVaAlHCqlGFuURoJ5svJn
-         +kJoMtxVlZpRdH26I3PSy0ZIwByA6WCHgnvBnZLWFp6rjmnvnKysDc5pgspzfjD9FsKm
-         SWeoWigxN5OItEJrer5WFh/bHn9hZ1moEQ7xDmFXs1ooSqf+tHI0dv3R4a8kL44HCJ0D
-         +4Hx1TKcnQc2DV+75Cw11GDCUQk1CYRcGZnFIhPrNeod8Rsi5gKsuLjNOcMkcphg/x7j
-         91rQ==
+	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="mgV5xqH+"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7ee37dc91f5so2729291a34.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 07:09:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788271757; x=1788876557;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b9vPZOgd6NLyUWZKoe/EId/qc/H8rWYiebMVzAAsIXQ=;
-        b=gvf9HNy+x/9NEpaMjgA/AY6EPfZR6ykm+GEpK6qwpCToe9apJ3QsrV0MaUSGuirnbP
-         kvbDhlgKkUbQtnTv3M43RWQUS4BOVtbBON1j+LtkNpvDfC7qU5D525eUEQ9tQkNUJnhL
-         1CclSuxqRoF5yZjHTk4+41oeHPcOFhsobJxSe9YxpjqtCI+XcXK5MUFVXq89YuO37djX
-         lZn74YnPpES0np0A7L7S91W0seLmDyq22Vo2as4C8D6tFGi+rVVsVRZzOQnXRQjHi/oB
-         SzVQCNlobNG4hzRcL9MPa+0KGHaWPnKHfBxfxBZWK++XRDGTK3yGLUFihUJQklvJsJe7
-         eDqw==
-X-Forwarded-Encrypted: i=1; AKwUvByae4YHIJmBzwWUsSWiix6YunFfkagVUH3vyiUo2YZ+w3rcdo2tDkcaL6neNCO6Dv/UG1cr98Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++m1Cqx4MqdG1GUkTvNxHibQYgL0dEH/8A9oBDdwfiXfb5l0Ss0k
-	6PDNo1ptFZXHfqGve/rVj5R2hiWiCe6E+cjlj73v51DdM4vYjPHi/+n0pr1SMXJtfpiIYd4ZwvF
-	FFvCQfeNGEiAMBpzjWpE9D5CSXxblGsEK7/klRwkFmIkSxMzWJyTvxxNqhA==
-X-Gm-Gg: AYBFou2U2y0ra+m1+JT/LC6s7C4pOg/5DMUWRyXRIfHFQd8NUWnzSVHISpIvIE1Cw27
-	tfebbCjbAz+JngO6ylbRe6mCdSJWisH/L+FawYpWxQWGzKIbzWidaPz2A9vaPU5UYzRtpq0LMOV
-	cERmvZVI1hIHW9qALqG2300vf/kVguLuMpUl24m0VBFRSlzZjKOi7jqo4US0k1LhneBQKPe74zy
-	BBLwIKsyeBfckZEtyaYTQBxJ7DW9hdVRsz/hDfwwBkMhY7gI3yqRxrUPgNXJMwlpX8eai6hY9Lr
-	YXhplYwyLjQ3UFMD1OEGw9WRgAWaGUCVXLpFNfqi9aTpQIJbCme5c20mVQRqqQekK1J8GrjgVdV
-	d8VRE6coIVkCdG2xsELFENXoqruStXqWR5rmJ7ovvZDeiwYPg4Z5jYQeSBGPSY/o11kYSUlA1bg
-	==
-X-Received: by 2002:a5d:5e01:0:b0:482:e2f2:19c9 with SMTP id ffacd0b85a97d-482f7987c40mr51900099f8f.2.1788271756603;
-        Tue, 01 Sep 2026 07:09:16 -0700 (PDT)
-X-Received: by 2002:a5d:5e01:0:b0:482:e2f2:19c9 with SMTP id ffacd0b85a97d-482f7987c40mr51899930f8f.2.1788271756069;
-        Tue, 01 Sep 2026 07:09:16 -0700 (PDT)
-Received: from [192.168.188.218] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48442d7ec2esm5063012f8f.37.2026.09.01.07.09.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 07:09:14 -0700 (PDT)
-Message-ID: <a86aa34a-8bea-46d2-a785-6c423ac00b1d@redhat.com>
-Date: Tue, 1 Sep 2026 16:09:13 +0200
+        d=1e100.net; s=20251104; t=1788271793; x=1788876593;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=klux3Px16MgfpuFL4Thl1laPfvZCFrqMR76ZeHwaoNE=;
+        b=dvSTBo2m6OGgS54PAafF93fMI/92Bp4xP8GyUok4LH8t60GS3QomGp75plNCiOfuDi
+         tK/XjjtbXneoDPVrGFKajLH4EMWyEBg2fIM6HK+hdnwt3/pURF+/2K19CGxd7OjvIOQy
+         iaKGbStFX7caohg969VF11LoJo5v/fFp4Bu0B/Aw4CRE/BEH5uKwCYtqCKivdEn+QXAz
+         sS3zt7JMwn66s0N/CpZ6IK3pUWc/0jd9xDpc1bqQ6vlCn1zrvE8AaL/BmdNV39bETa76
+         xFw/vsKI/37DuQ8PcgRAf2obGcxoxotk8+CqU+DMtZMEaBLgj+spgbo0pUP+c1Y3VWqL
+         MMog==
+X-Gm-Message-State: AFuF++mps08PvIVvE13Vv14I0EBDjyAEbqXaKm4LHY8L5huElbjNTU46
+	t7p/JmPWmNtf0QQTr5NRsR+kAGNAe3VPlaf92odtr/CcgKMVHhJ0mqj4
+X-Gm-Gg: AR+sD11F4pij8JXsrBQYlx4WoGIs+nldk9clGMfm9fFnRhhNLRKmr9pc4vZe34N+IxR
+	fJmSF/fF9VUsyLuyFqey0dsdMM622U2FsyBA+wKNshCLpSp9YaNANfSjPdrgVlJvd+JcykoHwl/
+	PcsDysEQOKl71i+XFLkrPE6r8lYEgbxihUZHJ5J6elb2r4DUdUxJPcg+1satcqqCb+Tv0Gc+SI9
+	1qvq9svtQWi4BvBE9AiRNVmigFcM1mkH7Sj1xVbmfiqmAKo6RaCt9PSdqviM6LUG/G9eRj/6IXs
+	zs5Ne/gXAuvAziuITm63dVhFtws6g3JfbFBhCq1DX8868Qa7kFn0KXxkvb7afXQ7Rtt0AqaqVS0
+	u4qAzikzl2CpjW8TnDVmaC5k8Xl5LVuKFVb6aASLcuE2Ihlt0PVzobucjrrb9NpmmnIj4XPYuiL
+	MSr0Vy3tpC94SCI0tUsSwdTiQRZS3J10AcMqOKQXkhyCfs2Aktny0AFiTWt/fbjaNX4doToTcCG
+	xjhD4I27zt/EKBSIQq8BCoukh6SwfwBjtvFsW7tzM0JvYVRqKiwPeL7rlhdKu6UKw==
+X-Received: by 2002:a4a:de54:0:b0:6b1:bb82:f7a3 with SMTP id 006d021491bc7-6b1c6493d32mr23982278eaf.5.1788271793018;
+        Tue, 01 Sep 2026 07:09:53 -0700 (PDT)
+Received: from mail.marliere.net (137.65.66.34.bc.googleusercontent.com. [34.66.65.137])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f4fa96ce3dsm11066967a34.18.2026.09.01.07.09.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 07:09:52 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4AB2060B50;
+	Tue,  1 Sep 2026 14:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=dkim; t=1788271790;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=klux3Px16MgfpuFL4Thl1laPfvZCFrqMR76ZeHwaoNE=;
+	b=mgV5xqH+k13vCIzrWoRJdltr88WENTmx5T41hD1GXD49M4oSnj9xQaafgJGIu0Rire71sl
+	ktRbAYwC/tL/54WqR+JxjtkxtD9Z4mx2PJlv1BgM+EmIsCcjjAaX0PY/CQOU4dnZOyuZcx
+	huIQymEZrXMpFko8idN1Oe45Jfu45rfs+sOoDIS++y5jTjEtMpOZONGjB7FmrPnrpAVWol
+	FqKbmL+5H9RB5goLkP8jMVe3f6CkGTM/tzvQrd4PaXA4nMYfLPVMbm72emn+DW8+W+nfWi
+	cdHGrh09sfLHMYwozXH02K7UIM81S+PUkjSQKlhGvC6lvHTud6YgciL0MyR9LA==
+From: =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
+Date: Tue, 01 Sep 2026 11:09:37 -0300
+Subject: [PATCH net] selftests/net: Fix icmp.sh race between ping and
+ tcpdump startup
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] udp: revalidate socket family before publishing an
- IPv6 cork
-To: Daehyeon Ko <4ncienth@gmail.com>, netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Vladislav Yasevich <vyasevic@redhat.com>, linux-kernel@vger.kernel.org
-References: <20260829132125.1160893-1-4ncienth@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260829132125.1160893-1-4ncienth@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260901-selftests-net-icmp_race-v1-1-0b2a27e91a0c@marliere.net>
+X-B4-Tracking: v=1; b=H4sIAKDclmoC/yWMUQqDMBAFryL73VANJWivUorE+NQtNcpuWgri3
+ RvbzxnmvY0UwlC6FhsJ3qy8xAzVqaAw+TjCcJ+ZbGld2ZSVUTyHBE1qIpLhMK+t+ADjrKv7unb
+ 20oDyehUM/Pk93yindP9LfXUPhHR8HlnnFaYTH8N0qEV45HievSYI7fsXh/uIqKAAAAA=
+X-Change-ID: 20260901-selftests-net-icmp_race-6268d886249e
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openssh-sha256; t=1788271786; l=3118;
+ i=ricardo@marliere.net; h=from:subject:message-id;
+ bh=UprTbNUUvXH99g2NCx2ct2QD9UMqg+J0yXIvULzVEkw=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgguRCc5X8/UX9M40lkMnr//aFGOhce
+ x5ezt8MFNUFlqYAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QEU5ZNtbO6jMIJnt/iaiBCRbVaf0TWZ09i/vgrknAQj2sJC+7NF0An791bEYL4SJaoSawW7WMkp
+ CkMm10Zglrg8=
+X-Developer-Key: i=ricardo@marliere.net; a=openssh;
+ fpr=SHA256:pzhe0fJpYLz+3cZ33FFPhIfaUElk9CXPFFXmalIH+1g
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 8/29/26 3:21 PM, Daehyeon Ko wrote:
-> udpv6_sendmsg() prepares the IPv6 flow and route before taking the socket
-> lock when a datagram is corked.  IPV6_ADDRFORM takes the same lock, but it
-> can convert the socket to AF_INET while the send path is doing that
-> lockless preparation because no cork has been published yet.
-> 
-> If the conversion wins the race, udpv6_sendmsg() later publishes an
-> AF_INET6 cork on an AF_INET socket.  Uncorking through the IPv4 socket
-> operations then interprets the IPv6 cork as IPv4 state.  The IPv4
-> finalizer writes a 20-byte IPv4 header into the 40-byte IPv6 header
-> reservation while the retained IPv6 dst routes the skb through
-> ip6_output().  ip6_finish_output2() consequently consumes the unwritten
-> 20-byte tail.
-> 
-> An unprivileged reproducer triggered the mixed state on 12 of 10,000
-> sockets.  KMSAN reported an uninitialized-value read in
-> ip6_finish_output2() on three fresh boots, with the allocation origin in
-> __alloc_skb() through __ip6_append_data().  The same process recovered the
-> 20-byte region from the TX timestamp error queue; one of three fresh boots
-> contained recognizable stale heap data.
-> 
-> The route prepared by the racing send is not published in the socket dst
-> cache.  An implicit send on the IPv4-mapped peer required by ADDRFORM
-> delegates to udp_sendmsg() before the IPv6 lookup.  An explicit native IPv6
-> destination reaches the lookup, but leaves connected false and therefore
-> cannot call ip6_sk_dst_store_flow().  Conversely, a native connected send
-> can publish an IPv6 dst, but ADDRFORM rejects that peer with EADDRNOTAVAIL.
-> The same reasoning covers the non-corking explicit send path.
-> 
-> After taking the lock, revalidate that IPV6_ADDRFORM has not changed the
-> socket family before publishing the cork.  The existing error path releases
-> the invocation's prepared dst, flowlabel, and transmit-option references;
-> there is no socket dst cache entry from this send to reset.  With this
-> change, the serialized controls retain their existing results and the
-> forbidden mixed state occurred zero times across 20,000 sockets.
+icmp.sh backgrounds ping and then starts tcpdump, with no synchronization
+between the two. If tcpdump is not capturing yet by the time the ICMP
+unreachable replies come back, the test fails even though the kernel
+behaved correctly:
 
-I understand that with the above you intend address sashiko concerns
-WRT cached dst:
+  FAIL - got ICMP response from , should be 192.0.0.8
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260829132125.1160893-1-4ncienth%40gmail.com
+The empty address is misleading: it means the capture matched nothing
+before its 10s timeout, not that the reply had a wrong source address.
+NS1's Icmp InDestUnreachs counter still increments across such a failure,
+so the replies were generated and did reach NS1. Ping sends several probes
+over its 3s deadline, so losing every one of them takes a multi-second
+stall in tcpdump startup, which does happen on loaded CI hosts [1].
 
-but I tend to agree with sashiko that the race is still present.
+Fix it with the idiom already used by broadcast_ether_dst.sh and
+macvlan_mcast_shared_mac.sh: start tcpdump first and wait for its
+"listening" banner via slowwait() before sending traffic.
 
-/P
+Fixes: 7e9838b7915e ("selftests/net: Add icmp.sh for testing ICMP dummy address responses")
+Link: https://openqa.opensuse.org/tests/5907626/logfile?filename=icmp_sh.tap.txt#line-2 [1]
+Signed-off-by: Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
+---
+ tools/testing/selftests/net/icmp.sh | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/net/icmp.sh b/tools/testing/selftests/net/icmp.sh
+index 824cb0e35eff..593d5f3abcae 100755
+--- a/tools/testing/selftests/net/icmp.sh
++++ b/tools/testing/selftests/net/icmp.sh
+@@ -28,10 +28,11 @@ RT2=172.16.0.0/24
+ H2_IP6=2001:db8:1::2
+ 
+ TMPFILE=$(mktemp)
++TCPDUMP_ERR=$(mktemp)
+ 
+ cleanup()
+ {
+-    rm -f "$TMPFILE"
++    rm -f "$TMPFILE" "$TCPDUMP_ERR"
+     cleanup_ns $NS1 $NS2
+ }
+ 
+@@ -53,11 +54,21 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
+ # Make sure ns2 will respond with ICMP unreachable
+ ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
+ 
+-# Run the test - a ping runs in the background, and we capture ICMP responses
+-# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
+-# in case something goes wrong
++# Run the test - start tcpdump and wait for it to be capturing before
++# sending any traffic. -c 1 means it should exit on the first ping, but add
++# a timeout in case something goes wrong
++ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 \
++    'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>$TCPDUMP_ERR &
++TCPDUMP_PID=$!
++if ! slowwait 3 grep -qs "listening" "$TCPDUMP_ERR"; then
++    echo "FAIL - tcpdump did not start listening"
++    cat "$TCPDUMP_ERR"
++    exit 1
++fi
++
+ ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
+-ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
++
++wait $TCPDUMP_PID
+ 
+ # Parse response and check for dummy address
+ # tcpdump output looks like:
+
+---
+base-commit: 786262be6048deab760f68c8acc2c85607165894
+change-id: 20260901-selftests-net-icmp_race-6268d886249e
+
+Best regards,
+--  
+Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
 
