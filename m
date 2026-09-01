@@ -1,94 +1,106 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F67443A97;
-	Tue,  1 Sep 2026 19:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043DB4483A1
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 19:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788292058; cv=none; b=QOOG+Wt8v/u0HVB+OQF8NZ03O2rRF7G7WLr7ved5VCsasXpRypd/oVbuS1pek6N3WCBtomT7fBrL4M1+k8NcxKA72iLEiibTWeWue3LcJaSwyONvfP4zXgWul50cfEf/Z/xXvXG45hJpbB0zpRtNi9fGtFs34mHKR8LXKUIy/1E=
+	t=1788292281; cv=none; b=L9vvOOug3rYhqkDMfTF/x3CrSZN8J6259SsHAFBcyrasVy8YJFxItjkfCyMkeGFGYjh9KvGuOhRYrf5xVoGE0WvbxKVVl5ir4aYkO262sY5ubr1/Oo+Z+9/koffyAYOh4Ku/uS4xVL1hSQfocoawKVe15V/12ELFDfSbNsb4lYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788292058; c=relaxed/simple;
-	bh=S6Ze5dH30c1sk13lINsxsruT9DPKAtqX7682wKNvFoM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZY76xw/baSTX3dPcyhSibNs4OoTR1G8Xn1rt6ZkiawOajpbk7ntjHcWB2eQRrtDaGuX2ICPECuZwCg67FI3wW/6qP/zzxJ5JNyvYMji+ei4ToKjZRkfnLoEfRHjhSU+2l1NcDk3mLGW1uhY4uxFvcM65gBgeuKKq18l8dMToNTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KGQ6Sv5V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iMGMW1+A; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1788292281; c=relaxed/simple;
+	bh=BwLey5dTW4uM292A2Vd7bSxkboLRHGDZjGIzXx+42J8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OeyTndH4AxOVvSCtK+fpUD9/KWxUytaq7qd8ILe9V1fO07BmrVpNgfvL81Sjjuoix3vo366m0Jdqbk+M7D6nmShFvENcIUCMh6X2dxHcvOlFkovCQsdeAeucbXElNBRTvy90EpKFxpojSCG6O8BKilAJiKVG7D/kXI64h5UTEik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=ITG5IN46; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KGQ6Sv5V";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iMGMW1+A"
-Date: Tue, 1 Sep 2026 21:47:29 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788292050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8kVakSZKJ+/biQmo1FhyfgpI2TOx3aJuye+azQYfGnU=;
-	b=KGQ6Sv5V/WARQz5NH6d3Sb3JusTpH/c7YNqpIgnd9h+VIJikdiibfvsSkNPtm2bSP/sNrE
-	AvHRhw0oEpHKfBQZW28q8HHevQzjUQdV4cj7aH7bgegDqLPaMvv5rlmLb9YdaAASayjDzJ
-	xVlgYYJBlHfQhauHSraIKwBiw3GZR6FVxUYNYgUeeeBA0exkdQe8TVBBAh0RBWdGZWXBvF
-	h3NuDkP6SH5UBdfiI5GtXrMum8aDWrwZ4iiAoPmhDv2/N8lPNbi1ApDs+lQBJonjZYRdM7
-	zXdBN2cuHfTH8WIKTdW+KcAncRBjoEAr8ptEteLUVDWDo0bwvmdcdOyjZCGUcA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788292050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8kVakSZKJ+/biQmo1FhyfgpI2TOx3aJuye+azQYfGnU=;
-	b=iMGMW1+AP/4HcbKeF6pbp3Co1it0nekDJR7mljsr5oAtbOpE4Avv74bSlvj0UHwdzmMNy2
-	/d0cJ8VUYMLn94Bw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Marek Vasut <marex@nabladev.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="ITG5IN46"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-482fc3327fdso216123f8f.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 12:51:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lex.la; s=google; t=1788292278; x=1788897078; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BwLey5dTW4uM292A2Vd7bSxkboLRHGDZjGIzXx+42J8=;
+        b=ITG5IN46vGcwvMKwBFWO2A2I4biFNMH5plPiYYnUi99kTt9ug7TJsZ+OjrRkJP1CtD
+         4QzTASJ244haASscNMebdaW/qh4UZpcFnerkaVFy69wpBnYutrc9DxKlhT1vU95OMmx9
+         xi6igBx8aoBG8OfgM/QbLOwdRErxuq6878+/L9Nm/ktpQ5hC4Jpd7R6inINqoFz/rLzb
+         5yUl7jUXXDsM4Z426JilCySPd3Ae50esTRxex2b3iaumu5zuZIHrz4P7SwsVjwo6N4ag
+         cp8oP7OoHA6S7Js8Brio8WESvaMULs0CPEB3pel7kQDeXFhqAjS8L1qm7iQco8DyyIIo
+         WM+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788292278; x=1788897078;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BwLey5dTW4uM292A2Vd7bSxkboLRHGDZjGIzXx+42J8=;
+        b=FAFnC4SrhFmhyW7ZRUNrunXnq3/rGD8wpqUcqPLi8mDsnWyQfaUBtgGAfCYphvnl2Z
+         QmlcvnY+uKWGQ4CWyCkSYwXlxLAO58K/ha2PtIO3J6cjqdu5dvSD8lcXlkoOwplH8iu8
+         oISMbDpouBIYQEZSa8pXGljTjH3urnPrgB1ydsTI0F5gcC9ujJbTemSZi9IbW+dsOR/W
+         OOp0e6g9a3JuaUT7egPjzqe/jKUyr8UmMQFrDIUdfuRvWx2U4Ph8iJi6vCeBoR5Uhwne
+         hZhdaSLqMJMG4ZtC2rdGpGldd1ScVZs6ak5r4WnLemYPklcZzb9CDs1jIs/UOc5cGN1z
+         tu6g==
+X-Forwarded-Encrypted: i=1; AKwUvBw9IWqApnsyq9NXysijFOaii89D8gO65KYJk5FPYtwheuGP2sJXnYyRSCWUw99Wi8MMfM1Pkj0=@vger.kernel.org
+X-Gm-Message-State: AFuF++kHxgmmOFm4by+ynaX8Ml7ZkKOXb9DVwE/jmoGavPKy4MkQZQiC
+	iYP624A4NdrhvJwEAAMwvCVpxlGwvi0VZVGLjuMGORdsoRBsrPwOWAASlfgsfLfBYRg=
+X-Gm-Gg: AYBFou3ay2JuqhRIJH1RcA8/N09BLnZ+Xj7cntF8KbJ7MnjN1kPY9Jz1dti5lY+c/c1
+	sdJsdSeGvoJgxrN2nzJA99Y+unWoAkoIfHAcs/5+XxcxXppWAsQE/8uxi0YvMiPXtKKkyBwFkgN
+	DpqyyQWkPrnh0x3uLljfIYvaNx5AsflTbH4X9OxYPURtctM/r8qWgG9F/KP9GcTfSJ0gOCvzMft
+	G+b200E9xA/0ETPsdyrl5OS3yhStXFg7UoVWMQVdvOoSi4wpHR4qG8uR1OagF0qWVjl2x8nNRE+
+	7ziQm0mZqzyvdDBmDavd+2DuQVICxl51aIsvAUZwB+0eToWzCwz9xKcn2iqYAANtLehH1RBLKtS
+	yNua10yox8tIHvyvjsTmO7tJ2SPKSlTyzDinyl9pHLScNyjIKLrSGYVO468RFhpFVL6xaTuO6QU
+	2IppL9tb/U20PmfrkDBy50ZanxoixXiiCIS5IdP5RdK9somJNpMQ==
+X-Received: by 2002:a05:6000:648:b0:484:4189:6b09 with SMTP id ffacd0b85a97d-48441896b75mr15334529f8f.17.1788292278109;
+        Tue, 01 Sep 2026 12:51:18 -0700 (PDT)
+Received: from remote-01 ([84.17.55.226])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-484492ce236sm1316681f8f.35.2026.09.01.12.51.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 12:51:17 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yicong Hui <yiconghui@gmail.com>, kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net,PATCH v1] net: ks8851: Fix receiver error in 100BASE-TX
- mode following software power-down
-Message-ID: <20260901194729.r9N1Z-4-@linutronix.de>
-References: <20260901173925.96183-1-marex@nabladev.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net v3 2/2] net: ethernet: mtk_eth_soc: populate lpi_interfaces to fix EEE support
+Date: Tue,  1 Sep 2026 19:51:12 +0000
+Message-ID: <20260901195112.37184-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <68c51086-eb10-4074-8495-b31c8e8a21e0@redhat.com>
+References: <20260827211652.63504-1-f@lex.la> <20260827211652.63504-3-f@lex.la> <68c51086-eb10-4074-8495-b31c8e8a21e0@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260901173925.96183-1-marex@nabladev.com>
+Content-Transfer-Encoding: 8bit
 
-On 2026-09-01 19:39:14 [+0200], Marek Vasut wrote:
-> KSZ8851 errata sheet DS80000716D-page 4 Module 3 [1] states that,
-> when issuing a software power-down (PMECR[1:0] = 10) followed by a
-> power-on (PMECR[1:0] = 00), the receiver circuit can fail to start
-> properly preventing communication. The Transmitter will still send
-> data, but no data will be received.
-> 
-> The errata sheet also includes a workaround, which states that,
-> it is recommended that the software power-down feature not be used.
-> 
-> Implement that workaround and drop the entry into software power-down
-> mode. The ks8851_write_mac_addr() calls entry into normal power-on
-> mode at the very beginning of the function, therefore dropping the
-> second call to enter software power-down mode is sufficient here.
-> The ks8851_net_stop() can only be called after ks8851_net_start()
-> was already called, and ks8851_net_start() also makes the MAC enter
-> normal power-on mode, therefore it is also fine to drop the call to
-> enter software power-down mode from ks8851_net_stop().
-> 
-> This will lead to slight increase in power consumption, but it also
-> fixes a sporadic problem which occurs at least on KSZ8851-16MLL, on
-> which this fix is tested.
-> 
-> [1] https://ww1.microchip.com/downloads/en/DeviceDoc/80000716D.pdf
-> 
-> Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
-> Signed-off-by: Marek Vasut <marex@nabladev.com>
+> For a 'net' patch, I think it makes more sense to restrict the lpi
+> interface to the chip revisions with support confirmed.
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+v4 will gate lpi_interfaces on a per-SoC capability bit, so only chips
+with a confirmed LPI exit get it and the rest keep the current
+behaviour.
 
-The patch description matches the errata document and the change.
+MT7981 is confirmed on my bench: with tx-lpi armed the PHY's MMD 3.1
+shows Tx LPI asserted by the MAC, and thousands of LPI exits at 1G and
+100M against a BCM5720 lost nothing. Details in the v4 cover.
 
-Sebastian
+Qingfang, which SoC did you validate the wake-up values on when adding
+EEE? That would be the second entry.
