@@ -1,45 +1,82 @@
-Received: from mta0.migadu.com (out-105.mta0.migadu.com [91.218.175.105])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0313D476CC0
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B44C476075
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788253492; cv=none; b=YGA55sJJMo6wBH4bsTZ2//8aqobIAPcH86W8qKUM9P57sP6DMzHGL7/82ar+RY7l1hSiCJXWal+HEaQjqkuZdZup9zbdnMEuKVEXgOPw116P9qrOcrXBm8PRzL0z/PIYC9OnEb5hPEGnzntrmMBsHQYG7lkW8iXV2sWDM6ZFkls=
+	t=1788253494; cv=none; b=P5sIDwUPxEkZgmuVDPYuilB7yIMbXJ8ADpu5IQpMTewtG+nyScjWmMIr5FFy+M6kj5EnKPqbaQ2uH98NlPEgr7C0r9eqP7W56ertEju4Vj9F7EKF5ddGKQlMiCr6cq3c1DOwtWSc8+hKN63+zaoTBhj0RXyaHsOBNpWBn21o7K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788253492; c=relaxed/simple;
-	bh=K5adOlBiMa0yYmMZJxP73c0SVwU2yadNCgQ5ECt6Exg=;
+	s=arc-20240116; t=1788253494; c=relaxed/simple;
+	bh=aR05XSKkL3b3y4Zjj9QVy6cakyTIpzNdOUr+meAo6/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n4IMzElI3A47tTnsuUhV2TWuN26sJrZH19DRWyIgAF+rJB2EavWF6w9OXUfg93SWxgPis4sQYpWyqyKQENg9SFL1cJagphU7lUTuvmOgmyKEyqwGt2FffKvAjTmI4ANJ14PRRBgg628PlTrxVW5d/N9K+NKQSSpN9Ei1v0cFj3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AmHSDqKi; arc=none smtp.client-ip=91.218.175.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNuNLCvE2IkYr9Vn2Ycxon/SuBIt2dJbtbpQ2DlajsO5SJe9ev4NcyiZcGfd57qOOtr1jiyjtRB4/D2amIxAWg7nj/grzqUjxKuM1afcbFwtt2Rt18gnQg0gKSry6b73zcWhqZN7LOzhz8L62JWAgZutrbMNjpMJShtj+Hrd3/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PbZNgYUe; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AmHSDqKi"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=K5adOlBiMa0yYmMZJxP73c0SVwU2yadNCgQ5ECt6Exg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788253486; v=1; x=1788858286;
- b=AmHSDqKiyQnNoP3nOzui06pUEckABybku0hhy8gwPSMry/zytXPkZwIcMQaV17zjQW4zCA53
- GwmSMcAx9Lai/6UAE6U6H3b9TWnrBfp8cD+lBJ0RDrWX5ZNyWzDbAOIY4pr+DiV4suTKEJ+3tSa
- P8iRQxdhcKkihrHBpGmV5iek=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 5353e1dd7fab9237;
-	Tue, 01 Sep 2026 09:04:46 +0000
-X-Mizu-Trace-ID: 5353e1dd7fab9237
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 1 Sep 2026 17:04:38 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, Bongsu Jeon <bongsu.jeon@samsung.com>,
-	Shuah Khan <shuah@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: nci: Fix uninitialized family ID on missing
- attribute
-Message-ID: <apaVJjXnwJLZLwq2@fedora>
-References: <20260901070618.3299012-1-nagachaithanya9911@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PbZNgYUe"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e041ea211so4293058a91.0
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 02:04:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788253492; x=1788858292; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rQqAf7khM3cl6pZ04M6I5XPDq13U9kFDsHdlwrXDb4E=;
+        b=PbZNgYUempJC4/ILvHlMOky/mwSoKjG9/WFNPjOLKQahDPcICQvzwd0DrOPzO4Xodi
+         ZREzYYxAdtOMYIxvq2a4riLZ2fhw3Rmd+UtBPxHo3y3WqiwSpQ7h3TDDMdbYkECoGR+2
+         jwIBJ2cXFh1cU30qhOOJTz7t1Id+n2jpPH2WrcfeflHH27pZ0aY/4D6ONhGnFK5RK7jO
+         GM/n0rnT8SimPnWIxv9VHL1kGc7gB9nqtKvoF/7s7SPuguxpGnuYPIWh82F+Ol06Xycp
+         zMIxqMNZ65YxycVR79GlJDoVVScSjCpR6RvRfnffm/z9wWXl7BW+6bDrwqQ6Sqtoztsz
+         5WwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788253492; x=1788858292;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rQqAf7khM3cl6pZ04M6I5XPDq13U9kFDsHdlwrXDb4E=;
+        b=IlxWtgXrqvrRB31yxfBKpXpVmjzbhyu6No19/haM5koa8qK3cRyVRoQllVD8A3j7/B
+         J8oY4wEaj/NmciowiLyLGsTF7UpzoAzI3Kzlxy3qcrvkQlVf8umaKhMOyZVlHbTyT/B4
+         dUgB+bKs6vxL0Zq13p2DuF7AVJD8EC2AiDPj44JRcCDdmm56C+208JQFeDqT8ramenHk
+         TdhW+Arzv5lUCL+jeJtFK1NSnaFlFNuy+Wp8zr+HP5Pm+yBuIStdENEOKXO7y9k4m2cz
+         0RAWUa0VHci8/F3//zPEZJyw2aDdn9P9P/AnDOrM2CfxA27N2FB51Cra8ZLh1caBjOFW
+         1u1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzbKZ9ogx0lnl1vfltJGH2l3/OQEZ7TN57gjpLwscUsFU1B1iJhc6SYDMUEzo6AbOMtyOPoP8M=@vger.kernel.org
+X-Gm-Message-State: AFuF++naThnI413IjOGDt7aZoiYK12rMpOSr10LF4na8vxVWAttn1nOv
+	UBnr7cCVBYrqcrCKCLYpP+jU8TnnAbL9at3C6VL5PTe01r5G+/A4mu5O
+X-Gm-Gg: AYBFou1SIIkCtZwu2pk6e764nBuF3kDadfYDyLzYFITWNiciRlXgvi7AwCpbwb87buX
+	pkFWvafljqk29whyJucrWgdYSwrDPEcq062qT+mhlUXTjK4wA3IJztGYARE9Gr0JDHyEK5SKVlq
+	rw343AcUJIhT6eudJ+HAnFPAnRsDmvdssS0JpNwL4fGAflYNRSP/ODjket+4itqKu2G16lfzP6R
+	XKUROku8L5QO1U/Wf4biZB8mWdZEYHm7BdFj2i2yhjhG5ezLEyaR6JmYpu45xaLyn0SP0jqy710
+	Otmq46lD721PyWb5xMn4YsvdoCKSWk5wijWHtRTcwSlZ6Vv//QSVQXwt+zj8XZvPyAsuPlMxOuO
+	Moc4pfZXdjtgKBJWH9aHc6X0i2PMQU4uBQCFe4SHulbwf/t2f883Bq6i0QHdwzgJTNtHAMsA6hu
+	yRRgFrh2017kai0oXNrYcQpOEHw4Hx0FskadgLn5Q3CrjkWaLgdUxvC83mIiz864G8UR+ynqVB3
+	6/PRdAl
+X-Received: by 2002:a17:90b:224d:b0:36d:9e0b:3801 with SMTP id 98e67ed59e1d1-39907b17a40mr9025465a91.8.1788253492086;
+        Tue, 01 Sep 2026 02:04:52 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d6d29de3sm6463240a91.2.2026.09.01.02.04.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 02:04:51 -0700 (PDT)
+Date: Tue, 1 Sep 2026 18:04:45 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, ncardwell@google.com, dsahern@kernel.org,
+	idosch@nvidia.com, kuniyu@google.com, horms@kernel.org,
+	willemb@google.com, andrew+netdev@lunn.ch, kees@kernel.org,
+	jiayuan.chen@linux.dev
+Cc: kerneljasonxing@gmail.com, ij@kernel.org, martin.lau@kernel.org,
+	shakeel.butt@linux.dev, matttbe@kernel.org, martineau@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net v2 6/8] tcp: fix use-after-free in the lockless
+ listener path
+Message-ID: <apaVLS6Srsa7SQhJ@v4bel>
+References: <20260824033331.1084971-1-imv4bel@gmail.com>
+ <20260824033331.1084971-7-imv4bel@gmail.com>
+ <apaAskNL-IvdcR7h@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,40 +85,173 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260901070618.3299012-1-nagachaithanya9911@gmail.com>
+In-Reply-To: <apaAskNL-IvdcR7h@v4bel>
 
-On Tue, Sep 01, 2026 at 07:06:18AM +0000, Chaithanya Lagisetty wrote:
-> get_family_id() walks the generic netlink CTRL_CMD_GETFAMILY reply
-> looking for the CTRL_ATTR_FAMILY_ID attribute and returns the parsed
-> value in the local variable "id". If the reply does not carry that
-> attribute, the parsing loop never assigns "id" and the function returns
-> an indeterminate stack value, which the caller stores in self->fid and
-> uses for subsequent netlink requests.
+On Tue, Sep 01, 2026 at 04:37:22PM +0900, Hyunwoo Kim wrote:
+> On Mon, Aug 24, 2026 at 12:32:50PM +0900, Hyunwoo Kim wrote:
+> > tcp_v{4,6}_rcv() calls tcp_v{4,6}_do_rcv() without holding the socket
+> > lock when sk->sk_state is TCP_LISTEN. Every other path into
+> > tcp_v{4,6}_do_rcv() holds it.
+> > 
+> > tcp_v{4,6}_do_rcv() and tcp_rcv_state_process() below it read
+> > sk->sk_state again. A listener can leave TCP_LISTEN through
+> > connect(AF_UNSPEC), and if that happens in between, the second read
+> > returns a different state.
+> > 
+> > tcp_rcv_established() or tcp_rcv_state_process() then runs without the
+> > lock. If the second read returns TCP_SYN_SENT, the incoming SYN is
+> > treated as a crossed SYN and reaches tcp_send_synack(). When the SYN skb
+> > at the head of the retransmit queue is skb_cloned(), that function
+> > replaces it with a copy and releases the original with
+> > tcp_rtx_queue_unlink_and_free().
+> > 
+> > The original is the skb that a thread on another CPU is transmitting
+> > right now in __tcp_transmit_skb(). skb_cloned() is true because the
+> > clone made for that transmit is still alive. Once the transmit returns,
+> > tcp_update_skb_after_send() calls list_move_tail() on the skb's
+> > tcp_tsorted_anchor.
+> > 
+> > In short:
+> > 
+> >   socket(AF_INET) -> bind() -> listen()   // the socket that changes state
+> >   socket(AF_INET) -> bind() -> listen()   // the peer
+> > 
+> >   Several threads keep opening new sockets and connecting to the first
+> >   socket's address.
+> > 
+> >   Another thread repeats this on the first socket:
+> >     connect(AF_UNSPEC)      // TCP_LISTEN -> TCP_CLOSE
+> >     connect(peer address)   // TCP_CLOSE -> TCP_SYN_SENT
+> >                             // another CPU still sees a listener, handles
+> >                             // one of those SYNs without the lock and
+> >                             // releases the SYN skb that this connect()
+> >                             // is transmitting
+> >                             // -> use-after-free
+> >     connect(AF_UNSPEC)
+> >     listen()                // TCP_LISTEN again
+> > 
+> > KASAN log:
+> > 
+> >   BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0x14/0x140
+> >   Read of size 8 at addr ffff88800a5d1460 by task poc/125
+> >   ...
+> >   Call Trace:
+> >    __list_del_entry_valid_or_report+0x14/0x140
+> >    tcp_update_skb_after_send+0x62/0x170
+> >    __tcp_transmit_skb+0xe33/0x1e40
+> >    tcp_connect+0x1b67/0x2490
+> >    tcp_v4_connect+0x998/0xab0
+> >    __inet_stream_connect+0x22c/0x700
+> >    inet_stream_connect+0x48/0x70
+> >    __sys_connect+0x101/0x130
+> >   ...
+> >   Allocated by task 125:
+> >    __alloc_skb+0xd1/0x370
+> >    tcp_stream_alloc_skb+0x2d/0x2b0
+> >    tcp_connect+0x72d/0x2490
+> >    tcp_v4_connect+0x998/0xab0
+> >    __inet_stream_connect+0x22c/0x700
+> >    inet_stream_connect+0x48/0x70
+> >    __sys_connect+0x101/0x130
+> >   ...
+> >   The buggy address belongs to the object at ffff88800a5d1400
+> >    which belongs to the cache skbuff_fclone_cache of size 472
+> > 
+> > Instead of taking the lock, keep the lockless path from reading
+> > sk->sk_state again to decide how to process the packet. Move the
+> > TCP_LISTEN handling out of tcp_rcv_state_process() into
+> > tcp_rcv_listen_state_process(), and let the TCP_LISTEN branch of
+> > tcp_v{4,6}_rcv() call a new tcp_v{4,6}_rcv_listen(). Listener processing
+> > does not change. The TCP_LISTEN arm of tcp_v{4,6}_do_rcv() is left
+> > alone, because a socket can finish listen() after the state check and a
+> > backlogged skb is then processed there.
+> > 
+> > Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > 
-> Initialize "id" to 0 so a missing attribute yields a deterministic
-> (invalid) family ID instead of a garbage value.
-> 
-> Fixes: f595cf1242f3 ("selftests: Add nci suite")
-> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-> ---
->  tools/testing/selftests/nci/nci_dev.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/nci/nci_dev.c b/tools/testing/selftests/nci/nci_dev.c
-> index 312f84ee0444..ed306ec23895 100644
-> --- a/tools/testing/selftests/nci/nci_dev.c
-> +++ b/tools/testing/selftests/nci/nci_dev.c
-> @@ -182,7 +182,7 @@ static int get_family_id(int sd, __u32 pid, __u32 *event_group)
->  	} ans;
->  	struct nlattr *na;
->  	int resp_len;
-> -	__u16 id;
-> +	__u16 id = 0;
->  	int len;
->  	int rc;
->  
-> -- 
-> 2.43.0
-> 
+> Looking at this further, unhashing the listener and then calling
+> synchronize_net() lets the disconnect path handle it. MPTCP needs a fix
+> too, though, because it closes and reuses the first subflow directly
+> without going through tcp_disconnect().
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+...and tcp_abort() needs a fix too.
+
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b4237d0e994d6f..ce8e76052fe376 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -5139,6 +5139,9 @@ int tcp_abort(struct sock *sk, int err)
+
+        if (sk->sk_state == TCP_LISTEN) {
+                tcp_set_state(sk, TCP_CLOSE);
++               /* TCP BPF iterators run with RCU read-side protection. */
++               if (!has_current_bpf_ctx())
++                       synchronize_net();
+                inet_csk_listen_stop(sk);
+        }
+
+> 
+> This also closes the trigger path for patches 4, 5 and 8. I would still
+> keep those, since they add no work to the fast path and they remove the
+> root cause itself. Their changelogs would have to change though.
+> 
+> 
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index b4237d0e994d6f..ae6ab3b22beb53 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -3373,6 +3373,8 @@ int tcp_disconnect(struct sock *sk, int flags)
+> 
+>  	/* ABORT function of RFC793 */
+>  	if (old_state == TCP_LISTEN) {
+> +		/* Wait for lockless listener receive paths to finish. */
+> +		synchronize_net();
+>  		inet_csk_listen_stop(sk);
+>  	} else if (unlikely(tp->repair)) {
+>  		WRITE_ONCE(sk->sk_err, ECONNABORTED);
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index b474d03620a75d..e41a5e1bf8dbf3 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -3432,7 +3432,7 @@ static __poll_t mptcp_check_readable(struct sock *sk)
+>  	return mptcp_epollin_ready(sk) ? EPOLLIN | EPOLLRDNORM : 0;
+>  }
+> 
+> -static void mptcp_check_listen_stop(struct sock *sk)
+> +static void mptcp_check_listen_stop(struct sock *sk, bool sync_net)
+>  {
+>  	struct sock *ssk;
+> 
+> @@ -3446,6 +3446,9 @@ static void mptcp_check_listen_stop(struct sock *sk)
+> 
+>  	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+>  	tcp_set_state(ssk, TCP_CLOSE);
+> +	if (sync_net)
+> +		/* Wait for lockless listener receive paths to finish. */
+> +		synchronize_net();
+>  	mptcp_subflow_queue_clean(sk, ssk);
+>  	inet_csk_listen_stop(ssk);
+>  	mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
+> @@ -3462,7 +3465,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
+>  	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+> 
+>  	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)) {
+> -		mptcp_check_listen_stop(sk);
+> +		mptcp_check_listen_stop(sk, false);
+>  		mptcp_set_state(sk, TCP_CLOSE);
+>  		goto cleanup;
+>  	}
+> @@ -3593,7 +3596,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+>  	if (msk->fastopening)
+>  		return -EBUSY;
+> 
+> -	mptcp_check_listen_stop(sk);
+> +	mptcp_check_listen_stop(sk, true);
+>  	mptcp_set_state(sk, TCP_CLOSE);
+> 
+>  	mptcp_stop_rtx_timer(sk);
+> 
+> 
+> Best regards,
+> Hyunwoo Kim
