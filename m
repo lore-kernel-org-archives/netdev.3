@@ -1,220 +1,238 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BA03B6370
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E43545D1BF
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788248231; cv=none; b=kRtzj9wgNVJoXbXgBTGRLiJtH53qqKcbWKZnZyxojX3MxLcJWrp4Q66KgIlQmK2uMlw/RkTa4bgMeZ8uicfAx0gNnUTeJQs+Z9GZt7VmsT2h5ZA7/BB3wpQfr3vdD/JsJ+yU5BOzG5NVm6p5XvI5pIN5YuFAHTmBJb0uj5OMxhA=
+	t=1788248250; cv=none; b=NRO1bCabnS8Ie93E66hgD9URYCkoyNhpVrK+DpFBzHwb8yFplLHpiwOid5wyrtuSvevh5iiqPmzR8TFkABeKGyLmdHHclZ77/saaceOTFCBinZllWT4WInpnBOaWzxpPDiA4N8f7mFpwtGgGPqlrhqJut2VRhX2YkNmJJLdHYVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788248231; c=relaxed/simple;
-	bh=FJwryxdj6SeAfeatAboNCbJuNSz4L2laoNofSSSnyxI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TLFOy2p+WuR7o2b4dTLNAoVaV4tWVnEx100GehH+ZLbDfU5lOvZRM/doS6158Ac3eZk2nSl+/E4U+QV3rqAJwhLcrxsdbn9wZp4PrfaywjtD502+WQOZE98wrR+6TEDajgVp8zKqLVlrSipTamfsqz1wbrgaq7F/L7MyQ5OTpi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fZxogu5o; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jgMLF2p8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788248250; c=relaxed/simple;
+	bh=pYS/GFrUanOhlcC/NmixNJR7ATn1F3+XrW8M7qWpBNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FdsfG8/AM70o1MrDQDhZ14IEu04qTUGPvH6gH8wqyGgBE+kFAlTOpND6QjTkG1Om54icVmQQpgdBjB+Da627o9gs/mty/Vqa6AxAZTWVU0CyWQDC2Aia0lckyd0N3JbrfDpD4uisp0PqsXMixJ740KTpqGrDtyCJehmQXQn/n3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EpThNfJs; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fZxogu5o";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jgMLF2p8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788248228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sJI7b9uIFuaHf590ZX0b+HvWZoEv+dLMUmfbEqRC6AY=;
-	b=fZxogu5oE2aq5NYYULtqjbn72COhduwYhUY50e9I7c9eIvnr/bRH3gEGJEa/TVLnSHpwJU
-	3lkwSoGyrOiMRbHMW4CDoWx04uuN6W6BoC98hfmOJxyaz5h4XOcTC3CUD1MsT6dYVuHk6g
-	xomXJANBsZvt03BKSTwUtjy8t/RbRlE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-MRtgAqqfMh2diylWhER_Lw-1; Tue, 01 Sept 2026 03:37:07 -0400
-X-MC-Unique: MRtgAqqfMh2diylWhER_Lw-1
-X-Mimecast-MFC-AGG-ID: MRtgAqqfMh2diylWhER_Lw_1788248226
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4994aebe932so43218345e9.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:37:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EpThNfJs"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d8fd3b729dso24058485ad.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:37:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788248226; x=1788853026; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sJI7b9uIFuaHf590ZX0b+HvWZoEv+dLMUmfbEqRC6AY=;
-        b=jgMLF2p8tcprFdbhmlgojh0EQNBDWMNznDDz8+99YsWvXdrtErW74P2hBbLABW41pU
-         PECHfXmROOT3grXgMTnKCSKzM+7fdCszb9j9SudKt3zIBns1Qr59RHP7dpYvoHMOZ/UL
-         L4ORzNkfaNZ1MajOYOy2UVmC2s1lRGyT8g5wyTHNqvRx310sh8A+/zsJ4OUH9+MdfisI
-         ULJEnS1h9Kf8fA3qK8Dzkr/rVApUfyv3z0xrH3Hu0h2VkJhmve07V853Gh+VZjRVeQs1
-         nvrYKDjBWyVAvsusO/hE0asq/Bg30xwsr91BEFaaGbEYr57xCQz5qasD8YDVL/VJhM9v
-         iHtQ==
+        d=gmail.com; s=20251104; t=1788248249; x=1788853049; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rxm6irMUrWNwyv0K7EvAQpfSMPkiF7ptXJMabfvOf8g=;
+        b=EpThNfJsQ9AomChPdkMhC+ueUfmuhcnHCj4LepdRK4IArvzFdfELpSPntEyyRt2Cfp
+         DqVs/NN3eSXkF92ZXPLTLCswhB8ioJNF2lbekX4NmLTZqjKD5y4zcNd511t/AbB199sc
+         vLTksHuaI1C+AGw5NIrffhR2AvMtdHLb9odAvEnllfL+HxW4EITCTXsJgiQqPQE6z73Z
+         Q4Dt28GZUMpgDIPzepD7THKCdBO4R4b88QsOss5eT4KmLl1NzIbyTj+5YT3qCilL/KoF
+         I9V/TvMpzmEH5buvK5+aDuDUAp6ET6mJazF5H47HTswCb40LAD1n47GSPTQmhDLgkO8n
+         VVcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788248226; x=1788853026;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sJI7b9uIFuaHf590ZX0b+HvWZoEv+dLMUmfbEqRC6AY=;
-        b=kjwH+GyDkCOYiKN5FLBohi7ouYya2LP2A7nhrSPbJWsL4T5Vz87XiDWTvhDl2RDcQW
-         Smrz1WHSItxGL2DzrbniHOwcDE3YSWlcp/ToYnmJn1yDA0LGBK9CMtRzYy8nsKwAJkX3
-         9admuNvr9HpXXJGjQ3tsy21s+g8GdwTRobUqFVkPxEuUs7/ySeVaTKerfSaZ7RfVymHD
-         wNAXVAQDHDKDmDgLy4cK0hKkVFnL9GaQG/BFHT+BB2rCI5crPMFuqAsTj+loPUo6uiwL
-         9s5c3opmuVN+SCxCjyvMXzhc1tmPN1K09C4YntK2F+MGCjm6VzYtlL27B/ptUccXACjk
-         2fmA==
-X-Forwarded-Encrypted: i=1; AHgh+Rplo/1V1Rdr0KX+Ur/pUZFEyQ7rm54W3zMBDR4KEK5fJoYE9+xKY4Thrmm+wkeqhRuv6It6IWQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ne9fh5Njag5oc755+CiKo7DXxWJ/MpmG96Y3020Hm00m4JRci3
-	T2pygMmXrTg3YI6Fzse6vP4qGSHL/xDosv13KHJBYCmgDXhgeOmtjFlT46F/OF4uXZCCcgWTgwz
-	CBOdducgz53EyS0O0LT2mjhizn19T7GZesIwWZ/05QwrEwd5dwZD/hFzgqg==
-X-Gm-Gg: AR+sD10X+lfbN40q9bbxxKzIbfxrT628Bi/+OcZmS3S4HohKl8FbmgMkF2BrK2uObuY
-	uZef/A9mbHElSPK5miqM09EWsh9N+1z/gBugNU0GIUBWnnHtwuVSbOy6w1oM9T90db4vP7kzSc6
-	7qNgE4ZN/LdzvtF7L5goihsNAOsFz0eJrNgBClVMXID/GxeEC7XMoR9Fd0BZQYEQjQnT6A2En9M
-	CLpMLibA4KLVtQDxvrTxX5Hv6QMswStPVc76nSJIwRnIiXE7p2NNQk5n1uXdj7CmRujeUk01BLb
-	fpieYx692JM1XXTbAyk+CgBzZR+Rj8eYLZdPpChL+FKyk/VqSGI644/o4cPyx6k8p5O4+5RlLQA
-	QQwbr+EXjUmRivgxJKKCl19wEwfmRDKwdC/f5QgHnEbWTu4sKgIlLqSUxfeqJmIzAcltJSCc/aw
-	==
-X-Received: by 2002:a05:600c:3b2a:b0:49c:cee0:e7c1 with SMTP id 5b1f17b1804b1-49cdc57d1d1mr95574065e9.16.1788248226221;
-        Tue, 01 Sep 2026 00:37:06 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b2a:b0:49c:cee0:e7c1 with SMTP id 5b1f17b1804b1-49cdc57d1d1mr95573025e9.16.1788248225616;
-        Tue, 01 Sep 2026 00:37:05 -0700 (PDT)
-Received: from [192.168.188.103] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce3e4e7sm45045755e9.9.2026.09.01.00.37.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 00:37:04 -0700 (PDT)
-Message-ID: <3e84c09f-d760-41e9-a99f-0d86239b5ebd@redhat.com>
-Date: Tue, 1 Sep 2026 09:37:02 +0200
+        d=1e100.net; s=20251104; t=1788248249; x=1788853049;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rxm6irMUrWNwyv0K7EvAQpfSMPkiF7ptXJMabfvOf8g=;
+        b=LQr5RLdJaGrzCWryOCO6IrvQUyy/naI499sDwDgr+JfB4xjh7q5W6GCu3MuwOlhRsv
+         RpGInam9Xu84BE1uLK7UAQRf6Y+L06SzVqAxZgUTca96FsHDtD/T1YnpeaxRL7DW8T8L
+         8mKdOfMshisdXN/mC69T4wR0XCGckrLdpjnbbCiRcJ1gD8SZB4KQPbL75vlnkq0Vh+z2
+         +gAFEgCtTK20zF7zCaGKdhTMTeDR3pykLmrM4y+FSV4FIVP55CdJR4Fh1rAU+t+dfV0a
+         HccfF2UV2bAI86oXPly5PK8hQ59X4ngYcBp5e0d0Q7Dq3ckiWqqNJ59JYmUzxyHqC5u3
+         O+1Q==
+X-Forwarded-Encrypted: i=1; AKwUvByaYciF+XkUqoo1HV8dnbBkvo88D39kYf7tIR26qFs6QPyGHDEsgGMieko0+X3feJglVhaowI4=@vger.kernel.org
+X-Gm-Message-State: AFuF++m2p9az3/DKEChUdxJlrAedxihSYumb8hIg2obT7SHLJwRaEFHy
+	Wyw60h7wjM0xFIB52hLtFmYwqVG2t/2D7NQ9ZuS60IImjaJQfRG05jG5
+X-Gm-Gg: AYBFou0ZjW1R+Mcpaw12Nn5MPY6vMqWpSGdBu3AUwGEpy4EIaU0dg7GOmW1WeU/BRI8
+	agRlQCKwcgWdiyRWHOn+fsldyhdyC7IIXWpq8Hbkg8LZI/OxCbtM8hlEzETZ/7JRbPjBB58dYGm
+	QGe7qYxgR0dc6xKvQ8TYAVmEUaQtj/usz5A1Xy2ySdhtaaB+oIWSSrcGVN7If+zc8HXkSEMTJfO
+	ffuzIdrubXQNPfAGYjbsfAvorI2iVhTzCNy34+56E0++NlLdF+PvZ2zHCC6O87Z+lLmVk2iivHl
+	05IZgN5eidKkUcjhKa3rKoLw6bIHtIxpoYIB/oK3xpbUa30OfHeCHpgUgYwAjs6wIP00Lkzl91/
+	7e8jPhtgEWJLL/7V1JUv1f/TN7DX+BTcxrgwxuDnRMep2NCmBZs71I9NHVtc6h5IDaRhPKc+j45
+	01DJu57woMPuB/2Irw3vDCIeYw9G+ZYMZbbxnhZpH/EPVb2H1phDs8cr1GHyor95iB0F3TKZuWL
+	fQ4Xyg=
+X-Received: by 2002:a17:90b:528b:b0:398:c16e:69d3 with SMTP id 98e67ed59e1d1-39907ab521fmr9594085a91.1.1788248248379;
+        Tue, 01 Sep 2026 00:37:28 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990c40d0c9sm4465448a91.7.2026.09.01.00.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 00:37:27 -0700 (PDT)
+Date: Tue, 1 Sep 2026 16:37:22 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, ncardwell@google.com, dsahern@kernel.org,
+	idosch@nvidia.com, kuniyu@google.com, horms@kernel.org,
+	willemb@google.com, andrew+netdev@lunn.ch, kees@kernel.org,
+	jiayuan.chen@linux.dev
+Cc: kerneljasonxing@gmail.com, ij@kernel.org, martin.lau@kernel.org,
+	shakeel.butt@linux.dev, matttbe@kernel.org, martineau@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net v2 6/8] tcp: fix use-after-free in the lockless
+ listener path
+Message-ID: <apaAskNL-IvdcR7h@v4bel>
+References: <20260824033331.1084971-1-imv4bel@gmail.com>
+ <20260824033331.1084971-7-imv4bel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/5] tcp: Remove mmap_lock fallback path
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
- Eric Dumazet <edumazet@google.com>
-Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
- david@redhat.com, willy@infradead.org, shakeel.butt@linux.dev,
- vbabka@kernel.org, jannh@google.com, aliceryhl@google.com, arve@android.com,
- cmllamas@google.com, christian@brauner.io, tkjos@android.com,
- dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
- syzbot@syzkaller.appspotmail.com
-References: <20260831203056.838265-1-surenb@google.com>
- <20260831203056.838265-6-surenb@google.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260831203056.838265-6-surenb@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260824033331.1084971-7-imv4bel@gmail.com>
 
-adding Eric.
+On Mon, Aug 24, 2026 at 12:32:50PM +0900, Hyunwoo Kim wrote:
+> tcp_v{4,6}_rcv() calls tcp_v{4,6}_do_rcv() without holding the socket
+> lock when sk->sk_state is TCP_LISTEN. Every other path into
+> tcp_v{4,6}_do_rcv() holds it.
+> 
+> tcp_v{4,6}_do_rcv() and tcp_rcv_state_process() below it read
+> sk->sk_state again. A listener can leave TCP_LISTEN through
+> connect(AF_UNSPEC), and if that happens in between, the second read
+> returns a different state.
+> 
+> tcp_rcv_established() or tcp_rcv_state_process() then runs without the
+> lock. If the second read returns TCP_SYN_SENT, the incoming SYN is
+> treated as a crossed SYN and reaches tcp_send_synack(). When the SYN skb
+> at the head of the retransmit queue is skb_cloned(), that function
+> replaces it with a copy and releases the original with
+> tcp_rtx_queue_unlink_and_free().
+> 
+> The original is the skb that a thread on another CPU is transmitting
+> right now in __tcp_transmit_skb(). skb_cloned() is true because the
+> clone made for that transmit is still alive. Once the transmit returns,
+> tcp_update_skb_after_send() calls list_move_tail() on the skb's
+> tcp_tsorted_anchor.
+> 
+> In short:
+> 
+>   socket(AF_INET) -> bind() -> listen()   // the socket that changes state
+>   socket(AF_INET) -> bind() -> listen()   // the peer
+> 
+>   Several threads keep opening new sockets and connecting to the first
+>   socket's address.
+> 
+>   Another thread repeats this on the first socket:
+>     connect(AF_UNSPEC)      // TCP_LISTEN -> TCP_CLOSE
+>     connect(peer address)   // TCP_CLOSE -> TCP_SYN_SENT
+>                             // another CPU still sees a listener, handles
+>                             // one of those SYNs without the lock and
+>                             // releases the SYN skb that this connect()
+>                             // is transmitting
+>                             // -> use-after-free
+>     connect(AF_UNSPEC)
+>     listen()                // TCP_LISTEN again
+> 
+> KASAN log:
+> 
+>   BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0x14/0x140
+>   Read of size 8 at addr ffff88800a5d1460 by task poc/125
+>   ...
+>   Call Trace:
+>    __list_del_entry_valid_or_report+0x14/0x140
+>    tcp_update_skb_after_send+0x62/0x170
+>    __tcp_transmit_skb+0xe33/0x1e40
+>    tcp_connect+0x1b67/0x2490
+>    tcp_v4_connect+0x998/0xab0
+>    __inet_stream_connect+0x22c/0x700
+>    inet_stream_connect+0x48/0x70
+>    __sys_connect+0x101/0x130
+>   ...
+>   Allocated by task 125:
+>    __alloc_skb+0xd1/0x370
+>    tcp_stream_alloc_skb+0x2d/0x2b0
+>    tcp_connect+0x72d/0x2490
+>    tcp_v4_connect+0x998/0xab0
+>    __inet_stream_connect+0x22c/0x700
+>    inet_stream_connect+0x48/0x70
+>    __sys_connect+0x101/0x130
+>   ...
+>   The buggy address belongs to the object at ffff88800a5d1400
+>    which belongs to the cache skbuff_fclone_cache of size 472
+> 
+> Instead of taking the lock, keep the lockless path from reading
+> sk->sk_state again to decide how to process the packet. Move the
+> TCP_LISTEN handling out of tcp_rcv_state_process() into
+> tcp_rcv_listen_state_process(), and let the TCP_LISTEN branch of
+> tcp_v{4,6}_rcv() call a new tcp_v{4,6}_rcv_listen(). Listener processing
+> does not change. The TCP_LISTEN arm of tcp_v{4,6}_do_rcv() is left
+> alone, because a socket can finish listen() after the state check and a
+> backlogged skb is then processed there.
+> 
+> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 
-Full series at:
+Looking at this further, unhashing the listener and then calling
+synchronize_net() lets the disconnect path handle it. MPTCP needs a fix
+too, though, because it closes and reuses the first subflow directly
+without going through tcp_disconnect().
 
-https://lore.kernel.org/netdev/20260831203056.838265-1-surenb@google.com/
+This also closes the trigger path for patches 4, 5 and 8. I would still
+keep those, since they add no work to the fast path and they remove the
+root cause itself. Their changelogs would have to change though.
 
-On 8/31/26 10:30 PM, Suren Baghdasaryan wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> Previously, the per-VMA locking could fail in the face of writers
-> which necessitates a fallback to mmap_lock. The new
-> vma_start_read_unlocked() will wait for writers instead of failing.
-> 
-> Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
-> The fallback removal does not affect NOMMU case because TCP_ZEROCOPY
-> is gated on CONFIG_MMU.
-> 
-> This really is a nice cleanup. It removes the need to pass the lock
-> state back and forth to find_tcp_vma().
-> 
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Tested-by: syzbot@syzkaller.appspotmail.com
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: linux-mm@kvack.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arve Hjønnevåg <arve@android.com>
-> Cc: Todd Kjos <tkjos@android.com>
-> Cc: Christian Brauner <christian@brauner.io>
-> Cc: Carlos Llamas <cmllamas@google.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: David S. Miller <davem@davemloft.net>
-> Cc: David Ahern <dsahern@kernel.org>
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  net/ipv4/tcp.c | 31 +++++++++----------------------
->  1 file changed, 9 insertions(+), 22 deletions(-)
-> 
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 455441f1b694..62defe70f3ce 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -2167,27 +2167,18 @@ static void tcp_zc_finalize_rx_tstamp(struct sock *sk,
->  }
->  
->  static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
-> -					   unsigned long address,
-> -					   bool *mmap_locked)
-> +					   unsigned long address)
->  {
-> -	struct vm_area_struct *vma = lock_vma_under_rcu(mm, address);
-> +	struct vm_area_struct *vma = vma_start_read_unlocked(mm, address);
->  
-> -	if (vma) {
-> -		if (vma->vm_ops != &tcp_vm_ops) {
-> -			vma_end_read(vma);
-> -			return NULL;
-> -		}
-> -		*mmap_locked = false;
-> -		return vma;
-> -	}
-> +	if (!vma)
-> +		return NULL;
->  
-> -	mmap_read_lock(mm);
-> -	vma = vma_lookup(mm, address);
-> -	if (!vma || vma->vm_ops != &tcp_vm_ops) {
-> -		mmap_read_unlock(mm);
-> +	if (vma->vm_ops != &tcp_vm_ops) {
-> +		vma_end_read(vma);
->  		return NULL;
->  	}
-> -	*mmap_locked = true;
-> +
->  	return vma;
->  }
->  
-> @@ -2208,7 +2199,6 @@ static int tcp_zerocopy_receive(struct sock *sk,
->  	u32 seq = tp->copied_seq;
->  	u32 total_bytes_to_map;
->  	int inq = tcp_inq(sk);
-> -	bool mmap_locked;
->  	int ret;
->  
->  	zc->copybuf_len = 0;
-> @@ -2233,7 +2223,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
->  		return 0;
->  	}
->  
-> -	vma = find_tcp_vma(current->mm, address, &mmap_locked);
-> +	vma = find_tcp_vma(current->mm, address);
->  	if (!vma)
->  		return -EINVAL;
->  
-> @@ -2315,10 +2305,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
->  						   zc, total_bytes_to_map);
->  	}
->  out:
-> -	if (mmap_locked)
-> -		mmap_read_unlock(current->mm);
-> -	else
-> -		vma_end_read(vma);
-> +	vma_end_read(vma);
->  	/* Try to copy straggler data. */
->  	if (!ret)
->  		copylen = tcp_zc_handle_leftover(zc, sk, skb, &seq, copybuf_len, tss);
 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b4237d0e994d6f..ae6ab3b22beb53 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3373,6 +3373,8 @@ int tcp_disconnect(struct sock *sk, int flags)
+
+ 	/* ABORT function of RFC793 */
+ 	if (old_state == TCP_LISTEN) {
++		/* Wait for lockless listener receive paths to finish. */
++		synchronize_net();
+ 		inet_csk_listen_stop(sk);
+ 	} else if (unlikely(tp->repair)) {
+ 		WRITE_ONCE(sk->sk_err, ECONNABORTED);
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index b474d03620a75d..e41a5e1bf8dbf3 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3432,7 +3432,7 @@ static __poll_t mptcp_check_readable(struct sock *sk)
+ 	return mptcp_epollin_ready(sk) ? EPOLLIN | EPOLLRDNORM : 0;
+ }
+
+-static void mptcp_check_listen_stop(struct sock *sk)
++static void mptcp_check_listen_stop(struct sock *sk, bool sync_net)
+ {
+ 	struct sock *ssk;
+
+@@ -3446,6 +3446,9 @@ static void mptcp_check_listen_stop(struct sock *sk)
+
+ 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 	tcp_set_state(ssk, TCP_CLOSE);
++	if (sync_net)
++		/* Wait for lockless listener receive paths to finish. */
++		synchronize_net();
+ 	mptcp_subflow_queue_clean(sk, ssk);
+ 	inet_csk_listen_stop(ssk);
+ 	mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
+@@ -3462,7 +3465,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
+ 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
+
+ 	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)) {
+-		mptcp_check_listen_stop(sk);
++		mptcp_check_listen_stop(sk, false);
+ 		mptcp_set_state(sk, TCP_CLOSE);
+ 		goto cleanup;
+ 	}
+@@ -3593,7 +3596,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	if (msk->fastopening)
+ 		return -EBUSY;
+
+-	mptcp_check_listen_stop(sk);
++	mptcp_check_listen_stop(sk, true);
+ 	mptcp_set_state(sk, TCP_CLOSE);
+
+ 	mptcp_stop_rtx_timer(sk);
+
+
+Best regards,
+Hyunwoo Kim
