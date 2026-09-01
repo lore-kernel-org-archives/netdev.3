@@ -1,75 +1,100 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8419947206C
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 11:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1572BD59C;
+	Tue,  1 Sep 2026 11:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788261019; cv=none; b=ugovk0M8oTTc8hmgxLDcKJVdp521YUYfhc9NQIW9gj24AEP+MtPy3hXnuUCzhyMIWphf6O8jah+BKurbBRmJwQSEgvHgvpRg3T6ZiiftDqoAqViO2uSyLz3ZNINudsGm7Bb46fU1NWEigs8Ryj44ySGwyJyzGWfOBDIFuBEJvNM=
+	t=1788261639; cv=none; b=r6Hpo7N8cKtncVs+YijkuU5DDjsT7ykDD5FgW3C/0W0FklOUNewN/h2LLXxbz3JBBvwsFsu465W5q4AWubHHLIY2xnB7lIEdZnghGHCer7f2RXlnZunen4DIyxEynHUULRJvJOfcg2hZZ3hOYzrvqQOgV+g/eg6eKG08LHD7gN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788261019; c=relaxed/simple;
-	bh=L8Hrqvz6GFMoSEhRyzIorG1PWvffPNsLFlZwtdXw7FQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ax5f1XlWDBuq1EFaZaE5POQMeWGcCPDQ6U4khjpe7kDzJz/QgLeby20c48fM9XSqV0JMH/ow9Y/4tmkTHum16UFSsCGZHgKEIxlTZZqPdTWls4HVqXGsbYNcd8SvIYTQfG/x/RHJu4nMeyi6dZUaqvMUOA+iKQLUXHZv2xCVcTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6vNaZuf; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788261639; c=relaxed/simple;
+	bh=sffXTPFZSPpQoSn04HRQbUmu3lL5q5NbBIaiJ1ZCaNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nkF+7ZLyH1vb4fzVg7TqtXr2XG9B8iHzWWmYsfgqJWbsH/x1lICUZrjhwG95MVduzwNu3r47iDNo1Twi151TvUnYE56b+ON2gQaMU/YwuaYgwosuRURt8AtwDVnw9sxsuMoQtcOWcExjrGIn2MEtcCkj4AZEKTkOCzyGYio0aHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Hf9JCTT9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=zkQg0tRe; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=SuFh1Pts; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=f5DItYMz; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6vNaZuf"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so811222a91.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 04:10:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788261018; x=1788865818; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IgO2ob95gg6fumjWiN+mfIqaFjC/9ud8+iboIR5TNwg=;
-        b=Q6vNaZuf9iWDfxOuNNZVl/lZ9P5DuJDi8HR4nRMaGyutWmCKO+oiiEfJ+mHZT/ZAzA
-         Xf+5AMiXbEIitwvjcH4ommzo4p63jCnXuySLMBsDSsIklqtV+EFAjee2oUN39neScvTe
-         fNiZ1tyG+aiYTuNPbegKzvw8FX16RiTlvxd8R2Y4JyNNu7CsKIQdJD/oe6viYLIXi5Sv
-         E3ohQZcdlrt22asYt95ApGLBKiGRHydTW3ibvD1+FtduNvdvu+BQ0SdKj0Wz3TM5ibBD
-         +vpfTIyKU2eL3ZSfxO5WjTxC019WYetG6G8g2blOsRIObTEoX5Em4LZi7Ad2ref4YOXU
-         VUvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788261018; x=1788865818;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IgO2ob95gg6fumjWiN+mfIqaFjC/9ud8+iboIR5TNwg=;
-        b=swcrh+dVrfBLoA80akzxCbVpTARSuzAE3ZHgI8A3vbMeZzgMWtDRbcKdiz+qXIskLF
-         3qvd/KL+C67LuIkyXv7JumUwjW/N6JY5tMLhTfQ5vFrGyxtn/GJzlJLOnzMGab4lHxiG
-         t1VvJBVb+vvR0COqAGbdkjiV5OrFjUdAcBq4dZZ/hlN433sP/eNSOOnPQHCnfjk4263z
-         a6ksscOaaSyU824ouC3qzgZCNktIpcLlck4sxw9avvzzMLhHAEkqV3tjbEKkJUsKGxDF
-         us79DmzlhgeeAjxls580cb08GC1Fx3FLreRhmyvKCcD6mkzrfM/jpPlKUvWmX48oi+Fb
-         zb+Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwYdbY42XuRC6t7n4EStkwhvW2ZfskXZ9KQFqk3CzJDSdDdzwbAmPF4c5NCM/NZi8BKtmqq5fA=@vger.kernel.org
-X-Gm-Message-State: AFuF++laR5+82VPYgnTEX3E7MWo7c5jeee3/MdTVVYqiFsLlJBjVRmUD
-	i83zgZXf+mUuj30EhXhvkCk9nhHRFaCZ8pNQJQI8hY/LHpM4mIfJgH2Z
-X-Gm-Gg: AYBFou3j0FzmAh+B9ESjbfgxNuGisT1LjKHCeinI0dWaNAp3+rypQqM95INUuNgnf3s
-	33KEboMCkqrZ2Euadzx0Dtkzt0Qtx/3YpaCJTw06283IuUe3P9JA40Z6MbMOspiCigus6ty9g75
-	TmLa35LUvhupAo36BuzlAerDM7Gl2Zl6ZLyfJM4yZQwZCI2Sy1vl1l6iJW2DCa9RPxYYitBTtBc
-	nbLEBKJ6Ms/v/COi2gVewxu/OZ45VGVIeJvYzPz3OhZnY5A1DDM/tTOLmVQ6NXhpCRgLp6ERERj
-	IyDz5GMKrHI7RjXR8sV7s4PqLsQPwagVe9LClKxKLM3vzlbCDufLXnVmCbZnOM2FSsrdfnD1gz1
-	QtEyUlwluL7pbX0r+H9/fT+puFpkGw6cwywFFku69S2b1aetBrqeNXhojX6kkNtVV+fgS/FfLKj
-	tMtNOQgg7zI+kDwYUpJipYsRTTR/h0v+mRl0yDtIlVjCJI8CnBHqaQp6Fz
-X-Received: by 2002:a17:90b:3c8a:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-396d10076e9mr49352310a91.13.1788261017551;
-        Tue, 01 Sep 2026 04:10:17 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d777c329sm7452644a91.2.2026.09.01.04.10.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 04:10:16 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Veerasenareddy Burru <vburru@marvell.com>,
-	Sathesh Edara <sedara@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next] octeon_ep: remove redundant memset in octep_setup_pfvf_mbox()
-Date: Tue,  1 Sep 2026 20:09:11 +0900
-Message-ID: <20260901110913.977745-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Hf9JCTT9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="zkQg0tRe";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="SuFh1Pts";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="f5DItYMz"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F2F1D227CB;
+	Tue,  1 Sep 2026 11:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788261632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtmIS6tKOUtReXnNNwZiRzWq/ytmd8xb/oWQMHMDyns=;
+	b=Hf9JCTT93OXZ/HovKvZqdSQw7UXfAczrJ5NzJ4Nb5pULOtabheIYIz82w+ZEnf0Heh8OwM
+	xZfoIk09wPhZrg1K75BFjjwdpg1W0TjziytqfwJGJE3wjMmzU6UYknWes2uc1TH6n3O61l
+	zwYHHn0xNUQ3+iRECnPtVXkP5szqtSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788261632;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtmIS6tKOUtReXnNNwZiRzWq/ytmd8xb/oWQMHMDyns=;
+	b=zkQg0tRepWOfUXvYBHKDCXc2/skaHZFhTBnMedBGerxmfPS7RQRKs9Z+Q5tUAMowqtdPkg
+	ka/ICtz7b+/UMMAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SuFh1Pts;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=f5DItYMz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1788261628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtmIS6tKOUtReXnNNwZiRzWq/ytmd8xb/oWQMHMDyns=;
+	b=SuFh1Ptsic8yo8W/kOkebiJXJ2QZjJPuBovoFvsmsaR049SriUVd5dTaHPvIvTBBJ9+VFC
+	YDlyFdorW6hu7MQSBhamlavB4MIXJaSeITu8FaF5mDMhxxA8nRdSvygNuzT4b/yVghgCHF
+	AL8g1FPMh9UqiTw61NlynPnxO/YRCNY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1788261628;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtmIS6tKOUtReXnNNwZiRzWq/ytmd8xb/oWQMHMDyns=;
+	b=f5DItYMzVlrpMd30KvSv3Iz1t3rV/iQZ+ZXZRCuAlHHYTq9ddwVZWM+GcEVCa9b7COk7uH
+	Bj4doxnEL/gPWADQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B1471369E;
+	Tue,  1 Sep 2026 11:20:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FE5vFPu0lmo6MwAAD6G6ig
+	(envelope-from <pvorel@suse.cz>); Tue, 01 Sep 2026 11:20:27 +0000
+From: Petr Vorel <pvorel@suse.cz>
+To: zihanx@nebusec.ai
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	horms@kernel.org,
+	idosch@nvidia.com,
+	kaber@trash.net,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	stable@vger.kernel.org,
+	vega@nebusec.ai,
+	Petr Vorel <pvorel@suse.cz>
+Subject: Re: [PATCH net v3 1/1] ipv4: fib: bound automatic table ID allocation
+Date: Tue,  1 Sep 2026 13:20:25 +0200
+Message-ID: <20260901112025.855917-1-pvorel@suse.cz>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <6f2f2a7a136aee005512a2e1ac8ede62ac8c7bb6.1788258884.git.zihanx@nebusec.ai>
+References: <6f2f2a7a136aee005512a2e1ac8ede62ac8c7bb6.1788258884.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,29 +102,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: F2F1D227CB
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:email,suse.cz:mid];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
 
-vzalloc() returns zeroed memory, so the memset after the allocation is
-redundant.
+> diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+> index 4edb0dca7be8..060501b376a8 100644
+> --- a/net/ipv4/fib_rules.c
+> +++ b/net/ipv4/fib_rules.c
+> @@ -214,6 +214,8 @@ INDIRECT_CALLABLE_SCOPE int fib4_rule_match(struct fib_rule *rule,
+>  	return 1;
+>  }
+>  
+> +#define FIB_MAX_AUTO_TABLE_ID  4096
+> +
+>  static struct fib_table *fib_empty_table(struct net *net)
+>  {
+>  	u32 id = 1;
+> @@ -222,7 +224,7 @@ static struct fib_table *fib_empty_table(struct net *net)
+>  		if (!fib_get_table(net, id))
+>  			return fib_new_table(net, id);
+>  
+> -		if (id++ == RT_TABLE_MAX)
+> +		if (id++ == FIB_MAX_AUTO_TABLE_ID)
+>  			break;
+>  	}
+>  	return NULL;
 
-No functional change.
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
-index 0867fab61b19..e4175d5bdb3b 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
-@@ -274,7 +274,6 @@ int octep_setup_pfvf_mbox(struct octep_device *oct)
- 		if (!oct->mbox[ring])
- 			goto free_mbox;
- 
--		memset(oct->mbox[ring], 0, sizeof(struct octep_mbox));
- 		memset(&oct->vf_info[i], 0, sizeof(struct octep_pfvf_info));
- 		mutex_init(&oct->mbox[ring]->lock);
- 		INIT_WORK(&oct->mbox[ring]->wk.work, octep_pfvf_mbox_work);
--- 
-2.43.0
-
+Kind regards,
+Petr
