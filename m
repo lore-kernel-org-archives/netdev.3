@@ -1,156 +1,106 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3703101A2
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B800388385;
+	Tue,  1 Sep 2026 08:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788251616; cv=none; b=aw4ZVbCOSKHLamAaR5Orkzq4Mw1hmc/SfereFSLX8KMsFStf1Jv085dYyaX1XFtT99DofaEPObAvwXvbadhLgN3ShKvGvvHAxM0xBXlkOm5fIgwVWZKeSFZa5Y9S6lkcwbrIc3doeUG6OlLZtwsb38m+xlKrCBuGHMuUjrhu1ok=
+	t=1788252003; cv=none; b=hg6CRFicc7l95idCMbfWhv0LwRe77VlNW9mmN9SgsMXDvFTaPjbusCGR1B8Yyfj8Yb+hedq2CaNiah5IN8ZHpb3mwSQxtaaQ3wjJBD+DNK7EW427O9HXOMqBuzt1eTX0wnikWcGMGzJSZc1KBrgqOhV0e4nnkRCcYQxcSGhuqq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788251616; c=relaxed/simple;
-	bh=7KCYYPGqpmRxNWWjzwtBvJRWE67e0WRdOEM93VIEuxM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GC+MMi3NqSjCRX4cmzXPpmCgHJKasOIM7cmC0/7c53JE8DJd3xjZAlXgGJLJnUrwxOvlcKNr9/uFMVM41zJqKD167Sms3uAhhAx+uzh5tV594BqhAcQrJzTVVvYQRgDFbbLvWfUzmUKqSqpb1UG6xcF9EuCQFLcmc757dRRw1Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4c/caT2; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788252003; c=relaxed/simple;
+	bh=f5+z/urWN18KpDb3NPBrCm05UiPH3MMNc7VsUg/Sv7w=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E31Mc8WpLwV5KAmqzFJlcBuf0X9XG4b8qW6CtuBmxmFcA2kOAjpGjVxL1mkoDoqRgwNc6kC6iDzKw2JQBmyd90Z/4HUaXSP70c+tbAfFWLc1WGA04syrKS8tie1rQ5PaV/WZOzJvm7IA1Jpk9KqV4vktDc1/JQInhy9uwHcNTLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=rLm4dJAY; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4c/caT2"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc1cbb64a1fso4375083a12.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 01:33:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788251614; x=1788856414; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RiEALvjPEuEOIdvB+bOx1YYVXmJ76RxpCYaG+WNrEhY=;
-        b=i4c/caT2K76RYYa7eZrrFF9ML6TNI4T6HsJXHyR5bvnQ98ts0x91T4hmL9mByrHVuF
-         O0V67Vw0suxmq3fRmfD9SGju8QiSZ9K1BHCwFRht7z/2lpufpm+VophS/n5L4vDPAyq6
-         jeJ9MadyFRJ5tfWKAJnsISr6y5m6T+TF1zV6hi/XD4Wfzqm4KgmUZKnGxds+RT9SVJ6m
-         PJ1WFr8rgaf6bMOWW11I6P77w/LRqEDzRzgMTPLMJYemzP6PuDwQPs3A32+TtruWVsfB
-         foG820/5cUavaU6Vy8r+YBUZ/yoLsRQUg5zjxUOksStyTx3DeSZhrhJaO91OIRloHmId
-         uxAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788251614; x=1788856414;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RiEALvjPEuEOIdvB+bOx1YYVXmJ76RxpCYaG+WNrEhY=;
-        b=c8PVN0RS9Qq+Yy8L/Lxp8i+NQQMWAopSq3FYrQEESn6pi7yf90Te8AOTL21aDxxvN3
-         xUA7HsvLQ09yLnxQCgcIlLPFlUzlkY7Y6iCcnHItXJRXwWz/FWVL8RmAkDWd1Ny5/jp0
-         hysrMvjPR76ohrQy5y+uiVy3V9RsVi1iFrfTxpupHYIQ2VdeLHLddJmbF4gCFFkXkwZD
-         fZTRKEB8uMwXXLM/tCM0ykSY5p1zYX+S6Zmr7I1AciD1EC1fj7PSEW781L12hCp4h7tT
-         Xx8OjEXXxknuK+/FArXzOgl4w3ozdTVcMQ38r+Q3jSWBTm6h5eIqjnEdlMbhulZe26Ox
-         jBkw==
-X-Forwarded-Encrypted: i=1; AKwUvBzWzt6OlETrN9YN+2Ktf2F0opGUiIxFfTjEWJSAs/kCG3fuwtDoZpg0+YBb5t2z3G+cSgBmBE0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nfI8Yp3XAFjyAI99vc8HVWkSm2/kGtdCGcO0l7I75lny8fBWBY
-	P6pD/zIsrvO43+MsXBHv9n2PYgg4+Q+rqE61YtO3HNpNmJ91nePtZbjR
-X-Gm-Gg: AYBFou2MkVIP80CZ7BHtpZK4cN0Pmj7wT5X4gDKQ2QdEDbfXSc/ld7utf9iXIwSAzfU
-	lOHVDw3xvbO2rlj2qjgiWRAO6tIOk0Qmv8ps0J6Gv8shxAJmF65j6dOsdeX0PGDPsH6+yD2r+CX
-	00HJEOm9yYUcqsG40rs70ceH9gXs3767oJif4iW8hZ5E6iM291FnuqdNXgdhRYr8PpV3TvaKFcT
-	3eSRQo4WwUjpyYecRtOYdnbAWbDBfd+63qUTAhk4vDXeWUdUVS9OE3+2LcXK8UnNVUaGvkgYZQy
-	tJ5DJ/ikCBax3rnbK8lPeyv6kQUsWNThIlSCXLLlFyZ2Gujn1h8INylWZ4sO5kVH0HzE9mkYFpB
-	KS5v4wUocOC3fLEmR7qjKxaoYBK96YT5/N35KFsiwG+Ehas0xKigxOqzivEIpY5RthjyyrafwX1
-	zlxi54Y41IWGFSduZ9CSFd8KmZaPj4gQQeDmAFO31Old0ZQSBItn4gWYIAj+9UTVC5bSIgjc+Nx
-	gGpoRs/c12PD4Qc1bvQN1CyBIA3RpI4lBx1Mry6DEHykCdFiDTtvhktctT+TJhWpLxwj7kwYk2u
-	q8LycHD9Dh7U2QxyD7RyGN5BFY5sXo2ILBV8QtbaikSgTBDQKg==
-X-Received: by 2002:a17:90b:530c:b0:381:1c96:829b with SMTP id 98e67ed59e1d1-396d0d4c43amr50193467a91.3.1788251614426;
-        Tue, 01 Sep 2026 01:33:34 -0700 (PDT)
-Received: from KERNELXING-MB0.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d49e9e0sm4656501a91.11.2026.09.01.01.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 01:33:33 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bjorn@kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	jonathan.lemon@gmail.com,
-	sdf@fomichev.me,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	aleksander.lobakin@intel.com
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
-Subject: [PATCH net v2] xsk: set network header on skb at generic transmit
-Date: Tue,  1 Sep 2026 16:33:25 +0800
-Message-Id: <20260901083325.3445-1-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="rLm4dJAY"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 11290201AA;
+	Tue,  1 Sep 2026 10:39:58 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id sC8SiCtWYc7Y; Tue,  1 Sep 2026 10:39:57 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 6F21E20189;
+	Tue,  1 Sep 2026 10:39:57 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6F21E20189
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788251997;
+	bh=QVhAnbOLAAflZPz0raZS/HocwXEYsGRuvIvb5hBKbVs=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=rLm4dJAY6CRlvls+u+2MVZPr0LPwXKMvfUyYkAeqtdn0muUTCa+m0NS9OY+fZGAGU
+	 dSYHZHugvJYGhPFYtGEED4la7T7zm3KuaEhRksL6AjsWmwe+LX8zJBvvgCwWCdKSkc
+	 xAGdxFSomuh3MhbnhaKwcRfpZ9XB/LSweVwfOY/hGmxnZUdrOBMw1pXmwry5S0K9hP
+	 DeXUBKZbaY5sW8x1Pe8EfR5VgxEsjI1YldEdORAIpG+vRRC+Gh9y8tDdqgdXC4bI9H
+	 +lDXRBJr4+kZU3hmfqo0SteZWmWh1DPjT7tBG8dIJ2EvvxR23qgwLP045HrVhCnj0F
+	 SXaAsKHkKSAaw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 1 Sep
+ 2026 10:39:56 +0200
+Received: (nullmailer pid 5844 invoked by uid 1000);
+	Tue, 01 Sep 2026 08:39:55 -0000
+Date: Tue, 1 Sep 2026 10:39:55 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Siwei Zhang <oss@fourdim.xyz>
+CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Siwei Zhang <fourdizhang@tencent.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH net v2 1/1] xfrm: use hlist_del_init_rcu for state_cache
+ and state_cache_input
+Message-ID: <apaPW58bs4VcO__s@secunet.com>
+References: <20260730114028.1077499-1-oss@fourdim.xyz>
+ <20260730114028.1077499-2-oss@fourdim.xyz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260730114028.1077499-2-oss@fourdim.xyz>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-When constructing an skb in the XSK generic transmit path, neither
-xsk_build_skb() nor xsk_build_skb_zerocopy() calls
-skb_reset_network_header(). After __finalize_skb_around(), the
-network_header offset defaults to 0 (pointing to skb->head). The
-subsequent skb_reserve(skb, hr) moves skb->data forward by hr bytes,
-but leaves network_header still at 0. This makes skb_network_offset()
-return a negative value (-hr).
+On Thu, Jul 30, 2026 at 07:40:08PM +0800, Siwei Zhang wrote:
+> From: Siwei Zhang <fourdizhang@tencent.com>
+> 
+> Commit 14acf9652e56 ("xfrm: defensively unhash xfrm_state lists in
+> __xfrm_state_delete") converted bydst/bysrc/byseq/byspi from
+> hlist_del_rcu() to hlist_del_init_rcu() so that a second
+> __xfrm_state_delete() on the same object becomes a no-op rather than a
+> write through LIST_POISON pprev. It missed state_cache and
+> state_cache_input, which kept hlist_del_rcu():
+> 
+> - hlist_del_rcu() leaves pprev = LIST_POISON2 (non-NULL), so
+>   hlist_unhashed() returns false.
+> - hlist_del_init_rcu() leaves pprev = NULL, so hlist_unhashed()
+>   returns true.
+> 
+> A second __xfrm_state_delete() therefore enters __hlist_del() on the
+> already-deleted state_cache/state_cache_input nodes and does
+> WRITE_ONCE(*pprev, next) through LIST_POISON2 — a write use-after-free
+> once the slab is reused. The corruption can in turn cause a subsequent
+> hlist_for_each_entry_rcu traversal to follow a dangling next pointer,
+> producing the read use-after-free reported in xfrm_input_state_lookup().
+> 
+> Switch state_cache and state_cache_input to hlist_del_init_rcu() to
+> match the other four lists, closing the write use-after-free and, with
+> it, the read use-after-free it spawns.
+> 
+> Assisted-by: CodeBuddy:GLM-5.2
+> Fixes: 0045e3d80613 ("xfrm: Cache used outbound xfrm states at the policy.")
+> Fixes: 81a331a0e72d ("xfrm: Add an inbound percpu state cache.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Siwei Zhang <fourdizhang@tencent.com>
 
-When such an skb reaches a tunnel driver like ipgre_xmit(), the call
-chain pskb_inet_may_pull() -> pskb_network_may_pull_reason() computes:
-
-    pskb_may_pull_reason(skb, skb_network_offset(skb) + nhlen)
-
-The negative int from skb_network_offset() is implicitly promoted to
-unsigned int, wrapping around to a huge value. This triggers the
-DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in pskb_may_pull_reason().
-
-Call trace from syzkaller:
-  ipgre_xmit+0x958/0xcd0 net/ipv4/ip_gre.c:658
-  __netdev_start_xmit include/linux/netdevice.h:5400
-  netdev_start_xmit include/linux/netdevice.h:5409
-  __dev_direct_xmit+0x4b6/0x730 net/core/dev.c:4942
-  __xsk_generic_xmit net/xdp/xsk.c:1079
-  xsk_generic_xmit+0x277a/0x40a0 net/xdp/xsk.c:1120
-
-Reset the network header so skb_network_offset() is valid (0). Note this
-anchors it at the start of the frame (L2 for an ethernet device), which
-is the same convention AF_PACKET uses on TX. Unlike AF_PACKET, AF_XDP
-does not need to locate the real L2/L3 boundary or probe the transport
-header: an AF_XDP frame is always a complete, opaque L2 blob from
-userspace. AF_PACKET only cares about the boundary because it can cook an
-L2 header itself (SOCK_DGRAM) and supports GSO/checksum offload; none of
-that applies here, where the frame is sent as-is via __dev_direct_xmit().
-So resetting the network header is enough to restore the invariant and
-avoid the crash.
-
-Fixes: 3914d88f7608 ("xsk: Respect device's headroom and tailroom on generic xmit path")
-Reported-by: syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f16c1b285c9f63994eec
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
----
-V2
-Link: https://lore.kernel.org/all/20260826012052.51028-1-kerneljasonxing@gmail.com/
-1. add more clarification about why we don't probe the header like packet at
-the end of the commit message (Jakub)
----
- net/xdp/xsk.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 33475b180ea6..2077bb6299ca 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -947,6 +947,8 @@ static int xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
- {
- 	int err;
- 
-+	skb_reset_network_header(skb);
-+
- 	err = xsk_skb_destructor_set_addr(skb, addr);
- 	if (unlikely(err))
- 		return err;
--- 
-2.43.5
-
+Patch applied, thanks a lot!
