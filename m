@@ -1,117 +1,82 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C5939C632;
-	Tue,  1 Sep 2026 13:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3630E33263B
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 13:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788267733; cv=none; b=YvGconoHpkvbwILQy2a4Tb+VDFiiwKHX5556JpHQlBpv5hnHFzo2MALUORmdf2461xyBziXoU/JyY09YTndcWRFgfrbcn93fch/EvG07P0rC2aP+dps2A/9fYbv50gdw3QH75/4IJ/9TcZ/CryE5rtkOSg1U9kp0YbYVU9pio4Q=
+	t=1788267890; cv=none; b=GXXDsMiOfj5g8wGoc9YmX/MTVrHZdoPTD+TkUdRgrot8MZdwujt1kWKYZ1KzzX6rllRDioPu1amJkPOZwn9kCCXAft+aZ01s4yLIY17/KBKE/L2C6Rg01A21J2/MqUjcb084/x71ddw72/a714qT4JwRE3JuDRNtZcrVfMXSWSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788267733; c=relaxed/simple;
-	bh=pZUMlEwtsaEeH7TVMF5qsqoi7Zgr+VsMU0EuwmAA45I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CvLD2iVaTMaBtyeB/9D4Dtis87qSYaGhdUj/rKDVcy9V/zWqjc8MJxtJGsOHo5Wcsze10J2TycgkLQqOTs9xA9Oibypo/6Zusvq/5dfaWbwPbDDW9TlOgMGnI3DJcQXMNXolKqPAL1e4WuBsZJ4Il8L20PG8qJ8Lecu7kitm+gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=c9fTC4u0; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1788267890; c=relaxed/simple;
+	bh=A4mU+ZrAkvQl8NVxFJ/4s/Y7PH4gaV/BiB2sBBPkW9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jDnbJxNN1G+jw3JanpDjHH0TtjGmeVCQ6ZgJKtcsgH/tFVd08/5H2t9fAHlBr1Bq5F+nio/0BlM7lnGs93KjM4y2FH7Lae5NQe2xwwRRy+laspVslkBTVmLla/UyeHuO4p6t+6S2EwqWnAkXeZy9iL29dpNdTckPfEpneh5mECQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AhEOjRMr; arc=none smtp.client-ip=95.215.58.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="c9fTC4u0"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788267722; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=ppWzcSYLfmdmUEwetfWNeyyHnWXusGFRwvVsm+qIFG8=;
-	b=c9fTC4u0sW16Jw5RG5bR+SGcvOCz98cMeG47wuP+Fal/Qmi0bYCPBBP2EAaofMHbEm9WM/fljcDHMilifyl4WmxWoFnFiWQZqucrmCNV8jue7OSqrYtUelxCdvz8jUKHr/dFyiTt4isfGe0qF7LJ465OZW6G+7CZj9nFWa0wPPI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XA8SIPL_1788267721;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XA8SIPL_1788267721 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 01 Sep 2026 21:02:01 +0800
-Date: Tue, 1 Sep 2026 21:02:00 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
-	hidayath@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, stable@vger.kernel.org,
-	netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] net/smc: fix diag dump lifetime races
-Message-ID: <apbMyLc0IhLMKwwA@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260828065439.3582783-1-mjambigi@linux.ibm.com>
- <apWEzobrZ3QR3IfN@linux.alibaba.com>
- <4f303f9f-fd20-475a-8004-1a670dfd34df@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AhEOjRMr"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=A4mU+ZrAkvQl8NVxFJ/4s/Y7PH4gaV/BiB2sBBPkW9g=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788267887; v=1; x=1788872687;
+ b=AhEOjRMr3LAlbcwEzW1DgSZwtZSWioNhfaochcQtq9YQ3u3oJrC5zuHYokCR9j+G6D5uovP/
+ 4FW8OG8EImZu1MVv/OzZva+FuceL5PNKZPB796elgLqLuYiRxT/zou2M7I3T+6iUkTHbLsEpbez
+ Q6irqQYeHKBdge9UUxgZfehw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 46f1897b22d68139;
+	Tue, 01 Sep 2026 13:04:47 +0000
+X-Mizu-Trace-ID: 46f1897b22d68139
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <4a664246-eaf9-47ad-98a0-10a0fccce572@linux.dev>
+Date: Tue, 1 Sep 2026 21:04:40 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] octeon_ep: remove redundant memset in
+ octep_setup_pfvf_mbox()
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Veerasenareddy Burru <vburru@marvell.com>, Sathesh Edara
+ <sedara@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20260901110913.977745-1-ekffu200098@gmail.com>
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260901110913.977745-1-ekffu200098@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4f303f9f-fd20-475a-8004-1a670dfd34df@linux.ibm.com>
 
-On 2026-08-31 20:27:38, Mahanta Jambigi wrote:
+
+在 2026/9/1 19:09, Sang-Heon Jeon 写道:
+> vzalloc() returns zeroed memory, so the memset after the allocation is
+> redundant.
 >
+> No functional change.
 >
->On 31/08/26 7:12 pm, Dust Li wrote:
->> On 2026-08-28 08:54:37, Mahanta Jambigi wrote:
->>> This series fixes multiple lifetime races in the SMC diag dump path.
->>>
->>> The first patch adds the basic infrastructure needed to synchronize diag readers
->>> against connection-owned conn->lgr/conn->lnk updates. It introduces a
->>> per-connection spinlock and uses it in the link switch and connection free
->>> handoff paths. conn->lgr and conn->lnk are NULLed under the lock before the
->>> borrowed references are released, so a non-NULL conn->lgr seen under the lock
->>> guarantees the lgr object is alive. The diag reader can rely on this invariant
->>> without borrowing any extra reference.
->>>
->>> The second patch fixes two races in smc_diag itself:
->>>
->>> - serialize clcsock field access against smc_clcsock_release() with
->>>  mutex_trylock()
->>> - take conn->lgr_lnk_lock when reading conn->lgr and conn->lnk; use
->>>  smc_conn_lgr_valid() inside the lock to check that the connection is
->>>  still registered, then snapshot all required fields and call nla_put()
->>>  after releasing the lock
->> 
->> Hi Mahanta,
->> 
->> As discussed in the other thread, I think we should defer the release of
->> smc->clcsock and remove clcsock_release_lock.
->> 
->> In that case, we should no longer need these two patches. Also,
->> introducing more locks in SMC is the last thing I want to do :)
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+
+Reviewed-by: Xuanqiang Luo<luoxuanqiang@kylinos.cn> Thanks,
+Xuanqiang
+
+> ---
+>   drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c | 1 -
+>   1 file changed, 1 deletion(-)
 >
->Thanks for the new series "[RFC net-next 0/7] net/smc: tie clcsock
->lifetime to the smc socket and remove clcsock_release_lock" — once it
->lands, we can drop the mutex_trylock() fix for Race 1 (clcsock).
->
->However, Race 2 remains open. Your series does not touch smc_core.c or
->smc_cdc.c, so smc_conn_free(), smc_switch_link_and_count(), and
->smc_cdc_msg_validate() still write conn->lgr/conn->lnk with no
->synchronization against the diag reader.
-
-Hi Mahanta,
-
-Thanks for the detailed explanation. You are right that a per-connection
-spinlock can work here, and I agree none of the lock sites are on the
-per-message hot path. But I think we can also do the same thing we did with
-clcsock_release_lock: instead of adding a lock, tie the lifetime of
-conn->lgr/conn->lnk to the point where the connection stops being observable,
-and remove the need for synchronization altogether.
-
-For lgr/lnk, that point is the hash table. Once the connection is unhashed, the
-diag dump (which iterates under the hash read_lock) can no longer reach it. So
-if we make sure the connection-owned references are only dropped after unhash,
-the invariant becomes: holding the hash read_lock and seeing a non-NULL
-conn->lgr implies it is safe to dereference. The diag path then reduces to
-`hold hash read_lock -> read conn->lgr -> if non-NULL, use it -> done` with no
-new lock, no extra reference, and no trylock. The invariant is carried by
-object lifetime rather than by a lock, which I find easier to keep correct over
-time.
-
-Best regards,
-Dust
-
+> diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+> index 0867fab61b19..e4175d5bdb3b 100644
+> --- a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+> +++ b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+> @@ -274,7 +274,6 @@ int octep_setup_pfvf_mbox(struct octep_device *oct)
+>   		if (!oct->mbox[ring])
+>   			goto free_mbox;
+>   
+> -		memset(oct->mbox[ring], 0, sizeof(struct octep_mbox));
+>   		memset(&oct->vf_info[i], 0, sizeof(struct octep_pfvf_info));
+>   		mutex_init(&oct->mbox[ring]->lock);
+>   		INIT_WORK(&oct->mbox[ring]->wk.work, octep_pfvf_mbox_work);
