@@ -1,201 +1,227 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010054.outbound.protection.outlook.com [52.101.61.54])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1138E1DF75A
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788252546; cv=fail; b=nRmI4UaHWFMZlvJxZFEY3WuweSZNEw2huBXw7VFb87BCjjWBzWvUXX8XY18Zpp7zb1BDdsmpBzICdSl96kz/nbCJG1dUJzvw+kOqDQbS8SmX2EpiR+msEk5SLHmKJX9HZp8pQCj3yWKfWkwtfl+QYuJqaN8jA3OlJZJuvR5rNzQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788252546; c=relaxed/simple;
-	bh=LpZm/Ptn0+x0Ys3HAsZa4+e1JNTYPyxGjWx2WzpadNE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AqxOSTr8OAwqyG79I6IbP6zhIw2VfgMXtaBc0oIkM9fzIX0OUx1BvxWSO7jsSoE0uA91Kzyzr1S1QR5bhyL0Fg2SeANnddiceYVrSY2F3/++0BuLPY7IhEwLaf6c7LdyiN8/ptN4Vj8DzGmHJfpd2/v6c9vJsOIuGOOQaHcbpQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ixYS+qP1; arc=fail smtp.client-ip=52.101.61.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D094756D8;
+	Tue,  1 Sep 2026 08:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788252561; cv=none; b=T0WZNzIjfOwzWju54bvZ1nf2xGdIgf24zMraPxW1jEkq9Bx3DpRZwN2HQTkyPi7eLRd+p1XBlYoQidiDHBuqUGPMvuB5IdY5mLctOGI2w9Fn4JrubsCFqov+rZbiomwPb/kOT+58kzD0j76S8nVR0Ox8WQ3pqA33kpe8RSjWGd8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788252561; c=relaxed/simple;
+	bh=QTlcHTpowKWsQovdj1XGzRdJ/ZDJt6zGIppnB6xPRIg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j3k9wUf0vkCYVkj9QLWUqMDWZYFCgpyqgGXgovLr7GAedXPAVf4p/o/Y63Q0jXKI2eUEMENeYWNrjZLLyo51519BLP77xjtpNXp+bOxiXxFamu8pfXMHW9sqUBKcfFdzcbLxfVEzFQBywk+giZAO4253Rw6uD26LuaoyVVc420o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=wGC8CcS8; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ixYS+qP1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fhmTtqXWS3c/y1sjJEaJ7rfOx1s1949xtgCSifprUu255MtX6jiXnUc5ZZgyN8Z8QJSn2ZLMr2w1OVl2FhsBWxS7M01F78GiB1DSlquQiR36hB1bth4uhGKIFrcpCM9t3me+bzuzHkqEfrOhw5YTkDuRILg3Jf2HbkPTQZH3DeWYMTHE3mU3whfTv1SgH998GnWCt/qUg2I/8mfzl4pNq1tpqu9mZW27Mfnor9QXkDQ0Y5Xsyvd261qAH48xjtT5/B9KYtEXYt0G9PYo7TeGUZ+LBWgJ3bogV3+6jxsHXFh5zlOYLy0+mW3P8REkG+1ly3I9RhmwecwRHuaZLYfDDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CquEn08pAPDi+kWh9dAz+G9z4vzehSqdgO5EP9c2yjs=;
- b=P6Lgh+BZjBd+P5eF9s9LYknGq7mzj4LFmzejdaaHp9rpSeFwBG+I3Y9Pg4ZTq7SIRkssKfes8e+ZROtMVkoZSTkn7Ym3QlO9yDdKjEg0KRFPuW+Tfvp8pP9PiQxIKBXbP7ZfGXOs5O8DEUDdn1NgbTK4NHku0nxeQkeXbgMv3x5UYdiGJ0FpL6kR1OoW24hrLUYJDhwBp6u9y5jp+0dlspNpdmtadIFrV+Xw/ZHMp38yCK0NWiG9QYinahK8pIKZT1WV1+zm1Z8tjCeHqo4AWGLduxGW2J1zABhpGlmh5z8wzChJkNA4CJgMZIW11waXL1ujd2pOSR6vV27wYIVWAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CquEn08pAPDi+kWh9dAz+G9z4vzehSqdgO5EP9c2yjs=;
- b=ixYS+qP1bt8bvefUZ3Lb1UgwCgtp5o7wyVEg9aD1I0CTHzrPqRd1T1/AFs/10H1XypEHDNKv4eV3CKV5bxv4SmqgDzz7wFFBqi061CZyB/cWftuq2fSpfN+YDF4e9d/Dv1ncwa01h4Q9vDu/HKf6PKLBzw9xs1G7cX3u3t2NBqU2SAzAlJ2gCYP0JvUndDfuTJ8OsKAE4KIB4GN7GS0jZ63LizpSpHForp/9pdMcXLCTnjQCYIU+RDWO8f1WLGlmd6rJOReXniMWFyQsl4Lrl1DOChUl6RBm1ZGUmnutfF4tSE7oMmroWxY2Nr5xBuVurgtk1tv8lEvQPxJQAq0R3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM4PR12MB5248.namprd12.prod.outlook.com (2603:10b6:5:39c::15)
- by IA1PR12MB8263.namprd12.prod.outlook.com (2603:10b6:208:3f8::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 08:49:00 +0000
-Received: from DM4PR12MB5248.namprd12.prod.outlook.com
- ([fe80::92d8:797b:4db0:d385]) by DM4PR12MB5248.namprd12.prod.outlook.com
- ([fe80::92d8:797b:4db0:d385%5]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 08:48:59 +0000
-Message-ID: <c43698bb-d791-4eb5-9cd0-df3d6fd38c66@nvidia.com>
-Date: Tue, 1 Sep 2026 11:48:54 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: MLX driver for host-to-ARM communication
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- ttoukan.linux@gmail.com
-References: <ba322fd3-9f91-4e2c-9000-12d473ecb249@nvidia.com>
- <20260813081410.5fdeceb1@kernel.org>
- <0444bbb8-39e2-40f8-b3c2-a5851e5bfa70@nvidia.com>
- <20260827081529.63513668@kernel.org>
-From: Gal Pressman <gal@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20260827081529.63513668@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0149.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:95::20) To DM4PR12MB5248.namprd12.prod.outlook.com
- (2603:10b6:5:39c::15)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="wGC8CcS8"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 8EEE120799;
+	Tue,  1 Sep 2026 10:49:16 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id OOREstNd2N3Z; Tue,  1 Sep 2026 10:49:15 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 5E8BB20190;
+	Tue,  1 Sep 2026 10:49:15 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 5E8BB20190
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788252555;
+	bh=b46sx9/wbMx+9rxKsV8IbfLLdVKgYWfbGTeZ3rXxF5A=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=wGC8CcS8L9j36kszjNZxh8O9t8VZwmhYaTwVs2Gn7R1rlZFmL8lwlk/7qbJnuamQI
+	 DDRgMdoYjH16HtpIvF4WxFsnKIV9j5Juom3desm+IVF5vjEVieT0IuTdns9vqk59lo
+	 L4tMYwcj1JFTmRV4o5ItLCncgr20637joCiDu+k5S/r6cjfl2/TQL9Y+rc3rUN4Hc/
+	 SiZo0b+p2ZJ181v57H+4L06Kmv3T4E19v8egs2ty4NOwzsIdMijdPCEW2BkiyB5Pqi
+	 XkNRlCF7mLBMMHjoSOkRQUlGvcKOMvxQJ0XDW/1/Vkkip+d/yZLCtHfuZfHi1dmR1/
+	 tFm4aHoxHrxCg==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 1 Sep
+ 2026 10:49:14 +0200
+Received: (nullmailer pid 23536 invoked by uid 1000);
+	Tue, 01 Sep 2026 08:49:13 -0000
+Date: Tue, 1 Sep 2026 10:49:13 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Lilly Aronleigh <lilly@aronleigh.au>
+CC: <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Christian Hopps
+	<chopps@labn.net>, "open list:NETWORKING [IPSEC]" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v3] xfrm: iptfs: avoid canceling reorder-window drop
+ timer
+Message-ID: <apaRiWQn54Pr9hpm@secunet.com>
+References: <20260824072851.301644-3-lilly@aronleigh.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5248:EE_|IA1PR12MB8263:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f68229b-919b-490c-d9e6-08df0805dd74
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|18002099003|22082099003|56012099006|3023799007|6133799003|4143699003|11063799006|10067099003|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	JGCw/3/puowEfEOArqUKZZXwGK42SDlRkJgpJ+2okKlTXLLUixvvBA2yvXlEqhmq5kxFmTSzH2l7RyG8d5Pyyb3a5k9f3VLGbdove0UtGEi7K24I8xmIORlHq0wF1tqdfMRM13+G+7lwtYy690QJRkb91BHV0Oo42339RVEY6zmx8DHfkPjyTw3FNIfHx1kolk0izgg2dcuRm/dIS1yUAkgwJoomRy5XcUgPZxM+snrtw3/DQU9K9PoX5o1G74ehN0UMRx0Vl7fIP+nxEgyrWJB0M6s8vdbIi8sHESbF+2xKg0yeuu9TeMQroAKX8mj9UmhtmzCPWtSmlf3l89S/19IKfIgo7cwSUByvHQMiJECYImV9Jm7jFcBuAdLFoqPovaBSgAaivokgcPJc52yxJRdvzFmErkxgI+IyLIt/QkObt4514oFQiQ23faP7FpUENYmGmYhuKq8YexEzcZv//ud+AZ4PwybGjYEQQbAOCBM1BoO29HneoPoyqtTDCMH/YpDTiyXhAKfbYyRuOYLd67mspYqMwEdhLFLEBgUpbMuFMaU9lYVnoqGsDHoGv5ybJC8mIT31EgEWW6k64U62m10bxS3Zl9DqmiRbrtTHE4XMdt+MLU283h76z5MbYS9aAtVsDpjNAH680KNQKVFLRLZuqEMcRfNENM3JrvuCCOk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(18002099003)(22082099003)(56012099006)(3023799007)(6133799003)(4143699003)(11063799006)(10067099003)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WEdyN1Z0S1dhWDBLd3N6NmxjT1FyQ1p2L0V1K2N0dUk2b0xGZWlzWnoySDQ3?=
- =?utf-8?B?THVzeWUxamh3cXJnMEtORjVtU3RTVlBSLzR3dC9CUktPcDBrbUtLaUt6OFJY?=
- =?utf-8?B?dDJCdkltUXl4ZFNSNC9ObUpMUzI3WGpyS0dYVnFUUDFaOGg3WnZvRzgwa2ps?=
- =?utf-8?B?WTBqd1ZsVDRJNFlnYXluSTNpL2pZNk9mQm1oeDN5SkxnSVlvdzZiYWQ3RHZC?=
- =?utf-8?B?Z1VURzVjTGZWM0NvMlV6b0FLak4xRWtTYUo2MmFscVRGSGNDeFd4M3hqMXkr?=
- =?utf-8?B?OURwVGNBRDBUaFNKWDJTdW11R3NrQXdqSkN1SXpmcXlhaGZRMzlsUkwxWHh2?=
- =?utf-8?B?TFp1bi9wWnIrenI5cUZQT2NaNHU2S0hWTk1tT0ljRW5uYXRNc1NKZ0VleGlH?=
- =?utf-8?B?c0ovRmNhbmsxRW5RUUtJemNTYU9LdFVQRUx6OXNlazkvUTdPOVFmSXVOQVlI?=
- =?utf-8?B?MDJ5d09VOCtSejBnOFduKzNublQ4YksrTHR4cDI1K3gyWGdqMW9FbnFQb2VG?=
- =?utf-8?B?TVNqTDR5dDY1d1VHMWY0SHF1MTR4b2g0dDZxV29ESjhZQ0RLT3BNQlAxd29B?=
- =?utf-8?B?dmU2VWl4RmZFRkpzd0xIRzdvTFJaL3JJN0d1WkNUYjkyRXAzYmhIbzkrcmtl?=
- =?utf-8?B?bWt5VHBiSWlMZnRHTnY4ZFRaZW1Mamh2YnJjMUZLRGsyaHI3SWhwNExXMVFv?=
- =?utf-8?B?Z05PVE5IbEJNdk5PT01WNHl2a3BtVFhPcnNGZFJ0SW1CcXlPN0k4UkNYd2VV?=
- =?utf-8?B?RnNoTHJUc0RyK1QySjF0Ulc1c0o1Yk1TK3VLUGVValZsYVcxSXEyaUdxWFhI?=
- =?utf-8?B?ZHB0MGxnQUVuZ1YyNndaaGxEUXpmWG91NWk0U05aL2tsNndMdTJJcnlwaE9n?=
- =?utf-8?B?QXpMUU5wV1lMWUloWmQvWDAvNWQvWTQrenJrQ3NzWXFkZ3NiZnN2VTFlYUZ6?=
- =?utf-8?B?Ymt2ekxmaEkydVlSbldkdG9US0N4S3BKOWR1WG5KMXB3bzc1YkJ3RGFsL2hU?=
- =?utf-8?B?QUViQ2loN3EwNkdHVUpHNGFHYU9nNmVnako4S2xwZnIrS09NQkhpVjVJSWtC?=
- =?utf-8?B?a2hLdTRYb0pZZTNwcEVYQjZkWktWbUFiUjRoSld6MkliNVhKSnBmb3BqZmk4?=
- =?utf-8?B?Sm5pUnZ4eTlkb1pPNHBMVTRQZ2QrNGljWk5HbVlaOTNtRDQ5NGtleitpM2dV?=
- =?utf-8?B?TkRkc011dDZUaWZ1NDlNNUJjRlZYZ0FGVTZ6bWR4NlpyN2RhdWFyR2tMNkox?=
- =?utf-8?B?SXJIeXhsYi9LTkpVRE9sODY2Rjh3VzA5VWljWEtuT1ZDVXR2Njh4TzNueXRD?=
- =?utf-8?B?OGI4Y0NLR2NRVERsNGlSemhaallWNkhlbGVLVlFVektoMDFFdkwxYTh6MWNx?=
- =?utf-8?B?SzZqWjl3YytDQm51R282WSsrdHdDKzVzK2hYSHliQ3NLY2ZVdjhBZ1pqTXNS?=
- =?utf-8?B?aHdOVEF4YkVyaTZHYXlyeXdIVVVsTmZNZk5WUzFFOVQxUi9Pd2ZtaXZKVTMr?=
- =?utf-8?B?Mkc3V2EySTI1V3Ezak1PTjcxR1JZc3pIR29YcU5FSXlUazhHS3BVb0Y0aWdr?=
- =?utf-8?B?dExpSDZPUXdXNWp4dVhoYjB2bEd3d3ZRYXIzeTBOWWQyS0VNbm9CdTFJbThF?=
- =?utf-8?B?bFRqMS84NE5nNFFSY3RJcytmRDhCS1FqeGF3ZlpYYUF4SDVwUjdrSkFhVk8z?=
- =?utf-8?B?bXlHbmZEa3FiK2IvMjdrbFhrWWVYeGUxa3JuUElhZkd3VDlXeStDL2ZGaUJT?=
- =?utf-8?B?QjRJakRoaWJOZyswMkp2R2p5NGlEK0puOVZXVkRKdW9TYlBBdnpzQmxFZXM3?=
- =?utf-8?B?REJqczRTSm9ycFlYcmhMaXNJUldNVHNOdGpXUTRITWFHZjdnMGkzOGxOMGJG?=
- =?utf-8?B?R1hJemFIK29SMk5LRXZoay9WK1h0R05ReitUdDJKWVJjMnZ6djRUWVo0SnBj?=
- =?utf-8?B?citBYWJKWTdnOW1GNG5LbHVSR0hOd3hGdjJQTWYzYkY5Sy9aSUVjYytRc2Fw?=
- =?utf-8?B?bkdYbVFOZzRZaGFINzFyalMrZ0JkTWkwV1gzNHhreHVkZ21Yelg4cFl6WjBB?=
- =?utf-8?B?ZDd6MDZrNDVrNmJoNUNFWUU4YnVGZlFVWmJuSUx6QTJGampvdWRkOW01ZENQ?=
- =?utf-8?B?OXJ1KzQwcXpTS3REa0diYnZ3UEZiNnVvWG15YU11QXEwY29QUndsZnFzL1dy?=
- =?utf-8?B?Rlh0TTJGN3VTS1NOYkJyTHVTNkVGSFE2WjM4Z2UzbW9IcFdKV0dKa1FpbkpN?=
- =?utf-8?B?eUNYVmVDRHVKdzZFZFdQNm1ZWFg1ZTFONTVTNUxlT2FSMUovU3poOWhBWkpP?=
- =?utf-8?Q?0zjkINvNwFImV0rDUu?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f68229b-919b-490c-d9e6-08df0805dd74
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5248.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 08:48:59.5613
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /G+KwhI+FsXEOrxMSgDJOXS+0UTIJUZ5+Oa0jdLsjT2V3XkFMd/CB5okOF+Qkt9+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8263
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260824072851.301644-3-lilly@aronleigh.au>
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On 27/08/2026 18:15, Jakub Kicinski wrote:
-> On Tue, 25 Aug 2026 11:24:08 +0300 Gal Pressman wrote:
->> On 13/08/2026 18:14, Jakub Kicinski wrote:
->>> This will be nacked. We nacked multiple such drivers over the years.
->>> Most recent one not more than a year ago.
->>>
->>> If you model the device as a network node it should be reachable via
->>> the normal networking path. If it's a control channel - explicit
->>> control channel APIs should be built, rather than doing pretend
->>> networking.
->>>
->>> Every IPU vendor gets to this sort of design sooner or later because
->>> it's an easy hack when running a user space SDK. nVidia has clearly
->>> turned from upstream work to pushing your DOCA stack on all customers.
->>> No matter how many shameful lies y'all told about fwctl not being DOCA
->>> related. This is just a next step. But please commence your bullying
->>> campaign. What do I know, right?
->>
->> There are some unrelated accusations here, I'll focus on the technical
->> side of things.
->>
->> No DRAM NIC (NODNIC) is not a new interface designed for BlueField 4 or
->> DOCA. It exists in our NIC since 2015, and implemented in other OSs
->> drivers long before DOCA existed.
->>
->> It is a lightweight NIC PF intended for simple packet transmission with
->> a small memory footprint.
->> It sends and receives ordinary Ethernet frames using SQs, RQs, CQs, and
->> EQs. There is no private encapsulation or command protocol. You can
->> connect this PF to any other NIC on the other side of the wire and it
->> will work.
->>
->> On BlueField 4, the firmware connects the host side NODNIC PF to a peer
->> PF on the DPU side using ordinary vport forwarding rules. The Ethernet
->> packets are forwarded unchanged, both sides are Linux netdevs.
->>
->> The purpose of this is to provide network connectivity between the host
->> and the DPU OS, particularly when the DPUâ€™s OOB port is not connected.
->> Standard networking applications such as ssh and PXE use it.
->>
->> To be clear, there is no hidden FW involvement or handling of the
->> packets, these packets are forwarded as is between both sides.
->> It makes sense to use a networking driver for networking purposes, I
->> don't see how control channel APIs are better for this.
-> 
-> I understand. Having a full networking driver for such point to point
-> communication between device FW (/OS running on the device, doesn't
-> matter) complicates the system topology, config/init and mixes very
-> non-networking requirements with networking. It's a lazy design which
-> leads to poor, vendor-specific user experience. The NFP had a similar
-> thing, it obviously never made it upstream, but I'm very familiar with
-> the implications.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+--- Patch [1]: [PATCH net v3] xfrm: iptfs: avoid canceling reorder-window drop timer ---
+commit c07a5e7c7c7f82df32e93a21827b1fe442840cc7
+Author: Lilly Aronleigh <lilly@aronleigh.au>
 
-What is the mix of non-networking requirements?
+xfrm: iptfs: avoid canceling reorder-window drop timer
 
-From the networking stack's perspective, this is pretty much the same as
-connecting the DPU's OOB port and communicating through that port's netdev.
-Also similar to how virtio-net has been used successfully between
-hypervisors and VMs for a long time.
+This changes __iptfs_reassem_done() so that the shared xtfs->drop_timer is
+only canceled when the reorder window has no saved packets, with the aim of
+keeping the reorder-window timeout armed. Two observations below, one about
+the resulting timer deadline and one about whitespace.
 
-I can't comment on other companies' experience, but this driver is
-running successfully in our systems, we do not encounter the problems
-you described.
+Link: https://lore.kernel.org/netdev/CAFrrV-O1fesaza+5_WqH8OciXRu9KKE4UsB6RcMamDu0j2-nBA@mail.gmail.com/T/#u
 
-What is the basis for the NACK? A technical problem with the networking
-driver itself, or a policy objection against this kind of DPU use case?
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 597aedeac26eb..c0d712b594a37 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -699,8 +699,12 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
+>  {
+>  	assert_spin_locked(&xtfs->drop_lock);
+>  
+> -	/* We don't care if it works locking takes care of things */
+> -	hrtimer_try_to_cancel(&xtfs->drop_timer);
+> +        /*
+> +         * The drop timer also drives the reorder window timeout. Locking makes
+> +         * a failed cancel harmless.
+> +         */
+> +        if (!xtfs->w_savedlen)
+> +                hrtimer_try_to_cancel(&xtfs->drop_timer);
+
+Discovered by: opus-5 · Missed by: gpt-5-6-sol, sashiko-gemini · Confirmed by: gpt-5-6-sol
+When the cancel is skipped, the timer stays queued with the expiry that
+belonged to the reassembly that just finished, not with the reorder
+window's deadline.  Can a subsequent reassembly then inherit that stale
+expiry?
+
+Both arming sites decline to arm when the timer is already queued:
+
+net/xfrm/xfrm_iptfs.c:__input_process_payload() {
+	...
+	xtfs->ra_newskb = skb;
+	xtfs->ra_wantseq = seq + 1;
+	if (!hrtimer_is_queued(&xtfs->drop_timer)) {
+		hrtimer_start(&xtfs->drop_timer,
+			      xtfs->drop_time_ns,
+			      IPTFS_HRTIMER_MODE);
+	}
+	...
+}
+
+net/xfrm/xfrm_iptfs.c:iptfs_set_window_drop_times() {
+	...
+	if (index == -1 && !hrtimer_is_queued(&xtfs->drop_timer))
+		hrtimer_start(&xtfs->drop_timer, xtfs->drop_time_ns,
+			      IPTFS_HRTIMER_MODE);
+}
+
+The sequence, with D = xtfs->drop_time_ns, all transitions under drop_lock:
+
+t_r: an ordered payload ends in a partial inner packet, so ra_newskb is
+     set and the timer is armed for t_r + D.
+
+t_w: a future sequence is saved, iptfs_set_window_drop_times() records
+     w_saved[].drop_time = t_w + D but does not re-arm because the timer
+     is queued.
+
+t_c (< t_r + D): the missing sequence arrives, __reorder_this() flushes it
+     plus consecutive saved packets but at least one saved entry remains,
+     and the flushed packet completes reassembly.  With this patch
+     w_savedlen != 0, so the cancel is skipped and the timer remains armed
+     at t_r + D, which is earlier than the window's own deadline.
+
+t_n (~ t_c): the same flush ends in another partial inner packet, so a new
+     reassembly starts, but __input_process_payload() sees
+     hrtimer_is_queued() == true and does not arm t_n + D.
+
+t_r + D: the callback fires.
+
+At that point iptfs_drop_timer() takes the in-progress skb unconditionally:
+
+net/xfrm/xfrm_iptfs.c:iptfs_drop_timer() {
+	...
+	/* Drop any in progress packet */
+	skb = xtfs->ra_newskb;
+	xtfs->ra_newskb = NULL;
+	...
+	if (skb)
+		kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
+	...
+}
+
+while __reorder_drop() just re-arms for the window, since its own deadline
+has not passed yet:
+
+net/xfrm/xfrm_iptfs.c:__reorder_drop() {
+	if (xtfs->w_saved[0].drop_time > now)
+		goto set_timer;
+	...
+set_timer:
+		hrtimer_start(&xtfs->drop_timer,
+			      xtfs->w_saved[0].drop_time - now,
+			      IPTFS_HRTIMER_MODE);
+}
+
+So the only casualty is the freshly started reassembly, which still had
+D - (t_c - t_r) of its budget left.  If its continuation sequence arrives
+afterwards, iptfs_reassem_cont() drops the leading fragment silently:
+
+	if (!runtlen && !xtfs->ra_newskb)
+		return data + min(blkoff, remaining);
+
+with no statistic incremented, so a valid inner packet is lost that would
+have been reassembled before this change.  Before the patch the
+unconditional cancel left the timer unqueued at reassembly completion, so
+each new reassembly armed its own deadline.
+
+Would re-programming the timer to the remaining window deadline be closer to
+what is wanted here, for example cancelling and then:
+
+	hrtimer_start(&xtfs->drop_timer,
+		      xtfs->w_saved[0].drop_time - ktime_get_raw_fast_ns(),
+		      IPTFS_HRTIMER_MODE);
+
+Related to this, the resulting state (timer armed with a deadline belonging
+to neither the current reassembly nor slot 0) does not match the
+iptfs_drop_timer() kernel-doc:
+
+ * So, regardless of why the timer is firing we can always discard any inprogress
+ * fragment; either it's the reassembly timer, or slot 0 is going to be
+ * dropped as S0 must have the most recent drop time, and slot 0 holds the
+ * continuation fragment of the in progress packet.
+
+Should that comment be updated, and should the commit message mention the
+new case?  Also, the new comment says "Locking makes a failed cancel
+harmless", but the concern with the shared timer here is the leftover
+deadline rather than a cancel that fails, so is that rationale the right one
+for this change?
+
+Discovered by: opus-5 · Missed by: gpt-5-6-sol, sashiko-gemini · Confirmed by: gpt-5-6-sol
+This isn't a bug, but the six added lines in __iptfs_reassem_done() are
+indented with spaces (eight for the comment and the if, sixteen for the
+hrtimer_try_to_cancel() call) while the surrounding lines of the same
+function use tabs, so the function ends up with mixed indentation.
+checkpatch.pl flags this as "code indent should use tabs where possible" and
+"please, no spaces at the start of a line".
+
+The added multi-line comment also opens with a bare /* line, while the other
+multi-line comments in net/xfrm/xfrm_iptfs.c start the text on the /* line.
+
+>  	if (free)
+>  		kfree_skb(xtfs->ra_newskb);
+>  	xtfs->ra_newskb = NULL;
