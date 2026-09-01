@@ -1,110 +1,91 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-51.mta0.migadu.com [91.218.175.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828695FDA7;
-	Tue,  1 Sep 2026 06:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7889833C536
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788243627; cv=none; b=o1Wzp/5w1UrA26PwstJ9VK0y0Cz0MShjl+VTHa/1rRP+p+LySbcXsiYW9FMWERYzvYJ+smltXRXgtUmorptVD08N1JE/oLL9t+5K7cr32rr3c/gUrXemG1Lf2QtXMXIQG72PFSGe1MDepHkeO1GuCtjDCe5Mf4XzahOyEd6dfkg=
+	t=1788243997; cv=none; b=OMqSisXUUTuTxmE8pvUwjLg1Y2vwvVlhQum2WXs4wm9JJZjDIzSn0heP3uh1qvMnB6iSpqVrVHuLRikRf8Nn/8nOj3Y9WSzZli49+49pVGlj+p7ZL5jnrlX9cRG0UppeWfR5KxPituUbvJhiUm6RgL12Vy8F7Hi/T510t2yqCVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788243627; c=relaxed/simple;
-	bh=YxiFU9/82jDAV6JYBPDzG7V683ieSGbBZ51OOgOUV9w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=P/sH3IwimrC78X6XYhGcx+9UlwLy2x+1EXJRL1AWykOM/QDNuIpYrdZQkbBG9qbYMilMZz3iOM6EqU8n/DA8rfPirKYPvTDfq5xtA7nTEMTead8MqttbEgtQMGrQhae+cd3oCeAKADiTJwqFNbIyuGgn6yexzC4yIU0gBs8UV0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pAfB3HYW; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788243997; c=relaxed/simple;
+	bh=nY/oabUsnL5fxFERwMfqwf4ojTlIZToZ50HB2OBLDSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JlkmBeqqfFJfJOTcOJUmElViP5hhfptnxVcvgjIKnOmbwmua8lQYmD8jJx2FhOiGvZRso6Yw/hSF0Zia37pKgxmqzGpEHxKfDdotUIFtK3UrQik9JPxB4tbU0YIRGsFn31+J9WVKvlw/pgMiPcpgAaM3AqnwmbX9AZitAz+7GUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hneSvjVg; arc=none smtp.client-ip=91.218.175.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pAfB3HYW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=aJ
-	7PhLxxl4PYQ5oEasx3MRN7GPE1zqCps2cOFgmWAvc=; b=pAfB3HYWGvDac7V2Iy
-	ibBuvAl1Uy0CaCxA01Z5QR5U1dgSpDJr2xby0nrhTLRKg0fKX25QJEXqW88iLJJD
-	p/+zgmscmK2mkEutq7c8sbEmYWl9kmfTkTFq+ect7a9f3bmQwrMakYnnMgK70poO
-	c8XeL55jJmTfKFQN/iQOcfZc4=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDn78FjbpZqEUZBTQ--.7422S2;
-	Tue, 01 Sep 2026 14:19:16 +0800 (CST)
-From: guoqi0226 <guoqi0226@163.com>
-To: Frank <Frank.Sae@motor-comm.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cuiguoqi@kylinos.cn
-Subject: [PATCH] net: phy: motorcomm: keep chip delay defaults when firmware provides none
-Date: Tue,  1 Sep 2026 14:19:15 +0800
-Message-Id: <20260901061915.3410228-1-guoqi0226@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hneSvjVg"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=nY/oabUsnL5fxFERwMfqwf4ojTlIZToZ50HB2OBLDSQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788243993; v=1; x=1788848793;
+ b=hneSvjVgcw76oTyRUpRV6FAdJA127bq/Fi1XLuHRLlE5YgxFQNbpayEb+/FrF8R5zLKzb3q6
+ PDq3gtCo+h79waKTod+1hphziWe9Tmi1yyh0xMAdMhRW+9FLoiluhCgjQZNRGjPwXYVj/NK4jm0
+ /lGynhIiCQ+EDorMyaOONjXM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id b1f864fda224ca39;
+	Tue, 01 Sep 2026 06:26:33 +0000
+X-Mizu-Trace-ID: b1f864fda224ca39
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 1 Sep 2026 14:26:18 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next v2] selftests: net: move log_test to lib file
+ and remove duplicate code
+Message-ID: <apZwCtNbjnHITbC4@fedora>
+References: <20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn>
+ <20260831080321.59cc6af1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn78FjbpZqEUZBTQ--.7422S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tryUWry7Xw4fKFWxCry3Arb_yoW8tFy7pr
-	W5XFWYqrWqg3W8Gwn8tan7ZryFqan3JrW7Gr1rWw1F9ws8AF9Yvr48KFy7tF1UCrW8Xa1a
-	vrZ5WayDuas0krJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jvMKtUUUUU=
-X-CM-SenderInfo: 5jxr1xaqsslqqrwthudrp/xtbC-gT0XWqWbmT87wAA32
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831080321.59cc6af1@kernel.org>
 
-From: cuiguoqi <cuiguoqi@kylinos.cn>
+On Mon, Aug 31, 2026 at 08:03:21AM -0700, Jakub Kicinski wrote:
+> On Mon, 31 Aug 2026 17:21:28 +0800 Hangbin Liu wrote:
+> > Many test scripts under tools/testing/selftests/net/ each define their own
+> > log_test() function with near-identical logic for comparing a return
+> > code against an expected value and printing OK/FAIL. Add a shared
+> > log_test_expected() to lib.sh and replace each local definition with a
+> > thin wrapper that delegates to it.
+> > 
+> > The function is named log_test_expected() rather than log_test() because
+> > lib.sh already exports log_test() with a different signature used by
+> > the forwarding tests.
+> > 
+> > Two tests required special handling:
+> > 
+> > - icmp_redirect.sh passed a fourth "xfail" argument to log_test(). The
+> >   underlying issue has been fixed and the argument is always absent now,
+> >   so it is simply dropped.
+> > 
+> > - fib_nexthops.sh checked for ksft_skip (exit code 4) inside log_test(),
+> >   but no test in the file produces that code. The check is removed,
+> >   callers that need to report a skip should use log_test_skip() instead.
+> >   Two callers compared against exit code 2 are left as-is since code 2
+> >   correctly counts as a failure in the previous log_test().
+> 
+> still breaks fib_tests.sh
 
-ytphy_rgmii_clk_delay_config() unconditionally programs the YT8521
-RGMII delay registers. When firmware describes neither
-rx-internal-delay-ps nor tx-internal-delay-ps,
-ytphy_get_delay_reg_value() falls back to the default 1950 ps values
-and those are still written into CCR and RC1R, overwriting the chip
-strap/OTP settings. With phy-mode "rgmii-rxid" this clears the RX
-internal delay the MAC relies on, causing CRC errors, packet loss and
-link training failures at gigabit speed until the link falls back to
-100M.
+Oh... This patch touches too much tests. I only fixed the [ "$VERBOSE" = "1" ]
+checking and return 1 issue in test_bridge_neigh_suppress.sh. I didn't notice
+one of fib_test.sh "set -e" and also breaks here.
 
-The fallback only supplies a value and does not skip the register
-write, so the check belongs in the caller. Since the hardware links
-cleanly at gigabit with the chip defaults untouched, return early when
-firmware provides neither delay property. Delays supplied via DT or
-ACPI _DSD are still honored.
+I think there is no test would expect return 1 for log_test. So I will
+fix it by return 0 in the lib function directly.
 
-Since commit fffedfece2b4 ("net: phy: motorcomm: use device properties
-for firmware tuning") switched the driver to the generic device
-property API, this applies to both DT and ACPI platforms.
-
-Fixes: a6e68f0f8769 ("net: phy: Add dts support for Motorcomm yt8521 gigabit ethernet phy")
-Signed-off-by: cuiguoqi <cuiguoqi@kylinos.cn>
----
- drivers/net/phy/motorcomm.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 5071605a1a11..a8b8ebbd4d6b 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -895,6 +895,18 @@ static int ytphy_rgmii_clk_delay_config(struct phy_device *phydev)
- 	u16 mask, val = 0;
- 	int ret;
- 
-+	/* When firmware provides no delay properties, keep the chip's
-+	 * strap/OTP defaults untouched. Rewriting the delay registers here
-+	 * would zero the RX internal delay that rgmii-rxid relies on,
-+	 * which breaks gigabit links (CRC errors and intermittent link
-+	 * training failures).
-+	 */
-+	if (!device_property_present(&phydev->mdio.dev,
-+				     "rx-internal-delay-ps") &&
-+	    !device_property_present(&phydev->mdio.dev,
-+				     "tx-internal-delay-ps"))
-+		return 0;
-+
- 	rx_reg = ytphy_get_delay_reg_value(phydev, "rx-internal-delay-ps",
- 					   ytphy_rgmii_delays, tb_size,
- 					   &rxc_dly_en,
--- 
-2.25.1
-
+Thanks
+Hangbin
