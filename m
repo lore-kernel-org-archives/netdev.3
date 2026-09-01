@@ -1,37 +1,49 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1DC44236B;
-	Tue,  1 Sep 2026 03:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEF635E1BC;
+	Tue,  1 Sep 2026 03:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788232724; cv=none; b=jImh/MRbJBi1l3zL/cN/I11+31fY9FZw5N0tdiTTAAQJHNq3gHeTthenmsSOsR/in9+7yWN67m89W801UnQ+cOkLT3Dtgn4uATvu4tpqjBMV65+zJgyLNSQ0jS81/g15JglGuyvx9/TwkqLXnke3Jxi552BOWtA/bM6oxG04DmM=
+	t=1788232774; cv=none; b=YjlIlPVv1AsKo/2Q1Cna62fvYcK7CuNXgXLiZm00sN/9REYMIjRwH8C8r7N2zYu7ohkr2qxGBQ1ffsiBfGDjGy9oFWJL+h6kjTMSocVCcUixJitfE9pML2IJ+IZ36lHxZjhCEaodnzFAif8kdx32Vzqkri0DuIYgIPoiWcIBaSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788232724; c=relaxed/simple;
-	bh=AlLd8VzesRJb0sPZHinVMShBq9DoqHCiOZF92vBBQxM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k6nX5ijl0BS0JGz3H3Y3c3bifiSPh88/5fbqE3YWiX0Tf2lV2aHgTtCcTvNwkRKNE8MZsnL8yuBUs3vLE90bOywldC4Mb/LkrM0JtdpG9GGuQcC96WtFALSXoh6JLZaSNmGWBjYWvc3R6OD9j18fZ3zrHCCL9QTBfQmvJSWDeeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=UVl8X8Y0; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	s=arc-20240116; t=1788232774; c=relaxed/simple;
+	bh=RhwQGauGUHP11xbppaMXraitbUJEn804pviFbnUcZKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=frs+qrfGGkXZT+NXrTRzPrnEEE9yuqJADH7GHtx2zQlb089PRWaKYNU9vWHUxjxu5l3GJ7L77NjEKRWtlESs7Q0mcOcb1UnpJZB320BywiNOLEoTYRvg7t5DaUMcBcWDZjRGlnvBwH4W432pM5JVNg/V/J5ZN2FcMBiH+EwrvB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I9GA7KCs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="UVl8X8Y0"
-Received: from localhost.localdomain (unknown [106.120.124.5])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4c0a8eb6c;
-	Tue, 1 Sep 2026 11:18:29 +0800 (GMT+08:00)
-From: Chunfeng Song <springbreeze@stu.pku.edu.cn>
-To: netdev@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	fujita.tomonori@gmail.com,
-	kuba@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] rust: net: phy: fix off-by-one bit positions in device status accessors
-Date: Tue,  1 Sep 2026 03:18:24 +0000
-Message-ID: <20260901031824.1377498-1-springbreeze@stu.pku.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I9GA7KCs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ACF1F000E9;
+	Tue,  1 Sep 2026 03:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788232773;
+	bh=WG3XF7Kw0LabU5DuitR2Zj4YR6z32AQ/YJ3tPqdXMWA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=I9GA7KCsXSam4+UW9drNTSEeYGvKiETi7QjZ68G+0x1DouxKYZMikQKpLpNQLpx1Z
+	 wkivMwUOaYOrfWr1gdbYL6BUYfabc0pMq/u8H3nwyeB5PNrC5+goJ+nOwcDBGkLysS
+	 eUFYO0zQTEB5GFm1JQ+2zLTGce6usU6tAQuqGOkEM6LWkXeGFXzfeGvozTmRkrU47k
+	 prBt2llramvWx0/60qBOCzm676+mqwBBUo751TQ7dKwLe+kaqn8RDj/qUrKJanl+8t
+	 VFC0OD59YZKcZEPJy245gH3q/PWv8wrY64u/zB/Voc8gtwJFHeXWwfMou4bcljv1wt
+	 OOckOkyDufU+w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: jiayuan.chen@linux.dev
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	john.fastabend@gmail.com,
+	sd@queasysnail.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	wilfred.mallawa@wdc.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] tls: fix TX context confusion in the max payload size setsockopt
+Date: Mon, 31 Aug 2026 20:19:31 -0700
+Message-ID: <20260901031931.1636980-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260831025607.62927-1-jiayuan.chen@linux.dev>
+References: <20260831025607.62927-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,143 +51,138 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa05af9b2e903a1kunm6d567a69154752
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaT0IYVkpJTR8eS0xCSk5ISlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS01VSklLVUpJT1VOWVdZFhoPEhUdFFlBWU9LSFVKS0lITk
-	NDVUpLS1VLWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=UVl8X8Y0sXYhEPCBkIw/fUf2i4/abc/ythzwgdJxmQj/PzZbB3CKJNiGt+9eRwmhMLZi3YPdRLw6N2ofRfSy5tkXETa7uFReNP6cDjB44N0bLe4JxznWZJFTXMAcxCZOPzzzYPpmm1zR/QHQQI1V7/XdsSK/nd1Aq3/EQTXEELo=; s=default; c=relaxed/relaxed; d=stu.pku.edu.cn; v=1;
-	bh=p7rrGaXT4UeoPTJFL5EF1bpXNENSKM4jFfB8RlGEIK4=;
-	h=date:mime-version:subject:message-id:from;
 
-The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
-and is_autoneg_completed() were correct when the abstraction was
-merged: at that time autoneg, link, and autoneg_complete were at bits
-13, 14, and 15 of struct phy_device's first bitfield unit. Commit
-2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
-later inserted is_genphy_driven just before autoneg, shifting the three
-fields up by one, so the accessors now read:
-
-  is_link_up()           reads bit 14 = autoneg
-  is_autoneg_enabled()   reads bit 13 = is_genphy_driven
-  is_autoneg_completed() reads bit 15 = link
-
-The official ax88796b Rust driver uses all three accessors in its
-link-change handling, so it inherits the bug. On genphy-driven devices
-is_genphy_driven is always 1, which masks the broken
-is_autoneg_enabled() check.
-
-The ordinary bindgen accessors take &self. Calling them through
-(*phydev).link() would create a shared reference to the complete
-bindings::phy_device, which is not appropriate for an object wrapped in
-Opaque.
-
-Use the bindgen-generated raw accessors (link_raw(), autoneg_raw(),
-and autoneg_complete_raw()) instead. They retain the bit positions and
-endianness handling generated from the C layout without creating a Rust
-reference to the complete phy_device. Drop the hand-written numbers
-together with the TODO comment that marked them as a stopgap.
-
-Found by a static equivalence audit (C2RustDrv, a C-to-Rust driver
-migration tool) that compares hand-written bitfield offsets against
-the bindgen layout of struct phy_device. Verified by building the
-bindings and checking the generated accessors; no runtime testing was
-possible without PHY hardware.
-
-Fixes: 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chunfeng Song <springbreeze@stu.pku.edu.cn>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
-v4:
-  - Use the bindgen-generated raw accessors to avoid creating a shared
-    reference to the complete C `phy_device`, as suggested by Jakub Kicinski.
-  - Update the SAFETY comments to describe pointer validity and the
-    callback-context preconditions.
-  - Add `#[inline]` to the three small forwarding methods.
+    tls: fix TX context confusion in the max payload size setsockopt
 
-v3: https://lore.kernel.org/r/20260825111334.795732-1-springbreeze@stu.pku.edu.cn/
-  - Use the bindgen-generated accessors instead of hard-coded bit numbers.
-  - Update the Fixes tag and add the net tree subject prefix.
+The patch replaces the unchecked tls_sw_ctx_tx() dereference in
+do_tls_setsockopt_tx_payload_len() with a new helper,
+tls_tx_record_is_open(), that dispatches on ctx->tx_conf so the TLS_HW
+path looks at tls_offload_ctx_tx(ctx)->open_record instead of a field of
+the wrong structure.  The rest of the option handling is unchanged.
 
-v2: https://lore.kernel.org/r/20260824111227.742645-1-springbreeze@stu.pku.edu.cn/
-  - Use bindgen-generated accessors as suggested by Andrew Lunn.
-  - Explain that the offsets drifted after `is_genphy_driven` was added.
+> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+> index fbb274287aa5..e4f288c1fa34 100644
+> --- a/net/tls/tls_main.c
+> +++ b/net/tls/tls_main.c
+> @@ -833,15 +833,29 @@ static int do_tls_setsockopt_no_pad(struct sock *sk, sockptr_t optval,
+>  	return rc;
+>  }
+>
+> +/* priv_ctx_tx holds a different structure on each TX path, so tx_conf has to
+> + * say which open record to look at.
+> + */
+> +static bool tls_tx_record_is_open(struct tls_context *ctx)
+> +{
+> +	switch (ctx->tx_conf) {
+> +	case TLS_SW:
+> +		return !!tls_sw_ctx_tx(ctx)->open_rec;
+> +	case TLS_HW:
+> +		return !!tls_offload_ctx_tx(ctx)->open_record;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+>  static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+>  					    unsigned int optlen)
+>  {
+>  	struct tls_context *ctx = tls_get_ctx(sk);
+> -	struct tls_sw_context_tx *sw_ctx = tls_sw_ctx_tx(ctx);
+>  	u16 value;
+>  	bool tls_13 = ctx->prot_info.version == TLS_1_3_VERSION;
+>
+> -	if (sw_ctx && sw_ctx->open_rec)
+> +	if (tls_tx_record_is_open(ctx))
+>  		return -EBUSY;
 
-v1: https://lore.kernel.org/r/20260823103644.342849-1-springbreeze@stu.pku.edu.cn/
- rust/kernel/net/phy.rs | 43 ++++++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 20 deletions(-)
+[Severity: High]
+For the TLS_HW arm, is open_record enough to tell that no record is being
+built?  do_tls_setsockopt() calls this helper with only the socket lock
+held:
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 956cda573ddb..3f1c1637f027 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -123,39 +123,42 @@ pub fn state(&self) -> DeviceState {
-     /// Gets the current link state.
-     ///
-     /// It returns true if the link is up.
-+    #[inline]
-     pub fn is_link_up(&self) -> bool {
--        const LINK_IS_UP: u64 = 1;
--        // TODO: the code to access to the bit field will be replaced with automatically
--        // generated code by bindgen when it becomes possible.
--        // SAFETY: The struct invariant ensures that we may access
--        // this field without additional synchronization.
--        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
--        bit_field.get(14, 1) == LINK_IS_UP
-+        let phydev = self.0.get().cast_const();
-+        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
-+        // `struct phy_device`, and the caller is in a context where this access
-+        // is safe. The bindgen raw accessor does not create a Rust reference to
-+        // the C struct.
-+        unsafe { bindings::phy_device::link_raw(phydev) == 1 }
-     }
- 
-     /// Gets the current auto-negotiation configuration.
-     ///
-     /// It returns true if auto-negotiation is enabled.
-+    #[inline]
-     pub fn is_autoneg_enabled(&self) -> bool {
--        // TODO: the code to access to the bit field will be replaced with automatically
--        // generated code by bindgen when it becomes possible.
--        // SAFETY: The struct invariant ensures that we may access
--        // this field without additional synchronization.
--        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
--        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
-+        let phydev = self.0.get().cast_const();
-+        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
-+        // `struct phy_device`, and the caller is in a context where this access
-+        // is safe. The bindgen raw accessor does not create a Rust reference to
-+        // the C struct.
-+        unsafe {
-+            bindings::phy_device::autoneg_raw(phydev) == bindings::AUTONEG_ENABLE
-+        }
-     }
- 
-     /// Gets the current auto-negotiation state.
-     ///
-     /// It returns true if auto-negotiation is completed.
-+    #[inline]
-     pub fn is_autoneg_completed(&self) -> bool {
--        const AUTONEG_COMPLETED: u64 = 1;
--        // TODO: the code to access to the bit field will be replaced with automatically
--        // generated code by bindgen when it becomes possible.
--        // SAFETY: The struct invariant ensures that we may access
--        // this field without additional synchronization.
--        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
--        bit_field.get(15, 1) == AUTONEG_COMPLETED
-+        let phydev = self.0.get().cast_const();
-+        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
-+        // `struct phy_device`, and the caller is in a context where this access
-+        // is safe. The bindgen raw accessor does not create a Rust reference to
-+        // the C struct.
-+        unsafe { bindings::phy_device::autoneg_complete_raw(phydev) == 1 }
-     }
- 
-     /// Sets the speed of the PHY.
+net/tls/tls_main.c:do_tls_setsockopt() {
+	case TLS_TX_MAX_PAYLOAD_LEN:
+		lock_sock(sk);
+		rc = do_tls_setsockopt_tx_payload_len(sk, optval, optlen);
+		release_sock(sk);
+}
 
-base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
+but the offload TX path is serialized by ctx->tx_lock, and it drops the
+socket lock at a point where open_record is already NULL:
+
+net/tls/tls_device.c:tls_push_record() {
+	offload_ctx->open_record = NULL;
+	...
+	return tls_push_sg(sk, ctx, offload_ctx->sg_tx_data, 0, flags);
+}
+
+tls_push_sg() calls tcp_sendmsg_locked(), which for a blocking sendmsg()
+with a full send buffer waits in sk_stream_wait_memory() and releases the
+socket lock there.  tls_push_data() has a second such wait on the
+tls_do_allocation() failure path.
+
+So can a concurrent setsockopt() see open_record == NULL, take the "not
+open" branch and publish a smaller ctx->tx_max_payload_len while a sender
+is parked mid-sendmsg holding tx_lock?
+
+If so, does the offload path then keep using the old limit for the rest of
+that sendmsg?  tls_push_data() latches it once, before the loop, and never
+refreshes it:
+
+net/tls/tls_device.c:tls_push_data() {
+	max_open_record_len = tls_ctx->tx_max_payload_len +
+			      prot->prepend_size;
+	do {
+		...
+		copy = min_t(size_t, size, max_open_record_len - record->len);
+}
+
+That would mean setsockopt returns 0 while records larger than the new
+limit continue to go out, which does not match what
+Documentation/networking/tls.rst says about TLS_TX_MAX_PAYLOAD_LEN ("the
+kernel enforces the specified limit on all outgoing TLS records.  No
+plaintext fragment will exceed this size").
+
+There is a follow-on question about the next call.  If the sender leaves a
+record open across the syscall (MSG_MORE with record->num_frags <
+MAX_SKB_FRAGS - 1), the next tls_push_data() latches the new, smaller
+max_open_record_len while record->len is still the old, larger value.
+max_open_record_len is u32 and record->len is int, so does
+
+	copy = min_t(size_t, size, max_open_record_len - record->len);
+
+wrap around here and drop the record-size clamp entirely, letting
+tls_append_frag() grow the record past the 2^14 plaintext maximum before
+"record->len >= max_open_record_len" closes it?
+
+Note that tls_sw_sendmsg_locked() re-reads the limit on every iteration:
+
+net/tls/tls_sw.c:tls_sw_sendmsg_locked() {
+		record_room = tls_ctx->tx_max_payload_len - msg_pl->sg.size;
+}
+
+so the latched offload value looks like the odd one out.
+
+Would it be better to serialize the check and the store against the lock
+that actually protects record building?  Since tls_device_sendmsg() takes
+tx_lock before lock_sock:
+
+net/tls/tls_device.c:tls_device_sendmsg() {
+	mutex_lock(&tls_ctx->tx_lock);
+	lock_sock(sk);
+}
+
+tx_lock is the outer lock, so taking it inside the already socket-locked
+helper is not an option; the acquisition in do_tls_setsockopt() would have
+to be reordered (or the helper made to wait for in-flight senders, as
+tls_sk_proto_cleanup() does on sk_write_pending).
+
+One smaller point: the plain read of tls_ctx->tx_max_payload_len in
+tls_push_data() against the plain write in
+do_tls_setsockopt_tx_payload_len() is an unannotated data race that KCSAN
+would flag.
 -- 
-2.43.0
-
+pw-bot: cr
