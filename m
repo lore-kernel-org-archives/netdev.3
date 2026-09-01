@@ -1,242 +1,131 @@
-Received: from mout-b-106.mailbox.org (mout-b-106.mailbox.org [195.10.208.46])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E3935F5E4;
-	Tue,  1 Sep 2026 12:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A8135B63C;
+	Tue,  1 Sep 2026 12:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788265916; cv=none; b=akUZm2ncpOsh2Cenpr99zFIrORB0cl6vfqh7BYoVXKItIbxufGBwljxJgGJJMhNS1Dqsgi00f3IfV/kHioE5GshtT4iVci33X1jD5kdMLYZqBiZBSUW8SSHS6TyXnwZQ+r2Occ9Bh8DQjNwGx+/f5AT5hcjrSygTUhMps7rpY3k=
+	t=1788266300; cv=none; b=F0ctWnPJtzY/gNanHTbhXZF0eZQVLlvOlJsA9kHV/apWoPCPQ8pFqyXvWjXaIc1ZOoHgOQE6A7LNY70uBjVxdgxOHbJ4N5xybDiWCZ5zYGwDnT/9x/T23GlPU6C/DXLbeM4X69fYk0ASR+XxMobHfLiDQ11FUDGl4Lk5Kc4m2mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788265916; c=relaxed/simple;
-	bh=PMpxVeo8/K+WkAG4crP0i3QfmVnqXj6Y1JQkz8g4L3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ILz9G+6dFuaZ20SdY/e4HHhQaB63p1vpuRkbgAvHCgP9lwf8Nuq9Lx9V8rBz+jSrvUNvnRtdW7j2QfjHCnMxYz4pdI9XRBfnpIWJ8PYJWLj//ppSYTboSMJA/JQBX0Ym1rFyOITnQ8vZyOOGE8r4bzZIkTb5neX4WXqkdOEv/gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=d+Chb3Xn; arc=none smtp.client-ip=195.10.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1788266300; c=relaxed/simple;
+	bh=tybral73O94yJ3AK3rRIF6TtP3axjEUn9rrWo0LeLO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BKtEjhkJVpTbyfm3QGT15cG+BXTHclezrnEg+kPOnjDJGaXx0DBMUIBsqrc8zx7KD8paM60ArP8cgBWa901G1rTJccBwzRdfDuSLQBFlnFcwoTQ71+vh5dLNQNwErGGEtBbVHWCNPDV1SSgOD4KC/p/SVKKzPUU1zhrBcF0+Rvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3z6MQ7zH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="d+Chb3Xn"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-106.mailbox.org (Postfix) with ESMTPS id 4hZ4nN5gMSzNm0Z;
-	Tue, 01 Sep 2026 14:25:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1788265512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=pt8q8SslG4nV7I2Us5/9H2w2vOb/dJSWRlAn+mdagcE=;
-	b=d+Chb3XnA1jUv1Dsp7+FizYruRBRVyTmE3cW0CKSrhfZO8nWqOANtIzuw7Rq2VvvYDjA82
-	qziMtREuM3P/qUMVW0K4hVk4RpGUnZ1EMe8ENeXSBWub8IkNyqj2ALEUJpijRy2Wn1MHKI
-	rhoQLQD8s72fDr9BVQEGe3sy4bfPsSbZ9eaDLYOQPmN42LvsJB1ao66+PJd8cgEeUrjHd8
-	JxYseVvsvj8ZOHGPDOwo5qxf0AbKTHiUeUutz0LnV59YwV4+d5y/VEMnIFXQpyNT4M2L1R
-	FTtHRqUkZC8Gz4fjk6LcMIiOj6si+4zL12Df7PEFh92Kvd4h4drXyc60qmcBpA==
-From: Ralf Lici <ralf@mandelbit.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	netfilter-devel@vger.kernel.org
-Subject: [RFC] ipv6: preserving route lookup provenance in dst caches
-Date: Tue,  1 Sep 2026 14:24:59 +0200
-Message-ID: <20260901122501.482920-1-ralf@mandelbit.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3z6MQ7zH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=+0OfScGfVNxdaLgqeCIO9xxQE676Gfne+cxN+29Fig8=; b=3z6MQ7zHSYBiydDAWot2oJhVD/
+	GDe7TK+lnmOY85Sqt+n/sBofwbKjgHyS3dTAKQVTb824OD9zbjeyOfl2jNZ+f+fQ+i9jnDcajNEZt
+	EMDdlqCd+n9TNqgAvxrAQR8gzup/rBm59gXvTDuUeQyo9ams3GKout1DxVcfNYb3grFs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1Nkc-002M2c-CY; Tue, 01 Sep 2026 14:38:06 +0200
+Date: Tue, 1 Sep 2026 14:38:06 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
+	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next 1/2] net: stmmac: dwmac4: Read the UC filter
+ size from hardware capabilities
+Message-ID: <96eae005-8be7-4d65-9461-8a8475e38089@lunn.ch>
+References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+ <20260831070121.349778-2-maxime.chevallier@bootlin.com>
+ <2631c832d5aebc56e152628132494545@tipi-net.de>
+ <480f15e2-e045-46b7-89af-1fbcefd3c4eb@bootlin.com>
+ <b2fbcec7-90ee-4a6f-bd15-32e4e1ff1a47@lunn.ch>
+ <b677535a-5395-4703-aa08-a71a6b26ccb6@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b677535a-5395-4703-aa08-a71a6b26ccb6@bootlin.com>
 
-Hi,
+On Tue, Sep 01, 2026 at 09:04:28AM +0200, Maxime Chevallier wrote:
+> 
+> 
+> On 9/1/26 02:26, Andrew Lunn wrote:
+> >> Yeah but dwmac4 has a hash filter, but same as the UC filter it's just not plumbed
+> >> in :/
+> >>
+> >> Let's leave this flag here, hash filter addition for MC filtering is coming-up, so let's not
+> >> drop it now only to re-enable it after, one of the other wonderful discoveries found by
+> >> running the selftests...
+> > 
+> > I assume you can put a MC address in a perfect match filter? You can
+> > perfectly match a multicast address just as well as a unicast address.
+> > 
+> > The hash filter is less accurate, but again can be used to match a
+> > unicast or multicast address, and then you need additional filtering
+> > in software, which Linux will do.
+> > 
+> > So it seems to me, you should use a perfect match filters if you have
+> > one available, independent of unicast or multicast, and only use a
+> > hash filter if you have run out of perfect match filters.
+> 
+> That's an interesting point. The HW supports that, we have 3 control knobs
+> for that in the MAC_PACKET_FILTER register :
+> 
+>  - HPF (bit 10) : Use Hash or Perfect Match for filtering.
+>                   0 : Match UC and MC against hash filter
+>                   1 : Match UC and MC according to HMC and HUC
+> 
+>  - HMC (bit 2) : Use Hash or Perfect Match for MC filtering
+>                  0 : Match MC against perfect filter
+>                  1 : Match MC against Hash table
+> 
+>  - HUC (bit 1) : Use Hash of PF for UC filtering
+>                  0 : Match UC against PF
+>                  1 : Match UC against Hash table
+> 
+> I don't know though how this all interacts with the primary MAC address. We
+> always have one entry in PF for the device's own MAC address, we should
+> probably always perfect match that one.
 
-While fixing an ovpn IPv6 dst-cache bug, I found what appears to be a
-more general race between IPv6 route lookup and cache publication.
-Following a suggestion from Sabrina during review, I would like to get
-feedback on the intended FIB6 serial-number model and on a possible
-kernel-wide fix before attempting a fairly invasive refactoring.
+Yes, i agree, the primary should be a perfect match.
 
-The race
-========
+> But as the UC Perfect Filter toggle is global for All UC addresses it means
+> we're stuck with perfect filter for all UC then ?
 
-For routes without their own rt6_info::sernum, rt6_get_cookie returns
-the current fn_sernum of the fib6_node associated with the route's
-fib6_info. Persistent caches generally obtain a dst first and sample
-this cookie later when publishing it.
+> For MC, this is a good point, but I'm worried about the complexity vs gain.
+> 
+> If we consider the 4 dwmac boards I have (may not be a very representative sample),
+> we have :
+> 
+>  - imx8mp   : 64 PF (Perfect Fitler) entries
+>  - jh7110   : 9 PF entries
+>  - stm32mp1 : 4 PF entries
+>  - yt6801   : 1 PF entry
 
-This permits the following sequence:
+I assume the imx8mp is using bank 1 and back 2? The designers of this
+device seem to think the use cases for the device include lots of UC
+and MC addresses.
 
-  CPU0                                  CPU1
-  ----                                  ----
-  ip6_dst_lookup_flow()
-    returns Dold
+Maybe, reserve bank 0 for UC, but allow both UC and MC in bank 1 and
+2? That would allow imx8mp to make use of its hardware in an efficient
+way, but it also keeps things simple and efficient for the more
+restricted devices like the yt6801 and stm32mp1.
 
-                                        add a more-specific route (for example a blackhole /128)
-                                        stamp the affected node and its parents C0 -> C1
+This discussion should however not effect this patchset. This sort of
+optimisations can come later.
 
-  rt6_get_cookie(Dold)
-    reads C1 from Dold->from's node
-
-  publish (Dold, C1)
-
-The next dst_check(Dold, C1) compares C1 with the same node's current
-fn_sernum, accepts Dold and can continue bypassing the more-specific
-route indefinitely. This is different from the normal bounded case in
-which one packet uses the result of a lookup concurrent with a FIB
-update because the stale result has been paired with a newer validation
-token and preserved for future packets.
-
-I reproduced this in ovpn by inserting a delay after
-ip6_dst_lookup_flow, adding a more-specific IPv6 blackhole route in the
-window and then letting dst_cache_set_ip6 sample the cookie. The cached
-route continued to bypass the blackhole.
-
-ovpn can avoid the problem locally by bracketing its lookup with
-rt_genid_ipv6 reads and not populating the cache if the generation
-changes, as implemented in [1]. However, the same late rt6_get_cookie
-pattern exists in several persistent caches, including socket TX and RX
-caches, XFRM route/path cookies, dst_cache users, SCTP, flowtable, IPVS
-and RXE. Fixing every user independently would also leave future users
-exposed.
-
-Proposed model
-==============
-
-The cookie is a property of the lookup which selected a dst, rather than
-a property that can safely be recovered from a shared dst at some later
-time. I'd therefore suggest making cache-producing route lookups return
-the pair explicitly, for example:
-
-  struct dst_lookup_result {
-          struct dst_entry *dst;
-          u32 cookie;
-  };
-
-Pointer-only APIs could remain as wrappers for one-shot users which do
-not persist the result.
-
-For FIB6 policy lookup, the result would be constructed approximately as
-follows:
-
-  gen0 = rt_genid_ipv6(net);
-  smp_rmb();
-
-  dst = fib6_rule_lookup(..., gen0);
-  cookie = rt6_get_cookie(dst_rt6_info(dst));
-
-  smp_rmb();
-  gen1 = rt_genid_ipv6(net);
-
-  result.dst = dst;
-  result.cookie = gen0 == gen1 ? cookie : gen0;
-
-The result remains usable for the current packet when the generation
-changes. Returning gen0 as the cache cookie makes the result fail later
-equality validation, unless the selected node's serial is gen0.
-
-The latter case should also be safe, provided the following writer-side
-contract holds:
-
-  1. a routing-visible update is published before its serial is
-     allocated and stamped;
-  2. node serials are not overwritten with an older allocation;
-  3. every invalidation represented by fn_sernum uses a freshly
-     allocated serial.
-
-rt_genid_ipv6 reads the same fib6_sernum counter from which node serials
-are allocated. Therefore, if a node still has serial gen0, any update
-represented by gen0 was visible before the lookup. A relevant later
-update must stamp the node with a different serial and make the cached
-result fail validation. An unrelated update can conservatively make the
-result miss, but it cannot bless a stale route.
-
-Writer-side prerequisites
-=========================
-
-Two current paths appear incompatible with that contract.
-
-First, fib6_flush_trees allocates one serial before walking all IPv6
-tables, while __fib6_clean_all locks the tables one at a time. A writer
-can stamp a not-yet-walked table with a newer serial, after which
-fib6_clean_node overwrites it with the older flush serial. For example:
-
-  flush allocates 10 and starts walking table A
-  route insertion in table B allocates and stamps 11
-  flush reaches table B and overwrites 11 with 10
-
-That regression could revalidate a result carrying fallback cookie 10.
-One possible fix would be to allocate the flush serial after acquiring
-each table lock, so no writer for that table can allocate a newer serial
-before the walk stamps it. This also avoids introducing wrap-aware
-serial ordering.
-
-Second, ip6_link_failure writes -1 directly into fn_sernum for a default
-route. I think this should instead take the appropriate table lock on
-this failure path and perform a normal fresh node/ancestor serial
-update.
-
-Routes with rt6_info::sernum
-============================
-
-Routes with a nonzero rt6_info::sernum need special handling because
-ip6_dst_check currently ignores the supplied cookie and validates them
-against the global generation. The pre-lookup generation would need to
-be used when obtaining or materializing these per-CPU routes, and
-validation should also require the route serial to match the lookup
-cookie.
-
-Propagating the result
-======================
-
-The pair would have to follow whichever dst ultimately wins through the
-higher-level IPv6 APIs, including source-address selection, a possible
-second output lookup and optimistic-DAD route replacement. Persistent
-caches would store the supplied cookie instead of calling rt6_get_cookie
-after the lookup.
-
-XFRM would propagate lookup results through bundle construction, pairing
-cached route and path pointers with their cookies instead of sampling
-those cookies after the fact.
-
-Two skb handoff points need separate handling.
-
-TCP and UDP obtain an input dst from the skb but sample its cookie only
-later when installing sk_rx_dst. A fresh coherent lookup at cache
-installation appears less invasive than adding the cookie to every skb.
-The sk_rx_dst pointer, cookie and (for TCP) ingress ifindex also form a
-logical cache entry and could be published together as an immutable RCU
-object.
-
-Flowtable has a similar skb handoff point for the observed direction,
-while the opposite direction already comes from a fresh nf_route lookup.
-Performing a fresh route lookup for the observed direction at flow
-installation would avoid adding provenance storage to struct sk_buff.
-
-Questions
-=========
-
-1. Is this race already known, or is there an invariant that makes late
-   cookie sampling harmless here? The number of users following this
-   pattern makes me wonder whether I have missed some intended
-   semantics.
-
-2. Does the proposed approach, including the (dst, cookie) result and
-   the implementation details outlined above, look sound, or is there a
-   simpler way to preserve route lookup provenance across these users?
-
-I have not started implementing this larger design yet. I wanted to
-check the model and expected scope first, rather than produce a large
-series based on assumptions that are currently not documented.
-
-[1] https://lore.kernel.org/openvpn-devel/25d830e082b03afb4615aaeed6e0dc1d1370ecbc.1785308184.git.ralf@mandelbit.com/
-
-Thanks,
-
--- 
-Ralf Lici
-Mandelbit Srl
+	Andrew
