@@ -1,62 +1,62 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39774468C38
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 21:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E439456DEF
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 21:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788298798; cv=none; b=WjWflUIPzEZ+1OpHD0d3cDYjlXD8ko+CRN34jwona741He4tLfZberUOMhCnXAGL5j6UXEAlOyXeQ4n6S3Ku51y+7pOhosDrWDPLzc4npoYPJRQR2Jf79yBH/asaFnU4TXdqOG7Jh8DqCEsnCbtGV7XeJdCM6FALpqKp4LgPTlQ=
+	t=1788298800; cv=none; b=mXnIPlWu+ERozeo222lGBBLInrYCLxRIxf1KcKfRYXqqaDL4TWRsZZ7XPOwxSMn6k2hkBHT3Cy8g2/gb1xQcqocMXLxGIzV9Jbb/MwxhTI9oj4DMaUcRKPNmc4wAJiV4hzb8nl6hvFwJxxNxgfAnNeMEeIxRf01ezqMGV4TIIRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788298798; c=relaxed/simple;
-	bh=sziN1WTxdrWA0/eaCfdoIvXyznvXx429BIdmYLBm8WQ=;
+	s=arc-20240116; t=1788298800; c=relaxed/simple;
+	bh=CZcYT4H12Z590tau+Ggna8NfSJnrXJarOehmwomiNFI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qpHnwGOR1TgsOln2gYJGW7mnj7RdcHKUnLm4DoiBYqvQwfcPbfhZ613jxL5Bp97kCXcNiDBgA9afEQzZNRBAzUlgJA9GDFIMqvrOVAZAeMVnb3V/WLr9yQDWH+AsBBHmBdp8OzKkVOxVX7EzU9SjAWTqOF1QaMavpoat0nxiPsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=b4itef3C; arc=none smtp.client-ip=209.85.219.46
+	 MIME-Version:Content-Type; b=Feyrv5qBkY/vz2yk4IVLWA3YLV1Twrkn8Yv9tvIttxnWAt3nJAzcWDNo4YroHcrAn9OoqnNNiGLqsYLVWxKWlBLG7t6xt6DzmiSMVf2tC72hvT7cmNUsF891eddpGs4jnlD1LouBOBnZwnsrvy+RrXud48zHg+w+1EhMcxyCXKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=yCxcr2Ba; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="b4itef3C"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-90cc107c451so2502306d6.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 14:39:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="yCxcr2Ba"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-90e95a18c92so5462606d6.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 14:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788298796; x=1788903596; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1788298798; x=1788903598; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=W5MvV0x1EBsSpklgDw3P0bUHlzoYD1WHBSUfOtcrQ6g=;
-        b=b4itef3C81xNUAoW00Iqevzmauh9QMmk2YjuMeajbxeB08/X0OcjIeKX1s0j4adCLA
-         vPVZHZFpXvkiE43t9dgP1tsVwsZvoUdp17Ap4bRuFjyizOSF/dipTaFm9TjWx14q1JQF
-         Ca3fF/0WY37FT87ebKEdQtScVDwl3tFS2xaOE=
+        bh=CS83/1OzQ4e6zuu3aLpz2rT1vWyNGuyjDUNfgFfyELQ=;
+        b=yCxcr2BaY/ACBZRF1Ady0aVx4EePC9tdRrCIl+SjymkRadmLyCooXIinbYzzle0Xcj
+         h/KHDT3pu9VSyW4RnaROoSAim1mmo3zB9W+V18RDYv05k1MRQgDNVWbLpMHCqfbLlFYm
+         FJsG5duA0JkvjDZkLJoQp2AX/X7BCiZBc6mco=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788298796; x=1788903596;
+        d=1e100.net; s=20251104; t=1788298798; x=1788903598;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=W5MvV0x1EBsSpklgDw3P0bUHlzoYD1WHBSUfOtcrQ6g=;
-        b=JuAa0KlckM9gbqZUGGcmJBER4owrC9/IpAVrxxfZN3eyjCoF/wwGMo4RfMtPYrfsgH
-         3kp1ppuz/N4R0WXtQHd65MHFx40/G62wnkL0rWm9tcOxyFW40hB9XpuG4U1OFByjgzwX
-         Xby/EJAgeRldRoOOhzIAh8tM0oHzufuZKVFpSqIJwn77PLSyy4+hK/pY6OORyIUCfOTF
-         AfAww4Xj6F9S0bcq00HPJrDPbN8BWBT/ujiLWLb5fMsbmtbSC0NwFqNSEOGiFELiSwcs
-         mBe4JiFMXHMr5HNN/ni4NL2DRDMGw4yEk1dsYBBStflxUPPQQQ84xMdKecK7ObMhcCLd
-         Kk1w==
-X-Gm-Message-State: AFuF++lagQbkV/NuM4RJFti+LcbnMk0Aaj+ZI0nBJo3fKAzvs018Qf7C
-	DjbA1nvFjORfwl2cbZ5xf2FPSQm7CVxGqsmJrVeozwxNRDnlmq4wo0ggt16rWk6kwMrHIus0rjm
-	9mvV9qA==
-X-Gm-Gg: AYBFou0mRX9RRDsNPIXiN63XrekfxopAvAOBhF7pMvmMYRpFiklqfdDXR0T1ZU7GYvF
-	bM4L06QqMZ+eptWx3av3NyEnLgIHwNwDC0zA5ltrAIn+fVoT1GQ6FRdOLSm1wr4gg/bmJ9UmzrW
-	pvrIyUjUqxDKASRkeuSI9+1+BxYginapWzZwVbE0S3u2S9islkda4tdzVs0gGJMWMwHsZjYopx/
-	0w1M+puPfhZCw+CR8dBoSuxBkBL4Ud0P9n/JireA3x6jHNspwcIGmh7FEDk8z4026aVBOP6NhzI
-	2bGvV/GPb7SWpZ0zWsiQhai8P0dsD73kbVpAfy9NBparsnggXOvW11VgBfJNk7yx6MyHi8IV8Dd
-	LMtsO/CHe2oIImVZy+Juvlo1BMDadPhIUFI4Oop4lPLfcBbml/sfH4AAGAJIQ9up+i+1eBWhEOc
-	DYxW+L9Tp9kOq0fmsmTLVHk3ALV0Soh7hRR3tHFx144WZcJ8G/8pUfAx29PJnf0nmw1kYs8QyYo
-	yI+3f2HnuZbQZZZHYugMRTkuEXXxqTz6inmdFxGk0gD+3tr
-X-Received: by 2002:a05:6214:f61:b0:90e:9665:71b9 with SMTP id 6a1803df08f44-90ebafb8dc6mr9465336d6.27.1788298795811;
-        Tue, 01 Sep 2026 14:39:55 -0700 (PDT)
+        bh=CS83/1OzQ4e6zuu3aLpz2rT1vWyNGuyjDUNfgFfyELQ=;
+        b=HcqBd7vs4oGDhZqxXMaD5M6gPquG4URrDmZPogsWTckzxy7F45cvMyO1i9CmSwzUSi
+         lFeMA9DqTQIwA2Gxc2WPml+oLEECqnmX3g/+yhA6yvkLImBJFiv4+2bwYDvtY03M6Km5
+         jWUFgEwAmWSRr8xcoTuXDu/FyU1L2B/zk9UXFffW4Ovco05NIwuW0E9DCzotrKHPhdrJ
+         JUWGp59T0dplhlkOlKB4KC5sB8zVHhSAAQbFmoI4vki2hxCaOQk40GURptXloAnege64
+         MdYcRjYYDmGfGj7/3TPvVm24EYWOlN+tJlVgZKuyjoFS4dQfVZUnFzBfgYkrJzTdar0+
+         USLA==
+X-Gm-Message-State: AFuF++m372e8pZ8mKw9pDj0pj1nLbFuIqmXyxm3FsXR5Z+SwvEyRfr/S
+	LcHgclrbxD4lYZQT9NnPI2V1pkpw8DvcH8cqHev9bb1JnqtckO7aKaW8Bns3kT8OKvZ0jVWfZqv
+	b+ZwVPA==
+X-Gm-Gg: AYBFou01eo6ete/NMDMVaAo3YGztscZlFdjApWJo8s4gcRioJJm+mPCi5Y2cnm/yt7U
+	FCnM2HaiNOlEoU0ny8Vhwca7PpYTZigSP0uv+BLR89pdk8PlvFT9LmmD57pip+KCsrFIE1RYrhv
+	Q3yh9WApN+/Ni3Ir/MEUHOZtDwp5eqe3kg2nPFFP5Et+GdtaOEF8K9N/0EV55ZF/sSNShWMgvF0
+	JcfzRJc3f3kLCkMyDpO0g3sRm7jy6hRQ6wYXAQIvoTLMSQylKoMzI/dQISrYewMTDtkLHacfoF1
+	RUPJ+Kk14lvNTwyXHPAoZWcUMW5s6WQZX92v/6NmOk6PQ9ZqJ1+3sCZ1y3Pbrbf5j1/kdXyNbuE
+	gS4sZAD4EuYlerADZ2fng35YY1j9OtaroEWCZOcYymMa3O4Iy+nJuN4rvpuFcwRTdhVfMYeTFt1
+	2ki9vatJosrc4FFrDfwjKE8IQIW24ViPbJOOfQlvIgdf6T6mVBJ4gioP/txyLtFq1SjBN5QYqOj
+	mKZqcNf5oJdN9StsyaCEA2eHducM2iH89/d3g==
+X-Received: by 2002:a05:6214:3bc2:b0:90e:92a4:2194 with SMTP id 6a1803df08f44-90eca378bc3mr10695206d6.14.1788298798008;
+        Tue, 01 Sep 2026 14:39:58 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm3458426d6.2.2026.09.01.14.39.54
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm3458426d6.2.2026.09.01.14.39.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 14:39:55 -0700 (PDT)
+        Tue, 01 Sep 2026 14:39:56 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -73,9 +73,9 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Vijay Subramanian <subramanian.vijay@gmail.com>,
 	Petr Machata <petrm@nvidia.com>,
 	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Subject: [PATCH net v3 6/9] net/sched: pie: clamp psched_mtu in pie_drop_early
-Date: Tue,  1 Sep 2026 17:39:27 -0400
-Message-Id: <QDISC-0CFC.v3.20260901204856@mojatatu.com.7>
+Subject: [PATCH net v3 7/9] net/sched: drr: clamp quantum in change class
+Date: Tue,  1 Sep 2026 17:39:28 -0400
+Message-Id: <QDISC-0CFC.v3.20260901204856@mojatatu.com.8>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
 References: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
@@ -88,39 +88,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-pie_drop_early() calls psched_mtu() with no clamp. With mtu=0x80000000
-the bytemode divide silently zeroes the drop probability, disabling AQM.
-Clamp to [1, 1<<20].
+drr_change_class() rejects explicit quantum==0 but falls back to
+psched_mtu() with no floor. With a crafted size table qdisc_pkt_len
+reaches ~2 GiB, so quantum=1 (or a zero psched_mtu on a headerless
+device) makes the deficit-refill loop spin under the qdisc lock.
+
+Add clamp_t(u32, quantum, 256, 1<<20) after the zero reject and on the
+fallback path. The explicit-zero reject is preserved.
 
 Conditions to recreate the bug:
-  CONFIG_NET_SCH_PIE=y. Requires CAP_NET_ADMIN (namespace-local via
+  CONFIG_NET_SCH_DRR=y. Requires CAP_NET_ADMIN (namespace-local via
   unshare -Urn suffices).
 
-  tc qdisc add dev dummy0 root pie
-  tc qdisc change dev dummy0 root pie stab data 32768 size_log 15 cell_log 0
+  tc qdisc add dev dummy0 root drr
+  tc class add dev dummy0 parent 1: classid 1:1 drr quantum 1
 
-Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
+Fixes: 13d2a1d2b032 ("pkt_sched: add DRR scheduler")
 Reported-by: Vega <vega@nebusec.ai>
 Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
 Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/sch_pie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_drr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index b41f2def2e2c..3b7863ffd284 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -35,7 +35,7 @@ bool pie_drop_early(struct Qdisc *sch, struct pie_params *params,
- {
- 	u64 rnd;
- 	u64 local_prob = vars->prob;
--	u32 mtu = psched_mtu(qdisc_dev(sch));
-+	u32 mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
+diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+index 91b1ef824afa..8621d057edd9 100644
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -82,8 +82,9 @@ static int drr_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 			NL_SET_ERR_MSG(extack, "Specified DRR quantum cannot be zero");
+ 			return -EINVAL;
+ 		}
++		quantum = clamp_t(u32, quantum, 256, 1 << 20);
+ 	} else
+-		quantum = psched_mtu(qdisc_dev(sch));
++		quantum = clamp_t(u32, (u32)psched_mtu(qdisc_dev(sch)), 256, 1 << 20);
  
- 	/* If there is still burst allowance left skip random early drop */
- 	if (vars->burst_time > 0)
+ 	if (cl != NULL) {
+ 		if (tca[TCA_RATE]) {
 -- 
 2.43.0
 
