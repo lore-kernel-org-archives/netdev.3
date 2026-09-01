@@ -1,40 +1,36 @@
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-238.mta0.migadu.com [91.218.175.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C7433D6F7;
-	Tue,  1 Sep 2026 03:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C111E3CB579
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 03:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788234461; cv=none; b=cCpuR6x5uVcV1uQh+ZyxPhjcgjlLT9CY1cm12is5an9W5VPDKIgxFCCVVh7dY0vEApYTJ7jUBH3InotUkx1vGuaoQVs80HzaEUndwNLnmpTSAz9VqfO9WRqDPHOK2xVjeQb5LE4zBgCOQ2XbJjNHrwBx0UDszgl2ok3pGXX5w3Y=
+	t=1788234625; cv=none; b=MQfBpkA0zivKuwMP6v13u+VG8SLUkkyeDs1GOkM7UlH8SCGtQb6Q6PX2ntODTgyNDvRUbs8MtmfmsyyMNCN7nYc1cLUQ02KXu7+OiQl3rXYIhbh27fJQnt60ttDaFSb/Z02stc+TRs8XoB6V6VDwQJB13dugPaHRXmIJbwpaczo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788234461; c=relaxed/simple;
-	bh=W0Id0Pf68vSruKPAPVofzbJEMCYxPO8Y+jLfSTczdks=;
-	h=Message-ID:Date:MIME-Version:To:CC:References:Subject:From:
-	 In-Reply-To:Content-Type; b=BBtuOD6eZGxh0XXz/u+haUJq/YmEtKG6Q+BAoE4CVeG8ulL2h6ugPcAiPG3ekI6QOIxx4mXHUKUQq473o4QKnIUMeZO173jHejux4qRpmAwzogY1/VnkGChAcC/SQOrxMjdbf8uWq0V43mqA0EQeGQnWaH1kxK0tpgNWlWFX9eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=Iwnj0++u; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+	s=arc-20240116; t=1788234625; c=relaxed/simple;
+	bh=Igt94N9mHc9AM+xVGYbOdd5entWuLAAmHL+i+Nc8zOU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WJYSCXF5GppJ/16nc7dOsxb440l2QrBUw4E0TszLOAQKsHgjQCCLwA44z4zTMMIVwhWi7Cw7UL7lU2Cnks1JcjMM1eL9QLaqo+evEisH3MeCLvcNVarpnmG2X9DnO8vG8dtVeAwOXSHioT7VRwQN5hUJJIIhvP/X1Fvm3mYG8PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sCRA5s3j; arc=none smtp.client-ip=91.218.175.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="Iwnj0++u"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=0sIKT5aAMI3AbebxHeg10Bs0qjcH61HwUS46wKZqAHQ=;
-	b=Iwnj0++utJzA++JIpLf6EKSwabk8bRjr4beqhMKlvKRXOJIsoH2M4xl7Bcc9i8OeaAbT49aIi
-	vV8h+OhqM7uHKJ5o44KoojJCFi7eHMyvIXIZbqruo9H0FT+nebIrFYK6HgC7gTrqaaowWSbV4fC
-	onnvoXO+Oj9jLJQbvBADeoE=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hYs2x1wVJz1T4Lb;
-	Tue,  1 Sep 2026 11:36:09 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0F07740561;
-	Tue,  1 Sep 2026 11:47:29 +0800 (CST)
-Received: from [10.136.112.147] (10.136.112.147) by
- kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 1 Sep 2026 11:47:28 +0800
-Message-ID: <68cb4941-3668-44f1-a889-6b2f023b2a08@h-partners.com>
-Date: Tue, 1 Sep 2026 11:47:27 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sCRA5s3j"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Igt94N9mHc9AM+xVGYbOdd5entWuLAAmHL+i+Nc8zOU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788234620; v=1; x=1788839420;
+ b=sCRA5s3j/dRyMszHGA6yqlWaO5/kuANZOgHuQDnUucI6wNNi2yPw6EMeDi2OSwnX+D6Ga5Lb
+ A274Hm99f9L9aM1m2XmKa9Mnu/IUs1oBMsfVjH5gEeIgexA+EQFqwVvGBGgaSz2txw9QcRLx0MV
+ aN1rmbRQDHJ57+t2Fn5ZFKv8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 8c089a648f6b2069;
+	Tue, 01 Sep 2026 03:50:09 +0000
+X-Mizu-Trace-ID: 8c089a648f6b2069
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <710b8c70-a7fb-484a-957f-ec230952739b@linux.dev>
+Date: Tue, 1 Sep 2026 11:50:01 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,72 +38,159 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: <syzbot+80dfcb1a2235b3efc877@syzkaller.appspotmail.com>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon
- Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	<lucien.xin@gmail.com>, <marcelo.leitner@gmail.com>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-sctp@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <syzkaller-bugs@googlegroups.com>, gaoxingwang
-	<gaoxingwang1@huawei.com>, <huyizhen2@huawei.com>
-References: <6a7d8773.c5ad36c8.12f49d.002e.GAE@google.com>
-Subject: Re: [syzbot] [sctp?] WARNING: refcount bug in sctp_transport_put (6)
-Content-Language: en-US
-From: xietangxin <xietangxin@h-partners.com>
-In-Reply-To: <6a7d8773.c5ad36c8.12f49d.002e.GAE@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v5 net] octeontx2-af: switch qmem from coherent DMA alloc
+ to streaming DMA mapping
+To: Ratheesh Kannoth <rkannoth@marvell.com>, davem@davemloft.net,
+ gakula@marvell.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ sgoutham@marvell.com
+Cc: andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com
+References: <20260901015621.2708182-1-rkannoth@marvell.com>
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <20260901015621.2708182-1-rkannoth@marvell.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr100001.china.huawei.com (7.202.195.168)
 
 Hi,
 
-I have analyzed this issue and successfully reproduced locally.
-The race occurs between the timer callback (`sctp_generate_heartbeat_event`) and
-the transport cleanup path (`sctp_transport_free`):
+On 2026/9/1 9:56, Ratheesh Kannoth wrote:
+> qmem_alloc() uses dma_alloc_attrs() with DMA_ATTR_FORCE_CONTIGUOUS, which
+> allocates CPU-cache-coherent DMA memory and, with CMA enabled, draws from
+> the CMA pool. qmem backs NIX/NPA queue contexts, admin queues, and LMTST
+> regions (including CN10K LMTST areas that span page boundaries), so
+> consumption grows with enabled interfaces and is hard to provision in CMA.
+>
+> Switch qmem to a streaming-DMA-style path: allocate physically contiguous
+> compound pages from the buddy allocator via __get_free_pages(), then map
+> them for device access with dma_map_phys() and dma_unmap_phys() using
+> DMA_ATTR_REQUIRE_COHERENT. Add otx2_dma_alloc_coherent() and
+> otx2_dma_free_coherent() helpers that enforce dev_is_dma_coherent(),
+> retry with GFP_DMA32 when the physical range is outside the device DMA
+> mask, and wire qmem_alloc()/qmem_free() through them instead of
+> dma_alloc_attrs()/dma_free_attrs().
 
-Task 1(Timer Softirq)               Task 2(sctp_transport_free)
-==========================              ===============================
-sctp_generate_heartbeat_event()
-  refcnt = 2
+__get_free_pages() can only allocate memory in power-of-two pages. You 
+can use alloc_pages_exact() and free_pages_exact() to save memory.
 
-  bh_lock_sock(sk)
-  sock_owned_by_user(sk)
-  mod_timer(&hb_timer) -> returns 0
-                                          sctp_transport_free()
-                                            transport->dead = 1
-                                            del_timer(&hb_timer) -> returns 1!
-                                              sctp_transport_put() (2 -> 1)
-                                            sctp_transport_put() (1 -> 0)
-                                              sctp_transport_destroy()
+> This works on Octeon because the octeontx2 driver is written for
+> DMA-coherent devices: Octeon platforms provide IO coherency (via SMMU), so
+> the driver already uses streaming DMA APIs for packet data while
+> deliberately skipping explicit CPU cache sync (DMA_ATTR_SKIP_CPU_SYNC).
+> The same IO coherency lets qmem use a streaming map of buddy-allocated
+> pages instead of a dedicated coherent allocator or CMA reservation. That
+> is valid because the platform is DMA-coherent, not because omitting
+> dma_sync_* magically makes memory coherent.
+>
+> Allocations requiring more than MAX_PAGE_ORDER pages are still rejected,
+> since the buddy allocator cannot serve them without CMA.
 
-  sctp_transport_hold()
-    -> refcnt is 0, increment fails
-  out_unlock:
-    sctp_transport_put() (0 -> -1)
-    -> refcount underflow warning!
+Can you confirm that no existing allocations exceeds MAX_PAGE_ORDER?
 
+> cc: Geetha sowjanya <gakula@marvell.com>
+> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+>
+> ---
+>
+> v4 -> v5: Fixed compilation issues.
+> 	https://lore.kernel.org/netdev/20260831024210.208447-1-rkannoth@marvell.com/
+>
+> v3 -> v4: Fixed compilation issues.
+> 	https://lore.kernel.org/netdev/apTpKcN_S1xIwRbZ@rkannoth-OptiPlex-7090/
+>
+> v2 -> v3: Addressed sashiko comments
+> 	https://sashiko.dev/#/patchset/20260825045616.3723078-1-rkannoth%40marvell.com
+>
+> v1 -> v2: Rewrote patch as per sashiko comment
+> ---
+>   .../ethernet/marvell/octeontx2/af/common.h    | 93 +++++++++++++++++--
+>   1 file changed, 87 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/common.h b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> index 779413a383b7..061dd907f7fa 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> @@ -7,6 +7,11 @@
+>   #ifndef COMMON_H
+>   #define COMMON_H
+>   
+> +#include <linux/dma-mapping.h>
+> +#include <linux/dma-map-ops.h>
+> +#include <linux/gfp.h>
+> +#include <linux/mm.h>
+> +
+>   #include "rvu_struct.h"
+>   
+>   #define OTX2_ALIGN			128  /* Align to cacheline */
+> @@ -44,6 +49,83 @@ struct qmem {
+>   	u32		qsize;
+>   };
+>   
+> +/* Buddy-backed coherent DMA alloc (Option 3): pages from __get_free_pages(),
+> + * DMA-reachable RAM via dma_coherent_ok(), and bus/SMMU mappings via
+> + * dma_map_phys() -> iommu_dma_map_phys() -> iommu_map() on SMMU systems.
+> + */
+> +#define OTX2_DMA_COHERENT_ATTRS	DMA_ATTR_REQUIRE_COHERENT
+> +
+> +static inline bool otx2_dma_phys_in_mask(struct device *dev, phys_addr_t paddr,
+> +					 size_t size)
+> +{
+> +	u64 mask = dma_get_mask(dev);
+> +
+> +	return paddr + size - 1 <= mask;
+> +}
+> +
+> +static inline void *otx2_dma_alloc_coherent(struct device *dev, size_t size,
+> +					    dma_addr_t *dma_handle, gfp_t gfp)
+> +{
+> +	dma_addr_t dma_addr;
+> +	unsigned int order;
+> +	phys_addr_t paddr;
+> +	void *vaddr;
+> +	gfp_t alloc_gfp;
+> +
+> +	if (!dev || !dma_handle || !size)
+> +		return NULL;
+> +
+> +	if (!dev_is_dma_coherent(dev))
+> +		return NULL;
+> +
+> +	size = PAGE_ALIGN(size);
+> +	order = get_order(size);
+> +	if (order > MAX_PAGE_ORDER)
+> +		return NULL;
+> +
+> +	alloc_gfp = (gfp & ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM)) |
+> +		__GFP_ZERO | __GFP_COMP | __GFP_RECLAIM;
+> +
+> +	vaddr = (void *)__get_free_pages(alloc_gfp, order);
+> +	while (vaddr &&
+> +	       !otx2_dma_phys_in_mask(dev, page_to_phys(virt_to_page(vaddr)), size)) {
 
+page_to_phys(virt_to_page(vaddr)) can be simplifed to virt_to_phys(vaddr).
 
-Adding a small delay  after `mod_timer()` increases the reproduction rate:
+> +		free_pages((unsigned long)vaddr, order);
+> +		if (alloc_gfp & GFP_DMA32)
+> +			return NULL;
+> +		alloc_gfp |= GFP_DMA32;
+> +		vaddr = (void *)__get_free_pages(alloc_gfp, order);
+> +	}
+> +	if (!vaddr)
+> +		return NULL;
+> +
+> +	paddr = page_to_phys(virt_to_page(vaddr));
 
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -373,8 +373,10 @@ void sctp_generate_heartbeat_event(struct timer_list *t)
- 		pr_debug("%s: sock is busy\n", __func__);
+Same here.
 
- 		/* Try again later.  */
--		if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
-+		if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20))) {
-+			mdelay(1);
- 			sctp_transport_hold(transport);
-+		}
- 		goto out_unlock;
- 	}
-
-Any feedback or guidance would be greatly appreciated.
-
--- 
-Best regards,
-Tangxin Xie
-
+> +	dma_addr = dma_map_phys(dev, paddr, size, DMA_BIDIRECTIONAL,
+> +				OTX2_DMA_COHERENT_ATTRS);
+> +	if (dma_mapping_error(dev, dma_addr)) {
+> +		free_pages((unsigned long)vaddr, order);
+> +		return NULL;
+> +	}
+> +
+> +	*dma_handle = dma_addr;
+> +	return vaddr;
+> +}
+Kind regards,
+Qingfang
