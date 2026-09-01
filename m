@@ -1,103 +1,264 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0423242D8;
-	Tue,  1 Sep 2026 12:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF2F35F5E4;
+	Tue,  1 Sep 2026 12:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788266630; cv=none; b=pGj6nwPSUFNlw2dMtIovvVQLRuB6mpLX/ZXZZyKghPbyhZhn36k2j3UBMuIoijcjUtNGpkNQl/79gMi4UY/bmCBCZ5lLA8sxld1ACaTfAtjung3OWoq+6tYGDBQsnxMe7zLpTLbxfUrPcchvh8SuQxyUZcIhEgTddRdz5kNLznI=
+	t=1788266824; cv=none; b=rAvYfytFXYMw5/N/nQJ/5ZzlF31lGscXZ72UIARTTrjx9bQz0CtmtRefbZOSaiOnxfAhe9nwHOCK5VQY0LTJhT5leYGuBw66J5TysG7oiJfA+Qp7lhI24HumWyrGyt9nRgzdD9xsMfkbFLGMJ8bjl0F/1i+jOgcc2GJ4BkWlel4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788266630; c=relaxed/simple;
-	bh=RI2I8TVst60QA7Wwo891cXbfplKuOcbVlYL7hlT75r4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WDIPDHsmtgTjNlwJXIM4potzHMYeHfyV009Bi9nHUEFl4Oq2c1V4LE64cHX69Nik57ZZSOSBEfcO2DKaleabS0crCwkUs1BsU4ZEj5Dka2ikXtFmD5E4az7YxjURK+CFFFr/fHbeey+hbpnySP2q4kZ1V/+OF9C13Xt2N2F0VaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jzYPc4wH; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788266824; c=relaxed/simple;
+	bh=daBI1gC+G2LYNVTL8IqZftF+7euB5ofnjjG485171D8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=seu4AbIsm/eP5zVyuWVXezihug7GTx/EKkjzvxB8bdFzEbt21p5pQnYmgIt0eMVfAFA8uzqzBC8adHAmkWJ/NyLExTYSVWyq78kkt/GkHQzaQa3lOJNyMd/k3b6jAbI+T7krGefHlZ6bCPuDRFo4Mvtewo37dyt839f8F+Sc1og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1PUljkM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jzYPc4wH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=e3VZOr6RNXuMNZ3GiRBt7EGvtd3df9zDyi/QD1KV4w0=; b=jzYPc4wHaWGYtW+8ajtkNP1w5u
-	caRT+ejzr1+LNoTMrtimyR5bbdXR9tumAakmJ/WaJpxp/vNmDawecY3zGfsHnNU3nXUSZdOurMLUB
-	3AKk6REdUU5WmzJZyBVX2d7sSyTnw8WQQeQBX0ZIdfBajcYRswd26CjJYJJtQOOj6bMM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1Npz-002M5N-Bd; Tue, 01 Sep 2026 14:43:39 +0200
-Date: Tue, 1 Sep 2026 14:43:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net-next 1/2] netdevsim: add link speed support
-Message-ID: <18c7a000-97ad-459a-bb9c-5c821274e9f3@lunn.ch>
-References: <20260831-nsim_speed-v1-0-7a651ee65738@kylinos.cn>
- <20260831-nsim_speed-v1-1-7a651ee65738@kylinos.cn>
- <53215678-05bb-4191-b5ff-aa236b16a96a@lunn.ch>
- <apZzJDVtENpAluhT@fedora>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1PUljkM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CA708C2BCF4;
+	Tue,  1 Sep 2026 12:47:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788266823;
+	bh=daBI1gC+G2LYNVTL8IqZftF+7euB5ofnjjG485171D8=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=P1PUljkMkA6VtWReTak3sygP/hhWP1gs0nYl6Hn5yroKXfCh2GXzRRs/raXRLUtoa
+	 XGjly1mHi0/QYxSrSIlZFZtoTNY994BfymofUOVbNxzsJcxFWG+eXoD8XUoZGoZmss
+	 fo2ui58koQn4GwbyTehdSlgGthNlm+9zPWfLIjudCGgHGdxJRZ+DL4Q9cwKERJ+jO5
+	 egWIsSea6bPS4e6LLsH/yvwyyr+IWF8OXZLI5KEnNW5RPpqKIdSO2AbqIebV8Bt4jg
+	 x2P/laQ1B2I55cDovnvRDTYacGAx/Sz3+HL3LSKLnzOdwoIrn/XsfE2gM+0FEcmUqx
+	 fwFYbVKxh8vFA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6131C624D3;
+	Tue,  1 Sep 2026 12:47:03 +0000 (UTC)
+From: Johnathan Browall via B4 Relay <devnull+johnathan.browall.topgolf.com@kernel.org>
+Date: Tue, 01 Sep 2026 14:46:47 +0200
+Subject: [PATCH net v3] bnxt_en: avoid redundant RX mask updates in UC
+ overflow state
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apZzJDVtENpAluhT@fedora>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260901-bnxt-uc-overflow-v3-1-2ea7c42c013c@topgolf.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwRKCIBRFf8VhHQ2iEbXqP5oWAg+lMXEAycbx3
+ 1NqUVPL+96950zIgzPg0TGbkINovLHdEopNhmRTdTVgo5aMKKGMcMqw6MaAB4ltBKdbe8e6EDu
+ +fCgTAi2z3oE2Y0KeUQcBXV5HP4gryLDC1lpjfLDukcQxT+W3Y//riDnOsaZElZyzUsPhFGxf2
+ 1Zvpb0lQaSfCP4HQVdEpZTMmSBQkW/EPM9PItzk/QwBAAA=
+X-Change-ID: 20260826-bnxt-uc-overflow-f3b5882626bb
+To: Michael Chan <michael.chan@broadcom.com>, 
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Pontus_H=C3=A5llstedt?= <pontus.hallstedt@topgolf.com>, 
+ Johnathan Browall <johnathan.browall@topgolf.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788266822; l=8587;
+ i=johnathan.browall@topgolf.com; s=20260826; h=from:subject:message-id;
+ bh=JXa4L36f5k63XQR1//4sj+78c5sshjpWcD0nSiXaRxY=;
+ b=ZnZZ6ZCn2hG6aXaTuLfzq91bzS+2Y7cuU5kZqp9rVJ5L+LY8/3xOKkaIdnsGPOl3I6u6OkrZ/
+ OMq1xnC2t8hCw6+2ZfTpOesqJ0k749NSfCr+9/X4e8O646dMz7WnyaD
+X-Developer-Key: i=johnathan.browall@topgolf.com; a=ed25519;
+ pk=w6Hvfd81SFSs3dF3Kpe2Y17SpDtiKU3eXu0RdWOCnZk=
+X-Endpoint-Received: by B4 Relay for johnathan.browall@topgolf.com/20260826
+ with auth_id=976
+X-Original-From: Johnathan Browall <johnathan.browall@topgolf.com>
+Reply-To: johnathan.browall@topgolf.com
 
-On Tue, Sep 01, 2026 at 02:39:32PM +0800, Hangbin Liu wrote:
-> On Mon, Aug 31, 2026 at 02:16:46PM +0200, Andrew Lunn wrote:
-> > >  static void nsim_ethtool_ring_init(struct netdevsim *ns)
-> > > @@ -250,12 +276,16 @@ void nsim_ethtool_init(struct netdevsim *ns)
-> > >  	ns->ethtool.fec.active_fec = ETHTOOL_FEC_NONE;
-> > >  
-> > >  	ns->ethtool.channels = ns->nsim_bus_dev->num_queues;
-> > > +	ns->ethtool.duplex = DUPLEX_FULL;
-> > > +	ns->ethtool.speed = SPEED_5000;
-> > >  
-> > >  	ethtool = debugfs_create_dir("ethtool", ns->nsim_dev_port->ddir);
-> > >  	ns->ethtool_ddir = ethtool;
-> > >  
-> > >  	debugfs_create_u32("get_err", 0600, ethtool, &ns->ethtool.get_err);
-> > >  	debugfs_create_u32("set_err", 0600, ethtool, &ns->ethtool.set_err);
-> > > +	debugfs_create_u32("speed", 0600, ethtool, &ns->ethtool.speed);
-> > > +	debugfs_create_u8("duplex", 0600, ethtool, &ns->ethtool.duplex);
-> > 
-> > debugfs_create_bool() ?
-> 
-> I'm not sure if anyone want to set nsim duplex to unknown for testing.
-> Do you think that we should disable this behavior?
+From: Johnathan Browall <johnathan.browall@topgolf.com>
 
-Ah, i did not think of DUPLEX_UNKNOWN.
+bnxt_cfg_rx_mode() stops programming individual L2 filters and turns
+on the promiscuous bit in the VNIC rx mask when the interface has more
+unicast addresses than the hardware has filter slots
+(BNXT_MAX_UC_ADDRS).  The driver state never becomes consistent after
+that: vnic->uc_filter_count stays at 1, so bnxt_uc_list_updated()
+keeps reporting the UC list as changed on every rx-mode callback, and
+bnxt_set_rx_mode() removes the promiscuous bit from the mask it
+computes (it only re-adds it for IFF_PROMISC), so the mask comparison
+also fails every time.
 
-We need to consider Jakubs reply, what are you actually testing here,
-do such tests make any sense?
+As a consequence, every rx-mode callback resends the same
+HWRM_CFA_L2_SET_RX_MASK to the firmware, including for requests that
+change nothing, such as setting a link flag to the value it already
+has, or a macvlan going up or down.  That would only cost an
+unnecessary firmware call if SET_RX_MASK processing did not affect
+traffic, but on BCM57416 and BCM57504 (firmware 23.3 and 23.6) it
+does: each invocation causes a short interval in which incoming
+unicast traffic is dropped.  We observed this in production as
+sequence gaps in GigE Vision camera streams on a PF carrying 19
+secondary unicast addresses, with HWRM tracing showing a SET_RX_MASK
+(and no filter alloc/free) for every repeated "ip link set ... arp on"
+that changed nothing.
 
-If they do, i think some validation would be good here. We already
-have:
+Fix it by recording the overflow state in a new vnic flag.  While the
+flag is set, the UC list is only treated as updated once it has shrunk
+enough to fit the available filters (the content of the list does not
+matter while all unicast is accepted through promiscuous mode), and
+bnxt_set_rx_mode() keeps the promiscuous bit in the mask, subject to
+the same bnxt_promisc_ok() check that bnxt_cfg_rx_mode() applies.
 
-static inline int ethtool_validate_duplex(__u8 duplex)
-{
-	switch (duplex) {
-	case DUPLEX_HALF:
-	case DUPLEX_FULL:
-	case DUPLEX_UNKNOWN:
-		return 1;
-	}
+The flag is committed only after bnxt_hwrm_cfa_l2_set_rx_mask()
+succeeds, so a failed attempt leaves the state marked as changed and
+the next retry or rx-mode callback programs the mask again.  This
+matches the behavior before this patch, where the never-converging
+state retried until the firmware accepted the mask.  Committing the
+flag before the send would let a single failure end the retry
+sequence with the secondary filters already freed and the promiscuous
+bit not installed.
 
-	return 0;
-}
+An unchanged rx mode no longer causes any firmware call, and neither do
+UC list changes that stay above the limit.  Crossing the limit and
+real changes to the flags or the MC list are programmed as before.
 
-We don't expect a driver to set duplex to 42, so why should the user
-be allowed to do that?
+Tested with the equivalent patch on 6.12.y on BCM57416: the repeated
+SET_RX_MASK invocations no longer occur and the receive disruption is
+no longer reproducible.
 
-Also, SPEED_UNKNOWN is -1, so you need debugfs_create_s32().
+Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
+Cc: stable@vger.kernel.org # needs adjustment for <= 6.18
+Co-developed-by: Pontus Hållstedt <pontus.hallstedt@topgolf.com>
+Signed-off-by: Pontus Hållstedt <pontus.hallstedt@topgolf.com>
+Signed-off-by: Johnathan Browall <johnathan.browall@topgolf.com>
+---
+The review also led us to two pre-existing defects in the same area,
+independent of this patch. vnic->rx_mask is committed before the
+firmware send, so any failed mask-only change retries without sending
+anything, including at open time. And the IFF_PROMISC branch in
+bnxt_set_rx_mode() lacks the bnxt_promisc_ok() gate that the skip_uc
+strip applies, so an untrusted VF with IFF_PROMISC resends an
+identical mask on every callback. We plan to send fixes for both
+separately after this patch is applied.
 
-	Andrew
+Changes in v3:
+- Commit the overflow flag only after HWRM_CFA_L2_SET_RX_MASK succeeds,
+  so a failed send leaves the state marked as changed and the retry or
+  any later rx-mode callback programs the mask again (Paolo Abeni's
+  review). Without this, a single failure while entering overflow ended
+  the retry sequence with the secondary filters freed and no
+  promiscuous bit installed; a failure while leaving overflow silently
+  left the port promiscuous.
+- Reword the comment in bnxt_uc_list_updated(): on an untrusted VF the
+  promiscuous bit is not usable, so the previous wording overstated the
+  state (review finding on v1).
+- Drop the Reviewed-by from v2 because of the code change.
+- Link to v2: https://patch.msgid.link/20260828-bnxt-uc-overflow-v2-1-faddc16b0ea0@topgolf.com
+
+Changes in v2:
+- Wrap a line exceeding 80 columns (Pavan Chebbi)
+- Collect Reviewed-by (Pavan Chebbi)
+- Note on the stable Cc that trees <= 6.18 need an adjusted version.
+- Link to v1: https://patch.msgid.link/20260827-bnxt-uc-overflow-v1-1-f20d48864fe9@topgolf.com
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 42 +++++++++++++++++++++++++++++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  1 +
+ 2 files changed, 41 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 9c2cc5027..1e9e86934 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -13791,6 +13791,16 @@ static bool bnxt_uc_list_updated(struct bnxt *bp,
+ 	struct netdev_hw_addr *ha;
+ 	int off = 0;
+ 
++	/* In the overflow state no secondary L2 filters are programmed
++	 * and unicast RX relies on the promiscuous mask, so the list
++	 * only needs reprogramming once it fits the available filters
++	 * again.  Reporting an update here would resend an identical
++	 * SET_RX_MASK on every callback, which causes brief RX packet
++	 * loss on some chips.
++	 */
++	if (vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG)
++		return netdev_hw_addr_list_count(uc) <= (BNXT_MAX_UC_ADDRS - 1);
++
+ 	if (netdev_hw_addr_list_count(uc) != (vnic->uc_filter_count - 1))
+ 		return true;
+ 
+@@ -13826,6 +13836,13 @@ static int bnxt_set_rx_mode(struct net_device *dev,
+ 	if (dev->flags & IFF_PROMISC)
+ 		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
+ 
++	/* Keep the promiscuous bit while the UC list is longer than the
++	 * available L2 filters, so that an unchanged rx mode is not
++	 * treated as a mask change.
++	 */
++	if ((vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG) && bnxt_promisc_ok(bp))
++		mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
++
+ 	uc_update = bnxt_uc_list_updated(bp, uc);
+ 
+ 	if (dev->flags & IFF_BROADCAST)
+@@ -13853,6 +13870,9 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
+ 	struct bnxt_vnic_info *vnic = &bp->vnic_info[BNXT_VNIC_DEFAULT];
+ 	struct netdev_hw_addr *ha;
+ 	int i, off = 0, rc;
++	bool uc_promisc;
++
++	uc_promisc = !!(vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG);
+ 
+ 	if (!uc_update)
+ 		goto skip_uc;
+@@ -13869,7 +13889,12 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
+ 	netif_addr_lock_bh(dev);
+ 	if (netdev_hw_addr_list_count(uc) > (BNXT_MAX_UC_ADDRS - 1)) {
+ 		vnic->rx_mask |= CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
++		uc_promisc = true;
+ 	} else {
++		uc_promisc = false;
++		if (!(dev->flags & IFF_PROMISC))
++			vnic->rx_mask &=
++				~CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS;
+ 		netdev_hw_addr_list_for_each(ha, uc) {
+ 			memcpy(vnic->uc_list + off, ha->addr, ETH_ALEN);
+ 			off += ETH_ALEN;
+@@ -13907,11 +13932,24 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
+ 		vnic->mc_list_count = 0;
+ 		rc = bnxt_hwrm_cfa_l2_set_rx_mask(bp, 0);
+ 	}
+-	if (rc)
++	if (rc) {
+ 		netdev_err(bp->dev, "HWRM cfa l2 rx mask failure rc: %d\n",
+ 			   rc);
++		return rc;
++	}
+ 
+-	return rc;
++	/* Commit the overflow state only once the mask is installed, so
++	 * that a failed attempt keeps the state marked as changed and the
++	 * next retry or rx-mode callback programs the mask again.
++	 */
++	netif_addr_lock_bh(dev);
++	if (uc_promisc)
++		vnic->flags |= BNXT_VNIC_UC_PROMISC_FLAG;
++	else
++		vnic->flags &= ~BNXT_VNIC_UC_PROMISC_FLAG;
++	netif_addr_unlock_bh(dev);
++
++	return 0;
+ }
+ 
+ static bool bnxt_can_reserve_rings(struct bnxt *bp)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index ab894f8ad..53ad39f44 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -1332,6 +1332,7 @@ struct bnxt_vnic_info {
+ #define BNXT_VNIC_RFS_NEW_RSS_FLAG	0x10
+ #define BNXT_VNIC_NTUPLE_FLAG		0x20
+ #define BNXT_VNIC_RSSCTX_FLAG		0x40
++#define BNXT_VNIC_UC_PROMISC_FLAG	0x80
+ 	struct ethtool_rxfh_context *rss_ctx;
+ 	u32		vnic_id;
+ 	u16		default_rx_ring;
+
+---
+base-commit: f967455fb2a5a2079b9eb5823e9ccf359174bf9f
+change-id: 20260826-bnxt-uc-overflow-f3b5882626bb
+
+Best regards,
+--  
+Johnathan Browall <johnathan.browall@topgolf.com>
+
+
