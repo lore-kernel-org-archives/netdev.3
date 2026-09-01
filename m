@@ -1,238 +1,319 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E43545D1BF
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06D22BFC7B;
+	Tue,  1 Sep 2026 07:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788248250; cv=none; b=NRO1bCabnS8Ie93E66hgD9URYCkoyNhpVrK+DpFBzHwb8yFplLHpiwOid5wyrtuSvevh5iiqPmzR8TFkABeKGyLmdHHclZ77/saaceOTFCBinZllWT4WInpnBOaWzxpPDiA4N8f7mFpwtGgGPqlrhqJut2VRhX2YkNmJJLdHYVY=
+	t=1788248298; cv=none; b=JpbAzRXxibUBfCW1xrREb25r/e+1E4J9WWlBC5PWFCt7FydBGeK7ORQyOlHTDx5bFa1PeUyGzU3IQf+QnDMi5vgxfCcfRNDVVQ0R4mVZL0LeTbveog3sWTl6Y7vc/+6wFayocmXTx0FkiYUgN6JVOv0PniaYlvNNPWw+hsx8clE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788248250; c=relaxed/simple;
-	bh=pYS/GFrUanOhlcC/NmixNJR7ATn1F3+XrW8M7qWpBNQ=;
+	s=arc-20240116; t=1788248298; c=relaxed/simple;
+	bh=9spn0Zdq9ptjKE61Ukyr4tlyQHHboYJOftZRpwohZA0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FdsfG8/AM70o1MrDQDhZ14IEu04qTUGPvH6gH8wqyGgBE+kFAlTOpND6QjTkG1Om54icVmQQpgdBjB+Da627o9gs/mty/Vqa6AxAZTWVU0CyWQDC2Aia0lckyd0N3JbrfDpD4uisp0PqsXMixJ740KTpqGrDtyCJehmQXQn/n3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EpThNfJs; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=T/TrmAFkoBe9BpiU7kqftXOtsm7/+6Y7kGyHucSUk0YV6bKB9mgvYDWfrsFO/iZdrtbWp3JVpmFS4oDN8B+fGhNnS3AWze2PKzwU5v8d2SHwmE1WHIYX/SHd2ZK1oiGT8Gm6XwLrUyRSpzwPgaas+wKwdSsLCE9BVTKe+Xi2iFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/B0TM+q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EpThNfJs"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d8fd3b729dso24058485ad.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:37:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788248249; x=1788853049; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rxm6irMUrWNwyv0K7EvAQpfSMPkiF7ptXJMabfvOf8g=;
-        b=EpThNfJsQ9AomChPdkMhC+ueUfmuhcnHCj4LepdRK4IArvzFdfELpSPntEyyRt2Cfp
-         DqVs/NN3eSXkF92ZXPLTLCswhB8ioJNF2lbekX4NmLTZqjKD5y4zcNd511t/AbB199sc
-         vLTksHuaI1C+AGw5NIrffhR2AvMtdHLb9odAvEnllfL+HxW4EITCTXsJgiQqPQE6z73Z
-         Q4Dt28GZUMpgDIPzepD7THKCdBO4R4b88QsOss5eT4KmLl1NzIbyTj+5YT3qCilL/KoF
-         I9V/TvMpzmEH5buvK5+aDuDUAp6ET6mJazF5H47HTswCb40LAD1n47GSPTQmhDLgkO8n
-         VVcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788248249; x=1788853049;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rxm6irMUrWNwyv0K7EvAQpfSMPkiF7ptXJMabfvOf8g=;
-        b=LQr5RLdJaGrzCWryOCO6IrvQUyy/naI499sDwDgr+JfB4xjh7q5W6GCu3MuwOlhRsv
-         RpGInam9Xu84BE1uLK7UAQRf6Y+L06SzVqAxZgUTca96FsHDtD/T1YnpeaxRL7DW8T8L
-         8mKdOfMshisdXN/mC69T4wR0XCGckrLdpjnbbCiRcJ1gD8SZB4KQPbL75vlnkq0Vh+z2
-         +gAFEgCtTK20zF7zCaGKdhTMTeDR3pykLmrM4y+FSV4FIVP55CdJR4Fh1rAU+t+dfV0a
-         HccfF2UV2bAI86oXPly5PK8hQ59X4ngYcBp5e0d0Q7Dq3ckiWqqNJ59JYmUzxyHqC5u3
-         O+1Q==
-X-Forwarded-Encrypted: i=1; AKwUvByaYciF+XkUqoo1HV8dnbBkvo88D39kYf7tIR26qFs6QPyGHDEsgGMieko0+X3feJglVhaowI4=@vger.kernel.org
-X-Gm-Message-State: AFuF++m2p9az3/DKEChUdxJlrAedxihSYumb8hIg2obT7SHLJwRaEFHy
-	Wyw60h7wjM0xFIB52hLtFmYwqVG2t/2D7NQ9ZuS60IImjaJQfRG05jG5
-X-Gm-Gg: AYBFou0ZjW1R+Mcpaw12Nn5MPY6vMqWpSGdBu3AUwGEpy4EIaU0dg7GOmW1WeU/BRI8
-	agRlQCKwcgWdiyRWHOn+fsldyhdyC7IIXWpq8Hbkg8LZI/OxCbtM8hlEzETZ/7JRbPjBB58dYGm
-	QGe7qYxgR0dc6xKvQ8TYAVmEUaQtj/usz5A1Xy2ySdhtaaB+oIWSSrcGVN7If+zc8HXkSEMTJfO
-	ffuzIdrubXQNPfAGYjbsfAvorI2iVhTzCNy34+56E0++NlLdF+PvZ2zHCC6O87Z+lLmVk2iivHl
-	05IZgN5eidKkUcjhKa3rKoLw6bIHtIxpoYIB/oK3xpbUa30OfHeCHpgUgYwAjs6wIP00Lkzl91/
-	7e8jPhtgEWJLL/7V1JUv1f/TN7DX+BTcxrgwxuDnRMep2NCmBZs71I9NHVtc6h5IDaRhPKc+j45
-	01DJu57woMPuB/2Irw3vDCIeYw9G+ZYMZbbxnhZpH/EPVb2H1phDs8cr1GHyor95iB0F3TKZuWL
-	fQ4Xyg=
-X-Received: by 2002:a17:90b:528b:b0:398:c16e:69d3 with SMTP id 98e67ed59e1d1-39907ab521fmr9594085a91.1.1788248248379;
-        Tue, 01 Sep 2026 00:37:28 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990c40d0c9sm4465448a91.7.2026.09.01.00.37.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 00:37:27 -0700 (PDT)
-Date: Tue, 1 Sep 2026 16:37:22 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, ncardwell@google.com, dsahern@kernel.org,
-	idosch@nvidia.com, kuniyu@google.com, horms@kernel.org,
-	willemb@google.com, andrew+netdev@lunn.ch, kees@kernel.org,
-	jiayuan.chen@linux.dev
-Cc: kerneljasonxing@gmail.com, ij@kernel.org, martin.lau@kernel.org,
-	shakeel.butt@linux.dev, matttbe@kernel.org, martineau@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v2 6/8] tcp: fix use-after-free in the lockless
- listener path
-Message-ID: <apaAskNL-IvdcR7h@v4bel>
-References: <20260824033331.1084971-1-imv4bel@gmail.com>
- <20260824033331.1084971-7-imv4bel@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/B0TM+q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDC01F000E9;
+	Tue,  1 Sep 2026 07:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788248296;
+	bh=kGJBTxI0BTFP9qYGYHlSLCXCQCO3O2EtQUjch3HFwi8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=J/B0TM+qn7Bc6/87PafTXa00ztozqZNvsXgnr5Z5wdK0mUQIqViGzAQrquu4+Rlej
+	 uNvdZTiee3n6L06Qr4N2t2tjJwiBekmH8OwLGpv1fs+wTjDO95HOt/mnrTCipEg9O0
+	 TWtI8iHWAcy/Y9s7oTna14pTlQafb6rC7dYf0FmhddV1Mpj3SoM0d2a93UnUZwLmaf
+	 zLZzKG6o0TBjLu26QbRbCbVU/aL9P5ath/gR5LkDMVzKL2CEz5B2XOB+jMY0CaiEl9
+	 JrQJDQVMG32lCsan1QNse+jfkioI7kV8icktX+tBj2EGTTyBU+MxrUn4h26Bb9oavT
+	 ls6sKrNtoP9mA==
+Date: Tue, 1 Sep 2026 09:38:14 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+Cc: netdev@vger.kernel.org, upstream@airoha.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/3] net: airoha: recover RX ring after hw
+ completion stall
+Message-ID: <apaA5jDYH71F0JaS@lore-desk>
+References: <20260830095717.37218-1-sochnev.v.74@gmail.com>
+ <20260831234701.206021-1-sochnev.v.74@gmail.com>
+ <20260831234701.206021-3-sochnev.v.74@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="AGYD2yEKCoEXZcmo"
+Content-Disposition: inline
+In-Reply-To: <20260831234701.206021-3-sochnev.v.74@gmail.com>
+
+--AGYD2yEKCoEXZcmo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260824033331.1084971-7-imv4bel@gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 24, 2026 at 12:32:50PM +0900, Hyunwoo Kim wrote:
-> tcp_v{4,6}_rcv() calls tcp_v{4,6}_do_rcv() without holding the socket
-> lock when sk->sk_state is TCP_LISTEN. Every other path into
-> tcp_v{4,6}_do_rcv() holds it.
-> 
-> tcp_v{4,6}_do_rcv() and tcp_rcv_state_process() below it read
-> sk->sk_state again. A listener can leave TCP_LISTEN through
-> connect(AF_UNSPEC), and if that happens in between, the second read
-> returns a different state.
-> 
-> tcp_rcv_established() or tcp_rcv_state_process() then runs without the
-> lock. If the second read returns TCP_SYN_SENT, the incoming SYN is
-> treated as a crossed SYN and reaches tcp_send_synack(). When the SYN skb
-> at the head of the retransmit queue is skb_cloned(), that function
-> replaces it with a copy and releases the original with
-> tcp_rtx_queue_unlink_and_free().
-> 
-> The original is the skb that a thread on another CPU is transmitting
-> right now in __tcp_transmit_skb(). skb_cloned() is true because the
-> clone made for that transmit is still alive. Once the transmit returns,
-> tcp_update_skb_after_send() calls list_move_tail() on the skb's
-> tcp_tsorted_anchor.
-> 
-> In short:
-> 
->   socket(AF_INET) -> bind() -> listen()   // the socket that changes state
->   socket(AF_INET) -> bind() -> listen()   // the peer
-> 
->   Several threads keep opening new sockets and connecting to the first
->   socket's address.
-> 
->   Another thread repeats this on the first socket:
->     connect(AF_UNSPEC)      // TCP_LISTEN -> TCP_CLOSE
->     connect(peer address)   // TCP_CLOSE -> TCP_SYN_SENT
->                             // another CPU still sees a listener, handles
->                             // one of those SYNs without the lock and
->                             // releases the SYN skb that this connect()
->                             // is transmitting
->                             // -> use-after-free
->     connect(AF_UNSPEC)
->     listen()                // TCP_LISTEN again
-> 
-> KASAN log:
-> 
->   BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0x14/0x140
->   Read of size 8 at addr ffff88800a5d1460 by task poc/125
->   ...
->   Call Trace:
->    __list_del_entry_valid_or_report+0x14/0x140
->    tcp_update_skb_after_send+0x62/0x170
->    __tcp_transmit_skb+0xe33/0x1e40
->    tcp_connect+0x1b67/0x2490
->    tcp_v4_connect+0x998/0xab0
->    __inet_stream_connect+0x22c/0x700
->    inet_stream_connect+0x48/0x70
->    __sys_connect+0x101/0x130
->   ...
->   Allocated by task 125:
->    __alloc_skb+0xd1/0x370
->    tcp_stream_alloc_skb+0x2d/0x2b0
->    tcp_connect+0x72d/0x2490
->    tcp_v4_connect+0x998/0xab0
->    __inet_stream_connect+0x22c/0x700
->    inet_stream_connect+0x48/0x70
->    __sys_connect+0x101/0x130
->   ...
->   The buggy address belongs to the object at ffff88800a5d1400
->    which belongs to the cache skbuff_fclone_cache of size 472
-> 
-> Instead of taking the lock, keep the lockless path from reading
-> sk->sk_state again to decide how to process the packet. Move the
-> TCP_LISTEN handling out of tcp_rcv_state_process() into
-> tcp_rcv_listen_state_process(), and let the TCP_LISTEN branch of
-> tcp_v{4,6}_rcv() call a new tcp_v{4,6}_rcv_listen(). Listener processing
-> does not change. The TCP_LISTEN arm of tcp_v{4,6}_do_rcv() is left
-> alone, because a socket can finish listen() after the state check and a
-> backlogged skb is then processed there.
-> 
-> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> On AN7583 hw can stop advancing the descriptor the sequential consumer in
+> airoha_qdma_rx_process() is waiting on, while its own completion counter
+> keeps moving. The ring is then dead: NAPI is scheduled, finds DONE clear
+> at q->tail, and does nothing, forever.
+>=20
+> Observed directly on ring 4 at its 16-descriptor default (devmem, qdma0):
+> REG_RX_CPU_IDX frozen at 15 for over an hour while REG_RX_DMA_IDX advanced
+> 29 -> 96, with a 60-byte frame left stranded in the ring.
+> QDMA_DESC_DROP_MASK was never set. In practice this is hit during PPPoE
+> negotiation bursts on the shared "force to CPU" ring, where it stops the
+> dial-up from ever completing.
+>=20
+> Detect it without trusting ring content: REG_RX_DMA_IDX is hw's own
+> counter, independent of what sw posted. If it advances across polls while
+> q->tail does not, hw is making progress the consumer cannot observe. Idle
+> rings, where hw does not advance either, are left alone. An earlier
+> version scanned the ring for a DONE descriptor and trusted its content;
+> that OOMed once it reached uninitialised DMA memory that happened to have
+> the bit set. A register cannot misfire that way.
+>=20
+> Recovery is deferred to a work item, since the register access can sleep.
+> It drops what is in flight and re-arms the ring through the existing
+> cleanup_rx_queue()/fill_rx_queue() pair, which only touch the sw-owned
+> [tail, head) window and rewrite both indices from it. Trying instead to
+> identify and keep the descriptor hw used caused a page_pool double free.
+>=20
+> GLOBAL_CFG_RX_DMA_EN_MASK is per-QDMA, not per-ring, so this briefly
+> pauses every ring behind that instance; there is no per-ring equivalent.
+> The measured pause is 986-1131 us over 13 recoveries, not the 50 ms
+> read_poll_timeout() ceiling, so the logged value is worth having.
+>=20
+> Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 =
+SoC")
+> Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
 
-Looking at this further, unhashing the listener and then calling
-synchronize_net() lets the disconnect path handle it. MPTCP needs a fix
-too, though, because it closes and reuses the first subflow directly
-without going through tcp_disconnect().
+IIUC increasing the ring size the issue never occurs again (correct?). If s=
+o, I
+would drop this patch for the moment and add it if it is really necessary.
 
-This also closes the trigger path for patches 4, 5 and 8. I would still
-keep those, since they add no work to the fast path and they remove the
-root cause itself. Their changelogs would have to change though.
+Regards,
+Lorenzo
 
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 98 +++++++++++++++++++++++-
+>  drivers/net/ethernet/airoha/airoha_eth.h |  8 ++
+>  2 files changed, 105 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index c59201aded26..177a0e10e372 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -3,12 +3,14 @@
+>   * Copyright (c) 2024 AIROHA Inc
+>   * Author: Lorenzo Bianconi <lorenzo@kernel.org>
+>   */
+> +#include <linux/ktime.h>
+>  #include <linux/of.h>
+>  #include <linux/of_net.h>
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/tcp.h>
+>  #include <linux/u64_stats_sync.h>
+> +#include <linux/workqueue.h>
+>  #include <net/dst_metadata.h>
+>  #include <net/page_pool/helpers.h>
+>  #include <net/pkt_cls.h>
+> @@ -657,6 +659,34 @@ airoha_qdma_get_gdm_dev(struct airoha_eth *eth, stru=
+ct airoha_qdma_desc *desc)
+>  	return port->devs[d] ? port->devs[d] : ERR_PTR(-ENODEV);
+>  }
+> =20
+> +#define AIROHA_RX_STALL_THRESHOLD	3
+> +
+> +/* REG_RX_DMA_IDX is hw's own completion counter, independent of what sw=
+ has
+> + * posted, so comparing it against q->tail spots the stall without trust=
+ing
+> + * ring content: if hw keeps advancing while the strictly sequential con=
+sumer
+> + * does not, it is completing descriptors that consumer can never reach.
+> + */
+> +static void airoha_qdma_rx_check_stall(struct airoha_queue *q)
+> +{
+> +	struct airoha_qdma *qdma =3D q->qdma;
+> +	int qid =3D q - &qdma->q_rx[0];
+> +	u32 dma_idx;
+> +
+> +	dma_idx =3D airoha_qdma_get(qdma, REG_RX_DMA_IDX(qid),
+> +				  RX_RING_DMA_IDX_MASK);
+> +
+> +	if (q->stall_tail =3D=3D q->tail && dma_idx !=3D q->stall_dma_idx) {
+> +		if (++q->stall_count >=3D AIROHA_RX_STALL_THRESHOLD &&
+> +		    !test_and_set_bit(qid, qdma->rx_recover_mask))
+> +			schedule_work(&qdma->rx_recover_work);
+> +	} else {
+> +		q->stall_count =3D 0;
+> +	}
+> +
+> +	q->stall_tail =3D q->tail;
+> +	q->stall_dma_idx =3D dma_idx;
+> +}
+> +
+>  static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+>  {
+>  	enum dma_data_direction dir =3D page_pool_get_dma_dir(q->page_pool);
+> @@ -675,8 +705,10 @@ static int airoha_qdma_rx_process(struct airoha_queu=
+e *q, int budget)
+>  		struct page *page;
+> =20
+>  		desc_ctrl =3D le32_to_cpu(READ_ONCE(desc->ctrl));
+> -		if (!(desc_ctrl & QDMA_DESC_DONE_MASK))
+> +		if (!(desc_ctrl & QDMA_DESC_DONE_MASK)) {
+> +			airoha_qdma_rx_check_stall(q);
+>  			break;
+> +		}
+> =20
+>  		dma_rmb();
+> =20
+> @@ -895,6 +927,56 @@ static void airoha_qdma_cleanup_rx_queue(struct airo=
+ha_queue *q)
+>  			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->tail));
+>  }
+> =20
+> +static void airoha_qdma_rx_recover_work(struct work_struct *work)
+> +{
+> +	struct airoha_qdma *qdma =3D container_of(work, struct airoha_qdma,
+> +						rx_recover_work);
+> +	int qid;
+> +
+> +	for_each_set_bit(qid, qdma->rx_recover_mask, AIROHA_NUM_RX_RING) {
+> +		struct airoha_queue *q =3D &qdma->q_rx[qid];
+> +		ktime_t rx_dma_off_ts;
+> +		s64 rx_dma_off_us;
+> +		u32 status;
+> +
+> +		napi_disable(&q->napi);
+> +
+> +		/* per-QDMA, not per-ring: this pauses every RX ring behind
+> +		 * this instance, hence the measured duration below
+> +		 */
+> +		rx_dma_off_ts =3D ktime_get();
+> +		airoha_qdma_clear(qdma, REG_QDMA_GLOBAL_CFG,
+> +				  GLOBAL_CFG_RX_DMA_EN_MASK);
+> +		if (read_poll_timeout(airoha_qdma_rr, status,
+> +				      !(status & GLOBAL_CFG_RX_DMA_BUSY_MASK),
+> +				      USEC_PER_MSEC, 50 * USEC_PER_MSEC, true,
+> +				      qdma, REG_QDMA_GLOBAL_CFG))
+> +			dev_warn(qdma->eth->dev,
+> +				 "qid=3D%d RX DMA busy timeout during recovery\n",
+> +				 qid);
+> +
+> +		airoha_qdma_cleanup_rx_queue(q);
+> +		if (q->skb) {
+> +			dev_kfree_skb(q->skb);
+> +			q->skb =3D NULL;
+> +		}
+> +		airoha_qdma_fill_rx_queue(q);
+> +
+> +		airoha_qdma_set(qdma, REG_QDMA_GLOBAL_CFG,
+> +				GLOBAL_CFG_RX_DMA_EN_MASK);
+> +		rx_dma_off_us =3D ktime_us_delta(ktime_get(), rx_dma_off_ts);
+> +
+> +		q->stall_count =3D 0;
+> +		napi_enable(&q->napi);
+> +		napi_schedule(&q->napi);
+> +
+> +		dev_warn_ratelimited(qdma->eth->dev,
+> +				     "qid=3D%d RX ring recovered after hw stall (RX DMA paused %lld =
+us)\n",
+> +				     qid, rx_dma_off_us);
+> +		clear_bit(qid, qdma->rx_recover_mask);
+> +	}
+> +}
+> +
+>  static int airoha_qdma_init_rx(struct airoha_qdma *qdma)
+>  {
+>  	int i;
+> @@ -1582,6 +1664,8 @@ static void airoha_qdma_cleanup(struct airoha_eth *=
+eth,
+>  {
+>  	int i;
+> =20
+> +	cancel_work_sync(&qdma->rx_recover_work);
+> +
+>  	if (test_bit(DEV_STATE_INITIALIZED, &eth->state)) {
+>  		u32 status;
+> =20
+> @@ -1639,6 +1723,13 @@ static int airoha_hw_init(struct platform_device *=
+pdev,
+>  	if (err)
+>  		return err;
+> =20
+> +	/* init every instance up front: the error path below tears down all
+> +	 * of eth->qdma[], including entries the init loop never reached
+> +	 */
+> +	for (i =3D 0; i < ARRAY_SIZE(eth->qdma); i++)
+> +		INIT_WORK(&eth->qdma[i].rx_recover_work,
+> +			  airoha_qdma_rx_recover_work);
+> +
+>  	for (i =3D 0; i < ARRAY_SIZE(eth->qdma); i++) {
+>  		err =3D airoha_qdma_init(pdev, eth, &eth->qdma[i]);
+>  		if (err)
+> @@ -1687,6 +1778,11 @@ static void airoha_qdma_stop_napi(struct airoha_qd=
+ma *qdma)
+>  {
+>  	int i;
+> =20
+> +	/* must not run or re-arm past this point: the work calls
+> +	 * napi_disable() too, and doing that twice spins forever
+> +	 */
+> +	disable_work_sync(&qdma->rx_recover_work);
+> +
+>  	for (i =3D 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
+>  		napi_disable(&qdma->q_tx_irq[i].napi);
+> =20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index fa9a8edce22f..c195dad5ed58 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -207,6 +207,11 @@ struct airoha_queue {
+>  	bool txq_stopped;
+>  	bool flushing;
+> =20
+> +	/* see airoha_qdma_rx_check_stall() */
+> +	u32 stall_dma_idx;
+> +	u16 stall_tail;
+> +	u8 stall_count;
+> +
+>  	struct napi_struct napi;
+>  	struct page_pool *page_pool;
+>  	struct sk_buff *skb;
+> @@ -567,6 +572,9 @@ struct airoha_qdma {
+>  	struct airoha_queue q_tx[AIROHA_NUM_TX_RING];
+>  	struct airoha_queue q_rx[AIROHA_NUM_RX_RING];
+> =20
+> +	struct work_struct rx_recover_work;
+> +	DECLARE_BITMAP(rx_recover_mask, AIROHA_NUM_RX_RING);
+> +
+>  	DECLARE_BITMAP(qos_channel_map, AIROHA_NUM_QOS_CHANNELS);
+>  };
+> =20
+> --=20
+> 2.55.0
+>=20
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b4237d0e994d6f..ae6ab3b22beb53 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3373,6 +3373,8 @@ int tcp_disconnect(struct sock *sk, int flags)
+--AGYD2yEKCoEXZcmo
+Content-Type: application/pgp-signature; name=signature.asc
 
- 	/* ABORT function of RFC793 */
- 	if (old_state == TCP_LISTEN) {
-+		/* Wait for lockless listener receive paths to finish. */
-+		synchronize_net();
- 		inet_csk_listen_stop(sk);
- 	} else if (unlikely(tp->repair)) {
- 		WRITE_ONCE(sk->sk_err, ECONNABORTED);
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index b474d03620a75d..e41a5e1bf8dbf3 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3432,7 +3432,7 @@ static __poll_t mptcp_check_readable(struct sock *sk)
- 	return mptcp_epollin_ready(sk) ? EPOLLIN | EPOLLRDNORM : 0;
- }
+-----BEGIN PGP SIGNATURE-----
 
--static void mptcp_check_listen_stop(struct sock *sk)
-+static void mptcp_check_listen_stop(struct sock *sk, bool sync_net)
- {
- 	struct sock *ssk;
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCapaA5gAKCRA6cBh0uS2t
+rL7jAP9qEM/opfNLRp7q5R6TRo2Ez9Nid+r3IAynC+NEWoZQ6QEA0fUQT4kWN7Qu
+3xpi2zx+HAETBAl4w32vblKK7tzXeAY=
+=ewuH
+-----END PGP SIGNATURE-----
 
-@@ -3446,6 +3446,9 @@ static void mptcp_check_listen_stop(struct sock *sk)
-
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
- 	tcp_set_state(ssk, TCP_CLOSE);
-+	if (sync_net)
-+		/* Wait for lockless listener receive paths to finish. */
-+		synchronize_net();
- 	mptcp_subflow_queue_clean(sk, ssk);
- 	inet_csk_listen_stop(ssk);
- 	mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CLOSED);
-@@ -3462,7 +3465,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
- 	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
-
- 	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)) {
--		mptcp_check_listen_stop(sk);
-+		mptcp_check_listen_stop(sk, false);
- 		mptcp_set_state(sk, TCP_CLOSE);
- 		goto cleanup;
- 	}
-@@ -3593,7 +3596,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	if (msk->fastopening)
- 		return -EBUSY;
-
--	mptcp_check_listen_stop(sk);
-+	mptcp_check_listen_stop(sk, true);
- 	mptcp_set_state(sk, TCP_CLOSE);
-
- 	mptcp_stop_rtx_timer(sk);
-
-
-Best regards,
-Hyunwoo Kim
+--AGYD2yEKCoEXZcmo--
