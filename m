@@ -1,329 +1,176 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7A240860A
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 02:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788229670; cv=pass; b=OAtzj6LY0XVcR8NLHaAEdM7ndSCE4Wgu8yp1pqDMwYbRHpJ2lbFMUSk0pycVKNycVIrB5AwEfWFAIx068W9+kKKTzdVcw+YwAOGgFne+A0YTye1V4LOqH6fwO31UbNaozWNP1p/66eya325ub/nLVS6W/wEkEpbjnp3Db/cSFTw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788229670; c=relaxed/simple;
-	bh=PN/UjImC7bgd865J9BP2KD4atjXNWpj+MALMnuPZKh0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RqafYhHNTRzvy2CDFG1NFyIMAXB7r7RcA/IeXWwFn3HiJmF7Elktq3rGJSSnaS60a5V5dX1oB6+lq6yWRTCFLeZcO+UIWf30UaUT4rXigJrk9fFqg+f5TX9CW+YBgR7B4++vyS+xNbQOoD1Xdexq5fPHG+s+WGoDG9N5Yn5nnLc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aVGtqx6U; arc=pass smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aVGtqx6U"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92f0b5ed131so509252785a.3
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:27:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788229667; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qIHnpP4G45HVzdshYglThVtcW8FazTpMpAa5XUjcEszNBr2rHnU11Is5Bkw+Lq+BPk
-         a4TU+QvxRDkYWEKgkwkrn10U2lW0Mgwq9ASGJ3UhVLBRoJi5ZzBXKU58j5jU2/tl17Jv
-         /t3KJLXxkWSVnUdvUU5ssdqfxZ/Kn8+f3ZRO3eBn6BeJVsvO0hPlNHpnchP4+G478ZFr
-         0b4Xvxun44tupneBGjpryc1wIYBh3/B4fT1avLCCPXbIpg535RSqRXahcWnpIoW89/yQ
-         g5TIc28j79MlSz8kZi/Knwn915pUFjtjzzlK4KI0UqPQ25M7Nhtvgw6hzApeAnV20YoB
-         xZ6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DIwG3h1DWr4hnTm8Um8YYeq8VR9qYUjCZHlufcU+1bY=;
-        fh=sREmDdJG8c/mfEOqKkiK39McnrCkQMiLzS1adSU9tBo=;
-        b=nmcW33qByXh8h6Db3u9yUSuiltvo7I7ihkpRrnXD9nuBl5lqn6S56mPOn1QoG2w6Y0
-         Drss98UZlvKMjHrWpFOaAXM1J62+miCiX8eiCc+qGLBxzX5ibv5pPDTA2Tl8R9I9+e49
-         xQh42GCPEz/y8NlyMp6dYZqiDyAj7DPXu/2qauiwVUnr7BxW72QvimgOPQbC7sZpoL8I
-         zK0tHQ/YzoYnga5SUPXdz3nLkj+UiyDnWt35l6z/PX8gDeyQYD1u9Ye8EkZoAVAlSOnr
-         mBrxphA0sMoAJ8WTMIyCERf1brckfzve0D/9c1gAsQANzqxWqM6jwROEjwdDE5/x7WA5
-         3Nwg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788229667; x=1788834467; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DIwG3h1DWr4hnTm8Um8YYeq8VR9qYUjCZHlufcU+1bY=;
-        b=aVGtqx6Uh8m9TPjCcQt7kVMDw6uqg4T0QVuPd6jOfSZQ6Zc84z01Yq8soTAZEvCXdz
-         9LLyHYXAlH85VL0t0nM/AinM4plP5VgD680Swx7x1qNWdE5hibAFnfhDlPkHHZUFcM4r
-         c2TJCXohAm7KhUWI2kIo4BexlQR4xtcjQMBkwuuObg0Ms5PEMpF0WRHPOzoj6BwDE+iR
-         Rm/YMZhTtO2lHEkhuOyLabtaGBlXteTq19jLxFAxDZbQ/Y8Ft1unvka0Let9vxbNGB1l
-         H5QP/HwZB+ms2GEBrGKIiSLmKGMCR4jHmu/BkYk7i6ggExW9nve8pIyHhUouR0SEWfxL
-         TYcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788229667; x=1788834467;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DIwG3h1DWr4hnTm8Um8YYeq8VR9qYUjCZHlufcU+1bY=;
-        b=CCcYK2mxL2nzVP25R5cClhgUbswfvZ50PfFoTJwEmh3bviVHugQKAQkOP0OV3UouUW
-         3X+Ql2Rst1DVr6KflLhf7p8LC7UD8O0osSrf2wgHMbT9h4F6QkmSuiSqLMqKCRSZcR8m
-         KQpRaPx4alujGlb2gjJy0zssxy44/dq2rbh1vSXs4MmVmPFEexcaP9WB3ykAZdwsb9xq
-         EOnUBhkzlh+5GI8PTrf/ImdFOq3gbofWQ7N/DKSQdrMDbsUqdbTSrAyzoN58qn6HMT24
-         7Z7Zd6mIepqNq8/cZxyNlJx9HpDSBtkZN6EIcLe46xxo/XwPd1iafSXStszoRU4Azy+r
-         JZBw==
-X-Forwarded-Encrypted: i=1; AHgh+RqaXgEviATuDRemkrOTkuFZzKygsglq6WMB5JwDbO79KP5WOY50jjXS3YFTOibZJOhtuaDr0i4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nluhanAXWmyijQjmHawWfNuE8NFBGZNJ4PXLhtfROBoS73UyQQ
-	34/mMmPRbtM8SdD079OD9Ol2RiYE7R3ImTMxLtTjARdPdABjYTYCWtbzYD67XLYHWLp8t0ocNaL
-	SLIsekoS/wY2u+SaouMWaZq8BG7oSJKY=
-X-Gm-Gg: AR+sD139NmJD3RyWAT127Q8Bs4UCJkjRcY6h+i4+r4b81cVjBNHAiXXb4gCdxjJwrXY
-	N2evE6AEzDdO0E+NmW/cqAx8Wh9eo8+q8ZaCUOK9OkNmZ4x2ipdYpanNzhosoKhuevtak7u5qsv
-	Iyl6/0LvK24K1RHCHCgYWetWjT/QY2LB31/eVnE2ODfhqAfmEWn6Mu+GacSrKWd2oeWoSxP6HYd
-	qZWEmb/XrFxmoA8eDXEESoF5P0fiBh9GiXDAUVCAOdtPdiKLk3V7588waJ1tfEtbjrBvMAb0CLl
-	TwrnoMP9nzm0sK08c7806G9OQis+Hl67DkZPAOjm7XGQ
-X-Received: by 2002:a05:620a:172b:b0:939:32ea:9f0c with SMTP id
- af79cd13be357-93932eaa334mr1720744085a.8.1788229666903; Mon, 31 Aug 2026
- 19:27:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389313E7BBF;
+	Tue,  1 Sep 2026 02:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788229733; cv=none; b=PGdePVJap1SzRyJXdUc3iQAo81d0e3gDWv04Nr24MBTnZqFMNb33jhRFekXH2Vl9lTd1MEOh4Xm1lEcjl4aWH9drM4nlFn85vV31B+iU1buW1u2IRU6TQueU99eXt6co6weuVynoC7BaCqTGgkZPA5BSmTg8JW+iWN4XC/NA4rw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788229733; c=relaxed/simple;
+	bh=/uBjX4LxQBoAdOyHrFjv0EyZiRoi58ZS2N2lJDloRCg=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=bZmMTqmuBd9k9gMxNQ3Bcudjl14hbm1NPiOSc6vIoQVEYJEiqfFxebttNi88UY33ug2wALmPNC4Kilpkmt/N8r0PPl6AUSC1psur6lWhkbaOUY2GHFafiUfirhqTs1n7ZG16Owaq6uPeFNV/MThqf6jQlpeSd5mWKYTgH9qytt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hYqY54NlBz5B0rb;
+	Tue, 01 Sep 2026 10:28:41 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 6812Sbd0005903;
+	Tue, 1 Sep 2026 10:28:37 +0800 (+08)
+	(envelope-from he.peilin@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid31;
+	Tue, 1 Sep 2026 10:28:38 +0800 (CST)
+X-Zmail-TransId: 2af96a963856934-b1ee6
+X-Mailer: Zmail v1.0
+Message-ID: <20260901102838839qOylm1OxcNUptu0TbB_Cd@zte.com.cn>
+Date: Tue, 1 Sep 2026 10:28:38 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260827055850.26951-1-physicalmtea@gmail.com> <CAJaqyWfjjSe19z4TrPbJfBBQZJXuAzqE4H8bik6UAiSgogzfmQ@mail.gmail.com>
-In-Reply-To: <CAJaqyWfjjSe19z4TrPbJfBBQZJXuAzqE4H8bik6UAiSgogzfmQ@mail.gmail.com>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Tue, 1 Sep 2026 10:27:11 +0800
-X-Gm-Features: AcwNN1X8xFc3zj4Mx5oZW-ZuOM04e_bQ28qEh0Tx7DrEEEAOGAyocsDW-QjEdZI
-Message-ID: <CAJwVaMJ5Lc0J1M-+QAHH9w_tcrjNYDqOTbkAWUucCK4_50ay-g@mail.gmail.com>
-Subject: Re: [PATCH] vhost/vsock: batch RX used-ring updates
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+From: <he.peilin@zte.com.cn>
+To: <maxime.chevallier@bootlin.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <vbridgers2013@gmail.com>,
+        <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Cc: <jiang.kun2@zte.com.cn>, <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4IG5leHQgdjJdIG5ldDogc3RtbWFjOiByZW1vdmUgc29mdHdhcmUgVkxBTiB0YWcgc3RyaXBwaW5n?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6812Sbd0005903
+X-TLS: YES
+X-ENVELOPE-SENDER: he.peilin@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 01 Sep 2026 10:28:41 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A963859.000/4hYqY54NlBz5B0rb
 
->
-> On Thu, Aug 27, 2026 at 7:59=E2=80=AFAM Jia Jia <physicalmtea@gmail.com> =
-wrote:
-> >
-> > vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
-> > buffer even though it delays the Guest signal until the worker finishes=
-.
-> > Each call publishes one used entry and updates the used index separatel=
-y.
-> >
-> > Collect the completed buffer heads in the arrays already allocated for =
-the
-> > virtqueue and publish them with vhost_add_used_n().  Bound the batch by=
- the
-> > ring size, array capacity, and worker packet budget.  Flush before
-> > re-enabling notifications or leaving the worker.
-> >
-> > Each used entry describes one completed RX buffer and keeps its actual =
-used
-> > length, so set nheads to 1 for every entry.  This patch does not change
-> > negotiated features or compress multiple buffers into one used entry.
-> >
-> > This patch is limited to the current skb-based vhost-vsock RX path.
-> >
-> > Performance:
-> >
-> > Tested with a QEMU/KVM guest on a host with 4 online CPUs, using 2 vCPU=
-s
-> > pinned to host CPUs 2 and 3, QEMU 10.2.1, q35, 1536 MiB, and Linux
-> > 7.2.0-rc3-next-20260713-next-debug-kasan.  The vhost-vsock source is ba=
-sed
-> > on linux-next master at 49362394dad7df66c274c867a271394c10ca2bb8.
-> >
-> > Current vhost-vsock does not implement VIRTIO_F_IN_ORDER or
-> > VIRTIO_F_RING_PACKED, so both configurations used packed=3Doff and
-> > in_order=3Doff:
-> >
-> >   baseline:                 RX batching=3Doff
-> >   vhost-vsock RX batching:  RX batching=3Don
-> >
-> > The test used vsock_perf.  The Guest receiver was started with:
-> >
-> >   vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
-> >
-> > The Host sender was started with:
-> >
-> >   vsock_perf --sender 3 --port PORT --bytes BYTES \
-> >       --buf-size SEND_BUF --vsk-size 64M
-> >
-> > Each workload transferred BYTES=3D1 GiB.  The SEND_BUF values were 256 =
-B
-> > (SEND_BUF=3D256), 512 B (SEND_BUF=3D512), 4 KiB (SEND_BUF=3D4K), and 64=
- KiB
-> > (SEND_BUF=3D64K).
-> > Each state used a fresh Guest.  Each workload uses 20 paired runs, with=
- 10
-> > runs in each order.  The reported values are
-> > Guest RX throughput in Gbits/s.  The baseline and batching columns are =
-the
-> > geometric means over the 20 runs; change is batching / baseline - 1,
-> > computed from the unrounded values:
-> >
-> >   workload   baseline RX    batching RX   change   faster
-> >   256 B      0.0795724      0.0831509      +4.497%  20/20
-> >   512 B      0.1194885      0.1210297      +1.290%  14/20
-> >   4 KiB      0.7208273      0.7242053      +0.469%  11/20
-> >   64 KiB     2.1712797      2.1951941      +1.101%  13/20
-> >
-> > For reference, the table below gives the 95% normal-approximation inter=
-vals
-> > obtained from the 20 paired log(batching / baseline) values:
-> >
-> >   workload   paired 95% interval
-> >   256 B      +3.985% to +5.011%
-> >   512 B      +0.206% to +2.385%
-> >   4 KiB      -1.442% to +2.416%
-> >   64 KiB     -1.474% to +3.745%
-> >
-> > All transfers passed byte-count checks, and no kernel errors were obser=
-ved
-> > in the logs.  The 256-byte workload improved in every pair.  The 512 B
-> > workload was faster in 14 of 20 pairs, with a small gain.  The 4 KiB an=
-d
-> > 64 KiB workloads showed no material throughput change; the difference
-> > between their results may be due to scheduling and execution variation.
-> >
-> > Link: https://lore.kernel.org/r/20181214082146-mutt-send-email-mst@kern=
-el.org
-> > Link: https://lore.kernel.org/r/20220901055434.824-4-qtxuning1999@sjtu.=
-edu.cn
-> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> > ---
-> >  drivers/vhost/vsock.c | 41 +++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 39 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> > index 9aaab6bb8..d8050cca2 100644
-> > --- a/drivers/vhost/vsock.c
-> > +++ b/drivers/vhost/vsock.c
-> > @@ -103,12 +103,37 @@ static bool vhost_transport_has_remote_cid(struct=
- vsock_sock *vsk, u32 cid)
-> >         return found;
-> >  }
-> >
-> > +static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
-> > +                                  unsigned int *used_count)
-> > +{
-> > +       if (!*used_count)
-> > +               return false;
-> > +
-> > +       vhost_add_used_n(vq, vq->heads, vq->nheads, *used_count);
-> > +       *used_count =3D 0;
-> > +       return true;
-> > +}
-> > +
->
-> I think that the used_count should be updated by the caller based on
-> the boolean returned by this function.
->
+Problem
+=======
+When the stmmac driver has NETIF_F_HW_VLAN_STAG_RX enabled by default,
+but the hardware does not support hardware stripping of ETH_P_8021AD
+(VLAN 802.1ad) tags, the driver falls back to software stripping in
+stmmac_rx_vlan(). If the received VLAN packet is fragmented and the
+VLAN header resides in the non-linear part of the skb, the driver
+attempts to pull the header without first ensuring it is linearized.
+This leads to a kernel BUG in __skb_pull() due to invalid header
+access.
 
-Thanks for the review. I will fix this in v2.
+Crash log
+=========
+[   72.212903] kernel BUG at include/linux/skbuff.h:2700!
+[   72.212908] Kernel BUG [#1]
+..
+[   72.212958] [<ffffffff846919d2>] eth_type_trans+0xe2/0x168
+[   72.212962] [<ffffffff844672e2>] stmmac_rx+0x602/0xc58
+[   72.212966] [<ffffffff84467984>] stmmac_napi_poll_rx+0x4c/0xb8
+[   72.212970] [<ffffffff84635246>] __napi_poll+0x2e/0x1e0
+[   72.212975] [<ffffffff8463596e>] net_rx_action+0x31e/0x388
+[   72.212979] [<ffffffff83c329b0>] handle_softirqs+0x170/0x358
+[   72.212983] [<ffffffff83c32cc6>] __irq_exit_rcu+0xd6/0x100
+[   72.212986] [<ffffffff83c32ee0>] irq_exit_rcu+0x18/0x28
+[   72.212989] [<ffffffff84895b1e>] handle_riscv_irq+0x66/0x78
+[   72.212994] [<ffffffff84896728>] do_irq+0x60/0xa0
 
-> > +static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
-> > +                                unsigned int *used_count,
-> > +                                unsigned int head, unsigned int len)
-> > +{
-> > +       struct vring_used_elem *used =3D &vq->heads[*used_count];
-> > +
-> > +       used->id =3D cpu_to_vhost32(vq, head);
-> > +       used->len =3D cpu_to_vhost32(vq, len);
-> > +       vq->nheads[*used_count] =3D 1;
-> > +       (*used_count)++;
-> > +}
->
-> Same here, why pass it as an argument? The caller knows way better.
+Root cause
+==========
+In the software VLAN stripping path, stmmac_rx_vlan() does not call
+pskb_may_pull() to ensure that the Ethernet header plus VLAN header
+are in the linear area. As a result, __skb_pull() operates on an
+skb with insufficient linear data, triggering the BUG check.
 
-I will fix this in v2.
+Solution
+========
+The software VLAN stripping logic in stmmac_rx_vlan() was originally
+introduced in 2014 by commit b93819854d6e ("stmmac: Add vlan rx for
+better GRO performance.") as a workaround to improve GRO performance,
+since at that time GRO could not handle frames with VLAN tags. However,
+this limitation was resolved in 2015 by commit 66e5133f19e9 ("vlan: Add
+GRO support for non hardware accelerated vlan"), which added GRO support
+for non-hardware-accelerated VLAN frames. Keeping a software fallback
+path for VLAN stripping is no longer necessary and only adds complexity.
 
->
-> Other than that, the patch looks good to me,
->
-> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
->
-> Thanks!
->
+Rather than fixing the issue by adding pskb_may_pull() checks to
+stmmac_rx_vlan(), remove the function entirely. Additionally, ensure
+that hardware VLAN stripping features are only reported via
+dev->hw_features when the hardware truly supports them.
 
-Thanks!
+Fixes: b93819854d6e ("stmmac: Add vlan rx for better GRO performance.")
+Signed-off-by: Peilin He <he.peilin@zte.com.cn>
+Reviewed-by: xu xin <xu.xin16@zte.com.cn>
+Reviewed-by: Jiang Kun <jiang.kun2@zte.com.cn>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 27 ++-----------------
+ 1 file changed, 2 insertions(+), 25 deletions(-)
 
-> > +
-> >  static void
-> >  vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
-> >                             struct vhost_virtqueue *vq)
-> >  {
-> >         struct vhost_virtqueue *tx_vq =3D &vsock->vqs[VSOCK_VQ_TX];
-> >         int pkts =3D 0, total_len =3D 0;
-> > +       unsigned int used_count =3D 0;
-> > +       unsigned int used_limit;
-> >         bool added =3D false;
-> >         bool restart_tx =3D false;
-> >
-> > @@ -120,6 +145,12 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vs=
-ock,
-> >         if (!vq_meta_prefetch(vq))
-> >                 goto out;
-> >
-> > +       used_limit =3D min_t(unsigned int, vq->num,
-> > +                          min_t(unsigned int, vq->dev->iov_limit,
-> > +                                vq->dev->weight));
-> > +       if (unlikely(!used_limit))
-> > +               goto out;
-> > +
-> >         /* Avoid further vmexits, we're already processing the virtqueu=
-e */
-> >         vhost_disable_notify(&vsock->dev, vq);
-> >
-> > @@ -134,9 +165,13 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vs=
-ock,
-> >                 u32 offset;
-> >                 int head;
-> >
-> > +               if (used_count =3D=3D used_limit)
-> > +                       added |=3D vhost_vsock_flush_used(vq, &used_cou=
-nt);
-> > +
-> >                 skb =3D virtio_vsock_skb_dequeue(&vsock->send_pkt_queue=
-);
-> >
-> >                 if (!skb) {
-> > +                       added |=3D vhost_vsock_flush_used(vq, &used_cou=
-nt);
-> >                         vhost_enable_notify(&vsock->dev, vq);
-> >                         break;
-> >                 }
-> > @@ -153,6 +188,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vso=
-ck,
-> >                         /* We cannot finish yet if more buffers snuck i=
-n while
-> >                          * re-enabling notify.
-> >                          */
-> > +                       added |=3D vhost_vsock_flush_used(vq, &used_cou=
-nt);
-> >                         if (unlikely(vhost_enable_notify(&vsock->dev, v=
-q))) {
-> >                                 vhost_disable_notify(&vsock->dev, vq);
-> >                                 continue;
-> > @@ -230,8 +266,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vso=
-ck,
-> >                  */
-> >                 virtio_transport_deliver_tap_pkt(skb);
-> >
-> > -               vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
-> > -               added =3D true;
-> > +               vhost_vsock_add_used(vq, &used_count, head,
-> > +                                    sizeof(*hdr) + payload_len);
-> >
-> >                 VIRTIO_VSOCK_SKB_CB(skb)->offset +=3D payload_len;
-> >                 total_len +=3D payload_len;
-> > @@ -264,6 +300,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vso=
-ck,
-> >                         virtio_transport_consume_skb_sent(skb, true);
-> >                 }
-> >         } while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
-> > +       added |=3D vhost_vsock_flush_used(vq, &used_count);
-> >         if (added)
-> >                 vhost_signal(&vsock->dev, vq);
-> >
-> > --
-> > 2.53.0
-> >
->
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b2b7d0242dd3..790b7362048e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5021,24 +5021,6 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
+ 	return vlan_features_check(skb, features);
+ }
+
+-static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
+-{
+-	struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
+-	__be16 vlan_proto = veth->h_vlan_proto;
+-	u16 vlanid;
+-
+-	if ((vlan_proto == htons(ETH_P_8021Q) &&
+-	     dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
+-	    (vlan_proto == htons(ETH_P_8021AD) &&
+-	     dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
+-		/* pop the vlan tag */
+-		vlanid = ntohs(veth->h_vlan_TCI);
+-		memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
+-		skb_pull(skb, VLAN_HLEN);
+-		__vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
+-	}
+-}
+-
+ /**
+  * stmmac_rx_refill - refill used skb preallocated buffers
+  * @priv: driver private structure
+@@ -5407,9 +5389,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+ 	if (priv->hw->hw_vlan_en)
+ 		/* MAC level stripping. */
+ 		stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+-	else
+-		/* Driver level stripping. */
+-		stmmac_rx_vlan(priv->dev, skb);
++
+ 	skb->protocol = eth_type_trans(skb, priv->dev);
+
+ 	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+@@ -5901,9 +5881,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 		if (priv->hw->hw_vlan_en)
+ 			/* MAC level stripping. */
+ 			stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+-		else
+-			/* Driver level stripping. */
+-			stmmac_rx_vlan(priv->dev, skb);
+
+ 		skb->protocol = eth_type_trans(skb, priv->dev);
+
+@@ -7965,7 +7942,7 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
+ #ifdef STMMAC_VLAN_TAG_USED
+ 	/* Both mac100 and gmac support receive VLAN tag detection */
+-	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
++	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
+ 	if (dwmac_is_xmac(priv->plat->core_type)) {
+ 		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
+ 		priv->hw->hw_vlan_en = true;
+-- 
+2.27.0
