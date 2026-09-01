@@ -1,159 +1,117 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012006.outbound.protection.outlook.com [40.107.209.6])
+Received: from m101-out-mua-6.websupport.se (m101-out-mua-6.websupport.se [109.235.175.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B4C2F745D
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 05:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788242225; cv=fail; b=pyLBsrhmaHzPXde2mLsL+jdRvi2cvWQxn3EWw/7chFx+guhTG1Ndy/UZnZ2fs4cJk6qU4rRFKMd6tyb3fNAzZYvUT3ZnFmq036vJimeJuIw70WHwtlfdaB5PrxpKcDJbMY28rQ+Fm0ntVowsUpghAAHMayMyAZHm3dy6xBc/iXI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788242225; c=relaxed/simple;
-	bh=++uKU8AZdM0C8HhWr1WvD8XEA18F4s4c1CjPHCJimgk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rtNDWZuuDnuU1wvQvIInWa/SS0ss1wHI6VPi6azpy83AnCytSoIdDxYGlk4LnrgHta7l5v8OXxNlZAs3SIsY0x15JNPUGjIP2mKHzT5KdiQ6WC+9/ijUoH7JfHfE+c48lmv9OCie8TwcruNdyehfaQx0oASMRB/BHFWpLj+6mlE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=G25Re6Di; arc=fail smtp.client-ip=40.107.209.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC32377EC2;
+	Tue,  1 Sep 2026 05:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.235.175.106
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788242351; cv=none; b=XFy+FF6Z9E7Cm0W8eIHndJaNGFO9CEQr2AUWZaz9OPWjwlte2YmpMUeyvUsbSYHGn2meKiEEl8DZNt7xkLePAg7fU0LC7Vwml42urH7jnImt3XzwcZ8jY118Rqe5no15+ql3dyqfeHrysMzAV/UxlNOdnpZJhor+4wk3St0WtFA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788242351; c=relaxed/simple;
+	bh=7uuRZp7qeKh4R7noNFIXIYhCuhsLsbYCAsIHUDE9vGc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C8yzHcFQIFwNeOQ1HaKNbU2Pa2vzs9UWynEf9rdtL388xid9jZUJ2wfxrBSXZEOl3FV/O1xZ8Lt1cbWwlbusAF3Bsj9ZOP9XWhf7hFVLQsJ/JokIHv0yRWsg8Ad9wVaUpVRrWE1fgEv6rcFvy6yaZpMcLBiJI11l1l+MmBiviPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=palvencia.se; spf=pass smtp.mailfrom=palvencia.se; dkim=pass (2048-bit key) header.d=palvencia.se header.i=@palvencia.se header.b=KZ5UTKMS; arc=none smtp.client-ip=109.235.175.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=palvencia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=palvencia.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="G25Re6Di"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dZFo9lNKdOc3QRQI2R0OJcnKrPmga5EswiGNje77GKS3VJSusPUhkanXf7GCeuSwFt35tSvTCrAcKJy1VgROlL+c9cuB4KCRR82xyQkRoEYTvngzIzHSEmVEu38BX5HjPpGFEo6GSyUmvzLJDwqQq4wAUkHha/le+iQgekscnM/aQYV/3iSB59i0EO0qDvJPaAu/kH8DP2+Gga+hvBbH9kJ/cul46v3xa06ZiChzRRa4ZGrw00bnE0pa9GVLYIl1ilbcdrqX+N6C429oepc6jCIrHqpNf02jZWsaES8GHtLfdgcxtGbW5DPMhCpci1khw59q62z23URfxBRjN6gO+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HhDujLNxaRIgyp55FSc8ArqZAzZkjY/D3LDug35pkpk=;
- b=fLnNuTRUeYn0RA7X8sSqzUFMo97EYRdhqhX2sOlHI2nuSYjoZOc8wzl2iQxRsAxT2kjH/GV3gia4UDTOmaupTLyr8F1G5wgchBINoWoaqm9Qc7KdRsQvE8Dk3cFx9ozq1Aikv02mAE8JqxhijedJF1AEN940xW+vBHQmtM4TJJgkK/JR6HhzRPm/cXjbqUTWRh0XtsLvTdwZYDXa7fV+HUIGtr6IsFj5jCh/lT7AMr/ZmU9MSeVZX2K6MdMgcDV+VxvLaACVuZkfEhETINT/G0AQ49MtPxIHyfTx/1CQPL3fJzgAHilujOftOsoSk0Ak8K+/4yCSpmsySTSb9faPmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HhDujLNxaRIgyp55FSc8ArqZAzZkjY/D3LDug35pkpk=;
- b=G25Re6DiWqzbZQ86WgRTEkOlMG+TZUOvP3/GMcLMhkQW6szvIG2qKBDBHAghjS/guDv64UdAMsBYc61HCpITrwxybGWdxOpBGCpy0o589OH7ft7Q02TEJG+FlVIj8Z4IYCCvnli/lZYHo6v7nhPOGE1y2D+ZiVjC7pwIBGKOC7Q=
-Received: from SA1PR05CA0020.namprd05.prod.outlook.com (2603:10b6:806:2d2::22)
- by DS0PR12MB6559.namprd12.prod.outlook.com (2603:10b6:8:d1::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.13; Tue, 1 Sep 2026 05:56:58 +0000
-Received: from SA2PEPF00003AEA.namprd02.prod.outlook.com
- (2603:10b6:806:2d2:cafe::64) by SA1PR05CA0020.outlook.office365.com
- (2603:10b6:806:2d2::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Tue, 1
- Sep 2026 05:56:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AEA.mail.protection.outlook.com (10.167.248.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Tue, 1 Sep 2026 05:56:57 +0000
-Received: from lab223.rund-run.pensando.io (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 1 Sep 2026 00:56:56 -0500
-From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-To: <netdev@vger.kernel.org>
-CC: <brett.creeley@amd.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <eric.joyner@amd.com>, "Nikhil P. Rao"
-	<nikhil.rao@amd.com>
-Subject: [PATCH net] ionic: use netif_txq_maybe_stop() in ionic_tx()
-Date: Tue, 1 Sep 2026 05:56:27 +0000
-Message-ID: <20260901055627.1373129-1-nikhil.rao@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=palvencia.se header.i=@palvencia.se header.b="KZ5UTKMS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=palvencia.se;
+	s=mail; t=1788241715;
+	bh=YygSGBZu0R6mtENe2yptPbGK7gd+pjUTcphUn2rVuTo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KZ5UTKMS6tkX5fwRrcxEB4s0bZWbepjd0YohsrdLoFy1Tgmo5Oq/tpdj7NYPwqWnV
+	 YWgGVUmIHskDAeWgSoezOW01N1V6XZuniezQyMxb2vN5pAhYKbr61k0Sz5bu3kCrnX
+	 ZAotHbPqXwMyVdCbh8mmg/tmUU+Ef6aj4OJWhJFfobxXNB9NlrEHzHOhpfF7DmrDkD
+	 HCOefuXkRvcPvF1BUXJqEf3SKRUXubRwgP0oL2PYpo3N1BqxtQGPU+BMtaHXlnWmM9
+	 hvIEtARyqbjM9JHo1ihbObu0EC/NH1Oqj4oexiVG6UY5aTCAjuABCz1wtGUBaiOiuQ
+	 05JeiBjexsung==
+Received: from m101-u6-ing.websupport.se (unknown [10.30.6.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by m101-out-mua-6.websupport.se (Postfix) with ESMTPS id 4hYvzl60sSz1GVb;
+	Tue,  1 Sep 2026 07:48:35 +0200 (CEST)
+X-Authenticated-Sender: per@palvencia.se
+Authentication-Results: m101-u6-ing.websupport.se;
+	auth=pass smtp.auth=per@palvencia.se smtp.mailfrom=per@palvencia.se
+Received: from rpi (unknown [213.204.219.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: per@palvencia.se)
+	by m101-u6-ing.websupport.se (Postfix) with ESMTPSA id 4hYvzg2Zqwz2k72;
+	Tue,  1 Sep 2026 07:48:31 +0200 (CEST)
+Date: Tue, 1 Sep 2026 07:48:27 +0200
+From: Per Larsson <per@palvencia.se>
+To: Andre Przywara <andre.przywara@arm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Liu
+ Changjie <liucj1228@outlook.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 6/6] arm64: dts: allwinner: a523: x96qpro+: enable
+ Ethernet support
+Message-ID: <20260901074827.39a649bc@rpi>
+In-Reply-To: <20260809134607.65d66069@rpi>
+References: <20260803101452.2993721-1-andre.przywara@arm.com>
+	<20260803101452.2993721-7-andre.przywara@arm.com>
+	<20260809134607.65d66069@rpi>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AEA:EE_|DS0PR12MB6559:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef75d1f8-bed7-4733-5330-08df07edd562
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|6133799003|10067099003|5023799004|11063799006|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	WdKNAicjRtXRWbU2ftyK8vXvz62S3BMjYGG1TnDWnUfs2qO9ltFJeH2wm0MLGeuQWmRt2MBpmtQT57+4U0yml/3O0FUAGmI+L64j6Pj5WNvttiMOU2rnolUnXiYozIoCLOM24TviTjvL3icWkG91uNuzR7PHST54w/k2cEufP7quNrZn0x2z0kcK+uUnRY1QRXdngj/scyyOsOYlrPVrpIpOLnxmAJ5LodUhV89QWesM1iL4uIaWAHPsb91B5qUD8/zqq6/I/z9OQxeYu+JJMtkb+0R9btgk6u7hFthP3WY5lixW0mC8ymz0ltJ8UdyAVZXoFpFkjYF+IHvMuda2+qC8J8TrTrNI+Qyk/p/ZzmR9Gi31jfL2tCBhzAz7gYfiG3oGO0N57dO0rn447BeawRUU/5fyk7HX9dEYKsZ7tycSnjtXIe9QYuNuIj5cl2HSd7+kiatuCVkfTXZwZ3BCsQ1xwPYrMQy+PNTaPQ57zeWAxs3PQZ0lKReQDMWoiRzGGmKnyZkyxVDRxokqQocua4AZ64YWrhEXYhDAKI8pKhQHPf+S//KoUwxBBxdIXnpiZqO6INloT4EvgRR0ef1xfe/R6MX6KcH92ASNz7Fi+46bEzdLKCPU+4BEuEJxuO83MGLxEwSL2JIvTAC3do0NO442apyLINCKoFFahDJR0uBBmy6aFec6osXyRWbHBpCAzGPtXIjyii2+WIOZ9aJpUA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(6133799003)(10067099003)(5023799004)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	yDEgYDH+ibs1skZarmfxnx6H3YDKs3E8/p1MmA3E1DUJakWn+kNwPfqoaLw1opJTfXwXXiNiJZWDmttyE+6ibLubs7LduLDOsTgL2DHWZ7xYszGNv1ikRK54vt3Oz83OlDFg3p6s2PG2YVqmBKIo1BLe+tfX5ryiEyDwyC1Ml8ItePb1cKnNBuXPihf7p1SSbSI8RxdGTwEhUql+9o0A/j8vFISzI0DjToV3CDeCoMYxyMGixJqDoMP6PYlsIvCbCBcdM1xOsNT7HYoLMJZwlR0juT9/9CZ0cyfRFiI13pOTGCA6moMxmC+l0f9fkJIWYeIa9mIz7upp/Zq6/xu7Vgl/SSHOT7XiimwPP5x1T1FYJPTKqTAhxSQASF5U0P5jCrrgqXqVzW6An3qbH5fL3Tl3o+AOwnSN21cFz+UU/hf7nCWQYkjNbit/rwBsWI5L
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 05:56:57.7922
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef75d1f8-bed7-4733-5330-08df07edd562
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003AEA.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6559
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Out-Spamd-Result: default: False [1.90 / 1000.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,outlook.com];
+	TAGGED_RCPT(0.00)[netdev,dt];
+	RCVD_COUNT_ZERO(0.00)[0];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:35790, ipnet:213.204.219.0/24, country:SE];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	BAYES_HAM(0.00)[40.30%];
+	HAS_X_AS(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	LOCAL_OUTBOUND(0.00)[];
+	FREEMAIL_CC(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,sholland.org,armlinux.org.uk,outlook.com,vger.kernel.org,lists.linux.dev,lists.infradead.org]
+X-Out-Rspamd-Queue-Id: 4hYvzg2Zqwz2k72
+X-Out-Rspamd-Server: m101-rspamd-out-4
+X-Rspamd-Action: no action
+X-purgate-type: clean
+X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-purgate-size: 466
+X-purgate-ID: 155908::1788241715-3F2551C6-327DD7E6/0/0
 
-Commit 061b9bedbef1 ("ionic: Rework Tx start/stop flow") replaced
-ionic_maybe_stop_tx() with netif_txq_maybe_stop() to get the memory
-barriers around the stop/start bits right, but did not cover the stop
-in ionic_tx() added by commit 138506ab249b ("ionic: Check stop no
-restart"). Convert the remaining site.
+On Sun, 9 Aug 2026 13:46:07 +0200
+Per Larsson <per@palvencia.se> wrote:
 
-netif_txq_maybe_stop() requires the ring indexes to be updated before
-it is invoked, so the post has to come first. But ring_dbell comes
-from __netdev_tx_sent_queue(), which runs after that and reads the
-stop bit, so it is not known in time to pass to ionic_txq_post(). Post
-without the doorbell and ring it separately.
+> On Mon,  3 Aug 2026 12:14:52 +0200
+> Andre Przywara <andre.przywara@arm.com> wrote:
+> 
+> > +		pinctrl-0 = <&ephy_25m_pin>;  
+> 
+> This should be &ephy1_25m_pin, right?
 
-The stop condition is unchanged. The re-check only clears the stop bit
-when space has become available, so the doorbell starvation fixed by
-commit 138506ab249b ("ionic: Check stop no restart") cannot recur.
-
-Fixes: 138506ab249b ("ionic: Check stop no restart")
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
----
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index e436e3231e86..2543a8ff8547 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -1672,15 +1672,22 @@ static int ionic_tx(struct net_device *netdev, struct ionic_queue *q,
- 	stats->pkts++;
- 	stats->bytes += skb->len;
- 
-+	ionic_txq_post(q, false);
-+
- 	if (likely(!ionic_txq_hwstamp_enabled(q))) {
- 		struct netdev_queue *ndq = q_to_ndq(netdev, q);
- 
--		if (unlikely(!ionic_q_has_space(q, MAX_SKB_FRAGS + 1)))
--			netif_tx_stop_queue(ndq);
-+		netif_txq_maybe_stop(ndq, ionic_q_space_avail(q),
-+				     MAX_SKB_FRAGS + 1, MAX_SKB_FRAGS + 1);
- 		ring_dbell = __netdev_tx_sent_queue(ndq, skb->len,
- 						    netdev_xmit_more());
- 	}
--	ionic_txq_post(q, ring_dbell);
-+
-+	if (ring_dbell) {
-+		ionic_dbell_ring(q->lif->kern_dbpage, q->hw_type,
-+				 q->dbval | q->head_idx);
-+		q->dbell_jiffies = jiffies;
-+	}
- 
- 	return 0;
- }
--- 
-2.43.0
-
+With this typo (and the one in patch 4/6) fixed, this series gets a
+Tested-by: Per Larsson <per@palvencia.se>
+since it eliminates the need to use hackier methods to get the ethernet
+port to work on this box.
