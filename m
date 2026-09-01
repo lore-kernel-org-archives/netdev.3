@@ -1,66 +1,66 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFC63ACF1D
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 03:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCA3C09EC
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 03:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788231761; cv=none; b=BQp053Ql1VBRn/VwUEIBQHKURgmIIROSaXIWOtzT7+e1peefgNGkcdFhurH7av0OerOmLcJRsMkDGbDm1jzdu+0EFj1PNoTHgQwPG22ih9YbN4IQp9Apcw9SYfQeHxuQWVS99mQz1ZzZ7CJDbc0+q4MG5KVpaNz6fbUAf/RklIM=
+	t=1788231822; cv=none; b=D7Wog8WKzRFvIUiZCc/nLZRD7/kht0d+6UOUzu3QafrVM+T1LkWFP8B65uFkfaWuq+EXv7Jx+UF96NqLcY4gwITO34K6FO3f+riSRE9o63MOKeuAiVuarOjOexzthEjILfuadSs/7e6jKZ6tLN5+gh48SaEZVbKmDweC4NQDz0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788231761; c=relaxed/simple;
-	bh=ArDpOCf+E4mBR0SMtxM4WSiZdRIZqs2ntZuYIW7YmhY=;
+	s=arc-20240116; t=1788231822; c=relaxed/simple;
+	bh=QMjMCPTpdsCRoTAyCq7iY2dZzfbVHms6j3EXWfMOAPI=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=ZNk/V/6vvTaDv9J19kA9DlGB0CL6nsRRHyHRAFlojIwbVOYjJX/2/AaHOqtdnPyDjpjf6fvHutH02H9mvaJlavnhnlCjytp4OJKmdpbQAIwjWBGdcVL0XdX+aVo0cXRITYRYVH5dngRMSNlrytcr4No5rClCxOCbYv0hdftB7QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPt176SL; arc=none smtp.client-ip=209.85.128.178
+	 Mime-Version:Content-Type; b=S3CQHFBAqvfpeWD/XY/KHNLbEfaiJB6EIcWJmwaiOyU/0OnJ8KGIq+sj72lHn17lyFG7ibzjkzhzBNruT32kQCcT9EEOpEkiodN1YB/a/lITSnEHGFW38hfIQB2EUrY9s8QKTQeEE6fr+gpuwmKBFqOMIOJmAhTU/09K1eIVIhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRAGazp5; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPt176SL"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-81f36179d72so49596637b3.2
-        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 20:02:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRAGazp5"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8630c1503f2so20393687b3.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 20:03:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788231755; x=1788836555; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788231819; x=1788836619; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=14D0j1GkvdeJVIp3hOiK/Hee6MT34LdqRKsw7jOuS3I=;
-        b=TPt176SLTC77jv5zekiQv95LAx73uUBUgiBVtFPXAX0Ka9jPUGoSgFMcWgAN+bz0sr
-         IiY9LEeZ0FRXYTAj9x1QL0JmbH5bw/xJaejMcr6SSKcp5iC2R1BrLchi3E82LV8YqOLb
-         GJ9W6IwYn+LY/tvQChhxdNoCU67Ia2zkqyQ0aTU6gRkj44nOKMidVVNxHmh9XsYzobWp
-         0/Qy/v3L0ZQ8LI0M0bCokZDT/19+pCTaMAK7khJ2+Y5btPuqA1ZcDVF8+SqGBmNRAx+l
-         j2iq2pPostruWM/tirZYOHGd4oimKGcOwprLyU4eLdlXBroMrYtQxzaXkoWJoZIy6bQk
-         Y1qw==
+        bh=5+eVI0mQz7KwBX8ylebIXjGIn2MepFoVALYcchUmiwY=;
+        b=LRAGazp5sKuwz8l6nbuobcsOMZqemShEOa0Fpnkil2odIOYfXvkqosUxYYgPg6kBnl
+         1Ec4YKms2cLL0D+eGsXgGIDHJLvqSM0C/d1bPBfhILwZR3HpMBxT89ao97cXkaC09+Ev
+         yW/ktaJp9hLVwh3TwZ/zyk+UCSzEJnjCy5HVbQAeTvngi7aAQ/6aHu26V2fK0SkvvRhz
+         kLBZU81T79BCweIpLr4rWJM02rsmxewuoON4mNDJpFLWH5km36sfPsGOLjzQ4EtU5cSg
+         cto2zS49FJyKIXdJA6saE0Q3sps0Edh3DIwRYJ0BiHca/8kpTNC1tTFkF319BMmdZQR+
+         cm0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788231755; x=1788836555;
+        d=1e100.net; s=20251104; t=1788231819; x=1788836619;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=14D0j1GkvdeJVIp3hOiK/Hee6MT34LdqRKsw7jOuS3I=;
-        b=FIEhOCahhYntcM0VxAVuPNuIQmmo+YqDPuZ+3VJInbVRDV+ddtfntrvdu1oL4ibncc
-         Yby5cB21LxnJfmYTxiXT+qiTgh/GTQMWSqRtVWbYxa8bOEzLUzLYH/v3kuUJ0z10VDXc
-         DJ5t/QeyaZzUQ/yu10+fUGG/tgnWqFS3NNV4QzJLq00kNGYw+i1f/l506bTgtvvlMmrT
-         WpH+sPLH2V2ObPiLc4k74r0/l1NN7whXyh3RDDHR94ING3H2yAC/CCrqVnZ9Qu8AdMdv
-         ACwrbaj3mrDsbEgJw7CZstgWhLX/kwHgSikEwm/1ovtX5CtBHZHHBgv35FacRozTb6R6
-         w1qw==
-X-Forwarded-Encrypted: i=1; AKwUvBzcLMAsT7Bm2Dhjg8dI/9vL4dZEBt+lE3Ya0E/Oth3zLEqfxflLLExbbViSMua9WU+19owUEMA=@vger.kernel.org
-X-Gm-Message-State: AFuF++l+5fes1Ou5o68+3PgiE76CLwdGLJ82WKqCKqnCiAj9AwlnBAlc
-	1i5UccysbLBPz9Wjhr5QOw0WzOpOqWLKA0EE29Gqe8gSReQxkjssq9Lu
-X-Gm-Gg: AYBFou2hpTzYvgcT99+K8ansbLqluKE05Qdhz07LSr306zP76yG4euJ+ZXgGXOzZhEa
-	lJi6V5MESGwrdOcCrNF9oWq9Lad3NFuemN9MBLOtZWoLYdGB2vuAwRvdsMxbWXpukR95/CKYDXf
-	2tG0pI7fBV5rLBGUgtA89+tRtMTEOz9b6aHsUWbOx++munisn8m5S/tBtXH1/cBgnCM98ywedCv
-	jl2GhMqsWjw92QKewfmzGfnQS27pFIUeO3lFIWN7+LvXVoYp6ugXjgkWWvjFdspOGW43tij+SzZ
-	aXCPyYtyVKvoShYILq9Lb+b5ovlPlkFKR26fv9Vs8WgQlxDrGKIj/XhQLHMh0qo3Eq3zTpJPNdM
-	MFMJe0NkkzODjMZomyXAv4qvTjvKKHrkMjreZ1M42eWs5xXwIxp0TtF6p5KGC125zAbWiJ/SlB+
-	cVfOCQ3vpPLFTBVbAuxlId0QEg2/J4D1Nuwk0Lr73O6FOCCpnYp5B7pwRFfq3rdXFakX97fuSpo
-	AuikzhiCunlKO2O6AO8O5EFW0sPKWQwg7nXe0Llkuwu4vQMyyEl
-X-Received: by 2002:a05:690c:c4fa:b0:81e:eebb:8e4a with SMTP id 00721157ae682-85d684bed50mr109638597b3.12.1788231755320;
-        Mon, 31 Aug 2026 20:02:35 -0700 (PDT)
+        bh=5+eVI0mQz7KwBX8ylebIXjGIn2MepFoVALYcchUmiwY=;
+        b=c5lxyeCM0neERrpIS4PAsXMjsRUAmb+IKJiNphfP1rDAlu7QhGgSJZay6dKHYVaFbr
+         MqHW/f7YocXizycQahIPjP/tGUVz1NfgzQmxP13bamAgipq8CB6clFn/NG9f8GjYeK3z
+         YjE/Tfl9AqE/MF+3yBe1fmVvh3oMvXgthHXgk8If2GBEc7svhZCAzRIgi4VJBFtvX+60
+         XZcb6huqnjRZQY9EAmPK/WIaGHxTHOTzw0XbYohsMY76WDhG/8+z5jhZGGeiOel5zVEu
+         +p5wXpBDoMiBZrXNBWKp3w/X1f5jbXB6hKy9YW7ngXFCEZz2mHdtM/xGOQl5PVA6Axui
+         /r1A==
+X-Forwarded-Encrypted: i=1; AKwUvBwpweFwVYwhoc+aSyuvfdzMWuselfgGj1QTVPisLeiX4VvVnIAz5RFmCawxDfdC3eBhZiR25+Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++kVndZZ62QweddY9r9NvUwW+CxM48dE1HT/bzrLBE++bUD2ACut
+	D0/SoMy8CLxTn+S6VWeWH158rm/fH3FRAeA6OI1LlXmANy0Y97TG2hO3
+X-Gm-Gg: AYBFou2/FRhSAVG7vr+6mKCCyUaePlEY620jrgZ4ANL7YR9ae2AkMj+e7QTLRigcqdZ
+	jRZdS8uFqAAiKrOpa1Z8VB9SgDKGsh9Drs4pEhJOVdT4lCYRpdB8yAPUzQDAV3cQ8Wa7HSUghpN
+	DJXB0F2GcQJTs1ogBwfUV/Ru61cnRfiuym+1H4oG8VVLmCP8H7htZZtz6PSq9P/6v/l7poL1Oea
+	tyQIu9o+P1ABm6DJrFBHRbmEvk6zg1e7EVRCE5wRkZ9NoU87Nr2QQK5hp+jMjkFew5/sBgn1p2L
+	NrnVKBK085ulBhc6JVmAHIMhXWXu5xTFl2hpwmyOMoEtfu7U7gxslmqnrNAmBFhE2lRDSB1Bq6A
+	m1EPTe3Xtnn0cBXC1qxxk7inzaMmMdF73Hg8MAFswUbByoKAIQ/nzTrI4KCva4MJknEQJX86dF0
+	xQfgIKBgcezbt8TMEf5uO0XTnq5tTbXSVt8L2MjOX72u0OGUctKOIO4iUHApHSOPdXHNv2f2FPV
+	00W3xg5EDns/YbwlNYAdBC7GcTkzuneefg2JcNBLA==
+X-Received: by 2002:a05:690c:4017:b0:859:9c98:b8b4 with SMTP id 00721157ae682-86875b7b5a6mr25036897b3.31.1788231818693;
+        Mon, 31 Aug 2026 20:03:38 -0700 (PDT)
 Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e68ae126bsm67293157b3.9.2026.08.31.20.02.34
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-862e2335134sm43186607b3.28.2026.08.31.20.03.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 20:02:34 -0700 (PDT)
-Date: Mon, 31 Aug 2026 23:02:34 -0400
+        Mon, 31 Aug 2026 20:03:38 -0700 (PDT)
+Date: Mon, 31 Aug 2026 23:03:37 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
  netdev@vger.kernel.org
@@ -70,15 +70,13 @@ Cc: davem@davemloft.net,
  pabeni@redhat.com, 
  horms@kernel.org, 
  andrew+netdev@lunn.ch, 
- Willem de Bruijn <willemb@google.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Joshua A Hay <joshua.a.hay@intel.com>
-Message-ID: <willemdebruijn.kernel.8de9480d62e6@gmail.com>
-In-Reply-To: <20260831213221.1370774-4-willemdebruijn.kernel@gmail.com>
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <willemdebruijn.kernel.2d4ddab147812@gmail.com>
+In-Reply-To: <20260831213221.1370774-7-willemdebruijn.kernel@gmail.com>
 References: <20260831213221.1370774-1-willemdebruijn.kernel@gmail.com>
- <20260831213221.1370774-4-willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next v7 3/6] idpf: support pacing offload
+ <20260831213221.1370774-7-willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next v7 6/6] selftests: drv-net: extend so_txtime with
+ hw offload
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,120 +90,39 @@ Content-Transfer-Encoding: 7bit
 Willem de Bruijn wrote:
 > From: Willem de Bruijn <willemb@google.com>
 > 
-> If skb->tstamp is in the future, program this future delivery txtime
-> in the transmit descriptor.
+> Add two pacing hardware offload variants
 > 
-> TCP pacing offload is only offloaded if SK_PACING_FQ is negotiated and
-> the FQ offload_horizon is configured. But device support for pacing
-> offload must be more robust: it can also be reached through SO_TXTIME.
+> 1. one that uses FQ to safely offload when within bounds.
+> 2. one that uses pfifo_fast and thus forwards all packets.
 > 
-> Bounds check txtime. Only packets with timestamp between now and the
-> horizon (pacing_offload_horizon) are offloaded.
+> Verify that the packets are paced in hardware with new flag '-H'.
 > 
-> Negotiate the feature with the device using virtchnl. Support is
-> conditional on
-> - splitq mode, where tx and tx completion queues are separate, so
->   completions can be returned out of order.
-> - flow scheduling mode, where completions can arrive out of order.
-> - PTP to ensure the NIC clock is synced to CLOCK_TAI.
+> Also increase rcvtimeout significantly to reduce flakiness. Especially
+> for the new beyond_hw_horizon test, which is close to the 100ms limit.
+> But update recv_verify_empty to take MSG_DONTWAIT. That last empty
+> check must not delay each testcase by the receive timeout.
 > 
-> These features are negotiated per adapter, but expect all vports to
-> uniformly request splitq (req_[rt]x_splitq) and flow scheduling
-> (flow_sch_en) when available.
+> Hardware pacing offload can complete packets out of order. So the
+> reverse_order test is expected to pass with pfifo_fast too.
 > 
-> Do not explicitly check all preconditions. Trust the firmware to
-> only advertise EDT when all are met. In general, firmware response is
-> trusted to be correct. If not, EDT would be the least of the worries.
-> In particular, granularity is trusted to be a power of two. And
-> time_horizon_ns is a range expressible given the chosen granularity.
+> Do not test ETF, which does not change its dequeue behavior based on
+> pacing_offload_horizon.
 > 
-> Packets beyond the horizon are sent immediately with the overflow bit
-> set.
-> 
-> On device reset, dev->pacing_offload_horizon, fq offload_horizon and
-> granularity are not re-negotiated. It is safe to assume that firmware
-> does not change these EDT capabilities across resets.
-> 
-> Must not be called from netpoll due to ktime_get. But netpoll does not
-> generate packets with EDT, so no explicit test is needed.
-> 
-> Do not fail device initialization on EDT init error. Log an error, but
-> continue without EDT, similar to PTP.
-> 
-> Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-> Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Cc: Joshua A Hay <joshua.a.hay@intel.com>
 > Signed-off-by: Willem de Bruijn <willemb@google.com>
-> 
-> ---
-> 
-> Changes
->   v6 -> v7
->     - rebase onto libie changes: adjust idpf_send_get_edt_caps_msg
->     - only set horizon if splitq with flow scheduling
->     - fail on illegal granularity 0, rather than use hardcoded default
->     - zero edt_caps on negotation error, in case of call after reset
->     - cache ts_gran_pow2 in idpf_tx_queue to be in hot cache line
->     - similar to FQ, add offload slack to avoid pacing < 400ns of now
->     - remove now superfluous include netpoll.h
->     - reverse xmas tree (1x)
 
-> +static void idpf_tx_splitq_set_txtime(const struct sk_buff *skb,
-> +				      const struct idpf_tx_queue *tx_q,
-> +				      struct idpf_tx_splitq_params *tx_params)
-> +{
-> +	const int offload_slack_ns = 400;
-> +	struct idpf_netdev_priv *np = netdev_priv(skb->dev);
+> +@ksft_variants(_test_variants_fq())
+> +def test_so_txtime_pfifofast_mono_hw(cfg, ipver, args_tx, args_rx):
+> +    """Run all variants of monotonic tests, without fq pacing sw backup."""
+> +    cfg.require_ipver(ipver)
+> +    cfg.require_nsim(nsim_test=False)
+> +
+> +    _dev_setup_pacing_offload(cfg)
+> +    _qdisc_setup(cfg.ifname, "pfifo_fast")
+> +
+> +    # Expect all tests to pass, except beyond_hw_horizon without sw fallback.
+> +    # It will send immediately, failing the receiver arrival bounds check.
+> +    expect_pass = not args_tx == "a,70"
 
-Unused variable after latest refactor. Will remove.
+Will fix a style warning
 
-No longer needed after introducing tx_q->ts_gran_pow2.
-
-> +	u64 ts, now, horizon;
-> +
-> +	horizon = READ_ONCE(skb->dev->pacing_offload_horizon);
-> +	if (!horizon)
-> +		return;
-> +
-> +	switch (skb->tstamp_type) {
-> +	case SKB_CLOCK_REALTIME:
-> +		ts = ktime_to_ns(ktime_add(skb->tstamp,
-> +					   ktime_mono_to_any(0, TK_OFFS_TAI) -
-> +					   ktime_mono_to_any(0, TK_OFFS_REAL)));
-> +		break;
-> +	case SKB_CLOCK_MONOTONIC:
-> +		ts = ktime_to_ns(ktime_mono_to_any(skb->tstamp, TK_OFFS_TAI));
-> +		break;
-> +	case SKB_CLOCK_TAI:
-> +		ts = ktime_to_ns(skb->tstamp);
-> +		break;
-> +	default:
-> +		WARN_ON_ONCE(1);
-> +		return;
-> +	}
-> +
-> +	now = ktime_get_clocktai_ns();
-> +	if (ts < now + offload_slack_ns)
-> +		return;
-> +
-> +	/* beyond offload horizon? set overflow bit only */
-> +	if (ts > now + horizon) {
-> +		tx_params->offload.desc_ts[2] =
-> +			IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M;
-> +		return;
-> +	}
-> +
-> +	ts >>= tx_q->ts_gran_pow2;
-> +
-> +	/* 0 is valid 23b timestamp, but also means field unset.
-> +	 * Increase by one to avoid this case
-> +	 */
-> +	if ((ts & 0x7fffff) == 0) {
-> +		tx_params->offload.desc_ts[0] = 1;
-> +		return;
-> +	}
-> +
-> +	tx_params->offload.desc_ts[0] = ts & 0xff;
-> +	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
-> +	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
-> +}
+> +    test_so_txtime(cfg, "mono", ipver, f"-H {args_tx}", args_rx, expect_pass)
