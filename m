@@ -1,187 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912AE2D7DC6;
-	Tue,  1 Sep 2026 02:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988B71A3160
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 02:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788228400; cv=none; b=WIBkrTgjBQ5olbAQK/eetQXT71nX5tUofTtV3zpTprhKdyXl3TamFfrVlEn29PVllZ+G2GX6MQVhH+jVcqD1vWggDD1iTRWTbylHcK0kIBXcoQF4o5zGT03mIiUv0Qm0MVzGN4SRXz0hHwDSdIqV3eoEFBdfAwDtgoIjbw5xGc4=
+	t=1788228549; cv=none; b=ibESZ7g2vpeIp3FjmOCDTwHJdc3/rkFhY/Kl1RAk0+L9dd6gY1HiVUWakYmGu46FZq4JdRWeaxn3QV2M7kJSZ9Yxu9G/ZDNF90/eLZKalMhjLVcgjIRjiZaxIiXMMfuikAr9n6IME3XeMj/+Cdav50UtulLSb0qI3RcOuEHiJsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788228400; c=relaxed/simple;
-	bh=osUJTPGe+6IXcaGu1Ek1DCiDWhQX7fuXXqmd/E8g73g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RG0JE/VY1kCjTfbSEmFOGZUDB1WXBh7O+2vtM+Y4KKtKWfyWjlxJbj8aZc7vCShTSuwJR378vyCWEx67ovYe48Tr+MZcR2sgXaJzM28z7SbidJOmQRllv+iRxUf+1tCE5toRLzQQRd3JHczZunK9UCHLrvbSbEQJqsXrTd4IR84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b853ORDn; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788228549; c=relaxed/simple;
+	bh=Q5WY4mGV/sXcYbuyAdtfoPTqexnD0MLKQKM7L2B5no4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n/BY1DYsVmEieohqJBG/xlKKQL1Us192YJUzgUC68Tleh9fQk0Y2jWVw/O6cNMYVW6UCj6Yrd9RIaAcdMQPHR4qsg5StPSRkRGONXiw+KHHaRFKqoDxjDiBKglzZBGKKNph51QzxXQeqwe+Wg+WsoJt9eO8RXqN7Hvijo6yU1Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDjUNlnG; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b853ORDn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788228390; x=1819764390;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=osUJTPGe+6IXcaGu1Ek1DCiDWhQX7fuXXqmd/E8g73g=;
-  b=b853ORDnr6lV/r9HLOpgI8jW0IsKNf51KgIlKmgYi2DWx6paxuGIWhPI
-   sANmWimgU+2lNroThYvkAwjtx11xAzr+IZSnObweStFPF6Acgsxts62EI
-   wIF203sfaUlfjj10G5XbR80nw3fh5lABdaZ2d/TXF9k+pfve97HQurEvR
-   22tNWcbfqMgDBAxBbk/lGfCm4gzhHi1aJMKL/kp54NoqDGPi1w0uzSGnh
-   8FTsy3VaIPi94gqHPxOyViav/EpZplhuBqQWSuPxnXNV8bhg61vOdNvFm
-   r18emcmIGs9fUJvw+i/VoY/KRA4PnNTtxlvfgOYA+J5H1HRtpr17Hg6OA
-   Q==;
-X-CSE-ConnectionGUID: JAfCe7cQSCiWK1yBCZtWbw==
-X-CSE-MsgGUID: Fhx7lyyYQNmxG1wL4n2ZLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="100157423"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="100157423"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 19:06:26 -0700
-X-CSE-ConnectionGUID: SxVqlaV6Qx6a7+Ue7H1uIg==
-X-CSE-MsgGUID: B6rybq5dQ9ydFCMTuqetLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; 
-   d="scan'208";a="274214031"
-Received: from junjie-desk-dev.bj.intel.com ([10.238.152.71])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 19:06:22 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2] net: dropreason: add SKB_DROP_REASON_IP_TTL_EXCEEDED
-Date: Tue,  1 Sep 2026 10:06:13 +0800
-Message-ID: <20260901020613.417495-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDjUNlnG"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso3541879a12.0
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 19:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788228542; x=1788833342; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=q5l77EYxAj/p40Aq8/m79QpRqrk/O0v9B05toG/6DK4=;
+        b=XDjUNlnGPj6elqaQ9fhpS1XtIs+GpQCXQ2MAAMZRTlsn/qikKpphtXFiMxqPiQBYZw
+         sCsRo/+0zCD/os9hLKv+OqFAjsTqanyyu28tCz2sA4KWIMENBeZ+9S4OmTNL9Vw0ToyG
+         PWM7ctG0RYqQa190Azv7TepgguGmbOVWQwSVS57THzJSg67MOoBqEwsFgMu2QoQRQsB0
+         /3Qtjz6BSW5dP1K6XkNH9qFIziNECsli6g+hPg85s586g+sZHNNjFYi6viykgFP0rUhH
+         tokur6r5fvSZodsQ9CV8lp4KO3UaMN2ZtgtWrQQSI2Vrw3j3bzsV861Yq8sI3jyzFEXw
+         TrXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788228542; x=1788833342;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=q5l77EYxAj/p40Aq8/m79QpRqrk/O0v9B05toG/6DK4=;
+        b=ZBTomiqBaQtzr5JcLLJziqpi3vuc/qE+2A+SJ1I4R5Ct6nQwIpLl02lJvnSvBip8Ca
+         p/CwvJks33/MecSTFbyU8P+Aoa4hyHcsr2IuJuA5jFvfFrClp+f6H4fpYcb92VidJhYJ
+         pcGoto6q7FM6u4Jsbtu4oqOu3cH3e0W/HBk7lerL5fN68HCdf7L9RIYwS3Lwg19/vk/6
+         iphN9vage6+5JJlxYKCUCotWXC/p3UQScUESvkO7xO83vpaA88Jv/JNmI1ksAQadS6GY
+         esxXCMrxpbhDBGwsjp8OtmKnonSClvy6WYDq5eHATjEWJqznQo9jxn5lx2BkDNrd5fnN
+         QEfw==
+X-Forwarded-Encrypted: i=1; AKwUvBw6gxANdUaDHKityxe2LCSXv2iSYxC8YYXL39vbouyMjCzYkHTZMnESP1ZmxhVaIJzw5QzrOsM=@vger.kernel.org
+X-Gm-Message-State: AFuF++k42ud52CpRWYOMXux4CxDzloyr4icK71ShIE8VzYbN4WvTah4l
+	YB7Ds1HZ5HvlnJOQyylvmn9No3+TkfsieR2zfbk7iw9TWX8+Jb/WeGj+HDg66L3h
+X-Gm-Gg: AYBFou32s5nmup2XZa83gTFqJTCHYBovuQFFoTmhO6rMZfKM1MkqvzTzq96jc42PKpC
+	4QF5FpjZa/dMtxhyq92/equfyiLwRtrEn6cNsW4abuxJgy7d1KiunVSrR1eX3qx/Ys7mx4a2HIo
+	2uq9a2Tg9yRKfEkcihgOdsG9VDAu/zkDvbQBj/71s8+2upR36GlThHTiCQMvcSLwPasLtQxoeeo
+	BfXptpdSrCqjE0nuxfb3Gr0neBZbII5vTsD4lvFCujVys2UrrtNvJfNhEErDj6VS85bNmRkgNfI
+	X1cCwcZGYMGwaVOQonppkWu5DCwmzj62dPO3MrZ8Yy0y1yDM+6z1AhRq4l9RZq1FVcQ0wmFElgG
+	8oO2UyA0c5og7Yflcs04/KYe1tYH9ixvdOTYPPhD40/hJIB1UUMsHZr0s/clNMofZayFtdKbaTT
+	GuWuIzEjMLdkNd1QIlzxwFyVwqMjDv+vpeYoHl9i46tKkBj3TiZW5I7mZOSoJlM1F6/SF7LOA=
+X-Received: by 2002:a17:90b:2b4c:b0:393:19a3:4f1 with SMTP id 98e67ed59e1d1-39907b651d4mr7328792a91.6.1788228541781;
+        Mon, 31 Aug 2026 19:09:01 -0700 (PDT)
+Received: from [163.43.103.131] ([163.43.103.131])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d463798sm2569822a91.6.2026.08.31.19.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 19:09:00 -0700 (PDT)
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Subject: [PATCH RFC iproute2-next v2 0/2] seg6: add support for the SRv6
+ End.MAP behavior under seg6mobile encap
+Date: Tue, 01 Sep 2026 11:08:58 +0900
+Message-Id: <20260901-seg6-mobile-end-map-v2-0-05b2ad78b922@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALozlmoC/22OwQqDMBBEf0X23C0xYrQ9FQr9gF6LB6OrbjFGE
+ hWL+O9Ve+1xhpl5s4Anx+ThGizgaGLPttuEPAVQNHlXE3K5aZBCKhHLCD3VCo3V3BJSV6LJe1R
+ VHCuhK61Sgq3ZO6p4PlZf8Hzcd497Z8eBJHY0D5D9Un7UbyqGHbBnGvaDdZ/jzBQe7YObhOIvd
+ wpR4CURMomrqEyFvtUm5/ZcWAPZuq5f4OLBUN4AAAA=
+X-Change-ID: 20260523-seg6-mobile-end-map-6f5560bfb68e
+To: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, 
+ Andrea Mayer <andrea@common-net.org>, 
+ Yuya Kusakabe <yuya.kusakabe@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1834;
+ i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
+ bh=Q5WY4mGV/sXcYbuyAdtfoPTqexnD0MLKQKM7L2B5no4=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqljO6QepTWVxk4WuJO1kvWH6XhtznwlTEq8K0e
+ TMLaP2WFRmJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCapYzugAKCRAq19F1Kl0b
+ Te2fD/9NtDX2S5kQig0doMkXfmySYHecPw1vlTxY62udyUiztXiUXz1SoM4iXDGmRlcFnS5ZBSw
+ 6CACh9ycRuABd3iBQ5gYvcGLOLOmbsQUep1l+HJnww6ix2R7y6E9BiJX4YEcUzPatYe0DAz67KA
+ 6sQW5wHvFdf/F0o88IOtaryQfFFuSymGspgM3TlB12WaHPszQi4mtJQPLD06q0tkCfVjc7N0kJ7
+ VKFF4JOElwUbEg/fdf5k1XOPJ15JUNePPaie4O+YPMCp8OPaqZocv8UVLBqSb7K+0LwyGw94/Ut
+ fuh9vDgoKjZBOgRt8fSzx8Rv3HC5yYVDGC7WkDNt9ObSNxI3LiwppPG8zQUSCJLh0nk0k4K3O7j
+ xsWsMzOy6ngNPvjWH1yleUgc4CEW3iu8GXIcOnEoEIEJYftKfA0jm0OQsc3DNJgq7CKz+fdP5U7
+ lTk6aVby7BVU5Jo0h+qgaGO8rdSRFoFIqkK4MBr0azyfXGiVVUdLt/GHBVtwei+HX+l45RdSj26
+ +VQ296fTU0+NeTJao3OI/mBilp/Z8SN9NWSEJNkvTDu6/kgYnFOXCamPUqyKWJPjYLRDtF8S6m0
+ hlPfWpW6psVO5+jx/5lmlK6WA4LZ5E8PcsftfxGjymIjEbD5XilyOqjm390Eg8nqDSAoOJt/suj
+ fxkz92TC6LmMgZg==
+X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
+ fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-The forwarding paths report an expired TTL or hop limit as
-SKB_DROP_REASON_IP_INHDR, the reason otherwise used for a header that is
-malformed (ip_input.c, exthdrs.c, br_netfilter). Nothing else in the drop
-path separates the two: IPSTATS_MIB_INHDRERRORS covers both, and the TTL
-check runs before NF_INET_FORWARD, so netfilter tracing stops at
-PREROUTING and never sees the drop.
+This series adds support for the "seg6mobile" lightweight tunnel, the
+iproute2 counterpart of the SRv6 Mobile User Plane (RFC 9433) kernel
+RFC series [1], starting with the End.MAP behavior.
 
-The Fedora bug linked below shows how that reads in practice. The
-reporter took kfree_skb(reason=IP_INHDR, loc=ip_forward) to mean the
-software header checksum check had failed, and worked through RX checksum
-offload, tc csum actions and both libvirt firewall backends before the
-drops turned out to be replies arriving with TTL 1. ip_forward() never
-verifies the header checksum; that runs earlier, in ip_rcv_core(), and
-reports IP_CSUM.
+Patch 1 imports the new UAPI headers as a standalone patch so it can
+be dropped once the matching kernel header lands.  The selftest in
+the kernel series needs the "seg6mobile" keyword to run.
 
-TTL expiry is not a corner case -- every traceroute through a Linux
-router goes through too_many_hops.
+[1] https://lore.kernel.org/netdev/20260901-seg6-mobile-end-map-v2-0-1629bfc166eb@gmail.com/
 
-The three loopback hop limit checks in exthdrs.c drop with no reason at
-all; give them the new one.
-
-IPSTATS_MIB_INHDRERRORS stays as it is: RFC 1213 counts time-to-live
-exceeded under ipInHdrErrors. The drop reason has no such constraint.
-
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2517131
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
 ---
-v2: repost after net-next reopened; no code change.
-v1: https://lore.kernel.org/netdev/20260825073906.336072-1-junjie.cao@intel.com/
+Changes in v2:
+- Sync the UAPI header with the kernel v2 series (comment wording
+  only).
+- Document seg6mobile in the man page the way seg6local is: the
+  "count" attribute in the synopsis, an ENCAP_SEG6MOBILE grammar
+  entry, and End.MAP wording aligned with RFC 9433.
+- Align the counters helper comment with the seg6local one.
+- Rename the nh6 attribute and keyword to mapped_sid to match the
+  RFC 9433 "mapped SID" wording and avoid clashing with the
+  SEG6_LOCAL_NH6 nexthop semantics.
+- Add Assisted-by tags.
+- Link to v1: https://patch.msgid.link/20260710-seg6-mobile-end-map-v1-0-970275f3d80b@gmail.com
 
- include/net/dropreason-core.h | 6 ++++++
- net/ipv4/ip_forward.c         | 2 +-
- net/ipv6/exthdrs.c            | 6 +++---
- net/ipv6/ip6_output.c         | 2 +-
- 4 files changed, 11 insertions(+), 5 deletions(-)
+---
+Yuya Kusakabe (2):
+      uapi: sync lwtunnel.h and add seg6_mobile.h
+      seg6: add support for the End.MAP behavior under seg6mobile encap
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 2f312d1f67d6..3046a2699479 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -128,6 +128,7 @@
- 	FN(PSP_INPUT)			\
- 	FN(PSP_OUTPUT)			\
- 	FN(RECURSION_LIMIT)		\
-+	FN(IP_TTL_EXCEEDED)		\
- 	FNe(MAX)
- 
- /**
-@@ -606,6 +607,11 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_PSP_OUTPUT,
- 	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
- 	SKB_DROP_REASON_RECURSION_LIMIT,
-+	/**
-+	 * @SKB_DROP_REASON_IP_TTL_EXCEEDED: IPv4 TTL or IPv6 hop limit hit
-+	 * zero on a packet being forwarded (see IPSTATS_MIB_INHDRERRORS)
-+	 */
-+	SKB_DROP_REASON_IP_TTL_EXCEEDED,
- 	/**
- 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
- 	 * shouldn't be used as a real 'reason' - only for tracing code gen
-diff --git a/net/ipv4/ip_forward.c b/net/ipv4/ip_forward.c
-index 8b65f12583eb..b242561d37e7 100644
---- a/net/ipv4/ip_forward.c
-+++ b/net/ipv4/ip_forward.c
-@@ -174,7 +174,7 @@ int ip_forward(struct sk_buff *skb)
- 	/* Tell the sender its packet died... */
- 	__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
- 	icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
--	SKB_DR_SET(reason, IP_INHDR);
-+	SKB_DR_SET(reason, IP_TTL_EXCEEDED);
- drop:
- 	kfree_skb_reason(skb, reason);
- 	return NET_RX_DROP;
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 51941ad656a3..74caaf8746ff 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -464,7 +464,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-@@ -623,7 +623,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-@@ -815,7 +815,7 @@ static int ipv6_rthdr_rcv(struct sk_buff *skb)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
- 				    0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 8fc4766c8da9..0b6d78c8b6be 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -577,7 +577,7 @@ int ip6_forward(struct sk_buff *skb)
- 		icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT, 0);
- 		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 
--		kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 		return -ETIMEDOUT;
- 	}
- 
--- 
-2.43.0
+ include/uapi/linux/lwtunnel.h    |   1 +
+ include/uapi/linux/seg6_mobile.h |  61 ++++++++++++++
+ ip/iproute.c                     |   6 +-
+ ip/iproute_lwtunnel.c            | 173 +++++++++++++++++++++++++++++++++++++++
+ man/man8/ip-route.8.in           |  34 +++++++-
+ 5 files changed, 272 insertions(+), 3 deletions(-)
+---
+base-commit: fce739fa4f2ec83206d8d9435aa94ce22f09cdb1
+change-id: 20260523-seg6-mobile-end-map-6f5560bfb68e
+
+Best regards,
+--  
+Yuya Kusakabe <yuya.kusakabe@gmail.com>
 
