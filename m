@@ -1,121 +1,130 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939F33803C7;
-	Tue,  1 Sep 2026 10:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8D5477E20
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 10:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788258323; cv=none; b=Os6+5sRNpgXk3EtZgfLbbusZyZjNMoA34sOMnOuEJw8SJQ8veaHiWthdDG0ZMduzydwpklyGsN9sWCQ4ymaCxrSMLAIANPgy6B1KF8X6KmN2JOrNYyeIlXrNDID7sKePZH1ybr9Impt8dyi5CMUVkwyJrg8UWidjczleecnDCq4=
+	t=1788258396; cv=none; b=GgMgMYYSuHUoslgRdOR9EPaq41tzKIya7kb207wppT3eSkiaEfC72I0WhQPy5rzX1aLq/jw1rlv8ovt4njxfTHzaosHtHdrUIdAkNBiFEkdaHipxGpacAp58Q4IxVNZd3ai4uKxGPH2POOMKv6aZ0UWUbWTDn/jubKjuJaOUPE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788258323; c=relaxed/simple;
-	bh=dpgQTcDFAntabKQEPWMXBkyxDsa/0xz/pF71/sI+/ys=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=azEplsxovHD+kHa9tTD1CYOLX7VQGKtK+x66lBnezEZMOQhwyzd49EQHik0YMyR79WtasMqm/G3oNHDEl6XcWVuhKYCH/hbaVUyKvDTWlCYqkjXBK7K7KUaf2X7IsJ9hX+Ps5WMDW7mUJVq7oABndln1nP7XHnEyCZUnzR9GzUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ZyrGbhdT; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1788258396; c=relaxed/simple;
+	bh=qwXKfWyJLlUJucJmgktLqPP85Us4UXby9QDkdbHOuso=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CaGhqkqAhP8xANDumlr8oS+fQfN/EDWv01b1RCfmlRDubEMcMlYRkkCFD8DrdxwXqQVGS5lnoH+/h00oNjCfw/4aZUVx7yqqRb1X9rt565jXlMLc6fMGpAonVYGjfVdw6eRZisQPnU8ZpihJtR2+Hu0HZPliubukhO1p76YA654=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BMjT38c/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Elcoo6jZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ZyrGbhdT"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681AKLXT3033126;
-	Tue, 1 Sep 2026 03:25:08 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=shsVEbJ7R+9Q8yEbl+KCswJ
-	0c2jlh9zRxu2kKEgXDoE=; b=ZyrGbhdTgykoM1zvKdUmK/31d9S9YE7HrY2ACCc
-	dYNEPHm5x0ysXOa9+fa4iIvQdmQNXFhagVaqcCiH0cHtYgsOuChmkltUxyw3SBw4
-	FQJsP87f5Rm3RcqxrqUl8cADbc+rnCBBZv3ZwM3V1US6aQzYp+JpbJDMyNmbBdE4
-	mYhJoNwPWs+jilLJQwpD+pnnHvjGoVG3+pnYWx8Rdckw+dqO4RycGoq/WQJ6JV0+
-	E0Hlpg7FJdVTg6P4CQudKvwgKRYlfhUgZPIAJNFhkdMxYJjM6MAr5BgnqrNvjCsf
-	c2fSb/Jqi8uApgOLA9YlndHA7T2bMax/w8D7WdhOuhBuv5g==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gdvpwg1g3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Sep 2026 03:25:08 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 1 Sep 2026 03:25:07 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 1 Sep 2026 03:25:07 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id BCDA55B6928;
-	Tue,  1 Sep 2026 03:25:03 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Rakesh Kudurumalla <rkudurumalla@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net] octeontx2-af: Fix BPID leak in nix_bp_enable()
-Date: Tue, 1 Sep 2026 15:55:00 +0530
-Message-ID: <20260901102500.1534911-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BMjT38c/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Elcoo6jZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788258394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hljqqtQHi/PIRJOIh6/7RUx97Fgfx8/DFdEiDoTdzuM=;
+	b=BMjT38c/HRtEu3TwhcR9h1hdnMZYQojePl7dwQhKKSvS9PpbQxgsOH9XYbcj+/tPO9RAs2
+	+S9YdhOFNm9loFE9WQknuqMX5zC+4J+Dm+klYLpEFl6eFdd5thbT1ahZlSmUfVQ6Xs+mMd
+	vJ0wHIzg2m26giCrsFS5x5M/ZXSiq1E=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-iE1iiu1dP66MwCAiImTgDg-1; Tue, 01 Sept 2026 06:26:32 -0400
+X-MC-Unique: iE1iiu1dP66MwCAiImTgDg-1
+X-Mimecast-MFC-AGG-ID: iE1iiu1dP66MwCAiImTgDg_1788258392
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c213d5fb55aso463250466b.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 03:26:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788258391; x=1788863191; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hljqqtQHi/PIRJOIh6/7RUx97Fgfx8/DFdEiDoTdzuM=;
+        b=Elcoo6jZdi/3KCWTas2i18losiGxrCnQER2EZrv76x0wDU3zIsWEWmgX9jcVdm7bm+
+         RZbGQybvCSK9gyR+Z/aD+A62ILBG9bPa/H+0wzA9FXIQV3QbxXsgCB5kzXVxQqwgno5h
+         XPr7aZDBsL0GGwzzkpNiMYL55ez7plMpK5eUGXg9Uu90cK3LafmHwS/H5bTHNQBtenrG
+         HFFWN7lkLv6GFtbOqCtXTCz3b+wHKs4EHOSdamXJVph8whqKh2dGmSJPFZNADbWgjIe9
+         9lCRfsFznwAUw3DNs0kRsgwoE9Z5WbsBUWnS6j6QdRlFLPUYc1aBn1cAeL6mcdIgY/tP
+         lgxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788258391; x=1788863191;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hljqqtQHi/PIRJOIh6/7RUx97Fgfx8/DFdEiDoTdzuM=;
+        b=pe3NqMVui324AOJVoeM0Yb+Wj75Qf+ak5xQ0CQkD0Z/iuMVNqnRWmjsSGiTHdOExav
+         0cdFTfy8RqR5zZXumWZQ35GRSa3ikCkHD8VC+MXrmUFVSqFvIemlabtsxQ0Q0XAl3WNC
+         c3tVV/sjJgVy+7K9B+VrZ3ywmST5BO2UQaFH3HtAk/LT+l8HsB6/cGqumGcTPs22dg6b
+         FUshiTN+SOw3dsCXVCKt7vKCFnX/agkGrlK8qhsbwk0l9xCLofoxjCBX8DLPWniIeSlE
+         xAe3EJ97a3y7jNFny/r44viRVFAhGesF85lFwBCyddCBYgFTzlVXCT5OtaWRQGh9R+M0
+         0UBA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpwo9dMgO7XQEHbxxuCrozcvLrCFxroQiI6uTx1H0iHWyEgotpAiqdJ/E6LKMmi6YIOV10hbWc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kWBuXlb0PyUnqFEEvLI0f7OANEl8/26SfP44mxVM0+r1CrMRIn
+	Zm2UT1MqnZphYNg5ffW4yVwjYoy3lfdu89WSCc1B5JmA49dDB/lWVMHDy+bm/0lpo9o/Po72aTm
+	xy4whRUhsDLtQlhogt/bi/ApTuyOEHtKQcXW3auKW69wbVJfscutWfXNHTg==
+X-Gm-Gg: AR+sD10oCnTxN4JexTVbLJV/MU64IFvRqmXEkOix+b/Gd/d9aP8TOPFhEpONSjY4GxD
+	st7giem1xZEo2ettGP8Jd8gPef0nSIvDYcGUlYAWPVv5lAW3ICqxUqYt4SEXuuyeXlCaDmS/8UX
+	zq3FWRHxIKAA3EGIbROEtI6osiuaaVxTRt+rKPAt3aeAFlVPiTTAQnokTagm/zfnvT2mPOZmRWC
+	8yPiucrvBKI6eqZeNW+yda38Ru2RCr2ycVeZweTBVJc4htzErd/DkXtWPTFmpqkQP0GIIwl0r37
+	N8395stXG5Ji3YTOBemD+qSOwSxFq1NUxJ0H121dUnIByAm0IQ5dpHX2vzsUnu4/2HspMQLIW6f
+	kKW3rip+UodFmmgfVuYRSXb3GkenIlnPK7gUzg8ThfPVox5lTpuL+6rw0hizUrtTJwX21kiyRAg
+	==
+X-Received: by 2002:a17:907:5c3:b0:c16:4df6:176b with SMTP id a640c23a62f3a-c255741620bmr2176837366b.20.1788258391582;
+        Tue, 01 Sep 2026 03:26:31 -0700 (PDT)
+X-Received: by 2002:a17:907:5c3:b0:c16:4df6:176b with SMTP id a640c23a62f3a-c255741620bmr2176832366b.20.1788258390988;
+        Tue, 01 Sep 2026 03:26:30 -0700 (PDT)
+Received: from [192.168.188.218] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255ee0b23esm542535066b.2.2026.09.01.03.26.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Sep 2026 03:26:30 -0700 (PDT)
+Message-ID: <bddad244-f4a9-4e3b-ab6e-9ca8886f1eb6@redhat.com>
+Date: Tue, 1 Sep 2026 12:26:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDA5MiBTYWx0ZWRfX/7uGCg6c/cTG
- Tjd8I5Z8JxhC4AZ6POcauIPDf55syMCUiYMV9G+4YPSc9joNV3kuDmzR6KEXJ4igrTYxXFuftSf
- ba/Mu0fYXHnEjDFSivwJPBj9jlkiPCY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDA5MiBTYWx0ZWRfX5Dn9Li16eyhT
- mJse3hSkFmPzT5vAyMFv7CXngWqLjXbS4x4GYzayAeB57UcCTMhHogTIXJrDW9yFcfNukiWtPCX
- Bt8WyLgMwQ4UIMsdmDXQFDCwIrov5NHw5cPcntlX1iqoCdKI2ejs7uROK4h6FHGxJ2IxSWFGx1u
- gOPK2mM0rJ72Xma5AcReKVF1GhSfeZJtkM2U3xR08yJMQO7p5ZIDR9sYypFcUEkKGz7tYcw6wRc
- wNUbuAnFWvS+odvT57Y3nXqN6NiekpiTlX9LaUBA4jdMIk7+uIKwhl9+0Qf8g5znu+I/6iSS94W
- npQMi7qJ8xOiDeuPI3KFTyMekIlB8fa5WOiQC64cZTqOv7x/QpiT6U6CGd0rl1Q4UsPOgJr13BG
- q6mZZNBlVkznSa1uCfxIZ2WPTR6tV/Ad1CqzKxQKNKkUlMNj4MWHFe8+PRw4//PI3EOrUnJ7Y7O
- lA7ofD6g7Sd+UdpM2QA==
-X-Authority-Analysis: v=2.4 cv=brF8wkai c=1 sm=1 tr=0 ts=6a96a804 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=1oJNLSowvIMRzDzG_ikA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: 0mmI7mcS_6bs9PcDt566LJDQYMUzDvOH
-X-Proofpoint-GUID: 0mmI7mcS_6bs9PcDt566LJDQYMUzDvOH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_03,2026-08-31_01,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bonding: annotate lockless writes with
+ WRITE_ONCE()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ Jay Vosburgh <jv@jvosburgh.net>
+References: <20260831081027.3209554-1-edumazet@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260831081027.3209554-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Rakesh Kudurumalla <rkudurumalla@marvell.com>
+On 8/31/26 10:10 AM, Eric Dumazet wrote:
+> Several fields in bonding are read locklessly using READ_ONCE()
+> (or ACCESS_ONCE() previously) but have corresponding writes that
+> do not use WRITE_ONCE().
+> 
+> Add WRITE_ONCE() annotations to:
+> - bond->send_peer_notif decrements in bond_peer_notify_may_events()
+>   and reset in bond_close().
+> - bond->slave_cnt increments and decrements in bond_enslave() and
+>   __bond_release_one().
+> - bond->recv_probe updates in bond_open(), bond_option_arp_interval_set()
+>   and rlb_initialize().
+> - slaves->count decrement in bond_skip_slave().
+> 
+> Fixes: 4d97480b1806 ("bonding: use local function pointer of bond->recv_probe in bond_handle_frame")
+> Fixes: 9a72c2da690d ("bonding: fix div by zero while enslaving and transmitting")
+> Fixes: ee6377147409 ("bonding: Simplify the xmit function for modes that use xmit_hash")
+> Fixes: 429208aab9db ("net: bonding: add the READ_ONCE/WRITE_ONCE for outside lock accessing")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+Clashiko noted there is still a missing READ_ONCE annotation for
+`usable_slaves->count` in bond_miimon_inspect(), but I think that is
+better handled with a separate patch.
 
-Avoid calling rvu_nix_get_bpid() after the last channel is programmed.
-For LBK interfaces, each call allocates a BPID, so the extra final call
-can leak one BPID.
-
-Fixes: 27150bc4286c ("octeontx2-af: Interface backpressure configuration")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Rakesh Kudurumalla <rkudurumalla@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index b81c47ea023b..c6164da4caa6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -784,7 +784,8 @@ static int nix_bp_enable(struct rvu *rvu,
- 		rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v),
- 			    cfg | (bpid & GENMASK_ULL(8, 0)) | BIT_ULL(16));
- 		chan_id++;
--		bpid = rvu_nix_get_bpid(rvu, req, type, chan_id);
-+		if (chan_id < req->chan_cnt)
-+			bpid = rvu_nix_get_bpid(rvu, req, type, chan_id);
- 	}
- 
- 	for (chan = 0; chan < req->chan_cnt; chan++) {
--- 
-2.48.1
+/P
 
