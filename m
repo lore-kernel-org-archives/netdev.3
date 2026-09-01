@@ -1,126 +1,242 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-b-106.mailbox.org (mout-b-106.mailbox.org [195.10.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876E73C108A
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E3935F5E4;
+	Tue,  1 Sep 2026 12:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788265729; cv=none; b=nUrHp3QEiaGdgPNn/psch+bEGxbpdHH6Rli3BukFEJu49Z4WZpDZHA9UnxyH7TUcny/5m49g1RjvHXf0L34gfucdtP4DQZG4zMz9Cp7iO8YY2iuNVNvAXeo73aqgaDO30l69rJSbWvhw7+zJkhHCDNHO+fKrTC9/SRRNA48ODh0=
+	t=1788265916; cv=none; b=akUZm2ncpOsh2Cenpr99zFIrORB0cl6vfqh7BYoVXKItIbxufGBwljxJgGJJMhNS1Dqsgi00f3IfV/kHioE5GshtT4iVci33X1jD5kdMLYZqBiZBSUW8SSHS6TyXnwZQ+r2Occ9Bh8DQjNwGx+/f5AT5hcjrSygTUhMps7rpY3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788265729; c=relaxed/simple;
-	bh=uW5IpcCfdHEQSmaxthsTEiw3Xy8qTsaPJxs6r/lEbKY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=BkOmtE8sXREr3IxdhmCuVFcP1J5S0KzPxyjSES2F6BkI7aVAE6VrdHRQ0TjlXoUlmR9GTj6LUrS4d021gN+3ogb7sc/psoOldrAMbgkgYaRHSvaezDsREj7pl3R7VF8VKpj5gpkji0qaGO6aPDSRyAS9XsSrqNrJeizo2HKg8Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1A19Ay0; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788265916; c=relaxed/simple;
+	bh=PMpxVeo8/K+WkAG4crP0i3QfmVnqXj6Y1JQkz8g4L3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ILz9G+6dFuaZ20SdY/e4HHhQaB63p1vpuRkbgAvHCgP9lwf8Nuq9Lx9V8rBz+jSrvUNvnRtdW7j2QfjHCnMxYz4pdI9XRBfnpIWJ8PYJWLj//ppSYTboSMJA/JQBX0Ym1rFyOITnQ8vZyOOGE8r4bzZIkTb5neX4WXqkdOEv/gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=d+Chb3Xn; arc=none smtp.client-ip=195.10.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1A19Ay0"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92e85499ffbso81747385a.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:28:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788265727; x=1788870527; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uW5IpcCfdHEQSmaxthsTEiw3Xy8qTsaPJxs6r/lEbKY=;
-        b=G1A19Ay0IvK0ilLps6KXsH5d8lS1ztFmCAmnMd1cNN9AyVe3W7junVcQi+dKwyBm6y
-         Imwe2qTJhu1dUwoCYTgFULB03k9HtBQOk7xzdwEXPQeH4OkrxVXn4j9IgF1y6CZ0fGXZ
-         4vNRPXx0Pg7RGspNCl54yBZPya2DvfAiBwKJVlIJkxB79hWFQD7S3WeP8c2wB9uYrC3v
-         B04TeCkCgBIeVIrJ9DJyxA1/5itZqsy++1yIhNmPXIMBBPNH1aH2iaPh4Q/xfWvr2G8F
-         J0zHkPccp32USE/IyDIUpPdJtwhAGsLomyByKNLVLVuMaqiMIdEYQhAbTv665hTmkerT
-         /dJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788265727; x=1788870527;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uW5IpcCfdHEQSmaxthsTEiw3Xy8qTsaPJxs6r/lEbKY=;
-        b=hwMlsNKEBRwzIvqpEoAj0xj41tsnDUf/3+JHwSzA3vYlbEbHPFxcnu74hEV/HeDK0a
-         mrguF89rgk0i4PkJ7tufV30W47VT+o5UYo6YvtSpbngOCfrTed7LWCqNsH2s7/XR8rGk
-         gJJHwHS8fIiMs3IYFtQqZe5ysT2qMrFuDemBnddP2/MYGFnOHH5aJNeWe/6k7o0orE40
-         exxGQ9+QmJsTxkIg6oxxjJ41pcExnMxNVvJ4cNoS4RHbUimqbimEGEhjxP8hzw98Vhin
-         pXE9Q8KhpJM24hv1GjnnfjISLvxn4B/vlvypTJw7EtpuPtQt5mBBz2tYDQO4wFGasGkj
-         V8Eg==
-X-Forwarded-Encrypted: i=1; AHgh+RoC/9QIkaOaJ2+4el9P2y0l6svMzcBe2Hkk9e5u+JzS0hKmNoptW1mCrdBGnW7qYFQzF6WRVVc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nD+JXj2FhzTd0o2Um/XOvGLJUdSZmbXzeLSxMfoVdsC/6l8Z3N
-	WYzOxngATv1Qp+qqGUW+lq2ALm+d6nWLl/zOCz+u91JaXQmRGPkujRBA
-X-Gm-Gg: AR+sD12y7xYBOte6kB1lORMGQCyl+Q/goCnHquOVJcnrDp3jNzNjf2qujA349hF82U+
-	WFN33C2Fm0ARGOjl5nJ/HEjwOWeMtqkEYdDTEmEZ+5XEhKB7Gq8SX1DEOp4BKOAYf70d/BLY97b
-	i9z695cUK7kFn9jVMPF5pYX27tSgZOTfkdB+zoh3nuyzc/thL2z6KTnQme0lQAUxplB961DeKU/
-	tiQgvV5ZqXeVcbuq0ogKz8zCdVYuXSiRDytQDtklDWpqlZNuRWxunE/P4/l1t1mjqZVrTrgy2r9
-	HVt4T3P8SnXT0A2oxnCXOhobthT3F8GJwEEQIWuSvVMzBd30Jc5EE/TZXZRsrI89fnMVKeMQnxR
-	SUNmsETpz9KwoyxnKT1PYQUyGwOOHKgpasMYJlWqNs26QLi+V5UCrAr3hFsHJVPWx2Y/TU2iKwc
-	OOKnuIQo1+KSjUDu3T++XRpt7Tsrq2cNw7zWYQfBepAufTXL6tJTXorQNlmstfAWISpA==
-X-Received: by 2002:a05:620a:a0cc:10b0:930:a26a:fb2a with SMTP id af79cd13be357-939137af782mr2940063485a.2.1788265722830;
-        Tue, 01 Sep 2026 05:28:42 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939170142fesm1016077585a.7.2026.09.01.05.28.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 05:28:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="d+Chb3Xn"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-106.mailbox.org (Postfix) with ESMTPS id 4hZ4nN5gMSzNm0Z;
+	Tue, 01 Sep 2026 14:25:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1788265512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pt8q8SslG4nV7I2Us5/9H2w2vOb/dJSWRlAn+mdagcE=;
+	b=d+Chb3XnA1jUv1Dsp7+FizYruRBRVyTmE3cW0CKSrhfZO8nWqOANtIzuw7Rq2VvvYDjA82
+	qziMtREuM3P/qUMVW0K4hVk4RpGUnZ1EMe8ENeXSBWub8IkNyqj2ALEUJpijRy2Wn1MHKI
+	rhoQLQD8s72fDr9BVQEGe3sy4bfPsSbZ9eaDLYOQPmN42LvsJB1ao66+PJd8cgEeUrjHd8
+	JxYseVvsvj8ZOHGPDOwo5qxf0AbKTHiUeUutz0LnV59YwV4+d5y/VEMnIFXQpyNT4M2L1R
+	FTtHRqUkZC8Gz4fjk6LcMIiOj6si+4zL12Df7PEFh92Kvd4h4drXyc60qmcBpA==
+From: Ralf Lici <ralf@mandelbit.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	netfilter-devel@vger.kernel.org
+Subject: [RFC] ipv6: preserving route lookup provenance in dst caches
+Date: Tue,  1 Sep 2026 14:24:59 +0200
+Message-ID: <20260901122501.482920-1-ralf@mandelbit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Sep 2026 08:28:41 -0400
-Message-Id: <DL3ZAJ3NEDKQ.2ZUNLEUPN0JIF@gmail.com>
-Cc: "Eric Dumazet" <edumazet@google.com>, "Kuniyuki Iwashima"
- <kuniyu@google.com>, "Willem de Bruijn" <willemb@google.com>, "David S.
- Miller" <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Simon
- Horman" <horms@kernel.org>, "Daniel Zahka" <daniel.zahka@gmail.com>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: psp: do not inherit the Rx association on
- clone
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Paolo Abeni" <pabeni@redhat.com>, "Norbert Szetei"
- <norbert@doyensec.com>, <netdev@vger.kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <BC10EB92-ABB3-41B2-AB16-266BEEBE18C0@doyensec.com>
- <924455c8-9f62-491f-ae3c-ea2127f46769@redhat.com>
-In-Reply-To: <924455c8-9f62-491f-ae3c-ea2127f46769@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Sep 1, 2026 at 6:01 AM EDT, Paolo Abeni wrote:
-> On 8/29/26 6:56 PM, Norbert Szetei wrote:
->> sk->psp_assoc sits past sk_dontcopy_end, so sock_copy() copies it into
->> every socket accepted from a listener without taking a reference, while
->> inet_sock_destruct() puts for every inet socket. psp_twsk_init() does
->> refcount_inc() for the timewait socket, so a child closing through
->> TIME_WAIT cancels its own put and leaves the association with one
->> reference and N timewait sockets holding the same pointer. Closing the
->> listener frees it, and the timewait timers then put freed memory.
->>=20
->> Rejecting the association on a listening socket is not sufficient: a soc=
-ket
->> can acquire one while established and then be turned back into a listene=
-r,
->> because tcp_disconnect() leaves sk->psp_assoc in place.
->
-> So rejecting the association on listener, and clearing on disconnect
-> would be enough, right?
+Hi,
 
-I think that would solve this problem with sk_clone(), but clearing out
-the psp_assoc from the sk anywhere other than the socket destructor
-makes me nervous because of the risk of leaking cleartext to the
-network, or admitting cleartext the receive queue.
+While fixing an ovpn IPv6 dst-cache bug, I found what appears to be a
+more general race between IPv6 route lookup and cache publication.
+Following a suggestion from Sabrina during review, I would like to get
+feedback on the intended FIB6 serial-number model and on a possible
+kernel-wide fix before attempting a fairly invasive refactoring.
 
-Specifically about tcp_disconnect(), the write queue purge won't save us
-from skbs already queued to the device. I suppose if we clear out the
-sk_validate_xmit_skb hook we have for psp, those would at least get
-dropped first. After that there is still a hazard of the psp_assoc
-cleanup deleting a tx key handle, while tx descriptors in the driver
-ring are still referencing that. That is something for which we rely
-upon psp skbs being socket owned until the driver tx completion path.
+The race
+========
 
-All that to say, I think the fix here is the best option.
+For routes without their own rt6_info::sernum, rt6_get_cookie returns
+the current fn_sernum of the fib6_node associated with the route's
+fib6_info. Persistent caches generally obtain a dst first and sample
+this cookie later when publishing it.
 
->
-> I think that would be preferable: it's a pity to add safeguard code to
-> the datapath due to a syscall (disconnect) used mostly by fuzzers.
->
-> /P
+This permits the following sequence:
 
+  CPU0                                  CPU1
+  ----                                  ----
+  ip6_dst_lookup_flow()
+    returns Dold
+
+                                        add a more-specific route (for example a blackhole /128)
+                                        stamp the affected node and its parents C0 -> C1
+
+  rt6_get_cookie(Dold)
+    reads C1 from Dold->from's node
+
+  publish (Dold, C1)
+
+The next dst_check(Dold, C1) compares C1 with the same node's current
+fn_sernum, accepts Dold and can continue bypassing the more-specific
+route indefinitely. This is different from the normal bounded case in
+which one packet uses the result of a lookup concurrent with a FIB
+update because the stale result has been paired with a newer validation
+token and preserved for future packets.
+
+I reproduced this in ovpn by inserting a delay after
+ip6_dst_lookup_flow, adding a more-specific IPv6 blackhole route in the
+window and then letting dst_cache_set_ip6 sample the cookie. The cached
+route continued to bypass the blackhole.
+
+ovpn can avoid the problem locally by bracketing its lookup with
+rt_genid_ipv6 reads and not populating the cache if the generation
+changes, as implemented in [1]. However, the same late rt6_get_cookie
+pattern exists in several persistent caches, including socket TX and RX
+caches, XFRM route/path cookies, dst_cache users, SCTP, flowtable, IPVS
+and RXE. Fixing every user independently would also leave future users
+exposed.
+
+Proposed model
+==============
+
+The cookie is a property of the lookup which selected a dst, rather than
+a property that can safely be recovered from a shared dst at some later
+time. I'd therefore suggest making cache-producing route lookups return
+the pair explicitly, for example:
+
+  struct dst_lookup_result {
+          struct dst_entry *dst;
+          u32 cookie;
+  };
+
+Pointer-only APIs could remain as wrappers for one-shot users which do
+not persist the result.
+
+For FIB6 policy lookup, the result would be constructed approximately as
+follows:
+
+  gen0 = rt_genid_ipv6(net);
+  smp_rmb();
+
+  dst = fib6_rule_lookup(..., gen0);
+  cookie = rt6_get_cookie(dst_rt6_info(dst));
+
+  smp_rmb();
+  gen1 = rt_genid_ipv6(net);
+
+  result.dst = dst;
+  result.cookie = gen0 == gen1 ? cookie : gen0;
+
+The result remains usable for the current packet when the generation
+changes. Returning gen0 as the cache cookie makes the result fail later
+equality validation, unless the selected node's serial is gen0.
+
+The latter case should also be safe, provided the following writer-side
+contract holds:
+
+  1. a routing-visible update is published before its serial is
+     allocated and stamped;
+  2. node serials are not overwritten with an older allocation;
+  3. every invalidation represented by fn_sernum uses a freshly
+     allocated serial.
+
+rt_genid_ipv6 reads the same fib6_sernum counter from which node serials
+are allocated. Therefore, if a node still has serial gen0, any update
+represented by gen0 was visible before the lookup. A relevant later
+update must stamp the node with a different serial and make the cached
+result fail validation. An unrelated update can conservatively make the
+result miss, but it cannot bless a stale route.
+
+Writer-side prerequisites
+=========================
+
+Two current paths appear incompatible with that contract.
+
+First, fib6_flush_trees allocates one serial before walking all IPv6
+tables, while __fib6_clean_all locks the tables one at a time. A writer
+can stamp a not-yet-walked table with a newer serial, after which
+fib6_clean_node overwrites it with the older flush serial. For example:
+
+  flush allocates 10 and starts walking table A
+  route insertion in table B allocates and stamps 11
+  flush reaches table B and overwrites 11 with 10
+
+That regression could revalidate a result carrying fallback cookie 10.
+One possible fix would be to allocate the flush serial after acquiring
+each table lock, so no writer for that table can allocate a newer serial
+before the walk stamps it. This also avoids introducing wrap-aware
+serial ordering.
+
+Second, ip6_link_failure writes -1 directly into fn_sernum for a default
+route. I think this should instead take the appropriate table lock on
+this failure path and perform a normal fresh node/ancestor serial
+update.
+
+Routes with rt6_info::sernum
+============================
+
+Routes with a nonzero rt6_info::sernum need special handling because
+ip6_dst_check currently ignores the supplied cookie and validates them
+against the global generation. The pre-lookup generation would need to
+be used when obtaining or materializing these per-CPU routes, and
+validation should also require the route serial to match the lookup
+cookie.
+
+Propagating the result
+======================
+
+The pair would have to follow whichever dst ultimately wins through the
+higher-level IPv6 APIs, including source-address selection, a possible
+second output lookup and optimistic-DAD route replacement. Persistent
+caches would store the supplied cookie instead of calling rt6_get_cookie
+after the lookup.
+
+XFRM would propagate lookup results through bundle construction, pairing
+cached route and path pointers with their cookies instead of sampling
+those cookies after the fact.
+
+Two skb handoff points need separate handling.
+
+TCP and UDP obtain an input dst from the skb but sample its cookie only
+later when installing sk_rx_dst. A fresh coherent lookup at cache
+installation appears less invasive than adding the cookie to every skb.
+The sk_rx_dst pointer, cookie and (for TCP) ingress ifindex also form a
+logical cache entry and could be published together as an immutable RCU
+object.
+
+Flowtable has a similar skb handoff point for the observed direction,
+while the opposite direction already comes from a fresh nf_route lookup.
+Performing a fresh route lookup for the observed direction at flow
+installation would avoid adding provenance storage to struct sk_buff.
+
+Questions
+=========
+
+1. Is this race already known, or is there an invariant that makes late
+   cookie sampling harmless here? The number of users following this
+   pattern makes me wonder whether I have missed some intended
+   semantics.
+
+2. Does the proposed approach, including the (dst, cookie) result and
+   the implementation details outlined above, look sound, or is there a
+   simpler way to preserve route lookup provenance across these users?
+
+I have not started implementing this larger design yet. I wanted to
+check the model and expected scope first, rather than produce a large
+series based on assumptions that are currently not documented.
+
+[1] https://lore.kernel.org/openvpn-devel/25d830e082b03afb4615aaeed6e0dc1d1370ecbc.1785308184.git.ralf@mandelbit.com/
+
+Thanks,
+
+-- 
+Ralf Lici
+Mandelbit Srl
