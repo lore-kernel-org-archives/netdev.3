@@ -1,108 +1,118 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender5-op-o12.zoho.com (sender5-op-o12.zoho.com [165.173.182.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEDF371887
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 16:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788280458; cv=none; b=HWDROed0WDv6RXACwvdxEcTCXkR8GlxawQInSLQIahU6vB4OB+9pImEwQ1yQ1xVCm980o2shbkHleNsRoLwQHe5CT1LLdWsAqUghFQF1EZsS5LV2MJXulFUhLLkd7f4DJABPM8cD8f0Ieflb7J1CFBwdXDRruW4RinR9eRH/5EY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788280458; c=relaxed/simple;
-	bh=eQ+b0FuUbkgk3GjbjUprpVwWlSOMhpS2zwmbdYuf/ow=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCJQNwyLipS6OBzGA+dNn754rNHmhDnk/dExSeh+qhtchBOjNktA2HHyG7t44bUfTqh+Wzw1NI82Z3Yn2WNw/gbKxjDoOYPeFqmgTO8/6MsR6PQwmM73FXFIpMWp8kokmOp0zFvX6Pb8QJFEvAy3KhlVoVdMSbVYRW4K5T9R/qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i/P4F2lD; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2892F7F0F;
+	Tue,  1 Sep 2026 16:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788280486; cv=pass; b=uy6R8/Tm4jeCzkkOxBXjd7fEGCJ9SWd28s6A+aR6DYt7nkkSIT4H96gvn+HSf27At7BkPK45NAeP2f1sV48RwReiKextA1BYbnHOYMKXPE75E9dostY8WM+bbJ+M0cWUzd8Zvya76AInBj0XSjIj/eJtnNzmQjdpcDbrukzTpbQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788280486; c=relaxed/simple;
+	bh=zOkocXH0i4ruUrdQQi8zQJJT0RhOyE8LbiLmW7dsBqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XBxt/4WmStSHyW5+ZXhtlr//AD7jJtJ8hx3nVzgsLNprlMqHlfxws1gbFBKGYGAcYnY/xtOtz5NLxLNF4/pfqV1RE2jwrmIxvAuEht1LGdHfdXx4Ga66YKEFoIPSOufUMCK9l0HDhc+S39QJTDQvHvMVcRuQiptKGh/Xbxicnc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=izm7AwEw; arc=pass smtp.client-ip=165.173.182.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i/P4F2lD"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-39da69c5ba3so103041fa.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 09:34:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788280455; x=1788885255; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eQ+b0FuUbkgk3GjbjUprpVwWlSOMhpS2zwmbdYuf/ow=;
-        b=i/P4F2lD2dVhRH03OWaNIxcaZ0qGEbhnQcHJ/PA0eeuxUfggZOr0UCwJgbPfYmo5FG
-         IiJW4Pmx9tc/y+hECvKmvSN0uL+kuQL+1Eoyij6kFyGagr/U5RsxL2vZzOVg4C6u1Fz8
-         C2fOwaphgDK1ABS3Hm6hzs2dcIel6fcMEs5RvPPksS53j7fDpgdEQpC1cTHhEIr4C0EM
-         ljSo5frBBJka6EfgWMhhq//O15I70mO0ZJ5IMLgRYdpPrcEj/OgYnaK+xWez0fquckMc
-         9dPAHpmmMLtWlSkQbsYZcpPLu2RZCrDrsMt1UauGorSPAYTvcVDQ+NvjbzX6eaNhlApT
-         JWww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788280455; x=1788885255;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eQ+b0FuUbkgk3GjbjUprpVwWlSOMhpS2zwmbdYuf/ow=;
-        b=MoFUbxWAP7KVIaFENp6LiKsL/vw7jTaBRztQb/nICbD5eOMXOBmpnJS2alK4+tX9ug
-         cTk2Ir6ctunc1RLNu1XFtSb/LdIkGpeTBw1bkuIvHwK9c2wN8AKhfzozBi2y/hJmIH0w
-         JwugocjuYUuXsDY4EAR2K+AQqiCDxkM85VfHziHDwC9vffV85Npu9qaTL1BUpLHR731X
-         2hz6UOVR8P26jmprREHIO1uk5xxNVWfuQEzBNfgM/zyPWa97OisBlsaiDL4WHpnzYqMs
-         EI9Qj458UvzRSJGn5RA2ffiXjSzPuZc+wQHmIpraO40gQcJTvimlVhT3mFYRZUbmk7wW
-         sKPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx16vklkF9jMftbFZjkBneWkm4r3rvOLOi3wPHzZGdM5rMQTakXy1x/iJuJfiY3jH3lLMrNL2w=@vger.kernel.org
-X-Gm-Message-State: AFuF++kEIOMorEXZ2oKUlgGPjv9RedNwDGNBrIxaP+dOIq57oRfPv0YB
-	8QfwQcEJ9VhInJc/6p1Dfv871rMOBWgmGbGSTJKg8X8Tu0CwC3PKf90=
-X-Gm-Gg: AYBFou1ApdC8SMSazWuNHdwoJpZ4zbFfvKbg7ngbjRCg2bnoU5rnCEHpUX63ZvvZ8Ru
-	A9OZlVT8fGON2HS6F2dWR0ytvFTNYnegXNDnJbUXWMRCsNFagWOmtCGQFaEX0P5uNpacAacdGXo
-	F5CU1kZKIN/yfaWbPV9GLiV5z+EAM6/Spx03J74b+5hPt/Ox8IFiieZkkEQD2lybtIOPhTHv2iq
-	j1kWicb8n0iazinohNuVIm/qhqITBbIQp6+KDCbswiAxdOKBjWMlse41DLmLM2MGR8jd6VlTMBK
-	JGpL6cA9eq47KU+nXd0gdL7kktd9N6ljwW9CCbeH+VdxYvGykH+8OH5+D3PpUP+/UCWSvaOzqxE
-	dkr1UwG8bUcb1Utl+oPYxfhK60oMcHP10od8yFs4FAvlbjXqT4XQxThP/2EYZCBYXCsgq4618g3
-	YssC7Buaaeh/3/QBu6oxNpd3/nTwp2RO4yK3KeekHQsXBs4WN99QPI
-X-Received: by 2002:a2e:a554:0:b0:3a2:fd1:8a8 with SMTP id 38308e7fff4ca-3a3018ba808mr78554981fa.1.1788280454464;
-        Tue, 01 Sep 2026 09:34:14 -0700 (PDT)
-Received: from fedora ([92.36.3.203])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a34a8f03fasm688001fa.9.2026.09.01.09.34.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 09:34:14 -0700 (PDT)
-From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	netdev@vger.kernel.org
-Cc: upstream@airoha.com,
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="izm7AwEw"
+ARC-Seal: i=1; a=rsa-sha256; t=1788280429; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=jDxfWGQAvL0qTaX362S0GAKT1dNbUHBBeVr8edgQonH6NEK46AXLtAHx0aiOwZzyXXab+Qm44TuU7Fxi9eLpNJTEapcbWmsVYjnFqC5KXx9s6cU2F0H9y/FRmv7Uzh3iYQCKIrz+aNgkAkMlMcKarlWawh/TBDbq9MnhOgevCsQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788280429; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aSzSwKdiOyhfRAmkgtryOTqsNj7Y6W/yZ2lJoe+sm1s=; 
+	b=XmIgUJoS9mL+tg5zPsiBaeM9U5A6lvUkShybZDACb5DraepsMdvMch2O4vsHu8G3u0qEnPMELnIICJd4u+hvkhcWEiGLPexv24QHCdCcOaOxleXjrdi0hxh1dc6kSEupv+dJwIGBC2jkekV9ALTQNLl4kZLxqOe+4mBgRbXyyDo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788280429;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=aSzSwKdiOyhfRAmkgtryOTqsNj7Y6W/yZ2lJoe+sm1s=;
+	b=izm7AwEwUZ6Ix97/NfYMiLDMn1TgHl0z2BKTdbaFqJVSrDmvqMjesw+YuMC75pFY
+	g6QPLjkL9oCTyynjVdUyNoLzhubLv2jaBeKS0OqCTrLeG7++9JVzX3x+s7UC4zNgCKk
+	dbTFGmVe377NH04L7EHEMb0/SxXlzpaCMOOpQHXM=
+Received: by mx.zohomail.com with SMTPS id 1788280425896668.4069042560614;
+	Tue, 1 Sep 2026 09:33:45 -0700 (PDT)
+Date: Tue, 1 Sep 2026 16:33:22 +0000
+From: Yao Zi <me@ziyao.cc>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-mediatek@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, Yao Zi <me@ziyao.cc>,
+	Frank <Frank.Sae@motor-comm.com>
+Cc: thomas.petazzoni@bootlin.com,
+	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Vitaliy Sochnev <sochnev.v.74@gmail.com>
-Subject: Re: [PATCH net v2 2/3] net: airoha: recover RX ring after hw completion stall
-Date: Tue,  1 Sep 2026 19:33:48 +0100
-Message-ID: <20260901183348.40949-1-sochnev.v.74@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <apaA5jDYH71F0JaS@lore-desk>
-References: <20260830095717.37218-1-sochnev.v.74@gmail.com> <20260831234701.206021-1-sochnev.v.74@gmail.com> <20260831234701.206021-3-sochnev.v.74@gmail.com> <apaA5jDYH71F0JaS@lore-desk>
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next 0/3] net: phy: motorcomm: Enable analog frontend
+ DAC on yt8531S
+Message-ID: <apb-UvaZYQljYJ5I@pie>
+References: <20260831073747.361482-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831073747.361482-1-maxime.chevallier@bootlin.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/288.256.78
+X-ZohoMailClient: External
 
-> IIUC increasing the ring size the issue never occurs again (correct?). If so, I
-> would drop this patch for the moment and add it if it is really necessary.
+On Mon, Aug 31, 2026 at 09:37:42AM +0200, Maxime Chevallier wrote:
+> In the process of getting more stmmac boards to run tests on, I've
+> acquired a nice and inexpensive YT6801 PCIe card, that can do
+> 10/100/1000BaseT. It uses stmmac's PCI variant dwmac-motorcomm, as well
+> as an integrated Motorcomm PHY (the YT8531S).
+> 
+> However while testing the card, I had link-up maybe once every 10
+> reboots, and no traffic whatsoever. Comparing with the out-of-tree
+> driver provided by Motorcomm, it was found that some Analog Frontend DAC
+> needs a clock to be enabled, and indeed it fixed the issue.
 
-Correct. At 128 the stall never occurred: 500 forced PPPoE reconnects
-over 20 h, ~37500 samples, zero triggers, plus ~994 cycles in earlier
-runs. This detector was compiled in and armed throughout, so that is a
-measured absence, not just the absence of a visible symptom.
+As a side note, this operation was added between v1.0.30 and v1.031 of
+the vendor driver, and we haven't observed similar issues with the
+current YT8531S driver, so maybe this is a silicon issue only present in
+later revisions of the chip.
 
-It is also not sufficient on its own: at 16 descriptors the recovery
-fires roughly every 35 s and PPPoE still never completes, since each
-recovery flushes the ring and negotiation restarts. The ring size is
-what fixes the bug - and the other two patches on their own are what
-ran the longest here: 508 forced reconnects over 20 h 32 min, zero
-rx_dropped/rx_errors across 39158 samples.
+If interested, you could find v1.028, v1.029, and v1.031 of the YT6801
+driver here[1]. And REG_MII_EXT_AFE_CONTROL_CLKDAC_AON_POS was
+introduced in this commit[2].
 
-Dropped in v3, just sent. I will resend this one with evidence if the
-stall ever turns up at the larger ring.
+> As I don't know much about this device, this series implements the DAC
+> CLK configuration in the YT8531S driver only for the integrated version,
+> that uses the GMII interface.
+> 
+> I split that into 3 commits, the first 2 are splitting-out the YT8521
+> and YT8531S config_init(). The third commit adds the DAC configuration.
+> 
+> This was tested on YT6801, which now reliably reports link up.
+> 
+> Maxime Chevallier (3):
+>   net: phy: motorcomm: Split yt8521_config_init() page management
+>   net: phy: motorcomm: Add a dedicated .config_init for YT8531S
+>   net: phy: motorcomm: Enable analog frontend on YT8531S
+> 
+>  drivers/net/phy/motorcomm.c | 76 ++++++++++++++++++++++++++-----------
+>  1 file changed, 54 insertions(+), 22 deletions(-)
+> 
+> -- 
+> 2.55.0
+> 
 
-Thanks for the review.
+Regards,
+Yao Zi
 
-Vitaliy
+[1]: https://github.com/deepin-community/kernel/blob/linux-6.6.y/drivers/net/ethernet/motorcomm/yt6801/
+[2]: https://github.com/deepin-community/kernel/commit/721c505713d104fe48a817e703936dfe583b8ae4
