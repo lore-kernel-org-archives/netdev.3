@@ -1,99 +1,102 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FD443BDA9
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 15:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E97A41DDE3;
+	Tue,  1 Sep 2026 16:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278293; cv=none; b=nO49QbU7FovbAfRHs8XeNwLMpzx2BuleiLLz+Jb+xlZC71vkroSECZoX97K7qaZZFfBbynB8ACtr1py000ijtnIY3ozI94aZ6PlorGEgcQ0NpKVeBUzb+zBQpfWhn4wpGOQj8rixKyqGxYKuOERQU6bQrbUHWLbtRVI1+oSddL0=
+	t=1788278465; cv=none; b=IBdTYne7QcS0CaSM7sbR78lXPDMuDAbT1tI0enEc5egSZcygToKf4YEvfuw0OZvG/GtxLJBwTtPfYpowi+DFXYYXkSKH9AKVbDP+2nAtwXdoneKHNm8N6GCKD3MGPCi4ToNF+HrF76mqg8V15CvyUVFPvOHZ7GsOywUiNOnUqa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788278293; c=relaxed/simple;
-	bh=M5BeQDw5eb2myqWI4EYOJmv87nba4ut4fX4kqBHrbmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pbBm0bIjhg1nXrrF7ZeYyJrGAshFcS9Uv5337f5v9oCPUs0mbJdivvLlOZLNfS9d7CbiPVUSULNfHzFlRi3mRdT2LA2BlEd5sCccZe5n57MmbsbQSlujkJI6ehI9Eiq+NKIOEqN/KoCh0fOr/J3ToDHBxgSbFv3uDTaI6E1n9UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=f+iPIqSf; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1788278465; c=relaxed/simple;
+	bh=23IX0L/IYlRtvlF8jKzUBJ1l6aTsu1TIgr+UqcEB2sA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dDPrG7x5y9BsVp1/RqHSwIpnP3kOe/7RwNSvaQY43gk956ccOVrQ9mnJuBv8PRoY+fQu5n7+P4UyMzepLHlNPry5OlxTOa1uMoUcdSwDKEJh+mimMf1Xj9Mf7QPTxZSQJNrILKxd04oVo0Y/2zbSdvRNc85mjGMIWbY6bvpXVBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lTDxnXxh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LztLxJnU; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="f+iPIqSf"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-39647184c73so1255777a91.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 08:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1788278291; x=1788883091; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tFh8cJbHJN/yLYBydB6gpSd9kUWn9zqLfjwYsTOT5+M=;
-        b=f+iPIqSf0N036Hbf4/jzY8alpTENsK3exEQcmb9AwfUCNEFDmB13seP0G5ZZTYur6l
-         UdrQLQDXjvj+MNnxq6TWMPIKiGy63/LEqy6enQ8KpUihYI5m+ZZNVPxAjbg1/rH7DOoi
-         qTpBiKEkwUsYGZwM2IKlcBGYsH5hzh98PznwHudwZZGB64TL+Biyj2GnkrvKy8mlLzfX
-         9Bq4P25Krjte5PBcPgVwBkzsLRD4PFykuMrw9E+HWZcW3bR1zvIWM68oR9rdPo577VH/
-         G5zGQCOGugw5coKxd48eKUY60L4Zmqpglx/zgDmjvLrnGPNmJ2Oos89znfEshEWuiPlG
-         b3kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788278291; x=1788883091;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tFh8cJbHJN/yLYBydB6gpSd9kUWn9zqLfjwYsTOT5+M=;
-        b=NzZpRQRcxm42qJWalADFOIduKNlehnExn6aKgDDSQID8EDf27//vhoGQmKTyHwPOqh
-         gK1qaaamuvGt8uiJeFE3isNeR08LhqmhF/WEFyUTJfmkbQNA66b3Tnp0KN+z6nGdRv6Y
-         R2VB3JiVfyl8SwW6qKyZAwxnSKRR0O2KtzGpKqnP7xz62dt1NJZwccjQoBvcFG/OeAfO
-         sdCGHLLvcpN/3KpQM7klnodvwnEGLcdCQNNe9UPaHwIR8/nk3M3oZ3wrbLLSfYHUfCG1
-         O34CXpA/spa3Ah+x9u7mag2xPrZuC+vT6Im75ZCnNUx5t+CPslH0oYPMz0nuMQqRwS5W
-         E0sg==
-X-Gm-Message-State: AFuF++nBxiC8yPWnw7Uq0BsHyWCFdMYi8ybFQ0GkEjG6ML8nQ5P2bRco
-	W1A9L2fMG0k/+lJxUTLggvXJx67wEfH2jdSg7cKxQ066vn8i/QqVmbviuYdw2yIhfxJW7ie3Jdl
-	GG55S
-X-Gm-Gg: AYBFou2+lND56FP3d1hA6qBdaETPURS9CsCmPDKflPPq+geM537IFMtYXfC+KVb+Jvs
-	C9E92qz3+oUuZEmrWFJqYeHkVRr1Gh6E4NjQiQGE0t1BwmrKIjMhydyM0yafj3VaQLR3nkbqze+
-	dg2F4vqy5sKMSvRDbpSQoHzoQjdu4Rnft5YhbYswgsIuA22ZeXRn3sDtFqzKDHUkDRrG5vhq7zf
-	RQup7L9zGm7kg+/UAaIt+kdVa0bTxLi0jfyzvquz37WGaXCjQ6Vzp/oMPwP09o4RHWSXsV6QYGK
-	/eU4HNwJXolJ78CmbixWban2p8lS0J7HOzqmqGx82H+5hpUap/c9Leo1yyaV9++yEPVnzF2TpJt
-	t6lEmwvkdDxmBepGIg5TJB4c1iDY3U4kbNfNlQ86Gf55ZmrFHH7dsJsTDR3Z0FzTaFitMFcVOZf
-	SqqdDtjB3KQoOkV2Ry7uocf4uG0nkClFzRgQ4J4bJzyn9n8inBzKktK7bBviApDSbMKJ98IS+Pc
-	AyZMctDepYz/wY1FoPQgkEQvdh9SHg=
-X-Received: by 2002:a17:90b:4a42:b0:38e:6d55:b1a6 with SMTP id 98e67ed59e1d1-3990f727a7amr4773479a91.3.1788278290630;
-        Tue, 01 Sep 2026 08:58:10 -0700 (PDT)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396d22eacbfsm8431325a91.0.2026.09.01.08.58.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 08:58:10 -0700 (PDT)
-Date: Tue, 1 Sep 2026 08:58:01 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH iproute2] u32: fix IPv6 port match pretty printing
-Message-ID: <20260901085801.61250518@phoenix.local>
-In-Reply-To: <20260831104057.2176-1-prabhakar.pujeri@dell.com>
-References: <20260831104057.2176-1-prabhakar.pujeri@dell.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lTDxnXxh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LztLxJnU"
+Date: Tue, 1 Sep 2026 18:01:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788278461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kVbZaHZB2UoG7nxTrsvCQq3Yn4HBjnRnCLNdDUnj4As=;
+	b=lTDxnXxhlhwbcgcIcDbRw2LGt2y2H+vVhAgVPR6Fmpfiyf2Ax2arNgQcIQBJeco2MvtN5R
+	16NDw+MdFPqG7iGN36cHBNCOeKqivM1frIE4883jI1KynKoQB7lQyvyI5B8Xu6OreX4YGK
+	AlXjDIOpAhgU7oVbn51RmU9RsxiGo+xCn/GDkx4Lbhdnm2TH4xSebEgRwuBEgv9UPI489l
+	6V4SOrp3LpctmVyePvqmXFDB/0SyL9K5onCbgJoxlHTUmQW68y79jdV1c8aUMvw2gbEOIf
+	2ji73oAXi0z8p2FUXo1kqW80QALU/dWEvJZhnZsVCVq2OFcuAE/QrYwKus4VKA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788278461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kVbZaHZB2UoG7nxTrsvCQq3Yn4HBjnRnCLNdDUnj4As=;
+	b=LztLxJnUMSmoTI1m+GOzgcR4o453Iz+FRfzrLecpbxx3cKPdb/Kqwtm2PNuqt21iEtfor2
+	4ZgaEMhdFi7PodBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Remi Denis-Courmont <courmisch@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>, Petr Mladek <pmladek@suse.com>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH net-next v4] net: Replace %pK output with 0
+Message-ID: <20260901160100.ATjnom7K@linutronix.de>
+References: <20260901153706.RKMS7kBY@linutronix.de>
+ <9e18a5a0-33c7-482b-9edc-972de9954453@hartkopp.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <9e18a5a0-33c7-482b-9edc-972de9954453@hartkopp.net>
 
-On Mon, 31 Aug 2026 10:40:57 +0000
-Prabhakar Pujeri <prabhakar.pujeri@dell.com> wrote:
+On 2026-09-01 17:51:10 [+0200], Oliver Hartkopp wrote:
+> > ---
+> > v3=E2=80=A6v4: https://lore.kernel.org/all/20260812110531.ITPqiY2O@linu=
+tronix.de/
+> >   - The CAN changes have been dropped.
+>=20
+> No. They are still part of your patch - in the former way.
 
-> parse_ip6() stores source and destination ports in the 32-bit key at
-> offset 40.  print_ipv6() checks offset 20 instead, so it does not print
-> the decoded port fields.  The source and destination labels in that case
-> are also reversed relative to the layout produced by pack_key16().
-> 
-> Handle offset 40 and use the source label for the high half and the
-> destination label for the low half.  This matches the parser and the
-> equivalent IPv4 printer in both text and JSON output.
-> 
-> Fixes: d13cee6d598d ("Add IPV6 match pretty print")
-> Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
-> ---
->  tc/f_u32.c | 10 +++++-----
+unbelievable. So I just resent v3 and though that I forgot to update the
+patch description so I stripped the can bits.
 
-Used the new review-prompts for iproute and it saw incorrect placement
-of print_nl() so I fixed that during merge
+> Would you like to integrate my patch into yours or do you want me to reba=
+se
+> my code once it shows up in net-next?
+>=20
+> https://lore.kernel.org/linux-can/20260815103400.117175-1-socketcan@hartk=
+opp.net/
 
+No, it is too big for my taste. Please route it your usual way. The plan
+is to get rid of %pK once all users are gone so there is no need to have
+it merged as part of this one.
+
+> Best regards,
+> Oliver
+
+Sebastian
