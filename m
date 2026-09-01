@@ -1,131 +1,151 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A8135B63C;
-	Tue,  1 Sep 2026 12:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7F03C4174
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 12:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788266300; cv=none; b=F0ctWnPJtzY/gNanHTbhXZF0eZQVLlvOlJsA9kHV/apWoPCPQ8pFqyXvWjXaIc1ZOoHgOQE6A7LNY70uBjVxdgxOHbJ4N5xybDiWCZ5zYGwDnT/9x/T23GlPU6C/DXLbeM4X69fYk0ASR+XxMobHfLiDQ11FUDGl4Lk5Kc4m2mg=
+	t=1788266307; cv=none; b=uxV8JiA4bRH7WOxRP0wq7IaXIHRwDOVFawpntXni+Y9uWEPDXBv4Z3Ofm7QZ3JGWH4osryVeSSd4sa1LMlgDP0DnsFCvnUdphASimMJISbLVWZoTGioXwjzi3NFJGeU6YT6//viqBC6L7dCjLNEiEkFxhEFceYdSAjbTqY+obkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788266300; c=relaxed/simple;
-	bh=tybral73O94yJ3AK3rRIF6TtP3axjEUn9rrWo0LeLO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BKtEjhkJVpTbyfm3QGT15cG+BXTHclezrnEg+kPOnjDJGaXx0DBMUIBsqrc8zx7KD8paM60ArP8cgBWa901G1rTJccBwzRdfDuSLQBFlnFcwoTQ71+vh5dLNQNwErGGEtBbVHWCNPDV1SSgOD4KC/p/SVKKzPUU1zhrBcF0+Rvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3z6MQ7zH; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788266307; c=relaxed/simple;
+	bh=vruKC89nk4zaiMLwDl5SIvX2XA+mwQsDJ/NYJL65OA0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EwrJGZ9l51dXz/CUlbDfyKO+qhiJAoS7cJ98Vajc9isfw6m2P90DtAnSi9N3o5KvbVImypWwaNiWZvOunw8yLIMTzxSrPyaWjnX8Q95Kg/Z6W4uogBzXpGHdtJTcLO5JSHwmzmKYgVGm+//gVX1J3H6EsltRXMAa44bjm/W6r0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CB9W0V8X; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3z6MQ7zH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+0OfScGfVNxdaLgqeCIO9xxQE676Gfne+cxN+29Fig8=; b=3z6MQ7zHSYBiydDAWot2oJhVD/
-	GDe7TK+lnmOY85Sqt+n/sBofwbKjgHyS3dTAKQVTb824OD9zbjeyOfl2jNZ+f+fQ+i9jnDcajNEZt
-	EMDdlqCd+n9TNqgAvxrAQR8gzup/rBm59gXvTDuUeQyo9ams3GKout1DxVcfNYb3grFs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1Nkc-002M2c-CY; Tue, 01 Sep 2026 14:38:06 +0200
-Date: Tue, 1 Sep 2026 14:38:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Nicolai Buchwitz <nb@tipi-net.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>, thomas.petazzoni@bootlin.com,
-	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next 1/2] net: stmmac: dwmac4: Read the UC filter
- size from hardware capabilities
-Message-ID: <96eae005-8be7-4d65-9461-8a8475e38089@lunn.ch>
-References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
- <20260831070121.349778-2-maxime.chevallier@bootlin.com>
- <2631c832d5aebc56e152628132494545@tipi-net.de>
- <480f15e2-e045-46b7-89af-1fbcefd3c4eb@bootlin.com>
- <b2fbcec7-90ee-4a6f-bd15-32e4e1ff1a47@lunn.ch>
- <b677535a-5395-4703-aa08-a71a6b26ccb6@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CB9W0V8X"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-499b0908c66so3054435e9.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 05:38:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788266303; x=1788871103; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cLf1s6Y9d7Zvfbu7ZXvz8xHKdpLKgc9er+6NC48ncbQ=;
+        b=CB9W0V8XPQNZh91DkGEmr2Kwe2SiTiapgsmSACd5fEi1sk1RJBzfxpKEMnp4LwitS6
+         KsCs3TK8Gbrzar4xfltug4vhmxip9xnxq2i2/dX/NlUNfMD1DfwnmNSN3sT5aT8iRnQ1
+         rySrt4L3fLC3yQabKDGQe5t6a72wwbGoajyi0oqpKRxof7SMnondmF3tNcBDA0IbGOS9
+         DOIAnVdViGo8UeY1hYLrvZJu5MMnEVquYf/iOMFBLULRuACWo0O3KN1gKJLzLnhAMjHr
+         8rJ8c3e0cP9mRXuS7rKLZue+FKdXEGApkk/rZIrB7bOH/7MpWfrlRNPIe8D75ehZQ4N9
+         OFUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788266303; x=1788871103;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cLf1s6Y9d7Zvfbu7ZXvz8xHKdpLKgc9er+6NC48ncbQ=;
+        b=aQkRPshe2wlDM+AXHmjiDTA7XEAxwQN1AL2Jnf4QzNzNGjc88WWgBZFt+507JJ1FWd
+         qsKYogkr2aos+7dSKaCKdg6+0AL3zN14dAhIDD4LIiI5ylbHT5GbVtOcAsKlXYEj761P
+         qgo2op9cq/wWDmQZuyzdWFIp5nuEaHpc5TNrk6LyvoV0PCOkg0WEM+C/4gd+zu4atNB0
+         LoUfJ7w+3SUJj27zV0GKQ7GwZwYZEF9Vm9ymngd7OuKMlL/n3pwb7GtnU5K4Me6UY0K8
+         ca/xPDEn+qVMQFIuVdO/n9b0ru5TwwU1Qt0FN72xuIEqd537OrRMoMQ5HDD9qQotUwR4
+         HsUA==
+X-Gm-Message-State: AFuF++ntwKMFtmC1n60gRzv44NrQH+8GmW00ZOM9Oq6BYxerfaZipWqi
+	GW7lTv2VK68pbzh6JBQQfReATZnwFYd8RNZ/JjLxBcEV62GW5emhNE+PQ5JP7NS9+AI=
+X-Gm-Gg: AR+sD11Y7I6nLXuDTBmjkMwFo6LC53kNtHI6R3cqzgguDCwwfHg6jx1cxfhGUAJVbRy
+	GGzriFd/rmkgFu78bDC6FoUTVyIY/vxwlN4NPW+yLVa22kYaK71wZajPUNvOuY0EUEy0+8QgUJo
+	iujuedgilse1CEc78x1bEIegc1235hd7Dh7Klpmn5xlTIb+bKs9gSnklJCq20mBD0pXiachTQ/Y
+	9Rh7H+D6T8RR3IU0JitfKiEi4dpXViNCUtXdPo6HR400VPcCOZ92stIbGF9Y7eWoqNOB+Wwj55b
+	TPir0YjQi/XKdgxCxNw7kbsqt6vqsukRxv4y9YK4tUEOtXnNmCq3T3+NphD7ggkkOA2mrmXy9mo
+	yy9+TO8BN5IZXgTkbOaicyiHVh7Zep0I+PzzsagH15oY0MpSrD5O11AGUnDOyLa/1ynmX3ZjnfN
+	ICZIiS7YtQUYyF0irb62e2AIX/B5S/g+rjwPvmcMFtdj6iQW0rqSK21O+7OX4QfZ3J/LWMmZhUC
+	eYcqT5IM+48E2KvBY1GU7Z9FeyeQDRPz+y1NiRY6F7BsmnkCpWJR5+pMbpcKGFTxBw7yYzJhqUx
+	xRVwpTDigfnl7NkfKheSNtCg
+X-Received: by 2002:a05:600c:3511:b0:49b:916a:e553 with SMTP id 5b1f17b1804b1-49b91bd790cmr275499345e9.0.1788266303178;
+        Tue, 01 Sep 2026 05:38:23 -0700 (PDT)
+Received: from pop-os.. (98.102.222.87.dynamic.jazztel.es. [87.222.102.98])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce1025asm63961915e9.6.2026.09.01.05.38.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 05:38:21 -0700 (PDT)
+From: Miguel Garcia <miguelgarciaroman8@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Miguel Garcia <miguelgarciaroman8@gmail.com>,
+	andrew@lunn.ch,
+	jacob.e.keller@intel.com,
+	syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com,
+	linux-kernel@vger.kernel.org,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Subject: [PATCH net v3] devlink: use direct firmware requests for flash updates
+Date: Tue,  1 Sep 2026 14:38:19 +0200
+Message-ID: <20260901123819.2035064-1-miguelgarciaroman8@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260830111700.1799255-1-miguelgarciaroman8@gmail.com>
+References: <20260830111700.1799255-1-miguelgarciaroman8@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b677535a-5395-4703-aa08-a71a6b26ccb6@bootlin.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 01, 2026 at 09:04:28AM +0200, Maxime Chevallier wrote:
-> 
-> 
-> On 9/1/26 02:26, Andrew Lunn wrote:
-> >> Yeah but dwmac4 has a hash filter, but same as the UC filter it's just not plumbed
-> >> in :/
-> >>
-> >> Let's leave this flag here, hash filter addition for MC filtering is coming-up, so let's not
-> >> drop it now only to re-enable it after, one of the other wonderful discoveries found by
-> >> running the selftests...
-> > 
-> > I assume you can put a MC address in a perfect match filter? You can
-> > perfectly match a multicast address just as well as a unicast address.
-> > 
-> > The hash filter is less accurate, but again can be used to match a
-> > unicast or multicast address, and then you need additional filtering
-> > in software, which Linux will do.
-> > 
-> > So it seems to me, you should use a perfect match filters if you have
-> > one available, independent of unicast or multicast, and only use a
-> > hash filter if you have run out of perfect match filters.
-> 
-> That's an interesting point. The HW supports that, we have 3 control knobs
-> for that in the MAC_PACKET_FILTER register :
-> 
->  - HPF (bit 10) : Use Hash or Perfect Match for filtering.
->                   0 : Match UC and MC against hash filter
->                   1 : Match UC and MC according to HMC and HUC
-> 
->  - HMC (bit 2) : Use Hash or Perfect Match for MC filtering
->                  0 : Match MC against perfect filter
->                  1 : Match MC against Hash table
-> 
->  - HUC (bit 1) : Use Hash of PF for UC filtering
->                  0 : Match UC against PF
->                  1 : Match UC against Hash table
-> 
-> I don't know though how this all interacts with the primary MAC address. We
-> always have one entry in PF for the device's own MAC address, we should
-> probably always perfect match that one.
+request_firmware() may enter the sysfs fallback and call
+try_to_freeze(). Devlink invokes it while holding the instance lock,
+causing syzbot to report:
 
-Yes, i agree, the primary should be a perfect match.
+  WARNING: syz-executor/... still has locks held!
 
-> But as the UC Perfect Filter toggle is global for All UC addresses it means
-> we're stuck with perfect filter for all UC then ?
+Firmware flash requests already name a file provided by userspace.
+Use request_firmware_direct() in both flash update paths so a missing
+file fails immediately instead of entering the sysfs fallback. This
+keeps the normal devlink locking intact.
 
-> For MC, this is a good point, but I'm worried about the complexity vs gain.
-> 
-> If we consider the 4 dwmac boards I have (may not be a very representative sample),
-> we have :
-> 
->  - imx8mp   : 64 PF (Perfect Fitler) entries
->  - jh7110   : 9 PF entries
->  - stm32mp1 : 4 PF entries
->  - yt6801   : 1 PF entry
+On systems with CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y, devlink flash
+can no longer obtain a missing image through that fallback. Callers still
+receive the existing error result, and netlink users retain the extack
+message.
 
-I assume the imx8mp is using bank 1 and back 2? The designers of this
-device seem to think the use cases for the device include lots of UC
-and MC addresses.
+Fixes: b44cfd4f5b91 ("devlink: move request_firmware out of driver")
+Reported-by: syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=372a7d84708b07f64d9b
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Miguel Garcia <miguelgarciaroman8@gmail.com>
+---
+Changes in v3:
+- Use request_firmware_direct() instead of dropping the devlink instance
+  lock, as suggested by Jakub Kicinski.
+- Document the resulting sysfs fallback behavior.
+- Rebase onto net/main at bc93419130bb.
 
-Maybe, reserve bank 0 for UC, but allow both UC and MC in bank 1 and
-2? That would allow imx8mp to make use of its hardware in an efficient
-way, but it also keeps things simple and efficient for the more
-restricted devices like the yt6801 and stm32mp1.
+Changes in v2:
+- Cc Jacob Keller, author of b44cfd4f5b91, as requested by Andrew Lunn.
+- Keep only b44cfd4f5b91 as the Fixes tag; ed539ba614a0 provides the
+  registration check but did not introduce the locking bug.
 
-This discussion should however not effect this patchset. This sort of
-optimisations can come later.
+v2: https://lore.kernel.org/r/20260830111700.1799255-1-miguelgarciaroman8@gmail.com
+v1: https://lore.kernel.org/r/20260829142525.3900565-1-miguelgarciaroman8@gmail.com
 
-	Andrew
+ net/devlink/dev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/devlink/dev.c b/net/devlink/dev.c
+index 55959b0ff..b85bb02a9 100644
+--- a/net/devlink/dev.c
++++ b/net/devlink/dev.c
+@@ -1169,7 +1169,7 @@ int devlink_nl_flash_update_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	nla_file_name = info->attrs[DEVLINK_ATTR_FLASH_UPDATE_FILE_NAME];
+ 	file_name = nla_data(nla_file_name);
+-	ret = request_firmware(&params.fw, file_name, devlink->dev);
++	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
+ 	if (ret) {
+ 		NL_SET_ERR_MSG_ATTR(info->extack, nla_file_name,
+ 				    "failed to locate the requested firmware file");
+@@ -1245,7 +1245,7 @@ int devlink_compat_flash_update(struct devlink *devlink, const char *file_name)
+ 		goto out_unlock;
+ 	}
+ 
+-	ret = request_firmware(&params.fw, file_name, devlink->dev);
++	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
+ 	if (ret)
+ 		goto out_unlock;
+ 
+-- 
+2.43.0
