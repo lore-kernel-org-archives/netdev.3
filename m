@@ -1,58 +1,58 @@
 Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C0D472064;
-	Tue,  1 Sep 2026 13:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7EA472064;
+	Tue,  1 Sep 2026 13:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788268859; cv=pass; b=ubKI5f72uNCLOQMTfaudHulXUcqm29KRQwAFkYY6e/4WYYt6cyDCB8DkDumBS3Y9K/pelePkAFNC5a1LE6lYDRPNPZMx85LlgPxBzGIIFQ3nIF8g0qDBNi3+/P8wpR4h8WHihl3Nzy6C4V3qOuw9NslsvPbpZxMjAqS12RdGtzE=
+	t=1788268864; cv=pass; b=utcStwI13OsdXl+juRflq+j7vZQq6uO2SSQp9o0uqp555S6mO2MSjTRtyvHXJIO9sRSpO9w6WMeOBMXTF0PKpyLDBemSZ11w3pzkPZwj5UVytzh0HofRkg4l6s6SD3GobzMriynEnZRokql6V5MfE+nPLMNyPoMoDG0i5yBlLJQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788268859; c=relaxed/simple;
-	bh=fQk0OZNyx5bWSZ06u8sA1/WbxMmAEqhV0VVV323FxoE=;
+	s=arc-20240116; t=1788268864; c=relaxed/simple;
+	bh=ePdcpjW/kLvFZnLJetnASTkIonTXjx3cf8nqDnz7rQY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bCZMGkoaX1UWW3StJ9ED2AlC6N+8SKKeJhplNoKoawnsCQZGmzx5vfJ60UgOBf9kYTPKGbm2GyT97mj5GlN/xdIRPJCWLm6z3/TWgYlwycJLrYsS8VU64PbCGKSBaSuwSAMCX2DycwVQXQAP3VsnX1AI441APh77/0DyO0MUjVk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=oToQO52C; arc=pass smtp.client-ip=185.185.170.37
+	 MIME-Version; b=FVWVhgDjeuJOvd/P3xk73hd2iHs69OayLHfjESfrYNsbLFekf9qwcHxUMXufHrbBHsQpVq7O5iVEgtskgm8B98knM70nxLaeDoBRtBXKZyCllH5RclYRq8B4Y+YQB5icjAOMzHWCBvD39RZB8lA1lXxjL2zBVTzfXWhw/yEUFB4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=s1So/mBE; arc=pass smtp.client-ip=185.185.170.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="oToQO52C"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="s1So/mBE"
 Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ61b0B7Rz49Q8l;
-	Tue, 01 Sep 2026 16:20:51 +0300 (EEST)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hZ61j26Xfz49QF7;
+	Tue, 01 Sep 2026 16:20:57 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788268851;
+	t=1788268857;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Oycz5u0f3lz1AvS7cGHa543haJ+L6aX2mdafdbJn/A4=;
-	b=oToQO52CMbD94BBjYGilgi5alaBTvUzTe9goXYKPWx5oYvD7lw2Ug0Kn1QaCnCMfJoWy6Y
-	+iXNfLnzY8zeVcEJ3tZw1lfxWlDTkCevFYbDcwcU9QzCN9Z2/9nAQorA3nGGmdrehX/vdd
-	3DdEAXYPC1LHPsROzeYBahXaj26FWYq+JW1VctWF6ImIbrcwZeMM1+KXiKWYEWVY1rGfmo
-	sJ3W0uIzv9fQxgevBtNRa5TCKyBWsnnygtP60XBeps22N96XxPHHS5ld34T1SC7bsOANI/
-	u3MwoFCb5O1Dn50x6tQvKdncQMNFoh3f07FRKvfDen7UwDdaQ/EbG4F6JiqlUA==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268851;
-	b=mI1KUA/kqKgXyAC6WdPq2XQ2Z2zvvCqGpx0YUybDVgRXE87LzcgwMCLQuKDPNP0RjEqu8I
-	0sOgcOYs3kN0AeonD7w2Ao0cYjWOz1vMnDSSbIy7Gsm5C7smde21k3Xh477u/JP4hkWs87
-	2YovbAm2LfLTSXY5sWzKcOTEWyCyDfOr9Q+uy+8kuyi/mlhtyTM09xrShcbgnaTWZd6k/7
-	x93QgR4tW7xHweGDtLGQRPnToMVk2gpziw0L7PvyypLc64wP0KCGFNPHNiJHPx4HyjL0FI
-	ZhN0ohcuM0kNLOZ+Lc408UwKW4wAiulczeaUQdr90JgRLOrzqrzisMPHSeCMlw==
+	bh=v6GkYk0HZBFKkX376VoqF+8xKuVMeoSo1m24bvpn9Wg=;
+	b=s1So/mBEfFktHgEtlbB2K6AiVetMyEPXW0DnkIe48kmKj8/iNOD71jVbv7taUrcHsfRpN1
+	8JTQsF2ICx7G9v6sDLKBkxnR6rpT8TZ8odwJjH8ZSE2zRcsEaZqRLScZK3ecN4VdPfme1F
+	OS6/RXxguApV0X9raxaROWU7rghZTgXXuyX+iYwiMt9lSqu/mJgQU4c8KqSyIQ1R9fsC95
+	stRydWO2NHGNg89RAjlE5rBt7anxqjYbPLUPbYSXW91jngNbYQ13qydWpRC37CWy4+3Bfm
+	cQb5Y/I4JAaSPO5O8XTwjXzAe/ZMdBIdAdt3nrHgdoJhcL8FMQxLW6vwfqe9+A==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788268857;
+	b=eVuCaLrzOVuLtdsu0obT1pky+hLKnSn5sxnVkUFJt6YL5ZbOEgLyHen+CG880kKZmBUqe4
+	Hm+VYakdsPwdmPf4TYVXKSaafEee0M0RgIqiFOh+Dfix/e4r/zVSGkPDJKn7bB6WpleD2h
+	lcwtGt8P7cbcmq75qblFxQ9RxfSNiaKTLka0N85dj6+Hp5JLVfTiNAaR8/PLn6kDT3y19z
+	2gYNiIUH1K7YLTLrAAVqnS6MJasw/huupVFqz3TWpgmuFTcfjMQzdPrbL7PQvXVS9aKCxV
+	W4mKRnld5rgF4lvlenBP414vAezTORlbTqNckImkF78ZbmHt3XCGW9ixS1N1Yw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788268851;
+	s=lahtoruutu; t=1788268857;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Oycz5u0f3lz1AvS7cGHa543haJ+L6aX2mdafdbJn/A4=;
-	b=mVwCdsMPEokic4rSJdVRleFr/iXL5sPZTe/K4NeHCqI46EitbwiEfGgdYmXKASdEi2MODj
-	TZRTWIPExLxdTt4/hbIhh/4xgWOXdH4pSUAXdX5QYxpskRSN/8YYwoOLeaZAN/SYhj8YLJ
-	wew3cj+tGGYNP/KngHfx8I1s3fuuPU/sVqYVn07q296JvrMumLRUxoYgbOsQVBhNNulkCq
-	BG2tlezh9D6rnnqHZRdpSVVnjyKhqeiw77llEsRxc72vDPAWUT0au+VYjgIw5gM8h5dMVJ
-	VnxSBVSc5AkYNF5wstJ6xRQjmKs+3VLmY+39GF0RFGcj1Ph3gaFOj7BaQuotAA==
+	bh=v6GkYk0HZBFKkX376VoqF+8xKuVMeoSo1m24bvpn9Wg=;
+	b=cuScf6M7zWVdcAGGyB/sxa0Vaqx0RiQfqoOvKPiCUoO5WdhnDoY3AihE+nXIIG+RLjYo9Q
+	BCRhWxG0ITW5ClY832T3KWwlYTwXpvDWNBtzTMXOJ/DUB0kSEwYzPnQgo6bt6f4FpX0Nkd
+	44zJFgmq9W8zeQLJ8t42skQ6uRqT9SSCvsxkRadZ+ruR/0CX80j6L4vNX3TK9D2DeypX5C
+	kVieTAT05GCbgtjguvTjebgykN7lgtsPt5V9M8Qhd6YXaiUPJgLZoPBGeYGsqQLRQlcOvb
+	17HjuK8g93d6LEpwJ/6EkOhiwR3VSdldgANZOxupqHrcLD/KF/siRUEUfKYzGA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
@@ -73,9 +73,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v6 03/15] net: qrtr: fit node ID + port number combination into unsigned long
-Date: Tue,  1 Sep 2026 16:19:22 +0300
-Message-Id: <20260901131934.225991-4-juha-matti.tilli@iki.fi>
+Subject: [PATCH v6 04/15] net: qrtr: use only low 16 bits of node/port in 32-bit systems
+Date: Tue,  1 Sep 2026 16:19:23 +0300
+Message-Id: <20260901131934.225991-5-juha-matti.tilli@iki.fi>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
 References: <20260901131934.225991-1-juha-matti.tilli@iki.fi>
@@ -87,205 +87,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mihai Moldovan <ionic@ionic.de>
+The node id is generally a single fixed value hardcoded into device
+firmware. If it happens to be larger than 16 bits on a 32-bit system,
+using the value modulo 65536 is enough. It is not necessary to check it
+for being in range. Evidence of this is a prior implementation that fit
+node_id (u32) and port (u32) into unsigned long in 32-bit systems, in a
+manner that completely discarded all bits of node_id. Do the same for
+port: don't check for it being in range.
 
-The flow control implementation uses a radix tree to store node ID and
-port number combinations and the key length is hardcoded to unsigned
-long.
+This arguably creates a bug where node_id could clash with a node_id
+that has the same low-order 16 bits, or a port could clash with a port
+that has the same low-order 16 bits. But it's probably better than
+discarding all bits of node and using only bits from port. It's probably
+also better than failing if either node or port is out-of-range.
 
-The original implementation shifted the node ID up by 32 bits and added
-the port number to the lower 32 bits of the unsigned long value to
-create a key.
-
-Unfortunately, since both node IDs and port numbers are defined as u32,
-this will overflow on platforms where sizeof(unsigned long) < 8 (which
-are most 32 bit platforms) and essentially just drop the node ID part.
-
-To fix this, build the key in a generic way, using half of the unsigned
-long space for the node ID and the other half for the port number.
-
-This will be transparent to platforms where sizeof(unsigned long) >= 8
-and fix overflow issues otherwise.
-
-The caveat, of course, is that, for platforms where
-sizeof(unsigned long) < 8, the supported amount of node IDs and port
-numbers will be severely limited - to half of sizeof(unsigned long),
-which typically will be 16 bits. Needless to say, we have to check if
-both values fit into this limit.
-
-This limitation is probably not going to be an issue in real-world
-scenarios, but if it turns out to be one after all, we could switch from
-a radix tree implementation to an XArray implementation.
-
-Signed-off-by: Mihai Moldovan <ionic@ionic.de>
-Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
 Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
 ---
- net/qrtr/af_qrtr.c | 74 +++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 64 insertions(+), 10 deletions(-)
+ net/qrtr/af_qrtr.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
 diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 38b6def7c5272..f2edbd2e9dea9 100644
+index f2edbd2e9dea9..b2cb05f2480e0 100644
 --- a/net/qrtr/af_qrtr.c
 +++ b/net/qrtr/af_qrtr.c
-@@ -117,6 +117,26 @@ static u32 next_endpoint_id;
- /* local port allocation management */
- static DEFINE_XARRAY_ALLOC(qrtr_ports);
- 
-+/* The xarray API uses fixed unsigned long keys and we will have to make
-+ * do with that.
-+ * These keys are often a combination of node IDs (currently u32) and
-+ * port numbers (also currently u32).
-+ * Using the high 32 bits for the node ID and the low 32 bits for the
-+ * port number will work fine to create keys on platforms where unsigned long
-+ * is 64 bits wide, but obviously is not be possible on platforms where
-+ * unsigned long is smaller.
-+ * Virtually split up unsigned long in half and assign the upper bits to
-+ * node IDs and the lower bits to the port number, however big that may be.
-+ */
-+#define QRTR_XARRAY_INDEX_BITS  (8 /* CHAR_BIT */ * sizeof(unsigned long))
-+#define QRTR_INDEX_HALF_BITS (QRTR_XARRAY_INDEX_BITS >> 1)
-+
-+#define QRTR_INDEX_HALF_UNSIGNED_MAX ((~(unsigned long)(0)) >> QRTR_INDEX_HALF_BITS)
-+#define QRTR_INDEX_HALF_UNSIGNED_MIN ((unsigned long)(0))
-+
-+#define QRTR_INDEX_HALF_SIGNED_MAX ((long)(QRTR_INDEX_HALF_UNSIGNED_MAX) >> 1)
-+#define QRTR_INDEX_HALF_SIGNED_MIN ((long)(-1) - QRTR_INDEX_HALF_SIGNED_MAX)
-+
- /**
-  * struct qrtr_node - endpoint node
-  * @ep_lock: lock for endpoint management and callbacks
-@@ -221,16 +241,23 @@ static void qrtr_node_release(struct qrtr_node *node)
-  * qrtr_tx_resume() - reset flow control counter
-  * @node:	qrtr_node that the QRTR_TYPE_RESUME_TX packet arrived on
-  * @skb:	resume_tx packet
-+ *
-+ * Return: 0 on success; negative error code on failure
-  */
--static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
-+static int qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
- {
- 	struct qrtr_ctrl_pkt *pkt = (struct qrtr_ctrl_pkt *)skb->data;
- 	u64 remote_node = le32_to_cpu(pkt->client.node);
- 	u32 remote_port = le32_to_cpu(pkt->client.port);
+@@ -252,9 +252,9 @@ static int qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
  	struct qrtr_tx_flow *flow;
--	unsigned long key;
-+	unsigned long key = 0;
+ 	unsigned long key = 0;
  
--	key = remote_node << 32 | remote_port;
-+	if (remote_node > QRTR_INDEX_HALF_UNSIGNED_MAX ||
-+	    remote_port > QRTR_INDEX_HALF_UNSIGNED_MAX)
-+		return -EINVAL;
-+
-+	key = ((unsigned long)(remote_node) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(remote_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
+-	if (remote_node > QRTR_INDEX_HALF_UNSIGNED_MAX ||
+-	    remote_port > QRTR_INDEX_HALF_UNSIGNED_MAX)
+-		return -EINVAL;
++	/* Don't check node/port for the valid range, use only low
++	 * 16 bits on 32-bit architectures.
++	 */
  
- 	flow = xa_load(&node->qrtr_tx_flow, key);
- 	if (flow) {
-@@ -241,6 +268,8 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
- 	}
- 
- 	consume_skb(skb);
-+
-+	return 0;
- }
- 
- /**
-@@ -261,11 +290,20 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
- static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
- 			int type)
- {
--	unsigned long key = (u64)dest_node << 32 | dest_port;
-+	unsigned long key = 0;
- 	struct qrtr_tx_flow *flow;
+ 	key = ((unsigned long)(remote_node) << QRTR_INDEX_HALF_BITS) |
+ 	      ((unsigned long)(remote_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
+@@ -295,11 +295,9 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
  	int confirm_rx = 0;
  	int ret;
  
-+	if (dest_node < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_node > QRTR_INDEX_HALF_SIGNED_MAX ||
-+	    dest_port < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_port > QRTR_INDEX_HALF_SIGNED_MAX)
-+		return -EINVAL;
-+
-+	key = ((unsigned long)(dest_node) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(dest_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
-+
- 	/* Never set confirm_rx on non-data packets */
- 	if (type != QRTR_TYPE_DATA)
- 		return 0;
-@@ -322,19 +360,32 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
-  * message associated with the dropped confirm_rx message.
-  * Work around this by marking the flow as having a failed transmission and
-  * cause the next transmission attempt to be sent with the confirm_rx.
-+ *
-+ * Return: 0 on success; negative error code on failure
-  */
--static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
--				int dest_port)
-+static int qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
-+			       int dest_port)
- {
--	unsigned long key = (u64)dest_node << 32 | dest_port;
-+	unsigned long key = 0;
+-	if (dest_node < QRTR_INDEX_HALF_SIGNED_MIN ||
+-	    dest_node > QRTR_INDEX_HALF_SIGNED_MAX ||
+-	    dest_port < QRTR_INDEX_HALF_SIGNED_MIN ||
+-	    dest_port > QRTR_INDEX_HALF_SIGNED_MAX)
+-		return -EINVAL;
++	/* Don't check node/port for the valid range, use only low
++	 * 16 bits on 32-bit architectures.
++	 */
+ 
+ 	key = ((unsigned long)(dest_node) << QRTR_INDEX_HALF_BITS) |
+ 	      ((unsigned long)(dest_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
+@@ -369,11 +367,9 @@ static int qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
+ 	unsigned long key = 0;
  	struct qrtr_tx_flow *flow;
  
-+	if (dest_node < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_node > QRTR_INDEX_HALF_SIGNED_MAX ||
-+	    dest_port < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_port > QRTR_INDEX_HALF_SIGNED_MAX)
-+		return -EINVAL;
-+
-+	key = ((unsigned long)(dest_node) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(dest_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
-+
- 	flow = xa_load(&node->qrtr_tx_flow, key);
- 	if (flow) {
- 		spin_lock_irq(&flow->resume_tx.lock);
- 		flow->tx_failed = 1;
- 		spin_unlock_irq(&flow->resume_tx.lock);
- 	}
-+
-+	return 0;
- }
+-	if (dest_node < QRTR_INDEX_HALF_SIGNED_MIN ||
+-	    dest_node > QRTR_INDEX_HALF_SIGNED_MAX ||
+-	    dest_port < QRTR_INDEX_HALF_SIGNED_MIN ||
+-	    dest_port > QRTR_INDEX_HALF_SIGNED_MAX)
+-		return -EINVAL;
++	/* Don't check node/port for the valid range, use only low
++	 * 16 bits on 32-bit architectures.
++	 */
  
- /* Pass an outgoing packet socket buffer to the endpoint driver. */
-@@ -382,7 +433,7 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
- 	/* Need to ensure that a subsequent message carries the otherwise lost
- 	 * confirm_rx flag if we dropped this one */
- 	if (rc && confirm_rx)
--		qrtr_tx_flow_failed(node, to->sq_node, to->sq_port);
-+		rc = qrtr_tx_flow_failed(node, to->sq_node, to->sq_port);
- 
- 	return rc;
- }
-@@ -444,6 +495,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	size_t size;
- 	unsigned int ver;
- 	size_t hdrlen;
-+	int ret = -EINVAL;
- 
- 	if (len == 0 || len & 3)
- 		return -EINVAL;
-@@ -526,7 +578,9 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	}
- 
- 	if (cb->type == QRTR_TYPE_RESUME_TX) {
--		qrtr_tx_resume(node, skb);
-+		ret = qrtr_tx_resume(node, skb);
-+		if (ret)
-+			goto err;
- 	} else {
- 		ipc = qrtr_port_lookup(cb->dst_port);
- 		if (!ipc)
-@@ -544,7 +598,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 
- err:
- 	kfree_skb(skb);
--	return -EINVAL;
-+	return ret;
- 
- }
- EXPORT_SYMBOL_GPL(qrtr_endpoint_post);
+ 	key = ((unsigned long)(dest_node) << QRTR_INDEX_HALF_BITS) |
+ 	      ((unsigned long)(dest_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
 -- 
 2.34.1
 
