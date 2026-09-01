@@ -1,119 +1,59 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2413B3AA4F2
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 19:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745A73D75A6;
+	Tue,  1 Sep 2026 19:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788291377; cv=none; b=mckvr+KAwwPuo9Wyz63FbcWYj98sHiZer/E1hdps6dKESfcZpjGIcXe1Ps3uUS3LyeVmvfJ0togYMfAGyIeGtojRZOx73ERs3teIwbTgNDrGTlfQHSSf0ZIBJ3rsIU0b3TtXwUmpHEEL5pBybcdwXmDN0uoCJA9y7Y1GtSx1bkk=
+	t=1788291902; cv=none; b=qvb4WV4jGC2x/WWpSzeWmMpC9WR6aVMe7la+S5a6o4eYe8SPU2mfrHo9Lt02UmmVqVKkhUTmC1vSPmI3sZ+66EcR4Cng2eJukrc1qoEEJyO7s72QyNGIaOsldmdZS414ttynJ82N+je4bv8b9iaXUsdKT+/Rda9bypjN9ZlEzh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788291377; c=relaxed/simple;
-	bh=S8tVcBtQmk1gIOJgZgX6vL6li98lR+0HPMAETmKo1TU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IONtUd8TD+0ohfC2cn18h1OCAg15M5g+6inXldYuGh0Wl7NxEE8BYf00d7HeGKvCdR4CB4K8znsCNHS+Ue52nzUG/rZnazEq4gKZgR87+KLZ3KKn4hbvxOh3kBY0JtO3FdhKqc8aaXwCDhnZzrqNB2LlmDJuGIBqwL7jvkFYAlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=BnXgbLd6; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1788291902; c=relaxed/simple;
+	bh=bHCHhvUcFXrc7jtqYq3GgkzC0r75MgG9iRoTawtOo68=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n2/K1kyaqKrrK1OTbQXMPXTmfT9KVv2LfsWa2Y2YVulsNabROtOGZXcHJY9Y/Pe9aGAqUHxukFKdHdl1tHPrNONXGQJnOpkkTixFjEb1nkVqogBNT76TmemVHyZpWA9k+1As7JxDfrW3s6WYFeD6x3U0077p4swv9g7rzphgobk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fagLo42Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="BnXgbLd6"
-Received: by dvalin.narfation.org (Postfix) id 0E7F320396;
-	Tue, 01 Sep 2026 19:36:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1788291370;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IyloIUtGzLJBXQuyoH+mecbEdju+FMs6EneyHfBdrbc=;
-	b=BnXgbLd6UIv+NF+nkq58UjyPcFQC6iB+IOaxKT9VAYjj+wxknxWDEO75gtnW3JlBJBl1OY
-	0F3M9sIlbmlAydE68o+1oGgAED6xPIdI8UWHe1m/K78/vKmlOlg1/5uWc3W92d3bzdSbvK
-	XvnlnhCL0dcrr+idoOBSbKKEbhVSlzo=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 15/15] batman-adv: tt: decrement count for committed
- client on local_remove
-Date: Tue, 01 Sep 2026 21:36:07 +0200
-Message-ID: <2735744.Lt9SDvczpP@sven-desktop>
-In-Reply-To: <20260831135117.574836-16-sw@simonwunderlich.de>
-References:
- <20260831135117.574836-1-sw@simonwunderlich.de>
- <20260831135117.574836-16-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fagLo42Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6BE1F00ACA;
+	Tue,  1 Sep 2026 19:45:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788291901;
+	bh=LxF/Rg4+kQ3io3xffo4a7oXM/qXJ6e0Gg4EOV7ZOvAg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fagLo42Y11DNqcz1Er9L03qsT7b2bLdQC6Mf4UvKLNLPz2bjMjUQ8bFUd8CFvj6FA
+	 6xemH4ih71azalwzvqu/5cB31G+Mx9m+jAKw83wa0yzd/Z6axGU+xJajADJ9i6JftM
+	 ke70cdn3T8SVFV6SpqvllkTGORzlFoAhM2lymcFjkYfXd4ECHABgZwQv9JPPXxDvR5
+	 8paISbIZpe68C5R1QVDFctOcz2mDEgi+QtC354xby8AiOaroVOYgOGef3sFEeA5gyI
+	 DzDZxti3m7YhGzIh6gKMGkNr/VsZ7x+KKc4ywPLFHKFwU+Vl7l4nBsrpQtImW/q9sM
+	 gCP2CD9cEvfJA==
+Date: Tue, 1 Sep 2026 12:44:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ willemb@google.com, petrm@nvidia.com, linux-kselftest@vger.kernel.org,
+ noren@nvidia.com
+Subject: Re: [PATCH net-next 2/3] selftests: drv-net: split gro.py into one
+ test per coalescing mode
+Message-ID: <20260901124459.4ece3818@kernel.org>
+In-Reply-To: <20260831163734.1121891-3-kuba@kernel.org>
+References: <20260831163734.1121891-1-kuba@kernel.org>
+	<20260831163734.1121891-3-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4549420.ejJDZkT8p0";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
---nextPart4549420.ejJDZkT8p0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Tue, 01 Sep 2026 21:36:07 +0200
-Message-ID: <2735744.Lt9SDvczpP@sven-desktop>
-In-Reply-To: <20260831135117.574836-16-sw@simonwunderlich.de>
-MIME-Version: 1.0
+On Mon, 31 Aug 2026 09:37:33 -0700 Jakub Kicinski wrote:
+> +from lib.py import ksft_run, ksft_exit, ksft_variants
+> +from lib.py import NetDrvEpEnv
+> +from gro_lib import run_test
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1=
-=2Dsw%40simonwunderlich.de?part=3D15
-
-
-> > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/transl=
-ation-table.c
-> > index 794692170b61..44a8cf89382c 100644
-> > --- a/net/batman-adv/translation-table.c
-> > +++ b/net/batman-adv/translation-table.c
->=20
-> [ ... ]
->=20
-> > @@ -1423,6 +1424,13 @@ u16 batadv_tt_local_remove(struct batadv_priv *b=
-at_priv, const u8 *addr,
-> >  	if (!tt_removed_node)
-> >  		goto out;
-> > =20
-> > +	/* batadv_tt_local_transition_new() may have committed the entry and
-> > +	 * thus counted it in the local table size since the BATADV_TT_CLIENT=
-_NEW
-> > +	 * check above.
-> > +	 */
-> > +	if (!(batadv_tt_flags_get(&tt_local_entry->common) & BATADV_TT_CLIENT=
-_NEW))
-> > +		batadv_tt_local_size_dec(bat_priv, tt_local_entry->common.vid);
-> > +
->=20
-> Discovered by: gpt-5-6-sol, opus-5 =C2=B7 Missed by: sashiko-gemini
-> Should this change carry a Fixes: tag?
-
-
-I am not allowed to add Fixes: lines for patches targeting net-next. And th=
-is=20
-is not suitable for net or stable backports. See
-https://lore.kernel.org/all/7d73cd74-b040-4a3d-9d78-4ad8fc0a01f4@redhat.com/
-
-
-Regards,
-Sven
---nextPart4549420.ejJDZkT8p0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCapcpJwAKCRBND3cr0xT1
-y/4lAP9bzuKmRi7fUkP73L3i7HpGSy+CVGEaCYel6ASiYsnLfQD9EYu2l7koF89B
-Om0nx+aTg0QGJZ0+Xd/ZyL8KFizLDAQ=
-=gent
------END PGP SIGNATURE-----
-
---nextPart4549420.ejJDZkT8p0--
-
-
-
+ruff is nit picking on the order of imports here, I'll have to respin,
+sorry about that..
+-- 
+pw-bot: cr
