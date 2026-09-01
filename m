@@ -1,159 +1,93 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7B1472543
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 13:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00E4472084;
+	Tue,  1 Sep 2026 13:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788269180; cv=none; b=PS7qQkkC+pq1snHINCUXBUiBwM16gBKJOQPHKqoIO5Ao9VU75FRYinoV0zhw6wN60Tqld/5aPGHgRDOQ8ea2uly9yqlGDIFRc04LplmyLyILf1zuTqhtbS87eM/2lKv57lvki4VBCClzlzy+rFQqB1VwM+ihpzZs+YgF0S1uFQ4=
+	t=1788269470; cv=none; b=C/nwjwNUO/4+PW0smwYXnUyNUrKvKAa0VaDkpFxVY8getajV6pcGxzZuYQ8S9HdKqW6l6s+5NaDw/otNGAiSbiwwngthucquZAN278xrK6oCV92+yjx6MN04eUMQYkXfy0CcsS/7JwEdRvZDO4bWJvfKCIyUxZ0MZGT58Z+2CBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788269180; c=relaxed/simple;
-	bh=Rn9/tcknkMhoBJMoT/vDX/T84MaINb69k5oYE5QTRas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MiTWDhVnCq5NX/Pk1DWAc63XVFooJP1HF29fvWSGRiAkkCk4bpvX7abAKXt1xQLhtgOnuUit6TpeiSL9LGKrmZANBKDPfoq9WdkHAjQ9yTWM0UZqV0EkSa3Kxen4x7c6uAX7/7lUB8yWtpPMl5lFYnIjWdkdChgL0MG5ACIDaqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MmLmJrFU; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788269470; c=relaxed/simple;
+	bh=fSWLmEM+qUKvuvXBfZA/dIZDxpUvtz6idNCD9qf/v+c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uHcuGRQQg3glr9kUwswRHTuN1TWLNx7d5oUs46C4XLpWRtdd8NDAvinDkX6sHAYaO4VCuVuLBB6OFKsOFxyMxi8b+isHGrxGL1ndNfe1FyEl0zscGWzEOqTn6ychXmgyzGl9YAOU0e7O0dhj578wfpb72/ZV6l1A1fVZrKg/qHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZjNyuvUU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MmLmJrFU"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b4ab40d839so4612865e87.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 06:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788269176; x=1788873976; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5YQ2NkdYE1UkDQmtG4k56tSGp0dI9qqzV8dhPz8o8Qo=;
-        b=MmLmJrFUY+prIRyTONU+oFVHyOs92yM2LiDDdexmu11edZB8c/MwbOvXoPluCI9onV
-         V6tt7E5kd1jXAglceOgm4r4Gt1R3GoawaWepLpC06FSFKPmCgpkdZHL6CD0P0IT2HRtb
-         ULbgcbMjPpDlfEQ60BjH4ZVeBCSqwGPYw0ZmOrn8DsPZnF8KUqUgRjkZhIe0Q0Z3iPV6
-         oYMsGUZtjgfS7A5ZHjUGTTY+gnql7DzvNcl0/45HgAG5qS2NDxdUSPbpJIP6711Y7sAb
-         SNcANDd/MMKJMnd4X2P+j+b5V8+N0p7JtcJLvZabaWScKywLQsupMmPuEwgwBqN+OYdE
-         ZiUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788269176; x=1788873976;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=5YQ2NkdYE1UkDQmtG4k56tSGp0dI9qqzV8dhPz8o8Qo=;
-        b=dHV47i62L9IBu3M5IzYyMdq8ofcmK4Qz361VFWTEAEhJtc9O6uFyUJSQDdy4Wzia+Q
-         haQDhE9dWeW62QRxk+RJxXfxgaqTc63mlLNGk8sHuhkcIgSaAFPHJkveI6nwOtXX7x0Q
-         9StA7aojDBlWhYRSktmtmUSLu03EOaPSAOcdwx3DqKiNuQ/Jg2jOgh7cvGyf3qsQFY0k
-         7KUrORFLuzxnz8WdzsHHfbpqXimMOdKhWpyiVKiuM0P6xojmmke3KpKZ5sECmKI1SrD4
-         1sRV6phZ/N6rtINxrTvoBx1zDbDma+sIj2E+2pXnuwnDdjrOsJhbbYDrwJ5b5kvvPhuy
-         oiHw==
-X-Forwarded-Encrypted: i=1; AKwUvBwPh9gh3/HTnIGLsdFefc6aJJ4w922PMUkzfQ1WWHyILeg82sD5CBjtiQY/8n4S9LEoNafPr3s=@vger.kernel.org
-X-Gm-Message-State: AFuF++lCSjm3yADwRH7qusl5B5sGsGBA1r6UVFcxuJQlFRfdFawcO1XS
-	JvQ9no3xg95CRAI0iUbj5iqbR/UMxSHX+xLMAzVhgRDFxRxxArmUpq5h
-X-Gm-Gg: AYBFou2MP2SL21ymoPrduTYPIs1No+zUqhIAy8W8yUPITxiNJSP0DUliStRhF+qDOQE
-	YMg9N47SegBEE4+Cc8YPR1qHz2hC44tS9Qr1COZSNR8BHF4u7zZRDB7gk6YSX88kBcT8PPDKdRy
-	r/ejsBnxTHAFK9cgUJVcFHIJ9xkARlXEJkT03tfLQb3L+IPNN5azOy5XmvOwqmFvMTC7T1W919X
-	xvJP/PuFB/cljqZkwvczX2OXOgUiwMuTeGxOakHNOtNjKjNUqngp8K8a6oZPXYbHPRcfVq7T7sn
-	Rtlg6Zx6qrqpEcpDIesZC0sYtPKKduvM0Dv8Ie2bDDqiOd7gEsVGNLlHAIYnyv6w0xGtMTv/N+D
-	2J2xt9/cg0E1IvNcfyc2ZIpR40xu8QX0atw7YVSmELg/Ab8adKc1Bkz63QXfeUhto4iGZ3Xgt92
-	X9JySTXixu85EFlUG3y6+P9nAIAc/qsxbd7R5jRWBes5aSeHXnfoIg7WJ7qv+bu9HRwaVMrCz8B
-	PljPcQ=
-X-Received: by 2002:a05:6512:3985:b0:5b4:b03e:b17 with SMTP id 2adb3069b0e04-5b5fe0914e3mr3071911e87.4.1788269175321;
-        Tue, 01 Sep 2026 06:26:15 -0700 (PDT)
-Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b5e8a18422sm2841927e87.76.2026.09.01.06.26.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 06:26:14 -0700 (PDT)
-Date: Tue, 1 Sep 2026 13:36:51 +0000
-From: Anton Protopopov <a.s.protopopov@gmail.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>,
-	netdev <netdev@vger.kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH bpf-next 1/7] bpf: Allow BPF LSM programs to attach to
- more hooks
-Message-ID: <apbU8-fpioNIwUA8@mail.gmail.com>
-References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
- <20260831110934.241898-2-a.s.protopopov@gmail.com>
- <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZjNyuvUU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BAF1F000E9;
+	Tue,  1 Sep 2026 13:31:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788269469;
+	bh=pY3Mevs5Q+7bXSl27PgPi8DZPEJ4oPIVYsmCCQIuEP8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ZjNyuvUUl4lJrerjX/MBp0tAcJ34HSJ262VzhSvfllK+j+/vGnaLoGlDZb5Dkyl2j
+	 3ojZOGB1Qfjvhm8KQEJos4CypJFqEnj/FNSfCvLMgt2CX5c1M20Ia5XTUhjGzhJVme
+	 YL4DfMh/zBHQEvFXO/UCz61CCU4hi98rtspftnkEO5ecq1R5NR+jSo3fcwUhve6cDt
+	 FXzW316h6FbCOGMSH37DR5yYUQRfx4Wv4g0hPVSVnx9aNfqs/UqVdl4Wvw8Gyk3FLo
+	 QXrtIvTFCBoxHCPLzRrzBOt227hUIpLhVVVSWu8qAgMeLEuQSZtKRp2fbAREqLhyiF
+	 UcZJWw9CQiRHQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568E43924FF0;
+	Tue,  1 Sep 2026 13:30:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 0/3] netlink: specs: rt-link: ipv6 devconf
+ updates
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178826941214.1182020.17205509719306465886.git-patchwork-notify@kernel.org>
+Date: Tue, 01 Sep 2026 13:30:12 +0000
+References: <20260831093458.472180-1-ast@fiberby.net>
+In-Reply-To: <20260831093458.472180-1-ast@fiberby.net>
+To: =?utf-8?b?QXNiasO4cm4gU2xvdGggVMO4bm5lc2VuIDxhc3RAZmliZXJieS5uZXQ+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: donald.hunter@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, fmaurer@redhat.com,
+ danieller@nvidia.com, fmancera@suse.de, g.goller@proxmox.com,
+ prohr@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On 26/08/31 06:42PM, Paul Moore wrote:
-> On Mon, Aug 31, 2026 at 6:59 AM Anton Protopopov
-> <a.s.protopopov@gmail.com> wrote:
-> >
-> > The BPF LSM programs are allowed to attach to LSM hooks, all of which
-> > are defined in the <lsm_hook_defs.h> header file.  From BPF's point
-> > of view the set of attachment points is defined in the bpf_lsm_hooks
-> > BTF set. By analogy with existing code, add a new header file
-> > <bpf_lsm_hook_defs.h> which will also be included in the bpf_lsm_hooks
-> > BTF set.
-> >
-> > This change allows attaching BPF LSM programs to more functions.
-> > The actual hooks are added in subsequent commits.
-> >
-> > Each BPF hook calls a [__weak] noinline function each time a hook is
-> > reached. This may be too expensive for hot paths if a BPF program is
-> > not attached. A future commit will optimize this by adding a per-hook
-> > static key and inc/dec it on attach/detach. This way disabled hooks
-> > will be bypassed efficiently.
-> >
-> > Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-> > ---
-> >  MAINTAINERS                       |  1 +
-> >  include/linux/bpf_lsm.h           | 12 ++++++++++++
-> >  include/linux/bpf_lsm_hook_defs.h |  6 ++++++
-> >  kernel/bpf/bpf_lsm.c              |  2 ++
-> >  4 files changed, 21 insertions(+)
-> >  create mode 100644 include/linux/bpf_lsm_hook_defs.h
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Mon, 31 Aug 2026 09:34:52 +0000 you wrote:
+> This series updates the doc-string for ifla-inet6-conf, and adds
+> two missing ipv6-devconf enum values as identified by Sashiko
+> during review of v1.
 > 
-> Adding new BPF hooks in the kernel is one thing, but adding new BPF
-> LSM hooks outside of the LSM framework is likely to be problematic as
-> these new hooks operate disconnected from the LSM framework (callback
-> and LSM kernel object state management).  We've seen bugs in the past
-> caused by the BPF LSM trying to operate independently of the LSM
-> framework, something like this will only make that worse.
-
-Could you please point me to some of the bugs you mention, such that
-I understand exactly what you mean? I am not really seeing how the
-real LSM hooks differ from the ones added here (from BPF point of
-view, and the objects it can access via kfuncs/maps). We provide the
-same "sleepable", "untrusted", etc. guarantees with the new hooks,
-as for normal ones.
-
-The main reason (for now) to specifically create a new list of BPF-only LSM
-hooks is (pcmoore/lsm.git/tree/README.md):
-
-  """New LSM hooks must demonstrate their usefulness by providing a meaningful
-  implementation for at least one in-kernel LSM.  The goal is to demonstrate the
-  purpose and expected semantics of the hooks.  Out of tree kernel code, and pass
-  through implementations, such as the BPF LSM, are not eligible for LSM hook
-  reference implementations."""
-
-And for the hooks added in this series
-
-  a) BPF satisfies our needs, as we can precisely analyse what the
-     calls are trying to do with good granularity
-
-  b) I am not sure how to actually express this in any in-tree LSMs
-
-Can't BPF be considered enough to demonstrate usefulness?
-
+> Changes:
+> v2:
+>  - Update commit message for net-next, and renamed from
+>    "netlink: specs: rt-link: fix ipv6 devconf doc"
+>  - Add Reviewed-by from Fernando (Thanks).
+>  - Sashiko comments:
+>    - Added missing enum members accept-ra-min-lft and force-forwarding
+>      as patch #2 and #3.
+>    - Re: data types: as Jakub wrote in the original commit 720447bd0b24
+>      ("netlink: specs: rt-link: remove implicit structs from devconf"):
+>      "u32 is probably best we can do right now", as the reality is that
+>      the sub-type varies per value.
+> v1: https://lore.kernel.org/20260824103816.40040-1-ast@fiberby.net
 > 
-> -- 
-> paul-moore.com
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/3] netlink: specs: rt-link: update ipv6 devconf doc
+    https://git.kernel.org/netdev/net-next/c/5e63ade19044
+  - [net-next,v2,2/3] netlink: specs: rt-link: add accept-ra-min-lft
+    https://git.kernel.org/netdev/net-next/c/2b0aecb7b2b1
+  - [net-next,v2,3/3] netlink: specs: rt-link: add force-forwarding
+    https://git.kernel.org/netdev/net-next/c/f952040d7016
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
