@@ -1,79 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-233.mta1.migadu.com [95.215.58.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9529A385D90
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF824749FA
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 08:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788252672; cv=none; b=HgDi4/QLBXlVkpu7CKu2C7SWnZmFVVceTezppCKUTFK8HO9pM3FwDYm1XrlVA+I5DhrE8y+cLrTECD0pt5ZQqTYyFFn6gCdH+gfqHCif+bYw4JH1xI9TLKV6IjENcJy7tQrXlZg5XarkUyKGd8CZ9VLh9oP/rE1rNQx9HxdJ3p8=
+	t=1788253089; cv=none; b=QZkHvx1pRsvzDaU0lP62z8LnWIdOmk4qmIg8T1Uu1EjfJ9a0lkYvUD+wZnkghz44fZOlqtQ0d3XKjnQrisxSvEogoMZrwKkllM62ChrPVrRuTTq1HMXNzB7eaLMqX3zO4GmWvR4i0h5dctYoXJ8gyo4cYCgpn0bB9AOTxlKYqBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788252672; c=relaxed/simple;
-	bh=kRF+XTm0Y29DJA6L0FmlFFVu41s0e6vH4LIddvKF+CY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BrXqx3GAEU0qkwKkdQ8YC633BfA1A2ONm2WvKyEbbQZiVhWVBePVvrcCcy28RZRqUm3Kx648asxLdbs8yN3wlXqClICkcPzmte97hU8RiJ53lx3ONUq0514S0mKyKim0MjwCkk18CwFHZvuZpigGoy006N4kmqrhKBcdXifnfZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRfnvKM6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788253089; c=relaxed/simple;
+	bh=ZIso4ptPNJGZpWJKew4ZgsGdgqmT/6zdPCg7vUXSiE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CnuT6QnvT7KKLhDDK/sivos7we29RDEE4unhRwSbelXInScGGKcrp/+awYG7/N7/iAsbfoolquNi0MwqElbALDXO3sl5DCLPcytERlKPvUTRdtr56FCZMKLpl4/sUxxkuW4QgtN7WHI03kXtNyYXQn/cKIYLbgCz8h//GN/uICo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eF56NYny; arc=none smtp.client-ip=95.215.58.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRfnvKM6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3A81F000E9;
-	Tue,  1 Sep 2026 08:51:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788252671;
-	bh=ptkyV63gWnjxXlNGWyt/4NSmr1e3rMOtDfJCJoxXQ30=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WRfnvKM6eIMXula5Q7C17JMBQ60QvKKhuyH9M/awWF6JcrNVnJEcpQ+3Gb18j3mJj
-	 EYMKqL0o60FhJs3Dm99yZ+Pw4pFpPKjWnXMLIguyTkQNvDTRP+JsGYjzJL4odgqCwy
-	 yLQBJd1qSHvGU2UIjHVsqTgvlelMU6VuPWyt2GfBwO+eOadDxje8ui2CPO/7cONWcT
-	 5fIdl5EhBfhFXqbHcJjnohsGAr/XytKnAbWthwRGi13rTZZv0gMR6V5QKsSe48AVZ+
-	 GSF9Usn0TGRA0/u5AkSzBRVRl1jBH8DC3vlwvWBLPHvAU66tzctVAWVsnBNi2+i2/4
-	 ESpoRjws2a6CQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198333924FC7;
-	Tue,  1 Sep 2026 08:50:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eF56NYny"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ZIso4ptPNJGZpWJKew4ZgsGdgqmT/6zdPCg7vUXSiE4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788253083; v=1; x=1788857883;
+ b=eF56NYnyHMor6wFUfG+fSaVZRaqdoPjXT2s+LdZawzq86hAV+G2LIJe2C573DDNHEJJ8CX1d
+ Afb2ZYF+LroSRIll/knFWk0UDiZxmULVUKlJtKCg9dMQYKEgyusc9Iona+0XLHT3W01/Yf3kv5s
+ 7/i7h6wIrJtPiqkvCP0J6ZWA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 682b157fd764c229;
+	Tue, 01 Sep 2026 08:58:03 +0000
+X-Mizu-Trace-ID: 682b157fd764c229
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 1 Sep 2026 16:57:52 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: net: ipmr: Avoid memcpy() from NULL in
+ nl_add_rtattr()
+Message-ID: <apaTkG5SLsnbbcAR@fedora>
+References: <20260901071353.3302900-1-nagachaithanya9911@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net] af_packet: Don't cast tpacket_hdr.tp_len to int in
- tpacket_parse_header().
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178825261387.1041503.18296517355721988030.git-patchwork-notify@kernel.org>
-Date: Tue, 01 Sep 2026 08:50:13 +0000
-References: <20260830180915.260225-1-kuniyu@google.com>
-In-Reply-To: <20260830180915.260225-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- johann.baudy@gnu-log.net, kuni1840@gmail.com, netdev@vger.kernel.org,
- syzbot+73df3f89e1e13089e466@syzkaller.appspotmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901071353.3302900-1-nagachaithanya9911@gmail.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sun, 30 Aug 2026 18:09:12 +0000 you wrote:
-> syzbot reported BUG() in sock_sendmsg_nosec(). [0]
+On Tue, Sep 01, 2026 at 07:13:53AM +0000, Chaithanya Lagisetty wrote:
+> nl_add_rtattr() unconditionally does memcpy(RTA_DATA(rta), data, len).
+> For zero-length attributes the callers pass data == NULL and len == 0,
+> for example the RTA_PREFSRC attribute added for proxy MFC entries:
 > 
-> The problem is that tpacket_parse_header() casts user-provided
-> tpacket_hdr.tp_len, which is u32, to int.
+> 	if (mfc_attr->proxy)
+> 		rta = nl_add_rtattr(nlmsg, rta, RTA_PREFSRC, NULL, 0);
 > 
-> If the length is larger than INT_MAX, the following condition
-> in tpacket_parse_header() passes,
+> Passing a NULL pointer to memcpy() is undefined behaviour even when the
+> length is zero, because its source parameter is marked
+> __attribute__((nonnull)); it is flagged by fortify/-Wnonnull.
 > 
-> [...]
+> Only call memcpy() when len is non-zero.
+> 
+> Fixes: 05068eaa67b2 ("selftest: net: Add basic functionality tests for ipmr.")
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>  tools/testing/selftests/net/forwarding/ipmr.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/net/forwarding/ipmr.c b/tools/testing/selftests/net/forwarding/ipmr.c
+> index 9cd9f70de132..d3e26341821c 100644
+> --- a/tools/testing/selftests/net/forwarding/ipmr.c
+> +++ b/tools/testing/selftests/net/forwarding/ipmr.c
+> @@ -120,7 +120,8 @@ static struct rtattr *nl_add_rtattr(struct nlmsghdr *nlmsg, struct rtattr *rta,
+>  
+>  	rta->rta_type = type;
+>  	rta->rta_len = RTA_LENGTH(len);
+> -	memcpy(RTA_DATA(rta), data, len);
+> +	if (len)
+> +		memcpy(RTA_DATA(rta), data, len);
+>  
+>  	nlmsg->nlmsg_len += NLMSG_ALIGN(rta->rta_len);
+>  
+> -- 
+> 2.43.0
+> 
 
-Here is the summary with links:
-  - [v1,net] af_packet: Don't cast tpacket_hdr.tp_len to int in tpacket_parse_header().
-    https://git.kernel.org/netdev/net/c/73e594c19b4f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
