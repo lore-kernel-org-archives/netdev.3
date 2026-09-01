@@ -1,120 +1,149 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D7D46AEF1
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F1646D558
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788248410; cv=none; b=Xp96PBZgg2bBpCuKQ7HYqb60U0JMckAPtzzXA4hsomttyAdP5f2SkhVaCobBcmsCwwws7Y3Li/FY9Qi43ukNQvysMrBHy0FIfF9jo8caAyH1fmmIVsovwCspjKuDlO2jUKQ7ujoCcjrnHsQjQxk0rOj6l7p1GZvU9UGDyw8lBcA=
+	t=1788248461; cv=none; b=g6POWeTmRmNeSIjjM769CowUJ89MCoxbHFVnYF1WhtFKadv7UGloLL4SaNl21FGHTMIDBZQ1Ogdhk5XPgvK3PB/k1aPHN7FJp+LxP8bGwxn/rX1NwujgqxOn2/QYp/9mAKmqakaPOhbgbs86uQyioaXbWmQRHe6WdI+VTKkFD80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788248410; c=relaxed/simple;
-	bh=fNXgbUH4YwoCUckMTjuilOc6um4z0aw79/1hpJaeGjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lICbn+N05v/KsFzIAPF2dqVVavn+tDq7fLbQh9GMA5XhdtZ46fEGnyXtdNMB6w5lZclkRSu6EcHujiu8VsFjG7FbDSOQuCVjlD96UslEBLr+OWkcFlKCfHAo0nNRZ/RyLZ/CBwwnMIfiCSyfWT0U7XnIuaHzXqQ1uzSrwP+xU5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BGuLuA+K; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788248461; c=relaxed/simple;
+	bh=d69I/cdvJ/o7q3nW7vBwryI/iZgtGSueqw1aSs5Y1TA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H1AhenhSZwXfN4vxieqc1sBTT3SrmzWEIZtAackGv17YAZNXJE76ylVOsWDElTweI/vmQUMrftxA9GV7BeHGAo6BUnrJuHK09eqMQMB1PvUFdYxK5aeuUJ4/938tEoETo+eVL5+iaKR9C/1TDscnkMoOeYLIibYMpwbfbfsRvBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=gwq3qHY6; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BGuLuA+K"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d91ff7d9acso17100305ad.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:40:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="gwq3qHY6"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48431648f33so512844f8f.0
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:40:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788248408; x=1788853208; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lVGuGBruvV53X0XkgR5c4IAW5uh3SaQmvTN/K44C1Qw=;
-        b=BGuLuA+K1dgYX97zPKCAbOfGkyvLNA/Kqu3MBn+mr/ChKsHHooUoxdv4Xfh8xvvHuv
-         OoZv1oJR2DYIJphulDjLfbG9FMR4iXr/tDSvjrizoBXCTqA+u9b52I6JvnoUcouWluBu
-         W6l8jrX8bVe5Q+1C0sFsSwxAxn0yQ+K0r6rHgU759FjWZWoW76WRWOwxHcfwgx0fQDXZ
-         Sd/7D//nb/19ib1pvzZx/hyKt26UaH0utUI3QF3dNPU+5ZeSGRi9DMA2a98Mb9pYLJa8
-         qe7ag5+5/azlN7eLcBQyVQdCnh86qwvRGRUuKZuaRCO+3UYieTW5NjjQjnTogTP8OKze
-         2z5w==
+        d=blackwall.org; s=google; t=1788248457; x=1788853257; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WzxcW1LLqwVWe0wSU90DzGvke623LGpZQMtqGLDr5j8=;
+        b=gwq3qHY61ExCAEo9vWnYPjhPuTvZSCcblZKJkEmTNO/lAKxOPd1/U4iw1VzxqWTJLG
+         i7JKL32RC35NaBr5tAI+h0srDgvwQJ3sH9K3VmfX1SgVfVQf609GcL0uvdtK56tpuBse
+         6+zIb/NinYnByHK0rfG7WJ1hA/mer3ajVeKLzSVmQ6Zc5dYkfYoOk11gVkhs6JBp5y70
+         SeQoAOVlrGfdJomIi4HF1ZztYjHPI0n8eK8lxdaP2gag3M0na+dr9I4/J2l5lI9MpM5+
+         t5uQckISmV0b8qZCxG9Bx/8FlYtr/qRsfVHzDC0OkIDdTE/Zz2WG9z27x3Bq8COMeq1v
+         Xw5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788248408; x=1788853208;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lVGuGBruvV53X0XkgR5c4IAW5uh3SaQmvTN/K44C1Qw=;
-        b=n5zYOSgLbtmuQko9O2sU60SzvkCc1f+Z6cGkj40eVvMlbR4THC4l0jwMkf1f76BcZo
-         lvCtJIofiV2uaPJ26L6u2bgRu9l9jLQ8hSnnqrVpk+ETeKPSe/AQPHGJ4Hyb5LtIs8Dm
-         tLX+F9fpyUd7JVU7WXovkkK560R13WyCZBKuavDycXxOkMmDNmbv1iQhOQh0K5Trp7Pl
-         GeRyu4iW5InGK2ZHVye/2fJSW6V1C9owznqInD+aqIbE15GQW2tC2OwXv7Gdnfj2ijSK
-         j4k5Lz/jhzfgTK2CZGSo86q1CE1N+cRnfoVRp7BTqgCY64PIVD+6oH1WqN4Eo7QHVHjN
-         T29g==
-X-Forwarded-Encrypted: i=1; AKwUvBw6DRVMJKIv1UXJmmu5yLWlV2dYOMX7QrVRF7qHzPf+J3iNY9UJRlwZ/GqJ2ryP8pBl51w/nPc=@vger.kernel.org
-X-Gm-Message-State: AFuF++l9lxe5aGc3ESOzMCvXjqomi57e8zod/VcPRznikUN/JMnXRyBh
-	ZkxBAmicG8jhC/V3fnABBjtg8SYwFU2zBVQsWRRXdaXjZEwcQSUg+Rkk
-X-Gm-Gg: AYBFou07x20LQYlzcfDoIV3hwR52wTUNMD2VCSRIcX5xMIfiHdImUIDZMki2+faYeQ/
-	+aoMtV9/vJMZi09Af+kluclGWW7XtmrlhLiI/tkb0ovicDLHN+OnAyerwtfnI7v0+DEHM9+oavz
-	ubF9xJFmCsHXs7w28tzwxRElkBTusVTCRgjLcxUuuu8eIIaI232MD/1+nCTQOMLEfAC1luekqar
-	+qmANIWwyBJPd0GxyZJ9Qys2gHHqFnIUB8oxJTLNajwZx2gJ1hYdneBlMp+PwZdpBUnzXjEu1wf
-	ylXK1OatvYt8a9kX/Toepe5tNTarS3ZA6OoNEdHV9i+g/KgUHMKjpBov1iuO/jJO/cbVG8BOMos
-	bWtQCr/Qf2cDipEwyB2MyNNZ4gbGaQ7im5PED68Bquy82QkGWWuRa6Yfz7oCbNJUstnQEip/u4n
-	ELOZv4ScFPu12WQ7JGZzAmbphoXmNLJlRffz6JWBJwKLuOzHMjWiGzCW9+nctiNbsUoySBSj3Jt
-	ojMHz5jmZVcWwxHyQ==
-X-Received: by 2002:a17:90b:4c0b:b0:398:9c0c:7c72 with SMTP id 98e67ed59e1d1-3989c0c7ffemr32652283a91.25.1788248408489;
-        Tue, 01 Sep 2026 00:40:08 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d4f1bb8sm5341572a91.14.2026.09.01.00.40.03
+        d=1e100.net; s=20251104; t=1788248457; x=1788853257;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WzxcW1LLqwVWe0wSU90DzGvke623LGpZQMtqGLDr5j8=;
+        b=kFrzu2g+WOQqQLlryfUtrs19g6r0jnIN7SxtlRPNZtTi7oUTX4kI2+OsaJOP/5IK9z
+         dMrSOnIMtMuF/uXVrmuavAzDSganaixxmwKMy8jJQ7r26DF5TrMGBk4qcXvv1sd/fMis
+         tsn0dLucpaHJ0cD+AKG0CEB9+Mt3KezELTJcGn6g6Xzk3BogGjL71uz9v9Tbi2CTh1Rv
+         xA9B51Q4v2A23GOQJ9HpfBKttu0DbaYRd47hTCZjv5VedJilCV8KyzwtdionB8jbNz7A
+         K8VB0zFejb+bqHjRIjM/GF/7Z43h/SpkLxN0UCEYzSm7LTBbYhuCnbdi3pYWrzYbWQBz
+         ImGA==
+X-Gm-Message-State: AFuF++mmKXS3rSZEfvzYQYrOBjzwLGDBWE9qBqYe2mFqxck6d77M6Xqh
+	5KII65V6XjUOZD9qOpUTNqs2PwnDfHvyP4BGIHeVN7v34OcAdWqRjQE35RJ0tBbt/2eJE+Xo+8z
+	fiLGAG2o8IA==
+X-Gm-Gg: AR+sD12Hnq9hDQsHqHcsO1W5OIsUjZ88TuIXmSRIp2sMwKS4UJflzL2tRgpt9YWhMwe
+	t4fmRAQB09M7Xw+7NoqFRBaO6kaours4I8SpFCUhA2GCgSsjrD+kMUsdNQ51hV7eKjqBs+23HkB
+	NYbOEU73nF5P3rLm2q3oJ6KjPLqNZN8JadXjru7iJL0RILf6XQ5U8Ub32uBP02GRKLfVKOf1Vlo
+	GC5WXzoOHpVUXhrAqpSBI23gLtdT8gougLtnCBgHjWl1Q0RU032VmOtTLnC+/j9v8sXizejdpnO
+	OpzZBybA5gu2xgamhE5r0XgTRoG+qDUGBiAQyYJHb8alUDTFRpZtBE/zoAGMMa81Ufq4AroYznL
+	pEG5TqgnxjIQb6iL9QGOZ4kS39J3VkNWUR6jAjCmQK5PPLzWsyHUrIvaBcXFpNp84NJ1bApi5Hv
+	UTedpy2gCpWQvTnj9pzNW0hUcG8wZWkGTs8k3UhD15Bc7dJNF1VCmAyPaRq0Bhn3yxUmUko+qDo
+	Vjh4po5vzM=
+X-Received: by 2002:a05:600c:217:b0:49b:9105:e831 with SMTP id 5b1f17b1804b1-49cdd635db8mr37882095e9.7.1788248456986;
+        Tue, 01 Sep 2026 00:40:56 -0700 (PDT)
+Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48442d3c4absm3142913f8f.10.2026.09.01.00.40.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 00:40:07 -0700 (PDT)
-Date: Tue, 1 Sep 2026 16:40:01 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: edumazet@google.com, kuniyu@google.com, davem@davemloft.net,
-	pabeni@redhat.com, ncardwell@google.com, dsahern@kernel.org,
-	idosch@nvidia.com, horms@kernel.org, willemb@google.com,
-	andrew+netdev@lunn.ch, kees@kernel.org, jiayuan.chen@linux.dev,
-	kerneljasonxing@gmail.com, ij@kernel.org, martin.lau@kernel.org,
-	shakeel.butt@linux.dev, matttbe@kernel.org, martineau@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: Re: [PATCH net v2 0/8] net: fixes for requests completing on a
- socket that no longer listens
-Message-ID: <apaBUYXZlemOU1y0@v4bel>
-References: <20260824033331.1084971-1-imv4bel@gmail.com>
- <20260831163556.54f89805@kernel.org>
+        Tue, 01 Sep 2026 00:40:56 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linus.luessing@c0d3.blue,
+	bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net v2] net: bridge: mcast: fix br_multicast_list_adjacent rcu walk of mglist
+Date: Tue,  1 Sep 2026 10:40:46 +0300
+Message-ID: <20260901074046.316190-1-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831163556.54f89805@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 31, 2026 at 04:35:56PM -0700, Jakub Kicinski wrote:
-> On Mon, 24 Aug 2026 12:32:44 +0900 Hyunwoo Kim wrote:
-> > connect(AF_UNSPEC) and listen() move a socket back and forth between
-> > listener and active session. IPV6_ADDRFORM on top of that turns an
-> > AF_INET6 socket into an AF_INET one.
-> > 
-> > Two things follow. One is that what the socket had before the change is
-> > left behind: requests still in the ehash, and parent fields a child
-> > inherits. The other is that the socket is used while it is changing.
-> > tcp_check_req() does not hold the listener lock, and tcp_v{4,6}_rcv()
-> > reads sk_state twice without it on the listener path.
-> > 
-> > Patch 2 is neither. After a reuseport migration the listener that counted
-> > a request and the listener the count is decremented on are not the same.
-> > It goes with patch 3 because patch 3 needs it. Nothing ever resets that
-> > count, so patch 3 on its own has a check that can be bypassed.
-> 
-> No reviews? Are people getting tired of the disconnect bugs?
-> 
-> Hyunwoo Kim, can any of the fixes be simplified if we move more
-> cleanup / responsibility to the disconnect path? Patch 6 perhaps?
+Sashiko reported a bug [1] that br_multicast_del_port_group unlists the
+port group not using proper rcu helper that preserves the next pointer and
+after that immediately frees the port group without waiting for rcu grace
+period. The only rcu walker of mglist is br_multicast_list_adjacent() and
+it turns out that function has always been buggy because mglist was never
+converted to RCU. Fix it by acquiring the bridge's multicast lock for the
+mglist walk. Return -ENOMEM on allocation error.
 
-Fixing it like this [1] lets the disconnect path handle it, and also
-closes the trigger path for patches 4, 5 and 8.
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
 
-What do you think?
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 07f8ac4a1e26 ("bridge: add export of multicast database adjacent to net_dev")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+v2: while changing this fn, return -ENOMEM on error and document it in
+    the kdoc (sashiko)
 
-[1]: https://lore.kernel.org/all/apaAskNL-IvdcR7h@v4bel/
+ net/bridge/br_multicast.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 3ef5d8bbf552..97686984de6d 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -4936,13 +4936,15 @@ void br_multicast_set_startup_query_intvl(struct net_bridge_mcast *brmctx,
+  * snooping feature on all bridge ports of dev's bridge device, excluding
+  * the addresses from dev itself.
+  *
+- * Returns the number of items added to br_ip_list.
++ * Return: The number of items added to br_ip_list or -ENOMEM on memory
++ *         allocation error
+  *
+  * Notes:
+  * - br_ip_list needs to be initialized by caller
+  * - br_ip_list might contain duplicates in the end
+  *   (needs to be taken care of by caller)
+  * - br_ip_list needs to be freed by caller
++ * - on -ENOMEM the caller must free any allocated entries
+  */
+ int br_multicast_list_adjacent(struct net_device *dev,
+ 			       struct list_head *br_ip_list)
+@@ -4967,15 +4969,20 @@ int br_multicast_list_adjacent(struct net_device *dev,
+ 		if (!port->dev || port->dev == dev)
+ 			continue;
+ 
+-		hlist_for_each_entry_rcu(group, &port->mglist, mglist) {
++		spin_lock_bh(&br->multicast_lock);
++		hlist_for_each_entry(group, &port->mglist, mglist) {
+ 			entry = kmalloc_obj(*entry, GFP_ATOMIC);
+-			if (!entry)
++			if (!entry) {
++				spin_unlock_bh(&br->multicast_lock);
++				count = -ENOMEM;
+ 				goto unlock;
++			}
+ 
+ 			entry->addr = group->key.addr;
+ 			list_add(&entry->list, br_ip_list);
+ 			count++;
+ 		}
++		spin_unlock_bh(&br->multicast_lock);
+ 	}
+ 
+ unlock:
+-- 
+2.47.3
 
-Best regards,
-Hyuwnoo Kim
