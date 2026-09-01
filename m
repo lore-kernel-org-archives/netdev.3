@@ -1,143 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EDF35C69C;
-	Tue,  1 Sep 2026 02:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329B83FBB46;
+	Tue,  1 Sep 2026 02:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788229428; cv=none; b=SJQLI+vy9AcWR+2QeWyd9lnkzuZ8hMZCshmMNU9tB9SeXeFeLmhE/ok1zQRDstKAq2/2mk37ZgpwpFES4b3I3t3u6gUE073HEKVB4VuhEF1uDsj0OLoHWzq3AwNfJXOfOwlJpwnuVJoT1bN1CBUnmR+c8NjhzKUK7Q2wNgrWdo0=
+	t=1788229654; cv=none; b=qtKXcaiDuo6vlw7DGT2bu4dCKORpyyyB05ntFl0wFeK+LzaJJQEUG3K+qmwImrqE5wYdCJxqrVm1RJKGEKSHs2VyFu/6DQch6IF+hSCfhqLDQvDx95V2TKgmQbbJ5QntmpDCc+Rw9BDBdEbZ+W5h8cfgU/mkfWZNmhBKl64AbhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788229428; c=relaxed/simple;
-	bh=jjo/QVN81+mKIPlWprcvxxppUKU0zE6MAdcRt6sNm84=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BgRklIl3kjf+1yR/eed2NbBBmPm2j+eQDK0GRj0v+XyxAIjtsG6N1Z/BCjmON2U/cUXcJPDYkWzw/5GzUeb0tRthVPpMhkrK/WMfF7Aw05LHTW+JxCmnKPQEvM/rsDNpvsN1W0MMJY+Fmpc3pI1PLiQ/b6idZxpAEa9YwXzWAJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JA1J3nNt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788229654; c=relaxed/simple;
+	bh=Mhe7v584R/LptRRkHUOtCefrgqdzU6Q/A4TF2Ip3AAI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qR0EINo/W99j3StgmtXrgUD2bKNFhMDRiwG/apfvzw+R+th42lSvB9ECtlHbq8K3TFxsLP+DK0ng0Ije3uiUFqLpDTg+BCPCJKtex0ydbgowFKQFfyJbipB1ZCvCli0agMqY4JLtGMysjdHrzJB1SXl81HAfy4SMp7eEOcz08jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jPiNNpOH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JA1J3nNt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28C51F000E9;
-	Tue,  1 Sep 2026 02:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788229427;
-	bh=ACJMY/83lWO63tg7OoF0hUJEnIuwwL7R39Ev4W5uZoU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JA1J3nNt+qvK1AF+sEPx0KtrlUpsGX3aWQpznJ7mRMe64i77u+6DB8O7Ba7fhvKOr
-	 vq1/WpXN6Lm2cZQjJ0aQhEHcJ6vfr7RWyNiDERzzbeIY5tH3roqzMuvWVIT320dDEr
-	 FreC4AoCVhtaXb5BrRn/uEvd7SoxoRNzb13DujORRBqpK7pCX7inIcl1FoDokNAfhi
-	 D5ZLtcFTrVxQp9sBq70ihTTR/YHdPqmnwD5rDwS5fd82FcbBjIObcLtgjZsbgSsE0A
-	 UtNQxz4H3bhR0bqR9e2YeYTNBzFPzUctfurKog7BbmOr0R6QUHNc8vjgbd7Z40DrK6
-	 c9CCepHgPawBA==
-Message-ID: <7afff157-a5ed-459a-9b40-47123efd71e1@kernel.org>
-Date: Mon, 31 Aug 2026 20:23:45 -0600
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jPiNNpOH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=hPQ/QWdQE++cI/dDAEep87CH0o6JrpMqbXjWWZ5hibw=; b=jPiNNpOH0wMr8nT9x1pMTr+d3E
+	z+4wzGLd1OTDx1WY4AMnOJ39x/Ny76GH6nO5wDSJemlYpvg22Q1W6g8ouHPmFLWOaI5RzyJT18c8S
+	JhEilL3z/Rn/MW4xDeQW4EIPtMt+UqvgheuMUbTpv8da4wIBdXvvmzOybMwXX/09Ru4c=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1EDW-002I0k-6i; Tue, 01 Sep 2026 04:27:18 +0200
+Date: Tue, 1 Sep 2026 04:27:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Suraj Gupta <suraj.gupta2@amd.com>
+Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/6] dt-bindings: net: xlnx,xxv-ethernet: Add
+ Xilinx XXV 10G/25G Ethernet
+Message-ID: <bb36094f-07d1-49fb-be2a-ffe126e1b919@lunn.ch>
+References: <20260831150816.1020883-1-suraj.gupta2@amd.com>
+ <20260831150816.1020883-3-suraj.gupta2@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net: dropreason: add
- SKB_DROP_REASON_IP_TTL_EXCEEDED
-Content-Language: en-US
-To: Junjie Cao <junjie.cao@intel.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260901020613.417495-1-junjie.cao@intel.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260901020613.417495-1-junjie.cao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831150816.1020883-3-suraj.gupta2@amd.com>
 
-On 8/31/26 8:06 PM, Junjie Cao wrote:
-> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-> index 2f312d1f67d6..3046a2699479 100644
-> --- a/include/net/dropreason-core.h
-> +++ b/include/net/dropreason-core.h
-> @@ -128,6 +128,7 @@
->  	FN(PSP_INPUT)			\
->  	FN(PSP_OUTPUT)			\
->  	FN(RECURSION_LIMIT)		\
-> +	FN(IP_TTL_EXCEEDED)		\
->  	FNe(MAX)
->  
->  /**
-> @@ -606,6 +607,11 @@ enum skb_drop_reason {
->  	SKB_DROP_REASON_PSP_OUTPUT,
->  	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
->  	SKB_DROP_REASON_RECURSION_LIMIT,
-> +	/**
-> +	 * @SKB_DROP_REASON_IP_TTL_EXCEEDED: IPv4 TTL or IPv6 hop limit hit
-> +	 * zero on a packet being forwarded (see IPSTATS_MIB_INHDRERRORS)
-> +	 */
-> +	SKB_DROP_REASON_IP_TTL_EXCEEDED,
->  	/**
->  	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
->  	 * shouldn't be used as a real 'reason' - only for tracing code gen
-> diff --git a/net/ipv4/ip_forward.c b/net/ipv4/ip_forward.c
-> index 8b65f12583eb..b242561d37e7 100644
-> --- a/net/ipv4/ip_forward.c
-> +++ b/net/ipv4/ip_forward.c
-> @@ -174,7 +174,7 @@ int ip_forward(struct sk_buff *skb)
->  	/* Tell the sender its packet died... */
->  	__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
->  	icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
-> -	SKB_DR_SET(reason, IP_INHDR);
-> +	SKB_DR_SET(reason, IP_TTL_EXCEEDED);
->  drop:
->  	kfree_skb_reason(skb, reason);
->  	return NET_RX_DROP;
+> +  The Xilinx XXV Ethernet Subsystem implements a 10G/25G Ethernet MAC with an
+> +  in-core PCS/PMA driving a high-speed serial transceiver. It supports the
+> +  10GBASE-R and 25GBASE-R line rates, with 25G operation following the 25G
+> +  Ethernet Consortium specification. It has no external MDIO PHY
 
-what about icmp_unreach, ip_expire, and other sources of
-ICMP_TIME_EXCEEDED? The reason code applies to more than just forwarding
-paths.
+What about MDIO bus?
 
-> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-> index 51941ad656a3..74caaf8746ff 100644
-> --- a/net/ipv6/exthdrs.c
-> +++ b/net/ipv6/exthdrs.c
-> @@ -464,7 +464,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
->  			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
->  			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
->  				    ICMPV6_EXC_HOPLIMIT, 0);
-> -			kfree_skb(skb);
-> +			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
->  			return -1;
->  		}
->  		ipv6_hdr(skb)->hop_limit--;
-> @@ -623,7 +623,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
->  			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
->  			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
->  				    ICMPV6_EXC_HOPLIMIT, 0);
-> -			kfree_skb(skb);
-> +			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
->  			return -1;
->  		}
->  		ipv6_hdr(skb)->hop_limit--;
-> @@ -815,7 +815,7 @@ static int ipv6_rthdr_rcv(struct sk_buff *skb)
->  			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
->  			icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
->  				    0);
-> -			kfree_skb(skb);
-> +			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
->  			return -1;
->  		}
->  		ipv6_hdr(skb)->hop_limit--;
-> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-> index 8fc4766c8da9..0b6d78c8b6be 100644
-> --- a/net/ipv6/ip6_output.c
-> +++ b/net/ipv6/ip6_output.c
-> @@ -577,7 +577,7 @@ int ip6_forward(struct sk_buff *skb)
->  		icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT, 0);
->  		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
->  
-> -		kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
-> +		kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
->  		return -ETIMEDOUT;
->  	}
->  
-
-similarly for IPv6, there are more ICMPV6_TIME_EXCEED cases than just
-the forwarding path.
-
+	Andrew
