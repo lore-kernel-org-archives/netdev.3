@@ -1,99 +1,114 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F52518FDDE;
-	Tue,  1 Sep 2026 12:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E703220687;
+	Tue,  1 Sep 2026 12:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788265131; cv=none; b=p60QGrO460Nyia4AneojocxtBwZ1dni3OEEVVTOLmFGC2FtxTp0O/S+FeBFRmkLyOYIofgvt+dsqk5hhenpX4hSuFVHf95gueNCKoB0nx/xqwi8Cg9pwsYqaK3+OlD7AErGNdRx9s+e4wLTBYqXjcyqy/hJpsdA5DRw4a8xQ5S0=
+	t=1788265154; cv=none; b=ds6vJXKR50AAF1DC3yeK6PJmJsCQM1AaAq8zQlVlSYfHyeGmC6IFZLdsHIsjurSQRWdO/isUc3qn2vwYNPH+w+lxSjGUxiJyLc7NtwDwLuoBieXxwut/j6Uhws51uTGEH04bA+DgNLTr6KBM3JHAS2LWg+gMgCWB2aCI2UstKtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788265131; c=relaxed/simple;
-	bh=f91MJKWGtDcgImwhw5xnCqWepe3MFrUOX8o7V25aOck=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=AEm2QGUXOo1hlgaPAayBIDPmQztabblt7/xM29VAmCWe1lWCKVZh6Vy7BwZjOHDheyjjRBUOf7V/BOG2hvMDgfkk82U6tHLWyWcZ8qCXJteIEIoh1ngKbs5OhtUKA4g9weInIAB32woFiRIm4foOlCBep39BDHzIbO2yn+UaObs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZZz7diOa; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1788265154; c=relaxed/simple;
+	bh=NQYQLBBoAiiCGBr+b14hRW1oV2++VtwdOjDRFyDTa/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wr+dJKKnXPPDrfYzQpcgU4kUixiwn0qNYbMOmPT/p6cnTYXH83n1ARwsDEzyz10XWkTGjmXoQ/q9cVLq4/ErrQSN5PeRMqXxI8wQuJo81kQFvgnU0ZECu9oh3PcevQlotskUo7bxhgLAt9wFCIFRs7oJScIiJ1IbcxWiJW3w3nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=inr+6Ohl; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZZz7diOa"
-Received: from kali.mshome.net (unknown [4.213.232.20])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 04E4920B7166;
-	Tue,  1 Sep 2026 05:18:09 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 04E4920B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1788265093;
-	bh=wpQ4qtHHQBV6bm/lnDJ+MhXIw96xxzkcYVHtndKnkPE=;
-	h=From:To:Subject:Date:From;
-	b=ZZz7diOaOppL27ukTWIO4OH+8kfShyjAnD17iRY1D+i1Z5Z0w0qfRsMxGEVDK9pBV
-	 e6TB/3PvYthT1oaxT8UnHHEMXiDTGHvMRZI2jBmVzq1hClVROvq8bDWB5GQbWKrDm3
-	 Acm4sCDw3XIT7ZxZ0fq9FEiqDGf936HRLAc60qvE=
-From: Sahil Chandna <sahilchandna@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ernis@linux.microsoft.com,
-	gargaditya@linux.microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: mana: Reserve extra CQ slot for the fence completion CQE
-Date: Tue,  1 Sep 2026 07:17:58 -0500
-Message-ID: <20260901121837.3503240-1-sahilchandna@linux.microsoft.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="inr+6Ohl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=tTg7Bo2wbjcRAUaxL1UEgGC/z6y7gvvxxIrjwzhUMXw=; b=inr+6Ohlz4RN7rLPYiLjzI4aYf
+	4TVsOlrxoOmr6Zx7CKUnmemKhTUkxJIBfi4hNvs9yerdiHWTBkvh8sgbBGkBy3PHfgWzGsKWDLTXm
+	jRYbOQAgAiG8YFBmEt5a3T8TO4X5cxzOLji/CUfrK5+m34t7Pz1uyrVhwwuNfx6iS8vg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1NRr-002Lx0-P9; Tue, 01 Sep 2026 14:18:43 +0200
+Date: Tue, 1 Sep 2026 14:18:43 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: guoqi0226 <guoqi0226@163.com>
+Cc: Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cuiguoqi@kylinos.cn
+Subject: Re: [PATCH] net: phy: motorcomm: keep chip delay defaults when
+ firmware provides none
+Message-ID: <0dc278ab-c370-4e13-a727-a5e92f18703d@lunn.ch>
+References: <20260901061915.3410228-1-guoqi0226@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901061915.3410228-1-guoqi0226@163.com>
 
-The RX completion queue is sized to hold exactly one CQE per posted RX WQE.
-MANA_FENCE_RQ makes hardware post an additional CQE_RX_OBJECT_FENCE after
-the packet CQEs. The current sizing reserves no extra slot for it and in
-rare cases, CQ has no guaranteed slot for the fence CQE when it is full of
-packet CQEs. This can lead to dropping the fence completion while the
-driver waits holding RTNL lock throughout the timeout duration.
-Reserve one extra CQE slot for CQE_RX_OBJECT_FENCE. mana_gd_alloc_memory()
-requires queue_size to be a power-of-two and at least MANA_PAGE_SIZE;
-the reservation pushes cq_size past a power-of-two, so round up the CQ size
-in mana_create_rxq().
+On Tue, Sep 01, 2026 at 02:19:15PM +0800, guoqi0226 wrote:
+> From: cuiguoqi <cuiguoqi@kylinos.cn>
+> 
+> ytphy_rgmii_clk_delay_config() unconditionally programs the YT8521
+> RGMII delay registers. When firmware describes neither
+> rx-internal-delay-ps nor tx-internal-delay-ps,
+> ytphy_get_delay_reg_value() falls back to the default 1950 ps values
+> and those are still written into CCR and RC1R, overwriting the chip
+> strap/OTP settings. With phy-mode "rgmii-rxid" this clears the RX
+> internal delay the MAC relies on, causing CRC errors, packet loss and
+> link training failures at gigabit speed until the link falls back to
+> 100M.
+> 
+> The fallback only supplies a value and does not skip the register
+> write, so the check belongs in the caller. Since the hardware links
+> cleanly at gigabit with the chip defaults untouched, return early when
+> firmware provides neither delay property. Delays supplied via DT or
+> ACPI _DSD are still honored.
+> 
+> Since commit fffedfece2b4 ("net: phy: motorcomm: use device properties
+> for firmware tuning") switched the driver to the generic device
+> property API, this applies to both DT and ACPI platforms.
 
-Fixes: 6cc74443a773 ("net: mana: Add RX fencing")
-Signed-off-by: Sahil Chandna <sahilchandna@linux.microsoft.com>
+This seems wrong.
+
+phydev->interface describes the basic actions.
+PHY_INTERFACE_MODE_RGMII means no delays are added by the
+PHY. PHY_INTERFACE_MODE_RGMII_ID means delays are added for both RX
+and TX, by PHY.
+
+rx-internal-delay-ps and tx-internal-delay-ps are about how big the
+delays are. The RGMII standard says the delays should be 2ns, so if
+these properties are not present, if delays should be added, 2ns
+should be added.
+
+The chips strapping does not matter, the PHY should do what it is told
+to do, via phydev->interface.
+
+So, does your PCB have extra long clock lines? That decides on the
+phy-mode value, you are describing the hardware.
+
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+
+You say "rgmii-rxid". That would be a very odd value, it means you
+have an extra long clock line for one, and a regular clock line for
+the other. It does happen, but it is very unusual.
+
+If you really want to have the PHY not touch the delay configuration:
+
+/**
+ * enum phy_interface_t - Interface Mode definitions
+ *
+ * @PHY_INTERFACE_MODE_NA: Not Applicable - don't touch
+
+and you need to patch ytphy_rgmii_clk_delay_config() to support this.
+
+    Andrew
+
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 7dfb453ae75a..e677842059e2 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3020,6 +3020,10 @@ static int mana_alloc_rx_wqe(struct mana_port_context *apc,
- 		*cq_size += COMP_ENTRY_SIZE;
- 	}
-
-+	/* Reserve an extra slot for Fence completion
-+	 * event (CQE_RX_OBJECT_FENCE) in case RX CQ is full.
-+	 */
-+	*cq_size += COMP_ENTRY_SIZE;
- 	return 0;
- }
-
-@@ -3114,7 +3118,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 		goto out;
-
- 	rq_size = MANA_PAGE_ALIGN(rq_size);
--	cq_size = MANA_PAGE_ALIGN(cq_size);
-+	cq_size = MANA_PAGE_ALIGN(roundup_pow_of_two(cq_size));
-
- 	/* Create RQ */
- 	memset(&spec, 0, sizeof(spec));
---
-2.53.0
-
+pw-bot: cr
