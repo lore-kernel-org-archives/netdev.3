@@ -1,215 +1,242 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012062.outbound.protection.outlook.com [52.101.53.62])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F3837B41F;
-	Tue,  1 Sep 2026 09:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788256175; cv=fail; b=F5HYBzvIkwHYifMdOe1bD3p2F+VhGOLalLBuVLX9WyENT+X5w9edEG5J//ZNfA+EO7v/QskTP3kLPXp6xF8SE29GkRwJngygSErhQuwI9wyCbMj+CWyImhe3t6pguv16T6dlFGSZu/QUxuVAN9WzcSW62VQ55k/EGqTe5BIBmRA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788256175; c=relaxed/simple;
-	bh=PYlAOBPhbrzSnYmUmE9MPlxHUf+Vhz+97MWrfq+E6FE=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PFzoFzV9tnyXgvV0Qh3W0pcUNiTuDKWybM4yu5W0f7rW3GfxjofrliSZByIzGUY0X/2k8POHnoQCqammEcYX6d/xPJwaYTz/Ln8kNWQNsRfM2RgUPnPN3seVSeU2aAzyJQqgjEddgsAQ6UqStGEGJotXoviO6AMwH5qguK3/OfM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Gifz+haz; arc=fail smtp.client-ip=52.101.53.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2D9384CCE
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 09:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788256276; cv=none; b=b9mJHDMDKoSHLy+Ushp2BhxJGgYA8qCN+nIOobtdLikczEUh4Gnsn76o6+tzdPF3Ggl/Is1PAgz80FiMp4ooQa7A3k8lsbNIC3xYRw7X71pStvLZqGWY7ffFx2eL0lHX3Y2sqtRvP+fKP/JyLEPBMplimqlIqdhrX63etUSNhOE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788256276; c=relaxed/simple;
+	bh=PqcS43Kz0L3EIY3rHu337RGN1e3vUqPXpU2wBPTMRq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kzT/G8L+FLluE8mR21L6RAApVED+bvb5TF3P/zVtb/TekL0iZI6wPrjcv0XdxWUKZCcoRduyfGjK73yuANTSqME6tARJw2ovPkEAH+lE3RDZ19neosDuPf8LfzdJEgDgu9/gBP89eibls7C8MP0BFY0Ymj9LJ5gecdwMZ3Q2nXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fEAKTK2k; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Gifz+haz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gqNFYlyn6YOzKGN/1Q9lh3mFKIX6/KiRd15fAriHABzdq3xC/HgOedW3sSvldHNfuMp9VwIXCJNHZTuBsitEwWoFzSKXEwNl59nQnmRPMAEcnoorhhP8XLHMD6AFwWs7A9wra7CgJwrW3hhf551avQvkqS/RZAz6N79QFYoVELofyawQF2/gDGOYsf0zZKgkkKIBPjSJqmZPWCbiecvA8jWaUPkFa9bnQNCuYlkNdbrIoLMXCUaXUEkkJtvjshm4kgPaN5r777mIukguQeSV0u0gQ7oml8OelDrzO5S25FYludsiSFOBYHRpCI9d/NTrgCkUxZHaesOcCdnByc/Irg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gF/tgVzqz+c7badlcVgxETDbUhDXEBs/oB2xj1eXW2w=;
- b=N9B3E7e5a10RgRq1bW99Hz+v3l6dWi/r0UbXH+j1X3r5V24yg2HlFmP1RIQlmVSY9OafN2pigGpMyfIvdysgO/oofVMz0zKuM90+Ipm+G1Jh01DOncNqTxKr0F+T31N7pXP49/CjvMqOaPxWiM/81ZVQYB2LIGTyemen392nrdTLGhdse1NnARFb/1od0HX3ZugQNJJvPRBh+ERY2nyN1gy315UY/OUB6J9LbkRBP2x0COwXEOZH9X2a+v9gGJFPGpJZ6SY4pV2jG27FJAP40hKLMwlWwUrVxBwUz9rEUmR3zARU95MeY/YvfhSLKb0RaWWBuskm6AEuaCeVvC+6Iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gF/tgVzqz+c7badlcVgxETDbUhDXEBs/oB2xj1eXW2w=;
- b=Gifz+haza2ejnu2ezfGq0GBB/dSMyd+WyNYLp4RmuW/KoqJdp4T6+pjB0+3avUx838YElA2pTC/W1RKwyGo1Y7iqM9uboumZKF/BP1tismBc7GzV1cJOmr/qchA3EO7YeDZzwZ8Cvb0zx5/tdcLc8m4eGTWJ14Wes/YJUU7P7/A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
- by CH3PR12MB9218.namprd12.prod.outlook.com (2603:10b6:610:19f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 09:49:28 +0000
-Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
- ([fe80::f3b5:fc98:8973:5c0b%4]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 09:49:27 +0000
-Message-ID: <5573c94c-db2e-4fb4-af19-c9764f0a74c2@amd.com>
-Date: Tue, 1 Sep 2026 15:19:22 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/4] net: macb: Rename MACB_CAPS_QBV to
- MACB_CAPS_TC
-From: "Karumanchi, Vineeth" <vineeth@amd.com>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
- Conor Dooley <conor@kernel.org>,
- Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, git@amd.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260807095012.640223-1-vineeth.karumanchi@amd.com>
- <20260807095012.640223-2-vineeth.karumanchi@amd.com>
- <20260807-juggle-porcupine-71281d2d9041@spud>
- <DKIX8UXQE9AW.3V3Y8P4USSJDR@bootlin.com>
- <080ab679-cd69-48ed-b96d-c515741101ba@amd.com>
- <DL0GSSXQPVDE.2O8IIQA60348U@bootlin.com>
- <19708df1-7f79-48c0-b026-3c69eb8c2034@amd.com>
-Content-Language: en-US
-In-Reply-To: <19708df1-7f79-48c0-b026-3c69eb8c2034@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0041.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:175::15) To SJ2PR12MB8953.namprd12.prod.outlook.com
- (2603:10b6:a03:544::14)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fEAKTK2k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788256273;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RGPYUUj4p3YEROI4nFlvU0VDeo3swndiRIwBv/4inAw=;
+	b=fEAKTK2kL9bp5owuqIDb9eyxaQKnj+XeU3FUiQC4ie8fGfL9L9p122GgrCy7d0dR+gwRJA
+	hzk1AcOVtY8Ft64/ijDMWupjbZ1pE4elc5OvbV8A3TUPY2mf7QB5U+/nok5PVpl4EwQfsw
+	IHi7HU3+rRH5G/WO4P4SthdrbORyfXc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47--0Sj_pLAOxW15zvqP7Zvxg-1; Tue,
+ 01 Sept 2026 05:51:10 -0400
+X-MC-Unique: -0Sj_pLAOxW15zvqP7Zvxg-1
+X-Mimecast-MFC-AGG-ID: -0Sj_pLAOxW15zvqP7Zvxg_1788256268
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 59CC21944E42;
+	Tue,  1 Sep 2026 09:51:08 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.49.14])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EFC9F1955F7C;
+	Tue,  1 Sep 2026 09:51:04 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: victor@mojatatu.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	horms@kernel.org,
+	vega@nebusec.ai,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net] net/sched: cls_route: free emptied bucket on filter move
+Date: Tue,  1 Sep 2026 11:51:01 +0200
+Message-ID: <20260901095101.124563-1-pabeni@redhat.com>
+In-Reply-To: <20260829205422.854785-1-victor@mojatatu.com>
+References: <20260829205422.854785-1-victor@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|CH3PR12MB9218:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6d42848-6b8e-4176-69f6-08df080e502d
-X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|6133799003|10067099003|11063799006|4143699003|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	FBoF/m2z7kqB+qYomqIjwMQRdj25H7vVj42BhaoxnTZyKeWDldpvmyd/2YrnB9fRM4ebEhepdDcAgt9g3Kr/kPR0zuTWAW3vKEKazY+0+K+1U9j/Umxj5XwpiYTk/4MpclA9hUhmixFaazoejpn+vLR4KegWW6ZUMcBT97rkDgEA1C8rfMB6YGTi548bi0PAzmerJ71RXEH6tLCu+gp5WvT0CdAxhnW2HmbgtVaoYdBCDjVxHmfnwdC1Tb5jKbCJt+tj50185RpSwlhsnjtw4HjVsFfl3yMvkH8F4I7rS/QIT5t3O+A4SMTtKRdbWLKgj016dr8PIswi6PRdaao7xA3DxvcoGFcPAkqk93qFKRJZhiBc6VI33ERy3spggjRQ2pp5/r4BH4dJmIS0rDPiYgbOg39C0GSZVblQyx6yyVqTKhJr/ForhThtYdqHvL2SG4Vqt2xPx1YjP1vryIeFaziEXQsbXPgM2Egi+gvdI/sMl9TKKy9YPr3geM9z+PlMBtalUvsYURiRKjYAz/KCHdkhvq3DrLUF9PAgaKQYG94Ic4/6r3US7OUXDwspxKzxNx/eajzFqVfHNdVer1YxvWps9AcjCX6Lu0/CE8vMKdM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzRGUU5DUkNGRUZQa1QzdDZyTE9CMldFdnFJc1U3Qlc3MURVUnFxd1V3d1o4?=
- =?utf-8?B?b29sQ3J6L1dJRzM4NlhoTTIrNUdDd3FwaXlLdVo2VnBzOUcyWEcrOWhEQmFJ?=
- =?utf-8?B?cy82OHVlb2FXOXYyajYxMTdETERoZHZiQjJOYnVQaHlJWG1HejJPaHdOVWJo?=
- =?utf-8?B?Z0hZdzNUdWdiSVNjMm9Tc0RvR2ZGWWJ0aTUzNUFRbTZmeTlnN0dRZDg3OHFV?=
- =?utf-8?B?ZHBYTldDNzI0OWd5blQ4SnJxZWlmbmdvL09HbUZyNU9XY1A4WHUzdW1rRGhw?=
- =?utf-8?B?dDRGTnUyU0FTTVNwQjlJUHB3UmhYS0J0OVo5ZHlRb1dpU2Y5NlNBV0EydDJZ?=
- =?utf-8?B?eVJWRG1EQVRTSnpUM2tKVVpFSlJIRUowNlpZdm0vSkxiWTZ0WHZxRk9JYjZu?=
- =?utf-8?B?Zmt2Q3Rxd1lJeGpjMTZXd2dhK1dtTDBKWjR6QTRGaTVtNkRZdEUzcHA5RHNx?=
- =?utf-8?B?ZEJNV0k5TVJyZWZ1Z215WDZFcHZhelhGZ0tzU0ZrUk01bXg3bkVaVXFlNU11?=
- =?utf-8?B?bFFmOEdTM1pHZkJMTFpjanFFTmExd0R0a3BiZEt2eHZUa3B3UElVcXk3akhB?=
- =?utf-8?B?OHEvWUFMSU4zMFArclRPT2JrUDNDbWtmNVdqMmFXcGhyVDhickJJdGxGZHdD?=
- =?utf-8?B?bE1QS2FLckJxcWtRVHNza2phbUpPOENRYmYxK1ZlL09yL1hjdERMalI2UHRq?=
- =?utf-8?B?YXpjYjg4UExQWlJqSHR0UWpBOVl3U1l3SEo0eUorRVZaY0M1ajhNVzA1cmR3?=
- =?utf-8?B?KzJySVp0REFMcWgwRU10NWk2UEJMYlZiTnN3d3hkR0J6OGkxNGp4WHpwYUNC?=
- =?utf-8?B?L2VDSWdlWEJJUVlyeEF6N0VFMStxTGp3M1JYdXgyM2dmVkphY01iOHJIL204?=
- =?utf-8?B?ZHJxb1lZZ2RYZGM5cks3NFVJNUdha3BKN1dFSFJUR3kvWVdGTGI0d013TkZ6?=
- =?utf-8?B?M1Vjci9TL0tRQ01wa3B1ZXJ6UzNBMUJSZ3FVcHNoNUJORUkzbW1pbThKOEla?=
- =?utf-8?B?dy9BclNXMDB2QjNZZmxRKzRvVWhWR282N3haN3ZpcktxOUhxYlJJampJeVow?=
- =?utf-8?B?MjNoblZLN1hqUmdrN28xc0RlYThmWkh2OU9yWFgveWkySlpuVFAzU29EWEhY?=
- =?utf-8?B?NExYNXhPcWI2N1Uzd1NIa25LeTBsQzVOSk5ycHQwcDRueXFYaDMyT0VJMXd2?=
- =?utf-8?B?Ykt3cFlDMkNDQnVycUZFanhmYVE4ZWU1WkgrTVFGM0tLMU9KelNvNW80ZjVY?=
- =?utf-8?B?eEZtVGlORUtuTnhyVmhVaDlvamlwdW8yakI3U01RTGh5ZmRoQzU5UjZVMXQ5?=
- =?utf-8?B?UytjSnA5QW1YZ0J2RlhwOUdwSHFtY1h6WGtLK0ExYytwaWJmQlVJU0pFaGZr?=
- =?utf-8?B?UXVDN01Edm5zbEZabjAzMm1zaXV1bnNnY0lQR2thNTRqWDB4bU5nR3FLTk1H?=
- =?utf-8?B?UEdkcVZXTnkwM2VaWjdLTzBaVjdLVjg4QWFONWx6cDZKaTM3TzlaeTRUSTVW?=
- =?utf-8?B?cGsxMTFwdmVwMDhKYnZIZ1ZlTERVbEJPZ0ZNZDdwR0JrY2ZJaEwyYy9UOUFF?=
- =?utf-8?B?aDdTV0FnQVhaNDhzSTUrQjNYUEpYQXNFcHZXRUFMQ25kMlBPNkVwODcxNi9N?=
- =?utf-8?B?OWFpaXI0WFV2dzhEZGdySktXUzhzaUViS3dEOGxxRVJBQjZFS2V4Mk1kOXp0?=
- =?utf-8?B?Z2FzTzl2M0o0TkhEUXdUTjRsUnZKMkJDaThCZ21sZVlMUGYyOXRXTzJhZ0lq?=
- =?utf-8?B?ZEszUFF2MXRJd0FFSlFOSHE4YlhIV1AyQ3N4dGhXWjV1SkxmWWs0TlFtdHFz?=
- =?utf-8?B?ZWdobis5VUlETHVuQ1N4OEQxY0xrOU9wb2NqbWE3NmdKN004Umlkd1BDekxs?=
- =?utf-8?B?NGk1Qmg2ekVZRG52dmtIVHprNnBlTE9SSDk2UG51MXB3b3hQdEdYWXN6Q3pK?=
- =?utf-8?B?dXVMbUNsSmdSTWNMdkNTQVF6cTV6WTdCOXRhc0dBRksxaGpLQVBNNnJwKzVV?=
- =?utf-8?B?WmJIMEVwSHQ2ZmlqZ3FYWXpPLy9DT1ovYk5WdDh0R2toSWRrQm1iak04NDBM?=
- =?utf-8?B?aEVLTkFtMXNjVmtERERIYm15VUVZODd6WUREMEp3R3ZCelg4SWMzNUxLVzZZ?=
- =?utf-8?B?Q1duYjNQYUdIVlRnMldvNnQ2aFErUzZKYlY2ZGhMNWxPRnJQYnRSVDJ2MlNr?=
- =?utf-8?B?NTJHTFRyNmJkUnRGS3NBUUNva3Q4NTZZU2drVlZLaU5LNUhpY25hSW0vOTBM?=
- =?utf-8?B?cXFKczVRVW4zRkpRczBweEFKYUVsanZ4YVVERWRsNFRNb0RYNmZQcUVYNzdS?=
- =?utf-8?Q?62g+GQAMm/3owROBe5?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6d42848-6b8e-4176-69f6-08df080e502d
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 09:49:27.8658
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GKEdtfagu/EQ4KCV5P1bQZKQ9QHIqZuDftDdmo/0rNtv2D1wSc4BSTAxWynx53zz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9218
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi,
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net/sched: cls_route: free emptied bucket on filter move
 
-On 8/31/2026 12:27 PM, Karumanchi, Vineeth wrote:
-> Hi Théo Lebrun,
-> 
-> On 8/28/2026 2:51 PM, Théo Lebrun wrote:
->> On Mon Aug 10, 2026 at 12:11 PM CEST, Karumanchi, Vineeth wrote:
->>> On 8/7/2026 11:56 PM, Théo Lebrun wrote:
->>>> On Fri Aug 7, 2026 at 7:09 PM CEST, Conor Dooley wrote:
->>>>> On Fri, Aug 07, 2026 at 03:20:09PM +0530, Vineeth Karumanchi wrote:
->>>>>> The MACB_CAPS_QBV capability flag was originally introduced to
->>>>>> gate TAPRIO/QBV support. However, GEM IP versions that support
->>>>>> QBV also implement multiple TSN clauses.
->>>>>>
->>>>>> Replace this with a generic capability flag that can be reused
->>>>>> by other TSN features. Rename MACB_CAPS_QBV to MACB_CAPS_TC to
->>>>>> better reflect its role as a general traffic-class offload capability.
->>>>>
->>>>> I'm not convinced that this is broadly correct, whether or not there's
->>>>> Qav support (which is what you're using the newly renamed flag for)
->>>>> depends on an IP configuration time define that I think is independent
->>>>> of whether or not there's Qbv support (gem_exclude_cbs).
->>>>>
->>>>> That said, the only platform that supports Qbv that I have the exact
->>>>> documentation for does not disable the CBS bits.
->>>>
->>>> EyeQ5 instances have both active qbv and cbs as well.>
->>>> I see two ways forward:
->>>>  - MACB_CAPS_TC aggregating the two, coming from match data
->>>>  - split and use runtime-detection, see DCFG1/0x0280 bits 1 and 24
->>>
->>> This was the initial plan for the QBV implementation.
->>>
->>> Quoting from
->>> https://lore.kernel.org/netdev/20250814071058.3062453-3-vineeth.karumanchi@amd.com/
->>>
->>> "The 'exclude_qbv' bit in the designcfg_debug1 register varies across
->>> MACB/GEM IP revisions, making direct probing unreliable for detecting
->>> QBV support. This patch introduces a capability-based approach for
->>> consistent QBV feature identification across the IP family."
->>
->> This is surprising to me! What's the source? Do you have AMD hardware
->> where DCFG1-6 have diverging layouts?
-> 
-> Yes. The source is the AMD register documentation for Zynq and ZynqMP
-> devices. Some DCFG register layouts on these devices differ from those
-> on newer devices.
-> 
+This adds a refcount of the filters linked into a route4_bucket so the
+bucket can be dropped from head->table[] and freed as soon as the last
+filter leaves it, replacing the open coded scan in route4_delete().  It
+also reworks the fold unlink path in route4_change() to use fold->bkt
+directly instead of looking the bucket up by to_hash(fold->handle).
 
-https://docs.amd.com/r/en-US/ug1087-zynq-ultrascale-registers/designcfg_debug1-GEM-Register
+> diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
+> index 0d1324c90583..17b0ebb76662 100644
+> --- a/net/sched/cls_route.c
+> +++ b/net/sched/cls_route.c
 
-This information was taken from the original Cadence IP documentation
-for that version.
+[ ... ]
 
-Thanks,
-> For example:
-> 
-> GEM IP revision: r1p6f4  (revision_reg: 0x40070106)
-> For this GEM revision, bit 1 of designcfg_debug1 is defined as
-> "serdes", while bit 24 is reserved and reads as zero.
-> 
->>
->> Thanks,
->>
->> --
->> Théo Lebrun, Bootlin
->> Embedded Linux and Kernel engineering
->> https://bootlin.com
->>
-> 
-> Thanks
+> @@ -459,6 +452,7 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
+>  		if (b == NULL)
+>  			return -ENOBUFS;
+>  
+> +		refcount_set(&b->filters_ref, 1);
+>  		rcu_assign_pointer(head->table[h1], b);
+>  	} else {
+>  		unsigned int h2 = from_hash(nhandle >> 16);
+> @@ -468,6 +462,8 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
+>  		     fp = rtnl_dereference(fp->next))
+>  			if (fp->handle == f->handle)
+>  				return -EEXIST;
+> +
+> +		refcount_inc(&b->filters_ref);
+>  	}
 
+[Severity: Medium]
+Should this duplicate scan compare against nhandle rather than f->handle?
+
+The destination bucket and chain are selected from nhandle:
+
+net/sched/cls_route.c:route4_set_parms() {
+	...
+	h1 = to_hash(nhandle);
+	b = rtnl_dereference(head->table[h1]);
+	...
+		unsigned int h2 = from_hash(nhandle >> 16);
+
+		for (fp = rtnl_dereference(b->ht[h2]);
+		     fp;
+		     fp = rtnl_dereference(fp->next))
+			if (fp->handle == f->handle)
+				return -EEXIST;
+	...
+	f->handle = nhandle;
+}
+
+but for a change route4_change() has copied the old handle into f before
+calling here:
+
+net/sched/cls_route.c:route4_change() {
+	...
+	if (fold) {
+		f->id = fold->id;
+		f->iif = fold->iif;
+		f->handle = fold->handle;
+	...
+}
+
+and f->handle is only set to nhandle further down, after this loop.
+
+Taking the reproducer from the changelog one step further on the patched
+tree:
+
+  tc filter add ... route from 1 to 1     -> handle 0x10001, bucket 1
+  tc filter add ... route from 1 to 2     -> handle 0x10002, bucket 2
+  tc filter change ... handle 0x10001 route from 1 to 2
+
+nhandle becomes 0x10002 and new is false, so the mismatch check under
+"if (handle && new)" is skipped.  Bucket 2 exists, so the scan above walks
+ht[1], finds the filter with handle 0x10002, compares it to f->handle
+(still 0x10001), does not match, and the new refcount_inc() is taken.
+
+Does that leave two filters carrying handle 0x10002 in the same chain?
+route4_get() returns the first match only:
+
+net/sched/cls_route.c:route4_get() {
+	...
+		for (f = rtnl_dereference(b->ht[h2]);
+		     f;
+		     f = rtnl_dereference(f->next))
+			if (f->handle == handle)
+				return f;
+	...
+}
+
+so get, change, delete and dump would resolve the handle by list order.
+
+The mirror case looks affected too: an in-place change that keeps the same
+to/from computes nhandle == fold->handle, the scan then finds fold itself
+in the chain and returns -EEXIST, rejecting the change.
+
+The comparison itself predates this patch, but this patch is what turns the
+renumbering/bucket-move path into a supported, leak-free operation, and it
+adds code immediately after the faulty comparison.  Would
+"fp->handle == nhandle && fp != fold", or rejecting the handle mismatch for
+existing filters as well, belong in the same change?
+
+The refcount accounting itself looks exact in the duplicate case, since each
+linked filter contributed one reference, so no premature free follows from
+this.
+
+Also, the changelog says the handle-mismatch check being gated on the 'new'
+flag is what allows the move, but it does not mention that the filter's
+handle visible to userspace changes as a result.  Could that be spelled out?
+
+> @@ -560,17 +556,20 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
+>  	rcu_assign_pointer(*fp, f);
+>  
+>  	if (fold) {
+> -		th = to_hash(fold->handle);
+> +		b = fold->bkt;
+>  		h = from_hash(fold->handle >> 16);
+> -		b = rtnl_dereference(head->table[th]);
+> -		if (b) {
+> -			fp = &b->ht[h];
+> -			for (pfp = rtnl_dereference(*fp); pfp;
+> -			     fp = &pfp->next, pfp = rtnl_dereference(*fp)) {
+> -				if (pfp == fold) {
+> -					rcu_assign_pointer(*fp, fold->next);
+> -					break;
+> +		fp = &b->ht[h];
+> +		for (pfp = rtnl_dereference(*fp); pfp;
+> +		     fp = &pfp->next, pfp = rtnl_dereference(*fp)) {
+> +			if (pfp == fold) {
+> +				rcu_assign_pointer(*fp, fold->next);
+> +				if (refcount_dec_and_test(&b->filters_ref)) {
+> +					unsigned int th = to_hash(fold->handle);
+> +
+> +					RCU_INIT_POINTER(head->table[th], NULL);
+> +					kfree_rcu(b, rcu);
+>  				}
+> +				break;
+>  			}
+>  		}
+>  	}
+
+[Severity: Low]
+Could a tdc case be added for the cross-bucket move this fixes?
+
+tools/testing/selftests/tc-testing/tc-tests/filters/route.json has exactly
+one test touching the replace path, "b042" ("Try to delete class referenced
+by route after a replace"):
+
+  $TC filter add dev $DEV1 parent 10: prio 1 route from 10 classid 10:1 action ok
+  $TC filter replace dev $DEV1 parent 10: prio 1 route from 5 classid 10:1 action drop
+
+With TCA_ROUTE4_TO absent, route4_set_parms() builds nhandle as
+0x8000 | id << 16, so the handles are 0xA8000 and 0x58000, and to_hash() is
+256 for both.  Both filters land in the same top-level bucket, and the
+replaced handle 0x58000 does not exist, so *arg is NULL and the fold path
+above is never entered.
+
+That leaves both new free sites untested: this refcount_dec_and_test() plus
+kfree_rcu(b, rcu) in route4_change(), and the equivalent one in
+route4_delete().  Neither a return of the leak nor a premature bucket free
+introduced by the new refcounting would be caught.
+
+The reproducer in the changelog (add "from 1 to 1", change to "from 1 to 2",
+delete 0x10002, then count the remaining filters) maps directly onto a tdc
+case in route.json.
 -- 
-🙏 Vineeth
+This is an AI-generated review.
 
