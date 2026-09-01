@@ -1,77 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-59.mta1.migadu.com [95.215.58.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB73A39D3FD;
-	Tue,  1 Sep 2026 01:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F9239D6FA
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 01:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788225723; cv=none; b=hlwp2TEoead/1/PFVX9lSsAdBybbaky88cw/mlT+/gQZomsMgOD4zvSQu3e4e8pouyHsdfIUfb+CkcIlEdzE0r+HRmoLMsyKcTPaX6FzCZoj8+Upj6/TEzUcy6xu6oP/Lwx+5eH2nOsudfrrj41Plrbj4dWW7+OiTi3WB0dvgsA=
+	t=1788225854; cv=none; b=TFfRjFaP0a6tjiQi4AcNlN7EuyX/5323T18ALgX+Lsz6QJSlMqzRdtxDiwLh31xWzA+bk6PbHt9xNsJvNWSe9Pf1e14nf6prFI4j43zRddIKf+MxSqygcwH1cdKJed8LCscV0upO8zs4eh4lkSVHcZsCi1/SG2PtafzmBNcM8cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788225723; c=relaxed/simple;
-	bh=kf3JwUxSQPCNsBeJ1W33FuzQTEV/mi4ddV9bThbV82g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yo3X6sSE535avn2+4E1lARq1rzvLN4xiC/73PpHLXDdCUTm/94OSKySiQAofQqVEP8pCJK8s7EjITezQxpwvAIwO/BF1NvJ6lwdZgfoEqAXZfFcobUT+e3SHZXz+PaBaAjny6aRn+MuHboPPUR3KpBbwUaz7vqxg2i8cerOjZQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kpevG456; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788225854; c=relaxed/simple;
+	bh=iWpoK28RPhpEG9h6a+SpBJXlvuFmjpQg8gVKJEmgDEo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sGAG3GUFx+zvPUymjob0hFq9bbdBRdAm52Qn20YXWWx/US0aD7+SN+TdznI+1Q4EJcSzZnsg0i2G3sHhXHKCqfD1ZigvNKCmMKPgpxipSDPdxQsorXTNj2fDkbGJklD+yMkml5HFmLfNaU+1B5o5GDoWAcI9RGuThtiV6YkvYHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PwNl/2Ky; arc=none smtp.client-ip=95.215.58.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kpevG456"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD181F00A3D;
-	Tue,  1 Sep 2026 01:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788225718;
-	bh=ry3n3u/QgT+ueyUZE3MNBWNcN9sxIUHDI00PpIe/2SQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kpevG456BrJchHPPJsynXc6IjfzzXMaAh9EBv7GX7BUdr3GcsfSeuCmZACVB1nBTZ
-	 G9yyWEYj2MuoP0If1QVZEglLUMrTQz4xyLZPQvHqMLRk7D70vzCZVb+lTF4rKcVOlE
-	 cL5WzzOxEKwRRHTLMCdiWDuWt0W5Uv2da1XBmrPILoGtp2k4NS4/Yj3ePNyUsjWlyv
-	 08/6DgmvLISPgkFwk8FgrPuvCDycOr7veTDhRMOl4+oXaLuReupClTR2O13mDlpQma
-	 +51Cv3nwcXtkR9+/afBrmfMoDp0rXZwAEBFCKCGuvCkE85dCx41nZ77napNFgzBgfL
-	 xmFGXGcZ4K/Sg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Wei Wang <weiwan@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	"Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: Re: [PATCH 6.6.y 0/4] ipv4: start using dst_dev_rcu()
-Date: Mon, 31 Aug 2026 21:21:47 -0400
-Message-ID: <20260831-daily-reply-0003-dst-dev-rcu-6-6@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831-cve-2025-40074-6-6-v1-0-027e51b162a3@bootlin.com>
-References: <20260831-cve-2025-40074-6-6-v1-0-027e51b162a3@bootlin.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PwNl/2Ky"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=iWpoK28RPhpEG9h6a+SpBJXlvuFmjpQg8gVKJEmgDEo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788225847; v=1; x=1788830647;
+ b=PwNl/2Ky3QV24DhiE6mTQcp5v+etDUp2jMJRFGzvx6BEO3cWf+kDmxyrMH36zcBBwdzGePlZ
+ t11wrV/qduYj/eGTP7zfbIup6IQJTt2abQYgjozDW8NjF4eEzA5jMXOphYqUWuNX97/2mGe6R+8
+ JfYFuem0e+5+BtYDM58I+BY4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5176e71f97516690;
+	Tue, 01 Sep 2026 01:24:07 +0000
+X-Mizu-Trace-ID: 5176e71f97516690
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1a07addd-6d7f-4c5b-a1da-7f97e1e15376@linux.dev>
+Date: Tue, 1 Sep 2026 09:24:00 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] mac802154: drain mac_wq before unregistering
+ interfaces
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, alex.aring@gmail.com,
+ stefan@datenfreihafen.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20260828101905.26865-1-xuanqiang.luo@linux.dev>
+ <87jyp6btia.fsf@bootlin.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <87jyp6btia.fsf@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-> Three other patches are required to be able to apply cleanly the final patch.
+
+在 2026/8/31 16:10, Miquel Raynal 写道:
+> On 28/08/2026 at 18:19:05 +08, Xuanqiang Luo <xuanqiang.luo@linux.dev> wrote:
 >
-> Eric Dumazet (4):
->       net: dst: add four helpers to annotate data-races around dst->dev
->       ipv4: adopt dst_dev, skb_dst_dev and skb_dst_dev_net[_rcu]
->       net: dst: introduce dst->dev_rcu
->       ipv4: start using dst_dev_rcu()
+>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>
+>> ieee802154_unregister_hw() unregisters the wpan netdevs before
+>> destroying mac_wq. The RX path stores the receiving sub-interface
+>> (sdata) in the queued MAC command descriptor without taking a
+>> reference to the netdev.
+>>
+>> If mac802154_rx_mac_cmd_worker() runs after the netdev has been freed,
+>> it dereferences the stale pointer and triggers a KASAN
+>> slab-use-after-free:
+>>
+>>    BUG: KASAN: slab-use-after-free in mac802154_rx_mac_cmd_worker+0xc0/0x498 [mac802154]
+>>    Read of size 8 at addr ffff0000c6db0ba8 by task kworker/u16:3/61
+>>    ...
+>>    Call trace:
+>>     show_stack+0x20/0x38 (C)
+>>     dump_stack_lvl+0x78/0x90
+>>     print_address_description.constprop.0+0x88/0x398
+>>     print_report+0xa8/0x278
+>>     kasan_report+0xa8/0xf8
+>>     __asan_load8+0x9c/0xc0
+>>     mac802154_rx_mac_cmd_worker+0xc0/0x498 [mac802154]
+>>     process_one_work+0x334/0x8b8
+>>    ...
+>>    Allocated by task 630:
+>>     kasan_save_stack+0x2c/0x58
+>>     kasan_save_track+0x20/0x40
+>>     kasan_save_alloc_info+0x40/0x58
+>>     __kasan_kmalloc+0xa0/0xb8
+>>     __kvmalloc_node_noprof+0x1e8/0x588
+>>     alloc_netdev_mqs+0x74/0x7f0
+>>     ieee802154_if_add+0xac/0x630 [mac802154]
+>>     ieee802154_register_hw+0x31c/0x3d0 [mac802154]
+>>     fakelb_add_one+0x250/0x318 [fakelb]
+>>    ...
+>>    Freed by task 652:
+>>     kasan_save_stack+0x2c/0x58
+>>     kasan_save_track+0x20/0x40
+>>     kasan_save_free_info+0x4c/0x78
+>>     __kasan_slab_free+0x60/0x90
+>>     kfree+0x194/0x478
+>>     kvfree+0x44/0x60
+>>     netdev_release+0x4c/0x68
+>>     device_release+0xac/0x130
+>>     kobject_cleanup+0x84/0x248
+>>     kobject_put+0x98/0xf8
+>>     netdev_run_todo+0x3a0/0x5e0
+>>     rtnl_unlock+0x18/0x30
+>>     ieee802154_unregister_hw+0x48/0x90 [mac802154]
+>>     fakelb_remove+0xe8/0x148 [fakelb]
+>>
+>> After killing local->tasklet, drain mac_wq before calling
+>> ieee802154_remove_interfaces() so pending work completes before the
+>> interfaces are unregistered. Do this without holding rtnl because scan
+>> and beacon workers acquire it themselves.
+>>
+>> Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
+>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> Missing Cc: stable.
+>
+> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+>
+> Thanks,
+> Miquèl
 
-Queued the series for 6.6, thanks.
+Thanks.
 
--- 
-Thanks,
-Sasha
+I see Sashiko has also found a few new issues, which look valid.
+I'll address them as well in the next revision.
+
+pw-bot: cr
+
