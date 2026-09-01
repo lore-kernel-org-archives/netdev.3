@@ -1,118 +1,121 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A59D3BB674;
-	Tue,  1 Sep 2026 07:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB918415B8F
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788246837; cv=none; b=g2Zuwm/aIJ0Gz3JfAC4Bi2GAjzSPvbsOZS4FBPLbzCRRqeK4GBGDyCDJqI5gF00YNKH9GpQVkiCUDXkoY0i/sNs1A9AlcCk0xxv8I2jEL1kA+z8LygeCjec9PVnAkwszfdDfWPEw0So9XzNKl+kAdASJNcvHZV0wDuHRhfEfo2Q=
+	t=1788246850; cv=none; b=Qky+RwKCM9B94FJiIapfaBwixsrW6yP2w2zJWCPaXuww+SMR9a79ag9Vf7fT6/BDUHHWBl2vE8T0eMLv15EVXBRC4uAYL9T98tfPdYms3fJ9xot9zwu3rtQnc+sLldf4Upybo31GlsJFBTTTOf5LDqNr6Zt2wbEmQiOROt82CDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788246837; c=relaxed/simple;
-	bh=fo3eEH+mpRfdJzCSVpOfwHZwWLVlDIEbk28HxZcXPPA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Af+gPyunef2Joxi99VVpeItpNXyWiDuiFkR0bac9PNOtFjigZYkn33XxlOSjPKhEaaERadUtGCz7KBuDX4taqAUQKcQluIzGv9ilG6DyvVfOt1jS6h5clTuQlJB9c9AWlYndiGY27IPvqRvudBEfHAYmnkRP42d67pE3XTx1/cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RbCWRFst; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1788246850; c=relaxed/simple;
+	bh=J4RGoZnnRiQoevlGy8lm2wL/d6hz8MOcWCl8s2VRWIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PpN3cTZmuzkNm2D5W+yGn0rNBI58A/JMIplYs7hQnHFHOxp0yUubCdF2VkW77E6bdFRZGF/rSAwuchqc6vUWFCXGwrxgWPZiHuQP4UYdWVZpe8VPCKJUUkgXYviIMPH7kr+mG/iTye37V560yWv0PXiGkrCmrT0bEaB+rHhk2cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rx7B2w/8; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RbCWRFst"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6817DJ8f81480650, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1788246800; bh=fo3eEH+mpRfdJzCSVpOfwHZwWLVlDIEbk28HxZcXPPA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=RbCWRFst9c3PRAH5ZL+RA+ZZ98n+akGV2a6u8ELslEmpcBYr4mw0LXkSBfQV4pgqM
-	 TO4GQ0HqA/O3Ar37VIXbkpFXQcophFwJahs4mbimYydhjp6JFRi5doGfTFQv7uTAGz
-	 ZnsgHdNa2XBOnwU7TVH2T8WCy+ARuHY82SHqwKbr7Gte/dRS9MY0u6druPIenKexD5
-	 gvYNEjVTb6Rrc2j3lsDaDymAxY8TbZ4drP7SZWDhSF85jn+6Tc+SFB8Go5l4bFl3Qg
-	 i8vTErgjDrfAGRVTFPWA/b1yNxgfa2jPd1SVszjwnV3a58V2hEOsKSKgLMmC9o02Yn
-	 7kARxTI0LYL1w==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6817DJ8f81480650
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 1 Sep 2026 15:13:20 +0800
-Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 1 Sep 2026 15:13:18 +0800
-Received: from RTKEXHMBS04.realtek.com.tw ([::1]) by
- RTKEXHMBS04.realtek.com.tw ([fe80::6d7e:80bb:9fcb:1a5e%6]) with mapi id
- 15.02.2562.043; Tue, 1 Sep 2026 15:13:18 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: Yang Zi <2959243019@qq.com>, Larry Chiu <larry.chiu@realtek.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] net: rtase: Fix NULL pointer dereference in NAPI cleanup
- on probe failure
-Thread-Topic: [PATCH] net: rtase: Fix NULL pointer dereference in NAPI cleanup
- on probe failure
-Thread-Index: AQHdNHB+KP6gOL0O7kacMo8VAsZX0ba5WYJA
-Date: Tue, 1 Sep 2026 07:13:18 +0000
-Message-ID: <b2e37853a4634b3b8810283580b6d393@realtek.com>
-References: <tencent_AFD4DC7BE2EC61C628B53A3BCF4B558C2105@qq.com>
-In-Reply-To: <tencent_AFD4DC7BE2EC61C628B53A3BCF4B558C2105@qq.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rx7B2w/8"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d01663d816so4073665ad.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:14:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788246848; x=1788851648; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AhnZnMS1zl6dPRGigIwYLk+xKIiY6xljGos5e3aMaGE=;
+        b=Rx7B2w/8tRz6cAHeO+mx+t4X0jgQpoQZ3mJ/trWX6JAjl5BpQGu0Ua1xi4/5Ori4VF
+         4sfR2V3rbMrDLT7mVaDLNxiTFHPreue8z8QVqnZZ9Be+OGookjnOn2bHtlpWcDlznweS
+         hiDsf6qSB7wb0k/c6yzB5zvL2L62waIl8OnLmCtWMVzGTuEeM+05WnLXxYKPr3FMtjgD
+         JGdhak87kZib5lsTVyrarLdeQaUeuiGtmyRVeKwviPbO7Lh6X24YMgAk4dwDmFNmX7U1
+         MrWWfjqiiNziQ4wGITOmTBXXu643s9mDUT4xVempFU4Oppf5GYovRfyfDu64UmITMNQ6
+         78rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788246848; x=1788851648;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AhnZnMS1zl6dPRGigIwYLk+xKIiY6xljGos5e3aMaGE=;
+        b=PvU3uRwa8zXSPmOedosodv9gK/jNFmx+Dor6nkp3VMkaVJW3sdoQ2+heE3yv2z/4/l
+         mQlBzvRHdalqA7ln6G5M56A0qdEOiNPM16FE6NwL71qbG7tavWGXkuMT/zPKAIeHo7hl
+         Z4Fc+yiZGNh4/VPAsEJ2Xe/K4d863Tv3hyOwuzPL47La51izyjFsvf0CbyA488OjO0AF
+         a0s1KzKgILpZGm84IV6XgM8mmDRacDBysOcDPmdHuXYdaFxObZQ4Z1TzT2OowuVYmYis
+         MEKuh26zUOFK1NIzvlghsW1coagvqk1EalE0yO0eAaR4gB+ccQaymY2O2qcnnIkWlXo6
+         B7Xw==
+X-Forwarded-Encrypted: i=1; AKwUvBxItPhRrloPMmUWyhB1+ZRsN+82qCiwIehMiFSXFy2ze5g3Q51tn95iCi7/JyCobbpPCbfsfQg=@vger.kernel.org
+X-Gm-Message-State: AFuF++neoHVmF4QOTjNfsrEDC/Lb4Nt4kgp265QZlHkS7Ek8qJvd4q4p
+	EkTHVARpVDW52C9lsEKYmqEzg6V2GPkeNaGGPlLO8jnIS/y9sOdVsLiA
+X-Gm-Gg: AYBFou1+zbgmXVnH5Lv1HaubBlHQbKec1B7kP3zjAacjNHhynBedsxojdu6HueIQ858
+	ej57Hw/XJ5T0oJSiLEFaiwEtnMncaMxBU2FuB/kUhMbgn+f2EKFj68UAIh+/blaDyFvyktaal8U
+	avDehtj4s+HvFg2obFMOJWZbmxB7M2guWFJJo4s91czYgBF3FJjI95vIfg/PhNgYhYG4PsObOxW
+	DhG+7oAIBvzHwBDh8VhtVL9om8mwVRat4tn4G8glCvZPh/eynn2F3sm5D+gj994JCCSrUN1G27o
+	GZGk5yaq85TyH4WoR/IxWWQbAHgaubc20b3kTOMXj3hhx4NdVPrWKerxXkjAqYmXJu5+9Z83sDc
+	zQJtQ3hMg37ecnWLvAWhlK61QTx++R7+pP94fKmtqK2bLatXYMlkxJri4dD05vysiUol84oL1ih
+	tBzDHVOZyKybBBIKRIVnWg0xSV5DycVTdfnnUC2x7HiGrKzmO4ohrStwA9CyKvx5iKNKzsS4Tvh
+	g==
+X-Received: by 2002:a17:903:228a:b0:2cf:9347:f445 with SMTP id d9443c01a7336-2d74ddc705cmr412540935ad.10.1788246848073;
+        Tue, 01 Sep 2026 00:14:08 -0700 (PDT)
+Received: from amd.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f9e2a95sm34374175eec.23.2026.09.01.00.14.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 00:14:07 -0700 (PDT)
+From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Subject: [PATCH] selftests: net: ipmr: Avoid memcpy() from NULL in nl_add_rtattr()
+Date: Tue,  1 Sep 2026 07:13:53 +0000
+Message-ID: <20260901071353.3302900-1-nagachaithanya9911@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-WWFuZyBaaSA8Mjk1OTI0MzAxOUBxcS5jb20+IHdyb3RlOg0KPiANCj4gRXh0ZXJuYWwgbWFpbCA6
-IFRoaXMgZW1haWwgb3JpZ2luYXRlZCBmcm9tIG91dHNpZGUgdGhlIG9yZ2FuaXphdGlvbi4gRG8g
-bm90DQo+IHJlcGx5LCBjbGljayBsaW5rcywgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91
-IHJlY29nbml6ZSB0aGUgc2VuZGVyIGFuZA0KPiBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUuDQo+
-IA0KPiANCj4gDQo+IHJ0YXNlX2luaXRfbmFwaSgpICh3aGljaCBhZGRzIHRoZSBOQVBJIGNvbnRl
-eHRzIGFuZCBzZXRzIG5hcGktPmRldikgaXMNCj4gY2FsbGVkIGFmdGVyIHJ0YXNlX2FsbG9jX2lu
-dGVycnVwdCgpLiAgSWYgaW50ZXJydXB0IGFsbG9jYXRpb24gZmFpbHMsDQo+IHJ0YXNlX2luaXRf
-b25lKCkganVtcHMgdG8gZXJyX291dF9kZWxfbmFwaSBhbmQgY2FsbHMgbmV0aWZfbmFwaV9kZWwo
-KSBvbg0KPiBOQVBJIGNvbnRleHRzIHRoYXQgd2VyZSBuZXZlciBhZGRlZCwgc28gbmFwaS0+ZGV2
-IGlzIHN0aWxsIE5VTEwuDQo+IG5ldGlmX25hcGlfZGVsKCkgLT4gX19uZXRpZl9uYXBpX2RlbCgp
-IC0+IG5ldGRldl9sb2NrKG5hcGktPmRldikNCj4gZGVyZWZlcmVuY2VzIHRoYXQgTlVMTCBwb2lu
-dGVyLg0KPiANCj4gS0FTQU4gcmVwb3J0Og0KPiANCj4gICAgIEJVRzogS0FTQU46IG51bGwtcHRy
-LWRlcmVmIGluIF9fbXV0ZXhfbG9ja19jb21tb24NCj4ga2VybmVsL2xvY2tpbmcvbXV0ZXguYzo2
-MjUgW2lubGluZV0NCj4gICAgIEJVRzogS0FTQU46IG51bGwtcHRyLWRlcmVmIGluIF9fbXV0ZXhf
-bG9jaysweDhmLzB4Y2UwDQo+IGtlcm5lbC9sb2NraW5nL211dGV4LmM6ODIwDQo+ICAgICBSZWFk
-IG9mIHNpemUgOCBhdCBhZGRyIDAwMDAwMDAwMDAwMDBjZDggYnkgdGFzayBzeXouMC4xLzExNDcN
-Cj4gDQo+ICAgICBfX211dGV4X2xvY2srMHg4Zi8weGNlMCBrZXJuZWwvbG9ja2luZy9tdXRleC5j
-OjgyMA0KPiAgICAgbmV0ZGV2X2xvY2sgaW5jbHVkZS9saW51eC9uZXRkZXZpY2UuaDoyODE4IFtp
-bmxpbmVdIFtydGFzZV0NCj4gICAgIF9fbmV0aWZfbmFwaV9kZWwgaW5jbHVkZS9saW51eC9uZXRk
-ZXZpY2UuaDoyOTQyIFtpbmxpbmVdIFtydGFzZV0NCj4gICAgIG5ldGlmX25hcGlfZGVsIGluY2x1
-ZGUvbGludXgvbmV0ZGV2aWNlLmg6Mjk2MSBbaW5saW5lXSBbcnRhc2VdDQo+ICAgICBydGFzZV9p
-bml0X29uZSsweDVjM2QvMHg1ZmQwDQo+IGRyaXZlcnMvbmV0L2V0aGVybmV0L3JlYWx0ZWsvcnRh
-c2UvcnRhc2VfbWFpbi5jOjIyOTUgW3J0YXNlXQ0KPiANCj4gT25seSBjYWxsIG5ldGlmX25hcGlf
-ZGVsKCkgb24gTkFQSSBjb250ZXh0cyB0aGF0IHdlcmUgYWN0dWFsbHkgYWRkZWQNCj4gKG5hcGkt
-PmRldiAhPSBOVUxMKSwgc28gdGhlIGludGVycnVwdC1hbGxvY2F0aW9uIGZhaWx1cmUgcGF0aCBz
-a2lwcyB0aGVtDQo+IHdoaWxlIHRoZSBwb3N0LW5hcGktaW5pdCBmYWlsdXJlIHBhdGhzIHN0aWxs
-IHJlbW92ZSB0aGVtLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogWWFuZyBaaSA8Mjk1OTI0MzAxOUBx
-cS5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvcmVhbHRlay9ydGFzZS9ydGFz
-ZV9tYWluLmMgfCA3ICsrKysrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyks
-IDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9y
-ZWFsdGVrL3J0YXNlL3J0YXNlX21haW4uYw0KPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3JlYWx0
-ZWsvcnRhc2UvcnRhc2VfbWFpbi5jDQo+IGluZGV4IGUzY2Q0ZjdjMTM4MC4uYjRkODgyOGNhODdk
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZWFsdGVrL3J0YXNlL3J0YXNl
-X21haW4uYw0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZWFsdGVrL3J0YXNlL3J0YXNl
-X21haW4uYw0KPiBAQCAtMjQ5Myw5ICsyNDkzLDE0IEBAIHN0YXRpYyBpbnQgcnRhc2VfaW5pdF9v
-bmUoc3RydWN0IHBjaV9kZXYgKnBkZXYsDQo+ICAgICAgfQ0KPiANCj4gIGVycl9vdXRfZGVsX25h
-cGk6DQo+ICsgICAgLyogcnRhc2VfaW5pdF9uYXBpKCkgcnVucyBhZnRlciBydGFzZV9hbGxvY19p
-bnRlcnJ1cHQoKTsgaWYgaW50ZXJydXB0DQo+ICsgICAgICogYWxsb2NhdGlvbiBmYWlsZWQgdGhl
-IE5BUEkgY29udGV4dHMgd2VyZSBuZXZlciBhZGRlZCBhbmQgbmFwaS0+ZGV2DQo+IGlzDQo+ICsg
-ICAgICogc3RpbGwgTlVMTCwgc28gbmV0aWZfbmFwaV9kZWwoKSBtdXN0IG5vdCBiZSBjYWxsZWQg
-b24gdGhlbS4NCj4gKyAgICAgKi8NCj4gICAgICBmb3IgKGkgPSAwOyBpIDwgdHAtPmludF9udW1z
-OyBpKyspIHsNCj4gICAgICAgICAgaXZlYyA9ICZ0cC0+aW50X3ZlY3RvcltpXTsNCj4gLSAgICAg
-ICAgbmV0aWZfbmFwaV9kZWwoJml2ZWMtPm5hcGkpOw0KPiArICAgICAgICBpZiAoaXZlYy0+bmFw
-aS5kZXYpDQo+ICsgICAgICAgICAgICBuZXRpZl9uYXBpX2RlbCgmaXZlYy0+bmFwaSk7DQo+ICAg
-ICAgfQ0KPiANCj4gIGVycl9vdXRfcmVsZWFzZV9ib2FyZDoNCg0KVGhhbmtzIGZvciB0aGUgcGF0
-Y2guDQogDQpTaW5jZSBydGFzZV9pbml0X25hcGkoKSBpcyBvbmx5IGNhbGxlZCBhZnRlcg0KcnRh
-c2VfYWxsb2NfaW50ZXJydXB0KCkgc3VjY2VlZHMsIEkgdGhpbmsgdGhlIGludGVycnVwdCBhbGxv
-Y2F0aW9uDQpmYWlsdXJlIHBhdGggY2FuIHNpbXBseSBqdW1wIHRvIGVycl9vdXRfcmVsZWFzZV9i
-b2FyZCBpbnN0ZWFkIG9mDQpjaGVja2luZyBuYXBpLT5kZXYgaW4gdGhlIE5BUEkgY2xlYW51cCBw
-YXRoLiBUaGUNCmVycl9vdXRfZGVsX25hcGkgbGFiZWwgY2FuIHRoZW4gYmUgcmVtb3ZlZC4NCiAN
-Ckp1c3Rpbg0K
+nl_add_rtattr() unconditionally does memcpy(RTA_DATA(rta), data, len).
+For zero-length attributes the callers pass data == NULL and len == 0,
+for example the RTA_PREFSRC attribute added for proxy MFC entries:
+
+	if (mfc_attr->proxy)
+		rta = nl_add_rtattr(nlmsg, rta, RTA_PREFSRC, NULL, 0);
+
+Passing a NULL pointer to memcpy() is undefined behaviour even when the
+length is zero, because its source parameter is marked
+__attribute__((nonnull)); it is flagged by fortify/-Wnonnull.
+
+Only call memcpy() when len is non-zero.
+
+Fixes: 05068eaa67b2 ("selftest: net: Add basic functionality tests for ipmr.")
+Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+---
+ tools/testing/selftests/net/forwarding/ipmr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/net/forwarding/ipmr.c b/tools/testing/selftests/net/forwarding/ipmr.c
+index 9cd9f70de132..d3e26341821c 100644
+--- a/tools/testing/selftests/net/forwarding/ipmr.c
++++ b/tools/testing/selftests/net/forwarding/ipmr.c
+@@ -120,7 +120,8 @@ static struct rtattr *nl_add_rtattr(struct nlmsghdr *nlmsg, struct rtattr *rta,
+ 
+ 	rta->rta_type = type;
+ 	rta->rta_len = RTA_LENGTH(len);
+-	memcpy(RTA_DATA(rta), data, len);
++	if (len)
++		memcpy(RTA_DATA(rta), data, len);
+ 
+ 	nlmsg->nlmsg_len += NLMSG_ALIGN(rta->rta_len);
+ 
+-- 
+2.43.0
+
