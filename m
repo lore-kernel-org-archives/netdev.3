@@ -1,65 +1,65 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD63D469832
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 20:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B6D45563D
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 20:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788293346; cv=none; b=ac7bTigaKftsbWNjdLQqEJnI4637E3Hq9o2vqtthwG3uPb7oTBF53KriClTrj76p/so3f8DfK9fEuUmA6KvctGwsqmeJt+p/hB5FWWxhKmp+Gg1WEerKopYh3DbXn6oNxq6MdObwAQAjAk/vG3gLDZTYjaqK7nS2fpAVs7izMsk=
+	t=1788294036; cv=none; b=OyR/2JYx9YJ6A7u2CzelZAWtKqq4Ob7DQcdaS3NbnP8ArwzHsqD2P5+2b8EmBV33nnrAPH2wOTlR37u+siQS4F79YJeXVUnYcwy8/uVVJY+lwp/cniT8R4/4+KIzuacHbRRR53U+ZD1PdbYnECcNozJXyhtM2FJMcbSunFLRhFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788293346; c=relaxed/simple;
-	bh=HCIZDrxMlJ/DZpkvSCypXwsnsSCn18IbMyI7eXUNoog=;
+	s=arc-20240116; t=1788294036; c=relaxed/simple;
+	bh=istqpQdfoLlF7xgTCn4y2bSZDJfpNcTMy4pIOpgogb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CbGiI2tdR9s/0/txO7/7pAnqaeP5+nOI3sPwix/rEYotMsCZoJk4Lh/gRUo+VUyszixG9n33K73NiwB+F2WZLn911qY4dZR6TtJc4YRo0NMi+dNqsAMQoIuRqgucuC8Hd7A3UFqjrtnXzcWcb9DhpZL7majbpq5NNEPP9fSQWQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=fxDYV0KU; arc=none smtp.client-ip=209.85.215.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=hxitEiLsACu8K8vyXgW9MfviOYrsQoogQxQV1hxU5D+kM1Qnlg5Sn5fk9M+TdbrrhCozlbNi6t/1JS4tfgCDNQmVUthDNr/NB8XYHO1FTrdCk8nqzaAm30kyGRC3/DVNTIiqQPU7C5GxKFJqqmhsZJ8VhZT6hw9FtQg9wRCwCzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=T60br6uM; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="fxDYV0KU"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cbb8b54fcf8so384100a12.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 13:09:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="T60br6uM"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc1cb472b76so309820a12.0
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 13:20:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788293344; x=1788898144; darn=vger.kernel.org;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788294034; x=1788898834; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:mail-followup-to:message-id:subject:cc:to:from:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZSCeT8nl12kwIIX7QDxT+qTYp68l/hXoFbD8TSlIdZk=;
-        b=fxDYV0KUteqG01Vd/4jywBOma1ZSC4b8zOdzH2ZduDW4ZsTuFtVdP6JnxwlpQTA3+M
-         /uoUVUA7SAtL67qAZZQ0jzQFJirni9OaUGwuGv9k8Ax/U0M2ZejKcOT+RmyItnyjcptM
-         GFL1C5xeqYhqo18k8uXvMf1sur8kaQycnPIDWEf3Q1vFRT549Ky7T+1CuF/MVzCmMZ1U
-         0yfi0zG8wqETLbUqvgmncGv7h0vZV38keode+pcbEtl6rlHr9bFhhYetsHWXW36rpA/q
-         tZiAyqw+9yFBiTgCACDeNSO6Ob6XuNrPQTx5KH2OX2S2mVSnkVmW+GSdNZbssgs8i/n9
-         zY0w==
+        bh=R5sPEjv+xwXb+QVAroiu5Lctzd4I6+pfvVTzx8c9acc=;
+        b=T60br6uMfahadSaWaftOShlMDdAgjOc6LljjimqKL/51e70XFmx2uPqC2/TfODNuuE
+         KNwV6uHAH+ChFgKP5yA5Ril0A2O5Zq2tlNtXD3Xg99f+/iqdV+AJvBiIbOJ4SqBavUrm
+         +2pw0fhMxaaRB2YRAEcUi33CY5hjhVugV1F4/29V6fqYJ5R5FgtuLUp8PfSurBxEz1rB
+         yxPCpyeiL/FIkTuncFmrgIrfUGWH/8uyoX9YG4OiyO21A25wv35BLLuHXUjGsGzsUOhE
+         rww/y5vRqCOixzUrqQ0Fzd0enEMskLYRly6tBMDG0f23PkzrubC/01xPaloUWdcajipA
+         KflQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788293344; x=1788898144;
+        d=1e100.net; s=20251104; t=1788294034; x=1788898834;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ZSCeT8nl12kwIIX7QDxT+qTYp68l/hXoFbD8TSlIdZk=;
-        b=E6HJrR8+Gd00mhO1+QeaqxAaVcn8xmDzbxmHvl2ww/ud26a31cLlDK7x7yeSAS8/Ed
-         ym+1w0JxPJ/0TTMcyh/8Ra3Uz5ipbMKiz97ZiYNrh3JbfWnalaNKKSVDMV6bIwpBTnBh
-         i981n08vySlW7eM735+/WL2kU+Id94fJyyCnPCdLO6mLohh8OUL440W5J7f83TEzfbIb
-         TMZjJQLDeL1dLh9rBaPxKSoDMu6dZKVjV7Gn1n6Eb+RenQgSh3/arz5bIc3JA9yMxmTP
-         VGnRuLI8Z7BzChNA74kB6zSFhv8w8m2bFk8QR1QjYwTYYSRDNe2irmPOSAe48HQlBliS
-         DH/Q==
-X-Forwarded-Encrypted: i=1; AKwUvByRyqsdx+EUl1i6D00N03LXYMyzk6m6n8zdedp9FLI7t1Gr8spbXar78F1X9h74gNlpmMG4bYA=@vger.kernel.org
-X-Gm-Message-State: AFuF++kgI3AA0MZavOD4beBGoLcuk5xRvt6c9SPFcR8sgiVnTWeWtxzU
-	4jKbtrIixBRMdgHx7L+SycqbiEe6QbDDwlSx/mlEajPfUAnd1TpVqPa1qotEDK9xJTk=
-X-Gm-Gg: AYBFou2R/ka4z9vfx9bsZKnkhklwkbQlqOviRcKleZx4/k5ZVtBOHlhgn6CB3DmDjej
-	dJ0L9v9oIF9wFVMNY7SoF+QL+C1oCLgOzfiwau9YpnkWFk2wyv2LrE2fgsuMCCVNHWgqKLF42P4
-	uB82jM0gLOWgWP0MThPUikaFPDUCetoqH5wQWgCVfHkIcrDt6lk8W8G2BOex1LEXxGx4eaXl6XA
-	mE+lqQEPWRVsGSidFM/fqFUatawY4YSepbTzq53r80hbDvijbXRRRhrDGALvdShm0mDWmmDs/Ui
-	owXYG6gyKkP7FEDbVWNbwAStmRR4YH7e20oLrmxZNZ4AgJnkTxAVCO8EE6U4iflRLBwE55efBNg
-	Er1Li0SAxzdJTffiQ5GWFdzb84OTubvdWsrIowVtr/YEllHYMl1bvrtT9kG/9Kbg7Vyf46dSSnM
-	bo6TkqNHUnS3jpoD1L2lpMWQ005U2s8jNAnRwQhki4wg==
-X-Received: by 2002:a17:90b:1e03:b0:398:b88c:2b7b with SMTP id 98e67ed59e1d1-39907cd7808mr15605031a91.8.1788293344036;
-        Tue, 01 Sep 2026 13:09:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:53::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae0f2a321sm1271958a91.7.2026.09.01.13.09.03
+        bh=R5sPEjv+xwXb+QVAroiu5Lctzd4I6+pfvVTzx8c9acc=;
+        b=T+talbkHJgkvYydHe/qeFhNZHI0vsW4dZk4jOX1pevEljBiWLyLOt0HVTI7xdKV9qn
+         Yk9u59hZK92hojKNcfVsY+qcVApdjPG6xEbU21sjM6sXKxml17YcRwInRWdWXSgFUi82
+         4cCOV0LFiB9++OmqdMzZ4u9vX0zZx7xPdOHfXF6w1u/MV5njbfoZSrT2L7p+TG4641/K
+         DHv2fgYzde8yKbBEE8i/X7jPpA+I89htXL4yQr7iqaHMoNg9qCAIMoxT1SaeZXmysJ8F
+         6UobdgnuTlMUQlzP3H8IXZnhl3BhObAleDu7a9jLuyDlM7pL68BAX6EhOnQyA8WSujhF
+         bIgg==
+X-Forwarded-Encrypted: i=1; AKwUvBzw0ydWo0jShjwJE2rQpcQeWMT01EI6ldoiNPS0AOgQwsncwEo9WNjE2A2ZNbSsSLmNlKncOPA=@vger.kernel.org
+X-Gm-Message-State: AFuF++miqQUDmhvN3tgSCIfyfcakPXh+XWa5qTcIMERttS/5eNvsAnTJ
+	03av/tX6t3UoPbZP2OsMDaTxjuS4zmq/mTGuBXLOGGk/MI/U5Vbgza6Wu7XcVI7H5uM=
+X-Gm-Gg: AYBFou2ALPXUnkjP9kW2VOZJhmNW9Zqa3LHMIEM8i0LvrS8/8Q6sfHryDaVOfhNoI04
+	ikyqJJF8Cm1d3n1IEffnQIOCXb0gCF9wajKu4WXRmhWoN2pQetj8PNF3NH+3991/5vXTTAmd1lN
+	Xs3v7wWPCzyJ7CpWy0LBqq4pcSqDgJdpN7RNC9Kpn6THijg6hTYc9lH/Y0so+aBL7rJCPWFAiYY
+	koF1QRT2obtJaGoDlYUMwjTRIGW45lJSMOlou0iSth7Dyo1FwcN8DDp+F/4itSwdB9hneKG+zMI
+	q2sW9VEZ41sfYVNXa+Yo19gOVzm8j6lZIVXwRGVtSxpOKax3bv+VDZV6aJt4/xRmOwJPDcKMGvK
+	zI2f0LVSFtIs8ehUMM+aDnM8CDWwdy9hEFS5r3wmFqoH3AyR++an8AVg3BsotMUcXN/3Sjcd5Sh
+	/W6kdkYMqel72IJmRG5YDWmzoTHyFmnsQ7JKHrh9YbS2TRzsh+y/7r
+X-Received: by 2002:a17:90a:d610:b0:381:1c96:829b with SMTP id 98e67ed59e1d1-39ae82197fdmr1091497a91.3.1788294033890;
+        Tue, 01 Sep 2026 13:20:33 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5a::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae3c6f337sm1306368a91.16.2026.09.01.13.20.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 13:09:03 -0700 (PDT)
-Date: Tue, 1 Sep 2026 13:09:02 -0700
+        Tue, 01 Sep 2026 13:20:33 -0700 (PDT)
+Date: Tue, 1 Sep 2026 13:20:32 -0700
 From: Joe Damato <joe@dama.to>
 To: Linus Walleij <linusw@kernel.org>
 Cc: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
@@ -69,9 +69,8 @@ Cc: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 2/3] net: ethernet: cortina: Count dropped frames as NAPI
- work
-Message-ID: <apcw3tpNHStCCCc/@devvm20253.cco0.facebook.com>
+Subject: Re: [PATCH 1/3] net: ethernet: cortina: Fix budget accounting
+Message-ID: <apczkOm+o+dUqvZW@devvm20253.cco0.facebook.com>
 Mail-Followup-To: Joe Damato <joe@dama.to>,
 	Linus Walleij <linusw@kernel.org>,
 	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
@@ -82,7 +81,7 @@ Mail-Followup-To: Joe Damato <joe@dama.to>,
 	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
 	netdev@vger.kernel.org
 References: <20260901-gemini-ethernet-fixes-v1-0-ee6b09675876@kernel.org>
- <20260901-gemini-ethernet-fixes-v1-2-ee6b09675876@kernel.org>
+ <20260901-gemini-ethernet-fixes-v1-1-ee6b09675876@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,48 +90,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260901-gemini-ethernet-fixes-v1-2-ee6b09675876@kernel.org>
+In-Reply-To: <20260901-gemini-ethernet-fixes-v1-1-ee6b09675876@kernel.org>
 
-On Tue, Sep 01, 2026 at 07:04:56PM +0200, Linus Walleij wrote:
-> The RX loop only consumes budget when it successfully delivers a frame.
-> Error paths keep consuming descriptors without reducing the budget, so a
-> stream of bad frames can process the entire receive ring in one poll.
+On Tue, Sep 01, 2026 at 07:04:55PM +0200, Linus Walleij wrote:
+> The gmac_rx() function returns the remaining NAPI budget, but its
+> caller treats the return value as the number of packets received. An
+> idle poll therefore reports a full budget and remains scheduled.
 > 
-> Move the budget accounting to a common end-of-frame path. This counts
-> each completed frame as NAPI work whether it was delivered or dropped,
-> matching the behavior of the vendor driver.
+> Return the number of received packets instead. Preserve the existing
+> free queue refill accounting by adding that count directly; continuing
+> to subtract it from the budget would invert the refill behavior.
 > 
 > Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+> Link: https://lore.kernel.org/r/20260509-gemini-ethernet-fixes-v1-4-6c5d20ddc35b@kernel.org
+> Link: https://lore.kernel.org/r/20260512131456.189452-1-pabeni@redhat.com
 > Assisted-by: LLM
 > Signed-off-by: Linus Walleij <linusw@kernel.org>
 > ---
->  drivers/net/ethernet/cortina/gemini.c | 30 +++++++++++++++++-------------
->  1 file changed, 17 insertions(+), 13 deletions(-)
+>  drivers/net/ethernet/cortina/gemini.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
 
-[...]
+Looks right to me. I assume the LLM mentioned
+u64_stats_update_begin/u64_stats_update_end ? Just feels like there's a lot of
+code in between but maybe the only system this NIC runs on, u64_stats_update_*
+are no-ops ? idk.
 
-> @@ -1575,27 +1579,27 @@ static int gmac_napi_poll(struct napi_struct *napi, int budget)
->  	struct gemini_ethernet_port *port = netdev_priv(napi->dev);
->  	struct gemini_ethernet *geth = port->geth;
->  	unsigned int freeq_threshold;
-> -	unsigned int received;
-> +	unsigned int work_done;
->  
->  	freeq_threshold = 1 << (geth->freeq_order - 1);
->  	u64_stats_update_begin(&port->rx_stats_syncp);
->  
-> -	received = gmac_rx(napi->dev, budget);
-> -	if (received < budget) {
-> +	work_done = gmac_rx(napi->dev, budget);
-> +	if (work_done < budget) {
->  		napi_gro_flush(napi, false);
-> -		napi_complete_done(napi, received);
-> +		napi_complete_done(napi, work_done);
->  		gmac_enable_rx_irq(napi->dev, 1);
->  		++port->rx_napi_exits;
->  	}
+Anyway:
 
-Hmm. I could be wrong, but I think the above code could be simplified by
-calling napi_complete_done and letting it do the gro_flush? You can check the
-return value and then optionally enable interrupts. That's what most other
-drivers do, IIRC.
+Reviewed-by: Joe Damato <joe@dama.to>
