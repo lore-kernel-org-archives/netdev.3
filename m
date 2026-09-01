@@ -1,77 +1,47 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F1646D558
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 07:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A154B41378E;
+	Tue,  1 Sep 2026 07:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788248461; cv=none; b=g6POWeTmRmNeSIjjM769CowUJ89MCoxbHFVnYF1WhtFKadv7UGloLL4SaNl21FGHTMIDBZQ1Ogdhk5XPgvK3PB/k1aPHN7FJp+LxP8bGwxn/rX1NwujgqxOn2/QYp/9mAKmqakaPOhbgbs86uQyioaXbWmQRHe6WdI+VTKkFD80=
+	t=1788248574; cv=none; b=YIc1I5TG3HQSMkPx26OGJy0jQJXUrffWtBmUcOttaWJspfwVniIfo3N6Mr9zBRDuTiD6BfB+w6uqJXWW4EIYYsi1k638bb8NPzIueHiPJAhgVmhOfoQxv8qUbgOniKjJiUOnInUgQz2NtZc9Y1a3WahF8jCQTY2hKJJhIsSZCj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788248461; c=relaxed/simple;
-	bh=d69I/cdvJ/o7q3nW7vBwryI/iZgtGSueqw1aSs5Y1TA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H1AhenhSZwXfN4vxieqc1sBTT3SrmzWEIZtAackGv17YAZNXJE76ylVOsWDElTweI/vmQUMrftxA9GV7BeHGAo6BUnrJuHK09eqMQMB1PvUFdYxK5aeuUJ4/938tEoETo+eVL5+iaKR9C/1TDscnkMoOeYLIibYMpwbfbfsRvBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=gwq3qHY6; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1788248574; c=relaxed/simple;
+	bh=boAq9UlSLVen/OoceZ6i8CG0+ilM9weU6jwKbKABuHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y2H4DLr7NaLWPOzxDbdmhlIXl7MqVePte8pCxB7BQNDjTcpf2c642lpb4H2m+vQ2G8QdkgK0GiIsOlhw1jIHcW2CTqbg5XW1oR6olr15G3GLKrUDaBGW2tCJPt2sSSNwQe54Btlh4igpjiXB98W9gSXCtlGdWcyVz1n4R6W4E2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VbKlaiiG; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="gwq3qHY6"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48431648f33so512844f8f.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 00:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788248457; x=1788853257; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WzxcW1LLqwVWe0wSU90DzGvke623LGpZQMtqGLDr5j8=;
-        b=gwq3qHY61ExCAEo9vWnYPjhPuTvZSCcblZKJkEmTNO/lAKxOPd1/U4iw1VzxqWTJLG
-         i7JKL32RC35NaBr5tAI+h0srDgvwQJ3sH9K3VmfX1SgVfVQf609GcL0uvdtK56tpuBse
-         6+zIb/NinYnByHK0rfG7WJ1hA/mer3ajVeKLzSVmQ6Zc5dYkfYoOk11gVkhs6JBp5y70
-         SeQoAOVlrGfdJomIi4HF1ZztYjHPI0n8eK8lxdaP2gag3M0na+dr9I4/J2l5lI9MpM5+
-         t5uQckISmV0b8qZCxG9Bx/8FlYtr/qRsfVHzDC0OkIDdTE/Zz2WG9z27x3Bq8COMeq1v
-         Xw5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788248457; x=1788853257;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WzxcW1LLqwVWe0wSU90DzGvke623LGpZQMtqGLDr5j8=;
-        b=kFrzu2g+WOQqQLlryfUtrs19g6r0jnIN7SxtlRPNZtTi7oUTX4kI2+OsaJOP/5IK9z
-         dMrSOnIMtMuF/uXVrmuavAzDSganaixxmwKMy8jJQ7r26DF5TrMGBk4qcXvv1sd/fMis
-         tsn0dLucpaHJ0cD+AKG0CEB9+Mt3KezELTJcGn6g6Xzk3BogGjL71uz9v9Tbi2CTh1Rv
-         xA9B51Q4v2A23GOQJ9HpfBKttu0DbaYRd47hTCZjv5VedJilCV8KyzwtdionB8jbNz7A
-         K8VB0zFejb+bqHjRIjM/GF/7Z43h/SpkLxN0UCEYzSm7LTBbYhuCnbdi3pYWrzYbWQBz
-         ImGA==
-X-Gm-Message-State: AFuF++mmKXS3rSZEfvzYQYrOBjzwLGDBWE9qBqYe2mFqxck6d77M6Xqh
-	5KII65V6XjUOZD9qOpUTNqs2PwnDfHvyP4BGIHeVN7v34OcAdWqRjQE35RJ0tBbt/2eJE+Xo+8z
-	fiLGAG2o8IA==
-X-Gm-Gg: AR+sD12Hnq9hDQsHqHcsO1W5OIsUjZ88TuIXmSRIp2sMwKS4UJflzL2tRgpt9YWhMwe
-	t4fmRAQB09M7Xw+7NoqFRBaO6kaours4I8SpFCUhA2GCgSsjrD+kMUsdNQ51hV7eKjqBs+23HkB
-	NYbOEU73nF5P3rLm2q3oJ6KjPLqNZN8JadXjru7iJL0RILf6XQ5U8Ub32uBP02GRKLfVKOf1Vlo
-	GC5WXzoOHpVUXhrAqpSBI23gLtdT8gougLtnCBgHjWl1Q0RU032VmOtTLnC+/j9v8sXizejdpnO
-	OpzZBybA5gu2xgamhE5r0XgTRoG+qDUGBiAQyYJHb8alUDTFRpZtBE/zoAGMMa81Ufq4AroYznL
-	pEG5TqgnxjIQb6iL9QGOZ4kS39J3VkNWUR6jAjCmQK5PPLzWsyHUrIvaBcXFpNp84NJ1bApi5Hv
-	UTedpy2gCpWQvTnj9pzNW0hUcG8wZWkGTs8k3UhD15Bc7dJNF1VCmAyPaRq0Bhn3yxUmUko+qDo
-	Vjh4po5vzM=
-X-Received: by 2002:a05:600c:217:b0:49b:9105:e831 with SMTP id 5b1f17b1804b1-49cdd635db8mr37882095e9.7.1788248456986;
-        Tue, 01 Sep 2026 00:40:56 -0700 (PDT)
-Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48442d3c4absm3142913f8f.10.2026.09.01.00.40.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 00:40:56 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linus.luessing@c0d3.blue,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net v2] net: bridge: mcast: fix br_multicast_list_adjacent rcu walk of mglist
-Date: Tue,  1 Sep 2026 10:40:46 +0300
-Message-ID: <20260901074046.316190-1-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VbKlaiiG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=iJ
+	1HACajl7jRHSMfEPRFJKfQbbsmoWUbVzLWRle57Jg=; b=VbKlaiiGFQOToqHGFD
+	nCFmoA7vEJV0xnQWrlsr0oT0hBNOOS3bhdNkxEizHd9WrPp7tFa7O2f04ENIyd1P
+	hL6raUrby2EDa7SLqTdVC+FW6Z8cmPcK5ciX1WHEJELzg0nJVA0CLIS9hcrkX9SZ
+	Mp2sBfbJYXihnlPNx9h1a3u74=
+Received: from sky.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wA30ITXgZZq7jdkSw--.38828S2;
+	Tue, 01 Sep 2026 15:42:15 +0800 (CST)
+From: Junnan Zhang <zhangjn_dev@163.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhangjn_dev@163.com,
+	Junnan Zhang <zhangjn11@chinatelecom.cn>,
+	Shouxin Sun <sunshx@chinatelecom.cn>
+Subject: [PATCH net v3] net/packet: fix network header offset for non-VLAN raw packets on VLAN subinterfaces
+Date: Tue,  1 Sep 2026 15:42:14 +0800
+Message-ID: <20260901074214.57717-1-zhangjn_dev@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,71 +49,118 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wA30ITXgZZq7jdkSw--.38828S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3AF1DCw1UuF1kCF4rJrW7XFb_yoW7GF1Dpa
+	yjkF9xGw4DGr1Svr4kKFsrJF45ZFs3Ga12g3yfJ340vF4q9FyFvFWxtF129FyUKFWrX34U
+	Xr1jvF1Y9a1ktrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pipuWJUUUUU=
+X-CM-SenderInfo: x2kd0wxmqbvvry6rljoofrz/xtbC7hfVa2qWgdd9vwAA3v
 
-Sashiko reported a bug [1] that br_multicast_del_port_group unlists the
-port group not using proper rcu helper that preserves the next pointer and
-after that immediately frees the port group without waiting for rcu grace
-period. The only rcu walker of mglist is br_multicast_list_adjacent() and
-it turns out that function has always been buggy because mglist was never
-converted to RCU. Fix it by acquiring the bridge's multicast lock for the
-mglist walk. Return -ENOMEM on allocation error.
+AF_PACKET SOCK_RAW sets skb network_header to dev->hard_header_len in
+packet_snd(). On VLAN subinterfaces with software tag insertion,
+hard_header_len includes space for the VLAN tag (ETH_HLEN + VLAN_HLEN =
+18) while min_header_len is the on-wire Ethernet header length
+(ETH_HLEN = 14). A non-VLAN SOCK_RAW frame carries a standard 14-byte
+Ethernet header, so its L3 header sits at min_header_len, not
+hard_header_len.
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
+packet_parse_headers() only corrects network_header for VLAN-tagged
+frames. For non-VLAN frames it leaves network_header at hard_header_len,
+so the IP header is found VLAN_HLEN bytes too late and
+inet_gso_segment() fails with -EINVAL.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: 07f8ac4a1e26 ("bridge: add export of multicast database adjacent to net_dev")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Observed on a virtio_net NIC (KVM guest) that advertises
+NETIF_F_HW_VLAN_CTAG_FILTER but not NETIF_F_HW_VLAN_CTAG_TX, so VLAN
+subinterfaces use software tag insertion (hard_header_len = 18). An
+AF_PACKET SOCK_RAW socket bound to the VLAN subinterface with
+PACKET_VNET_HDR enabled sends a large IPv4/TCP frame exceeding the path
+MTU, with gso_type set in the virtio-net header. The user frame is a
+plain [ethhdr][IP...] layout without a VLAN tag;
+vlan_dev_hard_start_xmit() only attaches the tag metadata via
+__vlan_hwaccel_put_tag(), and validate_xmit_vlan() on the physical
+device later inserts the actual tag bytes via
+__vlan_hwaccel_push_inside(). With network_header stuck at 18 while the
+real IP header is at ETH_HLEN (14), inet_gso_segment() reads a
+misaligned ip_hdr(skb) and returns -EINVAL.
+
+For non-VLAN SOCK_RAW frames on VLAN subinterfaces, set network_header
+to min_header_len so that the L3/L4 header positions match the actual
+on-the-wire frame.
+
+This fix is placed before skb_probe_transport_header() so that both the
+transport header probe (which uses skb_network_offset() as nhoff) and
+subsequent GSO see the right L3/L4 offsets. It complements
+commit 01fdecc0480d ("net: packet: fix wrong transport_header when sending VLAN-tagged frame")
+which only covers VLAN-tagged frames.
+
+Fixes: dfed913e8b55 ("net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO")
+Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
+Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
+Signed-off-by: Junnan Zhang <zhangjn_dev@163.com>
 ---
-v2: while changing this fn, return -ENOMEM on error and document it in
-    the kdoc (sashiko)
+v3:
+- Use is_vlan_dev() instead of the min_header_len < hard_header_len
+  heuristic to detect the affected device; the heuristic may have false
+  positives for other protocols, and the ARPHRD_ETHER check excluded
+  the other hard_header_len cases anyway, so scope the fix back to
+  VLAN subinterfaces.
+- Rename is_vlan to is_vlan_packet to disambiguate from is_vlan_dev().
+- Correct where the tag is inserted: vlan_dev_hard_start_xmit() only
+  attaches the tag metadata via __vlan_hwaccel_put_tag(); the tag
+  bytes are inserted later by validate_xmit_vlan() on the physical
+  device.
+- Reword the subject and commit message back to the VLAN-subinterface
+  scope.
 
- net/bridge/br_multicast.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+v2: https://lore.kernel.org/all/20260831072034.40044-1-zhangjn_dev@163.com/
+v1: https://lore.kernel.org/all/20260821085722.24036-1-zhangjn_dev@163.com/#t
+---
+ net/packet/af_packet.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 3ef5d8bbf552..97686984de6d 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4936,13 +4936,15 @@ void br_multicast_set_startup_query_intvl(struct net_bridge_mcast *brmctx,
-  * snooping feature on all bridge ports of dev's bridge device, excluding
-  * the addresses from dev itself.
-  *
-- * Returns the number of items added to br_ip_list.
-+ * Return: The number of items added to br_ip_list or -ENOMEM on memory
-+ *         allocation error
-  *
-  * Notes:
-  * - br_ip_list needs to be initialized by caller
-  * - br_ip_list might contain duplicates in the end
-  *   (needs to be taken care of by caller)
-  * - br_ip_list needs to be freed by caller
-+ * - on -ENOMEM the caller must free any allocated entries
-  */
- int br_multicast_list_adjacent(struct net_device *dev,
- 			       struct list_head *br_ip_list)
-@@ -4967,15 +4969,20 @@ int br_multicast_list_adjacent(struct net_device *dev,
- 		if (!port->dev || port->dev == dev)
- 			continue;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 1168bd6b09cd..3bada38b3556 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1935,6 +1935,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
+ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
+ {
+ 	int depth;
++	bool is_vlan_packet = false;
  
--		hlist_for_each_entry_rcu(group, &port->mglist, mglist) {
-+		spin_lock_bh(&br->multicast_lock);
-+		hlist_for_each_entry(group, &port->mglist, mglist) {
- 			entry = kmalloc_obj(*entry, GFP_ATOMIC);
--			if (!entry)
-+			if (!entry) {
-+				spin_unlock_bh(&br->multicast_lock);
-+				count = -ENOMEM;
- 				goto unlock;
-+			}
+ 	/* On TX skb->data is the L2 header; anchor it for all socket types. */
+ 	skb_reset_mac_header(skb);
+@@ -1943,11 +1944,28 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
+ 	    sock->type == SOCK_RAW)
+ 		skb->protocol = dev_parse_header_protocol(skb);
  
- 			entry->addr = group->key.addr;
- 			list_add(&entry->list, br_ip_list);
- 			count++;
- 		}
-+		spin_unlock_bh(&br->multicast_lock);
- 	}
++	if (likely(skb->dev->type == ARPHRD_ETHER)) {
++		is_vlan_packet = eth_type_vlan(skb->protocol);
++
++		/* For non-VLAN SOCK_RAW frames on VLAN subinterfaces with
++		 * software tag insertion, hard_header_len includes space
++		 * for the VLAN tag while min_header_len is the on-wire
++		 * Ethernet header length. The user frame carries a
++		 * standard Ethernet header, so its L3 sits at
++		 * min_header_len, not hard_header_len. Move
++		 * network_header to the actual L2/L3 boundary so the
++		 * transport header probe below and subsequent GSO see
++		 * the right L3.
++		 */
++		if (sock->type == SOCK_RAW && !is_vlan_packet &&
++		    is_vlan_dev(skb->dev))
++			skb_set_network_header(skb, skb->dev->min_header_len);
++	}
++
+ 	skb_probe_transport_header(skb);
  
- unlock:
+ 	/* Move network header to the right position for VLAN tagged packets */
+-	if (likely(skb->dev->type == ARPHRD_ETHER) &&
+-	    eth_type_vlan(skb->protocol) &&
++	if (is_vlan_packet &&
+ 	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+ 		skb_set_network_header(skb, depth);
+ }
 -- 
-2.47.3
+2.43.0
 
