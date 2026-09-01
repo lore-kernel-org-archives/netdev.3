@@ -1,100 +1,114 @@
-Received: from mta0.migadu.com (out-118.mta0.migadu.com [91.218.175.118])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFB8368D4D
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD1C38A72B
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788245903; cv=none; b=F8eHLzpKjdtPXQXUu/qUP1JZDcSWJgWNlCGqpb9OvPMrEMJ9ikAy+h3ewG0kjgHHpnFjh6Ogwhq6lREujbNu3MwvhxIwqYisNkmB5gLeVCKiFb8rh6VRTEHZ6AwjfCHsKaKjOXpvkp2bXaav9qvQVYC9PY9shKwHRiCAbycDkxA=
+	t=1788245905; cv=none; b=P7TdTXNsyOc+bI9vs38cSQfr9AqB9BCUNXglQefHv3Vxv6uWaiOsBu56kTx0BxsI8TiY1+Yv556/PJqLw+A5BGe3Am/rS43m8/LlMkKa3SJqEUgcF4FKDKOgveY+OP5ojr5DESe/DRKVmC5eNGxt/8MkGPyEKw8U4tserf5rw6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788245903; c=relaxed/simple;
-	bh=amvD2KT70UCxTU5QR/Qs4sT4tQAd0JRZ8JFIGs2eMxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mmkbaWKQs9yZNoayB/MW62eCNL0wL5tL52FDTWFyqkptWWor5xN7DgI2dVSeBeXXMHpyAz2qsA+zSIXPl9nv8B5QoxlmyKBLiBxDvakH8cpubLA6MAuJ0Hz7idXbs4NLu3UQRmGA8hZ8Lwiw3PRYzyjzQSkAR5NNmlIJzEbHDaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QBAqgrEn; arc=none smtp.client-ip=91.218.175.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788245905; c=relaxed/simple;
+	bh=yfaR0A/+gSGtM9k54V0oJDhwxPBwxLScBGZZgZ0p00k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oTumFNHoTNuMDdaHqHP8PL+2yRV3DGgcJDvKHtlgWQ64OIDsSSuqRcJTld5M2QAFa6XO/lW2qX5xNPn/JH1yRRW+1ioqM6iXIdYpyY5gSRhRcqiOuhmNk0ZZWyr8eob6A1gQLfzkheq94GwbHujfetkIlrKGEj/KNWqo8AlRNOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=NQXzxQkj; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QBAqgrEn"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=amvD2KT70UCxTU5QR/Qs4sT4tQAd0JRZ8JFIGs2eMxI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788245897; v=1; x=1788850697;
- b=QBAqgrEnEjvGiQFLRtx86vbu83paGoa/ikXEyP86VS/slfx2tRaIm+Fbg0XC5mvF0czn/72U
- jfXC8FOqdWE6jNSjgCrl7Qtw2OSjdC6iMKm6XMjnCCpDf0NX1zExiorbXhuggraEVSKI8CAwnPk
- cy/IqRXddza6H8alQ1F7gg+U=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a00feb9a4dbcf499;
-	Tue, 01 Sep 2026 06:58:17 +0000
-X-Mizu-Trace-ID: a00feb9a4dbcf499
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 1 Sep 2026 14:58:07 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net-next 1/2] netdevsim: add link speed support
-Message-ID: <apZ3f3vm5sUrcyrZ@fedora>
-References: <20260831-nsim_speed-v1-0-7a651ee65738@kylinos.cn>
- <20260831-nsim_speed-v1-1-7a651ee65738@kylinos.cn>
- <20260831150818.660de896@kernel.org>
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="NQXzxQkj"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49b8687630fso31665585e9.3
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1788245899; x=1788850699; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2AqnrywdkgyiuCUc7C7pp08uWzz2A6+vu89yOmEHuQk=;
+        b=NQXzxQkj0hHIElysyAl3oDwPEqp0gUD8MVxaj2sjES1UUAko9xAhUw2RaLzrGTBmQU
+         8KbFngk+tV/Z8ZayKoh3ZlaMYcrfia9KdoeumL0yZFBxS8jngkTKI546wQFBRrrRkfQ0
+         7tqEZZTg/2OIeQQMKzS8vSxQh2Z/xa0JDM12UkSJa4rWHrQfr24IHTEPFttycuVwZwR1
+         i9u8292mV9kIEK3qnmezuMZ7Gkgmlp8mEsJpcC10TreUzVVX4kS6Fs1dE/49OiU/58Q1
+         yHM3zqT4JCxfAtrUyOUeSpzjKxEkPt610fYNmB6/s5zKC1oiPKJkLhw+3YS2sS77B723
+         8XJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788245899; x=1788850699;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2AqnrywdkgyiuCUc7C7pp08uWzz2A6+vu89yOmEHuQk=;
+        b=bcVmn/WUvmAVd++ACj4O+6mN/+0ewHkY3/dV/PF+ek1MLprBgvJBRAGqz63YmwgHk8
+         vDUHgvI8po+YxPVZ19VARjkXNrFqHgsxMrZPAdMlalOXBZFZYzje8Y7fITn6jMfT5L4e
+         hXaGwJ4OuLxfN0voqeIOrpnJF397ZDxD8y459RbH6kLnRz37NqTxGQMT9wZlcskOQM3a
+         BoYNl/DiTrMDj24nrSM26lydIjVGAJvDSe3FZPrVHMCcpy+h2uHi+DRd6rziSNQvELgE
+         k3+zIbqvdmAMaoOkKb/ZpPj7YyT9XURs4gMqjeoloXDpvO8yK7pZHQlJVOG+JhAXcoEt
+         vtug==
+X-Gm-Message-State: AFuF++mBML03HD4bYCV8rURLlBM7bueTzebWDmckZFcr0ZeiSVPYsysv
+	P6XYdsH5aIkVdr2waVe4UoEYlgdNCf9W0r/naYtjJBMAyZHd8sAK+kUHd5KjsUET9ZY=
+X-Gm-Gg: AR+sD13Gurs0XGvf0W+uYa5eYwHwaY8yrL+OImSi+VAXBaRPYccRcXLmn/azSgPVtbU
+	k+uue80HwQ81xPlko2AKyFacXMCsP9T25wdGEyZJLL9fKoJfgtEH4Iuw+Xkk18oeGaJRymJNLiO
+	B0sAdtGlDYvEyfCKIQfErbmau7wJxSa7M+8lycV0x1tuZ9Gmowpt2jZrNbp/ru4Y5Qfjjdm7gXa
+	CNlKOPQK/Duza/CbQx+VYv3GnR0HV8eHNJ0+fqJLyZmzUoepizqmcSaLzCFo87bzWTRrm8Avcsi
+	XLKzXBWJwZCMZjcw7am5SirGYCF07kb5nWG6mbXmMIkiv/FpPeD6iRgyhjbSXraxMwTQpvzJ1j6
+	wn9XmnJ55f/kRj9meAUZFw261+ssZ2P9TV9p2VHsrhFvIy46N+XiwgiwrhSPrnIhfy4cUSEA1HI
+	671OVjtNAN2okFlgDylk7mk7aEDWnlsDciIk43GWHcbR01GZBNvcG4KZzrxDf4WNLE2PJx0fyFX
+	Nuj/jAXXUOITqFKsKQ=
+X-Received: by 2002:a05:600c:4f0e:b0:49b:9433:ea44 with SMTP id 5b1f17b1804b1-49cdc40ff56mr120580185e9.4.1788245898951;
+        Mon, 31 Aug 2026 23:58:18 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce0b425sm44270625e9.1.2026.08.31.23.58.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 23:58:18 -0700 (PDT)
+Message-ID: <d0efe7c7-efaf-4e2a-917a-98f99dc66b3a@blackwall.org>
+Date: Tue, 1 Sep 2026 09:58:17 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260831150818.660de896@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/3] netdev: correct error code in
+ netdev_nl_queue_fill_lease()
+Content-Language: en-US, bg
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, daniel@iogearbox.net,
+ bobbyeshleman@meta.com, sdf@fomichev.me, Joe Damato <joe@dama.to>
+References: <20260831164159.1124679-1-kuba@kernel.org>
+ <20260831164159.1124679-2-kuba@kernel.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260831164159.1124679-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 31, 2026 at 03:08:18PM -0700, Jakub Kicinski wrote:
-> On Mon, 31 Aug 2026 11:28:10 +0800 Hangbin Liu wrote:
-> > Add ethtool get/set_link_ksettings callbacks to netdevsim so the simulated
-> > link speed and duplex can be queried and configured from userspace.
-> > 
-> > Move NSIM_LINK_SPEED_MAX and NSIM_LINK_SPEED_UNIT from dev.c to netdevsim.h
-> > so they are available to both the devlink rate path and the new ethtool
-> > code. The set callback rejects speeds exceeding NSIM_LINK_SPEED_MAX.
-> > 
-> > The default link speed is set to SPEED_5000 with DUPLEX_FULL, matching the
-> > existing NSIM_LINK_SPEED_MAX definition.
+On 31/08/2026 19:41, Jakub Kicinski wrote:
+> netdev_nl_queue_fill_lease() returns ENOMEM on nla_put failures.
+> This is wrong, the error code should be EMSGSIZE. But it doesn't
+> matter, caller of netdev_nl_queue_fill_lease() just checks if
+> the retcode is zero or not, and uses EMSGSIZE.
 > 
-> This breaks TDC which uses netdevsim for taprio testing.
+> Reviewed-by: Joe Damato <joe@dama.to>
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>   net/core/netdev-genl.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+> index cb18db681640..04dcd7fc614e 100644
+> --- a/net/core/netdev-genl.c
+> +++ b/net/core/netdev-genl.c
+> @@ -434,7 +434,7 @@ netdev_nl_queue_fill_lease(struct sk_buff *rsp, struct net_device *netdev,
+>   nla_put_failure_unlock:
+>   	rcu_read_unlock();
+>   nla_put_failure:
+> -	return -ENOMEM;
+> +	return -EMSGSIZE;
+>   }
+>   
+>   static int
 
-Sigh, I really didn't expect a speed feature could break the tc qdisc
-testing... I will check the reason.
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-> You posted 2 series for net-next and both broke tests.
-> Please try harder to test stuff locally.
-
-Sorry for the extra work this caused you. You know I did not mean for this
-to happen.
-
-Every time I prepare a patch, I build it locally, run the relevant selftests,
-and get an AI review before posting.
-
-The selftest lib patch touches too many files. The fib_test failed locally
-without producing any useful error output: it returns 1, but I cannot spot
-the it by human viewing. The netdevsim test failed during tc testing, which
-I did not expect at all.
-
-> Matt added support for Docker to NIPA so you should be able
-> to repro all ksfts locally. If something doesn't work please 
-> report back.
-
-I will give this a try. NIPA could help capture this return‑1 failure.
-
-Regarding the tc‑related failures: do you run the full set of network
-selftests for every single patch, or are there rules to select tests based
-on the changes? As you know, not all companies have testing resources
-comparable to RedHat. I have to run all these tests on my personal laptop.
-
-Thanks
-Hangbin
