@@ -1,134 +1,101 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A0E360EC9
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380BB36A34F
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 06:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788245948; cv=none; b=tuuQAk0m7hB1o0htCrQbVw5E4/XpykaSyt8fZva8qVpRGkhevN+YhvJ7LxKSZCkHSwSOogOV3o5TJaiarBCu96Yxk5yRwj60Z62ve3HLp+gCCJVOIRObHoxHGF7pSPlZSV4gcyEiSdqmhMqNp89AHR34fHn0SXZ3xJNX1JjTB4o=
+	t=1788245960; cv=none; b=QraTAe4zydzm7TUe+4Pl/wSHtYWI4RADJN/4RgFPOighsAv2z5CWmq/rA2Zx3CH+vW6Fjtx5CInwzY+rgae8EsIpLEtoAw1IrvR0Xx8uXtfqFxiyby3EdVcgF20ZTNWAuEJnnXzEjMYEibuyS6p3UCjRUKO8iIe/cQg5ukD++2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788245948; c=relaxed/simple;
-	bh=OmNONeQEhJ2VotaJhOxm+SK/y+YV+47pCn9SFs924Xg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FNVC8xai4T3qJnJ8ZbKeeTCiSEDkEZR13cr1EEsWVZKmbvlnATcI53Isw8DHij6bc+MyrHmE2G7T7JbWa+fnRa+TfUETQEpqwvu5Y1kNTMCB3kSbHXjjrYnNWJRBNQOVXSEJKPy1UIEiGpqoyWJ5/tDvMx6sPW4txEKtCojMLZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz17t1788245827t53a6bb27
-X-QQ-Originating-IP: UryGDJvsKak0uUTv+O3XRZu3v5CO75J4aFBAXrptFF0=
-Received: from w-MS-7E16.trustnetic.com ( [36.24.189.66])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 01 Sep 2026 14:57:00 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6337307342351750624
-EX-QQ-RecipientCnt: 12
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Breno Leitao <leitao@debian.org>
-Subject: [PATCH net-next v2] net: libwx: rename wx_pf_flags to wx_flags
-Date: Tue,  1 Sep 2026 14:56:59 +0800
-Message-ID: <9479B0506F544556+20260901065659.41273-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1788245960; c=relaxed/simple;
+	bh=PM8yG5L8nxfTl0hQPflJyNmieEv0klwsJeYgC+9+hsw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=blPtiUE0aQPLh8abtQB7I+Cm/oVUWf22WwRWqbKDdFkERdD3AAv5qZIOq3yWOEeWj7GzZ/whwLw1Y057EcgxSB3FnR417auheetOpfmPs1jt19eN4CQMtmhZPugAwSXnIxP//dTWFvol00Ef7MhpmIehGUTM1F8n4iwC1GkJ7EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=mKZHGooV; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="mKZHGooV"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4954a9e8490so3859115e9.1
+        for <netdev@vger.kernel.org>; Mon, 31 Aug 2026 23:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1788245956; x=1788850756; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=k36GfoFRjCQq2uAtog6zcbE63ZtALQcw/6/pmjWfYF8=;
+        b=mKZHGooV4TreMXbIz2mJyy1cPCXeElHjKlCkk5jSk9C5zd+ucM2EopkKA1bxeNLyej
+         NkC2cFFh6U0cs8sSlEswtVEuO9ETRN+7UOiuaDHWalW/5hK2nGGUVOKVYiXtWl59ZBuS
+         WeVhNzTx4T34x5dJ1Sk+7Ov8RHSp17B1Elo69nJdhMN0K+xh9akUypTxCq8MrGylsqNR
+         NuzQCUXmkxkrm/D9M+tzjZA+SZkUG2uJ+EHTYRoG0VnM71Fo70uFbcciBlFvx+E0hnPS
+         awn8kT0QVPDnzfRxx6E1LFhUOeiOWbgah39P3Ok/xrDzB5Enb3UJbAxwyyDFP3lNZtyo
+         2S8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788245956; x=1788850756;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k36GfoFRjCQq2uAtog6zcbE63ZtALQcw/6/pmjWfYF8=;
+        b=MlbqcDSVWy1iOtNiMDu5jip7xO9JP2kgyKaQv0hxDtNbhJhaN7vCMgcuxZ9wgrmtBE
+         CBH8kRrI5u28PNXERtzHDwbW3oedx9KviW8iGbCPyKPXW+iFfz9vmPmnCd7kD4YbGVLL
+         5L/+PlsbjQyAp1MjFP+Cadafu2o1F+eInob3iM+lXVEanf3Vd4uLpM/z992X6Xxk9M44
+         LtE6JIs0kark5Lkni5EzEKsiPI+/ZSemuDQTqkLT9LuzQbKONyUojD1PioBEudzSDtKd
+         qWAidn/WYwMohN+AWV6dnWzF17jaDprofhfCJKW6aF+tU/bmlOMBrDzSFhkTdGPB5pyv
+         E/UQ==
+X-Gm-Message-State: AFuF++kfuBf/YyQwLA7RGWB1pmLLN87aeX0CGR6+fkClvcsHPmYIv+mR
+	jCAXgoFvl91xPFt8s+XM8ObO6LY2FuD0tAFauG5hcdYtxUlUgbFcUp2x1FUU81jkppY=
+X-Gm-Gg: AR+sD10xvQsOL2O3aAHgPKyecT+BWKaBUAnEsshVvv+1oFj/QsDzFT9B8UA7nc1dKbT
+	97BwCMYO2o1GzGTSTzARsSTj7gelrzU2YidCfOyc3Z6+0Y3cYcT9cxva1k9UVZYrPKJPropddF3
+	sP8vb8h1PT246PSiqNI8SWs0Wya+4u6kl7Wgtna/Tec50A390hf9kWvpA2F3ihO3JBBXXBmk5LR
+	3KbsAfn47stvI3I4i6L2zx0RaudxjnASi1cFzkzOLO53g+O0AzokAsu5QhCsZ1pDv3Ci3UeyXxt
+	abVNTTMxqS3BCjKClUWVijtedZur3s9/GNm4TNZJg1zIaOQnqV3JLkAYZv3BI36jnH70yxpO+Hi
+	chQSvs3SJmapvcVhusZFHl2i1W+EhK5+ftmNtljaLjGoRq4bjdiffRkepRqdoA9TBbxeFF20ctb
+	3j4xR3ALBF9xkmccV/ejo+3z/s3Y4uER2wTpzuUKU7iqA44ZuHyvnlTei/7w0yjRiF+HdaDi6m0
+	K5rf/dpmboyqoEzd+Op5Gmoe58q0A==
+X-Received: by 2002:a05:600c:4e4c:b0:49b:e22:4ee4 with SMTP id 5b1f17b1804b1-49cdd416ef1mr48881135e9.4.1788245956428;
+        Mon, 31 Aug 2026 23:59:16 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce1025asm44368765e9.6.2026.08.31.23.59.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Aug 2026 23:59:15 -0700 (PDT)
+Message-ID: <6e1a4e05-7290-4430-9668-e401f10ca4fa@blackwall.org>
+Date: Tue, 1 Sep 2026 09:59:14 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M+0YV038q5N1YAtUoH8pnGG2lifh1W3LXmKOYUj/vcc7GKPEq5PsAZIB
-	tqcmzH/4gd3y5HkSz9VTfbaByQTJNuCCx0YnaOj9bc5YzSTutl/PH9RK1JemvPIDdA4tho9
-	MF0UyK1k/WeLoFmN/2aUZ3H06ymnMLMin9By49QTpQl87Riz5gCssgldEFab4knawRAf4xG
-	vlrNSDuj7XZ0dfSoOJT4Z/CVOPGaikk8Gd91DqFz6U8mw5HQu7CeawEfxM1sfx7NfMGqozZ
-	QQRKeozYNHDe7ueBA3V1LSUWgLk96m62/TKMp9IeD8OcIwP8EjJJOS/VEUWS9wvJgqjFipY
-	ySddoi9DOgpZYAhlhteCn6p4cGP9VoQnJDXpYCiD8xBcgftIQH6BNOuN++UdiCxagcxOHD6
-	zASyTV5+ChCRylUaRHGyuJXUo8QoNCXJhs4uOGDXmkwd+s8KUKEp8zc1QjVH3tiv17VpJjr
-	WXISVLTX7fouXLIkP4yoA35IaqzoTlnZr3BrbCYtnJs+ooef+tuVb3nOJbnodC2j2H2p7yv
-	gByTO7rkTD21TXFMwgbUdS/CTbY/SLjAmu/dCu4HabNprafRcCAYZ0NFL8pvc8I4L46sR5M
-	3yoj4yuM+YiWM48A8cw4SteRhhY9hi72MIePzvu3xZfb144hAe9n8dAbvVUBeksoYbRhAMK
-	axFKkZoj6tCTky0crVSrLqFOHNEd+TSUx8v3qOT6/wuDpbQIUeJBUmN3IoeiOnrNdAUjwXU
-	+SgwMGYoiOt2Rk6Y3hjZyX4hdpOw5ijD+W4OdTZc01xP1qyiEquStOdgcRQRXTFbAjdktNO
-	UBZjb3YOx9WbfRFuVWGuMm0yJ+uIpD98Indt/riK9RErCRlYjnuio/+upO2vuvk9shGuNXN
-	vEX0ZnQCKDVZIDNCLizh06KI8TDAtMdHqffE7u3NkNMPyNdaB0jjX8wIXN231dfRORALONI
-	A5Pgcsd0r5QkYZg7fMJUAcQm0h209iKM6x4ceMJAkUmvxJ6IWdUfQ0e06uY3sG4T2ly/MPI
-	eqAYTsaCPb9PcYzgqjaHtukEVXCezQe4H9c7d/MA8YYmpbQ0EURIv2j8Yopbhn6bouQakkC
-	A==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 3/3] netdev: don't use dev->flags for IFF_UP
+Content-Language: en-US, bg
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, daniel@iogearbox.net,
+ bobbyeshleman@meta.com, sdf@fomichev.me, Joe Damato <joe@dama.to>
+References: <20260831164159.1124679-1-kuba@kernel.org>
+ <20260831164159.1124679-4-kuba@kernel.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260831164159.1124679-4-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The flags defined in `enum wx_pf_flags` and its terminator
-`WX_PF_FLAGS_NBITS` were originally named with a "PF" (Physical Function)
-prefix. However, these flags are not exclusive to PFs and are also
-utilized by Virtual Functions (VFs).
+On 31/08/2026 19:41, Jakub Kicinski wrote:
+> dev->flags are not technically ops lock protected. The IFF_UP flag
+> will not change when dev->lock is held, but other flags may change
+> so KCSAN would probably not be impressed. Because of this we added
+> a dedicated dev->up which is safe to read under dev->lock.
+> 
+> qstats want to make sure device is up, use dev->up.
+> 
+> Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> Reviewed-by: Joe Damato <joe@dama.to>
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>   net/core/netdev-genl.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-Rename the enumeration to `enum wx_flags` and the bit count to
-`WX_FLAGS_NBITS` to accurately reflect their shared usage across both PF
-and VF drivers, and to prevent potential confusion.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
----
-Changes in v2:
-- Rebase on new fixes.
----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c   | 2 +-
- drivers/net/ethernet/wangxun/libwx/wx_type.h | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 122c4952d203..59cdd7d71e44 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2520,7 +2520,7 @@ int wx_sw_init(struct wx *wx)
- 	spin_lock_init(&wx->hw_stats_lock);
- 	mutex_init(&wx->reset_lock);
- 	bitmap_zero(wx->state, WX_STATE_NBITS);
--	bitmap_zero(wx->flags, WX_PF_FLAGS_NBITS);
-+	bitmap_zero(wx->flags, WX_FLAGS_NBITS);
- 	set_bit(WX_STATE_DOWN, wx->state);
- 	wx->misc_irq_domain = false;
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 9454e90258d8..a05a8c1f4049 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1269,7 +1269,7 @@ struct wx_rss_flow_map {
- 	u8 flag;
- };
- 
--enum wx_pf_flags {
-+enum wx_flags {
- 	WX_FLAG_MULTI_64_FUNC,
- 	WX_FLAG_SWFW_RING,
- 	WX_FLAG_VMDQ_ENABLED,
-@@ -1291,13 +1291,13 @@ enum wx_pf_flags {
- 	WX_FLAG_RX_MERGE_ENABLED,
- 	WX_FLAG_TXHEAD_WB_ENABLED,
- 	WX_FLAG_NEED_PCIE_RECOVERY,
--	WX_PF_FLAGS_NBITS               /* must be last */
-+	WX_FLAGS_NBITS               /* must be last */
- };
- 
- struct wx {
- 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
- 	DECLARE_BITMAP(state, WX_STATE_NBITS);
--	DECLARE_BITMAP(flags, WX_PF_FLAGS_NBITS);
-+	DECLARE_BITMAP(flags, WX_FLAGS_NBITS);
- 
- 	void *priv;
- 	u8 __iomem *hw_addr;
--- 
-2.51.0
-
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
