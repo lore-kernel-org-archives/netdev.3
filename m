@@ -1,130 +1,115 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7863AAF57;
-	Tue,  1 Sep 2026 09:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B883955C3;
+	Tue,  1 Sep 2026 09:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788253525; cv=none; b=tA6Nfm5TMSQQVy5wijSRTR70wLdP3hQ5nJOf8xH7MuGQ8/egDP5mEyt6cQMvcqWZPUbv63idnDULW6abPyMIYqTlsEIIMLD9mtQUC7+S35HRHWO+dd2kguE00Wh0L68RsaYTwbu82L3npemBpJldViMWoxO/U1dn45nSVY9aCbU=
+	t=1788253553; cv=none; b=X0JhHVKulEJMrnuZRAZEdQFDco4yjsMW74VZ0Yw065f70RdkcsHb/ky9kuAQxI1DBwreM5Z+Fi19Z7oy2qSnkvzFGkz1oSUmw+7SWBULWQpM6sew9/0EvnpJLGcitopi973/NMKjOGjHmmpa/h4GzBIqyr/g9ZIBAVsJSPl/JOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788253525; c=relaxed/simple;
-	bh=Vg4cyF1+d9e+J9NUaFGqRHksw/LB1Ux2jcR/L7iyFkM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sadLLGFuUmYZ9oVGKh2SJ/krbnCCRoZ/QxxcU+Lq7+zwQTKIf9IFnDVqD8D4p8xXD19qiyyLqK/QKBtctK8gUAJS3xqJq3Q42vN2cvJDN2CmU+Vjen4fTksnCikO9P95IGAwiAGHold4TcyfwJYvNmX+tJFAxXSNXK4FYu08RUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eJcvPQIc; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788253553; c=relaxed/simple;
+	bh=tx+BXv8FdJTOqroRusEgS7WxHl7Hlq864y2qJKfbL2A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eEusSfbgZBNItLEUbbpRfunUxxQLFkfhUsgXKzuxXh+gX1WvRnl2Zxa4ou/mlyd/yAV7tH0EMH+nCvXGsZ0oBW92X08nxWBMiQFr70kjRrmTSMxWe9nEnKkqL+WB2sTWj+cUKo2NNdha2RKrHQoQMhAPEn9UlJteoYlK66S6/uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=JL9zg82M; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eJcvPQIc"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DA9FB1A1925;
-	Tue,  1 Sep 2026 09:05:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AA94C6053C;
-	Tue,  1 Sep 2026 09:05:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 196BE11C79250;
-	Tue,  1 Sep 2026 11:05:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788253519; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=GJuoWYQzDE1NRtCyW1LcfgF9O6bpX8to9ln1fn3ixIc=;
-	b=eJcvPQIc8DGkcHhHoXhV1UzWfmBDlgzHp9/jTqCqe21bTmqgyBkFg7hq0V17idFcuc3ylq
-	tYkYzAzaDvVxhe3hniX6FwBMU7WL8ZKUm3SdhBjZYNuYhPi5g11gPca17rViw+Rf2eaDLF
-	JvKViPoBLhHKMr6Fo1EGBavxqpeGAJjTEaw4NSvpUYZgs2VbHGqA4wz08gscIHeeMe1tZc
-	NDSrVuDX1xThOCioQxK1wngqAq2OedyhyoMtZuHGA3QyRw0/wDCmPTlVH4YlZi2+w1Giu6
-	CkGQXpOO2FI7xCRLjqYDb1RmAO15Xu1IywWDolfrgHxz/gkA3asWBvCaJcFS8A==
-Message-ID: <e4050d49-29cc-4fc7-aec5-53c8dd9dbc97@bootlin.com>
-Date: Tue, 1 Sep 2026 11:05:11 +0200
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="JL9zg82M"
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1788253545;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bEnHDKcXLyTKDgscSQ2cRAL+7EnQmBfBqSJoXXxrq7k=;
+	b=JL9zg82MHRd7pK9alIJ8BKW0UoCzNQGeWxrWNBThDPzERk0V38yvjJNLiHtLTTbydPacVa
+	CHHVwxaOl0lzJUSSfXovZUoFvGd2y4skGGCsS0UhgbOOJ/YNjNYykH9MfHqwMFokH4nb7C
+	08V/FHs8sXir2kdJ7SmGgPqksuKqV8E=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Karsten Graul <kgraul@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Ursula Braun <ubraun@linux.ibm.com>,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"D . Wythe" <alibuda@linux.alibaba.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Subject: [PATCH 5.10] net/smc: fix potential panic dues to unprotected smc_llc_srv_add_link()
+Date: Tue,  1 Sep 2026 12:05:43 +0300
+Message-ID: <20260901090545.10419-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] net: stmmac: Add UltraRISC DP1000 GMAC
- support
-To: Jia Wang <wangjia@ultrarisc.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20260901-dwmac-ultrarisc-v1-0-f19454814bcf@ultrarisc.com>
- <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
- <49620860-9bd5-48fb-bbaf-55da377e9018@bootlin.com>
- <178825152454.3900827.17398212265347300430.b4-reply@b4>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <178825152454.3900827.17398212265347300430.b4-reply@b4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: "D. Wythe" <alibuda@linux.alibaba.com>
 
-On 9/1/26 10:32, Jia Wang wrote:
-> On 2026-09-01 09:29 +0200, Maxime Chevallier wrote:
->> Hello,
->>
->> On 9/1/26 03:27, Jia Wang wrote:
->>> The DP1000 GMAC integration provides fixed TX and RX RGMII clock delays
->>> that cannot be disabled. For boards without PCB delays, "rgmii-id"
->>> describes the link, but passing that mode unchanged to the PHY would enable
->>> a second set of delays.
->>>
->>> Use phy_fix_phy_mode_for_mac_delays() to translate "rgmii-id" to "rgmii"
->>> before attaching the PHY. Reject other RGMII modes because the fixed MAC
->>> delays cannot be combined with them without duplicating or omitting a
->>> delay.
-[...]
-> 
-> Thanks. I enabled CONFIG_STMMAC_SELFTESTS and ran the test on the Milk-V
-> Titan with the new glue driver:
-> 
->  1. MAC Loopback                 0
->  2. MMC Counters                 0
->  3. EEE                          -95
->  4. Hash Filter MC               0
->  5. Perfect Filter UC            -95
->  6. MC Filter                    -95
->  7. UC Filter                    -95
->  8. Flow Control                 0
->  9. RSS                          -95
-> 10. VLAN Filtering               -110
-> 11. VLAN Filtering (perf)        -110
-> 12. Double VLAN Filter           -110
-> 13. Double VLAN Filter (perf)    -110
-> 14. Flexible RX Parser           -95
-> 15. SA Insertion (desc)          0
-> 16. SA Replacement (desc)        0
-> 17. SA Insertion (reg)           0
-> 18. SA Replacement (reg)         0
-> 19. VLAN TX Insertion            -110
-> 20. SVLAN TX Insertion           -110
-> 21. L3 DA Filtering              -95
-> 22. L3 SA Filtering              -95
-> 23. L4 DA TCP Filtering          -95
-> 24. L4 SA TCP Filtering          -95
-> 25. L4 DA UDP Filtering          -95
-> 26. L4 SA UDP Filtering          -95
-> 27. ARP Offload                  -110
-> 28. Jumbo Frame                  0
-> 29. Multichannel Jumbo           -95
-> 30. Split Header                 0
-> 31. TBS (ETF Scheduler)          -95
+commit e40b801b3603a8f90b46acbacdea3505c27f01c0 upstream.
 
-Awesome, that's pretty-much what I expected, nothing too bad stands out :)
+There is a certain chance to trigger the following panic:
 
-Code itself looks good, no obvious error, so
+PID: 5900   TASK: ffff88c1c8af4100  CPU: 1   COMMAND: "kworker/1:48"
+ #0 [ffff9456c1cc79a0] machine_kexec at ffffffff870665b7
+ #1 [ffff9456c1cc79f0] __crash_kexec at ffffffff871b4c7a
+ #2 [ffff9456c1cc7ab0] crash_kexec at ffffffff871b5b60
+ #3 [ffff9456c1cc7ac0] oops_end at ffffffff87026ce7
+ #4 [ffff9456c1cc7ae0] page_fault_oops at ffffffff87075715
+ #5 [ffff9456c1cc7b58] exc_page_fault at ffffffff87ad0654
+ #6 [ffff9456c1cc7b80] asm_exc_page_fault at ffffffff87c00b62
+    [exception RIP: ib_alloc_mr+19]
+    RIP: ffffffffc0c9cce3  RSP: ffff9456c1cc7c38  RFLAGS: 00010202
+    RAX: 0000000000000000  RBX: 0000000000000002  RCX: 0000000000000004
+    RDX: 0000000000000010  RSI: 0000000000000000  RDI: 0000000000000000
+    RBP: ffff88c1ea281d00   R8: 000000020a34ffff   R9: ffff88c1350bbb20
+    R10: 0000000000000000  R11: 0000000000000001  R12: 0000000000000000
+    R13: 0000000000000010  R14: ffff88c1ab040a50  R15: ffff88c1ea281d00
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #7 [ffff9456c1cc7c60] smc_ib_get_memory_region at ffffffffc0aff6df [smc]
+ #8 [ffff9456c1cc7c88] smcr_buf_map_link at ffffffffc0b0278c [smc]
+ #9 [ffff9456c1cc7ce0] __smc_buf_create at ffffffffc0b03586 [smc]
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+The reason here is that when the server tries to create a second link,
+smc_llc_srv_add_link() has no protection and may add a new link to
+link group. This breaks the security environment protected by
+llc_conf_mutex.
 
-Maxime
+Fixes: 2d2209f20189 ("net/smc: first part of add link processing as SMC server")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[Denis Arefev: adapted for 5.10: smc_llc_srv_add_link() has no 
+req_qentry argument here, as SMC-Rv2 REQ_ADD_LINK support is
+not present in 5.10]
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+Backport fix for CVE-2023-54237
+Link: https://nvd.nist.gov/vuln/detail/CVE-2023-54237
+---
+ net/smc/af_smc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index e9dabe758a31..e76e71417a2c 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1303,8 +1303,10 @@ static int smcr_serv_conf_first_link(struct smc_sock *smc)
+ 	smc_llc_link_active(link);
+ 	smcr_lgr_set_type(link->lgr, SMC_LGR_SINGLE);
+ 
++	mutex_lock(&link->lgr->llc_conf_mutex);
+ 	/* initial contact - try to establish second link */
+ 	smc_llc_srv_add_link(link);
++	mutex_unlock(&link->lgr->llc_conf_mutex);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
