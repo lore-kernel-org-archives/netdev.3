@@ -1,102 +1,84 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E97A41DDE3;
-	Tue,  1 Sep 2026 16:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A9C432BF5;
+	Tue,  1 Sep 2026 16:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278465; cv=none; b=IBdTYne7QcS0CaSM7sbR78lXPDMuDAbT1tI0enEc5egSZcygToKf4YEvfuw0OZvG/GtxLJBwTtPfYpowi+DFXYYXkSKH9AKVbDP+2nAtwXdoneKHNm8N6GCKD3MGPCi4ToNF+HrF76mqg8V15CvyUVFPvOHZ7GsOywUiNOnUqa4=
+	t=1788278546; cv=none; b=uRtyBl0g+oneXZOOEYyp2qiyk7gahsyUhIgTNtHBh7wqRmTmmWTGLiTtuIJRdyKl1VaM26nYB94dd4h9/HxB/Svx+jVbkM+33Se7tkon+RQlISidWC/V7rgnYUANiPO3HS3O9sgaY/eShTxSMYwxrmolkq2TPvHfRgiv2i9JIPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788278465; c=relaxed/simple;
-	bh=23IX0L/IYlRtvlF8jKzUBJ1l6aTsu1TIgr+UqcEB2sA=;
+	s=arc-20240116; t=1788278546; c=relaxed/simple;
+	bh=gNdfoe53Mwg604n+y0WvOrjjC2vMCSzhmMsUM4XmopE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dDPrG7x5y9BsVp1/RqHSwIpnP3kOe/7RwNSvaQY43gk956ccOVrQ9mnJuBv8PRoY+fQu5n7+P4UyMzepLHlNPry5OlxTOa1uMoUcdSwDKEJh+mimMf1Xj9Mf7QPTxZSQJNrILKxd04oVo0Y/2zbSdvRNc85mjGMIWbY6bvpXVBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lTDxnXxh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LztLxJnU; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=SWMnSgC0L8EbszsnW4lFgpnCunI+bMQJwoqHCUgk8M9hxtIXTyd9CDXoEemGR02OqD8EMvdorS7rS3ORImMBiOQ/ZqwcK+WAgXL42002iOf13EnezAVuc1i5nGZv03lIyNJ8fg6EB1d8kpVVf+yCE+MA+tB5mQWdusxjkgnVMsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5BA3PfSj; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lTDxnXxh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LztLxJnU"
-Date: Tue, 1 Sep 2026 18:01:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788278461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kVbZaHZB2UoG7nxTrsvCQq3Yn4HBjnRnCLNdDUnj4As=;
-	b=lTDxnXxhlhwbcgcIcDbRw2LGt2y2H+vVhAgVPR6Fmpfiyf2Ax2arNgQcIQBJeco2MvtN5R
-	16NDw+MdFPqG7iGN36cHBNCOeKqivM1frIE4883jI1KynKoQB7lQyvyI5B8Xu6OreX4YGK
-	AlXjDIOpAhgU7oVbn51RmU9RsxiGo+xCn/GDkx4Lbhdnm2TH4xSebEgRwuBEgv9UPI489l
-	6V4SOrp3LpctmVyePvqmXFDB/0SyL9K5onCbgJoxlHTUmQW68y79jdV1c8aUMvw2gbEOIf
-	2ji73oAXi0z8p2FUXo1kqW80QALU/dWEvJZhnZsVCVq2OFcuAE/QrYwKus4VKA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788278461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kVbZaHZB2UoG7nxTrsvCQq3Yn4HBjnRnCLNdDUnj4As=;
-	b=LztLxJnUMSmoTI1m+GOzgcR4o453Iz+FRfzrLecpbxx3cKPdb/Kqwtm2PNuqt21iEtfor2
-	4ZgaEMhdFi7PodBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5BA3PfSj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=FfrKBcy61KkfVsK24t+C7a6pUxQVpc0yKJroxL4DpCM=; b=5BA3PfSjkYjr0GpkauUfNf2enR
+	FCD7S4ZAjZ0MqCrkYQLWWrL8NYJc65r/gtgGbc7DOOrd46dTZfiqOyxjpFfZFQ07fVmE06tkXu3Uf
+	JSiu1dU+XgJBmFZyJTzpDy8rddcpRJ9ME9DLN98S/NwwBlq4SuG7Bn1P1k9jMbMI26nA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1Qw7-002NxP-Kn; Tue, 01 Sep 2026 18:02:11 +0200
+Date: Tue, 1 Sep 2026 18:02:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: khendry@reliablecontrols.com
+Cc: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>, Petr Mladek <pmladek@suse.com>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH net-next v4] net: Replace %pK output with 0
-Message-ID: <20260901160100.ATjnom7K@linutronix.de>
-References: <20260901153706.RKMS7kBY@linutronix.de>
- <9e18a5a0-33c7-482b-9edc-972de9954453@hartkopp.net>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] net: pcs: rzn1-miic: Verify port number from dtb
+Message-ID: <bca8ba82-211e-496c-bc8a-c9ccd8667f9c@lunn.ch>
+References: <20260901-rzn1-miic-fix-array-v2-0-3e907049e770@reliablecontrols.com>
+ <20260901-rzn1-miic-fix-array-v2-2-3e907049e770@reliablecontrols.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <9e18a5a0-33c7-482b-9edc-972de9954453@hartkopp.net>
+In-Reply-To: <20260901-rzn1-miic-fix-array-v2-2-3e907049e770@reliablecontrols.com>
 
-On 2026-09-01 17:51:10 [+0200], Oliver Hartkopp wrote:
-> > ---
-> > v3=E2=80=A6v4: https://lore.kernel.org/all/20260812110531.ITPqiY2O@linu=
-tronix.de/
-> >   - The CAN changes have been dropped.
->=20
-> No. They are still part of your patch - in the former way.
+On Tue, Sep 01, 2026 at 08:25:14AM -0700, Kyle Hendry via B4 Relay wrote:
+> From: Kyle Hendry <khendry@reliablecontrols.com>
+> 
+> Add check to make sure port number is in range before writing
+> to dt_val array
+> 
+> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+> ---
+>  drivers/net/pcs/pcs-rzn1-miic.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
+> index c50b65d064fa..ebd73ed63896 100644
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -692,6 +692,11 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
+>  		if (of_property_read_u32(conv, "reg", &port))
+>  			continue;
+>  
+> +		if (port < miic->of_data->miic_port_start || port > miic->of_data->miic_port_max) {
+> +			dev_err(miic->dev, "Port number out of range: %d\n", port);
+> +			continue;
 
-unbelievable. So I just resent v3 and though that I forgot to update the
-patch description so I stripped the can bits.
+Better to return -EINVAL, so the probe fails and the broken DT blob is
+fixed.
 
-> Would you like to integrate my patch into yours or do you want me to reba=
-se
-> my code once it shows up in net-next?
->=20
-> https://lore.kernel.org/linux-can/20260815103400.117175-1-socketcan@hartk=
-opp.net/
+    Andrew
 
-No, it is too big for my taste. Please route it your usual way. The plan
-is to get rid of %pK once all users are gone so there is no need to have
-it merged as part of this one.
-
-> Best regards,
-> Oliver
-
-Sebastian
+---
+pw-bot: cr
