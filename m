@@ -1,184 +1,175 @@
-Received: from mail-oa2-f10.google.com (mail-oa2-f10.google.com [74.125.231.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9080734EF04
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 13:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262303016F1
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 13:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788271112; cv=none; b=Kn1cELroQYKHPnEpVnzU5UN5v3VrB4rkbwOrdT3mu4u4VxZZNv++vnFWEG0EnSzk2Z1WuI5ds85nAGPQAIE0gArzzg3Ba7EDmTYWH0iq/cbvpJSa+y8rZT68tNJaetxW4zVCVqru+ZifWDa5EBKYvLrI6BD1RfVJVs7HGlTgXGc=
+	t=1788271153; cv=none; b=nFs+u6worwzrLzKS0S0bHDRlbEMS3KX+zotTmcFfgXkKwwQZk2V+6qCTRhMm5rbCcctAvDB7W0kkzi6kqjQnhbHGGuAO/Xc8cC1OGH9aM2M5kh4wCwoxnHDf9d7vMHA3mgsOam5urgJZtaCozR4AXVT8Rdad7F+xmbyFlV/5w0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788271112; c=relaxed/simple;
-	bh=ENIdvHRw1IiFMIzhFtYNWAzVUTCe7z0d5NvRi0XN0lQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ImXuV55fGhs9X/qdRxscfGwHWkGcT1AizGkJj+aK/PD2oWWZvgxJjDrDOvsbMrMfiIquRVwurE9X1can26gBsjPvm/Rzqp397WjPmXqlC0d8lGhs4zlsOcq3RqQ/zkC9sB/5vfe0toUJzSqtU8wJf95EyXF9nercnEFF5pZNTV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa2-f10.google.com with SMTP id 586e51a60fabf-46abf222dc3so400718fac.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 06:58:30 -0700 (PDT)
+	s=arc-20240116; t=1788271153; c=relaxed/simple;
+	bh=+dQW5HMUoVkq1CBnPzF+MmC76PM+fL5474Pz/VoXE7M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RZALThd6zCrKKNgYAT6aoJ9JIeWL2H8NDLDhSTByN7gzfgGYy3FMvSVPQ9ITEXfXdTT2hDobBlBq6CEkJd+hBTcTWcnn2ka07x95JwDhmR3f5F5RUNy5E9I1f1GxLFHAXAAREXtQhZoI+zMIejhxQ9nYQRoqQaOI9QU4k0GjqSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JbJpyPNJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LAr/3elC; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JbJpyPNJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LAr/3elC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788271150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RyeT2gPwgRHGbRT1UC00BJ26hUwN31fmD+oDhUutisA=;
+	b=JbJpyPNJ/w3zz3f+CGCpCuof50zU0xQDu/aYkuoeMt6jqE8hRH9CpXurhpvY0NMDO5PSei
+	qJiP29QELNIhlO5mVVasa3tpnBrHpcGBHYfDhIT70YnkPU0FRyvGI5u211tAjjDS3lZ0qZ
+	Wl9FvZFIz7SdV+Yez/VqjP1HdG84rTQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-606-j5DmVvUzMU2ilNrsd_1sPA-1; Tue, 01 Sept 2026 09:59:09 -0400
+X-MC-Unique: j5DmVvUzMU2ilNrsd_1sPA-1
+X-Mimecast-MFC-AGG-ID: j5DmVvUzMU2ilNrsd_1sPA_1788271148
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4955fd77c18so26974105e9.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 06:59:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788271148; x=1788875948; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RyeT2gPwgRHGbRT1UC00BJ26hUwN31fmD+oDhUutisA=;
+        b=LAr/3elCnOAvH/kVYc+6e94S+p0vL2LMILz1mr1Gtjg5rAT3F8tKZ+YKHtNkdMZ6l+
+         L/IrITJ4YSDII4EmOYCt5AKiNjdiM4JAyToMbdrhT6D0kGaNkgo9hjuvtKAhNI6noBuN
+         b8kV4upsTAjIgAL9dImyKYcXV1h11b2TCAfaMJDdGXMnaM1Y8LiiDHw+96oEcYdGiOdC
+         pDJZ4ca0PJGcP6glUxio/E2N7kZ/FyEgODC8Sb05yWeoDoulHNK+ErfSY0wXaIwZxMyH
+         SlxvqSU0icKeQut4tfdUY5UKayIykBESEgxvjAFumvd4gIHhGR5JRyQOwQh6CK4mqbws
+         dawQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788271109; x=1788875909;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oSScl9b39LFhA6dCrI2VzC9NEUldGRGWmrst0p3B1xs=;
-        b=rCwTFx9z3Mf3RktRUg5ypaGkAAuWNQ/ZELfASARhjrWQSRd5k2RD3lWEHI9mVkhjV7
-         e06REi89Apni88uqgeM0pWcglLjOhpDK+E1qCIyhLC+C9gCqWm1qb4HQ6mvlBVeGDlc+
-         7e+dQ7dsGeuJzmdnMcCBPovUqF1VYscT8RHbEpcpxphgzYBRhlNBphrBlGtxXSzynjBu
-         n3vCsRf2ZIgxb9FED+dYtFuB5JNAK2L483YFahJGKzhMl/pMGq8B+x0CxHn1exU1KeKG
-         4OE9jf8/MdLSRpt91eznRtE8YTfQ74m2KHi9LfdsHBGKNyX2EwMUj2Ywdk2oS6mFkYZG
-         spRw==
-X-Forwarded-Encrypted: i=1; AHgh+RortAKdAeEku70Vc+gisaagWmTEP66+x3r7II5TNxHBCqjuJyxypao2nRoWB11iVihKkVU9dNw=@vger.kernel.org
-X-Gm-Message-State: AFuF++n5cdNlsze0hu03wEWZHh7IDJoy+CvBVnk+gxzrz966/aLne3sQ
-	p4zWG1D/urvZpg0vE90PMx30NiyoSsG4OZsBFK3ZVLG+wYcCJuRo0BjIUL76+X4T86CZD0o2NcE
-	M36JC3Ff1dCOFT1444Z0+rADz81VEwBjwObP8LOPOAUdTBMixMB+tulBYevI=
+        d=1e100.net; s=20251104; t=1788271148; x=1788875948;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RyeT2gPwgRHGbRT1UC00BJ26hUwN31fmD+oDhUutisA=;
+        b=O7zJ8rijzFmDMcXO9gjoAHaYq6lzUE3FN3bLTYbNMpDSLfP0DGUI8tUf4RpYrGFETw
+         6SFUrV7FxFEYrPGqSwop99XM+b8js+h+IGjq4dbBAEu+tjAlEglcCwC7m5PBdZJ9u+pu
+         aznqEO4KkxvWq3HyhSKGP1JmcgG28MOn2ey5ZHqvCme2bn4EtfvPJzvSd1cAMsj3bn5k
+         Lfl9uibuWPIIsnVdDmSudDdj/r5iHCs2TvEYDwEbv3QPbQfCO4HM6i/6jpPLUlI9a2ln
+         JLP84UeSWWeWP/NjJ8WKfYQCRdq/kQy7f8r+KH2OYZ4c16GdF3tQ/t5ukQJXskO0CjyG
+         51Qw==
+X-Forwarded-Encrypted: i=1; AHgh+RobT8R9obfOsHrjVPNbyNwVs0OGfkhbEX47s+Nqf8p1f8qiplLr7O44kBR487VuNRuKBAfil04=@vger.kernel.org
+X-Gm-Message-State: AFuF++nZGCOkryjF8X9nAclaxVb0mtO6fKeEvhDdsjE7pmVoy+l0c5Jt
+	fXrb+wlEY+f3/lpEcuiAzVUUjVa2/fIGVwBp4x3AfO6N8efoB0JVoNvpV3AH4D0G+w/wb+kpf+9
+	pehymGaOTZOu8L6aXVZUWPq6475NWEsUlXW+cyY4/Hc1EdizApXvV5A9p+g==
+X-Gm-Gg: AR+sD13h2D+MeynB1z76KIvYOH46wQP27Xgn+eOMMEhNRrMHtMfRUp/A6pIghzHHorw
+	ElEBv32uTX1+RLraFcTdE+6+SRI2yxFct78JjFYmKwwVLNZh711q9VOLy0W9NZqv2PvHnRxmMJl
+	Wge/ca4r9EGzp92kSp9rOsS2zR+PKpKEqWUWNVq+/GcNuC7mLcxrjnEsX2dXyU5sLxHxsWeZKCf
+	YGKhqFwJVXM8mlJvC0r4I/SzgflUYVkMMkmPD5TW6JE6rNDSXZJEy8NizDJfRWDI5F8xjGbNeOS
+	yyJA83lfhFl2TnLBPbKjluZe16AmOxXiWDICDunTl9V7IOhLjWQ6wstvPR9HBaX0FrvVxuOkQFY
+	+sqX2wr0UPQ1UqZ/v51ttetctUCCk7mrGxS5tpvu/eAYUFLFILU4x6Y5X3UOQQrBI1pS387PWaQ
+	==
+X-Received: by 2002:a05:600c:3542:b0:499:a5c8:c6f3 with SMTP id 5b1f17b1804b1-49cdc422c19mr158172605e9.3.1788271148277;
+        Tue, 01 Sep 2026 06:59:08 -0700 (PDT)
+X-Received: by 2002:a05:600c:3542:b0:499:a5c8:c6f3 with SMTP id 5b1f17b1804b1-49cdc422c19mr158171425e9.3.1788271147829;
+        Tue, 01 Sep 2026 06:59:07 -0700 (PDT)
+Received: from [192.168.188.218] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce10153sm76476035e9.4.2026.09.01.06.59.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Sep 2026 06:59:07 -0700 (PDT)
+Message-ID: <17e50070-46c9-46dd-8109-95007a4f681f@redhat.com>
+Date: Tue, 1 Sep 2026 15:59:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:60b:b0:6b3:bb82:2736 with SMTP id
- 006d021491bc7-6b3bb82372amr1185072eaf.17.1788271109452; Tue, 01 Sep 2026
- 06:58:29 -0700 (PDT)
-Date: Tue, 01 Sep 2026 06:58:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a96da05.08473e0e.15b4ac.0001.GAE@google.com>
-Subject: [syzbot] [sctp?] WARNING: refcount bug in sctp_generate_timeout_event (4)
-From: syzbot <syzbot+f5baf1a1df3261c2ad8d@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/3] net: phy: motorcomm: Enable analog frontend
+ on YT8531S
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Yao Zi <me@ziyao.cc>,
+ Frank <Frank.Sae@motor-comm.com>
+Cc: thomas.petazzoni@bootlin.com, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20260831073747.361482-1-maxime.chevallier@bootlin.com>
+ <20260831073747.361482-4-maxime.chevallier@bootlin.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260831073747.361482-4-maxime.chevallier@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 8/31/26 9:37 AM, Maxime Chevallier wrote:
+> The YT6801 PCIe NIC includes the dwmac-motorcomm IP for the MAC part, as
+> well as a YT8531S PHY, configured in GMII mode.
+> 
+> It seems this PHY requires the Analog Front-end (AFE) DAC clock to be
+> enabled for link to reliably establish, otherwise the link just doesn't
+> come up.
+> 
+> Let's enable it at config_init().
+> 
+> This logic has been extracted from the vendor driver provided by
+> Motorcomm.
+> 
+> It's really unclear if this is specific to the integrated version of
+> that PHY, and how this potentially interacts with the fiber mode this
+> PHY supports, so this configuration is only enabled when the interface
+> is GMII, i.e. the PHY is integrated.
+> 
+> With this, the PHY reliably establishes link and the YT6801 PCIe card
+> becomes fully functional.
+> 
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  drivers/net/phy/motorcomm.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+> index 36c229460a77..90a4f86f2758 100644
+> --- a/drivers/net/phy/motorcomm.c
+> +++ b/drivers/net/phy/motorcomm.c
+> @@ -144,6 +144,11 @@
+>  #define YT8521_CLOCK_GATING_REG			0xC
+>  #define YT8521_CGR_RX_CLK_EN			BIT(12)
+>  
+> +/* Analog front-end control register 3 */
+> +#define YT8531S_EXT_AFE_CTRL3			0x12
+> +/* Analog front-end DAC clock enable */
+> +#define YT8531S_AFE_CTRL3_CLKDAC_AON		BIT(13)
+> +
+>  #define YT8521_EXTREG_SLEEP_CONTROL1_REG	0x27
+>  #define YT8521_ESC1R_SLEEP_SW			BIT(15)
+>  #define YT8521_ESC1R_PLLON_SLP			BIT(14)
+> @@ -1740,8 +1745,15 @@ static int yt8531s_config_init(struct phy_device *phydev)
+>  	if (ret)
+>  		goto err_restore_page;
+>  
+> -	if (phy_interface_is_rgmii(phydev))
+> +	if (phy_interface_is_rgmii(phydev)) {
+>  		ret = yt8531_set_ds(phydev);
+> +		if (ret)
+> +			goto err_restore_page;
+> +	}
+> +
+> +	if (phydev->interface == PHY_INTERFACE_MODE_GMII)
+> +		ret = ytphy_modify_ext(phydev, YT8531S_EXT_AFE_CTRL3,
+> +				       0, YT8531S_AFE_CTRL3_CLKDAC_AON);
 
-syzbot found the following issue on:
+Sashiko suspects this will not survive a suspend/resume:
 
-HEAD commit:    bf1079577a11 Merge tag 'sched_ext-for-7.3-rc1-fixes' of gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17d06d9e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=f5baf1a1df3261c2ad8d
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831073747.361482-1-maxime.chevallier%40bootlin.com
 
-Unfortunately, I don't have any reproducer for this issue yet.
+/P
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/c52dc60311d3/disk-bf107957.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/37591d96a65b/vmlinux-bf107957.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/729e80af6e39/bzImage-bf107957.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f5baf1a1df3261c2ad8d@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x9f/0x110 lib/refcount.c:25, CPU#1: syz.0.2220/13955
-Modules linked in:
-CPU: 1 UID: 0 PID: 13955 Comm: syz.0.2220 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-RIP: 0010:refcount_warn_saturate+0x9f/0x110 lib/refcount.c:25
-Code: eb 66 85 db 74 3e 83 fb 01 75 4c e8 6b d2 e9 fc 48 8d 3d f4 46 a7 0b 67 48 0f b9 3a eb 4a e8 58 d2 e9 fc 48 8d 3d f1 46 a7 0b <67> 48 0f b9 3a eb 37 e8 45 d2 e9 fc 48 8d 3d ee 46 a7 0b 67 48 0f
-RSP: 0018:ffffc90000a18c28 EFLAGS: 00010246
-RAX: ffffffff84dde548 RBX: 0000000000000002 RCX: ffff88807715be80
-RDX: 0000000000000100 RSI: 0000000000000100 RDI: ffffffff90852c40
-RBP: 0000000000000000 R08: ffff88807715be80 R09: 0000000000000005
-R10: 0000000000000004 R11: 0000000000000100 R12: dffffc0000000000
-R13: 0000000000000001 R14: ffff888020fde004 R15: ffff888020fde640
-FS:  00007f4a87be06c0(0000) GS:ffff888124dda000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff55dd92eb8 CR3: 000000005800b000 CR4: 0000000000350ef0
-Call Trace:
- <IRQ>
- sctp_generate_timeout_event+0x1c8/0x390 net/sctp/sm_sideeffect.c:284
- call_timer_fn+0x18d/0x5f0 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1799 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x652/0x8b0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
- handle_softirqs+0x226/0x860 kernel/softirq.c:645
- __do_softirq kernel/softirq.c:679 [inline]
- invoke_softirq kernel/softirq.c:519 [inline]
- __irq_exit_rcu+0xcb/0x220 kernel/softirq.c:767
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:784
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:lock_acquire+0x232/0x350 kernel/locking/lockdep.c:5913
-Code: ff ff ff e8 a0 a9 40 0a f7 44 24 10 00 02 00 00 0f 84 38 ff ff ff 65 48 8b 05 f2 44 f1 11 48 3b 44 24 50 75 33 fb 48 83 c4 58 <5b> 41 5c 41 5d 41 5e 41 5f 5d e9 ba 25 6d ff cc 48 8d 3d 77 31 da
-RSP: 0018:ffffc9000dabfac8 EFLAGS: 00000282
-RAX: b29753db72d85c00 RBX: 0000000000000001 RCX: 8000000000000001
-RDX: 00000000b866b3b2 RSI: ffffffff8e6fc28f RDI: ffffffff8c6d9380
-RBP: ffff88807715be80 R08: 8c00000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: ffff888066f6e418 R12: ffff888066f6e418
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000246
- __raw_spin_lock include/linux/spinlock_api_smp.h:190 [inline]
- _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:173
- spin_lock include/linux/spinlock.h:347 [inline]
- __io_cq_lock io_uring/io_uring.c:484 [inline]
- __io_submit_flush_completions+0x85/0x10d0 io_uring/io_uring.c:1133
- io_submit_flush_completions io_uring/io_uring.h:253 [inline]
- io_submit_state_end io_uring/io_uring.c:1939 [inline]
- io_submit_sqes+0x1cec/0x2310 io_uring/io_uring.c:2063
- __do_sys_io_uring_enter io_uring/io_uring.c:2637 [inline]
- __se_sys_io_uring_enter+0x35b/0x1bb0 io_uring/io_uring.c:2586
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4a86d9e159
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f4a87bdff38 EFLAGS: 00000246 ORIG_RAX: 00000000000001aa
-RAX: ffffffffffffffda RBX: 0000200000000340 RCX: 00007f4a86d9e159
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000009
-RBP: 0000000000000a12 R08: 0000000000000000 R09: 0000000000000008
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000200000000940
-R13: 0000200000000948 R14: 0000000000000e26 R15: 0000000000000002
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	eb 66                	jmp    0x68
-   2:	85 db                	test   %ebx,%ebx
-   4:	74 3e                	je     0x44
-   6:	83 fb 01             	cmp    $0x1,%ebx
-   9:	75 4c                	jne    0x57
-   b:	e8 6b d2 e9 fc       	call   0xfce9d27b
-  10:	48 8d 3d f4 46 a7 0b 	lea    0xba746f4(%rip),%rdi        # 0xba7470b
-  17:	67 48 0f b9 3a       	ud1    (%edx),%rdi
-  1c:	eb 4a                	jmp    0x68
-  1e:	e8 58 d2 e9 fc       	call   0xfce9d27b
-  23:	48 8d 3d f1 46 a7 0b 	lea    0xba746f1(%rip),%rdi        # 0xba7471b
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	eb 37                	jmp    0x68
-  31:	e8 45 d2 e9 fc       	call   0xfce9d27b
-  36:	48 8d 3d ee 46 a7 0b 	lea    0xba746ee(%rip),%rdi        # 0xba7472b
-  3d:	67                   	addr32
-  3e:	48                   	rex.W
-  3f:	0f                   	.byte 0xf
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
