@@ -1,133 +1,158 @@
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AE044A3E6
-	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 19:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9459F44A416
+	for <netdev@vger.kernel.org>; Tue,  1 Sep 2026 19:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788292690; cv=none; b=iUoSa7vCfEEjJddEl1yGtcpJYZ65XGU4EUQ2iiba6C1z+7b7q7tRpZfV3iWslPcY74lFjJbzBUxJ1tdhP/u+5rGWBpGQMo09dBNSAHeX/5o6TrAN5GR1U/7WxgE00puyBOX3NFB7VccqgVzD38znhRdxdD7DpxxS6n/geX22o7E=
+	t=1788292737; cv=none; b=MolnM+Yfg8/6qkblKCuEklsgm+WCvmlTDiWVuYcdjOfNoen5BOxeydMLkBs8DFYnVAhWQYmqGX9i6FAN22ObV6a1+rgSqlI5/xcR2g4CRiLaicyTDaSx3ZHFaScVVabcWZ1M1E97jetIiobgvyMSbp18TG3z1KTTzYmwqLRvDko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788292690; c=relaxed/simple;
-	bh=h5g19SztFkEyFkjk0/cKFCbVHJ2HbodvOjb/zahKntc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCWjOuRf7IZqAroGCIfDUdkmq5cvEDYIvUuZOsSi9bZUkOYiwxSnCM/okbQt6DGTW5+rqSHOp2nqaQCCNGJMv8iY+Q1bFliVZEHuafFaAC7+yyJ3ftlo4ASs5tYqGPHezHmmXFhS71mZ2jo+S7EK44M3L304OXcpE6bMDt5Zquc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=Y/F93o5S; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d7qU1AGm; arc=none smtp.client-ip=202.12.124.153
+	s=arc-20240116; t=1788292737; c=relaxed/simple;
+	bh=MGdskzSxiD/sw5yijXuFD+ea1ERwLtruXpAWf4rJoKw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=DZr16eT5DPCKPnuLZAiXLH8JJYX/58Kdf4nRwZBwavsyHTBuxNueIIzZ2E3rqkGUgSb0PP1eRGU0mKji6gAS1ICypnzHJMj9MfJNIW1e6TIaF8ZAmRfqOvHKLokFRkRkLjrGkYxDjbnzUZzHGe2KuYfiHe3g4hMtTsqnm/z9Sdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=S8+Wf7Th; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mYsXmG1f; arc=none smtp.client-ip=202.12.124.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="Y/F93o5S";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="d7qU1AGm"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E457D7A00AD;
-	Tue,  1 Sep 2026 15:58:06 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 01 Sep 2026 15:58:07 -0400
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="S8+Wf7Th";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mYsXmG1f"
+Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
+	by mailfout.stl.internal (Postfix) with ESMTP id 953B51D0004B;
+	Tue,  1 Sep 2026 15:58:53 -0400 (EDT)
+Received: from ams-imap-19 ([10.64.2.39])
+  by ams-compute-01.internal (MEProxy); Tue, 01 Sep 2026 15:58:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1788292686; x=
-	1788379086; bh=LeYtaEEhyDnwQ2HLainJO/J0XK6yonvKpQawt9qdEhY=; b=Y
-	/F93o5SEDBsd6TFmrODp8PzwBFKhHcZNR78JvQYoqGjb7H5jQJ8R4R7fyOtwYDLR
-	SQlG4vhcORaC310WElAC2PAo83rMXQnuI8fBneUOLrIdYFCYNHlMndiLVfGMIjJs
-	6YU9SYuxkVdMtbThP8vqtlRaOCovfD9wIGKNbjJ4OdgNJ154Mdn97Bb8NmKuQW9A
-	R2GzP3S494Jcb5sDMhJhphzekciZEGkSgUX/7xjILrC1Ea6pX0sqp0wiIU73EAPf
-	eI0Py1yv8uDcpaKe2Eciw9pWPzNEnwiSus9NZJpyG/JsOyQjlwh6szHVjd7/3FD0
-	EEb3wJnLqz9Pgi96oWkVA==
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1788292732;
+	 x=1788379132; bh=HtBurZwaMJiQvnqDWg1tU15j20OMcl43cDl3tYDzqnM=; b=
+	S8+Wf7ThrHIK+esmrlnat2sh/nk72Ag7bHCTQxQL11LTmLTuFn5CO2jcdCFeCvmk
+	J9nL7YSGSN920AGOn90p82DBq3vCpPOdyA6xZPzwkMRE6prf9q3UF6NACiNUxjGj
+	nDpF5yam8vYB5eeo1uYnSbtss/1dEVoaqXs0XtCwDQI5Lf6m0Tfb9xvSMYFnd51H
+	9LGdPHZTntXDofKVzFIHxcn+DUJB6tTBNqmpJcRyvBuROk7iw7EdiI5A8riUMjkO
+	QEF4y+SogoW0eLWr9fbVctJHno0CkdqOtkI1NGRzhE08duybG78MGMmFbuhdCglC
+	ZZp7eavEdyDzYXt4/5AiDw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1788292686; x=1788379086; bh=L
-	eYtaEEhyDnwQ2HLainJO/J0XK6yonvKpQawt9qdEhY=; b=d7qU1AGm3ymK8bHgB
-	5hN/v00JJFhNKuaeKs3BJfzCO8EM/ddQABx6aS7Y5le+7arqLvNeBQd2/3npm3Ls
-	r5mH0zNfnrqCqz9jGAayRmqJqJOEV2IkPO14bWQS+pVLFGNMH9zOJYIWfQMczcrA
-	n43zVY7TzMSCV2uCpqRSGlRPiZKCP7S/+SSk+g6LlpzriimzYisoP8CaEHCTA0tl
-	rDJ3KV7+VU1CrJwyKat/opHLu18X+P6DUhp2DTu3MAHi5zkjdSNj3ZB9m2RjFRlq
-	y8hEziaIzzp6PcNFf3HrNcuPkIaFnqyv7G5yPoCN7HDQIirHo63NeUGRCg0K/yRQ
-	sF28A==
-X-ME-Sender: <xms:Ti6XauSzYs8Zv2Whst2tv0sbS90eGdgwt8vE3XncP8zKVTm5GlDHtQ>
-    <xme:Ti6Xandjmyajlrqw5wlAK4f1o5Z6q9IFGrRH6zXtgH2hfxWyAIG5Y2CXVmPlS9K-8
-    rfv_h42LvAaP4SKYNf1OrhJFIrWYD_wi06GvJlAIfWU3FvExFzwPq0J>
-X-ME-Received: <xmr:Ti6XakeRsbb7J-miU8JOyQy4zTeSylSUwRHOE08netV1ExOUVCta2t5_B8SzjNPJCDZzeDn6Xu0LghNLEdBbTNY>
-X-ME-Proxy-Cause: dmFkZTFbOziUSr6IKVqYzGMnQqqLqpz4/GW9SiBKHax7ntUiJyYR2tQiayaS8y0igZY2vR
-    nV625AU9QVfc1wz1bFtctU0X3jKJ6nbYAolqzUobflk66zRPZSdPdeg22EaptFLG2NLPlQ
-    oDbDHVUYLFn4qZSYUtWoGo8wgLbknoRxYsy/qzGjxCnl0yT4iXZaGbGdgUXK8MzYcioT9w
-    wHgLyBooZFiULBZLRB4ObY5sY7I8nZO6YhJLgqZuvPKM2+w5gDcmxvt3BpJmK+Kk0pOJIK
-    BnX5WToKcjfsd4um7E/sabkCVGKlbyPd3GlMmlAk2zX4jRYzzNDS7c/s1PcjzAxhX/PYtu
-    hh7Sm2HBgp/P9nkYsnf3e/Kdc5MeuycAUOa9qfN3aoWRj4mc5+NDEITwPJD+EwpfDB4qck
-    eNjaIS+Kc0jZhHOKc3ehCDIOKz+vHv1YCjJFvao1OCgfx4dyNrGeKcm26I84P3kBZ8fOPk
-    r1/uxeJvM96gIv8RKX3NdnM31ESwNqB4BX/fTXq+AgsAQA/3ihycjuVCQz8wjjR/EhHSU1
-    UsJR6T1IIrQ8Fbaw+xMHvpQhoeQdXScMMIG/HS7JRaHgp7+gA43LFNZ0MoHNRCsWVGDPob
-    XnwRVZeJuzbFCtflZGNu1g80w4TOVU/CNpbCNPI9yZEjjgoHUN/j1/gvsbhw
-X-ME-Proxy: <xmx:Ti6XarbsFAIV1NG-s4YIoj0XAEmnIgfsLSF7sbetNPQ6S_5SdTNyTw>
-    <xmx:Ti6Xao7Vxto2OX0wubHTgw4Cj0j5JOG1avkKAEXaY8RFMUL7v964ig>
-    <xmx:Ti6XapfAjGvdwps0wo-rjyNS_7nMNFlHB_9LL1S8R45oxlEM5EOYig>
-    <xmx:Ti6Xarw9pZ_Ljhd3UmKJNVZRp0lCTE5QySlaGK62fN992yHa2W_Idg>
-    <xmx:Ti6XarsTfGKCyp0qvMtxMOS7E_jHpzgYPSPBINpjJo0X7-dOJUzo5mQw>
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788292732; x=
+	1788379132; bh=HtBurZwaMJiQvnqDWg1tU15j20OMcl43cDl3tYDzqnM=; b=m
+	YsXmG1f15cQjiMJxSD19Ptajvuwi0tzeTgzgFPPnz8aM3zLp+U2bT4j5J+zDcUYn
+	MtIb/cxu6vjq64RRLbOoIXGTBEx0UDOv77sa8JBNVjJP5vTL7O4XLsqq3ZoY9FVQ
+	tJiTShelMIdZ5dL2u2fcvSegZKgyqCKXCIVIme5FnegrqqpSeWwejrZjTTzGKlya
+	1L+Vl7OI0cUcCdU0uE2MY/D/K2QQAVFjcs3QulRaUyhynfDJMZAiqSj0ctobF1fB
+	2QB088dF40Nj8fmAiDPpBsudWYZwhW17xgXUUHqLZghwW4aP1jwvB6hLyqLRqFBv
+	fi2ouxUQikeYPvUN67XJg==
+X-ME-Sender: <xms:dy6XamYamL1OoTQTFdUnjTaN18mB2oFUCp42EM3dMdTQnAv14PWvag>
+    <xme:dy6XakO1EQdFCzrUOEwIBZdzra_IHYhg33gBpSgagi_p-W6bX1tvm9YuSrTHLIUj2
+    rVVkN_47hkqR8fhmebC1NnJFNF7Z-SZ8hnpKbdc5kZrtXsNzz4OINcw>
+X-ME-Proxy-Cause: dmFkZTFIHQXSi4Mh6AHi8Mqru8yFrihET0luYnl2VjfLYDmNlqPiiN3ud+DyjDTr5iKVoU
+    gIXQJaLXLPyJIrtnZm1RZgw9LS3UN37nNKIza0+tjEqL+8piH4cK50rmi8GfYkOmyxSTYP
+    LNGCO3tM55AcJZSUkKAvg+tBY0KY0xqarZyfhQ+hIq6jy8brwpBYejZL9a2HFtwfgdGfTd
+    FcZj1bbP6KqXtTYSP0pXlgFs0nYlzEWWD8qeH7MLW151G7laNuoONSX1mkEgO9NbDGIxLH
+    4VjySY0K0NJgOXoKKct1Yyz+CleLFGKml7JjK+ibgxpIxTWE0qIW1cgieKouQT+XWwElUL
+    xQkQ781rJzPFfkRN6Bv6zEPRtabk2FCa3LRb7Kvdjp17TeiwoDv3PjtxzuuXPW6Sq90+6h
+    qMd/U57jjwTP6+w/Pc8J9e0ej6V+AlxdrhJCNRI5NM+a8RedHYnm9JwZvEq88uwiXVI74w
+    VfSOLq2Uo8UH2m/V/Gy74VV7hZpsG++n5Gk1vHezPxXANmmFw1ZmEWGO43G/2jSt7N9SKU
+    IWxJFjmI73u1LbeDnLFKe+LVo8uhLu8rQsdXQSRJAsMiYuRvXluTQ44Tx4neIQ/4WuIaeu
+    uAzkReH6aiRHqemcUZXa5yFwFBR4ITVbiKKsnU3A2mtdR/1tkk3RLZp1W4WA
+X-ME-Proxy: <xmx:eS6Xaiq4aMYQNwYEwwuRfAZp8Lj94XgXaQSwwDevIktEybixMXg7rQ>
+    <xmx:eS6XanLFMSijjP5Cn-CjYWhxpKrRvgmDcI2lL0yrwqbfW5CGSTcwHg>
+    <xmx:eS6XalOIl06E-IsWyEYTnsJH0ltdkCihRVdnzzv_oS6cIPQjB_ey8w>
+    <xmx:eS6XakrpLU_4gCxQVc1ygai8KHDsn94QX24V543mkDwR1-yID4_oMw>
+    <xmx:fC6Xal0mONOwPSTyNh5B4cGlChZezN9XsUuhT0nwvbIkH8Rz9XQ-x9Wn>
 Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Sep 2026 15:58:05 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	netdev@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net v5 4/4] net: ipv6: Clamp to IP6_MAX_MTU in ip6_dst_mtu_maybe_forward
-Date: Tue,  1 Sep 2026 22:57:14 +0300
-Message-ID: <20260901195714.673548-5-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260901195714.673548-1-alice.kernel@fastmail.im>
-References: <20260901195714.673548-1-alice.kernel@fastmail.im>
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id ED4892F8003D; Tue,  1 Sep 2026 15:58:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: AQCaIXmGAEe7
+Date: Tue, 01 Sep 2026 22:58:26 +0300
+From: "Alice Mikityanska" <alice.kernel@fastmail.im>
+To: "Jakub Kicinski" <kuba@kernel.org>,
+ "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
+ "Shuah Khan" <shuah@kernel.org>,
+ "Hannes Frederic Sowa" <hannes@stressinduktion.org>,
+ "Vadim Fedorenko" <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
+ "Alice Mikityanska" <alice@isovalent.com>
+Message-Id: <b9144a73-a079-4442-91a5-bd5a5557dd0a@app.fastmail.com>
+In-Reply-To: <e01d7fc0-cc3f-4a52-a587-f9087f1c787d@app.fastmail.com>
+References: <20260825200215.90326-1-alice.kernel@fastmail.im>
+ <20260825200215.90326-4-alice.kernel@fastmail.im>
+ <willemdebruijn.kernel.3645a45d69737@gmail.com>
+ <20260827122856.4b6eeb96@kernel.org>
+ <e01d7fc0-cc3f-4a52-a587-f9087f1c787d@app.fastmail.com>
+Subject: Re: [PATCH net v4 3/4] selftests: net: Test UDP length overflow with PMTU
+ discover and big MTU
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-From: Alice Mikityanska <alice@isovalent.com>
+On Fri, Aug 28, 2026, at 23:35, Alice Mikityanska wrote:
+> On Thu, Aug 27, 2026, at 22:28, Jakub Kicinski wrote:
+>> On Wed, 26 Aug 2026 13:18:18 -0400 Willem de Bruijn wrote:
+>>> > +def check_dmesg_clean(func: str) -> bool:
+>>> > +    with subprocess.Popen(['dmesg'], stdout=subprocess.PIPE) as dmesg:
+>>> > +        res = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout, check=False)
+>>> > +    return res.returncode != 0 and dmesg.returncode == 0
+>>> > +
+>>> > +
+>>> > +@contextmanager  
+>>> 
+>>> Interesting approach. In ksft the built-in defer() mechanism may be
+>>> preferred. Not sure.
+>>
+>> +1 small preference towards defer() if Alice is willing.
+>> It's be more idiomatic for our selftests
+>
+> No problem, I can switch to defer, thanks for the suggestion.
 
-Commit 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-dropped the IP6_MAX_MTU clamp that used to be present in ip6_mtu(). A
-similar IPv4 commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward") preserves the IP_MAX_MTU clamp.
+I replaced try-finally with defer, but I also kept dummy_netdev() with
+@contextmanager, because otherwise it leads to code repetition between
+the two tests (even if I put ip setup into a function) and increases
+indent by two levels (because it would be no longer possible to compact
+these four with statements into one). I.e.:
 
-Restore the upper bound in the IPv6 flow to avoid potential 16-bit
-overflows in forwarding paths.
+    with (
+        NetNS() as ns,
+        dummy_netdev(ns, 65556 + 20 * ipv6, ipv6),
+        NetNSEnter(ns),
+        socket.socket(af, socket.SOCK_DGRAM) as fd,
+    ):
 
-Fixes: 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
----
- include/net/ip6_route.h | 2 ++
- 1 file changed, 2 insertions(+)
+vs
 
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index c69f1c871922..b9e8d2b759e9 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -384,6 +384,8 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
- 	rcu_read_unlock();
- 
- out:
-+	mtu = min_t(unsigned int, mtu, IP6_MAX_MTU);
-+
- 	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
- }
- 
--- 
-2.55.0
+    with NetNS() as ns:
+        ip('link add dummy type dummy', ns=ns)    # this repeats
+        with defer(ip, 'link del dummy', ns=ns):  # and this
+            ip_setup(ns, 65556 + 20 * ipv6, ipv6)
+            with (
+                NetNSEnter(ns),
+                socket.socket(af, socket.SOCK_DGRAM) as fd,
+            ):
 
+I think the first one is better. And yes, I need to scope defer with
+with, otherwise it's scheduled after ns is deleted. I haven't found any
+other selftest that would do that, but I see this functionality is
+implemented in the defer class. Hope that works for you, respinnning :)
+
+>> More importantly ruff check and pylink --disable=R have to be clean
+>> for new tests. The test cases need a docstring explaining what they are
+>> trying to test. The helpers can probably get a _ prefix to mark them
+>> as private and silence the warning.
+>
+> Got it, will do. I thought it was OK, because all tests I saw didn't
+> have docstrings.
+>
+>> -- 
+>> pw-bot: cr
