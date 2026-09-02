@@ -1,120 +1,274 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7905480DC0
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 21:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DE74AC16D;
+	Wed,  2 Sep 2026 21:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788384175; cv=none; b=VILbHjBww/GHLOTRMOq2S0kAczfY+Z/FZaPrz8pmXVHuxiFy3pVJUp1wc2Hn8IulJVMK16Uo/hrI1dK6YBr9q839rTgGWApkAKvRvQTbTnlGij+bfozuED3PFoyHPN1mSsyXttmRciSUjhD+3oxwMCU2/ZHO6/NasS/AK9h6dTE=
+	t=1788384187; cv=none; b=Uw0QxBnU1BEU/LMxK8byNseXc1S/j+kZDKwddY/z4ZtaQLoit0Xc4goxCDeJD/RiVSNY6xLhN+uwdfNoDXU0icvLZEjeewXUfISmwfL/8v4UIqi0lOePnDPGk8QzdjbvQ68XweYRhaj9FnIr8Zmhqt/j8mhv5jY74quWLw7ZoYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788384175; c=relaxed/simple;
-	bh=N38+peKMXiO4pZtIjokGtVOkCxm0tkIOhgMfwECw6wM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WgcV+miGXjEdXGOIE3JYd2zTva3sIbIVQDqkNkmSZEcL0qcsyAAmb2qo5ZpC+SClgR+c7MfQhNuY0ZipUINENwqk4sOLJrZ2d4d9Q765HcmJ6xpAEvkGGw/gBJy+YsJofoYhGNvVMWPo1rQYdl9d2kldSl1MADGacyFwdR+XxNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Dwh5vIWo; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1788384187; c=relaxed/simple;
+	bh=p2ZxY3EOMzzJNYpyG8OmaF+k9ByB2w7EHcBq1yjj1x8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U6k5/nFXn8tzOcNwghfFXeUE1oY/NJZUbgaptzxH3xs/dJuhWnBVvfsXSJA1gkSiwkl1MLTY9P3U9H08UIdB4bb88dVX7QOmqVc2wgk2d28a5i126gExBNTqWwA/JEXg5/PWh0hwWPCCsVbIMKsFD2d+W5KjcuLg9CopfsZ81h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xxJVLbO1; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Dwh5vIWo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1788384149; x=1788643349;
-	bh=N38+peKMXiO4pZtIjokGtVOkCxm0tkIOhgMfwECw6wM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Dwh5vIWo0NqSQEetDSwtJXlBkB9z+q03yjX0K1vpN2k406kEZcaBSMB0tKIZGgAws
-	 TLlae7qV+ExvPPBcyh3YscJTay4jjYaihNLwOpxJ7i14PCUE/XMWbeM8tntjIJNgYy
-	 nCDdHO12ee8LSpvphFN4bxMcapopXN7rRnJCKNEiao7RMrjvSSelQPL+/ivLohowfi
-	 sfUFU+daogueFlKPLJ4Mi5PIqFczvwOZRt99KG9lQI4HbIpMgYaS6BBzA+IpKNgaTu
-	 5VXKJ4+EzheaAqClmw+xti86bUyVyGKbvvpMZEUFVQm2r1ag9ZidBM8SpTqQBoQXOZ
-	 cavLCiY7qxExg==
-Date: Wed, 02 Sep 2026 21:22:25 +0000
-To: David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
-From: Kristian Brox <isyourbrainfoss@proton.me>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>
-Subject: [PATCH v4 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: add ST21NFCD NFC
-Message-ID: <20260902-fp5-st21nfcd-v4-v4-3-ded2f1c501be@proton.me>
-In-Reply-To: <20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me>
-References: <20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me>
-Feedback-ID: 203906395:user:proton
-X-Pm-Message-ID: 3c1b6f39bba4351a7e3072044bfe914a77b17bcc
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xxJVLbO1"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id BFF0C4E414C9;
+	Wed,  2 Sep 2026 21:22:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 93DE36053C;
+	Wed,  2 Sep 2026 21:22:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7805211C79331;
+	Wed,  2 Sep 2026 23:22:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788384167; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=y+pBdWECO3S9thQ0dHEfQH5NJypSJMkWNK1S93bZjdQ=;
+	b=xxJVLbO1fA223TMrAVZ15V9TsEKOGKd3UElWRVYDzAlyV974AFewEJ6Ec4Zs/wKlS9Jr2R
+	AUyNj7K3Dh+RMbIjKUXvp3Q2Msma1QByAyCmkl5GQgnJxEe+RwCTvxGNR+nihKhZkehPKo
+	kYF7RqAjiFiidEK/3uRTJS7pf8V9FOaVyCnxy/70Eqpq2AkKdqzv+tVDlKR7M0Oj55je+0
+	uPnD93iUv0uj+GxkPkVAeOYlIQeAZXGRVoEbJwmuZFnj8eKFYqQ65wlrKvXfzLuk1p+8th
+	N6W802B2NRoqostKL3b0nwJ4bAIDyaQkjhIFC2Dh8qMApXWS8nAeJ3Ory3XS2Q==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: [PATCH net-next v16 08/10] netlink: specs: Add ethernet port listing with ethtool
+Date: Wed,  2 Sep 2026 23:21:32 +0200
+Message-ID: <20260902212135.1805948-9-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902212135.1805948-1-maxime.chevallier@bootlin.com>
+References: <20260902212135.1805948-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Enable the ST21NFCD on i2c9 (0x08), IRQ TLMM 41, reset TLMM 38
-active-low. Compatible is st,st21nfcd (raw NCI).
+Ethernet network interfaces may have more than one front-facing port.
+The phy_port infrastructure was introduced to keep track of
+these ports, and allow userspace to know about the presence and
+capability of these ports. Add a ethnl netlink message to report this
+information.
 
-SYS_CLK is LN_BB_CLK2. VPS_IO is L18B (vreg_l18b). ese-present and
-uicc-present follow the public schematic (NFC_SWP1/SWP2: SWP_SE to
-SIM1, SWP_UICC to SIM2). Reader path is tested; SE/HCE is not.
-
-Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 34 ++++++++++++++++++=
-+++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ Documentation/netlink/specs/ethtool.yaml      | 55 +++++++++++++++++++
+ Documentation/networking/ethtool-netlink.rst  | 34 ++++++++++++
+ .../uapi/linux/ethtool_netlink_generated.h    | 19 +++++++
+ 3 files changed, 108 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm6=
-4/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index f41ad446a39e..b028d1bb25d4 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -933,7 +933,23 @@ redriver_ss_in: endpoint {
- &i2c9 {
- =09status =3D "okay";
-=20
--=09/* ST21NFC NFC @ 28 */
-+=09nfc@8 {
-+=09=09compatible =3D "st,st21nfcd";
-+=09=09reg =3D <0x08>;
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index 5dd4d1b5d94b..35e028c0be29 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -210,6 +210,11 @@ definitions:
+       -
+         name: discard
+         value: 31
++  -
++    name: port-type
++    doc: type of physical connector
++    type: enum
++    entries: [mdi, sfp]
+ 
+ attribute-sets:
+   -
+@@ -1905,6 +1910,32 @@ attribute-sets:
+         name: link
+         type: nest
+         nested-attributes: mse-snapshot
++  -
++    name: port
++    attr-cnt-name: --ethtool-a-port-cnt
++    attributes:
++      -
++        name: header
++        type: nest
++        nested-attributes: header
++      -
++        name: id
++        type: u32
++      -
++        name: supported-modes
++        type: nest
++        nested-attributes: bitset
++      -
++        name: supported-interfaces
++        type: nest
++        nested-attributes: bitset
++      -
++        name: type
++        type: u32
++        enum: port-type
++      -
++        name: upstream-port
++        type: u32
+ 
+ operations:
+   enum-model: directional
+@@ -2859,6 +2890,30 @@ operations:
+             - worst-channel
+             - link
+       dump: *mse-get-op
++    -
++      name: port-get
++      doc: Get ports attached to an interface
 +
-+=09=09interrupts-extended =3D <&tlmm 41 IRQ_TYPE_LEVEL_HIGH>;
-+=09=09reset-gpios =3D <&tlmm 38 GPIO_ACTIVE_LOW>;
++      attribute-set: port
 +
-+=09=09pinctrl-0 =3D <&nfc_default>;
-+=09=09pinctrl-names =3D "default";
++      do:
++        request:
++          attributes:
++            - header
++            - id
++        reply: &port-get-op-reply
++          attributes:
++            - header
++            - id
++            - supported-modes
++            - supported-interfaces
++            - type
++            - upstream-port
++      dump:
++        request:
++          attributes:
++            - header
++        reply: *port-get-op-reply
+ 
+ mcast-groups:
+   list:
+diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+index e92abf45faf5..b4326c89b075 100644
+--- a/Documentation/networking/ethtool-netlink.rst
++++ b/Documentation/networking/ethtool-netlink.rst
+@@ -2537,6 +2537,39 @@ Within each channel nest, only the metrics supported by the PHY will be present.
+ See ``struct phy_mse_snapshot`` kernel documentation in
+ ``include/linux/phy.h``.
+ 
++PORT_GET
++========
 +
-+=09=09clocks =3D <&rpmhcc RPMH_LN_BB_CLK2>;
-+=09=09vdd-io-supply =3D <&vreg_l18b>;
++Retrieve information about the physical connection points of a network device,
++referred to as "ports". User needs to specify a PORT_ID for the DO operation,
++in which case the DO request returns information about that specific port.
 +
-+=09=09ese-present;
-+=09=09uicc-present;
-+=09};
++As there can be more than one port, the DUMP operation can be used to list the
++ports present on a given interface, by passing an interface index or name in
++the dump request.
 +
- =09/* VL53L3 ToF @ 29 */
++Request contents:
++
++  ===================================== ======  ===============================
++  ``ETHTOOL_A_PORT_HEADER``             nested  request header
++  ``ETHTOOL_A_PORT_ID``                 u32     port id
++  ===================================== ======  ===============================
++
++Kernel response contents:
++
++  ======================================= ======  =============================
++  ``ETHTOOL_A_PORT_HEADER``               nested  request header
++  ``ETHTOOL_A_PORT_ID``                   u32     the port's unique identifier,
++                                                  per netdevice.
++  ``ETHTOOL_A_PORT_SUPPORTED_MODES``      bitset  bitset of supported linkmodes
++  ``ETHTOOL_A_PORT_SUPPORTED_INTERFACES`` bitset  bitset of supported MII
++                                                  interfaces
++  ``ETHTOOL_A_PORT_TYPE``                 u32     the port type
++  ``ETHTOOL_A_PORT_UPSTREAM_PORT``        u32     If any, the index of the MII
++                                                  port that feeds into this
++                                                  port.
++  ======================================= ======  =============================
++
+ Request translation
+ ===================
+ 
+@@ -2647,4 +2680,5 @@ are netlink only.
+   n/a                                 ``ETHTOOL_MSG_PHY_GET``
+   ``SIOCGHWTSTAMP``                   ``ETHTOOL_MSG_TSCONFIG_GET``
+   ``SIOCSHWTSTAMP``                   ``ETHTOOL_MSG_TSCONFIG_SET``
++  n/a                                 ``ETHTOOL_MSG_PORT_GET``
+   =================================== =====================================
+diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+index 8134baf7860f..f9d8794eabc1 100644
+--- a/include/uapi/linux/ethtool_netlink_generated.h
++++ b/include/uapi/linux/ethtool_netlink_generated.h
+@@ -78,6 +78,11 @@ enum ethtool_pse_event {
+ 	ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR = 64,
  };
-=20
-@@ -1462,6 +1478,22 @@ hall_sensor_default: hall-sensor-default-state {
- =09=09drive-strength =3D <2>;
- =09=09bias-pull-up;
- =09};
+ 
++enum ethtool_port_type {
++	ETHTOOL_PORT_TYPE_MDI,
++	ETHTOOL_PORT_TYPE_SFP,
++};
 +
-+=09nfc_default: nfc-default-state {
-+=09=09reset-pins {
-+=09=09=09pins =3D "gpio38";
-+=09=09=09function =3D "gpio";
-+=09=09=09drive-strength =3D <2>;
-+=09=09=09bias-disable;
-+=09=09};
-+
-+=09=09int-pins {
-+=09=09=09pins =3D "gpio41";
-+=09=09=09function =3D "gpio";
-+=09=09=09drive-strength =3D <2>;
-+=09=09=09bias-disable;
-+=09=09};
-+=09};
+ enum {
+ 	ETHTOOL_A_HEADER_UNSPEC,
+ 	ETHTOOL_A_HEADER_DEV_INDEX,
+@@ -840,6 +845,18 @@ enum {
+ 	ETHTOOL_A_MSE_MAX = (__ETHTOOL_A_MSE_CNT - 1)
  };
-=20
- &uart5 {
-
---=20
+ 
++enum {
++	ETHTOOL_A_PORT_HEADER = 1,
++	ETHTOOL_A_PORT_ID,
++	ETHTOOL_A_PORT_SUPPORTED_MODES,
++	ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
++	ETHTOOL_A_PORT_TYPE,
++	ETHTOOL_A_PORT_UPSTREAM_PORT,
++
++	__ETHTOOL_A_PORT_CNT,
++	ETHTOOL_A_PORT_MAX = (__ETHTOOL_A_PORT_CNT - 1)
++};
++
+ enum {
+ 	ETHTOOL_MSG_USER_NONE = 0,
+ 	ETHTOOL_MSG_STRSET_GET = 1,
+@@ -893,6 +910,7 @@ enum {
+ 	ETHTOOL_MSG_RSS_CREATE_ACT,
+ 	ETHTOOL_MSG_RSS_DELETE_ACT,
+ 	ETHTOOL_MSG_MSE_GET,
++	ETHTOOL_MSG_PORT_GET,
+ 
+ 	__ETHTOOL_MSG_USER_CNT,
+ 	ETHTOOL_MSG_USER_MAX = (__ETHTOOL_MSG_USER_CNT - 1)
+@@ -954,6 +972,7 @@ enum {
+ 	ETHTOOL_MSG_RSS_CREATE_NTF,
+ 	ETHTOOL_MSG_RSS_DELETE_NTF,
+ 	ETHTOOL_MSG_MSE_GET_REPLY,
++	ETHTOOL_MSG_PORT_GET_REPLY,
+ 
+ 	__ETHTOOL_MSG_KERNEL_CNT,
+ 	ETHTOOL_MSG_KERNEL_MAX = (__ETHTOOL_MSG_KERNEL_CNT - 1)
+-- 
 2.55.0
-
 
