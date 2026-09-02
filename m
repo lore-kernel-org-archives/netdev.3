@@ -1,139 +1,181 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02EC35AC11;
-	Wed,  2 Sep 2026 17:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C1E374186;
+	Wed,  2 Sep 2026 17:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788371564; cv=none; b=j8FEb3cXkMXuJjz6xiwFScvJbvck/VrmYRYzhUchXal/c25VBTbH7B4bfeyrq2DfjR0PvfJcVhA/bMdIcAdVzwW97GpKcXOChC9TjbWHS3fgt3IRiE9qF4XH3hiUSkIMvZVDqD20fbPL/acNt2U7ciUCNnCs48r7glSvlzk0MM8=
+	t=1788371744; cv=none; b=sXIZT2CuhIVlmnD79tY1gur5l8+I221myOxZMEObywlVKyTbtsvecWkSoyyIz0EKFuvbP05OacR/DBdVIo49mBx2ZLK+q/KohJpx/p/V374FHzwk6cjwGhYiKIwD13jUCRlHFxxj5AlIaYwIcLZa+JtBZfidl35jifkRrwBNoBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788371564; c=relaxed/simple;
-	bh=YVNtSg2MyyFvAtx+ywzZAiw3i0NgncKT5WbHKGDdgNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ufkpnfzknmAo43f3obMiMwfewYh9CQryb1n7FbTjYnwd1LWy7Snnd4sgvqudf3EmuPkSQexbIbOdjCW9kdUaVD8fh5nDVWHp117pwpjHu5TvzMSimiGiP4DZnqCmGIvwViD/110C3XKIG+/F4V8y1LUgJK0yLWRQbmP7E4FOFr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id B469A20B712B; Wed,  2 Sep 2026 10:52:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B469A20B712B
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com,
-	Simon Horman <horms@kernel.org>,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org,
-	shirazsaleem@microsoft.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] net: mana: Clear RDMA teardown and suspend state in mana_rdma_probe()
-Date: Wed,  2 Sep 2026 10:51:53 -0700
-Message-ID: <20260902175153.3410560-1-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1788371744; c=relaxed/simple;
+	bh=+dB8QRffgR6eYaoWZ0dZUjdKapPSbpOHQIRfxloj+Zc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=njN3eztFwhP+O7nYhWnFp4c6Le2TsCd942ta0H3gl4upCYjJOz2GvcNbeiJep49RkLB1wBCFaegki6C7jcHxmIGp8/oU6xsDLnLRCnLSnwyZOxzUYHLenscHBcEXo897jKNlCJECG3r910cdowRLC1TyLfzsUlGaJCMkQvyh4OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=EIMZTpic; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="EIMZTpic"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1x1pB3-0093kV-KA; Wed, 02 Sep 2026 19:55:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=fSlfqnwEvLaNr4akvlf7I2sHJLIFmr8QwBFYs0VFHBs=
+	; b=EIMZTpicfh8iRbwp6VmW/QD90Q4sYZYV1LtQDQWascH+g0H9KwrRsOx4zOHeBhK02KM7ShO/b
+	ZwEuH1jukjT/6g9Hq2tFSCOrZCiGcc2fEAdgCSrh5iJ2EZkXhQ2a+M+K+bXAnJOmRgkSjxqt9I7/K
+	cTDBKMhcP5iafiq0TrPkhBdMP9daCL6GuflWwrZ58uQJ+wKSuu/bw1KfVmLojVHXpyB1ZlflBHxqz
+	JVjeME8bpcFqhSrmyvRVOLiX+jkbFmW9Y2+xjZmxUta7A+YF1L25G4Apvgtg4hgfU8jzLo2SwO9CK
+	2P+UmKjB/I5mMgwl56jKpTqy55c1lqtmmKoptQ==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1x1pAy-00072V-0N; Wed, 02 Sep 2026 19:55:08 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1x1pAi-0020Qt-Gs;
+	Wed, 02 Sep 2026 19:54:52 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Subject: [PATCH bpf v3 0/2] bpf: Fix socket leaks around
+ connect(AF_UNSPEC)+listen()
+Date: Wed, 02 Sep 2026 19:52:13 +0200
+Message-Id: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ7CIBBFr2JYi6EgSFx5D+MC6NRitRBoSU3Tu
+ 0tx0ZXu5k/+f29GEYKFiM67GQVINlrX58D2O2Ra1d8B2zpnRAkVRFCJozPdS3n8dK4bPR5MPkF
+ 1WNdKKwZEMsNRXvsAjZ0K+Yq0b9Dt+4yjfoAZVuZaa20cXHgXf6pKuahOlP1UpQoTXGldGy4N8
+ Op4CdpNB+OKI9GNIskfCs0URgQQynUDQmyUZVk+iXGFbhkBAAA=
+X-Change-ID: 20260628-sockmap-lookup-tcp-leak-bdaba3e083c5
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ Phil Sutter <phil@nwl.cc>
+Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ Sashiko <sashiko-bot@kernel.org>
+X-Mailer: b4 0.15.2
 
-mana_rdma_remove() sets gd->rdma_teardown to stop
-mana_rdma_service_handle() from acting on servicing events, but nothing
-ever clears it. A hardware service reset (GDMA_EQE_HWC_RESET_REQUEST)
-goes through mana_gd_suspend() -> mana_rdma_remove() and mana_gd_resume()
--> mana_rdma_probe(), so from the first reset onwards every
-GDMA_EQE_HWC_SOC_SERVICE event returns early and RDMA suspend/resume
-servicing is silently dropped for the life of the device.
+This is a follow-up to Sashiko's report[1].
 
-gd->is_suspended has the same problem: it is set when servicing removes
-the adev and is cleared only by a matching resume. A reset while RDMA is
-suspended re-adds the adev but leaves is_suspended set, so a later resume
-event calls add_adev() on top of a live gd->adev and leaks it. This is
-currently masked by the rdma_teardown bug.
+Several BPF socket helpers acquire a socket reference only when
+sk_is_refcounted() == true, and release it, independently, by
+re-evaluating sk_is_refcounted() again at the time the release runs. TCP
+connect(AF_UNSPEC)+listen() sets SOCK_RCU_FREE on an established socket.
+If that happens while a reference is outstanding, the release side sees
+sk_is_refcounted() == false and skips the put; the socket is leaked.
 
-Clear both in mana_rdma_probe(). On the reset path mana_rdma_remove()
-has closed the gate and drained the service workqueue, so clear
-is_suspended first and re-open the gate with smp_store_release(), paired
-with smp_load_acquire() in the handler, so the handler cannot observe an
-open gate with a stale is_suspended. On the initial probe path the gate
-was never closed and both flags are already clear.
+unreferenced object 0xffff88811617ce00 (size 3200):
+  comm "softirq", pid 0, jiffies 4294848512
+  hex dump (first 32 bytes):
+    7f 00 00 01 7f 00 00 01 4d 43 02 f6 00 00 00 00  ........MC......
+    02 00 07 41 00 00 00 00 00 00 00 00 00 00 00 00  ...A............
+  backtrace (crc fb5bd4c8):
+    kmem_cache_alloc_noprof+0x53e/0x640
+    sk_prot_alloc+0x69/0x240
+    sk_clone+0x79/0x1230
+    inet_csk_clone_lock+0x30/0x760
+    tcp_create_openreq_child+0x34/0x2750
+    tcp_v4_syn_recv_sock+0x12e/0x1080
+    tcp_check_req+0x447/0x2310
+    tcp_v4_rcv+0x1026/0x3c90
+    ip_protocol_deliver_rcu+0x93/0x340
+    ip_local_deliver_finish+0x356/0x5c0
+    ip_local_deliver+0x184/0x4a0
+    ip_rcv+0x4f4/0x5b0
+    __netif_receive_skb_one_core+0x153/0x1b0
+    process_backlog+0x28d/0x1190
+    __napi_poll+0xab/0x520
+    net_rx_action+0x3f0/0xca0
 
-This does not order gd->adev, which add_adev() publishes afterwards. A
-servicing event arriving in that window is still dropped, as it is in
-mainline today on the initial probe path; closing it needs probe and the
-handler to be serialized and is left to a separate change.
+[1]: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
 
-Fixes: 505cc26bcae0 ("net: mana: Add support for auxiliary device servicing events")
-Signed-off-by: Long Li <longli@microsoft.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
 Changes in v3:
-- Reword the comment and commit message so they only claim what holds:
-  the "gate is still closed" justification applies to the reset path,
-  not to the initial probe path where gc is zeroed and the gate was
-  never closed. Note that the release/acquire pair orders is_suspended
-  but not gd->adev. Reported by the AI review of v2.
-- No functional change.
+- Add a fix for TC bpf_sk_assign() (patch #2)
+- Clean up commit messages
+- Non-fixes went to bpf-next: https://lore.kernel.org/bpf/20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co/
+- Link to v2: https://patch.msgid.link/20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co
 
 Changes in v2:
-- Target the net tree explicitly in the subject prefix; v1 omitted it and
-  the netdev CI guessed net-next, where the Fixes: tag is not evaluated.
-- CC Shiraz Saleem, the author of the commit named in the Fixes: tag, as
-  reported by netdev/cc_maintainers.
+- Defer "Use sock_hold() instead of refcount_inc_not_zero() in lookup" to
+  bpf-next [John]
+- Fix comment style [Sashiko]
+- Link to v1: https://patch.msgid.link/20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co
 
-v2: https://lore.kernel.org/all/20260828001202.2110938-1-longli@microsoft.com/
-v1: https://lore.kernel.org/all/20260826235940.1869565-1-longli@microsoft.com/
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: Andrii Nakryiko <andrii@kernel.org>
+To: Eduard Zingerman <eddyz87@gmail.com>
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+To: Song Liu <song@kernel.org>
+To: Yonghong Song <yonghong.song@linux.dev>
+To: Jiri Olsa <jolsa@kernel.org>
+To: Emil Tsalapatis <emil@etsalapatis.com>
+To: John Fastabend <john.fastabend@gmail.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+To: Willem de Bruijn <willemb@google.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: Joe Stringer <joe@wand.net.nz>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Florian Westphal <fw@strlen.de>
+To: Phil Sutter <phil@nwl.cc>
+Cc: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: netfilter-devel@vger.kernel.org
+Cc: coreteam@netfilter.org
+
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+Michal Luczaj (2):
+      bpf: Unconditionally take socket references in lookup helpers
+      bpf: Fix reference leak in bpf_sk_assign()
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 7a1ac853e3abcd28c4a1e5c6987ec631a18ad840..d8e847df7a44b2758b428d49b2b060bfd94b0e58 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3983,7 +3983,8 @@ static void mana_rdma_service_handle(struct work_struct *work)
- 	struct device *dev = gd->gdma_context->dev;
- 	int ret;
- 
--	if (READ_ONCE(gd->rdma_teardown))
-+	/* Pairs with the smp_store_release() in mana_rdma_probe(). */
-+	if (smp_load_acquire(&gd->rdma_teardown))
- 		goto out;
- 
- 	switch (serv_work->event) {
-@@ -4279,6 +4280,21 @@ int mana_rdma_probe(struct gdma_dev *gd)
- 	if (err)
- 		return err;
- 
-+	/* Clear the state left by a previous mana_rdma_remove() so servicing
-+	 * events are handled again after a reset cycle.
-+	 */
-+	gd->is_suspended = false;
-+
-+	/* Publish is_suspended before re-opening the gate, so the handler
-+	 * cannot observe an open gate with a stale is_suspended.  Pairs
-+	 * with the smp_load_acquire() in mana_rdma_service_handle().  This
-+	 * matters on the reset path, where mana_rdma_remove() closed the
-+	 * gate and drained the workqueue; on the initial probe path the
-+	 * gate was never closed and both flags are already clear.  It does
-+	 * not order gd->adev, which add_adev() publishes below.
-+	 */
-+	smp_store_release(&gd->rdma_teardown, false);
-+
- 	err = add_adev(gd, "rdma");
- 	if (err)
- 		mana_gd_deregister_device(gd);
--- 
-2.43.0
+ include/net/inet6_hashtables.h |  9 ++++----
+ include/net/inet_hashtables.h  |  9 ++++----
+ include/net/request_sock.h     |  2 +-
+ include/net/sock.h             | 11 ++++++++++
+ net/core/filter.c              | 49 +++++++++++++++++++++++++++++-------------
+ net/core/sock_map.c            |  8 ++-----
+ net/netfilter/nf_queue.c       | 18 ++++++++--------
+ 7 files changed, 67 insertions(+), 39 deletions(-)
+---
+base-commit: ce6b9e5dd873de532cd924e2abc928220cdc2738
+change-id: 20260628-sockmap-lookup-tcp-leak-bdaba3e083c5
+
+Best regards,
+--  
+Michal Luczaj <mhal@rbox.co>
 
