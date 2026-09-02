@@ -1,170 +1,220 @@
-Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33734A5C25
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C4147A899
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788381127; cv=none; b=DhHEzEIC9dxqiNZBPkcqXUkcFlpe3uAOGlI/BtXo+V4Q7Q/E3cROsZ5oJV+QbruhhUh2kgPbjCUpIzPl9x2n2vAJrudhzzVAUZU8Gd1qe2V9XeJDQ5wSNdW1/oVQ1nU36aGt5vwAoUFqBoeAEr4+sz0qND0I5I4RbJ6QtJAyggM=
+	t=1788381464; cv=none; b=EfIeJB2KBPDqDvcPUQFjP/GqBOTwv0yUTzk2H6JQwBrWCK9zNdKAvb6MrlpnWaDhinx3c746nPMb4Pn6sxzdItS0gXk/EZyxkV4GzM3XYwl+DvChfQT+I16013d4TY76jHk/Yf+7vmW43sU2GXxzT7BoyYTdxTh7jkOmqt798AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788381127; c=relaxed/simple;
-	bh=DZRGi0YkwMmKkDFY82SN6nJfXXcbmLtf6J+0y60/HUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M5ERLfVceJ53iF0Pag1Z+IfPlCd5XROTuHiTzCNFxhsGoSy1o/VU62inRBoiTr2hkT+zo7pcWtH6kw/ClqBpllw9Yvp18FlY0Ns9j4ilpqIaIU0jECxC2Hb8vz15anTRgrNoZb4hAgbCzWXFU+a2S0PphH1Kl1Q9QBkwvadr43Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49ccea58fe3so6156125e9.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:32:05 -0700 (PDT)
+	s=arc-20240116; t=1788381464; c=relaxed/simple;
+	bh=2edZcXKNp4ztGJxOQFGQBpPF8dJfKCaOvf6gk1cWo2A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Pzf5jVDm1RWKISWL+HZsEfMfOfdhZbRYWro/j5w6+xpgQVBRuqDU0cqBZlrcANjRsou5yPDMytMq5PMqWScMSVZBOKix29VvCrmQOF0IQkXfp+USGT5fzpHeqklthhh5ISnqAjKfDBhjV19NyefJGoPBzQQkAydu8bz1ZI8WMGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JTTqGqGX; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JTTqGqGX"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e375d9736so1353154b3a.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:37:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788381462; x=1788986262; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i73ZU8dNn3/xPt/JoIsrzZEp0mXdlhe6VUhoY6nKhmg=;
+        b=JTTqGqGX14yAi1PrhQl5P76C7BIR2dWdZgcO+VdL9QeBbJQV57zFOPSFqABxkY4zpl
+         kPigiJSUn3aj7hdJ32jgWpl7/f6VVv0lpZL2JD7GtMrRm4g7ITRyyLuiJwqtniWgmeLH
+         EoRxkZJus/ie/btzvZc764qcwGvFREkA4QEpJuna90MHLngGuzMgGkGhjvNS8I6In+LQ
+         bXacE8WBXdv+g/pcHmVTtRe8IzG3MG+8m2CXyhLsunp24Q5+IZTQ1jF0qUuYH2bxMQSf
+         uHfg5Pfz56AGCwS/V2Iu0PoSMXskiRaELLEKt4gWHMQW798kcZa1Sjo9y4FvmeMk58aT
+         dH4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788381124; x=1788985924;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X4qp6/3DQjm1uYF71HjtKIkBpSfIBgTn2nEvAonfrWQ=;
-        b=lTvxv/DG5qOM/UOKdgMfz24dDvhlLQFdlhgCxhTMjoyjaMZaKPGfCVYlEZIKH6MKhW
-         UKaFlXPKD/CJqRJw8WgrD/5InT2b26i+t2kE2wKoaG3kN8zQnK17a0Img8MaQTouMhtY
-         j6uvaCZE7ljAvY+1/m5PpVCxJgDODV4+9mPFiMlY00zDuFq/IGWHtxvHt0anj1KbXKfb
-         Whax9O70EJzekbBlMderC2eEh0MUxmzXRA1loBKoT/FwKvq2gZHcW51I+HA8Sf9yvO/h
-         gTYUVfEg4Ok9YVeVw5wW5pOIdzhnqKqmLC/d3dHPpD9X/1Eu8aQMTUViHkwf8fLVKYIi
-         0EOA==
-X-Gm-Message-State: AFuF++nVNOs8mdfzgATCsQRoV6pzAvDZ2P12PTjS77QdBNM8auCt+oC8
-	iopRh2RI8u0GtjBe1TO+Sor3UAa2XEsPs1qBPOrej2ztLzZ1pfp8jLx/EPqNrgo4
-X-Gm-Gg: AYBFou3nKE8I5PYiQiyTjJFinzBOT8iBAd5bb2vyt8J2ugIor05W5kcOe6V96TcU9AK
-	BvEtSuVacvB0QPJabw9+Fla0Vhhuht3yh5uGqrJ7JKv0XjgGZVL5PFYeSt/FiKL711LO9tac1FX
-	Wit/uPOXTtlUjIi8R8Pt5bybk7B08GAGuenGLjSBO2tv9MpPS6OVFiv5Htt1E+VH70uGUq80dPG
-	LeqQVVM3CzTlOhnk94NJZuXicZOs9Ydh+nQ49RFzJee7So1rCGqenniRheVe3Hgns2I5frGYjPD
-	7CQH4uqtLDfBm2TtK5kY9fOs0q7IrfxAyim0NIpv5iyRHwUM0EaNup6WrS7UF8AeEbjESO5XqJI
-	KxFMso7iw34SGvb+Ei/q2BrmY62WQ0sspeGEi5xCo/yGWmSFNEgTwNIj6jnX+l6oxdpu7jL2Hqw
-	Rptib1utfyQpJ2vTYWAjC30V3Nt/QW+QJAp12TRClJm0L2Z5O0ZWFoGudUr4i12/fmvl+g0DgF+
-	60XvJaetFGe0qmxlos=
-X-Received: by 2002:a05:600c:4ed0:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-49ce57ec163mr141464905e9.1.1788381123692;
-        Wed, 02 Sep 2026 13:32:03 -0700 (PDT)
-Received: from im-t490s.redhat.corp (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce47b9817sm69220065e9.1.2026.09.02.13.32.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 13:32:03 -0700 (PDT)
-From: Ilya Maximets <i.maximets@ovn.org>
-To: netdev@vger.kernel.org
-Cc: Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	dev@openvswitch.org,
-	linux-kernel@vger.kernel.org,
-	Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH net-next] net: openvswitch: don't schedule rebalancing if there are no datapaths
-Date: Wed,  2 Sep 2026 22:30:41 +0200
-Message-ID: <20260902203200.1416026-1-i.maximets@ovn.org>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1788381462; x=1788986262;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i73ZU8dNn3/xPt/JoIsrzZEp0mXdlhe6VUhoY6nKhmg=;
+        b=WnOiwAa185iRzADstJ1AJIjTKeHET266sDcOb6EpHdVBBq3uutumxhBXOrQSOPkJNs
+         FbQFUx3glRp94qD0fjSMNW1unF1RkibaWIOwo+Ce6/qzxA1SO3UVoYKVLBXTwUvw+RdL
+         H1x3822HV5hlJodBlsv5vdGDIbsEZ2CW/zQKUnUqn0YUlKVfDvzIQDFp1XvVTBVnCQ9q
+         FGo71GRYqr63v+qNyck8GetXDsG5Fw3CYBIFU1yvxtMn+4LtSMHyOAFWNrehe/AbJMiM
+         j3PCVdaDORDhPpuQMGHryWh3TgYev14dL0bhmHG75JMMbf9PzwTKykXnlGliaxStpYgt
+         8G0w==
+X-Forwarded-Encrypted: i=1; AKwUvBwnL+MSLJjXHyCkKMcFOHpbfpuSd0B9ESJMgySUsy5JeBKl+jgNfzjfz2/KAUubSc3iS2VGIoQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kMJl8fe3pusuX2v15E2EfM73nJ4QDyDmmcGKqW70vgboCVXRgG
+	dKU21CRifk5c0h0X5lUBooIJcxNG/Wi/Vg5KJFe+frBbs73e5ZeFicf5FyVqoNlVQxlHRyeNtGP
+	k3yWhRg==
+X-Received: from pgvc27.prod.google.com ([2002:a65:619b:0:b0:cc4:33e1:5b76])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b18:b0:3d3:adbf:7780
+ with SMTP id adf61e73a8af0-3d9afb00c9emr12665789637.21.1788381461892; Wed, 02
+ Sep 2026 13:37:41 -0700 (PDT)
+Date: Wed,  2 Sep 2026 20:36:41 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
+Message-ID: <20260902203722.926528-1-kuniyu@google.com>
+Subject: [PATCH v6 net-next 00/15] neighbour: Namespacify arp_tbl and nd_tbl.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-During namespace initialization the masks rebalancing work is
-scheduled and automatically re-scheduled every 4 seconds afterwards.
-This is happening in every namespace.  On a large kubernetes node with
-500 pods, i.e., 500+ namespaces, this creates a decent amount of
-unnecessary churn scheduling 500 jobs every 4 seconds that take the
-mutex, check that there are no datapaths in their namespace, release
-the mutex, re-schedule themselves and exit.  These 500 unnecessary
-mutex locks may hold off operations in a single namespace that
-actually has a datapath configured and has real user requests to
-handle under this lock.  They can also add delay to removal of other
-namespaces as ovs_exit_net() needs to take that lock as well and
-synchronously waits for the work to be cancelled.
+The neighbour subsystem is almost ready to drop RTNL.
 
-Let's only fire the job when the first datapath is actually created
-and not re-arm it if there are no more datapaths configured in the
-namespace.
+However, the control paths are serialised by the global
+per-table lock.
 
-Another approach would be to make ovs_mutex per-namespace, but it's
-a much larger change that should be handled separately, and the
-unnecessary work scheduling feels like a waste regardless.
+This series converts arp_tbl and nd_tbl to per-netns table.
 
-It's safe to check and re-arm outside of the mutex as DP_CMD_NEW
-handler will re-arm if the new datapath appears.  The scheduling
-attempt also doesn't change the work or delay if it is already queued,
-so it's also safe to call multiple times.
+With the series, /proc/sys/net/ipv{4,6}/neigh/default/ can
+be configured per netns, which was only configurable in
+init_net.
 
-Skipping the re-arming is more elegant than canceling on removal of
-the last datapath as it allows us to not think about potential race
-conditions at a negligible cost of potentially one extra re-scheduling.
+To avoid potential regression, all the settings are inherited
+from init_net by default, and this behaviour is controlled by
+a new sysctl knob, net.core.neigh_inherit_init_net:
 
-msecs_to_jiffies() moved to the macro to save on line length.
+  # sysctl net.core.neigh_inherit_init_net
+  net.core.neigh_inherit_init_net = 1
+  # sysctl net.ipv4.neigh.default.gc_thresh1
+  net.ipv4.neigh.default.gc_thresh1 = 128
+  # sysctl net.ipv4.neigh.default.gc_thresh1=129
+  net.ipv4.neigh.default.gc_thresh1 = 129
+  # unshare -n sysctl net.ipv4.neigh.default.gc_thresh1
+  net.ipv4.neigh.default.gc_thresh1 = 129
 
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
----
- net/openvswitch/datapath.c | 14 ++++++++++----
- net/openvswitch/datapath.h |  2 +-
- 2 files changed, 11 insertions(+), 5 deletions(-)
+If it is turned off, all settings are reset in the new netns:
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index 631a03136fa14..2187034143255 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -1921,6 +1921,10 @@ static int ovs_dp_cmd_new(struct sk_buff *skb, struct genl_info *info)
- 
- 	ovs_unlock();
- 
-+	/* Start periodic mask rebalancing if it wasn't already. */
-+	schedule_delayed_work(&ovs_net->masks_rebalance,
-+			      DP_MASKS_REBALANCE_INTERVAL);
-+
- 	ovs_notify(&dp_datapath_genl_family, reply, info);
- 	return 0;
- 
-@@ -2598,16 +2602,20 @@ static void ovs_dp_masks_rebalance(struct work_struct *work)
- 	struct ovs_net *ovs_net = container_of(work, struct ovs_net,
- 					       masks_rebalance.work);
- 	struct datapath *dp;
-+	bool rearm;
- 
- 	ovs_lock();
- 
- 	list_for_each_entry(dp, &ovs_net->dps, list_node)
- 		ovs_flow_masks_rebalance(&dp->table);
- 
-+	rearm = !list_empty(&ovs_net->dps);
-+
- 	ovs_unlock();
- 
--	schedule_delayed_work(&ovs_net->masks_rebalance,
--			      msecs_to_jiffies(DP_MASKS_REBALANCE_INTERVAL));
-+	if (rearm)
-+		schedule_delayed_work(&ovs_net->masks_rebalance,
-+				      DP_MASKS_REBALANCE_INTERVAL);
- }
- 
- static const struct nla_policy vport_policy[OVS_VPORT_ATTR_MAX + 1] = {
-@@ -2713,8 +2721,6 @@ static int __net_init ovs_init_net(struct net *net)
- 	if (err)
- 		return err;
- 
--	schedule_delayed_work(&ovs_net->masks_rebalance,
--			      msecs_to_jiffies(DP_MASKS_REBALANCE_INTERVAL));
- 	return 0;
- }
- 
-diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
-index b2c2b8da12d40..7a7afaeceee5e 100644
---- a/net/openvswitch/datapath.h
-+++ b/net/openvswitch/datapath.h
-@@ -23,7 +23,7 @@
- 
- #define DP_MAX_PORTS                USHRT_MAX
- #define DP_VPORT_HASH_BUCKETS       1024
--#define DP_MASKS_REBALANCE_INTERVAL 4000
-+#define DP_MASKS_REBALANCE_INTERVAL msecs_to_jiffies(4000)
- 
- /**
-  * struct dp_stats_percpu - per-cpu packet processing statistics for a given
+  # sysctl net.core.neigh_inherit_init_net=0
+  net.core.neigh_inherit_init_net = 0
+  # unshare -n sysctl net.ipv4.neigh.default.gc_thresh1
+  net.ipv4.neigh.default.gc_thresh1 = 128
+
+Series overview:
+
+  Patch 1 deflakes test_neigh.sh.
+
+  Patch 2 ~ 3 are misc cleanup.
+
+  Patch 4 ~ 7 store arp_tbl/nd_tbl to net->neigh_tables[] and
+  remove the global neigh_tables[].
+
+  Patch 8 ~ 9 replace the direct access to arp_tbl/nd_tbl to
+  net->neigh_tables[] using new helpers.
+
+  Patch 10 ~ 12 finally replace the global table with per-netns
+  table.
+
+  Patch 13 ~ 14 clean up unnecessary net_eq().
+
+  Patch 15 updates test_neigh.sh.
+
+Note that some buggy drivers access nd_tbl without checking
+disable_ipv6_mod, so nd_tbl's extern definition is still left.
+
+After this series, I will follow up on two suggestions by Ido:
+https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
+
+
+Changes:
+  v6:
+    * Patch 12
+      * Define sysctl_neigh_inherit_init_net in neighbour.c
+        for CONFIG_SYSCTL=n
+
+  v5: https://lore.kernel.org/netdev/20260901183327.3332855-1-kuniyu@google.com/
+    * Rebased on the latest net-next
+
+  v4: https://lore.kernel.org/netdev/20260813080248.407680-1-kuniyu@google.com/
+    * Patch 12
+      * Add sysctl knob, net.core.neigh_inherit_init_net
+      * Inherit all neigh parms by default
+
+  v3: https://lore.kernel.org/netdev/20260811022448.116235-1-kuniyu@google.com/
+    * Add Patch 1 & 11
+    * Patch 12
+      * Remove timer_shutdown_sync() in neigh_flush_one() and
+        rely on tbl->entries (Patch 11) to free it in neigh_table_free().
+    * Patch 15
+      * Remove stale comments
+
+  v2: https://lore.kernel.org/netdev/20260807232932.3986667-1-kuniyu@google.com/
+    * Add Patch 11 & 13
+    * Patch 7
+      * Add note about mlx5e_tc_update_neigh_used_value()
+    * Patch 9
+      * Add __maybe_unused to net in neigh_table_clear()
+    * Patch 10
+      * panic() when register_pernet_subsys(&arp_net_ops) fails
+      * Add timer_shutdown_sync() in neigh_flush_one()
+    * Patch 11
+      * Split from the next patch
+      * Remove net comparison in pneigh_dump_table()
+      * Remove net arg of pneigh_create(), pneigh_delete(), and
+        pneigh_lookup()
+
+  v1: https://lore.kernel.org/netdev/20260806011152.1170012-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (15):
+  selftest: net: Deflake Periodic GC test in test_neigh.sh.
+  neighbour: Remove __neigh_for_each_release().
+  neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
+  neighbour: Remove unnecessary EXPORT_SYMBOL().
+  neighbour: Remove __rcu from neigh_tables[].
+  neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
+  neighbour: Remove neigh_tables[].
+  ipv4: Replace &arp_tbl with arp_table(net).
+  ipv6: Replace &nd_tbl with nd_table(net).
+  neighbour: Clean up neigh_table_init() and neigh_table_clear().
+  neighbour: Convert neigh_table.entries to refcount_t.
+  neighbour: Namespacify neigh_tables.
+  neighbour: Don't store net in struct pneigh_entry.
+  neighbour: Remove unnecessary net_eq().
+  selftest: net: Specify netns for ip ntable in test_neigh.sh.
+
+ Documentation/admin-guide/sysctl/net.rst      |  14 +
+ drivers/infiniband/ulp/ipoib/ipoib_main.c     |  27 +-
+ .../marvell/prestera/prestera_router.c        |  10 +-
+ .../mellanox/mlx5/core/en/rep/neigh.c         |  29 +-
+ .../mellanox/mlx5/core/en/tc_tun_encap.c      |  23 +-
+ .../mellanox/mlx5/core/en_accel/ipsec.c       |   6 +-
+ .../ethernet/mellanox/mlxsw/spectrum_router.c |  31 +-
+ .../ethernet/mellanox/mlxsw/spectrum_span.c   |  10 +-
+ .../netronome/nfp/flower/tunnel_conf.c        |  14 +-
+ drivers/net/ethernet/rocker/rocker_main.c     |   2 +-
+ drivers/net/ethernet/rocker/rocker_ofdpa.c    |   2 +-
+ drivers/net/ethernet/sfc/tc_counters.c        |   8 +-
+ drivers/net/ethernet/sfc/tc_encap_actions.c   |   4 +-
+ drivers/net/vrf.c                             |   2 +-
+ drivers/net/vxlan/vxlan_core.c                |  16 +-
+ include/net/arp.h                             |  10 +-
+ include/net/ndisc.h                           |  20 +-
+ include/net/neighbour.h                       |  22 +-
+ include/net/net_namespace.h                   |   4 +
+ include/net/route.h                           |   7 +-
+ net/bridge/br_arp_nd_proxy.c                  |   4 +-
+ net/core/neighbour.c                          | 402 +++++++++---------
+ net/core/sysctl_net_core.c                    |  10 +
+ net/ieee802154/6lowpan/tx.c                   |   3 +-
+ net/ipv4/arp.c                                | 131 ++++--
+ net/ipv4/devinet.c                            |  18 +-
+ net/ipv4/fib_semantics.c                      |   7 +-
+ net/ipv4/route.c                              |   2 +-
+ net/ipv6/addrconf.c                           |  17 +-
+ net/ipv6/ip6_output.c                         |   4 +-
+ net/ipv6/ndisc.c                              | 146 ++++---
+ net/ipv6/route.c                              |  18 +-
+ tools/testing/selftests/net/test_neigh.sh     |  66 +--
+ 33 files changed, 620 insertions(+), 469 deletions(-)
+
 -- 
-2.55.0
+2.55.0.970.g62bdec98f9-goog
 
