@@ -1,131 +1,168 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C102415B6B
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 09:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9B84189C3
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 09:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788341058; cv=none; b=tsELnwyAS92AI9nuyzLwZekByj/2/S6WW7cAYAHuuDJ5awwRLI1uAVMjd7UqqpCyEnJzCpOgI3LaKM5j6hy8Tn2227enzD2Q/6cu92q4qG4PtovvjbWvRqyJE7uGukHm+2JxgKK4+GGqvkFF9WIMSmgpjQSLUe8wYIXoyvpf14w=
+	t=1788341269; cv=none; b=cNbY6BP/oPq8fq8ZFoXp+oqjrCpmsC1zbzTMJl6vO0e2LoEE91qTT1EIpVgH6jntMCT4Px56zboG5L9SAhKkaelgi/iydNGnnXHs4G0MFEwwS7dBSp/07v8fQt8b4fH823SgGfEiDaugWoqgNLnNhT1H9m+GMWdPub78OMkyTK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788341058; c=relaxed/simple;
-	bh=wi3qO921M+VWsBBas/ZiJoc39eV+5WMK/Bj0xc7Pj9w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=isrCiZRi0Qon6DWzguMmKaTKVR8ZmgNXe+lrfp4yazVn/bBEvVjDRkstbhTqwHq9EOAneSzwwPLDCItEhGn+bMFDzmcwa14E3NBdpPIXTbgpyvPnEuOKs9ZAknzLnrV2VQ067O5Cgaa0pI4VVKBS/edmoee1u3btUZNlMjpuKwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bfWjZ6CJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OfCtEel6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788341269; c=relaxed/simple;
+	bh=h/dQd4Jqh669dcKQjFfQ2tvPKkMsUHgb5Dzinm9LIzE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KvBejd8ow11/9rEbxuemr/zjNAjW/Ysg14Bw6JnK4FIEr5enyZaCbrcY5gZERtZ92fgMfuwSzQvMb/jb2xAnwAup6qjNytX5puie7Kt5ep98cbbJiHQa+CAqcMeDAiFkDK8lkFEKO1++XeAvAh8cuzYwy0OGf7m4hwYjfWw6dLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fFwu+lV3; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bfWjZ6CJ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OfCtEel6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788341055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cnDR0n4+GLAv92tnJZywkhWC5Cq0oacjpAbp860Ber0=;
-	b=bfWjZ6CJsv0lpfk7rCZ1NKRt61ispc4ygDWC9bBHWgWYNKMcMRp+4SGnDxDWS19ZyBpOc+
-	8yRu80XueFWk00c5V/H+g3pPcIinDD5kvA1H6mGFe2Mjqhu7O+8cQz+Xy3FJByRd5kapmk
-	paRPbiGLYJHfAhoZWXumDwwLPqxkiEg=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-jDZWxrBIMSWq64opL_dG8A-1; Wed, 02 Sept 2026 05:24:14 -0400
-X-MC-Unique: jDZWxrBIMSWq64opL_dG8A-1
-X-Mimecast-MFC-AGG-ID: jDZWxrBIMSWq64opL_dG8A_1788341051
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c2538c1c649so94570766b.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 02:24:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fFwu+lV3"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso699017b3a.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 02:27:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788341051; x=1788945851; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cnDR0n4+GLAv92tnJZywkhWC5Cq0oacjpAbp860Ber0=;
-        b=OfCtEel68mAVaTm/5c5tvmHHX+jqWXCkMKB4kWh2ZBAVvmTSu/PqBFHTJEBj+MfZxR
-         iKUwCn2T6EhFxJAHG4uK0GIRj2SgUVYir9eCXJa3pkxWOd0NeLkqJ8BDvIT/l13uPn8c
-         K+hEbEFBUaT6wIbCP+U2r8js9RkQJKhFFV7Op923XV6Z+Qy2vzW1HQKv+ZwcmkvfiOE/
-         gfbY3vsS8LqzagJLUVnwxZ+NoKAzVZbl5vXehr2ifqqeOzcrJ8Z0VQcXgcsgezxyAcVp
-         ddtSBkPa6ssKDM3QyAZVjM2H7ZbfQcWE1BQIwPBp+ZSpU4iSywHbARqQvuTajmOReObf
-         5MgQ==
+        d=gmail.com; s=20251104; t=1788341265; x=1788946065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YREt4HKo/yR3fmF2bs9ccnvMNqYMkkGFmZFuaSJ3xzQ=;
+        b=fFwu+lV3WfpbgkUE6xlLOqhyUaRc+EOjb5hAy2xRuhwZ1E99V/u3qSeXGtfsfFIFaV
+         d9vjUSrLGRuZ+0k0tS7ogCJIpG5zNNzsH69YvE5we4N8oPj+SMyEJsAHXnrUasIsyXnL
+         aTO+txLNzIpGs+8gqi20MWoaq+0tGbxfczzy51yhumy0FvyXuoCO/J4O7sFERFPVq/b3
+         5spYo7+k6P5u6s4qNanjl6+JvOhKiFaWaznv3zRA2OWiyTsqYU3ZNsTsEG5j4VuPDDGF
+         lBt1JuKPJ7pgTCJpyRP7uI9DIFljYgX9xaYtJelugdu64rXoDq5rnJucGd1KfM69V/Bw
+         2r+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788341051; x=1788945851;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788341265; x=1788946065;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cnDR0n4+GLAv92tnJZywkhWC5Cq0oacjpAbp860Ber0=;
-        b=AXQPGXRJhkxiRSUv3Ofdd6mg//PwCdPtKiJx+aBq1CQaHCJ2WDAqYL85wCu7FU7nWT
-         LLDgLC17dJmyNmZ4mwQj1tePFssk0+rhcyB5x03wzkqdk1MLbs6ZldOUrdGHy3yeJs96
-         mtJ7633MD/P34vgE+TVIiBAsrpR2wiq/FfORXVQgD4WRZ44AJkD79uL61dQhR9RjyTry
-         /fqqV4XP6tGSYzVYwo5+9m1G002FoklgfZDgEsAQfBYBxxjq1xA5z4BpgecblpS37xNa
-         WAbb+ZHFN791qcVvzu9mCGt6AzNbNRXPtN5cCCWbmwoHXCinBZsiLXwAutiERVWoc8o4
-         C4gg==
-X-Gm-Message-State: AFuF++l+kNGEm2gTGKYQbdRE4hH/98a7X4435cnEGS8P2cachYDJRdxU
-	QAiXCZTkON1wrthdNxmswtnXlHoUt/ygD8iJvGL7p8BDod8tGzcDKktsco4YBO92YMhma0VZRp9
-	HWN7t6mKdGEsLNqLW9JaU8g0rs3S6o0JX77sb9+smL2XwT0DLRt7JHih2Dn5zE67wUg==
-X-Gm-Gg: AYBFou1wD4Wajo+huejhGUVK2ydvParuEj0MWxlWsEpvQh8hyMWq96ww89StJMtaO0A
-	6jbGhJODfBG6fDx17cY81ks3q3OLsutrqXBSnDf/ZiQpnusRW4aQIVHlrH24Xf5ZcaMxEHdP7x1
-	FNj9+bVcM2wal+EqPO7YoiQgt3H0uKiuOFBVfGdImzM5iobx74AqhO7wHaXbJBnAe9l7zixW9lI
-	Qtq/0qvnR0gTFLeLY/8t0dNBAMqONY8jXpDyiMXxBT2VFhbLcT3PZ6cvCcvyu3crjXdQUJ0b5/0
-	sB/dWFocJlWkftYoRYkq4AnBoOajSCvKBWbeC1ZOquN6UDH/9QqrXgSoJEUUkDngHS0kz8Mu0qf
-	55dJYiOif8wG/M/gJLFpdVlEmBc/VOIGpKwDOISIjdW9QgyQzbTFWKVPIgMjYW4a5vcED1XTy3g
-	==
-X-Received: by 2002:a17:906:99d4:b0:c25:58e:83ff with SMTP id a640c23a62f3a-c25d52b4f8cmr209871566b.10.1788341051261;
-        Wed, 02 Sep 2026 02:24:11 -0700 (PDT)
-X-Received: by 2002:a17:906:99d4:b0:c25:58e:83ff with SMTP id a640c23a62f3a-c25d52b4f8cmr209867366b.10.1788341050845;
-        Wed, 02 Sep 2026 02:24:10 -0700 (PDT)
-Received: from [192.168.188.103] (ip245-45-231-195.pool-bba.aruba.it. [195.231.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d044d776sm96589266b.62.2026.09.02.02.24.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 02:24:10 -0700 (PDT)
-Message-ID: <0d3f33cf-d1db-451b-a4a6-25b22fd9bb5b@redhat.com>
-Date: Wed, 2 Sep 2026 11:24:08 +0200
+        bh=YREt4HKo/yR3fmF2bs9ccnvMNqYMkkGFmZFuaSJ3xzQ=;
+        b=rcl+FQxdKsFifa+OVvRQpg2/3nhmWPesK5g4yEZL2rHlpjcwe7qZB6bUedq0f7NMbq
+         HS1GQ72JWqeQ3BIQLErJaPIR3r3UW2p2o3DfEpa/Mx1TvOHKT0yj8+qFu0DCfa5VYED6
+         DcoDdZg9GHN+byBDg6DgaMqw8GPdRI+s6e2Ii0HytW5uoXKIhDO7oyOBDYzQR7qyv2kE
+         tAtOQM0eXsfa8k3fFvUNiYmfdY2Sc4zKavy69x31QPoglRkyWyOJ7xHKYqqbfZUxIh11
+         3uvsb8bGi3N49qaR2nrOrkWyMrGMkNwUwd6/Y8MWuLFM+QK3xPuvvvP4UdOQPsRhX6pr
+         crjA==
+X-Gm-Message-State: AFuF++n07Zp419mpFqzTOfiFY+RkWmQpu5hesfdHb8DuhVfizd/u4SOc
+	oooOAqiFko90QE5XVcFOEF5P8svnI6NMp/F7N6JsMm1dJgErEtt1DfkpQ+7QLuBc3Yo=
+X-Gm-Gg: AYBFou1XhR2M9y0SrL4erP2ayQmwz2mH4GVWgiYw4rUiMTBjA+6yO6zaHWKjSolPaK8
+	0BplhmaZ9iyyeD8jX6tCxktgt90Prs4Qk42gFSbcf1Knb+bj7LfLQHYx/27dQU3vyBvvQZyNyBa
+	E8AJo/mYW8xpfn8KEgU7xXX3rs4XYUMd0Tpo4HstDKPcqfyNclDDouzOVcL0ws9vTRm22sLBF/B
+	9CbJ+d8d9ou2/e71zu/GYtsbP014yiSSt47CiTCl8+8mHS+szoZyqKCTfvRm9LMwEO3WD1y8esT
+	dSXwQMrPAroV+1LmNCfqUFW0J3amfFVZuaSkgBg62VuvPUFbzkTQxbxT9R5mfgVuw+P1wZIf2Gn
+	ON5XbLWV/W4lcHUJw+jDwhXsdO4tubSlYSP1p9FPuZ1nudp3ofXSNVCC8nQD0OjXtqv9Sw1DvI/
+	eVsyHm26MD3SfnDE4JMSTQOU/FkJ0GwZkSoBuPF48IPXWNdVP7msSy5O61HBDCA1vf9g==
+X-Received: by 2002:a05:6a00:368c:b0:851:c1d2:c48d with SMTP id d2e1a72fcca58-85ed25e0713mr5793959b3a.8.1788341264937;
+        Wed, 02 Sep 2026 02:27:44 -0700 (PDT)
+Received: from TENCENT64.site ([103.7.29.106])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85dc0810a7bsm1051678b3a.47.2026.09.02.02.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 02:27:44 -0700 (PDT)
+From: Fourie Zhang <littleddfu@gmail.com>
+X-Google-Original-From: Fourie Zhang <fouriezhang@tencent.com>
+To: netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Jiri Benc <jbenc@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Aaron Conole <aconole@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	dev@openvswitch.org,
+	stable@vger.kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	Fourie Zhang <fouriezhang@tencent.com>
+Subject: [PATCH net v2] net: mpls: clear inner_protocol when the last label is popped
+Date: Wed,  2 Sep 2026 17:27:12 +0800
+Message-ID: <20260902092719.2874481-1-fouriezhang@tencent.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/2] net: Make skb_ext_put_sp() idempotent
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: netdev@vger.kernel.org, Florian Westphal <fw@strlen.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Simon Horman <horms@kernel.org>, Jeremy Kerr <jk@codeconstruct.com.au>,
- Matt Johnston <matt@codeconstruct.com.au>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, kernel-team@cloudflare.com,
- Jakub Kicinski <kuba@kernel.org>
-References: <20260831-skb-ext-prep-work-v1-0-ecc2a8542fd9@cloudflare.com>
- <20260831-skb-ext-prep-work-v1-1-ecc2a8542fd9@cloudflare.com>
- <20260901171520.072acdd2@kernel.org> <87ld9k2oaq.fsf@cloudflare.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <87ld9k2oaq.fsf@cloudflare.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/2/26 7:51 AM, Jakub Sitnicki wrote:
-> On Tue, Sep 01, 2026 at 05:15 PM -07, Jakub Kicinski wrote:
->> On Mon, 31 Aug 2026 08:27:38 +0200 Jakub Sitnicki wrote:
->>> +	if (!sp->len)
->>> +		return;
->>
->> Somewhat mixed feelings about explicitly checking what is the loop
->> bound, anyway. But I guess you can argue we shouldn't write len?
->> Probably not worth a respin either way
-> 
-> You read my mind. Then I thought maybe I'm trying to be smarter than the
-> compiler? But it seems that neither clang nor gcc eliminate the write:
-> 
-> https://godbolt.org/z/EcWTdEYqh
-I'm a little late here, but it looks like sashiko cataloged as 
-pre-existing a couple of issues that on top of this series can new 
-lead to memory corruption:
+skb_mpls_push() records the pre-encapsulation network header once, gated
+on !skb->inner_protocol. skb_mpls_pop() never clears that record, so it
+outlives the encapsulation it describes.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831-skb-ext-prep-work-v1-0-ecc2a8542fd9%40cloudflare.com
+Open vSwitch can then re-push MPLS onto a packet whose
+inner_network_header still points at the older, deeper offset: push a
+label, pop every label, recirculate (ovs_flow_key_update() re-derives
+key->eth.type and resets network_header, but leaves inner_*), then push
+again. ovs_fragment() trusts the record:
 
-Could you please have a look?
+	skb->network_header = skb->inner_network_header;
 
-/P
+so skb_network_offset() goes negative. The bound check is signed:
+
+	if (skb_network_offset(skb) > MAX_L2_LEN)
+
+a negative offset passes it, and prepare_frag() widens the value:
+
+	unsigned int hlen = skb_network_offset(skb);
+	memcpy(&data->l2_data, skb->data, hlen);
+
+which is a ~4GiB memcpy out of a 30-byte per-CPU buffer.
+
+Reproduced on v7.3-rc1. RDX is the truncated length, (unsigned int)(-8):
+
+  BUG: unable to handle page fault for address: ffffe8ffffc16000
+  #PF: supervisor write access in kernel mode
+  Oops: 0002 [#1] SMP KASAN NOPTI
+  RIP: 0010:memcpy+0x8/0x20
+  RDX: 00000000fffffff8 RSI: ffff888105d732db RDI: ffffe8ffffc16000
+   prepare_frag+0x3df/0x4e0
+   ovs_fragment+0x589/0x7e0
+   do_output+0x4ce/0x5e0
+   do_execute_actions+0x55d2/0x7b30
+   ovs_execute_actions+0xea/0x450
+
+Same root-cause shape as commit 975b5b067f52 ("ipv6: sr: restore network
+header before routing and forwarding"): a stale network header offset
+reaching a consumer that widens it. Here it originates in the MPLS
+push/pop path.
+
+Clear inner_protocol once the packet is no longer MPLS, so a later push
+re-records the current header. net/sched/act_mpls.c is the only other
+skb_mpls_pop() caller and gets the same fix; sch_frag.c saves and
+restores inner_protocol around fragmentation in the same way OVS does.
+
+Fixes: 48d2ab609b6b ("net: mpls: Fixups for GSO")
+Cc: stable@vger.kernel.org
+Assisted-by: tencentos-corvus-ai:hy4-preview
+Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
+---
+v2:
+  - correct the Fixes tag (Jiri Benc)
+v1: https://lore.kernel.org/netdev/20260902082924.2812968-1-fouriezhang@tencent.com/
+
+A KASAN reproducer for this issue is available if requested.
+
+ net/core/skbuff.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 966af3beed94..cc3b4b70288b 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6690,6 +6690,13 @@ int skb_mpls_pop(struct sk_buff *skb, __be16 next_proto, int mac_len,
+ 	}
+ 	skb->protocol = next_proto;
+ 
++	/* The last label is gone, so the inner header recorded by
++	 * skb_mpls_push() no longer describes this packet. Drop it, or a
++	 * later push keeps the stale offset.
++	 */
++	if (!eth_p_mpls(next_proto))
++		skb->inner_protocol = 0;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(skb_mpls_pop);
+-- 
+2.43.7
 
