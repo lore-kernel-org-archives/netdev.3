@@ -1,56 +1,56 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402FD2D5412
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 00:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3218628B7EA
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 00:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788309236; cv=none; b=LYVMPUWEl5y0dJMNmoBJ3rGc4cuEAs3OjtyL8TtiCtHbTLh0Wdtk6/0j58U4+cwtz1yKPX7fVyjVTLLHNoOKFWFatQ2VmflyGHY/THjF2q7YZEFFQca8GkJwxLHQVrNfUQ83oneDhmJ4wRGfUSVX42C+lam28Stm9lKvC5ihWcE=
+	t=1788309238; cv=none; b=JYHt/oIwbM0uSZPBiowA0uFYtVRr17YTKMPIW+lewsQc/dFQvNTJkv7/KmZOQDp3sydABPP+SVIC3ETgVfpRV5qJIrleaWEufNIsCzn8BGPW8qPwt/zehjd8/dXcK1C/g0qs1OM7IuSUGngRWXFYp+XT5hL8vZVMLuriw7hrXoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788309236; c=relaxed/simple;
-	bh=Y28b9bHSwIIK50NWh9CclWdbO/LaxyN45BWaJbO4tD0=;
+	s=arc-20240116; t=1788309238; c=relaxed/simple;
+	bh=pfgGQPeQ6f1FO/f1aPTHHjYKPZ1JAPknYqLz5w4NlgY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AUPlgeoJwm64OMbkltY2RvXx1hS2v8HexNuaq92YVyXm4rDzJlvXpPdEhjTZrbyBrrBxdZCO2Mw46u8ZMGiLoUAzlyezqqi6ji0fih79HsyZ5FSlIJqSGVlXI6wlL3+9XPgrZlGlW0qfRNrneULBIZBpY/twvXedIrlAmveJTwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zc9GzMiS; arc=none smtp.client-ip=209.85.222.198
+	 To:Cc:Content-Type; b=Xw2rfK5CYKTqCTZ4jmibnpXshW0E1eTqIwnLiOK3aviCjCtBKbFiue17Csj1kFFasJDq97NVazVLMvs3+h59vRYoaWIR5QkgjHwOeXsSziTW8M78E3h1rbidWpCKwqZKLMfgtH45XK+DskrD0JdUtiCtMVgzo+shOSikE29rZMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G/RCtZHC; arc=none smtp.client-ip=209.85.160.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zc9GzMiS"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9390e7e4c5eso98227785a.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 17:33:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G/RCtZHC"
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52ce3c7cb2eso9374441cf.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 17:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788309234; x=1788914034; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788309236; x=1788914036; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GuNL7Wby9MNWAnsVQJiqvpKUIMJDRnuc5Vz5nrBgTGM=;
-        b=Zc9GzMiSNuDPrbpVRH8vYXgskHw5BiGiQt5x+gbvoDvIAf/AZEaj2uFvzovXVe8CXv
-         RznrRdx30JQcxlF0eR1YJu6rd5ODBHxIdFhndNV4QPLG+lLrNeI8KyV6r1YAOMU0WHws
-         /PcOXAZuAnl+QldmyGE4vOLOHu+kdFVywpRak42T3oa54sOvXbWeuYb+I2N+PSbU9wLp
-         ieHhhCwvGkKlr+b5NwEo/uhA5ILlJxfxQo6vRoV/e7zakTBZPfasKFeTcddY/4nYUe5V
-         lKSH3sOTOsD0yQx5WHFp+ijDR2FQZit+fx8ynf/3Vazom2gWVrHh47bzk+okt8sjzjkG
-         1t9Q==
+        bh=YFS62CPFHohhGRKRf2J7v/SfAoWqeMRRR/mDres1KHA=;
+        b=G/RCtZHCqw9aLr7085CTwUZ02ystZlESTlOOrWqjR7LvvcDabd7idIi1LAqSOPbZ+V
+         WPBJ0WKOeR+QEysOaHbrQOIZQVr+OIZECeJnbjmcXoORnVVpZ0sR1uDI1tzEpTHSjJkd
+         nPEouAjHkUFJRSwkgrEImHM4T+Z4Iz0xxMhk/4KBcpQKI0lisBYVnYVCqADfR2fbhvcL
+         izSST8iuBjIwtE2qmR+wKqNl+5SR6iBKv12XvAGMbVEISBqf1fe30x5KeOwEGWB02DJ6
+         UP4d0n+m9WfzBf65hhKV3gc3R8ewiJpaZtDjsCVL2ZuNciVhT2gqiIWZHkeO0hieFvDq
+         xtuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788309234; x=1788914034;
+        d=1e100.net; s=20251104; t=1788309236; x=1788914036;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GuNL7Wby9MNWAnsVQJiqvpKUIMJDRnuc5Vz5nrBgTGM=;
-        b=pP+x2eb78KMHwNyzyB6qlfQDG995anRSynOge/U4YRxjANDt51vNH5KjpfyktquWcv
-         Y2pW1dVx0mHKw3GBruGWYY1wjFnbM/SVnDgr/jtQaBPSXzBNcA6iXfQkMPL2a0yUNb5V
-         zhDTnxvCLmJqcm5KUB0zlPskVdL20TbBZAa4dqb4dKlqpkot2akLQMm6ZZRRlv169ISZ
-         hKmXeW15/qdLkHnNLUMkpMPr3WKnye8+2+lgCyV9TPJeh76A0I1iW0O9SR9/mUDkOuLQ
-         Sux8Ti8P2TinzVVn6TkQ2TRHiH+QuJMoHx3QL8EOfoezfKm/FwK5mN6rS3vqKpDDpDbq
-         Awbw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpjwz9KCkvNnNBxqWKpmDOcQQYYJ5Zh3Z3U8RQLjNwaiGHz4KGLPxO9VHpkpQFu2IUXpvyEOrc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mzfGBZG7ZDhT5qdkvORaN3H1ygxBD7LH+Cu0jtr7MUkJkwZ8Cg
-	/BFwKdJ+RTSO4CgKlwkaNb3kgH0v75TMJ+4MZ9z14KElc1W6BnMbiAVxY5sx0Z8pHYxr6VzaNY5
-	O0DSKUzZ866GoAw==
-X-Received: from qkof21.prod.google.com ([2002:a05:620a:4095:b0:939:359f:cb12])
+        bh=YFS62CPFHohhGRKRf2J7v/SfAoWqeMRRR/mDres1KHA=;
+        b=I7O8W6wDP+a0DByRnfJXlpCCxbK8ia52qZfCagQp7Q5t1Fdp5LIOqW8DlrAEJiZAWC
+         UcQ8IBKk4MK1HAILIb2uT4oFm64V3d505Z/ZegO5u5HU75FVSJw0d1dKayo4Iq+2Da2p
+         zwyid0e6/BKTo+OAKaOTNVjQfZdhccentBPAkjKQiu4RsjWq/kjLkuimEZc/WKFFn1eS
+         nMdwyNAbIHi0AveWd4mXH0LvytR/eG5t8B86Xojn0FHL5/CP1kd7VqW8oYOMGx12zjDH
+         ddKe8tVb4JGi/TvFVy+XVPNml1IKFH1hWNatm7tfDZ+8cTzI4ZMstX2N8dACFlVPmf+L
+         cp4A==
+X-Forwarded-Encrypted: i=1; AHgh+Rr30KIiQOX4VNICjQTaNuvcrGaCyyBfmjzdyhiDD20XdsUja5r/fN3cGnlxuKxoA55N2QYQokk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mpYuG+/4QKUKCL/+Cx8YTLTfyg32xPnT8NYimlRjssjRg0htCd
+	b28/pWHRfu6/km4ziyZgJYCU2PzIavuS+sJ1kcdICQXncGxOCe/nZ7DUThpZ53t815R8sT2r88b
+	UPHuEAXxgrwumbg==
+X-Received: from qtbjv8.prod.google.com ([2002:a05:622a:a088:b0:52e:f047:8481])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:a285:b0:937:11c9:37f1 with SMTP id af79cd13be357-93960e3256dmr141949085a.16.1788309233837;
- Tue, 01 Sep 2026 17:33:53 -0700 (PDT)
-Date: Wed,  2 Sep 2026 00:33:39 +0000
+ 2002:a05:622a:2c2:b0:51c:1568:3a53 with SMTP id d75a77b69052e-53036c0ea49mr8038111cf.16.1788309235206;
+ Tue, 01 Sep 2026 17:33:55 -0700 (PDT)
+Date: Wed,  2 Sep 2026 00:33:40 +0000
 In-Reply-To: <20260902003344.1931843-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260902003344.1931843-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260902003344.1931843-6-edumazet@google.com>
-Subject: [PATCH net-next 05/10] netvsc: do not assume mac header is set in netvsc_start_xmit()
+Message-ID: <20260902003344.1931843-7-edumazet@google.com>
+Subject: [PATCH net-next 06/10] macsec: do not assume mac header is set in macsec_encrypt_finish()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -76,23 +76,23 @@ and remove now redundant skb_reset_mac_header().
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- drivers/net/hyperv/netvsc_drv.c | 3 +--
+ drivers/net/macsec.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index 1d43c73fd73f10200ee0c69c9221a2a44971b08a..d78ed0f3a3bd1de37a05187b4d7f499099041668 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -533,8 +533,7 @@ static int netvsc_xmit(struct sk_buff *skb, struct net_device *net, bool xdp_tx)
- 	if (skb->protocol == htons(ETH_P_8021Q)) {
- 		u16 vlan_tci;
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 6f9f3aceffaad311d5d47bb93fa0df59082aa9f9..da7f917e71807410c050bcf4a8ed836272ab87cb 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -503,8 +503,7 @@ static void macsec_encrypt_finish(struct sk_buff *skb, struct net_device *dev)
+ 	struct macsec_dev *macsec = netdev_priv(dev);
  
--		skb_reset_mac_header(skb);
--		if (eth_type_vlan(eth_hdr(skb)->h_proto)) {
-+		if (eth_type_vlan(skb_eth_hdr(skb)->h_proto)) {
- 			if (unlikely(__skb_vlan_pop(skb, &vlan_tci) != 0)) {
- 				++net_device_ctx->eth_stats.vlan_error;
- 				goto drop;
+ 	skb->dev = macsec->real_dev;
+-	skb_reset_mac_header(skb);
+-	skb->protocol = eth_hdr(skb)->h_proto;
++	skb->protocol = skb_eth_hdr(skb)->h_proto;
+ }
+ 
+ static unsigned int macsec_msdu_len(struct sk_buff *skb)
 -- 
 2.55.0.966.g6673acef38-goog
 
