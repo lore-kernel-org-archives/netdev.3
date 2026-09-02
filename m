@@ -1,220 +1,187 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C4147A899
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C27395240
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788381464; cv=none; b=EfIeJB2KBPDqDvcPUQFjP/GqBOTwv0yUTzk2H6JQwBrWCK9zNdKAvb6MrlpnWaDhinx3c746nPMb4Pn6sxzdItS0gXk/EZyxkV4GzM3XYwl+DvChfQT+I16013d4TY76jHk/Yf+7vmW43sU2GXxzT7BoyYTdxTh7jkOmqt798AI=
+	t=1788381465; cv=none; b=NH7nCUD5l5vL+xKE+zDymSVwrsM0lFWEvy68J9nMyUqFNggoBDyqTn5rvCCM8KluO1SMULApxMmcbUkqoN57MqcaI/AD0+J8TGpiQWRqywIWsDBhw6hv3IWqGbGJVKT7k1f87J/e0ZnYdyXY+1NV4hgPHM6z5O3RRpO91GS6mow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788381464; c=relaxed/simple;
-	bh=2edZcXKNp4ztGJxOQFGQBpPF8dJfKCaOvf6gk1cWo2A=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Pzf5jVDm1RWKISWL+HZsEfMfOfdhZbRYWro/j5w6+xpgQVBRuqDU0cqBZlrcANjRsou5yPDMytMq5PMqWScMSVZBOKix29VvCrmQOF0IQkXfp+USGT5fzpHeqklthhh5ISnqAjKfDBhjV19NyefJGoPBzQQkAydu8bz1ZI8WMGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JTTqGqGX; arc=none smtp.client-ip=209.85.210.197
+	s=arc-20240116; t=1788381465; c=relaxed/simple;
+	bh=m3RyCgbTYhcd2jtl8f8bV736rYnT8jb1GY/o4DvwK1s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=e51OisUNKV0PDpLyxfXmN4JBnL9vNwzVva+PXzfyH+Uyd2YtHgZFzxbfmL5bogLhPR081xAo67RASHg+1ZbFQm8MD/eahGMu7bHEyHOpyW87V+Xwiprexvnf9Oj26g/J3+p/LJGj+UI3kFf/ig8C4XX+Scqx4clIc9z1UpblRkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JWj6Rf2M; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JTTqGqGX"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e375d9736so1353154b3a.2
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:37:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JWj6Rf2M"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-854f274dd69so1779158b3a.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:37:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788381462; x=1788986262; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i73ZU8dNn3/xPt/JoIsrzZEp0mXdlhe6VUhoY6nKhmg=;
-        b=JTTqGqGX14yAi1PrhQl5P76C7BIR2dWdZgcO+VdL9QeBbJQV57zFOPSFqABxkY4zpl
-         kPigiJSUn3aj7hdJ32jgWpl7/f6VVv0lpZL2JD7GtMrRm4g7ITRyyLuiJwqtniWgmeLH
-         EoRxkZJus/ie/btzvZc764qcwGvFREkA4QEpJuna90MHLngGuzMgGkGhjvNS8I6In+LQ
-         bXacE8WBXdv+g/pcHmVTtRe8IzG3MG+8m2CXyhLsunp24Q5+IZTQ1jF0qUuYH2bxMQSf
-         uHfg5Pfz56AGCwS/V2Iu0PoSMXskiRaELLEKt4gWHMQW798kcZa1Sjo9y4FvmeMk58aT
-         dH4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788381462; x=1788986262;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788381463; x=1788986263; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i73ZU8dNn3/xPt/JoIsrzZEp0mXdlhe6VUhoY6nKhmg=;
-        b=WnOiwAa185iRzADstJ1AJIjTKeHET266sDcOb6EpHdVBBq3uutumxhBXOrQSOPkJNs
-         FbQFUx3glRp94qD0fjSMNW1unF1RkibaWIOwo+Ce6/qzxA1SO3UVoYKVLBXTwUvw+RdL
-         H1x3822HV5hlJodBlsv5vdGDIbsEZ2CW/zQKUnUqn0YUlKVfDvzIQDFp1XvVTBVnCQ9q
-         FGo71GRYqr63v+qNyck8GetXDsG5Fw3CYBIFU1yvxtMn+4LtSMHyOAFWNrehe/AbJMiM
-         j3PCVdaDORDhPpuQMGHryWh3TgYev14dL0bhmHG75JMMbf9PzwTKykXnlGliaxStpYgt
-         8G0w==
-X-Forwarded-Encrypted: i=1; AKwUvBwnL+MSLJjXHyCkKMcFOHpbfpuSd0B9ESJMgySUsy5JeBKl+jgNfzjfz2/KAUubSc3iS2VGIoQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kMJl8fe3pusuX2v15E2EfM73nJ4QDyDmmcGKqW70vgboCVXRgG
-	dKU21CRifk5c0h0X5lUBooIJcxNG/Wi/Vg5KJFe+frBbs73e5ZeFicf5FyVqoNlVQxlHRyeNtGP
-	k3yWhRg==
-X-Received: from pgvc27.prod.google.com ([2002:a65:619b:0:b0:cc4:33e1:5b76])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b18:b0:3d3:adbf:7780
- with SMTP id adf61e73a8af0-3d9afb00c9emr12665789637.21.1788381461892; Wed, 02
- Sep 2026 13:37:41 -0700 (PDT)
-Date: Wed,  2 Sep 2026 20:36:41 +0000
+        bh=ns7gyWKirNLIEdATdumIRkFOdzljlcRnsIk2HEd0ZmQ=;
+        b=JWj6Rf2MOcjrJ2IRDL8YQwa+DSObL3TiGtQRDymVbXEu4suAVJHDISKr+MSnShHoQW
+         /sY31B8UWEIZnm3hcM9YZxQyONzaaCn/zldfIpYBskwMh2VxcoRHKK/9ptb/gCDCs100
+         gE14l533Iz/Kp7BHFTKmfTCrRllQCNLybfmH7RJatLFQe/0oWhhBtpbilxdvQLEhCwYG
+         Ux69PO7eTLRaSBrTqbWXVuhf7mG32LNQ6BlGisU0E4BVvQCctDWLtY1dRcxNwpZN1QCD
+         /cMQwjoAEjAEQmzDlN5g5+RId7u3uS2wmpssBa1YdUB6xpoixX3mMJeaoiBq0cuS7LLn
+         5MRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788381463; x=1788986263;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ns7gyWKirNLIEdATdumIRkFOdzljlcRnsIk2HEd0ZmQ=;
+        b=pCcVtc0PDkZ6BpOTM4AF5HkOqobByQnR+BeWrmxW8f8nKkAGhko4iXFpfKx33FSX9v
+         GOjJ34Np60tAZBpzmrGQc/yj9F3ZzND7PBudEJuVcj1439N+bKptFI0E5e0jhQl0PprM
+         O2eA5dpaajJzCXIh5cz6LIzVKAeQKZ3B+ItuTcxg5XWOqTKAZLeac4sqsgiYOa2FCs1Z
+         89UglAp0MgwYM7Pan4pXFgNg8JLDgOgtdp+28OKbpe+KJWukb5EhF8Y107W4zsqGkR5a
+         L5vrYUQ5pgCr8In7Oi+0EBCmuUE9odDBs1x7lO83caUe9YxaCCaH/mZHXyKXwZNrhwAD
+         He1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBx8kwY/BwTzDHuNRuA3y/6FGrJfRwrsfcgrruqCpzU2R2JWEglW9F31IK0bZmyGqLS6HEPScV8=@vger.kernel.org
+X-Gm-Message-State: AFuF++ngw+C1cFhx+cwMNRVTYv7mjXPpmGDILvUOORgQcXq/viloOmdx
+	jlNezjcXNwzhZnJ/2coxYY0gKG94wfVO5TbKS0oAFGRcRfTo47jGvlfe4A0OrfLyAh1g7t6iDbO
+	+UEcL/Q==
+X-Received: from pfx27.prod.google.com ([2002:a05:6a00:a45b:b0:853:7629:c005])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3405:b0:847:99bb:b6d0
+ with SMTP id d2e1a72fcca58-85ed3793051mr10934276b3a.15.1788381462675; Wed, 02
+ Sep 2026 13:37:42 -0700 (PDT)
+Date: Wed,  2 Sep 2026 20:36:42 +0000
+In-Reply-To: <20260902203722.926528-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260902203722.926528-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260902203722.926528-1-kuniyu@google.com>
-Subject: [PATCH v6 net-next 00/15] neighbour: Namespacify arp_tbl and nd_tbl.
+Message-ID: <20260902203722.926528-2-kuniyu@google.com>
+Subject: [PATCH v6 net-next 01/15] selftest: net: Deflake Periodic GC test in test_neigh.sh.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
 	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Nikolay Aleksandrov <razor@blackwall.org>
 Content-Type: text/plain; charset="UTF-8"
 
-The neighbour subsystem is almost ready to drop RTNL.
+test_neigh.sh has a test case to check if GC is running periodically.
 
-However, the control paths are serialised by the global
-per-table lock.
+It applies a new value to BASE_REACHABLE_TIME, waits for half of
+the old value (+2s) to ensure the config is reflected, and waits for
+BASE_REACHABLE_TIME to see if the next GC is triggered.
 
-This series converts arp_tbl and nd_tbl to per-netns table.
+  orig_base_reachable=$(ip -j ntable show name "$tbl_name" | jq '.[] | \
+                        select(has("thresh1")) | .["base_reachable"]')
+  run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable 10000"
+  run_cmd "sleep $(((orig_base_reachable / 1000) / 2 + 2))"
 
-With the series, /proc/sys/net/ipv{4,6}/neigh/default/ can
-be configured per netns, which was only configurable in
-init_net.
+This is because neigh_periodic_work() schedules the next GC with
+(BASE_REACHABLE_TIME / 2) seconds:
 
-To avoid potential regression, all the settings are inherited
-from init_net by default, and this behaviour is controlled by
-a new sysctl knob, net.core.neigh_inherit_init_net:
+  queue_delayed_work(system_power_efficient_wq, &tbl->gc_work,
+                     NEIGH_VAR(&tbl->parms, BASE_REACHABLE_TIME) >> 1);
 
-  # sysctl net.core.neigh_inherit_init_net
-  net.core.neigh_inherit_init_net = 1
-  # sysctl net.ipv4.neigh.default.gc_thresh1
-  net.ipv4.neigh.default.gc_thresh1 = 128
-  # sysctl net.ipv4.neigh.default.gc_thresh1=129
-  net.ipv4.neigh.default.gc_thresh1 = 129
-  # unshare -n sysctl net.ipv4.neigh.default.gc_thresh1
-  net.ipv4.neigh.default.gc_thresh1 = 129
+However, the very first run is scheduled with a longer period in
+neigh_table_init(), which will be up to 45s:
 
-If it is turned off, all settings are reset in the new netns:
+  neigh_set_reach_time(&tbl->parms);
+  queue_delayed_work(system_power_efficient_wq, &tbl->gc_work,
+                     tbl->parms.reachable_time);
 
-  # sysctl net.core.neigh_inherit_init_net=0
-  net.core.neigh_inherit_init_net = 0
-  # unshare -n sysctl net.ipv4.neigh.default.gc_thresh1
-  net.ipv4.neigh.default.gc_thresh1 = 128
+The initial value is randomly chosen, so if it is larger than 27s
+(larger than two "sleep"s), the test fails.
 
-Series overview:
+The test fails more frequently when neigh_table is namespacified by
+the later patch.
 
-  Patch 1 deflakes test_neigh.sh.
+In addition, the long "sleep" makes the test more flaky on kernel with
+CONFIG_NO_HZ_IDLE=y, which is enabled by defconfig.
 
-  Patch 2 ~ 3 are misc cleanup.
+The tbl->gc_work is initialised with INIT_DEFERRABLE_WORK() and queued
+to system_power_efficient_wq.
 
-  Patch 4 ~ 7 store arp_tbl/nd_tbl to net->neigh_tables[] and
-  remove the global neigh_tables[].
+Even when the next GC is supposed to be triggered 5s later, "sleep"
+makes the CPU idle, delaying GC execution until often 20s later,
+which is too late.
 
-  Patch 8 ~ 9 replace the direct access to arp_tbl/nd_tbl to
-  net->neigh_tables[] using new helpers.
+Let's take the initial tbl->parms.reachable_time into account and
+poll periodic_gc_runs every 0.1s up to the proper timeout, not to
+make CPU idle.
 
-  Patch 10 ~ 12 finally replace the global table with per-netns
-  table.
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+It seems NIPA has CONFIG_HZ_PERIODIC=y and has no problem.
+We may want to add it in net/config.
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/769301/config
+---
+ tools/testing/selftests/net/test_neigh.sh | 27 ++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-  Patch 13 ~ 14 clean up unnecessary net_eq().
-
-  Patch 15 updates test_neigh.sh.
-
-Note that some buggy drivers access nd_tbl without checking
-disable_ipv6_mod, so nd_tbl's extern definition is still left.
-
-After this series, I will follow up on two suggestions by Ido:
-https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
-
-
-Changes:
-  v6:
-    * Patch 12
-      * Define sysctl_neigh_inherit_init_net in neighbour.c
-        for CONFIG_SYSCTL=n
-
-  v5: https://lore.kernel.org/netdev/20260901183327.3332855-1-kuniyu@google.com/
-    * Rebased on the latest net-next
-
-  v4: https://lore.kernel.org/netdev/20260813080248.407680-1-kuniyu@google.com/
-    * Patch 12
-      * Add sysctl knob, net.core.neigh_inherit_init_net
-      * Inherit all neigh parms by default
-
-  v3: https://lore.kernel.org/netdev/20260811022448.116235-1-kuniyu@google.com/
-    * Add Patch 1 & 11
-    * Patch 12
-      * Remove timer_shutdown_sync() in neigh_flush_one() and
-        rely on tbl->entries (Patch 11) to free it in neigh_table_free().
-    * Patch 15
-      * Remove stale comments
-
-  v2: https://lore.kernel.org/netdev/20260807232932.3986667-1-kuniyu@google.com/
-    * Add Patch 11 & 13
-    * Patch 7
-      * Add note about mlx5e_tc_update_neigh_used_value()
-    * Patch 9
-      * Add __maybe_unused to net in neigh_table_clear()
-    * Patch 10
-      * panic() when register_pernet_subsys(&arp_net_ops) fails
-      * Add timer_shutdown_sync() in neigh_flush_one()
-    * Patch 11
-      * Split from the next patch
-      * Remove net comparison in pneigh_dump_table()
-      * Remove net arg of pneigh_create(), pneigh_delete(), and
-        pneigh_lookup()
-
-  v1: https://lore.kernel.org/netdev/20260806011152.1170012-1-kuniyu@google.com/
-
-
-Kuniyuki Iwashima (15):
-  selftest: net: Deflake Periodic GC test in test_neigh.sh.
-  neighbour: Remove __neigh_for_each_release().
-  neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
-  neighbour: Remove unnecessary EXPORT_SYMBOL().
-  neighbour: Remove __rcu from neigh_tables[].
-  neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
-  neighbour: Remove neigh_tables[].
-  ipv4: Replace &arp_tbl with arp_table(net).
-  ipv6: Replace &nd_tbl with nd_table(net).
-  neighbour: Clean up neigh_table_init() and neigh_table_clear().
-  neighbour: Convert neigh_table.entries to refcount_t.
-  neighbour: Namespacify neigh_tables.
-  neighbour: Don't store net in struct pneigh_entry.
-  neighbour: Remove unnecessary net_eq().
-  selftest: net: Specify netns for ip ntable in test_neigh.sh.
-
- Documentation/admin-guide/sysctl/net.rst      |  14 +
- drivers/infiniband/ulp/ipoib/ipoib_main.c     |  27 +-
- .../marvell/prestera/prestera_router.c        |  10 +-
- .../mellanox/mlx5/core/en/rep/neigh.c         |  29 +-
- .../mellanox/mlx5/core/en/tc_tun_encap.c      |  23 +-
- .../mellanox/mlx5/core/en_accel/ipsec.c       |   6 +-
- .../ethernet/mellanox/mlxsw/spectrum_router.c |  31 +-
- .../ethernet/mellanox/mlxsw/spectrum_span.c   |  10 +-
- .../netronome/nfp/flower/tunnel_conf.c        |  14 +-
- drivers/net/ethernet/rocker/rocker_main.c     |   2 +-
- drivers/net/ethernet/rocker/rocker_ofdpa.c    |   2 +-
- drivers/net/ethernet/sfc/tc_counters.c        |   8 +-
- drivers/net/ethernet/sfc/tc_encap_actions.c   |   4 +-
- drivers/net/vrf.c                             |   2 +-
- drivers/net/vxlan/vxlan_core.c                |  16 +-
- include/net/arp.h                             |  10 +-
- include/net/ndisc.h                           |  20 +-
- include/net/neighbour.h                       |  22 +-
- include/net/net_namespace.h                   |   4 +
- include/net/route.h                           |   7 +-
- net/bridge/br_arp_nd_proxy.c                  |   4 +-
- net/core/neighbour.c                          | 402 +++++++++---------
- net/core/sysctl_net_core.c                    |  10 +
- net/ieee802154/6lowpan/tx.c                   |   3 +-
- net/ipv4/arp.c                                | 131 ++++--
- net/ipv4/devinet.c                            |  18 +-
- net/ipv4/fib_semantics.c                      |   7 +-
- net/ipv4/route.c                              |   2 +-
- net/ipv6/addrconf.c                           |  17 +-
- net/ipv6/ip6_output.c                         |   4 +-
- net/ipv6/ndisc.c                              | 146 ++++---
- net/ipv6/route.c                              |  18 +-
- tools/testing/selftests/net/test_neigh.sh     |  66 +--
- 33 files changed, 620 insertions(+), 469 deletions(-)
-
+diff --git a/tools/testing/selftests/net/test_neigh.sh b/tools/testing/selftests/net/test_neigh.sh
+index 7c594bf6ead0..447423713266 100755
+--- a/tools/testing/selftests/net/test_neigh.sh
++++ b/tools/testing/selftests/net/test_neigh.sh
+@@ -63,6 +63,15 @@ exit_cleanup_all()
+ 	exit "${EXIT_STATUS}"
+ }
+ 
++get_periodic_gc_runs()
++{
++	local ns=$1
++	local tbl_name=$2
++
++	ip -n "$ns" -j -s ntable show name "$tbl_name" | \
++		jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]'
++}
++
+ ################################################################################
+ # Tests
+ 
+@@ -282,24 +291,30 @@ extern_valid_common()
+ 	local periodic_gc_runs_t0
+ 	local periodic_gc_runs_t1
+ 	local orig_base_reachable
++	local base_reachable=10000
+ 	local orig_gc_stale
++	local timeout
+ 
+ 	run_cmd "ip -n $ns1 neigh flush dev veth0"
+ 	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
+ 	orig_base_reachable=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["base_reachable"]')
+-	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable 10000"
++	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable $base_reachable"
+ 	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | jq '.[]["gc_stale"]')
+ 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale 1000"
+ 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
+ 	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
+-	# Wait orig_base_reachable/2 for the new interval to take effect.
+-	run_cmd "sleep $(((orig_base_reachable / 1000) / 2 + 2))"
++	# Wait up to neigh_set_reach_time(BASE_REACHABLE_TIME) (~45s) + 5s
++	# for the new interval to take effect, see neigh_table_init().
++	timeout=$(((orig_base_reachable / 1000) * 3 / 2 + 5))
++	slowwait_for_counter "$timeout" 1 get_periodic_gc_runs "$ns1" "$tbl_name" >/dev/null
+ 	for i in {1..20}; do
+ 		run_cmd "ip -n $ns1 neigh add ${subnet}$((i + 4)) nud none dev veth0"
+ 	done
+-	periodic_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
+-	run_cmd "sleep 10"
+-	periodic_gc_runs_t1=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
++	periodic_gc_runs_t0=$(get_periodic_gc_runs "$ns1" "$tbl_name")
++	# Wait up to BASE_REACHABLE_TIME / 2 + 5s, see neigh_periodic_work().
++	timeout=$(((base_reachable / 1000) / 2 + 5))
++	slowwait_for_counter "$timeout" 1 get_periodic_gc_runs "$ns1" "$tbl_name" >/dev/null
++	periodic_gc_runs_t1=$(get_periodic_gc_runs "$ns1" "$tbl_name")
+ 	[[ $periodic_gc_runs_t1 -ne $periodic_gc_runs_t0 ]]
+ 	check_err $? "Periodic garbage collection did not run"
+ 	run_cmd "ip -n $ns1 neigh get $ip_addr dev veth0 | grep \"extern_valid\""
 -- 
 2.55.0.970.g62bdec98f9-goog
 
