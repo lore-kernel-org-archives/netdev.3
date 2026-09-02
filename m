@@ -1,454 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8D0399CE9;
-	Wed,  2 Sep 2026 23:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788392308; cv=none; b=DILdM/5Ahr0h90rbDhoaMxUiny4PlZx1PoyOQm7sr1lQ9GLWcecGYfFrkuBxfmLdRsTymASrG9Mhdbxo8z3fs1nMWm8DV6YfKW7LtO0DQBuYQTdJCs2t0+hxfLFkANWk1bySpoIewSJMzyrNohZMAowOw69m8Z2ZvteW4HzZgLw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788392308; c=relaxed/simple;
-	bh=I9Pa8hKDS5g85UOgRYJgl+7TkogfiuEIx9cFvpLhXl4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aiB8BNmo+tKGfPxreuQi9mP1CDr3lffREM5Ceyb7oPdQN6AWatgZ3maG7yDa5Rkffk3mkq00sZGq94DmKCeRnWOcFd/BQMj1WSDARdMpzxchHNVxZyIrri38cjIaz0VgUxZipezfK4M1+ndmnuSgK2tfKH5iC6z86bbPPZ/JgfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEtCNUAQ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7DD42B316
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 23:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788392973; cv=fail; b=L98uy56xAQKIp1oupyLaYaZ6JCGDKXBLkfAVF+lzclsLlJlfYLziYQAF1xWN83ETK/vLu5yL6Cg3bqqbfi0k4z6LFgDavwyj6AhRO9S5mrguBdVYq2/wS+QwZy4fMEfMfL8JXLZAqkL4Lgm1JkplLGbSpNZVp+ov9z3AkSHIiRA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788392973; c=relaxed/simple;
+	bh=YphwSgpeyPTYPWsAyhYluEUhtzyRjssA/H7UOa0fmmo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QyQ313Zjt3JPAHToC7LuexpaMA55xw0sHzPhGL+As8BB8ZuSd7PYbZHgpd/4KfzYkzIpjnaBqUguyvk1ARLhs4SLWg0MPD3+vAyuXt/RVJN3zGZvTLum9OqZzGCSPVsJuNGeBXXk9u/dsrjRTOJcq9Epfc+VJ0WnrGqzPVBmkDM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bD8/+A0F; arc=fail smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEtCNUAQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D78C1F00A3A;
-	Wed,  2 Sep 2026 23:38:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788392298;
-	bh=pHsLzd984RzzfYVBDhPofwWlK+4V0adj0RtO8W+Zsik=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PEtCNUAQDu5QWSXmRDN7xGUSLtpF0ykA4pt9S9+uVxHneGLLriLlwborBdB48n28t
-	 h+5jj8fRtCrqFcmYLj5bluZn3D8pMvO7P/JtRreeqTvhjBSlghEyAJtNl/0nsQsG3M
-	 sPnjyUapgK+eaY6hKMl8Ynb6SXbvsJbrwqUJvJSg6dBdH0Qo2Sh08eX1za+V3oXL0H
-	 iGE75rM5jKQfoqiwvHYMcsYiEID5/yI9mb44yb40cMPZ/OBXoWGYSaKHgonEAE/s9z
-	 TQdcQCJawpnkksOLeWzOjKiogEyn5/nBOtJF0JTyV1e19jdvQ7S8SEd3Ee7TccFmM/
-	 TE3kBQQydsilg==
-Subject: Re: [net-next,v6,5/6] selftests: net: add multithread server support
- to iou-zcrx
-From: netdev-bot+sashiko@kernel.org
-To: juanlu@fastmail.com
-Cc: dw@davidwei.uk, netdev@vger.kernel.org, io-uring@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kuba@kernel.org, asml.silence@gmail.com, pabeni@redhat.com, shuah@kernel.org
-Date: Wed, 02 Sep 2026 23:38:17 +0000
-Message-ID: <178839229706.3394541.1555608492152892136@kernel.org>
-In-Reply-To: <20260831-iou-zcrx-v6-5-02d1d012f0fd@fastmail.com>
-References: <20260831-iou-zcrx-v6-5-02d1d012f0fd@fastmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bD8/+A0F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788392971; x=1819928971;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=YphwSgpeyPTYPWsAyhYluEUhtzyRjssA/H7UOa0fmmo=;
+  b=bD8/+A0FfRR6mFmryNQum0KBaGj++SM/B+68bvZ0lCFhEw0AcsjSKnDz
+   9X9RV11BB/iOWRiljPlksySpHlek/ERyfBUSb7YbDY06WkzZHcfIyNeFo
+   ssUerhg2zvdj2XTY+QQegrua1ZhMO/6RToqEPrJg+SW9nBk8fK35pFZhj
+   f5mpaNiJj3gaWPMsWA7gKGTOEWc8re4mxbv5/tHbeOTczaZhoYg/Ij8me
+   OPGmn/GmJAgEnFpslov+mqYtrnnP/MJmDuz3nrG/WMwdV+RCa2nqGx5L6
+   vUpm/8sTXfmXJg20sjaq72vL08ETImYWt/Kh8KuDTM6U9FU9OOOzf6SLS
+   A==;
+X-CSE-ConnectionGUID: 6aZjSGPbRDaEMVgXSKYqNg==
+X-CSE-MsgGUID: 3ZIl4w4DQoW3fZf0BLsVXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="88915601"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="88915601"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 16:49:31 -0700
+X-CSE-ConnectionGUID: FsD1FSWWRw+z9eUPD3yN1Q==
+X-CSE-MsgGUID: JjYL8DfXSGCd1QSE1VOS3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="274842514"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 16:49:31 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 2 Sep 2026 16:49:30 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 2 Sep 2026 16:49:30 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.11)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 2 Sep 2026 16:49:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=snLaBy5/TFy0YYSOOrIP+OtlSdhvKrDVvafHitu2gH+DtU3WicBLeDs+aZvy93zLoqSG1D+zOiJZergavE+0iu0AIB1utZX64ffsZL7hUpeaVc1mTYn3cqpnzM61YIHb2hvnymXOxFs6I6WOfBij1O1jaO1gWOAGr8goNojpHJZRCkVvVTCJzK13GjFmDOdH2nuI0AMz+VmEeibLh6PqOry325pDFKvoZ8cE6Q1zzerarkrwljzReAnQc3kEYy3gtro4lUO4wpuUWI8SXH+/hEONHpPBaD5wOzgb1Z1hoVSMB86xT62E7Ygvlo5MlSuwxrOUkXGVuPV1Hd1hFKMHUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i7q7Ei8VfFHVuVOomXbUeQDwXqBX2IPtut7/ePXrOKk=;
+ b=YkYCsfjA5oiOZl9jAMPB6QPxD7gZtYCrovZfOga6u1934w4zXdWqRZzAYJxG1+NxTh81KTbar61zfLCbKwIB6nPsf7Fe+0u4D/l7jkkm4K+SEnl5MJkzL1IEiXK53YVeMgQwepR5PqY+J4y9xR9jDKLd2GCtz82oxr2ooUETzDDLUt91eZEmmGKMBBIJT8fRmeDgXXWij0aRpwvUSmF6k1w2kPzN4EZ4cB5VGFaBuw4DAaTKDuBhzBq4Ml1YfobyD2iXAUqiG03JfcFhXvl/asube/z8wE7v4aaieqbFAKsWf9+jFFpLBaqkwSU0pqcDxCiriYhHkqG7qfxant0NOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from LV1PR11MB8790.namprd11.prod.outlook.com (2603:10b6:408:2b1::16)
+ by IA3PR11MB9302.namprd11.prod.outlook.com (2603:10b6:208:579::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 23:49:25 +0000
+Received: from LV1PR11MB8790.namprd11.prod.outlook.com
+ ([fe80::27cb:7a60:19bb:584a]) by LV1PR11MB8790.namprd11.prod.outlook.com
+ ([fe80::27cb:7a60:19bb:584a%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 23:49:25 +0000
+From: "Nowlin, Alexander" <alexander.nowlin@intel.com>
+To: Jakub Kicinski <kuba@kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "horms@kernel.org" <horms@kernel.org>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, "jbrandeb@kernel.org"
+	<jbrandeb@kernel.org>, "Shelton, Benjamin H" <benjamin.h.shelton@intel.com>
+Subject: RE: [PATCH iwl] eth: ice: don't dereference pointers from TP_printk()
+Thread-Topic: [PATCH iwl] eth: ice: don't dereference pointers from
+ TP_printk()
+Thread-Index: AQHdMREdE5/OKWcu4Eqymg5X34haHba8COfA
+Date: Wed, 2 Sep 2026 23:49:25 +0000
+Message-ID: <LV1PR11MB87908829F6BF6F7A687BA93690B72@LV1PR11MB8790.namprd11.prod.outlook.com>
+References: <20260821020201.1337338-1-kuba@kernel.org>
+In-Reply-To: <20260821020201.1337338-1-kuba@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LV1PR11MB8790:EE_|IA3PR11MB9302:EE_
+x-ms-office365-filtering-correlation-id: 26415c89-b86e-4996-ad74-08df094cd1f4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|22082099003|18002099003|38070700021|11063799006|56012099006|10067099003;
+x-microsoft-antispam-message-info: LQ8oncH2SEcFP1tvCPp/f20ZwIE8hcrc0sgOiy4zNRVj/kOA99MLJhnBy/lZDS9rrFkDg/13Pi/1d0Vr2a4tduSEGtnUGm+dv2lRNl3ANclcYI1FP+SLOv5H99knmvKjfUKeh07t+bGufDHDSyYCvM+Fx/Jnj0KC5Tl/m6fjdH/BOiyuWOwNNveXJRbI6sMRH0hfRIdnqiRbW/cH2xUbtw4uPNkt0s2QzZrdL9QDq8bvoQ6zcx3C7k4qMPhRlWJ5OnapPyZ/JxGO2ksRXs5RDBILnnYm8zv6elCdoA8pzDL5Ex2tOeKGhoI2R9IBsSCXx8omu/92FsT2H3450natPhFbqr53CaqvyPhgNX8tXNNysYkorEHKJwUqmsmXG6tDcv2P/qr+c3PvLFAMuO9ojNUUqyXea4bLr4ZZnP8l9OgOLsy6tpgzN6OUzq+QVc6ExalKr13Sfq1+uTti6LZfE7D/sDpBue/qkDPb6nxaqeRUFwVKwsQVS6Su6FrPkAYe2mYXR3o9dkTJY4r3Q67hnf28KTXy9M3JwO8beDjK9r30QFuPJ8Wbs6JB8eqsVcGlqID4FEWCMFSE1w+cuaVJuapPHmpER5bHAQ7JO/SIWcLOOFLiTrczYQTJdnmeVfwu80VYfrLjynjU9vxCZlL3XviZA2yVjiobwwpyoEhN//sx5v6BsEvrCOehLuUKx7BwILt8bwn0RPB1pQSPgwXKc3vEsH1JiCMX2M77ifd4Q/U=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV1PR11MB8790.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(22082099003)(18002099003)(38070700021)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?lS7XhG3sFdxSjDAz10YTEw6qorOen4eyQTkykYecsXRB2wSTvjeCy5KS5njw?=
+ =?us-ascii?Q?022HyoYFjSxMM2ouVJLhsGxP0shS8une57rzMjl2gx82NjXQqbiy/nIQvazo?=
+ =?us-ascii?Q?/7i9IQVFdYKN26PQGV9bPuJ9xJmuKIoENGjdWDTbyHomjIWOYUP6Hk7kEu5m?=
+ =?us-ascii?Q?b5UwXTr7CJ/xDzpGKPS7aRJWhYQY0abYDDHU+NljnVNhi6n664UpbmnKfOfQ?=
+ =?us-ascii?Q?GMVdE/oRBZfJLvV5H/qNLp4sXp/pV3NoOD0e/cA+VxwJSr7jurJ0fIA68mRP?=
+ =?us-ascii?Q?MmnQXy4bW/k1mZzVoDCMUfJw4teN9S5BhdbX94a8oj4rugafFWJVHNyUdim+?=
+ =?us-ascii?Q?o1tXuVaYdE23sftXRi+t2KOJi8ZCvUBgBdFMBn2ftG+4kRtm8BPzyonC0wuf?=
+ =?us-ascii?Q?1+yxgJxabRsnGVkRgXVobq0gMTFcv8y8x36WemCD0sg+LbhIypNDpwHnpKCX?=
+ =?us-ascii?Q?jOImo9zLW9NwPpScAK32OLhKpCeh7EkNJ6c6505PfURAIevTfx9GJC0LTcpE?=
+ =?us-ascii?Q?XiMPbOelIIrNSl6XNE2AP0ABn3gkFyNkiAsu/289SHk2kZko2mcaSAx6BkDn?=
+ =?us-ascii?Q?GTZhlMAS9iuv9v/AbbBU8eD2eaMTaVZ+tg9alGRD3erxBg0uqe8uAmDeu99F?=
+ =?us-ascii?Q?eKsfzvjsEgEa3ifahm1raq0+Eii8PIDU0/Ejt/hp/V7M4NM1m2aIWRat+b5L?=
+ =?us-ascii?Q?fJdo1KThpi/pLTuD8nnGfuCDTumrB3KNsVMxX65ah9LJIdOYpt6Id7YRMa9o?=
+ =?us-ascii?Q?x2kJfcjqa5NRejybDFFAU5vzYXzGtWpa74VHH3UI4DqzZ4qWRIvlRncDLS+j?=
+ =?us-ascii?Q?JF4fERHrbP4VxcK2qQEFp7/wd8jeW8wAD3i8F1QyVLfy1qedhWBSg0yHK+e6?=
+ =?us-ascii?Q?hyOVX/HOgfIxRe6mpX3xfKcn4QGCEq7OQw1xHfhsrmPfc1yd99zEEVxNXcUg?=
+ =?us-ascii?Q?h9DcCO0tZcCMaKWm/+eU1BJySA8FcIyMeHGtudet3s2VPtpmyTfuXz4xSfBS?=
+ =?us-ascii?Q?Zi8/q4fL+5sV+bVaGEBRZ/kYlycTlhOBS/4y3LKakOhi2Mj+sO8hBVxDhJXh?=
+ =?us-ascii?Q?V0rU50YFCXrmSL52KzkSCTHFhZJ6DGiyZtDUbuaL8rJRDENlnKPNh36C3AMG?=
+ =?us-ascii?Q?0KlsXFnL+uIO5UIrsUPANpHjwldXiAmPwso0Lun7tGj5ZbzSTvgz+7cQqK3l?=
+ =?us-ascii?Q?XNDGLo9fyXhKBdj6V+mBdYxfAZXDeUhOh7wxgFaWMB2asq0XqbmeV3uwOtco?=
+ =?us-ascii?Q?fysWsHWDG5fjGf0Xn5Rr+hXoKhkrQELH7FZvWvj73jz6o5JPXKDZ1hToxXeq?=
+ =?us-ascii?Q?TdYOwBSMiuPyf90k/KGSiCaViPTCjokr5wkfxx0XGQNGJx0R+Ew4Bpc3SOyK?=
+ =?us-ascii?Q?e50Dw3f8uhaPvb+bBVtT1B8gItDFMRK4KdcaL3E5cxaBTnc97ABVN8AawMMl?=
+ =?us-ascii?Q?GzMoJMAbHojmSOFuQ9d7OvYMg+vbZkXaKVQxwHymJOv5XEnfUJ0JT1UPJ357?=
+ =?us-ascii?Q?LVw5thkmY0ykL6Yq6vRxAT1s1yVF4F2NA7RvX7m86G+NyON61cBwvS3Z7KSv?=
+ =?us-ascii?Q?NV/qnjwzKPx40LasQb/TfSGez9ZZzPAuMoPwdt4rfjhh+KRm6kkBGIxf75J+?=
+ =?us-ascii?Q?rD+cjJvLQDsq1yZmQFa3t6GmqmDfjsQbeaAMW86kJwB0VMU9wUryr7tw3NBU?=
+ =?us-ascii?Q?PwXZU63dBg+XY1g/OqlvyV1wRTjCA0dHSZZRB2yUWDvA4oMEW/ukGL6ICaum?=
+ =?us-ascii?Q?nszyPCzXqA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: seisdDxDLdzbcfz7pOa2Dlwc1WC4gpTIrPy+KcL0TOaqcQQZDBxJSju8VX8AO4h0if8yqQi2RlbVzDH8PfKTYn0jSl5CSxqL/+cV1eJ/Kq0bX+Yvm4rS+3mvJCk19am5uJpXJYKK+edvQrnSkjp/OSqICV8RQ39MOHR604ttUY/WEOBT2tAku4C16w4YWWz5oI9a/bc6HX8HakK1LPUQcMIp8JXe05GlCy9X+4hBp0s2adRPMXQUIp2gpaadGDBol48OcJAFPTiLErSXSDVxXwaiaKF4RlokmrOz+7Po5V47SOIQs+3ys430jigaB0usehLDwhIhEHVrEBTyXDQ/NA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LV1PR11MB8790.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26415c89-b86e-4996-ad74-08df094cd1f4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2026 23:49:25.4406
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /PqzdwvPo461bDBmQI3DStTCzYSdHS5oNDfEGl0NIxP/agZxbfnY58niTUCjFIwwV8RQdGG+VM2h862eO/O2B7ZIkYqbX90ktZDjxZ1LfAM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9302
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider:
+> -----Original Message-----
+> From: Jakub Kicinski <kuba@kernel.org>=20
+> Sent: Thursday, August 20, 2026 7:02 PM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>
+> Cc: netdev@vger.kernel.org; davem@davemloft.net; edumazet@google.com; pab=
+eni@redhat.com; andrew+netdev@lunn.ch; horms@kernel.org; intel-wired-lan@li=
+sts.osuosl.org; Jakub Kicinski <kuba@kernel.org>; Kitszel, Przemyslaw <prze=
+myslaw.kitszel@intel.com>; jbrandeb@kernel.org; Shelton, > Benjamin H <benj=
+amin.h.shelton@intel.com>
+> Subject: [PATCH iwl] eth: ice: don't dereference pointers from TP_printk(=
+)
+>=20
+> After forwarding net-next during the v7.3 merge window we started
+> seeing:
+>=20
+>   TRACE EVENT ERROR: Event ice_tx_dim_work has double dereference in TP_p=
+rintk: REC->q_vector->tx.tx_ring->q_index
+>   WARNING: kernel/trace/trace_events.c:420 at test_double_dereference.col=
+d+0x39/0x4b
+>=20
+> this is due to extra checks added in tracing subsystem in commit b5cc230a=
+f5e5 ("tracing: Warn when an > event dereferences a pointer in TP_printk()"=
+).
+>=20
+> Printing happens long after the event was recorded, by which point the po=
+inters may be invalid (the ring > or the dim instance).
+> Copy the eight scalars into the event instead.
+>=20
+> Fixes: 3089cf6d3caa ("ice: add tracepoints")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: anthony.l.nguyen@intel.com
+> CC: przemyslaw.kitszel@intel.com
+> CC: jbrandeb@kernel.org
+> CC: benjamin.h.shelton@intel.com
+> ---
+>  drivers/net/ethernet/intel/ice/ice_trace.h | 64 ++++++++++++++--------
+>  1 file changed, 42 insertions(+), 22 deletions(-)
 
-Critical: 0 · High: 1 · Medium: 2 (3) · Low: 3
-
-- [High] listen() is now executed before the workers have registered
-  their zcrx ifqs, breaking the ordering that two existing in-tree tests…
-- [Medium] A worker thread that is dispatched zero connections reports
-  success without receiving or verifying a single byte.
-- [Medium] The new CQ sizing removes the implicit bound that kept the
-  zcrx refill-queue producer inside one ring.
-- [Low] DISCARDED (resolved later in the series): the concern states that
-  the new multithread/multi-queue server path is dead code because iou-…
-- [Low] `-t` is documented as a thread count but produces its square.
-- [Low] `-t 0` is accepted and yields a silent PASS.
-
-Pre-existing issues:
-- [Medium] DISCARDED (pre-existing, medium): the concern states that the
-  5 s watchdog in server_worker() can never fire while the thread is…
-- [Medium] DISCARDED (pre-existing, medium): the concern states that per-
-  worker resources are never released — no io_uring_queue_exit(), no…
-- [Medium] DISCARDED (pre-existing, medium): the concern states that
-  process_recvzc() indexes the 2 MiB `payload` buffer with…
-
---
-
-selftests: net: add multithread server support to iou-zcrx
-
-This converts the iou-zcrx server into N worker threads, each owning one
-RX queue with its own io_uring and zcrx ifq. The main thread keeps the
-listening socket and dispatches accepted connections to workers by
-matching SO_INCOMING_NAPI_ID against per-queue NAPI IDs queried over ynl.
-
-A few questions about the new threading and setup ordering below.
-
-> diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-> index f793a6c04e412..29905cb3b2433 100644
-> --- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-> +++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-
-[ ... ]
-
-> @@ -97,9 +101,15 @@ struct thread_ctx {
->  	size_t			ring_size;
->  	struct io_uring_zcrx_rq	rq_ring;
->  	unsigned long		area_token;
-> -	int			connfd;
-> -	bool			stop;
-> -	size_t			received;
-> +	int			queue_id;
-> +	int			napi_id;
-> +	pthread_barrier_t	*setup_done;
-> +	pthread_barrier_t	*dispatch_done;
-> +
-> +	int			connfds[MAX_CONNS_PER_THREAD];
-> +	size_t			received[MAX_CONNS_PER_THREAD];
-> +	int			oneshot_recvs[MAX_CONNS_PER_THREAD];
-> +	int			nr_conns;
->  };
-
-[ ... ]
-
-> @@ -304,10 +296,10 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe,
->  	data = (char *)ctx->area_ptr + (rcqe->off & mask);
->  
->  	for (i = 0; i < n; i++) {
-> -		if (*(data + i) != payload[(ctx->received + i)])
-> +		if (*(data + i) != payload[(ctx->received[conn_idx] + i)])
->  			error(1, 0, "payload mismatch at %d", i);
->  	}
-> -	ctx->received += n;
-> +	ctx->received[conn_idx] += n;
-
-[Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but the
-index into payload[] is still unbounded. payload is a single
-posix_memalign(page_size, SEND_SIZE) allocation in main(), while
-ctx->received[conn_idx] only ever accumulates cqe->res, which is driven
-by whatever the peer sends into the wildcard-bound listener.
-
-Would it be worth adding a check that
-ctx->received[conn_idx] + n <= cfg_send_size before the comparison loop,
-so a peer sending more than cfg_send_size bytes produces a clear error
-rather than an out-of-bounds read of payload[]?
-
->  
->  	rqe = &ctx->rq_ring.rqes[(ctx->rq_ring.rq_tail & rq_mask)];
->  	rqe->off = (rcqe->off & ~IORING_ZCRX_AREA_MASK) | ctx->area_token;
-
-> @@ -320,28 +312,124 @@ static void server_loop(struct thread_ctx *ctx)
->  	struct io_uring_cqe *cqe;
->  	unsigned int count = 0;
->  	unsigned int head;
-> -	int i, ret;
->  
->  	io_uring_submit_and_wait(&ctx->ring, 1);
->  
->  	io_uring_for_each_cqe(&ctx->ring, head, cqe) {
-> -		if (cqe->user_data == 1)
-> -			process_accept(ctx, cqe);
-> -		else if (cqe->user_data == 2)
-> -			process_recvzc(ctx, cqe);
-> -		else
-> -			error(1, 0, "unknown cqe");
-> +		process_recvzc(ctx, cqe, cqe->user_data);
->  		count++;
->  	}
->  	io_uring_cq_advance(&ctx->ring, count);
->  }
->  
-> -static void run_server(void)
-> +static void *server_worker(void *arg)
->  {
-> -	struct thread_ctx ctx = {};
-> -	unsigned int flags = 0;
-> -	int fd, enable, ret;
-> +	struct io_uring_params params = { };
-> +	struct thread_ctx *ctx = arg;
->  	uint64_t tstop;
-> +	int i;
-> +
-> +	params.flags |= IORING_SETUP_COOP_TASKRUN;
-> +	params.flags |= IORING_SETUP_SINGLE_ISSUER;
-> +	params.flags |= IORING_SETUP_DEFER_TASKRUN;
-> +	params.flags |= IORING_SETUP_SUBMIT_ALL;
-> +	params.flags |= IORING_SETUP_CQE32;
-> +	params.flags |= IORING_SETUP_CQSIZE;
-> +	params.cq_entries = AREA_SIZE / page_size;
-
-[Severity: Medium]
-Can this overrun the zcrx refill ring? The CQ is now sized to
-AREA_SIZE / page_size (8192 entries), while setup_zcrx() still uses
-rq_entries = 4096.
-
-server_loop() drains every available CQE in one batch, and
-process_recvzc() publishes exactly one refill descriptor per CQE without
-ever consulting khead:
-
-	rqe = &ctx->rq_ring.rqes[(ctx->rq_ring.rq_tail & rq_mask)];
-	...
-	io_uring_smp_store_release(ctx->rq_ring.ktail, ++ctx->rq_ring.rq_tail);
-
-Previously io_uring_queue_init(512, ...) gave cq_entries = 1024, which is
-strictly smaller than rq_entries, so a single drain could not wrap the
-refill ring. With 8192 CQ entries a drain of more than 4096 zcrx CQEs
-overwrites descriptors that the kernel has not consumed yet, and the
-kernel side clamps rather than complains:
-
-io_uring/zcrx.c:__zcrx_rq_entries() {
-	u32 entries = rq->cached_tail - rq->cached_head;
-
-	return min(entries, rq->nr_entries);
-}
-
-so the surplus buffers are simply never returned to the page pool. Should
-the producer only publish while (ktail - khead) < rq_entries, or should
-rq_entries be at least cq_entries?
-
-> +
-> +	io_uring_queue_init_params(512, &ctx->ring, &params);
-> +	setup_zcrx(ctx);
-> +
-> +	if (cfg_dry_run)
-> +		return NULL;
-> +
-> +	pthread_barrier_wait(ctx->setup_done);
-> +	pthread_barrier_wait(ctx->dispatch_done);
-> +
-> +	for (i = 0; i < ctx->nr_conns; i++) {
-> +		if (cfg_oneshot) {
-> +			ctx->oneshot_recvs[i] = cfg_oneshot_recvs;
-> +			add_recvzc_oneshot(ctx, i, page_size);
-> +		} else {
-> +			add_recvzc(ctx, i);
-> +		}
-> +	}
-> +
-> +	tstop = gettimeofday_ms() + 5000;
-> +	while (ctx->nr_conns > 0 && gettimeofday_ms() < tstop)
-> +		server_loop(ctx);
-> +
-> +	if (ctx->nr_conns != 0)
-> +		error(1, 0, "test failed: %d connections incomplete",
-> +		      ctx->nr_conns);
-
-[Severity: Medium]
-Can a worker that received no connections at all report success here?
-nr_conns is used both as the dispatch count and as the live-connection
-countdown, so with nr_conns == 0 the arming loop above does nothing, the
-drain loop is skipped, and this final check passes without a single byte
-having been received or verified.
-
-Dispatch in run_server() is purely SO_INCOMING_NAPI_ID based, and nothing
-guarantees a non-empty distribution. With -t 2 (total_conns = 4) all four
-flows can hash onto one RSS queue, in which case the second worker exits
-successfully having done nothing, and the multi-queue test reports pass
-while only one queue was exercised. The previous code failed loudly in
-this situation with "test failed".
-
-Would a post-dispatch assertion in run_server() that every worker owns at
-least one connection, plus a check on the received byte totals, keep the
-old strictness?
-
-The reverse skew looks unhandled too: total_conns is cfg_num_threads
-squared, and if they all land on one worker then for -t 9 and above this
-trips the "worker %d connection overflow" error in run_server(), which
-would be a spurious failure rather than a real one.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the 5 s deadline can still
-never fire while the thread is parked inside server_loop():
-
-	io_uring_submit_and_wait(&ctx->ring, 1);
-
-The deadline is only re-evaluated between blocking waits, so a stalled
-connection hangs the worker (and then pthread_join() in run_server())
-instead of producing the "connections incomplete" failure. The same shape
-existed before the patch, but it now applies per worker thread. Could the
-wait use a timeout so the watchdog is effective?
-
-> +
-> +	return NULL;
-> +}
-
-[ ... ]
-
-> +static void run_server(void)
-> +{
-> +	pthread_barrier_t setup_done, dispatch_done;
-> +	int total_conns, accepted = 0, connfd;
-> +	struct thread_ctx *ctxs;
-> +	int fd, ret, enable, i;
-> +	unsigned int ifindex;
-> +	pthread_t *threads;
-> +
-> +	ctxs = calloc(cfg_num_threads, sizeof(*ctxs));
-> +	threads = calloc(cfg_num_threads, sizeof(*threads));
-> +	if (!ctxs || !threads)
-> +		error(1, 0, "calloc()");
-
-[Severity: Low]
-Should parse_opts() reject -t 0? cfg_num_threads is taken straight from
-strtoul(optarg, NULL, 0) with no positivity check, and with 0:
-
-  - calloc(0, ...) returns a non-NULL pointer, so this guard passes
-  - both barriers are initialised with a single participant
-  - no workers are created
-  - total_conns is 0, so the accept loop never runs
-  - both barrier waits return immediately and run_server() returns 0
-
-The client side also computes total_conns as cfg_num_threads squared, so
-it makes no connection and exits successfully as well. Either way the
-binary reports success without doing any work.
-
->  
->  	fd = socket(AF_INET6, SOCK_STREAM, 0);
->  	if (fd == -1)
-
-> @@ -356,29 +444,68 @@ static void run_server(void)
->  	if (ret < 0)
->  		error(1, 0, "bind()");
->  
-> -	flags |= IORING_SETUP_COOP_TASKRUN;
-> -	flags |= IORING_SETUP_SINGLE_ISSUER;
-> -	flags |= IORING_SETUP_DEFER_TASKRUN;
-> -	flags |= IORING_SETUP_SUBMIT_ALL;
-> -	flags |= IORING_SETUP_CQE32;
-> +	pthread_barrier_init(&setup_done, NULL, cfg_num_threads + 1);
-> +	pthread_barrier_init(&dispatch_done, NULL, cfg_num_threads + 1);
-> +
-> +	for (i = 0; i < cfg_num_threads; i++) {
-> +		ctxs[i].queue_id = cfg_queue_id + i;
-> +		ctxs[i].setup_done = &setup_done;
-> +		ctxs[i].dispatch_done = &dispatch_done;
-> +	}
->  
-> -	io_uring_queue_init(512, &ctx.ring, flags);
-> +	for (i = 0; i < cfg_num_threads; i++) {
-> +		ret = pthread_create(&threads[i], NULL,
-> +				     server_worker, &ctxs[i]);
-> +		if (ret)
-> +			error(1, ret, "pthread_create()");
-> +	}
->  
-> -	setup_zcrx(&ctx);
->  	if (cfg_dry_run)
-> -		return;
-> +		goto join;
->  
->  	if (listen(fd, 1024) < 0)
->  		error(1, 0, "listen()");
->  
-> -	add_accept(&ctx, fd);
-> +	pthread_barrier_wait(&setup_done);
-
-[Severity: High]
-Is the listen() intentionally moved before the workers have registered
-their ifqs? The main thread creates the threads, calls listen(), and only
-then waits on setup_done, while the workers reach that barrier after
-io_uring_queue_init_params() plus setup_zcrx(), i.e. after
-io_uring_register_ifq() has restarted the device RX queue.
-
-Before the patch the sequence was serialized in one thread:
-
-	io_uring_queue_init(512, &ctx.ring, flags);
-	setup_zcrx(&ctx);
-	...
-	listen(fd, 1024);
-
-so the port only became visible once the memory provider was installed.
-
-Two existing tests depend on that ordering. wait_port_listen() in
-net/lib/py/utils.py polls every 5 ms, so it can now return while
-registration is still in flight:
-
-iou-zcrx.py:test_zcrx_large_chunks() {
-	wait_port_listen(cfg.port, proto="tcp")
-
-	check_iou_rx_buf_len(cfg, rx_buf_len)
-}
-
-check_iou_rx_buf_len() raises "Expected 1 io-uring page pool, found 0",
-and nk_qlease.py:test_destroy() does queue_get() plus
-ksft_in("io-uring", queue_info) immediately after wait_port_listen() with
-no sleep.
-
-Beyond the harness races, data delivered into the queue before the
-provider exists is serviced by the copy fallback rather than zero copy,
-and the queue restart during registration can drop in-flight frames.
-
-Would moving listen() below pthread_barrier_wait(&setup_done) restore the
-previous guarantee?
-
->  
-> -	tstop = gettimeofday_ms() + 5000;
-> -	while (!ctx.stop && gettimeofday_ms() < tstop)
-> -		server_loop(&ctx);
-> +	if (cfg_num_threads > 1) {
-> +		ifindex = if_nametoindex(cfg_ifname);
-> +		if (!ifindex)
-> +			error(1, 0, "bad interface name: %s", cfg_ifname);
-> +		for (i = 0; i < cfg_num_threads; i++)
-> +			ctxs[i].napi_id = query_napi_id(ifindex,
-> +							ctxs[i].queue_id);
-> +	}
-> +
-> +	total_conns = cfg_num_threads * cfg_num_threads;
-
-[Severity: Low]
-This isn't a bug, but -t is documented as a thread count while both
-run_server() and run_client() square it. usage() advertises
--t<num_threads>, and run_client() creates total_conns threads with
-total_conns = cfg_num_threads * cfg_num_threads, so -t 8 produces 64
-client threads and 64 connections, not 8. That also interacts with the
-64-entry MAX_CONNS_PER_THREAD limit. Could the option name or the usage
-text spell out the quadratic connection count?
-
-> +
-> +	while (accepted < total_conns) {
-> +		int idx = 0;
-> +
-> +		connfd = accept(fd, NULL, NULL);
-> +		if (connfd < 0)
-> +			error(1, errno, "accept()");
->  
-> -	if (!ctx.stop)
-> -		error(1, 0, "test failed\n");
-> +		if (cfg_num_threads > 1)
-> +			idx = find_thread_by_conn(ctxs, connfd);
-> +
-> +		if (ctxs[idx].nr_conns >= MAX_CONNS_PER_THREAD)
-> +			error(1, 0, "worker %d connection overflow", idx);
-> +		ctxs[idx].connfds[ctxs[idx].nr_conns++] = connfd;
-> +		accepted++;
-> +	}
-> +
-> +	pthread_barrier_wait(&dispatch_done);
-> +
-> +join:
-> +	for (i = 0; i < cfg_num_threads; i++)
-> +		pthread_join(threads[i], NULL);
-> +
-> +	pthread_barrier_destroy(&setup_done);
-> +	pthread_barrier_destroy(&dispatch_done);
-> +	close(fd);
-> +	free(threads);
-> +	free(ctxs);
-
-[Severity: Medium]
-This is a pre-existing gap rather than something the patch introduces,
-but the teardown is now asymmetric. The barriers, the listening fd and
-the two calloc'ed arrays are released here, while the per-worker
-resources are not: there is no io_uring_queue_exit(), no munmap() of the
-AREA_SIZE zero-copy area or of the refill ring mapping created in
-setup_zcrx(), and the accepted connfds stored in ctxs[idx].connfds[] are
-never closed. With cfg_num_threads workers this is now multiplied by the
-thread count, including on the cfg_dry_run early return in
-server_worker(). Would it be worth adding the matching cleanup?
-
->  }
->  
->  static void *client_worker(void *arg)
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831-iou-zcrx-v6-0-02d1d012f0fd%40fastmail.com
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
