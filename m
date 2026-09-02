@@ -1,130 +1,183 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56267476CF5
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 11:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788348175; cv=pass; b=cG4c+b5cTfwYpPlrJwojeOElxGB0+xcaL8yDg3ug4A4TVX2xLDzjncC9vNspCX8OOB3XrkUsl9uoo4wCKbgoOYpkBT9GDlrYgXrsGoJrQ5q6Y3qo3ltFUFytC3YKuktnvQwP07FCaY5sqIpoK+CfbWSlycKDvlXQaLN+Kufco6s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788348175; c=relaxed/simple;
-	bh=uUk+l7F1x73TBUXiddcj9QUykpfhsH7j1MvfaQsWcfY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aydccl/yrW2uW1xxjBzwPVZIZ73boqySvBuHhJ6acjMZnhxkbteIj2BwCFIY1Hp6iJEqnK2ffpSs8Nsw+5ig/Coeo1G4wmr8OcJvGU/7gOo+c2BToghpREA2N8PuIAcZRLLR5Cj2zjJ0SuJ+YBLebG52043WMM/W0BlG+Kj+n8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dYbsuj8d; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dYbsuj8d"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-52f83889a93so10794121cf.2
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 04:22:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788348167; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UAwcMKsu+fk39NbKhYC3Sgenoh2MgSJNlLsw2DPj0MmUBodWgyc1aGj2wJZdPqE75T
-         gFSqdQPxlCLYJsqKpmLwynKYnkxNPpyC1h50zc0iRjVv6vQRPPpusy5gX0m4lQ6cTuyS
-         7FAVnbhxzh+G6Vcn9a83op2NW2rdLar/8k+Y+nBCfRUPpqhXc5dbdme6SfN/1WysVuNF
-         QIZl8a/aUrE1rDB620n0xwLuDmB8gab/yZ01KwMUwadn0FtHQKMRRPL4cy5p7obqyZL1
-         9g6FnLaU1rcaAaUknywGDUbXNgnobAuC1pi5pobVblFM3v4Zsn0ltAVyT93D/V/KpxaE
-         nCbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uUk+l7F1x73TBUXiddcj9QUykpfhsH7j1MvfaQsWcfY=;
-        fh=NR3i8Pqmcg9wX1Ej50FMiURb9a8nSdaOVpfs5v6cEww=;
-        b=GJ/eo6DRGBD20yAktaPsFoAaSph/T91ty6lwK2Sori3IIOMKr0FS7LJ2jQnNyippZN
-         PoLcRSft3lh3Xpt0cCpfPnjztY3jaKA2968BznjXh/bKBsjaRO3AHvXJ9qLgaLbfkvUX
-         fufjw3cL3QxQPuvm/Hce/QzTx03iMBwjK7uINdP7ZGylD1tDNc/rtSnJX9U/4YcYEcgq
-         7VFRIjQcF5j3s0e1mg5JyjblSK90D4a/qOZVnQfeCMJ9kSmwzGNiQBdfYIlPXl8JeXp/
-         LXR5H6fin/jB6KTzFAR74bdhRRHOFgPve98WvNEF3mFhIMy3u8rXdin0//DR6Qc2RUMP
-         KIhA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788348167; x=1788952967; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uUk+l7F1x73TBUXiddcj9QUykpfhsH7j1MvfaQsWcfY=;
-        b=dYbsuj8dCzOcVb/l/24mqP7FVkQvchcWBCWJhuv+3RN0ujnEJx2Hy46DkOVBa+thqZ
-         SRdOp/h4c1HCBYvmL6OhNzqTznGBZ9s4u3L4FD8EvdYjE/5mw/pl33bXywjMEo1y7dbP
-         yUi6Nrmz6HwWbLi3V6ZJVY3QHPLYEwc2j9aFjliyEIcg/Y7yyYrZF1Ltnr9IT+J8/f/W
-         SYyubgdirSHUHJRfmcUZGD53z+bz0EMELLL0MuNW+AqFSlMYfdKvHStdzaxvQg8VI2RT
-         SGZBO9SnSb2DyclOi9mPv7dIW7zBa7cam/Z3j/R7rIbBFKvVtsQaQ5ljOYO3mLA+YmJz
-         Or8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788348167; x=1788952967;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uUk+l7F1x73TBUXiddcj9QUykpfhsH7j1MvfaQsWcfY=;
-        b=RzcjnVYC/m7kbzH47vOPe9R+Zy+iothbWH5VhBslszsA524UtyScl+FvpLDiQTdhwb
-         hIaTKLhZepS2EG00UHYE6KJtsB+2p7SDoIEVTCT4W0hYTxYvRTRDecYgdDu3y73HX8iH
-         JnDruLHn3vEDSbijogdnnjIz5yy3dqCCVtgu8zoBzyMjX3IguzAQF+hUfqkaghNhUu23
-         W/myiyW6JAck1Z9F2rHRYJ5ET+gBKf9zteyPnokQYd1v05+Bxy0qH1OO5C7C6sM1o6wF
-         yYoPTZ8jA/IJKRa+CoCZ+1F6G88seJji6oyL4xzLjFI8U2OowSdYWVMp8mZqT/xKj3js
-         OGAQ==
-X-Forwarded-Encrypted: i=1; AHgh+RppizOA+d6YFl2Cgxy9r2wqn2C5lqeqAzaNJyBb2vN17x+erNWGNaI48k8mjP+lmHDv12+m+hE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lenj4t+LfrSIy3dK0ITd/Gjivp09K8iaM3R8HH22Ky6NupDkb+
-	PwuNSiVroNjmrXPDQhQlNExfgX5DvoRCJknbeBrmoVy2RCvoibjF4vKSJBlee75ew/pdHjRmXjd
-	jde7MlpKE51QCTsQzKw67ZrCNu4TPtJOyDgBfqeN4
-X-Gm-Gg: AR+sD13/qDdkoA95Py+x41xvjLpVj3ngli8RYMrgG63ML2VgabKImgKR3BIPiQPpe16
-	Un+7P6QZnNMOWWDOPnt1ZAWo6tkyt7XGtDucCn0fbeOA3aK32DTTJmExKoNdfDUuKOhGnMfb1O8
-	0ntqNZQONYiVmD4mXqv1F2rbr1HRMSwbuADEh5L9/WKJAEHG0fCgGomF/oe8jQ9XU7eQM0IPK72
-	vWowj3V3ksh598AYyCzz73crZjfTf3uxqSLQR/7ktaohvAeuOhATyNsre1hB9UrBYg8r2kkuQ6h
-	GNuPxWsb7abk5V0CRiceM+9uRYHzGsxAQWMTc7+My67UeColDpxLD0CgYcD/hoUP59gGxIiIqa+
-	VGwGIUxpDQFJjdYkHoO/nDiNrv0wdJZ5D4eeO8NbkDT5GtRGXpgv7hqId0Q==
-X-Received: by 2002:a05:622a:4014:b0:52e:8ef:5960 with SMTP id
- d75a77b69052e-53036d1745cmr47815971cf.33.1788348166577; Wed, 02 Sep 2026
- 04:22:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C0A476CCC;
+	Wed,  2 Sep 2026 11:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788348266; cv=none; b=Mxg5Ac8libFstRL7YgmvOPjyIMKTviWoS5NZgNwxiMxQAfiMvfZLd7Fw/tf7oc+9h6HFNPdDqCCa4iboOjQqyfGFCHtrsba06JgoA6xM1YkMJy/0RCNlEKjNkfaGU0vCfTqwTXwia2OrO0CIsfIy+x9YMoDG0/PS29hGFGvQgk0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788348266; c=relaxed/simple;
+	bh=d3enSKxXZb1rG7gux2duaE/k3z2/PeR+urz+rPW91J4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=CcB6kMJVSTLFXQ2h5Sr9EDNopQskfyOWhNHLvxPvb5SnOcq/+N6KryNZ2VTc2tLI4ob/pTgiQyJtVSgmirH/DZmQX+MYAeQBeKimF89ccGd5iK9eWsLbiy7KI4n7uWK9jSHG1fyQy1rCCz5gEP4krV0l6B43ptffrXPIhQqQcB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
+	 (Exim 4.100)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1x1j4X-000000004BY-2BB0;
+	Wed, 02 Sep 2026 11:24:05 +0000
+Date: Wed, 2 Sep 2026 12:24:01 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Antoine Tenart <atenart@kernel.org>,
+	Ilya Maximets <i.maximets@ovn.org>, John Crispin <john@phrozen.org>,
+	Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] vxlan: add IFLA_VXLAN_IGNORE_DF
+Message-ID: <c8add19a594ca2724ad97205c9cf3af387a2d6db.1788347880.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260902003344.1931843-1-edumazet@google.com>
-In-Reply-To: <20260902003344.1931843-1-edumazet@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 2 Sep 2026 13:22:35 +0200
-X-Gm-Features: AcwNN1XtrN_vRmmLotA05NPV2nZoREgdYIiTjejMqXkeMTeXnJS8hCfHR5m_YAA
-Message-ID: <CANn89iLX4Rw6NhxwN+NT5OLMTUDmqUiaAWC5KHS9PL9tmQSykQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 00/10] net: remove skb mac_header assumptions in
- TX paths (I)
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Sep 2, 2026 at 2:33=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> In the transmit path, network drivers should not assume that
-> skb->mac_header has been set.
->
-> In the TX path, skb->data points to the start of the L2 header. Using
-> eth_hdr(skb) or vlan_eth_hdr(skb) when mac_header is unset reads from
-> skb->head + (u16)~0, leading to out-of-bounds reads (flagged by KASAN)
-> or triggering DEBUG_NET warnings.
->
-> Commit 96cc4b69581d ("macvlan: do not assume mac_header is set in
-> macvlan_broadcast()") introduced skb_eth_hdr() (and later commit
-> 1f5020acb33f ("net: vlan: introduce skb_vlan_eth_hdr()")) to safely
-> access L2 headers in TX paths via skb->data without needing to call
-> skb_reset_mac_header().
->
-> This series converts the first batch of 10 network drivers and virtual
-> devices to use skb_eth_hdr(), skb_vlan_eth_hdr(), and
-> skb_checksum_start_offset() in their TX paths, and removes now redundant
-> skb_reset_mac_header() calls.
->
-> When all drivers are converted, we will remove skb_reset_mac_header()
-> from our TX fast paths.
+A vxlan whose underlay cannot carry the encapsulated frame answers the
+sender with a path MTU message and drops it. That is the right default,
+but it leaves no way to extend a segment across an underlay that is
+merely smaller: every host behind the tunnel then learns a path MTU that
+the hosts beside it do not have, so once extended the resulting MTU can
+be too small to carry any IPv6 at all (<1280).
 
-AI-reviews have killed the notion of patch series.
+It also fails outright where the path forwards whole datagrams but
+discards IP fragments, which is common on carrier NAT. There the
+fragmenting has to happen inside the encapsulation to survive, and the
+tunnel refuses to do it.
 
-I will send stand alone patches, to avoid 10+ versions ;)
+Add IFLA_VXLAN_IGNORE_DF, off by default, mirroring IFLA_GRE_IGNORE_DF:
+carry the frame and let IP fragment the outer packet rather than report
+the path MTU and drop it.
 
-pw-bot: cr
+On IPv4 this means never setting DF. On IPv6 there is no DF bit to
+clear, and ip6_fragment() refuses a packet that is not from a local
+socket unless skb->ignore_df is set, so set it there. Without that the
+existing df attribute has no expression on IPv6 at all: an oversized
+frame is dropped whatever it is set to.
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+ drivers/net/vxlan/vxlan_core.c | 20 +++++++++++++++++---
+ include/net/vxlan.h            |  1 +
+ include/uapi/linux/if_link.h   |  1 +
+ 3 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 459f19f7071e..21cb7fbfb6e6 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2510,7 +2510,9 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			if (err)
+ 				goto out_unlock;
+ 
+-			if (vxlan->cfg.df == VXLAN_DF_SET) {
++			if (vxlan->cfg.ignore_df) {
++				df = 0;
++			} else if (vxlan->cfg.df == VXLAN_DF_SET) {
+ 				df = htons(IP_DF);
+ 			} else if (vxlan->cfg.df == VXLAN_DF_INHERIT) {
+ 				struct ethhdr *eth = eth_hdr(skb);
+@@ -2526,7 +2528,9 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 		}
+ 
+ 		ndst = &rt->dst;
+-		err = skb_tunnel_check_pmtu(skb, ndst, vxlan_headroom(flags & VXLAN_F_GPE),
++		err = vxlan->cfg.ignore_df ? 0 :
++		      skb_tunnel_check_pmtu(skb, ndst,
++					    vxlan_headroom(flags & VXLAN_F_GPE),
+ 					    netif_is_any_bridge_port(dev));
+ 		if (err < 0) {
+ 			goto tx_error;
+@@ -2598,7 +2602,8 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 				goto out_unlock;
+ 		}
+ 
+-		err = skb_tunnel_check_pmtu(skb, ndst,
++		err = vxlan->cfg.ignore_df ? 0 :
++		      skb_tunnel_check_pmtu(skb, ndst,
+ 					    vxlan_headroom((flags & VXLAN_F_GPE) | VXLAN_F_IPV6),
+ 					    netif_is_any_bridge_port(dev));
+ 		if (err < 0) {
+@@ -2630,6 +2635,9 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			goto tx_error;
+ 		}
+ 
++		if (vxlan->cfg.ignore_df)
++			skb->ignore_df = 1;
++
+ 		udp_tunnel6_xmit_skb(ndst, sock6->sk, skb, dev,
+ 				     &saddr, &pkey->u.ipv6.dst, tos, ttl,
+ 				     pkey->label, src_port, dst_port, !udp_sum,
+@@ -3453,6 +3461,7 @@ static const struct nla_policy vxlan_policy[IFLA_VXLAN_MAX + 1] = {
+ 	[IFLA_VXLAN_REMCSUM_NOPARTIAL]	= { .type = NLA_FLAG },
+ 	[IFLA_VXLAN_TTL_INHERIT]	= { .type = NLA_FLAG },
+ 	[IFLA_VXLAN_DF]		= { .type = NLA_U8 },
++	[IFLA_VXLAN_IGNORE_DF]	= { .type = NLA_U8 },
+ 	[IFLA_VXLAN_VNIFILTER]	= { .type = NLA_U8 },
+ 	[IFLA_VXLAN_LOCALBYPASS]	= NLA_POLICY_MAX(NLA_U8, 1),
+ 	[IFLA_VXLAN_LABEL_POLICY]       = NLA_POLICY_MAX(NLA_U32, VXLAN_LABEL_MAX),
+@@ -4391,6 +4400,9 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
+ 	if (data[IFLA_VXLAN_DF])
+ 		conf->df = nla_get_u8(data[IFLA_VXLAN_DF]);
+ 
++	if (data[IFLA_VXLAN_IGNORE_DF])
++		conf->ignore_df = nla_get_u8(data[IFLA_VXLAN_IGNORE_DF]);
++
+ 	if (data[IFLA_VXLAN_VNIFILTER]) {
+ 		err = vxlan_nl2flag(conf, data, IFLA_VXLAN_VNIFILTER,
+ 				    VXLAN_F_VNIFILTER, changelink, false,
+@@ -4547,6 +4559,7 @@ static size_t vxlan_get_size(const struct net_device *dev)
+ 		nla_total_size(sizeof(__u8)) +	/* IFLA_VXLAN_TTL_INHERIT */
+ 		nla_total_size(sizeof(__u8)) +	/* IFLA_VXLAN_TOS */
+ 		nla_total_size(sizeof(__u8)) +	/* IFLA_VXLAN_DF */
++		nla_total_size(sizeof(__u8)) +	/* IFLA_VXLAN_IGNORE_DF */
+ 		nla_total_size(sizeof(__be32)) + /* IFLA_VXLAN_LABEL */
+ 		nla_total_size(sizeof(__u32)) +  /* IFLA_VXLAN_LABEL_POLICY */
+ 		nla_total_size(sizeof(__u8)) +	/* IFLA_VXLAN_LEARNING */
+@@ -4623,6 +4636,7 @@ static int vxlan_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 		       !!(vxlan->cfg.flags & VXLAN_F_TTL_INHERIT)) ||
+ 	    nla_put_u8(skb, IFLA_VXLAN_TOS, vxlan->cfg.tos) ||
+ 	    nla_put_u8(skb, IFLA_VXLAN_DF, vxlan->cfg.df) ||
++	    nla_put_u8(skb, IFLA_VXLAN_IGNORE_DF, vxlan->cfg.ignore_df) ||
+ 	    nla_put_be32(skb, IFLA_VXLAN_LABEL, vxlan->cfg.label) ||
+ 	    nla_put_u32(skb, IFLA_VXLAN_LABEL_POLICY, vxlan->cfg.label_policy) ||
+ 	    nla_put_u8(skb, IFLA_VXLAN_LEARNING,
+diff --git a/include/net/vxlan.h b/include/net/vxlan.h
+index 7b8207505523..85690b817e0e 100644
+--- a/include/net/vxlan.h
++++ b/include/net/vxlan.h
+@@ -228,6 +228,7 @@ struct vxlan_config {
+ 	unsigned int			addrmax;
+ 	bool				no_share;
+ 	enum ifla_vxlan_df		df;
++	bool				ignore_df;
+ 	struct vxlanhdr			reserved_bits;
+ };
+ 
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 43cecca49f01..5a2d3a92941a 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1463,6 +1463,7 @@ enum {
+ 	IFLA_VXLAN_LABEL_POLICY, /* IPv6 flow label policy; ifla_vxlan_label_policy */
+ 	IFLA_VXLAN_RESERVED_BITS,
+ 	IFLA_VXLAN_MC_ROUTE,
++	IFLA_VXLAN_IGNORE_DF,
+ 	__IFLA_VXLAN_MAX
+ };
+ #define IFLA_VXLAN_MAX	(__IFLA_VXLAN_MAX - 1)
+-- 
+2.55.0
