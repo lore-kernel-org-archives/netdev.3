@@ -1,131 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177F04A2E3C;
-	Wed,  2 Sep 2026 14:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2367749C4D7;
+	Wed,  2 Sep 2026 14:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788359772; cv=none; b=AJpQ/cAq3x7jLz8X/YqzdycQbrW+57rN+g0gFasOrWddAV2Qan/caX56h9ZarEYlzLMeimJploQLeqrEvzWtJZCfm3shsRCjxhSQNSIoC1NBhoB6mWmcbpEFPtBQ0IeC0txZ8ZFRUjsiBXuXbqtzhRKBH3MEqG0sTSDtBL1VilE=
+	t=1788359866; cv=none; b=RhHRclXz+Rif287bBQziWIPqN1E9D91Qta7oyql4b/sylubxoZNWUJjV5v6RRSs11BOtHH1DWOQQNgOLTWtjxQvARcZR2hSElPRwtp+/rsTIRtaDP72Lqfb6wHU4ki+JWa+Qi6KDM6tremO2DkCKGUX6ZqIXoSnbReBg9RWJ3vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788359772; c=relaxed/simple;
-	bh=eJC9UUBWutn2N8t4IKPJkVXhNrPPSiqt3WTyCAhkfEE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z8l0+bG+l1s0O61sRairy2MqdktKzqxHcHfEuEYqufX/8ir7/mYcSxLtvBE6C/yMvoWpYncNyVwFDNWp5b4oyHcQRib/CamuxDtgJC5wsf/7qbWU04ITUpCDTiB+4bgVpo8+2q/6bH/DG0p1TmV8IikLzDTLF3uXgH2eRdnhP8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qz2Ew/Fo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788359866; c=relaxed/simple;
+	bh=Z2SmtmE1suspIAmKKHbFLu6H2SwSdqIjvFfPBGIw8mA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OsZ7k4VLOgSot6dCYRJ+hwHRw1UKR1QsMfXmRcrL2ilCkxeHIfHUVHY/dJqer4+oNmuW4ycMC52kSjDJCeQZBqBhNWuV7kd/7ZvGTqgTIiHYkYEb6biUrBncbOfj4NcTWM8I5RcNKHI1nhc/XpTUF/oK6u1Nhl6Bx06o0HhlI7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MTcd2h7C; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qz2Ew/Fo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DAE1F000E9;
-	Wed,  2 Sep 2026 14:36:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788359770;
-	bh=uzzpWL0xLJV4HxgXaJDCRpeFEK+cpnvsfs6kVzVfAak=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qz2Ew/Fo96WKMMFECtw6AcGedth0FeblIay9/D+sibhjAK2/BTaqye6hTBWLs8zRw
-	 qXakXIrkxjuU89HS4vq0KEDl4x5Z+5neqSP1lPuX0OLciuKdgyqjd9FTsSHKpkKbON
-	 +rEI4WgECsqIzEjtNQqxUwhobsANlSwbLo0+gejc7TXvcdF2esdVnYMH+viUhY4Vxs
-	 I5YPwI+B873UPnl851liAilmTnKwoRgKEBL/Qkp67CXcRlVxi7w0cHqyTfePTjs2ij
-	 SqS2cmlvhnjlis8DLSAigHIQ3woqHE6gL5snkeJGrQ1zoiv/+OdHptqVqSk/XgvaGn
-	 Hno8waIJ7Q4NA==
-Message-ID: <d3ca9ecd-768a-48fc-805b-cd50efa639af@kernel.org>
-Date: Wed, 2 Sep 2026 16:36:05 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MTcd2h7C"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682CVt3k046988;
+	Wed, 2 Sep 2026 14:37:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=iRHFg86EO0/MN34t0IR1s3CzJshwoAt0NYJyN21zt
+	bU=; b=MTcd2h7CViPyov3jtthYP9hErMGGOSHLjccUFjpgZQ9qnyIQYhDSzcq+6
+	LXSUW5VP/BS/lhVoQBq1lThp9hDYvNhuD6mHkQrTq64rGFRLYQPRnCJ0LY/kDi3z
+	TGiGDKHkUV0Wdsc5Danh0VSYt/P1jNybMJsr+intaYz1vmKIp/Q+hC+P5LmyheHJ
+	OjLgWd6OtQfKq7/nvSWQPVKxgIagHc0EtqEDAhjADNNeS3qELgQF1sdf/wPNYw6r
+	12tNWhFohsCg5HOKghARvmXQjHz5e8C5Hc43RUwvzO44zr3jA0RH6cJmLAQ+SmNS
+	2bTOM7Fq5Set+JCjfzFlcKy+VRmkg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2tes87-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 14:37:38 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 682EQHn8019138;
+	Wed, 2 Sep 2026 14:37:37 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gcbygj5xw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 14:37:37 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 682EbXnB40304986
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 2 Sep 2026 14:37:33 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9548520043;
+	Wed,  2 Sep 2026 14:37:33 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 59F2D2004D;
+	Wed,  2 Sep 2026 14:37:33 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed,  2 Sep 2026 14:37:33 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
+	id 3F45F160CDE; Wed, 02 Sep 2026 16:37:33 +0200 (CEST)
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, Gerd Bayer <gbayer@linux.ibm.com>,
+        Aswin Karuvally <aswin@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
+Subject: [PATCH net] s390/ism: folio_put() after error
+Date: Wed,  2 Sep 2026 16:37:33 +0200
+Message-ID: <20260902143733.433574-1-wintera@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
-Content-Language: en-US
-To: Alan Stern <stern@rowland.harvard.edu>, Oliver Neukum <oneukum@suse.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johan Hovold <johan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- accessrunner-general@lists.sourceforge.net,
- linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
- <20260830-usb-v1-1-aa349c302246@kernel.org>
- <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
- <8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a9834b2 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=YWMzHMNbCl421vV1xwsA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfX3ZL7SCahZHug
+ ypjv5wWt3AoWurYhhwn7tfUhYhzJ+PLvURJDTdPlTllOu1Zmf0K1pMWsQvH7pw3+vy11QafET6T
+ JWVU/cR3v/kTWjfZC/anGaAFfF0iyFU=
+X-Proofpoint-ORIG-GUID: cb_pReO7UX88rfvXiYsg3iIo_Y1I9slW
+X-Proofpoint-GUID: dMCPfe_cWoXXux3_NHcXGgVJUhGD4aq9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfX/EUha08rVjsK
+ tszIPV40XQXwk5M+Y3R8zM0f/u461zjvF6MSoJbzURwqJpcGBkOO3gtVGwBEWQTbi1e165chBqV
+ clP2tz3V6GJoXdRwiIhnss/Gl6ho+5trY0rr15nXRa4e5aEIiae6tIsiRUFQhXauGYltmdSKlWk
+ DAevH/ltsf0vvL2iEGGE9Fw4K79Lz9Y6+tmxbAhr/nIMcMgOmxfYMA5zK71pnuoRssJPmGXyymF
+ a7vPkA6tYOAYYsqSbh/+2pfNLzc+3N2fWfrNJHOeHdd/35XP00uDZgUl4EqVYPLZ6m6NK09R5H8
+ xCsE8W8pP+A7K39MKo9CcNRHsPlnW0bIc4ZUk4b+juIvTvlXRouihVecL367KXekRLsJlj9nzjS
+ xWRhUURTUTe1f7E0b952LqRt3t1SbBOZqtKm6lKZPf7CA2mTKGF081FjDtIC5ZDzF73fz+Ef7MI
+ J6zaEf/ovvtMWzuIPbw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-02_03,2026-09-01_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609020128
 
-On 8/31/26 16:30, Alan Stern wrote:
-> On Mon, Aug 31, 2026 at 03:27:07PM +0200, Oliver Neukum wrote:
->> On 30.08.26 10:10, Mike Rapoport (Microsoft) wrote:
->> > do_proc_control() allocates a temporary buffer for the data stage of a
->> > control transfer issued from userspace.
->> > 
->> > This buffer can be allocated with kmalloc() as there's nothing special
->> > about it to go directly to the page allocator.
->> 
->> You are breaking the calculation. A page has a size of exactly
->> PAGE_SIZE. A kmalloced object of PAGE_SIZE is larger. That is
->> a bad idea.
-> 
-> By "the calculation", are you referring to the 
-> usbfs_increase_memory_usage() call in do_proc_control()?
-> 
-> The overhead in kmalloc allocations doesn't really matter for this 
-> purpose -- it can be considered a rounding error.
+dmb->cpu_addr was allocated via folio_alloc(). Use folio_put() instead of
+kfree() in the error exit of ism_alloc_dmb() to avoid slab allocator
+corruption.
 
-FWIW, the overhead will be zero for a PAGE_SIZE size, unless slab debugging
-is enabled, but you can ignore it.
+While at it, reset dmb->cpu_addr after folio_put to avoid unintentional U=
+AF
+by future callers.
 
->  Besides, we don't 
-> know how big the overhead is, so we can't account for it.  You can see 
-> that in the same call, we don't try to account for the overhead involved 
-> in usb_alloc_urb() or kmalloc_obj() either.
+Fixes: 83781384a96b ("s390/ism: Properly fix receive message buffer alloc=
+ation")
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+---
+ drivers/s390/net/ism_drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-ksize() exists but I wouldn't bother indeed.
-
-> I'd say there's nothing wrong with this patch.
-
-Agreed.
-
-> Alan Stern
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 242da20f27e0..035b233abb4e 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -231,6 +231,7 @@ static void ism_free_dmb(struct ism_dev *ism, struct =
+dibs_dmb *dmb)
+ 	dma_unmap_page(&ism->pdev->dev, dmb->dma_addr, dmb->dmb_len,
+ 		       DMA_FROM_DEVICE);
+ 	folio_put(virt_to_folio(dmb->cpu_addr));
++	dmb->cpu_addr =3D NULL;
+ }
+=20
+ static int ism_alloc_dmb(struct ism_dev *ism, struct dibs_dmb *dmb)
+@@ -274,7 +275,8 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct =
+dibs_dmb *dmb)
+ 	return 0;
+=20
+ out_free:
+-	kfree(dmb->cpu_addr);
++	folio_put(folio);
++	dmb->cpu_addr =3D NULL;
+ out_bit:
+ 	clear_bit(dmb->idx, ism->sba_bitmap);
+ 	return rc;
+--=20
+2.53.0
 
