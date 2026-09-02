@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3053AF65A;
-	Wed,  2 Sep 2026 20:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1179CA6F;
+	Wed,  2 Sep 2026 20:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788380597; cv=none; b=u2w48Qq+OKff/RNZguQJnXnc1Vvqq0UJezw72Qs443K6c5D4B8nDPHWHjfNz01Ql6LPsKnyZTkF6jP4r9ZK4fBDbEHCmfOq65XkoCUYrZDVsqiya/M535/bbZ6PS2Yh046uucyUYoMlDUrGRBbpnawHgNygV88fLOsJJJ7+HoJ8=
+	t=1788381000; cv=none; b=MKVCDwZqBMZi3S6FjWg0I14ZG/W1cJXcirsTbATTG/2oPMPbJnu6jfRyGtjDDDFEBr8mpmYaLHXP0A3hrl74X1N/h8RdDTx9owqpyCnSRZESsfDTNWeAhRUTirlY/b04PHKKmhIhmTtdvNA3v6U9O7yxLmqomns1oHRhXeTgXEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788380597; c=relaxed/simple;
-	bh=nu1WIE3ei6FHDqZYvsO0hq/WTr2hgN5wXY9v84y/GZU=;
+	s=arc-20240116; t=1788381000; c=relaxed/simple;
+	bh=5GZBvCsMOFsFK+rU7KztXj9UD8tznxkCHHiAEsivmks=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g7Xo3SjYBc0NXw48BNwjwO1IuUXC08sYcJ3nlPjYyYSdzhcHMd737RgVSmOAfYDwW6sZcZEXP0iBNi2milKk+JI+OrTWIfNIvP1wSb81Mu9rcQFa0oQzgXgsafSCTFq90GbH8n4Ii7n3rg8rB9o8T/dJtIjKwk9RgfXKGUGT8bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3U4+ZOG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=PZu/Zy3O4eBjQbR/SOK4zIrz9ClfMz2H57gOnRkRzaZACNR55/IGndVACi7RakmO4scgyyUqH1uj2a97iSORJT6zKzRdPtyZpgk7D2lBppQWO8q959w7FAgPp6ixZyi8WXgZ1rOhPYI0eXuIe4MLSZ1z7kRK1efp8caOxDa8IoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjMU7p5Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3U4+ZOG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2091F000E9;
-	Wed,  2 Sep 2026 20:23:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjMU7p5Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17ADC1F000E9;
+	Wed,  2 Sep 2026 20:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788380595;
-	bh=IyD8PJIAU/ivp+yW1A765I7ZM8+hJz+Gaak/AdDpoHs=;
+	s=k20260515; t=1788380998;
+	bh=cGdkDE7sit6AxArVGexqh3DzsX9Gs9/f7klByuNA0IA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=F3U4+ZOGfURgQ+w+FTww3KK6JrTXQZ1zI18w8AcqYgVcyBC4mMpYRgjmhvpbmiLfY
-	 MwDt60WAHlHRF4D2dveabEG9nR/f+FiP5WU2HVvW+HYRow8OheC44EJX0AE1YEXt++
-	 O+lnHd6df0DbP30pCtWGDMEbVYTsjsYJX6+UEP2i17GhlBkzWrw9YdGjit+jGRVjXr
-	 1905F7fRCBBsijQQ6gaktAwas+On1HtJdgVUnGU3pwg9Cg4+Y7AZqu5ACBhAquwwRP
-	 bCLkxlxngw7gFXxTIpK+LdFpY+UxI9VmbTa/Gv9apAETJ102nZwEeWe0oyr1vrI5yP
-	 9Lv8aGTPGNpew==
-Message-ID: <d6b9b185-29a0-4dae-adc2-329474018bdf@kernel.org>
-Date: Wed, 2 Sep 2026 14:23:13 -0600
+	b=EjMU7p5Q1RdK3l4wX8IbzKHsEaVHCiB4xywxTYeHXUYGqG7quVvPk2uchitIv64yD
+	 j8blse4qdSB9ggwcNwTHDvi3MU78BmVG3Z/yyc+SOfHjMXisWhp+yfpjQPOCtqEilG
+	 NwVQLJI6aohDk686p1OD5RaUDk6a9m4ZjqG03sMpIIgVxFzhKmIulOQOKTRFCXDPyn
+	 gUSVKMBgRkk6lkqRjDH2i6Lr9PQpZAJEQYUWnfbD8dRuM1iHVdVSgpaJPP1sg42UQg
+	 q3vdKLHNiQyt4bQPoV+V/LAHR7aDCGq/jA/ZdLuQNLp4juvvzb8f1apCMfcM8pTc8r
+	 b+zpI5zg+fzxw==
+Message-ID: <fc45c17c-84f7-45c7-a411-ba9070d1dcd7@kernel.org>
+Date: Wed, 2 Sep 2026 14:29:57 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,67 +35,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tunnels: Drop stale dst when building an ICMP error
- for PMTUD
+Subject: Re: [PATCH net] selftests/net: Fix icmp.sh race between ping and
+ tcpdump startup
 Content-Language: en-US
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, aconole@redhat.com,
- sbrivio@redhat.com, gnault@redhat.com, laikabcprice@gmail.com,
- aroslavdudkov622@gmail.com, rough.rock3059@datachamp.fr,
- stable@vger.kernel.org
-References: <20260902190112.4126199-1-idosch@nvidia.com>
+To: =?UTF-8?B?UmljYXJkbyBCLiBNYXJsacOocmUgKFNVU0Up?= <ricardo@marliere.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260901-selftests-net-icmp_race-v1-1-0b2a27e91a0c@marliere.net>
 From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260902190112.4126199-1-idosch@nvidia.com>
+In-Reply-To: <20260901-selftests-net-icmp_race-v1-1-0b2a27e91a0c@marliere.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/2/26 1:01 PM, Ido Schimmel wrote:
-> Bridged UDP tunnels such as VXLAN and GENEVE build an ICMP error packet
-> around an overlay packet if the packet is going to exceed the underlay
-> path MTU. The ICMP error packet is then injected back into the Rx path
-> with the source and destination addresses swapped, so that it will be
-> delivered to the overlay source.
-> 
-> If the overlay packet was routed to the UDP tunnel or locally generated,
-> then it is already carrying a valid dst entry and this entry is not
-> dropped when transforming the packet to an ICMP error packet. This
-> causes the IP layer to reuse the dst entry, leading to the ICMP error
-> packet being dropped or routed out of the UDP tunnel interface in case
-> of forwarding.
-> 
-> Prior to the blamed commit this could not happen, as
-> skb_tunnel_check_pmtu() did not build ICMP errors for PACKET_HOST
-> packets. Such packets were instead encapsulated and, unless the DF bit
-> was set in the outer header, fragmented by the underlay.
-> 
-> Fix this by making sure that the ICMP error packet does not have a valid
-> dst entry, thereby forcing the IP layer to perform a route lookup.
-> 
-> Adjust the bridged PMTU exception selftests accordingly. When the
-> local sender in ns_a pings the overlay destination with a deadline
-> (-w), ping exits on the first socket error before any reply is
-> received and returns a non-zero exit code. The test therefore only
-> passed because the ICMP error was never delivered. Use a packet count
-> (-c) like the ns_c line above it, so that the ICMP error counts
-> against the packet budget and the exit code depends on whether echo
-> replies were received. This passes with and without the fix.
-> 
-> Fixes: 8930424777e4 ("tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu().")
-> Cc: stable@vger.kernel.org
-> Reported-by: Laika Price <laikabcprice@gmail.com>
-> Closes: https://lore.kernel.org/netdev/20260614-master-v3-1-9f5060ba1ed1@gmail.com/
-> Reported-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
-> Closes: https://lore.kernel.org/netdev/20260901081825.287173-1-aroslavdudkov622@gmail.com/
-> Reported-by: Charles Bordet <rough.rock3059@datachamp.fr>
-> Closes: https://lore.kernel.org/netdev/aHVhQLPJIhq-SYPM@eldamar.lan/
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->  net/ipv4/ip_tunnel_core.c           | 6 ++++++
->  tools/testing/selftests/net/pmtu.sh | 2 +-
->  2 files changed, 7 insertions(+), 1 deletion(-)
-> 
+On 9/1/26 8:09 AM, Ricardo B. Marlière (SUSE) wrote:
+> @@ -53,11 +54,21 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
+>  # Make sure ns2 will respond with ICMP unreachable
+>  ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
+>  
+> -# Run the test - a ping runs in the background, and we capture ICMP responses
+> -# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
+> -# in case something goes wrong
+> +# Run the test - start tcpdump and wait for it to be capturing before
+> +# sending any traffic. -c 1 means it should exit on the first ping, but add
+> +# a timeout in case something goes wrong
+> +ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 \
+> +    'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>$TCPDUMP_ERR &
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Why keep the 'timeout 10'?
+
+> +TCPDUMP_PID=$!
+
+You have the pid. You can always kill it after the ping command if it
+does not terminate on its own after the 1 packet is received.
+
+> +if ! slowwait 3 grep -qs "listening" "$TCPDUMP_ERR"; then
+> +    echo "FAIL - tcpdump did not start listening"
+> +    cat "$TCPDUMP_ERR"
+> +    exit 1
+> +fi
+> +
+>  ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
+> -ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
+> +
+> +wait $TCPDUMP_PID
+>  
 
 
