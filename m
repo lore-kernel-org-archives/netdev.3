@@ -1,172 +1,120 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9CD3B19AC
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 06:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788332373; cv=pass; b=rMyvCwnHL9ySCQpFcMsv0DjGIcMrCPoeA24AzAqBHIQkhf6/GDzsqE44XAllVEtcuoJCOddxWXgXqom/m+k38gIAZQYs2VQOIAFbefUW/HNVXI8j43K2Khinl8ZGndVCgErJdwWibwe96XqCJgCEu1cmmlylCKf0oBERuR0jfvc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788332373; c=relaxed/simple;
-	bh=N85RJ+R7r9Ai0hOOjY7YpH5Ytqqm74t2AFNML4GFVK4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aSYqFtgVqsbypEMGUn6Ctl6DwgXTZKwAy4PTbSqW+6GO38cEgXweeE+CU6US0vhmZNhYr+NmiVs9v3U9E6t7wLVo/VrpIrVhAzE6l3H/ELpWCfhKZ+KZW+ov72wATjpV532G59e+WTyegmmFayJZ6c/8YjU3qqDootl6xpfY2vw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rz0ubruT; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C532D1907
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788332434; cv=none; b=DS7EL6wEE9BiATvgWEoZem0tVsWSYnJVX7iYeeenrsIFKH886jfhxZsQ5UXtCodudai3MaxBTK4nwrseR7zn/dxFbPUZIGTCuVS8Cl6ObluIIYX9tUd50ZJnpgMEzcRw2Gd2u3pHyyO4MXwRCF+xW9QVI2U/dZ8Kb95vJ/B4GbQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788332434; c=relaxed/simple;
+	bh=fER+gMxgMdx84eTSstOteI3BKITvhY58vYW6TD5RMpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fTISmmo5dL5ZcbdrctVyt+0anj3lbHXHuMCt1ZlZvEvIH7DorhhJam0Y3J74/Zrw15vYhxh6Nhfatitku6BCYT6YoCPpPZVC4wyH7mZv7xvwyAHgZYvqUWyUUDJeRpQgZPcVkmjpvcg7grXiUMTDoMyz0L8UBqlB0UtEbnB+rko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AjAPJRyD; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rz0ubruT"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5301a453186so5726361cf.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 23:59:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788332369; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pTO1FD0XAmadT0AbDe4sRLxeBapvWpGd4AgwmtdppSYaTpEtF2wt9fHOfnKtL/ZDrK
-         eUSDDGCgPcvIwSwDRIFnaK92giJpuyQgfIpac88IljZlcGcyNUOTxLPBhWpPfj6nfJne
-         cUqLYpwJ/RC7zLtbgFBPtoRJ1aAKanJ7K5sEHWauxNrhHaNtqGJmrFjvWxlfheG1WSfX
-         GvspNHzFcDsgmTwFi5QuqiWpVoewK4mFKlHSDgEPHmtc3kyNfSA4Av0VyxxrG6dI0Uqo
-         QLALptPFlay7QyFrQdQJwJEJrHih58G8rNLlhXGO43S3e6t5BKw7pawI09kXZLS5y6Wm
-         gPpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oOP9Z7HNYiswXIyPHT63AslF3SPZRjDN0nxwMCDDVtk=;
-        fh=GtqmlVST52xlXeFvszKCotaYXz7B2c/j5C4Dc2AujuU=;
-        b=QlzJMu7OTeTB0iX/GeFOhDZ7I2tv6amUDq6a9Amvk46S3C4CyDuG94LTs3aA6ZsuRp
-         LuKesN0+lqI6dmZ39+nYcqZtu7sA7yDQHpXNlmNB3R7uIKm5e9U/sTMs2zfhMhrtXigL
-         dD7dErDDXvriumDvocyk+Wx+R9DPvzpk+JpFuZgMXvLTCcEY98eYII1tyb5jcB89G60W
-         8qYegrxNgp7odm/hybv6TTg5w8906evmM0nUF3oOujtvxtF2gHwmRDT/nw6D3I6ZgQ47
-         V/dy7ftMjMkDJ7JbdPfCQofLJNLejxqdWfL6+L+2eUkjuGspqAkmFoMdRCD/uYtqbJQl
-         8aiw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AjAPJRyD"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d6e954afbdso4173655ad.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:00:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788332369; x=1788937169; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oOP9Z7HNYiswXIyPHT63AslF3SPZRjDN0nxwMCDDVtk=;
-        b=Rz0ubruTCj46vPENnFbN8lNeC1130gr0rjTez8fpJn3zcAMEIafczV5/ZNacYaKS9S
-         U+kC6hy1i1d7bPee5vNLYdmIUcnrgXdqdHeyAhcCJApPeGAPFqnMad1XuSGCjbgU4DmV
-         597DuWf27eWXJVz/Re66pvpjste/d23C5DI7M1pM0uW2oiWjY4s/CveUj4Uq6WnWtB/Q
-         FNda7zcUBvtncwOS1WJsY/vNgsxtaqvF+k3+G7C9JchAEhOTc4Zm49sd4i9a/PKEDnh3
-         3jylk/d4s47yOI47dnOWgdkBCHp6Gb7i6hXp3AKp6DYHdnjODIOEEW4QRRybTphSqOhQ
-         1WYA==
+        d=gmail.com; s=20251104; t=1788332433; x=1788937233; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fER+gMxgMdx84eTSstOteI3BKITvhY58vYW6TD5RMpI=;
+        b=AjAPJRyDgHRjtTBNA9l65GsYfuKflDaGRNAYGFaHES0XOxIayMh9OoZuf8X0pvHwjA
+         o4mfiqTt527jh9Y0FFQVAEVubDPBQGPAxdju2wNvNQr57NrZtNU+wXVirXFtOeG0JcLR
+         OfGAcnI21l+yTgzxGfacScURNlXyzq4cIOyTZGb4BrL4hbGUj05OgICnAGxMIbPvVVJN
+         EM60EVVxXNJeWm+tMycj8YIo0m6K1WPTgv30R6BAAt68HzZWSlojUhZqCKMuvH2ZSyZ+
+         vkrTvDEQ5ANiB27OZ8gvW49v3fzxdk28t+slNBoPTkphtzUloKZZ2mzzzGLSO5xsxmhR
+         dsxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788332369; x=1788937169;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oOP9Z7HNYiswXIyPHT63AslF3SPZRjDN0nxwMCDDVtk=;
-        b=R09eLGPUlHh+MjvoJUr8sRvtHxi+gBwKiXEomgwBNXlw3/4ti/BUTiPr/zT9PoiGZo
-         tA9Oo2hreSgtNg0chFVH2GA/vUHy9/YxkHb3n0F2iQaqjdBX5dtpSAdcsejaV84Wo8IR
-         Q9b3jQaX2OCRD6Z0WOQ3lk6Edn7G7+7A6MKALdjEW4ls42BVN+YoDzc8j0yixoWBfn4j
-         kB0CO/L8PKVyOo8zR/VVTkVRQghm4w/40IOkzuuAKGzmHfxINwe5GEDhukA/CTjN8u3J
-         B81M/YC3gyjnE0MMUeTlTl6ZJ9DACg6quESNizvuNV5wSPwkavv18zfeIlUZOjJQDEO6
-         8gvA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6xV5cjKFXMv/rvCtVK+9FKSmFqUCbrpSjoHc04iTXgjaB2WTgGFI3V38uPptQxzEjuK+8Ls0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mAMHa3vL1IhDQwZvGlk5toCluGHbcTpYsbY/yza7goo+eQe1Np
-	uO5sbuLOG+keAcuL3lCvH4PnrSOC2SncVI2r8/iLl6pPe2Pbnr/B637V3hK5Gzfigsna+aPm53L
-	3/wg2vdkeN7UyEpb/ZgfSsMV0VHpd9mJUzsUcVUov
-X-Gm-Gg: AR+sD13n5gmIsN4sSIIvlT46w9VSl6drEqCB8TwoHUCIbZkUgshK6veao1HDYgy8+on
-	QRNBz2JcI7kbKdwf69DP4ph7Iiu1ULjJ/dJZDuSu/sGjG/zE8TafvCU/FrD/9nCMO1jWvYP274K
-	1ajXJfyNg3iY6DQmskMA7rlo1PoK4l2XQpQLf75LeaWMh9UPqe3sQG6WnK4B/pNFZTMZxl3RhEa
-	m2tiI3ttVELGMqAT4Jjbdd6w7P9vCZwsEVdFqk9z7Fe+hOywfUIAYkONERMGwVF1r7kmxaeJ9cv
-	iLpNpJCXB7fw+0WZZjqR5ptgh4WmvwV67OkwBQlsgCMxOQFpWKiV15xiTnSbLwKCkp61pSXK3by
-	a0UqJqxA2hC4bPPBApja1knpAYaX40JjUjNMtQXAmpsS4yysPumRebaMVkg==
-X-Received: by 2002:a05:622a:5507:b0:52d:41d0:89e0 with SMTP id
- d75a77b69052e-53036d2c227mr28091701cf.40.1788332368021; Tue, 01 Sep 2026
- 23:59:28 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788332433; x=1788937233;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fER+gMxgMdx84eTSstOteI3BKITvhY58vYW6TD5RMpI=;
+        b=ZWhQXzlAjZ3E2uLClUfS56NlLidUIZEodlEYgr/3B8EjPdpqtrpgFRW5d3EXDxvIxC
+         yRWLeYz34mjCJ0MHQK+3KFoXRzCWBS6kG5LpvR2ATAYVmVbbO/tVbFQXcJMU4R/tOmF8
+         wB3r1hyxIzNF/0uoltQ6C1Xb3uiCexYySXpsmJvXNaRLVm60mMD/jbKw15fq8ZC4EEwO
+         ZvkA+RIc8gFfQGY2je0DvDgb8nimzu0E+xDRxPXJsmBmbwCajMSEW7LosVE5xNwwAOhE
+         w2l/lwZoPxgpXVMhaAK3ofkNx8k/cI8FFTbiLzt2d5uy4/4NkgjzqhTizJjbvD2y8WRy
+         Ywjw==
+X-Forwarded-Encrypted: i=1; AKwUvBwUGbdhodTfZxWgK9JTHdMLxSho9n+Z5kPKhZ1oF3FLC2n9lFcl6FVp3LOwSCpegHEX9wyMXrg=@vger.kernel.org
+X-Gm-Message-State: AFuF++muMl+9PF6LD8YARLwfWELLVMFybi2Cj9I3RXQMkQB2+EQBC+CI
+	k8eTBI7EmS1tGcboQeaV2aBAeA90QJuPoutqMFQ49GyItY6CBXEFs4zq
+X-Gm-Gg: AR+sD12/ZHsTiu3eUYDoZRZHj9zk6TpQ6xMBa9VcirtFQJElQaETtYh+MlHp+ZJlRuG
+	FIQG45aa/0kGFBg/sWjyJzSzOKnrhgdNgA7nfp1710oJwhIIPoztYbvWJsAVnJvlKgY8nZE0deT
+	/LUgLdg+sqKsGwWof7lRisMuG8RVV09P6uSycbOjFhTkq95umvsSrDgnvsWetilHNbTRFyuxb6i
+	vYs5KZVCwf4ckxI64ZGLCBpsx1bU+QPZS0KFrtwT4r3ZOswjMUOMpVuRrtpqKV8cn45Sb1wHEc/
+	b24jCezgsopsQS/tKIH6SyfZqK/4a6GHglCkC40YixgPQcNSZhMEM9Pxj8CNPN6cdl4H/ZAfhmO
+	mFLWZxdqFFi7IiUIazcPwej6lxqtEaBuNwgb3kJP0xjSF63ADhv27AhAka5PuBqSBEiMJc5brYv
+	u0OgD2jq2nAl4SoCaUSieHTDvQraLXF3aYrTrFjjBOePcjzCFjg2KG1TQcEo+mAzjRrifcLdBkj
+	YGuTFZ/qeBt+vZwwkUKtitytM2+Gt8U7tXTnXLWZ7lekX2mv+ug
+X-Received: by 2002:a17:903:324c:b0:2da:e553:c70f with SMTP id d9443c01a7336-2daec7bc931mr42090935ad.22.1788332432973;
+        Wed, 02 Sep 2026 00:00:32 -0700 (PDT)
+Received: from secrnd-cstp.tailb7f510.ts.net ([125.131.91.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd4a7f1fsm8113065ad.63.2026.09.02.00.00.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 00:00:32 -0700 (PDT)
+From: Sanghyun Park <sanghyun.park.cnu@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Sanghyun Park <sanghyun.park.cnu@gmail.com>,
+	netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	David Stevens <dlstevens@us.ibm.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vxlan: use one headroom snapshot for neighbour replies
+Date: Wed,  2 Sep 2026 15:59:12 +0900
+Message-ID: <20260902065911.1177698-3-sanghyun.park.cnu@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <53a67f9a-b8a0-4967-b2c6-be4ee3a09735@redhat.com>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPAw8HE6QgnePG=UUfU2d9mYXNpY2O_kp5v0J82VuVoR6gwWOg@mail.gmail.com>
-In-Reply-To: <CAPAw8HE6QgnePG=UUfU2d9mYXNpY2O_kp5v0J82VuVoR6gwWOg@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 2 Sep 2026 08:59:17 +0200
-X-Gm-Features: AcwNN1U02nwDwCEqUG4sFb4t_cF5nFyslgDL7EwSIZZtJOIgdGasms2FHyekyOE
-Message-ID: <CANn89iKHVP_opOhoeNuVQEORu3_haw0+4Aao6RfB-kN=_fd5Pg@mail.gmail.com>
-Subject: Re: [PATCH] ppp: make room for the filter tag instead of assuming it
-To: Vlatko Kosturjak <vlatko.kosturjak@gmail.com>
-Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 2, 2026 at 8:22=E2=80=AFAM Vlatko Kosturjak
-<vlatko.kosturjak@gmail.com> wrote:
->
-> ppp_receive_nonmp_frame() prepends a two-byte direction tag before runnin=
-g
-> the pass/active BPF filters:
->
->         *(__be16 *)skb_push(skb, 2) =3D htons(PPP_FILTER_INBOUND_TAG);
->
-> Nothing on the receive path guarantees those two bytes of headroom, and a
-> peer can arrange for only one to be available. ppp_async.c contributes tw=
-o
-> halves of the problem.
->
-> First, the frame-error path resets a reused skb's headroom to zero while
-> claiming to restore it to a freshly allocated state - but a fresh skb fro=
-m
-> dev_alloc_skb() carries NET_SKB_PAD:
->
->         err:
->                 if (skb) {
->                         /* make skb appear as freshly allocated */
->                         skb_trim(skb, 0);
->                         skb_reserve(skb, - skb_headroom(skb));
->                 }
->
+Thanks for the review, Paolo.
 
-Thanks for the patch and the reproducer.
+> if you can observe a splat on the unpatched kernel, please include it,
+> otherwise please explain why the issue is not just a theoretical one.
 
-The analysis of the panic is correct, but instead of working around
-this root cause,
-I think we should drop the packet (like ppp_synctty does).
+I thought it would make the changelog verbose by putting the evidences of the
+bugs (some people like concise changelogs).
 
-Resetting headroom to 0 completely violates the NET_SKB_PAD guarantee
-provided by dev_alloc_skb().
+If you prefer splats in there, let me add some in v2.
 
-Not only does this lead to the filter panic you observed, but if CCP
-compression is enabled, ppp_decompress_frame() passes `skb->data - 2`
-to decompress()/incomp(), which reads out of bounds before skb->head.
+It would be like:
 
-Use in V2 : Fixes:1da177e4c3f4 ("Linux-2.6.12-rc2")
+```
+/* vxlan_na_create() samples ... */
 
-Also please target [PATCH net] in the subject prefix.
+The race is reproducible on the unpatched kernel. It occurred when
+vxlan_na_create() generated a neighbour reply while vxlan_changelink() changed
+the link headroom. KASAN caught a four-byte write two bytes beyond a 704-byte
+skbuff_small_head allocation.
 
-Please wait ~24 hours before sending a V2.
+/* Snapshot the headroom once ... */
+```
 
-Thanks!
+JFYI, every patch I make is done only after I get real evidence :)
 
-I am guessing the skb_reseve() could be replaced with skb_reserve(skb,
-NET_SKB_PAD - skb_headroom(skb));
+> Also please specify if some LLM has been used.
 
-But IMO a drop would be better.
+I used LLM assistance during bug discovery, analysis, etc, but try to review
+with my eyes as much as I can.
 
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
-index ea7fe9608ffd6580f584afd3c61cdd29e67474d3..6e6e2b9441285d6e16ee7610bd5=
-9344b9e3d3e52
-100644
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -742,11 +742,8 @@ process_input_packet(struct asyncppp *ap)
-  err:
-        /* frame had an error, remember that, reset SC_TOSS & SC_ESCAPE */
-        ap->state =3D SC_PREV_ERROR;
--       if (skb) {
--               /* make skb appear as freshly allocated */
--               skb_trim(skb, 0);
--               skb_reserve(skb, - skb_headroom(skb));
--       }
-+       kfree_skb(skb);
-+       ap->rpkt =3D NULL;
- }
 
- /* Called when the tty driver has data for us. Runs parallel with the
+Plz check the new paragraph of the changelog whether it is ok for v2.
+
+Thanks,
+Sanghyun
