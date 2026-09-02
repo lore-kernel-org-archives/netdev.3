@@ -1,114 +1,263 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EC4387364
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 18:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4DB3DE434
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 18:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788372463; cv=none; b=nplq5nlOi/GDT+XcL/hrT+ZIc8DKTHyNiTKVsQXZAFrc3rkk3/PLSf15/6JVc8ZorD2DRkoVJGU1lPDQJid79VvHG+WqOl44I6lqqjAjO3FurlgxgcgDwutN9BSeI+qle+itNMizA2EobBc8SRWfgsfmNQMmRcGwlaCZEOcCq74=
+	t=1788373012; cv=none; b=ia2EmaaEtHQ13Y/WMdfkb+mipKCtyy+9KcfRS+neLVlvsvmoy+ZL0dXG5Zbmrsq7xwhyfEbTjNBzHeya0t/AOGizvDJoEDHdxMPR4lAgA+u6sHuM/q5JHg6Q+rkYkYbtTo7zuVSd6P19cZNBYCT51Xi1JbirdnYDWe7vwbZKMVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788372463; c=relaxed/simple;
-	bh=fYkBum/oFlVqn/hZb0UPx1Qfhv79hOnpYMYi9KuYIrE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=VahL7Ik8Mj4Yi0NpJgzvvZ3Q0blGCMV7KQLFXH0kRLKVm6GmEdF8m4h/sVunAVElJtg6WW2gJA3Dpde/q0ekidCT8+jO8WImou/gkuZjplV3uiM7mQHSf2K2RJW8F+SC6wIq0vjZ8JZQXzqSLlXxZ6qsvTlFkUXN9U3fVlbK/4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cBKx4elA; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788373012; c=relaxed/simple;
+	bh=cHuW+PoC/Z1Qut9eKmuFeNWun/CMk2X5AcPMdTDPNdc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=efe0RYtW5hScX1gwitU/luy3JxSHYO0yzzR6MzH+24EUuY+BT++xAG74lxDkfKgXoxb7jIE+iUUeTfpxAQWgsf+rFOJbJEWUREl8sHl9+ZTg2bT/VsvNMHraf0HgV18kpm0Uieovdp9c1OlAGHONT/star9abwTzOsQwOJ3Kn4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=F6mOaSIn; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cBKx4elA"
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7f64ea07036so1114061a34.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 11:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788372460; x=1788977260; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:message-id:date:content-type
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bd4kBVS357wZ2scT6vts92XJDYgbdkTu0arT3q8gBpc=;
-        b=cBKx4elA6JllGDpaFfErYG/KUrv6Osoc06SpxI6OmUxs6fGl/D/mCoBBpu/YBGCsnt
-         oQT8dljeNk/lvMaG2mlkGedSlyW5gdkQbKoxGBJ7ZwIJonYt0TqkD3mzTU5nA9qqTeXo
-         dkTqBnuWAIZIMzfK9jozXN3UhiDzV5//atP7dWoRuxEgt17luLmyyXlnnnSiQ/0cPMWf
-         y5Jfv7lh72jruSYOS3Wv9WeMygB8cZXEYk7OSiWcR1CUTntmAt8Ngw8mgaUMSwX/JQiY
-         LvO8CG8buWqbCinCxXn56CeDdFiGzEymqsB+UIaV4QTRZi9eRYPn9IpZpNpMJocQGMLs
-         nDbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788372460; x=1788977260;
-        h=in-reply-to:references:to:from:subject:message-id:date:content-type
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bd4kBVS357wZ2scT6vts92XJDYgbdkTu0arT3q8gBpc=;
-        b=Xi5yCMXdXZ6jo7OMQ4teYaXiDH9KvyeA0gmT4UdBOGe/8ku7KUMqpYehHtwRfvkbey
-         ictGUi0faPcVeBcaQnjauEAJINTlF1BIDFJ//reYGMcXO8fIALizF+msGUbuU/y4DBAR
-         6m0GJgEmUHW1eXiKNIcnwQN2NmeOBQ6JF0bqQ4nMwth4HAnTxo18EcG/J3RjUJjpk9Ko
-         ntps7uZ+EG42StqcuEVXjEjWEkJ6muolr2h21hy66ZYbchqaBoxcPybxY7nSdz++0Gjs
-         ywNJJjjCpanIuzwcSjH8+fhExLi3GhYRQpaRnEasR2zPnM4BGMRuVUzNzE/9SkUZIR41
-         2hgw==
-X-Forwarded-Encrypted: i=1; AHgh+RoA7rt7AOYlt7B6anfrol6hRvgxuoAm5JDL0N/BznNfDxZQjVKxsxqRBv+9gl801x52ngfUKnk=@vger.kernel.org
-X-Gm-Message-State: AFuF++m/a+ouM6POypIdPv6kZ/3NF2tCzrLHBn+rMD9O6AvDxu+NS+6l
-	Uh0h7clJu3zLDE9xbb7PdW3oInWSln0u/DdVzSp1Bb5mM5NZji4jiTBy
-X-Gm-Gg: AR+sD1170SqawxnDBixCVt8aq3F5l9vp/7XyTK/QVM9Ikoj5202fxI7Mu+MjXTpPOIg
-	eUT/0HnNG34g5fN8kt2XQFICvFTRlLc02dHRDx/K7WBqbTh+S9P4CQLgQqpNRW+AJInll9+gjM1
-	3AW8oCbymRFtAbIOTruwle9vkaGgyXqF3yJvg+h7XHeQ9cEzMU0WnieAHIbAp3wbBXqA349zOw2
-	1g0XaXRgEyV7NreifyQJObYwylUlfK/YPGD9KR4wBhzZJS5EhISiW602IqQe4H/uAeY58+6ZxwV
-	IHAnxG/9fdtHs5BMVLpa9mynhR/rvXNRZDxNWvvCDBE4DRYBzP6lVUwS4ENHzIOePw7Frc7/Zac
-	lV5+gEnJDZHY4qYbDGhq7VOR5deRfTd+w51hQ1Xsap6jsBxOoyvbq0KgNPsIfSCgnUuAag7r06h
-	sR0GxfGSCFxvMD3GqqiO1uKvkbIbCyBIuL6tdYBP8XoqVqTUL+AlTyB62ERvC7xOgHlFEpRy6Zj
-	q2QqOIgRLZNtv+SboaznC6WxYMwLPgJkKpAOAGyUirZGS6yHFkKe9g=
-X-Received: by 2002:a05:6830:368b:b0:7e9:ea28:4c1f with SMTP id 46e09a7af769-7f780315ffemr7238971a34.8.1788372460202;
-        Wed, 02 Sep 2026 11:07:40 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:51::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f74f8f3c6fsm2908587a34.20.2026.09.02.11.07.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 11:07:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="F6mOaSIn"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1x1pAz-0093jk-Hg; Wed, 02 Sep 2026 19:55:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=2fxNQ3cklJgeh+Wdn7qij4WTU+lRYoEvYB4H1QfnGkk=; b=F6mOaSInNmI/4+IX8kuWbZXR4j
+	bXw7nbZ+2Ow0ksDuY1b0KmeDwmr3ZrlYy7UFaFsJV6Zg31+qRRiIqM9s2GcoWAJBD7fy5f0xpbsQ5
+	rvCZEWJ+ddfkrtcqvtgvOEWrl/hXwdQiUUYNxU3egKq+8lgsAq/fNaQJrcfVCZwgoIvCIzv73Y+IH
+	QLY40ejF/ZUhkcVhVZWwCIy69bQnu/Pkt4VTsKQRG2aIfkbzJjQMGFUif1WY6tYURNtUAOEDkaJoa
+	aVfLOm4AsrBEn9GlTUoPYDVAPqhQXwAHGPqpGmFPDRLAIDLghnw2m3JSQzaU5CWrx1iDeEGOkoMjc
+	sdauiRMw==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1x1pAy-00072p-U0; Wed, 02 Sep 2026 19:55:09 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1x1pAk-0020Qt-QS;
+	Wed, 02 Sep 2026 19:54:54 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 02 Sep 2026 19:52:15 +0200
+Subject: [PATCH bpf v3 2/2] bpf: Fix reference leak in bpf_sk_assign()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 02 Sep 2026 11:07:38 -0700
-Message-Id: <DL514LM5TA6V.IOW7P2WM70BE@gmail.com>
-Subject: Re: [PATCH bpf-next 0/7] Add new way to add BPF LSM hooks
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Anton Protopopov" <a.s.protopopov@gmail.com>, "bpf"
- <bpf@vger.kernel.org>, "lsm" <linux-security-module@vger.kernel.org>,
- "netdev" <netdev@vger.kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "KP Singh" <kpsingh@kernel.org>,
- "Matt Bobrowski" <matt@bobrowski.net>, "John Fastabend"
- <john.fastabend@gmail.com>, "Christian Brauner" <brauner@kernel.org>, "Paul
- Moore" <paul@paul-moore.com>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-X-Mailer: aerc
-References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
-In-Reply-To: <20260831110934.241898-1-a.s.protopopov@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-sockmap-lookup-tcp-leak-v3-2-b998b3d49d07@rbox.co>
+References: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
+In-Reply-To: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ Phil Sutter <phil@nwl.cc>
+Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+X-Mailer: b4 0.15.2
 
-On Mon Aug 31, 2026 at 4:09 AM PDT, Anton Protopopov wrote:
-> The BPF LSM programs are allowed to attach to LSM hooks. This enables
-> operators to mitigate known bugs without a need to reboot or livepatch
-> machines.  BPF has shown very useful to create such runtime policies.
-> However, many APIs and parts of kernel aren't covered by existing LSM
-> hooks and this would be beneficial to extend the coverage.
->
-> To simplify the process of adding new hooks this patch series enables
-> BPF to attach policy programs to hooks defined outside of the
-> official LSM list.
->
-> One of the reasons to add a new mechanism is that in order to add a
-> new LSM hook an implementation, at least one in-kernel LSM must be
-> added, such as SELinux or AppArmor, and BPF is specifically not
-> considered as a reference implementation [1].  This is, however, not
-> feasible for the use cases and capabilities covered by BPF LSMs,
-> which are not directly comparable to those of traditional LSMs.
+sk_is_refcounted() is mutable; it depends on sk_state and SOCK_RCU_FREE.
+TC bpf_sk_assign() uses it at assign time to take a reference and lets
+sock_pfree() re-evaluate it at free time. If the socket becomes
+non-refcounted in between, e.g. connect(AF_UNSPEC) + listen() sets
+SOCK_RCU_FREE, the reference is leaked.
 
-This is no go.
-bpf-lsm can attach to lsm hooks, but the machinery has nothing to
-do with LSM. bpf-lsm is exactly the same as bpf-mod-ret.
-So calling everything LSM is actively misleading and wrong.
-Patch 1 starts this misleading naming convention
-and then later patches add fake LSM hooks. Sorry, but no.
+Freeze the decision at assign time. If the socket is refcounted (i.e. can
+become non-refcounted), take a reference and set sock_pfree_refcounted()
+as the destructor; otherwise stick with sock_pfree(), which effectively
+becomes a no-op destructor. Next, extend skb_sk_is_prefetched() to handle
+both dtors and, for the sake of CONFIG_INET=n, add a specialized
+skb_sk_is_prefetched_noref(). Adapt prefetched-skb treatment in
+__nf_queue() and skb_steal_sock(). The latter changes its contract with
+callers: inet{,6}_steal_sock() must now expect a refcounted TCP_LISTEN
+socket.
 
-pw-bot: cr
+Fixes: 7ae215d23c12 ("bpf: Don't refcount LISTEN sockets in sk_assign()")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ include/net/inet6_hashtables.h |  9 +++++----
+ include/net/inet_hashtables.h  |  9 +++++----
+ include/net/request_sock.h     |  2 +-
+ include/net/sock.h             | 11 +++++++++++
+ net/core/filter.c              | 19 ++++++++++++++++---
+ net/netfilter/nf_queue.c       | 18 +++++++++---------
+ 6 files changed, 47 insertions(+), 21 deletions(-)
+
+diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
+index 2cc5d416bbb5..a310cb91611c 100644
+--- a/include/net/inet6_hashtables.h
++++ b/include/net/inet6_hashtables.h
+@@ -134,10 +134,11 @@ struct sock *inet6_steal_sock(struct net *net, struct sk_buff *skb, int doff,
+ 	if (!reuse_sk)
+ 		return sk;
+ 
+-	/* We've chosen a new reuseport sock which is never refcounted. This
+-	 * implies that sk also isn't refcounted.
+-	 */
+-	WARN_ON_ONCE(*refcounted);
++	/* New reuseport sock is never refcounted; drop the old sk's ref. */
++	if (*refcounted) {
++		sock_put(sk);
++		*refcounted = false;
++	}
+ 
+ 	return reuse_sk;
+ }
+diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
+index 6e2fe186d0dc..1589e9e7ecb2 100644
+--- a/include/net/inet_hashtables.h
++++ b/include/net/inet_hashtables.h
+@@ -474,10 +474,11 @@ struct sock *inet_steal_sock(struct net *net, struct sk_buff *skb, int doff,
+ 	if (!reuse_sk)
+ 		return sk;
+ 
+-	/* We've chosen a new reuseport sock which is never refcounted. This
+-	 * implies that sk also isn't refcounted.
+-	 */
+-	WARN_ON_ONCE(*refcounted);
++	/* New reuseport sock is never refcounted; drop the old sk's ref. */
++	if (*refcounted) {
++		sock_put(sk);
++		*refcounted = false;
++	}
+ 
+ 	return reuse_sk;
+ }
+diff --git a/include/net/request_sock.h b/include/net/request_sock.h
+index 5a9c826a7092..3fb114fa77de 100644
+--- a/include/net/request_sock.h
++++ b/include/net/request_sock.h
+@@ -113,7 +113,7 @@ static inline struct sock *skb_steal_sock(struct sk_buff *skb,
+ 			return sk;
+ 		}
+ #endif
+-		*refcounted = sk_is_refcounted(sk);
++		*refcounted = !skb_sk_is_prefetched_noref(skb);
+ 	} else {
+ 		*refcounted = true;
+ 	}
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 51185222aac2..fb553697db83 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1870,6 +1870,7 @@ void sock_efree(struct sk_buff *skb);
+ #ifdef CONFIG_INET
+ void sock_edemux(struct sk_buff *skb);
+ void sock_pfree(struct sk_buff *skb);
++void sock_pfree_refcounted(struct sk_buff *skb);
+ 
+ static inline void skb_set_owner_edemux(struct sk_buff *skb, struct sock *sk)
+ {
+@@ -3015,6 +3016,16 @@ static inline void sk_eat_skb(struct sock *sk, struct sk_buff *skb)
+ static inline bool
+ skb_sk_is_prefetched(struct sk_buff *skb)
+ {
++#ifdef CONFIG_INET
++	return skb->destructor == sock_pfree ||
++	       skb->destructor == sock_pfree_refcounted;
++#else
++	return false;
++#endif /* CONFIG_INET */
++}
++
++static inline bool skb_sk_is_prefetched_noref(struct sk_buff *skb)
++{
+ #ifdef CONFIG_INET
+ 	return skb->destructor == sock_pfree;
+ #else
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 66d83a198ea2..e473ad8c9b3c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7989,8 +7989,20 @@ static const struct bpf_func_proto bpf_tcp_gen_syncookie_proto = {
+ 	.arg5_type	= ARG_MEM_SIZE,
+ };
+ 
++/*
++ * skb destructor set by TC bpf_sk_assign(), refcounted path only.
++ * Acts as a "prefetched by bpf, ref taken" marker.
++ */
++void sock_pfree_refcounted(struct sk_buff *skb)
++{
++	sock_gen_put(skb->sk);
++}
++EXPORT_SYMBOL(sock_pfree_refcounted);
++
+ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
+ {
++	bool refcounted;
++
+ 	if (!sk || flags != 0)
+ 		return -EINVAL;
+ 	if (!skb_at_tc_ingress(skb))
+@@ -7999,13 +8011,14 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
+ 		return -ENETUNREACH;
+ 	if (sk_unhashed(sk))
+ 		return -EOPNOTSUPP;
+-	if (sk_is_refcounted(sk) &&
+-	    unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
++
++	refcounted = sk_is_refcounted(sk);
++	if (refcounted && unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+ 		return -ENOENT;
+ 
+ 	skb_orphan(skb);
+ 	skb->sk = sk;
+-	skb->destructor = sock_pfree;
++	skb->destructor = refcounted ? sock_pfree_refcounted : sock_pfree;
+ 
+ 	return 0;
+ }
+diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
+index 73363ceedebe..e2e9739c00ac 100644
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -195,16 +195,16 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
+ 		break;
+ 	}
+ 
+-	if (skb_sk_is_prefetched(skb)) {
+-		struct sock *sk = skb->sk;
+-
+-		if (!sk_is_refcounted(sk)) {
+-			if (!refcount_inc_not_zero(&sk->sk_refcnt))
+-				return -ENOTCONN;
++	/*
++	 * If the skb was prefetched without taking sock's ref, bump it.
++	 * Skip sock_pfree-dtor'ed skbs coming from bpf_sk_assign_tcp_reqsk().
++	 */
++	if (skb_sk_is_prefetched_noref(skb) && sk_fullsock(skb->sk)) {
++		if (!refcount_inc_not_zero(&skb->sk->sk_refcnt))
++			return -ENOTCONN;
+ 
+-			/* drop refcount on skb_orphan */
+-			skb->destructor = sock_edemux;
+-		}
++		/* drop refcount on skb_orphan */
++		skb->destructor = sock_edemux;
+ 	}
+ 
+ 	entry = kmalloc(sizeof(*entry) + route_key_size, GFP_ATOMIC);
+
+-- 
+2.55.0
+
