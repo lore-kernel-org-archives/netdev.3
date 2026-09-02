@@ -1,164 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9AB49F13E;
-	Wed,  2 Sep 2026 13:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB373EC81B
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 13:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788354754; cv=none; b=ocobnPIBxG9jyOUq2RFLaZ31jeRD41QW8Ip9CSyz9WwfPAmIsxZhZLJTvnnHWUBamk44MMfA5YmI6aHioaPlhtUTYKksnoLlEBECqq7DWU79G3S8eUFIdcdSqn3mGLSNVQqrZ529KatxtI4JvHtyu7B26MJVWSRrU//QCFwQbAU=
+	t=1788354912; cv=none; b=r73U8f6v14s8UfQvPDfpF9ArI7gtPDqPtR7TQf1OWCtWaHD6VDoNClrK6BS9S/W+cerge7BpN29nrBBL/NeJ8FzO4Uu0Au/N11Y77Cxo0YMnVwERxHaBZ2vSGCTijsTgmNKAhKu6muXF7zgtDXfzDAzyG0SIJFEc0Z5JpGryd5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788354754; c=relaxed/simple;
-	bh=qEVtuTGkqMRiC3Sh9Gf/iKkxkp0xy1di4hFSx4L5F0w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NPLfPQO1Rls1mrIhdvh9pKP6cBYZhJN9O90b+82v4+fDAUKI0MeylI5bPNthz0uDylHGPmKV2XB+qyrQPqM8dqDjgLt3+0+iS0FGmJWOKtZRbxMFX3vpgAfwuCJYaSuDmgUlEyRasm9cco3+8GrEf7MpdX8cMk76gcIdb8hw334=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqX9mFN2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788354912; c=relaxed/simple;
+	bh=/h8KHRAun/jLn6ihpqdnZw6r1LjfxVZG68liizvJoKQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UEDVQKe+7jQmL0Vm/x/NgH2wboVjK9O2E91dv6OEB98zHfmD6KDOvFoR7XH4mvqdcDgiWIMBC3PPYitiII160wsGgcgMwVlJlhYeBeOf8tuEnQL5duBxsCzxhocGoS3g+pk9v/6bFHu7V+XU4/FQ5ihvNTm0ZfTC+abc4eTelhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UgCU/bfg; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqX9mFN2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234011F000E9;
-	Wed,  2 Sep 2026 13:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788354752;
-	bh=vj6v6mFAUT1Tp4CnHcN5FDUpYOKvsv3FsnRiWJGMGqs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HqX9mFN2K7v4yZHufhWXMeyWuyc37lQ8DprYTu3JLAy+B9eCcT4wxhwuTvDJyKftN
-	 TX8Q94uDjTAhZupLLLq273iYBlqWv+TAM4x9H0n6JHkUXBl3RzOPRd1igjNtbCDtRU
-	 eZFYw6EcoP5NMZIUuC4VL1cXB4HvszTfP9D25ybNs10gz6Kpz4SDcSntiAeNIuirze
-	 aUhOj2lErkG8DQSucFPiXLrBk5SjnkEEM2x6Rg8MtKrykaHpU0WHYydjsfKFPOqd5z
-	 SzjEwxtDlrkyLH495rIp6XjCNPr6IVMcC/m9HETloz9gcoNHG8kOMh8jxlxciGwh6h
-	 2wYo9j9nL8dNQ==
-Subject: Re: [net-next,v23,14/14] virtio_net: Add get ethtool flow rules ops
-From: netdev-bot+sashiko@kernel.org
-To: shshitrit@nvidia.com
-Cc: netdev@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
- pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com,
- yohadt@nvidia.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
- edumazet@google.com, danielj@nvidia.com
-Date: Wed, 02 Sep 2026 13:12:31 +0000
-Message-ID: <178835475172.3394541.12012371134538467117@kernel.org>
-In-Reply-To: <20260831161109.2999926-15-shshitrit@nvidia.com>
-References: <20260831161109.2999926-15-shshitrit@nvidia.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UgCU/bfg"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84f3ab8750cso820586b3a.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 06:15:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788354911; x=1788959711; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Uzv/JmEo6dRoaDeN8R/MmzC/JFKPPs1P6QOp8MtYRWQ=;
+        b=UgCU/bfgyaUH/yef9cmf2BmBIB0UQRXOiA7OUeGfTY/4HiVOrZfobtxowWi/GkgpJ0
+         uqsebvgAidMwvCUp/l/u+TRj9OTymvAFy5GUTiHr8YC8lG9JCO/a/xa/aYBMzMPqbYMg
+         O0BpzaC6nvTm+2EeJs/zsKur7GD7D07pyi3OhhpfEUvvgCLZoGeaY7yR3JzviG7s8fR7
+         dJ3W1WJ9J2dUpobwBS3xeRxSouiH5PJ/g5ahsMLSKGEfJsppGSNVt9ENI+gD+f8lGgZY
+         lAgvTIQxsJZoXpYPp7TRHyceK9qeYZeFbm478z3w0o1BbV/E/uta+asbbsBV2CMQfUHv
+         Er0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788354911; x=1788959711;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Uzv/JmEo6dRoaDeN8R/MmzC/JFKPPs1P6QOp8MtYRWQ=;
+        b=e/8Gm2YAwSDxltgqxXRbptbzmBknEQ4UyOcyUlnxQC1MP5xsPEdI3Zle62/6pGYEcH
+         A4l08C93J33r4Ga5gTkdBEgghumjJiQKen4/LEXz5GyjEHLAuKEskC1z7G3uhuWBIKz1
+         2AWvIso0DjRX7gHSAq+HaiqcWRu01PZqqBwFsJ1OOiGcOkgb44Mx/sf7mudT/pu6GJjq
+         t/WhCnKt/ub+2QEkK82psFOzrv33zaLL6aBX3yXwMUhUeRZwKIez0C8dDwxVIrxnkmWL
+         niKcbGq4FV51u/2aaJZa1FoSXln6RHtKYnhtHV3Rzy1ZkPiTCHu3HhyKN5TplHrNQv65
+         Td3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBz8JhO7mfBgw2Qt76FB9lt6A3hqBiW6WlAt/l1KkHWjXLlBVQKhqVr/cNkkRHc9ZkZ2kGjE9AY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kHr7pJ+fNNT/lJXWftHjUC8/Ne+O/Jy5lTngMOmu/nDFG9Sg4W
+	qcpNqhWsD7ZLrVGIBzWgHRmxlQmwAR/qGx+/3m1SOkmMiqQSRBD6UA3J
+X-Gm-Gg: AYBFou1Ou2W95mndgJPT4nvDWjohGcGc4w+mMv2uMSJkQ9rC7MAkTtlWdKNJKP2Nlsa
+	NU2PQLJSRGegN0oPgN7CeEdX+k7HPP53iz1lK78LRTb1nlmlMxqwnegocyURXhuZYDt8o88aPTx
+	POw+ei2kuKwYeAe6CV/B0gl2KFgjAWqW8KIMv5gwOzjpazVfVofqCGmOTgSHitXmadEG4dQgeG0
+	8U4uvvClBLfMReTGZhrJMEQV3Y8mDZRkYo8V0q6vjxSRmB+5sTKGwul4pMrgC6quvO8wiK17OV3
+	85B3f/83z6CrRBa5A/POmqhs4LmxDXj5keXc+gQdPkhY+/878uJR6KwWN5MVdNvbvNKbDQbAeEp
+	CMQEPwH4jErCLnhV+Xk4WOSLhZ7ow+yY5B64fa/bx656rjsbAHGQ+c5Y7Dqob2X1akheZaea3p1
+	/aNxvMor4k6uSPb2GWe4cfTWoW5oMQO+BX4+Pmol5s3MfbD4U0jsvHTewAGQI=
+X-Received: by 2002:a05:6a00:f88:b0:858:b809:6ec0 with SMTP id d2e1a72fcca58-85ed4d13780mr8488702b3a.23.1788354910497;
+        Wed, 02 Sep 2026 06:15:10 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85da342023asm1398533b3a.0.2026.09.02.06.15.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 06:15:10 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	richardcochran@gmail.com,
+	maxime.chevallier@bootlin.com,
+	muhammad.nazim.amirul.nazle.asmade@altera.com,
+	rohan.g.thomas@altera.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net-next v4 0/2] net: stmmac: dwxgmac2: timestamp interrupt + Agilex5 fix
+Date: Wed,  2 Sep 2026 21:14:39 +0800
+Message-Id: <20260902131441.322167-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+This series adds auxiliary snapshot (EXTTS) interrupt support to
+DWXGMAC2/DWXLGMAC2 and fixes a regression it would introduce on the
+Agilex5 cross-timestamp path.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Patch 1 wires up a dedicated DWXGMAC2 timestamp interrupt handler.
+Before this change the XGMAC hwif entries used the generic stmmac_ptp
+ops, whose timestamp_interrupt callback read the dwmac4 offset
+GMAC_TIMESTAMP_STATUS (0xb20) instead of the XGMAC register at 0xd20,
+and XGMAC_TSIE was never enabled, so auxiliary snapshot events were
+never reported on XGMAC platforms.
 
-- [Medium] The two new getters report the UAPI-documented "size of the
-  rule table" (struct ethtool_rxnfc::data) with two contradictory values.
+Patch 1 also unmasks XGMAC_TSIE in XGMAC_INT_DEFAULT_EN.  That makes the
+new handler run from hardirq on every XGMAC timestamp event, which races
+with the Agilex5 smtg_crosststamp() poll loop: the handler clears TSIS
+by reading XGMAC_TIMESTAMP_STATUS before the poll loop in process
+context can observe it, so getcrosststamp() times out.  Patch 2 fixes
+this by masking XGMAC_TSIE for the duration of the cross-timestamp so
+the handler cannot steal TSIS while smtg_crosststamp() owns the
+snapshot FIFO.
+
+Patch 2 has been verified on Agilex5 hardware: with both patches
+applied, smtg_crosststamp() no longer times out (no "Wait for time sync
+operation timeout" in dmesg) and the PTP clock registers and operates
+normally.
+
+The pre-existing FIFO-pop / PTP_ACR / flags races that the automated
+review raised are not specific to this series (the same shape exists in
+the dwmac4 handler) and are left for a separate follow-up.
+
+v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
+v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
+v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
+v4:
+- Rebased on the latest net-next/main (v7.4 cycle, after net-next
+  reopened).
+
+Zxyan Zhu (2):
+  net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
+  net: stmmac: dwmac-socfpga: mask XGMAC_TSIE during cross-timestamp
+
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 11 +++++
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 +-
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 43 +++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h     |  1 +
+ .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 12 ++++++
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  1 +
+ 7 files changed, 71 insertions(+), 3 deletions(-)
 
 --
-
-virtio_net: Add get ethtool flow rules ops
-
-This adds a get_rxnfc ethtool op to virtio_net handling
-ETHTOOL_GRXCLSRLCNT, ETHTOOL_GRXCLSRULE and ETHTOOL_GRXCLSRLALL, so
-userspace can query the rule count, a single rule, and the list of rule
-locations.
-
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index a1e042f356f5e..911a5142605bd 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -6575,6 +6575,60 @@ static int virtnet_ethtool_flow_remove(struct virtnet_ff *ff, int location)
->  	return err;
->  }
->  
-> +static int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
-> +					  struct ethtool_rxnfc *info)
-> +{
-> +	if (!ff->ff_supported)
-> +		return -EOPNOTSUPP;
-> +
-> +	info->rule_cnt = ff->ethtool.num_rules;
-> +	info->data = min(le32_to_cpu(ff->ff_caps->rules_limit),
-> +			 le32_to_cpu(ff->ff_caps->rules_per_group_limit)) |
-> +		     RX_CLS_LOC_SPECIAL;
-> +
-> +	return 0;
-> +}
-> +
-
-[ ... ]
-
-> +static int
-> +virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
-> +			      struct ethtool_rxnfc *info, u32 *rule_locs)
-> +{
-> +	struct virtnet_ethtool_rule *eth_rule;
-> +	unsigned long i = 0;
-> +	int idx = 0;
-> +
-> +	if (!ff->ff_supported)
-> +		return -EOPNOTSUPP;
-> +
-> +	xa_for_each(&ff->ethtool.rules, i, eth_rule) {
-> +		if (idx == info->rule_cnt)
-> +			return -EMSGSIZE;
-> +		rule_locs[idx++] = i;
-> +	}
-> +
-> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit);
-
-[Severity: Medium]
-Should these two handlers report the same value in info->data?
-
-include/uapi/linux/ethtool.h documents the field the same way for both
-commands:
-
- * For %ETHTOOL_GRXCLSRLCNT, ... If @data is non-zero on return then it is the
- * size of the rule table, plus the flag %RX_CLS_LOC_SPECIAL ...
- * For %ETHTOOL_GRXCLSRLALL, ... On return, @data is the size of the rule table
-
-virtnet_ethtool_get_flow_count() reports:
-
-	info->data = min(le32_to_cpu(ff->ff_caps->rules_limit),
-			 le32_to_cpu(ff->ff_caps->rules_per_group_limit)) |
-		     RX_CLS_LOC_SPECIAL;
-
-while virtnet_ethtool_get_all_flows() reports the unclamped
-ff_caps->rules_limit.  On a device that advertises
-rules_per_group_limit < rules_limit these two answers differ for the same
-table.
-
-Since every ethtool rule goes into one group (VIRTNET_FF_MAX_GROUPS is 1
-and insert_rule() hardcodes the group), isn't the usable capacity
-min(rules_limit, rules_per_group_limit)?
-
-	ff_rule->group_id = cpu_to_le32(VIRTNET_FF_ETHTOOL_GROUP_PRIORITY);
-
-If so, does ETHTOOL_GRXCLSRLALL overstate the table size here, so that
-inserts past rules_per_group_limit get refused by the device?
-
-There is a related question about the location space itself.
-virtnet_ethtool_flow_insert() allocates locations from the unclamped
-limit:
-
-	err = xa_alloc(&ff->ethtool.rules, &fs->location, eth_rule,
-		       XA_LIMIT(0, le32_to_cpu(ff->ff_caps->rules_limit) - 1),
-		       GFP_KERNEL);
-
-so locations handed back in fs.location, and then reported in
-rule_locs[] by virtnet_ethtool_get_all_flows(), can exceed the table size
-now advertised by ETHTOOL_GRXCLSRLCNT.  Should all three sites use the
-same limit?
-
-> +	info->rule_cnt = idx;
-> +
-> +	return 0;
-> +}
-> +
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831161109.2999926-1-shshitrit%40nvidia.com
+2.34.1
