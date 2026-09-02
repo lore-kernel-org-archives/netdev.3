@@ -1,117 +1,247 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEFC3EA949
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 21:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2353E6DF7;
+	Wed,  2 Sep 2026 21:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788382969; cv=none; b=UTw+R/kV7jSupkpyYy3K2WxPh2bIFVCEcmaiMwtUHdAI8xmRPcwdWjQ765uiY15hvNVhU2I/UFOITQM1lNbV2w4Xk/7jMB91oAdqKHmXU5S3sZcALGwgY6FHpWwC3o6z8NIDXHM8tZ22DjV5TN7FlYC5oB6UXUzqZCO245diwPU=
+	t=1788383485; cv=none; b=OAUs9CO1DseiyVCQ5BWsZEEov6TvTMhuaoGyZ8j3ZfDaSaC6jYMeLLCX/IcAWQCsjsg0t6WAIYNP6NIBtAIGEIgeSdbV1Idkv0lFHXbeHV4EIWENMHPVgj0D8godLe/K1RV85Hk1xqXsTvUpFJLQOcJT/1VaQ8ekVFI5z8DVjTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788382969; c=relaxed/simple;
-	bh=07ACrW5zkIgUmTwhlib3E6Ezj8EphHq2ybDKAfGthPw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OMYKYaTAfQ4X7C47NGuP9KfqwGgMrMPocfa0RGpnKJ16CMv8WZOftfmOUQ84HBJ5OtVHvggvRXv7x1QB+bSvTbnvQzrKqAZ56b3XOciyUChf2Na/SfxYIAlxpZn9juVJNTSNbMvwVnXoLrKhmpl7eSqEA75pqMG4Y0UNpECAZg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LX7YX9Ux; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788383485; c=relaxed/simple;
+	bh=1pkVeZoMJT8Hlv5Y2kTvQ9rQzv1D9wp5qa9D+tD5bdY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oEP0J4+C7L/XyLJqC78q/TsNG7ZnisTJbx4244Qe+gUlYoelSj+DxCxWpcDAuIefnRiwavabxPd6iA7DUUn9bf3vL9AyNptcyNIu/+NaLqLpBV719hgLSk82sPZPPa5jsdX/4pltg0IE2V6A8WoWz4nefitU+h1nkEX7v/Lmmo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMuXbAsw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LX7YX9Ux"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so1711382a12.3
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 14:02:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788382962; x=1788987762; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6zMLlM2fX1xLcX/WTGlvxUY5Z2fLG31XCRQQllFSHGs=;
-        b=LX7YX9UxGKYOlkuVD7wejO+u1yMkc1RuIjLmvpyYvkEX7WJj0yEupyzlndJj5FZ0lv
-         8WV+AjG4xB++rNFMHkP6NpH0b8xJ8wjZd8Fw/zplxJpgIaskOzxbjviJS564w3zfckzM
-         ceRUmMJCkHOYOx8D9gEEtYsN3iybu+dmmtyggfCVSUowK//4H51XhEGTzfLlBLu7rnLy
-         Nef86vSxl13iUNqaetQJokT0Pw/uKOn11G0xnK6Y9kMoXha2jw0sIS1490pqOvpow3TN
-         52k4SMpd2EBHhU1deV1bGbkmaYkNo/WWMQXk5neZ/eJIf2feWqsvki+H3U1WADA1p2nx
-         Dkaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788382962; x=1788987762;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6zMLlM2fX1xLcX/WTGlvxUY5Z2fLG31XCRQQllFSHGs=;
-        b=cbbKgsDGQLx+qpRXUP7YSa1UtqFgSM94UFoYCWYCOaxtyi7PnRtX99ck1oLmz9vsvJ
-         p1Bc/uwmFuyhVTJln6lYhJV/EGlPPfw8Z8r0Qxua25gPoOi23vnI7nUQBJ54OSCvzQ12
-         BvcN5CYufn96Z7ygKTo1qxuHjLkSlH+5+ztnSVC67YrJAubN8lVaNEcqjDJw4C1M2r3+
-         jIMnQw/PdvUIpFdoFYvbkJk7eKcDOWBSeIor/P4xYXRBJnimBsDMW2msI6UBxx1OSsOD
-         PrBEqS5qIHzTq4F6gV8CqIFdRbUHCn7Ylmi0UDes50u3QJ5O0zjdIEIHSsiT3IFYmkkR
-         HFTg==
-X-Gm-Message-State: AFuF++lH6ug88i8xuHrQiNbENwSURG4c+nBdlQZGUATkQ7bimmWppEhT
-	JKlPQXrqYunPu2MPZI6jdchuNDMdtQC6rSJx4VVAr1xpnScJnOXt7MHoenHxfg==
-X-Gm-Gg: AYBFou3krpIDiDgscwIzNxT7MlZRmzlAcGmDOk5JKp2yGuYGaY0p/yYTChvzfyw+ZKJ
-	eTXq8dnEhQDkQKa/kOPTV4/avUeaEH0HKko4Lys7FedXUEbhy84/lV/vX4lnoJfT8sQeMIN+qKK
-	GbvLww1cWTt5ll6TokGdVJraKUxH7tHTIXYTDSGLmQ6MK5fOjNLQt2DN/S+Q42CC+2KXQzRcDHy
-	N9BpKxKzDwePlqUBUSO+hXmgwbyG7LEcCuKrVGrSY4opDgiA65Mk31GZFWkUHCvYjfjx6oNf4OJ
-	iS8klyedNLkk6zuWe8c1U2NKpARd8p2db0mnTxV7Rljt/I9/i27CfMAxr0IdKwEY9F+R4GXrTTQ
-	mUlfOlNkU978SOuOquiH7lKVd0GfR/MbPUN34BAY5a44rhZzs2lOk3pcVcQyZG0AwXI/qKIJUXb
-	u9aQCc4WXyNr9pWXBaoEEj6Dk1IKWyU6LOLR2fHHs07EjeBemTTBruyjpzL4xdJXpAg5D8iEUUa
-	CXfyX33OKlRYL381DeniRnMRdFq8txT57pdX4DsfJS/FaUOajCtQTcZvr2IhlaJpk0/VarHJxcO
-	pL47U2PnqX6EuEoBXFnf92YKmx2aGNDZC9YR3g==
-X-Received: by 2002:a17:90b:2d83:b0:38f:5801:dc0e with SMTP id 98e67ed59e1d1-39aee049464mr12342955a91.15.1788382961730;
-        Wed, 02 Sep 2026 14:02:41 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083f04d1sm1141515a91.8.2026.09.02.14.02.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 14:02:39 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Esben Haabendal <esben@geanix.com>,
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/ZYNQ ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2 net] net: ll_temac: Return actual error from of_get_mac_address()
-Date: Wed,  2 Sep 2026 14:02:38 -0700
-Message-ID: <20260902210238.283494-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMuXbAsw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E0F1F000E9;
+	Wed,  2 Sep 2026 21:11:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788383483;
+	bh=pCZJHKeytEx9moXuPcXu+qxXE/yek+mRpLJWqTDgaDc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UMuXbAsw1NvK5+mJYeorWfGPFnI2sZp+K9aG1JqzuC8wdgCf8YXgTE2aRh0shOfEa
+	 86JKLU7N4Qe3y1Qi79ma14bs2LQjlCjH9TyfpWEB0MLbpBft0x6tuwYgJhig3O/OM4
+	 mLu3jcjsJyexng1/hpQnCmZge5gHBgmNfv2dyMXd1rWsK5m7zXz3E905Bs4ZO/32Ya
+	 9ziOLQI5h8LK1ZMUwSsKaMUY09cPvJfbXqbYPtYo/tp6zgGjQz7P8mqxiCCm2vR3J0
+	 tnSG8JQAAzunfiL+9lWtmSXbZQj/ETi5rDubaFbiYbkXgcSo6iHNJZia9DrhPcRXA1
+	 d+52pM+NuLEFQ==
+Subject: Re: [net,v2] net: wwan: qcom_bam_dmux: account network packets
+From: netdev-bot+sashiko@kernel.org
+To: sinyavin@gmail.com
+Cc: stephan@gerhold.net, stephan.gerhold@linaro.org,
+ loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 02 Sep 2026 21:11:22 +0000
+Message-ID: <178838348238.3394541.9061693826070810058@kernel.org>
+In-Reply-To: <20260831181006.1382372-1-sinyavin@gmail.com>
+References: <20260831181006.1382372-1-sinyavin@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When of_get_mac_address() fails, return the actual error code (rc)
-instead of the hardcoded -ENODEV. This preserves the original error
-information, which may be more specific (e.g., -EINVAL, -EPROBE_DEFER)
-and helps callers handle the failure appropriately.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Use dev_err_probe() to avoid printing an extra error message in case of
--EPROBE_DEFER.
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0 (1)
 
-Fixes: 8425c41d1ef7 ("net: ll_temac: Extend support to non-device-tree platforms")
-Assisted-by: opencode:big-pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/ethernet/xilinx/ll_temac_main.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+- [High] Use-after-free write of the netdevice's core-allocated per-CPU
+  statistics from the asynchronous BAM TX completion callback.
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index 711ed9c2631b..7a4890e45eb1 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1579,10 +1579,8 @@ static int temac_probe(struct platform_device *pdev)
- 	if (temac_np) {
- 		/* Retrieve the MAC address */
- 		rc = of_get_mac_address(temac_np, addr);
--		if (rc) {
--			dev_err(&pdev->dev, "could not find MAC address\n");
--			return -ENODEV;
--		}
-+		if (rc)
-+			return dev_err(&pdev->dev, rc, "could not find MAC address\n");
- 		temac_init_mac_address(ndev, addr);
- 	} else if (pdata) {
- 		temac_init_mac_address(ndev, pdata->mac_addr);
+Pre-existing issues:
+- [Medium] The driver allocates netdevs with alloc_netdev() in
+  bam_dmux_register_netdev_work() but bam_dmux_remove() only calls…
+- [Low] Drop paths remain uncounted after the patch: the `drop:` label in
+  bam_dmux_netdev_start_xmit() (drivers/net/wwan/qcom_bam_dmux.c,…
+
+--
+
+net: wwan: qcom_bam_dmux: account network packets
+
+The patch makes the BAM-DMUX driver maintain rx/tx packet and byte counters
+using the core per-CPU software statistics (NETDEV_PCPU_STAT_TSTATS plus
+dev_get_tstats64()). TX is accounted in the DMA completion callback and RX
+after the BAM-DMUX header and padding are stripped.
+
+Link: https://lore.kernel.org/netdev/20260830085400.2542956-1-sinyavin@gmail.com/ (v1)
+
+> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+> index cc6ace8d6437..5bcac2ccaabd 100644
+> --- a/drivers/net/wwan/qcom_bam_dmux.c
+> +++ b/drivers/net/wwan/qcom_bam_dmux.c
+> @@ -177,8 +177,12 @@ static void bam_dmux_tx_callback(void *data)
+>  {
+>  	struct bam_dmux_skb_dma *skb_dma = data;
+>  	struct sk_buff *skb = skb_dma->skb;
+> +	struct net_device *netdev = skb->dev;
+>  
+>  	bam_dmux_tx_done(skb_dma);
+> +	if (netdev)
+> +		dev_sw_netstats_tx_add(netdev, 1,
+> +				       ((struct bam_dmux_hdr *)skb->data)->len);
+>  	dev_consume_skb_any(skb);
+>  }
+
+[Severity: High]
+Can this write to freed per-CPU memory?  bam_dmux_tx_callback() runs from
+the BAM dmaengine completion (vchan tasklet), and skb->dev is not a
+counted reference.  dev_sw_netstats_tx_add() then does:
+
+include/linux/netdevice.h:dev_sw_netstats_tx_add() {
+	struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
+
+	u64_stats_update_begin(&tstats->syncp);
+	u64_stats_add(&tstats->tx_bytes, len);
+	...
+}
+
+With dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS, dev->tstats is
+allocated by register_netdevice() and released at unregistration time,
+independent of needs_free_netdev/free_netdev:
+
+net/core/dev.c:netdev_run_todo() {
+	...
+		netdev_do_free_pcpu_stats(dev);
+		if (dev->priv_destructor)
+			dev->priv_destructor(dev);
+		if (dev->needs_free_netdev)
+			free_netdev(dev);
+	...
+}
+
+In bam_dmux_remove() the TX channel is still armed when that happens:
+
+drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_remove() {
+	...
+	unregister_netdevice_many(&list);
+	rtnl_unlock();			/* netdev_run_todo() frees tstats */
+	cancel_work_sync(&dmux->tx_wakeup_work);
+	...
+	if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
+	...
+	disable_irq(dmux->pc_irq);
+	bam_dmux_power_off(dmux);	/* dmaengine_terminate_sync(dmux->tx) */
+	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
+}
+
+The only synchronous TX quiesce point is dmaengine_terminate_sync(dmux->tx)
+inside bam_dmux_power_off(), which is reached after rtnl_unlock(),
+cancel_work_sync(), the pm_runtime teardown and a wait_event_timeout() of
+up to BAM_DMUX_REMOTE_TIMEOUT.  bam_dmux_netdev_stop() only does
+netif_stop_queue() plus a CLOSE command, so it neither terminates nor
+drains outstanding descriptors:
+
+drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_netdev_stop() {
+	netif_stop_queue(netdev);
+	bam_dmux_send_cmd(bndev, BAM_DMUX_CMD_CLOSE);
+	return 0;
+}
+
+Does any TX descriptor still in flight during that window end up doing
+this_cpu_ptr() on an already freed (possibly recycled) tstats pointer?
+
+The "if (netdev)" test only filters the driver's own command skbs, which
+come from alloc_skb() and leave skb->dev NULL, so it does not say anything
+about registration state.
+
+Would accounting TX in bam_dmux_netdev_start_xmit(), where the netdev is
+provably live and hdr->len is already known, avoid this?  Alternatively,
+would terminating/draining the DMA channels and clearing dmux->netdevs[]
+before unregister_netdevice_many() close the window?
+
+[ ... ]
+
+> @@ -421,6 +426,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
+>  	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
+>  	dev->needed_tailroom = sizeof(u32); /* word-aligned */
+>  	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
+> +	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+
+[Severity: Medium]
+This is a pre-existing issue and not introduced by this patch, but it
+interacts with the new stats memory, so it is worth mentioning here.
+bam_dmux_register_netdev_work() allocates the netdev with alloc_netdev(),
+bam_dmux_netdev_setup() never sets dev->needs_free_netdev, and
+bam_dmux_remove() only calls unregister_netdevice_queue() /
+unregister_netdevice_many() with no free_netdev().
+
+net/core/dev.c:netdev_run_todo() {
+	...
+		if (dev->needs_free_netdev)
+			free_netdev(dev);
+
+		cnt++;
+
+		/* Free network device */
+		kobject_put(&dev->dev.kobj);
+	...
+}
+
+The kobject_put() there only balances the kobject_get() taken in
+netdev_unregister_kobject(), so the device_initialize() reference is never
+dropped and netdev_release() (kvfree(dev)) never runs.  Does this leak the
+struct net_device, its private data and its queue arrays on every driver
+removal?
+
+Would setting dev->needs_free_netdev = true here (next to the new
+pcpu_stat_type assignment), or pairing the alloc_netdev() with an explicit
+free_netdev() in bam_dmux_remove(), be the right fix?
+
+Note also that the still-allocated, still-readable net_device is what makes
+the freed dev->tstats access above silent rather than an obvious fault.
+
+> @@ -533,6 +539,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
+>  		break;
+>  	}
+>  
+> +	dev_sw_netstats_rx_add(netdev, skb->len);
+>  	netif_receive_skb(skb);
+>  }
+
+[Severity: Low]
+This is a pre-existing gap rather than something this patch introduces, but
+now that rx/tx counters become non-zero the missing drop counters are more
+visible.
+
+The TX error path frees the skb and reports success without any
+tx_dropped/tx_errors accounting:
+
+drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_netdev_start_xmit() {
+	...
+drop:
+	bam_dmux_tx_done(skb_dma);
+	dev_kfree_skb_any(skb);
+	return NETDEV_TX_OK;
+}
+
+and the RX early returns are not counted either:
+
+drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_cmd_data() {
+	...
+	if (!netdev || !netif_running(netdev)) {
+		dev_warn(dmux->dev, "Data for inactive channel %u\n", hdr->ch);
+		return;
+	}
+
+	if (hdr->len > BAM_DMUX_MAX_DATA_SIZE) {
+		...
+		return;
+	}
+	...
+}
+
+Would it make sense to also bump rx_dropped/tx_dropped on these paths, so
+that ip -s link can explain the loss instead of showing traffic counters
+with permanently zero drops?
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831181006.1382372-1-sinyavin%40gmail.com
