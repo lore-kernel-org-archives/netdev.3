@@ -1,81 +1,158 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879BB47FAF4;
-	Wed,  2 Sep 2026 12:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4907646D55A
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 12:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788350699; cv=none; b=C484QjdnWnGSv3+gaG1psnhBL/6RX0IZgfQdqlgzJ2PHg6/n7SJzG7BVwGLvZY2WLmWlbZNoOVV06BnWG08K81ljHGwp/IzXjOjZLeukai8DmqV1t5rfCbM7cg4dRSfMqLEahPHSQCnTy3YA1f9xE+0Zw4ut0LCJn9o9VxYwy3w=
+	t=1788351043; cv=none; b=sPj+H7I0Dt17vv7Dtzi+yi3gdfD5zfeQdyCIfi9OAwSWkh3rRl9Bhy48Q0vJiTDnSPeP6boWNdfJE2O7hV0tABFlxauag6HsTFxO1vJCPdUNIU/75Q/tqcCYATJE9mbxlrr4vmNuX9Knq9mjakBYc7RrHg04noapsx0T7eeQOM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788350699; c=relaxed/simple;
-	bh=mRkUfYStPkFa3gRUiis1yOOBE3gmRIjBScw1ExHohX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emD7xPHrfh5XyQoEjkEPgtyG/1pv9GN2RmBxUhFiOP6l3g5EWBDS2Q/5X5ZVF1lA5CVonVR3dDgAonPNLLaieki/DlUomiEhRKxWe9244T4tpxaFo87P48pw1nf0yoZE/ZpT3PsbMoT+K2FnwsupQmMFZGBSMjsRvV733x1FCRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FiNyV15A; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788351043; c=relaxed/simple;
+	bh=Y1wV/sdJ0I2tS5+afhbpaQktFXztVIMcXeD3dCZ+IQE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kZtCibgb4ac1sMkMSrkDoNlgcdkJpe0PvXYzrJfgKaCMsm3wYhLKUmVJY3uqXlzokXOesNCHG7xNu0Ktn26SJ4Xd+pI6u9PYLIVdkJzu6SWkkqe3GTRG4uG0vZoBKXyF3UCFm3O/Q7C9iPlCunNNscnKy/0iX4dRrto2uq7FlcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pYRk468b; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FiNyV15A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TPpTauZDU0aQOfK5RCZ05OFPP6Wl3wzfzEM2+qWjF9M=; b=FiNyV15A+tiNQttTDwkz1Vq6ah
-	xOXkcsV8HASptVdToC0bRMqhnATO1ZbYcX+Ylt21oGPhF3G3Q9lSLGn+6Ej00iGs5+vxjlkTjZF3h
-	qbUYVEGPqf5PYtw15zq+Tn+dkyuo0Q4Eqc2HM5dxFBVB1Hk0Zc7Ngnv0unxJH0WgGDEk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1jhh-002Vuf-2S; Wed, 02 Sep 2026 14:04:33 +0200
-Date: Wed, 2 Sep 2026 14:04:33 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v11 4/5] net: dsa: motorcomm: Add LED support
-Message-ID: <f17be0c1-96a4-4226-9581-a28a07d14a73@lunn.ch>
-References: <20260831044818.4103477-1-mmyangfl@gmail.com>
- <20260831044818.4103477-5-mmyangfl@gmail.com>
- <20260901175618.28d81bd6@kernel.org>
- <CAAXyoMOQf8oK3Z_TQKDmLvCQmgAjUR29VnFSFi+np4RtNNw_bg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pYRk468b"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-851cbd64814so314572b3a.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 05:10:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788351037; x=1788955837; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VWQGAkWlUzQFpRysKqIStAsuXjs0d0k3Dcf5bsCh5wU=;
+        b=pYRk468bicRkTW76QtyZ6Y629st3X8z7UTacI8+akxVc2J0McuOkvOTC7C/epbCIeh
+         oEp+kPcNyC5aXQJRLBQvDeDFAoQQWt2ZWLKu+I+DeZqsVZ6mKKr5khuN833jsIgLWV+K
+         zJRU6aKuhw78FgTaTwzTicxVwlfBAr8AfH8QDt9MZuNcMSZTZQntJxtNGWYhZTy0ePfz
+         8ANLomGoVVSPwJ6Djb6Y5EIBhw7Eo/EG8mHF65/0V26KyH74o1DG+YU1p8eFphHqW5vK
+         HaZbu2cvB7ofBYT+KdLvIkr7GTo7nX/fyc355nyOizmCRFu63hd0nisBF2fcPVknu4is
+         +hvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788351037; x=1788955837;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VWQGAkWlUzQFpRysKqIStAsuXjs0d0k3Dcf5bsCh5wU=;
+        b=oSvdICjxI2xvSOlJs1oEXoGck2nYD5p/WJWnMg67WasSZp4uahec+ghYa53GSTlSya
+         Db3CkrMhof85mk6QM7t0g3H4ZIji7sZi+ThufjXo1Gp0VEDgBPS8id5oeW1rFmnGYxOL
+         2q3dHW5yGvXTn1AcoYfIUbSoSEbwWzxRzjM4OaSfaMXAyo1PPBBUsJ3afJf/klFI8EqY
+         1u+nywgTekvh6WuglMYNs62H/6dSunGpXxIO484wEPSdxcawxGOPtHVqNSRalfKv6C7a
+         2NnbVQR9CHIvOMx6/j1tVUTmR0rmN7YuucBxp4LJiEYTwR/G30pgQAMHFK/zKb+YQ+GA
+         MT2A==
+X-Forwarded-Encrypted: i=1; AKwUvBz+ptygbXGe1sB35z9rMz3bykwk9xaDlv+QYSMU4Hno/vqmvLNvap/6eBrFJKqHGIm4otYEmRA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kt7AjLW973jFlDtW4HZIOt7BoyJ9r2/CozdG8JB4kZ/ltYy+EX
+	289qd7/q+tpVXvhs6k5LYUcLWJ3oKiu3IvH/1IQ0hIhD01M6rTz9KqB5
+X-Gm-Gg: AYBFou1NyY+a81HfZT/Oev++sAMtSdf5PHbQOOFz9ahfPllJ8WfAsNfcnYdPp19QBfC
+	Eh/hv6iyxm5MT0haGN40ec/liLqJ02NHLd2sFKsqiNIkfGT8ynhFuWSxOV6yifZg8PVuBokG7R4
+	C9XVraPp62oUN3KNHXcEv9EueXnuiYw0LQely0ng3fINyYu6Z/L9SisyWa/+vf9mOweCpsVDZcR
+	9W3yeW6ZVEO3Y+J3FkpLQYmOeDT/T0d+nvzmu3Noupp0jcu0itlGE4YQY1D1r0p990sX+leHXGc
+	iqIRynhv/k5nq4kfuLo4kqMV0EJJF7DtkLqWxBV4nzZw7aFfrsilfia7UvuZE6tULYgTsCVfEbR
+	Wo9M0xoOVeeTdjyNCpIrfv6afjUaD/0CCEyDUUOR3RA9PvE/VEP3QiZNFvwonPKYkgX8Fu481c9
+	SPqZC9kE+NKa/aDYGTuaMtBBxoveMbCmsUgN7bWVLEfpe8uv/DJTL1EMg7CqdwVTBqyzgwqPwu4
+	g6NTCwjWEAKk9ZiBxPBbSJToh8B3xOV1Z2YhVAEcqn+JimEZUcnuPkWOaMCfQKA1OQ9czVKtN8W
+	vW4N+iShE6xofhOq36B1CPDH9GuSSS3YdHQG/Sh1NZAnBJm6
+X-Received: by 2002:a05:6a00:4c85:b0:846:8b22:4933 with SMTP id d2e1a72fcca58-85ed94b7407mr7471210b3a.17.1788351036779;
+        Wed, 02 Sep 2026 05:10:36 -0700 (PDT)
+Received: from KERNELXING-MB0.tencent.com ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85da342023asm1300084b3a.0.2026.09.02.05.10.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 05:10:35 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	aleksander.lobakin@intel.com
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
+Subject: [PATCH net v3] xsk: set network header on skb at generic transmit
+Date: Wed,  2 Sep 2026 20:10:27 +0800
+Message-Id: <20260902121028.74092-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAXyoMOQf8oK3Z_TQKDmLvCQmgAjUR29VnFSFi+np4RtNNw_bg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> > Would an "echo netdev > /sys/class/leds/<led>/trigger" racing with switch
-> > unbind, or with the dsa_tree_setup() error path, touch a freed
-> > net_device here? Would removing the LEDs per port before the netdevs go
-> > away, or validating dp->user under rtnl_lock, avoid that?
-> >
-> > > @@ -4581,6 +4589,12 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
-> > >       if (res)
-> > >               return res;
-> > >
-> > > +#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-> > > +     res = yt921x_leds_setup(priv);
-> > > +     if (res)
-> > > +             dev_warn(dev, "Failed to setup LEDs: %d\n", res);
-> > > +#endif
-> > > +
-> 
-> Just a question: I don't see any protection against this in other DSA
-> led drivers, like mv88e6 or qca8k.
+When constructing an skb in the XSK generic transmit path, neither
+xsk_build_skb() nor xsk_build_skb_zerocopy() calls
+skb_reset_network_header(). After __finalize_skb_around(), the
+network_header offset defaults to 0 (pointing to skb->head). The
+subsequent skb_reserve(skb, hr) moves skb->data forward by hr bytes,
+but leaves network_header still at 0. This makes skb_network_offset()
+return a negative value (-hr).
 
-Registering the LEDs uses devm_ so the life of the LEDs is the life of
-the chip. The LED trigger does however take a reference on the network
-device, so it should not be possible for it to disappear while the
-trigger is still bound to it.
+When such an skb reaches a tunnel driver like ipgre_xmit(), the call
+chain pskb_inet_may_pull() -> pskb_network_may_pull_reason() computes:
 
-	Andrew
+    pskb_may_pull_reason(skb, skb_network_offset(skb) + nhlen)
+
+The negative int from skb_network_offset() is implicitly promoted to
+unsigned int, wrapping around to a huge value. This triggers the
+DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in pskb_may_pull_reason().
+
+Call trace from syzkaller:
+  ipgre_xmit+0x958/0xcd0 net/ipv4/ip_gre.c:658
+  __netdev_start_xmit include/linux/netdevice.h:5400
+  netdev_start_xmit include/linux/netdevice.h:5409
+  __dev_direct_xmit+0x4b6/0x730 net/core/dev.c:4942
+  __xsk_generic_xmit net/xdp/xsk.c:1079
+  xsk_generic_xmit+0x277a/0x40a0 net/xdp/xsk.c:1120
+
+Reset the network header so skb_network_offset() is valid (0). Unlike
+AF_PACKET, AF_XDP does not need to locate the real L2/L3 boundary: an
+AF_XDP frame is always a complete, opaque blob from userspace.
+AF_PACKET only cares about the boundary because it can cook an L2 header
+itself (SOCK_DGRAM) and supports GSO/checksum offload; none of that
+applies here, where the frame is sent as-is via __dev_direct_xmit().
+So resetting the network header is enough to restore the invariant and
+avoid the crash.
+
+Fixes: 3914d88f7608 ("xsk: Respect device's headroom and tailroom on generic xmit path")
+Reported-by: syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f16c1b285c9f63994eec
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+---
+V3
+Link: https://lore.kernel.org/all/20260901083325.3445-1-kerneljasonxing@gmail.com/
+1. remove the misleading description about af_packet
+
+V2
+Link: https://lore.kernel.org/all/20260826012052.51028-1-kerneljasonxing@gmail.com/
+1. add more clarification about why we don't probe the header like packet at
+the end of the commit message (Jakub)
+---
+ net/xdp/xsk.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 33475b180ea6..2077bb6299ca 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -947,6 +947,8 @@ static int xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
+ {
+ 	int err;
+ 
++	skb_reset_network_header(skb);
++
+ 	err = xsk_skb_destructor_set_addr(skb, addr);
+ 	if (unlikely(err))
+ 		return err;
+-- 
+2.43.5
+
