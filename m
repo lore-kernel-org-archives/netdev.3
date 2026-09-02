@@ -1,133 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE3B38F929;
-	Wed,  2 Sep 2026 07:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14FB38F929;
+	Wed,  2 Sep 2026 07:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788333391; cv=none; b=T/HHRKHfKje4ymILhFdFkQtqaCdyZFIR6byFU98dBao8zAdz6upZPYylBl+mkdE7pz1SW+L0NYsTBIMAmGLVXRJg0KnUwmNPqAk34R3A4oqnq1KZHwtyll3SkxUGiiTFwU0uwtbF80Fr8q8QAjDD/1I3pOROnlTtQ4LKg0367u4=
+	t=1788333424; cv=none; b=Ro7PUTDrs7rgvYOr6V9xqbVTRfRv9wwMZWyedCPlVna76jix1lBxdQ3RDb5Dghfe8AeevODoxXnh9AkDWsJrlW6BLtXz9kZxqMseocHjPa/rMxU5O2gXvObJNZxmNeeFa+YU+0crufTcBPU9a7/fY6c6uyFeCIuZCnT18aHbCjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788333391; c=relaxed/simple;
-	bh=vlCUORUrkFxC2f8FPjXKAu56xwLksBmkaS5jHDrYj7U=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GjM4h+vuWzTe2lf+xNV8f8FZe626L0iUV5oLflUtoMNvwtprKM+JaMGnGGI/YnEI2Z3JLdUZ78YYXVC26DKnWUDYAudd1hgOIDpdR2VSc6TyF+vlAfCXw+vFAxul45bXoNWXJUpjSWUsbo6jZOWMY0M1IB1VEQp3DWsg+boFe+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ui+4q7Nx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788333424; c=relaxed/simple;
+	bh=FAt2u36WZLrgsvlhYwAmtJVjR0LTSa8I3DJKL2YMedQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xmlu66NyQ+k4J8CEkX1MaixLCpqmmFl4UMpfvKK23Ewn2dgpgE/IeC1ABZUX3MztlCKbRFh+zm+PJ/cD4o4RaPs/eqzLJ6+M9kYtSogcaRGc8s+0p71OzKigYtpo/uokd8/fQEe8DnRqXquVgdi+rsMM49gk8n/pmmEYfHMkSD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=5knGDMY7; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ui+4q7Nx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67B31F00AC4;
-	Wed,  2 Sep 2026 07:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788333388;
-	bh=yVPU+hlOscZWW1rX8y1wh88T+GrbWAwzNbcQ70O8j+o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ui+4q7NxLbnPuEsNHRur2uETW6DiCmw1djJ85IJkgui5ivpZssCbH3YKS7Msaj8o5
-	 S3eS5TxNbpgDsAwCbHQXuvEassRBqZtYLT6EptMcLtZW4kWJ5QWt1NV8ixt6UMA0l3
-	 kb8v8OKuoNgakfoY3tOb3lLnhY6OAQN40+2DsYsKhwuMQilcoqlqtkyrytxqPxWTpG
-	 Q4ikFmMISq4urhJjDgfWndIRcoXTAHO8yAYW5U/1u4NifEfUj7RuKUVj/VbFQUkcYh
-	 BSU5VieAI819cBuTHm83P0ek2cbBCAtP/ta0ZBJKBcOMG3V+Ryd5ScRbrhomFHUAPn
-	 vb+NdWhIHBt/g==
-Subject: Re: [net-next] selftests: net: csum: filter packets by source address
- and port
-From: netdev-bot+sashiko@kernel.org
-To: willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, willemb@google.com
-Date: Wed, 02 Sep 2026 07:16:27 +0000
-Message-ID: <178833338726.3394541.13779692240559712632@kernel.org>
-In-Reply-To: <20260831210128.1359978-1-willemdebruijn.kernel@gmail.com>
-References: <20260831210128.1359978-1-willemdebruijn.kernel@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="5knGDMY7"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=dURJbGOT+nGQin/vz2Ejo4WJffZ3tf2RMyqU1ScFMTE=;
+	b=5knGDMY7e5CAb6N16lAvzBJYUSZrtxDIpwhcvvxjWLNoly2vmR0phPR7jnC1yDIa49b9vsLQK
+	X9Jtn0RfAbUbwuTdrAodlLM4oHdmi/W82bhTy+ZLrRj+oaRPoiCzg3CJLCaLTAg8REfEFKqTc/l
+	UNO9RcqZ0SNnB3ts6xxXsZk=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hZYdv5c92z1T4Mc;
+	Wed,  2 Sep 2026 15:05:23 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 38E3540579;
+	Wed,  2 Sep 2026 15:16:45 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
+ (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 2 Sep
+ 2026 15:16:44 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <jhs@mojatatu.com>, <jiri@resnulli.us>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH net-next v3] net: sched: act_gact: use acquire/release for tcfg_ptype
+Date: Wed, 2 Sep 2026 15:16:59 +0800
+Message-ID: <20260902071659.395509-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Replace the smp_wmb()/smp_rmb() barrier pair with
+smp_store_release()/smp_load_acquire() on gact->tcfg_ptype.
+tcf_gact_init() publishes tcfg_ptype via release after writing
+tcfg_pval/tcfg_paction; tcf_gact_act() acquires it before
+dispatching to gact_net_rand()/gact_determ(), ensuring the probability
+parameters are visible.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+No functional change intended.
 
-- [High] Incomplete fix: the patch adds source-address/source-port
-  filtering only to the PF_PACKET verification path…
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: DeepSeek:DeepSeek-V3
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+v3:
+- Split out from following patch set as Kuniyuki suggested.
+Link: https://lore.kernel.org/all/20260901024234.135119-1-ruanjinjie@huawei.com/
+---
+ net/sched/act_gact.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---
-
-selftests: net: csum: filter packets by source address and port
-
-The csum receiver now checks the source address and source port in
-recv_verify_packet_tcp(), recv_verify_packet_udp(), recv_verify_packet_ipv4()
-and recv_verify_packet_ipv6(), skipping non-matching packets. It also adds a
-20us inter-packet delay in do_tx() and drops a stale comment at the top of
-the file.
-
-> diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
-> index e28884ce3ab39..139465054f85a 100644
-> --- a/tools/testing/selftests/net/lib/csum.c
-> +++ b/tools/testing/selftests/net/lib/csum.c
-
-[ ... ]
-
-> @@ -647,6 +649,9 @@ static int recv_verify_packet_udp(void *th, int len)
->  		return recv_verify_packet_udp_encap(udph + 1,
->  						    len - sizeof(*udph));
->  
-> +	if (!cfg_zero_sum && udph->source != htons(cfg_port_src))
-> +		return -1;
-> +
->  	return recv_verify_csum(th, len, ntohs(udph->source), udph->check);
->  }
-
-[Severity: High]
-Does this cover the second receive path used by the UDP tests?
-
-For cfg_proto == IPPROTO_UDP the test also opens a real SOCK_DGRAM socket in
-recv_prepare_udp() and drains it in recv_udp(). That socket is only bound to
-the local address and cfg_port_dst; there is no connect() to the sender and
-recv_udp() uses plain recv() without inspecting the peer:
-
-tools/testing/selftests/net/lib/csum.c:recv_prepare_udp() {
-	fd = socket(cfg_family, SOCK_DGRAM, 0);
-	...
-	if (bind(fd, (void *)&cfg_daddr4, sizeof(cfg_daddr4)))
-		error(1, errno, "bind r");
-}
-
-tools/testing/selftests/net/lib/csum.c:recv_udp() {
-	while (1) {
-		ret = recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
-		...
-		count++;
-	}
-}
-
-do_rx() then turns that count into a hard failure in exactly the -E case this
-patch targets:
-
-tools/testing/selftests/net/lib/csum.c:do_rx() {
-	if (cfg_proto == IPPROTO_UDP)
-		count_udp += recv_udp(fdr);
-	...
-	if (cfg_bad_csum && count_udp)
-		error(1, 0, "rx: unexpected packets at udp");
-}
-
-The test's own crafted bad-checksum datagrams are dropped by the kernel UDP
-checksum check, so count_udp is expected to stay zero. An unrelated
-background datagram sent to the local address at cfg_port_dst with a valid
-checksum is delivered to this socket and counted, and the test aborts. The
-in-tree cases ipv4_rx_udp_invalid and ipv6_rx_udp_invalid in
-tools/testing/selftests/drivers/net/hw/csum.py run csum with -E and UDP, so
-they still appear exposed to background traffic after this change.
-
-Would it make sense to also connect() the receive UDP socket to
-cfg_saddr:cfg_port_src, or use recvfrom() and drop datagrams whose peer does
-not match, with the same cfg_zero_sum exception used above since the source
-port is computed at send time in that mode?
-
+diff --git a/net/sched/act_gact.c b/net/sched/act_gact.c
+index 565860cccba6..d4f39f98e2cf 100644
+--- a/net/sched/act_gact.c
++++ b/net/sched/act_gact.c
+@@ -25,7 +25,6 @@ static struct tc_action_ops act_gact_ops;
+ #ifdef CONFIG_GACT_PROB
+ static int gact_net_rand(struct tcf_gact *gact)
+ {
+-	smp_rmb(); /* coupled with smp_wmb() in tcf_gact_init() */
+ 	if (get_random_u32_below(gact->tcfg_pval))
+ 		return gact->tcf_action;
+ 	return gact->tcfg_paction;
+@@ -35,7 +34,6 @@ static int gact_determ(struct tcf_gact *gact)
+ {
+ 	u32 pack = atomic_inc_return(&gact->packets);
+ 
+-	smp_rmb(); /* coupled with smp_wmb() in tcf_gact_init() */
+ 	if (pack % gact->tcfg_pval)
+ 		return gact->tcf_action;
+ 	return gact->tcfg_paction;
+@@ -133,11 +131,8 @@ static int tcf_gact_init(struct net *net, struct nlattr *nla,
+ 	if (p_parm) {
+ 		gact->tcfg_paction = p_parm->paction;
+ 		gact->tcfg_pval    = max_t(u16, 1, p_parm->pval);
+-		/* Make sure tcfg_pval is written before tcfg_ptype
+-		 * coupled with smp_rmb() in gact_net_rand() & gact_determ()
+-		 */
+-		smp_wmb();
+-		gact->tcfg_ptype   = p_parm->ptype;
++		/* Pairs with smp_load_acquire() in tcf_gact_act(). */
++		smp_store_release(&gact->tcfg_ptype, p_parm->ptype);
+ 	}
+ #endif
+ 	spin_unlock_bh(&gact->tcf_lock);
+@@ -160,7 +155,8 @@ TC_INDIRECT_SCOPE int tcf_gact_act(struct sk_buff *skb,
+ 
+ #ifdef CONFIG_GACT_PROB
+ 	{
+-	u32 ptype = READ_ONCE(gact->tcfg_ptype);
++	/* Pairs with smp_store_release() in tcf_gact_init() */
++	u32 ptype = smp_load_acquire(&gact->tcfg_ptype);
+ 
+ 	if (ptype)
+ 		action = gact_rand[ptype](gact);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831210128.1359978-1-willemdebruijn.kernel%40gmail.com
+2.34.1
+
