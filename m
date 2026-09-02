@@ -1,95 +1,107 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63673002C8;
-	Wed,  2 Sep 2026 00:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141CC1DE8BB;
+	Wed,  2 Sep 2026 00:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788309828; cv=none; b=H5tf6j2kp1NEcQ3EH/q0P0vFfWNT0fnTk10aGC2EjzhxuVXCTvdvZss1EzzvW38FDeSLdPXTdUy1WzhpHtFKx9MRVZSxe8qCV0Ghwa5ZST8mPmo1QQN3yqNyMIlcfHdugLj+pLgVgwx38eDd8xpEhdGQI/bCdRBs7cW5Ioa4aS8=
+	t=1788310169; cv=none; b=nzB54mBb9SSkh5oseD0UwK0WXZ077/EiNFGILyuZkYViLCGt3PLaUiFcT8hFJHfnErqt8T5ncLLjL03X0789vnGlrADDfkmrorEsyMc42qfaV0abkBAOXuKY3f5raIK8UHYcu7Bw/eXBD/MfdmgoSeMxsA+1+TveKaCzPmdJW18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788309828; c=relaxed/simple;
-	bh=jSkSbebLUaFOavlNVjNmP9IG7T4Ps0LGjzfjY/DcH44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OcigDNC6FQugDvOi2AEwTCz38E1BtnNs3SE7B3OMaS16usLv9xmdFowMm71IyUV3eqZZOQBb+7O5PzPKp2CBwnOFDzz4MJ/500bDjo+dCzej/AiShFXsH8PkxrVVAjUG03ZyfhbCabPaP3lv43I23PMBAXhY8rLNDWml3AcGoDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yJkL4QJI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788310169; c=relaxed/simple;
+	bh=pXG0V5jXBLIVF9fdYnPv8sfD7dZDrtssN9xflLdKFBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QvstI4Q//wvQ8Bwg2+EriHYtQgZtvn03AVObEdaD5ZMkFv5zI+KX8+QHIAPlME4dPiVGqn2mm3U4K2ymAmsrH/rZE38zUlX5nAn7SK+bfrmTBmeNpy96ewlqS4aXIMRQklwD1tYJbfDt326OZzahpKLDWJfbS+lzKIPIBHw9TnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V11WDYvd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yJkL4QJI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=bsd4GQ+oxiEeulWAFYOzdSc/k93ZvAGEODURJZoqQ5o=; b=yJkL4QJI/mB5rfrQ/JTpf7DHiM
-	QmFlRjr/KqIjSM19UyeKdTiBVnuMCODB6/XSzoYHf/IDWmowX3ZOsO1YJFlszkiSyyLRkyFQ/y16I
-	e9oSqpj19qREgu3SWbqWdhWqJ+uuH+pUuef6OGrg3L4Drn2oSugaHiwYHnOlvA42KxWw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1Z4i-002RwU-1c; Wed, 02 Sep 2026 02:43:36 +0200
-Date: Wed, 2 Sep 2026 02:43:36 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/3] net: ethernet: oa_tc6: deliver the PHY
- interrupt to phylib
-Message-ID: <dbb77cce-b574-42d9-8a26-a12a0446d1b9@lunn.ch>
-References: <20260901130948.212914-1-parthiban.veerasooran@microchip.com>
- <20260901130948.212914-3-parthiban.veerasooran@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V11WDYvd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD551F000E9;
+	Wed,  2 Sep 2026 00:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788310167;
+	bh=7nLgCQSaCFKCb63UhFK8QBEL2bgjau/HoDT7IXt2qnI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=V11WDYvd0mgQawzLkGXiCrh1Gbka0P+U0c2qkRCJRZslacaQG0DNwxHoLn1Qju7WQ
+	 0MzAu+NpoT3thjyrsWNg7u67A+WKgEddbnwOdrfAjgEOH0419r4CNRQcbBRrzGmQjq
+	 2ZSPSSFNKK7hv+832HVp6OXpkPLSWGVYfAFoPB81EuBd0s34N/nYrZoF7Day9GON8M
+	 SF/NDbPlTIf7CDL+JwCsiqzMroZbYj65xzREDqptE3Jl+F/8JZlbHGCao5rfK+cQtY
+	 S+GA9fnfWhjB5gZeaxQHD6S5GHKq3kZ5Fkkhu5HJekLEQIS8Epb9ebG2t2a4nZYcm/
+	 9SWVQPrbIhNUA==
+Date: Tue, 1 Sep 2026 17:49:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Anton Protopopov <a.s.protopopov@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>,
+ netdev <netdev@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, KP Singh <kpsingh@kernel.org>, Matt Bobrowski
+ <matt@bobrowski.net>, John Fastabend <john.fastabend@gmail.com>, Christian
+ Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, Linus
+ Torvalds <torvalds@linux-foundation.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH bpf-next 0/7] Add new way to add BPF LSM hooks
+Message-ID: <20260901174926.12cc95f1@kernel.org>
+In-Reply-To: <apbFG4WKaZNsURo8@mail.gmail.com>
+References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
+	<20260831153456.5a7d6937@kernel.org>
+	<apbFG4WKaZNsURo8@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901130948.212914-3-parthiban.veerasooran@microchip.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 01, 2026 at 06:39:47PM +0530, Parthiban Veerasooran wrote:
-> The integrated PHY has no dedicated interrupt line; its interrupt is
-> delivered in-band as the PHYINT bit in STATUS0, which raises the MAC-PHY
-> SPI interrupt via the extended status. phy_mac_interrupt() only triggers
-> a link-status re-read and cannot make the PHY driver read and acknowledge
-> its interrupt source registers, so expose the PHY interrupt to phylib as a
-> nested virtual IRQ instead.
+On Tue, 1 Sep 2026 12:29:15 +0000 Anton Protopopov wrote:
+> On 26/08/31 03:34PM, Jakub Kicinski wrote:
+> > On Mon, 31 Aug 2026 11:09:25 +0000 Anton Protopopov wrote:  
+> > > The BPF LSM programs are allowed to attach to LSM hooks. This enables
+> > > operators to mitigate known bugs without a need to reboot or livepatch
+> > > machines.  BPF has shown very useful to create such runtime policies.
+> > > However, many APIs and parts of kernel aren't covered by existing LSM
+> > > hooks and this would be beneficial to extend the coverage.  
+> > 
+> > Dunno. Do you have any reason to believe that any of the CVEs your LLM
+> > gathered for you here are actually getting exploited? Spot checking 
+> > a few they seem to be mostly driver bugs. What security model do you
+> > have in mind? Untrusted/malicious users with physical NIC access?  
 > 
-> Use dummy_irq_chip as the irqchip, map a virtual IRQ and assign it to
-> phydev->irq before phy_connect_direct() so phylib enters interrupt mode
-> and uses the PHY driver's config_intr/handle_interrupt. Unmask PHYINT in
-> INT_MASK0, and when it is seen in the extended status, dispatch
-> handle_nested_irq() synchronously from the sleepable threaded IRQ. PHYINT
-> is level triggered, so acking the PHY source there clears it before the
-> next data chunk, avoiding a storm.
+> For the untrusted part, here are some existing examples:
+> 
+>   * old untrusted bugs: CVE-2022-50651, CVE-2025-40255
+>   * "namespace CAP_NET_ADMIN" bugs: CVE-2024-43836, CVE-2025-21921
 
+These span 4 years.
 
-   9.2.8.7 PHYINT
+> Also, the recent copy-fail is a stronger example (though not generic
+> netlink-related).
 
-   Physical Layer Interrupt. When set, this bit indicates a service
-   request from the underlying physical layer block.  Many physical
-   layer implementations support an interrupt output for signaling
-   events to the station controller. This bit is optional and will be
-   implemented only if the underlying physical layer supports
-   generating interrupts to a higher level. When implemented, this bit
-   shall be cleared by acknowledging the underlying physical layer
-   interrupt source(s). When not implemented, this bit shall be
-   reserved with a read- only value of zero.
+Yes, if anything it proves that serious security issues are usually
+on the datapath for networking, not what you're covering.
 
-At the moment, phylib is polling the PHY. That is guaranteed to work.
+> The general idea is that we gate the common de-multiplexors such that
+> not only known bugs, but mainly those which will appear in future are
+> covered. Rough numbers for coverage: around 5% of known cves are
+> covered with existing LSM hooks. Another ~5-7% can be covered if we
+> add netlink-related hooks [this series + net/sched, nftables,
+> rtnetlink, others smaller]. So, statistically, we know where
+> bugs had appeared in the past, so we can "predict" where new
+> will appear. Some of them might be severe, so this would be
+> good to have hooks in place to be able to "mitigate" them.
 
-The standard indicates this interrupt is optional. It might not be
-implemented. phylib assumes that if there is an interrupt, the
-interrupt works, and it does not poll. So any hardware which does not
-implement this interrupt is now broken.
+Easy to PoC stuff with LLMs these days. I'd like to hear from
+an end user who would find these hooks useful, in more detail.
+Anyone with an ounce of gray matter will run untrusted workloads
+_at least_ in a VM today.
 
-Please find a way not to break other devices.
+> Just in case, to test this patch locally, I've found around 10 new
+> ethtool-related bug candidates. I've sent a fix to one, d09c98a6da21
+> ("virtio_net: Fix resize of the RX ring"), which was easy to
+> reproduce in a VM. Others require specific hardware, though popular,
+> so I can try to reproduce some, and was planning to do this later.
+> Of those findings one is unprivileged, it triggers a OOB read.
 
-
-    Andrew
-
----
-pw-bot: cr
-       
+Please send the fixes along. The hash you mention requires
+CAP_NET_ADMIN on a real interface, not a serious security
+issue.
