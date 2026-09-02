@@ -1,52 +1,82 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB8940B0FA;
-	Wed,  2 Sep 2026 09:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9553EF66B
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 09:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788340040; cv=none; b=cH8idCq1QoY+VhWytqpRVvKBJlciSzxPN27s/kyyQKd/Ys/HkCT6lOlnQQGOh87QNIDGMbjFrKc8w+yypAw/mU8+EEP7X9oDnZL2GsFJyhf4BfLsjfoTc+fO7UcOpjTFLm8FjJ61UlFqO38cmG2yKLCf+z8Y2bKzhgMSwlYBW3Q=
+	t=1788340235; cv=none; b=VTJMfJ7hhLR1gmMcIwHHjupF92Evt3uiIvhH/ww7JdbU6NYwvJDhZ0nIAfxRvGsF5VVov1xLTlxkNuurn9dCeuRRUMspR9rvy44XBCNrc3NvfFkLbHeNpP7Sa1k9ZlqNistwvHwLmyLlsGYlVCfsmAmN6vRyhjiUiq4VmwV0MEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788340040; c=relaxed/simple;
-	bh=gsdeDRUybUisWv6Ll+6w8bay49Xe/bjDxzAGDMkf2vI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mh42KklL/iK6nHtqIURKusq04a1QtO8FdUIVT+SI+6rD7M0plAHxy3R4C2tBx1Q5qWZekmQoV/rT7Gxz4U11OIVLu4NmQifGhtbO4G4zUbJeaRRuXPQKnMZqSloPCgnVsgGIcEyKj2IqukMNjuDva0HqgJZkxW7zp1c+bYgi1OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=APkJZ5Uu; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1788340235; c=relaxed/simple;
+	bh=vQdzM4rvKFPam5dovDbIDl+CNeWDCL+2DysFzbO4wt4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dKgmgz67w/8UViTEhTgVH4P/J5EjmOU+Q6HA5WBUUvRBYkXq2uzeeP7/W7v+IkpN6DOjZJB4qYAm12M4HAOBnivJaYwwzyVHzjZxGXONbKMfqDg3hoswXsc2TqU6Jsm3E1JThK3sTCKZ0fNjGFKSqPi/qYZPkwaonU1pMJ+ARnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAbg+gr9; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="APkJZ5Uu"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68296Zr842526839, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1788339995; bh=Tym3NAGAstrYAPiDlaHsqMFDDSYFEK8Y40C5ERwfeNE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=APkJZ5UuhUbtWRkubL1229hvvSgHyIRcXZZS4h7d3u8Y62TWTVtsQjbamV81ipGIk
-	 IMhfcwcrOwXYysj1rDr4lzW6GlPtcZ4O7qjSPDLlzT9NyLuiJA0xUbofh65udnStwx
-	 J/8xKDNOl6cK8wfcidmr4Ra62Qyuu/tuFTz1NCc6p4MYoe+tJKCK1rtsdYuBS7sCe2
-	 tJIPuQFo3g70mS2QPmWCBcnHiSnV4z9HnT3VpXgkUHyq4d+8OJ3FOd4PgcLpBgWvD5
-	 kl2jTC57vxibwb4h1Te2mh8Zu/QNMK3iD71lUhpdecG1/1zuamaBN974JSuKnJAIY1
-	 hC6rtIN6Ed/YA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68296Zr842526839
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 2 Sep 2026 17:06:35 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 2 Sep 2026 17:06:35 +0800
-Received: from fc44.realtek.com.tw (172.22.241.7) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server id
- 15.2.2562.43 via Frontend Transport; Wed, 2 Sep 2026 17:06:35 +0800
-From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>
-CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
-	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
-	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>
-Subject: [PATCH net-next 0/8] r8152: refactor and extend RTL8157/8159 support
-Date: Wed, 2 Sep 2026 17:06:24 +0800
-Message-ID: <20260902090632.41844-1-nic_swsd@realtek.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAbg+gr9"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so899294a12.3
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 02:10:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788340233; x=1788945033; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b3pzX1jjiPX5m+fIujObi1ijyr2+XOPha2U23/dw054=;
+        b=FAbg+gr9i+wiFkWbeo59b9YQ7nkLxmCR7uwFjfn5SyL82Mo0orLeIwyiAXdqcAKpNL
+         sfRxw63Vrp5bujlnEJfRdlvFrHN2vBQTZNidxUXkIucnQhgv739m9kzuYTauvzZTkVz4
+         6bJRBl/ATelW7LcDcFHWmcl1KNx9JgBtOmthFoQ7TKho8JfdqiAVPMJ0DCt/fCMLiraC
+         HbTQVlLPhewUwkf6+ZjGOKFe6quhlEjCYdgZIR7NuwpJcIbD3ZO7d4VI+Ck9iRlRR2Eu
+         Ws+m5zQzviM11PEP0QtMLbTU+nrAj8yE9ZFV6TBDcoxYUqE3tx4HYjC8qh5/P8qpzrd8
+         eEqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788340233; x=1788945033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b3pzX1jjiPX5m+fIujObi1ijyr2+XOPha2U23/dw054=;
+        b=V4tuyDhOwkXYyD7xnqfvEX2M+kBVHT3ucVtAwo6r0xbWjYE4/FAhO7lpXXMpyBST7h
+         Ud9KHG6p1Tbqa0N247OrVLBqOWJVpz6IYUut/rQrHE4i3niHZ5ZOO4zUgzXnnCUG9CcR
+         Kq+Uup4h2IIjeIOq6e78XrcuUT02nJdoIKxhnbvMTgA0n7MVs1y1lhN5BcRoQyYRTz6B
+         1xc9gvaeu7UmpuF0ebFrGFKon9scnEsTncMj4/Y7AzLshhSFHEYkKBTVrRIldqZvnuL/
+         Lp8/ecGGwSsdaNpOtdtOlodJWYO5dD0Bt8YCr5quEA+111/PPw3a5XVLCXduDUZ54RwJ
+         mRLw==
+X-Forwarded-Encrypted: i=1; AHgh+RqbEZzEFsOOWRcXxssU16suNxrj7nMgc1r42q6Ady/25Lp2yvn7vaaDWbzrQGT7+gcI/md91hY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mXGMhD2EMDkuogBgLJey425RXid+KYkyLcKX1zsZO0wQiG6Ss9
+	3YDYzfdcGXsA5J0pgv66GKtz0qEn7QxvkZAU6nqIPYAfy9BRNDDwo5Bi
+X-Gm-Gg: AR+sD1227AQdlbooH2HdH8Gb+H0VfNyvPSHhWdadBL/14eG2GuYGW5tvcbUHHiuTHzs
+	sijxmD3ACifhslKQIO6gQr80qYz7krb9qNTY7CsGFO4YKc1xCoJ53OmAuLovJwAXJjk7YtKHVnT
+	7PjYp6bHh1cjuf496wjGNB/hDkj8o6DRixNnMjAH7AiRe4ebfAzo4zvj+kTfasoP+6EV1HdXRI7
+	YVwEo3r1daauu8DUwd3V4vVWLUyc5nop5hQnVr09sp+x7vvCzAAVfbhXytEbVapPMrZatyTAYa8
+	PWham0y3cBYHv2gE82Wkswfm/z8iXKSyhvv4VD502/y5uu/nH+eduOem1mVbFmAWZMeXdGN9thF
+	ts51NGu1SRhlnl+cS0HkDtHgR75z1o4CGB7aIicQ1KuOtE39sz/RPfg3j2N3gJT/OSfbGIc7aaU
+	0f9cciiUciWVSop6OmiDq/isQ8W+aCAtb50cHum+geEroaoKERCbeovTv5d4Qci1hjlmtoFPOr/
+	xjTLzqBnL2cl+h1EU8yeO9xRkpn2VmitBrflGWtCvCwRHpCeBo=
+X-Received: by 2002:a05:6a20:430a:b0:3d1:3c2:85b6 with SMTP id adf61e73a8af0-3d9ac8413a1mr4882102637.5.1788340232802;
+        Wed, 02 Sep 2026 02:10:32 -0700 (PDT)
+Received: from baaz.tail58d41.ts.net ([2401:4900:8852:4cb2:4c70:f750:2a36:4165])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc34e371e0esm744502a12.28.2026.09.02.02.10.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 02:10:32 -0700 (PDT)
+From: Muhammad Falak R Wani <falakreyaz@gmail.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH net-next v2] net: mana: remove unreachable dead code in mana_bpf()
+Date: Wed,  2 Sep 2026 14:40:10 +0530
+Message-ID: <3d8b67307df6fefdc18743274cef3de4fca0e7de.1788339612.git.falakreyaz@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,29 +84,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-RTL8157 and RTL8159 have different init, enable, up/down, hw_phy_cfg,
-and PHY access sequences from RTL8156.  This series splits the shared
-callbacks into per-chip variants and adds the missing RTL8157/8159
-functionality: dedicated unload and change_mtu callbacks, TGPHY register
-access via phy_read/phy_write pointers in struct rtl_ops, flow control
-patch support through rtl_fc_pause_pkt_en(), and UPS support via
-r8157_ups_en().
+mana_bpf() has a trailing 'return ret;' after a switch statement whose
+every case (XDP_SETUP_PROG and default) already returns unconditionally.
+The statement is therefore unreachable and 'ret' is never used.
 
-Chih Kai Hsu (8):
-  r8152: refactor r8156_init
-  r8152: support RTL8159 for different packages
-  r8152: refactor rtl8156_enable, rtl8156_up, and rtl8156_down
-  r8152: refactor r8157_hw_phy_cfg
-  r8152: support rtl8157_unload and rtl8157_change_mtu
-  r8152: add TGPHY access support
-  r8152: support rtl_fc_pause_pkt_en()
-  r8152: support UPS for RTL8157 and RTL8159
+Remove both. No functional change intended.
 
- drivers/net/usb/r8152.c | 1258 +++++++++++++++++++++++++++++++++------
- 1 file changed, 1063 insertions(+), 195 deletions(-)
+Signed-off-by: Muhammad Falak R Wani <falakreyaz@gmail.com>
+Reviewed-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+---
+v2:
+  - reword the commit message: drop the claim that an uninitialized value
+    could be returned; every switch case returns unconditionally, so the
+    statement is simply unreachable. Describe it as a pure cleanup.
+  - drop the Fixes: tag offered during v1 review, per the guidance that
+    net-next changes should not carry Fixes: tags.
+  - no code changes.
+v1: https://lore.kernel.org/netdev/DKWZHHOFA1F3.1EL2DMFNGMP0Y@gmail.com/
 
+ drivers/net/ethernet/microsoft/mana/mana_bpf.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
+index 53308e139cbe9..70bb8c9dc3413 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
+@@ -253,7 +253,6 @@ static int mana_xdp_set(struct net_device *ndev, struct bpf_prog *prog,
+ int mana_bpf(struct net_device *ndev, struct netdev_bpf *bpf)
+ {
+ 	struct netlink_ext_ack *extack = bpf->extack;
+-	int ret;
+ 
+ 	switch (bpf->command) {
+ 	case XDP_SETUP_PROG:
+@@ -262,6 +261,4 @@ int mana_bpf(struct net_device *ndev, struct netdev_bpf *bpf)
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+-
+-	return ret;
+ }
 -- 
-2.34.1
+2.55.0
 
