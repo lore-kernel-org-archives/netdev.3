@@ -1,120 +1,124 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C532D1907
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA00C38888C
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788332434; cv=none; b=DS7EL6wEE9BiATvgWEoZem0tVsWSYnJVX7iYeeenrsIFKH886jfhxZsQ5UXtCodudai3MaxBTK4nwrseR7zn/dxFbPUZIGTCuVS8Cl6ObluIIYX9tUd50ZJnpgMEzcRw2Gd2u3pHyyO4MXwRCF+xW9QVI2U/dZ8Kb95vJ/B4GbQ=
+	t=1788332738; cv=none; b=t9vHHMywGuDy5IZ6cRixix5B28CwcAUR/L+8AbGkFoSVdtvYvdgH/6+LWk++U9eDO61WnaILS5PgwBm2HpKeXpWT44cTZK6M4rY/bbN7PAW2LxUDQBTyxX84BX4W2cw+x60jentO3rbd1IsxHQSRcG7CRtt84cvUuGEui3akjlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788332434; c=relaxed/simple;
-	bh=fER+gMxgMdx84eTSstOteI3BKITvhY58vYW6TD5RMpI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTISmmo5dL5ZcbdrctVyt+0anj3lbHXHuMCt1ZlZvEvIH7DorhhJam0Y3J74/Zrw15vYhxh6Nhfatitku6BCYT6YoCPpPZVC4wyH7mZv7xvwyAHgZYvqUWyUUDJeRpQgZPcVkmjpvcg7grXiUMTDoMyz0L8UBqlB0UtEbnB+rko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AjAPJRyD; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1788332738; c=relaxed/simple;
+	bh=fzDpYNuECOcmrly29xrZFaME995vWnsllDCrIFhx8dA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XE8Ye/0zidFPysdOARYSszzQmLw7mQs2pCaKiHa7BYbedXp35JAn5bac96IUkq+nwrPQt3qMnL2sm7kXeLRmeOvC1Bf0ZrXUK9VZHTFdY3YRYDWmF6thZIFN+qhFGFMHJ4dv/JCoZLLeKJSGWSQlu04/dLAZnTQktLhmRQBgIOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AjAPJRyD"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d6e954afbdso4173655ad.2
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:00:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788332433; x=1788937233; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fER+gMxgMdx84eTSstOteI3BKITvhY58vYW6TD5RMpI=;
-        b=AjAPJRyDgHRjtTBNA9l65GsYfuKflDaGRNAYGFaHES0XOxIayMh9OoZuf8X0pvHwjA
-         o4mfiqTt527jh9Y0FFQVAEVubDPBQGPAxdju2wNvNQr57NrZtNU+wXVirXFtOeG0JcLR
-         OfGAcnI21l+yTgzxGfacScURNlXyzq4cIOyTZGb4BrL4hbGUj05OgICnAGxMIbPvVVJN
-         EM60EVVxXNJeWm+tMycj8YIo0m6K1WPTgv30R6BAAt68HzZWSlojUhZqCKMuvH2ZSyZ+
-         vkrTvDEQ5ANiB27OZ8gvW49v3fzxdk28t+slNBoPTkphtzUloKZZ2mzzzGLSO5xsxmhR
-         dsxw==
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-9773c6ea885so250992241.3
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:05:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788332433; x=1788937233;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fER+gMxgMdx84eTSstOteI3BKITvhY58vYW6TD5RMpI=;
-        b=ZWhQXzlAjZ3E2uLClUfS56NlLidUIZEodlEYgr/3B8EjPdpqtrpgFRW5d3EXDxvIxC
-         yRWLeYz34mjCJ0MHQK+3KFoXRzCWBS6kG5LpvR2ATAYVmVbbO/tVbFQXcJMU4R/tOmF8
-         wB3r1hyxIzNF/0uoltQ6C1Xb3uiCexYySXpsmJvXNaRLVm60mMD/jbKw15fq8ZC4EEwO
-         ZvkA+RIc8gFfQGY2je0DvDgb8nimzu0E+xDRxPXJsmBmbwCajMSEW7LosVE5xNwwAOhE
-         w2l/lwZoPxgpXVMhaAK3ofkNx8k/cI8FFTbiLzt2d5uy4/4NkgjzqhTizJjbvD2y8WRy
-         Ywjw==
-X-Forwarded-Encrypted: i=1; AKwUvBwUGbdhodTfZxWgK9JTHdMLxSho9n+Z5kPKhZ1oF3FLC2n9lFcl6FVp3LOwSCpegHEX9wyMXrg=@vger.kernel.org
-X-Gm-Message-State: AFuF++muMl+9PF6LD8YARLwfWELLVMFybi2Cj9I3RXQMkQB2+EQBC+CI
-	k8eTBI7EmS1tGcboQeaV2aBAeA90QJuPoutqMFQ49GyItY6CBXEFs4zq
-X-Gm-Gg: AR+sD12/ZHsTiu3eUYDoZRZHj9zk6TpQ6xMBa9VcirtFQJElQaETtYh+MlHp+ZJlRuG
-	FIQG45aa/0kGFBg/sWjyJzSzOKnrhgdNgA7nfp1710oJwhIIPoztYbvWJsAVnJvlKgY8nZE0deT
-	/LUgLdg+sqKsGwWof7lRisMuG8RVV09P6uSycbOjFhTkq95umvsSrDgnvsWetilHNbTRFyuxb6i
-	vYs5KZVCwf4ckxI64ZGLCBpsx1bU+QPZS0KFrtwT4r3ZOswjMUOMpVuRrtpqKV8cn45Sb1wHEc/
-	b24jCezgsopsQS/tKIH6SyfZqK/4a6GHglCkC40YixgPQcNSZhMEM9Pxj8CNPN6cdl4H/ZAfhmO
-	mFLWZxdqFFi7IiUIazcPwej6lxqtEaBuNwgb3kJP0xjSF63ADhv27AhAka5PuBqSBEiMJc5brYv
-	u0OgD2jq2nAl4SoCaUSieHTDvQraLXF3aYrTrFjjBOePcjzCFjg2KG1TQcEo+mAzjRrifcLdBkj
-	YGuTFZ/qeBt+vZwwkUKtitytM2+Gt8U7tXTnXLWZ7lekX2mv+ug
-X-Received: by 2002:a17:903:324c:b0:2da:e553:c70f with SMTP id d9443c01a7336-2daec7bc931mr42090935ad.22.1788332432973;
-        Wed, 02 Sep 2026 00:00:32 -0700 (PDT)
-Received: from secrnd-cstp.tailb7f510.ts.net ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd4a7f1fsm8113065ad.63.2026.09.02.00.00.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 00:00:32 -0700 (PDT)
-From: Sanghyun Park <sanghyun.park.cnu@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Sanghyun Park <sanghyun.park.cnu@gmail.com>,
-	netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Stevens <dlstevens@us.ibm.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vxlan: use one headroom snapshot for neighbour replies
-Date: Wed,  2 Sep 2026 15:59:12 +0900
-Message-ID: <20260902065911.1177698-3-sanghyun.park.cnu@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <53a67f9a-b8a0-4967-b2c6-be4ee3a09735@redhat.com>
-References: 
+        d=1e100.net; s=20251104; t=1788332736; x=1788937536;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=34YhfY3hqkRc1EY3EtPWnzhtL96VmHVIc4hAuYVzERo=;
+        b=C+Zpnm7jKTdeAv5vPrx1ss5Jsw9eT6Twwu1IaY/BrAQsgzhzdobiECgH0Qgy/6yg/I
+         avZEkCC4bWwtiZokXpRBy/E0Y/2zQGjTA7RbmNJyePd4wu3S6/QV3xPubTsmpAKrQW4A
+         zT+Nw26V4kUMTjuhrRZq3Q6OvusEnPTSs6zlgHiPN7TRi5xeV0YEYC3gQpSA4wYu3PNV
+         p48M07NaTfX8N+vpJO37wHuv364xtP2XSVblLjUodPl4QduYeTuo8fv1MA8Ektkphf/i
+         Vx2ZrWV/VcWQi60zEOhhek2G70bOuvOXxKJWMczi/3AMx3YSt4iBF9J2cMT7G9Txhh3a
+         LCIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxntBzJYsQZCjB7CTcbn7Lb/xbVei/TywOHFTAE1ikgA6HTgHXVWxm6AfG0VJr3H5Py+4HQe3g=@vger.kernel.org
+X-Gm-Message-State: AFuF++k6jtMdZEqxFCwUtNt6q52YRa4teYklNT9IvWTDl223ghPfqtcl
+	xUajPt2314glcrRMVM/6sijdyuGdb99AbPzZa6Tc9bCR3sibyBwjQMpExknfryM1
+X-Gm-Gg: AYBFou1dmpUgP0d+OyvW8coi6Amoe9LNwghTFL7jcsEsHqlzeIJQTD7IvKbNkJnrU/y
+	BI6hGGKfiWoRgipcg/aQz/AAjBx5fUET9qbgA3ansukmNX4GhbnL55yr+KywRq9qbWxr3q5gJVm
+	JMzBxUwvEHsXf9YtGfSGl4XX9YI9a+JTEdqI5oaP2s8Ek5Qh9OgfbX4r68/eODi32s8xLzlgBmH
+	S+ekIOTECK0aiDV8svmN4pVvd8V7zpCjPAKMlsGr2p/1Xj+AG4OjPrBxFLDI2yzk3Qfz51WpsZf
+	Xz3BYhEFkpm35da+LuBarn80YlzxUYPJhwvmUns5m9OVzHC8UjfxJjnYL+Rugzv4l638rrthiZf
+	pXI5gOy6O8zLULeNANuso/k5RI8/3bVHcmdVWJgiypxPhrcehatdiSGk7hUDzOUG45/lHTrUPjD
+	frS1QE7T1j2iHpqbTfFr4Bw7wMd07csYF/CIchLKOPXIeWmXAmfph+OP/QJU9I1M4GC8fhrGxgq
+	5SbrANfbuYDo5WfbLTtP4UEAokgfedO4aXx
+X-Received: by 2002:a05:6102:c12:b0:785:35cb:e64a with SMTP id ada2fe7eead31-78a1f192bcemr733005137.3.1788332735661;
+        Wed, 02 Sep 2026 00:05:35 -0700 (PDT)
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-78a1a51326asm1492123137.12.2026.09.02.00.05.35
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 00:05:35 -0700 (PDT)
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-97bf91b2e6eso167676241.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:05:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzj6sQVcx3X0m8nk4e44xyF4ptPjvfURPXwp0HQwobAF/0GYdy2q/i6F3hSvtkN4tDGb+F3R58=@vger.kernel.org
+X-Received: by 2002:a05:6102:e0d:b0:789:5f54:2367 with SMTP id
+ ada2fe7eead31-78a1f1f13e9mr820442137.4.1788332734870; Wed, 02 Sep 2026
+ 00:05:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260901-rzn1-miic-fix-array-v2-0-3e907049e770@reliablecontrols.com>
+ <20260901-rzn1-miic-fix-array-v2-1-3e907049e770@reliablecontrols.com>
+In-Reply-To: <20260901-rzn1-miic-fix-array-v2-1-3e907049e770@reliablecontrols.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 2 Sep 2026 09:05:23 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVs4Y+=_Q72QwdHbO=V_Y_-wS2vMzX=Qw5RYoZeXYT94w@mail.gmail.com>
+X-Gm-Features: AcwNN1VbxvsNj-N5m50LAojrEK604jhD7foSU4OSV3X2c4XmawrkeMppBtuO5-Q
+Message-ID: <CAMuHMdVs4Y+=_Q72QwdHbO=V_Y_-wS2vMzX=Qw5RYoZeXYT94w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] net: pcs: rzn1-miic: Fix config array initialization
+To: khendry@reliablecontrols.com
+Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	"Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thanks for the review, Paolo.
+Hi Kyle,
 
-> if you can observe a splat on the unpatched kernel, please include it,
-> otherwise please explain why the issue is not just a theoretical one.
+CC Prabhakar
 
-I thought it would make the changelog verbose by putting the evidences of the
-bugs (some people like concise changelogs).
+On Tue, 1 Sept 2026 at 17:53, Kyle Hendry via B4 Relay
+<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
+>
+> From: Kyle Hendry <khendry@reliablecontrols.com>
+>
+> Fix memset parameters to initialize the entire DT value array
+>
+> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
 
-If you prefer splats in there, let me add some in v2.
+Thanks for your patch!
 
-It would be like:
+You forgot to add
+Fixes: f39e968dc168a7bd ("net: pcs: rzn1-miic: Move configuration data
+to SoC-specific struct")
+as requested in my review of v1.
 
-```
-/* vxlan_na_create() samples ... */
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -683,7 +683,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
+>         if (!dt_val)
+>                 return -ENOMEM;
+>
+> -       memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val));
+> +       memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val) * miic->of_data->conf_conv_count);
+>
+>         if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
+>                 dt_val[0] = conf;
+>
 
-The race is reproducible on the unpatched kernel. It occurred when
-vxlan_na_create() generated a neighbour reply while vxlan_changelink() changed
-the link headroom. KASAN caught a four-byte write two bytes beyond a 704-byte
-skbuff_small_head allocation.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-/* Snapshot the headroom once ... */
-```
+Gr{oetje,eeting}s,
 
-JFYI, every patch I make is done only after I get real evidence :)
+                        Geert
 
-> Also please specify if some LLM has been used.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-I used LLM assistance during bug discovery, analysis, etc, but try to review
-with my eyes as much as I can.
-
-
-Plz check the new paragraph of the changelog whether it is ok for v2.
-
-Thanks,
-Sanghyun
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
