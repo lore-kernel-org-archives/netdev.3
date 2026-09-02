@@ -1,63 +1,67 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCE37E5FF
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965EB3909B5
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788380527; cv=none; b=R6LDnLvuEmG41QkYsX26GvC5fmio0+IIAOMcvvp35r0SbEV2aABepDPP0TalV0v4Bdd7cZWUA0fP3OWsNHCg0K5CHNEQA5CM7CGqmz25QzryY8smQYkb96RKYhHb1DAQp9iOhsUSz+HX0uJ5upxTEep1QDcOIyollLZY/jzb8qs=
+	t=1788380527; cv=none; b=EhRUK1DiqFyNU4sIyf/ncennTKNxLLGsk536akoE1BTHeVvYLSx4k+lSBzkbBfSMMYUVUXYLKCPBW+bPo872fgq8tvrr1lvW8Z57dX+1pFJN9hfyOKqOZqJY6HcrYyIkeGJe3IUm4LGb0urgXl248Z0QBXAAy6xD90UG5KGB3mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788380527; c=relaxed/simple;
-	bh=B0vK6YTDpQs2GopgLT4bEK5kK3s52dfugzneav7KDeQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ho7gqq74uHAsbJozdTo7zDxdFlKuVi6PZEkZJ1J7Q1ttO+zME+0iaJN7mKSRCrAOwQJJngHkKxVOhCSigDj1PhjcrSF1ufjnSusLmlkpkLzQNx1TUXpeH1q61fjYOBqLG6ktW/mL8PWWfOvNNcIfyM/Xqjoa1J44yyjcfjbM11o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iZjcAyXl; arc=none smtp.client-ip=209.85.216.72
+	bh=6LnK7q6zGIvWdlK63KvYVATiw7Ef0/UeIArN0nce0NA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lah7CP6PGJQ4u27N74eVMXkkIGb7YipC5zM70bHAXSstA9gto9dqyFwFZY97HaQKl3ilZtZ+e5iaYlp6+mwXQRhqUTrHGea12suGoHU8nAJETCgT3S9h7vFgkooOCsdzEkHrOSLqq718iW3+F7ume5ZMA9z9qecPVE8LIuEI47A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a7cxL67Y; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iZjcAyXl"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-381250979d5so1954998a91.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:22:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a7cxL67Y"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-395543dc382so2077837a91.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:22:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788380525; x=1788985325; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FNTpXX+qFZkepqUD97/CzK3xxhgqfbaP8aZpgIAie9U=;
-        b=iZjcAyXlRuykVL9NPtJBFnE50xTrb75uqS571yzi1IkPqSQAO0Beb2jOKZb+6x0WU4
-         pTuN8E48/jbLFAG9HKcceU4g1wfD4/4iOZr5dcxgdgoZxXebEJfnlqvWPOPW9CXHFJV4
-         95a22t0CM98scVpGfwJCW4c26lT88WwFpWHCxNlr/LC91l76gf5+b1AfViH2drmt10ch
-         FEBd253lqEq18Swcth/AUPjOC+zLXHR9hrQUtaptJU8tZR26ZIpONs/Y7gwjkxHV+RBv
-         MwT/ZG6ET5YI4Gu6jD6U+WC5oxgwOFcQsLWwHgUn0eKongb7ilYHaxgIobuh77hdi84T
-         Cczg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788380525; x=1788985325;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788380526; x=1788985326; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FNTpXX+qFZkepqUD97/CzK3xxhgqfbaP8aZpgIAie9U=;
-        b=rn3erSb7yod7IbKelxx2SQYhxQ+B1MfgMYE70Tawt8fdb23VaE6ULxgXzJ8qjsN1yj
-         JYTIwbIvaFokDgtJfPBL+/O6UVWk9ZATzAE0TopwSMcx3DBDTAbSU0k1E5TTyYpbrN/v
-         j8ZKl0pBW1PFpowi/Knn55BC7UL4xZwJEtKs9dBzzSWc6kyANgDt9fbpvSWvjl6zvHyf
-         3lRamHKiU5mGuXN5MaIm2o88Ua2ZICZAeF3beJuJWHmBJTxZdCWLToSt/vE/SdEhRCDg
-         avuiBKX2c4ZnT/vLBNHEpcUXoxgBcs21fC5c7+j4hZdVQUe53E9/w2VhSm9FAg7UAx/i
-         0AGA==
-X-Forwarded-Encrypted: i=1; AKwUvBz9Pc0TnnEykc3RYFSKhuaxM+Jw+BwF1WniCHSIVGcTeao31r1PWhWXxRpmBttlK0EnQiyMU/k=@vger.kernel.org
-X-Gm-Message-State: AFuF++lR8RKDRzkh2AqSMC57Yzt/4qry2vCcQo9hZgWD5X9nvCd3m+Yw
-	EmWBy7+U3T1kgpzS4k6u06D8WcBoHwDoZVjZCf9e0KcqJxcGrEvFyvds0hy6NKYiSboEFmIPhLx
-	XYcB6jg==
-X-Received: from pjbbh12.prod.google.com ([2002:a17:90b:48c:b0:381:171e:961c])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:dfc5:b0:398:d292:e6d5
- with SMTP id 98e67ed59e1d1-39aee17a08fmr11907862a91.24.1788380524927; Wed, 02
- Sep 2026 13:22:04 -0700 (PDT)
-Date: Wed,  2 Sep 2026 20:21:49 +0000
+        bh=qen5Ux+GGayn4cMUhvPmSroxT+QXpITMr+juIfolFiw=;
+        b=a7cxL67YyUMAXKPxU55HgYvvJRF5VTawCV+LMg9fGGQVSp16rjevXXynC6xOJVwc4g
+         5uCl3lUcGDTJ7PmuZ4KPcICEpovHedErgNIaP7HABAD+4k2VZDQHk1BKOk6gHwoUjODW
+         u+pSijltGDPA8HhQQy8A20mlaOo30IblHgZHciqNSi+qo0upljy9/g0cghhT/yM3Iu2V
+         Z/u+CGSs5HiNqat7vDJHw5n/hT0kUZPUSD8k3I5ywRj4UzraIu7RyzTJTYBtgNTnhapH
+         11vW0xuTyqWmslwjrzYQupsUCeTzPSfXOPRMpvNeV0pbYO3iOIjPE6wXmqBJQ2DQYU7T
+         E2gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788380526; x=1788985326;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qen5Ux+GGayn4cMUhvPmSroxT+QXpITMr+juIfolFiw=;
+        b=UXAvv0n9Lbz6FW2s3EyBsa9tp/uZpFmTm2+MjptIditNMKt3u0bZ0MRQoaYVTdmeZN
+         WjFmh96jax1tVdMm3gfWAGpLrXW2KIP8LBgoZUokqCJO4P3AU5F8F/3tV9K8ayDDilNF
+         I0u/uch8vYDGUSG66HAj2aMsxOVx1BKh5Asa31fblOsSb+daDpVQ7ZrOMjiA+JkqpH5t
+         okzU7MnB9M2KfbStV0oNlg2bh/phuc5ULl2UvDX0Wjk6dLj217UhnWHIWkx6sDCC6LZx
+         6fLYFARIpSYb1SWIYz6OV2a9Q/fvlOFQFFWlW/szTuI6SkixJtkwS0EDmERSu9bre/2p
+         0vbA==
+X-Forwarded-Encrypted: i=1; AKwUvBygD9Xa+2zA/a2Hh2mzziA4r8Ns37pz3fzT9TN0iw5oM0lPnGwnFvNgcXPJ+wTJ6vOJMgbiORA=@vger.kernel.org
+X-Gm-Message-State: AFuF++ki2uBAP+WI9XRX4ElCoU7xjnQtTaKZVwlaTbq2QP+UosSttfPh
+	MmQ3awzPDZAXB+8xO5k4GTPwxFhatgnSmkNAzLiRPZ5cQwZvfcOLk0VoWEZ5PPcxuEovP9VkH1f
+	m6kpJQA==
+X-Received: from pjbie23.prod.google.com ([2002:a17:90b:4017:b0:398:d6ef:84d])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5208:b0:37d:f206:a2ac
+ with SMTP id 98e67ed59e1d1-39aedf0d47amr12270537a91.7.1788380525751; Wed, 02
+ Sep 2026 13:22:05 -0700 (PDT)
+Date: Wed,  2 Sep 2026 20:21:50 +0000
+In-Reply-To: <20260902202202.892676-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260902202202.892676-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260902202202.892676-1-kuniyu@google.com>
-Subject: [PATCH v1 net 0/3] af_unix: Minor fixes for MSG_OOB and MSG_PEEK.
+Message-ID: <20260902202202.892676-2-kuniyu@google.com>
+Subject: [PATCH v1 net 1/3] af_unix: Update last skb marker in manage_oob().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -65,22 +69,100 @@ Cc: Simon Horman <horms@kernel.org>, Fahad Alharbi <fahad@codepure.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Fahad Alharbi reported blocking recv(MSG_PEEK) could hog CPU
+Fahad Alharbi reported that blocking recv(MSG_PEEK) could hog CPU
 due to OOB skb.
 
-Patch 1 and 2 fixes the issues and Patch 3 adds tests.
+In the following cases, manage_oob() skips OOB skb(s) and returns
+NULL for the last recv(MSG_PEEK):
 
+  socketpair(AF_UNIX, SOCK_STREAM, 0, sk);
 
-Kuniyuki Iwashima (3):
-  af_unix: Update last skb marker in manage_oob().
-  af_unix: Return immediately when manage_oob() returns NULL for
-    0-length buffer.
-  selftest: af_unix: Add zero-buffer test for msg_oob.c
+  1) skb -> OOB skb -> NULL
+     send(sk[0], "ab", 2, MSG_OOB);
+     recv(sk[1], buf, 0, MSG_PEEK);
 
- net/unix/af_unix.c                            | 12 ++--
- tools/testing/selftests/net/af_unix/msg_oob.c | 67 +++++++++++++++++++
- 2 files changed, 75 insertions(+), 4 deletions(-)
+  2) skb -> consumed OOB skb -> NULL
+     send(sk[0], "ab", 2, MSG_OOB);
+     recv(sk[1], buf, 1, MSG_OOB);
+     recv(sk[1], buf, 0, MSG_PEEK);
 
+  3) consumed OOB skb -> OOB skb -> NULL
+     send(sk[0], "a", 1, MSG_OOB);
+     recv(sk[1], buf, 0, MSG_OOB);
+     send(sk[0], "b", 1, MSG_OOB);
+     recv(sk[1], buf, 1, MSG_PEEK);
+
+Then, @copied is 0 in unix_stream_read_generic() (zero-length buffer,
+or non-OOB skb is not yet consumed), and unix_stream_data_wait() is
+called.
+
+However, it returns immediately because @last is not updated in
+unix_stream_read_generic(), and the thread busy-waits for a new skb.
+
+Let's update @last in manage_oob().
+
+For MSG_PEEK, @last is updated with the skipped OOB, and for the
+non-peek case, @last matches the returned value (when !copied)
+because OOB is unlinked.
+
+Note that manage_oob() is inlined and no stack canary is added.
+
+Fixes: 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
+Reported-by: Fahad Alharbi <fahad@codepure.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/unix/af_unix.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 13f9926bf205..6861370062df 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2812,8 +2812,8 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+ 	return 1;
+ }
+ 
+-static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+-				  int flags, int copied)
++static struct sk_buff *manage_oob(struct sk_buff *skb, struct sk_buff **last,
++				  struct sock *sk, int flags, int copied)
+ {
+ 	struct sk_buff *read_skb = NULL, *unread_skb = NULL;
+ 	struct unix_sock *u = unix_sk(sk);
+@@ -2827,11 +2827,13 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 		if (copied && (!u->oob_skb || skb == u->oob_skb)) {
+ 			skb = NULL;
+ 		} else if (flags & MSG_PEEK) {
++			*last = skb;
+ 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 		} else {
+ 			read_skb = skb;
+ 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 			__skb_unlink(read_skb, &sk->sk_receive_queue);
++			*last = skb;
+ 		}
+ 
+ 		if (!skb)
+@@ -2850,8 +2852,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 			__skb_unlink(skb, &sk->sk_receive_queue);
+ 			unread_skb = skb;
+ 			skb = skb_peek(&sk->sk_receive_queue);
++			*last = skb;
+ 		}
+ 	} else if (!sock_flag(sk, SOCK_URGINLINE)) {
++		*last = skb;
+ 		skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 	}
+ 
+@@ -2971,7 +2975,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ again:
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 		if (skb) {
+-			skb = manage_oob(skb, sk, flags, copied);
++			skb = manage_oob(skb, &last, sk, flags, copied);
+ 			if (!skb && copied) {
+ 				unix_state_unlock(sk);
+ 				break;
 -- 
 2.55.0.970.g62bdec98f9-goog
 
