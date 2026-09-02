@@ -1,75 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5654A9D56;
-	Wed,  2 Sep 2026 15:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF924A3F18
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 15:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788364469; cv=none; b=j+vRkx/xyDTbRCcxxlOVoDmy80KR4MIqWgbx5dYQARvApdOOk2l8YnKQq9gzIKcvkiAXflxE8acl3uf4rK9hvnVVZXTKSAXnoQi1ZfGHvee9nC4g+yTk7I2Muhxap9IksiPa9GR4PnhPPIWGju3EshgE0f2XXxfd6d5JCsX4WiA=
+	t=1788364694; cv=none; b=s1sSf02EZcT+cUgi129x012LncQ/cOKrFLynzQE+n4xu7ejshSW0oV1570jXVp5nOdTjSv+4UcZ+WPPKQQIG8w21Zc5qIpm0oBA6gVKGjiLYDo2IEv6RXQvHDUCGoBgYpuuT2i91hKexnbXBemcSIxR3SQAS2Et0lUXI63U72Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788364469; c=relaxed/simple;
-	bh=wLwvmzVQsRukFtqrXL7A77DVeN0iJazWeoBjaREnPaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LYfbIb0V+OmMClwq8FsMZOgXvtKEOLjaDQZtDVshSmHyzafJCIW3BNK8bKSNqtAqD8FpTdZooHz64q52+FaFXLy3rK55VDFDUSqW+8TKwPCjs8/xhRakVRH4EAsiOpc5EomlTxojdXk0LYRBsjASITixnZgXRQQOx6Oi1sp98kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=og6mDPB3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788364694; c=relaxed/simple;
+	bh=w9YvU/perSDaRXDpDVte38mozMNwVGeGKPeA6VLLxyM=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=l16IZwJKsWmdtAUuGBO/6UIdO4yENzgdTmm7BOEECkSJip2yM64LIJ7iihQc2bk6Eyvm74e0pr0GMdDEZgpTQ3p8T3w7lZkpGpKshQObGeNSmui9u0KG/8L++32jl4MNinD15gT2Q7AevqmKeGA4U+sBx8I1iKP0XoPY2d2zZy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=YCUNSvMG; arc=none smtp.client-ip=141.95.128.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="og6mDPB3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7A21F00A3A;
-	Wed,  2 Sep 2026 15:54:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788364467;
-	bh=ikgGunKiG2js2SWQ2vvgXAcTmkP2clqGwoHJwoz6Jtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=og6mDPB3fNHxT/b8DpGLOM/+fFPNR1nxAgmIc7JyX0WmQU7aOHknUrEakbgGXQdOk
-	 8eHMjyLtrIx4hMI3jNx2P5hZ3/851hFFaxn7yxbb2eAZYx66WFvhc4scqBHPJtJ9pm
-	 X8OJVidGTfH7w3jcE2UY3JV0+GWt0rZ8zoA6G/jRNAZByAL9u2pnkXHJpp8E+35Ssl
-	 6ZsDx9yTipNh30+DHBDgW3FjyB5btSHmCLEDwO0uj+raQwG5YB3c33nv81G0rQBFFA
-	 Pa5LGP4vCe8lR5hRjvzq1grDnV5Q7ls1u726Yi5d7hESIWKFsqGIm5P7GyjNZxH64n
-	 3xWru1KSFFcBQ==
-Date: Wed, 2 Sep 2026 16:54:23 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yang Zi <2959243019@qq.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, kees@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: liquidio: avoid sleeping allocation under
- octeon_devices_lock
-Message-ID: <20260902155423.GG396647@horms.kernel.org>
-References: <tencent_6653AA61B6BB17B8D845A89977D199C08C06@qq.com>
+	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="YCUNSvMG"
+Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
+ S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 2 Sep 2026 17:52:58 +0200
+Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
+ S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
+ 15.02.2562.046; Wed, 2 Sep 2026 17:52:58 +0200
+From: Julien Blanc <julien.blanc@sprinte.eu>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "andrew@lunn.ch"
+	<andrew@lunn.ch>
+Subject: [PATCH] Add config phase for dp83td510e phy
+Thread-Topic: [PATCH] Add config phase for dp83td510e phy
+Thread-Index: AQHdOvMgJh/Gn4788kyuSNBmULO8iQ==
+Date: Wed, 2 Sep 2026 15:52:58 +0000
+Message-ID: <0d5badda1670a578b18fae293d8cdd7e57d4d01a.camel@sprinte.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A25454C20250B34DBE5606E54CB4A7E3@EX793143.lan>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_6653AA61B6BB17B8D845A89977D199C08C06@qq.com>
+DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
+ c=relaxed/relaxed; t=1788364378; h=from:to:subject:date;
+ bh=w9YvU/perSDaRXDpDVte38mozMNwVGeGKPeA6VLLxyM=;
+ b=YCUNSvMG6wNK+BOir9Re+4TRsVv6Kx0lDbdvq4x4/5tXa4WrnFR55SqG/KgiwYpBPM8YBLmllNdzneqxr1WT0gc9tvd7gp9KYb/LeETFbQ9u4//d2u9b/V32F26x3ANau6WZoTZECiLQbbMrJ52Gqn21FEYHrpln2WCbsr0e9RitPp13x1gogE81HqSBiIGMUWX8OrOSpgfMuR8At7jkxKYeGi9u4Vu386FNoNKwHG5wJUa4WRDDrXW5McghaFMErGroksYQncpeq9p0HBHRsgc9wyWlswMY3NThCdjf2AI/TBLJBuQgRNJz9qLQFJWVatTAx/8m2oLOqA0yErarSA==
 
-On Tue, Aug 25, 2026 at 04:50:55PM +0800, Yang Zi wrote:
-> octeon_allocate_device() holds the spinlock octeon_devices_lock while
-> calling octeon_allocate_device_mem(), which uses vzalloc(). vzalloc()
-> can sleep, so this is a "scheduling while atomic" bug that can trigger a
-> sleeping-in-atomic warning (or deadlock on a preemptible kernel).
-> 
-> The memory allocation does not touch octeon_device[], octeon_device_count
-> or the free-slot search, so it does not need the lock. Move the
-> octeon_allocate_device_mem() call ahead of the lock: allocate the device
-> memory first, then take the lock only to find a free slot and register
-> the new device in the octeon_device[] array. If no slot is available
-> (all MAX_OCTEON_DEVICES slots in use), free the freshly allocated memory
-> and return NULL as before.
-> 
-> The lock therefore continues to protect exactly the data it documents:
-> the octeon_device[] array and octeon_device_count.
-> 
-> Signed-off-by: Yang Zi <2959243019@qq.com>
-
-This patch has been marked as Not Applicable in patchwork.
-I assume that is because it doesn't apply.
-Which I believe, in turn, is because it is whitespace mangled:
-the tabs appear to have been substituted for combinations
-of spaces and non-breaking spaces.
-
-Please consider updating the way that you send patches -
-e.g. using b4 or a different mail server - and reposting.
+QWRkIGEgY29uZmlnIHBoYXNlIGZvciB0aGUgVGV4YXMgSW5zdHJ1bWVudHMgRFA4M1RENTEwRSBl
+dGhlbmV0IFBIWQ0KDQpUaGUgY29uZmlnIHBoYXNlIGN1cnJlbnRseSBzZXRzIHRoZSBmb2xsb3dp
+bmcgcHJvcGVydGllcyBmcm9tIHRoZQ0KZGV2aWNlIHRyZWU6DQogICogUk1JSSAvIFJHTUlJIG1v
+ZGUgKG5vdGUgOiBSTUlJIG1hc3RlciAvIHNsYXZlIGNhbiBvbmx5IGJlIHNldA0KICAgIGJ5IHN0
+cmFwcyBhbmQgY2Fubm90IGJlIGNoYW5nZWQgYXQgcnVudGltZSBvbiB0aGlzIHBoeSkNCiAgKiBS
+R01JSSBkZWxheXMuIFRoZXNlIGRlbGF5cyBjYW4gYmUgZW5hYmxlZCBvbiB0aGUgcGh5IHNpZGUs
+IG9ubHkNCiAgICBhcyBhIGJvb2xlYW4uIERlbGF5cyBhcmUgZW5hYmxlZCBpZiBwaHktbW9kZSBp
+cyByZ21paS1pZCwgb3INCiAgICByZ21paS1bcnh8dHhdaWQgd2hpY2ggZW5hYmxlcyBvbmx5IHRo
+ZSBjb3JyZXNwb25kaW5nIGRlbGF5Lg0KDQpTaWduZWQtb2ZmLWJ5OiBKdWxpZW4gQmxhbmMgPGp1
+bGllbi5ibGFuY0BzcHJpbnRlLmV1Pg0KLS0tDQogZHJpdmVycy9uZXQvcGh5L2RwODN0ZDUxMC5j
+IHwgNTQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KIDEgZmlsZSBjaGFu
+Z2VkLCA1NCBpbnNlcnRpb25zKCspDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9waHkvZHA4
+M3RkNTEwLmMgYi9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMNCmluZGV4IGQ3NWRhZTYwNzFh
+ZC4uNTA1ZTM4NDM3NDBmIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvcGh5L2RwODN0ZDUxMC5j
+DQorKysgYi9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMNCkBAIC0zMCw2ICszMCwxMiBAQA0K
+ICNkZWZpbmUgRFA4M1RENTEwRV9JTlQxX0xJTksJCQlCSVQoMTMpDQogI2RlZmluZSBEUDgzVEQ1
+MTBFX0lOVDFfTElOS19FTgkJCUJJVCg1KQ0KIA0KKyNkZWZpbmUgRFA4M1RENTEwRV9SQ1NSCQkJ
+CTB4MTcNCisjZGVmaW5lIERQODNURDUxMEVfUk1JSV9NT0RFX0VOCQkJQklUKDUpDQorI2RlZmlu
+ZSBEUDgzVEQ1MTBFX1JHTUlJX01PREVfRU4JCUJJVCg5KQ0KKyNkZWZpbmUgRFA4M1RENTEwRV9U
+WF9DTEtfU0hJRlQJCQlCSVQoMTEpDQorI2RlZmluZSBEUDgzVEQ1MTBFX1JYX0NMS19TSElGVAkJ
+CUJJVCgxMikNCisNCiAjZGVmaW5lIERQODNURDUxMEVfQ1RSTAkJCQkweDFmDQogI2RlZmluZSBE
+UDgzVEQ1MTBFX0NUUkxfSFdfUkVTRVQJCUJJVCgxNSkNCiAjZGVmaW5lIERQODNURDUxMEVfQ1RS
+TF9TV19SRVNFVAkJQklUKDE0KQ0KQEAgLTY0Niw2ICs2NTIsNTMgQEAgc3RhdGljIGludCBkcDgz
+dGQ1MTBfY29uZmlnX2FuZWcoc3RydWN0IHBoeV9kZXZpY2UgKnBoeWRldikNCiAJcmV0dXJuIGdl
+bnBoeV9jNDVfY2hlY2tfYW5kX3Jlc3RhcnRfYW5lZyhwaHlkZXYsIGNoYW5nZWQpOw0KIH0NCiAN
+CitzdGF0aWMgaW50IGRwODN0ZDUxMF9jb25maWdfaW5pdChzdHJ1Y3QgcGh5X2RldmljZSAqcGh5
+ZGV2KQ0KK3sNCisJc3RydWN0IGRldmljZSAqZGV2ID0gJnBoeWRldi0+bWRpby5kZXY7DQorCWlu
+dCByZ21paV9kZWxheSA9IDA7DQorCXMzMiByeF9pbnRfZGVsYXk7DQorCXMzMiB0eF9pbnRfZGVs
+YXk7DQorCWludCByZXQ7DQorDQorCWlmIChwaHlfaW50ZXJmYWNlX2lzX3JnbWlpKHBoeWRldikp
+IHsNCisJCXJ4X2ludF9kZWxheSA9IHBoeV9nZXRfaW50ZXJuYWxfZGVsYXkocGh5ZGV2LCBkZXYs
+IE5VTEwsIDAsDQorCQkJCQkJICAgICAgdHJ1ZSk7DQorDQorCQkvKiBTZXQgRFA4M1RENTEwRV9S
+WF9DTEtfU0hJRlQgdG8gZW5hYmxlIHJ4IGNsayBpbnRlcm5hbCBkZWxheSAqLw0KKwkJaWYgKHJ4
+X2ludF9kZWxheSA+IDApDQorCQkJcmdtaWlfZGVsYXkgfD0gRFA4M1RENTEwRV9SWF9DTEtfU0hJ
+RlQ7DQorDQorCQl0eF9pbnRfZGVsYXkgPSBwaHlfZ2V0X2ludGVybmFsX2RlbGF5KHBoeWRldiwg
+ZGV2LCBOVUxMLCAwLA0KKwkJCQkJCSAgICAgIGZhbHNlKTsNCisNCisJCS8qIFNldCBEUDgzVEQ1
+MTBFX1RYX0NMS19TSElGVCB0byBlbmFibGUgdHggY2xrIGludGVybmFsIGRlbGF5ICovDQorCQlp
+ZiAodHhfaW50X2RlbGF5ID4gMCkNCisJCQlyZ21paV9kZWxheSB8PSBEUDgzVEQ1MTBFX1RYX0NM
+S19TSElGVDsNCisNCisJCXJldCA9IHBoeV9tb2RpZnlfbW1kKHBoeWRldiwgTURJT19NTURfVkVO
+RDIsIERQODNURDUxMEVfUkNTUiwNCisJCQkJICAgICBEUDgzVEQ1MTBFX1JYX0NMS19TSElGVCB8
+IERQODNURDUxMEVfVFhfQ0xLX1NISUZULA0KKwkJCQkgICAgIHJnbWlpX2RlbGF5KTsNCisJCWlm
+IChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisNCisJCXJldCA9IHBoeV9zZXRfYml0c19tbWQocGh5
+ZGV2LCBNRElPX01NRF9WRU5EMiwNCisJCQkJICAgICAgIERQODNURDUxMEVfUkNTUiwgRFA4M1RE
+NTEwRV9SR01JSV9NT0RFX0VOKTsNCisNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisN
+CisJfSBlbHNlIGlmIChwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUk1J
+SSkgew0KKwkJLy8gc2V0IFJNSUlfTU9ERV9FTiwgY2xlYXIgUkdNSUlfTU9ERV9FTiAoZXhjbHVz
+aXZlKQ0KKwkJcmV0ID0gcGh5X21vZGlmeV9tbWQocGh5ZGV2LCBNRElPX01NRF9WRU5EMiwgRFA4
+M1RENTEwRV9SQ1NSLA0KKwkJCQkgICAgIERQODNURDUxMEVfUk1JSV9NT0RFX0VOIHwgRFA4M1RE
+NTEwRV9SR01JSV9NT0RFX0VOLA0KKwkJCQkgICAgIERQODNURDUxMEVfUk1JSV9NT0RFX0VOKTsN
+CisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisJfQ0KKw0KKwlyZXR1cm4gcmV0Ow0KK30N
+CisNCiBzdGF0aWMgaW50IGRwODN0ZDUxMF9nZXRfc3FpKHN0cnVjdCBwaHlfZGV2aWNlICpwaHlk
+ZXYpDQogew0KIAlpbnQgc3FpLCByZXQ7DQpAQCAtOTM5LDYgKzk5Miw3IEBAIHN0YXRpYyBzdHJ1
+Y3QgcGh5X2RyaXZlciBkcDgzdGQ1MTBfZHJpdmVyW10gPSB7DQogCS5uYW1lCQk9ICJUSSBEUDgz
+VEQ1MTBFIiwNCiANCiAJLmZsYWdzICAgICAgICAgID0gUEhZX1BPTExfQ0FCTEVfVEVTVCwNCisJ
+LmNvbmZpZ19pbml0CT0gZHA4M3RkNTEwX2NvbmZpZ19pbml0LA0KIAkucHJvYmUJCT0gZHA4M3Rk
+NTEwX3Byb2JlLA0KIAkuY29uZmlnX2FuZWcJPSBkcDgzdGQ1MTBfY29uZmlnX2FuZWcsDQogCS5y
+ZWFkX3N0YXR1cwk9IGRwODN0ZDUxMF9yZWFkX3N0YXR1cywNCi0tIA0KMi40Ny4zDQo=
