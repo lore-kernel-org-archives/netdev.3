@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E0F37B003;
-	Wed,  2 Sep 2026 05:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7F6368D62;
+	Wed,  2 Sep 2026 05:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788327399; cv=none; b=p+xZAw9pX3B9WfYYgWECWJttYnYihHDWuvlRyFrEEwxqoSvcn17mDv/36EVwZwroeeECHjHJD7DCuJoDcIo6elQCdks89M01uCDTkkce2z7NSrjrFwrz0CwmVxUQsLMfJEeT+6nTPt17Jxq8ePTFWKieI5hI1rqBl0wZDkeCXBw=
+	t=1788327400; cv=none; b=p6ramWdVMp/ueVLnnO/rXjH/oFOc8oLsKbuQ1w3YBw4RzwQZ/LhFvdIoTOut6ofRioV90iL5q0Wd+I6eb2Y7yPPla5igNHiwrA8ZVYLm0dp80wDsOxizFMERguYD8n5mZwhQOyJWla9Y/A5lTSV19UviK3OAsWUlxzaxHds0OSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788327399; c=relaxed/simple;
-	bh=54IUuX2LgPfyeF7qW/3DbfTQb8po+6pSn/gM6d2d9cg=;
+	s=arc-20240116; t=1788327400; c=relaxed/simple;
+	bh=jZv9BvWfZt6o5tU/TnaMsZst6MrKpWoV+Xd2dTyXipE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d+qrq+Fvn9VW3I6foOsfw3bUD0h8zrkisYs1Tdhm6VppRbyFRc9FHvMJX3aeAkIAuU2Klxb6sVpncW67APXChQQvPfKW2Nbu6RFAhLasvY0CUXPCxsCQyvVuUJB14ypR1Bm6ojvqCQ+9scNxi5FcBmzH3vFBKc+A1+CU1hpU65s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E4L54Wa2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=chTS438Rit9cTIBSolDaFTMgyBpUbnwrKJnwJQAwXYqPTcliYFDCzeP84vU6kn+JuD//s+8PWvv8Ckapt2C7cPcybVyRYsmatYUwoN8E7NzE+pEbC8pdPv6tmIAJHVFQ3skHrMs2MCnX93IO6MusAYp5X9zkW/7/ghfsGkT254A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpCuTXxk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E4L54Wa2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC50A1F000E9;
-	Wed,  2 Sep 2026 05:36:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpCuTXxk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7531F00A3A;
+	Wed,  2 Sep 2026 05:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788327397;
-	bh=uhbRECPPQO0my9o6O3ryBUniRBemM/p1E3u24h68PMw=;
+	s=k20260515; t=1788327399;
+	bh=x2pDQ1F/3h98B9XgJrGcL2vwmSgngL3cOhtSuTq6fes=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=E4L54Wa23lFW+1090Fvseg3MKGqV7qRj4vV/JfI9ODaVLhkHgwI1gVlpZT62K2QvI
-	 /AMirorhScLalhURz4a4BZvCxtW7UAzDPGMT5XbWE+6QjAx3ZXdn7cNZizO5kzvbD4
-	 P+pwXnlud0vsPYKV9pysPF9NSqudGikFcrLPVixGP5gWFxjcN53TVMTKTMP3ZUO2jq
-	 /mVRajxBEkXRCz9v4gp/vA05rwdsQOGco68HX7NQWQqWn83F23etXXU6BiMC17b7ZM
-	 6icX/fvNd+dLEY5lS0qrb0/C2iJ+/eheEDDUXuGWrK4/ijK+u9PIBM6ZVqIWIV3Opc
-	 lKEKNxSbfTKQA==
-Subject:
- Re: [net-next,v15,03/13] net: mdio: realtek-rtl9300: deny C45 over C22 access
+	b=SpCuTXxkfRiGUQOlznHKKMa2RZwzTtvpxp1Dd3nGwrW0LCsKdqhR6Huz3xRDSV1px
+	 X1WmX0+uVOlVAd742XzLqFeLLdOf7zRcUB21bBoZoVgsK7nwddAc4XVYeCbvFsAekm
+	 YsSlxZvAPE7A+4sMEqiYaGkIZa9go/fz479I09Og4EF70b1jbnuPTmyHCHGPgYTb16
+	 PtNQ8iRwOcBTD8IMmjvazYBGJYXXM/Tl0dCqDjlb6lvpjzRaR8ccg8rwZQMFdhAADC
+	 ZI0lnYd998CWCGPu5vMU7zBHaAJhnehhjSzCWpcilMboxJplHGDPZspzJw0n9nMmxh
+	 fiyVR3zKmwthg==
+Subject: Re: [net-next,v15,05/13] net: phy: add (*notify_phy_attach/detach)()
+ hooks to struct mii_bus
 From: netdev-bot+sashiko@kernel.org
 To: markus.stockhausen@gmx.de
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
@@ -35,11 +35,11 @@ Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
  daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, devicetree@vger.kernel.org
-Date: Wed, 02 Sep 2026 05:36:36 +0000
-Message-ID: <178832739640.3394541.1568384920310155418@kernel.org>
-In-Reply-To: <20260831143439.2404484-4-markus.stockhausen@gmx.de>
-References: <20260831143439.2404484-4-markus.stockhausen@gmx.de>
-X-sashiko-severity: Medium
+Date: Wed, 02 Sep 2026 05:36:37 +0000
+Message-ID: <178832739788.3394541.12957364785529278050@kernel.org>
+In-Reply-To: <20260831143439.2404484-6-markus.stockhausen@gmx.de>
+References: <20260831143439.2404484-6-markus.stockhausen@gmx.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,153 +49,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
 
-- [Medium] The new guard is keyed purely on the register number, so it
-  rejects every C22 access to registers 13/14, not only the C45-over-C22…
-- [Low] The patch fixes a defect that exists in released kernels — the
-  commit message itself states that C45-over-C22 access "is accepted by…
+- [Low] New struct mii_bus callbacks (notify_phy_attach /
+  notify_phy_detach) and their core call sites in phy_attach_direct() /…
 
 --
 
-net: mdio: realtek-rtl9300: deny C45 over C22 access
+net: phy: add (*notify_phy_attach/detach)() hooks to struct mii_bus
 
-This adds a register number check to the C22 read and write accessors of
-the RTL9300 MDIO driver so that accesses to MII_MMD_CTRL and MII_MMD_DATA
-return -EOPNOTSUPP and emit a one-time warning. The stated reason is that
-hardware polling breaks C45 over C22 PHY access.
+This adds two optional callbacks to struct mii_bus so an MDIO bus driver
+can be told when a PHY is attached or detached. notify_phy_attach() is
+invoked in phy_attach_direct() after phy_init_hw() and before
+phy_resume(), and notify_phy_detach() is invoked from phy_detach() right
+after phy_suspend(). phy_detach_internal() gains a notify_bus argument so
+the attach error path does not emit a detach notification.
 
-No Link: tags are present in the commit header.
+References from the commit message:
+[1] https://github.com/openwrt/openwrt/pull/21515#discussion_r2714069716
+[2] https://lore.kernel.org/netdev/cover.1769053496.git.daniel@makrotopia.org/
+[3] https://lore.kernel.org/netdev/9e40f50b-357a-4a93-9f59-94847850835d@lunn.ch/#t
 
-> net: mdio: realtek-rtl9300: deny C45 over C22 access
->
->     Hardware polling breaks C45 over C22 PHY access. Currently this
->     is accepted by the driver but it silently fails with undefined
->     results.
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 69b04a92b7766..41d1b20cde2c0 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+
+[ ... ]
+
+> @@ -1997,6 +2003,12 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+>  	if (err)
+>  		goto error;
+>  
+> +	if (phydev->mdio.bus->notify_phy_attach) {
+> +		err = phydev->mdio.bus->notify_phy_attach(phydev);
+> +		if (err)
+> +			goto error;
+> +	}
+> +
+>  	phy_resume(phydev);
+
+[ ... ]
+
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index 5f8d65868e0ff..3d8afe6b7f1c5 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -376,6 +376,24 @@ struct mii_bus {
+>  			 int regnum, u16 val);
+>  	/** @reset: Perform a reset of the bus */
+>  	int (*reset)(struct mii_bus *bus);
+> +	/**
+> +	 * @notify_phy_attach: Perform post-attach handling for MDIO bus
+> +	 * drivers. Optional and independent of @notify_phy_detach. Called
+> +	 * in phy_attach_direct() right before phy_resume(). Runs in process
+> +	 * context, may sleep and may be called with RTNL held. Must not
+> +	 * acquire or rely on RTNL. Returns 0 on success or negative errno
+> +	 * on failure. Must unwind its own state on error as attachment is
+> +	 * aborted.
+> +	 */
+> +	int (*notify_phy_attach)(struct phy_device *phydev);
+> +	/**
+> +	 * @notify_phy_detach: Perform pre-detach handling for MDIO bus
+> +	 * drivers. Optional and independent of @notify_phy_attach. Called
+> +	 * in phy_detach() right after phy_suspend(). Runs in process context,
+> +	 * may sleep and may be called with RTNL held. Must not acquire or
+> +	 * rely on RTNL.
+> +	 */
+> +	void (*notify_phy_detach)(struct phy_device *phydev);
 
 [Severity: Low]
-The changelog describes behaviour that "is accepted by the driver but it
-silently fails with undefined results", which reads like a defect present in
-released kernels, but there is no Fixes: tag and no note about stable
-routing or about this being deliberately net-next only.
+This isn't a bug, but at this commit nothing in the tree assigns
+mii_bus::notify_phy_attach or mii_bus::notify_phy_detach, so both new
+members and the two call sites in phy_attach_direct() and
+phy_detach_internal() are inert here. Both call sites are NULL-checked, so
+there is no misbehaviour.
 
-The broken accessors are the pre-existing otto_emdio_read_c22() and
-otto_emdio_write_c22() installed as bus->read/bus->write in
-otto_emdio_probe_one(), which came in with commit 24e31e4747698 ("net:
-mdio: Add RTL9300 MDIO driver"). Another patch of this same series ("net:
-mdio: realtek-rtl9300: suppress sysfs bind/unbind attributes") already
-carries exactly that tag.
+Checking the rest of the series, the first user does arrive later:
+drivers/net/mdio/mdio-realtek-rtl9300.c adds
+otto_emdio_notify_phy_attach()/otto_emdio_notify_phy_detach() and wires
+them up in otto_emdio_probe_one():
 
-Should this one carry a Fixes: tag as well, so backporters can tell which
-kernels are affected and whether the new -EOPNOTSUPP behaviour is intended
-for stable?
+	bus->notify_phy_attach = otto_emdio_notify_phy_attach;
+	bus->notify_phy_detach = otto_emdio_notify_phy_detach;
 
-> diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
-> index 73ac5fdcd2674..69565a87f99db 100644
-> --- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-> +++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-
-[ ... ]
-
-> @@ -453,6 +454,12 @@ static int otto_emdio_read_c22(struct mii_bus *bus, int phy_id, int regnum)
->  	int ret, port;
->  	u32 value;
->  
-> +	if (regnum == MII_MMD_CTRL || regnum == MII_MMD_DATA) {
-> +		dev_warn_once(&bus->dev,
-> +			      "C45 over C22 read access broken due to polling\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
->  	port = otto_emdio_phy_to_port(bus, phy_id);
->  	if (port < 0)
->  		return port;
-
-[ ... ]
-
-> @@ -463,11 +470,18 @@ static int otto_emdio_read_c22(struct mii_bus *bus, int phy_id, int regnum)
->  	struct otto_emdio_priv *priv = otto_emdio_bus_to_priv(bus);
->  	int ret, port;
->  
-> +	if (regnum == MII_MMD_CTRL || regnum == MII_MMD_DATA) {
-> +		dev_warn_once(&bus->dev,
-> +			      "C45 over C22 write access broken due to polling\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-
-[Severity: Medium]
-Does this filter reject more than the C45 over C22 indirection?
-
-The mii_bus ->read/->write ABI in include/linux/phy.h only passes
-(addr, regnum), so otto_emdio_read_c22() and otto_emdio_write_c22() have no
-way to tell an MMD indirection sequence from a plain access to C22 register
-13/14. The check keys purely on the register number, so every access to
-0x0d/0x0e is denied.
-
-Two Clause 22 Realtek PHYs use register 14 as an ordinary vendor register,
-and both entries in realtek_drvs explicitly declare no MMD support:
-
-drivers/net/phy/realtek/realtek_main.c:
-	static int rtl8211b_suspend(struct phy_device *phydev)
-	{
-		phy_write(phydev, MII_MMD_DATA, BIT(9));
-
-		return genphy_suspend(phydev);
-	}
-
-	static int rtl8211b_resume(struct phy_device *phydev)
-	{
-		phy_write(phydev, MII_MMD_DATA, 0);
-
-		return genphy_resume(phydev);
-	}
-
-	PHY_ID_MATCH_EXACT(0x001cc910),
-	.name		= "RTL8211 Gigabit Ethernet",
-	.config_aneg	= rtl8211_config_aneg,
-	.read_mmd	= &genphy_read_mmd_unsupported,
-	.write_mmd	= &genphy_write_mmd_unsupported,
-
-and rtl8211_config_aneg() does the same for its forced-100Mbit quirk:
-
-		phy_write(phydev, 0x17, 0x2138);
-		phy_write(phydev, 0x0e, 0x0260);
-
-Both callers discard the phy_write() return value. On a bus that is not
-classified as native C45, otto_emdio_probe_one() installs these accessors:
-
-	} else {
-		bus->read = otto_emdio_read_c22;
-		bus->write = otto_emdio_write_c22;
-	}
-
-so rtl8211b_suspend() -> phy_write() -> mdiobus_write() ->
-otto_emdio_write_c22() now returns -EOPNOTSUPP before touching hardware,
-the RTL8211B power-down bit is never programmed, suspend still reports
-success through genphy_suspend(), and the bus prints "C45 over C22 write
-access broken due to polling" even though no MMD access took place.
-
-The C22 bus filter added later in the series by "net: mdio:
-realtek-rtl9300: Add page tracking" only checks
-phy_id_compare_vendor(phydev->phy_id, RTL_VENDOR_ID), which RTL8211
-(0x001cc910) and RTL8211B (0x001cc912) both match, so these PHYs are not
-excluded.
-
-Does this also break direct register access to 0x0d/0x0e from userspace via
-SIOCGMIIREG/SIOCSMIIREG, which reaches phy_mii_ioctl() ->
-mdiobus_read()/mdiobus_write() with no MMD emulation involved?
-
-Would it work to scope the rejection to the actual C22 MMD emulation path,
-or to express it as a bus level "no MMD over C22" capability that phylib can
-consult, instead of filtering two register numbers in the bus accessors?
-
->  	port = otto_emdio_phy_to_port(bus, phy_id);
->  	if (port < 0)
->  		return port;
+Would it be worth mentioning in the changelog that the first consumer of
+these hooks is added by the following patch in the same series ("net: mdio:
+realtek-rtl9300: Configure hardware polling during probing"), so readers of
+this commit alone know the API is not left without a user?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831143439.2404484-1-markus.stockhausen%40gmx.de
