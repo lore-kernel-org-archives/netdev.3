@@ -1,155 +1,131 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EDB4A2A78;
-	Wed,  2 Sep 2026 14:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177F04A2E3C;
+	Wed,  2 Sep 2026 14:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788359695; cv=none; b=EkC6ly5bhHVBQyTvxGgA5SPyaA7fE0lTzz7Cwl5ursQeF676Iu8bjphJtk/AugE/s3PysHN4bp2Z+9ORvyS2bfcLRRKZPJtlZ7krbh4PEQ8+7b1znpTVuotcCE8RM74/BDvIJxvjwqC1F2nyHEdaYqIKa7N/1goIfjGfw+LLDE8=
+	t=1788359772; cv=none; b=AJpQ/cAq3x7jLz8X/YqzdycQbrW+57rN+g0gFasOrWddAV2Qan/caX56h9ZarEYlzLMeimJploQLeqrEvzWtJZCfm3shsRCjxhSQNSIoC1NBhoB6mWmcbpEFPtBQ0IeC0txZ8ZFRUjsiBXuXbqtzhRKBH3MEqG0sTSDtBL1VilE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788359695; c=relaxed/simple;
-	bh=o+SBfyhIwjQVP7iaWx/Mh8m7g20JpJq/u+lkF+fPIQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GkwwvhfQVauBAVrYTdoNyS8uN1h+KprXITK5BsgOtuxTlrKdUocLy31u4xU2x0byMVK1NxGzxH3xUxLhK876oHawhvbV6OqsVZRlgp7cQ/QpOaAxs1KcxJ1L6FCI4Q7Jp9RChc1lMEkOWuUv0OSyq0HjDhVNVcYIZDr8VLobmls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d3vycU0M; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788359772; c=relaxed/simple;
+	bh=eJC9UUBWutn2N8t4IKPJkVXhNrPPSiqt3WTyCAhkfEE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z8l0+bG+l1s0O61sRairy2MqdktKzqxHcHfEuEYqufX/8ir7/mYcSxLtvBE6C/yMvoWpYncNyVwFDNWp5b4oyHcQRib/CamuxDtgJC5wsf/7qbWU04ITUpCDTiB+4bgVpo8+2q/6bH/DG0p1TmV8IikLzDTLF3uXgH2eRdnhP8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qz2Ew/Fo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d3vycU0M"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682CW0Vu047466;
-	Wed, 2 Sep 2026 14:34:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=yS4SGS35PmzrxXgaCOTALVjrqK0P+puvAUOhif4K6
-	n0=; b=d3vycU0MthLbWuYeteCtd22xuyokye9MW+YY3lrDvSjs2Yo6fiyuMIz0Z
-	dwbKRM5IftlRcrks9pQendxFl7Y/EzVC9J10YtqSe58Ki7d+fXTo1Fb48VMChXKv
-	58OqpmlV7o9/jm2D82Os2fQ67aP1k4hmdxQziuw7twAeTKuONlGpMngRtL7nQvvV
-	/JWr+cY/LObZNMBlBpXtGdO5mk2oH0iEbMlY0T6lI8D5Y8uPvCFy9Zyi+ifQcvjo
-	9ENlIBm15FzfU/Sb9Jn8CspnCpGWmv6ug9kRaFWzBO4pdz/k8BUj4EmbcjItCIzN
-	1qT9j97b47t25yOG/BFdz+McXblMQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2terg5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 14:34:43 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 682EQFUV030336;
-	Wed, 2 Sep 2026 14:34:42 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqjgtq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 14:34:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 682EYdvl41484656
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 2 Sep 2026 14:34:39 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 149292006A;
-	Wed,  2 Sep 2026 14:34:39 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D495C20043;
-	Wed,  2 Sep 2026 14:34:38 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  2 Sep 2026 14:34:38 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
-	id B9E5D160CDB; Wed, 02 Sep 2026 16:34:38 +0200 (CEST)
-From: Alexandra Winter <wintera@linux.ibm.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Julian Ruess <julianr@linux.ibm.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
-Subject: [PATCH net] dibs: Unregister dibs_class after error
-Date: Wed,  2 Sep 2026 16:34:38 +0200
-Message-ID: <20260902143438.426664-1-wintera@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qz2Ew/Fo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DAE1F000E9;
+	Wed,  2 Sep 2026 14:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788359770;
+	bh=uzzpWL0xLJV4HxgXaJDCRpeFEK+cpnvsfs6kVzVfAak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Qz2Ew/Fo96WKMMFECtw6AcGedth0FeblIay9/D+sibhjAK2/BTaqye6hTBWLs8zRw
+	 qXakXIrkxjuU89HS4vq0KEDl4x5Z+5neqSP1lPuX0OLciuKdgyqjd9FTsSHKpkKbON
+	 +rEI4WgECsqIzEjtNQqxUwhobsANlSwbLo0+gejc7TXvcdF2esdVnYMH+viUhY4Vxs
+	 I5YPwI+B873UPnl851liAilmTnKwoRgKEBL/Qkp67CXcRlVxi7w0cHqyTfePTjs2ij
+	 SqS2cmlvhnjlis8DLSAigHIQ3woqHE6gL5snkeJGrQ1zoiv/+OdHptqVqSk/XgvaGn
+	 Hno8waIJ7Q4NA==
+Message-ID: <d3ca9ecd-768a-48fc-805b-cd50efa639af@kernel.org>
+Date: Wed, 2 Sep 2026 16:36:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a983404 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=-X7FXM7bNh0ew3z3AVgA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfX2nmU3DzSq0rY
- Qs3kXU8fnSr4t34KcEVvxvXMXf0WG+TYMT9N4XB4xVmfSl42vs2SjFD8kB+PrbGAvQECY22xlm8
- jmjYGFZr4DSPt+sp3z9sB2iJBpayc50=
-X-Proofpoint-ORIG-GUID: czJ5sV-9pbq6LSKjB_qjbA7yFHFlXRez
-X-Proofpoint-GUID: Y_jUNTUsiB0K-SiWfL-mSDhHUhadfRMf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDEyOCBTYWx0ZWRfX6Q4ZnxYK1gLo
- hqv/ZpqQQvhu3kX9kt5rJcKDfcJWycmyUovgdBIHAGE9bLg2qekVznLXZWOTf5bgqMexPCCNoRT
- bSWQrE8n12abrZ4zPB0t0YRwFVQsPBO84Cg8Gr2on+IkXmtOVZDqm6XBiLnF8Dmu2V5xcaLzr8h
- paL0MKm0pGUOgH4JhmmAKZ29fp4qCxE7F4YVcX3I1UIF8weoRB+JEdQw9DAeutNP13ksMs8vk4H
- VnYzrCUmghOzqm0XjZM+bhqpuwFjGdC836GujtqtGPgY2KkGtbUUVqqjLeTmxJSBBZmZ2Yow0do
- xRl6b3uf+sok6GENVrp5dQb1d6FTQxdDtQKQiOD/WDfPlqPHfOaQILA5FA09CoPTsk45lt6DxzR
- Kif0aAi625GbtcKAN+J5m7TXBigoza+36SQLagqRehq0nqNG9TfAu2b8LUYCEitgcSHdEGeqlzI
- J8ovtE1v85RK3VTXOow==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_03,2026-09-01_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609020128
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] USB: usbfs: replace __get_free_page() with kmalloc()
+Content-Language: en-US
+To: Alan Stern <stern@rowland.harvard.edu>, Oliver Neukum <oneukum@suse.com>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Chas Williams <3chas3@gmail.com>, Duncan Sands <duncan.sands@free.fr>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johan Hovold <johan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ accessrunner-general@lists.sourceforge.net,
+ linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+ <20260830-usb-v1-1-aa349c302246@kernel.org>
+ <ea165ff8-cda2-4fed-9354-1d14ac2d87ca@suse.com>
+ <8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In case dibs_loopback_init() fails, e.g. because of -ENOMEM, dibs_init()
-must unregister dibs_class. Otherwise dibs_class and /sys/class/dibs exis=
-t
-even though the functionality is not available. A retry to load the modul=
-e
-fails with -EEXIST.
+On 8/31/26 16:30, Alan Stern wrote:
+> On Mon, Aug 31, 2026 at 03:27:07PM +0200, Oliver Neukum wrote:
+>> On 30.08.26 10:10, Mike Rapoport (Microsoft) wrote:
+>> > do_proc_control() allocates a temporary buffer for the data stage of a
+>> > control transfer issued from userspace.
+>> > 
+>> > This buffer can be allocated with kmalloc() as there's nothing special
+>> > about it to go directly to the page allocator.
+>> 
+>> You are breaking the calculation. A page has a size of exactly
+>> PAGE_SIZE. A kmalloced object of PAGE_SIZE is larger. That is
+>> a bad idea.
+> 
+> By "the calculation", are you referring to the 
+> usbfs_increase_memory_usage() call in do_proc_control()?
+> 
+> The overhead in kmalloc allocations doesn't really matter for this 
+> purpose -- it can be considered a rounding error.
 
-Unregister dibs_class in the error path of dibs_init.
+FWIW, the overhead will be zero for a PAGE_SIZE size, unless slab debugging
+is enabled, but you can ignore it.
 
-Note that before
-commit ad3dfa80be76 ("dibs: change dibs_class to a const struct")
-class_destroy(dibs_class) is required instead of
-class_unregister(&dibs_class).
+>  Besides, we don't 
+> know how big the overhead is, so we can't account for it.  You can see 
+> that in the same call, we don't try to account for the overhead involved 
+> in usb_alloc_urb() or kmalloc_obj() either.
 
-Fixes: 804737349813 ("dibs: Create class dibs")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
----
- drivers/dibs/dibs_main.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ksize() exists but I wouldn't bother indeed.
 
-diff --git a/drivers/dibs/dibs_main.c b/drivers/dibs/dibs_main.c
-index 2b53a9d277dc..20c50997a7cf 100644
---- a/drivers/dibs/dibs_main.c
-+++ b/drivers/dibs/dibs_main.c
-@@ -251,13 +251,19 @@ static int __init dibs_init(void)
-=20
- 	rc =3D class_register(&dibs_class);
- 	if (rc)
--		return rc;
-+		goto err;
-=20
- 	rc =3D dibs_loopback_init();
- 	if (rc)
--		pr_err("%s fails with %d\n", __func__, rc);
-+		goto err_unregister;
-=20
- 	return rc;
-+
-+err_unregister:
-+	class_unregister(&dibs_class);
-+err:
-+	pr_err("%s fails with %d\n", __func__, rc);
-+	return rc;
- }
-=20
- static void __exit dibs_exit(void)
---=20
-2.53.0
+> I'd say there's nothing wrong with this patch.
+
+Agreed.
+
+> Alan Stern
 
