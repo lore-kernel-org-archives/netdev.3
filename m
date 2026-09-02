@@ -1,165 +1,233 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD484A8A25;
-	Wed,  2 Sep 2026 16:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8424AA408;
+	Wed,  2 Sep 2026 17:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788368312; cv=none; b=K7waGsKyVb7psIZnHe6stu/wNt1GvAC31m9tBp9Sl5O2NaF4Nl2oDhzVSwWXmlmjPX73dI6evJvUvo3xlFk1Z0RLlp2VpR9TbptlPRR2o0MJsHoGQWt9yI5ExWAmMw4EvXCVqCpe+uin45a5yEPPtlkCyVKg2mIwdg7iYkEjyks=
+	t=1788369123; cv=none; b=K4K28dRPzmfGryZ4wzkqXiWGr2rOngu1S7COlzu/zNyI6vitc/wqgu6X1oN2jEVH0cobdQOhlMK98kyCLCsiGVr8WrVRvVgFqgr8mpflzoQYlttRITJtEGYWRuAmorrJmj1qiqqyuMG4Ydc2RYKO6Igjg1fXoSIUDwvk+cSkzi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788368312; c=relaxed/simple;
-	bh=1cD4S11PDu5NdFN7RYIo9XWJwMMqhzEEVqK8egUXLmM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IEiqWU8JLToUAdaTJmuN2gX+RIUPEIlJ0ZdzD5aJz+dQaePVSGCjRphb68R61Tf/dhqI4LbmMqTIww+pgQny4uB+p5YInE4OqsG4PEXV3BdR06uSqfQiXBdTHOifCojffnY2on5dbPIeyrrQK/P3Z+kGSyoeV+wRh4/9WlFehxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U4DO+qb2; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788369123; c=relaxed/simple;
+	bh=A4y7BzlZlHbVHQA3YDutbqAGnen7Yd6Hsb7ZXhmRCXg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NtcSD7d8m8usiacf3ghyIjTnVNiD/+mLSB+Ffb5dctab0YAkI5z5Y4Itj+9QJhU5RR+GYBoN9H6niFL+ffdddAIkrF1jxApW2q28FDNyuc1t4CkoUjAVHJW1f/6bnkcVWJam26RlwCiiygom8i7KTJuxN+SmXxOdipPWuJN7bc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXmMoAce; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U4DO+qb2"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682GXjxb3600700;
-	Wed, 2 Sep 2026 16:58:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=amARHs
-	hKtjSBC+168x70CO/KgvWGyu220e/FH9bh4+g=; b=U4DO+qb2zM3VcbRBpM73JA
-	wQk8TFHD18UqIMLCJu9Dqt69hLuhhXRm0ZHo4M3IjTaS1aBTa2by44SNah0Ka22h
-	GBAWaf6ThCq58Y2uXA3wPJ3keK/D1nIAQfERsvZ89Mf3OVkVUDKD1uu2GLr+qo2O
-	WAf7lv0ynfwBbwOXAeatkeb5QEH+ZtC6fCQ5rGJrA85BfHXEv/V8Ai2NVgYh6Y2z
-	/6YIEtT17kklCiR1Hl/Q4KOxezyoVhM4u2roJJtMYuTr5Ak8gFFXhBCmv2Nbid+R
-	PjKAfoNnpbGSnRxrk8yss3OFaHlGhMQzmzoP3b2OEvMtG+iAqDqVIdw5GtbMmxcw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbnudyv2c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 16:58:22 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 682GuGvK015543;
-	Wed, 2 Sep 2026 16:58:21 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqkamj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 16:58:21 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 682GwHnV43975116
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 2 Sep 2026 16:58:17 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CC7ED20043;
-	Wed,  2 Sep 2026 16:58:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9996A20040;
-	Wed,  2 Sep 2026 16:58:17 +0000 (GMT)
-Received: from [9.224.92.241] (unknown [9.224.92.241])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  2 Sep 2026 16:58:17 +0000 (GMT)
-Message-ID: <2325d95bbd1d6e57ec46eb0ff6638e4fffa465e9.camel@linux.ibm.com>
-Subject: Re: [PATCH net] s390/ism: folio_put() after error
-From: Gerd Bayer <gbayer@linux.ibm.com>
-To: Alexandra Winter <wintera@linux.ibm.com>,
-        David Miller
- <davem@davemloft.net>, Jakub Kicinski	 <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Eric Dumazet	 <edumazet@google.com>,
-        Andrew Lunn
- <andrew+netdev@lunn.ch>,
-        Aswin Karuvally	 <aswin@linux.ibm.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily
- Gorbik	 <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle
- <svens@linux.ibm.com>, Simon Horman	 <horms@kernel.org>
-Date: Wed, 02 Sep 2026 18:58:17 +0200
-In-Reply-To: <20260902143733.433574-1-wintera@linux.ibm.com>
-References: <20260902143733.433574-1-wintera@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXmMoAce"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590A71F000E9;
+	Wed,  2 Sep 2026 17:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788369121;
+	bh=dI/+mP/6uy+hmXcv9a7wdhNXo+dqlKQKNB0Rfwccc7c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WXmMoAceO6WalM+RQcPj5zUJvYFuLD72kMv6C5UCOnCq2nligUFKfsiNJzq8q3Fa8
+	 lbJLzArPjXN719IBvEX/ZvCJWlFbCX7HS4OPyYollmenOq8Zgnqxl7J6mPrbkSayAr
+	 7VFPjd3hz10n5AMrzmkwFcL+4IfNut9nBMFtcciAD6K7dC+D6Jm/QJ4m95+ha6JupM
+	 98vnEKfU/umRgFNfXUlQppFMNiZepkOOWh9jZVLCBStdmAxtMPQPKWM0jjHVZgFmxb
+	 zyOg8r/8u12koSzxq32oyFtX/E/CLfUGBwtRWjYCaHUWqmIxzPR7Z+OAZ+H/EBG6de
+	 dhzOejWQRJt8g==
+Subject:
+ Re: [net-next,v3] net: dsa: microchip: enable the SGMII port of the KSZ9897S
+From: netdev-bot+sashiko@kernel.org
+To: tapio.reijonen@vaisala.com
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, tristram.ha@microchip.com, nb@tipi-net.de,
+ Jerry.Ray@microchip.com
+Date: Wed, 02 Sep 2026 17:11:59 +0000
+Message-ID: <178836911986.3394541.10513395709262597554@kernel.org>
+In-Reply-To: <20260831-ksz9897-sgmii-port-v3-1-2376aa4edf11@vaisala.com>
+References: <20260831-ksz9897-sgmii-port-v3-1-2376aa4edf11@vaisala.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 1M-egrWsgnMntvlKBAlx08X9YQGf3k7v
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDE0NiBTYWx0ZWRfXz3gKY74Of8a/
- iS4zCu3LgG/kW7EFS4dkXmMZyRE6CTg3SdCGBM1ecwXOisxQSU6ZFsSn2nhJ3RhMHEw9oJ2Bj3X
- hznLoYaNtiU+8MD4OQ7njv8C05WHhzy0ZljxSYE/PKjPXHfy/Hm7s0U+z5IfpVNY4idUgBurjWh
- 9fLZxuLMWq0dDYnmxFOCeSMky9RlycdbNWYt8Q9onsiDQ5dOcJ4nhxvNqld+zoskf0+CNowK843
- xo2gmy8EYj9BQZ4kqNOHu0DtgB469YXx6pc/lBAGTV91xEjWJh1tR9v2HY2q+s9UKdpIt7E79Kj
- bFM7+cIpZMny8WQNTp6R34wss0vY/GNVMo3sampF7MyOakp2k6/vtJSPfZQUGTmS7jS22kMY9Ha
- xwPl31kN8158iVCkWYyGiMbCW4cWCK9pmnhL5tcyZpQois6UpeLUxM9RZDb5wfLuzbLRU/ac4pT
- HV0bf2vSYA1UOInmdtg==
-X-Proofpoint-ORIG-GUID: VUrM42jQwtrjgOd32LkBhXOgOTwA1Brv
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDE0NiBTYWx0ZWRfX8+uNsVArfQEa
- lm9tNAJySxp20CFv/RwgYGkJ8nnbcJ7YLgHAO2R7ysMXgkePo7inMePDO+FtA5UjEPOICU0EJO3
- +FjajWbohhfZnKGSuEstW0WBfKIIfNs=
-X-Authority-Analysis: v=2.4 cv=B92JFutM c=1 sm=1 tr=0 ts=6a9855ae cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=zx-3ciY802ilKned2NYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_04,2026-09-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0 clxscore=1011 suspectscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609020146
 
-On Wed, 2026-09-02 at 16:37 +0200, Alexandra Winter wrote:
-> dmb->cpu_addr was allocated via folio_alloc(). Use folio_put() instead of
-> kfree() in the error exit of ism_alloc_dmb() to avoid slab allocator
-> corruption.
->=20
-> While at it, reset dmb->cpu_addr after folio_put to avoid unintentional U=
-AF
-> by future callers.
->=20
-> Fixes: 83781384a96b ("s390/ism: Properly fix receive message buffer alloc=
-ation")
-> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-> ---
->  drivers/s390/net/ism_drv.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-> index 242da20f27e0..035b233abb4e 100644
-> --- a/drivers/s390/net/ism_drv.c
-> +++ b/drivers/s390/net/ism_drv.c
-> @@ -231,6 +231,7 @@ static void ism_free_dmb(struct ism_dev *ism, struct =
-dibs_dmb *dmb)
->  	dma_unmap_page(&ism->pdev->dev, dmb->dma_addr, dmb->dmb_len,
->  		       DMA_FROM_DEVICE);
->  	folio_put(virt_to_folio(dmb->cpu_addr));
-> +	dmb->cpu_addr =3D NULL;
->  }
-> =20
->  static int ism_alloc_dmb(struct ism_dev *ism, struct dibs_dmb *dmb)
-> @@ -274,7 +275,8 @@ static int ism_alloc_dmb(struct ism_dev *ism, struct =
-dibs_dmb *dmb)
->  	return 0;
-> =20
->  out_free:
-> -	kfree(dmb->cpu_addr);
-> +	folio_put(folio);
-> +	dmb->cpu_addr =3D NULL;
->  out_bit:
->  	clear_bit(dmb->idx, ism->sba_bitmap);
->  	return rc;
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Hi Alexandra,
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
 
-thank you for catching and addressing these flaws in my patch. Feel
-free to accept my
+- [Medium] The new `[KSZ9897S]` chip_data entry in
+  drivers/net/dsa/microchip/ksz_common.c (lines 1489-1522) declares…
+- [Low] The patch carries no Fixes: tag even though its commit message
+  describes a user-visible functional gap ("its chip_info entry never…
 
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the patch
+  newly routes KSZ9897S parts through it.
 
-Thanks!
+--
+
+net: dsa: microchip: enable the SGMII port of the KSZ9897S
+
+This adds a separate KSZ9897S chip_info entry that is the KSZ9897 one plus
+.sgmii_port = 7, detects the variant at run time from the read-only bit 7 of
+the port 7 XMII control 0 register in ksz_switch_detect(), and lets
+ksz_check_device_id() accept a detected KSZ9897S for a device tree naming the
+KSZ9897.
+
+Link: https://lore.kernel.org/r/20260811-ksz9897-sgmii-port-v2-1-04ae287a0b27@vaisala.com
+Link: https://lore.kernel.org/r/20260703-ksz9897-sgmii-port-v1-1-387e7632dd0b@vaisala.com
+
+One comment on the commit message before the diff:
+
+> The KSZ9897 has an SGMII/1000BASE-X capable port 7, but its chip_info
+> entry never set .sgmii_port. ksz_has_sgmii_port() is therefore false,
+> ksz9477_pcs_create() is never called and ksz9477_phylink_mac_select_pcs()
+> returns NULL for port 7, so a phy-mode = "sgmii" or "1000base-x" link on
+> that port cannot come up.
+
+[Severity: Low]
+This isn't a bug, but the description above reads like a user-visible
+functional gap while the patch carries no Fixes: tag.  Was that
+deliberate?
+
+For what it is worth, it looks correct to leave it out: this is hardware
+enablement (a new enum ksz_model value, a new KSZ9897S_CHIP_ID in
+include/linux/platform_data/microchip-ksz.h, a new chip_data entry and new
+run-time variant detection) aimed at net-next, and the direct precedent,
+commit e8c35bfce4c13 ("net: dsa: microchip: Add SGMII port support to
+KSZ9477 switch"), which introduced .sgmii_port and enabled the previously
+non-working SGMII port on the KSZ9477 and LAN9646, has no Fixes: tag
+either.
+
+> diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+> index 1a9d6f83a023..78442cc37643 100644
+> --- a/drivers/net/dsa/microchip/ksz_common.c
+> +++ b/drivers/net/dsa/microchip/ksz_common.c
+> @@ -1486,6 +1486,41 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+>  		.gbit_capable	= {true, true, true, true, true, true, true},
+>  	},
+>  
+> +	[KSZ9897S] = {
+> +		.chip_id = KSZ9897S_CHIP_ID,
+> +		.dev_name = "KSZ9897S",
+
+[ ... ]
+
+> +		.supports_mii	= {false, false, false, false,
+> +				   false, true, true},
+> +		.supports_rmii	= {false, false, false, false,
+> +				   false, true, true},
+> +		.supports_rgmii = {false, false, false, false,
+> +				   false, true, true},
+
+[Severity: Medium]
+Should index 6 of these three arrays be false in the KSZ9897S entry?
+
+Index 6 is physical port 7, which this same entry declares as the SGMII
+port, and the commit message says "Only the KSZ9897S has that port; the
+KSZ9897R has a second RGMII port instead".  The [KSZ9477] entry, the other
+7-port part with SGMII on port 7, sets index 6 of all three arrays to
+false:
+
+	drivers/net/dsa/microchip/ksz_common.c:
+	[KSZ9477] = {
+		...
+		.supports_rgmii = {false, false, false, false,
+				   false, true, false},
+		...
+		.sgmii_port = 7,
+
+What happens if a device tree names microchip,ksz9897 (which the new bypass
+in ksz_check_device_id() now accepts for a detected KSZ9897S) and declares
+phy-mode = "rgmii-id", "mii" or "rmii" on port 7?
+
+ksz_phylink_get_caps() turns the flags above into advertised interface
+modes, so phylink accepts the mode:
+
+	drivers/net/dsa/microchip/ksz_common.c:ksz_phylink_get_caps() {
+		...
+		if (dev->info->supports_rgmii[port])
+			phy_interface_set_rgmii(config->supported_interfaces);
+		...
+	}
+
+But because .sgmii_port = 7 makes ksz_is_sgmii_port() true for that port,
+the xMII control registers are then never programmed:
+
+	drivers/net/dsa/microchip/ksz_common.c:ksz_phylink_need_config() {
+		/* No need to configure XMII control register when using SGMII. */
+		if (ksz_is_sgmii_port(dev, port))
+			return false;
+		...
+	}
+
+and no PCS is attached either:
+
+	drivers/net/dsa/microchip/ksz9477.c:ksz9477_phylink_mac_select_pcs() {
+		if (ksz_is_sgmii_port(dev, dp->index) &&
+		    (interface == PHY_INTERFACE_MODE_SGMII ||
+		    interface == PHY_INTERFACE_MODE_1000BASEX))
+			return p->pcs;
+
+		return NULL;
+	}
+
+Does that leave port 7 with neither xMII programming nor a PCS, and without
+any error or warning, instead of rejecting the mode?
+
+Note the in-tree [LAN9646] entry carries the same combination since commit
+e8c35bfce4c13, so there is precedent for it, but it disagrees with the
+vendor-authored [KSZ9477] entry and with this commit message.
+
+> +		.internal_phy	= {true, true, true, true,
+> +				   true, false, false},
+> +		.gbit_capable	= {true, true, true, true, true, true, true},
+> +		.sgmii_port = 7,
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but setting .sgmii_port here
+makes ksz_has_sgmii_port() true and newly routes KSZ9897S parts through a
+PCS lifecycle that has no release path.
+
+ksz9477_pcs_create() allocates the dw_xpcs and stores it in p->pcs:
+
+	drivers/net/dsa/microchip/ksz9477.c:ksz9477_pcs_create() {
+		...
+		pcs = xpcs_create_pcs_mdiodev(bus, 0);
+		if (IS_ERR(pcs))
+			return PTR_ERR(pcs);
+		p->pcs = pcs;
+		...
+	}
+
+The counterpart, which does xpcs_clear_clks() plus xpcs_free_data() and
+drops the mdio_device reference taken by xpcs_create(), is never called from
+drivers/net/dsa/microchip/:
+
+	drivers/net/pcs/pcs-xpcs.c:
+	void xpcs_destroy_pcs(struct phylink_pcs *pcs)
+	{
+		xpcs_destroy(phylink_pcs_to_xpcs(pcs));
+	}
+
+Per-port teardown only frees the ACL, and p->pcs is left set:
+
+	drivers/net/dsa/microchip/ksz9477.c:
+	static void ksz9477_port_teardown(struct dsa_switch *ds, int port)
+	{
+		struct ksz_device *dev = ds->priv;
+
+		if (dsa_is_user_port(ds, port))
+			ksz9477_port_acl_free(dev, port);
+	}
+
+ksz_teardown() has no xpcs_destroy_pcs() call either.  Does every
+unbind/rebind cycle, or a DSA setup failure after ksz9477_setup() created
+the PCS, then leak the dw_xpcs and its mdio_device reference while the
+devm-managed mdiobus it points at goes away?  The omission dates back to
+commit e8c35bfce4c13, which first set .sgmii_port for the KSZ9477 and
+LAN9646.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831-ksz9897-sgmii-port-v3-1-2376aa4edf11%40vaisala.com
