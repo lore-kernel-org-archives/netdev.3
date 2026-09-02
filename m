@@ -1,70 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF962390C8E;
-	Wed,  2 Sep 2026 22:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92E242588C;
+	Wed,  2 Sep 2026 22:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788387136; cv=none; b=FFNpBlmyATbyZi53ea1YB6dH87jxItpal63wQpJQYuW+y4cX5eUIozCXr0ynQY0j+rj/YZTWfWMwT1BQh4DQArQxgsRUbkF0wlInLS/bMf8nHhqKh+s5jG+vf06eFaPkBON9yQ4w5ue5rZLKpBcJ8nfJoKGNU0nd1/2U/J9GaYo=
+	t=1788387284; cv=none; b=Eh4OHmhWV/RPD/HwGVNHOiRQsosukpZLivnQZxzECTBit0vtbTLPDgXTSEsE1HkcT29jDx58UgZqzYDhiTLLAV37vAX8oF9irh7MIHeGK/03x49QE1enZMWCy2McmWkLJNxyGZKRGeTzRjmnnzqY5YvvY5eCtyw2Han2azaHOdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788387136; c=relaxed/simple;
-	bh=lBRo0dtFcGZoLsHqwG1x8Z7YpfuSx379Id0Q97B6c50=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RCoYwzWaCf5flA1BMlK081lr0o3uPFXuF7xSrOsse1kfOLOVgtk+rKVP5kjtyPCKpta605c2sAM+56WOc+eUWrL0uHxe+p8Cyr0Ij6ZLKCj5pQyN71MPH2ntKrhmuNKjrZZ8WxhXThxz3vDppgO6r1mtfS8N511klD1sz9ogYW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Alcyj74s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788387284; c=relaxed/simple;
+	bh=+omWPuU3czAOS+ufJ2hA0WJX6iBaB0DbWviLa47f7D8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jywj1y4KuvZqkDhvIsUgA80+rMvNnx4680MdIIhG1pADL3l3Ag2wRx9/h6WHZ4WCN/+LGUX1dUdan+u4w91JiOCNOGO9sfm75imQc80ovm6hNyE4YnXEY1Jpc92J0Y1ae1ByfhOgHVL8sc1vzr6Oh/rEyODR82akXewfeLZ+QDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHW6h3NR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Alcyj74s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC561F000E9;
-	Wed,  2 Sep 2026 22:12:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHW6h3NR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341A81F00ADE;
+	Wed,  2 Sep 2026 22:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788387128;
-	bh=tg7zC0YvIqt87WX64Kb8dFLAU/T4AqeU8cWYntG0MUc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Alcyj74sTAGIUKrzpdX7RXIevv7KPHJ471XZlqZ4FKGF8kSPgvwlpYqqLqb+LiC4S
-	 zUoOvaJyBU6nSYWdpnQSO84qved4hVW3Q2lfyWTBs39c6XsBi8Mr4HaEz35Ke6bTlL
-	 d46qHBte0SL4yXVEO5tGSipLL4z0St9EfUYVQHiIIYdptZNeYDmhZT6wxNXPKeGIvb
-	 pjp6+dlDTpvUZ73EsgTqOIRC9jMbePjqp756ffAePwxHMh79ZLchPNKwfgEaj1e48E
-	 MrDu7LrhzjL+0TfAGcvGd9Ld9DTNeO8hZOX/fIhBEEDCqhkgIkE+OLYNyMTeUgKufE
-	 k/bVucW3m7IdQ==
-Date: Wed, 2 Sep 2026 15:12:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kyle Hendry via B4 Relay
- <devnull+khendry.reliablecontrols.com@kernel.org>
-Cc: khendry@reliablecontrols.com, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?=
- <clement.leger@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] net: pcs: rzn1-miic: Verify port number from dtb
-Message-ID: <20260902151207.671c55f5@kernel.org>
-In-Reply-To: <20260902-rzn1-miic-fix-array-v3-2-3f7dccffaf5a@reliablecontrols.com>
-References: <20260902-rzn1-miic-fix-array-v3-0-3f7dccffaf5a@reliablecontrols.com>
-	<20260902-rzn1-miic-fix-array-v3-2-3f7dccffaf5a@reliablecontrols.com>
+	s=k20260515; t=1788387277;
+	bh=gK15kQ97+7U/Zx+7r9m49LieX5MZOVt5jgSg8piKNbU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cHW6h3NR5bq9kM56I9ZcybHe2109NPYofkRNPk7zUKY4lRC7uconPOCvxaY6xX3sx
+	 ym9q3sZKd1pyFCfRT3+HjCQbDxOIMJBJIQGh2B3bjR9bWMZOBXBKQsvQ+kjHt8xVVy
+	 t4qinzeT4SRhQtR2UXDiiUQdGeDz+wir2qZ0TG3xyF5ABfmtkKeNXXchT40VVLi+Vc
+	 Cnz56mh704AgOzJJ03MWp1MnskbLSnYNp5q69GXzAZIuvgW8G9wwdr5UVqOA60TwOI
+	 qWJDH4pQtd0KqAaYWFdBDf6gac9eN1rXQC2ixwLPQcRgNn/IJCv9DTdGZajPJ2fMkw
+	 IFYoueEZV/OQg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Mukul Sikka <mukul.sikka@broadcom.com>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>,
+	Bin Lan <lanbincn@139.com>,
+	XiaoHua Wang <561399680@139.com>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Karl Mehltretter <kmehltretter@gmail.com>
+Subject: Re: [PATCH 6.1.y 6.6.y] netfilter: nft_set_pipapo: restore cloned mapping table memcg accounting
+Date: Wed,  2 Sep 2026 18:14:13 -0400
+Message-ID: <20260902-daily-reply-0014-pipapo-fixes-tag-ack@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260831194905.45045-1-kmehltretter@gmail.com>
+References: <20260831194905.45045-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 02 Sep 2026 11:37:36 -0700 Kyle Hendry via B4 Relay wrote:
-> +		if (port < miic->of_data->miic_port_start || port > miic->of_data->miic_port_max) {
+> Fixes: a4983e89e3b1 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
+> Fixes: 32bad10de347 ("netfilter: nft_set_pipapo: do not rely on ZERO_SIZE_PTR")
+>
+> This two Fixes: tag do not make any sense to me.
 
-Please wrap this at 80 chars, some for previous patch
+> The two Fixes tags are for the two stable branches:
+>
+> - a4983e89e3b1 is the 6.1.y backport
+> - 32bad10de347 is the 6.6.y backport
+>
+> I am not sure what the usual preference is here: one common patch with
+> both Fixes tags, or separate patches for each tree. Which do you prefer?
 
-> +			dev_err(miic->dev, "Port number out of range: %d\n", port);
-> +			kfree(dt_val);
-> +			return -EINVAL;
+Whatever Pablo prefers :)
 
-coccicheck says:
-
-drivers/net/pcs/pcs-rzn1-miic.c:691:1-33: WARNING: Function "for_each_available_child_of_node" should have of_node_put() before return around line 698.
-
-> +		}
 -- 
-pw-bot: cr
+Thanks,
+Sasha
