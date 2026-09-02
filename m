@@ -1,204 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261193EDAA2;
-	Wed,  2 Sep 2026 08:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA593E92AC;
+	Wed,  2 Sep 2026 08:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788338577; cv=none; b=XwtgW/QUjscpKRYOcEqRyD4PtbGCv5Zlm0d55S1VtfQi1PnAA4F0ehm3Sre78JN12hCXMhHTH2HebyIqHQVK05+zx3/6w1wN/HR9oPIDTUfnJQy0+U521kiwv8Fezxzg0w/faPbEJKv3nsrngV2iBOZjginM+etqxhlVXvuej8A=
+	t=1788338602; cv=none; b=Ml2HBahnt09z/m5Hs4aGEdJZ+EmCGIqU2d/QGkU9KHbbBG1URVvxU2828Mf09VFwrm7OJPIs/ybxjiqu0jC+jWywAwvErQgR0y1vb4IJIKee3iiusFRnvEAwj9tZ/w+nh9dsvgWVT0NMmEOQhe9Douh3pvjIMakSR8sTfOnTAFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788338577; c=relaxed/simple;
-	bh=IjIKHMccm8GrBjALwt5MmYqDVrJ1pabKzJPTt35AWBY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cW48yka859zuzjuRLY8RPT6GwZPDdBY2iYcrfsriSw/7LjkbX8qe/zljAJPndd1y+7hJXRQJAbDBEX14JhrM3tVUFFQJ9yVVFBU/g49dIyaMn+oBAyAvMY5mB2oE6MyaXDDi1XAHg7MBppPJCxl7Bp7BE/ilb5LRqGAjhWhxOTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmHgYsen; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788338602; c=relaxed/simple;
+	bh=fyo65rgi1I4XoYNMUJbJtRo49/ATU+C0glxBdqh4WeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcG2BSkDvVO784rZ+wAIHl7g9VgZc1vWWGFJfyIOXLCalQiUUPabZX6HplMk2u+iX+2uLlN/x6brZTNvKe4OKXtfqyF6YqO95KdaXzAv+Fzs7l7hkf50x+SQ4MJtatPnVOgTD0at9Jq29N++qB9Fhs7dRq4RWOqDqkzesmtBT2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=XptBUvUP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=E1ubXtQs; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmHgYsen"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450581F00A3A;
-	Wed,  2 Sep 2026 08:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788338572;
-	bh=kuzZ14B+FDuCbocvfoHL0MpjXRZgZHpI8//4nffdUFs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WmHgYsenldr0VOyDiE1eOikyxudRKJbTMm58pAhs2D77krpMpZqdZiFoFXjk0/LX1
-	 CT+x0tEGNQawPahcmFpn8RmqMZqSN5cgmBBuEcngQxCTNZJME3KTds5p0ZNqU9NFrW
-	 xlOH566QnkRmDsRe5WEGF1ec4NRz/rMYzYVaMOvGMBFOqHFlhOPSjFldRAlit/Vjsc
-	 JDU61f2q9lxdMwCjiWWBWbvy/XRkIdWiZXdQvAHCHrLxWPg21ZdNmSqRD8wsjgZFYr
-	 zUU9En13dQXt8SFpU/jtzsO/5p30qbNRiZJ25FRXn/sanvsSYKp+k39kxq2BHx9t5+
-	 tNsuJCYzxaZJA==
-Subject:
- Re: usb: atm: cxacru: fix NULL pointer dereference on uninitialized atm_dev
-From: netdev-bot+sashiko@kernel.org
-To: syzbot@kernel.org
-Cc: syzkaller-bugs@googlegroups.com, jie.wang@intel.com, 3chas3@gmail.com,
- accessrunner-general@lists.sourceforge.net, gregkh@linuxfoundation.org,
- linux-atm-general@lists.sourceforge.net, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev,
- kuba@kernel.org
-Date: Wed, 02 Sep 2026 08:42:51 +0000
-Message-ID: <178833857175.3394541.4513055242648047225@kernel.org>
-In-Reply-To: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
-References: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="XptBUvUP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="E1ubXtQs"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7BB00140019D;
+	Wed,  2 Sep 2026 04:43:19 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 02 Sep 2026 04:43:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1788338599;
+	 x=1788424999; bh=w23wXmKVstOydYIXHqk7q3E1FXLx5/jPKALPPrzHhNE=; b=
+	XptBUvUPqbsW81DaMTJyCH2pe/TKX4RFl8XgCPCK0vyQfYSK8E4sF1J+JimHaKn/
+	aB98LNJQxC8lw/6wAA9/Fhu6MxEQFtcKLR8OkBpYsgmVUAcsByA3YLECXs8daK/G
+	DO/BTO3W9FWsDzl2orzQHtT4+Ahst0Oi257Ei281kNDSTVVmV0+59wRDp2+pdxZF
+	P9CPIe8FMReKPRC4NoX1qbs3QO4sgRAkpSj/m3MNXqbRA1+xV/hCdltQ7a1HjSas
+	Ko4q5o20wGtwfvHe9TpekKYf28SzE9VtzPVBytFKTk1dH2y4k8ILlb1z+iTUQ5u2
+	LA16D9pNycXpoX3wcmOW8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788338599; x=
+	1788424999; bh=w23wXmKVstOydYIXHqk7q3E1FXLx5/jPKALPPrzHhNE=; b=E
+	1ubXtQsY/yILapAykumP8hjbhF4ta4eAtwuJDeNcldDhU6QwZtI3ja0rCjvRRklg
+	wMQW6EVRfLnx94bhAcrRnAnkuU8V3bDn1m/TlS44wAOqAbRZsPlBM++g5pDYXyES
+	MGuJD5Rnxp7685VnAm8CpSEYSW6juh6pe8/Ss2GmdoXvJcalknqnVvvld5YLTf2A
+	/vJU7MNk99oMYI6izutPE/1xkyHhYRzBUXLGnZWs6m9Z9/7PFtaoZnz+fn7kgUMI
+	pTGVHKRFUO+daXt4F4LGCMz+9fQamLeFbsPt5xwLeDsSFkwlsJUE+/3wNB8Q/Jwc
+	aN4zcKJCsrHItN/s7LYYw==
+X-ME-Sender: <xms:puGXahpTE3lPiD74vPR36WDJR3xbba7m3ayfgTIWliWYab5q7XGpfg>
+    <xme:puGXav-HXb9rtoRyNAdT-zSZ1FLtka-0yAI1Iajea_XUBknrS3LUvWJq123rBK5OZ
+    -8C3OVkD46vItkUopD7M4aYVl6HQ0BpYMlQpvNiVsQEe87jRXm13Wqd>
+X-ME-Received: <xmr:puGXav2jC7594WKpq9H4XKeTywV5YQRDMisuNZi1bdmXTPVbZNP30DVwZ_rKGKe3Jt02p1yp80tr71ywNsyDz0Fmrl1GMdE>
+X-ME-Proxy-Cause: dmFkZTGYV+Ldz7esYSoFXwSPlhFRnbZaD5qMVT7+OomT+XznTE+/fJaRljD+EMvmqL2YcZ
+    8TP1DE+xJ8yXZ9BeO5K71Wjl5RKPAgd7dtMPDMQDY1rBCNwTP5ukqWfg6olYQRG8HxS5Oz
+    m8KJkJWp+d2fjbdqHuRs9Q4w/aV5v+pCY0QbfATEZR0HTXgcA0wbem9a3PJ/12T7KzHa2J
+    BiamUDVYBV8B+y/KRIpvWEkTzgB2o1R7E/x+OMQ1T3+iVJ6KVG3zehdCWseapcvD6PxWVz
+    +ymzb3AM0IqXXBk9n4msnFRcF1vb2zWpjvJKWqgkdFGI73TOL9cMkuoGAnLRdMOSPBO8O7
+    vdBY+UT5DXeCX3Ueitvkci3HzQ+fCrLH0ceeInM3JWvzfn80iVX3lRx+sUWAzX7RukSfOj
+    RL0ln5OXxFOIplivo8L3pdB82m+7lccg6Cbme1qFjdnaXh2vrsILTt0scUqFEzlxYINTMc
+    EJBxrXYIR3Y5J5zzfTzcy59f5HYZdnkAZ/sZc4hQIfdbifsrvlSCWn36c/lG6CIwxJsDkM
+    mPj05wYvM9zS1bomUE3NdC5oeQKhBoJYK/e49zAFN7y5l210nc48N8s3shTU6IuqiGPdTe
+    yboaDVkHMeLcdgn00NMWgRb7MS1hIbcvl5PG2fty5PExdfiyCP60c5p9Nejw
+X-ME-Proxy: <xmx:puGXaqDfyjwycDlBOXmRxd8WiFrhxaE7NTXH9x-iU5E8w5SwtH-HHQ>
+    <xmx:puGXamCTrNH2B_rjmwufwBYlBAlvLTJfMGEOyA8C9qBgZ85kdFE4bw>
+    <xmx:puGXarPYCJJvJXU2ORxk6pYG7r3RX0kPtNuhOSIna76qGZBplCBzrQ>
+    <xmx:puGXagPJOCzS_rvJDovoErKeag-udyKhLnMg3ef029cUgmNHLKEpXw>
+    <xmx:p-GXalZkK4Wq_ysH09gz4YfjuIkvp_SCOP6hfr_QztRFpNHGJ4pd42GK>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Sep 2026 04:43:18 -0400 (EDT)
+Date: Wed, 2 Sep 2026 10:43:16 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Sergey Shtylyov <sergei.shtylyov@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"DavidS. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 10/10] net: ethernet: ravb: Add gPTP support
+ for Gen4
+Message-ID: <20260902084316.GD1116206@ragnatech.se>
+References: <f140a168-0f92-4507-bf07-f5297ad92159@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f140a168-0f92-4507-bf07-f5297ad92159@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hi Sergey,
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Thanks for your feedback.
 
-- [High] Incomplete fix: the new `instance->usbatm->atm_dev == NULL`
-  guards in adsl_state_store() (drivers/usb/atm/cxacru.c:350) and…
+On 2026-08-15 22:12:03 +0300, Sergey Shtylyov wrote:
+> On 8/11/26 7:02 PM, Niklas Söderlund wrote:
+> 
+> > While driver advertises gPTP support on Gen4 platforms it is in fact
+> > completely broken. On R-Car Gen4 devices the RAVB module have no
+> > internal gPTP clock as generations before it. Instead it utilizes a
+> > system-wide gPTP clock.
+> > 
+> > This change utilizes the refactoring of the RAVB gPTP code to add
+> > support for a system-wide clock and stops the Gen4 devices trying to use
+> > the non-existing internal gPTP clock.
+> > 
+> > To remain backward compatible the ptp-timer property is optional.If not
+> > present, or not enabled, the RAVB driver will no longer advertise gPTP
+> > support to user-space.
+> > 
+> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> > Reviewed-by: Sergey Shtylyov <sergei.shtylyov@gmail.com>
+> [...]
+> 
+> > diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
+> > index b4df5cab0e5c..4c8dc02022e2 100644
+> > --- a/drivers/net/ethernet/renesas/ravb.h
+> > +++ b/drivers/net/ethernet/renesas/ravb.h
+> > @@ -249,6 +249,8 @@ enum APSR_BIT {
+> >  	APSR_RDM	= 0x00002000,
+> >  	APSR_TDM	= 0x00004000,
+> >  	APSR_MIISELECT	= 0x01000000,	/* R-Car V4M only */
+> > +	APSR_GPTPTIMER_SOURCE = BIT(25), /* Gen4 */
+> > +	APSR_GPTPCLOCK	= BIT(29),	/* Gen4 */
+> 
+>    Again, I don't quite like that you switched to using BIT() all of a sudden...
 
---
+Indeed, the while enum should really be converted to avoid LLM warnings.  
+But doing this in this already large and way overdue series feels a bit 
+too much. Once this is picked up I plan to convert them all to BIT macro 
+to make life easier for the future.
 
-usb: atm: cxacru: fix NULL pointer dereference on uninitialized atm_dev
+> 
+> [...]> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> > index 12877a8488ed..30170e92d3d7 100644
+> > --- a/drivers/net/ethernet/renesas/ravb_main.c
+> > +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> > @@ -2752,6 +2752,59 @@ static const struct ravb_hw_info ravb_gen3_hw_info = {
+> >  	.magic_pkt = 1,
+> >  };
+> >  
+> > +static int ravb_gen4_ptp_probe(struct net_device *ndev)
+> > +{
+> > +	struct ravb_private *priv = netdev_priv(ndev);
+> > +
+> > +	priv->of_gptp =
+> > +		of_parse_phandle(priv->pdev->dev.of_node, "ptp-timer", 0);
+> 
+>    You now have full 100 columns, no need to break that line... :-)
 
-The commit adds a NULL test on instance->usbatm->atm_dev at the entry of
-adsl_state_store() and adsl_config_store() in drivers/usb/atm/cxacru.c, so
-that a sysfs write arriving before usbatm_do_heavy_init() has registered the
-ATM device returns -ENODEV instead of dereferencing atm_dev through
-atm_err().
+Fixed in next version.
 
-Closes: https://syzkaller.appspot.com/bug?extid=9b195c4f412ea5c4e56a
-Link: https://syzkaller.appspot.com/ai_job?id=b6352d63-d03a-4e87-92a4-b334c3ebcf97
+> 
+> > +	if (!priv->of_gptp)
+> > +		return 0;
+> > +
+> > +	if (!of_device_is_available(priv->of_gptp)) {
+> > +		of_node_put(priv->of_gptp);
+> > +		priv->of_gptp = NULL;
+> > +		return 0;
+> 
+>    This *return* seems superfluous...
 
-> diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-> index 429ac20a8999f..dee15f7b70bf6 100644
-> --- a/drivers/usb/atm/cxacru.c
-> +++ b/drivers/usb/atm/cxacru.c
-> @@ -347,7 +347,7 @@ static ssize_t adsl_state_store(struct device *dev,
->  		return -EINVAL;
->  	ret = 0;
->  
-> -	if (instance == NULL)
-> +	if (instance == NULL || instance->usbatm->atm_dev == NULL)
->  		return -ENODEV;
->  
->  	if (mutex_lock_interruptible(&instance->adsl_state_serialize))
+Thanks, fixed.
 
-[Severity: High]
-Is this check taken early enough to still be valid at the point where
-atm_dev is actually dereferenced?
-
-The test reads instance->usbatm->atm_dev once at handler entry, but the
-dereference happens later in atm_err(), which expands through atm_printk()
-in drivers/usb/atm/usbatm.h:
-
-  #define atm_printk(level, instance, format, arg...)	\
-	printk(level "ATM dev %d: " format ,		\
-	(instance)->atm_dev->number , ## arg)
-
-Between the check and that dereference the handler sleeps in
-mutex_lock_interruptible(&instance->adsl_state_serialize), then in
-cxacru_cm() (which takes cm_serialize and performs a USB control transfer),
-and on the "restart" path also in msleep(1500).
-
-Meanwhile usbatm_atm_init() in drivers/usb/atm/usbatm.c publishes atm_dev
-before calling atm_start, and clears plus frees it if atm_start fails:
-
-  instance->atm_dev = atm_dev;
-  ...
-  if (instance->driver->atm_start && ((ret = instance->driver->atm_start(instance, atm_dev)) < 0)) {
-	atm_err(instance, "%s: atm_start failed: %d!\n", __func__, ret);
-	goto fail;
-  }
-  ...
- fail:
-	instance->atm_dev = NULL;
-	atm_dev_deregister(atm_dev); /* usbatm_atm_dev_close will eventually be called */
-
-So a non-NULL atm_dev does not mean initialization completed, and the only
-failing leg of cxacru_atm_start() runs before it takes the mutex that
-adsl_state_store() uses:
-
-  ret = cxacru_cm(instance, CM_REQUEST_CARD_GET_MAC_ADDRESS, NULL, 0,
-		  atm_dev->esi, sizeof(atm_dev->esi));
-  if (ret < 0) {
-	atm_err(usbatm_instance, "cxacru_atm_start: CARD_GET_MAC_ADDRESS returned %d\n", ret);
-	return ret;
-  }
-
-  /* start ADSL */
-  mutex_lock(&instance->adsl_state_serialize);
-
-With that ordering, can the exact oops quoted in the commit message still
-happen?  A writer passes the new check while atm_dev is published but
-atm_start has not finished, sleeps in cxacru_cm(), the heavy-init kthread
-takes the fail path above, and the writer then evaluates:
-
-  atm_err(instance->usbatm, "change adsl state:"
-	  " CHIP_ADSL_LINE_STOP returned %d\n", ret);
-
-which is the reported crash site.  The CHIP_ADSL_LINE_START error leg is
-identical.  If the compiler had already loaded the old pointer, is this a
-use-after-free instead, given atm_dev_deregister() drops the last reference?
-
-There is a second window of the same shape in usbatm_usb_disconnect():
-
-  if (instance->atm_dev) {
-	atm_dev_deregister(instance->atm_dev);
-	instance->atm_dev = NULL;
-  }
-
-Would it be more robust to drop the atm_dev dereference from these paths
-altogether, for example by using usb_err()/dev_err() on
-instance->usb_intf->dev, which stays valid for the duration of the sysfs
-write?  Alternatively, re-validating and latching atm_dev under a lock that
-usbatm_atm_init()'s failure path also takes, holding a reference on the
-atm_dev, or publishing instance->atm_dev only after initialization has fully
-succeeded would close the window rather than narrow it.
-
-Related to the same window: adsl_state_store() calls cxacru_poll_status()
-after dropping adsl_state_serialize, and that function caches the pointer
-with no check of its own:
-
-  struct usbatm_data *usbatm = instance->usbatm;
-  struct atm_dev *atm_dev = usbatm->atm_dev;
-
-and then uses it via atm_warn(), atm_dev->link_rate and
-atm_dev_signal_change().  Can that path fault too once atm_dev has been
-cleared behind the writer's back?
-
-> @@ -444,7 +444,7 @@ static ssize_t adsl_config_store(struct device *dev,
->  	if (!capable(CAP_NET_ADMIN))
->  		return -EACCES;
->  
-> -	if (instance == NULL)
-> +	if (instance == NULL || instance->usbatm->atm_dev == NULL)
->  		return -ENODEV;
->  
->  	pos = 0;
-
-[Severity: High]
-The same check-then-use concern applies here, and this handler holds no
-mutex at all before the sleeping cxacru_cm() transfers inside the
-while (pos < len) loop.  Both the failure and the success legs dereference
-atm_dev after that sleep:
-
-  ret = cxacru_cm(instance, CM_REQUEST_CARD_DATA_SET,
-		  (u8 *) data, 4 + num * 8, NULL, 0);
-  if (ret < 0) {
-	atm_err(instance->usbatm,
-		"set card data returned %d\n", ret);
-	return -EIO;
-  }
-  ...
-  atm_info(instance->usbatm, "config%s\n", log);
-
-Since atm_info() expands to the same (instance)->atm_dev->number, does this
-mean no command failure is even required to hit the dereference here once
-usbatm_atm_init() or usbatm_usb_disconnect() has cleared atm_dev?
-
-Would it make sense to also drop the atm_err()/atm_info() uses in this
-function in favour of usb_err()/usb_info() on the USB interface?
+> 
+> > +	}
+> > +
+> > +	return 0;
+> > +}[...]
+> 
+> MBR, Sergey
+> 
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/f3ef0a67-79d7-47da-be6e-7e82d92e68fe%40mail.kernel.org
+Kind Regards,
+Niklas Söderlund
