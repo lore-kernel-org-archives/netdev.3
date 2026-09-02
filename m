@@ -1,83 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F631409270;
-	Wed,  2 Sep 2026 09:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD485412294
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 09:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788340266; cv=none; b=ofnnj7OcuKlkZ4+fypJ5NsLeqvt44/I7A8p/oF9JMFQ8jk/8Ri2VRPZRGP6wTjZSepIM0qhgL54LojRQDnTRK+KLmRoQFn/hqjNqRulWEN5crjnP4AGf/jE/JfW97W3Rk/UkMIRLTeHiIG+Ys06f6ZvaJpsbjSB2fAMCnJh+B54=
+	t=1788340620; cv=none; b=dIc0ZnudHTb7ehC0Z2Q+bu0zfOmz2C4OQ/A0JV0/v7pCtXB6DHSsXGI78tWXaeVpmk2Yo4VorLVTKSgZ/oGle/IhfVfajrA+EmM4pVnr0sM75O51IQ1vxjflSu6SbNrMyEaEmcU7O/A9DZW0T5r+TSBAtUyPKf+TQ+ExwIZK3Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788340266; c=relaxed/simple;
-	bh=HKnpFDZpmWd43daQqAXOR/dJZnDNA5xtg7iuRcr3hkA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DRnLF2K18OVWR3Akom8RC5ygBF3D8pehRWT1LWofk6+WM1UlLn4ckofjP/xvLoby14EDHDdRG9bP+p2Mj04dYA4MjNC77jY9UYEK8IwrA44h5hP4U5aLd+cwkH/x2YuJQ1O2n5V6gxZxyA6vVB5NcwPqI/R3u5FAOLyGRh48zhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7fwRP9E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788340620; c=relaxed/simple;
+	bh=2YBpcQAOPUJ9VseJE3U5VpLyuwZmbH18VY49scieT8s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RVLRwZwZl47qd1uRyWDtiz6NFO53l7XMGDStxqjIg7eQQkSY8xhMHLrXmkZr+vZ8vOOddkRxNGRKaUzdgpl5U27U+e6IE6hhcENfmfK0XmbJ1FyfqcBfqmkX3/GFORGDxvI7guPuYVZU4ykcugxVOicH6+4/zrqJ0Kgk1Bc9RJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eTfqQ/gG; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7fwRP9E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3BB1F000E9;
-	Wed,  2 Sep 2026 09:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788340264;
-	bh=vi+t1XuQPp0QQfSw0Pmppgp9Eec27Jzg5OE9cR5C3TU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=n7fwRP9EUBlhjuZy1QP+513sh5R6BidHPRyC7gPOiHBKmBJEt8J3xb5MOGo5QO9KC
-	 xt9Bhzy65M9an43ymAuSbJfpdzmFx5zahHofB7Mjzi49cu3SGJJfk7dtxNkQRayvmE
-	 u+vcN/yx/RvKiNEtfqiCTvm7l3wX2buYBMrhpjsHFK/IQiLB7pVsrRvsc9UjugaJi6
-	 y34pJPgvHX4g7uLQN1FmJbQddiRsppanRU7BIeZ8O449Kuxntb12EY6OALiFmE9lhZ
-	 4DMBAIVKBM/sGRi9/5zNhwjm/8QWk/Qa9SKwn2OJYSd/fw072VtZA6lGdzBEr4aPoP
-	 smMUBp0EDiG/A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0ABA3926275;
-	Wed,  2 Sep 2026 09:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eTfqQ/gG"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=2YBpcQAOPUJ9VseJE3U5VpLyuwZmbH18VY49scieT8s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788340615; v=1; x=1788945415;
+ b=eTfqQ/gGCVf9saaEmYA13NgUaHOgYcNzYMKHHacwkYUho6EPeEYh8iQEfYvbX7MlBLGEBGTu
+ i9AGm302CCRT7S/qsMF4BHfBkpZqILVhLwULDD/KY8wAG9Bytugp/ZGfkYs2D69c3TpXZ2/5e6Z
+ U+qZFaL/p3XVKQ5Z41Q3paRk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 70422e1d2167aac2;
+	Wed, 02 Sep 2026 09:16:55 +0000
+X-Mizu-Trace-ID: 70422e1d2167aac2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a59a2f22-dca0-443b-a0de-f580ed2c4438@linux.dev>
+Date: Wed, 2 Sep 2026 17:16:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: phy: microchip_t1: fix NULL pointer dereference in
+ lan887x_phy_init()
+To: huhai <15815827059@163.com>
+Cc: netdev@vger.kernel.org, huhai <huhai@kylinos.cn>, kuba@kernel.org,
+ andrew@lunn.ch, divya.koppera@microchip.com
+References: <20260902083342.221050-1-15815827059@163.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260902083342.221050-1-15815827059@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] hv_netvsc: Advertise the SR-IOV capability for
- CoCo
- VMs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178834020640.2165204.6609360204744972790.git-patchwork-notify@kernel.org>
-Date: Wed, 02 Sep 2026 09:10:06 +0000
-References: <20260828212325.2309515-1-decui@microsoft.com>
-In-Reply-To: <20260828212325.2309515-1-decui@microsoft.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- longli@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
+在 2026/9/2 16:33, huhai 写道:
+> From: huhai <huhai@kylinos.cn>
+>
+> mchp_rds_ptp_probe() may return NULL when CONFIG_PTP_1588_CLOCK is disabled.
 
-On Fri, 28 Aug 2026 14:23:25 -0700 you wrote:
-> This basically reverts the Feb 2021 change:
-> commit 96854bbda24f ("hv_netvsc: Restrict configurations on isolated guests")
-> 
-> In Feb 2021, PCI device assignment for CoCo VMs on Hyper-V was not
-> supported: if the host offered a PCI VF NIC device to the VM, the VM
-> couldn't handle it properly, so the 2021 commit was made to tell the host
-> "I'm unable to handle SR-IOV NICs, so please don't offer a VF to me".
-> If the host offers a VF NIC to the VM anyway, the change to
-> netvsc_receive_inband() ignores the VF NIC.
-> 
-> [...]
+When CONFIG_MICROCHIP_PHY_RDS_PTP=n, the stub for
+mchp_rds_ptp_probe() also returns NULL, even if
+CONFIG_PTP_1588_CLOCK=y. Please mention this case in the commit message.
 
-Here is the summary with links:
-  - [net-next] hv_netvsc: Advertise the SR-IOV capability for CoCo VMs
-    https://git.kernel.org/netdev/net-next/c/d0ec95a8a4e7
+> lan887x_phy_init() only checks for an error pointer before using the returned
+> clock to configure the periodic output pin, which can result in a NULL
+> pointer dereference.
+>
+> Handle the NULL return as PTP being unavailable and skip the event pin
+> configuration in that case.
+>
+> Fixes: 8541fc12edcd ("net: phy: microchip_t1: Enable pin out specific to lan887x phy for PEROUT signal")
+> Signed-off-by: huhai <huhai@kylinos.cn>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Since this is a crash fix suitable for the net tree, please mark
+the patch as [PATCH net] and add:
 
+Cc: stable@vger.kernel.org
+
+Thanks,
+Xuanqiang
 
