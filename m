@@ -1,373 +1,134 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF5227A91D
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 03:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788320175; cv=pass; b=MtKcvwO+Y1cGI7i75ouV7RUnIchuFL3tMBL6gcIaDPa0KjBXCs11N+MzIoyZWss9KfPuD+pPUXq8pX5Wd8fWrWzsxDET2hTCujx0zZawMCtLXOAUmukCdQINvqIiDkBHcDjX9A1hx0/evSkn90ulXFuK5pBRGbehT9JP94jyCF8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788320175; c=relaxed/simple;
-	bh=MBRR2QE/1sl+Ph3CpG18ShB2Bzi1dIhs75byozISlGc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NybBjqN6XSUBjBA1pVWhlNCRP/USBmeOzu75FYIB8xKx6S5ta0zVwzCecFazkmT0fQqP3S98DoZmvrpnCzvtTzrwiKq6Mkud3GR26RgbOn35kiISk4StP3gZvwGgKdT1GrllcqupUUf8MFuvibr3OSOWOoNUlnxTXSOe97wBpe8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=eUk0uQe2; arc=pass smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCA72F9DA1
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 03:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788321182; cv=none; b=N9J4ZmeKNLOeoscH2Na8DEigHWDsxpkwvMBDkGyZ1uXHfrivw8bHUpUIzEedxIbJrYF79WElNhqRA9WLhT40cuhgO7ToSP1dXcJ7TmO+HUZXBOWQ9PScdPMAVyvzZGVw5fS5aNF5xHT2/6ntn80wXBpEcKmdhPzXQlwBVpvNySs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788321182; c=relaxed/simple;
+	bh=VQTV+1Df829D0KhYI8z888n05bpJmIInGDkIRqI83Dc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IZI0KhH2qrMSspss1ndtle1SwbMjWOIXk9Ec7qnmn0k+fe/l8pz9MS6GMjH/XILXrQygMetKyg67jsHkfqoIeTL720CwmnbEaA0i5WpTnkQn/nVpGZQHrYWIVzdi3GZvfoMLim5r82GGaTiQYjn8/MvM7pngiOSWMpfSRAnoy1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R11sKAf7; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="eUk0uQe2"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aec201b582so672482e87.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 20:36:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788320171; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WyvNPzmByRSFf/B0T/ec/eFNfNPFpQPrFbCQSpDI6+neWmE2frl5pUT+7QIkn3E3gT
-         BcvTC1ynv3KlGBf6KwzHOXOSE5bSEervizmETPUJmo2txvUocBseUC7rnFkI5+95vl61
-         P7RmfoYqkiR0xbImPVst4/Ai083dqRF1Ogu5zeBAKbFBYJkVH/8q3KlCjjOz40DptUzx
-         TI0RCIzlT+0fNZG6byWSuZscHFMSemNX7xTrSFDzq5+9yzQeGJFAZa2GREQqbStlVwTi
-         7pYsl6lCMOh5OEhSaiKvRDldK/nruUtYejmXShnMgQQfF92OEkyro6SKKJy9fv7xK4gr
-         Fayg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WZJ6GV0DqGuA2eo3lm1kA/JjLv1Db3xa1qf9KZGwzIg=;
-        fh=xTPakTUgYSGUKVvY2V6SwMnZfW9/Fq2/vppTn/NMl6E=;
-        b=oX3wNPM08wXD6qNaDKjfrV6ocFkiZOnErNG+kkpBhpUcQfbGkLoOUku31tD1Y4Glhy
-         cMC2pR/1SlV3F3XrbQRIok/JN4ioCmtBogqvzqE4JS3NYRw7aJdag4vLBqk3vFzdl95y
-         Kj8yGH7uXvceKQziGgGdWJJi/bdZnnjK85f9hs86yE9ttPElxXxxvV9+H8/u8NeDFXQQ
-         o8qM1QsvgouAhgmPvXgeTFSGS43GomStxyQ4Nvohpqu1V4s7RFDzi3ISfzQ62ihzGkxo
-         NMOE4Qh90EIUEh5sJ0+XvAQwJaVvQjzl/inQ32HsGVeZYSWSMk8WH6ck3Va9OZezoMV2
-         QFfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R11sKAf7"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d715f4a587so8463755ad.2
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 20:53:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788320171; x=1788924971; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WZJ6GV0DqGuA2eo3lm1kA/JjLv1Db3xa1qf9KZGwzIg=;
-        b=eUk0uQe2K6FS5t6Jz9GmN81BGc3O2SX+h8bX/YLofBc0DfZw2ofuWCo3Pw8lR1Ir7g
-         5PFkPzR1clDLy+CxJvudjebxuUIxK+OBW7CvXazrbDKsHTRpE2jk+DNNf4frp5eejekX
-         6QqkC1fbs1SXBrvlKPgsirUT648RKKcwyu0kV+LRGAEVyg2BKtzX5PBrSVhYGD6Mp9jM
-         m+1IqIBSyEGi6iy38HZY+34bfIpGMMtOgfkR0jkEyUjmNxXuHBAUiOJTOeb8a3F2AAhi
-         IcXVI6Gzk3lJ8oicQu+Ju92KAFG41ohE+N8SV0axq8S3uO7b8HIlVeAn/KBmRldlnClh
-         VH5g==
+        d=gmail.com; s=20251104; t=1788321180; x=1788925980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eVrMymMIOAYqNefktBqX7HmVpjK/XEfS+UGqRqDmQdY=;
+        b=R11sKAf7JKVK39dLQ8o/woiFTtSlAdpyYeQ8aNeUuRpexJ+kUt1XFVDcFwvKfpu5Z5
+         a/SGO3Q83DCee6NHy3qbsWK3tEGHVYt9BhadL1HPZRocX7i2ml+2TkJVow+1pG/NlqfS
+         X2A+N/GMrZoMPo4Chuna82RJdVyO5UAbL86ltcwi2bgHYcU+FvlTmWJadeEju0njjuKq
+         /9em3X8VNdEHJR/KGsibeWQlZO5vtCLMTHgDavUCyBgdikT5Kk0Q4ZnEybHYdcYqmTkh
+         lhkbhnWKK3Mj8NXarZM/BLap2VKzmi2JZHr5nZOVh8KV3liX2ncZAeAbLufV8fhFvTAC
+         aT7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788320171; x=1788924971;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WZJ6GV0DqGuA2eo3lm1kA/JjLv1Db3xa1qf9KZGwzIg=;
-        b=j0G2zJEnImt2fy4Xcs5cb1MJpm3i097wCifpecg7Bi/z9HBxGUQ+u+ENO6tRMKX7qQ
-         JHjCJzM6tX2UFLMF+Sl8M9MZWLMH6N4ZZavz758V44N7KlddA00ZEnvB5DfA1wGNfO71
-         msNqRj66/uwKOH2xIzPcRyf04rC1g4vflWiH+bsyGWSWEbYAr9n+zGWuR0893BXyRqvC
-         Xbi8NtyU+jmlr1se+oHmMdVSE+B4F5FgdEexomytWs9AXVdM2hWVhFYg0gzSGmHlt1Vk
-         M5vymh0pAYJAn47KP6s98oodPFnR4DYfhlQgwQfukxh9iZ/secQ8CL1bopxB4xrf22Nd
-         7ydA==
-X-Forwarded-Encrypted: i=1; AKwUvBxTQB2tn3Dc+9NLPGnxqcSQjfb8ou9Nee2UcLgS0ENvE4PFW17qr0DyPPCW5+TjXlfHyeb3VKM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kJw6ybKhBe723z93KHxR8/GGwZWamk7LwZWuulhlCjo6Ef9dEj
-	Gndkwo0iZ/e6WMpUlDhnkw6fs+07PL2UEmG2gVe+DpCWSHhXiWx8jOm5I0mpfrGNZ8SC1WN9LdQ
-	EEmUPRoWVQZTEekIAovpTIZliDQ9GchhWaD/UHteTXVU=
-X-Gm-Gg: AYBFou32AzbMUEsHVh36mszF/+ZQz7UMFxB16O7FZe9g5BSBbm79vz3n4ZWGpI194r+
-	HLXo27DKKdennnARnnjPgYBA0jsn5MWJ2FNbEvIao8c24/xNy0hMN89BXfLlIDyXJfPniKhKfKF
-	S2ZlCSD0ZmDZ4SMOB/mWa98QeF+AUp4OGr6sAsssxwJBp10tMYhDUqwyTlNrnk6pwGX+S9NbDFm
-	eewZzl8UhuafI2emj4Hw7dcV/QvodszMuWE+YYQULzhTOWTyDzNEZR3GY5bYt2zXGpQ34qA2QaN
-	ZpXTmPABTAIB72gsurin9UrNI3DFkL0M6l/WPQYk/pbuemG6BooXrcYEqssSkyvsM1AN6VTgMU2
-	Qg/2NzL9xyOGiMBo2NrKLi3LMylkiffY=
-X-Received: by 2002:a05:651c:1544:b0:3a1:7eff:413c with SMTP id
- 38308e7fff4ca-3a35013ab1fmr3450211fa.10.1788320170983; Tue, 01 Sep 2026
- 20:36:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788321180; x=1788925980;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eVrMymMIOAYqNefktBqX7HmVpjK/XEfS+UGqRqDmQdY=;
+        b=NBjWzDjMBhj3jOtd2v3z7JGok89ssYYOAcGTfoXGb5DXGXpZCKdYLRJcEMgk3NFaPm
+         o239yPhZvrBek6VJ9Ei0yTjCkP2wi69phf/iP/Zo/GJc0QkYkYmehrHGxGptYyBdYt+W
+         479KtIwkHRCEFj9VcqD6Un5CXOyWxmbc3qUksvn0zuw8Qr+FQjkSSsO+1lwsf9omqNOr
+         cXgQxxFUVZLgh9RHa49F0odJvsvwlTB0TcpZGBJju/mUwllIuWgu26WVRGqTuyGd3Sf6
+         PXdxONaknE0fcWvQcdVSOk4C1gw/Q2Ieh86qPyw1YbnlDQOU4AMMuceBqsTuxEnOLgZM
+         Mgbw==
+X-Gm-Message-State: AFuF++nGuspbnXnLUjrCFKPpruD0HQ0iN7qHgZkG4H549ecSkmofoCtu
+	iFIbn+zwvIZ2BMpCI9761PtXcQsO9v9oNzH9ID3Tb3QkApP0UgywgBT06FDuboOC
+X-Gm-Gg: AYBFou0Ih17hVCVKCCUSWla58QZW/dje0kfER56FlGjUmzCFKQhyS3ju4/KIcpLWi4d
+	591EKWeuMYLR+Wi4zqGRBp8rabxIjn48LzQ+nP1K0b1PDy+ZpRIdOmBlfv1dDJuQ3QU+/dK4rvS
+	94MCuzG9fvEdbnhpW/70f95/d+sp4CuHjAxjxVsEa+3RY1SvuuRQA6NZX42wjdj8BQgGx2UmIj1
+	+jN1toPXCgiDA2ZaJGNfUQ0l3mfwEh6i8s3O8f/oHG4DwIGWsl+RyVpc7kp4dkxMv8RrpzJNIAG
+	MX0UW5rsecSgqXynMw9eUxZytEo4eN3VkCa/pATynEevX8S8GTDDyA6KaG9iiUU99bQeVIAd0YP
+	hIHpd8zWc0KL5bYVjDDuf1avq3saOjhmhotkMt537b2BzALEULS8kRn8qf4rj/6zKHwCZtqLAx2
+	Z0nmH6xMYoQaEEpFq44E8LZKeSvhCbAyTCzOusLAzxTWlcf5AvrdRJhsJsSN1utBNIDFtTz7cHt
+	58XliOb6p3BJ2myskmdjjLF2wSxNELgkiACTtwAp5deGVGeHV2MkMiPok0wisTp
+X-Received: by 2002:a17:90b:4fc5:b0:38e:49c0:75a7 with SMTP id 98e67ed59e1d1-39aedfe18c0mr2965060a91.8.1788321179932;
+        Tue, 01 Sep 2026 20:52:59 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:5fdf:d463:f07:1882])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-32f07b7987csm2502377eec.16.2026.09.01.20.52.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 20:52:59 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	jhs@mojatatu.com,
+	shuah@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	vishy0777@gmail.com,
+	tahiliani@nitk.edu.in,
+	"Hemendra M. Naik" <hemendranaik@gmail.com>
+Subject: [PATCH net-next v5 0/3] net/sched: sch_fq_pie: add per-flow class statistics
+Date: Wed,  2 Sep 2026 09:22:28 +0530
+Message-Id: <20260902035231.81866-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <8fa3c9e6d5dcf328979ed2bdc27817c11a5eff91.1787752861.git.zihanx@nebusec.ai>
- <20260902010052.2297527-1-kuba@kernel.org>
-In-Reply-To: <20260902010052.2297527-1-kuba@kernel.org>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Wed, 2 Sep 2026 11:35:58 +0800
-X-Gm-Features: AcwNN1W5A5Vr5_mfUAJhRgWg73KHuqbWAvozEtCFXeIQlCxjhsSFewh8gZGNXlA
-Message-ID: <CAANe3eS3knCks0avTO87C_Qg+FL4=NDi-xwFWyNhGPpQU-rKzw@mail.gmail.com>
-Subject: Re: [PATCH net v6 2/2] llc: reject out-of-service state before state lookup
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, vega@nebusec.ai, kees@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 2, 2026 at 9:00=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> llc: reject out-of-service state before state lookup
->
-> This adds a lower-bound check on llc->state in llc_conn_service() so that=
- a
-> socket sitting in LLC_CONN_OUT_OF_SVC is rejected before llc_qualify_conn=
-_ev()
-> indexes llc_conn_state_table[state - 1].  A few questions about the new
-> check below.
->
-> > diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-> > index 885a5c33024c3..4a34f240ad2cc 100644
-> > --- a/net/llc/llc_conn.c
-> > +++ b/net/llc/llc_conn.c
-> > @@ -362,7 +362,8 @@ static int llc_conn_service(struct sock *sk, struct=
- sk_buff *skb)
-> >       struct llc_sock *llc =3D llc_sk(sk);
-> >       int rc =3D 1;
-> >
-> > -     if (llc->state > NBR_CONN_STATES)
-> > +     if (llc->state < LLC_CONN_STATE_ADM ||
-> > +         llc->state > NBR_CONN_STATES)
-> >               goto out;
->
-> [Severity: High]
-> Does this check actually protect the table access, given that the validat=
-ed
-> value is not latched?  llc_qualify_conn_ev() re-reads llc->state twice to=
- do
-> the indexing:
->
-> net/llc/llc_conn.c:llc_qualify_conn_ev() {
->         struct llc_conn_state *curr_state =3D
->                                         &llc_conn_state_table[llc->state =
-- 1];
->         ...
->         for (next_trans =3D curr_state->transitions +
->                 llc_find_offset(llc->state - 1, ev->type);
->              (*next_trans)->ev; next_trans++) {
->                 if (!((*next_trans)->ev)(sk, skb)) {
->         ...
-> }
->
-> The store that produces state 0 is done with no socket lock at all:
->
-> net/llc/llc_conn.c:llc_sk_free() {
->         llc->state =3D LLC_CONN_OUT_OF_SVC;
->         /* Stop all (possibly) running timers */
->         llc_sk_stop_all_timers(sk, sync);
->         ...
-> }
->
-> and llc_ui_release() calls it after dropping the socket lock and before t=
-he
-> timers are synchronized:
->
-> net/llc/af_llc.c:llc_ui_release() {
->         ...
->                 llc_release_incoming_children(sk);
->                 release_sock(sk);
->         ...
->         llc_sk_free(sk, true);
-> }
->
-> So can this interleaving happen for a socket closed while an ack timer is
-> still armed (for example a non-blocking connect() left in
-> LLC_CONN_STATE_SETUP, where llc_send_disc() returns early because sk_stat=
-e
-> is not TCP_ESTABLISHED and stops nothing)?
->
-> CPU0 (softirq, ack timer)
-> llc_conn_ack_tmr_cb() -> llc_conn_tmr_common_cb()
->         bh_lock_sock(sk);          /* excludes nothing here */
->         llc_process_tmr_ev()       /* sees state 2, !sock_owned_by_user()=
- */
->           llc_conn_state_process() -> llc_conn_service()
->                 reads llc->state =3D=3D 2, passes the new bound check
->
-> CPU1 (close(2))
-> llc_ui_release() -> release_sock(sk) -> llc_sk_free()
->         llc->state =3D LLC_CONN_OUT_OF_SVC;     /* unlocked store of 0 */
->
-> CPU0 continues into llc_qualify_conn_ev()
->         &llc_conn_state_table[llc->state - 1]   /* now index -1 */
->         llc_find_offset(llc->state - 1, ev->type)
->         (*next_trans)->ev(sk, skb)              /* indirect call */
->
-> Since bh_lock_sock() in llc_conn_tmr_common_cb() does not exclude a write=
-r
-> that holds no lock, is the negative index and the indirect call through t=
-he
-> pointer read from before the tables still reachable after this patch?
->
-> Would latching the value once, for example
->
->         u8 state =3D READ_ONCE(llc->state);
->
-> and passing that value down to llc_qualify_conn_ev() and llc_find_offset(=
-),
-> or moving the llc_sk_free() state store under the socket lock, be a bette=
-r
-> fit for the problem described in the changelog?
->
-> >       rc =3D 0;
-> >       trans =3D llc_qualify_conn_ev(sk, skb);
->
-> [Severity: Medium]
-> The goto out here leaves rc at its initial value of 1, which was previous=
-ly
-> unreachable for a state of 0.  Where does that 1 end up?
->
-> net/llc/llc_conn.c:llc_conn_state_process() {
->         rc =3D llc_conn_service(skb->sk, skb);
->         if (unlikely(rc !=3D 0)) {
->                 printk(KERN_ERR "%s: llc_conn_service failed\n", __func__=
-);
->                 goto out_skb_put;
->         }
->         ...
-> }
->
-> net/llc/llc_if.c:llc_establish_connection() {
->         ...
->                 rc =3D llc_conn_state_process(sk, skb);
->         }
-> out_put:
->         sock_put(sk);
->         return rc;
-> }
->
-> net/llc/af_llc.c:llc_ui_connect() {
->         rc =3D llc_establish_connection(sk, llc->dev->dev_addr,
->                                       addr->sllc_mac, addr->sllc_sap);
->         if (rc) {
->                 sock->state  =3D SS_UNCONNECTED;
->                 sk->sk_state =3D TCP_CLOSE;
->                 goto out;
->         }
->         ...
-> out:
->         release_sock(sk);
->         return rc;
-> }
->
-> Can connect(2) then return +1 to userspace on a socket that was just rese=
-t
-> to SS_UNCONNECTED and TCP_CLOSE?  Callers testing for a negative return
-> would read that as success.
->
-> Is the printk also a concern, since it is not ratelimited and now fires o=
-nce
-> per event for a state this patch treats as expected?
->
-> The sequence I believe reaches it on a still-hashed socket:
->
->   1. socket(AF_LLC, SOCK_STREAM) + bind() leaves llc->state at
->      LLC_CONN_STATE_ADM
->   2. a failing connect() leaves state at ADM with llc->daddr set and the
->      socket still in the SAP list
->   3. any further frame from the peer matches the ADM catch-all transition
->
-> net/llc/llc_c_st.c:
-> static const struct llc_conn_state_trans llc_adm_state_trans_5 =3D {
->         .ev            =3D llc_conn_ev_rx_any_frame,
->         .next_state    =3D LLC_CONN_OUT_OF_SVC,
->         .ev_qualifiers =3D NONE,
->         .ev_actions    =3D llc_adm_actions_5,
-> };
->
->      which sets llc->state to 0
->   4. connect(2) again (sock->state is SS_UNCONNECTED, so it is accepted)
->      reaches the new reject path
->
-> Would it be more consistent to translate out-of-service into -ECONNABORTE=
-D
-> at the llc_if.c entry points?  llc_send_disc() already does an explicit
-> check:
->
-> net/llc/llc_if.c:llc_send_disc() {
->         if (sk->sk_type !=3D SOCK_STREAM || sk->sk_state !=3D TCP_ESTABLI=
-SHED ||
->             llc_sk(sk)->state =3D=3D LLC_CONN_STATE_ADM ||
->             llc_sk(sk)->state =3D=3D LLC_CONN_OUT_OF_SVC)
->                 goto out;
->         ...
-> }
->
-> while llc_establish_connection() has no such check.  On a related note, t=
-he
-> kernel-doc for llc_build_and_send_pkt() still documents only 0,
-> -ECONNABORTED and -EBUSY, although state 0 is filtered there only
-> incidentally by llc_data_accept_state().
->
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but while looking at the calle=
-rs
-> of llc_conn_service() there is an asymmetry in llc_backlog_rcv() worth
-> mentioning.  The fallback branch tests the owner socket's state and then
-> dispatches on it, while llc_conn_state_process() operates on skb->sk:
->
-> net/llc/llc_conn.c:llc_backlog_rcv() {
->         ...
->         } else if (likely(llc->state > 1)) {
->                 rc =3D llc_conn_rcv(sk, skb);
->         } else {
->                 goto out_kfree_skb;
->         }
->         ...
-> }
->
-> The two branches above it take bh_lock_sock_nested(newsk) before touching=
- a
-> child, this one does not.  For a listener-owned backlog skb whose skb->sk=
- is
-> a child, the child's state machine runs without the child's lock, even
-> though llc_conn_state_process() documents that the socket lock has to be
-> held.
->
-> Every child reachable through this branch appears to have already been
-> released by llc_release_incoming_sock(), whose state store the new check =
-now
-> rejects, so this looks defused for the concretely reachable case.  What
-> remains is the publication order in that function:
->
-> net/llc/llc_conn.c:llc_release_incoming_sock() {
->         if (atomic_xchg(&llc->incoming_state, LLC_INCOMING_NONE) =3D=3D
->             LLC_INCOMING_NONE)
->                 return;
->
->         WRITE_ONCE(llc->state, LLC_CONN_OUT_OF_SVC);
->         ...
-> }
->
-> Can a drainer in the fallback branch observe incoming_state as
-> LLC_INCOMING_NONE while still seeing the child's pre-teardown non-zero
-> state, and then run the child's state machine concurrently with
-> llc_release_incoming_sock() on another CPU?  Both fields are read there
-> without the child's bh lock.  Reaching the branch at all also needs the
-> listener's own llc->state above 1, which seems possible only through a
-> listen() followed by connect() on the same socket, since llc_ui_listen()
-> leaves sock->state at SS_UNCONNECTED and llc_ui_connect() has no TCP_LIST=
-EN
-> check.  I could not confirm that all of these hold at the same time, so t=
-his
-> may not be reachable in practice.
-> --
-> pw-bot: cr
+FQ-PIE runs an independent PIE controller per flow but exposes no
+per-flow statistics. This series wires up fq_pie_class_ops to expose
+per-flow AQM state (prob, delay, deficit, avg_dq_rate)
+via 'tc -s class show', following a similar pattern as FQ-CoDel.
+---
+Changelog:
 
-Thanks for the review. The points on 2/2 look valid, especially the
-unlatched llc->state check versus llc_sk_free(), and the connect(2)
-return of +1 / unratelimited printk path.
+v5:
+- Addressed Sashiko review comments:
+ - Omitted .tcf_block / .bind_tcf / .unbind_tcf from cl_ops (statistics
+   only being exported; filter attach to fq_pie is now disabled).
+ - Dropped empty tc_fq_pie_xqd_stats placeholder; class_stats is a direct
+   struct member.
+ - Limited flows to [1..65535] so per-flow class handles fit in a 16-bit
+   TC minor.
+ - Rewrote selftest 83c0 with TBF + fq_pie, ping traffic, and
+   matchCount 1 on per-flow stats output.
+ - Updated selftest 83be for the new flows limit.
+ - Dropped the tools/include UAPI mirror changes from patch 3/3.
 
-I'll drop 2/2. Kees's net-next series covers the same out-of-service
-lookup more completely, including the state machine guard and the
--ECONNABORTED translation:
+v4: https://lore.kernel.org/netdev/20260727164056.106203-1-hemendranaik@gmail.com/
+- Fixed unaligned commit message; moved typo fixes to another patch.
 
-  https://lore.kernel.org/all/20260901210300.i.590-kees@kernel.org/
+v3: https://lore.kernel.org/netdev/20260630183702.170798-1-hemendranaik@gmail.com/
+- No changes since v2.
+- Resent after the previous submission was deferred due to the
+  net-next tree closing during review.
+- Updated corresponding iproute2 patch in response to review comments;
+  kernel patches unchanged.
 
-I'll leave that bug to his series.
+v2: https://lore.kernel.org/netdev/20260614125000.6058-1-hemendranaik@gmail.com/
+- Addressed ABI backward compatibility issue for tc_fq_pie_xstats.
 
-1/2 is a separate listener child-socket leak and is not addressed
-there. I'll reroll that alone as v7.
+v1: https://lore.kernel.org/netdev/20260531125314.22492-1-hemendranaik@gmail.com/
+- Initial submission
 
-The remaining note about llc_backlog_rcv() / llc_release_incoming_sock()
-belongs to 1/2; I'll look at the publication order there in the reroll.
+Hemendra M. Naik (3):
+  net/sched: sch_fq_pie: add per-flow statistics via class ops
+  selftests: tc-testing: add fq_pie per-flow class stats test
+  net/sched: pie: correct tc_pie_xstats field documentation
 
-Thanks,
-Zihan
+ include/uapi/linux/pkt_sched.h                | 23 ++++-
+ net/sched/sch_fq_pie.c                        | 90 ++++++++++++++++++-
+ .../tc-testing/tc-tests/qdiscs/fq_pie.json    | 33 ++++++-
+ 3 files changed, 138 insertions(+), 8 deletions(-)
+
+-- 
+2.34.1
+
