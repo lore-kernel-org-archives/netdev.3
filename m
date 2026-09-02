@@ -1,234 +1,135 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012006.outbound.protection.outlook.com [52.101.53.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA483C456F;
-	Wed,  2 Sep 2026 19:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0468D394798
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 19:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788377366; cv=fail; b=lOJH1AjDa6OSl1zx/+E/SRS8w9sXWoVhOuT+4yOorwgZNQZ0sedXWV+FUBl0ZXnDpuFUuJ5EaLHtJVf6QzDlt9DVGV2KFm9dnb4BD/U4Gyb/gUXGcKSWPRgeN/BFQkkSiOqWxEM+UIZpDUW6l1w32MesCesHRoT9+ZKapquPxk0=
+	t=1788377522; cv=pass; b=d8qVWRLLMqg+r9X3kiHhUNvRByDQ91LXVyb3Xb38a3BHzgVAS2r/jENnpZK7rUvQtR0Taz8HWret2Bi7iWFj4d20RodHTlEx0TCI1z2h1T0/JvevFHt2tuviQgIw7hQ3V0s0HuBx1rYhPEn0cLu1Od1BVgzavhTfAtdZ3hYJxIg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788377366; c=relaxed/simple;
-	bh=2Hr+gMurbYm+zkm2jdTK1H7mnCk9k2DvD1QCClhWd78=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rt99GHqCw2JBBKnXgNCj888qpQ9IeXRl1QFAIyn1/iGGxxaOxHkkODlu9JaB1ooRwb5OCASOWYs4OMUYxvhrXNzWBU0swBp8k4Jw+EFU83J2IJIb4pgaaunZpUjrCRZEfQNby7AMLTphn0SFy7+ONmgQrNG28sOXaWogHV31TM8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eY95jcn5; arc=fail smtp.client-ip=52.101.53.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788377522; c=relaxed/simple;
+	bh=zzjKGij2xv9IwtzyPmqyOdFHZLosR5uzYe7NgB5WR5w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hnh1qQGM/VtNMvc5a9qvePEDsGv2Dp6Y6UvCKS2+8YlDi29aCh9g+j+kYWqJ/RDLmlGJrAEieKEm9/RDfIyEK1L4xnqoAwqT7dXzL1m0PgK784nYgufUvZ/r+rZF6eFIzH7ahb3TUZU52VuXI+DdhIJehqQGoQBE0VOxhuoTUAI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DcO2qkaa; arc=pass smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eY95jcn5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jEhQTxELSqwLLuvYRmuEAQM7bcCbgFpvE7P27LeCDOVBeHE6OSpXQmT/LS3RMY7pcHKhXpXpB30o3VZFwIlWUGPAG2HmjaSVOgSc4kzcLKdH7GIae2Gjl2KR9nSBnWpOk3UST92qunmGZt1rYBbINyTVDKB39gfDP8U+biR2dWIQCLnPfbTPwN6fIrREnfVhCOltf2MOvf+ds8BTOWzR350LSFuwyo/YQYhaWVVUe+j5OlToClr/c6BUXVcRobtr3EQDgbnmlk88mfv/F7TNmcpXSYoD7NK4mtmpDfbEikhid7jbGgRtlz4ivqMHp7PDPq6vH8WlQ+gViTsjQbH3nA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FsjJyomjRk0V36PnoBRCxZZAaj9kdg4LYoraNZotRQ0=;
- b=I51BlvBNDBeE5gyQcCrJT1clqhQyBYkSWdVuyChx5q5v5KNwIl7kD56bqu1eeazsEjlql8WDSCa5nJMcwPzHPK+8WRvXpNbIZFbev0kbvZXEjQXHc+SkCIjw0uA/2TOfq1kfueyYqPT0Y/TFCM3w6/+ATjcva4PJzaGuWhVuMiqWFa1PVIRAAIPJfUbkXwG1uzfeBsn+gk/EshLvGG7lq6jDHAXmGUvSHHIhiOlVG3uj5SScVIEbUY5ScMuDZAfmIAQ3bsnyXaxCeKe4LL6ujx4u1ydsqPHa2lfJ+Gh96cSpku2WbB4oJQE8OepCOM3eSmFqQYFW9ESgHZTNJGPpMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FsjJyomjRk0V36PnoBRCxZZAaj9kdg4LYoraNZotRQ0=;
- b=eY95jcn5jVQXbNjEkp2Z8efjCUd9zfCNtQOrHuhNJEs3d/Lt/GUiWntAv3FsQGYL09Au6NbEP5Hj9BkKTGgjyikQ6csyrEeIdzJkQhOV6u7tvLH7aoJduDR+Mgae0J8Mk0KvN6vB5yRU8ygSEDFfgggXni6QpENeUewqGeSsPL1iGI8Gda9aPnifPZlG7RpTk8bLuKTeuyIwkmwhrTRudp0hf+gyRjkkLcxyb/C5aM/KY8kS6Tl52OuVJadtaBslAkGc9BMUGnGH+Kqi2HXoX4gLDB6lU1KRJ7TpMDKpyy+gbXELlu0DtK2CVR6NV+xjF1zALDrH2rTdK8dqI5jOLA==
-Received: from CH0PR03CA0069.namprd03.prod.outlook.com (2603:10b6:610:cc::14)
- by DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 19:29:00 +0000
-Received: from DS3PEPF0000C381.namprd04.prod.outlook.com
- (2603:10b6:610:cc:cafe::41) by CH0PR03CA0069.outlook.office365.com
- (2603:10b6:610:cc::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.11 via Frontend Transport; Wed, 2
- Sep 2026 19:29:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS3PEPF0000C381.mail.protection.outlook.com (10.167.23.11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 19:28:59 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
- 2026 12:28:22 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
- 2026 12:28:22 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Wed, 2 Sep
- 2026 12:28:17 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Akiva Goldberger <agoldberger@nvidia.com>, Edward Srouji
-	<edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, Leon Romanovsky
-	<leon@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, "Liu, Changcheng" <jerrliu@nvidia.com>, "Maher
- Sanalla" <msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Or Har-Toov
-	<ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
-	<shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>
-Subject: [PATCH net] net/mlx5: LAG, use local tracker to update active ports
-Date: Wed, 2 Sep 2026 22:27:40 +0300
-Message-ID: <20260902192740.3665435-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DcO2qkaa"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-865bdc6ed72so27027297b3.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 12:31:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788377509; cv=none;
+        d=google.com; s=arc-20260327;
+        b=V4YmjbaZx94qo9s/GqJfskO3BFrO7DnywK/oHgf+RxDkjs5koj0p0k6ED0tJIpicH2
+         Jcgw5dyCv5FkC3wzwaj1j2np6IHMDBRWD06d7lHHxRzm687a9TT/HAkGA/JG4FPRftX/
+         sTLXSscyiFCepFNwzJcX5CRNJ0vpjT9PT68xObeMybs8CQE3Ll5YpqN2xwlEdwDQkny5
+         5YAwDPsKt6d7SDt1C9TPfbQg/i+ovRMLf/W/PbQpXhSpWsdGoUYd6zn2tdOqpstDU+qC
+         ZVUVAxwj8dv2Nf6XIQRvOugtfMloHgtJCrFaigzA/hpOqExGVBAhA50l0j+14f4QMcoe
+         0oOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4xB9mu0NfOZSjIYdWgzuHULYbUQ75NlZHyzkoQqQjp0=;
+        fh=8tm3KgvhXbPlTEXUCaGweCk6OfqVy4M8uHtGtmRdGgY=;
+        b=k3tDcIjeJuubSCMopIoBASa1dhrldlyKcBdRZEplKOUJtrLMr8ikOoPZYfVvDVaBCd
+         9PyQPThBaIqOSrXu5PPzPd1KkTXlPYmn1USXSj6UawQQDpoDdzZDee/Om7GyHqmHFTR/
+         PXqSIELapRoMo82cDz8Djrr1unM/k6jyJPA5rfFBSQpzFzfm9VyZJlzBM+2k3YvFm6s7
+         tkTX3bJ30HZFUjfIeU+xGjI0JtYMnfndEKL/qo1jXxZlYCnLlbwQK3mBpLdLi912JNhX
+         Gw8v1QmU5VY+6cLXAR8xeOr7lacR/W3kQbS7CcP52cytFRaYfSNvQQIgRX87KJch/B0i
+         wYew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788377509; x=1788982309; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4xB9mu0NfOZSjIYdWgzuHULYbUQ75NlZHyzkoQqQjp0=;
+        b=DcO2qkaaBXedEGfgIDl640T7TUGQpfBI0bwk3Wm3h1pK95XzF8ohcf5fi8xyh8vU51
+         R/pNmsRDVBG1rN/OjgqkN9qQgzUFV+QU+Qa/t0++RD/wEHji62+/3GoAfWXzw0gV6WuM
+         Xpvn2U8BVF/xK/94xntkvljMd6fpWBCcxeG1xnkmq6Q7ElqHfgq46f5czvPzFSwKheit
+         VXYCneDkWeZORbud5Wjr9p1r0dqh7nIFO809NCVxh+SOHMKZlE77dVd/4HbMO0ue1FBe
+         0sGFD5v6qvpxde73ixUPI9R1lPUy/myC13Moruz5OHXUcHxOg2fRZjWsD1/BLkKqa4rj
+         9keg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788377509; x=1788982309;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4xB9mu0NfOZSjIYdWgzuHULYbUQ75NlZHyzkoQqQjp0=;
+        b=f2t5XlC0DTPDmgnBOX39yOhHTWVLABW/81a5JIqOYAqwQ0L5s4NEUehDI4Aexzb40/
+         sCt1cnsxv8xNumFs44BcAq7Doh/L3mmI2i3E+EFIoU4AMKF1yMwlLnWye1JSExfqLTGD
+         ZI2PDGOEdcmR53fyaUswlyaenz3LFzP5CRLMlCNhxerOsp0meiO8/gWCJnhkFWH126S8
+         +tH+C6ukSfTRQUWlOgOEKP3lChdD0CZsp7aA2CtyeOGE27DiazU1v9v4FIKiSZ+BqUgF
+         b1REAV767NF3fh0isXE6hFgp6T4NOiNtSEAm09fg23sN00PFiPQMitLpXh9PN3yKGbb5
+         SIPA==
+X-Forwarded-Encrypted: i=1; AKwUvBzjQSSu6keSkUesJ7ybqlgBQlAhq9rtCyyM9SuO2Qc4aLQmo8vo70qaXX97W9sV7jk64evgCqg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lTHWUEU9zJc0aA8fSrQhMA1wsdiSPMl7LGL0+dRLEyn6eqHPDd
+	sLtEueHyMR8k1fVQ7afsfLDKJOmAZywOlPg3AqxnsPczBlLjRlHxHG9aE937eaklwudn54Cr72l
+	PHjNpUVOWEtOKzB/St5ij2mPy5iZqG4M=
+X-Gm-Gg: AYBFou31GbdeRYU6XmL+X9iRFzMdPA74CLbB9e4x+NLA9VWN84FxKiklJpFdOKDlG8N
+	cwQqyI6Jx1FMDqWzQGLJ+lB3U/miFkrkpsSJqYvSTlIEkc+jjhsjWd02f1D8pFHqGiB2dVD5jBJ
+	x/8U6EMhMwv4jfOLjBtH/Izvnon3O7pB2o3Zo/j/clZZEXP4iCLiNkO5B/e6ACBY0BkoLarPTiY
+	GSvTq6rbDewBtSCgQameL2uuzwQftSOCfNw8Hj2zEl/TDHYM9bvRbDhQjwtkIReP9AT2j/leakX
+	LAQ/1whvcT5ecngQf8zmVnUAnlVsRCDPmBzpNGdA1z+RAyK1DPMjcmsjzliA+nb740Cr11HgUQ=
+	=
+X-Received: by 2002:a05:690c:c512:b0:864:6fab:adff with SMTP id
+ 00721157ae682-86c509d9cd2mr39132517b3.14.1788377508601; Wed, 02 Sep 2026
+ 12:31:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C381:EE_|DS7PR12MB6095:EE_
-X-MS-Office365-Filtering-Correlation-Id: 306dab5a-f07d-4f0f-8e0f-08df09287065
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|1800799024|7416014|23010399003|82310400026|6133799003|10067099003|56012099006|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	Pq+KpWSQGufexfsMtju4EX72f6OicGVNuKnKFigoCIYABMViSkEHHjTjHpgI61xL5lX8XfkGApl7S2M/WdCKGKLV8mvojtY61tpulLRE/XWLtY3QgvcgeYPztkPsWoMk1xDtPftkCjK1I68Ldh4zzvLYXktk6viVGfJ2vyfbH1+1oOjoYOQkhNnVJ/PVOoNigBEKzB8T4dfQCxvKRtWhIrrHdHFSrVCWaq5K43a+dD3VKf2JeN3t5jwsN7uZ61nvPLO2Borv5NCAD6E4O8NWvz+E2TVD4OZZ2r3p9a2TLiw62CZXbM7Ei9KkXXecdEykFIoX5sR3lZjmMsLXRIIFOWhKfmWfI7Jbhz5pCQ2wAsK8N7xbytFjsfh6dXE67UQmbYlNoeeS2NkmxtPt7LpBDWZpniKzGEdelEya2qXy77axtMZsQ4DuqQvOT8hdLOTWDHQ8aN0LWyhNCgVXvtCxwkFUIzaGiErEzCtpyLx/svIpieKbMKsjSWLC+QBu25SWtO2M9RSNMItpVz65fIQrperXOpuFkgZNJc3Yw4CQvX4txYvGtJUJ2TLCm1OWQsJaT4dip8Z1JMeB150b2JQsZuqV62B3qnaipmriS9nsGsL40Z62P/EX7ol/ypfnBpYKO9zGJmmGqJV5ZKeoOt8uuOS99/zg3j7oDduWpUYi8NzQSlBMUl61RF9/Q45oSYQYgI4JrSBansuNtGQcGVhftg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(7416014)(23010399003)(82310400026)(6133799003)(10067099003)(56012099006)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	VIzXe8fhS6Gp3/h+kKDgo/lhsXNDm61lJwM/dTRtvAYtYkjciDaszI99Jrqgia9P+9DJuSPXsoKm9TxzuO6glAQIhnXpmpYEw5h4Igba9PbaNwSaxsNdRSGGM1a0WgJidcZx+6joKsyjN3FVAqazDsmvsf7h5gSoS7exD+OjWzbJSY4FDNFLY2LYs2sE7jL/rSmhpVM7yvEswnOkbmCmnk39ohW9/JCZ8npWMQQne90hAKgyUoRhnwy1FBVBAaJDX8HJELGgnJ1XnfV3qFRa1/SGuH+PBhp0OzRW8D/JzsRoIC4l4fJ3wfTGyQ1IuiLUeqYaGFyjsE9WU8CggYn266mfGZxWXHtkKFpbkgOjdaS0Ff0EQKDohB4AQ4HfAGvXtlEIf2QyuMYm+YDTKTn96apektSqR68BJsHXcaSgwY0E3DekNp4nOamZEBIRiDdI
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 19:28:59.7304
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 306dab5a-f07d-4f0f-8e0f-08df09287065
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF0000C381.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6095
+References: <20260831110934.241898-1-a.s.protopopov@gmail.com> <DL514LM5TA6V.IOW7P2WM70BE@gmail.com>
+In-Reply-To: <DL514LM5TA6V.IOW7P2WM70BE@gmail.com>
+From: Anton Protopopov <a.s.protopopov@gmail.com>
+Date: Wed, 2 Sep 2026 21:31:36 +0200
+X-Gm-Features: AcwNN1V2Rt775pi-2pC2GM4FeyRGEHYTzRhtRvIQQntbTC-IwI8Yk3niV4K0Pwc
+Message-ID: <CAGn_itxwZcMLtass5fZQ5XqgUtwTaJHfUGxg_SK7h_vqEgpmeA@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 0/7] Add new way to add BPF LSM hooks
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+	Matt Bobrowski <matt@bobrowski.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Akiva Goldberger <agoldberger@nvidia.com>
+On Wed, Sep 2, 2026 at 8:07=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+> On Mon Aug 31, 2026 at 4:09 AM PDT, Anton Protopopov wrote:
+> > The BPF LSM programs are allowed to attach to LSM hooks. This enables
+> > operators to mitigate known bugs without a need to reboot or livepatch
+> > machines.  BPF has shown very useful to create such runtime policies.
+> > However, many APIs and parts of kernel aren't covered by existing LSM
+> > hooks and this would be beneficial to extend the coverage.
+> >
+> > To simplify the process of adding new hooks this patch series enables
+> > BPF to attach policy programs to hooks defined outside of the
+> > official LSM list.
+> >
+> > One of the reasons to add a new mechanism is that in order to add a
+> > new LSM hook an implementation, at least one in-kernel LSM must be
+> > added, such as SELinux or AppArmor, and BPF is specifically not
+> > considered as a reference implementation [1].  This is, however, not
+> > feasible for the use cases and capabilities covered by BPF LSMs,
+> > which are not directly comparable to those of traditional LSMs.
+>
+> This is no go.
+> bpf-lsm can attach to lsm hooks, but the machinery has nothing to
+> do with LSM. bpf-lsm is exactly the same as bpf-mod-ret.
+> So calling everything LSM is actively misleading and wrong.
+> Patch 1 starts this misleading naming convention
+> and then later patches add fake LSM hooks. Sorry, but no.
 
-The CREATE_LAG command is handled asynchronously by queuing a work,
-which stores a local copy of ldev->tracker. When the work is processed,
-it is possible that the values of the local copy and ldev->tracker have
-diverged.
+Got it, thank you.
 
-A single CREATE_LAG command programs two related fields into the
-firmware: the v2p (virtual-to-physical) map, which selects the physical
-egress port for each hash bucket, and the active_port bitmask, which
-tells the firmware which physical ports are currently up so it can
-redirect QP/TIS away from inactive ports. For the firmware to steer
-traffic correctly, both must be derived from the same view of the ports'
-link state.
-
-The v2p map is computed by mlx5_infer_tx_affinity_mapping() from the
-local tracker snapshot, but lag_active_port_bits() called
-mlx5_infer_tx_enabled() on the live ldev->tracker instead. If
-ldev->tracker changed between the snapshot and command execution, the
-two fields reflect different port states: the v2p map may steer a bucket
-to a port that the active_port mask marks as inactive (or vice versa).
-The firmware then receives a self-contradictory configuration and can
-redirect or drop traffic on a port the mapping still points at, until a
-later event happens to reconcile the state.
-
-Update lag_active_port_bits so that it receives the local version of the
-tracker from when the work was queued, effectively closing the window
-for injecting an inconsistency.
-
-Fixes: c5c13b456cb8 ("net/mlx5: Lag, set active ports if support bypass port select flow table")
-Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 2285c889c215..c655f6e32e9b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -63,14 +63,15 @@ static int get_port_sel_mode(enum mlx5_lag_mode mode, unsigned long flags)
- 	return MLX5_LAG_PORT_SELECT_MODE_QUEUE_AFFINITY;
- }
- 
--static u8 lag_active_port_bits(struct mlx5_lag *ldev)
-+static u8 lag_active_port_bits(struct mlx5_lag *ldev,
-+			       struct lag_tracker *tracker)
- {
- 	u8 enabled_ports[MLX5_MAX_PORTS] = {};
- 	u8 active_port = 0;
- 	int num_enabled;
- 	int idx;
- 
--	mlx5_infer_tx_enabled(&ldev->tracker, ldev, enabled_ports,
-+	mlx5_infer_tx_enabled(tracker, ldev, enabled_ports,
- 			      &num_enabled);
- 	for (idx = 0; idx < num_enabled; idx++)
- 		active_port |= BIT_MASK(enabled_ports[idx]);
-@@ -79,7 +80,8 @@ static u8 lag_active_port_bits(struct mlx5_lag *ldev)
- }
- 
- static int mlx5_cmd_create_lag(struct mlx5_core_dev *dev, struct mlx5_lag *ldev,
--			       int mode, unsigned long flags)
-+			       struct lag_tracker *tracker, int mode,
-+			       unsigned long flags)
- {
- 	bool fdb_sel_mode = test_bit(MLX5_LAG_MODE_FLAG_FDB_SEL_MODE_NATIVE,
- 				     &flags);
-@@ -108,7 +110,7 @@ static int mlx5_cmd_create_lag(struct mlx5_core_dev *dev, struct mlx5_lag *ldev,
- 			break;
- 
- 		MLX5_SET(lagc, lag_ctx, active_port,
--			 lag_active_port_bits(mlx5_lag_dev(dev)));
-+			 lag_active_port_bits(ldev, tracker));
- 		break;
- 	default:
- 		break;
-@@ -787,7 +789,8 @@ static int mlx5_cmd_modify_active_port(struct mlx5_core_dev *dev, u8 ports)
- 	return mlx5_cmd_exec_in(dev, modify_lag, in);
- }
- 
--static int _mlx5_modify_lag(struct mlx5_lag *ldev, u8 *ports)
-+static int _mlx5_modify_lag(struct mlx5_lag *ldev,
-+			    struct lag_tracker *tracker, u8 *ports)
- {
- 	int idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
- 	struct mlx5_core_dev *dev0;
-@@ -804,7 +807,7 @@ static int _mlx5_modify_lag(struct mlx5_lag *ldev, u8 *ports)
- 		    !MLX5_CAP_PORT_SELECTION(dev0, port_select_flow_table_bypass))
- 			return ret;
- 
--		active_ports = lag_active_port_bits(ldev);
-+		active_ports = lag_active_port_bits(ldev, tracker);
- 
- 		return mlx5_cmd_modify_active_port(dev0, active_ports);
- 	}
-@@ -868,7 +871,7 @@ void mlx5_modify_lag(struct mlx5_lag *ldev,
- 			idx = i * ldev->buckets + j;
- 			if (ports[idx] == ldev->v2p_map[idx])
- 				continue;
--			err = _mlx5_modify_lag(ldev, ports);
-+			err = _mlx5_modify_lag(ldev, tracker, ports);
- 			if (err) {
- 				mlx5_core_err(dev0,
- 					      "Failed to modify LAG (%d)\n",
-@@ -976,7 +979,7 @@ static int mlx5_create_lag(struct mlx5_lag *ldev,
- 	mlx5_core_info(dev0, "shared_fdb:%d mode:%s\n",
- 		       shared_fdb, mlx5_get_str_port_sel_mode(mode, flags));
- 
--	err = mlx5_cmd_create_lag(dev0, ldev, mode, flags);
-+	err = mlx5_cmd_create_lag(dev0, ldev, tracker, mode, flags);
- 	if (err) {
- 		mlx5_core_err(dev0,
- 			      "Failed to create LAG (%d)\n",
--- 
-2.44.0
-
+>
+> pw-bot: cr
