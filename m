@@ -1,114 +1,80 @@
-Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-121.mta0.migadu.com [91.218.175.121])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACA03793A2;
-	Wed,  2 Sep 2026 08:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.171.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E63385D7C
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 08:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788337365; cv=none; b=kVxNhSFqKKdCIbYJUWA4LS7LfBvqRVSxb6SOq9ADzJrVHJwTiZ622sLr6MOImwSCqW6JCtXmvIveluDiuE+KXdVdT1+SeQblvDwdZe3qYmz5CDEPh0CJfOVSDdKYfqiRi7j6old3A0TngS3nx19xkgxsurBx+iDuDiThVXcLu8w=
+	t=1788337571; cv=none; b=DPEtGf3vgm+Z+t1YkyMc4QCANbgRMx8yTyU7rCrAL+4QP6ok0u/ncE/4p6+XOx+d+CCQSALFEUrB2i//QhBfu52NDlCKp0l5lBUV87elbj5797mP0LgTCV9p7qrCqrKkXtY9GAbt49fuCBu7Sd8xX4X+IwDdn2+hRf3NLWPoFXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788337365; c=relaxed/simple;
-	bh=hioswMSn+AjQXC6h4CTqNz7ZVZz3AXK2HleSF5/4bxo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UGB8IuTHW584phvRVonZIoa24SdadPqBx+J6gaIhjhV+DyY7fGFDGIx4PHjWq0Kz1CNYv0VTgpUDimhX2tnRcg8L4iGLwekESahuaIv7/uU0E+3WbqhAtbiEg0PBGNGOg+AKdzcfcIGpb4RI7XT/xHfORgFCbE22u1/rLbCGNqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b=AaNRseBQ; arc=none smtp.client-ip=78.47.171.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=datenfreihafen.org
+	s=arc-20240116; t=1788337571; c=relaxed/simple;
+	bh=1ABJDsizdbUcsTFjmjqXc7Om99Oc5ojiy8GHmxNb4As=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LaTRciBCYEO6AoLOY/6N06WgaWY5h+YTkb1NR8FeWbEtlV5n0KpAK3GyZtoqIIx60xGUN8TXldslfHzGmSMADxd4d+IEhyxcUV7rnsx5THe6FojZDtpu/042gHpRnTaLWLjdh2fPPNOXS3mlGVoAPIL7xx0JP7HpTEdFMHivk68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y42s2UIX; arc=none smtp.client-ip=91.218.175.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b="AaNRseBQ"
-Received: from [192.168.2.30] (unknown [46.253.254.187])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: stefan@datenfreihafen.org)
-	by proxima.lasnet.de (Postfix) with ESMTPSA id 18780C01B4;
-	Wed,  2 Sep 2026 10:22:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=datenfreihafen.org;
-	s=2021; t=1788337361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PYG50JCd+g+sfQ4pjUpRPP9jXBl0g/4zEJdEKNzdJxY=;
-	b=AaNRseBQh6rhWD4LactBTwSHnFz0xy1P6ftWoq1gwz0RHaxiQC3gA1jYo5pGg6MWP8xQsh
-	85edmU/bHDp6mQCBJauvD2fFz1ukoJupn/LVBh8LKR69+QKoXubvscZ0w3/UGay4oocbrY
-	KLDVAxYP/kLJBTWsKh/p35O5dZRyL9vXkJCaJPz9CvF4ue7p49pKQIsklpvysKpRC67Fu+
-	dGmKSzdGmuKnszvqyeuNghmiFv3GWY6YkUPfAGyQSsoKJg4e7zUtp7UECmat2ej4W7Pn8Y
-	Rsz1p8sNLbuR8LMaQRa8l96qE7frqTyUeLVIKIRoNb99/0vDEDsNcxHj3MbomQ==
-Message-ID: <cdc984d3-4ce4-4a57-bdd2-19f05d89e584@datenfreihafen.org>
-Date: Wed, 2 Sep 2026 10:22:39 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y42s2UIX"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=1ABJDsizdbUcsTFjmjqXc7Om99Oc5ojiy8GHmxNb4As=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788337568; v=1; x=1788942368;
+ b=Y42s2UIXf7JixuWET/opY/YOISsp76Z93AkxS1iLk/4BWAtxcdvSv45/q/kPvFn9SVjezgIM
+ 1gqvpmrNlMCcZOR+uYmqZ0QHpxbpJ1F8p/kjZZbSjRAhNyGhTkI7UZTjbsL0Df4IcTQj15dSCu8
+ 8cw73ox/60zTnqXT6CmUKcNk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id e46753c69547a79b;
+	Wed, 02 Sep 2026 08:26:07 +0000
+X-Mizu-Trace-ID: e46753c69547a79b
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 2 Sep 2026 16:25:59 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jussi Maki <joamaki@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net] bonding: fix slave_cnt leak on XDP error paths
+Message-ID: <apfdl4YtJQiqtJoC@fedora>
+References: <20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn>
+ <a85105b2-a576-4702-a9fb-3d17ddf4d2a7@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] ieee802154: hwsim: free PIB after unregistering
- hardware
-To: Yousef Alhouseen <alhouseenyousef@gmail.com>, miquel.raynal@bootlin.com
-Cc: alex.aring@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- syzbot+4707bb8a43a42fca2b97@syzkaller.appspotmail.com
-References: <20260627235805.17310-1-alhouseenyousef@gmail.com>
- <877bncnx25.fsf@bootlin.com>
- <CAMuQ4bWf+o_ZDMXn1tTw30veo-30Mt9XZehT8BPErJ30Kx_95A@mail.gmail.com>
- <87jyr8jgr8.fsf@bootlin.com>
- <CAMuQ4bWObh9FVFifH91UMcdugn6YD79T1wAqeJ2owBnzsMdnCA@mail.gmail.com>
-Content-Language: en-US
-From: Stefan Schmidt <stefan@datenfreihafen.org>
-In-Reply-To: <CAMuQ4bWObh9FVFifH91UMcdugn6YD79T1wAqeJ2owBnzsMdnCA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a85105b2-a576-4702-a9fb-3d17ddf4d2a7@blackwall.org>
 
-Hello Yousef,
-
-On 7/18/26 14:20, Yousef Alhouseen wrote:
-> Agreed. I'll use rcu_access_pointer() in v2; it expresses the final
-> pointer fetch more directly once unregister has quiesced the updaters.
-
-Did you send a v2? Did I miss it?
-
-regards
-Stefan Schmidt
-
-> Thanks,
-> Yousef
+On Wed, Sep 02, 2026 at 10:31:41AM +0300, Nikolay Aleksandrov wrote:
+> On 02/09/2026 08:21, Hangbin Liu wrote:
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
+> > 
+> > When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
+> > already incremented. If XDP setup subsequently fails, the error paths
+> > jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
+> > 
+> > This causes slave_cnt to drift upward on each failed enslaving attempt,
+> > which would lead to unbalanced traffic distribution with round-robin and
+> > balance-xor mode.
 > 
-> On Mon, 06 Jul 2026 17:10:35 +0200, Miquel Raynal
-> <miquel.raynal@bootlin.com> wrote:
->> Hello Yousef,
->>
->> On 03/07/2026 at 04:19:42 -07, Yousef Alhouseen <alhouseenyousef@gmail.com> wrote:
->>
->>> Hello Miquel,
->>>
->>> After ieee802154_unregister_hw() returns, the driver callbacks that
->>> can replace phy->pib have been quiesced, and hwsim_del() has exclusive
->>> ownership of the final teardown. The pointer is no longer being
->>> fetched inside an RCU read-side critical section, so rcu_dereference()
->>> is not appropriate there.
->>
->> That's right.
->>
->>> rcu_dereference_protected(phy->pib, 1) expresses that there can no
->>> longer be a concurrent updater at that point; the protection condition
->>> is the completed unregister rather than a locally held lock. The value
->>> is only fetched so the final object can be passed to kfree_rcu().
->>
->> While I believe this is indeed true, it actually feels slightly overkill
->> since there is no updater anymore and, as far as I understand, the only
->> thing that we need here is to get the pointer value for freeing, right?
->>
->>> rcu_access_pointer() would also be sufficient for that limited use if
->>> you prefer it, and I can use that spelling in a v2.
->>
->> If you don't mind, I feel like rcu_access_pointer() is exactly what we
->> need here. It is also more understandable, even though I agree in
->> practice there are no differences in this case.
->>
->> Thanks,
->> Miquèl
+> I don't think it affects balance-xor, it's using usable_slaves->count which is
+> incremented only for actual usable slaves
 
+Ah, yes. I missed this.
+
+> 
+> I think we can just move the slave count inc after XDP setup when we can't fail anymore?
+> I don't see anything using it before the slave array update.
+
+Makes sense to me. I will update the patch.
+
+Thanks
+Hangbin
