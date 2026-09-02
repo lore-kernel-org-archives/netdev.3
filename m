@@ -1,182 +1,132 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027C03E3C73;
-	Wed,  2 Sep 2026 07:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8801038E13F
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788334373; cv=none; b=u0nZHfvwGz/55AErhGZW8xDyaAWWfgi62jmfYSZ0KW4Id11jATePbpoZ1cVw9V/ZxsY0jOG/ty6hiEvSJt/KkEG7jNWc0fXr9JS+l8L9VHKoae48v+PGuR3nCRxvePgXJFqiDIR2vMWaldITBVJWc8Ufj5U/UCCsxLAob1MWgHw=
+	t=1788334845; cv=none; b=gHSbwLpoCUCoKkP1GIzdczerhryyRHcPR923ySixbQtSBmcITiVwcpBQZc2XrrvSiEKx1Kyx8GOQCV3l2r5RbLoNPvov64ZNJqDKs6mWm+dMmPhcQXj3WQy3Ci/4DQ4kDt81W1pdVz35kIapPF94w0JMSklXiZDuH7ExZ7s1lOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788334373; c=relaxed/simple;
-	bh=FEXr74+mRZDY5P0+8AX8vb2OHgI+CdK3+b71vGoRlz8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=soeZ27yq1Us1uv6aNAr09NmH4OO7laBs/WoackvXe5I+VfDbFyeiyVZ75nrflW2G93KTgToFwYo1Ns2dz+D2wkX5fc0ngFq09b1YdJmYi2TXOoqoxHmFoduWx0Nq/Dus8RuVnPBpYqJB8mEb8WdcZwhVMxT6oTBp/6yCVuE3j+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=m6929SfT; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1788334845; c=relaxed/simple;
+	bh=sCTvzwMNeW7mLvozVZaAsW2ArPVwb4hUthriXKM9Peo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iRKyYL5GkAjiZZNqL/a7GMMONcbNgQQG//7cgttCxBnhTdpXFYRuw6rBKlwac70CdfQSuqPnSy0RBPzZG6CZBQKPhFkI+FLO94UF00wvmmvoNi/3lvcqgnj7DUyOgJsIcGQHoToPFKOR4ITDMmjoG6KC/a0Bp3UJGtxeLi3u4O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=mo0Z1iNv; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="m6929SfT"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=TqoaAhRMVIzc4ysdOfxdXVObD5EzvCeXtJZE1w2pbag=;
-	b=m6929SfTYgjwMKoPvxZhsQs6ohVfL/lfiH4TcTvOo9BEXsDD9vCPGdxf9c3hCzBJPzxDY20GR
-	fPT6JnNSQqXCGKqhVl7qXYAUiAILvf4RfKh43k8g2UhoOj1y6Y3tx0/UDyU3wBUX8Iyf3m2fiOp
-	a5ntZL+UgHiQWWXZCWum0hM=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hZZ0t4j5VzKm6S;
-	Wed,  2 Sep 2026 15:21:50 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 49E7F40563;
-	Wed,  2 Sep 2026 15:32:44 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
- (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 2 Sep
- 2026 15:32:43 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <nb@tipi-net.de>,
-	<kuniyu@google.com>, <sdf@fomichev.me>, <liuhangbin@gmail.com>,
-	<da-x@monatomic.org>, <jeff@garzik.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH net-next v3 1/2] 8021q: Fix data race when publishing vlan net_device pointers
-Date: Wed, 2 Sep 2026 15:33:33 +0800
-Message-ID: <20260902073334.397685-2-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260902073334.397685-1-ruanjinjie@huawei.com>
-References: <20260902073334.397685-1-ruanjinjie@huawei.com>
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="mo0Z1iNv"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49a97714f5dso5092525e9.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:40:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1788334842; x=1788939642; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oUZ3VgmGI1wTXcVPmH/fxu4IpXzRuDeGuD61FDWbZHI=;
+        b=mo0Z1iNvHkW0Uwl9rBWEbzJDfVy6HrlXJd/FNOriKMgmjIDIjGnfH9R2IIEM1vHM1u
+         VtqTDdcqBK0baJ0d5S4XSa9StyPYCLEzaYSeP9CLbRN16U4AQq67rx+7QRIh6GfaD3eJ
+         TzXEv5sp20VrtWT3yjSs27oBe8WK8rjwSwjba+uUxzXZGAgwU10DnthTLRGOfyEl1wOG
+         GaWCgbtRA+xiYSabdBoSKPqzFp54urAYD1mrenM/d73n2tTAA0v3jCAGdoqZTQBwMTWw
+         qfdJjOD3LUNkwDC8vHEWsrXfBIvsgS4w6vQEPOc4P3g/kJJ+cIEdjB7A59UMc/smnkCK
+         RRgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788334842; x=1788939642;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oUZ3VgmGI1wTXcVPmH/fxu4IpXzRuDeGuD61FDWbZHI=;
+        b=H0XpL3WbXs5PKu0HtZ8oJ4AMwZMrXtjbPFe/YsNkiNRBeLoR3Q3NF+O6ESrCgo0k0Y
+         SLVPcx/PIkACMJDHsR735b82kKOqaPXhs/4+juiGLGC+og9nFkFHr8QKHgqUkiWnchxq
+         ADGwTlMeXflqDTULCoZQNFAdzTXzduCKHSliMUo/pbFBTDzaQOKo67Nw43XIrTuVKyE6
+         /64FgsgEsH3XGKO6W7sRwiSyozPJYFj4w4yMDSyqwU/wOlKtlN1Uf99ZTXMgVIo0qTbM
+         KyGLbjUEY9hnG0wgoID0jwY/OQoeWvL6Z0gYkxTp9VneZ3Wipi4Lc1QYHw14OrodQBY8
+         mudw==
+X-Forwarded-Encrypted: i=1; AHgh+RrsFdF/8zN3zZH07Hfn/tmxL6gVYIvNZ7wprG++9sUlKHaMGszm408dDYn3teLr+6a07bENNTI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lWatBfxgsCvLJK/z60JgqI9R7Ed5anMAVcGwkoIl2DjeLqS8xQ
+	p8zVzS++Vgi3VHh3VMTOXFwuCVQ+c5FcQJToQveL8VpSYQjfqR4oFUqP4KUAXUki/k4=
+X-Gm-Gg: AR+sD11HytETfVXGnp5kqVEUBRgcJPqvhmahFrgFNmAsRCluw0sHKhMcszOrAOnrE29
+	POd4qIlJX/PDEevhzX1s2NzBO+r5o6JmAjmnE1uHUpZqBe8PuSvvUNF3p7fJpYUD+o4hjMCTBTV
+	XVPcOIx4eAN38O9A3QVWhKaDlwUA9VLDCfoNtyJvk5AV6Yz1Wg1FZlVsX53X8V2vNSRRNo54bzK
+	meATGIPJtTATGAkvwFEIzZ6O02YFEiHWfV519JZWGLUCYnldJWAzdmazZ+QXHZu+ki+OmCDEezX
+	oivESA6EBUr26Tt5GCzeNedaku+SRuYxiB2rYExGsnV7o5x8blkqm6dhbZ8kp35mKXaq71nSgIV
+	9bu52dPpOJd1hxX+uWEWaQZ7aNUz4b51uO+xBSMjFg375fqQOfokVRTj0tpBy97rJhvDIz/vi1T
+	TRFZB7C9M00eHNHLEk56mLkfEqwUF9askouuoG9vClYXxTp2cGEW88LiwLWVQ86Q0X2zFk/t/Jh
+	sGcmTsq6nRQ1C73cDI=
+X-Received: by 2002:a05:600c:a417:b0:49c:eb04:1c49 with SMTP id 5b1f17b1804b1-49ceb041c7bmr1035545e9.13.1788334841462;
+        Wed, 02 Sep 2026 00:40:41 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce10148sm126778715e9.5.2026.09.02.00.40.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 00:40:40 -0700 (PDT)
+Message-ID: <359ae5cb-af14-457e-995f-bc03422150fb@blackwall.org>
+Date: Wed, 2 Sep 2026 10:40:40 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500011.china.huawei.com (7.185.36.131)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] bonding: do not clear curr_active_slave prematurely
+ when releasing all slaves
+Content-Language: en-US, bg
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, Jay Vosburgh <jv@jvosburgh.net>
+References: <20260831203042.164466-1-edumazet@google.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260831203042.164466-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-A plain C read and assignment of the net_device pointer
-in the vlan_devices_arrays leaf entries lack proper atomicity
-and ordering barriers. A concurrent lockless reader on the packet
-receive fast-path could observe a torn or partially initialized
-net_device pointer, leading to a potential out-of-bounds read or kernel
-panic.
+On 31/08/2026 23:30, Eric Dumazet wrote:
+> When releasing all slaves during bond destruction (all == true),
+> __bond_release_one() unconditionally clears bond->curr_active_slave to
+> NULL in every iteration.
+> 
+> If a backup slave is released before the active slave,
+> bond_alb_deinit_slave() triggers rlb_teach_disabled_mac_on_primary(),
+> which increments the active slave dev promiscuity counter and sets
+> bond_info->primary_is_promisc = 1.
+> 
+> Because bond->curr_active_slave was prematurely cleared to NULL when
+> releasing the backup slave, the subsequent iteration releasing the active
+> slave evaluates oldcurrent as NULL, so bond_change_active_slave(bond, NULL)
+> is skipped. Consequently, bond_alb_handle_active_change() is never called
+> to decrement the promiscuity counter, permanently leaking promiscuous
+> mode on the physical device after bond teardown.
+> 
+> When oldcurrent == slave, bond_change_active_slave(bond, NULL) already sets
+> bond->curr_active_slave to NULL. We only need to avoid selecting a new
+> active slave when all == true. Replace the if (all) branch with
+> if (!all && oldcurrent == slave).
+> 
+> Fixes: 0896341a44bf ("bonding: fix bond_release_all inconsistencies")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> ---
+>   drivers/net/bonding/bond_main.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index c23cf18a996a..1e5ab3454872 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2517,9 +2517,7 @@ static int __bond_release_one(struct net_device *bond_dev,
+>   		bond_alb_deinit_slave(bond, slave);
+>   	}
+>   
+> -	if (all) {
+> -		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
+> -	} else if (oldcurrent == slave) {
+> +	if (!all && oldcurrent == slave) {
+>   		/* Note that we hold RTNL over this sequence, so there
+>   		 * is no concern that another slave add/remove event
+>   		 * will interfere.
 
-The data race occurs between the netlink/ioctl configuration paths
-(holding the per-netns rtnl_nets_lock or RTNL lock) and the softirq
-receive fast-path (holding rcu_read_lock()):
-
-  CPU 0 (Writer, rtnl_nets_lock/RTNL)      CPU 1 (Reader, rcu_read_lock())
-  -----------------------------------      -------------------------------
-   rtnetlink_rcv_msg()
-     // RTM_NEWLINK handler with RTNL_FLAG_DOIT_PERNET
-     rtnl_newlink()
-       ops->newlink() == vlan_newlink()
-   OR
-   vlan_ioctl_handler()
-     [ADD_VLAN_CMD] -> register_vlan_device()
-
-     register_vlan_dev()
-       vlan_group_set_device()
-                                      netif_receive_skb_core()
-                                          vlan_do_receive()
-                                              vlan_find_dev()
-                                                 __vlan_group_get_device()
-                                                  // Speculative / torn read
-                                                  [Loads bad net_device *]
-           [Plain C store]
-           array[vlan_id] = dev;
-                                                  // Dereferences bad pointer
-                                                  // during device status check
-                                                  vlan_dev->flags (PANIC!)
-
-Fix this by using rcu_assign_pointer() in vlan_group_set_device()
-and rcu_dereference_raw() in __vlan_group_get_device() to enforce
-proper ordering and memory atomicity for the leaf entry traversal.
-
-Cc: stable@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Dan Aloni <da-x@monatomic.org>
-Cc: Jeff Garzik <jeff@garzik.org>
-Fixes: 5c15bdec5c38 ("[VLAN]: Avoid a 4-order allocation.")
-Link: https://sashiko.dev/#/patchset/20260825095422.3166067-1-ruanjinjie%40huawei.com
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- net/8021q/vlan.c |  2 +-
- net/8021q/vlan.h | 12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 2d2efb877975..6df80cad40a2 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -49,7 +49,7 @@ const char vlan_version[] = DRV_VERSION;
- static int vlan_group_prealloc_vid(struct vlan_group *vg,
- 				   __be16 vlan_proto, u16 vlan_id)
- {
--	struct net_device **array;
-+	struct net_device __rcu **array;
- 	unsigned int vidx;
- 	unsigned int size;
- 	int pidx;
-diff --git a/net/8021q/vlan.h b/net/8021q/vlan.h
-index c41caaf94095..3cb4c8294130 100644
---- a/net/8021q/vlan.h
-+++ b/net/8021q/vlan.h
-@@ -22,8 +22,8 @@ enum vlan_protos {
- struct vlan_group {
- 	unsigned int		nr_vlan_devs;
- 	struct hlist_node	hlist;	/* linked list */
--	struct net_device **vlan_devices_arrays[VLAN_PROTO_NUM]
--					       [VLAN_GROUP_ARRAY_SPLIT_PARTS];
-+	struct net_device __rcu **vlan_devices_arrays[VLAN_PROTO_NUM]
-+						     [VLAN_GROUP_ARRAY_SPLIT_PARTS];
- };
- 
- struct vlan_info {
-@@ -54,7 +54,7 @@ static inline struct net_device *__vlan_group_get_device(struct vlan_group *vg,
- 							 unsigned int pidx,
- 							 u16 vlan_id)
- {
--	struct net_device **array;
-+	struct net_device __rcu **array;
- 
- 	array = vg->vlan_devices_arrays[pidx]
- 				       [vlan_id / VLAN_GROUP_ARRAY_PART_LEN];
-@@ -62,7 +62,7 @@ static inline struct net_device *__vlan_group_get_device(struct vlan_group *vg,
- 	/* paired with smp_wmb() in vlan_group_prealloc_vid() */
- 	smp_rmb();
- 
--	return array ? array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN] : NULL;
-+	return array ? rcu_dereference_raw(array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN]) : NULL;
- }
- 
- static inline struct net_device *vlan_group_get_device(struct vlan_group *vg,
-@@ -82,13 +82,13 @@ static inline void vlan_group_set_device(struct vlan_group *vg,
- 					 struct net_device *dev)
- {
- 	int pidx = vlan_proto_idx(vlan_proto);
--	struct net_device **array;
-+	struct net_device __rcu **array;
- 
- 	if (!vg || pidx < 0)
- 		return;
- 	array = vg->vlan_devices_arrays[pidx]
- 				       [vlan_id / VLAN_GROUP_ARRAY_PART_LEN];
--	array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN] = dev;
-+	rcu_assign_pointer(array[vlan_id % VLAN_GROUP_ARRAY_PART_LEN], dev);
- }
- 
- /* Must be invoked with rcu_read_lock or with RTNL. */
--- 
-2.34.1
-
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
