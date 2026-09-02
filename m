@@ -1,175 +1,186 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFF9376483
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 05:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C472EEE79;
+	Wed,  2 Sep 2026 05:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788327064; cv=none; b=PyITwVp7cvTKYfQvOSTZhBXK7UAV5xw5jrw0DqyYMbuk9r0I+ydJrn07tTV/aqZRhIsOwbikZs8UBU0bvguhqYmkr0Eyq0f5eN3LxyilWnZfJdTK0eURoBvjwcC7rupUBhZu1g9mRKw3TRSP+GkGiGqeZ1Mu98rEKP4fpmPUSf4=
+	t=1788327150; cv=none; b=iOdJEjpTc4onXiOIFQsxw+rAsGowgGfhepvzScaHpIV4prItl1IqNa82NcYfAVRVs3nYQbEqgouupzdrxTKAB4UBFlrOIykEex25K2IHylx1iGb8JhjXQeeOMpo5JxSkn2gutOLmC/FkRFxlWKt4m6ux85fmiXJbpmx587cDXug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788327064; c=relaxed/simple;
-	bh=Ze4KZMmqeisDJade5sE6HdwQRZN4yRq7ckdDCGnIeNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a7lwq2oga5/UDuQf7no9pp7gfGHL3z82uVNCxI8CByAqb7GmG9laNMlL0IVtkX5Mz7JpyLmCTiIxEGFeqcRd4YSaMF18h2Ub5wlaZ0GcKKM4OckMF3xWXSNAYoW+OoaVbSe4R6QR8erNANjei6q2vp7eaIi6kTtF0remNJuFtE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S9OSF7Vg; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788327150; c=relaxed/simple;
+	bh=jwt4/P6m39Q7cHGZNupVohOKZcnBDb8tWoIqwc8oGpw=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WSc4VoG9W8Vf3e8lWs0M0IuVVXFSx/1RUw6G1QUbuKk0+4rymzkCfbFoEMnPMkgRSCaKofURSkaoKbb9ZLUaCkviWN/UbdiDpfdWmUv+cwAF5VOyy3B1qKSYaTUUQQACYTP7YzBgy47Vpv7gHVT1fC0Al60bHl+PRk4FEQAu0rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=FUYcAVnc; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S9OSF7Vg"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso6700085ad.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 22:31:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788327060; x=1788931860; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4kKDuCF0gtf/+wksRKec866a+BS3VQBZ3BCmkYpnxeA=;
-        b=S9OSF7VgqxtQx7vYADvktQ11BYtadHiqnoX9szobCJZyS/+EWpgdHNcUq7MXEbGLQk
-         nyA8kkZYmtE2z7Ri3Pr6CpdEQ92jFWA18d1Mqx3eo51DcDrDUAQ+QBT2QvpYXOAjuIRJ
-         pZQ2E3DERD5yMOFCCazJjNoJQsDqKLsEg9S0azDKd+3FlfmcT8m/qP4uM9rw0Hk/pe7E
-         OsWQkdw46AD5uL3j/KWxuFGb7IBkamGSrurKF8pWp4FGocEuuHNxO59rzQebYRAlJTRz
-         kFsjlsrT7Cj4ZA4yKe+s1iKhu+aGVUuad6FpyWNGl+ktTZrAC8LQIrWPdCXAG5fJpW7p
-         RX3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788327060; x=1788931860;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4kKDuCF0gtf/+wksRKec866a+BS3VQBZ3BCmkYpnxeA=;
-        b=Z6dchLSQFLja18Ar96Gj8GrEfzoi2o0kNXEPvKyg+yBANAevjq7YSgDiL2uXkk0PEN
-         vZTB6A/hYZ9Vytu2JFPMm/Pdr7t1nZErCduojxOxe1P7dkT50rrK2kL/4vcGLQFDL3jx
-         ADU9KeuTR/Q3HtvYcH1Tf1ZUsfAqew7Im9n1gmSABbhcrq9U9y9caiZtKQvoSd0yXRcj
-         sFB2qyLH0wTi8HazAUjpNMa2zPRq9tUBjlC56AP01e4/4wDHSJfXU2enNNVPylL1qiD5
-         YVxGWOVUIpjv7WW7zBHXtYuEcxUNvMcHOVhF49ke2UOHj1bwCrPwVzxIcWWR/0sX8EOi
-         ZzNQ==
-X-Gm-Message-State: AFuF++m6SAW4t6zDs87eaEZPk9hnS/JaWeskFJn1ooeO/XszJUNogdqo
-	DigX1mN5sBGn94T0MZVccgQWTH9uLSmI4C8IGr6MUh2x+xSAjsjMKuSn
-X-Gm-Gg: AYBFou16d9tX+kT5lijd3kFgqN29S5z72q2X8p5+gL2UhZScHpH+FVFE8jTS82nlC/B
-	KV8O3c6zoTNaI0vVd1Q/wvV4O1K/1zwnX04hYtK0U7N20yvO0CGjzDoYyrWCCeWz7mFhwLKYXjN
-	LKxAgJ9WgTTD8PvAo5KPUtnpPt8De90WRjAnQSyHyhAMH8rzuyD3wBtnQ3T6zvbFqAN8MYdoW/I
-	Ad9YXhS8ScnRJ6ofV/Jot3rqY6Y/ljYBt1WpI02Rh5mgKEA8mpfuhDcFVR2yo8GTiGsGGHeUeeq
-	NKEGye4CC0YNDyPiMLwiuyV7AkIazzbm6In+GvQFdKR0/8nMq3QvyV9ihNxv8FonHN7KbSEbxTK
-	Fwocq7Vt5BY5rCLiaeD/59yHgz8DUfV/4foCQywLpSQihQg4yJVcMhkBGJXvmlsQxDuFgPOPmnl
-	KaZm25a0eCkU+99BfxetO3WL95G+TOca5S+/n7kbNGYt5PEPqDaOr8e4FfJRSZaRg3V1quJJlzF
-	OKJVPVJuNs=
-X-Received: by 2002:a17:90b:288a:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-39aee0848bbmr3603479a91.14.1788327060307;
-        Tue, 01 Sep 2026 22:31:00 -0700 (PDT)
-Received: from ubuntu.. ([129.41.8.14])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3990d76622csm9830189a91.11.2026.09.01.22.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 22:30:58 -0700 (PDT)
-From: Ajith P V <ajithpv.linux@gmail.com>
-To: tung.quang.nguyen@est.tech,
-	jmaloy@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Ajith P V <ajithpv.linux@gmail.com>
-Subject: [PATCH net-next v4] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
-Date: Wed,  2 Sep 2026 05:30:43 +0000
-Message-ID: <20260902053043.1483895-1-ajithpv.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="FUYcAVnc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1788327130; x=1788931930;
+	i=markus.stockhausen@gmx.de;
+	bh=jwt4/P6m39Q7cHGZNupVohOKZcnBDb8tWoIqwc8oGpw=;
+	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=FUYcAVnc0J6TE3kguQ7YZbBqDAvWJpRhNCnflOATALbzwT4qd5OYkkoGTr0ubyfn
+	 jB3eZpx6g75uQfiSkN7qRY0sNfqnVZEWoXenof8sOfcowoF8GKxJpxnM/Uao27FOL
+	 Ye/8w2O/K2U/jrO6wRU1eFF9XI6JuYG85HSxBxyGEoCqn0rIfiO7oDfsX/BKjdJG8
+	 nX2xYO5wuY4Tv4z+11L5A9qwEtBVtec5pLwXZCRn8RHSDQBVMkVHji2PwNeOI/2HE
+	 nOv0RcFON9d3OQslEjXXDHBVpPWQVoCsFhr/4cC0UIXZOpGT3CeVVdd7jzhuHeVqU
+	 xDZhUBEJAHyhasMtoQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3siA-1wsjZx3dp2-017X3N; Wed, 02
+ Sep 2026 07:32:09 +0200
+From: "Markus Stockhausen" <markus.stockhausen@gmx.de>
+To: "'Andrew Lunn'" <andrew@lunn.ch>
+Cc: <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<netdev@vger.kernel.org>,
+	<chris.packham@alliedtelesis.co.nz>,
+	<daniel@makrotopia.org>,
+	<robh@kernel.org>,
+	<krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>,
+	<devicetree@vger.kernel.org>
+References: <20260831143439.2404484-1-markus.stockhausen@gmx.de> <20260831143439.2404484-13-markus.stockhausen@gmx.de> <be7ca09a-25ca-4ef9-b753-715db4223be7@lunn.ch>
+In-Reply-To: <be7ca09a-25ca-4ef9-b753-715db4223be7@lunn.ch>
+Subject: AW: [PATCH net-next v15 12/13] net: mdio: realtek-rtl9300: Add support for RTL839x
+Date: Wed, 2 Sep 2026 07:32:05 +0200
+Message-ID: <006101dd3a9c$66ca8340$345f89c0$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQGFLzUwCgAarOf0mfSqlWbH5pzTGQGGgBcjAehB7du3T2PtwA==
+Content-Language: de
+X-Provags-ID: V03:K1:dKLeWeKggaTj+G+uFbGo6ZOak26yMvdL4on3dDMkbE2/asHZYzd
+ 12XYqlb4uQaCSuSIWICsBgOgf/8uDYUhMGZUHp3tDRbYRMYeVlNTzfTEkXws5zp4RMZG8UF
+ zRuF+Dhdjm2y9DDB8n/dw6sBOhg3Vn6Mrd03vh0kQH8hhd5DjbOpAMnXBn6JT9PeFKvgTfD
+ wjbMXePoSh0yOPsjYFcNA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:t82UNLBqphs=;Iu7AqP5l4rlmnUdTaDi2klsB734
+ Ew1Gd//dg4btLZqsmwysQP7DdP9l1pmK9vBl4GZOM/ADqYQ/QC6REhjLCbR/2U1q6LKMHwpks
+ m4EaJ1mEhn2LnhDiAj4DBZCwHH86S88c24XWPMZqs7PXQ2QFC9Ke7EYwXrDiXgSKIF5LpQrpo
+ 1os5OOIXLHZqlcN87Ub/ciVHqvNoAzB9cofyEsPB7Ogp/hnv5jyUSWWGlrOdXPtV+yRoXi87W
+ 7mmOW8hCruQ9E/94MPJGXB2e0r/rOMOxl/speUFJzaxzbrU7gguSB816DoVuTXB9QenoRbLcw
+ 11YEZCAb6XF2kpo/8QxbonYeL0zeksDCzt1EYrrKk0f7CDg8b+rfDrwh/dZny3MbjULegRONW
+ JPFmTylv4E3756uE9b9mOz8Vk+G/JWzfujpJfDg3kd3X1X97q+jDGWYAeUegbaoY0HKw4RmqA
+ nYaLm/il6xPRr1LMWWKc6FmH5v5o00kS3fKjzua+eEqPq/Pl9OzQXPtBLrTH8uQq7sfYcAsjx
+ oSDWEEzXZwu2aZXPEcNVNbR3nYsFl/KOA3yTZ7nGtfR2bwgwDYp6iF58VZmu2lMz9odnfRpqR
+ 79RDlOo1MTzILrg7wRKjMRUQWjw3g4mUThWWazGQFl4HNiT6cMfaDzK/gkGMlenGw9isFf0sx
+ if0MW5oyexqKbO7CTT6cFbxY8ya06cPt+pJF+W4gkh5wfUf4/ONoCgeyvU2JGqGuGQHRUPnXx
+ bDdrqBTMPisZnWRiY2WKxLV8HLul0Z7ChUSQMOGyNzlanzdohfbynvLVko9XMsLotkA/f5KMQ
+ JFGsaWuv31B7+ZT38ofiIol2cncbimdo3EBuMGCPPRpTk5noiFWEdpcPwmEZCfyXYMz6+89EQ
+ Ym9fFzx1K9nJfddTvIWioWkD4vgZTijc/TYEx1E1sv5KCgkQWiXLRsIQxWnGEwUHZAmIjpHJ2
+ vMsKRS/zuDK6cPHt9GJOWU4ajeIUPyxPT24mK2VOPDONegVekg/YGa3j/0G47l0eishK7lTFz
+ NUPcjEWt9HXoLQgme2MTe5cmifM4RHL8REFCNh0QJ14rgP8mcdtiucsLtGv6pqB+RZRaeFuZY
+ n+3ChA9oX9bQAELyh+zEiOen56xGfpZkXW9iuWnd9395w0vy9TSZLh2ZyMXPzDBdBo+WOyacY
+ w17gm//pWSBh/9030ln2bmdmjhur3K88ffP3h8nAG5DuiOrHCihYi4UzqZ2IlXkw0BawjMAYW
+ MLdt6DWt12Cc4SULIPpdJR+xSddNqdEVX8EegyEUqVi71wGqPilgCgMLGtt0YoucenSMqEZB7
+ yoLzDV7epOuXPHbunp4u3f4h03ed+ahhgEkUs6ykYCZ0l1dvv/ZZzRXF3RKVtXfqYKyLqjgac
+ m8G2dp3klvdOn1SMLRPOOjAkBqp3z5Cuad/+c8GCE4qlUp4XDIMdiHWaJsKKGJ2CuNP91KVBN
+ w9Vg60SEy/Y6oGAnwkPEIdkDgxZscfqt4J0wLM23RJeeo+QLnceBQAg7jP8lDNx7JX2eaMlKM
+ h+03puSx8aJFczqygaVqsIkIYfaLJxaFuJaB2tLwWERqgRfLU4vq/zXqoQJ457H4CkXy9Qk/k
+ iu4xqTbO/DdrQm0UopTfoNwfCrUqRzgixUxIYuhYjgb8PuNlb6b2dp5bGiwg1oJMHBzzGGHTw
+ 7mXlG+Idxjs5o+lHshcymPSzOFoc7pKPvOLoN4ACGl/jEM5z9VzodWu9FkJ/GCP+NkQvu2xlT
+ bJn8sFln3qiNdNCiF5Qx7l46sfD716yrrh6E4XZMLvHXmyX1XlOMlprZseqvPAi5B5nGajz+D
+ ZhFZNgElcDitCNdojr/ntlxYRfwlpb11D3811ebL7eiYI4BKXU03/lSbECvzMssa7me2WYR9o
+ D3kEcoQB0TcFP0frcmcTYumjnIhDhQqFxYD1GL1uP03OHxBGDY9GjfHWQRCiSfwz91gw8M08F
+ fsyvXMjPVbyUXgJlC2WM0MqzzRuBN0/httl4V0tGYGUR1pMA/BZqy930SUVVDZcoRMPK+DXip
+ jVscod1MVthMjF6vkOpDK6JtDE6eHRok2lpx1MRgmH+bws3KrCcBdl+kLtRzJdKDVOpupEpXp
+ 5us7dV94BMBcKxn32PzRdTHMv9UVbGY/PKksVJbq2+xCE+z8nGEzQSflwyZS00Di82dTPNR+O
+ 5Vy9PQ76dO53OjKYS67dOakbsSvU9IDAdpIY8KNciZfznCukjkonfGKYdaWfTxEqAiUpIrKE/
+ WJ8vhLwUKUpAMimOGbeOOn2Mye1ArLtF3JiLMd8zMdlfbZwhEe7rouD6fBz0slkaeUdCLRbqv
+ Dk7MOlRNxEXxf517sp8DHrJRD/Xx4sCtgYKX4VZO9uIQNwrThy7mNLRT85O4ps+X+BuefEDXS
+ EmKYsLTbD5POqxbn4VPqSnbrRwN7nzymIgz8XMgnRvoV5pKSZXuvR0m2C/WZCf5Ny2CxJuO57
+ imRRq2QTpnu9RTBpJgDqlPR+UWIcCC+9XstWftJWasm+EgEahve09uVrr0y31y45qxPgMLLS/
+ NqmAPXnTRuMw4y+Px/YfPOlRe8QfAWHTMPVPG+n+JW+Ssk9qcggaJQhhvE8WFHz/C643Bl4mF
+ EBNikRyoEdbl/ZQZwGi0LI7+vdlpK7sW6uYRmBLt8acabM0fvGcsgwLXGXrf1dF82KwJS589P
+ NNb7t06Y7eEHeD4Sbh7UyF2+J7djoyYtrfHacZAea/Yy65O2y+T/jLSr7ql5t+EBocwoksGF0
+ yE+Axvd+QPcIOzvU7bl0UDF3UKpnm2JUs+s+ND2KOkdaMaRXL2Jxu0R5NN2IOOQNqNrSGkIwA
+ MF0aJ51eOT8fkxFhXbfKwE5TQmMR6hghUC0QMruX459jvwNPIbQzpWE3oO5RQlpYhgbJDR5L+
+ AYtvrkoSmXPj38hfCp4PZeDrSXfISYOjRufAIDuYqJmxKnpBz0Ubzm69UySPvhrLmp4KBj/bV
+ ZpQIrarR79HMSViSBJSu8SCwx6l2JNEF2UC/60TBMbxG163isswWVsSzYvfTFoOEj9WwCYA6D
+ R5zBJ3daKRBwLFEQ41oMzP1WN33TYsAxyXdnyXdDmMlQ6SppLFjCBgYQ10YguJXtSVtntLqXS
+ C2sr6uzgHAEKQjsvtQO+DxzW1DSnuJAnMrblxWjT1YZTqgWynTNPX4T0yqyYPpbh6RcPdPPzn
+ 9lFnQwfg8UzXWAekOm7iv49C+4C1f4Xv40lYRZ4Nq/d1OBFjIPhrDX9HoCmJG3cBKXVoyqoe/
+ V/hf3qHODlI7+h5ftowqKaQCEo8+QLhKWRPBFKykd1nlL+0MkJNYIRTtxLz1a5EPn7sXvaOSg
+ vmpwNWx45bzxSCI0R8MyDRyyCDiuPTc55PzXPxCV6sUXt8HK8FYGisFlz02LpQR3zZyxHE/gW
+ 3lV6RcwidGBcpmdQ+GRaRO1gLMPwT0jvpkWUVtqulBAlNdHqKJeupovsMnksprjlVmiH5mmzL
+ fygsuMNGz7HlM08ftl6sxtqtLw6Vi2dTPAPop6YWX/4WWgXb3haSwAbEdCwAWL3sqzu89J+hd
+ HwNyQMg1D21Ut46isOXfV2r6P4NxoJzcUel7LovpOradzhQu2/WwDxmY0sV8GTvhgRr6lSY+i
+ tSejX7HEfSmLt4YROiY2W1pGPtBkNN+Ks/eEFrMnnnhVEisZDM181EGbv6O6X1Yw8hXqsNjSs
+ fU4nSdN63sWsDnEzFlCfn7cgMV6PmFHxMZS7RraK4wMtVgBtbB/52caWsMQEG+iw9HLK2t4W5
+ JzqdvBWkO5xhWcJAzksAAyrnEZTANl28MFZDUqdNPW8cmqRx6J0IV6FtJYIF/zv2A4YIu/+QD
+ M/p49tS2vQBrT9iazxYI7flpt6Cg5FsZon6S8JitJTGxrmVSpkfGBsVzPOxjcCNLi3ihlRRa6
+ VsKIvoGYFlFuFG8BRqOAaZhjnaBOhX5eNjoicuzA4PiusKgP3l7EGJyv9MAwGqItPPDggggTH
+ TtsUg+YkunT80CF5msepfnH+MZc9G4eG8gd/R2a3Mo4GT4BeorGzoN5daTlhZm6BqQ7w0dZLa
+ HDbztEghDRSe9XfeIspcs7PFFs3ytRG3a2aUvvtkmvObonF+L9HwPchag/2uu39nt1FXotsGY
+ UH7tK/7DnNedx/5PDxA4LwjzkL4HB8p+C2n1k1yLQ28+5uzQo0R46GardipAgYhA8Y3XPICuf
+ EsRppPdRGhhZGt9LPYbtySYHPvlL/dfX0qtiNkMRUuSErIlakU8ucIyUJiVZxKBsPnVlo+2D4
+ wQUZmrKHNfsoIKiHRlg4yhUE17rCm6IuoJS/DfmR7+7ugeOUSvuhk40lqlWGRNp+gj2zImbCB
+ wXM5tLtFF7l5DgEg59D4xpH4hAPT+Ab3YBQEGCL1khX80eIkBFYHSbchPx9u72+h0v6BbOL2/
+ 1eFq2BPuQg3gtTzwRZ1BveecZ8iC/Wxmf9Y74q1bQ/IDKprCqS8iPHi61tXR13UlFdangxZJi
+ Fqrhb4yKXNRjGcmdbS0weZlfM01Ci9YQ/0SePBGHNCqZEz+vPr7kH8OoT4jWoArLS8Nd9QCAd
+ M2IMyYXvyUQI6YGOPqgw5tDvhlSWYx+BcsQHP0WsdWxuHwvi1JU5VD9IrrdbyjJdrxJMdaDaN
+ CXuUG7zXBOaCdpakpL6OJV1J6m3vuxIAuGUWzxaCoPjReJEXGxojXLlFzGwS74YNLDA/4/d2s
+ qWVYrP6YO6Ui8yxMdHfSIpvrE66WInDqMBF8YjQA9gPhcvIqsz5LfCdv2egzSB1mvsX0x4E9b
+ jzsHZ6/BbSlprSE8F2nEtHevvDNxuWwfC1DXGUr2NWnBv+IgcZRf4muPtgIDEvnwivQoX7rDU
+ dOVXU4y456g34SmlqVwzovTo4JAo8Tbodgzp93FSBBHvPqqgYj2wW9mR8dnLwmL0cg21L3LwK
+ 8adXmbYACa/mLmGtWbDvfQfEV8u7Kwe8ZZgmXzR/HrnqyC9P8NHVHLSeVzbJlialF2S5CPNaq
+ myjAXPUMHbp/p59RzJ2ZteZLsejS+zxHRACL25ghDijG0n5mti0HOcmwownMByinDwcNAXVRQ
+ 0jhCGAzF6nVgaS0/LCz7uV1rL4hhwl0xesJUFy2xT4o1YjbCDUqfqIJbd/HifYymIhAxM5d3u
+ cpreqXAP7qJX+wlsBaDE7kKTgKmcWc2C7wf+MSdWJSTDCEe4BU/DZ5TOu0nbNVIbB1DLFxEL9
+ bEpabGvQqC6l2fnGfkzjZZpMpwhbGjKqojI2zwq4NidHbZHF50WDm0ZIYz0Cs6Qo4OktBHoSM
+ EifmIQbDijvERUM0biYcF6o25lrn2hVLggxhQxUVVLMRDC1ckswWPYntjGMiGU5W3xK+uF+PY
+ Le0OUtMxanSjN/sIsCocCt3ErHj3lv08FeDNk/In76lh8NaDtCan0SOGEVY6wNXDR+rT1BkfC
+ P7hPGCnftmA+VGcIAgGt7ZXjjMuEZOtTZezqdfak1vhW4A+ioD+SRAev96Gn2veL7VhAlrvK4
+ IDPmB3OxqQffexdBBehmf7KlrgGm1pPf1NwmxXMC0WUAEW4z0sIImk+P90l9wBzQ3AZWZgc2v
+ Lf73c52I32SbvD1Um2GXp0FpDa1tPe9r+KdFDsoewBOMzuVDYJYVHO8367kRS3HDJEy2uKSw2
+ yMxB1nqCvFRqs/a7L4vL8AjcJcgnLknYAyrUE/714uOQ0lGou/9ZQ5FYKwveWrnZdDaGeekF0
+ PG6R/g295rAzbSc30VnSdauPksEtOXxbE10blgfvq4ZAWXuWGTgKHcKb1c3s7sR518vVcbMI8
+ 0U5AbOkN8uIgjYHuIgcAS7xXM1iaH1oqjUcUK7FjkWyocBgsDygp1IPRYWbKTodwEk61nIdFD
+ ocwUJjPP1pBfE3Hq/d81bljTExwIhH8AWEjR1rWjNcgcD5wFyAb1jH3M3ymF3/cLlGO7wUG85
+ EHCOKlYKFmroY4BJcRrmp9tLgJQTp2zF7ggMs8X88WvcUQMYMbIQs4MZt4bDSdlVf7CdtKAWV
+ oV0H9WYhBmmUf4dIvMtQeUw5HslRrAlnP+GurBvH8IfN+RXF8FxdIUrh9DFvnnJNcNirsgBjF
+ slwR6ORBSCIh/S4yezeHB9uFhV3x+m3ueBmN9mxXTv4qN4c1JXtWY51mSbV154ITf3HMsOa59
+ Se4m9nCB3OdIuQiSkdiccVNfWcy0FMAT5cmaZmlMOst9gegWoHtHSUoHVuhDD1UO2CCQvuQ3i
+ PtCTyXsUhchkLctduaDcgYKVgnsjQLj7lbopvWsGkSv+Lg9oUUjbEG0Rp3tKRG1IQZeZQgWab
+ 0LnuwHLgqPp1ZR6FUstk6Q4Rvp44O/a91+Zc0bnIUGI139slXTChSGRq2h+1YKMGImhFM85Bu
+ Vmi2IvzsFTPyep5mP4r2IMIhjmc31Pw51Zef6jNzGxzbBZGCvbzAvaSgv8fwmy+TsPfDkBoBQ
+ 1cCJR9H8Qlgm6ocF8+VsI60kwk4rhoxsdfzKG20acSEFUrvD/M83EtWlP1jAQAQ4E7hJzuurU
+ KHH2Cb3ReDbak0ftJ0RMXHjysALi+VaFalNoSPgDcKmATEDYJhepwOey5WCL2nUoEoVuc/po9
+ Pbcu8phnvdV5319ZhR4g55f59bgSQN9GcdjIqAKG1Q0bQFUx2/TdTYuimUpx86eBjnx4rhogO
+ kgK//nQv6kihn1eXk7Vd+YwN7AqHV5hydSq0Q8nP00QFGfzLZwJM63jrHkkh2fOWDi914WXP5
+ 0VpINbOfvzE=
 
-The `strcpy()` function is deprecated and moving towards code-tree
-elimination. Replacing it with `strscpy()` fixes potential buffer
-overflow vectors by ensuring safe NULL-termination based on the
-destination buffer size limit [1][2].
+Hi Andrew,
 
-To make the interface safer and more robust for future callers, refactor
-`tipc_bearer_get_name()` to accept a destination buffer length parameter.
-Replace `strcpy()` with `strscpy()` and pass through any potential
-`-E2BIG` truncation error code up to the caller. Update the existing
-caller in `net/tipc/monitor.c` to pass its array size.
+> Von: Andrew Lunn <andrew@lunn.ch>=20
+> Gesendet: Mittwoch, 2. September 2026 02:18
+> An: Markus Stockhausen <markus.stockhausen@gmx.de>
+> Betreff: Re: [PATCH net-next v15 12/13] net: mdio: realtek-rtl9300: Add
+support for RTL839x
+> ...=20
+> > Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+>=20
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-Link: https://github.com/KSPP/linux/issues/88 [2]
+Thousand thanks for your support.
 
-Signed-off-by: Ajith P V <ajithpv.linux@gmail.com>
----
-v4:
-  - Avoid hard-coding TIPC_MAX_BEARER_NAME in the function body.
-  - Pass size_t len from the caller down to strscpy().
-  - Forward strscpy()'s -E2BIG error up through the existing int return type.
-  - Updated function documentation comment block.
-v3:
-  - Fix patch title as suggested by Tung Quang Nguyen.
-  - No code changes from v2.
-v2:
-  - Target net-next tree instead of standard net tree as requested by Tung Quang Nguyen.
-  - No code changes from v1.
+Markus
 
- net/tipc/bearer.c  | 8 ++++++--
- net/tipc/bearer.h  | 2 +-
- net/tipc/monitor.c | 2 +-
- 3 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-index 05dcd2f9e887..abd90e6bde09 100644
---- a/net/tipc/bearer.c
-+++ b/net/tipc/bearer.c
-@@ -195,12 +195,14 @@ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name)
- /*     tipc_bearer_get_name - get the bearer name from its id.
-  *     @net: network namespace
-  *     @name: a pointer to the buffer where the name will be stored.
-+ *     @len: size of the destination buffer
-  *     @bearer_id: the id to get the name from.
-  */
--int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
-+int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id)
- {
- 	struct tipc_net *tn = tipc_net(net);
- 	struct tipc_bearer *b;
-+	int ret;
- 
- 	if (bearer_id >= MAX_BEARERS)
- 		return -EINVAL;
-@@ -209,7 +211,9 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
- 	if (!b)
- 		return -EINVAL;
- 
--	strcpy(name, b->name);
-+	ret = strscpy(name, b->name, len);
-+	if (ret < 0)
-+		return ret; /* Returns -E2BIG if destination buffer is too small */
- 	return 0;
- }
- 
-diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-index 41eac1ee0c09..12a322642de1 100644
---- a/net/tipc/bearer.h
-+++ b/net/tipc/bearer.h
-@@ -226,7 +226,7 @@ int tipc_l2_send_msg(struct net *net, struct sk_buff *buf,
- void tipc_bearer_add_dest(struct net *net, u32 bearer_id, u32 dest);
- void tipc_bearer_remove_dest(struct net *net, u32 bearer_id, u32 dest);
- struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name);
--int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id);
-+int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id);
- struct tipc_media *tipc_media_find(const char *name);
- int tipc_bearer_setup(void);
- void tipc_bearer_cleanup(void);
-diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
-index a94b9b36a700..8af49000a07c 100644
---- a/net/tipc/monitor.c
-+++ b/net/tipc/monitor.c
-@@ -833,7 +833,7 @@ int __tipc_nl_add_monitor(struct net *net, struct tipc_nl_msg *msg,
- 	void *hdr;
- 	int ret;
- 
--	ret = tipc_bearer_get_name(net, bearer_name, bearer_id);
-+	ret = tipc_bearer_get_name(net, bearer_name, sizeof(bearer_name), bearer_id);
- 	if (ret || !mon)
- 		return 0;
- 
--- 
-2.43.0
 
