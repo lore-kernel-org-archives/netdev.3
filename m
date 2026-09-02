@@ -1,339 +1,178 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2A83A75B1
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 21:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788385231; cv=none; b=HSLo9Mc6FPd0YBC3Er6PLOjN2dTyfjAZboDtkJCTXkwRPWlY+leirXaebu6u6lFVKXqRVoplomJW5EpuF0l5ifORGt3WusamNTU5WSt5+gexn4VsYCgprmBMLg6kO3a8N9NbOhsQPesv/1XJMF89OiZw6JixpTJVCyf+K+kEBUY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788385231; c=relaxed/simple;
-	bh=Dq67t2Rd+hg8V0xvGWnBPE3j+TeyWEEtMdCfDQzDsoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aIcTfLK36TD3EIyHtHbK62RSxfjJf/yxyeiMZ8MgWQ8lxNu5Qmts5a6ngAMlifMXgYwFjrPBIkiMryOAE95976nV8XpHHYsU2BE2uK5gSgLxgwcSsVhVrE7cm1qDZE/XvRmPwJBAL5ZMtXvEZPr9lU0z+PD661iEuzC6J9FW9kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=HCDoZbHy; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A993A2540;
+	Wed,  2 Sep 2026 21:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.154.183
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788385254; cv=fail; b=TIihwI8zrT2amsjmAeEMfiXRijyEo5iHY0j3ECOV5l7qljwBZBKfqwsPwAUuJ+x0Vni3SiqzcSTXlcPe2sV7fiElGCyudbyKishBwmeY1/p+Jw+9+3tNm6OTP0VQmXCITNHZ2inR6rYgvtd/Nj1unhX6ttxVgaztx6JQBhG4VD8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788385254; c=relaxed/simple;
+	bh=QFt3K31SvMGZkxnWDftd/dr4sazZS7C/N9WT/yweot8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rQSNVM5NSkeZMQoAZq9tszuDiJEUjvQMuYulGXVWDxUlcDTOktf2+ziIvaTbwJUXK4iOQ8tRXp+K+8tdUX1Jn9Dwul/is7RHgtC5P9w8xWlLtaZ50zJqxarhgeeMD8DJahsAPb5MZtGiHa5Bpk49c8yJ530sJYO9B9pXKQAjLjk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=orEFucA0; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=zV8a6l3V; arc=fail smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="HCDoZbHy"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d9004f39d3so19078585ad.2
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 14:40:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="orEFucA0";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="zV8a6l3V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
+ h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
+ s=mail; bh=GUMQxhpXW13mboPPWDvdQWiT0aoaZ4vpdNJdKgJ6Mg4=;
+ b=orEFucA0hwCUBzM0ajvcGx46SLZvbxvGNifUDW0721OVXQ40byQq8Nfxr4gokP3178mzSjq1PIo7eIC+htvKDKROSuhr7CH8PRsOmESfDf0OEafNt1Yl5d28ssk3s8lW+LW4csN549UQEVzU+T950Nhmavb8MszdM848gGjkz/J87AQeRjHmP1ozrHg2KmaSnZBS8ubyq/NtP5h4B3Qq80DKuX6LCRT3c5ImYEwXMqrHimGmMx0u7ejmQm8+VfTuzEUY0ZUFR28ofR1r5ImnVPWujQbPLeqAnowF+14N5MyqwCrLk0d1a8YeM4RPJsyX3Gy5hoOqSua5wb6lI4NcuA==
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023110.outbound.protection.outlook.com [40.93.201.110])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 62ACE3C0088;
+	Wed,  2 Sep 2026 21:40:35 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RDhAI6+O9y2W9EgiOuIc/wN3OJBgSLa/4f/wq05pYvqM5I0ZLKOfXEnKj85BP0HvxUkhCWkVESHBCEBxSuxzV/Lw/0yB231tgAj9powVtnDeO2URxcXGFs7Cu/PZ51bLDe189onKKPCXMzzR21vqAy/OJdJqiof4Kkws1di0JXPitz+/btdQnp+s938S6ErS345qqQ2hcQhjUWrz/Tg2r+u5x2SO08jEJosiymd/LC0h3iRVnJRcsxGzP+VRtdmrM7mKIOKJs9Y6bV6jYB5bYjQlnJNggAZEYAAu2D6TD7b6X3Cdhl5qo8cugy3HUWV+mCDvBb2jgjss9tAPm8fPUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GUMQxhpXW13mboPPWDvdQWiT0aoaZ4vpdNJdKgJ6Mg4=;
+ b=f2SkBBugeiQPXUdtfb0/dXeMqTjz/Nl6k3rktmw3/XFsNi/3ZC4TBXyB9/1eJfjzLGFTy1aqal+X5iD6BtVxSOpwT/pLKQGSatkdUK/uPFgG+ewtsexpHTRvoJIQr/LEWb1Smfm9WC4XjLqNtwZZTTOSks4aPmJGRvdLYibjNY9YWYWGXDrHW4jUpuC+2oJESPF/vMc8IvchRacv+R1+Gnv1rpg2NuyINhS+XqDXwty58SBw/9cs6Jg8rXkKqh8KD5r0NjRGNXkpnQMBVOC3/NYjR5Xsh2lUICw37bm2xG/PvWEBZVFG9wBqdJiDrdTSRDbRYzJi7o3J5qlkZ0JbVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
+ dkim=pass header.d=sitime.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788385222; x=1788990022; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5fGMF8dux1u/osYh+byEn+SjYk2NnCouch+o/Hv5HJY=;
-        b=HCDoZbHyjiQySQGgJPybwUFqVs9FXhqp0l2ytAaZdEy6pFxasLdQfjq09er/yWTX0K
-         GYPU5t8Olji2HJ23Jk6DRKRwXdr0JUEm3Qw2540zt7pjwfx5CD9/5R1AMswp8xA0dNEx
-         /JhsrGNrITT5lH3IlPyV8QhnyZr1r4sRoELnvLQPE0PqhmgJiswTRz3p1vBnzUuB0VIq
-         OssFytNpPgp1ORlS+wUpZ2nZ3bJBVQFlLIGs9K3MGa/k/YGf+46xIPSDUvaoIWoSneEc
-         z9ZAx7FvkgHPHxP1iKc6ltE8TrQ+1gYwja/BbUnDeN/fIpaAVNAfSZpi520wb3xfDAo5
-         MPew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788385222; x=1788990022;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5fGMF8dux1u/osYh+byEn+SjYk2NnCouch+o/Hv5HJY=;
-        b=FACj9flZW0H/jMrWfZ39OSBX9E6mveL+Q8uJHbaq0Ah3qBAg+VBFj4WiVyQuEF5Vaa
-         EKa1HnqLJLqfO65qIUGhJKBvXjuxe3zUE+SSYjsgFpExKSy0KLUm0EwwvpXM7JCqrvpd
-         6vFkHFEI+j492X3wdCMwMxmHSzuQTyY14QJJIjciyYAlVQDJGVctJaJvZdbi9/0Mh+cV
-         xGAqasUqfUv/cZtY57/wtDiWP3l2mzDKdq2vtfIbxvzfti+6Cy/mPPaVHoa7JhE8412r
-         V0YuTlnpII/gBbVKTyIzRI4/hF2PFzCdlUhTV6UtWBdjQq49sbVUay0gEc8FPx9slacR
-         9NLQ==
-X-Gm-Message-State: AFuF++nU1KXwAqX4VejcC5Ksintq/Z4Adpi7gILdg0I2eU0tHSGX0v9R
-	v+xHFKCbtTtzaXQ24cINaf1fAyD61S9vCtJN0cPxoViNCSRg2OKAM0szZsZLsWZMV4/UncCdBOu
-	NYhjU7Uk=
-X-Gm-Gg: AYBFou1//tf4cbFY8Rky7eptXrm2GMeJ0DYkjVpq1GVAaRWJA3UVEIgzgy9ehOVpHmm
-	Jc7MhE1qioO/jvCFcLmKIZxqaZ75LhpI3GR55TnCSpwLaOENTILj3Vd80OlRT8Kf+zNZLNvHLu5
-	G2P6EUrP6GZjKwFwH2NHfvvLGVch9/f5bGFN1oc7siySJgpq9kqRdtx7fL/vKZ+KrUpnw2QLpbV
-	uz6NcWq9Gt2uqW72SJtaT5xoq4ip/a/roG3lkhsBnZZzbRwGIheIEwHE8g+vf2XyWZW/O9R/U6Z
-	GsjymsgpQff+e2Nd8ibvPnVhguV+cuMRUcYUXWqoTBRiZkQhlUDthc2m09D7A/OaDMaAfTe5hHh
-	EpK6xmKjF7IqUlEBUQeU3421SXaXKrLu81y0AM6xM7HbXRqkI/bpmns+LBvw4iLWK783H+hBBD+
-	w6ES1FRZao8KiiXd9WwdzGsZwUFnEaYrQ66CyHcGyiJaiQNFWG1qhM
-X-Received: by 2002:a17:902:fac7:b0:2d7:203b:9863 with SMTP id d9443c01a7336-2daec5ff49bmr82734015ad.1.1788385221561;
-        Wed, 02 Sep 2026 14:40:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:49::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe62d872sm909995ad.23.2026.09.02.14.40.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 14:40:20 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <joe@dama.to>
-Cc: horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] bnxt_en: Prevent queue stop with deferred completions
-Date: Wed,  2 Sep 2026 14:39:54 -0700
-Message-ID: <20260902213956.4160615-1-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
+ d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GUMQxhpXW13mboPPWDvdQWiT0aoaZ4vpdNJdKgJ6Mg4=;
+ b=zV8a6l3VctL4OB+qkJ3siAY6XdN9AK77XAfQw+O6YnjDJ09mkfA3cIMExthLWpX7NmknIjxkPMHQgGH68/rLZR0EPsxgvsYju+rcOfazYehyaMz1L42SXwCuPMalJhEbWLcjVGzAlluNZc7QSGW+JK7KGPZYvCKil0my+HNRkVt5Wm4Z27qyYWNXW/EM0Cve8oEx4iwp9+S9E8E0MOMcZuC2LEzbGPgSUwnu52vi7C/Hbfdl1f2K2bgEyyAR6Pvq92oHuVtIbVhXvS1kA8t6YaosqBvqb7eOMDTWtr6Cgimu7N9TSdJ+Xlagwc9/kyckuEpQyw5NpH5TXEW9uAt8Sg==
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ (2603:10b6:408:3bf::16) by DS7PR20MB4877.namprd20.prod.outlook.com
+ (2603:10b6:8:97::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 21:40:32 +0000
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01%5]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 21:40:32 +0000
+From: Ali Rouhi <arouhi@sitime.com>
+To: "jiri@resnulli.us" <jiri@resnulli.us>
+CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
+	"arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>,
+	"ivecera@redhat.com" <ivecera@redhat.com>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "cjubran@nvidia.com"
+	<cjubran@nvidia.com>, "Oleg.Zadorozhnyi@devoxsoftware.com"
+	<Oleg.Zadorozhnyi@devoxsoftware.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Ali Rouhi <arouhi@sitime.com>, Conor Dooley
+	<conor.dooley@microchip.com>
+Subject: [PATCH net-next v8 01/15] dt-bindings: vendor-prefixes: add SiTime
+ Corporation
+Thread-Topic: [PATCH net-next v8 01/15] dt-bindings: vendor-prefixes: add
+ SiTime Corporation
+Thread-Index: AQHdOyOtdzxNfre4VUG4ep2vRQhUNA==
+Date: Wed, 2 Sep 2026 21:40:31 +0000
+Message-ID: <20260902214030.20955-2-arouhi@sitime.com>
+References: <20260902214030.20955-1-arouhi@sitime.com>
+In-Reply-To: <20260902214030.20955-1-arouhi@sitime.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sitime.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|DS7PR20MB4877:EE_
+x-ms-office365-filtering-correlation-id: ec0e6854-2f17-4881-38fa-08df093ad09f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|18002099003|22082099003|56012099006|38070700021|10067099003;
+x-microsoft-antispam-message-info:
+ 7AdrZ1NK/WzigNiLt7L8hRtauGFhpSI5TfpX7+XgT3Yj319RqG6u8LH4uOKGTxxWnWqUb5BNMKlTngI76SWVpU787n4czO8jN2tQxPPk08iJLCz4tOQB8oDaMqLCovl4yDhvk8MSGb3ktwZ1QAIvAdSOgR31zYPlx1yxvijQihar90cLOt3pTqEn7jO99dWrcATZMQcDNnDrT5yRQyqrg0QkkCZeJ9K4b0dcVy//C4RKJlkuWDGtdk4Qnk6YiyD7X+OH54Q7EMV67EguMhdrReddrCdHFBuN5fHVSQqlusXuXKuVZeTQfTXDpo3Pxal9FY06UiwUL6uWIjTwibMCb0bzrMut1j+IDkFZ6JubDQ+SluJsw75hxo8CEtNk2OS0H9D8+6K0qgAxQY/EyDuOE/9HcGXN/+XoaLk2CLRN66FNEaZrrgMXB/hZw2Eq5NmAoRZNaYcKCgNoXy4s83fPtNAinDQ7ikQhpypktISNEWzrxYlisjNMwBDEFRmxz25S2A69+hBp2IWSU4DZ8dXY/9/xtcjZFNxx5b1E50/9MJ2Tnk4P/dheovgt87BTNTxrdERJhdORvTPWvhJjlVWX++GqD1n9HlOmTYxQ9nRNbF+5EcOnkFnut489Kd/GVcmKjypDOZMxNGMzbifXgpYInXuFElYx2Z1DRQXg0OHWVFUuA7TtyitDueYfdzrwXYiwcIbEvsatyQ+FweHOB6MuUfSEot+whEIGggbcP+Dw4oQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(18002099003)(22082099003)(56012099006)(38070700021)(10067099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?+KxFaLSn0QqmSdzjgR5eGdN0dkSBjL3gAs94Bn0NEENI+2ntbh5nEFOq1N?=
+ =?iso-8859-1?Q?hy317bEu5hn2NpTU6wYi7/xthA3z2li3J8iOKcKp9oYDq+jdF53YCnIu02?=
+ =?iso-8859-1?Q?9bu+jgCmP1qfBuGR01iHMnQT75WEwGA9uE0E007h4rYtLR1flD1KJRNtJO?=
+ =?iso-8859-1?Q?gqe6Z8qkMYCtn9Kb8YONL+az1qcmWJ5afrAOa3iKdAQnlw7JcvUR+HBx1P?=
+ =?iso-8859-1?Q?PVEA7wvqiZ1wyTcpXy8MKLYfjpMMg1OZ5B3YrqTWTiUqS3aLkmS+YtNCiI?=
+ =?iso-8859-1?Q?e46aKkn5fhKyvE8tussv6NrKuteIohC146wDGi3OKOx7bkDTYtBOrTzQ+w?=
+ =?iso-8859-1?Q?Bw5EHId1nFSjrSY+AXOHVx59YMX/T74If7vwMvudNaOCy7R2x6ocPPFRKS?=
+ =?iso-8859-1?Q?wOXvVt9tCeYjoFHEpQHafiDYmBTr8YxdsLJqq4EH/m7iUFiFisquOCr0ui?=
+ =?iso-8859-1?Q?uMT4XCavP1x3NEdD6wXgeWWamcDQIGURQ82UguYXfFG6zqeQSXoKvW48ME?=
+ =?iso-8859-1?Q?VXW5R0VwY0KTNsM8/qXrG9eDxVIs7FJslcH3bqa26kOYcQZoNJtQZyaoVz?=
+ =?iso-8859-1?Q?A/CQwOgW1u+aUErpYnT+Iyq/umN4vHP8Sr/cODjNAMvHlsbPzhyw6nPC94?=
+ =?iso-8859-1?Q?BUiWpFIuzdMU0viHbbr2Q8HoVDvkKvJ9pwx0pXpt6ytfreDyrAd1tLTzBs?=
+ =?iso-8859-1?Q?IRU7BMc20G96wmfQpOxXCf++/UM1kznxGCwbekvd8fulsgeqo4N8yVCUG4?=
+ =?iso-8859-1?Q?n1XHhKpgEZVb0E6trhtUQaGOmgy+fQLKHOS2b163cX/9mrtOyvcxa7Mecx?=
+ =?iso-8859-1?Q?lMzIVQhhon1KpMwsNh5yu2HJBuOi6u+wFltquUtvNmeW38wUIeJda5fMhy?=
+ =?iso-8859-1?Q?UO29dHIl/PrrZSrt0z3JKsWR+kO0UWTLP4UzqBwb5F/S0l7VgdPNuo46us?=
+ =?iso-8859-1?Q?4C2BrSLO7GIT/QoX8KZfVbKYB8YrU7qps3mXtzV0Ma7lJlo8fm5+WaDNjw?=
+ =?iso-8859-1?Q?AJV0qQic43rV9xVh/St27rAp0yWyfTsaR/N0YjjRiI1nhjgM1qkkidOQ5N?=
+ =?iso-8859-1?Q?3egrm8ukGrAR99XKMJ3av1H2WPYJdDUZjctKkgaRjLxRpAtc0idabM5rtY?=
+ =?iso-8859-1?Q?JOWewCPjBkkcNzIomitMeiTKpT9p2z1MQsAUZCx4hbLut4KkROFb+gsp49?=
+ =?iso-8859-1?Q?U+6YcAZpWxedWCfvI3cpMQQb6uoUFD1EIQL0fenap5Rj1/t22b8WoyP5jV?=
+ =?iso-8859-1?Q?uLOAuWrOeMGEoAU6mt+By3MzUUP7ZOqee41r/zD8AtvxO//nByGRuNZ+ya?=
+ =?iso-8859-1?Q?w6blgYtZjsA17IQLTx++2YrUB7NCChUn2XMsKXON/A+ExspWxYmRXhHtRt?=
+ =?iso-8859-1?Q?WdvHwH+QAk45fHE361vHBztM/Rfh94JrBAf/0wvBh0DySmLSz4ZVrEw/aw?=
+ =?iso-8859-1?Q?MGRLp62U/giMx508fCsdKo3vFRa4yq9jyJLySRrLg0x2E7uGNe2FwXoja3?=
+ =?iso-8859-1?Q?m49HJV+JViYeQZGYGupHG+7HXqfFFlr5wNI/ByvtEpqkg/sg+XQtjNgJxr?=
+ =?iso-8859-1?Q?KZ881QkESpSlDCRv5mmKeTyPnsPPm3c0SGFUGLnDDmI0abgyhwlzDQ1LSv?=
+ =?iso-8859-1?Q?vEYgyl8BMZygVLjop5LRTcaG6J+4Ay6bUUS/s1mwAuWScgxw5PAlgcO9pG?=
+ =?iso-8859-1?Q?8aL4bl93XzLGEW7e+KLEYV65we4xWwZ0L9zfz2naqk8/cMAUdqFe7U6jCu?=
+ =?iso-8859-1?Q?f1rZLHkYHCJwgKr+6D2wNYOZd8QoXZruIEWRBerDPVUJ/G?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked:
+	eEKSbUOXz0MbbCyMqyd8iLbSkjVC0tbWD8AEMH1BA50iIXMhP6GjQVWgAIkxW27BM1dG4894+ePTM91jZNp6nKfdgWE2sqvEZJR3gAuWjJZgkpsgVdbu1hdo4gett7zIm2C5bors0QE9oSITkVEiBOlS6Sph1dXxmbe0byXnZDw6Lso4OTbc46uS1XlrDAZsZt884xhA0zip2TGPcHis5UTEYPmdTq/UrwXZd7mVYmkHSbZZkBvqsIGdu8jHAFD4gUphwVfARhC0Rnx0VBVDzH40Vp+kwLDf6xyayyFZDPv4a5bIsH0GPozbfAd/DrMBgGwzqO2x96ihRZkJM+VcXA==
+X-OriginatorOrg: sitime.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec0e6854-2f17-4881-38fa-08df093ad09f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2026 21:40:31.9235
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Dh2SZCce3HHJlvMAKmXL454KPGU0QvED7lyUBWF8GRWkzcckt0kVMFa3+CfN56lM+5o7vWpIKlIa4LaKFJmfhw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR20MB4877
+X-MDID: 1788385236-XyjU6467gJHq
+X-PPE-STACK: {"stack":"us1"}
+X-MDID-O:
+ us1;at1;1788385236;XyjU6467gJHq;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-When the driver receives a burst of packets, it can mark a BD with the
-NO_CMPL bit to defer completions. The expectation is that the last
-packet in the ring will have this bit unset and the completion generated
-by that packet will cleanup that packet and the ones preceding it. This
-helps to reduce the number of completions fired.
-
-The suppressed completions are controlled by the driver and the number
-of packets with suppressed completions scales with the size of the ring.
-SW USO packets, on the other hand, have an upper bound on the maximum
-number of BDs which can be consumed which does not scale with the ring
-size.
-
-So, for small rings it is possible that: a burst of packets is handed to
-the driver, the driver defers completions for all of the packets because
-the number of free descriptors stays above the threshold in the driver.
-Then, a USO packet arrives, but the number of BDs available is not
-enough and the USO code exits early.
-
-In this case, you end up in a state where the ring is full of packets
-with their completions suppressed, which can cause the queue to stop and
-never be restarted.
-
-Assuming default CONFIG_MAX_SKB_FRAGS, this is only possible for small
-rings (<= 457 descriptors, below the driver default value) when
-a burst of packets fills the ring, followed by a large USO packet that
-can't fit. For larger rings, the delta between the completion
-suppression threshold and the BDs required for SW USO is large enough
-that completions will fire and this case is unreachable.
-
-This issue was pointed out by Sashiko and while it seems fairly unlikely
-given that the queue size must be small to trigger this, it is indeed
-possible.
-
-Fix this by tracking the last BD which deferred completions and
-centralizing the logic for deciding when to ring the doorbell. The NO_CMPL
-bit is now cleared in bnxt_txr_db_kick(), so every doorbell site is
-covered, including the SW USO early exit. This guarantees the ring always
-ends in a BD which generates a completion to clean it and wake the queue.
-
-Fixes: cc5d90667db8 ("net: bnxt: Implement software USO")
-Cc: <stable@vger.kernel.org> # v7.1+: 4e15e89faac9: net: bnxt: ring the doorbell when SW USO exits early
-Signed-off-by: Joe Damato <joe@dama.to>
----
-v2:
-  - Add kick_txbd0 to track the BD where completions were most recently
-    deferred.
-  - Update the logic in bnxt_txr_db_kick to clear the NO_CMPL bit if needed.
-  - Remove the open-coded NO_CMPL clear from tx_done in bnxt_start_xmit()
-    and key the flush off txr->kick_pending.
-  - Update the signature of bnxt_sw_udp_gso_xmit to return 1/0/-1 when SW USO
-    transmits, drops, or is busy. This delegates the handling of the doorbell
-    to the caller, cleaning up the code as Jakub Kicinski suggested.
-
-v1: https://lore.kernel.org/all/20260827230233.94878-1-joe@dama.to/
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 42 +++++++++++++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  1 +
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 21 ++++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h |  6 +--
- 4 files changed, 48 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d59bcca73a2b..8c6e2ee6bee4 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -462,6 +462,16 @@ u16 bnxt_xmit_get_cfa_action(struct sk_buff *skb)
- static void bnxt_txr_db_kick(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 			     u16 prod)
- {
-+	/* If the most recent BD has its completion suppressed, unset the bit
-+	 * so that a completion is generated, otherwise nothing is left to
-+	 * clean the ring and wake the queue.
-+	 */
-+	if (txr->kick_txbd0) {
-+		txr->kick_txbd0->tx_bd_len_flags_type &=
-+			cpu_to_le32(~TX_BD_FLAGS_NO_CMPL);
-+		txr->kick_txbd0 = NULL;
-+	}
-+
- 	/* Sync BD data before updating doorbell */
- 	wmb();
- 	bnxt_db_write(bp, &txr->tx_db, prod);
-@@ -485,7 +495,6 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct bnxt_sw_tx_bd *tx_buf;
- 	__le32 lflags = 0;
- 	skb_frag_t *frag;
--	netdev_tx_t ret;
- 
- 	i = skb_get_queue_mapping(skb);
- 	if (unlikely(i >= bp->tx_nr_rings)) {
-@@ -509,11 +518,22 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (skb_is_gso(skb) &&
- 	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
- 	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP)) {
--		ret = bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
--		if (txr->kick_pending)
-+		int rc = bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
-+
-+		/* if SW USO queued a packet, the doorbell will be written
-+		 * below and there is no reason to track the last BD with
-+		 * suppressed completions
-+		 */
-+		if (rc > 0)
-+			txr->kick_txbd0 = NULL;
-+
-+		/* if a packet was queued by SW USO or a doorbell was pending
-+		 * from a previous xmit that was deferred, write the doorbell.
-+		 */
-+		if (rc > 0 || txr->kick_pending)
- 			bnxt_txr_db_kick(bp, txr, txr->tx_prod);
- 
--		return ret;
-+		return rc < 0 ? NETDEV_TX_BUSY : NETDEV_TX_OK;
- 	}
- 
- 	free_size = bnxt_tx_avail(bp, txr);
-@@ -751,23 +771,23 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	prod = NEXT_TX(prod);
- 	WRITE_ONCE(txr->tx_prod, prod);
- 
-+	txr->kick_txbd0 = NULL;
- 	if (!netdev_xmit_more() || netif_xmit_stopped(txq)) {
- 		bnxt_txr_db_kick(bp, txr, prod);
- 	} else {
--		if (free_size >= bp->tx_wake_thresh)
-+		if (free_size >= bp->tx_wake_thresh) {
- 			txbd0->tx_bd_len_flags_type |=
- 				cpu_to_le32(TX_BD_FLAGS_NO_CMPL);
-+			txr->kick_txbd0 = txbd0;
-+		}
- 		txr->kick_pending = 1;
- 	}
- 
- tx_done:
- 
- 	if (unlikely(bnxt_tx_avail(bp, txr) <= MAX_SKB_FRAGS + 1)) {
--		if (netdev_xmit_more() && !tx_buf->is_push) {
--			txbd0->tx_bd_len_flags_type &=
--				cpu_to_le32(~TX_BD_FLAGS_NO_CMPL);
-+		if (txr->kick_pending)
- 			bnxt_txr_db_kick(bp, txr, prod);
--		}
- 
- 		netif_txq_try_stop(txq, bnxt_tx_avail(bp, txr),
- 				   bp->tx_wake_thresh);
-@@ -5427,6 +5447,8 @@ static void bnxt_clear_ring_indices(struct bnxt *bp)
- 			txr->tx_prod = 0;
- 			txr->tx_cons = 0;
- 			txr->tx_hw_cons = 0;
-+			txr->kick_pending = 0;
-+			txr->kick_txbd0 = NULL;
- 		}
- 
- 		rxr = bnapi->rx_ring;
-@@ -11772,6 +11794,8 @@ static int bnxt_tx_queue_start(struct bnxt *bp, int idx)
- 		txr->tx_prod = 0;
- 		txr->tx_cons = 0;
- 		txr->tx_hw_cons = 0;
-+		txr->kick_pending = 0;
-+		txr->kick_txbd0 = NULL;
- start_tx:
- 		WRITE_ONCE(txr->dev_state, 0);
- 		synchronize_net();
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index ab894f8addef..dc5a16ec5943 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -993,6 +993,7 @@ struct bnxt_tx_ring_info {
- 	u16			txq_index;
- 	u8			tx_napi_idx;
- 	u8			kick_pending;
-+	struct tx_bd		*kick_txbd0;
- 	struct bnxt_db_info	tx_db;
- 
- 	struct tx_bd		*tx_desc_ring[MAX_TX_PAGES];
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-index f7e18bea0fb8..6c1060fa2ea5 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-@@ -31,10 +31,14 @@ static u32 bnxt_sw_gso_lhint(unsigned int len)
- 		return TX_BD_FLAGS_LHINT_2048_AND_LARGER;
- }
- 
--netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
--				 struct bnxt_tx_ring_info *txr,
--				 struct netdev_queue *txq,
--				 struct sk_buff *skb)
-+/* Transmit an skb requiring software UDP segmentation.
-+ *
-+ * Returns 1 if the skb was queued and new BDs were produced, 0 if the skb
-+ * was dropped, or -1 if the ring is full and the skb should be retried.
-+ * The caller owns the doorbell for all three cases.
-+ */
-+int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
-+			 struct netdev_queue *txq, struct sk_buff *skb)
- {
- 	unsigned int last_unmap_len __maybe_unused = 0;
- 	dma_addr_t last_unmap_addr __maybe_unused = 0;
-@@ -69,7 +73,7 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
- 	if (unlikely(bnxt_tx_avail(bp, txr) < bds_needed)) {
- 		netif_txq_try_stop(txq, bnxt_tx_avail(bp, txr),
- 				   bp->tx_wake_thresh);
--		return NETDEV_TX_BUSY;
-+		return -1;
- 	}
- 
- 	/* BD backpressure alone cannot prevent overwriting in-flight
-@@ -77,7 +81,7 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
- 	 */
- 	if (!netif_txq_maybe_stop(txq, bnxt_inline_avail(txr),
- 				  num_segs, num_segs))
--		return NETDEV_TX_BUSY;
-+		return -1;
- 
- 	if (unlikely(tso_dma_map_init(&map, &pdev->dev, skb, hdr_len)))
- 		goto drop;
-@@ -223,16 +227,15 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
- 	netdev_tx_sent_queue(txq, skb->len);
- 
- 	WRITE_ONCE(txr->tx_prod, prod);
--	txr->kick_pending = 1;
- 
- 	if (unlikely(bnxt_tx_avail(bp, txr) <= bp->tx_wake_thresh))
- 		netif_txq_try_stop(txq, bnxt_tx_avail(bp, txr),
- 				   bp->tx_wake_thresh);
- 
--	return NETDEV_TX_OK;
-+	return 1;
- 
- drop:
- 	dev_kfree_skb_any(skb);
- 	dev_core_stats_tx_dropped_inc(bp->dev);
--	return NETDEV_TX_OK;
-+	return 0;
- }
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-index 47528c20f311..77d9af97cc22 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-@@ -38,9 +38,7 @@ static inline int bnxt_min_tx_desc_cnt(struct bnxt *bp,
- 	return BNXT_MIN_TX_DESC_CNT;
- }
- 
--netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
--				 struct bnxt_tx_ring_info *txr,
--				 struct netdev_queue *txq,
--				 struct sk_buff *skb);
-+int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
-+			 struct netdev_queue *txq, struct sk_buff *skb);
- 
- #endif
-
-base-commit: 544d85de4dc22c01badfd8cefa59829ce35c4858
--- 
-2.53.0-Meta
-
+Add vendor prefix for SiTime Corporation, manufacturer of=0A=
+programmable clock generators and MEMS oscillators.=0A=
+=0A=
+Signed-off-by: Ali Rouhi <arouhi@sitime.com>=0A=
+Acked-by: Conor Dooley <conor.dooley@microchip.com>=0A=
+---=0A=
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++=0A=
+ 1 file changed, 2 insertions(+)=0A=
+=0A=
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Docum=
+entation/devicetree/bindings/vendor-prefixes.yaml=0A=
+index ba2002969373..65da27d6e84d 100644=0A=
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml=0A=
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml=0A=
+@@ -1563,6 +1563,8 @@ patternProperties:=0A=
+     description: SiRF Technology, Inc.=0A=
+   "^sis,.*":=0A=
+     description: Silicon Integrated Systems Corp.=0A=
++  "^sitime,.*":=0A=
++    description: SiTime Corporation=0A=
+   "^sitronix,.*":=0A=
+     description: Sitronix Technology Corporation=0A=
+   "^skov,.*":=0A=
+-- =0A=
+2.43.0=0A=
+=0A=
