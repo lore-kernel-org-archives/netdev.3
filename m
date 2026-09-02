@@ -1,56 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D48443AA5;
-	Wed,  2 Sep 2026 22:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1A9443A86
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 22:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788389555; cv=none; b=nHnNVN5BiXlReokv2COTOHfAzKdDEIJci5pWPRctEPxBr0+461ZOzEctxqHjDj7UvWw96KopN7iOddvrpfWU7mpXWq9cIJe7IE83dTzD1rG7uZh+888Vc7Nhfz0HkwtuV+5KF0lzmTsmZZAP3LIbwwm3MHmbb+U4zHLc6XCkGSI=
+	t=1788389917; cv=none; b=q7qSos8Ek7UeClOnOW8KEH/s8lDIYMpCxo/Do3hL2cjQfrTpF1v7aI1pB7pGvueG/JLgpRc1K95F6FB2ycahdp8OHg2ECujhDVGed75SRV+SL3dhjSshL8cxGG/fHnvf7vOGUZOlq2nh4FgwDAqX8TF0+uLZhwJYXJB7NJf1mMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788389555; c=relaxed/simple;
-	bh=jPy/vhRnfB9J5DrZW1+7yOkwzkCKQGz1PKr4vTz4abU=;
+	s=arc-20240116; t=1788389917; c=relaxed/simple;
+	bh=VneFzBugj/kfJvz99X2rDsCHmMVhGYnQa5voXhxQ3Po=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MJmN1sqbXzz5rRePcckj/3++gtBDYTVpeZeTlXrNhEiak/0Cch1GuMuw9oC5yGrnkKm96wMm2cq6/lx+SFkbaDAyMOWbnyEhgSnJplzz6z8lPUZc5uvCq4XJxaowD9ncsZgH4uH/PBZmS0MkjEkk6clACItDRUE9xt/lwijy5cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABT2fz0Y; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=T7k2uOw319YxK/RqfABbyG6HCNxxYHxQ3ZyFItD35RHURDD1vbAniDLmc76dfy0wEuJ2UJ1jmthCPn7Q0e//cC/skbl4fuAAAbxYFt5ekiChCA9oiBq4KfNFAzHL9esVrS4a9DhzIQzt/1ezYb4rPyT7jC58eEBw3mY3ahIefcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVds7fkS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABT2fz0Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77C71F000E9;
-	Wed,  2 Sep 2026 22:52:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVds7fkS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AA81F000E9;
+	Wed,  2 Sep 2026 22:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788389537;
-	bh=aesFN2OHbarFM50VtQtwNH9OJpNYeiU/N7P2t16enJQ=;
+	s=k20260515; t=1788389905;
+	bh=5iEl6MqRuofjjRdvYG8kYpZfAP9r1v1X/olIxd6EuZU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ABT2fz0YYmV6oRP8XGH5PsyGf2cm+MFOfBtxMC35kopb2qMQH7dEFnf3vkNsagATF
-	 1QaCueu06oRLe+UvB9dlIbBu59STycKG9dUSI398JJf6jy/u91vqR5R3VYVl2ryX7W
-	 Jh4SaA0myYHvyRn/bCjqQdQMblaG+0FHtlcyfeT1nEtjUjFTvomz1A5sZVINKyKZ+f
-	 3e6Rrojphf1QXoh7pRKQpprfcE7ijB+h9+yNlDz5IE08TODhoXIidUSI8ieUYUzLfN
-	 DXa1AyW9/sSj1FTjIWDHSC67fjE+m0O43OMj91y/t9OFhNN4f0EWPNT+Mo8R0o6X20
-	 fzDUBr6sXbHnA==
-Date: Wed, 2 Sep 2026 15:52:16 -0700
+	b=UVds7fkSD66SJt8rgZusngbIwWTdGTQBEgVQAOhuTPEE29/b/eHyqPmgLyog+2FFW
+	 j/q75f75onKVpl+34ydrV3qkyehaA6Xj+JxewpteLx4wBTdYxzZizBKl/Yzh/PSm1U
+	 IvqzZWNLcP/v4/0cZhsrcOf+yPnklIGvfARr28EogGeuUu2s0BUvhI354buFi8WGaD
+	 131mpSOkWr1QcwwhybChuLPiHwQK2eIlG0aWR1hOf64xnKNVLZQvqD3P/c2BP0mpV+
+	 0gKOpM2PlqLxbA3ePa0JWvM1tn2y+9Ra13DIR7kHqNZWoX3218RuAflb17D0wEMPoA
+	 ff5ks3lXmi6QA==
+Date: Wed, 2 Sep 2026 15:58:25 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Michal Luczaj <mhal@rbox.co>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
- Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song
- Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Willem de
- Bruijn <willemb@google.com>, Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan
- Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>, Ihor
- Solodrai <ihor.solodrai@linux.dev>, Pablo Neira Ayuso
- <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter
- <phil@nwl.cc>, bpf@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH bpf v3 0/2] bpf: Fix socket leaks around
- connect(AF_UNSPEC)+listen()
-Message-ID: <20260902155216.4fa23444@kernel.org>
-In-Reply-To: <CAAVpQUC==6KEBs3XgFjZ536mJ23cbHma8HuiWMu1DRc_=YYOHg@mail.gmail.com>
-References: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
-	<CAAVpQUC==6KEBs3XgFjZ536mJ23cbHma8HuiWMu1DRc_=YYOHg@mail.gmail.com>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>, huhai <15815827059@163.com>
+Cc: netdev@vger.kernel.org, huhai <huhai@kylinos.cn>, andrew@lunn.ch,
+ divya.koppera@microchip.com
+Subject: Re: [PATCH] net: phy: microchip_t1: fix NULL pointer dereference in
+ lan887x_phy_init()
+Message-ID: <20260902155825.63974224@kernel.org>
+In-Reply-To: <a59a2f22-dca0-443b-a0de-f580ed2c4438@linux.dev>
+References: <20260902083342.221050-1-15815827059@163.com>
+	<a59a2f22-dca0-443b-a0de-f580ed2c4438@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,15 +46,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 2 Sep 2026 11:58:49 -0700 Kuniyuki Iwashima wrote:
-> > Several BPF socket helpers acquire a socket reference only when
-> > sk_is_refcounted() == true, and release it, independently, by
-> > re-evaluating sk_is_refcounted() again at the time the release runs. TCP
-> > connect(AF_UNSPEC)+listen() sets SOCK_RCU_FREE on an established socket.  
+On Wed, 2 Sep 2026 17:16:48 +0800 Xuanqiang Luo wrote:
+> > mchp_rds_ptp_probe() may return NULL when CONFIG_PTP_1588_CLOCK is disabled.  
 > 
-> Due to several bug reports, we are now inclined to forbid the
-> buggy transformation.
-> https://lore.kernel.org/netdev/CANn89i+px52TtJy3S9=uHxGj3s-WueguRo1Z_4FxO=02KLmwmQ@mail.gmail.com/
+> When CONFIG_MICROCHIP_PHY_RDS_PTP=n, the stub for
+> mchp_rds_ptp_probe() also returns NULL, even if
+> CONFIG_PTP_1588_CLOCK=y. Please mention this case in the commit message.
 
-Kuniyuki, would you be willing to send a patch to do that?
-Not sure if anyone else is planning to, I wasn't..
+Speaking of improvements to the commits message - please also explain
+how the issue was found, reproduced, and fix validated.
+
+It'd be good to improve the spalling of your name (rather just
+repeating your email login) a little; or just add your real name in
+unicode characters in () brackets, like huhai ($unicode chars) <email>.
