@@ -1,188 +1,133 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011037.outbound.protection.outlook.com [40.107.208.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC9A37A847;
-	Wed,  2 Sep 2026 19:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF1739CCFB
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 19:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788378073; cv=fail; b=KQUDH+ngiVdI1l3J2lSnCPJB4UJQeHDnEgZZ4g2Bc7/pi+h9WStMgfKllF34Q7zez2RbhOwqdu/IRVriFpI1es2gwFlegXWtuLjCIy2L69HodsmeJbP1KTnqjXF5e6+NeK0JmLU4Ql6JjmyfNFmBnGVkKyItcjGLQ1JvDilk3/g=
+	t=1788378215; cv=pass; b=TwMkTGVwf/NF4d8VmNMXqKZEHZ88RmNtluEDEnX1dFUbhGT7OS929iQ9JLE/8DxvkSCnwUy6mdT2bqxG5/9D3qGkSyVqAdknWCpqkYWFomS9iKtwOndaj/DxijuIIB9FizmlfZtjStGxuJefk3DfVzQqszaomEoZ5SORA6y5+JQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788378073; c=relaxed/simple;
-	bh=+gZwyzxc5skxzO6CLlrR8mGjtbKxIBoXc5mNjWIf0oY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oPyqjUGIrM1NzlysFpNFbhuRpL4qtXGCs01J5HqEDLz3nQ97tvuJl9eJ8znlmpP2/4ZU3AjebLvi5VNHnSi++doauMWnftPheIfNyZGuCPQgm8+0ROa3lcMKhzB1cBEvM/5ceKJQbZdanbF0MZsYcqr77N0hc2+ihkmzUY0eFUE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=f4WI8Upy; arc=fail smtp.client-ip=40.107.208.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788378215; c=relaxed/simple;
+	bh=v13IBvJ3Cs5k45Op8zhzzynqZs/Da4H7F6eGXP4EZOo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hJr0SPaq9ec3JHr9IYOqtMecwG560PzB5kPn9w0Un2r72sf9hx3M3iXNMsHtZoaMA3m3k5pP4LT1q/iPEUHhKlLOpsPB60/W6soWO+N3A4349zNVqRA/9z2XXNB00XcH6IaVP6DZqisDeEErq/sX+EqqCuW0uZAGyFpsud7SLVQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=aYFA5tCO; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="f4WI8Upy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d7U5jUdctpXyiq6OD9myquhckOTGybO5snr9n5j563S/F2mr3sOeVp7jkhy5+evTZTQJTNW76HvmL5BzQ1vvLtL+gxj8cqaunAioQFQ+MVI5hd/gSkKZXLHn3dvcuxUH64pH14XNdLutrZfoAQ1ABUrWu/sWy3dyWMYfwUk++q07jiJMyGMwSwnm1ePaHtMvoF8PSpTwPH0mMZNgMnwVp4gL6qMeAwdhJ8V0YpIDdrRMQHAlL516YGYN/thJ78VeDovgHplmgchKfk3KJcboAAqg26HNf0+hUacaUA9G4b/BOzIiv5DQh1zE9px1dFhM/Sn8Y1iq993dURfXFmO4sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9yy9L+s+nggMa0cHpqzgZ2qv11i57VgdKpudk0ZPtpY=;
- b=FM5PQ/T7BTYQLE5stTJQ4nWzwCo6IyLP5w+Xcf4lD1zxIkpxX3ZJ5C2567Np7vOlXtoShcfar8RPd5nHk8SxA5jB3yM+VEI9t3svRAyAlTN0chthiPnRrYLxwuHLHlGa3MnpoIjelvRSGSHHp5Glmy5D61yaM74Nz0+/ndoe1KSdCh/TdvXq2d02TxzrLhqhMC3Z9Ho5Ga52A18S2hw18IPuofR1Yg4SK57OcN0OmfiH/TWt8V0EDXRCPhmIJLSP0N096vf+lGiR/kSQGrdc7wcPX0Ndbrb1Zg3EE2tCRVjOw6AdSeQvJTj5cCncJFk42TLNdQienZIT6DCeatcZ5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9yy9L+s+nggMa0cHpqzgZ2qv11i57VgdKpudk0ZPtpY=;
- b=f4WI8UpymLW+A6QJbJmN67IJzilgxcrpiCFyo/KILHstLyK6hmB3mejIYfpG8rfDJdoz+/uwE1LflBhJDPAJRE96qUTlqk6U6FM/rJOpAWEOvKP6hAV7IuZjWZJMvekl3Thh3LzEKImezOTqyR+GYF8tGNc5NopZrXxddyCZ38arwRutamrMrUtI+WsHm1aNj2JayioHIt0vzV/Pq7+NkHswwwcVqjmWnnVxBg+oNF7d8W2c+pGWlOUAJHRJuZ3RqEkEuM98dOt+CZKeNsPH8S6xUFKnETD/YVeYvBubszhe07pz6a+4wpDdyEkbVnzmLgtX7Gi7QrEtJWZySNHVfQ==
-Received: from SJ0PR03CA0163.namprd03.prod.outlook.com (2603:10b6:a03:338::18)
- by DS0PR12MB6461.namprd12.prod.outlook.com (2603:10b6:8:c7::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 19:39:35 +0000
-Received: from MWH0EPF000A6730.namprd04.prod.outlook.com
- (2603:10b6:a03:338:cafe::8d) by SJ0PR03CA0163.outlook.office365.com
- (2603:10b6:a03:338::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Wed, 2
- Sep 2026 19:39:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- MWH0EPF000A6730.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 19:39:34 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
- 2026 12:39:05 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 2 Sep 2026 12:39:04 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
- Transport; Wed, 2 Sep 2026 12:39:00 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Lama
- Kayal" <lkayal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Maor Dickman
-	<maord@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net] net/mlx5: E-Switch, prevent mc_list repopulation during vport disable
-Date: Wed, 2 Sep 2026 22:38:54 +0300
-Message-ID: <20260902193854.3669035-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="aYFA5tCO"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so1483802b3a.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 12:43:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788378196; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZJgQk95ezG+6KQ4olLfWgLNB93S4XNBWAS+OTdHj+8ocMdaV82ThJrN+kcRNHKWvNS
+         29q8dYNsAXjVxPmjJPbCPeabwHE9Gu0lkpmcxZFC9PTMi0zbGEfQnJilqJIgZ30Ux1VD
+         dN2QVM53xho4rJTlnKwmhn3nzTzzsSG/vxd8UiIfzx+bzby8ICweK3U7km5ZgJJ7e7Cg
+         XBHkp6MMcH4iR1DIddetuu7S4B429rlwm/WIMTIeoaIahtCyy97xmp44KaymWy7IKBqX
+         5gEoLHKg+mHYc3D40dRMY4wmBVowIUB67Bk5mbaq3hYomcDkCAARRGK9spOATQkWzGwH
+         laVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HZzgWfQ/86NrxOY8y/QdFfPZVfg39pEM5TlwSWapW24=;
+        fh=uRuF63zACNWM/AyVHFELnFymGuvgLbxakvhY/vkzmeA=;
+        b=PvhJeeziWuLFI0iTm97/IbiXOmd9MtXtR1+OgjhWyucwC1kh5dGl1vE9t8/uVFchDv
+         HahHgPE7kwiDiWaGDAi/zYtZbX7/yU1xtBXfG022V5cKu8NxgnDMZcAXzrNa96RKuWtR
+         onDbP8AiA1odQCv0YLD6lVwTFgUiqx8JCjbjOj9VrvBnCnSIq3Jx8q7GjyOzBnQACzhl
+         yzaNcdMlv3a5H6mfVDdg8w1X1h0C/4x4vTVdoDhsr/WkKS9KbvWX9MPhQ7CzMKfBmuGx
+         MCf03HlOMQfUjEO6PdhAPJcqKIpdQOamHAwOrW3CVsBpeVwWn6xpRUWacoYUmqB7xwrw
+         vHyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1788378196; x=1788982996; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HZzgWfQ/86NrxOY8y/QdFfPZVfg39pEM5TlwSWapW24=;
+        b=aYFA5tCOZ5UjOiabbKf+4Li2QUBDULtgqc0UtYdMcN42FuRj6wzgCLFhAKAaI60NZg
+         7u1Eli49zAV6MQy2b78QDrhXqwsAAyzcu0FxEVwk7WavXov/6rxM2LcwYoEZz+y3+VJW
+         UPE1ELzTJgWxSva8X0e2e1NXkBo3cCfyVB0GIATavl2RU2ZDH7e8KvDWAqlS6L4lRWc7
+         K6dMtF07P92DD6er/SfN4xho3HHF40di7hzQcuudBqZKdhG7XH6aiNRsVxtH3VbzeKgV
+         MtP22v903BOORWOseI5xsYPMTLbzRrrQg9QhGLpbqq1N/BcLGnPT4dTtTl6qp/VcSKPD
+         sBvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788378196; x=1788982996;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HZzgWfQ/86NrxOY8y/QdFfPZVfg39pEM5TlwSWapW24=;
+        b=Hn8uxZd5oGSDvtuE89vhjLcyFwVvU9ZnrctZVZDeR8YB8JgPDrD5Yhct5TPTbamb7D
+         s/R2zeBkTVCAjr2G7+kQ4lD9mlrksPcdcxOZYHS4Q03xTW+6k0FSnBmCfWRPbNeXvXV5
+         8D+HEuHoVwrYDxw2XHriYAFrFWK3P/vebxvWY5u95jDKo2PCviskt9eL5vg15s4j5YAp
+         +xYkt0cPt77wf1pg/VSYKvFyxFIh586PAe74krnC+491oHZ0zYxYkbrFV6yS7cyqMTh2
+         L5VSbRYa8/bS8pCRzHIs7ckCZqcBOPU+fHakJovVhcM8DGF/YD6OXRquyacbsyuiF2pw
+         OJzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz/qN2dmzmy0JaXuaFtyXuIj3KaZpwV13MwoOMXMMIemXfisV84UwU3/nBHu+ETQ3J3TbatlU8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKnYkUtM6dkvRYAqwT8BvpCee3i8pj01xwLzgBVnhfiXcKNZ/Y
+	zIZlmYHNyX3RJ84AUBhrsAI8n9F5O+k1+wKszqBJH7KHWibUKUqULqhvEFvrZMGmLzboI9bA4Dp
+	bQabORxLkX+VWEcMhHJAxtcU5Xz+gCREs5LjBQqq9
+X-Gm-Gg: AYBFou3g+drGkoFhi8Rr+vY9gpPIMfhXs9JKqz2N9ysq2XjUfmPInOphbTYoveExtJo
+	C68hjj7An5SCVkpnI918+mfPMtBtjry22UP+yBJZeeK6TGVp8Eu/6lrpMCUTCOlqi36W4c5TTFe
+	fRIRS7rNEw/a+v4ZjNqYcp15IrUUZxOeHk6BmXvrOESO63ytjlpuAfuUkeLdXS0eTVY6ZcPxziZ
+	zdWkoO+A1rvcSngY0SUbPC3MNPMljsA7Q9seK4uYeISJpByEWp/GA2u4XhE0o6To1jPhXYCy9wP
+	ft/y+5CylTo7PPMsRRTGxRNoDIMc4MITbMAPCkzxLXyF
+X-Received: by 2002:a05:6a21:2d04:b0:3d1:8876:fb1e with SMTP id
+ adf61e73a8af0-3d9a9695714mr11592712637.0.1788378196405; Wed, 02 Sep 2026
+ 12:43:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6730:EE_|DS0PR12MB6461:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c0ec54d-315a-4f28-68c3-08df0929eaae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|82310400026|36860700016|56012099006|10067099003|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	njWPNbUSMwNoYawqY8SAuysfJBdyPVmu6fTIqT12PAR2UmxAFDwB86SWc3Hi/mym+ipyQ136HmDOKe57dlY+oPSCdcAv8iQ8+mJD7VFDNnPMuyS+CHgqtMdAeNXf5NBHZH2HS2n1E4wnvK9HUKwdSKORi0mX3CIg3etf+k08zIiIz5O1TWEzNatLSZOU7AhPivmDmeltyC1uSNX5omtE/UeyNeQeNipJnmx0XfkB+XnZc97lBpsicn3Am1kWbqmWJhIuYa1pYn0Ryvdk7/ZSErECIGf7IcZY0CvZRtfHqbwehSi0npK1Ao7z0/fID31rWYcWCuPPE9/Wwjn8W9zYM0J7hfEUD9OLSwbR+W83M6yyTyChrdqk2Us5oBM3rwjq/7OEtGbp/JM/W407QwEbytW7Em3BR2Ag6uBG1pfTV4L4BV7j/pOwOuXuMC836ww9J8nbm3kqFfpDAgqC7PGs9yawtXdjYbGN5QMyNB1kl0mwhMwliQJ2FAFjCWdWSUrNY/RYgJzn5G1ruiYapkTfKlBraxC178ul8+AKvQdsdFck9CI+4mi6DpxBeFewmKo9z8m5RWS7yjx1lq+WpLuYYf1jUNprYFwr+Gk4C7h7PT2Anx+zA0GhXhPVH8IHuu+Z/zj9Xx4u+JUJZuBIHYL+WYa4Xot0SmSumYxVh1GmnzwIcwv/Gc+tW6PwoLjg7X7Z
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(82310400026)(36860700016)(56012099006)(10067099003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	fy71QtAQq7vV8KKi6R+OzWy9QudvnvFKA0BNvIixwxAuXPzfp1PeTZdKA3ojWgWp6TOeZA5MZe/9f3Qt/wRooMAlsf14CJcdv9+29ngsZe9Ji1BxP1m3EuvuxJxdONb2x/CRTQNoygFxEE9G4DPiiSuTw5tPmOA4bpb+MDwqLZxCMpi77354zYo6q2kt7TXgN31O6rg+BQDhyf1Y4O8fp9c/bGph7MVsc5f4OJA52I7xZnUmfK6K30MrvGpEGx8lzPruQLmHyWmj1VfjjGTL0xDeYqboSeE/4BJBoggHAUQ0Jp+DBt2dS0lnzQXfwOSYVXmXJU6XK5XFbXn9M9BiXt1JmXcDRMtvDMcIZoMVV1y4Sse9o24M//eUw0de2xgbIV5yzWYcDvQJNJnUy4y2XMU7A8ExZpX6ZfD8olVclBpsfxiqlf8cSgZZe+dMnaHc
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 19:39:34.4614
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c0ec54d-315a-4f28-68c3-08df0929eaae
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6730.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6461
+References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
+ <20260831110934.241898-2-a.s.protopopov@gmail.com> <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
+ <apbU8-fpioNIwUA8@mail.gmail.com> <CAHC9VhQbWPqEz5g1rVcMyJgrzzd4cQuwi7cddgJQK1H3ugMz7A@mail.gmail.com>
+ <aphBNqQK0JeVy5Sm@mail.gmail.com>
+In-Reply-To: <aphBNqQK0JeVy5Sm@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Wed, 2 Sep 2026 15:43:04 -0400
+X-Gm-Features: AcwNN1XYNCXydNpNM6ZU2Rnek6l8sLmm3paMheXeGevlLusJ85KkWm2it_ZUJS0
+Message-ID: <CAHC9VhREB2krVp9XkV6Psp4PWhYT14281+1TQUZL7o+GTo1cXQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 1/7] bpf: Allow BPF LSM programs to attach to
+ more hooks
+To: Anton Protopopov <a.s.protopopov@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+	Matt Bobrowski <matt@bobrowski.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Christian Brauner <brauner@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Lama Kayal <lkayal@nvidia.com>
+On Wed, Sep 2, 2026 at 11:20=E2=80=AFAM Anton Protopopov
+<a.s.protopopov@gmail.com> wrote:
+> On 26/09/01 06:15PM, Paul Moore wrote:
 
-In mlx5_esw_vport_disable(), move esw_apply_vport_rx_mode() ahead
-of esw_vport_change_handle_locked() so vport->allmulti_rule is
-NULL before the change handler observes it.
+...
 
-During FW-fatal recovery the disable runs while dev->state ==
-INTERNAL_ERROR. The promisc query inside esw_update_vport_rx_mode()
-fails and returns early, leaving vport->allmulti_rule intact, so
-esw_update_vport_mc_promisc() runs and adds MLX5_ACTION_ADD entries
-to vport->mc_list whose flow rules are then installed in the FDB
-by esw_add_mc_addr(). esw_destroy_legacy_table() tears down the
-FDB with those refs still held, corrupting the sub-tree and
-leaving dangling flow_rule pointers in vport->mc_list.
+> > The core issue has little to do with BPF, it has everything to do with
+> > in-tree vs out-of-tree code.  The BPF LSM is explicitly mentioned as a
+> > "pass through" because some have argued that the BPF LSM is in-tree,
+> > and while the basic BPF enablement is in-tree, the actual LSM code
+> > that is executed has thus far always been out-of-tree.
+>
+> Yes, the actual code isn't, but all the building blocks are.
+> The BPF is just a sophisticated policy language, in which,
+> given, say, ethtool hooks are present, one can say "block
+> all ethtool ETHTOOL_TEST_CMD calls for the XXX driver" or so.
+>
+> Is there any way into turning BPF first-class citizen from LSMs
+> point of view?
 
-Two-stage failure on `echo 1 > /sys/bus/pci/devices/<bdf>/reset`:
+As I said earlier, the important part is in-tree vs out-of-tree code.
+We are not going to add new LSM hooks only for code that lives outside
+the kernel sources, regardless of whether that code is written in C,
+Rust, or BPF.
 
-  refcount_t: underflow; use-after-free.
-   tree_put_node+0xef/0x110 [mlx5_core]
-   clean_tree+0x44/0xd0 [mlx5_core] (x5)
-   mlx5_fs_core_cleanup+0x57/0x1c0 [mlx5_core]
-   mlx5_unload+0x65/0xd0 [mlx5_core]
-   ... mlx5_health_try_recover
-
-  BUG: unable to handle page fault for address: 0000000003000055
-   down_write+0x1c/0x60
-   mlx5_del_flow_rules+0x33/0x1f0 [mlx5_core]
-   esw_del_mc_addr+0x7b/0x170 [mlx5_core]
-   esw_apply_vport_addr_list+0x56/0xf0 [mlx5_core]
-   esw_vport_change_handle_locked+0x28b/0x310 [mlx5_core]
-   mlx5_esw_vport_enable+0x270/0x4a0 [mlx5_core]
-   ... mlx5_load ... mlx5_health_try_recover
-
-esw_apply_vport_rx_mode(false, false) clears vport->allmulti_rule
-via its local state machine even when the FW del fails. With the
-rule NULL the !IS_ERR_OR_NULL(allmulti_rule) gate in the change
-handler closes, no rules are installed during disable, and the
-reload starts with a clean mc_list.
-
-Fixes: 922f56e9a795 ("net/mlx5: Fix steering rules cleanup")
-Signed-off-by: Lama Kayal <lkayal@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index b6e2c153b4f7..4c7fa4a52b0e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1040,13 +1040,19 @@ void mlx5_esw_vport_disable(struct mlx5_eswitch *esw, struct mlx5_vport *vport)
- 	    (vport->info.ipsec_crypto_enabled || vport->info.ipsec_packet_enabled))
- 		esw->enabled_ipsec_vf_count--;
- 
-+	/* Clear rx-mode before esw_vport_change_handle_locked(): on
-+	 * MLX5_VPORT_PROMISC_CHANGE it calls esw_update_vport_mc_promisc()
-+	 * when vport->allmulti_rule is set, repopulating mc_list with FDB
-+	 * rules that dangle once the FDB is destroyed. NULL allmulti_rule
-+	 * here skips that path.
-+	 */
-+	esw_apply_vport_rx_mode(esw, vport, false, false);
- 	/* We don't assume VFs will cleanup after themselves.
- 	 * Calling vport change handler while vport is disabled will cleanup
- 	 * the vport resources.
- 	 */
- 	esw_vport_change_handle_locked(vport);
- 	vport->enabled_events = 0;
--	esw_apply_vport_rx_mode(esw, vport, false, false);
- 	esw_vport_cleanup(esw, vport);
- 	esw->enabled_vports--;
- 
--- 
-2.44.0
-
+--=20
+paul-moore.com
