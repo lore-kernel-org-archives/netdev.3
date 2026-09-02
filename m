@@ -1,190 +1,213 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F154A8FED
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 15:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433C34A9D54
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 16:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788364722; cv=none; b=sNh03Yl+Aeb7A+Ns8/DobfQ1+4l0HGG3wN+Sz5509F7N+0NjpvVumEVpBZQBJ0JmHEB00gURuXQKax2eNKVxzgI9oW08MGYcIqQcbG1bXe1aadufpnR0IrBd/Xc99b1Y2J3A2VeAquD0qR9T/Pjxjd+2A2Zy41tgzGWZe2oTmZg=
+	t=1788364821; cv=none; b=bgdn1ENyYl+Xk7IdEcTCGKJ2yqy+Pg2GWx3dzb287muf3cz172xYB+/X//2lh2QTA/YG9xRX08BuNduZuqGKJMnxrQsHgW+U3sX/k0/WJJHT1X+frPVLONLmIQmdOIWa8BeT6q/08zJsbMpLl2jPxeERqiYXQU8dI8yIqqBh5x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788364722; c=relaxed/simple;
-	bh=lwm6jSNbiO6LZzYLxybW8K+lAptA9OdyeL+wXz5Haqc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cika0E8XxKvuBABHA2fF8rHtDRZzY+20xwgCFQ7kZ2VfRdy/vvejpv19iAL8Cq3gL/JALfvsd4LDAnxW1ViZs7ltBDE/WEc+ZkTpPjTZ3OzD1LAFIsefbEZVb7VHgoM3nWxjvUCNAjCmJSyKwX4HUGZflkuAQoSkdvXVM7icZso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=f0o06vvW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TxqY5ztF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788364821; c=relaxed/simple;
+	bh=n/Zk7kfVfTs+vnFJat95rrNmdJq5Mr397u5VOT6F1zE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jrdY9l+uh0yvG9RzVmJ3KDavHU0oWefbo+hXas8ELm39kUaPbXOAYH9lX8e2zSYA7YlSCXQXmH0rFAr2k5QKpJ0YTPOgQ7m/jIBJHroabe6DZE8F2lmk2gVw7samiVRC6WW3tErnubPsnqc9Ko1wjV58oXo6aEyUJHUVSBevS4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ajou.ac.kr; spf=pass smtp.mailfrom=ajou.ac.kr; dkim=pass (1024-bit key) header.d=ajou.ac.kr header.i=@ajou.ac.kr header.b=mJfGrMVr; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ajou.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ajou.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="f0o06vvW";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TxqY5ztF"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682FYvmK3071057
-	for <netdev@vger.kernel.org>; Wed, 2 Sep 2026 15:58:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WT4vDkQPrtgRr5nF277OBdLIuA4Vcdh4zy8bVUfvfeE=; b=f0o06vvWiYYW4k0B
-	x8yxMht7qboOuruBR1QI8ZqNZ89BhK2FgeLQWItmX/mvkfR3Ph6zKVc5wmzZafb7
-	tejjztWgvzjFzkxrQs2UlCg2dINhF/HAsLAOP6lL6BtqUQxQ+O23Ulskx47I67KP
-	x4y+Cqh/rdhd3CvwlkbvynmUFSoA7i/+4pUVs+QwXS7p2M6tYBIWBsn3dTrD1l0B
-	4jNMH4ZF02A/GZg1BL14C1ztUpW0TnE2/3GfmeasSp3iG5i4hHpX5Nb7gI1Ei2s9
-	Bv/sNn7fK/DSGvhtYFMZnEB2D5WADtBGSAlWsbiUolgtTaSmOaoMpy/IGSftyqKW
-	rzq1iw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4genrnga3b-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 15:58:40 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-930bd2bfc45so36714585a.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 08:58:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ajou.ac.kr header.i=@ajou.ac.kr header.b="mJfGrMVr"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d58efc7356so16141545ad.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 09:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788364719; x=1788969519; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WT4vDkQPrtgRr5nF277OBdLIuA4Vcdh4zy8bVUfvfeE=;
-        b=TxqY5ztFr0nbrIJvJGnjP22/xTXBpB8XkI0pbcxcw6gqHlgQ0GI41OSc7eXo+cS0gB
-         tWMToahKLND4a+m8Kk6HbDJhBNLNWL0IsUOhvmiI+zMhGJeepgpYdMGj02P0jvytkAuQ
-         HV/NwUXHq8j8CjF3NQeqqCeV9nFDvfTgSx7N6qHP+CoVsn4sL10rVXaSsVQa0PbwJP57
-         T2eiyLx3No5zzrodj6uA+L9srRfitR4mjM8sICw9Elx2Nacnd0S52pkx4g3qehEByzcS
-         DvLprJpXG5A02J/aI/TZTioCXQBi+9pTyDnlP3H/fqxr4XJSN75dwvLrmoFpen3o5TOl
-         kogg==
+        d=ajou.ac.kr; s=google; t=1788364819; x=1788969619; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aAh7tWHEmqOf5EXSkkVLuXbK+rgxGiOqwP75KDeQuy8=;
+        b=mJfGrMVrQbinahOPQ4qmoOCE+6QErHlP2VYxgpsTa6ao1gD4iJfPFfcxPGZCb2bqYZ
+         FeO32tZDwJ4GmhlIVZNRU4uJxN/iFcboAjEW32NKrkSCcev8XgOfXvVb1eB/flb8o9Q7
+         MYnAcsTD6/zlEMleZcZ4svonHth9Dcmq9TXXc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788364719; x=1788969519;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788364819; x=1788969619;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WT4vDkQPrtgRr5nF277OBdLIuA4Vcdh4zy8bVUfvfeE=;
-        b=L1DNC2p7BrLcoklzfxUK0u0WKfHNsrtT7thBqD41uBj4MEwfMRykhRC0rOb399M0ar
-         3Rvm3wPSL8vs32DTyZlQQoZ8Zq0siw280tF80/svZN3m5ZYigTYOsseKkwOEYrFxbeT6
-         YjuP9JXGCM/eBpTy7CYQZrymMYpttsgaSO4ruuPQoRIrbmCyTHVBUxkSl2AzDY5qqqnj
-         8BFztjzLO3NnbFPlGBU5zUi6FBqvo55GVdOIM4ZPm/weU74ZT8drnBtIzihka12ekG6T
-         BISVYhdeOYiEl+jq1loEKBxW8GhoaelxWnxhacpl1eA8cgb61MsAVW20upG+V8owSWpp
-         Ky0A==
-X-Forwarded-Encrypted: i=1; AHgh+RrtbWaeBN5BbKmrEzi3y5PGALqkdB5GYfq5DzIkqvo+zUqnFTAEWizKaV4XkEq5JUkKJ3Dyc8c=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXIS3PeqsMcPcuv1DF/8yLEVKp9e04XzJ0NdRj3D+JrV/7P7/O
-	y0wIZORxCEjLp0WqPhe6fZzpumbifpHGl0Balsl2uSt+z/iaAptLFzGPVLLXoSZBggyx/mS+rMX
-	9HRTRplgT8nz1boLnJNR1vh2mfSjM88zTwCCHDUGTk96lvBbxQiDvM39sQR8=
-X-Gm-Gg: AR+sD11QE+T6Jea7Z0DI23FFabQmMQuzBP020D2+7XbMkVbaC0ePLrW2gWxAIZqE8Oy
-	RQjNREaTL4QGcF6qkhCuinHKCjCvoEdZDE3PIlgxqH6R0d7nPfOqXdPobpZM1AdWPBPLZdfTZpk
-	9/6XfLG6mIBdy9/gy7RIfXqMd6hrH9n8ncJqUlWwjyKidqSCHZQOHlxiulD4KChBsMVHKZWpLSy
-	KbPmkgSRn/4NGN8pTzesS7JLpK8h6rlWGzReOu+FAg1TfbcMEHLeRP4rv2tWlAScmaaC5QA4Ilz
-	Zk5POloHRx/6EfzD32MRX7EVqyjYNL6UPm1KawOMcNbu5sscXOPFbcN4JNh3B5Y4C2SK7cgrDc4
-	1pbI2shKeZHVFtekxmCLXag==
-X-Received: by 2002:a05:620a:1790:b0:939:2884:e11 with SMTP id af79cd13be357-9396108b065mr451170785a.5.1788364719173;
-        Wed, 02 Sep 2026 08:58:39 -0700 (PDT)
-X-Received: by 2002:a05:620a:1790:b0:939:2884:e11 with SMTP id af79cd13be357-9396108b065mr451116785a.5.1788364713865;
-        Wed, 02 Sep 2026 08:58:33 -0700 (PDT)
-Received: from [192.168.202.12] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25d044d776sm159586866b.62.2026.09.02.08.58.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 08:58:33 -0700 (PDT)
-Message-ID: <245eb766-e35b-4f73-a252-69eda60011a2@oss.qualcomm.com>
-Date: Wed, 2 Sep 2026 17:58:30 +0200
+        bh=aAh7tWHEmqOf5EXSkkVLuXbK+rgxGiOqwP75KDeQuy8=;
+        b=HZ4L8DWse00CMqx9u5ZSo7302vEu2Frz8S1W/nwrNhbnm5tS0NToNqaki5GLX4d21C
+         4TZpatRuwC1tdyj7tLmZAd8Vr2Fo2oGqOXVNO37tNq+MVrksq04UChJMVNGkiGAkdxn4
+         8t6qhTbo4eJc5mYlML8Yl7JQw0ST79I0gjVgo8yG7+dbSQ2MAmPfE4TizD0/dh/sYgMt
+         r5iSR1Ta9XoRIJ5W2KFWElSNnVLEnxMAyx9j5z8qvQJFrYYFg4raHF9AN+TwJwWEFfha
+         IvoK7aZXJNajchA4O3QZPGqM24/4SP/7vzg9Pjf+OMMjbvz621E9SwSgpC2sIuJM3FLn
+         yOeg==
+X-Forwarded-Encrypted: i=1; AKwUvBx4KtqVIxl91qkoKN6E2/OsSEdfP9c0idQhPfnRrHXInUtr7wxLXYOfojApNTh5DO+3lP3djAs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kJU+1bNZivWlUnf8snCLdKPWb1cJko3AuA/NOEVvKa47J2T0P1
+	rTeMbqKe0ag3v4ckaR44pLpJF4l3MHWh/GYa2zxrxfFRmLDbli364GPXJsgxw3XUAmE=
+X-Gm-Gg: AYBFou1J9JrLmP9oCWZ4q56v/+cG2zEXjN6em3v4J2Na580+QS1I+rTVpbR3OWiTMgU
+	6/XlbFNw2G+HE+SzCqWZQ5Mrf6/D4f1SGAdhYRWSFrpwkfgnYd90RiD8Gc5mPGD65QyWdnbNK98
+	evcGmhBzv+8QmnSw3+fZFvYs9F2/TwewD+wTTUNfT9NKyzGj1/pM2S0nfqSTbf2FmjSvxhuxg3Y
+	OOkcxZL/AsTzTDXhJJPrC14A1LhdazaCzGOX+DDi0pRh1eqw/PaZPEBGufMyCziaoo2q6Nbdg7t
+	cUCG0+cStAul0VEEUMqngm/PKbV2BnsUefr1fiKHYg+GYOZAJrn1iZs1ohmDq8rulfW/O0xFluO
+	NOR8jOV9P+xDkOiNOvi8d43WrU3Eb/StAWfDdcMN+gRqrhkN5olRBYxQBbtIPcCmQP1QFVmXF+B
+	xkQjse78qX9zHGYq/sbXxxLeoB+PYqiYOLs0BdnHV8yz2PqjlDg7ujUADaD74tE5/yoUksKfQhy
+	zREk0o14rXxEyGBb5G4yUCZP9b6xQEjr8aUcbRns2k=
+X-Received: by 2002:a17:902:f78c:b0:2c9:df1b:e948 with SMTP id d9443c01a7336-2daec5dfa20mr91006295ad.4.1788364813891;
+        Wed, 02 Sep 2026 09:00:13 -0700 (PDT)
+Received: from DESKTOP-2P4OM44.localdomain ([175.195.197.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd35dac1sm15536475ad.16.2026.09.02.09.00.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 09:00:13 -0700 (PDT)
+From: Seungwon Bae <qotmddnjs@ajou.ac.kr>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	shuah@kernel.org
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Seungwon Bae <qotmddnjs@ajou.ac.kr>
+Subject: [PATCH net v3] vxlan: reject dynamic fdb entries that reference a nexthop id
+Date: Thu,  3 Sep 2026 00:59:56 +0900
+Message-ID: <20260902155956.296699-1-qotmddnjs@ajou.ac.kr>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] arm64: dts: qcom: lemans: Add support for TSCSS node
-To: Imran Shaik <imran.shaik@oss.qualcomm.com>, Rob Herring
- <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Taniya Das <taniya.das@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com>
- <20260727-tscss-v1-5-beed14e72510@oss.qualcomm.com>
- <a93f11c5-d0cf-4acd-a959-53fecc996e5f@oss.qualcomm.com>
- <9d1c5451-f665-40d1-866d-51a53fba27f6@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <9d1c5451-f665-40d1-866d-51a53fba27f6@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: VVEfRnIfxJD0Tq2eBBpApfsTCM2fsSJx
-X-Proofpoint-ORIG-GUID: VVEfRnIfxJD0Tq2eBBpApfsTCM2fsSJx
-X-Authority-Analysis: v=2.4 cv=YKuvDxGx c=1 sm=1 tr=0 ts=6a9847b0 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=EUspDBNiAAAA:8 a=hKkCCEgSrQTGbmuQoJcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDE0MSBTYWx0ZWRfX1gUPgBfJEDUg
- wULmB9NGGaRmItg6PWJdt+1fRH8tWoQRs5C4Y+6WdLA66npG+TpyIxQccSOV2XaefC0DUPKafZH
- Loxj2hBT8IChP/NgtMQhVl8inOu71uBd4vOIGzxLrYxEF7vmh0cE/OSP/CZsvFNFdT/uy2htMYg
- IGyz7NA+IpCVlGkbM7LvbkK3WP6ydQENv7hHSyO9wp5Tet3jH55q94AfH+yDYkeJO6Edap2f7iE
- 6/3EU+1ap6l+Pqo8ijiepXCSIQBtNpUvRoG5KzFw2NlR57FpXF62iNkUh/KfaLCf020mubLlrqG
- AzGmKV+o7fu/YHGZiM/6hHz0iKAHW1jsWfYuc847Qdz6lTZ7bnBuIPYxWG9zcmvopzVIUjaSMxb
- KFmFKIZ4uMek25KlywBOiyoa0MfW8LY19iykuHlJhok/xZPRekbwkUFI98q7KzpUCVpzKuB4V0u
- 7VOZYawzQ0pJvZRouaA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDE0MSBTYWx0ZWRfX0LiEyBzwRRPn
- wbgTaeGM92j1RhC7W/PV8ddF//Bd7EjjAr2Hc4vBWCmetar/pA5IO3I+fJpr3HQioY6OB8irm04
- vTSOQFqxRNxtP2NFMHG3elg8cKDZFL4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_04,2026-09-01_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 adultscore=0 impostorscore=0 malwarescore=0
- phishscore=0 clxscore=1011 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609020141
 
-On 9/1/26 8:41 AM, Imran Shaik wrote:
-> 
-> 
-> On 27-07-2026 08:14 pm, Konrad Dybcio wrote:
->> On 7/27/26 4:11 PM, Imran Shaik wrote:
->>> Add Timestamp Counter Subsystem (TSCSS) node support on Qualcomm Lemans
->>> SoCs.
->>>
->>> Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
->>> ---
->>>   arch/arm64/boot/dts/qcom/lemans.dtsi | 11 +++++++++++
->>>   1 file changed, 11 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
->>> index 3b0539e27b5192582e0bc9ea248f1c0382e05030..e225292a1e41a5a313aca188ca04bb12474995e8 100644
->>> --- a/arch/arm64/boot/dts/qcom/lemans.dtsi
->>> +++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
->>> @@ -3023,6 +3023,17 @@ pcie1_phy: phy@1c14000 {
->>>               status = "disabled";
->>>           };
->>>   +        tscss@1c80000 {
->>> +            compatible = "qcom,lemans-tscss";
->>> +            reg = <0x0 0x01c80000 0x0 0x2000>;
->>> +            reg-names = "tsc";
->>> +            clocks = <&gcc GCC_TSCSS_AHB_CLK>,
->>> +                 <&gcc GCC_TSCSS_GLOBAL_CNTR_CLK>;
->>> +            clock-names = "ahb", "cntr";
->>> +            assigned-clocks = <&gcc GCC_TSCSS_GLOBAL_CNTR_CLK>;
->>> +            assigned-clock-rates = <15625000>;
->>
->> I'm guessing this will only ever require a single rate - do we
->> need power-domains pointing to one of the RPMHPDs and a
->> required-opps reference to match?
->>
-> 
-> The power-domains/required-opps are not really required here, as this
-> clock's rate is at the lowest corner on the CX rail, which is always
-> kept ON.
+The commit cited in the Fixes tag allowed VXLAN FDB entries to point to
+FDB nexthops so that overlay traffic could be load balanced across
+multiple VTEPs. Such entries can only be configured from user space,
+cannot be learned and cannot roam. They only make sense with a user space
+control plane such as E-VPN where data plane learning is disabled.
 
-The clock plan calls for SVS_L1, the RPMHPD node also defines SVS,
-LOW_SVS and MIN_SVS below it
+Despite that, the VXLAN driver does not currently prevent such entries
+from being configured with the "dynamic" flag. The per-nexthop FDB list
+is only protected by the per-device hash lock, which is not sufficient
+when two VXLAN devices point to the same FDB nexthop and therefore share
+the list. Aging runs in softirq context without RTNL, so an entry deleted
+by one device can race with an addition or deletion from the other,
+leading to list corruption:
 
-Konrad
+  list_del corruption. next->prev should be ffff8881069d9548, but was
+  dead000000000122. (next=ffff8881069d9448)
+  WARNING: CPU: 0 PID: 90 at lib/list_debug.c:65
+  __list_del_entry_valid_or_report+0x1aa/0x210
+  ...
+   vxlan_fdb_destroy+0x5b8/0xad0
+   vxlan_cleanup+0x328/0x450
+   call_timer_fn+0x2a/0x1c0
+   run_timer_softirq+0x18c/0x210
+  BUG: KASAN: slab-use-after-free in vxlan_fdb_destroy
+
+Fix this by rejecting the bogus configuration of dynamic FDB entries that
+point to FDB nexthops, both when created and when an existing entry is
+updated. As such, the per-nexthop FDB list is only ever mutated under the
+RTNL lock. Add test cases to make sure that this does not regress in the
+future.
+
+Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Seungwon Bae <qotmddnjs@ajou.ac.kr>
+---
+Found with AI assistance; treated as public per
+Documentation/process/security-bugs.rst. A reproducer is available
+privately on request.
+
+Changes in v3:
+- Reword the commit message to explain why rejecting dynamic nexthop
+  FDB entries is safe (per Ido). No code change from v2.
+Changes in v2:
+- Reject making a nexthop fdb dynamic (on add and update) instead of
+  locking nh->fdb_list; a nexthop fdb cannot roam so it must not age,
+  leaving nh->fdb_list mutated under RTNL only.
+- Add fib_nexthops.sh selftest coverage; add Fixes tag.
+v1: https://lore.kernel.org/netdev/20260901050253.47197-1-qotmddnjs@ajou.ac.kr/
+v2: https://lore.kernel.org/netdev/20260901120740.105374-1-qotmddnjs@ajou.ac.kr/
+ drivers/net/vxlan/vxlan_core.c              | 11 ++++++++
+ tools/testing/selftests/net/fib_nexthops.sh | 28 +++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
+
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index ac88d1c85..93bf7c535 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -996,6 +996,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (rcu_access_pointer(f->nh) &&
++	    !(state & (NUD_PERMANENT | NUD_NOARP))) {
++		NL_SET_ERR_MSG(extack, "Cannot make a nexthop fdb dynamic");
++		return -EOPNOTSUPP;
++	}
++
+ 	/* Do not allow an externally learned entry to take over an entry added
+ 	 * by the user.
+ 	 */
+@@ -1257,6 +1263,11 @@ static int vxlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
+ 	if (err)
+ 		return err;
+ 
++	if (nhid && !(ndm->ndm_state & (NUD_PERMANENT | NUD_NOARP))) {
++		NL_SET_ERR_MSG(extack, "A nexthop fdb cannot be dynamic");
++		return -EINVAL;
++	}
++
+ 	if (vxlan->default_dst.remote_ip.sa.sa_family != ip.sa.sa_family)
+ 		return -EAFNOSUPPORT;
+ 
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index 3d3471267..431d7bed7 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -533,6 +533,20 @@ ipv6_fdb_grp_fcnal()
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 61 self"
+ 	log_test $? 255 "Fdb mac add with nexthop"
+ 
++	# fdb entries with a nexthop group cannot be aged out
++	run_cmd "$BRIDGE fdb add 02:02:00:00:00:15 dev vx10 nhid 102 self static"
++	log_test $? 0 "Fdb mac add with nexthop group and static state"
++
++	run_cmd "$BRIDGE fdb add 02:02:00:00:00:16 dev vx10 nhid 102 self dynamic"
++	log_test $? 255 "Fdb mac add with nexthop group and dynamic state"
++
++	run_cmd "$BRIDGE fdb add 02:02:00:00:00:17 dev vx10 nhid 102 self"
++	run_cmd "$BRIDGE fdb replace 02:02:00:00:00:17 dev vx10 dst 2001:db8:91::11 self dynamic"
++	log_test $? 255 "Fdb mac replace with nexthop group and dynamic state"
++
++	run_cmd "$BRIDGE fdb append 02:02:00:00:00:17 dev vx10 dst 2001:db8:91::11 self dynamic"
++	log_test $? 255 "Fdb mac append with nexthop group and dynamic state"
++
+ 	run_cmd "$IP -6 ro add 2001:db8:101::1/128 nhid 66"
+ 	log_test $? 2 "Route add with fdb nexthop"
+ 
+@@ -669,6 +683,20 @@ ipv4_fdb_grp_fcnal()
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
+ 	log_test $? 255 "Fdb mac add with nexthop"
+ 
++	# fdb entries with a nexthop group cannot be aged out
++	run_cmd "$BRIDGE fdb add 02:02:00:00:00:15 dev vx10 nhid 102 self static"
++	log_test $? 0 "Fdb mac add with nexthop group and static state"
++
++	run_cmd "$BRIDGE fdb add 02:02:00:00:00:16 dev vx10 nhid 102 self dynamic"
++	log_test $? 255 "Fdb mac add with nexthop group and dynamic state"
++
++	run_cmd "$BRIDGE fdb add 02:02:00:00:00:17 dev vx10 nhid 102 self"
++	run_cmd "$BRIDGE fdb replace 02:02:00:00:00:17 dev vx10 dst 10.0.0.3 self dynamic"
++	log_test $? 255 "Fdb mac replace with nexthop group and dynamic state"
++
++	run_cmd "$BRIDGE fdb append 02:02:00:00:00:17 dev vx10 dst 10.0.0.3 self dynamic"
++	log_test $? 255 "Fdb mac append with nexthop group and dynamic state"
++
+ 	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
+ 	log_test $? 2 "Route add with fdb nexthop"
+ 
+-- 
+2.43.0
+
