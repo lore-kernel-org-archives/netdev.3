@@ -1,177 +1,281 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011051.outbound.protection.outlook.com [52.101.65.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAA23164C5
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 02:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788315172; cv=fail; b=CedZyx+db1euRuK4WSLYZUyTxInLOk18F+CijIf94RKfecFM6d5x+BxlfNkt8COu7VX0mXJwYi90Y5PPgzePGn+2e9ZLXQi6OW7GbQtZJGexbl3y8qS9giTyjkUQAQqLrx20pGCOptdzy5y4EMogLwGDg6nNyYddr7lL2RYKxVY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788315172; c=relaxed/simple;
-	bh=eEC/jJQQtO6VC/nMi5N2tq7b8zrx+0l952gkdPNlb34=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=V9LREm/3lfzT8CShT4ZVQJouvWHeyE/lwKY/sD6F+1eAkaQ3TTc6NkUWtJASDODSdUs1qLz2U9h80nOXP/0dSXb+tWOc5wfDujbxhYswUdIXNVHIaEosaqy0re+axiR9AurQCzE998d8KReKsuSmi/lisAj1kQiCxoJU+HQNmYk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=PHKq20B6; arc=fail smtp.client-ip=52.101.65.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB6927473;
+	Wed,  2 Sep 2026 02:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788316447; cv=none; b=S8IDrulxhuTZ1SowmCmUDuUB6FPbyAg9QNQW5AFs4GMgmHndanED7VFYEVuRYu6m3GZVfOn+1sBeZNipoPdb168Go6bB5HKIx5sUR3GplFAgDQLaxbQ0Tb19S/w86rKNf1p6qowXhJ5eJIr1CRMH1OewOa5+i7GAQvWDth9d8Xc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788316447; c=relaxed/simple;
+	bh=JUYmhXFP2a2YF0aKT7MyPblCcJHehWaM3wUVtQBEyTk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jWliiodn+G/KuUawOWfFhd+0Vo/KRqQyzuwWNde3GByiWtrTHouz8Hc7rRXBVwwbhUTQLjZmfr43unY7qm/da5s+45mOQ7Cq8RtEacsnHQIlUyeqPYHdRxaV0pfcbxVWxSqBVbH5x+YO5DSXXiGnvIr75L5xROveN/Lqu4nQsNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3OPvIS5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="PHKq20B6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uFZ05uDv3SrLy0pap/fIW1cPb3mKtlmqZWtPf6+BdNTcRh6XiKzqNZakt0dw+UQ2NiTwu3z8Uxv3bnDOin3bEhyuZqh1rckDiRTnhzrhPr/38cqgyoi+djYWdH43MMQcgBsBLnSclfGAD/0mQbbx/Hlw3VuZ75xytmxqVJHBKffb4sSkR5y06mIH1RqskEkRnBRjrN55C7Ws4i2aTNUHNyQrDTlua9Iy4+n1/o4GPXxFZLcOpIYa6jdjLC+0IYAzwytO/onS0GS2E2y0PgKbzBldoaqDAxj/leZhyGdXLx/ACLgi85Qs5Dxa5AdwP4ptZfQLc+WJk1PhK8KgWSVLhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eEC/jJQQtO6VC/nMi5N2tq7b8zrx+0l952gkdPNlb34=;
- b=wKHSejU8XIqjLm95LjXuyFfrJk+pgqjQ110hdVl95qIEs7GASqTzi76SHIxLinEG7nIVKc48zJcGwdlDFHyZSRqp6Q4ypji+MIZc+zuZ4NFu2Y778KGHBtNVc0InzVWNSI+/9LL8rXIOphZcv8jOtGHEfIR5kZQFjJRd9CNptmfgXcCrtJm8psxsVcBqMsSEUuyxL34VZ99Lot9tQY+uaj01Krndod4bAtcGtZYxY1IZFv4d9UEbGutQWI8TTEtCZwreenf3lD0bJxiVAriMmAD2jjhH9s8pRadL3vNSP/uO9Zn6/JFIsqYBxFRoyz/RVisqOboNmI+EXE7Y42q/qg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eEC/jJQQtO6VC/nMi5N2tq7b8zrx+0l952gkdPNlb34=;
- b=PHKq20B6h4ro0UVsx219+nP9XTyNkY/yYdQFpnuZkTASo7TZfEhBMRG1xAnAukI20SkC5PNJ9qvdgt9re4Xw4yu3i6cY5jHsz5kJXQyamVv634FfVgDmjEPjPhc3PHmgWKxEBg0cSO0vRiQplDC55oaaxIne7qS9ZNfz3HbeK/Z1bD6NlsUV1SeHIMr1UNWzovXL2IMFwuHbzjfd0772jyWnskkqhbimOD6r2BWOVH83B4KfgbdA7wLrBvOuwbVAZBEfdX89pxfQir8+tdkzRQT2a13U8MQ45P3CbwfsCc474Wds0/6USCagmMMPvNoLrgzcf6S30cFdl3SdatX3RA==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by VI2PR04MB10113.eurprd04.prod.outlook.com
- (2603:10a6:800:230::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
- 2026 02:12:42 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
- 02:12:42 +0000
-From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-CC: "Frank.Li@kernel.org" <Frank.Li@kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, Linux Kernel Network Developers
-	<netdev@vger.kernel.org>
-Subject: RE: [PATCH v3 net-next 7/8] net: dsa: netc: add PTP two-step
- timestamping support
-Thread-Topic: [PATCH v3 net-next 7/8] net: dsa: netc: add PTP two-step
- timestamping support
-Thread-Index: AQHdOSGM+xUfu45krU+0s+UyHQnnrLa5YzgAgAErk2A=
-Date: Wed, 2 Sep 2026 02:12:41 +0000
-Message-ID:
- <GV2PR04MB117394B3CEEB1CA71CAC28AFC88B72@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260831082335.1184605-1-wei.fang@oss.nxp.com>
- <20260831082335.1184605-8-wei.fang@oss.nxp.com>
- <20260901082026.7F3911F00A3E@smtp.kernel.org>
-In-Reply-To: <20260901082026.7F3911F00A3E@smtp.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|VI2PR04MB10113:EE_
-x-ms-office365-filtering-correlation-id: 0d237996-a0ff-4491-2297-08df0897ab7c
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|19092799006|23010399003|38070700021|3023799007|10067099003|56012099006|5023799004|4143699003|11063799006|6133799003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- Aokb6M95zBVJsk1I40xSDWbbZIFoH4hrbO+0HoZgsrOwuPnqD7Tq8Se2a8bDJWLlj9f0jFIAm0sYZKgN4O5xU1ArUSmHlpPnwGK0ZhDAwxvffrMODnyERvlH197hLhB4y1Mtz6uPaKP8X96919bg0GuCO9ebN1HoWPj7W+7CTLZWrSck/xr6nZ/sOi7CmnLHXj/ha5zGBEpk1mrKbx7+PXheBB6xOq7QOijnNtXUGp7Smfs27+gtq84KARvNT5KiFlVP7c3YkQQgeli2OCHnhNaLnrdwYy9/9z46zbMqGYA/HkDP0JxenCQq6ea8DZTSBEGM8/dgVtQZTyeuajeeeUW2dqed20uu1O5U9Nvw8n5RzNVnlkC5e255QE5Tyv7H5rR/G0xDSP9pazS25EcbdW4s0GlCpnrWQABKAQFxga6FeggMG8CyQpKQdUOa76uwKPxplTJ479PyyMVhrJ6UYe/xGNy1PEQiLZdAL2XRyTCr7vC7+aPZ0q24Uj3alKz9/y2HOeUhlceq6pyLCcLYIKeV5PP4ZcscTh1P5iwdJh2RHb4KoDjZuzGuZYz9CUtfhZHb5m3Xov74/6s3m0rjePTxR+WDL1fHYH2yaA65DaXr+CRUJ+4/1xPFvE9xFNpwmhJiYjcsL4H6Zi5FeqEe7K9gD9i13wYQmk1tz7ww4JrH1O/+ilFs/y828LnA17F0uM6Vf5Hy6Z21QD9brcHG0ijV7xA/5wx8OuMEkzlOBCY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(19092799006)(23010399003)(38070700021)(3023799007)(10067099003)(56012099006)(5023799004)(4143699003)(11063799006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?SDFuOVFCbFhkY3E0TGttK3d5NEptNmRIWWRaT2lKNVpCTzBGVCt1TzdTNHR4?=
- =?utf-8?B?ano2ZGFvYUVhVW50ZWI3TUZwa0tTeU45cXdFS3AxT21SejhvQ0VBNm85Vkc2?=
- =?utf-8?B?bndVbXpqbnJrSUNqWFJxN2dXM3ZGTUJYSE5JaVZoMmZRME1pNVpTNnVzMDVh?=
- =?utf-8?B?dFp0VzZKckdmemlSaDdpZ1ZFdTFWeDd2aHdQODNRMzNvS2hhVFlMT3B3Qlor?=
- =?utf-8?B?dkk1UGpIaUlUM1E4RXUrQW5jbDJrMUJkQ2tOb0NWby9vT2ErWHBtWnh0bm1F?=
- =?utf-8?B?YW5zdElsbFZNRExVcVNFeWdSZ3grMEFzUnF1K2VFOThuMzkwY0pxWWVySlJL?=
- =?utf-8?B?Mm0wSzZ5M2ZGdEEzSWlSN0tFd3dQYW53enh1eENROXRDVEVlUnNSRGN0K3BQ?=
- =?utf-8?B?ZFV0RHFtQmVuR242ajhqbzJlZlJXa3EraTQ5MERTMmpwWUZ1VHVhMEliQ0tE?=
- =?utf-8?B?SVJ6eWI3QlRuUjRnZUovMDBSUlR2SlpHTDB4RSsyQmRRV3lQU2xQVjZYVTZK?=
- =?utf-8?B?d2Mxa1ZmU2ZTYW1FYXJpS0JMYkJpNkpDRG4wd3h0MEFrcnhlRVU0WklvcUJT?=
- =?utf-8?B?VkdxYmI2SUpsN1E3VHJXV3diL2p5SkZFMFpDQXRjaUt3L1NJdXd6djc0WTEz?=
- =?utf-8?B?WXZWYWRld3VKdVM0QkRLdVZyeVJETVMvRHBNMDNBeUpxUi9IWEhCRm16dU43?=
- =?utf-8?B?eVBmeC8vb01oN1lWcXBNeUx4UlpQVjJkdk5zM21TL3k4SlZJZHhaNkwwR0o2?=
- =?utf-8?B?L2J6WUhCeVpTU21RNTE3MnVGL0ZQeTdkdmpSUVBKaThwTWl0aGl5cmEwVkIv?=
- =?utf-8?B?MUhvTGdDYmNLei96Mll2QWYxRjB4M3JvSnRaNG9tTHVPM3V6SFg3NnVKWTlo?=
- =?utf-8?B?cjB6NnowOFVJSkp2UkJ3dTF0T3d0NXhYRFVGUjJPQjJCeFBNTnJsbEtuOE5o?=
- =?utf-8?B?Zm9meXZhcjBYY2s1RUhKdXJjZlNPTCthZkJrd2dYSFNNUEZtc0hKeGFLQjVw?=
- =?utf-8?B?UEZSYVhLMHVPemN6Z0dZSXpLV0lzd3BDQ3hQOW5HQmJVcFFIVis1NU9HdDMv?=
- =?utf-8?B?OHZZZ2hRdXdtUlV4SmxRdXJET2JlRndYMUZTVTlQa1ZhcnJzZnBEN2JjM2R2?=
- =?utf-8?B?WC9DQzNlSlB3Qk5ReEYyT0Q0V1B2cjhVT1d6MjNTR3hnMURUNkJSOEdRQ3V0?=
- =?utf-8?B?cU1CTzAvSTV2UlI0Sk9XQkYzMEZJY3JibkpGWlQ0N2dzMU1OSXE4cWVMTUN3?=
- =?utf-8?B?YWZnWVZjME8wcDE1dEYvTUM0MEpoNzAraXYwekNkM0lOekluYnpPSW1MTFpB?=
- =?utf-8?B?ZGpJWklJUHFNR2UrUEFNMCtQc0pBT01oZnhXL1RJRXl0RG1Nd25hMERMb2U2?=
- =?utf-8?B?dnZHT3ZQK0hKRUpUOFBhQXNpUDBQSDliZFN2UTBRKy9mbXVkK3BEbjcyT3Bo?=
- =?utf-8?B?ZjBqSkZERWxwdUR3TmtuYlNLdTBaalhMWHRTcjJwNlRGK2ZFc0gyMkNjUWRH?=
- =?utf-8?B?V1hIMlRTUWhxZEVBS2VwTFpEN2hCblQyYjN4aG5NTHNlNFA3QWhpVWNLZjJB?=
- =?utf-8?B?TThQb0RFV204ejFHK0Z0dXNldDRMVEQyangvQjhPSUpTN3d1M1VJeWJ3LzNK?=
- =?utf-8?B?eHZPYy9xTUszdUhHUkI2eFpQeFlpeFhRNmxmenJRVEVncTNSd2JjNGpIcjVS?=
- =?utf-8?B?UDcybGptZlhhaEhEWWVrVGRTeDB3M00xZGpFeEplTWRTSUNXMVhQcVUvUTdP?=
- =?utf-8?B?UnVkdFcyMDNBMEdRcEVXR0huUlUraU5wMC9xTDdDNzFjUzlFRHluQlZnZlQx?=
- =?utf-8?B?c0RBUEFWWXJ3MURxbksvT2RDckwvT3NGaHVuaHFwcit2R2M2YXlFTHVnUVJI?=
- =?utf-8?B?YW1ubEthdWQ4Z1BrUC8vaXpoeXBUN3RuUUtIYUVOOUxzNWhLeDNOVE9obWhG?=
- =?utf-8?B?M3NzamlIRUQ5eW1NYUh6V1hrOXlBMjIySkV6ekNYMnkrTyt6S0pIZ0NvK2J3?=
- =?utf-8?B?L2hsL3B4Q3JoK2FHVEhicDBqK3NST2d3dHhPOXcvZC9vQ0lsVTZHMVRWTXpW?=
- =?utf-8?B?RmdLbmo3clVhZ054THZsb3dLL0c2RHRXejllcWhtdnlibG1wOEYzL21aZUdt?=
- =?utf-8?B?T25vT2JRZGIvRWdYL01weG1ZQWpBVmpPQmhOQnNQbmp5bEhZL0ZwdXZhTWI3?=
- =?utf-8?B?NXhNM0dEUlNBRFN5Zk9ML1BGZXRDMkE2ekxwRk9IQ3oySWZxS25aYXFjRTNr?=
- =?utf-8?B?Ujdoek05eStjV1BlMnM4eXdqMzI5aG1tT3J1ci9YSlNBK3ZLYWxvUW1QTExM?=
- =?utf-8?Q?ICMlLX7US1KML5qSuo?=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3OPvIS5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D03A1F000E9;
+	Wed,  2 Sep 2026 02:34:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788316445;
+	bh=Dc77wljZJgDwExXbT/HbdCINRwERCtbm+9vwDrcagrw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=O3OPvIS5OUYk7DSuD2XymwXDwG8ScWkcePfMWhG1VsM/gCmD/cRkkdSah77tFfGRL
+	 +SIdmhUrNlwj5CBoNzdwconswFwjnweJtiRZKThtAvVziamtUdm/qwWx4g0jI5wUtl
+	 DQzdn7uQaHdGw+9RgDw5C7OhAZldR5hBTyxJ2zbpcekUN3EdzAKWCcjWVz+j7Q4yZN
+	 ta5OjIlrboTemdUPVMENnEKH9smm+4TuTih5kk6Irzn5EV8GGPMM07bo8p5Obq/PGb
+	 5KHnV9bRkGiMMAqi42S9lZWak2UjUOuZdKMJWMB5F46xHf6dczHTR+lL+UmVX300KX
+	 4kzHSuJM6ZCLA==
+Subject: Re: [net] net: macb: exclude software FCS from TX byte statistics
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
+ conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ david.laight.linux@gmail.com, linux-kernel@vger.kernel.org
+Date: Wed, 02 Sep 2026 02:34:04 +0000
+Message-ID: <178831644461.3394541.6866889296253430552@kernel.org>
+In-Reply-To: <20260831113128.1678674-1-nb@tipi-net.de>
+References: <20260831113128.1678674-1-nb@tipi-net.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d237996-a0ff-4491-2297-08df0897ab7c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2026 02:12:41.9619
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Te7jYfGNYocfr16oDBnGk9zTkXwFrqoheepC1cX4cMFlF3doc8i+LFapnjANKlCas+hWyQa4cgXTHH06/+7VaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10113
 
-PiA+ICtzdGF0aWMgdm9pZCBuZXRjX3R3b3N0ZXBfdHN0YW1wX3Byb2Nlc3Moc3RydWN0IG5ldGNf
-dGFnX3RoX3N1YnR5cGUyICp0YWcsDQo+ID4gKwkJCQkJc3RydWN0IHNrX2J1ZmYgKnNrYikNCj4g
-PiArew0KPiA+ICsJdTggdHNfcmVxX2lkID0gRklFTERfR0VUKE5FVENfVEFHX1RTX1JFUV9JRCwg
-dGFnLT5ocl90c3JlcV9pZCk7DQo+ID4gKwlzdHJ1Y3QgZHNhX3BvcnQgKmRwID0gZHNhX3VzZXJf
-dG9fcG9ydChza2ItPmRldik7DQo+ID4gKwl1NjQgdHMgPSBnZXRfdW5hbGlnbmVkX2JlNjQoJnRh
-Zy0+dGltZXN0YW1wKTsNCj4gPiArCXN0cnVjdCBuZXRjX3RhZ2dlcl9kYXRhICp0YWdnZXJfZGF0
-YTsNCj4gPiArCXN0cnVjdCBkc2Ffc3dpdGNoICpkcyA9IGRwLT5kczsNCj4gPiArDQo+ID4gKwl0
-YWdnZXJfZGF0YSA9IGRzLT50YWdnZXJfZGF0YTsNCj4gPiArCWlmICh1bmxpa2VseSghdGFnZ2Vy
-X2RhdGEtPnR3b3N0ZXBfdHN0YW1wX2hhbmRsZXIpKQ0KPiANCj4gW1NldmVyaXR5OiBIaWdoXQ0K
-PiBDYW4gdGFnZ2VyX2RhdGEgYmUgTlVMTCBoZXJlLCBsZWFkaW5nIHRvIGEga2VybmVsIHBhbmlj
-Pw0KPiANCj4gSW4gdGhlIERTQSB0ZWFyZG93biBzZXF1ZW5jZSAoZHNhX3RyZWVfdGVhcmRvd24o
-KSksDQo+IGRzYV9zd2l0Y2hfdGVhcmRvd25fdGFnX3Byb3RvY29sKCkgaXMgY2FsbGVkIGZpcnN0
-LCBpbnZva2luZw0KPiBuZXRjX2Rpc2Nvbm5lY3QoKSB3aGljaCBmcmVlcyBkcy0+dGFnZ2VyX2Rh
-dGEgYW5kIHNldHMgaXQgdG8gTlVMTC4NCj4gDQo+IEhvd2V2ZXIsIHRoZSBjb25kdWl0IGRldmlj
-ZSdzIHJ4X2hhbmRsZXIgaXMgbm90IHJlbW92ZWQgdW50aWwNCj4gZHNhX3RyZWVfdGVhcmRvd25f
-Y29uZHVpdHMoKSBpcyBjYWxsZWQgbGF0ZXIuIElmIGEgaGFyZHdhcmUtZ2VuZXJhdGVkIFRvX0hv
-c3QNCj4gc3VidHlwZSAyIHJlc3BvbnNlIGFycml2ZXMgaW4gdGhpcyB3aW5kb3csIHRoZSBjb25k
-dWl0J3MgcnhfaGFuZGxlciB3aWxsIHN0aWxsDQo+IGludm9rZSBuZXRjX3JjdigpLCBldmVudHVh
-bGx5IGNhbGxpbmcgbmV0Y190d29zdGVwX3RzdGFtcF9wcm9jZXNzKCkuDQo+IFRoaXMgd291bGQg
-cmVzdWx0IGluIGEgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlIHdoZW4NCj4gZXZhbHVhdGluZyAh
-dGFnZ2VyX2RhdGEtPnR3b3N0ZXBfdHN0YW1wX2hhbmRsZXIuDQo+IA0KPiBOb3RlIHRoYXQgYSBm
-b2xsb3ctdXAgcGF0Y2ggKDgvOCkgaW50cm9kdWNlcyBhIHNpbWlsYXIgdW5jaGVja2VkIGRlcmVm
-ZXJlbmNlDQo+IGluIG5ldGNfb25lc3RlcF9zeW5jX2VucXVldWUoKSwgc28gdGhpcyBpc3N1ZSBt
-aWdodCBzdGlsbCBiZSBwcmVzZW50IGF0IHRoZSBlbmQNCj4gb2YgdGhlIHNlcmllcy4NCg0KRmFs
-c2UgcG9zaXRpdmUg4oCUIHRoZSB0ZWFyZG93biBvcmRlcmluZyBpcyByZXZlcnNlZC4NCg0KSW4g
-ZHNhX3RyZWVfdGVhcmRvd24oKSwgdGhlIGNvbmR1aXQgaXMgdG9ybiBkb3duIGJlZm9yZSB0aGUg
-c3dpdGNoLg0KbmV0Y19kaXNjb25uZWN0KCkgKHdoaWNoIGZyZWVzIHRhZ2dlcl9kYXRhIGFuZCBz
-ZXRzIGl0IE5VTEwpIHJ1bnMgZHVyaW5nDQpzd2l0Y2ggdGVhcmRvd24sIHdoaWNoIGhhcHBlbnMg
-YWZ0ZXIgdGhlIGNvbmR1aXQgaXMgYWxyZWFkeSBzaHV0IGRvd24uDQoNCkRTQSBSWCBpbnRvIHRo
-ZSB0YWdnZXIgaXMgZ2F0ZWQgYnkgdGhlIGNvbmR1aXQncyBkc2FfcHRyLiBDb25kdWl0IHRlYXJk
-b3duDQpjbGVhcnMgZHNhX3B0ciAod2l0aCBhIGJhcnJpZXIpLCBzbyBubyBmdXJ0aGVyIGZyYW1l
-cyByZWFjaCBuZXRjX3JjdigpIGZyb20NCnRoYXQgcG9pbnQgb24uIEJ5IHRoZSB0aW1lIHRhZ2dl
-cl9kYXRhIGlzIGZyZWVkLCB0aGUgUlggcGF0aCBpcyBhbHJlYWR5IHN0b3BwZWQsDQpzbyB0aGUg
-d2luZG93IHlvdSBkZXNjcmliZSAoInRhZ2dlcl9kYXRhIE5VTEwgYnV0IGZyYW1lcyBzdGlsbCBh
-cnJpdmluZyIpIG5ldmVyDQpvY2N1cnMuIE5vIE5VTEwgZGVyZWZlcmVuY2UgaXMgcG9zc2libGUs
-IGFuZCB0aGUgc2FtZSBvcmRlcmluZyBjb3ZlcnMgdGhlIDgvOA0KY2FzZSB0b28uIE5vIGNoZWNr
-IG5lZWRlZC4NCg0K
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
+
+Critical: 0 (1) · High: 0 · Medium: 1 (1) · Low: 0
+
+- [Medium] Incomplete fix: the software FCS can be appended twice to the
+  same skb, so tx_bytes is still over-reported by four bytes and the new…
+
+Pre-existing issues:
+- [Critical] Use-after-free / double-free of an skb plus leak of the
+  replacement skb: macb_pad_and_fcs()…
+- [Medium] macb_pad_and_fcs() writes the four software FCS bytes into a
+  cloned skb's shared data allocation without unsharing it.
+
+--
+
+net: macb: exclude software FCS from TX byte statistics
+
+The patch records how many FCS bytes macb_pad_and_fcs() appended in
+software into a new macb_tx_skb.fcs_len field, and subtracts that value
+from skb->len when TX completion updates tx_bytes.  BQL accounting keeps
+using the padded skb->len.
+
+Referenced series: https://lore.kernel.org/all/20260824134703.766708-1-nb@tipi-net.de/
+
+> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+> index 1e1f52285a39..d6931c41f39d 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -968,6 +968,8 @@ struct macb_dma_desc_ptp {
+>   *       of the frame
+>   * @mapping: DMA address of the skb's fragment buffer
+>   * @size: size of the DMA mapped buffer
+> + * @fcs_len: FCS bytes appended in software, 0 or ETH_FCS_LEN, only
+> + *           set for the last buffer of the frame
+>   * @mapped_as_page: true when buffer was mapped with skb_frag_dma_map(),
+>   *                  false when buffer was mapped with dma_map_single()
+>   */
+> @@ -975,6 +977,7 @@ struct macb_tx_skb {
+>  	struct sk_buff		*skb;
+>  	dma_addr_t		mapping;
+>  	size_t			size;
+> +	u8			fcs_len;
+>  	bool			mapped_as_page;
+>  };
+>  
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index 76ee4f506033..b1939da4c95a 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+
+[ ... ]
+
+> @@ -1450,8 +1450,8 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+>  					    skb->data);
+>  				bp->netdev->stats.tx_packets++;
+>  				queue->stats.tx_packets++;
+> -				bp->netdev->stats.tx_bytes += skb->len;
+> -				queue->stats.tx_bytes += skb->len;
+> +				bp->netdev->stats.tx_bytes += skb->len - tx_skb->fcs_len;
+> +				queue->stats.tx_bytes += skb->len - tx_skb->fcs_len;
+>  				packets++;
+>  				bytes += skb->len;
+>  			}
+
+[ ... ]
+
+> @@ -2417,6 +2419,7 @@ static inline int macb_clear_csum(struct sk_buff *skb)
+>  	return 0;
+>  }
+>  
+> +/* Returns a negative errno, or the FCS bytes appended (0 or ETH_FCS_LEN). */
+>  static int macb_pad_and_fcs(struct sk_buff **skb, struct net_device *netdev)
+>  {
+>  	bool cloned = skb_cloned(*skb) || skb_header_cloned(*skb) ||
+> @@ -2465,7 +2468,7 @@ static int macb_pad_and_fcs(struct sk_buff **skb, struct net_device *netdev)
+>  	skb_put_u8(*skb, (fcs >> 16)	& 0xff);
+>  	skb_put_u8(*skb, (fcs >> 24)	& 0xff);
+>  
+> -	return 0;
+> +	return ETH_FCS_LEN;
+>  }
+
+[Severity: Medium]
+This is a pre-existing issue, not something introduced here, but can these
+four skb_put_u8() writes land in data shared with another sk_buff?
+
+macb_pad_and_fcs() computes:
+
+	bool cloned = skb_cloned(*skb) || skb_header_cloned(*skb) ||
+		      skb_is_nonlinear(*skb);
+
+and only copies via skb_copy_expand() under "if (cloned || tailroom <
+padlen)".  For a linear skb with skb->len >= ETH_ZLEN and skb_tailroom()
+>= ETH_FCS_LEN the earlier
+
+	if (padlen <= 0) {
+		/* FCS could be appeded to tailroom. */
+		if (tailroom >= ETH_FCS_LEN)
+			goto add_fcs;
+
+jumps past that copy, so the FCS is written into the possibly shared data
+area.
+
+One case where the written bytes are still inside a clone's valid range:
+packet_rcv() clones the skb for a tap, then ip_rcv_core() calls
+pskb_trim_rcsum(), which only moves the original's tail.  Forwarding that
+skb out a macb port then overwrites four bytes that the clone (and
+userspace) still considers payload.
+
+Would using skb_unshare()/skb_cow() before the "goto add_fcs" fast path be
+appropriate here?
+
+>  
+>  static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+> @@ -2478,6 +2481,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+>  	netdev_tx_t ret = NETDEV_TX_OK;
+>  	unsigned int hdrlen;
+>  	unsigned long flags;
+> +	int fcs_len;
+>  	bool is_lso;
+>  
+>  	if (macb_clear_csum(skb)) {
+> @@ -2485,7 +2489,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+>  		return ret;
+>  	}
+>  
+> -	if (macb_pad_and_fcs(&skb, netdev)) {
+> +	fcs_len = macb_pad_and_fcs(&skb, netdev);
+> +	if (fcs_len < 0) {
+>  		dev_kfree_skb_any(skb);
+>  		return ret;
+>  	}
+
+[Severity: Medium]
+Does the requeue path still report tx_bytes four bytes too large?
+
+macb_pad_and_fcs() runs here, before the descriptor space check later in
+macb_start_xmit():
+
+	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
+		       bp->tx_ring_size) < desc_cnt) {
+		netif_stop_subqueue(netdev, q);
+		...
+		ret = NETDEV_TX_BUSY;
+		goto unlock;
+	}
+
+On NETDEV_TX_BUSY the core hands the same skb back:
+
+sch_direct_xmit()
+    if (!dev_xmit_complete(ret)) {
+        /* Driver returned NETDEV_TX_BUSY - requeue skb */
+        dev_requeue_skb(skb, q);
+
+so macb_start_xmit() -> macb_pad_and_fcs() runs on that skb a second time.
+The early-exit predicate (features, ip_summed, gso_size, ptp state) is
+unchanged, padlen = ETH_ZLEN - skb->len is now <= 0, so the code reaches
+add_fcs again and appends a second four-byte CRC computed over
+payload+FCS1.
+
+macb_tx_map() then stores fcs_len = ETH_FCS_LEN while skb->len contains
+2 * ETH_FCS_LEN software bytes, so macb_tx_complete() and
+macb_tx_error_task() still add four bytes too many:
+
+	bp->netdev->stats.tx_bytes += skb->len - tx_skb->fcs_len;
+
+and the frame on the wire carries the stale first FCS as trailing payload.
+
+Reaching the NETDEV_TX_BUSY branch needs desc_cnt >= 2, i.e. a
+software-FCS frame longer than bp->max_tx_length.  In-tree configurations
+allow that: mpfs_config has .max_tx_length = 4040 with .jumbo_max_len =
+4040, and pic64hpsc_config has .jumbo_max_len = 16383 against
+GEM_MAX_TX_LEN of 16320, so with jumbo MTU a frame grown by the software
+FCS spans two descriptors and CIRC_SPACE == 1 yields NETDEV_TX_BUSY.
+
+Would moving the macb_pad_and_fcs() call after the CIRC_SPACE check (or
+otherwise making the append idempotent) address this?  Since the chosen
+representation records only the length of the last append, should the
+changelog also mention the requeue interaction?
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but the same ordering looks like
+it can free the caller's skb and then tell the core to reuse it.
+
+macb_pad_and_fcs() substitutes the skb only through the caller's local
+pointer:
+
+	if (cloned || tailroom < padlen) {
+		nskb = skb_copy_expand(*skb, 0, padlen, GFP_ATOMIC);
+		if (!nskb)
+			return -ENOMEM;
+
+		dev_consume_skb_any(*skb);
+		*skb = nskb;
+	}
+
+If macb_start_xmit() afterwards takes the
+
+		ret = NETDEV_TX_BUSY;
+		goto unlock;
+
+path, nskb is dropped on the floor and the core continues with the
+original pointer:
+
+dev_hard_start_xmit()
+    rc = xmit_one(skb, dev, txq, next != NULL);
+    if (unlikely(!dev_xmit_complete(rc))) {
+            skb->next = next;
+            goto out;
+
+That is a write into the already freed sk_buff, and sch_direct_xmit() then
+calls dev_requeue_skb() on it, so it is dequeued, transmitted and freed a
+second time, while nskb leaks.
+
+The preconditions coexist: a forwarded or bridged nonlinear frame has
+skb_tailroom() == 0 and cloned == true, so the skb_copy_expand() /
+dev_consume_skb_any() path is always taken, and on mpfs_config
+(.max_tx_length = 4040, .jumbo_max_len = 4040) or pic64hpsc_config
+(GEM_MAX_TX_LEN 16320 against .jumbo_max_len 16383) the frame plus the
+four FCS bytes needs two descriptors, so CIRC_SPACE == 1 returns
+NETDEV_TX_BUSY.
+
+Should the space check happen before any skb is consumed or replaced?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831113128.1678674-1-nb%40tipi-net.de
