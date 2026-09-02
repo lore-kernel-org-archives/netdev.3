@@ -1,87 +1,153 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB37D2E7366;
-	Wed,  2 Sep 2026 12:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E6247ECF2;
+	Wed,  2 Sep 2026 12:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.171.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788352489; cv=none; b=mxt720GPKVHxN+IIGNCFYnJ3ZDnYZDYoKyciYLTwm8UgSqkTqv7isexegw2hhygmj0uFzb3FON7MbgTKroTeRJcyNzDZR025N3zaz0DjOyM9qXu4DwvXWY0xQRyLfG5K/EAy1dwVatjEBcLCtMbE26FplH/WfdAiXbW08+pgKus=
+	t=1788352533; cv=none; b=Dkw9+xEQKU/2fA7p1VCaQ+PFGqdDv0zrS+doRnqiKj45VZdF90690ewthLYAsadOFOF+nepHQV397D4gwzQpC3USX/5iI8WZoVo+WOxxfApkemwpWk9cmvnsgQ049ZJEDMAxRCtT8UT8Wy849xFZj/3jS6MUdl7z67TfzUHAaG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788352489; c=relaxed/simple;
-	bh=QTOz9WuygDUf9f2kuZRKTQxDJxuXW5+qSiq0sqlF5bs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UOlZDxdFdO+9ikV6XcVqa5TAXpPPaXcyBiIAJZDc7IT3b4b4dXbFJYaklFRXVQhMxIgMUDzh8L0/KOOmqbs+rRdFysMHVXNlKdWZ8OvLWxFZvq2LyPIbSccdfdVwYizJE6To5L0EqwS/4ZoSgJcj3Wfpek1M5K6jJpXGmhHWHXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hp03u8TH; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788352533; c=relaxed/simple;
+	bh=/mJqXti8QBJSd6BhhOZy12f+td/MAipAzf1teO2oGCA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YjI7uw5CUJNPui4xdzoYCRfjRzuZbvj4STw+NIHWa+9y0zm14zN7zOkHfL6xl/VF/jluZXjXj6RKb2ZL7uM6jEl/Yb92X5dfOIKqNXBxXH/ivMR94ib6aMNZ+4gpDlOZx8WDuQxJPUXWZnJIHk0HWRGPhH/6lFk/eD8q43AR2d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b=qJAcqk5Q; arc=none smtp.client-ip=78.47.171.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=datenfreihafen.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hp03u8TH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DqIr+thPrbep/O0pQIu8oOVm6WAFx0khwrPGH8+faaI=; b=hp03u8THC/bL/aO0tZNb/guAdj
-	6JE1X0XikSOzaUI55ijxAp09/JKsp8VYSxaBtCILzK3/necMgjMbyUS8KowWKVI2++f5v2jYh/SFR
-	ft1e9Zn2OCyYQFzftb9gGc0MIseKxQTQiZiDR/nfi2Xv9NdenQD3jOd4KSUxGwsZAgHU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x1kAc-002W90-LK; Wed, 02 Sep 2026 14:34:26 +0200
-Date: Wed, 2 Sep 2026 14:34:26 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v5 0/9] net: dsa: mt7530: modernise register
- access and add two DSA ops
-Message-ID: <e3b0d41a-ff23-4dc2-aa8e-3fc279f750fa@lunn.ch>
-References: <cover.1788190568.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b="qJAcqk5Q"
+Received: from [192.168.2.30] (unknown [46.253.254.187])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: stefan@datenfreihafen.org)
+	by proxima.lasnet.de (Postfix) with ESMTPSA id 15BF4C05C4;
+	Wed,  2 Sep 2026 14:35:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=datenfreihafen.org;
+	s=2021; t=1788352525;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FAzGcaQ3QymzfPM8l8G2UeopGjsr8CDlo4Gd16dLAFU=;
+	b=qJAcqk5QpmT7T+XDtcYo3OEea2cTt1y5c+6p2RbLdTOZVb7DKeC3vyPI7T6+Pd3RpIpv7r
+	Ex0nQGhWx+MesJNuqyaxX1/T90G1fZlZMbgiXyiL1R+fogdwGw00jV54ACKHjvui0wKN3o
+	344C0J6OgGOoKFjTC8TcQRJ1HLHDzXf9DpmjLyNqDrq9DSMbo83XF9dGtrQg9xTnVsnnuh
+	3e4YEiOgtr08TWDJDqSfHCFLYzA3MWGb79Mim+WUimlUij7TO5RKx3adVj7MFMNc4aqOMb
+	ypU+3KFnzzDzI0vzxm/vAmSYE9hAL8YWKzidgLj/ySDkcITe5QTq6StkL1veGQ==
+Message-ID: <ceb38e6c-832e-4345-bbc3-52721aa4b6c6@datenfreihafen.org>
+Date: Wed, 2 Sep 2026 14:35:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1788190568.git.daniel@makrotopia.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/1] mac802154: fix netdev use-after-free in beacon
+ worker
+To: zihan xi <zihanx@nebusec.ai>
+Cc: linux-wpan@vger.kernel.org, netdev@vger.kernel.org, alex.aring@gmail.com,
+ miquel.raynal@bootlin.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, david.girault@qorvo.com, vega@nebusec.ai
+References: <cover.1785596603.git.zihanx@nebusec.ai>
+ <e9a3909c7a6281967961773ca841e860b8ecf40e.1785596603.git.zihanx@nebusec.ai>
+ <6326f119-048e-4d46-ab2f-debb20420297@datenfreihafen.org>
+ <CAANe3eSyr9sSS1q1LfFXztXaZGXMR0HAiYmT4=eBhf0M5asrXQ@mail.gmail.com>
+Content-Language: en-US
+From: Stefan Schmidt <stefan@datenfreihafen.org>
+In-Reply-To: <CAANe3eSyr9sSS1q1LfFXztXaZGXMR0HAiYmT4=eBhf0M5asrXQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 31, 2026 at 04:37:43PM +0100, Daniel Golle wrote:
-> The mt7530 driver carries its own register accessors that predate the
-> regmap conversion and now largely duplicate what regmap already
-> provides, including locking. Most of this series removes that layer.
+Hello Zihan,
+
+On 9/2/26 12:16, zihan xi wrote:
+> On Wed, Sep 2, 2026 at 4:15 PM Stefan Schmidt <stefan@datenfreihafen.org> wrote:
+>>
+>> Hello Zihan,
+>>
+>> On 8/2/26 11:23, Zihan Xi wrote:
+>>> mac802154_beacon_worker() reads local->beacon_req under RCU and derives
+>>> the sub-interface from the request, but then drops the RCU read lock and
+>>> continues to use both sdata and the embedded wpan_dev.
+>>>
+>>> mac802154_stop_beacons_locked() cancels only pending beacon work, clears
+>>> local->beacon_req and frees the request.  A beacon worker that is already
+>>> running can therefore continue after interface teardown and dereference
+>>> the freed netdev private area.
+>>>
+>>> The scan worker already pins the netdev before leaving RCU.  Apply the
+>>> same lifetime rule to the beacon worker: take a netdev reference while
+>>> the request is still protected by RCU, and release it on all paths that
+>>> continue after the reference is acquired.
+>>>
+>>> Fixes: 3accf4762734 ("mac802154: Handle basic beaconing")
+>>> Cc: stable@vger.kernel.org
+>>> Reported-by: Vega <vega@nebusec.ai>
+>>> Assisted-by: Codex:gpt-5.4
+>>> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+>>> ---
+>>>    net/mac802154/scan.c | 4 ++++
+>>>    1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
+>>> index 65089826f..ebd092d40 100644
+>>> --- a/net/mac802154/scan.c
+>>> +++ b/net/mac802154/scan.c
+>>> @@ -416,6 +416,7 @@ void mac802154_beacon_worker(struct work_struct *work)
+>>>        struct cfg802154_beacon_request *beacon_req;
+>>>        struct ieee802154_sub_if_data *sdata;
+>>>        struct wpan_dev *wpan_dev;
+>>> +     netdevice_tracker dev_tracker;
+>>>        u8 interval;
+>>>        int ret;
+>>>
+>>> @@ -427,12 +428,14 @@ void mac802154_beacon_worker(struct work_struct *work)
+>>>        }
+>>>
+>>>        sdata = IEEE802154_WPAN_DEV_TO_SUB_IF(beacon_req->wpan_dev);
+>>> +     netdev_hold(sdata->dev, &dev_tracker, GFP_ATOMIC);
+>>>
+>>>        /* Wait an arbitrary amount of time in case we cannot use the device */
+>>>        if (local->suspended || !ieee802154_sdata_running(sdata)) {
+>>>                rcu_read_unlock();
+>>>                queue_delayed_work(local->mac_wq, &local->beacon_work,
+>>>                                   msecs_to_jiffies(1000));
+>>> +             netdev_put(sdata->dev, &dev_tracker);
+>>>                return;
+>>>        }
+>>>
+>>> @@ -450,6 +453,7 @@ void mac802154_beacon_worker(struct work_struct *work)
+>>>        if (interval < IEEE802154_ACTIVE_SCAN_DURATION)
+>>>                queue_delayed_work(local->mac_wq, &local->beacon_work,
+>>>                                   local->beacon_interval);
+>>> +     netdev_put(sdata->dev, &dev_tracker);
+>>>    }
+>>>
+>>>    int mac802154_stop_beacons_locked(struct ieee802154_local *local,
+>>
+>>
+>> This patch does no longer apply. Please rebase and re-send.
+>>
+>> regards
+>> Stefan Schmidt
 > 
-> It first moves the MDIO bus locking into the switch regmap via
-> .lock/.unlock callbacks, matching the PCS regmaps, so any path reaching
-> the regmap is serialised automatically. With the wrappers no longer
-> adding locking, the thin mt7530_mii_* indirection is folded away and the
-> remaining accessors are replaced mechanically with the plain regmap API,
-> using the coccinelle semantic patches included in the commit messages.
-> The two remaining reset polls are converted to
-> regmap_read_poll_timeout() and the then-unused dummy poll machinery is
-> dropped. Open-coded register fields are converted to
-> FIELD_GET/FIELD_PREP. None of this is intended to change behaviour.
+> Hi Stefan,
 > 
-> The last two patches implement .port_fast_age, which flushes dynamically
-> learned MAC entries on topology changes, and .port_change_conduit, which
-> moves a user port's CPU-port affinity at runtime.
+> thanks for taking a look.
 > 
-> The swallowed MDIO errors Sashiko flagged on v4 5/8 have meanwhile been
-> fixed in tree by "fix swallowed MDIO read errors" and "fix remaining
-> swallowed MDIO access errors", both merged into net-next. This respin is
-> rebased on top of them: regmap_* return values are no longer ignored,
-> which is what most of the semantic patches had to be reworked for.
+> This change already landed in net.git as 5f26a690e8ef
+> ("mac802154: fix netdev use-after-free in beacon worker"),
+> applied by Jakub with Miquel's Reviewed-by.
 
-I only had a quick look at the series, but it seems O.K. to me.
+Ah, I missed that Jakub took it already. Thanks.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> If wpan.git still needs a rebased copy, I can send that. Otherwise
+> I will leave it as is to avoid a duplicate.
 
-    Andrew
+No need. Its fine as is now.
+
+regards
+Stefan Schmidt
+
