@@ -1,48 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB55A1FBEA6;
-	Wed,  2 Sep 2026 01:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4305017993
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 01:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788310855; cv=none; b=frs95KJrnY9d18XrUmOj/UVcCvw+sIF4KkdCOfcxyPkOhtdxQUjMe2ikCOMwb8fBvkWpH9ReTSKdhIboddObXuhSusTaJeaQzURrb102Bkj2FYNtx4AUau5mwLPCKDcFrbyUcaTwIIWPSZ5P1LSqraF1FKhKWPrgVxJLJuJC6xI=
+	t=1788311062; cv=none; b=tsuIzVFqai7khgou1ER0FFh4axaCTIS4OhSg0qqwub2PwzQPJC5CG9eMmKM/HKupx5uQFOsHuHRURXA1A9Vth1432a/Qke5auKodCjWy0xQ+4N7IOEmrLt+6sJTnBNtiIERpKeGPvB1DyP+Rh4Ijzj2DWlQL0qjHtbFQKyp9U+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788310855; c=relaxed/simple;
-	bh=bmzzdbld4301f/3AgKchLwCvg38RiDFH0dyJJSvV89k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRzcihDbG8fZvv9nd+fN3+5jAO6/Yb6iwr0k0ltDeYJ1+HHcFQG6d+2XKHoCDqyIgakErttXzYqWtzlq+NXtt+aNhozaMIJtlBHmCiodLfipStoHqku+7gS5ZiuXCZ2gYAKmkEl5oNG8CkGmJ8DW9tDNZ4SEaB6v8dcu1IDjOwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pi/s9Ln3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788311062; c=relaxed/simple;
+	bh=Dq5UyI2XGKVEHYLJ4tWPWAEkFCi3pSgRDI2MzuRchnk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=InOnJdG5Zo6gmGKivGZHNDh5LgnUMEcxgF4ZuR+xYHQVLsdPoEU8LUCBotyDyDPs52aRSDEO/kmDgtZ+a67mqRcIKyDJqYAQ1wTO3NPwJ9MJrrzNNwj3WlKGqDDKHUStJkYcPJVW+FJkuFh1zkwdgeu6iMBeLFWG8sTgl8EmyDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nnntFiMD; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pi/s9Ln3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2801F000E9;
-	Wed,  2 Sep 2026 01:00:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788310853;
-	bh=Lu7JmO51EukdXJvBdPRfmDly312e6LsOXdN4+gP9uho=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pi/s9Ln3bAIi6J2Sc+gwxDr75CKs4MTNS3OBo/owLH5PfiOUGC6uuAvyPlw8nR7rg
-	 cp6fW/qtRRw9aQpFsT8ThwH11VqZg9Bb7rSuAcsXjLAPM0NpU9jy9rPL6dB8g/1lPR
-	 Snl1JtTs1bGWnYM0CNTuXmCZq5BTlixRWZPuAJNFO4nHaLpTZGhQ2qEFQkhksB+IcI
-	 IhZ1diSEBEyV522pP9UsdU1NVpQXFn7wztDPMtFMY/2nvgSDDXKEpg5KQ41wHVnPGa
-	 QhWdP6zoJow1pwZScnlogjvFeNYHo3vVaAyhTHJzHoSe5z1TbxYMJ8EAIVMP1tRz4O
-	 Zfdqi8vICjcFA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: zihanx@nebusec.ai
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	vega@nebusec.ai
-Subject: Re: [PATCH net v6 2/2] llc: reject out-of-service state before state lookup
-Date: Tue,  1 Sep 2026 18:00:52 -0700
-Message-ID: <20260902010052.2297527-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nnntFiMD"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8558c0b26a8so383606b3a.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 18:04:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788311060; x=1788915860; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eI2Ohe4pJEhqiz6K2k0vJtzHDraEJV/HJp7zS58ORf4=;
+        b=nnntFiMDaLKc4Cq0GkNsKBdy3Um3BzEN/NREGLuybTGQq/2fA8veFgqHMJd45O0y4g
+         Ne+Wlx48IpXDSbyUeyCoHC8qrGKQskKEIVtOdl24x+xg3SW64YjmnNNVQ89cXfLJszWM
+         cMH+mjwwyU/97Llj6j4oCysg+8AsItxb8YE4MAXEUUxJkjyLWqRDWRIuRY0MlUYXttAS
+         J1IqhZu293QNSCLk1D4PEgCWWNo98+mWuIlLMHCe1yj6D1GfZJUzNPQmhsraZudh+6uX
+         yeZxb69aD3Xxp02CYtegT4VpqP/X4BDmP+l8W8MBC3Kj2bo4EmHlHfbpkQk32koJqroM
+         FYEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788311060; x=1788915860;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eI2Ohe4pJEhqiz6K2k0vJtzHDraEJV/HJp7zS58ORf4=;
+        b=XnbqjoszfHUfFHRZCHxErnz2BvioJtH3HXv35c2VBJ9p0MvYsm35Ck2z+VpT/HbQxe
+         Lzbnl5L9OMujkJygR2QLDe330cYd1faVWtpB163W3tQ5/hsEzLeWlpILz/SX6IdBRwmt
+         bq+AOlAogThlCyEQ8BiHNhLZxZnfQLrptt5G7+K4AP5dhvz+dY5LW7eCB7PdIlYh6aAn
+         E9lW63cA9iCjNFzgvtsQm5gcxzVzeLaEmM2ZnLFCDucKyHg16mal+OpoS+uN4P1wJtxL
+         owR21fjWccQgjE9r4Y2C42+3pCA7rNYokhmyTfcS+gF9LdngdC2gvmnplvKzQZl8MttZ
+         /PMQ==
+X-Gm-Message-State: AFuF++nqvxs+c9q3aW3fuYqKWiO0T2Aq+PvVwOxJq5emjC2Q6LsO79jn
+	khoEF7YQhj8qRaT+Y5UWcolD9iZlkoooy7iIJs/d7vBNm3cEC+Gw95KyjQdPfg==
+X-Gm-Gg: AR+sD13p8krDpQTPkOMaN/7vAZ4uKbOYW69HL1KtkHRQ51aXONZidrOxrvOgTtzEPok
+	3YsnAo0V5grCaGFc/3d6kjqEjXJt9PuYMfIkwmejxq+37eXuXq6N8W8zK9ur6Fm9UAVROibbvoK
+	xBMPL9EsESlVP9vJtdlvIuOk3/Cqd8bcAKYoAsJt/yWmEhAZdjZXqxHTn6x9sxNZq1f7mu0wJjO
+	an6s+S9zlw0tz7vHXJg2DiAGUy4kBaXBBt/81fDG4b2Fndcw+ld3yJ1ibxQTiaw7rPywk7D4bn9
+	HO6NNTFLIpsXSFo4Rhgo6+cdSjJjfuW/YBkws4COasrQc7XnQQOIVCPpuww5BVNlyJAfuDiMaxI
+	O66FNM8JkKZ6CoiEli92vrEbF0BPiF+HD1UXoRIu6ymxX2OsSDT1fR2On6heIof9ZV7bu17Ecky
+	BwU6yHG0UKqf7f3ICyzzeImT/u6V1Ymb9bH1zwj8HTEau5aX/lBzuGOsC64cz6GA+uqU4BkRLNJ
+	F+SFVvUoUpi
+X-Received: by 2002:a05:6a20:7283:b0:3d7:eb3e:1c58 with SMTP id adf61e73a8af0-3d9ac94bb04mr1352340637.8.1788311060538;
+        Tue, 01 Sep 2026 18:04:20 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc34d036d0asm252394a12.27.2026.09.01.18.04.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 18:04:19 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Vladislav Yasevich <vyasevic@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] udp: revalidate socket family before publishing an IPv6 cork
+Date: Wed,  2 Sep 2026 10:04:05 +0900
+Message-ID: <20260902010408.1057857-1-4ncienth@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <8fa3c9e6d5dcf328979ed2bdc27817c11a5eff91.1787752861.git.zihanx@nebusec.ai>
-References: <8fa3c9e6d5dcf328979ed2bdc27817c11a5eff91.1787752861.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,226 +80,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+udpv6_sendmsg() prepares IPv6 flow and route state before taking the socket
+lock when a datagram is corked.  IPV6_ADDRFORM takes the same lock, but it
+can convert the socket to AF_INET during that lockless preparation because
+no cork has been published yet.
+
+If the conversion wins, udpv6_sendmsg() can publish an AF_INET6 cork on an
+AF_INET socket.  Uncorking through the IPv4 operations then writes a
+20-byte IPv4 header into the 40-byte IPv6 reservation while the retained
+IPv6 dst routes the skb through ip6_output().  ip6_finish_output2()
+consequently consumes the unwritten 20-byte tail.
+
+An unprivileged reproducer triggered the mixed state on 12 of 10,000
+sockets.  KMSAN reported an uninitialized-value read in
+ip6_finish_output2() on three fresh boots, with the allocation origin in
+__alloc_skb() through __ip6_append_data().  The same process recovered the
+20-byte region from the TX timestamp error queue on all three boots; one
+contained recognizable nonzero stale heap data.
+
+There is also socket state to handle before cork publication.  A sendto()
+with an AF_UNSPEC address clears its explicit destination and later selects
+the stored peer with connected set.  On an ADDRFORM-eligible socket with a
+mapped peer and a suitable IPv6 route, ip6_sk_dst_lookup_flow() can
+therefore publish an IPv6 dst in the socket cache.  A native connected send
+racing a new mapped connect can reach the same store.  Revalidating only
+after lock_sock() prevents the mixed cork, but does not cover the non-cork
+path or undo a dst stored before conversion.
+
+Close both orderings.  After a connected IPv6 lookup, reject a socket which
+has already been converted and reset any dst the lookup may have stored.
+When UDP ADDRFORM publishes the AF_INET family, reset the socket dst after
+the family write.  Thus, if the send stores and checks first, the later
+conversion clears the cache; if conversion and its reset happen first, the
+send observes AF_INET after its store and clears it.  Keep the locked
+family check before cork publication to prevent the original mixed cork.
+
+With a mapped loopback route supplied before dropping to uid 65534 with no
+capabilities, an unpatched KASAN control reached ip6_sk_dst_store_flow()
+from the AF_UNSPEC send.  On patched current net, the sequential conversion
+released that dst from do_ipv6_setsockopt().  Corked and non-corked races
+both reached the dst store, then returned EAFNOSUPPORT when conversion won;
+the converted socket's follow-up send used only udp_sendmsg().  No KASAN,
+Oops, warning, or panic followed.  The concurrent mapped-connect variant
+was validated from the same source ordering, but was not forced in a
+dedicated runtime interleaving.
+
+Fixes: 03485f2adcde ("udpv6: Add lockless sendmsg() support")
+Closes: https://lore.kernel.org/netdev/20260825160630.1888866-1-4ncienth@gmail.com/
+Link: https://lore.kernel.org/netdev/a86aa34a-8bea-46d2-a785-6c423ac00b1d@redhat.com/
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 ---
-llc: reject out-of-service state before state lookup
+Changes in v3:
+- Address Paolo and Sashiko's finding that AF_UNSPEC and a concurrent mapped
+  connect can publish an IPv6 socket dst before the family revalidation.
+- Revalidate after a connected route lookup and reset a dst stored after an
+  already completed conversion.
+- Reset the UDP socket dst after ADDRFORM publishes AF_INET, covering the
+  opposite store-before-convert ordering and the non-cork path.
+- Retain the post-lock family check which prevents late AF_INET6 cork
+  publication.
+- Add route-enabled, zero-capability KASAN matrix and cork/non-cork race
+  validation. The separate privileged sockmap mismatch remains out of scope.
+- State that the concurrent mapped-connect variant was source-validated but
+  was not forced in a dedicated runtime interleaving.
 
-This adds a lower-bound check on llc->state in llc_conn_service() so that a
-socket sitting in LLC_CONN_OUT_OF_SVC is rejected before llc_qualify_conn_ev()
-indexes llc_conn_state_table[state - 1].  A few questions about the new
-check below.
+v2: https://lore.kernel.org/netdev/20260829132125.1160893-1-4ncienth@gmail.com/
+v1: https://lore.kernel.org/netdev/20260825160630.1888866-1-4ncienth@gmail.com/
 
-> diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-> index 885a5c33024c3..4a34f240ad2cc 100644
-> --- a/net/llc/llc_conn.c
-> +++ b/net/llc/llc_conn.c
-> @@ -362,7 +362,8 @@ static int llc_conn_service(struct sock *sk, struct sk_buff *skb)
->  	struct llc_sock *llc = llc_sk(sk);
->  	int rc = 1;
->  
-> -	if (llc->state > NBR_CONN_STATES)
-> +	if (llc->state < LLC_CONN_STATE_ADM ||
-> +	    llc->state > NBR_CONN_STATES)
->  		goto out;
+Testing notes:
+- Build and runtime validation used x86_64. Sparse was unavailable;
+  allmodconfig and multi-architecture builds were not run.
+- The tested reproducer is available privately on request and is not included
+  in this public AI-assisted security-fix submission.
+---
+ net/ipv6/ipv6_sockglue.c |  1 +
+ net/ipv6/udp.c           | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
-[Severity: High]
-Does this check actually protect the table access, given that the validated
-value is not latched?  llc_qualify_conn_ev() re-reads llc->state twice to do
-the indexing:
+diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+index b4c977434c2e..59ca446d3156 100644
+--- a/net/ipv6/ipv6_sockglue.c
++++ b/net/ipv6/ipv6_sockglue.c
+@@ -611,6 +611,7 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
+ 				WRITE_ONCE(sk->sk_prot, &udp_prot);
+ 				WRITE_ONCE(sk->sk_socket->ops, &inet_dgram_ops);
+ 				WRITE_ONCE(sk->sk_family, PF_INET);
++				sk_dst_reset(sk);
+ 			}
+ 
+ 			/* Disable all options not to allocate memory anymore,
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 93478d1ad576..8ba552f1a6b2 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1705,6 +1705,12 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		dst = NULL;
+ 		goto out;
+ 	}
++	if (unlikely(connected &&
++		     READ_ONCE(sk->sk_family) != AF_INET6)) {
++		sk_dst_reset(sk);
++		err = -EAFNOSUPPORT;
++		goto out;
++	}
+ 
+ 	if (ipc6.hlimit < 0)
+ 		ipc6.hlimit = ip6_sk_dst_hoplimit(np, fl6, dst);
+@@ -1729,6 +1735,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	}
+ 
+ 	lock_sock(sk);
++	if (unlikely(sk->sk_family != AF_INET6)) {
++		release_sock(sk);
++		err = -EAFNOSUPPORT;
++		goto out;
++	}
+ 	if (unlikely(up->pending)) {
+ 		/* The socket is already corked while preparing it. */
+ 		/* ... which is an evident application bug. --ANK */
 
-net/llc/llc_conn.c:llc_qualify_conn_ev() {
-	struct llc_conn_state *curr_state =
-					&llc_conn_state_table[llc->state - 1];
-	...
-	for (next_trans = curr_state->transitions +
-		llc_find_offset(llc->state - 1, ev->type);
-	     (*next_trans)->ev; next_trans++) {
-		if (!((*next_trans)->ev)(sk, skb)) {
-	...
-}
-
-The store that produces state 0 is done with no socket lock at all:
-
-net/llc/llc_conn.c:llc_sk_free() {
-	llc->state = LLC_CONN_OUT_OF_SVC;
-	/* Stop all (possibly) running timers */
-	llc_sk_stop_all_timers(sk, sync);
-	...
-}
-
-and llc_ui_release() calls it after dropping the socket lock and before the
-timers are synchronized:
-
-net/llc/af_llc.c:llc_ui_release() {
-	...
-		llc_release_incoming_children(sk);
-		release_sock(sk);
-	...
-	llc_sk_free(sk, true);
-}
-
-So can this interleaving happen for a socket closed while an ack timer is
-still armed (for example a non-blocking connect() left in
-LLC_CONN_STATE_SETUP, where llc_send_disc() returns early because sk_state
-is not TCP_ESTABLISHED and stops nothing)?
-
-CPU0 (softirq, ack timer)
-llc_conn_ack_tmr_cb() -> llc_conn_tmr_common_cb()
-	bh_lock_sock(sk);          /* excludes nothing here */
-	llc_process_tmr_ev()       /* sees state 2, !sock_owned_by_user() */
-	  llc_conn_state_process() -> llc_conn_service()
-		reads llc->state == 2, passes the new bound check
-
-CPU1 (close(2))
-llc_ui_release() -> release_sock(sk) -> llc_sk_free()
-	llc->state = LLC_CONN_OUT_OF_SVC;     /* unlocked store of 0 */
-
-CPU0 continues into llc_qualify_conn_ev()
-	&llc_conn_state_table[llc->state - 1]   /* now index -1 */
-	llc_find_offset(llc->state - 1, ev->type)
-	(*next_trans)->ev(sk, skb)              /* indirect call */
-
-Since bh_lock_sock() in llc_conn_tmr_common_cb() does not exclude a writer
-that holds no lock, is the negative index and the indirect call through the
-pointer read from before the tables still reachable after this patch?
-
-Would latching the value once, for example
-
-	u8 state = READ_ONCE(llc->state);
-
-and passing that value down to llc_qualify_conn_ev() and llc_find_offset(),
-or moving the llc_sk_free() state store under the socket lock, be a better
-fit for the problem described in the changelog?
-
->  	rc = 0;
->  	trans = llc_qualify_conn_ev(sk, skb);
-
-[Severity: Medium]
-The goto out here leaves rc at its initial value of 1, which was previously
-unreachable for a state of 0.  Where does that 1 end up?
-
-net/llc/llc_conn.c:llc_conn_state_process() {
-	rc = llc_conn_service(skb->sk, skb);
-	if (unlikely(rc != 0)) {
-		printk(KERN_ERR "%s: llc_conn_service failed\n", __func__);
-		goto out_skb_put;
-	}
-	...
-}
-
-net/llc/llc_if.c:llc_establish_connection() {
-	...
-		rc = llc_conn_state_process(sk, skb);
-	}
-out_put:
-	sock_put(sk);
-	return rc;
-}
-
-net/llc/af_llc.c:llc_ui_connect() {
-	rc = llc_establish_connection(sk, llc->dev->dev_addr,
-				      addr->sllc_mac, addr->sllc_sap);
-	if (rc) {
-		sock->state  = SS_UNCONNECTED;
-		sk->sk_state = TCP_CLOSE;
-		goto out;
-	}
-	...
-out:
-	release_sock(sk);
-	return rc;
-}
-
-Can connect(2) then return +1 to userspace on a socket that was just reset
-to SS_UNCONNECTED and TCP_CLOSE?  Callers testing for a negative return
-would read that as success.
-
-Is the printk also a concern, since it is not ratelimited and now fires once
-per event for a state this patch treats as expected?
-
-The sequence I believe reaches it on a still-hashed socket:
-
-  1. socket(AF_LLC, SOCK_STREAM) + bind() leaves llc->state at
-     LLC_CONN_STATE_ADM
-  2. a failing connect() leaves state at ADM with llc->daddr set and the
-     socket still in the SAP list
-  3. any further frame from the peer matches the ADM catch-all transition
-
-net/llc/llc_c_st.c:
-static const struct llc_conn_state_trans llc_adm_state_trans_5 = {
-	.ev	       = llc_conn_ev_rx_any_frame,
-	.next_state    = LLC_CONN_OUT_OF_SVC,
-	.ev_qualifiers = NONE,
-	.ev_actions    = llc_adm_actions_5,
-};
-
-     which sets llc->state to 0
-  4. connect(2) again (sock->state is SS_UNCONNECTED, so it is accepted)
-     reaches the new reject path
-
-Would it be more consistent to translate out-of-service into -ECONNABORTED
-at the llc_if.c entry points?  llc_send_disc() already does an explicit
-check:
-
-net/llc/llc_if.c:llc_send_disc() {
-	if (sk->sk_type != SOCK_STREAM || sk->sk_state != TCP_ESTABLISHED ||
-	    llc_sk(sk)->state == LLC_CONN_STATE_ADM ||
-	    llc_sk(sk)->state == LLC_CONN_OUT_OF_SVC)
-		goto out;
-	...
-}
-
-while llc_establish_connection() has no such check.  On a related note, the
-kernel-doc for llc_build_and_send_pkt() still documents only 0,
--ECONNABORTED and -EBUSY, although state 0 is filtered there only
-incidentally by llc_data_accept_state().
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but while looking at the callers
-of llc_conn_service() there is an asymmetry in llc_backlog_rcv() worth
-mentioning.  The fallback branch tests the owner socket's state and then
-dispatches on it, while llc_conn_state_process() operates on skb->sk:
-
-net/llc/llc_conn.c:llc_backlog_rcv() {
-	...
-	} else if (likely(llc->state > 1)) {
-		rc = llc_conn_rcv(sk, skb);
-	} else {
-		goto out_kfree_skb;
-	}
-	...
-}
-
-The two branches above it take bh_lock_sock_nested(newsk) before touching a
-child, this one does not.  For a listener-owned backlog skb whose skb->sk is
-a child, the child's state machine runs without the child's lock, even
-though llc_conn_state_process() documents that the socket lock has to be
-held.
-
-Every child reachable through this branch appears to have already been
-released by llc_release_incoming_sock(), whose state store the new check now
-rejects, so this looks defused for the concretely reachable case.  What
-remains is the publication order in that function:
-
-net/llc/llc_conn.c:llc_release_incoming_sock() {
-	if (atomic_xchg(&llc->incoming_state, LLC_INCOMING_NONE) ==
-	    LLC_INCOMING_NONE)
-		return;
-
-	WRITE_ONCE(llc->state, LLC_CONN_OUT_OF_SVC);
-	...
-}
-
-Can a drainer in the fallback branch observe incoming_state as
-LLC_INCOMING_NONE while still seeing the child's pre-teardown non-zero
-state, and then run the child's state machine concurrently with
-llc_release_incoming_sock() on another CPU?  Both fields are read there
-without the child's bh lock.  Reaching the branch at all also needs the
-listener's own llc->state above 1, which seems possible only through a
-listen() followed by connect() on the same socket, since llc_ui_listen()
-leaves sock->state at SS_UNCONNECTED and llc_ui_connect() has no TCP_LISTEN
-check.  I could not confirm that all of these hold at the same time, so this
-may not be reachable in practice.
+base-commit: 70f3995830d3f1e79faa14eb0605914f778feca9
 -- 
-pw-bot: cr
+2.55.0
