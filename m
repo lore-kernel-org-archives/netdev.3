@@ -1,77 +1,100 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B0248A2DF
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 12:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2473B48B368;
+	Wed,  2 Sep 2026 12:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788352660; cv=none; b=evTFRu2vJtXdHfV0HROKMpticxP6nO0R11h9ai8wLy0WFcVQZj2brCAROwvRiQmx94/txspQI10dHj4IqO019KjRohEkj5vXw0f83A/0wKWvTEcmAnf5rGMt98JuEtQQAobKUQ/NJdMOwZWytwYOkYceA95txNXKqXeF03c4bH0=
+	t=1788352716; cv=none; b=GX5sLKT2gx2Wuae94uMLs8PJDl0WUjZx8cWkC4r237YHdFI6dTTZSqOZvoTwl75xmHIe2vhPzgK4CY2ZPktt4Jv6itgG4vPeWa/uTKPTAiskAwPFWXX1lkx8lxVBBLSbkHRhjpiyP3Nqk0K/5moFx1CpMpDSfDGsB9IOu/T2QL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788352660; c=relaxed/simple;
-	bh=/fNEhStUrfNS7Jp/iVs9IDKTY22PttxfS1sUfr0lqcU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CaS3JBPTI+SxOxEfpEvOQTvCNuXL9wI+j9v7DAkMh0GgnAeAgLr/8V7h9uagP5rCGIqz4hluueglfov6xY8ZGqltXMVqOoTB65/sBpaPuJGsqfIGz06ZukFeK3a5l+6KkU72CvNR5s5DosjBHC8KysLTEsVOyhI7s3zFYsT2gzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MFJ7yO3a; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788352716; c=relaxed/simple;
+	bh=kCGseby/cvNqTQZnThWhwW7Zzz3wrVvCMPclZNwW0Gs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GQh31p8KjmSy0ZLreM3Zcjj/vq1zo3a1rEJFRQwkwPsfel4rAQuLS6QrXesyeKNj3Px9iR2VNjOrrWI2KwfBAL8CoB2qJKkltiL7zc0AK6g+J2CrBlmZ1b4iUhaFyuv/2vCtHHrHJgBYnUdMBhRbtO68Yg6zLfZLzU49oUqZNDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fL+eJOjc; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MFJ7yO3a"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 603E84E414CE;
-	Wed,  2 Sep 2026 12:37:35 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 317706053C;
-	Wed,  2 Sep 2026 12:37:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 751E911C79293;
-	Wed,  2 Sep 2026 14:37:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788352654; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=/fNEhStUrfNS7Jp/iVs9IDKTY22PttxfS1sUfr0lqcU=;
-	b=MFJ7yO3aZwqgTUJJCwP0uqVRmFD5d6DSyUeDPt8Muxq183aUIUVVDC0pjDXn4AP78vRjsb
-	8TlYiJ2vB4Ly8ePpdtOXSwkDSPr5i4s7xVD6OAlu3CXvuTRnwkFfCcbhI3Kd+s6Vcb39pn
-	RFBEl0OY8STYxBtXsuNtAsEx7/DEM41cyj3/WZeeT5qqAkNRXuEZRKzqpmMAnxQ2x4O4Yb
-	tWB1pC6XrNJ2O1DtyoDk4qGszIcdHXbAAkQJXz99eJ6pDFAJHe/MNWGipPo5zvoWwcabS/
-	FACQYkw5QG6kwcS1m+hx93+JksA6J6U3V/Bfi6LYDRvCDvj8a/HrjouVjGtCAg==
-Message-ID: <7140f146-643d-42d5-abca-88fc8697bba5@bootlin.com>
-Date: Wed, 2 Sep 2026 14:37:27 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fL+eJOjc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=zaRlwF56CM9F4rJ8UyK8kspioZcE1Mtz+dCysJmhYy4=; b=fL+eJOjctKWiFYasZP2IkkHM3U
+	pUkNtDrvtFqmclvkwR7D3jfUjgpAwmS5ZHe5ym4sk1/AiIkrcIZPB8sB7g9sfDZxrXdQNWUZhHFV4
+	QM2rbqaXw6xhZTiQU3ngK9H6j36WzW032/vhNzWlf+f00daA6DtUho/Vrh0KGxp0FWi8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x1kEN-002WCu-Kt; Wed, 02 Sep 2026 14:38:19 +0200
+Date: Wed, 2 Sep 2026 14:38:19 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next 1/2] netdevsim: add link speed support
+Message-ID: <9d9bad3a-a43d-47ad-b0d8-ba0878197ffc@lunn.ch>
+References: <20260831-nsim_speed-v1-0-7a651ee65738@kylinos.cn>
+ <20260831-nsim_speed-v1-1-7a651ee65738@kylinos.cn>
+ <53215678-05bb-4191-b5ff-aa236b16a96a@lunn.ch>
+ <apZzJDVtENpAluhT@fedora>
+ <18c7a000-97ad-459a-bb9c-5c821274e9f3@lunn.ch>
+ <apeBoyP1G93wW_VZ@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] net: stmmac: remove software VLAN tag stripping
-To: he.peilin@zte.com.cn, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- vbridgers2013@gmail.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Cc: jiang.kun2@zte.com.cn, xu.xin16@zte.com.cn
-References: <20260902173506784mJX3FrsAcjhcYqtGuZuxE@zte.com.cn>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260902173506784mJX3FrsAcjhcYqtGuZuxE@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <apeBoyP1G93wW_VZ@fedora>
 
-Hi,
+On Wed, Sep 02, 2026 at 09:53:39AM +0800, Hangbin Liu wrote:
+> On Tue, Sep 01, 2026 at 02:43:39PM +0200, Andrew Lunn wrote:
+> > On Tue, Sep 01, 2026 at 02:39:32PM +0800, Hangbin Liu wrote:
+> > > On Mon, Aug 31, 2026 at 02:16:46PM +0200, Andrew Lunn wrote:
+> > > > >  static void nsim_ethtool_ring_init(struct netdevsim *ns)
+> > > > > @@ -250,12 +276,16 @@ void nsim_ethtool_init(struct netdevsim *ns)
+> > > > >  	ns->ethtool.fec.active_fec = ETHTOOL_FEC_NONE;
+> > > > >  
+> > > > >  	ns->ethtool.channels = ns->nsim_bus_dev->num_queues;
+> > > > > +	ns->ethtool.duplex = DUPLEX_FULL;
+> > > > > +	ns->ethtool.speed = SPEED_5000;
+> > > > >  
+> > > > >  	ethtool = debugfs_create_dir("ethtool", ns->nsim_dev_port->ddir);
+> > > > >  	ns->ethtool_ddir = ethtool;
+> > > > >  
+> > > > >  	debugfs_create_u32("get_err", 0600, ethtool, &ns->ethtool.get_err);
+> > > > >  	debugfs_create_u32("set_err", 0600, ethtool, &ns->ethtool.set_err);
+> > > > > +	debugfs_create_u32("speed", 0600, ethtool, &ns->ethtool.speed);
+> > > > > +	debugfs_create_u8("duplex", 0600, ethtool, &ns->ethtool.duplex);
+> > > > 
+> > > > debugfs_create_bool() ?
+> > > 
+> > > I'm not sure if anyone want to set nsim duplex to unknown for testing.
+> > > Do you think that we should disable this behavior?
+> > 
+> > Ah, i did not think of DUPLEX_UNKNOWN.
+> > 
+> > We need to consider Jakubs reply, what are you actually testing here,
+> > do such tests make any sense?
+> 
+> I'm fixing a bug in bonding that need to test with different speed slaves.
+> So I add this feature for netdevsim.
 
-> -
-> - if ((vlan_proto == htons(ETH_P_8021Q) &&
-> - dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
-> - (vlan_proto == htons(ETH_P_8021AD) &&
-> - dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
-> - /* pop the vlan tag */
-> - vlanid = ntohs(veth->h_vlan_TCI);
-> - memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
-> - skb_pull(skb, VLAN_HLEN);
-> - __vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
-> - }
-The patch is all mangled and doesn't apply, something went wrong
-when generating/sending it :/
+That would of been useful to put into the commit message, after the
 
-Maxime
+---.
+
+Better still, create a self test for the bonding bug you have found,
+show that it fails. Then have the fix, and show that the self test
+then passes. That makes it a lot clearer why this change is useful,
+plus it gives us a regression test to ensure bonding does not break
+again.
+
+	Andrew
