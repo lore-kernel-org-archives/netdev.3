@@ -1,133 +1,248 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF1739CCFB
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 19:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788378215; cv=pass; b=TwMkTGVwf/NF4d8VmNMXqKZEHZ88RmNtluEDEnX1dFUbhGT7OS929iQ9JLE/8DxvkSCnwUy6mdT2bqxG5/9D3qGkSyVqAdknWCpqkYWFomS9iKtwOndaj/DxijuIIB9FizmlfZtjStGxuJefk3DfVzQqszaomEoZ5SORA6y5+JQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788378215; c=relaxed/simple;
-	bh=v13IBvJ3Cs5k45Op8zhzzynqZs/Da4H7F6eGXP4EZOo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hJr0SPaq9ec3JHr9IYOqtMecwG560PzB5kPn9w0Un2r72sf9hx3M3iXNMsHtZoaMA3m3k5pP4LT1q/iPEUHhKlLOpsPB60/W6soWO+N3A4349zNVqRA/9z2XXNB00XcH6IaVP6DZqisDeEErq/sX+EqqCuW0uZAGyFpsud7SLVQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=aYFA5tCO; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BF13B19BA
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 19:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788378233; cv=none; b=kFCl+Qq/ehwiSIRNMuQ0jwG4RvL+OKBxI/5bhcVNQ2Dv233pMInGeIToPKtQv9tZ4hs4X8jwRHUpkS8wPBaYk4Wr9ZKzhqfhG7ReKV2pFD39LtdZ20pt0SmxzzKSR1flvqPG56fGR1Ck6dlWWk6koF0EhtgNbykRg1iv/TG5FDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788378233; c=relaxed/simple;
+	bh=z9ApUZl4fkj3LpyyRfK1d2BUmDbSu2Ov7LfnnyjD2OM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TZ93Isr2mgQcCig58zrFctOpVKHya2ZW4fdwg0snQVnyGBU3FXQcBzlbRsbkHShkrv3xus3Tajlz+VhbS/h0lSAe0w6vo8U9TJmIU1UW+OtHJjQWu2Taky5Iy226+XHM0nxokS5aoH5Q9S/QamYcyrlLtu3XyjX9JWY4zrjpMwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jao6HQOz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="aYFA5tCO"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so1483802b3a.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 12:43:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788378196; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZJgQk95ezG+6KQ4olLfWgLNB93S4XNBWAS+OTdHj+8ocMdaV82ThJrN+kcRNHKWvNS
-         29q8dYNsAXjVxPmjJPbCPeabwHE9Gu0lkpmcxZFC9PTMi0zbGEfQnJilqJIgZ30Ux1VD
-         dN2QVM53xho4rJTlnKwmhn3nzTzzsSG/vxd8UiIfzx+bzby8ICweK3U7km5ZgJJ7e7Cg
-         XBHkp6MMcH4iR1DIddetuu7S4B429rlwm/WIMTIeoaIahtCyy97xmp44KaymWy7IKBqX
-         5gEoLHKg+mHYc3D40dRMY4wmBVowIUB67Bk5mbaq3hYomcDkCAARRGK9spOATQkWzGwH
-         laVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HZzgWfQ/86NrxOY8y/QdFfPZVfg39pEM5TlwSWapW24=;
-        fh=uRuF63zACNWM/AyVHFELnFymGuvgLbxakvhY/vkzmeA=;
-        b=PvhJeeziWuLFI0iTm97/IbiXOmd9MtXtR1+OgjhWyucwC1kh5dGl1vE9t8/uVFchDv
-         HahHgPE7kwiDiWaGDAi/zYtZbX7/yU1xtBXfG022V5cKu8NxgnDMZcAXzrNa96RKuWtR
-         onDbP8AiA1odQCv0YLD6lVwTFgUiqx8JCjbjOj9VrvBnCnSIq3Jx8q7GjyOzBnQACzhl
-         yzaNcdMlv3a5H6mfVDdg8w1X1h0C/4x4vTVdoDhsr/WkKS9KbvWX9MPhQ7CzMKfBmuGx
-         MCf03HlOMQfUjEO6PdhAPJcqKIpdQOamHAwOrW3CVsBpeVwWn6xpRUWacoYUmqB7xwrw
-         vHyQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1788378196; x=1788982996; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HZzgWfQ/86NrxOY8y/QdFfPZVfg39pEM5TlwSWapW24=;
-        b=aYFA5tCOZ5UjOiabbKf+4Li2QUBDULtgqc0UtYdMcN42FuRj6wzgCLFhAKAaI60NZg
-         7u1Eli49zAV6MQy2b78QDrhXqwsAAyzcu0FxEVwk7WavXov/6rxM2LcwYoEZz+y3+VJW
-         UPE1ELzTJgWxSva8X0e2e1NXkBo3cCfyVB0GIATavl2RU2ZDH7e8KvDWAqlS6L4lRWc7
-         K6dMtF07P92DD6er/SfN4xho3HHF40di7hzQcuudBqZKdhG7XH6aiNRsVxtH3VbzeKgV
-         MtP22v903BOORWOseI5xsYPMTLbzRrrQg9QhGLpbqq1N/BcLGnPT4dTtTl6qp/VcSKPD
-         sBvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378196; x=1788982996;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HZzgWfQ/86NrxOY8y/QdFfPZVfg39pEM5TlwSWapW24=;
-        b=Hn8uxZd5oGSDvtuE89vhjLcyFwVvU9ZnrctZVZDeR8YB8JgPDrD5Yhct5TPTbamb7D
-         s/R2zeBkTVCAjr2G7+kQ4lD9mlrksPcdcxOZYHS4Q03xTW+6k0FSnBmCfWRPbNeXvXV5
-         8D+HEuHoVwrYDxw2XHriYAFrFWK3P/vebxvWY5u95jDKo2PCviskt9eL5vg15s4j5YAp
-         +xYkt0cPt77wf1pg/VSYKvFyxFIh586PAe74krnC+491oHZ0zYxYkbrFV6yS7cyqMTh2
-         L5VSbRYa8/bS8pCRzHIs7ckCZqcBOPU+fHakJovVhcM8DGF/YD6OXRquyacbsyuiF2pw
-         OJzQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz/qN2dmzmy0JaXuaFtyXuIj3KaZpwV13MwoOMXMMIemXfisV84UwU3/nBHu+ETQ3J3TbatlU8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nKnYkUtM6dkvRYAqwT8BvpCee3i8pj01xwLzgBVnhfiXcKNZ/Y
-	zIZlmYHNyX3RJ84AUBhrsAI8n9F5O+k1+wKszqBJH7KHWibUKUqULqhvEFvrZMGmLzboI9bA4Dp
-	bQabORxLkX+VWEcMhHJAxtcU5Xz+gCREs5LjBQqq9
-X-Gm-Gg: AYBFou3g+drGkoFhi8Rr+vY9gpPIMfhXs9JKqz2N9ysq2XjUfmPInOphbTYoveExtJo
-	C68hjj7An5SCVkpnI918+mfPMtBtjry22UP+yBJZeeK6TGVp8Eu/6lrpMCUTCOlqi36W4c5TTFe
-	fRIRS7rNEw/a+v4ZjNqYcp15IrUUZxOeHk6BmXvrOESO63ytjlpuAfuUkeLdXS0eTVY6ZcPxziZ
-	zdWkoO+A1rvcSngY0SUbPC3MNPMljsA7Q9seK4uYeISJpByEWp/GA2u4XhE0o6To1jPhXYCy9wP
-	ft/y+5CylTo7PPMsRRTGxRNoDIMc4MITbMAPCkzxLXyF
-X-Received: by 2002:a05:6a21:2d04:b0:3d1:8876:fb1e with SMTP id
- adf61e73a8af0-3d9a9695714mr11592712637.0.1788378196405; Wed, 02 Sep 2026
- 12:43:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jao6HQOz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFB31F000E9;
+	Wed,  2 Sep 2026 19:43:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788378226;
+	bh=+vCh84D/9kPl/D06OTw5EDlP6cf17RH9TIt8F8Lfy14=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jao6HQOzm5QgANrpWRJtkemTbsLHMDtrV1P+9fcbIynjeT4ZckvZ6qbz9ycNFXvd9
+	 Tsq35yynxlIewSCYTDnrIGR63zi8wFQ0hnIBs7R0k4JLp8Jr3H2aBrspwMp8kCSEqx
+	 MzGnvR+VphBjRSwQEO+0L3nrboIrJhtV3LJmM5gF44mMWVDmsv9hrYqhBk+kPxu+lM
+	 H4zmFdFOWQSOHV+mxwIHZpUgXnmOri+7Z/Cps+nNK+lq6rlOYeI5wTllpFhvYVYDQY
+	 Y/f/TQGnR5SoORPBLUTeqhPx19gDVQ/KNXslorL6PbBnKjp89PPFBmy6zBGuf8XkBn
+	 KjmbQuH4+SC2A==
+Subject: Re: [net-next,v2,2/3] netdev: avoid skipping objects on race with
+ device disappearance
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ daniel@iogearbox.net, razor@blackwall.org, bobbyeshleman@meta.com,
+ sdf@fomichev.me, joe@dama.to
+Date: Wed, 02 Sep 2026 19:43:45 +0000
+Message-ID: <178837822544.3394541.8986948577168153795@kernel.org>
+In-Reply-To: <20260831164159.1124679-3-kuba@kernel.org>
+References: <20260831164159.1124679-3-kuba@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
- <20260831110934.241898-2-a.s.protopopov@gmail.com> <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
- <apbU8-fpioNIwUA8@mail.gmail.com> <CAHC9VhQbWPqEz5g1rVcMyJgrzzd4cQuwi7cddgJQK1H3ugMz7A@mail.gmail.com>
- <aphBNqQK0JeVy5Sm@mail.gmail.com>
-In-Reply-To: <aphBNqQK0JeVy5Sm@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 2 Sep 2026 15:43:04 -0400
-X-Gm-Features: AcwNN1XYNCXydNpNM6ZU2Rnek6l8sLmm3paMheXeGevlLusJ85KkWm2it_ZUJS0
-Message-ID: <CAHC9VhREB2krVp9XkV6Psp4PWhYT14281+1TQUZL7o+GTo1cXQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 1/7] bpf: Allow BPF LSM programs to attach to
- more hooks
-To: Anton Protopopov <a.s.protopopov@gmail.com>
-Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, KP Singh <kpsingh@kernel.org>, 
-	Matt Bobrowski <matt@bobrowski.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Christian Brauner <brauner@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 2, 2026 at 11:20=E2=80=AFAM Anton Protopopov
-<a.s.protopopov@gmail.com> wrote:
-> On 26/09/01 06:15PM, Paul Moore wrote:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-...
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-> > The core issue has little to do with BPF, it has everything to do with
-> > in-tree vs out-of-tree code.  The BPF LSM is explicitly mentioned as a
-> > "pass through" because some have argued that the BPF LSM is in-tree,
-> > and while the basic BPF enablement is in-tree, the actual LSM code
-> > that is executed has thus far always been out-of-tree.
->
-> Yes, the actual code isn't, but all the building blocks are.
-> The BPF is just a sophisticated policy language, in which,
-> given, say, ethtool hooks are present, one can say "block
-> all ethtool ETHTOOL_TEST_CMD calls for the XXX driver" or so.
->
-> Is there any way into turning BPF first-class citizen from LSMs
-> point of view?
+- [Medium] Incomplete fix across the netdev generic-netlink family:
+  netdev_nl_page_pool_get_dump() in net/core/page_pool_user.c (backing…
+- [Medium] The new continuation logic identifies the resumed device only
+  by its numeric ifindex (ctx->ifindex != start_ifindex).
+- [Low] Commit message / provenance: the patch fixes a real user-visible
+  dump-correctness bug (a netdev-genl dump can silently omit…
 
-As I said earlier, the important part is in-tree vs out-of-tree code.
-We are not going to add new LSM hooks only for code that lives outside
-the kernel sources, regardless of whether that code is written in C,
-Rust, or BPF.
+--
 
---=20
-paul-moore.com
+netdev: avoid skipping objects on race with device disappearance
+
+The dumpit handlers for napi-get, queue-get and qstats-get now snapshot
+ctx->ifindex before iterating and only clear the sub-object cursor
+(ctx->napi_id, ctx->rxq_idx, ctx->txq_idx) when the iterator has moved
+to a different ifindex, instead of clearing it after each device.  The
+unconditional reset at the end of netdev_nl_stats_by_queue() is dropped.
+
+No Link: tags in the commit header.
+
+[Severity: Low]
+
+The commit message says:
+
+    If the currently dumped device disappears while we were mid-dump
+    we will get the next device without resetting the sub-object ID.
+
+Since the effect of that is a dump that silently omits the NAPIs, queues
+or per-queue stats rows of the device following the one that went away,
+should this carry a Fixes: tag for the commits that introduced the
+per-device cursor reset in netdev_nl_napi_get_dumpit(),
+netdev_nl_queue_get_dumpit() and netdev_nl_qstats_get_dumpit()?
+
+The message does state "This is quite unlikely, it was reported by an AI
+tool not a real user. Let's fix it for better dump consistency.", so if
+skipping stable is intentional then this is only a question about making
+the provenance explicit.
+
+> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+> index 04dcd7fc614e1..e427bab4c4d2e 100644
+> --- a/net/core/netdev-genl.c
+> +++ b/net/core/netdev-genl.c
+> @@ -312,11 +312,14 @@ int netdev_nl_napi_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>  			err = -ENODEV;
+>  		}
+>  	} else {
+> +		unsigned long start_ifindex = ctx->ifindex;
+> +
+>  		for_each_netdev_lock_scoped(net, netdev, ctx->ifindex) {
+> +			if (ctx->ifindex != start_ifindex)
+> +				ctx->napi_id = 0;
+
+[Severity: Medium]
+
+Is the numeric ifindex enough to establish that the resumed device is
+the same object we stopped inside?
+
+Between two dumpit invocations the per-device lock taken by
+for_each_netdev_lock_scoped() is dropped by the __free() cleanup in
+net/core/dev.h, and nothing pins the device or its index.  A different
+device can take over the same index in that window, because a requested
+non-zero index is accepted directly in dev_index_reserve():
+
+net/core/dev.c:dev_index_reserve() {
+	...
+	if (!ifindex)
+		err = xa_alloc_cyclic(&net->dev_by_index, &ifindex, NULL,
+				      xa_limit_31b, &net->ifindex, GFP_KERNEL);
+	else
+		err = xa_insert(&net->dev_by_index, ifindex, NULL, GFP_KERNEL);
+	...
+}
+
+and rtnl_newlink_create() then assigns it:
+
+net/core/rtnetlink.c:rtnl_newlink_create() {
+	...
+	dev->ifindex = ifm->ifi_index;
+	...
+}
+
+A device moved in from another netns can also keep its index.  In that
+case ctx->ifindex == start_ifindex, the reset is skipped, and the old
+device's cursor is applied to the replacement device:
+
+net/core/netdev-genl.c:netdev_nl_napi_dump_one() {
+	...
+		if (ctx->napi_id && napi->napi_id >= ctx->napi_id)
+			continue;
+	...
+}
+
+A freshly created device gets higher napi ids, so would every NAPI of
+the replacement device be filtered out here?  The same applies to the
+queue-get and qstats-get hunks below, where the stale ctx->rxq_idx /
+ctx->txq_idx would cause the replacement device's low-numbered queues to
+never be reported.
+
+Would keying the reset on something other than the raw ifindex, or
+invalidating the sub-cursor whenever object identity cannot be proven
+(for example a dump generation counter plus NLM_F_DUMP_INTR), close this
+remaining case?
+
+>  			err = netdev_nl_napi_dump_one(netdev, skb, info, ctx);
+>  			if (err < 0)
+>  				break;
+> -			ctx->napi_id = 0;
+>  		}
+>  	}
+>  
+> @@ -636,13 +639,17 @@ int netdev_nl_queue_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+>  			err = -ENODEV;
+>  		}
+>  	} else {
+> +		unsigned long start_ifindex = ctx->ifindex;
+> +
+>  		for_each_netdev_lock_ops_compat_scoped(net, netdev,
+>  						       ctx->ifindex) {
+> +			if (ctx->ifindex != start_ifindex) {
+> +				ctx->rxq_idx = 0;
+> +				ctx->txq_idx = 0;
+> +			}
+>  			err = netdev_nl_queue_dump_one(netdev, skb, info, ctx);
+>  			if (err < 0)
+>  				break;
+> -			ctx->rxq_idx = 0;
+> -			ctx->txq_idx = 0;
+>  		}
+>  	}
+>  
+
+[ ... ]
+
+> @@ -936,7 +942,13 @@ int netdev_nl_qstats_get_dumpit(struct sk_buff *skb,
+>  		return err;
+>  	}
+>  
+> +	start_ifindex = ctx->ifindex;
+> +
+>  	for_each_netdev_lock_ops_compat_scoped(net, netdev, ctx->ifindex) {
+> +		if (ctx->ifindex != start_ifindex) {
+> +			ctx->rxq_idx = 0;
+> +			ctx->txq_idx = 0;
+> +		}
+>  		err = netdev_nl_qstats_get_dump_one(netdev, scope, skb,
+>  						    info, ctx);
+>  		if (err < 0)
+
+[Severity: Medium]
+
+Should netdev_nl_page_pool_get_dump() in net/core/page_pool_user.c get
+the same treatment?  It backs page-pool-get and page-pool-stats-get in
+the same netdev family and still uses the idiom this patch replaces:
+
+net/core/page_pool_user.c:netdev_nl_page_pool_get_dump() {
+	...
+	for_each_netdev_dump(net, netdev, state->ifindex) {
+		...
+		hlist_for_each_entry(pool, &netdev->page_pools, user.list) {
+			if (state->pp_id && state->pp_id < pool->user.id)
+				continue;
+
+			state->pp_id = pool->user.id;
+			err = fill(skb, pool, info);
+			if (err)
+				goto out;
+		}
+
+		state->pp_id = 0;
+	}
+out:
+	...
+}
+
+The "state->pp_id = 0" is bypassed by the goto out taken when fill()
+returns -EMSGSIZE, which is the normal dump continuation path.  If the
+device is unregistered before the next recvmsg(), for_each_netdev_dump()
+lands on the following device while state->pp_id still holds the
+previous device's page-pool id.
+
+Since ids come from xa_alloc_cyclic() in page_pool_list():
+
+net/core/page_pool_user.c:page_pool_list() {
+	...
+	err = xa_alloc_cyclic(&page_pools, &pool->user.id, pool, xa_limit_32b,
+			      &id_alloc_next, GFP_KERNEL);
+	...
+}
+
+they grow monotonically, so would the "state->pp_id < pool->user.id"
+test then silently skip every page pool of the new device?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831164159.1124679-1-kuba%40kernel.org
