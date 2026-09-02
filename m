@@ -1,544 +1,423 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16F395ACC
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1194B4AA595;
+	Wed,  2 Sep 2026 20:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788380286; cv=none; b=MgEXVW7j2xSImm+UnVmZAb9gCT3eS4nw+Eo6QVqS8DTD8ySVX+PbH+3XfCIjjenLmoWyc3QHfFXzDgnFXNJ5wMJL1Yo3YvZWsZkH8T8M/yL26L5b0IV53UKbSPmnA8Uqq8G3cgJgkF1qHO/FO5Kb4SxDuyNeDwswv4DdU5k5/hY=
+	t=1788380297; cv=none; b=g9yXOh3gqSO18MEGdXAo9mtIPcEm+N0dfXSvI41f1hhPMxbj3pOJM3zt4XsooaE+z3HR3hW0sLH+5hz6QLjwK0biodICp+9xq1M/nz3zB1h7K9laVIWj12jisKPNytyI3jveazTWZ0XSBxQCMBqMJ9mrchqKWDW+1wnvrfRG6/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788380286; c=relaxed/simple;
-	bh=nFxZoL8X1JqmLeavgnZ7iJeUzTYIv1IFELQUjfYADQc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k+9Fsf4r1c/QMTzLiqw23hz1pOQhr6gjvmT3veA9qkNiImQhNUSCLJ56PDrtKKB+WYEPnTSotdlPpWrif4e/DumXXSBWinoLkKfiuSCeBTG2bdcuJ3gv9QKjgZ0BXBW8UhRzuG7b6uAEThYsZ0MB4ReA2PNYhC2j3aWvUsfBWTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=H7aZ0vC3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VRDtGlzs; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788380297; c=relaxed/simple;
+	bh=AiMpsQKRSyW9p3QmVE+GV+W6pXWXt1nNQlMgTFD3klw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=siqzUpom+Cbl1P1i15n7ROuyQoiPOXcG4jBCHpEoXIX/qUr56Q2sUCDj83PZlqm8FufD0ocBOEZiMusiJCIcrqxJrzOfbSqFryScyRBqsA2zV4JUZT/O67sihecOxqpS7yw2FRblv9xPJVokpOwj0pIueEALUNc3Yj64mchTcrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uf4oyFBZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="H7aZ0vC3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VRDtGlzs"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682KHFtk2797235
-	for <netdev@vger.kernel.org>; Wed, 2 Sep 2026 20:18:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	efI1FvVtE+b3ucJ7UkFRdJEgMJPTTh0ZxSFaMrEjJSM=; b=H7aZ0vC3hKr6fW4u
-	a2QKtX1ydF6rUcEtnvzQ3p0SE+VcdllxtYSFcwb5+WvVdxF4aDyRVU8CA+JHOKuV
-	+zaQc8oZZY58hN+R4TH2Zf7Yv7jK7nDHTkmftHwYiAGV3Z7uLX44WK5WXYEXxYTz
-	5kEprpFr8VLmufVcG3TO1LI8aASfNOXGCgAPRxUSM4LEWp29r14EcsMJIRdbkBGN
-	K23AjPRm59+WAMaw7pF+LluWVEsgday52WXPrkCO56E8YNirT18l5CF/GpmQGQHE
-	HprT4AmO4YKVwxTsn1BibBg5PGM5NWPAXdPPNMcpPaQES2l1s7mgITbVlpunu+qE
-	QEdieA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gemjh9qfh-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 20:18:03 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-938153538caso312174185a.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:18:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788380282; x=1788985082; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=efI1FvVtE+b3ucJ7UkFRdJEgMJPTTh0ZxSFaMrEjJSM=;
-        b=VRDtGlzsA07+/oxDRBH+AUTMLOvnozn/f7dlOe5G5R1BZJXANWvGe9v8nBApnuvM8w
-         1lFT2bTQ4qlbHKpaFVWeVFCyuGPQs99gBbfnN1Zx8vXgdYMq5O4oS9fx26OwqgjMVCCW
-         w1U3Ddaf9zosxi4l25/M5icRPwiKWvAcJFTIi4x5TkS8LfWd9oyQMl53tXTn0G4DVJQW
-         S1j8WIzIXtONtgqk+1anAlUHYnER9z6Kn8lo2Y+kVxbp2QHITKsNz8U42uqNL6f7AB0k
-         HzMbDYy6dTuHD+ghr+MeDcQa++8qtJZn+rHRikR7i9FUt6/zvlZo2PjYVHEMqkbeTyJj
-         6EPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788380282; x=1788985082;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=efI1FvVtE+b3ucJ7UkFRdJEgMJPTTh0ZxSFaMrEjJSM=;
-        b=sdQCQ2Z+6G3CKfxfN86mZOTF+4UsZZrUX3mkQt6Sz0FRZ7o9wDNSxHdqyJcNJHjJH8
-         bAJHViuYauXga08gTUCNKJrBOv6yP+VGFyUc6HJriRXsjW8jkAaJK/j8M6/KLUfvcmVQ
-         3rYG0ZasmtqZQ+wPWESXaNeVgO9puY7T82X524KLUL0HSVworUctEuzWH+d+cQzflDgA
-         C6AVH2AVkFN+UZ0hUw899N6FOBKjqsuNUaByAXRR36wwjb2oxrTpZzC8ChVyFNx/WCOD
-         TQvg+n2Gl+DyB/H4IoW2Sj1PAs9t5n7dAbyV0babdaEDH/hXNg3fY1yP8aPLZF9IOuux
-         2IEQ==
-X-Gm-Message-State: AFuF++noKYAoHu3QOBiN3MB63Sv2mCgvDipj7Drz4oT0GrUi++786cCQ
-	i1sNAGGNHxpbxCNGf7wQqO5YEOjqJ2UFY4KEZfJc+Be4vJkSUp0It8weSt0DEkISVG7QHXoQ9qy
-	72jivggH5xQACVk0P/4NUaRVmsInevVdrZylBMxAyPFZZsJO+wMv698QKIOEycAzP5R8=
-X-Gm-Gg: AYBFou3gx5xUltGR52iTFUDODODYRw8WolGZyoad4bme1hE1RF6I8ukofDNJOJGvtv3
-	g+BWMHErR4N7BGU9e7SAa8VgrN/iey2doSok/FNIifimJVIuFacve3WQS10ksxOPJIDsMyBzqgM
-	qEqPnpAW9nrydw1WAShwp255AukR9Jhogz6suEWPyN77qlbFF0peLSVVAPylntSwNYuWFjgtZBr
-	uecOybiMwMjKoClrHUAkq8TuAbn25Nms8CNejVkv7v7qxR8RpU6ldojENPG94qS6nvF86nH9lsI
-	ewXinMbBM/WDcru8jz7rwwskXjXLeVmZW63xt+rYOYQoTOgL/60y0kc55SsOblAi3LioPPDGMXz
-	A1r3qJ/Ujx1JMJg==
-X-Received: by 2002:a05:620a:ec4:b0:939:6df9:6547 with SMTP id af79cd13be357-9396df968e6mr148816685a.51.1788380277444;
-        Wed, 02 Sep 2026 13:17:57 -0700 (PDT)
-X-Received: by 2002:a05:620a:ec4:b0:939:6df9:6547 with SMTP id af79cd13be357-9396df968e6mr148808485a.51.1788380276690;
-        Wed, 02 Sep 2026 13:17:56 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d9db2sm16618865e9.8.2026.09.02.13.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 13:17:55 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Wed, 02 Sep 2026 22:15:44 +0200
-Subject: [PATCH net v3 4/4] net: stmmac: re-apply taprio offload in
- __stmmac_open() and stmmac_resume()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uf4oyFBZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF411F000E9;
+	Wed,  2 Sep 2026 20:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788380295;
+	bh=A8rlIDdIOWg5m9AdylGBKk63i17vSwszE6f5FVlv1g8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Uf4oyFBZtRfV0T7EeDICXwiKQYqJnJn0l61KgcbWS/4Z0JeY3S8SJtyIgTFb8TNuV
+	 fG+TONzGdJJbWvw8dtrHJ91NNP0krWe+oOSVSRKz29cOGDAACaQLL7ZP4Ez8mBZ6BN
+	 pnwhiFSnGBEFg+8ueG45EIUymTtlu5rc9v2c7EO7j6Op7NWi8PH8R6IEuJkGLVA7qV
+	 gmRZwAjtMigknkL8H2eUkmrQ5WYJmWiY2hClNvERS+EkChDj/7IbgAdUWU27m3MEDj
+	 3j8MhhV1rM9mvS6lTHXgPNJTDdzEaiVvxsh8hkHhgv8tO/deVkgg79RLmGK7VOjL0J
+	 9Foygr88sDIOw==
+From: Simon Horman <horms@kernel.org>
+To: rosenp@gmail.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	claudiu.manoil@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: gianfar: handle startup_gfar failure and fix double free
+Date: Wed,  2 Sep 2026 21:18:01 +0100
+Message-ID: <20260902201803.546034-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260828222051.77604-1-rosenp@gmail.com>
+References: <20260828222051.77604-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-stmmac-est-reapply-after-open-v3-4-e72a6df5a7ef@oss.qualcomm.com>
-References: <20260902-stmmac-est-reapply-after-open-v3-0-e72a6df5a7ef@oss.qualcomm.com>
-In-Reply-To: <20260902-stmmac-est-reapply-after-open-v3-0-e72a6df5a7ef@oss.qualcomm.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Rayagond Kokatanur <rayagond@vayavyalabs.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-GUID: 682QZ9IYM42DUpR-prks9sVHk91MPK9E
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDE3OSBTYWx0ZWRfX33P9YatjZMdK
- rn/g8ZOftkkzr2e0WWiz/uTCkZQq2ZlZdf+BC0m5rtTJhHG5D5CF+xJCh6CEpoIY3CB3+D86Czt
- I10f3A4IO6s21vdthB5We4XSU9200/5KiMAWwsxUW5ranXKVvWo04cf1/HM/OZaWahH9M6Zu/r5
- k1CGM4sd36pBDEj6hTfp4SlmStoIoPd3cLiPcMS4XbmIXX5hzFn9YgTaGcBGEoneOWYvm8UGfrQ
- Cg8VKisOZ9ZOsMCOo7g2Z7i1xuapElE1aVPbFZR31fbuTN7LlnxBBrO40HtMBs8j2Vue+A/5s4z
- gqzS6TdMSQaJySw/hYP4VNp5IHwi6Cr10kmWHHYKrP2qwhfyERsPxaQj+IPuPP1+QVI7wnMLoia
- GuI5Wrd8/OGFNPI95PkivdT4QoXFYOK2nIwYAPKL6+3HUCC7Dlv/PMJtxkIWV7hfbv3UAWKmTlv
- SPEE480einUu3DGHw5Q==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDE3OSBTYWx0ZWRfX1ZWDKe2Ss0s6
- 4YxunjuzcEr9pjGw0XK1BGPQrouzc0+qLZN2eHmXrtjc50Sk+lH7IzzqDPo/5q5GHfoxKjA7YhK
- X9/RYLfBoUA27iR8f/5ucg7AMz2w5WQ=
-X-Authority-Analysis: v=2.4 cv=ErHiaycA c=1 sm=1 tr=0 ts=6a98847b cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=P-IC7800AAAA:8 a=EUspDBNiAAAA:8 a=JpBpa1p7AAAA:8 a=DNwXZpNFxi9TDD9oO0cA:9
- a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22 a=d3PnA9EDa4IxuAV0gXij:22
- a=YCh05so4W2E6r1tszMC6:22
-X-Proofpoint-ORIG-GUID: 682QZ9IYM42DUpR-prks9sVHk91MPK9E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_05,2026-09-02_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 adultscore=0 malwarescore=0 spamscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609020179
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The core soft reset issued in stmmac_init_dma_engine() clears the
-MTL_EST registers, but nothing re-applies the taprio offload after it:
-priv->est.enable stays true while the hardware EST block is left
-disabled. The TX/XDP paths then keep dropping frames larger than
-priv->est.max_sdu[] and taprio is reported as offloaded, although the
-EST block is not programmed.
-
-Re-apply the taprio offload in __stmmac_open() and stmmac_resume()
-after PTP is up. The base time is recomputed from the reserved base
-time and the current PTP time, since the timestamp counter has been
-re-initialized and the previously programmed base time is stale.
-Introduce the stmmac_setup_est utility routine.
-
-While at it, make the EST enable state transition atomic with the
-hardware programming: pass the desired enable state explicitly to
-est_configure() and hold est_lock across the whole configure sequence
-in tc_taprio_configure(), so that the software enable flag and the
-hardware state transition atomically. Moreover, priv->est.enable is
-only set once the hardware has been programmed successfully, and any
-failure path disables EST before returning. This also fixes the stale
-HW schedule left behind when a REPLACE fails validation, since priv->est
-is no longer wiped before the new schedule is known to be valid.
-
-Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828222051.77604-1-rosenp@gmail.com?part=1
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_est.c  |  30 +++++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_est.h  |  13 +++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  13 +++
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  |  35 ++------
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 101 ++++++++++++----------
- 5 files changed, 116 insertions(+), 76 deletions(-)
+net: gianfar: handle startup_gfar failure and fix double free
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-index f15d4d046aa7..49edfebbc39e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-@@ -80,6 +80,36 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
- 	return 0;
- }
- 
-+int __stmmac_setup_est(struct stmmac_priv *priv)
-+{
-+	struct timespec64 current_time, time;
-+	ktime_t current_time_ns, basetime;
-+	u64 cycle_time;
-+	int err;
-+
-+	lockdep_assert_held(&priv->est_lock);
-+
-+	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-+	current_time_ns = timespec64_to_ktime(current_time);
-+
-+	time.tv_nsec = priv->est.btr_reserve[0];
-+	time.tv_sec = priv->est.btr_reserve[1];
-+	basetime = timespec64_to_ktime(time);
-+
-+	cycle_time = (u64)priv->est.ctr[1] * NSEC_PER_SEC + priv->est.ctr[0];
-+
-+	time = stmmac_calc_tas_basetime(basetime, current_time_ns, cycle_time);
-+	priv->est.btr[0] = (u32)time.tv_nsec;
-+	priv->est.btr[1] = (u32)time.tv_sec;
-+
-+	err = stmmac_est_configure(priv, priv, &priv->est,
-+				   priv->plat->clk_ptp_rate, true);
-+	if (err)
-+		netdev_err(priv->dev, "failed to re-configure EST\n");
-+
-+	return err;
-+}
-+
- static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
- 			   struct stmmac_extra_stats *x, u32 txqcnt)
- {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-index f70221c9c84a..b4d1a1f04f10 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
-@@ -65,3 +65,16 @@
- #define EST_GCL_DATA			0x00000034
- 
- extern const struct stmmac_est_ops dwmac510_est_ops;
-+
-+int __stmmac_setup_est(struct stmmac_priv *priv);
-+static inline int stmmac_setup_est(struct stmmac_priv *priv)
-+{
-+	int ret = 0;
-+
-+	mutex_lock(&priv->est_lock);
-+	if (priv->est.enable)
-+		ret = __stmmac_setup_est(priv);
-+	mutex_unlock(&priv->est_lock);
-+
-+	return ret;
-+}
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a9fb15bdda43..c4d353948347 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -48,6 +48,7 @@
- #include "stmmac_ptp.h"
- #include "stmmac_fpe.h"
- #include "stmmac.h"
-+#include "stmmac_est.h"
- #include "stmmac_pcs.h"
- #include "stmmac_xdp.h"
- #include <linux/reset.h>
-@@ -4168,6 +4169,13 @@ static int __stmmac_open(struct net_device *dev,
- 	if (ret)
- 		goto ptp_error;
- 
-+	/* The core soft reset in stmmac_hw_setup() clears the MTL_EST
-+	 * registers, so re-apply the taprio offload after PTP is up.
-+	 */
-+	ret = stmmac_setup_est(priv);
-+	if (ret < 0)
-+		goto est_error;
-+
- 	stmmac_init_coalesce(priv);
- 
- 	phylink_start(priv->phylink);
-@@ -4189,6 +4197,7 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
- 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
-+est_error:
- 	stmmac_release_ptp(priv);
- ptp_error:
- 	stmmac_stop_all_dma(priv);
-@@ -8336,6 +8345,10 @@ int stmmac_resume(struct device *dev)
- 	if (ret)
- 		goto error_stop_dma;
- 
-+	ret = stmmac_setup_est(priv);
-+	if (ret < 0)
-+		goto error_stop_dma;
-+
- 	stmmac_init_coalesce(priv);
- 	phylink_rx_clk_stop_block(priv->phylink);
- 	stmmac_set_rx_mode(ndev);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-index 4869827670c8..8f3a90df3178 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-@@ -8,6 +8,7 @@
-   Author: Rayagond Kokatanur <rayagond@vayavyalabs.com>
- *******************************************************************************/
- #include "stmmac.h"
-+#include "stmmac_est.h"
- #include "stmmac_ptp.h"
- 
- #define PTP_SAFE_TIME_OFFSET_NS	500000
-@@ -55,7 +56,6 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
- 	u32 quotient, reminder;
- 	int neg_adj = 0;
- 	bool xmac, est_rst = false;
--	int ret;
- 
- 	xmac = dwmac_is_xmac(priv->plat->core_type);
- 
-@@ -69,46 +69,21 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
- 	nsec = reminder;
- 
- 	/* If EST is enabled, disabled it before adjust ptp time. */
-+	mutex_lock(&priv->est_lock);
- 	if (priv->est.enable) {
- 		est_rst = true;
--		mutex_lock(&priv->est_lock);
--		priv->est.enable = false;
- 		stmmac_est_configure(priv, priv, &priv->est,
- 				     priv->plat->clk_ptp_rate, false);
--		mutex_unlock(&priv->est_lock);
- 	}
-+	mutex_unlock(&priv->est_lock);
- 
- 	write_lock_irqsave(&priv->ptp_lock, flags);
- 	stmmac_adjust_systime(priv, priv->ptpaddr, sec, nsec, neg_adj, xmac);
- 	write_unlock_irqrestore(&priv->ptp_lock, flags);
- 
- 	/* Calculate new basetime and re-configured EST after PTP time adjust. */
--	if (est_rst) {
--		struct timespec64 current_time, time;
--		ktime_t current_time_ns, basetime;
--		u64 cycle_time;
--
--		mutex_lock(&priv->est_lock);
--		priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
--		current_time_ns = timespec64_to_ktime(current_time);
--		time.tv_nsec = priv->est.btr_reserve[0];
--		time.tv_sec = priv->est.btr_reserve[1];
--		basetime = timespec64_to_ktime(time);
--		cycle_time = (u64)priv->est.ctr[1] * NSEC_PER_SEC +
--			     priv->est.ctr[0];
--		time = stmmac_calc_tas_basetime(basetime,
--						current_time_ns,
--						cycle_time);
--
--		priv->est.btr[0] = (u32)time.tv_nsec;
--		priv->est.btr[1] = (u32)time.tv_sec;
--		priv->est.enable = true;
--		ret = stmmac_est_configure(priv, priv, &priv->est,
--					   priv->plat->clk_ptp_rate, true);
--		mutex_unlock(&priv->est_lock);
--		if (ret)
--			netdev_err(priv->dev, "failed to configure EST\n");
--	}
-+	if (est_rst)
-+		stmmac_setup_est(priv);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index be48bcabdadc..9745c9bae33c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -10,6 +10,7 @@
- #include "dwmac4.h"
- #include "dwmac5.h"
- #include "stmmac.h"
-+#include "stmmac_est.h"
- 
- static void tc_fill_all_pass_entry(struct stmmac_tc_entry *entry)
- {
-@@ -968,10 +969,10 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- {
- 	u32 size, wid = priv->dma_cap.estwid, dep = priv->dma_cap.estdep;
- 	struct netlink_ext_ack *extack = qopt->mqprio.extack;
--	struct timespec64 time, current_time, qopt_time;
--	ktime_t current_time_ns;
-+	u64 ctr = qopt->cycle_time;
-+	struct timespec64 time;
-+	u32 *gcl = NULL;
- 	int i, ret = 0;
--	u64 ctr;
- 
- 	if (qopt->base_time < 0)
- 		return -ERANGE;
-@@ -979,6 +980,9 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- 	if (!priv->dma_cap.estsel)
- 		return -EOPNOTSUPP;
- 
-+	if (ctr > (u64)U32_MAX * NSEC_PER_SEC)
-+		return -ERANGE;
-+
- 	switch (wid) {
- 	case 0x1:
- 		wid = 16;
-@@ -1013,35 +1017,45 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	mutex_lock(&priv->est_lock);
-+
- 	if (qopt->cmd == TAPRIO_CMD_DESTROY)
- 		goto disable;
- 
--	if (qopt->num_entries > dep)
--		return -EINVAL;
--	if (!qopt->cycle_time)
--		return -ERANGE;
--	if (qopt->cycle_time_extension >= BIT(wid + 7))
--		return -ERANGE;
-+	if (qopt->num_entries > dep) {
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
- 
--	mutex_lock(&priv->est_lock);
--	memset(&priv->est, 0, sizeof(priv->est));
--	mutex_unlock(&priv->est_lock);
-+	if (!qopt->cycle_time) {
-+		ret = -ERANGE;
-+		goto unlock;
-+	}
- 
--	size = qopt->num_entries;
-+	if (qopt->cycle_time_extension >= BIT(wid + 7)) {
-+		ret = -ERANGE;
-+		goto unlock;
-+	}
- 
--	mutex_lock(&priv->est_lock);
--	priv->est.gcl_size = size;
--	priv->est.enable = qopt->cmd == TAPRIO_CMD_REPLACE;
--	mutex_unlock(&priv->est_lock);
-+	gcl = kzalloc(sizeof(*gcl) * EST_GCL, GFP_KERNEL);
-+	if (!gcl) {
-+		ret = -ENOMEM;
-+		goto unlock;
-+	}
- 
-+	size = qopt->num_entries;
- 	for (i = 0; i < size; i++) {
- 		s64 delta_ns = qopt->entries[i].interval;
- 		u32 gates = qopt->entries[i].gate_mask;
- 
--		if (delta_ns > GENMASK(wid - 1, 0))
--			return -ERANGE;
--		if (gates > GENMASK(31 - wid, 0))
--			return -ERANGE;
-+		if (delta_ns > GENMASK(wid - 1, 0)) {
-+			ret = -ERANGE;
-+			goto free_gcl;
-+		}
-+		if (gates > GENMASK(31 - wid, 0)) {
-+			ret = -ERANGE;
-+			goto free_gcl;
-+		}
- 
- 		switch (qopt->entries[i].command) {
- 		case TC_TAPRIO_CMD_SET_GATES:
-@@ -1053,51 +1067,44 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- 			gates &= ~BIT(0);
- 			break;
- 		default:
--			return -EOPNOTSUPP;
-+			ret = -EOPNOTSUPP;
-+			goto free_gcl;
- 		}
- 
--		priv->est.gcl[i] = delta_ns | (gates << wid);
-+		gcl[i] = delta_ns | (gates << wid);
- 	}
- 
--	mutex_lock(&priv->est_lock);
--	/* Adjust for real system time */
--	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
--	current_time_ns = timespec64_to_ktime(current_time);
--	time = stmmac_calc_tas_basetime(qopt->base_time, current_time_ns,
--					qopt->cycle_time);
--
--	priv->est.btr[0] = (u32)time.tv_nsec;
--	priv->est.btr[1] = (u32)time.tv_sec;
-+	memset(&priv->est, 0, sizeof(priv->est));
-+	memcpy(priv->est.gcl, gcl, sizeof(priv->est.gcl));
-+	priv->est.gcl_size = size;
- 
--	qopt_time = ktime_to_timespec64(qopt->base_time);
--	priv->est.btr_reserve[0] = (u32)qopt_time.tv_nsec;
--	priv->est.btr_reserve[1] = (u32)qopt_time.tv_sec;
-+	time = ktime_to_timespec64(qopt->base_time);
-+	priv->est.btr_reserve[0] = (u32)time.tv_nsec;
-+	priv->est.btr_reserve[1] = (u32)time.tv_sec;
- 
--	ctr = qopt->cycle_time;
- 	priv->est.ctr[0] = do_div(ctr, NSEC_PER_SEC);
- 	priv->est.ctr[1] = (u32)ctr;
- 
- 	priv->est.ter = qopt->cycle_time_extension;
--
- 	tc_taprio_map_maxsdu_txq(priv, qopt);
- 
--	ret = stmmac_est_configure(priv, priv, &priv->est,
--				   priv->plat->clk_ptp_rate, true);
--	mutex_unlock(&priv->est_lock);
--	if (ret) {
--		netdev_err(priv->dev, "failed to configure EST\n");
-+	ret = __stmmac_setup_est(priv);
-+	if (ret)
- 		goto disable;
--	}
- 
- 	ret = stmmac_fpe_map_preemption_class(priv, priv->dev, extack,
- 					      qopt->mqprio.preemptible_tcs);
- 	if (ret)
- 		goto disable;
- 
-+	priv->est.enable = true;
-+	kfree(gcl);
-+
-+	mutex_unlock(&priv->est_lock);
-+
- 	return 0;
- 
- disable:
--	mutex_lock(&priv->est_lock);
- 	priv->est.enable = false;
- 	stmmac_est_configure(priv, priv, &priv->est,
- 			     priv->plat->clk_ptp_rate, false);
-@@ -1107,9 +1114,11 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
- 		priv->xstats.mtl_est_txq_hlbf[i] = 0;
- 		priv->xstats.mtl_est_txq_hlbs[i] = 0;
- 	}
--	mutex_unlock(&priv->est_lock);
--
- 	stmmac_fpe_map_preemption_class(priv, priv->dev, extack, 0);
-+free_gcl:
-+	kfree(gcl);
-+unlock:
-+	mutex_unlock(&priv->est_lock);
- 
- 	return ret;
- }
+This makes reset_gfar() return an int and propagates the startup_gfar()
+error out of reset_gfar() and gfar_change_mtu(), and adds a
+tx_bd_base test plus NULLing of the descriptor-ring base and dma-base
+pointers in free_skb_resources(). A few questions on the resulting
+behaviour below.
 
--- 
-2.55.0
+> diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
+> index cf636fc5aafa..d0ac8a958696 100644
+> --- a/drivers/net/ethernet/freescale/gianfar.c
+> +++ b/drivers/net/ethernet/freescale/gianfar.c
+> @@ -1140,11 +1140,24 @@ static void free_skb_resources(struct gfar_private *priv)
+>  			free_skb_rx_queue(rx_queue);
+>  	}
+>  
+> -	dma_free_coherent(priv->dev,
+> -			  sizeof(struct txbd8) * priv->total_tx_ring_size +
+> -			  sizeof(struct rxbd8) * priv->total_rx_ring_size,
+> -			  priv->tx_queue[0]->tx_bd_base,
+> -			  priv->tx_queue[0]->tx_bd_dma_base);
+> +	if (priv->tx_queue[0]->tx_bd_base) {
+> +		dma_free_coherent(priv->dev,
+> +				  sizeof(struct txbd8) *
+> +				  priv->total_tx_ring_size +
+> +				  sizeof(struct rxbd8) *
+> +				  priv->total_rx_ring_size,
+> +				  priv->tx_queue[0]->tx_bd_base,
+> +				  priv->tx_queue[0]->tx_bd_dma_base);
 
+[Severity: High]
+The changelog says that after this change "a second free cannot operate on
+a stale pointer regardless of which error path is taken". Is that true for
+the receive skb as well?
+
+free_skb_resources() -> free_skb_rx_queue() frees it but leaves the field
+set:
+
+drivers/net/ethernet/freescale/gianfar.c:free_skb_rx_queue() {
+	dev_kfree_skb(rx_queue->skb);
+	...
+	kfree(rx_queue->rx_buff);
+	rx_queue->rx_buff = NULL;
+}
+
+rx_buff is cleared, rx_queue->skb is not, and gfar_init_bds() only resets
+next_to_clean/next_to_use/next_to_alloc for the rx rings on the following
+startup_gfar().
+
+rx_queue->skb is non-NULL whenever a frame spanning several descriptors was
+only partially received:
+
+drivers/net/ethernet/freescale/gianfar.c:gfar_clean_rx_ring() {
+	/* Store incomplete frames for completion */
+	rx_queue->skb = skb;
+}
+
+So after any stop/start cycle (gfar_change_mtu(), reset_gfar() from
+gfar_hwtstamp_set() or gfar_reset_task(), or the ethtool ring/coalesce/
+features paths) the field is a dangling pointer, and the next poll picks it
+up:
+
+drivers/net/ethernet/freescale/gianfar.c:gfar_clean_rx_ring() {
+	struct sk_buff *skb = rx_queue->skb;
+	...
+}
+
+Can that append fragments to the freed skb via gfar_add_rx_frag()? And if
+no packet arrives before the next teardown, does the next stop_gfar() ->
+free_skb_resources() -> free_skb_rx_queue() call dev_kfree_skb() on the
+same skb a second time?
+
+Would adding rx_queue->skb = NULL in free_skb_rx_queue() fit here?
+
+> +
+> +		for (i = 0; i < priv->num_tx_queues; i++) {
+> +			priv->tx_queue[i]->tx_bd_base = NULL;
+> +			priv->tx_queue[i]->tx_bd_dma_base = 0;
+> +		}
+> +		for (i = 0; i < priv->num_rx_queues; i++) {
+> +			priv->rx_queue[i]->rx_bd_base = NULL;
+> +			priv->rx_queue[i]->rx_bd_dma_base = 0;
+> +		}
+> +	}
+>  }
+>  
+>  void stop_gfar(struct net_device *dev)
+
+[Severity: Medium]
+What serializes these stores against the transmit path?
+
+gfar_start_xmit() reads the base with only the txq _xmit_lock held, and
+without testing GFAR_DOWN:
+
+	base = tx_queue->tx_bd_base;
+
+stop_gfar() only marks the queues stopped:
+
+drivers/net/ethernet/freescale/gianfar.c:stop_gfar() {
+	netif_tx_stop_all_queues(dev);
+	...
+	disable_napi(priv);
+	gfar_halt(priv);
+	phy_stop(dev->phydev);
+	free_skb_resources(priv);
+}
+
+It takes no netif_tx_lock() (gfar_suspend() does) and no synchronize_net(),
+and it sleeps in napi_disable() and phy_stop(), so a transmit that already
+passed netif_xmit_frozen_or_stopped() inside HARD_TX_LOCK can still be
+running here.
+
+With base == NULL, does the wrap arithmetic move the descriptor pointer
+below the former ring?
+
+drivers/net/ethernet/freescale/gianfar.c:skip_txbd() {
+	return (new_bd >= (base + ring_size)) ? (new_bd - ring_size) : new_bd;
+}
+
+For a stale cur_tx the comparison against (NULL + ring_size) is always
+true, so the result is new_bd - ring_size. Before the patch the same race
+scribbled inside the freed ring; can it now write up to
+(ring_size - 1) * sizeof(struct txbd8) bytes below it?
+
+The zeroed rx_bd_dma_base feeds gfar_rxbd_dma_lastfree(), used by
+gfar_clean_rx_ring() and gfar_update_link_state() to program rfbptr — would
+that publish a bogus DMA address? If the NULLing is kept, should it happen
+under the same exclusion the readers use, i.e. netif_tx_disable() plus a
+GFAR_DOWN check in gfar_start_xmit()?
+
+> @@ -2003,6 +2016,7 @@ static int gfar_set_mac_address(struct net_device *dev)
+>  static int gfar_change_mtu(struct net_device *dev, int new_mtu)
+>  {
+>  	struct gfar_private *priv = netdev_priv(dev);
+> +	int err = 0;
+>  
+>  	while (test_and_set_bit_lock(GFAR_RESETTING, &priv->state))
+>  		cpu_relax();
+> @@ -2013,24 +2027,27 @@ static int gfar_change_mtu(struct net_device *dev, int new_mtu)
+>  	WRITE_ONCE(dev->mtu, new_mtu);
+>  
+>  	if (dev->flags & IFF_UP)
+> -		startup_gfar(dev);
+> +		err = startup_gfar(dev);
+>  
+>  	clear_bit_unlock(GFAR_RESETTING, &priv->state);
+>  
+> -	return 0;
+> +	return err;
+>  }
+
+[Severity: Medium]
+Who restores the configuration that was already committed before the new
+error return?
+
+dev->mtu is written with WRITE_ONCE() before startup_gfar() runs, and the
+core does not undo it when the driver callback fails:
+
+net/core/dev.c:__netif_set_mtu() {
+	if (ops->ndo_change_mtu)
+		return ops->ndo_change_mtu(dev, new_mtu);
+	...
+}
+
+net/core/dev.c:netif_set_mtu_ext() {
+	if (new_mtu == dev->mtu)
+		return 0;
+	...
+	orig_mtu = dev->mtu;
+	err = __netif_set_mtu(dev, new_mtu);
+
+	if (!err) {
+		err = call_netdevice_notifiers_mtu(NETDEV_CHANGEMTU, dev, orig_mtu);
+	...
+}
+
+So on -ENOMEM userspace is told the request failed, but ip link reports the
+new MTU, no NETDEV_CHANGEMTU is sent, and a retry with the same value hits
+the new_mtu == dev->mtu early return and reports success without ever
+restarting the stopped device. Should dev->mtu be put back on the failure
+path?
+
+gfar_hwtstamp_set() has the same shape: priv->hwts_rx_en is assigned before
+reset_gfar() and is not restored when the new error is returned.
+dev_set_hwtstamp_phylib() returns the ndo error directly with no rollback,
+so gfar_hwtstamp_get() then reports the filter the setter said it could not
+apply, and repeating the identical request returns 0 because the flag
+already matches while the controller stays halted.
+
+>  
+> -static void reset_gfar(struct net_device *ndev)
+> +static int reset_gfar(struct net_device *ndev)
+>  {
+>  	struct gfar_private *priv = netdev_priv(ndev);
+> +	int ret;
+>  
+>  	while (test_and_set_bit_lock(GFAR_RESETTING, &priv->state))
+>  		cpu_relax();
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but since both users of the
+GFAR_RESETTING guard are being touched here: the set-on-entry /
+clear-on-exit bit pair in reset_gfar() and gfar_change_mtu() is an
+open-coded, lockdep-invisible spinlock whose holder sleeps, in
+dma_alloc_coherent(GFP_KERNEL) inside gfar_alloc_skb_resources(), in
+napi_disable()'s usleep_range() and in phy_stop(), while another CPU
+busy-waits in cpu_relax(). Two concurrent reconfiguration requests, for
+example ip link set mtu racing hwstamp_ctl or a TX-timeout reset racing
+ethtool -G, will burn a CPU for the duration.
+
+It also cannot express the state left behind by the new error path: once
+the bit is cleared after a failed startup_gfar(), code whose only guard is
+the bit runs against the freed and now NULLed rings:
+
+drivers/net/ethernet/freescale/gianfar.c:gfar_update_link_state() {
+	if (unlikely(test_bit(GFAR_RESETTING, &priv->state)))
+		return;
+	...
+}
+
+Would a mutex plus an explicit "rings gone" state be a better fit?
+
+>  
+>  	stop_gfar(ndev);
+> -	startup_gfar(ndev);
+> +	ret = startup_gfar(ndev);
+>  
+>  	clear_bit_unlock(GFAR_RESETTING, &priv->state);
+> +
+> +	return ret;
+>  }
+>  
+>  /* gfar_reset_task gets scheduled when a packet has not been
+
+[Severity: High]
+Is the failure sequence in the changelog reachable? It says
+"gfar_close() -> stop_gfar() -> free_skb_resources() frees the same
+coherent DMA ring a second time".
+
+When startup_gfar() fails it returns before enable_napi():
+
+drivers/net/ethernet/freescale/gianfar.c:startup_gfar() {
+	gfar_mac_reset(priv);
+
+	err = gfar_alloc_skb_resources(ndev);
+	if (err)
+		return err;
+	...
+	phy_start(ndev->phydev);
+	enable_napi(priv);
+	netif_tx_wake_all_queues(ndev);
+	...
+}
+
+reset_gfar() and gfar_change_mtu() then just forward the error, so NAPI
+stays in the state left by the preceding stop_gfar() -> disable_napi() and
+the netdev stays IFF_UP. The next teardown disables NAPI again before it
+ever reaches free_skb_resources():
+
+drivers/net/ethernet/freescale/gianfar.c:stop_gfar() {
+	netif_tx_stop_all_queues(dev);
+	...
+	disable_napi(priv);
+	gfar_halt(priv);
+	phy_stop(dev->phydev);
+	free_skb_resources(priv);
+}
+
+and the second disable has nothing to wait for:
+
+net/core/dev.c:napi_disable_locked() {
+		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+			usleep_range(20, 200);
+			val = READ_ONCE(n->state);
+		}
+
+		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC;
+	...
+}
+
+Those bits are left set on exit and only napi_enable() clears them, so does
+gfar_close() -> cancel_work_sync() -> stop_gfar() spin here forever,
+unkillable, holding rtnl_lock and the netdev instance lock? If so the
+double free described in the changelog never happens, because the close
+never gets past disable_napi(), and the hunk in free_skb_resources() is not
+what breaks.
+
+Would it make more sense to restore the NAPI and PHY balance, or to force
+the interface fully down, when startup_gfar() fails, rather than only
+returning the error?
+
+[Severity: Medium]
+The changelog says reset_gfar() now propagates the error "instead of
+silently continuing", but the reset path that runs on TX watchdog expiry
+and on IEVENT_XFUN still drops it:
+
+drivers/net/ethernet/freescale/gianfar.c:gfar_reset_task() {
+	struct gfar_private *priv = container_of(work, struct gfar_private,
+						 reset_task);
+	reset_gfar(priv->ndev);
+}
+
+gfar_timeout() -> schedule_work(&priv->reset_task) -> gfar_reset_task()
+ignores the return value, with no netdev_err() and no recovery, so after a
+failed reset the netdev remains IFF_UP with the MAC halted, PHY stopped,
+NAPI disabled, all TX queues stopped and GFAR_DOWN set, and nothing is
+logged. Should this caller at least report the failure?
+
+Note the ethtool re-init sites in gianfar_ethtool.c (gfar_scoalesce,
+gfar_sringparam, gfar_set_features) already propagated the error before
+this patch and end up in the same half-down state, which suggests
+propagation alone does not address the "leaves the interface logically UP"
+half of the problem the changelog describes.
+
+>  @@ -2058,6 +2075,7 @@ static int gfar_hwtstamp_set(struct net_device *netdev,
+>  			     struct netlink_ext_ack *extack)
+>  {
+>  	struct gfar_private *priv = netdev_priv(netdev);
+> +	int ret = 0;
+>  
+>  	switch (config->tx_type) {
+>  	case HWTSTAMP_TX_OFF:
+
+[ ... ]
+
+> @@ -2084,13 +2102,13 @@ static int gfar_hwtstamp_set(struct net_device *netdev,
+>  			return -ERANGE;
+>  		if (!priv->hwts_rx_en) {
+>  			priv->hwts_rx_en = 1;
+> -			reset_gfar(netdev);
+> +			ret = reset_gfar(netdev);
+>  		}
+>  		config->rx_filter = HWTSTAMP_FILTER_ALL;
+>  		break;
+>  	}
+>  
+> -	return 0;
+> +	return ret;
+>  }
+
+[Severity: High]
+This is a pre-existing issue rather than something the patch introduces,
+but it is in the function being modified: gfar_hwtstamp_set() calls
+reset_gfar() with no netif_running() or IFF_UP test, and reset_gfar()
+unconditionally runs stop_gfar() followed by startup_gfar().
+
+The generic caller only requires the device to be present:
+
+net/core/dev_ioctl.c:dev_set_hwtstamp() {
+	if (!netif_device_present(dev))
+		return -ENODEV;
+	...
+}
+
+So SIOCSHWTSTAMP on an administratively down gianfar interface with
+FSL_GIANFAR_DEV_HAS_TIMER set reaches stop_gfar() -> disable_napi() ->
+napi_disable() on contexts that were only added by netif_napi_add() in
+gfar_probe() and never enabled, since napi_enable() runs only in
+startup_gfar(). Does that loop forever in napi_disable_locked()'s
+usleep_range() with rtnl_lock held? And if it did return, would
+phy_stop(dev->phydev) run with dev->phydev already cleared by
+phy_disconnect() in gfar_close()?
+
+Should reset_gfar() (or its callers) skip the stop/start when the interface
+is not running, the way gfar_change_mtu() checks dev->flags & IFF_UP?
