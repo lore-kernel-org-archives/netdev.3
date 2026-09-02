@@ -1,191 +1,204 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012041.outbound.protection.outlook.com [40.107.209.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C194ACC88;
-	Wed,  2 Sep 2026 16:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FD04A384F
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 16:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788367683; cv=fail; b=Zie7kRLa7ENFKCQpTNvbA5fCCx0FDt017A70PsL2mAwhD+z3ZOHMqyRlXbo084cAdTdzQAxgrCxJOijtd9NUR5RkA6qw5X4kn6dCqktWB+5/HDbqDzWUgPGOd+jDIRmWEwDoSqSoeVQy8iaVgiM3Fck1HzaJYPDacFhWpnGn+Bg=
+	t=1788368024; cv=pass; b=s17OTCZFnRMh3LMz8DojI4EwIFZ0pxTH17qD8zX6/+QUjDIX2YSdd+YboMxPV9Uxwe0426roZ67cTElSrSOGmIP2Mu3RGMe27/wiv/VnD5mNFwmayZy9D8tg0h8FDIkaqs3ritP4H28g1iAV1Mamqb2HmvpH5hsKHs4TYFA7Fiw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788367683; c=relaxed/simple;
-	bh=o8liquoPgyQMv7VEAD66g4mCaQ8bDgn6BwqdYxwew34=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OjXwsepAbgHKj0zSDClJtDhVdG6Q3Qdprq5AtHDBfMS+bLYRanxm/ULBdymdPmr5uHM5iZDufOGvRXC+RPLsoSC9FW2UFVc12GJ8oGPBIXLghf3bHYLqbJ6qrD5c9Lgiz5OdG4z4ryYjcKuDb8/AFu585u2oPj3qIgs6Qlf8cCc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=r+475SHL; arc=fail smtp.client-ip=40.107.209.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788368024; c=relaxed/simple;
+	bh=zGbelR12Gyj9gES9Fk+TohsoQHnSEXAIShN0M5SkbYg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jujz6h2cM4DXT4oitdyFUwnbrMsdMpw8EKFIe2SA0qBZv2O22i2JUdTVZi1FgiaOfk6gkVdu8ULaKBLwHQOgVkm0U28axH3b0iJttqFen2Oqaq1T47B6zlP49dyTuM0RGrge60okkXZKXGBJrWxiFio5ZK/UzAJW1sr28FNXG6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TjFdQFEm; arc=pass smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="r+475SHL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XnDVKDZhYGdWmQfVOGj2aivUonwlanqyapzgsRchqSUp9KCxEa3bq3VHgPVVU6auRhDAe0UExBtIftSx2h40liokRfnsLOMy1YzkRxPpKQZ0U8mhLxjmhqCXmgPmA81gRlaEKazcppRu/amPaNOO67FZ8sB8Q+grYZvw3RLfTPZnDA5PlP6/ARBdSvu10PimmRlEkhQE2sTq56/j/mrPLJQaAkjC1Ny+ofPjmiZc6yiv+JgMuByPG1SSIYfLUb5SOhGgKvs06Uie+hm1r5AaICtVLZtwwpoCHiC6qkpz6DN3u4PDFJuwjYQWBXzabEdhMiEn9KHjT9MS9GboUqhfIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5mdoGrb0cWFdGzpkjl/Wrt7hgSr2nisP9rrhCMRkVng=;
- b=MOc9ueWrArtSGR1KXBRJOociBRtRrFFN9Dmf6qztFHq7LO4EAcOqHpxkUTqJBVQAFouYK9rLp3ECasa1eZ0ytbz2Rklb4YGatuqvAeJ8St6Ih45P/lTmQNVtfPwwVNP69V9CfgwJObL4X4iBveFeWu04gt3XC+QxMMwmsBeN9wyXFe7ZRCFLo0yvmIIyp7Xp3E2Hx8CwkZQWhxnYgTLWMfs8o3v0wj8mVEM5zSFnn+zF3KnJNZE5y3k2nvL1ltcgwj15LQ/hGaLyJopwDtvvKpnzsHldjOtj1CXKk2rlVq5mkAjHvZYOwMAvnD3we5Nq7Q0RBwIwpvbJp6mB2gMu5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5mdoGrb0cWFdGzpkjl/Wrt7hgSr2nisP9rrhCMRkVng=;
- b=r+475SHL8AP3oPz5XiYEsza+IBIflMulG+w5CHFmoUMKKKneSVTWQjkzjaLvVEB5y11nHCG71b15tUf+PZ9XNgCzAExgSRhfK5HD7Q+KNaorie0RzwKGeIb9m9ZcRCjNSeMTEzFvPW6NeqXrCirVw+27cdkoNS6fZ9uxUUkucki6jXBKZ9R7l3TTZ7gtGyeSVfsGLv2L0lWz4Eui2pekXjpuwq1k1gmQP7BLyFcl0HFRCL1LQ8W+YWKnJQBUf/ztyyG4TqcboSrgK6I5DFuCQcqZM/xVStSXWhCdX0HArzI0C9brnVt4ulyAZpI07pkwEyxiuEJ6QTsPz9lOsEocLQ==
-Received: from BN9P223CA0021.NAMP223.PROD.OUTLOOK.COM (2603:10b6:408:10b::26)
- by CH0PR12MB8578.namprd12.prod.outlook.com (2603:10b6:610:18e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Wed, 2 Sep
- 2026 16:47:53 +0000
-Received: from BN7PEPF00000093.namprd03.prod.outlook.com
- (2603:10b6:408:10b:cafe::57) by BN9P223CA0021.outlook.office365.com
- (2603:10b6:408:10b::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Wed, 2
- Sep 2026 16:47:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BN7PEPF00000093.mail.protection.outlook.com (10.167.245.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Wed, 2 Sep 2026 16:47:52 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 2 Sep
- 2026 09:47:24 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 2 Sep 2026 09:47:23 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
- Transport; Wed, 2 Sep 2026 09:47:19 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Dragos Tatulea <dtatulea@nvidia.com>, Eran Ben Elisha <eranbe@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh
-	<moshe@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shahar Shitrit
-	<shshitrit@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Yael Chemla
-	<ychemla@nvidia.com>
-Subject: [PATCH net 3/3] net/mlx5e: Fix reporting support for all RS FEC variants
-Date: Wed, 2 Sep 2026 19:46:34 +0300
-Message-ID: <20260902164634.3657606-4-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260902164634.3657606-1-tariqt@nvidia.com>
-References: <20260902164634.3657606-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TjFdQFEm"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1319814a91.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 09:53:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788368023; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kYB9Oe3kTnXn3xA/vAbG/BOA8LhQIooAn8varaQS+BnPYLCySq4+VmMB39F23Ctdze
+         NabJhhfvvCMy7XPkxaii6sIRIcWvxDU1W5GCpwRsXg0p7L2ewetK9p9EsWidoNCF9fM+
+         S20RcgYtilreQ/KyTGZlFzSZxO/FXqv9EGNWEyqsvny+x/GMc6eXJoqjG7MYGTNo0zX1
+         isBtr41pT0qi9pxFWPXvxoZiKY1DjYU8mUlrA86O5qCTIuOEYH2NLbzA1F61k6i69J/2
+         TRSAatP3nT/86aXQEniPfPW6bTBiUZa1z1hMOkNjJiIdF2STGaI4X6l8PQCy+0PnGiqo
+         YeuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JQ6YySytuwdq0LmTASGzKyasbfA7NZfTyTRNMv0VMVw=;
+        fh=ZsipQt8Xb1MyFWwUs0Av7/ri18p+nh8/PdJHbtdtUuc=;
+        b=YeJAWH5QT2jFzl/Jbme3xtjRUtOXxhMrmlX0jvCiU69SYdVYlW7o+i6v4Ag00aN/H1
+         LBXeqHDAmYL0Hxliu/ABhqGMjJ+MT25NKiSriVcVTFw+MvL6OtMv2X2NQ6TIrrYrOCrc
+         KtHE3E1j6bZhqQQddaRBlpIyP3uDb5eT5fCX6HDpAtIJ0Nqmw5WSSMmnW7SBQAyP083V
+         xV7pPJm1I4S+E7OMp0R0XRkQvJ8Ngxc8zy6maTKEla/gFpmkJ0v/KHdcX6wzltQS8VGc
+         +S1KqMWXgPA7eLnwcu8940FANGhOqlF17ANNFPOUlu/0Qltrt2xttX+bo48OMCwynopo
+         HDFw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788368023; x=1788972823; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JQ6YySytuwdq0LmTASGzKyasbfA7NZfTyTRNMv0VMVw=;
+        b=TjFdQFEmHBgykIIhZiv44qkSMzXvk3PjwdyO9JisNF0j29ySADDlmfebjY1/Mb8cyE
+         i8YHbMxLk+GY89voAEByDw/t54ovFVPFMv1GoK84v038xoSP00eLVradhx/H/qvjqOvM
+         uW0rKKgMyqi5yzxFNC7xsvSavh8R7P55HTkrhAVAjAAa+oY+eK9dgNnpjzuZfsMnu02/
+         gUth+PNLfZ4Tm+IM9LI8DTeKxsDXPNEJEXNrjU9pfVNmn+tQhqxq0vc82uC1YDVBhEiA
+         R8hM9c+8IWZ+XfCaAqZZI/ga1CRZLThbY1coCGp9MARHJw/hKQxvmWOVolhaT5LAnRnB
+         nKfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788368023; x=1788972823;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JQ6YySytuwdq0LmTASGzKyasbfA7NZfTyTRNMv0VMVw=;
+        b=VHelaNptJHDX2xtAqnAVu4wvPUmXgwYVuPvmOvs1V9y1QiH1cedqJfn4DQT53u84mP
+         +X/RsdTAfF2DcbJkLLr48vRIc2Sy/SxP38Y0lWzZV0vqphJY7RnHD1aAeLTw+4DRNqbh
+         ZvAlBw0jhhokSqEBh8gmNORWCJp+ocJRyxnxvGIQbtiFE4QNaoXgS4j742qnughzEwEx
+         QtIk7SyGhIyvzyzpZyULhDLeVn8OmA9/AhoaIl/hchj3NfwLEFmlRcfM3QFHF2RDG6G7
+         8i8cSEygfI6ArwRn/JHbhCBrI5p4P71OPCHNOiJc2z/Hs+2x1+LKTOXfrqzARlaCEGPQ
+         zTBA==
+X-Forwarded-Encrypted: i=1; AKwUvBx8Hpwnz1g/26aG2UZQzxSvZRCfJUQ0U8IVCkvOZlPZFKkS5MQmqTv1d/XS6koH0kMhWLozOrw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kLDUbYpx7YYGQA6wofWBrE4Gs6qB4misdj2Xyhyzjw5jbAC+XJ
+	RgVLMr5MboxeEO5GXa+1F7L22AZzxb/cPdhnZWnCFNnvK4QlREZfF1f7rlLMGK13fuIcRR+z6Qf
+	Fc+BSg8beDeihL/SBssVhcIwlE1IQrAlNzDMOdQvypN0vSNpdb6aeipZR
+X-Gm-Gg: AYBFou0xwp3QxmWRiTiKbVDK9+IGIt+qOEN8NUosqkjIUAX4s1WJ/o5dPBA2nj3yddD
+	slJFTLiJN7/nJQQ4YUBrrBB3lP/1pDB4UtzzrLtPNx0ol34RZASMOYN+JO21fqZLhmkzFP3dWcM
+	z9GH3piUpbHBBnZGWCt+YzLpSRhYXZb7WU+A1GihhlKUWdibJFnuB2bBEBcEr+TGHp2oN9Zz1Ga
+	wNfynFZkXiwhEAJv5M50GYC1T1HCUUB/dNTE6sbUyL8gIHZAvbzglrNNRr7bOesu7HNvYL7ULio
+	NS4HtB8MQDDVK6upbEwpqmLrh35KovfiflIz1YBYBLGRcZUjiVtjJtZbU1ItucuHCwED2OaVQlN
+	7eeHHit3HKT2Qinti0Qk33U1OqIbXwLU6A34FBucPDFkVLXXmwj8j90MtwiEVzOpwlpAeVJ7RO4
+	ask4hrra1/uhQI
+X-Received: by 2002:a17:90b:4fcb:b0:395:f0e8:9e13 with SMTP id
+ 98e67ed59e1d1-39aedf22274mr10300989a91.7.1788368021990; Wed, 02 Sep 2026
+ 09:53:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PEPF00000093:EE_|CH0PR12MB8578:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ff1265c-f255-49f9-5655-08df0911ee51
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|23010399003|10067099003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	fBrzqR4iEZsLyqTybNCsV+mtg3wilQBPMAsH51Cbins8Rgjo9NbEXNVJaRxXQsOp2/tgbz8EuunBiEZHo8O1aMDAuuaFSLHFZZ9f+ptBSuUCf72eS6Hv64zJQZMUO2wzRDPmLhoNFlZCpy5aNuXBeHHJ9eEaUatXwj8vap7wTWb82ZpTKnzMfr+xlKVEcuyyAEprr7D+vsWqzPuCofgf5yAlatPmRTc9dZyht3qYUUykD7rxPgF1m19yk0nHjO+fNZmRnmhhAG/AsYswG5/9q/0NhIZ3JmCYw79SGK5SMa1SVH23A7RLbJgqYWY6dpPpxqzIoCC6v8xzxiGxmRylob/lAsM/ZyTSQIbJ75zVCwHakMZdqZDIPWmrU7pZu6Efd9mxQ8mzMxioBXMRnykXux6DqEC2zPGstgCqK5PqM7CDONJjizzAdQiaxNqlOFRhHg9YELL821qvQFCJMoTaI7Z9fI3J6BM/UuMQG9Qf67w43H4ssQ8UcNuyb4aucaEcpXL/noEO4ISSnGO4U/Qika0gMQ5nnj0Qb6gbRSEa3Rltggh05iHvubYFe48lGprsFhvj+a28RYnK2Jei7jo8tXfgXfwHUTXYUY14XkVodUAit9aCSxgF++/X7w/pWAl5KOcH5dAjnEDR9fFsvbaqUS9BulimH+wGEg44mVap/NYiFYJg+D51EPQD7cRxrQQPXlj+37evsNF9jvuxnp6ytg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(23010399003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	yQsBTO/y59W8yGeoNyhmLQqcuAxvvjw9iCqcGl8b2ACZzAoSgSp27YZ7ZFZsm4dbikIdT6zZS+nZHMXOtMP+1tXw7xHA5/md08HA+Xp0i/aOzJJsN9nPAaDw/4FX6l25Fu8iwNDB1o/5BFbEc/yYB/ZvzrRtJXOq7gBmR+aPi7TAIgDgfr1SiBcXMDGKKb64MeKqVS5+h1lexqwVueiiyytKuLMZCFLL3sqUmH7mJcUWHSGk/guqVPt39N44U+gBIsF49Q52zkDrKYXBYkgCP2/AlvfWvO154UMdz4ZoZ/ezhfHKH6km6kvM4usjwt8/dy1J1GXD2GiHdrA3lWzxvis35tGNHh7F7VMUruYd2O7yob99WT4xb1LJs72m/o0RoU3XbZuTxMEOc/b8mG1lfPT9zlxPSWM38dCFlYByBvFwB3r9+ElXZ5UOt3sA/baH
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 16:47:52.4976
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ff1265c-f255-49f9-5655-08df0911ee51
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN7PEPF00000093.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8578
+References: <20260901183327.3332855-1-kuniyu@google.com> <20260901183327.3332855-13-kuniyu@google.com>
+ <20260902132906.GA3929399@shredder>
+In-Reply-To: <20260902132906.GA3929399@shredder>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 2 Sep 2026 09:53:30 -0700
+X-Gm-Features: AcwNN1UycUkN3BCif1MS-35BhtwqF4ByKHMsIBx2ebkBRHeT8wbGE4j4bxRXZC4
+Message-ID: <CAAVpQUAnTyn8PC=rp2FwXoz-nb2u4hBLTXwNj2rkAPvw0=K=EA@mail.gmail.com>
+Subject: Re: [PATCH v5 net-next 12/15] neighbour: Namespacify neigh_tables.
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Nikolay Aleksandrov <razor@blackwall.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+On Wed, Sep 2, 2026 at 6:29=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wro=
+te:
+>
+> On Tue, Sep 01, 2026 at 06:33:01PM +0000, Kuniyuki Iwashima wrote:
+> > +static void neigh_table_inherit(struct net *net, struct neigh_table *t=
+bl,
+> > +                             int index)
+> > +{
+> > +     const struct neigh_table *init_tbl =3D init_net.neigh_tables[inde=
+x];
+> > +     bool inherit =3D READ_ONCE(sysctl_neigh_inherit_init_net);
+> > +     int i;
+> > +
+> > +     if (net_eq(net, &init_net) || !inherit)
+> > +             return;
+> > +
+> > +     tbl->gc_interval =3D READ_ONCE(init_tbl->gc_interval);
+> > +     tbl->gc_thresh1 =3D READ_ONCE(init_tbl->gc_thresh1);
+> > +     tbl->gc_thresh2 =3D READ_ONCE(init_tbl->gc_thresh2);
+> > +     tbl->gc_thresh3 =3D READ_ONCE(init_tbl->gc_thresh3);
+> > +
+> > +     for (i =3D 0; i < NEIGH_VAR_DATA_MAX; i++)
+> > +             tbl->parms.data[i] =3D READ_ONCE(init_tbl->parms.data[i])=
+;
+> >  }
+>
+> [...]
+>
+> > diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> > index eb35da3556f4..53e044fc53b0 100644
+> > --- a/net/core/sysctl_net_core.c
+> > +++ b/net/core/sysctl_net_core.c
+> > @@ -21,6 +21,7 @@
+> >
+> >  #include <net/ip.h>
+> >  #include <net/sock.h>
+> > +#include <net/neighbour.h>
+> >  #include <net/net_ratelimit.h>
+> >  #include <net/busy_poll.h>
+> >  #include <net/pkt_sched.h>
+> > @@ -53,6 +54,8 @@ EXPORT_SYMBOL(sysctl_fb_tunnels_only_for_init_net);
+> >  int sysctl_devconf_inherit_init_net __read_mostly;
+> >  EXPORT_SYMBOL(sysctl_devconf_inherit_init_net);
+> >
+> > +int sysctl_neigh_inherit_init_net __read_mostly =3D 1;
+>
+> This fails to build with CONFIG_SYSCTL=3Dn (yes, unlikely config):
 
-get_fec_supported_advertised() populates the FEC modes reported as
-supported to userspace. The MLX5E_ADVERTISE_SUPPORTED_FEC macro only
-checked MLX5E_FEC_RS_528_514, causing devices that support only the
-other RS variants (RS_544_514_INTERLEAVED_QUAD or RS_544_514) to not
-advertise RS as supported to ethtool at all.
+Oh, thanks for catching this !
 
-Introduce MLX5E_FEC_RS_MASK covering all three RS bit positions,
-update the macro to accept a bitmask directly rather than a single
-enum value, and pass MLX5E_FEC_RS_MASK for the RS entry.
+Will squash the diff.
 
-Fixes: b5ede32d3329 ("net/mlx5e: Add support for FEC modes based on 50G per lane links")
-Fixes: 4e343c11efbb ("net/mlx5e: Support FEC settings for 200G per lane link modes")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Thanks !
+
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port.h    |  4 ++++
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 12 ++++++------
- 2 files changed, 10 insertions(+), 6 deletions(-)
+pw-bot: cr
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port.h
-index fa2283dd383b..53dbdf77bcce 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port.h
-@@ -66,4 +66,8 @@ enum {
- 	MLX5E_FEC_LLRS_272_257_1 = 9,
- };
- 
-+#define MLX5E_FEC_RS_MASK (BIT(MLX5E_FEC_RS_528_514) | \
-+			   BIT(MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD) | \
-+			   BIT(MLX5E_FEC_RS_544_514))
-+
- #endif
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index f285ad88b6d5..3ed59ced0407 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1002,9 +1002,9 @@ static u32 pplm2ethtool_fec(u_long fec_mode, unsigned long size)
- 	return 0;
- }
- 
--#define MLX5E_ADVERTISE_SUPPORTED_FEC(mlx5_fec, ethtool_fec)		\
-+#define MLX5E_ADVERTISE_SUPPORTED_FEC(fec_mask, ethtool_fec)		\
- 	do {								\
--		if (mlx5e_fec_in_caps(dev, 1 << (mlx5_fec)))		\
-+		if (mlx5e_fec_in_caps(dev, fec_mask))			\
- 			__set_bit(ethtool_fec,				\
- 				  link_ksettings->link_modes.supported);\
- 	} while (0)
-@@ -1030,13 +1030,13 @@ static int get_fec_supported_advertised(struct mlx5_core_dev *dev,
- 	if (err)
- 		return (err == -EOPNOTSUPP) ? 0 : err;
- 
--	MLX5E_ADVERTISE_SUPPORTED_FEC(MLX5E_FEC_NOFEC,
-+	MLX5E_ADVERTISE_SUPPORTED_FEC(BIT(MLX5E_FEC_NOFEC),
- 				      ETHTOOL_LINK_MODE_FEC_NONE_BIT);
--	MLX5E_ADVERTISE_SUPPORTED_FEC(MLX5E_FEC_FIRECODE,
-+	MLX5E_ADVERTISE_SUPPORTED_FEC(BIT(MLX5E_FEC_FIRECODE),
- 				      ETHTOOL_LINK_MODE_FEC_BASER_BIT);
--	MLX5E_ADVERTISE_SUPPORTED_FEC(MLX5E_FEC_RS_528_514,
-+	MLX5E_ADVERTISE_SUPPORTED_FEC(MLX5E_FEC_RS_MASK,
- 				      ETHTOOL_LINK_MODE_FEC_RS_BIT);
--	MLX5E_ADVERTISE_SUPPORTED_FEC(MLX5E_FEC_LLRS_272_257_1,
-+	MLX5E_ADVERTISE_SUPPORTED_FEC(BIT(MLX5E_FEC_LLRS_272_257_1),
- 				      ETHTOOL_LINK_MODE_FEC_LLRS_BIT);
- 
- 	active_fec_long = active_fec;
--- 
-2.44.0
-
+>
+> $ vng -b
+> /usr/bin/x86_64-linux-gnu-ld.bfd: vmlinux.o: in function `neigh_table_inh=
+erit':
+> /home/idosch/.virtme/net/core/neighbour.c:1920:(.text+0xc8ddd9): undefine=
+d reference to `sysctl_neigh_inherit_init_net'
+> make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
+> make[1]: *** [/data/idosch/virtme-build/Makefile:1376: vmlinux] Error 2
+> make: *** [Makefile:248: __sub-make] Error 2
+>
+> $ grep CONFIG_SYSCTL .config
+> CONFIG_SYSCTL_EXCEPTION_TRACE=3Dy
+> # CONFIG_SYSCTL is not set
+>
+> Can be fixed with the following diff:
+>
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index 9b28f40b019a..27602bcbeb69 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -1913,6 +1913,8 @@ static void neigh_table_clear(struct net *net, stru=
+ct neigh_table *tbl)
+>         neigh_table_put(tbl);
+>  }
+>
+> +int sysctl_neigh_inherit_init_net __read_mostly =3D 1;
+> +
+>  static void neigh_table_inherit(struct net *net, struct neigh_table *tbl=
+,
+>                                 int index)
+>  {
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index 53e044fc53b0..23310581f494 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
+> @@ -54,8 +54,6 @@ EXPORT_SYMBOL(sysctl_fb_tunnels_only_for_init_net);
+>  int sysctl_devconf_inherit_init_net __read_mostly;
+>  EXPORT_SYMBOL(sysctl_devconf_inherit_init_net);
+>
+> -int sysctl_neigh_inherit_init_net __read_mostly =3D 1;
+> -
+>  #if IS_ENABLED(CONFIG_NET_FLOW_LIMIT) || IS_ENABLED(CONFIG_RPS)
+>  static int dump_cpumask(void *buffer, size_t *lenp, loff_t *ppos,
+>                         struct cpumask *mask)
