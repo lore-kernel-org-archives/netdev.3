@@ -1,1229 +1,167 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011002.outbound.protection.outlook.com [40.107.130.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC50830D41B;
-	Wed,  2 Sep 2026 01:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788314157; cv=none; b=XqwzcsDLEgSlb2pmr/2l1LgLyHO9wUD9T/gld4V//ZlaDqoFvd0iFz+Ng/5p/uXeQBQPYLewMYE7fD/60nacObQfPYwLnHlC8lqkq8JIc9/LrealrU151F50inOeHrU1fKpITyJdbVvwbM/d9nDGFL75FT4374nhdlf/HON8Vr4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788314157; c=relaxed/simple;
-	bh=kpEzaeVzGLbsfZXi8r+8op3SW5Cg8O9GEtnGeO4N/4w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L3W9YVyyhu00VamusG2AL+Er0CQqPIfCtJDBXDJmJMeqovLX2dim0TBhO93FIRnEUlkjkguWG+A9CXquEcJF6GFgIrwRfEtRpEl71tnMsCIKVZe/IPDRY5iDsQSWdRwsH/03veI3uZ2W6zD5wCec3OyPF90Hn0EDq2FUd2Ij9SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=HH74jArZ; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50B2348C7F
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 01:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788314183; cv=fail; b=htPYjxf6XvczZ68mUl7SIa7LUepvAIi4PHf7upYwx5uLcGg/bfa9dIQk0ohXhkqZAujm+oMQsP8N/t1uwVy3f8nZ5MJUVROSfcNrKkSXFxhWPFfrhJr316oCnqcB5jKvp65RRjXL2tHlYCrXH6qB34tBTsufnO5mwtgi1YJnfk4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788314183; c=relaxed/simple;
+	bh=bH4U8jJ8NTmUDRfuB76wpFvVoveXaEw98cQEdJ/Xmvg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=s2zKHUWBGt8wOyDNiWrSUioXDJhrmkGLYzpnd8B4dQ+/lzrG+8/H0PQXisVwLpD3HQc3FpxLgTLQ42CLzPgbJ0dvIffeH95WtH2KjnQ6Zr2/qb0rU4asGcwIHQgfNNpj8HeWlcjaKIrx89tYTgV5d+m6UfBaZwLS53UvkAi/Jo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=cd0IhlJ0; arc=fail smtp.client-ip=40.107.130.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="HH74jArZ"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681Nhe5M1081781;
-	Tue, 1 Sep 2026 18:55:16 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=njSfeI93gE8nSOLAldtOvbU
-	lZGLXxvPVDddXc4sHZd4=; b=HH74jArZXeKhtRHxZYz2bEwfcqBIikwBhvikwtH
-	faZ5ZL0l/wEPPF2CAFTeB7ul1sD6durKpLW4JgV0Yn86HFT9J0eTqbSZwe0D3eVo
-	0Aoj7zYDjj4ndXbkFPebytKlMSTdoxwFhNTK9FACOsDYRFIbniXbYN4fRZpsRQUo
-	fy7c6MWVVQxxu0qjYFBD1pFfA1cXTI1xkmaC7fKJ3xv4YYGBNKb7qnLKofGJ3zPm
-	sY5pOpqY1uDWbiChKY6MLks9ZyyS9uOBzSNbFJrfhsibyQUMs52mySXVFS1kU2RB
-	HEigidPKalggX4Q17o4hw2aeEzM8PmbrmbhcHQSRuvpbcxw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ge8mj88pv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Sep 2026 18:55:16 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 1 Sep 2026 18:55:14 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 1 Sep 2026 18:55:14 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 26CAF3F704D;
-	Tue,  1 Sep 2026 18:55:09 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
-        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <sdf@fomichev.me>, <sgoutham@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>
-Subject: [PATCH v11 net-next] octeontx2-pf: add mqprio bandwidth offload for NIX TX schedulers
-Date: Wed, 2 Sep 2026 07:25:00 +0530
-Message-ID: <20260902015500.2985371-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="cd0IhlJ0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=o52/xCD+T2Ky6FY7SvPISj74ZLIC5efP/0afLi8mkALRm2rUxL93yAH878VYJPsMOY91LRAYY1Rzmt7FYJ4g3pOPSyfxURS8Z3gQcUysBoHQfDTW1FAppSrQVE9ChYHAeS0Dc/1wQvY8filVUGFGa5KDBH/F8m9dSFUCT048h+mLCvP+D3zb7F4Pdw1b1PCFrgolnuKeP1/i6m5rxrUzbm2KP3pJBdevuvIarFEM21YztxLoY1SDtNypWAlvoO2NIPWfxuzBSa9fuFRNQcjDUuYUogI8ofZBseRvFkwM5WF9BgSytuHwa2JIDqxgckZQYoDsY38oRh3K2j43URDn8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bH4U8jJ8NTmUDRfuB76wpFvVoveXaEw98cQEdJ/Xmvg=;
+ b=n3xLcHkR7aY29tS27xamzIltn9rqIzsZjg+UoUUsV66p/J8x8N4Upn3QAd+++kmTbAJNenAJbnl4WHPIJ2uTuX3AP5sK1e0PBXV6vVV4ZDVkvSJKx2xjJfmOUVys8yCyhurAaov0FkgSFOgH/6obchUZKbJCtIkct6A+xGSfuEQfrjB0iph0QmNSeBohjGNU72dNQQXkhm91oiE2SOiRi6HBsUIdbZTRd5qfIAfyBoyBvliZtvxli7awflUDJQHfc0erMyYnWV8VMTsVrqTy++WlQZ2ZF6giDcwBu8spHh6P23X5BB0qoFZQID/vZ/fEPd/5RsDKwIgQkKxw9qyP8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bH4U8jJ8NTmUDRfuB76wpFvVoveXaEw98cQEdJ/Xmvg=;
+ b=cd0IhlJ0xXkvau5QwPYTYJvtcp+79ZOCmfKoVFjkwhmo4FXhYG+EgVi3sP81qhzQh3CVBC7UVEPDNXno3hPC2Z8mAvwEAKraPkuUPHxF+Px36KhA5mhRjfz6NzIUFRySE8+OQzjG/TuhjqlY+iW0D3ete32IMl5bui4v7Bx1jk/LrZG5yCXtBsBwavhk4UL/6te3Rhzba3FbMFrdLEP+Y52JHl8fm1kgaZyHYDaU8WGaxaGwcBWoISCmrJERf0sUqmtpP3ZvH3G/Gu7JrhC3+qE8wzgJx/XewjXugt8X7K5NAF8v/3wjDfHAYPq3So+mkEPkmulNeAUfrwX8HH6UQQ==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by AM9PR04MB7617.eurprd04.prod.outlook.com
+ (2603:10a6:20b:286::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 01:56:13 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 01:56:13 +0000
+From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org"
+	<Frank.Li@kernel.org>, Linux Kernel Network Developers
+	<netdev@vger.kernel.org>
+Subject: RE: [PATCH v3 net-next 1/8] ptp: netc: use
+ ioread64_lo_hi/iowrite64_lo_hi for 64-bit register access
+Thread-Topic: [PATCH v3 net-next 1/8] ptp: netc: use
+ ioread64_lo_hi/iowrite64_lo_hi for 64-bit register access
+Thread-Index: AQHdOSF2s760xtH4WkKkMD+rqmYMCba5YzYAgAEm+7A=
+Date: Wed, 2 Sep 2026 01:56:13 +0000
+Message-ID:
+ <GV2PR04MB1173990C7B78E5A04779B435088B72@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831082335.1184605-1-wei.fang@oss.nxp.com>
+ <20260831082335.1184605-2-wei.fang@oss.nxp.com>
+ <20260901082024.E6F931F000E9@smtp.kernel.org>
+In-Reply-To: <20260901082024.E6F931F000E9@smtp.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AM9PR04MB7617:EE_
+x-ms-office365-filtering-correlation-id: c59e66e9-9789-4a5e-3876-08df08955e72
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|366016|23010399003|376014|10067099003|22082099003|18002099003|11063799006|56012099006|4143699003|38070700021;
+x-microsoft-antispam-message-info:
+ A94BVLgcaI9obL+TD4DsShiByRlbzHJ54OXf5N6NIUldfdaHjqd0ZgLX8tQoSPJhFxycFoagEKGRGYdjThLasAbH0RuBhVwpPqorBcOLh2LsZAdTqUH7Pxyw5AZTEq2gR2DkQM9PFGlROZlYUWjH370fZAgCtOgzxBxGsN0ZxHXZBZAFzSGId1LIYLmVVG+PuNpjbci4IXDah1lRZQBySwL6pb8tZtb6MRBCwkpkQ88J66nU7P40JGtT3EW24LjxyjxRCIIh2IEDVSePrhUkv4hxlsD0tXFk726j0Nn7JZCKkYbOlOhA9dV0FbHu/NKeNcsgU27TywS0rB7G2xRrBlAVcT+6u8BhZx2+RyGwLuQHmH3Y7SAwFNQ+zXOFWsxRUeAj8yblu/Hz38ix7KlXg5/OrHmsYZ4XODFmTTJUOb9bXTpg2kSOoyFkDZBV/itZMlYTpYb9FsYcEjnI6g5BJJqcVs2nmBALBEqBlOilmZy3mouo+nCH+TX8h6b2YgAhubs+BwNs33VhqO6MHvrpR3Mh6FXFmgIEkkWD6u9V47tZPyMTKLM3tUL0ltAiFQ4iP7NKQOMQuhOd49saCQl4M+DVH1tHitLWQmF/2KuFOairYwMSf8NQIfnrQPQl76sl3uNyv/r5bASuBQG82ayxaJBKAtgzpeAw33RU0NF7E4eQsJSY09Cgbvs1RuMGgmJaj+oijRXLMmlEOLApUitF47Vkeg5wfHCIoBPTJfAvQXg=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(23010399003)(376014)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MmROb3ZhcUhDRlFJc1dpWW8zb0JtWHJmQkMxMitJZTZZVXhDbER1TkdjWjUr?=
+ =?utf-8?B?bytGWCtmeTFuV0krZXFtYUh3em9oUStwUFNCVWljR041MnpuMlFGY1pRbHIy?=
+ =?utf-8?B?SkJpbW9hQVk4UkxhRDNPdXNnSFZ5T1ZPR0IzTUpJTyt5T1BFa2pPNks1ZW9J?=
+ =?utf-8?B?SUJzaXpUVElRTEdxMUtBcTJ0OHBGSkowc1RYbnpnTWlxVVI2NGdWSVJvWThJ?=
+ =?utf-8?B?YjFkMXl3bk9nT2tBT1VRVEZhck1lU3JnRVBWeGNxOUgxaUpJTVAyU2U1NHNQ?=
+ =?utf-8?B?eXhXbU1CNTJHRXlVSmZHWkpkbVFhZHlKdUhNN0NaK3lVY2MwNDdJYzFLUDNx?=
+ =?utf-8?B?Nm5BMXVGZXFjVzQzQjBpTnJWdUI2eitvTXpxQzBpK0FmdjBKZjFyL1JNM3Qw?=
+ =?utf-8?B?TVdhUG9rdFpWUXpmQjhiU3lRR3RJLzgwR0U0VFpubkdwTTlDK3Y2S3Bvd0Y2?=
+ =?utf-8?B?dE1tNmwwVFNMUWhBdHhkNmxya1RsU3RXOXZHNWNhdFZ2NlpZdCs0M1R4N3VF?=
+ =?utf-8?B?VW80TGk0TTJmNEdIZmtOV0FVVHRvanY4VXhIaTRvSTJ0dTNPbyt0R2kweE9U?=
+ =?utf-8?B?d2dWeTlLM1hYN1B3b2VQY094Wkh3UWxldFJ6TU8yZ1pvQ0x1bElEb2dzVHJJ?=
+ =?utf-8?B?WXREYUw3N09wYUFyQmc5QjdKQm10Mjk1ZmZ5T21BamVyNFp2SEJoNGpYalVR?=
+ =?utf-8?B?UGFKb3BKb1pxZk83V0NPLzM0REFqQjJoWGtFdGs5OU1nVVZUQUNHSE5mSDNJ?=
+ =?utf-8?B?TW1UMFk5N1NOTmtzK213blBLMkNMYyt0T1cwM09qTWlBaXBnNldHTW93TjFQ?=
+ =?utf-8?B?T0dFWVJGeFh1NGNkazZnWVRUVmROcXBRRU5yUjc0Tm9mUVlSb2FGNmtFZk9o?=
+ =?utf-8?B?Y01JMkVqbVNpSW9RTU1LcHRoT29SQXZLRzJtZlM4SWxBUUJlSWgxcGtWTUZl?=
+ =?utf-8?B?ZU54c2phcDJQUGMrWGlCTlAvbnNUOTRLK2JrUnZnVUFVTTlMUWxJVDh6b2VF?=
+ =?utf-8?B?OUNLMWRDdCtUb09kZ2YrbUs3STZuUm44MWV1SnpDZ00zZWJiVHVxWHRLc1Ey?=
+ =?utf-8?B?UGZCOVo3b3ExZncya2dUOW8wZVc4MzZvWFRHVlQvMkdhUVIxSElNVDRNOXB4?=
+ =?utf-8?B?dCs3Y010TkF6b3FyM0s1eUd0My9weUpNdlNPS0RXTHJCRFNlRkNZRGZ0K3JR?=
+ =?utf-8?B?WksvZlJtcGxmVVc5UGpvZTc1ZEpZZGpMK2N0VzZTaFpxQ3BkYzRHWjJvRk43?=
+ =?utf-8?B?Yjh6VTcvcjBDRDA2NkNHMW1lQ20vSExPV0J5b0Z1aFJWdjd0UjJzQVYwdGZQ?=
+ =?utf-8?B?TWEySFlHa0JLdHpmdGR4WEljVWpyMTZOdDVhNHFvbVo2QnoreS81SW5hTFJ4?=
+ =?utf-8?B?YlhqZDdrUWJRa1d1R2RwRlpLeDNiS1ljOG9TbWpweVdOc3c4NWpYZUM5dWV4?=
+ =?utf-8?B?RFE0NkJKdXZDV1lYei9pZmlIcFA2bVJ6cGp2M3RSejNoQjlDQ2lmbFVIVndH?=
+ =?utf-8?B?aXNCNkhqbk9TMytYWFJGd1NCNUN6cGY4cEgvYlErSDNNLzFmcDBnSlFmcEly?=
+ =?utf-8?B?Ry9mV2hFWG9PeWwyNkNnaTJpbFdnL2hmYmxYY0pTOFZFcEtsWmZZZXF5MG5F?=
+ =?utf-8?B?Q2E1RjFuN1gzdHMvN2tIdnc1ODBFZk9kb1lmUVRHckxGL3BNTnZRYncwSStJ?=
+ =?utf-8?B?WGdTNTg4ZU1HS0VwMG5KQnFKUjI3TXpUc3ljRDVmazdRZ0VibWxjMjcxY0hj?=
+ =?utf-8?B?bEtEMFU0WWRQVlNmM3ZjQ3pSdVIzalpENkhmMHV4cVZka0hIc24xb005M2Zk?=
+ =?utf-8?B?anhqODd0V0VFOHF6WlFmYUNCNlRSU1JsYVBpemhDT0RmUTdlWjFxOFpZM2ZW?=
+ =?utf-8?B?RFp1aGJPd1Ryb2NPOWpiODFtLzhlenRqZlZia3VnQTBTaElJVFd5WjRhSmJv?=
+ =?utf-8?B?WVdnOXcvQkhCTEVDZ1hrWlRpTVpEK0dLbndJclNrYVVmZWtwK0Q5OVEzanZI?=
+ =?utf-8?B?RGxSRjhBSE1rYWZwbFZzQ2x5TEhwdWxjY0JrTHd5bUI5U2xnY3UvcWdNaEF5?=
+ =?utf-8?B?TDhoUnBDZGZuY3NkcDBJS3dQTU9laU9pZnBqZmJTWUtNNmV0cFJ6VElFNnpJ?=
+ =?utf-8?B?VkVuelBkZ25FdU5rSkVkN2tsVzBxUitQTDlqSGk0Zi92QjUyZjZKK0diV1dJ?=
+ =?utf-8?B?UmFRK0lhTE5JQkdkYjFKWDlKUjZvT2d6ME5nd1IzYjFGSU9LS2d2V1A4dE1H?=
+ =?utf-8?B?RVdFUkk2ZnFiWUtCVUE4Q3NoUVBzaExyZ3RhZWxadTNRNFZSNmNTYzd4Q2xh?=
+ =?utf-8?Q?3G4tQm/6CZuXV1hYMV?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: RX52inVhhOuNCr_vDwd_iGvBhsgRM7mu
-X-Proofpoint-ORIG-GUID: RX52inVhhOuNCr_vDwd_iGvBhsgRM7mu
-X-Authority-Analysis: v=2.4 cv=FKorAeos c=1 sm=1 tr=0 ts=6a978204 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=c92rfblmAAAA:8 a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8
- a=Vk650Z6Kb_TtDR3AB1EA:9 a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDAxNCBTYWx0ZWRfX6X3hHLuLAHkX
- l96UMe0VDGZZkrHhydSCf1kG0BSf8miED7GuWu2V0UP2i6BWAM45nQSAMuy2yY1DaYI2bFyFgmo
- N/2KQ10UTx0akoWltcggsHOqz+P0u58=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDAxNCBTYWx0ZWRfXxrFmlLgbb47w
- 9TaLtvHZMXXV1RNkcgBU4KRsszaYfj4XraaEjD9PskcQJf+UCsxS6sSTH16AurTFPycABPLVPTv
- Ocvmtp1MQp0O0wYBgYZlfCIjtFBlqMEE5VRJ2puK1VdAH5V/CTbes22J9CY0xMAojUrvPcT1nAx
- l7qzkGjGAJ0tRlemvzfBqqAQ/G5pz7yD7lFf5MQ0foIt5cqwLMThvkyVHf+pfv3rzJP8mpWea2z
- +7eL84+9WwozTduw1VaiE5owxVwEeK9R2i4zr9anfFINbGDfX0qlkPtUw2VIVW3PtfHNPueBcO2
- fGUhiNLZN7Xg8Gmmy3Mj3H/SG0VqIbd4SpSyXL1+FmdgL1PWoifE4Mm4D5DuhYbz0cIFKfVxDAT
- oE4yWsCWP4YOXRVeJVu4tjNl4g4G0FLyMMd/aofA4+Lto6YKMeqzgb0/Fs0nbSW2RViNb+7vUnq
- eYcwLKGAnDi+clwzHUQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_06,2026-09-01_03,2025-10-01_01
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c59e66e9-9789-4a5e-3876-08df08955e72
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2026 01:56:13.7183
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: z9rroXagtkYGCBldComI+fp/+wW2hjU+Z1a2Hdsvp7JYejp2jQWe2YfxRn32QhGEBIbX9sdcRYlKmeNJfmS5GQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7617
 
-Add TC_SETUP_QDISC_MQPRIO offload for channel-mode mqprio with
-TC_MQPRIO_SHAPER_BW_RATE. Program per-queue MDQ CIR/PIR through the
-NIX TX scheduler mailbox for each non-QoS transmit queue. When offload
-is active, allocate one SMQ per such queue, parent every MDQ under
-TL4[0], and map each traffic class min/max rate to the queue(s) in that
-class.
-
-Rebuild the TX scheduler hierarchy by bouncing the netdev through
-ndo_stop() and ndo_open() on mqprio add, replace, and delete. Cache
-the active rates and restore MDQ shapers from otx2_mqprio_up() during
-ndo_open(); log and continue if restoration fails so a normal open is
-not blocked.
-
-Track mqprio configuration in mq_offload_snap snapshots (TC layout and
-rates). On tc qdisc replace, stage the new configuration while keeping
-the previous snapshot for rollback: failed setup restores the old
-snapshot, successful graft is recorded through TC_ROOT_GRAFT, and
-teardown of the replaced qdisc instance commits the staged snapshot
-without tearing down the live offload.
-
-Reject offload unless the interface is running and the device advertises
-CIR+PIR support. Reject per-TC rates for traffic classes mapped to more
-than one queue, SDP rep ports, and concurrent PFC or XDP use. Block
-ethtool channel count changes while mqprio bandwidth offload is active.
-
-Add a ratelimited AF debug message when validating TX scheduler queue
-ownership to aid mqprio hierarchy setup failures.
-
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-
----
-v10 -> v11: Addressed sashiko comments.
-	https://sashiko.dev/#/patchset/20260831131014.2639581-1-rkannoth%40marvell.com
-
-v9 -> v10: Addressed sashiko/jacub comments.
-	https://sashiko.dev/#/message/20260817032747.1765883-1-rkannoth%40marvell.com
-
-v8 -> v9: Addressed Sashiko comments
-	https://lore.kernel.org/netdev/aoJ6FhtWue0FHDQV@rkannoth-OptiPlex-7090/
-v7 -> v8: Addressed Sashiko comments
-	https://sashiko.dev/#/patchset/20260811085050.3212280-1-rkannoth%40marvell.com
-v6 -> v7: Addressed Sashiko comments
-	https://sashiko.dev/#/message/20260810034738.1786029-1-rkannoth%40marvell.com
-v5 -> v6: Addressed Sashiko comments
-	https://lore.kernel.org/netdev/20260806095434.1144397-1-rkannoth@marvell.com/
-v4 -> v5: Addressed sashiko comments
-	https://sashiko.dev/#/patchset/20260803042724.3380209-1-rkannoth%40marvell.com
-v3 -> v4: Addressed sashiko comments
-	https://lore.kernel.org/netdev/20260729105139.2302908-1-rkannoth@marvell.com/
-v2 -> v3: Addressed sashiko comments
-	https://lore.kernel.org/netdev/amnYX866mYx02cBe@rkannoth-OptiPlex-7090/T/#m67310cbec48b21c7720858ab3a1ea083a0f8dc10
-v1 -> v2: Addressed sashiko comments
-	https://lore.kernel.org/netdev/20260724075010.2665758-1-rkannoth@marvell.com/
----
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   |   6 +-
- .../marvell/octeontx2/nic/otx2_common.c       | 145 +++-
- .../marvell/octeontx2/nic/otx2_common.h       |  27 +
- .../marvell/octeontx2/nic/otx2_dcbnl.c        |   6 +
- .../marvell/octeontx2/nic/otx2_ethtool.c      |   8 +
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  12 +
- .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 702 ++++++++++++++++++
- .../net/ethernet/marvell/octeontx2/nic/qos.c  |   3 +
- 8 files changed, 907 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 153eb57bad06..c9a4326d725d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -331,8 +331,12 @@ static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
- 			return true;
- 	}
- 
--	if (map_func != pcifunc)
-+	if (map_func != pcifunc) {
-+		dev_err_ratelimited(rvu->dev,
-+				    "pcifunc %x map pcifunc %x not equal, lvl=%u schq=%u\n",
-+				    pcifunc, map_func, lvl, schq);
- 		return false;
-+	}
- 
- 	return true;
- }
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 175992188c18..5c502c9d7c83 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -615,6 +615,142 @@ void otx2_get_mac_from_af(struct net_device *netdev)
- }
- EXPORT_SYMBOL(otx2_get_mac_from_af);
- 
-+static int
-+otx2_nix_tmq_reg_write(struct otx2_nic *pfvf, int cnt,
-+		       u64 reg_addr[MAX_REGS_PER_MBOX_MSG],
-+		       u64 reg_val[MAX_REGS_PER_MBOX_MSG])
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int i, err;
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+	req->num_regs = cnt;
-+
-+	for (i = 0; i < cnt; i++) {
-+		req->reg[i] = reg_addr[i];
-+		req->regval[i] = reg_val[i];
-+	}
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+
-+	return err;
-+}
-+
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf)
-+{
-+	u64 reg_addr[MAX_REGS_PER_MBOX_MSG];
-+	u64 reg_val[MAX_REGS_PER_MBOX_MSG];
-+	int err, smq, i, cnt = 0;
-+
-+	for (i = 0; i < pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ]; i++) {
-+		smq = pfvf->hw.txschq_list[NIX_TXSCH_LVL_SMQ][i];
-+
-+		reg_addr[cnt] = NIX_AF_MDQX_PIR(smq);
-+		reg_val[cnt] = 0;
-+		cnt++;
-+
-+		reg_addr[cnt] = NIX_AF_MDQX_CIR(smq);
-+		reg_val[cnt] = 0;
-+		cnt++;
-+
-+		if (cnt < MAX_REGS_PER_MBOX_MSG - 1)
-+			continue;
-+
-+		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-+					     reg_addr, reg_val);
-+		if (err)
-+			goto fail;
-+		cnt = 0;
-+	}
-+
-+	if (cnt) {
-+		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-+					     reg_addr, reg_val);
-+		if (err)
-+			goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	return err;
-+}
-+
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf,
-+				 int txq, u64 minrate, u64 maxrate)
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int err, smq, n = 0;
-+	u64 reg_addr[2];
-+	u64 reg_val[2];
-+	u64 rate;
-+
-+	if (!maxrate && !minrate) {
-+		smq = otx2_get_smq_idx(pfvf, txq);
-+		reg_addr[0] = NIX_AF_MDQX_PIR(smq);
-+		reg_val[0] = 0;
-+		reg_addr[1] = NIX_AF_MDQX_CIR(smq);
-+		reg_val[1] = 0;
-+		return otx2_nix_tmq_reg_write(pfvf, 2, reg_addr, reg_val);
-+	}
-+
-+	smq = otx2_get_smq_idx(pfvf, txq);
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+
-+	/* MQPRIO exposes only min/max rate, not burst.  Pass burst 0 so
-+	 * otx2_get_egress_burst_cfg() programmes the largest burst the NIX
-+	 * encoding supports (CN10K_MAX_BURST_SIZE on CN10K).  This differs
-+	 * from the 65536 byte default used in the HTB path, which is a
-+	 * kernel-side default when no explicit burst is configured, not a
-+	 * hardware cap.
-+	 *
-+	 * mqprio setup restarts the netdev (otx2_mqprio_restart_netdev),
-+	 * which resets MDQ shapers to zero.  Program both PIR and CIR on
-+	 * every update so omitted rates are applied explicitly rather than
-+	 * relying on stale hardware state.
-+	 */
-+	req->reg[n] = NIX_AF_MDQX_PIR(smq);
-+	if (maxrate) {
-+		rate = otx2_convert_rate(maxrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
-+	} else {
-+		req->regval[n] = 0;
-+	}
-+	n++;
-+
-+	/* CIR+PIR support is required and checked at mqprio setup. */
-+	req->reg[n] = NIX_AF_MDQX_CIR(smq);
-+	if (minrate) {
-+		rate = otx2_convert_rate(minrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
-+	} else {
-+		req->regval[n] = 0;
-+	}
-+	n++;
-+	req->num_regs = n;
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+	return err;
-+}
-+
- int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for_pfc)
- {
- 	u16 (*schq_list)[MAX_TXSCHQ_PER_FUNC];
-@@ -651,7 +787,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 						(u64)hw->smq_link_type);
- 		req->num_regs++;
- 		/* MDQ config */
--		parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+		if (pfvf->mqprio.rate_limit)
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][0];
-+		else
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+
- 		req->reg[1] = NIX_AF_MDQX_PARENT(schq);
- 		req->regval[1] = parent << 16;
- 		req->num_regs++;
-@@ -779,6 +919,9 @@ int otx2_txsch_alloc(struct otx2_nic *pfvf)
- 		req->schq[NIX_TXSCH_LVL_TL4] = chan_cnt;
- 	}
- 
-+	if (pfvf->mqprio.rate_limit)
-+		req->schq[NIX_TXSCH_LVL_SMQ] = pfvf->hw.non_qos_queues;
-+
- 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
- 	if (rc)
- 		return rc;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index eecee612b7b2..ede7f1113b71 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -17,6 +17,7 @@
- #include <linux/soc/marvell/silicons.h>
- #include <linux/soc/marvell/octeontx2/asm.h>
- #include <net/macsec.h>
-+#include <uapi/linux/pkt_sched.h>
- #include <net/pkt_cls.h>
- #include <net/devlink.h>
- #include <linux/time64.h>
-@@ -483,6 +484,23 @@ struct pf_irq_data {
- 	int mdevs;
- };
- 
-+struct mq_offload_snap {
-+	u64 min_rate[TC_QOPT_MAX_QUEUE];
-+	u64 max_rate[TC_QOPT_MAX_QUEUE];
-+	__u8 num_tc;
-+	__u16 count[TC_QOPT_MAX_QUEUE];
-+	__u16 offset[TC_QOPT_MAX_QUEUE];
-+};
-+
-+struct otx2_mqprio {
-+	u32	flags;
-+	u64	*min_rate;
-+	u64	*max_rate;
-+	bool	rate_limit;
-+	bool	replace_setup_done;
-+	bool	replace_graft_done;
-+};
-+
- struct otx2_nic {
- 	void __iomem		*reg_base;
- 	struct net_device	*netdev;
-@@ -515,6 +533,10 @@ struct otx2_nic {
- 	u64			flags;
- 	u64			*cq_op_addr;
- 
-+	struct otx2_mqprio	mqprio;
-+	struct mq_offload_snap	*cur_mq_snap;
-+	struct mq_offload_snap	*old_mq_snap;
-+
- 	struct bpf_prog		*xdp_prog;
- 	struct otx2_qset	qset;
- 	struct otx2_hw		hw;
-@@ -1246,6 +1268,11 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
- 				 struct sk_buff *skb, int seg, int *len);
- void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg);
- int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx);
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf, int txq,
-+				 u64 minrate, u64 maxrate);
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf);
-+int otx2_mqprio_down(struct otx2_nic *pfvf);
-+int otx2_mqprio_up(struct otx2_nic *pfvf);
- void otx2_queue_vf_work(struct mbox *mw, struct workqueue_struct *mbox_wq,
- 			int first, int mdevs, u64 intr);
- int otx2_del_mcam_flow_entry(struct otx2_nic *nic, u16 entry,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-index f110dfa42360..4a70abc230be 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-@@ -413,6 +413,12 @@ static int otx2_dcbnl_ieee_setpfc(struct net_device *dev, struct ieee_pfc *pfc)
- 	u8 old_pfc_en;
- 	int err;
- 
-+	if (pfvf->mqprio.rate_limit && pfc->pfc_en) {
-+		netdev_err(dev,
-+			   "PFC: cannot enable while mqprio bandwidth offload is active\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	old_pfc_en = pfvf->pfc_en;
- 	pfvf->pfc_en = pfc->pfc_en;
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 9bee1b91eeaa..ec2601c6c255 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -287,6 +287,14 @@ static int otx2_set_channels(struct net_device *dev,
- 		return -EINVAL;
- 	}
- 
-+	if (pfvf->mqprio.rate_limit &&
-+	    (channel->tx_count != pfvf->hw.tx_queues ||
-+	     channel->rx_count != pfvf->hw.rx_queues)) {
-+		netdev_info(dev,
-+			    "Not permitted to change channel count while MQ prio is active\n");
-+		return -EINVAL;
-+	}
-+
- 	if (if_up)
- 		dev->netdev_ops->ndo_stop(dev);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c995f2900859..79a82e445454 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1980,6 +1980,12 @@ int otx2_open(struct net_device *netdev)
- 	if (err)
- 		goto err_free_mem;
- 
-+	err = otx2_mqprio_up(pf);
-+	if (err)
-+		netdev_err(pf->netdev,
-+			   "mqprio: failed to restore shapers during open: %d; continuing without bandwidth limits\n",
-+			   err);
-+
- 	/* Register NAPI handler */
- 	for (qidx = 0; qidx < pf->hw.cint_cnt; qidx++) {
- 		cq_poll = &qset->napi[qidx];
-@@ -2846,6 +2852,12 @@ static int otx2_xdp_setup(struct otx2_nic *pf, struct bpf_prog *prog)
- 	bool if_up = netif_running(pf->netdev);
- 	struct bpf_prog *old_prog;
- 
-+	if (prog && pf->mqprio.rate_limit) {
-+		netdev_err(dev,
-+			   "XDP: cannot attach while mqprio bandwidth offload is active\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (prog && dev->mtu > MAX_XDP_MTU) {
- 		netdev_warn(dev, "Jumbo frames not yet supported with XDP\n");
- 		return -EOPNOTSUPP;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 039fd47ebf52..5efa0b4d27d5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -16,6 +16,8 @@
- #include <net/tc_act/tc_mirred.h>
- #include <net/tc_act/tc_vlan.h>
- #include <net/ipv6.h>
-+#include <net/pkt_sched.h>
-+#include <net/sch_generic.h>
- 
- #include "cn10k.h"
- #include "otx2_common.h"
-@@ -31,6 +33,10 @@
- 
- #define MCAST_INVALID_GRP		(-1U)
- #define RATE_MANTISSA_BITS		8
-+/* Min per-queue egress shaping rate the NIX TLX encoder supports (2 Mbps). */
-+#define OTX2_MQPRIO_MIN_RATE_BYTES_PS	250000ULL
-+/* Max egress shaping rate the NIX TLX encoder supports (130816 Mbps). */
-+#define OTX2_MQPRIO_MAX_RATE_BYTES_PS	((MAX_BURST_SIZE * 1000000ULL) / 8ULL)
- 
- static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
- 				      u32 *burst_exp, u32 *burst_mantissa)
-@@ -61,6 +67,9 @@ static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
- 			*burst_mantissa = tmp / (1ULL << (*burst_exp - 7));
- 		}
- 	} else {
-+		/* burst 0: largest encodable burst (CN10K_MAX_BURST_SIZE on
-+		 * CN10K), not a minimal burst.
-+		 */
- 		*burst_exp = MAX_BURST_EXPONENT;
- 		*burst_mantissa = max_mantissa;
- 	}
-@@ -1600,14 +1609,706 @@ static int otx2_setup_tc_block(struct net_device *netdev,
- 					  nic, nic, ingress);
- }
- 
-+/* Free the per-queue min/max rate caches. */
-+static void otx2_mqprio_free_cache(struct otx2_nic *pfvf)
-+{
-+	devm_kfree(pfvf->dev, pfvf->mqprio.min_rate);
-+	devm_kfree(pfvf->dev, pfvf->mqprio.max_rate);
-+	pfvf->mqprio.min_rate = NULL;
-+	pfvf->mqprio.max_rate = NULL;
-+	pfvf->mqprio.flags = 0;
-+}
-+
-+static int otx2_mqprio_alloc_cache(struct otx2_nic *pfvf, bool replacing)
-+{
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+
-+	if (replacing && pfvf->mqprio.min_rate && pfvf->mqprio.max_rate) {
-+		memset(pfvf->mqprio.min_rate, 0,
-+		       num_txq * sizeof(*pfvf->mqprio.min_rate));
-+		memset(pfvf->mqprio.max_rate, 0,
-+		       num_txq * sizeof(*pfvf->mqprio.max_rate));
-+		pfvf->mqprio.flags = 0;
-+		return 0;
-+	}
-+
-+	otx2_mqprio_free_cache(pfvf);
-+
-+	pfvf->mqprio.min_rate = devm_kcalloc(pfvf->dev, num_txq,
-+					     sizeof(*pfvf->mqprio.min_rate),
-+					     GFP_KERNEL);
-+	pfvf->mqprio.max_rate = devm_kcalloc(pfvf->dev, num_txq,
-+					     sizeof(*pfvf->mqprio.max_rate),
-+					     GFP_KERNEL);
-+	if (!pfvf->mqprio.min_rate || !pfvf->mqprio.max_rate) {
-+		otx2_mqprio_free_cache(pfvf);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+static void otx2_mqprio_snap_free(struct otx2_nic *pfvf,
-+				  struct mq_offload_snap **snap)
-+{
-+	if (!*snap)
-+		return;
-+
-+	devm_kfree(pfvf->dev, *snap);
-+	*snap = NULL;
-+}
-+
-+static int otx2_mqprio_snap_copy(struct otx2_nic *pfvf,
-+				 struct mq_offload_snap **dst,
-+				 const struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	const struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	struct mq_offload_snap *snap;
-+	int tc;
-+
-+	if (!*dst) {
-+		snap = devm_kzalloc(pfvf->dev, sizeof(*snap), GFP_KERNEL);
-+		if (!snap)
-+			return -ENOMEM;
-+		*dst = snap;
-+	} else {
-+		snap = *dst;
-+	}
-+
-+	snap->num_tc = qopt->num_tc;
-+	for (tc = 0; tc < TC_QOPT_MAX_QUEUE; tc++) {
-+		snap->count[tc] = qopt->count[tc];
-+		snap->offset[tc] = qopt->offset[tc];
-+		snap->min_rate[tc] = 0;
-+		snap->max_rate[tc] = 0;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			snap->min_rate[tc] = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			snap->max_rate[tc] = mqprio->max_rate[tc];
-+	}
-+
-+	return 0;
-+}
-+
-+static int otx2_mqprio_stage_cur(struct otx2_nic *pfvf,
-+				 const struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	return otx2_mqprio_snap_copy(pfvf, &pfvf->cur_mq_snap, mqprio);
-+}
-+
-+static void otx2_mqprio_snap_commit(struct otx2_nic *pfvf)
-+{
-+	otx2_mqprio_snap_free(pfvf, &pfvf->old_mq_snap);
-+	pfvf->old_mq_snap = pfvf->cur_mq_snap;
-+	pfvf->cur_mq_snap = NULL;
-+}
-+
-+static void otx2_mqprio_clear_replace_state(struct otx2_nic *pfvf)
-+{
-+	pfvf->mqprio.replace_setup_done = false;
-+	pfvf->mqprio.replace_graft_done = false;
-+}
-+
-+static bool otx2_mqprio_mdq_allocated(struct otx2_nic *pfvf)
-+{
-+	return pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_MDQ] != 0;
-+}
-+
-+static int otx2_mqprio_restore_old(struct otx2_nic *pfvf)
-+{
-+	struct mq_offload_snap *snap = pfvf->old_mq_snap;
-+	struct net_device *netdev = pfvf->netdev;
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	int tc, txq, err;
-+
-+	if (!snap)
-+		return 0;
-+
-+	err = otx2_mqprio_alloc_cache(pfvf, false);
-+	if (err)
-+		return err;
-+
-+	memset(pfvf->mqprio.min_rate, 0, num_txq * sizeof(*pfvf->mqprio.min_rate));
-+	memset(pfvf->mqprio.max_rate, 0, num_txq * sizeof(*pfvf->mqprio.max_rate));
-+	pfvf->mqprio.flags = 0;
-+
-+	for (tc = 0; tc < snap->num_tc; tc++) {
-+		u64 min_rate = snap->min_rate[tc];
-+		u64 max_rate = snap->max_rate[tc];
-+
-+		if (min_rate)
-+			pfvf->mqprio.flags |= TC_MQPRIO_F_MIN_RATE;
-+		if (max_rate)
-+			pfvf->mqprio.flags |= TC_MQPRIO_F_MAX_RATE;
-+
-+		for (txq = snap->offset[tc];
-+		     txq < snap->offset[tc] + snap->count[tc]; txq++) {
-+			pfvf->mqprio.min_rate[txq] = min_rate;
-+			pfvf->mqprio.max_rate[txq] = max_rate;
-+		}
-+	}
-+
-+	netdev_set_num_tc(netdev, snap->num_tc);
-+	for (tc = 0; tc < snap->num_tc; tc++)
-+		netdev_set_tc_queue(netdev, tc, snap->count[tc],
-+				    snap->offset[tc]);
-+
-+	if (otx2_mqprio_mdq_allocated(pfvf)) {
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* otx2_mqprio_restart_netdev() clears rate_limit when ndo_open() fails. */
-+	pfvf->mqprio.rate_limit = true;
-+
-+	err = otx2_mqprio_up(pfvf);
-+	if (err)
-+		return err;
-+
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+
-+	return 0;
-+}
-+
-+static void otx2_mqprio_snap_destroy(struct otx2_nic *pfvf)
-+{
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+	otx2_mqprio_snap_free(pfvf, &pfvf->old_mq_snap);
-+}
-+
-+static void otx2_mqprio_clear_sw(struct otx2_nic *pfvf)
-+{
-+	struct net_device *netdev = pfvf->netdev;
-+
-+	pfvf->mqprio.rate_limit = false;
-+	otx2_mqprio_clear_replace_state(pfvf);
-+	netdev_set_num_tc(netdev, 0);
-+	otx2_mqprio_free_cache(pfvf);
-+}
-+
-+/* Tear down mqprio bandwidth offload: clear per-queue shapers,
-+ * mqprio_rate_limit, netdev TC mappings, and the cached rates.  Called on
-+ * explicit mqprio teardown (tc qdisc del) and error cleanup, not on
-+ * routine netdev stop/open cycles where the offload stays active.
-+ */
-+int otx2_mqprio_down(struct otx2_nic *pfvf)
-+{
-+	int err = 0;
-+
-+	if (!pfvf->mqprio.rate_limit)
-+		return 0;
-+
-+	if (netif_running(pfvf->netdev) &&
-+	    otx2_mqprio_mdq_allocated(pfvf))
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+
-+	if (err) {
-+		netdev_err(pfvf->netdev,
-+			   "mqprio: failed to clear hardware shapers: %d; some TX queues may retain bandwidth limits\n",
-+			   err);
-+		return err;
-+	}
-+
-+	otx2_mqprio_clear_sw(pfvf);
-+
-+	return 0;
-+}
-+
-+int otx2_mqprio_up(struct otx2_nic *pfvf)
-+{
-+	struct net_device *netdev = pfvf->netdev;
-+	int txq, err;
-+
-+	if (!pfvf->mqprio.rate_limit)
-+		return 0;
-+
-+	if (!pfvf->mqprio.min_rate || !pfvf->mqprio.max_rate)
-+		return 0;
-+
-+	for (txq = 0; txq < pfvf->hw.non_qos_queues; txq++) {
-+		u64 min_rate = 0, max_rate = 0;
-+
-+		if (pfvf->mqprio.flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = pfvf->mqprio.min_rate[txq];
-+		if (pfvf->mqprio.flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = pfvf->mqprio.max_rate[txq];
-+
-+		if (!min_rate && !max_rate)
-+			continue;
-+
-+		err = otx2_nix_tm_set_queue_shaper(pfvf, txq, min_rate,
-+						   max_rate);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "mqprio: failed to restore shaper for txq %d: %d\n",
-+				   txq, err);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/* Restart the netdev to reprogram the TX scheduler hierarchy for mqprio
-+ * bandwidth offload.  Both mqprio add and delete (when offload was active)
-+ * take this path via ndo_stop()/ndo_open() so VF-specific open logic (e.g.
-+ * LBK carrier on) runs correctly.  The full stop/open cycle clears
-+ * carrier, stops all TX queues, tears down IRQs/NAPI and drops in-flight
-+ * traffic.  If open fails, the interface is left administratively down
-+ * without calling ndo_stop() again on resources already torn down by
-+ * the open error path.
-+ *
-+ * Do not call dev_deactivate()/dev_activate() here: this runs from
-+ * ndo_setup_tc() while qdisc_graft() may already hold the device
-+ * deactivated and must perform the final dev_activate().
-+ */
-+static int otx2_mqprio_restart_netdev(struct net_device *netdev, bool rate_limit)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	const struct net_device_ops *ops = netdev->netdev_ops;
-+	int err;
-+
-+	/* TODO: Explore live TX scheduler reprogramming to avoid a full
-+	 * ndo_stop()/ndo_open() bounce on every mqprio change.
-+	 */
-+	netdev_info(netdev,
-+		    "mqprio: restarting interface to reprogram TX scheduler; in-flight traffic will be dropped\n");
-+
-+	err = ops->ndo_stop(netdev);
-+	if (err)
-+		return err;
-+
-+	/* Set before ndo_open() so otx2_txsch_alloc() widens SMQ allocation. */
-+	if (rate_limit)
-+		pfvf->mqprio.rate_limit = true;
-+
-+	err = ops->ndo_open(netdev);
-+	if (err) {
-+		netdev_err(netdev,
-+			   "Failed to restart device after mqprio change: %d\n",
-+			   err);
-+		/* ndo_open() already freed the TX schedulers on failure while
-+		 * netif_running() may still be true; drop mqprio software state
-+		 * only instead of sending shaper clears to freed queues.
-+		 */
-+		otx2_mqprio_clear_sw(pfvf);
-+		/* ndo_open() rolls back on failure; mark the interface down so
-+		 * netif_close() does not invoke ndo_stop() on freed NAPI/queue
-+		 * state. Caller holds RTNL; dev_close() would deadlock.
-+		 */
-+		pfvf->flags |= OTX2_FLAG_INTF_DOWN;
-+		/* visible to otx2_stop() on other cpus */
-+		smp_wmb();
-+		netif_close(netdev);
-+	}
-+
-+	return err;
-+}
-+
-+static int otx2_mqprio_validate_tc_rate(struct net_device *netdev,
-+					struct netlink_ext_ack *extack,
-+					u64 rate, u32 qcount, int tc,
-+					const char *name)
-+{
-+	if (!rate)
-+		return 0;
-+
-+	if (qcount <= 1)
-+		return 0;
-+
-+	/* TODO: mqprio min_rate/max_rate are per traffic class, but bandwidth
-+	 * offload shapes on per-queue MDQ nodes parented under a single TL4.
-+	 * Without per-TC TL4 shapers the driver cannot honor TC-level limits
-+	 * for a traffic class that spans multiple queues without either
-+	 * dividing the rate across queues (uAPI mismatch) or exceeding the TC
-+	 * cap when every member queue is active. Reject until per-TC TL4
-+	 * shaping can be implemented without allocating additional TL4 nodes
-+	 * beyond the existing hierarchy.
-+	 */
-+	netdev_err(netdev,
-+		   "mqprio: %s rate for tc %d not supported with %u queues\n",
-+		   name, tc, qcount);
-+	NL_SET_ERR_MSG_FMT_MOD(extack,
-+			       "mqprio: %s rate for tc %d not supported with %u queues",
-+			       name, tc, qcount);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int otx2_mqprio_validate_txqs(struct net_device *netdev,
-+				     struct netlink_ext_ack *extack,
-+				     struct tc_mqprio_qopt *qopt)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	int tc, txq;
-+
-+	if (qopt->num_tc > num_txq) {
-+		netdev_err(netdev, "Number of TCs (%u) exceeds hw queues %u\n",
-+			   qopt->num_tc, num_txq);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Number of TCs (%u) exceeds hw queues %u",
-+				       qopt->num_tc, num_txq);
-+		return -EINVAL;
-+	}
-+
-+	if (num_txq > MAX_TXSCHQ_PER_FUNC) {
-+		netdev_err(netdev,
-+			   "Number of queues (%u) exceeds max scheduler queues %u\n",
-+			   num_txq, MAX_TXSCHQ_PER_FUNC);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Number of queues (%u) exceeds max scheduler queues %u",
-+				       num_txq, MAX_TXSCHQ_PER_FUNC);
-+		return -EINVAL;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u32 qcount = qopt->count[tc];
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qcount; txq++) {
-+			if (txq >= num_txq) {
-+				netdev_err(netdev,
-+					   "mqprio: txq %d exceeds offload queue count %u\n",
-+					   txq, num_txq);
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: txq %d exceeds offload queue count %u",
-+						       txq, num_txq);
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static bool otx2_mqprio_rate_valid(u64 rate_bytes_ps)
-+{
-+	u64 mbps;
-+
-+	if (!rate_bytes_ps)
-+		return true;
-+
-+	if (rate_bytes_ps < OTX2_MQPRIO_MIN_RATE_BYTES_PS)
-+		return false;
-+
-+	if (rate_bytes_ps > OTX2_MQPRIO_MAX_RATE_BYTES_PS)
-+		return false;
-+
-+	if (rate_bytes_ps > div_u64(U64_MAX, 8))
-+		return false;
-+
-+	mbps = otx2_convert_rate(rate_bytes_ps);
-+	return ilog2(mbps / 2) <= MAX_RATE_EXPONENT;
-+}
-+
-+static int otx2_teardown_tc_mqprio(struct otx2_nic *pfvf,
-+				   struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	bool had_mqprio = pfvf->mqprio.rate_limit;
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	struct net_device *netdev = pfvf->netdev;
-+	bool if_up = netif_running(netdev);
-+	int err;
-+
-+	qopt->hw = 0;
-+
-+	/* tc qdisc replace runs setup on the new mqprio before destroying the
-+	 * old one. replace_setup_done and TC_ROOT_GRAFT distinguish stale
-+	 * old-instance teardown from graft failure after setup.
-+	 */
-+	if (pfvf->mqprio.replace_setup_done && pfvf->cur_mq_snap) {
-+		if (pfvf->mqprio.replace_graft_done) {
-+			otx2_mqprio_snap_commit(pfvf);
-+		} else {
-+			err = otx2_mqprio_restore_old(pfvf);
-+			if (err)
-+				return err;
-+		}
-+		otx2_mqprio_clear_replace_state(pfvf);
-+		return 0;
-+	}
-+
-+	/* Skip the netdev restart when mqprio offload was not active. */
-+	if (!had_mqprio)
-+		return 0;
-+
-+	if (if_up) {
-+		int down_err, err;
-+
-+		down_err = otx2_mqprio_down(pfvf);
-+		err = otx2_mqprio_restart_netdev(netdev, false);
-+		if (err)
-+			return err;
-+		return down_err;
-+	}
-+
-+	/* ndo_stop() already freed the TX scheduler TL nodes; drop software
-+	 * state only.
-+	 */
-+	otx2_mqprio_clear_sw(pfvf);
-+	return 0;
-+}
-+
-+static int otx2_setup_tc_mqprio(struct net_device *netdev,
-+				struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	struct netlink_ext_ack *extack = mqprio->extack;
-+	bool replacing = pfvf->mqprio.rate_limit;
-+	bool if_up = netif_running(netdev);
-+	int tc, txq, err, i;
-+
-+	if (!qopt->hw)
-+		return otx2_teardown_tc_mqprio(pfvf, mqprio);
-+
-+	if (!if_up) {
-+		netdev_err(netdev, "mqprio: setup requires interface UP\n");
-+		NL_SET_ERR_MSG_MOD(extack, "mqprio: setup requires interface UP");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (mqprio->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+		netdev_err(netdev, "Unsupported mqprio shaper %#x\n", mqprio->shaper);
-+		NL_SET_ERR_MSG_FMT_MOD(extack, "Unsupported mqprio shaper %#x",
-+				       mqprio->shaper);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!test_bit(QOS_CIR_PIR_SUPPORT, &pfvf->hw.cap_flag)) {
-+		netdev_err(netdev,
-+			   "mqprio: bandwidth offload requires CIR+PIR support\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: bandwidth offload requires CIR+PIR support");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (is_otx2_sdp_rep(pfvf->pdev)) {
-+		netdev_err(netdev, "mqprio: bandwidth offload not supported on SDP rep\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: bandwidth offload not supported on SDP rep");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (pfvf->pfc_en) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while PFC is enabled\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while PFC is enabled");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (pfvf->xdp_prog) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while XDP is active\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while XDP is active");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+		u32 qcount = qopt->count[tc];
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		if (min_rate && max_rate && min_rate > max_rate) {
-+			netdev_err(netdev,
-+				   "min_rate %llu exceeds max_rate %llu for tc %d\n",
-+				   min_rate, max_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "min_rate %llu exceeds max_rate %llu for tc %d",
-+					       min_rate, max_rate, tc);
-+			return -EINVAL;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE) {
-+			err = otx2_mqprio_validate_tc_rate(netdev, extack, min_rate,
-+							   qcount, tc, "min");
-+			if (err)
-+				return err;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE) {
-+			err = otx2_mqprio_validate_tc_rate(netdev, extack, max_rate,
-+							   qcount, tc, "max");
-+			if (err)
-+				return err;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE &&
-+		    !otx2_mqprio_rate_valid(min_rate)) {
-+			netdev_err(netdev,
-+				   "mqprio: min_rate %llu for tc %d is outside hardware limits\n",
-+				   min_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: min_rate %llu for tc %d is outside hardware limits",
-+					       min_rate, tc);
-+			return -EINVAL;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE &&
-+		    !otx2_mqprio_rate_valid(max_rate)) {
-+			netdev_err(netdev,
-+				   "mqprio: max_rate %llu for tc %d is outside hardware limits\n",
-+				   max_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: max_rate %llu for tc %d is outside hardware limits",
-+					       max_rate, tc);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	err = otx2_mqprio_validate_txqs(netdev, extack, qopt);
-+	if (err)
-+		return err;
-+
-+	err = otx2_mqprio_stage_cur(pfvf, mqprio);
-+	if (err)
-+		return err;
-+
-+	err = otx2_mqprio_restart_netdev(pfvf->netdev, true);
-+	if (err)
-+		goto cleanup;
-+
-+	err = otx2_mqprio_alloc_cache(pfvf, replacing);
-+	if (err)
-+		goto cleanup;
-+
-+	/* otx2_mqprio_up() may have restored the previous configuration during
-+	 * the restart above. Clear every MDQ shaper before applying the new
-+	 * mapping so queues dropped from the TC layout do not keep stale
-+	 * limits in hardware.
-+	 */
-+	if (otx2_mqprio_mdq_allocated(pfvf)) {
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+		if (err)
-+			goto cleanup;
-+	}
-+
-+	pfvf->mqprio.flags = mqprio->flags;
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+		u32 qcount = qopt->count[tc];
-+
-+		/* Rates omitted from tc mqprio are passed as zero and both MDQ
-+		 * shaper registers are programmed; see
-+		 * otx2_nix_tm_set_queue_shaper(). Multi-queue TCs with rates
-+		 * are rejected above.
-+		 */
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qcount; txq++) {
-+			netdev_dbg(netdev,
-+				   "mqprio: tc %d txq %d min_rate %llu max_rate %llu\n",
-+				   tc, txq, min_rate, max_rate);
-+
-+			pfvf->mqprio.min_rate[txq] = min_rate;
-+			pfvf->mqprio.max_rate[txq] = max_rate;
-+
-+			err = otx2_nix_tm_set_queue_shaper(pfvf, txq,
-+							   min_rate, max_rate);
-+			if (err)
-+				goto cleanup;
-+		}
-+	}
-+
-+	netdev_set_num_tc(netdev, pfvf->cur_mq_snap->num_tc);
-+	for (i = 0; i < pfvf->cur_mq_snap->num_tc; i++)
-+		netdev_set_tc_queue(netdev, i, pfvf->cur_mq_snap->count[i],
-+				    qopt->offset[i]);
-+
-+	qopt->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
-+
-+	if (replacing) {
-+		pfvf->mqprio.replace_setup_done = true;
-+		pfvf->mqprio.replace_graft_done = false;
-+	} else {
-+		otx2_mqprio_snap_commit(pfvf);
-+	}
-+
-+	return 0;
-+
-+cleanup:
-+	qopt->hw = 0;
-+	if (replacing) {
-+		int restore_err = otx2_mqprio_restore_old(pfvf);
-+
-+		otx2_mqprio_clear_replace_state(pfvf);
-+		if (restore_err) {
-+			netdev_err(netdev,
-+				   "mqprio: replace failed and prior configuration rollback failed: %d\n",
-+				   restore_err);
-+			if (extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: replace failed and prior configuration rollback failed: %d",
-+						       restore_err);
-+		} else {
-+			netdev_err(netdev,
-+				   "mqprio: replace failed; prior configuration restored\n");
-+			if (extack)
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "mqprio: replace failed; prior configuration restored");
-+		}
-+		return err ? err : -EIO;
-+	}
-+	otx2_teardown_tc_mqprio(pfvf, mqprio);
-+	return err;
-+}
-+
-+static int otx2_setup_tc_root(struct otx2_nic *pfvf,
-+			      struct tc_root_qopt_offload *root)
-+{
-+	switch (root->command) {
-+	case TC_ROOT_GRAFT:
-+		if (pfvf->mqprio.replace_setup_done)
-+			pfvf->mqprio.replace_graft_done = true;
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int otx2_setup_tc_query_caps(void *type_data)
-+{
-+	struct tc_query_caps_base *base = type_data;
-+	struct tc_mqprio_caps *caps;
-+
-+	if (base->type != TC_SETUP_QDISC_MQPRIO)
-+		return -EOPNOTSUPP;
-+
-+	caps = base->caps;
-+	caps->validate_queue_counts = true;
-+
-+	return 0;
-+}
-+
- int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		  void *type_data)
- {
- 	switch (type) {
-+	case TC_QUERY_CAPS:
-+		return otx2_setup_tc_query_caps(type_data);
- 	case TC_SETUP_BLOCK:
- 		return otx2_setup_tc_block(netdev, type_data);
- 	case TC_SETUP_QDISC_HTB:
- 		return otx2_setup_tc_htb(netdev, type_data);
-+	case TC_SETUP_QDISC_MQPRIO:
-+		return otx2_setup_tc_mqprio(netdev, type_data);
-+	case TC_SETUP_ROOT_QDISC:
-+		return otx2_setup_tc_root(netdev_priv(netdev), type_data);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -1632,6 +2333,7 @@ EXPORT_SYMBOL(otx2_init_tc);
- void otx2_shutdown_tc(struct otx2_nic *nic)
- {
- 	otx2_destroy_tc_flow_list(nic);
-+	otx2_mqprio_snap_destroy(nic);
- }
- EXPORT_SYMBOL(otx2_shutdown_tc);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 69c0911e28e9..d9af182e5721 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -118,6 +118,9 @@ static void otx2_config_sched_shaping(struct otx2_nic *pfvf,
- 	/* configure PIR */
- 	maxrate = (node->rate > node->ceil) ? node->rate : node->ceil;
- 
-+	/* 65536 is the kernel-side default burst when HTB does not supply an
-+	 * explicit value, not the NIX hardware maximum (CN10K_MAX_BURST_SIZE).
-+	 */
- 	cfg->regval[*num_regs] =
- 		otx2_get_txschq_rate_regval(pfvf, maxrate, 65536);
- 	(*num_regs)++;
--- 
-2.43.0
-
+PiA+IEBAIC01MDAsMjIgKzQ3MywxOSBAQCBzdGF0aWMgdm9pZCBuZXRjX3RpbWVyX2hhbmRsZV9l
+dHRzX2V2ZW50KHN0cnVjdA0KPiBuZXRjX3RpbWVyICpwcml2LCBpbnQgaW5kZXgsDQo+ID4gIAkJ
+CQkJIGJvb2wgdXBkYXRlX2V2ZW50KQ0KPiA+ICB7DQo+ID4gIAlzdHJ1Y3QgcHRwX2Nsb2NrX2V2
+ZW50IGV2ZW50Ow0KPiA+IC0JdTMyIGV0dHNfbCA9IDAsIGV0dHNfaCA9IDA7DQo+ID4gKwl1NjQg
+ZXR0cyA9IDA7DQo+ID4NCj4gPiAtCXdoaWxlIChuZXRjX3RpbWVyX3JkKHByaXYsIE5FVENfVE1S
+X1NUQVQpICYgVE1SX1NUQVRfRVRTX1ZMRChpbmRleCkpDQo+IHsNCj4gPiAtCQlldHRzX2wgPSBu
+ZXRjX3RpbWVyX3JkKHByaXYsIE5FVENfVE1SX0VUVFNfTChpbmRleCkpOw0KPiA+IC0JCWV0dHNf
+aCA9IG5ldGNfdGltZXJfcmQocHJpdiwgTkVUQ19UTVJfRVRUU19IKGluZGV4KSk7DQo+ID4gLQl9
+DQo+ID4gKwl3aGlsZSAobmV0Y190aW1lcl9yZChwcml2LCBORVRDX1RNUl9TVEFUKSAmIFRNUl9T
+VEFUX0VUU19WTEQoaW5kZXgpKQ0KPiA+ICsJCWV0dHMgPSBuZXRjX3RpbWVyX3JkNjQocHJpdiwg
+TkVUQ19UTVJfRVRUU19MKGluZGV4KSk7DQo+ID4NCj4gPiAgCS8qIEludmFsaWQgdGltZSBzdGFt
+cCAqLw0KPiA+IC0JaWYgKCFldHRzX2wgJiYgIWV0dHNfaCkNCj4gPiArCWlmICghZXR0cykNCj4g
+PiAgCQlyZXR1cm47DQo+ID4NCj4gPiAgCWlmICh1cGRhdGVfZXZlbnQpIHsNCj4gPiAgCQlldmVu
+dC50eXBlID0gUFRQX0NMT0NLX0VYVFRTOw0KPiA+ICAJCWV2ZW50LmluZGV4ID0gaW5kZXg7DQo+
+ID4gLQkJZXZlbnQudGltZXN0YW1wID0gKHU2NClldHRzX2ggPDwgMzI7DQo+ID4gLQkJZXZlbnQu
+dGltZXN0YW1wIHw9IGV0dHNfbDsNCj4gPiArCQlldmVudC50aW1lc3RhbXAgPSBldHRzOw0KPiA+
+ICAJCXB0cF9jbG9ja19ldmVudChwcml2LT5jbG9jaywgJmV2ZW50KTsNCj4gPiAgCX0NCj4gPiAg
+fQ0KPiANCj4gW1NldmVyaXR5OiBIaWdoXQ0KPiBUaGlzIGlzIGEgcHJlLWV4aXN0aW5nIGlzc3Vl
+LCBidXQgZG9lcyB0aGlzIGxvb3AgZGlzY2FyZCBhbGwgYnV0IHRoZSBsYXN0DQo+IHRpbWVzdGFt
+cCBmcm9tIHRoZSBoYXJkd2FyZSBGSUZPPw0KPiANCj4gVGhlIHdoaWxlIGxvb3Agc3VjY2Vzc2Z1
+bGx5IGRyYWlucyBtdWx0aXBsZSB0aW1lc3RhbXBzIGZyb20gdGhlIFRNUl9FVFRTDQo+IEZJRk8N
+Cj4gaWYgdGhleSBhY2N1bXVsYXRlIGJlZm9yZSB0aGUgaW50ZXJydXB0IGlzIGhhbmRsZWQuIEhv
+d2V2ZXIsIGJlY2F1c2UgZXR0cyBpcw0KPiBvdmVyd3JpdHRlbiBvbiBlYWNoIGl0ZXJhdGlvbiBh
+bmQgcHRwX2Nsb2NrX2V2ZW50KCkgaXMgb25seSBjYWxsZWQgb25jZQ0KPiBhZnRlciB0aGUgbG9v
+cCBjb21wbGV0ZXMsIGl0IGFwcGVhcnMgYW55IHByaW9yIGV4dGVybmFsIGV2ZW50cyBpbiB0aGUg
+YmF0Y2gNCj4gYXJlIHNpbGVudGx5IGxvc3QuDQo+IA0KDQpUaGlzIGlzIGEgZmFsc2UgcG9zaXRp
+dmUsIHRoZSBpbnRlbnRpb24gaXMgdG8gZ2V0IHRoZSBsYXN0IHRpbWVzdGFtcC4NCg0K
