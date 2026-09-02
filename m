@@ -1,106 +1,157 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B44C3A4F26
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 19:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FEB3876BB
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788378796; cv=none; b=kgVKbv5kPL3Zb09EfHnfuHe4KpekL1WRiZlc8af2VjtB3bIEUKm4bj/eEupRr9PF+BgO4TX6MkHpUHYvH8nMUPgHMwK6MD54KuyfIWmAr066EwE0RjhVfhW5dYUwYI746Q7q5/TOqG7Ov0JMf9w/swkhhma8QXhM2uffw0K/fgY=
+	t=1788379608; cv=none; b=aAB+4lfoNLXxEB/Ew2M8eIZhl/6dkU66FWHCstZnirzFvA9mv3s6GgZx3l0FEveC4dcW2Ev+jWqYjSb61kPRF2iwF0sKVmUKhwtwGi32/xBzlUiAs7tciU0s7VLT4QgfXSXsfOSUqbN5V9RJVBviuvQjrHNpYYd8B9fn+cuaLO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788378796; c=relaxed/simple;
-	bh=vr6W5zFpVz8w0VHMme/yDcx9OPftCRNIo4AFcnhZPtA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ar7HJIYzqipojzM3tdwB5ze9iU0TIkN/1JnybkTaQa1u7GkxmLXxJ5yz3yDG87W23l68KB6Ksq9wss8r+dofVSYTDyXjnzT1w1V0j+IlZtbs0QexhqpTOebCm8fAWmZXZRy1BOMQg+LVXpiVMum6JIjpu/vVKOBt5V0y+VZ8Zlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FpD1KkVR; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788379608; c=relaxed/simple;
+	bh=tORk9YRaKq8coxtAkv9z3oKm3x3VzIOvr1YIJQcM84I=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=h2Pen9+/xU9KDS6Iapn6Ch79NVTW2TM+lgABrCRGLoOlhOjO7HBM1cKSBezKS2wkd2nJnWbGbbCQok3yPyp0kvgRC4HljlCFWcTDEctF9puQQe46B1pZsDB5Ns4Y3oq6nHQg757HQRrkggosp9DsV6HUz6fwaTiooCLpVVhM6HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MT1fp9c1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FpD1KkVR"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47fe89fb333so1001469f8f.3
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 12:53:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788378786; x=1788983586; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Uw/w31b9K+Bo5B9bJ2pBdij1/BOB3D6uwkiUGcYBOoc=;
-        b=FpD1KkVRQ6ip1P1cfhHQc+TUFKZorOz2rEkEJiN9sxbO9abeWr+Az0MR3bKe5yvYhK
-         /EE/ylsBdQQNYDD1Gzc0jGRixN6E1DGHSETBJrJDRbtuVrfMiMDAkXv4WHiB8wYNuksq
-         i8SlVEHcxoaB5oLHpSgTCVPLlnaVQyUZOZTF2t3hN3riC+VrcxUpeNq5zQ5i2pXf8n95
-         /brTAPQtOCJyQQzoYUcpvTRMjCLzusxniEzvBg2Mlw5Fp87X8v77I8AeDBmiiLz2blUo
-         Tq46VgPNvyPVrg5yJjcE+GEyPSNeZ/Cxs2wTevFXD2s/0YZWZ9PjIDvlHkuXA6xjLVVC
-         +O6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788378786; x=1788983586;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Uw/w31b9K+Bo5B9bJ2pBdij1/BOB3D6uwkiUGcYBOoc=;
-        b=MER4EGXAJ5oZH1RD7vBBF5K8M7QbVWhEiC4cTUQKg2YPZAohTivrY8LtnZbY128M9e
-         9PlpUpXEtdS108JuhwtABm3JgZGJ4Xc1hpkFnAv8jeuVLHL8flg1gjIhtyT4TYjYNqal
-         nfer+AoqjKKhAimd9S6vuL/HarRQMusDazN0CUECQNZFQUF0Ehmpi/8lMvuE1Sf+6x1k
-         tdZzKS724s/u0ZGfkPhVODzlsrEbQU+2WT46I2iaytXuPlsfM4n6ULdXEIgp/efOqfdW
-         Kr0zc2dqa20TfmXVzVHul9WMKlWD01VNgHPzOIzAafy2qgc07dgjAGfbGm1uYlSoBnXH
-         9lww==
-X-Gm-Message-State: AFuF++lk1NGKbx3Ffbyn825fE4Dof76gE9O3w5Z3DU4CLG1ywE3LM+Js
-	iWajhLt70mKJbN7/1WstpjfB1IJLJ64sENgaUaQc0NPmPvBH8CSU9zgd
-X-Gm-Gg: AYBFou3b4AfWhNsRMODnOY3fPNvxvZ+XIrNfimGxMh1QQz00HtA//7VV6AX+FPCZlOg
-	Wv+e10K3FP3bekeGhm4lUgM6WB2AkOSFdrz1jXQqU7aK6M2lqCEf0WRrvQk5iI+vodJ2j00xzRq
-	S5eJGCbA/GKeUhpFl34IoqnokxEooiya6pMiZkR0KE1eSRjjDUdEkSEl1zqFGbuDIWTSi8Hs4B8
-	BLrJtIwuE4ZgePo/gRkIvLJzTRwy+Y/INOt6mb10Q1gr2tt0fKDlaoYnsdyk+yFgpSZHseS1NZk
-	3K+OXfa1WBfDYmwErv5M2yiJgDvsNilKkDhGYQP2wTv0n5SKBgM7GPtz3blm8Wvv7XNmWaxqV83
-	FPCd8dkTqtLZ0UBiCOjyOrtuWEyXwkpE6aDVe7T0KCQO9hPiEzLzTbTv/hCx8EB0vuyKo+vpL9e
-	FjvF7r+vBE2D2CFvzL4P0MOG8hdeuGgaskMCRwbeW2Q8TDeZHsT4KRQxrd/ZvlkpQ=
-X-Received: by 2002:a05:6000:701:b0:484:3600:35b2 with SMTP id ffacd0b85a97d-48488f00a25mr11965360f8f.5.1788378785721;
-        Wed, 02 Sep 2026 12:53:05 -0700 (PDT)
-Received: from gentoo ([45.150.111.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448ed30c0sm8552779f8f.24.2026.09.02.12.53.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:53:04 -0700 (PDT)
-From: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	dsahern@kernel.org,
-	horms@kernel.org,
-	aconole@redhat.com,
-	sbrivio@redhat.com,
-	gnault@redhat.com,
-	laikabcprice@gmail.com,
-	rough.rock3059@datachamp.fr,
-	stable@vger.kernel.org,
-	Yaroslav Dudkov <aroslavdudkov622@gmail.com>
-Subject: Re: [PATCH net] tunnels: Drop stale dst when building an ICMP error for PMTUD
-Date: Wed,  2 Sep 2026 19:50:10 +0000
-Message-ID: <20260902195012.265628-1-aroslavdudkov622@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260902190112.4126199-1-idosch@nvidia.com>
-References: <20260902190112.4126199-1-idosch@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MT1fp9c1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59D01F000E9;
+	Wed,  2 Sep 2026 20:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788379605;
+	bh=e+6avOhkX2a5nm3hAX8xbb0ClyrPNQV7k96dYGXW578=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MT1fp9c1W5XNqKhcX6GOQVpcnlXVDNwkhIVniTGA+zNRQ3yPLru78Xy8nQ3cBE/eS
+	 Zf1D4k2O+IxNHjtwzL8iuhViYfmzDmPppDR9djQxbjgMFEnNprG4t4qr1Snagl5YhB
+	 4O0k6x7O3jhjYzDxlEh8mif/Cg/paq6qh/kk8BRYEwNGf4LXEEBQCyWQr74+7bSYfj
+	 iAs1fVkHKiEH0qbOhPVH8bHTDo9gP/4r5T0h7ipYmP/CGN9y3FYPiCY2RFjxyuEliT
+	 AdezDb7OAhDR40XTaEQ63/KUS28wp0wf6asCknNsPH8l7GR3ngafJVwH2Hf8Tf5UFR
+	 f/1KQ9/Fd8ohA==
+Subject: Re: [net-next] net: sysfs: use ops lock for speed and duplex
+From: netdev-bot+sashiko@kernel.org
+To: wang.zhan@smartx.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com
+Date: Wed, 02 Sep 2026 20:06:44 +0000
+Message-ID: <178837960413.3394541.4377119381016247697@kernel.org>
+In-Reply-To: <20260831080623.1064001-1-wang.zhan@smartx.com>
+References: <20260831080623.1064001-1-wang.zhan@smartx.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 02, 2026 at 07:01:12PM +0000, Ido Schimmel wrote:
-> Fix this by making sure that the ICMP error packet does not have a valid
-> dst entry, thereby forcing the IP layer to perform a route lookup.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Tested on net with this patch applied:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- pmtu.sh: all 16 bridged and all 16 OVS subtests pass, both with and
-  without br_netfilter loaded. Without the patch, loading br_netfilter
-  makes all 16 bridged subtests fail (the reply gets delivered and exits
-  with the old -w 1 failure).
+- [Medium] In the new non-RTNL fast path of sysfs_get_link_ksettings()
+  (net/core/net-sysfs.c:141-149), a read of…
 
-- The forwarded-sender reproducer from my earlier mail goes from
-  10 tx / 0 rx / no errors to 10 tx / 8 rx / +1 error, the error being
-  "From 192.168.4.1 icmp_seq=1 Frag needed and DF set (mtu = 3950)" --
-  the tunnel's PTB reaching the sender.
+--
 
-Tested-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+net: sysfs: use ops lock for speed and duplex
+
+This moves the speed and duplex sysfs reads off rtnl_lock() for ops-locked
+devices whose get_link_ksettings callback does not set
+ETHTOOL_OP_NEEDS_RTNL_LINKSETTINGS, taking the netdev instance lock
+instead.  The new helper sysfs_get_link_ksettings() keeps sysfs_rtnl_lock()
+for legacy devices and for callbacks that opt into RTNL.
+
+> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+> index 352173df75785..3e01e7f3cac79 100644
+> --- a/net/core/net-sysfs.c
+> +++ b/net/core/net-sysfs.c
+> @@ -118,6 +118,55 @@ static int sysfs_rtnl_lock(struct kobject *kobj, struct attribute *attr,
+>  	return ret;
+>  }
+>  
+> +/*
+> + * Use the per-device ops lock without RTNL when the device supports it.
+> + * Legacy devices and callbacks which explicitly require RTNL retain the
+> + * existing locking.
+> + */
+> +static int sysfs_get_link_ksettings(struct device *dev,
+> +				    struct device_attribute *attr,
+> +				    struct ethtool_link_ksettings *cmd)
+> +{
+> +	struct net_device *netdev = to_net_dev(dev);
+> +	int ret = -EINVAL;
+> +	bool need_rtnl;
+> +
+> +	/*
+> +	 * The check is also done in netif_get_link_ksettings(); this helps
+> +	 * returning early without hitting the locking section below.
+> +	 */
+> +	if (!netdev->ethtool_ops->get_link_ksettings)
+> +		return ret;
+> +
+> +	need_rtnl = !netdev_need_ops_lock(netdev) ||
+> +		    (netdev->ethtool_ops->op_needs_rtnl &
+> +		     ETHTOOL_OP_NEEDS_RTNL_LINKSETTINGS);
+> +	if (need_rtnl) {
+> +		ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	netdev_lock_ops(netdev);
+
+[Severity: Medium]
+When need_rtnl is false, sysfs_get_link_ksettings() skips sysfs_rtnl_lock()
+and therefore also skips the dev_hold() and
+sysfs_break_active_protection() that it performs, then sleeps in
+netdev_lock_ops() -> mutex_lock(&dev->lock) while the kernfs active
+reference on the speed/duplex attribute is still held.
+
+Can that delay the unregistration path?  unregister_netdevice_many_notify()
+runs with rtnl_lock held (ASSERT_RTNL at its entry) and reaches:
+
+net/core/dev.c:unregister_netdevice_many_notify() {
+	...
+		/* Remove entries from kobject tree */
+		netdev_unregister_kobject(dev);
+	...
+}
+
+device_del() -> kernfs_drain() on the speed node then waits for the sysfs
+reader to return, so RTNL stays held for as long as some other thread holds
+the instance lock, for example an mlx5 channel or ring reconfiguration.
+That is the same multi-hundred-millisecond work the commit message wants to
+keep out of RTNL.  Before this patch the reader had already broken active
+protection before blocking, so it could not hold up the drain.
+
+The second half is the interruptibility change.  sysfs_rtnl_lock() waits
+like this:
+
+net/core/net-sysfs.c:sysfs_rtnl_lock() {
+	...
+	if (rtnl_lock_interruptible()) {
+		ret = -ERESTARTSYS;
+		goto unbreak;
+	}
+	...
+}
+
+mutex_lock(&dev->lock) in netdev_lock_ops() has no interruptible variant
+here, so a world-readable poller of /sys/class/net/<dev>/speed can end up
+uninterruptible in D state for the duration of a driver reconfiguration.
+Would it make sense to keep sysfs_break_active_protection() and dev_hold()
+around the instance-lock acquisition, or to use netdev_trylock() with a
+retry that drops the active reference first, so sysfs readers still cannot
+stall the rtnl-holding teardown?
+
+For context, netdev_lock_store() already takes netdev_lock() from a sysfs
+handler without breaking active protection, so the pattern itself is not
+new; the difference here is that it now applies to a world-readable
+attribute that monitoring agents poll continuously rather than to a rare
+CAP_NET_ADMIN write.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831080623.1064001-1-wang.zhan%40smartx.com
