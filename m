@@ -1,52 +1,52 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB6540911E;
-	Wed,  2 Sep 2026 09:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462243AA1BA;
+	Wed,  2 Sep 2026 09:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788340038; cv=none; b=Ht86dL6psqjwT6ykjunw99CkYn1OAJIrKgnyiTKJimtr75QKnDHPom/+6cZvFWH3dp5Xvtcl4rPykNFOJ5ddVo1D2pH4WEqrivR+2ZklPyGG6PvNtmaUjpW6quh/SYyelaymLpP/w7BXyx3qJJE+WwlnNMXJZzT9/scAyu8khzU=
+	t=1788340038; cv=none; b=e3fsQDsFg4hTggK3ul+HXN2Pqdyia/4zFtEi/4VEuNOmZazc1ozRsK/FoAB5wfs3+wa+ke2x6Bpc5RL1L7e0ovEAghZ6wMExbZs93rR6pwJ3lmCQAed+jQy8rNOwsOC77x9maWO43TYgILNez2LWlKnF++tokOtnbuMzlA0h78Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788340038; c=relaxed/simple;
-	bh=mOHDSgUhbYXp0qXFhhOqHlXOCRZ0j+8zGHc/eDk3rYM=;
+	bh=OiXwn6J/u1isD3Rd/3NIi4HO84Dm0gCf7BdMCMOWrZ4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V9zSwCZ6jceX2WvRKI105DZyILOPzDAelmEwrXWpQ/OUOZ4+iS57/xFDRgg6teHYmMeWaymWebRaK4AzL0GbDrdvb+hOk92yrCuNJ7RZUtAoHvO8sFSNo00dCeDajLXNPMdOu1FsR6SDR6Di0qRbli+Z8SiifAl59Y0UKq0JCQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=LQDfk9HO; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=VBKblF5/av5FS4/vx9klKFY5Ou/1loa2930ro/xq0U8SZiccIvm9+/CQGerE4U1soRBELkoVPOy4efytEl7C/wti9pEJD1VSYeb/ebRLGc3LW4ZrWMQ9iQXum4ZJOYIbmQnCN02fl0F+4KBTzCppSQzob1F6OrcRp4xe20eGFG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=bplBL1t1; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="LQDfk9HO"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68296jDC22527049, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="bplBL1t1"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68296iQF22526998, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1788340005; bh=AQaNtWm2BTwuy9M16olyI6FrrwUYT6i5k4f0R1NvGAM=;
+	t=1788340004; bh=n+X/aO7jLdI6qb5aqduOCFysTjtYcbKdZpA1kYIeFsg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=LQDfk9HOT0n/kMUMbcjw4HRaR5Jf+ZtNOWxR2qxcl3yAzqCogolqKmXS8xh0UdI/Z
-	 NLEtj89nRK1NThHd9G/eZIC/Z6GtdUVmxEOJUzm8II4lqTBoPQX9P8tl9ECjYyG/aD
-	 PyYIxQZprDveFOy4rdmuHLq+C5l24MwjagHuEo3I9sQrhaooBZyXunBaIeX+hnJA56
-	 WWQsX0uLpc+L9Z4PFUsYuILt0Nd4G6QTUyQXbIz9RbVtrXwbk9wT6dGMJc/4YCI8IA
-	 xA2n66BFEft+lfsP8nH9CubA8FPPaF7ZyrY6UH539KNfMQKoG3y+2r6096ciVAn1tA
-	 tycgEzQbchfNA==
+	b=bplBL1t1DWrnEMlkr4e0iyiKX8Vz+9bGvYYwRXfdKpXFvJWUGqfRNM0c41kxfwubq
+	 EJFxRRktvWMk5Giybwf1DgckuWkmnnZWkrqfjPvys4NYoe5PGXSSnBDWobwS1CnYGh
+	 f5t1nJmvZB/WbSq5ELWkl2JIkXjRb2/lfOyVdvHmnObBUw/JJoahuTT4Rr+4HxS8dJ
+	 8PWLJym4bWq2LvH7Cy4NM16X8zfeDBA/TkE4ygy9j2hYgXogzCAAfa7vCAGR8PH5Fu
+	 kBn3aDDfnWTRy9gRwHHtWxRyKLwQqe9WHJIt8trcweLHVGuFTEAtmUKnOdGKAWaotT
+	 O3JXIszNrYhQA==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68296jDC22527049
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68296iQF22526998
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 2 Sep 2026 17:06:45 +0800
+	Wed, 2 Sep 2026 17:06:44 +0800
 Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 2 Sep 2026 17:06:45 +0800
+ 15.2.2562.43; Wed, 2 Sep 2026 17:06:44 +0800
 Received: from fc44.realtek.com.tw (172.22.241.7) by
  RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server id
- 15.2.2562.43 via Frontend Transport; Wed, 2 Sep 2026 17:06:45 +0800
+ 15.2.2562.43 via Frontend Transport; Wed, 2 Sep 2026 17:06:44 +0800
 From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>
 CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
 	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
 	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
 	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>
-Subject: [PATCH net-next 5/8] r8152: support rtl8157_unload and rtl8157_change_mtu
-Date: Wed, 2 Sep 2026 17:06:29 +0800
-Message-ID: <20260902090632.41844-6-nic_swsd@realtek.com>
+Subject: [PATCH net-next 4/8] r8152: refactor r8157_hw_phy_cfg
+Date: Wed, 2 Sep 2026 17:06:28 +0800
+Message-ID: <20260902090632.41844-5-nic_swsd@realtek.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260902090632.41844-1-nic_swsd@realtek.com>
 References: <20260902090632.41844-1-nic_swsd@realtek.com>
@@ -59,119 +59,307 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Introduce dedicated rtl_ops callbacks for RTL8157 and RTL8159:
-- rtl8157_unload: a dedicated unload callback for RTL8157 and RTL8159
-- rtl8157_change_mtu: determines MTPS depending on the packet size,
-  with the range of MTPS from 10K to 16K
+Refactor r8157_hw_phy_cfg into two functions:
+- r8157_hw_phy_cfg
+- r8159_hw_phy_cfg
+
+Moreover, update PHY parameters for RTL8156B/57/59, and add two
+bitwise operation helpers for sram2.
 
 Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 ---
- drivers/net/usb/r8152.c | 47 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 10 deletions(-)
+ drivers/net/usb/r8152.c | 168 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 139 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 90b628790a148..0cc3e8cedb84d 100644
+index 53835453913c8..90b628790a148 100644
 --- a/drivers/net/usb/r8152.c
 +++ b/drivers/net/usb/r8152.c
-@@ -7031,6 +7031,28 @@ static void rtl8156_down(struct r8152 *tp)
- 	r8153_aldps_en(tp, true);
+@@ -655,6 +655,7 @@ enum spd_duplex {
+ /* OCP_POWER_CFG */
+ #define EEE_CLKDIV_EN		0x8000
+ #define EN_ALDPS		0x0004
++#define EN_ALDPS_PLLOFF         0x0002
+ #define EN_10M_PLLOFF		0x0001
+ 
+ /* OCP_EEE_CONFIG1 */
+@@ -1992,6 +1993,16 @@ static void sram2_write_w0w1(struct r8152 *tp, u16 addr, u16 clear, u16 set)
+ 	ocp_reg_write(tp, OCP_SRAM2_DATA, data);
  }
  
-+static void rtl8157_change_mtu(struct r8152 *tp)
++static void sram2_set_bits(struct r8152 *tp, u16 addr, u16 set)
 +{
-+	u32 max_pkt_size = mtu_to_size(tp->netdev->mtu);
-+	u32 ocp_data;
-+
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, max_pkt_size);
-+
-+	/* Use at least 10K for MTPS */
-+	ocp_data = max_t(u32, max_pkt_size, 10 * 1024) / 64;
-+
-+	/* 16 * 1024 / 64 = 0x100, so the max is 0xff for 8 bits data */
-+	ocp_data = min_t(u32, ocp_data, 0xff);
-+
-+	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, ocp_data);
-+	r8156_fc_parameter(tp);
-+
-+	/* TX share fifo free credit full threshold */
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_TXFIFO_CTRL, 512 / 64);
-+	ocp_write_word(tp, MCU_TYPE_PLA, PLA_TXFIFO_FULL,
-+		       ALIGN(max_pkt_size + tp->tx_desc.size, 1024) / 16);
++	sram2_write_w0w1(tp, addr, 0, set);
 +}
 +
- static void rtl8157_up(struct r8152 *tp)
- {
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-@@ -7055,7 +7077,7 @@ static void rtl8157_up(struct r8152 *tp)
- 
- 	rtl_rx_vlan_en(tp, tp->netdev->features & NETIF_F_HW_VLAN_CTAG_RX);
- 
--	rtl8156_change_mtu(tp);
-+	rtl8157_change_mtu(tp);
- 
- 	/* share FIFO settings */
- 	ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_RXFIFO_FULL, RXFIFO_FULL_MASK,
-@@ -10245,11 +10267,6 @@ static void rtl8153_unload(struct r8152 *tp)
- 		return;
- 
- 	r8153_power_cut_en(tp, false);
--
--	if (tp->version >= RTL_VER_16) {
--		/* Disable Interrupt Mitigation */
--		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04, BIT(0) | BIT(1) | BIT(2) | BIT(7));
--	}
- }
- 
- static void rtl8153b_unload(struct r8152 *tp)
-@@ -10260,6 +10277,16 @@ static void rtl8153b_unload(struct r8152 *tp)
- 	r8153b_power_cut_en(tp, false);
- }
- 
-+static void rtl8157_unload(struct r8152 *tp)
++static void sram2_clr_bits(struct r8152 *tp, u16 addr, u16 clear)
 +{
-+	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++	sram2_write_w0w1(tp, addr, clear, 0);
++}
++
+ static void r8152_mdio_clr_bit(struct r8152 *tp, u16 addr, u16 clear)
+ {
+ 	int data;
+@@ -8108,6 +8119,9 @@ static void r8156b_hw_phy_cfg(struct r8152 *tp)
+ 		sram_write(tp, 0x8074, 0x2417);
+ 		sram_write(tp, 0x807a, 0x2417);
+ 
++		/* Nway DACONB parameters */
++		ocp_reg_w0w1(tp, 0xa4ca, 0x6000, 0x0040);
++
+ 		/* XG PLL */
+ 		ocp_reg_w0w1(tp, 0xbf84, 0xe000, 0xa000);
+ 		break;
+@@ -8184,11 +8198,14 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
+ 
+ 	/* Advanced Power Saving parameter */
+-	ocp_reg_set_bits(tp, 0xa430, BIT(0) | BIT(1));
++	ocp_reg_set_bits(tp, OCP_POWER_CFG, EN_10M_PLLOFF | EN_ALDPS_PLLOFF);
+ 
+ 	/* Disable ALDPS force mode */
+ 	ocp_reg_clr_bits(tp, 0xa44a, BIT(2));
+ 
++	/* Disable bypass_turn_off_clk_in_aldps */
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
++
+ 	switch (tp->version) {
+ 	case RTL_VER_16:
+ 		/* XG_INRX parameter */
+@@ -8204,7 +8221,7 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x8078, 0xff00, 0x3000);
+ 
+ 		/* green mode */
+-		sram2_write_w0w1(tp, 0x89e9, 0xff00, 0);
++		sram2_clr_bits(tp, 0x89e9, 0xff00);
+ 		sram2_write_w0w1(tp, 0x8ffd, 0xff00, 0x0100);
+ 		sram2_write_w0w1(tp, 0x8ffe, 0xff00, 0x0200);
+ 		sram2_write_w0w1(tp, 0x8fff, 0xff00, 0x0400);
+@@ -8310,12 +8327,85 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x807c, 0xff00, 0x5000);
+ 		sram2_write_w0w1(tp, 0x809d, 0xff00, 0x5000);
+ 		break;
++	default:
++		break;
++	}
++
++	if (rtl_phy_patch_request(tp, true, true))
 +		return;
 +
-+	r8157_power_cut_en(tp, false);
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04,
-+			  BIT(0) | BIT(1) | BIT(2) | BIT(7));
++	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL4, EEE_SPDWN_EN);
++
++	ocp_reg_w0w1(tp, OCP_DOWN_SPEED, EN_EEE_100 | EN_EEE_1000, EN_10M_CLKDIV);
++
++	tp->ups_info._10m_ckdiv = true;
++	tp->ups_info.eee_plloff_100 = false;
++	tp->ups_info.eee_plloff_giga = false;
++
++	ocp_reg_set_bits(tp, OCP_POWER_CFG, EEE_CLKDIV_EN);
++	tp->ups_info.eee_ckdiv = true;
++
++	rtl_phy_patch_request(tp, false, true);
++
++	rtl_green_en(tp, test_bit(GREEN_ETHERNET, &tp->flags));
++
++	ocp_reg_clr_bits(tp, 0xa428, BIT(9));
++	ocp_reg_clr_bits(tp, 0xa5ea, BIT(0) | BIT(1));
++	tp->ups_info.lite_mode = 0;
++
++	if (tp->eee_en)
++		rtl_eee_enable(tp, true);
++
++	r8153_aldps_en(tp, true);
++	r8152b_enable_fc(tp);
++
++	set_bit(PHY_RESET, &tp->flags);
 +}
 +
- static int r8152_desc_init(struct r8152 *tp)
- {
- 	tp->rx_desc.size = sizeof(struct rx_desc);
-@@ -10438,13 +10465,13 @@ static int rtl_ops_init(struct r8152 *tp)
- 		ops->disable		= rtl8153_disable;
- 		ops->up			= rtl8157_up;
- 		ops->down		= rtl8157_down;
--		ops->unload		= rtl8153_unload;
-+		ops->unload		= rtl8157_unload;
++static void r8159_hw_phy_cfg(struct r8152 *tp)
++{
++	u16 data;
++
++	r8156b_wait_loading_flash(tp);
++
++	ocp_word_test_and_clr_bits(tp, MCU_TYPE_USB, USB_MISC_0, PCUT_STATUS);
++
++	data = r8153_phy_status(tp, 0);
++	switch (data) {
++	case PHY_STAT_EXT_INIT:
++		rtl8152_apply_firmware(tp, true);
++		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
++		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
++		break;
++	case PHY_STAT_LAN_ON:
++	case PHY_STAT_PWRDN:
++	default:
++		rtl8152_apply_firmware(tp, false);
++		break;
++	}
+ 
++	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
++
++	r8153_aldps_en(tp, false);
++
++	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
++	WARN_ON_ONCE(data != PHY_STAT_LAN_ON);
++
++	/* PFM mode */
++	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
++
++	/* Advanced Power Saving parameter */
++	ocp_reg_set_bits(tp, OCP_POWER_CFG, EN_10M_PLLOFF | EN_ALDPS_PLLOFF);
++
++	/* Disable ALDPS force mode */
++	ocp_reg_clr_bits(tp, 0xa44a, BIT(2));
++
++	/* Disable bypass_turn_off_clk_in_aldps */
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
++
++	switch (tp->version) {
+ 	case RTL_VER_17_QFN68:
+ 	case RTL_VER_17_QFN100:
+-		/* Disable bypass turn off clk in ALDPS */
+-		ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
+-
+ 		/* Power level tuning
+ 		 * test mode power level
+ 		 */
+@@ -8325,22 +8415,35 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram_write_w0w1(tp, 0x81ae, 0xff00, 0x0f00);
+ 		sram_write_w0w1(tp, 0x81b9, 0xff00, 0xb900);
+ 		/* normal link TX filter */
+-		sram2_write_w0w1(tp, 0x83b0, 0x0e00, 0);
+-		sram2_write_w0w1(tp, 0x83c5, 0x0e00, 0);
+-		sram2_write_w0w1(tp, 0x83da, 0x0e00, 0);
+-		sram2_write_w0w1(tp, 0x83ef, 0x0e00, 0);
++		sram2_clr_bits(tp, 0x83b0, 0x0e00);
++		sram2_clr_bits(tp, 0x83c5, 0x0e00);
++		sram2_clr_bits(tp, 0x83da, 0x0e00);
++		sram2_clr_bits(tp, 0x83ef, 0x0e00);
++
++		ocp_reg_w0w1(tp, 0xbf38, 0x01f0, 0x0160);
++		ocp_reg_w0w1(tp, 0xbf3a, 0x001f, 0x0014);
++		/* shorten CLKS latency */
++		ocp_reg_clr_bits(tp, 0xbf28, BIT(14) | BIT(13));
++		ocp_reg_clr_bits(tp, 0xbf2c, BIT(15) | BIT(14));
++		/* CMP_Timer on MP_Timer=333
++		 * GPHY OCP 0xbf28 bit[0] = 0x1
++		 * GPHY OCP 0xbf28 bit[6:1] = 0x3
++		 * GPHY OCP 0xbf28 bit[12:7] = 0x3
++		 */
++		ocp_reg_w0w1(tp, 0xbf28, 0x1fff, 0x0187);
++		ocp_reg_w0w1(tp, 0xbf2a, 0x3f, 0x03);
+ 
+ 		/* AFE power saving for 2.5G & 5G */
+ 		sram_write(tp, 0x8173, 0x8620);
+ 		sram_write(tp, 0x8175, 0x8671);
+ 
+-		sram_write_w0w1(tp, 0x817c, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x8187, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x8192, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x819d, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x81a8, BIT(13), 0);
+-		sram_write_w0w1(tp, 0x81b3, BIT(13), 0);
+-		sram_write_w0w1(tp, 0x81be, 0, BIT(13));
++		sram_set_bits(tp, 0x817c, BIT(13));
++		sram_set_bits(tp, 0x8187, BIT(13));
++		sram_set_bits(tp, 0x8192, BIT(13));
++		sram_set_bits(tp, 0x819d, BIT(13));
++		sram_clr_bits(tp, 0x81a8, BIT(13));
++		sram_clr_bits(tp, 0x81b3, BIT(13));
++		sram_set_bits(tp, 0x81be, BIT(13));
+ 
+ 		sram_write_w0w1(tp, 0x817d, 0xff00, 0xa600);
+ 		sram_write_w0w1(tp, 0x8188, 0xff00, 0xa600);
+@@ -8404,10 +8507,10 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x84b2, 0xff00, 0x6000);
+ 		/* Training AAGC PAR (with uc2 patch) */
+ 		sram2_write(tp, 0x8ffc, 0x6008);
+-		sram2_write(tp, 0x8ffe, 0xf450);
++		sram2_write(tp, 0x8ffe, 0xf4ff);
+ 		/* DAC BGK */
+-		sram2_write_w0w1(tp, 0x8015, 0, BIT(9));
+-		sram2_write_w0w1(tp, 0x8016, 0, BIT(11));
++		sram2_set_bits(tp, 0x8015, BIT(9));
++		sram2_set_bits(tp, 0x8016, BIT(11));
+ 		sram2_write_w0w1(tp, 0x8fe6, 0xff00, 0x0800);
+ 		sram2_write(tp, 0x8fe4, 0x2114);
+ 		/* 10G PBO table */
+@@ -8416,14 +8519,14 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x864b, 0xff00, 0xdc00);
+ 		/* 2.5G ado power window size */
+ 		sram2_write_w0w1(tp, 0x8154, 0xc000, 0x4000);
+-		sram2_write_w0w1(tp, 0x8158, 0xc000, 0);
++		sram2_clr_bits(tp, 0x8158, 0xc000);
+ 		/* 10G lock far */
+ 		sram2_write(tp, 0x826c, 0xffff);
+ 		sram2_write(tp, 0x826e, 0xffff);
+ 		/* XG INRX parameter */
+ 		sram2_write_w0w1(tp, 0x8872, 0xff00, 0x0e00);
+-		sram_write_w0w1(tp, 0x8012, 0, BIT(11));
+-		sram_write_w0w1(tp, 0x8012, 0, BIT(14));
++		sram_set_bits(tp, 0x8012, BIT(11));
++		sram_set_bits(tp, 0x8012, BIT(14));
+ 		ocp_reg_set_bits(tp, 0xb576, BIT(0));
+ 		sram_write_w0w1(tp, 0x834a, 0xff00, 0x0700);
+ 		sram2_write_w0w1(tp, 0x8217, 0x3f00, 0x2a00);
+@@ -8434,7 +8537,7 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		/* improve UBE */
+ 		ocp_reg_set_bits(tp, 0xbf0c, 0x7 << 11);
+ 		/* close Sparse NEC, improve connect 5EUU cable performance */
+-		sram2_write_w0w1(tp, 0x88de, 0xff00, 0);
++		sram2_clr_bits(tp, 0x88de, 0xff00);
+ 		/* 5G slave compatibility issue */
+ 		sram2_write(tp, 0x80b4, 0x5195);
+ 
+@@ -8493,8 +8596,15 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write(tp, 0x8ff8, 0xaa5a);
+ 
+ 		sram2_write_w0w1(tp, 0x88d5, 0xff00, 0x0200);
+-		break;
+ 
++		/* spdchg_pga1_lpf_cap */
++		sram_write_w0w1(tp, 0x84bb, 0xff00, 0x0a00);
++		sram_write_w0w1(tp, 0x84c0, 0xff00, 0x1600);
++
++		/* ENET PLL jitter improvement */
++		ocp_reg_w0w1(tp, 0xbf8a, 0xfc00, 0x2000);
++		ocp_reg_set_bits(tp, 0xbf88, BIT(2));
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -8504,9 +8614,9 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 
+ 	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL4, EEE_SPDWN_EN);
+ 
+-	ocp_reg_w0w1(tp, OCP_DOWN_SPEED, EN_EEE_100 | EN_EEE_1000, EN_10M_CLKDIV);
+-
+-	tp->ups_info._10m_ckdiv = true;
++	ocp_reg_clr_bits(tp, OCP_DOWN_SPEED,
++			 EN_EEE_100 | EN_EEE_1000 | EN_10M_CLKDIV);
++	tp->ups_info._10m_ckdiv = false;
+ 	tp->ups_info.eee_plloff_100 = false;
+ 	tp->ups_info.eee_plloff_giga = false;
+ 
+@@ -8518,7 +8628,7 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 	rtl_green_en(tp, test_bit(GREEN_ETHERNET, &tp->flags));
+ 
+ 	ocp_reg_clr_bits(tp, 0xa428, BIT(9));
+-	ocp_reg_clr_bits(tp, 0xa5ea, BIT(0) | BIT(1));
++	ocp_reg_clr_bits(tp, 0xa5ea, BIT(0) | BIT(1) | BIT(2));
+ 	tp->ups_info.lite_mode = 0;
+ 
+ 	if (tp->eee_en)
+@@ -10355,7 +10465,7 @@ static int rtl_ops_init(struct r8152 *tp)
  		ops->eee_get		= r8153_get_eee;
  		ops->eee_set		= r8152_set_eee;
  		ops->in_nway		= rtl8153_in_nway;
- 		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
+-		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
++		ops->hw_phy_cfg		= r8159_hw_phy_cfg;
  		ops->autosuspend_en	= rtl8157_runtime_enable;
--		ops->change_mtu		= rtl8156_change_mtu;
-+		ops->change_mtu		= rtl8157_change_mtu;
- 		tp->rx_buf_sz		= 32 * 1024;
- 		tp->support_2500full	= 1;
- 		tp->support_5000full	= 1;
-@@ -10461,13 +10488,13 @@ static int rtl_ops_init(struct r8152 *tp)
- 		ops->disable		= rtl8153_disable;
- 		ops->up			= rtl8157_up;
- 		ops->down		= rtl8157_down;
--		ops->unload		= rtl8153_unload;
-+		ops->unload		= rtl8157_unload;
- 		ops->eee_get		= r8153_get_eee;
- 		ops->eee_set		= r8152_set_eee;
- 		ops->in_nway		= rtl8153_in_nway;
- 		ops->hw_phy_cfg		= r8159_hw_phy_cfg;
- 		ops->autosuspend_en	= rtl8157_runtime_enable;
--		ops->change_mtu		= rtl8156_change_mtu;
-+		ops->change_mtu		= rtl8157_change_mtu;
+ 		ops->change_mtu		= rtl8156_change_mtu;
  		tp->rx_buf_sz		= 48 * 1024;
- 		tp->support_2500full	= 1;
- 		tp->support_5000full	= 1;
 -- 
 2.34.1
 
