@@ -1,42 +1,41 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18940438026
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 09:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5031B3A9DBA;
+	Wed,  2 Sep 2026 09:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788343079; cv=none; b=D+QCTc2loSEDzrrE32E5uizu7HsUGuyTvPZuF6lsj6/VnZh34lQ1LhBPhFgxAJQNh+Rjohq1J2adty0UzGCcbv9Hj1tngQ1Mz+P3qgy5EHbRXO1U96Pe8LtcnJPA3uibGga9cfoc2X4Aa4gRPhCGJjY4hwmcEI+ifU/nbImEvwA=
+	t=1788343080; cv=none; b=DPpuAA+RPMhPGVW2LGzPkpLQ741GNUFQQHv0hSyxumJGfA4xvKlfF3JOQGO3aikyzp+3o5tsJHqbhVYzHiAbt5k7X9owrQY6IGidVQyFJPfxsppyUY6n+jvCyowfOHkDcpt2mRkNo42CWUycIBBdJIlK81JWkXCvHdxzbiVas9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788343079; c=relaxed/simple;
-	bh=j1+ZBVJmPVW03bJXf/56FabNKgWY7EFAGihdRcW3d0M=;
+	s=arc-20240116; t=1788343080; c=relaxed/simple;
+	bh=elhEQoqrJU0Bva3r+jlfTvSY8EbxMP1ywSHdj8Kg318=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sogNue1nrrqupxSwyoYNy/XFcNpTwZn7PHsgt7cVmY5pOC9NvP76gR/qUJYKw9GudEbWsYpjUlJaPVcGhVMQMEEXUv/CEkfLtJJo6c7q+3SVcLmUAggYhxoe5gNFdDZeowpnOQngAkx8OrSiqTKW88Nt572pS8gtmZvDuR7FrXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N8+wLS2L; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=KJu6ExlyMTQC8FDDTS/HvY26YY+uoktkCxooLJCKCSk9GbZ0gzmgV2LGoeW4L9p8zIAvsdFV2mcfTFxrlWbVWE+p/6QTr7ALy9HHuppb8YBUZC9OT+aRD5cxVDhFbu0O05DQhfiqiAT4GP3TC/mVQk47pYzcT11qsVT3OZQKJWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mvCEQ4na; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N8+wLS2L"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mvCEQ4na"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 888FC4E414C8;
-	Wed,  2 Sep 2026 09:57:54 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 59F0A1A1948;
+	Wed,  2 Sep 2026 09:57:56 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C2AB6053C;
-	Wed,  2 Sep 2026 09:57:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5FCAC11C79300;
-	Wed,  2 Sep 2026 11:57:52 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D4316053C;
+	Wed,  2 Sep 2026 09:57:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E712B11C7932C;
+	Wed,  2 Sep 2026 11:57:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788343073; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1788343075; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=B3aS/Mr7RC/ZOcg+EzhbjQUCCCKDV341PmBKKjmtwgs=;
-	b=N8+wLS2Ll22TDwBLHiqNLg7OAedfUyffpzSliEukRmJdZMddNvq17l15e/8PW+RhsBaMnB
-	8Kvq72TBUWIgavrMZvJkNV6FSVc6NdRdV6DE4GEhe8eQiWwYaqoGcjEjF0+3z3m0ccRvQh
-	9PVMzY9RWGRdHq5DeLMgrFkfannxyFtaXD84eJmgpcViKC+8wzmtuKYSwkYj3VcCnrTtaO
-	TuWHiIGg4Mn3vzK6A5Yf0CJ7bjrJrIH5SNFzKXGSIuMiLo8dP6CdMyta5U4v2nq8zenFwc
-	Eh1eaj4OSw6Z2YCmosbkRn4JDqyHwGBU9OWlFRmfqmHLwJiBWYa2UfjR881Uow==
+	bh=UE3d8uBd3AkiHRdBNbCVNULk3X2F/j5sdXNN38PNd5o=;
+	b=mvCEQ4naV4Xqm4XB4laOSQ2m9P39ksFyMj4fBqh/3iFI/ahUzbyjtgB/i6VNw2qTOGthp7
+	Wr8L5w3UyGo+gdKSzDqhEnIZjEP4hKorHLd2jZ+NZGyYcTSOdtjOmlR3ryAvkzqF6+0gGU
+	2AZhd82e2zHEG5k6vr24xMOcHaWKRWJHaKcF9xR4j/cN+VW+WiD10ttPnQy4APJwSbAvja
+	w8yC3LHgg4K+gZItf4YyeeD2q1RIhQcAkYPb7rqnbm1FMk6zgP1xXWIKn/Y660CYzIHdGQ
+	nqn26XVjG56tfYoaDu1zgmr5XECohLOSpU+s4OzpBOItPi7VdnkKX6U3iqsanw==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Wed, 02 Sep 2026 11:57:37 +0200
-Subject: [PATCH net-next v2 07/10] net: dsa: microchip: extract prepare
- reset
+Date: Wed, 02 Sep 2026 11:57:38 +0200
+Subject: [PATCH net-next v2 08/10] net: dsa: microchip: extract time update
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-ksz-perout-v2-7-6f277fcc9e68@bootlin.com>
+Message-Id: <20260902-ksz-perout-v2-8-6f277fcc9e68@bootlin.com>
 References: <20260902-ksz-perout-v2-0-6f277fcc9e68@bootlin.com>
 In-Reply-To: <20260902-ksz-perout-v2-0-6f277fcc9e68@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -63,67 +62,74 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 The KSZ8463 supports periodic outputs but doesn't handle them in the same
 way as the other KSZ switches. To add proper support for the KSZ8463, a
-dedicated ksz8463_ptp_restart_perout() function needs to be created. This
-function will use the same request initialization as the common
-ksz_ptp_restart_perout() function.
+dedicated ksz8463_ptp_settime() function needs to be created. This
+function will access the same registers than the common
+ksz_ptp_settime().
 
-Extract the inialization into a dedicated function so it can be used
-later by the KSZ8463 support.
+Extract the register accesses into a dedicated function so it can be
+used later by the KSZ8463 support.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_ptp.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-index 2f141df65eb0..e262bc7448f2 100644
+index e262bc7448f2..aa73ad1f05d8 100644
 --- a/drivers/net/dsa/microchip/ksz_ptp.c
 +++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -788,11 +788,11 @@ static int ksz_ptp_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
- 	return ret;
+@@ -845,30 +845,42 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+ 	return ksz_ptp_enable_perout(dev, &request, 1);
  }
  
--static int ksz_ptp_restart_perout(struct ksz_device *dev)
-+static int ksz_ptp_prepare_restart_perout(struct ksz_device *dev,
-+					  struct ptp_perout_request *request)
+-static int ksz_ptp_settime(struct ptp_clock_info *ptp,
+-			   const struct timespec64 *ts)
++static int __ksz_ptp_settime(struct ksz_device *dev,
++			     const struct timespec64 *ts)
  {
- 	struct ksz_ptp_data *ptp_data = &dev->ptp_data;
- 	s64 now_ns, first_ns, period_ns, next_ns;
--	struct ptp_perout_request request;
- 	struct timespec64 next;
- 	struct timespec64 now;
- 	unsigned int count;
-@@ -823,12 +823,24 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+-	struct ksz_ptp_data *ptp_data = ptp_caps_to_data(ptp);
+-	struct ksz_device *dev = ptp_data_to_ksz_dev(ptp_data);
+ 	const u16 *regs = dev->info->regs;
+ 	int ret;
  
- 	/* Restart periodic output signal */
- 	next = ns_to_timespec64(next_ns);
--	request.start.sec  = next.tv_sec;
--	request.start.nsec = next.tv_nsec;
--	request.period.sec  = ptp_data->perout_period.tv_sec;
--	request.period.nsec = ptp_data->perout_period.tv_nsec;
--	request.index = 0;
--	request.flags = 0;
-+	request->start.sec  = next.tv_sec;
-+	request->start.nsec = next.tv_nsec;
-+	request->period.sec  = ptp_data->perout_period.tv_sec;
-+	request->period.nsec = ptp_data->perout_period.tv_nsec;
-+	request->index = 0;
-+	request->flags = 0;
+-	mutex_lock(&ptp_data->lock);
+-
+ 	/* Write to shadow registers and Load PTP clock */
+ 	ret = ksz_write16(dev, regs[PTP_RTC_SUB_NANOSEC], PTP_RTC_0NS);
+ 	if (ret)
+-		goto unlock;
++		return ret;
+ 
+ 	ret = ksz_write32(dev, regs[PTP_RTC_NANOSEC], ts->tv_nsec);
+ 	if (ret)
+-		goto unlock;
++		return ret;
+ 
+ 	ret = ksz_write32(dev, regs[PTP_RTC_SEC], ts->tv_sec);
+ 	if (ret)
+-		goto unlock;
++		return ret;
+ 
+ 	ret = ksz_rmw16(dev, regs[PTP_CLK_CTRL], PTP_LOAD_TIME, PTP_LOAD_TIME);
++	if (ret)
++		return ret;
 +
 +	return 0;
 +}
 +
-+static int ksz_ptp_restart_perout(struct ksz_device *dev)
++static int ksz_ptp_settime(struct ptp_clock_info *ptp,
++			   const struct timespec64 *ts)
 +{
-+	struct ptp_perout_request request;
++	struct ksz_ptp_data *ptp_data = ptp_caps_to_data(ptp);
++	struct ksz_device *dev = ptp_data_to_ksz_dev(ptp_data);
 +	int ret;
 +
-+	ret = ksz_ptp_prepare_restart_perout(dev, &request);
-+	if (ret)
-+		return ret;
++	mutex_lock(&ptp_data->lock);
++
++	ret = __ksz_ptp_settime(dev, ts);
+ 	if (ret)
+ 		goto unlock;
  
- 	return ksz_ptp_enable_perout(dev, &request, 1);
- }
 
 -- 
 2.55.0
