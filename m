@@ -1,181 +1,114 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C1E374186;
-	Wed,  2 Sep 2026 17:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EC4387364
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 18:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788371744; cv=none; b=sXIZT2CuhIVlmnD79tY1gur5l8+I221myOxZMEObywlVKyTbtsvecWkSoyyIz0EKFuvbP05OacR/DBdVIo49mBx2ZLK+q/KohJpx/p/V374FHzwk6cjwGhYiKIwD13jUCRlHFxxj5AlIaYwIcLZa+JtBZfidl35jifkRrwBNoBo=
+	t=1788372463; cv=none; b=nplq5nlOi/GDT+XcL/hrT+ZIc8DKTHyNiTKVsQXZAFrc3rkk3/PLSf15/6JVc8ZorD2DRkoVJGU1lPDQJid79VvHG+WqOl44I6lqqjAjO3FurlgxgcgDwutN9BSeI+qle+itNMizA2EobBc8SRWfgsfmNQMmRcGwlaCZEOcCq74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788371744; c=relaxed/simple;
-	bh=+dB8QRffgR6eYaoWZ0dZUjdKapPSbpOHQIRfxloj+Zc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=njN3eztFwhP+O7nYhWnFp4c6Le2TsCd942ta0H3gl4upCYjJOz2GvcNbeiJep49RkLB1wBCFaegki6C7jcHxmIGp8/oU6xsDLnLRCnLSnwyZOxzUYHLenscHBcEXo897jKNlCJECG3r910cdowRLC1TyLfzsUlGaJCMkQvyh4OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=EIMZTpic; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1788372463; c=relaxed/simple;
+	bh=fYkBum/oFlVqn/hZb0UPx1Qfhv79hOnpYMYi9KuYIrE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=VahL7Ik8Mj4Yi0NpJgzvvZ3Q0blGCMV7KQLFXH0kRLKVm6GmEdF8m4h/sVunAVElJtg6WW2gJA3Dpde/q0ekidCT8+jO8WImou/gkuZjplV3uiM7mQHSf2K2RJW8F+SC6wIq0vjZ8JZQXzqSLlXxZ6qsvTlFkUXN9U3fVlbK/4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cBKx4elA; arc=none smtp.client-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="EIMZTpic"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1x1pB3-0093kV-KA; Wed, 02 Sep 2026 19:55:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=fSlfqnwEvLaNr4akvlf7I2sHJLIFmr8QwBFYs0VFHBs=
-	; b=EIMZTpicfh8iRbwp6VmW/QD90Q4sYZYV1LtQDQWascH+g0H9KwrRsOx4zOHeBhK02KM7ShO/b
-	ZwEuH1jukjT/6g9Hq2tFSCOrZCiGcc2fEAdgCSrh5iJ2EZkXhQ2a+M+K+bXAnJOmRgkSjxqt9I7/K
-	cTDBKMhcP5iafiq0TrPkhBdMP9daCL6GuflWwrZ58uQJ+wKSuu/bw1KfVmLojVHXpyB1ZlflBHxqz
-	JVjeME8bpcFqhSrmyvRVOLiX+jkbFmW9Y2+xjZmxUta7A+YF1L25G4Apvgtg4hgfU8jzLo2SwO9CK
-	2P+UmKjB/I5mMgwl56jKpTqy55c1lqtmmKoptQ==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1x1pAy-00072V-0N; Wed, 02 Sep 2026 19:55:08 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1x1pAi-0020Qt-Gs;
-	Wed, 02 Sep 2026 19:54:52 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH bpf v3 0/2] bpf: Fix socket leaks around
- connect(AF_UNSPEC)+listen()
-Date: Wed, 02 Sep 2026 19:52:13 +0200
-Message-Id: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cBKx4elA"
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7f64ea07036so1114061a34.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 11:07:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788372460; x=1788977260; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:message-id:date:content-type
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bd4kBVS357wZ2scT6vts92XJDYgbdkTu0arT3q8gBpc=;
+        b=cBKx4elA6JllGDpaFfErYG/KUrv6Osoc06SpxI6OmUxs6fGl/D/mCoBBpu/YBGCsnt
+         oQT8dljeNk/lvMaG2mlkGedSlyW5gdkQbKoxGBJ7ZwIJonYt0TqkD3mzTU5nA9qqTeXo
+         dkTqBnuWAIZIMzfK9jozXN3UhiDzV5//atP7dWoRuxEgt17luLmyyXlnnnSiQ/0cPMWf
+         y5Jfv7lh72jruSYOS3Wv9WeMygB8cZXEYk7OSiWcR1CUTntmAt8Ngw8mgaUMSwX/JQiY
+         LvO8CG8buWqbCinCxXn56CeDdFiGzEymqsB+UIaV4QTRZi9eRYPn9IpZpNpMJocQGMLs
+         nDbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788372460; x=1788977260;
+        h=in-reply-to:references:to:from:subject:message-id:date:content-type
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bd4kBVS357wZ2scT6vts92XJDYgbdkTu0arT3q8gBpc=;
+        b=Xi5yCMXdXZ6jo7OMQ4teYaXiDH9KvyeA0gmT4UdBOGe/8ku7KUMqpYehHtwRfvkbey
+         ictGUi0faPcVeBcaQnjauEAJINTlF1BIDFJ//reYGMcXO8fIALizF+msGUbuU/y4DBAR
+         6m0GJgEmUHW1eXiKNIcnwQN2NmeOBQ6JF0bqQ4nMwth4HAnTxo18EcG/J3RjUJjpk9Ko
+         ntps7uZ+EG42StqcuEVXjEjWEkJ6muolr2h21hy66ZYbchqaBoxcPybxY7nSdz++0Gjs
+         ywNJJjjCpanIuzwcSjH8+fhExLi3GhYRQpaRnEasR2zPnM4BGMRuVUzNzE/9SkUZIR41
+         2hgw==
+X-Forwarded-Encrypted: i=1; AHgh+RoA7rt7AOYlt7B6anfrol6hRvgxuoAm5JDL0N/BznNfDxZQjVKxsxqRBv+9gl801x52ngfUKnk=@vger.kernel.org
+X-Gm-Message-State: AFuF++m/a+ouM6POypIdPv6kZ/3NF2tCzrLHBn+rMD9O6AvDxu+NS+6l
+	Uh0h7clJu3zLDE9xbb7PdW3oInWSln0u/DdVzSp1Bb5mM5NZji4jiTBy
+X-Gm-Gg: AR+sD1170SqawxnDBixCVt8aq3F5l9vp/7XyTK/QVM9Ikoj5202fxI7Mu+MjXTpPOIg
+	eUT/0HnNG34g5fN8kt2XQFICvFTRlLc02dHRDx/K7WBqbTh+S9P4CQLgQqpNRW+AJInll9+gjM1
+	3AW8oCbymRFtAbIOTruwle9vkaGgyXqF3yJvg+h7XHeQ9cEzMU0WnieAHIbAp3wbBXqA349zOw2
+	1g0XaXRgEyV7NreifyQJObYwylUlfK/YPGD9KR4wBhzZJS5EhISiW602IqQe4H/uAeY58+6ZxwV
+	IHAnxG/9fdtHs5BMVLpa9mynhR/rvXNRZDxNWvvCDBE4DRYBzP6lVUwS4ENHzIOePw7Frc7/Zac
+	lV5+gEnJDZHY4qYbDGhq7VOR5deRfTd+w51hQ1Xsap6jsBxOoyvbq0KgNPsIfSCgnUuAag7r06h
+	sR0GxfGSCFxvMD3GqqiO1uKvkbIbCyBIuL6tdYBP8XoqVqTUL+AlTyB62ERvC7xOgHlFEpRy6Zj
+	q2QqOIgRLZNtv+SboaznC6WxYMwLPgJkKpAOAGyUirZGS6yHFkKe9g=
+X-Received: by 2002:a05:6830:368b:b0:7e9:ea28:4c1f with SMTP id 46e09a7af769-7f780315ffemr7238971a34.8.1788372460202;
+        Wed, 02 Sep 2026 11:07:40 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:51::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f74f8f3c6fsm2908587a34.20.2026.09.02.11.07.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 11:07:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ7CIBBFr2JYi6EgSFx5D+MC6NRitRBoSU3Tu
- 0tx0ZXu5k/+f29GEYKFiM67GQVINlrX58D2O2Ra1d8B2zpnRAkVRFCJozPdS3n8dK4bPR5MPkF
- 1WNdKKwZEMsNRXvsAjZ0K+Yq0b9Dt+4yjfoAZVuZaa20cXHgXf6pKuahOlP1UpQoTXGldGy4N8
- Op4CdpNB+OKI9GNIskfCs0URgQQynUDQmyUZVk+iXGFbhkBAAA=
-X-Change-ID: 20260628-sockmap-lookup-tcp-leak-bdaba3e083c5
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, 
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
- Phil Sutter <phil@nwl.cc>
-Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- Sashiko <sashiko-bot@kernel.org>
-X-Mailer: b4 0.15.2
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 02 Sep 2026 11:07:38 -0700
+Message-Id: <DL514LM5TA6V.IOW7P2WM70BE@gmail.com>
+Subject: Re: [PATCH bpf-next 0/7] Add new way to add BPF LSM hooks
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Anton Protopopov" <a.s.protopopov@gmail.com>, "bpf"
+ <bpf@vger.kernel.org>, "lsm" <linux-security-module@vger.kernel.org>,
+ "netdev" <netdev@vger.kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "KP Singh" <kpsingh@kernel.org>,
+ "Matt Bobrowski" <matt@bobrowski.net>, "John Fastabend"
+ <john.fastabend@gmail.com>, "Christian Brauner" <brauner@kernel.org>, "Paul
+ Moore" <paul@paul-moore.com>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
+X-Mailer: aerc
+References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
+In-Reply-To: <20260831110934.241898-1-a.s.protopopov@gmail.com>
 
-This is a follow-up to Sashiko's report[1].
+On Mon Aug 31, 2026 at 4:09 AM PDT, Anton Protopopov wrote:
+> The BPF LSM programs are allowed to attach to LSM hooks. This enables
+> operators to mitigate known bugs without a need to reboot or livepatch
+> machines.  BPF has shown very useful to create such runtime policies.
+> However, many APIs and parts of kernel aren't covered by existing LSM
+> hooks and this would be beneficial to extend the coverage.
+>
+> To simplify the process of adding new hooks this patch series enables
+> BPF to attach policy programs to hooks defined outside of the
+> official LSM list.
+>
+> One of the reasons to add a new mechanism is that in order to add a
+> new LSM hook an implementation, at least one in-kernel LSM must be
+> added, such as SELinux or AppArmor, and BPF is specifically not
+> considered as a reference implementation [1].  This is, however, not
+> feasible for the use cases and capabilities covered by BPF LSMs,
+> which are not directly comparable to those of traditional LSMs.
 
-Several BPF socket helpers acquire a socket reference only when
-sk_is_refcounted() == true, and release it, independently, by
-re-evaluating sk_is_refcounted() again at the time the release runs. TCP
-connect(AF_UNSPEC)+listen() sets SOCK_RCU_FREE on an established socket.
-If that happens while a reference is outstanding, the release side sees
-sk_is_refcounted() == false and skips the put; the socket is leaked.
+This is no go.
+bpf-lsm can attach to lsm hooks, but the machinery has nothing to
+do with LSM. bpf-lsm is exactly the same as bpf-mod-ret.
+So calling everything LSM is actively misleading and wrong.
+Patch 1 starts this misleading naming convention
+and then later patches add fake LSM hooks. Sorry, but no.
 
-unreferenced object 0xffff88811617ce00 (size 3200):
-  comm "softirq", pid 0, jiffies 4294848512
-  hex dump (first 32 bytes):
-    7f 00 00 01 7f 00 00 01 4d 43 02 f6 00 00 00 00  ........MC......
-    02 00 07 41 00 00 00 00 00 00 00 00 00 00 00 00  ...A............
-  backtrace (crc fb5bd4c8):
-    kmem_cache_alloc_noprof+0x53e/0x640
-    sk_prot_alloc+0x69/0x240
-    sk_clone+0x79/0x1230
-    inet_csk_clone_lock+0x30/0x760
-    tcp_create_openreq_child+0x34/0x2750
-    tcp_v4_syn_recv_sock+0x12e/0x1080
-    tcp_check_req+0x447/0x2310
-    tcp_v4_rcv+0x1026/0x3c90
-    ip_protocol_deliver_rcu+0x93/0x340
-    ip_local_deliver_finish+0x356/0x5c0
-    ip_local_deliver+0x184/0x4a0
-    ip_rcv+0x4f4/0x5b0
-    __netif_receive_skb_one_core+0x153/0x1b0
-    process_backlog+0x28d/0x1190
-    __napi_poll+0xab/0x520
-    net_rx_action+0x3f0/0xca0
-
-[1]: https://lore.kernel.org/bpf/20260701235552.2B0AA1F00A3F@smtp.kernel.org/
-
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
-Changes in v3:
-- Add a fix for TC bpf_sk_assign() (patch #2)
-- Clean up commit messages
-- Non-fixes went to bpf-next: https://lore.kernel.org/bpf/20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co/
-- Link to v2: https://patch.msgid.link/20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co
-
-Changes in v2:
-- Defer "Use sock_hold() instead of refcount_inc_not_zero() in lookup" to
-  bpf-next [John]
-- Fix comment style [Sashiko]
-- Link to v1: https://patch.msgid.link/20260723-sockmap-lookup-tcp-leak-v1-0-1bbdc58ce514@rbox.co
-
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: Andrii Nakryiko <andrii@kernel.org>
-To: Eduard Zingerman <eddyz87@gmail.com>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-To: Song Liu <song@kernel.org>
-To: Yonghong Song <yonghong.song@linux.dev>
-To: Jiri Olsa <jolsa@kernel.org>
-To: Emil Tsalapatis <emil@etsalapatis.com>
-To: John Fastabend <john.fastabend@gmail.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-To: Willem de Bruijn <willemb@google.com>
-To: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: Joe Stringer <joe@wand.net.nz>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Florian Westphal <fw@strlen.de>
-To: Phil Sutter <phil@nwl.cc>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: netfilter-devel@vger.kernel.org
-Cc: coreteam@netfilter.org
-
----
-Michal Luczaj (2):
-      bpf: Unconditionally take socket references in lookup helpers
-      bpf: Fix reference leak in bpf_sk_assign()
-
- include/net/inet6_hashtables.h |  9 ++++----
- include/net/inet_hashtables.h  |  9 ++++----
- include/net/request_sock.h     |  2 +-
- include/net/sock.h             | 11 ++++++++++
- net/core/filter.c              | 49 +++++++++++++++++++++++++++++-------------
- net/core/sock_map.c            |  8 ++-----
- net/netfilter/nf_queue.c       | 18 ++++++++--------
- 7 files changed, 67 insertions(+), 39 deletions(-)
----
-base-commit: ce6b9e5dd873de532cd924e2abc928220cdc2738
-change-id: 20260628-sockmap-lookup-tcp-leak-bdaba3e083c5
-
-Best regards,
---  
-Michal Luczaj <mhal@rbox.co>
-
+pw-bot: cr
