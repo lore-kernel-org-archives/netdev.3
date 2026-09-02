@@ -1,133 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3534A3D22;
-	Wed,  2 Sep 2026 15:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753964A8FED;
+	Wed,  2 Sep 2026 15:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788363087; cv=none; b=gbiaL+ssV1WdU+npM7RfrhRywEtfCG3DNIRz0K64STI0vp6ovJSMy6xliDw7SgeMXjYxRfDMHh8sBOSgODCB/mmq4DPkahHFnuJM6jvvttaGaEV28eDou1EBbf6gjmYDWnNIgY77tidZx/jIFQiAjb18fOS/FeNHZWX2oOaCoWQ=
+	t=1788363334; cv=none; b=hFWkZSpPH3EdiD9UTg0ADTu/S7xEdBPA3XUQBjT8qCGUPvzULkozJfHEU1q3sFHLAZBomE5rUb8drvJC5LANs1D0R1r5ihMdSQXSN/bNSyeEnZnOPlgRja1Ey5S4tcBxfEYR3ITMcyOuojHw6VWEWRhwdJizU3Blo3rgrK5iXho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788363087; c=relaxed/simple;
-	bh=S0Nt2P4vCrSFbn3omrbv97TFQVKE0znoAZ3qhi8ymB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LdEs1rGkkN+7Zks75S4A3QruQW0naayv5OD+U/N+lIWmLMXw2fYPDPdHZkt/5abPHfMhb8651J6kQJP5G+r9x9rQzHl9N2ZlmtGwGdoQdbDUNUqKGmftHGh9/h0OOumBorEbDH1IMtO8nBaZWhIKlbW4iu7VNGIG5xNSZMfJ4oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0FNAcg8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788363334; c=relaxed/simple;
+	bh=4/zkLDvK82JU6Q6Tw2RpZsP6R/Iy2acCK0Y+c7mxREM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s1I4TlupLEKj89VtriDVD6upyJ2Blo5KEUAmKDBk07jdagV2Cr3Y77gMbhcoC0EaHsRX4nYgjRzBYnF2+CWU3K0qJWBLCScdw9Nx7VgYjrwQRW+bzs/sv1FrYQe/tisukOxwMFlulAPA8zI9O5Zrm0Bqlq8Az4HZfFMjisEu234=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=J9JFdUcU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tSL+WAXj; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0FNAcg8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750A31F000E9;
-	Wed,  2 Sep 2026 15:31:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788363085;
-	bh=5g+Anq2ydwDAm8tMjK/GWZeQicH2dZLnX/P1Almr94U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c0FNAcg8eNZuLffQgXxummhhYdW4JpJaqsHZu/b5/lrHhOaME70GPBk5YrMP5Ar6s
-	 bwv7hmTQx+nXE26h2VWjDcCKTkJs+UeSFL9DZAlMTwfUaOr+h+n5/2vZ9GJiNqGe+8
-	 Zny+IwlBXK9EwzM3JY6AOsdRra0UAccE/Q/br1RSE5IcNFUKQVa7lmzEuPR3Tyd8zw
-	 XK7EWr4oPCp9d5c4XfwOoNb0xTYsj7toTV+OWDtXwKNuuLjLHgm4dGldZU19sCx3hO
-	 XOIU1A5AyHqf4KflHKVJbdzXTPmZL7ipGEL6L4ybL2R4mtADdM66EgbSulGXyNp5Pd
-	 uYsI/RS9I1iug==
-Message-ID: <fc4d4d8c-34af-4ea8-ace8-e10e547d6744@kernel.org>
-Date: Wed, 2 Sep 2026 17:31:21 +0200
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="J9JFdUcU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tSL+WAXj"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 16ED47A0149;
+	Wed,  2 Sep 2026 11:35:27 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 02 Sep 2026 11:35:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1788363326; x=1788449726; bh=WClryFH/uykhLTwGrswB2IbjE2NVUlJb
+	Xpw7qCV2yQQ=; b=J9JFdUcUvGR2jn0Cz0R5bDpmoY2/7CwXnryN0ONPCwFkYBzD
+	zdDGYTls0frTCFJ7s4S6Kwceafhk4J124bnlBZZkvhvty0lKIbm9NfXX06rYZLeN
+	j6kKJ9p8Sz73+76ku3eOxepWN/f6XcFjItWo8skfPV5HhsskC1/VeKnN8Tv3j6Fq
+	mwdgZ8CBBLovXc6qQectX5eqBP+5rGeWTbP6WS/Fx4fsRYLMPfyaIoS7URbNWxy9
+	CHrpl+20LpEFuoL1zZZ8/n2Ypc7TrnNKzulDkak+nuNMVVm+tTf+AIpH0Mr19kka
+	jIq+QBA5xRUGh9mBuFfgVn40+x/KV5GgzEMQfg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788363326; x=
+	1788449726; bh=WClryFH/uykhLTwGrswB2IbjE2NVUlJbXpw7qCV2yQQ=; b=t
+	SL+WAXjD6Oz+jMKIWEuB5ns+eqdiolbTbx/M5w97qjtyFtOOeVKG1Tcob13EPRyG
+	GGfla5WkIkDkQmJHFEtKnym7RFfdlkTDA5VklpOKxH5fUfsPFJMOKi7epcW7RM/q
+	sgBoZxsS9rTk3l85GJEoQzOFZbR2OiUJV+sjYJdRqZKcxPZWO4jrCZKeVA1+Xf+F
+	rjlxCLe3nqwnODDmHbB0Y9U6Ii79anL0ZIFBrqJw2MQJiziL653HZAGX+S1IhbaW
+	QnDeqSPG9u8GzPdStjPB+pV/BBFw0bLTrwz454k3SjLJxZsKsn1dL5U7mJdLxwyb
+	cz6aLp5OwJrcNdK0igsOQ==
+X-ME-Sender: <xms:PkKYajecV2bl94Ydq8S4vdX6ZwZKkYSei_UgHNWiZeqwSp2pNPH5CQ>
+    <xme:PkKYalBYjLupgqBvMJZeHqay-uqNJFKW1kUqWS79Ymga2EUXJ54oG6dtHTFXVbPZP
+    toV5s3n0XKCbunuZTrWXoOl0qYrVJmUWvwjNdLxWRLPRiSWbBuDJpY>
+X-ME-Received: <xmr:PkKYan6zKoSDm8Kfp7sgWEBDGsjGuI66RbRzovJ679zm9ZwenvCZfzciFow>
+X-ME-Proxy-Cause: dmFkZTEf4k+3+JnIrFCzoGXzs89B6GwbkUyP8MFu2olz4AHzC29gDOrIDb4S1aFZs4Vr0Q
+    Gi5yw83Uj/+D38UBBcGcMaAYGhWF9Q4iy5kA+ScqAPy2xndWfFU91RifL3hapLRrs3F/ya
+    f1cJax7diydBCIWG4mjJgya75KzCaJyd0dMAmn08K/kfoDSQIDo+MN+ZzpVT5mjYSB2EDT
+    kINyn3/SCpMC62mdfcr8RiYIsapHEDqyjwtZXqavViZ0iJJtxwcTY7I7Wurh+4asGxWNxs
+    8VuhMWKXDj+A3qbDYZFmezTh40dEGT2hcbPXn3e+icvkpcinglKglJAQqkSkH6L96yg4eN
+    u8F7yRp1dC24c9fz41j8Ygf/2AxG5hL3UcC10in/nYNDqjuGODXwOvbsICTLD0WSJRdwKA
+    mgnaK/Gjpr6T9Z1d7ie3CQjJgNlVaVt4HV341LBIbVINlvABh+JPk89QIaH7/2F2f715XK
+    uxNaLNAaXjV82q9S+o6iPlHHK+LN7vAwx8q9l5fnjs9MTifrmrpCi2SH6fZAi4P0AxLMm2
+    XzAN6wLLqgaXVoDFMZ9ScdgueDpldN4ZqvhSoXF2CYsQWYWJdaDZzjES0rWmX7fU5309Pw
+    do391yGPtyO5nK36l4eKjtDAdCwTKGPyme54xBD5KRiGgz7vmrqAsGAB4UyQ
+X-ME-Proxy: <xmx:PkKYaufdR5IRxqdVL91Ff9_7km6lkS-QmLrLoYnoFAPJyv2L1TcuRA>
+    <xmx:PkKYatubdQOFRK1kwUEQSu-iBEyleeoX207N0qO8jpyvd9CvCJVEgw>
+    <xmx:PkKYaunv_OV_bfb_GWuWNKy5rDqnbwsjD2ssrx7EwedOoSLsDAjMeA>
+    <xmx:PkKYagSKoi5AiAMLjkj6PCwn72Ck_OehEbNhk7IBsR_nw-DS0cIa1Q>
+    <xmx:PkKYaiAtuEkwyY3s0ACABoyfDXFtUoAjO2N_AXJL3JNBNHQkeaMkDTFq>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Sep 2026 11:35:25 -0400 (EDT)
+Date: Wed, 2 Sep 2026 17:35:23 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>, john.fastabend@gmail.com,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.18-6.1] tls: reject the combination of TLS and
+ sockmap
+Message-ID: <aphCOxhmFLqpjqvs@krikkit>
+References: <20260831133314.4125787-1-sashal@kernel.org>
+ <20260831133314.4125787-596-sashal@kernel.org>
+ <apacn0u4092axmXy@krikkit>
+ <apbqjuv6l20bTjQI@laps>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] tcp: fastopen: check rsk_drop_req() in
- tcp_fastopen_create_child()
-Content-Language: fr
-To: Jiayuan Chen <jiayuan.chen@linux.dev>,
- Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau <martineau@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- Kimi Security Team <bug-report@moonshot.ai>
-References: <20260902121247.3248539-1-yilinzhang@moonshot.ai>
- <44162dd1-fec7-47be-bf48-186c69be6dd9@linux.dev>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <44162dd1-fec7-47be-bf48-186c69be6dd9@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <apbqjuv6l20bTjQI@laps>
 
-Hi Jiayuan, Yilin,
-
-Thank you for the patch and the review!
-
-On 02/09/2026 16:12, Jiayuan Chen wrote:
+2026-09-01, 11:09:02 -0400, Sasha Levin wrote:
+> On Tue, Sep 01, 2026 at 11:36:31AM +0200, Sabrina Dubroca wrote:
+> > 2026-08-31, 09:30:24 -0400, Sasha Levin wrote:
+> > > From: Jakub Kicinski <kuba@kernel.org>
+> > > 
+> > > [ Upstream commit 460e6486617c17dd19abe8f3fc67d9a6fa25f8ca ]
+> > > 
+> > > TLS and sockmap (BPF psock) integration hides a lot of latent bugs.
+> > > Bugs which may be more or less relevant for real users but they
+> > > are definitely exploitable.
+> > > 
+> > > We could not find anyone actively using this integration so let's
+> > > reject this config. Adding a TLS socket to a sockmap was already
+> > > rejected by sk_psock_init() through the inet_csk_has_ulp() check.
+> > > We need to reject the attempts to configure the TLS keys (rather
+> > > than adding the ULP itself) because checking prior to the ULP
+> > > installation is tricky without risking a race with sockmap getting
+> > > added in parallel (sockmap does not hold the socket lock).
+> > > 
+> > > This patch is a minimal rejection of the feature. Subsequent patch
+> > > in the series will do a light dead code removal. Full cleanup would
+> > > require a major rewrite of the Tx path, we don't need skmsg any more.
+> > > 
+> > > Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> > > Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+> > > Link: https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
+> > > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > ---
+> > > 
+> > > LLM Generated explanations, may be completely bogus:
+> > 
+> > 330L... wow.
+> > 
+> > > ## Phase 1: Commit Message Forensics
+> > > 
+> > > ### Step 1.1: Subject line
+> > > **Record:** `[tls]` / `reject` — reject the unsupported TLS + sockmap
+> > > (BPF psock) configuration.
+> > > 
+> > > ### Step 1.2: Tags
+> > > **Record:**
+> > > - **Reviewed-by:** Jakub Sitnicki `<jakub@cloudflare.com>`
+> > > - **Reviewed-by:** Sabrina Dubroca `<sd@queasysnail.net>`
+> > > - **Link:**
+> > >   https://patch.msgid.link/20260614014102.461064-2-kuba@kernel.org
+> > > - **Signed-off-by:** Jakub Kicinski `<kuba@kernel.org>`
+> > > - No Fixes:, Reported-by:, Cc: stable@vger.kernel.org, or syzbot tags
+> > 
+> > Yes, this was intentionally sent to net-next without a Fixes tag,
+> > because it's a "feature-level" change, so it kind of feels wrong to
+> > send that to stable (even if it's removing a feature that nobody seems
+> > to be using). OTOH the code is broken and not really fixable...
 > 
-> on 9/2/26 8:12 PM, Yilin Zhang wrote:
->> subflow_syn_recv_sock() destroys the freshly cloned child for an MP_JOIN
->> SYN under the fatal fallback and hands it back with drop_req=true to
->> tell the caller to drop both the request and the child. Of the three
->> syn_recv_sock() callers, tcp_check_req() and the cookie path honor that
->> contract; tcp_fastopen_create_child() only checks child != NULL.
->>
->> With an MPTCP listener and server-side Fast Open enabled, this can
->> become a use-after-free:
->>
->>    1. fetch a TFO cookie,
->>    2. complete a normal MP_CAPABLE handshake to learn the server's key
->>       and compute the token offline,
->>    3. send an MP_JOIN SYN carrying that token and the valid TFO cookie,
->>    4. a subsequent accept() hands the freed socket to userspace, and
->>       any fd operation triggers slab-use-after-free, leading to a
->>       denial of service.
+> We have plenty of "fixes" that just drop a bunch of broken code :)
+> 
+> Happy to do either, just let me know.
 
-(...)
+Alright, if that's ok for you, no objection.
 
-> BTW, since this is reported by LLM I think it is not difficult to have
-> the LLM write a     reproducer and test this patch.
-
-That would be great to use the MPTCP packetdrill fork for that:
-
-  https://github.com/multipath-tcp/packetdrill/
-
-Cheers,
-Matt
 -- 
-Sponsored by the NGI0 Core fund.
-
+Sabrina
