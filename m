@@ -1,160 +1,151 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2FD4AD7FA;
-	Wed,  2 Sep 2026 21:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D534252B7;
+	Wed,  2 Sep 2026 21:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788384174; cv=none; b=JwmcZ+vlWYhx6hf3HVyC0FXsB2wkpQID8sDSs7rsJyziZ5s3+lyFLRh8/G0/01D6xEQT3fDxuOLG4Yrrm4NMKXfvYn3QT2P3Iz5uUVfhtLJ06y/mI6ZjUwIp/YnHAmOspqy1mef4BRAZxgNtFrQMVZXZFKtiaQQrfXzbzX6KLsw=
+	t=1788384161; cv=none; b=YMO+8NYr/BPFGxIOJl9rGquWFZKKcQdcdC40D44KVOIwSfxJUI/UfmzN7wKR8MftZS6Fx7ajr+39khO26d58LHPp0rOWXm6Ehgm2d8aE7Iv83Im2bG6HwYo7u8wR44xbmEkNnIIUa+p9XZ6mGt+VNpIY2Hr0SO+9s15yWtq+alU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788384174; c=relaxed/simple;
-	bh=NJ5m18CxljZRh3SWxoKlqcAc5mDci3B2P01E7VE+SI8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkfC2xOCITv9KCwmxbDsUHjEOj3qN5MYNQ95iBtbMQ0n6RCHfeTJ3N8W0dma7yYCsqg6vTHWAo554qzCeI8jtuWmdg+fpHauzNUiFXVZ5dn/+miY/Kk51cyomdx4Vk1QGrr1iKytOkICDiIaAYvvniK+qm5p6T/INpYjAmvM24E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=drp2QtP3; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788384161; c=relaxed/simple;
+	bh=3gj0kSLsPkp7d/bNS6rXLOSD9pvnNEbtOz7WcVsgHI8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U+qqguvsxbNZG9nu+zDiDTVDNEAzyTZB8ewox0bozjUYupR59F09l2EPX3p1w7/8hrl65hTr5GS1bb1kbvP/VPK7ChmetX4F1KK0twmK8IkATIXyaqJiVD2m6uiZuqaJBFGWTS6AWYz7j5rGxhvUW3vnNoRIfIQaVcG4Cg33IMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=J6LERhRX; arc=none smtp.client-ip=185.70.43.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="drp2QtP3"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7BD3C1A1968;
-	Wed,  2 Sep 2026 21:22:44 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4ED286053C;
-	Wed,  2 Sep 2026 21:22:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 63B7C11C79A58;
-	Wed,  2 Sep 2026 23:22:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788384159; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Adet2ZDQHwOYlmDFrolkeO1eG5L0ercG+7z6zSSzxfk=;
-	b=drp2QtP33ntPn0qAO8mbHn4uFkRgfen6y01HsMmwl2ZzrDRzM6hq9zd1q1SqPMiqnEzBDW
-	rSKBf6mqQ7/ajHT+rCNMhGeRY3Db0gHAm6uQCA1RGXBml+mxn/vN1+LqS8Y+2lElOg4j1f
-	KILRd5aMqrJ5mnPF2p9ql8yeHSQmnkfNo9hBYiDGN7fmBzUb8+m+P1srcPtYgmlIzLeLpz
-	9ccAX6yiod/sMPPuGwmEAxiusWGW8wKN7d7iCnUOhuoBAhoVSZLMzExBbBP5CZTwPqDUco
-	Dree1bjmqBypmTAwDrt5JZcERY6T1FtWShWUhq+g3XnaCgTjmHQmo13G7FmbWw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>,
-	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH net-next v16 07/10] net: phy: phy_link_topology: Add a helper to retrieve ports
-Date: Wed,  2 Sep 2026 23:21:31 +0200
-Message-ID: <20260902212135.1805948-8-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902212135.1805948-1-maxime.chevallier@bootlin.com>
-References: <20260902212135.1805948-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="J6LERhRX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=bttjsimnxnbpbgimf4fwcpgurq.protonmail; t=1788384142; x=1788643342;
+	bh=dS3+A9eI+tmeoJ5w1r4TVLIeNSpcjB+BfvEJnyPVnDw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=J6LERhRXAhtAdBq025g77m/FcORrkbEZrIkkiRettxL+koUt2nbznZ/1nxENk3Duh
+	 9DAvo/1YMs0DOccL+hWx4wJWUnT7ljGWX0zrYM13r5MO/mHaZAOxiQFJ+PNMW21j2E
+	 wXJVj3VwnmLqXIGS9HwgmR8cWCJFHcU9pdmOVMz36kM1hpVUlm4mRWfL8dpWCaQo6q
+	 Os0QPk2EvatNXGtY8gIUO7LgUmf/oQ+yyAK+tZT3FBBumIaUA51gxnpouhE7vkThe3
+	 MfwYAPgWjo+dogqeCCAee1kbkZEFmYNOUid/bGgucGGLXqlsDrzJ/yNDUzqi2Zpvl7
+	 IP6Wpx4Fs8iPQ==
+Date: Wed, 02 Sep 2026 21:22:18 +0000
+To: David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
+From: Kristian Brox <isyourbrainfoss@proton.me>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>
+Subject: [PATCH v4 1/3] dt-bindings: net: nfc: add st,st21nfcd
+Message-ID: <20260902-fp5-st21nfcd-v4-v4-1-ded2f1c501be@proton.me>
+In-Reply-To: <20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me>
+References: <20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me>
+Feedback-ID: 203906395:user:proton
+X-Pm-Message-ID: 60a34411ed117ddd54a64cbbc892ca3c69075bec
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-In order to allow netlink access to phy_ports, let's add a helper to
-retrieve them. When handling a port coming from phy_link_topology, the
-caller must hold rtnl until it's done with it.
+Add a compatible for the ST ST21NFCD NFC controller. Document optional
+SYS_CLK (clocks) and VPS_IO (vdd-io-supply).
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+ST21NFCD is not I2C-only; the ST data brief lists I2C and SPI.
+Split the spi-max-frequency if/else: forbid it for
+st,st21nfcb-i2c and st,st21nfcc-i2c, require it for st,st21nfcb-spi,
+and leave it optional for st,st21nfcd. Add clocks and vdd-io-supply to
+the existing st,st21nfcb-i2c example instead of a second I2C example.
+
+Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
 ---
- drivers/net/phy/phy_link_topology.c |  8 ++++++++
- include/linux/phy_link_topology.h   | 26 ++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
+ .../devicetree/bindings/net/nfc/st,st-nci.yaml     | 49 +++++++++++++++---=
+----
+ 1 file changed, 35 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
-index 91cf9c62c511..046c4c4bf815 100644
---- a/drivers/net/phy/phy_link_topology.c
-+++ b/drivers/net/phy/phy_link_topology.c
-@@ -65,6 +65,14 @@ int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port)
- 	struct phy_link_topology *topo;
- 	int ret;
- 
-+	/* Ports can now be queried without rtnl for ops-locked devices, which
-+	 * we don't support now as port retrieval is done under rtnl.
-+	 * We don't have phy_port enabled devices yet, let's make sure
-+	 * we are loudly warned about that when it happens.
-+	 */
-+	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
-+		return -EOPNOTSUPP;
+diff --git a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml b/Doc=
+umentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+index 1dcbddbc5a74..8abafb3d8994 100644
+--- a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+@@ -15,6 +15,7 @@ properties:
+       - st,st21nfcb-i2c
+       - st,st21nfcb-spi
+       - st,st21nfcc-i2c
++      - st,st21nfcd
+=20
+   reset-gpios:
+     description: Output GPIO pin used for resetting the controller
+@@ -36,26 +37,43 @@ properties:
+       Specifies that the uicc swp signal can be physically connected to th=
+e
+       controller
+=20
++  clocks:
++    maxItems: 1
++    description:
++      External reference clock connected to SYS_CLK.
 +
- 	topo = phy_link_topo_get_or_alloc(dev);
- 	if (IS_ERR(topo))
- 		return PTR_ERR(topo);
-diff --git a/include/linux/phy_link_topology.h b/include/linux/phy_link_topology.h
-index 296ee514ba46..9585282cae3f 100644
---- a/include/linux/phy_link_topology.h
-+++ b/include/linux/phy_link_topology.h
-@@ -13,6 +13,7 @@
- 
- #include <linux/ethtool.h>
- #include <linux/netdevice.h>
-+#include <linux/rtnetlink.h>
- 
- struct xarray;
- struct phy_device;
-@@ -71,6 +72,25 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
- 	return NULL;
- }
- 
-+static inline struct phy_port *
-+phy_link_topo_get_port(struct net_device *dev, u32 port_id)
-+{
-+	struct phy_link_topology *topo = dev->link_topo;
++  vdd-io-supply:
++    description:
++      Digital I/O supply (VPS_IO).
 +
-+	if (!topo)
-+		return NULL;
+ required:
+   - compatible
+   - interrupts
+   - reg
+   - reset-gpios
+=20
+-if:
+-  properties:
+-    compatible:
+-      contains:
+-        enum:
+-          - st,st21nfcb-i2c
+-          - st,st21nfcc-i2c
+-then:
+-  properties:
+-    spi-max-frequency: false
+-else:
+-  $ref: /schemas/spi/spi-peripheral-props.yaml#
+-  required:
+-    - spi-max-frequency
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - st,st21nfcb-i2c
++              - st,st21nfcc-i2c
++    then:
++      properties:
++        spi-max-frequency: false
++    else:
++      $ref: /schemas/spi/spi-peripheral-props.yaml#
 +
-+	/* ports in the topo are RTNL protected, but may be accessed under
-+	 * netdev_lock for ops-locked devices. For now keep them under rtnl
-+	 * protection, as no ops-locked devices have phy_port capabilities
-+	 * yet.
-+	 */
-+	ASSERT_RTNL();
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: st,st21nfcb-spi
++    then:
++      required:
++        - spi-max-frequency
+=20
+ unevaluatedProperties: false
+=20
+@@ -76,6 +94,9 @@ examples:
+             interrupts =3D <2 IRQ_TYPE_LEVEL_HIGH>;
+             reset-gpios =3D <&gpio5 29 GPIO_ACTIVE_HIGH>;
+=20
++            clocks =3D <&clk>;
++            vdd-io-supply =3D <&vdd_io>;
 +
-+	/* Caller must hold RTNL while handling the phy_port */
-+	return xa_load(&topo->ports, port_id);
-+}
-+
- #else
- static inline int phy_link_topo_add_phy(struct net_device *dev,
- 					struct phy_device *phy,
-@@ -100,6 +120,12 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
- {
- 	return NULL;
- }
-+
-+static inline struct phy_port *
-+phy_link_topo_get_port(struct net_device *dev, u32 port_id)
-+{
-+	return NULL;
-+}
- #endif
- 
- #endif /* __PHY_LINK_TOPOLOGY_H */
--- 
+             ese-present;
+             uicc-present;
+         };
+
+--=20
 2.55.0
+
 
