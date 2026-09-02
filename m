@@ -1,154 +1,191 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E2B40F732
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 10:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8492343A7FA
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 10:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788343733; cv=pass; b=PxS4u92hOKnEk+cbAKQK+LWtmTWilYN5MDjF25sLND5AYXPHj8osized+fdWdZc1aPXQ1taPxdpwzOfDKiNmboCsNH5TalXT5fzMaOdS9110wkXnjdCOA18vz/I1IecqfY2GoxDBfz8uuk7kEkkMAJPMM2/46NS5JGn7gcVQI8A=
+	t=1788344213; cv=pass; b=joTTI6uSWOxNwrf+3WpNVnrSKTy1+npXTZuWT0cMI1nMsYQvOqie4FUjyMFkeD998cVnmGsPm5CHZG1+wsS0AKd+giU50bW5jCqcJEzof4i5XDWYUe4MGprtG6rj4YI11gx3NewA2YQ/GwfUDGnfckWrC/ZXOIOnBSohKkuuALQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788343733; c=relaxed/simple;
-	bh=e22SUgGgIJ3poJkGI8HTllTE/j2hDqd/FF+MOcjqrxQ=;
+	s=arc-20240116; t=1788344213; c=relaxed/simple;
+	bh=OxkC+UQNPmTnPjpxYR7wsxARRTLqWm6Mfgpq9rElfgk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YyzTPq6D0IXmZcOZOweLXOxc0xW8TSnRDvc3Nb7dEqWpU5g8+fYehzSYIqeBgzUExuUDdd2PpKBDlgy3mR9iXH5SjfypozkqsQ9Q2nGoqdSDQj1vUbTUFGd/glHpLdEwb7qvsATtxzmNSEO8HXiWL4f2rW+61TxvQijDeYfqKMc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dfL+csT0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nMnUnst2; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=RlQEnguae7U31xLaE9AXBwkFmnVGxC+7ScOAaUJzgvEA9nsMbxkOvYeHk8IAtL/+7SCxYSUZWWAXGs2UGQT20uZUKl3eLj0XEsNTDV5b0A38WhcQpcqUwL7zCoyrdlVZRnMLYocxfdkH31hah77IPsFqtgjLWSg4uRgHEAj6TK8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=MTVEzfE8; arc=pass smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dfL+csT0";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nMnUnst2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788343730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e22SUgGgIJ3poJkGI8HTllTE/j2hDqd/FF+MOcjqrxQ=;
-	b=dfL+csT0Nr7xjunVMrWBZlNCiQt7UH7K6PChQBnNvuEuySRDckDlJ6slanlDe6FfbOf1WG
-	78itl4bxceY85d3W8oPm10HVAdyTciIwX6j7zoi3tgt1m2OvVDv+2/shiuKCGQ4svhYPtf
-	xh9S8YZvYeJq+V7NubwuiFxdRO1l56M=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-PCBOwjn8Nt6Wa86WPQmCZQ-1; Wed, 02 Sept 2026 06:08:49 -0400
-X-MC-Unique: PCBOwjn8Nt6Wa86WPQmCZQ-1
-X-Mimecast-MFC-AGG-ID: PCBOwjn8Nt6Wa86WPQmCZQ_1788343727
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-5b15484404cso555962e87.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 03:08:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788343727; cv=none;
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="MTVEzfE8"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a309f92daaso7828351fa.3
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 03:16:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788344209; cv=none;
         d=google.com; s=arc-20260327;
-        b=qc1EN3j/mMqCqmBlohm8/B/fudb0RJ9l6XVIvoMvIp6fHW1YdFQBNhfWcx/lLYYAuQ
-         B5EfWLfr7NBVGqcPLA1wx+kZLV0kpaLFQ8I4KQL661m2IH02Xw91Ic8Nn9qh5gh4xy0P
-         Oma3s1p7pQZlIscHtJVSMH5lyYggLiywQA3hAWxMOV0vhOWNRiYZEOY9WnuJ8yvn2/y9
-         o8MSr0aHJZi8kXcFm4fUnhvKkzItiUfnMZab8p5CDJhUwURhT9h4BLBoEJQDqMw95oC4
-         RpOfck+nUAjkQPax6s6XdS/CVdue9PFxy3rfvzISKy5LVrsKAUb7POXxej1KpZZkIuL2
-         Jsuw==
+        b=XacxXjq6IyLYiyhzPMm6O6eGWxcOL+94eZL6mL7KePolS1kwrFXVv8q/+MgVVLEeV+
+         44Lytqtx70/AfK19WnDPJlv7aYAaFH/URQJkuH0wQhE7GmECqgtglljlXJond6tHiWeQ
+         iNG/YnOpiVaN5p4Hs92NGjGtX1tRrioGzB0GhvG3H8pL4DzYUcUwrnmzQbOP1fVP8mID
+         OrLCG/gTYYKTcwFq3cMPJSpENoJgKTrrPfAb307YOImQsPRrsI4PjkNKk/ye0mUHWU/H
+         3rmq23KQvVg9uR0tD9JoKK1ArcxOXYziorRm2yxsHeQ4Y0EhPBB58I2Bm/myJ2gOjF3P
+         tipA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=e22SUgGgIJ3poJkGI8HTllTE/j2hDqd/FF+MOcjqrxQ=;
-        fh=YYuAsTm8mom/dJ9HIYH44hutfMW5v+U8cqQpoMfmqNE=;
-        b=kqrgpm0RP9j/8+zW+PSrNAckFx8u9BErMSo1Z5laOM8+fxf4QbqzYj/muziRWbH6QH
-         +6s0QbbbPLELrD3T8oJR7DMsNohA0Ioqpp/8mOHhecfNqRQKfT9s3OOkohy+4j18jlWY
-         PjGcpyWHjaXd+OpMAIDnjUUh3SEtrPJuJ+n4ubYIR66yJWHtx2+OD1M1KZpo6SDmXdzE
-         o6dbsUsLLiuTYgAk7pXiCbM4CFQqXVvO7sU7etuIw3i88XbSnWU03stlzzO/H3E1iUPo
-         maVhKdBBbil8PpT7jgIg5U77V3LlvQ19AB8cCY6Zz28Lad46Z3iPBlQrVm9QtC6RCjJf
-         QzqQ==;
+        bh=eB8x9CRrNk1XnJUaioaAbBG800wLPGIMi5GlCYlPpkc=;
+        fh=5/BxLna2m37bEJkJg2hvCCngMFuev5/YMYTWmdMPxyw=;
+        b=eJ7Ltp9kSvz1tx0nqoBOZVBfBn/lzAzKomPbLnw7b/ukAH5dNFd7FrDXTphJcCnK8p
+         yCatN4h5lauz6+TzwHFGmAyc92DwbSzuifrAK/+kSh9Uvhzg3/dX58RpWQ8lLX42wJ/k
+         LCUvfYDN4Xdf1nG4rYHxLzqY7F8WffNOTmr6jR42hLkXrCB2UpejNkG7M2oTv1ZKL4HE
+         v4uFFJUUSRYtaso8/BOb7ZNXhSddQ5JVSiuXRoX2Zb1mYhTZO3Y0fWaLZj4NYj+8dFL2
+         mhmp4xZNmKF8Vae7kpyLJG6aYYbNPUZ4pkaDldq4rUqcGMFMqo0H3xKb7V0Txoyk6o4g
+         Cw/A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788343727; x=1788948527; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1788344209; x=1788949009; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=e22SUgGgIJ3poJkGI8HTllTE/j2hDqd/FF+MOcjqrxQ=;
-        b=nMnUnst2Yx0Msk7zIwj8FUlVvIvyw9uUohHRoadFQgmiUybQVvU7oCdIqVzEYZXI/M
-         R9PlX28mc7pvtT/9xfKJzMhgP0PTJpjgWFFOywPEKu8Wb8D1RLWLQMuylGXcXThU9cLa
-         3zMR9vPguuUufi079763jqFqQvHkCgS0lt0zKRclnvLZwruKDfQJ0Z+4SYN9kf1rH3vJ
-         fHPqbyRlbodTVHZ1FEX5+98uxyF7o6UIKWqghYBjO+vL+AbAYkwLX4grefGEwnJmWfwT
-         ufVM2IAtguMhAV95KRuQPNcoyC8LAhXss087Rf4EYTqhnLqxjE8+J+9dLI9Lei5Mzg1a
-         hO8Q==
+        bh=eB8x9CRrNk1XnJUaioaAbBG800wLPGIMi5GlCYlPpkc=;
+        b=MTVEzfE84KflnmDn4ziageLEu/D8SOGpyoyupJ0tsX/G5RunaIwKjo+yGoWN0t9OPv
+         VG+tES8SI7L/gKM5X4Ek5KpItr56U2qeDo/Ims5lIWLOCXX1pGNl6rIs90yK8l4XkSuA
+         Dv7XfNaiWo5s5HuSNO5W9W0y/6EAai4V8x6NuTangx6dnz7YHjapOn2k7vJTZSCHB/GO
+         xwbi+o9aGwKU1pNaXYPfoBroT5RuWwuEzElixpMxOx9gu7+nFuI+H0Zeatbf7pqZxzt5
+         5EcAaUWcuHo/WT4zy4Yr7Q9eKp556j2iRqDs7WqQfpenvQCmkTbFD2CVCoGWmMyerTk1
+         MEWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788343727; x=1788948527;
+        d=1e100.net; s=20251104; t=1788344209; x=1788949009;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=e22SUgGgIJ3poJkGI8HTllTE/j2hDqd/FF+MOcjqrxQ=;
-        b=Z+0yJGM9X4vrqcqIKxYBsrQCBPekzZrESTHxttWWDXdjVmZw7c6l9SQyGJFbp2VrME
-         KljvSj6E+AcKG1irGR7JJha68gWjeycDLTemtXYoEbuJYkBywLLHsvDkeVboBO7JPYAj
-         ojrSwlkZD23V00PVv5VMJgiqveBNqfxF/fZR/dks3ZjlCE1o+IlJxhIvYWI+Z3v5DjjE
-         DvLlaC9n5EuZZIU8P9cAyW15uuEfI+ZLsUET2i6ABxx2pLyi4ni3luL04G4JzES46Uqb
-         h225DSWalY4GHLXbdGEnHizYpIqqtOUAk0Zqm4h/F9d+il80zdx2ZAjqIU8Q8dztqVJz
-         Riug==
-X-Forwarded-Encrypted: i=1; AKwUvBzs3rxJk+pLl+3bltmbRGUtZaMwsatXLKMazuGi+OplMF3UY3HDW90K0QT0wP2T+WIyS3rExH4=@vger.kernel.org
-X-Gm-Message-State: AFuF++ms9hu+daF/EZl/9yl/8Yw1COn5q1tC4hbJmd0yEmPAkQqNKGmR
-	/feYqdV23LBbbNp+uqeCFsRC5u16Iz6toZqBmF6B+Y10bKPRch155njsAnWN5lNR4TdxKCl5PjB
-	+Uu2Pp/sqsFfWszKr88gljR9+UtXKNP7BkoDa/TLxGmUL7qV0pk4CNvmHqtCYZx8HasianosBGU
-	cM7ToU4nERRIq3QaUmKsBku4hFC860pQ/F
-X-Gm-Gg: AYBFou30h0/qC7xm/0He88I6j8RnxiL103u/YbbzEJgubt4DMHUPCmngDdpV8bU3mB1
-	ddyv727grZu6zAKotM3cYvfIrscvHTsT0wJbTt4aWjvvmUjjVDrPGR4Gkh+jbnY7cOd4c+gxq3o
-	luVZnDPavD3cITbc8xLfgOU6KT3zjMUxkhx9f7/5Ru6jeHa/8R5VTNFlVt
-X-Received: by 2002:a05:6512:1252:b0:5ae:b0f0:c217 with SMTP id 2adb3069b0e04-5b60834b9bdmr1404123e87.9.1788343727397;
-        Wed, 02 Sep 2026 03:08:47 -0700 (PDT)
-X-Received: by 2002:a05:6512:1252:b0:5ae:b0f0:c217 with SMTP id
- 2adb3069b0e04-5b60834b9bdmr1404086e87.9.1788343726954; Wed, 02 Sep 2026
- 03:08:46 -0700 (PDT)
+        bh=eB8x9CRrNk1XnJUaioaAbBG800wLPGIMi5GlCYlPpkc=;
+        b=UqQKeaokxyCvZfdy/Cxh69h6IPWZN+nKQhij2bLWtsb9P3R+hVYmbVNPJnjKQjvdUb
+         rZZZHlj7gJ8fyrE/o8dkGzv10L3sXEfxeN/DdZfsk95Gv6CB97UnQD9Dl8uiaCZKxTOP
+         2PPWOt9YTTxU5KqKxvlxfafivJu6LveJ7s5gpKQDLAZUoQvv7a0ntAwFnqj2bl5/kBlj
+         /yKjDp0YJw25+Un6NhvfjkIYvXQoSTPi1QwHk/jIB53wo3XNHeQpa62fBy2a0Y2aLbBU
+         3zgK+JHeA3hfteOlVVY5Vz1gywOQSUQvMk3EErsVKDEu9pV18WDhZXiwR8OyA6Rr3ktC
+         jJ6g==
+X-Forwarded-Encrypted: i=1; AKwUvBwpEMp2ShuV8VcpDXHWGK0LJ6SHnkXTA8mB56v7bHN35JLBH9fkCc8khlg60Js6cFRocGSovLc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mql6GJwIm0LdDOLnJ+5H4x7+MOXWboK83mXOS1HaciHY17O+DY
+	OFmnHj/SYvoGwS4e4wpgrvpCFdNsM3w4STlBDbG69phSYlGQaE9HOcKTZz/+Qc9OcZrSqvQVyGH
+	v2fcpnGDXNJHqiy0R1yR1KsJfKLWSntoRGSjewHKAlQ7RjvZr9tz1wFOt8GINi7Mb
+X-Gm-Gg: AYBFou0L94KTACK0cojV3ZUiEI2G1ePCxT9HwItOThR+Vo35TycQB2aUTozowDQfe+h
+	z/kyiMU3AYQEKyIUE4VDQ7/+IrQh+7baJtS2HnPKWj0B56MPzImLq18ZBp+vfYhrMPrRc/DWVkA
+	dVPsqkIBi0HcTczcwFPuGEUG78XRwAA8odrLVuPtz+AYAHCW31WjOhZmVPcMN9MmRyYOFXU4IEp
+	2/FqeMEyQgxV+JCoetx4FRclX0gBNLKQG74lE5gvI09d/tXf8nk3tE5YLYEk0Mzg2CG39e0IIcL
+	vvKexhxPjpDCcFTqCeN1rfcG0NmyFU0/v0LuHwt6Evh+85GopfxjvwclJ0HybjRXfRLH44855xz
+	506TVm/+N7CgU
+X-Received: by 2002:a05:651c:1443:b0:3a3:1391:fb19 with SMTP id
+ 38308e7fff4ca-3a34ff11646mr8038211fa.9.1788344209091; Wed, 02 Sep 2026
+ 03:16:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260901115021.50057-1-ihuguet@riseup.net> <3d8ef804-efc1-46c7-bbb4-f1a6c26fed8b@kernel.org>
-In-Reply-To: <3d8ef804-efc1-46c7-bbb4-f1a6c26fed8b@kernel.org>
-From: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
-Date: Wed, 2 Sep 2026 12:08:34 +0200
-X-Gm-Features: AcwNN1WWjJG56_BD-BZvMi7yD139IVOfUkEJ5Q53fMWfoLWzhUAroA5GHqaqbfc
-Message-ID: <CACT4oueX-g20hKft6Z1Aj3rNK2Fi7MYHZz=LdBd3RKWu+YK-0A@mail.gmail.com>
-Subject: Re: [PATCH net] net/ipv6: don't route packets with unknown source address
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@riseup.net>, 
-	David Ahern <dsahern@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neal Cardwell <ncardwell@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Phil Sutter <phil@nwl.cc>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Fernando Fernandez Mancera <fmancera@suse.de>, Alexei Starovoitov <ast@kernel.org>, Junseo Lim <zirajs7@gmail.com>, 
-	Leon Hwang <leon.hwang@linux.dev>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>, 
-	Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>, Qi Tang <tpluszz77@gmail.com>, 
-	Jeff Layton <jlayton@kernel.org>, Joe Damato <joe@dama.to>, Breno Leitao <leitao@debian.org>, 
-	Li RongQing <lirongqing@baidu.com>, "open list:VRF" <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:NETFILTER" <netfilter-devel@vger.kernel.org>, 
-	"open list:NETFILTER" <coreteam@netfilter.org>, 
-	"open list:BPF [MISC] :Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>
+References: <cover.1785596603.git.zihanx@nebusec.ai> <e9a3909c7a6281967961773ca841e860b8ecf40e.1785596603.git.zihanx@nebusec.ai>
+ <6326f119-048e-4d46-ab2f-debb20420297@datenfreihafen.org>
+In-Reply-To: <6326f119-048e-4d46-ab2f-debb20420297@datenfreihafen.org>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Wed, 2 Sep 2026 18:16:35 +0800
+X-Gm-Features: AcwNN1VJQMwlHjV16Apj6_hoFNf4qd9w8vLJXYoDBFJHRBvXJSk1cx2HQCyvrMc
+Message-ID: <CAANe3eSyr9sSS1q1LfFXztXaZGXMR0HAiYmT4=eBhf0M5asrXQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] mac802154: fix netdev use-after-free in beacon worker
+To: Stefan Schmidt <stefan@datenfreihafen.org>
+Cc: linux-wpan@vger.kernel.org, netdev@vger.kernel.org, alex.aring@gmail.com, 
+	miquel.raynal@bootlin.com, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, david.girault@qorvo.com, vega@nebusec.ai
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 1, 2026 at 7:41=E2=80=AFPM Matthieu Baerts <matttbe@kernel.org>=
- wrote:
-> Thank you for looking at this, but I think your patch is causing
-> multiple KASAN warnings, e.g.
+On Wed, Sep 2, 2026 at 4:15=E2=80=AFPM Stefan Schmidt <stefan@datenfreihafe=
+n.org> wrote:
 >
-> https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-extra-dbg/results/8045=
-84/24-connect-deny-ipv6/stderr
+> Hello Zihan,
 >
-> And a few more, see:
+> On 8/2/26 11:23, Zihan Xi wrote:
+> > mac802154_beacon_worker() reads local->beacon_req under RCU and derives
+> > the sub-interface from the request, but then drops the RCU read lock an=
+d
+> > continues to use both sdata and the embedded wpan_dev.
+> >
+> > mac802154_stop_beacons_locked() cancels only pending beacon work, clear=
+s
+> > local->beacon_req and frees the request.  A beacon worker that is alrea=
+dy
+> > running can therefore continue after interface teardown and dereference
+> > the freed netdev private area.
+> >
+> > The scan worker already pins the netdev before leaving RCU.  Apply the
+> > same lifetime rule to the beacon worker: take a netdev reference while
+> > the request is still protected by RCU, and release it on all paths that
+> > continue after the reference is acquired.
+> >
+> > Fixes: 3accf4762734 ("mac802154: Handle basic beaconing")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Assisted-by: Codex:gpt-5.4
+> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> > ---
+> >   net/mac802154/scan.c | 4 ++++
+> >   1 file changed, 4 insertions(+)
+> >
+> > diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
+> > index 65089826f..ebd092d40 100644
+> > --- a/net/mac802154/scan.c
+> > +++ b/net/mac802154/scan.c
+> > @@ -416,6 +416,7 @@ void mac802154_beacon_worker(struct work_struct *wo=
+rk)
+> >       struct cfg802154_beacon_request *beacon_req;
+> >       struct ieee802154_sub_if_data *sdata;
+> >       struct wpan_dev *wpan_dev;
+> > +     netdevice_tracker dev_tracker;
+> >       u8 interval;
+> >       int ret;
+> >
+> > @@ -427,12 +428,14 @@ void mac802154_beacon_worker(struct work_struct *=
+work)
+> >       }
+> >
+> >       sdata =3D IEEE802154_WPAN_DEV_TO_SUB_IF(beacon_req->wpan_dev);
+> > +     netdev_hold(sdata->dev, &dev_tracker, GFP_ATOMIC);
+> >
+> >       /* Wait an arbitrary amount of time in case we cannot use the dev=
+ice */
+> >       if (local->suspended || !ieee802154_sdata_running(sdata)) {
+> >               rcu_read_unlock();
+> >               queue_delayed_work(local->mac_wq, &local->beacon_work,
+> >                                  msecs_to_jiffies(1000));
+> > +             netdev_put(sdata->dev, &dev_tracker);
+> >               return;
+> >       }
+> >
+> > @@ -450,6 +453,7 @@ void mac802154_beacon_worker(struct work_struct *wo=
+rk)
+> >       if (interval < IEEE802154_ACTIVE_SCAN_DURATION)
+> >               queue_delayed_work(local->mac_wq, &local->beacon_work,
+> >                                  local->beacon_interval);
+> > +     netdev_put(sdata->dev, &dev_tracker);
+> >   }
+> >
+> >   int mac802154_stop_beacons_locked(struct ieee802154_local *local,
 >
-> https://netdev.bots.linux.dev/branch_deltas/net-next-2026-09-01--15-01.ht=
-ml
+>
+> This patch does no longer apply. Please rebase and re-send.
+>
+> regards
+> Stefan Schmidt
 
-As far as I can see all the warnings are in the tcp_v6_send_response
-function. I guess that sk may be a request socket there, so it's not
-valid to treat it as a inet_sk in all cases. I will send a v2 with the
-fix.
+Hi Stefan,
 
-Thanks!
+thanks for taking a look.
 
+This change already landed in net.git as 5f26a690e8ef
+("mac802154: fix netdev use-after-free in beacon worker"),
+applied by Jakub with Miquel's Reviewed-by.
 
---=20
-=C3=8D=C3=B1igo Huguet
+If wpan.git still needs a rebased copy, I can send that. Otherwise
+I will leave it as is to avoid a duplicate.
 
+Thanks,
+Zihan
