@@ -1,59 +1,61 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFC5411FB1
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 21:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5C39E18F
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 21:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788384571; cv=none; b=UVfDtNJaut0l0acAOgvGideEkD/LHra+Lx/08EnTMsPR6EuDt7dLJCidO6Ip9MsXFS4ZGsmfMzplPP6+vLLsuyW/8WyDrJCZs/j8GHef9M2QSDWccmKm56o5LsY8vGUzW7QXVaSuwe6yZSk2JAiT0zos4QW3bHXkCEKnMZmyayg=
+	t=1788384576; cv=none; b=EHd7hzkARAy5ALay1eqqJZx9cEgw6QUKUOv40w/lLwUfjU4+ppa9nMgrUYx5plngMHBfs81lc2G+vJQLDt8KHNRNNMXBqXvTKEbrs+QDySXue4cL+1mV6VhfkLiiXZ+U/jcu2uRWV28/76WmXe1CLu7aTm0VzPfOB30zOFQutjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788384571; c=relaxed/simple;
-	bh=Rwpti7iQwDFikXIDN8JqQyuYZyRBY6WxLhROo8inQYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uk91He5sVz0J0eOZqjzJgMw4Uw+Kxv4oI8Di0ivEp/CsRsmhSn9Is0er/dcUlv1snoMqlsOJP7Y/ZoHUDD416A/4uA1QsPUrVGndudCetIxveb4o/CQiGnvAoSzcUG4P0GjEhrUVmVwrEVEq/3taeBkCgtl9xe/wL7eBEAz15aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=u2SB/1k4; arc=none smtp.client-ip=209.85.219.48
+	s=arc-20240116; t=1788384576; c=relaxed/simple;
+	bh=fnCzv/03dRMIFg8h/PiBArxECEmb72z9bWTPFi3bqlk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Aqs6whKPNKxSpe34fMp/lNCUk0v0bgR1RKUw2s3KaO8NGBqG+b8hXIkAkv6Ke1HjsWi9/4W8Z5KeiDZvpGXx1NjMk6SBSFbqqspUulcClGQlsA2OkxpDlXcoKpEzvXnicNdbmziHVAUQtX+3aem9J9kfv74byx6NlDpmuAs8NpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=QE6ArFXo; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="u2SB/1k4"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90cd4631090so4402696d6.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 14:29:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="QE6ArFXo"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-936e393176fso132718685a.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 14:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788384556; x=1788989356; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uHUCSjdJ+fy55MfodjzYcXnnlacL4uHKJaK4zHusjHE=;
-        b=u2SB/1k43+lfI1ZGf7AG5Mrf/Wfs1DWpAUi8wfoJ7yaFzYHuUh6nDd1vsL1C/Zf1iB
-         2Y1bGkAtKwwObVv5dksqI3mi8bw270+BU9+9lu8e+9+trhNmbkeG5u3Vo+kYJKDFDB+O
-         ylDd4+Bg5n2DIz2xN02Cq+sXPtkKZUm3YI0To=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788384556; x=1788989356;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1788384561; x=1788989361; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uHUCSjdJ+fy55MfodjzYcXnnlacL4uHKJaK4zHusjHE=;
-        b=QFInibtOCYugrdVihUre6jSjIAqkyEvDYRCt/EDSo9zqzGOLS43hq13K/2rOeL73kU
-         O72DZjes963oEfPGukk69oBVutPL00m5CqXYztJWnxhm9YkHVN74TB+emvvEeT/LK2Kc
-         1YsEQvBtXprwTD+VdQxTBCwx/wLLQuw9+ww3MuckCDZT/dbhI7yl53OP2oEa4q8XWm5G
-         Zg9S9s43oFeI7PNMJI0bmHlRtn5XUXbx16AFX9fc/2jspCOR4I02YUmgFalf+1qabic+
-         38dPjztN4yMGVpbGa+QFPQ/OoMuVugrQDM/HLKFJeCWt5QVXxQj1EvwBJIf30yvT2bz3
-         txkw==
-X-Gm-Message-State: AFuF++n7KnJsNBW+HL39VCVT9/sd+nAivv0Uun+HHvciebl6ehW78a6v
-	+TjRYm0uaCKQo36NLs0j/Y/R+0RqsS8tHG17ZNvyp61X0fBt7zb7pRwuSztPME5XU3cYUNtmXrI
-	5BP946w==
-X-Gm-Gg: AYBFou3t8+HL366iOIqjeOxgwveOGPyucg3swtLizhtLKL8P2ONlgN1rk8aUWJWztBO
-	9QOSoDst++N8RvL1wWy866ZFqS4gpreTZIx/++GlxZseLQtLPRGgJidTJpfzqQWt7ZeE9j770JT
-	a43Jzim4zj5XeuIZcLStbjbeL/kR+jYVUSDe0gDhgUTkFBuhGuhiplHoJCb+AkoehRi+Aul/YxF
-	NJV8RO8V7NqGkEgwVX68YDCD7J98642s51cPpkppJDmsrLUmxEH3ViuZFkpBIAVHTRKAh681aJb
-	eqJXFg8sOdAYCmFh7oM9ivWdxmoQlwlfcjNjLWBE7BRzeAxX2LpRUCWg8Rl60OsIj5myNS3XWK8
-	b9TJEcpOZDGW8WKCxIABbmz0zw7CBBQps4CTbXJTw2hqbj2wljptoiZcjCRWDUcYETjm9iaPLcv
-	IzOgsbzlTinxWt572FgZjd6/C4x6uWCdcVgC1NLsRYeO81Ae2VQP+fmdN7Hu3YiFAxJgwXJms+Y
-	/9d9RaMiiwtEs5EwCEaKGyOIF+pPCSySZONr8M=
-X-Received: by 2002:a05:6214:f2f:b0:90c:de0e:d741 with SMTP id 6a1803df08f44-9103476d3c5mr25060216d6.15.1788384555713;
-        Wed, 02 Sep 2026 14:29:15 -0700 (PDT)
+        bh=tFXRNdSb9HwrsFgIcOd49WRWmMxbjwRabQG24eFpDYk=;
+        b=QE6ArFXoyKnQsFwbaYBIOauwjzVwMBgye2m8naqzPwwA+diau/GOnhfwnAnv4Xkl1A
+         N77SbMj4+fBzf6aj12CD1xpq+CZFt/7XbC47Gn+YrOHrzkCKISJHbIRntTymiuuWI8+/
+         vfq6YAfZc4UVKjuJqR7N7q+RgKr6lo2KwoPeQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788384561; x=1788989361;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tFXRNdSb9HwrsFgIcOd49WRWmMxbjwRabQG24eFpDYk=;
+        b=TIvqa3rLgeqfCmA5VIZ+ulmpREugAUfJyZtymF5FPAtSQJxxxX/IXYXBsc/3/QsPne
+         agx9Ac1f939kb2qfpXqI4aVktSDA8ieHqeIBQUrS+0O/NXxHYxOsDWOqPWJIiGgodJoh
+         WfSlExE4iMGBBLskstKKNxgGQ3cA5xL4lrBteA42F3CKW2/2ZyEqj5jch8dqhqDiD1fQ
+         Sk7dXpnF1qhRwqhl0dVSJDiF0h172Vmzz7LVSTB5kwtjGplQGYSz8qsly5MD97YppSb3
+         XpWkJtPEqChNBl9JDQNKReAtR+7N+dUgs7ng+9qhBwRVrUjhV3qmaEWGRyBVKdCYb7NO
+         PC3w==
+X-Gm-Message-State: AFuF++mcpQiFA0TX2R67n5icUtQqH1UDGvBi6onbYbDiXWIsPdnMVr40
+	uGmQHGA+yaDjlaBEOrDfRlXoonoL80JE6E3yZOSBH6qST8hLCFmTQCjbAKYeezKSxGwrDnSBK9K
+	lunQ2kA==
+X-Gm-Gg: AYBFou2PJ4D8fkFKHsBfD2ITjB7X+xxXhzwX4CcKnbzRWeHZNRfqLQLdpUSZMP2mhNp
+	ACICgYTbUbIVtJ0FxUrx6WSKAgZ3YWVwKvh2NkBJKNzW25K0Z5bC/v53Q8rFV1LXJbvcUVCOoWg
+	ToKGXY7f8XwBAxtHu320rrRENIfpDHTKSN5d9Xsq3y5XvZP/yeqkh8AWNtLZ/j3CImtbFroLndQ
+	QMNX+0Rzj0eraI1iHFe+NDBDhnE1NPgemeHQbWAkmPTH76w2hk8FRm35jNicLArPUuohoNzs3RZ
+	rlDcm41GwyGoFF7cGNT4o4iaoZ0Oubiil9mwiVMMSGbOZy4FlgVmt5k6Qn4JNUx9povM9jx+V3I
+	R7tkPvKqSPXKmNMOh10R/l/MeJ1lFtuaEmFhhN1qetTht06SGOPbB5Vd5aCfh1jC3wo+iUzvSg5
+	5RrrNUI0+pP0z2KsEfSPgC+tQtsY/d5J29ScwIeR3azuEoW+ub/9WqWcbvPAiBrcInDhyoVPh6n
+	zOKYueGHD43UAbua/QpIp7REMlcbdK7f76Dxw==
+X-Received: by 2002:a05:620a:2589:b0:937:6ed3:78d with SMTP id af79cd13be357-93960f3bc9fmr959524385a.20.1788384561076;
+        Wed, 02 Sep 2026 14:29:21 -0700 (PDT)
 Received: from majuu.waya ([142.159.91.240])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm27169086d6.2.2026.09.02.14.29.14
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm27169086d6.2.2026.09.02.14.29.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 14:29:15 -0700 (PDT)
+        Wed, 02 Sep 2026 14:29:20 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -65,12 +67,15 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Donald Hunter <donald.hunter@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
 	Vega <vega@nebusec.ai>,
 	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2 0/3] net: cap tx_queue_len at S16_MAX to prevent oversized ring allocations
-Date: Wed,  2 Sep 2026 17:29:07 -0400
-Message-ID: <QDISC-2899.v2.20260901233641@mojatatu.com>
+Subject: [PATCH net v2 3/3] selftests: tc-testing: add tx_queue_len cap regression tests
+Date: Wed,  2 Sep 2026 17:29:10 -0400
+Message-Id: <QDISC-2899.v2.20260901233641@mojatatu.com.3>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-2899.v2.20260901233641@mojatatu.com>
+References: <QDISC-2899.v2.20260901233641@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,89 +83,282 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Message-ID: <20260902212907.SarAMZD0WSkfjiNod3aUoZfxUv5N56McECcfcnO0hMg@z>
 
-An unprivileged user (via unshare -Urn) can set a huge tx_queue_len
-and exhaust global memory through ring allocations sized from it
-(pfifo_fast skb_arrays, tun/tap ptr_rings).
-The reproducer from vega@nebusec.ai set the following params for
-illustration: txqlen of 500000 -> ~32 GiB/ring attempts, 1.6 GB tun,
-~960 MB tap. Gets worse when you consider qdiscs like mq.
+Add nine test cases for the S16_MAX tx_queue_len cap to the
+pfifo_fast suite. Netlink cases exercise the ifla_policy bound
+(2/3); the two new sysfs cases exercise the netif_change_tx_queue_len()
+choke point that 1/3 owns (SIOCSIFTXQLEN shares it; the ioctl is not
+portably reachable from tdc):
 
-What we fix: every path an unprivileged user can use to install
-an oversized tx_queue_len is rejected with -ERANGE before any ring is
-allocated; per-ring memory is bounded at 256 KiB.
+- dbe3: set txqueuelen 32767 (S16_MAX) - accepted, pins the exact
+  boundary value.
+- b50e: set txqueuelen 32768 - rejected with -ERANGE.
+- 40f8: write 32768 to /sys/class/net/*/tx_queue_len - rejected
+  (covers patch 1/3 directly; netlink cannot reach this path).
+- 4b6e: write 32767 via sysfs - accepted, boundary positive control
+  for the patch-1 path.
+- b90d: create a dummy with txqueuelen 32767 - accepted.
+- 57ab: create a dummy with txqueuelen 32768 - rejected at netlink
+  parse time.
+- e777: create a dummy with txqueuelen 500000 - rejected (the v1
+  bypass path flagged by review).
+- 31ac: create a veth with an oversized txqueuelen on the peer nest -
+  rejected (the peer nest is parsed against ifla_policy too).
+- b567: create a veth with txqueuelen on both ends within the cap -
+  accepted (positive control for the peer nest).
 
-This is for you sashikos: What we deliberately _do not fix_
-bound the NUMBER of rings. With the cap in place the worst case moves
-from "one knob" to the aggregate of ring x queues x devices, example:
+The three negative-creation verifies assert device absence
+("ip -o link show" must not contain the device), not merely absence
+of a qlen pattern - the device does not exist when creation fails, so
+the exit code carries the signal and the verify adds content.
 
-  ip link add v0 numtxqueues 4096 txqueuelen 32767 type veth
-  tc qdisc add dev v0 root mq
-    -> 4096 * 3 * 32767 * 8 = ~3.0 GiB (one command)
-  50 tun devices x 256 queues x 32767 x 8 = ~3.1 GiB
+The v1 04b5 "resize rollback" case is dropped: with the cap checked
+first, netif_change_tx_queue_len() returns -ERANGE before the write,
+the notifier or any qdisc resize, so the case exercised no resize and
+no rollback. It was also nondeterministic: pre-patch, the resize
+issues three ~11 MB kvmallocs for qlen 500000 which normally succeed,
+so the case passed on an unfixed kernel only under memory pressure -
+its outcome depended on the test host's free memory.
 
-Unfortunately tx_queue_len is a bit ambigious in meaning:
-In some cases it means a ring size (which is pre-allocated, ex:
-tun, tap, and pfifo_fast); a cap of 4096 seems reasonable here.
-but in other cases it is used to indicate a queue limit ex:
-the qdisc consumers that allocate nothing (pfifo/bfifo/gred/plug/sfb,
-htb direct_qlen, qfq, teql). 32767 is a legitimate high-BDP queue
-length, so we are going to keep that value.
+Test commands run inside the netns, but nsPlugin creates the veth
+peer in the root namespace, so the teardown deletes the in-ns end
+only; deleting the peer via the pair is implicit.
 
-Getting back to you sashikos, after this is merged and shows up
-in net-next we will send followup patches as follows:
-this series is not misread as "closes the OOM class"):
+Note: iproute2 treats "txqueuelen" appearing after "type X" as a
+link-type attribute and silently drops it, so the creation cases
+place it before "type" to actually reach the kernel.
 
-a) Per-site ring limits at six identified locations
-    - pfifo_fast init/resize,
-    - tun attach/resize,
-    - tap minor/resize)
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+Changes since v1:
+- new patch: rebuilt tdc coverage for the v2 series (drop
+  nondeterministic 04b5; boundary pair + create-path + peer-nest)
 
-   if you can spot more in your review we will take care of those as well.
+Internal review (i1) changes, 2026-09-02:
+- add sysfs coverage (40f8/4b6e): the seven v2 cases all drive
+  netlink and exercise only 2/3; patch 1/3 owns sysfs+ioctl
+- strengthen the three negative-creation verifies (57ab/e777/31ac):
+  assert device absence instead of pattern absence on a nonexistent
+  device (vacuous before)
+- fix the Cc: header (recipients were folded into To:)
+- drop the no-op "$IP link del dev $DEV0" teardown (peer lives in
+  the root namespace; deleting $DEV1 removes the pair)
+- subject prefix: selftests/tc-testing (conventional for the dir)
+---
+ .../selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json | 204 ++++++++++++
+ 1 file changed, 204 insertions(+)
 
-b) memcg accounting (GFP_KERNEL_ACCOUNT) for those ring
-   allocations: contains a memcg-limited container's ring memory.
-   Not GFP_KERNEL_ACCOUNT has no effect on the unshare attacker
-   but will protect against containers  (memory.max in its cgroup)
-
-
-Patches:
---------
-
-  1/3 net: cap tx_queue_len at S16_MAX in netif_change_tx_queue_len()
-      (netlink set, sysfs, SIOCSIFTXQLEN choke point)
-  2/3 net: reject oversized tx_queue_len at netlink parse time
-      (IFLA_TXQLEN policy: closes the create path + veth peer nest)
-  3/3 selftests: tdc regression tests (netlink, sysfs, create paths)
-
-Changes:
---------
-v1 -> v2:
-- new patch 2/3: close the device-creation path (Jakub Kicinski
-  flagged that rtnl_create_link() bypasses the cap)
-- rationale reworded: the 32767 ceiling citing NLA u32 range
-  policy can express (s16 bounds), replacing the invalid virtio
-  ring-depth claim
-- rebuilt tdc coverage (sysfs path now tested; nondeterministic
-  resize-rollback case dropped)
-
-Sashiko v1 review links:
-https://sashiko.dev/#/patchset/20260828121902.66837-1-jhs@mojatatu.com
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828121902.66837-1-jhs@mojatatu.com
-
-v1: https://lore.kernel.org/netdev/20260828121902.66837-1-jhs@mojatatu.com/
-
-Jamal Hadi Salim (3):
-  net: cap tx_queue_len at S16_MAX to prevent oversized ring
-    allocations
-  net: reject oversized tx_queue_len at netlink parse time
-  selftests: tc-testing: add tx_queue_len cap regression tests
-
- .../tc-testing/tc-tests/qdiscs/pfifo_fast.json | 209 +++++++++++++++++-
- net/core/dev.c                                 |   2 +-
- net/core/rtnetlink.c                           |   9 +-
- 3 files changed, 211 insertions(+), 2 deletions(-)
-
--- 
-2.43.0
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+index 30da27fe8806..a6e25e76ecb1 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+@@ -105,5 +105,209 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
++    },
++    {
++        "id": "dbe3",
++        "name": "Set tx_queue_len to S16_MAX boundary (32767 accepted)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$IP link set dev $DUMMY txqueuelen 32767",
++        "expExitCode": "0",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 32767$",
++        "matchCount": "1",
++        "teardown": []
++    },
++    {
++        "id": "b50e",
++        "name": "Reject tx_queue_len above S16_MAX at set time (32768)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$IP link set dev $DUMMY txqueuelen 32768",
++        "expExitCode": "2",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 1000$",
++        "matchCount": "1",
++        "teardown": []
++    },
++    {
++        "id": "40f8",
++        "name": "Reject tx_queue_len above S16_MAX via sysfs (32768)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "sh -c 'echo 32768 > /sys/class/net/$DUMMY/tx_queue_len'",
++        "expExitCode": "1",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 1000$",
++        "matchCount": "1",
++        "teardown": []
++    },
++    {
++        "id": "4b6e",
++        "name": "Set tx_queue_len to S16_MAX via sysfs (32767 accepted)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "sh -c 'echo 32767 > /sys/class/net/$DUMMY/tx_queue_len'",
++        "expExitCode": "0",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 32767$",
++        "matchCount": "1",
++        "teardown": []
++    },
++    {
++        "id": "b90d",
++        "name": "Create device with tx_queue_len at S16_MAX boundary (32767 accepted)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$IP link del dev $DUMMY",
++                0,
++                1
++            ]
++        ],
++        "cmdUnderTest": "$IP link add dev $DUMMY txqueuelen 32767 type dummy",
++        "expExitCode": "0",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 32767$",
++        "matchCount": "1",
++        "teardown": [
++            [
++                "$IP link del dev $DUMMY",
++                0,
++                1
++            ]
++        ]
++    },
++    {
++        "id": "57ab",
++        "name": "Reject creating device with tx_queue_len above S16_MAX (32768)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$IP link del dev $DUMMY",
++                0,
++                1
++            ]
++        ],
++        "cmdUnderTest": "$IP link add dev $DUMMY txqueuelen 32768 type dummy",
++        "expExitCode": "2",
++        "verifyCmd": "$IP -o link show",
++        "matchPattern": "^[0-9]+: $DUMMY",
++        "matchCount": "0",
++        "teardown": []
++    },
++    {
++        "id": "e777",
++        "name": "Reject creating device with oversized tx_queue_len (500000)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$IP link del dev $DUMMY",
++                0,
++                1
++            ]
++        ],
++        "cmdUnderTest": "$IP link add dev $DUMMY txqueuelen 500000 type dummy",
++        "expExitCode": "2",
++        "verifyCmd": "$IP -o link show",
++        "matchPattern": "^[0-9]+: $DUMMY",
++        "matchCount": "0",
++        "teardown": []
++    },
++    {
++        "id": "31ac",
++        "name": "Reject veth peer nest tx_queue_len above S16_MAX at create",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$IP link del dev $DEV1",
++                0,
++                1
++            ]
++        ],
++        "cmdUnderTest": "$IP link add dev $DEV1 type veth peer name $DEV0 txqueuelen 500000",
++        "expExitCode": "2",
++        "verifyCmd": "$IP -o link show",
++        "matchPattern": "^[0-9]+: $DEV1",
++        "matchCount": "0",
++        "teardown": []
++    },
++    {
++        "id": "b567",
++        "name": "Accept veth peer nest tx_queue_len within S16_MAX",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$IP link del dev $DEV1",
++                0,
++                1
++            ]
++        ],
++        "cmdUnderTest": "$IP link add dev $DEV1 txqueuelen 100 type veth peer name $DEV0 txqueuelen 200",
++        "expExitCode": "0",
++        "verifyCmd": "$IP link show",
++        "matchPattern": "qlen (100|200)$",
++        "matchCount": "2",
++        "teardown": [
++            [
++                "$IP link del dev $DEV0",
++                0,
++                1
++            ]
++        ]
+     }
+ ]
