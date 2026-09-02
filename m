@@ -1,189 +1,213 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011024.outbound.protection.outlook.com [52.101.62.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04EE3AA4F8
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 19:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788375697; cv=none; b=QJ9qkjJleUq1FXrhKvId76UmeSSmKzueo8Ehobf5jWZPAF8EYOcKRh1zp6W3IORx+iIXHUYVI6EtV7nglLmAOVmfBP3yRUBhXegIPV/NttwLBflZpKCw66WCWqaRqALq9VXUZsjvq+RaRaLuBQe6rLyC2W9IIvcNRkDBK9o/m40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788375697; c=relaxed/simple;
-	bh=Pj3Tfj/rXbhYtoCKSJ4tuNiipc0mwby1qypcJp1Kk7g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XeyNqHK5sG0WJA4/ZWt32favsy50fk7fCqZLibARL6RllbQU6/V0KCZ3IwMbTGub6jIgMoIDctPiobb7WbiLFckDxLVzULIIxnOs3giuVG7CZZiOmygGELCKlut8IZay+I6MDArwNID2H/Y/99lMIaThDg/F5mqrU4fF6aSJpRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LWlTn01M; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF874AA59F;
+	Wed,  2 Sep 2026 19:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788375743; cv=fail; b=PIy3MSwIjUpy4ELPsjSfONHtosvk8T87w/no7xa1DfWU3wh7MMrf5JNmfCDdeIvRP8GlpW0fl0ncvBQzApYiJWSsW+0bFvVpVBW2tz4hh5B8JUdqXUs+FTQFVgzTfTij9JotDsknmdBZhWLr8GsCntPP+ynfm9IorYyX8G2tqNo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788375743; c=relaxed/simple;
+	bh=+AL5sCNxp5l15c1LM3jiJL3XioMk+BA1hVsleImU3JQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lU4e6XSPfT/gc41gxdudv9FvVvTuXSSl5VHJ4Xj3YadXp9f5xjz9cKIEf84qRrArTxKtnNpt/kyIGsAfsdLVzPY66wpseCNJ8lvFxv9BZM4JOh7lK6Z1iB5JwQDlewwufvXIIyPu7MOXiAM5emEZA8p2VB0MHM5ceKORxDEdz0c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jfKS7gQG; arc=fail smtp.client-ip=52.101.62.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LWlTn01M"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c25344a8c6cso191656466b.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 12:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788375693; x=1788980493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QNUfCL4s/ReoBmg8c9La9jH0Egi+d1LIRRzTEf1FzS0=;
-        b=LWlTn01MHKJI/rt8KhroFjQ4dr+gEj0ua2yXhS0Y6g6L389PATHCxrHrxH5YTVDjRd
-         a6w5AnN+cQ4k+p24WQYT/RCbS66KsYpBjnC0RoxF/UVn2MV222yRXGn/Qdy2zamVHyCw
-         nUyhXpfxaFPX9Y6wy9bx+LdOv/eond11ojhfUJ2DjaZMsIJzW2vErSjCZmiHxzAu9vcl
-         dh21AV22YOPs/aj81JJHUH9jIskwewgV/3SpqKd599Oo8B+6o5M/IlecAGe81jheuqqO
-         iOWTAs71rNtRZYz4NEN5jkNchCSEO4GjKAViNzXYYm1XHJqFtQqvfZBIFWo22jkXh5pH
-         DKlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788375693; x=1788980493;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QNUfCL4s/ReoBmg8c9La9jH0Egi+d1LIRRzTEf1FzS0=;
-        b=PdHUZeMN3D9gM3x7GRtCJtdHxNLex3nxZGoihvwHuWfumPYAzK0VU36N13W0LMSgVF
-         Ueuu9Lom0s+D7zeT+CGdGt/wNxugdouCtn46hPCVP8RaxPX0XpnfNo1YmJfw8lzTOjTE
-         rg/xWH390V2wW3qlP+v0GSUbEB7mpkxMoNNCtQOLP8LBDzggguk9sCWCoI66MdCrYWgv
-         u0beqzNlDyPqT3sFAvpfOXUAgBjUzcQWskO2JtaMHT9w+t3bzbJNjAFwBDhPpzdL2aWp
-         +CwFNV4vnjnidFJjrl6KE8mT2tL969BqvMg96lzLwp/n86oUB4Hk4jHgH+UxXUyi5vM+
-         1uBg==
-X-Gm-Message-State: AFuF++lvlLWlC6hNMTT/iT/KfH5heMD26ZuRclYcNqT6SZWEytJo6rl5
-	RZUDH/t2f2UeqO33xgeqGNParoPY0QhimD2wN4gNMLdC7UxIj1yQSEMVaJLkun3mig==
-X-Gm-Gg: AYBFou3/F18WmoDCs5tGMg6qEst/V+h/e7PThImLxMQAadwqUsJNwkxkLHUXjkte8o3
-	8/crzynUbEo+27IaSs+/x+1xNakABHtjnPocV+uTzmRSvhSGWWuqnHQR5n4yy9zmCiG/ARK4y6k
-	/RfaCGQwTKhB6SoEQNAb4NJ6tmkqaGG3OwcJOuAiO3dSwuX6jR/OKIyMktQbbTQLXpKvXT7YwhO
-	y3bFLIC98/z55BOBvSMgp6TjErNQ+4n9dov5aTygGIEEOxtxzj//9m3fow6idvZjr4VK4yBXG56
-	gkesthA0+SiX2tqCGJ0XeKHe/YqQpvqdQPXMR2jhbw7g6fR7dD+IY2YDW7WOvSpKHUaG7fAxRrU
-	7JmLTTVptuOYU7Dx54Dc7XnarmIWuA22Hv2ZggWPyI7HlKB97tLAk+ntI0yaqI0YqlqVEHoToxy
-	tzfjYZgOjnJZcnOrZLh6DWgcOkbaNvZV2TppzA/PPpqhCtaumn7HQ=
-X-Received: by 2002:a17:907:7293:b0:c25:2e93:28a6 with SMTP id a640c23a62f3a-c25d52871f2mr443022966b.3.1788375692672;
-        Wed, 02 Sep 2026 12:01:32 -0700 (PDT)
-Received: from fedora ([46.8.219.5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25f42307e6sm611866b.55.2026.09.02.12.01.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 12:01:32 -0700 (PDT)
-From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jfKS7gQG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iAe25QlQPCzNxbacBgQSoLYSNX+hb0+Ig4YQcHf9gLymyh328fimUd1E0YeYRmJSsCwA6iIDlL8/NeOvIlkEhOoCc7pmreaqlqhK+mtFIFoV1zPFI1KgSFXkF060uY45c34I7Vxot0EXc7w+gE7VI1o80SMdSlwIUk4H//NZsy+h28g4SFKvEHabHoxqImpgNEcEH2YuzuIpbBsH5KBwrSzS0tLW4ZPwdfk9S6FSilFUawBEvDHhyW4QwKaoUOxrdfmnXB7B8RWeJJVrk0indGH+bkBgdjGFusv0Q7I9tbotiXxLKvz6199gxgkwEqudaVz3xvhyrPiTTNxnM4cY5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KDr//jq3cv/nBbOSB2t1nPlTTL98oZETxCQxH55bZMo=;
+ b=S8GEWv9YNhU0wGN6pjHOFfyWvq210Ln2XME10NORyO0VFVE8TOOY3o5Yjyqw3mX3G65AOWr2xfd1mp8wNoPUjX8SAmjB8xs0th9MayGGLVl2+32bhsXSaZ28KsucZYMhzIKrJVMYKv7f4TYxjlN7MVHGs2BvPj4fkZrpBdk3Vm/Ku+wTP1jKTVMGu4QofpoAC3S4836pGUl3ZwC/c9ZhRMGvDwKCdOl1xNpdqdexn3rOf0HTlL1IVai5bIAJu+OPdTICS03IuXGXV2cVRQ6Mq+A77ZthY+rZTt5xBv1PCeaoHvuHWde6GdQaUjk0N117MY4JNzh4FcIOZ4VQFSM82Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KDr//jq3cv/nBbOSB2t1nPlTTL98oZETxCQxH55bZMo=;
+ b=jfKS7gQGsI0X/cQYKqYSBfKOwcdyvvLE/bQdVyxo5lKjeI8FdqZ0jDvRTTBXwQ4Hg81ZNZQnw1RHibF94WODsDCiH/F1U5UiE6pzsFGAEQ+qW6Ste9Fx31469jP5Cievk4fvIf4rdq4Rzj9eU51LJNTwfGNdu34NIz+et1U9crUJ7UA34xjxMYQXtM67pKjKqRTrkUFczACKfbKwQf/X4CdCnlT1At+Q6kdX6GXXXbF3kMeMNJWL3S1zt+I5ouqCzFCpFbUrvjfgDiEftUsU08uvMf0PZbXaQx285BhNGb+O1MPT10DdSqUyuMHWQVfNU+bGxGVISJPC62O1lvhfXQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by BL1PR12MB5825.namprd12.prod.outlook.com (2603:10b6:208:394::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Wed, 2 Sep
+ 2026 19:02:07 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 19:02:07 +0000
+From: Ido Schimmel <idosch@nvidia.com>
 To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Wei Wang <weiwan@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: yield the CPU on every exit of the threaded NAPI poll loop
-Date: Wed,  2 Sep 2026 22:00:53 +0100
-Message-ID: <20260902210053.263070-1-sochnev.v.74@gmail.com>
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	dsahern@kernel.org,
+	horms@kernel.org,
+	aconole@redhat.com,
+	sbrivio@redhat.com,
+	gnault@redhat.com,
+	laikabcprice@gmail.com,
+	aroslavdudkov622@gmail.com,
+	rough.rock3059@datachamp.fr,
+	Ido Schimmel <idosch@nvidia.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] tunnels: Drop stale dst when building an ICMP error for PMTUD
+Date: Wed,  2 Sep 2026 22:01:12 +0300
+Message-ID: <20260902190112.4126199-1-idosch@nvidia.com>
 X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TL0P290CA0002.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::10) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|BL1PR12MB5825:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d5a4d2c-208e-44b5-5557-08df0924af02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|10067099003|3023799007|6133799003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ZznoHN3Lz/6IVNwp0cnz+ylrq74uAYWaoHr6ISKBjfhb+mvEV/0TTa3uJxzMEv5SKO3/ShtJVG04ZiQ2fuyjB2Jf622LIvSSR/LcCxyYIrURTjgNL4qJMo5ja282VJL6rWsHIMA7W+8VfMLt4jLuDKGL0m5D4NKo3FLZb304RjQG9t2RFF76jn14rBQ4t+p3AQQh1JbxY2Us4pkzz5kTsxQeDwoh8VZSBAWpIGFgEXRLwZ4XKOeTU83U95snQJCIQMLIVxcl+gfrP6cbYXsYShXJ68zmtBAoa2v9dorn2Id80wNrexgH7a30bKLWK3HQVsHiZu/UHCi8p17PQnI2UiS5mmeMGoJ2HD98Ih6siNjzsCgOOr9pobCLl6L/xmhu/Nj6EfURHWmQeTjMmE13L/NLZ7m8XxTSiFkYeFIoxNHczf7B0esWVNT7MKTOMOmZeq6al6E/Bjjfk1lC7jS1MZzRBnGyES8SgRFc61bm99qr66NHqT55EjW9yx9+k7U3+jAMGzlDIK1MigG6BaLleyl6Emt7RzMqSgcmMVF+Cqz4HNcUs972rIMPluADONA16EFBAZAccXdOMGXWBRStiw92m1C7u9XXPdhl8B9mrkgOm27fihfQBt9Sn+sjf9KET6Zn8iKfEO4N5Pz++P/t+UZGUigALaR85s+GTk29xoE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(10067099003)(3023799007)(6133799003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?UBESoi/fssR0qdtNQaY6kiAsriIkP8bh2Z0oIOOjBi2M4ULSkDguUSHFPX2o?=
+ =?us-ascii?Q?eZREpv/NOZt32ja8FeyYvz1A44hnVHdyVnp1Q2/cn1/oezh37qwiQHilsHf1?=
+ =?us-ascii?Q?Orf1SLCXuKIzV06GEGLY/GjzpiuVa6L1BjVRpGM6+5uqaEFNogs5neJtcNDw?=
+ =?us-ascii?Q?lJZEG+gjoJ/2XannGFbA7Jraq07H3ao6y8jX0mIrQLLdzLbp0EGEhf6tYpRm?=
+ =?us-ascii?Q?iPL1n0++sxOMpftwIzNzVWlDOXGHE63DQL+XR45JA9NFeF8Luv0PLcLQIGXT?=
+ =?us-ascii?Q?lBWET8fJzbXxgpvNsIlzeSnt+GlQXuGqW+JjJIM21dtFz4EUdMnIajBFY0Q8?=
+ =?us-ascii?Q?/1bGBK3L+M7nupynmOEQ98RnlxSicfH6fyKZb2X5yLhP3HsE2KDmxGCk0HpM?=
+ =?us-ascii?Q?TwxZlbJNrW5B4BwHn84cgBn/YWhLWEpE2ncZSnPrLI/dJSPFHlfOyoyGO1J+?=
+ =?us-ascii?Q?Zfz3vomhHOcpkc9j3SUfePgvr8Y+OwTymKFW0vUhBgspBK/+kB08MeFFOuGw?=
+ =?us-ascii?Q?AY0IuqLcazl2T/5xwzCoevasArN54d0BVrQ6FMyOxUy7giAKUmZA3YjP31O0?=
+ =?us-ascii?Q?mopMS5Q05seCBGnRhVTZH8k7A7Jy9jiNI2YYd+rFYLCYq1tboa5UnPOyl4Yo?=
+ =?us-ascii?Q?axkFFpTvHaSLQmYqk0/+Afs/3xG6spBG/FHApTJBJtmnkULmqBcoxuKyafoD?=
+ =?us-ascii?Q?m2SQSauhXFCYZ3Utuu1omBdhEszaBMkhGmG/0ujUvYPZ0uMTuRXLvBep6/Vn?=
+ =?us-ascii?Q?P4XEgqphvxrAzVx2mVZCI9mgQWKAfsxcZG3y9fNPeusF54dbdbGIWACOwBGK?=
+ =?us-ascii?Q?BaYgmvLieZpzplgwk4e5WuNUsTcOevjxUaB01uiOax1LJNrE0HY2CblZvSrt?=
+ =?us-ascii?Q?2b8C5/QelbvwmlkfmKx/CisXnuRCBoXnXCAhtuozVPo2kC0/Fs+ttIDNaqee?=
+ =?us-ascii?Q?AYPG+HN0h7++8nMEZhqb+5hfGPqDRwGJg12o73L88AOw5oOYg2QzLLi9gpUD?=
+ =?us-ascii?Q?b05GRf+V/faC4osZ41BHToWRC6e/a55gotcJ3RqI64UIJOr14fYZggWXu+Fn?=
+ =?us-ascii?Q?nGhcyxsS0pXLeS3PYmxhmdT8yuCWj6BalkjwKpGQh3cDWwlmUM/hSxGzT9A1?=
+ =?us-ascii?Q?YHDSts0IgmQi9aGl3xhqL4Gs+sLJ21AgogOlwgTaLvkcnsx5vubuM3PtTRr/?=
+ =?us-ascii?Q?1+e5xoHQMIEzIENzuPIDIx5O26RKj76ID5rRebcwZCBY5lJzdNuB0RAIh0H5?=
+ =?us-ascii?Q?WSoM1qBVwE9rcXfPbvpA/eWjTsTLKBQPVjd4EnuxRExXfFf7arwSGrX39Hqj?=
+ =?us-ascii?Q?Wi+T0XBlvq80kImUwUEUCGRkAsPVBPepsEB2ZW1rAsth/sYv4xGWKmZLeRQ3?=
+ =?us-ascii?Q?qj8QWZ1k6TXFcWCc0zteVJymIyscT1ysSemWkqL1Mbsmppq8r/6zN9TSBLVB?=
+ =?us-ascii?Q?VSNw8AjxM5Y2q5DRXVUiSS1ASAfHGwOZZnPqCP6sliDiDGnUNqfhruDPMAh8?=
+ =?us-ascii?Q?HhQcDkHugmo2YyJ/aixGCRkXFI9n0i9f/pENIbsYXebVGsAO7p4effgaAAYL?=
+ =?us-ascii?Q?+fjh41oh/DafMmM1GHyo/uSsF6iIfInCWsX59SCYaHqnBELOXqNPWIWtzdkR?=
+ =?us-ascii?Q?r/DGQPrU0hh2I1jyvxxHqBqWfq8eGRazwdw2tk5dLlc9VJsOC8NBaIVv0+Mw?=
+ =?us-ascii?Q?ZNHi634xzaAU16bxaMN1PCB2M6fB+HPlKgOfL3+PYVmFDR02KF1RXAocid3s?=
+ =?us-ascii?Q?BXw1Gy+UmQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d5a4d2c-208e-44b5-5557-08df0924af02
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 19:02:07.1291
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jfJpG/1zkDqTVCeFxFbEPaD5C4PnziR1jnnUtiTKhyrhBIs5hWQ3A0WsSNQk6yIHqg7IPW6OaljyB9Pmgc5s3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5825
 
-napi_threaded_poll_loop() reaches cond_resched() only when it is about to
-iterate. When __napi_poll() clears repoll the loop breaks first, and
-napi_thread_wait() returns without scheduling if work is already pending.
-Under a receive load arriving as fast as it is drained the kthread never
-yields, and on CONFIG_PREEMPT_NONE nothing else on that CPU runs.
+Bridged UDP tunnels such as VXLAN and GENEVE build an ICMP error packet
+around an overlay packet if the packet is going to exceed the underlay
+path MTU. The ICMP error packet is then injected back into the Rx path
+with the source and destination addresses swapped, so that it will be
+delivered to the overlay source.
 
-Everything waiting for deferred work on that CPU then blocks. Deleting a
-netdev hits three such waits - synchronize_net(), flush_all_backlogs() ->
-flush_work() and rcu_barrier() from netdev_run_todo() - which is how this
-was found. run_backlog_napi() runs the same loop, so the backlog kthread
-can be held off the same way.
+If the overlay packet was routed to the UDP tunnel or locally generated,
+then it is already carrying a valid dst entry and this entry is not
+dropped when transforming the packet to an ICMP error packet. This
+causes the IP layer to reuse the dst entry, leading to the ICMP error
+packet being dropped or routed out of the UDP tunnel interface in case
+of forwarding.
 
-rcu_softirq_qs_periodic() does not cover it: it reports a quiescent state
-but does not schedule, so the work items and the callbacks still wait.
-Moving only that call is not enough either - the delay then migrates from
-synchronize_net() to flush_work() and rcu_barrier().
+Prior to the blamed commit this could not happen, as
+skb_tunnel_check_pmtu() did not build ICMP errors for PACKET_HOST
+packets. Such packets were instead encapsulated and, unless the DF bit
+was set in the outer header, fragmented by the underlay.
 
-Without the patch the kernel reports the thread holding the CPU:
+Fix this by making sure that the ICMP error packet does not have a valid
+dst entry, thereby forcing the IP layer to perform a route lookup.
 
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu:  0-....: (5999 ticks this GP) ... (t=6000 jiffies g=913 q=1218)
-  CPU: 0 UID: 0 PID: 203 Comm: napi/qdma_eth-0 Not tainted 6.18.44 #0
-  Hardware name: Nokia XG-040G-MD (UBI) (DT)
-  pc : __dma_sync_single_for_device+0x8/0xfc
+Adjust the bridged PMTU exception selftests accordingly. When the
+local sender in ns_a pings the overlay destination with a deadline
+(-w), ping exits on the first socket error before any reply is
+received and returns a non-zero exit code. The test therefore only
+passed because the ICMP error was never delivered. Use a packet count
+(-c) like the ns_c line above it, so that the ICMP error counts
+against the packet budget and the exit code depends on whether echo
+replies were received. This passes with and without the fix.
 
-Measured on that board (Airoha AN7581, quad core Cortex-A53, PREEMPT_NONE,
-HZ=100, airoha_eth with threaded NAPI) while it terminates a 950 Mbit/s TCP
-receive load. 30 minute runs, timing "ip link del" of a dummy interface:
-
-                          before        after
-  mean                    31.09 s       0.20 s
-  worst                  151.92 s       1.00 s
-  over 1 s              13 of 37      0 of 89
-  RCU stalls, classic          14            0
-  RCU stalls, expedited        43            0
-  packet rate           79363 p/s    79520 p/s
-
-The packet rate is the control: the same work is done in both runs, so the
-difference is not a lighter load. Three of the four CPUs sat around 65%
-idle throughout the first run and did not help - the deferred work the
-delete waits for is tied to the CPU the poll loop holds.
-
-On preemption, raised in v1: same board and load, unpatched, two halves
-differing only in that choice - worst "ip link del" 248.48 s with 8 stalls
-under PREEMPT_NONE against 0.39 s and none under PREEMPT_LAZY. So lazy
-preemption does hide the symptom, and PREEMPT_NONE and PREEMPT_VOLUNTARY
-builds are what is left. It is not the NAPI thread being preempted more -
-nonvoluntary_ctxt_switches on it is 4.6/s under LAZY against 13.9/s under
-PREEMPT_NONE - so that is a measurement, not a mechanism. The missing yield
-is there under either model.
-
-The loop is unchanged in Linus's tree - net/core/dev.c at v7.3-rc1 is
-identical here to net/main. The numbers come from 6.18 because that is the
-only kernel this board runs: mainline carries en7581-evb alone, while the
-SoC dtsi, the board DTS and the airoha_eth changes it needs are still out
-of tree. On 6.18 the loop has no busy_poll_last_qs parameter, but with that
-pointer NULL the two are the same code, so the change under test is this
-one. The busy-poll path is unaffected; cond_resched() was already reached
-there.
-
-Reproducing needs the loop re-entered tens of thousands of times a second,
-which depends on the driver and the shape of the load rather than on this
-board: threaded NAPI can be turned on for any driver through
-/sys/class/net/<dev>/threaded, and what it takes on top is little or no
-interrupt coalescing. It did not reproduce on mtk_eth_soc, whose net_dim
-moderation folds the same packet rate into far fewer interrupts.
-
-Fixes: 29863d41bb6e ("net: implement threaded-able napi poll loop support")
-Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+Fixes: 8930424777e4 ("tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu().")
+Cc: stable@vger.kernel.org
+Reported-by: Laika Price <laikabcprice@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260614-master-v3-1-9f5060ba1ed1@gmail.com/
+Reported-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260901081825.287173-1-aroslavdudkov622@gmail.com/
+Reported-by: Charles Bordet <rough.rock3059@datachamp.fr>
+Closes: https://lore.kernel.org/netdev/aHVhQLPJIhq-SYPM@eldamar.lan/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
-v2:
-  - answered the tree question: the loop is unchanged in Linus's tree at
-    v7.3-rc1, and said why the numbers have to come from 6.18
-  - re-ran the A/B on a kernel with no out-of-tree module, so the splat and
-    the numbers now come from an untainted 6.18.44 build
-  - added the preemption-model measurement, and why PREEMPT_NONE and
-    PREEMPT_VOLUNTARY are still the exposed configs
-  - noted the repro is not board-specific
-  - shortened the comment; no other code change
-v1: https://lore.kernel.org/netdev/20260814220427.623427-1-sochnev.v.74@gmail.com/
+ net/ipv4/ip_tunnel_core.c           | 6 ++++++
+ tools/testing/selftests/net/pmtu.sh | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
- net/core/dev.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 38336858c168..5c7f8cdf8443 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -7924,11 +7924,13 @@ static void napi_threaded_poll_loop(struct napi_struct *napi,
- 			gro_flush_normal(&napi->gro, HZ >= 1000);
- 		local_bh_enable();
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index d3c677e9bff2..5168d546ea2f 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -268,6 +268,9 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ 	eth_header(skb, skb->dev, ntohs(eh.h_proto), eh.h_source, eh.h_dest, 0);
+ 	skb_reset_mac_header(skb);
  
--		/* Call cond_resched here to avoid watchdog warnings. */
--		if (repoll || busy_poll_last_qs) {
-+		if (repoll || busy_poll_last_qs)
- 			rcu_softirq_qs_periodic(last_qs);
--			cond_resched();
--		}
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
 +
-+		/* napi_thread_wait() can return without scheduling, so yield on
-+		 * every exit, not only when the loop iterates.
-+		 */
-+		cond_resched();
+ 	return skb->len;
+ }
  
- 		if (!repoll)
- 			break;
+@@ -371,6 +374,9 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	eth_header(skb, skb->dev, ntohs(eh.h_proto), eh.h_source, eh.h_dest, 0);
+ 	skb_reset_mac_header(skb);
+ 
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++
+ 	return skb->len;
+ }
+ 
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index a3323c21f001..c7cd271714ef 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -1457,7 +1457,7 @@ test_pmtu_ipvX_over_bridged_vxlanY_or_geneveY_exception() {
+ 	mtu "${ns_b}" ${type}_b $((${ll_mtu} + 1000))
+ 
+ 	run_cmd ${ns_c} ${ping} -q -M want -i 0.1 -c 10 -s $((${ll_mtu} + 500)) ${dst} || return 1
+-	run_cmd ${ns_a} ${ping} -q -M want -i 0.1 -w 1  -s $((${ll_mtu} + 500)) ${dst} || return 1
++	run_cmd ${ns_a} ${ping} -q -M want -i 0.1 -c 10 -s $((${ll_mtu} + 500)) ${dst} || return 1
+ 
+ 	# Check that exceptions were created
+ 	pmtu="$(route_get_dst_pmtu_from_exception "${ns_c}" ${dst})"
 -- 
 2.55.0
 
