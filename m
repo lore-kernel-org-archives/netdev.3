@@ -1,64 +1,68 @@
 Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5552217648
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 00:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31E2229B38
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 00:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788309229; cv=none; b=sdFq2zwyLgxr02bp5znqBytg8XJQA9isb1MBPChx8CwhR38WGddi023EX8I5lpXEAxzN4yv1UKO+imwHcomvzeewE4mEtqPYCtsCqVh9TTKfq/tlytAyIWUtVUy05RPB/dRpWuPfqo7Cc3cVRqCyM6sAuOPPRDrnoRXcU74g7gc=
+	t=1788309231; cv=none; b=Q0IRYaNSVZ4Xz3QH4upzWyAt2NWotZ/YjOzx8lsYNcVNhY40FVWAxN+hYvQza6FPltcCWTGZk29u3CGYO65V6s6YEDiU53tiRMv0VrqZAbISfwRV2GbUU290vZdGeGqtjVvTPYaM4I0bvg9LUe6KjR9Y7E3AjCzQe+iLH/Y0CdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788309229; c=relaxed/simple;
-	bh=D6TohYiFW4lOnT8eEjY46+NuE3CAxgdkxwda83XCUZ0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sSI13VFMVfpCjf4sS/LlzRgTVs5naBUpf2HzsJI74veCvU3/E7B1WjoTdw21egamI9xjCTxueHudYadb4udhr6h6wDRHPE5T/+t6y6l3SNhUdbB4Py33ohx/g402quv4e6XPr6PsUSXGtn4PN85GZJqSey320lc/GkLBr+GDvrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H/KNwT+l; arc=none smtp.client-ip=209.85.160.197
+	s=arc-20240116; t=1788309231; c=relaxed/simple;
+	bh=WBOwm1FM8iiMl4/EbShKWDrIsJ3+3lnn93+nu8QxH4I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HVv3J6712goTjDgzLnbcCD1h9q3vLQbMUeHZ8vN8IejJGFBNmV7WbKBHGwi6RgMEOrazzyqb+QUtA/rD/UuPaHMh6YPpeNil3qh7VX0M8JTp6flDKiaW+3prOfpzYSNGJ3RwhSl798einUItmWcDj0rFbQdXnnOOIMjvefBpeig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HwqNXNDo; arc=none smtp.client-ip=209.85.160.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H/KNwT+l"
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-52fb2a46cb5so11781371cf.3
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 17:33:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HwqNXNDo"
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51c1d137a68so11823431cf.3
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 17:33:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788309227; x=1788914027; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O18ooVhGIftn67UgCjW5AwXaqlyfo+1zgjbl8OD4fJA=;
-        b=H/KNwT+ltrDUrhnH5ZYtV55qIixIeCftnorR+fPe1kbI5NTdSaRmSQ79TcM5hlnB4x
-         +SpoGViaCyYe3oXm1jp89EKpmJGUbucwP404yfDTLblYBuxkT3zgaJwfI6lygH0Bo8Ei
-         wpY73rX6UKCGdCsXYcUPE05k/9ag+t4aPoX8daOrWRSkJ2oECeB3RwhdPZEDKT2xcRMN
-         IHCctgyJlji5B2gGcSv9HUNhHyPSVpb2OlV4NAwfXa/Y04XidDa6m7SU9fqGTHg6yFPC
-         6C4Gjm+4lMFzXGurb/Ey00XFVApmc2WVNW3J6J9EHQ9rcdlSOsC5TV7zdTcxGnsDoGLk
-         Q+5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788309227; x=1788914027;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788309228; x=1788914028; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O18ooVhGIftn67UgCjW5AwXaqlyfo+1zgjbl8OD4fJA=;
-        b=Ur5V/4Esm0K0QbS1EfJkItNimGJG+VS6SDWoHyxbY10TWj/FOBFkk3jpDgn6/hNFRO
-         d0/TRKBwgwzU/hF6/2x6a+MPvuXBgNx1GngXwxfhj2c7aa2WmPdiCa9ZCqMidUrMeQVy
-         2ETwUmX1a+H1mwg49o/cIb+csqd/D/CVF9uLTSTqwgj3Ex9OfkdRDy/EIv5XmWvkj/No
-         l9LL5EbbDKD5E4sI6z4jYPjqMG4uin4UwvIEwnHwxk1uVSjrPvK8T1r+K0aP4aMI6/fz
-         Rb9Gxjb53RUq1JXZNn+HRYLYYvQu5+vyiodFynu7b99b+riAezzfeSgBpsP6J5xn87mI
-         IiPw==
-X-Forwarded-Encrypted: i=1; AHgh+RpNEfLG9GPgg0SQhgB2QO7PRf97PtjAmld78gzUEkLg49/zU/pPLMd4CCPT68xY3QfZPxVPl84=@vger.kernel.org
-X-Gm-Message-State: AFuF++kDDUQZTKOgIdgP4Cgakt4kPLtmPMS1azUeN/JK49J7hY0SLW0K
-	F7flxOxS1WUMDpWXcjnjqd9KQr/oSKoESIqt4aaY4VwNhifSO6eYce0Sv5gJlqaDU07QinJ2skb
-	57b6CEs8Sm3OKHg==
-X-Received: from qviz17.prod.google.com ([2002:a0c:d791:0:b0:8dc:18c1:5c77])
+        bh=14zjqv44VGG0GQmQRdsZ7UA2UrDxWUXUgWfhQ5+RSqc=;
+        b=HwqNXNDojn23CnwDZkfUvbVVibTMvxmkEsr2E7AsFcgy/xS2JA9HfHmR+5+k///T8V
+         txPCfxJ3feuG1GAA0vtoB9UISAEJPgDoSgFxnFRWk0oHCF9IuuBtdkRgB4gSJuzNrgbu
+         RJ9wvm5TGUVMj/h+cWG9ybAtJio43HrqFWusehXZOHh5y45oKaUpTJE8N2oj8RTpAZ4R
+         wQZW4x2HN+hSOJ4uiTkbBuSMIkA8u3GOBjYB2AIj4fJCx5iE6kzUacIKO02uAWqwy5XQ
+         dFlbH6NayzZZEEEL5hB699OgDRggo744scxEWja9vopNUN+gfMBKbJ1p1KTc03xTDWjr
+         0o3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788309228; x=1788914028;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=14zjqv44VGG0GQmQRdsZ7UA2UrDxWUXUgWfhQ5+RSqc=;
+        b=TlkVvDs1G4wzYh+qDWtEGW2Xnc4raLAXKfHfqjh5OA+6KZ/tl1CkgKKmwK/ao5BMBX
+         /P2s5PyR4enKUjBM/BK630ZzHX6ngZ4ANoV1Rbd24TkRhVI/QtWd3C8xjY0ETGmS5DFT
+         07e+fDG3CoIkN2B7PF9utaDmlh8IuH0PMRg7VoeylxSXwe4CKSkQGJAuLIpAQ7xQOcZu
+         AmAQD6hwjdqFhVoXrGZSMAe4eTZJbXTz0nv0rdKpxqyzIyH+qeJiUQczpW5jNuhRhhQ9
+         vf/paWl2cWwYwfNeXo3DRFxHM9H9jW8fL3prmi+p6/kz9s1HJVnfkilSp9WStQgR1kZH
+         ahYw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrt0fbDQNkSKCZ89jzs7P3dEypcR/keeD3xcJ6akdLSuXticVv245bzqnkGCU58bKzHabUHzNI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mtj8TP2hbadfHhIC6X0TWU1N8QXQKwaBsNS/hvfNIO20+yboPC
+	ej77nHCV+qUPL+E/wWT4jvf50qtUwRVGOR+JqWKqEnYt53nTHk6xjgInCBwpsjOmJMi5s7NN+uZ
+	Z5vFqapW+1Hwimw==
+X-Received: from qtrr18-n2.prod.google.com ([2002:a05:622a:a992:20b0:51b:fc9e:edef])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:579a:b0:52f:bb67:8e42 with SMTP id d75a77b69052e-53036bda450mr13298701cf.9.1788309226532;
- Tue, 01 Sep 2026 17:33:46 -0700 (PDT)
-Date: Wed,  2 Sep 2026 00:33:34 +0000
+ 2002:ac8:5a4e:0:b0:51b:ec6c:766c with SMTP id d75a77b69052e-53036bf7625mr10900971cf.12.1788309228029;
+ Tue, 01 Sep 2026 17:33:48 -0700 (PDT)
+Date: Wed,  2 Sep 2026 00:33:35 +0000
+In-Reply-To: <20260902003344.1931843-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260902003344.1931843-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260902003344.1931843-1-edumazet@google.com>
-Subject: [PATCH net-next 00/10] net: remove skb mac_header assumptions in TX
- paths (I)
+Message-ID: <20260902003344.1931843-2-edumazet@google.com>
+Subject: [PATCH net-next 01/10] bonding: do not assume mac header is set in
+ ALB/TLB tx paths
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -66,54 +70,49 @@ Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-In the transmit path, network drivers should not assume that
-skb->mac_header has been set.
+We should not assume mac header is set in output path.
 
-In the TX path, skb->data points to the start of the L2 header. Using
-eth_hdr(skb) or vlan_eth_hdr(skb) when mac_header is unset reads from
-skb->head + (u16)~0, leading to out-of-bounds reads (flagged by KASAN)
-or triggering DEBUG_NET warnings.
+Use skb_eth_hdr() instead of eth_hdr() to fix the issue,
+and remove now redundant skb_reset_mac_header() calls.
 
-Commit 96cc4b69581d ("macvlan: do not assume mac_header is set in
-macvlan_broadcast()") introduced skb_eth_hdr() (and later commit
-1f5020acb33f ("net: vlan: introduce skb_vlan_eth_hdr()")) to safely
-access L2 headers in TX paths via skb->data without needing to call
-skb_reset_mac_header().
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ drivers/net/bonding/bond_alb.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-This series converts the first batch of 10 network drivers and virtual
-devices to use skb_eth_hdr(), skb_vlan_eth_hdr(), and
-skb_checksum_start_offset() in their TX paths, and removes now redundant
-skb_reset_mac_header() calls.
-
-When all drivers are converted, we will remove skb_reset_mac_header()
-from our TX fast paths.
-
-Eric Dumazet (10):
-  bonding: do not assume mac header is set in ALB/TLB tx paths
-  atlantic: do not assume mac header is set in aq_ndev_start_xmit()
-  ibmveth: do not assume mac header is set in ibmveth_start_xmit()
-  net: mediatek: do not assume mac header is set in mtk_start_xmit()
-  netvsc: do not assume mac header is set in netvsc_start_xmit()
-  macsec: do not assume mac header is set in macsec_encrypt_finish()
-  macvlan: do not assume mac header is set in macvlan_broadcast()
-  vxlan: do not assume mac header is set in tx paths
-  cdc_mbim: do not assume mac header is set in cdc_mbim_tx_fixup()
-  ice: do not assume mac header is set in tx paths
-
- drivers/net/bonding/bond_alb.c                |  8 +++----
- .../net/ethernet/aquantia/atlantic/aq_main.c  |  2 +-
- drivers/net/ethernet/ibm/ibmveth.c            |  2 +-
- drivers/net/ethernet/intel/ice/ice_eswitch.c  |  2 +-
- drivers/net/ethernet/intel/ice/ice_txrx.c     |  4 ++--
- drivers/net/ethernet/mediatek/mtk_eth_soc.c   |  2 +-
- drivers/net/hyperv/netvsc_drv.c               |  3 +--
- drivers/net/macsec.c                          |  3 +--
- drivers/net/macvlan.c                         |  5 ++--
- drivers/net/usb/cdc_mbim.c                    |  5 ++--
- drivers/net/vxlan/vxlan_core.c                | 24 +++++++++----------
- drivers/net/vxlan/vxlan_mdb.c                 |  4 ++--
- 12 files changed, 28 insertions(+), 36 deletions(-)
-
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 839f7482dc1823b12a13437a4b6639e3b63d46ec..3d2c6a9fe3b7bfdd46299aeff14689d323c525d3 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -1339,7 +1339,7 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+ 				    struct slave *tx_slave)
+ {
+ 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
+-	struct ethhdr *eth_data = eth_hdr(skb);
++	struct ethhdr *eth_data = skb_eth_hdr(skb);
+ 
+ 	if (!tx_slave) {
+ 		/* unbalanced or unassigned, send through primary */
+@@ -1374,8 +1374,7 @@ struct slave *bond_xmit_tlb_slave_get(struct bonding *bond,
+ 	struct ethhdr *eth_data;
+ 	u32 hash_index;
+ 
+-	skb_reset_mac_header(skb);
+-	eth_data = eth_hdr(skb);
++	eth_data = skb_eth_hdr(skb);
+ 
+ 	/* Do not TX balance any multicast or broadcast */
+ 	if (!is_multicast_ether_addr(eth_data->h_dest)) {
+@@ -1427,8 +1426,7 @@ struct slave *bond_xmit_alb_slave_get(struct bonding *bond,
+ 	u32 hash_index = 0;
+ 	int hash_size = 0;
+ 
+-	skb_reset_mac_header(skb);
+-	eth_data = eth_hdr(skb);
++	eth_data = skb_eth_hdr(skb);
+ 
+ 	switch (ntohs(skb->protocol)) {
+ 	case ETH_P_IP: {
 -- 
 2.55.0.966.g6673acef38-goog
 
