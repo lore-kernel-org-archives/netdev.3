@@ -1,56 +1,56 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965EB3909B5
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD023EEAE9
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 20:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788380527; cv=none; b=EhRUK1DiqFyNU4sIyf/ncennTKNxLLGsk536akoE1BTHeVvYLSx4k+lSBzkbBfSMMYUVUXYLKCPBW+bPo872fgq8tvrr1lvW8Z57dX+1pFJN9hfyOKqOZqJY6HcrYyIkeGJe3IUm4LGb0urgXl248Z0QBXAAy6xD90UG5KGB3mY=
+	t=1788380528; cv=none; b=mkuU8JTVq50LtFsQ2AqxLFvxM9BB07wdK3U0y2FordI6rbAT/vtdG6L3FkgpRD9NkP/6Sp3k+90ijkwGKvMvPsnhPdvy1Zj8iQvyyqHz10tLkZLvI7A8UiOw4tdBA/7gw9PbC5VUZpyRADD9xd8C/KxJNX6hH1vWjoOGoEHtyS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788380527; c=relaxed/simple;
-	bh=6LnK7q6zGIvWdlK63KvYVATiw7Ef0/UeIArN0nce0NA=;
+	s=arc-20240116; t=1788380528; c=relaxed/simple;
+	bh=Ifjj33M8C/GMTqqu+oWRpsGS046QLRzs37W0a4ay888=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lah7CP6PGJQ4u27N74eVMXkkIGb7YipC5zM70bHAXSstA9gto9dqyFwFZY97HaQKl3ilZtZ+e5iaYlp6+mwXQRhqUTrHGea12suGoHU8nAJETCgT3S9h7vFgkooOCsdzEkHrOSLqq718iW3+F7ume5ZMA9z9qecPVE8LIuEI47A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a7cxL67Y; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=ehh3aqZwnBrHYyH1/zFR5ebZFC7oVfaKoRqx+vqetRVGAoWEH/tCqG21Y6VIFmI83hWeJY4upsePI3YBg2DeSeIaJCnL43vh/o4LoxrTT98jyPOgAmRK78fOxORSSTTWmCDUhMdKuWighjYDa0ny6ezrkHE06l9dqV68Ku+rqNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PsRyZbI8; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a7cxL67Y"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-395543dc382so2077837a91.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:22:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PsRyZbI8"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d7293f13c6so20666845ad.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 13:22:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788380526; x=1788985326; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788380527; x=1788985327; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qen5Ux+GGayn4cMUhvPmSroxT+QXpITMr+juIfolFiw=;
-        b=a7cxL67YyUMAXKPxU55HgYvvJRF5VTawCV+LMg9fGGQVSp16rjevXXynC6xOJVwc4g
-         5uCl3lUcGDTJ7PmuZ4KPcICEpovHedErgNIaP7HABAD+4k2VZDQHk1BKOk6gHwoUjODW
-         u+pSijltGDPA8HhQQy8A20mlaOo30IblHgZHciqNSi+qo0upljy9/g0cghhT/yM3Iu2V
-         Z/u+CGSs5HiNqat7vDJHw5n/hT0kUZPUSD8k3I5ywRj4UzraIu7RyzTJTYBtgNTnhapH
-         11vW0xuTyqWmslwjrzYQupsUCeTzPSfXOPRMpvNeV0pbYO3iOIjPE6wXmqBJQ2DQYU7T
-         E2gA==
+        bh=c/jVGVXgcxhO4Cwr4IvA8VgQeYVxY1W7sZCNw8BHXOY=;
+        b=PsRyZbI8J6nveXE7NygS6BTwcMf3o8U2w68AYk1e1s/doLRaH4msm52ZtZToMM07FX
+         NnK45WLga+OVm0aE2s39FlcV6pDjeN0HcLTpKcMxCS8R4dFPrgpzng1eIPxx8GS01VGE
+         CDcv8rDusj+vvtuqrRhR82BL46q1iGiUGsHQRjbrj5LbHIahTqTgQXk6ue95YJ6gnW9/
+         RT3BP7T+Vc/0CrZ8pTQ4Lzoq/XZ3ycfxTtMHmFMVS9D/XRFgyFSiCcFhASFOzUgKKKTN
+         QzJ4h2V6tEiG9kIRhvTFB5n6DDVqZpndi330sY8rx9S5UWQ/v99jJrfgvdW7cSZddeND
+         kh3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788380526; x=1788985326;
+        d=1e100.net; s=20251104; t=1788380527; x=1788985327;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qen5Ux+GGayn4cMUhvPmSroxT+QXpITMr+juIfolFiw=;
-        b=UXAvv0n9Lbz6FW2s3EyBsa9tp/uZpFmTm2+MjptIditNMKt3u0bZ0MRQoaYVTdmeZN
-         WjFmh96jax1tVdMm3gfWAGpLrXW2KIP8LBgoZUokqCJO4P3AU5F8F/3tV9K8ayDDilNF
-         I0u/uch8vYDGUSG66HAj2aMsxOVx1BKh5Asa31fblOsSb+daDpVQ7ZrOMjiA+JkqpH5t
-         okzU7MnB9M2KfbStV0oNlg2bh/phuc5ULl2UvDX0Wjk6dLj217UhnWHIWkx6sDCC6LZx
-         6fLYFARIpSYb1SWIYz6OV2a9Q/fvlOFQFFWlW/szTuI6SkixJtkwS0EDmERSu9bre/2p
-         0vbA==
-X-Forwarded-Encrypted: i=1; AKwUvBygD9Xa+2zA/a2Hh2mzziA4r8Ns37pz3fzT9TN0iw5oM0lPnGwnFvNgcXPJ+wTJ6vOJMgbiORA=@vger.kernel.org
-X-Gm-Message-State: AFuF++ki2uBAP+WI9XRX4ElCoU7xjnQtTaKZVwlaTbq2QP+UosSttfPh
-	MmQ3awzPDZAXB+8xO5k4GTPwxFhatgnSmkNAzLiRPZ5cQwZvfcOLk0VoWEZ5PPcxuEovP9VkH1f
-	m6kpJQA==
-X-Received: from pjbie23.prod.google.com ([2002:a17:90b:4017:b0:398:d6ef:84d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5208:b0:37d:f206:a2ac
- with SMTP id 98e67ed59e1d1-39aedf0d47amr12270537a91.7.1788380525751; Wed, 02
- Sep 2026 13:22:05 -0700 (PDT)
-Date: Wed,  2 Sep 2026 20:21:50 +0000
+        bh=c/jVGVXgcxhO4Cwr4IvA8VgQeYVxY1W7sZCNw8BHXOY=;
+        b=BxV7Q0VDuW79qyasZMSBG3oCopW95c//SjqQE7IuiQiF5haXin6hiPZRt0gECCu3fV
+         e+oScVtf2OSlF9Jf385QL9AbJ+aFzedyp8j7SnqSupdGorxtFTiEDWM0czXj8DzKYOBs
+         EHutCwtEF02SuBQHnOl9oE3+ElB0S/MiowiTOXi8jyHp6reuNtZ1X6U3Eh2xJ300jh1j
+         wfDE1mHh04Lj1qsPoJSLDvmilOLPRhRhKZWZhx/BDxGd5wsACRC+ZlbbpS0gioFVA9WF
+         /32RpIZSKFU1Oq1OnSq1MfxUH/KFq7rRLSpqnNmH9ojJjP6MK/DaLVqOmaWaeVqjNnYD
+         6o1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzgIgHaJbYQlNAsJGs4DGX4IWK3PJ5cP8gu9XkxuIieJntHv7tzwPNU6c6xO83tNJQeqQNeV58=@vger.kernel.org
+X-Gm-Message-State: AFuF++lu663rrLTxSrpY/74pxALVPXTLldqwWH+W9h+1/fEDXv+iVsWE
+	OhiZMgyBrebkzBaC328cNGMj3qKD+sZn5BbVNNXU4ODNjzmuOQt8raxR8p7ksubJZhH8hIFPP3W
+	ydSC22w==
+X-Received: from plgl1.prod.google.com ([2002:a17:902:f681:b0:2cc:6206:58ad])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2281:b0:2ca:9d5a:8b6c
+ with SMTP id d9443c01a7336-2daec5f4f13mr98520475ad.5.1788380526506; Wed, 02
+ Sep 2026 13:22:06 -0700 (PDT)
+Date: Wed,  2 Sep 2026 20:21:51 +0000
 In-Reply-To: <20260902202202.892676-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260902202202.892676-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260902202202.892676-2-kuniyu@google.com>
-Subject: [PATCH v1 net 1/3] af_unix: Update last skb marker in manage_oob().
+Message-ID: <20260902202202.892676-3-kuniyu@google.com>
+Subject: [PATCH v1 net 2/3] af_unix: Return immediately when manage_oob()
+ returns NULL for 0-length buffer.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -69,100 +70,35 @@ Cc: Simon Horman <horms@kernel.org>, Fahad Alharbi <fahad@codepure.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Fahad Alharbi reported that blocking recv(MSG_PEEK) could hog CPU
-due to OOB skb.
+Fahad Alharbi reported that recv(0, MSG_PEEK) triggers busy-wait
+in unix_stream_read_generic() if recv() is blocking and the last
+skb in the queue is MSG_OOB skb.
 
-In the following cases, manage_oob() skips OOB skb(s) and returns
-NULL for the last recv(MSG_PEEK):
+In such a situation, TCP returns 0 immediately regardless of
+blocking or non-blocking.
 
-  socketpair(AF_UNIX, SOCK_STREAM, 0, sk);
+Let's follow the behaviour.
 
-  1) skb -> OOB skb -> NULL
-     send(sk[0], "ab", 2, MSG_OOB);
-     recv(sk[1], buf, 0, MSG_PEEK);
-
-  2) skb -> consumed OOB skb -> NULL
-     send(sk[0], "ab", 2, MSG_OOB);
-     recv(sk[1], buf, 1, MSG_OOB);
-     recv(sk[1], buf, 0, MSG_PEEK);
-
-  3) consumed OOB skb -> OOB skb -> NULL
-     send(sk[0], "a", 1, MSG_OOB);
-     recv(sk[1], buf, 0, MSG_OOB);
-     send(sk[0], "b", 1, MSG_OOB);
-     recv(sk[1], buf, 1, MSG_PEEK);
-
-Then, @copied is 0 in unix_stream_read_generic() (zero-length buffer,
-or non-OOB skb is not yet consumed), and unix_stream_data_wait() is
-called.
-
-However, it returns immediately because @last is not updated in
-unix_stream_read_generic(), and the thread busy-waits for a new skb.
-
-Let's update @last in manage_oob().
-
-For MSG_PEEK, @last is updated with the skipped OOB, and for the
-non-peek case, @last matches the returned value (when !copied)
-because OOB is unlinked.
-
-Note that manage_oob() is inlined and no stack canary is added.
-
-Fixes: 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
 Reported-by: Fahad Alharbi <fahad@codepure.com>
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/unix/af_unix.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 13f9926bf205..6861370062df 100644
+index 6861370062df..2da1017f8873 100644
 --- a/net/unix/af_unix.c
 +++ b/net/unix/af_unix.c
-@@ -2812,8 +2812,8 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
- 	return 1;
- }
- 
--static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
--				  int flags, int copied)
-+static struct sk_buff *manage_oob(struct sk_buff *skb, struct sk_buff **last,
-+				  struct sock *sk, int flags, int copied)
- {
- 	struct sk_buff *read_skb = NULL, *unread_skb = NULL;
- 	struct unix_sock *u = unix_sk(sk);
-@@ -2827,11 +2827,13 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 		if (copied && (!u->oob_skb || skb == u->oob_skb)) {
- 			skb = NULL;
- 		} else if (flags & MSG_PEEK) {
-+			*last = skb;
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 		} else {
- 			read_skb = skb;
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			__skb_unlink(read_skb, &sk->sk_receive_queue);
-+			*last = skb;
- 		}
- 
- 		if (!skb)
-@@ -2850,8 +2852,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 			__skb_unlink(skb, &sk->sk_receive_queue);
- 			unread_skb = skb;
- 			skb = skb_peek(&sk->sk_receive_queue);
-+			*last = skb;
- 		}
- 	} else if (!sock_flag(sk, SOCK_URGINLINE)) {
-+		*last = skb;
- 		skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 	}
- 
-@@ -2971,7 +2975,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- again:
+@@ -2976,7 +2976,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
  		if (skb) {
--			skb = manage_oob(skb, sk, flags, copied);
-+			skb = manage_oob(skb, &last, sk, flags, copied);
- 			if (!skb && copied) {
+ 			skb = manage_oob(skb, &last, sk, flags, copied);
+-			if (!skb && copied) {
++			if (!skb && (copied || !state->size)) {
  				unix_state_unlock(sk);
  				break;
+ 			}
 -- 
 2.55.0.970.g62bdec98f9-goog
 
