@@ -1,154 +1,130 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E2032824B
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 12:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788353897; cv=none; b=XVZ/uKQZRiQu+8iX882OXFsiB1zejwrM3vtubvM1tRS3CqiWzsEmljkyK3DO/Z3duH8i/ANf/QhuptDJBec3MPsbaR/ey3hGQPzeL+pMSBarJlm1/LYIoCckeRaLYnbO8tdAGizvTlQUEkXaDVycoWmosfGgOP2Eyv0vTSaShiE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788353897; c=relaxed/simple;
-	bh=AZkSoc+LX+Zys6+rUBEVWW4bcyNMbwH0ZtLsMicOQys=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PBtvHWkvrPyVxEtt+nDhxw1ureYmdqbdnHmcEyIII8M/tDhrc17Mc6o9+Jjw/fga2QBVCqYap05rXLXJIBcFgZoroktPJYq42N6CLcOHeme/jyZd3ecz+z+Zb7/zPt3ahUsDum2U0cKIcGHwd7Md79pvKv1j0LJaGsYSbdHM7WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ui11FnuQ; arc=none smtp.client-ip=209.85.160.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0DC49C4A5
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 13:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788354243; cv=pass; b=l5/Fx8+OY2r2E8GlBaF/6amHWrpsGE35CMqfm7V+V7bLdttPVlAxTFCf8GZfEAdKdrP3r+1ATioFwY3Yxlu+dsFqN/FQLLZfVhhqcZdtOFstmhs5MwCw1NbyBrt3Jm4drSFCQOwYLtpUB2ihhRaKhkOf17gTrlr73PuHWPRFva0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788354243; c=relaxed/simple;
+	bh=d3tednFs93qhVo5hjvRy9y5lXWa9IuFW7vC72+58OmU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VhBGJvtv6fHTmNOo2Vff2H+zIqoU7q/JeDPzVgYQsUv9NMieoqkK54tqSa4xCsgDTpBUbri+aopzOhd08oEUpN5rvtmj4qxkol6ktn00fvIDzClzDCgnDqBtMov2ja+mjHOi+jOWS2etgQzP6kA6I2phLdjd6LNZBGE1CSwYB8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UtNWwq9K; arc=pass smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ui11FnuQ"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-52ffe24490bso24978681cf.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 05:58:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UtNWwq9K"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52fa9c055b5so28829061cf.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 06:04:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788354240; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lmyJ3OhwjkeMSEKtH380N4nUu0laZSEZd61iOvC9X5K8tuGErel5RiduZx/C91dfVn
+         +RHuQQIj89SWXNkJQYjUmdCokVofQd1rGRFgiKOfRhPfFRZuN+xN48R5q/aK+t8kqQr9
+         bzUGQVoyg3mdu87GogWOwF7CdbunIlqoL2gbDq7iy13ZCH/pBvbbDUx3aS6erf7QEqY+
+         IKB7I+/amtM3uKi4WTrzbIM4OBCzt1dU1yr4Uzu+q/CAORjlEdUwQLG+RP6nbpDAcUK5
+         NBkVdBNXfD1BNLhZp0njSZE7PFZQr2UJrswTSSQbmrp8KGan5I3Wb23Dxk0ldGBbJxCd
+         /0Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=REC0WBjU6HbnzKlsagTQJMv9INahl8hjQLf2W4ca4pg=;
+        fh=AukeYB0QOsqywlJ4iWkAnO6L+/H3Jo4TSzBag9fEpZM=;
+        b=qmWeKJsMO+xrXJAmkU+Spu6S8JClUGbcrVQBTH/WW5QXiF0kP6OPvP+hrAEgu8jC3i
+         RMjNXsA4816UKT6C3tqsEm4bJGhhEoak2zAWVpnKH9M8Rj5Pcw04BBD3o5j8ociScY2j
+         gmSLz5lclENFPO2tZdtmwqASJSgFYlsv3UWzRRL0BLAK/SY1BtM48v3tnvV60VlzwPrb
+         N1RBaM3wtfRxpj0P8gTDRiu9RI7nyjNOjGMT0/n/83VphxIIH3dA1Oq8HPmAfUaYQhs4
+         i3buzH+akt6cfFK9QwnFpsPcvTF6ViliB6l3vQwzICcLIx8+IjvRbDSuKhfYQfJRvejC
+         6u8A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788353891; x=1788958691; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eR6JjRH50MEhDDiYrqwTLYf/MTdbs2G9sfC9/W7oCr0=;
-        b=Ui11FnuQOkFAIfYWzGW3DA8AHBv1zJJdCNuVXNn7+hT7P5LpojwAKwAD3ciGit8zkN
-         UaQqR8S9kqZswHsYuYgIQIAjA3VY8LCVRRXGj6HGna2HeytK/FR34iHFwwwr1SvgHnX4
-         Xkh02r/Q31GNhD/J288XOfRhPT+Ua33Bo0wqSd0hbGKe5Kyix/8DK4Y1/TYUHXzr5/OO
-         KdFbBJkLrfTWGMbIhR/asgpOSDNsosjRkLhpeUWDi7VTfmDY+3ncLblkdWrg3FGaOrCN
-         hm2v2ldDhcRQpzZlCw5Uz+kRK28xdEmFC0Y86/IyekjrPhgNGxxyf1fV7YifHklnVL/e
-         S3EQ==
+        d=google.com; s=20251104; t=1788354240; x=1788959040; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=REC0WBjU6HbnzKlsagTQJMv9INahl8hjQLf2W4ca4pg=;
+        b=UtNWwq9K1oJmDKrc3zfN1PFB/SI6SfMt5xWZpseDC8kcBaoGSzbOh7ZEVzaCO6mNGW
+         oBWnLLXpNH3tAE5JEVnTmOZFl788dNx4CBNZyU3iyUMVHzgGqtnhP99SPmqUl6YhS1mP
+         bPf7e3NgA6W2rWLAjVXowAwzc2NwiQDLvmA/FgoghaBnC81M6kSrOqpAqTEDGsIblFB5
+         oSycm6Gh+P6tyumbez3eJPrxkOFv2vvbzOweE/zfJPna4fJekWrZY880gQx2fLzdID/k
+         QwIHKpyGKnsACz7KCpanOrtAmxlCjRvxydfbksBXJ2tEwKfWURkRBye2BEk73YNQ9lxi
+         yx7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788353891; x=1788958691;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20251104; t=1788354240; x=1788959040;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eR6JjRH50MEhDDiYrqwTLYf/MTdbs2G9sfC9/W7oCr0=;
-        b=g13lBsnqnF3Q3owMJaH1FsCH1JWRgLaUC86Wwc5UGatmSrtxeJ1OxMVKjjLa0g03US
-         wgVu5GNkwgXaI9Is1Ved/0zNaLcC/jul4Mdq18XqYxJV61dp6TEnflvtBYITorW+logN
-         axqlLvX1PR/+NbJirGAqU4anfzgMIUdqOX7uTREUTal7wWRMvLaQ0NOmcJXq6pIrnLmr
-         eMl0Glalg276ZXcRRqVZ0/p9y2sBNtyu7vRtf3tYC/2rQr7vFEkSTcm9XLyLdLJoTl0X
-         D9dUv/Gn/6KTokahoHsLrBW86EbquoVLH2MQ3p8Y/2uV89U+lBV317V+kkgfM6wpo+Rm
-         E8lw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqu/w9Yu+j5H2+oh1ZYMX5VyOxMV5F+dJHxfbKwPSuIN+Mgo+qC5VbBYNeOxy8d4BpOblHj0ZA=@vger.kernel.org
-X-Gm-Message-State: AFuF++k595H6Rmfdcxy9ediT314Hi5YKkwtGDsqiRwOE28QW/rMAsnbs
-	BdZcmhv/mqvm6sVxnnFphgXb2Fsf+DzFbcfgAhqYVroisi8JK4S5SXC4S9UUK8KKRzc7zKOv01G
-	gAnFV+Nzj9VmPWw==
-X-Received: from qtmr26.prod.google.com ([2002:ac8:425a:0:b0:52a:a661:63f5])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5e10:0:b0:52f:b0f9:e4f2 with SMTP id d75a77b69052e-53036b97d24mr46514001cf.1.1788353890588;
- Wed, 02 Sep 2026 05:58:10 -0700 (PDT)
-Date: Wed,  2 Sep 2026 12:58:09 +0000
+        bh=REC0WBjU6HbnzKlsagTQJMv9INahl8hjQLf2W4ca4pg=;
+        b=J8uXYi2ci39GkEy1O1548rTKq7rZ/D5YHYzevTHmaIHjmGrcmrsR4HAZT0cAmVRR3u
+         G3b3/jLUBfmN9lVouu3R9ayiSbbfXDKNSJoOD+xY72J4z81f4xKhtcuyc7isBsf93lp7
+         mwmY86AMm/u+pUyfvUNw6Mdk2BfSKTBeC1AmR7yCFLS5lFn0LQAZwcLw8Cf+bMZmyjjR
+         qY5ZjjV9Nt+WSMrq+RBdBtxFUr4PA78i22D4EUr0e9bssKMC6Ftabe5hdfxOLRCLWVp6
+         PbbrZg8ZjcdtqWMKLUq5S90ci4r5VzJXmIhriGPt2DkL11VSY3GEL2rIvH2Wj/j72U+E
+         uong==
+X-Gm-Message-State: AFuF++ko93NwqbYVxKkBQGTcyuh7BUIxLAkycLGN9JL299FvLskJbbYZ
+	LTzPwO0fxCIYegchAlGghZ4FicB+WQWoDzoM3RqdE91bj91cqPoMorviavThZJbcX1kCyMzf3EG
+	e3duVlYpNA77e1UtqchTHO8bB69I69yIoipYTEPvh
+X-Gm-Gg: AR+sD11m/wB7ZiNJk3h//UIZselNFNxTAiDaj6Y0Qm51582C6WpCBS+80b4mpRJL/3y
+	igL4KXCTnqiU/RhgS4CXI6pF6UodIYJL8z576W25SR9rZQ95TlegE0ZDfEQW00Qiu3VHMJM6kLV
+	pVzevi5db5QK3huDbE8onHh0mN3GJ/i0RHr2zV7NlKH6z+b8PKGEHfl7yjXeIj4BhA0yKykoY+X
+	kyW4Pd7YvdEX4bX/Y37iWug/FJxof5O94ERcJ7BehRtJWfJBPJBPtoMBXsVZnL95aIVT24U2N71
+	H4n7Da8uKVhxBgGZ4Pw/CPoK4rpEh+esKCuww4euf/nke9FGh+jUEacbLu4dgW+Slu4GiNwyMU/
+	oK5AfzRlApm4fzXpbiq1PzC0V76/QS8Po0Et7Ue/EzSpj3iW3ckNyJz7/sg==
+X-Received: by 2002:a05:620a:1714:b0:939:5c17:8c73 with SMTP id
+ af79cd13be357-93965763938mr276084685a.0.1788354239348; Wed, 02 Sep 2026
+ 06:03:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.966.g6673acef38-goog
-Message-ID: <20260902125809.2910366-1-edumazet@google.com>
-Subject: [PATCH net] bonding: use skb_cow_head() in bond_do_alb_xmit() and rlb_arp_xmit()
+MIME-Version: 1.0
+References: <QDISC-0CFC.v3.20260901204856@mojatatu.com> <QDISC-0CFC.v3.20260901204856@mojatatu.com.2>
+ <CANn89iJCBTSGwKK02xw0XdZRsP=2VGmJny27cdi0bnpz4aBwHg@mail.gmail.com>
+ <CANn89iL+o5mdPOvRUy_vSiHxj3Kc9Wzr3HV_dGf2tsKJJNwniA@mail.gmail.com> <CAM0EoMnENJAY7pP9dP6pbbWnW44Ug-Ow3C=sf87pfOTwxjMdaQ@mail.gmail.com>
+In-Reply-To: <CAM0EoMnENJAY7pP9dP6pbbWnW44Ug-Ow3C=sf87pfOTwxjMdaQ@mail.gmail.com>
 From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
-	Jay Vosburgh <jv@jvosburgh.net>
+Date: Wed, 2 Sep 2026 15:03:48 +0200
+X-Gm-Features: AcwNN1X3f7LD30KD1qZfc49zPIh9rkbs0FiNWJF728EVXHW4XziSK5SvOhwvgEg
+Message-ID: <CANn89iLr_3Z1MTa6U9SuooU7q-Yw8nXgRb=heSvoR=uUSTJgzg@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/9] net/sched: fq: clamp quantum and
+ initial_quantum in change path
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, Vega <vega@nebusec.ai>, 
+	stable@vger.kernel.org, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>, 
+	Vijay Subramanian <subramanian.vijay@gmail.com>, Petr Machata <petrm@nvidia.com>, 
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In bond_do_alb_xmit() and rlb_arp_xmit(), make sure to unclone
-skb head via skb_cow_head() before modifying the source MAC address
-(Ethernet header and ARP payload) to avoid silent corruption if
-the skb is shared or cloned. Avoid caching the header pointers
-across skb_cow_head().
+On Wed, Sep 2, 2026 at 2:40=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com> =
+wrote:
+>
+>
+> Trying to understand your concern: Are you arguing for
+> stylistic/readability improvement or robustness?
+> The only place i can see where the multiplies you describe could
+> happen is what the 709f34f7c28d patch closed. i.e this part:
+>
+> -       q->quantum              =3D 2 * psched_mtu(qdisc_dev(sch));
+> -       q->initial_quantum      =3D 10 * psched_mtu(qdisc_dev(sch));
+>
+> IIRC, you are suggesting restoring the original logic (x2 and x10) and
+> i am likely missing why that is a must do? Does it break anything?
 
-In rlb_arp_xmit(), also check that
-tx_slave != rcu_access_pointer(bond->curr_active_slave)
-before modifying arp->mac_src. When tx_slave is the active slave,
-arp->mac_src already matches its hardware address, so we can avoid
-an unnecessary copy and head reallocation.
+It does not break anything; it just causes a cascade of various clamps.
 
-Also, we should not assume mac header is set in output path.
+After your patch we will have:
 
-Use skb_eth_hdr() instead of eth_hdr() to fix the issue,
-and remove now redundant skb_reset_mac_header() calls.
+       mtu =3D clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
+       q->quantum              =3D clamp_t(u32, 2 * mtu, 256, 1 << 20);
+       q->initial_quantum      =3D min_t(u32, 10 * mtu, 1 << 20);
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-Cc: Jay Vosburgh <jv@jvosburgh.net>
----
- drivers/net/bonding/bond_alb.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+So @mtu is no longer the psched mtu anymore.
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index 654f051d0023929a48536c378996e0ef39b75d88..5f750f08a144791589b5ed0f44b1b68ab99e6e61 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -678,9 +678,13 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
- 	if (arp->op_code == htons(ARPOP_REPLY)) {
- 		/* the arp must be sent on the selected rx channel */
- 		tx_slave = rlb_choose_channel(skb, bond, arp);
--		if (tx_slave)
-+		if (tx_slave && tx_slave != rcu_access_pointer(bond->curr_active_slave)) {
-+			if (unlikely(skb_cow_head(skb, 0)))
-+				return NULL;
-+			arp = (struct arp_pkt *)skb_network_header(skb);
- 			bond_hw_addr_copy(arp->mac_src, tx_slave->dev->dev_addr,
- 					  tx_slave->dev->addr_len);
-+		}
- 		netdev_dbg(bond->dev, "(slave %s): Server sent ARP Reply packet\n",
- 			   tx_slave ? tx_slave->dev->name : "NULL");
- 	} else if (arp->op_code == htons(ARPOP_REQUEST)) {
-@@ -1340,7 +1344,6 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
- 				    struct slave *tx_slave)
- {
- 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
--	struct ethhdr *eth_data = eth_hdr(skb);
- 
- 	if (!tx_slave) {
- 		/* unbalanced or unassigned, send through primary */
-@@ -1351,7 +1354,9 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
- 
- 	if (tx_slave && bond_slave_can_tx(tx_slave)) {
- 		if (tx_slave != rcu_access_pointer(bond->curr_active_slave)) {
--			ether_addr_copy(eth_data->h_source,
-+			if (unlikely(skb_cow_head(skb, 0)))
-+				return bond_tx_drop(bond->dev, skb);
-+			ether_addr_copy(skb_eth_hdr(skb)->h_source,
- 					tx_slave->dev->dev_addr);
- 		}
- 
-@@ -1375,8 +1380,7 @@ struct slave *bond_xmit_tlb_slave_get(struct bonding *bond,
- 	struct ethhdr *eth_data;
- 	u32 hash_index;
- 
--	skb_reset_mac_header(skb);
--	eth_data = eth_hdr(skb);
-+	eth_data = skb_eth_hdr(skb);
- 
- 	/* Do not TX balance any multicast or broadcast */
- 	if (!is_multicast_ether_addr(eth_data->h_dest)) {
-@@ -1428,8 +1432,7 @@ struct slave *bond_xmit_alb_slave_get(struct bonding *bond,
- 	u32 hash_index = 0;
- 	int hash_size = 0;
- 
--	skb_reset_mac_header(skb);
--	eth_data = eth_hdr(skb);
-+	eth_data = skb_eth_hdr(skb);
- 
- 	switch (ntohs(skb->protocol)) {
- 	case ETH_P_IP: {
--- 
-2.55.0.966.g6673acef38-goog
-
+This is fine.
