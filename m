@@ -1,173 +1,299 @@
-Received: from mail-oo2-f0.google.com (mail-oo2-f0.google.com [74.125.231.128])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11F3B0AE7
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691C03CE0A2
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788335021; cv=none; b=BWiVSDjuVp/Gton+bX+J2psgdI9J+MjmGml3XU7p/Kcwv32qzfZis0EFhaMpRvN8Y5wC1iU0CeME4vHM8s/flOk3HdKc3Cng9CG4TENfcSlDEg8RPnfNaQwPVeenswg2ElvgIKiIrCPraFZ1hygwcOGPvOgODH6vfOC17vvMFSY=
+	t=1788335095; cv=none; b=aCOdb4qFOJBnOcFq4qmIQZZ4tmQCy+dRcsshNheHiCCtpfwbvHPAvN+d3zmrIqZWkkFb89a15Ldmw7BSurK+1V+1VjECudG+e2wcWzjo6XLAG4bMu7AlhJ8J3iKNGdrKpBm4xVhfeHjOV7ikbeI5AgClkxdTGOgMd8bTw9l5Kkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788335021; c=relaxed/simple;
-	bh=RleU7cNN1wOfOHEFXMjowd8IIs6GlYKSm1VisDWm+6U=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UlhXNXZUsnH4b3pBEim2XWaMYKJgbTMV78IVT2HS+xgQ0Vv57YyIKur8xQ1buR7cAzLFn6/huXLA3SPvs/GV1h7y0o5ob45tRhveKHEBWQjMAYML/R1d7bDNp0Xiqyjh/fO9gPzzLegxaExo0t7Xj4isGPakW3OVvmtUIcXanLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f0.google.com with SMTP id 006d021491bc7-6a3900cb2b5so268227eaf.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:43:39 -0700 (PDT)
+	s=arc-20240116; t=1788335095; c=relaxed/simple;
+	bh=He2KYxQxFOYfUvBCEdU6KVIHQ9ioT0lUUIGeFFdbizg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=mBcKdteLIRoyvLmss/EsuWmeWUn2hKygYVVowEjlnLeTQW+ra9Qamhp4DN2Zjy96CaybZHW1sIfppAu1sFlatEg7DEuZsa2ol3B151Y1rwgIkJfcGMtdC+P0v327ToBrifxcB0rWeJVSWmomJZpEjRdCxVEzlXOP+VxXBdgfiUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=WqmfHoR5; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="WqmfHoR5"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so840592a91.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:44:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1788335093; x=1788939893; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dF0J1p4zzUo0oOMD9z+s+iaA8fp2BSZeTfe7CbtsAi8=;
+        b=WqmfHoR5MEd5/ZsaDMYxaPFgLp6YlsFopcaNdJkc3TXij+7V+TQRm/1NLC93j8YCq3
+         lGQIQFihnIZJIWFDABRbZktrDTYgkIN6h6/0NKLfCYp/uHp9e08e2l9rZoyjOMSpZFzp
+         a23kh4sSffEHd/t9VgL+MvU6/9BLMCe1l/TVPm1jPTWsY5NfCLrq7bmZafvQpoD7jiRM
+         rrFUMBkoUNLj9E2EjECTdU2sxqyZw8xYx4b4jfPmFLEFsVyBuc7aGlrbfvy072ou8kAB
+         f+07QypL4f/o4OHsBZjCYk7KbO5HkTJaZ5DG+/l++JpOplv5vKSeAxn/3T96upVPcPbK
+         aEOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788335019; x=1788939819;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1788335093; x=1788939893;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+Fyr7GjnemiBK6OzWbgukemJrSOlrcphd1h+NIeU+Ak=;
-        b=IOPZ41kfZR8EWl8AaE5xvr3WAdbbUf+1WGqqNEjw4OSjClEfLz2skW2gQcqpsZV8G0
-         O5BnzsYIWghZY423OlNU+siiDI5+QyvYyg6325eCmdRN5tft/HUbqPBfj3yjzpTaKpIL
-         +rk22DG3ubCv0CznZRbNCzOqQ9dncx9ZKwEUwnm6sQ+c0rt6WoE19SHUJJduxpSvjF5J
-         CrQG2fDDke4e1RTlFx5Eo4Q9q3bojrZ/f3KDqJdo4jg6p2FxqPtS+Q2I7g3ivroyWnfr
-         UJiKJ2MD7d0jJRiK9VA1tpz1MwfIiQZmASdbDvLXRvAnAnKFbsYVYaIycJl+LqPpnIVU
-         qsQw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6fW3+2xhdO00iqDUyWYAW0EgDuz/pp4FG/nRNgmh37abMXRZDg8yDBUVR8y7QeFmiG1e1p5o=@vger.kernel.org
-X-Gm-Message-State: AFuF++nREdemShZPeAA6oSxbM0BTTdTHUjW7RasaA2QlPduBFGM6pQry
-	gV+4h+lgR8K2NqpoIGbTkzPhGqw2CRKc/ExFbmHEi+Cvbfw58ZjT6pagWH70C0N6gGjmbV76Vqb
-	Kh7aCrlglu4+JWOvHOstX9HeDFb8RlxE95//clcz02FK7yK8spd9OSZ/BY50=
+        bh=dF0J1p4zzUo0oOMD9z+s+iaA8fp2BSZeTfe7CbtsAi8=;
+        b=UKRDNw21TOAe1Sue7owWrs/HbyOo6VQkURb5FqMZEl8w/ZM9h+R5gLzexPo3H1X53P
+         68dULh76rwr+CbYzqpsZqtt3GAU3l+hP8Uo75EAaCgp5p5ZSHeHCSCmfYGztw6XEuPoC
+         +M91y0n6ilEijQhtGkdRpK17XOdxlwGXRpXr+y8pUbFWtM/A4QohkV0IIHoclcfmlSMk
+         1eHYZfH1F0cYH7gy3I+vTuh84D1OWPQwseEAyeKizGoVqfWxNtvgv1+LnZdjcNHp9w57
+         KXRTASUxUNTzrOEqDXN6fPBWtLgzz32UjlIfsja0ynbm251Ulbg64aRmSNapoc3JRK2j
+         BajA==
+X-Forwarded-Encrypted: i=1; AKwUvBwIDhwbgy+L1zviHP7RSJs8uJefSEbcjYUSUHlPwLfurP8hSjE6ojDr5x8UABSaiUKWJ5EP8aA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lIoiUo8Mk1INqpNrCRpnagQTTcnh3MtTiW/jPIJ+TYvFbaQ1Qy
+	GbGHvLcr5dAHPmIEoRVD9TgoOJC5twpS+974J1+BE0HMkHlfoyCbkBg2EH2teHVLGbM=
+X-Gm-Gg: AYBFou1+Ket2BOJy+vDGDDLm0AKPaWytXrd3mRQNb3mm8E80TDF4Tqitrism9FftQmH
+	O6BTLGTDNsaIp2/auE7mNd9oHBuj/f1YB8Y4nOdq+rgksJ2k6harWPUZ8koLyl65dl7M/DSqJ5/
+	Ya3PzYH0inaVZBkJ1YTn7BH1cpK9ViQAcwMfDRycJ13EH6iy9yr/R24HkYXZd/Lw4tMYm6+79wn
+	g8PTT/rnVVTJlI1YsuKFsVj+6BW93GYjOmioFSRSlwRMbO5VYATQ/1zuZZUQGHzu1Q4tYjEBZtJ
+	aATYfcpCXs17NOvYv9Oae5J0woifJbrIoWOO6saKH+VqPyBiVekeN8y1M/1arpvFs1y1PXlvEtr
+	+fF1dACnNTO89ahxD7p2SMKsIAS0RHKnAUHPdqb6M2cDqZJ+QCy2L2EsieolKPIj0Wz3q7UBy5k
+	uKew5DkWUVYUMARYhmIsj2hIpGLcaOzthygDiCaQ+FsiT+1dxXpOKN/wifidxnYW+ixLUKMGSj+
+	mDRSbF81BqXACirqOkgbifqTs3l
+X-Received: by 2002:a17:90b:2f84:b0:398:9bd3:d6d1 with SMTP id 98e67ed59e1d1-39af64e0adbmr1032593a91.11.1788335092395;
+        Wed, 02 Sep 2026 00:44:52 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d463798sm9938748a91.6.2026.09.02.00.44.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 00:44:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:168f:b0:6b1:9f9d:79f3 with SMTP id
- 006d021491bc7-6b47e7beac8mr2231224eaf.17.1788335018735; Wed, 02 Sep 2026
- 00:43:38 -0700 (PDT)
-Date: Wed, 02 Sep 2026 00:43:38 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a97d3aa.e163c37b.143a1.0007.GAE@google.com>
-Subject: [syzbot] [openvswitch?] INFO: task hung in ovs_dp_masks_rebalance (8)
-From: syzbot <syzbot+75ce0a9129024fa8cbf6@syzkaller.appspotmail.com>
-To: aconole@redhat.com, davem@davemloft.net, dev@openvswitch.org, 
-	echaudro@redhat.com, edumazet@google.com, horms@kernel.org, 
-	i.maximets@ovn.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 02 Sep 2026 03:44:50 -0400
+Message-Id: <DL4NVR5IIKSE.IC903DOR6ZDA@etsalapatis.com>
+Cc: "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Jiayuan
+ Chen" <jiayuan.chen@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>,
+ "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Emil Tsalapatis" <emil@etsalapatis.com>, <netdev@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH bpf-next v2] selftests/bpf: Track test_xdp_features DUT
+ processes
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Bochao Cao" <bochaolucky@gmail.com>, =?utf-8?q?Alexis_Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ <bpf@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260812-xdp-dut-process-lifecycle-gmail-v2-1-b03ef2aa1b97@gmail.com> <d4be160e-703e-46bb-9509-d3d90f6bc34b@iogearbox.net> <DKX99ZAP7GZ8.23U5EOSFB4VPU@bootlin.com> <CAHKNYVXN0DAUzv2Lwm=oQ_K=zhi2iNyTO2e99s5F4M+Kr7u5tQ@mail.gmail.com> <CAHKNYVV8gn-L_unjsxUZV=E+Rx4ouDBJX613_n4hevXP1rivyg@mail.gmail.com> <CAHKNYVX_r_yS+NjkTx=gn7zGfcHF11azQbFWHJ+naqXO3aTpJw@mail.gmail.com>
+In-Reply-To: <CAHKNYVX_r_yS+NjkTx=gn7zGfcHF11azQbFWHJ+naqXO3aTpJw@mail.gmail.com>
 
-Hello,
+On Fri Aug 28, 2026 at 5:32 AM EDT, Bochao Cao wrote:
+>  Resending as plain text because my previous reply was rejected by the
+> vger mailing lists. Sorry for the duplicate.
+>  Thanks Daniel and Alexis.
+>
+>   Dropping the procps dependency is not the primary motivation for
+>   this change. I agree that Debian can remove the dependency independentl=
+y.
+>   The issue addressed by this patch is process isolation in the standalon=
+e
+>   test. The current readiness check may observe an unrelated
+>   concurrent xdp_features process, while cleanup may terminate every
+> xdp_features
+>   process on the host. In addition, a DUT which exits before listening
+> can leave the test waiting indefinitely.
+>
+>   Although this script is not currently run by the BPF CI, it remains
+> useful  for testing real hardware,
+>   so these process lifecycle issues can still  affect users running
+> the test manually.
+>
+>   Would it be acceptable to fix these issues in the script's current loca=
+tion?
+>   If the preferred direction is to move it under
+> tools/testing/selftests/drivers/net/hw/,
+>   should the move be submitted first, with this fix rebased on top?
+>
+>   I can send a v3 that drops the Debian Closes tag and focuses
+>   the commit message solely on the process isolation, timeout,
+>   and cleanup fixes once the preferred location is clear.
+>
+>   Thanks,
+>   Bochao
 
-syzbot found the following issue on:
+While I'd defer to Daniel and Alexis on this, imo we could merge the fix
+as-is and move the file as a followup since the change is a net gain on
+its own.
 
-HEAD commit:    a23cbb05744b Merge tag 'timers-urgent-2026-08-30' of git:/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1107a379580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=75ce0a9129024fa8cbf6
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+Wherever we end up putting the file feel free to add:
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/eed599d932fb/disk-a23cbb05.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/74e8c268c325/vmlinux-a23cbb05.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/aa91aebf1baf/bzImage-a23cbb05.xz
+>
+>
+> Bochao Cao <bochaolucky@gmail.com> =E4=BA=8E2026=E5=B9=B48=E6=9C=8828=E6=
+=97=A5=E5=91=A8=E4=BA=94 14:10=E5=86=99=E9=81=93=EF=BC=9A
+>>
+>>  Thanks Daniel and Alexis.
+>>
+>>   Dropping the procps dependency is not the primary motivation for
+>>   this change. I agree that Debian can remove the dependency independent=
+ly.
+>>   The issue addressed by this patch is process isolation in the standalo=
+ne
+>>   test. The current readiness check may observe an unrelated
+>>   concurrent xdp_features process, while cleanup may terminate every xdp=
+_features
+>>   process on the host. In addition, a DUT which exits before listening c=
+an leave the test waiting indefinitely.
+>>
+>>   Although this script is not currently run by the BPF CI, it remains us=
+eful  for testing real hardware,
+>>   so these process lifecycle issues can still  affect users running the =
+test manually.
+>>
+>>   Would it be acceptable to fix these issues in the script's current loc=
+ation?
+>>   If the preferred direction is to move it under tools/testing/selftests=
+/drivers/net/hw/,
+>>   should the move be submitted first, with this fix rebased on top?
+>>
+>>   I can send a v3 that drops the Debian Closes tag and focuses
+>>   the commit message solely on the process isolation, timeout,
+>>   and cleanup fixes once the preferred location is clear.
+>>
+>>   Thanks,
+>>   Bochao
+>>
+>> Bochao Cao <bochaolucky@gmail.com> =E4=BA=8E2026=E5=B9=B48=E6=9C=8825=E6=
+=97=A5=E5=91=A8=E4=BA=8C 21:01=E5=86=99=E9=81=93=EF=BC=9A
+>> >
+>> >   Thanks Daniel and Alexis.
+>> >
+>> >   Dropping the procps dependency is not the primary motivation for
+>> >   this change. I agree that Debian can remove the dependency independe=
+ntly.
+>> >   The issue addressed by this patch is process isolation in the standa=
+lone
+>> >   test. The current readiness check may observe an unrelated
+>> >   concurrent xdp_features process, while cleanup may terminate every x=
+dp_features
+>> >   process on the host. In addition, a DUT which exits before listening=
+ can leave the test waiting indefinitely.
+>> >
+>> >   Although this script is not currently run by the BPF CI, it remains =
+useful  for testing real hardware,
+>> >   so these process lifecycle issues can still  affect users running th=
+e test manually.
+>> >
+>> >   Would it be acceptable to fix these issues in the script's current l=
+ocation?
+>> >   If the preferred direction is to move it under tools/testing/selftes=
+ts/drivers/net/hw/,
+>> >   should the move be submitted first, with this fix rebased on top?
+>> >
+>> >   I can send a v3 that drops the Debian Closes tag and focuses
+>> >   the commit message solely on the process isolation, timeout,
+>> >   and cleanup fixes once the preferred location is clear.
+>> >
+>> >   Thanks,
+>> >   Bochao
+>> >
+>> > Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> =E4=BA=8E2026=E5=B9=
+=B48=E6=9C=8824=E6=97=A5=E5=91=A8=E4=B8=80 22:49=E5=86=99=E9=81=93=EF=BC=9A
+>> >>
+>> >> Hi Daniel, thanks for the notification
+>> >>
+>> >> On Mon Aug 24, 2026 at 1:31 PM CEST, Daniel Borkmann wrote:
+>> >> > [ Trimming the excessive Cc list, and adding Alexis ]
+>> >> >
+>> >> > On 8/12/26 10:28 AM, Bochao Cao via B4 Relay wrote:
+>> >> >> From: Bochao Cao <bochaolucky@gmail.com>
+>> >> >>
+>> >> >> test_xdp_features.sh waits for any xdp_features listener to appear=
+ and
+>> >> >> uses pidof during cleanup. A concurrent test can therefore make an=
+other
+>> >> >> test proceed before its own DUT is ready, and cleanup kills every
+>> >> >> xdp_features process on the host. The readiness loop also has no t=
+imeout,
+>> >> >> so a DUT that exits before listening leaves the test hung indefini=
+tely.
+>> >> >>
+>> >> >> Track one active DUT at a time, wait for ss to report that exact P=
+ID with
+>> >> >> a bounded retry loop, and reap it after each test. Consult the she=
+ll job
+>> >> >> table before signaling the DUT so a stale PID cannot target an unr=
+elated
+>> >> >> process. On failure, terminate the shell job with SIGKILL and reap=
+ it so
+>> >> >> blocked I/O cannot hang cleanup. Install an EXIT trap and signal h=
+andlers
+>> >> >> so failure paths also remove network setup.
+>> >> >>
+>> >> >> Fixes: 4dba3e7852b7 ("selftests/bpf: introduce XDP compliance test=
+ tool")
+>> >> >> Closes: https://bugs.debian.org/1136522
+>> >> >> Signed-off-by: Bochao Cao <bochaolucky@gmail.com>
+>> >> >> ---
+>> >> >> Tests:
+>> >> >> - bash -n tools/testing/selftests/bpf/test_xdp_features.sh
+>> >> >> - make -C tools/testing/selftests/bpf xdp_features
+>> >> >> - sudo tools/testing/selftests/bpf/test_xdp_features.sh
+>> >> >> - verified cleanup terminates a blocked DUT without affecting an u=
+nrelated process
+>> >> >> ---
+>> >> >> Changes in v2:
+>> >> >> - Clarify that avoiding name-wide process matching, rather than dr=
+opping a dependency, is the motivation.
+>> >> >> - Track and reap one active DUT at a time instead of retaining his=
+torical PIDs.
+>> >> >> - Address PID reuse by signaling only the current Bash job during =
+cleanup.
+>> >> >> - Use SIGKILL on failure cleanup so blocked DUT I/O cannot hang wa=
+it indefinitely.
+>> >> >> - Link to v1: https://patch.msgid.link/20260805-xdp-dut-process-li=
+fecycle-gmail-v1-1-45984df8d295@gmail.com
+>> >> >> ---
+>> >> >>   tools/testing/selftests/bpf/test_xdp_features.sh | 82 ++++++++++=
+++++++++------
+>> >> >>   1 file changed, 62 insertions(+), 20 deletions(-)
+>> >> >
+>> >> > Sorry for the late reply. With regards to https://bugs.debian.org/1=
+136522, src:linux deb
+>> >> > does not have to depend on this at all, so the src:linux can just g=
+et rid of procps in
+>> >> > any case if this is indeed the last dependency. I'm not seeing the =
+test being run in our
+>> >> > BPF CI. I've Cc'ed Alexis as he's in the process of migrating and/o=
+r removing tests from
+>> >> > tools/testing/selftests/bpf/ depending on how they fit into test_pr=
+ogs framework. I'll
+>> >> > let him comment if there is already work in progress. It feels like=
+ this script could be
+>> >> > reworked into tools/testing/selftests/drivers/net/hw/ tests and rem=
+oved altogether from
+>> >> > the tools/testing/selftests/bpf/ dir.
+>> >>
+>> >> There has been an attempt to fully convert and get rid of
+>> >> test_xdp_features.sh, but discussions around the corresponding series
+>> >> highlighted the need for the script to remain available for testing o=
+n
+>> >> real hardware.  Features covered by the test_xdp_features.sh that wer=
+e
+>> >> not covered yet by test_progs have been added to test_progs (in
+>> >> xdp_cpumap_attach), see [1]. So there's currently no active effort on
+>> >> this one on my side.
+>> >>
+>> >> Alexis
+>> >>
+>> >> [1] https://lore.kernel.org/bpf/20241009-convert_xdp_tests-v3-0-51cea=
+913710c@bootlin.com/
+>> >>
+>> >> --
+>> >> Alexis Lothor=C3=A9, Bootlin
+>> >> Embedded Linux and Kernel engineering
+>> >> https://bootlin.com
+>> >>
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+75ce0a9129024fa8cbf6@syzkaller.appspotmail.com
-
-INFO: task kworker/0:0:9 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/0:0     state:D stack:22128 pid:9     tgid:9     ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: events ovs_dp_masks_rebalance
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5520 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
- __schedule_loop kernel/sched/core.c:7347 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7362
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
- ovs_lock net/openvswitch/datapath.c:108 [inline]
- ovs_dp_masks_rebalance+0x2f/0xe0 net/openvswitch/datapath.c:2602
- process_one_work kernel/workqueue.c:3387 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-INFO: task kworker/u8:1:13 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u8:1    state:D stack:22376 pid:13    tgid:13    ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: ipv6_addrconf addrconf_verify_work
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5520 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
- __schedule_loop kernel/sched/core.c:7347 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7362
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
- rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
- addrconf_verify_work+0x19/0x30 net/ipv6/addrconf.c:4770
- process_one_work kernel/workqueue.c:3387 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-INFO: task kworker/u8:2:27 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/u8:2    state:D stack:23808 pid:27    tgid:27    ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: netns cleanup_net
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5520 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
- __schedule_loop kernel/sched/core.c:7347 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7362
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
- ops_exit_rtnl_list net/core/net_namespace.c:173 [inline]
- ops_undo_list+0x28e/0x8d0 net/core/net_namespace.c:249
- cleanup_net+0x572/0x810 net/core/net_namespace.c:706
- process_one_work kernel/workqueue.c:3387 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
- worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-INFO: task kworker/1:1:31 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:1     state:D stack:22232 pid:31    tgid:31    ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: events ovs_dp_masks_rebalance
-Call Trace:
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
