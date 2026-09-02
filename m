@@ -1,145 +1,193 @@
-Received: from mta0.migadu.com (out-133.mta0.migadu.com [91.218.175.133])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7435D485CDD
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 14:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.133
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788358349; cv=none; b=Tv3PHGIXuMozKE/MHNz/9vXQk6CGEa4Fi3jxaKbtRqRqHmsY7fKSGuNqS58JfFyhd1prc/ieyMA3GEIyGCXguOdA3HV20lpODEIzIU8t4IYFxhrvPEOKjlpJ/tp+/mA1kdKsndOgBAefA3YJiQMJjHz1GS6k7o/YH3gBUNM8EQc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788358349; c=relaxed/simple;
-	bh=W7b5bnaFNjMh4W/Tp38RDotWj8dBqgWV6+5uiy7EAEA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qmzuQHH818mBRI6aQSh5JZgM2X66Rzru3QJHZWMieGw7zRFWf30NT70fG3ZNrFmsT/MZStutMwetdpaSqw2Kh8h6SAgHO3Kk1YWk85ls7cJikBMEpLNaUQIvw1kG4YLLLvx3FSMvAGWkcL/QSytoAo/acZIJ6YOHUI7v1fs9uEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pvn9iXyl; arc=none smtp.client-ip=91.218.175.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657BA4CCDC8
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 14:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788358728; cv=pass; b=ngQtlT2sSOFfPf2CslDSWiH7ofMLKGab3i+ejqXOl/gG8OqhMAMM9F92+8rMLuDA6zOrXxYTEkkSMAxCDVhFnhyxCqHK5hJ77VediWurtJLFice3eTO0GRY8fOpwwvJfWy/B6e1kb2v7bT4Y/T3d40I8cTTdiXQ92f+S6iGsoaw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788358728; c=relaxed/simple;
+	bh=om459VHzGIcS7fnosyh6/zrkKImWOivry8YlszBybgk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iP9nswvxFHvT8uhArp/LxdJFY3a7w7/SGKmyLiiiwsaO1AAM3O56/zVVJ9yJkO8vbLOy84wPwGdDtM/RVa3GW4cpuKcdOmMqApshHv6EsRKEfCmjJ1DxJFSkjbs+NBDYV4nXEiucnN4BAyIIrWKzOQKPyd8vXEWen0ABXyOlZ8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=prsWrMhm; arc=pass smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pvn9iXyl"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=W7b5bnaFNjMh4W/Tp38RDotWj8dBqgWV6+5uiy7EAEA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788358345; v=1; x=1788963145;
- b=pvn9iXyl7K4x8sIvTRmyqEl+pOPk8qHucKnlUb7So7Y/gnrt2/8hclA09L/5YK1qnDGn84lh
- +zF9KJHpRxOj+m4ECiWUE8MQ7EwIqXPA6fvarKULOD6gq4PVTAkV2vTgnnDfpACY5qnzgrdkY2v
- y/aa8xkyAPlyo0kahAHNjCqU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3d4233997ff0b34f;
-	Wed, 02 Sep 2026 14:12:25 +0000
-X-Mizu-Trace-ID: 3d4233997ff0b34f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <44162dd1-fec7-47be-bf48-186c69be6dd9@linux.dev>
-Date: Wed, 2 Sep 2026 22:12:18 +0800
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="prsWrMhm"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84e04df8c46so1565265b3a.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 07:18:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788358726; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aA0uQF5Xpj3IoeEyIXg6raJgT3YpEIAVgEJlzFNAjt/TR2ho0Q6l3MRuOpfpEoN884
+         F1I7+6AlkQNnTuJob2+R9eTJn/QBfuUJ8WRwl6H/DkOvv2BEIpvkngqoeyl8lC1dI8IZ
+         mAFJhORhQBLNafoBr2p6AvHPoY4PRTUMaaWur0E+4eCGZw21M3KOskZKtNEVERF/EfZh
+         pZEPTZgNI88cqXSZVdSZX2U6lM3oC6Gx0u492kmwpbz8KO9TUUtuuO6LwNTAJ1T3GVGW
+         kXIPta10FglpenvxpIAMAV02zg5EaEz6CVeviavJoCwG0PC50sGtGqOXdhrronXvAwat
+         2nig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uYNjIZZ8RMmiF+3QP0G43VfzKqj75CKSNv+DnxNLnmo=;
+        fh=WZObNTyBda+jlO3u+3ku4cv8hKJ5z4w0U2RTMO8bX1o=;
+        b=FIFPdiESNuI3PgPbdzYObQAxZAKbN1McfYLWWK/1JMnz4RqxVVLT6/6olQmWfTp+Kw
+         OeNttpcXy1Pk8cpZRlnXdj/SWzsPUSCFtEWU0wDGB4YP0BjfJdqIp6mbEfVXr4qkE6Rs
+         vBJ/sykQrty7NuaRgQj9P8zhBB9jNfM2rD4t2mBoDVAgwOMVEKmoYbNuzbnSI0K5A1UP
+         RBZzp0FvO8mD/1L27BjbpFKamxDOB+yk9KiwdMOQ/ibfUwrTvDWVUotOEJk6sfVR/ejc
+         FQ6IIoCTjVRvTGwjBDfpp9pnnGTNua0DTwZyKf+zJ5jgFsnXVd1JHvyDd8S8U0VErCKd
+         12dA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1788358726; x=1788963526; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uYNjIZZ8RMmiF+3QP0G43VfzKqj75CKSNv+DnxNLnmo=;
+        b=prsWrMhmoQUBWPD4+yI4lrN165+gPWImmdf5uctf5fC0QVskkIDoHtsbJp/6DqlUNP
+         Oy3h8zmC/NiWoq4vlIgtWwW4neAAVDUum9sNOakazos2t8odkKO21DMfEtGPUarvZ06x
+         Qq6oZWA/jCG/eNCGhOqIV36nH8umJHjuuKQh8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788358726; x=1788963526;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uYNjIZZ8RMmiF+3QP0G43VfzKqj75CKSNv+DnxNLnmo=;
+        b=Z0zfQ3xEWP85pRjBxXvmBL8u/+o6rF6scahHrmiHy9wyK6fF60mdSD6bdAsvOJgwnl
+         cnUjMGMMG1zER8ilKRtOtYNgrl5tM9YUBJs4RkzgvyXdRfGAj1Mu7y8cspxBevmOPhk+
+         DJSJnr1mxO6TJ8P2DFzr4/SnYDSYhFQEoAOVIGjr7Wqn6FmapYtpH8GQmRhOMeNWSwMu
+         MvWRO3Ff5wEm3FI1DX+pjYTh7ub7R1oBWhEkprmE90T6FqHfa5aN+4AbRqZ+XNGvQlzi
+         ZHFCMG7toXfXhmHPLtmtInclaKNKDU93xbk17aTnP/HcXNIjaAtqWL9es6cYuUQCfmaT
+         0Q3g==
+X-Forwarded-Encrypted: i=1; AKwUvBwH8+CHgrPMb7wZNejKSomUe5aAd6NC76uynvb45IFznzv9ajNB0vs4Bpo/x4Ei0m7H8/7zhIk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLrEwHwDc8Lk+1h7AeJPN5m9nko55TdXl3Eo0JUggtUJyylZV2
+	QnHypB85lUYkW5w1fxX6sWZwTobuDjcdTFrcsx3WokmfdVhJOxq40Aj4qVqkFUIUdHwjE39ux21
+	gV4tJLL/j7HLuFWgyYo9n/F4pdWhqe10UngQKZjz+
+X-Gm-Gg: AYBFou1yepDce1KD1lq6InCxMOSjPDc5P3eKjp1uebqcsbcglOsa41KsxGRW4jKMhUx
+	LT+iJWi0ZuqQhdRU9otP58qQyiwNkBZ8yliTkm1vQWY5byXevFXe97sh1TEoKd+u9/GJI0e9VaL
+	vD9fzCAkyWUhEr0WtcJvCJKADnlOqRXwNQYQjHePymB7D/5zsceStYorIgqv63CkZq5BvpVS0Yj
+	722k08vVvsII2hTg8aILlLiqjQv/q8UFDJFyb4zWkWcJjdUm5sSWvFnspIUSDdcgQtP/cE5t1D2
+	M2TrRS4adJX6Nt8KO8OLARE5miezziNLZAV3Z8izhyWkfPg6kfdbVP+uVMehCpH6YkWJ4ixSrTs
+	QK4ZGexWvfZt4xbQjrCWNPT+Fabg=
+X-Received: by 2002:a05:6a00:1701:b0:84f:dfce:966b with SMTP id
+ d2e1a72fcca58-85ed21f2412mr6888834b3a.8.1788358725561; Wed, 02 Sep 2026
+ 07:18:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tcp: fastopen: check rsk_drop_req() in
- tcp_fastopen_create_child()
-To: Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau
- <martineau@kernel.org>, Matthieu Baerts <matttbe@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- Kimi Security Team <bug-report@moonshot.ai>
-References: <20260902121247.3248539-1-yilinzhang@moonshot.ai>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260902121247.3248539-1-yilinzhang@moonshot.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <CAPBHdam0Y5cxjFgm7MgavPNHrb=wOSCG_BODbYsn5y2-CGKfQw@mail.gmail.com>
+In-Reply-To: <CAPBHdam0Y5cxjFgm7MgavPNHrb=wOSCG_BODbYsn5y2-CGKfQw@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 2 Sep 2026 10:18:34 -0400
+X-Gm-Features: AcwNN1U6X99laJb8c88uWPJYk3eUllDdXF5Y-4eBqmjSTbtDjbsRQ5IZUPYJXh8
+Message-ID: <CAM0EoMkc57T879QJEOUg4n7pgoff4iLzmF16FGD7j+0ZXmhrug@mail.gmail.com>
+Subject: Re: [BUG] net/sched: cls_u32: ht_down refcount leak on replace_hw failure
+To: Qingyu Zhang <usupergate@gmail.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-on 9/2/26 8:12 PM, Yilin Zhang wrote:
-> subflow_syn_recv_sock() destroys the freshly cloned child for an MP_JOIN
-> SYN under the fatal fallback and hands it back with drop_req=true to
-> tell the caller to drop both the request and the child. Of the three
-> syn_recv_sock() callers, tcp_check_req() and the cookie path honor that
-> contract; tcp_fastopen_create_child() only checks child != NULL.
+On Tue, Sep 1, 2026 at 9:55=E2=80=AFPM Qingyu Zhang <usupergate@gmail.com> =
+wrote:
 >
-> With an MPTCP listener and server-side Fast Open enabled, this can
-> become a use-after-free:
+> Hello,
 >
->    1. fetch a TFO cookie,
->    2. complete a normal MP_CAPABLE handshake to learn the server's key
->       and compute the token offline,
->    3. send an MP_JOIN SYN carrying that token and the valid TFO cookie,
->    4. a subsequent accept() hands the freed socket to userspace, and
->       any fd operation triggers slab-use-after-free, leading to a
->       denial of service.
+> u32_change()'s replace-failure path leaks a reference on the linked
+> hash table (ht_down). A patch is attached.
 >
-> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
-> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
-> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
-> ---
->   net/ipv4/tcp_fastopen.c | 5 +++++
->   1 file changed, 5 insertions(+)
+> Type: memory leak (refcount)
 >
-> diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-> index 6a031a1a6c9f..7a0b58b39a2c 100644
-> --- a/net/ipv4/tcp_fastopen.c
-> +++ b/net/ipv4/tcp_fastopen.c
-> @@ -337,6 +337,11 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
->   	if (!child)
->   		return NULL;
->   
-> +	if (own_req && rsk_drop_req(req)) {
-> +		sock_put(child);
+> * Summary
+>
+> u32_init_knode() does refcount_inc(&ht->refcnt) for the copied
+> ht_down. On u32_replace_hw_knode() failure:
+>
+>        u32_unbind_filter(tp, new, tb);
+>        if (tb[TCA_U32_LINK]) {
+>                ht_old =3D rtnl_dereference(n->ht_down); /* live knode */
+>                if (ht_old)
+>                        refcount_inc(&ht_old->refcnt);
+>        }
+>        __u32_destroy_key(new);  /* already drops new->ht_down */
+>
+> The extra inc is on the original knode's table. Destroying new
+> already accounts for the copy. Net +1 that is never dropped.
+> e8d3d78c19be added that inc; it is wrong given ec5b0f605b105.
+>
+> * Affected
+>
+> e8d3d78c19be. Reproduced on 08dbfad3f504. Needs cls_u32, a way to
+> make u32_replace_hw_knode() fail (no offload device: kretprobe, or
+> a driver that returns -EINVAL), and kmemleak.
+>
+> * Reproduction
+>
+>        tc qdisc add dev lo ingress
+>        tc filter add dev lo parent ffff: handle 800: protocol all u32 div=
+isor 1
+>        tc filter add dev lo parent ffff: handle 801: protocol all u32 div=
+isor 1
+>        tc filter add ... u32 ht 800: link 801: ...
+>        # replace that knode so replace_hw_knode fails
+>        tc filter del ...
+>        echo scan > /sys/kernel/debug/kmemleak
+>
+> kmemleak: size 192, u32_change, handle 0x80100000.
+>
+> Because skip_sw on replace is rejected earlier ("flags do not
+> match"), the QEMU PoC uses a kretprobe to force the 2nd
+> u32_replace_hw_knode to -EINVAL (poc/fail_replace.c + poc/u32_poc.c).
+>
 
+Isnt this the same cutnpaste from here?
+https://lore.kernel.org/netdev/20260813122242.1690024-4-jedrzej.jagielski@i=
+ntel.com/
 
-The child is still locked by inet_csk_clone_lock.
+Have your AI check next time instead of overwhelming us on the list.
+It is better not to post anything that makes someone spend valuable
+cycles going to double-check this slop.
 
+cheers,
+jamal
 
-We should do this instead:
-
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 471c78be5513..22494ff746c7 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -337,6 +337,12 @@ static struct sock 
-*tcp_fastopen_create_child(struct sock *sk,
-         if (!child)
-                 return NULL;
-
-+       if (own_req && rsk_drop_req(req)) {
-+               bh_unlock_sock(child);
-+               sock_put(child);
-+               return NULL;
-+       }
-+
-         spin_lock(&queue->fastopenq.lock);
-         queue->fastopenq.qlen++;
-         spin_unlock(&queue->fastopenq.lock);
-
-
-> +		return NULL;
-
-
-tcp_conn_request will still send a SYN-ACK, but the RST was already sent
-
-
-It's not clean. Maybe we should do something like this instead (untested)
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0f60a1dbf927..d371845d601a 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7775,6 +7775,10 @@ int tcp_conn_request(struct request_sock_ops 
-*rsk_ops,
-                 READ_ONCE(sk->sk_data_ready)(sk);
-                 bh_unlock_sock(fastopen_sk);
-                 sock_put(fastopen_sk);
-+       } else if (rsk_drop_req(req)) {
-+               reqsk_free(req);
-+               dst_release(dst);
-+               return 0;
-         } else {
-                 tcp_rsk(req)->tfo_listener = false;
-                 if (!want_cookie &&
-
-
-
-BTW, since this is reported by LLM I think it is not difficult to have 
-the LLM write a     reproducer and test this patch.
-
+> * Expected
+>
+> Failed replace does not change ht_down's refcount of the live knode.
+>
+> * Actual
+>
+> The 801: hash table stays referenced after qdisc destroy.
+>
+> Please consider the suggested patch
+>
+> Thanks.
+>
+> Suggested patch:
+> ```
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index ac6d0fa5a40e..a619dbb435b8 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -938,14 +938,6 @@ static int u32_change(struct net *net, struct sk_buf=
+f *in_skb,
+> err =3D u32_replace_hw_knode(tp, new, flags, extack);
+> if (err) {
+> u32_unbind_filter(tp, new, tb);
+> -
+> - if (tb[TCA_U32_LINK]) {
+> - struct tc_u_hnode *ht_old;
+> -
+> - ht_old =3D rtnl_dereference(n->ht_down);
+> - if (ht_old)
+> - refcount_inc(&ht_old->refcnt);
+> - }
+> __u32_destroy_key(new);
+> return err;
+> }
+> ```
