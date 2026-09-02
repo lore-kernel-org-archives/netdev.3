@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D20386C22;
-	Wed,  2 Sep 2026 05:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC0E38758C;
+	Wed,  2 Sep 2026 05:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788327406; cv=none; b=NSOhOSnySf4FYtQxiP/ebHqkvgevoIF7QWEky20XOi5zjoOylNUy2eWtc9/KHQwB63zMIUMAp9ewtZ2p9WXZkzk0ZTtZNAub/6Ioi4jSAOLtSihMl8Wy7T1TPPbvIS3qyHLhpXU616MDCPljF1pvn517n+nyg47q+gdKmyy5/R0=
+	t=1788327407; cv=none; b=UjIdPZvk0Hzv6KtrOjLdQZDtvaDGGQd94XIjQz8/DrrLtI2MBKtJeUBfXm832AjDSyX6Jrow6ti9pKeZTpngntm7nWkq6jEG8GOLWQ+x2s4mydXYh0Q6Y1JzRhHLWHi50ChhU6s3ISsXLtSzuF//RslglkNz1aJmm39DdIJmIj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788327406; c=relaxed/simple;
-	bh=tj2gzw+V0f8YYRj/T9zFR6h+qIP/M4tRfC+H/SN3jAs=;
+	s=arc-20240116; t=1788327407; c=relaxed/simple;
+	bh=PK/FWWehGLFaLTiqWVOyihZM52jAgczzjuxMrm129iA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SUb/5bw6TBqF3Q6Wm2PEJNfRm8jOThqLWc0awRJ70+IauCcQjd+N3w4BwVAqMGmHZLD/ZO514ToX4FrQbWbcD+cw+AwRgRdy4Sl6SvHI06GTa0AEJNpd3ZbHhivI1hyJLOgVvRf59eg+Gsw+kNSZzif+7EeY3ecpydd3CJm+mPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0UhWkVC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=gi5czt1x52/I+Ysss0h3b5Es20Bmlh9ofDpBHyQbqbmp+/t6oWp1LL0QGVi9i7p5pR/3x4iVHrCJ3NvVTQ4MLYgbjj6q41ubQsn5EHf47fB/FDI5tEPG+uHjHOqJzKNJkOXTWn9SXW4knIrBlGIh4mbXib6nNq71/d94IncNiAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb7aAwla; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0UhWkVC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D661F000E9;
-	Wed,  2 Sep 2026 05:36:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb7aAwla"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAC61F00A3A;
+	Wed,  2 Sep 2026 05:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788327404;
-	bh=b5K/2tcey193i96/BXtW35ONxn2wwpOGswPUoaAYHyM=;
+	s=k20260515; t=1788327406;
+	bh=Y6IQbBn3Cx/BWmZYf6oCeu7h2HCAWR3VNIWpyWvQBg0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H0UhWkVCTO3YnfMIBWKd0AOAMxmNPJ2n3Q6HRKZjChqZ5rwDZCp5l9yPR1b9zicEY
-	 cHD75vvAlZ1yzXpKwCwtWMDA2qCIFjNMl2pg/UHQyJB5FLTxi2HFrQXEnmUWNlXl7l
-	 gv1PQxzhhR02SSR7TAsw54fRlygZ10WRcfgsS61+0nn0tQA75F24mkIqRMeHCq6sQ6
-	 4g5qtxEx2o0yQ2dzucfWncyPowAbSmKaJF6SGfD5a8eRYKIEYsPViXIRsYuIC5tqFX
-	 OMVMdw5cRyey0j6gWQ9BYOwr7Fqd598aiaelCE5YfyGsLKRMCP3KFY/5vK08mVCnmS
-	 wsAeQxd3bborg==
-Subject: Re: [net-next,v15,10/13] net: mdio: realtek-rtl9300: Open up C22 and
- C45 space in parallel
+	b=Cb7aAwla7aGBSmEWVwqvgNnIyL00BTUrjXiUF77sa/GEKFTm9AAsg+knw6pd4wDd1
+	 E+gFcmA7sLnOH1pl/dErz3shB1OVJkh/ICUyFUxUeSw/l+84W3Zlr7HDDm63Ra5p4Z
+	 GzcAhbIKife6j9BYCFry3Ea+8ZS04lZrtRhi20+55RLRdHe38n0uUQNsD8S3JIwQaw
+	 n7dZNMndkLhNKdx19PCajIsiH57dJaNJyw029x8mRJyfYiEZKW/ZFIhHTIJUIzGIl/
+	 U1Y/ryArqRKg4/y9fqAhSqbDnFq5O0hwGHqnvdmcXogmO8+YmE6gwbA9zSgoCIlmbO
+	 ZW4/z4/3KunNw==
+Subject:
+ Re: [net-next,v15,11/13] net: mdio: realtek-rtl9300: Add support for RTL838x
 From: netdev-bot+sashiko@kernel.org
 To: markus.stockhausen@gmx.de
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
@@ -35,10 +35,10 @@ Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
  daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, devicetree@vger.kernel.org
-Date: Wed, 02 Sep 2026 05:36:43 +0000
-Message-ID: <178832740342.3394541.17329043321577379359@kernel.org>
-In-Reply-To: <20260831143439.2404484-11-markus.stockhausen@gmx.de>
-References: <20260831143439.2404484-11-markus.stockhausen@gmx.de>
+Date: Wed, 02 Sep 2026 05:36:44 +0000
+Message-ID: <178832740475.3394541.12105423283158871835@kernel.org>
+In-Reply-To: <20260831143439.2404484-12-markus.stockhausen@gmx.de>
+References: <20260831143439.2404484-12-markus.stockhausen@gmx.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,270 +52,195 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
-- [Medium] otto_emdio_probe_one() now installs both accessor pairs
-  (bus->read/write and bus->read_c45/write_c45) on every SMI bus, but…
-- [Medium] priv->smi_bus_is_c45[] is set per physical SMI bus whenever
-  any DT child of that bus declares compatible = "ethernet-phy-…
-- [Medium] Installing bus->read_c45/bus->write_c45 on every SMI bus
-  (including the C22-polling ones) makes PHY-driver code paths live that…
-- [Medium] The driver's C22 path is Realtek-specific:
-  otto_emdio_9300_read_c22()/otto_emdio_9300_write_c22() always encode…
+- [Medium] On the newly added RTL838x variant, a device tree that
+  declares a Clause 45 PHY (compatible = "ethernet-phy-ieee802.3-c45")…
+- [Low] DISCARDED (fixed later in the same series): Kconfig prompt/help
+  text and MODULE_DESCRIPTION still advertise only the RTL9300 family…
+- [Low] The driver now matches "realtek,rtl8380-mdio", but no in-tree
+  binding documents a parent node that satisfies what the driver…
+- [Low] The RTL838x variant introduced here declares RTL8380_NUM_BUSES =
+  1, but Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml…
 
 --
 
-net: mdio: realtek-rtl9300: Open up C22 and C45 space in parallel
+net: mdio: realtek-rtl9300: Add support for RTL838x
 
-The patch stops selecting the mii_bus accessors based on the per-bus
-smi_bus_is_c45[] flag and instead registers both the C22 and the C45
-read/write callbacks on every SMI bus, matching what the downstream
-driver does.
+This patch adds the RTL838x (maple) variant to the Realtek MDIO driver by
+duplicating the RTL9300-style register defines with an RTL8380 prefix,
+adding C22/C45 accessors, a setup_controller() callback that sets the PHY
+patch-done bit, and the new "realtek,rtl8380-mdio" match entry.
 
-Link: https://github.com/openwrt/openwrt/blob/main/target/linux/realtek/files-6.18/drivers/net/phy/realtek/realtek_multiport.c#L349
-Link: https://github.com/openwrt/openwrt/blob/main/target/linux/realtek/files-6.18/drivers/net/mdio/mdio-realtek-otto.c#L1072
+A few questions below on the new variant description and the device tree
+side.
 
 > diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
-> index ae7ba86e90b9a..b90972c1dc6a2 100644
+> index b90972c1dc6a2..57ab89afb9e5e 100644
 > --- a/drivers/net/mdio/mdio-realtek-rtl9300.c
 > +++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-> @@ -688,13 +688,10 @@ static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_priv *priv
->  		return -ENOMEM;
+> @@ -126,6 +126,28 @@
+>  #include <linux/property.h>
+>  #include <linux/regmap.h>
 >  
->  	bus->name = "Realtek Switch MDIO Bus";
-> -	if (priv->smi_bus_is_c45[mdio_bus]) {
-> -		bus->read_c45 = otto_emdio_read_c45;
-> -		bus->write_c45 = otto_emdio_write_c45;
-> -	} else {
-> -		bus->read = otto_emdio_read_c22;
-> -		bus->write = otto_emdio_write_c22;
-> -	}
-> +	bus->read_c45 = otto_emdio_read_c45;
-> +	bus->write_c45 = otto_emdio_write_c45;
-> +	bus->read = otto_emdio_read_c22;
-> +	bus->write = otto_emdio_write_c22;
+> +#define RTL8380_NUM_BUSES			1
+      ^^^^
+
+[Severity: Low]
+Should the binding also express the one-bus limit for this compatible?
+Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml applies the
+same subnode pattern to every compatible and has no per-compatible if/then
+block:
+
+  patternProperties:
+    '^mdio-bus@[0-3]$':
+      $ref: mdio.yaml#
+
+So a device tree for realtek,rtl8380-mdio with mdio-bus@1 through
+mdio-bus@3 validates cleanly, but the driver then refuses it in
+otto_emdio_probe_one():
+
+  if (mdio_bus >= priv->info->num_buses)
+          return dev_err_probe(dev, -EINVAL,
+                               "illegal (dangling) smi bus number %d\n", mdio_bus);
+
+and otto_emdio_map_ports() likewise returns -EINVAL for
+"illegal smi bus number". Since otto_emdio_probe() propagates that error,
+the whole controller fails to probe and even the valid bus 0 is never
+registered. The later 2-bus RTL839x compatible in this series has the same
+gap.
+
+> +#define RTL8380_NUM_PAGES			4096
+> +#define RTL8380_NUM_PORTS			28
+> +#define RTL8380_SMI_GLB_CTRL			0xa100
+> +#define   RTL8380_SMI_PHY_PATCH_DONE		BIT(15)
+> +#define RTL8380_SMI_ACCESS_PHY_CTRL_0		0xa1b8
+> +#define RTL8380_SMI_ACCESS_PHY_CTRL_1		0xa1bc
+> +#define   RTL8380_PHY_CTRL_REG_ADDR		GENMASK(24, 20)
+> +#define   RTL8380_PHY_CTRL_PARK_PAGE		GENMASK(19, 15)
+> +#define   RTL8380_PHY_CTRL_MAIN_PAGE		GENMASK(14, 3)
+> +#define   RTL8380_PHY_CTRL_WRITE		BIT(2)
+> +#define   RTL8380_PHY_CTRL_READ			0
+> +#define   RTL8380_PHY_CTRL_TYPE_C45		BIT(1)
+> +#define   RTL8380_PHY_CTRL_TYPE_C22		0
+> +#define   RTL8380_PHY_CTRL_FAIL			0 /* no fail indicator */
+> +#define RTL8380_SMI_ACCESS_PHY_CTRL_2		0xa1c0
+> +#define   RTL8380_PHY_CTRL_INDATA		GENMASK(31, 16)
+> +#define   RTL8380_PHY_CTRL_DATA			GENMASK(15, 0)
+> +#define RTL8380_SMI_ACCESS_PHY_CTRL_3		0xa1c4
+> +#define RTL8380_SMI_POLL_CTRL			0xa17c
+> +#define RTL8380_SMI_PORT0_5_ADDR_CTRL		0xa1c8
+> +
+>  #define RTL9300_NUM_BUSES			4
+>  #define RTL9300_NUM_PAGES			4096
+>  #define RTL9300_NUM_PORTS			28
+
+[ ... ]
+
+> @@ -586,6 +662,15 @@ static int otto_emdio_setup_topology(struct otto_emdio_priv *priv)
+>  	return 0;
+>  }
+>  
+> +static int otto_emdio_8380_setup_controller(struct otto_emdio_priv *priv)
+> +{
+> +	/*
+> +	 * PHY_PATCH_DONE enables PHY control via SoC. This is required for PHY access, including
+> +	 * patching and must be set before the PHYs are probed.
+> +	 */
+> +	return regmap_set_bits(priv->regmap, RTL8380_SMI_GLB_CTRL, RTL8380_SMI_PHY_PATCH_DONE);
+> +}
 
 [Severity: Medium]
-The commit message says that "when polling is set to C22 most of the C45
-space can not be accessed" and that only "EEE register access is allowed
-independently from the polling mode".  Should the opening up be limited to
-that documented exception rather than to the whole opposite address space?
+Can priv->smi_bus_is_c45[] end up set on RTL838x with nothing in the
+hardware matching it?
 
-The hardware frame format and the PPU scan mode are still derived per bus
-from priv->smi_bus_is_c45[] in otto_emdio_9300_setup_controller():
+otto_emdio_map_ports() sets the flag for any variant:
 
-	if (priv->smi_bus_is_c45[i])
-		glb_ctrl_val |= RTL9300_GLB_CTRL_INTF_SEL(i);
+  if (of_device_is_compatible(phy_dn, "ethernet-phy-ieee802.3-c45"))
+          priv->smi_bus_is_c45[bus] = true;
 
-and in otto_emdio_9310_setup_controller():
+For RTL9300/RTL9310 that flag is consumed by their setup_controller()
+callbacks, which program RTL9300_GLB_CTRL_INTF_SEL and
+RTL9310_SMI_GLB_FMT_SEL_C45. The new RTL838x callback above never reads it,
+which matches the commit message: "The setup_controller() function needs no
+C45 configuration as polling only works in C22 mode".
 
-	err = regmap_assign_bits(priv->regmap, RTL9310_SMI_GLB_CTRL1,
-				 RTL9310_SMI_GLB_FMT_SEL_C45(i),
-				 priv->smi_bus_is_c45[i]);
+The flag still has a software consumer in otto_emdio_notify_phy_attach():
 
-so the restriction described in the changelog is unchanged.  Before this
-patch an access into the non-configured space was refused by mdio_bus.c
-because the callback was NULL:
+  if (!priv->smi_bus_is_c45[chan->mdio_bus] &&
+      !phy_id_compare_vendor(phydev->phy_id, RTL_VENDOR_ID)) {
+          phydev_err(phydev, "Only Realtek PHYs allowed on C22 bus\n");
+          return -EOPNOTSUPP;
+  }
 
-drivers/net/phy/mdio_bus.c:__mdiobus_c45_read() {
-	if (bus->read_c45)
-		retval = bus->read_c45(bus, addr, devad, regnum);
-	else
-		retval = -EOPNOTSUPP;
-	...
-}
+  return otto_emdio_set_port_polling(priv, port, true);
 
-Now the command is issued to the controller instead.  otto_emdio_run_cmd()
-only reports the controller FAIL bit:
+With RTL8380_NUM_BUSES == 1, a single PHY node declaring
+compatible = "ethernet-phy-ieee802.3-c45" disables that check for every PHY
+on the device, and polling is then armed anyway for the port. The PHY keeps
+being accessed with the Realtek paged C22 encoding (priv->page[port] into
+RTL8380_PHY_CTRL_MAIN_PAGE) by a polling engine that only does C22.
 
-	return cmdstate & info->cmd_fail ? -ENXIO : 0;
+Because RTL8380_PHY_CTRL_FAIL is 0, otto_emdio_run_cmd() can never report a
+hardware failure here:
 
-Can a command that the controller accepts but cannot perform correctly in
-the current mode return success here, so that otto_emdio_read_c45() hands
-the data register contents to phylib as a valid PHY register value?  And can
-a wrongly executed write leave the PHY in a state the driver has no record
-of?
+  return cmdstate & info->cmd_fail ? -ENXIO : 0;
 
-The port is also not excluded from the polling engine around a transfer -
-otto_emdio_set_port_polling() is only toggled from the attach/detach
-notifiers, and priv->lock only serializes the CPU side command writes.
+Would it make sense for the RTL838x path to reject (or at least warn about)
+a bus flagged as C45, rather than letting the driver bookkeeping and the
+hardware mode diverge silently?
 
-Note the driver keeps the opposite policy elsewhere.  The C22 handlers still
-refuse MMD access with:
+[ ... ]
 
-	if (regnum == MII_MMD_CTRL || regnum == MII_MMD_DATA) {
-		dev_warn_once(&bus->dev,
-			      "C45 over C22 read access broken due to polling\n");
-		return -EOPNOTSUPP;
-	}
+> @@ -923,6 +1030,7 @@ static const struct otto_emdio_info otto_emdio_9310_info = {
+>  };
+>  
+>  static const struct of_device_id otto_emdio_ids[] = {
+> +	{ .compatible = "realtek,rtl8380-mdio", .data = &otto_emdio_8380_info },
 
-and the file header comment states:
+[Severity: Low]
+Is there a binding for the parent node this compatible needs?
 
- * - Access to MDIO_AN_EEE_ADV and MDIO_AN_EEE_LPABLE works via C45 over C22.
- * - It is unclear if these sequences change for different PHYs.
+otto_emdio_probe() takes its regmap from the parent:
 
-Should the header comment and the MMD guard be updated together with this
-change, or should the new access be narrowed to the EEE registers?
+  priv->regmap = syscon_node_to_regmap(dev->parent->of_node);
 
-[Severity: Medium]
-Does this change PHY detection and binding on device trees that mix C22 and
-C45 PHYs on one SMI bus?
+and otto_emdio_map_ports() requires an "ethernet-ports" child of that same
+parent, otherwise probe fails with -EINVAL "missing ethernet-ports":
 
-otto_emdio_map_ports() sets the flag for the whole bus as soon as a single
-child declares Clause 45:
+  ports_dn = of_get_child_by_name(parent->of_node, "ethernet-ports");
 
-	if (of_device_is_compatible(phy_dn, "ethernet-phy-ieee802.3-c45"))
-		priv->smi_bus_is_c45[bus] = true;
+The only schema describing such a container (syscon + simple-mfd with
+ethernet-ports and an mdio-controller child) is
+Documentation/devicetree/bindings/net/realtek,rtl9301-switch.yaml, and its
+compatible enum lists only realtek,rtl9301/9302b/9302c/9303-switch, also at
+the end of this series. A grep of Documentation/devicetree/bindings finds no
+rtl838x/rtl8380 switch compatible.
 
-and setup_controller() then programs the frame format for the entire
-interface from that flag.  Previously a PHY of the opposite protocol on such
-a bus was unreachable, so get_phy_c22_id()/get_phy_c45_ids() returned
--EOPNOTSUPP and of_mdiobus_register() failed with a clear error.  With both
-callback pairs installed the ID read is now issued on an interface programmed
-for the other framing, and since otto_emdio_run_cmd() only checks the FAIL
-bit, whatever is in the data register becomes the PHY ID used for driver
-matching.
+That leaves a DT author either inventing an undocumented parent compatible
+(caught by dtbs_check) or claiming realtek,rtl9301-switch on RTL838x
+hardware, whose register window this patch treats as different (0xa1xx
+versus 0xcaxx). Should a parent binding for the RTL838x switch/syscon node
+be added alongside this?
 
-The C45 fallback in get_phy_device() also becomes reachable on C22 polling
-buses:
+[Severity: Low]
+This isn't a bug, but with RTL838x now matched, the Kconfig prompt and help
+text in drivers/net/mdio/Kconfig still say:
 
-drivers/net/phy/phy_device.c:get_phy_device() {
-	if (!is_c45 && phy_id == 0 && bus->read_c45) {
-		r = get_phy_c45_ids(bus, addr, &c45_ids);
-		if (!r)
-			return phy_device_create(bus, addr, phy_id,
-						 true, &c45_ids);
-	}
-	...
-}
+  tristate "Realtek RTL9300 MDIO interface support"
+  ...
+    This driver supports the MDIO interface found in the Realtek
+    RTL9300 family of Ethernet switches with integrated SoC.
 
-Can this create a bogus C45 phydev where registration previously returned
--ENODEV?
+and MODULE_DESCRIPTION() in this file still says "RTL9300 MDIO driver". The
+later patch in this series, "net: mdio: realtek-rtl9300: reword Kconfig and
+module description", changes both to RTL83xx/RTL93xx, so this is only a
+transient state within the series. Would folding the wording change in
+earlier keep each commit self-consistent?
 
-Once such a mismatched PHY is attached, otto_emdio_notify_phy_attach()
-enables hardware polling for the port without comparing the individual PHY
-protocol against the bus polling mode:
-
-	if (!priv->smi_bus_is_c45[chan->mdio_bus] &&
-	    !phy_id_compare_vendor(phydev->phy_id, RTL_VENDOR_ID)) {
-		phydev_err(phydev, "Only Realtek PHYs allowed on C22 bus\n");
-		return -EOPNOTSUPP;
-	}
-
-	return otto_emdio_set_port_polling(priv, port, true);
-
-Would the PPU then send wrong-format polling transactions for that port,
-leaving MAC_LINK_STS unpopulated as described in the file header comment?
-
-[Severity: Medium]
-Can enabling read_c45/write_c45 on C22 polling buses route MMD accesses to
-the wrong PHY on the same bus?
-
-The Realtek PHY driver reaches the bus C45 accessors through helpers that
-pass the literal address 0 rather than phydev->mdio.addr:
-
-drivers/net/phy/realtek/realtek_main.c:
-static int rtlgen_read_vend2(struct phy_device *phydev, int regnum)
-{
-	return __mdiobus_c45_read(phydev->mdio.bus, 0, MDIO_MMD_VEND2, regnum);
-}
-
-static int rtlgen_write_vend2(struct phy_device *phydev, int regnum, u16 val)
-{
-	return __mdiobus_c45_write(phydev->mdio.bus, 0, MDIO_MMD_VEND2, regnum,
-				   val);
-}
-
-Those helpers were written for the r8169 internal PHY bus (commit
-da681ed73fb98 "net: phy: realtek: improve mmd register access for internal
-PHY's").  rtlgen_read_mmd()/rtlgen_write_mmd() use them precisely for the
-EEE registers this patch wants to open up:
-
-	if (devnum == MDIO_MMD_VEND2)
-		ret = rtlgen_read_vend2(phydev, regnum);
-	else if (devnum == MDIO_MMD_PCS && regnum == MDIO_PCS_EEE_ABLE)
-		ret = rtlgen_read_vend2(phydev, RTL_MDIO_PCS_EEE_ABLE);
-	else if (devnum == MDIO_MMD_AN && regnum == MDIO_AN_EEE_ADV)
-		ret = rtlgen_read_vend2(phydev, RTL_MDIO_AN_EEE_ADV);
-
-and they are installed as .read_mmd/.write_mmd on the "Generic FE-GE Realtek
-PHY" entry matched by rtlgen_match_phy_device() for RTL_GENERIC_PHYID, a
-Realtek vendor ID this MDIO driver explicitly admits on C22 buses.
-
-Before this patch __mdiobus_c45_read() returned -EOPNOTSUPP on such a bus.
-Now the literal 0 is resolved against the shared switch bus:
-
-	port = otto_emdio_phy_to_port(bus, phy_id);
-	if (port < 0)
-		return port;
-
-So phy_ethtool_set_eee() -> genphy_c45_write_eee_adv() -> phy_write_mmd()
-for port N would rewrite the EEE advertisement of whichever port is mapped
-to SMI address 0, and genphy_c45_read_eee_abilities() would populate port
-N's supported_eee from that port.  If no port on the bus uses address 0,
-otto_emdio_phy_to_port() returns -ENOENT instead of -EOPNOTSUPP, which
-callers that treat -EOPNOTSUPP as "feature absent" do not expect:
-
-drivers/net/phy/realtek/realtek_main.c:rtl822x_read_mmd() {
-	...
-	if (ret != -EOPNOTSUPP)
-		return ret;
-	...
-}
-
-The hardcoded address 0 predates this series, but is this patch what makes
-it reachable on C22 buses?
-
-[Severity: Medium]
-Registering the C22 accessors on C45 buses also makes them reachable for
-non-Realtek PHYs.  Should the vendor gating follow the PHY rather than the
-bus?
-
-The C22 path is Realtek specific.  otto_emdio_9300_read_c22() and
-otto_emdio_9300_write_c22() always encode the page fields:
-
-	.c22_data	= FIELD_PREP(RTL9300_PHY_CTRL_REG_ADDR, regnum) |
-			  FIELD_PREP(RTL9300_PHY_CTRL_PARK_PAGE, 0x1f) |
-			  FIELD_PREP(RTL9300_PHY_CTRL_MAIN_PAGE, priv->page[port]),
-
-so per the file header comment the controller emits a page select write to
-PHY register 31 before every C22 transaction, while
-otto_emdio_read_c22()/otto_emdio_write_c22() emulate register 31 in
-software.
-
-The only guard against doing that to a PHY without a Realtek page register
-is bus scoped, in otto_emdio_notify_phy_attach():
-
-	if (!priv->smi_bus_is_c45[chan->mdio_bus] &&
-	    !phy_id_compare_vendor(phydev->phy_id, RTL_VENDOR_ID)) {
-		phydev_err(phydev, "Only Realtek PHYs allowed on C22 bus\n");
-		return -EOPNOTSUPP;
-	}
-
-On a C45 bus that check is skipped, and a non-Realtek 10G PHY is legitimately
-allowed there.  Previously bus->read/bus->write were NULL on such a bus, so
-no C22 access could reach that PHY.  Now a PHY driver's phy_read()/
-phy_write(), or userspace via ioctl(SIOCGMIIREG)/ioctl(SIOCSMIIREG), takes
-the non-C45 branch:
-
-drivers/net/phy/phy.c:phy_mii_ioctl() {
-	case SIOCGMIIREG:
-		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
-			...
-			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
-	...
-}
-
-Can this write the vendor specific register 31 of a foreign PHY, and can a
-read of register 31 return driver bookkeeping instead of the device's actual
-register content, leaving software and hardware state diverged?
-
-Extending the vendor check to the C22 accessors on every bus, or omitting the
-page fields for non-Realtek devices, would keep the gating with the PHY.
-
->  	bus->parent = dev;
->  	bus->notify_phy_attach = otto_emdio_notify_phy_attach;
->  	bus->notify_phy_detach = otto_emdio_notify_phy_detach;
+>  	{ .compatible = "realtek,rtl9301-mdio", .data = &otto_emdio_9300_info },
+>  	{ .compatible = "realtek,rtl9311-mdio", .data = &otto_emdio_9310_info },
+>  	{}
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831143439.2404484-1-markus.stockhausen%40gmx.de
