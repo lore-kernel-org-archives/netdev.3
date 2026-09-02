@@ -1,187 +1,174 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA593E92AC;
-	Wed,  2 Sep 2026 08:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FDC3EC804
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 08:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788338602; cv=none; b=Ml2HBahnt09z/m5Hs4aGEdJZ+EmCGIqU2d/QGkU9KHbbBG1URVvxU2828Mf09VFwrm7OJPIs/ybxjiqu0jC+jWywAwvErQgR0y1vb4IJIKee3iiusFRnvEAwj9tZ/w+nh9dsvgWVT0NMmEOQhe9Douh3pvjIMakSR8sTfOnTAFs=
+	t=1788338618; cv=none; b=Krp7ZaEBy6S9bE1/dX2X+U6hPt0/5jkpU7lu5xXCDwdO9o9kL5gUaz7vGyFVfxT2gK1sNFbshu7uBWNa3cOgJ9gukrPKPp7ypxGTnbHkUjRAYg+xefGCGJkoI/lPIbS/aS38DBnTYUSyQxnkn5QD1LlTnHW9d7/P1IR2xVlp2g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788338602; c=relaxed/simple;
-	bh=fyo65rgi1I4XoYNMUJbJtRo49/ATU+C0glxBdqh4WeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rcG2BSkDvVO784rZ+wAIHl7g9VgZc1vWWGFJfyIOXLCalQiUUPabZX6HplMk2u+iX+2uLlN/x6brZTNvKe4OKXtfqyF6YqO95KdaXzAv+Fzs7l7hkf50x+SQ4MJtatPnVOgTD0at9Jq29N++qB9Fhs7dRq4RWOqDqkzesmtBT2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=XptBUvUP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=E1ubXtQs; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	s=arc-20240116; t=1788338618; c=relaxed/simple;
+	bh=7gH+SD8eLuCh344QK/gV4nKDBevSAhteXMbkV3w/8Vw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J/x0Ti+p6wXqbQBcpsXr4+4WIUjHqz4yqZa94Fxsy0cuu8O/HWVuN/3cvuU8btrx0Kh7otyoKG8/JP9Kmb6TX+zgCdwGAKwpUPbpYM5mjzB+GLfMS2If1BSQm1EO10lTd61EYMmxalaSMLdRmuqVcTxhXoXrfWJkKULC7grAXhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hA+iZwUd; arc=none smtp.client-ip=74.125.227.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="XptBUvUP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="E1ubXtQs"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7BB00140019D;
-	Wed,  2 Sep 2026 04:43:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Wed, 02 Sep 2026 04:43:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788338599;
-	 x=1788424999; bh=w23wXmKVstOydYIXHqk7q3E1FXLx5/jPKALPPrzHhNE=; b=
-	XptBUvUPqbsW81DaMTJyCH2pe/TKX4RFl8XgCPCK0vyQfYSK8E4sF1J+JimHaKn/
-	aB98LNJQxC8lw/6wAA9/Fhu6MxEQFtcKLR8OkBpYsgmVUAcsByA3YLECXs8daK/G
-	DO/BTO3W9FWsDzl2orzQHtT4+Ahst0Oi257Ei281kNDSTVVmV0+59wRDp2+pdxZF
-	P9CPIe8FMReKPRC4NoX1qbs3QO4sgRAkpSj/m3MNXqbRA1+xV/hCdltQ7a1HjSas
-	Ko4q5o20wGtwfvHe9TpekKYf28SzE9VtzPVBytFKTk1dH2y4k8ILlb1z+iTUQ5u2
-	LA16D9pNycXpoX3wcmOW8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788338599; x=
-	1788424999; bh=w23wXmKVstOydYIXHqk7q3E1FXLx5/jPKALPPrzHhNE=; b=E
-	1ubXtQsY/yILapAykumP8hjbhF4ta4eAtwuJDeNcldDhU6QwZtI3ja0rCjvRRklg
-	wMQW6EVRfLnx94bhAcrRnAnkuU8V3bDn1m/TlS44wAOqAbRZsPlBM++g5pDYXyES
-	MGuJD5Rnxp7685VnAm8CpSEYSW6juh6pe8/Ss2GmdoXvJcalknqnVvvld5YLTf2A
-	/vJU7MNk99oMYI6izutPE/1xkyHhYRzBUXLGnZWs6m9Z9/7PFtaoZnz+fn7kgUMI
-	pTGVHKRFUO+daXt4F4LGCMz+9fQamLeFbsPt5xwLeDsSFkwlsJUE+/3wNB8Q/Jwc
-	aN4zcKJCsrHItN/s7LYYw==
-X-ME-Sender: <xms:puGXahpTE3lPiD74vPR36WDJR3xbba7m3ayfgTIWliWYab5q7XGpfg>
-    <xme:puGXav-HXb9rtoRyNAdT-zSZ1FLtka-0yAI1Iajea_XUBknrS3LUvWJq123rBK5OZ
-    -8C3OVkD46vItkUopD7M4aYVl6HQ0BpYMlQpvNiVsQEe87jRXm13Wqd>
-X-ME-Received: <xmr:puGXav2jC7594WKpq9H4XKeTywV5YQRDMisuNZi1bdmXTPVbZNP30DVwZ_rKGKe3Jt02p1yp80tr71ywNsyDz0Fmrl1GMdE>
-X-ME-Proxy-Cause: dmFkZTGYV+Ldz7esYSoFXwSPlhFRnbZaD5qMVT7+OomT+XznTE+/fJaRljD+EMvmqL2YcZ
-    8TP1DE+xJ8yXZ9BeO5K71Wjl5RKPAgd7dtMPDMQDY1rBCNwTP5ukqWfg6olYQRG8HxS5Oz
-    m8KJkJWp+d2fjbdqHuRs9Q4w/aV5v+pCY0QbfATEZR0HTXgcA0wbem9a3PJ/12T7KzHa2J
-    BiamUDVYBV8B+y/KRIpvWEkTzgB2o1R7E/x+OMQ1T3+iVJ6KVG3zehdCWseapcvD6PxWVz
-    +ymzb3AM0IqXXBk9n4msnFRcF1vb2zWpjvJKWqgkdFGI73TOL9cMkuoGAnLRdMOSPBO8O7
-    vdBY+UT5DXeCX3Ueitvkci3HzQ+fCrLH0ceeInM3JWvzfn80iVX3lRx+sUWAzX7RukSfOj
-    RL0ln5OXxFOIplivo8L3pdB82m+7lccg6Cbme1qFjdnaXh2vrsILTt0scUqFEzlxYINTMc
-    EJBxrXYIR3Y5J5zzfTzcy59f5HYZdnkAZ/sZc4hQIfdbifsrvlSCWn36c/lG6CIwxJsDkM
-    mPj05wYvM9zS1bomUE3NdC5oeQKhBoJYK/e49zAFN7y5l210nc48N8s3shTU6IuqiGPdTe
-    yboaDVkHMeLcdgn00NMWgRb7MS1hIbcvl5PG2fty5PExdfiyCP60c5p9Nejw
-X-ME-Proxy: <xmx:puGXaqDfyjwycDlBOXmRxd8WiFrhxaE7NTXH9x-iU5E8w5SwtH-HHQ>
-    <xmx:puGXamCTrNH2B_rjmwufwBYlBAlvLTJfMGEOyA8C9qBgZ85kdFE4bw>
-    <xmx:puGXarPYCJJvJXU2ORxk6pYG7r3RX0kPtNuhOSIna76qGZBplCBzrQ>
-    <xmx:puGXagPJOCzS_rvJDovoErKeag-udyKhLnMg3ef029cUgmNHLKEpXw>
-    <xmx:p-GXalZkK4Wq_ysH09gz4YfjuIkvp_SCOP6hfr_QztRFpNHGJ4pd42GK>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 2 Sep 2026 04:43:18 -0400 (EDT)
-Date: Wed, 2 Sep 2026 10:43:16 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Sergey Shtylyov <sergei.shtylyov@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"DavidS. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 10/10] net: ethernet: ravb: Add gPTP support
- for Gen4
-Message-ID: <20260902084316.GD1116206@ragnatech.se>
-References: <f140a168-0f92-4507-bf07-f5297ad92159@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hA+iZwUd"
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2cf5e516e67so3307995ad.1
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 01:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788338615; x=1788943415; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sHd6n2JrNGVkpcXl+ihkA+tOmim5HyAzQwTnMpLSpuA=;
+        b=hA+iZwUdz1KC3O26wBF8R5Vt8imodPssKKl41h9UiApcUCjFKYmEiwJi0zPWqjdrSS
+         ObYpLAImajdYbpqNqHPkVPZsXovqgFm97bjvOlLjXxep0JSBo/Y2Q9+Xfn7NMxxRZs11
+         DXekszlaAeKxr+Tz03ZYd4gk3Uh8wUSez3BE2gfFJrXK6nqa6SIIFxLTzuu+I7Y9bQoy
+         Z0ZVVXw4HGfT08Lmmvw5dc6rDi91xM7ByuL4xoxwzLF3Y7mLmFl45aGi59m4ETqxoXjH
+         AnzQ6jBFTKymREWcYSdunBLxQHPJSN+57U6WL4g0ZrDIcHz2Op4p61dwsT3VxeZNcrwU
+         w+lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788338615; x=1788943415;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sHd6n2JrNGVkpcXl+ihkA+tOmim5HyAzQwTnMpLSpuA=;
+        b=afEUCK+Drbh4ZHbdonzID54ou+apYAQqBR27lyj7rJSkPBhWZ7H2jV/psCVENWEh7W
+         /h2l1HfeqNpBmcCflY74JhKCKqwcGntUXQjKJKqa+jK4K5VsV4Qj237cgV1QNi43KIJz
+         Eiv5QtNdWhhXy7XE4ovCgAXa9pP+7qBx20vSA7k4UVJUPpSLH9ISiGFoy6cx4bttRNIq
+         UB6FIw7YlRFy5PRLGmkYIGz1WucRAT4pOXQu0VLxSTuWQwxp3xFCDexSlYqwAuWjMmXe
+         Vr91kQsc0OymctPZMh8tYb/9FIR2lmy6CO6ErpzF7YMCt7fJ1KjmYSPehRmgGW6SQsfL
+         NQBw==
+X-Gm-Message-State: AFuF++kypqYi2yl36NEE8uab3Ll/Sk0ZbZ6KwuzFsyb8+FKuVoTDyalN
+	YfrW0bLpDJ52PNH1wtRBegnR5cK7+nm/SH2bMbStprpYaIMexabnIwvY92QdR6IbYlQ=
+X-Gm-Gg: AR+sD11mW4mv2dwjwiQQcaptmjQVoKo9w4puNxKsd0ERVQSK7LoPz9/MsjP66iDnOln
+	bsfMfy72im/CTd1qUyfj8fZiymkAxbc7Fi1eEeQpl/zc0ichNwvSSiG3KqjNKwabVv/sC8+RR5g
+	3BbYs+Qu1FO2MTMhMMQCQjrXN0Zg9TS45oG63RfeMmTknNSOTWnoMoQ3N+K+ByF9fHHx2spvaVj
+	9jielxNw+FZ8ooU1KM2U4E9wlizT5EshgXOLz38cBS6vhzuBPME274QjHLgKoWjvCs+Ly92MdoK
+	XvJu6Go0v7tZDwQFqSuvUG5/KCSzKkJzgpR/fQ9yx+O7mDoY6DbldZ5Kk7I0vOxPZkGiH1ATGvn
+	C8Rrm77usqrHZsID9f60URbz6RiKTVV/5L6Ay+pGN6V6T8Y+CUVC4Oyb3GMeWH8YrzI1QDVHGrA
+	yMOMXDVD0iOsXCBr4IyVmqGA/1xjPZMYlI8MgE1O5YzcdZJSkW/8ycVEig/w==
+X-Received: by 2002:a17:903:1acc:b0:2d8:d4d0:7931 with SMTP id d9443c01a7336-2daec76359dmr54463095ad.21.1788338615386;
+        Wed, 02 Sep 2026 01:43:35 -0700 (PDT)
+Received: from fedora ([59.172.176.172])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dadd35dadbsm9622825ad.13.2026.09.02.01.43.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 01:43:35 -0700 (PDT)
+From: XingWang Xiang <v3rdant.xiang@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	XingWang Xiang <v3rdant.xiang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] genetlink: pin family module during policy dump
+Date: Wed,  2 Sep 2026 17:43:17 +0900
+Message-ID: <20260902084317.4092542-1-v3rdant.xiang@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f140a168-0f92-4507-bf07-f5297ad92159@gmail.com>
 
-Hi Sergey,
+The generic netlink controller's policy dump keeps pointers to the target
+family's operation and policy tables in its callback state.  A dump may be
+split across multiple skbs and remain pending after the initial request.
 
-Thanks for your feedback.
+Netlink pins the module which owns the dump callback, but in this case
+that is the controller's owner rather than the target family's owner.  The
+target family can consequently be unregistered and its module unloaded
+while a policy dump is pending.  Advancing the dump then dereferences
+policy memory from the unloaded module.
 
-On 2026-08-15 22:12:03 +0300, Sergey Shtylyov wrote:
-> On 8/11/26 7:02 PM, Niklas Söderlund wrote:
-> 
-> > While driver advertises gPTP support on Gen4 platforms it is in fact
-> > completely broken. On R-Car Gen4 devices the RAVB module have no
-> > internal gPTP clock as generations before it. Instead it utilizes a
-> > system-wide gPTP clock.
-> > 
-> > This change utilizes the refactoring of the RAVB gPTP code to add
-> > support for a system-wide clock and stops the Gen4 devices trying to use
-> > the non-existing internal gPTP clock.
-> > 
-> > To remain backward compatible the ptp-timer property is optional.If not
-> > present, or not enabled, the RAVB driver will no longer advertise gPTP
-> > support to user-space.
-> > 
-> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-> > Reviewed-by: Sergey Shtylyov <sergei.shtylyov@gmail.com>
-> [...]
-> 
-> > diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-> > index b4df5cab0e5c..4c8dc02022e2 100644
-> > --- a/drivers/net/ethernet/renesas/ravb.h
-> > +++ b/drivers/net/ethernet/renesas/ravb.h
-> > @@ -249,6 +249,8 @@ enum APSR_BIT {
-> >  	APSR_RDM	= 0x00002000,
-> >  	APSR_TDM	= 0x00004000,
-> >  	APSR_MIISELECT	= 0x01000000,	/* R-Car V4M only */
-> > +	APSR_GPTPTIMER_SOURCE = BIT(25), /* Gen4 */
-> > +	APSR_GPTPCLOCK	= BIT(29),	/* Gen4 */
-> 
->    Again, I don't quite like that you switched to using BIT() all of a sudden...
+Take a reference to the target family's module when the dump starts.
+Drop it from the error and done paths.  This matches the lifetime for which
+the dump context retains the family and policy pointers.
 
-Indeed, the while enum should really be converted to avoid LLM warnings.  
-But doing this in this already large and way overdue series feels a bit 
-too much. Once this is picked up I plan to convert them all to BIT macro 
-to make life easier for the future.
+Fixes: d07dcf9aadd6 ("netlink: add infrastructure to expose policies to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: XingWang Xiang <v3rdant.xiang@gmail.com>
+---
+ net/netlink/genetlink.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-> 
-> [...]> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> > index 12877a8488ed..30170e92d3d7 100644
-> > --- a/drivers/net/ethernet/renesas/ravb_main.c
-> > +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> > @@ -2752,6 +2752,59 @@ static const struct ravb_hw_info ravb_gen3_hw_info = {
-> >  	.magic_pkt = 1,
-> >  };
-> >  
-> > +static int ravb_gen4_ptp_probe(struct net_device *ndev)
-> > +{
-> > +	struct ravb_private *priv = netdev_priv(ndev);
-> > +
-> > +	priv->of_gptp =
-> > +		of_parse_phandle(priv->pdev->dev.of_node, "ptp-timer", 0);
-> 
->    You now have full 100 columns, no need to break that line... :-)
-
-Fixed in next version.
-
-> 
-> > +	if (!priv->of_gptp)
-> > +		return 0;
-> > +
-> > +	if (!of_device_is_available(priv->of_gptp)) {
-> > +		of_node_put(priv->of_gptp);
-> > +		priv->of_gptp = NULL;
-> > +		return 0;
-> 
->    This *return* seems superfluous...
-
-Thanks, fixed.
-
-> 
-> > +	}
-> > +
-> > +	return 0;
-> > +}[...]
-> 
-> MBR, Sergey
-> 
-
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index 0da39eaed..41d37442f 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1513,6 +1513,7 @@ struct ctrl_dump_policy_ctx {
+ 	struct netlink_policy_dump_state *state;
+ 	const struct genl_family *rt;
+ 	struct genl_op_iter *op_iter;
++	struct module *owner;
+ 	u32 op;
+ 	u16 fam_id;
+ 	u8 dump_map:1,
+@@ -1555,6 +1556,9 @@ static int ctrl_dumppolicy_start(struct netlink_callback *cb)
+ 		return -ENOENT;
+ 
+ 	ctx->rt = rt;
++	ctx->owner = rt->module;
++	if (!try_module_get(ctx->owner))
++		return -ENOENT;
+ 
+ 	if (tb[CTRL_ATTR_OP]) {
+ 		struct genl_split_ops doit, dump;
+@@ -1565,7 +1569,7 @@ static int ctrl_dumppolicy_start(struct netlink_callback *cb)
+ 		err = genl_get_cmd_both(ctx->op, rt, &doit, &dump);
+ 		if (err) {
+ 			NL_SET_BAD_ATTR(cb->extack, tb[CTRL_ATTR_OP]);
+-			return err;
++			goto err_put_owner;
+ 		}
+ 
+ 		if (doit.policy) {
+@@ -1583,16 +1587,20 @@ static int ctrl_dumppolicy_start(struct netlink_callback *cb)
+ 				goto err_free_state;
+ 		}
+ 
+-		if (!ctx->state)
+-			return -ENODATA;
++		if (!ctx->state) {
++			err = -ENODATA;
++			goto err_put_owner;
++		}
+ 
+ 		ctx->dump_map = 1;
+ 		return 0;
+ 	}
+ 
+ 	ctx->op_iter = kmalloc_obj(*ctx->op_iter);
+-	if (!ctx->op_iter)
+-		return -ENOMEM;
++	if (!ctx->op_iter) {
++		err = -ENOMEM;
++		goto err_put_owner;
++	}
+ 
+ 	genl_op_iter_init(rt, ctx->op_iter);
+ 	ctx->dump_map = genl_op_iter_next(ctx->op_iter);
+@@ -1624,6 +1632,8 @@ static int ctrl_dumppolicy_start(struct netlink_callback *cb)
+ 	netlink_policy_dump_free(ctx->state);
+ err_free_op_iter:
+ 	kfree(ctx->op_iter);
++err_put_owner:
++	module_put(ctx->owner);
+ 	return err;
+ }
+ 
+@@ -1760,6 +1770,7 @@ static int ctrl_dumppolicy_done(struct netlink_callback *cb)
+ 
+ 	kfree(ctx->op_iter);
+ 	netlink_policy_dump_free(ctx->state);
++	module_put(ctx->owner);
+ 	return 0;
+ }
+ 
 -- 
-Kind Regards,
-Niklas Söderlund
+2.52.0
