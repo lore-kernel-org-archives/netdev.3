@@ -1,61 +1,59 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884293EB112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFC5411FB1
 	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 21:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788384566; cv=none; b=T25sf0BtMglbrpfcWcMO5M2j4z5+9QWmz9FHht0YvMMtFn+qnGGpKLY7F4ok6zxwXovQmENk+WGMrMXLgUgrk03opmNYzfTCffIOs+xDpMroSmA4pppWoatu8rthHziwKUPWOmM/qkyIMNeRWKZCLdOnSZvGoeISwKegJiDgeFQ=
+	t=1788384571; cv=none; b=UVfDtNJaut0l0acAOgvGideEkD/LHra+Lx/08EnTMsPR6EuDt7dLJCidO6Ip9MsXFS4ZGsmfMzplPP6+vLLsuyW/8WyDrJCZs/j8GHef9M2QSDWccmKm56o5LsY8vGUzW7QXVaSuwe6yZSk2JAiT0zos4QW3bHXkCEKnMZmyayg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788384566; c=relaxed/simple;
-	bh=dAbGgP6x+3b3BaLO9L1pUjQPzqGBICTOfgVRYWKJuOY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LJ/yLR+cwxgg1rmDeu2IdfFdlK5e6TWP9f1xh7SVPK1W6rcgvdLON67mJPZuMw0B+G+otkZ+9kVoCmcugQn9u9EKIp3HE2QjdA+VSihrR7P4zLtjEAy2I0A4S3h/WUB5PVJ6ivRvLp0cX2Co2W85HQcMuqT91awzzGnfy/QOWtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=NRJyw2Y1; arc=none smtp.client-ip=209.85.222.175
+	s=arc-20240116; t=1788384571; c=relaxed/simple;
+	bh=Rwpti7iQwDFikXIDN8JqQyuYZyRBY6WxLhROo8inQYo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uk91He5sVz0J0eOZqjzJgMw4Uw+Kxv4oI8Di0ivEp/CsRsmhSn9Is0er/dcUlv1snoMqlsOJP7Y/ZoHUDD416A/4uA1QsPUrVGndudCetIxveb4o/CQiGnvAoSzcUG4P0GjEhrUVmVwrEVEq/3taeBkCgtl9xe/wL7eBEAz15aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=u2SB/1k4; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="NRJyw2Y1"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ed19f4d60so37707185a.0
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="u2SB/1k4"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90cd4631090so4402696d6.1
         for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 14:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788384557; x=1788989357; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qJLbb3RbAxCQKLzwDVl++Syy1ybQRe9fgWS9wwpr6uU=;
-        b=NRJyw2Y1KKiv6hkuO0WJ+ZSjUdAnH3Rr8wrLPBpZ4uhHxMq7SzWhNAzpl2FiJHrHBu
-         NK5gOnyrhU5OEawdIeYZC7nPEapqnSB9QZyid2VWNQTGn0dVp90VcUkl0ZB+RftX6gpg
-         gC0Yxar9KNwvFtnZb9BtY9lUM/+cAe8ATJ+Xk=
+        d=mojatatu.com; s=google; t=1788384556; x=1788989356; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uHUCSjdJ+fy55MfodjzYcXnnlacL4uHKJaK4zHusjHE=;
+        b=u2SB/1k43+lfI1ZGf7AG5Mrf/Wfs1DWpAUi8wfoJ7yaFzYHuUh6nDd1vsL1C/Zf1iB
+         2Y1bGkAtKwwObVv5dksqI3mi8bw270+BU9+9lu8e+9+trhNmbkeG5u3Vo+kYJKDFDB+O
+         ylDd4+Bg5n2DIz2xN02Cq+sXPtkKZUm3YI0To=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788384557; x=1788989357;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qJLbb3RbAxCQKLzwDVl++Syy1ybQRe9fgWS9wwpr6uU=;
-        b=ibeQhJHzZHA75wOvwuVoPj4H7YIdmDe0c5ZnHnOi7rMiTKVKV82fxsn5BLM7V+EQcT
-         hRbqMJHcNuBC0VRqqcMt2Vl/raX2LQQO5hsymylc2zuyhsTGkqOlw+pjLGb18tyyFUqy
-         rxnDXeDxSThQQ9cjIy+VsQoG1gBEhlyzzQkuxIxeGhXJHbuBOkBMicraBj/4n/Au43Ce
-         y92ZSz45LyC5Jv5yWusFbq4rHWU50OeSj6nABsUZ79PCdi0a6TGwm9jwAJxXtPR9wBFn
-         uD7bW+TcVQj5+BnbQVfpDFYA9CDAddIPNk1fda9kg40MMEXe5jAgWB58MjVnUWzdw0SU
-         XMBA==
-X-Gm-Message-State: AFuF++keNuzO+FesJsv7FiHcXB9PWLW9AWrQ9O994xKx2X6M4KTnWCnb
-	QnxJr2bzQvBqV98QtXrOoUnC1QkRUDSptlm3fKjx1MFoEr48ztx49yr3EZBkn3gWe+f+F1cK5fS
-	iEuIi4w==
-X-Gm-Gg: AYBFou0A1yI3A+ILNqmqFAGUBE15gY4jVgFUoF23DYEVXjXzaEew2VpPvD5caD4CWvf
-	PmHkI1QVmkv7fb9ZBbdWzL4jpnShIjZS97wBsBQD65Rlu1iLnVFspSWnG8UfWlZJWyJt2T7sBtk
-	7IB8ngBkStfIyoi8EQdK0l6XL2ZMKLTQYmtx5tynmui6hfQwAYshU9mA2U9/GY9ARuhy7QOyFDk
-	zGqcpwBAsl0pzpD4Zn4UAGU1N5n4DeCG8Vbnf+IUoFDlOMMb0OSGzrMzJrmYYP4YrHir+Ktt5dM
-	Msh9G8WAr41G1oucoKH9WBA5wjARNzHlEje4fNaoFa5tHd0RjLmUiVBE8u3x1ghxTh8DAMLCC5q
-	1giNOcP+5bnZ9IS5m9S0q9+dN2g9fsyeombeqViWb/VRCMAMil/yxXQzC7qc1jN2V3ocO3EMTIJ
-	IiBuAUnMbTMaQpDErv9CS7jKisxf+hb7KYIq6KzZyN/9wzyn2pQIw+tQXCqF7NmFlYyljC7u8ge
-	VfE7Ki6gDzUFCfP2tc3V4MoIeDbC98x8IR9Vr+KUXhu5zgo
-X-Received: by 2002:a05:620a:aa09:b0:939:a45:8c96 with SMTP id af79cd13be357-9396e07a4d1mr234162285a.19.1788384557277;
-        Wed, 02 Sep 2026 14:29:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788384556; x=1788989356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uHUCSjdJ+fy55MfodjzYcXnnlacL4uHKJaK4zHusjHE=;
+        b=QFInibtOCYugrdVihUre6jSjIAqkyEvDYRCt/EDSo9zqzGOLS43hq13K/2rOeL73kU
+         O72DZjes963oEfPGukk69oBVutPL00m5CqXYztJWnxhm9YkHVN74TB+emvvEeT/LK2Kc
+         1YsEQvBtXprwTD+VdQxTBCwx/wLLQuw9+ww3MuckCDZT/dbhI7yl53OP2oEa4q8XWm5G
+         Zg9S9s43oFeI7PNMJI0bmHlRtn5XUXbx16AFX9fc/2jspCOR4I02YUmgFalf+1qabic+
+         38dPjztN4yMGVpbGa+QFPQ/OoMuVugrQDM/HLKFJeCWt5QVXxQj1EvwBJIf30yvT2bz3
+         txkw==
+X-Gm-Message-State: AFuF++n7KnJsNBW+HL39VCVT9/sd+nAivv0Uun+HHvciebl6ehW78a6v
+	+TjRYm0uaCKQo36NLs0j/Y/R+0RqsS8tHG17ZNvyp61X0fBt7zb7pRwuSztPME5XU3cYUNtmXrI
+	5BP946w==
+X-Gm-Gg: AYBFou3t8+HL366iOIqjeOxgwveOGPyucg3swtLizhtLKL8P2ONlgN1rk8aUWJWztBO
+	9QOSoDst++N8RvL1wWy866ZFqS4gpreTZIx/++GlxZseLQtLPRGgJidTJpfzqQWt7ZeE9j770JT
+	a43Jzim4zj5XeuIZcLStbjbeL/kR+jYVUSDe0gDhgUTkFBuhGuhiplHoJCb+AkoehRi+Aul/YxF
+	NJV8RO8V7NqGkEgwVX68YDCD7J98642s51cPpkppJDmsrLUmxEH3ViuZFkpBIAVHTRKAh681aJb
+	eqJXFg8sOdAYCmFh7oM9ivWdxmoQlwlfcjNjLWBE7BRzeAxX2LpRUCWg8Rl60OsIj5myNS3XWK8
+	b9TJEcpOZDGW8WKCxIABbmz0zw7CBBQps4CTbXJTw2hqbj2wljptoiZcjCRWDUcYETjm9iaPLcv
+	IzOgsbzlTinxWt572FgZjd6/C4x6uWCdcVgC1NLsRYeO81Ae2VQP+fmdN7Hu3YiFAxJgwXJms+Y
+	/9d9RaMiiwtEs5EwCEaKGyOIF+pPCSySZONr8M=
+X-Received: by 2002:a05:6214:f2f:b0:90c:de0e:d741 with SMTP id 6a1803df08f44-9103476d3c5mr25060216d6.15.1788384555713;
+        Wed, 02 Sep 2026 14:29:15 -0700 (PDT)
 Received: from majuu.waya ([142.159.91.240])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm27169086d6.2.2026.09.02.14.29.15
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90e9ee08710sm27169086d6.2.2026.09.02.14.29.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 14:29:16 -0700 (PDT)
+        Wed, 02 Sep 2026 14:29:15 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -69,12 +67,10 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Donald Hunter <donald.hunter@gmail.com>,
 	Vega <vega@nebusec.ai>,
 	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2 1/3] net: cap tx_queue_len at S16_MAX to prevent oversized ring allocations
-Date: Wed,  2 Sep 2026 17:29:08 -0400
-Message-Id: <QDISC-2899.v2.20260901233641@mojatatu.com>
+Subject: [PATCH net v2 0/3] net: cap tx_queue_len at S16_MAX to prevent oversized ring allocations
+Date: Wed,  2 Sep 2026 17:29:07 -0400
+Message-ID: <QDISC-2899.v2.20260901233641@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-2899.v2.20260901233641@mojatatu.com>
-References: <QDISC-2899.v2.20260901233641@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,72 +78,89 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Message-ID: <20260902212907.SarAMZD0WSkfjiNod3aUoZfxUv5N56McECcfcnO0hMg@z>
 
-Several subsystems allocate ring buffers sized by dev->tx_queue_len
-with no upper bound. An unprivileged user (via unshare -Urn) can set a
-huge tx_queue_len and exhaust global memory with ring allocations:
+An unprivileged user (via unshare -Urn) can set a huge tx_queue_len
+and exhaust global memory through ring allocations sized from it
+(pfifo_fast skb_arrays, tun/tap ptr_rings).
+The reproducer from vega@nebusec.ai set the following params for
+illustration: txqlen of 500000 -> ~32 GiB/ring attempts, 1.6 GB tun,
+~960 MB tap. Gets worse when you consider qdiscs like mq.
 
-- pfifo_fast: pfifo_fast_init() and pfifo_fast_change_tx_queue_len()
-  allocate 3 skb_array rings of tx_queue_len entries each.
-- tun: tun_queue_resize() and the queue-attach path resize ptr_rings
-  to tx_queue_len on the NETDEV_CHANGE_TX_QUEUE_LEN notifier.
-- tap (macvtap/ipvtap): tap_queue_resize() and tap_init() resize/init
-  ptr_rings to tx_queue_len on the same notifier.
+What we fix: every path an unprivileged user can use to install
+an oversized tx_queue_len is rejected with -ERANGE before any ring is
+allocated; per-ring memory is bounded at 256 KiB.
 
-netif_change_tx_queue_len() is the single entry point for IFLA_TXQLEN,
-sysfs, and the SIOCSIFTXQLEN ioctl. Cap new_len at S16_MAX (32767)
-there so the oversized value is rejected at set time. This takes
-effect whether the device is up or down, before dev->tx_queue_len is
-written, before any notifier fires, and before any ring is allocated.
-The "> S16_MAX" check also subsumes the previous unsigned-long
-truncation test, and a negative ifr_qlen from the ioctl lands far
-above the cap after conversion, so both old failure modes are covered
-by the one comparison.
+This is for you sashikos: What we deliberately _do not fix_
+bound the NUMBER of rings. With the cap in place the worst case moves
+from "one knob" to the aggregate of ring x queues x devices, example:
 
-tx_queue_len is ambigious: both a per-ring sizing multiplier and a
-default queue-length/limit knob for consumers that allocate
-nothing at set time (pfifo/bfifo/gred/plug/sfb limits, htb
-direct_qlen, qfq max_classes, teql). 32767 is chosen as the largest
-value NLA_POLICY_FULL_RANGE can express for the u32 IFLA_TXQLEN
-policy in patch 2/3 while staying a legitimate queue length on
-high-BDP paths; the ring-memory trade-off of a shared knob is
-disclosed below.
+  ip link add v0 numtxqueues 4096 txqueuelen 32767 type veth
+  tc qdisc add dev v0 root mq
+    -> 4096 * 3 * 32767 * 8 = ~3.0 GiB (one command)
+  50 tun devices x 256 queues x 32767 x 8 = ~3.1 GiB
 
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED=y, CONFIG_VETH=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
-- Unprivileged user in a fresh user+net namespace (unshare -Urn).
-- pfifo_fast: create veth pairs, set tx_queue_len to 500000, attach
-  mq+pfifo_fast. ~28 iterations OOMs a 2GB guest.
-- tun: create 50 tun devices with IFF_MULTI_QUEUE, set tx_queue_len to
-  500000, open 8 queues each. ~1.6GB of ptr_ring allocations OOMs a
-  512MB guest.
-- tap: same as tun with IFF_TAP. ~960MB OOMs a 512MB guest.
-- On the fixed kernel the oversized tx_queue_len is rejected with
-  -ERANGE at set time (all four paths: RTM_SETLINK, RTM_NEWLINK
-  create, sysfs, ioctl - the latter two via this check, the former
-  two via this check and the 2/3 parse policy respectively).
+Unfortunately tx_queue_len is a bit ambigious in meaning:
+In some cases it means a ring size (which is pre-allocated, ex:
+tun, tap, and pfifo_fast); a cap of 4096 seems reasonable here.
+but in other cases it is used to indicate a queue limit ex:
+the qdisc consumers that allocate nothing (pfifo/bfifo/gred/plug/sfb,
+htb direct_qlen, qfq, teql). 32767 is a legitimate high-BDP queue
+length, so we are going to keep that value.
 
-Fixes: 6a643ddb5624 ("net: introduce helper dev_change_tx_queue_len()")
-Reported-by: Vega <vega@nebusec.ai>
-Closes: https://lore.kernel.org/netdev/20260828121902.66837-1-jhs@mojatatu.com/
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/core/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Getting back to you sashikos, after this is merged and shows up
+in net-next we will send followup patches as follows:
+this series is not misread as "closes the OOM class"):
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 38336858c168..1d3fc0a268a5 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -9982,7 +9982,7 @@ int netif_change_tx_queue_len(struct net_device *dev, unsigned long new_len)
- 	unsigned int orig_len = dev->tx_queue_len;
- 	int res;
- 
--	if (new_len != (unsigned int)new_len)
-+	if (new_len > S16_MAX)
- 		return -ERANGE;
- 
- 	if (new_len != orig_len) {
+a) Per-site ring limits at six identified locations
+    - pfifo_fast init/resize,
+    - tun attach/resize,
+    - tap minor/resize)
+
+   if you can spot more in your review we will take care of those as well.
+
+b) memcg accounting (GFP_KERNEL_ACCOUNT) for those ring
+   allocations: contains a memcg-limited container's ring memory.
+   Not GFP_KERNEL_ACCOUNT has no effect on the unshare attacker
+   but will protect against containers  (memory.max in its cgroup)
+
+
+Patches:
+--------
+
+  1/3 net: cap tx_queue_len at S16_MAX in netif_change_tx_queue_len()
+      (netlink set, sysfs, SIOCSIFTXQLEN choke point)
+  2/3 net: reject oversized tx_queue_len at netlink parse time
+      (IFLA_TXQLEN policy: closes the create path + veth peer nest)
+  3/3 selftests: tdc regression tests (netlink, sysfs, create paths)
+
+Changes:
+--------
+v1 -> v2:
+- new patch 2/3: close the device-creation path (Jakub Kicinski
+  flagged that rtnl_create_link() bypasses the cap)
+- rationale reworded: the 32767 ceiling citing NLA u32 range
+  policy can express (s16 bounds), replacing the invalid virtio
+  ring-depth claim
+- rebuilt tdc coverage (sysfs path now tested; nondeterministic
+  resize-rollback case dropped)
+
+Sashiko v1 review links:
+https://sashiko.dev/#/patchset/20260828121902.66837-1-jhs@mojatatu.com
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828121902.66837-1-jhs@mojatatu.com
+
+v1: https://lore.kernel.org/netdev/20260828121902.66837-1-jhs@mojatatu.com/
+
+Jamal Hadi Salim (3):
+  net: cap tx_queue_len at S16_MAX to prevent oversized ring
+    allocations
+  net: reject oversized tx_queue_len at netlink parse time
+  selftests: tc-testing: add tx_queue_len cap regression tests
+
+ .../tc-testing/tc-tests/qdiscs/pfifo_fast.json | 209 +++++++++++++++++-
+ net/core/dev.c                                 |   2 +-
+ net/core/rtnetlink.c                           |   9 +-
+ 3 files changed, 211 insertions(+), 2 deletions(-)
+
 -- 
 2.43.0
