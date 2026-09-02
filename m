@@ -1,44 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1F3A9D9F;
-	Wed,  2 Sep 2026 22:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D48443AA5;
+	Wed,  2 Sep 2026 22:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788389332; cv=none; b=M4fgjnhSHA5QwT95djojhvDakgg7+UMUtrNCL+tZTIRnsuLelXkV5iv34KFr/3Hy7Y8FeIQwqhmp21yf7lvwoqN2K6AaRvN8G0KjtuVqWkbV8nE4xR9bFqX/hxQnoKZxf09zRqT3ibryALkvTqENRH/jY99do9k+uv2juF4MWVU=
+	t=1788389555; cv=none; b=nHnNVN5BiXlReokv2COTOHfAzKdDEIJci5pWPRctEPxBr0+461ZOzEctxqHjDj7UvWw96KopN7iOddvrpfWU7mpXWq9cIJe7IE83dTzD1rG7uZh+888Vc7Nhfz0HkwtuV+5KF0lzmTsmZZAP3LIbwwm3MHmbb+U4zHLc6XCkGSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788389332; c=relaxed/simple;
-	bh=40t0hgxS4XPNzElFaEEuYNYujSlwACiFk5X0jpDQpso=;
+	s=arc-20240116; t=1788389555; c=relaxed/simple;
+	bh=jPy/vhRnfB9J5DrZW1+7yOkwzkCKQGz1PKr4vTz4abU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qKCdW6lmvF5nOPTyUNIWwdsRSAKdiLxIZS/HL3tJwxQXNsIC5UVOkVJ+BETMK5oUmyGaZGkM4FwQ8gl3gplszwvIGx6pKLz79n45Lu/sEPFZyH96V1ih0VWEXM3UWSY68BzaDGiKZLB0O/3XHqtU3uDOfJrHfGu4uOUZc65Ij+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8iixU8I; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=MJmN1sqbXzz5rRePcckj/3++gtBDYTVpeZeTlXrNhEiak/0Cch1GuMuw9oC5yGrnkKm96wMm2cq6/lx+SFkbaDAyMOWbnyEhgSnJplzz6z8lPUZc5uvCq4XJxaowD9ncsZgH4uH/PBZmS0MkjEkk6clACItDRUE9xt/lwijy5cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABT2fz0Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8iixU8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA251F000E9;
-	Wed,  2 Sep 2026 22:48:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABT2fz0Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77C71F000E9;
+	Wed,  2 Sep 2026 22:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788389317;
-	bh=igDMCCmz5PGq9Z6y9npw9FedQbUox+5LrQVQalZWSfc=;
+	s=k20260515; t=1788389537;
+	bh=aesFN2OHbarFM50VtQtwNH9OJpNYeiU/N7P2t16enJQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=S8iixU8I8BEDSv5fKt/+HP/nxfzMlb4bUORL89PEuLZC1L+yPj5WbTTBOfgCK37Yy
-	 X1jlFUmcMjHpfsKODpeItB2T7TZ4g7GY7DmP90PHm5pM06hVpn5q5nEty2o07fzk1v
-	 V2l3iwwppU/uQ8j6LF0AY5pYTtXdPlIGxqdK6N5m2yMyc7puB7oAEsfWkE4JSwDmKW
-	 oTXKamLUj7+fHuU7Q8b7Nnf5TecHHeD2BCiY2nXRrmXHFR8MyxjGvIiQ0PY5WSpQWw
-	 wqE+7aW0RHZyBvFz+X0hw/UwnASCzi0tzyLEpThoY/YHhCnlnxE+cswjbS+UeeB6Vz
-	 hOBB57DYOn6RA==
-Date: Wed, 2 Sep 2026 15:48:36 -0700
+	b=ABT2fz0YYmV6oRP8XGH5PsyGf2cm+MFOfBtxMC35kopb2qMQH7dEFnf3vkNsagATF
+	 1QaCueu06oRLe+UvB9dlIbBu59STycKG9dUSI398JJf6jy/u91vqR5R3VYVl2ryX7W
+	 Jh4SaA0myYHvyRn/bCjqQdQMblaG+0FHtlcyfeT1nEtjUjFTvomz1A5sZVINKyKZ+f
+	 3e6Rrojphf1QXoh7pRKQpprfcE7ijB+h9+yNlDz5IE08TODhoXIidUSI8ieUYUzLfN
+	 DXa1AyW9/sSj1FTjIWDHSC67fjE+m0O43OMj91y/t9OFhNN4f0EWPNT+Mo8R0o6X20
+	 fzDUBr6sXbHnA==
+Date: Wed, 2 Sep 2026 15:52:16 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Vitaliy Sochnev <sochnev.v.74@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Alexander Duyck <alexanderduyck@fb.com>, Hannes
- Frederic Sowa <hannes@stressinduktion.org>, Wei Wang <weiwan@google.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: yield the CPU on every exit of the threaded
- NAPI poll loop
-Message-ID: <20260902154836.19a497e5@kernel.org>
-In-Reply-To: <20260902210053.263070-1-sochnev.v.74@gmail.com>
-References: <20260902210053.263070-1-sochnev.v.74@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Michal Luczaj <mhal@rbox.co>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song
+ Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
+ <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Willem de
+ Bruijn <willemb@google.com>, Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan
+ Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>, Ihor
+ Solodrai <ihor.solodrai@linux.dev>, Pablo Neira Ayuso
+ <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter
+ <phil@nwl.cc>, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH bpf v3 0/2] bpf: Fix socket leaks around
+ connect(AF_UNSPEC)+listen()
+Message-ID: <20260902155216.4fa23444@kernel.org>
+In-Reply-To: <CAAVpQUC==6KEBs3XgFjZ536mJ23cbHma8HuiWMu1DRc_=YYOHg@mail.gmail.com>
+References: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
+	<CAAVpQUC==6KEBs3XgFjZ536mJ23cbHma8HuiWMu1DRc_=YYOHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,24 +60,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  2 Sep 2026 22:00:53 +0100 Vitaliy Sochnev wrote:
-> On preemption, raised in v1: same board and load, unpatched, two halves
-> differing only in that choice - worst "ip link del" 248.48 s with 8 stalls
-> under PREEMPT_NONE against 0.39 s and none under PREEMPT_LAZY. So lazy
-> preemption does hide the symptom, and PREEMPT_NONE and PREEMPT_VOLUNTARY
-> builds are what is left. It is not the NAPI thread being preempted more -
-> nonvoluntary_ctxt_switches on it is 4.6/s under LAZY against 13.9/s under
-> PREEMPT_NONE - so that is a measurement, not a mechanism. The missing yield
-> is there under either model.
+On Wed, 2 Sep 2026 11:58:49 -0700 Kuniyuki Iwashima wrote:
+> > Several BPF socket helpers acquire a socket reference only when
+> > sk_is_refcounted() == true, and release it, independently, by
+> > re-evaluating sk_is_refcounted() again at the time the release runs. TCP
+> > connect(AF_UNSPEC)+listen() sets SOCK_RCU_FREE on an established socket.  
 > 
-> The loop is unchanged in Linus's tree - net/core/dev.c at v7.3-rc1 is
-> identical here to net/main. The numbers come from 6.18 because that is the
-> only kernel this board runs: mainline carries en7581-evb alone, while the
-> SoC dtsi, the board DTS and the airoha_eth changes it needs are still out
-> of tree. On 6.18 the loop has no busy_poll_last_qs parameter, but with that
-> pointer NULL the two are the same code, so the change under test is this
-> one. The busy-poll path is unaffected; cond_resched() was already reached
-> there.
+> Due to several bug reports, we are now inclined to forbid the
+> buggy transformation.
+> https://lore.kernel.org/netdev/CANn89i+px52TtJy3S9=uHxGj3s-WueguRo1Z_4FxO=02KLmwmQ@mail.gmail.com/
 
-Rebase your OOT patches on latest and test the tree you're targeting
-or keep this patch in your downstream kernel as well.
+Kuniyuki, would you be willing to send a patch to do that?
+Not sure if anyone else is planning to, I wasn't..
