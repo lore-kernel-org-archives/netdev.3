@@ -1,75 +1,76 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E615E3F0A90
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 22:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C3143E49B
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 22:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788388325; cv=none; b=MFs9ydh9eOq5XEz4exXwG/KCfpThTU7AmC/YebtuNZOUXx8zPnT52cZnguHDikdY8lb+yuI8hD/wQ982bFatYNZZhHeFbiFbc17S2kw3LY9RmvQD+WNrgkE8YEJgzg483N3D3x+fTjdUYlCYU7aio1ul40MbhjyAGFLAOtiOick=
+	t=1788388330; cv=none; b=SBhn6rJjO8minqNLweqBAqjcNmnFteQbYTiyPNb6YUg9FkWEWeG2tTSavL9sYhSlGmZ0ubcdOXqHH6OxeEpoxtjsu3EJFK04wc2ewyWtIow5kcV3STUEb+XzwvY9NXQHKAlRoRSMop2avwM+hgZ63i+xXR75vS+H+WPIdwvOglg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788388325; c=relaxed/simple;
-	bh=ZAVbycGPoGS6oTWU2cxFjNfVmlm/CvFHFmp4I1ouxeA=;
+	s=arc-20240116; t=1788388330; c=relaxed/simple;
+	bh=U2FyTgB44Anc/HvR8J4NpqdwZUTvwDFzA19j6jFIn94=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bodyOjX8R8bYXJmTjzxDgjZ3wK8oiCXb4FRLSia6EY6Ddfu49MbfCbFi3eS+F3pyvTJdxsvuok/dVrXAPPnz+auyQ3Wr6ghIFIyZJM6wsOo1VI5hO/qDMCb3iWF7e0gnrqyjnbKXRDAjbYi6Smh0gz1lItw6oHqZcnVzco/Gc6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXZxfJsh; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version:Content-Type; b=erYAKZkTRQBax69cC143Hkot1FdFYv7qcKono2mpi3MOTCDebnD725TkAv1INJYFzO7aCKEqRSLDlxvO48KwrVXciv1s0s2Tq8SainPqAIHb83qgIBoc1xnm0CAhBy3UlY02hbcQXqsjcbQTYcul9xsMe5pNuopQcEuKdvuTksw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D0Tp9DwR; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXZxfJsh"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-39675172593so1630253a91.2
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 15:31:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0Tp9DwR"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8525efa7274so1356791b3a.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 15:32:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788388313; x=1788993113; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788388320; x=1788993120; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=2a4ijTAp/3eyCNXduNdrvSeH88w8TAOtQ1wv+qYnBl4=;
-        b=NXZxfJshbMXiw8gDUrHeaukf4+OW55NxyZ/jrinKtH7kZeRdy0Nma/Agr2a/uTvhzV
-         7DQUjjHLgOekGX+hHboCcFzcHOlh+LmQFZj1Mo5cK47ZxyL4QnpXW7xUyKUQEbm1rH0w
-         5yQ4UyfuvXg8ykN9sU0+7Fza4uil2LAcS1WrV8YdqueZc72ueIfLqzh+bc/kf5IB1mVP
-         1i0xEmy/3UYBa1OGBRDhpETlJsQaI4W9nyPKLK70A11R/xsr8WJhT/1D4j2Gh11XrD1k
-         L7dq6YD8ljZEefJS/voJnmTJtcwsBKgxd0CO1yALWHJlaMb8RgT+g9nJuKvSvV3DFCtX
-         qnQA==
+        bh=Nk5UnSsb6l4Ex7AkWhZotOeEzDzNmZaLsq5WOGz5Zmk=;
+        b=D0Tp9DwRJDkTbWjHzpaoUERLSC/U8ECZSNXAR4rXFltRkL2wvOJfGzbXC054uTUJZe
+         Uo3YZfDreU2zQ8+yympsdk4Yks5s5pNCoc2XBiICnunL/n+CcjUOgS/i6eiRBCfPZDXs
+         4feSDZnFOH805ucb3cWHVHQCd4w8SWBCAqlJ3i0bLD1YklYTkK4GXxk2ojLIgDfeNlBW
+         PgyJftZrMtTCfFBDTPp5KTRMRVlRQoauWWGsdp1hNRzNnTWl5FgjLR6PxH5gZtjMSz35
+         5rPOgU/AJWa5/w/ZUOhHo+X5sWiuaWLW4zYzs0DjTDYZOirnhwaneXBYduVXQXEnQZOm
+         jqhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788388313; x=1788993113;
+        d=1e100.net; s=20251104; t=1788388320; x=1788993120;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2a4ijTAp/3eyCNXduNdrvSeH88w8TAOtQ1wv+qYnBl4=;
-        b=RihDxZztRmY1nT29jH/rroDSkBvr9m8mYsg6smPyOp3qSrZAMzW74os+gSyLA2O6hl
-         iUaQYvkeirofYXIOMtVv+Jtzq/WViyy1SVANTAeoy98EqFy9tqcTlOOeFKF3fm14sFsB
-         lkvoTMn+PpRegH/Gfh7MDw6WvNp2blgWqyjnKB2lobEliAMyjB8zN7Z1CF6Hb4F/wSCi
-         C3Wa3RJ+rByPI46+fs75LlnP5skv2786JKykEcPbPcZvdooDGY2mZa2qg2zeQvn0gAiY
-         eloeXLPoNCQd89KRZ45SpGh64ZDaf0TnU3HVP+u3rGVl3P7b8FSDT1Mum3i/x7q9va0C
-         g0vQ==
-X-Gm-Message-State: AFuF++kuyGJovKtgCj4f+PWVZ82fPM+ElIkjSGD1+bptXGvXyNYhPmUZ
-	LUBnw7thgnUaQyUP7IDMBw5QelTMkbnnZGSqSKQq3wBPArRkkKZCwnhE
-X-Gm-Gg: AYBFou2rEMx8zdHfVq8A5NW27Q99ZeQNdoCPI85Q/+o2T6QVivF30WyVW4P8FREtW9E
-	ZYIkooE+spFrdV7fOaO5zhJsnTog2v3NeZZRhbOtnmPh1j4Dji0TQr9M2YfwHYSk1iT/RRLrDpv
-	6X5IpU2ujs42rCsGyTEV01K73SZU6SBirFkygo5W0e3QKSAzZb5qi/1yOoOXMjrG61JuPX4xthZ
-	CBMPm1/NUrgo3m1wk9Ug9QAXxy7IiRTGx1fBJcDN0KaoxEUVJCfIHKnql5cKTRAOAjX6aNP9YwT
-	yZJMq2UXAShCtPB7qFiRQaBxyDtqGAPCdDDz1NzPAWT717sWvQqNx0JLz9iX7PkUheI+khrucih
-	G3V4ruEEFokyUYcEWaEzzapG+PItf4xE6p5qUx9pXKWSda1yG3CrLAphCjM+OzOZBVTwcXg0l/3
-	Qcdvce3khg7+sAuA5jQB8BMlkVfY8LM+KiUjak5ubysMk18PS/LEsjTLj8/t2CwMGl/y1P7pT3z
-	hWbAkAQeQbbh85Q3m/GMSKnJ2/RRAcUUgbL2ggxxmvqutnFUFoeTdv5jP8VmuwenYsbrzhTOD08
-	zoxoi0BD
-X-Received: by 2002:a17:90b:4b0f:b0:38f:dec8:f7e9 with SMTP id 98e67ed59e1d1-39aee152d1cmr10949343a91.12.1788388313052;
-        Wed, 02 Sep 2026 15:31:53 -0700 (PDT)
+        bh=Nk5UnSsb6l4Ex7AkWhZotOeEzDzNmZaLsq5WOGz5Zmk=;
+        b=AKW5Bq06v90M2nFxJDMuR82Tr6qsFp2hkqVBuprVzysTu1noWNA6WUarG6fGM31ZKv
+         A1k9pD36EdqmrumGDpSuuOJ6gOClgXjD5WssQkT33HNMv/+zT6mo9z9w/QXUsFSlFNSh
+         dv4yov6637yrOKPXrX2ati5FZ9XkQVOKUaY4CQInYtaHrhHRpX2+QcUiTjUegYR8HST7
+         dqH069HJbyZDo2vxsv0ljzs4ifr88PO5jRLqekiXqNhpAmqKSvLhVvMYtNRlB5pm/6cb
+         oWoeWi91PIuOXJhFNOURWPrVRlNsMkinz9d7qJsL/hCqJz0A6+9VyTO7TquYaz6Sm1Yg
+         Ulpg==
+X-Gm-Message-State: AFuF++mDcG2UfX4dstyIrd3gpCDdUaZFsaT5DWNE2+42bkVeXTBupbCv
+	uUEjkvFRv/WkGNl71sklDquge490vO9ndCWCmbLRjwh+E/U6H8tRTUPl
+X-Gm-Gg: AYBFou0HY9sejjdRLJxfk/SfoU2OzZyOvY/wn84LXvTI4zJUAbobXRziEMi3bE27nrW
+	Z9QHn08DYl4YJyZyQGTzocMBUqs+FdnA2AEtVdiI+eoj8dQFjr1XKsUDBpr2Ruw1CsSOhZYD+me
+	wqiqia8+hP192T7jcQhveNkWHOSVlFtL28IpJ3qUV0xzOtdNDWEyu4C9EPRK9awAVlOIw0ho7Qd
+	B1d7WTrmowvVMBSjKldyfAsTklPbVYNkvDVIt9kMksYqKIOd1haN663U0q7cit/YHJ2//l1vqga
+	wqbexqxBVXByh2XMPoi8JcwkAoilEI7/hBtZbMw4kBJbko/qeRtE/J9LWr2zmTEoMmlwif6y/1M
+	OUes4gWmuP6FO8PXdV+RjWooUCLjFrbeedV5DGiczJQsU5l7lGHe2uWvSrtu8/Zzel7JGXV4HJA
+	BWHnWR3WIlAhq+7LFtatoOHL51GL6FOeYBRFodLgrjXYV7UJcks0eSO/Mmvt+WuPOqG1TNazmhS
+	UGrzIHKJbtUnNkvX+ojcDvZCILVnnKIOMJ40R16IqjjwpqntNagcjXloc3roeTJUSqKOL1ku/bq
+	Ay1bXS2g
+X-Received: by 2002:a05:6a00:3d82:b0:85f:7e51:a9ec with SMTP id d2e1a72fcca58-85f7e51b8a7mr6915636b3a.0.1788388320220;
+        Wed, 02 Sep 2026 15:32:00 -0700 (PDT)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c8:829:4c00:4db7:e37c:a6be:f5bf])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083f0565sm1416498a91.7.2026.09.02.15.31.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db2adc8e1sm1952060b3a.24.2026.09.02.15.31.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 15:31:52 -0700 (PDT)
-Subject: [net PATCH 1/4] fbnic: reset num_napi when the IRQ vectors are freed
+        Wed, 02 Sep 2026 15:31:59 -0700 (PDT)
+Subject: [net PATCH 2/4] fbnic: Set AW_FLUSH_MODE alongside AW_FLUSH when
+ flushing the mailbox
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  kernel-team@meta.com, Simon Horman <horms@kernel.org>
-Date: Wed, 02 Sep 2026 15:31:50 -0700
+Date: Wed, 02 Sep 2026 15:31:58 -0700
 Message-ID: 
- <178838831069.11136.15113954049469090479.stgit@ahduyck-xeon-server.home.arpa>
+ <178838831819.11136.3279654005346776816.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <178838795612.11136.15512516427273655916.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -86,98 +87,63 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-fbn->num_napi is the count of live napi vectors, each of which owns an
-IRQ.  The PM path frees the IRQs and vectors without clearing the count.
-It must do this to avoid leaving too many IRQs active which could overwhelm
-CPU 0 on some systems and end up in the suspend failing. See b980c0634fe5
-("i40e: shutdown all IRQs and disable MSI-X when suspended") for more info.
+When tearing down the FW mailbox Rx ring, fbnic_mbx_reset_desc_ring()
+writes AW_CFG with FLUSH set and everything else, BME included, cleared.
+On the write path that is not enough to terminate the outstanding
+requests. The PUL write pipeline only forces the staged requests out
+when both FLUSH and FLUSH_MODE are set; with FLUSH alone the writes keep
+obeying the halt that comes from clearing BME, so nothing drains and the
+flush never completes.
 
-fbnic_pm_suspend() tears the datapath down via ndo_stop() and frees the
-IRQs, but leaves netif_running() true so resume knows to re-open.  Resume
-rebuilds the datapath in __fbnic_pm_resume() and fbnic_reset_queues()
-overwrites num_napi and __fbnic_open() re-allocates the vectors.
+Add the FLUSH_MODE definition and set both bits so the flush terminates
+the outstanding writes on its own.
 
-When the datapath is torn down but never rebuilt, num_napi is left
-pointing at freed vectors. Two cases that can trigger this are:
+The read path is unaffected. AR_CFG has no equivalent mode bit and
+AR_FLUSH terminates the outstanding reads by itself, so it is left as
+is.
 
- - A PCIe error recovery that fails (fbnic_err_slot_reset() ->
-   __fbnic_pm_resume() returns an error -> PCI_ERS_RESULT_DISCONNECT), so
-   .resume never runs
- - An __fbnic_open() that fails partway on resume and unwinds, freeing
-   the vectors after fbnic_reset_queues() has already set num_napi.
+Both writes remain plain stores rather than read-modify-writes. That is
+deliberate: the matching write in fbnic_mbx_init_desc_ring() restores
+BME and the TLP attributes, and clears both flush bits as a side effect.
 
-The netdev is then running with num_napi > 0 but napi[] freed, and the
-eventual remove/unbind close re-enters fbnic_down() -> fbnic_dbg_down()
-and dereferences the freed vectors:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000210
-  RIP: fbnic_dbg_down+0x28
-
-Clear num_napi when the vectors in the suspend are torn down (a good resume
-re-establishes it before __fbnic_open()) and clear it on a resume open
-failure. A redundant ndo_stop() then walks an empty napi[].  The normal
-ndo_stop() down/up cycle is untouched and retains num_napi for the next
-ndo_open().
-
-Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
+Fixes: 3b12f00ddd08 ("fbnic: Gate AXI read/write enabling on FW mailbox")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h |    1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c  |    8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-index 8b9bc9e8ea56..c6698e3002a1 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-@@ -434,6 +434,7 @@ static int fbnic_pm_suspend(struct device *dev)
- {
- 	struct fbnic_dev *fbd = dev_get_drvdata(dev);
- 	struct net_device *netdev = fbd->netdev;
-+	struct fbnic_net *fbn;
- 
- 	if (fbnic_init_failure(fbd))
- 		goto null_uc_addr;
-@@ -441,11 +442,16 @@ static int fbnic_pm_suspend(struct device *dev)
- 	rtnl_lock();
- 	netdev_lock(netdev);
- 
-+	fbn = netdev_priv(netdev);
-+
- 	netif_device_detach(netdev);
- 
- 	if (netif_running(netdev))
- 		netdev->netdev_ops->ndo_stop(netdev);
- 
-+	/* The IRQs are about to be freed, so drop the napi vector count */
-+	fbn->num_napi = 0;
-+
- 	netdev_unlock(netdev);
- 	rtnl_unlock();
- 
-@@ -508,16 +514,20 @@ static int __fbnic_pm_resume(struct device *dev)
- 	if (fbnic_init_failure(fbd))
- 		return 0;
- 
-+	rtnl_lock();
-+	netdev_lock(netdev);
-+
- 	fbn = netdev_priv(netdev);
- 
- 	/* Reset the queues if needed */
- 	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
- 
--	rtnl_lock();
--	netdev_lock(netdev);
--
--	if (netif_running(netdev))
-+	if (netif_running(netdev)) {
- 		err = __fbnic_open(fbn);
-+		/* On failure the vectors are freed, so drop the count */
-+		if (err)
-+			fbn->num_napi = 0;
-+	}
- 
- 	netdev_unlock(netdev);
- 	rtnl_unlock();
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
+index 64b958df7774..14af30e189d6 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
+@@ -974,6 +974,7 @@ enum {
+ /* PUL User Registers */
+ #define FBNIC_CSR_START_PUL_USER	0x31000	/* CSR section delimiter */
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG	0x3103d		/* 0xc40f4 */
++#define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH_MODE	CSR_BIT(20)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH	CSR_BIT(19)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME		CSR_BIT(18)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_RDE_ATTR	CSR_GENMASK(17, 15)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 283d25fae79e..ace6685df039 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -60,8 +60,14 @@ static void fbnic_mbx_reset_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
+ 	 */
+ 	switch (mbx_idx) {
+ 	case FBNIC_IPC_MBX_RX_IDX:
++		/* The write path only terminates outstanding requests when
++		 * both FLUSH and FLUSH_MODE are set. With FLUSH alone the
++		 * writes still obey the halt asserted by clearing BME, so
++		 * nothing drains and AW_FLUSH_DONE never asserts.
++		 */
+ 		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AW_CFG,
+-		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH);
++		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH |
++		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH_MODE);
+ 		break;
+ 	case FBNIC_IPC_MBX_TX_IDX:
+ 		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AR_CFG,
 
 
