@@ -1,75 +1,76 @@
 Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBBD364EB0
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 08:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5E736C9D9
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 08:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788336332; cv=none; b=FQiiC4uvnY7U0GeIzymff4uFGvdUNFh5ry92OlRhoc6k2/F6VEa93veqO0A75sr1ZPopghUPHSEvJMbHRpxP3yEl7jEWu1lszaZjsQlEVRWYIBbJXgIQsje5QSfyuQZBtrU+514eoymrKbfFHyiRRjR6VXX2D+Pr4fLCxtY93fM=
+	t=1788336333; cv=none; b=JO6B+p2D9Blr1KdKaKyX5XyshiLe/bwHoDkxz62CNMncAiFYgKC9DCzI4lqnko1swUENQsKOCVb7CkVnjrpwVSNcliz/VTwbWzafqOHwn2S+WpSESP+3xg5qgEhzkFsn6EsNueQXzuI5ztAMFidoBvN6Ekvm6+ZeOkFTx91SeVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788336332; c=relaxed/simple;
-	bh=bz7mbGwH1ozJNrH6PB/OKP0VMbYFPj8Q83HI+01Zh1k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mZvLdX+CjGxnj9i5/lPzMtiWO7QlisUIB16Ze5zoZaeuPRtmRMCrm0ZtyN1d0dSwaUN1IHOPuPTiF9Onl+VrHg6RbUdGSBI5vCPlSnjLedvk5nHXapjeu4+YyE7/O9AkoX/4zA+txG3L1koQdHZkKzNmknl4sUYFmhl9sbTZ/80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=VZFpN4yB; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1788336333; c=relaxed/simple;
+	bh=uwT2KUAI1VvCWLMzjJ8R9s6y5wJv5+DsF35eViA8fUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WjOvlpwe3i5glQTGC8Tb6wPpgegBCIiwFC9pv9CdLXH/bFwtYFZUz4TD5ycFaYuxKZoA4XPyeg89AslkczVdhnQFd34KBYWJXuq3CeCBDPCMltGyYbcuz9F+9VnsJzudBzS+IhrJt5/XyMa/8tdfbx5Er9Zs6/dlCxriWoafh/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=FputoI0c; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="VZFpN4yB"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso7927835e9.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 01:05:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="FputoI0c"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so6562285e9.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 01:05:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788336328; x=1788941128; darn=vger.kernel.org;
+        d=lex.la; s=google; t=1788336330; x=1788941130; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3/nvq3O1f4VDKj1llpRvfWECSeeDrPmbkSrlnnczKPM=;
-        b=VZFpN4yB2iXupBjl87i5Mu6LSjrFbCppHIjDYPc4y+zjwnnp3z5HdevEz4xcsA967l
-         ctNtKky08LSKHWrRs2jvmUGVL3Nnkb6jgdpo85gPtR6B3N7B2FDG2OJjrdk1sU2U2bLN
-         0QCJqqUozty8BIeLUZzAiJXLEshmQmXw3NQvJDHtOZcankKekHvIV8SGrWCjPoX6Se7R
-         0l4CljeADHE8IAQ3YQXgKhwnSSWWwzNm3dksj8KNf24KrrP7Jbyx2kNXJIJ/g+O+xnhJ
-         aBMVDjcRO5Rwnfcf+/SBgrvHNqvInGqMzWfCYxWvrJmF9co6vuJolDQyKEG39m4Bimmc
-         HnEw==
+        bh=cb3utlTtnJeIblx6OWLfMMuXM2H1GUHEGzZQA00gdUU=;
+        b=FputoI0cokTZZLIeui22dUOWyMeGub6F8v/XVCwvcfr8YolKFGi6VkpAgilL0BLfB6
+         sGJb8540rkbAK03bw7vrrh3tvp/3wmeZJ8Utgxl7uS0ZMss0j8UdH/FtprpZMjIKhONp
+         pmJVWYtXY5u2huAkLN5HAHuHfRCtqlkvtzQjBj5EUfx9IH29pb8qt0zefetrQTnAwz6N
+         qRqKwqOiyQwoKEzCBuPoJ971jhb4xOIb4Hu23ERY7b2CCOsF/2MS+WqMKX/xLPfMC6Hm
+         8CQwREIv5tfT7pRCC4U2OiFcvqJuUFj4Ak01Hzbsmaf6+vsI1fbAY44CzsmJ4DkK1Q7h
+         R6nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788336328; x=1788941128;
+        d=1e100.net; s=20251104; t=1788336330; x=1788941130;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3/nvq3O1f4VDKj1llpRvfWECSeeDrPmbkSrlnnczKPM=;
-        b=hZS5Tn7iuOyb/7HVpgpkCYq0IqNFvHRHGo4F9qhDahYx3HCz5NVGgZ1iPgpdx/FnZM
-         oml2FpaDBnjmxHoPhh8bEJpk0ZyxecbHRN71nSFD8RAZ/bZdljbsO/7LTBPbX9bwCTZH
-         kstZogZNezQuKVzummw5Xr/OiVcrnoIsEfOPdIe5YZbzA5/niie8FE8FHHat6skM41ua
-         WQwgXRFSSzV+jvAj/H4xmePeYbJLX+dQ2mnHlFL5Vloj1JoWhYFD8DoWYeYJs7J3D8nJ
-         q4DZS9EHydsMOVF1qiHW1BzHKczQm3YKpZr3R9OXSq68XbB9GENfhWYHE8gJjb1+W+va
-         lWLw==
-X-Forwarded-Encrypted: i=1; AHgh+RrDMb2LAMXlcqrxi6h0teti/44z0SJY0qsX4ejw0QxIc6mwIzpZkDOFIADLy91i8x3ZbpBcNaY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kuGiUWx13sOO0tMWWb/+eFR0ndhF24dAGyRoPsLCIaH5pdiWdZ
-	CxAXNve3ZMQcqZ/4W/1O/D0KU8axXwBDy4ETbuzoJc6Z2ZLcH3rUIQXVewOuvXbODTM=
-X-Gm-Gg: AR+sD12JN4AWq0AJtQ0m2rzShNlvDT6Njx/uI8ycppw5/U3Cn7Q1pQa3wWYlzIDklmR
-	DQnNp7oTxDDqIdIiWmSDD7UDUWmnm5V/XPCF1EHoRjTFuwuUudZ4DIeb/KbyL0xCX86Ut1BtWEF
-	2HVsPBJqxVgXRBgfWotRo9ctR/ZcdSSlpDJ15uua/nvijbr/JMrzqmbED41EUFV0TWe56JdL6V4
-	cXtOBfe7BshhY2zgiyfGhDF5VPGu3Fq0x497s5WU2j5q2/bbmEjX4GWHBkcej/de6ehyGBOO+Xz
-	acbIN4U4ddivKdpBUHvEJ41ESfUYAtpjWJ5JeNPOlojyXPYvI1OaebITZxQgxAOit00VP5/nZlF
-	OBd5KZq4jRD2fOVIoWQB5mbL19G63feMA7nxMm6TME7Cj5k7z1gxTkW6PJdhgCI1BiLzJ0IGSdv
-	CQgQPKOdAgQ8ujAopI+9o88K3X8yo5tOyfQAsj7eU=
-X-Received: by 2002:a05:600c:1da1:b0:499:9eb8:a1d7 with SMTP id 5b1f17b1804b1-49ce5842935mr59733985e9.9.1788336327864;
-        Wed, 02 Sep 2026 01:05:27 -0700 (PDT)
+        bh=cb3utlTtnJeIblx6OWLfMMuXM2H1GUHEGzZQA00gdUU=;
+        b=FiDhD8WQKahzELwB4FIOXDxVbOfKEcej800Z07PiRbgq0SiA8kqgeIluZXTRvfN+HY
+         Fx/Xmi9nRhjFVguufDmGeq/9UY5Hz3JnHCGLZIDhl2+MWm0AwdawhNyv6PzSX3dMtiP2
+         58l2MKUPnkkvvGjb7P8NzHK9XUDVFXs7jOiZboe7dCEYbQPb4MtE7ZshqL79c9IrhFPR
+         X9RSwiy/SPTtYMX9ZMq7Uz4zisVm2nnCrYiyH+C9Jp7OD1UyPv1TK7Vujf/XmR15oEjU
+         vat4wCILExOsIde7cCJTojgL39qwo/No/QVmEFR8aAfEN42NnCWdeQpikLIjEz9oMf2j
+         wVew==
+X-Forwarded-Encrypted: i=1; AHgh+RoekvZ59EQlikyLD6j57ceWrKd001toqhJsyqqGusw6HZMwCDIrVKZDyfolk6vO7PoxCa7uLx0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nhKHSJZPI5h+sZhLufXqS3u8tlIz13kF8MPOmqzaN5M1vJE7mT
+	E0/HOnE8eOurPD2BXEPAC02sYeL/qggyQbi6/xm0vV9nlPWLqmX15hwQN5+fbt6UBYA=
+X-Gm-Gg: AR+sD102E/F7C9AezjaJnvNv8LY0VcEZ9wlB8ooTjJvl2dkEYPhAAGygCQ9qyL/t4og
+	bo4n0cv+fHksY31PNXaH8GCb/5jazPkBaa30ze8k2oYnZd4mVnjZNof9ZXrKN68OtheoAnaqPFx
+	WHQDfa5N+iTf3eT9HkoExEIbR6pjGs91Mnj+vYk/R9o977eRI3pFxoFnd6mIvRBtLwIQ8KrHWQH
+	tFYvR42231pJFcX1S9xllnonbQS9zQhYbsdHl89iihVjCH+ZWZCio9E3NeD/AaJ6xS88MAU7res
+	SNtF1pyaCowgQpnJdffRf5tx+V1bd3TSNgTNFkJ9oYJyPvrzFA6dZ44Pm4OJc6lQsTLdE0PUorf
+	nV02iW6RC8OyqlU+nIo3lLBvcCkwkd3PuOafGA1lF3lmdRP4Wu/gpoVhiMQFTmWc9bcgs7MLg1n
+	+dgMBonnqbD/7d1iQObhs96AWTu0PBMKZZEJKmKJc=
+X-Received: by 2002:a05:600c:8b62:b0:49c:d293:70c8 with SMTP id 5b1f17b1804b1-49ce57f524bmr58112675e9.3.1788336329943;
+        Wed, 02 Sep 2026 01:05:29 -0700 (PDT)
 Received: from remote-01 ([84.17.55.226])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce4761dd1sm31219815e9.0.2026.09.02.01.05.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce7dd5154sm17766875e9.2.2026.09.02.01.05.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 01:05:27 -0700 (PDT)
+        Wed, 02 Sep 2026 01:05:29 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+To: "Th\u00e9o Lebrun" <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: phy: air_en8811h: refuse a firmware blob that is not a multiple of 4
-Date: Wed,  2 Sep 2026 08:05:25 +0000
-Message-ID: <20260902080525.2211446-1-f@lex.la>
+Subject: [PATCH net 0/2] net: macb: fix the link speed the taprio setup reads
+Date: Wed,  2 Sep 2026 08:05:26 +0000
+Message-ID: <20260902080528.2211468-1-f@lex.la>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -79,37 +80,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The download loop streams the blob into the MCU as 32-bit words and
-reads the last word past the end of a blob whose size is not a multiple
-of four. The shipped blobs happen to be aligned, so the overread never
-showed; a truncated or foreign file would carry up to three bytes of
-whatever follows it into the MCU. Reject it before the first write
-instead.
+Two small fixes in macb_taprio_setup_replace(), both in how it obtains
+the link speed it scales the schedule with.
 
-Fixes: 71e79430117d ("net: phy: air_en8811h: Add the Airoha EN8811H PHY driver")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
- drivers/net/phy/air_en8811h.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The first: it hands phylink_ethtool_ksettings_get() a stack variable
+it never zeroed, while phylink fills only what the link mode provides
+and even reads one field back from the caller. The second: the speed
+check is written as "<= 0" on a u32, so SPEED_UNKNOWN passes it and
+turns into a 1 ns hardware limit that every entry then exceeds.
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 0eeb7b9a4e26..34d2727e8222 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -312,6 +312,12 @@ static int air_write_buf(struct phy_device *phydev, u32 address,
- 	int saved_page;
- 	int ret = 0;
- 
-+	if (fw->size % 4) {
-+		phydev_err(phydev, "firmware size %zu is not a multiple of 4\n",
-+			   fw->size);
-+		return -EINVAL;
-+	}
-+
- 	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
- 
- 	if (saved_page >= 0) {
+Compile-tested against net; the driver has no test surface, and no
+macb board here.
+
+Aleksei Sviridkin (2):
+  net: macb: zero the link settings taprio reads back
+  net: macb: reject an unknown link speed in the taprio setup
+
+ drivers/net/ethernet/cadence/macb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
 -- 
 2.53.0
 
