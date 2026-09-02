@@ -1,195 +1,118 @@
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-204.mta1.migadu.com [95.215.58.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AFA35E94E;
-	Wed,  2 Sep 2026 01:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E76927473
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 01:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788313729; cv=none; b=B0/sppUrsPbKrCHz/jGYrvblIUXWXQv4GE3eLhRyKZ4Hoe2WaDkKeCfFLZ2lpCwjwuS75vWvCepYucAnyNTC6zfew1xO3Sdx8Y0aVRMl9+hgdhYOO4rRggrznNBSUejPSTyljmsR1vr+MJqQB8x7VrtbK7zFV01qIE/9MayQq4c=
+	t=1788314034; cv=none; b=iryOWdTSqcwgmTmzj15pYdei5lS3y71fxLAHNbuKIkRaRHJ9t+d2+Foao2wOCuX+9ZtorpbomvjYmf+ecziCRxTeNSifZAY2mcuZkUzcmvyeJPOxMAMij9mxUuf6NZ1u17KqMZF4bM36kNzNH4GtkBwicx7AvKIJRe5yRGRntno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788313729; c=relaxed/simple;
-	bh=ZUc4hXdMovvUBU+bVv6Yj0xXP2zTmYbEUCvk1alUn+4=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Suqx41+oz0NsnBhqK6M0XAgMncZxSAjREgXhtIjzzXnwYvb5C+WkDFQC42K9gKfhdomPlLc72gNb4QM7+DzK5H5n691nCIc2gAEgzTyV/7zPgkI/8QG4IUr8ouxsG5+T/RBzzLCLkVDxeuhPKZYejcnGK4nvWRajlkONhfTsWDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=nIffXOkk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cw1+p392; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1788314034; c=relaxed/simple;
+	bh=sANjPEpEpLPepnknarqjCmElJF9xDw1LQMYHFsbseqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A9zMPu9j/GR82Gp9EVeb1DTirNkhniUcQQqmFh2vk9ehV1PbZE3eQ4fXj35ScFn9rMS5fqy2dkfrg0bor7DmDGybk0Ap6VYzt4m+y3GzrIDy7BBaOaVg84R5yGpeb/ITazLfaG6uYSQnvdNkgTnEZy8DPbQK0Pgq2JS0K7sIBoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GQ+NdCPp; arc=none smtp.client-ip=95.215.58.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="nIffXOkk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cw1+p392"
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id A84E61400101;
-	Tue,  1 Sep 2026 21:48:41 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Tue, 01 Sep 2026 21:48:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm2; t=1788313721; x=1788400121; bh=s0Wp34BsCTE9gs9qeINPy
-	/sDm+yywWKNSe4d08o5iQc=; b=nIffXOkkv0LGjh0ICsZlIEuSr42xQZrVSxIgt
-	qPZeZWm7psTnv6+DM+lt8adamlZiGMbhY4mcV85vUwgliOFoIhwvWbs2dMDyPuEC
-	yOHSu25t/uCFGkEgGBzw5IXZFfwuIn7cL+5MGEwWJUWMBEzAmmpi8PuQukVaSMyb
-	udPNbngokGq53v/Su/Mu8dAeDNbfe9ncZXpi9+cHwCJ8C9J/TwzU8BtoSHFRV1a1
-	FrPuMcy04z1OGX0H7XL93H3PNibowPS+WT/NILLN8BqssivIhyZofH+E1OqSs3bd
-	YOhaWKHdGLfvvF2vCBywn4tq4JnAYWWC+pYrYkHFedZcTjgiA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1788313721; x=1788400121; bh=s0Wp34BsCTE9gs9qeINPy/sDm+yywWKNSe4
-	d08o5iQc=; b=cw1+p392J6WKZRXDekqTuWSfoEH/BByAkl7/AmfWPqqjYwH4pik
-	FMgirc1sPWlOO6SxxKLO11n5P/l8cFQqb0bHuXiG/A4tS+/CDhzMY7CeQlEx0CQz
-	UkZm4h6G6OjQ8Y9ymsWNjTfpVNCOnH7gGiBVazViW8EGZWqDYAoRZb+VNx6mtlol
-	/1tZcv5r3tohDyrqWNZ2mAp9hzNT0WqEIQr5rHJdVlHWSbpVka184MOGPGh2agJ7
-	NLaHQx4UX5ohcx9k88ehOxOM1cilPGLcpJFPqiJxH9HK1f8WU3kTqNMqV4JKJP4q
-	aCDKLcN2b5C03diPpR6JojBrvkP13mRf2cQ==
-X-ME-Sender: <xms:eYCXasUFNQYLt8Bf8FmNY-4ZGy1KhJNMp_9qxWDqdJsppizqPFkJrw>
-    <xme:eYCXau341tHNIG7PLHIRd0D0LLHEpHscdAiNLBGU4NtJT2zOck3rxqb6mc64wnWWw
-    Ycj1AKIejwu9Y-tAhJOWg3PVVjM2fOp_pjmH2xYlDbJUfb62ZNWO00>
-X-ME-Received: <xmr:eYCXapsu93OwoQZzcXhcaUvm5JHGk_5vfOkrhdf1WQQTt9S9y5XwMgi3_2L6_DauaL33kw>
-X-ME-Proxy-Cause: dmFkZTFPOhnOfb0wATwmFaNmVd3Ea2WJMYbX8qsEu61r5/6z8zlb+lf6lB9OeIPJOFx3b4
-    S930wwmHpmRiCyhA0Ymd+1kPx3PsLag9kX2a87l1Ceacd0v1vCakff2xf0AQbf0/G0zi0I
-    EKcescoveDfjVHK0NMgz1h9JVsLGqB+D3a/Aq6i1D1xfamtsf3DrsNauCRRhITIh4+UsdI
-    qrH0hI4mGnIzkQNBbgai0UJSjjffYa9C46+maZ5/jBIegrAoB1r3G7QR5r8LfDvauY4F/j
-    t5bH2p+joTKQt7+7dAkGK5swo1bri4MS5GH6465SH5+vuRuk/XOtx7qGjY7+dGaT9RHpie
-    rnO4fms0gqNXKf87+Xw5ImRnbIew4k9oifaX0a/Q68Z3dqEZpKB7dNTH7Q75piA1L0Kt6X
-    TkLIiCCoV3pV19EoxhwRdbZjXMzuzWqsaDEtNHmHfXRoPsJpnPDWYCZfxM7+LPBjEjvwGb
-    HRQXzp7IUqicGXwUERdYD6S2PHfLXA6WxBSJOo0PhNYMTmSPf6FxgAy0JXfA1MysMORjap
-    ORp6dMZT5jrH8fwYD2lY2b7o5bNi4PtDH+6m0kJbXnyFvsoCVs88vpGseMOJEdqJa+Q5hy
-    kK8aIKHhhsErrV4lE/OwMXlgzDyUeuaOT8kTdmdmyviULqyHTtdB5L6tI9LA
-X-ME-Proxy: <xmx:eYCXauXs5suIafBQ-ifetReCFSx1tyKknSlQNChCg9eHQs-GBHYJng>
-    <xmx:eYCXapy2DxMc0bCJ3KGpXScI4WqMeC7KiqpYsS-LMLsPKZagGayInw>
-    <xmx:eYCXalFTwpgKy9ZjOLqMqfvHLNRgzWRJfnIerExWQtM5FqmOmoRfYg>
-    <xmx:eYCXaut4lXaJhWW3njW0MhkpJ0EU02dYEelPHJ3vAwyaE4Ykke9BzQ>
-    <xmx:eYCXaovW1s0pcN7Z33DsEhKARso1fHMAUMLdkf953DELBHtvclAN6AYP>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Sep 2026 21:48:40 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id 58F2B9FC75; Tue,  1 Sep 2026 18:48:39 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id 5644D9FC41;
-	Tue,  1 Sep 2026 18:48:39 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-    Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net v6 0/2] bonding: fix TLB load-tracking overflow on
- high-speed NICs
-In-reply-to: <20260831-bond_overflow-v6-0-ffb0ed1f7268@kylinos.cn>
-References: <20260831-bond_overflow-v6-0-ffb0ed1f7268@kylinos.cn>
-Comments: In-reply-to Hangbin Liu <hangbin.liu@linux.dev>
-   message dated "Mon, 31 Aug 2026 09:50:58 +0800."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GQ+NdCPp"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=sANjPEpEpLPepnknarqjCmElJF9xDw1LQMYHFsbseqc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788314027; v=1; x=1788918827;
+ b=GQ+NdCPpapvnQSsuw6oVsJepHNPRUSkvpnHnWSBbB4u4k9Hue4vLBptLvK5GK18aA2t7NqhR
+ H/V+fodYKDPdyDmzS0Op1rklgkBPyXZjDXklKfoQRKY+F2D2jnIYb4Bq+IYaZM7H4jkFkpaA5+H
+ S4ljvkWKFekiy9cYJodpLH/0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a71c7360aea84011;
+	Wed, 02 Sep 2026 01:53:47 +0000
+X-Mizu-Trace-ID: a71c7360aea84011
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 2 Sep 2026 09:53:39 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next 1/2] netdevsim: add link speed support
+Message-ID: <apeBoyP1G93wW_VZ@fedora>
+References: <20260831-nsim_speed-v1-0-7a651ee65738@kylinos.cn>
+ <20260831-nsim_speed-v1-1-7a651ee65738@kylinos.cn>
+ <53215678-05bb-4191-b5ff-aa236b16a96a@lunn.ch>
+ <apZzJDVtENpAluhT@fedora>
+ <18c7a000-97ad-459a-bb9c-5c821274e9f3@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <591551.1788313719.1@famine>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 01 Sep 2026 18:48:39 -0700
-Message-ID: <591552.1788313719@famine>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18c7a000-97ad-459a-bb9c-5c821274e9f3@lunn.ch>
 
-Hangbin Liu <hangbin.liu@linux.dev> wrote:
+On Tue, Sep 01, 2026 at 02:43:39PM +0200, Andrew Lunn wrote:
+> On Tue, Sep 01, 2026 at 02:39:32PM +0800, Hangbin Liu wrote:
+> > On Mon, Aug 31, 2026 at 02:16:46PM +0200, Andrew Lunn wrote:
+> > > >  static void nsim_ethtool_ring_init(struct netdevsim *ns)
+> > > > @@ -250,12 +276,16 @@ void nsim_ethtool_init(struct netdevsim *ns)
+> > > >  	ns->ethtool.fec.active_fec = ETHTOOL_FEC_NONE;
+> > > >  
+> > > >  	ns->ethtool.channels = ns->nsim_bus_dev->num_queues;
+> > > > +	ns->ethtool.duplex = DUPLEX_FULL;
+> > > > +	ns->ethtool.speed = SPEED_5000;
+> > > >  
+> > > >  	ethtool = debugfs_create_dir("ethtool", ns->nsim_dev_port->ddir);
+> > > >  	ns->ethtool_ddir = ethtool;
+> > > >  
+> > > >  	debugfs_create_u32("get_err", 0600, ethtool, &ns->ethtool.get_err);
+> > > >  	debugfs_create_u32("set_err", 0600, ethtool, &ns->ethtool.set_err);
+> > > > +	debugfs_create_u32("speed", 0600, ethtool, &ns->ethtool.speed);
+> > > > +	debugfs_create_u8("duplex", 0600, ethtool, &ns->ethtool.duplex);
+> > > 
+> > > debugfs_create_bool() ?
+> > 
+> > I'm not sure if anyone want to set nsim duplex to unknown for testing.
+> > Do you think that we should disable this behavior?
+> 
+> Ah, i did not think of DUPLEX_UNKNOWN.
+> 
+> We need to consider Jakubs reply, what are you actually testing here,
+> do such tests make any sense?
 
->The bonding TLB (Transmit Load Balancing) mode tracks per-slave and
->per-client transmit byte counts in u32 fields. At sustained throughput
->above ~3.2 Gbit/s over the 10-second rebalance interval these counters
->wrap, causing compute_gap() to produce incorrect gap values and
->mis-select transmit slaves. Such speeds are routine on modern NICs
->under heavy traffic.
->
->This two-patch series fixes the overflow by widening the relevant
->fields to u64.
->
->Patch 1 converts the unbalanced_load counter to per-cpu state as a
->preparatory step. The counter sits in the transmit hot path, so
->converting it to per-cpu before widening avoids introducing cross-CPU
->synchronization overhead for a u64. Also use a prev_total_unbalanced
->to store the previous total load to avoid reset per-cpu data.
->
->Patch 2 widens tx_bytes, load_history, load, and the per-cpu
->unbalanced_load tx_bytes from u32 to u64. It adds u64_stats_sync
->protection for the per-cpu counter to prevent tearing on 32-bit
->architectures, and reworks compute_gap() to use s64 arithmetic with
->READ_ONCE() on slave->speed.
->
->Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+I'm fixing a bug in bonding that need to test with different speed slaves.
+So I add this feature for netdevsim.
+> 
+> If they do, i think some validation would be good here. We already
+> have:
+> 
+> static inline int ethtool_validate_duplex(__u8 duplex)
+> {
+> 	switch (duplex) {
+> 	case DUPLEX_HALF:
+> 	case DUPLEX_FULL:
+> 	case DUPLEX_UNKNOWN:
+> 		return 1;
+> 	}
+> 
+> 	return 0;
+> }
+> 
+> We don't expect a driver to set duplex to 42, so why should the user
+> be allowed to do that?
 
-	For the series, looks good to me.
+The user interface (ethtool) setting is already handled by
+ethtool_virtdev_set_link_ksettings(). Here is the debugfs issue.
+Since no one is asking for setting DUPLEX_UNKNOWN, I can use
+debugfs_create_bool first.
 
-	My only nit is that you don't state why you use READ_ONCE for
-the access of ->speed, and I didn't see it in the prior discussion
-(perhaps I missed it).  Regardless, I presume it's because the access
-could race with a concurrent update in bond_update_speed_duplex.
+> 
+> Also, SPEED_UNKNOWN is -1, so you need debugfs_create_s32().
 
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Ah, yes. Thanks
 
-	-J
-
-
->---
->Changes in v6:
->- Do not return fixed value for unknown speed logic, we need load balance
->  even NIC speed is UNKNOWN (sashiko)
->- Link to v5: https://lore.kernel.org/r/20260825-bond_overflow-v5-0-7a800=
-de133f1@kylinos.cn
->
->Changes in v5:
->- use s64 as the return value for compute_gap, so we can compute the
->  difference when NICs are overload. (Nikolay Aleksandrov)
->- Link to v4: https://lore.kernel.org/r/20260820-bond_overflow-v4-0-805ba=
-0d3efb6@kylinos.cn
->
->Changes in v4:
->- move per-cpu allocation to tlb_initialize/tlb_deinitialize (Nikolay Ale=
-ksandrov)
->- use an extra prev_total_unbalanced to avoid reset per-cpu data (Nikolay=
- Aleksandrov)
->- Link to v3: https://lore.kernel.org/r/20260818-bond_overflow-v3-0-e05d4=
-dbc2fd8@kylinos.cn
->
->Changes in v3:
->- Add a preparatory patch to convert unbalanced_load to per-cpu first
->- widens tlb counters to u64 and add helpers to prevent tearing on 32-bit
->- Link to v2: https://lore.kernel.org/r/20260814-bond_overflow-v2-1-d3fe5=
-88ad167@kylinos.cn
->
->Changes in v2:
->- update comment description, including AI-detected info.
->- fix tx_bytes/load type detected by sashiko
->- cast SPEED_UNKNOWN to 0 before shift, detected by sashiko
->- Link to v1: https://lore.kernel.org/r/20260810-bond_overflow-v1-1-c9ff2=
-9d76770@kylinos.cn
->
->---
->Hangbin Liu (2):
->      bonding: convert unbalanced_load to per-cpu state
->      bonding: fix u32 overflow in compute_gap()
->
-> drivers/net/bonding/bond_alb.c | 63 +++++++++++++++++++++++++++++++++++-=
-------
-> include/net/bond_alb.h         | 14 +++++++---
-> 2 files changed, 63 insertions(+), 14 deletions(-)
->---
->base-commit: a8455260b2e9c024d1872ac1c094793d55a7e537
->change-id: 20260806-bond_overflow-ac6a6a78d6a0
->
->Best regards,
->-- =
-
->Hangbin Liu <liuhangbin@kylinos.cn>
->
-
----
-	-Jay Vosburgh, jv@jvosburgh.net
+Hangbin
