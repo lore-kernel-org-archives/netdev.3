@@ -1,143 +1,176 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-78.mta0.migadu.com [91.218.175.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FA536EA93;
-	Wed,  2 Sep 2026 06:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8BD3A6F1C
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 06:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788331590; cv=none; b=ju2FCOW5qHBWpdJ5qN/mpBIpqyDVRJasIhwPo19FkdJVKfaulDJInGFNhEGo/v8yXt0AuhATGElgK+dvmCroRqHQify+z/9zOB0kkfSnNWZH3dC9e2FAe71YVi+TO6g2sBZpSXrgMrptsD7MBCy/9pxqJWYqj8LZkEU9bDJhlJ4=
+	t=1788331990; cv=none; b=KlXtbAB7nDKdYzFuBPEj8r9OT/Bc0rxJ3rx+VlKSc8D1EM5Z6vVuBLuzxARn5ZrFVF+gNpyR9RRo8p2wHI2o+zvklFTT8Iv7wXetl86cbwPsgCfu6iifY78KaZk9myXOAvH8RmE40tGT2UBv2WU+4swdxhfrHgimeEHQP2gkPPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788331590; c=relaxed/simple;
-	bh=BQ/OLKVbP+6G6AzF18XitS8dZZFklfctJS9TxMOmcnU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DjEjtzqk2swdUKbgDP1sYIPvAXhYOg6tjVIqAL0BnWEXgW8d0BebBHIXAEJZmrMkJRSVNu9C/trJkDp8+Jbk+T+cTblfEopN1zJFscCDP4nBOQNlGEVghCrcc5OVvIuEXViVVGXP0Iu58h+94VFB7mKMI9gJT2HO7gnYAhB1FB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=pWpxjur1; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1788331990; c=relaxed/simple;
+	bh=CjE4pZlt4icFEu9bJ6HEckDv3cSAsyek8ZM9GiMyKls=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=O47E5jM/KcC+lXNGyw6C8IYUUwuOey35hRNcIGiMPjRO7924lp0DkLG1PzHujwDDuUfMz0aP5p61iL2oU6MeVa89Oj3Ns3cC3cZk04Jzp7bsCaF46ga6BXDGD36e9Wl31/hXlBBu3v48BPxYoSvj3OR16gZ67QYq75uVcVI1uF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TqInTpfx; arc=none smtp.client-ip=91.218.175.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="pWpxjur1"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=XkVkydpEbd/i/xyW0bVNgYtI18TmGIgVUYVlilWRXC8=;
-	b=pWpxjur1ia9Wds1HdRjs5cyzpqLF4seDOc/RLHklmeLfdlvuVEhkBvZQaoX5+giXgrsDuswUR
-	4LD0NE+qCLsGV9eAQD+ucr4usT1VCy/3nC2GpkHn7UMIvcODtNYdWw9Tjr7vK5XluGWpOnLhZJW
-	NPaWcXMW97CToFAiypVdSpk=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hZXz71xySzKm5t;
-	Wed,  2 Sep 2026 14:35:15 +0800 (CST)
-Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id D82FD4057C;
-	Wed,  2 Sep 2026 14:46:08 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- dggpemf500011.china.huawei.com (7.185.36.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Sep 2026 14:46:06 +0800
-Message-ID: <cb145b63-7f72-4912-87d5-4af3f6d89c09@huawei.com>
-Date: Wed, 2 Sep 2026 14:46:04 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TqInTpfx"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=CjE4pZlt4icFEu9bJ6HEckDv3cSAsyek8ZM9GiMyKls=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788331980; v=1; x=1788936780;
+ b=TqInTpfx+dkE6luF7kaMDpmqjMRqzAb0A7KPuYDEcDPT3C/rspbKgaJlqLWuIhU3xTiJLJbi
+ tik4RRLzf9rnzFhqtlpea0ShGNgBJh4i3+2W667dD0uzxjEU3Kjeq/bUyYCN+HB5CfVhs6WdHur
+ /XlRHh5LklUXv6n9Gp8DOeww=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 8cd489d4159e8300;
+	Wed, 02 Sep 2026 06:53:00 +0000
+X-Mizu-Trace-ID: 8cd489d4159e8300
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Wed, 02 Sep 2026 14:52:35 +0800
+Subject: [PATCH mptcp-next 1/2] selftests: mptcp: convert iptables to
+ nftables for mptcp_sockopt.sh
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/12] 8021q: Fix data race when publishing vlan
- net_device pointers
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<bcrl@kvack.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
-	<libaokun@linux.alibaba.com>, <ojaswin@linux.ibm.com>,
-	<ritesh.list@gmail.com>, <yi.zhang@huawei.com>, <sforshee@kernel.org>,
-	<pmladek@suse.com>, <rostedt@goodmis.org>,
-	<andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>,
-	<senozhatsky@chromium.org>, <akpm@linux-foundation.org>,
-	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <kuniyu@google.com>, <willemb@google.com>,
-	<jhs@mojatatu.com>, <jiri@resnulli.us>, <kees@kernel.org>,
-	<cyphar@cyphar.com>, <tglx@kernel.org>, <sdf@fomichev.me>, <nb@tipi-net.de>,
-	<liuhangbin@gmail.com>, <da-x@monatomic.org>, <jeff@garzik.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-aio@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-References: <20260901024234.135119-1-ruanjinjie@huawei.com>
- <20260901024234.135119-12-ruanjinjie@huawei.com>
- <20260901075833.1aa73cb3@kernel.org>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <20260901075833.1aa73cb3@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500011.china.huawei.com (7.185.36.131)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-mptcp_nft-v1-1-559caa16f410@kylinos.cn>
+References: <20260902-mptcp_nft-v1-0-559caa16f410@kylinos.cn>
+In-Reply-To: <20260902-mptcp_nft-v1-0-559caa16f410@kylinos.cn>
+To: MPTCP Linux <mptcp@lists.linux.dev>, 
+ Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
+The per-AF iptables mark rules are replaced with an inet table
+(msock_table) with separate per-AF counter drop rules for IPv4
+and IPv6 drop counting.
 
-在 2026/9/1 22:58, Jakub Kicinski 写道:
-> On Tue, 1 Sep 2026 10:42:33 +0800 Jinjie Ruan wrote:
->> A plain C read and assignment of the net_device pointer
->> in the vlan_devices_arrays leaf entries lack proper atomicity
->> and ordering barriers. A concurrent lockless reader on the packet
->> receive fast-path could observe a torn or partially initialized
->> net_device pointer, leading to a potential out-of-bounds read or kernel
->> panic.
->>
->> The data race occurs between the netlink/ioctl configuration paths
->> (holding the per-netns rtnl_nets_lock or RTNL lock) and the softirq
->> receive fast-path (holding rcu_read_lock()):
->>
->>   CPU 0 (Writer, rtnl_nets_lock/RTNL)      CPU 1 (Reader, rcu_read_lock())
->>   -----------------------------------      -------------------------------
->>    rtnetlink_rcv_msg()
->>      // RTM_NEWLINK handler with RTNL_FLAG_DOIT_PERNET
->>      rtnl_newlink()
->>        ops->newlink() == vlan_newlink()
->>    OR
->>    vlan_ioctl_handler()
->>      [ADD_VLAN_CMD] -> register_vlan_device()
->>
->>      register_vlan_dev()
->>        vlan_group_set_device()
->>                                       netif_receive_skb_core()
->>                                           vlan_do_receive()
->>                                               vlan_find_dev()
->>                                                  __vlan_group_get_device()
->>                                                   // Speculative / torn read
->>                                                   [Loads bad net_device *]
->>            [Plain C store]
->>            array[vlan_id] = dev;
->>                                                   // Dereferences bad pointer
->>                                                   // during device status check
->>                                                   vlan_dev->flags (PANIC!)
->>
->> Fix this by using rcu_assign_pointer() in vlan_group_set_device()
->> and rcu_dereference_raw() in __vlan_group_get_device() to enforce
->> proper ordering and memory atomicity for the leaf entry traversal.
->>
->> Cc: stable@vger.kernel.org
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Eric Dumazet <edumazet@google.com>
->> Cc: Jakub Kicinski <kuba@kernel.org>
->> Cc: Paolo Abeni <pabeni@redhat.com>
->> Cc: Simon Horman <horms@kernel.org>
->> Cc: Stanislav Fomichev <sdf@fomichev.me>
->> Cc: Kuniyuki Iwashima <kuniyu@google.com>
->> Cc: Nicolai Buchwitz <nb@tipi-net.de>
->> Cc: Dan Aloni <da-x@monatomic.org>
->> Cc: Jeff Garzik <jeff@garzik.org>
->> Fixes: 5c15bdec5c38 ("[VLAN]: Avoid a 4-order allocation.")
->> Link: https://sashiko.dev/#/patchset/20260825095422.3166067-1-ruanjinjie%40huawei.com
->> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> 
-> make C=1 says:
-> 
-> net/8021q/vlan.c: note: in included file:
-> net/8021q/vlan.h:91:9: error: incompatible types in comparison expression (different address spaces):
-> net/8021q/vlan.h:91:9:    struct net_device [noderef] __rcu *
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |  2 +-
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh | 56 ++++++++++------------
+ 2 files changed, 26 insertions(+), 32 deletions(-)
 
-Good catch, let me fix it in next version.
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+index b9d14647f401..41febb1bbbc7 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -528,7 +528,7 @@ mptcp_lib_check_tools() {
+ 				exit ${KSFT_SKIP}
+ 			fi
+ 			;;
+-		"iptables"* | "ip6tables"*)
++		"iptables"* | "ip6tables"* | "nft"*)
+ 			if ! "${tool}" -V &> /dev/null; then
+ 				mptcp_lib_pr_skip "Could not run all tests without ${tool}"
+ 				exit ${KSFT_SKIP}
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+index e850a87429b6..4d0af2bf9484 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -15,8 +15,6 @@ cin=""
+ cout=""
+ timeout_poll=30
+ timeout_test=$((timeout_poll * 2 + 1))
+-iptables="iptables"
+-ip6tables="ip6tables"
+ 
+ ns1=""
+ ns2=""
+@@ -49,17 +47,23 @@ add_mark_rules()
+ 	local ns=$1
+ 	local m=$2
+ 
+-	local t
+-	for t in ${iptables} ${ip6tables}; do
+-		# just to debug: check we have multiple subflows connection requests
+-		ip netns exec $ns $t -A OUTPUT -p tcp --syn -m mark --mark $m -j ACCEPT
+-
+-		# RST packets might be handled by a internal dummy socket
+-		ip netns exec $ns $t -A OUTPUT -p tcp --tcp-flags RST RST -m mark --mark 0 -j ACCEPT
+-
+-		ip netns exec $ns $t -A OUTPUT -p tcp -m mark --mark $m -j ACCEPT
+-		ip netns exec $ns $t -A OUTPUT -p tcp -m mark --mark 0 -j DROP
+-	done
++	ip netns exec "$ns" nft add table inet msock_table
++	ip netns exec "$ns" nft add chain inet msock_table output \
++		'{ type filter hook output priority 0; policy accept; }'
++
++	# just to debug: check we have multiple subflows connection requests
++	ip netns exec "$ns" nft add rule inet msock_table output \
++		 meta mark "$m" tcp flags syn accept
++	# RST packets might be handled by a internal dummy socket
++	ip netns exec "$ns" nft add rule inet msock_table output \
++		meta mark 0 tcp flags rst accept
++	ip netns exec "$ns" nft add rule inet msock_table output \
++		meta mark "$m" meta l4proto tcp accept
++
++	ip netns exec "$ns" nft add rule inet msock_table output \
++		meta nfproto ipv4 meta mark 0 meta l4proto tcp counter drop
++	ip netns exec "$ns" nft add rule inet msock_table output \
++		meta nfproto ipv6 meta mark 0 meta l4proto tcp counter drop
+ }
+ 
+ init()
+@@ -105,33 +109,23 @@ cleanup()
+ 
+ mptcp_lib_check_mptcp
+ mptcp_lib_check_kallsyms
+-mptcp_lib_check_tools ip "${iptables}" "${ip6tables}"
++mptcp_lib_check_tools ip nft
+ 
+ check_mark()
+ {
+ 	local ns=$1
+ 	local af=$2
+ 
+-	local tables=${iptables}
++	drop=$(ip netns exec "$ns" nft list table inet msock_table | \
++		grep "ipv$af.*packets.*drop" | awk '{print $(NF-3)}')
+ 
+-	if [ $af -eq 6 ];then
+-		tables=${ip6tables}
++	if [ "$drop" -ne 0 ]; then
++		mptcp_lib_pr_fail "got $drop pkt drops in ns $ns IPv{$af} tables," \
++				  "not 0 - not all expected packets marked"
++		ret=${KSFT_FAIL}
++		return 1
+ 	fi
+ 
+-	local counters values
+-	counters=$(ip netns exec $ns $tables -v -L OUTPUT | grep DROP)
+-	values=${counters%DROP*}
+-
+-	local v
+-	for v in $values; do
+-		if [ $v -ne 0 ]; then
+-			mptcp_lib_pr_fail "got $tables $values in ns $ns," \
+-					  "not 0 - not all expected packets marked"
+-			ret=${KSFT_FAIL}
+-			return 1
+-		fi
+-	done
+-
+ 	return 0
+ }
+ 
 
-> net/8021q/vlan.h:91:9:    struct net_device *
-> net/8021q/vlan.h:91:9: error: incompatible types in comparison expression (different address spaces):
-> net/8021q/vlan.h:91:9:    struct net_device [noderef] __rcu *
-> net/8021q/vlan.h:91:9:    struct net_device *
+-- 
+2.55.0
 
