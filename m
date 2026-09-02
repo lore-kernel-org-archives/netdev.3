@@ -1,132 +1,173 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-oo2-f0.google.com (mail-oo2-f0.google.com [74.125.231.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8801038E13F
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11F3B0AE7
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 07:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788334845; cv=none; b=gHSbwLpoCUCoKkP1GIzdczerhryyRHcPR923ySixbQtSBmcITiVwcpBQZc2XrrvSiEKx1Kyx8GOQCV3l2r5RbLoNPvov64ZNJqDKs6mWm+dMmPhcQXj3WQy3Ci/4DQ4kDt81W1pdVz35kIapPF94w0JMSklXiZDuH7ExZ7s1lOA=
+	t=1788335021; cv=none; b=BWiVSDjuVp/Gton+bX+J2psgdI9J+MjmGml3XU7p/Kcwv32qzfZis0EFhaMpRvN8Y5wC1iU0CeME4vHM8s/flOk3HdKc3Cng9CG4TENfcSlDEg8RPnfNaQwPVeenswg2ElvgIKiIrCPraFZ1hygwcOGPvOgODH6vfOC17vvMFSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788334845; c=relaxed/simple;
-	bh=sCTvzwMNeW7mLvozVZaAsW2ArPVwb4hUthriXKM9Peo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iRKyYL5GkAjiZZNqL/a7GMMONcbNgQQG//7cgttCxBnhTdpXFYRuw6rBKlwac70CdfQSuqPnSy0RBPzZG6CZBQKPhFkI+FLO94UF00wvmmvoNi/3lvcqgnj7DUyOgJsIcGQHoToPFKOR4ITDMmjoG6KC/a0Bp3UJGtxeLi3u4O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=mo0Z1iNv; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="mo0Z1iNv"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49a97714f5dso5092525e9.0
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:40:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788334842; x=1788939642; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oUZ3VgmGI1wTXcVPmH/fxu4IpXzRuDeGuD61FDWbZHI=;
-        b=mo0Z1iNvHkW0Uwl9rBWEbzJDfVy6HrlXJd/FNOriKMgmjIDIjGnfH9R2IIEM1vHM1u
-         VtqTDdcqBK0baJ0d5S4XSa9StyPYCLEzaYSeP9CLbRN16U4AQq67rx+7QRIh6GfaD3eJ
-         TzXEv5sp20VrtWT3yjSs27oBe8WK8rjwSwjba+uUxzXZGAgwU10DnthTLRGOfyEl1wOG
-         GaWCgbtRA+xiYSabdBoSKPqzFp54urAYD1mrenM/d73n2tTAA0v3jCAGdoqZTQBwMTWw
-         qfdJjOD3LUNkwDC8vHEWsrXfBIvsgS4w6vQEPOc4P3g/kJJ+cIEdjB7A59UMc/smnkCK
-         RRgw==
+	s=arc-20240116; t=1788335021; c=relaxed/simple;
+	bh=RleU7cNN1wOfOHEFXMjowd8IIs6GlYKSm1VisDWm+6U=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UlhXNXZUsnH4b3pBEim2XWaMYKJgbTMV78IVT2HS+xgQ0Vv57YyIKur8xQ1buR7cAzLFn6/huXLA3SPvs/GV1h7y0o5ob45tRhveKHEBWQjMAYML/R1d7bDNp0Xiqyjh/fO9gPzzLegxaExo0t7Xj4isGPakW3OVvmtUIcXanLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f0.google.com with SMTP id 006d021491bc7-6a3900cb2b5so268227eaf.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 00:43:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788334842; x=1788939642;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oUZ3VgmGI1wTXcVPmH/fxu4IpXzRuDeGuD61FDWbZHI=;
-        b=H0XpL3WbXs5PKu0HtZ8oJ4AMwZMrXtjbPFe/YsNkiNRBeLoR3Q3NF+O6ESrCgo0k0Y
-         SLVPcx/PIkACMJDHsR735b82kKOqaPXhs/4+juiGLGC+og9nFkFHr8QKHgqUkiWnchxq
-         ADGwTlMeXflqDTULCoZQNFAdzTXzduCKHSliMUo/pbFBTDzaQOKo67Nw43XIrTuVKyE6
-         /64FgsgEsH3XGKO6W7sRwiSyozPJYFj4w4yMDSyqwU/wOlKtlN1Uf99ZTXMgVIo0qTbM
-         KyGLbjUEY9hnG0wgoID0jwY/OQoeWvL6Z0gYkxTp9VneZ3Wipi4Lc1QYHw14OrodQBY8
-         mudw==
-X-Forwarded-Encrypted: i=1; AHgh+RrsFdF/8zN3zZH07Hfn/tmxL6gVYIvNZ7wprG++9sUlKHaMGszm408dDYn3teLr+6a07bENNTI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lWatBfxgsCvLJK/z60JgqI9R7Ed5anMAVcGwkoIl2DjeLqS8xQ
-	p8zVzS++Vgi3VHh3VMTOXFwuCVQ+c5FcQJToQveL8VpSYQjfqR4oFUqP4KUAXUki/k4=
-X-Gm-Gg: AR+sD11HytETfVXGnp5kqVEUBRgcJPqvhmahFrgFNmAsRCluw0sHKhMcszOrAOnrE29
-	POd4qIlJX/PDEevhzX1s2NzBO+r5o6JmAjmnE1uHUpZqBe8PuSvvUNF3p7fJpYUD+o4hjMCTBTV
-	XVPcOIx4eAN38O9A3QVWhKaDlwUA9VLDCfoNtyJvk5AV6Yz1Wg1FZlVsX53X8V2vNSRRNo54bzK
-	meATGIPJtTATGAkvwFEIzZ6O02YFEiHWfV519JZWGLUCYnldJWAzdmazZ+QXHZu+ki+OmCDEezX
-	oivESA6EBUr26Tt5GCzeNedaku+SRuYxiB2rYExGsnV7o5x8blkqm6dhbZ8kp35mKXaq71nSgIV
-	9bu52dPpOJd1hxX+uWEWaQZ7aNUz4b51uO+xBSMjFg375fqQOfokVRTj0tpBy97rJhvDIz/vi1T
-	TRFZB7C9M00eHNHLEk56mLkfEqwUF9askouuoG9vClYXxTp2cGEW88LiwLWVQ86Q0X2zFk/t/Jh
-	sGcmTsq6nRQ1C73cDI=
-X-Received: by 2002:a05:600c:a417:b0:49c:eb04:1c49 with SMTP id 5b1f17b1804b1-49ceb041c7bmr1035545e9.13.1788334841462;
-        Wed, 02 Sep 2026 00:40:41 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cdce10148sm126778715e9.5.2026.09.02.00.40.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 00:40:40 -0700 (PDT)
-Message-ID: <359ae5cb-af14-457e-995f-bc03422150fb@blackwall.org>
-Date: Wed, 2 Sep 2026 10:40:40 +0300
+        d=1e100.net; s=20251104; t=1788335019; x=1788939819;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+Fyr7GjnemiBK6OzWbgukemJrSOlrcphd1h+NIeU+Ak=;
+        b=IOPZ41kfZR8EWl8AaE5xvr3WAdbbUf+1WGqqNEjw4OSjClEfLz2skW2gQcqpsZV8G0
+         O5BnzsYIWghZY423OlNU+siiDI5+QyvYyg6325eCmdRN5tft/HUbqPBfj3yjzpTaKpIL
+         +rk22DG3ubCv0CznZRbNCzOqQ9dncx9ZKwEUwnm6sQ+c0rt6WoE19SHUJJduxpSvjF5J
+         CrQG2fDDke4e1RTlFx5Eo4Q9q3bojrZ/f3KDqJdo4jg6p2FxqPtS+Q2I7g3ivroyWnfr
+         UJiKJ2MD7d0jJRiK9VA1tpz1MwfIiQZmASdbDvLXRvAnAnKFbsYVYaIycJl+LqPpnIVU
+         qsQw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6fW3+2xhdO00iqDUyWYAW0EgDuz/pp4FG/nRNgmh37abMXRZDg8yDBUVR8y7QeFmiG1e1p5o=@vger.kernel.org
+X-Gm-Message-State: AFuF++nREdemShZPeAA6oSxbM0BTTdTHUjW7RasaA2QlPduBFGM6pQry
+	gV+4h+lgR8K2NqpoIGbTkzPhGqw2CRKc/ExFbmHEi+Cvbfw58ZjT6pagWH70C0N6gGjmbV76Vqb
+	Kh7aCrlglu4+JWOvHOstX9HeDFb8RlxE95//clcz02FK7yK8spd9OSZ/BY50=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] bonding: do not clear curr_active_slave prematurely
- when releasing all slaves
-Content-Language: en-US, bg
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, Jay Vosburgh <jv@jvosburgh.net>
-References: <20260831203042.164466-1-edumazet@google.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260831203042.164466-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6820:168f:b0:6b1:9f9d:79f3 with SMTP id
+ 006d021491bc7-6b47e7beac8mr2231224eaf.17.1788335018735; Wed, 02 Sep 2026
+ 00:43:38 -0700 (PDT)
+Date: Wed, 02 Sep 2026 00:43:38 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a97d3aa.e163c37b.143a1.0007.GAE@google.com>
+Subject: [syzbot] [openvswitch?] INFO: task hung in ovs_dp_masks_rebalance (8)
+From: syzbot <syzbot+75ce0a9129024fa8cbf6@syzkaller.appspotmail.com>
+To: aconole@redhat.com, davem@davemloft.net, dev@openvswitch.org, 
+	echaudro@redhat.com, edumazet@google.com, horms@kernel.org, 
+	i.maximets@ovn.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 31/08/2026 23:30, Eric Dumazet wrote:
-> When releasing all slaves during bond destruction (all == true),
-> __bond_release_one() unconditionally clears bond->curr_active_slave to
-> NULL in every iteration.
-> 
-> If a backup slave is released before the active slave,
-> bond_alb_deinit_slave() triggers rlb_teach_disabled_mac_on_primary(),
-> which increments the active slave dev promiscuity counter and sets
-> bond_info->primary_is_promisc = 1.
-> 
-> Because bond->curr_active_slave was prematurely cleared to NULL when
-> releasing the backup slave, the subsequent iteration releasing the active
-> slave evaluates oldcurrent as NULL, so bond_change_active_slave(bond, NULL)
-> is skipped. Consequently, bond_alb_handle_active_change() is never called
-> to decrement the promiscuity counter, permanently leaking promiscuous
-> mode on the physical device after bond teardown.
-> 
-> When oldcurrent == slave, bond_change_active_slave(bond, NULL) already sets
-> bond->curr_active_slave to NULL. We only need to avoid selecting a new
-> active slave when all == true. Replace the if (all) branch with
-> if (!all && oldcurrent == slave).
-> 
-> Fixes: 0896341a44bf ("bonding: fix bond_release_all inconsistencies")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
-> Cc: Jay Vosburgh <jv@jvosburgh.net>
-> ---
->   drivers/net/bonding/bond_main.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index c23cf18a996a..1e5ab3454872 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -2517,9 +2517,7 @@ static int __bond_release_one(struct net_device *bond_dev,
->   		bond_alb_deinit_slave(bond, slave);
->   	}
->   
-> -	if (all) {
-> -		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
-> -	} else if (oldcurrent == slave) {
-> +	if (!all && oldcurrent == slave) {
->   		/* Note that we hold RTNL over this sequence, so there
->   		 * is no concern that another slave add/remove event
->   		 * will interfere.
+Hello,
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+syzbot found the following issue on:
+
+HEAD commit:    a23cbb05744b Merge tag 'timers-urgent-2026-08-30' of git:/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1107a379580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=75ce0a9129024fa8cbf6
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/eed599d932fb/disk-a23cbb05.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/74e8c268c325/vmlinux-a23cbb05.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/aa91aebf1baf/bzImage-a23cbb05.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+75ce0a9129024fa8cbf6@syzkaller.appspotmail.com
+
+INFO: task kworker/0:0:9 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/0:0     state:D stack:22128 pid:9     tgid:9     ppid:2      task_flags:0x4208060 flags:0x00080000
+Workqueue: events ovs_dp_masks_rebalance
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5520 [inline]
+ __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
+ __schedule_loop kernel/sched/core.c:7347 [inline]
+ schedule+0x164/0x2b0 kernel/sched/core.c:7362
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
+ __mutex_lock_common kernel/locking/mutex.c:726 [inline]
+ __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
+ ovs_lock net/openvswitch/datapath.c:108 [inline]
+ ovs_dp_masks_rebalance+0x2f/0xe0 net/openvswitch/datapath.c:2602
+ process_one_work kernel/workqueue.c:3387 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+INFO: task kworker/u8:1:13 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/u8:1    state:D stack:22376 pid:13    tgid:13    ppid:2      task_flags:0x4208060 flags:0x00080000
+Workqueue: ipv6_addrconf addrconf_verify_work
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5520 [inline]
+ __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
+ __schedule_loop kernel/sched/core.c:7347 [inline]
+ schedule+0x164/0x2b0 kernel/sched/core.c:7362
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
+ __mutex_lock_common kernel/locking/mutex.c:726 [inline]
+ __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
+ rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
+ addrconf_verify_work+0x19/0x30 net/ipv6/addrconf.c:4770
+ process_one_work kernel/workqueue.c:3387 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+INFO: task kworker/u8:2:27 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/u8:2    state:D stack:23808 pid:27    tgid:27    ppid:2      task_flags:0x4208060 flags:0x00080000
+Workqueue: netns cleanup_net
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5520 [inline]
+ __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
+ __schedule_loop kernel/sched/core.c:7347 [inline]
+ schedule+0x164/0x2b0 kernel/sched/core.c:7362
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
+ __mutex_lock_common kernel/locking/mutex.c:726 [inline]
+ __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
+ ops_exit_rtnl_list net/core/net_namespace.c:173 [inline]
+ ops_undo_list+0x28e/0x8d0 net/core/net_namespace.c:249
+ cleanup_net+0x572/0x810 net/core/net_namespace.c:706
+ process_one_work kernel/workqueue.c:3387 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+INFO: task kworker/1:1:31 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/1:1     state:D stack:22232 pid:31    tgid:31    ppid:2      task_flags:0x4208060 flags:0x00080000
+Workqueue: events ovs_dp_masks_rebalance
+Call Trace:
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
