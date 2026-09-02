@@ -1,488 +1,276 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89B4329391
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 00:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB55A1FBEA6;
+	Wed,  2 Sep 2026 01:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788310667; cv=none; b=eITdxnOZvKvDij+ZBeNWvLUVHO/TGE1EMi6FqcFb2WGPbiGq9vRI/NJFgaIVC87UfTL75XfRivykwREA4UzQEFUR4pY7VVvHU0/EoWK0Wd+vvFmGD47Dqk1tH/VXDkr+yRlA/ZNmTWLM0uV4dsgzECavkQ/eS+HDdVFKm+zj5wY=
+	t=1788310855; cv=none; b=frs95KJrnY9d18XrUmOj/UVcCvw+sIF4KkdCOfcxyPkOhtdxQUjMe2ikCOMwb8fBvkWpH9ReTSKdhIboddObXuhSusTaJeaQzURrb102Bkj2FYNtx4AUau5mwLPCKDcFrbyUcaTwIIWPSZ5P1LSqraF1FKhKWPrgVxJLJuJC6xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788310667; c=relaxed/simple;
-	bh=qrLiLXSbpKm418GppfuyArsNKguL4gSRqF57ZXsh2o0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k4/PFbqz1Am8mU3Yca8dlIEFUEIjIHE/5P76Yzy4SPyx23OVatj287uqBVRkrVpocIpr2JrLgYsOzKO0+R3YRMZoPdH3Emch9GphDA4z7AGrZulTVv9g9L+E+vEkjr61fSDu6JRC0jk5e+DZRtKvErO15rOOGrgjax15jQvZgAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UwuaQEE/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788310855; c=relaxed/simple;
+	bh=bmzzdbld4301f/3AgKchLwCvg38RiDFH0dyJJSvV89k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gRzcihDbG8fZvv9nd+fN3+5jAO6/Yb6iwr0k0ltDeYJ1+HHcFQG6d+2XKHoCDqyIgakErttXzYqWtzlq+NXtt+aNhozaMIJtlBHmCiodLfipStoHqku+7gS5ZiuXCZ2gYAKmkEl5oNG8CkGmJ8DW9tDNZ4SEaB6v8dcu1IDjOwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pi/s9Ln3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UwuaQEE/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EF51F000E9;
-	Wed,  2 Sep 2026 00:57:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pi/s9Ln3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2801F000E9;
+	Wed,  2 Sep 2026 01:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788310665;
-	bh=0E31ylpq8cojEHHyuFLuJiEdvges6A1wKF5cEAt3OZE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UwuaQEE/rDhh+Wyt9VIBCVlk5iYTxrnCu7EAAG+F4WIEravoj623/WXUkuRm+xt7c
-	 UubQZfV7MbP4GEB1Z6dIDppMKbEvYbYzSrjXlqzh5IB7wI0zzf5gzAVLN163DXHoLM
-	 ExGQRqAKX5AAn1HpFSUeeIQtxAr8AeQIzLjUYpXLUA7qNCOgyq8k8i8NdyjKNVGWwe
-	 /yAqMJKbfGBOqxVjCGGXSGn5L2/UoGlQWjy9rfS0CssX9+OSnj+cIzsbtdrC397Yhf
-	 t5muWIQJ/2dBc2/Xctvs08FFssHfa02AC7r63zZpjoyP05GqCLwKMMwzWJ3KP4J8ND
-	 /8CO6zG7y5Jww==
-Subject: Re: [net,v2] net: stmmac: re-apply taprio offload in __stmmac_open()
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- richardcochran@gmail.com, linux@armlinux.org.uk, Jose.Abreu@synopsys.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, rayagond@vayavyalabs.com
-Date: Wed, 02 Sep 2026 00:57:44 +0000
-Message-ID: <178831066405.3394541.2972817415810002471@kernel.org>
-In-Reply-To:
- <20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92@oss.qualcomm.com>
-References:
- <20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92@oss.qualcomm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1788310853;
+	bh=Lu7JmO51EukdXJvBdPRfmDly312e6LsOXdN4+gP9uho=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Pi/s9Ln3bAIi6J2Sc+gwxDr75CKs4MTNS3OBo/owLH5PfiOUGC6uuAvyPlw8nR7rg
+	 cp6fW/qtRRw9aQpFsT8ThwH11VqZg9Bb7rSuAcsXjLAPM0NpU9jy9rPL6dB8g/1lPR
+	 Snl1JtTs1bGWnYM0CNTuXmCZq5BTlixRWZPuAJNFO4nHaLpTZGhQ2qEFQkhksB+IcI
+	 IhZ1diSEBEyV522pP9UsdU1NVpQXFn7wztDPMtFMY/2nvgSDDXKEpg5KQ41wHVnPGa
+	 QhWdP6zoJow1pwZScnlogjvFeNYHo3vVaAyhTHJzHoSe5z1TbxYMJ8EAIVMP1tRz4O
+	 Zfdqi8vICjcFA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: zihanx@nebusec.ai
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	vega@nebusec.ai
+Subject: Re: [PATCH net v6 2/2] llc: reject out-of-service state before state lookup
+Date: Tue,  1 Sep 2026 18:00:52 -0700
+Message-ID: <20260902010052.2297527-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <8fa3c9e6d5dcf328979ed2bdc27817c11a5eff91.1787752861.git.zihanx@nebusec.ai>
+References: <8fa3c9e6d5dcf328979ed2bdc27817c11a5eff91.1787752861.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+llc: reject out-of-service state before state lookup
 
-Critical: 0 · High: 3 (1) · Medium: 3 (1) · Low: 0
+This adds a lower-bound check on llc->state in llc_conn_service() so that a
+socket sitting in LLC_CONN_OUT_OF_SVC is rejected before llc_qualify_conn_ev()
+indexes llc_conn_state_table[state - 1].  A few questions about the new
+check below.
 
-- [High] Incomplete fix: the taprio/EST offload is re-applied only in
-  __stmmac_open(); the second caller of stmmac_hw_setup(),…
-- [High] The new EST re-apply failure branch in __stmmac_open()
-  (drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:4166-4170) does…
-- [High] Divide-by-zero kernel oops reachable from a plain interface
-  down/up after a rejected taprio replace.
-- [Medium] __stmmac_open() calls stmmac_setup_est() with a comment
-  asserting the re-apply happens 'after PTP is up', but the guard is…
-- [Medium] A transient EST programming failure permanently suppresses the
-  newly added restoration.
-- [Medium] Lock-scope regression on priv->est->enable, which struct
-  stmmac_priv documents est_lock as protecting ('/* Protect est…
-
-Pre-existing issues:
-- [High] priv->est is published to concurrent readers across several
-  disjoint est_lock sections in tc_taprio_configure(): memset(priv->est,…
-- [Medium] In stmmac_adjust_time()
-  (drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c:86-89) the code sets…
-
---
-
-net: stmmac: re-apply taprio offload in __stmmac_open()
-
-The core soft reset in stmmac_init_dma_engine() clears the MTL_EST registers,
-so this patch re-applies the taprio offload from __stmmac_open() after PTP is
-brought up, recomputing the base time from the reserved base time and the
-current PTP time.  The open, PTP adjust and taprio configure paths are
-factored into a new stmmac_setup_est() helper.
-
-Link: https://lore.kernel.org/r/20260825-stmmac-est-reapply-after-open-v1-1-dfa80735e0a1@oss.qualcomm.com
-
-A few questions below.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-> index afc516059b89..bbebd33c8a88 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
-> @@ -80,6 +80,39 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
->  	return 0;
->  }
+> diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
+> index 885a5c33024c3..4a34f240ad2cc 100644
+> --- a/net/llc/llc_conn.c
+> +++ b/net/llc/llc_conn.c
+> @@ -362,7 +362,8 @@ static int llc_conn_service(struct sock *sk, struct sk_buff *skb)
+>  	struct llc_sock *llc = llc_sk(sk);
+>  	int rc = 1;
 >  
-> +int stmmac_setup_est(struct stmmac_priv *priv)
-> +{
-> +	struct timespec64 current_time, time;
-> +	ktime_t current_time_ns, basetime;
-> +	u64 cycle_time;
-> +	int err;
-> +
-> +	mutex_lock(&priv->est_lock);
-> +
-> +	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-> +	current_time_ns = timespec64_to_ktime(current_time);
-> +
-> +	time.tv_nsec = priv->est->btr_reserve[0];
-> +	time.tv_sec = priv->est->btr_reserve[1];
-> +	basetime = timespec64_to_ktime(time);
-> +
-> +	cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC + priv->est->ctr[0];
-> +
-> +	time = stmmac_calc_tas_basetime(basetime, current_time_ns, cycle_time);
+> -	if (llc->state > NBR_CONN_STATES)
+> +	if (llc->state < LLC_CONN_STATE_ADM ||
+> +	    llc->state > NBR_CONN_STATES)
+>  		goto out;
 
 [Severity: High]
+Does this check actually protect the table access, given that the validated
+value is not latched?  llc_qualify_conn_ev() re-reads llc->state twice to do
+the indexing:
 
-Can cycle_time be zero at this point?
-
-tc_taprio_configure() commits the enable flag before it validates the
-per-entry values:
-
-	mutex_lock(&priv->est_lock);
-	priv->est->gcl_size = size;
-	priv->est->enable = qopt->cmd == TAPRIO_CMD_REPLACE;
-	mutex_unlock(&priv->est_lock);
-
-	for (i = 0; i < size; i++) {
-		s64 delta_ns = qopt->entries[i].interval;
-		...
-		if (delta_ns > GENMASK(wid - 1, 0))
-			return -ERANGE;
-
-Those failures return directly instead of taking the disable: label, priv->est
-was just zeroed, and ctr[]/btr_reserve[] are only written further down.  So a
-rejected replace (for example sched-entry interval 1000000 when
-dma_cap.estwid is 0x1, which caps the interval at 65535) leaves
-{enable = true, ctr = {0, 0}, btr_reserve = {0, 0}}.
-
-sch_taprio leaves q->offloaded false when ndo_setup_tc fails and never sends
-TAPRIO_CMD_DESTROY afterwards, so that state stays around.
-
-A plain ip link set dev X up then walks:
-
-__stmmac_open() -> stmmac_setup_est() -> stmmac_calc_tas_basetime()
-
-	n = div64_s64(ktime_sub_ns(current_time, old_base_time),
-		      cycle_time);
-
-with cycle_time == 0 (basetime 0 is not after the PTP time, so the else branch
-is taken).  Is this a divide error inside ndo_open, which runs under
-rtnl_lock?  Would a sanity check of ctr[] and gcl_size in stmmac_setup_est(),
-or clearing enable on the validation failures in tc_taprio_configure(), be
-preferable?
-
-> +	priv->est->btr[0] = (u32)time.tv_nsec;
-> +	priv->est->btr[1] = (u32)time.tv_sec;
-> +
-> +	err = stmmac_est_configure(priv, priv, priv->est,
-> +				   priv->plat->clk_ptp_rate);
-> +
-> +	mutex_unlock(&priv->est_lock);
-> +
-> +	if (err)
-> +		netdev_err(priv->dev, "failed to re-configure EST\n");
-> +
-> +	return err;
-> +}
-> +
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index d576059c04df..b30036428188 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-
-[ ... ]
-
-> @@ -4153,11 +4154,22 @@ static int __stmmac_open(struct net_device *dev,
->  	ret = stmmac_hw_setup(dev);
->  	if (ret < 0) {
->  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-> -		goto init_error;
-> +		return ret;
->  	}
->  
->  	stmmac_setup_ptp(priv);
->  
-> +	/* The core soft reset in stmmac_hw_setup() clears the MTL_EST
-> +	 * registers, so re-apply the taprio offload after PTP is up.
-> +	 */
-> +	if (priv->est && priv->est->enable) {
-
-[Severity: High]
-
-Does the resume path need the same treatment?  stmmac_hw_setup() has two
-callers, __stmmac_open() and stmmac_resume().  stmmac_resume() runs the same
-DMA/core soft reset that wipes MTL_EST and then only calls
-stmmac_init_timestamping(), never stmmac_setup_est():
-
-stmmac_resume()
-	ret = stmmac_hw_setup(ndev);
+net/llc/llc_conn.c:llc_qualify_conn_ev() {
+	struct llc_conn_state *curr_state =
+					&llc_conn_state_table[llc->state - 1];
 	...
-	stmmac_init_timestamping(priv);
-
-	stmmac_init_coalesce(priv);
-
-Nothing in stmmac_suspend() or __stmmac_release() clears priv->est->enable, so
-after a suspend/resume cycle with taprio offloaded the flag is still true
-while the hardware block has EEST cleared and an empty gate list, and the
-programmed base time is stale because stmmac_init_timestamping() reinitialises
-the systime counter.  Isn't that exactly the divergence the commit message
-sets out to remove?
-
-[Severity: Medium]
-
-The comment says the re-apply happens "after PTP is up", but is that
-guaranteed?  stmmac_setup_ptp() returns void and swallows both errors:
-
-static void stmmac_setup_ptp(struct stmmac_priv *priv)
-{
-	ret = clk_prepare_enable(priv->plat->clk_ptp_ref);
-	if (ret < 0)
-		netdev_warn(...);
-
-	if (stmmac_init_timestamping(priv) == 0)
-		stmmac_ptp_register(priv);
+	for (next_trans = curr_state->transitions +
+		llc_find_offset(llc->state - 1, ev->type);
+	     (*next_trans)->ev; next_trans++) {
+		if (!((*next_trans)->ev)(sk, skb)) {
+	...
 }
 
-Only stmmac_init_tstamp_counter() programs TCR, the sub-second increment and
-the initial systime, so when stmmac_init_timestamping() fails the MAC system
-time counter stays in its post-reset, non-running state.  stmmac_setup_est()
-then reads that counter through priv->ptp_clock_ops.gettime64(), derives
-EST_BTR from it and sets EEST, arming the gate list against a time base that
-does not advance.  Should the guard here also depend on PTP having come up
-successfully?
+The store that produces state 0 is done with no socket lock at all:
 
-> +		ret = stmmac_setup_est(priv);
-> +		if (ret < 0) {
-> +			priv->est->enable = false;
-> +			return ret;
-> +		}
-> +	}
+net/llc/llc_conn.c:llc_sk_free() {
+	llc->state = LLC_CONN_OUT_OF_SVC;
+	/* Stop all (possibly) running timers */
+	llc_sk_stop_all_timers(sk, sync);
+	...
+}
 
-[Severity: High]
+and llc_ui_release() calls it after dropping the socket lock and before the
+timers are synchronized:
 
-Does this bare return skip the unwind that is required at this stage?
+net/llc/af_llc.c:llc_ui_release() {
+	...
+		llc_release_incoming_children(sk);
+		release_sock(sk);
+	...
+	llc_sk_free(sk, true);
+}
 
-By this point stmmac_hw_setup() has already done stmmac_mac_set(..., true) and
-stmmac_start_all_dma(), and stmmac_setup_ptp() has done
-clk_prepare_enable(priv->plat->clk_ptp_ref) plus, on success,
-stmmac_ptp_register().  The pre-existing label just below does the matching
-teardown:
+So can this interleaving happen for a socket closed while an ack timer is
+still armed (for example a non-blocking connect() left in
+LLC_CONN_STATE_SETUP, where llc_send_disc() returns early because sk_state
+is not TCP_ESTABLISHED and stops nothing)?
 
-irq_error:
-	phylink_stop(priv->phylink);
+CPU0 (softirq, ack timer)
+llc_conn_ack_tmr_cb() -> llc_conn_tmr_common_cb()
+	bh_lock_sock(sk);          /* excludes nothing here */
+	llc_process_tmr_ev()       /* sees state 2, !sock_owned_by_user() */
+	  llc_conn_state_process() -> llc_conn_service()
+		reads llc->state == 2, passes the new bound check
 
-	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
-		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+CPU1 (close(2))
+llc_ui_release() -> release_sock(sk) -> llc_sk_free()
+	llc->state = LLC_CONN_OUT_OF_SVC;     /* unlocked store of 0 */
 
-	stmmac_release_ptp(priv);
+CPU0 continues into llc_qualify_conn_ev()
+	&llc_conn_state_table[llc->state - 1]   /* now index -1 */
+	llc_find_offset(llc->state - 1, ev->type)
+	(*next_trans)->ev(sk, skb)              /* indirect call */
 
-Both callers treat the return as an ordinary open failure and free the rings
-the running DMA engine is programmed with:
+Since bh_lock_sock() in llc_conn_tmr_common_cb() does not exclude a writer
+that holds no lock, is the negative index and the indirect call through the
+pointer read from before the tables still reachable after this patch?
 
-stmmac_open() -> err_dma_resources:
-	free_dma_desc_resources(priv, dma_conf);
-	kfree(dma_conf);
+Would latching the value once, for example
 
-stmmac_change_mtu()
-	ret = __stmmac_open(dev, dma_conf);
-	if (ret) {
-		free_dma_desc_resources(priv, dma_conf);
-		kfree(dma_conf);
+	u8 state = READ_ONCE(llc->state);
 
-Can the MAC/DMA keep fetching TX descriptors and writing RX frames into that
-freed coherent memory?  Does this also leak the clk_ptp_ref enable count and
-leave a registered PTP clock behind, so that a later successful open calls
-ptp_clock_register() again over priv->ptp_clock and re-runs
-rwlock_init(&priv->ptp_lock) and mutex_init(&priv->aux_ts_lock) on live locks?
+and passing that value down to llc_qualify_conn_ev() and llc_find_offset(),
+or moving the llc_sk_free() state store under the socket lock, be a better
+fit for the problem described in the changelog?
 
-Would jumping to a label that performs phylink_stop()/DMA stop plus
-stmmac_release_ptp() be more appropriate here?
-
-[Severity: Medium]
-
-Separately, does clearing priv->est->enable here make the failure permanent?
-
-est_write() can return -ETIMEDOUT from readl_poll_timeout() on
-EST_GCL_CONTROL.SRWO before est_configure() ever writes EST_CONTROL, so this
-can be a transient programming failure.  Neither stmmac_open() nor
-stmmac_change_mtu() removes the attached taprio offload, and sch_taprio keeps
-the qdisc installed, so when userspace retries ip link set dev X up the new
-block is skipped because enable is now false: the open succeeds with EST
-disabled in hardware, taprio still reported as offloaded and no error
-reported.  Recovery then requires deleting and re-adding the qdisc.  Is that
-the intended behaviour?
-
-> +
->  	stmmac_init_coalesce(priv);
->  
->  	phylink_start(priv->phylink);
-> @@ -4181,7 +4193,7 @@ static int __stmmac_open(struct net_device *dev,
->  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
->  
->  	stmmac_release_ptp(priv);
-> -init_error:
-> +
->  	return ret;
->  }
->  
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> index 960249960004..917ef7ddcae6 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-
-[ ... ]
-
-> @@ -84,30 +84,8 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
->  
->  	/* Calculate new basetime and re-configured EST after PTP time adjust. */
->  	if (est_rst) {
-> -		struct timespec64 current_time, time;
-> -		ktime_t current_time_ns, basetime;
-> -		u64 cycle_time;
-> -
-> -		mutex_lock(&priv->est_lock);
-> -		priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-> -		current_time_ns = timespec64_to_ktime(current_time);
-> -		time.tv_nsec = priv->est->btr_reserve[0];
-> -		time.tv_sec = priv->est->btr_reserve[1];
-> -		basetime = timespec64_to_ktime(time);
-> -		cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC +
-> -			     priv->est->ctr[0];
-> -		time = stmmac_calc_tas_basetime(basetime,
-> -						current_time_ns,
-> -						cycle_time);
-> -
-> -		priv->est->btr[0] = (u32)time.tv_nsec;
-> -		priv->est->btr[1] = (u32)time.tv_sec;
->  		priv->est->enable = true;
-> -		ret = stmmac_est_configure(priv, priv, priv->est,
-> -					   priv->plat->clk_ptp_rate);
-> -		mutex_unlock(&priv->est_lock);
-> -		if (ret)
-> -			netdev_err(priv->dev, "failed to configure EST\n");
-> +		stmmac_setup_est(priv);
->  	}
+>  	rc = 0;
+>  	trans = llc_qualify_conn_ev(sk, skb);
 
 [Severity: Medium]
+The goto out here leaves rc at its initial value of 1, which was previously
+unreachable for a state of 0.  Where does that 1 end up?
 
-Is the lock scope on priv->est->enable still correct after the refactor?
+net/llc/llc_conn.c:llc_conn_state_process() {
+	rc = llc_conn_service(skb->sk, skb);
+	if (unlikely(rc != 0)) {
+		printk(KERN_ERR "%s: llc_conn_service failed\n", __func__);
+		goto out_skb_put;
+	}
+	...
+}
 
-struct stmmac_priv documents est_lock as "Protect est parameters".  Here the
-store to priv->est->enable now happens outside est_lock, and the hardware
-programming happens in a separate critical section inside stmmac_setup_est().
-The new code in __stmmac_open() also reads and writes the same flag with no
-lock at all:
+net/llc/llc_if.c:llc_establish_connection() {
+	...
+		rc = llc_conn_state_process(sk, skb);
+	}
+out_put:
+	sock_put(sk);
+	return rc;
+}
 
-	if (priv->est && priv->est->enable) {
-		ret = stmmac_setup_est(priv);
-		if (ret < 0) {
-			priv->est->enable = false;
+net/llc/af_llc.c:llc_ui_connect() {
+	rc = llc_establish_connection(sk, llc->dev->dev_addr,
+				      addr->sllc_mac, addr->sllc_sap);
+	if (rc) {
+		sock->state  = SS_UNCONNECTED;
+		sk->sk_state = TCP_CLOSE;
+		goto out;
+	}
+	...
+out:
+	release_sock(sk);
+	return rc;
+}
 
-rtnl gives no exclusion against clock_adjtime, which becomes reachable as soon
-as stmmac_ptp_register() has run a few lines earlier in the same function.
-Can the open path observe enable == false in the middle of an adjust and skip
-the re-apply, or can its enable = false store be lost to the unlocked
-enable = true here?  Can a taprio destroy holding est_lock clear enable and
-program the disabled state while this path stores true and re-arms a schedule
-that was just destroyed?
+Can connect(2) then return +1 to userspace on a socket that was just reset
+to SS_UNCONNECTED and TCP_CLOSE?  Callers testing for a negative return
+would read that as success.
 
-Would passing the desired enable state into stmmac_setup_est() and
-re-validating it after taking est_lock keep the state transition and the
-programming in one section?
+Is the printk also a concern, since it is not ratelimited and now fires once
+per event for a state this patch treats as expected?
+
+The sequence I believe reaches it on a still-hashed socket:
+
+  1. socket(AF_LLC, SOCK_STREAM) + bind() leaves llc->state at
+     LLC_CONN_STATE_ADM
+  2. a failing connect() leaves state at ADM with llc->daddr set and the
+     socket still in the SAP list
+  3. any further frame from the peer matches the ADM catch-all transition
+
+net/llc/llc_c_st.c:
+static const struct llc_conn_state_trans llc_adm_state_trans_5 = {
+	.ev	       = llc_conn_ev_rx_any_frame,
+	.next_state    = LLC_CONN_OUT_OF_SVC,
+	.ev_qualifiers = NONE,
+	.ev_actions    = llc_adm_actions_5,
+};
+
+     which sets llc->state to 0
+  4. connect(2) again (sock->state is SS_UNCONNECTED, so it is accepted)
+     reaches the new reject path
+
+Would it be more consistent to translate out-of-service into -ECONNABORTED
+at the llc_if.c entry points?  llc_send_disc() already does an explicit
+check:
+
+net/llc/llc_if.c:llc_send_disc() {
+	if (sk->sk_type != SOCK_STREAM || sk->sk_state != TCP_ESTABLISHED ||
+	    llc_sk(sk)->state == LLC_CONN_STATE_ADM ||
+	    llc_sk(sk)->state == LLC_CONN_OUT_OF_SVC)
+		goto out;
+	...
+}
+
+while llc_establish_connection() has no such check.  On a related note, the
+kernel-doc for llc_build_and_send_pkt() still documents only 0,
+-ECONNABORTED and -EBUSY, although state 0 is filtered there only
+incidentally by llc_data_accept_state().
 
 [Severity: Medium]
+This isn't a bug introduced by this patch, but while looking at the callers
+of llc_conn_service() there is an asymmetry in llc_backlog_rcv() worth
+mentioning.  The fallback branch tests the owner socket's state and then
+dispatches on it, while llc_conn_state_process() operates on skb->sk:
 
-This isn't a bug introduced by this patch, but the return value of the EST
-re-programming is still dropped here, and stmmac_adjust_time() returns 0
-unconditionally.  EEST and EST_INT_EN were explicitly cleared a few lines
-above before the systime adjust:
+net/llc/llc_conn.c:llc_backlog_rcv() {
+	...
+	} else if (likely(llc->state > 1)) {
+		rc = llc_conn_rcv(sk, skb);
+	} else {
+		goto out_kfree_skb;
+	}
+	...
+}
 
-		priv->est->enable = false;
-		stmmac_est_configure(priv, priv, priv->est,
-				     priv->plat->clk_ptp_rate);
+The two branches above it take bh_lock_sock_nested(newsk) before touching a
+child, this one does not.  For a listener-owned backlog skb whose skb->sk is
+a child, the child's state machine runs without the child's lock, even
+though llc_conn_state_process() documents that the socket lock has to be
+held.
 
-so if stmmac_setup_est() fails (est_write() SRWO poll timeout, or -EINVAL for
-clk_ptp_rate == 0) the MTL_EST block stays disabled while priv->est->enable
-remains true, which is the same divergence described in the commit message.
-The other two callers of the new helper do check the result.  Since the helper
-now returns an error, would it make sense to propagate it here too, or at
-least roll priv->est->enable back?
+Every child reachable through this branch appears to have already been
+released by llc_release_incoming_sock(), whose state store the new check now
+rejects, so this looks defused for the concretely reachable case.  What
+remains is the publication order in that function:
 
->  
->  	return 0;
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> index 14cabe76e53e..b41df317d73c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+net/llc/llc_conn.c:llc_release_incoming_sock() {
+	if (atomic_xchg(&llc->incoming_state, LLC_INCOMING_NONE) ==
+	    LLC_INCOMING_NONE)
+		return;
 
-[ ... ]
+	WRITE_ONCE(llc->state, LLC_CONN_OUT_OF_SVC);
+	...
+}
 
-> @@ -1069,34 +1069,23 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
->  	}
->  
->  	mutex_lock(&priv->est_lock);
-> -	/* Adjust for real system time */
-> -	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
-> -	current_time_ns = timespec64_to_ktime(current_time);
-> -	time = stmmac_calc_tas_basetime(qopt->base_time, current_time_ns,
-> -					qopt->cycle_time);
-> -
-> -	priv->est->btr[0] = (u32)time.tv_nsec;
-> -	priv->est->btr[1] = (u32)time.tv_sec;
->  
-> -	qopt_time = ktime_to_timespec64(qopt->base_time);
-> -	priv->est->btr_reserve[0] = (u32)qopt_time.tv_nsec;
-> -	priv->est->btr_reserve[1] = (u32)qopt_time.tv_sec;
-> +	time = ktime_to_timespec64(qopt->base_time);
-> +	priv->est->btr_reserve[0] = (u32)time.tv_nsec;
-> +	priv->est->btr_reserve[1] = (u32)time.tv_sec;
->  
->  	ctr = qopt->cycle_time;
->  	priv->est->ctr[0] = do_div(ctr, NSEC_PER_SEC);
->  	priv->est->ctr[1] = (u32)ctr;
->  
->  	priv->est->ter = qopt->cycle_time_extension;
-> -
->  	tc_taprio_map_maxsdu_txq(priv, qopt);
->  
-> -	ret = stmmac_est_configure(priv, priv, priv->est,
-> -				   priv->plat->clk_ptp_rate);
->  	mutex_unlock(&priv->est_lock);
-> -	if (ret) {
-> -		netdev_err(priv->dev, "failed to configure EST\n");
-> +
-> +	ret = stmmac_setup_est(priv);
-> +	if (ret)
->  		goto disable;
-> -	}
-
-[Severity: High]
-
-This is a pre-existing issue, but since stmmac_setup_est() is now the single
-programming helper shared by three contexts, is the split publication of
-priv->est safe?
-
-tc_taprio_configure() publishes the configuration across four disjoint
-est_lock sections: the memset of priv->est in one, gcl_size/enable in a
-second, btr_reserve/ctr/ter/max_sdu in this third one, and the hardware
-programming in stmmac_setup_est() as the fourth.  The gate control list itself
-is written with no lock held at all:
-
-		priv->est->gcl[i] = delta_ns | (gates << wid);
-
-stmmac_adjust_time() runs without rtnl and, once it has latched est_rst, calls
-stmmac_setup_est() unconditionally, which reads ctr[] under est_lock:
-
-	cycle_time = (u64)priv->est->ctr[1] * NSEC_PER_SEC + priv->est->ctr[0];
-
-	time = stmmac_calc_tas_basetime(basetime, current_time_ns, cycle_time);
-
-If it acquires est_lock in the window after
-
-		mutex_lock(&priv->est_lock);
-		memset(priv->est, 0, sizeof(*priv->est));
-		mutex_unlock(&priv->est_lock);
-
-and before ctr[] is rewritten here, cycle_time is 0 and
-stmmac_calc_tas_basetime() reaches div64_s64(..., 0).  The window spans the
-unlocked gcl[] build loop, so it is not a single instruction.  Can a
-concurrent tc qdisc replace and PTP time step on a taprio-offloaded port hit
-this divide, or program the hardware from a half-built gate list?  Would
-publishing priv->est in one est_lock section, and adding a cycle_time check in
-stmmac_setup_est(), close both?
-
->  
->  	ret = stmmac_fpe_map_preemption_class(priv, priv->dev, extack,
->  					      qopt->mqprio.preemptible_tcs);
-
+Can a drainer in the fallback branch observe incoming_state as
+LLC_INCOMING_NONE while still seeing the child's pre-teardown non-zero
+state, and then run the child's state machine concurrently with
+llc_release_incoming_sock() on another CPU?  Both fields are read there
+without the child's bh lock.  Reaching the branch at all also needs the
+listener's own llc->state above 1, which seems possible only through a
+listen() followed by connect() on the same socket, since llc_ui_listen()
+leaves sock->state at SS_UNCONNECTED and llc_ui_connect() has no TCP_LISTEN
+check.  I could not confirm that all of these hold at the same time, so this
+may not be reachable in practice.
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92%40oss.qualcomm.com
+pw-bot: cr
