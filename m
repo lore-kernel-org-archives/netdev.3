@@ -1,63 +1,63 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B0F35B63F
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 01:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64AF337BAB
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 01:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788314242; cv=none; b=bcpaHlrPI3AUSlPIgVZFOov0viDL0NpQmO3e613YZrzBTif0R2nXkIJJvQkLCBmc/o9k2QuTv67L1SllwjRjUfZtqVcwN7E8ZrrJcwP8/1RSpAuV3VAvQJg5sXiDasEHa0OHS3l7X8FivirjL78EUL3JEi2RWSOW8jsWFiXUCCs=
+	t=1788314246; cv=none; b=W3Q2Ir7c8jE/H24yH14a3auuTiHa30OmV5+hRSEst76MJAqlDRJ2WWc/oS60HRSA7UBX8S6qjd+UZYiK42g6I6cabM1x7vkyDTuqY07XURi6yBmVrcvh8lQ5fa4VnkLZjmMXhWy488DnVMSabwoyFkfsq7gzmBvdNsmPqe1lAGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788314242; c=relaxed/simple;
-	bh=kjynEym4JkM4qLFWRtB6GBT9eT/13ERJsjb/5ssDOQI=;
+	s=arc-20240116; t=1788314246; c=relaxed/simple;
+	bh=OO2BGXWS3mSpTcM1EDr/idHgcRwBEfKjIKRjo8GuBro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eo4plkNpTojnsUF0asU9F7GQ5oiPkQ4N9DRIjjsdA8iyuYDXrNaV02du+EzJ20xuogttYZE3SUKb+zl2FyzzFZ+A4Q5ohz7ElNfZqsDhaSX4IAjbKg92IaZ8nhTQ6abZ8z4W4CJzxuVODxBCQaEz15nA2eMcJl1oqhrDT+pLL9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=neuNbo44; arc=none smtp.client-ip=209.85.216.53
+	 MIME-Version; b=Y1oVNr9LbfIsB00NOq5Tj5cPdrx5ZIS40xJAGyK39Y5fLoqmTwt/50vMFZeR2WqKO52E5xm5bH83JO02QhzppgPLvoZ+0mSyUOWZpu6cLjG21KN2A9imNCuNGXHYy/mHnOI4YkT2q/cvKGTF3Gb5sXJITSUEzJS+zC4f6MK3NDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=gLBepBaj; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="neuNbo44"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38511175ad3so518337a91.2
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 18:57:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="gLBepBaj"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso436006b3a.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 18:57:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788314234; x=1788919034; darn=vger.kernel.org;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788314236; x=1788919036; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+2ASlAu8y5yvnOMRkejZNi7wm/1MZgn7xMNUrYUfQtI=;
-        b=neuNbo44bMNUajm357LiSzKnzPxriyzf3VQtr1yrdq5+8LYsxqaz7V9REmNxf03Xkz
-         OHqxnbS1CLxomdb//e+Rs7Ip/1t5n3qYfwLabG0J/oHZSxQhf1uWerbrPTeFUBesMSli
-         Kd5K+xcf04yV/xtMzdqBewpFFDfc4CHUdMCKPD0ekp1XeUfj4m3RAqsiTsIp2bJECUsa
-         GgFcTT/CNo9O/CZrUPUCmF7Hp1o0bNx5puZ7SgxfXADOFBMzbI9Hw4m5WIk6+Q/niJhC
-         8ml3F+oYNfBZqvq2TzgCh3CpE+QNttvN5llDk9yBO6OF2hQ1VmJ2pGZSizNkwtRSZwZf
-         s4SA==
+        bh=yQv53l+2Rw8gT5LYIk2AL0drTQ3KamOD30iQa8HJxtU=;
+        b=gLBepBajF+Xh3kyYQ+5Bd+J6eBhFhs/ER2YOdlsgxKs5QnsToRIWEkB4n8Gx+N3vUp
+         FCR2oXAHq00B5f2/wG899jbozk8aG4QZgsRQKBbtdtWD5fAlC0E0PoJyLqW+mtipIuGt
+         Z6kbp0dGGNOLtuSlw56hHuIBg7MW+FfepMeNia+mR3peSD8XWjGXowQDGVKwMzhuNIiV
+         EzzOIMX/rt5PeNPHZ5B8tqAVOuuJo6QOkdW4IgDQbkjx6BymSrh4UgnyUIbp1LVTPxNM
+         LlNPGXHbo4nAo5g+0y7ynIvp5bS03Df70y2PqiNP52KtEUCYVpIL7oaYhPwojt9IZ00v
+         yGyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788314234; x=1788919034;
+        d=1e100.net; s=20251104; t=1788314236; x=1788919036;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+2ASlAu8y5yvnOMRkejZNi7wm/1MZgn7xMNUrYUfQtI=;
-        b=kwTrdoqggKgAxKoi29S1wvbb8QLUfUrXSbFi+ipWweab7xnJLO662euVW9agksFz7X
-         BrE6ECnWHt/8PhAsTrM4fxfO50a0bG44wm1eA0gWKdbcqVCUzYpcdcKvMGgoQlK4YQwu
-         brxoYSX60z8yYMvB24e60o+8ILOrtLOw2oBAHeQ80Rm5YhG7Lcic7cdIX0Gk9xc5459c
-         3R7C3ybZIRLlqrvaZATAODXeP5VJnia/i8ZNQsqbwbYPW16HRdFSAms+Wo0Zg0hFsfGb
-         BNJoASQD86Vd1SmS8e7B2gXt6ETb3si/xuTD8pW6nJQH5qbVKkO+9FsulNeqXcamXH1S
-         nhWg==
-X-Gm-Message-State: AFuF++k0ex0AqCK5180UQPj0fDEb5VX5NtlT7DpqLazKM2u9/QuBkhjZ
-	t+FwT7CG1YPMPRCHBynvisZ5hVDrHocRfk88VRIzpjHp11lRbnDgYiSVP7gJFbfbuDA61sMzKw7
-	cVa86L3Y=
-X-Gm-Gg: AYBFou19L+/fNkIfNC1YR+Dlkknu7FRruwckUnPs89t+KJPH7eq3zqguz0spyvjryOY
-	8H/VOItIkmss4PEIBhSIKi86IbtA0M8frezwVKbT/6kSwsOOOYhf+B2tZ4BlcicNj2cA1sq7U6p
-	DjyBQYY76z5+jAnPDGV1EZV2R2iFDSUYnvxcBwUB6QO31pVjhDbMT66xNqtL/oAatHAkltL6x5a
-	TZVM2P1afvZYBJjzapUr0cF7xp69o7zrlP+aCowQqiYMHD+frMptmZfx2HNH09AFnVH5QuuiCmx
-	QUzkKi2NM52d5E4ZQU/FFV3pgDS8BguZon4o1Fr00/kbsOAE6Ao2xEIk0CBXJZQPrFTaT7WD9Bf
-	fEetF2uBg5z33hLdHaw2pc+5PqXXQoHEsgl5WG33EFpZYb63eT1Db3dZMBACCpi8jEJhfXwVnMQ
-	qTmI2VKqqo5iRwjjtViwwcVeJ3hoXP5jrRWYmPwRwin1wbY3ZQM0cN
-X-Received: by 2002:a17:90b:4c52:b0:38e:6aa7:68ad with SMTP id 98e67ed59e1d1-39aedf7c6aemr1801505a91.5.1788314233810;
-        Tue, 01 Sep 2026 18:57:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5a::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae380d7a9sm2252710a91.12.2026.09.01.18.57.13
+        bh=yQv53l+2Rw8gT5LYIk2AL0drTQ3KamOD30iQa8HJxtU=;
+        b=LLRz/CXMX0NDlIOHvw0Qoahad6rud72bpB6/nl3W1WSHbYYZPnfZDE17u7vD3pWDrJ
+         RC+NRwTTl8zJ8vJl+abytodiLD03z+GU/TfyW6d7oBxH3gGtzt+BVJ1323yWT938SthO
+         8yZCwKal9LEPSuOVnDOXA6kjPRx1APfy/wUlKIwNgO+aQN5wNSQgwwieLK3qresZgHfk
+         qwxi1Q77rhC3PXQyeKpADmKvUTa/EGWuQjl7Poz0U6cht7SI8zjBSe8WPYvH/cjL9u3T
+         ZbhXD+kvNNMvY5ub/NXjXqFHUgbLhtYquXCP71DbH/iCLrPZto98Fr8hdfVtzY2nR3lL
+         O5+Q==
+X-Gm-Message-State: AFuF++lCezFN2a+dgUEjjCajPHFif+avmEB9zed0mnD5Obev17Gu4hXn
+	JhTTeV3jingpkvDK0M48hs2/m0/XQRXJXWGo7pERENvJU2AagWLCkeGMfqDAo9qZFVLaXRmILKq
+	tXP6Jubc=
+X-Gm-Gg: AYBFou1qaYL8N1Yzw/tdrgboH8Vb3B67AqTdFnE4uS6Rz8ipOkswNPUHRJVKmWJf4CQ
+	R5cp2mpCNK+WtZmJfMo2TJLtpC/EcILQLb/Eew9ttawk6vQHD+Hau34tdw3C2UmeLDEX85QnloK
+	SB3lcnQe/XkIaoN/1xS1VuyCYcMXyh3nufLTnBZNV2AaWXdq9JcBSy6rLg6rgOsxuyzyA8//vRs
+	cIFZmWcdJm01EvFk7KPXdBg7msZo2nBKsBqI/hdUzvCw9FjeMZo2wcMstXKg/7JwOptmhiq2TLr
+	45sHQ68a0pyy7DC+NOlTaeSDd7PnVcZa4LkChqEP6zmkGZKms4PED7kmgBG5Gd7UEeM7pVsQ3iZ
+	ttQBagl34P01KBmqIc+aA0Q42Spf1r9WMUZGJG1nIYVKdRgsGEg6/GX3IwTTPhlkunl3zySU0+p
+	w8Ll4RiGvuW9J2GNBxbqWgTQTXcYM1tePujn1cAr5Skr0E1YAN5hQb
+X-Received: by 2002:a05:6a00:bd8a:b0:857:7317:cff2 with SMTP id d2e1a72fcca58-85ed444a110mr3184790b3a.19.1788314235666;
+        Tue, 01 Sep 2026 18:57:15 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4f::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85dc07157e0sm549385b3a.43.2026.09.01.18.57.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 18:57:13 -0700 (PDT)
+        Tue, 01 Sep 2026 18:57:15 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
 To: netdev@vger.kernel.org,
 	Michael Chan <michael.chan@broadcom.com>,
@@ -67,7 +67,7 @@ To: netdev@vger.kernel.org,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>
+	David Wei <dw@davidwei.uk>
 Cc: horms@kernel.org,
 	kalesh-anakkur.purayil@broadcom.com,
 	colin.winegarden@broadcom.com,
@@ -77,9 +77,9 @@ Cc: horms@kernel.org,
 	Joe Damato <joe@dama.to>,
 	Sashiko <sashiko-bot+sashiko@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH net v5 1/6] bnxt_en: Only restore LRO if the device supports TPA
-Date: Tue,  1 Sep 2026 18:56:44 -0700
-Message-ID: <20260902015652.2421609-2-joe@dama.to>
+Subject: [PATCH net v5 2/6] bnxt_en: Don't free the live ring's TPA state on queue restart failure
+Date: Tue,  1 Sep 2026 18:56:45 -0700
+Message-ID: <20260902015652.2421609-3-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260902015652.2421609-1-joe@dama.to>
 References: <20260902015652.2421609-1-joe@dama.to>
@@ -91,35 +91,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With a P5+ device with firmware that reports max_aggs_supported == 0, it is
-possible to make LRO settable by attaching and detaching an XDP program
-even though the device does not support TPA.
+bnxt_queue_mem_alloc() shallow copies the live RX ring into the clone:
 
-Fix this by testing BNXT_SUPPORTS_TPA before restoring the feature bit.
+  memcpy(clone, rxr, sizeof(*rxr));
 
-Fixes: f0aa6a37a3db ("eth: bnxt: always recalculate features after XDP clearing, fix null-deref")
+the code currently clears pointers that the clone owns (such as
+rx_agg_bmap), but rx_tpa and rx_tpa_idx_map are left pointing at memory
+of the live ring that was cloned.
+
+If an allocation failure happens later and the err_free_tpa_info label
+is taken, the live ring's memory can be freed while still in use.
+
+Fix this by initializing the clone's pointers to NULL to prevent live
+ring state from being freed inadvertently.
+
+Fixes: bd649c5cc958 ("bnxt_en: handle tpa_info in queue API implementation")
 Reported-by: Sashiko <sashiko-bot+sashiko@kernel.org>
 Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828190900.1767611-1-joe%40dama.to
 Cc: stable@vger.kernel.org
 Signed-off-by: Joe Damato <joe@dama.to>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d59bcca73a2b..0e5c2a48f313 100644
+index 0e5c2a48f313..f44a23c8a590 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -5006,7 +5006,8 @@ void bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
- 		bnxt_get_max_rings(bp, &rx, &tx, true);
- 		if (rx > 1) {
- 			bp->flags &= ~BNXT_FLAG_NO_AGG_RINGS;
--			bp->dev->hw_features |= NETIF_F_LRO;
-+			if (BNXT_SUPPORTS_TPA(bp))
-+				bp->dev->hw_features |= NETIF_F_LRO;
- 		}
- 	}
+@@ -16333,6 +16333,8 @@ static int bnxt_queue_mem_alloc(struct net_device *dev,
+ 	clone->need_head_pool = false;
+ 	clone->rx_page_size = qcfg->rx_page_size;
+ 	clone->rx_agg_bmap = NULL;
++	clone->rx_tpa = NULL;
++	clone->rx_tpa_idx_map = NULL;
  
+ 	rc = bnxt_alloc_rx_page_pool(bp, clone, rxr->page_pool->p.nid);
+ 	if (rc)
 -- 
 2.53.0-Meta
 
