@@ -1,110 +1,218 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263251FC110
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 04:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788323477; cv=pass; b=QJvZYhMSzDZQmxUJyU8t7wRAO0XtjNy5DJKkYekl4Gad6utNUb0uzf0GwAzf0+k5VqFPNzRnuYvytkqDReFZT+Xn5v0B2ORqsntdSeyWpV6tvGWaRZogm9Vy2p0xiZ5rwE+VZnsNJ8bmQuiZp7OYGJ5xYFcd/f0Wdcy8zJtdUkw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788323477; c=relaxed/simple;
-	bh=OAPlCfRou+I8iHAkd6NTAxqB5OJwBkgP5BUJDerN+qk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oaClguEjb/0NOM1lct1a+J+b32aWyd1WM/PPgliBIYOHlbUlzpvb4g5vc/AoJbjLJE2QkHx2Yq7BqJ4BXSuCqBRWLvj0Aedv10L3Gnyebu7CgZlNGuZ8728zUPRTW3dUGTkyaI0zBF8fP/qG/UfUeTWkwIGAh8bW5/SzotWzUo8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PSEm0yQ2; arc=pass smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C40A1B6D08;
+	Wed,  2 Sep 2026 04:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788323749; cv=none; b=VplNYFTOyoVwjUODVfyNenisCQxRoGOlbg5+kuOK7dAgaQbEdUkNzf2bnDsWeybtvmnhKOvx06zNDfEV40h76vSPFqfjiUT43EvvfD4cbz0t9N95iGbxSFU57ztaJe00JRrTUfFHfJf8YQykxoWxbYt18PG9/m8s3kCLdVSlizA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788323749; c=relaxed/simple;
+	bh=0Qdzli+qJp3FOabq/THj8Atm7xH7luM+jagflvB2Src=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fLK3E5hV1wInNh5Rbe0fVwLaIDMQd8A0wBDciSf3LaN8VQgc3bRHlo/E9pgxNWtJeObS2GhCYU/KGrA3NSLod4iTyQkpTvWXAYuAc7k8VquCqyR71z1hu4X4VwGOJK2lQAhUBXm4k3FIm04EkjULaeUbUdooAzj43TfnlFNiG+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esLXqLgv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PSEm0yQ2"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c250c6a6a9aso81185666b.1
-        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 21:31:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788323474; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OyZpivVywN75nVlR9XiblZnOtI8RFNnyYfpC6Kjv8fwcchvNjKAScUzQR+VaUWvQem
-         iZZXQLycTzRDLa3nkXF7mJ1j4D/qoIFwPDGMrcTcNUGWy2+LF5S1krAatmVhhZXQkVhX
-         pBaMkvDKNobsyhJAEjbZO2L7JcjAr931+2aV+iD02tEV+vcyvrb5Wn3vqddhwmcA1ycV
-         D92mv6nlw1c3eiLvP9xNeoGZ4YlTte5lY/vE/5r/TyadkV0lqfscVcFGygA61eCLT/Q5
-         TPEJqpNCg2n8agCpJGWR7AikDKyc7KRucGN0+DaFETD3d2kHyhrulh2xogrUB8fMGLSf
-         cIMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=OAPlCfRou+I8iHAkd6NTAxqB5OJwBkgP5BUJDerN+qk=;
-        fh=MtNgM0AfpRSABdqDbrb4h4Tr329YbQFy53v8S8Toqc4=;
-        b=Rii3B39sbUOdXslYHX9UG8yFCAwCYfRJEDl61kU5vkEN0SDxgGGUAf3Q06Po/+R+eP
-         7ALq2eg7+ljXOYrOMe3h8Ev45OzXlqGakAr6VMHi2/oYtTMF5ur7d6D8fRGpDvvqvWoK
-         hShFllp2U5ooNJS969t4fuTWCaB8wJu0XfxfP/h90xTFzcDnufk7Eb5oNIFHfh/gdkta
-         vWbus7g9fDwb8CoYtkCTtR3VTvXqYErjfh6RejHXihhXxlZym8Bawe1nceOySnCc/Ea0
-         iHFYi9I/i1pIxInUHNmDnarG8xdRhJFmMliP8JB6yhP5pCYvazp3gfvums4DIsH2x2eJ
-         mcSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788323474; x=1788928274; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OAPlCfRou+I8iHAkd6NTAxqB5OJwBkgP5BUJDerN+qk=;
-        b=PSEm0yQ2gAPtjRiczG/bTxkLqTkwupCZnQpIbHQDOF/Hpunlzs2I3Q43a3q7kJDz6i
-         7xX0957rYt0vOayQZagJfzUbaXLt+Frf/aN+N2/KPHayyInoxCXuBOVb6R6CugFqGS2c
-         pBKUpTE6wn6XbeSimiOWzFGNIxiAI6oECj4IC/dGKBeTmID+Dn1+R3bV2hqjA0Z0tpAA
-         oh7sYQckRim+TpxRaZKnrYFD9EWZW+Gj6YGbb7Qec6PfJV8d3IjYXz9pvHXv+ffSbTBC
-         zgddjky1njFxlOlRBXGzh78Wa0gGyWmwWMh545FRHZdoW+kpEFdcRdkvQXGO0DmX4fAu
-         g//g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788323474; x=1788928274;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OAPlCfRou+I8iHAkd6NTAxqB5OJwBkgP5BUJDerN+qk=;
-        b=dNNpZOaUGtdbZaikByNkRG12/H0m2JpxTN1ftw6q7uC/qbyitn3ohYleXDJO2LQvy0
-         w7/FJ4B67qDxihgy8Y6eDrIWJJgtTz0ajf0bnnwu8FTCQkfF6uhaoI9ZxHu+MI+m4Mr8
-         3fsnNbYJ3m4edYIzqImWLT7pvIcrNQJYIetPiTTOTC8aWch9E6wsYhI6kbd8mbJG7O2Z
-         JJ+JLRdJnss59VbTHK+8lVxGy1dejjWo6kW4OV+TMs1KPiKDZ9o4fg1382m3oue7HG1U
-         4WmDmpoLtSLd7n6maXN1EQpdIQLjdqU8zYb+lUvhu+ucIuMWSiyapljm4fhsi2BPLe5o
-         UjPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoXBLQkc6pyRmunI4boDtliC4dpVMexDMdrYevYJGc6B8zpPtWXiR5gNmw43zcFM3jlsC/ikv4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lOGq/erqIj1h5OeBYXUNIqiaug2jKog1YrCcCP8lB4j6rLcE+q
-	9T02cA1N8SSr8bz03X6mo/fwObxgeHh+vRaRvTd+ketyVGVXC0dpxUR2puM9KfKFSh3ulMU11/j
-	qhayO0ptpV0F5bZIKB5C2qRoUNC4m7HhdwjsT2Cf9MnQ3
-X-Gm-Gg: AYBFou1gMF6ZLTvXt+iH1J6Xdh3+gUtWKTN7G43qmpdna3cKkO84dNcuIzJc9FSR5Ek
-	SwbHKwT6YNvtdyqDXqlQxl9yuKDZ+Ybr52mhbRJP10vlNLEt5MGhTthRV8NTBB4wS5zP/K8X6QY
-	p+5KSQy0MLheoo215fszm7nrid5oRMFLD1CHUsaFj5NQ3BxN5ALHjwK4bEVEwc/auM7oCADPyLw
-	/Ui2sJJLlhMNP0pbRZ6ZvtniRxkvVmtelCGBc6wDWTJBwLjYlJfcC8JLwnKQAwm/lTgDupqkT7o
-	yGBDGsI8oeDHXZWQDKLZ7FYvSnq5EJ+0FMqJZyyeDyTY4g==
-X-Received: by 2002:a17:907:d21:b0:c12:b2db:873d with SMTP id
- a640c23a62f3a-c25d526e682mr95377266b.5.1788323474104; Tue, 01 Sep 2026
- 21:31:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esLXqLgv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08221F000E9;
+	Wed,  2 Sep 2026 04:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788323747;
+	bh=3+aNzt7+vR8uvvRPwWe1grwPlvO+Ou8ltA+L0ejnOWs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=esLXqLgvcPxUITP7luIajV9bgLZ5yzoX2XFHM6+gDi/B7h1L3BB5D7dNqDbaeIJ5C
+	 rtmBdRFErxZa78OPVY/dTrbs3ydZ/I/My3uunWpQWBS6Zf/ftpIFivOEu4KLWoCI3m
+	 O3+bJnvsm6L1b40xfBQzp8HpF4bM8Z5GL9+9NNzyC8h0ysUSKqXj+nds+hwphEaZrB
+	 TwV0BOOFIM0xLZT216bnhgSVBeA9i/GwMDNTQ7T0cvdqDGvfehCJsJCBNMNsilhwLa
+	 yI5THRjiwy4FuFqBJ5c9d4kMgHv9+mD98YWr9WXbDck0V/0UX0VkvsTfZ0XrygUrVT
+	 pEYOx+rOKJ1iw==
+Subject: Re: [RESEND,nf-next] netfilter: nf_conntrack_h323: fix double cursor
+ advance in decode_int()
+From: netdev-bot+sashiko@kernel.org
+To: l1138897701@163.com
+Cc: pablo@netfilter.org, fw@strlen.de, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, phil@nwl.cc,
+ horms@kernel.org, zhaojignmin@hotmail.com, kaber@trash.net,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 02 Sep 2026 04:35:46 +0000
+Message-ID: <178832374645.3394541.7615305682823291426@kernel.org>
+In-Reply-To: <20260831013315.95231-1-l1138897701@163.com>
+References: <20260831013315.95231-1-l1138897701@163.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813082247.31499-1-running910@gmail.com> <20260814174212.GS265046@horms.kernel.org>
-In-Reply-To: <20260814174212.GS265046@horms.kernel.org>
-From: Zhixing Chen <running910@gmail.com>
-Date: Wed, 2 Sep 2026 12:31:02 +0800
-X-Gm-Features: AcwNN1Vl7pBwgvFpX5wyxczRcTxqW947VlIcoxJ0K_4x4qTM6GrVaJ2eJQl0T4A
-Message-ID: <CAMyuFdVDdEC0nwphSS+g6wqDVRASrPb3hT96-RaPxeHwvKxfdQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] pptp: validate payload length before parsing PPP fields
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Simon,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Thanks a lot for taking the time to review this, and sorry for the late
-reply.
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
 
-Your concern makes sense. In v1 I used payload_len as the bound, but
-pptp_rcv_core() does not trim the skb to headersize + payload_len, so that
-can change the handling of packets with an under-reported payload length.
+- [Medium] Commit message mischaracterizes the impact of the fixed double
+  cursor advance in decode_int().
+- [Low] The patch is a user-visible bug fix to
+  net/netfilter/nf_conntrack_h323_asn1.c but carries no `Fixes:` tag, so…
 
-I have sent v2 using the available skb payload length instead, and also
-pull the required bytes into the linear area before dereferencing them.
+Pre-existing issues:
+- [Medium] The RAS timeToLive value decoded by the CONS/DECODE branch is
+  fully remote-controlled (nf_conntrack_h323_types.c:1594/1646 define it…
 
-Thanks again,
-Zhixing
+--
+
+netfilter: nf_conntrack_h323: fix double cursor advance in decode_int()
+
+In the CONS case of decode_int(), get_uint() already advances the bitstream
+cursor, so the following unconditional bs->cur += len consumed the value
+bytes twice.  The patch moves the manual advance into an else branch so the
+bytes are consumed exactly once.  The code change itself looks correct.
+
+A few questions about the changelog and about one pre-existing item in this
+area.
+
+>     All fields following such an integer are decoded from a wrong bit
+>     position.  This affects the timeToLive field in RAS
+>     RegistrationRequest/RegistrationConfirm messages: subsequent fields
+>     (e.g. transport addresses) end up being parsed from arbitrary offsets
+>     inside the message, so the helper may create expectations based on
+>     bogus addresses/ports.
+
+[Severity: Medium]
+Is this description of the impact accurate?
+
+The only fields that reach the CONS plus DECODE branch are the two
+timeToLive entries in _RegistrationRequest and _RegistrationConfirm in
+nf_conntrack_h323_types.c.  Every other CONS integer is SKIP or STOP and
+takes the (unchanged) manual advance path.
+
+In both tables timeToLive is an extension component, so decode_seq() wraps
+it as an open type and resets the cursor after the decoder returns:
+
+net/netfilter/nf_conntrack_h323_asn1.c:decode_seq() {
+	...
+	beg = bs->cur;
+	if ((err = (Decoders[son->type]) (bs, son, base, level + 1)) < H323_ERROR_NONE)
+		return err;
+	bs->cur = beg + len;
+	bs->bit = 0;
+	...
+}
+
+Doesn't that discard the over-advanced cursor, so parsing resumes at the
+correct offset?
+
+Also, the entry immediately following timeToLive in both tables carries
+STOP:
+
+net/netfilter/nf_conntrack_h323_types.c:_RegistrationRequest[] = {
+	{FNAME("timeToLive") INT, CONS, 1, 0, DECODE | OPT,
+	 offsetof(RegistrationRequest, timeToLive), NULL},
+	{FNAME("tokens") SEQOF, SEMI, 0, 0, STOP | OPT, 0, NULL},
+
+decode_seq() returns H323_ERROR_STOP at the STOP son, so no later field is
+decoded at all.  The DECODE'd transport addresses (callSignalAddress,
+rasAddress) are root components parsed before timeToLive.  Can a bogus
+address or port expectation actually be produced by this bug?
+
+The one effect that does escape decode_int() looks like the trailing
+boundary check:
+
+	if (nf_h323_error_boundary(bs, 0, 0))
+		return H323_ERROR_BOUND;
+
+When fewer than len bytes follow the timeToLive value, the doubled advance
+pushes bs->cur past bs->end and DecodeRasMessage() fails, so ras_help()
+takes the accept path and skips the whole RRQ/RCF:
+
+net/netfilter/nf_conntrack_h323_main.c:ras_help() {
+	ret = DecodeRasMessage(data, datalen, &ras);
+	if (ret < 0) {
+		pr_debug("nf_ct_ras: decoding error: %s\n", ...);
+		goto accept;
+	}
+
+That means no TTL based nf_ct_refresh() and no Q.931 expectation timeout
+update for that message.  Could the changelog be reworded to describe this
+spurious out-of-bound decode failure instead of the bogus address/port
+expectation scenario?  As written it reads like a security relevant misparse
+and may drive an urgent stable backport on the wrong grounds.
+
+>     Assisted-by: LLM
+>     Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+
+[Severity: Low]
+Should this carry a Fixes: tag?
+
+git blame at the baseline shows the unconditional bs->cur += len and the
+surrounding CONS case in decode_int() came in with 5e35941d9901
+("[NETFILTER]: Add H.323 conntrack/NAT helper"), so the defect has been
+there since decode_int() was added.  Since decode_int() is reachable
+remotely through DecodeRasMessage() from ras_help(), stable tooling would
+need the tag to pick the affected trees:
+
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+
+> diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+> index 6830c9da3507..a51275cc4d0f 100644
+> --- a/net/netfilter/nf_conntrack_h323_asn1.c
+> +++ b/net/netfilter/nf_conntrack_h323_asn1.c
+> @@ -336,8 +336,9 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
+>  			unsigned int v = get_uint(bs, len) + f->lb;
+>  			PRINT(" = %u", v);
+>  			*((unsigned int *)(base + f->offset)) = v;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but while looking at the value
+produced here: is the decoded timeToLive bounded anywhere?
+
+nf_conntrack_h323_types.c declares it as {INT, CONS, 1, 0, DECODE | OPT} in
+both _RegistrationRequest and _RegistrationConfirm, and get_uint(bs, len)
+with len up to 4 covers the whole u32 range, so v is fully remote
+controlled.
+
+process_rrq() and process_rcf() then copy it straight into info->timeout
+with no upper limit, unlike the default_rrq_ttl module parameter path:
+
+net/netfilter/nf_conntrack_h323_main.c:process_rcf() {
+	if (rcf->options & eRegistrationConfirm_timeToLive) {
+		pr_debug("nf_ct_ras: RCF TTL = %u seconds\n", rcf->timeToLive);
+		info->timeout = rcf->timeToLive;
+	}
+
+	if (info->timeout > 0) {
+		nf_ct_refresh(ct, info->timeout * HZ);
+		...
+			WRITE_ONCE(exp->timeout,
+				   nfct_time_stamp + (info->timeout * HZ));
+
+Does info->timeout * HZ wrap in u32 arithmetic here, and can a peer keep the
+RAS conntrack entry and its Q.931 expectation alive for an arbitrarily long
+time, or wrap the product down to a near-zero timeout?
+
+__nf_ct_refresh_acct() in nf_conntrack_core.c applies no upper clamp on
+extra_jiffies:
+
+	if (nf_ct_is_confirmed(ct))
+		extra_jiffies += nfct_time_stamp;
+
+	if (READ_ONCE(ct->timeout) != extra_jiffies)
+		WRITE_ONCE(ct->timeout, extra_jiffies);
+
+so the helper looks like the only place a bound could be applied.  Note this
+predates the patch: before the change the correct TTL bytes were still read
+and decode_seq() reset the cursor, so the value already reached
+process_rrq()/process_rcf() whenever bytes followed the TTL field.
+
+>  		}
+> -		bs->cur += len;
+>  		break;
+>  	case UNCO:
+>  		BYTE_ALIGN(bs);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831013315.95231-1-l1138897701%40163.com
