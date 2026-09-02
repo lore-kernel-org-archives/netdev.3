@@ -1,156 +1,191 @@
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C1A418343
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 22:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D707D424649;
+	Wed,  2 Sep 2026 22:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788386727; cv=none; b=CNk7UBgSEksov2F/EsV6a2ENOLIQe8ORdDjb3Fxgebhnl7Unkqyw1Gtmfxqu6Kg45Ypxk5RFt2BLx+lcTOkjKEcnaOFMKZcG62j/DMv2bqAEpBMzoZJSE3mOtOOHhF+iFPtzEXHCQd4R76Xrg1W4b+q87rrpWt6UzYV2CSUc6XY=
+	t=1788387032; cv=none; b=bx8JtQReb1ACPaXcLA2SjJzbRa2NOsKTa05IwjPjaBDKY8rYyd7LrPmZV1vTr4uAmJDpAsgOb+vSclQs3Ghg0fAm3OPmKwRvOTSgKbvrh3R9RvNIOX57LJ6kxw+dLYECAwj8S1gFfNOWCoGuAYROz8Ak78PItRrCJ2vCCYpnkp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788386727; c=relaxed/simple;
-	bh=WrNsgg1LDugEtKCJojlK1pSJgViIdBqsDBJpxyfRqe0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=nxj84e3JSWrxASmvLonMGZ5USbrAmR0/ty77HqhbilK9Rm1fQKI8GMKP03lSWE1CUzfaCEDmqmAPG8CD4JuWVT5ZLK7ByZl0an7fGNV29oEibKnP4s9w4Jir499gJTyDUgS3h94rymb0klPWnvM7+Z1n9NOJH0r+fgsFfNvK16I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-6b139665345so1292109eaf.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 15:05:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788386722; x=1788991522;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=LfKD6ngQRTKOJI4e0mUBdk+l6HtVu+CazLqp1wl6LGY=;
-        b=pIf06m6Px/ZSBUFqY2biOdqOKKdTiODDLXbbTLEQpXqadMriAIDnJ7sA+Oxh4Y8oxA
-         HORsahko2fsnE9CKzZOAftZmaUTVkguCse8mGJyuAYm+Yk1jsnq5iCUpOYww5Ir8HhAc
-         7Dtql9AkghGavFKPTklROOxCeQjOAws7klH5L6M6qrE4ljRDnXL7W257AOTlGoTWYpqV
-         pyEBwMpRaIJ7Xm6N/ZrtzB+WdPhtm70GeCh1Bj1AZ+GSCaWrQNfIsFzPTuVafUNG5lp4
-         dzNAq8cEuvttAvd96zIbmN2Jy8hxrIXOW/L9bxU+jUzE07yzrzeOHmGoDrbuqm9TJhZ9
-         Qw0A==
-X-Forwarded-Encrypted: i=1; AHgh+RpDCxaJq69EDreeLZpZLcNV2sfx+2AqJ5hH/TNhAPV7knwnGs8/wfWGok3J2tHLUOWv4FF/pfg=@vger.kernel.org
-X-Gm-Message-State: AFuF++n0XktDGWQvFBdC23vMtgLX7SuAd2mGRswEHv8eRXdlyGToZHYT
-	UFgdvrnOdkYw+CgtHbzF82oHdB6qPNaQtYvHwN4tg5yAbCJEdX2v4cyviGqod99wkAOQvhp9Eqa
-	/NhjZiKBw/AAWK9V3w12olJo1rlZMeEmbRCmj9Fs9t/0ZT8ap75098JtAO7k=
+	s=arc-20240116; t=1788387032; c=relaxed/simple;
+	bh=K0a7UCSTlR5TQ0bfImvIwbLW4H0HJIEmdBKpG3wev2Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=h1Kv78XauI7gumtK8vCI/FbaIds9aV518+RRRYK6/Qc0aB0nCUnBUEDRgbMCKpzWjaeOzW2mnQcMIV9DFBZmLixFx9mH0N9x6ZBUcEOS4Bq7Jo1+tmiduNfrBqPb7o7uRU1GMWVShUqp0Q7iPhbESP8pbf4nlYexMSsm2mxXcOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qukjg1EA; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qukjg1EA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273EC1F000E9;
+	Wed,  2 Sep 2026 22:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788387026;
+	bh=ZHxKxx1+VQVcsR9PoWaPh1Uk1GeVkL+9iDr0NhHJZz0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Qukjg1EAk73liBi8FkNRZjYuLw+KwYrPDhPO5ordTwLdACrozNPfvcC9Cim5awhpD
+	 C6naHQLp+fvEvckCRmVjWnh6Y10NgfNYEfR8/B+fUO6NMCyfXrATdxx4dvX9fc+/hy
+	 XyvtqrMqNAzlbjdW132IYfUm4blsn7woUBIsbhQ+uatBEwb1EBsdiUKXG/vxXObTl6
+	 fx09dQHqUg/ZYSpwm5x6wfFYVL0tOs2gRqtfqLkiB7HKrjLI16XdU2HqRhcsM+Q4xg
+	 kQqMlL7Vf9XzYELbrlThyxoGgc9Ss95dUGNQwJzYDrlaS4ydnZX811kUP/KsNDsF3b
+	 M9Wp9cfOx8xiw==
+Subject: Re: [net-next,real,v4] net: Replace %pK output with 0
+From: netdev-bot+sashiko@kernel.org
+To: bigeasy@linutronix.de
+Cc: socketcan@hartkopp.net, linux-atm-general@lists.sourceforge.net,
+ linux-can@vger.kernel.org, linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, herbert@gondor.apana.org.au,
+ kuba@kernel.org, kuniyu@google.com, mkl@pengutronix.de,
+ marcelo.leitner@gmail.com, ncardwell@google.com, pabeni@redhat.com,
+ courmisch@gmail.com, horms@kernel.org, steffen.klassert@secunet.com,
+ willemdebruijn.kernel@gmail.com, lucien.xin@gmail.com, pmladek@suse.com,
+ thomas.weissschuh@linutronix.de, kees@kernel.org
+Date: Wed, 02 Sep 2026 22:10:24 +0000
+Message-ID: <178838702467.3394541.6607347117257503033@kernel.org>
+In-Reply-To: <20260901160345.eeknHmY2@linutronix.de>
+References: <20260901160345.eeknHmY2@linutronix.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:199a:b0:6b3:619f:25ce with SMTP id
- 006d021491bc7-6b47eed806amr6317636eaf.30.1788386722094; Wed, 02 Sep 2026
- 15:05:22 -0700 (PDT)
-Date: Wed, 02 Sep 2026 15:05:22 -0700
-In-Reply-To: <20260902055802.3724915-1-4ncienth@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a989da2.2e567484.299ffc.0001.GAE@google.com>
-Subject: [syzbot ci] Re: ip: validate options before echoing them
-From: syzbot ci <syzbot+cid466e4e888be6037@syzkaller.appspotmail.com>
-To: 4ncienth@gmail.com, davem@davemloft.net, dsahern@kernel.org, 
-	edumazet@google.com, horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-syzbot ci has tested the following series
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-[v3] ip: validate options before echoing them
-https://lore.kernel.org/all/20260902055802.3724915-1-4ncienth@gmail.com
-* [PATCH net v3] ip: validate options before echoing them
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-and found the following issue:
-WARNING in __ip_options_echo
+- [Medium] Incomplete conversion relative to the commit's stated scope:
+  after this patch net/ still contains %pK socket/object-pointer output.
+- [Low] The updated /proc/net/tcp example in
+  Documentation/networking/proc_net_tcp.rst does not match the…
 
-Full report is available here:
-https://ci.syzbot.org/series/58d17295-c695-49b2-826d-b0fe305808e9
+--
 
-***
+net: Replace %pK output with 0
 
-WARNING in __ip_options_echo
+This replaces the %pK pointer output in the various /proc/net seq_file
+printers with a literal 0, adjusting field spacing and header strings so
+the column layout stays intact. Documentation/networking/proc_net_tcp.rst
+is updated to describe the field as always 0.
 
-tree:      linux-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-base:      70f3995830d3f1e79faa14eb0605914f778feca9
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/9a250d6c-0a45-4565-bbc0-cac6bc3e42ee/config
-syz repro: https://ci.syzbot.org/findings/5fa937c9-0c72-4a82-8221-cd01d8dc83d5/syz_repro
+> net: Replace %pK output with 0
+[ ... ]
+>     Replace the %pK annotation with 0 value. Correct the spacing for the
+>     cases where pointer is at the beginning.
 
-------------[ cut here ]------------
-len > ((int)(~0U >> 1))
-WARNING: ./include/linux/skbuff.h:2864 at pskb_may_pull_reason include/linux/skbuff.h:2864 [inline], CPU#1: syz.0.17/5791
-WARNING: ./include/linux/skbuff.h:2864 at pskb_network_may_pull_reason include/linux/skbuff.h:3294 [inline], CPU#1: syz.0.17/5791
-WARNING: ./include/linux/skbuff.h:2864 at pskb_network_may_pull include/linux/skbuff.h:3299 [inline], CPU#1: syz.0.17/5791
-WARNING: ./include/linux/skbuff.h:2864 at __ip_options_echo+0x10e4/0x1870 net/ipv4/ip_options.c:115, CPU#1: syz.0.17/5791
-Modules linked in:
-CPU: 1 UID: 0 PID: 5791 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:pskb_may_pull_reason include/linux/skbuff.h:2864 [inline]
-RIP: 0010:pskb_network_may_pull_reason include/linux/skbuff.h:3294 [inline]
-RIP: 0010:pskb_network_may_pull include/linux/skbuff.h:3299 [inline]
-RIP: 0010:__ip_options_echo+0x10e4/0x1870 net/ipv4/ip_options.c:115
-Code: 00 00 00 fc ff df 43 0f b6 04 3c 84 c0 0f 85 64 07 00 00 41 88 1e 4c 8b 64 24 10 41 83 c4 04 e9 a7 fe ff ff e8 7d 13 84 f7 90 <0f> 0b 90 e9 35 f1 ff ff 44 89 e7 44 89 f6 e8 79 15 84 f7 45 39 f4
-RSP: 0018:ffffc90004efef40 EFLAGS: 00010293
-RAX: ffffffff8a43a023 RBX: ffff8881b89a6b58 RCX: ffff888111125a00
-RDX: 0000000000000000 RSI: 00000000fffffff8 RDI: 0000000000000000
-RBP: ffffc90004eff070 R08: ffffc90004eff2c7 R09: 0000000000000000
-R10: ffffc90004eff2b8 R11: fffff520009dfe59 R12: 00000000fffffff8
-R13: ffff8881b89a6a80 R14: ffff8881b89a6b00 R15: 000000000000001c
-FS:  00007f39f8af86c0(0000) GS:ffff8882a8cdf000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f39f8af7ff8 CR3: 0000000112830000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- ip_options_echo include/net/ip.h:798 [inline]
- icmp_reply+0x2da/0xc90 net/ipv4/icmp.c:429
- icmp_timestamp+0x246/0x370 net/ipv4/icmp.c:1430
- icmp_rcv+0xd33/0x1290 net/ipv4/icmp.c:1543
- ip_protocol_deliver_rcu+0x2dc/0x440 net/ipv4/ip_input.c:207
- ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:241
- NF_HOOK+0x336/0x3c0 include/linux/netfilter.h:325
- NF_HOOK+0x336/0x3c0 include/linux/netfilter.h:325
- __netif_receive_skb_one_core net/core/dev.c:6264 [inline]
- __netif_receive_skb net/core/dev.c:6377 [inline]
- netif_receive_skb_internal net/core/dev.c:6463 [inline]
- netif_receive_skb+0x45b/0xbf0 net/core/dev.c:6522
- tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
- tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x612/0xba0 fs/read_write.c:687
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f39f7b5e98e
-Code: 08 0f 85 a5 a8 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 80 00 00 00 00 48 83 ec 08
-RSP: 002b:00007f39f8af7fb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f39f8af86c0 RCX: 00007f39f7b5e98e
-RDX: 000000000000003e RSI: 0000200000000780 RDI: 00000000000000c8
-RBP: 00007f39f7c35024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f39f7e26038 R14: 00007f39f7e25fa0 R15: 00007fff66b2b028
- </TASK>
+[Severity: Medium]
+The subject and this sentence read as if net/ no longer emits pointers,
+but three files under net/ still use %pK after this commit:
 
+  net/bluetooth/af_bluetooth.c:bt_seq_show()
+	seq_printf(seq,
+		   "%pK %-6d %-6u %-6u %-6u %-6llu %-6llu",
+		   sk,
 
-***
+  net/can/proc.c:can_print_rcvlist()
+	char *fmt = (r->can_id & CAN_EFF_FLAG)?
+		"   %-5s  %08x  %08x  %pK  %pK  %8ld  %s\n" :
+		"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+  net/can/bcm.c:bcm_proc_show()
+	seq_printf(m, ">>> socket %pK", sk->sk_socket);
+	seq_printf(m, " / sk %pK", sk);
+	seq_printf(m, " / bo %pK", bo);
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+bt_seq_show() is installed by bt_procfs_init() for every Bluetooth
+protocol, so /proc/net/l2cap, /proc/net/sco, /proc/net/rfcomm*,
+/proc/net/hci*, /proc/net/iso, /proc/net/bnep and /proc/net/hidp keep
+printing the struct sock pointer.
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+The changelog below the '---' line says the CAN changes were dropped on
+purpose, but that text is discarded when the patch is applied, and the
+Bluetooth site is not mentioned at all. Could the commit message name the
+remaining sites so git log does not suggest net/ was fully converted?
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+> diff --git a/Documentation/networking/proc_net_tcp.rst b/Documentation/networking/proc_net_tcp.rst
+> index 7d9dfe36af45b..4fa2e58429b95 100644
+> --- a/Documentation/networking/proc_net_tcp.rst
+> +++ b/Documentation/networking/proc_net_tcp.rst
+> @@ -30,16 +30,16 @@ up into 3 parts because of the length of the line)::
+>        |        |----------------------> receive-queue
+>        |-------------------------------> transmit-queue
+>  
+> -   1000        0 54165785 4 cd1e6040 25 4 27 3 -1
+> -    |          |    |     |    |     |  | |  | |--> slow start size threshold,
+> -    |          |    |     |    |     |  | |  |      or -1 if the threshold
+> -    |          |    |     |    |     |  | |  |      is >= 0xFFFF
+> -    |          |    |     |    |     |  | |  |----> sending congestion window
+> -    |          |    |     |    |     |  | |-------> (ack.quick<<1)|ack.pingpong
+> -    |          |    |     |    |     |  |---------> Predicted tick of soft clock
+> -    |          |    |     |    |     |              (delayed ACK control data)
+> -    |          |    |     |    |     |------------> retransmit timeout
+> -    |          |    |     |    |------------------> location of socket in memory
+> +   1000        0 54165785 4  0  25 4 27 3 -1
+
+[Severity: Low]
+Does the example still match what the kernel prints? The example shows two
+spaces on each side of the new always-zero field, while get_tcp4_sock() in
+net/ipv4/tcp_ipv4.c and get_tcp6_sock() in net/ipv6/tcp_ipv6.c both emit a
+single space on each side:
+
+	"%08X %5u %8d %llu %d 0 %lu %lu %u %u %d"
+
+so the real line is:
+
+   1000        0 54165785 4 0 25 4 27 3 -1
+
+Should the example (and the arrow alignment below it) use the single-space
+spacing, or should the format strings pad the field if the wider column is
+intended?
+
+> +    |          |    |     |  |  |  | |  | |-------> slow start size threshold,
+> +    |          |    |     |  |  |  | |  |           or -1 if the threshold
+> +    |          |    |     |  |  |  | |  |           is >= 0xFFFF
+> +    |          |    |     |  |  |  | |  |---------> sending congestion window
+> +    |          |    |     |  |  |  | |------------> (ack.quick<<1)|ack.pingpong
+> +    |          |    |     |  |  |  |--------------> Predicted tick of soft clock
+> +    |          |    |     |  |  |                   (delayed ACK control data)
+> +    |          |    |     |  |  |-----------------> retransmit timeout
+> +    |          |    |     |  |--------------------> always 0 (was memory location).
+>      |          |    |     |-----------------------> socket reference count
+>      |          |    |-----------------------------> inode
+>      |          |----------------------------------> unanswered 0-window probes
+
+[ ... ]
+
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index 9f053eb8b46e2..142e7b048229e 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -2811,7 +2810,7 @@ static void get_tcp4_sock(struct sock *sk, struct seq_file *f, int i)
+>  				      READ_ONCE(tp->copied_seq), 0);
+>  
+>  	seq_printf(f, "%4d: %08X:%04X %08X:%04X %02X %08X:%08X %02X:%08lX "
+> -			"%08X %5u %8d %llu %d %pK %lu %lu %u %u %d",
+> +			"%08X %5u %8d %llu %d 0 %lu %lu %u %u %d",
+>  		i, src, srcp, dest, destp, state,
+>  		READ_ONCE(tp->write_seq) - tp->snd_una,
+>  		rx_queue,
+
+[ ... ]
+
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index df9c29eb5c1f4..b55d036c7f4da 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -2171,7 +2171,7 @@ static void get_tcp6_sock(struct seq_file *seq, struct sock *sp, int i)
+>  
+>  	seq_printf(seq,
+>  		   "%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+> -		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %lu %lu %u %u %d\n",
+> +		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d 0 %lu %lu %u %u %d\n",
+>  		   i,
+>  		   src->s6_addr32[0], src->s6_addr32[1],
+>  		   src->s6_addr32[2], src->s6_addr32[3], srcp,
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901160345.eeknHmY2%40linutronix.de
