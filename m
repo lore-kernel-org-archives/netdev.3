@@ -1,41 +1,77 @@
-Received: from out198-4.us.a.mail.aliyun.com (out198-4.us.a.mail.aliyun.com [47.90.198.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F166BF4F1;
-	Wed,  2 Sep 2026 02:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E04C2F6565
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 02:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788317286; cv=none; b=Q3oeEG68L8QE+hVJIX5c5fmi2+ZaN1tfQY0kY9AWhncAmQxUFrgmx9GM3uhme3B3IZO+Gx6UV/JtUSop4BFJasYve3lSV3sqxXhBt7VjrmR3Mh8zJ0D21zlX46q3U9HAw+7+2sfb47Kcwwso1mLcXaJiPumun8rymWWSx/fBe8k=
+	t=1788317396; cv=none; b=EKO8Qe2SuaAsjcb9QMt6EDkKPpNx30yXuSoAiJ/Dq8jMnoH/ePvGW8nBcHT71Fxq3eAjc4h/alni+e7PWYv9ERFlsvklrlO2YzFBNAHtuKuhSM2L+V3sOtoUXyyUDxU5dGu05+XNoQv6aLU7fkq1IICNbZtMCFWrqU2qM3hYQ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788317286; c=relaxed/simple;
-	bh=Uqa9gkizaulzr2GkBJfJ1H30g6wcFX3f8BFL8bEoxuE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RFBkjrYqnXpCKvmjMrTDVwfOJSj6L2U+yGwvQYrT2Bl8mh/TfpKgWkDgqh+a+gVVvcWF6R0HCPDEEDeU9CfpGZm0Q1mUaPpTzLNSfY3IH+lD74CKPHcVeN+LXPv+yaySES02CGBsCbFAfpbEwd2yDisQ+21YwlOZRQT4nE3Cxm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436261|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0463333-0.000178527-0.953488;FP=16245952157201342130|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.j33T-Rs_1788317257;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.j33T-Rs_1788317257 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 02 Sep 2026 10:47:43 +0800
-From: Kyle Switch <kyle.switch@motor-comm.com>
-To: andrew@lunn.ch,
-	olteanv@gmail.com,
+	s=arc-20240116; t=1788317396; c=relaxed/simple;
+	bh=53NTfvMC3doPOJjgloU2Tc4mwB+X7Dj+8zIOLtSD3xM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PuIeQB8nj7qnHtUqRZl/oJsn0gzc48Xyr6M2XGUWL++qzXzSryKKkFv+Ueun62c6RWsIHl126Kir8Z+mMmPOmdR/ju1Ta3Wv5SAKTzO/86HdCh+z1GmGFhyQNGVl42p4ZgZMzAFeVyB7VNoiMv858vvTjDoPcxdJDX6k6CyvX48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHmkkxVE; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHmkkxVE"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-930c0f9c1b1so63499885a.1
+        for <netdev@vger.kernel.org>; Tue, 01 Sep 2026 19:49:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788317394; x=1788922194; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y0nHL3Rub7HkNOebtTsag0uOrFQQ/OX5K14wVSBqNwk=;
+        b=nHmkkxVErjpkZjttc8IElFFuImvFA1wCAJKlNcAwVVi4SQeA+a/R9LBJEOQx1Moaah
+         VqdRreHP3Ua8AsXigcG2/+JH7SF0luKBak14eZqEQrkbf8hlGVYMeBc9ngwLCYv7jca5
+         6hkdF4pFzZcssmvKE2Pd0zJru8nXbsLY3dIgnGVGP7dPN5Oq5BAx2DlYE3IpwYyYZS00
+         r2rtAamt6WEkIhV3qgzX0O/ZqbyywePmIVBtjHAMfj8J6HF/RaItTgTFBa/iGKPyLQ5L
+         ZcWCp0Td9yQNMFZtyaMTYnafkgR/ToCAEiuyizskHkJQIvkxx0mBZpnCs+iDWK1UEYQy
+         giyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788317394; x=1788922194;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Y0nHL3Rub7HkNOebtTsag0uOrFQQ/OX5K14wVSBqNwk=;
+        b=TK2ifDZYmgldEC3s5HNpJfSl//xId6kn88IoadqKl7DCXvs7wvbsAnAFqrN1VhPdWs
+         TL2nxVPtPtKVs8zeSGVrNBHDp+r6Di9HjBCHMenDBBY0toidsXLoj1BsgG+BTy+KL282
+         fkx8jiVqA4anygar/953L3fDTopY0wnrUI/EnUq9/xehKlUcXRbab3fcxn0fTGsWAMka
+         7B95UAzEV2DgVO9gZ0iO7GUTZZ49SAffCXKHAFe146WfN55Cp+yI35Ep1vmXzYBCCi41
+         hBQOFdRieU0ERUUzUaDPKQYu3RnCOXL3sPQdB+Qat/9rK8dNWWiFXLHBdSYe02w/2dLg
+         VLQA==
+X-Forwarded-Encrypted: i=1; AHgh+RoGmpbJYb+YGcUM76m0yif7CBSquFNootEJ+QUn/cTrs/YRUJPfH5N5S7FALBVdLCb4xqlEbj8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lHLjgu1xveguCYKUFHToEIXnH1p/l9f16rkoQRxkKc5ZVZEVV+
+	Af6iEyHYpltwoIkyOm5AOIRD7+sT7vROb8d40CW7J8GHOcv4w006/ACn
+X-Gm-Gg: AR+sD138RNOWb9CjcIhzVqwFBo6uCemae0g5rrbGSusDiIpAoU8BImQrIbHgu+YUFUZ
+	7J8z08Twu8ScBHdfSBVrIUCbOEyL2DkKYD+rkEd1ncba2eKzoJBm1yV0dcky7Fae9ssN53Y5vBI
+	3wVUfROM6fU7WepcNGRfc0A396OIkkMnNnVVhB5WtcVo86gXaHwOIOVdnAT6r7Q3NY4BhnQYkqF
+	DHgBD1ow0rQrs9vfQZ+svwya7s6GH76pCTCLCOaZb00HJSg7ySQJ+9lrRiAKCu5w2MQp6rBElHH
+	pLHA7B/ZR3mK/mhXc5Q8MTZMJrLoEz+xui3uxzFAz2KfRbLb0VjoCbs9YGao2lfSHEZdHpyL4Pl
+	u5LnvqJz3DA4kdsJLFLXuLijQM0abjUz3S+UAjtgR/Fyxc+hDMufiF8fK4W3pUMuoa8hrDEFnud
+	q4B7qGcr8+wSaxzPM6nQHAZwP8OdqOs8fhLeulQGkK89EBE1oupL15cQG8Tdo7K1JFzwaFuHVfD
+	BaRoiD7bFLyAB76a4Qe3KmwnXe9
+X-Received: by 2002:a05:620a:4454:b0:930:f337:ebeb with SMTP id af79cd13be357-93960cdf971mr203979685a.12.1788317393986;
+        Tue, 01 Sep 2026 19:49:53 -0700 (PDT)
+Received: from elster-wsl2.hq.laserthermal.com ([2606:8e80:692f:3310:f12b:2639:daa3:59d6])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9395f1539f0sm95716785a.10.2026.09.01.19.49.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 19:49:53 -0700 (PDT)
+From: Taylor Bates <tmbates12@gmail.com>
+To: idosch@nvidia.com,
+	petrm@nvidia.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	mmyangfl@gmail.com,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
+	amcohen@nvidia.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com
-Subject: [PATCH net-next v4] net: dsa: yt921x: Optimize driver for better generality.
-Date: Wed,  2 Sep 2026 10:47:37 +0800
-Message-Id: <20260902024737.587386-1-kyle.switch@motor-comm.com>
-X-Mailer: git-send-email 2.25.1
+	Taylor Bates <tmbates12@gmail.com>
+Subject: [PATCH net] mlxsw: spectrum_ptp: Fix napi_gro_receive() call from GC workqueue context
+Date: Tue,  1 Sep 2026 22:49:46 -0400
+Message-ID: <20260902024949.2273997-1-tmbates12@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,262 +80,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace fixed macros with values defined in series_info
-for port validity checks, in order to facilitate future
-adaptation to more switch series.
+Currently mlxsw_sp1_ptp_ht_gc_collect() is run from the PTP
+garbage-collection workqueue, rather than the NAPI poll context. For any
+unmatched PTP entries carrying an SKB, it calls
+mlxsw_sp1_ptp_unmatched_finish() -> mlxsw_sp1_ptp_packet_finish(). For
+ingress packets, this calls mlxsw_sp_rx_listener_no_mark_func(). The end
+of that function is the following:
 
-Replace all fixed values for DSA switch attributes with
-values defined in series_info, to enable better scalability
-across different switch families.
+    skb->protocol = eth_type_trans(skb, skb->dev);
+    napi_gro_receive(mlxsw_skb_cb(skb)->rx_md_info.napi, skb);
 
-Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+The napi pointer is one that was placed in the SKB control block when the
+trapped packet was received in the NAPI context. Later, when the GC reaps
+the unmatched entry (up to MLXSW_SP1_PTP_HT_GC_TIMEOUT later), the call to
+napi_gro_receive() mutates the NAPI instance's GRO list, which is unsafe
+if the poll is running concurrently on another CPU.
+
+In mlxsw_sp1_ptp_ht_gc_collect(), local_bh_disable() is called to prevent
+softirq processing, but this only applies to the local CPU. Additionally,
+its comment is stale. It states that mlxsw_sp1_ptp_unmatched_finish()
+invokes netif_receive_skb(). This has not been accurate since the
+referenced commit; this patch makes that comment accurate again.
+mlxsw_pci_napi_devs_init() calls netif_threaded_enable() on the NAPI RX
+net_device without any conditions. The NAPI instance's poll, which may be
+running concurrent to the GC, is running as an independently-scheduled
+kthread which may be on a different CPU. The call to local_bh_disable()
+does not guard against this.
+
+If a tx-timestamp timeout produces an unmatched entry (which can be easily
+reproduced by running ptp4l and waiting for a port to reach the
+UNCALIBRATED/SLAVE state) while the owning NAPI thread is in the middle of
+a poll on another CPU, both sides mutate the GRO list concurrently, as
+shown below:
+
+  [39.846] port 1 (swp1): MASTER to UNCALIBRATED on RS_SLAVE
+  list_add corruption. next->prev should be prev (ffff8d620faf4138), but was ffff8d624150f700. (next=ffff8d620faf4138).
+  kernel BUG at lib/list_debug.c:29!
+  Oops: invalid opcode: 0000 [#1] SMP PTI
+  CPU: 1 UID: 0 PID: 539 Comm: napi/mlxsw_rx-0 Not tainted 6.18.48 #1-NixOS PREEMPT(lazy)
+  Hardware name: Mellanox Technologies Ltd. MSN2410/VMOD0001, BIOS 4.6.5 09/13/2018
+  RIP: 0010:__list_add_valid_or_report+0x79/0xb0
+  RSP: 0018:ffffcdf8c0f27c08 EFLAGS: 00010246
+  RAX: 0000000000000075 RBX: ffff8d624150fd00 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8d6315d1e540
+  RBP: ffff8d620faf4070 R08: 0000000000000000 R09: 00000000ffffdfff
+  R10: ffffffffa5c60fe0 R11: ffffcdf8c0f27ab8 R12: 0000000000000003
+  R13: 000000000000003d R14: 00000000000001bc R15: 0000000000000001
+  FS:  0000000000000000(0000) GS:ffff8d636f63f000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000562689a60c24 CR3: 000000015f224004 CR4: 00000000001726f0
+  Call Trace:
+  <TASK>
+  gro_receive_skb+0xee/0x230
+  mlxsw_sp1_ptp_got_packet+0x61/0x140 [mlxsw_spectrum]
+  mlxsw_core_skb_receive+0xdf/0x1b0 [mlxsw_core]
+  mlxsw_pci_napi_poll_cq_rx+0x780/0x9d0 [mlxsw_pci]
+  __napi_poll+0x31/0x1e0
+  napi_threaded_poll_loop+0x16b/0x1c0
+  napi_threaded_poll+0x71/0xa0
+  kthread+0xfb/0x260
+  ret_from_fork+0x22d/0x260
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+The machinery that leads to this kernel panic has not been changed between
+6.18.48 and mainline.
+
+This patch adds an ingress-delivery helper for the PTP packet_finish()
+path that calls netif_receive_skb() instead of napi_gro_receive().
+netif_receive_skb(), unlike napi_gro_receive(), can be called from outside
+of the NAPI instance's poll context, which can occur at the call site for
+this path. RX stats accounting and the skb->dev assignment are still
+preserved; the only change is the delivery call itself.
+
+This removes GRO batching for any PTP event traffic received by the mlxsw
+trap, but given the relatively low volume of traffic characteristic of the
+protocol, and impact limited to only Spectrum-1 ASICs, this is an
+acceptable solution.
+
+Fixes: 1ba06ca96ca2 ("mlxsw: Switch to napi_gro_receive()")
+Signed-off-by: Taylor Bates <tmbates12@gmail.com>
 ---
+ .../ethernet/mellanox/mlxsw/spectrum_ptp.c    | 34 ++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-v4:
-1. Split patch into multiple patches
-2. Optimize existing code for better switch family scalability.
-
-v3: https://lore.kernel.org/all/0c8024bc-c444-42ea-83fc-88446c8c560e@motor-comm.com
-1. Post the driver as a patchset.
-2. Remove unnecessary macros.
-3. Add mib_working to indicate whether the MIB has been initialized.
-4. Fix any errors found
-
-v2: https://lore.kernel.org/all/20260820080542.2017118-1-kyle.switch@motor-comm.com
-1. Seperate tag_yt922x into an individual file.
-2. Fix the issues from the previous version.
-3. Optimize the code style to keep it consistent with the existing code style.
-
-v1: https://lore.kernel.org/all/20260813104137.55550-1-kyle.switch@motor-comm.com
-1. Add basic functional interfaces for the YT922X DSA driver.
-2. Although the DSA driver supports both YT922X and YT921X simultaneously,
-   the original file names are still maintained for now;
-   the file naming may be optimized in the future.
-3. Currently, the dsa_switch_ops structure is employed as the operational interface.
-   In future phases, as functionality expands, the architecture will be refactored
-   to introduce yt922x_dsa_ops, where chip-specific operations will be distinguished
-   between YT922X and YT921X, following a design pattern commonly adopted by other
-   existing multi-series DSA drivers.
-4. A new thread(patch series) is created. Although a previous version was submitted,
-   the changes are substantial, so the old version is not relevant for reference.
-
- drivers/net/dsa/yt921x.c | 78 ++++++++++++++++++++++++++++++++++------
- drivers/net/dsa/yt921x.h | 16 +++++++++
- 2 files changed, 83 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
-index 159b16606f6c..9bea42b61847 100644
---- a/drivers/net/dsa/yt921x.c
-+++ b/drivers/net/dsa/yt921x.c
-@@ -151,6 +151,8 @@ static const struct yt921x_info yt921x_infos[] = {
- 	{}
- };
- 
-+static const struct yt92xx_series_info yt92xx_series_info_table[];
-+
- #define YT921X_NAME	"yt921x"
- 
- #define YT921X_VID_UNWARE	4095
-@@ -563,7 +565,7 @@ static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
- 	u16 val;
- 	int res;
- 
--	if (port >= YT921X_PORT_NUM)
-+	if (port >= priv->series_info->max_ports)
- 		return U16_MAX;
- 
- 	mutex_lock(&priv->reg_lock);
-@@ -581,7 +583,7 @@ yt921x_mbus_int_write(struct mii_bus *mbus, int port, int reg, u16 data)
- 	struct yt921x_priv *priv = mbus->priv;
- 	int res;
- 
--	if (port >= YT921X_PORT_NUM)
-+	if (port >= priv->series_info->max_ports)
- 		return -ENODEV;
- 
- 	mutex_lock(&priv->reg_lock);
-@@ -596,6 +598,7 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
- {
- 	struct device *dev = to_device(priv);
- 	struct mii_bus *mbus;
-+	u32 max_port;
- 	int res;
- 
- 	mbus = devm_mdiobus_alloc(dev);
-@@ -608,7 +611,8 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
- 	mbus->read = yt921x_mbus_int_read;
- 	mbus->write = yt921x_mbus_int_write;
- 	mbus->parent = dev;
--	mbus->phy_mask = (u32)~GENMASK(YT921X_PORT_NUM - 1, 0);
-+	max_port = priv->series_info->max_ports;
-+	mbus->phy_mask = (u32)~GENMASK(max_port - 1, 0);
- 
- 	res = devm_of_mdiobus_register(dev, mbus, mnp);
- 	if (res)
-@@ -4430,8 +4434,36 @@ static int yt921x_edata_read(struct yt921x_priv *priv, u8 addr, u8 *valp)
- 	return yt921x_edata_read_cont(priv, addr, valp);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+index 9939749c47bc..9c5862f4e16a 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c
+@@ -572,6 +572,38 @@ mlxsw_sp1_ptp_unmatched_remove(struct mlxsw_sp *mlxsw_sp,
+ 			       mlxsw_sp1_ptp_unmatched_ht_params);
  }
  
-+static const struct yt92xx_series_info yt92xx_series_info_table[] = {
-+	[YT921X] = {
-+		.chip_mode = YT921X,
-+		.max_ports = YT921X_PORT_NUM,
-+		.num_lag_ids = YT921X_LAG_NUM,
-+		.ageing_time_min = 1 * 5000,
-+		.ageing_time_max = U16_MAX * 5000,
-+		.dscp_prio_mapping_is_global = true,
-+		.assisted_learning_on_cpu_port = true,
-+	},
-+};
-+
-+static const struct yt92xx_series_info *yt92xx_series_lookup_info(u32 major)
++/* mlxsw_sp1_ptp_packet_finish() is reached both from the NAPI poll context
++ * (mlxsw_sp1_ptp_got_packet(), mlxsw_sp1_ptp_got_piece() and
++ * mlxsw_sp1_packet_timestamp()) and from process context, by way of the GC
++ * workqueue (mlxsw_sp1_ptp_ht_gc_collect() ->
++ * mlxsw_sp1_ptp_unmatched_finish()).
++ *
++ * mlxsw_sp_rx_listener_no_mark_func() ends in napi_gro_receive(), using the
++ * NAPI pointer that was placed in the SKB control block when the trapped
++ * packet was received in the NAPI context. That pointer may only be used
++ * from its own poll context, which this call site cannot guarantee.
++ *
++ * netif_receive_skb(), unlike napi_gro_receive(), can be called from outside
++ * of the NAPI instance's poll context. RX stats accounting and the skb->dev
++ * assignment are still preserved; the only change is the delivery call.
++ */
++static void mlxsw_sp1_ptp_rx_finish(struct mlxsw_sp_port *mlxsw_sp_port,
++				    struct sk_buff *skb)
 +{
-+	enum chip_mode mode = YT_MAX;
-+	int i;
++	struct mlxsw_sp_port_pcpu_stats *pcpu_stats;
 +
-+	if (major == YT9215_MAJOR || major == YT9218_MAJOR)
-+		mode = YT921X;
++	skb->dev = mlxsw_sp_port->dev;
 +
-+	for (i = 0; i < ARRAY_SIZE(yt92xx_series_info_table); ++i)
-+		if (yt92xx_series_info_table[i].chip_mode == mode)
-+			return &yt92xx_series_info_table[i];
++	pcpu_stats = this_cpu_ptr(mlxsw_sp_port->pcpu_stats);
++	u64_stats_update_begin(&pcpu_stats->syncp);
++	pcpu_stats->rx_packets++;
++	pcpu_stats->rx_bytes += skb->len;
++	u64_stats_update_end(&pcpu_stats->syncp);
 +
-+	return NULL;
++	skb->protocol = eth_type_trans(skb, skb->dev);
++	netif_receive_skb(skb);
 +}
 +
- static int yt921x_chip_detect(struct yt921x_priv *priv)
- {
-+	const struct yt92xx_series_info *series_info;
- 	struct device *dev = to_device(priv);
- 	const struct yt921x_info *info;
- 	u8 extmode;
-@@ -4447,6 +4479,11 @@ static int yt921x_chip_detect(struct yt921x_priv *priv)
- 
- 	major = FIELD_GET(YT921X_CHIP_ID_MAJOR, chipid);
- 
-+	series_info = yt92xx_series_lookup_info(major);
-+	if (!series_info)
-+		return -ENODEV;
-+	priv->series_info = series_info;
-+
- 	for (info = yt921x_infos; info->name; info++)
- 		if (info->major == major)
- 			break;
-@@ -4740,6 +4777,20 @@ static int yt921x_chip_setup(struct yt921x_priv *priv)
- 	return 0;
- }
- 
-+static void yt92xx_register_switch(struct dsa_switch *ds)
-+{
-+	struct yt921x_priv *priv = to_yt921x_priv(ds);
-+
-+	ds->assisted_learning_on_cpu_port =
-+		priv->series_info->assisted_learning_on_cpu_port;
-+	ds->dscp_prio_mapping_is_global =
-+		priv->series_info->dscp_prio_mapping_is_global;
-+	ds->ageing_time_min = priv->series_info->ageing_time_min;
-+	ds->ageing_time_max = priv->series_info->ageing_time_max;
-+	ds->num_lag_ids = priv->series_info->num_lag_ids;
-+	ds->num_ports = priv->series_info->max_ports;
-+}
-+
- static int yt921x_dsa_setup(struct dsa_switch *ds)
- {
- 	struct yt921x_priv *priv = to_yt921x_priv(ds);
-@@ -4786,6 +4837,8 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 	if (res)
- 		return res;
- 
-+	yt92xx_register_switch(ds);
-+
- 	return 0;
- }
- 
-@@ -4913,11 +4966,16 @@ static void yt921x_mdio_remove(struct mdio_device *mdiodev)
- 
- static int yt921x_mdio_probe(struct mdio_device *mdiodev)
- {
-+	const struct yt92xx_series_info *compat_info = NULL;
- 	struct device *dev = &mdiodev->dev;
- 	struct yt921x_reg_mdio *mdio;
- 	struct yt921x_priv *priv;
- 	struct dsa_switch *ds;
- 
-+	compat_info = of_device_get_match_data(dev);
-+	if (!compat_info)
-+		return -EINVAL;
-+
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-@@ -4932,6 +4990,7 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
- 
- 	mutex_init(&priv->reg_lock);
- 
-+	priv->series_info = compat_info;
- 	priv->reg_ops = &yt921x_reg_ops_mdio;
- 	priv->reg_ctx = mdio;
- 
-@@ -4944,15 +5003,9 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
- 
- 	ds = &priv->ds;
- 	ds->dev = dev;
--	ds->assisted_learning_on_cpu_port = true;
--	ds->dscp_prio_mapping_is_global = true;
- 	ds->priv = priv;
- 	ds->ops = &yt921x_dsa_switch_ops;
--	ds->ageing_time_min = 1 * 5000;
--	ds->ageing_time_max = U16_MAX * 5000;
- 	ds->phylink_mac_ops = &yt921x_phylink_mac_ops;
--	ds->num_lag_ids = YT921X_LAG_NUM;
--	ds->num_ports = YT921X_PORT_NUM;
- 
- 	mdiodev_set_drvdata(mdiodev, priv);
- 
-@@ -4960,8 +5013,11 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
- }
- 
- static const struct of_device_id yt921x_of_match[] = {
--	{ .compatible = "motorcomm,yt9215" },
--	{}
-+	{
-+		.compatible = "motorcomm,yt9215",
-+		.data = &yt92xx_series_info_table[YT921X],
-+	},
-+	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, yt921x_of_match);
- 
-diff --git a/drivers/net/dsa/yt921x.h b/drivers/net/dsa/yt921x.h
-index 5f3b99e189c4..cc8223ea5f29 100644
---- a/drivers/net/dsa/yt921x.h
-+++ b/drivers/net/dsa/yt921x.h
-@@ -945,9 +945,25 @@ struct yt921x_reg_ops {
- 	int (*write)(void *context, u32 reg, u32 val);
- };
- 
-+enum chip_mode {
-+	YT921X,
-+	YT_MAX,
-+};
-+
-+struct yt92xx_series_info {
-+	enum chip_mode chip_mode;
-+	unsigned int max_ports;
-+	unsigned int num_lag_ids;
-+	unsigned int ageing_time_min;
-+	unsigned int ageing_time_max;
-+	u32 dscp_prio_mapping_is_global;
-+	u32 assisted_learning_on_cpu_port;
-+};
-+
- struct yt921x_priv {
- 	struct dsa_switch ds;
- 
-+	const struct yt92xx_series_info *series_info;
- 	const struct yt921x_info *info;
- 	unsigned int meter_slot_ns;
- 	unsigned int port_shape_slot_ns;
+ /* This function is called in the following scenarios:
+  *
+  * 1) When a packet is matched with its timestamp.
+@@ -600,7 +632,7 @@ static void mlxsw_sp1_ptp_packet_finish(struct mlxsw_sp *mlxsw_sp,
+ 	if (ingress) {
+ 		if (hwtstamps)
+ 			*skb_hwtstamps(skb) = *hwtstamps;
+-		mlxsw_sp_rx_listener_no_mark_func(skb, local_port, mlxsw_sp);
++		mlxsw_sp1_ptp_rx_finish(mlxsw_sp_port, skb);
+ 	} else {
+ 		/* skb_tstamp_tx() allows hwtstamps to be NULL. */
+ 		skb_tstamp_tx(skb, hwtstamps);
 -- 
-2.25.1
+2.54.0
 
