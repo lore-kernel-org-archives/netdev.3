@@ -1,164 +1,118 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B8038553F
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 08:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5C339FCAE;
+	Wed,  2 Sep 2026 08:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788337811; cv=none; b=lwdTCpLCEEFO4SSsleRUOmUjC+ji/0BdQlVzkAsAa85EZQUhMZuo8emP5hW/y0EKGDgz02yjptLsHTsvyXN9QVnStxX7kSuHa2AEvrenGKEkQWepkC4u71kwM6pC63opbwM9wHAnKZmlF7iVX5/b3H+8uFKiJ35WueUn9Tg64cA=
+	t=1788337953; cv=none; b=TKxltc8NUgtenp/mzQciGEV9wDPXcmWoln3pV5fXxfz9vW8kqTzWXbmUmxCdGQuAKvwPsETzPmUX9NNcoAlvh+LxIe/0Tt69ADcetHiwRojlw4rkKG9HJsc+Gl7Yx8CCF7VeUcb87xG0Ub1Tkzfw6x7rjTqzPxVLVEfNPB5M+9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788337811; c=relaxed/simple;
-	bh=4iqQOhkYAe4JDnnoq/RB1ItQgfUSqdEhqwOJ5R58t6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S1RW4v4Ula3nPNcCf4ugHr+161s9suqLVs/kOyMwng52gduIZVGESQD8UlWe7idjsPvrdJknfgMsq+MGpqD7WCmey1jTaDrXMNrOZBk+NQUMOA4O15rnJYJKl/B0S/k2LWX9osCTcLXizRQuQwzv066yUiqo9R+hSWeILyFgE28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5MzQUyk; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788337953; c=relaxed/simple;
+	bh=ezKgrojVYa7NV8qx2djOQ2aLoukbAOVSGt/2qj1wvWM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CyHy+rQU+ZxAU2ReWdhp676t+S7FEHHDMei8Zh3KIQI0kE5SWMR55u4tQnTFxrRvhOrvMXbKJ9+F3Tu+lCmLqyhaLGT6CGuyEZ2r9TfPuYwJRsaSgsGj1raVF1hvANBY+trNkppo+jpXTVy6iqeJQMQmzQmVbspMa87Rs+NA0oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QMXVjgy9; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5MzQUyk"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso661712b3a.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 01:30:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788337810; x=1788942610; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=90ZQiGeRfZ2jvqj4fAVGYYp8oYEh3dff8JUXtoUNxF0=;
-        b=G5MzQUyktmXp9N+3SJJN8OBTMlGB/ee5Nx+CZwKLqueHaWWiPBB2yQnTzv/R8YNwp6
-         JyZwr46QB3iUUNdcDdn4pGOhzbs3qc8KG6nzXxcNkPaTp4ZljHst6hT8waZuWVcRJE7k
-         UraqsxHLxdNRyWvQ1t0eylQ4JGh3NX5JjgeBt1vvE2iwvR/g5c62bOgFn+h2EFQ26RRJ
-         7A5SUMZ8cytugmLXX0M1Z7+98nxhTtkGedymeqT3pY7em8irB5NJVjVzE74HSewyUPYF
-         cBP+tpHxDZyOamO9l1EpdxSpq/csaAsF7ibkwRa3hb/eAJ8dP4Z6ArV6X96osXZw14Pd
-         u7Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788337810; x=1788942610;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=90ZQiGeRfZ2jvqj4fAVGYYp8oYEh3dff8JUXtoUNxF0=;
-        b=YTeI4UO29m9kZ3fJ+OS1wePGkDfEhyjsZQG7hezQmKpGnl5S28qnT7DG11G+fVZSN5
-         e3YE/T6vkhmRuEtNOnE5UAYnuBS8Ldr6cerE8zpWV8g9KugPcS4amJzANHHWMpWoyrsn
-         Q1uIBSM6zZve6OUaRK+BHKr8t+tsGKLDAELKHGPGy2DQz3YrRtTM+D6ewshMZmrwBBxx
-         omoBRTS4c3ZLpf9CUWMYdil7ZGDMeMrXv2fuueiNlDmFEffSzWb74wFyNwyPnvPOitwk
-         gy316VOy0/TWOV/3WOx9C4VbJKjmrHRHhvlDDYeEkWEhXrdeuNC2c3lQZCLPYWSfbtvj
-         zDuQ==
-X-Gm-Message-State: AFuF++ktwAd7wq3RsIA8ZTzlZRDDS70LY6P239LuhsgeYLYBoiR/1xbS
-	XOo8TJ4oS86ILGuoAhEgxB5uoTBSl52smeY7/YZnuBRY4+2fPCz9gXcR5/KiLb2qzH4=
-X-Gm-Gg: AYBFou24l/9BzkPypkYyGMQUqD1nNZjjxxHmQvprVdtrh2SdvHGoHX3q+RU1vGSumqX
-	kD5sKo+h4RgWO3srMWYS8n73gtagplF2qYFRh4TQvNrcuDQBlI3Ra4uOTUfjuAAWg/tsUHXi9IP
-	qYHUHBWYbVB7chHkBNCn/eD7ArrIXSR/Uityz1GVJ5a38AT/gHLW9S7GW4+hTGyy/NMRSCLJuPi
-	f6+bVZ9T8LtGwcZmZO9gymWKcpN/tZGLFtBsTrnwCmR4R4cC7e9smfrQKnvyIZRB31MQg9Tieh8
-	2i3pMY22Bpr8ZSUWEKZlV8EO6loBn2mUJOPWynqS5G0g7NED6PwZsMJ1amKc0D7J1wp1vQjtE7M
-	FqukxNyHhF3LAu1Zj3L/78pBbygUYNV81xMFHFqL8LOf1ugd4MAdboyWFxHxflexS6Q+9kbZZLQ
-	NvRMJ/C6DNRl2z0wgg1OAhjbAxkbzP92zSeKyxr5K1T9GQPiWeQlm6c52X+0t7IXZkdNQubywP5
-	rAf
-X-Received: by 2002:a05:6a00:2e9c:b0:848:2c2e:c79e with SMTP id d2e1a72fcca58-85ed3c7d861mr4329381b3a.12.1788337809432;
-        Wed, 02 Sep 2026 01:30:09 -0700 (PDT)
-Received: from TENCENT64.site ([103.7.29.106])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-85db24f29adsm1026904b3a.5.2026.09.02.01.30.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 01:30:09 -0700 (PDT)
-From: Fourie Zhang <littleddfu@gmail.com>
-X-Google-Original-From: Fourie Zhang <fouriezhang@tencent.com>
-To: netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Jiri Benc <jbenc@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Aaron Conole <aconole@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	dev@openvswitch.org,
-	stable@vger.kernel.org,
-	Fourie Zhang <fouriezhang@tencent.com>
-Subject: [PATCH net] net: mpls: clear inner_protocol when the last label is popped
-Date: Wed,  2 Sep 2026 16:28:08 +0800
-Message-ID: <20260902082924.2812968-1-fouriezhang@tencent.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QMXVjgy9"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0AD551A193E;
+	Wed,  2 Sep 2026 08:32:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CFAD36053C;
+	Wed,  2 Sep 2026 08:32:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E16511C79305;
+	Wed,  2 Sep 2026 10:32:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788337945; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9siiNjXPf+3lQwXCdsGCE+5hGvyR9DC4S4y1EZ+6xDI=;
+	b=QMXVjgy9052pA0iZPQdbYZd832rIZiuj/Hc7u/d1HxLRxw57fF2JEm13cxeRl8xkXPt4cO
+	vK4TKVvaGLDQAE02rKg6EBCeCwdlKivwA63JwvDZoyESgW5VU2tfmhJl2ln0RXNNLPd+wy
+	cKYWTEiTrdrpnfX9SvNeeF9HHaYpQtPGpjAQ28XkWS4FMU28N8owIsInvit1UkkbIJU09z
+	gHZNLgQgjo09Edk5aKI+OBx5ixPfZuKL/FJssPshjDRM7Z9qG333AfOdZlH39U/fAQWHC7
+	lsQHrRFGCbPX+qm8VygwzJVvDIHStGWQRVPapAEh6ZhN5EwAMLeQtCNoNhqyEQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 02 Sep 2026 10:32:21 +0200
+Message-Id: <DL4OW4OXWPGJ.201FKXDFSTRI4@bootlin.com>
+Subject: Re: [PATCH net 1/2] net: macb: zero the link settings taprio reads
+ back
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Russell King" <linux@armlinux.org.uk>,
+ "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Aleksei Sviridkin" <f@lex.la>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260902080528.2211468-1-f@lex.la>
+ <20260902080528.2211468-2-f@lex.la>
+In-Reply-To: <20260902080528.2211468-2-f@lex.la>
+X-Last-TLS-Session-Version: TLSv1.3
 
-skb_mpls_push() records the pre-encapsulation network header once, gated
-on !skb->inner_protocol. skb_mpls_pop() never clears that record, so it
-outlives the encapsulation it describes.
+Hello Aleksei,
 
-Open vSwitch can then re-push MPLS onto a packet whose
-inner_network_header still points at the older, deeper offset: push a
-label, pop every label, recirculate (ovs_flow_key_update() re-derives
-key->eth.type and resets network_header, but leaves inner_*), then push
-again. ovs_fragment() trusts the record:
+On Wed Sep 2, 2026 at 10:05 AM CEST, Aleksei Sviridkin wrote:
+> phylink_ethtool_ksettings_get() fills only what the current link mode
+> provides. With no PHY attached it writes port and supported; on a fixed
+> or in-band link it also writes speed and duplex, but only if
+> base.rate_matching already reads RATE_MATCH_NONE, a field it never
+> writes itself and so takes from the caller. The ethtool core zeroes the
+> structure on every path into the op, so its callers never notice; the
+> taprio path passes a stack variable and reads a speed nobody wrote.
+>
+> Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
+> Assisted-by: LLM
+> Signed-off-by: Aleksei Sviridkin <f@lex.la>
 
-	skb->network_header = skb->inner_network_header;
+Agreed on the fix.
 
-so skb_network_offset() goes negative. The bound check is signed:
+Could we improve the commit message? Point how straightforwardly the
+case where uninitialised memory might be used, which is the main thing
+we care about. See how the following is easier to parse out (for humans):
 
-	if (skb_network_offset(skb) > MAX_L2_LEN)
+   phylink_ethtool_ksettings_get(bp->phylink, &kset) gets called with
+   uninitialised kset but kset is not only an out-param. In some cases
+   kset->base.rate_matching might be read.
 
-a negative offset passes it, and prepare_frag() widens the value:
+   ... explain the cases in question ...
 
-	unsigned int hlen = skb_network_offset(skb);
-	memcpy(&data->l2_data, skb->data, hlen);
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index 76ee4f506033..a43855db1e45 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -4297,7 +4297,7 @@ static int macb_taprio_setup_replace(struct net_dev=
+ice *netdev,
+>  	struct macb_queue_enst_config *enst_queue;
+>  	struct tc_taprio_sched_entry *entry;
+>  	struct macb *bp =3D netdev_priv(netdev);
+> -	struct ethtool_link_ksettings kset;
+> +	struct ethtool_link_ksettings kset =3D {};
+>  	struct macb_queue *queue;
+>  	u32 queue_mask;
+>  	u8 queue_id;
 
-which is a ~4GiB memcpy out of a 30-byte per-CPU buffer.
+Let's try to respect reverse xmas tree as we grow a variable.
+I know it wasn't perfect before.
 
-Reproduced on v7.3-rc1. RDX is the truncated length, (unsigned int)(-8):
+Thanks,
 
-  BUG: unable to handle page fault for address: ffffe8ffffc16000
-  #PF: supervisor write access in kernel mode
-  Oops: 0002 [#1] SMP KASAN NOPTI
-  RIP: 0010:memcpy+0x8/0x20
-  RDX: 00000000fffffff8 RSI: ffff888105d732db RDI: ffffe8ffffc16000
-   prepare_frag+0x3df/0x4e0
-   ovs_fragment+0x589/0x7e0
-   do_output+0x4ce/0x5e0
-   do_execute_actions+0x55d2/0x7b30
-   ovs_execute_actions+0xea/0x450
-
-Same root-cause shape as commit 975b5b067f52 ("ipv6: sr: restore network
-header before routing and forwarding"): a stale network header offset
-reaching a consumer that widens it. Here it originates in the MPLS
-push/pop path.
-
-Clear inner_protocol once the packet is no longer MPLS, so a later push
-re-records the current header. net/sched/act_mpls.c is the only other
-skb_mpls_pop() caller and gets the same fix; sch_frag.c saves and
-restores inner_protocol around fragmentation in the same way OVS does.
-
-Fixes: c66549ffd666 ("openvswitch: correctly fragment packet with mpls headers")
-Cc: stable@vger.kernel.org
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
-
- net/core/skbuff.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 966af3beed94..cc3b4b70288b 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6690,6 +6690,13 @@ int skb_mpls_pop(struct sk_buff *skb, __be16 next_proto, int mac_len,
- 	}
- 	skb->protocol = next_proto;
- 
-+	/* The last label is gone, so the inner header recorded by
-+	 * skb_mpls_push() no longer describes this packet. Drop it, or a
-+	 * later push keeps the stale offset.
-+	 */
-+	if (!eth_p_mpls(next_proto))
-+		skb->inner_protocol = 0;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(skb_mpls_pop);
--- 
-2.43.7
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
