@@ -1,263 +1,141 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4DB3DE434
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 18:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473EC380FCD
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 18:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788373012; cv=none; b=ia2EmaaEtHQ13Y/WMdfkb+mipKCtyy+9KcfRS+neLVlvsvmoy+ZL0dXG5Zbmrsq7xwhyfEbTjNBzHeya0t/AOGizvDJoEDHdxMPR4lAgA+u6sHuM/q5JHg6Q+rkYkYbtTo7zuVSd6P19cZNBYCT51Xi1JbirdnYDWe7vwbZKMVM=
+	t=1788373075; cv=none; b=sSnHxttlKvSgCYMHWhmuLa0bsQeZixmqoixCMegnS7rZzgBJm3Y4bsoKp8Aa9zM/EthDLOfchAYljJgCaWoQRT80a5creXy3GKKonBQGBGgPhLSddbzoX7+xMq7vOwrBDL+nitsRhbbmnbG2TJ/zIvGvihDX+TjWOmEj81iZVZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788373012; c=relaxed/simple;
-	bh=cHuW+PoC/Z1Qut9eKmuFeNWun/CMk2X5AcPMdTDPNdc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=efe0RYtW5hScX1gwitU/luy3JxSHYO0yzzR6MzH+24EUuY+BT++xAG74lxDkfKgXoxb7jIE+iUUeTfpxAQWgsf+rFOJbJEWUREl8sHl9+ZTg2bT/VsvNMHraf0HgV18kpm0Uieovdp9c1OlAGHONT/star9abwTzOsQwOJ3Kn4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=F6mOaSIn; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1788373075; c=relaxed/simple;
+	bh=FIvSl4PT5M8wd2L9jYTo2dqNn3AMqaJytiBoP1qEqHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aE76CshNZDfrtOxbb60GNSonu5wpMeArLuC2Sri0trLYVQGULQs7OgWgtW457NqnNonlsLYYeEgwurqjsIFhFWHeyvbS8x+/84XHxKLw+bFu654UuxvuWmC/OEGZ/IzKKKDMd0VJwfsfWSRoNpFMM/ZkNT0ij2rQkB/PrKW44KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PNuikx9Y; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="F6mOaSIn"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1x1pAz-0093jk-Hg; Wed, 02 Sep 2026 19:55:09 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=2fxNQ3cklJgeh+Wdn7qij4WTU+lRYoEvYB4H1QfnGkk=; b=F6mOaSInNmI/4+IX8kuWbZXR4j
-	bXw7nbZ+2Ow0ksDuY1b0KmeDwmr3ZrlYy7UFaFsJV6Zg31+qRRiIqM9s2GcoWAJBD7fy5f0xpbsQ5
-	rvCZEWJ+ddfkrtcqvtgvOEWrl/hXwdQiUUYNxU3egKq+8lgsAq/fNaQJrcfVCZwgoIvCIzv73Y+IH
-	QLY40ejF/ZUhkcVhVZWwCIy69bQnu/Pkt4VTsKQRG2aIfkbzJjQMGFUif1WY6tYURNtUAOEDkaJoa
-	aVfLOm4AsrBEn9GlTUoPYDVAPqhQXwAHGPqpGmFPDRLAIDLghnw2m3JSQzaU5CWrx1iDeEGOkoMjc
-	sdauiRMw==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1x1pAy-00072p-U0; Wed, 02 Sep 2026 19:55:09 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1x1pAk-0020Qt-QS;
-	Wed, 02 Sep 2026 19:54:54 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Wed, 02 Sep 2026 19:52:15 +0200
-Subject: [PATCH bpf v3 2/2] bpf: Fix reference leak in bpf_sk_assign()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PNuikx9Y"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-86a29a48ed9so17567967b3.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 11:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788373073; x=1788977873; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Fk3ssK/NaqTImHGXbrUIvdUPCFHN5JxriIUvdrQJYnA=;
+        b=PNuikx9Yz1NSDYC/fpWm83C/FAKyv2BXEKrNQt9QyJ7M8kmeFbc1V/8/SLXpO3TfaT
+         O0/Q4dA9Skn+NL1CC81dqAxTJ2AEb0JE+SPgGFS8iFitvjlukdEYaBC1bCRkbMOe3lTW
+         V1WxDa1Yr5SMUqm7LuZog5kfhIj6yckYdeaKnMoLeCu8nLxFW1irVdbLQ3axxV6pSXOQ
+         fSVWGDRIu8ZxmkS9atIEFRMjv9wvLxjNFSOpfGsyVzJBAmFebtRZ5qq7m1FINMI3UvvQ
+         QNNaOxvQIu/Fe6C2X19ILUBei7BHvvXOA+eBKXaSpFlFfvQ98XYr71+lvh6oHdJPUa38
+         9PWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788373073; x=1788977873;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Fk3ssK/NaqTImHGXbrUIvdUPCFHN5JxriIUvdrQJYnA=;
+        b=rJETrDdR4/CD0rP+YFVrUV8PHDzuf+ceq4sHSOjit25NhvXX0KAG2fGEKnqQnsXQaB
+         vWrz3Q1L8f/F26IlWDOeoYofh7m8jV8/fTAU8bN7HlbG0dV98F0CaPF513AffuA23+ON
+         OLmDwOj2As8pSpRZwrd2bZfw1ConBq4yYDZ68fzzRHJLl10XMykMqtOcOs1PpILoe7I1
+         bFG1dv+1rT9a+WIJwqkkAUdohqqXXhZUnL9vSmrCjB2xx4qzIJZCw7cyjlLtTLKCnxve
+         CW7BmIdKI3ukFLEVhsQHFqBGP6f/n28xyef51i6Rg4sEdIlspdmvwsM78JpMfK0xdiLT
+         fzKQ==
+X-Gm-Message-State: AFuF++l5kE+mp0DZV0sa52Kh0I+n6vFOeTEZbXf9Ck7oz7zpoR+3yYmI
+	EG7GZ8r8PWrchKWNjBr+gLl/lQ8lUT9g64fulsQqSQ1cxZEKucUT9pdptshm8w==
+X-Gm-Gg: AYBFou2As+yei6Xxv1wFVnhsAsdXzzdqTEGIduJ6FxXDWpPPginqtCzUTaK0nMBofMy
+	R9z0KyzIQBfoLMwT962QHADdLiA6ao2BS6RM1uzu696HVvT93uNP/bPuTHKJK+W+XbPVRz9gPWc
+	bTg7GF/Cg3Cyrdh9PpMNIR3NlnXiVlLNWzd9nX1eNvPCAzUPodG2AmYXjBxnSt3oIPHzC/Icz9A
+	WkTWKM5eLquke+5+vtunqcoVdFnipOIjINQXeenj6uVVH3/dyPLhlhb5Z3hNUflIv5DRAEpo3XZ
+	XVfxERrAMekc0INzsGui6BxXivMZM2wDQX2LP5gkW92UcVjyfv0MVNxDPqOgqEsARx1S8cuHuCs
+	YBHV4UnwAUSGCoUUUo9Ko2zvNNGcxm5WD0nngUyYjP8nDWzroTO5EqvaDoZgbT/BW6k5yxhkq5k
+	YyDRe+Ytadb8EjeJ84SkId9ryoJTZWjCTBeqbWJnAjnMrO1OjYAcAPXpjC0UfxrPrBUY3zsp4bB
+	YbRNiBXrvycHYUTNx9PoEVTgup7aO3kl2FItd2UYzkBMn+4qmaqwKOnbWhXaBLW
+X-Received: by 2002:a05:690c:e3ce:b0:85b:f1ba:b111 with SMTP id 00721157ae682-86c533981d3mr26928207b3.26.1788373073185;
+        Wed, 02 Sep 2026 11:17:53 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-86c1784192bsm23162297b3.30.2026.09.02.11.17.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 11:17:52 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net-next v8 0/6] hardware pacing offload
+Date: Wed,  2 Sep 2026 14:17:10 -0400
+Message-ID: <20260902181747.2483351-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-sockmap-lookup-tcp-leak-v3-2-b998b3d49d07@rbox.co>
-References: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
-In-Reply-To: <20260902-sockmap-lookup-tcp-leak-v3-0-b998b3d49d07@rbox.co>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, Joe Stringer <joe@wand.net.nz>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, 
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
- Phil Sutter <phil@nwl.cc>
-Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 
-sk_is_refcounted() is mutable; it depends on sk_state and SOCK_RCU_FREE.
-TC bpf_sk_assign() uses it at assign time to take a reference and lets
-sock_pfree() re-evaluate it at free time. If the socket becomes
-non-refcounted in between, e.g. connect(AF_UNSPEC) + listen() sets
-SOCK_RCU_FREE, the reference is leaked.
+From: Willem de Bruijn <willemb@google.com>
 
-Freeze the decision at assign time. If the socket is refcounted (i.e. can
-become non-refcounted), take a reference and set sock_pfree_refcounted()
-as the destructor; otherwise stick with sock_pfree(), which effectively
-becomes a no-op destructor. Next, extend skb_sk_is_prefetched() to handle
-both dtors and, for the sake of CONFIG_INET=n, add a specialized
-skb_sk_is_prefetched_noref(). Adapt prefetched-skb treatment in
-__nf_queue() and skb_steal_sock(). The latter changes its contract with
-callers: inet{,6}_steal_sock() must now expect a refcounted TCP_LISTEN
-socket.
+Enable safe hardware pacing offload on a first device (idpf), plus support.
 
-Fixes: 7ae215d23c12 ("bpf: Don't refcount LISTEN sockets in sk_assign()")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- include/net/inet6_hashtables.h |  9 +++++----
- include/net/inet_hashtables.h  |  9 +++++----
- include/net/request_sock.h     |  2 +-
- include/net/sock.h             | 11 +++++++++++
- net/core/filter.c              | 19 ++++++++++++++++---
- net/netfilter/nf_queue.c       | 18 +++++++++---------
- 6 files changed, 47 insertions(+), 21 deletions(-)
+- Add rtnetlink support for admin control over the device feature
+- Add device support to the idpf driver
 
-diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
-index 2cc5d416bbb5..a310cb91611c 100644
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -134,10 +134,11 @@ struct sock *inet6_steal_sock(struct net *net, struct sk_buff *skb, int doff,
- 	if (!reuse_sk)
- 		return sk;
- 
--	/* We've chosen a new reuseport sock which is never refcounted. This
--	 * implies that sk also isn't refcounted.
--	 */
--	WARN_ON_ONCE(*refcounted);
-+	/* New reuseport sock is never refcounted; drop the old sk's ref. */
-+	if (*refcounted) {
-+		sock_put(sk);
-+		*refcounted = false;
-+	}
- 
- 	return reuse_sk;
- }
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index 6e2fe186d0dc..1589e9e7ecb2 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -474,10 +474,11 @@ struct sock *inet_steal_sock(struct net *net, struct sk_buff *skb, int doff,
- 	if (!reuse_sk)
- 		return sk;
- 
--	/* We've chosen a new reuseport sock which is never refcounted. This
--	 * implies that sk also isn't refcounted.
--	 */
--	WARN_ON_ONCE(*refcounted);
-+	/* New reuseport sock is never refcounted; drop the old sk's ref. */
-+	if (*refcounted) {
-+		sock_put(sk);
-+		*refcounted = false;
-+	}
- 
- 	return reuse_sk;
- }
-diff --git a/include/net/request_sock.h b/include/net/request_sock.h
-index 5a9c826a7092..3fb114fa77de 100644
---- a/include/net/request_sock.h
-+++ b/include/net/request_sock.h
-@@ -113,7 +113,7 @@ static inline struct sock *skb_steal_sock(struct sk_buff *skb,
- 			return sk;
- 		}
- #endif
--		*refcounted = sk_is_refcounted(sk);
-+		*refcounted = !skb_sk_is_prefetched_noref(skb);
- 	} else {
- 		*refcounted = true;
- 	}
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 51185222aac2..fb553697db83 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1870,6 +1870,7 @@ void sock_efree(struct sk_buff *skb);
- #ifdef CONFIG_INET
- void sock_edemux(struct sk_buff *skb);
- void sock_pfree(struct sk_buff *skb);
-+void sock_pfree_refcounted(struct sk_buff *skb);
- 
- static inline void skb_set_owner_edemux(struct sk_buff *skb, struct sock *sk)
- {
-@@ -3015,6 +3016,16 @@ static inline void sk_eat_skb(struct sock *sk, struct sk_buff *skb)
- static inline bool
- skb_sk_is_prefetched(struct sk_buff *skb)
- {
-+#ifdef CONFIG_INET
-+	return skb->destructor == sock_pfree ||
-+	       skb->destructor == sock_pfree_refcounted;
-+#else
-+	return false;
-+#endif /* CONFIG_INET */
-+}
-+
-+static inline bool skb_sk_is_prefetched_noref(struct sk_buff *skb)
-+{
- #ifdef CONFIG_INET
- 	return skb->destructor == sock_pfree;
- #else
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 66d83a198ea2..e473ad8c9b3c 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7989,8 +7989,20 @@ static const struct bpf_func_proto bpf_tcp_gen_syncookie_proto = {
- 	.arg5_type	= ARG_MEM_SIZE,
- };
- 
-+/*
-+ * skb destructor set by TC bpf_sk_assign(), refcounted path only.
-+ * Acts as a "prefetched by bpf, ref taken" marker.
-+ */
-+void sock_pfree_refcounted(struct sk_buff *skb)
-+{
-+	sock_gen_put(skb->sk);
-+}
-+EXPORT_SYMBOL(sock_pfree_refcounted);
-+
- BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
- {
-+	bool refcounted;
-+
- 	if (!sk || flags != 0)
- 		return -EINVAL;
- 	if (!skb_at_tc_ingress(skb))
-@@ -7999,13 +8011,14 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
- 		return -ENETUNREACH;
- 	if (sk_unhashed(sk))
- 		return -EOPNOTSUPP;
--	if (sk_is_refcounted(sk) &&
--	    unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-+
-+	refcounted = sk_is_refcounted(sk);
-+	if (refcounted && unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
- 		return -ENOENT;
- 
- 	skb_orphan(skb);
- 	skb->sk = sk;
--	skb->destructor = sock_pfree;
-+	skb->destructor = refcounted ? sock_pfree_refcounted : sock_pfree;
- 
- 	return 0;
- }
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index 73363ceedebe..e2e9739c00ac 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -195,16 +195,16 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
- 		break;
- 	}
- 
--	if (skb_sk_is_prefetched(skb)) {
--		struct sock *sk = skb->sk;
--
--		if (!sk_is_refcounted(sk)) {
--			if (!refcount_inc_not_zero(&sk->sk_refcnt))
--				return -ENOTCONN;
-+	/*
-+	 * If the skb was prefetched without taking sock's ref, bump it.
-+	 * Skip sock_pfree-dtor'ed skbs coming from bpf_sk_assign_tcp_reqsk().
-+	 */
-+	if (skb_sk_is_prefetched_noref(skb) && sk_fullsock(skb->sk)) {
-+		if (!refcount_inc_not_zero(&skb->sk->sk_refcnt))
-+			return -ENOTCONN;
- 
--			/* drop refcount on skb_orphan */
--			skb->destructor = sock_edemux;
--		}
-+		/* drop refcount on skb_orphan */
-+		skb->destructor = sock_edemux;
- 	}
- 
- 	entry = kmalloc(sizeof(*entry) + route_key_size, GFP_ATOMIC);
+Besides the main feature, also
+
+- Small optimization to FQ offload: avoid unnecessary ktime_.._get().
+- Expand so_txtime drv-net test with hw offload testcases.
+- Expand pktgen with txtime feature.
+
+Details and detailed changelog in the individual patches.
+
+High level changes:
+  v7 -> v8
+    - 2 small fixes: unused variable in idpf and new ruff warning in test
+  v6 -> v7
+    - Rebase onto conflicting patches and address feedback
+  v5 -> v6
+    - Address substantial opus 5 feedback
+  v4 -> v5
+    - Rebase + small kdoc fix only
+  v3 -> v4
+    - Replace ethtool API with rtnetlink
+    - Drop/defer pktgen patch: not essential
+
+v7: https://lore.kernel.org/netdev/20260831213221.1370774-1-willemdebruijn.kernel@gmail.com/
+v6: https://lore.kernel.org/netdev/20260813020529.3506539-1-willemdebruijn.kernel@gmail.com/
+v5: https://lore.kernel.org/netdev/20260808155217.885299-1-willemdebruijn.kernel@gmail.com/
+v4: https://lore.kernel.org/netdev/20260806232913.4020403-1-willemdebruijn.kernel@gmail.com/
+v3: https://lore.kernel.org/netdev/20260726202902.760552-1-willemdebruijn.kernel@gmail.com/
+v2: https://lore.kernel.org/netdev/20260722204454.3234605-1-willemdebruijn.kernel@gmail.com/
+v1: https://lore.kernel.org/netdev/20260706133433.3142805-1-willemdebruijn.kernel@gmail.com/
+
+Willem de Bruijn (6):
+  net: rtnetlink: add pacing_offload_horizon attribute to net_device
+  net_sched: sch_fq: clear past skb->tstamp if offloading pacing
+  idpf: support pacing offload
+  selftests: drv-net: refactor so_txtime errqueue handling
+  selftests: drv-net: in so_txtime tell apart sw from hw pacing
+  selftests: drv-net: extend so_txtime with hw offload
+
+ Documentation/netlink/specs/rt-link.yaml      |   6 +
+ .../networking/net_cachelines/net_device.rst  |   3 +-
+ drivers/net/ethernet/intel/idpf/idpf.h        |  12 ++
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   6 +
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  66 +++++++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   8 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  60 ++++++-
+ include/linux/netdevice.h                     |   4 +-
+ include/uapi/linux/if_link.h                  |   1 +
+ net/core/rtnetlink.c                          |  21 +++
+ net/sched/sch_fq.c                            |  23 ++-
+ .../testing/selftests/drivers/net/so_txtime.c | 159 +++++++++++++-----
+ .../selftests/drivers/net/so_txtime.py        |  74 +++++++-
+ 13 files changed, 387 insertions(+), 56 deletions(-)
 
 -- 
-2.55.0
+2.55.0.970.g62bdec98f9-goog
 
