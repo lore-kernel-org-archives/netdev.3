@@ -1,151 +1,130 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D402843A7F5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18940438026
 	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 09:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788343078; cv=none; b=cbynfjW9P9syo5DbF8A+WnP08KvTDrw34aD5s2pEjv+mGXwQsxk3s7PUvIXU3Rt+/1tmnOBWU5Q1/5c2K/kSeym83Obfok5KGo9fjT6L+4sPQzE0qa7s3qmcyt0U6Ek3SNsKm8v82lFQjYzdWHDzQawjcl8I8yapMNaSD/wVO1s=
+	t=1788343079; cv=none; b=D+QCTc2loSEDzrrE32E5uizu7HsUGuyTvPZuF6lsj6/VnZh34lQ1LhBPhFgxAJQNh+Rjohq1J2adty0UzGCcbv9Hj1tngQ1Mz+P3qgy5EHbRXO1U96Pe8LtcnJPA3uibGga9cfoc2X4Aa4gRPhCGJjY4hwmcEI+ifU/nbImEvwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788343078; c=relaxed/simple;
-	bh=Rn3Ml6qD+1HHdOTjNfgj8Ak/gjAuC1HBFzLG+cdX6mw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j6jDmaVJ4YaeHG/d3yhBeWw4pqa2kXcHOkm2fe/LxhxRVu+A52oLO2ZWP5/Qu+tHGEcd8tO/y4XeGoxLVYqzcaJd3Xg4P8wub0UqoBIGwiiwotTDLn2El2vY9Aq/bpoHZY0O5oxRdZCHJyauiUd/ZT2cOhyRNKk6p9lfLfvJC6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BCW3LOeZ; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788343079; c=relaxed/simple;
+	bh=j1+ZBVJmPVW03bJXf/56FabNKgWY7EFAGihdRcW3d0M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sogNue1nrrqupxSwyoYNy/XFcNpTwZn7PHsgt7cVmY5pOC9NvP76gR/qUJYKw9GudEbWsYpjUlJaPVcGhVMQMEEXUv/CEkfLtJJo6c7q+3SVcLmUAggYhxoe5gNFdDZeowpnOQngAkx8OrSiqTKW88Nt572pS8gtmZvDuR7FrXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N8+wLS2L; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BCW3LOeZ"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-499c0879d51so689585e9.2
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 02:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788343074; x=1788947874; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bdTxfR9/XiBh42PkGitR6A4ZtE4V1E6y6EFDszmsd5s=;
-        b=BCW3LOeZGqLem7DnM19NhwrgjegrdcVfE1gzXeW22UmibPhV7Sk50+UWRREKDW3PqR
-         PR3z2Ze+y6H+MRPUEg3RjwoJdt5VlJlxWt1OcasFDgju+9s/xUleEh79t5r2Tk0UiPR4
-         Iw3+S6uVLVoobf8EYHGyF10Azqv2bTGn+CJ9NL9HlhjI53W/W8juwAn5wmEyq7tyEMs4
-         aXv/01EirO1mCkcATWxhS3fxt8AGXiglTufPXDREBzN5JceYQyIWk0JiZjzxTWnuX7yR
-         1ZhbXeDCzA8a7HoUQ/R0rgOL6ThKzS9A3rRWgT1UvtQ93i5tpCS/biLudr0ljZuQ9OnF
-         nyGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788343074; x=1788947874;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bdTxfR9/XiBh42PkGitR6A4ZtE4V1E6y6EFDszmsd5s=;
-        b=HW7HpkdRyFsjFSXmoIUNHqhbolR3svWIPTR/zlT8x2exDci81h1O+KIj2IhniOiZi/
-         5OXp19DNSadXY2942jhh0b8jwFO8P2ZrNkH1epy3LNqmeWy0QeH0l7Vf8oIZO5mvraGn
-         RDYvNlbYjajjBkIxcIS8ih44maVR5iKSvZVCldgzKoBRJvjvghNDpUMUVQoHEnpFeYnb
-         SfQ2KXXG4ZjgnTfJLfyTsTNOV3V2lxi0wBJ8c+z02B2KBpDzwSJ+4rj64sQ+O7FpM7yW
-         UGC/21S0vGTuv8Sy4aeLTTGDCcXW8noXKxoLeDPf6XwnRvhCh2YX8Gsdo753UKotfceK
-         3UEg==
-X-Gm-Message-State: AFuF++n335V9Y3AaftITwN1dShfNBPm+lzYYcZsZOjd9kVdmeEL/Njw1
-	KFajurBiIAqLWfgwT2Fqp1ySv+xpB0LSyqeO9Z0g14tQ/v9sFX2fze+83uQYnpDnLDQ=
-X-Gm-Gg: AR+sD12ftZHTclo4LVxFqEZ1q+AvYNKGrqws1Kf8U3UzsXvBw4ccQwqh2+FqqtWqqbf
-	jQZmklnrlMArLVA2VNOMNoU87HDV71lBaAq2fz6zfMpZVsedINyB1Xw2a8OUgBzt5kb5HjenYCn
-	T4bgNdTrwYP6nSavnRGoUlKI5EiX48Wqh5iT49T6+rNLu/LBpNsePcmqBG76ECdre4BgCFfl4YY
-	KHTbqq0Bl82pH7ksdoY0SOf3kQth10KhRSyIssr6TnvpIHm6V2TSWT05JmBZ1xeC23Bp4olCa98
-	pX4jhOE49DnKn788Tmn+1zwuhopOoOrUo3KNNpMjoUjUzOR6kDnFs/9iob2TPY3dhofOO8w61eF
-	DqJU4uKMm4iWF/qx1+dc4mvJd9/mlPdysqFqUf2sfbcd+sEGLR9k8usfXCgCmc0TC1wH+7t+dup
-	w9Gv5bWThbDoX6XJ3Ic/fIYYISe+61rFpBrmFcNz5Vo1BJtHJ2zewKRw3xH4YhvpgwOiTfsmdrk
-	DUAgQO/oiI4ubvpVQGLNkxbqoCkMlY1qs/tS7D+VwILK1Bg/3a1mLnIHJCYwWsSW7/i59D3XADk
-	bbhiRaBQGfvmhBM=
-X-Received: by 2002:a05:600c:3b03:b0:49b:910c:76fb with SMTP id 5b1f17b1804b1-49ce58252e3mr29148515e9.2.1788343073581;
-        Wed, 02 Sep 2026 02:57:53 -0700 (PDT)
-Received: from pop-os.. (98.102.222.87.dynamic.jazztel.es. [87.222.102.98])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce46422desm54543615e9.1.2026.09.02.02.57.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 02:57:53 -0700 (PDT)
-From: Miguel Garcia <miguelgarciaroman8@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Miguel Garcia <miguelgarciaroman8@gmail.com>,
-	andrew@lunn.ch,
-	jacob.e.keller@intel.com,
-	syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Subject: [PATCH net v4] devlink: use direct firmware requests for flash updates
-Date: Wed,  2 Sep 2026 11:57:30 +0200
-Message-ID: <20260902095739.3587287-1-miguelgarciaroman8@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N8+wLS2L"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 888FC4E414C8;
+	Wed,  2 Sep 2026 09:57:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C2AB6053C;
+	Wed,  2 Sep 2026 09:57:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5FCAC11C79300;
+	Wed,  2 Sep 2026 11:57:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788343073; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=B3aS/Mr7RC/ZOcg+EzhbjQUCCCKDV341PmBKKjmtwgs=;
+	b=N8+wLS2Ll22TDwBLHiqNLg7OAedfUyffpzSliEukRmJdZMddNvq17l15e/8PW+RhsBaMnB
+	8Kvq72TBUWIgavrMZvJkNV6FSVc6NdRdV6DE4GEhe8eQiWwYaqoGcjEjF0+3z3m0ccRvQh
+	9PVMzY9RWGRdHq5DeLMgrFkfannxyFtaXD84eJmgpcViKC+8wzmtuKYSwkYj3VcCnrTtaO
+	TuWHiIGg4Mn3vzK6A5Yf0CJ7bjrJrIH5SNFzKXGSIuMiLo8dP6CdMyta5U4v2nq8zenFwc
+	Eh1eaj4OSw6Z2YCmosbkRn4JDqyHwGBU9OWlFRmfqmHLwJiBWYa2UfjR881Uow==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Date: Wed, 02 Sep 2026 11:57:37 +0200
+Subject: [PATCH net-next v2 07/10] net: dsa: microchip: extract prepare
+ reset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260902-ksz-perout-v2-7-6f277fcc9e68@bootlin.com>
+References: <20260902-ksz-perout-v2-0-6f277fcc9e68@bootlin.com>
+In-Reply-To: <20260902-ksz-perout-v2-0-6f277fcc9e68@bootlin.com>
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-request_firmware() may enter the sysfs fallback and call
-try_to_freeze(). Devlink invokes it while holding the instance lock,
-causing syzbot to report:
+The KSZ8463 supports periodic outputs but doesn't handle them in the same
+way as the other KSZ switches. To add proper support for the KSZ8463, a
+dedicated ksz8463_ptp_restart_perout() function needs to be created. This
+function will use the same request initialization as the common
+ksz_ptp_restart_perout() function.
 
-  WARNING: syz-executor/... still has locks held!
+Extract the inialization into a dedicated function so it can be used
+later by the KSZ8463 support.
 
-Firmware flash requests already name a file provided by userspace.
-Use request_firmware_direct() in both flash update paths so a missing
-file fails immediately instead of entering the sysfs fallback. This
-keeps the normal devlink locking intact.
-
-On systems with CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y, devlink flash
-can no longer obtain a missing image through that fallback. Callers still
-receive the existing error result, and netlink users retain the extack
-message.
-
-Fixes: b44cfd4f5b91 ("devlink: move request_firmware out of driver")
-Reported-by: syzbot+372a7d84708b07f64d9b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=372a7d84708b07f64d9b
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Miguel Garcia <miguelgarciaroman8@gmail.com>
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
-Changes in v4:
-- Resend as a new thread so patchwork and CI pick up the new revision.
+ drivers/net/dsa/microchip/ksz_ptp.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-Changes in v3:
-- Use request_firmware_direct() instead of dropping the devlink instance
-  lock, as suggested by Jakub Kicinski.
-- Document the resulting sysfs fallback behavior.
-- Rebase onto net/main at bc93419130bb.
-
-Changes in v2:
-- Cc Jacob Keller, author of b44cfd4f5b91, as requested by Andrew Lunn.
-- Keep only b44cfd4f5b91 as the Fixes tag; ed539ba614a0 provides the
-  registration check but did not introduce the locking bug.
-
-v3: https://lore.kernel.org/r/20260901123819.2035064-1-miguelgarciaroman8@gmail.com
-v2: https://lore.kernel.org/r/20260830111700.1799255-1-miguelgarciaroman8@gmail.com
-v1: https://lore.kernel.org/r/20260829142525.3900565-1-miguelgarciaroman8@gmail.com
-
- net/devlink/dev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/devlink/dev.c b/net/devlink/dev.c
-index 55959b0ff..b85bb02a9 100644
---- a/net/devlink/dev.c
-+++ b/net/devlink/dev.c
-@@ -1169,7 +1169,7 @@ int devlink_nl_flash_update_doit(struct sk_buff *skb, struct genl_info *info)
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 2f141df65eb0..e262bc7448f2 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -788,11 +788,11 @@ static int ksz_ptp_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
+ 	return ret;
+ }
  
- 	nla_file_name = info->attrs[DEVLINK_ATTR_FLASH_UPDATE_FILE_NAME];
- 	file_name = nla_data(nla_file_name);
--	ret = request_firmware(&params.fw, file_name, devlink->dev);
-+	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
- 	if (ret) {
- 		NL_SET_ERR_MSG_ATTR(info->extack, nla_file_name,
- 				    "failed to locate the requested firmware file");
-@@ -1245,7 +1245,7 @@ int devlink_compat_flash_update(struct devlink *devlink, const char *file_name)
- 		goto out_unlock;
- 	}
+-static int ksz_ptp_restart_perout(struct ksz_device *dev)
++static int ksz_ptp_prepare_restart_perout(struct ksz_device *dev,
++					  struct ptp_perout_request *request)
+ {
+ 	struct ksz_ptp_data *ptp_data = &dev->ptp_data;
+ 	s64 now_ns, first_ns, period_ns, next_ns;
+-	struct ptp_perout_request request;
+ 	struct timespec64 next;
+ 	struct timespec64 now;
+ 	unsigned int count;
+@@ -823,12 +823,24 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
  
--	ret = request_firmware(&params.fw, file_name, devlink->dev);
-+	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
- 	if (ret)
- 		goto out_unlock;
+ 	/* Restart periodic output signal */
+ 	next = ns_to_timespec64(next_ns);
+-	request.start.sec  = next.tv_sec;
+-	request.start.nsec = next.tv_nsec;
+-	request.period.sec  = ptp_data->perout_period.tv_sec;
+-	request.period.nsec = ptp_data->perout_period.tv_nsec;
+-	request.index = 0;
+-	request.flags = 0;
++	request->start.sec  = next.tv_sec;
++	request->start.nsec = next.tv_nsec;
++	request->period.sec  = ptp_data->perout_period.tv_sec;
++	request->period.nsec = ptp_data->perout_period.tv_nsec;
++	request->index = 0;
++	request->flags = 0;
++
++	return 0;
++}
++
++static int ksz_ptp_restart_perout(struct ksz_device *dev)
++{
++	struct ptp_perout_request request;
++	int ret;
++
++	ret = ksz_ptp_prepare_restart_perout(dev, &request);
++	if (ret)
++		return ret;
  
+ 	return ksz_ptp_enable_perout(dev, &request, 1);
+ }
+
 -- 
-2.43.0
+2.55.0
+
