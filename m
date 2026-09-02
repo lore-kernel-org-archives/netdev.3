@@ -1,200 +1,150 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AC04A8A2D
-	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 15:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EA947F79B
+	for <netdev@vger.kernel.org>; Wed,  2 Sep 2026 15:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788362433; cv=none; b=c8pRZLp6siZxWZfqPOfZnLg5Jb20pRYK6GWEdWKqPpvir4K+t59yNTy4dhunZpi789TtZt2riBAoT552GKVsGOxspUg2unBth+rNwCpmY72a5SGaaLCbXBHReviSMqCNR0I22NbJxkzeiAF1MD4ZwpILmd8gNlCETuQ6LG7J9CE=
+	t=1788362974; cv=none; b=qX5TOlM1wgph6OK1icYXVByd1H8AIKbu0Mf2drOxclX1tFXoT6/DJk4Z2w4QQcaRJqdPXgckqrmP8640qLiNigMfKF1tZbl+66QJeVjGCTXIkbrAKwJC34LZm/hhPw3xI6gnMVryNcTe2eq5pDqCeMvdpRqJM7jgTLrNs7SmpOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788362433; c=relaxed/simple;
-	bh=7xuDMIlFysPCGTCdJAsweWLwA/wrkwLbnesyHF9L3Cc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PGczTvElzmxxJz8b3MoaEpQ2vJZVoi6jxqFndoVVeA6825QD7/V+KnxWqb0BG32iqlfDLXM662FOQCMxaXjKzRsdS6ZThVVDOtBxbsefNP35jO0unflC3OGDD2iJTg3Y89xW9H2nIXRUAzuBGw+YrKm5pa98RQRu/X2NrMFzqtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rJ7T+BOJ; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788362974; c=relaxed/simple;
+	bh=bijU2jnkO+Iz4jiHhEnFrtC9/YwzwRE2+3H5/R9wvus=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UWq2QxfltOGwlWWVUxHJ6kILYLrNYykt66IHFZBCTyeiYds2+0wJkHDQ0pONaYVzVh+6uwJHt617wODy1WhhkoFK04z/d1/3Zea7IEvry1qJx8W7cW8RKWDV2sdtB0O8PaErQapb8u1wL2DNUtWPaP9WMP51ZeUOGJPEL0FGjSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bUGCUKKR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rJ7T+BOJ"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-482e61a34e5so486203f8f.3
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 08:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788362430; x=1788967230; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ba9zSR0pFL6J1qeSltvfRoRTGU1ERDBWr20h/vbRz9o=;
-        b=rJ7T+BOJsKL8xsUmp8sVc2QQI3Qfs5ycY8z05IP/J+zPtC8yJQzOSFzV71byya2IyT
-         VJJVtQYsm34uGhNMWTVUtGOwKPQWdyaojOT8/vDq/ufacMbrEvHep7limHrCuS/d5yer
-         fmKelJWPD7hMDcYCFSVkyPHud3Cdf2M+I27i/VNERvBEik8rVFSWuLfgdFsMxoIL4A4i
-         BNw4/8KtX2SosfwOwGMRR/5tx5nlmOUo8ctLghp3QxJvi+2siOVT8AnKW+NpRWMbkLK6
-         O291vZrpaAHvEg2OJMB+5mOgnuSeSoCkn7VNFMetYLLRkAsyY7nBmaLEYy6KOKSlGT8+
-         OLNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788362430; x=1788967230;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Ba9zSR0pFL6J1qeSltvfRoRTGU1ERDBWr20h/vbRz9o=;
-        b=A3WYdT3VL6Gdx/cgsMjd/GkhcyFGSo0sLLZuq1YSvmQ/pfBkvC58mGQXUmZkB4Zxg1
-         8zbZk3b/GyAglrQ6PYFtytK7EADCoGnqJunR0lepIg/BiJ5qDSrcLSzbTWcWLLI/sgoB
-         s7qkrP9cr3bqt1IFkKUR3+TvWpb23chOvXfsXaHGyvTr91r5PcYG+SWZ9fP0yCpvFbfT
-         5AZ7lse+2WLsA/+Lclvq0M5FGBM/ekSvBNZzOlFomVV0o2idp6DailBPPTdLaFFGBUrQ
-         LXBjfYAi7OwpQG2bX5h5AxEQmp1ytqauVNSZag7VYGtpPIRRuaC9wDCHwGgnbQlqdiAl
-         gePQ==
-X-Forwarded-Encrypted: i=1; AKwUvBweRXCrASF0RAueUl2I+u0LQcaJP8j8oU42/hUwFcfb0gduoCVXMMsAyiE/IJnou3TUY02QI0I=@vger.kernel.org
-X-Gm-Message-State: AFuF++ksVWmzPT7QaopEGq8TkxGjF4wkz7unSJAde1pENf2vUjjreSso
-	cJSNFw2zTNpFhxHCMRO3nfFDUTykvNTihN1Sfdtsd21G7JB2TlShQ3dl
-X-Gm-Gg: AYBFou3pm3KJI/rxKXB8xa/BFUVnPpVJq3sMqc4gjrjqeFzhsICxzIpOe42Km28s5oH
-	NaP08Uor3i1Ohlak3eUPoMWtb5by3cgOtcAKj6KC1C0CUGQAWyH8SiJfxpyGhe7NqIvgPIve2Qg
-	6zRAcJ8sAvFZJXVMnm9fOtUpbcLvZrMX0NPXJ6NZNnKuiWOgYF8URgU/8Dt9oMqXTVtJ+Bj/Vgz
-	dbgQcLC+pUx1qgd7xp+zY4jCzCUvwF+zxm1w/Tk5cbSDTwQrzp63Df5Md2qCU7lOpUqUmdCsJV9
-	0UNwHRu24Y/Lf7psokOgQmSyaF+Y96Y0WU101uXt/3s3fKRJangxmWrnDQ6VPZtP4xChTGRG+WC
-	3d/jfORladXdWuFqD8sCVg5PeV54jTxYyx1gegLL+haiBScHPlOaxEkEsg4p68rXUuFZR9jnfJ8
-	blugWZDlCjk50y0+baiyYNKlIMRVXKLYReXy3v73wRS6BoQc4djXQdyvAf5l0e13yCEZMv
-X-Received: by 2002:a05:6000:71c:b0:482:ee81:f0ca with SMTP id ffacd0b85a97d-48488dfd8bamr12215044f8f.12.1788362429459;
-        Wed, 02 Sep 2026 08:20:29 -0700 (PDT)
-Received: from mail.gmail.com ([2a04:ee41:4:b2de:1ac0:4dff:fe0f:3782])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e72c28sm7368681f8f.6.2026.09.02.08.20.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 08:20:27 -0700 (PDT)
-Date: Wed, 2 Sep 2026 15:31:02 +0000
-From: Anton Protopopov <a.s.protopopov@gmail.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: bpf <bpf@vger.kernel.org>, lsm <linux-security-module@vger.kernel.org>,
-	netdev <netdev@vger.kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Matt Bobrowski <matt@bobrowski.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH bpf-next 1/7] bpf: Allow BPF LSM programs to attach to
- more hooks
-Message-ID: <aphBNqQK0JeVy5Sm@mail.gmail.com>
-References: <20260831110934.241898-1-a.s.protopopov@gmail.com>
- <20260831110934.241898-2-a.s.protopopov@gmail.com>
- <CAHC9VhT7=wMsB9mERWoiM6pF+_T1=2tyAsSrxMphhtdE2NPHMw@mail.gmail.com>
- <apbU8-fpioNIwUA8@mail.gmail.com>
- <CAHC9VhQbWPqEz5g1rVcMyJgrzzd4cQuwi7cddgJQK1H3ugMz7A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bUGCUKKR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129811F000E9;
+	Wed,  2 Sep 2026 15:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788362972;
+	bh=Ff2cdz7fwsnmaf5KnGrXuakUCkPe3sYFjYXAWGmfpeY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bUGCUKKRkcJPHetPZa+L66yEfGL+46CFIZch73+KGdZyPDdx1xKywZq6tZ0Gq/hFW
+	 QAJcuIzfVEhC00eV2rvSi0af3CnILBoVyBFD9KARRZ0zl/09LEEh8LYRpBvStE+XVO
+	 PSCfX4TKTrnKhvICHIelEYE4e4V6b35GX7/rc3Qf8/0BDuziJfQu7GgshkuS+bc5DD
+	 pbJYzjeZPqy3AHvRzDf9Q14/NFBimzmgCTBY7g6uLdii87SU6lno/phIvUgi59qATa
+	 NhYbAGbTwVYhb+n0WPL+cwXUmnBO7w4yW9LFv1kr3ydGYeMyXRnpUQG2cJ8ghIGGP6
+	 vMaOOOshw8M8g==
+Subject: Re: [net] net: airoha: enable RX_DONE interrupt for RX queue 31
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Date: Wed, 02 Sep 2026 15:29:31 +0000
+Message-ID: <178836297161.3394541.17329602881799623239@kernel.org>
+In-Reply-To: <20260830-airoha-rxdone-rxq31-v1-1-830a91503f2f@kernel.org>
+References: <20260830-airoha-rxdone-rxq31-v1-1-830a91503f2f@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhQbWPqEz5g1rVcMyJgrzzd4cQuwi7cddgJQK1H3ugMz7A@mail.gmail.com>
 
-On 26/09/01 06:15PM, Paul Moore wrote:
-> On Tue, Sep 1, 2026 at 9:26 AM Anton Protopopov
-> <a.s.protopopov@gmail.com> wrote:
-> > On 26/08/31 06:42PM, Paul Moore wrote:
-> > > On Mon, Aug 31, 2026 at 6:59 AM Anton Protopopov
-> > > <a.s.protopopov@gmail.com> wrote:
-> > > >
-> > > > The BPF LSM programs are allowed to attach to LSM hooks, all of which
-> > > > are defined in the <lsm_hook_defs.h> header file.  From BPF's point
-> > > > of view the set of attachment points is defined in the bpf_lsm_hooks
-> > > > BTF set. By analogy with existing code, add a new header file
-> > > > <bpf_lsm_hook_defs.h> which will also be included in the bpf_lsm_hooks
-> > > > BTF set.
-> > > >
-> > > > This change allows attaching BPF LSM programs to more functions.
-> > > > The actual hooks are added in subsequent commits.
-> > > >
-> > > > Each BPF hook calls a [__weak] noinline function each time a hook is
-> > > > reached. This may be too expensive for hot paths if a BPF program is
-> > > > not attached. A future commit will optimize this by adding a per-hook
-> > > > static key and inc/dec it on attach/detach. This way disabled hooks
-> > > > will be bypassed efficiently.
-> > > >
-> > > > Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-> > > > ---
-> > > >  MAINTAINERS                       |  1 +
-> > > >  include/linux/bpf_lsm.h           | 12 ++++++++++++
-> > > >  include/linux/bpf_lsm_hook_defs.h |  6 ++++++
-> > > >  kernel/bpf/bpf_lsm.c              |  2 ++
-> > > >  4 files changed, 21 insertions(+)
-> > > >  create mode 100644 include/linux/bpf_lsm_hook_defs.h
-> > >
-> > > Adding new BPF hooks in the kernel is one thing, but adding new BPF
-> > > LSM hooks outside of the LSM framework is likely to be problematic as
-> > > these new hooks operate disconnected from the LSM framework (callback
-> > > and LSM kernel object state management).  We've seen bugs in the past
-> > > caused by the BPF LSM trying to operate independently of the LSM
-> > > framework, something like this will only make that worse.
-> >
-> > Could you please point me to some of the bugs you mention, such that
-> > I understand exactly what you mean?
-> 
-> The latest that I'm aware of was a few months ago:
-> 
-> https://lore.kernel.org/bpf/20260628201103.3624525-1-mattbobrowski@google.com
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-So, for this one patch specifically uses the same fix.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-> > I am not really seeing how the
-> > real LSM hooks differ from the ones added here (from BPF point of
-> > view, and the objects it can access via kfuncs/maps).
-> 
-> The existing LSM hooks, LSM security blobs (the 'void *security'
-> fields present in many kernel objects), and individual LSM callbacks
-> are managed by the LSM framework whereas the functions you are
-> proposing are not.  This is important because the LSM framework
-> enables/disables individual LSMs at boot time which impacts both the
-> executed LSM callbacks and the security blob allocations.
-> Implementing "hooks" that operate outside the LSM framework can cause
-> unexpected user behavior and potentially destabilize the kernel,
-> leading to a system crash.
-> 
-> We require all LSMs (Landlock, Smack, AppArmor, SELinux, etc.) to go
-> through the LSM framework, the BPF LSM is no exception to this rule.
-> If you want to add additional BPF program call sites beyond what the
-> LSM framework provides, please implement them outside of the BPF LSM;
-> there is plenty of precendence for that already.
+- [High] Incomplete fix: the patch only adds BIT(31) to
+  RX_IRQ1_BANK_PIN_MASK, so the exact defect the commit message…
 
-Thanks, this makes sense.
+--
 
-> > The main reason (for now) to specifically create a new list of BPF-only LSM
-> > hooks is (pcmoore/lsm.git/tree/README.md):
-> >
-> >   """New LSM hooks must demonstrate their usefulness by providing a meaningful
-> >   implementation for at least one in-kernel LSM.  The goal is to demonstrate the
-> >   purpose and expected semantics of the hooks.  Out of tree kernel code, and pass
-> >   through implementations, such as the BPF LSM, are not eligible for LSM hook
-> >   reference implementations."""
-> >
-> > And for the hooks added in this series
-> >
-> >   a) BPF satisfies our needs, as we can precisely analyse what the
-> >      calls are trying to do with good granularity
-> >
-> >   b) I am not sure how to actually express this in any in-tree LSMs
-> >
-> > Can't BPF be considered enough to demonstrate usefulness?
-> 
-> The core issue has little to do with BPF, it has everything to do with
-> in-tree vs out-of-tree code.  The BPF LSM is explicitly mentioned as a
-> "pass through" because some have argued that the BPF LSM is in-tree,
-> and while the basic BPF enablement is in-tree, the actual LSM code
-> that is executed has thus far always been out-of-tree.
+net: airoha: enable RX_DONE interrupt for RX queue 31
 
-Yes, the actual code isn't, but all the building blocks are.
-The BPF is just a sophisticated policy language, in which,
-given, say, ethtool hooks are present, one can say "block
-all ethtool ETHTOOL_TEST_CMD calls for the XXX driver" or so.
+This adds BIT(31) to RX_IRQ1_BANK_PIN_MASK so that RX queue 31's RX_DONE
+interrupt is routed to IRQ bank 1.  The stated goal is that the queue gets
+drained and its buffers returned to the page pool.
 
-Is there any way into turning BPF first-class citizen from LSMs
-point of view?
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+> index fa9a8edce22f..8277c1c87bb3 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -538,7 +538,7 @@ struct airoha_wdma_info {
+>  
+>  /* RX queue to IRQ mapping: BIT(q) in IRQ(n) */
+>  #define RX_IRQ0_BANK_PIN_MASK			0x839f
+> -#define RX_IRQ1_BANK_PIN_MASK			0x7fe00000
+> +#define RX_IRQ1_BANK_PIN_MASK			0xffe00000
+>  #define RX_IRQ2_BANK_PIN_MASK			0x20
+>  #define RX_IRQ3_BANK_PIN_MASK			0x40
 
-> -- 
-> paul-moore.com
+[Severity: High]
+Does this leave the same problem in place for the other RX rings?  After the
+change the union of the four bank masks is:
+
+  0x839f | 0xffe00000 | 0x20 | 0x40 = 0xffe083ff
+
+so rings 0-9, 15 and 21-31 are covered, but bits 10-14 and 16-20 are still
+clear in every bank mask.
+
+Those rings are still allocated and filled, because airoha_qdma_init_rx() in
+drivers/net/ethernet/airoha/airoha_eth.c gates only on RX_DONE_INT_MASK:
+
+	if (!(RX_DONE_INT_MASK & BIT(i))) {
+		/* rx-queue not binded to irq */
+		continue;
+	}
+
+	err = airoha_qdma_init_rx_queue(&qdma->q_rx[i], qdma,
+					RX_DSCP_NUM(i));
+
+and in drivers/net/ethernet/airoha/airoha_regs.h RX_DONE_INT_MASK expands to
+0xffffffff:
+
+	#define RX_DONE_HIGH_OFFSET	fls(RX_DONE_HIGH_INT_MASK)
+	#define RX_DONE_INT_MASK	\
+		((RX_DONE_HIGH_INT_MASK << RX_DONE_HIGH_OFFSET) | RX_DONE_LOW_INT_MASK)
+
+with RX_DONE_HIGH_INT_MASK and RX_DONE_LOW_INT_MASK both 0xffff.  So the
+"rx-queue not binded to irq" comment filters nothing and all 32 rings get
+programmed into hardware and filled from the page pool.
+
+Meanwhile airoha_qdma_hw_init() only unmasks RX_DONE according to the pin
+masks:
+
+	airoha_qdma_irq_enable(&qdma->irq_banks[i], QDMA_INT_REG_IDX1,
+			       INT_RX1_MASK(RX_IRQ_BANK_PIN_MASK(i)));
+	airoha_qdma_irq_enable(&qdma->irq_banks[i], QDMA_INT_REG_IDX2,
+			       INT_RX2_MASK(RX_IRQ_BANK_PIN_MASK(i)));
+
+and airoha_qdma_rx_napi_poll() re-arms through the same mask:
+
+	for (i = 0; i < ARRAY_SIZE(qdma->irq_banks); i++) {
+		if (!(BIT(qid) & RX_IRQ_BANK_PIN_MASK(i)))
+			continue;
+
+Since rx_intr_mask in airoha_irq_handler() comes from the per-bank irqmask,
+rings 10-14 and 16-20 are never passed to napi_schedule(), so
+airoha_qdma_rx_process() never runs for them and their buffers stay pinned
+from probe until airoha_qdma_cleanup_rx_queue().  Is that not exactly the
+behaviour the commit message describes as a bug for ring 31?
+
+Ring 11 stands out here, since RX_DSCP_NUM() gives it 128 descriptors, the
+same as rings 2 and 15 which are mapped to bank 0:
+
+	#define RX_DSCP_NUM(_n)			\
+		((_n) ==  2 ? 128 :		\
+		 (_n) == 11 ? 128 :		\
+		 (_n) == 15 ? 128 :		\
+		 (_n) ==  0 ? 1024 : 16)
+
+while BIT(11) is absent from all pin masks, and the ring this patch enables
+(31) uses the default 16 descriptors.
+
+Would it make sense to give airoha_qdma_init_rx() and the pin masks a single
+source of truth, either by having the masks cover every ring init_rx arms, or
+by having init_rx key off RX_IRQ_BANK_PIN_MASK()?
+
+Alternatively, if the sparse mapping is deliberate and those rings are simply
+unused by the hardware configuration, does the justification given for
+BIT(31) still hold?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260830-airoha-rxdone-rxq31-v1-1-830a91503f2f%40kernel.org
