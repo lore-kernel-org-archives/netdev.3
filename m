@@ -1,171 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FCA314B63;
-	Thu,  3 Sep 2026 19:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C465F50AC14
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 20:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788465454; cv=none; b=ZvWL/I9WKWBZNB3FNf4P75hRZThBjYg8Ezucw9tael2/o5E0MWpsSxaHu1M2RhCFeIGbdrhyo3FLBlqDDwBexPXaxsfmCz4P9NkTQhuLHmBDHepiJ8EyQZSTGe72WC0BnYatH3zkcMbG4ewB39uJonrGNKvsJE8040UzUvmkVsg=
+	t=1788466376; cv=none; b=hfP5H4B22ZEsBg2Z+cxewXVqkBhA/DzS8XUrI5oLA76MgbzSRCWoL+Bpd9QucjcOdrTmHfqVksy8sN0b11KXWavTnUx+N8p3aBkV/ccL69Zg3DKcsHUe1cqorEZ/vmBEabH+U/h+vA+uY2o7eRLCngP7h3RrGr4BGRlGvUernMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788465454; c=relaxed/simple;
-	bh=fmxBut2r/MdOgNLJ7AkgWTHL/DFaVyUjRO6GdYPY9IQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GaIO1HmZlpQvmAWCtKUuPESxSUcOtTJfBV+TzeJR1gUCv+MWaL0ZXSugVzzSxGztz122KPzjtJn2CzbsSJO7jstk8gZpgF2dBxYhZCyAvsmgEoElaA5f3h7aEMHSe4Dp6RdHEQwOmtHmbsEAciPVE2HOvn90OhmV7H4I05K5dx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mShBYE5a; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788466376; c=relaxed/simple;
+	bh=if3+2uAeCRhbxNTG1eS3XV/6S15lptrmfnU/a0gittk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S0lB6oZ6i6yQqs/l9SUuNzS7I+UXo7ycJ8HaZoGMJh7Sgh6sMd6VWE87/xD/oFyf9hbbZoBSTQ9bFDZzGjrKi1WhGZunLseXE3uBP1SJ97McUzF4EZDNdxu35ZpGwLxacnm9sZ8pZUz9k7Se+jXITanubP9S2m0HGgZs1/nzrpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=jiVKt2B1; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mShBYE5a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7649A1F000E9;
-	Thu,  3 Sep 2026 19:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788465435;
-	bh=VzbwYl2+rL3MNbaIw+TeYvTAUnrzEvaim7JN8m2R0Gs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mShBYE5aJW9JG1EmqmMUmqc/UnFnoV8s8EW4POCIvmyiB2gXIEJ92JLSwDZkF3Dpp
-	 bSjtHZu5RyA/tEp5J7b2VLNStylWuV3DQObuBfN6H/R7C+v02S7fcE745BAHPg8kwu
-	 C0uRxkz4RD7rF6pOHWXi+nx9CXX+hBe0PaemqEniTfcIry6f7gkXG5W/4xUB0VVztN
-	 HvOlicmPQJs5Iyh8Ee1yJJrKosx28x5EwL7UQhHzPPs6bBDfC578p4tlzM3+S3d1Uo
-	 jIwyzSnm2tgNBU8qvUXAfIc/p/L4y7vAzt8mVsRm+OrdxkKSP2D6+mwEVXqfnoyoGp
-	 8HXGhEE2j1E1g==
-Subject:
- Re: [net-next,v9,1/2] tcp: Replace min_tso_segs() with tso_segs() CC callback
-From: netdev-bot+sashiko@kernel.org
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: ihor.solodrai@linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com,
- jiayuan.chen@linux.dev, netdev@vger.kernel.org, bpf@vger.kernel.org,
- ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org,
- shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com,
- jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net,
- edumazet@google.com, andrew+netdev@lunn.ch, donald.hunter@gmail.com,
- kuniyu@google.com, ij@kernel.org, ncardwell@google.com,
- koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com,
- ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com,
- cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com,
- vidhi_goel@apple.com, Mike_Rudolph@comcast.com, Jeff_Howe@comcast.com,
- srichard@netapp.com, kuba@kernel.org
-Date: Thu, 03 Sep 2026 19:57:13 +0000
-Message-ID: <178846543301.3394541.455246755221753943@kernel.org>
-In-Reply-To: <20260831165230.2696893-2-chia-yu.chang@nokia-bell-labs.com>
-References: <20260831165230.2696893-2-chia-yu.chang@nokia-bell-labs.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="jiVKt2B1"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-395cf2535acso274839a91.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 13:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788466359; x=1789071159; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b5hY0LBIvlsS0CCowPL3V+4aAcjVobSM0xuyxpYlgF4=;
+        b=jiVKt2B1rWLD1DjR40a9eyvgBpGZw3UYqW6V0ZvwwjDvuckmQjLfvK4r4Gywn1sFVf
+         YI2ubLg+Zfve0c8vXXKxwSPtOBeXEB4nD1J+Bfu/ucr4WDsThDYB1fCjdPRA+INjVW0T
+         XjBAi6csLbrf3XSWrjaC+zgP9beP+OZPsf0qLpfsZnNvHVdLRuv7VkiR+5ZKghVWEz+p
+         VuyzWlpMFtdjnA0jEfMROEtq2yhN+zgfVYxwAAm4vLg02N/Uug4rwIXjxce5ZwiB/Ps1
+         5GFlPrFTlYuskj37KznCyxZA21kJnN/EyO9dC3N4yWVXG0Zq6S4Lnw/JNknI4aGDnVX1
+         sOdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788466359; x=1789071159;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=b5hY0LBIvlsS0CCowPL3V+4aAcjVobSM0xuyxpYlgF4=;
+        b=KgwE+Ilc+R0OcVKd0BNk9Azu8tvz1yH9KB3iGfqKsUWxl9SlR3yaAK8K2//h59HAA3
+         /nRo498yMNkfEOOMO4T29ZAItZJiKHsMb6nwxHGkDPalxQtvYf8DxxQ2qCOKVSiTE8rP
+         z252+kEXwFEgQoYpBX1BPgHUlA9okueFGdD3MgFoDXsU36HPywtDSrENYSbNBRJYrVCP
+         rssxCXlgt4B+P6rppCbGCgfKgb6nquQZbeJy2IrUW6OhIqFBAhXM7yaKdFo90tI6blxC
+         fReKbKJlVBj8BRl/Xav2OV/pH4tSFe1snUvSUEVwqmAzwkB8KuDCuTEYGZJC2I3iaAH9
+         omag==
+X-Forwarded-Encrypted: i=1; AKwUvBxDJxVU6cX2N/S/r2nlSBcSrO1ziWzP7ZJ1uzL7GZIaVRbdAmD5dFZSy1b0zOPMq5l7UIs4DY0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nWNF9n41Z74qUJVG9cW8seQtqyoL0CkZAM/U2KWl4SENkeCDFG
+	IsPQFos6HV/vgXr7YQNREoAdX+B+b9xLJUKUnl0YiDio0p66hWBKDjEubDMNTfSIMyU=
+X-Gm-Gg: AYBFou2UeS6TppyNGOXBfssfeiIqfMlRtPOJi98kKG+5JwQCvviGGOFr5czsPjyDrIF
+	jmB34khSC2AvFw7EvPIxOTNNsCKA0wv4W7pCpDjUx9xNzQ9SyrAchLp2oLcF8LbtsVDvcSeJVpc
+	bEJKT5lwuvF32C9uX6pvqcP1DFuvTUMZvbDESK+LdfPqMA4La00p8Vh0ypjsEkm4oLiX97m/9Hs
+	S74M2XesGHhADeIACAYeO0vJgGiWXAvpKd273+DFq7szbOSF+NkfbzYrkCHERcGLszbBlu0NmNL
+	mO8ZodAONzXf7sOOLjLtMy+5kahIzb1/1pLVz/dYl0hhDGz+bdUVvL/HwXUiF3Xs9ljGo0GyFAH
+	JFTPxY1Ibya9thrsIP94ql+6i8i5hnCvbxmJQa5lvhWYXiCGMgxX/7MD3+8YJGgC2zOxl+7FQxK
+	vSePBTADudsWjWGQY2NuhPXUHorhA0DnPZyktb//OLtyeEIfDqTt3i
+X-Received: by 2002:a17:90b:4d91:b0:398:c6e8:3fc2 with SMTP id 98e67ed59e1d1-39b27c42b89mr215418a91.4.1788466358809;
+        Thu, 03 Sep 2026 13:12:38 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:44::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6951789a91.1.2026.09.03.13.12.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 13:12:38 -0700 (PDT)
+Date: Thu, 3 Sep 2026 13:12:37 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	florian.fainelli@broadcom.com, jonas.gorski@gmail.com,
+	andrew@lunn.ch, olteanv@gmail.com
+Subject: Re: [PATCH net 1/5] net: dsa: bcm_sf2: bound the CFP rule dump by
+ the caller's buffer size
+Message-ID: <apnUtd3dvlQUEFYr@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org,
+	florian.fainelli@broadcom.com, jonas.gorski@gmail.com,
+	andrew@lunn.ch, olteanv@gmail.com
+References: <20260903032611.3000029-1-kuba@kernel.org>
+ <20260903032611.3000029-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903032611.3000029-2-kuba@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Wed, Sep 02, 2026 at 08:26:07PM -0700, Jakub Kicinski wrote:
+> bcm_sf2_cfp_rule_get_all() walks the whole cfp.unique bitmap into
+> rule_locs[] without consulting nfc->rule_cnt, which is how many entries
+> the caller had room for.  ETHTOOL_GRXCLSRLALL requires no CAP_NET_ADMIN
+> and the ioctl sizes the buffer from the rule_cnt userspace passes in, so
+> once an admin has installed CFP rules any user can ask for fewer slots
+> than there are rules and run off the end of the allocation.  A rule_cnt
+> of 0 leaves the buffer pointer NULL and the walk dereferences it.
+> 
+> Fixes: 7318166cacad ("net: dsa: bcm_sf2: Add support for ethtool::rxnfc")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: florian.fainelli@broadcom.com
+> CC: jonas.gorski@gmail.com
+> CC: andrew@lunn.ch
+> CC: olteanv@gmail.com
+> ---
+>  drivers/net/dsa/bcm_sf2_cfp.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
-
-- [Medium] The patch silently removes the `bbr_min_tso_segs` BPF kfunc
-  without a deprecation window and without mentioning it in the commit…
-
---
-
-tcp: Replace min_tso_segs() with tso_segs() CC callback
-
-The min_tso_segs() congestion control callback is replaced by a new
-tso_segs() callback that takes mss_now and returns the final TSO segment
-count, bypassing tcp_tso_autosize().  tcp_tso_autosize() is exported so
-modules can still do the autosizing themselves, and BBR is converted to
-the new callback.
-
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-
-[ ... ]
-
-> diff --git a/net/ipv4/tcp_bbr.c b/net/ipv4/tcp_bbr.c
-> index 82378a2bfd1e1..ecf11be46f382 100644
-> --- a/net/ipv4/tcp_bbr.c
-> +++ b/net/ipv4/tcp_bbr.c
-> @@ -297,11 +297,18 @@ static void bbr_set_pacing_rate(struct sock *sk, u32 bw, int gain)
->  }
->  
->  /* override sysctl_tcp_min_tso_segs */
-> -__bpf_kfunc static u32 bbr_min_tso_segs(struct sock *sk)
-> +static u32 bbr_min_tso_segs(struct sock *sk)
->  {
->  	return READ_ONCE(sk->sk_pacing_rate) < (bbr_min_tso_rate >> 3) ? 1 : 2;
->  }
->  
-> +__bpf_kfunc static u32 bbr_tso_segs(struct sock *sk, u32 mss_now)
-> +{
-> +	if (unlikely(!mss_now))
-> +		return bbr_min_tso_segs(sk);
-> +	return tcp_tso_autosize(sk, mss_now, bbr_min_tso_segs(sk));
-> +}
-> +
-
-[ ... ]
-
-> @@ -1163,7 +1170,7 @@ BTF_ID_FLAGS(func, bbr_sndbuf_expand)
->  BTF_ID_FLAGS(func, bbr_undo_cwnd)
->  BTF_ID_FLAGS(func, bbr_cwnd_event_tx_start)
->  BTF_ID_FLAGS(func, bbr_ssthresh)
-> -BTF_ID_FLAGS(func, bbr_min_tso_segs)
-> +BTF_ID_FLAGS(func, bbr_tso_segs)
->  BTF_ID_FLAGS(func, bbr_set_state)
->  BTF_KFUNCS_END(tcp_bbr_check_kfunc_ids)
-
-[Severity: Medium]
-Dropping the __bpf_kfunc annotation from bbr_min_tso_segs() and replacing its
-BTF_ID_FLAGS() entry with bbr_tso_segs() takes the bbr_min_tso_segs kfunc out
-of the kernel BTF kfunc set in one step.  Should this go through a
-deprecation release instead?
-
-Any out-of-tree BPF congestion control containing:
-
-    extern u32 bbr_min_tso_segs(struct sock *sk) __ksym;
-
-now fails to load with "kernel function bbr_min_tso_segs not found in kernel
-BTF", and that applies to programs calling it from any callback, not only
-from the renamed one.
-
-The helper is still present and still called internally, both from
-bbr_tso_segs() and from bbr_tso_segs_goal():
-
-net/ipv4/tcp_bbr.c:bbr_tso_segs_goal() {
-    ...
-	segs = max_t(u32, bytes / tp->mss_cache, bbr_min_tso_segs(sk));
-    ...
-}
-
-so would keeping the BTF_ID_FLAGS(func, bbr_min_tso_segs, KF_DEPRECATED)
-entry for a release work here?  Documentation/bpf/kfuncs.rst says "It's
-expected that the common case will be that kfuncs will go through a
-deprecation period rather than being changed or removed without warning".
-
-The v8 changelog of this submission said "Deprecate bbr_min_tso_segs() kfunc
-instead of removing it", and v9 said "Remove deprecated flag on
-bbr_min_tso_segs()", so the deprecation flag appears to have been dropped
-again between revisions.  Was that intentional?
-
-The commit message lists the BPF struct_ops impacts as:
-
-    - The callback is renamed from min_tso_segs() to tso_segs()
-    - The signature gains an extra u32 mss_now argument
-    - The return value semantics is changed from "floor value passed into
-      tcp_tso_autosize()" to "final tso_segs value", bypassing autosizing
-
-Could the disappearance of the bbr_min_tso_segs kfunc be added to that list?
-
-On the replacement side, the follow-up commit in this series, "bpf: make
-tcp_tso_autosize() available to BPF congestion controls", marks
-tcp_tso_autosize() as __bpf_kfunc and adds it to bpf_tcp_ca_check_kfunc_ids,
-so a BPF congestion control can reproduce the old "raise the floor, keep
-autosizing" behaviour by calling tcp_tso_autosize(sk, mss_now, my_floor)
-from there on.  At this commit alone that kfunc is not yet registered, so
-bbr_tso_segs() with BBR's hardcoded 1-or-2 floor is the only substitute.
-
-In-tree users were updated in
-tools/testing/selftests/bpf/progs/tcp_ca_kfunc.c and no other in-tree
-reference to the old kfunc remains.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831165230.2696893-1-chia-yu.chang%40nokia-bell-labs.com
+Reviewed-by: Joe Damato <joe@dama.to>
