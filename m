@@ -1,230 +1,143 @@
-Received: from mail-oo2-f4.google.com (mail-oo2-f4.google.com [74.125.231.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011051.outbound.protection.outlook.com [52.101.57.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A213E00AA
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.132
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788421181; cv=none; b=dT/xiaDiKARGiMIHphupOXLMJt+WcuHWWZUeG9Hm/duX4DlMh+Z+jfrcvIVoefvm3o2RzSKzjjjHQfRosjhAqZ/nVXO2nkQ5HLnZ7wCZ7HyK/SUbgnhO8uHetEVo/TT25MLA6bp7cDdzC4BVsQ3XsjrQ0uWr8FZIwFDqG0Ns+Tc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788421181; c=relaxed/simple;
-	bh=k4LOqtUosmr6ZyknwbppLFe4OcI5ltMy4YYox8qoGag=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=J2NiEXw+M40hkL8w2ZiRpVKDJcnbNsCr8bNcerzMME4q8qUhpffRYXSPP3qzqOWycRdr5QsdF2+/uPCDqjGgXOkyTsY5veCg9fXzsP572vFHa9+2WuYCFwI6HikJsJY1vJOjjquuaGfx0qZqF5JeffV7eTC77vYjtwtf9c/ZLl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f4.google.com with SMTP id 46e09a7af769-7f4e9ec63a7so363297a34.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:39:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788421178; x=1789025978;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QkbPX+/Gt8vrXhrXwYE9Oil0+rxtEjRaW6SUbOfN9XQ=;
-        b=b6bUPBl3JPrriDEh8I/Cq/sMl+STtctNNpVlPdKTpUK1mPiFjnamTC0uDt47G8f5WP
-         BMP8hMpTFDngdaz3WqVXrIDphl52WA+8qj6UoPQ2y+NakD4Gi9B43WnIlLfOoUpN746d
-         Pz6Wn5b4Rjk/rguAa43TAnaBcAhuh+/pVFqKmot39TYRifbjOyjJlAXlFwHd/LkaFvEB
-         zF+RKqxG1bvHgVmHMtLXfGEfwzaVmsMUN0jqmfQYKGQJGtbr+AJ1eKFyXNWJng9+ggsX
-         rWJl9ISoRSx3jMMrYyyunAg7wdKLAr/yqwiAgpKj9rc2gXSNdNLJsdOAqMX4JDLaAb9W
-         dQsQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzhB8A35oa2ysi0Bhvn6fjaspykokltAGu0VCxSaufe5DXLlc6Vfi7L3pRj1+Wf4ArwTNZT924=@vger.kernel.org
-X-Gm-Message-State: AFuF++kUUxs+xUsZcaLcJjTZwIdsbhKVbjH8y82UwUhV1tBDZOifRRqG
-	Stet+w5COJS2h1s3rp2swKGsEQnvXun58R2xwA3Qb/yOzaMkkGL8ZE/GALFJvOc0Wh2JLMgNdiT
-	e8joxLJlhs7UxH6zqjCyrgrfE1ZrZVI64riJB949puEWm68uXIzlE5en5dvc=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A593F54D2;
+	Thu,  3 Sep 2026 07:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788421233; cv=fail; b=c43QhuPYlraqhk9/iNYHy/WJGbu3qod5BbuOGwCgHjVOjuX9YrYRC9oWsbtKz9wscqK1adYp2hAP39gN/r+th15FZgnjDk2O6YJmUUz2y+WoFt7XhxdRZne5+cbaB0AMjUrE6VWu+ap+lbA3So7yOnbGvSMMwkRp7x1QP2qOopQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788421233; c=relaxed/simple;
+	bh=+ZCu/HgS5mhsvUsWrVSfB+utZlBDUgYo8Gl+mVgF4O0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BUDSmYvyVlzbcSMXe+jsTT7y4WUN9ptX91RT1tAGreQC94IHfCo7D1E/3cNr+xtqEfxwNqDzhF5xiJif3uiJw3CxeFxfgBTe6yfPlwa+/h46E7sRvm5BBT6O6yGvEaKT6nAvLcKm4OQx/YRhPXa+Nn9HEs7iiVERbyDRvG4yexk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lBkS5ZiC; arc=fail smtp.client-ip=52.101.57.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lBkS5ZiC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sbeDtczdWRBRJLPFRfwgg9EvqiZ3fyQUK64/rhJ7EVBy9yK1gyHcMpIHVY7oETpq/8YTJvRCtPxQUYofJNFCqy30hCx2/H4L1p5Zv/BwY2MbBPIjJDMc9OdNYgg96y/5hHiWkK/HlMqAmpmCrKaM+TBiOUdktipEom6R3ikOE4CCFFU2FbG0NJCWllMAioiJxVxdS7+QtdGsACJioEj5qiFFJGvkBmmVGbFq0f3vQuV8+PTcDzql2hOX/jciiYr1U04tlvTdtqAy/oo1A78h23tRoZRtLN9smOkUeE30hZibMEkpzCkCnR2r2wVGC01VAiZifRTw60xChZh+M1uKKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bGTudcmA3E7IVnTtq6422NFiKk3aBW2llk/+m3/cYwE=;
+ b=GDAUGamq1x+ndOKptZ1P7YHFqvOxUbl3GYGaSNhljrmf+RFgH65F2dwC4j67BoZIkgO1FMbXBnoDwtzJV0mJ8uTea+mWh/oa+rzVoL4go6S2PADZAdMGs1gNMxxujCJEHpKTirKhI+rLwef9Yzg3tYccZti2ROzbX8MfBNwDsv+QwUCaOcRtJQQvbN2Q06+AOk8UgWlWShnCIijw7Uokixcyq6q2JsPZjGYeImm3GgAh0ERT1a+HVgt/+14GcUAqeuaeCe5sB4eVOZs1yhr06BUduMNaKxZbEl8T72DH6suqAK6Z1tbvKhirRNFeDgcrQxHc/9WMHdYB4JW48Ivk4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bGTudcmA3E7IVnTtq6422NFiKk3aBW2llk/+m3/cYwE=;
+ b=lBkS5ZiCLmRp18kFG8LdBMfQ8hjFxZb9UHhcCfyRIZKtguGYR7faY7Rrimmp/T1wiJflKPzNbAU3ANvbgIBlvVyLCvkG+b9LUnI7ucfKlYzPgoILvtbh5YNLlA+EXzJkYPNknmqIVPiWLALi53ZXVLNS8zrRaYakrXiRvJP9eqnqbhLKkj8YHrK3viW7Pvwk513rVNk3rbjLtmmcmCk+1LVcD7EA8Oq8ziGrMp6PcYk0IpCqdz8+HVN5jiQgUNbCEIekJksr01L/cYhqOE2C1tm+IecjYJZlJnhjtjXNtsc4v7cfy8Oxzgvu3LH/M2RYHyKnsY2/YFhC5Q9sXVA6vw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DS7PR12MB6335.namprd12.prod.outlook.com (2603:10b6:8:94::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 07:40:26 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 07:40:26 +0000
+Date: Thu, 3 Sep 2026 10:40:17 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
+Cc: AutonomousCodeSecurity@microsoft.com, davem@davemloft.net,
+	dsahern@kernel.org, edumazet@google.com, horms@kernel.org,
+	kuba@kernel.org, kys@microsoft.com, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, petrm@nvidia.com,
+	tgopinath@linux.microsoft.com, xmei5@asu.edu, janak@mpiric.us,
+	shardul.b@mpiricsoftware.com, kalpanjani009@gmail.com
+Subject: Re: [PATCH net] nexthop: initialize extack in nh_res_bucket_migrate()
+Message-ID: <20260903074017.GA4171618@shredder>
+References: <20260714104428.GA838500@shredder>
+ <20260901094827.1236039-1-kalpan.jani@mpiricsoftware.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901094827.1236039-1-kalpan.jani@mpiricsoftware.com>
+X-ClientProxiedBy: TL2P290CA0030.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::16) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:619:b0:6ae:9815:7c8e with SMTP id
- 006d021491bc7-6b48102eaa1mr7838702eaf.21.1788421178408; Thu, 03 Sep 2026
- 00:39:38 -0700 (PDT)
-Date: Thu, 03 Sep 2026 00:39:38 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a99243a.2e567484.299ffc.0008.GAE@google.com>
-Subject: [syzbot] [kernfs?] INFO: rcu detected stall in kernfs_fop_release (3)
-From: syzbot <syzbot+087d9dac1f398074ca9f@syzkaller.appspotmail.com>
-To: driver-core@lists.linux.dev, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS7PR12MB6335:EE_
+X-MS-Office365-Filtering-Correlation-Id: 52374735-6093-490f-7dfc-08df098e9e9c
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|56012099006|10067099003|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	KZ1dDqTZr2wgByqw9hVwaHXjA8oviDX2vFUqOfvZY4WD2UsXqTXijIUyx2yL1/tmn2g0kFXIY3u0nq1wQ8XBRY1c8E2N5rdDFCW9GpvStSuhzz3st/dqv1rOvDgOjYTYLeIXzv2QDlgOOyP3s9bYTzcqveXsDLSxpFpJ00hhOcLVgF4W5YK2B7Z9C3l+xbXomsSbjCGDmMJ428CT0zcE4XVJ2f6X/UGN3y/Mwcekc6BG/2q/8MI4dqegsqQHeo8NgI7IDLTzW8G7VE6EzG4tjiRnzA3zQcCtsHILIV9F5EOTyG9hl9tC1BoqujNE+GJ+35VnP6k0RE0ZXJNgsZqWla8VWAW8Ed2WF080QIHNrlvmtf078UJL7x0p9usN47jq73fFLsgFM3DxNOrHBV5ajuIZet6rQ6BdmKmOrYkBStITbgMrnqQ8C/dGsQV0SqTfum7/3fnTeqUKBekfsa2OaZDqpt4hTn68ecvjSF/da4/5ZPl7pq2ymf+2x6kS1C1rrDMHKMInr1dC2q/YhYJI0x9L35a6bbVfAc4GsM2OZVlb0g7YMuExZ5V9X92O0lWtUJG3ZioU4SqRwrFwIFxWekUy95OhSifPNYL6XloJtmpTG99SPSCYbwdGqoOJl+1Z29bH1ow4LvaWChGe+WLB5GulEdYQFL1VcHzFOQtRp9U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(56012099006)(10067099003)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aM78mch6SMZrtcOCKefLVN/mRTDvy3PdVZ4liEdxrz1AtQHWNhbS1zyGSGAo?=
+ =?us-ascii?Q?N+1LNA7Wcg+AV5s8dgzDrn3PRT9B8gYh4sqjhSDQ/vySjAGiEA1e48iEkGQI?=
+ =?us-ascii?Q?7kI+/CP/RQiw1nWaIFHXIC7VNdbDkxdxeMcSMPgoeOcjS+Rur1XAyPKYicwl?=
+ =?us-ascii?Q?uoxvZu5puv4vL37M/7Yc6rQ3ltKU5s+ZOjmj8GHwxuK22g0ZTAOHDcy69ish?=
+ =?us-ascii?Q?S8SyWvN/TqTyiEeSN8pwoRUu6ebk4P+A7pJ9y1Gxyb2tEkCM2AGdF/NZiiST?=
+ =?us-ascii?Q?CUHWjcFxYR/G/8kwzFbZhY6Dspjtea/W+qBxy19EtcVkp7HEQF/usRqNkoT0?=
+ =?us-ascii?Q?3FYm3yL/AxOvD2l358IcQLHQ8YUjqipG+MzX+YsAr4Z9MkOnJs0yiGngZY9/?=
+ =?us-ascii?Q?tEKHVVp8x00E+sFn0QA+HhZDyN8aTT26X+amh/MK125TBEFCWRuqrgMj2yrc?=
+ =?us-ascii?Q?JeExHKvLu5M8ZdRkJYTN6QM5X2+jyVDwo1x5ebsJwqCYAxrsFVJoA9MRZrQz?=
+ =?us-ascii?Q?dpytY1pTjZro61BK7IzSLAsPcJEencqUjQISYqqYWM37nX1YFzjyatWdgiHh?=
+ =?us-ascii?Q?KvlirD71Da5emQ+7Rhrtl5gQcjGkrMjOhpmAmy0M4nHMEnotm57iTgtYOLIE?=
+ =?us-ascii?Q?38pR9wfrkUxC43NC3RvG+WNlEXxNRFvN0VbsR96SXQk0mlboo1lPXrwZj3Hp?=
+ =?us-ascii?Q?Q8iN0CRXCs6CmDZaAYXH4SuzCY/IJv0GoiLXxK8ORY1Vuz2QhoalnEUp/ZA9?=
+ =?us-ascii?Q?mFcuhfShwdoK8r0ANxrohrJvdbfTU+bHoAIOoHMdHtYMGT3fqOkx0zTNjzVw?=
+ =?us-ascii?Q?uwvQK4pzo6mMWDvyXRuUi1tfjjYxkZCxYdfZs/gdvi7x1fFlf7bs+SFlfrRO?=
+ =?us-ascii?Q?gTK6pI0Goj0G1wpLSitxh8uUGEdOzt7M1Vm7snaINnK6t6dJSppYne4mEnpz?=
+ =?us-ascii?Q?HmaLr0wxCHvmVP689T+b/xAMpWC+ggO8euHLHyg7iVHeEdFzoEo+a8BFIj1J?=
+ =?us-ascii?Q?fg5uwCGlKBtnccs8KNWgTLE5LUUagg4UsIRQt8mNrqqIsMAL18t4cw6Ug014?=
+ =?us-ascii?Q?MubxspQOcknjN5SrhlrXxTNaA38OTyQmdHvH44KC6UGgziikLirqSANClCl+?=
+ =?us-ascii?Q?TOeEQHE/7rInFQBy1HQIJgHZ42sMJ9x2b56LaNijPUN7qLzFmLC92Qt9flK8?=
+ =?us-ascii?Q?qGYuJxFxFjB2tzm+svaiM/nTDBvhK0YqQHiWQ/E5H/lX82BBT0NLXVaiNN+B?=
+ =?us-ascii?Q?2m6Js6FNzVRJcobK45xfwwQEmBamcEPyaxa4oLQzOqrQvkdNu0EOuE6EbduM?=
+ =?us-ascii?Q?9ccofuOhe8p7MOZgmRC/DMP9Ds5OEVKSdnctzzvl+GNe8zRENFnr+Zyf+Sby?=
+ =?us-ascii?Q?xyhoxH9zYj2W1DAw4Zt41AzLKrE3Bo26wz11KSF2HhzskDgaNn41J/142EBq?=
+ =?us-ascii?Q?uUo5uwI2K6PIRwP8uLQLmBBgxieP0k9W/kQuYd5ynPPa8dxcMjNAq7EHrCcX?=
+ =?us-ascii?Q?dmkylqr1nGzryQC9qu5raXUTzJLrnTJ1NS9FEU6ULOvyDiFzITvzyncrZ7QA?=
+ =?us-ascii?Q?IebnaOPuYLX6okU/iYoToNT2Uk68jBDuCUeD01zB0eCat54O7wRKfXkRodna?=
+ =?us-ascii?Q?t9qt/qYJSLre4ppm/BBVaOzGlZCvly/oT6CdrIMJTwV+5+v4CkMzz5O+oOGZ?=
+ =?us-ascii?Q?lCeTFnWjeWgyOSzcP914D0elgzmHzI3XjMQEBWmeO32wSPA8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52374735-6093-490f-7dfc-08df098e9e9c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 07:40:26.2537
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uPcSKkByiy5WGtD6hWRfiiRRuMAv7aEscmtPBcZDUxamyGpwz6GomXEQRqcBaBV/Mu5JTXaQ6NclkpnKX3wW4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6335
 
-Hello,
+On Tue, Sep 01, 2026 at 03:18:27PM +0530, Kalpan Jani wrote:
+> On Tue, Jul 14, 2026 at 01:44:28PM +0300, Ido Schimmel wrote:
+> > remove_nh_grp_entry() also doesn't initialize extack, but
+> > call_nexthop_notifiers() is using NL_SET_ERR_MSG(). Still, the same
+> > problem can happen if a listener is returning an error without setting
+> > extack. Please send a separate patch (targeted at net-next, no Fixes
+> > tag) to make remove_nh_grp_entry() consistent with
+> > nh_res_bucket_migrate().
+> 
+> Hi Ido,
+> 
+> Noticed this hasn't been picked up yet - happy to send that patch if
+> nobody else is already on it. Will target net-next, no Fixes tag, and
+> keep it consistent with your fix above.
 
-syzbot found the following issue on:
+I checked and this does need a Fixes tag. I will send a patch later
+today.
 
-HEAD commit:    1b78070aaef6 Merge tag 'net-7.3-rc1' of git://git.kernel.o..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=107d7d79580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=087d9dac1f398074ca9f
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13dc2379580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1286ac15580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/18856a03a9a3/disk-1b78070a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/cc2bc68d7ef4/vmlinux-1b78070a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/05a5e00f8f91/bzImage-1b78070a.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+087d9dac1f398074ca9f@syzkaller.appspotmail.com
-
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	0-...!: (1 GPs behind) idle=c15c/1/0x4000000000000000 softirq=16029/16030 fqs=6
-rcu: 	(detected by 1, t=10504 jiffies, g=15973, q=1121 ncpus=2)
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 5842 Comm: udevd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:should_restart_cycle net/sched/sch_taprio.c:-1 [inline]
-RIP: 0010:advance_sched+0x2fe/0xc80 net/sched/sch_taprio.c:955
-Code: 89 f8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 4c 89 ff e8 3e fc 4b f8 4d 8b 3f 4d 39 e7 0f 84 a7 00 00 00 <48> 8b 04 24 48 8d 98 28 01 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00
-RSP: 0018:ffffc90000007cf8 EFLAGS: 00000006
-RAX: 1ffff1100639ac28 RBX: 0000000000000000 RCX: dffffc0000000000
-RDX: 0000000001000001 RSI: 0000000000000000 RDI: 0000001db0a1a72b
-RBP: 0000000000000000 R08: 0000000001000001 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff52000000f90 R12: ffff888031cd6910
-R13: 0000000000000001 R14: 0000001db0a1a72b R15: ffff888076d4bd40
-FS:  00007ff72c957880(0000) GS:ffff888124ce0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe39b15f44 CR3: 0000000075580000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- __run_hrtimer kernel/time/hrtimer.c:2067 [inline]
- __hrtimer_run_queues+0x3bc/0xa10 kernel/time/hrtimer.c:2124
- hrtimer_interrupt+0x4cd/0xaa0 kernel/time/hrtimer.c:2243
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1051 [inline]
- __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1068
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:on_stack arch/x86/include/asm/stacktrace.h:58 [inline]
-RIP: 0010:stack_access_ok arch/x86/kernel/unwind_orc.c:409 [inline]
-RIP: 0010:deref_stack_reg arch/x86/kernel/unwind_orc.c:419 [inline]
-RIP: 0010:unwind_next_frame+0xb86/0x2550 arch/x86/kernel/unwind_orc.c:614
-Code: fc ff df 41 80 3c 04 00 74 09 e8 a5 7f bf 00 4c 8b 04 24 49 8d 50 f8 4d 8b 6e 10 48 b8 00 00 00 00 00 fc ff df 48 8b 4c 24 10 <0f> b6 04 01 84 c0 0f 85 3b 14 00 00 41 83 3e 00 0f 95 c0 49 39 d7
-RSP: 0018:ffffc90003cff8a0 EFLAGS: 00000246
-RAX: dffffc0000000000 RBX: 1ffff9200079ff2a RCX: 1ffff9200079ff29
-RDX: ffffc90003cffcb0 RSI: 0000000000000002 RDI: ffffc90003cff958
-RBP: 1ffffffff22401c0 R08: ffffc90003cffcb8 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8ed5c6e0 R12: 1ffff9200079ff2b
-R13: ffffc90003d00000 R14: ffffc90003cff948 R15: ffffc90003cf8000
- arch_stack_walk+0x11b/0x150 arch/x86/kernel/stacktrace.c:25
- stack_trace_save+0xa9/0x100 kernel/stacktrace.c:122
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2748 [inline]
- slab_free mm/slub.c:6499 [inline]
- kmem_cache_free+0x182/0x650 mm/slub.c:6626
- seq_release+0x63/0x70 fs/seq_file.c:357
- kernfs_fop_release+0x2f8/0x440 fs/kernfs/file.c:777
- __fput+0x418/0xa50 fs/file_table.c:512
- fput_close_sync+0x11f/0x240 fs/file_table.c:617
- __do_sys_close fs/open.c:1560 [inline]
- __se_sys_close fs/open.c:1545 [inline]
- __x64_sys_close+0x7e/0x110 fs/open.c:1545
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff72ca51a67
-Code: 44 00 00 48 83 ec 10 48 63 ff 45 31 c9 45 31 c0 6a 01 31 c9 e8 ca 19 f9 ff 48 83 c4 18 c3 0f 1f 44 00 00 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 8b 15 61 b3 0d 00 f7 d8 64 89 02 b8
-RSP: 002b:00007ffe39b145d8 EFLAGS: 00000297 ORIG_RAX: 0000000000000003
-RAX: ffffffffffffffda RBX: 0000557f662c60d0 RCX: 00007ff72ca51a67
-RDX: 00007ff72cb2bea0 RSI: 0000557f662dc3e0 RDI: 0000000000000008
-RBP: 00007ff72cb2bff0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000297 R12: 0000000000000000
-R13: 3d45505954564544 R14: 3d5845444e494649 R15: 3d454d414e564544
- </TASK>
-rcu: rcu_preempt kthread starved for 10474 jiffies! g15973 f0x0 RCU_GP_WAIT_FQS(5) ->state=R ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R  running task     stack:27496 pid:17    tgid:17    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5520 [inline]
- __schedule+0x17d4/0x5820 kernel/sched/core.c:7270
- __schedule_loop kernel/sched/core.c:7347 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7362
- schedule_timeout+0x152/0x2c0 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x30c/0x11f0 kernel/rcu/tree.c:2122
- rcu_gp_kthread+0x9e/0x2b0 kernel/rcu/tree.c:2330
- kthread+0x38b/0x480 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-CPU: 1 UID: 0 PID: 4986 Comm: udevd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:csd_lock_wait kernel/smp.c:363 [inline]
-RIP: 0010:csd_lock kernel/smp.c:396 [inline]
-RIP: 0010:smp_call_function_many_cond+0x628/0x1500 kernel/smp.c:944
-Code: 00 44 8b 3b 44 89 fe 83 e6 01 31 ff e8 51 51 0c 00 41 83 e7 01 75 07 e8 46 4c 0c 00 eb 3f f3 90 48 b8 00 00 00 00 00 fc ff df <41> 0f b6 04 04 84 c0 75 0f f7 03 01 00 00 00 74 1d e8 22 4c 0c 00
-RSP: 0018:ffffc90002e0f420 EFLAGS: 00000293
-RAX: dffffc0000000000 RBX: ffff8880b8643708 RCX: ffff88807e928000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc90002e0f570 R08: ffff88807e92959f R09: 1ffff1100fd252b3
-R10: dffffc0000000000 R11: 0000000000000000 R12: 1ffff110170c86e1
-R13: 0000000000000000 R14: ffff8880b8643700 R15: 0000000000000001
-FS:  00007ff72c957880(0000) GS:ffff888124de0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe39b19040 CR3: 000000007eae6000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __flush_tlb_multi arch/x86/include/asm/paravirt.h:46 [inline]
- flush_tlb_multi arch/x86/mm/tlb.c:1361 [inline]
- flush_tlb_mm_range+0x8ff/0x1090 arch/x86/mm/tlb.c:1435
- dup_mmap+0x1758/0x1dc0 mm/mmap.c:1884
- dup_mm kernel/fork.c:1543 [inline]
- copy_mm+0x11a/0x480 kernel/fork.c:1595
- copy_process+0x1e75/0x43e0 kernel/fork.c:2307
- kernel_clone+0x2d7/0x940 kernel/fork.c:2766
- __do_sys_clone kernel/fork.c:2908 [inline]
- __se_sys_clone kernel/fork.c:2892 [inline]
- __x64_sys_clone+0x1b6/0x230 kernel/fork.c:2892
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff72ca2d636
-Code: 89 df e8 6d e8 f6 ff 45 31 c0 31 d2 31 f6 64 48 8b 04 25 10 00 00 00 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 52 89 c5 85 c0 75 31 64 48 8b 04 25 10 00 00
-RSP: 002b:00007ffe39b18a50 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
-RAX: ffffffffffffffda RBX: 00007ffe39b18a58 RCX: 00007ff72ca2d636
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
-RBP: 0000557f662a4910 R08: 0000000000000000 R09: 0000557f662ac8e0
-R10: 00007ff72c957b50 R11: 0000000000000246 R12: 00007ffe39b18e10
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks
