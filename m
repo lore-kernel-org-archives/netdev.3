@@ -1,63 +1,65 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC04941D226
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F9342C4F8
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788420795; cv=none; b=FgNRYcBRNTLY91/9hTzwL2h7Tjo18jVYwX6FXKOHR6prqa0GdFIxsPYkcx1nt6oiwhbOrKJjRn7EH97UJNy9b18kL6VuLTVBv8P/x/0h4dgz5XPL2My/TASka+4OQz/KWvaL/tot22cNwyE2fclM5WUKpAoJ4nHDyC8xgtdlhI8=
+	t=1788420800; cv=none; b=bZaCIL4uBed+Fmq4qd13o9QsG0FqUv4RRhLsafkDhJxE4dWJiHAqThAU+QcK2z7ctIPLTPt8F7ZSEh3XHffXSHV/2tUfMFDk4qWQW1x0p/B0jKO+/n/wZt7j0YMnT5dMX1ajh/7UCEJ5Mjm+u/suvOMmCsfw6Zxc5lEbK0p+A5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788420795; c=relaxed/simple;
-	bh=hFt1NkArimH8+qxUmJAoo3uATQRlL9qRZn621gV6oWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DBwnreZtB6vGc0Y+HsOK1cIfA7+NN9+Re6B7D3v1Jac7PP+8/BYbT8XcOXf9rg1TQ4wQ7TtPwqiX7AVNSDUq0o6hRw5MnKxMmAIL5tDEswIVpQy+tl/1Rt6WPTaeqFYCtLaz6iFcg9VzXb5mCkD9geEEVb6TDXf8kIEBQ93IUYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJ0mCjDl; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1788420800; c=relaxed/simple;
+	bh=5qMEuy5eGy/JVQD+dpqf2Q/66DUF3xuDuOpkz4CMcPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N5HPRu42ti9DnNHWiLfoABCJx21WbfJ3efLCtPTCsxa2VQWwFm7wcAYIYGVA0rrPGiq+2DP1GoYmzURCALunAsNVswZGVGhOf/tcq/1pOmVAJWBiTFSfCligNJikA7zf4vFDVtd93rC/KybkNX5zURCdvijWhHurqRzcRrFNsro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GEurpcjX; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJ0mCjDl"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cc891373e0so21380585ad.2
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:33:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GEurpcjX"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-398a4dcf289so2393635a91.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:33:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788420793; x=1789025593; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XD10siGyv2UXcVcAX66uMHAbJieFBJyM178WgyCpFQo=;
-        b=ZJ0mCjDl0/2MXooLjBxQWLecNHnTY9YtjYa6NH/sNbPYHRbyMU6JWo7JrWJ9M5acDp
-         Ra1J/VSJ1m7uhw20ea58ecHwXuqy2e0w0Ke4p2zDXXwMHfmR/8GeAdbFIs6KntaWw1dq
-         taQC7GBrXWaBPu8YVPEqHBiuGUjXwlVWJrsKYA22mQVAYF10ealEXLq1W5pTexJkkYzn
-         G5N2kMGa69ZwSWgRIc+ilDTsLIpef18umn0IQbNJIY+1aqi3z5ZK/bG72GxYgRc6UU0K
-         XHs4E9Kv/OkTjDvifBiOJ8EtW/EiEkWrLD6w7u1iT7w64vIiBertSqqq9qeVtzD6Tcjs
-         LC7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788420793; x=1789025593;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788420799; x=1789025599; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XD10siGyv2UXcVcAX66uMHAbJieFBJyM178WgyCpFQo=;
-        b=F4M2Jhiz8jjV1ic13hto49sFzj6inMjCtphFIF0tyyk9QLEoR3K9MTZwdJWERn0NK6
-         vQl/ntJyX63YEQYRh8Fm6XzKdTr1ZD9ejVbEY1Ls3P/mTetqXSD/DJd1sCRyKI5ndQgp
-         AJDnjQl1qdI0iBWHySG1d0tkpGw4YrzNxqmRxpb3WSC+wieL4nWKiCiTW9i0QkIry7vJ
-         3msEvVZ2odJ9Ia+BvyyPNnm8vmYiEHk19CpQCICwIcxHQxV14DzJlnpohJYiS0xBFcXD
-         Ulm8IOjmRzMxkWQ6utDuDURk4h0A5GHd4vCdk/hSLLrnZ4kQU/ZppcpujSX8UQOhyDUA
-         q3YQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxiVIXEVA7Egii9jz+XzMPwGJWyGCP6tfoF8rtFO9Rke6ZDGJKgWuusFEe6IqmeSAdkJl8zAZo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mPtDd04eg9GVoDsUVJhn4kRRpamH/Mrj1W9h8gUAsh0oHjxwes
-	T2O91Lu9+Mh4nk1dOlrFo/mxYizIWDE3Z3AEPUkV0Ge9cuFvp0hunjSS
-X-Gm-Gg: AYBFou3gDbGe/2mHP6d2kOr3KuR1D9NxQ56QsAuYr21QdM5THbFfEsY1eA+a80TfcpL
-	s6RWfOiyKMrRdCHUThp1/W3IioQkiOTaPf6Q7WKFiAE8we90j7hDZEq8YCvLC/Qor8mgwerRRen
-	qbw9+37RmHobWV59sbHoeqHeJPLRUf5ILJDLl+x28TjPllmdJceTNI/XOc0XQg5SkeogTw4gA8/
-	zYL5HfpzQQPyELL70iXo7jCu4Utk9QjD/fc8guGM+YaZzhINAl0Syhk4Pts/xk83ZMJztfE9tfx
-	zOqg6smB5+vjSDrRZ6jjrIRodLmPERFI4C7HwLm5Z1GP2YS6RR4XmOQPuxW6xuPDqrvWJgiPfwH
-	yO/sMMMnHZt666DeOzKEAnGnq+0M9tSRv3G6IWotxASSz1KGivAK3GWPdRu9U29PQwa6MEuHsbO
-	jGuSMgeb/IE/j7drdTjUNs5jwrTIDeRlW9hndrIcWsiooJo2yGk4uQnDgVLJ4x1X5BqPDFdP9/Z
-	26PbQUcoDxAoGKZ6fkof6HQQqetxrjJB8hxJZG3MZcAHdLoS8PgpjrYUZ1k1wn9rdf9kmu8D24b
-	Hu4X0z8em09/tFU=
-X-Received: by 2002:a17:90b:2d8f:b0:398:9beb:5c17 with SMTP id 98e67ed59e1d1-39aee13d992mr17057325a91.18.1788420792882;
-        Thu, 03 Sep 2026 00:33:12 -0700 (PDT)
+        bh=fQhuxUhRanThkxdEOXasCJ4w6JBVmta7BprVKmAc0/A=;
+        b=GEurpcjX52Ed2vWWK4CVPakHBMV2l3QjDELSaX/KTPh77hIS3XvtwyistVfUrIkRuD
+         Qh4oidMzQ5+CvFcPioFoLxkHxkB6nCS6CKv4KJOjz9gS1yA6Icg0YBskyywgDV/iS7Ho
+         yb3qTaAv05w0ci4KUQLKEm4n7L90vklfDX+A0Rn10lll3IkK5GlICQBQ+nTdfr+h5E4g
+         JrtlU3IL0xS6P2hWaQT9V2IDAEsYZTMqWWefl7xFZmLgcsEqOrHQelsyIrRt0ctOWR8X
+         O5Nn1JcRx0QOq6LuIq26fyEntC1aFENTiKVm0I7KMfjCYgiXNKKjIyHeZ2ijqxpr7on4
+         S0pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788420799; x=1789025599;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fQhuxUhRanThkxdEOXasCJ4w6JBVmta7BprVKmAc0/A=;
+        b=dYqfgeCmh7+HuLoiYzsUp0ab1ptRrXGLvQFXHMUQRoa1Fu4a09rfTB616tcM81LMAz
+         mVB+LIvYGjM2/naConcFQWC8hxX/gm34B8WJAiqyp48eFWtigDkMP+Yu9oluzulpFX+r
+         z727tickcVKuyxy6qoAlNZMQyPBRFgWRN2vOcxh4/+hCo/rmzOwOc0qT0El/hxw8zMpo
+         gv9pToyouJBbM2WaVU9Qp13MZG/WZY/VaOVVqoWFqSiHBR+G3iI6/YmOYwoFMRR011TX
+         nW14BPIgQVEtWfjz3iHY7jWPuUWJ2nMJP2J23SSaJsGPpdCAqLzmBquMWBK2qzgzeKQY
+         pn2g==
+X-Forwarded-Encrypted: i=1; AKwUvBywSuQhfFNhX6SFkaPlggY7N6aPeTeqn+nyhOeY6368ERYJnifIIote2gDahOBFV+2cBtn3sd0=@vger.kernel.org
+X-Gm-Message-State: AFuF++n65mI4KRiWHrpqb1w7zmbzC6Wss5T2XMAKDmOFhcjFKIFQ7qO4
+	JuwPr6hjWlHMruTDB0V8+kLBbz6ll0V2500oKATvwA5b1Et4CU42w6mT
+X-Gm-Gg: AYBFou1uAxWtOvoUZY3vCqtDexFSOD37McTAC/xdrVoMwqS4Nzy+ldJ/e0situdaD05
+	4gWRRop/rhXjVbzEnvxSK9Y4KvedxYFH0KUcG0OkmDj46wlg7FNxlTX2eEUOtiEF5hUXopZIOLf
+	SPvBwaVw6aFzij1S9h+hJ0IJAp7aorr3eVW1ObNrbmzlOnmyqfJ0Hl6E1msRnsyOSDVcZA2FOYD
+	bgQ17r8MMTcPoKE534zvBucJ+A8osY6yLvfbQgPqDnD084B2DjrrsiopQdMitQD+aNxREI0Orad
+	XKRysovhEkZvHkLXY6xDva9izSrJzWTkvkIpg/wJ6HfFnq95z7K231qpfGM2JQU0DJ+qPmoK5zH
+	wkx/yEYVMBzi90T4cAjY4DqMleks7CRxxeuT8rhFJ7CH5zMTbhOIXMLxnrQukQmqVTVbVx2sagy
+	EQnLq0CylXobR+8cUhDrWUugxGfZX4vXRSbwGtzrAL0tgCYCAla1/U6kobwJQCJrM4+1QHiYodh
+	v/LmCjkhsgUpNlrD+WM7Gv1ZvthW3caZnJTGf63etQbqJbAUShs++5Qcl6pvYQMsRqI16vTcg68
+	kWWR
+X-Received: by 2002:a17:90b:2604:b0:38e:c7b0:84ad with SMTP id 98e67ed59e1d1-39aedce056cmr16042015a91.0.1788420798943;
+        Thu, 03 Sep 2026 00:33:18 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08624f11sm3606813a91.11.2026.09.03.00.33.09
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08624f11sm3606813a91.11.2026.09.03.00.33.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 00:33:12 -0700 (PDT)
+        Thu, 03 Sep 2026 00:33:18 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -73,10 +75,12 @@ Cc: Andre Przywara <andre.przywara@arm.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH net-next v5 0/3] net: xilinx: axienet: Fix IRQ error handling
-Date: Thu,  3 Sep 2026 14:32:49 +0700
-Message-ID: <20260903073252.339250-1-phucduc.bui@gmail.com>
+Subject: [PATCH net-next v5 1/3] net: xilinx: axienet: Propagate errors from optional IRQ lookup
+Date: Thu,  3 Sep 2026 14:32:50 +0700
+Message-ID: <20260903073252.339250-2-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260903073252.339250-1-phucduc.bui@gmail.com>
+References: <20260903073252.339250-1-phucduc.bui@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,49 +91,37 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-Hi all,
+platform_get_irq_optional() returns a positive IRQ number on success or
+a negative error code on failure. For an optional IRQ, -ENXIO indicates
+that no optional IRQ is available, while other errors should be propagated.
 
-This series fixes IRQ error handling in the Xilinx AXI Ethernet driver
+Propagate all error codes returned by platform_get_irq_optional() other
+than -ENXIO.
 
-Handle errors from optional IRQ lookup and preserve the original error
-codes instead of returning -ENOMEM.
+Another call to platform_get_irq_optional() in the same function already
+handles the return value this way. Apply the same error handling to this
+call site for consistency.
 
-The changes were found by manual code inspection and compile-tested
-only.
+Fixes: d6349e3e14c7 ("net: axienet: Mark eth_irq as optional")
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+---
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Link v1 : 
-https://lore.kernel.org/all/20260811034715.6034-1-phucduc.bui@gmail.com/
-Link v2 : 
-https://lore.kernel.org/all/20260813042012.17631-1-phucduc.bui@gmail.com/
-Link v3 :
-https://lore.kernel.org/all/20260817105241.63345-1-phucduc.bui@gmail.com/
-Link v4 :
-https://lore.kernel.org/all/20260821123249.41527-1-phucduc.bui@gmail.com/
-
-Changes in v2 : 
- - Split one patch from v1 into two patches.
-Changes in v3 :
- - Move the lp->eth_irq check below instead of handling it immediately 
-   after platform_get_irq_optional()
- - Add error handling for platform_get_irq()
-Changes in v4 : 
- - Add Reviewed-by tags
- - Add error handling for irq_of_parse_and_map()
-Changes in v5 : 
- - Change the error code returned when irq_of_parse_and_map() fails 
-   from -ENOMEM to -EINVAL.
-
-Best regards,
-Phuc
-
-bui duc phuc (3):
-  net: xilinx: axienet: Propagate errors from optional IRQ lookup
-  net: xilinx: axienet: Handle optional IRQ return value correctly
-  net: xilinx: axienet: Fix IRQ error handling
-
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 1722b7038f34..207aecb5f8b9 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -2975,6 +2975,8 @@ static int axienet_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev, "could not determine irqs\n");
+ 			return -ENOMEM;
+ 		}
++		if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
++			return lp->eth_irq;
+ 
+ 		/* Reset core now that clocks are enabled, prior to accessing MDIO */
+ 		ret = __axienet_device_reset(lp);
 -- 
 2.43.0
 
