@@ -1,67 +1,86 @@
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56544E66CA
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 15:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E62A4E56F0
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 15:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788450231; cv=none; b=pjkYtqFgz4ZHVTSbJ9J/ZJnWN18m/jIT7tBLsICG4g1l/iTfltTeKNZJ71pRUDEhZv3bJU2/FA5OKvfNSpkm8gkYAU6vyDmdN7F365AbNFKqUjASwHIFMmwbAnUzl0caYcam0pdNverQcNXGYOXgIPcl2IHXp57TZ8+8ELAoybs=
+	t=1788450319; cv=none; b=t79B/1n7jBbAT35i61QXcNY+984L/8uooG3UhR3oO9xrbxdp2nkBEpUT2SIHNYeiwn0nKn3yrdlZcSzZfQCsrrhWZSfdv2nYzkG5F9nigEyaoAWukHAQEStp+04iqTerp76osDM9tXkHie8f4+5GexB84PxQte3i5ZRz6LuXCjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788450231; c=relaxed/simple;
-	bh=3+nMBA2Tlo1PYEDpyj+jPk68G8jOx5DKBwKdopxfliw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UmhkltlVmoC+1Jd3+NDPx851mCKgR2YHJJzQjuWI9dzwO1wu8rAogc4Bm9WX1/JbxJzLOKInJy20h/26WET/0U2L82Nl17iunj/5ceYvlN+yOXIkDj6Sg3xBO9PReMEAZ8sa6OnpVGA4ZYmKbDXkHD+4TGSvNg2JP/vTc6kpwV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eu3YJuee; arc=none smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788450319; c=relaxed/simple;
+	bh=wNbZo52/jCuXUnRq9hwDsnLal9ayYeRAqN3lGb9tVZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=N922KVPTjViZ39L+4qOmwoMfuQ/HcEFs2hrs1fRnaWpda8mx+yB6h8GhOsRDqAwDaASEZJsZOuKYEL3XL6/kw7xsScDigAeVxSJqY+fKKwMN5qUtIszy54iE27TJHhcpHxLfM7GpShTC5/woRg6AWRW9fn9rBIB4XBd/3goVPkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dsXEK9oz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MeOfvMEM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eu3YJuee"
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-66c70f69d3fso2414515d50.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 08:43:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dsXEK9oz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MeOfvMEM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788450317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nLnpM91lg5cKjPDt0j7rgsNLagyFY0gB25r5tI9lEhA=;
+	b=dsXEK9ozWqXUv7ziM2qDp4mD1Wl8FXrwPgjJd0vVepouqOPnAd9xAR+MGqXVT7MEheoJTG
+	nuYI+v3uruNecry0lHUeNrVI9542duVAwe7MTGlp97GzupsY6bQrjk0nBasR8Jd7CnRU7L
+	VIMcgcsxZCRkn0fSoql8KNnTrUOuO7A=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-nrBfQbvENLiai2r_VLv5lg-1; Thu, 03 Sep 2026 11:45:16 -0400
+X-MC-Unique: nrBfQbvENLiai2r_VLv5lg-1
+X-Mimecast-MFC-AGG-ID: nrBfQbvENLiai2r_VLv5lg_1788450315
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c24ae1a510cso255078766b.3
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 08:45:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788450227; x=1789055027; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1788450315; x=1789055115; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bI1BhV68G1oPj0x4CKbgOGcd6eU2wirBl/zG9TZ5s3A=;
-        b=eu3YJueeadbLxIOzYzlgSSFfd6Y4MuUdfuhyufmzc43IvfyrdTHXXfpP5yX/M6ueaL
-         gMEjNO4ASRzPEOu+LHaPriCBqskBwo9Sm7v9WPRBEpknWOAMxxqGnSpV0UnqMo9IRaYV
-         +1Ad5COq+tCcEAz0fy8hLKbbNrA0q3zxN6+KYp3q/zweJrSmOPa9tZu7PZWhTfskKboi
-         11lyqmEhemZ0CDf64NJt1HYQew/iTiFGCam3KqUlNNTbo0qVfHaB+Ky8co6V0nL/tvYy
-         2PHWraYn3TCNPb32vX9Sy8yoGA3DrNYHk1T1vKVag3XXpy4szmp9LhkSB+RhZoWhxCaT
-         KE2g==
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nLnpM91lg5cKjPDt0j7rgsNLagyFY0gB25r5tI9lEhA=;
+        b=MeOfvMEM1aJHH7q7itcAUahtutfuYcctyC59ldTBGeV6ZF4aiTP7IoqxD0n2g6XUTc
+         OdD9OBVOZtEcBgXT082rwUlaMyB9t1una2ocl+LlWu4EG8cXIyJR6uMGTp5Z2ssifAci
+         y663oDIaTa8gU6esD48Wsi8c7d3xotVDrrYsQdQPtiytAozb6NZQGphw9eTmH4X4EIUL
+         dhDK15oTmG/fYEMDCHlVrHv4CNoqLpaVQKtAIQVySa2TSa8jD+cBrkmQLuwTuMJwP9b3
+         fnIgKax6bvfQdUCPLjqdCLFalmvsDH+ffDUphQx2fZxg5074GHOdICH94ArQ7abh4dC9
+         c3Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788450227; x=1789055027;
+        d=1e100.net; s=20251104; t=1788450315; x=1789055115;
         h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bI1BhV68G1oPj0x4CKbgOGcd6eU2wirBl/zG9TZ5s3A=;
-        b=EaJsrjfql2zL3yI5swl8o5AFf5JNdllY5VwIDbhJwHAij/EgAEIkQ0ZfinJ6o+WgCi
-         fGUC1J0Q5OAxTr5DRYxowYDKp/nHSI2wNa6fDIT4A8OjLJLr7E0NVIZnx6RIfWILlinm
-         gYQE45AuywKAc39eZx6VAHwqDj54yQsJm6z4mNQCHIop7uehaH72/K5VhZrVbnuiyL0i
-         USs3G8O6Nmk+aUQyxma81WclZ9v99oKBEQQwTWpH52vpRh1Qq5+EQ/loJqecghIoKfjA
-         D3W44hCT+0myYNSZX8enajk8En59/4DRmdNoRCkdNunQegP8APJdXTtYhfYhPvGYKRQh
-         3Wyg==
-X-Forwarded-Encrypted: i=1; AKwUvBz0sjykKnQYjKeuXyD5hqyZRV9y21ZCQOcXYP0Pq9wNRRokcrgO9EQZKP3NT7ZFv2AJNxTkXfw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kgFl3opkRnAxwuEcJTJI9BJ25OTkaZn2Jmmi7pjadN4pE59d2U
-	EKUGUATIaNUQR8A+Vh+MQaOq+iIrsi2kKKTr/Y8RmNHQeOjGN9kCxv2F
-X-Gm-Gg: AYBFou3dg8iMsdP9Zjxl6oUE+g1ZQtghzD2CLGOxIXlyZxrgUiUtvFAIjRoKOqXHdAa
-	Vt40CLK9Z931hiT9fsWUsonZc0vSWiahFwucee6xSkxgqg6511qzRg6XtWO7UWaMLRcRMA3Z25Y
-	rvZ3WqKSZaEpi+pokWuZev+bLzzEkQJoi6fRrFOnARUToygeRMQqvqqx++gEAvliLh5V0/06n59
-	rQsCPTasn0IXeuexP5TT7SzISR2Oor3hEnAXI5T8sp2KP3Ja2v+mWvFOHcBayFEnucTOfNdwWy/
-	Hl6der2lgO77rf3KKpoQQSPBnczxhK7rkh/o4GcLXHUrUHEAhPgT/l5LeK90jzoXR+0edDuuPVu
-	5b43xgHNSijhKAD07FoFbb9ZNxSNkXajMH4LfT89+j6VLJUtnsNyc+ZsuuzsVpiKB88zot9Lul8
-	nCGgK6UZvb6MZWmOBEWL8IVB8kqvya4U7rU9+Rp5b9l3IboQd4eNMRhfuCIQT8lr7MHs6d/SH2
-X-Received: by 2002:a05:690e:11ce:b0:66e:61bc:142b with SMTP id 956f58d0204a3-66fb3f17e38mr338606d50.6.1788450227467;
-        Thu, 03 Sep 2026 08:43:47 -0700 (PDT)
-Received: from ?IPV6:2600:6c5c:6b00:316::23? ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48b374bsm157898d50.3.2026.09.03.08.43.46
+        bh=nLnpM91lg5cKjPDt0j7rgsNLagyFY0gB25r5tI9lEhA=;
+        b=oVzmoXqDwVe4CPDxJluI+dz3Q22uVjz9CdGDAYzTtW9SerbOPNCpQSKjoRw0EocYkP
+         wkod1gxF5kQw85/1qb+BEkX2kK9JMsTiAh0SPo4LhaISD/KuGYYnEC6IkCGbli8VB2f0
+         jJKYOVxbADJH3qcEpTvNZEz0dNFfzmHk2jW6WL2+qKB/IKjgcWNq0McRl4Jr4KFtEOwx
+         lv7RUPrs0cHTTU+FbA9MVJ2TbtCq6CXHv6M2N1J88/7MZEwiz3cGZhQH1811i8Ciu3zN
+         hHIH92HqlUJEsTM+zO9QhM9UQFW1uKCsXcHuoqkWsWiWspc3PhvvKY9Rj/MgG4v411B0
+         mVXg==
+X-Forwarded-Encrypted: i=1; AKwUvByzfaUhqCgTFFQP/Vtbnu65OBgFUzwzjshYnmcjRzNpDRpB+e48LjtOUBpTdt+S8NEfeAUnyDQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++n3QeDgiv+B3RvXmyzQTzj/o/Q4zdKkTMO+RdprlmsO48fz50fe
+	3vvDARTr8kMcjk09NyUhVRYGWIe4vbhVuA0iP7W9bjGcXPpq88TuGbw7bIjowWY1WBSSuvTlU/P
+	5W7vflwOueMkLHrwbMAKta4yFnyz4CJEqa5jFrbG1oGc2zq2T+FwcoMCiog==
+X-Gm-Gg: AYBFou2Ao/fKfpc/Y+oWIXiY7MiYHr2Tlz/cSN/yz3miwm5TNJLmyKPkjrrkZ2hqUi4
+	HJ5hkx9vy/qqLwUZxLye/w4MLngWO4I2zqSMmOQrnsiGiwwUJLeWnGJ4zlKE2GaP1i2nV2zwLeo
+	3QwRVF0MFCAkFBGbocATLIlEwIU/wD9dGcimhNlho4haYRjAD8DWJ0n77XvKURYQxwRFK/r8tW+
+	yU3dseoCK5GxYhMzpt95FXXjPaAnjAU9koT7xktih1zUnEsUHgdrLrC7eQSRIl9GcBrvvhTuAlP
+	yzxde7aPgiAsyf6B0diyb04VrM4Pnd3GwxJJG9deAHY3hn0XAimoPnnTZGtkw7A83J8HE69jLBu
+	HeN3CD2qaf9hoCn6CfauuknG2M2J9hN5aomyl9t1DvtWB2QR45nOU6sHojtecUEM/MNGKNWsyuQ
+	==
+X-Received: by 2002:a05:6402:5515:b0:6a3:ee60:b13f with SMTP id 4fb4d7f45d1cf-6a6829aeb56mr9034742a12.14.1788450314613;
+        Thu, 03 Sep 2026 08:45:14 -0700 (PDT)
+X-Received: by 2002:a05:6402:5515:b0:6a3:ee60:b13f with SMTP id 4fb4d7f45d1cf-6a6829aeb56mr9034715a12.14.1788450314163;
+        Thu, 03 Sep 2026 08:45:14 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f94242csm2510375a12.21.2026.09.03.08.45.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 08:43:46 -0700 (PDT)
-Message-ID: <f233039c-e23e-40bf-b3ec-061f322d26af@gmail.com>
-Date: Thu, 3 Sep 2026 11:43:45 -0400
+        Thu, 03 Sep 2026 08:45:10 -0700 (PDT)
+Message-ID: <81bd9bf0-e9ae-444f-ac96-a341ae7faffc@redhat.com>
+Date: Thu, 3 Sep 2026 17:45:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,121 +88,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next 6/8] e1000e: disable NAPI while interface is down
-To: Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- aleksander.lobakin@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, corbet@lwn.net,
- skhan@linuxfoundation.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260830232146.36948-7-tactii@gmail.com>
- <20260903102748.578986-1-horms@kernel.org>
+Subject: Re: [PATCH net v5 0/6] Fix a variety of TPA bugs
+To: Joe Damato <joe@dama.to>, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ kalesh-anakkur.purayil@broadcom.com, colin.winegarden@broadcom.com,
+ rukhsana.ansari@broadcom.com, linux-kernel@vger.kernel.org,
+ raphaelcf@meta.com
+References: <20260902015652.2421609-1-joe@dama.to>
+ <bb4ae7c9-e705-4eff-9813-065ea4bd9514@redhat.com>
+ <apmQGp1mEhQ1EiEb@devvm20253.cco0.facebook.com>
 Content-Language: en-US
-From: Matt Vollrath <tactii@gmail.com>
-In-Reply-To: <20260903102748.578986-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <apmQGp1mEhQ1EiEb@devvm20253.cco0.facebook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/3/26 06:27, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev/#/patchset/20260830232146.36948-2-tactii@gmail.com?part=6
-> ---
-> e1000e: disable NAPI while interface is down
+On 9/3/26 5:19 PM, Joe Damato wrote:
+> On Thu, Sep 03, 2026 at 11:37:34AM +0200, Paolo Abeni wrote:
+>> On 9/2/26 3:56 AM, Joe Damato wrote:
 > 
-> This commit moves napi_disable into e1000e_down and adds napi_enable to
-> e1000e_up to ensure NAPI is disabled during reconfiguration windows.
+> [...]
 > 
->> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
->> index 194166531bc84..6d846cacb026e 100644
->> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
->> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> [ ... ]
->> @@ -3601,7 +3603,7 @@ void e1000e_down(struct e1000_adapter *adapter, bool reset)
->>   
->>   	e1000_irq_disable(adapter);
->>   
->> -	napi_synchronize(&adapter->napi);
->> +	napi_disable(&adapter->napi);
+>>> I boot tested this on a Thor1 and a Thor2 machine and there were no crashes at
+>>> boot.
+>> Waiting for Michael's ack here. Note that I think that the AI report on
+>> patch 5 is not a blocker.
 > 
-> [Severity: High]
-> Does this change introduce an infinite hang in napi_disable() due to
-> concurrent or duplicate e1000e_down() calls?
+> Aright. If there's no reply within 24hr of posting do you want me to spin a v6
+> that:
+>   - fixes the commit message sashiko doesnt like for patch 4
+>   - fixes the resets stat it mentions in patch 4
+>   - add the return value check for bnxt_init_ring_grps in patch 5
 > 
-> A runtime PM suspend callback (e1000e_pm_runtime_suspend) can execute
-> concurrently with an ethtool operation like e1000_set_ringparam. The ethtool
-> operation sets the __E1000_RESETTING bit and holds it while allocating
-> resources.
+> or just leave the series as is ?
+No other revision required IMHO just for the above. The 2nd and 3rd
+points could be eventually follow-ups.
 
-No, ethtool and runtime PM suspend are synchronized:
-* ethtool core calls pm_runtime_get_sync() before any operation. This
-   increments dev->power.usage_count and waits for any ongoing suspend to
-   finish.
-* PM core rpm_suspend exits without retry (rpm_check_suspend_allowed()).
-
-> 
-> The PM suspend callback waits on this bit but uses a bounded timeout (300ms).
-> If the ethtool operation takes longer than 300ms, the PM callback times out,
-> prints a WARN_ON, and unconditionally calls e1000e_down():
-> 
-> e1000e_pm_runtime_suspend() {
->          while (test_bit(__E1000_RESETTING, &adapter->state) && count--)
->                  usleep_range(10000, 11000);
-> 
->          WARN_ON(test_bit(__E1000_RESETTING, &adapter->state));
-> 
->          /* Down the device without resetting the hardware */
->          e1000e_down(adapter, false);
-> }
-> 
-> Because the ethtool operation also called (or is calling) e1000e_down(),
-> napi_disable() is executed either concurrently or sequentially on an
-> already-disabled NAPI struct, leading to an infinite hang waiting for
-> NAPI_STATE_SCHED.
-> 
-> [Severity: High]
-> Could this also lead to a sequential double napi_disable() hang due to state
-> mismatches where e1000e_down() is called but netif_running() remains true?
-> 
-> The e1000e_pm_thaw() function attempts to bring the device back up after a
-> freeze/suspend. If e1000_request_irq() fails, it exits via the err_irq label
-> without calling e1000e_up(), leaving NAPI disabled:
-> 
-> e1000e_pm_thaw() {
->          rc = e1000_request_irq(adapter);
->          if (rc)
->                  goto err_irq;
-> 
->          e1000e_up(adapter);
-> }
-> 
-> However, the device's IFF_UP flag is untouched, so netif_running() remains
-> true. Subsequently, if an administrator changes the MTU via
-> e1000_change_mtu(), the driver checks netif_running() and blindly calls
-> e1000e_down():
-> 
-> e1000_change_mtu() {
->          if (netif_running(netdev))
->                  e1000e_down(adapter, true);
-> }
-
-Core does not call ndo_change_mtu on detached devices, it checks
-netif_device_present() in the typical path. Bonding and team paths will
-close the device before changing MTU.
-
-Same netif_device_present() check in ethtool core and e1000e_pm_freeze().
-
-However, the PM runtime suspend and resume ops only check IFF_UP and not
-netif_device_present(). PM core does not check this or gate it on a known
-thaw failure (by design). That is a real pre-existing bug made more
-consequential by this change.
-
-> 
-> This invokes napi_disable() a second time sequentially, which hangs
-> indefinitely because the NAPI instance was never re-enabled.
-> 
->>   
->>   	timer_delete_sync(&adapter->watchdog_timer);
->>   	timer_delete_sync(&adapter->phy_info_timer);
+/P
 
