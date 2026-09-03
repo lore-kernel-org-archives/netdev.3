@@ -1,62 +1,64 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52A84AD7F3
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 16:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FF34DF4B5
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 16:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788451638; cv=none; b=o9fbGZV/RfrR0QxAyTUwd22Yol8ZS8OU8fz7XgRDBS7aHvZlXTMe8+G/UO8pFO7MVW3LSPsEKwK5iDmF69a9DhXZ+nFRyjX9PCsOBWi0DwMSH0mQKyGF3N9e3vaZnXhS5bs8wgRYUfmkm/7sNA9maRHeQmRnwBMFVfTGKssTpG4=
+	t=1788451640; cv=none; b=pol3JYQapSIrhgkfyh1AYog/j8wOixkasAdRYMcgqte0a1Q3wOVPWX5dDEoA3pxtJRpU3ocall9JM6BO6y4i36s3RoO/bgZ9tSrdlwwnNZUF4Q0XP6fxFIk2/2H9UfqrGfmWwaIDQ8ZaEc1qrxsthziyuSExYxFhB5teqZP1KlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788451638; c=relaxed/simple;
-	bh=4nfVwGbxhCKSpPCmUf2T+tRIUDg90eQLoFxKdHwqJyY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aikau0nakPAGjty1wrUmfawy6/3JVVb5knCEOE3i7A3iYeJu13bf0+fEsT9RN+tgoTzlL56z0p3w8rEzDcrWUTyjHBkAztDQD7JfNtq89Lb6kiCy9C6MxtPg4kyiyJrzPM5gBsasY4WwrtlUqXRP+uU37Y3VzB6/06IjogBrM6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KyqA4QAY; arc=none smtp.client-ip=209.85.216.54
+	s=arc-20240116; t=1788451640; c=relaxed/simple;
+	bh=xd7QfPoBvok/Ce3FnOcL4vksYEdiJx5bQP+Bx/J5PtU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Gu+1klI+I24wEjxLbbhyBwl8QU9a7auX65y6VKRX+lmvf4FdIiMuQa9MSH8ZsiuVJBkTpfPIbbgC2VyKLlKXYk2rAGBwV5DI6RO/T1Mhgtx8zjzXhcykaEIrW2LZmxCg1ag6nFfLs8U/lc/vAYcT/XawR5K1YWavTz2z4XQOXqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkQvsfgS; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KyqA4QAY"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3969e82ff8fso3099191a91.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 09:07:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkQvsfgS"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-39647184c73so1198721a91.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 09:07:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788451636; x=1789056436; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G6hrH/lA3aA7eJREheWu7J/A2b4LUsrs+Hdunm8t3Ac=;
-        b=KyqA4QAY2rKUszlkyZi4ovuEXZjYUFB/yr3ZWJTstgICFJb2MhlsxkORXh877+MXHk
-         m5wrdHoAB5eXp65Q/JUQ3owvBRc1oWx5Dh5SCmJgW8BzLp1inhX5e/5FRh+G3xDCYb8S
-         wkSldCSKMQGMPYNbAhTNYsymnYRfC8nUF9rMFZCEknjdNU0BfjCb6TOlcVaMmGZmXkn9
-         792k4RfIphUM/figciL6bjxV+fAthZrq5mFVWLV3Oa9+1eJnkejjZ0vaOqvlDfzwXQFe
-         ozllDBU5svGEOHLyFDc4KRPDLwkzUedyY1q8SXV68rqt/07b/IjiGo3sjkszWmXWVI5e
-         dKWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788451636; x=1789056436;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1788451638; x=1789056438; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=G6hrH/lA3aA7eJREheWu7J/A2b4LUsrs+Hdunm8t3Ac=;
-        b=XIlcAOPnr0abHZ/8ggEZcTPzxKF7KCnTvt4hNzPrjeBsBMiqkSQktCpYx4yIOMZtEt
-         mmxGockBrBqIZS9AWxEMxElxiBjb9oYOC5ZF5ayzPKrUvrnWXbvfTORA3XT0uMQZGJRL
-         iqqZ3AGxs10mX8hxmnmXhXpm6Y1MJfhsWjm8cWSL9VxJygRprPv9uyQfOQ1DEh4SUyEY
-         HtBb3ZVTiiW5DhV7s0g5F/TJUL0/XGPEmaq4lIkrstV4ZGFiSg53bkmiNhEVfAxXsWew
-         n9R3xUGNsSTLKG3iSqlKwz4MbNIoXpYXbRhJPJwVDsQADTcsLmn3jaa1tllO723KmGoL
-         dmtQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzg3iiA34Hx1TFYXNbSJzC/3/O1/13VyQ1lrXdSBAeF04YvUhYS8ak0u5+dZ3NcxBG+NOxoqiY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lxkTRQc00rjvqYRN6sSnV+B8KtOSNQ6okHKO3vgf+P2tUC0yVd
-	Aii9zaMaFENC2wIQIc4arq4r/4yz1kv2SlRFVvWcd0ZYIj0meSygkQdI
-X-Gm-Gg: AYBFou3V56fby/8PAihsNv4CQ2EKWAFVzkBEPxqxJwGussLiE9XSpyIVoGh5Dnv3vda
-	hhM1ebKSQ1PxJKvCzsZTzEYuPPPxpq7dJpbf81uUBqxfValzzgbhZoTTXWHFujq/HwCKiaYRo3L
-	9tLIUGq0umDJRaTnvbmTay6uAoEgvHUuMgxpJfrVV8rKk+mbPmR2SxkkL74kYCzFcjng+b806Ox
-	3a+L135A4YRmsVqScWCE7fej28jCqyEIgWqJ62M+Fwp6+Q1g/Ay5AMCNwKZw4MqB00JlyvfprXo
-	H7xZWAU9lZziuZ0SA/Oay1ccVTylmLcmMFgFM2VC1vNuB9f11krNMd8UJD3hU8Q71Pfg9oZaSBM
-	1w3/dkT6YrgRRyEHrBqhAqLRK+ftcgqPgDspkXe8Hwg9TLdBx4Bp4ww3djqbrZKNeoVxuyaoDXs
-	PurCDJUQtH4Bobbi60rddb18nVM6x/0anFIfHhtK7rhqxDg7l9e7owB8bQ+B9QcGltTw==
-X-Received: by 2002:a17:90b:4fc6:b0:398:c315:fa6f with SMTP id 98e67ed59e1d1-39aee04acdamr22881454a91.14.1788451636126;
-        Thu, 03 Sep 2026 09:07:16 -0700 (PDT)
+        bh=xyyusPI3FD+mQJM1H+4lN3LfiPaBkg/Gx00WGPfPItc=;
+        b=lkQvsfgS+idHRawxzjt9k6zh8JLmR7pjTKtQMEL0WEYCIFd38dWAzRO1U0JVenUT7F
+         tFMBJoFy4KLaVpHx4KHTJeXhVF563de9cXuaM8Vxd2rTi+Y3n1B8HkCCTe69WEd5/ATo
+         cJoMppkf4c16BNAANW97+xzWI3wpgGLjwXl902yBoGpK9jQJGG4o71b9zrFshuRrvwfp
+         INyHvo1YfYlZcLMszXtIe75EaSSyZwINaeq0PMyT+PTJCcjh1++KOjx0wExuO0Kofz9k
+         czQq0+yz596FwAOXKfP448TJxMOiX3V5uFZ88j5cLRJ9nt2uzb/JPD0VGE52lPPYiRpS
+         tszQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788451638; x=1789056438;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xyyusPI3FD+mQJM1H+4lN3LfiPaBkg/Gx00WGPfPItc=;
+        b=WDVksVk66LgKG1S4dwMjIhllHcK5J+yxJVH9PB0DAhX75G1i6SZDCEi24/FsjnfAJ/
+         AVtjhQQjhJyxeMTzD7fiTdkz37UmvxyOCvoIsorJajyEfmTH2CJ7awE28plncS+N/zIg
+         9fIcz7k4y/7tMVju5WT8Z9vHXGNsgc73fk/Q8aM0TXpwxfMDan+c1v0HevqgTi9ppj29
+         Unuulc3JzF6P/6+edMJZ4vmtZPm5Odv8bZJmNooZB3SSkKCET2BJ8BJpn/ofw2y0+jmH
+         aa4GfSjt83hwXy0saAwFjd0fJnJttqPStq6dg4d/0e4/jnYZyVolJH/o48H5V9IfUpA+
+         0Ecg==
+X-Forwarded-Encrypted: i=1; AKwUvBwxHxdqOVBoUzLSf/B6N4ZNj0TIq8nYS4LPAcrCwmuu6BUCaxtqCCp/2SDrmRCd/mzWvCbdmIE=@vger.kernel.org
+X-Gm-Message-State: AFuF++k6L3x0uvT+9+gHnndFCiUt/+yrcrIDn3MdjX2zrVkxmLxM7z4L
+	gzVMQL2Y37+n5DH3IKrfA+bnXNoGFa3AJk1Uh6qzLlPjt5ST2gqZiDac
+X-Gm-Gg: AYBFou3Ow4HPOLIgl8hb/I17MqBLvY5UV5QoxyPezavZhOWLgpjmuvGSXct/tHJpqFQ
+	b9aaojOU42Kh3pLkbE0AGDx7vFGR7DfpQnpPs/zxX0r2z3tt8yI5e4oCwWV8RkhrbjJRRoPCLSy
+	1EbezwmW1HgVoqfcLR2M8uHP9MMFuVMkZVpXfrC72inavW6NaAu6r3GFqzQ6MX4HKg05HWSHJSw
+	HXtyPqQSF5uaBiPMYFaEk3SZW2kTzTa3fl6WPxO2RA8vPi0Ipx4jqWAUd6LvuVKBJO7kt+hhOkA
+	G3XpK5wZnNmEYtbwkdqY64v2spJVWtT0o5o4w2Ut8UOxq0/hNKQADuUpGo0X76qRmLUd5cSkpkF
+	alF6ElrPtG8z0Ggm+MV+XZjJBNdNN4L/Uvu/EnpGNl2H7eF8hxAThP7ytSdFTbTQpZOtBCpPLYa
+	OqH49utf+/+KZNLsAiOJO5BP/dk1QgJQ+/MZxZcZVvJzJrYhoNuBnIW+SYynZjuybHLg==
+X-Received: by 2002:a17:90b:4c4c:b0:395:8124:ac53 with SMTP id 98e67ed59e1d1-39b1322464emr3752631a91.6.1788451637343;
+        Thu, 03 Sep 2026 09:07:17 -0700 (PDT)
 Received: from mhkubun.mshome.net ([50.34.2.22])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccc72fsm3702020a91.2.2026.09.03.09.07.15
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccc72fsm3702020a91.2.2026.09.03.09.07.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 09:07:15 -0700 (PDT)
+        Thu, 03 Sep 2026 09:07:16 -0700 (PDT)
 From: Michael Kelley <mhkelley58@gmail.com>
 X-Google-Original-From: Michael Kelley <mhklinux@outlook.com>
 To: kys@microsoft.com,
@@ -72,10 +74,12 @@ To: kys@microsoft.com,
 Cc: linux-hyperv@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 0/2] hv_netvsc: Fix leaking of send/receive buffers after GPADL teardown error
-Date: Thu,  3 Sep 2026 09:06:49 -0700
-Message-Id: <20260903160651.1637-1-mhklinux@outlook.com>
+Subject: [PATCH 1/2] Drivers: hv: Add vmbus_leak_buffer()
+Date: Thu,  3 Sep 2026 09:06:50 -0700
+Message-Id: <20260903160651.1637-2-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260903160651.1637-1-mhklinux@outlook.com>
+References: <20260903160651.1637-1-mhklinux@outlook.com>
 Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -85,32 +89,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a Hyper-V netvsc device is shutdown, the GPADLs for the device's
-large send and receive buffers are torn down. If the teardown fails,
-Hyper-V retain access to the buffers and may continue to read or write
-them. Consequently the buffers should be leaked after such an error.
+If an error case needs to leak the buffer memory allocated by
+vmbus_alloc_buffer(), doing so requires knowledge of how
+vmbus_free_buffer() works. In a CoCo VM buffers are allocated
+differently from a normal VM, and vmbus_free_buffer() handles
+the difference.
 
-Leaking the buffers used to work correctly, but was broken by a
-commit applied in the 4.16 kernel. This patch series restores the
-correct leaking behavior.
+Encapsulate this knowledge in a new function, vmbus_leak_buffer(),
+that error paths can call. After calling vmbus_leak_buffer(), a
+subsequent call to vmbus_free_buffer() frees the additional
+resources used in the CoCo VM case but does not free the actual
+buffer memory. As such, vmbus_leak_buffer() is callable in a
+context where accesses to the buffer memory may be in flight.
 
-Because the large buffers are allocated with wrapper functions
-that allow allocations larger than MAX_ORDER_NR_PAGES, leaking the
-memory is not as simple as setting the memory pointer to NULL so
-vfree() or kfree() does nothing. Patch 1 introduces a new
-vmbus_leak_buffer() function that causes vmbus_free_buffer() to
-properly leak the buffers. Then Patch 2 uses this function in
-the netvsc driver.
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+---
+ drivers/hv/channel.c   | 26 ++++++++++++++++++++++++++
+ include/linux/hyperv.h |  4 ++++
+ 2 files changed, 30 insertions(+)
 
-Michael Kelley (2):
-  Drivers: hv: Add vmbus_leak_buffer()
-  hv_netvsc: Leak send/recv buffers if GPADL teardown fails
-
- drivers/hv/channel.c        | 26 ++++++++++++++++++++++++++
- drivers/net/hyperv/netvsc.c |  6 ++++++
- include/linux/hyperv.h      |  4 ++++
- 3 files changed, 36 insertions(+)
-
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index f4370617deac..d5d20e322831 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -648,6 +648,32 @@ void vmbus_free_buffer(void *addr, struct page **chunks, u32 chunk_cnt)
+ }
+ EXPORT_SYMBOL_GPL(vmbus_free_buffer);
+ 
++/**
++ * vmbus_leak_buffer - set up a buffer to be leaked by vmbus_free_buffer().
++ *
++ * @addr: buffer address
++ * @chunks: chunks array from vmbus_alloc_buffer()
++ * @chunk_cnt: number of entries in @chunks
++ *
++ * When @chunks is NULL the buffer is a plain vzalloc() allocation and
++ * the buffer is leaked by setting @addr to NULL. Otherwise set
++ * @chunk_cnt to 0 so that vmbus_free_buffer() does not try to re-encrypt
++ * or free the buffer memory, but still releases the vmap address and
++ * the chunks memory.
++ *
++ * This function may be called in a context where the buffer is still
++ * being accessed. It must not remove any kernel virtual addresses of
++ * the buffer or change its encryption status.
++ */
++void vmbus_leak_buffer(void **addr, struct page ***chunks, u32 *chunk_cnt)
++{
++	if (*chunks)
++		*chunk_cnt = 0;
++	else
++		*addr = NULL;
++}
++EXPORT_SYMBOL_GPL(vmbus_leak_buffer);
++
+ /**
+  * vmbus_alloc_buffer - allocate a host-visible, virtually-contiguous buffer.
+  *
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index e61f9a4cb7c3..c55de4d01cbb 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1220,6 +1220,10 @@ extern void *vmbus_alloc_buffer(struct vmbus_channel *channel,
+ 
+ extern void vmbus_free_buffer(void *addr, struct page **chunks, u32 chunk_cnt);
+ 
++extern void vmbus_leak_buffer(void **addr,
++			      struct page ***chunks,
++			      u32 *chunk_cnt);
++
+ void vmbus_reset_channel_cb(struct vmbus_channel *channel);
+ 
+ extern int vmbus_recvpacket(struct vmbus_channel *channel,
 -- 
 2.25.1
 
