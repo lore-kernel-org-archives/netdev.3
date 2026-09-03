@@ -1,141 +1,116 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DB74483A3
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFB839CD0F
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788423314; cv=pass; b=aOIIB664hv+zIaagKVoNHhoHDYSJM1ank7AAOiTv0WV1IP74bvBSGT84Nuw3RfaKVTy24OakIu9XaWhBWmzsv+Yz3UjfS5nkvuHRfJGImY381CSBY8MrgnlMy2jYg92Us+XDju9De1p5G3Zi2qCJCuL3joyblkVi/15Di/eVg6k=
+	t=1788423371; cv=pass; b=uCL9coWAbBEPg3mUBtN40qCqMqpsgNTXeJzwSp9RXVpo/dnzJLnQatFvB9c8aRzGOLBemz+jED86BJPYiyMG4QVHazi2oOYDRZApx4FufbJMeb7Duhzn8XRfmZ8C0XiyLWH7url4onSGpwMo98jyvMLpj8LIFPZGkMj+6sflbVk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788423314; c=relaxed/simple;
-	bh=OlQ0YAVC6ujdBBFpljayXmVKSTR3LjTuNS8fAxNdB4k=;
+	s=arc-20240116; t=1788423371; c=relaxed/simple;
+	bh=6VKF61Qh6cq44dogm7XMikkysZ5UlAE0+1Jes2tyn7s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rbNBuYc4NtV+Q2iWFYdK9LIsiICn8Q9kWFiKfP/gvXTR/99HqwcG+d+qBpsXghmCdwuurOcz0XdRZSqfk/CR9A+X5n6gX3L8zxyz/ViAuT9nAvlqo4ioJqya5bH8GXoYZKad8IvsHC5zNvJEVLWbudPNanLxSUkEX+PIc3Xbr44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SJFJdIQB; arc=pass smtp.client-ip=209.85.160.174
+	 To:Cc:Content-Type; b=r8RCfZDf7tdoiT/A+nxhiVZza0alwz8wnIHy33OHqI83IL/HDQUIBr7iSQsnBAAAfc0JcZhzLV0GyXeIBNFjFZXqjS7p7ZW1bFMLTf2UvFoe5qTXOjkGd3hWJVpl21xLrL42/sK607NdeOrI/jR0uomDzpN3ux0EQ+J0dayd1zU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fu75ePYl; arc=pass smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SJFJdIQB"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-52fa6005224so18230631cf.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:15:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788423311; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fu75ePYl"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c0c45c580so21015011cf.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:16:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788423369; cv=none;
         d=google.com; s=arc-20260327;
-        b=dxVa/GU9zM1VakTzlbJLeHxxk0l05+8sWSLnhpmnayzdJ70nhfOc2d1E+2XObj5heA
-         Y9TvSV/siAKk0MOoJyCJ0fZLRUrQLa+v2BCGMm9edYmhrgJ1UV83VdujSuIAyWLDgvGs
-         EzwUSeo3wSJWwRyHvFo27lkao+/gN4x0qQgEBOW7qhRrRMPt2Wr7hM8p+IiHescDg7op
-         IxyNRtcqgQdBjC9ty0ShdOPOIk5MUK1v4RAfNNnlT15zZSRvED93RW0YM7HKRy5QQFJL
-         0jZSw7ZjbS3RtSAZAnRyXmNWXzbFGmr7skDjvyPFnEtdet9fr1egfTVnpbTlfP1GNiD7
-         4yDA==
+        b=L5hQ7r3kRyOu0bWbRei9VN5V43Oq1H/Jhbi+1AbqvjDzt6gcYMlrzM2f9wUXdXiRgW
+         CKZdRgbWWZdvG8LR5tBbMi5BZYhYwdFPofe1vUABvfgK3eVdhD3mGtyXSSyIp5KROMfp
+         70viJYOAsc36JgZ7sJeHsuGnj0GoosW7qW9gHbSJ9U3VhsPavkwjieuTG3ZJ7zyDM5Yl
+         zJn2fCNresiMsz7N8ucPckp+wiH5AgYF2XLv0NLRPuzC2ydDLyR2XcKVSCLrIVJJVMCy
+         Ag//LJPTgohYLiGgJrReKJ0PcoCkYGwNuzgPXvy/ug1zM3qtWcPPSZtnfq4tT1LFXt3F
+         NhIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7KdfSLURFL5msCoh/intCikQgtAh5MxrzCcW7QWmj0w=;
-        fh=G/Vf78Ej4cbQLZeZtPXmxwtadvD3+xyK+lDgqt1zCak=;
-        b=f2rqvRSwjjm8egwUzAN0w4pkan9dNc5K85Wa6/j9PLb8CciOJXCgI0tZzugDPL54UK
-         wNWJHJNDbutqcUnYYx4NuajqTrpenYnvO4KcN7/RSRvsgnpGNzbLJpr1hhXACBGFyw8h
-         2xFHffBX8808/VpkBnmKzkG7vDTcYYnNzbFwsydX93aQwRWGYyXKSrd40IHZ8HzGFYBH
-         xzQA+mcyLFvUqmXET6UY4m1PicMk/jzIA6U/vGZJOed3u7NOJg4HnefkfXbQy8FunUV0
-         MqDs4VkcZfec+OEuiKIT32XxPP2dNGBxva4LPoee3LezBnxcUcimty8DlfMBlyufqodr
-         4RYg==;
+        bh=6VKF61Qh6cq44dogm7XMikkysZ5UlAE0+1Jes2tyn7s=;
+        fh=lNUwulS8ccmV6DOczJJEFxsSgWdGk5piWzrq5CBYcVQ=;
+        b=FRYqzB3MpZ9iFMQRaOAFksX4RCkFTv/PAOEgMPkm9L6WZMpE7BbsXkEKze/QPYH72k
+         CTTrwr7jtLe0rnCyZvpUcx3iOtH3fCDzYmJpnAEukgBlCrnyIBUuWLL9850LY4ofKa5X
+         aSBgl6cS3vBkKXt9D1GK1WJrn5c6MUvfK0t/T0KjppFH3DoCprzFijBR5atAemmOxQP6
+         c5rwrl0IkMYobMag/ZHhufodqk9Q++9XdW5zb9J+kGfVc3XyBnAraABvy84IKgnPUK5y
+         wMC1WDPj4aZ1XQK0tcFxGCb6jQUp4bc78ow2ZOWg+I0fJzShF8QdSOQCKJdmsAgqTujn
+         lx0Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788423311; x=1789028111; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788423369; x=1789028169; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7KdfSLURFL5msCoh/intCikQgtAh5MxrzCcW7QWmj0w=;
-        b=SJFJdIQByRJ5Jbqcctl9eDeLipgCswwV5D9CWNRgofsarkfljSbzUmE5Q4uHoGoE5n
-         0QWqPGMmQ7stEZ9XPHoH5GTOhiaabS/jk+d6aaQCmBBPOMZHKVEtjbJSV+ExB0sCCkSz
-         Mo00ck1XILRS/jfkFbc57JLi9Zad0q9LzmFEd6RG7PkrqXU9lBYwXgpcrbdARS1yog6N
-         De4fNWmCuIwlboectm2iHuLAE/DvgSz2Tb5rn7qwr3upRkMf7CJ9UnIvHWLoakqil+sD
-         AkfP4OlTSOVHPetoIlsu1oSynfw+I9fZCTAGSod4faXr0OV8cNvCmg88r0zaJbOs8sCt
-         5HTA==
+        bh=6VKF61Qh6cq44dogm7XMikkysZ5UlAE0+1Jes2tyn7s=;
+        b=Fu75ePYloe302tn3PPn8HAavXkIYmW3KNa8FzzRjNB4XNElNFvXRkxr8H2MLNcICoy
+         qj1BVxz+PqW7gl7TN0Kt2/b/FctV1cIALDS/Pflfkz864KCBgh/TqPMywKxV99PmDjGQ
+         0HAn9r2PIVMw4LLMVULgKriT5VfoUkbZPMD3zgxiwB7zhfYon5wP79/bUZHsaXd00wr+
+         rSE6SBqLc/xU8eYNNi+9iRhmzjsq/i0RpEQfCr+DV8OUCzzraPpem2GuWihb5yyhGLhr
+         5b13G3xQn2NEBVRCxTFshpWLQNI3clsvoAPTMw3nrgrYY9ZZg+Z7qLaNZWWjjt3taI4W
+         6OhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788423311; x=1789028111;
+        d=1e100.net; s=20251104; t=1788423369; x=1789028169;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7KdfSLURFL5msCoh/intCikQgtAh5MxrzCcW7QWmj0w=;
-        b=o40sUqXJuhzoNAy1gMRL6ygSwW9YdCA5J5FktM3MsOi5kd9ZsSEs6/YGJ5GogSP9nn
-         AXT8QKxcrvUlo11q3m1RMo8Ox9DRPjEJiUDQI9MtOS94uPycRlatKlkrFbnHCPLBxdJb
-         P7HmTC+PfL4NPSWMaA2bRPEncvG/JtApxmINrspUuk4hud/NS43Z+WmRHtK40ijxHYU/
-         2dXQNVs9mEbhU9rmCHIRcNeVYiV9qmlk0Oj8MJgVVSBToqnkvZCORT2bANzDIowGGpQC
-         nSp7QW7tvukeDrP1Oja+C1++Rlwc5HQ1bVdGhwWi8RUe8oudsIJIjeo/3ymDDpbutc3l
-         9HQQ==
-X-Forwarded-Encrypted: i=1; AKwUvByKNjj2z++p8OSzMIhfu6XwKaTIrhHui7rl/mCR9oM1TIQdIuWhL2kvbq4jtHqFawUww8QtJ1c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kVKcDIGiaKiew0cIXIWJicE3TGcjFtFNqxnzM4zESLfyZg9B8r
-	KGkG+L5oydNCc7g9C+dkUbs41kIxtc4ymCZ+HCvr7sX9IxRW2ZR3W11XbkXwnY4ejICzLsImZQ8
-	52C1PTtolUWfQv0RfD23LsStBED7AoL49n4fhHWNN
-X-Gm-Gg: AYBFou3fU5mpfYC+A8ZXdHdXCJLqU++lhA96luVvCuY8NEhCHJU6PYHtUfZAGADe4iO
-	MSLo+JEr5LdFRYScebd0jzThwP0QLq3KN2+6G7bOYyt789744JB7c39tzaf9iDL9zJAl3WnMMIs
-	Kcdpl4yVAiypDZn0Hho14nJybPwU3sKIqET17BhCoNc3qpeLpX3HJ+WdToAfPAEid25rUFYKUye
-	rNxLwHm1+BlRjDObSNkCcpwGlXkJe/3eQ0vqPGiH6mKNzEcOeNBL4XCwWpgupYR7CMvZZQNvQon
-	HelTjONvwK16JTDlSlDn1LXCPh8N++8AUwrD+UDEbvxYAkES1A9bn/s6JxInj2UB2SKA++0+OEA
-	O6XKv2UhbhgVR3MZTpa2xU3VVOLLGqDMbLcuiBiEUSzyaQ91yvDtehW5ekA==
-X-Received: by 2002:a05:622a:303:b0:530:430f:630a with SMTP id
- d75a77b69052e-530430f77d7mr49522131cf.48.1788423310957; Thu, 03 Sep 2026
- 01:15:10 -0700 (PDT)
+        bh=6VKF61Qh6cq44dogm7XMikkysZ5UlAE0+1Jes2tyn7s=;
+        b=NrhS3cDexkTZB2PBqiWr7RbiKLAk6W9e7sI1EMpu/mvLJdBF2hZW8r9vtGHzG92OUd
+         GADE2kdvdt82AnXfR2kw/z8djd4GSfW50nl9smEOqFrCkjpT1AHT2Ll+//gHxkcnNDZS
+         sx1D90eAMNcF/BdNR43Vg3WeRN56Hk31/PLLRKJm4CEpdEYGFEEPqhx92pJwO659fjYF
+         54z+P61prFGMmpMP9KAcqGTyHKQIBuZpjkDkpCAWl1uKZEDUfYuXbXexiOTH/vcH8XqC
+         nDf8OVadgjZc8GNy68Xi78ZDf8d0DX8+0u9JIIU9AlaaKBgyLW84ck6A1g83k4IgilNp
+         8Y0g==
+X-Gm-Message-State: AFuF++mMkOh+wXJSfXJBeq575ZIAI6ogu0qezWpZ0FnWyGSDavTNnp9K
+	XBdI66gC6N0czN0eUKi9Uv2ibriUtTKhhT3ZCiNKYOZpeTFWxUqJVB6CtMAj2N8wYGc9oZMeMw5
+	RtXMTgKHiX9srkrAG6XD48rwXHN5OKsS/4GKpf/21
+X-Gm-Gg: AYBFou2vJZUtqZqjCnSEgKqkMAzkyfI/d1C1B+UNiL3ACD8WbpSovrLMOyyI3xNORYd
+	JJnoV3pfqAkPVbIxQcmGwAwA6DuD+WQC0MPOPAreZ4Ugf9zVeL1FGgM+fnVqQgXuKUs9Ramq6ZR
+	CsmEdRKw8oQId7rOZxPkzLW9bCRKEAFANLsRtU6ikmWK9uL9UWa+NKj9G4U+KB8bcwLTBhY2J/D
+	bYSrq4IicehC4zPpkshUniashhlj1fvyC3IPHt979UwO/Enw3XELyZ/37o8XbLjha2sJkuEdBEB
+	eYaoNTuRlnOG9uR8szxBo6W8FpyyzXAV1/edZGeUYsp5IY1Ld61Nnmmx5luIY1iEDcljGt1Lgct
+	2+d78EjX/MFb88uvdgcL0cPJy10pnYBcqG3t2IE/AKKW8MF8SdMkDW4LzC11lq+9HvzXq
+X-Received: by 2002:a05:622a:cd:b0:52d:8854:3e61 with SMTP id
+ d75a77b69052e-53036c85c28mr122279731cf.22.1788423368155; Thu, 03 Sep 2026
+ 01:16:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260901023539.6986-1-zhangcoder@yeah.net> <da990dc8-a7c5-4870-89f0-ad8e7dad0e0a@redhat.com>
-In-Reply-To: <da990dc8-a7c5-4870-89f0-ad8e7dad0e0a@redhat.com>
+References: <20260903080259.10378-1-idosch@nvidia.com>
+In-Reply-To: <20260903080259.10378-1-idosch@nvidia.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 3 Sep 2026 10:14:59 +0200
-X-Gm-Features: AcwNN1WMWij821xOv26UsqrEoLcMh-Z44UxeGO9PCnqsEdYxBlY9DRaWPIqH9qA
-Message-ID: <CANn89iLzwR40o3VmPuz+6GD62ndJFMo=gv5cyVEuTYdCmFSutg@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: fix mdev comment in tcp_rtt_estimator()
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Ziran Zhang <zhangcoder@yeah.net>, Neal Cardwell <ncardwell@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org
+Date: Thu, 3 Sep 2026 10:15:57 +0200
+X-Gm-Features: AcwNN1WlHZOPxE6l56sckreWuI1XoxKxh2_dYn5inqWRdTh4GG-0wa0YTvUUvL8
+Message-ID: <CANn89iJhRa+Ut+fFk=bb=Zggx4ROiEQEGz8u0h6+c_fx8nnkWw@mail.gmail.com>
+Subject: Re: [PATCH net] nexthop: Initialize extack in remove_nh_grp_entry()
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, 
+	kalpan.jani@mpiricsoftware.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 3, 2026 at 10:08=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
+On Thu, Sep 3, 2026 at 10:03=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
 >
-> On 9/1/26 4:35 AM, Ziran Zhang wrote:
-> > The old comment "mdev =3D 3/4 mdev + 1/4 new" only describes the
-> > common case. However, when RTT drops sharply, the code applies
-> > a finer gain of 1/32 instead of 1/4, resulting in:
-> > mdev =3D 31/32 mdev + 1/32 * new.
-> >
-> > Express both cases with a unified formula using variable
-> > gain g.
-> >
-> > Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
-> > ---
-> >  net/ipv4/tcp_input.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> > index 0f60a1dbf..2c9feb181 100644
-> > --- a/net/ipv4/tcp_input.c
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -1108,7 +1108,10 @@ static void tcp_rtt_estimator(struct sock *sk, l=
-ong mrtt_us)
-> >               } else {
-> >                       m -=3D (tp->mdev_us >> 2);   /* similar update on=
- mdev */
-> >               }
-> > -             tp->mdev_us +=3D m;               /* mdev =3D 3/4 mdev + =
-1/4 new */
-> > +             tp->mdev_us +=3D m;               /*
-> > +                                              * mdev =3D (1-g)*mdev + =
-g*new, g=3D1/4 normally,
-> > +                                              * g=3D1/32 on sharp RTT =
-drop
-> > +                                              */
+> remove_nh_grp_entry() prints the extack message when a listener fails
+> to replace the reduced nexthop group. However, extack is not
+> initialized and listeners are not required to set a message when
+> returning an error. Neither netdevsim nor mlxsw do so when an
+> allocation fails, resulting in the dereference of an uninitialized
+> stack pointer.
 >
-> I'm sorry, I have the feeling the above does not clarify much. Also
-> AFAICS it's not a 'sharp' drop but any negative delta.
+> Fix by zero-initializing extack, as was done in commit 6347c5314cee
+> ("nexthop: initialize extack in nh_res_bucket_migrate()").
+>
+> Fixes: 833a1065eeb1 ("nexthop: Emit a notification when a nexthop group i=
+s reduced")
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 
-I agree, this is a 'legacy comment' that should probably stay for one
-more century :)
+Reviewed-by: Eric Dumazet <edumazet@google.com>
