@@ -1,89 +1,89 @@
-Received: from mta0.migadu.com (out-119.mta0.migadu.com [91.218.175.119])
+Received: from mta0.migadu.com (out-132.mta0.migadu.com [91.218.175.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5289313543
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 02:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730D117A2E8
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 02:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788401749; cv=none; b=lKrE/QIg7/+8tGl1rtJ8PWZOMLWE9QWo1cQVplWEZMPk1N5ZvMVOEPRqtttzAqLyUifS/scCqa6TL4XVc1+1lP0JKcYbn5aIVNVgF23Hv2+qDsz+MbHfPiDu6yKoF+sslnq3L29Nn0a2atXAiTZXobTXGVO3/CnXtSf4JU4woQA=
+	t=1788401846; cv=none; b=UvqV+xONIef+eecKaPMCZw4c3BJpNMdbH/4JzC/EqxbyMFBWcHdHPQ7Oy+WlY4DOETXkTaVoKMEkQs2p3BsZGrFk+CEf/IESSr8ekSqLmmUxOt1+RlQwDyWUSaR97Rlp5OBW9n+CgSIbiyq5Muwc4lnH8HVJ9O/jnqet/M8PA0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788401749; c=relaxed/simple;
-	bh=G34xxgRBmUeCrrkke6/zmw55SL1tojQfi33A55TotFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3BaEw3oxg+kTjusLRQGiTCy+hdkcqWgTfJBf8nFmOMEEFlGQKpPhdR8KP6MB80sdFAIOnUKF+aREN8sjcAOuo8G9tQ2My7PIPoqZWpezeAdtV+RBi1G/Q7chvErHJ1VgaiFNVhKQxcVlWSX+rmxG8wk0AVYSgzsddEYZ1aOK9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NnryLoMH; arc=none smtp.client-ip=91.218.175.119
+	s=arc-20240116; t=1788401846; c=relaxed/simple;
+	bh=6KHUrCXryuMRO6NbRZhGY1jVIGm3Mw09CKEhifRYOSc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WLDbJ7gXp2s+Dy5io9wqe8MKJZYi+bTKKwsMaD1ZuMfXjq6TkuFDS8ISU6k+2ghYQzcoV/6dJxyOlmzY3urfsyOV8JB9kMH5TOr69BmVSSQfye8q33yjK8Tt9rrKyWq9NWQYl0RNZOKCnoi6u8z5XdVwoNxW6i3yE3/XAMcZxZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z+ipQS3c; arc=none smtp.client-ip=91.218.175.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NnryLoMH"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z+ipQS3c"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=G34xxgRBmUeCrrkke6/zmw55SL1tojQfi33A55TotFk=;
+DKIM-Signature: a=rsa-sha256; bh=6KHUrCXryuMRO6NbRZhGY1jVIGm3Mw09CKEhifRYOSc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788401744; v=1; x=1789006544;
- b=NnryLoMHCH5MB5L+wdVaBc2gzN6ossRcMyqJJS575vokGkFaIwu8MObJJiYzWBuIoHJqMmB+
- 11c7UWAyKM9cyZD75bcITWH3lKfjo1vM/kF2GkCCqpz0eYZCiBETcaFJXZJebyk7wA2Rvi5VN2s
- CEIE7/L5uO4OPLwaI8cn/4J8=
+ t=1788401840; v=1; x=1789006640;
+ b=Z+ipQS3c18g4uBgJK67g8G4sbcu2RJfSeKD3/b1IpVrAusdoBtkKptOUAk6m4l7KhZyIsQf9
+ KxAT5E/8g396paddDDXw7kXyyfa85wlWQ0TR/ZxNTvf0c1M9GMG6o1W/SxTANI+F8iW/8oa2HxU
+ oS6/EiZ7ErjETev9pePUNvBQ=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 22d32196a450c1c8;
-	Thu, 03 Sep 2026 02:15:44 +0000
-X-Mizu-Trace-ID: 22d32196a450c1c8
+Received: by smtp.migadu.com with ESMTPS id 88996744991c2e71;
+	Thu, 03 Sep 2026 02:17:20 +0000
+X-Mizu-Trace-ID: 88996744991c2e71
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 3 Sep 2026 10:15:31 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: MPTCP Linux <mptcp@lists.linux.dev>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH mptcp-next 1/2] selftests: mptcp: convert iptables to
- nftables for mptcp_sockopt.sh
-Message-ID: <apjYQ3bCkpT2Rb-X@fedora>
-References: <20260902-mptcp_nft-v1-0-559caa16f410@kylinos.cn>
- <20260902-mptcp_nft-v1-1-559caa16f410@kylinos.cn>
- <5b5452db-f03c-4825-b9ae-91ca28bbcf03@kernel.org>
+Message-ID: <fbb4c7c0-58cd-403d-bf77-8b58ef4c7b16@linux.dev>
+Date: Thu, 3 Sep 2026 10:17:10 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5b5452db-f03c-4825-b9ae-91ca28bbcf03@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: macb: fix NULL pointer dereference on unbind
+ with fixed-link
+To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: git@amd.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+References: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 02, 2026 at 11:17:48AM +0200, Matthieu Baerts wrote:
-> > @@ -105,33 +109,23 @@ cleanup()
-> >  
-> >  mptcp_lib_check_mptcp
-> >  mptcp_lib_check_kallsyms
-> > -mptcp_lib_check_tools ip "${iptables}" "${ip6tables}"
-> > +mptcp_lib_check_tools ip nft
-> >  
-> >  check_mark()
-> >  {
-> >  	local ns=$1
-> >  	local af=$2
-> >  
-> > -	local tables=${iptables}
-> > +	drop=$(ip netns exec "$ns" nft list table inet msock_table | \
-> > +		grep "ipv$af.*packets.*drop" | awk '{print $(NF-3)}')
-> 
-> Would it not be cleaner to use 'nft -j' and 'jq' to get all the
-> (non-zero) drop counters?
 
-We can get with this rule:
+在 2026/9/2 18:28, Vineeth Karumanchi 写道:
+> When the device tree describes a fixed-link and has no "mdio" child
+> node, macb_mii_init() returns early without allocating the MDIO bus,
+> leaving bp->mii_bus as NULL.
+>
+> Two cleanup paths then dereference this NULL bus:
+>
+> 1. On driver unbind, macb_remove() unconditionally calls
+>     mdiobus_unregister(bp->mii_bus), which oopses:
+>
+>    Unable to handle kernel NULL pointer dereference at virtual address 00000000000004a8
+>    pc : mdiobus_unregister+0x14/0xa4
+>    lr : macb_remove+0x38/0xa4
+>    Call trace:
+>     mdiobus_unregister+0x14/0xa4 (P)
+>     macb_remove+0x38/0xa4
+>     platform_remove+0x20/0x30
+>     device_release_driver_internal+0x1c8/0x224
+>     unbind_store+0xb4/0xbc
+>
+> 2. On the probe error path in macb_probe(), reached when
+>     macb_mii_init() has succeeded but a subsequent step fails, the
+>     err_out_unregister_mdio label runs the same unconditional cleanup.
+>
+> mdiobus_unregister() and mdiobus_free() do not guard against a NULL
+> bus, so guard the calls in both macb_remove() and the probe error
+> path.
+>
+> Fixes: d0c3601f2c4e ("net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY")
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 
-nft -j list table filter | jq -r '.nftables[] | select(has("rule")) |
-				.rule | select (.chain=="OUTPUT" and any(.expr[]; has("drop"))) |
-				.expr[] | select(has("counter")) |
-				.counter.packets'
+Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Thanks
-Hangbin
+Thanks,
+Xuanqiang
+
