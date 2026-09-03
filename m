@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6000D324716;
-	Thu,  3 Sep 2026 01:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3073128D7;
+	Thu,  3 Sep 2026 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788399709; cv=none; b=G4RXUD5SwgfwcBd8+zYagCXJGeEYUoR1qpQ7A1tx2AUZ2Kq1CKUk5IbE9fW+tMibMwYmeuK1YpOFN3aMOpOvA7v0eaGeBRTpqo9NDMEDE9YDgWhOQhkXkgSdKdKMQSoDVmAm+37PEyMYALpqjNGQxOpCw0gT/eOR60hJV7jf2Qw=
+	t=1788399711; cv=none; b=GHXHOFvfJcINjWBAsx9d08rNCb6GVypf61iCpNFRhvznANjZN7BNMEbbonDJE6xPJPAypOvl2/loO0eAJ62SQoH8myEZQ6897eJHQFdd0FHX48yLtc4oy8wSY6pNHb+Vj2BCVI82/loLzVbZbUQm67ZLOdqYdRtKsRNjc8tZ3u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788399709; c=relaxed/simple;
-	bh=Sbvjv7Y6GwEd0iYJ28BsZkNJzmiU80Akl/jhaRvLXG4=;
+	s=arc-20240116; t=1788399711; c=relaxed/simple;
+	bh=gTGTFtEjGigV+KMsPMepP8MaUMo5E8OEaMOlD8s5aC8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TzPlwe3liEBOhz0o7IvGY+pQnOiOfraTj95PwF/VHEc+cs6JBDI9qH0EKAJe2i3k9lD84iQnhCqTtoqtr3ToflMLvLGlhUclFTxlxHEpc+PgYC9eixFkK+i8Tpu26NGwPNZBajsDTJrStBQRoFR4+tfi0Xljo7IEbJUImHxStzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKkX/l7z; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=n4BnrJyAP8B44jeNRmUyvatQKySujaLP4LPHYPD0n2O6GJcynr2sFJJoNzEjnBANFzNI+7xsQpWgtHB/WJRbIboooYL2orkcET5uwM1Vixls+c0if9Ah5BxkooSjIvvtsvwUazk1ob0BGnOKd/8CYHE9pa7gxcQ72VAyWUUAGts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/2Ctn1x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKkX/l7z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0B31F000E9;
-	Thu,  3 Sep 2026 01:41:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/2Ctn1x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7509C1F00A3A;
+	Thu,  3 Sep 2026 01:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788399708;
-	bh=TebVvdRULCEq/DWVRWCFxnOtGNcebBk8gV/PkJsvqfc=;
+	s=k20260515; t=1788399709;
+	bh=VNSGAeT7uciZm8ppAmkEOoK7AJCszK21UEURh1WyfTQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EKkX/l7zqF4BPAQc4do8sa7nGCCpieET9FkHLwI1y+TpSTsK8NF8zb3ba7tR88OU6
-	 ddyiX82v7Lx2iXMivS3vrOpcaL82G142QnZH5gUfLJ7sXW8T8w7GUMsNHFZtcjvb8U
-	 jdtQ6KHjVQJlkP6uKbejhA2aLqGmWMWLcYVcrV+G5wKX1tjSVZ0A+GLhnEbggLtiX0
-	 h/kzzMVpVC0z6RyfYVjynWIEQ2D2v9aqs/TpcLGDcNB6TA+oI/RuPWb934yxT0N9Sm
-	 JMhi0voTD02A497qZYMcFfuc6L8/rVl2zKyiOK0C1beqBbdYF6W+HFC80W4dcAAr+w
-	 njuPJilp8VwBg==
+	b=N/2Ctn1xAAVZhStSoLplbj/rpFHKNVa54aYAustpG3KM0WyDe6vZ7+lilcjvoINIM
+	 LZ95/Dr5tn42WIO5lXLUPPR0CIOZ/xdikBbcJauHazcWRIWnd2NGa8sQnxCCHmJQdC
+	 IlE8AMrIBc5BVVH9mAMzGXMtNkzrOSCYOlkoUlTo279PmdaqiIF+buYtWbFz2BRxj6
+	 MN7c+T3SZHN4LQZEEZ+0tYrHFEgEW8QBGj2qyY/trDwO9+07k0Mp5FRWOr9VJ1eJ3P
+	 apaHCn4pbO0sm91Zp+DW2fkjUQZPS99WfAcDeGjXX9uRdtEG+P7aCC2Whqb/UZjMlQ
+	 qVPa/v0t2rQyA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AA73927054;
-	Thu,  3 Sep 2026 01:40:50 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569CE3927054;
+	Thu,  3 Sep 2026 01:40:52 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] dt-bindings: net: fsl,fman-dtsec: Drop redundant
- pcs-handle-names dependency
+Subject: Re: [PATCH net-next v3 0/3] net: dsa: realtek: enable RTL8365MB power
+ supplies
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178839964939.3035212.8947771195506296370.git-patchwork-notify@kernel.org>
-Date: Thu, 03 Sep 2026 01:40:49 +0000
-References: <20260901061255.25734-2-krzysztof.kozlowski@oss.qualcomm.com>
-In-Reply-To: <20260901061255.25734-2-krzysztof.kozlowski@oss.qualcomm.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: madalin.bucur@nxp.com, sean.anderson@linux.dev, andrew+netdev@lunn.ch,
+ <178839965088.3035212.12735726271200270390.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Sep 2026 01:40:50 +0000
+References: <20260831123637.666457-1-o.rempel@pengutronix.de>
+In-Reply-To: <20260831123637.666457-1-o.rempel@pengutronix.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: linusw@kernel.org, luizluca@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ kernel@pengutronix.de, linux-kernel@vger.kernel.org, a.fatoum@pengutronix.de,
+ alvin.sipraga@analog.com, netdev@vger.kernel.org, devicetree@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  1 Sep 2026 08:12:56 +0200 you wrote:
-> The binding references ethernet-controller.yaml schema, which already
-> defines a dependency of pcs-handle-names on pcs-handle, thus duplicating
-> it here is redundant.
+On Mon, 31 Aug 2026 14:36:34 +0200 you wrote:
+> The RTL8365MB family has several external power rails (analog, digital I/O
+> and PLL supplies) that on some boards are gated by regulators. Until now the
+> driver assumed they were always on, so it could not be used on designs that
+> keep these rails software-controlled.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
->  Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml | 4 ----
->  1 file changed, 4 deletions(-)
+> This series adds a device-tree description for those supplies and enables
+> them in the driver before the chip is accessed:
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] dt-bindings: net: fsl,fman-dtsec: Drop redundant pcs-handle-names dependency
-    https://git.kernel.org/netdev/net-next/c/577b53589d42
+  - [net-next,v3,1/3] dt-bindings: net: dsa: realtek: add RTL8365MB power supplies
+    https://git.kernel.org/netdev/net-next/c/f4d025418721
+  - [net-next,v3,2/3] net: dsa: realtek: rtl83xx: add support for enabling supplies
+    https://git.kernel.org/netdev/net-next/c/f82364499682
+  - [net-next,v3,3/3] net: dsa: realtek: rtl83xx: use dev_err_cast_probe() for reset GPIO
+    https://git.kernel.org/netdev/net-next/c/bd6b764f08de
 
 You are awesome, thank you!
 -- 
