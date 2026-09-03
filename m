@@ -1,191 +1,152 @@
-Received: from mta1.migadu.com (out-141.mta1.migadu.com [95.215.58.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58B84A498D
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D10C4A2628
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788438781; cv=none; b=ApwmPtLZ8sGVcIHpAjTBBS9xSYdyOnNzvmPABFqWkqSS+mhdAxti3fAnVq6EP7SElkQ3GFAYQn8/bZt+d06Ky3POJbkhoC+yX/sHEfSlQ908+EHHXccZwzRut4bpkDuNJDRHKksWu0RJj0xiz8sW7O+cwGmhdJqvUzv+NfWXA9Q=
+	t=1788438938; cv=none; b=c8defM0Bn2oSBbTj4uWE3f9SQ0EDXgnM2HPeET8pIIYX0c0hQA5IcXyiWEGvhVRXUqi7g94f+vochP88DotTxrKC6ZTi6JjcreKVKPQX7DKAz6oUyjlJp2btv/3nheJl5LQ8da29y4PhGhNtoJQyEYiL/hKPs6/ND5OizvIaY/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788438781; c=relaxed/simple;
-	bh=1iB/o8bZw94ZM1/04pVnXdKi6vlIvmj3KTplXfVEHY8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC/6PUAo64Rq4LE+RCjMtwq1Gub0S+R2I6uUGxJFUhhIRuXY4vOZODV5J6R8TVrwBmnRdT1XQcJurF6axka3jGPdqgnKTOFNx2l8hcUxSYvPcC5GrEUIgnW3SsP3FtoJMgbIOQnj9cOEOdlwKaHYaIqL6NGQAqLTDigGM+iimhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GnYSQNz2; arc=none smtp.client-ip=95.215.58.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788438938; c=relaxed/simple;
+	bh=HyBpkWtaUs3sABCXegt/l+QUd8TqSUvAAzApqOQ3+QA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VClNWdsBwaqT+oYKoZHmPDLzEZBwD9tutkNEyU1l2mDGvbbM5R2ll7OsjEKAXpEtF2GLYp73cHvxQFQF1HwwqRMVOt4ud+3XAGFOAGBBC+2yiUiookIVBJAUe9N2M0NezkeJijL18Ald0mlAa9pG0Pamiat6QN1OiFTvMxDtxO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKp5TvjN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GnYSQNz2"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=1iB/o8bZw94ZM1/04pVnXdKi6vlIvmj3KTplXfVEHY8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788438776; v=1; x=1789043576;
- b=GnYSQNz2fQBdKHJRcFxw5U1sEWVwiixC9V32gjo1LlJ39ZAIcQFXVzRgftKIsynpkzKV6N/M
- ITToR34WvDqIdtrTWGvq+VxycuVNQ3H9JVMXPUSr4UglO/hPfoIxtGoq4WrX06opasVv2AvlOmq
- IWlhfn8x7wBYqX59ROL+2Iio=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 88afac023ae83057;
-	Thu, 03 Sep 2026 12:32:56 +0000
-X-Mizu-Trace-ID: 88afac023ae83057
-X-Migadu-Flow: FLOW_OUT
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: linux-wpan@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
-	david.girault@qorvo.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v2 2/2] mac802154: pin netdevs for queued RX descriptors
-Date: Thu,  3 Sep 2026 20:32:02 +0800
-Message-ID: <20260903123202.60152-3-xuanqiang.luo@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260903123202.60152-1-xuanqiang.luo@linux.dev>
-References: <20260903123202.60152-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKp5TvjN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F701F000E9;
+	Thu,  3 Sep 2026 12:35:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788438936;
+	bh=1XdyeznFhql9EgOoZF6ZIKOla/L9yi5hCmaRt5yqyeU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mKp5TvjNoeGSv27DDg/j6XMUIt65JwtrMSbNG2SS9Jy1NEivmw3yqT/HHLqPv/8YW
+	 v+nBzQ/MugMFCPRU2WkuyxSnx0qsZ8N4nEOHRTCkPZWxk/f/5TEQUJLeV7a/qi0xo8
+	 waloM/Y6OlNim4+DDqtiX88n9MDliqjzFZbvywEdMhaKWkdIhaLKBEzpSyerAXZKJr
+	 0vx1+nnOpjJJGfZUlLArp+g76nw7e34WwZzbDfH0jsQXt/cQbEuoQZwzqjWLGEvtQV
+	 MIBY9ETaoI77bLkikG25WrW8CLajC8RdtBhU2df1sYJUjzxXwL+aRUeNWh28VcqXfY
+	 8QZQuhcbl33sQ==
+Date: Thu, 3 Sep 2026 14:35:34 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Madhur Agrawal <madhur.agrawal@airoha.com>
+Subject: Re: [PATCH net-next v5] net: airoha: add HW GRO offload support
+Message-ID: <aplpllPidmCjhSmA@lore-desk>
+References: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
+ <fce0ee5a-476a-4867-9dd2-08e55993bd90@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="EF3/+5Ej5nc/qA39"
+Content-Disposition: inline
+In-Reply-To: <fce0ee5a-476a-4867-9dd2-08e55993bd90@redhat.com>
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+--EF3/+5Ej5nc/qA39
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The RX path keeps the receiving sub-interface in queued beacon and MAC
-command descriptors after leaving its RCU read-side critical section. An
-interface can therefore be unregistered and freed before mac_wq consumes
-the descriptor, leading to a use-after-free such as:
+> On 8/31/26 8:34 AM, Lorenzo Bianconi wrote:
+> > Add hardware GRO offload support to the airoha_eth driver, leveraging
+> > the EN7581/AN7583 SoC's 8 dedicated LRO hardware queues mapped to RX
+> > queues 24-31. HW GRO offloading does not support Scatter-Gather (SG) so
+> > it is required to increase the page_pool allocation order to 2 for RX
+> > queues 24-31 (LRO queues).
+> > Since HW GRO is configured per-QDMA and shared across all devices using
+> > it, HW GRO is mutually exclusive with multiple devices bound to the
+> > same QDMA block. Call airoha_update_netdev_features() in
+> > airoha_dev_set_qdma() so that NETIF_F_GRO_HW availability is re-evaluat=
+ed
+> > whenever the QDMA user count changes (device registration and runtime Q=
+DMA
+> > migration).
+> > Set CHECKSUM_PARTIAL with pseudo-header checksum on aggregated packets
+> > so that L3-forwarded traffic is correctly handled by the GSO/TSO path
+> > on the egress device.
+> > The HW does not report the per-segment MSS (msg3[31:16] only reports
+> > the max aggregated size), so the gso_size of an aggregated packet is
+> > just an approximation computed as DIV_ROUND_UP(data_len, agg_count).
+>=20
+> What is the <max aggregated size> exactly? I read it as the maximum size
+> of the aggregated segments, am I correct?
 
-  BUG: KASAN: slab-use-after-free in mac802154_rx_mac_cmd_worker+0xc0/0x498 [mac802154]
-  Read of size 8 at addr ffff0000c6db0ba8 by task kworker/u16:3/61
-  ...
-  Call trace:
-   show_stack+0x20/0x38 (C)
-   dump_stack_lvl+0x78/0x90
-   print_address_description.constprop.0+0x88/0x398
-   print_report+0xa8/0x278
-   kasan_report+0xa8/0xf8
-   __asan_load8+0x9c/0xc0
-   mac802154_rx_mac_cmd_worker+0xc0/0x498 [mac802154]
-   process_one_work+0x334/0x8b8
-  ...
-  Allocated by task 630:
-   kasan_save_stack+0x2c/0x58
-   kasan_save_track+0x20/0x40
-   kasan_save_alloc_info+0x40/0x58
-   __kasan_kmalloc+0xa0/0xb8
-   __kvmalloc_node_noprof+0x1e8/0x588
-   alloc_netdev_mqs+0x74/0x7f0
-   ieee802154_if_add+0xac/0x630 [mac802154]
-   ieee802154_register_hw+0x31c/0x3d0 [mac802154]
-   fakelb_add_one+0x250/0x318 [fakelb]
-  ...
-  Freed by task 652:
-   kasan_save_stack+0x2c/0x58
-   kasan_save_track+0x20/0x40
-   kasan_save_free_info+0x4c/0x78
-   __kasan_slab_free+0x60/0x90
-   kfree+0x194/0x478
-   kvfree+0x44/0x60
-   netdev_release+0x4c/0x68
-   device_release+0xac/0x130
-   kobject_cleanup+0x84/0x248
-   kobject_put+0x98/0xf8
-   netdev_run_todo+0x3a0/0x5e0
-   rtnl_unlock+0x18/0x30
-   ieee802154_unregister_hw+0x48/0x90 [mac802154]
-   fakelb_remove+0xe8/0x148 [fakelb]
+Hi Paolo,
 
-Hold the receiving netdev from before a descriptor is queued until the
-descriptor is released. Since sdata is the netdev's private data, this also
-keeps sdata valid while a worker or scan cleanup accesses the descriptor.
+with "max aggregated size" I refer to the length of the aggregated TCP
+packet (composed by multiple segments). This value is reported via
+QDMA_DESC_LEN_MASK field in the DMA descriptor. Moreover, the hw reports
+the exact number of the aggregated segments via QDMA_ETH_RXMSG_AGG_COUNT_MA=
+SK
+field.
 
-Fixes: 57588c71177f ("mac802154: Handle passive scanning")
-Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- include/net/cfg802154.h | 2 ++
- net/mac802154/rx.c      | 4 ++++
- net/mac802154/scan.c    | 1 +
- 3 files changed, 7 insertions(+)
+>=20
+> Also any more details on how the aggregation engine works? i.e. can it
+> aggregate "random" segment sizes (i.e. 200 - 300 - 400) or does it
+> respect HW_GRO layout? (i.e. all segments except the last one must have
+> equal size, the can be smaller).
 
-diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
-index 76d2cd2e2b309..57343762d7f0b 100644
---- a/include/net/cfg802154.h
-+++ b/include/net/cfg802154.h
-@@ -369,6 +369,7 @@ struct cfg802154_beacon_request {
-  * @node: MAC packets to process list member
-  * @skb: the received sk_buff
-  * @sdata: the interface on which @skb was received
-+ * @dev_tracker: netdev reference held until the descriptor is released
-  * @page: page configuration when @skb was received
-  * @channel: channel configuration when @skb was received
-  */
-@@ -376,6 +377,7 @@ struct cfg802154_mac_pkt {
- 	struct list_head node;
- 	struct sk_buff *skb;
- 	struct ieee802154_sub_if_data *sdata;
-+	netdevice_tracker dev_tracker;
- 	u8 page;
- 	u8 channel;
- };
-diff --git a/net/mac802154/rx.c b/net/mac802154/rx.c
-index 26da20ea470ef..df2f6128ddd4a 100644
---- a/net/mac802154/rx.c
-+++ b/net/mac802154/rx.c
-@@ -62,6 +62,7 @@ void mac802154_rx_beacon_worker(struct work_struct *work)
- 	mac802154_process_beacon(local, mac_pkt->skb, mac_pkt->page, mac_pkt->channel);
- 
- 	kfree_skb(mac_pkt->skb);
-+	netdev_put(mac_pkt->sdata->dev, &mac_pkt->dev_tracker);
- 	kfree(mac_pkt);
- }
- 
-@@ -141,6 +142,7 @@ void mac802154_rx_mac_cmd_worker(struct work_struct *work)
- 
- out:
- 	kfree_skb(mac_pkt->skb);
-+	netdev_put(mac_pkt->sdata->dev, &mac_pkt->dev_tracker);
- 	kfree(mac_pkt);
- }
- 
-@@ -237,6 +239,7 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 		mac_pkt->sdata = sdata;
- 		mac_pkt->page = sdata->local->scan_page;
- 		mac_pkt->channel = sdata->local->scan_channel;
-+		netdev_hold(sdata->dev, &mac_pkt->dev_tracker, GFP_ATOMIC);
- 		spin_lock_bh(&sdata->local->rx_lists_lock);
- 		list_add_tail(&mac_pkt->node, &sdata->local->rx_beacon_list);
- 		queue_work(sdata->local->mac_wq, &sdata->local->rx_beacon_work);
-@@ -251,6 +254,7 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 
- 		mac_pkt->skb = skb_get(skb);
- 		mac_pkt->sdata = sdata;
-+		netdev_hold(sdata->dev, &mac_pkt->dev_tracker, GFP_ATOMIC);
- 		spin_lock_bh(&sdata->local->rx_lists_lock);
- 		list_add_tail(&mac_pkt->node, &sdata->local->rx_mac_cmd_list);
- 		queue_work(sdata->local->mac_wq, &sdata->local->rx_mac_cmd_work);
-diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
-index 5fa98e001a8fb..c3c61ebde1568 100644
---- a/net/mac802154/scan.c
-+++ b/net/mac802154/scan.c
-@@ -114,6 +114,7 @@ static void mac802154_flush_queued_beacons(struct ieee802154_local *local)
- 	list_for_each_entry_safe(mac_pkt, tmp, &mac_pkt_list, node) {
- 		list_del(&mac_pkt->node);
- 		kfree_skb(mac_pkt->skb);
-+		netdev_put(mac_pkt->sdata->dev, &mac_pkt->dev_tracker);
- 		kfree(mac_pkt);
- 	}
- }
--- 
-2.43.0
+The hw engine, for each LRO queue, is configured with:
+
+- CDM_LRO_AGG_NUM_MASK: max number of segments for each aggregated TCP pack=
+et
+                        (64 in the current configuration).
+- CDM_LRO_AGG_SIZE_MASK: max size of the aggregated TCP packet (composed by
+                         multiple segments). 16KB in the current configurat=
+ion.
+- CDM_LRO_AGG_TIME_MASK: max timeout to compose the aggregated TCP packet.
+
+In order to validate the scenario, I run the following test:
+
+TCP client:
+------------
+- disable TSO/GSO
+- set MSS to 256 bytes (iperf3 -M option)
+
+I can see multiple 310 bytes TCP segments on the wire
+
+TCP server: (where rx-gro-hw is enabled):
+-------------------------------------------
+- the engine aggregates ~64 segments in a ~16Kbyes TCP packet
+
+  so gso_size ~ 16KB / 64 ~ 256B
+
+I guess this would be the behaviour even if the original packets
+have different size (not sure if it is a real use-case).
+
+Regards,
+Lorenzo
+
+>=20
+> In the 'good' scenario, than by definition gso_size =3D=3D <max aggregated
+> size> - <total hdr len>, and you are better off computing the gso_size
+> from <max aggregated size>.
+>=20
+> Otherwise I think we can't call this HW_GRO - even if it would be more
+> convenient for the driver.
+>=20
+> /P
+>=20
+
+--EF3/+5Ej5nc/qA39
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaplplgAKCRA6cBh0uS2t
+rB0ZAP48zGsaOahQ/7/+9gWRoFOHmwQovjU85XOK+X6Ze2iYSwEA7uS7OT9h3/au
+H2hDKAHz6p1VAg1AFLFT0LQdDqVX2gQ=
+=gEmT
+-----END PGP SIGNATURE-----
+
+--EF3/+5Ej5nc/qA39--
