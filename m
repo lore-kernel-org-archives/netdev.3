@@ -1,101 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49195.qiye.163.com (mail-m49195.qiye.163.com [45.254.49.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1839060A
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69000463B9B;
+	Thu,  3 Sep 2026 09:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426007; cv=none; b=BoIZAerYeU4qNZzmdrrMrbwbjV8+IivyNymRKIUPbcHRg+itTO+1sOKe3TWZEfV73GOckxOnBIejhQlurYbZjGhdeB47dvvGVM5nkLrYmR/sVg9bYaX4am4wSTQwVj4PI+EnMMDH3VxOHScWkq5hgZGUw+6dl28T+Z+9IPIcy3w=
+	t=1788426014; cv=none; b=PmfLbiutP+GWZ7cqNHM/lxSTILNgGmL4wZvbDImDsW3Z3X8y5jitJvfYt8PZqFrPnp5EszqsVfgwn1yYyF+gg9ahXNGOULv5ZFQgV9kmoi2dm4Zu1//KZiNy0qPKkCLY/nAtijpbAhxDBec3crt0dbMeUWtS5Ktp9SqkvuFgmjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426007; c=relaxed/simple;
-	bh=4NstDlohkWjIgcni65mVUwiaGk5yiWDokMTEwFCkLJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d6Bmoadi8tg7ZfgMFbXDuDrG80mk3C+Z51OYeA9M3eZLikjeuLi8sBeTrZErLRqpWvVCuWu1De0u8NMqcavmJd9XQZJjtREHq8gGZJz+yaxzalMzvEsAL/DXIC5hYChsNMMLjBAVBMBH03kuEY8PRrFgxCKOr3KImF8WV65DE50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnA8uajd; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnA8uajd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8191F0155A;
-	Thu,  3 Sep 2026 09:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788426005;
-	bh=RE0ASB+DdFZ2kYHuMUvbFe6R5K94GkgGPlp796qZCRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BnA8uajd9lyP7thrGqR/vwSIZFCF32l3ok4ysl1WamoE86XDm02l0gGJdxMZ7qxZH
-	 qF6rZZHh14j/Z3LYYVPekElmOIYwtQNYRVuVymmcD26eN1wj19fOjl8AQ1NuYMkT8A
-	 U1LMF3a0BB8LOSf51ABrPdZR4TZIhOgkGr2v29jkgZXxjOn6iOG/YGE/6iV6GgUBPe
-	 jjVZ2fLwVY5GyQtOv8plQfV/vbk5NNfjZMSvUW3NqDo0BZwcGZHOgda4AU+984lLEZ
-	 MN9NVrE2fbqVNbIhmyJyv6ARK6a13R31FOpVaLNN/4BmmhXh74MKODsI55dFQXHQIB
-	 VV4DxQKOXqyTw==
-Date: Thu, 3 Sep 2026 10:00:01 +0100
-From: Simon Horman <horms@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [net] net: airoha: enable RX_DONE interrupt for RX queue 31
-Message-ID: <20260903090001.GI396647@horms.kernel.org>
-References: <20260830-airoha-rxdone-rxq31-v1-1-830a91503f2f@kernel.org>
- <178836297161.3394541.17329602881799623239@kernel.org>
- <apig7UCTvWjKmzQB@lore-desk>
+	s=arc-20240116; t=1788426014; c=relaxed/simple;
+	bh=DP5ug96jSZhhbn5PiK1JRJeUkMOpEdyiGgmuGPV7Km4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YBM+dP4sTIBROHPEfv6+YC50/fWoYSsFYlVRsu4SnSnYJfugLpICEsFNBl5h6eD5XmcITzz9RRwHEbTuPYsvJu0G/T8r2yk6ZtYC1dP5Tf7EfMa9owtzxXogK9GkVKpCyU+9qaDJ41KgSPl6kNHE+BWQEPwyMQEcmggHlbRZm5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnics.com; spf=pass smtp.mailfrom=resnics.com; arc=none smtp.client-ip=45.254.49.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnics.com
+Received: from localhost.localdomain (unknown [115.220.204.6])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4c65c5a83;
+	Thu, 3 Sep 2026 16:44:45 +0800 (GMT+08:00)
+From: Ruizhe Zhou <zhouruizhe@resnics.com>
+To: Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ruizhe Zhou <zhouruizhe@resnics.com>
+Subject: [PATCH net-next 02/14] net: alx: Remove obsolete 32-bit DMA mask fallback
+Date: Thu,  3 Sep 2026 16:43:27 +0800
+Message-Id: <20260903084339.870562-3-zhouruizhe@resnics.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20260903084339.870562-1-zhouruizhe@resnics.com>
+References: <20260903084339.870562-1-zhouruizhe@resnics.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <apig7UCTvWjKmzQB@lore-desk>
+X-HM-Tid: 0aa0667122c303ackunm85c9d55b5cc0c
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSx1DVktOTUgYGUtPSBpMHVYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKSk5VSUlLVUlLT1VNWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
 
-On Thu, Sep 03, 2026 at 12:19:25AM +0200, Lorenzo Bianconi wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider:
-> > 
-> > Critical: 0 · High: 1 · Medium: 0 · Low: 0
-> > 
-> > - [High] Incomplete fix: the patch only adds BIT(31) to
-> >   RX_IRQ1_BANK_PIN_MASK, so the exact defect the commit message…
-> > 
-> > --
-> > 
-> > net: airoha: enable RX_DONE interrupt for RX queue 31
-> > 
-> > This adds BIT(31) to RX_IRQ1_BANK_PIN_MASK so that RX queue 31's RX_DONE
-> > interrupt is routed to IRQ bank 1.  The stated goal is that the queue gets
-> > drained and its buffers returned to the page pool.
-> > 
-> > > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-> > > index fa9a8edce22f..8277c1c87bb3 100644
-> > > --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> > > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> > > @@ -538,7 +538,7 @@ struct airoha_wdma_info {
-> > >  
-> > >  /* RX queue to IRQ mapping: BIT(q) in IRQ(n) */
-> > >  #define RX_IRQ0_BANK_PIN_MASK			0x839f
-> > > -#define RX_IRQ1_BANK_PIN_MASK			0x7fe00000
-> > > +#define RX_IRQ1_BANK_PIN_MASK			0xffe00000
-> > >  #define RX_IRQ2_BANK_PIN_MASK			0x20
-> > >  #define RX_IRQ3_BANK_PIN_MASK			0x40
-> > 
-> > [Severity: High]
-> > Does this leave the same problem in place for the other RX rings?  After the
-> > change the union of the four bank masks is:
-> > 
-> >   0x839f | 0xffe00000 | 0x20 | 0x40 = 0xffe083ff
-> > 
-> > so rings 0-9, 15 and 21-31 are covered, but bits 10-14 and 16-20 are still
-> > clear in every bank mask.
-> 
-> Here I wanted just to align to the vendor sdk and enable rx queues 24-31 (31
-> was missing) in preparation for HW GRO support. The other rx queues are
-> out-of-scope.
+The DMA API guarantees support for masks of 32 bits or wider and
+explicitly identifies retrying a 32-bit mask after a 64-bit request as
+incorrect:
+https://docs.kernel.org/core-api/dma-api-howto.html#dma-addressing-capabilities
 
-Thanks Lorenzo,
+Remove the obsolete fallback while retaining the error check so that a
+genuine DMA setup failure is still reported and aborts initialization.
 
-Seems reasonable to me.
+Signed-off-by: Ruizhe Zhou <zhouruizhe@resnics.com>
+---
+ drivers/net/ethernet/atheros/alx/main.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+diff --git a/drivers/net/ethernet/atheros/alx/main.c b/drivers/net/ethernet/atheros/alx/main.c
+index ab262e66f986..3ca69fd14a5c 100644
+--- a/drivers/net/ethernet/atheros/alx/main.c
++++ b/drivers/net/ethernet/atheros/alx/main.c
+@@ -1727,15 +1727,12 @@ static int alx_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 * shared register for the high 32 bits, so only a single, aligned,
+ 	 * 4 GB physical address range can be used for descriptors.
+ 	 */
+-	if (!dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64))) {
+-		dev_dbg(&pdev->dev, "DMA to 64-BIT addresses\n");
+-	} else {
+-		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+-		if (err) {
+-			dev_err(&pdev->dev, "No usable DMA config, aborting\n");
+-			goto out_pci_disable;
+-		}
++	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
++	if (err) {
++		dev_err(&pdev->dev, "No usable DMA config, aborting\n");
++		goto out_pci_disable;
+ 	}
++	dev_dbg(&pdev->dev, "DMA to 64-BIT addresses\n");
+ 
+ 	err = pci_request_mem_regions(pdev, alx_drv_name);
+ 	if (err) {
+-- 
+2.27.0
 
