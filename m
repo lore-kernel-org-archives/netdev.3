@@ -1,179 +1,121 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2CC4A840A
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 13:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E244AF67B;
+	Thu,  3 Sep 2026 13:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788442076; cv=none; b=m8GuAbMtx98MVDhJFGsPer57rU8/OPurpDBsTd7i78SEnGlKcrjTx4Pk1vf9hyHzsZj6ZNN2MVdjP6nP8TYTXvK4QTIu+449atDD6Nwt9Uwk40mLjm+hmbi6rwp+sKizpjYet/wu9gkSpDJMYDQARZbHQmKL5AJ1DXeTnxa03PI=
+	t=1788442169; cv=none; b=Bu8JSUTKIyL94R+sDgdJfS5Fdm5unpDkcshFJLsS1uuUnpPP1XaMhH6W8oOqL5CTdwLFvWA5HlEX9tA/ZT49VldxaI9Y+zyn4ZFNl7AfzNOEa6i0sG+HZ7Vsfbi6//SrJFw5DjRKj2BiM4EUTBow9+0QjH/VTOifdd7AA1E59Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788442076; c=relaxed/simple;
-	bh=YPvyN3kfwwpBginyLPvcxEOta7fpjimyqNItqqLCY2c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jiuZcl9gc4AxsA/4dyDPZmuIBpPKt6aPjHcz26cpDnMj31lhNocMRiXQ2kIe33Xi5TLezDn9n1DZjD2WDMicTtxxAkWPC0VX62aZzH/NLySRCynkMBNvfSAdNRkAagufgDpRDwHYKSVMYZvTRQmextl9LV07aaHvh/Q4oKJnzM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jnf726Nx; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788442169; c=relaxed/simple;
+	bh=fhmzhrTpZ4dwuAMAc5n9ojQfW7DvMrtweGJSodoYcFE=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=CBSUV2Yt+VSP789/e5USZD1d0K/4sKC0kd+oSFg4qXH7E/lqrYsJEamvdYzObvboY//JwxEXWZYui4dnoQ8MBbVMhtOTy2jSPrGsZnV5Dd6GsLD5gkIuI3E7PIWaPtlGlAy3Y5Y7/0zxJyhtuHdz+k6aa78Dij63D7T6mkEbKCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIXwLsSd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jnf726Nx"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so2448082a12.3
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 06:27:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788442050; x=1789046850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cpNeig/STv3ElkV+GwYqrBBpO1RKTjvMEoB8VPZ2e9M=;
-        b=jnf726Nxy5gNE+m9LHyWLAsYfY0THYZ+y9m2amx97WX68g2MKscjZ1bt+E+CImRKCV
-         /UhH2X3ssZhX6ZP3SrEeMi2pPKahqPDRF459y23+FV1WuqI+UB/piTylc5EDZ2vHVBLr
-         n+22megOz75RdrKRmLMXZ2/zkg/TP3+z7uZyfrXzm0pb9wcuoEgjgbge+Iap1Mo9NKB+
-         JMxOwq8NxLwt+v79nSjhlav7Ebvm8iejHLdGEdVUwIo1pb8RMknIa+fCaQVVMkidhKEO
-         2VkniitHoJ2BAEnksoVE7wKfvdSK0Kcdt0j28K5RhDsCERpCsaWWsXMjmBdRV0AIv6oZ
-         pSlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788442050; x=1789046850;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cpNeig/STv3ElkV+GwYqrBBpO1RKTjvMEoB8VPZ2e9M=;
-        b=DMTXc4fyW4h36nCWfXuJG6QtOlHTk/V+UA8gjUFVW2N4kD0pN2AuY5DbH0CyrAFTDY
-         WBpFNKWW4q5LC3iWhB2qVmHdYIlCcyYIJ4Z8TtN3LBdhgxDqXwsX933Rg1qQdvnZsG4E
-         Luvsi8YJ11l7JID3+cNi9Q1f7BnQddhdQz5iYhrL1MZk9SpgahTWH9lmd2xljU6ZkTWm
-         TqnNWG3J56FvthnscFKyoBnvZlw3b2kwHuZmdNO4bLlEprCF/l426RI0HtvD74+lQRdc
-         EoMS01fENrbY6wxJy7L2D57g+Vp/+USa+SyAOoOhymFrd9U7QxqEMlQ8aeIl9YS9anRg
-         Icug==
-X-Gm-Message-State: AFuF++lH7XRf8WYoNHTIn2Wmo0/FPVwlmxReZHqOmNnt3Agjba2lX3r3
-	PSOB1ofR3r4KGLCkEudaTHOw0BKyTXcte6qClDfEFjfz2pfhyVMKIn1/
-X-Gm-Gg: AYBFou04+5iEUN5gUAoo4ynAi0XHfAYzdxnCILsI8Gmjy9mbD9v4vwd1q4aqzeD0axz
-	x9UlDdir/HhxA2DqX3z+AXEoEeMJeCeCTZuMS/z4/EBWHu6I0Rp5TPVo0nCvGTTblRPXQBak7mW
-	gxgWHMiGnzc+8maj574iiZ5tWLIKqRetfisOaiLlJ7f6v/9aAHlssJ38Kq3Gy4Ea73Xz36i3Zvd
-	r2QOH6C6sg9V25zYLCMxC4aU7lvY24GCEh0Hyd+M4CMAGXiu8SBjXufBhacWIuYbSj/BNQtAUZz
-	4Lzf8LtarY/2i03LFV++kQ5ngaFXqc3kEi1wMUVsuIVHC4lYML8BzjkiO+u2TDoYPkkB8bXlgnk
-	jzxenCzyx6wi13idnE0WU3w7bDYOK4W/O7eAk/g+m5J/70ooeuZYH02zXqyi4e4UCyk2t8ETH3+
-	KOKUzsG2kZIcIddEGkZ0LcqlCr6fyHQv4OEfuVBqtK0JhsVtPTLOsS7DzqaWN1Yc0/MldQAvA7e
-	0KaKiBVaGaXsw==
-X-Received: by 2002:a17:90b:5109:b0:399:e97:8d5a with SMTP id 98e67ed59e1d1-39aee152d79mr20056075a91.25.1788442049502;
-        Thu, 03 Sep 2026 06:27:29 -0700 (PDT)
-Received: from ubuntu.. ([49.205.39.116])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-143199692a6sm10752142c88.12.2026.09.03.06.27.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 06:27:28 -0700 (PDT)
-From: Ajith P V <ajithpv.linux@gmail.com>
-To: tung.quang.nguyen@est.tech,
-	jmaloy@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Ajith P V <ajithpv.linux@gmail.com>
-Subject: [PATCH net-next v5] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
-Date: Thu,  3 Sep 2026 13:27:18 +0000
-Message-ID: <20260903132718.1616159-1-ajithpv.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIXwLsSd"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 89B061F000E9;
+	Thu,  3 Sep 2026 13:28:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788442135;
+	bh=cXIQqHtsttnd1IPYZ00yXUmi1oQqWL5TqZ5grwGtN4c=;
+	h=From:To:Cc:Subject:Date;
+	b=FIXwLsSdS9DX0fr11SJz2bWkyNNO3jz17UQ5HvXkpxRs+w2BRnYl7shYjChenn+Nk
+	 njSCrtCgXCtIUOFbnL9ClA8lPIJBa4FkTOrpOgjzpxSTS7A2cT09F+vFqRpLyO9zJr
+	 Ek0mmix7g6zK0UCe9uNtLA558ArFWsXpb5LXE/wNMnwAcAz7COGbJKh6Y7CEj69hfL
+	 R6cp4OHK8ONzxoepJvOFjfpBykPrU5439aahkHv8nliuZhNMTpoFBlrI4no8MUCDvD
+	 +L0YDnQr053zE9UFUtKT7E2qt/o4W1XbKOmEgFtH/giRA4rFtTWDB4NWWwm4ALo5ZW
+	 oC8HR/exsgwOQ==
+From: "syzbot" <syzbot@kernel.org>
+To: syzkaller-bugs@googlegroups.com, Slawomir Stepien <sst@poczta.fm>, "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <cel@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jeff Layton" <jlayton@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Trond Myklebust" <trondmy@kernel.org>, "Trond Myklebust" <trond.myklebust@primarydata.com>
+Cc: Dai.Ngo@oracle.com, horms@kernel.org, linux-kernel@vger.kernel.org, neil@brown.name, okorniev@redhat.com, syzbot@lists.linux.dev, tom@talpey.com
+Subject: [PATCH] sunrpc: reject socket already in use in svc_addsock()
+Message-ID: <554e50fa-697c-4e57-b5a5-a1c280816436@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Date: Thu,  3 Sep 2026 13:28:54 +0000 (UTC)
 
-The `strcpy()` function is deprecated and moving towards code-tree
-elimination. Replacing it with `strscpy()` fixes potential buffer
-overflow vectors by ensuring safe NULL-termination based on the
-destination buffer size limit [1][2].
+From: Slawomir Stepien <sst@poczta.fm>
 
-To make the interface safer and more robust for future callers, refactor
-`tipc_bearer_get_name()` to accept a destination buffer length parameter.
-Replace `strcpy()` with `strscpy()` and pass through any potential
-`-E2BIG` truncation error code up to the caller. Update the existing
-caller in `net/tipc/monitor.c` to pass its array size.
+When a socket is added to an RPC service via svc_addsock() (for example, by
+writing its file descriptor to /proc/fs/nfsd/portlist), svc_setup_socket()
+saves the original socket callbacks (such as sk_state_change) into struct
+svc_sock and replaces them with RPC-specific callbacks (such as
+svc_tcp_state_change). It also attaches the new svc_sock to
+sk->sk_user_data.
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-Link: https://github.com/KSPP/linux/issues/88 [2]
+If the same socket file descriptor is added to an RPC service again,
+svc_addsock() invokes svc_setup_socket() a second time on the same socket.
+During the second setup, svsk->sk_ostate is assigned the socket's current
+sk_state_change callback, which was already replaced with
+svc_tcp_state_change. When a state change event subsequently occurs on the
+socket (for example, when connect() is called), svc_tcp_state_change()
+invokes svsk->sk_ostate, calling itself in an infinite recursion until the
+kernel stack overflows and triggers a stack guard page fault:
 
-Signed-off-by: Ajith P V <ajithpv.linux@gmail.com>
+BUG: TASK stack guard page was hit at ffffc900030b7ff8 (stack is
+ffffc900030b8000..ffffc900030c0000)
+Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
+...
+Call Trace:
+ <TASK>
+ svc_tcp_state_change+0x76/0x2e0 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x76/0x2e0 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x76/0x2e0 net/sunrpc/svcsock.c:917
+ ...
+ tcp_done_with_error net/ipv4/tcp_input.c:4877 [inline]
+ tcp_reset+0x176/0x380 net/ipv4/tcp_input.c:4909
+ tcp_rcv_synsent_state_process net/ipv4/tcp_input.c:6903 [inline]
+ tcp_rcv_state_process+0x13bc/0x48a0 net/ipv4/tcp_input.c:7197
+ tcp_v4_do_rcv+0xafc/0x1530 net/ipv4/tcp_ipv4.c:1876
+ sk_backlog_rcv include/net/sock.h:1192 [inline]
+ __release_sock+0x25b/0x390 net/core/sock.c:3260
+ release_sock+0x190/0x260 net/core/sock.c:3859
+ inet_wait_for_connect net/ipv4/af_inet.c:616 [inline]
+ __inet_stream_connect+0x863/0xe00 net/ipv4/af_inet.c:710
+ inet_stream_connect+0x66/0xa0 net/ipv4/af_inet.c:755
+ connect_socket net/socket.c:2141 [inline]
+ __sys_connect_file net/socket.c:2166 [inline]
+ __sys_connect+0x316/0x450 net/socket.c:2183
+ ...
+ </TASK>
+
+Fix this by checking if so->sk->sk_user_data is already set in
+svc_addsock() before proceeding with svc_setup_socket(). If it is already
+non-NULL, return -EBUSY to prevent re-initializing an active socket.
+
+Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
+Assisted-by: Gemini:gemini-3.7-flash Gemini:gemini-3.1-pro-preview syzbot
+Reported-by: syzbot+c9834a0c0215e6d8697a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c9834a0c0215e6d8697a
+Link: https://syzkaller.appspot.com/ai_job?id=30de91d1-1d14-4676-8c38-a3564f7acf48
+Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+
 ---
-v5:
-  - Cleaned up implementation by removing extra `ret` variable as suggested.
-  - Wrapped long lines to fix checkpatch column-limit warning.
-v4:
-  - Avoid hard-coding TIPC_MAX_BEARER_NAME in the function body.
-  - Pass size_t len from the caller down to strscpy().
-  - Forward strscpy()'s -E2BIG error up through the existing int return type.
-  - Updated function documentation comment block.
-v3:
-  - Fix patch title as suggested by Tung Quang Nguyen.
-  - No code changes from v2.
-v2:
-  - Target net-next tree instead of standard net tree as requested by Tung Quang Nguyen.
-  - No code changes from v1.
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 50e5e7f5b..e8cc4329f 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1541,6 +1541,9 @@ int svc_addsock(struct svc_serv *serv, struct net *net, const int fd,
+ 	err = -EISCONN;
+ 	if (so->state > SS_UNCONNECTED)
+ 		goto out;
++	err = -EBUSY;
++	if (so->sk->sk_user_data)
++		goto out;
+ 	err = -ENOENT;
+ 	if (!try_module_get(THIS_MODULE))
+ 		goto out;
 
- net/tipc/bearer.c  | 6 ++++--
- net/tipc/bearer.h  | 3 ++-
- net/tipc/monitor.c | 3 ++-
- 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-index 05dcd2f9e887..65fa18928fe3 100644
---- a/net/tipc/bearer.c
-+++ b/net/tipc/bearer.c
-@@ -195,9 +195,10 @@ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name)
- /*     tipc_bearer_get_name - get the bearer name from its id.
-  *     @net: network namespace
-  *     @name: a pointer to the buffer where the name will be stored.
-+ *     @len: size of the destination buffer
-  *     @bearer_id: the id to get the name from.
-  */
--int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
-+int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id)
- {
- 	struct tipc_net *tn = tipc_net(net);
- 	struct tipc_bearer *b;
-@@ -209,7 +210,8 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
- 	if (!b)
- 		return -EINVAL;
- 
--	strcpy(name, b->name);
-+	if (strscpy(name, b->name, len) < 0)
-+		return -E2BIG;
- 	return 0;
- }
- 
-diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-index 41eac1ee0c09..9ccc9ffa925a 100644
---- a/net/tipc/bearer.h
-+++ b/net/tipc/bearer.h
-@@ -226,7 +226,8 @@ int tipc_l2_send_msg(struct net *net, struct sk_buff *buf,
- void tipc_bearer_add_dest(struct net *net, u32 bearer_id, u32 dest);
- void tipc_bearer_remove_dest(struct net *net, u32 bearer_id, u32 dest);
- struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name);
--int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id);
-+int tipc_bearer_get_name(struct net *net, char *name,
-+			 size_t len, u32 bearer_id);
- struct tipc_media *tipc_media_find(const char *name);
- int tipc_bearer_setup(void);
- void tipc_bearer_cleanup(void);
-diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
-index a94b9b36a700..a8a088fc2a2c 100644
---- a/net/tipc/monitor.c
-+++ b/net/tipc/monitor.c
-@@ -829,11 +829,12 @@ int __tipc_nl_add_monitor(struct net *net, struct tipc_nl_msg *msg,
- {
- 	struct tipc_monitor *mon = tipc_monitor(net, bearer_id);
- 	char bearer_name[TIPC_MAX_BEARER_NAME];
-+	size_t name_len = sizeof(bearer_name);
- 	struct nlattr *attrs;
- 	void *hdr;
- 	int ret;
- 
--	ret = tipc_bearer_get_name(net, bearer_name, bearer_id);
-+	ret = tipc_bearer_get_name(net, bearer_name, name_len, bearer_id);
- 	if (ret || !mon)
- 		return 0;
- 
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
 -- 
-2.43.0
-
+See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
+The person who has signed off on the patch is responsible for
+addressing comments.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
