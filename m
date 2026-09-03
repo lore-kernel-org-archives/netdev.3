@@ -1,245 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61E135C1BD
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 03:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DCF34D915
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 03:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788404897; cv=none; b=l0iSlXrQR/Yke7rqEqKxJd5LB2dIBHhLhL1+OpHqiguxJo3gsRD2eruwDD87vwcfYh4PrMrBV/rNPUR7tCSPhC9ngk4xuvMzPGP1S7cTOENIYYyTm+KTMU3V7CnO8/2RRo0Tpw27swkU465wjFBcwApugsaxIipQudRMj0vKtd4=
+	t=1788405412; cv=none; b=KJa37LCqheDIOg+o1gf6A9N7pxqHdb5Yy2GV+pcn0JEasEmUdGiIET6Q44Te6/GoiAT1w3hlg7VuIvAGD1ssKsOCz8TlO6RT6uXfNKxnCFi/zobB+zE3glwkyCFnC/z0ol7u4+9tgh1K5RXjcTzq68oxnqPXw/n25QbnjgosXIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788404897; c=relaxed/simple;
-	bh=Y40n9YLM+RP6KIaB6uIxHdSlKdtOiVE8Z7UhXQbZo1s=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OvFHCsNeDNg/ZMc61dIf2ryKuq1ldQFK89s+tsmoqQ9+dOcAkNuIfRifpQhwTguxxn00Gn2FM1aUdzBLd1538UoMAclvayO96qnuiH0wcBLH0DpQaE1+ba/xySdC+NftQl9OGEdMQ9MMvTxRhwc5MEaZkYDp6swI8hEcDLMFgSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMamBfwy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788405412; c=relaxed/simple;
+	bh=/GmG2lNFZ6OJbWK1fHpz+vsHNX23AQ1RbWgGtVFqtiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NzirLPI4WSYP+xD9Hm1V5/+XO+qX3aGIz6ERT1qUF3eGyr92veJRjBu5rrzd3aYMedRemAmrn10TgCEoW4NkfW2KTpTmXmZK/uT//xKkXk/RojhpchQRt9UHoi7cZWXlhOFtO3sVw9QCfD9iT47P+x9LEB5TFnqqyFa+l56enas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n2vrlneL; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMamBfwy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1FD1F000E9;
-	Thu,  3 Sep 2026 03:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788404893;
-	bh=3Jouh/x03Sa0q7AB6QwhIixWEBFF4jE4cHKWpK4b8VA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RMamBfwySlAxTRi+SgG0RldPaqsPFOp3D791lyS6VKpqv6Hblhvt251vIImdYbXpa
-	 fVDWC9+vt6YbBj/tynBy7nO3rRdBJxLLJTGU2IHS+KVSTZHRy+Oz49OvV7UNzLo2sM
-	 2G1k7NKOS7j1cDdGtMpeKGgdafOGdWXokIWfXCzZD1ms92KftZvJ9UDSF1XiBmBdeM
-	 C8noB+5NhPpmJS7HTag6fZ+sez/DU9lFS0rm8E3DVmWd7oAI2zcd2qtNoGPcuGDnFx
-	 qWRkOO8g2hJ96Bk1HvS9rEUc4I1lR9FLfPjcPKGnBTC0GixiVo/rb5kyQDf9RFLG9L
-	 phyfnpVIl/W4w==
-Subject:
- Re: [net,v4] net: libwx: protect ring accesses with RCU and NULL check
-From: netdev-bot+sashiko@kernel.org
-To: mengyuanlou@net-swift.com
-Cc: netdev@vger.kernel.org, linglingzhang@trustnetic.com,
- jiawenwu@trustnetic.com, duanqiangwen@net-swift.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Date: Thu, 03 Sep 2026 03:08:12 +0000
-Message-ID: <178840489278.3394541.1727945751975594257@kernel.org>
-In-Reply-To:
- <4353E83B1147D652+20260830070624.7410-1-mengyuanlou@net-swift.com>
-References: <4353E83B1147D652+20260830070624.7410-1-mengyuanlou@net-swift.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n2vrlneL"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so1965422a12.3
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 20:16:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788405410; x=1789010210; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fJpu4x+o7ufVQL7Dk6JIrixaD1SGR2kHU0bAvSvj9sM=;
+        b=n2vrlneLv14/3wRHm/HaPyjNyuFDiE6SNMqj/dPoaKtcIvgApgCjT44I4+Z+5OLcOU
+         GBIHG2NBHDhCSTEYXv5YGXrior/VFOUK9Z9M6jL6xHHrh1yj091T2+ZV1usekhlGgCX8
+         bDsUlUaKrQsR4uIwu1RHSOmwUiZql6VfTkRb3ApIYwdqyZv18bSFs4wM67qjDmCIzWCo
+         9nNCdYKGyXSJDASBNqjQKGqqk/GSCjglObUcL04zsBbVU8zK31w3ASBMe3uR3lHNSMVc
+         f0RjLsNN5Yp/keHt95Lf1hjvTfbYhUos9m60zebiqT5yYjovSC4Nln93S8ZMzNNj1htu
+         a5hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788405410; x=1789010210;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fJpu4x+o7ufVQL7Dk6JIrixaD1SGR2kHU0bAvSvj9sM=;
+        b=lVkQ0SpsB+1hvhSRXByFf2aLdnYPZMPHgqs7MAyqA8Hbdcn+rGgD+KxsBoQeixLgkZ
+         +jLfQzK8JnDhjoHnboNSeC15NYrL2vkp0NFETLp50CLr3jIDeCoQfrdtcfdvia1hr530
+         nD754VC5pgL++hJkFG7qvxp6iTvCVsazqTMmxS6Ax7ViHIgYfuYizRal7fqkDldyZvF1
+         oSRxW4QSFr+AIiZioY9mv03Do7x0zmpHTtH3kgri6Ib6yFjfE5IVG9Jmf/oMtM+7k84R
+         E6YJx0ZjCjGvGBhhPvg49nVFKzLf5Hz10hNEyUuBQxfO63OallKPHOTV3VeR/lg3hyjx
+         oPRg==
+X-Gm-Message-State: AFuF++lawpgl+IK5oRCjtFbUpEzB8aSrKoI9ZIAoL9qKWlc3FiyzsNyD
+	sdaN1yM4gcaU8qKc05UC1i0/GVM/gRTfxZZzR9awmqufZHmEEFv+Ld2bfw3pvg==
+X-Gm-Gg: AYBFou12sow2gjLsMCHhwMO3FdW3sIIyD0kf90FAY3mrbe72MbNefpCmPJC5RNBx4WV
+	24enYwC+nlB329f7fRh1gRwFI168kYAyGZA11fqwu/+GlRxlomelQ7dhlAvCDSajirmb8yNXnoG
+	ybNhZR0n1hTNs3dBm+tRXwZobIxMTgAOvZ95y9RKQ5bFtH4uU/NJTa4cgZGRvJJiUGLswJh/6RK
+	tmIPfCldUH2TVl5Mtx5S8CdnPdZdK28GdDaknkcXXU+fk24aEXl5oIXC/KgMkDKQRkd4+s3jQwB
+	pSTsfu+0LJ4jWhQXp29evIlmNDfU6oh2iWTALnF3rvCWUIOcOFRXCrYORtdBQj0cnDzVJkkiq8G
+	4rjqz4sV1HJ02DiZr5y71viIqDZLr+KgAwTtAZLLWg3OtCH3HGSwBWUwO/yw1iAMeBWhdzPNnEP
+	IKPaf7eJoEdSVUP5WNOGNSDLYLlVIq01ViEJQvjaf2yrThGeaVe+oChjxqP2i9gHGvjljA0b8qz
+	yS4ti+ZwoCwKfM=
+X-Received: by 2002:a17:90b:4d08:b0:38f:de97:b06 with SMTP id 98e67ed59e1d1-39aede9344cmr12447130a91.5.1788405410279;
+        Wed, 02 Sep 2026 20:16:50 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661d:3050::4d0:16])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c397b1sm2244114a91.8.2026.09.02.20.16.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Sep 2026 20:16:49 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v12 0/5] net: dsa: motorcomm: Add LED support
+Date: Thu,  3 Sep 2026 11:16:21 +0800
+Message-ID: <20260903031630.356840-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+LEDs can be described in the device tree using the standard LED node
+notation. Currently, only parallel mode and strict 1:1 mapping (i.e. the
+HW default) are supported.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0 (1)
+v11: https://lore.kernel.org/r/20260831044818.4103477-1-mmyangfl@gmail.com
+  - handle one of *delay_on / *delay_off is zero
+  - fix error path for yt921x_led_setup()
+v10: https://lore.kernel.org/r/20260816193905.218112-1-mmyangfl@gmail.com
+  - new patch to fix lock status check
+  - LED control block redesigned
+v9: https://lore.kernel.org/r/20260726162731.1005803-1-mmyangfl@gmail.com
+  - LED initialization sequence adjusted
+  - add DT description
+v8: https://lore.kernel.org/r/20260725045008.858692-1-mmyangfl@gmail.com
+  - limit the led port number
+v7: https://lore.kernel.org/r/20260723195335.806002-1-mmyangfl@gmail.com
+  - rebase
+v6: https://lore.kernel.org/r/20260709014812.1158178-1-mmyangfl@gmail.com
+  - per-port initialization support
+v5: https://lore.kernel.org/r/20260707064752.1030345-1-mmyangfl@gmail.com
+  - improve trigger selection
+v4: https://lore.kernel.org/r/20260703165241.542195-1-mmyangfl@gmail.com
+  - fix some reg op typos
+v3: https://lore.kernel.org/r/20260701155519.273212-1-mmyangfl@gmail.com
+  - fix null pointer dereference
+  - support polarity auto-configuration
+v2: https://lore.kernel.org/r/20260629183137.541341-1-mmyangfl@gmail.com
+  - allocate LED structures only
+  - eliminate double locking
+v1: https://lore.kernel.org/r/20260618202716.2166450-1-mmyangfl@gmail.com
+  - set up polarity correctly
+  - do not set up .brightness_get() to prevent dead lo
 
-- [Medium] Commit message premise is unsubstantiated and the single
-  `Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")` tag…
-- [Medium] Ring pointers are published to lockless readers without
-  release ordering.
+David Yang (5):
+  net: dsa: yt921x: Check lock status with lockdep_assert_held_once()
+  net: dsa: motorcomm: Move to subdirectory
+  net: dsa: motorcomm: Split SMI module
+  net: dsa: motorcomm: Add LED support
+  dt-bindings: net: dsa: yt921x: Add LEDs definition example
 
-Pre-existing issues:
-- [Low] The loop bounds of every newly RCU-protected traversal
-  (wx->num_tx_queues / wx->num_rx_queues) remain plain, unannotated…
-
---
-
-net: libwx: protect ring accesses with RCU and NULL check
-
-This converts the wx->tx_ring[]/wx->rx_ring[] traversals in the libwx
-statistics, error, VLAN and PTP paths to READ_ONCE() plus a NULL check
-inside rcu_read_lock()/rcu_read_unlock(), and switches the ring slot
-assignment and clearing in wx_alloc_q_vector()/wx_free_q_vector() to
-WRITE_ONCE().
-
-A few questions below, first about the changelog and the Fixes tag, then
-about the publish side in wx_lib.c.
-
-> In wx_update_stats(), wx_get_ethtool_stats(), and other service tasks,
-> the ring pointers wx->rx_ring[i] and wx->tx_ring[i] can become NULL or be
-> freed asynchronously during queue teardown or channel reconfiguration.
-
-[Severity: Medium]
-Does this premise hold for the service task paths?
-
-txgbe_disable_device() and ngbe_disable_device() stop the service task
-synchronously:
-
-	timer_delete_sync(&wx->service_timer);
-	cancel_work_sync(&wx->service_task);
-
-and the ring slots are only cleared afterwards, in
-wx_clear_interrupt_scheme() -> wx_free_q_vectors() -> wx_free_q_vector().
-So can wx_ring_tx_pending() or wx_detect_tx_hang() actually observe a slot
-being cleared or a ring being freed underneath them?
-
-The PTP aux work is similarly quiesced by wx_ptp_suspend() ->
-ptp_cancel_worker_sync() before the rings go away, and
-wx_get_ethtool_stats() and wx_vlan_strip_control() are reached from
-RTNL-serialized callbacks (the latter only from wx_set_rx_mode()).
-
-The one reader that does look unserialized against
-wx_clear_interrupt_scheme() is wx_update_stats() reached from
-wx_get_stats64() (ndo_get_stats64, e.g. a read of /proc/net/dev), which
-before this patch dereferenced wx->rx_ring[i] with no NULL check. That is
-the hunk the changelog does not call out. Could the message describe that
-path specifically and mark the rest as hardening?
-
-> Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
-
-Is this tag right for most of the hunks? git blame attributes
-wx_ring_tx_pending()/wx_detect_tx_hang() in wx_err.c and the tx_ring loop
-in wx_update_xoff_rx_lfc() to 22d95e93c05b0, and wx_vlan_strip_control()
-to f3b03c655f678. A stable backport selected on this single tag lands in
-trees that have neither wx_err.c nor wx_ptp.c, so the patch cannot apply
-there. Should the tag be narrowed to the wx_update_stats()/
-wx_get_ethtool_stats() change that fixes the user-visible dereference?
-
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> index 122c4952d203..9e2cf794f81c 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-
-[ ... ]
-
-> @@ -2893,10 +2906,13 @@ void wx_update_stats(struct wx *wx)
->  
->  	spin_lock(&wx->hw_stats_lock);
->  
-> +	rcu_read_lock();
->  	/* gather some stats to the wx struct that are per queue */
->  	for (i = 0; i < wx->num_rx_queues; i++) {
-> -		struct wx_ring *rx_ring = wx->rx_ring[i];
-> +		struct wx_ring *rx_ring = READ_ONCE(wx->rx_ring[i]);
->  
-> +		if (!rx_ring)
-> +			continue;
->  		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
-
-[Severity: Low]
-This is a pre-existing issue and not introduced by the patch, but the loop
-bound itself stays an unannotated plain load while the reconfiguration path
-writes it concurrently:
-
-wx_free_q_vectors()
-	wx->num_tx_queues = 0;
-	wx->num_rx_queues = 0;
-	wx->num_q_vectors = 0;
-
-	while (v_idx--)
-		wx_free_q_vector(wx, v_idx);
-
-The count and the ring array are two independently updated variables, and
-the same pattern is in wx_ring_tx_pending(), wx_detect_tx_hang() and
-wx_vlan_strip_control(). Since the counts are zeroed before the slots are
-cleared and the rings live in a q_vector freed with kfree_rcu(), a stale
-count inside the new RCU section resolves to either a still-valid ring or a
-NULL slot, so the visible effect looks limited to a partial statistics
-sample or a skipped register write, but it remains a KCSAN-reportable race.
-Would annotating the count loads be worth doing while the traversals are
-being touched?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> index ed5aad7857bd..c227e9ab8a4a 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> @@ -2191,7 +2191,7 @@ static int wx_alloc_q_vector(struct wx *wx,
->  		ring->queue_index = txr_idx;
->  
->  		/* assign ring to wx */
-> -		wx->tx_ring[txr_idx] = ring;
-> +		WRITE_ONCE(wx->tx_ring[txr_idx], ring);
->  
->  		/* update count and index */
->  		txr_count--;
-> @@ -2217,7 +2217,7 @@ static int wx_alloc_q_vector(struct wx *wx,
->  		ring->queue_index = rxr_idx;
->  
->  		/* assign ring to wx */
-> -		wx->rx_ring[rxr_idx] = ring;
-> +		WRITE_ONCE(wx->rx_ring[rxr_idx], ring);
-
-[Severity: Medium]
-The v3 posting used rcu_assign_pointer() here and v4 changed it to
-WRITE_ONCE(). Does that leave the newly added read side without ordering?
-
-WRITE_ONCE() only stops the compiler from tearing or reordering this single
-store, it does not emit smp_store_release(). The ring is initialized with
-plain stores immediately before the publish:
-
-		ring->dev = &wx->pdev->dev;
-		ring->netdev = wx->netdev;
-		ring->q_vector = q_vector;
-		...
-		ring->queue_index = rxr_idx;
-
-		/* assign ring to wx */
-		WRITE_ONCE(wx->rx_ring[rxr_idx], ring);
-
-On a weakly ordered CPU, can a reader doing READ_ONCE() under
-rcu_read_lock() see the non-NULL pointer before those field stores become
-visible? The NULL check added by this patch does not cover that case, since
-the pointer is non-NULL and only the contents are stale.
-
-reg_idx looks like a separate hole, because wx_alloc_q_vector() never
-writes it. wx_init_interrupt_scheme() sets it after the pointers are
-already published:
-
-wx_cache_ring_rss()
-	for (i = 0; i < wx->num_rx_queues; i++)
-		wx->rx_ring[i]->reg_idx = i;
-
-and wx_vlan_strip_control() feeds that value straight into a register
-offset:
-
-		j = ring->reg_idx;
-		wr32m(wx, WX_PX_RR_CFG(j), WX_PX_RR_CFG_VLAN,
-		      enable ? WX_PX_RR_CFG_VLAN : 0);
-
-If wx_vlan_strip_control() can run against a freshly published ring set,
-can this reprogram the VLAN strip bit of a different receive queue? Note
-that switching the publish back to rcu_assign_pointer() would not close
-this one, since reg_idx is written after publication.
-
-Publication is reachable on a registered netdev through
-txgbe_setup_tc()/ngbe_setup_tc() and the resume paths, concurrently with
-wx_get_stats64() -> wx_update_stats(), so the statistics readers can pick
-up uninitialized per-queue counters and export them to userspace.
-
-> @@ -2245,10 +2245,10 @@ static void wx_free_q_vector(struct wx *wx, int v_idx)
->  	struct wx_ring *ring;
->  
->  	wx_for_each_ring(ring, q_vector->tx)
-> -		wx->tx_ring[ring->queue_index] = NULL;
-> +		WRITE_ONCE(wx->tx_ring[ring->queue_index], NULL);
->  
->  	wx_for_each_ring(ring, q_vector->rx)
-> -		wx->rx_ring[ring->queue_index] = NULL;
-> +		WRITE_ONCE(wx->rx_ring[ring->queue_index], NULL);
-
-[ ... ]
+ .../bindings/net/dsa/motorcomm,yt921x.yaml    |  23 +
+ MAINTAINERS                                   |   2 +-
+ drivers/net/dsa/Kconfig                       |  10 +-
+ drivers/net/dsa/Makefile                      |   2 +-
+ drivers/net/dsa/motorcomm/Kconfig             |  17 +
+ drivers/net/dsa/motorcomm/Makefile            |   5 +
+ .../net/dsa/{yt921x.c => motorcomm/chip.c}    | 228 +-----
+ .../net/dsa/{yt921x.h => motorcomm/chip.h}    |  15 +
+ drivers/net/dsa/motorcomm/leds.c              | 666 ++++++++++++++++++
+ drivers/net/dsa/motorcomm/leds.h              | 118 ++++
+ drivers/net/dsa/motorcomm/smi.c               | 180 +++++
+ drivers/net/dsa/motorcomm/smi.h               |  61 ++
+ 12 files changed, 1108 insertions(+), 219 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/Kconfig
+ create mode 100644 drivers/net/dsa/motorcomm/Makefile
+ rename drivers/net/dsa/{yt921x.c => motorcomm/chip.c} (96%)
+ rename drivers/net/dsa/{yt921x.h => motorcomm/chip.h} (99%)
+ create mode 100644 drivers/net/dsa/motorcomm/leds.c
+ create mode 100644 drivers/net/dsa/motorcomm/leds.h
+ create mode 100644 drivers/net/dsa/motorcomm/smi.c
+ create mode 100644 drivers/net/dsa/motorcomm/smi.h
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/4353E83B1147D652%2B20260830070624.7410-1-mengyuanlou%40net-swift.com
+2.53.0
+
