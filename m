@@ -1,142 +1,253 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C715039448F
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D593FB07E;
+	Thu,  3 Sep 2026 07:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788420491; cv=none; b=QqJTs3GNt85BYA/p7Ti+YIbNngKgiHm353RaTauasjHl8AN0vZS9LIcvs+ytw0Ysfi4HUqU4H+3KBkJhuQ5Wc2ZSDKkiDCr4jI2P4HAtzb1F/jyErB/YLueOlu7N3watg5ZPIKl05TtpYzu+wW77jeO35rvGS8o+8NSzEn6nx7g=
+	t=1788420574; cv=none; b=WWrWr/k1NtaT+ijVgD/qv7k9h0EgVmXLzlpFBmulaIYdfvLGIQANY9ubMq3D13yg5utzi+DbKuubPiDDRvXPogUPslpp+gaN37uT8t0MSIFvWGu435gv1ADU/LIfWYJc84NFE/6R7GYRmWHGDejtPYu3i/5K8iVP/AGAlR+1jl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788420491; c=relaxed/simple;
-	bh=5N23kZg17Uv7Cz4yV45WfpYVVL69fausX5a9IS5rPSY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GJbv15MidNKlWGinQX9L8AoxmkblNuDVfq4PzS5yv5jsoztK8Iezlo3RGn+aQLnNckUpM8Ui1K+ZijuwBV4npjWD1R4dKyiC4NvXOVHyGpCG/JOTUd8tS2bX1nZP3r9i4u9HemkrV5tXEbj3kIC/xPaEvbBwjmyiKA5yjTe2zdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=LQTKlVMQ; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1788420574; c=relaxed/simple;
+	bh=u1AEGd4v8vg+H9oKGs7YnfpOC2CfkuqfXBVIKdp7dSM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aWDg/20RRuy+COENgrpYGwMLfMisTOkYkoEZjRdDhPc+YQB5DRvrqIea5EnvziSWyZhFX+kkJFfuZrPixQ8mMa29wKbYU3lB4p1bNmnIM175+0+dUVJPUh+gLQoHLSxhfrnT8+QVrT1/sPbXbcS52lM9FRjuScAMXSjtY/CItqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ilU7vbWs; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="LQTKlVMQ"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48433fad54aso1297944f8f.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:28:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788420488; x=1789025288; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FeZeHnjIdwq+MQ17MHHapFhQUcjm9i7LeAcv2NoV3wM=;
-        b=LQTKlVMQ9JPxLU9HfUh2CsHOkWUUwFRdlOw0KIYKf4pBH7pV3vs7r6+IuhltcL2lv3
-         gUF13/3g1k5GbaPtFm3vGHMvV7ExfweeumCXdshE7/HIxQN/QPEL28inXiT9s5UAsyr9
-         6vn5kRi91Ql2+3MeihV37cixKI/pdUTiA5XwHsNgHc4k2gg4itgtt4OIAbFEzeizZW9q
-         DsMaPgZTXmmgtEzIwchEQVjtuR3AZxgR7EkGXQ9VdZUvPiCr+a17l5VAv01UGhIpHLtu
-         N0FFjY6NBNgKGNukgu+y0SauaxoP+QcgVFe6Nh+70IG5v9wTEuxlM9Loc2gFihUCo6Px
-         ZZLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788420488; x=1789025288;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FeZeHnjIdwq+MQ17MHHapFhQUcjm9i7LeAcv2NoV3wM=;
-        b=AEufqZQHpvChFcF5eHKfg4eCVEjeONqzeiy9Nbi+30wHHP4dFPWuFFzS29nLiK6+Sy
-         wAyXUqshz6Gb4qeRA4KW7y//tBmIRV4jpvkx52u7TzcvEZubXVxeD7h8Hg8lBfE/7weu
-         i5nspJHMXjfhcKLPckGJEuVVpr7v3UQqjKQIPccUAFyXoY1ifLiMusCGt95md9rveXUl
-         P5Jh+IqU47RfL9pw5zQycy6vLSLYd03C5u/2gkVV6dQAI9W95fXEk1CIkQ3Skqe4HHQj
-         3Xa8P9t0mV4i5SQOqyPyFZu2l5+SMjau9pVXvsrbDZkPojwRC+nTtlk20IWPDeiCBSQJ
-         pT+Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzigaF9Ki1cFLiAkiFVW/YcFXo6mODLmk3jRr/7IEtMeCp917xPRIBcW4N2VH/sbIeleEqppmY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nUYyBjt0LtmSS6UxRUceo4fCv6mhnL1c89KEJgCfoD6dBXPZfi
-	SREOuXQHLyvcYfP2g0XuaZqg6UlVDKgj1zSicoJswyCH2o2qiO/1mpwmUn/2LhSKJWA=
-X-Gm-Gg: AYBFou2BqIN36A8y2xpyTeeqfZqB0aozvWrLtK6SgySRktO7NKB+hBfV+VthRVIsplZ
-	EDMKgy40OWSyNyCR+RziPXV0SRE0M24rPU6ik59k+lKvh455sdqkP8VDxcsIwfbLMe6aYohJXNd
-	x8W+pgl+rW1wE0Mga9bB3UwmN64xqGX5PLxleCd17u77ts4j8TG9V8yChsKEF8gxaKQXgm6/323
-	uuz+UBGvaFw+tqDN4JpvtaR1hBnCvUNtBFdmYU29IfkxXibgfj5r0jbJrizZ5lHG3pMlyRKjx8y
-	BCnaShAHaKGfovawe1j+TP+SLbnUXVEm6h5JX3w1q9mBlaiF9+VW7UfLM9ShmpJMmry+2cdVWMv
-	WTjlSYnWeBS1Y5MSvkkw0VVT7m6hDWOf/M6RNhWsrh95UvrElB1qdJQNkbIh2y1TDgz5rLXqhan
-	oF4SnTYO8nARONlWRs07wThcYSr+YXq2al0HRofB5rWyo4TVEEVywREmV0ucIxykH65qQBOSV8j
-	SSK5ZDPtRitQ7DDqVXFQPnT3HbMBA==
-X-Received: by 2002:a05:6000:491a:b0:482:ea08:8c97 with SMTP id ffacd0b85a97d-48488e0392dmr19224377f8f.2.1788420487735;
-        Thu, 03 Sep 2026 00:28:07 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-484492cf550sm11790785f8f.37.2026.09.03.00.28.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 00:28:07 -0700 (PDT)
-Message-ID: <238aa513-0c61-4b84-8305-a46d9b527467@blackwall.org>
-Date: Thu, 3 Sep 2026 10:28:05 +0300
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ilU7vbWs"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6837StFfA3295546, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1788420535; bh=5Y4hBGY+aGo4VojakQGtbSySHwNLtKo5TcqlmyPJyGc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=ilU7vbWs62GTUdKWj6hQEFqPjLxttYU/ZJMgz258hei+1ZhHVvuPycux7zUtU5Oz8
+	 3CZQ8NwZu0fwhsg+TjdmYYsqbTQrDdn0yMUkc1OrHMRg+w8Yq6VJDcDAaZLuLDlWvB
+	 WuRSLEjnxLh3JP4jsiBx1R1O7tZHMRaDod19f82+cqigr1mXthwG8nyUyQZ6/I7Sny
+	 kNBoQxsRUnEAScEagq8oN4CXFxgh64bq1ZxAD+8bGvTnxBe8+Ra65Q8AaVdZ67eGOs
+	 s9YVpBjDwocqBgPZS5oopPhUZblJ0pdn15GbYCWdVK5eSwnn2lbKD+eWftM2ZSxdCW
+	 bVNnyY1qKnsaQ==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6837StFfA3295546
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 3 Sep 2026 15:28:55 +0800
+Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 3 Sep 2026 15:28:54 +0800
+Received: from fc44.realtek.com.tw (172.22.241.7) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server id
+ 15.2.2562.43 via Frontend Transport; Thu, 3 Sep 2026 15:28:54 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>
+CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
+	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
+	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>
+Subject: [PATCH net-next v2 8/8] r8152: support UPS for RTL8157 and RTL8159
+Date: Thu, 3 Sep 2026 15:28:52 +0800
+Message-ID: <20260903072852.58695-9-nic_swsd@realtek.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260903072852.58695-1-nic_swsd@realtek.com>
+References: <20260903072852.58695-1-nic_swsd@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/1] net: bridge: use option bits for CFM/MRP frame
- handlers
-Content-Language: en-US, bg
-To: Zhiling Zou <zhilinz@nebusec.ai>, bridge@lists.linux.dev,
- netdev@vger.kernel.org
-Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, henrik.bjoernlund@microchip.com,
- horatiu.vultur@microchip.com, vega@nebusec.ai, zylzyl2333@gmail.com
-References: <cover.1788417901.git.zhilinz@nebusec.ai>
- <0345b9d5aa60ba416f6738ff1b87140f0a749cb8.1788417901.git.zhilinz@nebusec.ai>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <0345b9d5aa60ba416f6738ff1b87140f0a749cb8.1788417901.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 03/09/2026 09:56, Zhiling Zou wrote:
-> CFM and MRP register a global br_frame_type whose hlist_node is linked
-> into the per-bridge frame_type_list when the first MEP/MRP instance is
-> created. Enabling the protocol on multiple bridges therefore inserts the
-> same node into multiple lists. Unregistering it on one bridge then
-> corrupts list state belonging to another.
-> 
-> These handlers can only be installed once per bridge, and they are
-> uncommon. Track their per-bridge enable state with net_bridge option
-> bits, which already live on the Rx hot cache line, and dispatch the
-> matching handler directly from the receive path. Check both bits
-> together first as an unlikely case.
-> 
-> Remove the generic frame_type_list and br_frame_type helpers, which
-> have had no other users since CFM and MRP were added. That shrinks
-> struct net_bridge by 8 bytes and drops the list walk from the fast
-> path. When neither protocol is compiled in, BR_CFM_MRP_OPTS is 0 and
-> the compiler prunes the branch.
-> 
-> Fixes: 90c628dd47ff ("net: bridge: extend the process of special frames")
-> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM frame RX added.")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Suggested-by: Nikolay Aleksandrov <razor@blackwall.org>
-> Co-developed-by: Yilin Zhu <zylzyl2333@gmail.com>
-> Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
-> ---
-> changes in v3:
-> - Always define BR_CFM_MRP_OPTS and keep the fast-path check
->    unconditional. Read br->options with READ_ONCE().
-> - Drop CONFIG ifdefs around CFM/MRP dispatch. Provide header no-ops when
->    the protocols are not compiled in so the compiler can prune them.
-> - v2 Link: https://lore.kernel.org/all/a43fdd12ad2fbb708c090dc4ead60f3e4aa8c0ac.1788159904.git.zhilinz@nebusec.ai/
-> 
-> changes in v2:
->    - Replace the per-bridge br_frame_type object with net_bridge option
->      bits.
->    - Dispatch CFM/MRP handlers from the receive path. Check both option
->      bits together first as an unlikely case.
->    - Cover MRP, which has the same shared hlist_node bug.
->    - Remove frame_type_list so CFM/MRP do not affect the fast path when
->      they are disabled in .config.
->    - v1 Link: https://lore.kernel.org/all/7198fe2845c30c60c6b3833dd78cead8c5966931.1778378864.git.zylzyl2333@gmail.com/
-> 
->   net/bridge/br_cfm.c     | 11 +++--------
->   net/bridge/br_device.c  |  1 -
->   net/bridge/br_input.c   | 35 ++++++++++++++---------------------
->   net/bridge/br_mrp.c     | 13 +++----------
->   net/bridge/br_private.h | 26 +++++++++++++++-----------
->   5 files changed, 35 insertions(+), 51 deletions(-)
-> 
+RTL8157 and RTL8159 support UPS but need different enable logic and EEE
+flag handling than RTL8156. Add r8157_ups_en() and extend
+r8156_ups_flags() with per-speed EEE flags (100M through 10G) and
+5G/10G speed entries for VER_16/17.
 
-Thank you for following up on this, the patch looks good to me.
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+---
+ drivers/net/usb/r8152.c | 110 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 98 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 2a96f3609c2b0..d219b242e1b2d 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -132,6 +132,7 @@
+ #define USB_BURST_SIZE		0xcfc0
+ #define USB_FW_FIX_EN0		0xcfca
+ #define USB_FW_FIX_EN1		0xcfcc
++#define USB_FW_USE_VER          0xcfd7
+ #define USB_LPM_CONFIG		0xcfd8
+ #define USB_ECM_OPTION		0xcfee
+ #define USB_CSTMR		0xcfef	/* RTL8153A */
+@@ -619,6 +620,11 @@
+ #define UPS_FLAGS_250M_CKDIV		BIT(2)
+ #define UPS_FLAGS_EN_ALDPS		BIT(3)
+ #define UPS_FLAGS_CTAP_SHORT_DIS	BIT(4)
++#define UPS_FLAGS_EN_100M_EEE		BIT(9)
++#define UPS_FLAGS_EN_1000M_EEE		BIT(10)
++#define UPS_FLAGS_EN_2500M_EEE		BIT(11)
++#define UPS_FLAGS_EN_5000M_EEE		BIT(12)
++#define UPS_FLAGS_EN_10G_EEE		BIT(13)
+ #define UPS_FLAGS_SPEED_MASK		(0xf << 16)
+ #define ups_flags_speed(x)		((x) << 16)
+ #define UPS_FLAGS_EN_EEE		BIT(20)
+@@ -4185,8 +4191,27 @@ static void r8156_ups_flags(struct r8152 *tp)
+ 	if (tp->ups_info.aldps)
+ 		ups_flags |= UPS_FLAGS_EN_ALDPS;
+ 
+-	if (tp->ups_info.eee)
+-		ups_flags |= UPS_FLAGS_EN_EEE;
++	if (tp->ups_info.eee) {
++		switch (tp->version) {
++		case RTL_VER_17_QFN68:
++			if (tp->eee_adv & MDIO_EEE_10GT)
++				ups_flags |= UPS_FLAGS_EN_10G_EEE;
++			fallthrough;
++		case RTL_VER_16:
++			if (tp->eee_adv & MDIO_EEE_100TX)
++				ups_flags |= UPS_FLAGS_EN_100M_EEE;
++			if (tp->eee_adv & MDIO_EEE_1000T)
++				ups_flags |= UPS_FLAGS_EN_1000M_EEE;
++			if (tp->eee_adv2 & MDIO_EEE_2_5GT)
++				ups_flags |= UPS_FLAGS_EN_2500M_EEE;
++			if (tp->eee_adv2 & MDIO_EEE_5GT)
++				ups_flags |= UPS_FLAGS_EN_5000M_EEE;
++			break;
++		default:
++			ups_flags |= UPS_FLAGS_EN_EEE;
++			break;
++		}
++	}
+ 
+ 	if (tp->ups_info.flow_control)
+ 		ups_flags |= UPS_FLAGS_EN_FLOW_CTR;
+@@ -4237,20 +4262,33 @@ static void r8156_ups_flags(struct r8152 *tp)
+ 	case NWAY_2500M_FULL:
+ 		ups_flags |= ups_flags_speed(9);
+ 		break;
++	case NWAY_5000M_FULL:
++		ups_flags |= ups_flags_speed(10);
++		break;
++	case NWAY_10000M_FULL:
++		ups_flags |= ups_flags_speed(11);
++		break;
+ 	default:
+ 		break;
+ 	}
+ 
+-	switch (tp->ups_info.lite_mode) {
+-	case 1:
+-		ups_flags |= 0 << 5;
+-		break;
+-	case 2:
+-		ups_flags |= 2 << 5;
++	switch (tp->version) {
++	case RTL_VER_16:
++	case RTL_VER_17_QFN68:
+ 		break;
+-	case 0:
+ 	default:
+-		ups_flags |= 1 << 5;
++		switch (tp->ups_info.lite_mode) {
++		case 1:
++			ups_flags |= 0 << 5;
++			break;
++		case 2:
++			ups_flags |= 2 << 5;
++			break;
++		case 0:
++		default:
++			ups_flags |= 1 << 5;
++			break;
++		}
+ 		break;
+ 	}
+ 
+@@ -4422,6 +4460,35 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
+ 	}
+ }
+ 
++static void r8157_ups_en(struct r8152 *tp, bool enable)
++{
++	if (enable) {
++		r8156_ups_flags(tp);
++
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
++				  UPS_EN | USP_PREWAKE | PHASE2_EN);
++
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_MISC_2,
++				  UPS_FORCE_PWR_DOWN);
++	} else {
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
++				  UPS_EN | USP_PREWAKE);
++
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_MISC_2,
++				  UPS_FORCE_PWR_DOWN);
++
++		if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) & PCUT_STATUS) {
++			/* clear USB fw_ver_reg */
++			ocp_write_byte(tp, MCU_TYPE_USB, USB_FW_USE_VER, 0);
++
++			tp->rtl_ops.hw_phy_cfg(tp);
++
++			rtl8152_set_speed(tp, tp->autoneg, tp->speed,
++					  tp->duplex, tp->advertising);
++		}
++	}
++}
++
+ static void r8153_power_cut_en(struct r8152 *tp, bool enable)
+ {
+ 	if (enable)
+@@ -4580,9 +4647,28 @@ static void rtl8157_runtime_enable(struct r8152 *tp, bool enable)
+ 		r8153b_u1u2en(tp, false);
+ 		r8157_u2p3en(tp, false);
+ 		rtl_runtime_suspend_enable(tp, true);
++
++		switch (tp->version) {
++		case RTL_VER_16:
++		case RTL_VER_17_QFN68:
++			r8157_ups_en(tp, true);
++			break;
++		default:
++			break;
++		}
+ 	} else {
+ 		r8153_queue_wake(tp, false);
+ 		rtl_runtime_suspend_enable(tp, false);
++
++		switch (tp->version) {
++		case RTL_VER_16:
++		case RTL_VER_17_QFN68:
++			r8157_ups_en(tp, false);
++			break;
++		default:
++			break;
++		}
++
+ 		r8157_u2p3en(tp, true);
+ 		if (tp->udev->speed >= USB_SPEED_SUPER)
+ 			r8153b_u1u2en(tp, true);
+@@ -9027,7 +9113,7 @@ static void r8157_init(struct r8152 *tp)
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
+ 
+ 	r8157_power_cut_en(tp, false);
+-	r8156_ups_en(tp, false);
++	r8157_ups_en(tp, false);
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
+ 
+@@ -9137,7 +9223,7 @@ static void r8159_init(struct r8152 *tp)
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
+ 
+ 	r8157_power_cut_en(tp, false);
+-	r8156_ups_en(tp, false);
++	r8157_ups_en(tp, false);
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
+ 
+-- 
+2.34.1
 
