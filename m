@@ -1,270 +1,101 @@
 Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5EF4CB8DF
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03BC46C849
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788472581; cv=none; b=N3uqPgWXIJiHk4S67EGzeL0GbHrYLFGNIFR+qbjW1gh6Kxs+VD13OZL3alDkAqTQFe3TgHs1itMblcDntydwG74+0rULBfql3wQ7sTZVdZlKg7BUYjdlgwW0ofN+FYZpVKgmbI4Ygt+easpL7ca2wwaIFQeQ01SMcGy5KhFrdWI=
+	t=1788472625; cv=none; b=ndsDxsGD60RlJocuMZfsZVp0zu87/M8ieNJ5YsuV/+3iEpdEcHcftUMfiC2qX1ozDFTaafsX0Q4cAbs2d5uUo4o5buK/qyaZAhjEGWuF5wTCW+1ileVmRuaLHpQx+PJExn2Ki4Iqo5tp4TULpOm2X9e5M1sEKsPE/AgZBDS6wzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788472581; c=relaxed/simple;
-	bh=O5Q9pWWByEk220xL0ok2C7lge+eGDW85Z+nzWLYH9p8=;
+	s=arc-20240116; t=1788472625; c=relaxed/simple;
+	bh=UUSqtnLWe5aZRYDj9K196OkIKDN+Zyhhau7+NTVDMnU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HvkNBrUkLr7qOsdg7gmbpyB5/EjfwZd1G2tTSwG4iJgFCxylfmcmcxPizQb5tCJ3QUGz0BBYcYqSGtUdVW3Ogbi3pS9QXuUJKFiEqU/LzHky4g8s9GkXfHMUA7363/Kqqf/35U7bi2GfsjDCfeHykHzL4zJNKiSmoER5Ds/hYok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V8gWj5Jy; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=JyGC7ChWEMdq+aILy0TlvupzC4L+fmGLnUTnYQCgHQv2wsEZ1S9joXufgH4d7ppnhXHhLooG+mET3mRCeMXRKS3i0cOFSwFKBesgeEISWvAjMkyLCi+IMZ/0ApLX8BpKk9CEtpph54bPaOzhyqbJ5qileFA7u1Ge9WEcNzGhDOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=myUeuBjv; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V8gWj5Jy"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d959904658so4975725ad.2
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 14:56:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="myUeuBjv"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cee1ec30f2so3864725ad.3
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 14:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788472579; x=1789077379; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BvQUrwieUiA5Xdna+a0l9yjFvKA0NlWxfhvUKr4MYT8=;
-        b=V8gWj5JypjOYsRdtLUWUJoNQza7uXf9/BK4u58XaUekKR0AGnUVinYNdUEj6VAAMG0
-         zcEGJkgCHZ09hhM9mqOBx8T0H1kSwyjMcgKmRFbyy1wY2LWxtkpNRzSnRbQccDOZjDmV
-         Zm3uJ07q4ikhtUJizMKOJeyeTGNi6UbtG7KHCQsL4xB0PhEWjMTD6Y8IQxOw1oXMvpif
-         r2KjjBP1Ag2hUwDMcVRmvoqTqwuasGLgLY8T6Pr+PNZCpr/mFlPAqnvaOJUe/HVtVLqG
-         ErcYFtA+7ZE9m1yZBEBC9+EDCQSRo6tuHK2jTasKV60PqDt5v7XMbMjDASaSiN1IlH4J
-         3xrg==
+        d=google.com; s=20251104; t=1788472622; x=1789077422; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qPa5Isz91A5PrjltfQrSDK6J910QYzqvDKsVi0XwhYs=;
+        b=myUeuBjvcQSfd1cAX26zih9VQxvP5Btgl5CTlWVkjO3Zh5nkDO6Gj02kLpl2ImqB6o
+         kKoo19Vj/yPSDrsccRdXEXDSGpumSsdCsHghbUCgoLnvfmDZd2VsOZEm2Z8hqoUGgHu3
+         m/0OzdMhhv28tVFgtp/3I4B5+Te4xpnTPD9c/71WCst9BjZDO+hjEDMBy+2+EKyywqAR
+         FqxCFwh+KowVJ/PbcIgDdWYxd1NzkEr8AOjMbll/wQblXHGiDn0AypsB0FMqXatn0MJ4
+         +2dQuq8yKlhXgxM/9+Wy3o+ruyno96KEX6z3d2goYBNModehKYTxWIEI4jh29K4NbXPE
+         tPrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788472579; x=1789077379;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BvQUrwieUiA5Xdna+a0l9yjFvKA0NlWxfhvUKr4MYT8=;
-        b=K7uIg9jMwdXbAv/SvmQsgpLi9nnPi1p9O1jDD2A7/sYByeRx+0KVubNlbRAi1Xxx67
-         zA8FVa1RTvCX9YPVwKGER8z0Bj2x/jF3iycWbTJ1SXP5j3bWdSXlyWDxlQYKPXSyMkex
-         O625Uj5qAUfXUwLB1XXc06loFZW0H5AYXHGpNvFR26Jv1gRLh16aZAYJJCIqlo5v/D53
-         0rhF+R9GwJCPix7W44O3lOdEKOpgPUJD+euhPK26nHFgVV5FUatGpqweDjaxxmvGQefI
-         j06gsFxQtpD1KwzorXuYxmOoM0aOtYijqoR9MKLcMqdTeAaeB/jauXpVeK1KzES7g9k/
-         rZ0A==
-X-Gm-Message-State: AFuF++kXWUpZGHT2piV70AVecXwuXVmEmt0o7rtPFUglXryQcuoa2Biq
-	i/mZxWDfDWbSIY9mrMiFjWAUZY2+edsy+/Y7WbBMAjlD+WZHEpFKFt/IgebNVJAuOSEXHN8hmxh
-	atGWaFgS8u/Rwuv0DdXSYCmgLu69bJBce/13EbMFYK6+9Hc1xT/QC3tNuQrzSqMZQVvKivz+1lS
-	9CPC9Vv5WVZg2rjXj+E60RIagavS/v7mg7kkHds65rvibaBAQtjXM+sT/JNomPvxA=
-X-Received: from plgv8.prod.google.com ([2002:a17:902:e8c8:b0:2ca:f1f8:ea00])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:a981:b0:2d8:de9f:9a44 with SMTP id d9443c01a7336-2db12879178mr20249165ad.19.1788472578526;
- Thu, 03 Sep 2026 14:56:18 -0700 (PDT)
-Date: Thu,  3 Sep 2026 21:56:06 +0000
-In-Reply-To: <20260903215606.31633-1-hramamurthy@google.com>
+        d=1e100.net; s=20251104; t=1788472622; x=1789077422;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qPa5Isz91A5PrjltfQrSDK6J910QYzqvDKsVi0XwhYs=;
+        b=SRY+VN6MnEzO5YOhN+HOcTeQhTK3uWtHuNRVGPX2uo9lSl8qLDuW3vsQr2qWTKiRuB
+         haYD+xaFERutbRc2W3vWa0fNBIOD1dFeest/AitwDszkkvjYLFnIZn/gjxfogbDLSkZw
+         F35o/20lkOVOjPaswtK+Ts+4RtA3tPdGaoJTtHgTcJ6bhs9yh/CRffDpinaHZyXQYs30
+         nFIGmUwFu6YEC/NrgzgRPjJS63HHatjm2ocl9vUsr5SKjYf5DjRx1CBiEXzbgxDm8J4I
+         yQulHdRzgKoGC6OCIv7m3eBVHMxEp0odr+R8Ye87Gy8i8f5okZA3jYEq9ayUmBhM5h83
+         TXjA==
+X-Forwarded-Encrypted: i=1; AKwUvBwUOlqMIox0qShYnzS0a6e7NmH/kiS7VjQBlU0zSdAuSbrIC9NCwppy4WfFONFmd+sJET0I4Hg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mRaG8wPDgcf+z7jKCVKtYkVFhqH0grTEKYW1qddQKraqIH4A8L
+	8BNgBOUR7hAzn0EBvQW6GxrEXv9JXOYcsEpcPjIzgRpj2mq2cCw38/DgJvE1mzOsMGOA+5WbYqB
+	VUr8miQ==
+X-Received: from plq5.prod.google.com ([2002:a17:903:2f85:b0:2ce:fc5f:e782])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1844:b0:2da:ef81:37e7
+ with SMTP id d9443c01a7336-2db126b1bcfmr32446965ad.21.1788472622253; Thu, 03
+ Sep 2026 14:57:02 -0700 (PDT)
+Date: Thu,  3 Sep 2026 21:55:50 +0000
+In-Reply-To: <5832ba17-c096-4f07-aa73-2e2bb6f79856@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260903215606.31633-1-hramamurthy@google.com>
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260903215606.31633-13-hramamurthy@google.com>
-Subject: [PATCH net-next v5 12/12] gve: add link status/speed ctrl ops
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
-	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
-	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	przemyslaw.kitszel@intel.com
+References: <5832ba17-c096-4f07-aa73-2e2bb6f79856@redhat.com>
+X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
+Message-ID: <20260903215701.2270160-1-kuniyu@google.com>
+Subject: Re: [net,v3] udp: revalidate socket family before publishing an IPv6 cork
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: pabeni@redhat.com
+Cc: 4ncienth@gmail.com, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev-bot+sashiko@kernel.org, 
+	netdev@vger.kernel.org, vyasevic@redhat.com, willemdebruijn.kernel@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Joshua Washington <joshwash@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Thu, 3 Sep 2026 15:22:57 +0200
+> On 9/3/26 3:05 PM, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 2 potential
+> > issue(s) to consider:
+> >=20
+> > Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> >=20
+> > - [High] Incomplete fix: the sibling IPv6 socket-dst publisher in the
+> >   connect() path is not covered, so an IPv6 dst can still be installed=
+=E2=80=A6
+> > - [High] The fix is writer-side and after-the-fact, so the mixed-family
+> >   socket dst it claims to eliminate remains observable by the unguarded=
+=E2=80=A6
+>=20
+> It looks like fixing this kind of issues, if possible at all, would
+> require adding a significant complexity to the data-path.
+>=20
+> I'm wondering if we could just remove setsockopt(IPV6_ADDRFORM) support?
 
-Refactor link status check to use a control plane op. Introduce
-new op for retrieving the link status in AQ mode. This op reads
-the link status from the device status register and stores the
-value in priv.
++1.
 
-Also add an op for retrieving link speed in AQ mode which calls into
-gve_adminq_report_link_speed.
+The feature was initially defined in RFC 2133 in 1997, but only
+two years later, it was removed from RFC 2553 in 1999.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
-v3:
-  - Fix kdoc typo ("set link status" -> "set link speed")
-  - Copy link status into local variable instead of reading twice to
-    prevent TOCTOU issue.
-
- drivers/net/ethernet/google/gve/gve.h         |  5 ++++
- drivers/net/ethernet/google/gve/gve_adminq.c  | 10 +++++++
- drivers/net/ethernet/google/gve/gve_adminq.h  |  1 +
- drivers/net/ethernet/google/gve/gve_ethtool.c |  3 +--
- drivers/net/ethernet/google/gve/gve_main.c    | 26 ++++++++++++-------
- 5 files changed, 33 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 00966b6a730f..b7ce6e8632db 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -845,6 +845,8 @@ struct gve_device_info {
-  * @reset_flow_rules: Flush all flow rules from device
-  * @create_queues: Sends commands to the device to create TX/RX queues.
-  * @destroy_queues: Sends commands to the device to destroy TX/RX queues.
-+ * @report_link_status: Set link status into @priv->link_up
-+ * @report_link_speed: Set link speed into @priv->link_speed
-  */
- struct gve_ctrl_ops {
- 	int (*map_db_bar)(struct gve_priv *priv);
-@@ -865,6 +867,8 @@ struct gve_ctrl_ops {
- 	int (*reset_flow_rules)(struct gve_priv *priv);
- 	int (*create_queues)(struct gve_priv *priv);
- 	int (*destroy_queues)(struct gve_priv *priv);
-+	int (*report_link_status)(struct gve_priv *priv);
-+	int (*report_link_speed)(struct gve_priv *priv);
- };
- 
- struct gve_priv {
-@@ -966,6 +970,7 @@ struct gve_priv {
- 
- 	/* Gvnic device link speed from hypervisor. */
- 	u64 link_speed;
-+	bool link_up;
- 	bool up_before_suspend; /* True if dev was up before suspend */
- 
- 	bool mgmt_irq_requested;
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index 9a0a94ebdcd8..ed64f298e80d 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -1841,3 +1841,13 @@ int gve_adminq_create_queues(struct gve_priv *priv)
- 
- 	return err;
- }
-+
-+int gve_adminq_report_link_status(struct gve_priv *priv)
-+{
-+	u32 status;
-+
-+	status = ioread32be(&priv->reg_bar0->device_status);
-+	WRITE_ONCE(priv->link_up,
-+		   !!(GVE_DEVICE_STATUS_LINK_STATUS_MASK & status));
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
-index d696e4932a8b..8daac5fd685a 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.h
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.h
-@@ -643,6 +643,7 @@ int gve_adminq_report_stats(struct gve_priv *priv, u64 stats_report_len,
- 			    dma_addr_t stats_report_addr, u64 interval);
- int gve_adminq_verify_driver_compatibility(struct gve_priv *priv);
- int gve_adminq_get_device_properties(struct gve_priv *priv);
-+int gve_adminq_report_link_status(struct gve_priv *priv);
- int gve_adminq_report_link_speed(struct gve_priv *priv);
- int gve_adminq_add_flow_rule(struct gve_priv *priv, struct gve_adminq_flow_rule *rule, u32 loc);
- int gve_adminq_del_flow_rule(struct gve_priv *priv, u32 loc);
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index dd1c44fedc77..a3220c651438 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -749,12 +749,11 @@ static int gve_get_link_ksettings(struct net_device *netdev,
- 	int err = 0;
- 
- 	if (priv->link_speed == 0)
--		err = gve_adminq_report_link_speed(priv);
-+		err = priv->ctrl_ops->report_link_speed(priv);
- 
- 	cmd->base.speed = priv->link_speed;
- 
- 	cmd->base.duplex = DUPLEX_FULL;
--
- 	return err;
- }
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index f09df9ca36fe..9af9eef64382 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1501,15 +1501,18 @@ static int gve_close(struct net_device *dev)
- 	return err;
- }
- 
--static void gve_handle_link_status(struct gve_priv *priv, bool link_status)
-+static void gve_handle_link_status(struct gve_priv *priv)
- {
-+	bool link_up;
-+
- 	if (!gve_get_napi_enabled(priv))
- 		return;
- 
--	if (link_status == netif_carrier_ok(priv->dev))
-+	link_up = READ_ONCE(priv->link_up);
-+	if (link_up == netif_carrier_ok(priv->dev))
- 		return;
- 
--	if (link_status) {
-+	if (link_up) {
- 		netdev_info(priv->dev, "Device link is up.\n");
- 		netif_carrier_on(priv->dev);
- 	} else {
-@@ -1536,7 +1539,6 @@ static int gve_set_xdp(struct gve_priv *priv, struct bpf_prog *prog,
- {
- 	struct bpf_prog *old_prog;
- 	int err = 0;
--	u32 status;
- 
- 	old_prog = READ_ONCE(priv->xdp_prog);
- 	if (!netif_running(priv->dev)) {
-@@ -1563,8 +1565,8 @@ static int gve_set_xdp(struct gve_priv *priv, struct bpf_prog *prog,
- 		bpf_prog_put(old_prog);
- 
- out:
--	status = ioread32be(&priv->reg_bar0->device_status);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
-+	priv->ctrl_ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
- 	return err;
- }
- 
-@@ -1997,11 +1999,11 @@ static void gve_turnup(struct gve_priv *priv)
- 
- static void gve_turnup_and_check_status(struct gve_priv *priv)
- {
--	u32 status;
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
- 
- 	gve_turnup(priv);
--	status = ioread32be(&priv->reg_bar0->device_status);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
-+	ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
- }
- 
- static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
-@@ -2325,12 +2327,14 @@ static void gve_service_task(struct work_struct *work)
- {
- 	struct gve_priv *priv = container_of(work, struct gve_priv,
- 					     service_task);
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
- 	u32 status = ioread32be(&priv->reg_bar0->device_status);
- 
- 	gve_handle_status(priv, status);
- 
- 	gve_handle_reset(priv);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
-+	ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
- }
- 
- static void gve_set_netdev_xdp_features(struct gve_priv *priv)
-@@ -2457,6 +2461,8 @@ static const struct gve_ctrl_ops gve_adminq_ops = {
- 	.teardown_mgmt_irq	= gve_adminq_teardown_mgmt_irq,
- 	.create_queues		= gve_adminq_create_queues,
- 	.destroy_queues		= gve_adminq_destroy_queues,
-+	.report_link_status	= gve_adminq_report_link_status,
-+	.report_link_speed	= gve_adminq_report_link_speed,
- };
- 
- static int gve_init_priv(struct gve_priv *priv)
--- 
-2.55.0.979.g7e5102b832-goog
-
+It's 2026 now, and I think most (all?) applications are ready to
+be passed IPv6 socekt fd given systemd does not use IPV6_ADDRFORM.
