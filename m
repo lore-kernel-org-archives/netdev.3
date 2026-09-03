@@ -1,118 +1,144 @@
-Received: from va-2-28.ptr.blmpb.com (va-2-28.ptr.blmpb.com [209.127.231.28])
+Received: from mta0.migadu.com (out-158.mta0.migadu.com [91.218.175.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE824052DC
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841DA4052DA
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788428440; cv=none; b=uJA8jv1tNx2lkn1biqwMW8dWXE6wbWn23mPqSWZV67wp76eNNvvmEfdPcNUnue7TuwLX+SnrrYSyIZCB7ryaOOpNzTWjH8siSc364GsTETHiub8VJJx7e4706YG0HJQOH15PxjBz6WMq6+MGnWh1FU2DzmWzeLFnTjWp6PsUWCs=
+	t=1788428547; cv=none; b=CPLVWYYULuw1zr0edrV6FZehoRjKaWGK8L6u6+AdoOhlMRaT/U6Tz7xZy3FqxXdmwQXDWHlq9IXNBQfEkPaIl16+myzDotWg9Tlp4jdlHKLEOzog3C82DyRWtdLCJnniI4fEgmqv2KPoXCl559aiHklHd09UFcogxrnRGLeOiW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788428440; c=relaxed/simple;
-	bh=GrCDUN0qRdj9HHV6N1Eevl3QYXECGcs4nqA8GSP2BeU=;
-	h=Subject:Message-Id:From:Mime-Version:Cc:Date:Content-Type:To; b=Yyr7LZI/ViPc8msWdAQefUsf8gRhw54PjTrFXsYMSoRZMo4SHn2zm1JMKy6iqial6trgtgNeW2GETssEN6Buj6n4I7A3rxP/ej7sDR7nBnhcKx3aKyqH4+3wgG+EvFpiaJe8ATocKIFkaBDsMtMAKoHhsgGmQ6jM6J+bg74wddI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai; spf=pass smtp.mailfrom=moonshot.ai; dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b=iGUlE7vM; arc=none smtp.client-ip=209.127.231.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moonshot.ai
+	s=arc-20240116; t=1788428547; c=relaxed/simple;
+	bh=Vxp9ZHlgNpAzBAfB4yGSmAaUvFpdlujsbCNr92pOTdg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bARpNddQJ/Rzqvx9sV2GKfYv5YfcHI0bOL6Em8xaWKALLYcKXn7oCGwVJ3jDlho2QV4zY+s6pNOZSKhMXPk2/tbdMOlNIezkdsr0LfhuvVGLrFUhjoLPw3Epqd8+x69k313Q5eShZMiGBNFXBdvXDv08SzFT1OmhPqQeEBwh2k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vXu4j8Ll; arc=none smtp.client-ip=91.218.175.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b="iGUlE7vM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2510091218; d=moonshot.ai; t=1788428427; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=mIr6xKWADAcPBR6bmqJhJGXvjssZ2Xl3MgIb0zIP3cY=;
- b=iGUlE7vM8qQ/Ik50O/i/K8qC/4zuDB1vIQ5tqg4IhvEFPBbD5OyJHAGukbDZjbC3oX8Pcy
- hA+9PV0ldTeqOqWP51MyyNMFYnDd58WbK6A35RXtBvmkpojpUB0heIk99D2HzR5e4VD4oY
- LVUr52RtszRMRVIoqq5CGf4Lf4NjZW7z8DJqJeM6usrecE9JxoTGSmWnjmQFk5mucjdmQV
- Iv/Ma7W12G7ktg9iv+kiQ1KX+yxRjYyNJUee5yahJaMU5+7goh4LjBAb8bDiradN18GW5e
- Y4eqd4t9Z2HTUmLr+dtrkTo2EiE54g6mlyUkcw9euXxkFDmo6SILRUxSuLG19Q==
-Subject: [PATCH v2] tcp: fastopen: check rsk_drop_req() in tcp_fastopen_create_child()
-Message-Id: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
-X-Lms-Return-Path: <lba+26a99408a+9357c7+vger.kernel.org+yilinzhang@moonshot.ai>
-From: "Yilin Zhang" <yilinzhang@moonshot.ai>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vXu4j8Ll"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Vxp9ZHlgNpAzBAfB4yGSmAaUvFpdlujsbCNr92pOTdg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788428543; v=1; x=1789033343;
+ b=vXu4j8LlTDjKEa3PGJWUvJKUbtUQta8g4HK4mNmTvrvwKaJmxdLKfyAD0/GfVESi1V+6sF/0
+ ezcRYDnIoTTBv9nURRlZaQnee59RT06N+LhQ88hnYmndSi1iBJvE6cmSh+GtJbxiBuC9si2Rkyr
+ mPHHYfamLrIDvgyt5n0jwFbg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 795b0095eeb9568e;
+	Thu, 03 Sep 2026 09:42:23 +0000
+X-Mizu-Trace-ID: 795b0095eeb9568e
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 3 Sep 2026 17:42:11 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Jay Vosburgh <jv@jvosburgh.net>
+Subject: Re: [PATCH net] bonding: use skb_cow_head() in bond_do_alb_xmit()
+ and rlb_arp_xmit()
+Message-ID: <aplA83k_kZIi1k7w@fedora>
+References: <20260902125809.2910366-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Received: from dev.msh-dev.svc.cluster.local ([117.157.206.135]) by smtp.feishu.cn with ESMTPS; Thu, 03 Sep 2026 17:40:25 +0800
-X-Original-From: Yilin Zhang <yilinzhang@moonshot.ai>
-Cc: "Yilin Zhang" <yilinzhang@moonshot.ai>, <netdev@vger.kernel.org>, 
-	<mptcp@lists.linux.dev>, "Kimi Security Team" <bug-report@moonshot.ai>
-Date: Thu,  3 Sep 2026 17:40:10 +0800
-Content-Type: text/plain; charset=UTF-8
-To: "Mat Martineau" <martineau@kernel.org>, 
-	"Matthieu Baerts" <matttbe@kernel.org>, 
-	"Jiayuan Chen" <jiayuan.chen@linux.dev>
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902125809.2910366-1-edumazet@google.com>
 
-subflow_syn_recv_sock() sets drop_req when an MP_JOIN SYN takes the fatal
-fallback and destroys the cloned child. tcp_fastopen_create_child()
-ignored the flag and could queue the destroyed child.
+On Wed, Sep 02, 2026 at 12:58:09PM +0000, Eric Dumazet wrote:
+> In bond_do_alb_xmit() and rlb_arp_xmit(), make sure to unclone
+> skb head via skb_cow_head() before modifying the source MAC address
+> (Ethernet header and ARP payload) to avoid silent corruption if
+> the skb is shared or cloned. Avoid caching the header pointers
+> across skb_cow_head().
+> 
+> In rlb_arp_xmit(), also check that
+> tx_slave != rcu_access_pointer(bond->curr_active_slave)
+> before modifying arp->mac_src. When tx_slave is the active slave,
+> arp->mac_src already matches its hardware address, so we can avoid
+> an unnecessary copy and head reallocation.
+> 
+> Also, we should not assume mac header is set in output path.
+> 
+> Use skb_eth_hdr() instead of eth_hdr() to fix the issue,
+> and remove now redundant skb_reset_mac_header() calls.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> ---
+>  drivers/net/bonding/bond_alb.c | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+> index 654f051d0023929a48536c378996e0ef39b75d88..5f750f08a144791589b5ed0f44b1b68ab99e6e61 100644
+> --- a/drivers/net/bonding/bond_alb.c
+> +++ b/drivers/net/bonding/bond_alb.c
+> @@ -678,9 +678,13 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
+>  	if (arp->op_code == htons(ARPOP_REPLY)) {
+>  		/* the arp must be sent on the selected rx channel */
+>  		tx_slave = rlb_choose_channel(skb, bond, arp);
+> -		if (tx_slave)
+> +		if (tx_slave && tx_slave != rcu_access_pointer(bond->curr_active_slave)) {
+> +			if (unlikely(skb_cow_head(skb, 0)))
+> +				return NULL;
+> +			arp = (struct arp_pkt *)skb_network_header(skb);
+>  			bond_hw_addr_copy(arp->mac_src, tx_slave->dev->dev_addr,
+>  					  tx_slave->dev->addr_len);
+> +		}
+>  		netdev_dbg(bond->dev, "(slave %s): Server sent ARP Reply packet\n",
+>  			   tx_slave ? tx_slave->dev->name : "NULL");
+>  	} else if (arp->op_code == htons(ARPOP_REQUEST)) {
+> @@ -1340,7 +1344,6 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+>  				    struct slave *tx_slave)
+>  {
+>  	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
+> -	struct ethhdr *eth_data = eth_hdr(skb);
+>  
+>  	if (!tx_slave) {
+>  		/* unbalanced or unassigned, send through primary */
+> @@ -1351,7 +1354,9 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+>  
+>  	if (tx_slave && bond_slave_can_tx(tx_slave)) {
+>  		if (tx_slave != rcu_access_pointer(bond->curr_active_slave)) {
+> -			ether_addr_copy(eth_data->h_source,
+> +			if (unlikely(skb_cow_head(skb, 0)))
+> +				return bond_tx_drop(bond->dev, skb);
+> +			ether_addr_copy(skb_eth_hdr(skb)->h_source,
+>  					tx_slave->dev->dev_addr);
+>  		}
+>  
+> @@ -1375,8 +1380,7 @@ struct slave *bond_xmit_tlb_slave_get(struct bonding *bond,
+>  	struct ethhdr *eth_data;
+>  	u32 hash_index;
+>  
+> -	skb_reset_mac_header(skb);
+> -	eth_data = eth_hdr(skb);
+> +	eth_data = skb_eth_hdr(skb);
+>  
+>  	/* Do not TX balance any multicast or broadcast */
+>  	if (!is_multicast_ether_addr(eth_data->h_dest)) {
+> @@ -1428,8 +1432,7 @@ struct slave *bond_xmit_alb_slave_get(struct bonding *bond,
+>  	u32 hash_index = 0;
+>  	int hash_size = 0;
+>  
+> -	skb_reset_mac_header(skb);
+> -	eth_data = eth_hdr(skb);
+> +	eth_data = skb_eth_hdr(skb);
+>  
+>  	switch (ntohs(skb->protocol)) {
+>  	case ETH_P_IP: {
+> -- 
+> 2.55.0.966.g6673acef38-goog
+> 
 
-With an MPTCP listener using server-side Fast Open, a valid-cookie
-MP_JOIN SYN could then expose the freed child through accept().
+Looks reasonable to me. Thanks!
 
-Release the locked child and drop the request before tcp_conn_request()
-sends a SYN-ACK. Initialize drop_req when allocating the request so the
-check cannot observe stale state after request-socket reuse.
-
-Changes in v2:
-- unlock the child before dropping its reference
-- drop the request instead of sending a SYN-ACK after the MPTCP reset,
-  as suggested by Jiayuan Chen
-
-Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
-Reported-by: Kimi Security Team <bug-report@moonshot.ai>
-Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
----
- net/ipv4/tcp_fastopen.c | 6 ++++++
- net/ipv4/tcp_input.c    | 5 +++++
- 2 files changed, 11 insertions(+)
-
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 471c78be5513..22494ff746c7 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -337,6 +337,12 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
- 	if (!child)
- 		return NULL;
- 
-+	if (own_req && rsk_drop_req(req)) {
-+		bh_unlock_sock(child);
-+		sock_put(child);
-+		return NULL;
-+	}
-+
- 	spin_lock(&queue->fastopenq.lock);
- 	queue->fastopenq.qlen++;
- 	spin_unlock(&queue->fastopenq.lock);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0f60a1dbf927..eb0e4259c280 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7669,8 +7669,9 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 	tcp_rsk(req)->txhash = net_tx_rndhash();
- #if IS_ENABLED(CONFIG_MPTCP)
- 	tcp_rsk(req)->is_mptcp = 0;
-+	tcp_rsk(req)->drop_req = false;
- #endif
- 
- 	tcp_clear_options(&tmp_opt);
- 	tmp_opt.mss_clamp = af_ops->mss_clamp;
- 	tmp_opt.user_mss  = READ_ONCE(tp->rx_opt.user_mss);
-@@ -7775,6 +7776,10 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 		READ_ONCE(sk->sk_data_ready)(sk);
- 		bh_unlock_sock(fastopen_sk);
- 		sock_put(fastopen_sk);
-+	} else if (rsk_drop_req(req)) {
-+		reqsk_free(req);
-+		dst_release(dst);
-+		return 0;
- 	} else {
- 		tcp_rsk(req)->tfo_listener = false;
- 		if (!want_cookie &&
--- 
-2.43.0
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
