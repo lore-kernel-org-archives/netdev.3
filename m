@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68246372ECD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43635013B2;
 	Thu,  3 Sep 2026 19:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788463513; cv=none; b=I1lNo//epKOAUAoSkIUj7xN/g9h8jbxGRsEVPo6MvNgA2Z+8A72jx6XXAkMbpBY5o3dDl+t4fGIl+CqAvc5dchxo3iWNYmZDsFNSN1JW2w8ZFZk6/sTDIoI8JF0BVt329VmA6V9z+yHyev4a87dvLluRBkFqhnXXWpnBG89pcH4=
+	t=1788463513; cv=none; b=fLENVUwuK4G2GK6yGLv58t3bKojzCvs7MCQ9STKzo4milMCnHc2W6s1lLxkMYq8KrqWJfifEWenJvWt/735eerJz9ubK4v/3QNYAaqe3T86qRjsGhxC2cBVZHPy1zfTpVUGatOgJs47O+3Mw8OnerfAGyUqFy2xzvDHaP5Rk/Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788463513; c=relaxed/simple;
-	bh=o/FDy8iQcSQo7zEq/xJWJ67YmjfJHYE4910XzMYngPU=;
+	bh=9erMMYeEp6MhpmeisCTbFBAC2XS6KvR0S9OUdWc35Ow=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=vEuAyKl+NiwD3D0RSECmWRS14jeBcA35tVAYSpEhffy1CX+DjVGrkU64lagcUbTAeCWhLfUQum3zm37scCRMkCUpWM4fDeK4r7GY4R2cOcEZ5mMI6rWvtZWYFXPG1hOApGW+ySvuewq2R8cdqDoOLkrEfRkaaNoZ/ewIYdRvXoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neg+rOwV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ohi0feRi1B6z8qW+cI0svnr91hyabvb/GcGETwSYQqHQlZhZR/+IOx88oalcGuDDPCx8PYeyJlbTyjli9zFPpavb4OWJW9lWHLplq/SgIOCh7QmrFM5alN83kP8eJgwaVLflfAM2fv0d47FJGLmYubGVYCXQNQuAQC6+/pTIjqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SA8GJn2w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neg+rOwV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A14E1F00ACF;
-	Thu,  3 Sep 2026 19:24:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SA8GJn2w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7221F00ACA;
+	Thu,  3 Sep 2026 19:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788463491;
-	bh=cyF/E/QSXTUrhfl5aco5srhl0/KIB+6BYrE8J2CyRlE=;
+	s=k20260515; t=1788463490;
+	bh=iVQg8Sph/zs009WQV54zYRKBypJ2lrCrIKDHh1aKapo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=neg+rOwVpXyntwi6iYaoVeqBVzpUFER33FhmG+uy75cAeNHN6AB3EDDnCFnhs34JD
-	 80d1PIYSIkN4/8dtpKXc4EeHt4PE7eRh+Q4MGlZDZtYabeUsmnQ5IxQlY1mlo+lpd1
-	 MaUQzWitlYhmdzGj6rZVWABWyTcTSM1lMXsRtlmrVT0Ry5OgpWPUxRgPAWDWUatjR5
-	 jsTYgbS6FxXZ1X2lJXczQeoxFE+kwQeUeDiEsEGBGvkXRek4MU3CqeloamSiyHPoOO
-	 co4M/rd4kNP0+TsKZTEmqLRTmRPdWChnIY0qdNPG25iSbxl1vF7EoO64c8EUmxKsqC
-	 wl+xqWbGprgZQ==
-Subject: Re: [v9,net-next,7/8] octeontx2: switch: plumb bridge FDB updates
- through AF and switchdev
+	b=SA8GJn2wh8HLgbv7Hn+GHRupjzDBeXJoyD/3uYhmRkhn/EBoYa6GbTjbkN5pqE3Xu
+	 jw0FAE/pfGy/C7PNADhQKO29juCdiPDxHxm11BwA395MHtaHcxTrwE424jF5ijww02
+	 +Ilqeus800aJE8fMfQnbvCkMTziXyqM0Ar2uO4UQaTNVfV7ujbmNUkq3JpvAfYtQAV
+	 D8va0GyqXCMWb2sZhnpg/duxS4gatoqnRDFIvPIkPZ9AUt9hZRkJPArNuhbfYHRVmk
+	 ciJiyK1stbVbo8ZAB4HQ4phr+rqYantJU5Ukpixqgzy3q3TZi/JHEyoxl5ScGJg0Bf
+	 LIp8r8fDY6rrg==
+Subject: Re: [v9,net-next,6/8] octeontx2-pf: switch: Register notifiers for
+ switch offload
 From: netdev-bot+sashiko@kernel.org
 To: rkannoth@marvell.com
 Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com
-Date: Thu, 03 Sep 2026 19:24:50 +0000
-Message-ID: <178846349021.3394541.5852418349978761361@kernel.org>
-In-Reply-To: <20260831131944.2649362-8-rkannoth@marvell.com>
-References: <20260831131944.2649362-8-rkannoth@marvell.com>
-X-sashiko-severity: Critical
+Date: Thu, 03 Sep 2026 19:24:49 +0000
+Message-ID: <178846348905.3394541.7517069116859509457@kernel.org>
+In-Reply-To: <20260831131944.2649362-7-rkannoth@marvell.com>
+References: <20260831131944.2649362-7-rkannoth@marvell.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,849 +47,1084 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 19 potential
+Thank you for your contribution! Sashiko AI review found 10 potential
 issue(s) to consider:
 
-Critical: 3 · High: 6 · Medium: 9 · Low: 1
+Critical: 0 · High: 3 · Medium: 3 · Low: 4
 
-- [Critical] Type confusion: `sw_nb_fdb_event()` forwards every non-local
-  SWITCHDEV_FDB_{ADD,DEL}_TO_DEVICE event to `sw_fdb_add_to_list(dev)`,…
-- [Critical] `sw_fdb_wq_handler()` re-derives the device object from the
-  deferred entry via `pf = pci_get_drvdata(entry->pdev)` and assigns it…
-- [Critical] `rvu_sw_swdev2af_sender_check()` deliberately short-circuits
-  authorization for SWDEV2AF_MSG_TYPE_FW_STATUS when `req->fw_up` is…
-- [High] The `fdb_notify` mailbox message carries no port identity, so
-  the AF derives the switch port solely from `req->hdr.pcifunc`.
-- [High] `call_switchdev_notifiers(SWITCHDEV_FDB_ADD_TO_BRIDGE /
-  SWITCHDEV_FDB_DEL_TO_BRIDGE, ...)` is invoked from the PF and VF…
-- [High] Both new AF up-message senders reuse the AF->PF / AF->VF
-  `mbox_up` shared region and re-ring the doorbell without waiting for…
-- [High] Pending `sw_fdb` work entries reference per-PF/VF mailbox state,
-  but the global `sw_fdb_wq` is only torn down from…
-- [High] `sw_fdb_llock` is acquired with plain `spin_lock()` from softirq
-  context and also with plain `spin_lock()` from process context.
-- [High] `rvu_mbox_handler_fdb_notify()` programs hardware L2 forwarding
-  rules based purely on the sender's own port and an attacker-supplied…
-- [Medium] Commit message claims the AF was taught to "treat it like the
-  CGX link event when acknowledging mailbox completion", but no such…
-- [Medium] The FDB refresh path can never reach representor (RVU_REP)
-  netdevs even though the offload direction explicitly supports them.
-- [Medium] The FDB offload and refresh pipeline drops the VLAN ID that is
-  part of the switchdev FDB key.
-- [Medium] The design permanently loses FDB changes whenever firmware is
-  unavailable or any asynchronous stage hits a transient failure, with…
-- [Medium] In `rvu_sw_l2_ctrl_work_handler()` the global pointers
-  `rvu_sw_l2_offl_wq` and `fdb_refresh_wq` and the global work…
-- [Medium] A WQ_MEM_RECLAIM control worker destroys non-WQ_MEM_RECLAIM
-  workqueues.
-- [Medium] `rvu->rswitch.pcifunc` is now mutable at runtime and is
-  written under the file-local `rvu_sw_l2_state_lock` (in…
-- [Medium] `rvu_sw_l2_offl_coalesce_pending_locked()` cancels a new FDB
-  operation against *any* pending opposite operation for the same…
-- [Medium] The AF acknowledges the switch firmware-up notification before
-  its FDB queues exist, and a later initialization failure can never be…
-- [Low] Two comments added by this patch describe opposite behaviour for
-  the same message.
+- [High] rvu_eswitch_config()
+  (drivers/net/ethernet/marvell/octeontx2/nic/rep.c:401) now returns…
+- [High] sw_nb_net_event()
+  (drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c) casts the…
+- [High] Global notifiers blindly cast `netdev_priv()` to `struct
+  otx2_nic *` for any Cavium PCI device, leading to type confusion and…
+- [Medium] IPv6 interface-address entries are marked as host entries
+  (`entry->host = 1`) but carry the interface's subnet prefix length…
+- [Medium] rvu_eswitch_config() now reads `priv->netdev` and passes it to
+  otx2_sw_nb_register()/otx2_sw_nb_unregister(), which stores it in the…
+- [Medium] otx2_sw_nb_registered and sw_nb_pf_netdev are plain globals
+  with no synchronisation.
+- [Low] At this commit every new notifier handler builds a struct
+  fib_entry, logs it with netdev_dbg() and immediately kfree()s it, and…
+- [Low] sw_nb_netdev_event() in
+  drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c declares…
+- [Low] Notifier registration is a process-global singleton:
+  otx2_sw_nb_register() returns -EBUSY if otx2_sw_nb_registered is…
+- [Low] sw_nb.h declares `int
+  otx2_mbox_up_handler_af2pf_fdb_refresh(struct otx2_nic *pf, struct…
 
 --
 
-octeontx2: switch: plumb bridge FDB updates through AF and switchdev
+octeontx2-pf: switch: Register notifiers for switch offload
 
-This plumbs switchdev FDB add/delete notifications from the PF through a
-new fdb_notify mailbox into the AF, which queues them and pushes L2 rules
-toward the switchdev image.  It also adds an AF to PF/VF upstream
-MBOX_MSG_AF2PF_FDB_REFRESH message which raises
-SWITCHDEV_FDB_ADD_TO_BRIDGE so the bridge FDB entry is kept alive.
+This registers and unregisters the switch notifier blocks (FIB, netevent,
+inetaddr/inet6addr, netdevice and switchdev FDB) when the representor
+enables or disables switch mode via devlink. It also adds sw_nb_v4.c and
+sw_nb_v6.c for the address-family specific handling, and links sw_nb_v6.o
+only when the IPv6 symbols are reachable.
 
-Some questions below.
+A few questions below about the notifier registration path and the new
+event handlers.
 
->     Teach the AF swdev2af path to initialize L2 offload workqueues on
->     firmware up/down and to accept refresh requests that enqueue FDB
->     entries for AF to PF mailbox delivery. Add an AF to PF (and VF) upstream
->     message for FDB refresh, handle it in the VF driver, and treat it like
->     the CGX link event when acknowledging mailbox completion in the AF.
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> index 257a2ae6a53e5..96ec58c508432 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
 
-[Severity: Medium]
-The changelog says the new message is treated "like the CGX link event when
-acknowledging mailbox completion in the AF", but I can't find that change in
-the diff.  __rvu_mbox_up_handler() in af/rvu.c still only special-cases
-MBOX_MSG_CGX_LINK_EVENT:
+[ ... ]
 
-	switch (msg->id) {
-	case MBOX_MSG_CGX_LINK_EVENT:
-		break;
-	default:
-		if (msg->rc)
-			dev_err(rvu->dev, "Mbox msg response has err %d, ID 0x%x\n",
-				msg->rc, msg->id);
-
-So a response to MBOX_MSG_AF2PF_FDB_REFRESH lands in the default branch.  A
-peer without this patch (an older guest VF driver, which the host cannot
-control) answers through otx2_reply_invalid_msg() with sig =
-OTX2_MBOX_RSP_SIG and rc = -ENODEV, which passes the signature check and hits
-that dev_err() for every refresh message.  Should a case for the new id be
-added here, or should the changelog drop that sentence?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> index 2aa1aa6599a5a..8f7b2962a2126 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> @@ -2015,6 +2015,7 @@ struct af2pf_fdb_refresh_req {
->  	struct mbox_msghdr hdr;
->  	u16 pcifunc;
->  	u8 mac[6];
-> +	u64 flags;
->  };
-
-[Severity: Medium]
-None of the structures used by this end-to-end path carry a VLAN id:
-fdb_notify_req, af2swdev_notify_req and af2pf_fdb_refresh_req all have only
-a MAC plus flags.  The switchdev FDB key includes the VLAN, and
-br_switchdev_fdb_populate() sets item->vid = fdb->key.vlan_id.
-
-sw_nb_fdb_event() forwards only fdb_info->addr and never rejects a non-zero
-fdb_info->vid, so the same MAC in two VLANs collapses to one hardware key.
-
-On the way back, both refresh handlers build a zero-initialized
-switchdev_notifier_fdb_info, so the bridge is asked to refresh the vid == 0
-entry:
-
-net/bridge/br.c:br_switchdev_event() {
-	...
-	err = br_fdb_external_learn_add(br, p, fdb_info->addr,
-					fdb_info->vid, fdb_info->locked, false);
-
-Is a VLAN field needed in these messages, or should non-zero vid be rejected
-in sw_nb_fdb_event() until it is plumbed through?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
-> index 2451eb57ec4c8..71f113bded5eb 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
-> @@ -33,9 +35,64 @@ u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
-> +static int rvu_sw_swdev2af_sender_check(struct rvu *rvu,
-> +					struct swdev2af_notify_req *req,
-> +					u64 msg_type)
-> +{
-> +	u16 sender = req->hdr.pcifunc;
-> +
-> +	if (!rvu_sw_swdev2af_msg_valid(msg_type))
-> +		return -EINVAL;
-> +
-> +	if (msg_type == SWDEV2AF_MSG_TYPE_FW_STATUS && req->fw_up)
-> +		return 0;
-> +
-> +	if (!rvu_is_switch_pcifunc(rvu, sender))
-> +		return -EPERM;
-> +
-> +	return 0;
-> +}
-
-[Severity: Critical]
-Can any mailbox client claim the switchdev role here?  The early return
-skips the only authorization check for FW_STATUS with fw_up set, and
-rvu_sw_l2_ctrl_work_handler() then stores the sender's identity:
-
-	rswitch->pcifunc = pcifunc;
-	rswitch->flags |= RVU_SWITCH_FLAG_FW_READY;
-
-SWDEV2AF_NOTIFY is an ordinary downstream message, and
-__rvu_mbox_handler()/rvu_process_mbox_msg() apply no per-message sender ACL
-(they only normalize hdr.pcifunc from the mailbox devid), including for the
-AF-VF mailbox:
-
-	case TYPE_AFVF:
-		msg->pcifunc &= ~(RVU_PFVF_FUNC_MASK << RVU_PFVF_FUNC_SHIFT);
-		msg->pcifunc |= (devid << RVU_PFVF_FUNC_SHIFT) + 1;
-		...
-	err = rvu_process_mbox_msg(mbox, devid, msg);
-
-rswitch.pcifunc is used as a privilege token elsewhere in the AF:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c:npc_install_flow() {
-	if (req->set_chanmask && !rvu_is_switch_pcifunc(rvu, req->hdr.pcifunc)) {
-		...
-		return NPC_FLOW_VF_PERM_DENIED;
-	}
-
-nix_txsch_pan_allowed() and nix_lf_alloc() also key off it.  Before this
-patch nothing ever assigned rswitch.pcifunc, so rvu_is_switch_pcifunc() was
-always false.  With this change a guest VF sending FW_STATUS/fw_up=true
-becomes the switch pcifunc, then passes the sender check for REFRESH_FDB with
-an arbitrary pcifunc and MAC, and all af2swdev L2 rule pushes are redirected
-to it.  Should the FW_STATUS path also verify the sender (device id /
-rep_pcifunc), and reject a takeover while a switch pcifunc is already
-registered?
-
-[Severity: Medium]
-rvu->rswitch.pcifunc becomes mutable at runtime with this patch, written
-under the file-local rvu_sw_l2_state_lock, but read without it by
-rvu_sw_l2_offl_rule_push():
-
-	swdev_pf = rvu_get_pf(rvu->pdev, rvu->rswitch.pcifunc);
-
-and by the inline rvu_is_switch_pcifunc() used from rvu_npc_fs.c,
-nix_txsch_pan_allowed() and nix_lf_alloc().  A repeated FW_STATUS(fw_up=true)
-with a different hdr.pcifunc can change the value while queued offload work
-is running, so messages may go to the old or new switch PF.  Is a shared
-accessor (or storing it under a lock visible to those readers) needed?
-
-> +int rvu_mbox_handler_swdev2af_notify(struct rvu *rvu,
->  				     struct swdev2af_notify_req *req,
->  				     struct msg_rsp *rsp)
+> @@ -399,22 +400,62 @@ static void rvu_rep_get_stats64(struct net_device *dev,
+>  
+>  static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
 >  {
-> -	return 0;
-> +	int rc;
-> +
-> +	rc = rvu_sw_swdev2af_sender_check(rvu, req, req->msg_type);
-> +	if (rc)
-> +		return rc;
-> +
-> +	switch (req->msg_type) {
-> +	case SWDEV2AF_MSG_TYPE_FW_STATUS:
-> +		rc = rvu_sw_l2_init_offl_wq(rvu, req->hdr.pcifunc, req->fw_up);
-> +		break;
-
-[Severity: Medium]
-This returns the result of merely queueing work.  rvu_sw_l2_init_offl_wq()
-does queue_work(wq, &ctrl->work) and returns, while the offload/refresh
-queues and RVU_SWITCH_FLAG_FW_READY are set later in
-rvu_sw_l2_ctrl_work_handler().
-
-Firmware that sees rc == 0 can immediately send REFRESH_FDB, which
-rvu_sw_l2_fdb_list_entry_add() rejects with -EINVAL while fdb_refresh_wq is
-still NULL.  PF FDB updates arriving in the same window are acknowledged and
-dropped by rvu_mbox_handler_fdb_notify():
-
-	if (!(rvu->rswitch.flags & RVU_SWITCH_FLAG_FW_READY)) {
-		spin_unlock_bh(&rvu_sw_l2_state_lock);
-		return 0;
-	}
-
-And if either alloc_workqueue() fails, the handler only does dev_err() with
-no way to correct the success already reported to firmware.  Would it be
-better to allocate the queues synchronously in the handler so the return
-code reflects readiness?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c
-> index 5f805bfa81edb..448a442a6ffb2 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw_l2.c
-> @@ -4,11 +4,619 @@
-
-[ ... ]
-
-> +static void rvu_sw_l2_destroy_wqs(struct rvu *rvu)
-> +{
-> +	struct workqueue_struct *offl_wq, *refresh_wq;
-> +	struct l2_entry *entry;
-> +
-> +	spin_lock_bh(&rvu_sw_l2_state_lock);
-> +	rvu->rswitch.flags &= ~RVU_SWITCH_FLAG_FW_READY;
-> +	fw_is_up = false;
-> +	spin_unlock_bh(&rvu_sw_l2_state_lock);
-> +
-> +	mutex_lock(&fdb_refresh_list_lock);
-> +	refresh_wq = fdb_refresh_wq;
-> +	fdb_refresh_wq = NULL;
-> +	mutex_unlock(&fdb_refresh_list_lock);
-> +
-> +	if (refresh_wq) {
-> +		cancel_work_sync(&fdb_refresh_work.work);
-> +		destroy_workqueue(refresh_wq);
-
-[Severity: Medium]
-This runs from the rvu_sw_l2_ctrl_wq worker, which is created with
-WQ_MEM_RECLAIM:
-
-	rvu_sw_l2_ctrl_wq = alloc_ordered_workqueue("rvu_sw_l2_ctrl",
-						    WQ_MEM_RECLAIM);
-
-while refresh_wq and rvu_sw_l2_offl_wq are allocated with flags 0.
-destroy_workqueue() always drains, and drain_workqueue() ->
-__flush_workqueue() -> check_flush_dependency() warns on exactly this
-combination:
-
-kernel/workqueue.c:check_flush_dependency() {
-	WARN_ONCE(worker && ((worker->current_pwq->wq->flags &
-			      (WQ_MEM_RECLAIM | __WQ_LEGACY)) == WQ_MEM_RECLAIM),
-		  "workqueue: WQ_MEM_RECLAIM %s:%ps is flushing !WQ_MEM_RECLAIM %s:%ps", ...);
-
-The preceding cancel_work_sync() doesn't avoid that drain.  Should the
-offload/refresh queues also carry WQ_MEM_RECLAIM, or the control queue drop
-it?
-
-[ ... ]
-
-> +/* High-frequency link state transitions or aggressive FDB
-> + * aging intervals can induce rapid fdb churn. To prevent
-> + * thrashing, inhibit hardware offloading of these transient
-> + * forwarding states to the switching ASIC.  Events are queued
-> + * at the tail and processed from the head; when enqueueing a
-> + * new operation, drop older pending opposite operations for the
-> + * same MAC and port that have not yet reached hardware. When an
-> + * opposite entry is removed, the new operation is dropped as well.
-> + */
-> +static bool rvu_sw_l2_offl_coalesce_pending_locked(struct rvu *rvu,
-> +						   struct l2_entry *new_entry)
-> +{
-> +	u64 opposite = (new_entry->flags & OTX2_FDB_ADD) ? OTX2_FDB_DEL : OTX2_FDB_ADD;
-> +	struct l2_entry *entry, *tmp;
-> +	bool coalesced = false;
-> +
-> +	lockdep_assert_held(&l2_offl_list_lock);
-> +
-> +	list_for_each_entry_safe(entry, tmp, &l2_offl_lh, list) {
-> +		if (!ether_addr_equal(new_entry->mac, entry->mac))
-> +			continue;
-> +
-> +		if (new_entry->port_id != entry->port_id)
-> +			continue;
-> +
-> +		if (!(entry->flags & opposite))
-> +			continue;
-> +
-> +		list_del_init(&entry->list);
-> +		rvu_sw_l2_list_cnt_dec(rvu->dev, &l2_offl_list_cnt, "offload");
-> +		kfree(entry);
-> +		coalesced = true;
-> +	}
-> +
-> +	return coalesced;
-> +}
-
-[Severity: Medium]
-Can this leave a stale rule programmed in hardware?  The coalescing has no
-knowledge of which operations already reached the switch image:
-
-  ADD(mac,port) queued -> worker pushes it (hardware entry programmed)
-  ADD(mac,port) again (bridge fdb update / replace / external-learn re-add)
-      -> queued, no opposite entry pending
-  DEL(mac,port) -> matches the pending duplicate ADD, deletes it and
-      returns coalesced == true
-
-The caller then does:
-
-	if (rvu_sw_l2_offl_coalesce_pending_locked(rvu, l2_entry)) {
-		mutex_unlock(&l2_offl_list_lock);
-		kfree(l2_entry);
-		return 0;
-	}
-
-so the DEL never reaches hardware while the earlier ADD did.  Should
-coalescing only cancel a pair where neither side has been pushed, e.g. by
-collapsing duplicates on enqueue?
-
-> +static int rvu_sw_l2_offl_rule_push(struct rvu *rvu, struct l2_entry *l2_entry)
-> +{
-> +	struct af2swdev_notify_req *req;
-> +	int swdev_pf;
-> +
-> +	swdev_pf = rvu_get_pf(rvu->pdev, rvu->rswitch.pcifunc);
-> +
-> +	mutex_lock(&rvu->mbox_lock);
-> +	req = otx2_mbox_alloc_msg_af2swdev_notify(rvu, swdev_pf);
-> +	if (!req) {
-> +		mutex_unlock(&rvu->mbox_lock);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	ether_addr_copy(req->mac, l2_entry->mac);
-> +	req->flags = l2_entry->flags;
-> +	req->port_id = l2_entry->port_id;
-> +
-> +	otx2_mbox_wait_for_zero(&rvu->afpf_wq_info.mbox_up, swdev_pf);
-> +	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, swdev_pf);
-> +
-> +	mutex_unlock(&rvu->mbox_lock);
-> +	return 0;
-> +}
-
-[Severity: High]
-Both new up-message senders here (and in rvu_sw_l2_fdb_refresh_send() on the
-afpf and afvf regions) discard the boolean result of
-otx2_mbox_wait_for_zero() and never call otx2_mbox_wait_for_rsp().  Every
-other AF up-message producer waits for the response before releasing
-mbox_lock, e.g.
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c:cgx_notify_pfs() {
-	otx2_mbox_wait_for_zero(&rvu->afpf_wq_info.mbox_up, pfid);
-	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pfid);
-	otx2_mbox_wait_for_rsp(&rvu->afpf_wq_info.mbox_up, pfid);
-
-otx2_mbox_msg_send_data() takes exclusive ownership of the shared region on
-each send:
-
-	mdev->msg_size = 0;
-	mdev->rsp_size = 0;
-	mdev->msgs_acked = 0;
-	...
-	rx_hdr->num_msgs = 0;
-
-Since rvu_sw_l2_offl_rule_wq_handler() sends up to 16 messages per run and
-the refresh worker drains its whole list one message at a time, can this
-clobber a message the peer's mbox_up worker is still parsing, and desync
-num_msgs/msgs_acked?
-
-> +static int rvu_sw_l2_fdb_refresh_send(struct rvu *rvu, u16 pcifunc, u8 *mac)
-> +{
-> +	struct af2pf_fdb_refresh_req *req;
-> +	int pf, vf;
-
-[ ... ]
-
-> +	if (pf != 0) {
-> +		if (pf >= rvu->afpf_wq_info.mbox_up.ndevs) {
-> +			mutex_unlock(&rvu->mbox_lock);
-> +			return -EINVAL;
-> +		}
-> +
-> +		req = otx2_mbox_alloc_msg_af2pf_fdb_refresh(rvu, pf);
-
-[Severity: Medium]
-For the host switchdev model the changelog targets ("so the host bridge can
-learn the updated FDB entry"), how does a refresh reach a representor
-netdev?  The offload direction accepts rep netdevs:
-
-	if (otx2_rep_dev(pdev)) {
-		struct rep_dev *rep = netdev_priv(dev);
-		return rep->mdev;
-	}
-
-but the refresh is addressed by the represented pcifunc and delivered to
-that function's parent PF mailbox (or the AF-VF mailbox for pf == 0), and
-the only PF-side consumer raises the notifier on pf->netdev.  The rvu_rep
-driver processes no up-messages at all, so an entry learned on a rep bridge
-port is never refreshed, ages out of the host bridge, and the resulting
-SWITCHDEV_FDB_DEL_TO_DEVICE tears the hardware rule down each ageing
-interval.  Is that configuration meant to be supported yet?
-
-> +static void rvu_sw_l2_fdb_refresh_wq_handler(struct work_struct *work)
-> +{
-
-[ ... ]
-
-> +		rvu_sw_l2_fdb_refresh_send(fdb_work->rvu, l2_entry->port_id,
-> +					   l2_entry->mac);
-> +		kfree(l2_entry);
-> +	}
-> +}
-> +
-> +static void rvu_sw_l2_offl_rule_wq_handler(struct work_struct *work)
-> +{
-
-[ ... ]
-
-> +		if (rvu_sw_l2_offl_rule_push(offl_work->rvu, l2_entry))
-> +			dev_err(offl_work->rvu->dev,
-> +				"%s: Error to push l2 rule\n",
-> +				__func__);
-> +		/*
-> +		 * TODO: Requeue l2_entry on transient rvu_sw_l2_offl_rule_push()
-> +		 * errors (e.g. ENOMEM, -EBUSY) to keep hardware FDB in sync with
-> +		 * the bridge. Drop-on-failure is known deferred work.
-> +		 */
-> +		kfree(l2_entry);
-
-[Severity: Medium]
-There seems to be no path that ever reconciles hardware with the bridge
-after an update is lost.  Updates are dropped in several places:
-
- - rvu_mbox_handler_fdb_notify() returns 0 without keeping the update when
-   RVU_SWITCH_FLAG_FW_READY is clear, and again when rvu_sw_l2_offl_wq is
-   NULL
- - rvu_sw_l2_destroy_wqs() frees all queued entries on firmware-down
- - this handler frees the entry after rvu_sw_l2_offl_rule_push() fails
- - rvu_sw_l2_fdb_refresh_wq_handler() ignores the return of
-   rvu_sw_l2_fdb_refresh_send() entirely
- - sw_fdb_wq_handler() frees the entry after sw_fdb_add_or_del() fails
-
-On the next firmware-up, rvu_sw_l2_ctrl_work_handler() only re-allocates the
-queues and re-arms FW_READY; the bridge won't re-emit
-SWITCHDEV_FDB_ADD_TO_DEVICE for entries it already considers offloaded.  Is
-a replay of the bridge FDB on firmware-up, or a periodic resync, planned?
-A dropped delete leaves a stale hardware entry forwarding a MAC to a port
-the bridge no longer uses.
-
-> +static void rvu_sw_l2_ctrl_work_handler(struct work_struct *work)
-> +{
-
-[ ... ]
-
-> +	if (rvu_sw_l2_offl_wq || fdb_refresh_wq)
-> +		rvu_sw_l2_destroy_wqs(rvu);
-> +
-> +	l2_offl_work.rvu = rvu;
-> +	INIT_WORK(&l2_offl_work.work, rvu_sw_l2_offl_rule_wq_handler);
-> +	rvu_sw_l2_offl_wq = alloc_workqueue("swdev_rvu_sw_l2_offl_wq", 0, 0);
-> +	if (!rvu_sw_l2_offl_wq) {
-> +		dev_err(rvu->dev, "L2 offl workqueue allocation failed\n");
-> +		return;
-> +	}
-> +
-> +	fdb_refresh_work.rvu = rvu;
-> +	INIT_WORK(&fdb_refresh_work.work, rvu_sw_l2_fdb_refresh_wq_handler);
-> +	fdb_refresh_wq = alloc_workqueue("swdev_fdb_refresh_wq", 0, 0);
-> +	if (!fdb_refresh_wq) {
-> +		dev_err(rvu->dev, "fdb refresh workqueue allocation failed\n");
-> +		destroy_workqueue(rvu_sw_l2_offl_wq);
-> +		rvu_sw_l2_offl_wq = NULL;
-> +		return;
-> +	}
-
-[Severity: Medium]
-These global pointers and work containers are published with no lock and no
-release barrier, while every other accessor uses the list mutexes.
-rvu_sw_l2_fdb_list_entry_add() reads them under fdb_refresh_list_lock, which
-the publisher never takes:
-
-	mutex_lock(&fdb_refresh_list_lock);
-	wq = fdb_refresh_wq;
-	...
-	queue_work(wq, &fdb_refresh_work.work);
-
-On a weakly ordered machine, can a concurrent mailbox handler observe the
-plain store to fdb_refresh_wq before the INIT_WORK() and .rvu stores are
-visible, and then queue work with a stale work->func or stale .rvu?
-
-The failure path here also does destroy_workqueue(rvu_sw_l2_offl_wq) plus
-the NULL store outside l2_offl_list_lock and without cancel_work_sync(), and
-rvu_sw_l2_shutdown() tests both pointers and dereferences l2_offl_work.rvu
-with none of those locks held.
-
-[ ... ]
-
->  int rvu_mbox_handler_fdb_notify(struct rvu *rvu,
->  				struct fdb_notify_req *req,
->  				struct msg_rsp *rsp)
->  {
-> +	struct workqueue_struct *wq;
-> +	struct l2_entry *l2_entry;
-> +	u32 port_id;
-> +
-> +	spin_lock_bh(&rvu_sw_l2_state_lock);
-> +	if (!(rvu->rswitch.flags & RVU_SWITCH_FLAG_FW_READY)) {
-> +		spin_unlock_bh(&rvu_sw_l2_state_lock);
-> +		return 0;
-> +	}
-> +	spin_unlock_bh(&rvu_sw_l2_state_lock);
-> +
-> +	port_id = rvu_sw_port_id(rvu, req->hdr.pcifunc);
-> +	if (port_id == RVU_SW_INVALID_PORT_ID)
-> +		return -EINVAL;
-
-[Severity: High]
-Is any sender check missing here?  The only validation is that the sender's
-pcifunc maps to a representor port id, and rep2pfvf_map[] is populated with
-CGX PFs *and* their VFs:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c:rvu_mbox_handler_get_rep_cnt() {
-	rvu->rep2pfvf_map[rep] = pcifunc;
-	...
-	rvu->rep2pfvf_map[rep] = pcifunc | ((vf + 1) & RVU_PFVF_FUNC_MASK);
-
-So a guest VF can send FDB_NOTIFY with an arbitrary req->mac and
-req->flags, and the AF queues an L2 rule binding that MAC to the VF's own
-switch port (or an OTX2_FDB_DEL for a victim MAC).  Legitimate senders come
-from the host switchdev notifier via sw_fdb_add_or_del(), i.e. host
-PF/representor-parent PFs only.  Should VF senders be rejected here?
-
-[Severity: High]
-(same site) Related to the above: with the FW_STATUS authorization gap, an
-attacker that has made itself rswitch.pcifunc also receives every L2 rule
-push (each bridge FDB MAC plus port id) via af2swdev_notify.
-
-> +	if (atomic_read(&l2_offl_list_cnt) >= RVU_SW_L2_LIST_MAX) {
-> +		rvu_sw_l2_list_cnt_warn(rvu->dev, &l2_offl_list_cnt, "offload");
-> +		return -ENOMEM;
-> +	}
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-> index fcdf891f90b58..1d86cac5a7e83 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-> @@ -114,6 +115,38 @@ static void otx2vf_vfaf_mbox_handler(struct work_struct *work)
 > +#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
-> +static int otx2vf_mbox_af2pf_fdb_refresh(struct otx2_nic *vf,
-> +					 struct af2pf_fdb_refresh_req *req,
-> +					 struct msg_rsp *rsp)
-> +{
-> +	struct switchdev_notifier_fdb_info item = {0};
-> +
-> +	/* VM bridge + HW offload: vf->netdev is a br0 port in the guest.
-> +	 * SWITCHDEV_FDB_ADD_TO_BRIDGE on this netdev refreshes the guest
-> +	 * bridge FDB even when accelerated traffic bypasses eth0/eth1 RX
-> +	 * (see rvu_sw_l2_fdb_refresh_send()).
+> +	struct net_device *netdev = priv->netdev;
+> +#endif
+
+[Severity: Medium]
+
+Is priv->netdev ever set for the rvu_rep PF?  Grepping the octeontx2 tree
+shows only two references: this new read, and the assignment inside
+rvu_rep_setup_tc_cb():
+
+	priv->netdev = rep->netdev;
+
+rvu_rep_probe() does not initialise it, so on the first eswitch enable
+netdev is NULL.  otx2_sw_nb_register() then stores NULL into
+sw_nb_pf_netdev (making the FIB logging fallback dead), and any
+register_*_notifier() failure runs netdev_err(NULL, ...).
+
+There is a second concern with the same pointer.  Once a TC flower rule has
+been offloaded on a representor, priv->netdev points at rep->netdev, and
+rvu_rep_destroy() does:
+
+		unregister_netdev(rep->netdev);
+		rvu_rep_devlink_port_unregister(rep);
+		free_netdev(rep->netdev);
+
+without clearing priv->netdev.  Can a later switchdev enable then publish
+that freed netdev into sw_nb_pf_netdev, where sw_nb_fib_event() logs
+through it?  Would taking a netdev_hold(), or simply using priv->dev for
+logging, be safer here?
+
+>  	struct devlink_port_attrs attrs = {};
+>  	struct esw_cfg_req *req;
+> +	int mbox_err;
+> +#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+> +	int err;
+> +#endif
+>  
+>  	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
+>  
+> +#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+> +	/* Disable unregisters PF notifiers before ESW_CFG clears rep_mode on
+> +	 * the AF.  unregister_*_notifier() removes each block synchronously,
+> +	 * so there is no window where the AF considers the eswitch off while
+> +	 * sw_nb_* handlers remain registered and could still send mailbox
+> +	 * traffic (that race existed only when disable ran after the mailbox).
 > +	 */
-> +	item.addr = req->mac;
-> +	item.info.dev = vf->netdev;
-> +	if (req->flags & OTX2_FDB_DEL)
-> +		call_switchdev_notifiers(SWITCHDEV_FDB_DEL_TO_BRIDGE,
-> +					 item.info.dev, &item.info, NULL);
-> +	else
-> +		call_switchdev_notifiers(SWITCHDEV_FDB_ADD_TO_BRIDGE,
-> +					 item.info.dev, &item.info, NULL);
-> +
-> +	return 0;
-> +}
+> +	if (ena) {
+> +		err = otx2_sw_nb_register(netdev);
+> +		if (err)
+> +			return err;
+> +	} else {
+> +		/* TODO: On disable, notifiers are unregistered before ESW_CFG. If
+> +		 * mailbox allocation fails below, restore otx2_sw_nb_register()
+> +		 * so software notifiers are not abandoned while hardware remains
+> +		 * in eswitch mode.
+> +		 */
+> +		err = otx2_sw_nb_unregister(netdev);
+> +		if (err)
+> +			return err;
+> +	}
+> +#endif
 
 [Severity: High]
-This runs from the VF mailbox-up work handler (otx2vf_vfaf_mbox_handler(),
-plain process context) with neither rtnl_lock() nor rcu_read_lock() held.
-The same applies to otx2_mbox_up_handler_af2pf_fdb_refresh() in sw_fdb.c
-called from otx2_pfaf_mbox_up_handler().  The notifier callee documents the
-requirement:
 
-net/bridge/br.c
-/* called with RTNL or RCU */
-static int br_switchdev_event(...)
-{
-	...
-	p = br_port_get_rtnl_rcu(dev);
-	if (!p)
-		goto out;
-	br = p->br;
+These early returns skip the ESW_CFG mailbox entirely, and both callers
+discard the return value:
 
-Besides the CONFIG_PROVE_RCU splat from rcu_dereference_rtnl(), can
-struct net_bridge_port be freed by a concurrent br_del_if() /
-netdev_rx_handler_unregister() between that dereference and the use of
-p->br?  DSA's dsa_slave_switchdev_event_work() and the mlx5 bridge offload
-take rtnl_lock() around this call.
+	rvu_rep_create()
+		rvu_eswitch_config(priv, true);
+		return 0;
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_fdb.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_fdb.c
-> index 500451e85b503..e5e20b08ee8ee 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_fdb.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_fdb.c
-> @@ -4,16 +4,276 @@
+	rvu_rep_destroy()
+		rvu_eswitch_config(priv, false);
+		priv->flags |= OTX2_FLAG_INTF_DOWN;
+		rvu_rep_free_cq_rsrc(priv);
+
+Can AF state and driver state diverge in both directions here?
+
+On enable, otx2_sw_nb_register() can fail with -EBUSY (the global
+single-registration guard) or with errors from sw_fdb_init(),
+otx2_sw_fib_init() or any register_*_notifier().  ESW_CFG is never sent,
+so rvu_mbox_handler_esw_cfg() never runs and rvu->rep_mode stays 0, but
+otx2_devlink_eswitch_mode_set() still sees success:
+
+	if (!ret)
+		pfvf->esw_mode = mode;
+
+so devlink reports switchdev mode with no representor steering installed.
+
+On disable, otx2_sw_nb_unregister() has already unregistered all six
+notifier blocks and run sw_fl_deinit()/otx2_sw_fib_deinit()/sw_fdb_deinit()
+and cleared otx2_sw_nb_registered before it returns the accumulated error.
+rvu_eswitch_config() then returns without sending ESW_CFG(ena = 0), so the
+AF keeps rep_mode = 1 and the rep MCAM entries installed, while
+rvu_rep_destroy() continues on to rvu_rep_free_cq_rsrc(),
+unregister_netdev(), free_netdev() and rvu_rep_rsrc_free().  Does that
+leave hardware steering traffic to representor pcifuncs whose NIX/CQ
+resources have been freed?
+
+A retry does not repair it either, since otx2_sw_nb_unregister() now
+short-circuits on !otx2_sw_nb_registered.
+
+Would it make more sense to send ESW_CFG regardless and propagate the
+result to rvu_rep_create()/rvu_rep_destroy()?
+
+> +
+>  	mutex_lock(&priv->mbox.lock);
+>  	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
+>  	if (!req) {
+>  		mutex_unlock(&priv->mbox.lock);
+> +#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+> +		if (ena)
+> +			otx2_sw_nb_unregister(netdev);
+> +#endif
+>  		return -ENOMEM;
+>  	}
+>  	req->ena = ena;
+>  	memcpy(req->switch_id, attrs.switch_id.id, attrs.switch_id.id_len);
+> -	otx2_sync_mbox_msg(&priv->mbox);
+> +	mbox_err = otx2_sync_mbox_msg(&priv->mbox);
+>  	mutex_unlock(&priv->mbox.lock);
+> -	return 0;
+> +
+> +#if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+> +	if (ena && mbox_err)
+> +		otx2_sw_nb_unregister(netdev);
+> +#endif
+> +
+> +	return mbox_err;
+>  }
+>  
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
+> index 426a420119301..b51d8d2d01b8c 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
+> @@ -4,18 +4,555 @@
 
 [ ... ]
 
-> +static struct otx2_nic *sw_fdb_netdev_to_nic(struct net_device *dev)
+> +const char *sw_nb_get_cmd2str(int cmd)
 > +{
-> +	struct device *parent = dev->dev.parent;
-> +
-> +	if (parent && parent->bus == &pci_bus_type) {
-> +		struct pci_dev *pdev = to_pci_dev(parent);
-> +
-> +		if (otx2_rep_dev(pdev)) {
-> +			struct rep_dev *rep = netdev_priv(dev);
-> +
-> +			return rep->mdev;
-> +		}
-> +	}
-> +
-> +	return netdev_priv(dev);
+> +	return sw_nb_cmd2str[cmd];
 > +}
+> +EXPORT_SYMBOL(sw_nb_get_cmd2str);
 
-[Severity: Critical]
-Can this return a pointer that isn't a struct otx2_nic?  The fallthrough
-returns netdev_priv(dev) for any netdev that isn't an RVU representor, and
-sw_nb_is_valid_dev() explicitly admits VLAN uppers and bridge devices whose
-lowers are merely Cavium-vendor PCI netdevs:
+[Severity: Low]
 
-drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c:sw_nb_is_valid_dev() {
-	if (netif_is_bridge_master(netdev) || is_vlan_dev(netdev)) {
-		netdev_walk_all_lower_dev_rcu(netdev, sw_nb_check_slaves, &priv);
-		valid = priv.flags && cnt;
+This helper has no in-tree caller, even at the end of the series, and it
+indexes sw_nb_cmd2str[] without validating cmd: index 0 returns NULL and
+cmd >= OTX2_CMD_MAX reads past the array.  Is the EXPORT_SYMBOL() needed,
+and could a bounds check be added?
 
-drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c:sw_nb_is_cavium_dev() {
-	if (pdev->vendor != PCI_VENDOR_ID_CAVIUM)
+Related: sw_nb_fib_event_dump() and SWITCH_NB_FIB_EVENT_DUMP() are added as
+__maybe_unused with no user and stay that way through the series.
+
+Also, at this commit each new handler builds a struct fib_entry, logs it
+with netdev_dbg() and immediately kfree()s it, and sw_nb_fdb_event() is a
+no-op:
+
+	case SWITCHDEV_FDB_ADD_TO_DEVICE:
+		if (fdb_info->is_local)
+			break;
+		break;
+
+The later patches in the series replace those kfree() calls with
+sw_fib_add_to_list()/sw_fdb_add_to_list(), so this is only noted for the
+record.
+
+[ ... ]
+
+> +static int sw_nb_net_event(struct notifier_block *nb,
+> +			   unsigned long event, void *ptr)
+> +{
+> +	struct neighbour *n = ptr;
+> +
+> +	if (!sw_nb_is_valid_dev(n->dev))
+> +		return NOTIFY_DONE;
+> +
+> +	if (event != NETEVENT_NEIGH_UPDATE)
+> +		return NOTIFY_DONE;
+
+[Severity: High]
+
+Should the event check come before ptr is treated as a struct neighbour?
+The netevent chain carries a different payload per event, per
+include/net/netevent.h:
+
+	NETEVENT_NEIGH_UPDATE = 1, /* arg is struct neighbour ptr */
+	NETEVENT_REDIRECT,	   /* arg is struct netevent_redirect ptr */
+	NETEVENT_DELAY_PROBE_TIME_UPDATE, /* arg is struct neigh_parms ptr */
+	NETEVENT_IPV4_MPATH_HASH_UPDATE, /* arg is struct net ptr */
+
+net/core/neighbour.c passes a struct neigh_parms:
+
+	if (index == NEIGH_VAR_DELAY_PROBE_TIME)
+		call_netevent_notifiers(NETEVENT_DELAY_PROBE_TIME_UPDATE, p);
+
+and net/ipv4/sysctl_net_ipv4.c passes a struct net:
+
+	if (write && ret == 0)
+		call_netevent_notifiers(NETEVENT_IPV4_MPATH_HASH_UPDATE, net);
+
+offsetof(struct neighbour, dev) is several hundred bytes in (arp_queue,
+timer, ha[] and a struct hh_cache precede dev), so reading n->dev from a
+neigh_parms object or from the stack-allocated struct netevent_redirect
+looks like an out-of-bounds read.  The garbage value is then dereferenced
+as a net_device by netif_is_bridge_master() (dev->priv_flags),
+sw_nb_is_cavium_dev():
+
+	dev = netdev->dev.parent;
+	if (!dev || dev->bus != &pci_bus_type)
 		return false;
 
-A VLAN netdev has dev->dev.parent == NULL (net/8021q/vlan_dev.c only does
-SET_NETDEV_DEVTYPE, never SET_NETDEV_DEV), so the PCI branch is skipped and
-vlan_dev_priv memory is returned typed as struct otx2_nic *.
-sw_fdb_add_to_list() then does:
+	pdev = to_pci_dev(dev);
+	if (pdev->vendor != PCI_VENDOR_ID_CAVIUM)
 
-	entry->pdev = pci_dev_get(pf->pdev);
-
-reading pf->pdev from an offset past the end of the much smaller VLAN
-private area, and the worker later calls pci_get_drvdata() and
-mutex_lock(&pf->mbox.lock) through it.  The if (!pf) guard can't catch this
-because the pointer is non-NULL.
-
-Reproducer shape:
-
-	ip link add link eth0 name eth0.100 type vlan id 100
-	ip link set eth0.100 master br0
-	# any learned (non-local) MAC on that port
-
-Should sw_fdb_netdev_to_nic() return NULL unless the netdev is known to be
-an rvu_nicpf/rvu_nicvf/rvu_rep netdev (e.g. by comparing
-dev->netdev_ops or the PCI device id) instead of falling back to
-netdev_priv()?
+and netdev_walk_all_lower_dev_rcu() (dev->adj_list).  Once switchdev mode
+is on, a write to /proc/sys/net/ipv4/neigh/*/delay_first_probe_time or to
+/proc/sys/net/ipv4/fib_multipath_hash_policy would reach this.  Can that
+oops?
 
 [ ... ]
 
-> +static void sw_fdb_wq_handler(struct work_struct *work)
+> +static int sw_nb_netdev_event(struct notifier_block *unused,
+> +			      unsigned long event, void *ptr)
 > +{
-> +	struct sw_fdb_list_entry *entry;
-> +	struct otx2_nic *pf;
-> +	struct workqueue_struct *wq;
-> +	LIST_HEAD(tlist);
+> +	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
+> +	struct in_device *idev;
+> +	struct inet6_dev *i6dev;
+
+[Severity: Low]
+
+i6dev is declared unconditionally but its only use sits inside
+#if IS_REACHABLE(CONFIG_IPV6) below.  With CONFIG_OCTEONTX_SWITCH=y and
+CONFIG_IPV6=n (allowed, since OCTEONTX_SWITCH only depends on
+(64BIT && COMPILE_TEST) || ARM64 and OCTEONTX2_PF), or with CONFIG_IPV6=m
+and a built-in driver, this is an unused variable and -Wunused-variable
+becomes a build failure with the default CONFIG_WERROR=y.  Should the
+declaration move inside the same conditional?
+
 > +
-> +	spin_lock(&sw_fdb_llock);
-> +	list_splice_init(&sw_fdb_lh, &tlist);
-> +	spin_unlock(&sw_fdb_llock);
+> +	if (event != NETDEV_CHANGE &&
+> +	    event != NETDEV_UP &&
+> +	    event != NETDEV_DOWN) {
+> +		return NOTIFY_DONE;
+> +	}
+> +
+> +	if (!sw_nb_is_valid_dev(dev))
+> +		return NOTIFY_DONE;
+> +
+> +	idev = __in_dev_get_rtnl(dev);
+> +	if (idev)
+> +		sw_nb_v4_netdev_event(unused, event, ptr);
+> +
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	i6dev = __in6_dev_get(dev);
+> +	if (i6dev)
+> +		sw_nb_v6_netdev_event(unused, event, ptr);
+> +#endif
+> +
+> +	return NOTIFY_DONE;
+> +}
 
-[Severity: High]
-sw_fdb_llock is taken with plain spin_lock() here and in sw_fdb_deinit()
-from process context, but also with plain spin_lock() from softirq context
-in sw_fdb_add_to_list() (the GFP_ATOMIC allocation and
-netdev_hold(..., GFP_ATOMIC) there confirm the atomic context).  The
-bridge raises the switchdev notifier from the NET_RX softirq learning path:
+[ ... ]
 
-net/bridge/br_fdb.c:br_fdb_update() {
+> +int otx2_sw_nb_unregister(struct net_device *netdev)
+> +{
+> +	int err, ret = 0;
+> +
+> +	if (!otx2_sw_nb_registered)
+> +		return 0;
+
+[ ... ]
+
+> +	sw_fl_deinit();
+> +	otx2_sw_fib_deinit();
+> +	sw_fdb_deinit();
+> +
+> +	sw_nb_pf_netdev = NULL;
+> +	otx2_sw_nb_registered = false;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL(otx2_sw_nb_unregister);
+> +
+> +/* Concurrent registration from multiple devlink instances cannot occur on a
+> + * given RVU: only the RVU_REP netdev devlink reaches this function (see
+> + * comment above). The AF and PF/VF devlinks do not call otx2_sw_nb_register(),
+> + * and their eswitch_mode_set handlers return -EOPNOTSUPP. devlink core
+> + * holds devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET handler,
+> + * so two threads cannot enter here concurrently on that single rep devlink.
+> + * A second call after successful registration returns -EBUSY before any
+> + * notifier or workqueue state is modified.
+> + */
+> +int otx2_sw_nb_register(struct net_device *netdev)
+>  {
+> +	int err;
+> +
+> +	/* Notifier blocks are global and only one RVU_REP may register at a
+> +	 * time (switch offload is init_net-wide; see comment at file top).
+> +	 * A second RVU card gets -EBUSY here by design.  Concurrent calls on
+> +	 * the same RVU_REP cannot happen: only that netdev's devlink reaches
+> +	 * this function (otx2_rep_dev()), and devlink core holds
+> +	 * devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET handler.
+> +	 * No extra lock is needed to protect the notifier chains.
+> +	 */
+> +	if (otx2_sw_nb_registered)
+> +		return -EBUSY;
+> +
+> +	sw_nb_pf_netdev = netdev;
+
+[Severity: Medium]
+
+devlink->lock is per devlink instance.  With two RVU_REP functions there
+are two devlinks, so can two threads run this unlocked check-then-set
+concurrently?
+
+	if (otx2_sw_nb_registered)
+		return -EBUSY;
 	...
-	br_switchdev_fdb_notify(br, fdb, RTM_DELNEIGH);
+	otx2_sw_nb_registered = true;
 
-So while this worker holds the lock for list_splice_init(), a softirq on the
-same CPU delivering a learned MAC calls sw_fdb_add_to_list() ->
-spin_lock(&sw_fdb_llock) on the already-held lock.  Should all these sites
-use spin_lock_bh()?
+Both would then run sw_fdb_init()/otx2_sw_fib_init()/sw_fl_init(), which
+re-initialise global workqueue pointers (leaking the loser's workqueue),
+both would call register_switchdev_notifier() and friends with the same
+static notifier_block objects, and sw_nb_pf_netdev would keep whichever
+store landed last.
 
-> +	while ((entry =
-> +		list_first_entry_or_null(&tlist,
-> +					 struct sw_fdb_list_entry,
-> +					 list)) != NULL) {
-> +		list_del_init(&entry->list);
-> +		sw_fdb_list_cnt_dec(entry->dev);
+The flag also records no owner.  Since rvu_rep_create() ignores the
+-EBUSY, device B enters switchdev mode without registering, and a later
+rvu_rep_destroy(B) -> otx2_sw_nb_unregister() sees the global flag set and
+tears down device A's notifiers and helpers.  Is that intended?
+
+Finally, is the comment's claim that DEVLINK_CMD_ESWITCH_MODE_SET is the
+only entry point accurate?  rvu_rep_remove() reaches the same code with no
+devlink lock held:
+
+	otx2_unregister_dl(priv);
+	if (!(priv->flags & OTX2_FLAG_INTF_DOWN))
+		rvu_rep_destroy(priv);
+
+[Severity: Low]
+
+The commit message describes switch-mode support generally but does not
+mention that this registration is a process-global singleton, so switch
+offload can be enabled on only one RVU device per host ("A second RVU card
+gets -EBUSY here by design").  Could the changelog state that, along with
+the other restrictions the comments encode: registration is init_net-wide
+with no netns scoping, and register_fib_notifier() is called with NULL
+dump/replay callbacks so pre-existing routes are never replayed?
+
 > +
-> +		spin_lock(&sw_fdb_llock);
-> +		wq = sw_fdb_wq;
-> +		spin_unlock(&sw_fdb_llock);
-> +
-> +		pf = wq ? pci_get_drvdata(entry->pdev) : NULL;
-> +		if (pf && sw_fdb_add_or_del(pf, entry->mac, entry->add_fdb))
+> +	err = sw_fdb_init();
+> +	if (err)
+> +		goto err_clear;
 
-[Severity: Critical]
-For PF and VF PCI devices, isn't the driver data a struct net_device * and
-not a struct otx2_nic *?
+[ ... ]
 
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:otx2_probe() {
-	pci_set_drvdata(pdev, netdev);
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c:otx2vf_probe() {
-	pci_set_drvdata(pdev, netdev);
-
-Only rep.c stores the struct otx2_nic *.  The result is passed to
-sw_fdb_add_or_del(), which does mutex_lock(&pf->mbox.lock) and
-otx2_mbox_alloc_msg_fdb_notify(&pf->mbox) on memory that is actually inside
-struct net_device.  The void * return of pci_get_drvdata() hides the
-mistype at compile time.
-
-sw_fdb_add_to_list() already resolved the correct struct otx2_nic * via
-sw_fdb_netdev_to_nic() and then discarded it, keeping only entry->pdev.
-Could the entry carry the otx2_nic pointer (with whatever reference makes it
-safe) instead of re-deriving it here?
-
-[Severity: High]
-Related lifetime question at the same site: what keeps pf->mbox alive until
-this work runs?  The global sw_fdb_wq is only torn down by
-otx2_sw_nb_unregister() (driven by devlink eswitch mode on the RVU_REP
-device), so removing the PF/VF instance that owns the referenced mailbox
-doesn't cancel or purge the pending entries:
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:otx2_remove() {
-	otx2_pfaf_mbox_destroy(pf);
-	pci_free_irq_vectors(pf->pdev);
-	...
-	pci_set_drvdata(pdev, NULL);
-	free_netdev(netdev);
-
-The if (pf) check can read a still-valid drvdata and then use pf->mbox after
-otx2_pfaf_mbox_destroy() has destroyed the mailbox workqueue and
-unmapped/freed the mailbox region.  netdev_hold()/pci_dev_get() keep the
-net_device and pci_dev allocations alive, but not the mailbox state that is
-dereferenced.  Should the remove path flush/purge the entries belonging to
-that device?
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h
+> index 0ba29f76fd41f..39435f23427cf 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.h
+> @@ -9,12 +9,41 @@
 
 [ ... ]
 
 > +int otx2_mbox_up_handler_af2pf_fdb_refresh(struct otx2_nic *pf,
 > +					   struct af2pf_fdb_refresh_req *req,
-> +					   struct msg_rsp *rsp)
-> +{
-> +	struct switchdev_notifier_fdb_info item = {0};
-> +
-> +	/* FDB refresh is raised from the switch offload path (AF) after
-> +	 * switchdev FDB updates. PF-local ports are refreshed on pf->netdev.
-> +	 * TODO: When req->hdr.pcifunc targets a guest VF (VM-bridged offload),
-> +	 * forward the refresh via the PF-VF mailbox instead of applying it to
-> +	 * pf->netdev; otherwise guest-owned MACs may age out prematurely (see
-> +	 * rvu_sw_l2_fdb_refresh_send()).
-> +	 */
+> +					   struct msg_rsp *rsp);
 
 [Severity: Low]
-This comment and the one in rvu_sw_l2_fdb_refresh_send() describe opposite
-behaviour for the same message.  Here the claim is that a VF-targeted
-refresh is applied to pf->netdev and PF-VF forwarding is a TODO, but the PF
-up-mbox dispatch never processes such a message locally:
 
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:otx2_pfaf_mbox_up_handler() {
-	devid = msg->pcifunc & RVU_PFVF_FUNC_MASK;
-	/* Skip processing VF's messages */
-	if (!devid)
-		otx2_process_mbox_msg_up(pf, msg);
+At this commit this prototype has no definition, and
+otx2_process_mbox_msg_up() does not expand
+MBOX_UP_AF2PF_FDB_REFRESH_MESSAGES, so MBOX_MSG_AF2PF_FDB_REFRESH is not
+routed.  Both gaps are closed by later patches in the same series
+(sw_fdb.c defines the handler and otx2_pf.c expands the macro), so this is
+only noted for the record - would it be tidier to add the declaration in
+the patch that adds the definition?
 
-The rvu_sw_l2_fdb_refresh_send() comment states this correctly ("the parent
-PF mailbox forwards the message to the guest VF driver").  Could the TODO
-here be dropped or reworded?
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c
+> new file mode 100644
+> index 0000000000000..3497e60aedbec
+> --- /dev/null
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb_v6.c
+> @@ -0,0 +1,301 @@
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
-> index b51d8d2d01b8c..c947f30becc83 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/switch/sw_nb.c
-> @@ -191,13 +191,17 @@ static int sw_nb_fdb_event(struct notifier_block *unused,
->  	switch (event) {
->  	case SWITCHDEV_FDB_ADD_TO_DEVICE:
-> -		if (fdb_info->is_local)
-> -			break;
-> -		break;
-> -
->  	case SWITCHDEV_FDB_DEL_TO_DEVICE:
->  		if (fdb_info->is_local)
->  			break;
-> +		/* dev is the bridge port that learned the FDB
-> +		 * (SWITCHDEV_FDB_*_TO_DEVICE), not the bridge master.
-> +		 * sw_nb_is_valid_dev() limits this to Cavium-offloaded
-> +		 * setups; only Cavium PF/representor netdevs are supported
-> +		 * as bridge ports today (VLAN/virt under bridge is TODO).
-> +		 */
-> +		sw_fdb_add_to_list(dev, (u8 *)fdb_info->addr,
-> +				   event == SWITCHDEV_FDB_ADD_TO_DEVICE);
->  		break;
+[ ... ]
+
+> +	entry->cmd = sw_nb_inetaddr_event_to_otx2_event(event, dev);
+> +	memcpy(entry->dst6, &addr, sizeof(entry->dst6));
+> +	entry->dst6_plen = prefix_len;
+> +	entry->host = 1;
+> +	entry->ipv6 = 1;
+
+[Severity: Medium]
+
+Should host entries carry a full 128-bit prefix here?  This path in
+sw_nb_v6_netdev_event(), and the same assignment in
+sw_nb_v6_inetaddr_event():
+
+	entry->dst6_plen = ifa6->prefix_len;
+	entry->mac_valid = 1;
+	entry->host = 1;
+
+use the interface subnet prefix while setting host = 1.  Every other
+producer of the same descriptor uses an exact-host length -
+sw_nb_v4_inetaddr_event() and sw_nb_v4_netdev_event() use:
+
+	entry->dst_len = 32;
+	entry->mac_valid = 1;
+	entry->host = 1;
+
+and sw_nb_net_v6_neigh_update() uses the full key length:
+
+	entry->dst6_plen = n->tbl->key_len * 8;
+
+If the consumer honours dst6_plen for host rules, would a typical /64
+interface prefix be installed as the local-host entry, claiming the whole
+subnet as local?
+
+[ ... ]
+
+> @@ -4,18 +4,555 @@
+>   * Copyright (C) 2026 Marvell.
+>   *
+>   */
+> +#include <linux/kernel.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/etherdevice.h>
+> +#include <net/switchdev.h>
+> +#include <net/netevent.h>
+> +#include <net/arp.h>
+> +#include <net/route.h>
+> +#include <linux/inetdevice.h>
+> +#include <net/addrconf.h>
+> +
+> +#include "../otx2_reg.h"
+> +#include "../otx2_common.h"
+> +#include "../otx2_struct.h"
+> +#include "../cn10k.h"
+>  #include "sw_nb.h"
+> +#include "sw_fdb.h"
+> +#include "sw_fib.h"
+> +#include "sw_fl.h"
+> +#include "sw_nb_v4.h"
+> +#include "sw_nb_v6.h"
+>  
+>  #if IS_ENABLED(CONFIG_OCTEONTX_SWITCH)
+>  
+> -int otx2_sw_nb_unregister(void)
+> +/* PF netdev for netdev_* logging when notifier info has no device */
+> +static struct net_device *sw_nb_pf_netdev;
+> +/* Notifier registration is toggled only from rvu_eswitch_config(), which is
+> + * reached exclusively when switchdev mode is enabled on the RVU eswitch
+> + * representor PF (PCI_DEVID_RVU_REP). The sole call path is:
+> + *
+> + *   DEVLINK_CMD_ESWITCH_MODE_SET
+> + *     -> otx2_devlink_eswitch_mode_set()  [otx2_rep_dev() only]
+> + *       -> rvu_rep_create() / rvu_rep_destroy()
+> + *         -> rvu_eswitch_config(ena = 1) -> otx2_sw_nb_register()
+> + *         -> rvu_eswitch_config(ena = 0) -> otx2_sw_nb_unregister()
+> + *
+> + * On disable, otx2_sw_nb_unregister() runs before the ESW_CFG mailbox so flush
+> + * paths in sw_fdb/fib/fl_deinit() can still reach hardware.
+> + *
+> + * Other OcteonTX2 netdev PFs/VFs also have a devlink, but their
+> + * eswitch_mode_set handler returns -EOPNOTSUPP. The AF rvu_devlink
+> + * eswitch_mode_set does not register these notifiers. There is exactly
+> + * one RVU_REP PCI function (and netdev devlink) per RVU, and devlink
+> + * core holds devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET
+> + * handler, so this path cannot run concurrently on the same device.
+> + * otx2_sw_nb_registered further ensures at most one active registration.
+> + */
+> +static bool otx2_sw_nb_registered;
+> +
+> +static const char *sw_nb_cmd2str[OTX2_CMD_MAX] = {
+> +	[OTX2_DEV_UP]  = "OTX2_DEV_UP",
+> +	[OTX2_DEV_DOWN] = "OTX2_DEV_DOWN",
+> +	[OTX2_DEV_CHANGE] = "OTX2_DEV_CHANGE",
+> +	[OTX2_NEIGH_UPDATE] = "OTX2_NEIGH_UPDATE",
+> +	[OTX2_FIB_ENTRY_REPLACE] = "OTX2_FIB_ENTRY_REPLACE",
+> +	[OTX2_FIB_ENTRY_ADD] = "OTX2_FIB_ENTRY_ADD",
+> +	[OTX2_FIB_ENTRY_DEL] = "OTX2_FIB_ENTRY_DEL",
+> +	[OTX2_FIB_ENTRY_APPEND] = "OTX2_FIB_ENTRY_APPEND",
+> +};
+> +
+> +const char *sw_nb_get_cmd2str(int cmd)
+> +{
+> +	return sw_nb_cmd2str[cmd];
+> +}
+> +EXPORT_SYMBOL(sw_nb_get_cmd2str);
+> +
+> +bool sw_nb_is_cavium_dev(struct net_device *netdev)
+> +{
+> +	struct pci_dev *pdev;
+> +	struct device *dev;
+> +
+> +	dev = netdev->dev.parent;
+> +	if (!dev || dev->bus != &pci_bus_type)
+> +		return false;
+> +
+> +	pdev = to_pci_dev(dev);
+> +	if (pdev->vendor != PCI_VENDOR_ID_CAVIUM)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +/* Resolve the Cavium PF netdev used to reach the switch AF for offload.
+> + *
+> + * For a bridge master netdev, any Cavium netdev enslaved to the bridge is
+> + * sufficient: callers only need a PF netdev to obtain the switch AF mailbox
+> + * context (pcifunc). Bridge-specific information is tagged separately in
+> + * the offload entry (entry->bridge), so walking every lower netdev is not
+> + * required here.
+> + *
+> + * Only a single level of netdev nesting is resolved (bridge lower dev or
+> + * VLAN real dev). Nested topologies such as VLAN-over-bridge are not
+> + * supported; offload will not work for those configurations.
+> + */
+> +struct net_device *sw_nb_resolve_pf_dev(struct net_device *dev)
+> +{
+> +	struct net_device *pf_dev = dev;
+> +	struct list_head *iter;
+> +
+> +	rcu_read_lock();
+> +
+> +	if (netif_is_bridge_master(dev)) {
+> +		iter = &dev->adj_list.lower;
+> +		pf_dev = netdev_next_lower_dev_rcu(dev, &iter);
+> +		if (!pf_dev)
+> +			pf_dev = dev;
+> +	} else if (is_vlan_dev(dev)) {
+> +		pf_dev = vlan_dev_real_dev(dev);
+> +	}
+> +
+> +	rcu_read_unlock();
+> +
+> +	if (!sw_nb_is_cavium_dev(pf_dev))
+> +		return NULL;
+> +
+> +	return pf_dev;
+> +}
+> +
+> +static int sw_nb_check_slaves(struct net_device *dev,
+> +			      struct netdev_nested_priv *priv)
+>  {
+> +	int *cnt;
+> +
+> +	if (!priv->flags)
+> +		return 0;
+> +
+> +	priv->flags &= sw_nb_is_cavium_dev(dev);
+> +	if (priv->flags) {
+> +		cnt = priv->data;
+> +		(*cnt)++;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> -int otx2_sw_nb_register(void)
+> +/* Switch offload has no network namespace support. The global notifiers
+> + * registered below are not scoped to a netns, and sw_nb_is_cavium_dev()
+> + * matches any Cavium PCI netdev without checking dev_net(). All netdevs
+> + * involved in offload (PF/VF ports, bridge members, VLANs, neighbours,
+> + * and routes) must therefore reside in &init_net for offload to work.
+> + */
+> +bool sw_nb_is_valid_dev(struct net_device *netdev)
+> +{
+> +	struct netdev_nested_priv priv;
+> +	struct net_device *br;
+> +	int cnt = 0;
+> +	bool valid;
+> +
+> +	priv.flags = true;
+> +	priv.data = &cnt;
+> +
+> +	rcu_read_lock();
+> +
+> +	if (netif_is_bridge_master(netdev) || is_vlan_dev(netdev)) {
+> +		netdev_walk_all_lower_dev_rcu(netdev, sw_nb_check_slaves, &priv);
+> +		valid = priv.flags && cnt;
+> +		rcu_read_unlock();
+> +		return valid;
+> +	}
+> +
+> +	if (netif_is_bridge_port(netdev)) {
+> +		br = netdev_master_upper_dev_get_rcu(netdev);
+> +		if (!br) {
+> +			rcu_read_unlock();
+> +			return false;
+> +		}
+> +		netdev_walk_all_lower_dev_rcu(br, sw_nb_check_slaves, &priv);
+> +		valid = priv.flags && cnt;
+> +		rcu_read_unlock();
+> +		return valid;
+> +	}
+> +
+> +	rcu_read_unlock();
+> +
+> +	return sw_nb_is_cavium_dev(netdev);
+> +}
+> +
+> +static int sw_nb_fdb_event(struct notifier_block *unused,
+> +			   unsigned long event, void *ptr)
+> +{
+> +	struct net_device *dev = switchdev_notifier_info_to_dev(ptr);
+> +	struct switchdev_notifier_fdb_info *fdb_info = ptr;
+> +
+> +	if (!sw_nb_is_valid_dev(dev))
+> +		return NOTIFY_DONE;
+> +
+> +	switch (event) {
+> +	case SWITCHDEV_FDB_ADD_TO_DEVICE:
+> +		if (fdb_info->is_local)
+> +			break;
+> +		break;
+> +
+> +	case SWITCHDEV_FDB_DEL_TO_DEVICE:
+> +		if (fdb_info->is_local)
+> +			break;
+> +		break;
+> +
+> +	default:
+> +		return NOTIFY_DONE;
+> +	}
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static struct notifier_block sw_nb_fdb = {
+> +	.notifier_call = sw_nb_fdb_event,
+> +};
+> +
+> +static void __maybe_unused
+> +sw_nb_fib_event_dump(unsigned long event, void *ptr)
+> +{
+> +	struct fib_entry_notifier_info *fen_info = ptr;
+> +	struct net_device *log_dev;
+> +	struct fib_nh *fib_nh;
+> +	struct fib_info *fi;
+> +	int i;
+> +
+> +	fi = fen_info->fi;
+> +	log_dev = (fi && fi->fib_nhs) ? fi->fib_nh->fib_nh_dev : sw_nb_pf_netdev;
+> +	if (log_dev)
+> +		netdev_info(log_dev, "%s: FIB event=%lu dst=%pI4h dstlen=%d type=%u\n",
+> +			    __func__, event, &fen_info->dst, fen_info->dst_len,
+> +			    fen_info->type);
+> +
+> +	if (!fi)
+> +		return;
+> +
+> +	fib_nh = fi->fib_nh;
+> +	for (i = 0; i < fi->fib_nhs; i++, fib_nh++) {
+> +		if (!fib_nh->fib_nh_dev)
+> +			continue;
+> +		netdev_info(fib_nh->fib_nh_dev,
+> +			    "%s: dev=%s saddr=%pI4n gw=%pI4n\n",
+> +			    __func__, fib_nh->fib_nh_dev->name,
+> +			    &fib_nh->nh_saddr, &fib_nh->fib_nh_gw4);
+> +	}
+> +}
+> +
+> +#define SWITCH_NB_FIB_EVENT_DUMP(...) \
+> +	sw_nb_fib_event_dump(__VA_ARGS__)
+> +
+> +int sw_nb_fib_event_to_otx2_event(int event, struct net_device *netdev)
+> +{
+> +	switch (event) {
+> +	case FIB_EVENT_ENTRY_REPLACE:
+> +		return OTX2_FIB_ENTRY_REPLACE;
+> +	case FIB_EVENT_ENTRY_ADD:
+> +		return OTX2_FIB_ENTRY_ADD;
+> +	case FIB_EVENT_ENTRY_DEL:
+> +		return OTX2_FIB_ENTRY_DEL;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	netdev_err(netdev, "Wrong FIB event %d\n", event);
+> +	return -1;
+> +}
+> +
+> +static int sw_nb_fib_event(struct notifier_block *nb,
+> +			   unsigned long event, void *ptr)
+> +{
+> +	struct fib_notifier_info *info = ptr;
+> +
+> +	switch (event) {
+> +	case FIB_EVENT_ENTRY_REPLACE:
+> +	case FIB_EVENT_ENTRY_ADD:
+> +	case FIB_EVENT_ENTRY_DEL:
+> +		break;
+> +	default:
+> +		if (sw_nb_pf_netdev)
+> +			netdev_dbg(sw_nb_pf_netdev,
+> +				   "%s: Won't process FIB event %lu\n",
+> +				   __func__, event);
+> +		return NOTIFY_DONE;
+> +	}
+> +
+> +	switch (info->family) {
+> +	case AF_INET:
+> +		return sw_nb_v4_fib_event(nb, event, ptr);
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	case AF_INET6:
+> +		return sw_nb_v6_fib_event(nb, event, ptr);
+> +#endif
+> +	default:
+> +		break;
+> +	}
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static struct notifier_block sw_nb_fib = {
+> +	.notifier_call = sw_nb_fib_event,
+> +};
+> +
+> +static int sw_nb_net_event(struct notifier_block *nb,
+> +			   unsigned long event, void *ptr)
+> +{
+> +	struct neighbour *n = ptr;
+> +
+> +	if (!sw_nb_is_valid_dev(n->dev))
+> +		return NOTIFY_DONE;
+> +
+> +	if (event != NETEVENT_NEIGH_UPDATE)
+> +		return NOTIFY_DONE;
+> +
+> +	switch (n->tbl->family) {
+> +	case AF_INET:
+> +		return sw_nb_net_v4_neigh_update(nb, event, ptr);
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	case AF_INET6:
+> +		return sw_nb_net_v6_neigh_update(nb, event, ptr);
+> +#endif
+> +	default:
+> +		break;
+> +	}
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static struct notifier_block sw_nb_netevent = {
+> +	.notifier_call = sw_nb_net_event,
+> +
+> +};
+> +
+> +int sw_nb_inetaddr_event_to_otx2_event(int event, struct net_device *netdev)
+> +{
+> +	switch (event) {
+> +	case NETDEV_CHANGE:
+> +		return OTX2_DEV_CHANGE;
+> +	case NETDEV_UP:
+> +		return OTX2_DEV_UP;
+> +	case NETDEV_DOWN:
+> +		return OTX2_DEV_DOWN;
+> +	default:
+> +		break;
+> +	}
+> +	netdev_dbg(netdev, "%s: Wrong interaddr event %d\n",
+> +		   __func__, event);
+> +	return -1;
+> +}
+> +
+> +static struct notifier_block sw_nb_v4_inetaddr = {
+> +	.notifier_call = sw_nb_v4_inetaddr_event,
+> +};
+> +
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +static struct notifier_block sw_nb_v6_inetaddr = {
+> +	.notifier_call = sw_nb_v6_inetaddr_event,
+> +};
+> +#endif
+> +
+> +static int sw_nb_netdev_event(struct notifier_block *unused,
+> +			      unsigned long event, void *ptr)
+> +{
+> +	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
+> +	struct in_device *idev;
+> +	struct inet6_dev *i6dev;
+> +
+> +	if (event != NETDEV_CHANGE &&
+> +	    event != NETDEV_UP &&
+> +	    event != NETDEV_DOWN) {
+> +		return NOTIFY_DONE;
+> +	}
+> +
+> +	if (!sw_nb_is_valid_dev(dev))
+> +		return NOTIFY_DONE;
+> +
+> +	idev = __in_dev_get_rtnl(dev);
+> +	if (idev)
+> +		sw_nb_v4_netdev_event(unused, event, ptr);
+> +
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	i6dev = __in6_dev_get(dev);
+> +	if (i6dev)
+> +		sw_nb_v6_netdev_event(unused, event, ptr);
+> +#endif
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static struct notifier_block sw_nb_netdev = {
+> +	.notifier_call = sw_nb_netdev_event,
+> +};
+> +
+> +int otx2_sw_nb_unregister(struct net_device *netdev)
+> +{
+> +	int err, ret = 0;
+> +
+> +	if (!otx2_sw_nb_registered)
+> +		return 0;
+> +
+> +	err = unregister_switchdev_notifier(&sw_nb_fdb);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to unregister switchdev nb\n");
+> +		ret = err;
+> +	}
+> +
+> +	err = unregister_fib_notifier(&init_net, &sw_nb_fib);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to unregister fib nb\n");
+> +		if (!ret)
+> +			ret = err;
+> +	}
+> +
+> +	err = unregister_netevent_notifier(&sw_nb_netevent);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to unregister netevent\n");
+> +		if (!ret)
+> +			ret = err;
+> +	}
+> +
+> +	err = unregister_inetaddr_notifier(&sw_nb_v4_inetaddr);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to unregister addr event\n");
+> +		if (!ret)
+> +			ret = err;
+> +	}
+> +
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	err = unregister_inet6addr_notifier(&sw_nb_v6_inetaddr);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to unregister addr event\n");
+> +		if (!ret)
+> +			ret = err;
+> +	}
+> +#endif
+> +
+> +	err = unregister_netdevice_notifier(&sw_nb_netdev);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to unregister netdev notifier\n");
+> +		if (!ret)
+> +			ret = err;
+> +	}
+> +
+> +	sw_fl_deinit();
+> +	otx2_sw_fib_deinit();
+> +	sw_fdb_deinit();
+> +
+> +	sw_nb_pf_netdev = NULL;
+> +	otx2_sw_nb_registered = false;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL(otx2_sw_nb_unregister);
+> +
+> +/* Concurrent registration from multiple devlink instances cannot occur on a
+> + * given RVU: only the RVU_REP netdev devlink reaches this function (see
+> + * comment above). The AF and PF/VF devlinks do not call otx2_sw_nb_register(),
+> + * and their eswitch_mode_set handlers return -EOPNOTSUPP. devlink core
+> + * holds devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET handler,
+> + * so two threads cannot enter here concurrently on that single rep devlink.
+> + * A second call after successful registration returns -EBUSY before any
+> + * notifier or workqueue state is modified.
+> + */
+> +int otx2_sw_nb_register(struct net_device *netdev)
+>  {
+> +	int err;
+> +
+> +	/* Notifier blocks are global and only one RVU_REP may register at a
+> +	 * time (switch offload is init_net-wide; see comment at file top).
+> +	 * A second RVU card gets -EBUSY here by design.  Concurrent calls on
+> +	 * the same RVU_REP cannot happen: only that netdev's devlink reaches
+> +	 * this function (otx2_rep_dev()), and devlink core holds
+> +	 * devlink->lock for the full DEVLINK_CMD_ESWITCH_MODE_SET handler.
+> +	 * No extra lock is needed to protect the notifier chains.
+> +	 */
+> +	if (otx2_sw_nb_registered)
+> +		return -EBUSY;
+> +
+> +	sw_nb_pf_netdev = netdev;
+> +
+> +	err = sw_fdb_init();
+> +	if (err)
+> +		goto err_clear;
+> +
+> +	err = otx2_sw_fib_init();
+> +	if (err)
+> +		goto err_fdb;
+> +
+> +	err = sw_fl_init();
+> +	if (err)
+> +		goto err_fib;
+> +
+> +	err = register_switchdev_notifier(&sw_nb_fdb);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to register switchdev nb\n");
+> +		goto err_helpers;
+> +	}
+> +
+> +	err = register_fib_notifier(&init_net, &sw_nb_fib, NULL, NULL);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to register fb notifier block\n");
+> +		goto err1;
+> +	}
+> +
+> +	err = register_netevent_notifier(&sw_nb_netevent);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to register netevent\n");
+> +		goto err2;
+> +	}
+> +
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	err = register_inet6addr_notifier(&sw_nb_v6_inetaddr);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to register addr event\n");
+> +		goto err3;
+> +	}
+> +#endif
+> +
+> +	err = register_inetaddr_notifier(&sw_nb_v4_inetaddr);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to register addr event\n");
+> +		goto err4;
+> +	}
+> +
+> +	err = register_netdevice_notifier(&sw_nb_netdev);
+> +	if (err) {
+> +		netdev_err(netdev, "Failed to register netdevice nb\n");
+> +		goto err5;
+> +	}
+> +
+> +	otx2_sw_nb_registered = true;
+> +
+>  	return 0;
+> +
+> +err5:
+> +	unregister_inetaddr_notifier(&sw_nb_v4_inetaddr);
+> +
+> +err4:
+> +#if IS_REACHABLE(CONFIG_IPV6)
+> +	unregister_inet6addr_notifier(&sw_nb_v6_inetaddr);
+> +
+> +err3:
+> +#endif
+> +	unregister_netevent_notifier(&sw_nb_netevent);
+> +
+> +err2:
+> +	unregister_fib_notifier(&init_net, &sw_nb_fib);
+> +
+> +err1:
+> +	unregister_switchdev_notifier(&sw_nb_fdb);
+> +
+> +err_helpers:
+> +	sw_fl_deinit();
+> +err_fib:
+> +	otx2_sw_fib_deinit();
+> +err_fdb:
+> +	sw_fdb_deinit();
+> +err_clear:
+> +	sw_nb_pf_netdev = NULL;
+> +	return err;
+>  }
+> +EXPORT_SYMBOL(otx2_sw_nb_register);
+>  
+>  #endif
 
 [Severity: High]
-The comment says representor netdevs are supported bridge ports, but does
-the AF accept an FDB update that originates from one?  fdb_notify_req has no
-port field:
+Is a PCI vendor ID match a strong enough filter here?  All six
+notifier blocks are global (netdev, netevent, fib, inetaddr,
+inet6addr, switchdev), so every netdev in init_net reaches
+sw_nb_is_valid_dev() -> sw_nb_is_cavium_dev(), and the only test
+performed is:
 
-	struct fdb_notify_req {
-		struct  mbox_msghdr hdr;
-		u64 flags;
-		u8  mac[ETH_ALEN];
-		u8  rsvd[2];
-	};
+	dev = netdev->dev.parent;
+	if (!dev || dev->bus != &pci_bus_type)
+		return false;
+	pdev = to_pci_dev(dev);
+	if (pdev->vendor != PCI_VENDOR_ID_CAVIUM)
+		return false;
 
-so the AF derives the port from req->hdr.pcifunc only.  For a rep bridge
-port, sw_fdb_add_or_del() sends on the representor PF's own mailbox
-(pf = rep->mdev), so hdr.pcifunc is the RVU_REP PF, not the represented
-function.  rvu_sw_port_id() looks that up in rep2pfvf_map[] (populated only
-with CGX PFs and their VFs), rvu_rep_get_vlan_id() returns 0, the
-rep2pfvf_map[0] != pcifunc recheck fails, and
-rvu_mbox_handler_fdb_notify() returns -EINVAL:
+PCI_VENDOR_ID_CAVIUM (0x177d) is not specific to RVU: liquidio,
+thunder nicvf/nicpf and octeon_ep all sit behind the same vendor ID.
+If any of those NICs is present in the same host, its netdev passes
+the filter, sw_nb_resolve_pf_dev() happily returns it, and the new
+handlers then do:
 
-	port_id = rvu_sw_port_id(rvu, req->hdr.pcifunc);
-	if (port_id == RVU_SW_INVALID_PORT_ID)
-		return -EINVAL;
+	pf = netdev_priv(pf_dev);
+	entry->port_id = pf->pcifunc;
 
-That would make every learn/flush on a rep bridge port fail with "Error to
-add/del fdb %pM entry", and even if accepted, all rep ports share one
-mailbox so they'd collapse to a single identity.  Does fdb_notify_req need a
-port_id/pcifunc field for this to work?
+That reads struct otx2_nic fields out of an unrelated driver's
+private area - pcifunc lives several hundred bytes into otx2_nic,
+well past the end of, say, struct lio or struct nicvf, so this is a
+plain out-of-bounds read of whatever follows that allocation.  The
+same cast appears in sw_nb_v4_netdev_event(),
+sw_nb_v4_inetaddr_event(), sw_nb_v4_fib_event(),
+sw_nb_net_v4_neigh_update() and all four v6 counterparts.  It gets
+worse later in the series, where these entries are handed to
+sw_fib_add_to_list()/sw_fdb_add_to_list(), which take pf->pdev and
+pf->mbox from the same bogus pointer and eventually lock
+pf->mbox.lock.
+
+sw_nb_check_slaves() inherits the same weakness for bridge and VLAN
+lower devs, so a bridge containing a liquidio port would be treated
+as a valid offload target too.
+
+What is the intended way to recognise an RVU PF/VF netdev here?
+Matching pdev->device against the RVU PF/VF/REP device IDs would be
+a minimal fix, but comparing netdev->netdev_ops (or ethtool_ops)
+against this driver's own ops table, or looking the netdev up in a
+list the driver itself maintains, would make the ownership check
+unambiguous.  Could you pick one that cannot alias other Cavium
+drivers?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831131944.2649362-1-rkannoth%40marvell.com
