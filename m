@@ -1,127 +1,127 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976744A64C2
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216B94A5EC0
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788439024; cv=none; b=ec2l8iGRjkIE2mvjsWtSm54YmW4B243Stkd52o0X1SG4g+6xqMePuVU+nk6oZJal0J5d/EG7e3oCW3XFod6SV5uSXAKlGWpvd3wctuFHfhWbubhHuZo7RE7dob948NdWox4wzuocg0R6t9fEzMTjmq+UOleWkQ2iASCoaCQGTCM=
+	t=1788439276; cv=none; b=I2mC+kH1o0gASyHXPjyvrpJLqnXTdI/nkUWp4RZ2BxwFyGPpofOuGgcCwwYhJbKzuYQIVc+qNsOy/PH5hnyTCopTYZXw55xxh/7s8RGnH5jziYeVTVRHVQO4XrCEruYjjnS+S+Dzi7fz7z1VDp2smQwIPqYaM4WEV3K3cgeR2VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788439024; c=relaxed/simple;
-	bh=JXRMCSTOVYqruevZDGOrAq0z24REEtuZW0GIiSGyGg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jkwFM1rko5DHuicSFo1509TQZC4aHgOtG9AbccRyQFDFuhwl6bza4+6D26k57xaw8gCcLTcBSQgmViCfzX4zRe1uqFd6BRYPhWhWfX6HlMLyYGxreoAfnc6a30i5kvz19bXKDdIhQ+P9PTgvlVpx8wn3L1ZglzQretcjw+9qCPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=YTgFr+1d; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="YTgFr+1d"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4843e9c5960so2264512f8f.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 05:36:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788439017; x=1789043817; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=693kjaVs+p5BNOB1UBpXt643TYLBrm9lh0vgjjyHqkI=;
-        b=YTgFr+1dgMKzRPQ/k6fkLNFTZUhG5N96++VhTPEwooh7nHxOxHH+qzbdWvf2rjsqyd
-         V2sX60YTCDpdwkEQvqyTVCqEtiZsoLryOtTzsp/4GYmNRHnGWW6zgiiQeJVpOoiFuYcc
-         0YLX9ATdf/0OMHlTNaDNq9F1JU8f45Ib/+W5htQec/pHc+GPMXVpZ1PcFWdgnOsNII8w
-         EQaUsEZSRUKJvzGGTyilcVX7Ne00qM35WA/liBDoyppoyWE2pE88aLVjAEpPA09ExiAQ
-         8Ng0Qna7I3Q4JnVEUJPMX0cowcPxTwpdYwWf+AS3ZaQSxi7jWfLTTm9acVyPaVVe3Z+Z
-         kEOA==
+	s=arc-20240116; t=1788439276; c=relaxed/simple;
+	bh=HKrP6WAuuGCRGxPtoZXgzlZWh7Uw52p6gH1hsBJAHoA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mjeMo98ahsUty/ftgTH3PmONufrjiGtvmXL8t/Ozwp13TSmynVyJBB1j6Ul2sL6DjTMhfltvXMzVSG/ghro9NmUXMXF8G/Pp5VDZHlc/L3lfbYNEqkY3hApDutfccS1HA128ceq5zn2Qkq1GjVyKqEWpVSr94r8Mv7hc03EWGKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-485853f8800so185785f8f.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 05:41:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788439017; x=1789043817;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=693kjaVs+p5BNOB1UBpXt643TYLBrm9lh0vgjjyHqkI=;
-        b=Bz5ACIWtjIbdWUGk0OfGpyT66aJ+nxmW4+XAmMbWvts1bb44o7xATDoV3J3qFH3lIV
-         DolfmpHDegEhWsLJsC2QBnf33Jlm5YgtNzYyKJT3JCicE4GOrYHe3Jvv00u6kvvvcgYb
-         p2s1lpunNVZq+Qr8vIPsUGwsnDXHibba5cCexZsiEvQ5gw4PeNk06rxTLq6x68a7kgOm
-         SGEXjwZeWY0dpZgBBTPte33/chffLojk9mEvLWPOJLB55yVpU07ccT8YCpgMYjG2ft9y
-         CEXaR2hLyz3W7WGsN2rGkLLvYTBO/6rFAq/HOlXdnWQVdgPb67j68YYjwPnifNrL/DWH
-         +kOw==
-X-Forwarded-Encrypted: i=1; AKwUvBzcvGQAL1dbIfxj0fjfTnJcSSCGrxwDAo8DcUK+05bXM2L5kNNmdiDnD/P6aa0t1FdOEVE/Y7k=@vger.kernel.org
-X-Gm-Message-State: AFuF++koJVl3PmoKnfBnmZSb3JQU39an2t47gipyoyXPW3BkVoTdUiAO
-	OTpFUhc//JowVXjU4pIxc5tSv8sN0rfgcUSt0PkR84cC6nQeQ3smZG1z33TyBg8CM58=
-X-Gm-Gg: AYBFou26gCjjYHEibxkKGnzkxKNd91tudHqymO4hVKmvXg1rDDiD+m+z6VQ4Y3SrLs1
-	eFIpZYOOr9iS1Li0f+MEhS5az12og4SgEsmWRbjnpZkIG0p3QD+MDETuhQ177Bvqyx5P0ChRhrj
-	khNFzhrYOsxiZoipezYZZzIeFbbq1ADgVtN3IqyGYv0OfVFCRNX0MtqsqgedS5LCq4THgmGQZji
-	VDfFXtpkdRf/2kUp1rNW5kSr+pSCU7RnfyqW7qRGDzSwXDp+UrUFeIk4c0WT1OEQczdDrE8HyX+
-	OEmoe0pMxVxEV3vOzO2hBeMMqihQ/pHVj0Cq+kZNW93vnUqtQlg7MXCzxRlStfkJExTK1SD4dOK
-	8NPQAHBK0YgwKveFO/lq1Vu94BQl/kwF+HZXYv3dr1xTSehFP8ex5U/00Ng1ToFixVe8IULveOf
-	EsLD9fQA8VplQ9GUtTBLlV236ZnAaseRkYEUN/RzI=
-X-Received: by 2002:a05:6000:40cb:b0:482:e1b0:8a1a with SMTP id ffacd0b85a97d-484913b80e8mr19057331f8f.15.1788439016781;
-        Thu, 03 Sep 2026 05:36:56 -0700 (PDT)
-Received: from remote-01 ([84.17.55.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448ed2edfsm13223248f8f.23.2026.09.03.05.36.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 05:36:56 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: "Th\u00e9o Lebrun" <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 2/2] net: macb: reject an unknown link speed in the taprio setup
-Date: Thu,  3 Sep 2026 12:36:52 +0000
-Message-ID: <20260903123652.23900-3-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260903123652.23900-1-f@lex.la>
-References: <20260903123652.23900-1-f@lex.la>
+        d=1e100.net; s=20251104; t=1788439273; x=1789044073;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B3HqcQ/B1fblnEsvTxBEQ1Ob0X5CAkA/L1H0oy4/vp0=;
+        b=pTUGBzA1oDVNgFtAXsLo0uiKDbrNL+J5araiTZ0I4aAs2x4CRBkWr1NLxCMAvDDCNi
+         AxiyUsS2S3WtDDSJBlIEKXeOnM04dqsBExd62qFnh7mdo3xrM8lDZLnC5ZlavO0NyxcV
+         TN5a+FZFRGix2UveGNfdFCAA0BctPWOLmeqMc03rpK2kAJdYeGRMvQ836lyeE2nRwRcB
+         DBaA7w+FUwbSTnfT8eBHSscjAswQjbA6hphyjie32tU+buSgxRkxziBDy62+vD7/3MUN
+         LCtxo6opAphDNOWBT3M7Qz2yrtVCPKcNwCWyeq5TbiVgKP6gruVWWh7zVlftJS4mgpgB
+         6aLQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx1f9MMvQJB7Hl8VjYYzocxbiC1M32AXUapx59uYhJZnmOgJK/+SFd/mQeqHq4sbHyVbIT/rys=@vger.kernel.org
+X-Gm-Message-State: AFuF++mfs2rVcS04Uns30ujjMEPrtnLj/XAFz8r/UpjQh1zHfMkKubl5
+	W8qwmXzUwH4XzqnU0qRcuBRM/+eQ4qfdJ4gcn55TCG/VOQ6sP3CFSg6A
+X-Gm-Gg: AYBFou2ZdR/t8mrt4rRweYo3Abz46++PzP4wYmeS9S50YD7ItJt6mWXRBPWP2RwS9eC
+	Tnkf8lZc/Ucu99N84A0Fd0kgVK2ogFWommCIEFuXQ8fsRxJJd92iQF2V228PnzqaSQbSfW2Sv9S
+	7APnBMrkMprYa8kxhz7wGAGnr2oE9YqHveP8N2ukvmZP2fDd1xkN5dhpoL4BhIYJmLvu15Jx8dX
+	jRy5aLvj/JZLHogkpkF/CM73JxrCl8W2DB870X86XCOwx7NvsDstw8C00S4g/1zk+3ddLvT/TFd
+	94FHxZTwYlfZfjDyJe5/HoAugJeg0cxxHSRCbNy/d2gh4ihb1f4Aw3KRlrKvJCRZDEp07B4Qs+1
+	/Kl+1625ofs1ABl9u7VulO1iBFf62SGaavdW0ppxacC73zp7XaD0Vq1HhZonbvHMgTfov4YZjU4
+	Vjgjjx7KLNctG5dRdSTp8b77N6ZRlxXWNdTKopMHKhm76XHEZD3sCF/xpl72UJliQzI2oeoF+wF
+	Zp702q3Od4rcQ==
+X-Received: by 2002:a05:6000:25fb:b0:485:8226:c699 with SMTP id ffacd0b85a97d-4858226c9a7mr4439744f8f.24.1788439272910;
+        Thu, 03 Sep 2026 05:41:12 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448eea96csm11530590f8f.29.2026.09.03.05.41.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 05:41:12 -0700 (PDT)
+Message-ID: <7b69c767-764b-4701-9523-9c49016a783f@ovn.org>
+Date: Thu, 3 Sep 2026 14:41:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] openvswitch: fix wrong flag value in
+ get_ipv6_ext_hdrs()
+To: Eelco Chaudron <echaudro@redhat.com>, netdev@vger.kernel.org
+Cc: dev@openvswitch.org, aconole@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, cpp.code.lv@gmail.com,
+ stable@vger.kernel.org
+References: <d42d6f04596dacab6cabfb1f06aaf4bd53394d3d.1788423539.git.echaudro@redhat.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <d42d6f04596dacab6cabfb1f06aaf4bd53394d3d.1788423539.git.echaudro@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-speed is a u32, so SPEED_UNKNOWN arrives as 0xffffffff and passes the
-"speed <= 0" check, which only ever catches zero. That is what an
-autonegotiating link reports while it is down: the limit derived from
-the speed collapses to a nanosecond at most and the first entry fails
-with a misleading "exceeds hardware limit". Zero stays covered, it is
-what an interface that was never opened reports, and
-enst_max_hw_interval() divides by it. Say which case it was in the
-error.
+On 9/3/26 10:18 AM, Eelco Chaudron wrote:
+> The ESP and AH cases in get_ipv6_ext_hdrs() used IPPROTO_FRAGMENT
+> instead of OFPIEH12_FRAG when checking for out-of-order extension
+> headers, causing the fragment header to not be recognised as a valid
+> predecessor.
+> 
+> Fixes: 28a3f0601727 ("net: openvswitch: IPv6: Add IPv6 extension header support")
 
-Fixes: 89934dbf169e ("net: macb: Add TAPRIO traffic scheduling support")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
-ethtool_validate_speed() accepts SPEED_UNKNOWN (and zero), so it cannot
-replace this check.
+Cc: stable@vger.kernel.org
 
-v2: error text and message per Théo Lebrun.
-
- drivers/net/ethernet/cadence/macb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 61838084989a..202bc688978c 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4324,8 +4324,8 @@ static int macb_taprio_setup_replace(struct net_device *netdev,
- 	}
- 
- 	speed = kset.base.speed;
--	if (unlikely(speed <= 0)) {
--		netdev_err(netdev, "Invalid speed: %d\n", speed);
-+	if (unlikely(speed == SPEED_UNKNOWN || !speed)) {
-+		netdev_err(netdev, "Invalid speed %d, link-down?\n", speed);
- 		return -EINVAL;
- 	}
- 
--- 
-2.53.0
-
+> Reported-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
