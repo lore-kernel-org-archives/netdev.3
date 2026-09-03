@@ -1,112 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A033B37F010;
-	Thu,  3 Sep 2026 16:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1E337F010;
+	Thu,  3 Sep 2026 16:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788452540; cv=none; b=LW+VK9kXo4u2htOCiNhkgzPT6lqFVQb68tN67hyxiQuJaqDINOGfU6i+Ng/zdvv49Wr0os3bWoEFNYzvLRFKRDle1SS5SPdzXeou9dxF4AemiwF76L4aKgbZCmbD3ehimbh34rIYI5oCVdkWAQC56zhX0K4EEZ2k+o2ECduFY/Y=
+	t=1788452581; cv=none; b=PBgAr+TXnXPyVOLz2/keaZ/zKN5mtbXkdhUZQboIMy6nMD1ZQPnSQX6lxQro8f/A6ULB3f1DxoEUQA2RmZx7gYPZidoDMa3znDzWIqPhtZwhGhBHzolmj7jyXb2XjhuiWpSxBE812UsUd17V/SHovtprHaqk45rBC0Qd3obba4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788452540; c=relaxed/simple;
-	bh=NtV6DTNQjSL3fe+qMVZM6yKpmsHFFyq5lnmYI8IUHvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PkcaP+aR5szQeL6qs7zpSA6vfyGwY2Ejlb8qCJ8s+a1hYjDPIlRuftinKIG7TIBHbM1RqfHHfbZVuSiWCdScyuB1rICOx5z6mki4seSqpZRiwc93b91spp4pxQ5m2k2yIY21NrYRGdb56g0mU+rcp29VaAL9bHtlWV1QMQlMivM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S3hVbUvD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788452581; c=relaxed/simple;
+	bh=phu32JUFTt3ICOhnu0d3tCvXTSCvduiOR7VBPKK84Ko=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bPHDwWeCbj2XEeCMADcgRlLgCpJzhL65Vs5IV5fMiYHloGa+CaoWkKGctRdVMQTOagnr8zQ+lApONcCVWSapi1SUfAQS7hi/Tx8rR+wePp9ICfF+DnHL3bvDF+AQhLQisJi14y3PyXYFqW4dk3HVT/eeGYqWMQtfHSaYbLUYFgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQyNgcpR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S3hVbUvD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDC71F00A3E;
-	Thu,  3 Sep 2026 16:22:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQyNgcpR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10F11F000E9;
+	Thu,  3 Sep 2026 16:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788452539;
-	bh=TxsRDejx17otjIUm9rvKLeqYltuZb6xmTCpPiecrBqo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=S3hVbUvDMyRz5SAWSh0vllOmy45+yJGznnZkMvw/drryIM41/ZoNqK94Ps5yUF6o9
-	 9yON1WKXIZmpxjfa/jC3nji1IkQWcwr3OKtF2IJAPbUck/s4Q1dZy+SIxBMYVFq1Ym
-	 xB1fZNw7HfR9a/jCsocVso3Ht6CmwjjbKHffNUcAsifa1CtYCZKXXsgvqMEB1ysxWP
-	 Q2GfBceXLCvCuPbG64dhgrrAle9U/DIyzcBT+h0D3HFRURPC79lArljAAj5qpiKAaA
-	 bXMuK9MD4hkTHQ00Ux443J83Gy5vMqQoC3quBmbJg3lqFKMTXdOjYv68NI5b8ZzcGI
-	 2FiYHeaihcqfA==
-Message-ID: <c384eb0d-1dce-4639-8546-6f435d56a9e2@kernel.org>
-Date: Thu, 3 Sep 2026 18:22:14 +0200
+	s=k20260515; t=1788452580;
+	bh=s0DcUKFUcOr6NqPWhrDGwNQBuilFraFwRJOhT/ht8zI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GQyNgcpRMHyhbCyUEHHdUEVXnWk9e6neDfS7T2sV0c4aQfC8nVeaEUE0Pr08q9ZUT
+	 5zSMJI2DN2j9fyW5rhrOnf8o2i8j+qbCB+ZoOpIeXjnsVLNbBPSpT4Zrgk5M1qdJI+
+	 uBu+BzbDdtjPw1SeLE2Z4VO3hXF4oUklBILWHwMQPcDikNBtMQT4vVkS3C9B1CaHei
+	 vSMNEnuvRdjGYr7z6wHoBr91yXgKUfxrKgDx6HUAAd4Ccc5Z7B+mBt74RexoQFlhB8
+	 iCs4YLN7ePUsvVUk8j0b0jt0oAy8qnnd8yfNMAXMiGj83fSnGIEGxyrKMOADMX/JDZ
+	 LW6WwMo6ilHNA==
+Date: Thu, 3 Sep 2026 09:22:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Matthieu Baerts <matttbe@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>, Jay
+ Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>, Jussi
+ Maki <joamaki@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>
+Subject: Re: [PATCH net v2] bonding: fix slave_cnt leak on XDP error paths
+Message-ID: <20260903092258.67ea7b65@kernel.org>
+In-Reply-To: <62271715-fbd6-4047-9b69-b2bda40db056@kernel.org>
+References: <20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn>
+	<62271715-fbd6-4047-9b69-b2bda40db056@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next v2 1/2] tools: ynl: Allow cross-compiling ynl and
- associated tools
-Content-Language: fr
-To: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
-References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
- <20260903155524.2241065-2-maxime.chevallier@bootlin.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260903155524.2241065-2-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 03/09/2026 17:55, Maxime Chevallier (Netdev Foundation) wrote:
-> The ynl tool and libraries may be built standalone or through the
-> drivers/net/hw selftest machinery. This may target a different arch, so
-> we need to account for the cross-compiling options such as CROSS_COMPILE
-> or the LLVM-specific variables.
+On Thu, 3 Sep 2026 12:38:14 +0200 Matthieu Baerts wrote:
+> On 03/09/2026 10:10, Hangbin Liu wrote:
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
+> > 
+> > When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
+> > already incremented. If XDP setup subsequently fails, the error paths
+> > jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
+> > 
+> > This causes slave_cnt to drift upward on each failed enslaving attempt,
+> > which would lead to unbalanced traffic distribution with round-robin
+> > mode.
+> > 
+> > Fix it by moving the slave_cnt increasement after XDP setup.  
+> Thank you for the fix, but it looks like it causes multiple KASAN
+> issues, see:
 > 
-> Let's include the tools/scripts/Makefile.include that deals with the
-> CC/AR resolution.
-> 
-> Fixup the ynltool CFLAGS handling to use +=, so that we don't override
-> the ones set in Makefile.include
+>  - https://netdev.bots.linux.dev/flakes.html?ld-remote=virt-bonding-dbg
 
-Reviewed-by: Matthieu Baerts (Netdev Foundation) <matttbe@kernel.org>
+Hangbin, this is at least the 3rd time in a week when kernel selftests
+find issues in patches you posted. It's really time for you to run
+these tests locally.
