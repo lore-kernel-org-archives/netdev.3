@@ -1,185 +1,128 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158EA4E56D0
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D5634A78F;
+	Thu,  3 Sep 2026 21:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788471858; cv=none; b=TEm4mVcPu8D5wXEyIYCZRv8D2/Ia0MEF1JIdeqYAvjP+7rsR/gPS3SICfsK8qub0p3rS1ImCVnddPoGaT2b8/rNoSelIuOzyiFIpN1odIvq+2CFHDcotbzG3SxEIxwYTc20up9UyO+4dWYe/M+sowDuZCGJfmJaQBVwtEB4nacg=
+	t=1788471908; cv=none; b=adVeT+HBfM0Nw093kpT/+hs4Ndq9WoWFbFQRI3GWqc21CLM0S3q2MrFDvUnBVNNGg6lDOzF/lWqeZ99ySsY6Yv2BE+H96MXUITNO6ZdZIOGFQSw+2RdfYN95W1uJGtLjYDtw2exmi1odP/9h/Kw/26GUQGeov4t57wVfOVssNGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788471858; c=relaxed/simple;
-	bh=Hueze08T5W2Ew3KvtbFUwllkqFG9iBBmCN0tN3fMiF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JxBrf9fvUys9IsZFwI8U3uUR73JBUdBKSeP2NJd+U1/CBUPrtLzkvLtD65j7p7dCmkGfoCPDohTWnRBkE2Z0flamwizbnih7oyKdeU0nQO3NCmV0YyE+NzjG+mT4Annv7rrOSIryhsKx6teYMBOc2m9woJQu4YtDWQO8S+IM394=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nWyNQFWH; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788471908; c=relaxed/simple;
+	bh=MmSK9HMeijf5NpQ56w4pw4FIoKKlGPxgZSitFHu/EKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XzAP6FSwbpiPy0oPYwk7DtTDA2HQH3TgTWTYEW/iZFwfOzokjh7+NfZ4sqevDwRrxszSwSorEigiqvXJ78bJn24xbtpqGnRTnmMEVOWS9xwxelS/RSR9pVBAheXjarJBrbnHNKLdgLNTd9KUkGkfZVO0NPTJh5OAs8h5gr7X/ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=am/esE3X; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWyNQFWH"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4995b0343c1so4228815e9.3
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 14:44:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788471855; x=1789076655; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6xH2vpFd7/KJDLnoGJY2uG70zopl/sgcsHz1QS01L2Y=;
-        b=nWyNQFWHYRomINWyzEpz4daStstzjj7USzRBX7OZhdsPvEnwkqew7wjBrZUgNphI4q
-         clONN6W2nK3Hkaeslp6Y9iquNxo1sIikUyDiSJ6vlZWq4EijTW9KpsuQD+QlHjdNIJFp
-         kRcSKykak6ao6yejYHhDygJ6XUfnEUrOkDvHHUNksQ9eSP9zdvMCp5ZBpth2CsteffAg
-         BaA9iCMcvpHVhFfGWmbMxjhD4ZSscm666aBNVSKUI1xUSUI70lc9VDx3WpZGkDIDXxj6
-         0xuInNOtC6jDrB2ZEuyeHqm6ywIUzvOImkcSe7fjmt0hlun53eL5LaMROYegBcNHaw84
-         a5AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788471855; x=1789076655;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6xH2vpFd7/KJDLnoGJY2uG70zopl/sgcsHz1QS01L2Y=;
-        b=f6mQrwdO3YaFuA1TkfNzaDTMnLvDkLLjZJig/qFJ7tH3dFa7Mwj/BcdoZiELwOD9Qe
-         fqe7iXcg3oXQU1k2m9Q+VZ/hlPf1rndxhAxcWO8heoPMRZET1yRTQIwEaT5lob2ULI/O
-         UDtlNWBcEbiqDLQ/vMRWTiy96CFnwiXSLjQgoCjbNAz9xjahcrrcSkcetuaAoJJ/9dH3
-         lwNhTB7jonuM7tK//Rh3ZQUKxvk5nF4IDe9CI2dyqLqyBnvpbJA4xvATBSZzbOKfKjrS
-         Gl9Bp+zna47MTF17+fVc90Cgh3X5UZyQtNsULtlsGrH1QdBkidHASJVq/PVFq8P64JVI
-         t4+g==
-X-Forwarded-Encrypted: i=1; AKwUvBwjGrKHv68+fTR829+dy1gO13bhf3wnMkn8RbyUqWLqX4FDz8JkNeC8t4E0pNc5FwajOqbjxEY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mtLCispQS5SHC39QCYbC8jR6znjJ5Z+2NQgj5/awZHcZdDA1M9
-	Z9/Jm7AzFw83Z5NNeSl1M2YXJHdY9Qx5ekzEMa40jvuSxJWw3BYsPf5j
-X-Gm-Gg: AYBFou01UE5BJeecDSGAYCeBEjQ3675iKLlR6pt8GAH6NpCqpiFR7I+LNxCihtqii1N
-	1wmtRKEG4Zpe6OQmXWCB1opJZ9NNDsqcKuxgqLO1IkltqKo4wvIDueNTI+whJ+Sv22Sr1hi6nd2
-	ieqF8ALTG9AdvtWQKvHCPZERQGXFZC2PFQORzTo9G3a6DgKdHeu9nmqUA8z1mZlxw36Ef3WfCeQ
-	gwwLpUd36pjZJosCRenyjRVZSp1mpy1amg7hZTqKSm/UUIfKdS6vMdILkBrPgDx82LpWP2etiek
-	jf/suUlZr7k85XVS9P/UTN6f0lbVQwHicpcsqmHDiQfXiSEwfW/ppZg2XWGY/RvC4Q+0kJT+nsU
-	Yt1B9d9d1HbWYg1iYyXMcanU9pOjO2QSH2qnIggWD9l8/OdPy4tL7m+BRAKscmeCpRzeaAcai0+
-	UQohvF/t0ZYOH46vyvaUquXaP8ReXZI9oGaqJ8cuXEv1Jwzpy+ebQdtoOY+42wYsPzekStwtj9H
-	6t7MJkYY1rHjPgoT4Ae4P9xRg==
-X-Received: by 2002:a05:600c:5251:b0:499:9eb8:a1d7 with SMTP id 5b1f17b1804b1-49cf825c45emr14362655e9.9.1788471854969;
-        Thu, 03 Sep 2026 14:44:14 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee60d9c6sm104115335e9.11.2026.09.03.14.44.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 14:44:14 -0700 (PDT)
-Date: Thu, 3 Sep 2026 22:44:12 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Ajith P V <ajithpv.linux@gmail.com>
-Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4] tipc: replace deprecated strcpy with
- strscpy in tipc_bearer_get_name()
-Message-ID: <20260903224412.179c87a1@pumpkin>
-In-Reply-To: <20260902053043.1483895-1-ajithpv.linux@gmail.com>
-References: <20260902053043.1483895-1-ajithpv.linux@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="am/esE3X"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9A0444E414F5;
+	Thu,  3 Sep 2026 21:45:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5649A6054B;
+	Thu,  3 Sep 2026 21:45:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D39611C79F76;
+	Thu,  3 Sep 2026 23:44:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788471897; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=h4i/kxfQCqCFT7ghPn0BH9jtsd+Es2/MJoFBQ5HsC5w=;
+	b=am/esE3XmG0vhAjg7PKNzFjKHsbscNTzjL1QP2JzqtDjUvyGjIeNUlsJyOBMHU9jMsGLbQ
+	sI0Z7TNiWeD7cwalyugQgHMPLdusBVuXM+Z2OdNWiTIEkLQsX7AjLlr6tfYtkL16oMj2gp
+	rbvTKvF4P9H4v4YnOk1+W1n9YRRrnKVTgMMP5Wlez/ryGJjJi5wr6qn2r0hrfjESDLTXQT
+	1pCsomRM2eILsq75RERywG5GiBVzUjCavz/QXMdNvLB2SnWwAH+5dvs8mOmahAjIpe5zeP
+	F5TrLCSIAYmhyzg6x0NXb2mX4n4OdUq4D7NPHW6kYHFCZ+eKuOuhwdxI+kyjCQ==
+Message-ID: <b2f7d07b-5c14-4767-9fbf-47a72a6c22cd@bootlin.com>
+Date: Thu, 3 Sep 2026 23:44:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/2] selftests: drv-net: Allow cross-compiling
+ the hardware tests
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ matttbe@kernel.org, Stanislav Fomichev <sdf@fomichev.me>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
+References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
+ <2a595cf6-d208-4a0a-a96f-738235236aa1@lunn.ch>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <2a595cf6-d208-4a0a-a96f-738235236aa1@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed,  2 Sep 2026 05:30:43 +0000
-Ajith P V <ajithpv.linux@gmail.com> wrote:
 
-> The `strcpy()` function is deprecated and moving towards code-tree
-> elimination. Replacing it with `strscpy()` fixes potential buffer
-> overflow vectors by ensuring safe NULL-termination based on the
-> destination buffer size limit [1][2].
-> 
-> To make the interface safer and more robust for future callers, refactor
-> `tipc_bearer_get_name()` to accept a destination buffer length parameter.
-> Replace `strcpy()` with `strscpy()` and pass through any potential
-> `-E2BIG` truncation error code up to the caller. Update the existing
-> caller in `net/tipc/monitor.c` to pass its array size.
+On 9/3/26 18:51, Andrew Lunn wrote:
 
-For real safety embed the char[TIPC_MAX_BEARER_NAME] in a struct and
-pass the struct through.
-Then you can use sizeof() in the function itself.
+> Nice. Did you give the liburing tests a quick smoke test?
 
-	David
+I had to bump liburing on my BR setup, I managed to get it to run, but
+it wasn't easy :/
+
+I've started an effort to run the kselftests on my fleet of random devices,
+trying various ways of interconnecting them with one another. This will be
+needed for the ethtool tests.
+
+I'm generating my rootfs with buildroot on all my boards, so I'm slowly getting
+a list of options to enable for proper kselftest runs.
+
+Focusing only on drivers/net/hw, all the kselftests that tests the local device
+have no trouble running once you get the proper list dependencies installed.
+
+(one example, some tests will grep through include/linux/ethtool.h, so you need
+kernel headers on the rootfs)
+
+I've already found some drivers bugs here and there with that, for example mvpp2
+fails the RSS kselftests (wonder who wrote that...)
+
+But then there's the kselftests that require a peer, and here it's another story.
+Some tests, when using the SSH remote type, will scp a small binary on the peer
+and use that binary for testing (sending specially crafted frames, etc.)
+
+Just in the drivers/net/hw tests, we have :
+
+drivers/net/hw/csum.py
+drivers/net/hw/devmem_lib.py
+drivers/net/hw/gro_hw.py
+drivers/net/hw/iou-zcrx.py
+drivers/net/hw/nk_qlease.py
+
+Thing is, what I have is a mixed bag of arm, aarch64, a few riscv, x86 and even
+ppc32 in there, so as you can guess, scp'ing an arm binary on a riscv peer doesn't
+work as one expects... took me a while to figure this out :(
+
+My setup is quite extreme but even for day to day development, I suspect most devs are
+directly connecting their embedded board to their x86 host for testing.
+
+We could expand the remote_ssh logic to probe the peer, and raise a skip if it's
+a different arch than the dut. Or better, have the DUT check if the peer doesn't
+already have the tool in question, i.e. the kselftest "package" is also installed
+there.
 
 > 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-> Link: https://github.com/KSPP/linux/issues/88 [2]
-> 
-> Signed-off-by: Ajith P V <ajithpv.linux@gmail.com>
-> ---
-> v4:
->   - Avoid hard-coding TIPC_MAX_BEARER_NAME in the function body.
->   - Pass size_t len from the caller down to strscpy().
->   - Forward strscpy()'s -E2BIG error up through the existing int return type.
->   - Updated function documentation comment block.
-> v3:
->   - Fix patch title as suggested by Tung Quang Nguyen.
->   - No code changes from v2.
-> v2:
->   - Target net-next tree instead of standard net tree as requested by Tung Quang Nguyen.
->   - No code changes from v1.
-> 
->  net/tipc/bearer.c  | 8 ++++++--
->  net/tipc/bearer.h  | 2 +-
->  net/tipc/monitor.c | 2 +-
->  3 files changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-> index 05dcd2f9e887..abd90e6bde09 100644
-> --- a/net/tipc/bearer.c
-> +++ b/net/tipc/bearer.c
-> @@ -195,12 +195,14 @@ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name)
->  /*     tipc_bearer_get_name - get the bearer name from its id.
->   *     @net: network namespace
->   *     @name: a pointer to the buffer where the name will be stored.
-> + *     @len: size of the destination buffer
->   *     @bearer_id: the id to get the name from.
->   */
-> -int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
-> +int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id)
->  {
->  	struct tipc_net *tn = tipc_net(net);
->  	struct tipc_bearer *b;
-> +	int ret;
->  
->  	if (bearer_id >= MAX_BEARERS)
->  		return -EINVAL;
-> @@ -209,7 +211,9 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
->  	if (!b)
->  		return -EINVAL;
->  
-> -	strcpy(name, b->name);
-> +	ret = strscpy(name, b->name, len);
-> +	if (ret < 0)
-> +		return ret; /* Returns -E2BIG if destination buffer is too small */
->  	return 0;
->  }
->  
-> diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
-> index 41eac1ee0c09..12a322642de1 100644
-> --- a/net/tipc/bearer.h
-> +++ b/net/tipc/bearer.h
-> @@ -226,7 +226,7 @@ int tipc_l2_send_msg(struct net *net, struct sk_buff *buf,
->  void tipc_bearer_add_dest(struct net *net, u32 bearer_id, u32 dest);
->  void tipc_bearer_remove_dest(struct net *net, u32 bearer_id, u32 dest);
->  struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name);
-> -int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id);
-> +int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id);
->  struct tipc_media *tipc_media_find(const char *name);
->  int tipc_bearer_setup(void);
->  void tipc_bearer_cleanup(void);
-> diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
-> index a94b9b36a700..8af49000a07c 100644
-> --- a/net/tipc/monitor.c
-> +++ b/net/tipc/monitor.c
-> @@ -833,7 +833,7 @@ int __tipc_nl_add_monitor(struct net *net, struct tipc_nl_msg *msg,
->  	void *hdr;
->  	int ret;
->  
-> -	ret = tipc_bearer_get_name(net, bearer_name, bearer_id);
-> +	ret = tipc_bearer_get_name(net, bearer_name, sizeof(bearer_name), bearer_id);
->  	if (ret || !mon)
->  		return 0;
->  
+> I get the feeling not many Embedded people run the self tests, if
+> basic things like cross compilation does not work, and native 32bit
+> builds spits out 1000s of warnings.
+
+Indeed... my idea for stmmac is to grab as many random stmmac boards as I can to get
+a good sample of glue drivers + PHYs, and run the kselftest on them (hopefully one
+day feeding that into NIPA).
+
+I can already tell the simple kselftests run well when cross-compiled on arm, aarch64
+and riscv but the interop issue needs resolving. Then it's a matter of adding a lot more
+tests. Hopefully this will give enough experience on what's to solve so that
+everyone else can do it as well...
+
+Maxime
+
 
