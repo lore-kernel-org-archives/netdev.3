@@ -1,240 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320124DBD64;
-	Thu,  3 Sep 2026 15:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FFB4D8DBD
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 15:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788449017; cv=none; b=PnbyLL9/nQMwD9O2+pQN9tqvfvK74i2p1runppCNtC6Ovu2G6l9TjLdjo+ooay57xvBQ/u0dR/guPfWuTTXO/xSA73xNxCzYoa72qpFAVvVvO2FLP/ihP/MHr9ueVa16gdMIJ1fjSht8PgnXm9YZW7pI/dcO3V7z9y2PFb/71/E=
+	t=1788449049; cv=none; b=rA4iXJnarPAZrkaHUwErr7tPOCwfmxnQYO6FI3J0qRKp/BiqSXmDosSLjxJz2eW2IRnym7SpYi72p0crLf9qrDo5aTmwNhe3PW6J0w1yuvCb2hCMxtgJCA1TaDmfEsnMmZW0N0YkUMbwKjPuB7Fc+dy+/5vx3/p7GePkQbFsdgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788449017; c=relaxed/simple;
-	bh=nUQ0WsBFZ2Yb6ancdOi0VOG5/Ts8us9ZZTML6ezNK74=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=heh1v6HXu4u4PE1Uuz1SM1wZVyTuTycEo7fOdrQtdL/IN0VOB8Z4q3aq1zHwsfu5LgxkMNHOu6CnIsueeLoX4LGUqTZ9i9I2Ct0GOdUzHSSdsNGgFFx9TkrkgQ4x+2GV7+74xZ3a2pbFFCJ3bgiWsyyE9JRXE7cuJS6Dxye2ncM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUYs3NaG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788449049; c=relaxed/simple;
+	bh=omShexslEO0ormzdaLwfaqKk2Itx1pm+zftJ+FCoHV0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eRMaHitu2ZZRSCnmnmO1KpFSzVDuirBviHBs2TT7NVbUxqbSgxdqrSgD0Pf1E9ZFIBmsu6hBqEBR3A/E3gtTRch+0fcmwUbCkc7wqxGjpqM1GnVg7JDvPCmqNr93zD+B+0qYSJtK23W+xkF1cremvajfFHCmZXFZHpkaBewTS+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MO+W1pwA; arc=none smtp.client-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUYs3NaG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985BA1F00A3D;
-	Thu,  3 Sep 2026 15:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788449016;
-	bh=951yxPP28ISDpMBkAXxtv2jRGbNBHcBVyMcI+H38kV4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XUYs3NaGCWqynIino2f4hUvRo8xN6NM3XuCxybJKjv8HrE12rFAKuipdsemaO9aOk
-	 fmJzlhafrNgeRVEK4ikmPJbtvxyVFLn6KaoMyz4tKeakrwO3RYkzpMutVQO7he2ASj
-	 44BsxzItJLdHUH0BPUWbIOOXRT9dAcYnPuxS+hA6vyc+Fn9qrENjyR8gwfw04rTaTR
-	 19uC4xqiGpJyrRTWiI4SOOr/5t+E8b+bXh42RpMK9xX0AMGobFL4Jab2s4Cp2Kql9F
-	 qcy9Ik7tBEMH0/mOH6j/NKJKe1KeGoJ/SSbJCFWz4knQ5tqjW/SqMf3UvdX716ZmWh
-	 jql75PW1AC04A==
-Subject: Re: [net,2/2] enic: match mailbox replies to request numbers
-From: netdev-bot+sashiko@kernel.org
-To: satishkh@cisco.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- sebaddel@cisco.com, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 15:23:35 +0000
-Message-ID: <178844901513.3394541.14778454790618042828@kernel.org>
-In-Reply-To: <20260830-b4-enic-v2-mbox-fixes-net-v1-2-23adf9bfd426@cisco.com>
-References: <20260830-b4-enic-v2-mbox-fixes-net-v1-2-23adf9bfd426@cisco.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MO+W1pwA"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so2218360a91.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 08:24:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788449047; x=1789053847;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=1lhliXRyJiQd1jmS684fOdzwqNj/3SOH6gyE1zgaeSI=;
+        b=g5NpPW8QWKRyyAbM84agbMYvYcGobWr7CHMHSxMf5h6A+m7cxVeIT6+K28DKPXaBuO
+         3Qb0b0ZKwOUysZjXiFZWzXVVyaXLO3FsXdS+h0quXWdE6NEX+meU/xw9o+XESkVMe7jO
+         ChjAZUglOnXdVW+rBfM1TzXh3MX+HilNYa6J5icdzpS5wy8qKsnmMAwv2wuEXmK99C1M
+         PSXXrC/+uqgvJnpHDk0oI3muHbUt3BqaHcSKR/HLZ58VsPtR/rgIrfuqlwesmjPQGum4
+         GPaAUAB4Nevg8RXM9Hl7rV2uTqJFOVDNGy4vvxYLjYGVUNwm/tVDBMWStHWfb720Z1bm
+         pyYg==
+X-Gm-Message-State: AFuF++lmpvZ2E5p49uDSUnyAx8W5Vs6H1NyMzNgCNZ05nbRNO8XlKiC5
+	DHWA/fMoqYT+C43HKbjtHrt70Np8mVaar8aEDcdTw9oxRdiCHRiQPXBab6TwB5xMPPfJqV5b4KP
+	ex4vyrINNAhSndF7g9QB5nWXdKhwkd3S7wwPbdc1dC0ka1OP06J6EEvpVME2BAqj50s3FB45dAf
+	RZHKJGiqBblcBJ0l1yfSA1AsAtNLk+TxeSGfUzba0B7Rsu/Ui2fQE4ConH6J46hpQhnMauqXc96
+	BwDVwKyXucgUW4j
+X-Gm-Gg: AYBFou0vBd+0a3gtCeEeq6W0WaowVb8xp8FPaQSz6P9P0nrF1KTP/bvty5phJw/ly7C
+	0k/m9PcAwlKgcer5/TlltqUeZK3airsyx8CR7scIzGupT9rfvUQwRK+V7jKI6P6EHqJ9l10Apsh
+	S+Owb+ZS2rx3kYQem5QgvaDpCeYXxN5LJnYMGquyOErLa2jsoweQ+UFRnGIKLamRiFKdjbEhlTb
+	ioPGwMUGYbEe7e4kI2AbYOfK3ZKgv4g9Y9lAwJ7jdmmVKm1nOtHEfL8LQjcYogmA7iyLv39ZR4l
+	XZBKIBH506fc4pybaR+M1eAoa5XqLsi2i2yn6tDt3E/iUsonxqQsisQcssNfEK7ijUBkgju3Jzv
+	x5ZSVXRds5/1BpvwOkOuTFvHm/LxMlZbtN6HU+x3AKM9KvvZH5GkCffMO8NTCydooFBvQhVcEXW
+	0IhIyrl45kE970EFKibY1mXT8Qh1CZPv5DZFiZW4xv
+X-Received: by 2002:a17:90b:4d0b:b0:380:f389:447b with SMTP id 98e67ed59e1d1-39b22ce8b5cmr659890a91.11.1788449046686;
+        Thu, 03 Sep 2026 08:24:06 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39b15caea34sm1146547a91.2.2026.09.03.08.24.06
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 03 Sep 2026 08:24:06 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d6f73d0f89so32564185ad.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 08:24:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1788449045; x=1789053845; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1lhliXRyJiQd1jmS684fOdzwqNj/3SOH6gyE1zgaeSI=;
+        b=MO+W1pwAnpVi6JBel1geQD9eutfxSXjqfPSpmLdu/ZQ60nj1672+u/5/dQZ86N/m30
+         ucMSbHUltDzOsSkmXs2QU2kTmSSONCKEQd3k5e8qZAE/6znkXblAA5lD6IC7N8VqubWg
+         OFd/OPPR0+Yil8O0DievK2xnQ0unwOONfGSA8=
+X-Received: by 2002:a17:903:26c8:b0:2d8:d4ce:9f33 with SMTP id d9443c01a7336-2db105a569cmr6865505ad.17.1788449044481;
+        Thu, 03 Sep 2026 08:24:04 -0700 (PDT)
+X-Received: by 2002:a17:903:26c8:b0:2d8:d4ce:9f33 with SMTP id d9443c01a7336-2db105a569cmr6864395ad.17.1788449043806;
+        Thu, 03 Sep 2026 08:24:03 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33253672b6asm7234065eec.1.2026.09.03.08.24.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 08:24:01 -0700 (PDT)
+Message-ID: <09bf93ba-7e8f-4488-a728-07bd133be6e7@broadcom.com>
+Date: Thu, 3 Sep 2026 08:24:01 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/5] net: dsa: bcm_sf2: bound the CFP rule dump by the
+ caller's buffer size
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, jonas.gorski@gmail.com,
+ andrew@lunn.ch, olteanv@gmail.com
+References: <20260903032611.3000029-1-kuba@kernel.org>
+ <20260903032611.3000029-2-kuba@kernel.org>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20260903032611.3000029-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [High] enic_mbox_vf_handle_reply()
-  (drivers/net/ethernet/cisco/enic/enic_mbox.c:403) now requires the…
+On 9/2/2026 8:26 PM, Jakub Kicinski wrote:
+> bcm_sf2_cfp_rule_get_all() walks the whole cfp.unique bitmap into
+> rule_locs[] without consulting nfc->rule_cnt, which is how many entries
+> the caller had room for.  ETHTOOL_GRXCLSRLALL requires no CAP_NET_ADMIN
+> and the ioctl sizes the buffer from the rule_cnt userspace passes in, so
+> once an admin has installed CFP rules any user can ask for fewer slots
+> than there are rules and run off the end of the allocation.  A rule_cnt
+> of 0 leaves the buffer pointer NULL and the walk dereferences it.
+> 
+> Fixes: 7318166cacad ("net: dsa: bcm_sf2: Add support for ethtool::rxnfc")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
---
+We had the exact same internal patch we were about to submit, thanks!
 
-enic: match mailbox replies to request numbers
-
-This adds a message-number match to the VF mailbox reply path: outgoing
-replies now reuse the initiating message number, the VF records both the
-expected reply type and the expected message number, and a reply is only
-accepted when both match.  The expected-reply state is moved under a new
-spinlock and the message counter is kept monotonic across an admin channel
-reopen.
-
-> diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-> index ad79d3951f3d..5c93ca49552a 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-> +++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-
-[ ... ]
-
-> @@ -68,7 +71,21 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
->  		goto unlock;
->  	}
->  
-> -	enic_mbox_fill_hdr(enic, buf, msg_type, dst_vnic_id, total_len);
-> +	/* Replies reuse the initiating message number.  Requests and
-> +	 * notifications allocate a new one.
-> +	 */
-> +	if (!reuse_msg_num)
-> +		msg_num = ++enic->mbox_msg_num;
-> +	if (expected_reply) {
-> +		reinit_completion(&enic->mbox_comp);
-> +		spin_lock_bh(&enic->mbox_state_lock);
-> +		enic->mbox_expected_reply = expected_reply;
-> +		enic->mbox_expected_msg_num = msg_num;
-> +		spin_unlock_bh(&enic->mbox_state_lock);
-> +		reply_expected = true;
-> +	}
-
-[ ... ]
-
-> @@ -178,8 +243,8 @@ static int enic_mbox_pf_handle_capability(struct enic *enic, void *msg,
->  	reply.reply.ret_major = cpu_to_le16(0);
->  	reply.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
->  
-> -	return enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
-> -				  &reply, sizeof(reply));
-> +	return enic_mbox_send_reply(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
-> +				    &reply, sizeof(reply), msg_num);
->  }
-
-[ ... ]
-
-> @@ -324,75 +389,57 @@ static void enic_mbox_pf_process_msg(struct enic *enic,
-> +static void enic_mbox_vf_handle_reply(struct enic *enic, u8 reply_type,
-> +				      void *payload, u64 msg_num)
->  {
-> +	struct enic_mbox_generic_reply *reply = payload;
-> +	u16 ret_major = le16_to_cpu(reply->ret_major);
-> +	u64 expected_msg_num;
-> +	u8 expected_type;
-> +
-> +	spin_lock_bh(&enic->mbox_state_lock);
-> +	expected_type = enic->mbox_expected_reply;
-> +	expected_msg_num = enic->mbox_expected_msg_num;
-> +	if (expected_type != reply_type || expected_msg_num != msg_num) {
-> +		spin_unlock_bh(&enic->mbox_state_lock);
->  		netdev_warn(enic->netdev,
-> -			    "MBOX: stale capability reply (expected %u), drop\n",
-> -			    READ_ONCE(enic->mbox_expected_reply));
-> +			    "MBOX: stale reply %u/%llu (expected %u/%llu), drop\n",
-> +			    reply_type, (unsigned long long)msg_num,
-> +			    expected_type, (unsigned long long)expected_msg_num);
->  		return;
->  	}
-
-[Severity: High]
-What happens when the VF runs this code against a PF that does not echo
-msg_num?
-
-The expected number armed in enic_mbox_send_msg_id() is the VF's own
-private counter value:
-
-	if (!reuse_msg_num)
-		msg_num = ++enic->mbox_msg_num;
-	if (expected_reply) {
-		...
-		enic->mbox_expected_msg_num = msg_num;
-
-so acceptance now depends on the peer returning that exact value.  The
-mismatch branch in enic_mbox_vf_handle_reply() returns without calling
-complete(&enic->mbox_comp), so enic_mbox_wait_reply() runs out its 3000 ms
-and returns -ETIMEDOUT for every reply that carries a different number.
-
-The only PF implementation that can be inspected is the in-tree one added
-by the commit named in the Fixes: tag, and before this patch it stamped a
-fresh number on every outgoing message, replies included:
-
-drivers/net/ethernet/cisco/enic/enic_mbox.c:enic_mbox_fill_hdr() {
-	...
-	hdr->msg_num = cpu_to_le64(++enic->mbox_msg_num);
-}
-
-That is also why this patch has to convert
-enic_mbox_pf_handle_capability(), enic_mbox_pf_handle_register() and
-enic_mbox_pf_handle_unregister() over to enic_mbox_send_reply(..., msg_num).
-
-Given that, is this statement in the commit message accurate?
-
-    Reply-number echo is part of the established version-1 protocol, so this
-    remains compatible with deployed V2-capable PF implementations that
-    already echo msg_num.
-
-For a VF with this patch talking to a PF running the pre-patch in-tree
-driver (older host kernel than guest, or a partial stable backport that
-picks up only the VF-side hunks), does the capability handshake fail
-outright?
-
-enic_mbox_vf_capability_check() -> enic_mbox_wait_reply() returns
--ETIMEDOUT, and in enic_probe() that error is fatal:
-
-		err = enic_mbox_vf_capability_check(enic);
-		if (err) {
-			dev_err(dev, "MBOX capability check failed: %d\n", err);
-			goto err_out_admin_close;
-		}
-
-so the SR-IOV V2 VF netdev is never registered.  On the reset path,
-enic_admin_chan_reopen() calls enic_admin_channel_close() on the same
-error, leaving the VF without PF-driven link state or registration.
-
-Would it make sense to keep a fallback here, for example accepting a reply
-whose msg_num is 0 (or otherwise not echoed), or gating the strict match on
-the negotiated pf_cap_version, so that the VF does not depend on peer
-behaviour that this same patch introduces?
-
-> -	if (le16_to_cpu(reply->reply.ret_major) == 0)
-> -		enic->pf_cap_version = le32_to_cpu(reply->version);
-> -	else
-> -		netdev_warn(enic->netdev,
-> -			    "MBOX: PF rejected capability request: %u/%u\n",
-> -			    le16_to_cpu(reply->reply.ret_major),
-> -			    le16_to_cpu(reply->reply.ret_minor));
-> -	complete(&enic->mbox_comp);
-> -}
-
-[ ... ]
-
-> @@ -571,32 +620,31 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
->  int enic_mbox_vf_capability_check(struct enic *enic)
->  {
->  	struct enic_mbox_vf_capability_msg req = {};
-> +	u32 version;
->  	int err;
->  
-> -	enic->pf_cap_version = 0;
-> -	reinit_completion(&enic->mbox_comp);
-> -	WRITE_ONCE(enic->mbox_expected_reply, ENIC_MBOX_VF_CAPABILITY_REPLY);
-> +	WRITE_ONCE(enic->pf_cap_version, 0);
->  	req.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
->  
-> -	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REQUEST,
-> -				 ENIC_MBOX_DST_PF, &req, sizeof(req));
-> -	if (err) {
-> -		WRITE_ONCE(enic->mbox_expected_reply, 0);
-> +	err = enic_mbox_vf_send_request(enic,
-> +					ENIC_MBOX_VF_CAPABILITY_REQUEST,
-> +					ENIC_MBOX_VF_CAPABILITY_REPLY,
-> +					&req, sizeof(req));
-> +	if (err)
->  		return err;
-> -	}
->  
->  	err = enic_mbox_wait_reply(enic, 3000);
-> -	WRITE_ONCE(enic->mbox_expected_reply, 0);
-> +	version = READ_ONCE(enic->pf_cap_version);
->  	if (err) {
->  		netdev_warn(enic->netdev,
->  			    "MBOX: no capability reply from PF\n");
->  		return err;
->  	}
-
-[ ... ]
-
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260830-b4-enic-v2-mbox-fixes-net-v1-0-23adf9bfd426%40cisco.com
+Florian
+
