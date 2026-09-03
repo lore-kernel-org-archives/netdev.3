@@ -1,132 +1,233 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99113317145
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C40C20DD51;
+	Thu,  3 Sep 2026 21:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788471949; cv=none; b=L/PfzyF/nIulK9Joid9GwH0A0T/f4OJfeJXX9Wpyk+7SL6VaO6L7UPhTwyaaSXMYcQYs82ssNqQ5jmeRnzcTUcWVP++aukEB3tfTNlFwvYsI0B/G1+eRUXummXotFr+vjztSCuU+Kp7YQuLHfTqnvRp/bkoq39E6ZmnkLO7rx5E=
+	t=1788471966; cv=none; b=DFtuyXBK/nyeV4XfGVxEat3SAzSV6bMkNEhAVLD7yUF4r3lLXT+yqsAiRUcz8U81w6gI7sWolA6XwJFX1Nr0sFmqj7EvdgXATJW13IYYy/lrSAbGhe92FW+nO+HyKd7eRwnPdsXdf0LSpyeo1Ql2sN0XDRiXFRNh4lnJDQg8Z9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788471949; c=relaxed/simple;
-	bh=XM5tchnEvp0UbDQ4nryqFRACGgUsN0er99FP5l+Ou28=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AAiX4mDhztSd+j9FVJK+TSvC3dw09LqO6CAg18Yfz91mIU0lAm09zdToG4bl+9ucPKaJqKigO6DvvVpLWZx0mLakwEbUqa/4mio5OaRh3SFS7/FyaX/CyNB0OSoD4ReYL1tMGUz3OK2rcctYx77Ajf28FURpQNSRXg7revW/0/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdE4ndfU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788471966; c=relaxed/simple;
+	bh=Ged1OvuCOT5wAKN5s3gjyhDlcfBNlHtzOGoFGEkWcO4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fZQ9yDapDJ47wKYwPqSz0CQuUgErZ+UcEfLtXXahD11XKdPihB4X/Wz1NozbFC/2Q6HaGmMAzuVkw8OMXvguHaXootdZ2GF5CmiunNOHxMIWiiI2eiih6YLO386nRdQkuPAcpU52nZlOfQ/UzarHq+BRHrz+9Sdl9kSrkHXqK4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjIMxOc1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdE4ndfU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE84B1F00A3D;
-	Thu,  3 Sep 2026 21:45:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjIMxOc1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA301F000E9;
+	Thu,  3 Sep 2026 21:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788471948;
-	bh=SMerT6DU1GKb4cA6ubL44qhf3GuIA/SVIZXqVr/J7M8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TdE4ndfUQe2z9iniPNaRchaRSa7qwdZDKLPg4zEUn2naURjrobWL6G3DB2Xb38Q4c
-	 N+SLfpTHqk6Xhixb2Vy53DYPP2B4Mv1btVeBjqCYceDiPnpFDSfngfav7T8OG9obe8
-	 cGJ3S3hqLxWRQYahYysY5a478M5eJNyVq2ndEAiiVWxFn93LFiV5OhQFERX8Q1xR0Z
-	 BUdhWK+deaFa8ii9UaWPz4hsvtmKpzEXVbzmBRDajCg1iMsXoP8pbqR9M8V0Psp7Sp
-	 qrfHhZv4tmIVNrFdAOqf/sYbWAg4eLgBmINnBqnUGcUCdjYKNZp7znP7l968q9SCRx
-	 kBicKjO/NXePA==
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 03 Sep 2026 23:45:33 +0200
-Subject: [PATCH v2 5/5] net: ethernet: cortina: Count RX descriptors for
- freeq refill
+	s=k20260515; t=1788471964;
+	bh=uGAVaeP0W8LvN/PN6xnor0NvE26XFUvUHT3W2tP0h5Q=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CjIMxOc1QnxYh/iZPFBY92Rvrj7P7CFMyondjkKH/Gp0OjPabi1F1grBwGyvdOytB
+	 7RakNaZaW+H53ohS/zB0rnj7guYCHhd6qU/TdZ8Mk3GfiYwyA2s8qv3qzDTQWGx9U/
+	 HQJZPC2XAoFWhzutBao25MZDNPhhKRzSVFDAw6729ba1vqbUeLb3iy5j0XJRrF9QN0
+	 JBaa7ap2uLDFycSmDn2tOtUhLx/W6Nwo5I3fnccYaQ5UJ6962OhhmFH2svWcy9Z/vI
+	 sdcAJs6okkmvg+fzxjsF6S2fUWNAc7ZyAnnKJSyeDj06AeITPWy+7tsJEON6c8aFVU
+	 ZV9P2dONFxyjA==
+Subject: Re: [2/7] net: mctp: usblib: Add test for splits inside headers
+From: netdev-bot+sashiko@kernel.org
+To: james@codeconstruct.com.au
+Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ kees@kernel.org, gustavoars@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Date: Thu, 03 Sep 2026 21:46:03 +0000
+Message-ID: <178847196367.3394541.6002836106059762076@kernel.org>
+In-Reply-To:
+ <20260831-dev-mctp-usb-lib-test-v1-2-79699bf67a18@codeconstruct.com.au>
+References:
+ <20260831-dev-mctp-usb-lib-test-v1-2-79699bf67a18@codeconstruct.com.au>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-gemini-ethernet-fixes-v2-5-2bbbd598ca6e@kernel.org>
-References: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
-In-Reply-To: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
-To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
- Joe Damato <joe@dama.to>
-X-Mailer: b4 0.16.0
 
-The software free queue provides one buffer fragment for every descriptor
-moved to an RX queue. The refill heuristic instead advances by NAPI work,
-which counts frames. A fragmented or discarded frame can consume several
-queue entries while adding only one to the refill count.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-Count the RX descriptors as they are consumed and report that separately
-from NAPI work. Use the descriptor count to drive free queue refills.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Assisted-by: LLM
-Reviewed-by: Joe Damato <joe@dama.to>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
- drivers/net/ethernet/cortina/gemini.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+- [Medium] SKB leak in the new helper
+  `mctp_usblib_test_rx_split_header()` (drivers/net/mctp/mctp-usblib-…
+- [Medium] `mctp_usblib_test_rx_split_header()` calls the driver's
+  completion entry point `mctp_usblib_rx_complete()` directly…
+- [Low] Unused local variable `size_t i;` in the newly added
+  `mctp_usblib_test_rx_header_splits()` (drivers/net/mctp/mctp-usblib-…
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 9ba8524fa371..f08de623e6f7 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1440,7 +1440,8 @@ static struct sk_buff *gmac_skb_if_good_frame(struct gemini_ethernet_port *port,
- 	return skb;
- }
- 
--static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
-+static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
-+			    unsigned int *freeq_consumed)
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	unsigned short m = (1 << port->rxq_order) - 1;
-@@ -1448,6 +1449,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	void __iomem *ptr_reg = port->rxq_rwptr;
- 	unsigned int frag_nr = port->rx_frag_nr;
- 	struct sk_buff *skb = port->rx_skb;
-+	unsigned int consumed = 0;
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
- 	struct gmac_queue_page *gpage;
-@@ -1483,6 +1485,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 
- 		r++;
- 		r &= m;
-+		consumed++;
- 
- 		frag_len = word0.bits.buffer_size;
- 		frame_len = word1.bits.byte_count;
-@@ -1575,6 +1578,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	port->rx_skb = skb;
- 	port->rx_frag_nr = frag_nr;
- 	port->rx_dropping = dropping;
-+	*freeq_consumed = consumed;
- 	writew(r, ptr_reg);
- 	return received;
- }
-@@ -1584,18 +1588,19 @@ static int gmac_napi_poll(struct napi_struct *napi, int budget)
- 	struct gemini_ethernet_port *port = netdev_priv(napi->dev);
- 	struct gemini_ethernet *geth = port->geth;
- 	unsigned int freeq_threshold;
-+	unsigned int freeq_consumed;
- 	unsigned int received;
- 
- 	freeq_threshold = 1 << (geth->freeq_order - 1);
- 	u64_stats_update_begin(&port->rx_stats_syncp);
- 
--	received = gmac_rx(napi->dev, budget);
-+	received = gmac_rx(napi->dev, budget, &freeq_consumed);
- 	if (received < budget)
- 		++port->rx_napi_exits;
- 
- 	u64_stats_update_end(&port->rx_stats_syncp);
- 
--	port->freeq_refill += received;
-+	port->freeq_refill += freeq_consumed;
- 	if (port->freeq_refill > freeq_threshold) {
- 		port->freeq_refill -= freeq_threshold;
- 		geth_fill_freeq(geth, true);
+--
+
+net: mctp: usblib: Add test for splits inside headers
+
+Adds a new KUnit case, mctp_usblib_test_rx_header_splits(), which walks a
+helper across every byte offset where a 16-byte packet's headers can be
+split between two transfers, and drops the three parameterized span entries
+that covered a subset of those cases.
+
+A few questions about the new test below.
+
+> diff --git a/drivers/net/mctp/mctp-usblib-test.c b/drivers/net/mctp/mctp-usblib-test.c
+> index 4c27307900fb..1a6dd6d10daa 100644
+> --- a/drivers/net/mctp/mctp-usblib-test.c
+> +++ b/drivers/net/mctp/mctp-usblib-test.c
+
+[ ... ]
+
+> @@ -403,10 +399,71 @@ static const struct mctp_usblib_test_pkt_span mctp_usblib_test_pkt_spans[] = {
+>  KUNIT_ARRAY_PARAM(mctp_usblib_test_rx_pkt_span, mctp_usblib_test_pkt_spans,
+>  		  mctp_usblib_test_pkt_span_to_desc);
+>  
+> +static void mctp_usblib_test_rx_split_header(struct kunit *test, size_t offset,
+> +					     struct mctp_usblib_test_dev *dev,
+> +					     struct mctp_usblib_rx *rx)
+> +{
+> +	struct sk_buff *skb;
+> +	size_t buflen, len;
+> +	u8 packet[16];
+> +	void *buf;
+> +	int rc;
+> +
+> +	len = sizeof(packet);
+> +	mctp_usblib_test_init_pkt(packet, len, len);
+> +
+> +	rc = mctp_usblib_rx_prepare(dev->ndev, rx, &buf, &buflen, GFP_KERNEL);
+> +	KUNIT_ASSERT_EQ(test, rc, 0);
+> +	KUNIT_ASSERT_GE(test, buflen, len);
+> +
+> +	memcpy(buf, packet, offset);
+> +	mctp_usblib_rx_complete(dev->ndev, rx, offset);
+
+[Severity: Medium]
+Should these two calls go through the mctp_usblib_test_rx_complete()
+wrapper rather than calling mctp_usblib_rx_complete() directly?
+
+The wrapper in this same file exists specifically to provide the calling
+context the driver expects:
+
+  /* Wrappers for usblib's rx_complete callback, which is intended to be called
+   * from atomic context
+   */
+  static int mctp_usblib_test_rx_complete(struct net_device *netdev,
+                                          struct mctp_usblib_rx *rx, size_t len)
+  {
+          local_bh_disable();
+          rc = mctp_usblib_rx_complete(netdev, rx, len);
+          local_bh_enable();
+          return rc;
+  }
+
+mctp_usblib_test_rx_single() and mctp_usblib_test_rx_pkt_span() both use it,
+but mctp_usblib_test_rx_split_header() calls the raw entry point from
+preemptible kunit process context.
+
+The delivery path starts with a per-CPU pointer fetch in
+drivers/net/mctp/mctp-usblib.c:
+
+  static void mctp_usblib_rx(struct net_device *netdev, struct sk_buff *skb)
+  {
+          struct pcpu_dstats *dstats = this_cpu_ptr(netdev->dstats);
+          ...
+          flags = u64_stats_update_begin_irqsave(&dstats->syncp);
+
+Can this produce a "BUG: using smp_processor_id() in preemptible code"
+splat on a CONFIG_DEBUG_PREEMPT build, given this_cpu_ptr() resolves
+through my_cpu_offset/smp_processor_id() there? The same this_cpu_ptr()
+pattern is in the drop path used when a header is rejected.
+
+Separately, with preemption enabled between the this_cpu_ptr() and the
+u64_stats_update_begin_irqsave(), can the task migrate and leave two
+contexts writing the same per-CPU dstats syncp?
+
+Also, both of these calls discard the return code, unlike every other
+mctp_usblib_rx_complete() call site in the file which does
+KUNIT_ASSERT_EQ(test, rc, 0). Was dropping the check intentional?
+
+> +
+> +	rc = mctp_usblib_rx_prepare(dev->ndev, rx, &buf, &buflen,
+> +				    GFP_KERNEL);
+> +	KUNIT_ASSERT_EQ(test, rc, 0);
+> +	KUNIT_ASSERT_GE(test, buflen, len);
+> +	KUNIT_ASSERT_EQ(test, dev->rx_pkts.qlen, 0);
+> +
+> +	memcpy(buf, packet + offset, len - offset);
+> +	mctp_usblib_rx_complete(dev->ndev, rx, len - offset);
+> +	KUNIT_EXPECT_EQ(test, dev->rx_pkts.qlen, 1);
+> +
+> +	skb = __skb_dequeue(&dev->rx_pkts);
+> +	KUNIT_EXPECT_NOT_NULL(test, skb);
+> +	if (skb)
+> +		KUNIT_EXPECT_EQ(test, skb->len, len - HDR_LEN);
+> +}
+
+[Severity: Medium]
+Does this helper leak the dequeued skb?
+
+The skb is unlinked from dev->rx_pkts by __skb_dequeue() and the function
+returns without a kfree_skb(). The teardown action only purges the queue:
+
+  static void mctp_usblib_test_dev_action(void *data)
+  {
+          struct mctp_usblib_test_dev *dev = data;
+
+          skb_queue_purge(&dev->rx_pkts);
+
+so once the skb has been dequeued it is no longer reachable from there.
+
+The two existing tests free it after dequeue:
+
+  skb = __skb_dequeue(&dev->rx_pkts);
+  ...
+  kfree_skb(skb);
+
+Since mctp_usblib_test_rx_header_splits() calls this helper eight times,
+does that leak eight skbs plus their linear data areas per run of the
+suite? This looks like it is still missing at the end of the series.
+
+> +
+> +static void mctp_usblib_test_rx_header_splits(struct kunit *test)
+> +{
+> +	struct mctp_usblib_test_dev *dev;
+> +	struct mctp_usblib_test_ctx *ctx;
+> +	struct mctp_usblib_rx *rx;
+> +	size_t i;
+
+[Severity: Low]
+This isn't a bug, but i is never referenced in the unrolled body below, so
+this should warn with -Wunused-variable when the KUnit module is built at
+this commit.
+
+The declaration does get removed by the following patch in the series,
+"net: mctp: usblib: Add tests of invalid headers"
+(49a493a0ed5d5a9d6a79967c53761c7a58c76c67), and it is absent at the tip of
+the series, so this is only visible when bisecting through this commit.
+Could it be dropped here instead?
+
+> +
+> +	ctx = mctp_usblib_test_init(test);
+> +	rx = mctp_usblib_test_rx_init(test, true);
+> +	dev = ctx->dev;
+> +
+> +	/* Unrolling here so stack traces point to the invocation with the
+> +	 * failing length.
+> +	 */
+> +	mctp_usblib_test_rx_split_header(test, 1, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 2, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 3, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 4, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 5, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 6, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 7, dev, rx);
+> +	mctp_usblib_test_rx_split_header(test, 8, dev, rx);
+> +}
+> +
+
+[ ... ]
 
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831-dev-mctp-usb-lib-test-v1-0-79699bf67a18%40codeconstruct.com.au
