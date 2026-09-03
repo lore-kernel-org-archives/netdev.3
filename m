@@ -1,89 +1,105 @@
-Received: from mail-m49226.qiye.163.com (mail-m49226.qiye.163.com [45.254.49.226])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B39746982C;
-	Thu,  3 Sep 2026 09:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CAD3E9F8D;
+	Thu,  3 Sep 2026 09:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426028; cv=none; b=IUrHK5BVP9OW8XbGfnAHy6N5OebBRRIvFMUBW7foBDoaXCxNcu/SBiBkfAfombkPKe9p++5bIPNTTI1/26g4V5veZA6t1aCPi5/+h9f+/aujdfxmLQt12YDlW50xouMxxXtomGzm/xUhbh8N5SCXvxs/RkoQK2VghdY25nKql60=
+	t=1788426050; cv=none; b=NfFZy/wcFYHA1jsjgn2PpoykdgPmLnI6IwmJfOtoZBI2SnoRPKZLFwY+0G+H7KJ5SMA6k3aaUqfsp8ifh9EiX5C+rRkuj2zGSwXdTC3DtQZBGxj0dPpfEJp/VMR96PmQyDR8bWxSzB/D2oSK/+oyHTrpoyLQN+k+QNbchCkXBXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426028; c=relaxed/simple;
-	bh=76/uEg7CCgtsRv05Q8ttbQver7Gydb2GL1UuImeu6r0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f8PYCImmfLj7MwPSxvXZvQEiCSTdzJHs12H46Nc3aVNzZAvOBaRl6EVOZe6rHlT5KvdZ3kQgDUiZ83tn8DJgvQFI+Q5Te8g7toTLTfE4UggNoKCiUv38KParCLCm/47uNpxSf7raxXhf4UEJUNKVBXkPLBhvlIW6Dri3IqiqwEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnics.com; spf=pass smtp.mailfrom=resnics.com; arc=none smtp.client-ip=45.254.49.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnics.com
-Received: from localhost.localdomain (unknown [115.220.204.6])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4c65c5af6;
-	Thu, 3 Sep 2026 16:44:59 +0800 (GMT+08:00)
-From: Ruizhe Zhou <zhouruizhe@resnics.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1788426050; c=relaxed/simple;
+	bh=T0oDyeZSdcMQzM7wfHkz/mM1T00zumoKLZed55VmyjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sNvNn4+UWltGnyuN6JeT+t/IvDFjzBWWPGRyFrBlB1ly0DRHlS0FcqjrSlH/yWf4pY8v7MVXanstAYGsJV/x7wDOUmUwHW8hT1lRLJ/wv/cL+jy55GqJgLv2qbhzgITy9DiruVHgTbCJ7pj7JEi3t4MzI7AjRlZsIMVl5vtcgmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0788C1F000E9;
+	Thu,  3 Sep 2026 09:00:44 +0000 (UTC)
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 Cc: netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ruizhe Zhou <zhouruizhe@resnics.com>
-Subject: [PATCH net-next 14/14] net: niu: Remove obsolete 32-bit DMA mask fallback
-Date: Thu,  3 Sep 2026 16:43:39 +0800
-Message-Id: <20260903084339.870562-15-zhouruizhe@resnics.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20260903084339.870562-1-zhouruizhe@resnics.com>
-References: <20260903084339.870562-1-zhouruizhe@resnics.com>
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH net-next v2 0/3] net: Make sure clk_init_data is fully initialized
+Date: Thu,  3 Sep 2026 11:00:38 +0200
+Message-ID: <cover.1788425654.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa06671596103ackunm85c9d55b5cc96
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTR1KVk0fTRpKTExKHUgaSFYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKSk5VSUlLVUlLT1VNWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
 
-The DMA API guarantees support for masks of 32 bits or wider and
-explicitly identifies retrying a 32-bit mask after a wider request as
-incorrect:
-https://docs.kernel.org/core-api/dma-api-howto.html#dma-addressing-capabilities
+	Hi all,
 
-Remove the obsolete fallback while retaining the error check so that a
-genuine DMA setup failure is still reported and aborts initialization.
-A successful setup now necessarily uses the 44-bit mask, so advertise
-NETIF_F_HIGHDMA directly after checking the result.
+The clk_init_data structure contains several mutually-exclusive members
+for different methods to specify the possible parents of a clock,
+prompting drivers to initialize only the members they need.  However,
+not initializing all members may cause subtle issues, which are only
+exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+enabled.
 
-Signed-off-by: Ruizhe Zhou <zhouruizhe@resnics.com>
----
- drivers/net/ethernet/sun/niu.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+Hence this series aims to make sure all members are fully initialized,
+to avoid such bugs, and to prevent future breakage when converting
+drivers to a different method for specifying the parents.
 
-diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
-index 54dd7281191d..c74a97fe5464 100644
---- a/drivers/net/ethernet/sun/niu.c
-+++ b/drivers/net/ethernet/sun/niu.c
-@@ -9835,15 +9835,11 @@ static int niu_pci_init_one(struct pci_dev *pdev,
- 		PCI_EXP_DEVCTL_RELAX_EN);
- 
- 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
--	if (!err)
--		dev->features |= NETIF_F_HIGHDMA;
- 	if (err) {
--		err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
--		if (err) {
--			dev_err(&pdev->dev, "No usable DMA configuration, aborting\n");
--			goto err_out_release_parent;
--		}
-+		dev_err(&pdev->dev, "No usable DMA configuration, aborting\n");
-+		goto err_out_release_parent;
- 	}
-+	dev->features |= NETIF_F_HIGHDMA;
- 
- 	niu_set_basic_features(dev);
- 
+Part One[1] fixed all cases that I identified to be real bugs, in
+response to a crash I saw on BeagleBone Black.
+
+This series is the networking subpart of Part Two, which fixes remaining
+cases that are currently harmless.  These are still fragile, and may
+cause future breakage when converting drivers to a different method for
+specifying the parents.
+
+Changes compared to v1[2]:
+  - Add Reviewed-by.
+
+Thanks for your comments!
+
+[1] "[PATCH treewide 0/5] clk: Make sure clk_init_data is fully
+     initialized (part 1)"
+    https://lore.kernel.org/cover.1787165329.git.geert+renesas@glider.be
+[2] "[PATCH net-next 0/3] net: Make sure clk_init_data is fully
+     initialized"
+    https://lore.kernel.org/cover.1787240118.git.geert+renesas@glider.be
+
+Geert Uytterhoeven (3):
+  net: macb: Make sure clk_init_data is fully initialized
+  net: mdio: mux-meson-g12a: Make sure clk_init_data is fully
+    initialized
+  net: phy: air_en8811h: Make sure clk_init_data is fully initialized
+
+ drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ drivers/net/mdio/mdio-mux-meson-g12a.c   | 2 +-
+ drivers/net/phy/air_en8811h.c            | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
 -- 
-2.27.0
+2.43.0
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
