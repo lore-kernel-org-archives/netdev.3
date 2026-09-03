@@ -1,56 +1,56 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301E9453A54
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40084A0927
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788437327; cv=none; b=NadV7GNehXhgs4flIkJc2ycjMrJq/wiXrsmDVap3VAMYxLlmFUrEF6tQa6YMvPkLLZPZhJNEDkri62WJNZP/zE7LXBc9Aovn5Ie8ZcQKwYrqtJxnIUas3KsP0Jdx0I6cZgFuHuVOzuF3z5RI4j9nceXlOIq/DMh+fb/Xqe34z10=
+	t=1788437329; cv=none; b=iF5/+qxUKgdx8s3dbHvL8SLdbP4x0az3ZI7aNLsqgOSvJPHLpmIJ0iCR9Izl9yCk4z9YSOdu2Hj2Xbb2MOhdIXOgtUsbNSe7lh8uo3au7C3Dnwj9dAFIcdIRQhscZJy3o9u1bH6ZCzYlSCW3BFxaWjJKdhwfSdg4sAfmSNK5mWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788437327; c=relaxed/simple;
-	bh=4S1d7ohGK54SgkYq3oMmvN/AkxzLrguuqK7LmeOmMcQ=;
+	s=arc-20240116; t=1788437329; c=relaxed/simple;
+	bh=koo4Mlu5Mzhe0wzkIkvaULt+IQgWV94Ed+2INooFKnM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ck6D7xkBnQZdc8Fc+kMNqgy4kSI2XUe3fWigfR4IZrnQIBsmAL8wUaujD3kp4xehKcZ/XphjBrQAo3B93tBkfHZxvyJADiiPCNX8PwLjS5mHSUxmww9heFWYO5D4rZP5QdwqFxUnOXp4FaCDPgqkNYZ6gzaRSOfEiwMhB+5tIOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I5vmgLv7; arc=none smtp.client-ip=209.85.160.200
+	 To:Cc:Content-Type; b=UlpFhc6PiTKTqLPkDvmmSkx37qo2w2n48Lb9M9GkJkIkAGE6IghY2Z1DRPb7/WmiMTDMGioWRxkJ3FAO4B8JUFAc5y7Z2cv9jZV+mTGF4wxtxsHdLMegogg5XB/PKkNBVYA44eM93vwOatsZlc1wV6PqVvS5SQhYyzf75qzbvWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eg82w3qg; arc=none smtp.client-ip=209.85.222.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I5vmgLv7"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-53018848232so16484941cf.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 05:08:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eg82w3qg"
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939062ecda9so337585985a.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 05:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788437325; x=1789042125; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788437326; x=1789042126; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nSKr8u5xZlNK8fpMG2HIvwpjBChMu25L0PjSFPHJGls=;
-        b=I5vmgLv7dqpJgtAO4OTvLOEXQRcWtKWLIATRel8QuaPwys8KOmN30DJgHmHuP+wU+t
-         Jt4kvn2A3n+6NPt4o0bGIr3bfk5si00O3hwEdcfAVSTKOe78MoAB2QYEiOpvc94V72kU
-         YcD5bSwWhSBHIc2iT8D5KgNj3QsvjN4HFmNskrJqA66L9aTj8Axf5jbFPf1SpBf56qO2
-         xwoTj+cKvYLipfDSAKEtql7t1Cb3nbh9QE0EcDNqq/hVQNTVHxPxdhVa5rL0A91JRE72
-         k4/GLp5ulZtmtWWxYe0LxjSlEcfj5VmFGU0ZGLQSgW8WJQwWEPdI/xigYCub1T+JIsIo
-         sayg==
+        bh=2Uf7lHzouHX/ERKj/2PYKMBQp1ml2OVJwobBBldlVCo=;
+        b=Eg82w3qgFQCE6BTufaBfxbOkNj1af3i2jF/8kIaPTJSNRPnnO6GCieTm7GhsT+hTrR
+         dOINY4fFx95KuG/4U699WCEhb0YLPzb+XlZLa73P+XmtH9cDNKYg6RD6b33NwvGUD/WU
+         3Hna+3OEoMVtg/FizYJvw6i779UbACNv6PNhInHNmPU+60jneRONHrrjuHiJH31UhFFi
+         hcKuUsjcJfPKlwN+ldWlgA2D/guxeacoxO3wdb7XxiKnSaPTv9U6vo0IfonpffGkY19J
+         dAd/F3KNZ8KFkwyK2xy574SFFiAluI7gmwWvfZAOzuCtKTooiyj/OcP74yiKhH/P+HJA
+         I4Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788437325; x=1789042125;
+        d=1e100.net; s=20251104; t=1788437326; x=1789042126;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nSKr8u5xZlNK8fpMG2HIvwpjBChMu25L0PjSFPHJGls=;
-        b=TbJ2EyhnCCti3UqYNYmbIbOelaMhGKfbdgR/ybohvA9mC0R6TWpJkUCHt0KuP9hx/h
-         FKeBmYQSN02Ea22EsukuNy6Kcf/QHauAnZp694/DoEUjOJ3KTwbKLWqXlF+E6SXaKwkL
-         4TptXRt0Cp0ODYkSE5FaXeRqgXG4y8WFBV5Nx6DyJY4On+HEuhGUOoh6UoZq7DfgEm1H
-         YkfNvLgAGQiJJQ6dr9Uo9qT2GeT56Ce1UK2YIDKN8CicOMzkLV0kMTs1O/nubZAmbTUK
-         8VQUJ7o971mg0sPd1w6ifbmxXBS6p+E06Q6ywgygge80AcjTXSzS/xK6Y9IYA1qExw/t
-         BI8A==
-X-Forwarded-Encrypted: i=1; AKwUvBy33k5Vi192Vmzgr2geayu0WxJgnK1B9z1VOpySbD+L3sxJdeI/lsZb8QyNIN6HDgX4wxeTw2g=@vger.kernel.org
-X-Gm-Message-State: AFuF++mdLKHnuF2c23HlmpAnCtc2lCx9nVYd+qx9Tmi5k2/MTZ0lT1JL
-	vLRVHR3RQs6apRoH3j/SMITepsNRsSgwkgA9uwqbruem3SvDc390qXOquc/RNHB51+U9agOD8lk
-	vACMJxsgQZmlJGA==
-X-Received: from qtrb11.prod.google.com ([2002:ac8:754b:0:b0:51c:43ce:65d9])
+        bh=2Uf7lHzouHX/ERKj/2PYKMBQp1ml2OVJwobBBldlVCo=;
+        b=bcSCXfjZLXjIiZ1r/18VAn8y6u3hfqHJvDeR2PlaNDQfUot5JBk6RzW+uJY1+CG6K5
+         jfVK7cB+lmXG0mmSGb+hu6I4gl/PegZ6b9UYFBW/mwTU5h7ZA3geJ2/RRFjoW62rQp2p
+         EMcBZRQd8SuAkIi1Qfudac8B6d6svp1TxwY8T66OoYNKw0XoFvN6c8XjzFHqQND4JFir
+         Nuzky2vvfnm9X4DFGJR3LAvTqaUqcNsQjd29mNz6bhFUEvXZH00DjCnFJWbiGkfTowCP
+         6hCqkWRc7u8gremJ3pyqoHnc3i/eHQlfk6RD4p4+P7qIcbQKYXV14DC9MGjCWcx8hdpA
+         i9Sg==
+X-Forwarded-Encrypted: i=1; AKwUvBwWQmsir/+0i1c0LvDERl285bikzaihc6XU80AWDG32OuLsViP5lg2sbRCYGq5kWSKCl8kLlJE=@vger.kernel.org
+X-Gm-Message-State: AFuF++lFIWwQD3cNh657h0/TqmZ9y5+fmkaAL677TZlC+1NQiDGO82sv
+	alarHmaH33joRraOjwfhoTZsg2DnVXPUIFgc+ASIO+petemUhF50/rIFiNQdAGcUk2IpSIn8QC5
+	KbqA4LknJxR/G9g==
+X-Received: from qkaf18.prod.google.com ([2002:a05:620a:20d2:b0:936:dbd9:5fe5])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:c14:b0:52e:f66:f17d with SMTP id d75a77b69052e-53036bf0c4amr149248371cf.12.1788437324536;
- Thu, 03 Sep 2026 05:08:44 -0700 (PDT)
-Date: Thu,  3 Sep 2026 12:08:33 +0000
+ 2002:a05:620a:270b:b0:936:8840:427f with SMTP id af79cd13be357-93960c6c8dbmr1425538485a.4.1788437326093;
+ Thu, 03 Sep 2026 05:08:46 -0700 (PDT)
+Date: Thu,  3 Sep 2026 12:08:34 +0000
 In-Reply-To: <20260903120840.1024153-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260903120840.1024153-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260903120840.1024153-3-edumazet@google.com>
-Subject: [PATCH net-next 2/9] vxlan: vnifilter: free vxlan_vni_group via RCU
- in vxlan_vnigroup_uninit()
+Message-ID: <20260903120840.1024153-4-edumazet@google.com>
+Subject: [PATCH net-next 3/9] vxlan: vnifilter: use list_for_each_entry_rcu()
+ in vxlan_vnifilter_dump_dev()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -71,57 +71,68 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-vxlan->vnigrp is an RCU-protected pointer accessed locklessly under
-rcu_read_lock() in vxlan_vnifilter_dump_dev().
+vxlan_vnifilter_dump_dev() runs under rcu_read_lock() without RTNL when
+dumping VNI filter entries via RTM_GETTUNNEL.
 
-Currently, vxlan_vnigroup_uninit() frees struct vxlan_vni_group
-synchronously via kfree(vg). If a VXLAN device is deleted concurrently
-with an RTM_GETTUNNEL dump, vxlan_vnifilter_dump_dev() can suffer a
-use-after-free when reading vg->num_vnis or walking vg->vni_list.
+1) Currently it traverses vg->vni_list using list_for_each_entry_safe(),
+   which performs raw pointer accesses without RCU dereference barriers.
+   Since concurrent RTNL writers modify vg->vni_list using list_add_rcu()
+   and list_del_rcu(), use list_for_each_entry_rcu() instead.
 
-Fix this by clearing vxlan->vnigrp with rcu_assign_pointer() and freeing
-vg after an RCU grace period using kfree_rcu().
+2) If vxlan_vnifilter_dump_dev() returns early because VXLAN_F_VNIFILTER
+   is not set or vg has no VNIs, cb->args[1] was not cleared. If a
+   paginated dump was in progress, this leaked a non-zero cb->args[1]
+   to the next device in vxlan_vnifilter_dump(), silently skipping its
+   first N VNIs. Clear cb->args[1] on early returns.
 
 Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 3 ++-
- include/net/vxlan.h                 | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index dd94085e088656d27b62420a5c8c95c609510a4c..ddfa24ad16f9303d7796e4a199b16dd5cc62047c 100644
+index ddfa24ad16f9303d7796e4a199b16dd5cc62047c..53213542fa3ecf67d66ba6bf41f7ac51cf8fb471 100644
 --- a/drivers/net/vxlan/vxlan_vnifilter.c
 +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -902,6 +902,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
- 	struct vxlan_vni_group *vg;
+@@ -333,7 +333,7 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
+ 				    struct sk_buff *skb,
+ 				    struct netlink_callback *cb)
+ {
+-	struct vxlan_vni_node *tmp, *v, *vbegin = NULL, *vend = NULL;
++	struct vxlan_vni_node *v, *vbegin = NULL, *vend = NULL;
+ 	struct vxlan_dev *vxlan = netdev_priv(dev);
+ 	struct tunnel_msg *new_tmsg, *tmsg;
+ 	int idx = 0, s_idx = cb->args[1];
+@@ -342,13 +342,17 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
+ 	bool dump_stats;
+ 	int err = 0;
  
- 	vg = rtnl_dereference(vxlan->vnigrp);
-+	rcu_assign_pointer(vxlan->vnigrp, NULL);
- 	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
- 		rhashtable_remove_fast(&vg->vni_hash, &v->vnode,
- 				       vxlan_vni_rht_params);
-@@ -914,7 +915,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
- 		call_rcu(&v->rcu, vxlan_vni_node_rcu_free);
- 	}
- 	rhashtable_destroy(&vg->vni_hash);
--	kfree(vg);
-+	kfree_rcu(vg, rcu);
- }
+-	if (!(vxlan->cfg.flags & VXLAN_F_VNIFILTER))
++	if (!(vxlan->cfg.flags & VXLAN_F_VNIFILTER)) {
++		cb->args[1] = 0;
+ 		return -EINVAL;
++	}
  
- int vxlan_vnigroup_init(struct vxlan_dev *vxlan)
-diff --git a/include/net/vxlan.h b/include/net/vxlan.h
-index 7b82075055237058d231d636698f640c75c521af..f41db72e9229d9cc8460ddbe265c6cd07890032d 100644
---- a/include/net/vxlan.h
-+++ b/include/net/vxlan.h
-@@ -279,6 +279,7 @@ struct vxlan_vni_group {
- 	struct rhashtable	vni_hash;
- 	struct list_head	vni_list;
- 	u32			num_vnis;
-+	struct rcu_head		rcu;
- };
+ 	/* RCU needed because of the vni locking rules (rcu || rtnl) */
+ 	vg = rcu_dereference(vxlan->vnigrp);
+-	if (!vg || !vg->num_vnis)
++	if (!vg || !vg->num_vnis) {
++		cb->args[1] = 0;
+ 		return 0;
++	}
  
- /* Pseudo network device */
+ 	tmsg = nlmsg_data(cb->nlh);
+ 	dump_stats = !!(tmsg->flags & TUNNEL_MSG_FLAG_STATS);
+@@ -362,7 +366,7 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
+ 	new_tmsg->family = PF_BRIDGE;
+ 	new_tmsg->ifindex = dev->ifindex;
+ 
+-	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
++	list_for_each_entry_rcu(v, &vg->vni_list, vlist) {
+ 		if (idx < s_idx) {
+ 			idx++;
+ 			continue;
 -- 
 2.55.0.970.g62bdec98f9-goog
 
