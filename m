@@ -1,18 +1,19 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CAD3E9F8D;
-	Thu,  3 Sep 2026 09:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DF546D541;
+	Thu,  3 Sep 2026 09:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426050; cv=none; b=NfFZy/wcFYHA1jsjgn2PpoykdgPmLnI6IwmJfOtoZBI2SnoRPKZLFwY+0G+H7KJ5SMA6k3aaUqfsp8ifh9EiX5C+rRkuj2zGSwXdTC3DtQZBGxj0dPpfEJp/VMR96PmQyDR8bWxSzB/D2oSK/+oyHTrpoyLQN+k+QNbchCkXBXs=
+	t=1788426054; cv=none; b=k04VlhsecBTBQKbWfIDZPy7ZrL61MrPRuCTRe5yeOReW2OdtBOCeQjkehgVKdZ77b/rq1VBz4kdWxMdRwuoHUnzN3tqLQQxsKKMgfvkNaJqif3bP0HPQYusngNmhRW2WlIMgr/nwWUv8dVNijSRBZ8u9fVKUGoGhlREWlu2q2pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426050; c=relaxed/simple;
-	bh=T0oDyeZSdcMQzM7wfHkz/mM1T00zumoKLZed55VmyjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sNvNn4+UWltGnyuN6JeT+t/IvDFjzBWWPGRyFrBlB1ly0DRHlS0FcqjrSlH/yWf4pY8v7MVXanstAYGsJV/x7wDOUmUwHW8hT1lRLJ/wv/cL+jy55GqJgLv2qbhzgITy9DiruVHgTbCJ7pj7JEi3t4MzI7AjRlZsIMVl5vtcgmU=
+	s=arc-20240116; t=1788426054; c=relaxed/simple;
+	bh=7SFF6+bDkyVBOQmIZhhbaq+s0DnpIzs7wUvGIntywK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CK7MAJdswKLSatxkDCUF6Az8YRW0PA9kkebiFfYT6gtI6EQylW5PlTRe9grauXhormGjwf0IYc6H106nyd5eXTBSCVAdr3zktglGD3GjvbQ0Dv+ORXl8lblGQ4hER4tXf3JIfqmnkjTUu9jYGxpC8i2jZIYpGQVQMaY7+IIKpf4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0788C1F000E9;
-	Thu,  3 Sep 2026 09:00:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D221F00A3A;
+	Thu,  3 Sep 2026 09:00:48 +0000 (UTC)
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Conor Dooley <conor.dooley@microchip.com>,
@@ -32,11 +33,14 @@ Cc: netdev@vger.kernel.org,
 	linux-amlogic@lists.infradead.org,
 	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH net-next v2 0/3] net: Make sure clk_init_data is fully initialized
-Date: Thu,  3 Sep 2026 11:00:38 +0200
-Message-ID: <cover.1788425654.git.geert+renesas@glider.be>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Brian Masney <bmasney@redhat.com>
+Subject: [PATCH net-next v2 1/3] net: macb: Make sure clk_init_data is fully initialized
+Date: Thu,  3 Sep 2026 11:00:39 +0200
+Message-ID: <62cfa62a8f39e0014d2fe9b30a668df20ace4a0c.1788425654.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1788425654.git.geert+renesas@glider.be>
+References: <cover.1788425654.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,8 +50,6 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-	Hi all,
-
 The clk_init_data structure contains several mutually-exclusive members
 for different methods to specify the possible parents of a clock,
 prompting drivers to initialize only the members they need.  However,
@@ -55,51 +57,35 @@ not initializing all members may cause subtle issues, which are only
 exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
 enabled.
 
-Hence this series aims to make sure all members are fully initialized,
-to avoid such bugs, and to prevent future breakage when converting
-drivers to a different method for specifying the parents.
+Make sure all members are fully initialized, to avoid such bugs, and to
+prevent future breakage when converting drivers to a different method
+for specifying the parents.
 
-Part One[1] fixed all cases that I identified to be real bugs, in
-response to a crash I saw on BeagleBone Black.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+Compile-tested only.
 
-This series is the networking subpart of Part Two, which fixes remaining
-cases that are currently harmless.  These are still fragile, and may
-cause future breakage when converting drivers to a different method for
-specifying the parents.
-
-Changes compared to v1[2]:
+v2:
   - Add Reviewed-by.
-
-Thanks for your comments!
-
-[1] "[PATCH treewide 0/5] clk: Make sure clk_init_data is fully
-     initialized (part 1)"
-    https://lore.kernel.org/cover.1787165329.git.geert+renesas@glider.be
-[2] "[PATCH net-next 0/3] net: Make sure clk_init_data is fully
-     initialized"
-    https://lore.kernel.org/cover.1787240118.git.geert+renesas@glider.be
-
-Geert Uytterhoeven (3):
-  net: macb: Make sure clk_init_data is fully initialized
-  net: mdio: mux-meson-g12a: Make sure clk_init_data is fully
-    initialized
-  net: phy: air_en8811h: Make sure clk_init_data is fully initialized
-
+---
  drivers/net/ethernet/cadence/macb_main.c | 2 +-
- drivers/net/mdio/mdio-mux-meson-g12a.c   | 2 +-
- drivers/net/phy/air_en8811h.c            | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 76ee4f5060335c4e..2e6a5e93d0cdd5d5 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5375,7 +5375,7 @@ static int fu540_c000_clk_init(struct platform_device *pdev, struct clk **pclk,
+ 			       struct clk **hclk, struct clk **tx_clk,
+ 			       struct clk **rx_clk, struct clk **tsu_clk)
+ {
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int err = 0;
+ 
+ 	err = macb_clk_init_dflt(pdev, pclk, hclk, tx_clk, rx_clk, tsu_clk);
 -- 
 2.43.0
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
