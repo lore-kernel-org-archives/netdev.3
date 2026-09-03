@@ -1,46 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CFC469846;
-	Thu,  3 Sep 2026 09:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A15376483;
+	Thu,  3 Sep 2026 09:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426063; cv=none; b=h42ws+VpXubj4v6ItaZe2yg1MpBYYsxRnNmH01Hb/bkmwc/RpXWvO72djgfqmr5quJWneNZ/0eyDR35RX857QedBP1Jv7OTDTe8M/1x1V2mMVrUqH350R+qscaisKFlvkLoUlhLiG2JlNedk1CkWb/Q4jTqC1juWF1OvfsgvDME=
+	t=1788426068; cv=none; b=HAywuEvax1+bz6wcUFc5oh4ea1Q+NVyEuxAR3bkLMnkhbImTxQRH9af79dk864xWaBSRGnn37hkp39oqdNrHHgvraCodaCcJRMXELcK27PtWYGyDTl6nNf4jkcL278cKwhEQ0N7iKl1tnlJfh0UurP4I0hQ8tvdY9T07RC0ksho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426063; c=relaxed/simple;
-	bh=1oam49rE2q1fURbGL8mKULShH5jhQop+PcZjj/rJ5Gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWGAuiKBl3cDf3JZU4IOT5ARMyJ43e5lc9CTU79VW09+2DO5vUr5wdXTCs2t+NvqG7dDKpwz6qh3LW89GKyC8g6cI7aUgsAtPr6iaIErhLdDI/6H7P/sFal4loDMoTrvaAnejz8DE8Y5ql/3ViM2SQ4Atqo/RKVL4BlmHHw+mk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB501F00A3A;
-	Thu,  3 Sep 2026 09:00:58 +0000 (UTC)
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Brian Masney <bmasney@redhat.com>
-Subject: [PATCH net-next v2 3/3] net: phy: air_en8811h: Make sure clk_init_data is fully initialized
-Date: Thu,  3 Sep 2026 11:00:41 +0200
-Message-ID: <0e869f49c910ce054aa22ae84480aab69420bb92.1788425654.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1788425654.git.geert+renesas@glider.be>
-References: <cover.1788425654.git.geert+renesas@glider.be>
+	s=arc-20240116; t=1788426068; c=relaxed/simple;
+	bh=vLMvwx4oZo86xTlh2FJV5p1Se7e8691YE6TB1uKI1hA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uHw+SmWc9JKMaveg7KYxBBLXoKhIQJy4wR18umSbhvgqN0OjNvWXTGRtWC+NIIppU1Asoo9CRocB9OjdG6EO47/g9sebT49LpKY+UhcNsZ24pJcdMLtU5nFXDXMMtREtcYtB3orHZaAz4F19Ow2xp3u2t23VyPil7JaSlJ7lQoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4YDmv6d; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4YDmv6d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7F91F000E9;
+	Thu,  3 Sep 2026 09:01:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788426067;
+	bh=/UG7zMVZVaj57JKaT/NgSm3yz88db2K0TI/06GsPpNc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=A4YDmv6dvoVogcMTXsrbyKW5pUL5wkQ7Mh/n/Kpq3gW2iN11xBWFcLhgFTZXkbj05
+	 RAmoL7fZ/nbRUw6CgmlI7z9QUpDBmN3lYMA3YCH/6JaQEdFZ1RPYrYACv6/ntH5ph7
+	 arm2nm+OJKhR/tlbPXVrvoZ+a/PVO0kPRtmR5jkbQl64TIGm7j0E0C6QCH4tdVGFf6
+	 Czw6Bd0etlvE9tYErEpV6rtmhAnm0mXCOf+bocoOOBDGnXNV6MIvnNubm8G3w3pUoM
+	 RFuAlsCeieY6D8os01ZUdn6CnQ9YMDY49y6YO/UO2Ztbp+LVJK7CbCPd1EELPj1Dhp
+	 0GqqEqLv52NZg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 62B133811961;
+	Thu,  3 Sep 2026 09:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,51 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] net: stmmac: dwmac4: Auto-discover UC filter
+ size
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178842600911.3208873.5559894421239346742.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Sep 2026 09:00:09 +0000
+References: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20260831070121.349778-1-maxime.chevallier@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux@armlinux.org.uk, thomas.petazzoni@bootlin.com,
+ alexis.lothore@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com
 
-The clk_init_data structure contains several mutually-exclusive members
-for different methods to specify the possible parents of a clock,
-prompting drivers to initialize only the members they need.  However,
-not initializing all members may cause subtle issues, which are only
-exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-enabled.
+Hello:
 
-Make sure all members are fully initialized, to avoid such bugs, and to
-prevent future breakage when converting drivers to a different method
-for specifying the parents.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
----
-Compile-tested only.
+On Mon, 31 Aug 2026 09:01:18 +0200 you wrote:
+> Following my attempts to get clean ethtool selftests runs on stmmac [1],
+> several issues were found with the unicast filtering.
+> 
+> [1]: https://lore.kernel.org/netdev/20260827134004.45ffb57e@kernel.org/
+> 
+> This lead to the discovery that on dwmac4 platforms, the unicast filter
+> size is always falling back to the default value of 1 entry. On older
+> variants, the size comes from devicetree.
+> 
+> [...]
 
-v2:
-  - Add Reviewed-by.
----
- drivers/net/phy/air_en8811h.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Here is the summary with links:
+  - [net-next,1/2] net: stmmac: dwmac4: Read the UC filter size from hardware capabilities
+    https://git.kernel.org/netdev/net-next/c/384ee2379a66
+  - [net-next,2/2] net: stmmac: dwmac4: Use the full perfect filter ability for UC filter
+    https://git.kernel.org/netdev/net-next/c/6815415d68b9
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 0eeb7b9a4e260bcb..429231949120c7c8 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -932,7 +932,7 @@ static const struct clk_ops an8811hb_clk_ops = {
- 
- static int an8811hb_clk_provider_setup(struct device *dev, struct clk_hw *hw)
- {
--	struct clk_init_data init;
-+	struct clk_init_data init = {};
- 	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_COMMON_CLK))
-@@ -1031,7 +1031,7 @@ static const struct clk_ops en8811h_clk_ops = {
- 
- static int en8811h_clk_provider_setup(struct device *dev, struct clk_hw *hw)
- {
--	struct clk_init_data init;
-+	struct clk_init_data init = {};
- 	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_COMMON_CLK))
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
