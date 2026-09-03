@@ -1,766 +1,154 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011008.outbound.protection.outlook.com [52.101.57.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BBD3932EA
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788422507; cv=none; b=lyEPSuHqXN+i6UaPeNcg+aC5ngK+bBK3Ia05in+oQPHWhw50vywVw+zD8jUYY3kh4RCUXJl7B7V7WYdwgL/utZVfGxLuQGIy3iOrF1bj/KtCLAImucMr2clygti2/1b37khI27AzdLh68HHUgqR9kRXQp4gRmY5qgiZyGdZVQiI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788422507; c=relaxed/simple;
-	bh=wOwgFPttteLWIPsiu6kTNiHyB+k+epRhQMr38sgXPbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+ZtntwEi5An2yLDwbyDiiTucBmEbU2b5WTQGKbeCFPrVrzZHtcGOJJanXf3QdGUn/7BJ+JaRcuJyFcc8IwviISpq+1C6dK75RNSk2Gj35B8/0v4bpCkLcLReKvfqZzalOS5wQxGGBc7av3TFNCykj3LZGkzsODUTk52j6+psTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Lm8jQDPq; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193E936C9D9
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788422618; cv=fail; b=fGjSmZK2SJUy0M056zzi7KUXyS6bFhqBbbQhxnZdH9oOv891vjApgMAg7fvbgV/pDU9o/5X0NWOmZ6lggzrmgrhYhbvl8ILMegH4ZfsVIsOw2uj3azREVltd5Ejw+XFizFoppvVt+oe4GTKWRN3SQ9GUVC+PMdCjCxtwdeG6OjU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788422618; c=relaxed/simple;
+	bh=16ygLat4+PGolZaUmzw9e2hcBzMpgg49W9hLUL+ZQq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lpU+2/Xcpd5Q5aeNBHf4kFBj7F3pXNJ/sb49ZM6szOGrEndkE19+sfHJN6HjAxvEBXHhEO2Oe48HntiPCU6bQSKwSamWz6qDgldylbdQKfXqJ9ahUKi3vthO7k/IdARDCbU1lOhtzvYjvhluV9JFHLtsbPJAOGcFu+BD+laosLI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Cpqx1q3d; arc=fail smtp.client-ip=52.101.57.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Lm8jQDPq"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ce98cb8165so8698145ad.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788422503; x=1789027303; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W2jfBitlglUZeKM+lLh9bmoqGOt5hwGK3ifMJXv58Uw=;
-        b=Lm8jQDPqMMwMy/3dAsTqx69AwkbwLMIGOwFdEjPD0BI+NREBAiaIVjcKpc6uceT2eZ
-         ih+rALl8S+RWV7nDyimJ88S2WESMZvIK2Q6IxEr9yzDnOSvOOQHFQjlkGwe4BaviqW64
-         6+n5CUYTK4trDRQOVm3zSh+W/6rfnZARpmp1PAsbgg4dEU0Nb8LetVr+y9xaIbSe2vSk
-         bW8O9H14o899iz8T3j8j05EgAW7s9FssNpMmD2+tNI9EdZZdIaf1q2OMEZKswUwexFA1
-         ip9HL0G9MJ0fhkCU1FstgRQHSY0g6i4QrqOZBNUA55WybR19M1I3gW7RnRgKJ8Un04GZ
-         1xcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788422503; x=1789027303;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W2jfBitlglUZeKM+lLh9bmoqGOt5hwGK3ifMJXv58Uw=;
-        b=fgWS8tzwH7fAvRrnRfnuzKED7CDMSDtHajZn0gg0KkWRvqXG8MAM1fOCOnhy4E/Co3
-         sFj+V4Gx5MTuK8U8d9I0buNZLlihgUOtXh3Mno8HeMqXv2acXVjzX+EGNuRWj8f0UEgx
-         vBDs9/nD+wO8TKiycosZe5VksCXvmxMvedSgiEyaIV8Hq1nfcPTy4xmHxmFulqQmpvaN
-         3UP9bED2iT/jq2vma79cVlsOIhW8GaopLHXMYkGQ1PUT3HCk9GXcnvPwZaUu0rnYTGgd
-         duxXAhz4C2TH8wgKBgIsWZG7/DQuJTGE/uElZn3xkDlOs2WWpqamdGr/Ot4SbpPBuZBY
-         u/Sg==
-X-Gm-Message-State: AFuF++kmbNN46ar3418dEu5AIFYzGs2xVSZt2HQctRYZQT9GbuNBKr04
-	pVGRFoth9m2lrFvy0VcQ2MAzUO1rysLOXF+6352yka7+tNZPMNx4v7n0wS82HqgK7yOTN7mO75a
-	CgqWZw8zhCxE=
-X-Gm-Gg: AYBFou3UQQTuDVDJWbdjRTnDL9gkGwNJcpGY8u5cTBznl1bjED6cwLnZ4re5VxRMbLM
-	t3s05hmcLXsymAM9wLF5uQQL7NLQ+2cU3QhU5dQJ0Lma0MNSfaDQP/Lf68i2JyzaVIDVEs8naHT
-	mZglaaovkd6CwJQEUzASQzqgH9m2Xk1luexTzRm5s4dZqc3p3lgndEMGwVfTnjNbyL3UQd13sEh
-	2EARvXePqeefJb/VMUPKl8Za4/6TentRHxz3JQmAiNQLsZSRNOcnctWbZHpTOgA+tA2BqV4s775
-	13WEeldemE7AL+pHXrK2IHnDgDu+KUq1BLQs9gm4GrDaWYgpx6pIwO1vzAEfRQ8Tva7sGe4XRih
-	P7MWsMPXEsmJTOdz7tZmelkbv0xE540JU2wlwBsOXY0BeXdoaTWOfx2oP7uN+8aCUoWcjV2HnFl
-	920Yf384ZmHhtfVZ+G5TmBuJYyV5gudJWaYpniskwdrwD6370TXISD+H4rf+we6xG+kB5vtiNiB
-	geAfbqbvzFe9Yc6ruY=
-X-Received: by 2002:a17:902:f707:b0:2cf:6e5d:23e9 with SMTP id d9443c01a7336-2dafb0b191cmr38825695ad.14.1788422503029;
-        Thu, 03 Sep 2026 01:01:43 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafe0d062fsm6240295ad.5.2026.09.03.01.01.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 01:01:42 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Cpqx1q3d"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ND4G0oaUbHEADa7rXl0hKQwWAc5jPKqod5UfXluxVZyCqJH1ObDUu5gbR35BBWc6Rec7gOZIUhtncVJlsrhgtVGIkX/3WaTvh/6pjVtIOJtdJyVefP2+rUrSIxldXaaB6UgtvZyE7J/B20lLkeJ5vcelzHGP9wMz3i8m4gLg7qDvax/Aos4WNO7+2i6Tve3liYL0d5fDBvW67X2E+bROuTZ//S73tVBbovJhCUEHdmr7t3sQRvpcHx8LmshP0agyq9jUWUPtkK9+sfqYdrHq6nHphTku++fFcLad4oLsbaLkMw4IcTSBYD+rORDliusq58qWve4MM+3OLh9WTizoFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/MgotoXit5cJtdW08mLp8LenlGf7KAfybYjxx9EA3gE=;
+ b=D+zrp2lJIvW9y8SM1epYB104+OagRFvfCD0vUaI1sprb/FnQ10GV7k+pP/cYlRT085PKTCecvLg48Bf8Z5IghlmlPwiGGQpiZgKbKaUBK4yLEBO3GWbvNHYXl5now7s5/vfUO22ba2XfYkokXW6jilcKfoh2t114A4SwsbaWA0dpFQYpMAQl+LOb/G+c+PMv56UwcUXRqtW8jVuKBR/P3n4chESzIwjWM4S2ST9LKTnX7pl4nelkXOdPIPGyyA+ktaCF79zzjiUE9d0TQL89sS7HY+NL/6lx6x+6pQiV8XrPb7Xb+t8ZfRyDMKlOApSidjmoEwrEBzZAexjgoFHsDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/MgotoXit5cJtdW08mLp8LenlGf7KAfybYjxx9EA3gE=;
+ b=Cpqx1q3dpVsURoEodXj9MivxxkQFIZYRep0slrNUvhFrr2BlYn0rwhJfcqnjYYPRDjafa64RJZgEgoXXj00/6/8itVFFpFxVgqkw4uPCo+65RASCYWtnocXbrhypUB9W6d5lzsSSxnsOOtm/rUbhwOpP03a9rhTGLsEYMpklSm8oW/GZrQ8nQnXAFJgymjVIgXaPsZUkfD6M7LsbaTGlKisBxHSfht9WTMRJbc/z5wBG49NYLvSnpIetplN+5uXVv8w8k07nnwDHHBN03S8QyLs4Bxy0oOJ+wAgWqwKU04mwKuhqHpceItrTbazUI+EB/OKArsdtLhFjfGzuknnagw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by MN6PR12MB8514.namprd12.prod.outlook.com (2603:10b6:208:474::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 08:03:32 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 08:03:32 +0000
+From: Ido Schimmel <idosch@nvidia.com>
 To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH net v7 1/1] llc: fix listener child socket leaks before passive open completes
-Date: Thu,  3 Sep 2026 08:01:24 +0000
-Message-ID: <0b8964c9cd294898c9657fd34c9d04cec77782eb.1788414881.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1788414881.git.zihanx@nebusec.ai>
-References: <cover.1788414881.git.zihanx@nebusec.ai>
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	dsahern@kernel.org,
+	horms@kernel.org,
+	kalpan.jani@mpiricsoftware.com,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net] nexthop: Initialize extack in remove_nh_grp_entry()
+Date: Thu,  3 Sep 2026 11:02:59 +0300
+Message-ID: <20260903080259.10378-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TLZP290CA0011.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::19) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MN6PR12MB8514:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0108a75-0ec1-41c9-b8dc-08df0991d8cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|10067099003|11063799006|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	E5aWCu7Wr33spA2zkz7VNWicgGJrEljnBK3Yk+KXk/4smSNBLlyP2fWUNi/iDTJJKUfBejV+/9llK97oQhi6ud8P/keUl9Ao9DAh0WomtWPFaJkLMmcei4lc/x2OVN01V+fSR6gpDLPn2277oKtLrOhtDRSPud7aJklEPCDu4zUd3yWJpvqMGbPBc/9ICFMw5xDPMZacxE1W/63yAvmx2B8jHkbgpGdwfIUVgOt0srg27udVr7/rBTWO3Pc0qg0xViv532hCSRXEt0Os+xXxnM/HGj9NtkR+O4Yk82JZIBG1RKJYnKNNT8W2ET5o/xu5jJp+dZOErUqMREdDsZrHGO+NynxN0o8r7DooBD0vYDZs6h/Xa8gL+Sfc+0YqNRa+PGqFPJGZNozEWVClZY6FoDoNS46mnZzVZL6Cc6SsBITd7bsh5W76/1LoT1pPqDgGYOevstMLfXvzv0LLs93KckKzw27MGh5fuf+dqgZD/gBft7IhoP2dNRL6f4KhIT54XWnemZjdUeu/folDg6N7OTDitIGWBIO51N5wwjTlRFm+yGN1duaYez8DA5qJeOL/ScxsdKqWf4yXDJ/a1r0bI107pLlyOjJpyD8e00Cxz2iwc0GH4QZVkBQCjjiU46fhMSDzaV+gf2wpNQtmLERRKm5LFbW36ITkd4TlGxcyuJo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ziKuQmzETjkU63YAl53HqVy+8isWWqfEKaz3aXLrDweevwyd/Zp++kmlqJ1o?=
+ =?us-ascii?Q?ExpE2MeK4tsuA6uJ7/1oje476plEWG7hQghIWrpQ0X4rrpkqnwspnxEd287M?=
+ =?us-ascii?Q?hDoJpmwCf8Et1SHlb1nJA8Kl+4e2qu/XA9t3mVI4XfYa6bTqCpdPKnpBNfw7?=
+ =?us-ascii?Q?23BvK/3Gfd0+u8D6Z0M5jD2F7DFVX0an+TKV5GQ/WzisgtEL0urMQOdYjquY?=
+ =?us-ascii?Q?dA938ldVRg3diiyWRxlYS1SaTSMaa36dwTwHhH7IgFcE5nH9kvYViQemBNlq?=
+ =?us-ascii?Q?QeSQMWhOM21kWvsLlXDzBFxutMITKGy0ab/CV2YhuWI+FHPDIuDWdnOYhXU9?=
+ =?us-ascii?Q?6zvFKlsuzEhi4N/khoce3jPRahoE98HvjlejkixWCmGqs7cVlyuija2qiORy?=
+ =?us-ascii?Q?2u/uj8amzmmiJHqzI9vleKWx2Jmajj2dPFVIlk7imfXPTtNv00n7O0oD1sA3?=
+ =?us-ascii?Q?eEkoqa4EhskBMGJ0g2VNg7VDNNTm8+J+L8ReyHugT+9RhgUJ+LElctgLz2ax?=
+ =?us-ascii?Q?Ms6y0ak8clcWLgJJdYMxuHeUWzpceoyDDmb6vWFyLbyrOcyGAFct6Yez7+py?=
+ =?us-ascii?Q?kbTl0VB4eg7qE+USNJyj0TYObH1kGNzqQpc6eJZljBdgBi1N3gAUCuPzYMeT?=
+ =?us-ascii?Q?SJ6ycd3yIwSUDOoSuYliQSSmFnRynjxPcyY8khjkzJqDnPjbRonz6Yg0cxWt?=
+ =?us-ascii?Q?+3pL12bnFvFQIcQdv0e54WTRTNj2AqnzooqWf4nubqjmf5dICyMyZd3wzKmG?=
+ =?us-ascii?Q?xfCdoTdIQ/1V7zKpjwF0TmMhyuJswtTOnE8OCPYAIMQCuTkmEbFgaME36uln?=
+ =?us-ascii?Q?S6Sv1IFqwAt6OaxNsNmDCgpZ2nnvpolIEmMPaU33dXpQV8Oopp1mCEwx+xq2?=
+ =?us-ascii?Q?8LtVmhqxZguimZAH3Di2HCKG3o6Bule7F2gOG9RB2NAxFoYO/hcql1l4QWvo?=
+ =?us-ascii?Q?dxLjCyjbXy/Gbt2Eum5g7fgI1hQFzbsyke8xGUCALsCBJJJyj/4EmtMFv/n1?=
+ =?us-ascii?Q?Hjs7NpXp4TPN2QpaQ/8mcTxSeh/4r9d0XOWepV53UViUHmSRJKlC6AIDdJiE?=
+ =?us-ascii?Q?cRhfOf/LkXBC8So2MKrr0NoRBY9yEmuitI4ZCBGADZyp6KGG55vYimZKe5H8?=
+ =?us-ascii?Q?vyRSN6mnhiKG23qVrOG1Gww+HDvcLl6gNZj/ZzKuVwBnamt8bwBRWj1OM3e7?=
+ =?us-ascii?Q?g/6pVEQ5R0UeMX24m3iIgq2qTYPL3hZqsHpHlOlHQJTRRk/6iVNl2Q88vOnL?=
+ =?us-ascii?Q?l/mfLYLlVTGspcfwelUFT0v62lBoqF7mjZR2+Gw7O1hn9P8l9K4kPQ/me9sq?=
+ =?us-ascii?Q?Rbv8r7aa4QqST9IZZXwGCgCgsmDWs0fG4ioFcM+Izj3U4igRvsqNyVIWmewX?=
+ =?us-ascii?Q?PTgP3vnFlJsXDZaHRDonMyUtzdLy64dEd76o+ghurnyv8Lvx0Sg+Zhtm8y3Q?=
+ =?us-ascii?Q?Nb6C4/r+X65XLjyJmZFk10zuw/Zj735IWx1NXNc34f2NKe5KUbnUUbAYCnEv?=
+ =?us-ascii?Q?scN+zGiq0AJ/lria67DEKsZc8ISDNCGG7OgAO4jtJaeva9lPTla8GDEj+bLO?=
+ =?us-ascii?Q?LXPDOUaPD1BCt+jTGI2NK69hvny6FYzG7qAPBktkoBDbtiqXIOlKRnOV/Qzo?=
+ =?us-ascii?Q?/YoGwuOZyvjc02qLMZRpx+6yDpRMzjFGX2SMUA4eaJfulsIP3BHSDCMfKfBv?=
+ =?us-ascii?Q?JzUMz+xxpwnwYLMNyg/TbSpdB/j+atICq2dWugiYxtr8/oPG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0108a75-0ec1-41c9-b8dc-08df0991d8cb
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 08:03:32.3133
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v4zhC3vQRUsbBf6A8UusoOBsiSIG7dIri69m9Ke125VW863/HyMU2gwS+VTJBJMfiWMMp0oEd+uHGOQpZj/lpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8514
 
-llc_conn_handler() creates and publishes a child whenever a listener
-matches a packet. A non-SABME frame never completes the passive open, so
-the child remains in the SAP tables, keeps its device reference, and
-cannot be returned by accept().
+remove_nh_grp_entry() prints the extack message when a listener fails
+to replace the reduced nexthop group. However, extack is not
+initialized and listeners are not required to set a message when
+returning an error. Neither netdevsim nor mlxsw do so when an
+allocation fails, resulting in the dereference of an uninitialized
+stack pointer.
 
-Create children only for SABME commands. Handle the listener's required
-DM replies directly, using the packet source address, and do not run the
-listener through the connection state machine.
+Fix by zero-initializing extack, as was done in commit 6347c5314cee
+("nexthop: initialize extack in nh_res_bucket_migrate()").
 
-Keep SABME children in the SAP tables during the passive open so that
-established lookup continues to select them. Track children until the
-connection indication is queued for accept(), and release any child that
-fails before then, including direct and backlog failures and listener
-close. Keep a listener-owned list of those children so close() can
-release PENDING sockets that never reached the accept queue, instead of
-relying only on later packets or backlog drain. Release pending children
-for redirected packets after the listener leaves TCP_LISTEN or is marked
-SOCK_DEAD. If a later redirected frame fails to enqueue on the listener
-backlog, drop that frame only; do not tear down the already pending
-child.
-
-Handshake skbs keep a child socket reference with
-skb_set_owner_sk_safe(). skb_set_owner_r() does not hold the socket, so
-kfree_skb() on drop, accept-failure, and close paths could race
-asynchronous teardown through sock_rfree().
-
-Finish sock_orphan() and the device put before llc_sk_free(). That
-helper already sock_put()s, so those steps must not run after its put
-and rely only on the extra hold from llc_release_incoming_sock().
-
-The child socket lock is acquired with bottom halves disabled whenever
-the cleanup or backlog path runs in process context. Deferred child
-teardown does not lock the listener; the child already holds a reference
-to it until that work drops it.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Fixes: 833a1065eeb1 ("nexthop: Emit a notification when a nexthop group is reduced")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
-changes in v7:
-  - Drop the companion LLC_CONN_OUT_OF_SVC bounds patch due to overlap with
-    Kees Cook's net-next series:
-    https://lore.kernel.org/all/20260901210300.i.590-kees@kernel.org/
-  - That series also covers the connect(2) +1 return and rejecting
-    out-of-service states before table lookup, as raised in review of
-    v6 2/2:
-    https://lore.kernel.org/all/20260902010052.2297527-1-kuba@kernel.org/
-  - Keep only the listener child leak fix for net.
-  - Fix reverse-xmas-tree local ordering in llc_conn_handler() and
-    llc_incoming_sock_work(), align the atomic_cmpxchg() continuation,
-    and add matching braces on the backlog retry if/else.
-  - Release a PENDING child when llc_conn_handler() sees a redirected
-    packet for a TCP_LISTEN socket that is already SOCK_DEAD, instead of
-    dropping the packet and leaving that cleanup only to close().
-  - Keep the init_net CAP_NET_RAW/CAP_NET_ADMIN reproducer; PF_LLC is
-    rejected outside init_net, so unshare -Urn cannot express this path.
-  - Spell out that the crash PoC is DISC-only, include poc-sabme.c for
-    the accept and close paths, and restore the full OOM panic so the
-    leftover /proc/net/llc/socket leak is described next to that log.
-  - Do not tear down an already pending child when a redirected frame
-    fails sk_add_backlog(); drop that frame only.
-  - Track incoming children on the listener and release leftover PENDING
-    sockets from that list on close(), instead of relying only on
-    sk_receive_queue, backlog drain, or a later SOCK_DEAD packet.
-  - Stop taking the listener lock in llc_incoming_sock_work(); the child
-    already holds the listener, and teardown no longer interleaves with
-    llc_ui_release()'s llc_sk_free().
-  - Hold a child socket reference on handshake skbs with
-    skb_set_owner_sk_safe(), so kfree_skb() cannot race asynchronous
-    teardown through sock_rfree().
-  - Finish sock_orphan() and the device put in llc_incoming_sock_work()
-    before llc_sk_free(), so those steps do not run after its sock_put().
-  - Keep the v1 lore Link on its own line, before the numbered-patch
-    diffstat.
-  - Include the original leak-only leftover /proc/net/llc/socket count
-    next to the later panic_on_oom log.
-  - v6 Link: https://lore.kernel.org/all/cover.1787752861.git.zihanx@nebusec.ai/
-changes in v6:
-  - Hold a reference for children queued for accept() and release it when they
-    are dequeued, while retaining SAP publication so tuple lookup still finds
-    a pending child before the passive open completes.
-  - Make direct receive, backlog, accept-queue, and listener-close cleanup
-    symmetric, with bottom-half-disabled child locking in process context.
-  - Keep the LLC_CONN_OUT_OF_SVC lower-bound check in its separate patch and
-    use the ADM state boundary consistently.
-  - v5 Link: https://lore.kernel.org/all/20260822082354.3109-1-zihanx@nebusec.ai/
-changes in v5:
-  - Make listener child cleanup unconditional so queued children are also
-    released if the socket leaves TCP_LISTEN before close.
-  - Serialize process-context child cleanup and backlog dispatch with bottom
-    halves disabled, avoiding child-lock acquisition races with LLC receive
-    and timer paths.
-  - Drop packets redirected through a pending child after its listener is no
-    longer listening, and release children left out of service instead of
-    dispatching them.
-  - Split the LLC_CONN_OUT_OF_SVC lower-bound check into a separate patch.
-  - v4 Link: https://lore.kernel.org/all/20260814185843.4748-1-zihanx@nebusec.ai/
-changes in v4:
-  - Create a passive-open child only for SABME and generate listener-side DM
-    replies directly for non-SABME commands.
-  - Use an atomic incoming-child lifecycle and serialize pending-child lookup,
-    backlog processing, rollback, and listener close with the child lock.
-  - Keep immediate SAP publication for passive-open tuple matching, but release
-    unaccepted children on direct and backlog failures and on listener close.
-  - Defer final incoming-child cleanup to workqueue context so timer
-    synchronization does not run in the receive softirq path.
-  - Add an LLC state lower-bound check before state-table dispatch.
-  - v3 Link: https://lore.kernel.org/all/20260805175945.10698-1-zihanx@nebusec.ai/
-changes in v3:
-  - Drop the unused llc_conn_handler() local rc variable reported in review.
-  - Rebase the numbered patch and cover onto commit
-    ede76849012e45ffb2193ad110b42027eec02c5c.
-  - v2 Link: https://lore.kernel.org/all/cover.1785386749.git.zihanx@nebusec.ai/
-changes in v2:
-  - Rework the fix to preserve the existing passive-open tuple matching
-    semantics instead of deferring child publication until LLC_CONN_PRIM.
-  - Track listener-created children pending publication to accept(), and roll
-    them back on every earlier failure or drop path.
-  - Cover the original non-SABME leak and SABME paths which fail before
-    LLC_CONN_PRIM, including backlog enqueue and backlog drop failures.
-  - Correct Fixes to 1da177e4c3f4 ("Linux-2.6.12-rc2") based on the earliest
-    locally visible history carrying the same root-cause fact.
-  - Clarify panic_on_oom crash evidence and packetdrill selection.
-  - v1 Link: https://lore.kernel.org/all/cover.1784725007.git.zihanx@nebusec.ai/
+ net/ipv4/nexthop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- include/net/llc_conn.h |  15 +-
- net/llc/af_llc.c       |  22 ++-
- net/llc/llc_conn.c     | 312 +++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 335 insertions(+), 14 deletions(-)
-
-diff --git a/include/net/llc_conn.h b/include/net/llc_conn.h
-index e1a3026967234..4fb5dedd46c4b 100644
---- a/include/net/llc_conn.h
-+++ b/include/net/llc_conn.h
-@@ -6,6 +6,7 @@
-  * 		 2001, 2002 by Arnaldo Carvalho de Melo <acme@conectiva.com.br>
-  */
- #include <linux/timer.h>
-+#include <linux/workqueue.h>
- #include <net/llc_if.h>
- #include <net/sock.h>
- #include <linux/llc.h>
-@@ -13,6 +14,10 @@
- #define LLC_EVENT                1
- #define LLC_PACKET               2
- 
-+#define LLC_INCOMING_NONE        0
-+#define LLC_INCOMING_PENDING     1
-+#define LLC_INCOMING_QUEUED      2
-+
- #define LLC2_P_TIME               2
- #define LLC2_ACK_TIME             1
- #define LLC2_REJ_TIME             3
-@@ -72,6 +77,11 @@ struct llc_sock {
- 					      received and caused sending FRMR.
- 					      Used for resending FRMR */
- 	u32		    cmsg_flags;
-+	atomic_t	    incoming_state;
-+	struct sock	    *incoming_listener;
-+	struct list_head    incoming_node;
-+	struct list_head    incoming_children;
-+	struct work_struct incoming_work;
- 	struct hlist_node   dev_hash_node;
- };
- 
-@@ -93,7 +103,10 @@ static __inline__ char llc_backlog_type(struct sk_buff *skb)
- struct sock *llc_sk_alloc(struct net *net, int family, gfp_t priority,
- 			  struct proto *prot, int kern);
- void llc_sk_stop_all_timers(struct sock *sk, bool sync);
--void llc_sk_free(struct sock *sk);
-+void llc_sk_free(struct sock *sk, bool sync);
-+void llc_release_incoming_sock(struct sock *sk);
-+bool llc_accept_incoming_sock(struct sock *sk);
-+void llc_release_incoming_children(struct sock *sk);
- 
- void llc_sk_reset(struct sock *sk);
- 
-diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
-index b0447c33dbf09..e8054809cf0cf 100644
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -27,6 +27,7 @@
- #include <net/llc_sap.h>
- #include <net/llc_pdu.h>
- #include <net/llc_conn.h>
-+#include <net/llc_c_st.h>
- #include <net/tcp_states.h>
- 
- /* remember: uninitialized global data is zeroed because its in .bss */
-@@ -196,6 +197,7 @@ static int llc_ui_release(struct socket *sock)
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index a7c2b8dced4e..42e55b5a755e 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2036,7 +2036,7 @@ remove_nh_grp_entry(struct net *net, struct nh_grp_entry *nhge,
  {
- 	struct sock *sk = sock->sk;
- 	struct llc_sock *llc;
-+	bool listener;
- 
- 	if (unlikely(sk == NULL))
- 		goto out;
-@@ -206,6 +208,9 @@ static int llc_ui_release(struct socket *sock)
- 		llc->laddr.lsap, llc->daddr.lsap);
- 	if (!llc_send_disc(sk))
- 		llc_ui_wait_for_disc(sk, READ_ONCE(sk->sk_rcvtimeo));
-+	listener = sk->sk_state == TCP_LISTEN;
-+	if (listener)
-+		sock_set_flag(sk, SOCK_DEAD);
- 	if (!sock_flag(sk, SOCK_ZAPPED)) {
- 		struct llc_sap *sap = llc->sap;
- 
-@@ -214,16 +219,18 @@ static int llc_ui_release(struct socket *sock)
- 		 */
- 		llc_sap_hold(sap);
- 		llc_sap_remove_socket(llc->sap, sk);
-+		llc_release_incoming_children(sk);
- 		release_sock(sk);
- 		llc_sap_put(sap);
- 	} else {
-+		llc_release_incoming_children(sk);
- 		release_sock(sk);
- 	}
- 	netdev_put(llc->dev, &llc->dev_tracker);
- 	sock_put(sk);
- 	sock_orphan(sk);
- 	sock->sk = NULL;
--	llc_sk_free(sk);
-+	llc_sk_free(sk, true);
- out:
- 	return 0;
- }
-@@ -722,6 +729,17 @@ static int llc_ui_accept(struct socket *sock, struct socket *newsock,
- 		goto frees;
- 	rc = 0;
- 	newsk = skb->sk;
-+	lock_sock_nested(newsk, SINGLE_DEPTH_NESTING);
-+	if (llc_sk(newsk)->state < LLC_CONN_STATE_ADM ||
-+	    !llc_accept_incoming_sock(newsk)) {
-+		if (atomic_read(&llc_sk(newsk)->incoming_state) !=
-+		    LLC_INCOMING_NONE)
-+			llc_release_incoming_sock(newsk);
-+		release_sock(newsk);
-+		sock_put(newsk);
-+		rc = -ECONNABORTED;
-+		goto frees;
-+	}
- 	/* attach connection to a new socket. */
- 	llc_ui_sk_init(newsock, newsk);
- 	sock_reset_flag(newsk, SOCK_ZAPPED);
-@@ -737,6 +755,8 @@ static int llc_ui_accept(struct socket *sock, struct socket *newsock,
- 	sk_acceptq_removed(sk);
- 	dprintk("%s: ok success on %02X, client on %02X\n", __func__,
- 		llc_sk(sk)->addr.sllc_sap, newllc->daddr.lsap);
-+	release_sock(newsk);
-+	sock_put(newsk);
- frees:
- 	kfree_skb(skb);
- out:
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 260460d50f54c..092625e28b3bb 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -32,6 +32,7 @@ static int llc_exec_conn_trans_actions(struct sock *sk,
- 				       struct sk_buff *ev);
- static const struct llc_conn_state_trans *llc_qualify_conn_ev(struct sock *sk,
- 							      struct sk_buff *skb);
-+static void llc_incoming_sock_work(struct work_struct *work);
- 
- /* Offset table on connection states transition diagram */
- static int llc_offset_table[NBR_CONN_STATES][NBR_CONN_EV];
-@@ -88,6 +89,13 @@ int llc_conn_state_process(struct sock *sk, struct sk_buff *skb)
- 		 * skb->sk pointing to the newly created struct sock in
- 		 * llc_conn_handler. -acme
- 		 */
-+		if (sk != skb->sk &&
-+		    atomic_read(&llc_sk(skb->sk)->incoming_state) ==
-+		    LLC_INCOMING_PENDING) {
-+			sock_hold(skb->sk);
-+			atomic_set(&llc_sk(skb->sk)->incoming_state,
-+				   LLC_INCOMING_QUEUED);
-+		}
- 		skb_get(skb);
- 		skb_queue_tail(&sk->sk_receive_queue, skb);
- 		sk->sk_state_change(sk);
-@@ -765,27 +773,196 @@ static struct sock *llc_create_incoming_sock(struct sock *sk,
- 	memcpy(&newllc->laddr, daddr, sizeof(newllc->laddr));
- 	memcpy(&newllc->daddr, saddr, sizeof(newllc->daddr));
- 	newllc->dev = dev;
-+	newllc->incoming_listener = sk;
-+	atomic_set(&newllc->incoming_state, LLC_INCOMING_PENDING);
-+	INIT_WORK(&newllc->incoming_work, llc_incoming_sock_work);
-+	sock_hold(sk);
- 	dev_hold(dev);
- 	llc_sap_add_socket(llc->sap, newsk);
-+	spin_lock_bh(&llc->sap->sk_lock);
-+	list_add_tail(&newllc->incoming_node, &llc->incoming_children);
-+	spin_unlock_bh(&llc->sap->sk_lock);
- out:
- 	return newsk;
- }
- 
-+static void llc_incoming_sock_work(struct work_struct *work)
-+{
-+	struct llc_sock *llc = container_of(work, struct llc_sock,
-+					    incoming_work);
-+	struct sock *listener = llc->incoming_listener;
-+	struct sock *sk = &llc->sk;
-+
-+	lock_sock(sk);
-+	llc_sk_stop_all_timers(sk, false);
-+	sock_orphan(sk);
-+	release_sock(sk);
-+	llc_sk_stop_all_timers(sk, true);
-+	dev_put(llc->dev);
-+	llc->dev = NULL;
-+	llc_sk_free(sk, false);
-+	sock_put(sk);
-+	sock_put(listener);
-+}
-+
-+void llc_release_incoming_sock(struct sock *sk)
-+{
-+	struct llc_sock *llc = llc_sk(sk);
-+
-+	if (atomic_xchg(&llc->incoming_state, LLC_INCOMING_NONE) ==
-+	    LLC_INCOMING_NONE)
-+		return;
-+
-+	WRITE_ONCE(llc->state, LLC_CONN_OUT_OF_SVC);
-+	spin_lock_bh(&llc->sap->sk_lock);
-+	list_del_init(&llc->incoming_node);
-+	spin_unlock_bh(&llc->sap->sk_lock);
-+	sock_hold(sk);
-+	llc_sap_remove_socket(llc->sap, sk);
-+	schedule_work(&llc->incoming_work);
-+}
-+
-+bool llc_accept_incoming_sock(struct sock *sk)
-+{
-+	struct llc_sock *llc = llc_sk(sk);
-+
-+	if (atomic_cmpxchg(&llc->incoming_state, LLC_INCOMING_QUEUED,
-+			   LLC_INCOMING_NONE) != LLC_INCOMING_QUEUED)
-+		return false;
-+
-+	spin_lock_bh(&llc->sap->sk_lock);
-+	list_del_init(&llc->incoming_node);
-+	spin_unlock_bh(&llc->sap->sk_lock);
-+	sock_put(llc->incoming_listener);
-+	return true;
-+}
-+
-+void llc_release_incoming_children(struct sock *sk)
-+{
-+	struct llc_sock *llc = llc_sk(sk);
-+	struct sk_buff *skb;
-+
-+	local_bh_disable();
-+	while ((skb = skb_dequeue(&sk->sk_receive_queue))) {
-+		struct sock *newsk = skb->sk;
-+
-+		if (newsk && newsk != sk) {
-+			int incoming_state;
-+
-+			bh_lock_sock_nested(newsk);
-+			incoming_state =
-+				atomic_read(&llc_sk(newsk)->incoming_state);
-+			if (incoming_state != LLC_INCOMING_NONE) {
-+				llc_release_incoming_sock(newsk);
-+				if (incoming_state == LLC_INCOMING_QUEUED)
-+					sock_put(newsk);
-+			}
-+			bh_unlock_sock(newsk);
-+		}
-+		kfree_skb(skb);
-+	}
-+	if (llc->sap) {
-+		spin_lock(&llc->sap->sk_lock);
-+		while (!list_empty(&llc->incoming_children)) {
-+			struct llc_sock *child;
-+			struct sock *newsk;
-+
-+			child = list_first_entry(&llc->incoming_children,
-+						 struct llc_sock,
-+						 incoming_node);
-+			list_del_init(&child->incoming_node);
-+			newsk = &child->sk;
-+			sock_hold(newsk);
-+			spin_unlock(&llc->sap->sk_lock);
-+
-+			bh_lock_sock_nested(newsk);
-+			if (atomic_read(&child->incoming_state) !=
-+			    LLC_INCOMING_NONE)
-+				llc_release_incoming_sock(newsk);
-+			bh_unlock_sock(newsk);
-+			sock_put(newsk);
-+			spin_lock(&llc->sap->sk_lock);
-+		}
-+		spin_unlock(&llc->sap->sk_lock);
-+	}
-+	local_bh_enable();
-+}
-+
-+/*
-+ * This mirrors the ADM-state DM actions, but a listener has no peer
-+ * address in llc->daddr yet.
-+ */
-+static void llc_conn_send_dm_rsp(struct llc_sap *sap, struct sk_buff *skb,
-+				 struct llc_addr *saddr, u8 f_bit)
-+{
-+	struct sk_buff *nskb;
-+	int rc;
-+
-+	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U, 0);
-+	if (!nskb)
-+		return;
-+
-+	llc_pdu_header_init(nskb, LLC_PDU_TYPE_U, sap->laddr.lsap,
-+			    saddr->lsap, LLC_PDU_RSP);
-+	llc_pdu_init_as_dm_rsp(nskb, f_bit);
-+	rc = llc_mac_hdr_init(nskb, skb->dev->dev_addr, saddr->mac);
-+	if (unlikely(rc))
-+		kfree_skb(nskb);
-+	else
-+		dev_queue_xmit(nskb);
-+}
-+
- void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- {
-+	struct sock *sk, *newsk = NULL;
-+	bool newsk_lookup_ref = false;
- 	struct llc_addr saddr, daddr;
--	struct sock *sk;
-+	bool newsk_locked = false;
- 
- 	llc_pdu_decode_sa(skb, saddr.mac);
- 	llc_pdu_decode_ssap(skb, &saddr.lsap);
- 	llc_pdu_decode_da(skb, daddr.mac);
- 	llc_pdu_decode_dsap(skb, &daddr.lsap);
- 
-+lookup:
- 	sk = __llc_lookup(sap, &saddr, &daddr, dev_net(skb->dev));
- 	if (!sk)
- 		goto drop;
- 
-+	if (atomic_read(&llc_sk(sk)->incoming_state) ==
-+	    LLC_INCOMING_PENDING) {
-+		newsk = sk;
-+		bh_lock_sock(newsk);
-+		if (atomic_read(&llc_sk(newsk)->incoming_state) !=
-+		    LLC_INCOMING_PENDING) {
-+			bh_unlock_sock(newsk);
-+			sock_put(newsk);
-+			newsk = NULL;
-+			goto lookup;
-+		}
-+		sk = llc_sk(newsk)->incoming_listener;
-+		sock_hold(sk);
-+		newsk_lookup_ref = true;
-+		bh_unlock_sock(newsk);
-+	}
-+
- 	bh_lock_sock(sk);
-+	if (unlikely(sk->sk_state == TCP_LISTEN &&
-+		     sock_flag(sk, SOCK_DEAD) &&
-+		     !newsk_lookup_ref))
-+		goto drop_unlock;
-+	if (newsk_lookup_ref) {
-+		bh_lock_sock_nested(newsk);
-+		newsk_locked = true;
-+		if (atomic_read(&llc_sk(newsk)->incoming_state) !=
-+		    LLC_INCOMING_PENDING)
-+			goto retry_unlock;
-+		if (unlikely(sk->sk_state != TCP_LISTEN ||
-+			     sock_flag(sk, SOCK_DEAD))) {
-+			llc_release_incoming_sock(newsk);
-+			goto drop_unlock;
-+		}
-+	}
- 	/*
- 	 * This has to be done here and not at the upper layer ->accept
- 	 * method because of the way the PROCOM state machine works:
-@@ -795,11 +972,31 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- 	 * in the newly created struct sock private area. -acme
- 	 */
- 	if (unlikely(sk->sk_state == TCP_LISTEN)) {
--		struct sock *newsk = llc_create_incoming_sock(sk, skb->dev,
--							      &saddr, &daddr);
--		if (!newsk)
-+		if (!newsk) {
-+			if (llc_conn_ev_rx_sabme_cmd_pbit_set_x(sk, skb)) {
-+				if (!llc_conn_ev_rx_disc_cmd_pbit_set_x(sk, skb)) {
-+					u8 f_bit;
-+
-+					llc_pdu_decode_pf_bit(skb, &f_bit);
-+					llc_conn_send_dm_rsp(sap, skb, &saddr, f_bit);
-+				} else if (!llc_conn_ev_rx_xxx_cmd_pbit_set_1(sk, skb)) {
-+					llc_conn_send_dm_rsp(sap, skb, &saddr, 1);
-+				}
-+				goto drop_unlock;
-+			}
-+			newsk = llc_create_incoming_sock(sk, skb->dev, &saddr,
-+							 &daddr);
-+			if (!newsk)
-+				goto drop_unlock;
-+			bh_lock_sock_nested(newsk);
-+			newsk_locked = true;
-+		}
-+		if (!skb_set_owner_sk_safe(skb, newsk)) {
-+			if (atomic_read(&llc_sk(newsk)->incoming_state) ==
-+			    LLC_INCOMING_PENDING)
-+				llc_release_incoming_sock(newsk);
- 			goto drop_unlock;
--		skb_set_owner_r(skb, newsk);
-+		}
- 	} else {
- 		/*
- 		 * Can't be skb_set_owner_r, this will be done at the
-@@ -813,18 +1010,49 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- 		skb->sk = sk;
- 		skb->destructor = sock_efree;
- 	}
--	if (!sock_owned_by_user(sk))
-+	if (unlikely(llc_sk(skb->sk)->state < LLC_CONN_STATE_ADM)) {
-+		if (newsk) {
-+			if (atomic_read(&llc_sk(newsk)->incoming_state) ==
-+			    LLC_INCOMING_PENDING)
-+				llc_release_incoming_sock(newsk);
-+		} else if (atomic_read(&llc_sk(sk)->incoming_state) ==
-+			   LLC_INCOMING_PENDING) {
-+			llc_release_incoming_sock(sk);
-+		}
-+		goto drop_unlock;
-+	}
-+	if (!sock_owned_by_user(sk)) {
- 		llc_conn_rcv(sk, skb);
--	else {
-+		if (newsk &&
-+		    atomic_read(&llc_sk(newsk)->incoming_state) ==
-+		    LLC_INCOMING_PENDING)
-+			llc_release_incoming_sock(newsk);
-+	} else {
- 		dprintk("%s: adding to backlog...\n", __func__);
- 		llc_set_backlog_type(skb, LLC_PACKET);
--		if (sk_add_backlog(sk, skb, READ_ONCE(sk->sk_rcvbuf)))
-+		if (sk_add_backlog(sk, skb, READ_ONCE(sk->sk_rcvbuf))) {
-+			if (newsk && !newsk_lookup_ref)
-+				llc_release_incoming_sock(newsk);
- 			goto drop_unlock;
-+		}
- 	}
- out:
-+	if (newsk_locked)
-+		bh_unlock_sock(newsk);
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
-+	if (newsk_lookup_ref)
-+		sock_put(newsk);
- 	return;
-+retry_unlock:
-+	bh_unlock_sock(newsk);
-+	newsk_locked = false;
-+	bh_unlock_sock(sk);
-+	sock_put(sk);
-+	sock_put(newsk);
-+	newsk = NULL;
-+	newsk_lookup_ref = false;
-+	goto lookup;
- drop:
- 	kfree_skb(skb);
- 	return;
-@@ -852,12 +1080,52 @@ static int llc_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- {
- 	int rc = 0;
- 	struct llc_sock *llc = llc_sk(sk);
-+	struct sock *newsk = skb->sk;
- 
- 	if (likely(llc_backlog_type(skb) == LLC_PACKET)) {
--		if (likely(llc->state > 1)) /* not closed */
-+		if (newsk &&
-+		    atomic_read(&llc_sk(newsk)->incoming_state) ==
-+		    LLC_INCOMING_PENDING) {
-+			local_bh_disable();
-+			bh_lock_sock_nested(newsk);
-+			if (atomic_read(&llc_sk(newsk)->incoming_state) !=
-+			    LLC_INCOMING_PENDING) {
-+				bh_unlock_sock(newsk);
-+				local_bh_enable();
-+				goto retry;
-+			}
-+			if (sock_flag(sk, SOCK_DEAD) ||
-+			    sk->sk_state != TCP_LISTEN ||
-+			    llc_sk(newsk)->state < LLC_CONN_STATE_ADM) {
-+				llc_release_incoming_sock(newsk);
-+				bh_unlock_sock(newsk);
-+				local_bh_enable();
-+				goto out_kfree_skb;
-+			}
- 			rc = llc_conn_rcv(sk, skb);
--		else
-+			if (atomic_read(&llc_sk(newsk)->incoming_state) ==
-+			    LLC_INCOMING_PENDING)
-+				llc_release_incoming_sock(newsk);
-+			bh_unlock_sock(newsk);
-+			local_bh_enable();
-+		} else if (newsk &&
-+			   atomic_read(&llc_sk(newsk)->incoming_state) ==
-+			   LLC_INCOMING_QUEUED) {
-+			local_bh_disable();
-+			bh_lock_sock_nested(newsk);
-+			if (llc_sk(newsk)->state < LLC_CONN_STATE_ADM) {
-+				bh_unlock_sock(newsk);
-+				local_bh_enable();
-+				goto out_kfree_skb;
-+			}
-+			rc = llc_conn_rcv(newsk, skb);
-+			bh_unlock_sock(newsk);
-+			local_bh_enable();
-+		} else if (likely(llc->state > 1)) {
-+			rc = llc_conn_rcv(sk, skb);
-+		} else {
- 			goto out_kfree_skb;
-+		}
- 	} else if (llc_backlog_type(skb) == LLC_EVENT) {
- 		/* timer expiration event */
- 		if (likely(llc->state > 1))  /* not closed */
-@@ -870,6 +1138,23 @@ static int llc_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- 	}
- out:
- 	return rc;
-+retry:
-+	if (atomic_read(&llc_sk(newsk)->incoming_state) ==
-+	    LLC_INCOMING_QUEUED) {
-+		local_bh_disable();
-+		bh_lock_sock_nested(newsk);
-+		if (llc_sk(newsk)->state >= LLC_CONN_STATE_ADM) {
-+			rc = llc_conn_rcv(newsk, skb);
-+		} else {
-+			bh_unlock_sock(newsk);
-+			local_bh_enable();
-+			goto out_kfree_skb;
-+		}
-+		bh_unlock_sock(newsk);
-+		local_bh_enable();
-+		goto out;
-+	}
-+	goto out_kfree_skb;
- out_kfree_skb:
- 	kfree_skb(skb);
- 	goto out;
-@@ -906,6 +1191,8 @@ static void llc_sk_init(struct sock *sk)
- 	llc->rw = 128; /* rx win size (opt and equal to
- 			* tx_win of remote LLC) */
- 	skb_queue_head_init(&llc->pdu_unack_q);
-+	INIT_LIST_HEAD(&llc->incoming_node);
-+	INIT_LIST_HEAD(&llc->incoming_children);
- 	sk->sk_backlog_rcv = llc_backlog_rcv;
- }
- 
-@@ -960,16 +1247,17 @@ void llc_sk_stop_all_timers(struct sock *sk, bool sync)
- /**
-  *	llc_sk_free - Frees a LLC socket
-  *	@sk: - socket to free
-+ *	@sync: whether to synchronously stop timers
-  *
-  *	Frees a LLC socket
-  */
--void llc_sk_free(struct sock *sk)
-+void llc_sk_free(struct sock *sk, bool sync)
- {
- 	struct llc_sock *llc = llc_sk(sk);
- 
- 	llc->state = LLC_CONN_OUT_OF_SVC;
- 	/* Stop all (possibly) running timers */
--	llc_sk_stop_all_timers(sk, true);
-+	llc_sk_stop_all_timers(sk, sync);
- #ifdef DEBUG_LLC_CONN_ALLOC
- 	printk(KERN_INFO "%s: unackq=%d, txq=%d\n", __func__,
- 		skb_queue_len(&llc->pdu_unack_q),
+ 	struct nh_grp_entry *nhges, *new_nhges;
+ 	struct nexthop *nhp = nhge->nh_parent;
+-	struct netlink_ext_ack extack;
++	struct netlink_ext_ack extack = {};
+ 	struct nexthop *nh = nhge->nh;
+ 	struct nh_group *nhg, *newg;
+ 	int i, j, err;
 -- 
-2.43.0
+2.55.0
 
