@@ -1,143 +1,208 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD5148823F
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2DE48C8A4
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788431622; cv=none; b=moYtGYd9hREXWyjY1HVoLdAiFfHdavjBpyArsimbazUEW15aqiIDkXfWggZyj4PJbI0AL1P0QYrKlqiqfjxoBGq/Mz9jJjDLBzWhlyO1wa18hPTCBLKPb2pOyeh7t04G4hyvDSVpDt3QogbLj+UYcQeLEzbbQPGqSXR0h2bE5xo=
+	t=1788431767; cv=none; b=eLmMdRZTH9b35XObKCtpyDgiRGtEAewueLj9/mrQ6UKxD5FTNHCUMWsIlFXioZk+2BsRNJAKgACYFyFARBC/x2Mm83p86K3drtzMTYzvwCWPJ/Vn9MDKFx4Ax35UzCztgXnAlOVTfW0jHpsCXPsYbSarXLtKpWuowI+4kE7VJcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788431622; c=relaxed/simple;
-	bh=INC/gMQ52XGV0tXzKdQk+QdM6fsrXDjrQLn6+41iXMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lrfa5Wh2BPn86ULhqpstM88aPTLnOKyCcRrm+7dvlRwN3eW7bSFMOcr2AUetiqIve4UAWnFGSdfdQHeU9uhkj7LpGUIJEvm4ZV2oXglTYM1k9E2EMODhFqLG8ZU8Y7p7jExDWx32yNFQw1COxGlXSj5E9oNEe2P5C3nDdVWRnQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YIwgx7R/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gyuDZD9Y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788431767; c=relaxed/simple;
+	bh=oCZyy8cESa1CQw46kQlW92KVpEPUeUQ8pnzCsXZVcOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jc3Cxj6uQu2/ZPk4l5GjprTNUQ9bLqxIwVrHD8vwD0i4lHHmY/9KEbRUvRyytSu+ZlJDU/iOFNfSkRPf9SF3LIS1grDLlDmol5I99aXc6zFSyZ07jyJmCJUdyL0p6rhWB7+OdkZB3eS1s6zczV285W+RIC/koLQNTHEerdOB8Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=mIqdakbF; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YIwgx7R/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gyuDZD9Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788431609;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CJZUMdrfC+SOHHgYZ50yWaWhgHW7YjmLUKRHwooHUww=;
-	b=YIwgx7R/YxvbrtRYISA8z11nIGy2Qnv0gffwY4JftuErIFBUhuAW8aBAQM0O5Kp78mys6x
-	SXfCKZIbrsDv5qMvdaG9KX/r7MIEdGWhZ4yOnYkwJi2TnlT6n78Pa8uKuC5BCYcIV88yqV
-	IAGEh7r25uUPfnJr65cv6nlFbc8o4vs=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-167-0FTxSeUAPOWAqIEKrH30HA-1; Thu, 03 Sep 2026 06:33:28 -0400
-X-MC-Unique: 0FTxSeUAPOWAqIEKrH30HA-1
-X-Mimecast-MFC-AGG-ID: 0FTxSeUAPOWAqIEKrH30HA_1788431607
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2542cd4faaso254571266b.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 03:33:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788431607; x=1789036407; darn=vger.kernel.org;
-        h=content-type:mime-version:references:in-reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CJZUMdrfC+SOHHgYZ50yWaWhgHW7YjmLUKRHwooHUww=;
-        b=gyuDZD9YPkC0tx/a0gdvuXXQOEfFnzbLBB+kFvCG8Lpbvm7gntq1Mwiu1pM/ovE/Uk
-         OnDA5sP6+5wBW3w2Cdy1GKTGcFxPl7N98yIpEX5zqmjymjmy5q83xPN0TjTKI4+1wfQM
-         8ELBokR9UnSP54MhNGFWJbNp228OSIgZciG9f6LlQmLJy80MWwZO+AXemyO9Tdv3QqUb
-         4QCbhCrNeTRfGUo9cV3SrOKyro3JTamWob8Wpzhz3UdPVE33qxRYeRx8vUZkHP8m/02e
-         TB5SnuaEj3tq92A4NNAMlLbdADFc16nMrwiS1EgTdEaHlVhDne58tPngodi9kHsaMg30
-         otuQ==
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="mIqdakbF"
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 0E88044B97
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1788431749;
+	bh=pRApGfPAXtPOCs+RBxplz3SPHgBy4a8d2R4AbBpaGlM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=mIqdakbFeFZuHZ8MMUgmrKIkGLoeyuVrA//XpCsooHxuv2GE1L/V8dsqlmF8kO5FJ
+	 nN/Q8e/CohBUWGpOi0v54v+6dSN9B+CmrP2K3aP/kJ9EaCplfKJ4PNQjsN8NcKksiQ
+	 E8qhf96yDBgt7xReNZskXiN505/5SBIcqUl5N2M97b1VUs2BtBquX1Twu6Zqgo0bYy
+	 DC6Fq7Uexzl9WbLNtKF1Eky1LVt7d64KKfOW+kXyU53JEjvzIlWJcstu02PAsiIf17
+	 vmDPfX7yZU7tuKHEnZhLYX3/Cv3LjOPqbusScYrU5xS6tgIRwWuRcaDVGdqbrCqofL
+	 ganOtiI/ua+EaubbL5XRjot1kUEOio9FE4D2ggjCt/8RrZzqYlDZXv7lqV/d3UBxYu
+	 ktofO/gSMBtGIfED2moqqxMPss9iZoI72p+yLMYXKW1st1GnWBHTf3QEVKTjtJXPp7
+	 kZlihwsFOapiRsD+MRrMgRxUFRKC64h32DQhsiETijlvGpSKlIWsCKBHJnFKQ5f5eb
+	 5HyMWu4i8sEp9oNDn9Zx98vxxPycdo9Wc1BJ1cgdswWe8xjwhI02eYTBIbjpVhp0DR
+	 bvJLNLpwUyQB2m/Lx783+QtZZBE4ZzSq1yLOKMXXQcxiZBNbu9s6ZJBsguMOBflr1u
+	 /hLgpNMEzhrWgEQ0h1bc7u1c=
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b0d7a07acso23843475e9.3
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 03:35:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788431607; x=1789036407;
-        h=content-type:mime-version:references:in-reply-to:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CJZUMdrfC+SOHHgYZ50yWaWhgHW7YjmLUKRHwooHUww=;
-        b=dK2xM0hacm+cDS9KlVNxG0snNRQjVCleCH6Xesa5623OdEe+9Fls61XTV2S8QQ7sjq
-         3UHesiUNQLZ2faP8IMCgDSQhJcF67iScHgs4HYpwmQMRZ6E4NxWsYDpM/eLJb2X3t1xa
-         Ave26N9Lcg/U9V7UL/4Bwm8WW1XgIV/W3gnMVzMF/Glp80XUx19Jnu9cv9j9vPxiu+dk
-         7qenQrJcf+9bEpcxCWX4PKTmDnzzB5pOXnLGfkQnehLvTr9qGKbikS+O58pFE8Bhk8Ao
-         GzBMv94/XMhhogRd116O4WqxeL03xEn/yPioZc7kQcufpgZw/YcC3EblLhs7g5TeWD4A
-         cmGg==
-X-Gm-Message-State: AFuF++kB3ZBjt63myMxA4g4tNWxdcKGx54FIPV7mVzKecXMTyiUc+Yfx
-	0idGboMWOEwWUftdPu63NZu2EeHYuL+Umq261Alwow8xhDqFdXvN+J5ht+0AXwdZhvnto2BKfTY
-	XRs8dKSBbp4Hirns1bcQX15K3JW5cr14+O5jlxD9IXJfR2NORfYWVViCBn7RIyI/OoA==
-X-Gm-Gg: AYBFou0LChSbh6/EZGCQsUSv2YAenjAhK1ZeEgA0NCr0Ci8fPk/esN+7QmFCS+whjTC
-	6/Q+eVHw/z22i6uF4j3aH5SyjgrwzN3/RziBKMPwDCqErDnQFNJk7yh1HjrKZLoSu92WfCoqm2P
-	E1g7bo01GFymF6TpL35ocUL9GnCDRZcKEtJkNKw6rmak33Ox3pYnQ7yZBgRmMKKLFBxGOWOtrsw
-	yGgZEnPykL5yzPPYaTPCWFAIG5OcdqnS+5ei6VekD+7BN+7b84fqMHRnz1jYm7yoIsBBpnNk1tf
-	bNPLQoFRRPKkyLJgcfi9oGuHZhfrHU0CWjraAGFZ8Zn1UsEDsjR1VY0x0BD0w6pWWA5jJks99G4
-	AjGxs3KSfYIU80Omatf83WwR08Yb8z1IJkfe38dYlds8uCVDj
-X-Received: by 2002:a17:907:198a:b0:c21:8c6a:c680 with SMTP id a640c23a62f3a-c25d563b583mr789072666b.22.1788431607073;
-        Thu, 03 Sep 2026 03:33:27 -0700 (PDT)
-X-Received: by 2002:a17:907:198a:b0:c21:8c6a:c680 with SMTP id a640c23a62f3a-c25d563b583mr789070066b.22.1788431606639;
-        Thu, 03 Sep 2026 03:33:26 -0700 (PDT)
-Received: from [172.16.2.95] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25f3eed0a9sm82869766b.1.2026.09.03.03.33.25
+        d=1e100.net; s=20251104; t=1788431748; x=1789036548;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pRApGfPAXtPOCs+RBxplz3SPHgBy4a8d2R4AbBpaGlM=;
+        b=GNMF7pTs4W1hc3zAtP3JC42ZLS18WrHfnx3TPpt7YZIXfPf/RpFCMhzXwPHc68zl6d
+         B+NiiRCnvnrB+qXEhLr70WplzGaxGxv5WHDU2PhzMxwkfN7y2JdXRo6fBmWsvJDe7cD1
+         fnbhgYQ1yb/YzCMPUngcG5o6wMHLnWXGKGnWOhn8W2FzOrH7WxIP/L9G55KiSIHjn/Ae
+         OfxipNvjGLUKpXBuD8GYRzSNezt2cI9OBHk2Pc7VuCWuVk/nNrNV6DOViuLfGtN9rKiq
+         3y7/xQ53XFKVVf5u+7XtE40NFBgbYm+ddYCEm6RbgnEvs5ajjq8kMDtLsNcnz0rDXDan
+         tGpA==
+X-Forwarded-Encrypted: i=1; AKwUvBxoL8l6ZNxmJEuTZmgCzq3aehdLbWk9kOwZx33eGkX9xRksZbzLtA9k9sPzY7y4JpyPTSEPyYs=@vger.kernel.org
+X-Gm-Message-State: AFuF++m2fjc7Ifgm4Z7okYCLQgkE/Viv9LeOsLP7lMz4q3HlEkhYhVDb
+	l7WatXgxLVcNBUwE3RP7nJSmodf2gMh/5ZWJKekU3oyFKFbTG/kGZw+CIcZaqtIq8dvB16mQBds
+	QCYdGP4daQumPNdP4D2TR3peU9I57oAUEWJD0EbIqPZ/+AsshbjmvKHVSAJmCLUS9HBQqBWWueA
+	==
+X-Gm-Gg: AYBFou2Mw14F1Of7tTyqNRALRAU6i9+DcB+Svt9UGCwNQs1l7tiv22z4tOO4NRqn3uw
+	2rYHQwUKuR/yAjdjghqWj1JwUeyCIg+eZvQjxVQzQ0ez/JIMQnPg2BTcYqjQn6U8YUJU6Gs1x0P
+	yJu/SXr0V6g3ND/f50BCLCwtrc616p/I8W5Vn1jVJf2MXzqJsvAiLFNgoggt6jYTYjIwUKRzRY0
+	wDhMuo7fVdU0IAtFcsYU3tXq7xNIZviurNXWIt8mbSltTW+1UO8DlJkJ/e/w1Zh3OkVn47ogis5
+	R+Nxse8RbaBld6Q6V4NSpCtLU8zVnDZFwSKB6eWZ0h+pSBlqmUNrbmXDmDmavb35CMRWjiKtl87
+	SW34xFY2L0IjwCZL631CGoywel9EtI12wi4hxiT0JDfqFW1q6wH5Sx+7XxXSPn3MJjkg=
+X-Received: by 2002:a05:600c:63c6:b0:49c:eb16:9fd with SMTP id 5b1f17b1804b1-49ceb160bb1mr110957205e9.3.1788431748674;
+        Thu, 03 Sep 2026 03:35:48 -0700 (PDT)
+X-Received: by 2002:a05:600c:63c6:b0:49c:eb16:9fd with SMTP id 5b1f17b1804b1-49ceb160bb1mr110956765e9.3.1788431748364;
+        Thu, 03 Sep 2026 03:35:48 -0700 (PDT)
+Received: from localhost (93-40-88-16.ip38.fastwebnet.it. [93.40.88.16])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d9db2sm62799975e9.8.2026.09.03.03.35.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 03:33:26 -0700 (PDT)
-From: Eelco Chaudron <echaudro@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, Aaron Conole <aconole@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, dev@openvswitch.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: openvswitch: don't schedule rebalancing if
- there are no datapaths
-Date: Thu, 03 Sep 2026 12:33:24 +0200
-X-Mailer: MailMate (3.0r7028)
-Message-ID: <61F294D1-5DEC-4DF7-999A-3E3DC8984897@redhat.com>
-In-Reply-To: <20260902203200.1416026-1-i.maximets@ovn.org>
-References: <20260902203200.1416026-1-i.maximets@ovn.org>
+        Thu, 03 Sep 2026 03:35:46 -0700 (PDT)
+From: Alessio Faina <alessio.faina@canonical.com>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] [net-next, v2] selftest/net: skip srv6_end_dt[4/6]_l3vpn_test.sh if vrftable not available
+Date: Thu,  3 Sep 2026 12:35:45 +0200
+Message-ID: <20260903103545.1325276-1-alessio.faina@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MS-Reactions: disallow
+Content-Transfer-Encoding: 8bit
 
+In case iproute2 is older than version 5.11.0, released ~Feb 23, 2021,
+the vrftable support is not available and the tests
+contained in the following 4 test files
+ - srv6_end_dt4_l3vpn_test.sh
+ - srv6_end_dt6_l3vpn_test.sh
+are failing in some kernel backports.
+This is the result of one those tests in an unsupported environment:
 
+\################################################################################
+\TEST SECTION: SRv6 VPN connectivity test among hosts in the same tenant
+\################################################################################
+\
+\    TEST: Hosts connectivity: hs-t100-1 -> hs-t100-2 (tenant 100)       [FAIL]
+\
+\    TEST: Hosts connectivity: hs-t100-2 -> hs-t100-1 (tenant 100)       [FAIL]
+\
+\    TEST: Hosts connectivity: hs-t200-3 -> hs-t200-4 (tenant 200)       [FAIL]
+\
+\    TEST: Hosts connectivity: hs-t200-4 -> hs-t200-3 (tenant 200)       [FAIL]
+\
 
-On 2 Sep 2026, at 22:30, Ilya Maximets wrote:
+To amend this, check the current running iproute2 supports the vrftable
+feature and, if not, just skip the entire test to avoid a failure.
 
-> During namespace initialization the masks rebalancing work is
-> scheduled and automatically re-scheduled every 4 seconds afterwards.
-> This is happening in every namespace.  On a large kubernetes node with
-> 500 pods, i.e., 500+ namespaces, this creates a decent amount of
-> unnecessary churn scheduling 500 jobs every 4 seconds that take the
-> mutex, check that there are no datapaths in their namespace, release
-> the mutex, re-schedule themselves and exit.  These 500 unnecessary
-> mutex locks may hold off operations in a single namespace that
-> actually has a datapath configured and has real user requests to
-> handle under this lock.  They can also add delay to removal of other
-> namespaces as ovs_exit_net() needs to take that lock as well and
-> synchronously waits for the work to be cancelled.
->
-> Let's only fire the job when the first datapath is actually created
-> and not re-arm it if there are no more datapaths configured in the
-> namespace.
->
-> Another approach would be to make ovs_mutex per-namespace, but it's
-> a much larger change that should be handled separately, and the
-> unnecessary work scheduling feels like a waste regardless.
->
-> It's safe to check and re-arm outside of the mutex as DP_CMD_NEW
-> handler will re-arm if the new datapath appears.  The scheduling
-> attempt also doesn't change the work or delay if it is already queued,
-> so it's also safe to call multiple times.
->
-> Skipping the re-arming is more elegant than canceling on removal of
-> the last datapath as it allows us to not think about potential race
-> conditions at a negligible cost of potentially one extra re-scheduling.
->
-> msecs_to_jiffies() moved to the macro to save on line length.
->
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+v2: - remove dx[4/6] tests
+    - test if vrftable is available in the installed iproute2 application
+v1: https://patchwork.kernel.org/project/netdevbpf/patch/20260824091537.2305107-1-alessio.faina@canonical.com/
+    - initial approach by testing DT[4/6] and DX[4/6]
+    - test if DT4/DT6 are available in iproute2
 
-Thanks for looking into this. The approach seems right to me.
-I did some basic testing, and it looks fine to me.
+Signed-off-by: Alessio Faina <alessio.faina@canonical.com>
+---
+ ./tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh  | 21 +++++++++++++++++++
+ ./tools/testing/selftests/net/srv6_end_dt6_l3vpn_test.sh  | 21 +++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
+diff --git a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
+index a649dba3cb77..037e5fe1da2a 100755
+--- a/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
++++ b/tools/testing/selftests/net/srv6_end_dt4_l3vpn_test.sh
+@@ -469,12 +469,33 @@ if [ ! -x "$(command -v ip)" ]; then
+ 	exit $ksft_skip
+ fi
+ 
++test_vrftable_supp_or_ksft_skip()
++{
++	local nsname
++
++	setup_ns nsname
++	ip netns exec "${nsname}" sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
++	ip -netns "${nsname}" link add vrf-100 type vrf table 100
++	ip -netns "${nsname}" link set vrf-100 up
++
++	if ! ip -netns "${nsname}" -6 route add fc00::1/128 \
++			encap seg6local action End.DT4 vrftable 100 dev vrf-100 2>/dev/null; then
++		cleanup_ns "${nsname}"
++		echo "SKIP: SRv6 End.DT4 vrftable not supported"
++		exit "${ksft_skip}"
++	fi
++
++	cleanup_ns "${nsname}"
++}
++
+ modprobe vrf &>/dev/null
+ if [ ! -e /proc/sys/net/vrf/strict_mode ]; then
+         echo "SKIP: vrf sysctl does not exist"
+         exit $ksft_skip
+ fi
+ 
++test_vrftable_supp_or_ksft_skip
++
+ cleanup &>/dev/null
+ 
+ setup
+diff --git a/tools/testing/selftests/net/srv6_end_dt6_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt6_l3vpn_test.sh
+index e408406d8489..9a29e0d6c912 100755
+--- a/tools/testing/selftests/net/srv6_end_dt6_l3vpn_test.sh
++++ b/tools/testing/selftests/net/srv6_end_dt6_l3vpn_test.sh
+@@ -479,12 +479,33 @@ if [ ! -x "$(command -v ip)" ]; then
+ 	exit $ksft_skip
+ fi
+ 
++test_vrftable_supp_or_ksft_skip()
++{
++	local nsname
++
++	setup_ns nsname
++	ip netns exec "${nsname}" sh -c "echo 1 > /proc/sys/net/vrf/strict_mode"
++	ip -netns "${nsname}" link add vrf-100 type vrf table 100
++	ip -netns "${nsname}" link set vrf-100 up
++
++	if ! ip -netns "${nsname}" -6 route add fc00::1/128 \
++			encap seg6local action End.DT6 vrftable 100 dev vrf-100 2>/dev/null; then
++		cleanup_ns "${nsname}"
++		echo "SKIP: SRv6 End.DT6 vrftable not supported"
++		exit "${ksft_skip}"
++	fi
++
++	cleanup_ns "${nsname}"
++}
++
+ modprobe vrf &>/dev/null
+ if [ ! -e /proc/sys/net/vrf/strict_mode ]; then
+         echo "SKIP: vrf sysctl does not exist"
+         exit $ksft_skip
+ fi
+ 
++test_vrftable_supp_or_ksft_skip
++
+ cleanup &>/dev/null
+ 
+ setup
+-- 
+2.43.0
 
