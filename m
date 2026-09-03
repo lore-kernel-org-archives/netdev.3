@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F6234CFCA;
-	Thu,  3 Sep 2026 23:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B158A348C47;
+	Thu,  3 Sep 2026 23:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788476963; cv=none; b=FQSjX5b0Y7yDG8sjVEyv0LUC6PPBg+y03wpK9WZ/vK4iZkyN47ndjHtwFyGG5yaJYhhNKlk45JqPr9+teBc9e+F4Oix3CH3SmnJt7Daa42GyD5dzdUEYTrtKEhsg2gkJNEsCIxetaSjTx/1AeKF9g/V9S2M7skSEMwgb122RaCw=
+	t=1788477623; cv=none; b=RbYvoOcdrUWXkWF4iNGb6++JKaFo6A+PwsEU80yiZSl229ECbYQXJTWEaDpP30xoRKxpHAqluzgLXL2ppYar9tWzJrnCeM2c2qAZgwign7zZHGNoPHfG798oC47ekhCualEm43bACGAaj0MTNKtHlu9vaNq9uJyXx7NdxBI6d/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788476963; c=relaxed/simple;
-	bh=6rcZAMWgIi+KZKSXFJ/0fk/gdtoBfa8p1RUDAQQsR40=;
+	s=arc-20240116; t=1788477623; c=relaxed/simple;
+	bh=S59SNuSACLdjyM+AU9w7c4CUYfxVPHHN0q6M5yk4FM0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j9fs9bNRqCDlMHn5/DA5CO2TA5WjJIODOMZJNNqOCC5Lwj/MVd3ensMZb14Av5bTMMuKH2XmX9HUQ1sf4n5A/Q6V/gdXW4zMSJ5Zbfrj+EDCfnWa9VP2kgZX5dhm+0YgdIlym3H+jZQMMZqf3moiX98Slarf3naWownA71teFN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMrFl5y1; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=mNWo//DUMocMT9sBmAavQC/PsyxCm/A2doB7shSYwrKSBLoYBgPimc67IK6hrN0F22yb24OiW0s9Bc3nm2r8YrIPMOTOcq3pqqlNV+c50JkNOArcWthWp+RGHwjXC8LBkTiYRZwqRd0uBTeSVD9aU4ykUsgUABkXNOOSH8mpZuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbmS68SM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMrFl5y1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EFC1F000E9;
-	Thu,  3 Sep 2026 23:09:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbmS68SM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7A81F000E9;
+	Thu,  3 Sep 2026 23:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788476962;
-	bh=7HebtJAgpTwpQUKv9N4H6F1loY4uPBv+ObzdRVGZik8=;
+	s=k20260515; t=1788477622;
+	bh=Jd2d3+3jAhjlIWPxn5NVZwiUzcNZ9cJ6/qoOYbHQKEk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SMrFl5y1M2g1Fkz5yeymSelT+0xGT7v7eRGluKTynOLqMYIydyb5/dLpjI1rv8Z6F
-	 gLOD9EVck7MPrRzD5oZ3H7fZi6vwf6NPtgWQAa+ZefgQLPCRyn9AO9EGvRUt+Xd5ju
-	 fD9QHACdud0V6szt2J92dpEddAvh7/eYUgoDHubMJEMx06UDMTn3IjLGt3I2AGeNHP
-	 PXICIl4VCLmFyydpT2dNWGjt/XSORbVHiphwASs2DUF3HpzzzidkDUzFaZdOeShZMe
-	 TmKBeKQxAer4fnv3Qc6NGCYc8KZuq/YjDnwQEiTafjqjgaZVVgemTtYb1CjZ2p7kay
-	 pTOs4tqBJ5lsA==
-Date: Thu, 3 Sep 2026 16:09:21 -0700
+	b=CbmS68SMAunuOIZQWmpFtxCQk7utUuViAFHuUe6GjOYQeTjKYbh3yM5O5b9kOTSPQ
+	 ifmG3Nrl9vmCoLVnHdRrQFpgCED41Toeqs5/M0737rmTdoDKiACzGWzRs23ETvTmjD
+	 W8Ydj9CccjusxqmdJaUoQvrawqm1i8R2sHUPbmg0vp9LGdEMZ42r00UjL3b8H5EyBD
+	 wEdMRK7OgDO+NfMseCQCA26acf9n2B/gDTD/VypyqG+PWIGePX8+VJkVPVLH7/DD7x
+	 MseYkufsPHfkSdnaQSKRvNHGn5E2qiNnFyVPpYi0hffmbQ61y7FIiw7idmYd4fQclf
+	 p93cNSDI3k3jA==
+Date: Thu, 3 Sep 2026 16:20:20 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, j.bhargav.u@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, tony@atomide.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- goledhruva@gmail.com, m-chawdhry@ti.com, daniel.baluta@gmail.com,
- simona.toaca@nxp.com
-Subject: Re: [v3] dt-bindings: net: ti,davinci-emac: Convert to DT schema
-Message-ID: <20260903160921.547dabf4@kernel.org>
-In-Reply-To: <33fe3846-eb8d-4b0b-9355-46388c1db2d3@kernel.org>
-References: <20260901-ti-davinci-emac-v3-1-db41e32f3f6d@gmail.com>
-	<178844863252.3394541.10006643092711574384@kernel.org>
-	<33fe3846-eb8d-4b0b-9355-46388c1db2d3@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: patchwork-bot+netdevbpf@kernel.org, Mike Rapoport <rppt@kernel.org>,
+ 3chas3@gmail.com, duncan.sands@free.fr, gregkh@linuxfoundation.org,
+ akpm@linux-foundation.org, david@kernel.org, willy@infradead.org,
+ vbabka@kernel.org, accessrunner-general@lists.sourceforge.net,
+ linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
+Message-ID: <20260903162020.323f6cdd@kernel.org>
+In-Reply-To: <aplR8tmzndmg4kfq@hovoldconsulting.com>
+References: <20260830-usb-v1-0-aa349c302246@kernel.org>
+	<178840081114.3041656.13596134068099743678.git-patchwork-notify@kernel.org>
+	<apkRyoCr2dNI0bNS@hovoldconsulting.com>
+	<aplR8tmzndmg4kfq@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,19 +51,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 3 Sep 2026 17:22:54 +0200 Krzysztof Kozlowski wrote:
-> On 03/09/2026 17:17, netdev-bot+sashiko@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 2 potential
-> > issue(s) to consider:
+On Thu, 3 Sep 2026 12:54:42 +0200 Johan Hovold wrote:
+> On Thu, Sep 03, 2026 at 08:20:58AM +0200, Johan Hovold wrote:
+> > > Here is the summary with links:
+> > >   - [1/4] USB: usbfs: replace __get_free_page() with kmalloc()
+> > >     (no matching commit)
+> > >   - [2/4] USB: cxacru: replace __get_free_page() with kmalloc()
+> > >     https://git.kernel.org/netdev/net-next/c/a3b4826138d4
+> > >   - [3/4] USB: speedtch: replace __get_free_page() with kmalloc()
+> > >     https://git.kernel.org/netdev/net-next/c/534b18813974
+> > >   - [4/4] USB: serial: wwan: replace __get_free_page() with kmalloc()
+> > >     (no matching commit)  
+> > 
+> > Why were these USB patches applies to net-next?  
 > 
-> Jakub and other netdev folks,
+> I see now that it was only the ATM ones.
 > 
-> I got this week a lot of new netdev Sashiko emails on my mailbox. All of
-> them escape filtering, because they do not use PATCH keyword. Can you
-> please fix that? PATCH is essential... For now I will just add a filter
-> to drop sashiko to dev null instead based on recipient, because I am not
-> going to add filters classifying email as patch just because "From" is
-> matching something.
+> Sorry about the noise.
 
-Ugh, not the first time we have this bug either, sorry.
-Should be fixed now.
+Sorry, should have sent a note.
