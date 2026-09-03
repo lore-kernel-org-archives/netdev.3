@@ -1,95 +1,144 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588944DC550;
-	Thu,  3 Sep 2026 16:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DC94E8DF7
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 16:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788452248; cv=none; b=jE9U9z9SKXSIjtbt6zov5VOKB8jKO0LDaKB/4okYokZlbVMSLYHdNqrv80/o4mSBe+29XFRcKruy6Zo7L/D6wxCJP4FokCQR/aopPWETVUV534QKpnQB9vOatSHqWztksAr5PnE+ASt1isRVmNyFFGjIcNyWhu9hpwu/LucpNRw=
+	t=1788452369; cv=none; b=OH7UvnmTqherRkJOU8IiOdrKFYT4vV66zARXTYauw3vkhvDKRUNmx0Svb+LX279H/Ur0DEWtq6oHCYpNb1k5Qa5QtoCJ5CP72ESXuWhoUz3MZpOd7Blx5uGIxLvfVrRmD1OzAXvdRcqef89rJFrj3op28xUuCUOcNH3aMHf5brc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788452248; c=relaxed/simple;
-	bh=3sh///itIsoTKfcWmE25u2y0I7EuYjWA/H8sylTsHz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t3tSu45u/8ARC3PSINEgL7iMgS+Qyi9rp/mGRkVYnl6M/ctgkVm2aMxrfrI1TJsYOZfJ2nlCauVhAmfQKWb/+ChukzMQD2EzTLu1oOs3knkrruZ/TGIp4tYiqyKv2QdQ+0qGAsFlbPwPZv1kAgZAz4Nqvb6mrOMidZbeF1lerFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vtZr2YRH; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788452369; c=relaxed/simple;
+	bh=roRLU+m6lq9xNOnAJ0AKHshc7+CQ1N+aRC7EOLrVCiU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=bBiea7QOFu7sDvkVDyKOMuyQvaPvL4rYccD+dVCsdJqWj/PHljEShTtbDP+uQCbkDIQSiKi17mIxL2Mhr5HNof0WWAsxKrOWMp2lO1CVUoJCCMVU0UJY6vuFIBkxR3b4O5rtRfCa870MHGC3vanKjJAlgr+qRHG6MPOyMnFrvBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSN8JZT7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vtZr2YRH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QJL5YYen0/QvqwSdxVCBnW1IHbfwX+hz9GYg+hZHlog=; b=vtZr2YRHzMODaWAj8YN+XZRuCY
-	5hniUse2Bkwjs8SvCC6gkiZtqfEC0c3ceBQtZeC+UJaszo9NPa7wKjWFYs379b6wf2ZF0udsqqnBD
-	zkkHYIQf/aj8Wge81let1VZFr3otfSNki/2lOh7ihj+7aCFq4KDLqFG52w7gsktzw300=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x2A7o-002ks7-1s; Thu, 03 Sep 2026 18:17:16 +0200
-Date: Thu, 3 Sep 2026 18:17:16 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/4] net: dsa: motorcomm: Split MIB buffers
-Message-ID: <3716dd9c-1b85-4534-98e9-08999824c02f@lunn.ch>
-References: <20260903143514.532023-1-mmyangfl@gmail.com>
- <20260903143514.532023-3-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSN8JZT7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AB21F000E9
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 16:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788452367;
+	bh=lgXFqwVqNN4wIcW4YLO255F7r1uMBTpnHLwD24EfXFA=;
+	h=Date:From:Subject:To;
+	b=gSN8JZT7UhddbARczsnghX0OK85eAkRthlLc3Bxs2P1QcMvsSE51hDzH8QZYq3Y1J
+	 DQCAonWMjj1idl5H2aQZsnncVxDGtvdOMIQJeJs+roJAGfJ+z2pR4a75Uap8cA58pg
+	 T6g3MdGJVXOEvMYSc5KWyG93DNU4DKxC5QZF1urlrUnSr/p9+oOVE5yTRfXaZ3DxuH
+	 UIE+8xNq+Guwk9eMTySFMZQQcu6Yuj6MuDnYAujK2Jsl8PgbJ3qPkesE3ODFXtI95e
+	 H6lMhrzI8pYsDzDJFCj1GRkTeaCM9S1JCl0f6Zg/aQkhUaMNsalPK23ZmgQv4kKEv7
+	 w6UW1PtWflArQ==
+Message-ID: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
+Date: Thu, 3 Sep 2026 18:19:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903143514.532023-3-mmyangfl@gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: fr
+Subject: [ANN] Containers to run Netdev CI tests locally
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+To: Netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 03, 2026 at 10:35:07PM +0800, David Yang wrote:
-> With MIB improvement introduced later, struct yt921x_priv will be over
-> 20k which is not very good for a single kmalloc(). Dynamically allocate
-> the MIB structures to reduce the size of struct yt921x_priv, and do not
-> waste memory on dummy ports.
+Hello,
 
-When you read this....
+TL;DR: containers are now available with all dependencies to easily
+execute all static, unit, and functional tests in an environment closed
+to the Netdev CI one:
 
->  
-> -struct yt921x_mib {
-> -	u64 rx_broadcast;
-> -	u64 rx_pause;
-> -	u64 rx_multicast;
-> -	u64 rx_crc_errors;
-> -
->  
-> +struct yt921x_mib_stats {
-> +	u64 rx_broadcast;
-> +	u64 rx_pause;
-> +	u64 rx_multicast;
-> +	u64 rx_crc_errors;
+- https://github.com/orgs/linux-netdev/packages
 
-It does not explain "Why?" this structure got renamed.
+- https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
 
-> +struct yt921x_mib {
-> +	struct yt921x_port *port;
-> +
-> +	struct delayed_work work;
-> +	struct yt921x_mib_stats stats;
-> +	u64 rx_frames;
-> +	u64 tx_frames;
-> +};
 
-And the old structure gets new contents.
+                             -- ** -- ** --
 
-I find this confusing, and not easy to review.
+As already mentioned on this list, and repeated at the last Netdev Conf,
+developers are expected to validate the same tests as the ones executed
+by the Netdev CI before any submissions. This includes all static, unit
+and functional tests linked to the net subsystem -- and impacted by the
+modifications --, but also LLM reviews. The goal is to reduce the number
+of revisions and general traffic on this mailing list, not to overload
+maintainers and reviewers even more.
 
-Maybe avoid the rename, and call this new structure something else?
+A wiki page has been added to cover this and explain how to validate the
+different tests:
 
-Maybe break this up into a number of patches, do things one step at a
-time, making it easier to review, lots of small changes which are
-obviously correct?
+  https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
 
-	  Andrew
+To help developers, containers are now built, packing all the required
+dependencies to run these tests in order to run the tests in an
+environment that would be as close as possible to the CI one. The goal
+is to have an environment that is easy to maintain -- no heavy
+optimisations to reduce the images size -- but also easy to use. In
+short, people (and non-humans) can continue to use the different tools
+as before, but add a prefix to the different commands to execute them
+from a container, e.g.
+
+  alias run="${nipa}/docker/selftests/run.sh"
+  run vng --build
+  run make headers
+  (...)
+
+
+Feedback on this is welcome. Do not hesitate to report issues on the
+GitHub project (or here) and share fixes!
+
+Note: currently only 'docker' is supported, but 'podman' can be used,
+and plain 'chroot' as well, see the wiki. Patches are welcome!
+
+Also, the following page has been modified to include more tips, visual
+improvements, and references to the new containers:
+
+
+https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-style
+
+Cheers,
+Matt
+--
+For the Netdev Foundation
