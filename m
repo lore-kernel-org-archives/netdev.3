@@ -1,58 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CDA19E97B;
-	Thu,  3 Sep 2026 02:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D94534DB74;
+	Thu,  3 Sep 2026 02:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788404176; cv=none; b=cZBJqbPRbn8zAVsXLOaGoAkconZnc/4hTqKYFF/pEDlQX5Fhk6WNFIelKL/aSlnF9mn+YEAhB9B/5p3TrxLbF3+nHSCUd3dkp4KLxglRCCraO4AypjXbwlcW3b7Lqs9UB+ZWZk/EqXaZ7CPUQMKvkdSjUf2Oyh7wR7DjmmFcJ6U=
+	t=1788404289; cv=none; b=Cdp5FfL/3CWBSe5K4+fS/+J1n+olx91QtkDnash0jjJdBXReouSFLSz42pvnkG/bv504G1kxvy3dlK4VJVJ4FbJ4DZoL6AYGFfI8bYAJz//qsdCrDw5+04GI2lP/ULP0rtuPmYd+Al5zfGci6v5+QB+T+tUSchH8YCo+XKfV8zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788404176; c=relaxed/simple;
-	bh=jd8RM++VCtwDVeu5SoH118Tv7kJz9aWt1slZwem9IaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mPtZx66T3UKyFx3OjBhe1mnJcUSQ5EKPa0OQncHMuAZyWWcnQ9NlkeCHkMjDeE7GQhFY/0SlW234Y3sIItIX5YUCtCcTD99EHojvRFY/mPUjUjtFJkbPwmKVnnN2BbMSvtaYpoL8Rim7ojatm47Ec3ohKhiZt3boREHlQL48GSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JSp/Afp4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788404289; c=relaxed/simple;
+	bh=WVJzMFypksULhssCBhs+u3lWuxrgnqMSYBaJhRScTpc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=WdJJ3rn0c7frThU2h4wdbQnxx2eqiXe4mCixq6xKlsfJRUqRAO2KzxVhuC7r8zTPi0Kf/tyeVS2QfKgSfPnaowKNfCpS+YxGZ9GJhudLfRALqcSPIFkgIpbTkQ4bka9XPyWwD/0gBjII6B/0wHx8+Q73xI7BQjs2JlRlVMr2DZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=s7g1vGJ9; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JSp/Afp4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A940D1F000E9;
-	Thu,  3 Sep 2026 02:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788404174;
-	bh=jd8RM++VCtwDVeu5SoH118Tv7kJz9aWt1slZwem9IaU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JSp/Afp4wJRikFIAu9WM8QMPN4/y2lVVkPCCLD11Mkyrd+I6L5TRctMwQEehiHFj+
-	 kGK5GEiKktE99jzS/Rql9XIoA6QjLb2nUkXZojAwKPxm6aS7B1i61Z0q++mESjQdu6
-	 WGiVWpUvmNla54zSctOQOYcrIIid2NQ+pPb61lF8eoEormHIGzeXy3FQDDkqAWUwNG
-	 BFg4b/ivg9i1gkQ6r4g/I0Zh3mtdP8ONjRXuUbJNMp8kSguSTsCEhC9p5t7yhM4lgY
-	 hXVGrbHc7EyQyzpM+EYtc8E3Zc4z7DDxFe4pOJD8oYG8H/UxzpkiYf0DruQk6F3BTZ
-	 H15l8xW4PePww==
-Date: Wed, 2 Sep 2026 19:56:13 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: wei.fang@oss.nxp.com
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew@lunn.ch, olteanv@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 00/15] net: enetc: SR-IOV improvements and
- ENETC v4 VF support
-Message-ID: <20260902195613.1e18b44c@kernel.org>
-In-Reply-To: <20260831025441.635045-1-wei.fang@oss.nxp.com>
-References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="s7g1vGJ9"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6832vR8X13154057, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1788404248; bh=j4Ybtv+0wCie/NnJLjyNOJMcX16jWSGU5FLxfTcsCGA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=s7g1vGJ9vta8SQePoPy3SpT1BQm+XNnQ/Wqv5kYTH92r4YBgj7FVMj0kqlVppbLhk
+	 VjYI9pbAn7rbBLC2AR2saSMsq1IqcKl58NbZsDydUsN0jhPwPZCUkcKq6UtofTpAAj
+	 c5U59JWCLn8XmGtJ7ZwSYFWLlJbToMfCCAxldqPsy9wXrD9N+Vce2iBPby334w+Ar+
+	 puCSDaAq4pFTkdr8pDgoxCGM9IrfXIWvvc6on3Dg0znHl+ShxyvRubRb2s56jWPPJB
+	 wV9GX+wBZs+gkFRS6vKgeF/JuxWsqNKwGqQnAMyu/h8aBZ3eXLAcLR0dAEawAtqDaA
+	 dRqG7E5C9CFwg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6832vR8X13154057
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 3 Sep 2026 10:57:28 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 3 Sep 2026 10:57:27 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 3 Sep 2026 10:57:27 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::126f:59ad:658:674d%10]) with mapi id
+ 15.02.2562.043; Thu, 3 Sep 2026 10:57:27 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next 1/8] r8152: refactor r8156_init
+Thread-Topic: [PATCH net-next 1/8] r8152: refactor r8156_init
+Thread-Index: AQHdOrpfAmeZLX/T10mr2kg/ADpLUba6uKkAgAFwccA=
+Date: Thu, 3 Sep 2026 02:57:26 +0000
+Message-ID: <ee890ce30dad440c9789f4aadab29724@realtek.com>
+References: <20260902090632.41844-1-nic_swsd@realtek.com>
+ <20260902090632.41844-2-nic_swsd@realtek.com>
+ <9a90f05a-ce9e-4f90-9a0d-19242f57f225@lunn.ch>
+In-Reply-To: <9a90f05a-ce9e-4f90-9a0d-19242f57f225@lunn.ch>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 31 Aug 2026 10:54:26 +0800 wei.fang@oss.nxp.com wrote:
-> This series enhances SR-IOV support for ENETC v1 and adds VF support
-> for ENETC v4. For ENETC v1, the trusted VF management and per-VF
-> configuration query via ndo_get_vf_config() are added. For ENETC v4,
-> preliminary VF support is introduced for i.MX94 and i.MX95 platforms.
+On Wed, Sep 2, 2026 08:54 PM +0800, Andrew wrote:
+>=20
+> > -static int r8159_wait_backup_restore(struct r8152 *tp)
+> > +static void r8156_init(struct r8152 *tp)
+> >  {
+> > -     u32 ocp_data;
+> > +     u16 data;
+> > +     int i;
+> >
+> > -     ocp_data =3D ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
+> > -     if (!(ocp_data & PCUT_STATUS))
+> > -             return 0;
+> > +     if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> > +             return;
+> >
+> > -     return poll_timeout_us(ocp_data =3D ocp_read_word(tp,
+> MCU_TYPE_USB, USB_GPHY_CTRL),
+> > -                            ocp_data & BACKUP_RESTRORE, 200,
+> 20000, false);
+> > +     ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP,
+> EN_ALL_SPEED);
+> > +
+> > +     ocp_write_word(tp, MCU_TYPE_USB, USB_SPEED_OPTION, 0);
+> > +
+> > +     ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION,
+> > + BYPASS_MAC_RESET);
+> > +
+> > +     r8153b_u1u2en(tp, false);
+> > +
+> > +     for (i =3D 0; i < 500; i++) {
+> > +             if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
+> > +                 AUTOLOAD_DONE)
+> > +                     break;
+> > +
+> > +             msleep(20);
+> > +             if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> > +                     return;
+> > +     }
+>=20
+> Please use one of the macros from iopoll.h. And return ETIMEDOUT on error=
+.
+>=20
+>         Andrew
 
-You only replied to some of the AI feedback, should we assume that
-feedback on patches 12/13/14 is legit and expect v4?
+Ok, I will do it in the next version.
+
+Thank you,
+Chih-Kai
