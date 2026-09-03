@@ -1,183 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F22250C28F;
-	Thu,  3 Sep 2026 20:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2932A3E5A29;
+	Thu,  3 Sep 2026 20:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788468155; cv=none; b=uULXNYboH5b10RLW4qcBmiJViaK09U4hkU/Lb6UO21oBhEZ0XvUbobxEWswCsnd00gTz2Qi2VnTfNB2iVoxghC2v50q2Wa7B+5r+8+MRl1q+7cLNlBLmsgziTwQXotZjZoSXveFB09wMBD6oppC2dligdtJFufPltr7QWyYTUrM=
+	t=1788468488; cv=none; b=e4dliwE9C3RiwYduu2BXdJb9W4T6KgPyNylGOKd4bf+XSR/9YVQK6pn0aS3/L8WfW6ukzprFZKlBgZBEwuQ9keMsPT05J4JTB/jxjrDwI29QH4JrfwdBADiL0Y6uQ+ASM8L7/Aq/EppSQsFk//1y0EK/o9vV2K6/bVGq7eK3ARI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788468155; c=relaxed/simple;
-	bh=GVd8Iy/H18JBf/7HKyrxgWxglNOxkHMbCo0lgYNyMbk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AMSXY+iFLzUl/IaDlRWV2iP/id6LfusRJchCsXIMM2X/M4NkwmkHAckRMfpEcW7n/+/UXOqrGJKXNYO/OgPD6c9MqTgWob9/x5AsUjPdaaNbfvTVaYCpZU5lzVr5Wob7TR9tDNrHne/rd7muUMdyIg5S0GoMvYhGGcGQhDxeHnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTx9C/VK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788468488; c=relaxed/simple;
+	bh=0tVHDldB0byJ87vmnVyBzo1m8ktM7L6UglxhruR5/f0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdynaIY8FycoxunKgIPKcb3dMvvCtRkwJ3tJozLHCZgF49qVCoDmVuxPL+N7FlhBuUMA4lk9yCb9C8NDnGVOE9nmiqMZe7J/iCiyrnYbcvCifbC9+2HbtBvkxuAkvtwh080pOFx7ArQyFfGL5XZ7yDSGVDL0CuKZM/MmampWcOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=LoqpdVHo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xr5+svod; arc=none smtp.client-ip=103.168.172.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTx9C/VK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3681F00ACA;
-	Thu,  3 Sep 2026 20:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788468128;
-	bh=R/ICcvEgsR7nCa4HQJQeOOquuFPufd/ZR1tavR5ybiw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gTx9C/VKgRoE5cVu6Nt+1vCiBAYsod+msYlM1ZeWkThijrtfh+j9FcKYIGUvi2i/Y
-	 OhOA8vtZ0f+l0856FmJjTyp9pmzebyn1Hmwc+coEQ9/PY/fo2dCX+SShtVo0W4ZxoQ
-	 BhJm57WXRfazdi3/sjV7E8qYIHAlC1Qvo1JBCcoLEEqpC5ebfQfBQWcUUVQH5VScdk
-	 U9gpG4uVnrm3sryMFHpYMt097h1ZrjYdsCavWS5Hjr5ndIoascb3nTjkmO10w8Xnwn
-	 Jw2kaydv26QBuAd9KeIaKvNpTqIp3jyCVlIsxlW0lJAN8RwMdPwQPNJeJZgeIULvSR
-	 aW4jv8beRBffw==
-Subject: Re: [net-next,v12,7/7] r8169: add get_channel support for ethtool
-From: netdev-bot+sashiko@kernel.org
-To: javen_xu@realsil.com.cn
-Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 20:42:07 +0000
-Message-ID: <178846812735.3394541.11906532448427871629@kernel.org>
-In-Reply-To: <20260831053940.620-8-javen_xu@realsil.com.cn>
-References: <20260831053940.620-8-javen_xu@realsil.com.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="LoqpdVHo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xr5+svod"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 35C0313800CC;
+	Thu,  3 Sep 2026 16:47:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 03 Sep 2026 16:47:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1788468478;
+	 x=1788475678; bh=vYh/59ueWC2tCap+cAh5Pc8XIHLmjRhWP4EF7HGivPY=; b=
+	LoqpdVHoHV2WXbeG0Ma8deXG8kWbqjfIDsRmS5QAKBLANiZjMmcOZF2G44wRfhrT
+	q7358SjwplUnzRX2gaBPdXs6vNgXQVxYmB7GPRPELLTUanlDrdzeMqxMQKsFPHRP
+	9zoUcssP+3izMtkpqDPCOf/dgrGG0qtxNi32ikJKN44gkWRzGzKB0PN3BQg/BIKO
+	Ngx+D4DeNTamsYnDa+f5XUeB9uqxq9yI8pQgXIfjpcKQQkjmQNB7FlEAvi6LrIji
+	lH5BnFSP4SZUmrvni/2t28TgYULBtkALduDaxgsmkmRhS1n88gzSth1iqBQg5jbg
+	L+6bETU0QxcwdqF5Y0HWzg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788468478; x=
+	1788475678; bh=vYh/59ueWC2tCap+cAh5Pc8XIHLmjRhWP4EF7HGivPY=; b=x
+	r5+svodN6ruZd+PRXpsu2eqv87HJ6DWONZKBmSiU70zgW8faYOcBTfmVr/Nb0Y3u
+	9mMKXhd+w+bRejySO8Z7OHPs3s76D6m3jlZzFhmdLcNyGsYxjW6eBPEujOjv4xtf
+	dtJEG2QxWPXJ35cHNXXpUIZ/NyG9MEYOEQwR4Xgme87kSohzOVPH60wVUUGXXIPs
+	Usjah0X8/fcsiyM12/MCOGbtuFlP4y9cLh29+0DG13L/IEpFliJN2mkaUrZWRAxP
+	QrcbgxOHQDHfcKlxp5pik3B+CSfII+yC1jSbqiPsPLgrqQX9ZQDPRbWw6XuYh9zP
+	T8n0XUB2xhdjxLxdcOBKQ==
+X-ME-Sender: <xms:_tyZao2MOcBKruAzVojCz2nnR46A-cBSrNZIdTRcDro4PIvsTToVoQ>
+    <xme:_tyZarSWNSfmoiXNIxwNkEIlDeOhjodv-6rS2fn2YPGPSPI6XhQDPb7RjnCT70sph
+    OlRUVvd1oCE0Zz5J3Hy7Jn_px3YEuJfivaKljDloTHNtIiB9JcAmKthlA>
+X-ME-Received: <xmr:_tyZasekoWZD5vT-bmFoJzKedAwixC_zArvzCCza8NjeM7r7XEX5xktcjJw-ZBp9INqmfaWqHfSTZi-vxEK7HpJqHXmaYeo>
+X-ME-Proxy-Cause: dmFkZTFONURqZfnbz0P41q83IrnEBnUQeLNict9qTZuSYOgw/OZgOGbwAgN8bJfthkkaIV
+    I4hzyFKmUHvWCL397ElXGN6juxpbuSPv7Nm46rxsOsdIPeHkf5vuiSg2JnsW8iLtrPch7N
+    jgTVWDOGoVmZG8jroNefPNoMOcPiyzzLBTFBgoHprYiYJFyeABY1IvrNzRx9zbviTV3xbi
+    aoWfDnz7460xs+RroEtKaeJGRUjNrcAvI4rCpxA2kMdCCNHGpm2bdCRpvUezclo9ePP5QN
+    EGreWD+jZhkGgilHJQMZWdm58IG9xLzST5+2ZxQeB+ObwI1u3Pe9FcSNXI4a2LePdXhgla
+    qG5heHvaxKCWmblHeiaFr/GY+kC6ZqPMn5m5Abt04a9M2zUU6G6LWvmjM7t9JdwP5aY34C
+    BQP7nyIXhyqj/+RWnLdsClEw+FumzAiO8TobK5vzXrVU5jVV2KrN5/KRS+47THK/toj8G/
+    vUQzzNm5qKRgomk81l/HDbFWKe/flOup7wSGmmtaw3bZKESHjsWLddXpyCg0M5u6ZVM6HF
+    tJ8W2u3487a5XAA9DKeH5pyqXwL32hr1Y/3oe906SbT+WIiuhhpw1TucTl7nJ+lBqRT1zv
+    NEMJvZGzwYdMMXmfc/M6wNgbI20m6jBPUce6KAQHmfgGFgSY/b5yDB8FYExw
+X-ME-Proxy: <xmx:_tyZasd4yshlRNdmoO1heF7F8vdGRgBH2_MGn8dO2S6tbhb0zabyIg>
+    <xmx:_tyZam16ekeSsJvRDhf7jX_lIhXgwXkqS9S8Ip3Pg8nGh9QlQudmAA>
+    <xmx:_tyZak_hhNLNElrSXmCWysZCd8H8XOTp73lgGrxTsk9VUKnkke-aKw>
+    <xmx:_tyZar4DoAvqzhiB1Pi3DnCnSLZBkS5cXmTCexENB3aYu8VzyECr0w>
+    <xmx:_tyZao6ee_T23TmanWEeLQDPJP1D3w3BYb30Xrhm0nYn-Xtv9rlRd9HN>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 3 Sep 2026 16:47:57 -0400 (EDT)
+Date: Thu, 3 Sep 2026 15:47:56 -0500
+From: Juanlu Herrero <juanlu@fastmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev-bot+sashiko@kernel.org, dw@davidwei.uk, netdev@vger.kernel.org, 
+	io-uring@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kuba@kernel.org, asml.silence@gmail.com, shuah@kernel.org
+Subject: Re: [net-next,v6,5/6] selftests: net: add multithread server support
+ to iou-zcrx
+Message-ID: <apncp9j_ie53HgYh@jlhe0197-mac>
+References: <20260831-iou-zcrx-v6-5-02d1d012f0fd@fastmail.com>
+ <178839229706.3394541.1555608492152892136@kernel.org>
+ <1cf3f4de-bec8-4559-a4b2-1d946ead0f69@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1cf3f4de-bec8-4559-a4b2-1d946ead0f69@redhat.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+On Thu, Sep 03, 2026 at 01:06:11PM -0600, Paolo Abeni wrote:
+> 
+> 
+> On 9/3/26 1:38 AM, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 6 potential
+> > issue(s) to consider:
+> > 
+> > Critical: 0 · High: 1 · Medium: 2 (3) · Low: 3
+> > 
+> > - [High] listen() is now executed before the workers have registered
+> >   their zcrx ifqs, breaking the ordering that two existing in-tree tests…
+> > - [Medium] A worker thread that is dispatched zero connections reports
+> >   success without receiving or verifying a single byte.
+> > - [Medium] The new CQ sizing removes the implicit bound that kept the
+> >   zcrx refill-queue producer inside one ring.
+> 
+> My understanding is that the above 3 concerns may affect tests stability
+> and should be addressed before merging.
+> 
+> Thanks,
+> 
+> Paolo
+> 
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+makes sense, I will address these in v7 of this patchset.
 
-- [Medium] rtl8169_get_channels()
-  (drivers/net/ethernet/realtek/r8169_main.c:6305-6315) unconditionally…
-- [Low] rtl8169_get_channels() sets ch->max_rx =
-  tp->hw_supp_num_rx_queues…
-- [Low] rtl8169_get_channels() hardcodes ch->max_tx = 1 and ch->tx_count
-  = 1 (drivers/net/ethernet/realtek/r8169_main.c:6311 and 6314) instead…
-
---
-
-r8169: add get_channel support for ethtool
-
-This adds a rtl8169_get_channels() callback to rtl8169_ethtool_ops so that
-ethtool -l reports the RX/TX channel layout of the device. The reported
-values come from tp->hw_supp_num_rx_queues and tp->num_rx_rings for RX, and
-from literal 1 for TX. No .set_channels callback is added.
-
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index 11fb31223f492..a76fbf1e50d11 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -6302,6 +6302,18 @@ static void r8169_init_napi(struct rtl8169_private *tp)
->  	}
->  }
->  
-> +static void rtl8169_get_channels(struct net_device *dev,
-> +				 struct ethtool_channels *ch)
-> +{
-> +	struct rtl8169_private *tp = netdev_priv(dev);
-> +
-> +	ch->max_rx = tp->hw_supp_num_rx_queues;
-
-[Severity: Low]
-Is hw_supp_num_rx_queues the right value to advertise as the maximum here?
-
-rtl_setup_rx_params() sets it purely from mac_version, before any interrupt
-vectors are allocated:
-
-	case RTL_GIGA_MAC_VER_80:
-		tp->hw_supp_num_rx_queues = R8169_MAX_RX_QUEUES;
-
-The number of RX rings the driver will actually arm is decided later, in
-rtl8169_set_rx_ring_num():
-
-	if (tp->irq_nvecs >= get_min_irq_nvecs(tp)) {
-		unsigned int rss_queue_num = netif_get_num_default_rss_queues();
-
-		tp->num_rx_rings = rounddown_pow_of_two(min(rss_queue_num,
-							    tp->hw_supp_num_rx_queues));
-
-and rtl_alloc_irq() can fall back to a single vector:
-
-	nvecs = pci_alloc_irq_vectors(pdev, get_min_irq_nvecs(tp),
-				      get_max_irq_nvecs(tp), flags);
-
-	if (nvecs < 0)
-		nvecs = pci_alloc_irq_vectors(pdev, 1, 1, flags);
-
-In that fallback case num_rx_rings stays 1 for the lifetime of the device,
-yet ethtool -l reports a maximum of 8. Counts that are not a power of two
-are also not usable in principle, since rtl_set_rss_config() and
-rtl8125_set_rx_q_num() both use ilog2(tp->num_rx_rings).
-
-Would it be better to bound the advertised maximum by what the driver can
-actually arm, for example rounddown_pow_of_two(min(hw_supp_num_rx_queues,
-RX vectors derivable from tp->irq_nvecs))? This matters more once a
-.set_channels callback is layered on top, because the ethtool core validates
-requested counts against max_rx and would accept counts the hardware paths
-cannot use.
-
-> +	ch->max_tx = 1;
-> +
-> +	ch->rx_count = tp->num_rx_rings;
-> +	ch->tx_count = 1;
-
-[Severity: Low]
-This isn't a bug, but could max_tx and tx_count use R8169_MAX_TX_QUEUES (and
-dev->real_num_tx_queues) instead of the literal 1?
-
-The netdev itself is sized from the constant in rtl_init_one():
-
-	dev = devm_alloc_etherdev_mqs(&pdev->dev, sizeof(*tp),
-				      R8169_MAX_TX_QUEUES,
-				      R8169_MAX_RX_QUEUES);
-
-The values agree today, so nothing is wrong now. If R8169_MAX_TX_QUEUES is
-bumped when multi-TX-queue support lands, would this report keep claiming a
-single TX channel while the netdev has more?
-
-> +}
-
-[Severity: Medium]
-Should the single-interrupt configuration be reported as one combined
-channel rather than as one dedicated RX plus one dedicated TX channel?
-
-max_combined and combined_count are left at 0 here, while max_rx/rx_count
-and max_tx/tx_count are always populated. For every chip other than
-RTL_GIGA_MAC_VER_80 (and for VER_80 whenever rtl_alloc_irq() falls back to
-pci_alloc_irq_vectors(pdev, 1, 1, flags)) there is exactly one IRQ and one
-NAPI instance, and it services both directions:
-
-rtl_set_irq_mask()
-	tp->irq_mask = RxOK | RxErr | TxOK | TxErr | LinkChg;
-
-r8169_init_napi() installs rtl8169_poll() in that case, which does:
-
-	rtl_tx(dev, tp, budget);
-
-	/* rtl8169_poll() is used only when there is a single RX ring. */
-	work_done = rtl_rx(dev, tp, &tp->rx_ring[0], budget, napi);
-
-The uAPI kernel-doc describes max_combined as a "Set of queues RX, TX or
-other", and ethtool(8) defines a channel as an IRQ plus the set of queues
-that can trigger it. By that definition the single-vector case looks like
-one combined channel, so does ethtool -l tell userspace that two
-independently steerable channels exist where only one shared channel does?
-
-The split rx/tx model appears accurate only for the RTL8127 MSI-X case,
-where vectors below R8169_MAX_RX_QUEUES run rtl8169_poll_msix_rx() and the
-rest run rtl8169_poll_msix_tx(). Since this is a newly exposed read-only
-ABI value, changing the classification later, when .set_channels is added,
-would change what userspace already sees. Could the commit message explain
-the reasoning behind the chosen model?
-
-> +
->  static const struct ethtool_ops rtl8169_ethtool_ops = {
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831053940.620-1-javen_xu%40realsil.com.cn
+Best,
+Juanlu
