@@ -1,159 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A23434D382
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF3933AD8C
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788422039; cv=none; b=br8rTYJxBeTevMvZCNCm0mZIkbZWHux3tXE1eU75ijG0KBPpT4+UA8Fsc+aFf2YPWwcNWcEPeA82KDVKZjXZzWkwCRZz5nwbMuxIn51Y8QpKup7j4ZWkc7xeNlt7W7TscCg+KnKGSvv7F3VHHeThsdr/D9cILZPk2WA2yNNc2QE=
+	t=1788422159; cv=none; b=ALz8C7aHUVyh7SgUO7DKezuMy96+uz0bzlUHa55IJJP9sCxOa8hwMS7uygY8SKEdgSrWLnh0CBZjDiwginAJgTPQdqMISwyqzWuA/+a0Ryrtk8wE625jCWHeulTng9muZihHjkKMeS0VvvBDAR9lIXxGG+gGsBfrFi2qqc053g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788422039; c=relaxed/simple;
-	bh=i6MdDSx3lDn2jpaaFa4GgsUevyMmmy5o9ai1CrRISb8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OR3RonH8JlHK4Ew/8rEgRX8vpGIuYQLkzxzF7yswdhZgYi2oP0MW7YABxlmuO8LsjTegEY1hixOqNnbqq2F7k35kDial7qUaAjyRIYRhTzoUcrGRcl+3yH3pVWxc8XfO57s9ycNCTeADUUMpfwBP6HBMoCzF7ifRBdyXo+H2zPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LGuA49yF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XsDEdXQp; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1788422159; c=relaxed/simple;
+	bh=eEN+V3cQexCgSmzmNCM5zv7ejVDZO+umGBGR3h1Tc3k=;
+	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Type:Date; b=ITWQu/+QCm0YM/YD+lZImuD8VOdyhQyfnN6wAVLt+N4UiHLtZQzGWpwfODYFQyeLqhmF390qGY17PxRD8mdoMi/CHJysl27tCt8DLl7i7uINm8+JeolCWE8ft1liwqbqb8gTViZazabV27/K6EP8PdDjP8YYrlpIOwLIPXEtGWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xsc/PCFh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NcY0E92g; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LGuA49yF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XsDEdXQp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xsc/PCFh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NcY0E92g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788422036;
+	s=mimecast20190719; t=1788422157;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1c3/qiiNicrr5D/2Rt/GDUWYd3VZjVY2MpTQTP3gXcs=;
-	b=LGuA49yFTtZUQ0/TpePL9n8nYXLin8Gt7zpVE97vpFJNqDrz8WbxEMjinznLbnAFOkHPLG
-	kkd9Fe48WVhRR0hJz7CdhYbQ47Jme5n9vFIut5iJm2RSjnI3Y68JqjM15/R+/LF00n7K/n
-	A5L2/tFHcrG8PVMNmciQ8mdQyfkB7gE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=pV9sg95pTpAsxuNpPStrP1G4M4KPRJDD47PoY7gwmD4=;
+	b=Xsc/PCFhDoxHP2ukinGBOdvvib3fmRKPN2/pHFRbkWwmhIlmjdftUOv7poMvOMDur3mXFq
+	CZ6h/GCvxcvltUUakuF62mfeVv/2oNNCjKuE5497kUbJmfXde2BfbxI0Z1d5oYguigFbxP
+	3LzReYHizHO3Z7YQIsH5nW4Kzc8lXzE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-1WbNRBL8M7CsSRCQA_ydhQ-1; Thu, 03 Sep 2026 03:53:55 -0400
-X-MC-Unique: 1WbNRBL8M7CsSRCQA_ydhQ-1
-X-Mimecast-MFC-AGG-ID: 1WbNRBL8M7CsSRCQA_ydhQ_1788422034
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-499b99a8a10so5080325e9.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:53:54 -0700 (PDT)
+ us-mta-126-XiU3Ula0OgWHMwZQywl9aw-1; Thu, 03 Sep 2026 03:55:55 -0400
+X-MC-Unique: XiU3Ula0OgWHMwZQywl9aw-1
+X-Mimecast-MFC-AGG-ID: XiU3Ula0OgWHMwZQywl9aw_1788422155
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-482a5e9400eso1755167f8f.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788422034; x=1789026834; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1c3/qiiNicrr5D/2Rt/GDUWYd3VZjVY2MpTQTP3gXcs=;
-        b=XsDEdXQprA+8QgGmXkkHQl13GHVoy3Ysa8DKxsPMFzBfI2fQjx95Msdd1yvoq/okPO
-         R9Qwpl3++JKSjtm1Qu8qrY8K1q1n7F87pIvhArqMopT9af3NiDVnWTEizQKcMzoszOar
-         OPM7IPVMyqYEKp4AK50d5EeO1ROF3UiDxA8yhLg+oQGZKK6OM1CZjsJ+bSrsK4TJ97Ty
-         zuVczu3HnePKWDNiswT1reUZMHwDnslaBViwfzXTj5dJosb4EZDVi/fJ/boqV4bqXnKU
-         sKqhGLFOSE0948n6OvJPdeolIabYhcLrZ/CrskVkVKIWcnaDiOJNzXXpQbGgV1jL4Lkl
-         LLfg==
+        d=redhat.com; s=google; t=1788422154; x=1789026954; darn=vger.kernel.org;
+        h=date:content-transfer-encoding:content-type:mime-version
+         :organization:references:in-reply-to:message-id:subject:cc:to:from
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pV9sg95pTpAsxuNpPStrP1G4M4KPRJDD47PoY7gwmD4=;
+        b=NcY0E92gf1Kgw3hdO0KWgbcvzLcr7NZbh3/HQMj0t5w0TCNlxbRv4IYx4BNM0SZkq+
+         4VREMsawjeY744XiSedIypJ5ENkiGE0awBQXd1aH+mTFhz3EdLXuvDKYUTJpafLugwLN
+         KqHULbO6Q77L2IGIZBOkX7HQZQEXqgogamxwlxkGELBcNsC2vi/Lv0GHd9T/TEhCbrsG
+         qZ2FdfeE+hLS4M7Futz8KgNF3O1JHclNJyVHBKksNrEy9400FAn4xJResgy7mAEdEIcD
+         UmJVb/tyiozIFtTq1Ps5x8sDNCRs5kzM/MXRBhYTcUNMF5q2+MDOXCZdqgwso8RSA1R6
+         +KOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788422034; x=1789026834;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1c3/qiiNicrr5D/2Rt/GDUWYd3VZjVY2MpTQTP3gXcs=;
-        b=U75TXBY//Lo1TMucWx0amvTRBRIlLl3MwE7d7EY5t/nAKVoPC6SgcKgq0uy3QKzymU
-         ZoxRJnoYiXX8QUMQFGqB6/pm4+BVTz1Yhwrmp6akaZAPdQic/wWu8i2p3blTCTd+YFh9
-         SHvTTAnqm06t/wpxx8hcRTpBG5fIUY8JCSHR6Rt3lTw48Lob32PIKOTlF8sCqJqh+zDm
-         4d9RsLjNSLggC0BoUbcT9gcrrJzoes/oc/kkecii109KtM7D+g7K6tNvjteXT3ygTEcV
-         +HU7qlNv/0PWd0VgONYhU//XTiPsh8RhgJtPSt3/UW+qeS+ohLtnsjhoaoLIy2H5kURr
-         bPXw==
-X-Forwarded-Encrypted: i=1; AKwUvBxGgu3ZPQMJPvM+K89c2xliYRskN9eHUxt+5Y/wKbphSa0oyv5+49hJfKYhvoPEdGHyAUNleS4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nZiY42+G5nOX1oLHIsSw1M9G/zGUa9Ujohv1/gd/xxNVbnl5hE
-	Q1lo1mVE9xUXDo/jdwMRjcl7hjp4adJ88S7OABi8j2INKLplKLUO/XZK490UcWyPRBd4mR8ugJ9
-	esx5AV1GRqbFBhBAckXF91a7ij4m2U/sqIDgmrlwsoJSDATC0Ekc7ygwpfA==
-X-Gm-Gg: AYBFou2U1XSK2rDVi6HyQR/KvML73RNpbceO0YUrquYTCEFZZzWK13SM/MwLLuRAAWK
-	ou1LqtNIwqB6uYXtr3b/qdjtIPf8QAksiqnFeCI1XhKY2GQR9b7uCZyAG++7Zqv9bhBACCyQ++v
-	dzGJLEvWu8qUZx3qQIZyIF/faWjLNv+CQaJo2h/F0SLLikBlkDKMd5IwuWRg9Ygg0B520sV2BnA
-	aXeaCECZSETvSsNuGizWqvhIGDEn4PosCwtyDh25iziQST54xM6YsFDx4WVDnAtbH8iHld3/OpG
-	kAE5tEexZ/XjkGk97Yfk2a3xySieRbsNRrNylulPzSb8QbiXmQVBwAk6mLubjyR9UDVcbOdw3tl
-	gYlGETMj+EK6fKrUa/wr7ILTN
-X-Received: by 2002:a05:600d:4445:20b0:499:59fd:dbfc with SMTP id 5b1f17b1804b1-49cf1577d23mr13882455e9.1.1788422033899;
-        Thu, 03 Sep 2026 00:53:53 -0700 (PDT)
-X-Received: by 2002:a05:600d:4445:20b0:499:59fd:dbfc with SMTP id 5b1f17b1804b1-49cf1577d23mr13882125e9.1.1788422033435;
-        Thu, 03 Sep 2026 00:53:53 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce55259ecsm77325335e9.2.2026.09.03.00.53.51
+        d=1e100.net; s=20251104; t=1788422154; x=1789026954;
+        h=date:content-transfer-encoding:content-type:mime-version
+         :organization:references:in-reply-to:message-id:subject:cc:to:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pV9sg95pTpAsxuNpPStrP1G4M4KPRJDD47PoY7gwmD4=;
+        b=KAxZkdIqEguDDbUViJgi/2xWWf2AQL+JE92w6oAH/LSafnyrJsyKx2ws0YrWECFL+z
+         7InVZSuh/L+1KTSVs20lNeVUGmVFK7BM5oiBb3LNYCskTxg76PI9JUMnZ1nwHGg2FsRc
+         LcscuF61/Yha3HpebFf8dJLOrA8nWbEkEe7fbAf+AKAHr9r5wXMpoUMdquvLN8+AM7JM
+         kQdpO2wru+Y80nDA3VoKkVmmW/rJIazNxcBi3gv8vrxezYcV4HdIFgjK5DP/zPizkUgF
+         RAA+BVmF/QUu6IoEB4Hi8i5gAsSfR9id84N0B0pVn1ZfDq5Pdl04f6G2xfJpxCodrFtq
+         I9kA==
+X-Gm-Message-State: AFuF++kX/nHvsC3e1qAEnAR97Jl7mjVt9u59cFzxhAxdEsgIYzJnF85U
+	Y5fqJ3nNt/E4A5Ogx4DYlB5YJcUgGhAXifAe7QPcyhH9v3dHj9HN9EZlaosnfigLu/oFiOtMtGH
+	wCRg/BSnejX62XX+Rgw/C3Be1GmY95bIOpVPk2b2Qg/nTir1jn/1rUGbMwg==
+X-Gm-Gg: AYBFou16zXb6TU7HKeP9ajUIbBv1asBWZZbGJO6Z4kh9NqqK0x+9NH2foPQ6BrkfDdv
+	dR7j3kyKYWp+xPpVf3B/TTogvRLku+ioJ1rkMUu8k88JKtRy8ykRABuf95qirdCXvFwm6kAsWRd
+	SNti6n+3ziu+NgypiXYMv3yNzUdJ98xL6voxDDbUCDUpcx/nFB6O0VBCt4sqkhkv0Xzcpy6zfAl
+	pf0UC6t/xyrUVHo45mDjrdLjtnl7AW1K36WNiWpD9TevY46lJzAX3KoUd7S8ibqSdujhp7ymiyH
+	q913CrmPsHKvlk2WQIU8t6LiAwoVLnTCl8W75XYnPp7jPBy1zB4Ei7ZSJzzUYByaYRI/e/KqgJC
+	zKs8u1MpDJ5A=
+X-Received: by 2002:a05:6000:1449:b0:482:ea9b:962c with SMTP id ffacd0b85a97d-48488f23cb6mr19279144f8f.22.1788422154549;
+        Thu, 03 Sep 2026 00:55:54 -0700 (PDT)
+X-Received: by 2002:a05:6000:1449:b0:482:ea9b:962c with SMTP id ffacd0b85a97d-48488f23cb6mr19279015f8f.22.1788422153950;
+        Thu, 03 Sep 2026 00:55:53 -0700 (PDT)
+Received: from maya.myfinge.rs (ifcgrfdd.trafficplex.cloud. [2a10:fc81:a806:d6a9::1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448eea96csm9953344f8f.29.2026.09.03.00.55.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 00:53:52 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 1D59897C771; Thu, 03 Sep 2026 09:53:51 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Quentin Monnet <qmo@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
- Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song
- Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai
- <ihor.solodrai@linux.dev>, Larysa Zaremba <larysa.zaremba@intel.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Lorenzo
- Bianconi <lorenzo@kernel.org>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next v3 1/4] bpftool: Set BPF_F_XDP_DEV_BOUND_ONLY
- flag non-destructively
-In-Reply-To: <CAEf4BzacBUMLREUObGo5544wyD+mm1=y8ZTnzd7OdDL-c==mMA@mail.gmail.com>
-References: <20260901-libbpf-frags-flags-v3-0-4eb6f14968b0@redhat.com>
- <20260901-libbpf-frags-flags-v3-1-4eb6f14968b0@redhat.com>
- <CAEf4BzacBUMLREUObGo5544wyD+mm1=y8ZTnzd7OdDL-c==mMA@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Thu, 03 Sep 2026 09:53:50 +0200
-Message-ID: <87bjaevkhd.fsf@toke.dk>
+        Thu, 03 Sep 2026 00:55:53 -0700 (PDT)
+From: Stefano Brivio <sbrivio@redhat.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, dsahern@kernel.org,
+ horms@kernel.org, aconole@redhat.com, gnault@redhat.com,
+ laikabcprice@gmail.com, aroslavdudkov622@gmail.com,
+ rough.rock3059@datachamp.fr, stable@vger.kernel.org
+Subject: Re: [PATCH net] tunnels: Drop stale dst when building an ICMP error
+ for PMTUD
+Message-ID: <20260903095552.273dc06f@elisabeth>
+In-Reply-To: <20260902190112.4126199-1-idosch@nvidia.com>
+References: <20260902190112.4126199-1-idosch@nvidia.com>
+Organization: Red Hat
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Date: Thu, 03 Sep 2026 09:55:52 +0200 (CEST)
 
-Andrii Nakryiko <andrii.nakryiko@gmail.com> writes:
+On Wed,  2 Sep 2026 22:01:12 +0300
+Ido Schimmel <idosch@nvidia.com> wrote:
 
-> On Tue, Sep 1, 2026 at 1:47=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <=
-toke@redhat.com> wrote:
->>
->> When setting the XDP hints ifname, bpftool would set the
->> BPF_F_XDP_DEV_BOUND_ONLY without looking at the existing program flags,
->> overriding any other flag values. This was always a destructive action,
->> but after we change libbpf to carry the frags section flag in
->> prog_flags, this can impact bpftool loading of XDP frags programs.
->>
->> Change the flag setting to be non-destructive by OR'ing it with the
->> existing flags.
->>
->> Fixes: f46392ee3dec ("bpftool: Specify XDP Hints ifname when loading pro=
-gram")
->> Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> ---
->>  tools/bpf/bpftool/prog.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
->> index a9f730d407a9..8c2f9255b36d 100644
->> --- a/tools/bpf/bpftool/prog.c
->> +++ b/tools/bpf/bpftool/prog.c
->> @@ -1769,7 +1769,7 @@ static int load_with_options(int argc, char **argv=
-, bool first_prog_only)
->>                 }
->>
->>                 if (prog_type =3D=3D BPF_PROG_TYPE_XDP && xdpmeta_ifinde=
-x) {
->> -                       bpf_program__set_flags(pos, BPF_F_XDP_DEV_BOUND_=
-ONLY);
->> +                       bpf_program__set_flags(pos, bpf_program__flags(p=
-os) | BPF_F_XDP_DEV_BOUND_ONLY);
->
-> maybe we should just add bpf_program__add_flags() and
-> bpf_program__clear_flags() to make life a touch easier and code in
-> selftests and bpftool a touch less verbose?
+> Bridged UDP tunnels such as VXLAN and GENEVE build an ICMP error packet
+> around an overlay packet if the packet is going to exceed the underlay
+> path MTU. The ICMP error packet is then injected back into the Rx path
+> with the source and destination addresses swapped, so that it will be
+> delivered to the overlay source.
+> 
+> If the overlay packet was routed to the UDP tunnel or locally generated,
+> then it is already carrying a valid dst entry and this entry is not
+> dropped when transforming the packet to an ICMP error packet. This
+> causes the IP layer to reuse the dst entry, leading to the ICMP error
+> packet being dropped or routed out of the UDP tunnel interface in case
+> of forwarding.
+> 
+> Prior to the blamed commit this could not happen, as
+> skb_tunnel_check_pmtu() did not build ICMP errors for PACKET_HOST
+> packets. Such packets were instead encapsulated and, unless the DF bit
+> was set in the outer header, fragmented by the underlay.
+> 
+> Fix this by making sure that the ICMP error packet does not have a valid
+> dst entry, thereby forcing the IP layer to perform a route lookup.
+> 
+> Adjust the bridged PMTU exception selftests accordingly. When the
+> local sender in ns_a pings the overlay destination with a deadline
+> (-w), ping exits on the first socket error before any reply is
+> received and returns a non-zero exit code. The test therefore only
+> passed because the ICMP error was never delivered. Use a packet count
+> (-c) like the ns_c line above it, so that the ICMP error counts
+> against the packet budget and the exit code depends on whether echo
+> replies were received. This passes with and without the fix.
+> 
+> Fixes: 8930424777e4 ("tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu().")
+> Cc: stable@vger.kernel.org
+> Reported-by: Laika Price <laikabcprice@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260614-master-v3-1-9f5060ba1ed1@gmail.com/
+> Reported-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260901081825.287173-1-aroslavdudkov622@gmail.com/
+> Reported-by: Charles Bordet <rough.rock3059@datachamp.fr>
+> Closes: https://lore.kernel.org/netdev/aHVhQLPJIhq-SYPM@eldamar.lan/
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 
-Sure, I can follow up with those. Also makes for a convenient feature
-detection target for this change :)
+Thanks for fixing this and for the clear explanation! It was a rather
+subtle and obscure issue.
 
--Toke
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+
+-- 
+Stefano
 
