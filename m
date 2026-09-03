@@ -1,71 +1,163 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776774A2061;
-	Thu,  3 Sep 2026 17:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608611FF7C8;
+	Thu,  3 Sep 2026 17:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788455478; cv=none; b=kOrOh2oEIf+H2GHP6Mk6/VIBEpH/eKHad3Ho7stwcqlcyqRBIeJ5lz7tikL67WeWbK1w9zzri4hjxEU8oRIb707qVQ3cYSdp+la51HYCQmp9k5VgaR9gZ7lQwRhwSqht529j2PZEhVu/ND9FgQ+FZZemuA7kokIuCMZZAy67Orc=
+	t=1788455915; cv=none; b=TTl9hFhX/UFZ0e7yE6Ni3MLwyLYRagOKWq2IJLjez3DpzeOv3dLW4WG1IUIXu8o1ujhPMZQz+QwJ6k9EyOaGVOHb90Tge+ziMzsbWcFMP5e+Z+IZHuJnuh9n7GgBTzovzh7Mu2QAJGK7nm9PkEyBRPsa91qoTpUgwvb1I5RHzOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788455478; c=relaxed/simple;
-	bh=ogzWy7EWCD75TNoqifNVGlozDnJBrFW7ZBndkoEm5YQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mHRDtw0EDznOko2cqNBoSCQTrjJyOb3woiNLUtMQ8Am+lzKy78tHrUrWrs6EtYzm4iIdqnXvGPiHebWPXKBCghjLtu7rDyJLC4lwaz4/WPNU7QNTJF0jYIKHmTGH/KJw1nXgmEbhunsvtRWzJ+HABUGyFitvV1O5Zvn6KBprkno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=F6L+1UB5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788455915; c=relaxed/simple;
+	bh=p6rS8X9u8AcSZpDVLpcO4p1MdnCNksBdWa0CcN1a6uc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bdoESDFD2ZP6R1hCMdWdwQgfFd22H6gCHHXBlJlabdEGWAc5SLE1pqZ9VS29PXSK0LNW8dpecOyEIaW9MXD3fbhH6P0IFZJbSOowH4MCft0r7mhC0Qshv6f7wMNjxti+U/uK5E+5FEDNimwm4fxCseg1wiWSCrDbnt+V8ynB36s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efuwS3Ky; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="F6L+1UB5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xIoSYNxD64iNAu+5aFubNHywfArpP6dsmDEkdSUVDow=; b=F6L+1UB5zwopoRmLN8NQz6bgm3
-	hYAYOTFyiyRVFPWHmvDHaHjYhI9qhiE3H+e4mexMOSjSQOzjmbNGYjx2Itfg/5Cxc30wZ8LLjGFCo
-	aIb7spf/v0Q/wtKTvm7/yy9p4KllwL6qEYqxcr85YrypBaeR+WH89mlf7CYxOIxOzcF4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x2Axt-002lUK-Mv; Thu, 03 Sep 2026 19:11:05 +0200
-Date: Thu, 3 Sep 2026 19:11:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	matttbe@kernel.org, Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/2] selftests: drv-net: Allow
- cross-compiling the hardware tests
-Message-ID: <c45453d8-72ae-450b-be9a-565df1cf0287@lunn.ch>
-References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efuwS3Ky"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027F61F000E9;
+	Thu,  3 Sep 2026 17:18:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788455914;
+	bh=VaNiKLjrBkXnRrP+B04GwooKadFpzdr1nDGvyAAiQEg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=efuwS3KyGVnO3KhfxaLo5r1/iLyUjlvyS0Ywu0t+kDTzEp+dW+QQzoHgkNOpsegVO
+	 fYMOR0+UXSDx6Sh3frJBtlbhwDLEY1tdzg5AHfO8mjFZ+Sv4MaWO64u3HxsiuwndsS
+	 lxIj3dA2GW3/BNS94ZIZgWNMODCqXL26yLDCgBs9O9vpdiPgBHru38kt81u5ompWW+
+	 lLpFAzg3OlCo2wTxzbj4u8S0w/sxZOJGLHcq4EhFD8iIF72nBbxnEV4r7sDRYROvP8
+	 846OFAA1o15l7hfbkkoxa1akw2JVMEl8TJfQE0JvCGWdhlNE73r88YW6KXLzXclvnG
+	 iwbibbMU9pT/Q==
+Subject:
+ Re: [v26,net-next,01/10] net/nebula-matrix: add minimum nbl build framework
+From: netdev-bot+sashiko@kernel.org
+To: illusion.wang@nebula-matrix.com
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ corbet@lwn.net, kuba@kernel.org, horms@kernel.org, linux-doc@vger.kernel.org,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
+ edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
+ hkallweit1@gmail.com, linux-kernel@vger.kernel.org
+Date: Thu, 03 Sep 2026 17:18:32 +0000
+Message-ID: <178845591249.3394541.8367854604654150435@kernel.org>
+In-Reply-To: <20260831021408.2325-2-illusion.wang@nebula-matrix.com>
+References: <20260831021408.2325-2-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
 
-> Tested on an aarch64 target, built on x86_64.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Probably a question for Jakub or Matthieu.
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
 
-As part of the CI system which is feeding into patchworks, I don't
-think we build the selftests? Do we have the CPU resources to build
-them?
+- [Low] The documentation file added by this patch,
+  Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst…
 
-We currently do x86 64 and 32 bit builds. Do we have the CPU resources
-to do an arm64 cross build?
+--
 
-I assume a cross build the self tests needs something like buildroot
-to be sensible? Or Debians multi-arch stuff where you can install .deb
-packages for libraries for other architectures? So maybe that is going
-too far?
+net/nebula-matrix: add minimum nbl build framework
 
-   Andrew
+This adds the Kconfig/Makefile/MAINTAINERS entries for a new
+drivers/net/ethernet/nebula-matrix/ vendor directory, a driver
+documentation file, and a PCI driver skeleton (nbl_main.c) whose probe
+and remove callbacks are stubs.
+
+> diff --git a/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+> new file mode 100644
+> index 000000000000..ff38302968c5
+> --- /dev/null
+> +++ b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+> @@ -0,0 +1,28 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +================================================================
+> +Linux Base Driver for Nebula-matrix m18110-NIC/m18000-NIC family
+> +================================================================
+> +
+> +Overview:
+> +=========
+> +The m18110-NIC/m18000-NIC is a series of network interface cards for the Data
+> +Center Area.
+> +
+> +The driver supports link-speed 100GbE/25GE/10GE.
+> +
+> +m18110-NIC/m18000-NIC devices support MSI-X interrupt vector for each Tx/Rx
+> +queue and interrupt moderation.
+> +
+> +m18110-NIC/m18000-NIC devices support also various offload features such as
+> +checksum offload, Receive-Side Scaling(RSS).
+
+[Severity: Low]
+Do these three statements describe what the driver actually does, either
+at this commit or at the end of the series?
+
+Grepping the vendor directory at the last patch of the series
+("net/nebula-matrix: add common dev start/stop operation",
+9b90629960395de83faaf5146e29ffc3cb854c5b) finds nothing for any of the
+netdev or offload plumbing these sentences describe:
+
+  git grep -E 'register_netdev|netdev_ops|alloc_etherdev|ethtool_ops|NETIF_F_' \
+      drivers/net/ethernet/nebula-matrix/
+  (no matches)
+
+The directory at that point contains only nbl_main.c plus nbl_channel/,
+nbl_common/, nbl_core/, nbl_hw/ and nbl_include/, so the code binds the
+PCI function, maps the BARs and brings up the PF mailbox, but never
+registers a net_device, never programs per-queue Tx/Rx MSI-X vectors, and
+has no RSS, checksum offload, interrupt moderation or link-speed
+reporting.
+
+Would it make sense to describe only what is implemented, and add the
+link speed / per-queue MSI-X / moderation / RSS / checksum text in the
+patches that introduce those features?
+
+> +
+> +Support
+> +=======
+> +
+> +For more information about m18110-NIC/m18000-NIC, please visit the following URL:
+> +https://www.nebula-matrix.com/snic_s1000_en
+
+Is this the right product page?  The URL names snic_s1000, while
+nbl_main.c documents the matched IDs as "SNIC v3r1 product Device IDs
+range: 0x3403-0x3412" for m18110/m18000.
+
+> +
+> +If an issue is identified with the released source code on the supported kernel
+> +with a supported adapter, email the specific information related to the issue to
+> +open@nebula-matrix.com.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/Kconfig b/drivers/net/ethernet/nebula-matrix/Kconfig
+> new file mode 100644
+> index 000000000000..f16e9663eaed
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/Kconfig
+
+[ ... ]
+
+> +config NBL
+> +	tristate "Nebula-matrix Ethernet Controller m18110/m18000 support"
+> +	depends on PCI && (64BIT || COMPILE_TEST) && !CPU_BIG_ENDIAN
+> +	help
+> +	  This driver supports Nebula-matrix Ethernet Controller m18110/m18000
+> +	  Family of devices.
+> +
+> +	  More specific information on configuring the driver is in
+> +	  <file:Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst>.
+
+The help text points users at the .rst above as the description of the
+option's capabilities, so the same over-claim reaches anyone selecting
+CONFIG_NBL: the prompt says "Ethernet Controller m18110/m18000 support",
+but no network interface is created by any commit in this series.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831021408.2325-1-illusion.wang%40nebula-matrix.com
