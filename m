@@ -1,72 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B319E15C14F
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 00:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBD526AC5;
+	Thu,  3 Sep 2026 00:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788396881; cv=none; b=UDf/Nzp2+Ut1KzpbCh8OoOSvGvoZ7KEkji9J4xZiFhxwi6xdKpiP+O/Ext4p4rJc5Jee23i9KOu3blYZZdmoNwwharjaIJkliWEkenjx8K+GDhlj76nwMzvKnoEAINdqlMWSRhBJS3Y9dgUhTfYdpznBi9dzBs48q5IbyQJFgpQ=
+	t=1788396964; cv=none; b=ZJakPw58fpQ1Jp+bGr9g5dB94t2ejYEX+qL/2fSWvgAwWQypbrMphcXiEpfsgYgC+ZIKeq1NoPoTDAPQHcB6SRWsKjrTniPWGHql2Q0Gw9iHYNmplBCbBjmZcWaPquNV5y6Vw8km8QncmlhR0Hyea/5LBI3DoPoXOZNOuUrVQkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788396881; c=relaxed/simple;
-	bh=DX6x0YzSmCKVjStrrKsEGZKXavg2WcAocz8T+yAqzqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cn0zajy4fTu+AXuVOZDpwXuD1Oa93XNNJE/rPXXHjFbFnqqBuuzLK6vvTOTB2wYYzWpuBnaWIhAi51dUzlV2UqOWtTLeH+mKhIp+MtGV9+sd5yoUYyezp7qZ375GFWZR5Qi/mqr4P7ljc38U0G5dwj3B5Ujmyg7RgDsbKfT6QhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGEUPR4f; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788396964; c=relaxed/simple;
+	bh=qtVlNxCnVzLzBM9Vf+e2JmadYkECyr8fqlB/cwj1NvQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Gj87+KH1dPFxoEipFl12YkbreSqpDGMoSq/g2vlQi+I8PYJKeyM8IVxEz4MKVJMVscA4DB+u5pG2uvcDo7ZkgFbg0uyzfn8RcUIo2GOompp6Tby/Krxfe7UIhKU13NwcGCeG+elZCaYL4gm6ftfMXMJmBG4QNCu3Y+v4NLW8ATY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=norbZ+og; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGEUPR4f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114621F000E9;
-	Thu,  3 Sep 2026 00:54:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="norbZ+og"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1168F1F000E9;
+	Thu,  3 Sep 2026 00:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788396880;
-	bh=kByBFXzLTqvbt91jCCe/tGyVt4UQsMeyzGZ9cStlk70=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZGEUPR4fxxXRNXBjJhKVzfLqLfvYFFSPq7jbSuhHeduHGQlQObc/nfsNklbHbtOYn
-	 G+AFIY8yj0MUDyGxbhctfC48cvjlpriCLOJgWGO+jkbsbWHk7C0ffzDQwDfB+R3mkT
-	 Z4rnsc2cdHEeKxrc+uc6IKjDlF6d7Wq3JW3fagTU5actzeIKq62E+K4lmDJLDzf6m/
-	 XGkKZui1fx3JaVxqcDR/NHWz5ljDJ2rO6Ahusej96Gjo80RiBi2V9jnul+Ye3ox9cb
-	 s+YIGszC8XR098EOfxeECiVTmhBNxx9RVocm58jw9NGetcDnktJk3zH2tG8JFrDtQH
-	 zlS649/xZ6J1Q==
-Date: Wed, 2 Sep 2026 17:54:39 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wang Zhan <wang.zhan@smartx.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com
-Subject: Re: [PATCH net-next] net: sysfs: use ops lock for speed and duplex
-Message-ID: <20260902175439.02f76447@kernel.org>
-In-Reply-To: <20260831080623.1064001-1-wang.zhan@smartx.com>
-References: <20260831080623.1064001-1-wang.zhan@smartx.com>
+	s=k20260515; t=1788396962;
+	bh=XqHrAGcUd2P6zGJxD2gyGcw4Dr0oavq/XJn+jXJPwuo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=norbZ+ogNZ8U6sL39LN07dZ1Xh90iqTjXcGcM4iEw9w0pxz0OgittRG1cUVb8kUa8
+	 CyrS8gmOXzVwfXILdnCW1A7DjY4HFgKE49fBL/kJ6MdmJJc0RqDhaxvYlIjZDT4qhD
+	 rRV7dnmCUiaEPT22mNL4jTTzfWY5ZM20dOQV0Uh1kK7Uuld7ZpaJDFUIC8UbBfLS2T
+	 wOiTCUs1wDjSaxkdE17C/1qXxddZO0MvMwpXP7CJGnM7+WCGtgXDjyzmpKLqxP8wcF
+	 nlvzyBpguoXbM3CTYxpbNuhDfl09EgyuZZgInNi4V1Lud/Chh7PI/rubBNtYqiv8b+
+	 XrjOBYlkT03SA==
+Subject:
+ Re: [net-next,v6,1/3] dt-bindings: net: wiznet,w5100: convert to DT schema
+From: netdev-bot+sashiko@kernel.org
+To: arthur@marmottus.net
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 03 Sep 2026 00:56:01 +0000
+Message-ID: <178839696151.3394541.8695572250360907851@kernel.org>
+In-Reply-To: <20260831-wiznet-link-gpio-v6-1-abee6c5c966e@marmottus.net>
+References: <20260831-wiznet-link-gpio-v6-1-abee6c5c966e@marmottus.net>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 31 Aug 2026 16:06:23 +0800 Wang Zhan wrote:
-> Reading /sys/class/net/<dev>/{speed,duplex} takes rtnl_lock() before
-> calling __ethtool_get_link_ksettings(). For ops-locked devices whose
-> callbacks do not require RTNL, this unnecessarily serializes sysfs
-> readers with rtnetlink users. On CPU-throttled hosts, a periodic reader
-> such as node-exporter can keep RTNL held for hundreds of milliseconds
-> while an mlx5 callback runs.
-> 
-> Ops-locked devices can run ethtool operations under the netdev instance
-> lock. The ethtool netlink and ioctl paths use
-> ETHTOOL_OP_NEEDS_RTNL_LINKSETTINGS to identify callbacks that still need
-> RTNL, but the sysfs path currently does not. Apply the same rule to sysfs
-> reads: call netif_get_link_ksettings() under netdev_lock_ops() when the
-> callback does not require RTNL, and keep sysfs_rtnl_lock() for legacy
-> devices and callbacks that opt in to RTNL.
-> 
-> Preserve the existing speed and duplex sysfs ABI, including -EINVAL for
-> devices that are down or callbacks that fail.
-> 
-> Assisted-by: LLM
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-The diff is too ugly to look at. Learn how to break up your changes to
-make them reviewable.
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
+
+- [Low] The new schema enforces one `spi-max-frequency: maximum:
+  80000000` for all three compatibles (wiznet,w5100, wiznet,w5200,…
+
+--
+
+dt-bindings: net: wiznet,w5100: convert to DT schema
+
+This converts the Wiznet w5x00 SPI Ethernet controller binding from plain
+text to a YAML DT schema, covering the wiznet,w5100, wiznet,w5200 and
+wiznet,w5500 compatibles. The old wiznet,w5x00.txt file is removed.
+
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> new file mode 100644
+> index 0000000000000..601d828bae927
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> @@ -0,0 +1,66 @@
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - wiznet,w5100
+> +      - wiznet,w5200
+> +      - wiznet,w5500
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    description:
+> +      According to the w5500 datasheet, the chip allows a maximum of 80 MHz,
+> +      however, board designs may need to limit this value.
+> +    maximum: 80000000
+
+[Severity: Low]
+Should the 80 MHz limit be conditional on the compatible string?
+
+The description scopes the number to the w5500 datasheet, but the maximum
+applies to all three compatibles enumerated just above, including
+wiznet,w5100 and wiznet,w5200, whose SPI slave interfaces are rated lower
+(the W5100 SPI timing figures are in the tens of MHz, not 80 MHz).
+
+With a single top-level maximum, a device tree that clocks a wiznet,w5100
+at 80000000 passes dt_binding_check without a complaint, and the value is
+then handed straight to spi->max_speed_hz for the register accesses done by
+w5100_spi_read()/w5100_spi_write() in
+drivers/net/ethernet/wiznet/w5100-spi.c, which use a different opcode
+protocol from the w5200/w5500 ops.
+
+Would per-variant limits be more accurate here, for example:
+
+    allOf:
+      - if:
+          properties:
+            compatible:
+              contains:
+                enum:
+                  - wiznet,w5100
+        then:
+          properties:
+            spi-max-frequency:
+              maximum: <w5100 limit>
+
+Note the exact W5100 and W5200 fSCLK ratings are not derivable from the
+tree, so this is based on the schema's own statement that the number comes
+from the w5500 datasheet.
+
+[ ... ]
+
 -- 
-pw-bot: cr
-pv-bot: slop
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831-wiznet-link-gpio-v6-0-abee6c5c966e%40marmottus.net
