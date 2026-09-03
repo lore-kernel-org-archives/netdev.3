@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14803A1681;
-	Thu,  3 Sep 2026 23:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B673A6412;
+	Thu,  3 Sep 2026 23:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788479069; cv=none; b=qvEHbrpeYAyf9NA0ryjg42Nc+m66y8PDEy7Sp6s39PLKs11SBb8pmp6Z1clSHvY2RlxeHugzpC6f0Ru1iDjF2MCNrBQ/vQx1nTUoFXdSHdWVgln/yfi4/6lBsHGRmNxd/CvHK4P1uqF3e8DLL7p9GBvnPud+KVnqz6hjFDUlKwA=
+	t=1788479070; cv=none; b=H9mjbVec7GVuVBc23E+/D9S7bJc2JO4Dl67R6lZkLegtziZXuBnacgXemZer/HexduVe45GjO2CEeoecRowy8DegaVwn6sGQ1DZkNHOeEBwFNlzkV38XZkv1j6DbO7lO7vG+ndbrRlKDhPyLuO7CMjX3jZCryBA6MqsIVUdQHu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788479069; c=relaxed/simple;
-	bh=jWfbaWIuKuBt41Xw/ilNcUSrY5c2RDlejX5qfDZWfhs=;
+	s=arc-20240116; t=1788479070; c=relaxed/simple;
+	bh=7CdGKf66S+9POaLGQ2FG7vdBj6HCbm8OuU3AJyb3Mhs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KUjUVTV4rgfQ/U0MXf4Z7wJVwW2Gtnd2ZG9NgZYrYPx6wkl0x78L5m4BDVGQxf2F7/5c6tMBJ4H76X2ADblV4aS05tEGBV+sQyVJkDvkffXCfa1WU1tjWT3jPR1CrXkZ5Cso3/wkLYJ821o4xAllcLosvsUo6cfaiwRvcyBXx78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOqVWTBG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=LbDe2dReGYjxQucclaHpe15SSxtNKY/hY/SPsmD0LrJY+zExmbwXLr0IJ/TQSQuPLswES1EkIVUDqyMZ3vkd1Avz2/s09nNByRrCDum5jUOBSNjXeH566e/uTNKJnQldKsu0uswWnvYpEegbJ9llKaTt3IIYeWHgw2SfvPBV70w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8n7Fvtg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOqVWTBG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95CA1F00A3D;
-	Thu,  3 Sep 2026 23:44:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8n7Fvtg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126261F00A3E;
+	Thu,  3 Sep 2026 23:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788479067;
-	bh=yw8lPJfec8tBYCcxBlZc+vMXTQhcPReHCDbeH7u0TEs=;
+	s=k20260515; t=1788479068;
+	bh=vvIkYBXZMmxBT+6D10uOx8Ye7aPkSdClNRitjOi6G18=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NOqVWTBGuLNDTFecmsgUUTdd600wDvEDAwWJWucQufBdgbj3loWj0GKF3BkfBVUXY
-	 Q/2oP/4neEp/dxtra0KPIkGXuXLbkf4R3+RF4zWJpVQlG7QsFFt4bGzKMSnGNxGY4H
-	 /joZbRuiV2RTA5UXpMx4Wb839s9wf4nABAHSUwbkT5Ayk47l3IX7/gRVb1T2CppTlT
-	 G0isqx7+PnQkirc/Z2SLunf5ehwXmCP2aLQT/XVmA37PUbGXOrNL2T97raMcdsgiFM
-	 PefBhLyoy5J48YA4qEdVGkt4Qx5weqwieyslfpts8PH0aFrEEpz62wgfuZObTjDePw
-	 MY0GEpdakcezA==
-Subject: Re: [PATCH v3 net-next 09/15] net: enetc: add MAC address filtering
- support for VFs of ENETC v4
+	b=m8n7FvtgkUH3W7b6bcxwSnc/5RrwF9DOLwDm1pYfytbqWNuUj6CwIlYHaH6VJBja7
+	 vlQjBhVec1DC/Fx7cJMM9KLh7hyignqklSjLkzzDLshgKJ8Tq0yZa4F8JYOtyR8RGI
+	 Z4LjyOaKVt3jr6ecav6vDLtBe2M/QBc7F2ph7hnHZ7WomQgGnBs1uix4MmtFN3PD/v
+	 87U5iJA0RM/QhiiWvCugdLcsKLwKq0tWG9CkuvFY5MpQtxZ5rvYjR+6Ilns8YEv+x0
+	 epa1lBzGgfjy5KCEVfP3keWmc+MH0dbtk8T0ZC4CFeGtRSja70raTdFzaoASi4td2G
+	 /YK09/dUo3r9w==
+Subject: Re: [PATCH v3 net-next 11/15] net: enetc: restore VF MAC promiscuous
+ mode after FLR for ENETC v4
 From: netdev-bot+sashiko@kernel.org
 To: wei.fang@oss.nxp.com
 Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
@@ -35,10 +35,10 @@ Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 23:44:26 +0000
-Message-ID: <178847906626.4131868.15091552349852478044@kernel.org>
-In-Reply-To: <20260831025441.635045-10-wei.fang@oss.nxp.com>
-References: <20260831025441.635045-10-wei.fang@oss.nxp.com>
+Date: Thu, 03 Sep 2026 23:44:27 +0000
+Message-ID: <178847906763.4131868.15039580023572972267@kernel.org>
+In-Reply-To: <20260831025441.635045-12-wei.fang@oss.nxp.com>
+References: <20260831025441.635045-12-wei.fang@oss.nxp.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,313 +49,156 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] Commit message mischaracterizes the privilege model of
-  ENETC_MSG_SET_MAC_HASH_TABLE.
-- [Medium] The patch lets a VF arm PF-owned hardware filtering state
-  (PSIPMMR unicast/multicast promiscuous bits and the per-SI…
-- [Medium] pf->msg_lock is now used for two incompatible purposes: (a) as
-  the mailbox transaction lock, held across a sleeping hardware poll -…
-- [Low] Concern that the patch adds the PF-side mailbox protocol
-  (ENETC_MSG_SET_MAC_HASH_TABLE, ENETC_MSG_SET_MAC_PROMISC_MODE) without…
+- [Medium] The promiscuous-mode revocation after a VF FLR is fully
+  asynchronous: enetc_msg_psi_msix() (enetc_msg.c:36-45) masks PSIIER…
 
 --
 
-net: enetc: add MAC address filtering support for VFs of ENETC v4
+net: enetc: restore VF MAC promiscuous mode after FLR for ENETC v4
 
-This adds two VSI-to-PSI mailbox commands so an ENETC v4 VF can ask the PF
-to program its per-SI MAC hash filter tables and to change its unicast and
-multicast promiscuous mode bits in PSIPMMR.  The PF-owned PSIPMMR
-read-modify-write is now serialized with pf->msg_lock, and losing trusted
-status clears part of the VF's filtering state.
-
-A few questions below.
+On ENETC v4 a VF FLR resets PSIPMMR[SIn_MAC_UP] and PSIPMMR[SIn_MAC_MP]
+to their default, which enables unicast and multicast promiscuous mode
+for that SI.  The patch tracks the PF-managed promiscuous state in
+enetc_vf_flags and adds a vf_flr_handler callback that re-applies it from
+enetc_msg_task() after each FLR.
 
 > diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> index 363ec562934e..a4ffe1100bd7 100644
+> index a4ffe1100bd7..c421c0e7355b 100644
 > --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
 > +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-
-[ ... ]
-
-> @@ -528,8 +523,10 @@ static int enetc4_pf_set_rx_mode(struct net_device *ndev,
->  		type = ENETC_MAC_FILTER_TYPE_ALL;
->  	}
->  
-> +	enetc_pf_msg_lock(pf);
->  	enetc_set_si_uc_promisc(si, 0, uc_promisc);
->  	enetc_set_si_mc_promisc(si, 0, mc_promisc);
-> +	enetc_pf_msg_unlock(pf);
-
-[Severity: Medium]
-
-Is pf->msg_lock the right lock to reuse for the PSIPMMR read-modify-write
-here?  It looks like msg_lock is also the mailbox transaction lock, and it
-is held across a sleeping hardware poll:
-
-drivers/net/ethernet/freescale/enetc/enetc_msg.c:
-enetc_msg_register_link_status_notifier() {
-	mutex_lock(&pf->msg_lock);
-	...
-	enetc_msg_notify_vf_link_status(pf, PSIMSGSR_MS(vf_id));
-msg_unlock:
-	mutex_unlock(&pf->msg_lock);
-}
-
-which ends in:
-
-enetc_pf_send_msg() {
-	...
-	return read_poll_timeout(enetc_rd, val, !(val & ms_mask), 1000,
-				 200000, false, hw, ENETC_PSIMSGSR);
-}
-
-enetc_pf_notify_vf_link_status() takes the same mutex around the same poll.
-
-enetc4_pf_set_rx_mode() is the ndo_set_rx_mode_async callback, which runs
-with rtnl held (netif_rx_mode_run() asserts it for a driver that sets none
-of request_ops_lock/queue_mgmt_ops/net_shaper_ops, and netdev_work_proc()
-takes rtnl_lock() unconditionally).  Can a VF that never drains its mailbox
-reply then keep the PF's address-list/promiscuity update, and the global
-rtnl mutex, waiting up to 200 ms per poll?  The same helper is now taken by
-the mac_filter debugfs reader in enetc_mac_filter_show().
-
-Would a small dedicated lock for the PSIPMMR read-modify-write, separate
-from the mailbox transaction mutex, avoid coupling a couple of register
-writes to a guest-controlled sleeping poll?
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> index c3ae4c024f34..d58fbaeaf46c 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-
-[ ... ]
-
-> @@ -108,6 +110,132 @@ static u16 enetc_msg_set_vf_primary_mac_addr(struct enetc_pf *pf, int vf_id,
->  	return pf_msg;
+> @@ -212,9 +212,29 @@ static void enetc4_pf_set_mac_filter(struct enetc_pf *pf, int type,
+>  		enetc4_pf_set_mc_hash_filter(pf, mc);
 >  }
 >  
-> +static u16 enetc_msg_set_vf_mac_hash_filter(struct enetc_pf *pf, int vf_id,
-> +					    void *vf_msg)
+> +static void enetc4_pf_vf_flr_handler(struct enetc_pf *pf, int vf_id)
 > +{
-> +	struct enetc_vf_state *vf_state = &pf->vf_state[vf_id];
-> +	struct enetc_msg_mac_hash_filter *msg = vf_msg;
-> +	u16 pf_msg = ENETC_PF_MSG_SUCCESS;
-> +	struct enetc_si *si = pf->si;
-> +	int si_id = vf_id + 1;
-> +	u64 uc_hash, mc_hash;
-> +	bool trusted;
-> +	int type;
+> +	struct enetc_vf_state *vf_state;
+> +	bool uc_promisc, mc_promisc;
 > +
-> +	/* Currently, hardware only supports 64 bits table size */
-> +	if (FIELD_GET(ENETC_MSG_MAC_HASH_SIZE, msg->sz_type) !=
-> +	    ENETC_MAC_HASH_TABLE_SIZE_64)
-> +		return ENETC_PF_MSG_NOTSUPP;
-> +
+> +	vf_state = &pf->vf_state[vf_id];
 > +	mutex_lock(&vf_state->lock);
 > +
-> +	/* For an untrusted VF, unicast MAC hash filtering is not permitted.
-> +	 * For multicast, the MAC hash filter is strictly limited to a maximum
-> +	 * of 8 bits to satisfy its basic multicast communication requirements
-> +	 * while preventing potential network abuse.
-> +	 */
-> +	trusted = !!(vf_state->flags & ENETC_VF_FLAG_TRUSTED);
-> +	type = FIELD_GET(ENETC_MSG_MAC_TYPE, msg->sz_type);
-> +	switch (type) {
-> +	case ENETC_MAC_FILTER_TYPE_UC:
-> +		if (!trusted) {
-> +			pf_msg = ENETC_PF_MSG_PERM_DENY;
-> +			goto vf_state_unlock;
-> +		}
-> +
-> +		uc_hash = (u64)msg->hash_tbl[1] << 32 | msg->hash_tbl[0];
-> +		enetc_set_si_uc_hash_filter(si, si_id, uc_hash);
-> +		break;
-> +	case ENETC_MAC_FILTER_TYPE_MC:
-> +		mc_hash = (u64)msg->hash_tbl[1] << 32 | msg->hash_tbl[0];
-> +		if (!trusted &&
-> +		    hweight64(mc_hash) > ENETC_VF_MC_HASH_BITS_MAX) {
-> +			pf_msg = ENETC_PF_MSG_PERM_DENY;
-> +			goto vf_state_unlock;
-> +		}
-> +
-> +		enetc_set_si_mc_hash_filter(si, si_id, mc_hash);
-> +		break;
-
-[Severity: Medium]
-
-Does the changelog match the policy implemented here?  It says:
-
-  "1. ENETC_MSG_SET_MAC_HASH_TABLE (cmd_id 3): allows a trusted VF to
-  program its unicast and/or multicast MAC hash filter table. The PF
-  validates that the hardware-supported 64-bit table size is requested
-  before applying the configuration via the per-SI hash filter registers."
-
-The ENETC_MAC_FILTER_TYPE_MC case does not test ENETC_VF_FLAG_TRUSTED at
-all.  An untrusted VF gets its multicast hash filter programmed as long as
-no more than ENETC_VF_MC_HASH_BITS_MAX of the 64 buckets are set.
-
-The TYPE_ALL case below does the same: for an untrusted VF it applies the
-multicast half of the request and then reports UCF_DENY.
-
-Neither the new ENETC_VF_MC_HASH_BITS_MAX constant nor the "up to 8 buckets
-for untrusted VFs" rule appears in the changelog.  Could the commit message
-describe this rule, and where the value 8 comes from?
-
-> +	case ENETC_MAC_FILTER_TYPE_ALL:
-> +		if (!msg->hdr.len) {
-> +			pf_msg = ENETC_PF_MSG_INV_LEN;
-> +			goto vf_state_unlock;
-> +		}
-> +
-> +		uc_hash = (u64)msg->hash_tbl[1] << 32 | msg->hash_tbl[0];
-> +		mc_hash = (u64)msg->hash_tbl[3] << 32 | msg->hash_tbl[2];
-> +
-> +		if (!trusted &&
-> +		    (hweight64(mc_hash) <= ENETC_VF_MC_HASH_BITS_MAX)) {
-> +			enetc_set_si_mc_hash_filter(si, si_id, mc_hash);
-> +			pf_msg = ENETC_PF_MSG_MF(ENETC_MF_CLASS_CODE_UCF_DENY);
-> +			goto vf_state_unlock;
-> +		}
-
-[ ... ]
-
-> +static u16 enetc_msg_set_vf_mac_promisc_mode(struct enetc_pf *pf, int vf_id,
-> +					     void *vf_msg)
-> +{
-
-[ ... ]
-
-> +	mutex_lock(&pf->msg_lock);
-> +
-> +	if (type & ENETC_MAC_FILTER_TYPE_UC)
-> +		enetc_set_si_uc_promisc(si, si_id, promisc);
-> +
-> +	if (type & ENETC_MAC_FILTER_TYPE_MC)
-> +		enetc_set_si_mc_promisc(si, si_id, promisc);
-> +
-> +	mutex_unlock(&pf->msg_lock);
-
-[Severity: Medium]
-
-This arms PSIPMMR_SI_MAC_UP/MP for the VF's SI, and the hash filter paths
-above write PSIUMHFR/PSIMMHFR for that SI.  Those registers live in the PF
-port register space, so a VF-level reset does not clear them.
-
-What clears them when a single VF goes away while SR-IOV stays enabled, for
-example on VF driver unbind or guest reboot?  The only disarm paths added
-here are enetc_pf_set_vf_trust(ndev, vf, false) and
-enetc_msg_clear_vf_config(), and the latter only runs from
-enetc_msg_psi_free(), i.e. full SR-IOV teardown.
-
-If neither runs, does the SI stay in promiscuous mode with the previously
-programmed hash buckets, so that the next driver bound to that VF inherits
-filtering scope it never asked for?  An untrusted VF can also leave up to
-ENETC_VF_MC_HASH_BITS_MAX multicast buckets armed this way.
-
-The later patch "net: enetc: restore VF MAC promiscuous mode after FLR for
-ENETC v4" adds enetc4_pf_vf_flr_handler(), but that re-applies the tracked
-ENETC_VF_FLAG_UC_PROMISC/MC_PROMISC state instead of clearing it and does
-not touch the hash filter tables, so the gap seems to remain at the end of
-the series.
-
-[ ... ]
-
-> @@ -582,6 +720,31 @@ static int enetc_msg_psi_init(struct enetc_pf *pf)
->  	return err;
->  }
->  
-> +static void enetc_msg_clear_vf_config(struct enetc_pf *pf, int vf_id)
-> +{
-> +	struct enetc_vf_state *vf_state = &pf->vf_state[vf_id];
-> +	struct enetc_si *si = pf->si;
-> +	int si_id = vf_id + 1;
-> +
-> +	/* For ENETC v1, we only support setting the VF's MAC address via
-> +	 * VSI-to-PSI messages, so there is no configuration to clear.
-> +	 */
-> +	if (is_enetc_rev1(si))
-> +		return;
-> +
-> +	mutex_lock(&vf_state->lock);
+> +	uc_promisc = !!(vf_state->flags & ENETC_VF_FLAG_UC_PROMISC);
+> +	mc_promisc = !!(vf_state->flags & ENETC_VF_FLAG_MC_PROMISC);
 > +
 > +	mutex_lock(&pf->msg_lock);
-> +	enetc_set_si_uc_promisc(si, si_id, false);
-> +	enetc_set_si_mc_promisc(si, si_id, false);
+> +	enetc_set_si_uc_promisc(pf->si, vf_id + 1, uc_promisc);
+> +	enetc_set_si_mc_promisc(pf->si, vf_id + 1, mc_promisc);
 > +	mutex_unlock(&pf->msg_lock);
-> +
-> +	enetc_set_si_uc_hash_filter(si, si_id, 0);
-> +	enetc_set_si_mc_hash_filter(si, si_id, 0);
 > +
 > +	mutex_unlock(&vf_state->lock);
 > +}
 > +
+>  static const struct enetc_pf_ops enetc4_pf_ops = {
+>  	.set_si_primary_mac = enetc4_pf_set_si_primary_mac,
+>  	.get_si_primary_mac = enetc4_pf_get_si_primary_mac,
+> +	.vf_flr_handler = enetc4_pf_vf_flr_handler,
+>  };
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.h b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
-> index 06dc47164dc5..12e67f611f77 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
-> @@ -6,6 +6,7 @@
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> index 4aabeb23a386..55c23d4a73a8 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -27,6 +27,9 @@ static void enetc_enable_psiier_interrupts(struct enetc_pf *pf)
+>  	u32 psiier = ENETC_PSIMR_MASK(pf->num_vfs);
+>  	struct enetc_hw *hw = &pf->si->hw;
 >  
->  #define ENETC_PF_NUM_RINGS	8
->  #define ENETC_VLAN_HT_SIZE	64
-> +#define ENETC_VF_MC_HASH_BITS_MAX	8 /* For untrusted VFs */
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> index 7a11370d2b8e..8007dce90195 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-
-[ ... ]
-
-> @@ -600,11 +620,39 @@ int enetc_pf_set_vf_trust(struct net_device *ndev, int vf, bool setting)
-> +		/* Disable unicast and multicast promiscuous modes */
-> +		mutex_lock(&pf->msg_lock);
-> +		enetc_set_si_uc_promisc(si, si_id, false);
-> +		enetc_set_si_mc_promisc(si, si_id, false);
-> +		mutex_unlock(&pf->msg_lock);
+> +	if (pf->ops->vf_flr_handler)
+> +		psiier |= ENETC_VFFLR_MASK(pf->num_vfs);
 > +
-> +		/* Clear unicast hash filter */
-> +		enetc_set_si_uc_hash_filter(si, si_id, 0);
-> +
-> +		/* Clear multicast hash filter if its set bits exceed
-> +		 * ENETC_VF_MC_HASH_BITS_MAX.
-> +		 */
-> +		hash = enetc_get_si_mc_hash_filter(si, si_id);
-> +		if (hweight64(hash) > ENETC_VF_MC_HASH_BITS_MAX)
-> +			enetc_set_si_mc_hash_filter(si, si_id, 0);
-> +	}
+>  	enetc_wr(hw, ENETC_PSIIER, psiier);
+>  }
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
-> index 1d35e906fc3a..91a9c339245a 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
-> @@ -30,6 +30,18 @@ static inline u16 enetc_get_ip_revision(struct enetc_hw *hw)
->  	return enetc_global_rd(hw, ENETC_G_EIPBRR0) & EIPBRR0_REVISION;
+> @@ -594,6 +611,29 @@ static void enetc_msg_handle_rxmsg(struct enetc_pf *pf, int vf_id,
+>  	kfree(msg);
 >  }
 >  
-> +static inline void enetc_pf_msg_lock(struct enetc_pf *pf)
+> +static void enetc_vf_flr_handler(struct enetc_pf *pf)
 > +{
-> +	if (pf->total_vfs)
-> +		mutex_lock(&pf->msg_lock);
+> +	u32 flr_mask = ENETC_VFFLR_MASK(pf->num_vfs);
+> +	struct enetc_hw *hw = &pf->si->hw;
+> +	u32 flr_status;
+> +
+> +	if (!pf->ops->vf_flr_handler)
+> +		return;
+> +
+> +	flr_status = enetc_rd(hw, ENETC_PSIIDR) & flr_mask;
+> +	if (!flr_status)
+> +		return;
+> +
+> +	for (int i = 0; i < pf->num_vfs; i++) {
+> +		if (!(ENETC_VFFLR_BIT(i) & flr_status))
+> +			continue;
+> +
+> +		/* Clear FLR interrupt status, W1C */
+> +		enetc_wr(hw, ENETC_PSIIDR, ENETC_VFFLR_BIT(i));
+> +		pf->ops->vf_flr_handler(pf, i);
+> +	}
 > +}
 > +
-> +static inline void enetc_pf_msg_unlock(struct enetc_pf *pf)
-> +{
-> +	if (pf->total_vfs)
-> +		mutex_unlock(&pf->msg_lock);
-> +}
+>  static void enetc_msg_task(struct work_struct *work)
+>  {
+>  	struct enetc_si *si = container_of(work, struct enetc_si, msg_task);
+> @@ -602,6 +642,8 @@ static void enetc_msg_task(struct work_struct *work)
+>  	u32 mr_status, mr_mask;
+>  	int i;
+>  
+> +	enetc_vf_flr_handler(pf);
 > +
+
+[Severity: Medium]
+How long can the SI stay in the hardware promiscuous state before this
+restore runs?
+
+The hardware puts the SI into UC/MC promiscuous mode at the instant of the
+FLR, but the policy is only re-applied from the work item:
+
+enetc_msg_psi_msix() {
+	enetc_disable_psiier_interrupts(pf);
+	schedule_work(&si->msg_task);
+
+	return IRQ_HANDLED;
+}
+
+enetc_msg_task() -> enetc_vf_flr_handler() -> pf->ops->vf_flr_handler()
+	-> enetc4_pf_vf_flr_handler()
+
+Since the guest owning the VF triggers the FLR itself (vfio-pci reset, or a
+driver bind path reaching pcie_flr()), it knows exactly when that window
+opens and only needs to re-arm an Rx BD ring to receive frames destined for
+other SIs until enetc4_pf_vf_flr_handler() clears the bits in PSIPMMR.
+
+The scan also happens once, at the top of enetc_msg_task():
+
+	enetc_vf_flr_handler(pf);
+
+	mr_mask = ENETC_PSIMR_MASK(pf->num_vfs);
+
+and enetc_vf_flr_handler() takes a single PSIIDR snapshot with an early
+return:
+
+	flr_status = enetc_rd(hw, ENETC_PSIIDR) & flr_mask;
+	if (!flr_status)
+		return;
+
+If an FLR lands while msg_task is already part-way through the VF message
+loop, is the restore then delayed until the whole in-flight batch finishes
+and the re-queued work runs?  The FLR bits are not re-checked before
+enetc_enable_psiier_interrupts(pf) at the end of the work item.
+
+Would it be feasible to clear PSIPMMR[SIn_MAC_UP]/[SIn_MAC_MP] directly in
+enetc_msg_psi_msix() for the VFs whose FLR bits are set, and leave the full
+policy re-apply in the work item?  As written the handler sleeps on
+vf_state->lock and pf->msg_lock, so it cannot run from the hardirq.
 
 [ ... ]
 
