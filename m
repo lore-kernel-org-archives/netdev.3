@@ -1,214 +1,122 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C36E332EC1
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 02:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3443515D2;
+	Thu,  3 Sep 2026 02:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788402572; cv=none; b=Xc+nEsMskUeOcxFAwNtZuZm3XGAFiny6U7ZvlN8auTysGuZv8nthYBQBRMb9vW4JSedx4Qmw3BRfmcmYoDqjD7F0x0QCIfb216fFe55UwnF/k+7MuZVtuLtlfgoF6gFGeKuhk59GcslxDpKMxwVeUAFy0wtiMspGkMZ0ql1tm0k=
+	t=1788402657; cv=none; b=vD6YnPtQWz4PSdSkmsGzakUbR2ctGcx36uMzyIPnXfOUek9xrrHzzhJ5mGxOMtZbdMnA+4KB0tpccRSmpTmTDVCNZuRA/FlR6Ub2P7Ej7WQIEb8FaCKPIzt2gwXL7A2AN8TVOwCw2WPUnink+4xD9RdiINDJoI3uJo9yz6pk+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788402572; c=relaxed/simple;
-	bh=rYQ1T8deK5DAxjP13zvM2PL0Ydf5YTZvFv1KGYJ1WAM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PuRiw3MMksY5LbiKbi77a59JWQEZ8JhdqR3TUNl5TGZ0D1s9NqpmpGbh7EE3rCAQrT0T9Xz9Qzir0dJLwhPjQ3hZIMdBEtMMfv6JJcHoDytxwrmIEvqLe1hVSCa9gGF38DKf0EHrfL56YUBg2VxKf/WB+RcowbEYOYhj7n0hNbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OQ2okNFJ; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788402657; c=relaxed/simple;
+	bh=AyX2EFPvuiK1pqoqXM9KP4CsCsWwvZZ/tNc38egcLoE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hndoyoeZfhP+GlIeqUT8nuLQ+uQVUQJa0Qx5NF5iXtGznZbXbQRY7OmfsCzC9hgvSlOoEmJWbE0oRG8BM1T7AKD1pKOea+q/zoapuU+ub/mOtaeDroOer5cUzV258PXCsXdcJ7yRhub6UNuVukF4ZlEinCgS+Vqx/Q0u8E+Lt8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=bC97djAD; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OQ2okNFJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=L7
-	K9UgrcST5kgVGu8NN1w64Fo9NJe0nEyYK61Cexfpo=; b=OQ2okNFJi3HDcYw3SH
-	egJY6W7o/RjaPeiobqPTcUqe4eIotQtOsfyDtAbZg0Tzi/UjDvnLXoL0FO0FSC/j
-	77GxKaMvAJlTxIerBaDMz4u6wsbS+raZajQereJ5NdxyOGFjoa225gs0Kegmr9dh
-	uuvjRuEKwclTLcjqmOmtlc3Bc=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3V81i25hqbf4hAQ--.48237S2;
-	Thu, 03 Sep 2026 10:28:52 +0800 (CST)
-From: Longjun Tang <lange_tang@163.com>
-To: kuba@kernel.org,
-	mst@redhat.com
-Cc: jasowangio@gmail.com,
-	xuanzhuo@linux.alibaba.com,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	tanglongjun@kylinos.cn
-Subject: [PATCH v3] virtio_net: add rx-alloc-fail counter
-Date: Thu,  3 Sep 2026 10:28:48 +0800
-Message-Id: <20260903022848.33595-1-lange_tang@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="bC97djAD"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682NMCXi3630541;
+	Wed, 2 Sep 2026 19:30:03 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=AyX2EFPvuiK1pqoqXM9KP4CsC
+	sWwvZZ/tNc38egcLoE=; b=bC97djADl+4XUaGJXAoKcaCGLw+ONBQPVxshS+6Hb
+	9SVmi22NHQCbnd59MxXyXQsCT4DRVplIDPFTiYidXplYkzXPVvqgauTgkNiFslFn
+	klXZlFR0PRaDyZErMBHptSyrR9tS1/jD/+HYtAx/ucWGQDzevNKbkGbWxOyc4gRT
+	iHD6sEblNxHI/ocB8RAZsiE5oy2/rEUBR6eWj+ro2CxNUvikP2RigDh2oypmorUV
+	UVkNR8tW+L2yzlhVymDSp6jvgZMvwHbnnmRtA6BvtzUQ6ZxCT2uqCJpeZkmpKnoh
+	RpZbX/9DoVw6Iaib3Er02qPepUviMN1ArWDq2Sjv6I+ow==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gegb62xnx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 19:30:03 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 2 Sep 2026 19:30:03 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 2 Sep 2026 19:30:02 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id B3BD23F7072;
+	Wed,  2 Sep 2026 19:29:58 -0700 (PDT)
+Date: Thu, 3 Sep 2026 07:59:52 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
+        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <sdf@fomichev.me>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v11 net-next] octeontx2-pf: add mqprio bandwidth offload
+ for NIX TX schedulers
+Message-ID: <apjboPTH53wIfke0@rkannoth-OptiPlex-7090>
+References: <20260902015500.2985371-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3V81i25hqbf4hAQ--.48237S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtw45JF1fAr1ruF18XrWxXrb_yoW7AFy7pr
-	43Aas0yFWDXwnrJrWrKFWUZr1Yywnaya43GFyag34I93Z8Kr1FkF10gayFkF43AFZ5A3WU
-	Xw4vy39xKayj9r7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UXZ2hUUUUU=
-X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC4gbQ-mqY22aSEAAA3H
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260902015500.2985371-1-rkannoth@marvell.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDAyMSBTYWx0ZWRfX5VeMKuQfoDUG
+ 5uzBIjEboLIisaI8gpJ2sBvakcEJCSUmlVfrZTBKohxw+ZHLvG9U6WvmBJ3ZDEbQq2MALed4TRO
+ I+rGW42TyUqy4WPJbAsGJVv2+RI9v7nO/Lq2/GGaS87ZRGu7cbOk6h77KxKKJJSwq0WY5MEHfBw
+ mMf4sCYXhtcX5vx3mA/eC29uK0AjF8JGkqU0uJVqFASmjEaakiXKPXnLW7lQeioV4s0WC49Eqtz
+ viQVljZSlZoqfeeMm3WGNg1/2XYvmFbhIV09xb1H32ORT+2bzMtYS2bHdpVHAVKCbGDBhdXL09E
+ 3dSYPgvARwD48Xbah28nDBf4f1W8/00s6tBh/8IXYAXW2P43xYzfGrwaaQn0kbCEOrmW9lai8XB
+ FUHvEFxejRQVc6fufkzRe8Vu4vZUu1Cj/HPGapmkbQTa0d4A4dDiQlssrrHDTPUe0Zu0ovfA/Th
+ SpNYlUwAtwV//2POA5g==
+X-Proofpoint-GUID: Tzlo5EZCpD6573HLryst_2rfiTdkzPvN
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDAyMSBTYWx0ZWRfXxDcOBLCsBsgy
+ 6E4V/k56qcIHSffqCEfwJ1oSxUG5U4VBBPG0JRCaZjfHTq1DFUOZdJc4ZlN3+iS0y0D53sTDziy
+ CnxcP/SomsJ6liObtSNhiqr3EwcR8Bs=
+X-Authority-Analysis: v=2.4 cv=GpJyPE1C c=1 sm=1 tr=0 ts=6a98dbab cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
+ a=rrcPliMPUjUZiAMkEZsA:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
+ a=Oh551-UHZqmTy8JkqTUo:22
+X-Proofpoint-ORIG-GUID: Tzlo5EZCpD6573HLryst_2rfiTdkzPvN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-02_06,2026-09-02_04,2025-10-01_01
 
-From: Longjun Tang <tanglongjun@kylinos.cn>
+On 2026-09-02 at 07:25:00, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> Add TC_SETUP_QDISC_MQPRIO offload for channel-mode mqprio with
+> TC_MQPRIO_SHAPER_BW_RATE. Program per-queue MDQ CIR/PIR through the
+> NIX TX scheduler mailbox for each non-QoS transmit queue. When offload
+> is active, allocate one SMQ per such queue, parent every MDQ under
+> TL4[0], and map each traffic class min/max rate to the queue(s) in that
+> class.
+>
+> Rebuild the TX scheduler hierarchy by bouncing the netdev through
+> ndo_stop() and ndo_open() on mqprio add, replace, and delete. Cache
+> the active rates and restore MDQ shapers from otx2_mqprio_up() during
+> ndo_open(); log and continue if restoration fails so a normal open is
+> not blocked.
+>
+> Track mqprio configuration in mq_offload_snap snapshots (TC layout and
+> rates). On tc qdisc replace, stage the new configuration while keeping
+> the previous snapshot for rollback: failed setup restores the old
+> snapshot, successful graft is recorded through TC_ROOT_GRAFT, and
+> teardown of the replaced qdisc instance commits the staged snapshot
+> without tearing down the live offload.
+>
+> Reject offload unless the interface is running and the device advertises
+> CIR+PIR support. Reject per-TC rates for traffic classes mapped to more
+> than one queue, SDP rep ports, and concurrent PFC or XDP use. Block
+> ethtool channel count changes while mqprio bandwidth offload is active.
+>
+> Add a ratelimited AF debug message when validating TX scheduler queue
+> ownership to aid mqprio hierarchy setup failures.
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-Count the cases where the driver fails to allocate a buffer or an skb,
-such as when try_fill_recv() fails with ENOMEM, and report them via the
-rx-alloc-fail qstat.
+Will address sashiko reviews in v12.
 
-Plumb alloc-fail into virtnet_get_base_stats() to keep this new stat
-reported consistently at both queue and device scope, matching how
-packets, bytes, stop and wake are handled.
-
-This counter does not cover every allocation failure in all RX paths.
-It is intentionally limited to the common skb and RX buffer allocation
-paths to keep its meaning clear.
-
-$ ./tools/net/ynl/ynltool/ynltool qstats show --json scope queue
-[{"ifname":"ens3",
-"ifindex":2,
-"queue-type":"rx",
-"queue-id":0,
-"rx":{"packets":3722,"bytes":374806,"alloc-fail":0}},
-{"ifname":"ens3",
-"ifindex":2,
-"queue-type":"tx",
-"queue-id":0,
-"tx":{"packets":622,"bytes":77495,"stop":0,"wake":0}}]
-
-Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
----
-change since v2:
-- update commit msg: this counter does't cover all allocation failure cases.
-- v2: https://lore.kernel.org/virtualization/20260824112050.02623327@kernel.org/T/#mcde23203f0dc3d3a64756e517d3f588c52723ad4
-
- drivers/net/virtio_net.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index e34c52d059d3..360cc3435e90 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -125,6 +125,7 @@ struct virtnet_rq_stats {
- 	u64_stats_t packets;
- 	u64_stats_t bytes;
- 	u64_stats_t drops;
-+	u64_stats_t alloc_fail;
- 	u64_stats_t xdp_packets;
- 	u64_stats_t xdp_tx;
- 	u64_stats_t xdp_redirects;
-@@ -173,8 +174,9 @@ static const struct virtnet_stat_desc virtnet_sq_stats_desc_qstat[] = {
- };
- 
- static const struct virtnet_stat_desc virtnet_rq_stats_desc_qstat[] = {
--	VIRTNET_RQ_STAT_QSTAT("packets", packets),
--	VIRTNET_RQ_STAT_QSTAT("bytes",   bytes),
-+	VIRTNET_RQ_STAT_QSTAT("packets",    packets),
-+	VIRTNET_RQ_STAT_QSTAT("bytes",      bytes),
-+	VIRTNET_RQ_STAT_QSTAT("alloc_fail", alloc_fail),
- };
- 
- #define VIRTNET_STATS_DESC_CQ(name) \
-@@ -1917,8 +1919,10 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
- 	}
- 
- 	skb = virtnet_build_skb(buf, buflen, xdp.data - buf, len);
--	if (unlikely(!skb))
-+	if (unlikely(!skb)) {
-+		u64_stats_inc(&stats->alloc_fail);
- 		goto err;
-+	}
- 
- 	if (metasize)
- 		skb_metadata_set(skb, metasize);
-@@ -1985,6 +1989,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 		return skb;
- 	}
- 
-+	u64_stats_inc(&stats->alloc_fail);
- err:
- 	u64_stats_inc(&stats->drops);
- 	page_pool_put_page(rq->page_pool, page, -1, true);
-@@ -2016,8 +2021,10 @@ static struct sk_buff *receive_big(struct net_device *dev,
- 
- 	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
- 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
--	if (unlikely(!skb))
-+	if (unlikely(!skb)) {
-+		u64_stats_inc(&stats->alloc_fail);
- 		goto err;
-+	}
- 
- 	return skb;
- 
-@@ -2298,8 +2305,10 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
- 	switch (act) {
- 	case XDP_PASS:
- 		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
--		if (unlikely(!head_skb))
-+		if (unlikely(!head_skb)) {
-+			u64_stats_inc(&stats->alloc_fail);
- 			break;
-+		}
- 
- 		skb_mark_for_recycle(head_skb);
- 		return head_skb;
-@@ -2414,8 +2423,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, headroom);
- 	curr_skb = head_skb;
- 
--	if (unlikely(!curr_skb))
-+	if (unlikely(!curr_skb)) {
-+		u64_stats_inc(&stats->alloc_fail);
- 		goto err_skb;
-+	}
- 
- 	skb_mark_for_recycle(head_skb);
- 	while (--num_buf) {
-@@ -2444,8 +2455,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 		truesize = mergeable_ctx_to_truesize(ctx);
- 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
- 						    buf, len, truesize);
--		if (!curr_skb)
-+		if (!curr_skb) {
-+			u64_stats_inc(&stats->alloc_fail);
- 			goto err_skb;
-+		}
- 	}
- 
- 	ewma_pkt_len_add(&rq->mrg_avg_pkt_len, head_skb->len);
-@@ -2928,12 +2941,14 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
- 
- 	u64_stats_set(&stats.packets, packets);
- 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
--		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
-+		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
- 			/* We need to retry refilling in the next NAPI poll so
- 			 * we must return budget to make sure the NAPI is
- 			 * repolled.
- 			 */
- 			packets = budget;
-+			u64_stats_inc(&stats.alloc_fail);
-+		}
- 	}
- 
- 	u64_stats_update_begin(&rq->stats.syncp);
-@@ -2948,6 +2963,7 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
- 
- 	u64_stats_add(&rq->stats.packets, u64_stats_read(&stats.packets));
- 	u64_stats_add(&rq->stats.bytes, u64_stats_read(&stats.bytes));
-+	u64_stats_add(&rq->stats.alloc_fail, u64_stats_read(&stats.alloc_fail));
- 
- 	u64_stats_update_end(&rq->stats.syncp);
- 
-@@ -5666,6 +5682,7 @@ static void virtnet_get_base_stats(struct net_device *dev,
- 	 */
- 	rx->bytes = 0;
- 	rx->packets = 0;
-+	rx->alloc_fail = 0;
- 
- 	if (vi->device_stats_cap & VIRTIO_NET_STATS_TYPE_RX_BASIC) {
- 		rx->hw_drops = 0;
--- 
-2.25.1
-
+pw-bot: changes-requested
