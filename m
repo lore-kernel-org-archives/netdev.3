@@ -1,164 +1,106 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ADB4C041D
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 14:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CA74C6F15
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 15:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788447479; cv=none; b=iIDIhLYEUEPHNY4Vh8vye8KQdh6zxvJgIkj3QPSFDh6qae7s9jzU0qO9NUBVSx3oO49yx2uTQQELYAfbiO7e1/7qNHYHW0QN23/WEJ40hR+YZA6SYoCRzPbtTn6ZfNZCSXEU5cOVOUPz8Sit2t0erHO7FSI+f+tARI345+XEDo8=
+	t=1788447641; cv=none; b=crWrg7rYa55hRp4kIr08iSZaozc6bddCqwG8NEQS+CDK0KkgwpqNAwRRPapQKthspyqmKYu7lP43UT4WSdrysRtjbp49oMfR9S2X28jqusIEInFs4OMHyx9KDnmQ3yGaz0cd6OrxRdGpLHouR1EaDeePtwpiEu/uoac9MZdQWb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788447479; c=relaxed/simple;
-	bh=qaETQDtnad1TUlbHOP9J7ajTReas+JTL6/GqwIiWxmU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LuWoey2TQu5EqkC9I4C4f0Xi829a/2tp2sDf8Hbf5Fze4sqKBi2j9xF4Ns+iZpkMQf4yPhmrvQT+HQiRul8HVjd2Qh+vug8ojjclJ9/eZZiuU52qztniGK+6DW4jDzRLex+Sx+6jaDySUnLNxdpY8T0kAqWfQF0RWB2x7WkpSnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RuLfyu4h; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1788447641; c=relaxed/simple;
+	bh=rEiGuSHpvriUqLhToDYgt8FFSKdOnEQptXqAy0J5nV4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LHKAYdHYOUnd1C4EjkTh1A2HSvHhAuL3SDkfzIu0BffMiBoe2DqMHsLPGOhisZDCTdnnXbptMpmSIt7Z03KoEldW3g45ceQf/eDI7haiycHf5hcVo0pOQb+ZGyEVLOxoZS7LvC7lgYk/lYzSTechf3uqkxUVCavsJPt06wkNsG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RuLfyu4h"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d5862bc921so6116055ad.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 07:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788447477; x=1789052277; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CHrg3cDedBMRGb61wI6lrgfnxx6d3yqY2V/Q1s1/JCc=;
-        b=RuLfyu4h+zF5r+ZjsjSPB/AJvlDYUlsDEqmgoaRfbf+bGG8djtJ9oP93KEmUn7fYao
-         2bR3J8sq7uBL/W3vBq5fQeNZP78jW7UE29BEh86+vk8GUIQfCZeaUtRwO6661ZNmtXNO
-         ELa3u0edK1T7LAtPXh6+auDUGLeY+0oh/ItqaSyg7r8lsLNGLxJeil6oA/lql5atyQ8J
-         HqPkEJdpSb2vq7vkkxvZnGCppp78Gtk0jyE3SLFGp7K0qjrnwys6phi7y5XybHx+eghL
-         jw+/XDjH/85l+faKOQGeFx2927ZkHu5IJhaxi4XT3AUBdXgCBwh1BjFRjgggdGJM/3Rw
-         081Q==
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5c7d4c663e9so1536007e0c.3
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 08:00:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788447477; x=1789052277;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CHrg3cDedBMRGb61wI6lrgfnxx6d3yqY2V/Q1s1/JCc=;
-        b=HFRn0x8DUpb0cdXXXGb8LLQZjSjEGnYrhHDYoY8vao32oAMe/7ly5ngiSNygd56zff
-         D+pJ/OIYo+Dpn57gOGOmGw6iVBX8k3cLAc0OfruTU8QmN93BN9I05dFsZaHb7e147449
-         lDc5xqcMDFI2lqOTjrQdu10i7TqrX0cQu0FDamCPAU+bl5NIIeGpycIHu+b/JAeHwlH+
-         GdP5pjKYzU+0zKnpDDHj0b2tU3fs0kB4HmZeTPgPDe5/IXhGZExTFc+XjzNLYmI0ldkC
-         FvxnYQ05GvQwHhkFr2b3GoL6gTYPo86dh6Bal8DFNWH2K8HucfkVccEx6f3pTBa6Zvgv
-         C6tw==
-X-Gm-Message-State: AFuF++ldfHd9sISokrloIR0k3Xc84AIKeY4oiq9s7XtJCKm/rcpR8ILD
-	68v6W71pA+xID9XvqRJRL2NckiQwUZ4dI+IG7MLgshQvNw9lMN3iGhWG
-X-Gm-Gg: AYBFou1GRm58KrCCz3oA0LPCiugu5Hk2CXlYEFRB4+VzlwPLiuHZTFLwXxqGbVTyRs5
-	WyFUBCAxLHwHAOmmskRdmtD0GJ0avZdHiiLKA+ZEdsdQXy408Lat0KjA6gCTXTb3UTBItnQJ1jD
-	GXu1XuJnSfvbrTdAQ+3elb/8zFpaVL+5hOd0CVEzQQSyT2LSlv7hTCTfIzaY/jGvxn3BNIzmDah
-	lGXXZTCcTJX4kJQue/ZlO/UjtKsxMSA36CxDTscg3V5+L+TlbQ231yedR7tJ3CPUwv4k1Wq/8Gi
-	M2USb2GvdWuW++cjJw/PTaWCZ98tLRN0XNbe6m8r5vD1uCp0xIhFMuJLkWXtHcPWgsAFe98+06r
-	0STRMaYzfo3ehmXKb2Wq3GrovW8NYnOS0ZrkwqFxEfFv1xwfocNWjjw4YtR9bIzbkMJ/RxJ5x8i
-	A0k2ku27HIOwyMYvvX2Z7CuQ17ZXW2+lroHsbTY1mz0KYVaa2/y8UeUqmAYzy3QB5G2+VXK7GHf
-	37PyroR+gXWTo98XxrUUYpkgxaeyzKSkEzhTvpogVI4
-X-Received: by 2002:a17:903:2ca:b0:2da:e5a1:4b8f with SMTP id d9443c01a7336-2daec6d3c49mr123986925ad.2.1788447476665;
-        Thu, 03 Sep 2026 07:57:56 -0700 (PDT)
-Received: from localhost.localdomain ([14.218.78.148])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dafec29a02sm11529805ad.54.2026.09.03.07.57.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 07:57:56 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] xfrm: retry inexact policy lookup after node reinsertion
-Date: Thu,  3 Sep 2026 22:57:34 +0800
-Message-ID: <20260903145735.468999-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1788447638; x=1789052438;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=E7IpOefrxKq1W8FoUG8547LazHe9zeJ3Q1wTKXTvt3Y=;
+        b=G4XxkubRWLYCKdGzqDBkPrDq71f7mR7ghjv11FGMConsRhpMYZVSusQlezEdsz1oor
+         W1agbcVPBozLrzkxiiKsKa+xrgg0Ank1xt+qV9ZeWiEyIgWBy/2oZ9qZfwsHXoERoCuM
+         TexN9CDuXDnFN4c/PfWD1uJ3tY7kVJzbQIBm+3ynm9fMIVBxNOd4sOhNhP9Ei3jat9H4
+         yqO5cLJuUGAmDVxuGmhgiAyuoZaXDx1b+9vQFMps8D5/+MStD87CRmTwwe3HT9YbjMD0
+         15e3Gmbd0zOc3DM0KvVIT++y9VJIKJRIqTgYYDYNNVwkPpGB/JmkG2bDeccvnSKoxHQ+
+         foVw==
+X-Forwarded-Encrypted: i=1; AKwUvBwKY19PPtrXg3VA6GmHKqfZ5JqM5h+4zDP9VecPPzc9pY4dRTuVfLBzGQ78BUbD9FJ+bjwcTgc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mc8r6skOa1ESqUkQ5WTkMnjULQg+7V8PtyrFGJVWcxqTwgXMNi
+	Lf7F8sdQjNN1OZh5KV5BMEOdHQikJ1lAG7raJGLJTmvi8cZiGySO64rAc0lX15uktUM=
+X-Gm-Gg: AYBFou12yUsnT719gXUyf4PEzGJqRG1Qw37HnokKs6URa95ypt/SZl6ltj490hqdTUP
+	UZNDu2d8S3Vdz6bW7vkzq7lm2YizjmeYRVDdPlbZeNOmoP31QTrNL//Ki0AvjwL+qHHCtk2Nmep
+	QQz209YAlqD6wAEc4fNTnzEg4Jc4Kd3xZKAlfN51plZawtnODMAb4QyddKucpWC8BspBDi2X4R3
+	otDMbngy3FCKRnkePgVEWyJpk5qGomjirIlnNloGhWN/meHPU78LLrwIsBVeAEqwBdKP3hIW27P
+	/+wyfKtrDkbLj/jWusWPmBYvXIrVJbi9sgupVWNsmMhcc37fUKNPoXgdbQtPtUP6pebpz4/xMJa
+	wTuQmDTudvobnuSkdKKzk4/u2ljy12rmKxVJ/kBqs0dKnXdHgJ65196J6NzuJtRROUzyLqS2Bxr
+	34cco/DbeCmEfW39Un3rn0cAeOyglbx+AX4NMEMd13YpQp5Gpo+31Wa4qlaiz1awyDSSxZnam53
+	nSRZiIpg9Rhm7ne5AT3Mw+lQg==
+X-Received: by 2002:a05:6122:d96:b0:5bf:9461:91d with SMTP id 71dfb90a1353d-5c7d27b5697mr5568673e0c.5.1788447636755;
+        Thu, 03 Sep 2026 08:00:36 -0700 (PDT)
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com. [209.85.217.54])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c7cd5da30asm4664925e0c.0.2026.09.03.08.00.32
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 08:00:34 -0700 (PDT)
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-77bf3334d14so1706683137.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 08:00:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzg1JNX3cz1ee6B6djA3mIeM9oyjQmHSAS/VtolFGQnNsMnHcqDzfL1ShqW0C7s6HodV0FJlTM=@vger.kernel.org
+X-Received: by 2002:a67:e704:0:b0:77c:6bdc:824f with SMTP id
+ ada2fe7eead31-78a1f1d4903mr5471476137.1.1788447632007; Thu, 03 Sep 2026
+ 08:00:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <e481b6de46cecc6ea604ae165272c667274cc621.1788437140.git.geert+renesas@glider.be>
+ <abec6831-d344-489d-b70c-1e5dd4d43c2d@lunn.ch>
+In-Reply-To: <abec6831-d344-489d-b70c-1e5dd4d43c2d@lunn.ch>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 3 Sep 2026 17:00:20 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV98HRJEy2s824VTnXXDMGcfuMN-s0RFertQ4ymjPyp4w@mail.gmail.com>
+X-Gm-Features: AcwNN1XbkTCwkdzzCUI--td_POZtF6rqFVqNEudn1e6PV9_tB5kgdfNf5dSHIDE
+Message-ID: <CAMuHMdV98HRJEy2s824VTnXXDMGcfuMN-s0RFertQ4ymjPyp4w@mail.gmail.com>
+Subject: Re: [PATCH] net: ethernet: ti: davinci_mdio: Drop commas after match
+ table sentinels
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-An inexact policy lookup first records pointers to candidate hlist heads
-and then traverses the lists.  A concurrent policy insertion can merge
-inexact tree nodes between those operations:
+Hi Andrew,
 
-  lookup                         policy insertion
-  ------                         ----------------
-  find inexact candidates
-    save obsolete hlist head
-                                 write_seqcount_begin(&bin->count)
-                                 merge inexact tree nodes
-                                   hlist_del_rcu(&policy->bydst)
-                                   reinsert policy->bydst in survivor
-                                 write_seqcount_end(&bin->count)
-  evaluate saved candidate list
-    miss the moved policy
+On Thu, 3 Sept 2026 at 16:38, Andrew Lunn <andrew@lunn.ch> wrote:
+> On Thu, Sep 03, 2026 at 02:06:47PM +0200, Geert Uytterhoeven wrote:
+> > It does not make sense to have a comma after a sentinel, as any new
+> > elements must be added before the sentinel.
+> >
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>
+> net-next.
 
-The merge immediately reinserts the same hlist node into the surviving
-tree node.  RCU keeps the policy alive, but it does not provide a
-consistent view while its list node is moved.  A lookup that selected the
-obsolete list can observe it empty.  A lookup already traversing a moved
-policy can instead follow the next pointer rewritten by the reinsertion.
-Either case can return an incorrect IPsec policy result.
+Bummer. I have added a check to my checkpatch wrapper script,
+so hopefully this was the last time I made that mistake ;-)
 
-The per-bin sequence counter already brackets calls to
-xfrm_policy_inexact_insert_node(), including node merges.  The read side,
-however, currently validates the counter only while searching an
-individual rb-tree.  A successful search returns without validation, and
-the later candidate-list traversal is outside that read-side section.
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Snapshot the per-bin sequence before discovering candidate heads and
-validate it after evaluating all candidate lists.   Retry the lookup if
-the inexact policy tree changes while it is being searched.
+Thanks!
 
-Fixes: 9cf545ebd591 ("xfrm: policy: store inexact policies in a tree ordered by destination address")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-Changes in v2:
-- (changelog) Drop the unrelated xfrm_policy_count[] KCSAN report.
+Gr{oetje,eeting}s,
 
-v1: https://lore.kernel.org/netdev/20260824152057.216329-1-nicoyip.dev@gmail.com/
+                        Geert
 
- net/xfrm/xfrm_policy.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 932a313b9460..5d4e863863df 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -2157,6 +2157,7 @@ static struct xfrm_policy *xfrm_policy_lookup_bytype(struct net *net, u8 type,
- 	struct xfrm_pol_inexact_bin *bin;
- 	struct xfrm_policy *pol, *ret;
- 	struct hlist_head *chain;
-+	unsigned int inexact_sequence;
- 	unsigned int sequence;
- 	int err;
- 
-@@ -2191,12 +2192,18 @@ static struct xfrm_policy *xfrm_policy_lookup_bytype(struct net *net, u8 type,
- 		goto skip_inexact;
- 
- 	bin = xfrm_policy_inexact_lookup_rcu(net, type, family, dir, if_id);
--	if (!bin || !xfrm_policy_find_inexact_candidates(&cand, bin, saddr,
--							 daddr))
-+	if (!bin)
-+		goto skip_inexact;
-+
-+	inexact_sequence = read_seqcount_begin(&bin->count);
-+	if (!xfrm_policy_find_inexact_candidates(&cand, bin, saddr, daddr))
- 		goto skip_inexact;
- 
- 	pol = xfrm_policy_eval_candidates(&cand, ret, fl, type,
- 					  family, if_id);
-+	if (read_seqcount_retry(&bin->count, inexact_sequence))
-+		goto retry;
-+
- 	if (pol) {
- 		ret = pol;
- 		if (IS_ERR(pol))
 -- 
-2.43.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
