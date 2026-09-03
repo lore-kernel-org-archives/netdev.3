@@ -1,119 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00FB1E7C02
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A285B3E929C
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788427533; cv=none; b=Em/REafNE+GpmylMFOiY7FjFlfKrKB/mxJTSPNN1kHAeiZD2uWYaZ0OvqI76Rfy4uWAwlhlgU762S0sUU4NGUHloNepBKfZ3M+JHyT6CLTZ1tYQhZztN9jJHShazaIQB86dY11stKrmHozMkTnbaSUAtVbTu34MYAw5NADquhSo=
+	t=1788427599; cv=none; b=DwHiORNA2CjZSf7e7TIYfz9tAuzvKJGtZMiYTQMaBOxKEiyGFsjzKpQKiFdfiU2YkjmocE91em1+cyTqRvBp3MU5OQHuToLS7HKUFmHLMEG0KIWaeVVRC+drWbIEDLNoSZyzTzczPNJKequp+22ong6j3FzQGAnNjeXnek5V/bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788427533; c=relaxed/simple;
-	bh=F3bEffyo0R4/edNFXtIcXkcvoM1A7JYlTzpbbIagYxo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fa+YBzcwKhqInE2x7ucx0DF8FS37jYXGJXhC4uNM+IynZsC9PlxRFEy5W/e+yNLP0NfS6TXravviZjJM+Jkiuxsg0uzaF0h38EVMqJ4Wt5WIpeHZ2P+vWgKFwA2KxE+w3Qevvn2OgKfgasuZgK+wdODOiYpn4EsaPs1mVUU/+oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GkiwP+7v; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RpKNapWZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788427599; c=relaxed/simple;
+	bh=5W4ArnJ86wA+s53i49IW1Ss6cZ7Vs8PEMrypqQMgHeI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Sr+iyluWOB5nefgMMeaD+p3FHLualOw54K3t+1Pd+V+m/w0+R8dX3ZcZDf0xG8fEpY3z8hf7zY7t89ZJmkk/Ctkzf3dnT+EuKLtH8ULO/SmM1CSPAbyG1h1LCFHvJIkRjFl5UyuUl+MzxvgvUQ6o1u60srf/gKSoxG+Is/2JFWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sOcqjool; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GkiwP+7v";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RpKNapWZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788427529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+PKW0eXtHxdKlv3YbhDeBo6WYo0CMN3NwYmrHCs4Z7w=;
-	b=GkiwP+7vka45x8gjWwDvNE6qtwWS/EPWETnNpbBUKa31uNhv6f1w1yHqoxFk+yNfaF+Y3d
-	2KlVE6NDUgvyBsfyAve8aOxIYljx/zI26I8JLShtt4G4Ivl6c+m2KVixqxDJVW/U7dWJEB
-	R5NeWPCjcnyodpmHyZVZaRj7rHrHf3o=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-4-g8cOLpMw2gVMWI-vf9Uw-1; Thu, 03 Sep 2026 05:25:26 -0400
-X-MC-Unique: 4-g8cOLpMw2gVMWI-vf9Uw-1
-X-Mimecast-MFC-AGG-ID: 4-g8cOLpMw2gVMWI-vf9Uw_1788427525
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-485835753caso283434f8f.3
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 02:25:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788427525; x=1789032325; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+PKW0eXtHxdKlv3YbhDeBo6WYo0CMN3NwYmrHCs4Z7w=;
-        b=RpKNapWZZpYD31waRw7sGdGDQOnHzECy8mm/yfByJfQwbK2H8p3ocGIv9m+13W7NiY
-         zgJxCBK53kfLzCkQOSAcmB2q/OlXnB2aXcdhJke+G6NSSEnP8ZdYzoeFnXEeGJRoEHUX
-         2E3ZNc2ErUNi8CWm2n3ero3YI2nQlIS4Gcdh2gWYOf77hXk6ouJgbQpnq2WwwSGbijIH
-         F96YisWaAJfflY7dEwFGNYhUDaHTPn5J1h/UJfaFwE6cq6BhapLYzLS0MUnlQCxSm0/9
-         GG2s1nVyLZLEq1oPTsrv5NuU3ZZ5R3nOsn1w3McY4YunsK3xF4zwCfw8DzCjCFChEzjR
-         I9Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788427525; x=1789032325;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+PKW0eXtHxdKlv3YbhDeBo6WYo0CMN3NwYmrHCs4Z7w=;
-        b=hpvezzhxzVjKJQbMrTPDS98/4+RNfsX2ywpdkiEOEzK8riwnp0fg1ExgDfFLVVrYav
-         ER1ndMNBqVbd9DuZC1x+m/fzLT0NFzn7pLrQxXbPwGFA1NANmuqzXkrVviltLSMCxLHX
-         thAcZoohS2jobO9mY3IzZuryZMP8yH8xqoM39HrYBdAvlWMDUCEe568D5H/w+Gapv88p
-         8JTFL3xX0SK4OtR8jMEprZHZDUjnrrNG61umCS4Icet/QDjWu8TDbGc3QOiRliUD6M8F
-         hOfthdeLy+ZMyELJ6+l2xj8HTwRP102elYjysCC3yFLv4LyKr6I5zVwnFbL7/VmkLV5h
-         9NGQ==
-X-Gm-Message-State: AFuF++mcSS/0EnZ5XS0MmZ0B44mhxkt0pqd+B4GrfnHwbGvvu+mzpx8a
-	2R7TyGNIwrIMJMam7lJJ/Z6AcddB8kIAkZyyz4cGdIMGavCXhjleYmuFKxhYs2BaTvj94QhQgOj
-	i3+UXbgSjIBMbsmBSDnZInPCL22Kr0HyMTRc2ZKNUllef1M4HnkNP2uYV0w==
-X-Gm-Gg: AYBFou3WO8yFMX1iPzvN0OKpjqZVvDw6oc/ZOUpIofN/92Kd7k8S98vpTJ7RwNOK3iS
-	egKj41MykHGn8otpgdr3A/bIV7cB2qFeGEPeZbXkKdPLubblllWMrGSEPePo9CKuoLH7UWveWzX
-	pKa3wwimsseAYQMc5GMPxwl3tfd8s3yoZqNBm/MY4SYDSdWQdqOm/SKmx+t4I0IQzfuzpcfOwUS
-	TSbeFgxho6Tz3AT1F2y/bTjI8QYpuTMHjy5QJc/r6FPofmhR18SMgm80N0ZMODnM2ixbyOGpktH
-	+LLmh/9en5vupF1FDsV/YY6IEE7p19bYqDvbjKDj/l2tStJRx92Xgx4UlBZVLnjK+6GUmNJkrLa
-	kI0lDwMe7Ala0lRETn1Tq9dkANi8iNUK+LUJB5uX+HpYDw3GFg/ltGTaae+Okr4ciwdyycee5tQ
-	==
-X-Received: by 2002:a05:6000:490e:b0:484:478e:e19f with SMTP id ffacd0b85a97d-4847b6266a6mr21200364f8f.0.1788427524973;
-        Thu, 03 Sep 2026 02:25:24 -0700 (PDT)
-X-Received: by 2002:a05:6000:490e:b0:484:478e:e19f with SMTP id ffacd0b85a97d-4847b6266a6mr21200258f8f.0.1788427524490;
-        Thu, 03 Sep 2026 02:25:24 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448eea5b4sm12823430f8f.27.2026.09.03.02.25.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 02:25:23 -0700 (PDT)
-Message-ID: <fe767fdb-634f-44d4-9a4e-80b2f8c5647f@redhat.com>
-Date: Thu, 3 Sep 2026 11:25:22 +0200
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sOcqjool"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788427590; h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+	bh=5W4ArnJ86wA+s53i49IW1Ss6cZ7Vs8PEMrypqQMgHeI=;
+	b=sOcqjoolXhtNRqP4ADWAAqMIVOzmFD6bHN+tIqpWt0FBsYUw/08m7G351ppgUsqD5cSWXXfpcDRAZ58jNEtOI5fhAmmA/5oveFVuKAEphd4qyB/H3BRqokXBUr2Lf/za8cnkRXTNLK8zTfFvZD8Ag15v3TXciuWeEGs0z6uGst8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=chuyf26@linux.alibaba.com;NM=1;PH=DS;RN=3;SR=0;TI=SMTPD_---0XAFZIge_1788427589;
+Received: from x31j07255.sqa.na131(mailfrom:Chuyf26@linux.alibaba.com fp:SMTPD_---0XAFZIge_1788427589 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 03 Sep 2026 17:26:29 +0800
+From: Yifei Chu <Chuyf26@linux.alibaba.com>
+To: horms@kernel.org
+Cc: xeb@mail.ru, netdev@vger.kernel.org
+Subject: Re: [PATCH] pptp: reject payloads shorter than the PPP protocol field
+Date: Thu, 03 Sep 2026 17:24:30 +0800
+Message-ID: <178842747087.1044540.6008885003196112246@linux.alibaba.com>
+In-Reply-To: <20260821092618.GF265046@horms.kernel.org>
+References: <20260818162143.gn-j15t2twSq3EK4tluniorb9JMdD9cS6_NWtWioiRc@z>
+ <20260821092618.GF265046@horms.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v23,02/14] virtio_pci: Fix sleeping under spinlock in
- admin command path
-To: netdev-bot+sashiko@kernel.org, shshitrit@nvidia.com
-Cc: netdev@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
- virtualization@lists.linux.dev, parav@nvidia.com, yohadt@nvidia.com,
- xuanzhuo@linux.alibaba.com, eperezma@redhat.com, jgg@ziepe.ca,
- kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch,
- edumazet@google.com, danielj@nvidia.com
-References: <20260831161109.2999926-3-shshitrit@nvidia.com>
- <178835473723.3394541.8002424749068111766@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178835473723.3394541.8002424749068111766@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 9/2/26 3:12 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 2 (2) · Medium: 2 · Low: 1
-> 
-> - [High] The patch adds a new `vp_dev->admin_vq.info = NULL` store in
->   vp_del_vq() (drivers/virtio/virtio_pci_common.c:261) but does not…
+Simon,
 
-At least this one looks real and worth addressing to me.
+you are right. I double-checked the arithmetic: when len == 1,
+pskb_may_pull(skb, 1 + len) only guarantees 2 bytes, so p[1] is read
+one byte past the validated area, but the pre-existing
+len < p[1] + 2 check rejects the frame for every possible value of
+that byte, and the len < 2 clause only hides the read behind
+short-circuit evaluation. There is no control-flow change, so this is
+hardening at best rather than a fix, and given the read stays inside
+the skb allocation I am withdrawing this patch instead of resubmitting
+it for net-next without a Fixes tag.
 
-/P
+The point in finding 2 about the p[1] / p[2] mismatch is valid, but
+as there is no memory-safety consequence I do not plan to pursue it
+here either.
 
+The pptp patch from the same series is addressed in a separate reply.
+
+Yifei Chu
