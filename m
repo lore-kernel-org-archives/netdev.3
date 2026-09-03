@@ -1,120 +1,95 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from sg-2-1.ptr.blmpb.com (sg-2-1.ptr.blmpb.com [71.18.227.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE373B5837
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 20:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9537F50EC10
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 20:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788466466; cv=none; b=b5FjclTbwcXjLNglUjnYs5fyydcSL3o/eABTJvivR2vGE2pZmYWkErsWoIN3Z6ojBr7AKP7EaTOG4MugbH1cC8XydW+K1sJ7vPpGqMFyEqkXQUxIV9sOoRs3ixMjw/gQtzS35PjRUe1HGUaox8AF28Svj9fY6ofzMmM0IQE8ylQ=
+	t=1788466571; cv=none; b=B1+6iLc9QDEtCKrLZTAU+bkv/G1ZejyspC5kPNGFlldTi/8Sj9T1AboxHSnLA5hy9f7AFk7dV8LQBvK6upe6fSy+5telwyYlbFaQoLsgaLwxW1AZXCLb2APt2AI31bYEpFj0LY/eLnC165BkqONMZBNJ5XV/fUAkwUFx82aieoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788466466; c=relaxed/simple;
-	bh=PXHv/uSzDhxCNQnjSd40odOiZVTPRMimycX6GvPMlGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=atizxEuPLk3ZdYfJ1pYFQ9Vq3FRPtAT/W3gNMteY9dh9bWj7gUID2tckR6DAG3qn5fYobSSY/i+mqDD8bPWH4gS2GvklodDegJAKXFQmCt6AVL2NNJmO1XhJ8N9ooVrVJU5RwMpKhAu5wo1pywj37iVcbmARGqLK8DxzQcSrYrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=HBKreGoh; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1788466571; c=relaxed/simple;
+	bh=OCay8y54i/DeL+BmtuyobvApMswnnqjLbsKh2PebhQ8=;
+	h=Content-Type:Subject:Date:Mime-Version:From:Message-Id:To:Cc; b=kEHrK7kFgTjo20AAwHYAaFEvslRzPBqOPInrFSnS/2Jl2u+7gohUzHk9GpOuc3sZ/va7SDJeGoW4Grc8GeUMW3+vR2lLpP6PYjJlWOK2lJukjIBSmlQ+Gm8Xr1SrWLdrfIvwV65G6/9Sl4fIXvEB9IQ6ZY9/7DAu69PJXZUYEuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=g9Blo83V; arc=none smtp.client-ip=71.18.227.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="HBKreGoh"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d715f4a587so3933495ad.2
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 13:14:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1788466445; x=1789071245; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iDplvj+ZDvMboLyoXyPhV2M+bmAxBWACgrtDZdQrMjI=;
-        b=HBKreGohwytgtVux11tGGmp1NzAdQudin9NUcHHCH3QwPTEXFJW052lKk9MuYWkEBk
-         zd2OWYQugkcaZBRvlUAu9ygLcRuPIu3Yd1YHBxjTVOHnvj23CazZDU8vpV/V3Pj9AIAS
-         THG+30805VScH4OSKkoxCIPCLICKEHxEAgtibjbakpZcAajDXNSTCx+6GptwR02aqGjL
-         SRx3jj2ySglCfhuRwEdWm7P/XYb5jT+AIITbAXkX9LeVTfmdefamRM09hNWhsmoHff1X
-         RNu+TeutNToFnv5UpHOT0OJYSwa9CNvkt1hez8V+GO+GKmCumGar+Fm5wUksISPcPVOQ
-         LrPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788466445; x=1789071245;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=iDplvj+ZDvMboLyoXyPhV2M+bmAxBWACgrtDZdQrMjI=;
-        b=Skdsh0g+fXTruzkT7YUdoSajs8SCT9+ru2rtuc05uyotd0s3HMyvDO68uAztvOfRt/
-         r2LARXqQoFAJl0UTwenxRX5n1nW2SMQrJlyL1W89rjlBwU+6tYJINLq27ANXpRBOVacn
-         6osYy6J+LVKS0bokB3cRUZSOeJcb6SWSquE3KUd+/7qdU8yvG1nWkse3rZViC9euklDD
-         L1U2r1jyNU5a/5yPUYFj+QLe8lqBhkc/rGoM8hTi6UMUxMYxLbrRphgs7NKoLdV32A1v
-         w4KgkWYvM3ga9WV9akPTl93QbjLvWr1+UMOWaZE/UwVvK7r1Nj6WWACuKJq4z+5FSPXr
-         0oLw==
-X-Forwarded-Encrypted: i=1; AKwUvByjPBu7gu+Q7nQHbyoFyiKoP2LhpWqagr5jP05uv9CN42rjcaD0o6ATAQ+pr9FOdsY3g/55fio=@vger.kernel.org
-X-Gm-Message-State: AFuF++ne1ksPG0ZzLrQMwbaM60x38gAH/n5E7z952PpHQFbywfUZB1Xc
-	+plAy22z/otnbeWxDb+wwuaiVoBH6diC8WMAIovDVxeb/eAXmmpcKfSNpPENOYHKbN4=
-X-Gm-Gg: AYBFou3Od2VpMW3imIjZtYcVxwXqXYfXYrZK2lTSGteMqgUQhD0cHRb5f0bUymsdqD/
-	7rA7/WamcTVRawWWrfDIMdf4Exen66Kkf2ROBW9Ib4guwEVaiQQzJM4GW8/R3UtEem5/jjcDBPs
-	d+3yQBek/DF0DI28u3dh5PCPVrqfufl9GYuerUwqG7LYR8QRNh3qVIvHUzLCtQa9d7dKuhTgzDz
-	9UNfO9EKVwNeqHqLfw0BcItVbfICFd5SXmOhP6vkBdvCH85yXGH43ZTjfLz8y0O0pyRE3KA0Mfl
-	Kzjjkkwld4ULxENvJQ9DpXgeCilssb6rAghVc+YO1eDiA3pdnT0VtT5tbo1nkYiu9EAXcU3yqnV
-	nqDPsXQdT0cCqie6T5sWDykw2BnjxHM5pdWU+7Tsl1bR8dKQi1ckJBCYAGxBKWK5ylFrZ3dRogX
-	n/agyyOW440ajkYu5a/25fnl206zXnZIJh6VrEKSAF
-X-Received: by 2002:a17:90b:3803:b0:395:7fff:a08f with SMTP id 98e67ed59e1d1-39b25eef036mr1509927a91.0.1788466445566;
-        Thu, 03 Sep 2026 13:14:05 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:9::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b26127fddsm588409a91.12.2026.09.03.13.14.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 13:14:04 -0700 (PDT)
-Date: Thu, 3 Sep 2026 13:14:03 -0700
-From: Joe Damato <joe@dama.to>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	florian.fainelli@broadcom.com, jonas.gorski@gmail.com,
-	andrew@lunn.ch, olteanv@gmail.com, VEGA <vega@nebusec.ai>,
-	leitao@debian.org, louis.peens@corigine.com,
-	yinjun.zhang@corigine.com, oss-drivers@corigine.com
-Subject: Re: [PATCH net 2/5] eth: nfp: bound the ntuple rule dump by the
- caller's buffer size
-Message-ID: <apnVC8cgHhtGhGNQ@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-	andrew+netdev@lunn.ch, horms@kernel.org,
-	florian.fainelli@broadcom.com, jonas.gorski@gmail.com,
-	andrew@lunn.ch, olteanv@gmail.com, VEGA <vega@nebusec.ai>,
-	leitao@debian.org, louis.peens@corigine.com,
-	yinjun.zhang@corigine.com, oss-drivers@corigine.com
-References: <20260903032611.3000029-1-kuba@kernel.org>
- <20260903032611.3000029-3-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="g9Blo83V"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2604220257; d=cherr.cc; t=1788466551; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=D9TEDMv0CjVfKQlEgF61kSUh682AwltwWfoAN5/kJX0=;
+ b=g9Blo83VJYy8VLloUNS5xPCXmdhaUn0YkuIKOIvse773bC5ZbTwBT45mTodgNz+AYOdN/+
+ vNol0TEwF+KvwoJqLuJH1CvmmwXesU17uSJbZCC8+HF6VSTrhAyomfkie1SMg8+T9+uvKt
+ bACPN8aVtm+f7Pc4KWDUOEYzfE2JNAlHLpPXOwwiJPIxIMNpz3o9xXjvfGaBYNefC55wY1
+ C1EDKusalc/1P6FMO/dzkY09eRKa4r3ZfRdF0FueQYds8XridN6+uvaAimheYYBkdXBg76
+ MVxiPoON/nZcj6+s+O1H/Mj46jEYvgec6WWffzrbkqYOMs85oJINZGmCCvDlvA==
+X-B4-Tracking: v=1; b=H4sIAHHVmWoC/yWMwQrCMBAFf6Xs2YWkoKK/Ih6a5EXXQ1yyaSmU/ rtRjzMws5GhCoyuw0YVi5i8Swd/GCg+p/IAS+pMoxtP7uI8Z0TWpqxqjAWl8TxlTjGefTjCp+C ot1qRZf19b1TQ6P6XNocXYvsead8/URna+34AAAA=
+X-Change-Id: 20260901-fec-ptp-pps-event-uaf-dcc71b5e1db0
+Content-Type: text/plain; charset=UTF-8
+Received: from [192.168.9.107] ([111.42.148.30]) by smtp.feishu.cn with ESMTPS; Fri, 04 Sep 2026 04:15:49 +0800
+Subject: [PATCH net 0/2] net: fec: fix PTP clock teardown races on device removal
+Date: Fri, 04 Sep 2026 04:15:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903032611.3000029-3-kuba@kernel.org>
+Mime-Version: 1.0
+From: "Shengzhuo Wei" <me@cherr.cc>
+Message-Id: <20260904-fec-ptp-pps-event-uaf-v1-0-9af446be4a11@cherr.cc>
+X-Mailer: b4 0.16.0
+Content-Transfer-Encoding: 7bit
+X-Original-From: Shengzhuo Wei <me@cherr.cc>
+X-Lms-Return-Path: <lba+26a99d575+cadeb7+vger.kernel.org+me@cherr.cc>
+To: "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>, 
+	"Shenwei Wang" <shenwei.wang@nxp.com>, 
+	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, 
+	"Richard Cochran" <richardcochran@gmail.com>, 
+	"Troy Kisky" <troy.kisky@boundarydevices.com>, 
+	"Fugang Duan" <fugang.duan@nxp.com>, 
+	"Lucas Stach" <l.stach@pengutronix.de>, 
+	"Fugang Duan" <B38611@freescale.com>
+Cc: <imx@lists.linux.dev>, <netdev@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, 
+	"Shengzhuo Wei" <me@cherr.cc>
 
-On Wed, Sep 02, 2026 at 08:26:08PM -0700, Jakub Kicinski wrote:
-> nfp_net_get_fs_loc() dumps every entry of nn->fs.list into rule_locs[]
-> without consulting cmd->rule_cnt, which is how many entries the caller
-> had room for.  ETHTOOL_GRXCLSRLALL requires no CAP_NET_ADMIN and the
-> ioctl sizes the buffer from the rule_cnt userspace passes in, so once an
-> admin has installed flow steering rules any user can ask for fewer slots
-> than there are rules and run off the end of the allocation.  A rule_cnt
-> of 0 leaves the buffer pointer NULL and the walk dereferences it.
-> 
-> Bail out with -EMSGSIZE when the buffer fills up, the way the other
-> ntuple capable drivers do, and report how many locations were filled so
-> a shrinking rule list does not leave the caller reading stale slots.
-> 
-> Reported-by: VEGA <vega@nebusec.ai>
-> Fixes: 9eb03bb1c035 ("nfp: add ethtool flow steering callbacks")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: leitao@debian.org
-> CC: louis.peens@corigine.com
-> CC: yinjun.zhang@corigine.com
-> CC: oss-drivers@corigine.com
-> ---
->  drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
+fec_drv_remove() calls fec_ptp_stop() before the netdev is unregistered
+and freed, but PTP teardown leaves dangling references behind.  The PHC
+pointer remains set after ptp_clock_unregister(), so an ethtool -T on the
+still-registered netdev can pass it to ptp_clock_index() after the clock
+structure has been freed.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+An in-flight PPS handler can race ptp_clock_unregister().  The devm-managed
+handler also remains registered past free_netdev() and can dereference the
+freed netdev before device-managed resources are released.
+
+This series closes both holes at their respective introduction points.
+Look up the PHC index by the parent device and clear fep->ptp_clock after
+unregistering the PHC, then explicitly free the dedicated PPS interrupt
+before the PHC and netdev teardown.
+
+Found by source inspection while reviewing PTP teardown paths.  Verified by
+compiling the driver with W=1.  No hardware was available to reproduce the
+races.
+
+---
+Shengzhuo Wei (2):
+      net: fec: don't leave a stale PTP clock pointer after unregister
+      net: fec: free the PPS interrupt before tearing down the PHC and netdev
+
+ drivers/net/ethernet/freescale/fec.h      |  1 +
+ drivers/net/ethernet/freescale/fec_main.c |  3 +--
+ drivers/net/ethernet/freescale/fec_ptp.c  | 15 +++++++++++++--
+ 3 files changed, 15 insertions(+), 4 deletions(-)
+---
+base-commit: 548e7bcd0c5460ddcbca9600cea603ebeebf4da7
+change-id: 20260901-fec-ptp-pps-event-uaf-dcc71b5e1db0
+
+Best regards,
+--  
+Shengzhuo Wei <me@cherr.cc>
