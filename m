@@ -1,19 +1,19 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D908E305680;
-	Thu,  3 Sep 2026 09:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CFC469846;
+	Thu,  3 Sep 2026 09:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426059; cv=none; b=PDXJRwHUhaB8VnhR5/3uybOgz2CNDMY2vMka4F+rJwqQfpMJ/fwSsPDYfdCuKlZGS00y0bF/Cty9jZ/8eYRQDkNHzcOKJEZ/r8poiryh0BcnJ+V8p8O0RijG2VR3REQ5aSm6SJDErctbJGGVeOwnJ3C/6lrolMnq5/walmCdNZU=
+	t=1788426063; cv=none; b=h42ws+VpXubj4v6ItaZe2yg1MpBYYsxRnNmH01Hb/bkmwc/RpXWvO72djgfqmr5quJWneNZ/0eyDR35RX857QedBP1Jv7OTDTe8M/1x1V2mMVrUqH350R+qscaisKFlvkLoUlhLiG2JlNedk1CkWb/Q4jTqC1juWF1OvfsgvDME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426059; c=relaxed/simple;
-	bh=Y5AIHhLS8iOxJqe2C41AIZfSByrag0bx0tv5L7x5ULk=;
+	s=arc-20240116; t=1788426063; c=relaxed/simple;
+	bh=1oam49rE2q1fURbGL8mKULShH5jhQop+PcZjj/rJ5Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcgzXtGQTA7sE+ei5BWqTvuqmWW+SusD8ec3RC8qG/XQ3RUW5hnd0sw3n8Lt6sgNrpkBiTrY9W0kUfIT5llUV3eBQmfwerbFk3wPpKARiNtzBzfg0qRJxmKlCI5GMlBTfxlPtCBMv5lMLDXaUBVd6fMDHH7067o0jJeSWImnhRQ=
+	 MIME-Version; b=iWGAuiKBl3cDf3JZU4IOT5ARMyJ43e5lc9CTU79VW09+2DO5vUr5wdXTCs2t+NvqG7dDKpwz6qh3LW89GKyC8g6cI7aUgsAtPr6iaIErhLdDI/6H7P/sFal4loDMoTrvaAnejz8DE8Y5ql/3ViM2SQ4Atqo/RKVL4BlmHHw+mk4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7811F000E9;
-	Thu,  3 Sep 2026 09:00:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB501F00A3A;
+	Thu,  3 Sep 2026 09:00:58 +0000 (UTC)
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Conor Dooley <conor.dooley@microchip.com>,
@@ -35,9 +35,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Brian Masney <bmasney@redhat.com>
-Subject: [PATCH net-next v2 2/3] net: mdio: mux-meson-g12a: Make sure clk_init_data is fully initialized
-Date: Thu,  3 Sep 2026 11:00:40 +0200
-Message-ID: <98e2b71c333fea0ed59bf615c818cb7b56e2f2b5.1788425654.git.geert+renesas@glider.be>
+Subject: [PATCH net-next v2 3/3] net: phy: air_en8811h: Make sure clk_init_data is fully initialized
+Date: Thu,  3 Sep 2026 11:00:41 +0200
+Message-ID: <0e869f49c910ce054aa22ae84480aab69420bb92.1788425654.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1788425654.git.geert+renesas@glider.be>
 References: <cover.1788425654.git.geert+renesas@glider.be>
@@ -68,22 +68,31 @@ Compile-tested only.
 v2:
   - Add Reviewed-by.
 ---
- drivers/net/mdio/mdio-mux-meson-g12a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/air_en8811h.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-mux-meson-g12a.c b/drivers/net/mdio/mdio-mux-meson-g12a.c
-index 08d6a6c93fb8bf02..e6c9ef3641afa27e 100644
---- a/drivers/net/mdio/mdio-mux-meson-g12a.c
-+++ b/drivers/net/mdio/mdio-mux-meson-g12a.c
-@@ -223,7 +223,7 @@ static int g12a_ephy_glue_clk_register(struct device *dev)
+diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
+index 0eeb7b9a4e260bcb..429231949120c7c8 100644
+--- a/drivers/net/phy/air_en8811h.c
++++ b/drivers/net/phy/air_en8811h.c
+@@ -932,7 +932,7 @@ static const struct clk_ops an8811hb_clk_ops = {
+ 
+ static int an8811hb_clk_provider_setup(struct device *dev, struct clk_hw *hw)
  {
- 	struct g12a_mdio_mux *priv = dev_get_drvdata(dev);
- 	const char *parent_names[PLL_MUX_NUM_PARENT];
 -	struct clk_init_data init;
 +	struct clk_init_data init = {};
- 	struct g12a_ephy_pll *pll;
- 	struct clk_mux *mux;
- 	struct clk *clk;
+ 	int ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_COMMON_CLK))
+@@ -1031,7 +1031,7 @@ static const struct clk_ops en8811h_clk_ops = {
+ 
+ static int en8811h_clk_provider_setup(struct device *dev, struct clk_hw *hw)
+ {
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
+ 
+ 	if (!IS_ENABLED(CONFIG_COMMON_CLK))
 -- 
 2.43.0
 
