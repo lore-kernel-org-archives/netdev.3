@@ -1,72 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1E337F010;
-	Thu,  3 Sep 2026 16:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648AC4EBACA;
+	Thu,  3 Sep 2026 16:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788452581; cv=none; b=PBgAr+TXnXPyVOLz2/keaZ/zKN5mtbXkdhUZQboIMy6nMD1ZQPnSQX6lxQro8f/A6ULB3f1DxoEUQA2RmZx7gYPZidoDMa3znDzWIqPhtZwhGhBHzolmj7jyXb2XjhuiWpSxBE812UsUd17V/SHovtprHaqk45rBC0Qd3obba4I=
+	t=1788452755; cv=none; b=Mku/CM0jDJOrnAFoim/ziVQ4PZSeSOkSDqaKRrpQeYqBltVMJGAORdZ6SJtDKTx17zJVePjqn1oALGgcG30LNpqp8xSRw7wroh7XmRDnDj7VNlNTVxKP0DUVbsM34a6RvCXzJJ9VjbBom/b0ssk8dVtbFv427x7gSNm6dNhMaZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788452581; c=relaxed/simple;
-	bh=phu32JUFTt3ICOhnu0d3tCvXTSCvduiOR7VBPKK84Ko=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bPHDwWeCbj2XEeCMADcgRlLgCpJzhL65Vs5IV5fMiYHloGa+CaoWkKGctRdVMQTOagnr8zQ+lApONcCVWSapi1SUfAQS7hi/Tx8rR+wePp9ICfF+DnHL3bvDF+AQhLQisJi14y3PyXYFqW4dk3HVT/eeGYqWMQtfHSaYbLUYFgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQyNgcpR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788452755; c=relaxed/simple;
+	bh=Qjp9s93WKT9GSAkwinXvY7BYYxnbXCPp1HZhL2ZKUWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dkv1LHWhqoodWxcv0hHGvtHdJagLxkc7i5fE6FGFOJNtgzriEXDv1YJKl8fZr+5A4rYxkS+Q7Bwu6Zfm2jWQr1ZkHTNhjQj0QMGVa5bbakUixL5ftIAV3R1ndqGxplo5FOO1ROByRMOi6R8AWy3FFWhU6fwhT/uI1z8KMmsEDB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4NNVtOn7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQyNgcpR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10F11F000E9;
-	Thu,  3 Sep 2026 16:22:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788452580;
-	bh=s0DcUKFUcOr6NqPWhrDGwNQBuilFraFwRJOhT/ht8zI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GQyNgcpRMHyhbCyUEHHdUEVXnWk9e6neDfS7T2sV0c4aQfC8nVeaEUE0Pr08q9ZUT
-	 5zSMJI2DN2j9fyW5rhrOnf8o2i8j+qbCB+ZoOpIeXjnsVLNbBPSpT4Zrgk5M1qdJI+
-	 uBu+BzbDdtjPw1SeLE2Z4VO3hXF4oUklBILWHwMQPcDikNBtMQT4vVkS3C9B1CaHei
-	 vSMNEnuvRdjGYr7z6wHoBr91yXgKUfxrKgDx6HUAAd4Ccc5Z7B+mBt74RexoQFlhB8
-	 iCs4YLN7ePUsvVUk8j0b0jt0oAy8qnnd8yfNMAXMiGj83fSnGIEGxyrKMOADMX/JDZ
-	 LW6WwMo6ilHNA==
-Date: Thu, 3 Sep 2026 09:22:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Matthieu Baerts <matttbe@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>, Jay
- Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>, Jussi
- Maki <joamaki@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>
-Subject: Re: [PATCH net v2] bonding: fix slave_cnt leak on XDP error paths
-Message-ID: <20260903092258.67ea7b65@kernel.org>
-In-Reply-To: <62271715-fbd6-4047-9b69-b2bda40db056@kernel.org>
-References: <20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn>
-	<62271715-fbd6-4047-9b69-b2bda40db056@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4NNVtOn7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=o9ibEAjof7rB7VihNGOccTypJjhjM+Lpyk7rTBpXcRg=; b=4NNVtOn7d+1/QEZy2LEeAspKFh
+	kzezQtmefEab6W1nyiNG93NxQFbtfYM5kNL1ZmAGtJCij/xejEKD5WaCXD5B09i8QmKQc4au9+RTk
+	iRhRUCdiFDt98CiQGz2mJ7qBCKDSMauCRq/4GDJTHLRgDiflWOfrjot3KLaZq2rFqjTY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x2AG2-002kyG-TR; Thu, 03 Sep 2026 18:25:46 +0200
+Date: Thu, 3 Sep 2026 18:25:46 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/4] net: dsa: motorcomm: Use u64_stats_t for
+ MIB stats
+Message-ID: <ff900ceb-82eb-4356-97f2-4af75480a8c4@lunn.ch>
+References: <20260903143514.532023-1-mmyangfl@gmail.com>
+ <20260903143514.532023-4-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903143514.532023-4-mmyangfl@gmail.com>
 
-On Thu, 3 Sep 2026 12:38:14 +0200 Matthieu Baerts wrote:
-> On 03/09/2026 10:10, Hangbin Liu wrote:
-> > From: Hangbin Liu <liuhangbin@kylinos.cn>
-> > 
-> > When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-> > already incremented. If XDP setup subsequently fails, the error paths
-> > jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
-> > 
-> > This causes slave_cnt to drift upward on each failed enslaving attempt,
-> > which would lead to unbalanced traffic distribution with round-robin
-> > mode.
-> > 
-> > Fix it by moving the slave_cnt increasement after XDP setup.  
-> Thank you for the fix, but it looks like it causes multiple KASAN
-> issues, see:
-> 
->  - https://netdev.bots.linux.dev/flakes.html?ld-remote=virt-bonding-dbg
+On Thu, Sep 03, 2026 at 10:35:08PM +0800, David Yang wrote:
+> 64-bit variables might not be atomic on 32-bit architectures, and could
+> lead to load/store tearing. Use u64_stats_t to ensure consistency.
 
-Hangbin, this is at least the 3rd time in a week when kernel selftests
-find issues in patches you posted. It's really time for you to run
-these tests locally.
+Can this patch also be broken up. It should be possible to use
+u64_stats_read() without changing the locking? So one patch which only
+does u64_stats_read(). You should then be able to add the syncp
+code. And lastly the mutex changes. That then allows you to explain
+why the mutex changes are safe in the commit message.
+
+    Andrew
