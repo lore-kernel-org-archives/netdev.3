@@ -1,120 +1,191 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D124FB9AB;
-	Thu,  3 Sep 2026 20:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DD150EBFC
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 20:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788468952; cv=none; b=n/chPZZKmV7sobjStyvsV6WKw6XI/+MezDpKp1M7KqLrHagbC5t4BrzrO4WQmuxfXOaSDWll6w3UViA5oiGp25J7UoI2rY6N8k+fdqWB5TXlVbL0XcYCg/wvXfPeeOfDgyy7UV4qK8JX9OUmzcv0+6jwVHt4T6KZa15JQ5h5R7w=
+	t=1788468991; cv=none; b=Iw2Bj7tfJyOBELaoN7p03G1KvPxHT+fP9KM4GGSs4mzByctvI/lFdeZcVzN14tZyn67q9m/4GvFwwR8JFkPLyZdeD17BrCMgtXUiDFnd7MIC5spc28YdCGS5vUqYcvK4lFV5Jo2YTtBkYPkZhe2sXFf4ou3JEThXrL1vQ+EfzUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788468952; c=relaxed/simple;
-	bh=nsnykFvKA6CUZI2i8nncnaHOBieMMPVzB48Gysb4EHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TNjW3rtJkoMTw9/o/H5WnE4G9hRU2uU1/4zJdxri0CHHTqDTrUXhHXK3keNu7Uabsj0LAlfB1i9nTBjLLOT7trn5vpQeH8gBbNC+r4UkKfNSQdSlvdGy0IWpV4dFYMf7Bqm7QVYx/YQQ30VZee89moCVq/VPOFN3RL5dKYXvar0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GRqjWyDz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788468991; c=relaxed/simple;
+	bh=asM3u2jh2/97ma/RigKr/jhcfK2a1T/GQYGyli6hKw4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PdMDpKYxfMEnmUoHoVwBrFEFpcAh2kWeFUR/plPVBp03W4mastlhN6MjJ9CYg179hujdkH7l0nWFg1LzuViMQxIjJqSSUVjFTh17hhFmSj9xcEAaIJ/VU1DxyByMTmgkALVpQCo+YzBgQ8T8t57BmP0MKP/Zc9A+rtL3LAEPcCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=oybCd1ev; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GRqjWyDz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=yFC2ClBw+6w8pStYMKhcLz/+4KqvGk4cr7parGrLYjY=; b=GRqjWyDzlED49vGoXmYfWSKpFp
-	VjqLPVXi7PH+nw4EMqHN2m3mCG9aKgU2REHUFmEESwWNy94KEcCWR79CNtsJL9OI1JCylyeoa9zbs
-	PQbnAB8UTK2pFgVWVS5+A1YHyUfDqifbWITJOsacCo6Md0DGlX5F1qZ15q55wyiJLNyo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x2ET5-002ndm-Oa; Thu, 03 Sep 2026 22:55:31 +0200
-Date: Thu, 3 Sep 2026 22:55:31 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="oybCd1ev"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-52d8679c149so3991511cf.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 13:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1788468981; x=1789073781; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=omcuQrXyWn92mT7/l5cfyeWdZD8VtU1sSuEMsPrFlZA=;
+        b=oybCd1evk4sAK+iGb2ojUB9x+GtRbYMjyKcG5CdCgfMiCGLieM3mKh9/digSW31lyO
+         y76otpy2sV37+9OE+fzYDzVB65TDOfzo/CJjdGXgZUDDk2Xuhay1nyN8nt6YD+yAk8qG
+         VWeIATpbzMWK5B2O8zbJtj/n7hjY1CJiskFL0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788468981; x=1789073781;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=omcuQrXyWn92mT7/l5cfyeWdZD8VtU1sSuEMsPrFlZA=;
+        b=qMUEiSXLkH66iA/f5CMSldjYJBgQpAep6eVMDizPy9ZF4XPRKgzUlkvvLKUo+Z01t0
+         0DoMLzx2oyxOtQ10KQobszE4LMd0Kxp3MLNfwhTkHZDSciRi8/imW0UWfKtN0q76NLYs
+         4cxE3jM+jChZHLewrmXCaBkNKImKqbgGb9XaN/bnpptm5JFipYQaXmp1akkgDs3exrzT
+         MkMBWLYLqMie0vMHwxzzAa0v0c56tgFusgwOUNMXVlNeBgOyY/v8izeWgKx8dXi1IOAv
+         pO8d2B0yc1CFWLNHFW6Xe3t7sU+aK3VUKzCTYBh+OFFvKVvhJmTtMeDKwFj/ZG4LJ8bW
+         hHKg==
+X-Gm-Message-State: AFuF++nLHzfZ1SSYa/35GBmFKSARI1zDLC7igXV37kMKM3v/OlE2iBfd
+	xTnD7uc7dj5s+Th+dgfLDUj5eRozg6LF3l/eA+a8K2YnfIvVKKKW/IhsAw+kx4AVhna6INNbNm8
+	mLqYJ6g==
+X-Gm-Gg: AYBFou2KewixOLgjKPX68EUy9Z3BY8WeHKrqea5/HufMPHpPksTXTVDILSihpRZeXOV
+	uuUPBoL/kQwgJZLMabJQ8KWLC2MC3/B1DaBBerANYPE7TjtRyoQO2lEY9uqot8V/LvHZVUhTgZB
+	kBuFkZ9twZECWLj2rPSyrKsLIALRHG3MEejZ4XitO/K/cgWpn6GE1FOnQBxjVykThxMzEWV1OUA
+	L0UbV7cnGjrk5HfBnbIHPY5ZsNPFE6SAUNzupVHf32ik2Hj3aqToFsgQDnGaM72lgbu22pN/HUY
+	UEQ/6zmL3OMjkU8upsKsym3huZgw5prqTkYglJK5a/cE9AjDa8Mq1m+NSdF99KWE3bLazdCGZKT
+	GOvcy5b8zyAf0FUm/6WofYxlK4tq2+40lAYj29VVpLSD7eZiOpKZpByTKBhkKdmdcgrfMMlZ3RU
+	JO9FDfGu82y23xgPxwAhfMgswEsbvVGfsOOeAbg4XAr787h1nysF/DjPF1U9rVVp/KOSNBcq+rH
+	1iq/iojFwsXT+y1zHszpDh++5zvEzObpbWrRIDl5dkPVQtC5+SOLmpg0FrYP0I0wrYGwdFHpX6Z
+	vJYPVQdlHAOU
+X-Received: by 2002:ac8:7f0f:0:b0:52f:b9ad:9dc1 with SMTP id d75a77b69052e-530548ea102mr18677551cf.20.1788468981102;
+        Thu, 03 Sep 2026 13:56:21 -0700 (PDT)
+Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5305422fc07sm5509881cf.31.2026.09.03.13.56.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 13:56:20 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	stable@vger.kernel.org,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/2] selftests: drv-net: Allow
- cross-compiling the hardware tests
-Message-ID: <24d07be4-79e9-4541-b97b-a6735baf5fed@lunn.ch>
-References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
- <c45453d8-72ae-450b-be9a-565df1cf0287@lunn.ch>
- <c3f649fa-24b6-41d3-b6a1-7f37edec87ff@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org,
+	Vega <vega@nebusec.ai>
+Subject: [PATCH net 1/2] net/sched: codel: bound the dropping loop per dequeue call
+Date: Thu,  3 Sep 2026 16:56:15 -0400
+Message-Id: <QDISC-1L5H.v1.20260903184552@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c3f649fa-24b6-41d3-b6a1-7f37edec87ff@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 03, 2026 at 07:25:22PM +0200, Matthieu Baerts wrote:
-> Hi Andrew,
-> 
-> On 03/09/2026 19:11, Andrew Lunn wrote:
-> >> Tested on an aarch64 target, built on x86_64.
-> > 
-> > Probably a question for Jakub or Matthieu.
-> > 
-> > As part of the CI system which is feeding into patchworks, I don't
-> > think we build the selftests? Do we have the CPU resources to build
-> > them?
-> 
-> We do: the "build_tools" script [1] checks that. And they are also built
-> before launching the selftests.
-> 
-> > We currently do x86 64 and 32 bit builds. Do we have the CPU resources
-> > to do an arm64 cross build?
-> 
-> I think we do, but I don't know if we need to (see below)
-> 
-> > I assume a cross build the self tests needs something like buildroot
-> > to be sensible? Or Debians multi-arch stuff where you can install .deb
-> > packages for libraries for other architectures? So maybe that is going
-> > too far?
-> 
-> >From what I understood, the goal is to execute the selftests on embedded
-> systems as well, which will require building new image including the
-> kernel and the drivers/net selftests. Do we need to build the whole
-> kernel for arm64? :)
+The CoDel control law schedules the next drop one interval/sqrt(count)
+after the previous drop, using the configured interval
+(codel_params.interval). For very small intervals the scheduled step
+rounds down to zero, so the dropping loop in codel_dequeue() never
+advances and drains the entire backlog under the qdisc lock in one
+call - an unprivileged user can trigger a soft lockup this way.
 
-I see a few different goals.
+Fix in the shared codel code used by both codel and fq_codel:
 
-Picking a patch at random:
+1. Make the control-law step at least 1 tick so the dropping loop
+   always moves forward.
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20260903-netcons_ipv6-v4-2-bdd183c844d3@gmail.com/
+2. Cap the dropping loop at CODEL_MAX_DROPS_PER_DEQUEUE (256) drops
+   per codel_dequeue() call, resyncing drop_next to now when the cap
+   is hit: the catch-up owed to the loop grows with the idle gap and
+   the backlog, which no interval threshold can bound. This is a
+   deliberate behaviour change after long idle gaps.
 
-We see 32bit, allmodconfig, clang, and clang_rust. These are all
-native builds, which given are servers are AMD64, these are AMD64
-builds.
+The cap applies to fq_codel (4b549a2ef4be) and the mac80211 TXQ path
+(fixed interval, cap only).
 
-However, many of the network drivers are used on ARM platforms. Most
-probably do compile on AMD64, but i expect there are a few which
-don't. So we could do an ARM64 cross compile, to make sure the patches
-are clean on ARM64 as well as AMD64.
+The target sojourn delay (codel_params.target) is not validated: it
+does not feed the control law, so a sub-tick value is aggressive
+rather than deadlock-prone.
 
-We are encouraging developers to write self tests. Ideally we want
-self test patches to be held to the same standard as driver
-patches. So if a patch touches the self tests, it would be good to
-build the self tests in order to show the number of warnings & errors
-has not gone up. I expect such a build will be native.
+Conditions to recreate the bug (repro from vega@nebusec.ai):
+  - tc qdisc add dev lo root handle 1: tbf rate 1kbit burst 2kb limit 1000000
+  - tc qdisc add dev lo parent 1:1 handle 10: codel interval 2us target 1ms noecn limit 1000000 (same for fq_codel)
+  - unpatched kernel: tc accepts it; a UDP flood under the 1kbit tbf
+    soft-lockups (watchdog: BUG: soft lockup) while one
+    codel_dequeue() call drops the backlog under the qdisc lock
+  - patched kernel: same setup, at most 256 drops per dequeue call,
+    no soft lockup
 
-But if we have gone to the time/effort to cross compile the kernel,
-can we also cross compile the self tests? Can we ensure with cross
-compile self tests don't have more warnings/errors, because the self
-test write has AMD64 blinkers on?
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Reported-by: Vega <vega@nebusec.ai>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ include/net/codel.h      |  5 +++++
+ include/net/codel_impl.h | 16 +++++++++++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-And sometime down the road, we would like to get ARM servers, with
-NICs in them, to run the self tests on. At that point, we either need
-to cross compile the kernel to run all the self tests, or we need
-another build server which is ARM64, so it can do native ARM64 builds
-of the kernel to run on the ARM64 runners.
+diff --git a/include/net/codel.h b/include/net/codel.h
+index aa80f744826c..183d43c2bd43 100644
+--- a/include/net/codel.h
++++ b/include/net/codel.h
+@@ -140,6 +140,11 @@ struct codel_vars {
+ /* needed shift to get a Q0.32 number from rec_inv_sqrt */
+ #define REC_INV_SQRT_SHIFT (32 - REC_INV_SQRT_BITS)
+ 
++/* Cap on drops per codel_dequeue() call: the loop's work depends on the
++ * idle gap and backlog, both outside our control; resync when exceeded.
++ */
++#define CODEL_MAX_DROPS_PER_DEQUEUE 256
++
+ /**
+  * struct codel_stats - contains codel shared variables and stats
+  * @maxpacket:	largest packet we've seen so far
+diff --git a/include/net/codel_impl.h b/include/net/codel_impl.h
+index 2c1f0ec309e9..9e779cd4d6de 100644
+--- a/include/net/codel_impl.h
++++ b/include/net/codel_impl.h
+@@ -93,12 +93,17 @@ static void codel_Newton_step(struct codel_vars *vars)
+  * CoDel control_law is t + interval/sqrt(count)
+  * We maintain in rec_inv_sqrt the reciprocal value of sqrt(count) to avoid
+  * both sqrt() and divide operation.
++ *
++ * Clamp the increment to at least 1 tick: a very small interval (or a
++ * large count) can truncate it to zero, stalling the dropping loop.
+  */
+ static codel_time_t codel_control_law(codel_time_t t,
+ 				      codel_time_t interval,
+ 				      u32 rec_inv_sqrt)
+ {
+-	return t + reciprocal_scale(interval, rec_inv_sqrt << REC_INV_SQRT_SHIFT);
++	return t + max_t(u32, 1,
++			 reciprocal_scale(interval,
++					  rec_inv_sqrt << REC_INV_SQRT_SHIFT));
+ }
+ 
+ static bool codel_should_drop(const struct sk_buff *skb,
+@@ -156,6 +161,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
+ 	struct sk_buff *skb = dequeue_func(vars, ctx);
+ 	codel_time_t now;
+ 	bool drop;
++	unsigned int drops = 0;
+ 
+ 	if (!skb) {
+ 		vars->first_above_time = 0;
+@@ -180,6 +186,14 @@ static struct sk_buff *codel_dequeue(void *ctx,
+ 			 */
+ 			while (vars->dropping &&
+ 			       codel_time_after_eq(now, vars->drop_next)) {
++				if (++drops > CODEL_MAX_DROPS_PER_DEQUEUE) {
++					/* fell far behind the schedule */
++					WRITE_ONCE(vars->drop_next,
++						   codel_control_law(now,
++								     params->interval,
++								     vars->rec_inv_sqrt));
++					break;
++				}
+ 				/* dont care of possible wrap
+ 				 * since there is no more divide.
+ 				 */
+-- 
+2.43.0
 
-     Andrew
