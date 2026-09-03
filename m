@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58D4FECF2
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 18:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064CF5013C9
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788459047; cv=none; b=UIS4W5e+PzntIUCB9aq/mO1oLS+pmVAWezADjd8DzjM1KXRYJE+OtoSeKGuRQRUxQXVniiytI+2kr9lPE4JOI2CrvgTGtlcdHScTBVC/re13/SZZy5GeZibWAONBP7oN8kpegxFZp55wGDtmy4OLt3rHPeYvwPEQrclTQVAulu8=
+	t=1788459049; cv=none; b=OJuuBO4m4PpPIMfdCEdtX0zUuddH4CDV/eiZymPryPdgxZaSob/kOI/nBZ77wtC3OH8fLRJlRs8g1LJWwLmY747l1pfGgoUBN/dIC7TsTrFBSAXbvhe8CPJm2j7IQ87FFh8tTUOn4pa8pAshitvJRH33BDeU8WOmHFNIH3L8O3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788459047; c=relaxed/simple;
-	bh=k8oYQ15loj2PIBDGVki4EvA6lkKDOkcDuxJfBc4gNgY=;
+	s=arc-20240116; t=1788459049; c=relaxed/simple;
+	bh=K5Q++tM/wHibjMNy0q59h6T7B5aG7O5UZAFs7WWJyHo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P0Q3GSU5cEdZ/aQ0qDmbu+WsT3I0z+we0nW/xxNXSugfnL/ZcdHD7CH83SdYRwTvvJJcADYvXFoU7P1NnYy1IG2O3EROxGk66qcRDa+AOsxURLq4QLVoIW11Eb0nb5YzxhOaF8eGwgGyEw0QbtX99XL6BJx2bJwO3KHyh+gEtGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMXxebPl; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pMF6ya7yLXgpEtUqdgfcmsqSkF7a+m0xHSC0kTNf/c9ALm+sP+hoA6VwY2FRA+j6LELIkSgYBHgV0pYEzonBGmE4/WtAZWKz2jsLdir0XaIL6uPQfhPzYWK8ZcMPmPcW0J3rJsHMc1z3+G/7voSyn2i8VrDpPbouu9FDLFoUang=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtjECWv/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMXxebPl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195981F00A3D;
-	Thu,  3 Sep 2026 18:10:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtjECWv/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB1B1F00A3D;
+	Thu,  3 Sep 2026 18:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788459045;
-	bh=uISuuiwZrdtenbDaRm1b/C1kKz5oR7is3ldGyyd+Anc=;
+	s=k20260515; t=1788459047;
+	bh=ZIIgVuIi3mfbCrea3/dtFbIYbYeEriOKm3waXn9SSsQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OMXxebPlOlTvTPS3QDgXiaa1p7O3zUQCpzu6VZ0eoaURtk2xPl2GKcH7HxCBVry/k
-	 YbWpjsl43vrSBQGHNkZjDxc3obgm+2i1gGNim0JpiaXlWJAwSRNgAy+3U9vaMdllIw
-	 3LSGX76Jc2y4hDMriU5lGsw84+oNv9zpKexLDUH0dXOUrQTK9vOsgZ93UVPCZnPgub
-	 UJFIAWvHvu/bbks8cLkVMQZ5Mbu6m9nRyhB9AeTiZ/Pgkqh3NMYEenGVauMIHjbYmR
-	 rWJXAqRQf21kKBSlPqGWFrhaCApiuYGvhHWCcVSJpYA561XsM+NF8fXTk8HQnW+En6
-	 vwtUrRyAIo7Fg==
-Subject: Re: [net-next,v6,12/15] ibmveth: Report MQ-aware RX counts in ethtool
- get_channels
+	b=WtjECWv/EEnJzQfNq7ZJxBC5T9JAikizaqLHk6mASaCbh2+LLc7pn7FFRWpelajTP
+	 mVd/Bzw/Nsg+UNIqUJA17TI2HXqC7R+En6NT7IrOZSzrfcZBjHUbLGcG61KuWrz/+B
+	 2BwvqwsQIzrcgBPpCET3x/mEdX9RACiblRU/vyhN+7DfC96YmdBMtt4he3dWgC45TK
+	 srRz8n03NL8MouVxkW/yp80XkU3T1kPy3Glrbvk4ZgdvHXz6NXynY+5w065i0yc6qk
+	 rLb0B1/bZRkqyev34dUzCP18gGyZ/Wtrck9C8xHH9powb6Vabc5PPfst9/MaqUKrtU
+	 jAtkhP+aNLXnQ==
+Subject: Re: [net-next,v6,15/15] ibmveth: Complete set_channels down-path and
+ mq_fallback max_rx cap
 From: netdev-bot+sashiko@kernel.org
 To: mmc@linux.ibm.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
@@ -36,12 +36,12 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
  ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
  shaik.abdulla1@ibm.com
-Date: Thu, 03 Sep 2026 18:10:43 +0000
-Message-ID: <178845904365.3394541.4016627609428622506@kernel.org>
+Date: Thu, 03 Sep 2026 18:10:46 +0000
+Message-ID: <178845904669.3394541.24513769216494846@kernel.org>
 In-Reply-To:
- <cfd6de05a68cd8a4f61a1f1e9e1c45a7d9ee2687.1788102125.git.mmc@linux.ibm.com>
+ <7096819367d53e08c1f4d317616c2624a2867b7a.1788102125.git.mmc@linux.ibm.com>
 References:
- <cfd6de05a68cd8a4f61a1f1e9e1c45a7d9ee2687.1788102125.git.mmc@linux.ibm.com>
+ <7096819367d53e08c1f4d317616c2624a2867b7a.1788102125.git.mmc@linux.ibm.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,174 +52,241 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
-- [Medium] Intermediate-state ethtool channel ABI mismatch:
-  ibmveth_get_channels() (drivers/net/ethernet/ibm/ibmveth.c:2537-2549)…
-- [Low] Advertised RX maximum not derived from any driver-side capability
-  check: ibmveth_get_channels() (ibmveth.c:2545-2548) reports a flat…
-- [Low] ibmveth_get_channels()
-  (drivers/net/ethernet/ibm/ibmveth.c:2540-2549) now sources…
+- [Medium] Advertised RX channel range does not match the enforced range
+  once `mq_fallback` latches.
+- [Low] In `ibmveth_set_channels()` the comment above the RX rollback
+  describes code that no longer exists: it claims…
+- [Low] The new up-path TX-failure rollback in `ibmveth_set_channels()`
+  calls `ibmveth_resize_rx_queues_incremental(adapter, old_rx,…
+- [Low] `adapter->mq_fallback` is written with a plain store from
+  softirq/NAPI context — `ibmveth_replenish_task()` does…
 
 --
 
-ibmveth: Report MQ-aware RX counts in ethtool get_channels
+ibmveth: Complete set_channels down-path and mq_fallback max_rx cap
 
-get_channels() now reports max_rx as IBMVETH_MAX_RX_QUEUES when MQ firmware
-is enabled (1 otherwise) and reports rx_count from the driver's published
-num_rx_queues instead of netdev->real_num_rx_queues.  The paired
-set_channels() is left unchanged in this patch.
+This completes the ethtool -L path in ibmveth: the down-path publishes the
+desired RX count without allocating, the up-path resizes RX then TX and
+rolls RX back if TX cannot reach the requested count, and get_channels()
+now caps max_rx at the live rx_count once mq_fallback is set.
+ibmveth_poll_controller() also returns early when the adapter is closed.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index f4fddfa56571d..4f2d956b4c89e 100644
+> index 5aef8a1f2c23d..4cd00ff3d43e4 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> @@ -2537,11 +2537,16 @@ static void ibmveth_get_ethtool_stats(struct net_device *dev,
->  static void ibmveth_get_channels(struct net_device *netdev,
+> @@ -3156,15 +3156,24 @@ static void ibmveth_get_channels(struct net_device *netdev,
 >  				 struct ethtool_channels *channels)
 >  {
-> +	struct ibmveth_adapter *adapter = netdev_priv(netdev);
-> +
+>  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+> +	unsigned int rx_count = ibmveth_get_num_rx_queues(adapter);
+>  
 >  	channels->max_tx = ibmveth_real_max_tx_queues();
 >  	channels->tx_count = netdev->real_num_tx_queues;
 >  
-> -	channels->max_rx = netdev->real_num_rx_queues;
-> -	channels->rx_count = netdev->real_num_rx_queues;
-> +	if (adapter->multi_queue)
-> +		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
-> +	else
-> +		channels->max_rx = 1;
+> -	if (adapter->multi_queue)
+> +	/*
+> +	 * Always report the live RX count. ethtool -L is read-modify-
+> +	 * write, so a TX-only request echoes rx_count back at us; an
+> +	 * understated value would be applied as a silent RX shrink.
+> +	 * mq_fallback instead caps max_rx at the live count, which
+> +	 * blocks growth in the core without misreporting what is
+> +	 * currently configured.
+> +	 */
+> +	channels->rx_count = rx_count;
+> +	if (adapter->multi_queue && !adapter->mq_fallback)
+>  		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
+>  	else
+> -		channels->max_rx = 1;
+> -	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
+> +		channels->max_rx = rx_count;
+>  }
 
 [Severity: Medium]
-Does raising max_rx here make the kernel admit RX channel requests that the
-driver then silently drops on the floor?
+Once mq_fallback is set, does the advertised max_rx still match what the
+driver will accept?
 
-The core only bounds an RX request against the value this callback returns,
-in ethtool_set_channels():
+Here max_rx becomes the live rx_count, which can be 8 or 16.  The core only
+bounds the request by that value, in ethtool_set_channels():
 
-	if (channels.rx_count > curr.max_rx ||
-	    channels.tx_count > curr.max_tx ||
+    if (channels.rx_count > curr.max_rx ||
+        channels.tx_count > curr.max_tx ||
 
-and ethnl_set_channels() does the same check on the netlink path.
-ibmveth_set_channels() at this commit only consumes tx_count:
+So every value in 1..rx_count reaches the driver.  But
+ibmveth_resize_rx_channels() refuses any changed count above 1 in that
+state, after the no-op shortcut:
 
-	unsigned int old = netdev->real_num_tx_queues,
-		     goal = channels->tx_count;
+    if (goal_rx == old_rx)
+            return 0;
+    ...
+    if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
+            netdev_err(netdev,
+                       "Cannot resize to %u RX queues: multi-queue mode not supported by firmware\n",
+                       goal_rx);
+            return -EOPNOTSUPP;
+    }
 
-channels->rx_count is neither read nor rejected.  Since ethtool -L is a
-read-modify-write, tx_count arrives unchanged and the TX grow/shrink loops
-do not run, so "ethtool -L ethN rx 4" on an MQ adapter returns 0, generates
-an ETHTOOL_MSG_CHANNELS_NTF, and changes nothing; a following "ethtool -l"
-still shows the old rx_count.
+With mq_fallback set and a live count of 8, ethtool -l reports max_rx 8 while
+ethtool -L ethX rx 2 through rx 7 all fail with -EOPNOTSUPP; only 1 and the
+current count are accepted.
 
-Before this patch max_rx equalled the live count, so the same request was
-rejected with -EINVAL by the core, which is why this reads as a behaviour
-change rather than a pre-existing gap.
+This state looks persistent rather than transient, since
+ibmveth_register_rx_queues() latches the flag and then fails the open:
 
-The commit message does acknowledge this:
+    if (rc) {
+            /* Firmware MQ gone: fall back to SQ on next open. */
+            if (rc == -EOPNOTSUPP)
+                    adapter->mq_fallback = true;
+            goto err_unregister;
+    }
 
-  "This patch only reports. set_channels() still reads only tx_count, so
-  an RX channel request returns success without changing anything;
-  raising max_rx widens the range of requests that behave that way from
-  the live count to IBMVETH_MAX_RX_QUEUES."
+adapter->opened stays false and num_rx_queues keeps its old value above 1
+until the next successful open.
 
-and the later patches do close it: by the end of the series
-ibmveth_set_channels() reads channels->rx_count and calls
-ibmveth_resize_rx_channels(), which validates the range:
-
-	if (goal_rx < 1 || goal_rx > IBMVETH_MAX_RX_QUEUES) {
-		...
-		return -EINVAL;
-	}
-
-Would it be possible to order the widening of max_rx after the setter
-learns to consume rx_count, so no bisect point reports success for a
-request it ignores?
-
-[Severity: Low]
-Should this ceiling be derived from a capability check rather than being a
-flat 16?
-
-The TX side bounds its advertised maximum by the CPU count:
-
-	static unsigned int ibmveth_real_max_tx_queues(void)
-	{
-		unsigned int n_cpu = num_online_cpus();
-
-		return min(n_cpu, IBMVETH_MAX_QUEUES);
-	}
-
-while the RX side reports IBMVETH_MAX_RX_QUEUES (16) purely on
-adapter->multi_queue, even though the driver's own MQ default is
-min(num_online_cpus(), IBMVETH_DEFAULT_QUEUES), which is at most 8.
-
-The test also ignores adapter->mq_fallback.  After firmware rejects MQ,
-multi_queue stays true until the next open runs
-ibmveth_apply_mq_fallback():
-
-	adapter->multi_queue = false;
-	ibmveth_publish_num_rx_queues(adapter, 1);
-	/* real_num_rx_queues is set later in open after resources exist. */
-
-so in that window ethtool -l advertises max_rx = 16 for a device the driver
-has already decided will come up single-queue.
-
-The mq_fallback half is handled later in the series, where get_channels()
-becomes:
-
-	if (adapter->multi_queue && !adapter->mq_fallback)
-		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
-	else
-		channels->max_rx = rx_count;
-
-The flat 16 does match the range the end-of-series setter accepts, so this
-is mostly a question about whether the commit message should say why the RX
-maximum intentionally skips the num_online_cpus() cap that TX applies.
-
-> +	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
+Would it be clearer to advertise max_rx = 1 in the fallback state and keep
+the no-op shortcut for the read-modify-write case?  The kernel-doc for
+ibmveth_resize_rx_channels() ("Rejects rx > 1 without MQ firmware
+(-EOPNOTSUPP)") also does not mention that the no-op shortcut precedes the
+gate.
 
 [Severity: Low]
-Can this disagree with the RX queue count the netdev core enumerates?
+Is the read of adapter->mq_fallback here synchronized against its writer?
 
-The queue-stats side of the same driver deliberately keys on the core's
-count, in ibmveth_get_base_stats():
+The flag is stored from softirq/NAPI context in ibmveth_replenish_task(),
+after the replenish_lock has already been dropped:
 
-	for (i = dev->real_num_rx_queues; i < IBMVETH_MAX_RX_QUEUES; i++) {
+    spin_unlock_irqrestore(&rxq->replenish_lock, flags);
+    ...
+            adapter->mq_fallback = true;
+            schedule_work(&adapter->work);
 
-with a comment saying the split is bound by real_num_*_queues so it lines up
-with the core's iteration exactly.  After this patch, ethtool -l reports the
-adapter's private count instead.
+The new reader added here, and the capability gate in
+ibmveth_resize_rx_channels():
 
-The two can drift.  ibmveth_apply_mq_fallback() publishes num_rx_queues = 1
-at the very start of open, and netif_set_real_num_rx_queues() is only
-reached much later:
+    if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
 
-	rc = ibmveth_register_rx_queues(adapter, mac_address);
-	if (rc)
-		goto out_free_buffer_pools;
+run under RTNL / the netdev ops lock, which does not exclude the softirq
+writer.  There is no lock, no READ_ONCE()/WRITE_ONCE() and no acquire/release
+pairing on this field, while the sibling field num_rx_queues in the same
+struct is deliberately published with:
 
-	rc = netif_set_real_num_rx_queues(netdev,
-					  ibmveth_get_num_rx_queues(adapter));
+    smp_store_release(&adapter->num_rx_queues, num);
 
-If ibmveth_alloc_filter_list(), ibmveth_alloc_rx_queues(),
-ibmveth_alloc_buffer_pools() or ibmveth_register_rx_queues() fails, open
-returns an error with adapter->num_rx_queues == 1 while
-netdev->real_num_rx_queues still holds the previous value, and
-ibmveth_close() never lowers it.
+A stale false read here would advertise max_rx = IBMVETH_MAX_RX_QUEUES right
+after firmware refused MQ buffer adds, and a stale read in the gate would let
+the driver allocate and replenish RX queues on that firmware, re-latching
+mq_fallback and queueing another reset.  Would WRITE_ONCE()/READ_ONCE() on
+mq_fallback, or folding it into the existing publish/consume helpers, be
+appropriate?
 
-In that state ethtool -l reports rx_count = 1, the core still enumerates the
-old number of RX queues for netlink per-queue stats, and the per-queue
-ethtool -S strings (which use the adapter count) list only queue 0.
+> @@ -3233,28 +3242,83 @@ static int ibmveth_set_channels(struct net_device *netdev,
+>  				struct ethtool_channels *channels)
+>  {
+>  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+> -	unsigned int old = netdev->real_num_tx_queues,
+> -		     goal = channels->tx_count;
+> +	unsigned int old_rx = ibmveth_get_num_rx_queues(adapter);
+> +	unsigned int goal_rx = channels->rx_count;
+> +	unsigned int old_tx = netdev->real_num_tx_queues;
+> +	unsigned int goal_tx = channels->tx_count;
+> +	unsigned int want_tx = goal_tx;
+> +	bool rx_changed = false;
+>  	int rc, i;
+>  
+> -	/* Validate RX (and resize when opened) before the down-path
+> -	 * early return so MQ/range errors are reported here. Publishing
+> -	 * the desired RX count and CMO while down is the next patch.
+> -	 */
+> -	rc = ibmveth_resize_rx_channels(adapter, channels->rx_count);
+> +	if (goal_tx < 1 || goal_tx > ibmveth_real_max_tx_queues()) {
+> +		netdev_err(netdev,
+> +			   "Invalid TX queue count %u (must be 1-%u)\n",
+> +			   goal_tx, ibmveth_real_max_tx_queues());
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* RX range / MQ checks live in ibmveth_resize_rx_channels(). */
+> +	rc = ibmveth_resize_rx_channels(adapter, goal_rx);
+>  	if (rc)
+>  		return rc;
 
-No out-of-bounds access results, since rx_qstats[] is sized
-IBMVETH_MAX_RX_QUEUES and the live/retired split stays non-overlapping, and
-the state self-heals on the next successful open.  This divergence is still
-present at the end of the series, where get_channels() uses the adapter
-count and get_base_stats() uses real_num_rx_queues.  Would keying both on
-the same counter be preferable?
+[ ... down-path publish/rollback block snipped ... ]
+
+> -	return rc;
+> +	if (netdev->real_num_tx_queues != want_tx) {
+> +		if (rx_changed) {
+> +			/*
+> +			 * Only meaningful once RX is live. num_slots is
+> +			 * embedded in the adapter and outlives the DMA ring,
+> +			 * so reading it at function entry is safe but can
+> +			 * return a stale geometry from before the resize.
+> +			 */
+> +			int rxq_entries = adapter->rx_queue[0].num_slots;
+
+[Severity: Low]
+This isn't a bug, but does this comment still describe the code below it?
+
+It says num_slots is read "at function entry" and "can return a stale
+geometry from before the resize", yet the read it annotates happens right
+here, inside the if (rx_changed) block, after ibmveth_resize_rx_channels()
+has already changed the RX geometry.  Function entry only reads
+num_rx_queues, real_num_tx_queues, channels->rx_count and channels->tx_count.
+
+The comment looks like a leftover from the v5 layout mentioned in the
+changelog, and now warns about a hazard that would only exist if the read
+were moved back to function entry.
+
+> +			int rb;
+> +
+> +			rb = ibmveth_resize_rx_queues_incremental(adapter,
+> +								  old_rx,
+> +								  rxq_entries);
+> +			if (rb)
+> +				netdev_err(netdev,
+> +					   "Failed to roll back RX queues to %u after TX failure: %d\n",
+> +					   old_rx, rb);
+> +		}
+> +		return rc ? rc : -ENOMEM;
+> +	}
+
+[Severity: Low]
+Can this rollback re-attempt a queue geometry that the forward path would
+have refused?
+
+The rollback calls ibmveth_resize_rx_queues_incremental() directly, so the
+multi_queue / mq_fallback gate in ibmveth_resize_rx_channels() is not
+consulted.  That gate only rejects goal_rx > 1:
+
+    if (goal_rx > 1 && (!adapter->multi_queue || adapter->mq_fallback)) {
+            ...
+            return -EOPNOTSUPP;
+    }
+
+Consider adapter->opened true, mq_fallback already latched from softirq in
+ibmveth_replenish_task():
+
+    adapter->mq_fallback = true;
+    schedule_work(&adapter->work);
+
+and a live RX count of 8.  A request of rx 1 with a larger tx passes the gate
+(goal_rx is 1), RX shrinks 8 -> 1 and rx_changed becomes true.  If the TX
+step then fails in ibmveth_allocate_tx_ltb() or
+netif_set_real_num_tx_queues(), the rollback runs the scale-up path back to
+old_rx = 8 on firmware that has already refused MQ buffer adds, so
+H_REG_LOGICAL_LAN_QUEUE / replenish hit the same H_FUNCTION, mq_fallback is
+re-latched and another schedule_work(&adapter->work) reset is queued from an
+ethtool error path.
+
+Would it be better to route the rollback through
+ibmveth_resize_rx_channels(), or to skip it when mq_fallback is set and leave
+RX at 1?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788102125.git.mmc%40linux.ibm.com
