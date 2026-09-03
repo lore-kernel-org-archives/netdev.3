@@ -1,146 +1,112 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mta1.migadu.com (out-136.mta1.migadu.com [95.215.58.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EF6393DCD
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6200393DCD
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788428407; cv=none; b=k94nwfcGtkOb8zACNtu2oRBkwVSi52vH7ew9q/jxvNCKy9QwWS8icKBjOBtan3bLdTruRn9itb9aBXK25PtaFZQTqA6nUPNCrfXpaK+WDPWWrQ6yjkeEd5DxqFceSI9BKOffDUvfd4WD+mEfOfvV4m891LIHlQZ62q2p1RJ9TSE=
+	t=1788428426; cv=none; b=IJU+aPJ3KtlrWGOedex19BPCIHML31EZ49fXvtUzEcpkE1/1G990RydUx1xdZhsmvx0yHXvdAzE8oMA00WkadqfrTd3J4B10ZJYiMdk9C82t4bMaMJswHdsOGWXBEHyhVKmnGFpc2OYm87cEh9dS86y1Vme2xN6ZvTzXdTiSGvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788428407; c=relaxed/simple;
-	bh=wz4keuX0h1t4uesVF64NbRSyPXsVWi/lr7DkR/S5oT0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jYZAcl0xZTHdsE8wjx/PdLN9em0ZNEqVLBM3gVdX0DFKzmtE/zAPR5xsg2DPOb2ujfV7YqBosaWx9cVI28gu0KFk9rojgWJF479SAj+mKbFnxtDaGEX5SdNrpC25bG7SsIPqOGnsFutVsD6vs2k3W+kJ69wV8JeQ+28zKkjQR00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=c/BpILMN; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1788428426; c=relaxed/simple;
+	bh=li0QtrKSoF1w5akDTx2Tm8g+pJQlMKfNm+NiL9GmhYQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AQDPFKZEJa8oM+g4D0E7pLOMTJKNKDptdF6SB3WyFmqrVBoq+qkbN8yJgzpNbnzvbowbdB5Ch/SOcf0/3FhcJlJUTa8hSHidP8ZIJd6GDsd6e+vZDVqF1PhFKMrdBTIr0o8Aoe4pn/cv9z9pFi/XJKrW3rRTiUAmJaBGZ5s8a5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eZhWx7wB; arc=none smtp.client-ip=95.215.58.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="c/BpILMN"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so21452885e9.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 02:40:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788428404; x=1789033204; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bNVK+ncMXTVlIksAK/ckFMkJgOdGgxwOoFQ9vZoAv8s=;
-        b=c/BpILMNwlAhcbxJ8se1pt4fwU0remyrPJtHs7zIV4wD9ZvYGtj0Ln0BGKpJUewJGo
-         7iW49Al54VVsWDJ/MjbOuDtR+xRlekOD9LUqKr6CUcnwog6Gn9nz0hh2RHvEo5zZ7I9J
-         +xA0VaVNEcxJLmbCYVG9fJXsgEl6J2X2wxGQg11Z8HcAeEWC3TvTJonNi7XZMglzT0lC
-         b42PBTPGO6Yia1SOLa5KfbWfiUyr211Pp3myiHBqkENI3O3vrv8wAdYOJ+ve3+1oxUrC
-         x9vEDxQwL5TGbIdGW3iLWoUTgmSGbVh127ZeHh1oos8F1mzpeeIYpNUoJqOACy9THZnP
-         l4Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788428404; x=1789033204;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bNVK+ncMXTVlIksAK/ckFMkJgOdGgxwOoFQ9vZoAv8s=;
-        b=RVIBPrJcWvgC1Das49gjeGOFZRB1pqrb04ZtSskSiAaLvhDpTLKgj9/UM+lRYYpBXE
-         sdLTdBamI/+FqpUgKsxFMkalFOg6ZgLBkPtKwDl0/gmUHDMV6Osl4SnatmN5gQ/fApI5
-         zSVKaonLqHWj3S2C/HHyZ9z01TNcHnYFirRsVBR16Mz7PB+1QSIdRpyb91O7sL3xbXAm
-         qbsUZxOEyF9gXnxXZYmGxPLbVFWnF23UCVCGy/iQmpqxsLy/Y/B17bJEZE2tvyLe3Iz1
-         PRLP7CuAXiAGMczPL8KLSc86Gh12RDK9O+cAYl95tOwSu+FZgB3fvXEB3Fr5o2gYwXZJ
-         SCTA==
-X-Gm-Message-State: AFuF++ntfM66KgfXnZEJj0LVefu3IGM7hbaTS4HtRmyfrSm8EKizRQ0M
-	f/9oo+qsbSdEhpdeFiq9rNhTDSpKBUb84pT3GZaLo3dOS0j3pkJ03d8j9Zd0vLXJmxVhFOpJKCO
-	2ydaJ2PU=
-X-Gm-Gg: AYBFou3x5KadPloHFi77U4HDyTHmV9pG3IeKgrfPt/xfVLJcsRbXMJu//PAUG7pDMGv
-	h09WINcAog/bx6qmxroiVTOAArJh078B95wUAwpr9HcFF+VL5z47s94LIbfbpSMRq4OP6BB2doK
-	evPKquzQUM/xRg4qF7dDfX8LiYuIl2iEgAzVlXj/ZpcOVFEvEULBG2T4LlIIJXDqIXRKs8jdJxd
-	Cl8vjY6pTjUU5W+9GRYKdqYwiFic9Khf8VOEPuroIPIqImsbPFo3hVuFurH/QsckOsH6SJmUiWr
-	P0qCaZ7U5Vr9tNmgEtajIEbuAGi0riAsYvvAkRT5P2jykTweoum0JZ/JpgCsuik8jq2yTN0XKF6
-	4SY+k4li8XN7qSKeZE3LsVcAd51ncZHnaWsay28KtibU4ASmi0s340aEJLPs/YTwQvmIF28azNx
-	B8PZp4HhcSEM51KfrvR39jH2Wbw45kFzjYDsjQ0f1fJ1yu/0BmfIgQr5NpGLgG44RA1J+Yxtl/F
-	xTIct0UXnY=
-X-Received: by 2002:a05:600c:608c:b0:49c:cedc:3c36 with SMTP id 5b1f17b1804b1-49ce5826c6amr221601125e9.16.1788428404306;
-        Thu, 03 Sep 2026 02:40:04 -0700 (PDT)
-Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49ce58da3acsm235767525e9.0.2026.09.03.02.40.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 02:40:03 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linus.luessing@c0d3.blue,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net v3] net: bridge: mcast: properly convert mglist to rcu
-Date: Thu,  3 Sep 2026 12:38:51 +0300
-Message-ID: <20260903093851.1494297-1-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eZhWx7wB"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=li0QtrKSoF1w5akDTx2Tm8g+pJQlMKfNm+NiL9GmhYQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788428422; v=1; x=1789033222;
+ b=eZhWx7wBHRR/Ph6P+nMqRG2JBBF2FineSMg+Bv+q5CrDf3Ro2+/s6+6VgP40BUccRsQwIAZG
+ DBVT/SsPyhYgIUC9/V54ohrKnpH33QJdX4Y6gS96vrddGPYmUWG1DwVzqUax3LorqYamD7QVotG
+ oHrExYWk6z/1O3+2I88ZxRW0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 9f4276aec2f9c0a2;
+	Thu, 03 Sep 2026 09:40:22 +0000
+X-Mizu-Trace-ID: 9f4276aec2f9c0a2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <7735a43a-98f4-4402-8bb7-790bee064f7f@linux.dev>
+Date: Thu, 3 Sep 2026 17:40:13 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] tls: fix the open record check in the max payload
+ size setsockopt
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: John Fastabend <john.fastabend@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+ linux-kernel@vger.kernel.org
+References: <20260901072927.128688-1-jiayuan.chen@linux.dev>
+ <2ba43d6b-f521-415e-a4a1-64b313051c88@redhat.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <2ba43d6b-f521-415e-a4a1-64b313051c88@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Sashiko reported a bug [1] that br_multicast_del_port_group unlists the
-port group not using proper rcu helper that preserves the next pointer and
-after that immediately frees the port group without waiting for rcu grace
-period. The only rcu walker of mglist is br_multicast_list_adjacent() and
-it turns out that function has always been buggy because mglist was never
-properly converted to RCU. Fix it by converting it to rcu and moving its
-initialization after eth_addr's. Initializing p->next can use
-RCU_INIT_POINTER because we have a barrier from the hlist_add_head_rcu call
-later, besides we're initializing an unpublished structure anyway.
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
+在 9/3/26 5:06 PM, Paolo Abeni 写道:
+> On 9/1/26 9:29 AM, Jiayuan Chen wrote:
+>> @@ -862,6 +876,7 @@ static int do_tls_setsockopt_tx_payload_len(struct sock *sk, sockptr_t optval,
+>>   static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+>>   			     unsigned int optlen)
+>>   {
+>> +	struct tls_context *ctx;
+>>   	int rc = 0;
+>>   
+>>   	switch (optname) {
+>> @@ -881,9 +896,17 @@ static int do_tls_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+>>   		rc = do_tls_setsockopt_no_pad(sk, optval, optlen);
+>>   		break;
+>>   	case TLS_TX_MAX_PAYLOAD_LEN:
+>> +		/* Take tx_lock like the sendmsg paths do, the socket lock is
+>> +		 * dropped while a sender waits for memory, with no record open.
+>> +		 */
+>> +		ctx = tls_get_ctx(sk);
+>> +		rc = mutex_lock_interruptible(&ctx->tx_lock);
+>> +		if (rc)
+> Why using the interruptible variant? the blocking lock just after will
+> still ignore signals, and this sockopt will now surprisingly fail if a
+> signal happens at the wrong time.
+>
+> /P
 
-Fixes: 07f8ac4a1e26 ("bridge: add export of multicast database adjacent to net_dev")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
----
-v3: a new patch, it converts mglist to rcu and moves the publishing after
-    all struct initializations
-v2: https://lore.kernel.org/netdev/20260901074046.316190-1-razor@blackwall.org/T/#m62e08b85f208b1c438e2fda2d5d8eaacf0e96c6f
-v1: https://lore.kernel.org/netdev/20260828100642.2664347-1-razor@blackwall.org/
 
- net/bridge/br_multicast.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Hi Paolo,
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 3e9b10f8abf1..2f9bb30e1a1f 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -1441,16 +1441,17 @@ struct net_bridge_port_group *br_multicast_new_port_group(
- 		goto free_out;
- 	}
- 
--	rcu_assign_pointer(p->next, next);
- 	timer_setup(&p->timer, br_multicast_port_group_expired, 0);
- 	timer_setup(&p->rexmit_timer, br_multicast_port_group_rexmit, 0);
--	hlist_add_head(&p->mglist, &port->mglist);
- 
- 	if (src)
- 		memcpy(p->eth_addr, src, ETH_ALEN);
- 	else
- 		eth_broadcast_addr(p->eth_addr);
- 
-+	RCU_INIT_POINTER(p->next, next);
-+	hlist_add_head_rcu(&p->mglist, &port->mglist);
-+
- 	return p;
- 
- free_out:
-@@ -1465,11 +1466,11 @@ void br_multicast_del_port_group(struct net_bridge_port_group *p)
- 	struct net_bridge_port *port = p->key.port;
- 	__u16 vid = p->key.addr.vid;
- 
--	hlist_del_init(&p->mglist);
-+	hlist_del_init_rcu(&p->mglist);
- 	if (!br_multicast_is_star_g(&p->key.addr))
- 		rhashtable_remove_fast(&port->br->sg_port_tbl, &p->rhnode,
- 				       br_sg_port_rht_params);
--	kfree(p);
-+	kfree_rcu(p, rcu);
- 	br_multicast_port_ngroups_dec(port, vid);
- }
- 
--- 
-2.47.3
+
+The two waits are very different. The xmit path holds tx_lock across
+sk_stream_wait_memory(), which can sleep for an undetermined time (until
+the peer reads):
+
+   tls_device_sendmsg()
+      mutex_lock(&tls_ctx->tx_lock);
+      lock_sock(sk);
+      tls_push_data()
+        sk_stream_wait_memory()   <- releases sk lock, keeps tx_lock
+      release_sock(sk);
+      mutex_unlock(&tls_ctx->tx_lock);
+
+
+So waiting for tx_lock with plain mutex_lock() can leave the process in
+
+D state for a long time. The lock_sock() after it is fine: the sleeping
+
+sender drops the socket lock, so that wait is only for short critical 
+sections, never across the long sleep.
+
+
+tls_sw_sendmsg() also uses  mutex_lock_interruptible but 
+tls_device_sendmsg() still
+
+uses plain mutex_lock() indeed, but that's another topic.
 
