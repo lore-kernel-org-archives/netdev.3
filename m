@@ -1,147 +1,213 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06364A3F00;
-	Thu,  3 Sep 2026 13:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4362A4A8412;
+	Thu,  3 Sep 2026 13:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788440564; cv=none; b=egATCHDd+xfy5HhUa2RERAx8jPQjXChanEzE9ukwzkUROcdmB1NoUObCPDVd0zUgjUFKOIdgLAkU8DjjkPdk2Hp/gm3+G6DvlHfIeiMV1pd1+dJwKsLedAEtB+mHubs2We/nVZ/eqhefWVhGI5k8tQ4/+ZKgdH3MTYcP93ojQOs=
+	t=1788440714; cv=none; b=HFBYv77vkQYY5UpWwfL5kV8lqQ7muu8RDxpEcNw0BAfNTMZBmGuGLx4XH6KxDAC3OBi8MB0pOWo7hLoe1/ORri9Wh4xQIJEUayA4IIOeiH4upfWIqTG9KM9IvmE84hgwhuU+8c2TM6uyG8AfkkXgcJ9IUfFcOwQc0OUfbrLww0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788440564; c=relaxed/simple;
-	bh=NsNiiOJhjJOyQBwkOa8osN/CvVc6DbJIZKeNK43iIyo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Kj9hjiTL4H6d7RYrbrs+puGhbhDzk+t9r6+OkRGTGg0wG6aWAS2q/mtAyGFsTl6TpXuJkf/5mwEOUnO5s9Ns1X3ke7/MD8PTmdSTXwvMz3YUJl/LG0Kz8ZklcypLRzpW/gIBwP21odvVR8u0G+9skewfKrxC65QoHz3UZaUkeUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=MWJiZKsr; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1788440714; c=relaxed/simple;
+	bh=X1ja7uOzseh34WQD5LZbgDwUjBCzajZavCXXbQDw+lc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RdsNZyWGvxHa2bd9azQLL+X1MOKXb8CJdZ+JNWdp0Fy5QhdbO1D/5kSSPNZJvAPpMujfds8ZnzSd0JuOcdVfyFnFOYs6a2DhVX3IJ3LOsy5S52kJ2pebv2+POfNj6WRqXu4QtP1EWEPvB2vEnOogyMcTlmWq/l95DX7Y83Gx7pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QcCvnCb5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="MWJiZKsr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1788440564; x=1819976564;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NsNiiOJhjJOyQBwkOa8osN/CvVc6DbJIZKeNK43iIyo=;
-  b=MWJiZKsrWPYz5B2pnKck2rb/hoctd904XeKdNF0gM3XeRAiE9npDISA2
-   j3VyngngyIRSyMLvgBVxt4XdBenZmvo6FY23C4oMELPBEgLGDmoZajf7j
-   T3OqoR1ZY+kQlL+vxKN5y7xcyf7ZX6p5I/ZzX73ias6MhkcQcjZ30ID+/
-   ewmm7E5pjRlK4dd3uQdSKZhwKdpOclgou1b8d4cFOxa6/GZCeMmgPjkJN
-   RKhT+RhQFMrB4JaO0JNbYkYS+1O8XgXuwxHErl1wSlNgY7YgGDuhLdbUW
-   OscAlAiW3jxXSGpoutkBZUXss7G2XKOwJ9f68RmVSrkhhlIFpixzXULef
-   A==;
-X-CSE-ConnectionGUID: oYpgwqYwQAeHdElgU6Fc/w==
-X-CSE-MsgGUID: K8NdNRSjTWSMkBeIcuB0nQ==
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="63413965"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 06:02:36 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.45; Thu, 3 Sep 2026 06:02:30 -0700
-Received: from [10.40.24.197] (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Thu, 3 Sep 2026 06:02:27 -0700
-Message-ID: <28cf906d-cd94-4497-9641-6220d57da3dd@microchip.com>
-Date: Thu, 3 Sep 2026 18:32:26 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcCvnCb5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2BD1F000E9;
+	Thu,  3 Sep 2026 13:05:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788440701;
+	bh=NBFIdlZhoNHS7V/7H1aeWVlnB+a/lbyKOxUlbFXPXqs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=QcCvnCb5mgJ7rIYOJYU3d8htkvl0n911ChMbzcRQBJluTSZiBB0dS4ems2n2hXt55
+	 ZdUiQjtNnj5am9yJQagJqfI+aF4nWtEj2l6YOT3meYK+IuY715VYV1jsuTrXcVCfju
+	 0/7tukmj4mIa3dQQ301k9hBCkjr2RXRrCAGMTxCHjhkIybjQgPRVCvOuyR3iapiNn+
+	 fkIeHwi2MnuRreTu9jp9Kkx7aqPzBaNe4hXMXSl6kXlQ4bBdZ6YaGklf5lT8KSMAvg
+	 nMXOka+/lXRMn9mDd7YI2HsctTVW8ACgdckMIXWfJj30UYvTbzgpielWXQ0oTe0GOQ
+	 ZTiBOBKGwM86Q==
+Subject:
+ Re: [net,v3] udp: revalidate socket family before publishing an IPv6 cork
+From: netdev-bot+sashiko@kernel.org
+To: 4ncienth@gmail.com
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, willemdebruijn.kernel@gmail.com, vyasevic@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Thu, 03 Sep 2026 13:05:00 +0000
+Message-ID: <178844070069.3394541.5419916956797677793@kernel.org>
+In-Reply-To: <20260902010408.1057857-1-4ncienth@gmail.com>
+References: <20260902010408.1057857-1-4ncienth@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/3] net: ethernet: oa_tc6: deliver the PHY
- interrupt to phylib
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
-	<UNGLinuxDriver@microchip.com>, <linux-kernel@vger.kernel.org>
-References: <20260901130948.212914-1-parthiban.veerasooran@microchip.com>
- <20260901130948.212914-3-parthiban.veerasooran@microchip.com>
- <dbb77cce-b574-42d9-8a26-a12a0446d1b9@lunn.ch>
-Content-Language: en-US
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-In-Reply-To: <dbb77cce-b574-42d9-8a26-a12a0446d1b9@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Andrew,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Thank you for reviewing this patch series.
+Critical: 0 · High: 2 · Medium: 0 · Low: 0
 
-On 02/09/26 6:13 am, Andrew Lunn wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> 
-> On Tue, Sep 01, 2026 at 06:39:47PM +0530, Parthiban Veerasooran wrote:
->> The integrated PHY has no dedicated interrupt line; its interrupt is
->> delivered in-band as the PHYINT bit in STATUS0, which raises the MAC-PHY
->> SPI interrupt via the extended status. phy_mac_interrupt() only triggers
->> a link-status re-read and cannot make the PHY driver read and acknowledge
->> its interrupt source registers, so expose the PHY interrupt to phylib as a
->> nested virtual IRQ instead.
->>
->> Use dummy_irq_chip as the irqchip, map a virtual IRQ and assign it to
->> phydev->irq before phy_connect_direct() so phylib enters interrupt mode
->> and uses the PHY driver's config_intr/handle_interrupt. Unmask PHYINT in
->> INT_MASK0, and when it is seen in the extended status, dispatch
->> handle_nested_irq() synchronously from the sleepable threaded IRQ. PHYINT
->> is level triggered, so acking the PHY source there clears it before the
->> next data chunk, avoiding a storm.
-> 
-> 
->     9.2.8.7 PHYINT
-> 
->     Physical Layer Interrupt. When set, this bit indicates a service
->     request from the underlying physical layer block.  Many physical
->     layer implementations support an interrupt output for signaling
->     events to the station controller. This bit is optional and will be
->     implemented only if the underlying physical layer supports
->     generating interrupts to a higher level. When implemented, this bit
->     shall be cleared by acknowledging the underlying physical layer
->     interrupt source(s). When not implemented, this bit shall be
->     reserved with a read- only value of zero.
-> 
-> At the moment, phylib is polling the PHY. That is guaranteed to work.
-> 
-> The standard indicates this interrupt is optional. It might not be
-> implemented. phylib assumes that if there is an interrupt, the
-> interrupt works, and it does not poll. So any hardware which does not
-> implement this interrupt is now broken.
-> 
-> Please find a way not to break other devices.
-Thank you for pointing it out. PHYINT is optional per the OA TC6 
-standard (section 9.2.8.7), and unconditionally setting up the virtual 
-IRQ breaks devices that do not implement it.
+- [High] Incomplete fix: the sibling IPv6 socket-dst publisher in the
+  connect() path is not covered, so an IPv6 dst can still be installed…
+- [High] The fix is writer-side and after-the-fact, so the mixed-family
+  socket dst it claims to eliminate remains observable by the unguarded…
 
-I checked both the OA TC6 standard (V1.1) and the LAN8650/1 datasheet, 
-and there is no capability register bit to detect PHYINT support at runtime.
+--
 
-The oa_tc6 driver already has a quirk_flags mechanism (enum 
-oa_tc6_quirk_flag, struct oa_tc6_quirks) used for the existing 
-OA_TC6_BROKEN_PHY flag. I plan to add a new flag to the same enum:
+udp: revalidate socket family before publishing an IPv6 cork
 
-enum oa_tc6_quirk_flag {
-     OA_TC6_BROKEN_PHY = BIT(0),
-     OA_TC6_PHY_INT    = BIT(1),
-};
+This adds a family recheck after the connected IPv6 route lookup in
+udpv6_sendmsg(), another one after lock_sock() before the cork is
+published, and a sk_dst_reset() in the UDP IPV6_ADDRFORM path once
+PF_INET has been written.  The goal is to stop an AF_INET6 cork or an
+IPv6 socket dst from surviving on a socket converted to AF_INET.
 
-The virtual IRQ setup, PHYINT unmasking, and interrupt dispatch in 
-oa_tc6_process_extended_status() will all be guarded by OA_TC6_PHY_INT. 
-The LAN865X driver, which always implements PHYINT, will pass the 
-quirk_flags as OA_TC6_PHY_INT. Any other TC6 device that does not pass 
-this flag will remain in PHY_POLL mode safely.
+Closes: https://lore.kernel.org/netdev/20260825160630.1888866-1-4ncienth@gmail.com/
+Link: https://lore.kernel.org/netdev/a86aa34a-8bea-46d2-a785-6c423ac00b1d@redhat.com/
 
-Hope this is fine?
+A couple of questions about the two orderings the changelog says are
+closed.
 
-Best regards,
-Parthiban V
-> 
-> 
->      Andrew
-> 
-> ---
-> pw-bot: cr
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index b4c977434c2e0..59ca446d3156b 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -611,6 +611,7 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
+>  				WRITE_ONCE(sk->sk_prot, &udp_prot);
+>  				WRITE_ONCE(sk->sk_socket->ops, &inet_dgram_ops);
+>  				WRITE_ONCE(sk->sk_family, PF_INET);
+> +				sk_dst_reset(sk);
+>  			}
 
+[Severity: High]
+Can an IPv6 socket dst still be published after this reset by the
+connect() path, which has no family revalidation?
+
+inet_dgram_connect() in net/ipv4/af_inet.c resolves the protocol before
+it can block, and says so:
+
+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
+	prot = READ_ONCE(sk->sk_prot);
+	...
+	return prot->connect(sk, uaddr, addr_len);
+
+So a connect() that already dispatched to udpv6_connect() sits in
+lock_sock() while do_ipv6_setsockopt() performs the conversion above and
+drops the lock.
+
+__ip6_datagram_connect() in net/ipv6/datagram.c then resumes and checks
+only the address family supplied by userspace and ipv6_only_sock(); it
+never re-reads sk->sk_family after the lock was taken:
+
+	if (usin->sin6_family != AF_INET6)
+		return -EAFNOSUPPORT;
+	...
+	err = ip6_datagram_dst_update(sk, true);
+
+and ip6_datagram_dst_update() ends with:
+
+	ip6_sk_dst_store_flow(sk, dst, fl6);
+
+That installs an rt6_info into sk->sk_dst_cache on a socket that is
+already AF_INET/udp_prot, i.e. after the new sk_dst_reset() has run.  The
+IPv4 consumer then takes it without any family test, in udp_sendmsg():
+
+	if (connected)
+		rt = dst_rtable(sk_dst_check(sk, 0));
+
+Note the cookie 0 does not reject it for every route type, since
+ip6_dst_check() short-circuits:
+
+	if (rt->sernum)
+		return rt6_is_valid(rt) ? dst : NULL;
+
+and rt_genid_ipv6() is seeded from fib6_sernum, which starts at 1, so
+pcpu routes of nexthop-object fib entries always carry a nonzero sernum.
+
+Given that, is the claim in the changelog accurate?
+
+  "Thus, if the send stores and checks first, the later conversion clears
+  the cache; if conversion and its reset happen first, the send observes
+  AF_INET after its store and clears it."
+
+The reset here only orders against stores made by code that revalidates
+the family; would a family recheck in __ip6_datagram_connect() after
+lock_sock(), or a dst->ops->family check on the IPv4 consumer side, be
+needed as well?
+
+> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+> index 93478d1ad5769..8ba552f1a6b26 100644
+> --- a/net/ipv6/udp.c
+> +++ b/net/ipv6/udp.c
+> @@ -1705,6 +1705,12 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+>  		dst = NULL;
+>  		goto out;
+>  	}
+> +	if (unlikely(connected &&
+> +		     READ_ONCE(sk->sk_family) != AF_INET6)) {
+> +		sk_dst_reset(sk);
+> +		err = -EAFNOSUPPORT;
+> +		goto out;
+> +	}
+
+[Severity: High]
+Is the mixed-family socket dst observable to a third thread in the window
+between the store and this check?
+
+The store happens inside the lookup just above, in
+ip6_sk_dst_lookup_flow():
+
+	dst = ip6_dst_lookup_flow(sock_net(sk), sk, fl6, final_dst);
+	if (connected && !IS_ERR(dst))
+		ip6_sk_dst_store_flow(sk, dst_clone(dst), fl6);
+
+so in the "conversion wins first" ordering the sequence is:
+
+CPU1 (setsockopt IPV6_ADDRFORM)
+	WRITE_ONCE(sk->sk_family, PF_INET);
+	sk_dst_reset(sk);
+
+CPU0 (udpv6_sendmsg, connected == true)
+	ip6_sk_dst_store_flow(sk, ...);	/* rt6_info now cached */
+	<preemptible window, no socket lock held>
+	READ_ONCE(sk->sk_family) != AF_INET6 -> sk_dst_reset(sk);
+
+CPU2 (udp_sendmsg on the converted socket)
+	rt = dst_rtable(sk_dst_check(sk, 0));
+
+The IPv4 side has no family validation, unlike its IPv6 counterpart
+ip6_sk_dst_check() which rejects a foreign entry outright:
+
+	if (dst->ops->family != AF_INET6) {
+		dst_release(dst);
+		return NULL;
+	}
+
+Does that leave an rt6_info being used as a struct rtable, with an
+IPv4-formatted skb reaching dst->output == ip6_output()?
+
+The symmetric ordering also looks reachable: in do_ipv6_setsockopt() the
+udp_prot, inet_dgram_ops and PF_INET writes are published before the new
+sk_dst_reset(), and inet6_sendmsg() dispatches on the lockless read:
+
+	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
+	prot = READ_ONCE(sk->sk_prot);
+
+Can a thread therefore enter IPv4 udp_sendmsg() and pick up the still
+cached IPv6 dst before the reset runs, in which case the reset cannot
+revoke the reference it already took?
+
+Would validating the family (or performing the connected store) under
+lock_sock, or adding a dst->ops->family check to the IPv4 path, cover
+these two windows instead of the after-the-fact reset?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902010408.1057857-1-4ncienth%40gmail.com
