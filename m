@@ -1,43 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B30B22B8AB
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 00:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04F26FD9B;
+	Thu,  3 Sep 2026 00:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788395772; cv=none; b=RUV/Cwt4odcMMQQSHKu/1WAhNixQA7GQQ3cBYmnpnZBGNNoXvq8PaTvxGU7TTgsdBxnmcaiV5zF5rrFxX84DtQuR0XkHAf9nq2psEBLSDFa5cuuHEwQzEZD/dWA4XFvEal99/SEhGj6M+dNP+di0C21AOzorlNdXqzYrHIB4z/I=
+	t=1788395774; cv=none; b=bypdpGuEZa/AvrKzwfPYCgXRITVG/nMP4YsAiKGNyYkiNTei3fwvIbYMP1/W4bqoTSsST3/+oJjs5s3KRCf/WgCJLYz7fk0iRm6IP43OaZ+oYd2HAtw3qQqId5ZCrTYP98AExmnH8mF3YgUSl52nft4Z6V6U/WuLplDGwb6+gkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788395772; c=relaxed/simple;
-	bh=BQFGPhvMs1GK55jF5PCVVENSgFD9mvtaJXdXn7scVcw=;
+	s=arc-20240116; t=1788395774; c=relaxed/simple;
+	bh=LmgEmsYcQWsfhNnkH1A0G4Z+9NO+ltICAddaBBqbAVY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pFn8dmArXtRNv5eaaP37fHLXqSmnV2YXR/XPv7VU06Kd3lvLkU0U9e/MmV+OOOTe7qO6lxLRymj8q7c48TXOxdMMOZs+SMY+5uGy/Ucy7+lcTxOeGyss5m4OyRa8XH6R9u7VjPFxk+T6QEOigMV2WjGHsT55XUGMOr+h7CTbzyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=amxqXOaV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=jO2S35d4lIkeSVJt84/a4vvEgO36kVNHpIxV751xEKbONs4byOeF5pr0qQEyzkjANCpzl3bRY5UG4c5KDmRROK++K8kQXwAqaxPPwt/xKXI3rs3de3TxcFjuyawY+3J+4PH993nNrnSKwkAzIzYQR+CzF3XMEvVfSGjXuQmihjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VbQV449q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="amxqXOaV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14ED1F000E9;
-	Thu,  3 Sep 2026 00:36:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VbQV449q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847BD1F00A3A;
+	Thu,  3 Sep 2026 00:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788395770;
-	bh=x2qNbvy1T2SnAes3F/wQppFd+FrV00UggrHHdFmIYeg=;
+	s=k20260515; t=1788395772;
+	bh=TyHYg0vhFMbcDU/ElIs1W6Oc764INMVYJqwl3+QuBXg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=amxqXOaVVe9Eq3ryHurCwJ9xMvkiw03drQaDa0HowYQkLxd73aX8AcA9Nsg7NXAC0
-	 c+rH3TNwHooCCWUXqmta3Nru8s+8f2wkPjkpv3AyB2Ama7T7d1veTN2YFHLVjfTXhP
-	 UPBiCtbjQuVMPaFhQr0jJcKD802DBMNuXixQ2u6Ofjm53vLnm2wF2DoIgyhyF2dtRM
-	 NQ0fNROlfD0klqJECOLHwBx0fCwaIVzVb5IP2wEJGgciIT4pg4S9K6g9QR0CxjzzzG
-	 V2J8JyHcQRQHou6vEwTfCbl2ZjcRbE+D6vQRVsZ/ETAkhrCdnzsDnsJLrpJCnfihFr
-	 a6qGOoOLqvJdw==
-Subject: Re: [net-next,v5] net: airoha: add HW GRO offload support
+	b=VbQV449qUkxk6pxxI19ti1/e8xkjopcZhjonBnGnoHQiP5dSapRXQwrT22pXbDFH1
+	 fI19LDjUoG+rNkfZ+kyyZuyLUv8ByI5zI9VFoDfZdLE4oXzax/kbDQT2wujxxrqnAv
+	 es5NsjkCafAnR4DXjopzX/uKAIqZ1eS/5O0EK/ZTXDl+wb3aTphOD8Jkc9UjFqThVJ
+	 5/BaPisi7YkV3V7JsoqsG9mgejYFmyN+RdaCSuBotcZz5aRlUB/qn5wznoCM9FZX7t
+	 QEniW3IfofIwp9wOLyAwV49k4HjYpGyQRdQS0Akao/sp1KaezHU9uaG2rw1oTzAI38
+	 x27pYGw8bDvZg==
+Subject: Re: [net,v3] net/sched: taprio: catch up in bounded time when the
+ schedule falls behind
 From: netdev-bot+sashiko@kernel.org
-To: lorenzo@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, aleksander.lobakin@intel.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, madhur.agrawal@airoha.com
-Date: Thu, 03 Sep 2026 00:36:09 +0000
-Message-ID: <178839576918.3394541.6887762855417310645@kernel.org>
-In-Reply-To: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
-References: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
-X-sashiko-severity: High
+To: junjie.cao@intel.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com,
+ jiri@resnulli.us, vinicius.gomes@intel.com, akpm@linux-foundation.org,
+ hdanton@sina.com, uladzislau.zhauniarovich@gmail.com, bestswngs@gmail.com,
+ syzbot+19d01f6082ec61dd45b2@syzkaller.appspotmail.com,
+ syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com,
+ syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com,
+ syzbot+e4aa91d7f20c34417d4e@syzkaller.appspotmail.com,
+ linux-kernel@vger.kernel.org
+Date: Thu, 03 Sep 2026 00:36:11 +0000
+Message-ID: <178839577112.3394541.14233212109648080060@kernel.org>
+In-Reply-To: <20260901093340.420809-1-junjie.cao@intel.com>
+References: <20260901093340.420809-1-junjie.cao@intel.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,234 +53,203 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
-- [High] LRO RX ring 31 is programmed as an active hardware-LRO
-  destination but is bound to no IRQ bank, so it is never polled.
-- [Medium] The driver advertises NETIF_F_GRO_HW while it cannot satisfy
-  the documented rx-gro-hw contract, because the hardware does not…
+- [Medium] Data race on a live, RCU-published `struct sched_entry`: the
+  new catch-up walk in `advance_sched()`…
+
+Pre-existing issues:
+- [Low] Claim that the new `sched_gate_list::period` contract
+  (min(cycle_time, sum of intervals), net/sched/sch_taprio.c:86-89) is…
 
 --
 
-net: airoha: add HW GRO offload support
+net/sched: taprio: catch up in bounded time when the schedule falls behind
 
-This adds hardware GRO (LRO) offload to airoha_eth, mapping the 8 LRO
-hardware contexts onto RX queues 24-31, bumping the page_pool order for
-those queues and disabling scatter-gather on them.  Aggregated frames get
-their network headers copied into a linear skb, the payload attached as a
-frag, CHECKSUM_PARTIAL with a pseudo-header checksum, and GSO metadata
-derived from the descriptor aggregation count.
+advance_sched() used to advance exactly one schedule entry per hrtimer
+expiry, so a delayed timer or a stepped reference clock made it replay the
+whole backlog from timer context.  This patch skips whole periods
+arithmetically, records the software period as min(cycle_time, sum of
+intervals) at parse time, and caps the remaining walk at twice the entry
+count.
 
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-> index 64619e9a704dd..57b19d7b5bd79 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+Closes: https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
+Closes: https://syzkaller.appspot.com/bug?extid=8785aaf121cfb2141e0d
+Closes: https://syzkaller.appspot.com/bug?extid=2642f347f7309b4880dc
+Closes: https://syzkaller.appspot.com/bug?extid=e4aa91d7f20c34417d4e
 
-[ ... ]
-
-> @@ -491,6 +493,88 @@ static void airoha_fe_crsn_qsel_init(struct airoha_eth *eth)
->  				 CDM_CRSN_QSEL_Q1));
->  }
->
-> +static void airoha_fe_lro_rxq_enable(struct airoha_eth *eth, int qdma_id,
-> +				     int lro_queue_index, int qid,
-> +				     int buf_size)
-> +{
-
-[ ... ]
-
-> +	airoha_fe_rmw(eth, REG_CDM_LRO_RXQ(id, lro_queue_index),
-> +		      LRO_RXQ_MASK(lro_queue_index),
-> +		      __field_prep(LRO_RXQ_MASK(lro_queue_index), qid));
-> +	airoha_fe_set(eth, REG_CDM_LRO_EN(id), BIT(lro_queue_index));
-> +}
-
-[ ... ]
-
-> +static void airoha_dev_lro_enable(struct airoha_gdm_dev *dev)
-> +{
-> +	struct airoha_qdma *qdma = airoha_qdma_deref(dev);
-> +	struct airoha_eth *eth = qdma->eth;
-> +	int qdma_id = qdma - &eth->qdma[0];
-> +	int i, lro_queue_index = 0;
-> +
-> +	if (airoha_fe_lro_is_enabled(eth, qdma_id))
-> +		return;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-> +		struct airoha_queue *q = &qdma->q_rx[i];
-> +		u32 size;
-> +
-> +		if (!q->ndesc)
-> +			continue;
-> +
-> +		if (!airoha_qdma_is_lro_queue(q))
-> +			continue;
-> +
-> +		size = SKB_WITH_OVERHEAD(AIROHA_RX_LEN(q->buf_size));
-> +		size = min_t(u32, size, AIROHA_MAX_RX_SIZE);
-> +		airoha_fe_lro_rxq_enable(eth, qdma_id, lro_queue_index, i,
-> +					 size);
-> +		lro_queue_index++;
-> +	}
-> +}
-
-[Severity: High]
-Can traffic steered to LRO context 7 be dropped here?  This loop enables an
-LRO context for every RX ring selected by airoha_qdma_is_lro_queue(), and
-AIROHA_RXQ_LRO_EN_MASK is GENMASK(31, 24), so ring 31 gets LRO context 7 and
-BIT(7) is set in REG_CDM_LRO_EN.
-
-RX ring 31 does not appear in any IRQ bank pin mask in airoha_eth.h:
-
-	#define RX_IRQ0_BANK_PIN_MASK			0x839f
-	#define RX_IRQ1_BANK_PIN_MASK			0x7fe00000
-	#define RX_IRQ2_BANK_PIN_MASK			0x20
-	#define RX_IRQ3_BANK_PIN_MASK			0x40
-
-The union of those four masks covers queues 0-4, 7, 8, 15 and 21-30, but not
-BIT(31).  Since airoha_qdma_hw_init() derives the RX interrupt enables from
-those masks:
-
-	airoha_qdma_irq_enable(&qdma->irq_banks[i], QDMA_INT_REG_IDX2,
-			       INT_RX2_MASK(RX_IRQ_BANK_PIN_MASK(i)));
-
-RX31_DONE is never enabled in any bank, and airoha_irq_handler() masks the
-status with irq_bank->irqmask, so q_rx[31]'s NAPI is never scheduled.  The
-re-arm loop in airoha_qdma_rx_napi_poll() is also a no-op for that qid:
-
-	if (!(BIT(qid) & RX_IRQ_BANK_PIN_MASK(i)))
-		continue;
-
-The ring is still created and filled by airoha_qdma_fill_rx_queue(), so once
-its descriptors are consumed by the LRO engine it is never drained or
-refilled again.  Would either restricting the mask to GENMASK(30, 24) or
-adding BIT(31) to one of the bank pin masks be the intended fix?  The v4
-changelog in this posting lists "Enable rx interrupt for queue 31", but that
-change does not seem to be present in this version of the patch.
-
-[ ... ]
-
-> @@ -657,12 +742,191 @@ airoha_qdma_get_gdm_dev(struct airoha_eth *eth, struct airoha_qdma_desc *desc)
->  	return port->devs[d] ? port->devs[d] : ERR_PTR(-ENODEV);
->  }
->
-> +static struct sk_buff *airoha_qdma_lro_rx_skb(struct airoha_queue *q,
-> +					      struct airoha_qdma_desc *desc,
-> +					      struct airoha_queue_entry *e,
-> +					      u32 msg1, u32 msg2, u32 len,
-> +					      u32 agg_count)
-> +{
-
-[ ... ]
-
-> +	page = virt_to_head_page(e->buf);
-> +	data_len = len - data_off;
-> +	shinfo = skb_shinfo(skb);
-> +	skb_add_rx_frag(skb, shinfo->nr_frags, page,
-> +			e->buf + data_off - page_address(page), data_len,
-> +			q->buf_size);
-> +
-> +	shinfo->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
-> +	/* HW does not report the per-segment MSS, so approximate it as
-> +	 * the average segment size. The LRO engine always aggregates
-> +	 * n-1 MSS-sized TCP segments plus one shorter tail for an
-> +	 * aggregate of n segments, so this still re-segments into
-> +	 * exactly agg_count segments, keeping gso_size/gso_segs and the
-> +	 * packet accounting coherent, while never overestimating the MSS.
+> diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+> index 39ac5b97aa3af..901dfd2484e10 100644
+> --- a/net/sched/sch_taprio.c
+> +++ b/net/sched/sch_taprio.c
+> @@ -83,6 +83,10 @@ struct sched_gate_list {
+>  	s64 cycle_time;
+>  	s64 cycle_time_extension;
+>  	s64 base_time;
+> +	/* min(cycle_time, sum of intervals): the software schedule restarts
+> +	 * the list after the last entry even when cycle_time is not up yet.
 > +	 */
-> +	shinfo->gso_size = DIV_ROUND_UP(data_len, agg_count);
-> +	shinfo->gso_segs = agg_count;
+> +	s64 period;
+>  };
+
+[Severity: Low]
+This is a pre-existing issue and not introduced by the patch, but now that
+the effective software repetition length has a name, should the sites that
+test for an "always open" gate use it too?
+
+The "never closes" tests all compare against cycle_time rather than the new
+period:
+
+net/sched/sch_taprio.c:advance_sched() {
+	if (next->gate_duration[tc] == oper->cycle_time)
+		next->gate_close_time[tc] = KTIME_MAX;
+}
+
+net/sched/sch_taprio.c:taprio_set_budgets() {
+	/* Traffic classes which never close have infinite budget */
+	if (entry->gate_duration[tc] == sched->cycle_time)
+		budget = INT_MAX;
+}
+
+The same equality against cycle_time is used in
+taprio_update_queue_max_sdu() and setup_first_end_time(), while
+taprio_calculate_gate_durations() accumulates gate_duration over the whole
+circular list:
+
+net/sched/sch_taprio.c:taprio_calculate_gate_durations() {
+		cur = list_next_entry_circular(cur, &sched->entries, list);
+	} while (cur != entry);
+}
+
+So gate_duration[tc] can be at most the sum of the intervals.  When
+cycle_time is configured larger than that sum, does a gate that is open in
+every entry still match "== cycle_time", or does it end up with a finite
+gate_close_time and a finite byte budget instead of KTIME_MAX / INT_MAX?
+
+> @@ -952,23 +958,49 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  		goto first_run;
+>  	}
+>  
+> -	if (should_restart_cycle(oper, entry)) {
+> -		next = list_first_entry(&oper->entries, struct sched_entry,
+> -					list);
+> -		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
+> -						    oper->cycle_time);
+> -	} else {
+> -		next = list_next_entry(entry, list);
+> +	now = hrtimer_cb_get_time(timer);
+> +	end_time = entry->end_time;
+> +	behind = ktime_sub(now, end_time);
+> +
+> +	/* Behind, e.g. delayed timer or stepped clock: skip whole periods
+> +	 * arithmetically and walk at most one more to the entry covering
+> +	 * now, instead of replaying the backlog one expiry at a time. The
+> +	 * cap bounds the walk; a leftover is picked up by the next expiry.
+> +	 */
+> +	if (unlikely(behind >= oper->period)) {
+> +		s64 jump = div64_s64(behind, oper->period) * oper->period;
+> +
+> +		end_time = ktime_add_ns(end_time, jump);
+> +		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
+>  	}
+>  
+> -	end_time = ktime_add_ns(entry->end_time, next->interval);
+> -	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+> +	budget = 2 * oper->num_entries;
+> +	do {
+> +		if (should_restart_cycle(oper, entry, end_time)) {
+> +			next = list_first_entry(&oper->entries,
+> +						struct sched_entry, list);
+> +			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
+> +							    oper->period);
+> +		} else {
+> +			next = list_next_entry(entry, list);
+> +		}
+> +
+> +		next_start = end_time;
+> +		end_time = ktime_add_ns(next_start, next->interval);
+> +		end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+> +		entry = next;
+> +	} while (unlikely(ktime_compare(end_time, now) <= 0) && budget--);
+>  
+> +	/* next can be the entry already published as q->current_entry (a
+> +	 * single-entry schedule, or a catch-up of whole periods), so the
+> +	 * close times and budgets below are rewritten in place while
+> +	 * taprio_dequeue_from_txq() may be reading them.
+> +	 */
+>  	for (tc = 0; tc < num_tc; tc++) {
+>  		if (next->gate_duration[tc] == oper->cycle_time)
+>  			next->gate_close_time[tc] = KTIME_MAX;
+>  		else
+> -			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
+> +			next->gate_close_time[tc] = ktime_add_ns(next_start,
+>  								 next->gate_duration[tc]);
+>  	}
 
 [Severity: Medium]
-Is NETIF_F_GRO_HW the right feature bit given this approximation?
-Documentation/networking/netdev-features.rst says for rx-gro-hw:
+Can this race on the live entry be avoided rather than documented?
 
-	A packet stream merged by Hardware GRO must
-	be re-segmentable by GSO or TSO back to the exact original packet stream.
+The walk reassigns entry = next on every iteration, so after num_entries
+steps it lands back on the entry that is still published in
+q->current_entry.  With the leftover r = behind % period, the extra step is
+taken whenever r >= period - interval(current entry), so multi-entry
+schedules can reach the case too, not just the single-entry one.
 
-With gso_size computed as the average payload size, the aggregate cannot be
-re-segmented into the original stream whenever the tail segment is shorter
-than the MSS, which the commit message describes as the normal case:
+Once next == q->current_entry, advance_sched() rewrites gate_close_time[]
+with plain 64-bit stores while the dequeue path reads it lockless:
 
-	The LRO engine always aggregates n-1 MSS-sized TCP segments plus one
-	shorter tail for an aggregate of n segments
+net/sched/sch_taprio.c:taprio_entry_allows_tx() {
+	return ktime_before(skb_end_time, entry->gate_close_time[tc]);
+}
 
-For a two-segment aggregate of 1460 + 1000 bytes, gso_size becomes 1230, and
-GSO/TSO emits 1230 + 1230 rather than 1460 + 1000.  On the L3-forwarding path
-this patch targets, airoha_dev_xmit() writes that value straight into the TX
-descriptor MSS field:
+net/sched/sch_taprio.c:taprio_dequeue_from_txq() {
+	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
+	    !taprio_entry_allows_tx(guard, entry, tc))
+		return NULL;
 
-	__be16 csum = cpu_to_be16(skb_shinfo(skb)->gso_size);
+	/* ... and no budget. */
+	if (gate_mask != TAPRIO_ALL_GATES_OPEN &&
+	    taprio_update_budgets(entry, len, tc, num_tc) < 0)
+		return NULL;
+}
 
-	tcp_hdr(skb)->check = (__force __sum16)csum;
-	msg0 |= FIELD_PREP(QDMA_ETH_TXMSG_TSO_MASK, 1);
+advance_sched() holds q->current_entry_lock and runs from the hrtimer
+(HRTIMER_MODE_ABS, hardirq), while taprio_dequeue() ->
+taprio_dequeue_tc_priority() -> taprio_dequeue_from_txq() only holds
+rcu_read_lock() and never takes that lock.  On 32-bit, can
+taprio_entry_allows_tx() observe a torn ktime_t here, since neither side
+uses READ_ONCE()/WRITE_ONCE()?
 
-so forwarded flows end up with a reduced MSS.  Would NETIF_F_LRO be the more
-accurate advertisement for an irreversible merge?
+The budget reset has the same overlap:
 
-A related question on gso_segs: agg_count comes from
-FIELD_GET(QDMA_ETH_RXMSG_AGG_COUNT_MASK, msg2) and is only bounded above by
-AIROHA_RXQ_LRO_MAX_AGG_COUNT, while data_len has no lower bound beyond 1.  If
-the engine ever aggregates segments that are not uniformly MSS-sized (for
-example 64 segments totalling 100 payload bytes, giving gso_size 2 and 50
-emitted segments), gso_segs would overstate the number of segments actually
-produced, which feeds qdisc pkt_len accounting.  Is the uniform-segment
-property guaranteed by the hardware for all aggregates?
+net/sched/sch_taprio.c:taprio_set_budgets() {
+		atomic_set(&entry->budget[tc], budget);
+}
 
-[ ... ]
+Can this atomic_set() on the published entry discard a concurrent
+atomic_sub()/atomic_sub_return() from taprio_update_budgets(), letting a
+frame be released against a freshly reset budget?
 
-> @@ -3430,11 +3781,9 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
->  	netdev->ethtool_ops = &airoha_ethtool_ops;
->  	netdev->max_mtu = AIROHA_MAX_MTU;
->  	netdev->watchdog_timeo = 5 * HZ;
-> -	netdev->hw_features = NETIF_F_IP_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO6 |
-> -			      NETIF_F_IPV6_CSUM | NETIF_F_SG | NETIF_F_TSO |
-> -			      NETIF_F_HW_TC;
-> -	netdev->features |= netdev->hw_features;
-> -	netdev->vlan_features = netdev->hw_features;
-> +	netdev->hw_features = AIROHA_HW_FEATURES | NETIF_F_GRO_HW;
-> +	netdev->features |= AIROHA_HW_FEATURES;
-> +	netdev->vlan_features = AIROHA_HW_FEATURES;
->  	SET_NETDEV_DEV(netdev, eth->dev);
-
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-> index fa9a8edce22ff..84cadbb538666 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> @@ -45,6 +45,18 @@
->  	 (_n) == 15 ? 128 :		\
->  	 (_n) ==  0 ? 1024 : 16)
->
-> +#define AIROHA_LRO_PAGE_ORDER		get_order(SZ_16K)
-> +#define AIROHA_MAX_NUM_LRO_QUEUES	8
-> +#define AIROHA_RXQ_LRO_EN_MASK		GENMASK(31, 24)
+The comment added above the loop states the overlap exists ("next can be
+the entry already published as q->current_entry ... rewritten in place
+while taprio_dequeue_from_txq() may be reading them").  Would it be
+preferable to keep the writer off the published entry, for example by
+stopping the walk one step earlier or by publishing before rewriting, so
+the guard band and byte budget are not mutated underneath a reader?
 
 [ ... ]
 
->  #define PSE_RSV_PAGES			128
->  #define PSE_QUEUE_RSV_PAGES		64
-
-[ ... ]
-
-> @@ -714,6 +728,18 @@ static inline bool airoha_is_7583(struct airoha_eth *eth)
->  	return eth->soc->version == 0x7583;
->  }
->
-> +static inline bool airoha_qdma_is_lro_queue(struct airoha_queue *q)
-> +{
-> +	struct airoha_qdma *qdma = q->qdma;
-> +	int qid = q - &qdma->q_rx[0];
-> +
-> +	/* EN7581 SoC supports at most 8 LRO rx queues */
-> +	BUILD_BUG_ON(hweight32(AIROHA_RXQ_LRO_EN_MASK) >
-> +		     AIROHA_MAX_NUM_LRO_QUEUES);
-> +
-> +	return !!(AIROHA_RXQ_LRO_EN_MASK & BIT(qid));
-> +}
+> @@ -1172,6 +1203,7 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
+>  		return -EINVAL;
+>  	}
+>  
+> +	new->period = min(new->cycle_time, cycle);
+>  	taprio_calculate_gate_durations(q, new);
+>  
+>  	return 0;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831-airoha-eth-lro-v5-1-6b0f50401121%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901093340.420809-1-junjie.cao%40intel.com
