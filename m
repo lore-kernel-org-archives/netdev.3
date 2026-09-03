@@ -1,194 +1,118 @@
-Received: from mail-ej2-f9.google.com (mail-ej2-f9.google.com [74.125.228.137])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BF14477FE
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1AE42F6F6
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788424703; cv=pass; b=Z741wMSiYbhKqemKHy5LywsYCXnZT4mUHFsxG6KCn8BD4qEIE9uz3GLitHIOMjp3rbfLLCNml/lmdRDQSgrs8t1y6SH83mO0rtVTPfF6HBvSyi2//TvGNPHu37sshzpB+cRUoTe2pOivBu99M6YDqoMR5gQ6PTR7IB0HKwWz4RY=
+	t=1788425073; cv=pass; b=Xi7HaX1WXcPC83y1eRExEPImyGonir5Oea0a/bcRVUxECz84AzfsgVy2hWi+1lsbdAJfiBR8R8wO5Oqv/XRFeyaTe6gKYhbTgY1inVmtPfaVZTIAq/PBY2ystsB4FWhPN/qoJASpiaGu14o572U/8CctXnMgxig1BnegNZDQtjk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788424703; c=relaxed/simple;
-	bh=TN4nRbj2sDa3jvcFws0KzC/xkvTzZd0I7H3ICwDkr5M=;
+	s=arc-20240116; t=1788425073; c=relaxed/simple;
+	bh=eo/mKAbZ8+ZAo6pNEeH1tClKeAv5a7K+pTLrtQ6S67w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IF2F2LqEDCOUNop5aJT++fn5Za3RBp0CP8VIsd+Srvb2wZIJ5793XuCZaXB1/Zvb9EZwFL7ljoZ9zHPFW31wUhdIVAzXZRFadC4NaA+Ylgm2Q/UGLad6M+5Om9ap3mDAOWgCAMMdneqHnp3pFl/2a3UfgfUSy3Bgq9eRtO7Rcxo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q1KThPar; arc=pass smtp.client-ip=74.125.228.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=tnCcsCE2xfcXtcMCx059SvcoOdSOCHZCmQzeXQqQsIDnVy/zY3e64TotFGJKufsxPThsL9JxaN4Dlu8UZnwk4HojAFYse8cRJT+waDfD41fiHtQAjf8nfxYEawgUrNTeESFpYUt4sldh6r+HImIeo3rfTxosRa6SJSNBb/CZWmw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K6kiAv3f; arc=pass smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q1KThPar"
-Received: by mail-ej2-f9.google.com with SMTP id a640c23a62f3a-c252e3644eeso101729466b.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:38:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788424700; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K6kiAv3f"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-52ff0b7c98aso19406611cf.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:44:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788425071; cv=none;
         d=google.com; s=arc-20260327;
-        b=O8LQAbMxc6+hbBLCupMtRSqgMS2tORC78iwUryXBGLB5JmGm/IWz+gnjoXFiIUEwsh
-         REewgoNGKgtPlo2GylLHT6lAQvEn0Ulhq6cqRLm7iwUWucAodezm9FW5/ySmUDMJIIpT
-         kdpCr3YUGlNT1DeohPPJa6I39sKQPLy2oTeqL/NTDQ1qSWAnNADu43cOMp3XK+G64iax
-         AYxd1Ujo1qpD36uvxMbcuiIAjQivej+eW+I5fNi1eZvEWLz7e9Aw5VTp5E3JffcI6hEI
-         e4zovst1GQy/URMB4Dr/WfpPGwPLhj2fJ6fupizlYGCed234Qt0wNYgegRJ3LrLypodJ
-         H+Iw==
+        b=kd4TQrsdzkR3YsCZqsCT4pke6/iUbft3djZNIhfEhyPpB5t4U3Fkcvy8sfQogVnFou
+         k7avZZvz6WAiEfv0xuZ5rxoeEETLy510KlSOM/bKpFuPiL1oeKHBgH0gzsRfJXQ/R0kX
+         iVSbDDK7JWjlP5hK5tpmMCK7un5/PPzh8FNHEQI/6JzM+h84g7JM4vkZE06aYKy9ZDLL
+         M+8PIZXD0Wnc4m+imTw9i+tWg+ZLLlgeaXzrouxle/V4x4QNtNreocrFwpR7gziob5ql
+         jHENCGi+vwuaVVGOzZWZVtr0SNmrKecJWzoN40VTK9JUr0t6ScAw3WGqlqJ3AdwjfS8o
+         neQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=zLI/RWFajbdI/yeWFj7by+G0c5qK0/HsoOvw38Apr+w=;
-        fh=QDQwO/bmLeZyGlxeDtqJ2OUZrONoGYeJhGNyd3WmyPo=;
-        b=E6nMp8/7b5XE/Mr72J+paOLlMES5Nt6cIpfdrdFdx6tyaakghA/VcKyaNWPaDgAz6c
-         DVqRHG6iYL4fNp3ESL7cgNnYpxUS/8xFSgRylmgPsSD6/bTn8pvKskQzg+Q3pEWOrTA4
-         vkkYkTm6eiCGcPbBKwJ3SQg7UvM/BHHMM4648VzGMnCFY2j/umZY62kRThUQprABQYOa
-         MbJNGrdYJVDQl7vvXPeBGyOAzGnF8VKLH0tMlBUoNa0XU7VRyUX9wLP5qVTg547VkrCU
-         V+IiU0RXnY9lydlkPG/Kj8P89eWYEJpmqvffXjIGyUpwsN5zPe8ZfftC6rqWtLfpi6Pi
-         omXA==;
+        bh=UGXcmmUVVzmY3X69FZhKc8apP0syqk+bcVAviicg0iQ=;
+        fh=xRmSFVpWHGf3Ob03Ze79S/Tz1ntJPP3L0PoxkK3CqQU=;
+        b=BVwKM7fYJOv+4MTKIcPOcrk/arfn3/LH1ShJF177LKNZRUQc6dpwEiHayN6NDKg1Qo
+         EUNMsaY120M8xOecqShzaZuJ5EyGhh+rg2kJSXNVe9xlDgua0jeQWLpPeYqGT3qM96Y7
+         CMFzDr0q0/PE4tevIUBta1kyzo+uo3GdmtA353vBdSYeSKO5GrRmYvBnAyJRC4nuW5Kl
+         WQXlKuRLKbb2KY2TpchkYccq/0FxUD0+eAUBs8eHYAFqNDJCkjJ7lEjLrFle7QS+ZKZi
+         xBn9Ic2EYhZfxqQiCa0wU60ylEM6z12qmE8mX9d//fmcC0abZSckAHblBFCSPH6nAhzf
+         jwVQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788424700; x=1789029500; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788425071; x=1789029871; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=zLI/RWFajbdI/yeWFj7by+G0c5qK0/HsoOvw38Apr+w=;
-        b=Q1KThParMiBk4Ixunwx8k+m3hjhnkHFvvKa/rhPe7EdaK2d4h5ll32Q+RN67QTkOZc
-         8jxQmYzl5TS07VD3JFNPsXT0GdrjJbvxGaOo+zQQeT9sDrsvPILQYn2pnpfVjLgYZO8Z
-         FInD1IuGQjhejxZi/krDFs67sVD8bAV2k34bqwLj5fC9IEb8t5D4hZEbTdLazUtIwa7T
-         sMzHihOT3uUvq0dWakEIb4jCpxHfKwelmP2DqJzndGfgj+zxWsUfPHSJ0RMA39h+rw1Y
-         MxI1fZDXHuYjMUvVP0OKFEmzMZdKZxtpmYZ0QCiluqDwE5V9j0pR0CVmiaqcaIUFdiP1
-         9bqg==
+        bh=UGXcmmUVVzmY3X69FZhKc8apP0syqk+bcVAviicg0iQ=;
+        b=K6kiAv3fjWk24m0b08pvLqLEYgRTmYEtPUBxvN3wgrYRbEMZM28PCUWCjnWzwWcbSh
+         uGTPbQo03cLbm8V4PV9tFHgWP+mtmy4SblAM0rOocccBe7Ar6R1u6DSaKB/cWGij9ulP
+         aLNUqMssasLEYzzxh3eib9F7PCRub2d9OThGZux26GcUHIB62QB6nf1k11aSnYlacRDN
+         VPy4bl77Z7cF142k8TctNHE0IHCPhpZzB5wtqCCwK9Re+I+cAXHobLVpsrh6F0L/MC3p
+         2pEctyS0mgYpHUDTi/Egi1taKRsKY6OYfaaq0sKspG0ROw6QL4qy+U/fB3jvqJYedICF
+         gs/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788424700; x=1789029500;
+        d=1e100.net; s=20251104; t=1788425071; x=1789029871;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zLI/RWFajbdI/yeWFj7by+G0c5qK0/HsoOvw38Apr+w=;
-        b=hImS7EDzHtoo0XRn7DhhKzQsg/SvOsbfJsvR34yfb5V9k08V2kOPvhc2D5ymz5w0ht
-         DF1Y61b8qauCoOUERSp4iIND31sKo/SUuDXdQQGbLrOgEgZ+IgWv4YaLsDzQmOcyaUtu
-         KCqnBnT4UqMGyBwafdUg+4b5ZJ5njLYoHiSAnM7K3SKuiQORy4Rg8oApZjywYW2zH7bh
-         UjkXx9/GTaKurJOmFrEGGhXuu0jJntgyv0cNwguAZqF9tubFq3WB4LLQS4kT9Blsxzga
-         wPX0qx0qTv0IIUDJomjg6BLBVtACWczUbw+x6SrS0+IVSoQ/yFBD/PMqqX5em7wpftcK
-         bzkw==
-X-Forwarded-Encrypted: i=1; AKwUvBxf+6YgL7YE3TMMWwrEfGJfFoUaJLRV92zm7OxxKDVL7zUvOT9c5FD2+8fvfZ7oFrTE7la35gw=@vger.kernel.org
-X-Gm-Message-State: AFuF++npuDo8UtgViKrn7bZLZIEABXhCHXdDyQ4qBFAihtYR/gk/z4p6
-	AZCyqpe2mxbahwLldaB3ydOyFGlYzJMk+mJfJE/84Nobs6ca+UZMmHcBjS63NM96JkfFKi80aop
-	8swiuKAyQmQAaa+jgqC/cT7WY1dhZ1hI=
-X-Gm-Gg: AYBFou39ajV0QHMfV6cZyLmVfuT+e/yiwh/6wAhoqcM6roNXBaZhiYU3GHGCFMJqdcB
-	N8YJ2kEVuTps+T9hR+KRzKTv+TohMWNM7PvJynsm1eNFgPMjvrWz8QSUu+7hF5uWHG5jmC+wJcp
-	mbtJDJlVaI24DUA1XfxGiE2wV6Y7BYXC88Uy3+a6PALIKY+0vNBSzbUQbWoDrGPK/u1++7Dq0Jh
-	+suuV6BTmwpe7jlLnPedWwRmGut8yz7W17U0AiqoX/PnFf7X+KGayuo66XOzZ/qgeXBuH7Fw8fV
-	6VrotxYRK4gd6wKHyx4LI81d3WIMBfU0WqXkwBfcJu7sMLJZUw1jgI1b4V9X37s=
-X-Received: by 2002:a17:907:c71b:b0:c20:af9d:4533 with SMTP id
- a640c23a62f3a-c25d560c603mr627292366b.19.1788424699559; Thu, 03 Sep 2026
- 01:38:19 -0700 (PDT)
+        bh=UGXcmmUVVzmY3X69FZhKc8apP0syqk+bcVAviicg0iQ=;
+        b=V1HgbJyAEcjhkdM1tvGjg461Jsj1ivL4MOo5vFFYPY6WjPFHos/QMxNmF8+7rtOaWb
+         6JL1sFo9PrKOLZ73l/22Zdp5HzqswiBQ5qwLTVHUWUBVJGxuQevZhVeYWzAVTAxx5hMl
+         OO8QOHSvGGYgAoTESk4w2xnLOeRC+X7V2WS5X9ES4OP2VV+TeXvNasFlEQ1h95F6e7/z
+         b0nNxB1GR2IxQMbaWtEo1jL7WjOOQqYtMGHF7ZPuEI6TbrWuZqKAXMsLquQ8dpOE30PJ
+         U1WZE8O/tjYdv1h+9kbUfKWhz3xnM7bS/ZG0UijO2ie7eNkXj4bylgXvS7V+vonUyzDJ
+         Zw9Q==
+X-Forwarded-Encrypted: i=1; AKwUvByCKwYFEk0Kt4TUoDbqWtPNzkBZKREB4Tn4XUN+BWm9DGd+BMXoRYlc8sl/zZgDlnQA4HbsK68=@vger.kernel.org
+X-Gm-Message-State: AFuF++kPC2s4EJR80ZUEQNfEU6wk9sS1syNvIDFSEAEnt9eVABoQIa4O
+	gIouZazFBI/OJ3NQjhl69a2Og6gGqbe0gLLClTf/jmMKlWGdvyje4r5gigHLbhnSP4Qnau0+KCV
+	u98GA7MmgQasDlbpzecYJ7ZuidR4th3o7Urc0Dmw9
+X-Gm-Gg: AYBFou0o0SUp1yH1BtofpUe5O/BCYJpA/F5X866a5sFmnUCVy2Rvq97m90N3eEiVGJc
+	dF32i/tQdO3VPcEd3TvsSqt5LKp+8Hh25MLKQBXhr+a/X1O7CL4iynB8KNx7vSdmLjq7hlNYSRl
+	ZvTrpvmdDlD1X16kWHBA7mG+H0Xw9CRnVXm3OdC6OpXHKj1q2zLJC2tJ6a+dnFM55PLrNRDAcH8
+	JwSxli2O6H0s/i2DmvrzU6y7iKwJfKBuL1STpttEMb3uuuDnkpXkdejP0CkMAmGzWyRBGy4BUGf
+	eJK/nGcxU1OXo5gjx5Fw3AZidjVZHz1ErhWgw7+GC4LHQLBnbtk6lrSfkbaG9c+ZU2hb+OCQ40y
+	RODotS30+QkaNYjQYj5AAntwB7T2xIy18EW0vYwqDelcaqizGSF3BeamV1Q==
+X-Received: by 2002:ac8:690b:0:b0:530:42e5:f3a2 with SMTP id
+ d75a77b69052e-53042e5f5e8mr64804661cf.43.1788425070051; Thu, 03 Sep 2026
+ 01:44:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260901150111.141037-1-coiaprant@gmail.com> <20260901150111.141037-9-coiaprant@gmail.com>
- <f07c64b4-3018-4e9d-8aea-12454f132419@bootlin.com>
-In-Reply-To: <f07c64b4-3018-4e9d-8aea-12454f132419@bootlin.com>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Thu, 3 Sep 2026 16:38:08 +0800
-X-Gm-Features: AcwNN1VhuHjbmY1CA9bSBTxLCt2mOIIUXarfDkLXAsSy1buatA_CYmYfdE_lEPs
-Message-ID: <CALj3r0hxSOrtRwOmAQ4Vw=nEkTfA+x93KzpAdG9m=xWFYbOuTw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 08/10] net: stmmac: dwmac-rk: add SGMII
- support for RK3568
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Vinod Koul <vkoul@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Romain Gantois <romain.gantois@bootlin.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Russell King <linux@armlinux.org.uk>, 
-	Shawn Lin <shawn.lin@rock-chips.com>, David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-renesas-soc@vger.kernel.org
+References: <apkR6ZU+tqP2C3Fl@griffin.linux.hr>
+In-Reply-To: <apkR6ZU+tqP2C3Fl@griffin.linux.hr>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 3 Sep 2026 10:44:16 +0200
+X-Gm-Features: AcwNN1V31QTbQHlVUR2Ei5qRHgvPD8qcEst2_28P8qGgpJy2SSyFXeEe1YOcxHE
+Message-ID: <CANn89iJ+qV5T1xzwqUKzw+mCryOfKyncSB2WPA7vhsTMJ6DfGA@mail.gmail.com>
+Subject: Re: [PATCH net v2] ppp_async: drop the errored frame instead of
+ resetting its headroom
+To: Vlatko Kosturjak <kost@linux.hr>
+Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Maxime Chevallier <maxime.chevallier@bootlin.com> =E4=BA=8E2026=E5=B9=B49=
-=E6=9C=883=E6=97=A5=E5=91=A8=E5=9B=9B 16:34=E5=86=99=E9=81=93=EF=BC=9A
+On Thu, Sep 3, 2026 at 8:21=E2=80=AFAM Vlatko Kosturjak <kost@linux.hr> wro=
+te:
 >
-> Hi
+> ppp_receive_nonmp_frame() prepends a two-byte direction tag before runnin=
+g
+> the pass/active BPF filters:
 >
-> On 9/1/26 17:01, Coia Prant wrote:
-> > The RK3568 SoC integrates a Synopsys DesignWare XPCS that can be
-> > connected to GMAC0 or GMAC1 in SGMII mode.  Add the necessary glue
-> > logic to support this configuration.
-> >
-> > The current dwmac-rk driver does not support SGMII mode.  SGMII
-> > requires a PCS to handle auto-negotiation and link state reporting,
-> > but the existing driver only supports RGMII and RMII.
-> >
-> > Add a set_to_sgmii() callback to configure the GMAC GRF register for
-> > SGMII mode (bit 7 set, interface selection bits 4:6 cleared).  Also
-> > add a supports_sgmii flag to indicate SGMII capability.
-> >
-> > Provide pcs_init/pcs_exit callbacks to create/destroy the XPCS via
-> > xpcs_rk_create() from the Rockchip XPCS platform driver, and a
-> > select_pcs callback to return the XPCS to phylink.
-> >
-> > While at it, fix the clock enable ordering in rk_gmac_powerup():
-> > gmac_clk_enable() is now called before any register access, including
-> > the SGMII mode setup path.  Previously SGMII mode would bypass the
-> > clock enable via a goto, which could cause synchronous external abort
-> > when accessing MAC registers with the clock domain disabled.
-> >
-> > Also clean up the error handling in rk_gmac_powerup() by using a
-> > unified clk_disable label, and add error handling for the default
-> > (unhandled interface) case.
-> >
-> > SGMII In-band vs Out-of-band
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> > On RK3568, the MAC clock is fixed at 125 MHz and cannot be dynamically
-> > changed by the stmmac core's set_clk_tx_rate callback.  In-band mode
-> > works because the PCS handles rate adaptation internally.  Out-of-band
-> > mode does not work because the MAC would need to change the clock rate
-> > to 125/12.5/1.25 MHz for 1000/100/10 Mbps respectively, and the clock
-> > is fixed.
-> >
-> > Enable default_an_inband for SGMII and disable the generic stmmac
-> > set_clk_tx_rate callback.  This forces phylink to use in-band mode,
-> > where the PCS is responsible for speed/duplex negotiation.  Without
-> > this, the stmmac core would attempt to change the clock rate on speed
-> > changes, causing TX to work but RX to fail.
-> >
-> > Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20=
-TRM%20Part1%20V1.1-20210301.pdf (Page 386)
-> > Signed-off-by: Coia Prant <coiaprant@gmail.com>
+>         *(__be16 *)skb_push(skb, 2) =3D htons(PPP_FILTER_INBOUND_TAG);
 >
-> [...]
->
-> > +static int rk_pcs_init(struct stmmac_priv *priv)
-> > +{
-> > +     struct device_node *np =3D priv->device->of_node;
-> > +     struct device_node *pcs_node;
-> > +     struct dw_xpcs *xpcs;
-> > +
-> > +     pcs_node =3D of_parse_phandle(np, "pcs-handle", 0);
-> > +     if (!pcs_node)
-> > +             return -ENODEV;
->
-> Here aswell you make it mandatory to have a PCS, as the generic pcs logic
-> introduced in patch 1 doesn't handle -ENODEV, it treats it as any other
-> error.
->
-> So, either you return 0 when there's no PCS (so that we don't break platf=
-orms
-> that don't have one), or you handle -ENODEV gracefully in patch 1.
->
-> Maxime
+> Nothing on the receive path guarantees those two bytes of headroom. The
+> frame-error path in ppp_async's process_input_packet() resets a reused sk=
+b's
+> headroom to zero while claiming to restore it to a freshly allocated stat=
+e -
+> but a fresh skb from dev_alloc_skb() carries NET_SKB_PAD:
 >
 
-Hi,
-
-Currently, `rk_pcs_init` is called only for SGMII, which requires a PCS.
-
-As it stands, only the RK3568 supports SGMII, so we won't break anything he=
-re.
-
-Best,
-Coia
+Reviewed-by: Eric Dumazet <edumazet@google.com>
