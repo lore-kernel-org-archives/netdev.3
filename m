@@ -1,79 +1,76 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964364AFE03
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 13:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2CC4A840A
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 13:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788442066; cv=none; b=Lu7NvX+79rQ6Dy/GzTzTziN3723v0N1xcQ6ZRRdCNSRuqdxdbMkOQDxEWQInzM+aFHcgsjUWwG12NUe6fUCdzQCU1A1KD1z0VuQucigLtiKMmsl1yy0+8a+BwZmgOqWrZjCmCfBbvVN6NkwgBdOY1Nnkaoiy7RB+Tm3uriZnBgA=
+	t=1788442076; cv=none; b=m8GuAbMtx98MVDhJFGsPer57rU8/OPurpDBsTd7i78SEnGlKcrjTx4Pk1vf9hyHzsZj6ZNN2MVdjP6nP8TYTXvK4QTIu+449atDD6Nwt9Uwk40mLjm+hmbi6rwp+sKizpjYet/wu9gkSpDJMYDQARZbHQmKL5AJ1DXeTnxa03PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788442066; c=relaxed/simple;
-	bh=FJCBFWXQ4JRn4p4I/3YHNA52Ktz3R5HZeu2CU4E/4lc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D1HWNhIg8M6AFC13Av57RF5EN7W22k33yQ9fNhEufyGz3hZgpCCEUwG8uSAaojS10Ke9+6Hq8K1QdQmGkiwknXGDf6SgO01wumL56GqNbiIhA6lHdlV7PI8YoQBGbiWQa6V/AYGYc09jG+4w9RW9eb4cLqufev+8TakC5gsGTpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxlkCM/F; arc=none smtp.client-ip=209.85.218.48
+	s=arc-20240116; t=1788442076; c=relaxed/simple;
+	bh=YPvyN3kfwwpBginyLPvcxEOta7fpjimyqNItqqLCY2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jiuZcl9gc4AxsA/4dyDPZmuIBpPKt6aPjHcz26cpDnMj31lhNocMRiXQ2kIe33Xi5TLezDn9n1DZjD2WDMicTtxxAkWPC0VX62aZzH/NLySRCynkMBNvfSAdNRkAagufgDpRDwHYKSVMYZvTRQmextl9LV07aaHvh/Q4oKJnzM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jnf726Nx; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxlkCM/F"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c1c52d920b8so319335066b.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jnf726Nx"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so2448082a12.3
         for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 06:27:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788442049; x=1789046849; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788442050; x=1789046850; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZDOCEIZcLPlm5WXvcUnbGXYJIo9YbDVlXEqCB5lDmx0=;
-        b=LxlkCM/F58qVgb3mAZGFQtJUAKOobcV6qMM5jvgiYSioVclcGdvF4l3fBpWo2L8BD/
-         Pa8mwo17irpDPhNR1LTAGLSr+dYNRAnlfL7QsDd/fe7GRA8zprNOqRWpZadT3nCekIR4
-         5E9QDqqeAN3CnjUZXUl2YXTK3HoiyQeZGj+Jip4V/0qEfrY3ahoZBMGVPhSyX6dD79Hw
-         TdzqkseRbEabAFq0iMPlgySi5OYFMN6uBqI0nCwIlX56uPWOVCvU/OZ+zBl6XLI/21iJ
-         UF7X8k+jX8HVbeUp9BKaI/CsBLt48E7KSASDQJ0RfOwBa2RXNbS/OJlKzg43pA+45Wav
-         dzCg==
+        bh=cpNeig/STv3ElkV+GwYqrBBpO1RKTjvMEoB8VPZ2e9M=;
+        b=jnf726Nxy5gNE+m9LHyWLAsYfY0THYZ+y9m2amx97WX68g2MKscjZ1bt+E+CImRKCV
+         /UhH2X3ssZhX6ZP3SrEeMi2pPKahqPDRF459y23+FV1WuqI+UB/piTylc5EDZ2vHVBLr
+         n+22megOz75RdrKRmLMXZ2/zkg/TP3+z7uZyfrXzm0pb9wcuoEgjgbge+Iap1Mo9NKB+
+         JMxOwq8NxLwt+v79nSjhlav7Ebvm8iejHLdGEdVUwIo1pb8RMknIa+fCaQVVMkidhKEO
+         2VkniitHoJ2BAEnksoVE7wKfvdSK0Kcdt0j28K5RhDsCERpCsaWWsXMjmBdRV0AIv6oZ
+         pSlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788442049; x=1789046849;
+        d=1e100.net; s=20251104; t=1788442050; x=1789046850;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZDOCEIZcLPlm5WXvcUnbGXYJIo9YbDVlXEqCB5lDmx0=;
-        b=I+LlZGGUbNyX+NVGVvJCROxl9KNvQbcK1b7uT95w8zcVKA0XWNZoGppmYtq6XyRXfX
-         UaphBk9C2y1fy5a2F2zwiqiN8QGV6Q+KYshVowuEszWamlLo8H0CXJkxl1kjGov/EADl
-         9Ptl+C/6EpRgGYKmc0trIOaoiHhtnnK+fvUx+dt+SxT3yC/RDcwqIZR71TIA5OrDmYc4
-         6qZg7xi9PhvPVv/lkYDmFv5xaKlBV5MBNKuCJ7K0SNLNMzWI6qNKuaj2Be9yU/s2l71k
-         2jvEwAtZ0ji/qzQ8TdPzX9fUpioV2DsD5qG0aZ7gybBfR4CSRsZUMH8nEhS5hYIJW13Y
-         LSyA==
-X-Forwarded-Encrypted: i=1; AKwUvBwWzIUsxKu0ScKxeOObrXkHpkkL/Rlt82C2hiz9LYqsmTYbpjntU0iWqmV6BiTKa/+3zR3D/nU=@vger.kernel.org
-X-Gm-Message-State: AFuF++npsL9tp/5+ZtfcYKzwihrraXZagJ3OH5uSv+DEfdSErXfvtQPY
-	pd5Ot1w/0cXHL4YH/Pqj2+XXzO1utqmNwQ9bPZPWoi14WP/9N8tzY/XR
-X-Gm-Gg: AYBFou3/j534Q7sVVdT9aeZSsJj7IEZAucyFQZDhv/usB7HOkaAA5JYt+ssCzOJBTQ5
-	1+PEMJf7PvbmMgeSyCIP+2oy1A5LJzr046c954yVP6m+aqKFfYxpfi3L9zWrmY/1JVb038kQV7y
-	OKv5K8Xi3HU/5hx2+eAi/YL8P1fhFP/Gv0cX4CiLZMUWeQ3WzfUCd61HxKsToEn0YNIU/pZtNx3
-	J/QqfnHTJkvS1XzAlTrGQpGCNozAAbDR8i1TcIebVJAHDESq04uJGe8rW5fnJn7t5fDpLugLguW
-	w9WjTbDThf2yUdMfCiXeVPS/8aDQQEwMcnJK/nioZC2ACx+rabHkCsBYNZFhqryy2vzs+rdO/Ex
-	82lTbwCjT+ux6P9GQSAMffC9ieZysX+mgxVV8exjn5qX6lW61EYuOWkuBdT2CCr8MHwHB5SBnzM
-	Nc8pw0P+8h1bQjStmNNRxUOYltKPFKvJhB0U0sAJSbuHpoJbrYTDSgPubGfUJOnWpJilh9/38=
-X-Received: by 2002:a17:906:8d86:b0:c25:10a:4020 with SMTP id a640c23a62f3a-c26047db192mr21855566b.16.1788442048941;
-        Thu, 03 Sep 2026 06:27:28 -0700 (PDT)
-Received: from grower.astralinux.ru ([82.22.172.205])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c25f419e965sm99514966b.25.2026.09.03.06.27.26
+        bh=cpNeig/STv3ElkV+GwYqrBBpO1RKTjvMEoB8VPZ2e9M=;
+        b=DMTXc4fyW4h36nCWfXuJG6QtOlHTk/V+UA8gjUFVW2N4kD0pN2AuY5DbH0CyrAFTDY
+         WBpFNKWW4q5LC3iWhB2qVmHdYIlCcyYIJ4Z8TtN3LBdhgxDqXwsX933Rg1qQdvnZsG4E
+         Luvsi8YJ11l7JID3+cNi9Q1f7BnQddhdQz5iYhrL1MZk9SpgahTWH9lmd2xljU6ZkTWm
+         TqnNWG3J56FvthnscFKyoBnvZlw3b2kwHuZmdNO4bLlEprCF/l426RI0HtvD74+lQRdc
+         EoMS01fENrbY6wxJy7L2D57g+Vp/+USa+SyAOoOhymFrd9U7QxqEMlQ8aeIl9YS9anRg
+         Icug==
+X-Gm-Message-State: AFuF++lH7XRf8WYoNHTIn2Wmo0/FPVwlmxReZHqOmNnt3Agjba2lX3r3
+	PSOB1ofR3r4KGLCkEudaTHOw0BKyTXcte6qClDfEFjfz2pfhyVMKIn1/
+X-Gm-Gg: AYBFou04+5iEUN5gUAoo4ynAi0XHfAYzdxnCILsI8Gmjy9mbD9v4vwd1q4aqzeD0axz
+	x9UlDdir/HhxA2DqX3z+AXEoEeMJeCeCTZuMS/z4/EBWHu6I0Rp5TPVo0nCvGTTblRPXQBak7mW
+	gxgWHMiGnzc+8maj574iiZ5tWLIKqRetfisOaiLlJ7f6v/9aAHlssJ38Kq3Gy4Ea73Xz36i3Zvd
+	r2QOH6C6sg9V25zYLCMxC4aU7lvY24GCEh0Hyd+M4CMAGXiu8SBjXufBhacWIuYbSj/BNQtAUZz
+	4Lzf8LtarY/2i03LFV++kQ5ngaFXqc3kEi1wMUVsuIVHC4lYML8BzjkiO+u2TDoYPkkB8bXlgnk
+	jzxenCzyx6wi13idnE0WU3w7bDYOK4W/O7eAk/g+m5J/70ooeuZYH02zXqyi4e4UCyk2t8ETH3+
+	KOKUzsG2kZIcIddEGkZ0LcqlCr6fyHQv4OEfuVBqtK0JhsVtPTLOsS7DzqaWN1Yc0/MldQAvA7e
+	0KaKiBVaGaXsw==
+X-Received: by 2002:a17:90b:5109:b0:399:e97:8d5a with SMTP id 98e67ed59e1d1-39aee152d79mr20056075a91.25.1788442049502;
+        Thu, 03 Sep 2026 06:27:29 -0700 (PDT)
+Received: from ubuntu.. ([49.205.39.116])
+        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-143199692a6sm10752142c88.12.2026.09.03.06.27.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 03 Sep 2026 06:27:28 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	lvc-project@linuxtesting.org,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
+From: Ajith P V <ajithpv.linux@gmail.com>
+To: tung.quang.nguyen@est.tech,
+	jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org,
-	Ralf Lici <ralf@mandelbit.com>
-Subject: [PATCH 6.18] ovpn: run deferred work on a module-owned workqueue
-Date: Thu,  3 Sep 2026 16:26:59 +0300
-Message-ID: <20260903132715.3823803-1-alexevgmart@gmail.com>
+	Ajith P V <ajithpv.linux@gmail.com>
+Subject: [PATCH net-next v5] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+Date: Thu,  3 Sep 2026 13:27:18 +0000
+Message-ID: <20260903132718.1616159-1-ajithpv.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -83,193 +80,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ralf Lici <ralf@mandelbit.com>
+The `strcpy()` function is deprecated and moving towards code-tree
+elimination. Replacing it with `strscpy()` fixes potential buffer
+overflow vectors by ensuring safe NULL-termination based on the
+destination buffer size limit [1][2].
 
-commit e9714db8041763f59dde152c812b96b3de05c6d9 upstream.
+To make the interface safer and more robust for future callers, refactor
+`tipc_bearer_get_name()` to accept a destination buffer length parameter.
+Replace `strcpy()` with `strscpy()` and pass through any potential
+`-E2BIG` truncation error code up to the caller. Update the existing
+caller in `net/tipc/monitor.c` to pass its array size.
 
-ovpn queues several work items whose callbacks execute module text.
-These works currently run on the global system workqueues, so module
-exit has no driver-owned drain point that guarantees the callbacks have
-fully returned before the module text can be freed.
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
+Link: https://github.com/KSPP/linux/issues/88 [2]
 
-Object references protect the objects used by the callbacks, but they do
-not prove that a workqueue function has returned. In particular, a
-worker can drop the final reference that unblocks device teardown while
-it is still executing ovpn code.
-
-Add a module-owned workqueue and queue all ovpn work items on it. During
-module exit, unregister rtnl and netlink first, flush the workqueue so
-ordinary ovpn workers finish, run the final RCU barrier, and destroy the
-workqueue last. This keeps the workqueue available for cleanup work
-queued from RCU callbacks, while ensuring no ovpn work item can outlive
-the module text.
-
-The per-device delayed keepalive work remains explicitly disabled during
-netdev teardown (disable_delayed_work_sync in ndo_uninit), since
-flush_workqueue does not flush delayed work that is still only pending
-on its timer.
-
-Fixes: 3ecfd9349f40 ("ovpn: implement keepalive mechanism")
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
+Signed-off-by: Ajith P V <ajithpv.linux@gmail.com>
 ---
-Backport fix for CVE-2026-80753
- drivers/net/ovpn/main.c     | 19 ++++++++++++++++++-
- drivers/net/ovpn/ovpnpriv.h |  4 ++++
- drivers/net/ovpn/peer.c     |  8 ++++----
- drivers/net/ovpn/tcp.c      |  9 ++++-----
- 4 files changed, 30 insertions(+), 10 deletions(-)
+v5:
+  - Cleaned up implementation by removing extra `ret` variable as suggested.
+  - Wrapped long lines to fix checkpatch column-limit warning.
+v4:
+  - Avoid hard-coding TIPC_MAX_BEARER_NAME in the function body.
+  - Pass size_t len from the caller down to strscpy().
+  - Forward strscpy()'s -E2BIG error up through the existing int return type.
+  - Updated function documentation comment block.
+v3:
+  - Fix patch title as suggested by Tung Quang Nguyen.
+  - No code changes from v2.
+v2:
+  - Target net-next tree instead of standard net tree as requested by Tung Quang Nguyen.
+  - No code changes from v1.
 
-diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-index 0262926449f2..c18ed8690baf 100644
---- a/drivers/net/ovpn/main.c
-+++ b/drivers/net/ovpn/main.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/netdevice.h>
- #include <linux/inetdevice.h>
-+#include <linux/workqueue.h>
- #include <net/gro_cells.h>
- #include <net/ip.h>
- #include <net/rtnetlink.h>
-@@ -26,6 +27,9 @@
- #include "tcp.h"
- #include "udp.h"
- 
-+/* module-owned workqueue on which all ovpn-specific work is queued */
-+struct workqueue_struct *ovpn_wq;
-+
- static void ovpn_priv_free(struct net_device *net)
+ net/tipc/bearer.c  | 6 ++++--
+ net/tipc/bearer.h  | 3 ++-
+ net/tipc/monitor.c | 3 ++-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 05dcd2f9e887..65fa18928fe3 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -195,9 +195,10 @@ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name)
+ /*     tipc_bearer_get_name - get the bearer name from its id.
+  *     @net: network namespace
+  *     @name: a pointer to the buffer where the name will be stored.
++ *     @len: size of the destination buffer
+  *     @bearer_id: the id to get the name from.
+  */
+-int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
++int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id)
  {
- 	struct ovpn_priv *ovpn = netdev_priv(net);
-@@ -264,10 +268,16 @@ static int __init ovpn_init(void)
+ 	struct tipc_net *tn = tipc_net(net);
+ 	struct tipc_bearer *b;
+@@ -209,7 +210,8 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
+ 	if (!b)
+ 		return -EINVAL;
  
- 	ovpn_tcp_init();
- 
-+	ovpn_wq = alloc_workqueue("ovpn", WQ_PERCPU, 0);
-+	if (!ovpn_wq) {
-+		pr_err("ovpn: cannot allocate workqueue\n");
-+		return -ENOMEM;
-+	}
-+
- 	err = rtnl_link_register(&ovpn_link_ops);
- 	if (err) {
- 		pr_err("ovpn: can't register rtnl link ops: %d\n", err);
--		return err;
-+		goto destroy_wq;
- 	}
- 
- 	err = ovpn_nl_register();
-@@ -280,6 +290,9 @@ static int __init ovpn_init(void)
- 
- unreg_rtnl:
- 	rtnl_link_unregister(&ovpn_link_ops);
-+destroy_wq:
-+	destroy_workqueue(ovpn_wq);
-+	ovpn_wq = NULL;
- 	return err;
+-	strcpy(name, b->name);
++	if (strscpy(name, b->name, len) < 0)
++		return -E2BIG;
+ 	return 0;
  }
  
-@@ -288,7 +301,11 @@ static __exit void ovpn_cleanup(void)
- 	ovpn_nl_unregister();
- 	rtnl_link_unregister(&ovpn_link_ops);
+diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
+index 41eac1ee0c09..9ccc9ffa925a 100644
+--- a/net/tipc/bearer.h
++++ b/net/tipc/bearer.h
+@@ -226,7 +226,8 @@ int tipc_l2_send_msg(struct net *net, struct sk_buff *buf,
+ void tipc_bearer_add_dest(struct net *net, u32 bearer_id, u32 dest);
+ void tipc_bearer_remove_dest(struct net *net, u32 bearer_id, u32 dest);
+ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name);
+-int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id);
++int tipc_bearer_get_name(struct net *net, char *name,
++			 size_t len, u32 bearer_id);
+ struct tipc_media *tipc_media_find(const char *name);
+ int tipc_bearer_setup(void);
+ void tipc_bearer_cleanup(void);
+diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
+index a94b9b36a700..a8a088fc2a2c 100644
+--- a/net/tipc/monitor.c
++++ b/net/tipc/monitor.c
+@@ -829,11 +829,12 @@ int __tipc_nl_add_monitor(struct net *net, struct tipc_nl_msg *msg,
+ {
+ 	struct tipc_monitor *mon = tipc_monitor(net, bearer_id);
+ 	char bearer_name[TIPC_MAX_BEARER_NAME];
++	size_t name_len = sizeof(bearer_name);
+ 	struct nlattr *attrs;
+ 	void *hdr;
+ 	int ret;
  
-+	flush_workqueue(ovpn_wq);
- 	rcu_barrier();
-+
-+	destroy_workqueue(ovpn_wq);
-+	ovpn_wq = NULL;
- }
+-	ret = tipc_bearer_get_name(net, bearer_name, bearer_id);
++	ret = tipc_bearer_get_name(net, bearer_name, name_len, bearer_id);
+ 	if (ret || !mon)
+ 		return 0;
  
- module_init(ovpn_init);
-diff --git a/drivers/net/ovpn/ovpnpriv.h b/drivers/net/ovpn/ovpnpriv.h
-index 5898f6adada7..84499140e4bd 100644
---- a/drivers/net/ovpn/ovpnpriv.h
-+++ b/drivers/net/ovpn/ovpnpriv.h
-@@ -15,6 +15,10 @@
- #include <uapi/linux/if_link.h>
- #include <uapi/linux/ovpn.h>
- 
-+struct workqueue_struct;
-+
-+extern struct workqueue_struct *ovpn_wq;
-+
- /**
-  * struct ovpn_peer_collection - container of peers for MultiPeer mode
-  * @by_id: table of peers index by ID
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index 412ef09abd5e..6b9f5f12fc5a 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -62,7 +62,7 @@ void ovpn_peer_keepalive_set(struct ovpn_peer *peer, u32 interval, u32 timeout)
- 	/* now that interval and timeout have been changed, kick
- 	 * off the worker so that the next delay can be recomputed
- 	 */
--	mod_delayed_work(system_wq, &peer->ovpn->keepalive_work, 0);
-+	mod_delayed_work(ovpn_wq, &peer->ovpn->keepalive_work, 0);
- }
- 
- /**
-@@ -1366,7 +1366,7 @@ static time64_t ovpn_peer_keepalive_work_single(struct ovpn_peer *peer,
- 			   peer->id);
- 		if (WARN_ON(!ovpn_peer_hold(peer)))
- 			return 0;
--		if (!schedule_work(&peer->keepalive_work))
-+		if (!queue_work(ovpn_wq, &peer->keepalive_work))
- 			ovpn_peer_put(peer);
- 	}
- 
-@@ -1458,8 +1458,8 @@ void ovpn_peer_keepalive_work(struct work_struct *work)
- 		netdev_dbg(ovpn->dev,
- 			   "scheduling keepalive work: now=%llu next_run=%llu delta=%llu\n",
- 			   next_run, now, next_run - now);
--		schedule_delayed_work(&ovpn->keepalive_work,
--				      (next_run - now) * HZ);
-+		queue_delayed_work(ovpn_wq, &ovpn->keepalive_work,
-+				   (next_run - now) * HZ);
- 	}
- 	unlock_ovpn(ovpn, &release_list);
- }
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 0af14055c39a..8fe8a8e750a4 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -151,7 +151,7 @@ static void ovpn_tcp_rcv(struct strparser *strp, struct sk_buff *skb)
- 	/* take reference for deferred peer deletion. should never fail */
- 	if (WARN_ON(!ovpn_peer_hold(peer)))
- 		goto err_nopeer;
--	if (!schedule_work(&peer->tcp.defer_del_work))
-+	if (!queue_work(ovpn_wq, &peer->tcp.defer_del_work))
- 		ovpn_peer_put(peer);
- 	ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
- err_nopeer:
-@@ -284,13 +284,12 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
- 			 * stream therefore we abort the connection
- 			 */
- 			ovpn_peer_hold(peer);
--			if (!schedule_work(&peer->tcp.defer_del_work))
-+			if (!queue_work(ovpn_wq, &peer->tcp.defer_del_work))
- 				ovpn_peer_put(peer);
- 
- 			/* we bail out immediately and keep tx_in_progress set
- 			 * to true. This way we prevent more TX attempts
--			 * which would lead to more invocations of
--			 * schedule_work()
-+			 * which would lead to more invocations of queue_work()
- 			 */
- 			return;
- 		}
-@@ -487,7 +486,7 @@ static void ovpn_tcp_write_space(struct sock *sk)
- 	rcu_read_lock();
- 	sock = rcu_dereference_sk_user_data(sk);
- 	if (likely(sock && sock->peer)) {
--		schedule_work(&sock->tcp_tx_work);
-+		queue_work(ovpn_wq, &sock->tcp_tx_work);
- 		sock->peer->tcp.sk_cb.sk_write_space(sk);
- 	}
- 	rcu_read_unlock();
 -- 
 2.43.0
 
