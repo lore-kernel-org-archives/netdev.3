@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959E633C18B
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEA32C032C
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788471938; cv=none; b=KQcaI1zeyUO1wHmZiXadxVVvsN62xE2+zm2jVpxILGzSFwSRcxFX/LyiPxH6Nap49T8ROr9Kiahrx+UH2rqKZmq+fk5fnKth16ohQoozLVkdKDfg1wG7Q6NyD3Bcycjm1sncCJWqObQd900Ntqq+LalIAazcjpRuKvWZEuQYdoo=
+	t=1788471941; cv=none; b=N3HGVO6npjosYJaNX1igBEcBV8etiZqKPvUADnIQkBtMR/LjOZeZYqJ1y/IjP04cJp7L58aXU+FHnsh/+AnMFeg5Mow+rCV5e1TO3HFsrX9GSWy8iKr/m3dsdDqDAYC2RR9iYC9RmHHNli965aFuGt13I448C0jIS9E92vWdC0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788471938; c=relaxed/simple;
-	bh=qk6Jgnk9jY7mBhX90Ks0aqNubb4hFG5CsqtPLa8F2l0=;
+	s=arc-20240116; t=1788471941; c=relaxed/simple;
+	bh=sNS3DtEP0A3C1Rk8RcuWF+nFz0WvfbxfqdfDK2pyQh0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sfQIB27ZW5dNncMKyijVc8CfuZrPVtAB+WIjH7OXEOLXoYWARZHehcnpa+v/SZp3I+LOWzu+YjognjWRLCUFaJ5wDUjrZAm8Kgp/XjMFtyuZKcqqY/cucVYnHPliJ3hNDdZ8D2hGxcnBwtVYyBix1i77GWCptiBWIyx4h1hgo8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3bOffZd; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=JKCuYOsN4MnVfHN3i4GpfLdYOaK/ln/HftYR0qBjm9StsK2FGW1KKDIDiouO/AyPIPI520sNa42KPtch4E6oqq4PRQb4l06kVMmkAYHr2IL4G0IryT5eTxiWYcTcb1NtJgWtlEEbEK/Z2/m3eRTZK/a+TqtG86AsUVuZofeAjhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAIgRXrx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3bOffZd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE9F1F00A3D;
-	Thu,  3 Sep 2026 21:45:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAIgRXrx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89CA1F000E9;
+	Thu,  3 Sep 2026 21:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788471937;
-	bh=B8B2nnTj040O1zxcTTABBjjduUmVhHBej0FWYUDnj3Q=;
+	s=k20260515; t=1788471940;
+	bh=D2KTR/927VPSyUHBItNhdHDxKuR54osLtU8w8VC4iX4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=b3bOffZdvAEAbDpqYVBdhEg1XIs2+jqh2HqKoFXbQIBocb3KcRand6/krChmYiWTo
-	 YSNMOCDq9pJfRn1x10njzqvW+ALu+dU6T4bZFIuQTAjB6UfTjXfb2h6Dtci3rtuulf
-	 jvvF8M1P8YanVAG/LL4q/cl5Gl1AZxBPN8aZvuPfaFNdXmE1KXBKhnbqQv5PDMclXn
-	 FEcHqICoQGjRgp1r89s33kY5KKa3ksDNm0IctB5KbWb9NoKavX6QpBf+n2MCMnQ+LV
-	 VHDmfe9duKF5LQ2I8718fOhBJebmjAnhmUlBUd0qdOh+9vmjHDfIr6Fvpqp8R72mFJ
-	 49s3u9jTh/8rQ==
+	b=PAIgRXrxMlYA0m9XTGuwokgSMorB/S8qPMu/BTq4L6vjwGICsSI6bbhcufsNAFUm7
+	 NgfzPdkvtRkHEr6qvvx24WtmpEQq4vJECOskMwcY7OY8m7mXp5Nsu4E1L7YAds/rQF
+	 AbWmWCBhrYSq6BPDGhi7/scR/C1A7hCBTNfTZGTweARDAbNyAoRkUfRKBGP/2VFFSq
+	 n/9X+Mbe/QaEv6OmAq5MME3bxgbYPlHrUAM0Srj0Uu9N+GSIHwpkXrM7KRNtPyepVB
+	 IoFk7L9neiiaHnfZqBmQNCwm0wu6nGWtUiZJ1IqafhXLfcKxc4PLiaGsfnXIQT6yJx
+	 y/O8pqEjT8mPg==
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 03 Sep 2026 23:45:29 +0200
-Subject: [PATCH v2 1/5] net: ethernet: cortina: Fix budget accounting
+Date: Thu, 03 Sep 2026 23:45:30 +0200
+Subject: [PATCH v2 2/5] net: ethernet: cortina: Finish RX updates before
+ NAPI completion
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-gemini-ethernet-fixes-v2-1-2bbbd598ca6e@kernel.org>
+Message-Id: <20260903-gemini-ethernet-fixes-v2-2-2bbbd598ca6e@kernel.org>
 References: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
 In-Reply-To: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -49,64 +50,54 @@ Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>,
  Joe Damato <joe@dama.to>
 X-Mailer: b4 0.16.0
 
-The gmac_rx() function returns the remaining NAPI budget, but its
-caller treats the return value as the number of packets received. An
-idle poll therefore reports a full budget and remains scheduled.
+napi_complete_done() releases ownership of the NAPI instance, but the
+Gemini poll keeps the RX statistics writer section open and updates the
+free queue after calling it. A new poll can therefore start while the old
+writer is still active.
 
-Return the number of received packets instead. Preserve the existing
-free queue refill accounting by adding that count directly; continuing
-to subtract it from the budget would invert the refill behavior.
+Finish the statistics and free queue updates before releasing ownership.
+Only re-enable RX interrupts when napi_complete_done() reports successful
+completion.
 
 Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Link: https://lore.kernel.org/r/20260509-gemini-ethernet-fixes-v1-4-6c5d20ddc35b@kernel.org
-Link: https://lore.kernel.org/r/20260512131456.189452-1-pabeni@redhat.com
+Suggested-by: Joe Damato <joe@dama.to>
 Assisted-by: LLM
-Reviewed-by: Joe Damato <joe@dama.to>
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 4c762229ce42..1d9824d1716c 100644
+index 1d9824d1716c..6502220362cb 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1450,6 +1450,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	unsigned int frame_len, frag_len;
- 	struct gmac_rxdesc *rx = NULL;
- 	struct gmac_queue_page *gpage;
-+	unsigned int received = 0;
- 	union gmac_rxdesc_0 word0;
- 	union gmac_rxdesc_1 word1;
- 	union gmac_rxdesc_3 word3;
-@@ -1545,7 +1546,8 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 			napi_gro_frags(&port->napi);
- 			skb = NULL;
- 			frag_nr = 0;
--			--budget;
-+			budget--;
-+			received++;
- 		}
- 		continue;
+@@ -1581,12 +1581,10 @@ static int gmac_napi_poll(struct napi_struct *napi, int budget)
+ 	u64_stats_update_begin(&port->rx_stats_syncp);
  
-@@ -1565,7 +1567,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	port->rx_skb = skb;
- 	port->rx_frag_nr = frag_nr;
- 	writew(r, ptr_reg);
--	return budget;
-+	return received;
- }
- 
- static int gmac_napi_poll(struct napi_struct *napi, int budget)
-@@ -1586,7 +1588,7 @@ static int gmac_napi_poll(struct napi_struct *napi, int budget)
+ 	received = gmac_rx(napi->dev, budget);
+-	if (received < budget) {
+-		napi_gro_flush(napi, false);
+-		napi_complete_done(napi, received);
+-		gmac_enable_rx_irq(napi->dev, 1);
++	if (received < budget)
  		++port->rx_napi_exits;
+-	}
++
++	u64_stats_update_end(&port->rx_stats_syncp);
+ 
+ 	port->freeq_refill += received;
+ 	if (port->freeq_refill > freeq_threshold) {
+@@ -1594,7 +1592,9 @@ static int gmac_napi_poll(struct napi_struct *napi, int budget)
+ 		geth_fill_freeq(geth, true);
  	}
  
--	port->freeq_refill += (budget - received);
-+	port->freeq_refill += received;
- 	if (port->freeq_refill > freeq_threshold) {
- 		port->freeq_refill -= freeq_threshold;
- 		geth_fill_freeq(geth, true);
+-	u64_stats_update_end(&port->rx_stats_syncp);
++	if (received < budget && napi_complete_done(napi, received))
++		gmac_enable_rx_irq(napi->dev, 1);
++
+ 	return received;
+ }
+ 
 
 -- 
 2.55.0
