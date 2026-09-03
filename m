@@ -1,141 +1,246 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD1049365E
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 11:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788435793; cv=none; b=P27HAYPE/qqeIeJB29KoUK1vWinzUr5tYrmEHzbKaBYOH2iJ+J87nd9kAIViM/udJQMAr8+npFzdhWiJqyl5SAM2rZkpuG9gYmuuCXELhUQ8bIIFPGzHh+4A/L3fqJt6/VSpc9lMq4HdJidreDUj5sxa4nfhNvBDY/nnEtCwmZc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788435793; c=relaxed/simple;
-	bh=Zg08WXWOXsJ2QVUn2MD0H7hbFnvg8gqIUMqRHXTyYHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZkNN/IJ1P223dAeNTqt2TRLeWyEgFFmdTqc0TgNITK/nph26uddy+G5biGxzSWUmY0/JhHpprZ+k3fnWtAwiOQhMFmvTA0GKLQY+8IC9+LVWxAYBULqabe7tqkQrvIEfEcHZt0YtfELU9pgN/J13S7MH+Gr3XVOQmqe5kwd3Nj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I8Dv6P+/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U3pd6fzJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517A447ACC0
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 11:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788436354; cv=pass; b=qCWmC4q+XkFYBHPscU6d3K1c9vA67gWKDSCqGsDC7914HAY567CzaFtCWeuwdTIs7dMmALFPgURThr6aKnEOcFWk+nBJSTS32w/gxcMNOn9zGpzzhJ7XHnDN/z8xxEH4/YoMvl0dhPtdYo+3qBEHm/71x/RZu5lGVe0RsvoIa/g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788436354; c=relaxed/simple;
+	bh=cyf8uSSy03fEDTKbXlCyyqKkzhQZsEN4reIazhmhJ/M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=maVXfsxk7IY6i7wXRwCtN3gwN1e8FpkwzssKEFfwtaokvhR/f07d+pl2MJ2iEK7kbmSulptEqU1zz/AfwB4AQgsRv4OUxcYCiS3AZiTfZtK/tnR7e/pNdz1DMfcf7iAzJyMpgwpy+fzFZ7uTRlxe2cUzSwqJ4+ByqoSPBeuoPrw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EVZWoEWw; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I8Dv6P+/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U3pd6fzJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788435784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zg08WXWOXsJ2QVUn2MD0H7hbFnvg8gqIUMqRHXTyYHs=;
-	b=I8Dv6P+/KYygmtnGecoJa1MowJXg8CyTg2O3+DASFKlhg3p9FynLhu30vPPTeCxFTRKa2j
-	LhKuQx9EJ/sLslKYa5W6UJx2IQ3oU6OK532kx94rTVT06qQRTOj3/qTT1nvhvm5jMOovVk
-	qoESZazO98KJbK75h8KL5HdYuE4mo7k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-B90G4-rIO1aevHtKEpNtcQ-1; Thu, 03 Sep 2026 07:43:03 -0400
-X-MC-Unique: B90G4-rIO1aevHtKEpNtcQ-1
-X-Mimecast-MFC-AGG-ID: B90G4-rIO1aevHtKEpNtcQ_1788435782
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-495474a5fbcso19158105e9.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 04:43:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EVZWoEWw"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a5f5d37778so351012a12.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 04:52:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788436346; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jez03f8lLHtxC+lxPRnVBgRmLddyp5yAlwSlHAyMBH3JzJXA4ixACuNPEcCtiwHOc2
+         jcy1UjUT9Vgn7Nz+uhWmwdLHL2q6NkDQM1A1Cy2GM39hYtTypzmWkVw1n7qVI5Io6+Zg
+         r64L5sA3ewrYdkX68iLF8+9WKnBedNT7iqd+eYKUTA9mQVwWFdlxAeoAXk0tKDY3L086
+         XHSzl6MxqMK5x5kkTAymYevcEZTRdSp1FqWHnVDJl84ccLH5YOwRJ4U8lnH4libINobk
+         O9j/u9bMi6QaOM4/y8t/ntt+yM4eAe0m1VIq9HH9E4eoBAo63TGRY6O1LWxPl25V3/kM
+         CgPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L1MtP6gVUVdXDgg6EZ1a4Wt0frubT3KBn7QT3mEi4Go=;
+        fh=k2/fgRxHmUI7nGup3B2R2D8qdvmQ5ABk3iddTOdxTus=;
+        b=sXSVgw1VzDYyAuIHLrQVwy1EphYRxNeXo5z0kaUgNINm9fFWafYdiEp8zKcxIJ0XL4
+         d+3Q03TiMHAwsUbA0aoHnWsK7mjca1eX8DmjEGkblrpvnFML0kkqsDUkwb0QlagCOQ9n
+         3twtIFgXRlORdCLFb1YTGX+GgnNM3nCOtGDk0u9slx/Mrnu+PWzsXW8c0WfVTcBBf4xk
+         aTHQD7gOGBJtJM3qFNMp+bHIcb9vuum/1tEbBLRUlHWuTGnrPhkgdgljwDp/8p87LW0w
+         nKtLPRd2d+xBl9sqKIDAU25o6cN5SXwBpCb9RqIIHD8YP9P4+3nomuJvp0f07yHSrFpC
+         frLw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788435782; x=1789040582; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Zg08WXWOXsJ2QVUn2MD0H7hbFnvg8gqIUMqRHXTyYHs=;
-        b=U3pd6fzJM8ktItiqAKyNHPSx9p4rIOIrjx0qMYPHFdzIN9fp4puv3UnAxMXKxzq8M9
-         klWAwwYB9+UDSuGT8ML+o1fsxKjMfVdH/a8z8kI1oPEvJVZuYf9h+N7xh6d5Cm69NSZn
-         SD9tbDKJILyVnF//bFc0HvomKT+3IIQB8VvOyIQVh47Q+Xo2OSPxzQqmDkkXgZjTeetk
-         /FeESNQCvmwlYLRizJD+0MLX7WHe98MyAJDnIjO/3KO7h5GSh58Jo6E9uwknKHDu6CYc
-         4JkXeR0zdBR4DoDpI8o2c4UoTJ8HLitoIraPNmcU2HJNTN44n9+FMI3JRNKwHJpxFe9j
-         P2UQ==
+        d=gmail.com; s=20251104; t=1788436346; x=1789041146; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L1MtP6gVUVdXDgg6EZ1a4Wt0frubT3KBn7QT3mEi4Go=;
+        b=EVZWoEWwnTXpQBVOUPsW3Ira8CqsD41zuMVUQb1bm1sniWBr4MIlTJhkz0r/X8mRkk
+         dpRC7zQgKSSWzwLKtvAQIqX3pojVL1B3k6miUlf+Eva9HFr4pL80gC4TujOuqKeDFN0i
+         CT5y1hk0cNGhap8HxphQZVVut4RgWeDgd4PSXbliX3QNyhSMXr0pITEJgsWX0OnP938i
+         I5vqaNdApme5OQgHRilezCM+5LfldYrE3ns5pBdV3EjSv/a59JXQ3oA4Ku1IT54/714M
+         70HS6rszsizZyskJIZeJctdpiS/YKUXfkMkXmZQv3FaegVmbrh06WK5fqybB9OuRfWw7
+         gQlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788435782; x=1789040582;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Zg08WXWOXsJ2QVUn2MD0H7hbFnvg8gqIUMqRHXTyYHs=;
-        b=skkRnEPE4vtUmRir6alL+oeupjSFmCT/OZXVmvR6wYbGNTGiWQltPz80rLDCN6LEBX
-         eVRhy2CJyAO9YJTMHD4eMhOW0CP3ViMbFeoH9hEeeofwqa7D2my7foa6fJbi7isiNVBd
-         O0dzx+nW3hqTcUuAMGfcFxFzgpXjUcfJ6RVurmgnvHhqOWksp7qBF1oqecbswrmSzq0+
-         Rht3JjIl6BpX3PoXayKv9YaJjr9Yw+i68fOSM1HITA0pCGzmS4fRaro5H9RVyJGVu2SD
-         ffm1gbQqAQs4TIl75dNKnJt6ryPLA4/+/fKG7UPDBx07qk5N1dIBRbLklnFGuDBmyQVQ
-         M92g==
-X-Forwarded-Encrypted: i=1; AKwUvBzH2zOqrN0926FZcVc13MgDFhKmFBUoFQAYxsyW6phzsR8eAoNAkBaXJCDs49CqIz+4Bo9Qntg=@vger.kernel.org
-X-Gm-Message-State: AFuF++knLLPIC5C6Wdfv9aJCBFNBckOlTaKc2xFnvMGS8F5IEDOpEpIA
-	ciDj3ZPXzY3jvvkRgHBax2sBCR/YcfBgm2BOgArxa8xiQsh+epQL2MLpHdLMFPPg/mcc75akGjw
-	a1yVT5Q/8R5betd8ctoBSN2lgQ069ngS9kN64O95iHD8Or7M31V9zrxZusA==
-X-Gm-Gg: AYBFou3fAXTmbD6EQkbB8O7mOqGPrw7WOVouNk+Jjbm7M+K+Zcirn2ONnpp1ckRbtk0
-	hvdD2WFePa3W0Vy237yAvjRM59mnNvUh9NteKfzToNFy1cJ/Ee6TEbRyMbLpnJJsb9BvSRY7xjL
-	fhakMxwqHy+cftiUzhqqwhgHtxwkyr1aMYX6/ouuck2LnAT05BBnb5Vp2MGYBIfcb1ZztSY7shc
-	axOfGk+vlEeAc4pt9ew12cAX1e9ot/e2hUVztvG/EI841oyBr2V+APFfNo9FlFpgtCiA6WswitE
-	W+ZZ7KPlP3B51mdZDazuPxqOrrfbfzkvh9p89AqFZ3TK0IsS7hK46CXHvBbjoPJtdr9z4WDJyw4
-	j8/okOBL7pwZTndtflG9lC1yCvoMtF2CQrtx5EkNOP+pq30yt+xANdyLS8c4sBiXut4Vfx0cSfg
-	==
-X-Received: by 2002:a05:600c:4743:b0:49c:e3b1:d826 with SMTP id 5b1f17b1804b1-49ce58195b0mr176370285e9.13.1788435781728;
-        Thu, 03 Sep 2026 04:43:01 -0700 (PDT)
-X-Received: by 2002:a05:600c:4743:b0:49c:e3b1:d826 with SMTP id 5b1f17b1804b1-49ce58195b0mr176369365e9.13.1788435781291;
-        Thu, 03 Sep 2026 04:43:01 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e7f8f9sm13297052f8f.9.2026.09.03.04.42.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 04:42:59 -0700 (PDT)
-Message-ID: <fce0ee5a-476a-4867-9dd2-08e55993bd90@redhat.com>
-Date: Thu, 3 Sep 2026 13:42:58 +0200
+        d=1e100.net; s=20251104; t=1788436346; x=1789041146;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L1MtP6gVUVdXDgg6EZ1a4Wt0frubT3KBn7QT3mEi4Go=;
+        b=sOLi6ZkFlJkdAOuNh/pt29gXCXmQoQ+DJW4q/wsRLve9yk/Nb0xJyglfW/+yu7zIA9
+         WLKJt3RZFgwYhkEbzUBJFq6v1oDvL55wWP8APzFnq1hRwFMSKeJdwU/e9G6EEqJbNG9x
+         u/WDykX3TNs0YZoZHNbxYCrGJJfXeMQH7IGfmWQPrV2kBqnI0V+/K0JDniLUJ9YmteP1
+         Lr9ax6W1sGSIqu9IsbMlJjdzgCG0iasN2uSi9kLZzwcpk7m7YW8H+dAvTTn28y2B+IB2
+         +jq/0NPB2XpgyfVY0XMMW4HIsx3hn7DFhHVCxcks1ixt8r4xG6rYYsItu6I1d/i0y5Sx
+         LSdA==
+X-Forwarded-Encrypted: i=1; AKwUvBzS9RzvciWEzmClt6QZj0fKbOR3VgobgPulE7tdTjOsmhXEoCh6QblGmp/YpxgerLTlqOcyDTc=@vger.kernel.org
+X-Gm-Message-State: AFuF++ktuMx4UKcwq6Ma8mJMXY3ZDv2DzdpuyHZZSDpPDsrZs57Xsj3g
+	kI5xKYMrO3rvjVS/wuO/rGxX9p024jp21eQtOcyyoyS5GmL1SziAqJaQQdK0S1IU4NBzp0/WL+w
+	R2bFUBTkpv+TKhqSMLX5KKFT2PQ0lM4w=
+X-Gm-Gg: AYBFou3aVjJTYnd6dqjhyqqDxtIuyeqgZbVpyfbfEDzQ1M6Q6VPLkmO5ZMmLm1jrm5d
+	//CAeTFX9od/8Q9fmNzEf609MjJzBzmsXoshgoZ9zN2F9VkbkBQg9nCpW7cKJseGuGVTDCx2Xea
+	hudx6b3xxYslP0PjAWg8i8X+J4dL82vhBJfoxyzqtku1N9x808K5mrM5C6bs/N3UNHDrWrnuOyd
+	x3YHmBdj3C/S2Df3Eh5+IPVvgahrP1SeXJe/94HVIUbpaeyTFYeroxTJcqg4HiFHqzenf6qXF9w
+	X9NMUbqZCQ2LgHpgrW96SLFmPAIth0i6pa0uXnsw8hINJ2weI/oUflT77vnB7xZfvLm/80fGVXM
+	=
+X-Received: by 2002:a05:6402:440b:b0:6a1:d68:338a with SMTP id
+ 4fb4d7f45d1cf-6a6818d6c95mr4590928a12.0.1788436345485; Thu, 03 Sep 2026
+ 04:52:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5] net: airoha: add HW GRO offload support
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, Madhur Agrawal <madhur.agrawal@airoha.com>
-References: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260824152057.216329-1-nicoyip.dev@gmail.com> <apkipe4r500gMfwx@secunet.com>
+In-Reply-To: <apkipe4r500gMfwx@secunet.com>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Thu, 3 Sep 2026 19:52:13 +0800
+X-Gm-Features: AcwNN1Uqyd2MMrjp6WqTlC7sD8-7Ze3YLOesPy3SU4_qPzuRaxEIC0IFeXGBbKg
+Message-ID: <CAAo+4rUt4FBGF=CFCriuMctiKQ=bRjpH45u4pNmyDLugCV6gFA@mail.gmail.com>
+Subject: Re: [PATCH net] xfrm: retry inexact policy lookup after node reinsertion
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/31/26 8:34 AM, Lorenzo Bianconi wrote:
-> Add hardware GRO offload support to the airoha_eth driver, leveraging
-> the EN7581/AN7583 SoC's 8 dedicated LRO hardware queues mapped to RX
-> queues 24-31. HW GRO offloading does not support Scatter-Gather (SG) so
-> it is required to increase the page_pool allocation order to 2 for RX
-> queues 24-31 (LRO queues).
-> Since HW GRO is configured per-QDMA and shared across all devices using
-> it, HW GRO is mutually exclusive with multiple devices bound to the
-> same QDMA block. Call airoha_update_netdev_features() in
-> airoha_dev_set_qdma() so that NETIF_F_GRO_HW availability is re-evaluated
-> whenever the QDMA user count changes (device registration and runtime QDMA
-> migration).
-> Set CHECKSUM_PARTIAL with pseudo-header checksum on aggregated packets
-> so that L3-forwarded traffic is correctly handled by the GSO/TSO path
-> on the egress device.
-> The HW does not report the per-segment MSS (msg3[31:16] only reports
-> the max aggregated size), so the gso_size of an aggregated packet is
-> just an approximation computed as DIV_ROUND_UP(data_len, agg_count).
+On Thu, Sep 3, 2026 at 3:32=E2=80=AFPM Steffen Klassert
+<steffen.klassert@secunet.com> wrote:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> --- Patch [1]: [PATCH net] xfrm: retry inexact policy lookup after node r=
+einsertion ---
+> commit 55045c9b49d306c47b0ee8e568d224e0bca94a3c
+> Author: Chengfeng Ye <nicoyip.dev@gmail.com>
+>
+> xfrm: retry inexact policy lookup after node reinsertion
+>
+> This adds a snapshot of the per-bin sequence counter around inexact
+> candidate discovery and evaluation in xfrm_policy_lookup_bytype(), and
+> retries the whole lookup if the counter changed.  The stated goal is to
+> reject lookups that overlap the bydst hlist hop done during node merge an=
+d
+> reinsertion.
+>
+> No Link: tags are present in the commit header.
+>
+> > During concurrent policy insertion and route lookup, KCSAN reported:
+> >
+> >   BUG: KCSAN: data-race in __xfrm_policy_link / xfrm_lookup_with_ifid
+> >   write to ... by task 92 on cpu 0:
+> >     __xfrm_policy_link
+> >     xfrm_policy_insert
+> >     xfrm_add_policy
+> >   read to ... by task 91 on cpu 1:
+> >     xfrm_lookup_with_ifid
+> >     xfrm_lookup_route
+> >     ip_route_output_flow
+>
+> Discovered by: opus-5 =C2=B7 Missed by: sonnet-5, gpt-5-6-sol, sashiko-ge=
+mini =C2=B7 Confirmed by: gpt-5-6-sol
+> Can this KCSAN report come from the code the patch changes?
+>
+> __xfrm_policy_link() in net/xfrm/xfrm_policy.c only does this:
+>
+>         switch (dir) {
+>         case XFRM_POLICY_IN:
+>         case XFRM_POLICY_FWD:
+>         case XFRM_POLICY_OUT:
+>                 pol->pos =3D xfrm_gen_pos(net);
+>                 break;
+>         }
+>
+>         list_add(&pol->walk.all, &net->xfrm.policy_all);
+>         WRITE_ONCE(net->xfrm.policy_count[dir], net->xfrm.policy_count[di=
+r] + 1);
+>         xfrm_pol_hold(pol);
+>
+> The only one of those locations that xfrm_lookup_with_ifid() touches is
+> policy_count, and it reads it marked:
+>
+>         if (!if_id && ((dst_orig->flags & DST_NOXFRM) ||
+>                        !READ_ONCE(net->xfrm.policy_count[XFRM_POLICY_OUT]=
+)))
+>                 goto nopol;
+>
+> Documentation/dev-tools/kcsan.rst states that if all concurrent accesses =
+to
+> a variable are properly marked, KCSAN will never trigger a watchpoint and
+> therefore never report the accesses.  Both sides here are marked, so how
+> was this pair reported?
+>
+> The write side the changelog describes in prose is a different one: the
+> bydst hop in xfrm_policy_inexact_node_merge():
+>
+>         hlist_for_each_entry(tmp, &v->hhead, bydst) {
+>                 tmp->bydst_reinsert =3D true;
+>                 hlist_del_rcu(&tmp->bydst);
+>         }
+>
+>         xfrm_policy_inexact_list_reinsert(net, n, family);
+>
+> That path is reached via xfrm_policy_inexact_insert_node(), not via
+> __xfrm_policy_link(), and it also uses only marked writes
+> (hlist_del_rcu(), hlist_add_head_rcu(), hlist_add_behind_rcu()) against a
+> reader using hlist_for_each_entry_rcu().  So that pair would not be
+> reported by KCSAN either, which suggests the hazard being fixed is a
+> logical list-hop ordering problem between correctly marked RCU accesses
+> rather than a data race.
+>
+> Could the changelog be reworded to describe the ordering problem directly=
+,
+> and either drop the KCSAN splat or replace it with a report that actually
+> corresponds to the accesses this patch guards?  With Cc: stable in place,
+> the quoted evidence is what backporters will use to judge the fix.
+>
+> > diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+> > index 932a313b9460a..5d4e863863dfe 100644
+> > --- a/net/xfrm/xfrm_policy.c
+> > +++ b/net/xfrm/xfrm_policy.c
+>
+> [ ... ]
+>
+> > @@ -2191,12 +2192,18 @@ static struct xfrm_policy *xfrm_policy_lookup_b=
+ytype(struct net *net, u8 type,
+> >               goto skip_inexact;
+> >
+> >       bin =3D xfrm_policy_inexact_lookup_rcu(net, type, family, dir, if=
+_id);
+> > -     if (!bin || !xfrm_policy_find_inexact_candidates(&cand, bin, sadd=
+r,
+> > -                                                      daddr))
+> > +     if (!bin)
+> > +             goto skip_inexact;
+> > +
+> > +     inexact_sequence =3D read_seqcount_begin(&bin->count);
+> > +     if (!xfrm_policy_find_inexact_candidates(&cand, bin, saddr, daddr=
+))
+> >               goto skip_inexact;
+> >
+> >       pol =3D xfrm_policy_eval_candidates(&cand, ret, fl, type,
+> >                                         family, if_id);
+> > +     if (read_seqcount_retry(&bin->count, inexact_sequence))
+> > +             goto retry;
+> > +
+>
+> Discovered by: opus-5 =C2=B7 Missed by: sonnet-5, gpt-5-6-sol, sashiko-ge=
+mini =C2=B7 Confirmed by: gpt-5-6-sol
+> Related to the above: this retry can only observe mutations that are
+> bracketed by write_seqcount_begin(&bin->count).  The chain updates done b=
+y
+> xfrm_policy_insert_list() and __xfrm_policy_unlink(), and the counter
+> update in __xfrm_policy_link() named in the quoted splat, do not run insi=
+de
+> any bin->count write section.
+>
+> So even taken at face value, would this new read_seqcount_retry() have an=
+y
+> effect on the __xfrm_policy_link() versus xfrm_lookup_with_ifid() pair
+> quoted in the changelog?
 
-What is the <max aggregated size> exactly? I read it as the maximum size
-of the aggregated segments, am I correct?
 
-Also any more details on how the aggregation engine works? i.e. can it
-aggregate "random" segment sizes (i.e. 200 - 300 - 400) or does it
-respect HW_GRO layout? (i.e. all segments except the last one must have
-equal size, the can be smaller).
+Hi Steffen,
 
-In the 'good' scenario, than by definition gso_size == <max aggregated
-size> - <total hdr len>, and you are better off computing the gso_size
-from <max aggregated size>.
+The review is correct. While generating the changelog I mistakenly
+pointed the agent to the KCSAN report triggered for the data race
+already fixed by 66817a979426, and I'm sorry for the mistake. I will
+send a v2 to correct the changelog.
 
-Otherwise I think we can't call this HW_GRO - even if it would be more
-convenient for the driver.
-
-/P
-
+Best regards,
+Chengfeng
