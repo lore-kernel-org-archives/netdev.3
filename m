@@ -1,137 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445EE370AD5
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788422928; cv=none; b=VhJ/+34XBPhtCEk0CxoXwhRkBuxi/MbVCpn+cWJzWz5h4neMuHx/y8AXOMUOlTb0pWLNCDnTOqHOi9tJihxpAv1PExTT6J3MmZg2TMavg3k3dGn0ll4l6jp6Cq9L0mHcdEoo6VYiNE0Yn5CI4LM0HoK0r+XAU5BA3HLb2UQo/9M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788422928; c=relaxed/simple;
-	bh=YwGBiuEcm3sjogZOLti1YAejry6Zqo6w1QEnPrFrIIc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RsybiGpyeBTO5hAlDsIkoGUH642uBdXIqIAwg6AYeWEj2iq62ytLm5rQud74nvuH1MiF2W9CAfVMHqCGGIKgh6c2JXlyG6wJRIrH4g8IO387fAZGB9C0sYwUt2E6xcfNth7D5xlP/53+wk4lHruE9NnUHjENo27eLam7ymnefVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1/shINN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WiQ+EQYz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EAB3FF89B
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788422960; cv=pass; b=dHLMsWILinQ8d4KfWeMU0tB3Zxsy5fhOMeuYPsJya9T7N5tUlaMSzRCWBDxNBdHySTCU9zUtw7XWnAjS95TiwXBKjHIIT5mpA3lNFm0cBhxdxhbGjTyqXLOD8XIaAnQWUjC1hZMbdUp693opBJkoTMv8n44LhEKWvAifSoVyb+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788422960; c=relaxed/simple;
+	bh=dWEo3mp7frOFVKITzORF+6HHk5U6mbYoC8XrjT44of8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dVubYV+oYBGbsnL1HsfcpsPTcsXMqHJn6juoXcyKNbCAOyd8YxFqVn9ywtDfS9HCgE2kLJpPSau9VZUzIWEpof+rtQc19YRwOz8iMSBMhUICK7uOLFebai34DV11y8/75vpiciG5pLV7dkbOs7sxEUFFZLeN1U+YiOfC1nXDbn8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=k+HhOoMk; arc=pass smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1/shINN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WiQ+EQYz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788422926;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pxj+lVXL/zpSaRcXZGTkqNDz4XPtDz61G0ycxj2h4L0=;
-	b=T1/shINNPV3NKnKJqZUqYdrogFjTvZ0xHO4mcQkKnl+M9TEhT6P5r9RE+wfQED2RUSiT1l
-	Pxzg+nfmWgbwayl5nSlch0NamQl3X+xfANFpFJTUjtQBafGQ9CSbt6rvYMXgGhHadjOSjQ
-	90FfPEFUw95eJ5s3y14wKJk7pShXpzY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-193-Y4ghsBItMtGubH7GTZjcAA-1; Thu, 03 Sep 2026 04:08:45 -0400
-X-MC-Unique: Y4ghsBItMtGubH7GTZjcAA-1
-X-Mimecast-MFC-AGG-ID: Y4ghsBItMtGubH7GTZjcAA_1788422924
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f4bff865cso1196551f8f.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:08:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="k+HhOoMk"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3a2e985245eso15305041fa.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:09:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788422956; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IxI4zS9NFFtouRFn+eGuP0ubuf5vvvdKIp044ww/cBejN6kHPKjBk87HWL+BjTiRZP
+         7Li/eYR6LLPTPxQkVaCmDZVVOSVHtWrwZuqGI5NziqLnfI7IPX3cfPp6wpnvNN48BPwk
+         mpxG1lXUw1zgpma+5fJBadBus2KZX2h9TNS8Xyl34IohfQiIy3r75+rteVaNkI0tJmnw
+         Gw3qWLTf/iOY1aBzDNb0ErxspXLN4ijARZu5loNW7kzTSvcS8qXQqwg7ZqIdX0nTgRGx
+         ucHsYbt6F/MByKJCmHp6Ht3qKoCykcOEWrkTCw9dnqt+yMAmIAJ+3xhe6TQ+08s35FIa
+         H3og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XTfy45raSGSmQ3CPJ+k8R7TpaweRcKOSHtZadmJbOaM=;
+        fh=ZjgBDvJKSttC6moKaL1J41sNQdFe/mZ6Qsko95gfD6w=;
+        b=RVEZ9UTlapah/BCm+o8VlzgJXEbYWRksiOLbSI8nw54rQeald8w0VutJFkTYclUaPM
+         UcWc+AQzYIP1td3PvMtNdbIo4M86fqTTA1Z+BWvqWAGo3tufO6MArBqFNjpdh/tTAdxZ
+         CrOF9EN84Dk5I/hmnQtt2p3X+Nemvd43D62WsrfUgLhg1UidWaoyClctZQzn+sIRTUJk
+         ZH791lCo/2tBZJk8dMvwMIF3pzE1wHcv1a9+XeQgvdptOnLmev9Pr37wL4Z8qW9lqUdL
+         mxlvoG9s0eu5S4t+3XjXfWoFsl0xx2B0i2va0ZggIJLbrF/+OyVNFY4edDjyYP/PYDiv
+         lr2Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788422924; x=1789027724; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pxj+lVXL/zpSaRcXZGTkqNDz4XPtDz61G0ycxj2h4L0=;
-        b=WiQ+EQYzky0mST7KMIdPaCabJczqxRoZ3qHRXcwrijyP9Zs1HIWhC8f+Z6SRlTaViH
-         9qsw8Avk8m6c81Rrmo5NhSWHAj2fM9CoftoZuIzS83G0dMBabccqsr6sFoXfbIw/WdcX
-         ToyrFxrthzkBHSbOo4VVwkkp2i1mnUAJgWUwkSndX6Z/bZ6EBczCQGvA9OwhPa12oVlV
-         9pWWYM0yGdZKHIKUNWN+u2WxJSFGVRHMIIk97INg/wdbE9x9I6ZCeU/ija5KFY0sFv/P
-         g433zhZOyyl0Gu3iAtG719zarTgiQCuxBN38nbUhG0xwgG28FGxdHu2XreWvhfZoihdq
-         5jCg==
+        d=nebusec.ai; s=google; t=1788422956; x=1789027756; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XTfy45raSGSmQ3CPJ+k8R7TpaweRcKOSHtZadmJbOaM=;
+        b=k+HhOoMk6tLRoMus9fcYwhdY69VwLNTc+4p+IDImaI4AoiK3BLP67bD4OJY3x17luV
+         tZDTqDifOEFMu4J4vHkZwLZMr+HsyumkVqzkU6ZI3pMB9g8U0ltgFtrlxD2e2/OxHa0+
+         iO6VWeVs5t2Yg9zM0mVufn79jPdTNOC/ffoVl0tSVHCYcm+oEHePv4JGolDmo7ARLW7s
+         eDNd/OkC703ZRdRC0/T7I+OwjmecjtMnyHyvq6E2rbRLgW9o3YmVn654PbY1CDt+8NTB
+         WMItEVfAcnlyzJkdSY6t2/9TlgxJtmbjfOXDXgRHiSAe4U3nJf0XZjZgTkFQqC2nsnJw
+         0jkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788422924; x=1789027724;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Pxj+lVXL/zpSaRcXZGTkqNDz4XPtDz61G0ycxj2h4L0=;
-        b=Sit6QEfnjFJgqMT2nb7WKu3SZNsHqF2hCp4IsGk1JkWhdcFaMNtx51V9er/7MKD9rL
-         Anwko6/Dyk4jYaahQLhm4GM1M4dnVB+MSM3tLMz8Y3tue6PJQf5gYmIWR/MBsu7dymd4
-         j5IyUBzTQsUP4zJGtJ4bjnNsXDsnpYQh/OInSQs/kCe3tYOiM2Idt7jmtqejJz1Htl+n
-         F84WHxR4FyRFXs9JKzA+pFHlWJTm+3Gqy5u+FYg/xw4M9Sj5wsTBz5TILWkb2oFxNS46
-         S8N4AKum9IHSx97ucjgjQnZRCU0DLI7CIm4KcoVZAVwpi+eiNDeqYyNH0LQBCsYVwhYg
-         scvw==
-X-Forwarded-Encrypted: i=1; AKwUvBzucwJ/7ad1s2E87AWoUDlbPNOQB6X+uoSTaupRDpVQ80AHxlCveu9bykvoBg/yagVQZtyzZdc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lZt2ul/fvoLSTkdOp95oqFMAuyXfni8cTB5EK/6aIp9fBGb08S
-	ecdKWbUJamffD54SX1Nhh7j8L++g+eGewIKFnxQP3fTl50gtig0UDHOIcZTF/q/dk2bOOaM0KxG
-	JoEBiIN7p35iEYEa875Psi0lCnBKo+lrMSFtnBt27OhoxdLOtcf/Hd8prWg==
-X-Gm-Gg: AYBFou0vA40diWBcZ/pXl5ecGiHsH0HcPRoDFH99/r2nKvP4JLpv0WlL9Cc7Caon/da
-	Yt9f56nW4w4HZ7s8WX2FkM4VLik4JkU7A7KjObbYiY7d9ap8VRvWwcKIA8w0efD3mj5nTY0tPNG
-	OHm6VSjhgYsvpew4aNCWJX4ZqxGD0OaMOz9LGR9PoWYgMoJPHrxgwLTC7WcefSxnEUeJTq+ny9C
-	hpQJ3YlCSWhKpKJb7jV9PMTxflUOglI4XKopG0uaC90yWnj0aYvIrOxbWoIbaeYQEmiSGLZ0Vex
-	MI/Mi6boV94Vr3XdbQrACa+1nouE/JLD0vHadLBpf68BF7lPtxC9KchbfhI5Xvncxy58dG82IIi
-	RR52eD9nYvwAMGMOQzvqrwD3Ob3P7Phh9K/zVLK1Z6eHqdJmbF1l1pp72u98+7IyUvp4vOl8kEw
-	==
-X-Received: by 2002:a5d:588f:0:b0:482:fbb5:8a74 with SMTP id ffacd0b85a97d-48488f032b6mr17086055f8f.11.1788422898326;
-        Thu, 03 Sep 2026 01:08:18 -0700 (PDT)
-X-Received: by 2002:a5d:588f:0:b0:482:fbb5:8a74 with SMTP id ffacd0b85a97d-48488f032b6mr17081105f8f.11.1788422866905;
-        Thu, 03 Sep 2026 01:07:46 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e80388sm13498841f8f.14.2026.09.03.01.07.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 01:07:46 -0700 (PDT)
-Message-ID: <da990dc8-a7c5-4870-89f0-ad8e7dad0e0a@redhat.com>
-Date: Thu, 3 Sep 2026 10:07:45 +0200
+        d=1e100.net; s=20251104; t=1788422956; x=1789027756;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XTfy45raSGSmQ3CPJ+k8R7TpaweRcKOSHtZadmJbOaM=;
+        b=P1y2WjnDmyHtcLs2dob3uhJmeD6EPYanMRVEn+LBqlIoC6lzO1MB40ep6D5i7O7c0B
+         W2AKDD0WjU3f4ELPVVkFVuRcoQhIPH8lV9S3pM2D04cZkoD08j50N6QNkCud12Zpt2hq
+         9Dxtwkcr6+DNMoqA4n3uMBYEi2P2mNNKaKpQpNeFzy6cMHNafeheBlIsoqC5blyQM+zu
+         z4YnUsDXeohbyX6ut7KsJ2b2d7xNL5pz2v8sShBhwiNuieoutcfF4BKWL9+QIIgH3W4j
+         rROQn7Y3NpoiEHgwKDaWykaitWkSg/BF6VYMGpzpdOxssqcv8yKaQhDvgzvSlcBlUMRK
+         suPw==
+X-Forwarded-Encrypted: i=1; AKwUvBwszWfDcFU8T16jqptJtGpBDE95i1xqo4ujh/p9tqELFIw8GMm/Rd5eHkPI9vXHvicIFGo1xoE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nqkQtpbsbdGkGafhLuBiDtQGWUKLT8ITQyaTSRfBWUOW2lw0KC
+	eGtr52BVzX2f9hw7hmQNysB9foRktd/iD2lBZmlFe9ioPmjlSfgaQYmXOgyDv1c1XzuBW+/rBYy
+	tyiHLesk2GfUWZj1e9ZcTy9iMsbk7hSjmfqthHVJtzrA=
+X-Gm-Gg: AYBFou3uEP4pesOiF0qqjGsskVhyNMEoD5wYgNRH9BOuxAABSfoaXPUWBxKVruB/whT
+	xh3zfLq8ojraCX+2+HRU5xVEhooAITB2frPXhz94JPRNz7p+69aIPzu+G6GlsiU0SQ6qNITp884
+	ryT4zID7XtSspg3kKuCaiORGa2lLXMwsjvVQIWaZsHyQwbbSlbhc3CRt+4a7KAjRb3XIWLzlRnK
+	2xQstWUsjzfveASLr5LusE0dOwW5ywRGplf836SNRIABigEANZYTIy3gfI3LDhpoKTNnqZ5pu/P
+	AWJ/nQJyqERZ/0MuC504vNVZRnxUTO4DBWGmxK1r+kAFyKjaWm8f4svGGYiANXZOMe798EQKApQ
+	=
+X-Received: by 2002:a05:651c:4ca:b0:3a3:115d:daf0 with SMTP id
+ 38308e7fff4ca-3a35008931dmr18616021fa.6.1788422955902; Thu, 03 Sep 2026
+ 01:09:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] tcp: fix mdev comment in tcp_rtt_estimator()
-To: Ziran Zhang <zhangcoder@yeah.net>, Eric Dumazet <edumazet@google.com>,
- Neal Cardwell <ncardwell@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260901023539.6986-1-zhangcoder@yeah.net>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260901023539.6986-1-zhangcoder@yeah.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <cover.1787903722.git.zihanx@nebusec.ai> <8e45ea5d0cf764267a90d959fa40f0f831aabf08.1787903722.git.zihanx@nebusec.ai>
+ <apKl65BbdyWCtre7@strlen.de> <CAANe3eT8ycDkomgpzZmni7hMrUX1fr2dE4QvQOcKCPEcw=J=2A@mail.gmail.com>
+ <apkahwSdQhuE6gRV@strlen.de>
+In-Reply-To: <apkahwSdQhuE6gRV@strlen.de>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Thu, 3 Sep 2026 16:09:03 +0800
+X-Gm-Features: AcwNN1Wd0FgsqLjcXjqWHA6w1DrMXZKkBLBFaJpau8ih4FBDSOgZEW2Xg9zNQoQ
+Message-ID: <CAANe3eS22cFoqz1DWAkLXkskZqO3istpX6ARSKvBKBBVKKKdtQ@mail.gmail.com>
+Subject: Re: [PATCH nf 1/1] netfilter: nf_dup: prevent asynchronous duplicate recursion
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Phil Sutter <phil@nwl.cc>, Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, coreteam@netfilter.org, 
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/1/26 4:35 AM, Ziran Zhang wrote:
-> The old comment "mdev = 3/4 mdev + 1/4 new" only describes the
-> common case. However, when RTT drops sharply, the code applies
-> a finer gain of 1/32 instead of 1/4, resulting in:
-> mdev = 31/32 mdev + 1/32 * new.
-> 
-> Express both cases with a unified formula using variable
-> gain g.
-> 
-> Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
-> ---
->  net/ipv4/tcp_input.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 0f60a1dbf..2c9feb181 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -1108,7 +1108,10 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
->  		} else {
->  			m -= (tp->mdev_us >> 2);   /* similar update on mdev */
->  		}
-> -		tp->mdev_us += m;		/* mdev = 3/4 mdev + 1/4 new */
-> +		tp->mdev_us += m;		/*
-> +						 * mdev = (1-g)*mdev + g*new, g=1/4 normally,
-> +						 * g=1/32 on sharp RTT drop
-> +						 */
+On Thu, Sep 3, 2026 at 2:58=E2=80=AFPM Florian Westphal <fw@strlen.de> wrot=
+e:
+>
+> zihan xi <zihanx@nebusec.ai> wrote:
+> > If you do prefer to keep a small nf_dup-only change, I can prepare eith=
+er:
+> >
+> > 1. disable IPv4/IPv6 dup in network namespaces owned by a non-initial u=
+ser
+> >    namespace; or
+>
+> I think this is the better option, someone would have to explain
+> the use-case for DUP in a user netns.
 
-I'm sorry, I have the feeling the above does not clarify much. Also
-AFAICS it's not a 'sharp' drop but any negative delta.
+Thanks. I will take this option and send a v2 that skips IPv4/IPv6
+duplication when the network namespace is owned by a non-initial user
+namespace.
 
-/P
-
+Best regards,
+Zihan Xi
