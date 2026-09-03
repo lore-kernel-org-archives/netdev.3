@@ -1,149 +1,170 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44EA4F30D7
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C168237DEAA;
+	Thu,  3 Sep 2026 21:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788470025; cv=none; b=fIgZuNcEOWDrm9UOu83Y0p25llxRmtY+n1dmLuXr+DQpschMjd4UBcUBnBaSViq4nwSb0UO+jY50lAiDMhIhTj3A/HZEi5A2fhX45udiDgEjXluameL7pKertHaLM+SgWtN85RuaZvp/IS6FvZU7M39XeLS1IQPfBsZ/eyeSg8U=
+	t=1788470810; cv=none; b=LqRM/1651BN1PqlpGaIiVlKxj1w+dR8MTte6ExddKIYmIXg6XUHQICY8zi46fX8sBBssMAuLwglA+CwjWnv0qOf2lr4wvDva5oqpv5G0SzUJK8M5nb1nUROiGdDdh8lVeFAzOlCIjrAawVN11e1TWXwa1VjC+hKe35jrRQzuAFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788470025; c=relaxed/simple;
-	bh=b0/HSCJZuEl0PGtn9azoPzkS0dWwxnYHqdvEixO/txA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jam1b5bQwB1ZSm5pooMJiYfprN2oEZ3n6qOf9JwNQGpiJC8T88VK0kdb/Kke2K7jCazUUhrMRoKyH/UAk2daphgfWBvxTEtD7Q9PKrMJh0sM4N0oPajCvXJuqhX8RJ6It2CnYa1Fro7CAGNeTnxC828ChLkTtitkAWjRMM33x8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rwXtRlJz; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788470810; c=relaxed/simple;
+	bh=E4zdXifS6EabLM823BiURpyWhwByvuK1FT9JjXB8iqo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iF5GaQIf0mztIDXnwEV01UyJXfPWkVMfBTOWWnQZbX8a71KhDt/43l15KQPv/5mduzR74LXt3M+lE+EG5mstLw6qQEeuAANhAirY8emdIcBwxetjr06D54grtDENqF0hIKhsArJ0PT0J9PtGbKfCJ4G2kJHGgU+nCkbX/eUded8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iO5v8yG8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rwXtRlJz"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a0a4aa99bdso273600a12.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 14:13:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788470020; x=1789074820; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mEtsy+Nj496tWyceVNXPO2QTuND+7hvS8GahA09Q5S0=;
-        b=rwXtRlJzrk7DrNzUN5tfH/9eOKUU1xx62/i3MLPpqSYw7ddJEm3HxcJb1EavrwGVtq
-         cmeh1Dl4QDUjVrOSr+KWDlrZyC+bdWdOEwZ3gb8230eQ6RJJi9PCJM3r4P+4iZ9B/BN+
-         ypl2iWV0FO4OEs+a45o++xhF+aEhDo6b4KTSRoUyaXPkrEoG1vBQrtyJ90wnQ36Mgq4S
-         tGi+9mGaMumXklppqfUIDCQP3/6PMAz1JFYh1s/Zc0SwHdnQGqcXf26UFDwXWEb69uTt
-         wjCoty/hSl6CHvi1bM9l65nBtTak3aY6bs1XSJM6ICcfR59a/EpfGgsgy0UbYBRl+/eT
-         O96g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788470020; x=1789074820;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mEtsy+Nj496tWyceVNXPO2QTuND+7hvS8GahA09Q5S0=;
-        b=Ga2LiihdaLlaogMaMTp6ruXVG2Gu025WZZCm27ucXGn6xCISIggedS31899r1wSxvp
-         Xnpe+y9FXupYqpG70c924gixq8qRBGNIpAQxU9Jodn0lFt4n/GToxRvO/31rlTYj8f+8
-         zWZMF5fP8mzcl1mpcGurs/yXEybiEVYlQG4eXAqGmxGXbwHAYtOdT6EM2jVFghBPrsdB
-         17RmPp+WgL2zaOqdBCWhVtBJ79RQg31vvKbBhwRGtTYtZkt0zVWhVtSzfeGlgAdsgshZ
-         x8hMMA4I3lhTa1TaaKqv7sarcchWuhdhDutIINWcH7CwayRvgIIEtGKVxcn3noGRL0xb
-         Vq1w==
-X-Gm-Message-State: AFuF++kspyxwsdrcr4cBo9pGIZoXPnq3rFJ6hH0hstM02Rc6ZciFsG42
-	7FvtWaYh80ZaUt7oqx+CGjso7r/zz18rCq7T4gsUKUivInRBIUn5buE=
-X-Gm-Gg: AYBFou2SL6va6ohqtC/YnMMsq8aMIYn4WKpqItpBr55cK71q+AqzKQActXwzpbbJkum
-	ASJqJoS9snQFZWPlVhFdnYI5RrII33Bjs4ksCFfhM33oDQcdQhLY99E74iLe+o931Oc+d6hWoxP
-	vFOEk1eQnIEQm08XM6dMM+gkRHBd7LGVvgAw0ep5/7wiW8IsILzUrJrRbT+Tt1wy580b9DHo+6n
-	YHL/yGxbZl3JMPEg/wa2IHYcIQ/Ll2BUGtpmlK5jAaXaDKHPir2DpRotyaud/28kpoRZRPEFyLu
-	Qp5OIqag1AfmN+QR1dQjYV04D6Lj69+xSBcTBwWEKURrfVk5gvR5qrRH7/IN96fRMFYU8qLRqE3
-	NgKJCmfiGn4KiYy5Xh28OU95eolNYEDdt19kie5AnbYZYS/fS1rSyrkjVFD/ZAA4wXOCVe2kHkH
-	crUeFZQ3DD6RIe4sjl8iiCiJ3o78y7jY9acHpCEo0MUL0TwLT6ht7D5i+rfg/6cg==
-X-Received: by 2002:a05:6402:11ce:b0:6a6:32f9:d7cf with SMTP id 4fb4d7f45d1cf-6a7e90bd161mr434390a12.20.1788470019849;
-        Thu, 03 Sep 2026 14:13:39 -0700 (PDT)
-Received: from fedora ([46.8.219.5])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e68a6a1dsm255242a12.7.2026.09.03.14.13.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 14:13:39 -0700 (PDT)
-From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Wei Wang <weiwan@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: yield the CPU on every exit of the threaded NAPI poll loop
-Date: Fri,  4 Sep 2026 00:12:53 +0100
-Message-ID: <20260903231253.292576-1-sochnev.v.74@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902154836.19a497e5@kernel.org>
-References: <20260902154836.19a497e5@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iO5v8yG8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2021F000E9;
+	Thu,  3 Sep 2026 21:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788470808;
+	bh=TmxsF8YocUAG377pTVG/evM7jZ0vLFh1Ti8Z3d5fFms=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iO5v8yG8NQ3lPQeodQ0avBL0C2ByzjBGsJNuX0YlNIsgNAti5aob/JOJu0/u0i4sN
+	 i4bkkzl+3nwHtTrJyDCVxb81/aEsoJs6OrSPaxkpF2LGA9MFth5RpK7fGM5dCxR8qT
+	 RVvyFa0pDWYtbSEhXLm7bnmSnWCjredc/TIIvLt4PndpauR6fDMNZL2QlIV6RFA4UT
+	 yML52aZlfNuNXG0zJV/gwNXH5ZMkb4GZbbYBiHX9IQwcySArxPkHF5tl+OkC7wtpdf
+	 PVez815qpvGrQ8wmb7AFe5kDF/9Xjd0eXuwQWGRHQ0lYhJuIZ6+dkAUro0rP61IR9g
+	 X+bDxMYef2qPQ==
+Subject:
+ Re: [net-next] net: dsa: offer a flowtable to the switch before the conduit
+From: netdev-bot+sashiko@kernel.org
+To: julius@bairaktaris.de
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 03 Sep 2026 21:26:47 +0000
+Message-ID: <178847080758.3394541.9994313358533592398@kernel.org>
+In-Reply-To: <20260901092546.369232-1-julius@bairaktaris.de>
+References: <20260901092546.369232-1-julius@bairaktaris.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-> Rebase your OOT patches on latest and test the tree you're targeting
-> or keep this patch in your downstream kernel as well.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-I could not produce a repro on the target tree, and the reason turns out
-to matter more than my board being out of tree.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Since v7.0 the non-preempting models are gated:
+- [Medium] dsa_user_setup_tc() now selects the TC_SETUP_FT offload target
+  (switch vs. conduit) independently on every call, by probing…
+- [Low] The new comment at net/dsa/user.c:1743-1746 says '... only a
+  conduit-side flow engine needs the block forwarded, and that forward…
 
-  kernel/Kconfig.preempt
-    config PREEMPT_NONE       depends on ARCH_NO_PREEMPT
-    config PREEMPT_VOLUNTARY  depends on !ARCH_HAS_PREEMPT_LAZY
+--
 
-  kernel/sched/core.c, sched_dynamic_mode()
-    "none" and "voluntary" are compiled out under
-    !(PREEMPT_RT || ARCH_HAS_PREEMPT_LAZY)
+net: dsa: offer a flowtable to the switch before the conduit
 
-ARCH_NO_PREEMPT is selected by m68k, hexagon and alpha only, and
-ARCH_HAS_PREEMPT_LAZY by x86, arm64, powerpc, s390, riscv and loongarch.
-So on those six there is no way to build a kernel, or boot one, in which
-cond_resched() is anything but a nop. I checked it on an x86 guest built
-from net/main: the set offered by /sys/kernel/debug/sched/preempt is
-"full (lazy)", and none and voluntary are not in it.
+TC_SETUP_FT is now offered to the switch driver via
+ds->ops->port_setup_tc() first, and only forwarded to the conduit netdev
+via dsa_user_setup_ft_block() when the switch answers -EOPNOTSUPP. This
+lets a switch that owns its own flow engine see a flowtable bound to one
+of its user ports.
 
-This patch therefore does nothing on those six, and I should have said
-that in v2 instead of describing PREEMPT_NONE and PREEMPT_VOLUNTARY as
-what is left. What is left is PREEMPT_VOLUNTARY on arc, arm, csky,
-microblaze, mips, nios2, openrisc, parisc, sh, sparc and xtensa,
-PREEMPT_NONE on the three above, and 6.18 and earlier everywhere, which
-is what the affected devices run and where the Fixes tag applies.
+> diff --git a/net/dsa/user.c b/net/dsa/user.c
+> index 041f9060c8ef0..c5adb557056f7 100644
+> --- a/net/dsa/user.c
+> +++ b/net/dsa/user.c
+> @@ -1734,11 +1734,22 @@ static int dsa_user_setup_tc(struct net_device *dev, enum tc_setup_type type,
+>  {
+>  	struct dsa_port *dp = dsa_user_to_port(dev);
+>  	struct dsa_switch *ds = dp->ds;
+> +	int err;
+>  
+>  	switch (type) {
+>  	case TC_SETUP_BLOCK:
+>  		return dsa_user_setup_tc_block(dev, type_data);
+>  	case TC_SETUP_FT:
+> +		/* A switch that owns the flow tables answers for itself; only
+> +		 * a conduit-side flow engine needs the block forwarded, and
+> +		 * that forward is gone by the time the port is torn down.
+> +		 */
 
-Since every number in v2 came from PREEMPT_NONE, which those
-architectures can no longer select, I measured VOLUNTARY as well. Same
-board, 6.18 where it is still selectable, untainted, no out-of-tree
-module, 30 minute runs, the two halves differing only in this patch:
+[Severity: Low]
+The comment says "that forward is gone by the time the port is torn
+down", but the statement right below it runs that conduit forward on
+every TC_SETUP_FT command, teardown unbind included. After -EOPNOTSUPP
+from the switch, dsa_user_setup_ft_block() still resolves
+dsa_port_to_conduit() and calls conduit->netdev_ops->ndo_setup_tc().
+Nothing suppresses the forward during teardown.
 
-                          before        after
-  mean                    13.38 s       0.19 s
-  worst                  135.95 s       0.51 s
-  over 1 s              10 of 55      0 of 89
-  RCU stalls, classic          12            0
-  RCU stalls, expedited        20            0
-  packet rate           80312 p/s    81532 p/s
+The changelog's argument is about the other direction — a conduit-side
+handler reaching back through conduit->dsa_ptr, which does not work
+because dsa_tree_teardown() in net/dsa/dsa.c orders the teardown as:
 
-add, mtu and a no-op netlink call stayed at 0.01-0.41 s throughout both
-halves, so the delay is the grace period and not rtnl or scheduling. The
-splat names the model itself:
+	dsa_tree_teardown_conduit(dst);
 
-  rcu: INFO: rcu_sched self-detected stall on CPU
-  rcu:  0-....: (5999 ticks this GP) ... (t=6001 jiffies g=861 q=830)
-  CPU: 0 PID: 200 Comm: napi/qdma_eth-0 Not tainted 6.18.44 #0 VOLUNTARY
+	dsa_tree_teardown_ports(dst);
 
-For completeness, I did try to reproduce it on net/main in a VM, with
-threaded NAPI on a veth pair and the ARCH_HAS_PREEMPT_LAZY select
-dropped from arch/x86/Kconfig so that voluntary preemption was
-reachable at all. The worst "ip link del" went to 0.19 s against 0.01 s
-at rest, but never to a stall: below the band the thread sleeps between
-batches, above it repoll stays set and the existing cond_resched() runs.
-I could not hold it in between, so I am not offering that as a
-reproduction.
+That ordering claim checks out, so this looks like just the comment
+wording talking about a route the patch does not take. Could the comment
+be reworded so it describes the fallback that is actually emitted here?
 
-So this fixes the architectures that still have a non-preempting model,
-and the stable kernels, but not the tree it is posted against. If that
-makes it not worth carrying in net, say so and I will keep it
-downstream. If it is worth carrying, I will send a v3 with the numbers
-above in the commit message.
+> +		if (ds->ops->port_setup_tc) {
+> +			err = ds->ops->port_setup_tc(ds, dp->index, type,
+> +						     type_data);
+> +			if (err != -EOPNOTSUPP)
+> +				return err;
+> +		}
+>  		return dsa_user_setup_ft_block(ds, dp->index, type_data);
+
+[Severity: Medium]
+TC_SETUP_FT carries a stateful FLOW_BLOCK_BIND / FLOW_BLOCK_UNBIND pair,
+but this picks the offload target fresh on every call from the driver's
+return code. Nothing records which side accepted the bind.
+
+If a switch driver's TC_SETUP_FT verdict differs between the bind and the
+matching unbind — for example its flow engine is unavailable at bind time
+and available later, or offload is toggled at runtime — does the unbind
+then land on the other target?
+
+The target that did not see the bind has no matching block_cb, so its
+flow_block_cb_lookup() fails and it returns -ENOENT. Since -ENOENT is not
+-EOPNOTSUPP, dsa_user_setup_tc() propagates it (and the conduit's return
+value is propagated unconditionally by dsa_user_setup_ft_block()).
+
+On the netfilter side that error short-circuits the cleanup in
+net/netfilter/nf_flow_table_offload.c:
+
+nf_flow_table_offload_cmd() {
+	...
+	down_write(&flowtable->flow_block_lock);
+	err = dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_FT, bo);
+	up_write(&flowtable->flow_block_lock);
+	if (err < 0)
+		return err;
+	...
+}
+
+nf_flow_table_offload_setup() {
+	...
+	if (err < 0)
+		return err;
+
+	return nf_flow_table_block_setup(flowtable, &bo, cmd);
+}
+
+nf_flow_table_block_setup() is the only place an unbind does list_del()
+plus flow_block_cb_free(), so does a misrouted unbind leak the
+flow_block_cb allocated at bind time, leaving it linked on the owner
+driver's private block list with cb_priv pointing at flowtable state that
+is going away?
+
+Worth noting no in-tree .port_setup_tc handles TC_SETUP_FT today — they
+all return -EOPNOTSUPP unconditionally — so this cannot trigger in tree
+right now, and the behaviour of the out-of-tree consumer is unknown.
+Would it make sense to decide the target only for FLOW_BLOCK_BIND and
+remember it on the port, so the unbind always goes back to whoever
+accepted the bind?
+
+>  	default:
+>  		break;
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901092546.369232-1-julius%40bairaktaris.de
