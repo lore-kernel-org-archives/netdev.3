@@ -1,62 +1,35 @@
-Received: from mta0.migadu.com (out-51.mta0.migadu.com [91.218.175.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C77A47DD79
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7639A47A88F
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788430219; cv=none; b=W2lYsc1ZVS5+ZG4A8nnJdR7ZN3z3Tn7qf4kC9/veZG0r2E4ztdULI7ZI76BcUgg9FlWUgqcH8GNJyD1RfVIaHgvsQ7pNTyRmoJF372bjAp+xUcHvpSxs3Kt37GyyW8mF8L2kzanDXmU7soJCupKf33+LjPNrAjyajZER5Bw6m50=
+	t=1788430266; cv=none; b=L5vTVAdcdEuzKe0kCO0KyizxOtqCeJ/7B73qZ3I3Lng4bCxsY1gO7e6PQEotZlJ/x4UyAZT09VreEAxrKyY2hSfi9Ap/gDNkDYtLDn6oZM8lAQt1BWBJCsnXzUR3ZnyMxyoRue//dD6Pgo3z37UKkazIQArMpCauKi3TQJN6jG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788430219; c=relaxed/simple;
-	bh=c3BKTF59VZktP3ACG4MFSbcPV9qbzIS6Z4cfOyHB/9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FHCDByPkF1su5ALNYDpVfO3ZFXHJ4uzGURXoEqtMhJ4oMMzo/fGcP3yPmh2YOWwDxdfMBT7CjiyWt+cm3v981nlC0f+4a19lH4y4a0JiCfauMuF+lFs5A33iJFJ2d8lwqTXDYS9ZscBvkiBx0ytSxw3JfecqGUfk1JPyVRXUTIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XBRwDrpk; arc=none smtp.client-ip=91.218.175.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788430266; c=relaxed/simple;
+	bh=I+4CzoKYXPF3sW0dOqh/p/U0M5jP7PLCOzJg5schpF4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=swG+IRUp1jxdIrJZGjFIi4EaJko0M83Qj7UmW6OxF7sSIzDQRGRPEk4t5ZCvpMTvoXTA+zHXuBzoc9zPn0zHgsljszdENVc+Ks3Ac66xY50cR6sD9cLXk4lFdGPPTpuHo5cWgD1LR+qoH01PsUeS8VnCG73Mne2EQDDrgawDdYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RG5l4Wr4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XBRwDrpk"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=c3BKTF59VZktP3ACG4MFSbcPV9qbzIS6Z4cfOyHB/9I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788430201; v=1; x=1789035001;
- b=XBRwDrpk+aESU58UF9DVtthz5RDa8C5f+Fq+ADUnq5W8My8UmMPXRQfAwelYjPlln+oXYaOK
- lXTu0nouIEr2vGdRmkJ/vJkkPmVtXnlk+FbCElEo/hkhf4JfJPNhplQSwsTa5DkMB4Z/Vyg5hbj
- IUCsmlaQQaH9nH83kXg6qZYA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 83a0c04ce43bf8e0;
-	Thu, 03 Sep 2026 10:09:51 +0000
-X-Mizu-Trace-ID: 83a0c04ce43bf8e0
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	VEGA <vega@nebusec.ai>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Lawrence Brakmo <brakmo@fb.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH bpf] bpf: Fix out-of-bounds read of rtt_min in sock_ops
-Date: Thu,  3 Sep 2026 18:09:20 +0800
-Message-ID: <20260903100921.113374-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RG5l4Wr4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A21D1F000E9;
+	Thu,  3 Sep 2026 10:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788430265;
+	bh=WGYoeDmiTIlfdYj/SmCDvoBmEjqLBYvUYlicIdwKfgw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=RG5l4Wr43OAfnf70QcrrsdqVdV1oDRbVe+GRSrmN4DU6pkevZFSxBmI2Mr7gM+0Qx
+	 kCM6EKyqQigs3Z3Q7rU6wzt2fkCYoKJecFDclkSRwv+ypXCBEz9sXwfv4Ze+OoAT1+
+	 TGWPPrBrp0kNPOHZYpbhQ7uFrCMpjEZWL4hS3Yi9dQJbPOYnOXq5Omb+e51AE12DL7
+	 ZaxnQLkVIsgtxBWH1arxoJn4JrN2l2GEifWzWFFFlng9Z5LP9VDWnhP3HymZ0ZDrWw
+	 nf+lD6d/zzPO6dW4fz0yCiS0qRAyueA2A2NLESv71ZNMpe2u3TvyyOmQ3Ak4Hl6/eT
+	 DITiwOqCemKZg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D099E3811965;
+	Thu,  3 Sep 2026 10:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,89 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3] net: stmmac: drop the queue-0 pinning for GSO
+ frames
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178843020640.3244835.6785391854454806070.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Sep 2026 10:10:06 +0000
+References: 
+ <20260831-stmmac_select_queue-tso-fix-v3-1-d9c215fe7a85@oss.qualcomm.com>
+In-Reply-To: 
+ <20260831-stmmac_select_queue-tso-fix-v3-1-d9c215fe7a85@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 
-A sockops prog reading skops->rtt_min never checks the sk type: on the
-tcp_conn_request() path sock_ops->sk is a request_sock (non-full), and the
-ctx rewrite casts it to a tcp_sock (full) and reads rtt_min past the end of
-the request_sock, returning dirty adjacent memory.
+Hello:
 
-	SEC("sockops")
-	int prog(struct bpf_sock_ops *skops)
-	{
-		switch (skops->op) {
-		case BPF_SOCK_OPS_RWND_INIT:
-			leak = skops->rtt_min;   /* reads the request_sock OOB */
-		...
-		}
-	}
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-For instance one such read returned rtt_min=0xffff8881, the high half of a
-leaked kernel pointer.
+On Mon, 31 Aug 2026 08:48:33 +0200 you wrote:
+> stmmac_select_queue() forces every GSO frame (TCPv4/TCPv6/UDP-L4) onto
+> TX queue 0, relying on the legacy assumption that at least queue 0 is
+> always TSO/USO capable. This is no longer needed since
+> stmmac_features_check() already validates each GSO frame against the
+> capabilities of the queue it is mapped to, clearing the checksum and GSO
+> features for queues that cannot perform TSO (e.g. TBS queues or queues
+> without TX checksum offload support).
+> 
+> [...]
 
-Guarding that cast is exactly what SOCK_OPS_GET_FIELD() does -- it checks
-is_locked_tcp_sock and returns 0 when sock_ops->sk is not a locked full
-socket. Every other tcp_sock field in sock_ops goes through it; rtt_min is
-the only one open-coded, so it skips the check.
+Here is the summary with links:
+  - [net-next,v3] net: stmmac: drop the queue-0 pinning for GSO frames
+    https://git.kernel.org/netdev/net-next/c/8e2faf945a13
 
-Read rtt_min through SOCK_OPS_GET_FIELD() too. rtt_min is a bit special:
-it is a struct minmax and we only want the current min, so pass
-rtt_min.s[0].v. That is equivalent to the old hand-computed offset
-
-	offsetof(struct tcp_sock, rtt_min) + sizeof_field(struct minmax_sample, t)
-
-(s[0] sits at rtt_min + 0 and .v at + sizeof(.t), i.e. what minmax_get()
-returns), so the loaded field is unchanged and only the full-sock guard is
-added. The two BUILD_BUG_ON()s that protected the hand-computed offset
-are no longer needed.
-
-Before patch:
-
-	0: r1 = *(u64 *)(r1 +0)      ; r1 = skops->sk
-	1: r1 = *(u32 *)(r1 +2324)   ; ((tcp_sock *)sk)->rtt_min.s[0].v
-
-After patch:
-
-	0: *(u64 *)(r1 +56) = r9
-	1: r9 = *(u8 *)(r1 +50)      ; is_locked_tcp_sock
-	2: if r9 == 0 goto pc+4      ; not a locked full sock -> 0
-	3: r9 = *(u64 *)(r1 +56)
-	4: r1 = *(u64 *)(r1 +0)      ; r1 = skops->sk
-	5: r1 = *(u32 *)(r1 +2324)   ; rtt_min.s[0].v
-	6: goto pc+2
-	7: r9 = *(u64 *)(r1 +56)
-	8: r1 = 0
-
-Fixes: 44f0e43037d3 ("bpf: Add support for reading sk_state and more")
-Reported-by: VEGA <vega@nebusec.ai>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- net/core/filter.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 61940e753552..a043d179ff1a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -11105,18 +11105,7 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
- 		break;
- 
- 	case offsetof(struct bpf_sock_ops, rtt_min):
--		BUILD_BUG_ON(sizeof_field(struct tcp_sock, rtt_min) !=
--			     sizeof(struct minmax));
--		BUILD_BUG_ON(sizeof(struct minmax) <
--			     sizeof(struct minmax_sample));
--
--		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(
--						struct bpf_sock_ops_kern, sk),
--				      si->dst_reg, si->src_reg,
--				      offsetof(struct bpf_sock_ops_kern, sk));
--		*insn++ = BPF_LDX_MEM(BPF_W, si->dst_reg, si->dst_reg,
--				      offsetof(struct tcp_sock, rtt_min) +
--				      sizeof_field(struct minmax_sample, t));
-+		SOCK_OPS_GET_FIELD(rtt_min, rtt_min.s[0].v, struct tcp_sock);
- 		break;
- 
- 	case offsetof(struct bpf_sock_ops, bpf_sock_ops_cb_flags):
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
