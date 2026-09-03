@@ -1,80 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4F2411A1A
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227A0400962
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 10:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788429675; cv=none; b=pShhmoQ8HqyS6srdhiXEg3PVkzfJbIHBytqeeD03CdwzCkF4KQkWuoly/dytCq1Lr2HG86GQzsSQxd0n7o5V7+/tOFXp49caO+l+b5Sd5n6HLaQR1Z/vWKoeIQIIKoSqp2iMzwpMmwOFJMuteTxrEl11tEyT5WjVRvMdp3WuFBA=
+	t=1788429802; cv=none; b=YABS7CjOGs67mN7gxnwNvtJsewM6kDG3an8aZrHmt3D1qqi6P1f7YZ0+/lYSVSvtqu/L/C8Tf0O3kumSi4Pk/vIBOJ0v7DOyumsnW6qfoADH2soNtRfM4ns9I97ueh4RAIh61WGUf88XKke4NKAE/RXZCwTFxPFjiGqBR25YlLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788429675; c=relaxed/simple;
-	bh=K+FSVfZkbiHydi9qCJP6r8SIt1xBv4wEkltsInKzDT8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nrlB9jQzZpDAlu6/BErPsxbdmIXQ2AWbwYbyxyHT9Eu1lyJc+TRhqwDaP8OisU2GLx+eBShSIcu0uJcXrN6fPE9lvd17W64o2uawATfCBVuoSa9WZtr3IcaGajvHqtkMDxY7Xqv2CSTbWHVeCt22vmRN2AZX/xgXeT+hb2/92Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmhcmDmf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788429802; c=relaxed/simple;
+	bh=mXvzaTzqMqFmqIfIE+ID/4lSzXdcbNgs5wDNDwkuixc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sQvjDOUheAytxayG1g+jxc3K6KEuZVzSQqESNIqZuiJfcoHtvCbqt3L8UBP//XiGTM6oEWLhLDntL3ilfLlO/kLAKGeU5JS30VsxKuXIB9Otxb4Khz6Tzz56liYn1SOJmy3qeGjldvnE/NN0O7SY8kso10XrJa/xWWRNrThVNWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x4AXSsvZ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmhcmDmf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FD11F000E9;
-	Thu,  3 Sep 2026 10:01:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788429673;
-	bh=YcCFwQoxPWG//NUmWizcKUC93w3Cy0U+kHb0NN+ifTs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TmhcmDmfacbJRDzbgWEBG/J/QaZRQ49iRbvbMPIVAjINZdgFLIHVw4FrPQw7z6oju
-	 At1pfYrha75cPOPf70rgIK7cTTLmnxp/oz5A1OIRVRGfGw9e0kwbIoq058zkFT1WsI
-	 KUODjXmVabF2y4fe6nt/ZxHw01RMkkfXtwcoub0m2M8pP8fyuY4RTyev9LCGGy34Wd
-	 yaho15QWGdIM7vVrFlEPFo6I+zYAciTHF6SFfWz9SGZR0JrnFxmProlBebRIVhBgNH
-	 ktBlLT5tsGAnUkq5+6MrQyr2EzaetJvHjrsPoIaWg19xlh6O3MEDO1VEUORXhn4ogW
-	 U4wWtkAnDXKzQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5696F3811965;
-	Thu,  3 Sep 2026 10:00:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x4AXSsvZ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5BBDC1A1977;
+	Thu,  3 Sep 2026 10:03:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D78F602B8;
+	Thu,  3 Sep 2026 10:03:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 48A6011C792CB;
+	Thu,  3 Sep 2026 12:03:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788429790; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=54Vyq7TkdJY+5dYhg6T/6D6Toheh277V8fD+wL38QnM=;
+	b=x4AXSsvZ1D+R4c+aolY13sCLKa6WA/pwdy1pAL5Sy9PLHUH+gUdEKst4zJ/Wy8lw7zzGm2
+	Z8aOQEQB4uX33I1lcn6VUBB3/ABL2kylBoUmdYeUOe1CzZwZXfSxGlMKpvizWwdRn8WltI
+	ZCLPzJG/Yt03UoZ/wb4DiDCKoe+lRDqs2Z3/30O8pxTfd7C6WezbkA+CowfdRQ5PNeV7fN
+	uwxWofKipwi1IwzQLE2wfTl3kgd0XG0nfua/9n9MYenTeuBZ7odHXDQGBEcmntrXnj4DvA
+	4X4ESajCdmQZkz56KuPRzShP7NfepAh7qsIdzAJ3S/R///7BnriFaQeMIwCY6Q==
+Message-ID: <f24fd4ca-dc49-4008-a482-db6f30e46131@bootlin.com>
+Date: Thu, 3 Sep 2026 12:03:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] octeontx2: use dev_err_probe() for deferred
- probe
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178842961514.3239309.11509161427420077146.git-patchwork-notify@kernel.org>
-Date: Thu, 03 Sep 2026 10:00:15 +0000
-References: <20260901-octeontx2-dev-err-probe-v1-1-1b5e1affb994@nokia.com>
-In-Reply-To: <20260901-octeontx2-dev-err-probe-v1-1-1b5e1affb994@nokia.com>
-To: Juuso Rinta <juuso.rinta@nokia.com>
-Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/2] net: stmmac: dwxgmac2: add XGMAC
+ timestamp interrupt support
+To: Zxyan Zhu <zxyan0222@gmail.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ richardcochran@gmail.com, muhammad.nazim.amirul.nazle.asmade@altera.com,
+ rohan.g.thomas@altera.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260902131441.322167-1-zxyan0222@gmail.com>
+ <20260902131441.322167-2-zxyan0222@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260902131441.322167-2-zxyan0222@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 01 Sep 2026 08:17:36 +0300 you wrote:
-> The PF and VF drivers warn and return -EPROBE_DEFER when the AF has
-> not programmed the RVUM revision or does not answer the mailbox READY
-> message. That is expected until rvu_af has finished initializing, so
-> the warning is repeated on every deferred retry.
+On 9/2/26 15:14, Zxyan Zhu wrote:
+> DWXGMAC2 uses XGMAC_TIMESTAMP_STATUS at offset 0xd20, while the
+> generic stmmac PTP handler reads the dwmac4 offset GMAC_TIMESTAMP_STATUS
+> (0xb20).  Before this change, the DWXGMAC2 and DWXLGMAC2 hwif entries
+> used &stmmac_ptp, whose timestamp_interrupt callback read the wrong
+> register and whose config_hw_tstamping callback never enabled the
+> XGMAC timestamp interrupt (XGMAC_TSIE was not in XGMAC_INT_DEFAULT_EN).
+> As a result, auxiliary snapshot events were never reported on XGMAC
+> platforms.
 > 
-> Use dev_err_probe() instead of dev_warn() so the expected deferral is
-> not printed at warning level. -EPROBE_DEFER is logged at debug level
-> and the reason is recorded in devices_deferred.
+> Add a dedicated DWXGMAC2 timestamp interrupt handler that:
+> - reads XGMAC_TIMESTAMP_STATUS before checking
+>   STMMAC_FLAG_EXT_SNAPSHOT_EN, so that the timestamp interrupt status is
+>   cleared even when auxiliary snapshots are disabled
+> - derives the pending auxiliary snapshot count from the persistent
+>   ATSNS field instead of the transient AUXTSTRIG status bit
+> - generates the corresponding PTP_CLOCK_EXTTS events
 > 
-> [...]
+> Also enable XGMAC_TSIE in XGMAC_INT_DEFAULT_EN and hook the new
+> handler into the DWXGMAC2 and DWXLGMAC2 hwif entries.
+> 
+> Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
 
-Here is the summary with links:
-  - [net-next] octeontx2: use dev_err_probe() for deferred probe
-    https://git.kernel.org/netdev/net-next/c/e048669dccec
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Maxime
 
