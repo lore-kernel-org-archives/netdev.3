@@ -1,19 +1,19 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DF546D541;
-	Thu,  3 Sep 2026 09:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D908E305680;
+	Thu,  3 Sep 2026 09:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426054; cv=none; b=k04VlhsecBTBQKbWfIDZPy7ZrL61MrPRuCTRe5yeOReW2OdtBOCeQjkehgVKdZ77b/rq1VBz4kdWxMdRwuoHUnzN3tqLQQxsKKMgfvkNaJqif3bP0HPQYusngNmhRW2WlIMgr/nwWUv8dVNijSRBZ8u9fVKUGoGhlREWlu2q2pQ=
+	t=1788426059; cv=none; b=PDXJRwHUhaB8VnhR5/3uybOgz2CNDMY2vMka4F+rJwqQfpMJ/fwSsPDYfdCuKlZGS00y0bF/Cty9jZ/8eYRQDkNHzcOKJEZ/r8poiryh0BcnJ+V8p8O0RijG2VR3REQ5aSm6SJDErctbJGGVeOwnJ3C/6lrolMnq5/walmCdNZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426054; c=relaxed/simple;
-	bh=7SFF6+bDkyVBOQmIZhhbaq+s0DnpIzs7wUvGIntywK8=;
+	s=arc-20240116; t=1788426059; c=relaxed/simple;
+	bh=Y5AIHhLS8iOxJqe2C41AIZfSByrag0bx0tv5L7x5ULk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CK7MAJdswKLSatxkDCUF6Az8YRW0PA9kkebiFfYT6gtI6EQylW5PlTRe9grauXhormGjwf0IYc6H106nyd5eXTBSCVAdr3zktglGD3GjvbQ0Dv+ORXl8lblGQ4hER4tXf3JIfqmnkjTUu9jYGxpC8i2jZIYpGQVQMaY7+IIKpf4=
+	 MIME-Version; b=gcgzXtGQTA7sE+ei5BWqTvuqmWW+SusD8ec3RC8qG/XQ3RUW5hnd0sw3n8Lt6sgNrpkBiTrY9W0kUfIT5llUV3eBQmfwerbFk3wPpKARiNtzBzfg0qRJxmKlCI5GMlBTfxlPtCBMv5lMLDXaUBVd6fMDHH7067o0jJeSWImnhRQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D221F00A3A;
-	Thu,  3 Sep 2026 09:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7811F000E9;
+	Thu,  3 Sep 2026 09:00:53 +0000 (UTC)
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Conor Dooley <conor.dooley@microchip.com>,
@@ -35,9 +35,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Brian Masney <bmasney@redhat.com>
-Subject: [PATCH net-next v2 1/3] net: macb: Make sure clk_init_data is fully initialized
-Date: Thu,  3 Sep 2026 11:00:39 +0200
-Message-ID: <62cfa62a8f39e0014d2fe9b30a668df20ace4a0c.1788425654.git.geert+renesas@glider.be>
+Subject: [PATCH net-next v2 2/3] net: mdio: mux-meson-g12a: Make sure clk_init_data is fully initialized
+Date: Thu,  3 Sep 2026 11:00:40 +0200
+Message-ID: <98e2b71c333fea0ed59bf615c818cb7b56e2f2b5.1788425654.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1788425654.git.geert+renesas@glider.be>
 References: <cover.1788425654.git.geert+renesas@glider.be>
@@ -47,7 +47,6 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The clk_init_data structure contains several mutually-exclusive members
@@ -63,29 +62,28 @@ for specifying the parents.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Reviewed-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
 Compile-tested only.
 
 v2:
   - Add Reviewed-by.
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ drivers/net/mdio/mdio-mux-meson-g12a.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 76ee4f5060335c4e..2e6a5e93d0cdd5d5 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5375,7 +5375,7 @@ static int fu540_c000_clk_init(struct platform_device *pdev, struct clk **pclk,
- 			       struct clk **hclk, struct clk **tx_clk,
- 			       struct clk **rx_clk, struct clk **tsu_clk)
+diff --git a/drivers/net/mdio/mdio-mux-meson-g12a.c b/drivers/net/mdio/mdio-mux-meson-g12a.c
+index 08d6a6c93fb8bf02..e6c9ef3641afa27e 100644
+--- a/drivers/net/mdio/mdio-mux-meson-g12a.c
++++ b/drivers/net/mdio/mdio-mux-meson-g12a.c
+@@ -223,7 +223,7 @@ static int g12a_ephy_glue_clk_register(struct device *dev)
  {
+ 	struct g12a_mdio_mux *priv = dev_get_drvdata(dev);
+ 	const char *parent_names[PLL_MUX_NUM_PARENT];
 -	struct clk_init_data init;
 +	struct clk_init_data init = {};
- 	int err = 0;
- 
- 	err = macb_clk_init_dflt(pdev, pclk, hclk, tx_clk, rx_clk, tsu_clk);
+ 	struct g12a_ephy_pll *pll;
+ 	struct clk_mux *mux;
+ 	struct clk *clk;
 -- 
 2.43.0
 
