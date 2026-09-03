@@ -1,125 +1,101 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD1E33FE33;
-	Thu,  3 Sep 2026 08:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1839060A
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788425984; cv=none; b=l+C28Pk9d4IcUia5t0q8xS0tib9Kq5uoAN9sZKshIcc1T0yf6G6PQ80X4973hpO2LQvOFmgTdJO+MYKVhtEjgX+TgcvkAhmc/4eEyhy6hpUITSsUzT0UbkxrbkUDpQEMkq0oLg7mKqlEti2D0Wk73aiQKrnUu9EQxKUAlQrueEc=
+	t=1788426007; cv=none; b=BoIZAerYeU4qNZzmdrrMrbwbjV8+IivyNymRKIUPbcHRg+itTO+1sOKe3TWZEfV73GOckxOnBIejhQlurYbZjGhdeB47dvvGVM5nkLrYmR/sVg9bYaX4am4wSTQwVj4PI+EnMMDH3VxOHScWkq5hgZGUw+6dl28T+Z+9IPIcy3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788425984; c=relaxed/simple;
-	bh=kVnEmuck5YlW+cysPHQ3yekEWh5fBAZYSZ+FOgY3PiI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JFJkUNei/2tZYwTUZEYJQW1dzIq7WyEO6OtwtdKLt/zGjmdbo/G8gy1Awds+XlzTkQ1qHF7YT32S0JZ1z4r7wrQO6rCoRS23rmc6epqOTgab6C0yaTIvw4ntplROXYbo/ZIa9kfj8X1u78P2Rnnf5hzvoPCI/0/Qxu9NravS4CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NSAfZPyF; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788426007; c=relaxed/simple;
+	bh=4NstDlohkWjIgcni65mVUwiaGk5yiWDokMTEwFCkLJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d6Bmoadi8tg7ZfgMFbXDuDrG80mk3C+Z51OYeA9M3eZLikjeuLi8sBeTrZErLRqpWvVCuWu1De0u8NMqcavmJd9XQZJjtREHq8gGZJz+yaxzalMzvEsAL/DXIC5hYChsNMMLjBAVBMBH03kuEY8PRrFgxCKOr3KImF8WV65DE50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnA8uajd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NSAfZPyF"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E7D5D4E414EA;
-	Thu,  3 Sep 2026 08:59:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B3073602B8;
-	Thu,  3 Sep 2026 08:59:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9D55D11C79B6F;
-	Thu,  3 Sep 2026 10:59:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788425975; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=PiL0n2uXooBtcEc368JZodVn4EdHp6AGVsRm0KQPqdM=;
-	b=NSAfZPyFa9kKtVaFiAwBkbsvfBe6WXTmXNm2f7foXwBePTVa3H+um9g9CFDz2W8fd/X5xc
-	E8nIZDWfVUXYxXhzu0UxH8/n+TJc2bvmjpDPFp0h2uWAimVXBXZFXIJfDnlpbC/BICsVHO
-	7OgGrMYElME/1bbRs1vfRILU5p97XBKrDBpkYQHx0vntvAqBPNmT/95Rfcn6qO2umjS/dz
-	6bNKILtLX1sD6vMvjgaFXhbdCNFXR3o05SWWTOZ3FmVvXWWFNSL6JpLYpfHaj/zqjTK7JA
-	1+EbewU6Kz/XhoqxrQ9mynIRFw4QwXYbxT9kLtPnVi4X1WF8Vvs2BzeoooPLaQ==
-Message-ID: <54544759-8668-41af-ba05-68b8b3f00416@bootlin.com>
-Date: Thu, 3 Sep 2026 10:59:30 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnA8uajd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8191F0155A;
+	Thu,  3 Sep 2026 09:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788426005;
+	bh=RE0ASB+DdFZ2kYHuMUvbFe6R5K94GkgGPlp796qZCRQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BnA8uajd9lyP7thrGqR/vwSIZFCF32l3ok4ysl1WamoE86XDm02l0gGJdxMZ7qxZH
+	 qF6rZZHh14j/Z3LYYVPekElmOIYwtQNYRVuVymmcD26eN1wj19fOjl8AQ1NuYMkT8A
+	 U1LMF3a0BB8LOSf51ABrPdZR4TZIhOgkGr2v29jkgZXxjOn6iOG/YGE/6iV6GgUBPe
+	 jjVZ2fLwVY5GyQtOv8plQfV/vbk5NNfjZMSvUW3NqDo0BZwcGZHOgda4AU+984lLEZ
+	 MN9NVrE2fbqVNbIhmyJyv6ARK6a13R31FOpVaLNN/4BmmhXh74MKODsI55dFQXHQIB
+	 VV4DxQKOXqyTw==
+Date: Thu, 3 Sep 2026 10:00:01 +0100
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [net] net: airoha: enable RX_DONE interrupt for RX queue 31
+Message-ID: <20260903090001.GI396647@horms.kernel.org>
+References: <20260830-airoha-rxdone-rxq31-v1-1-830a91503f2f@kernel.org>
+ <178836297161.3394541.17329602881799623239@kernel.org>
+ <apig7UCTvWjKmzQB@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 08/10] net: stmmac: dwmac-rk: add SGMII
- support for RK3568
-To: Coia Prant <coiaprant@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Vinod Koul <vkoul@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Russell King <linux@armlinux.org.uk>, Shawn Lin <shawn.lin@rock-chips.com>,
- David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
- linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-renesas-soc@vger.kernel.org
-References: <20260901150111.141037-1-coiaprant@gmail.com>
- <20260901150111.141037-9-coiaprant@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260901150111.141037-9-coiaprant@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <apig7UCTvWjKmzQB@lore-desk>
 
-Hi
+On Thu, Sep 03, 2026 at 12:19:25AM +0200, Lorenzo Bianconi wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider:
+> > 
+> > Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> > 
+> > - [High] Incomplete fix: the patch only adds BIT(31) to
+> >   RX_IRQ1_BANK_PIN_MASK, so the exact defect the commit message…
+> > 
+> > --
+> > 
+> > net: airoha: enable RX_DONE interrupt for RX queue 31
+> > 
+> > This adds BIT(31) to RX_IRQ1_BANK_PIN_MASK so that RX queue 31's RX_DONE
+> > interrupt is routed to IRQ bank 1.  The stated goal is that the queue gets
+> > drained and its buffers returned to the page pool.
+> > 
+> > > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+> > > index fa9a8edce22f..8277c1c87bb3 100644
+> > > --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> > > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> > > @@ -538,7 +538,7 @@ struct airoha_wdma_info {
+> > >  
+> > >  /* RX queue to IRQ mapping: BIT(q) in IRQ(n) */
+> > >  #define RX_IRQ0_BANK_PIN_MASK			0x839f
+> > > -#define RX_IRQ1_BANK_PIN_MASK			0x7fe00000
+> > > +#define RX_IRQ1_BANK_PIN_MASK			0xffe00000
+> > >  #define RX_IRQ2_BANK_PIN_MASK			0x20
+> > >  #define RX_IRQ3_BANK_PIN_MASK			0x40
+> > 
+> > [Severity: High]
+> > Does this leave the same problem in place for the other RX rings?  After the
+> > change the union of the four bank masks is:
+> > 
+> >   0x839f | 0xffe00000 | 0x20 | 0x40 = 0xffe083ff
+> > 
+> > so rings 0-9, 15 and 21-31 are covered, but bits 10-14 and 16-20 are still
+> > clear in every bank mask.
+> 
+> Here I wanted just to align to the vendor sdk and enable rx queues 24-31 (31
+> was missing) in preparation for HW GRO support. The other rx queues are
+> out-of-scope.
 
-On 9/1/26 17:01, Coia Prant wrote:
-> The RK3568 SoC integrates a Synopsys DesignWare XPCS that can be
-> connected to GMAC0 or GMAC1 in SGMII mode.  Add the necessary glue
-> logic to support this configuration.
-> 
-> The current dwmac-rk driver does not support SGMII mode.  SGMII
-> requires a PCS to handle auto-negotiation and link state reporting,
-> but the existing driver only supports RGMII and RMII.
-> 
-> Add a set_to_sgmii() callback to configure the GMAC GRF register for
-> SGMII mode (bit 7 set, interface selection bits 4:6 cleared).  Also
-> add a supports_sgmii flag to indicate SGMII capability.
-> 
-> Provide pcs_init/pcs_exit callbacks to create/destroy the XPCS via
-> xpcs_rk_create() from the Rockchip XPCS platform driver, and a
-> select_pcs callback to return the XPCS to phylink.
-> 
-> While at it, fix the clock enable ordering in rk_gmac_powerup():
-> gmac_clk_enable() is now called before any register access, including
-> the SGMII mode setup path.  Previously SGMII mode would bypass the
-> clock enable via a goto, which could cause synchronous external abort
-> when accessing MAC registers with the clock domain disabled.
-> 
-> Also clean up the error handling in rk_gmac_powerup() by using a
-> unified clk_disable label, and add error handling for the default
-> (unhandled interface) case.
-> 
-> SGMII In-band vs Out-of-band
-> ============================
-> On RK3568, the MAC clock is fixed at 125 MHz and cannot be dynamically
-> changed by the stmmac core's set_clk_tx_rate callback.  In-band mode
-> works because the PCS handles rate adaptation internally.  Out-of-band
-> mode does not work because the MAC would need to change the clock rate
-> to 125/12.5/1.25 MHz for 1000/100/10 Mbps respectively, and the clock
-> is fixed.
-> 
-> Enable default_an_inband for SGMII and disable the generic stmmac
-> set_clk_tx_rate callback.  This forces phylink to use in-band mode,
-> where the PCS is responsible for speed/duplex negotiation.  Without
-> this, the stmmac core would attempt to change the clock rate on speed
-> changes, causing TX to work but RX to fail.
-> 
-> Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 386)
-> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Thanks Lorenzo,
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Seems reasonable to me.
 
-Maxime
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
