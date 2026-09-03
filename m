@@ -1,105 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C214B203A;
-	Thu,  3 Sep 2026 14:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D357531716D;
+	Thu,  3 Sep 2026 14:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788444133; cv=none; b=uBu86gTwa9ATTgvn3JGr2yFN6irkhoKoIL4bOwcMPTQyINCVdZioQOkt05BoCTWlWmJLlBEsMDH1wuI8oDmXw0gNY0ySckUZDmAZhlU48SPrBH2BmRffW30K2FpvIteoK2WCrjGGGAuYIAnJv57vFCWMcLESyXRg8QLQ2CDIUxo=
+	t=1788444182; cv=none; b=oUIWWwx+apn6CB837F7/4c5GePGO0UhEONqbnM/X/l482jqCNwPakZ3yfBVjcnQt+eTfzquV0v9KKxGW6o5O0DoWvBY/AualCZfcJu8VAtJbFxWf3Vf7S8I/nwhCjMlpjKxm4InTAcv/e1KCB1S7nnYss+Qo+5/tfcMfIy0wjtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788444133; c=relaxed/simple;
-	bh=Mpm+2gSk0KcHCAC3FrfW80ns2FvddQM7L50oGYP+CP8=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=tG6m38IMvCz70BqZ7FMqbZjhw7Wi0dU56J6luoGBf5L0jExV1NbA8OsU97jx5NyXf//mv0ZDVj6uJtfAW0v2gLa4tAqB2y1Xvnuz7En3wF9Vph+O42Xj6QPx0e9XXZzPGjmZaJePPr2RKSN8YCq/cZVgFHJzJwo1bKzS7h7+Fe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGOi3nCD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788444182; c=relaxed/simple;
+	bh=hIcl5o7Ira9qzxp/5zL0DAYmfSYbKzPxXoCZUyyLSpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OsLYIUafRq70zOiWYANKEbr3mnsVhDverl0O+49Kc3muasJ8Y7WyKfJL2RO7fIDTOEBF4RAEXbbOsZt2j0pR8U/FeQZMY3j9Roxlmlj+4u+I1tiFsZECaoQkzDSMSNeLnGzKwmrJvT/vYkYWjhdSdL2Bnuknf9iO3YB/io95COI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kRKesSy/; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGOi3nCD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9A21F00A3A;
-	Thu,  3 Sep 2026 14:01:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788444120;
-	bh=+n84nme5mcwj2ZATP+IqzOi+xKkQiR6pMmo4Y0hPmXo=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=UGOi3nCDqkbIHaaq45hucr5sZ5dnkszL9YOvEeOPDY8Qr4L9f2WzGbCsBRDzz0Dki
-	 O1wdKekGPBiG+hcShw1I2wL1Y4w5yrjGe1PaBgJ+tP8iduokPb4j+Ce+Ho8Wmo9GAl
-	 g1SBKhxm6Ai2qmFwFUEjNUG993c6yzfRvOFU7VbAYUcGbLyxADXkCv6wEC/XZ50Op9
-	 UEqPQM0TA2lG1l0AEkjhDg5gJakiP4vgtZxUJYvSJWj2c8vNJ5fn3+Tbdx+E5Xtl1y
-	 aIwcNv0nBU+NlYgZCzESR1aWV+uMqtbLotpuRUcmJdoZ9itytCbuKcjh4mFHiLEzFC
-	 908ZttKaJpjYA==
-Content-Type: multipart/mixed; boundary="===============1260188190606007013=="
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kRKesSy/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788444175; x=1819980175;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hIcl5o7Ira9qzxp/5zL0DAYmfSYbKzPxXoCZUyyLSpw=;
+  b=kRKesSy/SA/eINPn7AIt579Q8DqUzkjehYwiZwmUtRbxbwr2wPAnVqTS
+   fxNhM9JacVlHYnHozJ5FUlLaTuKFHgGmTJqAXURF81YBpy7SshgxOeaig
+   62lQZHG76DMllMKK97GLyDaqQfocx4PzzlUrasB4x5hu2Ugq7bMUcb54m
+   b2LOeEPTGc7aq2GvJmT11HP2VnqmzKNZy/YydvTzBeQfhRNH/ZBV3CBUC
+   5VVbXmIW1iv1aLhiQ5YC+3gZ5cLxYUXBTmhhwj43GAnyT05b4SBeALnZt
+   DrAsB1ViTZ1MYv9IvUNB/9HM6vh8/pj5JEWTDBH1zjl1RNswPIqfAJZIi
+   A==;
+X-CSE-ConnectionGUID: YpQBuSnXTbe6CoChSGsUvw==
+X-CSE-MsgGUID: p6VvE/e0SkayK8ja0/eGpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="88951185"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="88951185"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 07:02:48 -0700
+X-CSE-ConnectionGUID: UhWqvqaeSwSjNBIJklvgNg==
+X-CSE-MsgGUID: F1ys3m5BRnK/OyVkga8VdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="299603472"
+Received: from lkp-server01.sh.intel.com (HELO bfac249b2189) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 03 Sep 2026 07:02:45 -0700
+Received: from kbuild by bfac249b2189 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x281a-000000004tK-0tHD;
+	Thu, 03 Sep 2026 14:02:42 +0000
+Date: Thu, 3 Sep 2026 22:01:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Elad Nachman <enachman@marvell.com>
+Cc: oe-kbuild-all@lists.linux.dev, Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: prestera: avoid overreading a short firmware tail
+Message-ID: <202609032140.39rhcpus-lkp@intel.com>
+References: <20260830142404.37663-1-pengpeng@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <88d25f82f5261c0a7f12d6e82988bda387f8180c656cd163eec959d327f48769@mail.kernel.org>
-In-Reply-To: <20260903125306.299943-1-jiayuan.chen@linux.dev>
-References: <20260903125306.299943-1-jiayuan.chen@linux.dev>
-Subject: Re: [PATCH bpf 1/2] bpf: Fix out-of-bounds read of sk_protocol in bpf_sock_destroy()
-From: bot+bpf-ci@kernel.org
-To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
-Cc: jiayuan.chen@linux.dev,xmei5@asu.edu,daniel@iogearbox.net,john.fastabend@gmail.com,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,shuah@kernel.org,aditi.ghag@isovalent.com,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Thu,  3 Sep 2026 14:01:59 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260830142404.37663-1-pengpeng@iscas.ac.cn>
 
---===============1260188190606007013==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Pengpeng,
 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 61940e7535523..1bbb72138ac64 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -12912,8 +12912,8 @@ __bpf_kfunc_start_defs();
->   * @sock: Pointer to socket to be destroyed
->   *
->   * Return:
-> - * On error, may return EPROTONOSUPPORT, EINVAL.
-> - * EPROTONOSUPPORT if protocol specific destroy handler is not supported.
-> + * On error, may return EOPNOTSUPP, EINVAL.
-> + * EOPNOTSUPP if protocol specific destroy handler is not supported.
->   * 0 otherwise
+kernel test robot noticed the following build errors:
 
-The EPROTONOSUPPORT -> EOPNOTSUPP correction is right, but the rewritten
-error list is incomplete. tcp_abort() returns -ENOENT when the socket is
-already closed (net/ipv4/tcp.c, around the sk_state == TCP_CLOSE check):
+[auto build test ERROR on 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72]
 
-    /* Avoid closing the same socket twice. */
-    if (sk->sk_state == TCP_CLOSE) {
-        if (!has_current_bpf_ctx())
-            release_sock(sk);
-        return -ENOENT;
-    }
+url:    https://github.com/intel-lab-lkp/linux/commits/Pengpeng-Hou/net-prestera-avoid-overreading-a-short-firmware-tail/20260830-222403
+base:   08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
+patch link:    https://lore.kernel.org/r/20260830142404.37663-1-pengpeng%40iscas.ac.cn
+patch subject: [PATCH] net: prestera: avoid overreading a short firmware tail
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20260903/202609032140.39rhcpus-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260903/202609032140.39rhcpus-lkp@intel.com/reproduce)
 
-That error propagates through sk->sk_prot->diag_destroy(sk, ECONNABORTED)
-and is reachable from a BPF iterator (destroying a sock the iterator
-already destroyed, or one closed concurrently). In contrast, EINVAL is only
-reachable through the narrower tcp_abort_override() path for MPTCP listener
-subflows.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609032140.39rhcpus-lkp@intel.com/
 
-Should ENOENT be added to the list?
+All errors (new ones prefixed by >>):
 
-> @@ -12925,8 +12925,12 @@ __bpf_kfunc int bpf_sock_destroy(struct sock_common *sock)
->  	 * Supporting protocols will need to acquire sock lock in the BPF context
->  	 * prior to invoking this kfunc.
->  	 */
-> -	if (!sk->sk_prot->diag_destroy || (sk->sk_protocol != IPPROTO_TCP &&
-> -					   sk->sk_protocol != IPPROTO_UDP))
-> +	if (!sk->sk_prot->diag_destroy)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (sk_fullsock(sk) &&
-> +	    sk->sk_protocol != IPPROTO_TCP &&
-> +	    sk->sk_protocol != IPPROTO_UDP)
->  		return -EOPNOTSUPP;
->
->  	return sk->sk_prot->diag_destroy(sk, ECONNABORTED);
+   In file included from include/linux/io.h:12,
+                    from include/linux/iopoll.h:14,
+                    from drivers/net/ethernet/marvell/prestera/prestera_pci.c:8:
+   drivers/net/ethernet/marvell/prestera/prestera_pci.c: In function 'prestera_ldr_send':
+>> drivers/net/ethernet/marvell/prestera/prestera_pci.c:603:32: error: implicit declaration of function 'get_unaligned'; did you mean 'get_cmdline'? [-Wimplicit-function-declaration]
+     603 |                 writel_relaxed(get_unaligned((u32 *)(buf + i)),
+         |                                ^~~~~~~~~~~~~
+   arch/x86/include/asm/io.h:88:39: note: in definition of macro 'writel_relaxed'
+      88 | #define writel_relaxed(v, a) __writel(v, a)
+         |                                       ^
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+vim +603 drivers/net/ethernet/marvell/prestera/prestera_pci.c
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33760037892
---===============1260188190606007013==--
+   589	
+   590	static int prestera_ldr_send(struct prestera_fw *fw, const u8 *buf, size_t len)
+   591	{
+   592		size_t write_len = ALIGN(len, sizeof(u32));
+   593		size_t i;
+   594		int err;
+   595	
+   596		err = prestera_ldr_wait_buf(fw, write_len);
+   597		if (err) {
+   598			dev_err(fw->dev.dev, "failed wait for sending firmware\n");
+   599			return err;
+   600		}
+   601	
+   602		for (i = 0; i + sizeof(u32) <= len; i += sizeof(u32)) {
+ > 603			writel_relaxed(get_unaligned((u32 *)(buf + i)),
+   604				       prestera_ldr_wr_ptr(fw));
+   605			prestera_ldr_wr_idx_move(fw, 4);
+   606		}
+   607		if (i < len) {
+   608			u32 last = 0;
+   609	
+   610			memcpy(&last, buf + i, len - i);
+   611			writel_relaxed(last, prestera_ldr_wr_ptr(fw));
+   612			prestera_ldr_wr_idx_move(fw, 4);
+   613		}
+   614	
+   615		prestera_ldr_wr_idx_commit(fw);
+   616		return 0;
+   617	}
+   618	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
