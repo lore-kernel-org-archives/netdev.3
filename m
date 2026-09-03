@@ -1,306 +1,105 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAC34AE139
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 14:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788444052; cv=pass; b=a/jeB0QIFV+P9W/p4Bw7aeqi3k31GjDZey0GYgptXYYq6j6+KyWZQFmeMvfsSj1MAHZC/N78RsYHlUx3jgapQI/JVRjg34KZqgTHeOFdfGs9HoIJrl0b23VttoEojvj/wGdfBsK3ID4hJDFuvhuNPpsyDhds0tGy9/AgcdZHR6A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788444052; c=relaxed/simple;
-	bh=d+nV/y5gzHZQbqpaWid3gzG6rgbMOVarLaEROjaG5PM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dVChHPrBNqAdy8XCMOcmc6MUWdJ889CBFzaMjwzpvXVxz9ZMMjJ0m2XY+9hWPFELZCBspQfOyFE4350tPmBtshYqnSYpoJulJYqvdOnLmX72Xidrr074k+kNEgE9Tt5slzmqOeCcw9uRk+GqZ9w0vxfvAM5bVUt4uO1DHfi90vc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r8p5L1OD; arc=pass smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C214B203A;
+	Thu,  3 Sep 2026 14:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788444133; cv=none; b=uBu86gTwa9ATTgvn3JGr2yFN6irkhoKoIL4bOwcMPTQyINCVdZioQOkt05BoCTWlWmJLlBEsMDH1wuI8oDmXw0gNY0ySckUZDmAZhlU48SPrBH2BmRffW30K2FpvIteoK2WCrjGGGAuYIAnJv57vFCWMcLESyXRg8QLQ2CDIUxo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788444133; c=relaxed/simple;
+	bh=Mpm+2gSk0KcHCAC3FrfW80ns2FvddQM7L50oGYP+CP8=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=tG6m38IMvCz70BqZ7FMqbZjhw7Wi0dU56J6luoGBf5L0jExV1NbA8OsU97jx5NyXf//mv0ZDVj6uJtfAW0v2gLa4tAqB2y1Xvnuz7En3wF9Vph+O42Xj6QPx0e9XXZzPGjmZaJePPr2RKSN8YCq/cZVgFHJzJwo1bKzS7h7+Fe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGOi3nCD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r8p5L1OD"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84faf0fa17eso2659253b3a.2
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 07:00:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788444039; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hq8Q3EobCZFcheO8zoFpGpaDH/Z3l29VNSAG9aqhOlY/vlAwvI/QIMukr8NyCek+/T
-         iYhe3tAzdf0yhIzbD7cQraFo2F31q+H6jM+fvTmDtk1Y2jp52hU2SswHNHo+64gajGcZ
-         2NUbSlEXv4hiGuDvPNmKdFtzeRC33Ff/S3IA3nmC9cP4q//9QFg4v28dMQmBT+TK3X2P
-         Y1noSxp/Ek2JnPuIq5A0vGKW3uK4Il0sP3VwFPvGCa/GOj07KPNMRiDhEHYGKaidaQW0
-         JBIgzbpEUsecApTaIBniSWzfTfhFY37Lkil03rbE4AI98KQy9muNyNC/QeFXFWFywaSv
-         vW2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EZlAVxnc61vhxXdUOKLatLp9Jvhf8iA3Pl5Y4/hX8c0=;
-        fh=iAgYwaxi5FwNzG8HcVkdrD8Y9X5M+A/nOkx0G2Fiyto=;
-        b=bV/bW6wHdmhg275adfyEOASlA+NggfIyz2yBND24zC76Yr1Huf1STXETPoqefirBYV
-         /IZdD7oayHXdPBTP8y6d78UsqBQSb1y2ys0tHIAZ85e9zLSDIHTG93Lqa8Hfmf5Y127x
-         jTjLv2hympwyK92ufM3PUntEiOUbalOsipbXzAYs6cucjOtEAauWvX4WdGcBShNfIr4J
-         6SGQ48k3wE86UhqevEYCza/gSx+fVaTaQ43aFQQCQ4ECh3b9Zo9REtiqhDIv+HmLEzqy
-         uMSPK32BLa5MggYVX9zbYgA47NgZKUoyRM+2WipU68rfVyX4zMcziEIzNr7f9I349CBv
-         0pHw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788444039; x=1789048839; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EZlAVxnc61vhxXdUOKLatLp9Jvhf8iA3Pl5Y4/hX8c0=;
-        b=r8p5L1OD1zg2BEvoWoFE6FQelMcJX4eTXDhsmg8c4+zW9SFVHqTMj460yDYBK9546Y
-         EZOVuowRo6oSWMcJBSxiIIrKdUwDgRMxQfVK83+v54CGvvmjSBee4yUsW+WwNtNRIO7l
-         didwu6gogazquktaeH4IHhe2udrlidgvPZ4yAzu+wK8GVNauEe6DAxF1LMPR0r/JRD8L
-         6rhaLKwktFgSGat8Lf701vYST43eJeh2XcL4oqHeFtc9T28ErP5jWV61jrElGdhIxI5p
-         XdJVaWqO82yPTVsHPf2cuT0IEiwhh4P/NqziedbtcN7XhfbC3E0nCCMqNDSlvZOfUKxo
-         fF9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788444039; x=1789048839;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EZlAVxnc61vhxXdUOKLatLp9Jvhf8iA3Pl5Y4/hX8c0=;
-        b=EmhTZbTw97IhwRuE0p4sbrVYeD0b/zBebGDhfrvezSDcermGtWt5kDQmFELlYTDhhk
-         XEJGBaVNx+ObY3GQJruJKaWrVQ2VFd0EywiCcXTLdUg1Ln1ixIgEl5azwTt8aR/vg+HV
-         qwnCpsplOE8muH7l9J+1oj1oHm+ZfrSpBs8L+2dn88itLMa9L18VUsnfubh46v7LZ+4+
-         SpPsApOPvpifMzP0b0++MGUfjssmw0NneAb5mdrBZWMXRwUkVDOVuyOsHpOTW+yYt3jc
-         ibbDSG8T2i0qgKsdBmVlMxTRJKxP3479HSKoPO3t+aFlIlGNisag1oeQ6iHc4kKHjOOH
-         t8ew==
-X-Forwarded-Encrypted: i=1; AKwUvBysimyRv0ChlTpyAOvwFIYM5io7b+Oy3BLPJHmtOe+by/dMysrRZJrBwVxp09ArnMmw8REiByA=@vger.kernel.org
-X-Gm-Message-State: AFuF++nrzEZUlH9dxnqBUg4zjsLqu0ZBVzHxPqRWDueOdA2niZmTb7aX
-	ex7vZbh1RED+CD8oa7bSYE25nOVQdzvQ3bophjVMuJ2jpi6WzybnGCiRj/Z7etRSctcr6YfPnNk
-	C+8UFQa5dOsTHQOzlpsIQJBN+2R2OZt4=
-X-Gm-Gg: AYBFou2jmjR90+tiy/Chl8a7d+UovMFGwUwrrLNE8TdZZojYjgooI5EBgo/ei0uV+Y6
-	XqbzQPXmK/b5hZcWZwgjAMLgwRk3aoxam23gZzfJNgpHDctF/vy9POlRCj+RtmQ4Ey7Vf/l8ppX
-	Z5KUj3cUGk5O8atv06L+Qvp58UXwHaW7ja95RI6unQjPYEnsmaZRen7L6NGx4TuJJ12IgHX2gHO
-	lEkr+NSDqAdPX11L4YhhB6qZlA8KgaJu3b0XJKa7yOlYjV/BRTZgRPDEvhfMSOUxorZA5M21VE4
-	7RWAJHgfWGXfmGjIWRmq0awDBtybFkye82XuMg3vrPlGZMlu/HVz8RUGr8jhoitrPsxpSeE9U01
-	sFvePcKgFzKcnW9QBzOd/9SLJSaPZrmw+/gywgeZfNiWB
-X-Received: by 2002:a05:6a00:88a:b0:848:56ff:6ced with SMTP id
- d2e1a72fcca58-85ed7d20475mr15597002b3a.8.1788444038911; Thu, 03 Sep 2026
- 07:00:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGOi3nCD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9A21F00A3A;
+	Thu,  3 Sep 2026 14:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788444120;
+	bh=+n84nme5mcwj2ZATP+IqzOi+xKkQiR6pMmo4Y0hPmXo=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=UGOi3nCDqkbIHaaq45hucr5sZ5dnkszL9YOvEeOPDY8Qr4L9f2WzGbCsBRDzz0Dki
+	 O1wdKekGPBiG+hcShw1I2wL1Y4w5yrjGe1PaBgJ+tP8iduokPb4j+Ce+Ho8Wmo9GAl
+	 g1SBKhxm6Ai2qmFwFUEjNUG993c6yzfRvOFU7VbAYUcGbLyxADXkCv6wEC/XZ50Op9
+	 UEqPQM0TA2lG1l0AEkjhDg5gJakiP4vgtZxUJYvSJWj2c8vNJ5fn3+Tbdx+E5Xtl1y
+	 aIwcNv0nBU+NlYgZCzESR1aWV+uMqtbLotpuRUcmJdoZ9itytCbuKcjh4mFHiLEzFC
+	 908ZttKaJpjYA==
+Content-Type: multipart/mixed; boundary="===============1260188190606007013=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6a7d8773.c5ad36c8.12f49d.002e.GAE@google.com> <68cb4941-3668-44f1-a889-6b2f023b2a08@h-partners.com>
- <CADvbK_eY4S1HbdNHuNq9b=Va-TA_6rNFvnCvtOUZ0sF-AWN67A@mail.gmail.com>
- <20260901153524.3e92df3a@pumpkin> <CADvbK_esKpvPWK0xipKeiDr6KDiAL2_uPOhrREOMMVjJ_ndK7A@mail.gmail.com>
- <20260901224645.7c5bd2e6@pumpkin> <057c057f-be11-4bf7-9403-f454bb2864c9@h-partners.com>
-In-Reply-To: <057c057f-be11-4bf7-9403-f454bb2864c9@h-partners.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 3 Sep 2026 10:00:27 -0400
-X-Gm-Features: AcwNN1XUrJ_FTmvwVEbrN9-ZuqD8a_Bm6_RE7fP6GlRGhmJiGfJcoIWsRw_q3mI
-Message-ID: <CADvbK_eBx0AicxxWXE1ZOqeNUJtU2YPgTynthBkhq3_1jks9iw@mail.gmail.com>
-Subject: Re: [syzbot] [sctp?] WARNING: refcount bug in sctp_transport_put (6)
-To: xietangxin <xietangxin@h-partners.com>
-Cc: David Laight <david.laight.linux@gmail.com>, 
-	syzbot+80dfcb1a2235b3efc877@syzkaller.appspotmail.com, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Simon Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>, marcelo.leitner@gmail.com, 
-	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, gaoxingwang <gaoxingwang1@huawei.com>, 
-	huyizhen2@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <88d25f82f5261c0a7f12d6e82988bda387f8180c656cd163eec959d327f48769@mail.kernel.org>
+In-Reply-To: <20260903125306.299943-1-jiayuan.chen@linux.dev>
+References: <20260903125306.299943-1-jiayuan.chen@linux.dev>
+Subject: Re: [PATCH bpf 1/2] bpf: Fix out-of-bounds read of sk_protocol in bpf_sock_destroy()
+From: bot+bpf-ci@kernel.org
+To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,xmei5@asu.edu,daniel@iogearbox.net,john.fastabend@gmail.com,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,shuah@kernel.org,aditi.ghag@isovalent.com,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu,  3 Sep 2026 14:01:59 +0000 (UTC)
 
-On Wed, Sep 2, 2026 at 11:23=E2=80=AFPM xietangxin <xietangxin@h-partners.c=
-om> wrote:
+--===============1260188190606007013==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 61940e7535523..1bbb72138ac64 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -12912,8 +12912,8 @@ __bpf_kfunc_start_defs();
+>   * @sock: Pointer to socket to be destroyed
+>   *
+>   * Return:
+> - * On error, may return EPROTONOSUPPORT, EINVAL.
+> - * EPROTONOSUPPORT if protocol specific destroy handler is not supported.
+> + * On error, may return EOPNOTSUPP, EINVAL.
+> + * EOPNOTSUPP if protocol specific destroy handler is not supported.
+>   * 0 otherwise
+
+The EPROTONOSUPPORT -> EOPNOTSUPP correction is right, but the rewritten
+error list is incomplete. tcp_abort() returns -ENOENT when the socket is
+already closed (net/ipv4/tcp.c, around the sk_state == TCP_CLOSE check):
+
+    /* Avoid closing the same socket twice. */
+    if (sk->sk_state == TCP_CLOSE) {
+        if (!has_current_bpf_ctx())
+            release_sock(sk);
+        return -ENOENT;
+    }
+
+That error propagates through sk->sk_prot->diag_destroy(sk, ECONNABORTED)
+and is reachable from a BPF iterator (destroying a sock the iterator
+already destroyed, or one closed concurrently). In contrast, EINVAL is only
+reachable through the narrower tcp_abort_override() path for MPTCP listener
+subflows.
+
+Should ENOENT be added to the list?
+
+> @@ -12925,8 +12925,12 @@ __bpf_kfunc int bpf_sock_destroy(struct sock_common *sock)
+>  	 * Supporting protocols will need to acquire sock lock in the BPF context
+>  	 * prior to invoking this kfunc.
+>  	 */
+> -	if (!sk->sk_prot->diag_destroy || (sk->sk_protocol != IPPROTO_TCP &&
+> -					   sk->sk_protocol != IPPROTO_UDP))
+> +	if (!sk->sk_prot->diag_destroy)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (sk_fullsock(sk) &&
+> +	    sk->sk_protocol != IPPROTO_TCP &&
+> +	    sk->sk_protocol != IPPROTO_UDP)
+>  		return -EOPNOTSUPP;
 >
->
->
-> On 9/2/2026 5:46 AM, David Laight wrote:
-> > On Tue, 1 Sep 2026 11:06:31 -0400
-> > Xin Long <lucien.xin@gmail.com> wrote:
-> >
-> >> On Tue, Sep 1, 2026 at 10:35=E2=80=AFAM David Laight
-> >> <david.laight.linux@gmail.com> wrote:
-> >>>
-> >>> On Tue, 1 Sep 2026 09:45:42 -0400
-> >>> Xin Long <lucien.xin@gmail.com> wrote:
-> >>>
-> >>>> On Mon, Aug 31, 2026 at 11:47=E2=80=AFPM xietangxin <xietangxin@h-pa=
-rtners.com> wrote:
-> >>>>>
-> >>>>> Hi,
-> >>>>>
-> >>>>> I have analyzed this issue and successfully reproduced locally.
-> >>>>> The race occurs between the timer callback (`sctp_generate_heartbea=
-t_event`) and
-> >>>>> the transport cleanup path (`sctp_transport_free`):
-> >>>>>
-> >>>>> Task 1(Timer Softirq)               Task 2(sctp_transport_free)
-> >>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D              =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>>>> sctp_generate_heartbeat_event()
-> >>>>>   refcnt =3D 2
-> >>>>>
-> >>>>>   bh_lock_sock(sk)
-> >>>>>   sock_owned_by_user(sk)
-> >>>>>   mod_timer(&hb_timer) -> returns 0
-> >>>>>                                           sctp_transport_free()
-> >>>>>                                             transport->dead =3D 1
-> >>>>>                                             del_timer(&hb_timer) ->=
- returns 1!
-> >>>>>                                               sctp_transport_put() =
-(2 -> 1)
-> >>>>>                                             sctp_transport_put() (1=
- -> 0)
-> >>>>>                                               sctp_transport_destro=
-y()
-> >>>>>
-> >>>>>   sctp_transport_hold()
-> >>>>>     -> refcnt is 0, increment fails
-> >>>>
-> >>>> This should not be 0, as the transport must hold a refcnt to start t=
-he
-> >>>> hb_timer.
-> >>>
-> >>> Isn't there one hold sctp_generate_heartbeat_event() and a second for
-> >>> whatever 'task 2' is doing.
-> >> Right,
-> >>
-> >>> When hb_timer is started it is given another hold (does it actually n=
-eed one??).
-> >> You mean mod_timer() in sctp_generate_heartbeat_event()?  Yes, as it w=
-ill
-> >> release the last one in out_unlock, it must hold a new one.
-> >
-> > But can that ever be the last 'hold' that actually calls sctp_transport=
-_destroy().
-Sorry, by =E2=80=9Crelease the last one=E2=80=9D above, I meant releasing t=
-he previous
-=E2=80=9Chold.=E2=80=9D
+>  	return sk->sk_prot->diag_destroy(sk, ECONNABORTED);
 
-If the hold succeeds after mod_timer(), it can never be the last/final hold
-that calls sctp_transport_destroy().
 
-However, in the current code, there's a window between mod_timer() and
-sctp_transport_hold() at [1], sctp_transport_destroy() can be called
-to  delete the newly enqueued timer and release the previous hold.
-The hold at [2] for the newly enqueuing has not been taken yet.
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-  if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20))) {
-          mdelay(1);  /* [1] */
-          sctp_transport_hold(transport); /* [2] */
-  }
-
-> > It the timer is always deleted (as task 2 above) it doesn't need one it=
-self.
-> > Might need to be del_timer_sync() so that it waits for the completion f=
-unction
-> > to terminate.
-> >
-Unfortunately, del_timer_sync() can only be used in sleepable contexts.
-
-> >>
-> >>> So when hb_timer is deleted it's hold is removed.
-> >>> But the del_timer() is happening before the the extra hold is obtaine=
-d.
-> >>>
-> >> Ahh, I can see the race now.
-> >>
-> >> I remember you mentioned holding it before mod_reduce() in a previous
-> >> patch, maybe it will work here, like:
-> >>
-> >>                 sctp_transport_hold(transport);
-> >>                 if (mod_timer(&transport->hb_timer, jiffies + (HZ/20))=
-)
-> >>                         sctp_transport_put(transport);
-> >>
-> >> Does it make sense?
-> >
-> > That should close the timing window, but is probably inefficient.
-> > Rather depends on how often the 'put' ends up being done.
-> >
-Each timer enqueue must have a corresponding hold. As long as we take the
-hold before enqueueing the timer, there is no race.
-
-> > David
-> >
-> >>
-> >> Thanks.
-> >>
-> >>> The RHS (task 2) would need to hold bh_lock_sock().
-> >>>
-> >>> Try giving sctp_generate_heartbeat_event() two holds.
-> >>>
-> >>> David
-> >>>
-> >>>
-> >>>>
-> >>>> Also, the delay below is under bh_lock_sock(), so it should not be t=
-he
-> >>>> real cause of the issue.
-> >>>>
-> >>>> Could you share the PoC for this issue?
-> >>>>
-> >>>> Thanks.
-> >>>>
-> >>>>>   out_unlock:
-> >>>>>     sctp_transport_put() (0 -> -1)
-> >>>>>     -> refcount underflow warning!
-> >>>>>
-> >>>>>
-> >>>>>
-> >>>>> Adding a small delay  after `mod_timer()` increases the reproductio=
-n rate:
-> >>>>>
-> >>>>> --- a/net/sctp/sm_sideeffect.c
-> >>>>> +++ b/net/sctp/sm_sideeffect.c
-> >>>>> @@ -373,8 +373,10 @@ void sctp_generate_heartbeat_event(struct time=
-r_list *t)
-> >>>>>                 pr_debug("%s: sock is busy\n", __func__);
-> >>>>>
-> >>>>>                 /* Try again later.  */
-> >>>>> -               if (!mod_timer(&transport->hb_timer, jiffies + (HZ/=
-20)))
-> >>>>> +               if (!mod_timer(&transport->hb_timer, jiffies + (HZ/=
-20))) {
-> >>>>> +                       mdelay(1);
-> >>>>>                         sctp_transport_hold(transport);
-> >>>>> +               }
-> >>>>>                 goto out_unlock;
-> >>>>>         }
-> >>>>>
-> >>>>> Any feedback or guidance would be greatly appreciated.
-> >>>>>
-> >>>>> --
-> >>>>> Best regards,
-> >>>>> Tangxin Xie
-> >>>>>
-> >>>>
-> >>>
-> >>
-> >
->
-> Hi Xin, David,
->
-> I have a syzkaller execution log that can trigger this issue.
-> Please let me know if there is anything else I can do.
-
-Hi, Tangxin,
-
-Can you try if the change below will fix the race?
-(You may add mdelay() back for reproducing)
-
-diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-index 94716406d602..c0fddd5e8097 100644
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -378,8 +378,9 @@ void sctp_generate_heartbeat_event(struct timer_list *t=
-)
-                pr_debug("%s: sock is busy\n", __func__);
-
-                /* Try again later.  */
--               if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
--                       sctp_transport_hold(transport);
-+               sctp_transport_hold(transport);
-+               if (mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
-+                       sctp_transport_put(transport);
-                goto out_unlock;
-        }
-
-Thanks.
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/33760037892
+--===============1260188190606007013==--
