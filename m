@@ -1,47 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B158A348C47;
-	Thu,  3 Sep 2026 23:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672E53328E6;
+	Thu,  3 Sep 2026 23:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788477623; cv=none; b=RbYvoOcdrUWXkWF4iNGb6++JKaFo6A+PwsEU80yiZSl229ECbYQXJTWEaDpP30xoRKxpHAqluzgLXL2ppYar9tWzJrnCeM2c2qAZgwign7zZHGNoPHfG798oC47ekhCualEm43bACGAaj0MTNKtHlu9vaNq9uJyXx7NdxBI6d/I=
+	t=1788477754; cv=none; b=iJbBFRClXZ5SwvLf6I4OcdyxARplMulbhXkM5hOVsjHv+FDStmvhZyF6l2SDE+arjsaStF9jskQf1C77IVKGyyj4kNDZalhd+7ij/pyFLRDV8YmDG0xmt2gzCnNY3692cw3CtAtQLlnflQJ68k/LWtPcDKa5qnDEs11fWC5WIvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788477623; c=relaxed/simple;
-	bh=S59SNuSACLdjyM+AU9w7c4CUYfxVPHHN0q6M5yk4FM0=;
+	s=arc-20240116; t=1788477754; c=relaxed/simple;
+	bh=U5x9qaygFInR0b+wz8KfAjhmfGyc0PwTUIUcxduux9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mNWo//DUMocMT9sBmAavQC/PsyxCm/A2doB7shSYwrKSBLoYBgPimc67IK6hrN0F22yb24OiW0s9Bc3nm2r8YrIPMOTOcq3pqqlNV+c50JkNOArcWthWp+RGHwjXC8LBkTiYRZwqRd0uBTeSVD9aU4ykUsgUABkXNOOSH8mpZuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbmS68SM; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=alCifv2Vx2+UuUHdgmJMUc96tNlCAb3+rfOkk61oXVbz/Q2uXRQvyNB1icEPepwCaMcAWWtcpbwxf3BduDXV4HWlNRfRQUR9MSJYIpLu2nlWUq8yNe3vwxJYASj/1hmJ7LdOP6tnU9nJMVPsi/sscU3C4N22uONs1sPgl91j2dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQoo80y8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbmS68SM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7A81F000E9;
-	Thu,  3 Sep 2026 23:20:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQoo80y8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E0C1F000E9;
+	Thu,  3 Sep 2026 23:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788477622;
-	bh=Jd2d3+3jAhjlIWPxn5NVZwiUzcNZ9cJ6/qoOYbHQKEk=;
+	s=k20260515; t=1788477753;
+	bh=FvNG3LS8nPKzshGEM3d/JxEgqTvJYa+h83LktEUOD94=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CbmS68SMAunuOIZQWmpFtxCQk7utUuViAFHuUe6GjOYQeTjKYbh3yM5O5b9kOTSPQ
-	 ifmG3Nrl9vmCoLVnHdRrQFpgCED41Toeqs5/M0737rmTdoDKiACzGWzRs23ETvTmjD
-	 W8Ydj9CccjusxqmdJaUoQvrawqm1i8R2sHUPbmg0vp9LGdEMZ42r00UjL3b8H5EyBD
-	 wEdMRK7OgDO+NfMseCQCA26acf9n2B/gDTD/VypyqG+PWIGePX8+VJkVPVLH7/DD7x
-	 MseYkufsPHfkSdnaQSKRvNHGn5E2qiNnFyVPpYi0hffmbQ61y7FIiw7idmYd4fQclf
-	 p93cNSDI3k3jA==
-Date: Thu, 3 Sep 2026 16:20:20 -0700
+	b=aQoo80y82vc9TxxsFDQBriTEWIeLzd/Ryt+8HOXF4c5N0mBRuno3eHgTx7IoemawA
+	 noVHuzBJi6Bx2nfUWaG14UcVKFQaq9y/eqe/rjd34FoFw2MMOrJvo8BSsm1j7q0hLs
+	 9CA2dLz+dLTpLDPDf+eYvE0Xl1ZQYdCUmXuYU6iYLHeEoEm1U5QsTM5PhOski2p69k
+	 DWBBHb4s9NYB2QPKJAI4z2HxxhpNBnyMIZFuuzSC+Jhpr8hmh0adNtFaUz0s/XdbE8
+	 awv5N3RGCVdrrWW8iiQXLkKPXmmDxAviGBZERYD1BQ8mkwiesyst23I3rX8Qtl6gNQ
+	 03sRNauHVabfQ==
+Date: Thu, 3 Sep 2026 16:22:32 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: patchwork-bot+netdevbpf@kernel.org, Mike Rapoport <rppt@kernel.org>,
- 3chas3@gmail.com, duncan.sands@free.fr, gregkh@linuxfoundation.org,
- akpm@linux-foundation.org, david@kernel.org, willy@infradead.org,
- vbabka@kernel.org, accessrunner-general@lists.sourceforge.net,
- linux-atm-general@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/4] USB: replace page allocator calls with kmalloc()
-Message-ID: <20260903162020.323f6cdd@kernel.org>
-In-Reply-To: <aplR8tmzndmg4kfq@hovoldconsulting.com>
-References: <20260830-usb-v1-0-aa349c302246@kernel.org>
-	<178840081114.3041656.13596134068099743678.git-patchwork-notify@kernel.org>
-	<apkRyoCr2dNI0bNS@hovoldconsulting.com>
-	<aplR8tmzndmg4kfq@hovoldconsulting.com>
+To: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ "andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "linux@armlinux.org.uk"
+ <linux@armlinux.org.uk>, Wei Fang <wei.fang@nxp.com>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 net-next 00/15] net: enetc: SR-IOV improvements and
+ ENETC v4 VF support
+Message-ID: <20260903162232.791e4c43@kernel.org>
+In-Reply-To: <GV2PR04MB11739E1618294F313E989A7ED88B62@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
+	<20260902195613.1e18b44c@kernel.org>
+	<GV2PR04MB11739E1618294F313E989A7ED88B62@GV2PR04MB11739.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,22 +54,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 3 Sep 2026 12:54:42 +0200 Johan Hovold wrote:
-> On Thu, Sep 03, 2026 at 08:20:58AM +0200, Johan Hovold wrote:
-> > > Here is the summary with links:
-> > >   - [1/4] USB: usbfs: replace __get_free_page() with kmalloc()
-> > >     (no matching commit)
-> > >   - [2/4] USB: cxacru: replace __get_free_page() with kmalloc()
-> > >     https://git.kernel.org/netdev/net-next/c/a3b4826138d4
-> > >   - [3/4] USB: speedtch: replace __get_free_page() with kmalloc()
-> > >     https://git.kernel.org/netdev/net-next/c/534b18813974
-> > >   - [4/4] USB: serial: wwan: replace __get_free_page() with kmalloc()
-> > >     (no matching commit)  
+On Thu, 3 Sep 2026 03:24:24 +0000 Wei Fang (OSS) wrote:
+> > On Mon, 31 Aug 2026 10:54:26 +0800 wei.fang@oss.nxp.com wrote:  
+> > > This series enhances SR-IOV support for ENETC v1 and adds VF support
+> > > for ENETC v4. For ENETC v1, the trusted VF management and per-VF
+> > > configuration query via ndo_get_vf_config() are added. For ENETC v4,
+> > > preliminary VF support is introduced for i.MX94 and i.MX95 platforms.  
 > > 
-> > Why were these USB patches applies to net-next?  
+> > You only replied to some of the AI feedback, should we assume that
+> > feedback on patches 12/13/14 is legit and expect v4?  
 > 
-> I see now that it was only the ATM ones.
+> I have not seen any other feedback on patches 12/13/14. Except for a
+> pre-existing issue on patch 14, but I do not think the issue needs to be
+> addressed.
 > 
-> Sorry about the noise.
+> Sashiko review link: https://sashiko.dev/#/patchset/20260831025441.635045-1-wei.fang%40oss.nxp.com
 
-Sorry, should have sent a note.
+Please TAL at:
+
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831025441.635045-7-wei.fang@oss.nxp.com
