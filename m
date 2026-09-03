@@ -1,40 +1,40 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951D1443E36;
-	Thu,  3 Sep 2026 08:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D543553D;
+	Thu,  3 Sep 2026 08:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788424376; cv=none; b=mYVXS37bmksGDhGTZePL+yKLCqVnvrZh5nAGqtmlTcMhHH/6hMje6bl642jh8bCyK/ry7Yj6O4H8TQg6HrBZdPYS6i3nsM5ZsCJ5pJcMRPUkAE3XP4EUgil88IGgP4Bo42anESxtFq9kRrqa01hjvOSAiifh5Nds57mJFETsrJI=
+	t=1788424481; cv=none; b=BalP56imyYc7mfg2UGV8akRr1+yfZLfCSzS5CjZ3MClgieuUN1OCcXYxVae08bpjlEOG/4Yz/Mer525gY5Q+Tvuo1gerIfrJpjwp7JLhXUuCk3iHnfimtTT+YTe4RHxWBiH0VZg62fVZV8l2YQ0bnuX+AvaGjF+o8qs1NuAfLdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788424376; c=relaxed/simple;
-	bh=706c7XlPLXsRsRqbTT2qHJpv1DQVqFBCKVgS9F9Rtrs=;
+	s=arc-20240116; t=1788424481; c=relaxed/simple;
+	bh=ucKEN6+uXGip22JN66gcFyiu0AM76YtKZqbRSJhNY2Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OAOwu0iqJbXVGrI2wBgsKDSPAQ0MdD25Q/Qy9cIJCf+OEEZYYLzncvE91toJ9S5Vd1m4flmki5TeioDq92a/iUpJfWg7St9FsBDSdEu9hN7KqbvdtdgHbirfjz906+PoF0jIbnRu8+wAn8UT72gJSurhIxltXOLCw5prR81vOqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xmDQLfyS; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:Content-Type; b=JZ+cfQ2rY8uE9bOnjL7AYr6+pJCsOEpLz+Sh2dmuSx6cYaB656MrILmEV0TYt+uslBa3q/bFvnIabWTS6q768+lOqFnE6QOMIFiiQblezsa/C3r/QdjjaTPztot+ESgD14W6nKLTZj6QKjg5/5NiVwBBBB30LqyggkX8DyR3AzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BgoM3hq2; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xmDQLfyS"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BgoM3hq2"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id ED51E4E414E3;
-	Thu,  3 Sep 2026 08:32:46 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0E0491A195F;
+	Thu,  3 Sep 2026 08:34:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BCFBE602B8;
-	Thu,  3 Sep 2026 08:32:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A82EF11C791C9;
-	Thu,  3 Sep 2026 10:32:35 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D530B602B8;
+	Thu,  3 Sep 2026 08:34:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2BB8B11C791C9;
+	Thu,  3 Sep 2026 10:34:26 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788424364; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1788424472; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=IyZA+ecio8dgqAefqnzmsKi9pbcS8BSqqmIH/9UMq/w=;
-	b=xmDQLfySV8a8MBc++crCZBbfP5E4IQF3AUhjAkH7pJHYZhs81ZtmJmArLA4/0O8f+u9NNp
-	FWpMxYVhjvG/sV7K8d8kqYx9eRtJpUzkQjUsZaZDvImEOA8jVPrp3J+09KHvidWEIzThxF
-	o1GzTpj7Pkbqd7EhjL1AlKn7+MAx6xryY0chcP9ouGvAQoS1UINYTI0NHO/ME5ZpDlAYWh
-	NkzB+AEvQrZvH16vItAtNer7BMLl6v5PVRRsoVuS22DK7K+Ldd0GQPFv3uTl3LlJViHMv8
-	FVNgZAI0stK1y6Z4MGFkbsbDiuEJ+BxV2d/vgr1Bg3hCmBF3LstSmarP78PpuQ==
-Message-ID: <0dec5462-f6d5-4ef9-9d02-5fdf7f3090a0@bootlin.com>
-Date: Thu, 3 Sep 2026 10:32:34 +0200
+	bh=xhPvOIjM4meUOojWE0gNF30Vl/5xG2LrjXeemmGp+cQ=;
+	b=BgoM3hq27qChOnoFp6bquvP3ejeOK+suMBAE4qgREVwodpZYX/vb505KLP1KSgKcab5dxf
+	czVxdWPlwQqPb9cqkEKWo0PKCUL6X6uBxc2XNKy3do7SFPWb8Op4Jy6ErpNWGvhGO3hgSQ
+	dyG22a2vkqi7SL60lKQCYp7Gsx2j+CKNsgnxvD92PuXpgU8DFtBZr9K60edsvp5xhAAGav
+	h8N7zGQwG5QqY2EEnULWQ8S9HiHyxWA1OxN/8n2t//rTO1EcqmWUFQ1W5MBQszlrWWbSND
+	QshIyDtba80p9tBhc4hEeQyZQ/EnrerqXzQmsnCSWFx6lLVoYZZSGtf/e5JE8Q==
+Message-ID: <f07c64b4-3018-4e9d-8aea-12454f132419@bootlin.com>
+Date: Thu, 3 Sep 2026 10:34:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 01/10] net: stmmac: move XPCS lifetime
- management to platform drivers
+Subject: Re: [PATCH net-next v3 08/10] net: stmmac: dwmac-rk: add SGMII
+ support for RK3568
 To: Coia Prant <coiaprant@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S . Miller" <davem@davemloft.net>, Eric Dumazet
  <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
@@ -63,104 +63,79 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
  linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
  linux-renesas-soc@vger.kernel.org
 References: <20260901150111.141037-1-coiaprant@gmail.com>
- <20260901150111.141037-2-coiaprant@gmail.com>
+ <20260901150111.141037-9-coiaprant@gmail.com>
 Content-Language: en-US
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260901150111.141037-2-coiaprant@gmail.com>
+In-Reply-To: <20260901150111.141037-9-coiaprant@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi again,
+Hi
 
 On 9/1/26 17:01, Coia Prant wrote:
-> The current XPCS creation logic in stmmac_pcs_setup() is problematic
-> for several reasons.
+> The RK3568 SoC integrates a Synopsys DesignWare XPCS that can be
+> connected to GMAC0 or GMAC1 in SGMII mode.  Add the necessary glue
+> logic to support this configuration.
 > 
-> First, if a device tree specifies a "pcs-handle" but no select_pcs()
-> callback is provided by the platform driver, the created XPCS is never
-> used. The phylink framework requires select_pcs() to actually return
-> the PCS to the core, so the pcs-handle property becomes effectively
-> useless without the matching callback. This is confusing for developers
-> who expect that specifying a pcs-handle in their device tree should be
-> sufficient to enable the PCS.
+> The current dwmac-rk driver does not support SGMII mode.  SGMII
+> requires a PCS to handle auto-negotiation and link state reporting,
+> but the existing driver only supports RGMII and RMII.
 > 
-> Second, and more critically, when stmmac_pcs_setup() fails to create
-> an XPCS (either because no pcs-handle is present and no pcs_mask is
-> configured), it falls through to the else branch and leaves
-> priv->hw->xpcs as NULL. This will silently override any XPCS that a
-> platform driver may have already set up during its own initialization,
-> for example in a pcs_init() callback or during probe. The platform
-> driver has no way to prevent this override because the common code
-> runs unconditionally after the platform-specific initialization.
+> Add a set_to_sgmii() callback to configure the GMAC GRF register for
+> SGMII mode (bit 7 set, interface selection bits 4:6 cleared).  Also
+> add a supports_sgmii flag to indicate SGMII capability.
 > 
-> After commit 93f84152e4ae ("net: stmmac: clean up
-> stmmac_mac_select_pcs()"), the common code no longer falls back to
-> priv->hw->phylink_pcs if select_pcs() is not set. This change
-> reinforces that each platform must manage its own PCS life cycle
-> explicitly, but the XPCS creation code in stmmac_pcs_setup() was not
-> updated to match this new expectation, leaving a gap where platform
-> drivers have no clean way to take control of XPCS creation.
+> Provide pcs_init/pcs_exit callbacks to create/destroy the XPCS via
+> xpcs_rk_create() from the Rockchip XPCS platform driver, and a
+> select_pcs callback to return the XPCS to phylink.
 > 
-> Address all of these issues by introducing pcs_init() and pcs_exit()
-> callbacks in plat_stmmacenet_data. These callbacks give platform
-> drivers full control over when and how the XPCS is created, configured,
-> and destroyed. The common stmmac_pcs_setup() and stmmac_pcs_clean()
-> functions are simplified to just call these callbacks, removing the
-> confusing and error-prone XPCS creation logic from the common code.
+> While at it, fix the clock enable ordering in rk_gmac_powerup():
+> gmac_clk_enable() is now called before any register access, including
+> the SGMII mode setup path.  Previously SGMII mode would bypass the
+> clock enable via a goto, which could cause synchronous external abort
+> when accessing MAC registers with the clock domain disabled.
 > 
-> Platforms that do not need an XPCS simply leave the callbacks as NULL
-> and no change in behavior occurs. Platforms that do need an XPCS can
-> now create it with the exact configuration they require, including
-> wrapping it with custom phylink_pcs_ops when necessary.
+> Also clean up the error handling in rk_gmac_powerup() by using a
+> unified clk_disable label, and add error handling for the default
+> (unhandled interface) case.
 > 
-> Existing platform drivers (intel, rzn1, socfpga) are updated to use
-> the new callbacks by moving their XPCS creation and cleanup logic into
-> pcs_init() and pcs_exit(). In their pcs_exit() implementations, the
-> pointer to the destroyed PCS is explicitly set to NULL to avoid
-> dangling pointer references.
+> SGMII In-band vs Out-of-band
+> ============================
+> On RK3568, the MAC clock is fixed at 125 MHz and cannot be dynamically
+> changed by the stmmac core's set_clk_tx_rate callback.  In-band mode
+> works because the PCS handles rate adaptation internally.  Out-of-band
+> mode does not work because the MAC would need to change the clock rate
+> to 125/12.5/1.25 MHz for 1000/100/10 Mbps respectively, and the clock
+> is fixed.
 > 
+> Enable default_an_inband for SGMII and disable the generic stmmac
+> set_clk_tx_rate callback.  This forces phylink to use in-band mode,
+> where the PCS is responsible for speed/duplex negotiation.  Without
+> this, the stmmac core would attempt to change the clock rate on speed
+> changes, causing TX to work but RX to fail.
+> 
+> Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 386)
 > Signed-off-by: Coia Prant <coiaprant@gmail.com>
-> ---
->  .../net/ethernet/stmicro/stmmac/dwmac-intel.c | 44 +++++++++++++++++--
->  .../stmicro/stmmac/dwmac-renesas-gbeth.c      |  7 ++-
->  .../net/ethernet/stmicro/stmmac/dwmac-rzn1.c  |  7 ++-
->  .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  7 ++-
->  .../net/ethernet/stmicro/stmmac/stmmac_mdio.c | 37 +++-------------
->  5 files changed, 61 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-> index f5f9fa67ecd77..fd5f01c8941c1 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-> @@ -603,13 +603,47 @@ static void common_default_data(struct plat_stmmacenet_data *plat)
->  	plat->mdio_bus_data->needs_reset = true;
->  }
->  
-> +static int intel_mgbe_pcs_init(struct stmmac_priv *priv)
+
+[...]
+
+> +static int rk_pcs_init(struct stmmac_priv *priv)
 > +{
-> +	struct fwnode_handle *devnode, *pcsnode;
-> +	struct dw_xpcs *xpcs = NULL;
-> +	int addr;
+> +	struct device_node *np = priv->device->of_node;
+> +	struct device_node *pcs_node;
+> +	struct dw_xpcs *xpcs;
 > +
-> +	devnode = dev_fwnode(priv->device);
-> +
-> +	if (fwnode_property_present(devnode, "pcs-handle")) {
-> +		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
-> +		xpcs = xpcs_create_fwnode(pcsnode);
-> +		fwnode_handle_put(pcsnode);
-> +	} else {
-> +		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
-> +		xpcs = xpcs_create_mdiodev(priv->mii, addr);
-> +	}
+> +	pcs_node = of_parse_phandle(np, "pcs-handle", 0);
+> +	if (!pcs_node)
+> +		return -ENODEV;
 
-Sorry I had a second look at that after a good night's sleep, and actually here
-we may regress. The original logic checked for "pcs-handle" presence, then
-for the pcs mask, but if no PCS is found we didn't error out, we returned 0.
+Here aswell you make it mandatory to have a PCS, as the generic pcs logic
+introduced in patch 1 doesn't handle -ENODEV, it treats it as any other
+error.
 
-This is making it mandatory to have a PCS. Please handle gracefully the "there's no
-PCS" case :(
-
+So, either you return 0 when there's no PCS (so that we don't break platforms
+that don't have one), or you handle -ENODEV gracefully in patch 1.
 
 Maxime
 
