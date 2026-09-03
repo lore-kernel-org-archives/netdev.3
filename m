@@ -1,53 +1,67 @@
-Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047AE46EF61
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 11:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ED045FFBA
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 11:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788435384; cv=none; b=DqE0zoHF1Qh4woOKTEaN+UdsadHAaT6HZs171KYDHk3DY+scUhsEf8CGCTBmR2kvRMXtRz00wn+G3e4DXpJ++nSzrw2W4Z1FM0YovwFigLNp7h85PLuLdUuyaUTijSHzDIMTBxDujWaPTT9ayR7TLzR25KAQs5QK3Qlh2+ooMNQ=
+	t=1788435557; cv=none; b=i5j2DOD/LiotpqB2dIT9IDmlJYtPgEbaf3nhkk9Jw23XPJe6OuBHrAAO/NhecHzwifOGnrLeIQs3feczX7l3TXDa6S9El5RTC8907mMAAk4Mtx/Oj0v49aTf+YE4Q2hg1/ecTYYbNVMuaKGBUfC6EkVszZ8mmTn2y7B2gITNmgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788435384; c=relaxed/simple;
-	bh=LJpMKj/XnEihoZ0YF7ai7Quioco7albx4xNT6cV563k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=owK8AYhO/48MVgs1E75+yjhs952w+FQNuThqWHnKnlPqmdLANU6Wgq+AtL8wLwvqmHsKqpfi32LfnfWkIco5qrY1EzyKnqZ6B9yJqpn+owB3YUdvvQD2fzQ8pYhlOd6N8XHYl+swe2tlsgul7gciIt2DsTmNVSFfTk37tUAzlW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-49b92ccb8e0so4785815e9.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 04:36:17 -0700 (PDT)
+	s=arc-20240116; t=1788435557; c=relaxed/simple;
+	bh=ro5ycANoLWJJCE9324sTDjhQ6jvDY7a4igZpzbhFBBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EonNJVA/AQXZKP9V/SjrHoxmYUuhf4x/8EmM+1c3UOa1BZdAQ1K/RbXOGJBjKUlc68wwI73BD7rjLFWPUKNN5P+PkeC1t6Ho7C0qiS5+/kezmO0qV54b1o3Unwqsl02ITHO+kshbsV5tHLet/xJbxEOk617YqnjwAu/8c6fj68I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=WXcs3L4s; arc=none smtp.client-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="WXcs3L4s"
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-396bf83d458so830040a91.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 04:39:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788435540; x=1789040340; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cRU7hLnxNiZ55MaNHqLlZScRyTHKVnmWkFZTM4ExPyA=;
+        b=WXcs3L4si6KuoF36NArKZksDtLUaaDRzsPBs6vgmdr3dhPO0GaGg1FPC6h9eICs25A
+         BwWj79QoY32YPaAG+WTDJv5q0O3qHPOLZAiiMnxLVJ7B2pcVRMDqlTljyFkKRwiK4zgX
+         lbGp0yetCe+EFhcXvym+ZseSffsKNVaUoU6NRt5nfufO1qFwRvhrWCmuhd8ZKS8T/fIs
+         cIIEYGkLskaE0Gfk1FX2505LfjfxxmjCDOE7dt8ediDIfzlPKQVhqyY7nLpXv+ces+48
+         G/Yak+a3yL30OQK27ubwqavdxv4i7+VjksFeo87EDG1HzYWSyyBKcaNeNYKnXDQYeDJq
+         HlHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788435373; x=1789040173;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788435540; x=1789040340;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qWw0DEZCWb3L47F1PExZyGmmWa6+/YdXupfpB49QAn4=;
-        b=EO6UiYjdrAwvX9yyx1qOahsRr2kzVUqG66K1uM4pHELdwsyCntGT0in2cDyK425SVf
-         pyGWOVzePktcBr97f0Ta2GocNZldoI/ATUcz73HjepNOm/hcbpEeEiNLIM4Jg5OJ1F8A
-         36x/l7oD3UaWyqu4ev5YD/psZGy2tJ6zviSQJ6eSOgZL+TObNviOGfdh0XYAQdgQhZBJ
-         xoJYTHygSQbUz5+IHfZ/inSfe/M3z/CrsvflkOJnroG47sybub6t3LlFbW6DXf+lGn8K
-         A34Svkvl13NpXGIBom9grXGCc+WHkWvkAfGb6gXOYVEB1KwncpQAtuvIW4wz1leYz/AC
-         2lsw==
-X-Forwarded-Encrypted: i=1; AKwUvBybh1qMYM4XoagnADwEP/bEqXRzKWDECP7qVSp1RpJJffB1JRnDloQEZkmU+ixfTjZRNWe9afI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nUUCvICJm6dT7x5ZVkwksP6xdrU8v0OxgJQrTo3SdyQlldJZUp
-	QMDfkQEEEJP8nMuCO9JThHkJ+ayPsCeWhrK65ymnF08tasHIby4LVUdf
-X-Gm-Gg: AYBFou2eKxj7O2CPGV83uwosyl0basAbIgJn9GbyYB7ZphFXDSO3tw0rrxt6FDXhZFB
-	Qk8GgputLefR6BE5kmjP7tXu9W9afjC8PNXDJYIfmKBR0JwCkJyxcjwIBrX380kifHjYQBSrMpm
-	oNi5E7aNO+dH2hxnSwbswsMSI9+XUyVgALMq7x7cngpnAEkQTvGMeaIElD/w1VudrKAfGq35PJ9
-	mmwv1xjzm1Scgegqq5wzfLgub3zaaW+iPPvrFZqXGJoJ3HPUDCbJGYOQ5ysi89sObnxdeB5N/tF
-	NZxpdSVuAwDHKlwmn5M2vqruj7GUnOw5v+1QEg6SSjDCX5oFeGXdzuNL3WLSwZTqcHSUvKrQhtW
-	GYuWaSUG21XGJALGNJDYiBnlbxD/26jdlfMuTtUlEnEnjeQKbpR6UwK395cu4PbsTq90IJySsh5
-	SBVAPrM50y2+K75LPYxp1oN9LvqweofoPqsmMJQj7OplAxHCuIcj2UfG0k1+ucGL9m0Q4VBv76I
-	epsvvdvdGLaRw==
-X-Received: by 2002:a05:600c:a402:b0:49c:ee22:364c with SMTP id 5b1f17b1804b1-49cee22422dmr100668035e9.9.1788435372633;
-        Thu, 03 Sep 2026 04:36:12 -0700 (PDT)
-Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d5d12sm63346745e9.5.2026.09.03.04.36.11
+        bh=cRU7hLnxNiZ55MaNHqLlZScRyTHKVnmWkFZTM4ExPyA=;
+        b=THqjrX0U2TB20mC29n9T4l6PtB8szcE/x2MgK7LTakkyUdbzRIBMHkP4xQFIzcSICY
+         ilwW3Z8CXbmMDSyGvlN3V9bIhqH1JY0IqzTQwuo1iiumF3vxHjmWc7kSXA2/gfd62jKZ
+         2sx/N4qIu472m0xwZenjYMVDrTIR4AUn9hBMzTfTQgVDnfbJh73cDj9zQR0ZHlVVd3BU
+         PaSTy43iUyYvYMGeg/WTlkj9Kg25wzX85hrFkqr6Cd7c7ttnEkpRaYm0omfBlGq/CZhv
+         9a196/K+68VTK44K5dVE2KdyTQVvwJS0yILJcaxuacX2g1l2ZSpFuHgiFmYiRpVXbmnP
+         IPuw==
+X-Gm-Message-State: AFuF++kkdmvfPTfXhsKJjIG/VEQjbbKQhkjASe5fUVlu/+0ateijKC3F
+	WmwADhDNU6KPNOmR65Cr0PnzKD5zsHqH5fN/T8eR+/O46d/efsz1rOubS1adl6z0N0Sl
+X-Gm-Gg: AYBFou0PFf5i91umfOmqaQ1xIXGw94I1lYyorYMpb9pHpO0uKgXYAPtQkw78Xb01K2R
+	0BAZVavI88qSGgLR83ZOkbY3UO0PXEFy74Ww1NVtqQjrMYbwnBNu7Kc6e8PLdIndNovam+5jHZ1
+	KHsOFAmxdsElVmMqhNKmsRnQ4MRVJTOit8uI/yCTVrXa4oLkx+NH50VzjriC7BeRaA16Ip0b55F
+	YjwBXlDzh1CVut0VU1QmYdkylnaOaiHizY3xWfRghcfudKsTD9RQ22M0Qck6Uvk6eiQIe4F1WJu
+	6xW6aohi+Yslcd4y5MTQWcgzj/RGHE1QVY5c39lG3Bm0vsTK2QuTM+WFHuIA+b4JwjEqhMiTian
+	+5s/honV+sjsrxI1Qtx/hNSn8JxBwNuXzKcdn5fU51a1TrNj23fWda6K20sQvczsg63m5oOf1Lc
+	ZSakos/+MS3xgji7Cvino1sMHy41C2lE0LKdgdRTDNWUNvUr9iS63ZHipKD0zV8UmucvrBXTEY0
+	wu8KAbI+TbUKOx1UO2epLbX7Bb6Xg7we1mXDuUhww==
+X-Received: by 2002:a17:90b:164d:b0:398:c16e:69d3 with SMTP id 98e67ed59e1d1-39aedeb9aecmr17724130a91.1.1788435539824;
+        Thu, 03 Sep 2026 04:38:59 -0700 (PDT)
+Received: from [192.168.4.59] (c-73-93-246-205.hsd1.ca.comcast.net. [73.93.246.205])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14319922eb4sm5341286c88.7.2026.09.03.04.38.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 04:36:12 -0700 (PDT)
-Message-ID: <866d33bf-cb36-4900-a05f-481c4ec6043b@ovn.org>
-Date: Thu, 3 Sep 2026 13:36:10 +0200
+        Thu, 03 Sep 2026 04:38:59 -0700 (PDT)
+Message-ID: <e105651b-a773-4a46-80e9-1e2ff0b665f4@nebusec.ai>
+Date: Thu, 3 Sep 2026 04:38:57 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,170 +69,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [openvswitch?] INFO: task hung in ovs_dp_masks_rebalance
- (8)
-To: syzbot <syzbot+75ce0a9129024fa8cbf6@syzkaller.appspotmail.com>,
- aconole@redhat.com, davem@davemloft.net, dev@openvswitch.org,
- echaudro@redhat.com, edumazet@google.com, horms@kernel.org,
- i.maximets@ovn.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-References: <6a97d3aa.e163c37b.143a1.0007.GAE@google.com>
+Subject: Re: [ANNOUNCE] A Syzbot-style Platform for Verifying and Fixing
+ LLM-reported Bugs
+To: Jan Kara <jack@suse.cz>
+Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, workflows@vger.kernel.org, frankw@nebusec.ai,
+ jhs@mojatatu.com, ksummit@lists.linux.dev, kuba@kernel.org,
+ pabeni@redhat.com, kerneljasonxing@gmail.com, roman.gushchin@linux.dev,
+ jgg@nvidia.com, mchehab+huawei@kernel.org, torvalds@linux-foundation.org,
+ ben.copeland@linaro.org, gregkh@linuxfoundation.org, yuantan098@gmail.com
+References: <20260830115546.3942129-1-yuantan098@gmail.com>
+ <f73vtlhwpdgrt5klkk2cgxfuqsvwvvlhzti4nu7hgdevwbqhvt@g2udlammqolb>
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <6a97d3aa.e163c37b.143a1.0007.GAE@google.com>
+From: Yuan Tan <yuant@nebusec.ai>
+In-Reply-To: <f73vtlhwpdgrt5klkk2cgxfuqsvwvvlhzti4nu7hgdevwbqhvt@g2udlammqolb>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/2/26 9:43 AM, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    a23cbb05744b Merge tag 'timers-urgent-2026-08-30' of git:/..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1107a379580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-> dashboard link: https://syzkaller.appspot.com/bug?extid=75ce0a9129024fa8cbf6
-> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/eed599d932fb/disk-a23cbb05.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/74e8c268c325/vmlinux-a23cbb05.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/aa91aebf1baf/bzImage-a23cbb05.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+75ce0a9129024fa8cbf6@syzkaller.appspotmail.com
-> 
-> INFO: task kworker/0:0:9 blocked for more than 143 seconds.
->       Not tainted syzkaller #0
-> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> task:kworker/0:0     state:D stack:22128 pid:9     tgid:9     ppid:2      task_flags:0x4208060 flags:0x00080000
-> Workqueue: events ovs_dp_masks_rebalance
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5520 [inline]
->  __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
->  __schedule_loop kernel/sched/core.c:7347 [inline]
->  schedule+0x164/0x2b0 kernel/sched/core.c:7362
->  schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
->  __mutex_lock_common kernel/locking/mutex.c:726 [inline]
->  __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
->  ovs_lock net/openvswitch/datapath.c:108 [inline]
->  ovs_dp_masks_rebalance+0x2f/0xe0 net/openvswitch/datapath.c:2602
->  process_one_work kernel/workqueue.c:3387 [inline]
->  process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
->  worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
->  kthread+0x38b/0x480 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> INFO: task kworker/u8:1:13 blocked for more than 143 seconds.
->       Not tainted syzkaller #0
-> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> task:kworker/u8:1    state:D stack:22376 pid:13    tgid:13    ppid:2      task_flags:0x4208060 flags:0x00080000
-> Workqueue: ipv6_addrconf addrconf_verify_work
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5520 [inline]
->  __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
->  __schedule_loop kernel/sched/core.c:7347 [inline]
->  schedule+0x164/0x2b0 kernel/sched/core.c:7362
->  schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
->  __mutex_lock_common kernel/locking/mutex.c:726 [inline]
->  __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
->  rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
->  addrconf_verify_work+0x19/0x30 net/ipv6/addrconf.c:4770
->  process_one_work kernel/workqueue.c:3387 [inline]
->  process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
->  worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
->  kthread+0x38b/0x480 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> INFO: task kworker/u8:2:27 blocked for more than 143 seconds.
->       Not tainted syzkaller #0
-> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> task:kworker/u8:2    state:D stack:23808 pid:27    tgid:27    ppid:2      task_flags:0x4208060 flags:0x00080000
-> Workqueue: netns cleanup_net
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5520 [inline]
->  __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
->  __schedule_loop kernel/sched/core.c:7347 [inline]
->  schedule+0x164/0x2b0 kernel/sched/core.c:7362
->  schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
->  __mutex_lock_common kernel/locking/mutex.c:726 [inline]
->  __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
->  ops_exit_rtnl_list net/core/net_namespace.c:173 [inline]
->  ops_undo_list+0x28e/0x8d0 net/core/net_namespace.c:249
->  cleanup_net+0x572/0x810 net/core/net_namespace.c:706
->  process_one_work kernel/workqueue.c:3387 [inline]
->  process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3470
->  worker_thread+0xa47/0xfb0 kernel/workqueue.c:3551
->  kthread+0x38b/0x480 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> INFO: task kworker/1:1:31 blocked for more than 143 seconds.
->       Not tainted syzkaller #0
-> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> task:kworker/1:1     state:D stack:22232 pid:31    tgid:31    ppid:2      task_flags:0x4208060 flags:0x00080000
-> Workqueue: events ovs_dp_masks_rebalance
-While this report points to ovs_dp_masks_rebalance, it seems like this job
-is just a victim of something else getting stuck in the system.  My guess
-is that something is holding rtnl blocking one of the OVS operations that
-is also holding ovs_mutex and blcoks the rebalancing job from taking it.
-But there is no enough information in this report to say what is actually
-happening.  We'd need stack traces from all cores.
+On 9/2/26 08:10, Jan Kara wrote:
+> Hi,
+>
+> On Sun 30-08-26 04:55:45, Yuan Tan wrote:
+>> A month ago, I posted an RFC[1] to the mailing list proposing an automated
+>> platform that validates AI-reported bugs and prepares draft fixes, and
+>> later discussed the idea at the Netdev conference. After further
+>> development, it is finally ready.
+>>
+>> While preparing to send this email, I noticed that Roman has since started
+>> a related discussion:
+>> [MAINTAINERS SUMMIT] The place of AI code review in the Linux Kernel process
+>>
+>> It turns out this platform already addresses several of the needs raised
+>> there.
+>>
+>> The platform is available at:
+>> https://bugtracker.nebusec.ai
+>>
+>> It is currently hosted under my company's domain for convenience. I would
+>> prefer to move it to a neutral, community-oriented domain once the project
+>> name is settled.
+>> Access is currently restricted to maintainers whose email addresses are
+>> listed in the Linux kernel MAINTAINERS file.
+>> For now, only bug reports from the net subsystem have been fully imported
+>> and processed.
+> I was playing with this for a while and this looks useful. Some notes I have:
+>
+> 1) When you download the patch, it has 'From' field set to some value (I've
+> actually seen different values in different patches). Perhaps it would make
+> sense to automatically set From to the person downloading the patch (or
+> maybe value configured in user's profile)?
+>
+Fixed!
+>
+> 2) Based on current state of the kernel doc, the patches should contain
+> "Assisted-by: LLM" tag although I understand that might be controversial.
+Fixed! 
+>
+> 3) It would be nice if you could "assign" the report to yourself - i.e.,
+> you've decided to handle this and don't want co-maintainers to waste time
+> on it anymore.
 
-In the meantime, the patch I posted yesterday would actually reduce the
-chance for ovs_dp_masks_rebalance to be flagged as a victim here, so maybe
-we'll learn more in future reports:
-  https://lore.kernel.org/r/20260902203200.1416026-1-i.maximets@ovn.org
+This feature is ready now. Our fixing team will also assign bugs to
+themselves. Feel free to remove their names if you think it would be
+better for you to fix a particular bug yourself. Our team definitely
+won’t know this part of the code as well as the maintainers do, and
+reviewing our patches may sometimes take more effort than fixing the bug
+directly.
 
-Best regards, Ilya Maximets.
+As for patch generation, I’ll make some adjustments. This is indeed
+because I explicitly asked the llm in the prompt to follow the reverse
+Christmas tree style.
+
+Also, I haven’t had a chance yet to enable fix-status tracking or import
+the Sashiko bug reports for the fs subsystem. So far, I’ve only finished
+this for net, as cleaning up and normalizing all the data has been quite
+a bit of work.
+
+Some fs bugs may still be outside the threat model, such as those
+requiring a corrupted or malicious filesystem to trigger. I haven’t
+filtered those out yet.
+
+Over the next couple of days, I’ll first run the fix-status detection
+for the filesystem bugs and try to reduce as much unnecessary work for
+you as possible.
+
+Yuan
+
+>
+> Thanks for putting together the service.
+>
+> 								Honza
