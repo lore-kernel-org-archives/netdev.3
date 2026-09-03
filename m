@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638BF4399E6;
-	Thu,  3 Sep 2026 10:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E15936A36B;
+	Thu,  3 Sep 2026 10:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788431276; cv=none; b=ayLkyWzIRdv+/t4AatL9Q7y7s4wfkZCVocfIY8wCqnV5czqu+HOGNd5MxxjWbgbCpbDn/aU8Wnog4D4u97sOczdHoFASskVGvosWkmNnBwHSLK7PQLrHapADRrIIv692CermwcjlQxe0NMDMX2G+C5FJNt/AR4erLupaYeGs76s=
+	t=1788431289; cv=none; b=auTEhbBLgWI0V7Xsw2EsboEGMPsjPO5Xa/nWGYum9SLTsa0gjtcWKg7bu7JHUU+8M0DVo98DrDFeG4TeR3dx0mtMqARheMgU9HHyLkKgDvC9pN9yct7S6ELqhxPvZM7KBQ0xuJk4pTFzXc5Hl8IOIxx/FdmriPMc1qV/PjdJ0yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788431276; c=relaxed/simple;
-	bh=xQcJuDFvFPBT6ZYRpZgPGU8Uad9koS4KrJdIrgeViB8=;
+	s=arc-20240116; t=1788431289; c=relaxed/simple;
+	bh=r39OwDIidsdmPm27rLdZU5gWa7pXs22H8jB5WxLNB6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPBvJ5SuXwb3AipbLioUhHZrjt36h6WH2oCW9pVN9ciLrE66CQJ3WBy+rfflMM73s6EeaenyAevZ9L1GH61xYhjE6ZZwYLDtJjEOYTzy+oCEZ0oIG5aGIjCPW8DUWNP+fTLbEoLWkaEOLBFihpyerR5obHoqUMSpsE6AxyglJcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0sleX8b; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=NLyDO0X/6K5Akv1gMnE2dKC7vINxm/dLH4XSqwy0vqNRpwTcyGTT+V61u6iLb0r4TbzcnXfgcllueCf+haB+GDaClkc2XyeqJ2mMGML8c5r79aLF/BASTtFN8vzAsFlHuC+d62MLkepfY1ysAF1Fxnquhp2lBDNJ9JH6FgBVy8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA4aYCyo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0sleX8b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2B71F000E9;
-	Thu,  3 Sep 2026 10:27:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA4aYCyo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4EF1F00A3A;
+	Thu,  3 Sep 2026 10:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788431263;
-	bh=atJ2KXPXSgGiq2OqP7CMIUjSO8wmjaHoVZs8sAlmqBk=;
+	s=k20260515; t=1788431275;
+	bh=a4c1woQ9AJvItpYFTfW7Q9gNf4I+aOW6flvKS8gj4h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L0sleX8b5Wj/WKStYZA6hK9/wQDat30zobX24QjYj83n4y0YfoclGIR2uC6AU7EWr
-	 GfIKHI7LlqeAtyZPwuE5T2rYARl2SkP5tdg4pvqwGXKd6TYycldWoefRszGn92f6yu
-	 v1adk2QSVTj+NBgRAWA7JcKijrOfRJ9xxsDRADDFwbDiVvM4Zg02Hj+cimlU3aQVzm
-	 c7W++roFN1tZw2GjTQTmDMOTfo6fqZ1Rw9aCtr5WSTBR4ZpPA4bojM7EvnAHcQ3JXK
-	 ptsQofWLY43QHngnq8H4oALiBPZqNe5/57vq8AsvViaEnXvWWGo8QfWOPDq4sI4RYk
-	 Hw0UO0rCbisBQ==
+	b=bA4aYCyoK/Cz+nUGXSM/J1Go45ueDIO4MMNRXB0xoe7VZawXneuMArnLQJQlXLvvv
+	 om36d1x3MniUO8APyU1J9ditp6Xp+tks96x41cqHw3OnZgixwfcI0uMqtQM6R6oi1O
+	 gwrxHNVFVe516yL0hLRUNDcrIx/bRDgf2Imel2odx1VtUduDkZyhhTM9dxc8vlvIit
+	 GYaeGoERz9Cs7B7k11Fxo8l8w0n+oFn2iBa5NhZ6enAtqeB2Ap75woAkrhX4AM+xht
+	 EQa2xhuym2q3KIR9fZLVcHhNP/2JPeqMLvg47ZurSJt9+SuYgCwOatMErZDb7l298o
+	 J2cPU8Vl8S/VA==
 From: Simon Horman <horms@kernel.org>
 To: tactii@gmail.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	skhan@linuxfoundation.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH iwl-next 1/8] e1000e: add jumbo Rx CRC stripping
-Date: Thu,  3 Sep 2026 11:27:30 +0100
-Message-ID: <20260903102730.578872-1-horms@kernel.org>
+Subject: Re: [PATCH iwl-next 6/8] e1000e: disable NAPI while interface is down
+Date: Thu,  3 Sep 2026 11:27:48 +0100
+Message-ID: <20260903102748.578986-1-horms@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260830232146.36948-2-tactii@gmail.com>
-References: <20260830232146.36948-2-tactii@gmail.com>
+In-Reply-To: <20260830232146.36948-7-tactii@gmail.com>
+References: <20260830232146.36948-7-tactii@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,52 +59,82 @@ Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260830232146.36948-2-tactii@gmail.com?part=1
+Full review at: https://sashiko.dev/#/patchset/20260830232146.36948-2-tactii@gmail.com?part=6
 ---
-e1000e: add jumbo Rx CRC stripping
-    
-When the hardware is configured to not strip the FCS (CrcStripping=0),
-the jumbo Rx path would deliver frames with the FCS still attached.
-Follow the standard path's convention by stripping the FCS at EOP and
-leaving it out of the byte count.
+e1000e: disable NAPI while interface is down
+
+This commit moves napi_disable into e1000e_down and adds napi_enable to
+e1000e_up to ensure NAPI is disabled during reconfiguration windows.
 
 > diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 844f31ab37ad4..599600ad695cd 100644
+> index 194166531bc84..6d846cacb026e 100644
 > --- a/drivers/net/ethernet/intel/e1000e/netdev.c
 > +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> @@ -1631,13 +1631,23 @@ static bool e1000_clean_jumbo_rx_irq(struct e1000_ring *rx_ring, int *work_done,
->  			}
->  		}
+[ ... ]
+> @@ -3601,7 +3603,7 @@ void e1000e_down(struct e1000_adapter *adapter, bool reset)
 >  
-> +		/* strip the Ethernet CRC; it may span fragments */
-> +		if (!(adapter->flags2 & FLAG2_CRC_STRIPPING) &&
-> +		    !(netdev->features & NETIF_F_RXFCS))
-> +			pskb_trim(skb, skb->len - 4);
-> +
->  		/* Receive Checksum Offload */
->  		e1000_rx_checksum(adapter, staterr, skb);
+>  	e1000_irq_disable(adapter);
 >  
->  		e1000_rx_hash(netdev, rx_desc->wb.lower.hi_dword.rss, skb);
->  
-> -		/* probably a little skewed due to removing CRC */
->  		total_rx_bytes += skb->len;
-> +		/* If configured to store CRC, keep the FCS bytes out of the
-> +		 * total_rx_bytes counter
-> +		 */
-> +		if (!(adapter->flags2 & FLAG2_CRC_STRIPPING) &&
-> +		    (netdev->features & NETIF_F_RXFCS))
-> +			total_rx_bytes -= 4;
+> -	napi_synchronize(&adapter->napi);
+> +	napi_disable(&adapter->napi);
 
-[Severity: Medium]
-Could these lockless evaluations of adapter->flags2 and netdev->features get
-out of sync if userspace changes features via ethtool while a packet is being
-processed?
+[Severity: High]
+Does this change introduce an infinite hang in napi_disable() due to
+concurrent or duplicate e1000e_down() calls?
 
-If a concurrent change occurs between the first check and this second check,
-it appears it could lead to an inconsistent state where a packet's payload is
-incorrectly truncated by 4 bytes, or where the byte statistics are overcounted
-or undercounted by 4 bytes.
+A runtime PM suspend callback (e1000e_pm_runtime_suspend) can execute
+concurrently with an ethtool operation like e1000_set_ringparam. The ethtool
+operation sets the __E1000_RESETTING bit and holds it while allocating
+resources.
 
->  		total_rx_packets++;
+The PM suspend callback waits on this bit but uses a bounded timeout (300ms).
+If the ethtool operation takes longer than 300ms, the PM callback times out,
+prints a WARN_ON, and unconditionally calls e1000e_down():
+
+e1000e_pm_runtime_suspend() {
+        while (test_bit(__E1000_RESETTING, &adapter->state) && count--)
+                usleep_range(10000, 11000);
+
+        WARN_ON(test_bit(__E1000_RESETTING, &adapter->state));
+
+        /* Down the device without resetting the hardware */
+        e1000e_down(adapter, false);
+}
+
+Because the ethtool operation also called (or is calling) e1000e_down(),
+napi_disable() is executed either concurrently or sequentially on an
+already-disabled NAPI struct, leading to an infinite hang waiting for
+NAPI_STATE_SCHED.
+
+[Severity: High]
+Could this also lead to a sequential double napi_disable() hang due to state
+mismatches where e1000e_down() is called but netif_running() remains true?
+
+The e1000e_pm_thaw() function attempts to bring the device back up after a
+freeze/suspend. If e1000_request_irq() fails, it exits via the err_irq label
+without calling e1000e_up(), leaving NAPI disabled:
+
+e1000e_pm_thaw() {
+        rc = e1000_request_irq(adapter);
+        if (rc)
+                goto err_irq;
+
+        e1000e_up(adapter);
+}
+
+However, the device's IFF_UP flag is untouched, so netif_running() remains
+true. Subsequently, if an administrator changes the MTU via
+e1000_change_mtu(), the driver checks netif_running() and blindly calls
+e1000e_down():
+
+e1000_change_mtu() {
+        if (netif_running(netdev))
+                e1000e_down(adapter, true);
+}
+
+This invokes napi_disable() a second time sequentially, which hangs
+indefinitely because the NAPI instance was never re-enabled.
+
 >  
->  		/* eth type trans needs skb->data to point to something */
+>  	timer_delete_sync(&adapter->watchdog_timer);
+>  	timer_delete_sync(&adapter->phy_info_timer);
