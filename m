@@ -1,127 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-m49226.qiye.163.com (mail-m49226.qiye.163.com [45.254.49.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA79432310
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 11:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3EA431E68;
+	Thu,  3 Sep 2026 11:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788433579; cv=none; b=cKkcTB6OKsmA/IoqdebtAlAwO2yHWiIZUxHojNcCSLWC556Kf0XEoI7+k1jvUEeXJQxeGxaSZZ6DsYtmCvAFcr9M3qtRKCNwMOLYUJvEGO/lbmUEfZy14mOOKuNmxQ07fzUz36gHNGHV94tT+B+xJQZFpqpDl/FeffYYAiiA1jg=
+	t=1788433644; cv=none; b=BffK6nfLVtdvUHkiRa28s94Zy1RELkGJ7afMEGHtqqSVT8RlkHF7zM6tnCEpxXtrtEpn0o/L11QyH3GQ9AZ5jia38lQBuzp3gvcfZXY2iAcBM7TsaLEbcbfHtJcNf5Otg/3Ygkx4s8SkT4UGJhljX8S2gKNRi8l3qgqmVjTPHy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788433579; c=relaxed/simple;
-	bh=kRMsU1aQi5RSNYArF5IobHP4IFwCbZNZ+oBFJRRILgc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EuGxXBmyWTHaDvhs3j6MeSA1xacCVCaXDeIXAcaYbZEvHfHFnbZ69ZA4Vw+zX3F+3L5LYqF9TRcWSp3v0/ndQF+KHazQf7bBdZ7qBeBizFFLkbd8fi0mhPDwexVXNhUW2kWlva98+0vAn6vlL5pYg2Vhzgz3cqn/z1ki+j0rYoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sp214kcz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z6ETwcpX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sp214kcz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z6ETwcpX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788433576;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kaaI8EpfE53Tx/bzWzG0YZdIemiUc49MwXJ5O8jhTbw=;
-	b=Sp214kcz0vpAyUF/Vg+Yt6h+aUjZEJDRUFT4Jp1rOn4WopZM6XtIrBuXf34XG7XHAetigh
-	mG3Em6mmooLONq5Ow8Bql/c/diA0xuR3++L5xshad4BkC8Lm7ff0re6wUHVt0GcMvCyyOD
-	gHZNue30K2wSS81PhI3E1MrcrL5jwXw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-7RGJhmriNHu_8CpqnOmg0Q-1; Thu, 03 Sep 2026 07:06:15 -0400
-X-MC-Unique: 7RGJhmriNHu_8CpqnOmg0Q-1
-X-Mimecast-MFC-AGG-ID: 7RGJhmriNHu_8CpqnOmg0Q_1788433574
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b0d7a07acso24176365e9.3
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 04:06:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788433574; x=1789038374; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kaaI8EpfE53Tx/bzWzG0YZdIemiUc49MwXJ5O8jhTbw=;
-        b=Z6ETwcpXFXpVuftUIu5lqa1Nw9d3+HKr8k5V2XeQzBEDJy/4vK7ZaWM2v11nmT960b
-         R0/Sv9i/aICk1OPcE+pvhOngAGGY0a+iHfsAVqEs2H5QNohaBb1gyduTF83i6upt1F2a
-         +fX9h35xHfkP9D0F2r7wBORLwa5wcRSZNr1NUD00AwQ/qk/gcNOzHNzAjXfX/FHCtOL9
-         BVt7HOyM4P+94Z36otHWh4fdr63Ses0NvN4YEasQ0fxZGEvivcw9qm82zfv0agZJhl53
-         kKpfL9PaEgFi55geU+tDx34B/ErQASkmY098RMGoaxFbyVU4odwcrBKmH6lwPc5oZ/dU
-         tgFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788433574; x=1789038374;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kaaI8EpfE53Tx/bzWzG0YZdIemiUc49MwXJ5O8jhTbw=;
-        b=gB7+IuJyRrfuqZaMH+IB8Cv9prYSvCP9VdlEIByqV96YgdjMVOIXPw30d+Mdc95rRs
-         X3OPVFfjBPGqWStKfdOK9VUJdqNcI6CT+qq6zdpLGzv5pQCahN7Y7eMVI1xK/lcLj+1q
-         eJfasGaNeecCn9SJT4nJEA5ROiKsUv3ewBJDWX3r+xhGwVPbFyepQ74in3ZbG2nRql0G
-         rquTbuQKPx1mbi/vFhHz1p3Gy8+d8tWV4jvsCpejrVxqeZ+9KEriKS/GGmt5vV72dELd
-         HSSYU89xvKi7N2GkFOKlQQ5HQSBu1EYEz74cUyaeaCtiC+pwaQSgKcon/GZnx9lzOLA7
-         dLlA==
-X-Forwarded-Encrypted: i=1; AKwUvBzaB83f3QoPFGHg2HxX9HudlSinw9tKFvKKAs2iW+mfCPEFFNAXSRNBtN3KARPbQi8q3HX+mTk=@vger.kernel.org
-X-Gm-Message-State: AFuF++m5Doj2IybkHouemXQMEOMxfwhAMvTjv4frSCKbFJPAAIaLytox
-	fjjItrglUUGFqOqr1D8TXSfqwTK3HOnEKk/2MaBJtFhViwpqKUvQ1SJEg90ErVUkngxbuzM+KSy
-	5M3CswFVBYUIDrH3of+xaQ9hxnNJJsSDm+iFt+1WL9uC1gynmyGWVm6vvJw==
-X-Gm-Gg: AYBFou1cmpnQq+K5L4hVSULJBIRe44BLRVUZmAqNCL5QAuR7tRrsmv0YP9zfNP9AglJ
-	VLMrdo2tEbUjpLGsEGY08fSnQsKkoxjndiaPQLmXYyJblX2DiRzT956i2hS6imZv0O/2ve9nv5v
-	WFlRuNW4aP5BWPpwv9bXRfzTr2dTe+QQE5zrotrBDnmm3m+0oyk2YGyll49JBKf6SVkoTDnqt1V
-	PmAyLjNdmObnhNKmUXKHgPdDx3qBjIxAQXwu2ZbZKdtMgtW64SgrqRbykmAZ+QtRHa2HV9SCM4q
-	DP/gfFZjpujtujqc89GWcrNRVc/gngtWw8R4w67emJ72UHVX9YsNBYXhObL0zvP5UlOVv5iIueQ
-	oMQOVToui5bICT+2rrcqYaFgrhuVji+ECkX4rzaZ7xeFQfvxRR9uXXTqe7EHibAd6iItmT8qU1Q
-	==
-X-Received: by 2002:a05:600c:83c4:b0:499:8ff5:8ecc with SMTP id 5b1f17b1804b1-49ce58268afmr210656565e9.15.1788433573931;
-        Thu, 03 Sep 2026 04:06:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:83c4:b0:499:8ff5:8ecc with SMTP id 5b1f17b1804b1-49ce58268afmr210655435e9.15.1788433573513;
-        Thu, 03 Sep 2026 04:06:13 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e80798sm12414481f8f.13.2026.09.03.04.06.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 04:06:12 -0700 (PDT)
-Message-ID: <1cf3f4de-bec8-4559-a4b2-1d946ead0f69@redhat.com>
-Date: Thu, 3 Sep 2026 13:06:11 +0200
+	s=arc-20240116; t=1788433644; c=relaxed/simple;
+	bh=IJGozM6s/ale0r1EEkXytOcvAiIFZCktGMSge/1lhxY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XGHz5ePtDxVjH1NSVt67uAf+ophRsiaKiEWbytW+tNQURO5mToLo7ElEl59HSz5PgG9H+SM4FolU/RBKsfkxIwK1YYi3wlgFyMMcZQb+S8aiXDwd7VcpLPhyNg7KNvC1msHduKzf8/ipv5NrcU0JYELBoJxGPCdHfp4iPw6KTt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnics.com; spf=pass smtp.mailfrom=resnics.com; arc=none smtp.client-ip=45.254.49.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnics.com
+Received: from localhost.localdomain (unknown [115.220.204.6])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4c65c5a96;
+	Thu, 3 Sep 2026 16:44:48 +0800 (GMT+08:00)
+From: Ruizhe Zhou <zhouruizhe@resnics.com>
+To: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ruizhe Zhou <zhouruizhe@resnics.com>
+Subject: [PATCH net-next 04/14] bnxt_en: Remove obsolete 32-bit DMA mask fallback
+Date: Thu,  3 Sep 2026 16:43:29 +0800
+Message-Id: <20260903084339.870562-5-zhouruizhe@resnics.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20260903084339.870562-1-zhouruizhe@resnics.com>
+References: <20260903084339.870562-1-zhouruizhe@resnics.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v6,5/6] selftests: net: add multithread server support
- to iou-zcrx
-To: netdev-bot+sashiko@kernel.org, juanlu@fastmail.com
-Cc: dw@davidwei.uk, netdev@vger.kernel.org, io-uring@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kuba@kernel.org, asml.silence@gmail.com, shuah@kernel.org
-References: <20260831-iou-zcrx-v6-5-02d1d012f0fd@fastmail.com>
- <178839229706.3394541.1555608492152892136@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178839229706.3394541.1555608492152892136@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa066712c6603ackunm85c9d55b5cc23
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSU4eVk1CS0pCSkhPSx5DSVYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKSk5VSUlLVUlLT1VNWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
 
+The DMA API guarantees support for masks of 32 bits or wider and
+explicitly identifies retrying a 32-bit mask after a 64-bit request as
+incorrect:
+https://docs.kernel.org/core-api/dma-api-howto.html#dma-addressing-capabilities
 
+Remove the obsolete fallback while retaining the error check so that a
+genuine DMA setup failure is still reported and aborts initialization.
 
-On 9/3/26 1:38 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 1 · Medium: 2 (3) · Low: 3
-> 
-> - [High] listen() is now executed before the workers have registered
->   their zcrx ifqs, breaking the ordering that two existing in-tree tests…
-> - [Medium] A worker thread that is dispatched zero connections reports
->   success without receiving or verifying a single byte.
-> - [Medium] The new CQ sizing removes the implicit bound that kept the
->   zcrx refill-queue producer inside one ring.
+Signed-off-by: Ruizhe Zhou <zhouruizhe@resnics.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-My understanding is that the above 3 concerns may affect tests stability
-and should be addressed before merging.
-
-Thanks,
-
-Paolo
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index d59bcca73a2b..1d5cb53f4258 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15610,8 +15610,8 @@ static int bnxt_init_board(struct pci_dev *pdev, struct net_device *dev)
+ 		goto init_err_disable;
+ 	}
+ 
+-	if (dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64)) != 0 &&
+-	    dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32)) != 0) {
++	rc = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
++	if (rc) {
+ 		dev_err(&pdev->dev, "System does not support DMA, aborting\n");
+ 		rc = -EIO;
+ 		goto init_err_release;
+-- 
+2.27.0
 
