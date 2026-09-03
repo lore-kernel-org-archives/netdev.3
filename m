@@ -1,124 +1,161 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A594B5415;
-	Thu,  3 Sep 2026 14:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788446141; cv=none; b=YfP5SWyuLNuCCmNKQ1VnXAaayRbZypXvtxX3QywiyWD9SfHYjp+zp0CXcTkxOrB7b0eajSJ/CkgoRhHmUPyT/ru57N6HEIMXWfEGD5/e3LyIA+1Hzi824EOSrUQIorkw8qCdifBFV4WkVWbhX3kJPW/PqE18AeLptdThNN/9Okk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788446141; c=relaxed/simple;
-	bh=YjpaqXpvwSNhD5cxbWrTn7f9BvyFu9l97HslMp3oo/Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NxLStu61sEFJI5iws/K3jzfLzOj3PRjVClBORFoQ3APSFJYUn7L38AxDaHzAQkW5nxq0ZFjS4fYPz0eLJUi4i0Rxh524SFr/CcLEjEFB1dOAlEqIfNR8L89JfIZBHK2AXxyCqGau5Too/2GZYI/tAjSXPB0z2NDwbUS3ae4stZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=iPKVQ3jz; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9832E41F369
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 14:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788446225; cv=pass; b=i25WTDH3DzhmvU3hVRzLCDHus3AfEeqnxQoUNG5jl46X53pFvUlC6lUHuTgQTCvW5RnCE+PJa9DYd7vu8aUuhQe6MUVrdzvJHPjfC3D8FzJGEsqXXujXJWFIVHvi+juJz23Z5aoycyOoi0R/d9nAPAV5FlRtQPgUHQVU86A18fs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788446225; c=relaxed/simple;
+	bh=vZbQXvmGyW1/UKrE0sFXKT2KNHALtKdLQAjyI+9b7Y8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DT7ZfYVdYQMU3Kjf97+knDcUB+AUUoWb1rbVkyCDRUEGoI86NiSmBoLTWgciCaD5c6B0TENavM4cLS1+eIPGvEuh6WCdHO5dy7RWWW3jsjHcmqnoyapzGb0U/A0q3w9RFDhTVKhSC2szyRcaUFZij0xk7/QcIDe0cke2hPmv9Lk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NePxcv/Q; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="iPKVQ3jz"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683D6cjQ227829;
-	Thu, 3 Sep 2026 07:35:23 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=DI+TtN4uQGUZT5m13PgQA9B
-	E97AK+Mre10Xip4LDuDk=; b=iPKVQ3jzELex9MocaCbkzGwIexvsagQhDB62iTS
-	7N4v6ohRjYNEEbkTn8DU6J4td1RQvZQDfZsqhJXTf3Nt4OIk0xUkOCpwtjXaFbli
-	whnIor4iQjSt0cySsWd4Ygee1dkJViPIfj69fpsrUG2ZGJ7BuMRTQqdXhiMvnA/h
-	GaVIqeN5CsBKIvAbvnKKdhDOZ5WPL/wvTY+vj2NucZg5nLsZpn6HMy2xKo440O3U
-	QDJdHjjVkGivI7R3GEz+doIaV4lF3poKmrchQ6PsNWkdX/vMa0NHkO2SH2aGHqmU
-	vzzl6F5DFiFJcX5Mq0qZ7xGtcOmsN9UubOnV96W6qZaLvRw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gef5b52tm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Sep 2026 07:35:23 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 3 Sep 2026 07:35:22 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 3 Sep 2026 07:35:22 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id BB5A63F7052;
-	Thu,  3 Sep 2026 07:35:18 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Geetha sowjanya <gakula@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net] octeontx2-pf: fix null RX segment address free
-Date: Thu, 3 Sep 2026 20:05:15 +0530
-Message-ID: <20260903143516.2697708-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NePxcv/Q"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-52ff7e275e0so22897821cf.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 07:37:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788446221; cv=none;
+        d=google.com; s=arc-20260327;
+        b=B8QZYtRL+pk10HaJUMd2jfoNq+IHFs36IeAQG+0RjLyMizJ1+A2HQsfyy4yzW+xXLA
+         NK9797JkGaormYIHMl+tr3hBAV/Ao+sPo7i6bPs7cJrOSPD1vECqIfu4TobxB1TaDARr
+         Lz4oFqLrLtFTAUXS7YpreaSu9r2lwgPf5txg7lW0KhfaPMiWmYygItmATC/0N++i2WE+
+         Hp74W6CTrrhqtQiUKeKz5K3sgrAG1tbPNmeL+3Vqanux/Ol0sKrGhfO2Ojlx1ZuLhgGW
+         CVvWHR34vTlWvgwpKDo53eZ6Ni0FcUmcgBxPDxcyH4wtE4gu0T/nJyj+pPyC2kufUucs
+         E26Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=La57paUsnYX53CumeykdWBf/0oLfULFm4zC/h1xvH1E=;
+        fh=e5190AbwGS6RZ0qsmVT6yQBy9/N1vyEGLM+YGL4DSPY=;
+        b=iazLgYM5F5b7C2L1/UB0c+rSOfgYZ+gYYpBl3X+oTOP/b/nW8fHikj7M0ejkMUfNPM
+         Q+WUmd7nZTTlhouQaiZ1PwKaEOoTmizivc+Fr9vXQdr7VjifgXpa4C3DvS8Og3u2YtsG
+         M5CBbG2Eya8LDlroliDzpIPRQlFsGFGPeNABqJ6kRREAD1c+7grosNNbS6CA8Cx+P69s
+         xLESR6TIBKPxEMrUkwSdia0uW6pO+Js+uZqPns055JsE0th/wFHXQGYNiShXV3SLrRxF
+         ZrVOjLm/CkY3pAfNKLZKZBEJ+/XzsLp3jaiZgbbiS+4nAakCOI83xjdHZbzCbEl6dzWC
+         6fUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788446221; x=1789051021; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=La57paUsnYX53CumeykdWBf/0oLfULFm4zC/h1xvH1E=;
+        b=NePxcv/QibOq8ZEBsf9h+aGt1Ge66TAR/1ufEGGI9gslCJ/sNqRpgpDo6l8uMRBhib
+         2pEEcQWjDbL1yZsQ1WI3EdlDjXr8Ati1iqBDzmIl3/IsM21pAKx0ka/l4dJg90FJQ9Xy
+         nbI0lEvsnJj1MEKmDbigesCATicuRSEvDGXz7tlYTTbjJZoHNYWFIMfQnTNPLviIRtaD
+         l51UPnVidYRrc1V/DuITwCOVF/R61Sv9Ii/3/VMoa4svwL/GwuIYQBQIop1AcaoC7t3V
+         K9QfwQYC1c1oRQWliPIBCIa8+msBwp8+qIrQDJQP4l8SpLTgSoi0jyPjV824wUM3iY17
+         wLdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788446221; x=1789051021;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=La57paUsnYX53CumeykdWBf/0oLfULFm4zC/h1xvH1E=;
+        b=ZAc8R7WjDACPOx+CMPrjRXyVJS+6/V+uMZpkX25H4InOrUC+P2gg2z+K+gI7hRF6HI
+         jV6pQ+y2R4Fhl006g0gz3JrwMZRX0n/LZMTHpzbhZqMxyH6n4dcKF9ihs8B8s3F5E/zh
+         up2IQ1Zwkb9aJmByWZ7WO7/eG4E/iH+lLpWrC7S+F3zd4UbPXld6H/IOtwicctaf7f1I
+         bDg1j6999OnYBHFbIDRDp3B13p+IwO8R/PBpd2nTbzGY7mhTsX4Jih09G0IgftRo5F0I
+         zS18BPTWaaCgzcwizQDSTMUyP6U8aHzcCWsbfdBgErV7KybhZBb5Ob15Pwy3DrkaCkH8
+         aaOg==
+X-Forwarded-Encrypted: i=1; AKwUvBxDoOe+Ovm533qNM2vBNojhFBFZMsvBQN/t7SQZQr/9RTnw7hSLvvz+1HcZkgaPBtG4rffW5mM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxTElbIXwopp6cDO09OGCwTlzMGwhHdkEpdDxRBmqKIETAmjKd
+	GJXI6bjl+AwX3AWu/lf6vKwt9CP9dNZaEIRY6touWmq34sB/i7tLwaOo/O6y5LNK2/ENzdYFh2H
+	qvbZMp2WK7fqPopd2Tdw/WA6ATl1FZuxWnktQeda0qrIAoP3J8yy0U2dU7So=
+X-Gm-Gg: AYBFou2tcfcF2m2s659L1lQdm7BUiZYqNU9+FiKSXvm+EL9tGWRt1duOVlJSpb7L940
+	uZZAwZR8VcTzOEITJ4IOxtcpCGaxj34cTK6sI08A6/Urm1gIBhNqmw3vWPtghd0ArGtqrMtG3sP
+	/ETAoS+3+81t8F9+uT3I+aylgJt6BMz+13I3Itw6dYS0aS6Km9ek02SgYkGD4c20YR8q5gatsZP
+	DS3TWBtPXg6rXDZm0Ch5JaToqHDhkqVaeozZUfHCYHsgz1vScETCjlb1ND/rUO97xgA+zvSxy4S
+	OeTySGHe32xWA2R54PKE+GOhyiHWfRYCY/E22BmslTqEAGZd7sNx0yb+niBJX0EaFpLlBn1l1yM
+	9g5EAfCySDK3LBJcnv9qaEAUlWZaK18j/8Ek/8ZmhQ5a7ZpdaC/J2Zz9ikQ==
+X-Received: by 2002:a05:622a:1391:b0:530:42e4:f281 with SMTP id
+ d75a77b69052e-53042e4f99amr78832371cf.42.1788446219727; Thu, 03 Sep 2026
+ 07:36:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDEyNyBTYWx0ZWRfX4KtV1qYkcTbP
- UqiAWj4Qkw8G82YSsvz0oHQzb0l9t6s32gkcOCaTUAxySWI8qFO3XUoLVgTMIPvvEk4jYCViz1e
- HujdUKa0Hybp6hav9MDaqYn51nTDGRfJYbEFTgGtivggk2VxICMF5sesZyZu6PgvwUTdFCYPh9u
- 2oMrsKRZBKC1x3PZfJpgVM3fZJezlDNMnJnP1fo6rocf/VvhaL+M8vYpHIng5gO6yGofpQ29YRJ
- hYN+EbUX4NCGy+NwSUppuBFPZ/M9g2Bv9aWQQiUjHh3STtoRxrPVhK8aikKh7UcQlrElVb5CAXx
- zJ2FNmkyaMIiYvw3BYPYvoii+jjG+iPNIaWp7uSGKeD6k5SMDOME9MdfoGf2XoldglWsQ2TSN3b
- Zy03Bo9XwQtlt1XRV4yv9JiYkrQpJI2q8mVewMqBXjESQt+/hsQqyCDnRf/M/H/kxMYfuYY0VPC
- GkiWXyxCYNzn/DjXe6g==
-X-Proofpoint-GUID: p5RvlBYcphUB7z-dX6GFb9ngqj_VKNzX
-X-Authority-Analysis: v=2.4 cv=e6Y2j6p/ c=1 sm=1 tr=0 ts=6a9985ab cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=RKXXwRgqdNSa3DIiABwA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: p5RvlBYcphUB7z-dX6GFb9ngqj_VKNzX
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDEyNyBTYWx0ZWRfX7WPruttXJPlL
- PuhmbAo4EdbcE94GMsNOIQQl801EiP05dCCtHGh0erOHFkVNIRU4KCdbnKCcAuWjX5Uzsp/6+be
- kawwRWqVHh2IAj1/yA7SJTcAIEN2vHM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-03_04,2026-09-03_01,2025-10-01_01
+References: <20260903141204.40934-1-yilinzhang@moonshot.ai>
+In-Reply-To: <20260903141204.40934-1-yilinzhang@moonshot.ai>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 3 Sep 2026 16:36:48 +0200
+X-Gm-Features: AcwNN1XeB6M7fHc8_CMFwS-rDmM8_s4w0a_8KKsMOJLsJdLcokW0Xwm7DJ_4Mfw
+Message-ID: <CANn89i+8uLsaq91utS5d_W9ufUP-DC0-j=PRctwQFMTMZ_0FuQ@mail.gmail.com>
+Subject: Re: [PATCH] inet: frags: invalidate queues before flushing them
+To: Yilin Zhang <yilinzhang@moonshot.ai>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Kimi Security Team <bug-report@moonshot.ai>, Weiming Shi <shiweiming@moonshot.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Geetha sowjanya <gakula@marvell.com>
+On Thu, Sep 3, 2026 at 4:12=E2=80=AFPM Yilin Zhang <yilinzhang@moonshot.ai>=
+ wrote:
+>
+> fqdir_pre_exit() flushes the skbs from incomplete queues without
+> changing their completion state. A fragment which found a queue before
+> high_thresh was cleared can then acquire the queue lock and reuse stale
+> reassembly metadata.
+>
+> For IPv6, this can make ip6_frag_reasm() use the old nhoffset with a
+> new skb and access memory out of bounds. The resulting heap corruption
+> can be leveraged for local privilege escalation when unprivileged
+> network namespaces are available.
+>
+> Kill each queue before flushing it in fqdir_pre_exit(). This marks the
+> queue complete and releases any timer reference removed by
+> inet_frag_kill(), while leaving the hash reference for the asynchronous
+> fqdir teardown. In-flight fragments consequently take the existing
+> complete-queue drop path without changing the reusable-queue semantics
+> of inet_frag_queue_flush().
+>
 
-Avoid freeing RX segment addresses when the segment address is null.
-This prevents passing an invalid pointer to aura_freeptr().
+> Fixes: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()=
+")
+> Cc: stable@vger.kernel.org
+> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+> Tested-by: Weiming Shi <shiweiming@moonshot.ai>
+> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+> ---
+>  net/ipv4/inet_fragment.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
+> --- a/net/ipv4/inet_fragment.c
+> +++ b/net/ipv4/inet_fragment.c
+> @@ -235,15 +235,22 @@ void fqdir_pre_exit(struct fqdir *fqdir)
+>         rhashtable_walk_start(&hti);
+>
+>         while ((fq =3D rhashtable_walk_next(&hti))) {
+> +               int refs =3D 0;
+> +
+>                 if (IS_ERR(fq)) {
+>                         if (PTR_ERR(fq) !=3D -EAGAIN)
+>                                 break;
+>                         continue;
+>                 }
+>                 spin_lock_bh(&fq->lock);
+> -               if (!(fq->flags & INET_FRAG_COMPLETE))
+> +               if (!(fq->flags & INET_FRAG_COMPLETE)) {
+> +                       inet_frag_kill(fq, &refs);
+> +               }
 
-Fixes: b1bc8457e9d0 ("octeontx2-pf: Cleanup all receive buffers in SG descriptor")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
----
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+OK, but remove the braces as they are not needed per kernel coding style.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 8d2d607bc92f..a9aefd14ae52 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -256,9 +256,12 @@ static void otx2_free_rcv_seg(struct otx2_nic *pfvf, struct nix_cqe_rx_s *cqe,
- 	while (start < end) {
- 		sg = (struct nix_rx_sg_s *)start;
- 		seg_addr = &sg->seg_addr;
--		for (seg = 0; seg < sg->segs; seg++, seg_addr++)
-+		for (seg = 0; seg < sg->segs; seg++, seg_addr++) {
-+			if (unlikely(!*seg_addr))
-+				return;
- 			pfvf->hw_ops->aura_freeptr(pfvf, qidx,
- 						   *seg_addr & ~0x07ULL);
-+		}
- 		start += sizeof(*sg);
- 	}
- }
--- 
-2.48.1
+if (!(fq->flags & INET_FRAG_COMPLETE))
+        inet_frag_kill(fq, &refs);
 
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+
+Please wait ~24 hours before sending a new version, so that other
+reviewers can chime in.
+
+Thanks.
