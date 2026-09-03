@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD183B6362;
-	Thu,  3 Sep 2026 23:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF78E3BBFAD;
+	Thu,  3 Sep 2026 23:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788479076; cv=none; b=gZlFS6J+yWEA/oLljr8paHYWH/bsVef4QDIE/B0VIFAUbfJYmGTe7OgFoV7c5EXGDG3OmfH365j2Bend3i5uV1Iq9qBlGP2rTQxOq6+hmvMZK4KxaoX+MPo4SpzG6ngo3pNKqjGFFSBc1nZDPASwQuFERSA387vUBPlTR17B5kI=
+	t=1788479084; cv=none; b=Xj32IzNaoVsqtvfK1YsO7tuKgzTZQZUJNMrpCq5SPNAlxtNWPxZnsn/dUvrf/OAGw7CA/mCI6rg+zd5PrNtz2Kd0gL2QCNUQ13gtDmiWRWOTpBfoN9fNMFE8UIxEP3NxinnsYtpCEwo3P8cwpiJOM8Stu662Lkxtcmx9qOB8mug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788479076; c=relaxed/simple;
-	bh=1c3u9lbyrEK3Sipbuw+pzD7gE1dM6Vt3CXqxnRu4Q5w=;
+	s=arc-20240116; t=1788479084; c=relaxed/simple;
+	bh=cv/CdDHnF/j/JE9abIu74TZ7GStmXWG3MT8avEsGn/U=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tIXHVAy3fAT2aFfXHBcD7gkuGosZ7Owsv+oous85bju9evAp88gSnxt7WxcngWbTPPsRHT+DNybWt9nb1gzsUmMh0sbPBKbvDpn3/ADyJQjo7vqhUbM8xKQZcgH7Sf3yubp6kxlO89gZTiG0GNGIs+aTZM+YFzacj12jEZS9ZwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6FjUim2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Sr2u0tiMzfjTTQwkCTT+eqjHIWQ9vFDEiJB2g/hZal3trOUCP9zRjfSuaET1iLVHnEA8S2yRYlBySbZtLIOmaHno5XC7sHy6kbLPj3Q9AjJktAHuAbF9so2W5qraUu6fKecIKU7FMwZtxxfw1Z4i9AlhnDE0IVBr+cGC0dHLtkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RygBT2CG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6FjUim2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A301F000E9;
-	Thu,  3 Sep 2026 23:44:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RygBT2CG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDEC1F00A3D;
+	Thu,  3 Sep 2026 23:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788479071;
-	bh=A4PzUWSrsOlBl0EXImtelImvI4eWA9wr/zb8Q3KfysA=;
+	s=k20260515; t=1788479073;
+	bh=8PIIsvCnkMVBHT5zMeUU8FMuF1Spow1Sm251S4fyx7A=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=a6FjUim26h3MEwLkD/B0GoYimsRXx6av/k25aXbCc2jArRVFpveaLg0AGFwqJOTzZ
-	 t4XhIYPPXswDdD+AdR0FYe0TqkG2TUqBUXWDR/AQdhbB9F3pqJPuSUs+OWvriNqA7J
-	 1dCGgVmUfMiNFzQPpxdZdEZg2Oi5iUDKD17xPG4zhApCh73Xhz+eyQnxuMsM9Ps6o0
-	 lKD5aOFSB8UWF/DePIsAJ8hToodRRjOc/EMLQ7Ey+YCFKlEY2CxbuC6hZghD1icH79
-	 174wVkOH+nUTMXTtA1EilSwMt0V9yBqIDt/vjOk0Tn3N8czWjMbUOtVNXMQBZndhcn
-	 mPsot6Xf041Jw==
-Subject: Re: [PATCH v3 net-next 13/15] net: enetc: implement
- ndo_set_rx_mode_async for ENETC v4 VF
+	b=RygBT2CGB7mpo5qA2uSGPv7wMELWhYdDZKWni5RDfaeHrWjnn0eDOVlOBNvPuruA+
+	 vp8ADnOamu/gRkz49TroHbClAwgZAiqYg5lE4uThXlo6lIevRlpmY+JMtPEsiqxhX7
+	 yw7ikS++c/E4DovEun2qOq62eWiGQKd67TAPB/e255blwhbEqA+sUAPaYXO8dr9hoE
+	 Wbg/0EqOWhkhIIRBRwtv4j3+/EFez8RafHakTeAB8QUzh4wlp6OFV2/c9lV6FP0hh0
+	 ztMZAVbTUuGrVsy05MJCWFnhnjtd7F5rlDfofxebjYyoHix8giB/Se2N1U9aXF8/WI
+	 ZKj4/rcJ6ma7A==
+Subject: Re: [PATCH v3 net-next 14/15] net: enetc: add PSI-to-VSI link status
+ notification support for VF
 From: netdev-bot+sashiko@kernel.org
 To: wei.fang@oss.nxp.com
 Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
@@ -35,11 +35,11 @@ Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 23:44:30 +0000
-Message-ID: <178847907053.4131868.14448615471105460167@kernel.org>
-In-Reply-To: <20260831025441.635045-14-wei.fang@oss.nxp.com>
-References: <20260831025441.635045-14-wei.fang@oss.nxp.com>
-X-sashiko-severity: High
+Date: Thu, 03 Sep 2026 23:44:32 +0000
+Message-ID: <178847907205.4131868.7015450810217454362@kernel.org>
+In-Reply-To: <20260831025441.635045-15-wei.fang@oss.nxp.com>
+References: <20260831025441.635045-15-wei.fang@oss.nxp.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,376 +49,474 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 6 · Low: 1
 
-- [High] For the default (untrusted) ENETC v4 VF the PF handlers reject
-  exactly the messages the new callback sends, and…
-- [Medium] enetc_vf_set_rx_mode() narrows the SI's promiscuous
-  configuration before the replacement MAC hash filters are installed,…
-- [Low] The commit message describes the change as a plain Rx-mode
-  offload implementation for ENETC v4 VFs and never mentions that every…
-- [Low] The single enetc_ndev_ops table used by all ENETC VFs now
-  installs '.ndo_set_rx_mode_async = enetc_vf_set_rx_mode'…
+- [Medium] The PSI-to-VSI link-status notification protocol has no
+  coalescing, retry or re-query path, so the newest link state can be…
+- [Medium] The VF treats a CMD_SUCCESS reply to
+  ENETC_MSG_REGISTER_LINK_CHANGE_NOTIFIER as a guarantee that the PF…
+- [Medium] The PF-side link-status subscription (bit in
+  pf->link_status_ms_mask) is acquired with no guaranteed release, and…
+- [Medium] Teardown ordering bug: enetc_vf_remove()
+  (drivers/net/ethernet/freescale/enetc/enetc_vf.c:773-774) calls…
+- [Medium] Head-of-line blocking / lock inversion between rtnl_lock and
+  the VSI-PSI mailbox.
+- [Medium] enetc_vf_probe() enables the message-received interrupt and
+  then calls netif_carrier_off(ndev) *after* register_netdev() with no…
+- [Low] Claim: the commit message omits that
+  enetc_vf_msg_handle_link_status() also reprograms hardware…
 
 --
 
-net: enetc: implement ndo_set_rx_mode_async for ENETC v4 VF
+net: enetc: add PSI-to-VSI link status notification support for VF
 
-This adds ndo_set_rx_mode_async to the ENETC VF driver so MAC filter
-updates can be sent to the PF through the sleepable VSI mailbox path, and
-sets IFF_UNICAST_FLT for ENETC v4 VFs. Two helpers are added, one for the
-MAC promiscuous mode message and one for the 64-bit hash filter message.
+This adds two enetc_si_ops hooks so that a phy-less ENETC v4 VF registers a
+link status notifier with the PF over the VSI-to-PSI mailbox on open and
+unregisters it on close. Incoming PSI-to-VSI notifications are taken by a
+dedicated MSI-X vector and processed in a work item that updates the VF
+carrier.
 
-A few questions about the interaction with the PF-side trust checks and
-about the ordering of the two mailbox messages.
+I had a few questions about the new paths below.
 
-First, on the commit message itself:
-
-> The ndo_set_rx_mode_async callback selects the appropriate filter
-> configuration based on the current netdev flags:
->
->  - IFF_PROMISC: enable full promiscuous mode for both unicast and
->    multicast
->  - IFF_ALLMULTI: enable multicast promiscuous mode, disable unicast
->    promiscuous mode, and apply a unicast hash filter
->  - otherwise: disable all promiscuous modes and apply both
->               unicast and multicast hash filters
->
-> Set IFF_UNICAST_FLT in priv_flags for ENETC v4 VFs so the network stack
-> does not fall back to full promiscuous mode unnecessarily when unicast
-> address filtering is supported by the hardware.
->
-> This feature applies to ENETC v4 hardware only. ENETC v1 (LS1028A) does
-> not support VF-PF MAC filter messaging and the callback returns early
-> for such devices.
-
-[Severity: Low]
-Could the commit message mention that all of these messages are subject to
-the PF-side ENETC_VF_FLAG_TRUSTED check in enetc_msg.c?
-
-For an untrusted VF (the default), enetc_msg_set_vf_mac_promisc_mode()
-denies any promisc-enable and enetc_msg_set_vf_mac_hash_filter() denies
-unicast hash programming, so the described IFF_PROMISC and IFF_ALLMULTI
-behaviour does not take effect, and the justification for IFF_UNICAST_FLT
-("unicast address filtering is supported by the hardware") only holds for
-trusted VFs.
-
-The message also documents only the ENETC v1 early return, not the new
-policy at the out: label that maps -EOPNOTSUPP, -EACCES and -EPERM to 0.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> index 322705202d49..4e717afba7f7 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-> @@ -213,6 +213,142 @@ static int enetc_vf_setup_tc(struct net_device *ndev, enum tc_setup_type type,
->  	}
->  }
->  
-> +static int enetc_vf_set_mac_promisc(struct enetc_si *si, int type, bool en)
-> +{
-> +	struct enetc_msg_mac_promisc_mode *msg;
-> +	struct device *dev = &si->pdev->dev;
-> +	struct enetc_msg_swbd msg_swbd;
-> +
-> +	if (!(type & ENETC_MAC_FILTER_TYPE_ALL))
-> +		return -EINVAL;
-> +
-> +	msg_swbd.size = ALIGN(sizeof(*msg), ENETC_MSG_ALIGN);
-> +	msg_swbd.vaddr = dma_alloc_coherent(dev, msg_swbd.size,
-> +					    &msg_swbd.dma, GFP_KERNEL);
-> +	if (!msg_swbd.vaddr)
-> +		return -ENOMEM;
-> +
-> +	msg = (struct enetc_msg_mac_promisc_mode *)msg_swbd.vaddr;
-> +	msg->config = FIELD_PREP(ENETC_MSG_MAC_TYPE,
-> +				 type & ENETC_MAC_FILTER_TYPE_ALL);
-> +	msg->config |= FIELD_PREP(ENETC_MSG_MAC_PROMISC_MODE, en);
-> +	msg->config |= FIELD_PREP(ENETC_MSG_MAC_FLUSH_MACS, en);
-> +	enetc_msg_fill_common_hdr(&msg_swbd, ENETC_MSG_CLASS_ID_MAC_FILTER,
-> +				  ENETC_MSG_SET_MAC_PROMISC_MODE, 0, 0);
-> +
-> +	return enetc_msg_vsi_send(si, &msg_swbd);
-> +}
-> +
-> +static int enetc_vf_set_mac_hash_filter(struct enetc_si *si,
-> +					struct netdev_hw_addr_list *uc,
-> +					struct netdev_hw_addr_list *mc)
-> +{
-> +	struct enetc_msg_mac_hash_filter *msg;
-> +	struct enetc_mac_filter *mac_filter;
-> +	struct device *dev = &si->pdev->dev;
-> +	struct net_device *ndev = si->ndev;
-> +	struct enetc_msg_swbd msg_swbd;
-> +	struct netdev_hw_addr *ha;
-> +	u32 msg_size, tbl_cnt;
-> +	int mac_filter_type;
-> +	int i = 0;
-> +
-> +	if (ndev->flags & IFF_PROMISC)
-> +		return 0;
-> +
-> +	if (ndev->flags & IFF_ALLMULTI) {
-> +		tbl_cnt = 2;
-> +		mac_filter_type = ENETC_MAC_FILTER_TYPE_UC;
-> +	} else {
-> +		tbl_cnt = 4;
-> +		mac_filter_type = ENETC_MAC_FILTER_TYPE_ALL;
-> +	}
-> +
-
-[ ... ]
-
-> +	if (mac_filter_type & ENETC_MAC_FILTER_TYPE_UC) {
-> +		mac_filter = &si->mac_filter[UC];
-> +		enetc_reset_mac_addr_filter(mac_filter);
-> +		netdev_hw_addr_list_for_each(ha, uc)
-> +			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
-> +
-> +		bitmap_to_arr32(&msg->hash_tbl[i], mac_filter->mac_hash_table,
-> +				ENETC_MADDR_HASH_TBL_SZ);
-> +		i += 2;
-> +	}
-> +
-> +	if (mac_filter_type & ENETC_MAC_FILTER_TYPE_MC) {
-> +		mac_filter = &si->mac_filter[MC];
-> +		enetc_reset_mac_addr_filter(mac_filter);
-> +		netdev_hw_addr_list_for_each(ha, mc)
-> +			enetc_add_mac_addr_ht_filter(mac_filter, ha->addr);
-> +
-> +		bitmap_to_arr32(&msg->hash_tbl[i], mac_filter->mac_hash_table,
-> +				ENETC_MADDR_HASH_TBL_SZ);
-> +	}
-> +
-> +	enetc_msg_fill_common_hdr(&msg_swbd, ENETC_MSG_CLASS_ID_MAC_FILTER,
-> +				  ENETC_MSG_SET_MAC_HASH_TABLE, 0, 0);
-> +
-> +	return enetc_msg_vsi_send(si, &msg_swbd);
-> +}
-> +
-> +static int enetc_vf_set_rx_mode(struct net_device *ndev,
-> +				struct netdev_hw_addr_list *uc,
-> +				struct netdev_hw_addr_list *mc)
-> +{
-> +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 803c5c541a5c..fb5df740650e 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -2935,11 +2935,31 @@ static void enetc_clear_interrupts(struct enetc_ndev_priv *priv)
+>  static int enetc_phylink_connect(struct net_device *ndev)
+>  {
+>  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
 > +	struct enetc_si *si = priv->si;
-> +	int err;
+>  	struct ethtool_keee edata;
+>  	int err;
+>  
+>  	if (!priv->phylink) {
+>  		/* phy-less mode */
+> +		if (!si->ops->vf_reg_link_status_notifier)
+> +			goto carrier_on;
 > +
-> +	/* For ENETC v1, we cannot return -EOPNOTSUPP or any other error,
-> +	 * otherwise ndev->rx_mode_retry_timer will try to set rx_mode
-> +	 * multiple times, which is pointless.
-> +	 */
-> +	if (is_enetc_rev1(si))
-> +		return 0;
-> +
-> +	if (ndev->flags & IFF_PROMISC) {
-> +		err = enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_ALL,
-> +					       true);
-> +	} else if (ndev->flags & IFF_ALLMULTI) {
-> +		err = enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_UC,
-> +					       false);
-> +		if (err)
-> +			goto out;
-> +
-> +		err = enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_MC,
-> +					       true);
-> +	} else {
-> +		err = enetc_vf_set_mac_promisc(si, ENETC_MAC_FILTER_TYPE_ALL,
-> +					       false);
-> +	}
-> +
-> +	if (err)
-> +		goto out;
-> +
-> +	err = enetc_vf_set_mac_hash_filter(si, uc, mc);
-> +
+> +		/* For phy-less VFs on ENETC v4, attempt to register a link
+> +		 * status notifier with the PF via the VSI-to-PSI messaging
+> +		 * channel. If registration succeeds, the PF will immediately
+> +		 * send the current link status and broadcast future link
+> +		 * transitions; carrier state is then managed in
+> +		 * enetc_vf_msg_handle_link_status(). If registration fails,
+> +		 * fall back to the LS1028A behaviour and assert carrier
+> +		 * unconditionally via netif_carrier_on().
+> +		 */
+> +		if (!si->ops->vf_reg_link_status_notifier(si))
+> +			return 0;
 
 [Severity: Medium]
-Is the order of these two mailbox transactions the right way round?
 
-enetc_vf_set_mac_promisc() sends FLUSH_MACS together with en, and the PF
-handler zeroes both hash filter registers when FLUSH_MACS is set:
+Here a CMD_SUCCESS reply to ENETC_MSG_REGISTER_LINK_CHANGE_NOTIFIER is
+taken as a promise that the PF registered the VF and will push the current
+link status, so this path returns without calling netif_carrier_on() and
+without any timeout fallback.
 
-drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_mac_promisc_mode() {
-	...
-	if ((type & ENETC_MAC_FILTER_TYPE_UC) && flush_macs)
-		enetc_set_si_uc_hash_filter(si, si_id, 0);
+Does the PF side keep that promise? enetc_msg_register_link_status_notifier()
+writes the SUCCESS reply first and only then checks sriov_enabled:
 
-	if ((type & ENETC_MAC_FILTER_TYPE_MC) && flush_macs)
-		enetc_set_si_mc_hash_filter(si, si_id, 0);
-	...
-}
+	enetc_pf_reply_msg(&pf->si->hw, vf_id, pf_msg);
 
-So while promiscuous mode is active the SI hash filters are known to be
-empty (enetc_vf_set_mac_hash_filter() also returns early for IFF_PROMISC).
-On the way out of promiscuous mode this function completes the
-promisc-disable round trip first and only then installs the replacement
-hash filters.
+	/* SR-IOV is being disabled if pf->sriov_enabled is false, so no
+	 * need to set link_status_ms_mask and notify the link status.
+	 */
+	if (!pf->sriov_enabled)
+		goto msg_unlock;
 
-Each enetc_msg_vsi_send() is a blocking round trip polled with
-read_poll_timeout(..., 1000, 200000, ...). Between the two sends the SI has
-promiscuity cleared and empty hash filters - can that drop all multicast
-and secondary unicast frames for the duration, two round trips in the
-IFF_ALLMULTI branch?
+so both pf->link_status_ms_mask |= PSIMSGSR_MS(vf_id) and the immediate
+enetc_msg_notify_vf_link_status() are skipped after the VF has already been
+told SUCCESS.
 
-And if the hash filter send then fails (-EIO "VSI mailbox is busy", -ETIME
-on mailbox timeout, -EBUSY for a busy PSI), the promisc-off write is
-already committed and is not undone; netif_rx_mode_schedule_retry() gives
-up after NETIF_RX_MODE_RETRY_MAX attempts:
+That window is entered by enetc_sriov_configure(pdev, 0) (echo 0 >
+sriov_numvfs) and by the pci_enable_sriov() error path, both before the VFs
+are torn down.
 
-net/core/dev_addr_lists.c:netif_rx_mode_schedule_retry() {
-	if (dev->rx_mode_retry_count >= NETIF_RX_MODE_RETRY_MAX) {
-		netdev_err(dev, "rx_mode retry limit reached, giving up\n");
-		return;
-	}
-	...
-}
+Even with sriov_enabled true, the immediate notification can fail inside
+enetc_pf_send_msg() (-EIO when the VF MS bit is still set, or the 200 ms
+timeout) and is only reported with dev_err_ratelimited("PF notifies link
+status failed").
 
-Would programming the new (superset) filters before narrowing the
-promiscuous bits avoid both the window and the stuck state? The PF side
-already does something similar in enetc4_pf_set_uc_exact_filter() with its
-temporary unicast hash filter.
+In these cases, is the VF left administratively up with carrier off, with no
+traffic, until a manual down/up?
 
-> +out:
-> +	/* If the error code is -EOPNOTSUPP or -EACCES or -EPERM, return 0
-> +	 * directly to avoid meaningless retries.
-> +	 */
-> +	if (err == -EOPNOTSUPP || err == -EACCES || err == -EPERM)
-> +		return 0;
 > +
-> +	return err;
+> +		dev_warn(&ndev->dev,
+> +			 "Link status notifier registration failed\n");
+> +
+> +carrier_on:
+>  		netif_carrier_on(ndev);
+>  		return 0;
+>  	}
+
+[ ... ]
+
+> @@ -3051,8 +3072,15 @@ int enetc_open(struct net_device *ndev)
+>  err_alloc_rx:
+>  	enetc_free_tx_resources(tx_res, priv->num_tx_rings);
+>  err_alloc_tx:
+> -	if (priv->phylink)
+> +	if (priv->phylink) {
+>  		phylink_disconnect_phy(priv->phylink);
+> +	} else if (si->ops->vf_unreg_link_status_notifier &&
+> +		   test_bit(ENETC_LINK_STATUS_NOTIFIER_REGISTERED,
+> +			    &priv->flags)) {
+> +		if (si->ops->vf_unreg_link_status_notifier(si))
+> +			dev_warn(&ndev->dev,
+> +				 "Link status notifier unregistration failed\n");
+> +	}
+>  err_phy_connect:
+>  	enetc_free_irqs(priv);
+>  err_setup_irqs:
+
+[ ... ]
+
+> @@ -3100,6 +3129,17 @@ int enetc_close(struct net_device *ndev)
+>  		phylink_stop(priv->phylink);
+>  		phylink_disconnect_phy(priv->phylink);
+>  	} else {
+> +		if (!si->ops->vf_unreg_link_status_notifier ||
+> +		    !test_bit(ENETC_LINK_STATUS_NOTIFIER_REGISTERED,
+> +			      &priv->flags))
+> +			goto carrier_off;
+> +
+> +		if (!si->ops->vf_unreg_link_status_notifier(si))
+> +			goto carrier_off;
+> +
+> +		dev_warn(&ndev->dev,
+> +			 "Link status notifier unregistration failed\n");
+> +carrier_off:
+>  		netif_carrier_off(ndev);
+>  	}
+
+[Severity: Medium]
+
+Both new unregister call sites, here and in the enetc_open() unwind, are
+gated on ENETC_LINK_STATUS_NOTIFIER_REGISTERED, but that flag is only set
+when the whole mailbox round trip returned 0:
+
+enetc_vf_reg_link_status_notifier()
+	err = enetc_msg_link_status_notifier(si, true);
+	if (!err)
+		set_bit(ENETC_LINK_STATUS_NOTIFIER_REGISTERED, &priv->flags);
+
+On the PF side, enetc_msg_register_link_status_notifier() replies first and
+sets pf->link_status_ms_mask |= PSIMSGSR_MS(vf_id) afterwards.
+
+So if enetc_msg_vsi_send() hits its 200 ms read_poll_timeout (-ETIME) or
+-EIO, the PF is registered while the VF flag stays clear, and this code
+takes the goto carrier_off path so UNREGISTER is never sent. Can the
+PF-side subscription be leaked this way?
+
+A failed unregister is likewise only warned about and leaves the flag set,
+and enetc_vf_remove() relies solely on unregister_netdev() -> enetc_close(),
+so after close or unbind the PF keeps notifying a VF that can no longer
+acknowledge, paying the full 200 ms poll under pf->msg_lock which also
+serialises mailbox service for the other VFs.
+
+enetc4_pf_vf_flr_handler() restores promisc state but does not clear the
+reset VF's bit in link_status_ms_mask either. Would a forced unregister in
+enetc_vf_remove(), plus clearing link_status_ms_mask on FLR, be appropriate?
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> index 4e717afba7f7..a4d0089ef1a9 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+
+[ ... ]
+
+> @@ -435,6 +481,128 @@ static void enetc_vf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
+>  	enetc_load_primary_mac_addr(&si->hw, ndev);
+>  }
+>  
+> +static void enetc_vf_enable_mr_int(struct enetc_si *si)
+> +{
+> +	if (is_enetc_rev1(si))
+> +		return;
+> +
+> +	enetc_wr(&si->hw, ENETC_VSIIER, VSIIER_MRIE);
+> +}
+> +
+> +static void enetc_vf_disable_mr_int(struct enetc_si *si)
+> +{
+> +	if (is_enetc_rev1(si))
+> +		return;
+> +
+> +	enetc_wr(&si->hw, ENETC_VSIIER, 0);
+> +}
+> +
+> +static void enetc_vf_msg_handle_link_status(struct enetc_si *si, u8 status)
+> +{
+> +	bool tx_pause = !!(status & ENETC_CLASS_CODE_TX_PAUSE_EN);
+> +	bool link_down = !!(status & ENETC_CLASS_CODE_LINK_DOWN);
+> +	struct enetc_ndev_priv *priv = netdev_priv(si->ndev);
+> +	struct net_device *ndev = si->ndev;
+> +
+> +	rtnl_lock();
+
+[Severity: Medium]
+
+Is rtnl_lock() needed here? netif_carrier_on()/netif_carrier_off() do not
+require it, and enetc_set_congestion_mode() already serialises on
+si->gen_lock.
+
+Taking rtnl in this work item ties PF message acknowledgement to rtnl
+availability. Every VSI-to-PSI sender runs with rtnl held and busy-polls the
+PF for up to 200 ms inside enetc_msg_vsi_send(): the two new notifier ops
+called from enetc_phylink_connect() and enetc_close(), plus
+enetc_vf_set_mac_addr() and the rx-mode async worker.
+
+There is a single si->msg_task on an ordered workqueue and MRIE stays masked
+from enetc_vf_msg_msix_handler() until it completes, so while one invocation
+is parked on rtnl_lock() no further PF message can be acked:
+
+VF work item                        VF rtnl holder (ip link set <vf> down)
+enetc_vf_msg_task()
+  enetc_vf_msg_handle_link_status()
+    rtnl_lock()  <- blocks          enetc_close()
+                                      vf_unreg_link_status_notifier()
+                                        enetc_msg_vsi_send() 200 ms poll
+
+The PF in turn holds pf->msg_lock while polling for that same VF's ack.
+
+Does this resolve only when the 200 ms timeouts fire, leaving "VSI mailbox
+timeout" and "Link status notifier unregistration failed", a leaked PF
+registration and a lost link transition?
+
+> +	if (!netif_running(ndev))
+> +		goto unlock_rtnl;
+> +
+> +	if (link_down) {
+> +		if (netif_carrier_ok(ndev)) {
+> +			netif_carrier_off(ndev);
+> +			netdev_info(ndev, "Link is Down\n");
+> +		}
+> +
+> +		goto unlock_rtnl;
+> +	}
+> +
+> +	/* Link is up */
+> +	enetc_set_congestion_mode(priv, tx_pause);
+
+[Severity: Low]
+
+This isn't a bug, but the commit message says only that the work item
+"parses the notification and updates the carrier state via
+netif_carrier_on() or netif_carrier_off() accordingly". It does not mention
+that the same notification reprograms hardware, updating the congestion
+mode bit in ENETC_RBMR for every VF Rx BD ring from the PF TX pause bit.
+Could that be spelled out in the changelog?
+
+> +
+> +	if (!netif_carrier_ok(ndev)) {
+> +		netif_carrier_on(ndev);
+> +		netdev_info(ndev, "Link is Up, tx pause %s\n",
+> +			    tx_pause ? "on" : "off");
+> +	}
+> +
+> +unlock_rtnl:
+> +	rtnl_unlock();
+> +}
+> +
+> +static void enetc_vf_msg_task(struct work_struct *work)
+> +{
+> +	struct enetc_si *si = container_of(work, struct enetc_si, msg_task);
+> +	struct enetc_hw *hw = &si->hw;
+> +	u8 class_id, class_code;
+> +	u16 pf_msg;
+> +
+> +	/* W1C to clear the message received interrupt event */
+> +	enetc_wr(hw, ENETC_VSIIDR, VSIIDR_MR);
+> +
+> +	/* Reading VSIMSGRR retrieves the message data and acknowledges to
+> +	 * the PF that the message was received and another message can be
+> +	 * sent.
+> +	 */
+> +	pf_msg = FIELD_GET(VSIMSGRR_MC, enetc_rd(hw, ENETC_VSIMSGRR));
+
+[Severity: Medium]
+
+Only the single 16-bit value VSIMSGRR currently holds is ever consumed, and
+the VF never sends ENETC_MSG_GET_CURRENT_LINK_STATUS even though the
+protocol defines it and the PF already handles it.
+
+On the PF side, enetc_pf_send_msg() drops every VF whose MS bit is still
+set:
+
+	ms_status = enetc_rd(hw, ENETC_PSIMSGSR) & 0xffff;
+	ms_mask &= ~ms_status;
+	if (!ms_mask)
+		return -EIO;
+
+and enetc_msg_notify_vf_link_status() only logs "PF notifies link status
+failed" without storing the pending state or retrying once the MS bit
+clears.
+
+If the VF has not read VSIMSGRR within the PF's 200 ms poll, the ack being
+deferred to this work item with MRIE masked meanwhile, and the link then
+changes again, the second transition is skipped for that VF and never
+resent.
+
+Does the VF carrier then stay at the older state, including carrier off
+which blocks all VF transmit, until some later PF transition happens to
+succeed?
+
+> +	class_id = FIELD_GET(ENETC_PF_MSG_CLASS_ID, pf_msg);
+> +
+> +	switch (class_id) {
+> +	case ENETC_MSG_CLASS_ID_LINK_STATUS:
+> +		class_code = FIELD_GET(ENETC_PF_MSG_CLASS_CODE_U8, pf_msg);
+> +		enetc_vf_msg_handle_link_status(si, class_code);
+> +		break;
+> +	default:
+> +		dev_err(&si->pdev->dev,
+> +			"Unsupported Message Class ID (0x%02x) from PF\n",
+> +			class_id);
+> +	}
+> +
+> +	enetc_vf_enable_mr_int(si);
+> +}
+> +
+> +static irqreturn_t enetc_vf_msg_msix_handler(int irq, void *data)
+> +{
+> +	struct enetc_si *si = (struct enetc_si *)data;
+> +
+> +	enetc_vf_disable_mr_int(si);
+> +	queue_work(si->workqueue, &si->msg_task);
+> +
+> +	return IRQ_HANDLED;
 > +}
 > +
 
-[Severity: High]
-For an untrusted VF - the default, since pf->vf_state is allocated with
-devm_kcalloc() and ENETC_VF_FLAG_TRUSTED is only set by
-enetc_pf_set_vf_trust() - the PF handlers reject exactly the messages this
-callback sends.
+[ ... ]
 
-drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_mac_promisc_mode() {
-	...
-	promisc = !!(msg->config & ENETC_MSG_MAC_PROMISC_MODE);
-	if (promisc && !(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
-		pf_msg = ENETC_PF_MSG_PERM_DENY;
-		goto vf_state_unlock;
-	}
-	...
-}
-
-drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_set_vf_mac_hash_filter() {
-	...
-	case ENETC_MAC_FILTER_TYPE_UC:
-		if (!trusted) {
-			pf_msg = ENETC_PF_MSG_PERM_DENY;
-			goto vf_state_unlock;
-		}
-	...
-	case ENETC_MAC_FILTER_TYPE_ALL:
-		...
-		if (!trusted &&
-		    (hweight64(mc_hash) <= ENETC_VF_MC_HASH_BITS_MAX)) {
-			enetc_set_si_mc_hash_filter(si, si_id, mc_hash);
-			pf_msg = ENETC_PF_MSG_MF(ENETC_MF_CLASS_CODE_UCF_DENY);
-			goto vf_state_unlock;
-		}
-
-		if (!trusted) {
-			pf_msg = ENETC_PF_MSG_PERM_DENY;
-			goto vf_state_unlock;
-		}
-	...
-}
-
-enetc_msg_vsi_send() maps PERMISSION_DENY and UCF_DENY to -EACCES and
-returns before the dev_err(), so there is not even a log line.
-
-In the IFF_ALLMULTI branch, does the MC promisc-enable message therefore
-always fail on an untrusted VF, making "if (err) goto out;" skip
-enetc_vf_set_mac_hash_filter() completely?
-
-Even when it is reached, enetc_vf_set_mac_hash_filter() selects
-mac_filter_type = ENETC_MAC_FILTER_TYPE_UC under IFF_ALLMULTI, so the mc
-snapshot handed in by the core is never converted into an MC hash table.
-With MC promiscuous mode denied as well, does the multicast hash filter
-stay frozen at its previous contents - so groups joined after the VF is
-enslaved to a bridge or gets a macvlan on top (both call
-dev_set_allmulti()), such as IPv6 solicited-node addresses or mDNS, are
-silently dropped by hardware?
-
-In the default branch the TYPE_ALL message is refused outright once more
-than ENETC_VF_MC_HASH_BITS_MAX (8) multicast hash bits are set, so
-PSIMMHFR0/1 keeps its stale value. Would it be worth falling back to the
-MC-only message, which the PF does accept from an untrusted VF?
-
-The out: block then turns -EACCES, -EPERM and -EOPNOTSUPP into 0, and the
-core treats that as "installed":
-
-net/core/dev_addr_lists.c:netif_rx_mode_run() {
-	...
-		if (err)
-			netif_rx_mode_schedule_retry(dev);
-		else
-			dev->rx_mode_retry_count = 0;
-	...
-}
-
-Can this leave the SI hash filters permanently out of sync with the address
-list the stack believes is programmed, with no retry and no message? Since
-this patch also sets IFF_UNICAST_FLT, the core's unicast promiscuous
-fallback is suppressed too.
-
-Two related points: the promisc-disable message carries FLUSH_MACS = en =
-false, so a denied hash filter update can also leave hardware more
-permissive than requested (removed multicast groups keep being received).
-And when trust is granted later, enetc_pf_set_vf_trust() only flips the
-PF-side flag - nothing replays or re-requests the receive mode
-configuration that the VF already reported as successfully installed, so
-does a configuration denied while untrusted stay unapplied indefinitely?
-
->  /* Probing/ Init */
->  static const struct net_device_ops enetc_ndev_ops = {
->  	.ndo_open		= enetc_open,
-> @@ -225,6 +361,7 @@ static const struct net_device_ops enetc_ndev_ops = {
->  	.ndo_setup_tc		= enetc_vf_setup_tc,
->  	.ndo_hwtstamp_get	= enetc_hwtstamp_get,
->  	.ndo_hwtstamp_set	= enetc_hwtstamp_set,
-> +	.ndo_set_rx_mode_async	= enetc_vf_set_rx_mode,
->  };
-
-[Severity: Low]
-This ops table is shared by ENETC v1 and v4 VFs, but the callback returns 0
-immediately for v1 without programming anything. Core code uses callback
-presence as the rx-filtering capability test:
-
-net/core/dev_ioctl.c:dev_ifsioc() {
-	...
-	case SIOCADDMULTI:
-		if ((!ops->ndo_set_rx_mode && !ops->ndo_set_rx_mode_async) ||
-		    ifr->ifr_hwaddr.sa_family != AF_UNSPEC)
-			return -EINVAL;
-	...
-}
-
-Does SIOCADDMULTI/SIOCDELMULTI on an ENETC v1 VF now return success instead
-of -EINVAL while no hardware filter is touched, and __dev_set_rx_mode()
-queue rx-mode work that can never do anything? Could the revision test be
-applied where the ops are selected, as the probe path already does for
-si->ops, so the capability is only advertised where it is implemented?
-
->  
->  static void enetc_vf_get_revision(struct enetc_si *si)
-> @@ -280,6 +417,9 @@ static void enetc_vf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
->  	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
->  			      NETIF_F_TSO | NETIF_F_TSO6;
->  
-> +	if (!is_enetc_rev1(si))
-> +		ndev->priv_flags |= IFF_UNICAST_FLT;
-> +
+> @@ -447,8 +615,38 @@ static const struct enetc_si_ops enetc4_vsi_ops = {
 
 [ ... ]
+
+> +static void enetc_vf_wq_task_destroy(struct enetc_si *si)
+> +{
+> +	if (!si->workqueue)
+> +		return;
+> +
+> +	disable_work_sync(&si->msg_task);
+> +
+> +	/* The MR interrupt may be re-enabled by si->msg_task */
+> +	enetc_vf_disable_mr_int(si);
+> +
+> +	destroy_workqueue(si->workqueue);
+> +}
+> +
+>  static int enetc_vf_probe(struct pci_dev *pdev,
+>  			  const struct pci_device_id *ent)
+>  {
+> @@ -520,15 +718,33 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+>  		goto err_alloc_msix;
+>  	}
+>  
+> +	err = enetc_vf_wq_task_init(si);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "Failed to init workqueue\n");
+> +		goto err_wq_init;
+> +	}
+> +
+> +	err = enetc_vf_register_msg_msix(si);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "Failed to register msg irq\n");
+> +		goto err_register_msg_msix;
+> +	}
+> +
+>  	err = register_netdev(ndev);
+>  	if (err)
+>  		goto err_reg_netdev;
+>  
+> +	/* Enable message received interrupt */
+> +	enetc_vf_enable_mr_int(si);
+>  	netif_carrier_off(ndev);
+
+[Severity: Medium]
+
+This netif_carrier_off() runs after register_netdev() has published the
+interface and dropped rtnl, with no lock held, while the new work item
+writes the same carrier bit under rtnl. If the probe thread is preempted
+after register_netdev(), can this happen?
+
+  probe                            udev / ifup
+  register_netdev()
+                                   enetc_open()
+                                     enetc_phylink_connect()
+                                       vf_reg_link_status_notifier()
+                                   PF sends current link status
+                                   enetc_vf_msg_task()
+                                     netif_carrier_on()  (rtnl held)
+  netif_carrier_off()   <- reverts it
+
+Since the carrier is now driven only by PF transition notifications, with no
+periodic refresh and no VF-side status query, the interface would stay up
+with carrier off until the next physical PF link change.
+
+Would moving netif_carrier_off() and enetc_vf_enable_mr_int() before
+register_netdev() avoid this? The netif_running() check in
+enetc_vf_msg_handle_link_status() should make the earlier interrupt enable
+harmless.
+
+>  
+>  	return 0;
+>  
+>  err_reg_netdev:
+> +	enetc_vf_free_msg_msix(si);
+> +err_register_msg_msix:
+> +	enetc_vf_wq_task_destroy(si);
+> +err_wq_init:
+>  	enetc_free_msix(priv);
+>  err_config_si:
+>  err_alloc_msix:
+> @@ -554,8 +770,11 @@ static void enetc_vf_remove(struct pci_dev *pdev)
+>  	struct enetc_msg_swbd msg;
+>  
+>  	priv = netdev_priv(si->ndev);
+> +	enetc_vf_disable_mr_int(si);
+>  	unregister_netdev(si->ndev);
+
+[Severity: Medium]
+
+Is this ordering intentional? enetc_vf_disable_mr_int() masks VSIIER while
+the VF is still present in pf->link_status_ms_mask, because the
+UNREGISTER_LINK_CHANGE_NOTIFIER message is only sent later from
+enetc_close(), reached via unregister_netdev() -> dev_close().
+
+A PF link transition landing in that window writes PSIMSGSR and polls up to
+200 ms under pf->msg_lock, but nothing can read ENETC_VSIMSGRR any more:
+the MR interrupt is masked, and enetc_vf_wq_task_destroy() then calls
+disable_work_sync() and masks MRIE again, so enetc_vf_msg_task() never runs.
+Per enetc_pf_send_msg()'s own comment, reading VSIMSGRR is the only way to
+clear the MS bit, "the MS bit can only be written as 1, writing a 0 has no
+effect".
+
+Does the MS bit then stay asserted across an unbind, so that on the next
+probe and open enetc_pf_send_msg()
+
+	ms_mask &= ~ms_status;
+	if (!ms_mask)
+		return -EIO;
+
+drops the initial link status notification for the freshly registered VF,
+whose carrier stays off because enetc_phylink_connect() skips
+netif_carrier_on() on registration success?
+
+The early disable also looks redundant, since enetc_vf_wq_task_destroy()
+already performs the final MRIE disable after disable_work_sync().
+
+>  
+> +	enetc_vf_free_msg_msix(si);
+> +	enetc_vf_wq_task_destroy(si);
+>  	enetc_free_msix(priv);
+>  
+>  	enetc_free_si_resources(priv);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831025441.635045-1-wei.fang%40oss.nxp.com
