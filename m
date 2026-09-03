@@ -1,91 +1,162 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E66A4E2343;
-	Thu,  3 Sep 2026 15:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4B44D8DB5
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 15:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788450440; cv=none; b=ZTz/1afxsqx0rAq07r0xTnanlti4cR4CP/AJCxZnEtlvuuoRZnYAuTuBSKBIpQqPZKNwnUlZjh/qPFJqY7AC28/fFFc2GnHSi19ju14l5aq28F8jaN+ujh/LCXDTeXxmptPu0Vkbvba6DioPmpQ8dmmhrz5csP8XIcdma5vjxKA=
+	t=1788450936; cv=none; b=hrj6kGybe1KWmYi20dxf3OspfJafIsghEVW5fXmE++ySsKtvrAnn8vpTzReyKespfwH1feAS3rxR5JSIA61At4A4aJUTj0cCaY/IwglQCQFWCjQwEBCE1Gz1URTtaydqLHAuBTVWWAyvajoZD/eHjaSmK97EvqCHAa99OCixk4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788450440; c=relaxed/simple;
-	bh=XM1j/aLph87KjehGhzloy5KQFE5iSI5nWnm3VvgFBCE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mTwqVMsYSgQnxuRmtnIipYqE+8nPEg+bS1QL0axO14c5LELIxbSL++a9w9j48M935nD7XZz8+o6Gp0ILyfuz4zHlL9AkGNYolX7Y6ZWEXf6t+u52Urm82VR1otTMFXyXD/2cjGJ44SGskoyZ+P5Bm2tqx9cjyLE1fFHpisozYw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=NGyegiiF; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1788450936; c=relaxed/simple;
+	bh=8riOprZzOx5VNxFq6Mu0JLi7Psb/3lqKj9XMOrlRwV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AF4SZ0leXYiJSB8hnUG6EXIm1cXwBVK6u02GyLMCSk+dRCRKT7lQCAF7dSh7DmkKd0rWT4W8781+Yd+U7CvZ+8DI3JcWsdYUWaBwRvNe8gjFhyV1f2f3xV4JtRR7uMK5AaWvxbhJkUTTEFPEJzH5QjG24F6uJO4IK3HMxllx97A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MwEFw8ZF; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="NGyegiiF"
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 1AFC4583856;
-	Thu,  3 Sep 2026 15:10:57 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D1133EF90;
-	Thu,  3 Sep 2026 15:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1788448254; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=uYXVTMatMDH0138orMZx6ToE2yw83S5uLOlwjJpjVh4=;
-	b=NGyegiiFn+j6/YRzTlbdj0VS4x/hJZZriNEvhhpWyEVsdgPxTMNFT/BNYuYZIqqFlpE2Zq
-	vy7IZ+5aRshKRX5KbUsb7+hjxXMrsy198rjXpVaBgBFUg1kedPRAENPul43JGP6YJhJVHn
-	qbpdBzX85Nb0jHB7PBb/JTFF+V91T5LQc1l7+AZGfnuhUN0ZTRkc1ov+Ih3wIHbxrMtXkY
-	m8VkQLwviddnw/a0lnnuevwaZoXdF9atIzHekZ26M+iIIlBpPyPSVBwXAKE5TrrHpvOnmu
-	42YTiwlExKT0IMDbZgdXNYfNeQCs/xRpW5LEimiGCh+a70GFpkPhFM/9pF97nA==
-Date: Thu, 3 Sep 2026 17:10:50 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [net-next,v6,3/3] w5100: detect carrier state using link status
- bit and optional interrupt
-Message-ID: <20260903151050.GA185059@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260831-wiznet-link-gpio-v6-3-abee6c5c966e@marmottus.net>
- <178839696443.3394541.11998106403165239318@kernel.org>
- <20260903130820.GA21664@marmottus.net>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MwEFw8ZF"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2D2C04E414ED;
+	Thu,  3 Sep 2026 15:55:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 016106054B;
+	Thu,  3 Sep 2026 15:55:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D11B311C79776;
+	Thu,  3 Sep 2026 17:55:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788450932; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=F2iYv7w94fBUcU0dgYfP8HvNVq7KQvbN0dmbw7DgBkE=;
+	b=MwEFw8ZFhjFCLFFPD2ibN6y25HtanmEzr4RIq9MoLO8/EGi300/1f5bX6c8lSCJXfy6Llj
+	nA2zsfur2gfhQmfQNEKhKFiWVOFYi5f4F6EYHqrR72eQ3cw1/1dcSq/Hb3V5J3KMbI+497
+	zayC3iYr05KHmchQhGaDd9vNCzGqdAtMNo7ohjIzANspzN2JgrCKjeSpGdFUiBHWO11Vqs
+	eJjNhDhJ2UHmwUtv5X2GuLrpRPakw/JNx+Wl2V+0ZpIj9Cf3aFSoviBuDwX42W9fVPyE+w
+	aUQZh2WW0gOMtQZNglzFotEiItxOIDgG+iplWgaA/qdj6UHfs5jfT28fHUH/mw==
+From: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	matttbe@kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] tools: ynl: Allow cross-compiling ynl and associated tools
+Date: Thu,  3 Sep 2026 17:55:22 +0200
+Message-ID: <20260903155524.2241065-2-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
+References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260903130820.GA21664@marmottus.net>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: dmFkZTFt7+Z64xoReW3on4YvpCbHIFE2WLFu56/NKaAgQeY5o5E/KZpcFfC28pZ2KfkCzOzhSxD3W01evXb0glBKmdMRdNyzgL9MvGQE/0gXySyrtuCXNf5hZOLxbT6nBe6gBoCtLVTyQL8n0CbF/jtzjtjT+SDrYGppumnq+Jo6x/lsx4+jSBbNsCEAO0skQSJGIQ1nzFftU6KzSkBp/WYiGpBGzgaxTE1Gy5QG7dr7s2nq+4w96Xe11e4lNDCBghVrUtVHkCsimKfUkr40/r0xDdxnBLgw5jMKNgomcxKC0BAGSaS1VXCtfpzawqwkFHhF7lJYfDuOOwDIP7Atj5wv20P5ft5k4uW/EIY83WAMCnHfATfu5TPqdzGGJ2sAX71EvKmXOyWrQ9LcJNkhdDx7wZHpra6KwcwVWvkI6JfHVXF+DlcelYnmOPJ7Nh7cw3xFQmifB6jQ5kR5+XgiH5XcXHme/rEh9R+4FWNxIU5lVeG1T0tTcxuLmDOsL8bunGr48SUxHpqjuXHygse+ckExl3ahhnD/hmBb7VIJSLWDI6lNFLHmTKHrOsAD53nNmXmHYeWkporxMDJeDC1w9QDIBtunlhd+9ht5EHVLNUtXLmB86+jzzRHIIHQZFhZ6zDW1E6fbZzprKB9JAoLGwy+BpEFZPpLSBpy1MGy4E4EHttSBZw
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Sep 03, 2026 at 03:08:24PM +0200, Arthur Crepin Leblond wrote:
->On Thu, Sep 03, 2026 at 12:56:04AM +0000, netdev-bot+sashiko@kernel.org wrote:
->>Since || short-circuits, w5100_get_link() is not called at all when link_irq
->>is negative and the carrier is unconditionally turned on.  The ethtool
->>callback added just above, however, keys on the chip id rather than on
->>link_irq:
->>
->>	if (priv->ops->chip_id == W5500)
->>		return w5500_get_phycfgr_lnk(ndev);
->>
->
->Again, good catch! One could setup the w5500 without the link IRQ but
->still use the PHCFGR register for the carrier state.
+The ynl tool and libraries may be built standalone or through the
+drivers/net/hw selftest machinery. This may target a different arch, so
+we need to account for the cross-compiling options such as CROSS_COMPILE
+or the LLVM-specific variables.
 
-One more time about this one, if we use w5500 without an interrupt the
-carrier state will be the one read from PHYCFGR bit and will never
-change.
+Let's include the tools/scripts/Makefile.include that deals with the
+CC/AR resolution.
 
-w5100_open:
-	w5100_get_link -> 0
-		netif_carrier_off      // stays off forever?
+Fixup the ynltool CFLAGS handling to use +=, so that we don't override
+the ones set in Makefile.include
 
-There is probably no good solution, the user can only get the real
-state with .get_link.
+Signed-off-by: Maxime Chevallier (Netdev Foundation) <maxime.chevallier@bootlin.com>
+---
+V2: Fix subject, as per Jakub's review
 
-I think netif_carrier_on should initially be called if there
-is no interrupt configured, that way the state stays on like on
-w5100/w5200.
+ tools/net/ynl/Makefile           | 1 +
+ tools/net/ynl/generated/Makefile | 3 ++-
+ tools/net/ynl/lib/Makefile       | 3 ++-
+ tools/net/ynl/tests/Makefile     | 2 +-
+ tools/net/ynl/ynltool/Makefile   | 4 ++--
+ 5 files changed, 8 insertions(+), 5 deletions(-)
 
-Arthur
+diff --git a/tools/net/ynl/Makefile b/tools/net/ynl/Makefile
+index 3cefe4ed96cb..8bf72c063e86 100644
+--- a/tools/net/ynl/Makefile
++++ b/tools/net/ynl/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ include ../../scripts/Makefile.arch
++include ../../scripts/Makefile.include
+ 
+ INSTALL	?= install
+ prefix  ?= /usr
+diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
+index ea4128f612d6..5a186349b5a8 100644
+--- a/tools/net/ynl/generated/Makefile
++++ b/tools/net/ynl/generated/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-CC=gcc
++include ../../../scripts/Makefile.include
++
+ CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow \
+ 	-I../lib/ -idirafter $(UAPI_PATH)
+ ifeq ("$(DEBUG)","1")
+diff --git a/tools/net/ynl/lib/Makefile b/tools/net/ynl/lib/Makefile
+index 9b98c0599600..7b3eae89982f 100644
+--- a/tools/net/ynl/lib/Makefile
++++ b/tools/net/ynl/lib/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-CC=gcc
++include ../../../scripts/Makefile.include
++
+ CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow
+ ifeq ("$(DEBUG)","1")
+   CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
+diff --git a/tools/net/ynl/tests/Makefile b/tools/net/ynl/tests/Makefile
+index 40827ca8e579..99ae7dcd6348 100644
+--- a/tools/net/ynl/tests/Makefile
++++ b/tools/net/ynl/tests/Makefile
+@@ -2,8 +2,8 @@
+ # Makefile for YNL tests
+ 
+ include ../Makefile.deps
++include ../../../scripts/Makefile.include
+ 
+-CC=gcc
+ CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow \
+ 	-I../lib/ -I../generated/ -I../../../testing/selftests/ \
+ 	-idirafter $(UAPI_PATH)
+diff --git a/tools/net/ynl/ynltool/Makefile b/tools/net/ynl/ynltool/Makefile
+index 48b0f32050f0..85cc0840b403 100644
+--- a/tools/net/ynl/ynltool/Makefile
++++ b/tools/net/ynl/ynltool/Makefile
+@@ -1,12 +1,12 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+ include ../Makefile.deps
++include ../../../scripts/Makefile.include
+ 
+ INSTALL	?= install
+ prefix  ?= /usr
+ 
+-CC := gcc
+-CFLAGS := -Wall -Wextra -Werror -O2
++CFLAGS += -Wall -Wextra -Werror -O2
+ ifeq ("$(DEBUG)","1")
+   CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
+ endif
+-- 
+2.55.0
+
