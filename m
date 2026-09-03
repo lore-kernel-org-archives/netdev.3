@@ -1,149 +1,191 @@
-Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC5A4AFE38
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 14:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.67.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945504B0CBF
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 14:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788444369; cv=none; b=HqL47AgimOZN0JjYDg2Y7Db/yo33dgvrLrvHZ1GnKCvp2isYs0BldtQRg0qKriUIDG6a7V+UXLrOjCSlo3FqcXfShxfVH3irzrFVp2+/5J9yiwkn7KIn5b3Ffp4VdZSFiMrLVku2HRnaT69utL2rAwi1bhMy1FtupYOqyjoE40c=
+	t=1788444582; cv=none; b=bNy5OqPn8wmiJhzs4UjON49pMlvzgV1e7r/7U3U3cGdI7HW69dmNl3+wGlqZPJNSitr5EOFJYBWnbedqySJD1WCUO75rHRL+IpO1vD5ytKTjg6CweZK2CSwbH03ZY7ZCe1W+DZ8rZloKGH1bD5/i6L2jVFn+DbfaJ+nb62/RqDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788444369; c=relaxed/simple;
-	bh=jIg0gQVea/HpkmYQ6hpRxOBNe+E0GsfphvWvKN4xPmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tYrWncdTjnfUb8/RzSafVccorH+jimU6iqYUQlGKYu3rsO0OzWomv5jRNWnro30qnIw589e+1h4Yhk83Cp0UtqRoRYAHWTHBGwEoaSCEgpwqL5dT491rzCVVcUeHX8hHtB3dzk14tG2HI4CzS/D+DhojFkkxRSdo9aWOr0mdmrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm; spf=pass smtp.mailfrom=poczta.fm; dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b=nU0Dj+Yc; arc=none smtp.client-ip=217.74.67.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
+	s=arc-20240116; t=1788444582; c=relaxed/simple;
+	bh=9eP6sRHHIYHbk2l92ruUWjH8yhzSt82UzA7vaL409lA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=enVufBtibjlIwpkj9d36Y5fHnpmg9GAVlOXKXM1XdsuyEQLOBvq5a7CbnS47z/SB3vEWqI0ktDkgbblS94UCnRwR/2D9hBA7K5QoRmXVvYDaU058GWFnf8usqmk0xrt7FF7BEfjaRoyqo3qlarq9mxinpHY/oHTErhbMVS6G9Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHvecmbR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.b="nU0Dj+Yc"
-Received: from nr200 (unknown [80.68.231.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Thu,  3 Sep 2026 16:05:50 +0200 (CEST)
-Date: Thu, 3 Sep 2026 16:05:47 +0200
-From: Slawomir Stepien <sst@poczta.fm>
-To: Chuck Lever <cel@kernel.org>
-Cc: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com,
-	Anna Schumaker <anna@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jeff Layton <jlayton@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Trond Myklebust <trond.myklebust@primarydata.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>, syzbot@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>
-Subject: Re: [PATCH] sunrpc: reject socket already in use in svc_addsock()
-Message-ID: <apl-u5wtRUO6o5wC@nr200>
-References: <554e50fa-697c-4e57-b5a5-a1c280816436@mail.kernel.org>
- <c31de847-f77f-4dd8-87c4-46e3d21c57a9@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHvecmbR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E311F00AC4;
+	Thu,  3 Sep 2026 14:09:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788444576;
+	bh=pz0utapClilhPvCvFjabifjHUhUyxNooV4aXV8dFLxU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZHvecmbRGCoL8Kzo+1TMyrj7qj/XqdtUGRPq+cflY1vDmo3hPO8MqpIhZjqGaGIb9
+	 vLGz6hNdUcUSWSd8B7XBpFIxfRHNf1TCckw3NRRE/3WFXUglO6Y9O4mIOhIt94I3dl
+	 EjgsR0vm8Cgg7sFuqbatJLSMrGn1bXMcGSmkHhMCXmWFZTYtLDyfPeGiAPUyRKs7sr
+	 2+3FTnfNC58vrPpX+FD4Tzg3pcgvgbCL8h37Bz0gNFs7NHsvMwUZYLfUjz+7Fpr1Rl
+	 Xli2Q0WeqkU25t1IRCwaeZp8uOoTVCHbLa30d6AY9Xt3HBqPJUU3BcL3WdMtOIWavj
+	 nFgwgsCUzb64Q==
+Subject: Re: [net] bonding: use skb_cow_head() in bond_do_alb_xmit() and
+ rlb_arp_xmit()
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ jv@jvosburgh.net
+Date: Thu, 03 Sep 2026 14:09:35 +0000
+Message-ID: <178844457550.3394541.1019645216778443244@kernel.org>
+In-Reply-To: <20260902125809.2910366-1-edumazet@google.com>
+References: <20260902125809.2910366-1-edumazet@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c31de847-f77f-4dd8-87c4-46e3d21c57a9@app.fastmail.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1788444353; bh=4yzE0r6uHgl6auw9ViVevz1l+8qKEPBoHma3z4nNR2U=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	b=nU0Dj+YcWB8dzesRuOdepnOzLEnxTfRXHtH3xyuzIM8MPUznP1whML583lcbWvA2V
-	 7zCNtepXFEZv0HxIFP1tTXNmOEzCG6tIN7AXIjuA/NE3Ng58j/uBGaZGNEqNU/eYXh
-	 BW4suu84bIyRxBIgEjMcQazuy+NqPCI8pljVV0po=
 
-On wrz 03, 2026 09:48, Chuck Lever wrote:
-> On Thu, Sep 3, 2026, at 9:28 AM, syzbot wrote:
-> > From: Slawomir Stepien <sst@poczta.fm>
-> >
-> > When a socket is added to an RPC service via svc_addsock() (for example, by
-> > writing its file descriptor to /proc/fs/nfsd/portlist), svc_setup_socket()
-> > saves the original socket callbacks (such as sk_state_change) into struct
-> > svc_sock and replaces them with RPC-specific callbacks (such as
-> > svc_tcp_state_change). It also attaches the new svc_sock to
-> > sk->sk_user_data.
-> >
-> > If the same socket file descriptor is added to an RPC service again,
-> > svc_addsock() invokes svc_setup_socket() a second time on the same socket.
-> > During the second setup, svsk->sk_ostate is assigned the socket's current
-> > sk_state_change callback, which was already replaced with
-> > svc_tcp_state_change. When a state change event subsequently occurs on the
-> > socket (for example, when connect() is called), svc_tcp_state_change()
-> > invokes svsk->sk_ostate, calling itself in an infinite recursion until the
-> > kernel stack overflows and triggers a stack guard page fault:
-> >
-> > BUG: TASK stack guard page was hit at ffffc900030b7ff8 (stack is
-> > ffffc900030b8000..ffffc900030c0000)
-> > Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
-> > ...
-> > Call Trace:
-> >  <TASK>
-> >  svc_tcp_state_change+0x76/0x2e0 net/sunrpc/svcsock.c:917
-> >  svc_tcp_state_change+0x76/0x2e0 net/sunrpc/svcsock.c:917
-> >  svc_tcp_state_change+0x76/0x2e0 net/sunrpc/svcsock.c:917
-> >  ...
-> >  tcp_done_with_error net/ipv4/tcp_input.c:4877 [inline]
-> >  tcp_reset+0x176/0x380 net/ipv4/tcp_input.c:4909
-> >  tcp_rcv_synsent_state_process net/ipv4/tcp_input.c:6903 [inline]
-> >  tcp_rcv_state_process+0x13bc/0x48a0 net/ipv4/tcp_input.c:7197
-> >  tcp_v4_do_rcv+0xafc/0x1530 net/ipv4/tcp_ipv4.c:1876
-> >  sk_backlog_rcv include/net/sock.h:1192 [inline]
-> >  __release_sock+0x25b/0x390 net/core/sock.c:3260
-> >  release_sock+0x190/0x260 net/core/sock.c:3859
-> >  inet_wait_for_connect net/ipv4/af_inet.c:616 [inline]
-> >  __inet_stream_connect+0x863/0xe00 net/ipv4/af_inet.c:710
-> >  inet_stream_connect+0x66/0xa0 net/ipv4/af_inet.c:755
-> >  connect_socket net/socket.c:2141 [inline]
-> >  __sys_connect_file net/socket.c:2166 [inline]
-> >  __sys_connect+0x316/0x450 net/socket.c:2183
-> >  ...
-> >  </TASK>
-> >
-> > Fix this by checking if so->sk->sk_user_data is already set in
-> > svc_addsock() before proceeding with svc_setup_socket(). If it is already
-> > non-NULL, return -EBUSY to prevent re-initializing an active socket.
-> >
-> > Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead 
-> > of open coding")
-> > Assisted-by: Gemini:gemini-3.7-flash Gemini:gemini-3.1-pro-preview 
-> > syzbot
-> > Reported-by: syzbot+c9834a0c0215e6d8697a@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=c9834a0c0215e6d8697a
-> > Link: 
-> > https://syzkaller.appspot.com/ai_job?id=30de91d1-1d14-4676-8c38-a3564f7acf48
-> > Signed-off-by: Slawomir Stepien <sst@poczta.fm>
-> >
-> > ---
-> > diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-> > index 50e5e7f5b..e8cc4329f 100644
-> > --- a/net/sunrpc/svcsock.c
-> > +++ b/net/sunrpc/svcsock.c
-> > @@ -1541,6 +1541,9 @@ int svc_addsock(struct svc_serv *serv, struct net 
-> > *net, const int fd,
-> >  	err = -EISCONN;
-> >  	if (so->state > SS_UNCONNECTED)
-> >  		goto out;
-> > +	err = -EBUSY;
-> > +	if (so->sk->sk_user_data)
-> > +		goto out;
-> >  	err = -ENOENT;
-> >  	if (!try_module_get(THIS_MODULE))
-> >  		goto out;
-> >
-> >
-> > base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-> 
-> A similar fix is already in nfsd-testing:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git/commit/net/sunrpc/svcsock.c?h=nfsd-testing&id=7e8d1b4845aac4ad3c7bcd39032754917f5b966d
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Ah ok, a different extid of syzbug that's why I've missed it. Thanks!
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+- [Medium] In `rlb_arp_xmit()` (drivers/net/bonding/bond_alb.c:681) the
+  patch adds `tx_slave != rcu_access_pointer(bond->curr_active_slave)`…
+
+--
+
+bonding: use skb_cow_head() in bond_do_alb_xmit() and rlb_arp_xmit()
+
+This adds skb_cow_head() before rewriting the source MAC in the Ethernet
+header and in the ARP payload, stops caching header pointers across the
+cow, and switches to skb_eth_hdr() so the mac header offset is not assumed
+to be set in the output path.  It also adds a new condition so that
+arp->mac_src is only rewritten when tx_slave is not the current active
+slave.
+
+> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+> index 654f051d0023..5f750f08a144 100644
+> --- a/drivers/net/bonding/bond_alb.c
+> +++ b/drivers/net/bonding/bond_alb.c
+> @@ -678,9 +678,13 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
+>  	if (arp->op_code == htons(ARPOP_REPLY)) {
+>  		/* the arp must be sent on the selected rx channel */
+>  		tx_slave = rlb_choose_channel(skb, bond, arp);
+> -		if (tx_slave)
+> +		if (tx_slave && tx_slave != rcu_access_pointer(bond->curr_active_slave)) {
+> +			if (unlikely(skb_cow_head(skb, 0)))
+> +				return NULL;
+> +			arp = (struct arp_pkt *)skb_network_header(skb);
+>  			bond_hw_addr_copy(arp->mac_src, tx_slave->dev->dev_addr,
+>  					  tx_slave->dev->addr_len);
+> +		}
+
+[Severity: Medium]
+The changelog states:
+
+  "When tx_slave is the active slave, arp->mac_src already matches its
+  hardware address, so we can avoid an unnecessary copy and head
+  reallocation."
+
+Is that invariant actually established anywhere in rlb_arp_xmit()?  The only
+check applied to arp->mac_src earlier in the function is:
+
+  if (!bond_slave_has_mac_rcu(bond, arp->mac_src))
+          return NULL;
+
+and bond_slave_has_mac_rcu() in include/net/bonding.h matches any slave, not
+just the active one:
+
+  bond_for_each_slave_rcu(bond, tmp, iter)
+          if (ether_addr_equal_64bits(mac, tmp->dev->dev_addr))
+                  return true;
+  return false;
+
+In balance-alb each slave has a distinct MAC, so an ARP reply whose sender
+MAC is a non-active slave's MAC passes this filter (for example an injected
+reply via AF_PACKET with CAP_NET_RAW, or an upper VLAN whose MAC was set to a
+slave MAC).
+
+Can rlb_choose_channel() then return curr_active_slave for such a packet?  It
+picks the channel independently of arp->mac_src, either via the existing
+client entry:
+
+  assigned_slave = client_info->slave;
+  if (assigned_slave) {
+          spin_unlock(&bond->mode_lock);
+          return assigned_slave;
+  }
+
+or via __rlb_next_rx_slave(), which walks all transmitting slaves including
+the active one:
+
+  bond_for_each_slave_rcu(bond, slave, iter) {
+          if (!bond_slave_can_tx(slave))
+                  continue;
+
+With the new gate, the rewrite is skipped in that case, so the ARP reply goes
+out advertising a MAC that is not the RX channel just recorded in
+client_info->slave.  Does the peer then steer return traffic to a slave the
+RLB accounting believes is unassigned?  The early return above also leaves
+client_info->ntt unset, so no corrective rlb_update_client() ARP is queued.
+
+Note that rlb_update_client(), the other emitter of this field,
+unconditionally advertises the assigned slave's address:
+
+  skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
+                   client_info->ip_dst,
+                   client_info->slave->dev,
+                   client_info->ip_src,
+                   client_info->mac_dst,
+                   client_info->slave->dev->dev_addr,
+                   client_info->mac_dst);
+
+so the two paths now disagree about what mac_src should contain.
+
+There is also a failover window.  The comparison is done under
+rcu_read_lock() only, since bond->mode_lock is dropped inside
+rlb_choose_channel(), while bond_alb_handle_active_change() publishes the new
+active slave before the MAC swap:
+
+  /* curr_active_slave must be set before calling alb_swap_mac_addr */
+  if (swap_slave) {
+          /* swap mac address */
+          alb_swap_mac_addr(swap_slave, new_slave);
+
+During that window, can tx_slave == curr_active_slave hold while the slave
+MACs have not been swapped yet, making the skipped rewrite wrong even for a
+normally generated ARP reply?
+
+Would a value comparison be a safer way to express this optimization, for
+example:
+
+  if (tx_slave &&
+      !ether_addr_equal_64bits(arp->mac_src, tx_slave->dev->dev_addr)) {
+
+That keeps the fast path when the field already holds the right address
+without relying on the pointer identity of curr_active_slave.
+
+[ ... ]
+
+> @@ -1351,7 +1354,9 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+>  
+>  	if (tx_slave && bond_slave_can_tx(tx_slave)) {
+>  		if (tx_slave != rcu_access_pointer(bond->curr_active_slave)) {
+> -			ether_addr_copy(eth_data->h_source,
+> +			if (unlikely(skb_cow_head(skb, 0)))
+> +				return bond_tx_drop(bond->dev, skb);
+> +			ether_addr_copy(skb_eth_hdr(skb)->h_source,
+>  					tx_slave->dev->dev_addr);
+>  		}
+
+Related to the above: this is the same pointer comparison, evaluated later in
+the transmit path for the same skb.  If curr_active_slave changes between the
+check in rlb_arp_xmit() and this one, can the Ethernet source be rewritten
+here while arp->mac_src was left untouched (or the reverse), leaving the two
+headers inconsistent with each other?
 
 -- 
-Slawomir Stepien
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902125809.2910366-1-edumazet%40google.com
