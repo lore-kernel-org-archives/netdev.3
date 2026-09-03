@@ -1,459 +1,214 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B33A230BDB
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 00:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788394617; cv=none; b=PZN8PJpjWB2nbGpH+oJnmkrqNObbEQ+sAPgg6HSAIePakx8qJ4prADCyJbjxiI2ycFlXkQzwO2kJxE3qq6cN5YX5p4p3rOf5QOKE9V2sN+6EfkDhSg0ZWQzYXH/8bZkhdgAqF8QKIQCqfb6a9UA6KPXrM9Cz1QwyS5YmiroPOOM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788394617; c=relaxed/simple;
-	bh=TAbIm9y3KhMo1LF1+vbSkrXVqUbkUi4pfRq1ktwqUAk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eZOkgslm/phRddTknqq26F80osuvnEVorRkf2wT0sADkqOmmv2fINRHI31OYoE5xyNkSTQ4Nkw2sR1wFs2nCE9wAXXUDnmqpaHDfQHG7lr2yHAPPZMYvRTiLUQaiaE4ShT24i5z6TQ8g6XZnyz/WZkGm44SndfP96xgZVfLhYbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHNeZCoP; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886682165EA
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 00:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788394951; cv=pass; b=KoUfMc8hgZcNUlhJgnBAL8OcNiyeapt0YY8mdJCtHNoooX8AT/ThS/LZWW0sLw07NoQwRnxcgcls9UpmVbEBgum+3mb99/7PQxUb3b5gBg6LVATCuRe8DiCHNfXyA3ZXzsGfnzHCT5B9JemJH/vRs1i3IhKCXja8hQuuF13SUaE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788394951; c=relaxed/simple;
+	bh=HpXZGHKjm19GrKGeBKOpw8KiMZWEY3w+BaVtBt5+knU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RLkYNXJyVPTx2qrE8ysNpy5hqbaPNpc9Gwu/NXUxU3lUyLJIDgiOA86PZmMRRmp9i6jUrd1/DC5z5EnASGS7A3E6X9mP6Uh0vO1kcilBI9KavCEUKfT6Iz4Agnw32WUNCzMBr3FBCBd4p1s7X6xoNwW30f/y437igPfEcyab7Ss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UgqT9Ja4; arc=pass smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHNeZCoP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB191F000E9;
-	Thu,  3 Sep 2026 00:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788394615;
-	bh=Tll7KApgSJsN9T7Xl3RjDamWlxyahJVjYrxerxfkV5s=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UHNeZCoPIN31Wa/AHQWohSG1PuIFZz0JdYJYd+Wvt/M6+miK4LmUkJjwmT07YhbVt
-	 f0kEn7kv91LOsRqwMlFa/k8+w04vXsBb6FfIIzxPqK9VwkPQAZjQvP2jde5JHqUDja
-	 nBJtlipZ1pgFLG7B7D7VZIgRLCYXiswg/s/I6LUk+KmyCiqfS43Ej3zvqE725shAbv
-	 lsg5+baU/JsTaTe0KLoLzh3W164LKUN9ITvjD4iq08uG56Lq0iuQQfuZw6b/jFzE98
-	 U7fMrbzm+mbCwKfGl6Mx9o0DsyL6p5GhClZenn4oFARyN9nl4fAPdgHqtpP8GXj5VX
-	 FrCP+fhUfYWKQ==
-Subject: Re: [net,v2] net: libwx: fix PM suspend/resume flow for VF drivers
-From: netdev-bot+sashiko@kernel.org
-To: mengyuanlou@net-swift.com
-Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hramamurthy@google.com
-Date: Thu, 03 Sep 2026 00:16:54 +0000
-Message-ID: <178839461464.3394541.3478369630769947860@kernel.org>
-In-Reply-To: <20260829091423.83097-1-mengyuanlou@net-swift.com>
-References: <20260829091423.83097-1-mengyuanlou@net-swift.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UgqT9Ja4"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84eb992a881so1562380b3a.2
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 17:22:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788394949; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iHo7ihL9x9qDujmCv2I8B9ZKzI5NBw1lFrZRqnhgxAD+Pny0kqTk/ZraAtBRQdJzH1
+         wJ8H3y3I+e5mdf+7TEEDzgQVu/eDTnzvcIgJMKb0s0keumaA+EkXeLyYOb76cRXp4Z5F
+         1+uW59AJzH1u5fWfNqRIHScJBA4G/4oRE9qPLdiarSnTCBANRdGrR3ls6a8I0FPvkPQD
+         vYtcbN8e9SlDqmUEwSEg822ehaR2+5oeEFtVLpq9fqf/lK3Wp/Xkadz2v9WkjVx/0Fhl
+         Ec91DxycZstIHTBpgdM9qCfMyfXWam3yt6KWnfIM2G2UJHlGugCqbbJUuGabdPz+z9Oi
+         V4yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KWsvOdETbY/9pvWuO7n+ydArZGGk0CzvZ5+doKudMVs=;
+        fh=dJXIwG2zgWXiS4Rn5ArX6/uzNpiTJZmC0j+RFhYWGp8=;
+        b=k1cVDS3QJKDTYrKXvIUObrv60MREVqDF0oWTnx1vuioj4UL1npLqc0eb4hMaWuvfDS
+         F/Y7A+Gg4uV5JNTWsHKtGpvXdAgqvsm2RZIEzKbbi/xbrI9suADeVz9ApIuZGXt2huW/
+         0w3tgq0sXoJ0GOyUlM9sdIPzBPt3kf86dVyX3CMrmVTLhRNorTYFBqgsmxf0skdSQufQ
+         WysdovoDM7rAMEWEi5HMyOKwXo6yXsYOSSYEyB6fmrQBBW8p+mcajG9KKr/iQJBllW2z
+         xVRfDRo1WqupbCzSgBeiB3wAWoH3/WHXP8E5ygaebvfBS2ou3TkK86nGwQ5OiA6FgHi2
+         t3TQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788394949; x=1788999749; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KWsvOdETbY/9pvWuO7n+ydArZGGk0CzvZ5+doKudMVs=;
+        b=UgqT9Ja4QslI+H0nJlHEo3L3FrVIzKP97lfiwc5Vg0pwxI9O4TCkmABM1cxsyUTh/o
+         bsHQmDLCVZdQ8hb+ZhE2Fixtnl5+IrZoq/014hSzMWuCmOQeOBYZkXJbILvq0ubclxhG
+         tcNG0uCx2u6KAkzPpHt4VoQfwrrovB2wzCzfCb/23UMdHd5oA5FuDI5YSxSGtnuuJIOL
+         VdfGmmuEzsDpz3KpcsR8HHBl7X4iy5EzSsCt01zBzxbCB4Jn8weZ2LFDF8jwbqIunFJb
+         ueN6xmAtGh/OG0PxUj93Fx72/f/fvMSzmcL3AwC+bmeKoFDdzy6og0hwfcLL1vaOYit8
+         lBKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788394949; x=1788999749;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KWsvOdETbY/9pvWuO7n+ydArZGGk0CzvZ5+doKudMVs=;
+        b=C6aAnTtUMs6VZoZTKNq8wrAapt8Z0OnHE9bwvQbQMsslQBobOOTCinuYrGU+0ZNIDi
+         +2iBS9uKLJzd9nKUAuhPopNiI3GIgPr/j3ybmukzXWmxcWGOGUj2QpMh5LyRXRnTcYGa
+         xaRSqax6lPqUITjQCR/II8I7KlHC8sEddCdvB4yfhdr40p15hdUD00+mxyi63sHbjczx
+         KdyC8nDbGV66OaaW1shMF5G4RKgg+WbY468pstx2D8UhEMCKgwHwn5Cu6ZnrSuFTya4y
+         FCH/9hW/Yrkb/9Qk15Q++k2Dm2+on09B0MZBLXsoYrz8zOt2DDaR+8ABUhl25Gy2wLLx
+         dQOg==
+X-Forwarded-Encrypted: i=1; AKwUvBwrYmj+zuO+i9XnS27ErCXig0HlBcE2iDScbLSmHeJ8+jKYMad19QFVco49adTtw0SbunB87mg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQoXCMP6sqZ8c5A8GSdi/wD8nMoSJmNzOgZRePUjnnkMuFiI3S
+	EMVECt/Hg2hFmFYvVFomcMP8c55LtnMVqIKZFxUKs49C4jvPcl+P6omG1MliWJl6rUas2trjKVC
+	aZlrnpH37W5RYbSDsgJCoZgdBu+MHSo0=
+X-Gm-Gg: AYBFou1DQSFm9u5HLNqLlrobAzmL+mV6PMz/OuBCdAYa39JTtlGNL+fPGpDFaRFLN/I
+	p2lErqcnUnOMFSvc+epemPhYtnVJJWcvtZVpztZCG5Lr5Nirw6Dvk/gtdcT3QzSglYvZMpp91Dr
+	MVjdz0QnKAMjDKElCjACFgKkxLWRUtJH2HnMaWOcTpz40nNVK+1c6NjC4VB24hh5x19JQ46e5/Q
+	mtkuqg7YTQ9yxmW5elZkp/OMe0Z67BCeA/ggIMFqWdlrOzcVwtJ8qxwOTDmCmuVtCpulJAPWWli
+	jAbE0yyaPFY+nnb1bF4jN+b80A80Qc07bjcpKpUYbjDkx5l1Nwdw3UenI+1ZqB3rCeqmBExtbMB
+	tE5H5mWFXJDCh8TPLkBUVmXS8acyLUbB7J4P1
+X-Received: by 2002:a05:6a00:997:b0:84e:f90e:492f with SMTP id
+ d2e1a72fcca58-85ed25e06efmr11217290b3a.7.1788394948796; Wed, 02 Sep 2026
+ 17:22:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider:
-
-Critical: 0 · High: 5 · Medium: 1 (1) · Low: 0
-
-- [High] wxvf_suspend() frees the DMA-visible receive/transmit resources
-  while the VF hardware queues are still enabled and bus mastering is…
-- [High] The new error unwind in wxvf_resume() (wx_vf_common.c:91-98)
-  leaves the driver in a state that is inconsistent with the netdevice.
-- [High] wxvf_resume() re-arms DMA and starts the data path before any VF
-  ring register is re-programmed.
-- [High] wxvf_resume() recomputes the VF queue configuration but never
-  publishes the new counts to the netdevice.
-- [High] wxvf_suspend() tears down the service timer and work without
-  ever closing the gate that allows them to be re-armed/re-queued: it…
-- [Medium] When the VF interface was administratively down at suspend
-  time, wxvf_resume() restores nothing but the interrupt scheme:…
-
-Pre-existing issues:
-- [Medium] wxvf_reinit_locked() (wx_vf_common.c:401-413) discards the
-  return value of wx_request_msix_irqs_vf()…
-
---
-
-net: libwx: fix PM suspend/resume flow for VF drivers
-
-This reworks wxvf_suspend()/wxvf_resume() in libwx to run under rtnl_lock(),
-to cancel the service timer/task and free IRQ and ring resources on suspend,
-and to re-enable the PCI device, re-init the interrupt scheme and re-request
-MSI-X vectors on resume, deferring hardware reconfiguration to the reset
-subtask via WX_FLAG_NEED_DO_RESET.
-
-A few questions about the new flow below.
-
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-> index 26de78e9a69e..8a212e36c3d8 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-> @@ -15,10 +15,26 @@ int wxvf_suspend(struct device *dev_d)
->  {
->  	struct pci_dev *pdev = to_pci_dev(dev_d);
->  	struct wx *wx = pci_get_drvdata(pdev);
-> +	struct net_device *netdev;
->  
-> -	netif_device_detach(wx->netdev);
-> +	netdev = wx->netdev;
-> +	timer_delete_sync(&wx->service_timer);
-> +	cancel_work_sync(&wx->service_task);
-> +	clear_bit(WX_STATE_SERVICE_SCHED, wx->state);
-
-[Severity: High]
-Can the service timer come back after this teardown?
-
-wxvf_suspend() does not set WX_STATE_DOWN, and it explicitly clears
-WX_STATE_SERVICE_SCHED, so the only two gates in
-wx_service_event_schedule() are both open:
-
-wx_lib.c:wx_service_event_schedule() {
-	if (!test_bit(WX_STATE_DOWN, wx->state) &&
-	    !test_and_set_bit(WX_STATE_SERVICE_SCHED, wx->state))
-		queue_work(system_power_efficient_wq, &wx->service_task);
-}
-
-If the service work is already running when suspend starts, the ordering
-looks like:
-
-  timer_delete_sync(&wx->service_timer);   /* timer now not pending */
-  ... work still running:
-      wxvf_service_task() -> wxvf_reset_subtask() -> wxvf_reinit_locked()
-        -> wxvf_up_complete()
-             mod_timer(&wx->service_timer, jiffies + HZ);
-             clear_bit(WX_STATE_DOWN, wx->state);
-  cancel_work_sync(&wx->service_task);     /* waits, but timer is pending */
-
-Nothing deletes the timer after cancel_work_sync() returns, and
-timer_delete_sync() (unlike timer_shutdown_sync()) does not prevent
-re-arming. Suspend then frees the IRQs, rings and q_vectors and disables the
-device, so when the surviving timer fires wxvf_service_task() can reach
-wxvf_reinit_locked() -> wx_request_msix_irqs_vf():
-
-wx_vf_common.c:wx_request_msix_irqs_vf() {
-	err = request_irq(wx->msix_entry->vector, wx_msix_misc_vf,
-			  0, netdev->name, wx);
-
-wx->msix_entry was kfree()d and set to NULL by
-wx_reset_interrupt_capability() inside wx_clear_interrupt_scheme() during
-suspend, so is this a NULL dereference? wx_free_irq() on that path also
-free_irq()s vectors that are already gone.
-
-Note wxvf_shutdown() calls the same function, and timers keep running until
-the machine actually restarts, so the >= HZ delay is easy to hit there too.
-
-Would set_bit(WX_STATE_DOWN, wx->state) before the cancel, and
-timer_shutdown_sync() instead of timer_delete_sync(), close this? Also, what
-is the purpose of clearing WX_STATE_SERVICE_SCHED here, given that clearing
-it re-opens the queueing gate?
-
-> +
-> +	rtnl_lock();
-> +	netif_device_detach(netdev);
-> +	if (netif_running(netdev)) {
-> +		netif_tx_disable(netdev);
-> +		netif_carrier_off(netdev);
-> +		wx_napi_disable_all(wx);
-> +		wx_free_irq(wx);
-> +		wx_free_resources(wx);
-> +	}
->  	wx_clear_interrupt_scheme(wx);
-> +	pci_clear_master(pdev);
->  	pci_disable_device(pdev);
-> +	rtnl_unlock();
-
-[Severity: High]
-Can the device DMA into the memory that wx_free_resources() just released?
-
-Everything in the netif_running() branch is software-only work. With the
-interface up, wx_configure_rx_ring_vf()/wx_configure_tx_ring_vf() have
-programmed the ring DMA addresses and set the enable bits:
-
-wx_vf_lib.c:wx_configure_rx_ring_vf() {
-	wr32(wx, WX_VXRDBAL(reg_idx), rdba & DMA_BIT_MASK(32));
-	wr32(wx, WX_VXRDBAH(reg_idx), rdba >> 32);
-	...
-	rxdctl |= WX_VXRXDCTL_ENABLE | WX_VXRXDCTL_VLAN;
-
-The sequence that actually stops the VF engines is in wx_stop_adapter_vf()
-(mask WX_VXIMS, clear WX_VXICR, WX_VXTXDCTL_FLUSH per Tx queue, clear
-WX_VXRXDCTL_ENABLE per Rx queue), reachable via
-wx_reset_vf() -> wx_reset_hw_vf(), and it is not called anywhere in
-wxvf_suspend(). The only DMA quiesce present, pci_clear_master()/
-pci_disable_device(), runs after wx_free_resources() has already
-dma_free_coherent()d the descriptor rings and head-write-back buffer and
-released the Rx page-pool pages.
-
-If the PF is still forwarding frames to this VF in that window, are those
-frames written into freed pages, with descriptor write-back into freed
-coherent memory?
-
-wxvf_close()/wxvf_down() use the opposite order:
-
-wx_vf_common.c:wxvf_down() {
-	wx_napi_disable_all(wx);
-	wx_reset_vf(wx);
-
-	wx_clean_all_tx_rings(wx);
-	wx_clean_all_rx_rings(wx);
-
-Should suspend do the same, i.e. reset/stop the adapter before freeing the
-rings?
-
-> @@ -34,12 +50,52 @@ int wxvf_resume(struct device *dev_d)
->  {
->  	struct pci_dev *pdev = to_pci_dev(dev_d);
->  	struct wx *wx = pci_get_drvdata(pdev);
-> +	struct net_device *netdev;
-> +	int err;
-> +
-> +	netdev = wx->netdev;
-> +	err = pci_enable_device_mem(pdev);
-> +	if (err) {
-> +		dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
-> +		return err;
-> +	}
->  
->  	pci_set_master(pdev);
-> -	wx_init_interrupt_scheme(wx);
-> -	netif_device_attach(wx->netdev);
-> +	rtnl_lock();
-> +
-> +	err = wx_init_interrupt_scheme(wx);
-> +	if (err)
-> +		goto err_pci;
-
-[Severity: High]
-Is bus mastering re-enabled too early here?
-
-VFs frequently have no PCI PM capability, so on suspend-to-idle the function
-may never leave D0 and comes back with WX_VXRXDCTL_ENABLE still set and
-VXRDBAL/VXTDBAL still holding the addresses of the rings that wxvf_suspend()
-freed. pci_set_master() then re-arms DMA against those stale addresses, and
-nothing reprograms them until the deferred reset subtask runs, which cannot
-happen before the service timer armed inside wxvf_up_complete() expires:
-
-wx_vf_common.c:wxvf_up_complete() {
-	netif_carrier_off(wx->netdev);
-	mod_timer(&wx->service_timer, jiffies + HZ);
-
-So is there a window of up to a second in which the device can DMA into
-freed memory?
-
-> +
-> +	/* Since vf resume before than pf, only the vf interrupt and software
-> +	 * resources need to be initialized. The hardware configuration will be
-> +	 * reconfigured in reset subtask.
-> +	 */
-> +	if (netif_running(netdev)) {
-> +		err = wx_setup_resources(wx);
-> +		if (err)
-> +			goto err_clear_int;
-> +
-> +		err = wx_request_msix_irqs_vf(wx);
-> +		if (err)
-> +			goto err_free_resources;
-> +
-> +		wxvf_up_complete(wx);
-
-[Severity: High]
-The comment says only "the vf interrupt and software resources" are
-initialized, but wxvf_up_complete() writes WX_VXICR/WX_VXIMC, enables NAPI
-and calls netif_tx_start_all_queues().
-
-Both other callers configure the hardware first:
-
-wx_vf_common.c:wxvf_open() {
-	wx_configure_vf(wx);
-
-	err = wx_request_msix_irqs_vf(wx);
-	...
-	wxvf_up_complete(wx);
-
-wx_configure_vf() is the only code that writes the new VXRDBAL/H and
-VXTDBAL/H, resets VXRDH/VXRDT and VXTDH/VXTDT and resyncs
-next_to_use/next_to_clean with the hardware. On this path it is not called at
-all before the queues are started.
-
-If the function was reset by the power transition, does that leave the driver
-transmitting on hardware queues that are disabled with zero base addresses
-until the reset subtask runs, with wx_alloc_rx_buffers() ringing VXRDT and
-the xmit path ringing VXTDT on queues the hardware does not have, plus the tx
-watchdog running after netif_device_attach()?
-
-[Severity: High]
-Should this branch also re-publish the queue counts to the netdevice?
-
-wxvf_suspend() -> wx_clear_interrupt_scheme() -> wx_free_q_vectors() zeroes
-them:
-
-wx_lib.c:wx_free_q_vectors() {
-	wx->num_tx_queues = 0;
-	wx->num_rx_queues = 0;
-	wx->num_q_vectors = 0;
-
-On resume, wx_init_interrupt_scheme() calls wx->set_num_queues(), which
-starts from 1/1 and only raises the counts when the mailbox transaction
-succeeds:
-
-txgbevf_main.c:txgbevf_set_num_queues() {
-	wx->num_rx_queues = 1;
-	wx->num_tx_queues = 1;
-	...
-	ret = wx_get_queues_vf(wx, &num_tcs, &def_q);
-	...
-	if (ret)
-		return;
-
-Per the comment above, the VF resumes before the PF, so that request can
-fail and leave one Tx ring. wxvf_open() publishes the counts, but this path
-does not:
-
-wx_vf_common.c:wxvf_open() {
-	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
-	...
-	err = netif_set_real_num_rx_queues(netdev, wx->num_rx_queues);
-
-With netdev->real_num_tx_queues still at the pre-suspend value,
-netif_tx_start_all_queues() starts all of the stale queues and they fold
-onto one ring:
-
-wx_lib.c:wx_xmit_frame() {
-	if (r_idx >= wx->num_tx_queues)
-		r_idx = r_idx % wx->num_tx_queues;
-	tx_ring = wx->tx_ring[r_idx];
-
-Can two CPUs then run wx_xmit_frame_ring() on the same tx_ring concurrently,
-each holding a different __netif_tx_lock, and race on next_to_use /
-next_to_clean and the BQL accounting? The deferred reset subtask calls
-wx_configure_vf() but not set_num_queues() or netif_set_real_num_*_queues(),
-so would this persist until an explicit down/up?
-
-> +		set_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
-> +	}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but setting WX_FLAG_NEED_DO_RESET
-here makes wxvf_reinit_locked() part of every resume of a running interface,
-and that function discards an error:
-
-wx_vf_common.c:wxvf_reinit_locked() {
-	wx_configure_vf(wx);
-	wx_request_msix_irqs_vf(wx);
-	wxvf_up_complete(wx);
-
-On failure, wx_request_msix_irqs_vf() tears the interrupt capability down
-before returning:
-
-free_queue_irqs:
-	while (vector) {
-		vector--;
-		free_irq(...);
-	}
-	wx_reset_interrupt_capability(wx);
-	return err;
-
-so wxvf_up_complete() then re-enables NAPI, unmasks VXIMC and starts all Tx
-queues with no handlers installed and with wx->msix_entry left NULL. Would it
-be worth checking the return value while touching this flow?
-
-> +
-> +	netif_device_attach(netdev);
-> +	rtnl_unlock();
-
-[Severity: Medium]
-What restores the hardware when the interface was down at suspend time?
-
-WX_FLAG_NEED_DO_RESET and the service timer re-arm both live inside the
-netif_running() branch, so in the interface-down case no VF reset and no
-PF/VF mailbox re-initialization happens after the power transition.
-wx_reset_hw_vf() - which does the WX_VF_RESET handshake, resets
-wx->vfinfo->vf_api to wx_mbox_api_null and re-establishes CTS/perm_addr and
-mac.mc_filter_type - is reachable on the VF only from probe, wxvf_down() and
-the wxvf_open() error path:
-
-wx_vf_common.c:wxvf_open() {
-	err = wx_setup_resources(wx);
-	if (err)
-		goto err_reset;
-	wx_configure_vf(wx);
-...
-err_reset:
-	wx_reset_vf(wx);
-
-Two consequences: wx_init_interrupt_scheme() -> txgbevf_set_num_queues()
-issues wx_get_queues_vf() on a mailbox that was not re-initialized and
-silently falls back to one Rx/Tx queue, and a later "ip link set up" runs
-wx_configure_vf() xcast-mode/mc-list/uc-list/rlpml requests with the stale
-cached vf_api, discarding the errors.
-
-For comparison, ixgbevf_resume() calls ixgbevf_reset() unconditionally right
-after pci_set_master(). Should wxvf_resume() reset the VF regardless of
-netif_running()?
-
->  
->  	return 0;
-> +err_free_resources:
-> +	wx_free_resources(wx);
-> +err_clear_int:
-> +	wx_clear_interrupt_scheme(wx);
-> +err_pci:
-> +	rtnl_unlock();
-> +	pci_disable_device(pdev);
-> +	return err;
->  }
->  EXPORT_SYMBOL(wxvf_resume);
-
-[Severity: High]
-Do these unwind paths leave the netdevice in a state the rest of the driver
-can handle?
-
-All three labels return without netif_device_attach() and without downing the
-netdev, so __LINK_STATE_START stays set (netif_running() is true) while
-__LINK_STATE_PRESENT stays clear, num_q_vectors/num_tx_queues/num_rx_queues
-are 0, wx->msix_q_entries and wx->msix_entry have been kfree()d and NULLed by
-wx_reset_interrupt_capability(), pdev->msix_enabled is 0, and the PCI device
-is disabled.
-
-An "ip link set down" afterwards is not gated by netif_device_present(), so
-wxvf_close() -> wxvf_down() issues wx_reset_vf() mailbox/register accesses on
-a device whose memory decoding was just disabled, and then:
-
-wx_lib.c:wx_free_irq() {
-	if (!(pdev->msix_enabled)) {
-		if (!wx->misc_irq_domain)
-			free_irq(pdev->irq, wx);
-		return;
-	}
-
-wx->misc_irq_domain is false for VFs, so does this free_irq() an IRQ that was
-never requested, giving the "Trying to free already-free IRQ" warning?
-
-The interface also cannot be brought back up, since the device stays
-detached:
-
-net/core/dev.c:__dev_open() {
-	if (!netif_device_present(dev)) {
-		if (dev->dev.parent)
-			pm_runtime_resume(dev->dev.parent);
-		if (!netif_device_present(dev))
-			return -ENODEV;
-	}
-
-And a second suspend would call pci_disable_device() on an already-disabled
-device, driving enable_cnt negative.
-
-The sibling PF drivers handle the "resources freed outside close()" case with
-an explicit flag:
-
-ngbe_main.c:ngbe_down_suspend() {
-	if (test_and_set_bit(WX_STATE_RES_FREED, wx->state))
-		return;
-...
-ngbe_close() {
-	if (test_bit(WX_STATE_RES_FREED, wx->state))
-		goto out;
-
-Would something equivalent be appropriate here, together with setting
-WX_STATE_DOWN in wxvf_suspend() so that the test_and_set_bit(WX_STATE_DOWN)
-guard in wxvf_down() reflects the teardown suspend already performed?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260829091423.83097-1-mengyuanlou%40net-swift.com
+References: <20260901-libbpf-frags-flags-v3-3-4eb6f14968b0@redhat.com> <140ef9fa6dc454d62eaf49b168850890f1617fba462dcc37288747f6fbc7dae8@mail.kernel.org>
+In-Reply-To: <140ef9fa6dc454d62eaf49b168850890f1617fba462dcc37288747f6fbc7dae8@mail.kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Wed, 2 Sep 2026 17:22:15 -0700
+X-Gm-Features: AcwNN1VQ1YMtD0MgL0myLt2ygnmk6dG-xiKZpsmTHuTFu9Rx8blS2RsSJlnGUVk
+Message-ID: <CAEf4Bzbvy=igxp9ihNrc9WHs8gXeY4nvfxc+Dt=0Oijmy+gyXA@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 3/4] libbpf: Move section-defined program
+ flags to prog_flags
+To: bot+bpf-ci@kernel.org, Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Cc: toke@redhat.com, qmo@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, 
+	song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, 
+	emil@etsalapatis.com, ihor.solodrai@linux.dev, larysa.zaremba@intel.com, 
+	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, lorenzo@kernel.org, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, martin.lau@kernel.org, 
+	mason@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 1, 2026 at 2:54=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
+>
+> > diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+> > index f09cbfd8e729d..c036e8a91ed88 100644
+> > --- a/tools/lib/bpf/libbpf.c
+> > +++ b/tools/lib/bpf/libbpf.c
+> > @@ -7879,6 +7879,19 @@ static int tracing_multi_mod_fd(struct bpf_progr=
+am *prog, int *btf_obj_fd)
+> >       return 0;
+> >  }
+> >
+> > +static int libbpf_setup_prog_flags(struct bpf_program *prog, long cook=
+ie)
+> > +{
+> > +     enum sec_def_flags def =3D cookie;
+> > +
+> > +     if (def & SEC_SLEEPABLE)
+> > +             prog->prog_flags |=3D BPF_F_SLEEPABLE;
+> > +
+> > +     if (def & SEC_XDP_FRAGS)
+> > +             prog->prog_flags |=3D BPF_F_XDP_HAS_FRAGS;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> >  /* this is called as prog->sec_def->prog_prepare_load_fn for libbpf-su=
+pported sec_defs */
+> >  static int libbpf_prepare_prog_load(struct bpf_program *prog,
+> >                                   struct bpf_prog_load_opts *opts, long=
+ cookie)
+> > @@ -7889,12 +7902,6 @@ static int libbpf_prepare_prog_load(struct bpf_p=
+rogram *prog,
+> >       if ((def & SEC_EXP_ATTACH_OPT) && !kernel_supports(prog->obj, FEA=
+T_EXP_ATTACH_TYPE))
+> >               opts->expected_attach_type =3D 0;
+> >
+> > -     if (def & SEC_SLEEPABLE)
+> > -             opts->prog_flags |=3D BPF_F_SLEEPABLE;
+> > -
+> > -     if (prog->type =3D=3D BPF_PROG_TYPE_XDP && (def & SEC_XDP_FRAGS))
+> > -             opts->prog_flags |=3D BPF_F_XDP_HAS_FRAGS;
+> > -
+>
+> Does this change break bpf_program__clone() when the caller passes
+> non-zero opts.prog_flags?
+>
+> Before this patch, libbpf_prepare_prog_load() OR'd in the section flags
+> after the caller's override:
+>
+>     /* in bpf_program__clone() */
+>     attr.prog_flags =3D OPTS_GET(opts, prog_flags, 0) ?: prog->prog_flags=
+;
+>     ...
+>     prog->sec_def->prog_prepare_load_fn(prog, &attr, ...);
+>
+>     /* in libbpf_prepare_prog_load() */
+>     if (def & SEC_SLEEPABLE)
+>         opts->prog_flags |=3D BPF_F_SLEEPABLE;
+>
+> So a caller doing:
+>
+>     LIBBPF_OPTS(bpf_prog_load_opts, opts, .prog_flags =3D BPF_F_TEST_STAT=
+E_FREQ);
+>     fd =3D bpf_program__clone(prog, &opts);
+>
+> would get TEST_STATE_FREQ | SLEEPABLE for a program in SEC("fentry.s/..."=
+).
+>
+> After this patch, the flags live only in prog->prog_flags, and the `?:`
+> in bpf_program__clone() discards prog->prog_flags entirely when the
+> caller passes non-zero opts.prog_flags:
+>
+>     attr.prog_flags =3D OPTS_GET(opts, prog_flags, 0) ?: prog->prog_flags=
+;
+>                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>                       returns TEST_STATE_FREQ, prog->prog_flags is ignore=
+d
+>
+> So the same caller now gets only TEST_STATE_FREQ without SLEEPABLE. For
+> sleepable-only helpers like bpf_copy_from_user, this produces a verifier
+> rejection. For BPF_PROG_TYPE_SYSCALL, which requires prog->sleepable,
+> it fails at load. For xdp.frags programs, BPF_F_XDP_HAS_FRAGS is lost.
+>
+> Looking at the pattern immediately below in the same function:
+>
+>     if (attr.token_fd)
+>         attr.prog_flags |=3D BPF_F_TOKEN_FD;
+>
+> should the section flags be OR'd in unconditionally, or should the
+
+no, I don't think so. In the given example, I think BPF_F_SLEEPABLE
+flag should be provided by the caller explicitly.
+
+Mykyta, can you please check if veristat would need some adjustments
+due to these changes? Thanks!
+
+> caller-override `?:` be removed for prog_flags? The commit message
+> mentions bpf_program__set_flags() and bpf_program__set_type() as
+> affected APIs but doesn't mention bpf_program__clone().
+>
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/334899=
+85893
