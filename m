@@ -1,296 +1,214 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3B645DF58
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9541543F087
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426558; cv=none; b=NPwlm++Vd4GoMEY6gDV5hzoPIhf3TWLvXJ8mBETpXzzzsBIPpXcDkl0rm50WvjfpPNizaITcVoqHpVtrGzOe5PUQbAqMNZWcueDhZyZP7z45jFSuUbpGnV9zAf24mggxlcyuWzPwBVWBqO7cHK5pivwxo/khm54pNrdIc9f3Fqw=
+	t=1788426767; cv=none; b=GyV8fkmGxb7A9nk9srHHDef/nKvgLCmRAP5hABqIX1SOdSC0od/KNKwD/jhVJsqu7MdELBecweaEvBTLlSs84d6MWE20+3dKnLwjBlbfwW924saQxDI7z44iEaQzhUq2VVGaSt9Qvy6F1EVHJgS6S6TfunOiRJkiuerUknE2XQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426558; c=relaxed/simple;
-	bh=IzIe2onD9pmr7wZemYI6FFDtj4e2XA89rPmJIh0jRkM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qBrbXIRRHzWyWDcyznIHyCswX83Yr+WJXyAfW7ZB25gIx9FrC5Lmde+ogAA1S+MSNu+pbntGV0RmYGnwsQi1tkVsUNw4427vlgOtG6utmwYG3tbMn1blC/r9xs8VT+2jbhu0kNi7OL/e5tmWFme3uHuOSOI3wDz4klkVv1uo2IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UfBn7RhR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TpmgmNao; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788426767; c=relaxed/simple;
+	bh=8yRwhYp4T46Ioc2NqTAm466w7YfIjzlx6TzRz3cC4QY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N2EmIHcWyVMrt+E37ppKmtC0aoodWC03miktOtLla7cqLrKaJYsaPMawd19gdh8qZCloZ66FMNdOPkezAZwdd816SkbJgErCQgi54jD23AwWUxRgFQli1YOB7W0C8nNtKegaL7FwicLDpwBT2CCcvMsFlfAqTNU+KLJ6RfrLUa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LAOwcYVY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=b52+jnQy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UfBn7RhR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TpmgmNao"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683923JO3549390
-	for <netdev@vger.kernel.org>; Thu, 3 Sep 2026 09:09:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=Nm0b3decWts16dJvCGu7/4
-	gLHqIVSBuSg/h+YMAas2c=; b=UfBn7RhRJtjrWytUbJFGvf0MsF64YrLjo4VdZu
-	CeXHuCjaSF/+Di10p8rnF0vghqCBzeyX0MF7cJgyC3Hw9sbp0YYB0sZTc1kL5g0m
-	uhRMKuvCGQ3XSYzkPZLP+/WUv23evKLfy6mmoHxNKL1NoabKO4mpwJXO4dg6ZPgU
-	1bIp73cyI7IIq74FObcFWDKTrPjr+BEKJ5B/HNJA1r28B4QlKjKspY/5pH2NBnsA
-	cVZA0JE6EexEVSgstmTjaynORI+Hiqi0WlcE+O19cA2zjLsQ2napq0ftnuU5LNrD
-	RiegAhoRB72knvTSH5lnrJgCOJV+T1g+MUfB/x0njSo7c2ww==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gf0gjsauj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 09:09:16 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939281526e1so113263585a.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 02:09:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LAOwcYVY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="b52+jnQy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788426764;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1lmLINHHaQaNFXVLN7hTt2q7wBOhBTt6Ut2+Ns4748E=;
+	b=LAOwcYVYsFP0fAaOrI+DftyloBi50Rg7uOGDIA+jjLjvybHj8hPJdTqXdHm08mcr7F7qiv
+	jYxCTryRnq42d07uKAL9F432Wr0XHutntZe3KDKD4qEISRw7tIA9uyzqJoFiio3FpgBolx
+	+GohgkVVvGIv/JwfUcIgx1oKsKeTM1g=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-O-aEN9ADN36i4x1yQM4CcA-1; Thu, 03 Sep 2026 05:12:43 -0400
+X-MC-Unique: O-aEN9ADN36i4x1yQM4CcA-1
+X-Mimecast-MFC-AGG-ID: O-aEN9ADN36i4x1yQM4CcA_1788426762
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493fa6e28a7so18474965e9.1
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 02:12:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788426555; x=1789031355; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Nm0b3decWts16dJvCGu7/4gLHqIVSBuSg/h+YMAas2c=;
-        b=TpmgmNaoWlDl2UWCUd3PyBRX5j93pshzeQiPcMlZiaDdndFS6ShPBWEgbVKpKevGh/
-         gnQKmqioAoUZFDNWO12o5GuEh0DsdXcLiSjaWYHKBlidWo0j6vUD19u923iKV9+wueZQ
-         BYnmRP7j7YEReblumjtskwGT5ROw1z0f5aALcwnnPNGjYpUILXsye/XraNhzJrTkVah1
-         zaftV40dynxYNnqHuxQWNmuqD24iuWAaj+0LyLzc857DzbJ8Geobr8qYMjP+lgk+/+sQ
-         /2OGsVsC7SepJJgHE0fwcCALZMiRZyBiCqWnSsRXKaZADosjgC9ZlYzdGKdMC40Z+y9p
-         fx7g==
+        d=redhat.com; s=google; t=1788426762; x=1789031562; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1lmLINHHaQaNFXVLN7hTt2q7wBOhBTt6Ut2+Ns4748E=;
+        b=b52+jnQy8+MqE5WT6BlZhZKZWSQZtlC8iqku5GE4nTPQC0bfPJwLYK/o2nLsRQtWIC
+         8RW/bkZN6lyL7zrkMAI4nAtHEGO/zEHOgPyZyv3zoFhEdHtrYJqB6rSKC/qOm/Fkt6Gb
+         HqOPuGXo+JfoqGDmUkM+VqVPGsOz/4oOfcebCpZhdIJ62z7g1FNHm0CB6UqQMl1pLjRN
+         bsuRd5TEDRdbbon4Fn54hf0VhyBzDbPqXcUXcmfCq03izm5VkRJu6MSzYUH5/AHrrn/z
+         LOBZyy8besHkcS1+5J5CsevAGWob3EBWEFdg+ZCmSP81fDnXcXGtVH0jWJiUVrTc2zEb
+         LvwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788426555; x=1789031355;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Nm0b3decWts16dJvCGu7/4gLHqIVSBuSg/h+YMAas2c=;
-        b=qt9LQ1EnU8/gj/fJkQzWUEX7Etrddh/oze22XbpzNRWIFgTFCxpJQGPBADb6yJVS+F
-         mfeZorZxVDPxoYoQ/6/4CajqRy0pVOGBSQFK+ENTDOwpYMC/JEZ36XQCPHfOrw/p+Wwo
-         akqubGJ9Lsrv3vKwDQxFcGzAKgleNtoYHMj0s/dXvurAA6FhAt2K9Pe86cgxh4SgZE6e
-         FrMISkK12qZiRydLSGe+s23HtarceEnwckULWIs1FqB40wd8zGGiDpUuUsc7Drl9Z6j2
-         SQoA6wGlHGlY13tUs4niYXXdbEa8Fb2uGLmBwq3xue2oHu9BjE3lOjCCYUnB9HDjQAYw
-         EN6g==
-X-Gm-Message-State: AFuF++l1z0kzG00VY/OWP3t96qwKXRZ0+46inP7KkqqbFylmxjlljOqo
-	lGbV2lRRcAZr2V/ACWN0NONCtmr6vDmJixce0im33LNyGuBSK+OoEbK9LY822t5smVnpTrK3o7S
-	8SQu2BFMC3qdMugnfHnZwI4/sP3H+9UZxVUpTphDU9tbKyeu9F4NVUHRYGTenRau2LVc=
-X-Gm-Gg: AYBFou1r8oHdjgqf5DaPU2sUpqTNSGRYz7SZCVpH9o6r9xW4CqH3pQSA5ChvCl6cQbG
-	Yzs1DNDNnzcDH+SpXewFskH/KuoUjxtE4ch9RWSjg/pJZ3NdWY50+bnlwQ/qDGb+MRk8OHZ8LaC
-	m4ucGyQ8fXC8r6qycgK4hokSAP9NrVV9f2cqd1wTqdGKcCZbfSlbGACaAeZ2+RlaTq56T8MNlUk
-	CXFyKoa5bivNNjB3B0iaqlG53Zm/JHaq84JsWg9mkKBPQLZSLxt/t08qRoF9eiuxHX7RV5kHZO7
-	l2+tJPXYj2c7RbBTcam2uQkMrgveyGHrIwe5gqEuMnHCrSWJ/eNNzxv+mwgn+uAW8IHMf7lnq/h
-	NgyruF2j9yLtVRQ==
-X-Received: by 2002:ae9:e707:0:b0:939:6df7:73f1 with SMTP id af79cd13be357-9396df775admr458433185a.51.1788426555139;
-        Thu, 03 Sep 2026 02:09:15 -0700 (PDT)
-X-Received: by 2002:ae9:e707:0:b0:939:6df7:73f1 with SMTP id af79cd13be357-9396df775admr458426985a.51.1788426554489;
-        Thu, 03 Sep 2026 02:09:14 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e72d2asm11700770f8f.8.2026.09.03.02.09.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 02:09:13 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Thu, 03 Sep 2026 11:08:42 +0200
-Subject: [PATCH net] net: stmmac: preserve real_num_tx_queues on mqprio
- setup failure
+        d=1e100.net; s=20251104; t=1788426762; x=1789031562;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1lmLINHHaQaNFXVLN7hTt2q7wBOhBTt6Ut2+Ns4748E=;
+        b=W2pSyFXyp9Z0h5r0uax7aj8U5/PlHhe/Xe5wRU4lwup68GK8zvoB3ti8zpdFkRTOzW
+         OHZrzLTXD5AwyTnIVnn+krXPvPXJ36U3e49kwJDbtLX+LWd/UukfjdDA5Mx/tpnBFwu8
+         Pl+ORo8PDIlc0T9iIoyS0+bfLuhtw2owrAQFx1b3osCto79UuntsXM4obUD7wGnCJ2fR
+         gXZf3XNkW/7MwaiOFIVjrCjnzC375IDDa2Pmj3w+KtugQICfbCMDR0rCVtpyG7CWSsMf
+         21pkBZHxOrmBUI0LXhi3P/SRWazEV0EJtqBnNEvQQS7uENtaS9fC2jp3H6RtLdeQH5XA
+         jizQ==
+X-Gm-Message-State: AFuF++lSNUgJUYW/mfVOnoz4cqfknahYsRvWxhBPL6/ZnN5ngkj7CS1u
+	KRrM8Y1yyBmN4HkXZyeaxtUKaxW1oMzKWE/L9fxoZK/FZYkvO4EI1Jqg7pXeWFdLpCD0VPIMh0H
+	zLw2zaHg/3jisIxtxhSl6FhI1inj2tQonAaEM20QTdpcjMxS8ESs25oA/LQ==
+X-Gm-Gg: AYBFou3PjYiZwTatP4XD0nqywcSqPCxgaWbsi2SZp4ioV057sbpq7gWNVr0/ub5nTs8
+	jgTDP7kY8JS9CkzGV6qCXyNcAgvP+L9uI5v7LqCMtQsJuccRtMCi+st8XInnapcpEjBKcDZdkUd
+	14r0Ug4uyZIflJz3FaatWFnmQ1B7GUnLaWpnHY1BgP3DEVeuIjuDX91SJOokE8EJ/3Uh0Di4ts3
+	fpKB41E+Zfu9xqyN5kj6OaAmIxnbBiakoSKVNspi9T4Scyk4Y9atZWWSEsQB20m5o4FMj96WqDW
+	KufIln15kXOfpZ4uuw0h1CEMm7eCKUI0SvQiKN50cBeISUCORBYlF1A9rrZfxR5QGxrtkFZqYVG
+	IYwP+tKmKFWkMg9f/qpzvEpwSNhsSvp906xiUN/FaPGWG6r2DVzi9Evj/r13/QDkjmHKpwpPGIw
+	==
+X-Received: by 2002:a05:600c:5653:b0:49c:eb17:cf3b with SMTP id 5b1f17b1804b1-49ceb17cff4mr103012745e9.8.1788426761582;
+        Thu, 03 Sep 2026 02:12:41 -0700 (PDT)
+X-Received: by 2002:a05:600c:5653:b0:49c:eb17:cf3b with SMTP id 5b1f17b1804b1-49ceb17cff4mr103011865e9.8.1788426761041;
+        Thu, 03 Sep 2026 02:12:41 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6024a8sm54720075e9.6.2026.09.03.02.12.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 02:12:40 -0700 (PDT)
+Message-ID: <b7ca242f-e381-4cf4-993f-a151dcc0cc8f@redhat.com>
+Date: Thu, 3 Sep 2026 11:12:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-stmmac-tc_setup_dwmac510_mqprio-error-path-v1-1-eb171bdd340a@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3NSQ7DIAxA0atEXtcSgXS8SlQhBE7jBUMNHaQod
- y/q8m3+36CSMFW4DRsIvblyTh3jYQC/uvQg5NANWumTuiqDtcXoPDZvK7VXseHTeRyVjc8inJF
- EsmBxbcVLmM7aTSaYRUMPFqGFv//ZDIka3Pf9B6jLUIGBAAAA
-X-Change-ID: 20260903-stmmac-tc_setup_dwmac510_mqprio-error-path-8d472a43d3f2
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Furong Xu <0x1207@gmail.com>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDA3NyBTYWx0ZWRfX4tdZu2RxZHDK
- sTOFzggZblH3zYBWGzhsu03R+6vtuxIU37RHYA5KRFGnLVlXhsMP7NK6eS9aUY1ylouKJdLP6EH
- 9jHL9VhJCo3nEOOx3R6IbzHA9a1j1w2U2xsR5lWGBU8xoyGObi5jj5mPI1DLgVIFmxmYVMsSknu
- Rrm4LNQPp9EXIVpQgNyQ/WLFCUu2cuTYGM77Ry5syl7dik6TOjjhPsMUHyiAS3s4Gb1FDceEoWe
- 65DkxW8Q+sMmC7NDM9si4TWFj1rIuTMKynBTSH3KgPFvN2n6afdN97AVEp6+VRo7DTM+YOW8+Y+
- Vq/P6lLcSPzVBsouU03uXnMQV95+ZHirSbpDL2EjrgWDVUIBuDR9oIEgfJ4gdoanBcQQFfNNhcA
- Bf7XmsLOSjBlfbl9FO9y9ohLD3PmFe7uh6EB1ZBptP6YmIUf2/2w6VGhxcrgVV2tN1CMdiSiQYE
- DV1kKRfmW5dUnP4HPJQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDA3NyBTYWx0ZWRfXwRF/u0LC2eZJ
- Bx8R8J+JGSfNekOEwwvgYtrz16KqZSPkakrNCixrvhhXKQSHYvuUoMNXPv5UHn9TROYBTyRONU0
- 0wwjvl9bpmKAeZ2gJ1f8QiKv+snEwIo=
-X-Proofpoint-GUID: gVLBD-v6_mcnccH1jidjd84q3I35BuTV
-X-Proofpoint-ORIG-GUID: gVLBD-v6_mcnccH1jidjd84q3I35BuTV
-X-Authority-Analysis: v=2.4 cv=LZ4MLDfi c=1 sm=1 tr=0 ts=6a99393c cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=0Ze0suNwVZWZK1odzWoA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-03_02,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
- bulkscore=0 priorityscore=1501 impostorscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609030077
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net,v2] net: bridge: mcast: fix br_multicast_list_adjacent rcu
+ walk of mglist
+To: Nikolay Aleksandrov <razor@blackwall.org>, netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ linus.luessing@c0d3.blue, bridge@lists.linux.dev
+References: <20260901074046.316190-1-razor@blackwall.org>
+ <178835300671.3394541.1735736223580358438@kernel.org>
+ <1df834f1-cdf8-4b1a-aae6-a86c74278509@blackwall.org>
+ <30c1e3c4-71cb-426b-9949-d336b8824f95@blackwall.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <30c1e3c4-71cb-426b-9949-d336b8824f95@blackwall.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-In tc_setup_dwmac510_mqprio(), if stmmac_fpe_map_preemption_class()
-fails after the number of real TX queues has been set to
-num_tx_queues, the error path calls stmmac_reset_tc_mqprio(), which resets
-the number of real TX queues to priv->plat->tx_queues_to_use
-(the maximum the platform supports).
-This overwrites the value that was active before the mqprio offload was
-attempted, which may have been lower than the platform maximum (for
-example after a previous mqprio configuration reduced the queue count).
+On 9/2/26 2:54 PM, Nikolay Aleksandrov wrote:
+> On 02/09/2026 15:51, Nikolay Aleksandrov wrote:
+>> On 02/09/2026 15:43, netdev-bot+sashiko@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found 1 potential
+>>> issue(s) to consider:
+>>>
+>>> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+>>>
+>>> - [Medium] net/bridge/br_multicast.c:br_multicast_list_adjacent() now
+>>>    performs the entire per-port mglist walk, including one…
+>>>
+>>> -- 
+>>>
+>>> net: bridge: mcast: fix br_multicast_list_adjacent rcu walk of mglist
+>>>
+>>> The patch converts the mglist walk in br_multicast_list_adjacent() from an
+>>> RCU walk to one done under the bridge's multicast_lock, since mglist was
+>>> never converted to RCU.  It also makes the function return -ENOMEM on
+>>> allocation failure and documents that in the kdoc.
+>>>
+>>> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
+>>>
+>>>> diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+>>>> index 3ef5d8bbf552e..97686984de6d5 100644
+>>>> --- a/net/bridge/br_multicast.c
+>>>> +++ b/net/bridge/br_multicast.c
+>>>
+>>> [ ... ]
+>>>
+>>>> @@ -4967,15 +4969,20 @@ int br_multicast_list_adjacent(struct net_device *dev,
+>>>>           if (!port->dev || port->dev == dev)
+>>>>               continue;
+>>>> -        hlist_for_each_entry_rcu(group, &port->mglist, mglist) {
+>>>> +        spin_lock_bh(&br->multicast_lock);
+>>>> +        hlist_for_each_entry(group, &port->mglist, mglist) {
+>>>>               entry = kmalloc_obj(*entry, GFP_ATOMIC);
+>>>> -            if (!entry)
+>>>> +            if (!entry) {
+>>>> +                spin_unlock_bh(&br->multicast_lock);
+>>>> +                count = -ENOMEM;
+>>>>                   goto unlock;
+>>>> +            }
+>>>>               entry->addr = group->key.addr;
+>>>>               list_add(&entry->list, br_ip_list);
+>>>>               count++;
+>>>>           }
+>>>> +        spin_unlock_bh(&br->multicast_lock);
+>>>>       }
+>>>
+>>> [Severity: Medium]
+>>> How long can this critical section get?  The whole per-port mglist walk,
+>>> including one kmalloc_obj(*entry, GFP_ATOMIC) per port group, now runs with
+>>> br->multicast_lock held and bottom halves disabled.
+>>>
+>>> The number of allocations inside the section equals the length of
+>>> port->mglist, which is only bounded by br->hash_max in
+>>> br_multicast_new_group():
+>>>
+>>> net/bridge/br_multicast.c:br_multicast_new_group() {
+>>>     ...
+>>>     if (atomic_read(&br->mdb_hash_tbl.nelems) >= br->hash_max) {
+>>>     ...
+>>> }
+>>>
+>>> hash_max defaults to BR_MULTICAST_DEFAULT_HASH_MAX (4096) and can be set to
+>>> any u32 without validation via netlink
+>>> (br->hash_max = nla_get_u32(data[IFLA_BR_MCAST_HASH_MAX]) in br_netlink.c)
+>>> or via set_hash_max() in br_sysfs_br.c.  The list contents themselves are
+>>> populated by IGMP/MLD reports from hosts on the bridged L2 domain.
+>>>
+>>> While the lock is held, every other CPU that needs br->multicast_lock spins
+>>> for it, including the br_multicast_rcv() receive path, the group and query
+>>> expiry timers and br_multicast_port_group_rexmit().  Before this change the
+>>> loop only held rcu_read_lock(), so a long mglist slowed the caller but did
+>>> not block bridge multicast processing.
+>>>
+>>> The caller is periodic, so this is not a one-off:
+>>>
+>>> batadv_mcast_mla_update()
+>>>    __batadv_mcast_mla_update()
+>>>      batadv_mcast_mla_bridge_get()
+>>>        br_multicast_list_adjacent()
+>>>
+>>> which runs every BATADV_MCAST_WORK_PERIOD (500 ms) from the batman-adv
+>>> workqueue.
+>>>
+>>> Would it be preferable to bound the section, for example by pre-allocating
+>>> the entries outside the lock, or by dropping and re-taking the lock in
+>>> batches, rather than holding a bh-disabling spinlock across up to hash_max
+>>> slab allocations?
+>>>
+>>
+>> Oh please, enough with this shit. This is taking way too much time for a function
+>> that is largely useless.
+>>
+>> I will just convert it properly to RCU in -net and be done with this.
+>>
+> 
+> and just to be clear - IMO only bots and llm "security" researchers would be trying
+> to do what is suggested above, I doubt there is any real-world case where it would
+> actually happen.
+I understand your frustration. Unfortunately ignoring this kind of
+reports will lead to at least one security report, possibly with
+unbelievably high impact due to unexpected chaining. That is, we can't
+ignore them.
 
-Save ndev->real_num_tx_queues before lowering it and restore it if the
-FPE preemption-class mapping fails. Drop the use of
-stmmac_reset_tc_mqprio() from the error path: the queue count is now
-preserved and the TC-to-queue and priority-to-TC mappings are restored
-to the previously saved values.
-Introduce stmmac_set_ndev_tcs utility routine.
-
-Fixes: 195e4f409a40 ("net: stmmac: support fp parameter of tc-mqprio")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- drivers/net/ethernet/stmicro/stmmac/hwif.h      |  2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 80 ++++++++++++++++++-------
- 2 files changed, 61 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index 04dafec021b4..9314bcb85c22 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -494,7 +494,7 @@ struct stmmac_ops {
- #define stmmac_set_arp_offload(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, mac, set_arp_offload, __args)
- #define stmmac_fpe_map_preemption_class(__priv, __args...) \
--	stmmac_do_void_callback(__priv, mac, fpe_map_preemption_class, __args)
-+	stmmac_do_callback(__priv, mac, fpe_map_preemption_class, __args)
- 
- /* PTP and HW Timer helpers */
- struct stmmac_hwtimestamp {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 14cabe76e53e..c99d9b7e26dc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -1237,6 +1237,30 @@ static int tc_query_caps(struct stmmac_priv *priv,
- 	}
- }
- 
-+static int stmmac_set_ndev_tcs(struct net_device *ndev, u8 ntc,
-+			       struct netdev_tc_txq *tc_to_txq)
-+{
-+	int i, err;
-+
-+	netdev_reset_tc(ndev);
-+	if (!ntc)
-+		return 0;
-+
-+	err = netdev_set_num_tc(ndev, ntc);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < ntc; i++) {
-+		u16 count, offset;
-+
-+		count = tc_to_txq[i].count;
-+		offset = tc_to_txq[i].offset;
-+		netdev_set_tc_queue(ndev, i, count, offset);
-+	}
-+
-+	return 0;
-+}
-+
- static void stmmac_reset_tc_mqprio(struct net_device *ndev,
- 				   struct netlink_ext_ack *extack)
- {
-@@ -1250,45 +1274,61 @@ static void stmmac_reset_tc_mqprio(struct net_device *ndev,
- static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
- 				    struct tc_mqprio_qopt_offload *mqprio)
- {
-+	unsigned int ndev_num_tx_queues, num_tx_queues = 0;
-+	struct netdev_tc_txq ndev_tc_to_txq[TC_MAX_QUEUE];
-+	struct netdev_tc_txq tc_to_txq[TC_MAX_QUEUE] = {};
- 	struct netlink_ext_ack *extack = mqprio->extack;
- 	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
--	u32 offset, count, num_stack_tx_queues = 0;
- 	struct net_device *ndev = priv->dev;
--	u32 num_tc = qopt->num_tc;
--	int err;
-+	u8 ndev_prio_tc_map[TC_BITMASK + 1];
-+	int i, err, ndev_ntc;
- 
--	if (!num_tc) {
-+	if (!qopt->num_tc) {
- 		stmmac_reset_tc_mqprio(ndev, extack);
- 		return 0;
- 	}
- 
--	err = netdev_set_num_tc(ndev, num_tc);
--	if (err)
--		return err;
--
--	for (u32 tc = 0; tc < num_tc; tc++) {
--		offset = qopt->offset[tc];
--		count = qopt->count[tc];
--		num_stack_tx_queues += count;
-+	if (qopt->num_tc > ARRAY_SIZE(tc_to_txq))
-+		return -EINVAL;
- 
--		err = netdev_set_tc_queue(ndev, tc, count, offset);
--		if (err)
--			goto err_reset_tc;
-+	/* save current tc values for reset */
-+	ndev_ntc = netdev_get_num_tc(ndev);
-+	for (i = 0; i < ARRAY_SIZE(ndev->tc_to_txq); i++)
-+		ndev_tc_to_txq[i].combined =
-+			READ_ONCE(ndev->tc_to_txq[i].combined);
-+	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
-+		ndev_prio_tc_map[i] = READ_ONCE(ndev->prio_tc_map[i]);
-+
-+	for (i = 0; i < qopt->num_tc; i++) {
-+		tc_to_txq[i] = (struct netdev_tc_txq) {
-+			.count = qopt->count[i],
-+			.offset = qopt->offset[i],
-+		};
-+		num_tx_queues += qopt->count[i];
- 	}
- 
--	err = netif_set_real_num_tx_queues(ndev, num_stack_tx_queues);
-+	err = stmmac_set_ndev_tcs(ndev, qopt->num_tc, tc_to_txq);
-+	if (err)
-+		goto error_reset_tc;
-+
-+	ndev_num_tx_queues = ndev->real_num_tx_queues;
-+	err = netif_set_real_num_tx_queues(ndev, num_tx_queues);
- 	if (err)
--		goto err_reset_tc;
-+		goto error_reset_tc;
- 
- 	err = stmmac_fpe_map_preemption_class(priv, ndev, extack,
- 					      mqprio->preemptible_tcs);
- 	if (err)
--		goto err_reset_tc;
-+		goto error_reset_num_tx_queues;
- 
- 	return 0;
- 
--err_reset_tc:
--	stmmac_reset_tc_mqprio(ndev, extack);
-+error_reset_num_tx_queues:
-+	netif_set_real_num_tx_queues(ndev, ndev_num_tx_queues);
-+error_reset_tc:
-+	stmmac_set_ndev_tcs(ndev, ndev_ntc, ndev_tc_to_txq);
-+	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
-+		netdev_set_prio_tc_map(ndev, i, ndev_prio_tc_map[i]);
- 
- 	return err;
- }
-
----
-base-commit: 2f38e26a5741abdf152c1b56b22144a06d30fd66
-change-id: 20260903-stmmac-tc_setup_dwmac510_mqprio-error-path-8d472a43d3f2
-
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+/P
 
