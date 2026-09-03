@@ -1,64 +1,112 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-113.mta1.migadu.com [95.215.58.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC5049B218;
-	Thu,  3 Sep 2026 12:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9994A3F18
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788438745; cv=none; b=HU+K+gNw2zNEThTdqsxHhxGCLtOoO6zY5zd3LVWPPVhCtF19PDa/fOa+9XRWh+LcjKe5TIiNd3348SJVBe3C5LVzxEGy50CEql7ZJPuSxOR4AjUBNaadVuYuie0aYc1KjhZQqCQvN/D4x6z8O130d+buyMeSMQkVotjKKd9efd4=
+	t=1788438758; cv=none; b=uuGYmJ1BqGZDxSQO+Uft8/DX344W4Tf0twjIyROso7sHCOLpnHLNXYoxPLOFvWF4sOCMrqb1JiiQAtmbtB0T1KdBJ7RQzteReSMZ5fgp7dcUR3+5aGqEowrptbg61ydItpVvtTVttp2bjmLQMeRe/0/1MT+wypT2tpvddCtdA2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788438745; c=relaxed/simple;
-	bh=J/492hMOKyBGaM+3iGM+ZCs9lxLrvJV5w7DO+RwkAnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=inpq/V6xYt3KVNH7VUurYjKSin+qgt84bv3KwdJHguZKqDYxjFaZhrJn9fW2CrA5Q0X6lcAtTGIwYPeRVuuHToKtQ+k2BlHYJWE56oK2JdThNKzEMsAGeYzGln5Ynx4M0lh9rPqVFsMkbZwylNOQDBkSRw76cMXuZG/OA1TreEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4mRX585Q; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788438758; c=relaxed/simple;
+	bh=wT/Kh+SYC9N2PwFI4PChHwKHi3/2o0RhO4bSbbh0O1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RWicVnc+Yfg94sXPy18U4qhswBmZ9akzOAdiYo+X7RPG2u/WnXU0IGrNlcAo353WmRcZvlkKGWkg+wOWngeAry3uhbSSXKvrGgvkzZhmSv/A1oVSqIGCdqG/OJvoav1z2Ps4lSF5/qkga6UNehZrj32nwE+PI4cOSfxEYDmtuUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gPfkr7XB; arc=none smtp.client-ip=95.215.58.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4mRX585Q"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=qFKWNDBvBgnwTaxe1hyONp7XRCWlf/Jf5MKWkbrYx4Y=; b=4mRX585Q6zNO1FC8tqL8YuTYEM
-	ZnpFFIM+uQEuVpzIqq2sFa969n03zZt+CfmBgQjHSXMUaD7lfREcD8W63rvZOaFKA2U3JoIil2niQ
-	S517kiNvXy05ka50xj1/qnP/yW2ysQROa4lQ0jYhJ83AQs2MTjqj1J+ilZdM1kaMtkSA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x26c0-002inM-Ga; Thu, 03 Sep 2026 14:32:12 +0200
-Date: Thu, 3 Sep 2026 14:32:12 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 3/3] net: mdio: realtek-rtl9300: Support
- non-default clock frequency
-Message-ID: <5335179d-0820-4f54-972a-97b7d9f81973@lunn.ch>
-References: <20260903122119.2638354-1-markus.stockhausen@gmx.de>
- <20260903122119.2638354-4-markus.stockhausen@gmx.de>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gPfkr7XB"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=wT/Kh+SYC9N2PwFI4PChHwKHi3/2o0RhO4bSbbh0O1M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788438752; v=1; x=1789043552;
+ b=gPfkr7XB9AEkCMHAymjKen1j0ePj5NHYvw9jslU0v82431WVwNQ3o8qzh8j2eFLcHzhtyjqC
+ rfCl6wThIxIXzcwIc7Q03xF5Dj2dAbOVYDQ0Z2B375zVKZF+Iblexq6WvrEbUx/4hTABnPtUE2G
+ 6VZkKF+HyyFDv2TVzslOxsKw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 29adbccee56dd346;
+	Thu, 03 Sep 2026 12:32:32 +0000
+X-Mizu-Trace-ID: 29adbccee56dd346
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: linux-wpan@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	david.girault@qorvo.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v2 0/2] mac802154: fix queued RX descriptor lifetime
+Date: Thu,  3 Sep 2026 20:32:00 +0800
+Message-ID: <20260903123202.60152-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903122119.2638354-4-markus.stockhausen@gmx.de>
+Content-Transfer-Encoding: 8bit
 
-> +	if (of_property_read_u32(node, "clock-frequency", &freq))
-> +		freq = 2500000;
-> +	err = priv->info->set_bus_frequency(bus, freq);
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Please validate the frequency, return EINVAL if it is not an exact
-match.
+mac802154 queues one descriptor per received beacon or MAC command, but
+each worker invocation dequeues only one. Since queue_work() coalesces
+attempts to queue the same pending work item, a burst can add more
+descriptors than scheduled invocations. A later frame may schedule another
+invocation, but also adds a descriptor, so it does not necessarily reduce
+the backlog. Descriptors can therefore remain queued indefinitely once
+reception stops. The RX path, workers, and scan cleanup also access the
+descriptor lists without common synchronization.
 
+A queued descriptor carries its receiving interface beyond the RCU
+read-side critical section without holding a netdev reference. If the
+interface is removed first, the worker can dereference freed memory.
 
-    Andrew
+Protect the descriptor lists with a spinlock and keep the workers running
+until the queues are empty. Then hold the netdev for the lifetime of each
+queued descriptor to prevent it from being freed too early.
+
+This ordering is required. Without the queue-draining fix, a descriptor
+stranded by queue_work() coalescing would also strand its netdev reference,
+as netdev_put() runs only when the descriptor is released, leaving the
+netdev pinned indefinitely.
 
 ---
-pw-bot: cr
+Changes:
+v2:
+  Patch 1 (new):
+  - Serialize descriptor list access and requeue each worker while another
+    descriptor remains.
+  - Detach queued beacons under the same lock before scan cleanup frees
+    them.
+
+  Patch 2:
+  - Replace the v1 drain_workqueue() approach, which does not cover work
+    queued after the drain or the DEL_INTERFACE path, with a netdev
+    reference held by each queued descriptor. (Sashiko.)
+
+v1: https://lore.kernel.org/all/20260828101905.26865-1-xuanqiang.luo@linux.dev/
+
+Xuanqiang Luo (2):
+  mac802154: serialize and drain queued RX descriptors
+  mac802154: pin netdevs for queued RX descriptors
+
+ include/net/cfg802154.h      |  2 ++
+ net/mac802154/ieee802154_i.h |  2 ++
+ net/mac802154/main.c         |  1 +
+ net/mac802154/rx.c           | 36 ++++++++++++++++++++++++++++++------
+ net/mac802154/scan.c         |  8 +++++++-
+ 5 files changed, 42 insertions(+), 7 deletions(-)
+
+
+base-commit: dc4b95b8fee95113587e93ca116356032d271371
+-- 
+2.43.0
