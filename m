@@ -1,303 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7954FDE40;
-	Thu,  3 Sep 2026 17:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A994457A4;
+	Thu,  3 Sep 2026 17:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788455928; cv=none; b=P4qp19iQ07n2HzwTyZ0I1/+xJY5Hyn19u8rTBfciwfbGDP2EsD/0ti+KH/g6jdiVV86R6MP5CVJ17lCjOpH83+ztJAEihkH1T8Akj1vzUJI38P/HtzO371MSOPsZSguEZRdDy97MM9uP/U75Ts886csbsPBWhigIUcYbsR47xfI=
+	t=1788456329; cv=none; b=tFmFNPlryCSXcO/k4L6WSYV9vrhOqt/XgQkhj+M4UKNOGq9lg44s/C+fpBUJqyPV/XUME7h+xyRZHQE8tpDd8RfMe5oqliRrLeMeLhFgR4827925Va3Omb4+NPXplCtnqyrfvlFx3EhQp5nxcfwoCbhpTwT887ArC2E0M90I0nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788455928; c=relaxed/simple;
-	bh=mXX/Etrqb4EFrEaomh5MkwNzuyyRPV1gF/1or3ELYe4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pRYleiWSTWOpvuZaZ8Yr7Me7cvg9xaqbEKc8FM2QIMqX817McC0jX2mp6X67VaJGH1G1Mr1ivRDG+yds3DFwTofv9yMGEiNGnOgxFtzHEiDPck/YNYE//Z4Jj9sqHrKmeZL97ElSCodSqKKArY77WaBp6nknGxNEsMT9Kqc7AXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yk8H5Q8a; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788456329; c=relaxed/simple;
+	bh=SO+rIIMEQqagYPGY5fk4pR+141Fpo642qjF+27eLVFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=naM9+O/LDH4VnVRq3UmQgL7tNfkGmHAjXLE0TuuFtEfL0BGA/2OCSG/zeELKXUw67Vxwy2zG+X2X3K3G7AwbQPrBgw92JrmGorgNnL1OHuirr+6wEhpR1Hi6FjObvdzh76J2daxRHDR8DH/JuteX2W7j5TskdWx2MtwLbqYVKnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdflpS/6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yk8H5Q8a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAA51F000E9;
-	Thu,  3 Sep 2026 17:18:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdflpS/6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980E31F000E9;
+	Thu,  3 Sep 2026 17:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788455926;
-	bh=6/4SlY1teK8eTFIpFdeomtz5puYwSoy2NSf6sYKyA2I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Yk8H5Q8aZMB1iOP3pS3ymeFceap1st7ql64SEvg/XOJrpdhyF1eQ2On6ILk8a6+24
-	 +WSaRtWDI7vAZjpUGMke298SbGMzu2RpMqAZlTe3xa8FvLvkSQmvyohIT3nf7HtjBE
-	 nS79S0UEFMCBbJi14XEVyAf72oahN1dFReKeKNKja5a3OZuFWgGg500MUdIxE3pSXF
-	 axGQRpE62t/Fn237dBi0NxKfpg8JgllUOKIgSIri5eLdRFeIxyUgLHfzhyyh4H9uXp
-	 l7llLajDGF52VDcQmB/6VmQ0LANPtT3YwSIBHGC2VbG113DeLMOB+SIrbLNj5T7ioN
-	 G1ycculSM6aFA==
-Subject: Re: [v26,net-next,10/10] net/nebula-matrix: add common dev start/stop
- operation
-From: netdev-bot+sashiko@kernel.org
-To: illusion.wang@nebula-matrix.com
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- corbet@lwn.net, kuba@kernel.org, horms@kernel.org, linux-doc@vger.kernel.org,
- pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
- edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
- hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 17:18:45 +0000
-Message-ID: <178845592524.3394541.17926965120518392179@kernel.org>
-In-Reply-To: <20260831021408.2325-11-illusion.wang@nebula-matrix.com>
-References: <20260831021408.2325-11-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1788456328;
+	bh=DYlk3b3Hpldrnb+VBRe1xUF3jUimjKIJKALQa59x6fM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OdflpS/6fk/2tdjcHWoWBoMABGHltZL/v9jQdhL8yr5Vx1dcY1agOzicCa6c4llLB
+	 8b3qMGyCfbD2ewCVkR920yiGr+WwR9vOqwzMGxKhzPpeXHM0PBwRGQEzeglR6fYvnM
+	 VHGQeI7DJTwol+DIzUJPj48rtPgitvPxMKMOhBaJaKdSxID54lg7Op7Kp8IG5vFwRq
+	 34QOm15duDpStw/l95y5KhO0CGQDntD3v4lxQt/jAKnYCkW8pqnQOFQhTy14/axfY4
+	 1eatgE1kaXtjV4VpA5FkuvZQ67ZXuxM1HYXlxggFekp+uDE1j/emNCUd5Eor5ExkaY
+	 zn1KIf5s5GL1g==
+Message-ID: <c3f649fa-24b6-41d3-b6a1-7f37edec87ff@kernel.org>
+Date: Thu, 3 Sep 2026 19:25:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next v2 0/2] selftests: drv-net: Allow cross-compiling
+ the hardware tests
+Content-Language: fr
+To: Andrew Lunn <andrew@lunn.ch>,
+ "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-kselftest@vger.kernel.org
+References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
+ <c45453d8-72ae-450b-be9a-565df1cf0287@lunn.ch>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <c45453d8-72ae-450b-be9a-565df1cf0287@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+Hi Andrew,
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+On 03/09/2026 19:11, Andrew Lunn wrote:
+>> Tested on an aarch64 target, built on x86_64.
+> 
+> Probably a question for Jakub or Matthieu.
+> 
+> As part of the CI system which is feeding into patchworks, I don't
+> think we build the selftests? Do we have the CPU resources to build
+> them?
 
-- [High] This patch adds the first live callers of
-  cfg_msix_map()/destroy_msix_map(), so the control PF (function 0) now…
-- [Medium] In nbl_dev_stop() (nbl_core/nbl_dev.c:489-495) and in the
-  identical unwind inside nbl_dev_start() (nbl_dev.c:465-472), a failure…
-- [Low] Claim (assessed FALSE POSITIVE): nbl_dev_disable_mailbox_irq()
-  clears NBL_CHAN_IRQ_RDY (nbl_core/nbl_dev.c:137-139) without waking…
+We do: the "build_tools" script [1] checks that. And they are also built
+before launching the selftests.
 
---
+> We currently do x86 64 and 32 bit builds. Do we have the CPU resources
+> to do an arm64 cross build?
 
-net/nebula-matrix: add common dev start/stop operation
+I think we do, but I don't know if we need to (see below)
 
-This adds nbl_dev_start() and nbl_dev_stop() to configure the hardware
-MSI-X map, allocate MSI-X vectors, request the mailbox interrupt and tear
-all of that down again.  Thin nbl_core_start() / nbl_core_stop() wrappers
-are hooked into the PCI probe and remove paths.
+> I assume a cross build the self tests needs something like buildroot
+> to be sensible? Or Debians multi-arch stuff where you can install .deb
+> packages for libraries for other architectures? So maybe that is going
+> too far?
 
-A few questions on the new start/stop paths below.
+From what I understood, the goal is to execute the selftests on embedded
+systems as well, which will require building new image including the
+kernel and the drivers/net selftests. Do we need to build the whole
+kernel for arm64? :)
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> index 4fc52cadf60f..26b785c9a05f 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+Cheers,
+Matt
 
-[ ... ]
-
-> @@ -14,6 +25,189 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
->  	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
->  }
->  
-
-[ ... ]
-
-> +static int nbl_dev_disable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
-> +{
-> +	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-> +	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-> +	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-> +	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-> +	u16 local_vec_id;
-> +
-> +	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-> +		return 0;
-> +
-> +	local_vec_id =
-> +		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-
-[ ... comment block snipped ... ]
-
-> +	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
-> +				  NBL_CHAN_IRQ_RDY,
-> +				  NBL_CHAN_TYPE_MAILBOX, false);
-> +
-> +	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
-> +					    local_vec_id, false);
-> +}
-
-[Severity: Low]
-This isn't a bug in the tree as it stands, but clearing NBL_CHAN_IRQ_RDY
-here does not wake the per-message ACK wait queues that test that same
-bit.
-
-nbl_chan_send_msg() sleeps on it:
-
-	ret = wait_event_timeout(wait_head->wait_queue,
-				 READ_ONCE(wait_head->acked) ||
-				 READ_ONCE(chan_info->shutdn) ||
-				 !test_bit(NBL_CHAN_IRQ_RDY,
-					   chan_info->state),
-				 NBL_CHAN_ACK_WAIT_TIME);
-
-At this point in the series every ack-requesting sender is one of the
-nbl_disp_chan_*_req() helpers, all reached only from
-nbl_dev_setup_common_dev(), nbl_dev_start() and nbl_dev_stop(), which the
-driver core serializes against this path, and nbl_chan_send_ack() sends
-with ack = 0 and never sleeps.  So no waiter can be stranded today.
-
-Once netdev or ethtool paths start sending mailbox messages, would this
-also need the WRITE_ONCE(wait_head->acked, 1) plus wake_up() sequence that
-nbl_chan_teardown_queue() already does?
-
-[ ... ]
-
-> @@ -234,3 +436,69 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
->  		nbl_dev_remove_ctrl_dev(adapter);
->  	nbl_dev_remove_common_dev(adapter);
->  }
-> +
-> +/* ----------  Dev start process  ---------- */
-> +int nbl_dev_start(struct nbl_adapter *adapter)
-> +{
-> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-> +	int cleanup_ret;
-> +	int ret;
-> +
-> +	ret = nbl_dev_cfg_msix_map(dev_mgt);
-> +	if (ret)
-> +		goto cfg_msix_map_err;
-
-[Severity: High]
-This is the first live caller of cfg_msix_map() / destroy_msix_map(), so
-the control PF now allocates per-function MSI-X state on behalf of the
-other PFs.  Is there anything on the control PF side that ever releases
-that state?
-
-On the control PF, nbl_res_intr_cfg_msix_map() allocates:
-
-	tmp_msix_tbl->base_addr = dmam_alloc_coherent(dev, tmp_msix_tbl->size,
-						      &tmp_msix_tbl->dma,
-						      GFP_KERNEL);
-	...
-	tmp_interrupts = kcalloc(requested, sizeof(tmp_interrupts[0]), GFP_KERNEL);
-
-stores both in intr_mgt->func_intr_res[func_id] and programs the hardware
-map with VALID=1.  The only release path is
-nbl_res_intr_destroy_msix_map(), which for a peer function runs only when
-that peer PF executes its own nbl_dev_stop() and its DESTROY_MSIX_MAP
-mailbox request succeeds.
-
-On the control PF side, nbl_intr_mgt_start() has no stop counterpart,
-nbl_res_remove_leonis() is a stub:
-
-void nbl_res_remove_leonis(struct nbl_adapter *adap)
-{
-	/*
-	 * No resource release here because all memory uses devm managed
-	 * allocation
-	 */
-}
-
-and nbl_dev_remove_ctrl_dev() only calls disp_ops->deinit_module().
-
-Does unbinding or hot-removing the control PF while another PF is still
-bound leak the kcalloc()'d func_intr_res[].interrupts arrays?  intr_mgt
-itself is devm_kzalloc()'d, so the pointers to those arrays look
-unreachable once devres frees it, and the comment above claims everything
-is devm managed.
-
-In the same scenario, can the peer function be left with
-NBL_PCOMPLETER_FUNCTION_MSIX_MAP still VALID=1 pointing at the coherent
-table that devres just reclaimed together with the control PF, so a later
-interrupt from that function makes the device DMA-read freed memory?  The
-peer's own DESTROY_MSIX_MAP request has no manager left at that point, and
-nbl_dev_stop() only logs the failure.
-
-> +
-> +	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
-> +	if (ret)
-> +		goto init_interrupt_scheme_err;
-> +	ret = nbl_dev_request_mailbox_irq(dev_mgt);
-> +	if (ret)
-> +		goto mailbox_request_irq_err;
-> +	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
-> +	if (ret)
-> +		goto enable_mailbox_irq_err;
-> +
-> +	return 0;
-> +
-> +enable_mailbox_irq_err:
-> +	cleanup_ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-> +	if (cleanup_ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"Failed to disable mailbox IRQ: %d\n", cleanup_ret);
-> +	nbl_dev_free_mailbox_irq(dev_mgt);
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
-> +mailbox_request_irq_err:
-> +	nbl_dev_clear_interrupt_scheme(dev_mgt);
-> +init_interrupt_scheme_err:
-> +cfg_msix_map_err:
-> +	cleanup_ret = nbl_dev_destroy_msix_map(dev_mgt);
-> +	if (cleanup_ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"Failed to destroy MSI-X map: %d\n", cleanup_ret);
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
-> +	return ret;
-> +}
-> +
-> +void nbl_dev_stop(struct nbl_adapter *adapter)
-> +{
-> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-> +	int ret;
-> +
-> +	ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-> +	if (ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"Failed to disable mailbox IRQ: %d\n", ret);
-> +	nbl_dev_free_mailbox_irq(dev_mgt);
-> +	nbl_dev_clear_interrupt_scheme(dev_mgt);
-> +	ret = nbl_dev_destroy_msix_map(dev_mgt);
-> +	if (ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"Failed to destroy MSI-X map: %d\n", ret);
-
-[Severity: Medium]
-Here a failure of nbl_dev_disable_mailbox_irq() is only logged and
-teardown carries on.  On a non-control PF that helper is a mailbox RPC,
-nbl_disp_chan_set_mailbox_irq_req(), which can return -EREMOTEIO,
--ETIMEDOUT or -ESHUTDOWN when the manager PF is unresponsive or already
-unbound.
-
-It is also the only operation that clears MSIX_IDX and MSIX_IDX_VALID in
-NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id):
-
-nbl_hw_leonis.c:nbl_hw_set_mailbox_irq() {
-	data &= ~(NBL_MAILBOX_QINFO_MAP_MSIX_IDX_MASK |
-		  NBL_MAILBOX_QINFO_MAP_MSIX_IDX_VALID_MASK);
-}
-
-So if that RPC fails, the mailbox queue stays armed to emit an MSI-X
-message while nbl_dev_free_mailbox_irq() and then pci_free_irq_vectors()
-run.  Can that leave the device sending a vector with no handler behind
-it?
-
-The remaining masking path is reached over the same mailbox channel:
-
-nbl_interrupt.c:nbl_res_intr_destroy_msix_map() {
-	for (i = 0; i < intr_num; i++) {
-		hw_ops->cfg_msix_info(res_mgt->hw_ops_tbl->priv,
-				      func_id, false, interrupts[i],
-				      0, 0, 0, false);
-	}
-}
-
-and its failure is likewise only logged, so when the channel is wedged
-nothing quiesces the interrupt source.  Should stop fail loudly or use a
-local register write instead of the RPC for the masking step?
-
-Separately, even on the success path nbl_dev_clear_interrupt_scheme()
-runs before nbl_dev_destroy_msix_map(), i.e. the kernel-side vectors are
-released while the device-side mapping is still valid.  Was that ordering
-intended, given that only the (fallible) disable makes it safe?
-
-The identical unwind in nbl_dev_start() under enable_mailbox_irq_err
-ignores both failures in the same way, so probe can fail with the MSI-X
-map and mailbox routing still armed on the device.
-
-> +	/*
-> +	 * destroy_msix_map() sends ack-requested messages which may requeue
-> +	 * clean_mbx_task via polling send path. Drain work after the operation.
-> +	 */
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
-> +}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831021408.2325-1-illusion.wang%40nebula-matrix.com
