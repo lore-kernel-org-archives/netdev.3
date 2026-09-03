@@ -1,364 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013015.outbound.protection.outlook.com [52.101.83.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BE7372B50;
-	Thu,  3 Sep 2026 03:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788405856; cv=none; b=M1Sp6aE98gUV+OWI51QvACFWGhLTUqXGwYEu7r3n5KY4AP4Ai59l2ucW+PlyTlP44CzbIcFrHsfZKF1yYlQ3ZSpy+Xwz6PDMAt3eRlriJzEbRBKkaN4F37cibr49DKMDvDzpN09ROaATcQUyT77nENqHepfHbCjpnTLS3pl6onA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788405856; c=relaxed/simple;
-	bh=V+4yIgwu1Wz7LqCjXj/p+dTL2xWzWqKY6sqG86tw0rI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IXGLba75m/q+A0M5aovvpe0OcAQ5KfgjaS3Mcnfl6dSoaX57TyIMgX53ILHaUQQkVOUussxD2oEE1652n+Xnba06AtBwQjcqnLWRtX8M1Isc1qW9R+BbJCZoynZQj45B1gbS8CTUuRASgcpgfxJ8mOai5yV/2KMno1l97wYVkjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vp480v/C; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642BC3655E9;
+	Thu,  3 Sep 2026 03:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788405871; cv=fail; b=fbYl6WjO+dlJz3ZcqpvgwwBFU/YnpHWVy8Gaga048CveyrBQNPlr1y6q8dHsm+JpfOeKd+icHt+ebm3TimWQZCxU3gWT0R71L7ICPUdjVzpDcg87mxmR1OZ5SIHZL56MLS4u2RDaaF8FhItm41KYaN4SNCBotxGdp5Sy4hQa240=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788405871; c=relaxed/simple;
+	bh=Nz3xfbMUaV7OFqqpVcGS1WItZZvfqPI0FYzg8//66dU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rZPHY4uFO1QHaaJs73345sdgAqhpNQmOr9dzenEkWOPP/nQWLehVw98HExCAZnxr6ca80YKQEIggvhHTBQOvwy0VmuJQK1+PDwZiq+UEGupo/oxNnCDm4QXc8CXkw9IbZTBpUwVpID1X693c7IvULVy9XIXsXp2V5r69FNhr0gI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OISkjT7S; arc=fail smtp.client-ip=52.101.83.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vp480v/C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C279F1F00A3D;
-	Thu,  3 Sep 2026 03:24:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788405854;
-	bh=e2GhnOAM4LYEKzTqqXgSETDF6+BROa0YzDLZ0S/9yn8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Vp480v/C4e5HYZa69290CNQGB6cl3uyG5VxNFxRo2i8sftWBgLViJzrtrO6RBbFwz
-	 jGSyg3iEzZDRZyZwAmZlEljnuPu+dw+loCBMUylTntJJwih/EWM2LxWKkcZGsonueF
-	 4wCYFovem/hzKpKg8wgcNbsfFFlwxFkhFd/XigCJxF27Rtt6NlqWbupGmNG1Cb+Y9r
-	 pT5F3c77qFULUPhgr1GjozYpHD90VUWHjtnTBaYQ3moohwL45RnrqTwDAFe1HEwJp+
-	 Tyq9NrgyKv5uza8Jd1qdlKptDSVhF2Z9C7cQCtpgDGNdM1Na2J5xiwATlfZhOrqDh2
-	 A9zjV+kPqT4qQ==
-Subject: Re: [net-next,v2,6/6] eth: fbnic: firmware notifies hwmon on sensor
- threshold events
-From: netdev-bot+sashiko@kernel.org
-To: limzhineng2@gmail.com
-Cc: alexanderduyck@fb.com, kuba@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@roeck-us.net, horms@kernel.org, mohsin.bashr@gmail.com,
- kernel-team@meta.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, zinclim@meta.com
-Date: Thu, 03 Sep 2026 03:24:13 +0000
-Message-ID: <178840585335.3394541.17896777130676865499@kernel.org>
-In-Reply-To: <20260831212234.1212971-7-limzhineng2@gmail.com>
-References: <20260831212234.1212971-7-limzhineng2@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OISkjT7S"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X8U+hK/L3hqDKqTzT4Ai6vdTlewKXDaPDmU9b8aZ/WsUqP6wn+NB4CEdm+sCrvy4Ke5jRQvK8w2EX+XoYdmHedRKWNpwdu4JOvpWezwNxq4hlV4CaHQ4ByYOxe6yztkbnnMO0YEK49PKq8Im/DxPj2gWTqvT9QV+DwQse5jd5TGtrUop7jpWqUOAphTDIZpgYPkp9zxpO/CDxAEMdhtvkMNUS3ul6bT7wSBoJ4k+TC/FRCpjd8HVx2LiFKIbx+ONXjDRN6CpThJINNc54KC3j8/kD0dMUQtFuPEq2e/0t7HER4dwD4xBto7y417ZckAi5qbgxfq8yfMTRCpgUaik3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Nz3xfbMUaV7OFqqpVcGS1WItZZvfqPI0FYzg8//66dU=;
+ b=R4Lab1hBz2QuHNQoc6asymRhrb5w13Lnh8V7bcHEGmx2JEG950Jd+l6vaued/M0EB9VZgwG15JdotpZD8gNwMKgugY7wu0k6lPHlK7nesAh4L+XNY0w/qWVU8bu86pcGzd1WHLckkQLZmj01qjll7QFG3bOMfwGQF6q53A9clh7PDXKNBTucZo2Km6PaRAS+34XHRwtYadBduhA3nVsidgbVKefYZkQ6tW26ekauxe2pcIM+bSCTZTY4V88zEMUJceGNWdPlfJR+oADJzjPad2L7Gewn3md+HEPlPAwSYgI2j2pDOZSKq/DYNjeKx/LHfg5muLPW4RuoI9m+0jucnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Nz3xfbMUaV7OFqqpVcGS1WItZZvfqPI0FYzg8//66dU=;
+ b=OISkjT7SyVtFFMlqJi+bDnEG1AJ8Wtcr4qrKr2h2wzXZ00SdpFJfZDz5TEUkCAVcwZzvGWK1eEHlUfY+VAHb4TxS6t+OHef7inU/xTMoZ/eonYc4+wwJ88Z40qWb5dWwzKuqClEZmE55Xp2/6jRF31M4tXNvCX3SM9fTQvWQbvDShg1LzD4m3P4IpCE95JBtTyAPOGnkMmcvU4KzH9BNBvpHcYBnc0S3rrDUELkFraVEXFB+/Yw1j3zSFMxdxVmruM2OYtShCHwSnt769L+/t4tNYnE8xFHf6V+5MhJcmiP+ypC8F2RbYyu/QvhdgAAWcTa/HHnTIVTZ/AODysOCVQ==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by GV4PR04MB11776.eurprd04.prod.outlook.com
+ (2603:10a6:150:2d7::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 03:24:25 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 03:24:25 +0000
+From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>, "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, Wei Fang <wei.fang@nxp.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3 net-next 00/15] net: enetc: SR-IOV improvements and
+ ENETC v4 VF support
+Thread-Topic: [PATCH v3 net-next 00/15] net: enetc: SR-IOV improvements and
+ ENETC v4 VF support
+Thread-Index: AQHdOPfweXM7sOZf+ke0Lrbimycunra8LZ+AgAAH3UA=
+Date: Thu, 3 Sep 2026 03:24:24 +0000
+Message-ID:
+ <GV2PR04MB11739E1618294F313E989A7ED88B62@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831025441.635045-1-wei.fang@oss.nxp.com>
+ <20260902195613.1e18b44c@kernel.org>
+In-Reply-To: <20260902195613.1e18b44c@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|GV4PR04MB11776:EE_
+x-ms-office365-filtering-correlation-id: c2cbbdef-9b28-47aa-42ba-08df096adaa6
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|7416014|1800799024|366016|19092799006|376014|22082099003|18002099003|56012099006|38070700021|6133799003|4143699003|11063799006|10067099003;
+x-microsoft-antispam-message-info:
+ 9pFzJa7vgMX6mtGzMsf0y9gK8FoXMvm0pfGeoKNytRUrn6Ko1raZDXSi6frnVDwAUs1RRKPuSbcJmVc2PBJJWuQMkExsHrllwvdN6QR/KgcPJU5K2LAVixB4y+QFtF8AehdyC6vYdY5Nb1QHztn1IuZrFYUAnITmfE8l524MzYQ5hqZTnRWUDWMd0oe9ZvSYYvnGeElM1rZORJRCkPH30MuM6+xtxAHEwvc19Pu9sDQOVy/FlfU0ECnQ3InKO11ZPlhTLSAEtBjb+E17iB3S/T0xL5QatomtwVyhGRHfe7jqCcHgWi1L8Htjp0kmRQmDFptGMY0xOCSnGNsf2Tf7xNGPs6LofkngAkUM6VRJHtLljQAoqywbsoTSdSU92pA0wjB61lE63SnNYvg2HY84KLVRspviSP3xt4W/lqa2lcia+tQpEKtSsW7q0QgG1c7GQ6j6rybdcTrpmDm7lY9Y9H+zFYCa+psM36tducoQgWn2IL4xu/AGQPwbJRQjhkh731E73yRaNRUuYjmJjCd2Sq7axldf5nbF71mXFblyXoJboAUN4RJkAY+JCzWEmbOxzv30NO5I4scyMFjn0m4Bll8Wm2Ei9hIWbMnaahKSyCb1V1JCPdCAe/pZoJKLJA8IK12NppRoEGrWMm9Ldy5Z1CLobaC4xsV6dq2IssQyyeo=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(366016)(19092799006)(376014)(22082099003)(18002099003)(56012099006)(38070700021)(6133799003)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?s6k9wxKnDfsodghKDJ0emqPkSTrF7b3QCTlPCMIasu23p6kunU5fNA07izFe?=
+ =?us-ascii?Q?jTbkMF55cQgc4+gfKjFOyWPCfK4t06OgxTUPJ/hX53WbF0eX8irnVs/+/ql4?=
+ =?us-ascii?Q?be927GhzoZu5F2z3tryPQ2l5xu5P9E+IdULGTrDxSuHySTeGYU9LI7HkKyux?=
+ =?us-ascii?Q?o2tLyYjqvn9bNDRY2pppA1UgsjcHBsTB84UHqICJcMzczhNn9ElHIhBkfLEy?=
+ =?us-ascii?Q?ZWNgSbxgRfkqv+MxUckBCehp/dR9xuPoWArUTftUdK5aGhLDXHlMcJGdPTUD?=
+ =?us-ascii?Q?6K98XLmNWCAgtmfTy42gvASOhM7xYiPVCYaU56h25ItFr+JZ5hDDTWtBUelS?=
+ =?us-ascii?Q?fsl3kQ2mLywT1pxZ34ZxtE5125exKUAdEVKvUmryAT6x5LME+SaRkGoOE2rK?=
+ =?us-ascii?Q?qJYNXtg8y1MNAHmY+ivow28ij5u/7IGTnp01IVHwG/50wDBd9Zikm83Xwtdn?=
+ =?us-ascii?Q?kkc0AI/nrl7GQngLvpLKPl1KTDfF0inoTSdc5jsWWc8JSQPTrmFgL7HPve8O?=
+ =?us-ascii?Q?rs1Wq0YvXvJ95SrA4qUIJv5GQYdhb0nr53R1pkzAV1pK3dKkeTTFeqYqlpPq?=
+ =?us-ascii?Q?4HT8egakv0Q8OTY0CJUl/TLYm6FIVQnbspZNGX0W6O0m9iOz4ihNzUhqZSB/?=
+ =?us-ascii?Q?Y4udGMl6SQihl6dZVDwjk5sCTbKw8PWENHqAgnGQiRWSFGLyz3QXQpmBjiAL?=
+ =?us-ascii?Q?MhvLv1i9zk+1BH32lhEx0KT5WJ+szdoMTtwVJFsHHcoCCO/IvtW4PsxfwrNg?=
+ =?us-ascii?Q?8LBHUns6I2y99QkeOxlAdxzYRWVTfr38nx4i75K3sO7ekRxB0hxZjIUPmM+U?=
+ =?us-ascii?Q?Ya6rb1eWunU7hQ/XMaL7EeaCLCXojtp7apJ9uYrWBcPHZfamI3eNRzKk5NmN?=
+ =?us-ascii?Q?cdybfvhCU5739M7P+69EsrgG1VXOxq5iHiVr5JyeN1luHuihxYVoM652X5YU?=
+ =?us-ascii?Q?gQRmskQiKKyKW2bmvxr5gMY+a6wqdwl9MSpYkprNUf/QS4zDdGrOj596+Snv?=
+ =?us-ascii?Q?VubFvcV9l6ezwXDmbJLFjWTH4kGMZDWdesFYUxVe8zgNEYXhrnUqKOL47fkV?=
+ =?us-ascii?Q?eIlUchBJ4673bYKkDGBuXu8VCcSUNCixiWa3nJPpQGcw/csnyEbZMWCkvulK?=
+ =?us-ascii?Q?3pgdmvTQAzOsIoPkZ7+tc17j2sLpmw5iBKJGeEtUtkMOOCxufFceCQ60HcZB?=
+ =?us-ascii?Q?GzodDBmFUQrJXkccRoyh8k9pY2eyHKoGu9b7elblETVwpqW3DK5V1J/lFBNV?=
+ =?us-ascii?Q?DKZwG+512s2KMJCClv//qdmdx70SCPjKpYd+tRyvn+PN1KfhKatc5pj8n+oX?=
+ =?us-ascii?Q?WMjfXbhH9bwKRZPSJX3GaL1ivQ2Lx8W0L8QCiiYzNy1cMtOjzZsKROOB6xEO?=
+ =?us-ascii?Q?D1AtnuT8K1ZlxWxp9HkJmKW2HjxjTJCAvh456tSTEvv2sYCFim422g1B19nc?=
+ =?us-ascii?Q?8GyRj6MMHlnwQ27Bxxxj8kuDbTs2uMkQQhOx7NjUEhBe7x7K2FK9Q5AS6I/E?=
+ =?us-ascii?Q?EbOunnOuEyGmnzhSnFcS75Wblsbe3T6vwjogU8xQlDOP3e2ibWZW/raaa/HY?=
+ =?us-ascii?Q?O6UEkTmUuqtBHsRE+KFp+lTdZwgG2lHAEolNR5Uz//sEoI/qT91g9pAHl7p/?=
+ =?us-ascii?Q?ZNaSLU0PLrDzLVzlRDmuHxBRzBmPUxy0q3InWZcDwNLtnQdkYy8zRVpBXTQQ?=
+ =?us-ascii?Q?fNOvT9+Wl8i7LJjOacQQ/U0T0jADpc4dtTrFmauWLOBjIj/3?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2cbbdef-9b28-47aa-42ba-08df096adaa6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2026 03:24:24.9260
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: b2p699OFe9DrA8Z0qPNyGezuLNAlqGJe9H/xw3ob81eHhEUGKoHGCrfEKO6ZG0SWAwaupbBb5Q7oN4I7zN38zQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11776
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider:
+> On Mon, 31 Aug 2026 10:54:26 +0800 wei.fang@oss.nxp.com wrote:
+> > This series enhances SR-IOV support for ENETC v1 and adds VF support
+> > for ENETC v4. For ENETC v1, the trusted VF management and per-VF
+> > configuration query via ndo_get_vf_config() are added. For ENETC v4,
+> > preliminary VF support is introduced for i.MX94 and i.MX95 platforms.
+>=20
+> You only replied to some of the AI feedback, should we assume that
+> feedback on patches 12/13/14 is legit and expect v4?
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 4
+I have not seen any other feedback on patches 12/13/14. Except for a
+pre-existing issue on patch 14, but I do not think the issue needs to be
+addressed.
 
-- [Medium] fbnic_hwmon_notify_event() uses
-  fbd->fw_cap.temp.{min,max,crit} and fbd->fw_cap.volt.{min,max} in…
-- [Low] The new unsolicited-message handler logs at KERN_ERR
-  unconditionally for every firmware threshold event (dev_err…
-- [Low] fbnic_hwmon_unregister() calls
-  synchronize_irq(fbd->fw_msix_vector) unconditionally, but…
-- [Low] temp1_max_alarm and temp1_crit_alarm are independent attributes:
-  fbnic_hwmon_temp_read() computes max_alarm as (val >= temp.max) and…
-- [Low] fbd->hwmon is published with a plain WRITE_ONCE() after the hwmon
-  device has been fully initialized and the sensor cache seeded, and it…
+Sashiko review link: https://sashiko.dev/#/patchset/20260831025441.635045-1=
+-wei.fang%40oss.nxp.com
 
---
-
-eth: fbnic: firmware notifies hwmon on sensor threshold events
-
-This adds a parser for the new unsolicited
-FBNIC_TLV_MSG_ID_SENSOR_THRESHOLD_EXCEEDED_RESP firmware message and
-translates it into a hwmon alarm notification via hwmon_notify_event().
-It also reworks the publish/teardown of fbd->hwmon with WRITE_ONCE(),
-READ_ONCE() and synchronize_irq().
-
-A few questions below.
-
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> index e5669dfd97904..fd96a3962e3f5 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> @@ -1639,6 +1639,57 @@ fbnic_fw_parser_test(void *opaque, struct fbnic_tlv_msg **results)
->  	return err;
->  }
->  
-> +static const struct fbnic_tlv_index fbnic_threshold_exceeded_resp_index[] = {
-> +	FBNIC_TLV_ATTR_S32(FBNIC_FW_TSENE_THERM_EXCEEDED_FLAG),
-> +	FBNIC_TLV_ATTR_S32(FBNIC_FW_TSENE_VOLT_EXCEEDED_FLAG),
-> +	FBNIC_TLV_ATTR_S32(FBNIC_FW_TSENE_THERMAL),
-> +	FBNIC_TLV_ATTR_S32(FBNIC_FW_TSENE_VOLTAGE),
-> +	FBNIC_TLV_ATTR_LAST
-> +};
-> +
-> +static int fbnic_fw_parse_threshold_exceeded_resp(void *opaque,
-> +						  struct fbnic_tlv_msg **results)
-> +{
-> +	bool therm_exceeded, volt_exceeded;
-> +	struct fbnic_dev *fbd = opaque;
-> +	s32 value;
-> +
-> +	therm_exceeded =
-> +		fta_get_sint(results, FBNIC_FW_TSENE_THERM_EXCEEDED_FLAG);
-> +	volt_exceeded =
-> +		fta_get_sint(results, FBNIC_FW_TSENE_VOLT_EXCEEDED_FLAG);
-> +
-> +	if (!therm_exceeded && !volt_exceeded) {
-> +		dev_err(fbd->dev,
-> +			"Threshold exceeded message with no flag set\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (therm_exceeded) {
-> +		if (!results[FBNIC_FW_TSENE_THERMAL]) {
-> +			dev_err(fbd->dev,
-> +				"Thermal threshold exceeded but no value received\n");
-> +			return -EINVAL;
-> +		}
-> +		value = fta_get_sint(results, FBNIC_FW_TSENE_THERMAL);
-> +		dev_err(fbd->dev, "Thermal threshold exceeded: %d mC\n", value);
-> +		fbnic_hwmon_notify_event(fbd, FBNIC_SENSOR_TEMP, value);
-> +	}
-> +
-> +	if (volt_exceeded) {
-> +		if (!results[FBNIC_FW_TSENE_VOLTAGE]) {
-> +			dev_err(fbd->dev,
-> +				"Voltage threshold exceeded but no value received\n");
-> +			return -EINVAL;
-> +		}
-> +		value = fta_get_sint(results, FBNIC_FW_TSENE_VOLTAGE);
-> +		dev_err(fbd->dev, "Voltage threshold exceeded: %d mV\n", value);
-> +		fbnic_hwmon_notify_event(fbd, FBNIC_SENSOR_VOLTAGE, value);
-> +	}
-> +
-> +	return 0;
-> +}
-
-[Severity: Low]
-Should the logging in fbnic_fw_parse_threshold_exceeded_resp() be rate
-limited?
-
-Message ID 0x40 is registered in fbnic_fw_tlv_parser[] and dispatched
-straight from fbnic_mbx_process_rx_msgs() with no completion slot and no
-host request gating it, so the arrival rate is entirely controlled by the
-firmware. Each accepted event emits an unconditional dev_err() and then a
-KOBJ_CHANGE uevent through hwmon_notify_event() -> kobject_uevent_env().
-
-The three new -EINVAL returns feed the existing amplifier in
-fbnic_mbx_process_rx_msgs():
-
-	if (err) {
-		dev_warn(fbd->dev, "Unable to process message: %d\n",
-			 err);
-		print_hex_dump(KERN_WARNING, "fbnic:",
-			       DUMP_PREFIX_OFFSET, 16, 2,
-			       msg, length, true);
-
-so a firmware sending a malformed threshold message in a loop produces a
-full hex dump per message. Would dev_err_ratelimited() (or _once) be
-preferable here?
-
-Also worth noting: in the volt_exceeded path, if the thermal notification
-already happened and the voltage value attribute is missing, the function
-both notifies and returns -EINVAL, so the same message triggers the hex
-dump too.
-
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-> index c5cddd9cef124..3f33522fcfd2b 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-> @@ -214,22 +216,75 @@ void fbnic_hwmon_register(struct fbnic_dev *fbd)
->  	fbd->hwmon_cache.temp_mdeg = FBNIC_SENSOR_NO_DATA;
->  	fbd->hwmon_cache.volt_mv = FBNIC_SENSOR_NO_DATA;
->  
-> -	fbd->hwmon = hwmon_device_register_with_info(fbd->dev, "fbnic",
-> -						     fbd, &fbnic_chip_info,
-> -						     NULL);
-> -	if (IS_ERR(fbd->hwmon)) {
-> +	hwmon = hwmon_device_register_with_info(fbd->dev, "fbnic", fbd,
-> +						&fbnic_chip_info, NULL);
-> +	if (IS_ERR(hwmon)) {
->  		dev_notice(fbd->dev,
->  			   "Failed to register hwmon device %pe\n",
-> -			   fbd->hwmon);
-> -		fbd->hwmon = NULL;
-> +			   hwmon);
-> +		return;
->  	}
-> +
-> +	WRITE_ONCE(fbd->hwmon, hwmon);
-
-[Severity: Low]
-Is a plain WRITE_ONCE() enough on this publish side?
-
-fbnic_hwmon_register() seeds fbd->hwmon_cache and registers the device,
-then publishes the pointer that another CPU dereferences in
-fbnic_hwmon_notify_event() -> hwmon_notify_event() -> sysfs_notify(&dev->kobj,
-...). WRITE_ONCE() carries no release semantics and READ_ONCE() only gives
-address-dependency ordering for loads through the pointer, so the preceding
-initialization stores are not ordered against the pointer store on a weakly
-ordered architecture.
-
-The in-code comments in fbnic_hwmon_unregister() and
-fbnic_hwmon_notify_event() describe the WRITE_ONCE/READ_ONCE pair as
-providing that guarantee. Should this be smp_store_release() /
-smp_load_acquire() instead, or should the comments be adjusted?
-
->  }
->  
->  void fbnic_hwmon_unregister(struct fbnic_dev *fbd)
->  {
-> +	struct device *hwmon;
-> +
->  	if (!IS_REACHABLE(CONFIG_HWMON) || !fbd->hwmon)
->  		return;
->  
-> -	hwmon_device_unregister(fbd->hwmon);
-> -	fbd->hwmon = NULL;
-> +	hwmon = fbd->hwmon;
-> +	/* Pair with READ_ONCE() in fbnic_hwmon_notify_event(). Publish NULL
-> +	 * and wait for any in-flight FW mailbox IRQ handler to finish so it
-> +	 * cannot dereference the hwmon device after we unregister it.
-> +	 */
-> +	WRITE_ONCE(fbd->hwmon, NULL);
-> +	synchronize_irq(fbd->fw_msix_vector);
-
-[Severity: Low]
-Can fbd->fw_msix_vector be 0 or stale at this point?
-
-fbnic_fw_free_mbx() treats 0 as the "no IRQ" sentinel and guards on it:
-
-	/* Vector has already been freed */
-	if (!fbd->fw_msix_vector)
-		return;
-	...
-	free_irq(fbd->fw_msix_vector, fbd);
-	fbd->fw_msix_vector = 0;
-
-That runs on the PM suspend and error-recovery paths without touching
-fbd->hwmon, and fbnic_hwmon_unregister() has a single call site in
-fbnic_remove(). So an unbind after a failed resume reaches
-synchronize_irq() with fw_msix_vector == 0.
-
-fbnic_fw_request_mbx() also leaves a stale value behind:
-
-	err = __fbnic_fw_enable_mbx(fbd, vector);
-	if (err)
-		free_irq(vector, fbd);
-
-	fbd->fw_msix_vector = vector;
-
-synchronize_irq(0) does not return early when irq_to_desc(0) yields a
-descriptor, so the code would wait on an unrelated line rather than the
-fbnic FW mailbox IRQ, and the drain the commit message describes is not
-performed. Would guarding on fbd->fw_msix_vector != 0 (as
-fbnic_fw_free_mbx() does), or ordering the hwmon teardown against the
-mailbox teardown, be more robust here?
-
-> +
-> +	hwmon_device_unregister(hwmon);
-> +}
-> +
-> +void fbnic_hwmon_notify_event(struct fbnic_dev *fbd, int id, long val)
-> +{
-> +	enum hwmon_sensor_types type;
-> +	struct device *hwmon;
-> +	s32 attr = -1;
-> +
-> +	if (!IS_REACHABLE(CONFIG_HWMON))
-> +		return;
-> +
-> +	switch (id) {
-> +	case FBNIC_SENSOR_TEMP:
-> +		type = hwmon_temp;
-> +
-> +		if (val <= fbd->fw_cap.temp.min)
-> +			attr = hwmon_temp_min_alarm;
-> +		else if (val >= fbd->fw_cap.temp.crit)
-> +			attr = hwmon_temp_crit_alarm;
-> +		else if (val >= fbd->fw_cap.temp.max)
-> +			attr = hwmon_temp_max_alarm;
-> +
-> +		break;
-> +	case FBNIC_SENSOR_VOLTAGE:
-> +		type = hwmon_in;
-> +
-> +		if (val <= fbd->fw_cap.volt.min)
-> +			attr = hwmon_in_min_alarm;
-> +		else if (val >= fbd->fw_cap.volt.max)
-> +			attr = hwmon_in_max_alarm;
-> +
-> +		break;
-
-[Severity: Medium]
-Do these comparisons need to filter FBNIC_SENSOR_NO_DATA first?
-
-fbnic_fw_parse_cap_resp() stores the sentinel when the firmware cap
-response omits an optional threshold:
-
-	fbd->fw_cap.temp.min =
-		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_TEMP_MIN],
-					  FBNIC_SENSOR_NO_DATA);
-
-and FBNIC_SENSOR_NO_DATA is S32_MIN. Since every real reading is greater
-than S32_MIN, with temp.crit unpopulated:
-
-	val = 45000;
-	45000 <= temp.min (S32_MIN)   -> false
-	45000 >= temp.crit (S32_MIN)  -> true  -> hwmon_temp_crit_alarm
-
-so any thermal event is reported as temp1_crit_alarm regardless of the
-actual condition, and the same applies to in0_max_alarm when volt.max is
-unpopulated. hwmon_notify_event() for hwmon_temp additionally calls
-hwmon_thermal_notify(). A listener woken on temp1_crit_alarm then reads the
-attribute and gets -ENODATA back from the peer helper in this same file:
-
-	static int fbnic_hwmon_read_alarm(long a, long b, long *val)
-	{
-		if (a == FBNIC_SENSOR_NO_DATA || b == FBNIC_SENSOR_NO_DATA)
-			return -ENODATA;
-
-The mirror case also loses events: with temp.min == S32_MIN an
-under-minimum reading matches no branch at all and nothing is notified.
-
-[Severity: Low]
-Should the max and crit alarms be notified independently rather than
-selected by an if/else-if chain?
-
-fbnic_hwmon_temp_read() derives them from separate comparisons:
-
-	case hwmon_temp_max_alarm:
-		return fbnic_hwmon_read_alarm(*val, fbd->fw_cap.temp.max, val);
-	case hwmon_temp_crit_alarm:
-		return fbnic_hwmon_read_alarm(*val, fbd->fw_cap.temp.crit, val);
-
-so with temp.max <= temp.crit a reading at or above crit makes both
-temp1_max_alarm and temp1_crit_alarm read as 1. Both files are created
-(fbnic_hwmon_info[] advertises HWMON_T_MIN_ALARM, HWMON_T_MAX_ALARM and
-HWMON_T_CRIT_ALARM, and fbnic_hwmon_is_visible() returns 0444), but the
-else-if chain only notifies hwmon_temp_crit_alarm, so a poller on
-temp1_max_alarm is never woken even though that attribute just changed from
-0 to 1.
-
-The firmware event format in fbnic_threshold_exceeded_resp_index[] carries
-only a per-sensor exceeded flag plus a value, with no indication of which
-threshold was crossed, so is there anything that justifies picking exactly
-one alarm?
-
-> +	default:
-> +		return;
-> +	}
-> +
-> +	/* Pair with WRITE_ONCE() in fbnic_hwmon_unregister(). Skip the
-> +	 * notification if hwmon failed to register or has already been torn
-> +	 * down.
-> +	 */
-> +	hwmon = READ_ONCE(fbd->hwmon);
-> +	if (attr >= 0 && hwmon)
-> +		hwmon_notify_event(hwmon, type, attr, 0);
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831212234.1212971-1-limzhineng2%40gmail.com
