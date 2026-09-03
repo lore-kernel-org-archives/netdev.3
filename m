@@ -1,50 +1,45 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C398C490C1B;
-	Thu,  3 Sep 2026 12:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD35640681A;
+	Thu,  3 Sep 2026 12:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788438283; cv=none; b=alcZ2gW9cMtRzI6IyHyqxzNYKmuBZW/Ln3dxv3n46Uc+9ukt6b1gjGhBSf/zswkbA2Di4WMGIQ46s766qcaulkkWEpIyirq1kTrrL/LyzspFQRtUmdeHWlqKldMQzZLod3+iG7khB+GzUdDr9T9NCeaLzfI+JQLw5nsKlwHzzgQ=
+	t=1788438413; cv=none; b=McyNbDkcs62HTQjK1HEECqA0gaPrx4p/jIZ7bTpmWAz/iUBQh0imamDvBdLsif1KTJVzWeRm+zvQ+5K2ePIY/CA/zLjw9ax5rrNxQGupAU/FqfjonUFhtDrOw6EyAp/HUQPVGQk9M1cRVDkbMp797eeo+LD40OOCciFQNW4+eZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788438283; c=relaxed/simple;
-	bh=9DEnXh1ZLlGgNc243B0KvcYmHPzNxZq/epYn5VJSMPk=;
+	s=arc-20240116; t=1788438413; c=relaxed/simple;
+	bh=aRVsZf+IeDg7H1USx6COdGFGSvxpXScpaNYJDUmI9tk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AR2KlfGPmu7CVOLNT3AGSjsU+lAdrjbg/hccBGlY7tCXCmr2jYro6O1S746TspaNl+AmH34cNmOFYr5TKHcFPBFTI41r0w13ETsUeYW7HgmCcGcHD7+npxV7nNNSVzkVCS3Q8Gpfj90On6jdNccl5Qw39g4gjKaODdKJUqO8/V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5o6tujod; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=DYmlj3/B+u3FpIeTM+FKN7ZRMQaG55yWxLXxcmWyCerAOaffSnn4bWHkPpXaEysMDrmji2KjnNUF02mr8Z3nkhKUlPddqjD/Gv5K3gpdDpHvLaTB3TrAbF0RWyMROaXzF4CrEuBwEJjwjg0lXFio+SN07Ejgyd1wIwybHgsaW3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wtlVfjjJ; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5o6tujod"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wtlVfjjJ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=H5ZZhwockPxWVjGyDcKUGd0wOptVbOXPYmCwFoHMfUs=; b=5o6tujodFE8QR4lh1kEEI8HwQo
-	sKZvUSTrfQF66giRCiXwbKQyMMSBT2I41V6g2GPWcw7x/t5J7b2wobzdVW/fqbKU26WTL+OrQgNzM
-	vWK/KmkviaIwL8XSKUAuPhbQxsvWTBDCXksu2tQMMJTUhiKlzzSsJgeu13fnxQFD5hRg=;
+	bh=Fx0WgZnUlBwY/g9jObZUMhXjJIYEYr1WANTLvXc5zwI=; b=wtlVfjjJzc2EQQlqeJJbLoeGWl
+	x7tvmRKZXIaWwtC8nJ20IoXcNyJrVlhoUii3NPhqyr3MwjpPN/TIzFoQLZ8ORTkLmPcIMNDMBVaf1
+	soajtuG7qdsJ9aSK3JABVIQe7xyz7rK5SmD+GYD5ULRfhuG9J0f/XoblZHGUyjJYm+3Y=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1x26UY-002ic9-6S; Thu, 03 Sep 2026 14:24:30 +0200
-Date: Thu, 3 Sep 2026 14:24:30 +0200
+	id 1x26WX-002ieC-6o; Thu, 03 Sep 2026 14:26:33 +0200
+Date: Thu, 3 Sep 2026 14:26:33 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: dsa: realtek: rtl8365mb: add EEE
- support
-Message-ID: <1f2253f9-3368-4033-a091-ce424c08af89@lunn.ch>
-References: <20260903092211.2922058-1-o.rempel@pengutronix.de>
- <20260903092211.2922058-3-o.rempel@pengutronix.de>
+To: Markus Stockhausen <markus.stockhausen@gmx.de>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] net: mdio: realtek-rtl9300: Convert
+ "fwnode" left-overs to "of"
+Message-ID: <4d692d7d-3b00-4ba5-bd22-3dcb4130c618@lunn.ch>
+References: <20260903122119.2638354-1-markus.stockhausen@gmx.de>
+ <20260903122119.2638354-3-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,25 +48,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260903092211.2922058-3-o.rempel@pengutronix.de>
+In-Reply-To: <20260903122119.2638354-3-markus.stockhausen@gmx.de>
 
-On Thu, Sep 03, 2026 at 11:22:11AM +0200, Oleksij Rempel wrote:
-> Add EEE support on the integrated-PHY ports, controllable per port via
-> ethtool.
+On Thu, Sep 03, 2026 at 02:21:18PM +0200, Markus Stockhausen wrote:
+> The latest developments of the MDIO driver consistently used the
+> "of" API. Convert the remaining "fwnode" left-overs too.
 > 
-> The integrated PHYs have no MMD registers; their EEE registers live in the
-> switch's OCP space. phylib accesses EEE as MMD registers, so add
-> phy_{read,write}_c45 realtek_ops that map those MMD accesses onto their OCP
-> addresses, wired as the user MII bus C45 handlers when the chip provides
-> them (rtl8366rb etc. unaffected).
+> Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+> ---
+>  drivers/net/mdio/mdio-realtek-rtl9300.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> The hardware manages LPI on its own, so advertise EEE to phylink with
-> no-op mac_{en,dis}able_tx_lpi callbacks. The LPI timer is a single global
-> per-speed register, so .set_mac_eee rejects the per-port TX LPI knobs
-> rather than silently ignoring them.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
+> index 11d078ef941c..429321e9114f 100644
+> --- a/drivers/net/mdio/mdio-realtek-rtl9300.c
+> +++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+> @@ -831,14 +831,14 @@ static void otto_emdio_notify_phy_detach(struct phy_device *phydev)
+>  }
+>  
+>  static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_priv *priv,
+> -				 struct fwnode_handle *node)
+> +				struct device_node *node)
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+The indentation looks odd here.
 
-    Andrew
+	Andrew
