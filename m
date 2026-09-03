@@ -1,64 +1,64 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FF34DF4B5
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 16:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7534E80C8
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 16:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788451640; cv=none; b=pol3JYQapSIrhgkfyh1AYog/j8wOixkasAdRYMcgqte0a1Q3wOVPWX5dDEoA3pxtJRpU3ocall9JM6BO6y4i36s3RoO/bgZ9tSrdlwwnNZUF4Q0XP6fxFIk2/2H9UfqrGfmWwaIDQ8ZaEc1qrxsthziyuSExYxFhB5teqZP1KlY=
+	t=1788451642; cv=none; b=n2ZRVnimPW/JGKwcGdGNuAJ8oJplMv+wOsFx5Dwi1sdpae6eoYHlw0ME9pSvrPRi+bD1vKfv6PxH4nJJBoViR/b0Jd9deSBp+kxny33aP6alHlL4+nnLCaMtvlqsJtc1ZSeiuA4cHo6utv4IQjLAls6yxk1c3eobfgwthNYi4eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788451640; c=relaxed/simple;
-	bh=xd7QfPoBvok/Ce3FnOcL4vksYEdiJx5bQP+Bx/J5PtU=;
+	s=arc-20240116; t=1788451642; c=relaxed/simple;
+	bh=Jzu2KXstYOECbzt9rTNWK4DwBRqC3yCzhFkwK4z3dl8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gu+1klI+I24wEjxLbbhyBwl8QU9a7auX65y6VKRX+lmvf4FdIiMuQa9MSH8ZsiuVJBkTpfPIbbgC2VyKLlKXYk2rAGBwV5DI6RO/T1Mhgtx8zjzXhcykaEIrW2LZmxCg1ag6nFfLs8U/lc/vAYcT/XawR5K1YWavTz2z4XQOXqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkQvsfgS; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=JyBTNu8eJWTKH2c7Mv6njSrmC/Y9v4o7PuWcC46EPJ7pJPSI6u++OlmIHxYSe+sCKP2HmjYGHsizL1ykQbkL0EEIbQq/+QK6Z1t/zSn35FnDCZafICWJfGbpW/6wnXIeDWfHGTROXQ949WygqczG3vBEtcIgnhQXjcjvA+XkMbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJq5qR6/; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkQvsfgS"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-39647184c73so1198721a91.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 09:07:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJq5qR6/"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-398b1e63c49so1154319a91.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 09:07:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788451638; x=1789056438; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788451639; x=1789056439; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=xyyusPI3FD+mQJM1H+4lN3LfiPaBkg/Gx00WGPfPItc=;
-        b=lkQvsfgS+idHRawxzjt9k6zh8JLmR7pjTKtQMEL0WEYCIFd38dWAzRO1U0JVenUT7F
-         tFMBJoFy4KLaVpHx4KHTJeXhVF563de9cXuaM8Vxd2rTi+Y3n1B8HkCCTe69WEd5/ATo
-         cJoMppkf4c16BNAANW97+xzWI3wpgGLjwXl902yBoGpK9jQJGG4o71b9zrFshuRrvwfp
-         INyHvo1YfYlZcLMszXtIe75EaSSyZwINaeq0PMyT+PTJCcjh1++KOjx0wExuO0Kofz9k
-         czQq0+yz596FwAOXKfP448TJxMOiX3V5uFZ88j5cLRJ9nt2uzb/JPD0VGE52lPPYiRpS
-         tszQ==
+        bh=Pk/3OnFOTIoRoKUZw9CsXTCFHsM4oEkvuCZPpwqZeus=;
+        b=FJq5qR6/Uz7FKXcPGnqLfKVS/Ps4w0xrTa524Q3/Fo+4tngtg/xL4oTlegQC+tdVnC
+         iJRY4l+4g96z+B3WohoayBr8/4u9LzYb9fXA9BXqlm08lCkxzDiiAfQfq3KzDDmX1Qqn
+         4bIKSENWUqsxgnsITag7dMbUdRTUdk/DxgZguO7FayIKPNMUId6mz+2b92aIjoPtZErW
+         vEzkI1ypFykKNvKA3Q+c6B6f/2I7RUO2kHsXt/HwQk+w82RVLkLeFU/XxXSwcWA9IW6B
+         6g4w+0e5TFf9hB8yVedPhk3UI+TXSQy0NJg1wLAxqDxX+W6GiYH2TUvhfaK1AZYe3MMl
+         jIRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788451638; x=1789056438;
+        d=1e100.net; s=20251104; t=1788451639; x=1789056439;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xyyusPI3FD+mQJM1H+4lN3LfiPaBkg/Gx00WGPfPItc=;
-        b=WDVksVk66LgKG1S4dwMjIhllHcK5J+yxJVH9PB0DAhX75G1i6SZDCEi24/FsjnfAJ/
-         AVtjhQQjhJyxeMTzD7fiTdkz37UmvxyOCvoIsorJajyEfmTH2CJ7awE28plncS+N/zIg
-         9fIcz7k4y/7tMVju5WT8Z9vHXGNsgc73fk/Q8aM0TXpwxfMDan+c1v0HevqgTi9ppj29
-         Unuulc3JzF6P/6+edMJZ4vmtZPm5Odv8bZJmNooZB3SSkKCET2BJ8BJpn/ofw2y0+jmH
-         aa4GfSjt83hwXy0saAwFjd0fJnJttqPStq6dg4d/0e4/jnYZyVolJH/o48H5V9IfUpA+
-         0Ecg==
-X-Forwarded-Encrypted: i=1; AKwUvBwxHxdqOVBoUzLSf/B6N4ZNj0TIq8nYS4LPAcrCwmuu6BUCaxtqCCp/2SDrmRCd/mzWvCbdmIE=@vger.kernel.org
-X-Gm-Message-State: AFuF++k6L3x0uvT+9+gHnndFCiUt/+yrcrIDn3MdjX2zrVkxmLxM7z4L
-	gzVMQL2Y37+n5DH3IKrfA+bnXNoGFa3AJk1Uh6qzLlPjt5ST2gqZiDac
-X-Gm-Gg: AYBFou3Ow4HPOLIgl8hb/I17MqBLvY5UV5QoxyPezavZhOWLgpjmuvGSXct/tHJpqFQ
-	b9aaojOU42Kh3pLkbE0AGDx7vFGR7DfpQnpPs/zxX0r2z3tt8yI5e4oCwWV8RkhrbjJRRoPCLSy
-	1EbezwmW1HgVoqfcLR2M8uHP9MMFuVMkZVpXfrC72inavW6NaAu6r3GFqzQ6MX4HKg05HWSHJSw
-	HXtyPqQSF5uaBiPMYFaEk3SZW2kTzTa3fl6WPxO2RA8vPi0Ipx4jqWAUd6LvuVKBJO7kt+hhOkA
-	G3XpK5wZnNmEYtbwkdqY64v2spJVWtT0o5o4w2Ut8UOxq0/hNKQADuUpGo0X76qRmLUd5cSkpkF
-	alF6ElrPtG8z0Ggm+MV+XZjJBNdNN4L/Uvu/EnpGNl2H7eF8hxAThP7ytSdFTbTQpZOtBCpPLYa
-	OqH49utf+/+KZNLsAiOJO5BP/dk1QgJQ+/MZxZcZVvJzJrYhoNuBnIW+SYynZjuybHLg==
-X-Received: by 2002:a17:90b:4c4c:b0:395:8124:ac53 with SMTP id 98e67ed59e1d1-39b1322464emr3752631a91.6.1788451637343;
-        Thu, 03 Sep 2026 09:07:17 -0700 (PDT)
+        bh=Pk/3OnFOTIoRoKUZw9CsXTCFHsM4oEkvuCZPpwqZeus=;
+        b=W6Jvq8+LGN7QaPDyeQ6mlSEeS186nf15/xSqu2KcW4hWHbe5i4g7dJ7Ml+a4nSp7pf
+         56q8Rno+6Np0IwsTs67KCUyr1irTwk1zh111KNsNlfjXcE/B7OT8ZyyI+4FP30k+nsq0
+         WMGQgjUhei+xZ8VXHGp0bRL9zEyFJMCTxnWQpD3dGrcakQ6xR0IydMS17D5PunLCe4gR
+         A2gt97wKuphmrGC9p3lgNGBJ09yjbuzBJeCqlpv+bU34r+Tgk9yV/u4IiOwrxrT/TtXH
+         ZgUtdhGDSuOCrpitv2Oibi6/jhdwiqKTidcZRCuexn/ZbkFynSvS+lRf+To6WLmwFh/Z
+         enRw==
+X-Forwarded-Encrypted: i=1; AKwUvBwsgX10B+w1JaTHKVR9G4sNgS00ML8xR+CjPqx2u/itFQtHXtk1UsGO9OhW21BRQ/X1T1MXe0U=@vger.kernel.org
+X-Gm-Message-State: AFuF++kvm9ggOqs/p9QNAdFl54u+IuhzcqeoVh0XWjZHiHLMu6w6W8Rr
+	o0bAk2eR7Rvq5QQVZQVMDn7A2J8hNYuwQD7n3wgf4LpmPT7xpXaiyScE
+X-Gm-Gg: AYBFou0YaU2WwGgLtvFl0Vfe/d1pf2aEazxivX3KUFkQlum0yb3c8H0A2rYFnrR5wAS
+	tdjbOhlNN8UWsakZCueHY3aSFb8sYh+Ulk454H+65BluMCagSwq1l7L8SibBcqhK/wGk4GCm4uD
+	xHm49JuS9q/dAZfsugmoL85pxfMdGJl/KKVYisNkSIywILCDAqR68KAoMQv0vOlM2fHpOo4kB9d
+	BBKHXj6JrwijbIMEm8iEmiXjkpx9i0uuTXsyQOgQiKTOtctR5lDvAk473iOxHEx0vZr4/lpOlJD
+	WwqKlpDEKfb2QZIWTBy+fIUxwyRHLKdlDQzEFjqUJViyVjHBMlYm/jvFWsyKinOVJOeLIUYARPr
+	CywVmNfJ8ZXM5q3BlN08fu/NDVcsu0ceWBL85WliwnUODCDTamDBcGSVpmX/QgMr32s9KaIfB41
+	4ug1sVH4O/MEzukBBEQol3Ex9M/kZTQCfFUB2Zp9EqVXQdN3g+dXezoh4p0tTdIOw9pQ==
+X-Received: by 2002:a17:90b:3cc3:b0:398:9bd3:d6d4 with SMTP id 98e67ed59e1d1-39b132d819emr3821453a91.14.1788451639287;
+        Thu, 03 Sep 2026 09:07:19 -0700 (PDT)
 Received: from mhkubun.mshome.net ([50.34.2.22])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccc72fsm3702020a91.2.2026.09.03.09.07.16
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39ae8ccc72fsm3702020a91.2.2026.09.03.09.07.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 09:07:16 -0700 (PDT)
+        Thu, 03 Sep 2026 09:07:17 -0700 (PDT)
 From: Michael Kelley <mhkelley58@gmail.com>
 X-Google-Original-From: Michael Kelley <mhklinux@outlook.com>
 To: kys@microsoft.com,
@@ -74,9 +74,9 @@ To: kys@microsoft.com,
 Cc: linux-hyperv@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 1/2] Drivers: hv: Add vmbus_leak_buffer()
-Date: Thu,  3 Sep 2026 09:06:50 -0700
-Message-Id: <20260903160651.1637-2-mhklinux@outlook.com>
+Subject: [PATCH net 2/2] hv_netvsc: Leak send/recv buffers if GPADL teardown fails
+Date: Thu,  3 Sep 2026 09:06:51 -0700
+Message-Id: <20260903160651.1637-3-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260903160651.1637-1-mhklinux@outlook.com>
 References: <20260903160651.1637-1-mhklinux@outlook.com>
@@ -89,77 +89,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If an error case needs to leak the buffer memory allocated by
-vmbus_alloc_buffer(), doing so requires knowledge of how
-vmbus_free_buffer() works. In a CoCo VM buffers are allocated
-differently from a normal VM, and vmbus_free_buffer() handles
-the difference.
+If GPADL teardown fails for the send or receive buffers, the Hyper-V
+host retains access to the buffers and might continue to access them.
+Per the code comments, the intent is to be safe by leaking the buffers
+instead of freeing them.
 
-Encapsulate this knowledge in a new function, vmbus_leak_buffer(),
-that error paths can call. After calling vmbus_leak_buffer(), a
-subsequent call to vmbus_free_buffer() frees the additional
-resources used in the CoCo VM case but does not free the actual
-buffer memory. As such, vmbus_leak_buffer() is callable in a
-context where accesses to the buffer memory may be in flight.
+The intended behavior existed prior to commit 02400fcee254 ("hv_netvsc:
+use RCU to fix concurrent rx and queue changes") because freeing
+the buffers was done in the same function as the GPADL teardown.
+The "return" statement in the error path effectively skipped freeing
+the memory. But commit 02400fcee254 moved the freeing to a separate
+function that is called later. It has no knowledge of the GPADL teardown
+error, and so frees the memory regardless.
 
+Fix this by calling vmbus_leak_buffer() if the respective GPADL
+teardown fails. The later call to vmbus_free_buffer() then skips
+freeing of the actual buffer, including any re-encryption required
+in a CoCo VM.
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/linux-hyperv/20260731201210.3653C1F00AC4@smtp.kernel.org/
+Fixes: 02400fcee254 ("hv_netvsc: use RCU to fix concurrent rx and queue changes")
 Signed-off-by: Michael Kelley <mhklinux@outlook.com>
 ---
- drivers/hv/channel.c   | 26 ++++++++++++++++++++++++++
- include/linux/hyperv.h |  4 ++++
- 2 files changed, 30 insertions(+)
+ drivers/net/hyperv/netvsc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
-index f4370617deac..d5d20e322831 100644
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -648,6 +648,32 @@ void vmbus_free_buffer(void *addr, struct page **chunks, u32 chunk_cnt)
- }
- EXPORT_SYMBOL_GPL(vmbus_free_buffer);
- 
-+/**
-+ * vmbus_leak_buffer - set up a buffer to be leaked by vmbus_free_buffer().
-+ *
-+ * @addr: buffer address
-+ * @chunks: chunks array from vmbus_alloc_buffer()
-+ * @chunk_cnt: number of entries in @chunks
-+ *
-+ * When @chunks is NULL the buffer is a plain vzalloc() allocation and
-+ * the buffer is leaked by setting @addr to NULL. Otherwise set
-+ * @chunk_cnt to 0 so that vmbus_free_buffer() does not try to re-encrypt
-+ * or free the buffer memory, but still releases the vmap address and
-+ * the chunks memory.
-+ *
-+ * This function may be called in a context where the buffer is still
-+ * being accessed. It must not remove any kernel virtual addresses of
-+ * the buffer or change its encryption status.
-+ */
-+void vmbus_leak_buffer(void **addr, struct page ***chunks, u32 *chunk_cnt)
-+{
-+	if (*chunks)
-+		*chunk_cnt = 0;
-+	else
-+		*addr = NULL;
-+}
-+EXPORT_SYMBOL_GPL(vmbus_leak_buffer);
-+
- /**
-  * vmbus_alloc_buffer - allocate a host-visible, virtually-contiguous buffer.
-  *
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index e61f9a4cb7c3..c55de4d01cbb 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1220,6 +1220,10 @@ extern void *vmbus_alloc_buffer(struct vmbus_channel *channel,
- 
- extern void vmbus_free_buffer(void *addr, struct page **chunks, u32 chunk_cnt);
- 
-+extern void vmbus_leak_buffer(void **addr,
-+			      struct page ***chunks,
-+			      u32 *chunk_cnt);
-+
- void vmbus_reset_channel_cb(struct vmbus_channel *channel);
- 
- extern int vmbus_recvpacket(struct vmbus_channel *channel,
+diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+index 5cd084e5696c..449dc928cc44 100644
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -316,6 +316,9 @@ static void netvsc_teardown_recv_gpadl(struct hv_device *device,
+ 		 * rather than continue and a bugchk
+ 		 */
+ 		if (ret != 0) {
++			vmbus_leak_buffer(&net_device->recv_buf,
++					  &net_device->recv_buf_chunks,
++					  &net_device->recv_buf_chunk_cnt);
+ 			netdev_err(ndev,
+ 				   "unable to teardown receive buffer's gpadl\n");
+ 			return;
+@@ -337,6 +340,9 @@ static void netvsc_teardown_send_gpadl(struct hv_device *device,
+ 		 * rather than continue and a bugchk
+ 		 */
+ 		if (ret != 0) {
++			vmbus_leak_buffer(&net_device->send_buf,
++					  &net_device->send_buf_chunks,
++					  &net_device->send_buf_chunk_cnt);
+ 			netdev_err(ndev,
+ 				   "unable to teardown send buffer's gpadl\n");
+ 			return;
 -- 
 2.25.1
 
