@@ -1,205 +1,442 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF521284B4F
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC6F36B937
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 09:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788426907; cv=none; b=KXa94ZDnMtC3M2/LKRTzNudFIJBRrsRCX48SslEyJ3C368yIjAp0Wr7ZimUzl4XOm0hUed3hGwP9nr2aLHG5l1ReunFv3IGUX7wxIhQs+K5E4dd7WgiSY1Z30DRuqn6apISgrIytLxuXgOJJArI7KPRS1zyCkS+NNm2Isvrg1RY=
+	t=1788427161; cv=none; b=kXOANBNHOL6J3Bj9sul9LVzcMSrzqe/xPVpcBRDAzAPKZxDH8sw2g/t4mvk315mACzktN/e/bw2neGfawGAklRmDAqTJwEDFjhlEpgxCkJ9ltJAo2I+NhmEuUKwYWHd5NRY9fWmUWOE8jOe4ovHCA0lP6Mcvo7yAonUjhr00A64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788426907; c=relaxed/simple;
-	bh=RqpgGZVtfB2J+h75TJKDrZC9zVQSgT4b2v2Xy0Jprh8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IASHF30S+JWj/9+YWKa6cBJbYdUyl1bttDpqlWsyej9gXFyWT8ZbHn+lZ2JskX3Ye75fVZhk7ZoW8uKrUTfUt3BB2xwktmkxSeQ3OIahujRlNTc2q0KN4cNkKNTQezEzSLBtN5ub5SdU8GvDN5cu/Nx1mcbf+JkFMtobNj84U+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=droCPgDT; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="droCPgDT"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4843e397f74so1095050f8f.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 02:15:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788426904; x=1789031704; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wU9Z4QgDQQ63Lq/IIsJ44QGDy5mL0TGHF3RUnidQY+Q=;
-        b=droCPgDT33xpDX3OA9xtdid5UoEIDmzH77/L1njyoiESE8i5mpl9GwZjmxlws6ypv7
-         jnnPhkUy4M/cCt/T/SbgvfOSb+FeqxsKV4weqadmPfVcvIyzonoI+fk8fx1/f/OfoL6z
-         ssbr3i8aRB3DIvrQRftzm78XnWuRa7EKk/jOy2bw+8wEo+BrBC4O7oeMiJ8SP2Rdn+rB
-         YVEZkE4NvENrRwr8dCEKDRT9Y+ejjlcFQizP+LCYjw9YmB/oqMQIPo7HRRfGcVdqVmpj
-         YITQ+zh40yrnjtNzV40zSufqNXRHDQRzTQXLIUbQ8aAEGiBXb2QkqVk2+SqYlf9xAGOR
-         /9Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788426904; x=1789031704;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wU9Z4QgDQQ63Lq/IIsJ44QGDy5mL0TGHF3RUnidQY+Q=;
-        b=SGr8EpOvwxz1gCbWoMs4MoqxbA/T24Xt1/ps6dGFH/aeWh/2NI6PbHBPOZ2VMAmc5i
-         LZj4SgqKh66UXdC/sIwklvtWqUqKZJ9MZUsDhQgSunngTPb7hLZ5j/imoTolzkTHm/pI
-         xUDgX+6XWnlF8/MUJdlhXK8TChj0jj52l1U3R2G0vQe3K2O781hQOdIsZALN+qb27I/C
-         yFeMRXm8HWTM9U/Vin4DT64VPgEjDjavFXHJarBlDLjGnwHBUGn8S4WLpoKkysbX/yNd
-         De1VS6TI2KyESMRy5lGdp22cZB0Tf3yBmhycsMk0AnakAWkxTuBi6CgwzpucWejI6MAi
-         ohBw==
-X-Gm-Message-State: AFuF++kwzdKYOTUMT5W8lYc0odDP09i/Jj+AIf7rEA6MPahlviENdmKI
-	L2EYKxkET8+668H/qC8FHH8U6dLVLu584bxLwaZg7GcPe6RNAE66nu6rJex28KFC5Vs=
-X-Gm-Gg: AYBFou0La6yoEvdk8kCReEzdJczIUB5aMV8g2ixH+AgmSo/y35q8yVF74zUTe2XVwwW
-	gI2UylMX0SMGPtWY/ZzamSJ9sdgjmfgrZL8Nayj2hSV57lw/IV+J+K1kUgQFEQA24kluO2Ke72k
-	leCia11av6J3s59gHoFC7eBGN9DJFxgXYxVRDVaNzkceAxa57sbb1Yi1iY9pJWjoFGXadxd81xl
-	ctY34c0J9C+ojPYP/hOa3UlkE/yP33kA/0pcg8DR3h+fl1cZYLpas7FZQjBNhk5aYBBGT9vcBdj
-	OpU1D7M5uVP16HrPHlbKHhWySi3IpXCNt83E0qQKe04pabJtx0o1wim/AyA5y8DdLKX7BP/oL8q
-	jcN8QCmHSt3DVO3nSduHewjI3e3olsez9+DsazvQPTfkWAKnpg7t+c6HH1KwvKMTJlkBbMQW8Fh
-	FDh9RHILIIVoaSsWOFGWB/Fgcmno34jeFEhiJZXzH8vUOyV33LODp2gFVaVHBNEi//p2iad8ddA
-	Tr6ByNbGSAj/p9EC3A=
-X-Received: by 2002:a05:600c:6303:b0:49c:e37e:4389 with SMTP id 5b1f17b1804b1-49cf1581370mr23239015e9.4.1788426903342;
-        Thu, 03 Sep 2026 02:15:03 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d2019sm54930775e9.2.2026.09.03.02.15.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 02:15:02 -0700 (PDT)
-Message-ID: <4adcf116-66a5-4895-9b87-bbad9cba3a4c@blackwall.org>
-Date: Thu, 3 Sep 2026 12:15:01 +0300
+	s=arc-20240116; t=1788427161; c=relaxed/simple;
+	bh=pPLmA2nPwDDP1sV/vbltRX0Da1O4ROgctVT0KKyHNEs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=E3DCOczVlfMHazXY57t2bRtqMGEd29l65L0iTfrrCFfOef8xedC+/Fny3E24nzIPtkBJTRP/ykS+wqvjjTMZlz3LF/sVR03780QYfpYnytIHrf5up6ADhmFds2a2J3BAqUhj32roXIrxd2pyyY7k4Hj1seDpW3Yp6PiLGPDQeGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpgz8t1788427093t96cab5f0
+X-QQ-Originating-IP: o2xHLL9ydspNC4r0LaaNBlkEDi3GucSDTo5WqwPk06U=
+Received: from smtpclient.apple ( [36.24.189.66])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 03 Sep 2026 17:18:11 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 15758588636277576062
+EX-QQ-RecipientCnt: 11
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net,v2] net: bridge: mcast: fix br_multicast_list_adjacent rcu
- walk of mglist
-Content-Language: en-US, bg
-To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org,
- linus.luessing@c0d3.blue, bridge@lists.linux.dev
-References: <20260901074046.316190-1-razor@blackwall.org>
- <178835300671.3394541.1735736223580358438@kernel.org>
- <1df834f1-cdf8-4b1a-aae6-a86c74278509@blackwall.org>
- <30c1e3c4-71cb-426b-9949-d336b8824f95@blackwall.org>
- <b7ca242f-e381-4cf4-993f-a151dcc0cc8f@redhat.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <b7ca242f-e381-4cf4-993f-a151dcc0cc8f@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [net,v4] net: libwx: protect ring accesses with RCU and NULL
+ check
+From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
+In-Reply-To: <20260903084931.GH396647@horms.kernel.org>
+Date: Thu, 3 Sep 2026 17:18:01 +0800
+Cc: netdev-bot+sashiko@kernel.org,
+ netdev@vger.kernel.org,
+ linglingzhang@trustnetic.com,
+ jiawenwu@trustnetic.com,
+ duanqiangwen@net-swift.com,
+ andrew+netdev@lunn.ch,
+ davem@davemloft.net,
+ edumazet@google.com,
+ kuba@kernel.org,
+ pabeni@redhat.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6E7C6807-3314-4DA2-8491-945EBD619418@net-swift.com>
+References: <4353E83B1147D652+20260830070624.7410-1-mengyuanlou@net-swift.com>
+ <178840489278.3394541.1727945751975594257@kernel.org>
+ <D5E0F28C-A809-4194-B4C9-7C4EC77F9B73@net-swift.com>
+ <20260903084931.GH396647@horms.kernel.org>
+To: Simon Horman <horms@kernel.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: M6Pq6l2cVyBBWKJkn+E3pn1tdChbTvWIimngz6hx3SNTpWoGswLSFs7z
+	cjAtzLqihqbd5rtTutZVFxmUl+gjWDwP02n8odvVvENHtiRUZutORdcMdH5Lcy4xKIu3Y8Z
+	XxaNx5UteSaLJJJYM9TKBEXQCXi9fhsVA8sqe6aBRfI+xtTGlg0YjolKz5E9ZwBhbru9q2C
+	Yp9k3S3YDRj/bXlfp/tblE2eikBh74JccaUdNwOifjLHOFDJoojx/2YC4SEwA7sNuastZa7
+	JybSiVccIjfAbPPkrgGGvJkIsKvfrhf/qQAgmswq3V3MtSUR7kAiOumrA2pFVqiRG3vRVQ7
+	NAceBjCpYVrYGL2GL50Q2y35pL3yD+PL5p8RrFACOsvEGzh1PvHhJ9gxE54Ose6QmQdfYdG
+	1Cnn0AUnzAeSWrz6eA+HS5X6DP6jZM/EmsAbkiueeLjTrzk1pDxBXvsaSTuYbLU9ErSZzSt
+	yqCIpawrS5gFdYuqibZ5vXTPPjHn0HO7mE0rpLZHTdI6DlTE1Vf+7/CNx6fQ3mpD6GD8HRI
+	sA/mlUCvasNZb7VIn+Po1G9aSLYH7VS5ZrB6Fw3J/qAU2J5hJa2umxGAmdNpUgA/YAXLo1U
+	XeuSr4NYE7GRB7bZCUpMkz+sNo2v8o6UpsJaAM1kXwzHdh8pdy7RPuHTi1SvAWjlTnI1xAG
+	+Vr12FFrveAPQu2WA3qxfj+LjX9LO5ot+riSN+5hMUxJpzOZvbUYcgwOfkrySGPumM9xL7p
+	f1hP8dGc9X58Mrdx4luu03q6mOli+vYoltxrsj8bYCSOxkEyHbe+m8XxRtd6o6ODRZ7HWjl
+	U+AFJwgORtek9SYImO+A1Kb+TguDD71JhrRzv9XThrsBNPC/VWNQblaY7YGwI2RR/Xp1oiu
+	DZbHLOn/9w4pyoKA2OPqPxYVKqDjHgoRcveDBXlEyWsyPsiTlvlQ32PH9m8ms4S6M8H9Xvw
+	OmY+6uNjJ1Zqr5QLPVIy8/6/4nLM7tOQKdWoPv32F8qwcOE+4A1NHJzkQwIrbAU8IadFLii
+	ZdxRNMy8ZK+ypoKC6+wtE5nJS/sc8dOTdcrhR4kjqFdZoVRGE2UpTx1qLCibXFF6xkMyfXH
+	sJa57ukbhy+hr6MClzhRo+RHzwri57CjzcZSXcAnM2JV3rp/iej2YWTta4wJgQl0j7mV/IW
+	NlHv6Bl467bN/Ng6q1HIdtP5eQ==
+X-QQ-XMRINFO: M/715EihBoGSCFrzuBLBPKcYWAdd9boasg==
+X-QQ-RECHKSPAM: 0
 
-On 03/09/2026 12:12, Paolo Abeni wrote:
-> On 9/2/26 2:54 PM, Nikolay Aleksandrov wrote:
->> On 02/09/2026 15:51, Nikolay Aleksandrov wrote:
->>> On 02/09/2026 15:43, netdev-bot+sashiko@kernel.org wrote:
->>>> Thank you for your contribution! Sashiko AI review found 1 potential
->>>> issue(s) to consider:
->>>>
->>>> Critical: 0 · High: 0 · Medium: 1 · Low: 0
->>>>
->>>> - [Medium] net/bridge/br_multicast.c:br_multicast_list_adjacent() now
->>>>     performs the entire per-port mglist walk, including one…
->>>>
->>>> -- 
->>>>
->>>> net: bridge: mcast: fix br_multicast_list_adjacent rcu walk of mglist
->>>>
->>>> The patch converts the mglist walk in br_multicast_list_adjacent() from an
->>>> RCU walk to one done under the bridge's multicast_lock, since mglist was
->>>> never converted to RCU.  It also makes the function return -ENOMEM on
->>>> allocation failure and documents that in the kdoc.
->>>>
->>>> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826014200.362304-1-littleddfu%40gmail.com
->>>>
->>>>> diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
->>>>> index 3ef5d8bbf552e..97686984de6d5 100644
->>>>> --- a/net/bridge/br_multicast.c
->>>>> +++ b/net/bridge/br_multicast.c
->>>>
->>>> [ ... ]
->>>>
->>>>> @@ -4967,15 +4969,20 @@ int br_multicast_list_adjacent(struct net_device *dev,
->>>>>            if (!port->dev || port->dev == dev)
->>>>>                continue;
->>>>> -        hlist_for_each_entry_rcu(group, &port->mglist, mglist) {
->>>>> +        spin_lock_bh(&br->multicast_lock);
->>>>> +        hlist_for_each_entry(group, &port->mglist, mglist) {
->>>>>                entry = kmalloc_obj(*entry, GFP_ATOMIC);
->>>>> -            if (!entry)
->>>>> +            if (!entry) {
->>>>> +                spin_unlock_bh(&br->multicast_lock);
->>>>> +                count = -ENOMEM;
->>>>>                    goto unlock;
->>>>> +            }
->>>>>                entry->addr = group->key.addr;
->>>>>                list_add(&entry->list, br_ip_list);
->>>>>                count++;
->>>>>            }
->>>>> +        spin_unlock_bh(&br->multicast_lock);
->>>>>        }
->>>>
->>>> [Severity: Medium]
->>>> How long can this critical section get?  The whole per-port mglist walk,
->>>> including one kmalloc_obj(*entry, GFP_ATOMIC) per port group, now runs with
->>>> br->multicast_lock held and bottom halves disabled.
->>>>
->>>> The number of allocations inside the section equals the length of
->>>> port->mglist, which is only bounded by br->hash_max in
->>>> br_multicast_new_group():
->>>>
->>>> net/bridge/br_multicast.c:br_multicast_new_group() {
->>>>      ...
->>>>      if (atomic_read(&br->mdb_hash_tbl.nelems) >= br->hash_max) {
->>>>      ...
->>>> }
->>>>
->>>> hash_max defaults to BR_MULTICAST_DEFAULT_HASH_MAX (4096) and can be set to
->>>> any u32 without validation via netlink
->>>> (br->hash_max = nla_get_u32(data[IFLA_BR_MCAST_HASH_MAX]) in br_netlink.c)
->>>> or via set_hash_max() in br_sysfs_br.c.  The list contents themselves are
->>>> populated by IGMP/MLD reports from hosts on the bridged L2 domain.
->>>>
->>>> While the lock is held, every other CPU that needs br->multicast_lock spins
->>>> for it, including the br_multicast_rcv() receive path, the group and query
->>>> expiry timers and br_multicast_port_group_rexmit().  Before this change the
->>>> loop only held rcu_read_lock(), so a long mglist slowed the caller but did
->>>> not block bridge multicast processing.
->>>>
->>>> The caller is periodic, so this is not a one-off:
->>>>
->>>> batadv_mcast_mla_update()
->>>>     __batadv_mcast_mla_update()
->>>>       batadv_mcast_mla_bridge_get()
->>>>         br_multicast_list_adjacent()
->>>>
->>>> which runs every BATADV_MCAST_WORK_PERIOD (500 ms) from the batman-adv
->>>> workqueue.
->>>>
->>>> Would it be preferable to bound the section, for example by pre-allocating
->>>> the entries outside the lock, or by dropping and re-taking the lock in
->>>> batches, rather than holding a bh-disabling spinlock across up to hash_max
->>>> slab allocations?
->>>>
->>>
->>> Oh please, enough with this shit. This is taking way too much time for a function
->>> that is largely useless.
->>>
->>> I will just convert it properly to RCU in -net and be done with this.
->>>
->>
->> and just to be clear - IMO only bots and llm "security" researchers would be trying
->> to do what is suggested above, I doubt there is any real-world case where it would
->> actually happen.
-> I understand your frustration. Unfortunately ignoring this kind of
-> reports will lead to at least one security report, possibly with
-> unbelievably high impact due to unexpected chaining. That is, we can't
-> ignore them.
-> 
-> /P
-> 
 
-Sure, I know. :) Sorry about the noise, I guess frustration got the best of me. I've
-already prepared the proper fix that converts mglist to use RCU and we don't need
-the spinlock at all. I'll send it out after running a few tests.
 
-Cheers,
-  Nik
+> 2026=E5=B9=B49=E6=9C=883=E6=97=A5 16:49=EF=BC=8CSimon Horman =
+<horms@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> On Thu, Sep 03, 2026 at 12:16:35PM +0800, mengyuanlou@net-swift.com =
+wrote:
+>>=20
+>>=20
+>>> 2026=E5=B9=B49=E6=9C=883=E6=97=A5 =
+11:08=EF=BC=8Cnetdev-bot+sashiko@kernel.org =E5=86=99=E9=81=93=EF=BC=9A
+>>>=20
+>>> Thank you for your contribution! Sashiko AI review found 2 potential
+>>> issue(s) to consider:
+>>>=20
+>>> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 0 (1)
+>>>=20
+>>> - [Medium] Commit message premise is unsubstantiated and the single
+>>> `Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")` =
+tag=E2=80=A6
+>>> - [Medium] Ring pointers are published to lockless readers without
+>>> release ordering.
+>>>=20
+>>> Pre-existing issues:
+>>> - [Low] The loop bounds of every newly RCU-protected traversal
+>>> (wx->num_tx_queues / wx->num_rx_queues) remain plain, unannotated=E2=80=
+=A6
+>>>=20
+>>> --
+>>>=20
+>>> net: libwx: protect ring accesses with RCU and NULL check
+>>>=20
+>>> This converts the wx->tx_ring[]/wx->rx_ring[] traversals in the =
+libwx
+>>> statistics, error, VLAN and PTP paths to READ_ONCE() plus a NULL =
+check
+>>> inside rcu_read_lock()/rcu_read_unlock(), and switches the ring slot
+>>> assignment and clearing in wx_alloc_q_vector()/wx_free_q_vector() to
+>>> WRITE_ONCE().
+>>>=20
+>>> A few questions below, first about the changelog and the Fixes tag, =
+then
+>>> about the publish side in wx_lib.c.
+>>>=20
+>>>> In wx_update_stats(), wx_get_ethtool_stats(), and other service =
+tasks,
+>>>> the ring pointers wx->rx_ring[i] and wx->tx_ring[i] can become NULL =
+or be
+>>>> freed asynchronously during queue teardown or channel =
+reconfiguration.
+>>>=20
+>>> [Severity: Medium]
+>>> Does this premise hold for the service task paths?
+>>>=20
+>>> txgbe_disable_device() and ngbe_disable_device() stop the service =
+task
+>>> synchronously:
+>>>=20
+>>> timer_delete_sync(&wx->service_timer);
+>>> cancel_work_sync(&wx->service_task);
+>>>=20
+>>> and the ring slots are only cleared afterwards, in
+>>> wx_clear_interrupt_scheme() -> wx_free_q_vectors() -> =
+wx_free_q_vector().
+>>> So can wx_ring_tx_pending() or wx_detect_tx_hang() actually observe =
+a slot
+>>> being cleared or a ring being freed underneath them?
+>>>=20
+>>> The PTP aux work is similarly quiesced by wx_ptp_suspend() ->
+>>> ptp_cancel_worker_sync() before the rings go away, and
+>>> wx_get_ethtool_stats() and wx_vlan_strip_control() are reached from
+>>> RTNL-serialized callbacks (the latter only from wx_set_rx_mode()).
+>>>=20
+>>> The one reader that does look unserialized against
+>>> wx_clear_interrupt_scheme() is wx_update_stats() reached from
+>>> wx_get_stats64() (ndo_get_stats64, e.g. a read of /proc/net/dev), =
+which
+>>> before this patch dereferenced wx->rx_ring[i] with no NULL check. =
+That is
+>>> the hunk the changelog does not call out. Could the message describe =
+that
+>>> path specifically and mark the rest as hardening?
+>>=20
+>>>=20
+>>>> Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
+>>>=20
+>>> Is this tag right for most of the hunks? git blame attributes
+>>> wx_ring_tx_pending()/wx_detect_tx_hang() in wx_err.c and the tx_ring =
+loop
+>>> in wx_update_xoff_rx_lfc() to 22d95e93c05b0, and =
+wx_vlan_strip_control()
+>>> to f3b03c655f678. A stable backport selected on this single tag =
+lands in
+>>> trees that have neither wx_err.c nor wx_ptp.c, so the patch cannot =
+apply
+>>> there. Should the tag be narrowed to the wx_update_stats()/
+>>> wx_get_ethtool_stats() change that fixes the user-visible =
+dereference?
+>>=20
+>> I think it is ok. 46b92e10d631 is the earliest commit that involved =
+this patch.
+>=20
+> I think that the point the AI is making is that each of the patches -
+> 46b92e10d631, 22d95e93c05b0, and f3b03c655f678 - introduce code that
+> has accesses that are serialised by this patch. And thus this patch =
+fixes
+> each of them.
+>=20
+> I did not verify that is the case for all three patches. But I did
+> verify that f3b03c655f678 is the oldest of the three patches, and
+> it does introduce wx_vlan_strip_control() whose accesses to =
+wx->rx_ring
+> are addressed by this patch.
+>=20
+> My suggestion is to either have fixes tags for all three patches,
+> if the AI is correct. Or choose the oldest one, f3b03c655f678.
+>=20
+>>>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c =
+b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+>>>> index 122c4952d203..9e2cf794f81c 100644
+>>>> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+>>>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+>>>=20
+>>> [ ... ]
+>>>=20
+>>>> @@ -2893,10 +2906,13 @@ void wx_update_stats(struct wx *wx)
+>>>>=20
+>>>> spin_lock(&wx->hw_stats_lock);
+>>>>=20
+>>>> + rcu_read_lock();
+>>>> /* gather some stats to the wx struct that are per queue */
+>>>> for (i =3D 0; i < wx->num_rx_queues; i++) {
+>>>> - struct wx_ring *rx_ring =3D wx->rx_ring[i];
+>>>> + struct wx_ring *rx_ring =3D READ_ONCE(wx->rx_ring[i]);
+>>>>=20
+>>>> + if (!rx_ring)
+>>>> + continue;
+>>>> non_eop_descs +=3D rx_ring->rx_stats.non_eop_descs;
+>>>=20
+>>> [Severity: Low]
+>>> This is a pre-existing issue and not introduced by the patch, but =
+the loop
+>>> bound itself stays an unannotated plain load while the =
+reconfiguration path
+>>> writes it concurrently:
+>>>=20
+>>> wx_free_q_vectors()
+>>> wx->num_tx_queues =3D 0;
+>>> wx->num_rx_queues =3D 0;
+>>> wx->num_q_vectors =3D 0;
+>>>=20
+>>> while (v_idx--)
+>>> wx_free_q_vector(wx, v_idx);
+>>>=20
+>>> The count and the ring array are two independently updated =
+variables, and
+>>> the same pattern is in wx_ring_tx_pending(), wx_detect_tx_hang() and
+>>> wx_vlan_strip_control(). Since the counts are zeroed before the =
+slots are
+>>> cleared and the rings live in a q_vector freed with kfree_rcu(), a =
+stale
+>>> count inside the new RCU section resolves to either a still-valid =
+ring or a
+>>> NULL slot, so the visible effect looks limited to a partial =
+statistics
+>>> sample or a skipped register write, but it remains a =
+KCSAN-reportable race.
+>>> Would annotating the count loads be worth doing while the traversals =
+are
+>>> being touched?
+>>>=20
+>>> [ ... ]
+>>>=20
+>>>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c =
+b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+>>>> index ed5aad7857bd..c227e9ab8a4a 100644
+>>>> --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+>>>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+>>>> @@ -2191,7 +2191,7 @@ static int wx_alloc_q_vector(struct wx *wx,
+>>>> ring->queue_index =3D txr_idx;
+>>>>=20
+>>>> /* assign ring to wx */
+>>>> - wx->tx_ring[txr_idx] =3D ring;
+>>>> + WRITE_ONCE(wx->tx_ring[txr_idx], ring);
+>>>>=20
+>>>> /* update count and index */
+>>>> txr_count--;
+>>>> @@ -2217,7 +2217,7 @@ static int wx_alloc_q_vector(struct wx *wx,
+>>>> ring->queue_index =3D rxr_idx;
+>>>>=20
+>>>> /* assign ring to wx */
+>>>> - wx->rx_ring[rxr_idx] =3D ring;
+>>>> + WRITE_ONCE(wx->rx_ring[rxr_idx], ring);
+>>>=20
+>>> [Severity: Medium]
+>>> The v3 posting used rcu_assign_pointer() here and v4 changed it to
+>>> WRITE_ONCE(). Does that leave the newly added read side without =
+ordering?
+>>>=20
+>>> WRITE_ONCE() only stops the compiler from tearing or reordering this =
+single
+>>> store, it does not emit smp_store_release(). The ring is initialized =
+with
+>>> plain stores immediately before the publish:
+>>>=20
+>>> ring->dev =3D &wx->pdev->dev;
+>>> ring->netdev =3D wx->netdev;
+>>> ring->q_vector =3D q_vector;
+>>> ...
+>>> ring->queue_index =3D rxr_idx;
+>>>=20
+>>> /* assign ring to wx */
+>>> WRITE_ONCE(wx->rx_ring[rxr_idx], ring);
+>>>=20
+>>> On a weakly ordered CPU, can a reader doing READ_ONCE() under
+>>> rcu_read_lock() see the non-NULL pointer before those field stores =
+become
+>>> visible? The NULL check added by this patch does not cover that =
+case, since
+>>> the pointer is non-NULL and only the contents are stale.
+>>>=20
+>>> reg_idx looks like a separate hole, because wx_alloc_q_vector() =
+never
+>>> writes it. wx_init_interrupt_scheme() sets it after the pointers are
+>>> already published:
+>>>=20
+>>> wx_cache_ring_rss()
+>>> for (i =3D 0; i < wx->num_rx_queues; i++)
+>>> wx->rx_ring[i]->reg_idx =3D i;
+>>>=20
+>>> and wx_vlan_strip_control() feeds that value straight into a =
+register
+>>> offset:
+>>>=20
+>>> j =3D ring->reg_idx;
+>>> wr32m(wx, WX_PX_RR_CFG(j), WX_PX_RR_CFG_VLAN,
+>>>     enable ? WX_PX_RR_CFG_VLAN : 0);
+>>>=20
+>>> If wx_vlan_strip_control() can run against a freshly published ring =
+set,
+>>> can this reprogram the VLAN strip bit of a different receive queue? =
+Note
+>>> that switching the publish back to rcu_assign_pointer() would not =
+close
+>>> this one, since reg_idx is written after publication.
+>>>=20
+>>> Publication is reachable on a registered netdev through
+>>> txgbe_setup_tc()/ngbe_setup_tc() and the resume paths, concurrently =
+with
+>>> wx_get_stats64() -> wx_update_stats(), so the statistics readers can =
+pick
+>>> up uninitialized per-queue counters and export them to userspace.
+>>=20
+>>=20
+>> Switch rcu_assign_pointer() and rcu_dereference change a lot.
+>> If it is ok for READ_ONCE and WRITE_ONCE.
+>> I think there is nothing that needs to be modified in this patch.
+>=20
+> Firstly, I apologise for not answering your question in the v3 thread =
+[1].
+> I was on a short holiday. It does seem relevant but as we are here
+> it seems best to discuss it in the context of v4, so I'll quote it:
+>=20
+>>> - struct wx_ring *tx_ring[64] ____cacheline_aligned_in_smp;
+>>> - struct wx_ring *rx_ring[64];
+>>> + struct wx_ring __rcu *tx_ring[64] ____cacheline_aligned_in_smp;
+>>> + struct wx_ring __rcu *rx_ring[64];
+>=20
+>>> Does adding the __rcu annotation here cause Sparse warnings in other =
+parts
+>>> of the driver that still access these pointers directly?
+>=20
+>=20
+>>> For example,
+>>> in =
+drivers/net/ethernet/wangxun/libwx/wx_ethtool.c:wx_get_ethtool_stats():
+>>> =E2=80=94- Rtnl_lock protect it.
+>=20
+>>> ring =3D wx->tx_ring[j];In =
+drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_xmit_frame():
+>>> tx_ring =3D wx->tx_ring[r_idx];
+>>> =E2=80=94- Fast Path / Datapath
+>=20
+>>> in =
+drivers/net/ethernet/wangxun/libwx/wx_hw.c:wx_vlan_strip_control():
+>>> struct wx_ring *ring =3D wx->rx_ring[I];
+>>> =E2=80=94- wx_configure path
+>=20
+>>> Since these accesses don't use rcu_dereference_protected() or
+>>> rtnl_dereference(), could they generate "incorrect type in =
+assignment"
+>>> warnings from Sparse, even though they may be safely serialized by =
+other
+>>> locks?
+>=20
+>> To slove these warnings cost a lot.
+>> Should I use rcu_assign_pointer() and rcu_dereference()?
+>> Or fallback to WRITE_ONCE and READ_ONCE.
+>=20
+> I entirely agree that adding correct rcu_assign_pointer() and
+> rcu_dereference() (and other?) updates to the code will be a =
+non-trivial
+> change. And this is why I suggested, in my response to v3, that change =
+be
+> deferred to a follow-up.
+>=20
+> But I think the central question is: what is the correct approach?  =
+And my
+> concern is that while using RCU is some work to implement it does seem =
+to
+> lead to safe access that can be reasoned with in the context of normal
+> Kernel locking schemes.
+>=20
+> I'm not convinced that using WRITE_ONCE and READ_ONCE, as implemented =
+in
+> this patch, gives us that.
+>=20
+> My overall feeling is that in the long run the driver should be =
+converted
+> to RCU, including all the call sights that had warnings in v3. But as =
+that
+> is a lot of churn, and not without some risk, I suggest a minimal
+> conversion for net (as was implemented in v3) and then follow-up with =
+a
+> full conversion for net-next.
+>=20
+> If you really want to stick with WRITE_ONCE and READ_ONCE for net then =
+I
+> think you will need some memory barriers. But I still think that in =
+the
+> long run an RCU conversion will be needed, which is why I feel this
+> approach is a dead-end.
+
+Thanks=EF=BC=8CI will switch to rcu_assign_pointer()/rcu_dereference().
+And try to solve warnings from Sparse.
+
+
+>=20
+> [1] =
+https://lore.kernel.org/netdev/86BE7746-4418-4B69-A6D6-091EC9418E70@net-sw=
+ift.com/
+>=20
+>>>=20
+>>>> @@ -2245,10 +2245,10 @@ static void wx_free_q_vector(struct wx *wx, =
+int v_idx)
+>>>> struct wx_ring *ring;
+>>>>=20
+>>>> wx_for_each_ring(ring, q_vector->tx)
+>>>> - wx->tx_ring[ring->queue_index] =3D NULL;
+>>>> + WRITE_ONCE(wx->tx_ring[ring->queue_index], NULL);
+>>>>=20
+>>>> wx_for_each_ring(ring, q_vector->rx)
+>>>> - wx->rx_ring[ring->queue_index] =3D NULL;
+>>>> + WRITE_ONCE(wx->rx_ring[ring->queue_index], NULL);
+>>>=20
+>>> [ ... ]
+>>>=20
+>>> --=20
+>>> Sashiko AI review =C2=B7 =
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/4353E83B1147D652%2B202=
+60830070624.7410-1-mengyuanlou%40net-swift.com
 
 
