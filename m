@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1634FC8DD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199123F889E;
 	Thu,  3 Sep 2026 19:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788463501; cv=none; b=Q9oGtYNkzCOHS3vfHDYo97QEG2Wru5VqsDmOtX0GIboKcxQGPezcDqW/CX1xYaFcibK4ihvOWZghcp1ir+pU5yv1hwb4CpMmSbsqIIMFHhPP2j3ECzw64Yx6Hj7EzKFRRUTjoaRCAIdbAfRVT83bTORnptaDuQC0lGGDk4Sn2PA=
+	t=1788463499; cv=none; b=oTpTj67wZzSEfw4M+0YzB3Eav116yrO+zYhsczaqHgvpx4uauzl9z+lZrupSJhcjvpQNHE/fVuhAe85x/YX0wcyTfAuR0zr0YbjJDow7zbApvfA5rLZOV8Jj3Cm2tADOQIBImb3RzUPjJykjmdLXWaNNCdNhUeLgA0i2dHELoqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788463501; c=relaxed/simple;
-	bh=tBANJ1wP9dKHC0IglIKzSks514Sp6JIC0GJuvB8s59U=;
+	s=arc-20240116; t=1788463499; c=relaxed/simple;
+	bh=HfexqgJTCmjES206C8x5KnYV6rXQtyVK52AFsLZhXlk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HakLofIxbYCK7JbXMBx4D72c80Gs7e1KAUX4wLcLFMSp8lyLKtzHMex+xObR8/sCFW+Mfu7fuSf/oi8KpCOW3/UpF81siwfRH5h6lhiFdhgs4l3axLcXiJsrrEzKIrLmFBFzC4T36ezOQZrLeS5YmbTtAe1dXhE7ZFY2jcn8vVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eFQskMpX; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=HsnhjsFA19mTG5VntKeFOG2bO73PJlw3gS8ZjOvAjI78dZrE9OBTc8knkgjQbhx3fTaya8+kobJzVV02TpCfPVZaiRelLDNl1WkLZeWTPZrRj3EbzJFdAJvxMkCFPmBG8tYGZ7nL4LprnZyPpmKlzqlr+8SxXkFD+27RUQySmgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8jla0GL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eFQskMpX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B431F00AC4;
-	Thu,  3 Sep 2026 19:24:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8jla0GL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464331F00A3F;
+	Thu,  3 Sep 2026 19:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788463488;
-	bh=A27X+nw20gRXFBzit7cf2xMFfcbsAQu0d2PBBeHVEZ8=;
+	s=k20260515; t=1788463487;
+	bh=qOoshltNDcR8Ak/3ivJaA0Xxho4fs+bLQC1kfa9NnLM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=eFQskMpXdMQYnGOSnYu+oft41Z9F8Vtp6avJ6ClnAu+Ygjx3BOi5Ed3f1siGOXAFh
-	 QT7bvUdMkGcyILMmXGa0L5ds8URbwzbcmbFWiDr5mzHY0zkejttBfLFbd8uI2qYFlQ
-	 s/JwN0dGkJfa/eAPimJJQh6DT8yhCpTs4VVmCPPd8qC/vIQMPgEmxjPWkBQ6hQzMAV
-	 Ek0MbWeL/hq5kEI4idzDT4FmZuPBhl8WpphXWPt6wzbgHRZwkfrPDBUt4LhQoWyHyQ
-	 rBXrwhGnovnnet3x0NNoiLW+A3Tz6HiWmGRUZ9MKVy1KsgHvVmY5rs5s2i2cj1wzcd
-	 HXBfhlZqau+VQ==
-Subject: Re: [v9,net-next,5/8] octeontx2-af: switch: TL1 scheduling and NPC
- channel control
+	b=F8jla0GLdUQDuy6+MykJ1po4huDQ8Vpi4VvzTw5Ms7MJax96yHV1QRfnLv35br5xS
+	 6Qc1FUvS2tTxTYmAz+nsmK5kxtk+KsxaKAbT0P8AMz+wiNUxem70St7Gljx7kID5T8
+	 36NrMwixlAAupUJRNvdqH9VAgqJtODoRnDYHfzBh5Z6KYqPVifhIe9PR4+HWMajZhj
+	 T/+OrZxpet1NtD6Rrbo53Tx42RgTLq/JK8KVTpvSkggJeZgC35qznOofg53/xd8wjk
+	 glE+D+7rot1Cp1J3cl7jowvtMQLd2ZySR/hL16t0Dj6gRlerBj11K5y8aEaQYC5Oey
+	 FU6nLPmtX6Dqw==
+Subject:
+ Re: [v9,net-next,4/8] octeontx2-af: switch: Representor for switch port
 From: netdev-bot+sashiko@kernel.org
 To: rkannoth@marvell.com
 Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com
-Date: Thu, 03 Sep 2026 19:24:47 +0000
-Message-ID: <178846348798.3394541.4444021202266324323@kernel.org>
-In-Reply-To: <20260831131944.2649362-6-rkannoth@marvell.com>
-References: <20260831131944.2649362-6-rkannoth@marvell.com>
-X-sashiko-severity: Critical
+Date: Thu, 03 Sep 2026 19:24:46 +0000
+Message-ID: <178846348684.3394541.6856496868277058175@kernel.org>
+In-Reply-To: <20260831131944.2649362-5-rkannoth@marvell.com>
+References: <20260831131944.2649362-5-rkannoth@marvell.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,560 +47,358 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 7 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 1 · High: 1 · Medium: 2 (1) · Low: 3
+Critical: 0 · High: 2 (2) · Medium: 1 · Low: 1
 
-- [Critical] Missing scheduler-level validation on the new
-  TXSCHQ_FREE_PAN_TL1 path in nix_txschq_free_one()…
-- [High] Partial-allocation leak in rvu_mbox_handler_nix_txsch_alloc()
-  (drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c):…
-- [Medium] The commit message justifies the new fixed-size SQ bitmap with
-  "the same span used by bitmap_weight(..., BITS_PER_LONG * 16) in…
-- [Medium] PAN TL1 scheduler nodes are returned to the resource pool
-  while still armed.
-- [Low] Claim that rvu->rswitch.pcifunc has no writer, making
-  rvu_is_switch_pcifunc() permanently false and all new PAN/set_chanmask…
-- [Low] The new mailbox ABI comments in mbox.h describe the PAN scheduler
-  queues as TL2 ("requests two aggregate-level TL2 queues on the PAN…
-- [Low] The commit message states "without it, chan_mask was always
-  forced to 0xFFF for non-AF functions" and describes set_chanmask as…
+- [High] esw_cfg_req_has_switch_id()
+  (drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c:442-455) derives…
+- [High] Lockless access to rvu->rep2pfvf_map in rvu_sw_port_id() races
+  with GET_REP_CNT mailbox handler updates, leading to a NULL pointer…
+- [Medium] struct esw_cfg_req — an existing AF<->PF mailbox wire-format
+  message carried in the shared mailbox window — grows a 32-byte…
+- [Low] The patch adds rvu_sw_port_id(), RVU_SWITCH_FLAG_FW_READY and the
+  rvu_switch.flags/pcifunc fields with no producer or consumer at this…
 
 Pre-existing issues:
-- [Medium] In rvu_nix_blk_aq_enq_inst() the SQ index bounds computation
-  (the pfvf->sq_ctx NULL test, the sq_ctx->qsize read and the new…
+- [High] rvu_mbox_handler_get_rep_cnt() (af/rvu_rep.c:474-507, unchanged
+  at the end of the series) re-allocates rvu->rep2pfvf_map with…
+- [High] The new switch_id ingestion and rvu_sw_port_id() build on
+  rvu->rep_pcifunc, rvu->rep_cnt and rvu->rep2pfvf_map, all of which any…
 
 --
 
-octeontx2-af: switch: TL1 scheduling and NPC channel control
+octeontx2-af: switch: Representor for switch port
 
-This adds a NIX_TXSCH_ALLOC_FLAG_PAN request flag so the switchdev PF can
-get more than one aggregate-level scheduler queue on the PAN link, a
-TXSCHQ_FREE_PAN_TL1 flag so those TL1 entries can be freed again, and a
-set_chanmask field so the switchdev PF can keep its own NPC chan_mask.
-It also changes the NIX LF SQ bitmap sizing and extends struct sg_list.
-
-A few questions below.
+This adds a devlink-derived switch id to the esw_cfg mailbox message, copies
+it into rvu->rswitch on the AF side, and adds rvu_sw_port_id() plus an export
+of rvu_rep_get_vlan_id().  A few questions below about the new mailbox field
+and the state the new helper depends on.
 
 > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> index 8e3850f33751d..2aa1aa6599a5a 100644
+> index e45e6e93ed087..8e3850f33751d 100644
 > --- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
 > +++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-> @@ -1162,6 +1162,13 @@ struct nix_txsch_alloc_req {
->  	/* Scheduler queue count request at each level */
->  	u16 schq_contig[NIX_TXSCH_LVL_CNT]; /* No of contiguous queues */
->  	u16 schq[NIX_TXSCH_LVL_CNT]; /* No of non-contiguous queues */
-> +	/* Set only by the single switchdev PF (rvu->rswitch.pcifunc). This is
-> +	 * not the eswitch representor (rvu->rep_pcifunc). That PF requests two
-> +	 * aggregate-level TL2 queues on the PAN link, one for CGX and one for
-> +	 * SDP steering. No other PF or VF sets this flag.
-> +	 */
-> +#define NIX_TXSCH_ALLOC_FLAG_PAN BIT(0)
-> +	u32 flags;
+> @@ -1841,6 +1841,7 @@ struct esw_cfg_req {
+>  	struct mbox_msghdr hdr;
+>  	u8 ena;
+>  	u64 rsvd;
+> +	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
+>  };
+
+[Severity: Medium]
+
+This changes the layout of an existing AF<->PF mailbox message, growing
+struct esw_cfg_req from 32 to 64 bytes, but OTX2_MBOX_VERSION in the same
+header stays at 0x000a.
+
+The existing precedent in this driver for a message layout extension is to
+gate on the header version, for example in af/rvu.c:
+
+	if (attach->hdr.ver < RVU_MULTI_BLK_VER)
+
+and rvu_process_mbox_msg() only validates req->sig, never req->ver.  With
+the version unchanged, an old PF and a new AF both advertise ver = 0x000a
+for two incompatible layouts.  Should OTX2_MBOX_VERSION be bumped and
+checked here instead?
+
+Two related points on the field itself:
+
+The on-the-wire size of this message is now derived from
+MAX_PHYS_ITEM_ID_LEN, a core netdevice constant outside this driver's
+control.  Is it intentional that the mailbox layout follows that constant?
+
+No length accompanies the value.  rvu_rep_devlink_set_switch_id() in
+nic/rep.c sets ppid->id_len = sizeof(u64), and rvu_eswitch_config() copies
+only that many bytes:
+
+	memcpy(req->switch_id, attrs.switch_id.id, attrs.switch_id.id_len);
+
+while the AF stores and would compare all MAX_PHYS_ITEM_ID_LEN bytes.  How
+does the AF recover the meaningful prefix, i.e. should an id_len companion
+be carried in the message and in struct rvu_switch?
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+> index 2876c76ae61b6..9174b879850a2 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+> @@ -576,6 +576,10 @@ struct rvu_switch {
+>  	u16 *entry2pcifunc;
+>  	u16 mode;
+>  	u16 start_entry;
+> +	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
+> +#define RVU_SWITCH_FLAG_FW_READY BIT_ULL(0)
+> +	u64 flags;
+> +	u16 pcifunc;
 >  };
 
 [Severity: Low]
-The comment says the flag requests "aggregate-level TL2 queues", but the
-aggregation level is always TL1 here.
 
-af/rvu.c:rvu_setup_hw_capabilities() has the only assignment:
+This isn't a bug, but rvu_sw_port_id(), RVU_SWITCH_FLAG_FW_READY and
+rvu_switch.pcifunc have no producer or consumer at this commit; they do gain
+users in the later patches of the series, which reads like normal series
+decomposition.
 
-	hw->cap.nix_tx_aggr_lvl = NIX_TXSCH_LVL_TL1;
-
-and every implementation site in this patch indexes
-nix_hw->txsch[NIX_TXSCH_LVL_TL1].  The companion macro is even named
-TXSCHQ_FREE_PAN_TL1.
-
-Since mbox.h is the only contract a request producer has when choosing
-nix_txsch_free_req.schq_lvl, and nix_txschq_free_one() never cross-checks
-schq_lvl against the flag, would a producer following the TL2 prose end up
-operating on a different scheduler level than one following the TL1 macro
-name?
-
-Could the comments say TL1, and could the "PAN link" also be defined
-somewhere, along with why nix_get_pan_tx_link() is cgx_links + lbk_links + 1?
-
-[Severity: Low]
-This isn't a bug, but nothing in the tree sets NIX_TXSCH_ALLOC_FLAG_PAN,
-TXSCHQ_FREE_PAN_TL1 or npc_install_flow_req.set_chanmask, even at the end of
-this series, so the new mailbox fields have consumers in the AF but no
-in-tree emitters.  Are the producers coming in a follow-up series?
-
-(For the record, rvu->rswitch.pcifunc itself does get a writer later in the
-series in rvu_sw_l2_ctrl_work_handler(), so rvu_is_switch_pcifunc() is not
-permanently false.)
-
-> @@ -1180,6 +1187,10 @@ struct nix_txsch_alloc_rsp {
->  struct nix_txsch_free_req {
->  	struct mbox_msghdr hdr;
->  #define TXSCHQ_FREE_ALL BIT_ULL(0)
-> +	/* Frees PAN TL2 queues allocated with NIX_TXSCH_ALLOC_FLAG_PAN. Used
-> +	 * only by the switchdev PF (rvu->rswitch.pcifunc), not by other PFs/VFs.
-> +	 */
-> +#define TXSCHQ_FREE_PAN_TL1 BIT_ULL(1)
->  	u16 flags;
->  	/* Scheduler queue level to be freed */
->  	u16 schq_lvl;
+The one field that stays unused through the end of the series is
+rvu_switch.switch_id: it is written by rvu_mbox_handler_esw_cfg() and never
+read anywhere.  Would it be clearer to add that store together with the code
+that consumes it?
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> index 1402beccf6618..e4d13adc2896c 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> @@ -2006,9 +2007,18 @@ static void rvu_iface_get_qcnts(struct rvu *rvu, struct rvu_pfvf *pfvf,
->  
->  	spin_lock_irqsave(&aq->lock, flags);
->  
-> -	/* Use each LF queue context size; bitmaps are sized to qsize longs. */
-> -	if (pfvf->sq_ctx && pfvf->sq_bmap)
-> -		info->sq_cnt = bitmap_weight(pfvf->sq_bmap, pfvf->sq_ctx->qsize);
-> +	if (pfvf->sq_bmap) {
-> +		/* Match switchdev sq_bmap allocation size in nix_lf_alloc(). */
-> +		if (rvu_is_switch_pcifunc(rvu, pcifunc))
-> +			sq_bmap_bits = NIX_SQ_BMAP_BITS;
-> +		else if (pfvf->sq_ctx)
-> +			sq_bmap_bits = pfvf->sq_ctx->qsize;
-> +		else
-> +			sq_bmap_bits = 0;
-> +
-> +		if (sq_bmap_bits)
-> +			info->sq_cnt = bitmap_weight(pfvf->sq_bmap, sq_bmap_bits);
-> +	}
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> index a2781e0f504e3..672d54847c7b1 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> index b8f4ad160afcf..9ee6531afbf94 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> @@ -1138,10 +1139,25 @@ static int rvu_nix_blk_aq_enq_inst(struct rvu *rvu, struct nix_hw *nix_hw,
->  		if (!pfvf->rq_ctx || req->qidx >= pfvf->rq_ctx->qsize)
->  			rc = NIX_AF_ERR_AQ_ENQUEUE;
->  		break;
-> -	case NIX_AQ_CTYPE_SQ:
-> -		if (!pfvf->sq_ctx || req->qidx >= pfvf->sq_ctx->qsize)
-> +	case NIX_AQ_CTYPE_SQ: {
-> +		if (!pfvf->sq_ctx) {
-> +			rc = NIX_AF_ERR_AQ_ENQUEUE;
-> +			break;
-> +		}
-> +
-> +		/* Switchdev PF uses a fixed sq_bmap (NIX_SQ_BMAP_BITS); cap qidx
-> +		 * to that span so __set_bit() cannot run past the allocation.
-> +		 * nix_lf_alloc() also rejects sq_cnt above NIX_SQ_BMAP_BITS.
-> +		 */
-> +		sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
-> +			       NIX_SQ_BMAP_BITS :
-> +			       (u64)pfvf->sq_ctx->qsize * BITS_PER_LONG;
-> +		max_q = min_t(u64, pfvf->sq_ctx->qsize, sq_bmap_bits);
-> +
-> +		if ((u64)req->qidx >= max_q)
->  			rc = NIX_AF_ERR_AQ_ENQUEUE;
->  		break;
-> +	}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the comment claims a property
-the locking does not provide.
-
-The bounds computation above (the pfvf->sq_ctx test, the qsize read and
-max_q) runs with no lock held, while the mutation it is supposed to bound
-runs later in the same function under aq->lock, with no re-validation and no
-NULL check:
-
-	spin_lock(&aq->lock);
-	...
-		if (req->ctype == NIX_AQ_CTYPE_SQ && req->sq.ena)
-			__set_bit(req->qidx, pfvf->sq_bmap);
-
-Those are exactly the fields nix_ctx_free() clears under the same lock and
-frees immediately after releasing it:
-
-	spin_lock_irqsave(&aq->lock, flags);
-	...
-	pfvf->sq_bmap = NULL;
-	pfvf->sq_ctx = NULL;
-	...
-	spin_unlock_irqrestore(&aq->lock, flags);
-
-	kfree(sq_bmap);
-	...
-	if (sq_ctx)
-		qmem_free(rvu->dev, sq_ctx);
-
-The unlocked-validate/locked-mutate split predates this patch (the baseline
-read was "if (!pfvf->sq_ctx || req->qidx >= pfvf->sq_ctx->qsize)"), so this
-is only extending it.  I could not prove that AF mailbox AQ processing for a
-pcifunc can actually run concurrently with that pcifunc's teardown, so this
-may be unreachable.  If it is unreachable, could the comment avoid asserting
-that __set_bit() "cannot run past the allocation", since the check and the
-write are not in the same critical section?
-
-> @@ -1566,18 +1582,28 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
->  	if (!req->rq_cnt || !req->sq_cnt || !req->cq_cnt)
->  		return NIX_AF_ERR_PARAM;
->  
-> +	/* Switchdev PF sq_bmap is fixed at NIX_SQ_BMAP_BITS; reject larger
-> +	 * sq_cnt before allocating context memory or the bitmap.
-> +	 */
-> +	sq_bmap_bits = rvu_is_switch_pcifunc(rvu, pcifunc) ?
-> +		NIX_SQ_BMAP_BITS :
-> +		(u64)req->sq_cnt * BITS_PER_LONG;
-> +
-> +	if ((u64)req->sq_cnt > sq_bmap_bits)
-> +		return NIX_AF_ERR_PARAM;
-> +
-
-[Severity: Medium]
-The commit message says:
-
-    Allocate the NIX LF SQ bitmap with the same span used by
-    bitmap_weight(..., BITS_PER_LONG * 16) in rvu_get_hwinfo().
-
-There is no function named rvu_get_hwinfo() in the driver (git grep at this
-commit returns no matches), and there is no pre-existing bitmap_weight()
-call with a BITS_PER_LONG * 16 span either - NIX_SQ_BMAP_BITS is added by
-this patch.  The site actually changed is rvu_iface_get_qcnts(), the
-IFACE_GET_INFO handler.  Could the message name the real function?
-
-For the check above, the non-switch branch reduces to
-
-	req->sq_cnt > (u64)req->sq_cnt * BITS_PER_LONG
-
-which can never be true, so the "reject larger sq_cnt" validation is inert
-for every non-switch caller.  Is that intentional, and could the new
-NIX_AF_ERR_PARAM path and the new qidx cap in the SQ case of
-rvu_nix_blk_aq_enq_inst() be mentioned in the changelog?
-
-[ ... ]
-
-> @@ -2209,6 +2240,25 @@ static void nix_get_txschq_range(struct rvu *rvu, u16 pcifunc,
->  	}
+> @@ -189,7 +190,7 @@ int rvu_mbox_handler_nix_lf_stats(struct rvu *rvu,
+>  	return 0;
 >  }
 >  
-> +static int nix_get_pan_tx_link(struct rvu *rvu)
+> -static u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
+> +u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
+>  {
+>  	int id;
+>  
+> @@ -429,6 +430,30 @@ int rvu_rep_pf_init(struct rvu *rvu)
+>  	return 0;
+>  }
+>  
+> +/* ESW_CFG is always the sole message in a mailbox transaction.
+> + *
+> + * The otx2 mailbox API does not batch multiple messages per sync: the
+> + * representor driver allocates only ESW_CFG before calling
+> + * otx2_sync_mbox_msg() (see rvu_eswitch_config()), and the AF processes
+> + * one message per dispatch. next_msgoff is therefore the end offset of this
+> + * message, not a cumulative offset across batched messages, so the length
+> + * check below is safe. Batching is not supported; do not flag this path.
+> + */
+> +static bool esw_cfg_req_has_switch_id(const struct esw_cfg_req *req)
 > +{
-> +	struct rvu_hwinfo *hw = rvu->hw;
+> +	u16 hdr_len = ALIGN(sizeof(struct mbox_hdr), MBOX_MSG_ALIGN);
+> +	u16 next_off = req->hdr.next_msgoff;
+> +	u16 msg_len;
 > +
-> +	return hw->cgx_links + hw->lbk_links + 1;
+> +	if (next_off < hdr_len)
+> +		return false;
+> +
+> +	msg_len = next_off - hdr_len;
+> +
+> +	return msg_len >= offsetof(struct esw_cfg_req, switch_id) +
+> +			  MAX_PHYS_ITEM_ID_LEN;
 > +}
 > +
-> +static bool nix_txsch_is_pan_schq(struct rvu *rvu, int schq)
-> +{
-> +	int pan_link = nix_get_pan_tx_link(rvu);
-> +
-> +	return schq >= pan_link && schq <= pan_link + 1;
-> +}
-> +
-> +static bool nix_txsch_pan_allowed(struct rvu *rvu, u16 pcifunc)
-> +{
-> +	return rvu_is_switch_pcifunc(rvu, pcifunc);
-> +}
-> +
->  static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
->  				      struct nix_hw *nix_hw,
->  				      struct nix_txsch_alloc_req *req)
-> @@ -2224,12 +2274,27 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
->  	/* For traffic aggregating scheduler level, one queue is enough */
->  	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
-> -		if (req_schq != 1)
-> +		if (req_schq != 1 && !(req->flags & NIX_TXSCH_ALLOC_FLAG_PAN))
->  			return NIX_AF_ERR_TLX_ALLOC_FAIL;
-> +		if (req->schq[lvl] > MAX_TXSCHQ_PER_FUNC ||
-> +		    req->schq_contig[lvl] > MAX_TXSCHQ_PER_FUNC)
-> +			return NIX_AF_ERR_TLX_ALLOC_FAIL;
-> +		if (req->flags & NIX_TXSCH_ALLOC_FLAG_PAN) {
-> +			if (link >= txsch->schq.max || link + 1 >= txsch->schq.max)
-> +				return NIX_AF_ERR_TLX_ALLOC_FAIL;
-> +			if (req_schq > 2)
-> +				return NIX_AF_ERR_TLX_ALLOC_FAIL;
-> +		}
+>  int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+>  			     struct msg_rsp *rsp)
+>  {
+> @@ -436,6 +461,9 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
 >  		return 0;
->  	}
+>  
+>  	rvu->rep_mode = req->ena;
+> +	if (esw_cfg_req_has_switch_id(req))
+> +		memcpy(rvu->rswitch.switch_id, req->switch_id,
+> +		       MAX_PHYS_ITEM_ID_LEN);
 
 [Severity: High]
-This PAN block never test_bit()s whether the two PAN indices are actually
-free, it only bounds them against txsch->schq.max and caps req_schq at 2.
-So validation can pass while the two indices are already taken, and the
-failure is then deferred into nix_txsch_alloc(), which is now fallible.
 
-Can that leak the scheduler queues committed for the earlier levels?  See
-the two hunks below.
+Is the premise of the comment above esw_cfg_req_has_switch_id() correct?
+otx2_mbox_alloc_msg_rsp() in af/mbox.c derives next_msgoff from the running
+total of the whole mailbox region:
 
-> @@ -2270,6 +2335,46 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
->  	 * on transmit link to which PF_FUNC is mapped to.
->  	 */
->  	if (lvl >= hw->cap.nix_tx_aggr_lvl) {
-> +		if (start != end) {
-> +			int want_contig = rsp->schq_contig[lvl];
-> +			int got_contig = 0, got = 0;
-> +			int want = rsp->schq[lvl];
-> +
-> +			for (schq = start; schq <= end; schq++) {
-> +				if (test_bit(schq, txsch->schq.bmap))
-> +					continue;
-> +
-> +				if (got_contig < want_contig) {
-> +					set_bit(schq, txsch->schq.bmap);
-> +					rsp->schq_contig_list[lvl][got_contig++] = schq;
-> +					continue;
-> +				}
-> +
-> +				if (got < want) {
-> +					set_bit(schq, txsch->schq.bmap);
-> +					rsp->schq_list[lvl][got++] = schq;
-> +				}
-> +			}
-> +
-> +			rsp->schq_contig[lvl] = got_contig;
-> +			rsp->schq[lvl] = got;
-> +
-> +			if (got_contig < want_contig || got < want) {
-> +				for (idx = 0; idx < got_contig; idx++)
-> +					clear_bit(rsp->schq_contig_list[lvl][idx],
-> +						  txsch->schq.bmap);
-> +				for (idx = 0; idx < got; idx++)
-> +					clear_bit(rsp->schq_list[lvl][idx],
-> +						  txsch->schq.bmap);
-> +				rsp->schq_contig[lvl] = 0;
-> +				rsp->schq[lvl] = 0;
-> +				dev_err(rvu->dev,
-> +					"Could not allocate schq at lvl=%u start=%u end=%u\n",
-> +					lvl, start, end);
-> +				return -ENOMEM;
-> +			}
-> +			return 0;
-> +		}
+	mdev->msg_size += size;
+	mdev->rsp_size += size_rsp;
+	msghdr->next_msgoff = mdev->msg_size + msgs_offset;
 
-[ ... ]
+and __rvu_mbox_handler() in af/rvu.c walks a batch of messages per doorbell
+using it:
 
-> @@ -2398,10 +2512,11 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
->  			end = txsch->schq.max;
->  		}
->  
-> -		nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end);
-> +		if (nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end))
-> +			goto err;
-
-[Severity: High]
-Does this goto leak the scheduler queues allocated for the previous levels?
-
-This goto is inside the per-level loop, but the error path only sets the
-return code and unlocks:
-
-	err:
-		rc = NIX_AF_ERR_TLX_ALLOC_FAIL;
-	exit:
-		mutex_unlock(&rvu->rsrc_lock);
-		return rc;
-
-There is no clear_bit()/rvu_free_rsrc() for the bits already set in
-txsch->schq.bmap, and no reset of the pfvf_map[schq] = TXSCH_MAP(pcifunc, 0)
-stamps applied for SMQ/TL4/TL3/TL2 in earlier iterations.  The only failing
-return is the new start != end branch at the aggregate level, which is the
-last iteration, so the lower levels are already committed when it fires.
-
-The requester gets an error and no schq lists back, so it cannot free those
-indices individually - they stay used until TXSCHQ_FREE_ALL or LF teardown,
-and each retry commits a fresh set.  Since the two PAN indices stay occupied
-across retries, can a retry loop exhaust the shared SMQ/TL4/TL3/TL2 pool for
-the other PFs/VFs on that NIX block?
-
-Before this patch nix_txsch_alloc() was void and could not fail mid-loop, so
-there was nothing to unwind.
-
-> @@ -2679,6 +2794,20 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
->  	}
->  	nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1,
->  			  nix_get_tx_link(rvu, pcifunc));
-> +	/* TL1 is at nix_tx_aggr_lvl so the loop above skips it; also clear
-> +	 * PAN TL1 XOFF on switch-owned links before flushing SMQs.
-> +	 */
-> +	if (nix_txsch_pan_allowed(rvu, pcifunc)) {
-> +		txsch = &nix_hw->txsch[NIX_TXSCH_LVL_TL1];
-> +
-> +		for (schq = nix_get_pan_tx_link(rvu);
-> +		     schq < txsch->schq.max &&
-> +		     nix_txsch_is_pan_schq(rvu, schq); schq++) {
-> +			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
-> +				continue;
-> +			nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1, schq);
-> +		}
-> +	}
->  
->  	/* On PF cleanup, clear cfg done flag as
->  	 * PF would have changed default config.
-> @@ -2706,11 +2835,11 @@ static int nix_txschq_free(struct rvu *rvu, u16 pcifunc)
->  		 /* TLs above aggregation level are shared across all PF
->  		  * and it's VFs, hence skip freeing them.
->  		  */
-> -		if (lvl >= hw->cap.nix_tx_aggr_lvl)
-> -			continue;
-> -
->  		txsch = &nix_hw->txsch[lvl];
->  		for (schq = 0; schq < txsch->schq.max; schq++) {
-> +			if (lvl >= hw->cap.nix_tx_aggr_lvl &&
-> +			    !nix_txsch_is_pan_schq(rvu, schq))
-> +				continue;
->  			if (TXSCH_MAP_FUNC(txsch->pfvf_map[schq]) != pcifunc)
->  				continue;
->  			nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
-> 			rvu_free_rsrc(&txsch->schq, schq);
-> 			txsch->pfvf_map[schq] = TXSCH_MAP(0, NIX_TXSCHQ_FREE);
-
-[Severity: Medium]
-Are the PAN TL1 nodes returned to the free pool while still armed?
-
-The block above writes 0 to NIX_AF_TL1X_SW_XOFF (leaving the node
-scheduling), and the loop here then calls nix_reset_tx_schedule() followed
-by rvu_free_rsrc().  But nix_reset_tx_schedule() has no TL1 case:
-
-	switch (lvl) {
-	case NIX_TXSCH_LVL_TL2:
-	...
-	default:
-		return;
+	for (id = 0; id < mw->mbox_wrk[devid].num_msgs; id++) {
+		msg = mdev->mbase + offset;
+		...
+		offset = mbox->rx_start + msg->next_msgoff;
 	}
 
-TL1X_CIR is not reset in this path either, because the first loop in
-nix_txschq_free() still does
+So if ESW_CFG is not the first message in a transaction, wouldn't
+msg_len = next_msgoff - hdr_len exceed this message's real size and let the
+check pass for an old 32-byte esw_cfg_req?
 
-		if (lvl >= hw->cap.nix_tx_aggr_lvl)
-			continue;
+Beyond batching, next_msgoff lives in the shared mailbox window and is
+written by the peer.  rvu_process_mbox_msg() checks only req->sig, and
+otx2_pfvf_mbox_handler() in nic/otx2_pf.c forwards a VF's headers after
+rewriting just pcifunc:
 
-so nix_reset_tx_shaping() never runs for TL1.  The TL1 therefore goes back
-to the pool enabled and still anchored through TL1X_TOPOLOGY.PRIO_ANCHOR to
-TL2 children that the same loop frees and that can be handed to another PF.
+	if (msg->sig != OTX2_MBOX_REQ_SIG)
+		goto inval_msg;
+	msg->pcifunc &= ~RVU_PFVF_FUNC_MASK;
+	msg->pcifunc |= (vf_idx + 1) & RVU_PFVF_FUNC_MASK;
+	offset = msg->next_msgoff;
 
-The reverse direction looks asymmetric too: nothing in the allocation path
-normalizes TL1X_SW_XOFF (nix_reset_tx_linkcfg() returns early for the
-aggregation level, nix_reset_tx_schedule() is a no-op for TL1, and
-nix_reset_tx_shaping() only touches TL1X_CIR).  If a PAN TL1 is freed while
-XOFF is asserted - for instance rvu->rswitch.pcifunc has already been
-cleared, so the new XOFF-clearing block is skipped while this loop still
-releases the index - does the next owner get a TL1 that never transmits?
+with otx2_forward_vf_mbox_msgs() handing the VF's own mailbox memory to the
+AF verbatim (dst_mdev->mbase = src_mdev->mbase).
 
-nix_txschq_free_one() on the TXSCHQ_FREE_PAN_TL1 path does call
-nix_reset_tx_shaping() but likewise leaves TOPOLOGY/SCHEDULE programmed, so
-the two free paths leave different hardware state behind.  Before this patch
-TL1 was never freed, so leaving it armed did not matter.
+Can a VF that writes next_msgoff >= 80 and sends a 32-byte ESW_CFG make the
+memcpy above read 32 bytes past the end of its message, picking up the
+following message's header and payload, or bytes past the last message and
+potentially past the per-device mailbox window, and persist them as the AF's
+switch identity?
 
-> @@ -2754,7 +2883,16 @@ static int nix_txschq_free_one(struct rvu *rvu,
->  	schq = req->schq;
->  	txsch = &nix_hw->txsch[lvl];
+Since hdr.ver / OTX2_MBOX_VERSION exists to signal exactly this kind of
+layout skew, would a version check be the safer bound here rather than a
+peer-supplied offset?
+
+One more note on the comment: the closing sentence "Batching is not
+supported; do not flag this path" instructs readers not to inspect this
+code.  Could that be dropped?
+
 >  
-> -	if (lvl >= hw->cap.nix_tx_aggr_lvl || schq >= txsch->schq.max)
-> +	if (req->flags & TXSCHQ_FREE_PAN_TL1) {
-> +		if (!nix_txsch_pan_allowed(rvu, pcifunc))
-> +			return NIX_AF_ERR_TLX_INVALID;
-> +		if (!nix_txsch_is_pan_schq(rvu, schq))
-> +			return NIX_AF_ERR_TLX_INVALID;
-> +	} else if (lvl >= hw->cap.nix_tx_aggr_lvl) {
-> +		return 0;
-> +	}
-> +
-> +	if (schq >= txsch->schq.max)
->  		return 0;
+>  	if (!rvu->rep_mode)
+>  		rvu_npc_free_mcam_entries(rvu, req->hdr.pcifunc, -1);
+> @@ -449,6 +477,9 @@ int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+>  	int pf, vf, numvfs, hwvf, rep = 0;
+>  	u16 pcifunc;
+>  
+> +	/* Called once from representor driver probe during devlink eswitch
+> +	 * SWITCHDEV bring-up; not re-run during switch device operation.
+> +	 */
+>  	rvu->rep_pcifunc = req->hdr.pcifunc;
+>  	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
+>  	rvu->rep_cnt = rsp->rep_cnt;
 
-[Severity: Critical]
-Can this read past nix_hw->txsch[]?
+[Severity: High]
 
-lvl comes straight from the mailbox and is never bounded:
+This isn't a bug introduced by this patch, but the new comment states this
+handler is called once, and the new rvu_sw_port_id() is documented as relying
+on that.  Is the invariant enforced anywhere?
 
-	lvl = req->schq_lvl;
-	schq = req->schq;
-	txsch = &nix_hw->txsch[lvl];
+rvu_mbox_handler_get_rep_cnt() re-runs on every MBOX_MSG_GET_REP_CNT:
 
-rvu_mbox_handler_nix_txsch_free() forwards req unvalidated:
+	rvu->rep_cnt = rsp->rep_cnt;
 
-	if (req->flags & TXSCHQ_FREE_ALL)
-		return nix_txschq_free(rvu, req->hdr.pcifunc);
-	else
-		return nix_txschq_free_one(rvu, req);
+	rvu->rep2pfvf_map = devm_kzalloc(rvu->dev, rvu->rep_cnt *
+					 sizeof(u16), GFP_KERNEL);
+	if (!rvu->rep2pfvf_map)
+		return -ENOMEM;
 
-and nix_hw->txsch[] has only NIX_TXSCH_LVL_CNT (5) entries.  Before this
-patch the combined test short-circuited for every lvl >= 4 and returned 0
-before txsch was dereferenced.  The new PAN branch skips that early return
-and checks only the requester (nix_txsch_pan_allowed()) and the numeric
-index (nix_txsch_is_pan_schq(), which is level-agnostic), so with
-schq_lvl = 65535 execution reaches
+Each repetition drops the previous pointer without devm_kfree(), and the old
+buffer is devres-managed against the AF device, so it is only released when
+the AF itself is removed.  Does a representor PF unbind/rebind or module
+reload, or a VF repeating the message, grow the devres list without bound?
 
-	if (schq >= txsch->schq.max)
+On the -ENOMEM path, rvu->rep_cnt is already published while
+rvu->rep2pfvf_map is NULL, and rvu_rep_get_vlan_id() dereferences the map
+with no NULL check:
 
-reading roughly 65535 * sizeof(struct nix_txsch) past nix_hw.  If that
-garbage max happens to exceed schq, the code continues into
-TXSCH_MAP_FUNC(pfvf_map[schq]) through a garbage pointer, then
-rvu_free_rsrc(&txsch->schq, schq) and a pfvf_map[schq] write, all under
-rvu->rsrc_lock.
+	for (id = 0; id < rvu->rep_cnt; id++)
+		if (rvu->rep2pfvf_map[id] == pcifunc)
+			return id;
 
-Is the requester check enough to make this unreachable?  It looks like any
-PF/VF can become rvu->rswitch.pcifunc, since rvu_sw_swdev2af_sender_check()
-in af/switch/rvu_sw.c returns early without checking the sender:
+Can that NULL-dereference in the pre-existing AF callers of
+rvu_rep_get_vlan_id() after a failed re-initialization?  Note that
+rvu_sw_port_id() checks rvu->rep2pfvf_map itself, but its callee does not.
 
-	if (msg_type == SWDEV2AF_MSG_TYPE_FW_STATUS && req->fw_up)
+[Severity: High]
+
+This is a pre-existing issue, but the new switch_id ingestion and
+rvu_sw_port_id() build on rvu->rep_pcifunc, rvu->rep_cnt and
+rvu->rep2pfvf_map, all of which this handler sets with no capability or
+identity check:
+
+	rvu->rep_pcifunc = req->hdr.pcifunc;
+
+rvu_process_mbox_msg() applies no per-message privilege filter, and
+otx2_pfvf_mbox_handler() forwards raw VF message IDs after checking only
+sig.  Can a guest-owned VF send MBOX_MSG_GET_REP_CNT to become
+rvu->rep_pcifunc, and then pass the gate in rvu_mbox_handler_esw_cfg():
+
+	if (req->hdr.pcifunc != rvu->rep_pcifunc)
 		return 0;
 
-after which rvu_sw_l2_ctrl_work_handler() stores that pcifunc into
-rvu->rswitch.pcifunc.
+	rvu->rep_mode = req->ena;
 
-Also, even for in-range levels there is no lvl == NIX_TXSCH_LVL_TL1 check,
-so TXSCHQ_FREE_PAN_TL1 with schq_lvl = NIX_TXSCH_LVL_SMQ would tear down an
-SMQ whose index happens to fall in the PAN range.  Could this path reject
-lvl >= NIX_TXSCH_LVL_CNT before indexing, and require
-lvl == NIX_TXSCH_LVL_TL1 when the PAN flag is set, the way
-rvu_mbox_handler_nix_txschq_cfg() already validates
-req->lvl >= NIX_TXSCH_LVL_CNT?
+thereby setting the AF-global rvu->rep_mode, driving
+rvu_npc_free_mcam_entries(), and reaching the new switch_id memcpy?
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> index e36c68ee5d847..40d49a3238146 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> @@ -1833,9 +1833,23 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
-> -	/* ignore chan_mask in case pf func is not AF, revisit later */
-> -	if (!is_pffunc_af(req->hdr.pcifunc))
-> -		req->chan_mask = rvu_get_cpt_chan_mask(rvu);
-> +	/* Non-AF callers get the CPT default chan_mask unless the authorized
-> +	 * switchdev PF sets set_chanmask to preserve a caller-supplied mask.
-> +	 * VFs and other PFs must not use set_chanmask; that would bypass
-> +	 * channel isolation.
-> +	 */
-> +	if (!is_pffunc_af(req->hdr.pcifunc)) {
-> +		if (req->set_chanmask &&
-> +		    !rvu_is_switch_pcifunc(rvu, req->hdr.pcifunc)) {
-> +			rvu_npc_free_entry_for_flow_install(rvu,
-> +							    req->hdr.pcifunc,
-> +							    allocated,
-> +							    req->entry);
-> +			return NPC_FLOW_VF_PERM_DENIED;
-> +		}
-> +		if (!req->set_chanmask)
-> +			req->chan_mask = rvu_get_cpt_chan_mask(rvu);
-> +	}
+Also, rvu_afvf_mbox_handler() does not take rvu->mbox_lock while the AFPF
+worker does.  Can the AFVF path replace rvu->rep2pfvf_map concurrently with
+the new lockless readers?
 
-[Severity: Low]
-The commit message says:
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+> index fe143ad3f9449..2451eb57ec4c8 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/switch/rvu_sw.c
+> @@ -5,7 +5,33 @@
+>   *
+>   */
+>  
+> +#include <linux/bitfield.h>
+> +
+>  #include "rvu.h"
+> +#include "rvu_sw.h"
+> +
+> +/*
+> + * rep_cnt and rep2pfvf_map are populated once when the representor driver
+> + * probes via GET_REP_CNT (see rvu_get_rep_cnt() in rep.c), as part of
+> + * devlink eswitch SWITCHDEV bring-up. They are not updated during switch
+> + * device mailbox handling, so this lockless lookup cannot race with a
+> + * concurrent rep2pfvf_map resize.
+> + */
+> +u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
+> +{
+> +	u16 rep_id;
+> +
+> +	if (!rvu->rep2pfvf_map || !rvu->rep_cnt)
+> +		return RVU_SW_INVALID_PORT_ID;
+> +
+> +	rep_id = rvu_rep_get_vlan_id(rvu, pcifunc);
+> +	if (rep_id >= rvu->rep_cnt ||
+> +	    rvu->rep2pfvf_map[rep_id] != pcifunc)
+> +		return RVU_SW_INVALID_PORT_ID;
+> +
+> +	return FIELD_PREP(GENMASK_ULL(31, 16), rep_id) |
+> +	       FIELD_PREP(GENMASK_ULL(15, 0), pcifunc);
+> +}
 
-    For NPC install flow, add set_chanmask so callers can keep a non-default
-    chan_mask when the requester is not the AF; without it, chan_mask was
-    always forced to 0xFFF for non-AF functions.
+[Severity: High]
+The comment above this helper asserts that rep_cnt and rep2pfvf_map
+cannot change under a reader, but rvu_mbox_handler_get_rep_cnt() runs
+for every MBOX_MSG_GET_REP_CNT, and it publishes the new count before
+the matching array exists:
 
-Both halves look inaccurate for this code.  The replaced line called
-rvu_get_cpt_chan_mask(), which is platform dependent:
+	rvu->rep_cnt = rsp->rep_cnt;
 
-	if (!is_rvu_otx2(rvu))
-		return NIX_CHAN_CPT_X2P_MASK;
-	else
-		return 0xFFFu;
+	rvu->rep2pfvf_map = devm_kzalloc(rvu->dev, rvu->rep_cnt *
+					 sizeof(u16), GFP_KERNEL);
+	if (!rvu->rep2pfvf_map)
+		return -ENOMEM;
 
-so the previous default was 0xFFF only on OTX2.  And the new behaviour is
-not available to non-AF callers in general - the hunk above returns
-NPC_FLOW_VF_PERM_DENIED unless the requester is exactly
-rvu->rswitch.pcifunc.
+So there is a window in which rvu->rep_cnt describes the new topology
+while rvu->rep2pfvf_map still points at the previous, smaller buffer.
+A reader that passes the entry test here then walks id < rvu->rep_cnt
+in rvu_rep_get_vlan_id() and indexes rvu->rep2pfvf_map[rep_id] past the
+end of the old allocation.  The rep_id >= rvu->rep_cnt bound added in
+this helper does not help, since rep_cnt is exactly the value that has
+already been advanced.
 
-Could the changelog say that set_chanmask is honored only for the switchdev
-PF, and drop the claim about 0xFFF?
+The allocation failure path looks worse: rvu->rep2pfvf_map is
+overwritten with NULL while rvu->rep_cnt stays non-zero, and nothing
+re-checks the pointer after this function's own test - rvu_sw_port_id()
+validates rvu->rep2pfvf_map on entry, but rvu_rep_get_vlan_id()
+dereferences it unconditionally, so a store that lands between the two
+turns the lookup into a NULL dereference.
+
+Neither side takes a lock: rvu_afvf_mbox_handler() does not hold
+rvu->mbox_lock, so a VF-originated GET_REP_CNT can execute the
+reallocation in parallel with these reads on another CPU.
+
+What is the intended serialization here?  If GET_REP_CNT really can only
+arrive once, could that be enforced (reject the message when
+rvu->rep2pfvf_map is already set) rather than documented in a comment?
+Otherwise the map and its count need to be published together under a
+lock or as an RCU-swapped object, and rvu->rep_cnt should not be updated
+before the allocation succeeds.
 
 [ ... ]
 
