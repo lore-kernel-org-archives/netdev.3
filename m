@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC64348477
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E67231B803
 	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 03:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788405980; cv=none; b=U2SjMZuVPtesWBpND7o0bwEwV+oohQXzBSSsDZYVCL0YkHCQcRP4sYskUGVF+/SvuacbX+kNePGHDtN+q/I3IrGxqNvhOjsmpFaD8YtjpsIkoErZFWDG2oJD9GGTF7H1Hrk6xwiv8LTS3Apnqj56tV1BlQng1BsdIV9dft8NgII=
+	t=1788405980; cv=none; b=V4bYN/Dw+Mjx6TrrWVcoM9FbXERgHCcdCMrF0+vlujh7DOxz0T+J5gpfc0wDBzYIvXmCHUUgFjnKJ5ZJVFjrtf+vruxxtWPTnwYhjW6mZxq3et9utCUk97gpoGDTxoAyPY9wssUHOh1kp8Re4W2zM0J8wNGtPrPAi7X+EMc0AoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788405980; c=relaxed/simple;
-	bh=gOjQkDLbzdXqow7zeUnlIMIEm2lKJpD0HPEg/RDlObc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QFJX4V+JK7rHU1XgSmz2BFYi/efm+ByPCJUbVcII4gZE6eDMBlG5pLEtdBUbCvR+xFUD2TC4prCNKUcuX0r3FOgSgagOWWquLO0r+jXiDA306Aa0ogNz+kQA+5ssNSoTQfzpkYgWcTsDR5Jo7bzssBaLEKU3i0PhEe1WZ2G5Lgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjKCZcnP; arc=none smtp.client-ip=100.103.45.18
+	bh=9ESvqYXR3bkebbJSmiGdVMtsCN0wvSNtmzI/J9fYOjQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R5CgZdzzohDflKb/lJctkkaAroBhMYuEeEozjb9POO0y/6XmFWQ/wavo51m7i/Azx3927SdYxRmwUWrUGFo/hQLj6e1RGM4DjHtTqG09MC/+oIpIeEy/WkqjePpSRkNGF/v4Yx4KkfY4AysGmHkS5hFC9bzJHkHOACD5Es2iO2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cIS5fMOu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjKCZcnP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1C71F000E9;
-	Thu,  3 Sep 2026 03:26:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cIS5fMOu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEB81F00A3A;
+	Thu,  3 Sep 2026 03:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1788405979;
-	bh=Ii3eU6sNlToA8SxX6KGpZTIjqJUeqdYKdDwqDtIJNRA=;
-	h=From:To:Cc:Subject:Date;
-	b=OjKCZcnPhtV5PQ73GeB+YdFQnPuVEh+QTXAzcDIw0UMEq3w7jF00sKGbAjzbowv0o
-	 v7f/+qPj9EiZOQ8TFI9A27iM5M1eqTVE9XsDgg2QO2IQ94Eq3iHP8bpn6gc6fs+zS1
-	 Z05hru4ARgtRSX9aZZ9l46iKD1WkxhvVbzygK1lg5sgJPLfUMmHDR9uVmhTTcIGNAG
-	 Xbh641uXMdWRX6Ov/5dn7uCzn1Aqr+4XFNwhf8IGWNYPQiO2AQ7Bed+kuC48oXmiB8
-	 cxMUMqkXITxF4qQn61HU+TvMkqpzZvSzYjmkqJl8wdh9NQIv1K9mMenqpK0sQ+INzK
-	 nRrFUyT565FEg==
+	bh=EUEIgiw5oOjOAmkN39Lq75vQvEhNhpr9ZUmsYs/MymU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cIS5fMOunIq2Od9E2c3GSvByfA9CMRxYyB0Xd3/tl1v06RqjCEHY4KIr8px9Bh56X
+	 EKiYLx5mFmKRxPHhJfxdlACEZSydpn03a750lu5jVfYVl9+1Vwvox4D/bqbH7U7aYc
+	 vStBkbHqeHpSQTsSI14k5di2FFgr9eNxjX36LtiRAmesOsq73hrd29DAE7gpED0JRN
+	 4krv+vTOkm2JqgVskCXUm3EJ4ZRnYYBKISCJJjdbwcE+wzcyrfdaEPJNi4NGfKdlet
+	 ITTn3pOfDrwa8q6CdiFoSZ97gS7P2mKbJi0dHiapTGQBnkTezg2HjbtZ3H/UZx/UYY
+	 w1vmSNdP7Y1Xg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,10 +38,12 @@ Cc: netdev@vger.kernel.org,
 	andrew@lunn.ch,
 	olteanv@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 0/5] eth: fix bugs in ntuple filter reporting
-Date: Wed,  2 Sep 2026 20:26:06 -0700
-Message-ID: <20260903032611.3000029-1-kuba@kernel.org>
+Subject: [PATCH net 1/5] net: dsa: bcm_sf2: bound the CFP rule dump by the caller's buffer size
+Date: Wed,  2 Sep 2026 20:26:07 -0700
+Message-ID: <20260903032611.3000029-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260903032611.3000029-1-kuba@kernel.org>
+References: <20260903032611.3000029-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,59 +52,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Looking thru some reports prompted by:
-  Add new way to add BPF LSM hooks
-  https://lore.kernel.org/20260831110934.241898-1-a.s.protopopov@gmail.com
+bcm_sf2_cfp_rule_get_all() walks the whole cfp.unique bitmap into
+rule_locs[] without consulting nfc->rule_cnt, which is how many entries
+the caller had room for.  ETHTOOL_GRXCLSRLALL requires no CAP_NET_ADMIN
+and the ioctl sizes the buffer from the rule_cnt userspace passes in, so
+once an admin has installed CFP rules any user can ask for fewer slots
+than there are rules and run off the end of the allocation.  A rule_cnt
+of 0 leaves the buffer pointer NULL and the walk dereferences it.
 
-I/Claude noticed 3 drivers with buggy n-tuple filter dump. PoC built
-based on intentionally adding the same bug in fbnic under QEMU confirms:
+Fixes: 7318166cacad ("net: dsa: bcm_sf2: Add support for ethtool::rxnfc")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: florian.fainelli@broadcom.com
+CC: jonas.gorski@gmail.com
+CC: andrew@lunn.ch
+CC: olteanv@gmail.com
+---
+ drivers/net/dsa/bcm_sf2_cfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-    # install 8 rules (this part does need CAP_NET_ADMIN)
-    for p in 100 101 102 103 104 105 106 107; do
-            ethtool -N eth0 flow-type tcp4 dst-port $p action 0
-    done
-
-    # Python
-    SIOCETHTOOL = 0x8946
-    ETHTOOL_GRXCLSRLALL = 0x30
-    RXNFC_SIZE = 192          # sizeof(struct ethtool_rxnfc)
-    RULE_CNT_OFF = 184        # offsetof(struct ethtool_rxnfc, rule_cnt)
-
-    buf = array.array('B', bytes(RXNFC_SIZE + 4096))
-    struct.pack_into('=I', buf, 0, ETHTOOL_GRXCLSRLALL)
-    struct.pack_into('=I', buf, RULE_CNT_OFF, 1)   # room for one location
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    ifr = struct.pack('16sP', b'eth0', buf.buffer_info()[0])
-    fcntl.ioctl(sock, SIOCETHTOOL, ifr)
-
-  ==================================================================
-  BUG: KASAN: slab-out-of-bounds in fbnic_get_rxnfc+0x144d/0x1910
-  Write of size 4 at addr ff11000007522be4 by task python3.12/647
-
-Fix the 3 drivers, add a hopefully clearer mention in the doc.
-
-Note that Sashiko will likely complain about mv88e6xxx letting
-user read and delete rules from any port with ant netdev.
-We can fix that in net-next, if mv88e6xxx experts can confirm that
-the current behavior is not intentional (it's wrong but users may
-now depend on it).
-
-Jakub Kicinski (5):
-  net: dsa: bcm_sf2: bound the CFP rule dump by the caller's buffer size
-  eth: nfp: bound the ntuple rule dump by the caller's buffer size
-  eth: nfp: drop the replaced rule from the list when reprogramming
-    fails
-  net: dsa: mv88e6xxx: bound the policy rule dump by the caller's buffer
-    size
-  ethtool: document that GRXCLSRLALL rule_cnt is a caller-provided limit
-
- include/linux/ethtool.h                       |  6 ++++++
- drivers/net/dsa/bcm_sf2_cfp.c                 |  2 ++
- drivers/net/dsa/mv88e6xxx/chip.c              | 16 ++++++++++++----
- .../ethernet/netronome/nfp/nfp_net_ethtool.c  | 19 +++++++++++++++----
- 4 files changed, 35 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/net/dsa/bcm_sf2_cfp.c b/drivers/net/dsa/bcm_sf2_cfp.c
+index 50d3a818eb1b..84a086c3e99b 100644
+--- a/drivers/net/dsa/bcm_sf2_cfp.c
++++ b/drivers/net/dsa/bcm_sf2_cfp.c
+@@ -1088,6 +1088,8 @@ static int bcm_sf2_cfp_rule_get_all(struct bcm_sf2_priv *priv,
+ 	unsigned int index = 1, rules_cnt = 0;
+ 
+ 	for_each_set_bit_from(index, priv->cfp.unique, priv->num_cfp_rules) {
++		if (rules_cnt == nfc->rule_cnt)
++			return -EMSGSIZE;
+ 		rule_locs[rules_cnt] = index;
+ 		rules_cnt++;
+ 	}
 -- 
 2.55.0
 
