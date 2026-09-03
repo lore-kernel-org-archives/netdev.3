@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37D22D3727;
-	Thu,  3 Sep 2026 23:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A17039A06A;
+	Thu,  3 Sep 2026 23:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788479066; cv=none; b=Zy/lW1HFJvEamPqVSM8GFfKvmFTk/lZbS14zKsYe1bLNml/1DIO3141mngBTPYDsOb4hb6xZh+kG4O4Z7Gwlq1LBc4bZkWXSMHlOk3PaCoESghqSgl73wU3C/dGZaro5cHkQNhRz/p6FgrbP43uYpOjihZ1FlVSx/CZW8vo9IUk=
+	t=1788479068; cv=none; b=JkbpCvyecSnb8xWV/I4LAUSGoeFYukGyBIqNFWd0yh1qjsQWItcHBH81T7vmQCYaT/p+BO5CuSklwdrkjcUUUSrQIasRrodoqBJ3m6xedbB0SXQ6oxFp24uy9OtwbztDYrp36vGUdUXRrymZhSXH/Na9MGbh9hC9FdwwxGDykco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788479066; c=relaxed/simple;
-	bh=79G1VtWBYNI1Yb+rLByMLWc2N2fFYPLyZ/cay8aWq04=;
+	s=arc-20240116; t=1788479068; c=relaxed/simple;
+	bh=b3QES1dxdhvsaJHI+DG0X+7kmEnKrcJqI7ZZy70eIuA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ce+7Na+hLy7ONgpPXrdGgwVdG+8pKQxg1r1mfAdTlnLZwsNu2HRaIx0xsJlfOqITo/ziW95QZD6OXNu73h9ymI2Tp8DX9Emkawxrq8r+TphKfsI+u0mASO2dYw8uv4vTxYDUAFDdet8j602jYuxHTPRO12dt1XEzF0Z035loMmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQhOZBd1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=O1ZClU0/tP99MMFJWiWyR5kuXX/WQc74nV7sD9Np3aKLqKB6oActWRJGGfQS7cjebsAU6EY4Spar/ssiDIUBSfkhknH39r3mMGZyQ0lQLpVKn5P83qK6faYX1+iBIGo1exMJewPDzM9Z33+vqikP6FvnoA12sZ6PnOncioY1o3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4uBLq2k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQhOZBd1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC871F00A3D;
-	Thu,  3 Sep 2026 23:44:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4uBLq2k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDB81F000E9;
+	Thu,  3 Sep 2026 23:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788479064;
-	bh=6IGMoVFngXiVh617le38pjAhDRRqj0oJruoTGMTXJ8g=;
+	s=k20260515; t=1788479066;
+	bh=XSkr0hrHbEHlV6Vg2L0/yLSzbe1+9ozrU1bexhAhRKI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mQhOZBd1VxdqSbbP++kWCoOUykJwtd+GRAn4gKWLk5cDbXd2VrG8ZHbwiClZPh2gB
-	 ZyMHM01uuYOFgtMyG4gUA7VIyVtmJ4ovVpxZfQVLcdMccAc7zj+X8NwReUc/Et2JUq
-	 cf6oq1JeNpqegLbxi0Y4/CibONGPqeX0o1r3Nmufz6iCDBNK+bOFjddTWLCRgATRqW
-	 Ct55N56gfC8K895HBDM3vqqqHkY3lIVuPd8HuA0WESiIuwp6lLQg0fSbBL1Fk98uHq
-	 4vD8GmBsCUVA4qBP0czaUORPk4BSCR/OPI26EF2kJ4lK5GDglmnY87JPGTAOETu45K
-	 ScmRi1F63WHmA==
-Subject: Re: [PATCH v3 net-next 03/15] net: enetc: add link status message
+	b=X4uBLq2ksOAWOXAsZmj8PfuEldLJdpNT+Jh6QroZHjlAqTBEsO6bJ67SZXwSYyyT3
+	 ycUBS/YjcpfODZpSkdSP2+fawFMU9hIIpO6hkMwdxc4rPaHiPc4yAlqI+iWfSsjS0m
+	 mFzLHIjwtDxSQIt04ciMkPhZ7HDV/ABihYCpmiSx7CwbTmtxWVbKURDhs+kV6fW+hY
+	 LDsgyF2wUioUrpMwesCIgr/1OsK4+nqw9tU5PZNGH8pKqnO2X+1lVD2obn7zsC7WKG
+	 R/4YrVB7h9mLy3kSqwU66VYd1UXua19UDlT6/Khnx4Sy2vAEb7Eh4jgUcPJxwS0kru
+	 eUhoch/rHuU6Q==
+Subject: Re: [PATCH v3 net-next 04/15] net: enetc: add link speed message
  support to PF driver
 From: netdev-bot+sashiko@kernel.org
 To: wei.fang@oss.nxp.com
@@ -35,10 +35,10 @@ Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 23:44:23 +0000
-Message-ID: <178847906345.4131868.5011473704889309213@kernel.org>
-In-Reply-To: <20260831025441.635045-4-wei.fang@oss.nxp.com>
-References: <20260831025441.635045-4-wei.fang@oss.nxp.com>
+Date: Thu, 03 Sep 2026 23:44:24 +0000
+Message-ID: <178847906490.4131868.13521334026222207494@kernel.org>
+In-Reply-To: <20260831025441.635045-5-wei.fang@oss.nxp.com>
+References: <20260831025441.635045-5-wei.fang@oss.nxp.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,333 +52,224 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
-- [High] A link-state notification that cannot be delivered is silently
-  discarded, leaving the VF with a permanently stale link/TX-PAUSE view.
-- [High] enetc_pf_send_msg() performs a sleeping 200 ms poll
-  (read_poll_timeout(..., 1000, 200000, ...), enetc_msg.c:204) whose…
-- [Medium] Per-VF link-change notifier registration (bit in
-  pf->link_status_ms_mask) has no teardown path tied to VF lifetime.
-- [Low] enetc_pf_send_msg() logs "PF cannot send message to VF(s) 0x%x"
-  (enetc_msg.c:197-199) with the value `ms_mask ^ old_ms_mask`, which is…
+- [High] Global rtnl_lock() is acquired from inside the PF mailbox work
+  item to answer a VF-originated request.
+- [Medium] The new link-speed query is silently restricted to trusted
+  VFs, which neither the commit message nor the in-tree ABI description…
+- [Medium] enetc_msg_get_link_speed() answers
+  ENETC_MSG_GET_CURRENT_LINK_SPEED (documented in enetc_mailbox.h as…
+- [Low] The patch contains a stray hunk in enetc_sriov_configure()
+  (drivers/net/ethernet/freescale/enetc/enetc_msg.c) that only inserts a…
 
 --
 
-net: enetc: add link status message support to PF driver
+net: enetc: add link speed message support to PF driver
 
-This adds a link status message class (0x80) to the ENETC PF mailbox so a
-VF can query the current PF link state, register for link change
-notifications, or unregister from them. Registered VFs are notified from
-the PF phylink callbacks via the ENETC_PSIMSGSR register, with a new
-pf->msg_lock mutex and a pf->link_status_ms_mask bitmask tracking which VFs
-want notifications.
+This adds a new PSI-to-VSI mailbox class (0x81) so a VF can ask the PF for
+the current link speed, encoding speeds up to 5Gbps as explicit enum values
+and higher speeds via a formula.  The PF answers the query from
+phylink_ethtool_ksettings_get() and only for VFs marked trusted.
 
-A few questions below about the notification delivery path.
+A few questions below.
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> index 935a6a03b14f..17fd9ee27942 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -899,6 +899,7 @@ static void enetc4_pl_mac_link_up(struct phylink_config *config,
->  	enetc4_set_rx_pause(pf, rx_pause);
->  	enetc4_mac_tx_enable(pf);
->  	enetc4_mac_rx_enable(pf);
-> +	enetc_pf_notify_vf_link_up(pf);
->  }
->  
->  static void enetc4_pl_mac_link_down(struct phylink_config *config,
-> @@ -907,6 +908,7 @@ static void enetc4_pl_mac_link_down(struct phylink_config *config,
->  {
->  	struct enetc_pf *pf = phylink_to_enetc_pf(config);
->  
-> +	enetc_pf_notify_vf_link_down(pf);
->  	enetc4_mac_rx_graceful_stop(pf);
->  	enetc4_mac_tx_graceful_stop(pf);
->  }
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h b/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h
+> index 846998f07989..bd669543e96c 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> index 16da732dc5de..f97602714118 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> @@ -80,6 +80,11 @@ static inline u32 enetc_vsi_set_msize(u32 size)
->  #define ENETC_SIMSGSR_SET_MC(val) ((val) << 16)
->  #define ENETC_SIMSGSR_GET_MC(val) ((val) >> 16)
->  
-> +#define ENETC_PSIMSGSR		0x208
-> +/* n is VF index, which is less than 15 */
-> +#define  PSIMSGSR_MS(n)		BIT((n) + 1)
-> +#define  PSIMSGSR_MC		GENMASK(31, 16)
-> +
+> @@ -181,6 +212,11 @@ struct enetc_msg_mac_exact_filter {
+>   * cmd_id 0x0: get the current link status
+>   * cmd_id 0x1: register link status change notification
+>   * cmd_id 0x2: unregister link status change notification
+> + *
+> + * Link speed message, class_id 0x81.
+> + * cmd_id 0x0: get the current link speed.
+> + * cmd_id 0x1: register link speed change notification, not supported yet
+> + * cmd_id 0x2: unregister link speed change notification, not supported yet
+>   */
 
-[ ... ]
+[Severity: Medium]
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> index a89a5a418a23..e21414acdc0d 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> @@ -136,6 +136,154 @@ static u16 enetc_msg_handle_ip_revision(struct enetc_pf *pf, void *vf_msg)
->  	}
->  }
->  
+This documents cmd_id 0x0 as returning the current link speed, but can the
+reply describe a speed the port is not running at?
 
-[ ... ]
+enetc_msg_get_link_speed() takes the value straight from
+phylink_ethtool_ksettings_get() with no link-state gating.  For a fixed
+link, phylink copies the configured speed/duplex unconditionally:
 
-> +static int enetc_pf_send_msg(struct enetc_pf *pf, u32 msg_code, u16 ms_mask)
-> +{
-> +	struct enetc_hw *hw = &pf->si->hw;
-> +	u16 old_ms_mask = ms_mask;
-> +	u16 ms_status;
-> +	u32 val;
-> +
-> +	/* The MS bit is set, indicating that the corresponding VF has not
-> +	 * read the last message, PF cannot send new message to the VF. To
-> +	 * avoid sending messages to such a VF, the bit corresponding to VF
-> +	 * is cleared from ms_mask. Because the MS bit can only be written
-> +	 * as 1, writing a 0 has no effect. Writing a 1 when the bit is
-> +	 * already set is undefined.
-> +	 */
-> +	ms_status = enetc_rd(hw, ENETC_PSIMSGSR) & 0xffff;
-> +	ms_mask &= ~ms_status;
-> +	if (!ms_mask)
-> +		return -EIO;
-
-[Severity: High]
-Can a link state change be lost permanently here?
-
-The return happens before the enetc_wr(hw, ENETC_PSIMSGSR, ...) below, so
-when the target VF still has an unread message the new link state is never
-published, and enetc_msg_notify_vf_link_status() only prints
-"PF notifies link status failed". Nothing records that the VF is out of
-date, and notifications are generated only on the phylink transitions in
-enetc4_pl_mac_link_up()/enetc4_pl_mac_link_down().
-
-Single-VF sequence:
-
-  link up   -> PSIMSGSR written with "link up", the poll below times out
-               after 200 ms because the VF has not read VSIMSGRR yet
-  link down -> ms_status still has MS(0) set, ms_mask becomes 0,
-               -EIO is returned and "link down" is never written
-
-The VF then consumes the stale "link up" message and keeps carrier on plus
-a stale TX PAUSE derived congestion-mode setting until the next PF link
-transition. The same drop can hit the initial notification issued from
-enetc_msg_register_link_status_notifier(), which has already replied
-ENETC_MSG_CLASS_ID_CMD_SUCCESS to the VF.
-
-Would it make sense to record a pending state and re-send it once the MS
-bit is observed clear, rather than dropping the transition?
-
-> +
-> +	if (ms_mask != old_ms_mask)
-> +		dev_warn_ratelimited(&pf->si->pdev->dev,
-> +				     "PF cannot send message to VF(s) 0x%x\n",
-> +				     ms_mask ^ old_ms_mask);
-
-[Severity: Low]
-The printed value is a PSIMSGSR MS-bit mask, not a VF index mask, since
-
-  #define  PSIMSGSR_MS(n)		BIT((n) + 1)
-
-so a stuck VF0 is reported as 0x2 and VF1 as 0x4. Should the value be
-shifted back to VF numbering before printing, or should the message say
-that it is an MS mask?
-
-> +
-> +	enetc_wr(hw, ENETC_PSIMSGSR,
-> +		 FIELD_PREP(PSIMSGSR_MC, msg_code) | ms_mask);
-> +
-> +	return read_poll_timeout(enetc_rd, val, !(val & ms_mask), 1000,
-> +				 200000, false, hw, ENETC_PSIMSGSR);
-> +}
-
-[Severity: High]
-This waits up to 200 ms for a bit that only the VF can clear, and every
-caller holds pf->msg_lock across it. Can an untrusted guest use that to
-stall the host?
-
-The VF-initiated path has no ENETC_VF_FLAG_TRUSTED check (unlike the MAC
-filter handlers) and no rate limiting:
-
-  enetc_msg_task()
-    enetc_msg_handle_rxmsg()
-      enetc_msg_handle_link_status()   /* cmd_id from the VF */
-        enetc_msg_register_link_status_notifier()
-          mutex_lock(&pf->msg_lock);
-          enetc_msg_notify_vf_link_status()
-            enetc_pf_send_msg()        /* sleeps up to 200 ms */
-
-enetc_msg_task() handles all VFs sequentially in one work item with the MR
-interrupts disabled, so a VF that registers, drains its mailbox and
-re-registers in a loop keeps pf->msg_lock and the mailbox work item busy
-and denies mailbox service to the sibling VFs.
-
-The same pf->msg_lock is taken by enetc_pf_notify_vf_link_status() from
-enetc4_pl_mac_link_up()/enetc4_pl_mac_link_down(), and phylink runs those
-from its resolve work, which is flushed synchronously from ndo_open/
-ndo_stop with rtnl_lock held:
-
-drivers/net/phy/phylink.c:phylink_run_resolve_and_disable() {
+drivers/net/phy/phylink.c:phylink_ethtool_ksettings_get() {
 	...
-	flush_work(&pl->resolve);
+	case MLO_AN_FIXED:
+		phylink_get_fixed_state(pl, &link_state);
+		phylink_get_ksettings(&link_state, kset);
+		break;
 	...
 }
 
-so the guest-induced stall propagates into the host PF link handling and
-rtnl-held paths. In the other direction, one unresponsive registered VF
-adds up to 200 ms to every PF link transition, because the poll condition
-!(val & ms_mask) waits for all bits of the aggregate mask.
+So with the carrier down, or before the PF netdev has ever been opened,
+enetc_build_link_speed_msg() still encodes a valid speed class code rather
+than ENETC_MSG_SPEED_UNKNOWN.  The MLO_AN_INBAND case reads the PCS live,
+which also need not match what the MAC was last programmed with.
 
-Is the synchronous acknowledgement wait needed at all here? Link state is
-idempotent, so a fire-and-forget write with a deferred retry, or at least
-dropping pf->msg_lock before waiting, would keep the PF link state machine
-independent of VF behaviour. The commit message does not mention that a PF
-link transition can now block on VF acknowledgement.
+Would it be more consistent to derive the answer from the state the PF
+already tracks, the way the sibling link-status message does?
 
+drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_get_link_status() {
+	...
+	pf_msg = enetc_build_link_status_msg(priv, pf->link_up);
+	...
+}
+
+priv->speed is written next to PCR_PSPEED in enetc4_set_port_speed()
+(including the 10Mbps fallback on SPEED_UNKNOWN), so the programmed rate is
+already recorded.  As written, a VF can be told 1G/2.5G while the same PF
+reports the link as down over class 0x80.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> index e21414acdc0d..c3ae4c024f34 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> @@ -280,6 +280,93 @@ static u16 enetc_msg_handle_link_status(struct enetc_pf *pf, int vf_id,
+>  	return 0;
+>  }
+>  
+> +static u16 enetc_build_link_speed_msg(int speed, int duplex)
+> +{
+> +	u32 speed_code = ENETC_MSG_SPEED_UNKNOWN;
 > +
-> +static void enetc_msg_notify_vf_link_status(struct enetc_pf *pf, u16 ms_mask)
+> +	switch (speed) {
+
+[ ... ]
+
+> +	return FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> +			  ENETC_MSG_CLASS_ID_LINK_SPEED) |
+> +	       FIELD_PREP(ENETC_PF_MSG_CLASS_CODE_U8, speed_code);
+> +}
+> +
+> +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
 > +{
 > +	struct enetc_ndev_priv *priv = netdev_priv(pf->si->ndev);
-> +	u16 pf_msg;
+> +	struct enetc_vf_state *vf_state = &pf->vf_state[vf_id];
+> +	struct ethtool_link_ksettings link_info = {};
 > +
-> +	pf_msg = enetc_build_link_status_msg(priv, pf->link_up);
-> +	if (enetc_pf_send_msg(pf, pf_msg, ms_mask))
-> +		dev_err_ratelimited(&pf->si->pdev->dev,
-> +				    "PF notifies link status failed\n");
-> +}
-> +
-> +static void enetc_msg_register_link_status_notifier(struct enetc_pf *pf,
-> +						    int vf_id)
-> +{
-> +	u16 pf_msg = FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
-> +				ENETC_MSG_CLASS_ID_CMD_SUCCESS);
-> +
-> +	mutex_lock(&pf->msg_lock);
-> +
-> +	enetc_pf_reply_msg(&pf->si->hw, vf_id, pf_msg);
-> +
-> +	/* SR-IOV is being disabled if pf->sriov_enabled is false, so no
-> +	 * need to set link_status_ms_mask and notify the link status.
+> +	/* A malicious or malfunctioning VM could potentially spam these
+> +	 * messages in a tight loop causing global rtnl_lock contention,
+> +	 * which may severely starve other processes on the host that
+> +	 * require rtnl_lock for routine network configuration, resulting
+> +	 * in a system-wide control-plane denial of service. Therefore,
+> +	 * we expect the VF query for link speed to be trusted. There's no
+> +	 * need to consider the transition from trusted to untrusted here,
+> +	 * as this won't cause rtnl_lock() to be called frequently.
 > +	 */
-> +	if (!pf->sriov_enabled)
-> +		goto msg_unlock;
+> +	mutex_lock(&vf_state->lock);
+> +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
+> +		mutex_unlock(&vf_state->lock);
 > +
-> +	pf->link_status_ms_mask |= PSIMSGSR_MS(vf_id);
+> +		return ENETC_PF_MSG_PERM_DENY;
+> +	}
+> +	mutex_unlock(&vf_state->lock);
 
 [Severity: Medium]
-What clears this bit if the VF goes away without unregistering?
 
-The bit is set here and cleared only by a cooperative
-ENETC_MSG_UNREGISTER_LINK_CHANGE_NOTIFIER in
-enetc_msg_unregister_link_status_notifier(), or globally in
-enetc_sriov_configure() when SR-IOV is disabled. A VM destroy, a guest
-crash/reboot, or a killed DPDK application leaves the bit set.
+Should the trusted-VF requirement be described in the changelog and in the
+mailbox ABI comment in enetc_mailbox.h?
 
-After that, every PF link transition reaches enetc_pf_send_msg() with the
-stale mask and either writes the MS bit for a VF that will never read it
-and then blocks the full 200 ms with pf->msg_lock held from the phylink
-callbacks, or, once the MS bit is stuck set, filters that VF out and (when
-it is the only registered VF) returns -EIO, logging "PF notifies link
-status failed" indefinitely. Since the poll waits for all bits of the mask,
-one dead VF also delays notifications to the live ones.
+ENETC_VF_FLAG_TRUSTED is only ever set from enetc_pf_set_vf_trust()
+(ndo_set_vf_trust, i.e. "ip link set <pf> vf N trust on"), and pf->vf_state
+is allocated with devm_kcalloc() in enetc_init_sriov_resources(), so flags
+is zero by default.  A default setup therefore gets
+ENETC_PF_MSG_PERM_DENY / -EACCES back from enetc_msg_vsi_send().
 
-The FLR handler added later in the series, enetc4_pf_vf_flr_handler(),
-only restores the promiscuous mode bits and does not touch
-link_status_ms_mask, and enetc_sriov_configure() resets only the software
-mask without bringing PSIMSGSR back to a known state. Should the per-VF
-bit be cleared on FLR / VF teardown as well?
+The commit message says without qualification:
+
+  "The PF will reply the current link speed when it receives the get link
+   speed message from VF."
+
+  "VFs controlled by DPDK can obtain real-time link speed information from
+   the PF"
+
+The ABI comment added to struct enetc_msg_generic also describes class 0x81
+cmd 0x0 with the same wording as the 0x80 status query, and
+enetc_msg_get_link_status() answers any VF with no trust check.  Two paired
+link-info queries with different permission models is surprising for a
+DPDK VF implementer reading only the header.
 
 > +
-> +	/* Notify VF the current link status */
-> +	enetc_msg_notify_vf_link_status(pf, PSIMSGSR_MS(vf_id));
-> +
-> +msg_unlock:
-> +	mutex_unlock(&pf->msg_lock);
-> +}
-> +
-> +static void enetc_msg_unregister_link_status_notifier(struct enetc_pf *pf,
-> +						      int vf_id)
-> +{
-> +	u16 pf_msg = FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
-> +				ENETC_MSG_CLASS_ID_CMD_SUCCESS);
-> +
-> +	mutex_lock(&pf->msg_lock);
-> +
-> +	pf->link_status_ms_mask &= ~PSIMSGSR_MS(vf_id);
-> +	enetc_pf_reply_msg(&pf->si->hw, vf_id, pf_msg);
-> +
-> +	mutex_unlock(&pf->msg_lock);
-> +}
-> +
-> +static u16 enetc_msg_handle_link_status(struct enetc_pf *pf, int vf_id,
-> +					void *vf_msg)
-> +{
-> +	struct enetc_msg_header *msg_hdr = vf_msg;
-> +
-> +	switch (msg_hdr->cmd_id) {
-> +	case ENETC_MSG_GET_CURRENT_LINK_STATUS:
-> +		/* Currently, this message is intended only for
-> +		 * DPDK-owned VFs.
-> +		 */
-> +		enetc_msg_get_link_status(pf, vf_id);
-> +		break;
-> +	case ENETC_MSG_REGISTER_LINK_CHANGE_NOTIFIER:
-> +		enetc_msg_register_link_status_notifier(pf, vf_id);
-> +		break;
-> +	case ENETC_MSG_UNREGISTER_LINK_CHANGE_NOTIFIER:
-> +		enetc_msg_unregister_link_status_notifier(pf, vf_id);
-> +		break;
-> +	default:
-> +		return ENETC_PF_MSG_NOTSUPP;
-> +	}
-> +
-> +	return 0;
-> +}
+> +	rtnl_lock();
+> +	phylink_ethtool_ksettings_get(priv->phylink, &link_info);
+> +	rtnl_unlock();
 
-[ ... ]
+[Severity: High]
 
-> @@ -367,6 +519,11 @@ int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
->  	int err;
->  
->  	if (!num_vfs) {
-> +		mutex_lock(&pf->msg_lock);
-> +		pf->sriov_enabled = false;
-> +		pf->link_status_ms_mask = 0;
-> +		mutex_unlock(&pf->msg_lock);
-> +
->  		pci_disable_sriov(pdev);
->  		enetc_msg_psi_free(pf);
->  		pf->num_vfs = 0;
+Can blocking on rtnl here stall mailbox service for the other VFs?
+
+This runs from the single work item that services every VF with the PSIIER
+MR interrupts masked:
+
+drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_task() {
+	...
+	for (i = 0; i < pf->num_vfs; i++) {
+		...
+		enetc_msg_handle_rxmsg(pf, i, &msg_code);
+		...
+	}
+out:
+	enetc_enable_psiier_interrupts(pf);
+}
+
+rtnl hold times elsewhere (ndo_open with PCS/PHY negotiation, netdev
+unregistration, another driver probing, netlink dumps) are unbounded, while
+the VF side has a hard 200ms budget:
+
+drivers/net/ethernet/freescale/enetc/enetc_vf.c:enetc_msg_vsi_send() {
+	...
+	err = read_poll_timeout(enetc_rd, vsimsgsr,
+				!(vsimsgsr & ENETC_VSIMSGSR_MB),
+				1000, 200000, false, &si->hw, ENETC_VSIMSGSR);
+	if (err) {
+		dev_err(dev, "VSI mailbox timeout\n");
+	...
+}
+
+So one iteration waiting on rtnl can push unrelated requests from other VFs
+past that timeout, with a hardware mailbox transaction left outstanding.
+For a host-assigned VF, enetc_msg_vsi_set_primary_mac_addr() is issued from
+ndo_set_mac_address with rtnl already held, i.e. the VF waits for a PF reply
+that needs the very lock the VF holds.
+
+There is a second effect on teardown: enetc_msg_psi_free() does
+cancel_work_sync(&si->msg_task), and it is called from
+enetc_sriov_configure() (pci_driver::sriov_configure, invoked from
+sriov_numvfs_store() under the PCI device_lock) and from
+enetc_pf_remove()/enetc4_pf_remove().  Does SR-IOV disable/removal now wait
+for rtnl while holding device_lock, for a time a busy VF can extend?
+
+Every other handler in this file avoids rtnl.  enetc_msg_get_link_status()
+answers from the cached pf->link_up under pf->msg_lock, and speed/duplex are
+already handed to enetc4_pl_mac_link_up() where they could be cached the
+same way.  Would caching the speed there and replying from the cache work
+instead?
 
 [ ... ]
 
-> @@ -396,3 +567,34 @@ int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
->  	return err;
->  }
->  EXPORT_SYMBOL_GPL(enetc_sriov_configure);
+> @@ -546,6 +636,7 @@ int enetc_sriov_configure(struct pci_dev *pdev, int num_vfs)
+>  			dev_err(&pdev->dev, "pci_enable_sriov err %d\n", err);
+>  			goto err_en_sriov;
+>  		}
 > +
-> +static void enetc_pf_notify_vf_link_status(struct enetc_pf *pf,
-> +					   bool link_up)
-> +{
-> +	/* pf->msg_lock is initialized when pf->total_vfs is not 0 */
-> +	if (!pf->total_vfs)
-> +		return;
-> +
-> +	mutex_lock(&pf->msg_lock);
-> +
-> +	pf->link_up = link_up;
-> +	if (!pf->link_status_ms_mask)
-> +		goto msg_unlock;
-> +
-> +	enetc_msg_notify_vf_link_status(pf, pf->link_status_ms_mask);
-> +
-> +msg_unlock:
-> +	mutex_unlock(&pf->msg_lock);
-> +}
+>  	}
 
-[ ... ]
+[Severity: Low]
+
+This isn't a bug, but this hunk only adds a blank line before a close brace
+in enetc_sriov_configure(), which is unrelated to link speed messages and
+trips checkpatch ("Blank lines aren't necessary before a close brace").  It
+is still present at the end of the series, so nothing later removes it.
+Could it be dropped?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831025441.635045-1-wei.fang%40oss.nxp.com
