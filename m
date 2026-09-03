@@ -1,49 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001693655E9
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 03:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638D1305693;
+	Thu,  3 Sep 2026 03:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788405983; cv=none; b=KqJk/NnNjxGOF6BKAAPjc98TSqLU/j9tBJR+hTXUR8CdQbnjpWhTUYgg7yjjMN5I85veHnNrkP/BSOXHR69kMh1IGjeRWQC+e9HY1YkMbosirXs5m47x6soxYvnIu2E+g/2Sus3pbpexql+MO4xsQeF6t1HNXsL2NgX3AY38MWY=
+	t=1788406274; cv=none; b=RrZepkKzOsDOB7aInB4S84du0tZ4+QLKn9m2ZRnq7qVPq0Z8TKhYa2+ujl76OEgdHgki3IximUDAv98l8qn5LonDtJl4Rtywp166ASU3eNMiD4pAH0FanQ4FWRzi0QWnHTUc16MfY9YnLYJzrB2kOJpi1nc7XozgG05OiU8cXK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788405983; c=relaxed/simple;
-	bh=imE3azFTqr6IytikjQ8sAifmA7nD/iksLOw0tTbdeCY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=felG0/+3gX2tJjxDPedHRPODwlmm0PqcUbC6rveWs9lwj26Ngsgm62rzIh5J2Ak83FBOXehWaCI7NESv+H0FQYTbaFNARP3403uRh30KAPWn4A6vvns5ghe5hbt+HbMI9L9VmrxXgNgRth5wIwjMIV7gKPk8kkxfd5V1FEYYDdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UYUTMMlc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788406274; c=relaxed/simple;
+	bh=Ya3PcIfbrCKZPqwxMjzvPSvOUKEktdy/4yOrCRSvo2U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FUrowp9NFeZbDLdUsFRc0uQ9MZ3cmEw9zPYYcKFe9HayZG9IO2cVzsBnqRH2agbHaGJt/nm4WtRQs0oe3EQaBZewJ7YeQ/9DEjKOWfmNr4/z2m9nQNFNvFeeTLeD8GMWYfOr4CSdjzehrZn+WgZtoVxGd0yv580kfe5XEQNUJMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJStVjH9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UYUTMMlc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DDF1F00A3A;
-	Thu,  3 Sep 2026 03:26:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJStVjH9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFEF1F000E9;
+	Thu,  3 Sep 2026 03:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788405981;
-	bh=C3TWUAoKeQuJi8jRSdvfgXRyvTf28CWQiO04BbqrUos=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UYUTMMlcRVFIVrtKXQGnuXCe6IXq4/KYy1zggMmzDjr153gTHVnwJxpxr0RxdVRFm
-	 tie0C/bzaBwodt25D5wAIBit/FFgxYkovqKGGhSq3I6TKqPMaDTD9moUmHMn1jTXBA
-	 bvfHIRruRg2RzGclawZgstPQ8OvQrAhw4cnZdG4K02zWlIbXWW02ERvVtRicVFhIG5
-	 NCVVpHNEblmh1Iby61yIGxTGcr6REESMFCQOhtp+0p284j0mw83uDqoKDJEGZmP+JA
-	 d/Jf4Wqco/Tekc+AgDFQmw65Qu4z0XDL2V9F762+cdU8ewMlXoaWzfcVToTSNUaVFO
-	 aXkpOSfs1YMWQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	florian.fainelli@broadcom.com,
-	jonas.gorski@gmail.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 5/5] ethtool: document that GRXCLSRLALL rule_cnt is a caller-provided limit
-Date: Wed,  2 Sep 2026 20:26:11 -0700
-Message-ID: <20260903032611.3000029-6-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260903032611.3000029-1-kuba@kernel.org>
-References: <20260903032611.3000029-1-kuba@kernel.org>
+	s=k20260515; t=1788406272;
+	bh=15D7ziCqyOLDogPczVEc95HI709Ep4DKrGi2eP/m4eI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=AJStVjH9/z7F8Meeek8k4DaXWLWyl2/B3AXacmT2xxF+vdyF1jvuw7Qy5GPFaiizJ
+	 YGzACivA/a491pu0xcr+RuEK8QjeKrQyWz1tf/meWyuv6duLhuWFXVuM/FKcL/ccvR
+	 4H/lVp6Q2lu9eiuLGFKTsBL6x+UVYhElphKQaX7amR92e9jmiKdvuU3EKKppYDnCMF
+	 +RSz1uhpY4coE0Ixxi0GlMdxzXum1jGy7xGhcHRL7s+4B71gPzTJZJjqVKWPCgCpm9
+	 J2Q1QcOd+YGaG3bf81SB6ZZ8YhriD08bdMtSvwr2hJj88J5v/+UbZwCuFEKgFsSytC
+	 MKxpI/NJA/nKg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C0D392705C;
+	Thu,  3 Sep 2026 03:30:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,39 +37,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v11 0/5] net: dsa: motorcomm: Add LED support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178840621439.3072235.8474333977107368724.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Sep 2026 03:30:14 +0000
+References: <20260831044818.4103477-1-mmyangfl@gmail.com>
+In-Reply-To: <20260831044818.4103477-1-mmyangfl@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Three drivers have shipped a get_rxnfc() which dumps its entire rule
-table into rule_locs, reading rule_cnt as "how many rules do I have"
-rather than "how many entries did the caller allocate".  Nothing in the
-callback's documentation contradicted that reading.  The distinction only
-matters because the ioctl lets an unprivileged caller pick rule_cnt
-directly, so getting it wrong is a heap overflow rather than a truncated
-dump.
+Hello:
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: andrew@lunn.ch
----
- include/linux/ethtool.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-index 12683b5d125e..253600c0eccd 100644
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -1057,6 +1057,12 @@ struct kernel_ethtool_ts_info {
-  * @get_sset_count: Get number of strings that @get_strings will write.
-  * @get_rxnfc: Get RX flow classification rules.  Returns a negative
-  *	error code or zero.
-+ *	Note that for %ETHTOOL_GRXCLSRLALL rule_cnt and size of the arrays
-+ *	is user-provided, and not guaranteed to match what driver would
-+ *	have reported via %ETHTOOL_GRXCLSRLCNT. Drivers must return -%EMSGSIZE
-+ *	when rule_cnt is too small. rule_locs is %NULL when rule_cnt is zero.
-+ *	On success drivers must set rule_cnt to the number of locations they
-+ *	filled in, the core copies out exactly that many.
-  * @set_rxnfc: Set RX flow classification rules.  Returns a negative
-  *	error code or zero.
-  * @flash_device: Write a firmware image to device's flash memory.
+On Mon, 31 Aug 2026 12:38:53 +0800 you wrote:
+> LEDs can be described in the device tree using the standard LED node
+> notation. Currently, only parallel mode and strict 1:1 mapping (i.e. the
+> HW default) are supported.
+> 
+> v10: https://lore.kernel.org/r/20260816193905.218112-1-mmyangfl@gmail.com
+>   - new patch to fix lock status check
+>   - LED control block redesigned
+> v9: https://lore.kernel.org/r/20260726162731.1005803-1-mmyangfl@gmail.com
+>   - LED initialization sequence adjusted
+>   - add DT description
+> v8: https://lore.kernel.org/r/20260725045008.858692-1-mmyangfl@gmail.com
+>   - limit the led port number
+> v7: https://lore.kernel.org/r/20260723195335.806002-1-mmyangfl@gmail.com
+>   - rebase
+> v6: https://lore.kernel.org/r/20260709014812.1158178-1-mmyangfl@gmail.com
+>   - per-port initialization support
+> v5: https://lore.kernel.org/r/20260707064752.1030345-1-mmyangfl@gmail.com
+>   - improve trigger selection
+> v4: https://lore.kernel.org/r/20260703165241.542195-1-mmyangfl@gmail.com
+>   - fix some reg op typos
+> v3: https://lore.kernel.org/r/20260701155519.273212-1-mmyangfl@gmail.com
+>   - fix null pointer dereference
+>   - support polarity auto-configuration
+> v2: https://lore.kernel.org/r/20260629183137.541341-1-mmyangfl@gmail.com
+>   - allocate LED structures only
+>   - eliminate double locking
+> v1: https://lore.kernel.org/r/20260618202716.2166450-1-mmyangfl@gmail.com
+>   - set up polarity correctly
+>   - do not set up .brightness_get() to prevent dead lo
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v11,1/5] net: dsa: yt921x: Check lock status with lockdep_assert_held_once()
+    https://git.kernel.org/netdev/net-next/c/b1950d0426aa
+  - [net-next,v11,2/5] net: dsa: motorcomm: Move to subdirectory
+    https://git.kernel.org/netdev/net-next/c/9c472a0d7c38
+  - [net-next,v11,3/5] net: dsa: motorcomm: Split SMI module
+    https://git.kernel.org/netdev/net-next/c/e9423a64d382
+  - [net-next,v11,4/5] net: dsa: motorcomm: Add LED support
+    https://git.kernel.org/netdev/net-next/c/9af9a8168213
+  - [net-next,v11,5/5] dt-bindings: net: dsa: yt921x: Add LEDs definition example
+    https://git.kernel.org/netdev/net-next/c/5f28f63c5d19
+
+You are awesome, thank you!
 -- 
-2.55.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
