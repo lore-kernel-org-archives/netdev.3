@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3073128D7;
-	Thu,  3 Sep 2026 01:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2E732E692;
+	Thu,  3 Sep 2026 01:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788399711; cv=none; b=GHXHOFvfJcINjWBAsx9d08rNCb6GVypf61iCpNFRhvznANjZN7BNMEbbonDJE6xPJPAypOvl2/loO0eAJ62SQoH8myEZQ6897eJHQFdd0FHX48yLtc4oy8wSY6pNHb+Vj2BCVI82/loLzVbZbUQm67ZLOdqYdRtKsRNjc8tZ3u8=
+	t=1788399712; cv=none; b=SNlPijTQUjyU9NMMSD1OFIX9XBXPwfQEsTMGEEdeh/Fkt9XplWkF+NdJ3ouDfa5JQ/AbT3AyGEhOLf1Ags3hGGbo0y9GpgdO21sdb7FOBrcBOd28+BFo2eOuGucjssanbYa7hr+6roRURoW7J7Dwa1cPcP3X3HElhzWyM2cssPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788399711; c=relaxed/simple;
-	bh=gTGTFtEjGigV+KMsPMepP8MaUMo5E8OEaMOlD8s5aC8=;
+	s=arc-20240116; t=1788399712; c=relaxed/simple;
+	bh=xGLz8tBnseeaMErzReOVoGIPPWG3EzSSjPKUe4xCccA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=n4BnrJyAP8B44jeNRmUyvatQKySujaLP4LPHYPD0n2O6GJcynr2sFJJoNzEjnBANFzNI+7xsQpWgtHB/WJRbIboooYL2orkcET5uwM1Vixls+c0if9Ah5BxkooSjIvvtsvwUazk1ob0BGnOKd/8CYHE9pa7gxcQ72VAyWUUAGts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/2Ctn1x; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=GWIZwQhLPzJhrhpn4mnkiqBiHQSKG5a73IHzdWiPYTBY0sR8Iu+aObnGaLyDxFaJcu477qOi+WR3Iw5bF8MaPJ0lNYsqJ9/PAIVYDyAMvZcXRtorOom89rxC9HuUGDwa3CJGOwcpJwsOVuwPlkPq66uh5c9LHZtUUn3bcvW4JS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dD+U/y0h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/2Ctn1x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7509C1F00A3A;
-	Thu,  3 Sep 2026 01:41:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dD+U/y0h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3151F000E9;
+	Thu,  3 Sep 2026 01:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788399709;
-	bh=VNSGAeT7uciZm8ppAmkEOoK7AJCszK21UEURh1WyfTQ=;
+	s=k20260515; t=1788399711;
+	bh=bm12L47tDqFfoCdbxcdfRNX6AEUXyzZ8Xy18pTWXtLw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=N/2Ctn1xAAVZhStSoLplbj/rpFHKNVa54aYAustpG3KM0WyDe6vZ7+lilcjvoINIM
-	 LZ95/Dr5tn42WIO5lXLUPPR0CIOZ/xdikBbcJauHazcWRIWnd2NGa8sQnxCCHmJQdC
-	 IlE8AMrIBc5BVVH9mAMzGXMtNkzrOSCYOlkoUlTo279PmdaqiIF+buYtWbFz2BRxj6
-	 MN7c+T3SZHN4LQZEEZ+0tYrHFEgEW8QBGj2qyY/trDwO9+07k0Mp5FRWOr9VJ1eJ3P
-	 apaHCn4pbO0sm91Zp+DW2fkjUQZPS99WfAcDeGjXX9uRdtEG+P7aCC2Whqb/UZjMlQ
-	 qVPa/v0t2rQyA==
+	b=dD+U/y0hEwu7l5urE+c5RcxXP+c83qBMx6SWBLBPvuXnQS7ObjiQDjyST2iXNwarU
+	 8MrWuZ24MTOktXGdMBLwa6pQ4+2CQKosD43VEr4/lkNVbFS3k4W1AmOwMZjZAAnYSy
+	 PXp6yiO7VSS0lxWutlJsijgri4RHumUIYby1bWNgc2I9fqPw0lDj37t7Rslz/MnMEg
+	 Qz+7GtUrkmxkvIlOqgsDw0j3gPlg0f6W/ZYdnS9lIntsWlAgJ8HCUvc28eO0ADTBrE
+	 zod4J9RXfW6FpZnbmU+ONiiyIFcl1T3pnHFEF3cg1C0ZrA+GPuAeNdY6w2pwBgtmEP
+	 DWv6Hs8ae/ExA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569CE3927054;
-	Thu,  3 Sep 2026 01:40:52 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AA73927054;
+	Thu,  3 Sep 2026 01:40:53 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/3] net: dsa: realtek: enable RTL8365MB power
- supplies
+Subject: Re: [PATCH net-next v2 0/3] selftests: drv-net: split up gro.py
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178839965088.3035212.12735726271200270390.git-patchwork-notify@kernel.org>
-Date: Thu, 03 Sep 2026 01:40:50 +0000
-References: <20260831123637.666457-1-o.rempel@pengutronix.de>
-In-Reply-To: <20260831123637.666457-1-o.rempel@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: linusw@kernel.org, luizluca@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- kernel@pengutronix.de, linux-kernel@vger.kernel.org, a.fatoum@pengutronix.de,
- alvin.sipraga@analog.com, netdev@vger.kernel.org, devicetree@vger.kernel.org
+ <178839965238.3035212.7952345035477663016.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Sep 2026 01:40:52 +0000
+References: <20260901200728.2063720-1-kuba@kernel.org>
+In-Reply-To: <20260901200728.2063720-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ willemb@google.com, petrm@nvidia.com, linux-kselftest@vger.kernel.org,
+ noren@nvidia.com, joe@dama.to
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 31 Aug 2026 14:36:34 +0200 you wrote:
-> The RTL8365MB family has several external power rails (analog, digital I/O
-> and PLL supplies) that on some boards are gated by regulators. Until now the
-> driver assumed they were always on, so it could not be used on designs that
-> keep these rails software-controlled.
+On Tue,  1 Sep 2026 13:07:25 -0700 you wrote:
+> gro.py runs its full set of cases three times over - against SW GRO,
+> HW GRO and LRO. It's our test with the longest runtime. The 318 cases
+> take 12m30s on mlx5 with a debug kernel.
 > 
-> This series adds a device-tree description for those supplies and enables
-> them in the driver before the chip is accessed:
+> We will likely add more subcases here as the time goes on, so it's
+> time to start splitting it up. Long runtime wastes time on retries
+> (if any of the 300+ cases fails we try to check if it's a real failure
+> or flake an re-run the whole thing). It also forces us to increase
+> timeout for the whole test suite.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/3] dt-bindings: net: dsa: realtek: add RTL8365MB power supplies
-    https://git.kernel.org/netdev/net-next/c/f4d025418721
-  - [net-next,v3,2/3] net: dsa: realtek: rtl83xx: add support for enabling supplies
-    https://git.kernel.org/netdev/net-next/c/f82364499682
-  - [net-next,v3,3/3] net: dsa: realtek: rtl83xx: use dev_err_cast_probe() for reset GPIO
-    https://git.kernel.org/netdev/net-next/c/bd6b764f08de
+  - [net-next,v2,1/3] selftests: drv-net: hw: rename gro_hw.py to gro_stats.py
+    https://git.kernel.org/netdev/net-next/c/889b0cca6b29
+  - [net-next,v2,2/3] selftests: drv-net: split gro.py into one test per coalescing mode
+    https://git.kernel.org/netdev/net-next/c/f225a7317c18
+  - [net-next,v2,3/3] selftests: drv-net: bump the timeout to 15min
+    https://git.kernel.org/netdev/net-next/c/34d89dee719b
 
 You are awesome, thank you!
 -- 
