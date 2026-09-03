@@ -1,64 +1,66 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F22439F68
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CB54457D8
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788424523; cv=none; b=ExtG3iAD5/PPTkqOLlKWu1/QigFuwKFGUNiG7OThjcAV3MesUVctPOdYFziI7mYhmy5fkAZxMvvFKZbsZinUWxrzM2+A8K5QTbEITU7OtbC32zrabZ5b8pxh8SnjnJPKCxE0gHex7FZ5TSUDJT/0qs79DMxJljnxZxJ7VXuUKPk=
+	t=1788424526; cv=none; b=Z73VfmRLeJmhVjCiIUhRmZ4y5WhfsiiOdOxocp9U2uB/wjd51d+2HGO+84XA+ppLNzNB/boXTVSE20FLQpiyyfJInpl1feYwOuypx9962ixFOPRB1H+v6hBgw9P4sW+owjSd95GkAUe01VYJ2VnXmdolo/5GX/KxQMV+jOzjoW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788424523; c=relaxed/simple;
-	bh=/al7R5lGyABC5BAdv2q6KsiylkPVrrOvcHfyvOD6jio=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JratKkaJg309zSTwEByTzy95ofi+mCyRbBdUUMkDv6diycvQERIUxK3wRfv6CqDlJzLOdCxvHxSQLIhkF054MkEp+Z4kX0F2xn+/wU4TqDBkb578WBG5zrLY6t1/8Tre65B0eCw7WQ98kY9N5C4QIvJg4SJ1rSPsK9N+S0ZF4wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pUIiKenQ; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1788424526; c=relaxed/simple;
+	bh=/MjYt2ta9mFvbu69n1CKfGpTEP3/Cm6uJX62W/imdDY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=b7a3FAPay3rtWYkPpsN5D6Q5D1GkTTOqz6Aa2R3XYkiKekKo0Z5/hjFOQda9rbEI5/O0TlT0McePrzkRS9avtucMgF82qiTmzPpUyrOGg78AySclHxT25uzK2/n6myIoHf4qoIv/1dtTibR4MwEifkzZxp/IVeH7wBIIKjLxVd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mISsdnk1; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pUIiKenQ"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4843e9c5960so2017490f8f.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:35:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mISsdnk1"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49b965570d7so19280095e9.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788424520; x=1789029320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xk9CG0h6HWfqzzpvcIHPsx0W6k1L3yQKeOEbT++aQsw=;
-        b=pUIiKenQG1U+GVK5KR1bp0PB/OI2VQDbQ49VUHqP658yAGp9PlHO1T0yfQXrDkl5cB
-         QKBWDxwBHowxaNINq3EtPx/2pq8RAcsux7tiIJTzJGT///9/mzcGDse2kk3rO4fsWw2m
-         uln7yZIePBi5II9XdRYtZg9mkkoFwwpP9dGH2vhYOke6L6ssxwy3a3t/XvvgTYl/fplT
-         /ZIwgaT40rkAw7wIaEI2O9rZz7SfnNhR3n8VV4SfrgDeTmDOQjHjO5/sy0p4KBbsNMhE
-         pejbB61P7EFOBtjDe3dHaBtoQs7p3JFtbUgML3qPeOQiooEndUBfUJlwzIkgpq90SYig
-         RiPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788424520; x=1789029320;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1788424522; x=1789029322; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Xk9CG0h6HWfqzzpvcIHPsx0W6k1L3yQKeOEbT++aQsw=;
-        b=aR23LY2T82R/FR7HPZ4TSv8vt7wDNSAZlKYYGmddqtc+Ealiu8gb5N45TmCT3714h7
-         agxWlfSegJcEDLn/dG/LL8WXEeJ6jkHs7QJsO4BveOWtXLkoVO7xv0+wiz1SB+5MYIM8
-         OxPZUJnaFfvBrs8dmQtyG5vaO/S308+VtQlEJC+8FSe+fzl+AZvJFrL76G5wtLkpJjtf
-         Yl9nLchDjpJ46NtfaCIMGEtxGuiWXr4AbjI+Lq7iAq0QZuczhio3DGqv5LneR9/yl0ak
-         JgIGDJNzFHtmtYfH1528BamgRIcuB+Ei/uUEAa08C4MKKIUJToF2i6dZJZu5A08azhsq
-         XIJQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxN5xqMxhSNwLw2ZihouJaGSKumo6xNpinuxVNV0ga7xzkswfHayAINEejbFYq1AaJty07PgtI=@vger.kernel.org
-X-Gm-Message-State: AFuF++mMdr3a/6pHftCC/wxmAirFM8GJQnt6nqOBynO946enc2BpAL5m
-	U4iSpmI6ap8gW2zTB/8YtYgw7PojE88Qf03N8S/hVQ6UcGoTt8YeMPN7
-X-Gm-Gg: AYBFou0Jzwq3XByV5bhbpogUJbnH9Nwhb1QGxes03vZfIFzavMV8MJhaSSPqRKFIhgr
-	0v/MTMURxGpePmpzc7BdEZ7Db6rIkf2qG2Z57sYBocpfiyLW6nw5RWTQ6TJ3mwf1G7RKTplHtbG
-	VakjcIlD/5iMRgf4nPKKBgGXRRUkNpZ91wWHZgtsbwKYYJJvW787opJ4C6nIIAmqjUusEtIf+Qr
-	oZkSkupUC8RI/A5cE2oJ1rBbnZO9HGbcjoXtHT+lQExL4ItGOhEX5Yz49dUApTHBBQjN/UjfBzG
-	00Jzod98Fw37hH3TQXwTui9tu9PmsgWFbPS+DxJ3aGY75jo65z+WzbzN1NecoimXP8IPfXxcyHK
-	HwMGSeHPotrDkUmi50AVbc7jvKD9Z+U254NwOPWjk0Ojo81m/jQcBuIJRTUZLHcf+us2vP3Skps
-	EYvmrYZta7OCSl806fBpOV5zGbTeXjOg2ZJJcHryWOMTDC/tkz4hduAZGonelul5dzNHIXBfcBv
-	51B4C503bahbBbcHtrKfftiiTFvpdHKDP6ZktldT5VgfmH+Ijdv+R9wfNP8sCgSyZNXbo9Vb8Zv
-	h7NVNCWN0F/P1oq5snrIRgtd7aI+HumRkPCn2g1XmebegejndIlV6FvZLeCYpW2RdMP45+ZwS9/
-	t17j3
-X-Received: by 2002:a05:600c:8b10:b0:49b:12c2:104f with SMTP id 5b1f17b1804b1-49ce55ecddamr220293825e9.1.1788424519871;
-        Thu, 03 Sep 2026 01:35:19 -0700 (PDT)
+        bh=66m0kEzVw0wUaLA90qEFlh+4kl2dF1iPNWHMpLLgPYk=;
+        b=mISsdnk1YY0+ldzoPogWGOc6F4mxcxV64grlq/F0zjzxKJTbPbX88Up4uF2BK09NYY
+         P1E12TKBvM7BjsEPlo8cvfnnLsYbjmp/tmZaq00SujVJvmS51ZzdA95hH7qkmImA2nvc
+         updZxhje0S5zBgx3aXD1jJJ+zRmzQYdb2Bf7veyevz51UOSC2pwp4/yPyDeUQxbeiE3y
+         OJiBgRk3F6fw4XuMIICM4DFX+Zl0E5t8ilfUck9UoZCoFQsA/24KLBDdJlK04zD6OmYg
+         DMJB52nS4ILaBfRqny/o/mQ6afFhTd3ThCrFY8NkylSglmR65/qZkxalDaWkjmPnJ/I5
+         SOGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788424522; x=1789029322;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=66m0kEzVw0wUaLA90qEFlh+4kl2dF1iPNWHMpLLgPYk=;
+        b=ZI5Jz4GnF+mZPFL151h0ldykb6ITvug9O5LvjrseHNS3AB2kTqbCyiihMVYhRBlesU
+         tCiddU7Wu1/55KDUTjmfWp1kX6sJbgGYSLvZfBxPbStYMaS3pihMiwdW60I/BeAcEJOT
+         9nIYbENoNXLlInKvEJrNSBiS6DSjeNGl8tzYBi7LR5oVb3GEVXQkf34zATkh58iDio9N
+         ppj9qPkEoik5IQsLEPFygy+hWeGpifpvMBUsPVeEHW7AhHBPx9NrgiKodMgyv+tPxVlf
+         vPzNx77dwRWAM+DWg0XLiwIn48sTJjMCWpexQJuBX5y6kQFNvSvUoxUcw7Fp08Uve6Lw
+         E/Gg==
+X-Forwarded-Encrypted: i=1; AKwUvByoMGrzz2jonjXg7a3y1QYxoo5jQoWdoD8AWON+txh2yNo8+urVsMwnci6CAFww4jS3jXbLIkA=@vger.kernel.org
+X-Gm-Message-State: AFuF++m3jQPCLv1MssZRrAK06Kh9Y54JlY638JCKKbZo+rF9iX1Yg4O0
+	H1OiKW+Vy+kTqD49ZYZMm0JokHr00XXm/ehA7oiGoTw8h1nvoB+x2rYA
+X-Gm-Gg: AYBFou0pBr87lFWG8EP5zTS2MbNCm32SXkdXsbLtv7u2OcqpnmNz+qaKlUDCxbejdDm
+	THomMU7MVukBz1kUNRXEPLcPmruUvzxYuzcVZYZPv6sWNms1/wiUbNmOrf4RFFHZXVt7zTuTcUs
+	WcQMArtQaYBFmuh6prbrzo1S3e8h4GSPmUcYPhkMMeipYdCyMb4mMxnD/m+zjJl1YGpJnbKti3S
+	/P29wnM603w+v+N6ZHT4MVIbRTa+7clA/GFrnRmPsrm5jOMRxjYL9P2kjlWEPDJtGnGN4s1gI5r
+	iU60951MI6HNm9GbrWgaTGozceWStPkEBgNkTf58A31AhM3kkJVS0evixIigUSt0rGabv23w9vD
+	/lntkQ17szPVLTMcnUm+AlyiX0dfiAas3n8KpqMnt/FbjnVb5LBLlrlPDwHBWFI169I6FuAaXpJ
+	k4gjww61vDLONhHR4hL72tb2sIjK727yCO/LFafEGFhP1+rLbwrU6dPzmMIZsRqSYezipFQfH17
+	tKOhn/iDH24ZZMOX16xboVPnZfmJVVuWmeCJSbhfpnonXsj/1pPCbz7aMaBFA36W7pEHnVbLw0Z
+	J5aKgm0VBt+8gh1tJCSlLo65zJHvxqlKvJwkCcpEXnkQi2G4kdjP1xmhfb+SSLq4lTW6aDMnFd3
+	je3cF
+X-Received: by 2002:a7b:ca42:0:b0:49b:92df:87be with SMTP id 5b1f17b1804b1-49ce55fbdbemr129735745e9.4.1788424521705;
+        Thu, 03 Sep 2026 01:35:21 -0700 (PDT)
 Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a979-9501-3df6-d7fa-8a5a-06c5.310.pool.telefonica.de. [2a02:3100:a979:9501:3df6:d7fa:8a5a:6c5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce58da3acsm228357425e9.0.2026.09.03.01.35.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce58da3acsm228357425e9.0.2026.09.03.01.35.20
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 03 Sep 2026 01:35:19 -0700 (PDT)
+        Thu, 03 Sep 2026 01:35:21 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
 To: stable@vger.kernel.org
 Cc: Karl Mehltretter <kmehltretter@gmail.com>,
@@ -71,10 +73,12 @@ Cc: Karl Mehltretter <kmehltretter@gmail.com>,
 	netdev@vger.kernel.org,
 	mptcp@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10.y 0/2] mptcp: fix ADD_ADDR retransmission socket leaks
-Date: Thu,  3 Sep 2026 10:35:10 +0200
-Message-Id: <20260903083512.99864-1-kmehltretter@gmail.com>
+Subject: [PATCH 5.10.y 1/2] mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
+Date: Thu,  3 Sep 2026 10:35:11 +0200
+Message-Id: <20260903083512.99864-2-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260903083512.99864-1-kmehltretter@gmail.com>
+References: <20260903083512.99864-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,38 +87,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Backport the two ordered ADD_ADDR retransmission timer fixes missing from
-5.10.y. Patch 1 makes every terminal path release the socket reference
-held by the timer. Patch 2 uses sock_put() so the last reference frees the
-socket, while avoiding a timer self-deadlock during destruction.
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Both fixes carry Cc: stable and are present in 5.15.y and every newer
-supported LTS. The original 11-patch cover groups patches 3-5 as the
-v5.10 ADD_ADDR timer data-race and leak fixes. Patch 3 is already present
-as d9b272a85fe6 ("mptcp: pm: ADD_ADDR rtx: fix potential data-race");
-this series supplies the missing ordered patches 4 and 5:
-https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-0-fca8091060a4@kernel.org
+[ Upstream commit 9634cb35af17019baec21ca648516ce376fa10e6 ]
 
-In v5.10 the timer code is in pm_netlink.c and uses fixed retransmission
-delays; the adaptations retain those details. Patch 1 also routes v5.10's
-unreachable ID 0 guard through the reference drop.
+When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer().
+It should then be released in all cases at the end.
 
-Tested on v5.10.269 with KASAN under QEMU. A targeted A/B forced the
-tracked MPTCP socket to TCP_CLOSE at timer entry: the vulnerable kernel
-ran the callback without destroying the socket, while the fixed kernel
-destroyed it. Both completed an identical MPTCP transfer without a KASAN
-report, Oops, or warning.
+Some (unlikely) checks were returning directly instead of calling
+sock_put() to decrease the refcount. Jump to a new 'exit' label to call
+__sock_put() (which will become sock_put() in the next commit) to fix
+this potential leak.
 
-The fixed kernel also passed all 15 tests in pm_netlink.sh, a 16 MiB
-bidirectional transfer with a real ADD_ADDR/MP_JOIN second subflow, and an
-8 MiB curl --mptcp transfer. All payload comparisons were byte-exact.
+While at it, drop the '!msk' check which cannot happen because it is
+never reset, and explicitly mark the remaining one as "unlikely".
 
-Matthieu Baerts (NGI0) (2):
-  mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
-  mptcp: pm: ADD_ADDR rtx: free sk if last
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-4-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Karl Mehltretter: applied to pm_netlink.c; retained v5.10's ID 0 guard
+  and routed it through the common refcount drop. ]
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ net/mptcp/pm_netlink.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
- net/mptcp/pm_netlink.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
-
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index d4d56f0af3e0a..aee3a8dd9287a 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -217,14 +217,11 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 
+ 	pr_debug("msk=%p\n", msk);
+ 
+-	if (!msk)
+-		return;
+-
+-	if (inet_sk_state_load(sk) == TCP_CLOSE)
+-		return;
++	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
++		goto exit;
+ 
+ 	if (!entry->addr.id)
+-		return;
++		goto exit;
+ 
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk)) {
+@@ -253,6 +250,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 
+ out:
+ 	bh_unlock_sock(sk);
++exit:
+ 	__sock_put(sk);
+ }
+ 
 -- 
 2.53.0
+
