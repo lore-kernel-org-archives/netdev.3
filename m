@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64AD2DB791
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959E633C18B
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 21:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788471935; cv=none; b=XOUdG57vpSh1m/oTyhsvi4Wjygw0OBraqv/V0vw0cpMmSrZXWgwwUOunvQGPJt4TCYo5b61Yvc9RFeS5FVdrer1rhxrOpx31l/cHXs7QQL45Kb4ptz8eNd+rvMM2UUrt46CnTUqAygBqg8dP29dBsnwxa9RfSU2faU6jIwop5BY=
+	t=1788471938; cv=none; b=KQcaI1zeyUO1wHmZiXadxVVvsN62xE2+zm2jVpxILGzSFwSRcxFX/LyiPxH6Nap49T8ROr9Kiahrx+UH2rqKZmq+fk5fnKth16ohQoozLVkdKDfg1wG7Q6NyD3Bcycjm1sncCJWqObQd900Ntqq+LalIAazcjpRuKvWZEuQYdoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788471935; c=relaxed/simple;
-	bh=nXUDsFuZ0+f0NpD2kzdMb/CMR/WxBY5kXmLejNzjHdc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W7VYlwNQlzqP2ho7jvszkFIWqFDk4znI5CGg1vjH4jVPiNlx1r57tutBFtBLWGkNiFTuNcSDnUxr0G46n4dwnAl00cv1hgq5iL+GM38NZZ/9i25gBeSQyDrLhjp2FEb2IbhXI4n5Etye/sHqSLsQcqBwoRy1Gad/72Gz0LziRZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDnDbHzX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788471938; c=relaxed/simple;
+	bh=qk6Jgnk9jY7mBhX90Ks0aqNubb4hFG5CsqtPLa8F2l0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sfQIB27ZW5dNncMKyijVc8CfuZrPVtAB+WIjH7OXEOLXoYWARZHehcnpa+v/SZp3I+LOWzu+YjognjWRLCUFaJ5wDUjrZAm8Kgp/XjMFtyuZKcqqY/cucVYnHPliJ3hNDdZ8D2hGxcnBwtVYyBix1i77GWCptiBWIyx4h1hgo8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3bOffZd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDnDbHzX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485E71F000E9;
-	Thu,  3 Sep 2026 21:45:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3bOffZd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE9F1F00A3D;
+	Thu,  3 Sep 2026 21:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788471934;
-	bh=RRq3/KlHERIgSlTXRVtao9IRe4CY8GsUyqXlEGuddVY=;
-	h=From:Subject:Date:To:Cc;
-	b=EDnDbHzX2AA/iPlPapJ04taVhPUa3L8GtgoQs4Sg99uXF9CHGMvV1NJHGcRoGPvPs
-	 U8rOR+Gf/mwxuPGMh23Av3ewGfIDNPoJYn32NYqAmG9AP0Ki5UErFlwK6+Ec9OTV6z
-	 wbYnirOCtfOkNpNPYLVp+YnOGgBmgnQZ49OQcGe1SSRlJRxFBkmZO9WfrPXeDPPs2g
-	 8zR+JmXD1w/7wyhrzce++pT5LqslRqYdPX0Ew3d4vnK/NShUb09c+Nfh6nrldldDiv
-	 lgwvlZ4mnNDUDMM6xDKxOJ3TTvfZYaAwK2G0Cc8jRw38kFdRSzVunK+Ei7hO0gJ4Tn
-	 Xt0RY11R8/iOA==
+	s=k20260515; t=1788471937;
+	bh=B8B2nnTj040O1zxcTTABBjjduUmVhHBej0FWYUDnj3Q=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=b3bOffZdvAEAbDpqYVBdhEg1XIs2+jqh2HqKoFXbQIBocb3KcRand6/krChmYiWTo
+	 YSNMOCDq9pJfRn1x10njzqvW+ALu+dU6T4bZFIuQTAjB6UfTjXfb2h6Dtci3rtuulf
+	 jvvF8M1P8YanVAG/LL4q/cl5Gl1AZxBPN8aZvuPfaFNdXmE1KXBKhnbqQv5PDMclXn
+	 FEcHqICoQGjRgp1r89s33kY5KKa3ksDNm0IctB5KbWb9NoKavX6QpBf+n2MCMnQ+LV
+	 VHDmfe9duKF5LQ2I8718fOhBJebmjAnhmUlBUd0qdOh+9vmjHDfIr6Fvpqp8R72mFJ
+	 49s3u9jTh/8rQ==
 From: Linus Walleij <linusw@kernel.org>
-Subject: [PATCH v2 0/5] net: ethernet: cortina: Fix RX budget accounting
-Date: Thu, 03 Sep 2026 23:45:28 +0200
-Message-Id: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
+Date: Thu, 03 Sep 2026 23:45:29 +0200
+Subject: [PATCH v2 1/5] net: ethernet: cortina: Fix budget accounting
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,10 +37,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBREr0L+2m/aGoq48h6GhcAIP2pL2oZoC
- He3cAGXbyZvZqGIIIh0KRYKmCWKdxnMoaBuvLsBLH1mMspYVSvNA97ihJFGBIfED/kgMmxvUHX
- lqdMtZXcK2Ius3prMo8Tkw3e/mfWW/lucNSsGbKtqW5Xnyl6fW/06+jBQs67rDwp3e8u7AAAA
-X-Change-ID: 20260901-gemini-ethernet-fixes-e6d2e7c53c1b
+Message-Id: <20260903-gemini-ethernet-fixes-v2-1-2bbbd598ca6e@kernel.org>
+References: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
+In-Reply-To: <20260903-gemini-ethernet-fixes-v2-0-2bbbd598ca6e@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -50,42 +49,65 @@ Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>,
  Joe Damato <joe@dama.to>
 X-Mailer: b4 0.16.0
 
-Finish RX updates before releasing NAPI ownership, report actual NAPI
-work, charge dropped frames to the poll budget, and drive free-queue
-refills from consumed RX descriptors.
+The gmac_rx() function returns the remaining NAPI budget, but its
+caller treats the return value as the number of packets received. An
+idle poll therefore reports a full budget and remains scheduled.
 
-Track RX drop state across descriptor chains so discarded frames are
-counted exactly once.
+Return the number of received packets instead. Preserve the existing
+free queue refill accounting by adding that count directly; continuing
+to subtract it from the budget would invert the refill behavior.
 
-Tested on the D-Link DIR-685.
-
-Hi Sashiko, yes there are more latent issues I will get to them, but
-my LLM thinks those are on the top of the list.
-
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Link: https://lore.kernel.org/r/20260509-gemini-ethernet-fixes-v1-4-6c5d20ddc35b@kernel.org
+Link: https://lore.kernel.org/r/20260512131456.189452-1-pabeni@redhat.com
 Assisted-by: LLM
+Reviewed-by: Joe Damato <joe@dama.to>
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
-Changes in v2:
-- Finish RX statistics and free-queue updates before NAPI completion.
-- Enable RX interrupts only after successful NAPI completion.
-- Drop AI slop renaming of received->work_done.
-- Link to v1: https://patch.msgid.link/20260901-gemini-ethernet-fixes-v1-0-ee6b09675876@kernel.org
+ drivers/net/ethernet/cortina/gemini.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
----
-Linus Walleij (5):
-      net: ethernet: cortina: Fix budget accounting
-      net: ethernet: cortina: Finish RX updates before NAPI completion
-      net: ethernet: cortina: Count dropped frames as NAPI work
-      net: ethernet: cortina: Count RX drops once per frame
-      net: ethernet: cortina: Count RX descriptors for freeq refill
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 4c762229ce42..1d9824d1716c 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1450,6 +1450,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 	unsigned int frame_len, frag_len;
+ 	struct gmac_rxdesc *rx = NULL;
+ 	struct gmac_queue_page *gpage;
++	unsigned int received = 0;
+ 	union gmac_rxdesc_0 word0;
+ 	union gmac_rxdesc_1 word1;
+ 	union gmac_rxdesc_3 word3;
+@@ -1545,7 +1546,8 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 			napi_gro_frags(&port->napi);
+ 			skb = NULL;
+ 			frag_nr = 0;
+-			--budget;
++			budget--;
++			received++;
+ 		}
+ 		continue;
+ 
+@@ -1565,7 +1567,7 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
+ 	port->rx_skb = skb;
+ 	port->rx_frag_nr = frag_nr;
+ 	writew(r, ptr_reg);
+-	return budget;
++	return received;
+ }
+ 
+ static int gmac_napi_poll(struct napi_struct *napi, int budget)
+@@ -1586,7 +1588,7 @@ static int gmac_napi_poll(struct napi_struct *napi, int budget)
+ 		++port->rx_napi_exits;
+ 	}
+ 
+-	port->freeq_refill += (budget - received);
++	port->freeq_refill += received;
+ 	if (port->freeq_refill > freeq_threshold) {
+ 		port->freeq_refill -= freeq_threshold;
+ 		geth_fill_freeq(geth, true);
 
- drivers/net/ethernet/cortina/gemini.c | 77 +++++++++++++++++++++--------------
- 1 file changed, 47 insertions(+), 30 deletions(-)
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260901-gemini-ethernet-fixes-e6d2e7c53c1b
-
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+-- 
+2.55.0
 
