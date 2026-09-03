@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A24F648E;
-	Thu,  3 Sep 2026 17:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6884F6482;
+	Thu,  3 Sep 2026 17:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788455926; cv=none; b=igBqoghTSiGAPnVAToI7jIBRzPzt+myO2CfGOymecX9zuAen0RJLFy1RLPo3MybbI1Z+vOParOJeE+tqYjFj6lGL+4W3VHq6xUBCjZuvKaDlI+kTwVnl5R147o6fq6EF/GAMXbvck+IstHtaPUypPr9JHArGWL5SsloHJyr6oF8=
+	t=1788455927; cv=none; b=dmS3z4udAFP4vB9l3OU5kWYpFA68YfNdLpUvyeDXgJxkMfiNzIrK29UwyYP+qz7A27nmK/lyaZHK9nYhd5xw0W3AaaaTy6IpOlzdbDJmZsi0lDYNmDEJaiMtAC3aw+GpVHYGSGqxa48U+/C76oXEB4F3Su06sb2fOJlIqHgHJbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788455926; c=relaxed/simple;
-	bh=H0sJBh3iUa08WvqQ5JDWgyEAeOZooaz4nRPyuuyryZ4=;
+	s=arc-20240116; t=1788455927; c=relaxed/simple;
+	bh=SproD9EVvEjX2d85Qy+RJG2tz9WOx/zM4zeDlfICLEg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eutUj9c3eXIst9hUxXvg/Dm4/b+MnvwBTc9wytigG+1Rush6HlhlxietNVOpc+giHusyQJ8gBSYRKUZ49/Lt7vmP1nLbV4Ob2hOKCgztq6Ye9xNjK3qrZu+EVaHmTUFV8JUsn5ws2p663ld4bzed0WDdSo0hqun5h+q5/Rq2FII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2mEkntg; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=hUVhOVcVFq6SSVa44AjiiddJXSP7ZvDotJO8he0JlMu5Ql/zUxRrc+2/TE6DX6F00x5I3bZdvolCg5tnvQMrBceiqNv7F5gk7heDsok3wtFEI5sI1wcVfx8H8CH/t8M+Tfboo6IUuP9CJbMEDiEL4CHJtuXDsdr81pzrXTeQz2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdrP4OEh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2mEkntg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD031F0155A;
-	Thu,  3 Sep 2026 17:18:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdrP4OEh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341DC1F00A3F;
+	Thu,  3 Sep 2026 17:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788455923;
-	bh=MOtVnJbS/DYlH7nyySfpVxUsD+BgnvAkYBMz7V8I6DM=;
+	s=k20260515; t=1788455925;
+	bh=i5M5lIotdS18jd0lktx+ox3dLyD3xrY3JiUctRX0idc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=k2mEkntg4pQCrjxbAPJJfUvh7iVavCJU5bs5Xro1weVwC+xN6W5s0yNKdRUadTuQ8
-	 CQeZ6K5oeLaZiOPSTKc0nK8AEqJDTnEGEy4kqsD2t5/yTJqHrNaVhMwW0OtLf/HzEf
-	 I90+/aDoBGrPRvcA58Gf2EeBLuXel8RU5apb4PTKytpLsDj342W0JcgXZmuvDRWNU/
-	 xakl48xmKF1g7gQ5Ow63qkFuTylJN4Qa7qaG/rvEmufUT/ZpUuanE0OJxU7kSG/c/7
-	 hTaGmiT1CNy3WQmYLZV3BxD5lzILpAyLLU74xgMQ8pkTFugB4nKC3jPp6Qf/31pRj0
-	 VasE/5vb2YKyg==
-Subject: Re: [v26,net-next,08/10] net/nebula-matrix: dispatch: implement
- channel RPC framework and serialize hardware ops
+	b=bdrP4OEhkuQjv8CwoXEK6P59lBKjjJ/G1cL9RZYY4QMtnLR1ViCSVhaZH+lD4U77e
+	 vpTIn4N90KSfFDg04ZpzElBzRvZ6oQGezsELRG7apld4lhhLDv1Z0GZCitcWYejMs+
+	 EpVGrW5ZTeuuxUtvDom7toYtyax8wWOV0tYYVRodAbPvcjGP0FWYCOf/j+XRYwMCnZ
+	 qSkSwMqV8Old6sHrin7gOK/gv3i6Vk7ZqAXmi/2G5czOrgCTPvYsAkbQ+lGLDx7NEP
+	 b2WFoWZSz2DLIs86Ee+j/S4tFiYQ5fwB/YDoeuD5YEEMG+tPLb48X+kVkfTf+n4Nt5
+	 up0DvBnzt1ChA==
+Subject: Re: [v26,net-next,09/10] net/nebula-matrix: add common/ctrl dev
+ init/remove operation
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
@@ -36,10 +36,10 @@ Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
  edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
  hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 17:18:42 +0000
-Message-ID: <178845592228.3394541.3958833094999526357@kernel.org>
-In-Reply-To: <20260831021408.2325-9-illusion.wang@nebula-matrix.com>
-References: <20260831021408.2325-9-illusion.wang@nebula-matrix.com>
+Date: Thu, 03 Sep 2026 17:18:43 +0000
+Message-ID: <178845592378.3394541.15652479231011482818@kernel.org>
+In-Reply-To: <20260831021408.2325-10-illusion.wang@nebula-matrix.com>
+References: <20260831021408.2325-10-illusion.wang@nebula-matrix.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,474 +50,322 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 8 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 4
+Critical: 0 · High: 0 · Medium: 3 · Low: 2
 
-- [Medium] All five new *_req() helpers translate the return value of
-  chan_ops->send_msg() with a switch that only enumerates the four wire…
-- [Medium] nbl_disp_setup_msg()'s rollback calls
-  chan_ops->unregister_all_msg(), which is…
-- [Medium] nbl_disp_chan_get_vsi_id_req() and
-  nbl_disp_chan_get_eth_id_req() consume the ACK payload without…
-- [Medium] The newly exposed destroy_msix_map op (local
-  nbl_disp_destroy_msix_map(), remote…
-- [Low] The commit message describes work the diff does not contain.
-- [Low] nbl_disp_init() sets NBL_DISP_CTRL_LVL_NET whenever
-  common->has_net, with a comment claiming this enables the 'net control…
-- [Low] The kernel-doc block that this patch extends states 'Warning: All
-  ops except init_module/deinit_module can be safely called on PF/VF',…
-- [Low] The newly exposed NBL_CHAN_MSG_CONFIGURE_MSIX_MAP handler
-  forwards peer-supplied vector counts straight to the global allocator…
+- [Medium] nbl_dev_setup_common_dev() issues two synchronous ACK-waiting
+  mailbox requests (disp_ops->get_vsi_id(), disp_ops->get_eth_id())…
+- [Medium] nbl_dev_setup_common_dev() enables the PF mailbox queue
+  (nbl_chan_setup_queue(): config_mailbox_txq/rxq with QUEUE_EN=1,…
+- [Medium] nbl_dev_remove() relies on nbl_dev_remove_ctrl_dev() ->
+  disp_ops->deinit_module() -> nbl_hw_deinit_module(), which only does a…
+- [Low] The justification comment block added above
+  nbl_dev_remove_ctrl_dev() in nbl_core/nbl_dev.c is factually wrong and…
+- [Low] The in-tree comment documenting the ordering contract for
+  common->hw_bus in nbl_res_ctrl_dev_sriov_info_init()…
 
 --
 
-net/nebula-matrix: dispatch: implement channel RPC framework and serialize
-hardware ops
+net/nebula-matrix: add common/ctrl dev init/remove operation
 
-This adds mailbox RPC request/response handlers for configure_msix_map,
-destroy_msix_map, set_mailbox_irq, get_vsi_id and get_eth_id, resolving the
-dispatch ops to either local hardware calls (control PF) or remote requests
-to the manager PF. It also adds a per-dispatch mutex to serialize the
-mutable hardware ops, plus new wire message types and a permission-denied
-status code.
+This adds the nbl_dev core layer with nbl_dev_setup_common_dev() and
+nbl_dev_setup_ctrl_dev() plus their teardown counterparts, and wires them
+into nbl_dev_init()/nbl_dev_remove() from nbl_core_init()/nbl_core_remove().
+A few questions below about the probe/remove ordering and about some of the
+new comments and the commit message.
 
-A few questions below about the commit message and about the new handlers.
+> Enforce the deinit sequence: remove ctrl dev first to notify firmware
+> to clean all per-PF hardware state including qinfo registers. Afterwards
+> tear down common device queue resources. Firmware cleanup ensures valid
+> register access during common dev deinit and prevents PCIe master abort.
 
-The commit message says:
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> new file mode 100644
+> index 000000000000..4fc52cadf60f
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> @@ -0,0 +1,236 @@
 
-    Improve message payload validation for forward compatibility:
-    reject requests with insufficient payload length, enforce bounds
-    checks before parsing incoming RPC parameters. Fix unimplemented
-    operation check ordering to avoid potential NULL pointer
-    dereferences.
+[ ... ]
 
-and:
-
-    Add helper to register channel response callbacks; extend wire
-    protocol with new message types and NBL_CHAN_RESP_PERM_DENY error
-    code.
+> +/* ----------  Channel config  ---------- */
+> +static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
+> +{
+> +	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
+> +	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
+> +	struct nbl_common_info *common = dev_mgt->common;
+> +
+> +	if (!chan_ops->check_queue_exist(priv, chan_type))
+> +		return;
+> +
+> +	chan_ops->cfg_chan_qinfo_map_table(priv, common->hw_bus, common->devid);
+> +}
 
 [Severity: Low]
-Which pre-existing code do the words "Improve", "Fix ... ordering" and
-"Add helper" refer to?
 
-At the parent commit the only helpers in nbl_dispatch.c are
-nbl_disp_init_module() and nbl_disp_deinit_module(), and both already had
-the guard:
+This is the only in-tree caller of cfg_chan_qinfo_map_table(), and it is
+reached as nbl_dev_init() -> nbl_dev_setup_ctrl_dev() ->
+nbl_dev_setup_chan_qinfo().  The existing comment that documents the
+ordering contract for common->hw_bus names a different call site:
 
-	if (res_ops->init_module)
-		return res_ops->init_module(p);
-	return -EOPNOTSUPP;
+nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c:nbl_res_ctrl_dev_sriov_info_init() {
+	/*
+	 * common->hw_bus supplies bus number for channel mailbox QINFO mapping.
+	 * Execution order guarantee: this assignment runs before
+	 * cfg_chan_qinfo_map_table() in nbl_dev_start(), only executed
+	 * on control PF path.
+	 */
+	common->hw_bus = hw_bus;
+}
 
-Neither is touched by this patch, so no check ordering appears to change.
-Likewise, every handler containing a data_len < sizeof(param) test is
-introduced by this patch, so there is no earlier validation being improved.
+There is no nbl_dev_start() at this commit, and the nbl_dev_start() added
+later in the series calls nbl_dev_cfg_msix_map(),
+nbl_dev_init_interrupt_scheme(), nbl_dev_request_mailbox_irq() and
+nbl_dev_enable_mailbox_irq() only, so it never programs the qinfo map.  The
+ordering itself does hold today, since nbl_res_init_leonis() runs before
+nbl_dev_init() in nbl_core_init().  Could that comment be updated to point
+at nbl_dev_setup_ctrl_dev() instead?
 
-register_msg() and unregister_all_msg() also already exist in
-struct nbl_channel_ops, and nbl_chan_setup_ops() already registers
-NBL_CHAN_MSG_ACK; what this patch adds is a dispatch-layer setup function,
-nbl_disp_setup_msg(), not a channel helper.
+[ ... ]
 
-Could the wording be changed to describe the new code as new, so readers do
-not look for a Fixes: tag and a previously broken commit?
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> index 3da5f8351fa4..239d8317a9c5 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> @@ -3,9 +3,170 @@
->   * Copyright (c) 2026 Nebula Matrix Limited.
->   */
->  #include <linux/device.h>
-> +#include <linux/mutex.h>
->  #include <linux/pci.h>
->  #include "nbl_dispatch.h"
->  
-> +static int nbl_disp_chan_get_vsi_id_req(struct nbl_dispatch_mgt *disp_mgt,
-> +					u16 type, u16 *vsi_id)
+> +/* ----------  Dev init process  ---------- */
+> +static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
 > +{
-> +	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
-> +	struct nbl_common_info *common = disp_mgt->common;
-> +	struct nbl_chan_param_get_vsi_id result = { 0 };
-> +	struct nbl_chan_param_get_vsi_id param = { 0 };
-> +	struct nbl_chan_send_info chan_send = {0};
-> +	int ret;
-> +
-> +	param.type = cpu_to_le16(type);
-> +
-> +	nbl_chan_fill_send_info(&chan_send, common->mgt_pf,
-> +				NBL_CHAN_MSG_GET_VSI_ID,
-> +				&param, sizeof(param), &result,
-> +				sizeof(result), 1);
-> +	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
-> +	switch (ret) {
-> +	case NBL_CHAN_RESP_OK:
-> +		break;
-> +	case NBL_CHAN_RESP_UNIMPLEMENTED:
-> +		return -EOPNOTSUPP;
-> +	case NBL_CHAN_RESP_ERR:
-> +		return -EREMOTEIO;
-> +	case NBL_CHAN_RESP_PERM_DENY:
-> +		return -EPERM;
-> +	default:
-> +		return -EREMOTEIO;
-> +	}
-
-[Severity: Medium]
-Does this switch turn every local transport error into -EREMOTEIO?
-
-nbl_chan_send_msg() only returns a wire status code when an ACK actually
-arrives.  Otherwise it returns a negative Linux errno:
-
-nbl_channel/nbl_channel.c:nbl_chan_send_msg() {
-	...
-	if (READ_ONCE(chan_info->shutdn)) { ... return -ESHUTDOWN; }
-	...
-	ret = -ETIMEDOUT;
-	...
-	ret = READ_ONCE(wait_head->ack_err);
-}
-
-plus -EINVAL for oversized arg_len/resp_len, -EAGAIN when all TX wait slots
-are busy, and -EIO when the mailbox IRQ is disabled mid-wait.
-
-All of those land in the default arm, so a caller cannot tell a retryable
-or teardown condition from a genuine remote hardware failure, and
-nbl_dev_stop() ends up logging a remote I/O error for what was really
--ESHUTDOWN or -ETIMEDOUT.  The same switch is repeated in
-nbl_disp_chan_get_eth_id_req(), nbl_disp_chan_cfg_msix_map_req(),
-nbl_disp_chan_destroy_msix_map_req() and
-nbl_disp_chan_set_mailbox_irq_req().
-
-Would an early "if (ret < 0) return ret;" before the switch preserve the
-error semantics the changelog aims for?
-
-> +	*vsi_id = le16_to_cpu(result.vsi_id);
-> +	return 0;
-> +}
 
 [ ... ]
 
-> +	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
-> +	switch (ret) {
-> +	case NBL_CHAN_RESP_OK:
-> +		break;
-> +	case NBL_CHAN_RESP_UNIMPLEMENTED:
-> +		return -EOPNOTSUPP;
-> +	case NBL_CHAN_RESP_ERR:
-> +		return -EREMOTEIO;
-> +	case NBL_CHAN_RESP_PERM_DENY:
-> +		return -EPERM;
-> +	default:
-> +		return -EREMOTEIO;
-> +	}
-> +	*eth_num = result.eth_num;
-> +	*eth_id = result.eth_id;
-> +	*logic_eth_id = result.logic_eth_id;
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Can a short ACK make these two helpers report success with zeroed
-identifiers?
-
-nbl_chan_recv_ack_msg() takes the status straight from the wire and only
-clamps the payload copy, reporting the effective length back through
-chan_send->ack_len:
-
-nbl_channel/nbl_channel.c:nbl_chan_recv_ack_msg() {
-	...
-	copy_len = min_t(u32, READ_ONCE(wait_head->ack_data_len), ack_datalen);
-	if (READ_ONCE(wait_head->ack_err) >= 0 && copy_len > 0) {
-		...
-		WRITE_ONCE(wait_head->ack_data_len, (u16)copy_len);
-	}
-}
-
-nbl_disp_chan_get_vsi_id_req() and nbl_disp_chan_get_eth_id_req() never look
-at chan_send.ack_len, so a peer answering status OK with a truncated or
-empty payload leaves the "= { 0 }" initialiser values in place and the
-caller gets vsi_id 0, eth_id 0, logic_eth_id 0, eth_num 0 and a 0 return.
-Per nbl_res_ctrl_dev_vsi_info_init() ("pf0,pf1,pf2,pf3 vsi is 0,256,512,768")
-vsi_id 0 and eth_id 0 are valid identifiers belonging to PF0, so a
-non-control PF would silently adopt another function's VSI/port identity.
-
-There is also no range check on the returned values, unlike the local
-producer:
-
-nbl_hw/nbl_resource.c:nbl_res_get_eth_id() {
-	...
-	if (rel_pf_id >= eth_info->eth_num) {
-		dev_err(dev, "rel_pf_id %d out of range [0, %u)\n", ...);
-		return -ERANGE;
-	}
-}
-
-Should these helpers check chan_send.ack_len against sizeof(result) and
-bound eth_num/eth_id/logic_eth_id against NBL_MAX_ETHERNET before handing
-the values to the caller?
-
-> @@ -25,6 +186,346 @@ static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
->  	return -EOPNOTSUPP;
->  }
->  
-
-[ ... ]
-
-> +	if (res_ops->cfg_msix_map) {
-> +		mutex_lock(&disp_mgt->ops_mutex_lock);
-> +		ret = res_ops->cfg_msix_map(p, src_id,
-> +					    le16_to_cpu(param.num_net_msix),
-> +					    le16_to_cpu(param.num_others_msix),
-> +					    !!le16_to_cpu(param.msix_mask_en));
-> +		mutex_unlock(&disp_mgt->ops_mutex_lock);
-> +		if (ret)
-> +			err = NBL_CHAN_RESP_ERR;
-> +	} else {
-> +		err = NBL_CHAN_RESP_UNIMPLEMENTED;
-> +	}
-
-[Severity: Low]
-Should there be a per-function limit on the requested vector counts here?
-
-After the coarse src_id check the peer-supplied counts go straight to the
-global allocator, which only enforces device-wide maxima:
-
-nbl_hw/nbl_interrupt.c:nbl_res_intr_cfg_msix_map() {
-	...
-	if (num_net_msix > NBL_MSIX_MAP_TABLE_MAX_ENTRIES ||
-	    num_others_msix > NBL_MSIX_MAP_TABLE_MAX_ENTRIES) { ... }
-}
-
-The accepted maximum for num_others_msix equals the whole shared pool
-(NBL_MAX_OTHER_INTERRUPT is 1024), so a single request for 1024 drains
-intr_other_bmap and every later allocation for any function, including the
-control PF's own mailbox and misc vectors, then fails with -EAGAIN.
-
-Each request also does a full 1024-entry coherent DMA table allocation and
-the usleep_range(100, 120) quiesce inside nbl_res_intr_destroy_msix_map()
-while ops_mutex_lock is held, which stalls the control PF's mailbox work
-item.
-
-> +	if (src_id > NBL_MAX_PF_SRC_ID) {
-> +		err = NBL_CHAN_RESP_PERM_DENY;
-> +		goto ack_out;
-> +	}
-> +	if (res_ops->destroy_msix_map) {
-> +		mutex_lock(&disp_mgt->ops_mutex_lock);
-> +		ret = res_ops->destroy_msix_map(p, src_id);
-> +		mutex_unlock(&disp_mgt->ops_mutex_lock);
-> +		if (ret)
-> +			err = NBL_CHAN_RESP_ERR;
-> +	} else {
-> +		err = NBL_CHAN_RESP_UNIMPLEMENTED;
-> +	}
-
-[Severity: Medium]
-Does making destroy_msix_map remotely invokable leave the requester's
-mailbox interrupt routing armed on a recycled vector?
-
-nbl_res_intr_destroy_msix_map() masks the per-vector entries, returns the
-global vector numbers to the bitmaps and frees the per-function array:
-
-nbl_hw/nbl_interrupt.c:nbl_res_intr_destroy_msix_map() {
-	...
-	nbl_intr_release_bitmap(res_mgt, interrupts, intr_num);
-	...
-	kfree(intr_mgt->func_intr_res[func_id].interrupts);
-	intr_mgt->func_intr_res[func_id].interrupts = NULL;
-}
-
-but MSIX_IDX/MSIX_IDX_VALID in NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id),
-written only by nbl_hw_set_mailbox_irq(), is left pointing at the vector
-that was just released.  It cannot be cleared afterwards either:
-
-nbl_hw/nbl_interrupt.c:nbl_res_intr_set_mailbox_irq() {
-	if (!intr_mgt->func_intr_res[func_id].interrupts) {
-		dev_err(dev, "func %u MSIX map not configured\n", func_id);
-		return -ENODEV;
-	}
-}
-
-A later nbl_res_intr_cfg_msix_map() for another function re-validates the
-same global vector with the new owner's BDF, so a mailbox event for the old
-function would raise an interrupt owned by a different PF.
-nbl_res_intr_cfg_msix_map() also calls the same teardown internally, so a
-peer sending CONFIGURE_MSIX_MAP twice, or DESTROY_MSIX_MAP while its
-mailbox IRQ is still armed, reaches this from the wire.
-
-Would it be better to clear the mailbox QINFO mapping as part of
-destroy_msix_map, or at least document the required ordering against
-set_mailbox_irq in nbl_def_dispatch.h?
-
-> +static int nbl_disp_setup_msg(struct nbl_dispatch_mgt *disp_mgt)
-> +{
-> +	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
-> +	struct nbl_channel_mgt *p = disp_mgt->chan_ops_tbl->priv;
-> +	int ret = 0;
-> +	int _ret;
-> +
-> +	_ret = chan_ops->register_msg(p, NBL_CHAN_MSG_CONFIGURE_MSIX_MAP,
-> +				      nbl_disp_chan_cfg_msix_map_resp,
-> +				      disp_mgt);
-> +	if (_ret < 0 && !ret)
-> +		ret = _ret;
-
-[ ... ]
-
-> +	if (ret)
-> +		chan_ops->unregister_all_msg(p);
-> +	return ret;
-> +}
-
-[Severity: Medium]
-Does this rollback destroy state owned by the channel layer?
-
-unregister_all_msg is nbl_chan_remove_msg_handler():
-
-nbl_channel/nbl_channel.c:nbl_chan_remove_msg_handler() {
-	if (!chan_mgt->handle_hash_tbl)
-		return;
-	nbl_common_remove_hash_table(chan_mgt->handle_hash_tbl);
-	chan_mgt->handle_hash_tbl = NULL;
-}
-
-That frees every handler node, including the channel's own ACK handler
-registered by nbl_chan_setup_ops():
-
-	ret = nbl_chan_register_msg(chan_mgt, NBL_CHAN_MSG_ACK,
-				    nbl_chan_recv_ack_msg, chan_mgt);
-
-and then NULLs the shared table pointer with no re-init path, since
-nbl_chan_init_msg_handler() is only called from nbl_chan_setup_chan_mgt().
-Neither accessor tolerates a NULL table:
-
-nbl_common/nbl_common.c:nbl_common_get_hash_node() {
-	...
-	key_size = tbl_mgt->tbl_key.key_size;
-}
-
-Registration is also unpaired at this layer: nbl_disp_remove() is empty and
-delegates handler teardown to nbl_chan_remove_common().  As far as I can
-tell no crash is reachable today, because the only failure mode of
-nbl_chan_register_msg() is -ENOMEM during nbl_disp_init(), and at that point
-no mailbox queue, IRQ or clean_mbx_task exists yet, so nothing looks the
-table up during the unwind.  Would it be more robust to unregister only the
-five message types this function registered, and to do it from
-nbl_disp_remove()?
-
-> @@ -104,14 +621,30 @@ int nbl_disp_init(struct nbl_adapter *adapter)
->  	adapter->core.disp_mgt = disp_mgt;
->  	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
->  
-> +	ret = nbl_disp_setup_msg(disp_mgt);
+> +	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
 > +	if (ret)
 > +		return ret;
 > +
->  	if (common->has_ctrl)
->  		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
->  
+> +	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
+> +	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
+> +				   &common_dev->clean_mbx_task);
 > +	/*
-> +	 * For non-control PF with network capability, enable net control
-> +	 * level.
-> +	 * All dispatch ops declared with NBL_DISP_CTRL_LVL_MGT fall back
-> +	 * to remote mailbox msg_req handlers when MGT bit is not set.
+> +	 * Even if has_ctrl=false (no dedicated control PF channel), we fetch
+> +	 * VSI/ETH info via regular mailbox message instead of dedicated
+> +	 * control command.
 > +	 */
-> +	if (common->has_net)
-> +		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_NET);
+> +	ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
+> +	if (ret)
+> +		goto err_cleanup;
+> +	ret = disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_num,
+> +			     &common->eth_id, &common->logic_eth_id);
+> +	if (ret)
+> +		goto err_cleanup;
 
-[Severity: Low]
-Is anything reading NBL_DISP_CTRL_LVL_NET?
+[Severity: Medium]
 
-Grepping the nbl driver at this commit, the symbol appears only in its enum
-definition in nbl_def_dispatch.h and in this new set_bit().  The single
-consumer of ctrl_lvl only tests the MGT bit:
+Can these two calls complete at this point in the series?
 
-nbl_core/nbl_dispatch.c:nbl_disp_refresh_ctrl_ops() {
-	if (test_bit(NBL_DISP_CTRL_LVL_MGT, disp_mgt->ctrl_lvl)) {
-	...
+On a non-control PF, get_vsi_id()/get_eth_id() resolve to
+nbl_disp_chan_get_vsi_id_req()/nbl_disp_chan_get_eth_id_req(), i.e. real
+mailbox round trips to mgt_pf that wait for an ACK.
+
+At this commit nothing in the tree requests a mailbox interrupt and
+NBL_CHAN_IRQ_RDY is never set, so in nbl_chan_send_msg() the polling branch
+only drains the sender's own RX ring:
+
+nbl_channel/nbl_channel.c:nbl_chan_send_msg() {
+	if (test_bit(NBL_CHAN_IRQ_RDY, chan_info->state)) { ... }
+	else { /* Polling path for synchronous ACK */ }
 }
 
-so the NET bit is write-only state.
+The control PF has nothing driving nbl_chan_clean_queue() on its side, so
+the responder never runs and both requests appear to time out, failing
+probe on every non-control PF.
 
-The comment also says "For non-control PF with network capability", but the
-condition is just common->has_net, and every entry in nbl_id_table sets
-BIT(NBL_CAP_HAS_NET_BIT), so the control PF takes this branch too.  Should
-the condition and the comment be reconciled, or the bit dropped until a
-reader exists?
+The later patch in this series ("net/nebula-matrix: add common dev
+start/stop operation") adds nbl_dev_request_mailbox_irq() and
+nbl_dev_enable_mailbox_irq(), and nbl_probe() then calls nbl_core_start()
+-> nbl_dev_start(), which is what makes the control PF drain its RX ring
+and answer.  So the ACK path does exist at the end of the series and this
+looks limited to the intermediate tree state.  Would it be possible to
+order the series so probe works at each step, or is the intermediate
+bisect state intentional here?
 
->  	nbl_disp_refresh_ctrl_ops(disp_mgt);
->  	return 0;
->  }
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-> index d5e7da0fef6e..61083a750da4 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-> @@ -22,12 +22,28 @@ enum {
->   *               caller must check has_ctrl guard
->   * @deinit_module: dispatch layer cleanup, ONLY valid on Control PF,
->   *                 caller must check has_ctrl guard
-> + * @cfg_msix_map: configure function msix mapping table
-> + * @destroy_msix_map: tear down msix mapping resource
-> + * @set_mailbox_irq: bind mailbox interrupt to specified msix vector
-> + * @get_vsi_id: resolve VSI ID by type
-> + * @get_eth_id: resolve eth port info from VSI ID
-> + *
->   * Warning: All ops except init_module/deinit_module can be safely called
->   * on PF/VF; init/deinit hooks are control-PF exclusive to prevent NULL ptr.
->   */
+Also, nbl_dev_init_msix_cnt() records
+msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1 in this patch while no
+vector is allocated or requested yet, which fits the same observation.
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-> index ebf85702cef6..a53138530c54 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-> @@ -15,6 +15,8 @@
->  
->  #define NBL_MAX_FUNC					520
->  #define NBL_MAX_ETHERNET				4
-> +/* Product firmware only supports 1/2/4 contiguous PFs (ID 0~3) */
-> +#define NBL_MAX_PF_SRC_ID				3
+> +static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter)
+> +{
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
+> +	int ret;
+> +
+> +	ret = disp_ops->init_module(dev_mgt->disp_ops_tbl->priv);
+> +	if (ret)
+> +		return ret;
+> +
+> +	nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * This is intentional.  The qinfo registers are managed by the chip
+> + * firmware, not by the driver.  Setting driver status to false is the
+> + * designed teardown mechanism — it notifies the firmware, which then
+> + * performs its own cleanup of all per-PF state including the qinfo
+> + * registers.
+> + * An inverse helper would duplicate work that the firmware already
+> + * does, and would add error-path complexity for no benefit.  We keep
+> + * the deinit path minimal and rely on the firmware cleanup for
+> + * correctness, including in abnormal reset scenarios.
+> + */
+> +static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
+> +{
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
+> +
+> +	disp_ops->deinit_module(dev_mgt->disp_ops_tbl->priv);
+> +}
 
 [Severity: Low]
-Does this constant contradict the documented contract just above?
 
-The kernel-doc extended by this patch says the five new ops "can be safely
-called on PF/VF", but on a non-control function they resolve to the *_req()
-helpers, and every new responder starts with:
+Is the claim that "The qinfo registers are managed by the chip firmware,
+not by the driver" accurate?  The path added just above this comment
+programs them from the driver:
 
-	if (src_id > NBL_MAX_PF_SRC_ID) {
-		err = NBL_CHAN_RESP_PERM_DENY;
-		goto ack_out;
+nbl_dev_setup_chan_qinfo()
+  chan_ops->cfg_chan_qinfo_map_table()
+    nbl_chan_cfg_qinfo_map_table()
+      hw_ops->cfg_mailbox_qinfo()
+        nbl_hw_cfg_mailbox_qinfo()
+
+nbl_channel/nbl_channel.c:nbl_chan_cfg_qinfo_map_table() {
+	for (func_id = 0; func_id < NBL_MAX_PF; func_id++) {
+		if (!(pf_mask & (1 << func_id)))
+			hw_ops->cfg_mailbox_qinfo(p, func_id, bus, devid, func_id);
 	}
+}
 
-src_id is the mailbox descriptor srcid in a function-id space of
-NBL_MAX_FUNC (520), so any VF requester is denied by construction and its
-*_req() helper returns -EPERM.
+Only the cleanup is delegated to firmware, so would something like "the
+qinfo registers are cleaned up by firmware on driver-status change" be
+closer to what happens?
 
-The hardcoded 3 also disagrees with the runtime model used elsewhere:
-nbl_common_func_id_to_rel_pf_id() computes pf_id - common->mgt_pf and is
-documented to "Support future non-zero management PF", while
-nbl_res_func_id_to_bdf() and nbl_res_get_eth_id() validate against
-resource_info->max_pf.  With mgt_pf != 0 the legitimate absolute PF ids
-exceed 3 and would be denied as well.
+Two more notes on the same block: it is a near-verbatim copy of the comment
+already sitting above nbl_hw_deinit_module() in
+nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c, which is where the described register
+write actually lives, and the opening "This is intentional." reads as a
+reply to review feedback rather than as documentation.  Could it be dropped
+here and kept only at the hw layer?
 
-No VF can bind this driver today, since nbl_id_table lists only PF device
-ids and mgt_pf is hardcoded to 0 in nbl_core_init(), so this is a
-documentation and future-proofing question rather than an active failure.
-Would validating src_id against mgt_pf plus max_pf be preferable to the new
-constant, or should the "PF/VF" wording be adjusted?
+Relatedly, the commit message says:
 
->  
->  enum {
->  	NBL_VSI_DATA = 0,
+> Introduce nbl_dev_setup_common_dev()
+> and nbl_dev_setup_ctrl_dev() initialization helpers with paired
+> teardown routines
+
+nbl_dev_setup_ctrl_dev() does init_module() plus qinfo map programming while
+nbl_dev_remove_ctrl_dev() does deinit_module() only, so the two are not
+symmetric.
+
+[ ... ]
+
+> +int nbl_dev_init(struct nbl_adapter *adapter)
+> +{
+
+[ ... ]
+
+> +	/*
+> +	 * Chip hardware initialization is completed by firmware at power-up.
+> +	 * Only driver functional table/register config follows here, safe to
+> +	 * access hardware registers before ctrl dev setup.
+> +	 */
+> +	ret = nbl_dev_setup_common_dev(adapter);
+> +	if (ret)
+> +		goto setup_err;
+> +
+> +	if (common->has_ctrl) {
+> +		ret = nbl_dev_setup_ctrl_dev(adapter);
+> +		if (ret)
+> +			goto setup_ctrl_dev_fail;
+> +	}
+
+[Severity: Medium]
+
+What guarantees the mailbox routing table entry for a non-control PF is
+programmed before that PF starts using its mailbox?
+
+nbl_dev_setup_common_dev() enables the PF mailbox queue
+(nbl_chan_setup_queue() -> config_mailbox_txq/rxq with QUEUE_EN=1, RST=0,
+RX tail written) and then immediately sends mailbox messages, but
+NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id) is written only afterwards and only
+on the control PF:
+
+nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c:nbl_hw_cfg_mailbox_qinfo() {
+	data = FIELD_PREP(NBL_MAILBOX_QINFO_MAP_FUNCTION_MASK, function) |
+	       FIELD_PREP(NBL_MAILBOX_QINFO_MAP_DEVID_MASK, devid) |
+	       FIELD_PREP(NBL_MAILBOX_QINFO_MAP_BUS_MASK, bus);
+}
+
+has_ctrl is set only for PCI function 0 in nbl_get_func_param(), so PF1..PF3
+never program that table themselves.  Their probe path depends on PF0 having
+already done it, and nothing in nbl_dev_init() checks or enforces that.
+
+Cases where the entry may not be programmed yet look reachable: PF0 unbound
+via sysfs, PF0 bound to a different driver, or concurrent probing when async
+probing is enabled.  If the entry still holds zero, the mailbox ring BDF is
+also zero.  Best case that means the two ACK timeouts above and a probe
+failure with no retry; is a write towards a zero BDF also possible on this
+chip, and if so what stops it?
+
+> +/*
+> + * Teardown order: ctrl dev first, then common dev.
+> + * nbl_dev_remove_ctrl_dev() notifies firmware to clean all per-PF state
+> + * (including qinfo registers), so subsequent common dev queue cleanup
+> + * will not trigger PCIe master abort or invalid register access.
+> + */
+> +void nbl_dev_remove(struct nbl_adapter *adapter)
+> +{
+> +	struct nbl_common_info *common = &adapter->common;
+> +
+> +	if (common->has_ctrl)
+> +		nbl_dev_remove_ctrl_dev(adapter);
+> +	nbl_dev_remove_common_dev(adapter);
+> +}
+
+[Severity: Medium]
+
+How is the firmware cleanup serialized against the queue teardown that
+follows it?  The notification is a bare register write plus a flush:
+
+nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c:nbl_hw_deinit_module() {
+	nbl_hw_set_driver_status(hw_mgt, false);
+	/* ensure registers written */
+	nbl_flush_writes(hw_mgt);
+}
+
+There is no completion poll, status read-back or delay before
+nbl_dev_remove_common_dev() -> nbl_chan_teardown_queue() writes the queue
+reset:
+
+nbl_hw_stop_mailbox_rxq() / nbl_hw_stop_mailbox_txq() {
+	cfg_tbl.data[3] = FIELD_PREP(NBL_MAILBOX_QINFO_CFG_QUEUE_RST_MASK, 1);
+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR,
+			      cfg_tbl.data, sizeof(cfg_tbl));
+}
+
+and the QUEUE_RST/QUEUE_EN state is never read back, so a firmware write
+landing after the driver's reset write would leave the queue enabled in
+hardware while the driver believes it is stopped, with no way to notice.
+
+Could a driver-status handshake or a queue-reset read-back be added, or the
+claim in the commit message be dropped:
+
+> Firmware cleanup ensures valid
+> register access during common dev deinit and prevents PCIe master abort.
+
+For what it is worth, the DMA-after-free variant of this does not seem to
+apply: nbl_remove() calls pci_clear_master(pdev) before returning, and the
+dmam_alloc_coherent() rings are released by devres only after .remove()
+returns, so bus mastering is already off when the ring memory goes away.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831021408.2325-1-illusion.wang%40nebula-matrix.com
