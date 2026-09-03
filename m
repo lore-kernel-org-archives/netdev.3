@@ -1,56 +1,56 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEE749219D
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301E9453A54
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 12:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788437326; cv=none; b=HX2h49hOdNwe6MbiZzP+YWIIrC/nbsw9CE0xg+TM1Ynecyw8drYmCyU9z0iXP7d4oaAGHD5f0aF7/Ped3ip46Jubqblue54lGVtLZdaV1Ee59Oc5kkaD2/IPELzQ+SffU+9yXw0cFkAhQNjtow/ylWMd0AZm7o+9GQImb73Kz50=
+	t=1788437327; cv=none; b=NadV7GNehXhgs4flIkJc2ycjMrJq/wiXrsmDVap3VAMYxLlmFUrEF6tQa6YMvPkLLZPZhJNEDkri62WJNZP/zE7LXBc9Aovn5Ie8ZcQKwYrqtJxnIUas3KsP0Jdx0I6cZgFuHuVOzuF3z5RI4j9nceXlOIq/DMh+fb/Xqe34z10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788437326; c=relaxed/simple;
-	bh=3HT21EKjEC84ISx8TeY3/TshfcqtWZSXY6q3l5LDpA0=;
+	s=arc-20240116; t=1788437327; c=relaxed/simple;
+	bh=4S1d7ohGK54SgkYq3oMmvN/AkxzLrguuqK7LmeOmMcQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=D2opRoqceOYlyWum4YhfWl8hCVOlNO/Kl9VYoU3b2HH4BO2A47OXVWO7PzNYSA/dZfs/DCVZbcm3+RBKfMHAXvN2YX38zngfYntXHiUkosqbxyHt8qyUXWBvIvW/yESuIPzZMauR+54NirCBvsELeSbMZEDF8HjTzhkxrwAts3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TyQRo5kn; arc=none smtp.client-ip=209.85.222.199
+	 To:Cc:Content-Type; b=ck6D7xkBnQZdc8Fc+kMNqgy4kSI2XUe3fWigfR4IZrnQIBsmAL8wUaujD3kp4xehKcZ/XphjBrQAo3B93tBkfHZxvyJADiiPCNX8PwLjS5mHSUxmww9heFWYO5D4rZP5QdwqFxUnOXp4FaCDPgqkNYZ6gzaRSOfEiwMhB+5tIOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I5vmgLv7; arc=none smtp.client-ip=209.85.160.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TyQRo5kn"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-933023a5980so504678085a.3
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 05:08:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I5vmgLv7"
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-53018848232so16484941cf.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 05:08:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788437324; x=1789042124; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788437325; x=1789042125; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Lk0+Q6hMtOKZcsh1EUAVE+I7/l7qpGkOYE9jwGLdbkM=;
-        b=TyQRo5knFV5EUjSOz70qNbN1XqAiMhgzZoWONgdPyOV2ijPquWDN5TyqSftcUWhRvs
-         cF+V95NYvwYg6r8PgHz4+NXACiA18aorShTr06D7U8s2hnxyeNKa3NjbBzgkDiXKlYzO
-         VGNgY/J60KZ49Hp2ewwA4944zr93q7tPvXATZdqBTCjdp2BHx00xlxqD0IBZz26Q2Kie
-         vq30aACaQV+AtpUevq3XqKwMKyvHm6NjOXMWvMyaluar0rI/5w+8JVM937YCt7nWE9tp
-         V9YjlG2P/CQ12PW+utMu5farHTS2wTrBcAUNBrLjbj9qxRxQIdyUbQZWGhnfm7rQ61c+
-         7x9Q==
+        bh=nSKr8u5xZlNK8fpMG2HIvwpjBChMu25L0PjSFPHJGls=;
+        b=I5vmgLv7dqpJgtAO4OTvLOEXQRcWtKWLIATRel8QuaPwys8KOmN30DJgHmHuP+wU+t
+         Jt4kvn2A3n+6NPt4o0bGIr3bfk5si00O3hwEdcfAVSTKOe78MoAB2QYEiOpvc94V72kU
+         YcD5bSwWhSBHIc2iT8D5KgNj3QsvjN4HFmNskrJqA66L9aTj8Axf5jbFPf1SpBf56qO2
+         xwoTj+cKvYLipfDSAKEtql7t1Cb3nbh9QE0EcDNqq/hVQNTVHxPxdhVa5rL0A91JRE72
+         k4/GLp5ulZtmtWWxYe0LxjSlEcfj5VmFGU0ZGLQSgW8WJQwWEPdI/xigYCub1T+JIsIo
+         sayg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788437324; x=1789042124;
+        d=1e100.net; s=20251104; t=1788437325; x=1789042125;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Lk0+Q6hMtOKZcsh1EUAVE+I7/l7qpGkOYE9jwGLdbkM=;
-        b=hswWVqLa9uK7gXpozYvwXIl14s5jcVXci0F9N91971wHkMGv7uLRqXc2Fhv4jGjdww
-         ogXNbtB/+iAClZmJTFyw/x7d461sTRmXa7CxEfXa024rxm1lKvV1DSYWnzl8sVBL5TwR
-         upOT0lx/vu6xAzoqfvHahJkOrabvEeEeQY7c7m2w6mAb1iRwzrf2VMzS/dZeBVnAu4wH
-         4YniXKqvFtwnOAHo5oAbywo7pgjurWeJXRp8xfU63zUisvVv5dLu5V7Pdmw2eJ4VcoLr
-         yFQSi19cnGzHu3fraiDw0O4vl0TJKF+EsB0QcGv1FLQ5Yw0iq7JZOxa4n4y6ENY/vXXW
-         srzw==
-X-Forwarded-Encrypted: i=1; AKwUvBxYrBslVSA4w9zQOsSc/Y1pxZlaY7pFc6RJocJtmvxugp7CRSjVAr7a2Ad7i4NKam/1J+rQZNs=@vger.kernel.org
-X-Gm-Message-State: AFuF++nH3SR88RTvn5IGIkG7i1T1CncWzKZ66yIpIe9melUDQZJsMrzx
-	zqOiPqXCF6xgl9PNu4plDAksSGgz7ofok2+WCBm1ZnUUI66w8ApA9XTNbeYoSX9HQd5PWDIwUiO
-	xzqwbxERieabtRA==
-X-Received: from qknuo16-n2.prod.google.com ([2002:a05:620a:6310:20b0:936:c016:504d])
+        bh=nSKr8u5xZlNK8fpMG2HIvwpjBChMu25L0PjSFPHJGls=;
+        b=TbJ2EyhnCCti3UqYNYmbIbOelaMhGKfbdgR/ybohvA9mC0R6TWpJkUCHt0KuP9hx/h
+         FKeBmYQSN02Ea22EsukuNy6Kcf/QHauAnZp694/DoEUjOJ3KTwbKLWqXlF+E6SXaKwkL
+         4TptXRt0Cp0ODYkSE5FaXeRqgXG4y8WFBV5Nx6DyJY4On+HEuhGUOoh6UoZq7DfgEm1H
+         YkfNvLgAGQiJJQ6dr9Uo9qT2GeT56Ce1UK2YIDKN8CicOMzkLV0kMTs1O/nubZAmbTUK
+         8VQUJ7o971mg0sPd1w6ifbmxXBS6p+E06Q6ywgygge80AcjTXSzS/xK6Y9IYA1qExw/t
+         BI8A==
+X-Forwarded-Encrypted: i=1; AKwUvBy33k5Vi192Vmzgr2geayu0WxJgnK1B9z1VOpySbD+L3sxJdeI/lsZb8QyNIN6HDgX4wxeTw2g=@vger.kernel.org
+X-Gm-Message-State: AFuF++mdLKHnuF2c23HlmpAnCtc2lCx9nVYd+qx9Tmi5k2/MTZ0lT1JL
+	vLRVHR3RQs6apRoH3j/SMITepsNRsSgwkgA9uwqbruem3SvDc390qXOquc/RNHB51+U9agOD8lk
+	vACMJxsgQZmlJGA==
+X-Received: from qtrb11.prod.google.com ([2002:ac8:754b:0:b0:51c:43ce:65d9])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:d8c:b0:92e:ef09:f8f3 with SMTP id af79cd13be357-93960c91ccemr1343874785a.2.1788437323089;
- Thu, 03 Sep 2026 05:08:43 -0700 (PDT)
-Date: Thu,  3 Sep 2026 12:08:32 +0000
+ 2002:a05:622a:c14:b0:52e:f66:f17d with SMTP id d75a77b69052e-53036bf0c4amr149248371cf.12.1788437324536;
+ Thu, 03 Sep 2026 05:08:44 -0700 (PDT)
+Date: Thu,  3 Sep 2026 12:08:33 +0000
 In-Reply-To: <20260903120840.1024153-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260903120840.1024153-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260903120840.1024153-2-edumazet@google.com>
-Subject: [PATCH net-next 1/9] vxlan: initialize _md in vxlan_xmit_one()
+Message-ID: <20260903120840.1024153-3-edumazet@google.com>
+Subject: [PATCH net-next 2/9] vxlan: vnifilter: free vxlan_vni_group via RCU
+ in vxlan_vnigroup_uninit()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -70,62 +71,57 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-If a VXLAN device is configured with both VXLAN_F_COLLECT_METADATA and
-VXLAN_F_GBP, and a packet is transmitted through it using an external
-ip_tunnel_info that lacks the IP_TUNNEL_VXLAN_OPT_BIT flag, md is left
-pointing to the uninitialized _md stack variable:
+vxlan->vnigrp is an RCU-protected pointer accessed locklessly under
+rcu_read_lock() in vxlan_vnifilter_dump_dev().
 
-		if (test_bit(IP_TUNNEL_VXLAN_OPT_BIT, info->key.tun_flags)) {
-			if (info->options_len < sizeof(*md))
-				goto drop;
-			md = ip_tunnel_info_opts(info);
-		}
+Currently, vxlan_vnigroup_uninit() frees struct vxlan_vni_group
+synchronously via kfree(vg). If a VXLAN device is deleted concurrently
+with an RTM_GETTUNNEL dump, vxlan_vnifilter_dump_dev() can suffer a
+use-after-free when reading vg->num_vnis or walking vg->vni_list.
 
-Because IP_TUNNEL_VXLAN_OPT_BIT is not set, md is not updated and remains
-pointing to _md. Later, vxlan_build_skb() is called with md, which
-eventually calls vxlan_build_gbp_hdr():
+Fix this by clearing vxlan->vnigrp with rcu_assign_pointer() and freeing
+vg after an RCU grace period using kfree_rcu().
 
-	if (vxflags & VXLAN_F_GBP)
-		vxlan_build_gbp_hdr(vxh, md);
-
-Inside vxlan_build_gbp_hdr(), md->gbp is read:
-
-	if (!md->gbp)
-		return;
-	gbp = (struct vxlanhdr_gbp *)vxh;
-	...
-	if (md->gbp & VXLAN_GBP_DONT_LEARN)
-		gbp->dont_learn = 1;
-
-If the stack contains garbage, this causes:
-1) VXLAN_HF_GBP flag to be spuriously set in the VXLAN header.
-2) gbp->dont_learn and gbp->policy_applied to be set from stack bits.
-3) gbp->policy_id to receive 16 bits of uninitialized kernel stack data,
-   leaking it onto the wire.
-
-Fix this by zero-initializing _md. If IP_TUNNEL_VXLAN_OPT_BIT is not
-present, md->gbp remains 0, and vxlan_build_gbp_hdr() returns early
-without modifying the VXLAN header.
-
-Fixes: ee122c79d422 ("vxlan: Flow based tunneling")
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- drivers/net/vxlan/vxlan_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 3 ++-
+ include/net/vxlan.h                 | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 459f19f7071e5bafe9e4c57ef8819645c3da7121..6d886b6f2dc1d62f0eb26c9ba310c4feaed9cafd 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2362,7 +2362,7 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
- 	struct ip_tunnel_key key;
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	const struct iphdr *old_iph;
--	struct vxlan_metadata _md;
-+	struct vxlan_metadata _md = {};
- 	struct vxlan_metadata *md = &_md;
- 	unsigned int pkt_len = skb->len;
- 	__be16 src_port = 0, dst_port;
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index dd94085e088656d27b62420a5c8c95c609510a4c..ddfa24ad16f9303d7796e4a199b16dd5cc62047c 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -902,6 +902,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
+ 	struct vxlan_vni_group *vg;
+ 
+ 	vg = rtnl_dereference(vxlan->vnigrp);
++	rcu_assign_pointer(vxlan->vnigrp, NULL);
+ 	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
+ 		rhashtable_remove_fast(&vg->vni_hash, &v->vnode,
+ 				       vxlan_vni_rht_params);
+@@ -914,7 +915,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
+ 		call_rcu(&v->rcu, vxlan_vni_node_rcu_free);
+ 	}
+ 	rhashtable_destroy(&vg->vni_hash);
+-	kfree(vg);
++	kfree_rcu(vg, rcu);
+ }
+ 
+ int vxlan_vnigroup_init(struct vxlan_dev *vxlan)
+diff --git a/include/net/vxlan.h b/include/net/vxlan.h
+index 7b82075055237058d231d636698f640c75c521af..f41db72e9229d9cc8460ddbe265c6cd07890032d 100644
+--- a/include/net/vxlan.h
++++ b/include/net/vxlan.h
+@@ -279,6 +279,7 @@ struct vxlan_vni_group {
+ 	struct rhashtable	vni_hash;
+ 	struct list_head	vni_list;
+ 	u32			num_vnis;
++	struct rcu_head		rcu;
+ };
+ 
+ /* Pseudo network device */
 -- 
 2.55.0.970.g62bdec98f9-goog
 
