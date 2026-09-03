@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4F04F6495;
-	Thu,  3 Sep 2026 17:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F874F798D;
+	Thu,  3 Sep 2026 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788455919; cv=none; b=dJXShSXNssKfkU8aKwIMEqx8JkBQNLOQGAUyN4La7/PYmosd/KpWiNZbFWA0WnheMk6UhWaRxUjO8OPdJ0+TjR37vZCrPcqCTw6D/o3zHnTn+fDxt8nC1WseM2AyM2LRzH9hZX1dzIGTAYh2TtQ+Tz6/f3OS6gmz7l3woQ7bkuQ=
+	t=1788455921; cv=none; b=S1npVLuyOPTRBvaB11UcIXT2tws7rn3hkyTeS8PzkQElS5rpu1CeV/1g1OgOxGEzoepYPP5LRpU3msvcuTB1TujQdZ+EDc7vYu7kGHHA1QGoz5VJCtAGKgb/hrIUtpuajisPa3EgdtmXGnZ7MW588+IlJlLsiCkJ/p+SZq5ZQQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788455919; c=relaxed/simple;
-	bh=4r9xdRuw+nfGSIJsqPwKloMG7ugsToOcHD7QcXoN4mY=;
+	s=arc-20240116; t=1788455921; c=relaxed/simple;
+	bh=Crk/5TifzmN1stfZp9E3ID3itI66S5PvzceleYce+4U=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TYFxXDkZI55uVD0J2a1/ERJ4KCggbt3L+MabAafMSFuKGXmPny+MF1Zku7eYIcImWGQcRPqLRuBPWyO94QK2T3VonK0trTplrIL5qftOkL/yvDK7qHPGYwFzk5aIjFbz0ZvZOhTgr9L2y068D7+gzqZz5hBwpUXaY7ctqjRERYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbDTUD15; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=B/rqFc0CRSmqz1QLnKPeBcDF1fxAESRRz1twKIqicHBO9/usQDko+7swzXr8oZ6eXdtUjTzcpP0RG1ZXbmIkgEk5DArLnI13S8eo9M305vq5Rm9e1FpmDckzHIQF7MxwW8UqLvhDdHTY+haPuQyjBgaycHhMOJ/yvqjGnb+gyEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HBShT6IR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbDTUD15"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575E21F000E9;
-	Thu,  3 Sep 2026 17:18:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HBShT6IR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E659D1F00A3D;
+	Thu,  3 Sep 2026 17:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788455917;
-	bh=/VlosYE0+mQOcEd4YYUN3JGZzyrLKYH0CsOIAzr3Ma4=;
+	s=k20260515; t=1788455918;
+	bh=n17bE9u5TzzmrZQ7nDaW9yGufaf+IFDdVTwqtixbGWY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fbDTUD15HPDgyk7HtC4A+TLUQKRnjiRQuSufDjDfETdMczGneycGW3j7qcjIS38Ax
-	 L5eK2yLlkVsZSomz5kzqndPt0FBVLedGQwLlKEjm+YFGWaOvr/a9UNuorvzzTAL+Lv
-	 ucYsOq+E3PapRfKL5CmPruyDKfKJBHmpQNHPVIiqCmrhMzoqCrrbOERdlpUvicWRLl
-	 CkdHJxJr9B5Wdk6dZdwzhSZ0lHzv1sILksS6SqOC8PKD3mVPcvMV+404eEmhQe1FQ4
-	 qWrw21vovksrJxuHYJWCjdmRupOLE31wt3Vn0+xO2Tx6WZmI8G2jqg4mKE9QIROYcD
-	 mwR96LsF/MEdg==
-Subject: Re: [v26,net-next,03/10] net/nebula-matrix: add channel layer
+	b=HBShT6IRGDeE2yqTrcblHfa24ZJL0CzbuAblUDQ1U2FrvUH+FfaVkA8XAHo5S3wl+
+	 J1l2EiOhEfQARI44Q1LIcvO2HqrCjiUlxiGJAuiwz7w+8xo9PUBPCPnQQYRgvEO8nF
+	 vR/ky6lSOs8NL5+ygy0FbUHc+Vt8OwjW2QHSl+ZAzEQ/uRd5C97TwbnWCt4FGD1zJf
+	 q0zKV+VkTRLziy66eDQypmtCAKrqLbllFMfVuR/Ghoh2zEV3dI0D4PBeGC6xDBhLsO
+	 n9OXFJoplOPK1HlrIb8U5mvEGjyQKvqd3nSL6uxyaNk5XuOlaoDYzjJolqE+g1CSUa
+	 ndW63VX6LOwAQ==
+Subject: Re: [v26,net-next,04/10] net/nebula-matrix: add common resource
+ implementation
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
@@ -35,10 +36,10 @@ Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
  edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
  hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 17:18:35 +0000
-Message-ID: <178845591590.3394541.2319447689516880002@kernel.org>
-In-Reply-To: <20260831021408.2325-4-illusion.wang@nebula-matrix.com>
-References: <20260831021408.2325-4-illusion.wang@nebula-matrix.com>
+Date: Thu, 03 Sep 2026 17:18:37 +0000
+Message-ID: <178845591752.3394541.1488499474047337134@kernel.org>
+In-Reply-To: <20260831021408.2325-5-illusion.wang@nebula-matrix.com>
+References: <20260831021408.2325-5-illusion.wang@nebula-matrix.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,507 +50,307 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 22 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 20
+Critical: 0 · High: 0 · Medium: 2 · Low: 4
 
-- [Medium] nbl_chan_get_msg_id() treats a wait slot in
-  NBL_MBX_STATUS_TIMEOUT as free, but the timed-out owner has not…
-- [Medium] nbl_chan_kick_tx_ring() rings the TX doorbell and polls for
-  NBL_CHAN_TX_DESC_USED; on timeout it executes 'txq->next_to_clean =…
-- [Low] Commit message describes an operational mailbox framework (queue
-  lifecycle, dual RX modes, DMA buffers "allocated once in probe phase")…
-- [Low] nbl_chan_setup_queue() re-runs all
-  dmam_alloc_coherent()/devm_kcalloc() allocations (~2 MB per cycle)…
-- [Low] The data paths (nbl_chan_send_msg(), nbl_chan_clean_queue()) gate
-  only on chan_info->shutdn and never on chan_info->active, so a send or…
-- [Low] The commit message claims the patch adds "register lock
-  protection for hardware register read/write to ensure concurrent…
-- [Low] The comment in nbl_chan_cfg_qinfo_map_table() justifies iterating
-  raw hardware PF func_ids by claiming nbl_res_init_pf_num() already…
-- [Low] nbl_hw_rd_regs_lock()/nbl_hw_wr_regs_lock() perform
-  readl()/writel() at BAR0 offsets 0x1505004 (k_pf_mask) and 0xfb1000+…
-- [Low] nbl_chan_cfg_qinfo_map_table() consumes the raw k_pf_mask value
-  without honouring the driver's own documented contract (bit0 reserved…
-- [Low] The kernel-doc block for struct nbl_hw_ops::get_host_pf_mask
-  documents '@priv: hw ops private context', but the documented member's…
-- [Low] The drain-strategy comment in nbl_chan_teardown_queue() justifies
-  the 5 s inflight-drain timeout by asserting that every sender has 'its…
-- [Low] nbl_chan_get_msg_id() stores the slot it just claimed back into
-  chan_info->wait_head_index under a comment saying 'Advance starting…
-- [Low] nbl_hw_wr32() in nbl_hw_reg.h carries the comment 'Used for emu,
-  make sure that we won't write too frequently' although the body is a…
-- [Low] nbl_chan_teardown_queue() returns the raw wait_event_timeout()
-  result, so on success it returns a positive jiffies count (up to…
-- [Low] The device-removal path never tears down an active mailbox queue
-  before releasing channel resources: nbl_chan_remove_common() destroys…
-- [Low] nbl_common_get_hash_node() returns hash_node->data after dropping
-  the per-bucket spin_lock_bh with no reference count or RCU, and…
-- [Low] chan_info->active/shutdn, the state bitmap, inflight_wait and
-  inflight_tx_cnt are documented as guarded by state_lock, but…
-- [Low] nbl_chan_set_queue_state() clears NBL_CHAN_IRQ_RDY, which is part
-  of the wait condition used by the interrupt-mode ACK waiter in…
-- [Low] In nbl_chan_update_txqueue() the external-buffer path copies the
-  payload only 'if (param->arg)' but unconditionally programs…
-- [Low] Every channel op taking a u8 chan_type indexes
-  chan_mgt->chan_info[chan_type] (array size NBL_CHAN_TYPE_MAX == 1)…
-- [Low] In nbl_chan_kick_tx_ring()'s completion-poll loop, dma_rmb() is
-  issued before the load of tx_desc->flags with the comment 'Order…
-- [Low] nbl_hw_init_leonis() accepts any non-zero mailbox BAR length,
-  while nbl_hw_write_mbx_regs() silently drops out-of-range register…
+- [Medium] New, undisclosed fatal probe conditions derived purely from
+  firmware/register content.
+- [Medium] The kernel-doc contract of nbl_hw_ops::get_host_pf_mask in
+  nbl_include/nbl_def_hw.h states 'PF0 cannot be masked, bit0 is…
+- [Low] The commit message and a new code comment describe consumers and
+  an execution-order guarantee that do not exist at this commit, and the…
+- [Low] nbl_include/nbl_def_channel.h newly uses static_assert() but is
+  not self-contained: its only include is <linux/types.h> (which pulls…
+- [Low] The kernel-doc block for nbl_hw_ops::get_host_pf_mask documents
+  '@priv: hw ops private context', but the declared first parameter is…
+- [Low] Comment/implementation mismatch in
+  nbl_res_ctrl_dev_setup_eth_info(): the comment states 'Code accepts…
 
 --
 
-net/nebula-matrix: add channel layer
+net/nebula-matrix: add common resource implementation
 
-This adds the mailbox based inter-PF channel layer for the nbl driver,
-including the message handler hash table, TX/RX descriptor ring
-management with coherent DMA buffers, and a hardware abstraction layer
-for the mailbox queue registers.  A few questions below about the
-channel state machine, the TX completion poll and some comments that
-do not appear to match the code.
+This patch adds the common resource layer for the nbl driver, with helpers
+converting between vsi_id, func_id, eth_id and pf_id, plus new hw ops to
+read the board info, the FW eth bitmap and the real bus number.
+nbl_res_init_leonis() is now called from nbl_core_init() and initializes
+the VSI/Eth/PF data only for control devices.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> new file mode 100644
-> index 000000000000..c29ff76a75ae
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> @@ -0,0 +1,1220 @@
+A few questions below about the new firmware topology checks, the ops
+documentation and some of the new comments.
 
-[ ... ]
-
-> +static int nbl_chan_teardown_queue(struct nbl_channel_mgt *chan_mgt,
-> +				   u8 chan_type)
-> +{
-
-[ ... ]
-
-> +	/*
-> +	 * Step3:
-> +	 * wait all sender exit
-> +	 *
-> +	 * Drain strategy mirrors mlx5 command interface teardown:
-> +	 * set shutdown flag first, abort all pending waiters, then
-> +	 * block until inflight_tx_cnt reaches zero.
-> +	 *
-> +	 * A timeout here is treated as an exceptional condition rather
-> +	 * than a fatal error, following the same rationale as mlx5:
-> +	 *   - shutdn is already set, so every sender path observes it
-> +	 *     at its next checkpoint and exits;
-> +	 *   - each sender has its own bounded timeout (3s ACK wait,
-> +	 *     12ms max TX ring poll), all far shorter than this 5s
-> +	 *     drain window, so stalling beyond 5s should never happen
+> nbl_res_start() initializes VSI/Eth/PF data structures only for control
+> devices (`common->has_ctrl == true`). Framework dispatch layer ensures
+> resource mapping APIs such as nbl_res_func_id_to_vsi_id() are only invoked
+> on control devices.
 
 [Severity: Low]
-Is the "3s ACK wait" bound accurate for both wait modes?  The 3 * HZ
-bound (NBL_CHAN_ACK_WAIT_TIME) applies only to the interrupt branch of
-nbl_chan_send_msg().  The polling branch loops
-NBL_CHAN_TX_WAIT_ACK_TIMES times with usleep_range():
+Which dispatch layer is meant here?  At this commit nbl_core_init() returns
+right after nbl_res_init_leonis():
 
-	int i = NBL_CHAN_TX_WAIT_ACK_TIMES;
-	...
-		while (i--) {
-			...
-			usleep_range(NBL_CHAN_TX_WAIT_ACK_US_MIN,
-				     NBL_CHAN_TX_WAIT_ACK_US_MAX);
+	ret = nbl_res_init_leonis(adapter);
+	if (ret)
+		goto res_init_fail;
+	return adapter;
 
-With NBL_CHAN_TX_WAIT_ACK_TIMES = 5000 and 1000-1200 us per iteration
-that is roughly 5-6 s, which is longer than the 5 s drain window the
-comment says every sender bound is "far shorter" than.  Should the
-comment be corrected, or the constants adjusted?
+adap->intf.resource_ops_tbl is published but has no consumer yet, and
+nbl_res_vsi_id_to_pf_id() and nbl_res_pf_dev_vsi_type_to_hw_vsi_type() are
+non-static with no users outside nbl_resource.c.
 
-> +	 *   - in that hardware-dead case proceeding with teardown cannot
-> +	 *     make the situation worse, and avoids hanging rmmod forever.
+Could the commit message describe the guarantee that exists at this point in
+the series, i.e. the has_ctrl checks inside the helpers themselves?
+
+The same concern applies to the ordering comment in
+nbl_res_ctrl_dev_sriov_info_init(), see below.
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+> new file mode 100644
+> index 000000000000..a719cc8fbf8a
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+> @@ -0,0 +1,334 @@
+
+[ ... ]
+
+> +	eth_info->eth_num = fw_port_num;
+> +	/* Intentional design constraint: each PF maps to exactly one
+> +	 * Ethernet port. This couples PF identity to port identity
+> +	 * and is required by nbl_res_get_eth_id() which indexes
+> +	 * eth_info->eth_id[] by relative PF id.
 > +	 */
-> +	ret = wait_event_timeout(chan_info->inflight_wait,
-> +				 atomic_read(&chan_info->inflight_tx_cnt) == 0,
-> +				 msecs_to_jiffies(5000));
-> +
-> +	if (!ret) {
-> +		dev_warn(chan_mgt->common->dev,
-> +			 "teardown: inflight tx drain timeout\n");
-> +		ret = -ETIMEDOUT;
-> +	}
-
-[Severity: Low]
-On the success path this returns the raw wait_event_timeout() value,
-i.e. the remaining jiffies (up to ~5000), through
-
-	int (*teardown_queue)(struct nbl_channel_mgt *chan_mgt, u8 chan_type);
-
-while the early "channel not active" path of the same function returns
-0.  Would it be better to normalise the success case to 0 so a caller
-doing "if (ret) goto err;" does not treat a fully drained queue as a
-failure?
-
-> +
-> +	/* After all TX drained, stop hardware queue */
-> +	nbl_chan_stop_queue(chan_mgt);
-> +
-> +	/* All send paths drained, safely cancel cleanup work */
-> +	if (task)
-> +		cancel_work_sync(task);
-> +	WRITE_ONCE(chan_info->active, false);
-> +	return ret;
-> +}
-> +
-> +static int nbl_chan_setup_queue(struct nbl_channel_mgt *chan_mgt, u8 chan_type)
-> +{
-
-[ ... ]
-
-> +	nbl_chan_config_queue(chan_mgt, chan_info, true); /* tx */
-> +	nbl_chan_config_queue(chan_mgt, chan_info, false); /* rx */
-> +	nbl_chan_update_tail_ptr(hw_ops, chan_mgt->hw_ops_tbl->priv,
-> +				 rxq->tail_ptr, NBL_MB_RX_QID);
-> +	WRITE_ONCE(chan_info->active, true);
-> +	return 0;
-> +}
-
-[Severity: Low]
-Can this mark the channel active when the hardware queues were never
-programmed?  nbl_chan_config_queue() calls config_mailbox_txq/rxq,
-which are void and end up in nbl_hw_write_mbx_regs(); that helper drops
-out-of-range writes after a dev_err_once() and returns void, so the
-failure cannot reach here.
-
-nbl_hw_init_leonis() only rejects a mailbox BAR of length zero, while
-the queue configuration tables are written at
-NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR (0x10) and
-NBL_MAILBOX_QINFO_CFG_TX_TABLE_ADDR (0x20) plus 16 bytes each.  On a
-BAR2 smaller than 0x30 the writes are silently skipped, the RX doorbell
-is still rung and active is set to true.
-
-Would it make sense to validate the mailbox BAR against the highest
-register offset the driver uses at probe time, and/or let the config
-ops return an error?
-
-> +
-> +static int nbl_chan_update_txqueue(struct nbl_channel_mgt *chan_mgt,
-
-[ ... ]
-
-> +static int nbl_chan_kick_tx_ring(struct nbl_channel_mgt *chan_mgt,
-> +				 struct nbl_chan_info *chan_info)
-> +{
-
-[ ... ]
-
-> +	while (retry_count < max_retries) {
-> +		if (READ_ONCE(chan_info->shutdn))
-> +			return -ESHUTDOWN;
-> +
-> +		/* Order descriptor read after hardware DMA completion */
-> +		dma_rmb();
-> +		if (le16_to_cpu(READ_ONCE(tx_desc->flags)) &
-> +		    BIT(NBL_CHAN_TX_DESC_USED)) {
-> +			break;
-> +		}
-
-[Severity: Low]
-Does the dma_rmb() here provide the ordering the comment describes?  It
-is issued before the load of tx_desc->flags, so it cannot order later
-reads of device-written descriptor fields against observing USED.  The
-RX side in nbl_chan_clean_queue() uses the other order:
-
-	while (le16_to_cpu(READ_ONCE(rx_desc->flags)) &
-	       BIT(NBL_CHAN_RX_DESC_USED)) {
-		...
-		/* Make sure hardware written descriptor visible to CPU */
-		dma_rmb();
-		nbl_chan_recv_msg(chan_mgt, rx_buf->va);
-
-Should the TX poll follow the same pattern, loading flags first and
-placing dma_rmb() between the USED test and any other descriptor field?
-
-> +
-> +		retry_count++;
-> +		if (retry_count == max_retries) {
-> +			msg_type = le16_to_cpu(READ_ONCE(tx_desc->msg_type));
-> +			dev_err_ratelimited(dev, "chan send msg type: %d timeout\n",
-> +					    msg_type);
-> +			txq->next_to_clean = txq->next_to_use;
-> +			return -ETIMEDOUT;
-> +		}
-> +		usleep_range(NBL_CHAN_TX_WAIT_US, NBL_CHAN_TX_WAIT_US_MAX);
+> +	if (res_mgt->resource_info->max_pf != eth_info->eth_num) {
+> +		dev_err(dev, "Invalid PF-to-port topology: max_pf=%u, eth_num=%u\n",
+> +			res_mgt->resource_info->max_pf, eth_info->eth_num);
+> +		return -EINVAL;
 > +	}
 
 [Severity: Medium]
-On the timeout path the descriptor is still marked AVAIL, i.e. owned by
-the device, but next_to_clean is force-synced to next_to_use and the
-mailbox TX queue is left enabled with no reset.  The -ESHUTDOWN early
-return leaves next_to_clean behind next_to_use with a device-owned
-descriptor outstanding.
+Is the equality of these two values actually guaranteed by the hardware?
 
-nbl_chan_update_txqueue() then republishes slots with no producer /
-consumer fullness or ownership test:
+max_pf comes from the k_pf_mask register via nbl_res_init_pf_num(), while
+eth_num comes from NBL_FW_BOARD_DW3 port_num via nbl_hw_get_board_info().
+The two quantities are reported independently by firmware, and the only
+statement that they must match is this comment.
 
-	struct nbl_chan_tx_desc *tx_desc =
-		NBL_CHAN_TX_RING_TO_DESC(txq, txq->next_to_use);
-	struct nbl_chan_buf *tx_buf =
-		NBL_CHAN_TX_RING_TO_BUF(txq, txq->next_to_use);
-	...
-		if (param->arg)
-			memcpy(tx_buf->va, param->arg, param->arg_len);
-	...
-	tx_desc->flags = cpu_to_le16(BIT(NBL_CHAN_TX_DESC_AVAIL));
+The consequence is a probe failure: nbl_probe() -> nbl_core_init() ->
+nbl_res_init_leonis() -> nbl_res_start() -> nbl_res_ctrl_dev_setup_eth_info()
+returns -EINVAL, and nbl_core_init() turns that into ERR_PTR(ret), so the
+control PF does not bind at all.
 
-After NBL_CHAN_QUEUE_LEN further sends the ring wraps onto that slot.
-Can this rewrite a descriptor and its coherent tx_buf while the device
-is still fetching or DMAing them?  Would quiescing the queue with
-stop_mailbox_txq() (or rolling tail_ptr back) on the timeout path, plus
-a fullness check in nbl_chan_update_txqueue(), be needed here?
+Would it make sense to document this firmware contract in nbl_def_hw.h next
+to get_host_pf_mask/get_board_info, and to mention in the changelog that this
+patch introduces new fatal probe conditions?
 
 > +
-> +	txq->next_to_clean = txq->next_to_use;
-> +
-> +	return 0;
-> +}
+> +	/*
+> +	 * Original comment said dual-port board eth_id fixed to 0,2;
+> +	 * Code accepts any contiguous valid bitmap bits (0/1 or 0/2 etc).
+> +	 * Firmware only needs to report correct count of active ports,
+> +	 * no hard-coded fixed bit positions required.
+> +	 */
+> +	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
+> +		if ((1 << i) & eth_bitmap) {
+> +			set_bit(i, eth_info->eth_bitmap);
+> +			eth_info->eth_id[eth_num] = i;
+> +			eth_info->logic_eth_id[i] = eth_num;
+> +			eth_num++;
+> +		}
+> +	}
+
+[Severity: Low]
+This isn't a bug, but the word "contiguous" in the comment does not match the
+loop, and the example given (0/2) is not contiguous either.
+
+The loop imposes no contiguity rule: any subset of bits 0..3 whose population
+count equals board_info.eth_num (and equals max_pf) is accepted, so
+eth_bitmap = 0b1010 is mapped to PF0/PF1 as well.
+
+Should the word be dropped, or should the bitmap actually be checked for
+contiguity?
 
 [ ... ]
 
-> +static int nbl_chan_get_msg_id(struct nbl_chan_info *chan_info,
-> +			       u16 *msgid)
+> +	res_mgt->resource_info->sriov_info = sriov_info;
+> +	/*
+> +	 * common->hw_bus supplies bus number for channel mailbox QINFO mapping.
+> +	 * Execution order guarantee: this assignment runs before
+> +	 * cfg_chan_qinfo_map_table() in nbl_dev_start(), only executed
+> +	 * on control PF path.
+> +	 */
+> +	common->hw_bus = hw_bus;
+
+[Severity: Low]
+Where is nbl_dev_start()?  It does not exist at this commit, and later in the
+series cfg_chan_qinfo_map_table() is reached from nbl_dev_setup_ctrl_dev() via
+nbl_dev_setup_chan_qinfo():
+
+	nbl_dev_setup_ctrl_dev()
+	  nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX)
+	    cfg_chan_qinfo_map_table()
+
+so the function named in the ordering comment is wrong even at the end of the
+series.  Could the comment name the actual caller?
+
+[ ... ]
+
+> +static int nbl_res_init_pf_num(struct nbl_resource_mgt *res_mgt)
 > +{
-> +	int search_loc = READ_ONCE(chan_info->wait_head_index), i;
-> +	struct nbl_chan_waitqueue_head *wait = NULL;
-> +	int status;
+> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
+> +	u32 exp_contiguous_mask = 0;
+> +	u32 pf_mask = 0;
+> +	u32 pf_num = 0;
+> +	int i;
 > +
-> +	lockdep_assert_held(&chan_info->pending_lock);
-> +	for (i = 0; i < chan_info->num_txq_entries; i++) {
-> +		wait = &chan_info->wait[search_loc];
-> +		status = READ_ONCE(wait->status);
-> +		if (status == NBL_MBX_STATUS_IDLE ||
-> +		    status == NBL_MBX_STATUS_TIMEOUT) {
+> +	hw_ops->get_host_pf_mask(res_mgt->hw_ops_tbl->priv, &pf_mask);
+> +
+> +	/*
+> +	 * k_pf_mask register rule:
+> +	 * bit N == 0  -> PF#N enabled; bit N == 1 -> PF#N masked out.
+> +	 * Hardware constraint: bit0 is reserved, PF0 cannot be masked.
+> +	 * All-zero pf_mask means all PF0~PF7 are enabled.
+> +	 *
+> +	 * Product firmware constraint: only 3 valid configurations supported:
+> +	 * 1 PF  (PF0 only): pf_num = 1, mask = 0xfe
+> +	 * 2 PFs (PF0,PF1):  pf_num = 2, mask = 0xfc
+> +	 * 4 PFs (PF0~PF3): pf_num = 4, mask = 0xf0
+> +	 * No other PF count or sparse/non-contiguous PF layout is allowed.
+> +	 */
+> +	for (i = 0; i < NBL_MAX_PF; i++) {
+> +		if (!(pf_mask & (1 << i)))
+> +			pf_num++;
+> +	}
+> +
+> +	/*
+> +	 * Sanity check: enabled PFs must be contiguous starting from PF0.
+> +	 * Current resource framework uses relative PF id, sparse PF layout
+> +	 * will cause mismatch between resource layer and hardware func_id.
+> +	 */
+> +	for (i = 0; i < pf_num; i++)
+> +		exp_contiguous_mask |= BIT(i);
+> +	if ((pf_mask & exp_contiguous_mask) != 0) {
+> +		dev_err(res_mgt->common->dev,
+> +			"pf_mask 0x%08x: non-contiguous enabled PF, unsupported\n",
+> +			pf_mask);
+> +		return -EINVAL;
+> +	}
 
 [Severity: Medium]
-Is a slot in NBL_MBX_STATUS_TIMEOUT really free at this point?  The
-timed-out owner sets that status under pending_lock and then drops the
-lock before it releases the slot:
+Does this treatment of bit0 agree with the ops documentation?
 
-nbl_chan_send_msg()
-	mutex_lock(&chan_info->pending_lock);
-	if (READ_ONCE(wait_head->status) == NBL_MBX_STATUS_WAITING) {
-		WRITE_ONCE(wait_head->status, NBL_MBX_STATUS_TIMEOUT);
-		...
-	}
-	mutex_unlock(&chan_info->pending_lock);
-	dev_err_ratelimited(...);
-	ret = -ETIMEDOUT;
-	goto out_clear_wait_slot;
+nbl_def_hw.h says of the same register:
 
-out_clear_wait_slot:
-	mutex_lock(&chan_info->pending_lock);
-	nbl_chan_reset_wait_head(chan_info, wait_head);
+	 * PF0 cannot be masked, bit0 is reserved and has no hardware effect.
+	 * All-zero mask indicates all supported PFs are present and enabled.
 
-If a second sender claims the same slot in that window, the reset then
-clears the new owner's state, since nbl_chan_reset_wait_head() has no
-ownership check:
+but here bit0 is counted as a normal PF enable bit, and the contiguity test
+then requires it to be clear: exp_contiguous_mask always contains BIT(0) for
+any accepted pf_num >= 1, so a pf_mask with bit0 set fails.
 
-	WRITE_ONCE(wait_head->status, NBL_MBX_STATUS_IDLE);
-	WRITE_ONCE(wait_head->ack_data, NULL);
-	WRITE_ONCE(wait_head->ack_data_len, 0);
+Two examples: mask 0xff (PF0 only, with the documented-as-reserved bit0 also
+set) gives pf_num == 0, and mask 0xfd gives pf_num == 1 with bit0 set and
+trips the contiguity check.  Both end in -EINVAL and an aborted probe.
 
-The second sender can then be woken on the shared wait_queue and
-consume another request's ack_data_len / ack_err:
+Should nbl_res_init_pf_num() ignore bit0, or should the header comment be
+corrected to say bit0 is a real enable bit?
 
-		if (READ_ONCE(wait_head->acked)) {
-			smp_rmb();
-			chan_send->ack_len = READ_ONCE(wait_head->ack_data_len);
-			ret = READ_ONCE(wait_head->ack_err);
-
-Can that return success with a non-zero ack_len while chan_send->resp
-was never written, so the caller reads uninitialised memory as a
-mailbox reply?  Would releasing the slot to IDLE in the same critical
-section that sets TIMEOUT, or adding a generation/ownership check in
-nbl_chan_reset_wait_head(), close this?
-
-> +			WRITE_ONCE(wait->msg_index,
-> +				   NBL_NEXT_ID(wait->msg_index,
-> +					       NBL_CHAN_MSG_INDEX_MAX));
 > +
-> +			*msgid = FIELD_PREP(NBL_CHAN_MSGID_INDEX_MASK,
-> +					    wait->msg_index) |
-> +				 FIELD_PREP(NBL_CHAN_MSGID_LOC_MASK,
-> +					    search_loc);
-> +
-> +			/* Advance starting search position for next caller */
-> +			WRITE_ONCE(chan_info->wait_head_index, search_loc);
+> +	/* Only allow product-specified PF count: 1 / 2 / 4 */
+> +	if (pf_num != 1 && pf_num != 2 && pf_num != 4) {
+> +		dev_err(res_mgt->common->dev,
+> +			"Invalid pf_num=%u (mask=0x%08x), only 1/2/4 PFs supported\n",
+> +			pf_num, pf_mask);
+> +		return -EINVAL;
+> +	}
 
-[Severity: Low]
-The comment says the search position is advanced, but the slot that was
-just claimed is stored back, so the next caller starts at the same
-index.  Was NBL_NEXT_ID(search_loc, chan_info->num_txq_entries - 1)
-intended?
+[Severity: Medium]
+What happens on a board where the k_pf_mask register still reads its reset
+value of zero?  nbl_def_hw.h describes an all-zero mask as "all supported PFs
+are present and enabled", which yields pf_num == 8 here and is then rejected
+with -EINVAL, failing probe.
 
-As written, a single sender keeps reusing wait[0], so the 6-bit
-generation field NBL_CHAN_MSGID_INDEX_MASK wraps every 64 requests
-instead of the msgid space being spread over the 256 slots.  That is
-the field nbl_chan_recv_ack_msg() uses to reject stale ACKs:
-
-	if (FIELD_GET(NBL_CHAN_MSGID_INDEX_MASK, ack_msgid) != w_msgidx) {
-
-> +			return 0;
-> +		}
+Is the all-zero case expected to be rejected, and if so should the header
+comment say so?
 
 [ ... ]
 
-> +static void nbl_chan_set_queue_state(struct nbl_channel_mgt *chan_mgt,
-> +				     enum nbl_chan_state state, u8 chan_type,
-> +				     u8 set)
-> +{
-> +	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-> +
-> +	if (set)
-> +		set_bit(state, chan_info->state);
-> +	else
-> +		clear_bit(state, chan_info->state);
-> +}
-
-[Severity: Low]
-Clearing NBL_CHAN_IRQ_RDY makes the wait condition in
-nbl_chan_send_msg() true:
-
-			ret = wait_event_timeout(wait_head->wait_queue,
-						 READ_ONCE(wait_head->acked) ||
-						 READ_ONCE(chan_info->shutdn) ||
-						 !test_bit(NBL_CHAN_IRQ_RDY,
-							   chan_info->state),
-						 NBL_CHAN_ACK_WAIT_TIME);
-
-but no wake_up() of the per-slot wait queues follows the clear_bit().
-Should the waiters be woken here?  Otherwise a sleeping sender only
-notices the mode change when the 3 s timeout expires and then reports
--ETIMEDOUT rather than the -EIO the !test_bit() branch is meant to
-return.
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
-> new file mode 100644
-> index 000000000000..e6d96768a5b5
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
-> @@ -0,0 +1,170 @@
-
-[ ... ]
-
-> +#define NBL_CHAN_TX_WAIT_ACK_US_MIN		1000
-> +#define NBL_CHAN_TX_WAIT_ACK_US_MAX		1200
-> +#define NBL_CHAN_TX_WAIT_ACK_TIMES		5000
-
-[ ... ]
-
-> +#define NBL_CHAN_MSG_INDEX_MAX 63
-> +
-> +#define NBL_CHAN_MSGID_INDEX_MASK GENMASK(5, 0)
-> +#define NBL_CHAN_MSGID_LOC_MASK GENMASK(13, 6)
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index a67d1a674466..24b15418e601 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> @@ -10,6 +10,156 @@
->  #include <linux/bitfield.h>
->  #include "nbl_hw_leonis.h"
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+> index 4fc987c0e56d..61dd97c779ef 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+> @@ -39,6 +39,16 @@ enum nbl_chan_state {
+>  	NBL_CHAN_STATE_NBITS
+>  };
 >  
-> +static void nbl_hw_write_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
-> +				  const u32 *data, u32 len)
-> +{
-> +	u32 i;
+> +struct nbl_board_port_info {
+> +	u8 eth_num;
+> +	u8 eth_speed;
+> +	u8 p4_version;
+> +	u8 rsv[5];
+> +};
 > +
-> +	if (len % 4)
-> +		return;
-> +	if (reg >= (u64)hw_mgt->mailbox_bar_size ||
-> +	    reg + len > (u64)hw_mgt->mailbox_bar_size) {
-> +		dev_err_once(hw_mgt->common->dev,
-> +			     "mbx write out of range: reg=0x%llx len=%u bar_size=%pa\n",
-> +			     reg, len, &hw_mgt->mailbox_bar_size);
-> +		return;
-> +	}
-> +	for (i = 0; i < len / 4; i++)
-> +		nbl_mbx_wr32(hw_mgt, reg + i * sizeof(u32), data[i]);
-> +}
+> +static_assert(sizeof(struct nbl_board_port_info) == 8,
+> +	      "nbl_board_port_info size must be 8 bytes");
 > +
-> +static void nbl_hw_rd_regs_lock(struct nbl_hw_mgt *hw_mgt, u64 reg, u32 *data,
-> +				u32 len)
-> +{
-> +	u32 size = len / 4;
-> +	u32 i;
-> +
-> +	if (len % 4)
-> +		return;
-> +
-> +	spin_lock(&hw_mgt->reg_lock);
-> +
-> +	for (i = 0; i < size; i++)
-> +		data[i] = rd32(hw_mgt->hw_addr, reg + i * sizeof(u32));
-> +	spin_unlock(&hw_mgt->reg_lock);
-> +}
 
 [Severity: Low]
-The changelog says:
+Should this header include linux/build_bug.h?  static_assert is defined there,
+while the only include in nbl_def_channel.h is linux/types.h.
 
-    - Add register lock protection for hardware register read/write to
-    ensure concurrent access safety
-
-Does that cover the mailbox path?  Only nbl_hw_rd_regs_lock() and
-nbl_hw_wr_regs_lock() take hw_mgt->reg_lock.  nbl_hw_write_mbx_regs()
-above takes no lock, and it is the only writer used by
-config_mailbox_rxq/txq and stop_mailbox_rxq/txq for the four dword
-QINFO configuration sequence, which looks like it wants to be one
-atomic programming step.  nbl_hw_update_mailbox_queue_tail_ptr() is
-also unlocked.  Should the changelog be narrowed, or should the mailbox
-BAR helpers take the same lock?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-> index 5e9823e01d39..35604bdff2ae 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-
-[ ... ]
-
-> +static inline void nbl_hw_wr32(struct nbl_hw_mgt *hw_mgt, u64 reg, u32 value)
-> +{
-> +	/* Used for emu, make sure that we won't write too frequently */
-> +	wr32(hw_mgt->hw_addr, reg, value);
-> +}
-
-[Severity: Low]
-The comment promises rate limiting, but the body is a plain writel()
-with no delay or throttling.  Should the comment be dropped?
+It builds today because every current translation unit pulls in linux/device.h
+or linux/pci.h before the nbl headers, but nbl_hw_reg.h already includes
+nbl_def_channel.h before linux/pci.h arrives via nbl_core.h, so a future .c or
+.h that includes nbl_def_channel.h first would fail with an implicit
+declaration of static_assert.
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-> index ecbf440e4366..587ac0c58c24 100644
+> index 587ac0c58c24..ee53f9e10a8e 100644
 > --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
 > +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-> @@ -10,6 +10,39 @@
-
-[ ... ]
-
-> +	/**
-> +	 * get_host_pf_mask - Fetch host PF mask from firmware k_pf_mask reg
-> +	 * @priv: hw ops private context
-> +	 * @pf_mask: output pointer for PF mask value
+> @@ -34,9 +35,13 @@ struct nbl_hw_ops {
+>  	 * or other PF counts are unsupported by driver resource management.
+>  	 */
+>  	void (*get_host_pf_mask)(struct nbl_hw_mgt *hw_mgt, u32 *pf_mask);
+> +	void (*get_real_bus)(struct nbl_hw_mgt *hw_mgt, u8 *bus);
 
 [Severity: Low]
-The documented member has no priv parameter:
+This isn't a bug, but the kernel-doc block just above get_host_pf_mask
+documents "@priv: hw ops private context" while the declared first parameter
+is struct nbl_hw_mgt *hw_mgt, so scripts/kernel-doc -Wall reports an
+undescribed parameter hw_mgt plus an excess @priv description.
 
-	void (*get_host_pf_mask)(struct nbl_hw_mgt *hw_mgt, u32 *pf_mask);
-
-kernel-doc will report an excess parameter priv and a missing hw_mgt.
-Should the tag be renamed to @hw_mgt?
-
-[ ... ]
-
-> +	void (*get_host_pf_mask)(struct nbl_hw_mgt *hw_mgt, u32 *pf_mask);
+Since this patch extends the same ops structure and its new resource-layer
+consumer relies on that comment block for the pf_mask contract, could the
+parameter name be fixed here?
 
 [ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> index b7c80ea54c8d..1aafed2d46d7 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> @@ -42,7 +44,13 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+>  	ret = nbl_chan_init_common(adapter);
+>  	if (ret)
+>  		goto chan_init_fail;
+> +
+> +	ret = nbl_res_init_leonis(adapter);
+> +	if (ret)
+> +		goto res_init_fail;
+>  	return adapter;
+
+[Severity: Medium]
+This is the point where the new firmware topology validations become probe
+failures: any -EINVAL from nbl_res_init_pf_num() or
+nbl_res_ctrl_dev_setup_eth_info() propagates here and nbl_core_init() returns
+ERR_PTR(ret), so nbl_probe() reports "Nbl adapter init fail" and the device
+does not bind.
+
+Could the changelog mention that this patch alone can turn a previously
+successful probe into -EINVAL depending on register content?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831021408.2325-1-illusion.wang%40nebula-matrix.com
