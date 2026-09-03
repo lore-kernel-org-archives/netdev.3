@@ -1,178 +1,110 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A79366042
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D6643CE7E
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788424040; cv=none; b=C0cOpPifeXShsLFXDT6jn+AIeopEjLWGOHjvZkYhwMHxhcR/UEDdtz3lBhZBaLPF3E5ivpQTuzCpkfDhHCN2IPKroY53fIKo7gZxwLT+K7W2pmLS38wvNvebecLDbRtIN/XWWm97Cn4yXwYIRYsOZxp6/hcSsARDrQc3RzdXGs4=
+	t=1788424055; cv=none; b=NbzMKkEdd5AtZPQ9JSpXGlOUxQKkRSRijoo4Eo+Ay0aZdCe9VnDD44aL+cd8+Ir3tt+DQK2j15SWZEnd3ecGC3BbNYcSi+Poa/bJaHlIt1Iz2BdY/q6909s8DC1W2taZYkRcP3gjEJNH0Rww0F66URI5c1J3w7wgJMtEDytJ5to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788424040; c=relaxed/simple;
-	bh=QHcbKX4vQy3vRwUBSr3fQ/6HMsYcVpJ+fH8mUI/pgj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=obcpUuYHAAKI9i13iqFWqOj6asIUaMGJejrZ69rQa0fZgq/NrBTBeXaiaWLYu8ztitcAPP2qvooZ54o2fVZeHztdblF/+Fst7SSLHbjEAnlUbezoh2lMOHFcEX8Mamr9ZGpxrxKeTZk/Ho7DbUVQWWpvha9zunRwfFt3beNw1Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuXnDGAd; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788424055; c=relaxed/simple;
+	bh=67/91FpklvfDsnTt3gW3LRXC7Q4MrhTlEM2ATgBsutM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=rJ+SIsAM0PT6t2bbINY2CTnHs6Naq1J/BSkIgBrVecdYdhKK5AL/pwG8SQkfJxjGGtx7nMTkrIrMbLxnNt11CAw15BHgwyO0eJobjYHsUtUmsE4jCVOfC5UdKjPNpHVLoutruolWeoLn/yaAieHKhrOsdDWzL0G+ZtXtw9MDO7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TUdfXqNl; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuXnDGAd"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c169ae1cb26so134167466b.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:27:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788424037; x=1789028837; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UBM23VaC7NRoTSibSXqitvOOFeGtS5Tiv5Blws+1ceU=;
-        b=EuXnDGAdCQQIhFPc46E7iheOMgsGWg8MuISdJOXBEuzNtxw659SD16xWebgaUdldHO
-         DwPpWvNimj32UYS3IDRpCs2Tt6EXVr4yTzmMr30tNsff62Q6d6UuwIRO9uW8HgHczQs+
-         1OOCBnuMP0BonoNUAmezfRyG/wvDhNsIoXNT86Ycs1btTe5iIBmeLlXpoKAUoH6o6sM/
-         yR2MB/lQl8Y67RIFVQCxcmquCR+wkP/aiU3xsebq0EleCyN3gHFTOR91TPU/DtlsCQzr
-         bmYWE/ldzCQewER0wTTONxW/Eqa0tNMnifUssxGGUU9u2iCSr/DTQMsbcSOI+CTfZ9mu
-         AjAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788424037; x=1789028837;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UBM23VaC7NRoTSibSXqitvOOFeGtS5Tiv5Blws+1ceU=;
-        b=m8Vlx8zVhVLzwcIt5JH6mSMkXPZzSVYb3gI5k1TosXR8JN6/zVvNu5cF5BefidD3Jt
-         Fp2K+HqsOqPefsSGN/StJTakHQGLPeJOWaWfdXCtZvrJ46rBBfgBoOsX6ytsZm37X7Py
-         8gl1HgJaolUN+cOlQRXp0op+IbvBwwVb3r4VELzSsxq2PB1TMMX2tfOiSY4JiHDo0Qjm
-         DJ3fHN81Z5UT8CRRBUh5bJqwFOIgHIuFER2KRJHUdrnkP2xG9K+f00taSOCHZM+GS/3N
-         rpO4k9LmeLfh1YnTrkTBMWhZxpk1pbwA+w0aFwyfv9czmV6JiZovUv4lahKODbY3L0xd
-         +QtA==
-X-Forwarded-Encrypted: i=1; AKwUvBxgdV2BJa/3HQxnqHbJTaBxDNUe7zKYbUa2HwWL9qexTiDKcmi/39rBKlisM2jgRZzTiFD8RSw=@vger.kernel.org
-X-Gm-Message-State: AFuF++lnOkFMx3/UkCcUbkIGhPnCE85zFbaoOqOrUdzyreqwN4QhI/4d
-	bDFqWC0DLHRZz1WxHAaz9XGwUCpdhd1P28Lq0/vDUX2ANOTQth9N40cU
-X-Gm-Gg: AYBFou3UhrI9aZGGj+Rs/kT5x8wuhPifCHRBLzeMWFgNBJHx7aalTo8RhYSIFmS7XDE
-	jWVeHp9z8fmx3sFwwccRlvqma29gdOGEWcgTpStCwqXTFsbvRNmMvbALai3ESoAYOSPMsDIAleV
-	+JMloJpS3p51KtBLjnZ8IvM5bRBxRYn3f1Fygi372gP1xrQKxUTAq2TJtVv0tTXmeUjTaQBpvyr
-	reHHy1R4a9abm4yVklzltWOuejHwDSgv9PMJ7PnDUwa+wt208HvXuo1Wpo/v2n6dJXO8+xS8Em1
-	pCanW1iw4uN3SEJFT6fWV/Dq503dYhWGxJ21aNYOgpmfYgJ7+SGpFk86pT6IJ0rG5jAlpzQQhz+
-	pHkVwAcno0C+qkDawq8mqm9RVl59h1vj+GBTI0A6jDtpXrNBH3KTxCKUDbGgkEvPhq7Pt845arc
-	rb96oByXVPk/qjvGbHDx4NVAKv/KjMD4zb/E5gIws7lfMQYQTI2i5/macdvuA6LcF9NYGePtsiM
-	loovO+/Ydgs
-X-Received: by 2002:a17:907:3f23:b0:c25:5a26:3787 with SMTP id a640c23a62f3a-c25f011fb33mr251661166b.8.1788424036654;
-        Thu, 03 Sep 2026 01:27:16 -0700 (PDT)
-Received: from [192.168.1.124] (78-2-9-45.adsl.net.t-com.hr. [78.2.9.45])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f952c1bsm2043758a12.26.2026.09.03.01.27.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 01:27:16 -0700 (PDT)
-Message-ID: <c9cc4753-dcb5-4983-9cff-45135d8b3022@gmail.com>
-Date: Thu, 3 Sep 2026 10:27:15 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TUdfXqNl"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 8D2851A195F;
+	Thu,  3 Sep 2026 08:27:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5F268602B8;
+	Thu,  3 Sep 2026 08:27:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DCBD11C79EFB;
+	Thu,  3 Sep 2026 10:27:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788424041; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SiOl0TmdJANJFeVHr7GBo8ro7wF7gFtpcORo8twwUpM=;
+	b=TUdfXqNlUrI8/DL5Md0y88/hJ9tptWYCZ/7H4AbYl5vpOdq+lWd+b7GH/jHqcxwViiO4LH
+	1Q/WrMIGN22dnaUxI9tUswRNlho/mwMZsR3CM9EsRQPYO96frTZ8zbR2sggFPg05ka1e7i
+	KF2oi5JHcfPknduoAzdaeM1uo8sHWSjH6RJNsXpMjD29kb7R0nv5kuKp4qdCP51YXu5SBB
+	jdTEwY174TJUUVi/WNG624vQxXJhm6LLp6o1syVHt06eb/wXjR8lt3DsI5ufycG9xpcuyK
+	2gUoWjf4++hrJLxs4oKx4zy6QgtllU3Xb+SkV+FGY97omEqrImIFdVmCa08bwQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net: wwan: qcom_bam_dmux: account network packets
-To: Stephan Gerhold <stephan@gerhold.net>
-Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260902124506.363174-1-sinyavin@gmail.com>
-Content-Language: en-US
-From: Dmitry Sinyavin <sinyavin@gmail.com>
-In-Reply-To: <20260902124506.363174-1-sinyavin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 03 Sep 2026 10:27:17 +0200
+Message-Id: <DL5JESSS9JQK.2EV7XV479M0UW@bootlin.com>
+Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
+ <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net] net: macb: fix NULL pointer dereference on unbind
+ with fixed-link
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
+In-Reply-To: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-The delayed Sashiko review of v2 identified a valid teardown race that 
-also affects v3. I will address it in v4.
+Hello Vineeth,
 
-pw-bot: changes-requested
+On Wed Sep 2, 2026 at 12:28 PM CEST, Vineeth Karumanchi wrote:
+> When the device tree describes a fixed-link and has no "mdio" child
+> node, macb_mii_init() returns early without allocating the MDIO bus,
+> leaving bp->mii_bus as NULL.
+>
+> Two cleanup paths then dereference this NULL bus:
+>
+> 1. On driver unbind, macb_remove() unconditionally calls
+>    mdiobus_unregister(bp->mii_bus), which oopses:
+>
+>   Unable to handle kernel NULL pointer dereference at virtual address 000=
+00000000004a8
+>   pc : mdiobus_unregister+0x14/0xa4
+>   lr : macb_remove+0x38/0xa4
+>   Call trace:
+>    mdiobus_unregister+0x14/0xa4 (P)
+>    macb_remove+0x38/0xa4
+>    platform_remove+0x20/0x30
+>    device_release_driver_internal+0x1c8/0x224
+>    unbind_store+0xb4/0xbc
+>
+> 2. On the probe error path in macb_probe(), reached when
+>    macb_mii_init() has succeeded but a subsequent step fails, the
+>    err_out_unregister_mdio label runs the same unconditional cleanup.
+>
+> mdiobus_unregister() and mdiobus_free() do not guard against a NULL
+> bus, so guard the calls in both macb_remove() and the probe error
+> path.
 
-02.09.2026 14:45, Dmitry Sinyavin wrote:
-> The BAM-DMUX data path does not update the network device packet and byte
-> counters. As a result, userspace sees zero traffic even while packets are
-> being transferred.
-> 
-> Use the standard per-CPU software statistics helpers. Account transmitted
-> packets after their DMA completion and received packets after removing the
-> BAM-DMUX header and padding.
-> 
-> Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-> Signed-off-by: Dmitry Sinyavin <sinyavin@gmail.com>
-> Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-> ---
-> v3:
-> - Count packets discarded by the transmit error path.
-> 
-> v2:
-> - Read the TX payload length after unmapping the DMA buffer and combine the
->    network-device checks.
-> 
-> v2: https://lore.kernel.org/netdev/20260831181006.1382372-1-sinyavin@gmail.com/
-> v1: https://lore.kernel.org/netdev/20260830085400.2542956-1-sinyavin@gmail.com/
-> 
-> Build-tested for ARM with Clang and W=1 using allmodconfig and allyesconfig.
-> Hardware-tested on an MDM9607-based device: three 32-byte ICMP probes completed
-> without loss, and the RX and TX counters each advanced by three packets and
-> 180 bytes.
-> 
->   drivers/net/wwan/qcom_bam_dmux.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8d6437..ef3356200b3e 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-> @@ -177,8 +177,12 @@ static void bam_dmux_tx_callback(void *data)
->   {
->   	struct bam_dmux_skb_dma *skb_dma = data;
->   	struct sk_buff *skb = skb_dma->skb;
-> +	struct net_device *netdev = skb->dev;
->   
->   	bam_dmux_tx_done(skb_dma);
-> +	if (netdev)
-> +		dev_sw_netstats_tx_add(netdev, 1,
-> +				       ((struct bam_dmux_hdr *)skb->data)->len);
->   	dev_consume_skb_any(skb);
->   }
->   
-> @@ -368,6 +372,7 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
->   
->   drop:
->   	bam_dmux_tx_done(skb_dma);
-> +	dev_core_stats_tx_dropped_inc(netdev);
->   	dev_kfree_skb_any(skb);
->   	return NETDEV_TX_OK;
->   }
-> @@ -402,6 +407,7 @@ static const struct net_device_ops bam_dmux_ops = {
->   	.ndo_open	= bam_dmux_netdev_open,
->   	.ndo_stop	= bam_dmux_netdev_stop,
->   	.ndo_start_xmit	= bam_dmux_netdev_start_xmit,
-> +	.ndo_get_stats64	= dev_get_tstats64,
->   };
->   
->   static const struct device_type wwan_type = {
-> @@ -421,6 +427,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
->   	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
->   	dev->needed_tailroom = sizeof(u32); /* word-aligned */
->   	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
-> +	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
->   
->   	/* This perm addr will be used as interface identifier by IPv6 */
->   	dev->addr_assign_type = NET_ADDR_RANDOM;
-> @@ -533,6 +540,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
->   		break;
->   	}
->   
-> +	dev_sw_netstats_rx_add(netdev, skb->len);
->   	netif_receive_skb(skb);
->   }
->   
-> 
-> base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+Agreed on the patch! However as we are there, I looked at all
+bp->mii_bus usage and macb_phylink_connect() might crash if bp->mii_bus
+is NULL.
+
+bp->mii_bus is NULL if
+ - no children mdio DT node AND
+ - DT declared fixed-link, see of_phy_is_fixed_link()
+
+In macb_phylink_connect(), phy_find_first(bp->mii_bus) will be called if
+ - phylink_of_phy_connect() fails AND
+ - we have no phy-handle phandle prop
+
+Those two overlap right?
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
