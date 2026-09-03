@@ -1,141 +1,120 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D543553D;
-	Thu,  3 Sep 2026 08:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F22439F68
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788424481; cv=none; b=BalP56imyYc7mfg2UGV8akRr1+yfZLfCSzS5CjZ3MClgieuUN1OCcXYxVae08bpjlEOG/4Yz/Mer525gY5Q+Tvuo1gerIfrJpjwp7JLhXUuCk3iHnfimtTT+YTe4RHxWBiH0VZg62fVZV8l2YQ0bnuX+AvaGjF+o8qs1NuAfLdY=
+	t=1788424523; cv=none; b=ExtG3iAD5/PPTkqOLlKWu1/QigFuwKFGUNiG7OThjcAV3MesUVctPOdYFziI7mYhmy5fkAZxMvvFKZbsZinUWxrzM2+A8K5QTbEITU7OtbC32zrabZ5b8pxh8SnjnJPKCxE0gHex7FZ5TSUDJT/0qs79DMxJljnxZxJ7VXuUKPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788424481; c=relaxed/simple;
-	bh=ucKEN6+uXGip22JN66gcFyiu0AM76YtKZqbRSJhNY2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JZ+cfQ2rY8uE9bOnjL7AYr6+pJCsOEpLz+Sh2dmuSx6cYaB656MrILmEV0TYt+uslBa3q/bFvnIabWTS6q768+lOqFnE6QOMIFiiQblezsa/C3r/QdjjaTPztot+ESgD14W6nKLTZj6QKjg5/5NiVwBBBB30LqyggkX8DyR3AzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BgoM3hq2; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788424523; c=relaxed/simple;
+	bh=/al7R5lGyABC5BAdv2q6KsiylkPVrrOvcHfyvOD6jio=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JratKkaJg309zSTwEByTzy95ofi+mCyRbBdUUMkDv6diycvQERIUxK3wRfv6CqDlJzLOdCxvHxSQLIhkF054MkEp+Z4kX0F2xn+/wU4TqDBkb578WBG5zrLY6t1/8Tre65B0eCw7WQ98kY9N5C4QIvJg4SJ1rSPsK9N+S0ZF4wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pUIiKenQ; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BgoM3hq2"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0E0491A195F;
-	Thu,  3 Sep 2026 08:34:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D530B602B8;
-	Thu,  3 Sep 2026 08:34:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2BB8B11C791C9;
-	Thu,  3 Sep 2026 10:34:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788424472; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=xhPvOIjM4meUOojWE0gNF30Vl/5xG2LrjXeemmGp+cQ=;
-	b=BgoM3hq27qChOnoFp6bquvP3ejeOK+suMBAE4qgREVwodpZYX/vb505KLP1KSgKcab5dxf
-	czVxdWPlwQqPb9cqkEKWo0PKCUL6X6uBxc2XNKy3do7SFPWb8Op4Jy6ErpNWGvhGO3hgSQ
-	dyG22a2vkqi7SL60lKQCYp7Gsx2j+CKNsgnxvD92PuXpgU8DFtBZr9K60edsvp5xhAAGav
-	h8N7zGQwG5QqY2EEnULWQ8S9HiHyxWA1OxN/8n2t//rTO1EcqmWUFQ1W5MBQszlrWWbSND
-	QshIyDtba80p9tBhc4hEeQyZQ/EnrerqXzQmsnCSWFx6lLVoYZZSGtf/e5JE8Q==
-Message-ID: <f07c64b4-3018-4e9d-8aea-12454f132419@bootlin.com>
-Date: Thu, 3 Sep 2026 10:34:26 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pUIiKenQ"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4843e9c5960so2017490f8f.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:35:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788424520; x=1789029320; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xk9CG0h6HWfqzzpvcIHPsx0W6k1L3yQKeOEbT++aQsw=;
+        b=pUIiKenQG1U+GVK5KR1bp0PB/OI2VQDbQ49VUHqP658yAGp9PlHO1T0yfQXrDkl5cB
+         QKBWDxwBHowxaNINq3EtPx/2pq8RAcsux7tiIJTzJGT///9/mzcGDse2kk3rO4fsWw2m
+         uln7yZIePBi5II9XdRYtZg9mkkoFwwpP9dGH2vhYOke6L6ssxwy3a3t/XvvgTYl/fplT
+         /ZIwgaT40rkAw7wIaEI2O9rZz7SfnNhR3n8VV4SfrgDeTmDOQjHjO5/sy0p4KBbsNMhE
+         pejbB61P7EFOBtjDe3dHaBtoQs7p3JFtbUgML3qPeOQiooEndUBfUJlwzIkgpq90SYig
+         RiPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788424520; x=1789029320;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Xk9CG0h6HWfqzzpvcIHPsx0W6k1L3yQKeOEbT++aQsw=;
+        b=aR23LY2T82R/FR7HPZ4TSv8vt7wDNSAZlKYYGmddqtc+Ealiu8gb5N45TmCT3714h7
+         agxWlfSegJcEDLn/dG/LL8WXEeJ6jkHs7QJsO4BveOWtXLkoVO7xv0+wiz1SB+5MYIM8
+         OxPZUJnaFfvBrs8dmQtyG5vaO/S308+VtQlEJC+8FSe+fzl+AZvJFrL76G5wtLkpJjtf
+         Yl9nLchDjpJ46NtfaCIMGEtxGuiWXr4AbjI+Lq7iAq0QZuczhio3DGqv5LneR9/yl0ak
+         JgIGDJNzFHtmtYfH1528BamgRIcuB+Ei/uUEAa08C4MKKIUJToF2i6dZJZu5A08azhsq
+         XIJQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxN5xqMxhSNwLw2ZihouJaGSKumo6xNpinuxVNV0ga7xzkswfHayAINEejbFYq1AaJty07PgtI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mMdr3a/6pHftCC/wxmAirFM8GJQnt6nqOBynO946enc2BpAL5m
+	U4iSpmI6ap8gW2zTB/8YtYgw7PojE88Qf03N8S/hVQ6UcGoTt8YeMPN7
+X-Gm-Gg: AYBFou0Jzwq3XByV5bhbpogUJbnH9Nwhb1QGxes03vZfIFzavMV8MJhaSSPqRKFIhgr
+	0v/MTMURxGpePmpzc7BdEZ7Db6rIkf2qG2Z57sYBocpfiyLW6nw5RWTQ6TJ3mwf1G7RKTplHtbG
+	VakjcIlD/5iMRgf4nPKKBgGXRRUkNpZ91wWHZgtsbwKYYJJvW787opJ4C6nIIAmqjUusEtIf+Qr
+	oZkSkupUC8RI/A5cE2oJ1rBbnZO9HGbcjoXtHT+lQExL4ItGOhEX5Yz49dUApTHBBQjN/UjfBzG
+	00Jzod98Fw37hH3TQXwTui9tu9PmsgWFbPS+DxJ3aGY75jo65z+WzbzN1NecoimXP8IPfXxcyHK
+	HwMGSeHPotrDkUmi50AVbc7jvKD9Z+U254NwOPWjk0Ojo81m/jQcBuIJRTUZLHcf+us2vP3Skps
+	EYvmrYZta7OCSl806fBpOV5zGbTeXjOg2ZJJcHryWOMTDC/tkz4hduAZGonelul5dzNHIXBfcBv
+	51B4C503bahbBbcHtrKfftiiTFvpdHKDP6ZktldT5VgfmH+Ijdv+R9wfNP8sCgSyZNXbo9Vb8Zv
+	h7NVNCWN0F/P1oq5snrIRgtd7aI+HumRkPCn2g1XmebegejndIlV6FvZLeCYpW2RdMP45+ZwS9/
+	t17j3
+X-Received: by 2002:a05:600c:8b10:b0:49b:12c2:104f with SMTP id 5b1f17b1804b1-49ce55ecddamr220293825e9.1.1788424519871;
+        Thu, 03 Sep 2026 01:35:19 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a979-9501-3df6-d7fa-8a5a-06c5.310.pool.telefonica.de. [2a02:3100:a979:9501:3df6:d7fa:8a5a:6c5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce58da3acsm228357425e9.0.2026.09.03.01.35.18
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 03 Sep 2026 01:35:19 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: stable@vger.kernel.org
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10.y 0/2] mptcp: fix ADD_ADDR retransmission socket leaks
+Date: Thu,  3 Sep 2026 10:35:10 +0200
+Message-Id: <20260903083512.99864-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 08/10] net: stmmac: dwmac-rk: add SGMII
- support for RK3568
-To: Coia Prant <coiaprant@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Vinod Koul <vkoul@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
- Russell King <linux@armlinux.org.uk>, Shawn Lin <shawn.lin@rock-chips.com>,
- David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
- linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-renesas-soc@vger.kernel.org
-References: <20260901150111.141037-1-coiaprant@gmail.com>
- <20260901150111.141037-9-coiaprant@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260901150111.141037-9-coiaprant@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi
+Backport the two ordered ADD_ADDR retransmission timer fixes missing from
+5.10.y. Patch 1 makes every terminal path release the socket reference
+held by the timer. Patch 2 uses sock_put() so the last reference frees the
+socket, while avoiding a timer self-deadlock during destruction.
 
-On 9/1/26 17:01, Coia Prant wrote:
-> The RK3568 SoC integrates a Synopsys DesignWare XPCS that can be
-> connected to GMAC0 or GMAC1 in SGMII mode.  Add the necessary glue
-> logic to support this configuration.
-> 
-> The current dwmac-rk driver does not support SGMII mode.  SGMII
-> requires a PCS to handle auto-negotiation and link state reporting,
-> but the existing driver only supports RGMII and RMII.
-> 
-> Add a set_to_sgmii() callback to configure the GMAC GRF register for
-> SGMII mode (bit 7 set, interface selection bits 4:6 cleared).  Also
-> add a supports_sgmii flag to indicate SGMII capability.
-> 
-> Provide pcs_init/pcs_exit callbacks to create/destroy the XPCS via
-> xpcs_rk_create() from the Rockchip XPCS platform driver, and a
-> select_pcs callback to return the XPCS to phylink.
-> 
-> While at it, fix the clock enable ordering in rk_gmac_powerup():
-> gmac_clk_enable() is now called before any register access, including
-> the SGMII mode setup path.  Previously SGMII mode would bypass the
-> clock enable via a goto, which could cause synchronous external abort
-> when accessing MAC registers with the clock domain disabled.
-> 
-> Also clean up the error handling in rk_gmac_powerup() by using a
-> unified clk_disable label, and add error handling for the default
-> (unhandled interface) case.
-> 
-> SGMII In-band vs Out-of-band
-> ============================
-> On RK3568, the MAC clock is fixed at 125 MHz and cannot be dynamically
-> changed by the stmmac core's set_clk_tx_rate callback.  In-band mode
-> works because the PCS handles rate adaptation internally.  Out-of-band
-> mode does not work because the MAC would need to change the clock rate
-> to 125/12.5/1.25 MHz for 1000/100/10 Mbps respectively, and the clock
-> is fixed.
-> 
-> Enable default_an_inband for SGMII and disable the generic stmmac
-> set_clk_tx_rate callback.  This forces phylink to use in-band mode,
-> where the PCS is responsible for speed/duplex negotiation.  Without
-> this, the stmmac core would attempt to change the clock rate on speed
-> changes, causing TX to work but RX to fail.
-> 
-> Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 386)
-> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Both fixes carry Cc: stable and are present in 5.15.y and every newer
+supported LTS. The original 11-patch cover groups patches 3-5 as the
+v5.10 ADD_ADDR timer data-race and leak fixes. Patch 3 is already present
+as d9b272a85fe6 ("mptcp: pm: ADD_ADDR rtx: fix potential data-race");
+this series supplies the missing ordered patches 4 and 5:
+https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-0-fca8091060a4@kernel.org
 
-[...]
+In v5.10 the timer code is in pm_netlink.c and uses fixed retransmission
+delays; the adaptations retain those details. Patch 1 also routes v5.10's
+unreachable ID 0 guard through the reference drop.
 
-> +static int rk_pcs_init(struct stmmac_priv *priv)
-> +{
-> +	struct device_node *np = priv->device->of_node;
-> +	struct device_node *pcs_node;
-> +	struct dw_xpcs *xpcs;
-> +
-> +	pcs_node = of_parse_phandle(np, "pcs-handle", 0);
-> +	if (!pcs_node)
-> +		return -ENODEV;
+Tested on v5.10.269 with KASAN under QEMU. A targeted A/B forced the
+tracked MPTCP socket to TCP_CLOSE at timer entry: the vulnerable kernel
+ran the callback without destroying the socket, while the fixed kernel
+destroyed it. Both completed an identical MPTCP transfer without a KASAN
+report, Oops, or warning.
 
-Here aswell you make it mandatory to have a PCS, as the generic pcs logic
-introduced in patch 1 doesn't handle -ENODEV, it treats it as any other
-error.
+The fixed kernel also passed all 15 tests in pm_netlink.sh, a 16 MiB
+bidirectional transfer with a real ADD_ADDR/MP_JOIN second subflow, and an
+8 MiB curl --mptcp transfer. All payload comparisons were byte-exact.
 
-So, either you return 0 when there's no PCS (so that we don't break platforms
-that don't have one), or you handle -ENODEV gracefully in patch 1.
+Matthieu Baerts (NGI0) (2):
+  mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
+  mptcp: pm: ADD_ADDR rtx: free sk if last
 
-Maxime
+ net/mptcp/pm_netlink.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
+-- 
+2.53.0
