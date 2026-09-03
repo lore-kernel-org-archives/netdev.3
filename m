@@ -1,151 +1,179 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71E13749F6
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 07:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E903A62809;
+	Thu,  3 Sep 2026 07:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788421789; cv=none; b=EhrBFpA924c6OJSg2kywVjlQGERBH6UMRey48ONvcgZOR9YGftWLmPxCrRnTaW01wvPq1MiAQIcTeu/yrBOX3T85bYIB+uWb8bSsjBytZDhaucMTwQRWf5mZ5UKEqWiGt0HlP8gOUgAs2lSWwmWG5g6TiQL/38Um1t49WzZWo+I=
+	t=1788421918; cv=none; b=UvEmlie7SZe9oLRz4sS202M2TjsEtAY4xYj5HUywex2lzgynJmPhfRtVN7F13qrY+Ja59eneYq67XLR05/YbCFthUtRrKVyPVvM48VNz3pCsYcmoUqR6xU8nxOI+Y/ovYgZ0eJVakmqF9rXAITcKIkQmZcbjJtSD/7n1y8GLURc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788421789; c=relaxed/simple;
-	bh=ksv/avRnK4UOBJ1PwYrAwimKQy13c+CjYXmlx2M+y08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X4+qtbvjO96um0FMF+oC5weLUgdbdZNxI3MsPtenU893nB9KNgtewvFECQIiawYQqoLenXyjTnxtXcHXr9dZjuKZT5PF1e5mcG/VRF9aIWc0m2zr80h8SX1SP05jANQiHUIeB4RipDuv/z3/8kNuGYbhZJjsdtPy5ESwZWRsCpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q1oxQjw/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=T13BqZOg; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788421918; c=relaxed/simple;
+	bh=12vrxCeahiRMFFClwm46JzrWqrTkJZ+gk2zhllMrOcs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QaqEhlRx/oqvgLcQQ36nPBOPQPfTR2GsHI6aANrF3/KclZniQgO6DXhtU8Brs6hukhH3Dh/1iUHcC2p/ba8F83AYIxLkwDvD+SxkPpnm52uKPJV8loM23PLuKAPo0HSEp08jINFir9pan/gWyFuHkHxNmI0r9EjioGrOy7NgWos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oVxb3rOe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q1oxQjw/";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="T13BqZOg"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6835lKUs3798924
-	for <netdev@vger.kernel.org>; Thu, 3 Sep 2026 07:49:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=0GHibo9Blx2AAUlYEMr9nHfq
-	J5O/B9F3H0pQUm/H9Ds=; b=Q1oxQjw/FsamPFoT6xhhMx+0cOMRK02mhvy518Zk
-	ZrXvctXVLhqBKLXcq4ksiw5hIGxZ+3HNBq1gSumdq+mfme0gCrThrv6fjTC/3szr
-	fcUql69XiY38pX/hu1FVCSsB18qPV4I1s/Q7ZW8Vsb1yhRCumW/iw2Mx+vY714OH
-	cgWs8379I1YRcESweUqdhoOZMLDum2TutAL2U9Kn8yM8ZGUUna6IUEPmRkuOAu6l
-	zPyxT624VozAINaIfXnQWowqOT/DktWhyIzaao3jC09xhf72qZx/7iWtJiHWAWMU
-	UoPE5fl5QxqlE0ht3rdJ8qW0HxunKcTeO0+31GiYmClhHQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gf1pygs84-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 07:49:47 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e53b8a302so412976685a.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 00:49:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788421786; x=1789026586; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0GHibo9Blx2AAUlYEMr9nHfqJ5O/B9F3H0pQUm/H9Ds=;
-        b=T13BqZOgjfdoXUEhABJkkafh26fRsW28zEpYhfzCS1Jv7ehhaToPeksB7/T+82WKuM
-         LrDVubgDRs3JIfrCGmHRtD/X3gW4mPllh2OAnhkrh4WwDm2PU7KUCKiMiU1o4PYGWNzr
-         0VuHFFnmpwEqQdj4wWfyXeh4N2hVRJqBaH4H7/IcJLmZGGBtzYogcfdcoFa96Rl5MKc4
-         XFxc1j+Trv+H0jX93OJ1JEVvrLTRjNFF9xWFql+ZbNVDOkUP8xagBedXSGAXMAhxMke3
-         GbwIreI1ckQw1v0oLYB/lAd6rGnFB33WCssMokVA/tDC2rrrP8fAxLDfTXmQ0QHZUzYG
-         pAjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788421786; x=1789026586;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0GHibo9Blx2AAUlYEMr9nHfqJ5O/B9F3H0pQUm/H9Ds=;
-        b=k79G0yWrQ5WgtPkDn0VUmwSz7m7OxAyyIqtgoUUnhcuCbTsVPtN0SXQNEDzGW+59XG
-         lwwbopLMQ8QCaR5S70cpzza0XR1D0dycRHGQlAJYAcWGlYiAqP3wWPPSAAIzobtaI55u
-         fVkP6VB6zpHv7cB3GV7LPyEOBxNtG6R1YAU5mr4CexBIVjm6CKKbNizdQV5+u+u4IBVg
-         t2HasY6MJUVgED2yywHwWZ1rLtQo+qSOJTtREOLZLJuve27s/1sMESkLqM5wzsJGkzTo
-         VNR4KUfAsG/3bxsvsa/7NkmMk7z+wpAImVfoVoQ0lINqTAKKvjEATSh6TqzHbFbW+OSP
-         0d6w==
-X-Forwarded-Encrypted: i=1; AKwUvBzcMXwA8bZtWEoXOKUqTcTX9MMqRPAKL1azwMqg0C7G0jvE/DkovdAWruGDgzJOfC+NboSQrck=@vger.kernel.org
-X-Gm-Message-State: AFuF++khUKPL1NNzjsvv4J6L7vRkxcDMA8SZXkxb632EXMKZe9grztkS
-	EikXUBkGiFlVfhlqntj8QH5Vbfu3qLvXMXZid6qslgmgqjkAGzYfEwA8tUWbjFyXYehyOQRY5B6
-	13CaLlkzQgeDndR5JV5wqSt4rsQSjMp1qMiljnY0d6rLk2acKAzxqPc2zbSY=
-X-Gm-Gg: AYBFou3Ya1QXIXLgnVGdUDERU7PbszDxTDKJN7i3fKjzqZbxr7DWZ70whYkkyDWih/U
-	GTuMfMFSbrDxj/sd74uMsdBouVB6ZBz4GYR7nvdqdsn7P8mqdQlkCOtbmY8nqKvdQkf8OYcMSaO
-	iRnP0zJL+oYdSpnwha5RoLhUTwxsBwOcK9SeeXGeFccn+qAI32V6lLWTwvAbVZngmo9r6gMAfir
-	jNVSq5VylnGe1QJTPTpPXwdyvj4vhS9bU3yvKOk1gt1rqpgpuqa9DmCe4eKn+KM5GuYDpshbq7H
-	QvyrBrubC0Az0Ur3yWkbmbhX2tikT47ARs97KT323G9/iBp1VDmhTHm8sRXBzRQjPMleQYoLSYo
-	6CkDl1eW82ZWX/g==
-X-Received: by 2002:a05:620a:271a:b0:937:2443:341c with SMTP id af79cd13be357-9396100cb30mr1279827185a.41.1788421786091;
-        Thu, 03 Sep 2026 00:49:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:271a:b0:937:2443:341c with SMTP id af79cd13be357-9396100cb30mr1279821485a.41.1788421785465;
-        Thu, 03 Sep 2026 00:49:45 -0700 (PDT)
-Received: from oss.qualcomm.com ([86.121.170.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448eeabbfsm11219681f8f.31.2026.09.03.00.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 00:49:44 -0700 (PDT)
-Date: Thu, 3 Sep 2026 10:49:42 +0300
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: Kristian Brox <isyourbrainfoss@proton.me>
-Cc: David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: add
- ST21NFCD NFC
-Message-ID: <oznqr22wo4tuonlcs36uabppl7anwax6hcpdt4j5ppgjpmkzha@q3qmtizrtzam>
-References: <20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me>
- <20260902-fp5-st21nfcd-v4-v4-3-ded2f1c501be@proton.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oVxb3rOe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5161F000E9;
+	Thu,  3 Sep 2026 07:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788421916;
+	bh=F+vH8a0y5iRSZhuN97GDWV9SeN5RHeUo0YNxwL5iH24=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=oVxb3rOep+IUU1LXH2A3wECixLK1oLVhW8FDfxOMGYTwDNKP8CNWZ9LZLJj2BqwLM
+	 QBH2iA2PXrf26xksWjx5ubtwEnLvQJLZ++mYqaQa7Ar3vg9RkzZapjRlbKGF7tVw2h
+	 E+wiSPjaOvjQ/XLwpbFXc7WfgkRBTR7AcxHluQY18EU5GJ1f1QWIP2kYGZ0/Wz2caw
+	 KTqnDMrt1eJbt0J0K+x+S0XsZf+ewR8IiULSKEQuEHjuijiLgOMe2m1Nm9wHLwiKpV
+	 9M+UT3GyD6/et+zIFyq2bq5Dpl673Dywn6ePjzWBGz/XpFbIVX2FlvN+Dl/wtpfJ8S
+	 iC0NMmD8TznUA==
+Subject: Re: [net,v5,4/6] bnxt_en: Handle buffer allocation failure in
+ bnxt_rx_ring_reset()
+From: netdev-bot+sashiko@kernel.org
+To: joe@dama.to
+Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
+ pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ prashant@broadcom.com, eddie.wai@broadcom.com, huangjw@broadcom.com,
+ horms@kernel.org, kalesh-anakkur.purayil@broadcom.com,
+ colin.winegarden@broadcom.com, rukhsana.ansari@broadcom.com,
+ linux-kernel@vger.kernel.org, raphaelcf@meta.com,
+ sashiko-bot+sashiko@kernel.org, stable@vger.kernel.org
+Date: Thu, 03 Sep 2026 07:51:55 +0000
+Message-ID: <178842191510.3394541.8694280493608696004@kernel.org>
+In-Reply-To: <20260902015652.2421609-5-joe@dama.to>
+References: <20260902015652.2421609-5-joe@dama.to>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902-fp5-st21nfcd-v4-v4-3-ded2f1c501be@proton.me>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDA2OCBTYWx0ZWRfXyxR0j+Eob08w
- K7kqrYkxQFDe/wNpZ3JRJ6wK6hfXbBwr7vbpsDMZtvfBw7TBBOx47uQIp1AVZpOaK5ucFe6wBA8
- YvIlqTOohSINLeUm2m3Q+1ODjfL+5n4zKGncYTZ2t33MizyjGqmJ9h09V++7a+GgMkYA297X+8s
- LZqLibQqSZwAUbnOCaupIE1o6gi+mzPPKDvACaRqZ7o7onNJ8wwSQZMaMtMYq3ydGyTdRyI32Vo
- mYAYCJIIniI+eVXym601e2dLQGyHiyT7xO7HGqPeaB359d1+eqMsEZuZISX18ELh5ZVRVS7FUlC
- 0Z4STZHfsK2tpfx7m5rPTtH3uJqd+AKdzTwl9ntCF3Sy99ui0Oby9gpVD9w5G/fCIAzS/rftwYf
- YhfG/yr9rKDTgRjbnKecTtkhokZd4z/sF2bNtWPAx8ijb9QiIwMmJVStylaeuVnvgsI+gXS8dog
- 9/KjGFRuGUOvLTgP0Dw==
-X-Proofpoint-ORIG-GUID: NSKw79XDotdh1hXb0MPuZ22yHRamDAv-
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDA2OCBTYWx0ZWRfXwQw7OD/vADy2
- Fmn+ypN59ZK6bSmNIg0FI+eARiVbxlq3bxYr9KtBWkkQ0K/BJuQopgYb1UrLWJrRc3krI2NpKza
- 6v1yKcm1aJI8aXrFnRmFJZsVxXy49aI=
-X-Proofpoint-GUID: NSKw79XDotdh1hXb0MPuZ22yHRamDAv-
-X-Authority-Analysis: v=2.4 cv=DMO/JSNb c=1 sm=1 tr=0 ts=6a99269b cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=q7XEBjOi5DRkXzmV0jSBjQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=EUspDBNiAAAA:8 a=FWA6L-ytD-VELHUIOsEA:9 a=CjuIK1q_8ugA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-03_02,2026-09-02_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 suspectscore=0 adultscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609030068
 
-On 26-09-02 21:22:25, Kristian Brox wrote:
-> Enable the ST21NFCD on i2c9 (0x08), IRQ TLMM 41, reset TLMM 38
-> active-low. Compatible is st,st21nfcd (raw NCI).
-> 
-> SYS_CLK is LN_BB_CLK2. VPS_IO is L18B (vreg_l18b). ese-present and
-> uicc-present follow the public schematic (NFC_SWP1/SWP2: SWP_SE to
-> SIM1, SWP_UICC to SIM2). Reader path is tested; SE/HCE is not.
-> 
-> Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
+
+- [Medium] Commit message misdescribes the failure mechanism it is
+  fixing.
+- [Low] The new error path in `bnxt_rx_ring_reset()`
+  (drivers/net/ethernet/broadcom/bnxt/bnxt.c:14606-14616) loses the…
+
+--
+
+bnxt_en: Handle buffer allocation failure in bnxt_rx_ring_reset()
+
+bnxt_rx_ring_reset() used to ignore the return value of
+bnxt_alloc_one_rx_ring().  The patch checks it and, on failure, logs a
+warning and falls back to a global reset instead of re-enabling TPA with a
+partially populated rxr->rx_tpa[] array.
+
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260828190900.1767611-1-joe%40dama.to
+
+A couple of questions below, one about the commit message and one about the
+new error path.
+
+>     bnxt_alloc_one_rx_ring() can fail in bnxt_alloc_one_tpa_info_data(), which
+>     returns -ENOMEM on the first failed allocation and leaves the remaining
+>     rxr->rx_tpa[] entries zeroed.
+>
+>     This means that when the agg_id from hardware is mapped to a SW index in
+>     rxr->rx_tpa[], an uninitialized slot can be chosen which would hand a
+>     zero DMA address to the device.
+
+[Severity: Medium]
+Is the "entries zeroed" / "zero DMA address" description accurate for the
+reset path?
+
+bnxt_rx_ring_reset() calls bnxt_free_one_rx_ring_skbs() ->
+bnxt_free_one_tpa_info_data() first, and that only clears ->data:
+
+    for (i = 0; i < bp->max_tpa; i++) {
+            struct bnxt_tpa_info *tpa_info = &rxr->rx_tpa[i];
+            u8 *data = tpa_info->data;
+
+            if (!data)
+                    continue;
+
+            tpa_info->data = NULL;
+            page_pool_free_va(rxr->head_pool, data, false);
+    }
+
+->data_ptr and ->mapping are left pointing at the buffer that was just
+returned to the head pool.  bnxt_alloc_one_tpa_info_data() then bails out
+at the first failure:
+
+    for (i = 0; i < bp->max_tpa; i++) {
+            data = __bnxt_alloc_rx_frag(bp, &mapping, rxr, GFP_KERNEL);
+            if (!data)
+                    return -ENOMEM;
+            ...
+    }
+
+so entries [i, bp->max_tpa) keep the stale mapping from before the reset
+rather than becoming zero.  In the unfixed code bnxt_tpa_start() would then
+program that stale address into the RX BD:
+
+    mapping = tpa_info->mapping;
+    prod_rx_buf->mapping = mapping;
+    prod_bd = &rxr->rx_desc_ring[RX_RING(bp, prod)][RX_IDX(prod)];
+    prod_bd->rx_bd_haddr = cpu_to_le64(mapping);
+
+Would it be more precise to say the device would DMA into a recycled
+page-pool buffer (and prod_rx_buf->data would be NULL), instead of a zero
+DMA address?  Since this is tagged for stable, the description is what
+backporters will read.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index 3755a30f8d403..a8e5fdfcdf591 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -14604,7 +14604,14 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
+>  		rxr->rx_sw_agg_prod = 0;
+>  		rxr->rx_next_cons = 0;
+>  		rxr->bnapi->in_reset = false;
+> -		bnxt_alloc_one_rx_ring(bp, i);
+> +		rc = bnxt_alloc_one_rx_ring(bp, i);
+> +		if (rc) {
+> +			netdev_warn(bp->dev, "RX ring reset failed to allocate buffers, rc = %d, falling back to global reset\n",
+> +				    rc);
+> +			bnxt_reset_task(bp, true);
+> +			bnxt_rtnl_unlock_sp(bp);
+> +			return;
+> +		}
+>  		cpr = &rxr->bnapi->cp_ring;
+>  		cpr->sw_stats->rx.rx_resets++;
+
+[Severity: Low]
+Does this new path lose the rx_resets accounting for the reset it just did?
+
+rxr->bnapi->in_reset = false is done just above the allocation, and the new
+error path returns before reaching cpr->sw_stats->rx.rx_resets++.
+
+The fallback bnxt_reset_task(bp, true) -> bnxt_close_nic() ->
+bnxt_disable_napi() is the only other place that bumps this counter, and it
+is gated on in_reset:
+
+    if (bnapi->in_reset)
+            cpr->sw_stats->rx.rx_resets++;
+
+which is already false for this ring, so the event is counted nowhere.
+
+Contrast with the sibling failure path in the same function: the
+bnxt_hwrm_rx_ring_reset() failure does a break with in_reset still set, so
+its global reset does get counted by bnxt_disable_napi().  That leaves two
+paths that both do an RX ring reset plus a global reset reporting different
+rx_resets values via ethtool -S.
+
+cpr->sw_stats is only freed by bnxt_free_ring_stats(), which is not reached
+for an irq_re_init == false close, so the missing increment stays visible in
+rx_resets and rx_total_resets.
+
+Would incrementing rx_resets before the early return, or only clearing
+in_reset after a successful bnxt_alloc_one_rx_ring(), be preferable here?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902015652.2421609-1-joe%40dama.to
