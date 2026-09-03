@@ -1,168 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFCE4E66C3
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 15:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E66A4E2343;
+	Thu,  3 Sep 2026 15:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788450353; cv=none; b=tuuIwlHHE45tTaA16rvasj3xCGbhnGWWErZ93tbXH9mmb5fKU3XHWQV5kX8DjBVQsgO7CYeJqbS4C+7pAuk4nN2Aq7Xkky5ARxaXaRGBNODjNCOOvFOnngOgjSunpoYxkrb+D4FIX4TqZIar+qsG4YMDmdSc4IofCEYnQ7WmvWw=
+	t=1788450440; cv=none; b=ZTz/1afxsqx0rAq07r0xTnanlti4cR4CP/AJCxZnEtlvuuoRZnYAuTuBSKBIpQqPZKNwnUlZjh/qPFJqY7AC28/fFFc2GnHSi19ju14l5aq28F8jaN+ujh/LCXDTeXxmptPu0Vkbvba6DioPmpQ8dmmhrz5csP8XIcdma5vjxKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788450353; c=relaxed/simple;
-	bh=RAYwY55EGn/bAeUGHlw4U5RAYW90S1S+jDQJ1rHQLFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ESCPd1y0LC0m+O39aJmDJa24twVjXRN1UvcERGLowWWPgtF/elPtPkz6Tz2jl3RkX17/cg/FGLMnhQcU9+rV98WwkS17V2UEYYUPPqWV5XH3d6X3QfSY5bDNJf0lFRBADx3nry5W+cY1ugJGWL8WsRJYO8MnjUfEO4z8uChdL8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RShHivsJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788450440; c=relaxed/simple;
+	bh=XM1j/aLph87KjehGhzloy5KQFE5iSI5nWnm3VvgFBCE=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mTwqVMsYSgQnxuRmtnIipYqE+8nPEg+bS1QL0axO14c5LELIxbSL++a9w9j48M935nD7XZz8+o6Gp0ILyfuz4zHlL9AkGNYolX7Y6ZWEXf6t+u52Urm82VR1otTMFXyXD/2cjGJ44SGskoyZ+P5Bm2tqx9cjyLE1fFHpisozYw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=NGyegiiF; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RShHivsJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B771F000E9;
-	Thu,  3 Sep 2026 15:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788450352;
-	bh=yCMUqh6ANgvQ3Pwx5RlqzkheOtUmmalNv6/kwBMPNcQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RShHivsJHdQYENIAXi57A6y92sj/SKI64hzjlD+CpHniAIzXmEJphBiTvmrNl/Vot
-	 3Y0GFG1uKzoPSt5EUSrrJJ3zR28vBI4mDG6hAB6ZgGKWoUwblt8vqNEwRvU4FnJ69Z
-	 zemYcX3EYv1CWiICaujZowbPBgt5zgDDWX//759uPwefwK4tR8PECY2+w492cmgEmh
-	 7m7EzvBTZMiZBqNS2cclfG7ngmVxjPTEqargjpLRYBULmyL6i9XiO3hwAgc88eXIi/
-	 bjWPwueSBU2ZsmTIiVW2e1yah5PWZ4WHtxIY4yerUbHSf9sWMzAiwssJS7S8tNvmWc
-	 +JzTasZSy8BPQ==
-Date: Thu, 3 Sep 2026 17:45:50 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Madhur Agrawal <madhur.agrawal@airoha.com>
-Subject: Re: [PATCH net-next v5] net: airoha: add HW GRO offload support
-Message-ID: <apmWLtgcUXRrOTFj@lore-desk>
-References: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
- <fce0ee5a-476a-4867-9dd2-08e55993bd90@redhat.com>
- <aplpllPidmCjhSmA@lore-desk>
- <1ef90408-99b6-42fb-a7c6-7e5bca20c46d@redhat.com>
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="NGyegiiF"
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 1AFC4583856;
+	Thu,  3 Sep 2026 15:10:57 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D1133EF90;
+	Thu,  3 Sep 2026 15:10:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1788448254; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=uYXVTMatMDH0138orMZx6ToE2yw83S5uLOlwjJpjVh4=;
+	b=NGyegiiFn+j6/YRzTlbdj0VS4x/hJZZriNEvhhpWyEVsdgPxTMNFT/BNYuYZIqqFlpE2Zq
+	vy7IZ+5aRshKRX5KbUsb7+hjxXMrsy198rjXpVaBgBFUg1kedPRAENPul43JGP6YJhJVHn
+	qbpdBzX85Nb0jHB7PBb/JTFF+V91T5LQc1l7+AZGfnuhUN0ZTRkc1ov+Ih3wIHbxrMtXkY
+	m8VkQLwviddnw/a0lnnuevwaZoXdF9atIzHekZ26M+iIIlBpPyPSVBwXAKE5TrrHpvOnmu
+	42YTiwlExKT0IMDbZgdXNYfNeQCs/xRpW5LEimiGCh+a70GFpkPhFM/9pF97nA==
+Date: Thu, 3 Sep 2026 17:10:50 +0200
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+To: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [net-next,v6,3/3] w5100: detect carrier state using link status
+ bit and optional interrupt
+Message-ID: <20260903151050.GA185059@marmottus.net>
+Reply-To: arthur@marmottus.net
+References: <20260831-wiznet-link-gpio-v6-3-abee6c5c966e@marmottus.net>
+ <178839696443.3394541.11998106403165239318@kernel.org>
+ <20260903130820.GA21664@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NDvggmcI2CoJ2jcY"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <1ef90408-99b6-42fb-a7c6-7e5bca20c46d@redhat.com>
+In-Reply-To: <20260903130820.GA21664@marmottus.net>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: dmFkZTFt7+Z64xoReW3on4YvpCbHIFE2WLFu56/NKaAgQeY5o5E/KZpcFfC28pZ2KfkCzOzhSxD3W01evXb0glBKmdMRdNyzgL9MvGQE/0gXySyrtuCXNf5hZOLxbT6nBe6gBoCtLVTyQL8n0CbF/jtzjtjT+SDrYGppumnq+Jo6x/lsx4+jSBbNsCEAO0skQSJGIQ1nzFftU6KzSkBp/WYiGpBGzgaxTE1Gy5QG7dr7s2nq+4w96Xe11e4lNDCBghVrUtVHkCsimKfUkr40/r0xDdxnBLgw5jMKNgomcxKC0BAGSaS1VXCtfpzawqwkFHhF7lJYfDuOOwDIP7Atj5wv20P5ft5k4uW/EIY83WAMCnHfATfu5TPqdzGGJ2sAX71EvKmXOyWrQ9LcJNkhdDx7wZHpra6KwcwVWvkI6JfHVXF+DlcelYnmOPJ7Nh7cw3xFQmifB6jQ5kR5+XgiH5XcXHme/rEh9R+4FWNxIU5lVeG1T0tTcxuLmDOsL8bunGr48SUxHpqjuXHygse+ckExl3ahhnD/hmBb7VIJSLWDI6lNFLHmTKHrOsAD53nNmXmHYeWkporxMDJeDC1w9QDIBtunlhd+9ht5EHVLNUtXLmB86+jzzRHIIHQZFhZ6zDW1E6fbZzprKB9JAoLGwy+BpEFZPpLSBpy1MGy4E4EHttSBZw
 
---NDvggmcI2CoJ2jcY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Sep 03, 2026 at 03:08:24PM +0200, Arthur Crepin Leblond wrote:
+>On Thu, Sep 03, 2026 at 12:56:04AM +0000, netdev-bot+sashiko@kernel.org wrote:
+>>Since || short-circuits, w5100_get_link() is not called at all when link_irq
+>>is negative and the carrier is unconditionally turned on.  The ethtool
+>>callback added just above, however, keys on the chip id rather than on
+>>link_irq:
+>>
+>>	if (priv->ops->chip_id == W5500)
+>>		return w5500_get_phycfgr_lnk(ndev);
+>>
+>
+>Again, good catch! One could setup the w5500 without the link IRQ but
+>still use the PHCFGR register for the carrier state.
 
-On Sep 03, Paolo Abeni wrote:
-> On 9/3/26 2:35 PM, Lorenzo Bianconi wrote:
-> >> On 8/31/26 8:34 AM, Lorenzo Bianconi wrote:
-> >>> Add hardware GRO offload support to the airoha_eth driver, leveraging
-> >>> the EN7581/AN7583 SoC's 8 dedicated LRO hardware queues mapped to RX
-> >>> queues 24-31. HW GRO offloading does not support Scatter-Gather (SG) =
-so
-> >>> it is required to increase the page_pool allocation order to 2 for RX
-> >>> queues 24-31 (LRO queues).
-> >>> Since HW GRO is configured per-QDMA and shared across all devices usi=
-ng
-> >>> it, HW GRO is mutually exclusive with multiple devices bound to the
-> >>> same QDMA block. Call airoha_update_netdev_features() in
-> >>> airoha_dev_set_qdma() so that NETIF_F_GRO_HW availability is re-evalu=
-ated
-> >>> whenever the QDMA user count changes (device registration and runtime=
- QDMA
-> >>> migration).
-> >>> Set CHECKSUM_PARTIAL with pseudo-header checksum on aggregated packets
-> >>> so that L3-forwarded traffic is correctly handled by the GSO/TSO path
-> >>> on the egress device.
-> >>> The HW does not report the per-segment MSS (msg3[31:16] only reports
-> >>> the max aggregated size), so the gso_size of an aggregated packet is
-> >>> just an approximation computed as DIV_ROUND_UP(data_len, agg_count).
-> >>
-> >> What is the <max aggregated size> exactly? I read it as the maximum si=
-ze
-> >> of the aggregated segments, am I correct?
-> >=20
-> > Hi Paolo,
-> >=20
-> > with "max aggregated size" I refer to the length of the aggregated TCP
-> > packet (composed by multiple segments). This value is reported via
-> > QDMA_DESC_LEN_MASK field in the DMA descriptor. Moreover, the hw reports
-> > the exact number of the aggregated segments via QDMA_ETH_RXMSG_AGG_COUN=
-T_MASK
-> > field.
-> >=20
-> >>
-> >> Also any more details on how the aggregation engine works? i.e. can it
-> >> aggregate "random" segment sizes (i.e. 200 - 300 - 400) or does it
-> >> respect HW_GRO layout? (i.e. all segments except the last one must have
-> >> equal size, the can be smaller).
-> >=20
-> > The hw engine, for each LRO queue, is configured with:
-> >=20
-> > - CDM_LRO_AGG_NUM_MASK: max number of segments for each aggregated TCP =
-packet
-> >                         (64 in the current configuration).
-> > - CDM_LRO_AGG_SIZE_MASK: max size of the aggregated TCP packet (compose=
-d by
-> >                          multiple segments). 16KB in the current config=
-uration.
-> > - CDM_LRO_AGG_TIME_MASK: max timeout to compose the aggregated TCP pack=
-et.
-> >=20
-> > In order to validate the scenario, I run the following test:
-> >=20
-> > TCP client:
-> > ------------
-> > - disable TSO/GSO
-> > - set MSS to 256 bytes (iperf3 -M option)
-> >=20
-> > I can see multiple 310 bytes TCP segments on the wire
-> >=20
-> > TCP server: (where rx-gro-hw is enabled):
-> > -------------------------------------------
-> > - the engine aggregates ~64 segments in a ~16Kbyes TCP packet
-> >=20
-> >   so gso_size ~ 16KB / 64 ~ 256B
-> >=20
-> > I guess this would be the behaviour even if the original packets
-> > have different size (not sure if it is a real use-case).
-> Lacking more details from the vendor, I think you need to use a
-> pktdrill-like sender, explicitly sets the segment lengths to some not
-> mergeable (like, i.e. 200-300-400) but otherwise fitting a GRO packet
-> (i.e. same hdr except for the sequence number and push flag allowed only
-> in the last packet), ensure that the aggregation timeout lasts long
-> enough to receive all of them, and check if the engine really aggregates
-> them or not.
+One more time about this one, if we use w5500 without an interrupt the
+carrier state will be the one read from PHYCFGR bit and will never
+change.
 
-I think in the example you pointed out (length 200,300,400) the hw engine w=
-ill
-create a single TCP packet composed by 3 segments (with gso_size =3D 300) w=
-hile
-sw GRO will just push sigle skbs. I agree this is just a GRO approximation.
-If it is not enough I am fine to switch back to LRO implementation.
+w5100_open:
+	w5100_get_link -> 0
+		netif_carrier_off      // stays off forever?
 
-Regards,
-Lorenzo
+There is probably no good solution, the user can only get the real
+state with .get_link.
 
->=20
-> /P
->=20
+I think netif_carrier_on should initially be called if there
+is no interrupt configured, that way the state stays on like on
+w5100/w5200.
 
---NDvggmcI2CoJ2jcY
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCapmWLgAKCRA6cBh0uS2t
-rANwAPsF+NTXOkcRL4V1CRL7a/tEjI+S8Ac2hcZ3NwATud1NygD8DBFi90ndS7yk
-KCWzgZIqDHNgBnbbx2iTecwOVYlALg8=
-=kEaq
------END PGP SIGNATURE-----
-
---NDvggmcI2CoJ2jcY--
+Arthur
