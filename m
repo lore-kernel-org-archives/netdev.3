@@ -1,154 +1,137 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011008.outbound.protection.outlook.com [52.101.57.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193E936C9D9
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788422618; cv=fail; b=fGjSmZK2SJUy0M056zzi7KUXyS6bFhqBbbQhxnZdH9oOv891vjApgMAg7fvbgV/pDU9o/5X0NWOmZ6lggzrmgrhYhbvl8ILMegH4ZfsVIsOw2uj3azREVltd5Ejw+XFizFoppvVt+oe4GTKWRN3SQ9GUVC+PMdCjCxtwdeG6OjU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788422618; c=relaxed/simple;
-	bh=16ygLat4+PGolZaUmzw9e2hcBzMpgg49W9hLUL+ZQq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lpU+2/Xcpd5Q5aeNBHf4kFBj7F3pXNJ/sb49ZM6szOGrEndkE19+sfHJN6HjAxvEBXHhEO2Oe48HntiPCU6bQSKwSamWz6qDgldylbdQKfXqJ9ahUKi3vthO7k/IdARDCbU1lOhtzvYjvhluV9JFHLtsbPJAOGcFu+BD+laosLI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Cpqx1q3d; arc=fail smtp.client-ip=52.101.57.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445EE370AD5
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 08:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788422928; cv=none; b=VhJ/+34XBPhtCEk0CxoXwhRkBuxi/MbVCpn+cWJzWz5h4neMuHx/y8AXOMUOlTb0pWLNCDnTOqHOi9tJihxpAv1PExTT6J3MmZg2TMavg3k3dGn0ll4l6jp6Cq9L0mHcdEoo6VYiNE0Yn5CI4LM0HoK0r+XAU5BA3HLb2UQo/9M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788422928; c=relaxed/simple;
+	bh=YwGBiuEcm3sjogZOLti1YAejry6Zqo6w1QEnPrFrIIc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RsybiGpyeBTO5hAlDsIkoGUH642uBdXIqIAwg6AYeWEj2iq62ytLm5rQud74nvuH1MiF2W9CAfVMHqCGGIKgh6c2JXlyG6wJRIrH4g8IO387fAZGB9C0sYwUt2E6xcfNth7D5xlP/53+wk4lHruE9NnUHjENo27eLam7ymnefVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1/shINN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WiQ+EQYz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Cpqx1q3d"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ND4G0oaUbHEADa7rXl0hKQwWAc5jPKqod5UfXluxVZyCqJH1ObDUu5gbR35BBWc6Rec7gOZIUhtncVJlsrhgtVGIkX/3WaTvh/6pjVtIOJtdJyVefP2+rUrSIxldXaaB6UgtvZyE7J/B20lLkeJ5vcelzHGP9wMz3i8m4gLg7qDvax/Aos4WNO7+2i6Tve3liYL0d5fDBvW67X2E+bROuTZ//S73tVBbovJhCUEHdmr7t3sQRvpcHx8LmshP0agyq9jUWUPtkK9+sfqYdrHq6nHphTku++fFcLad4oLsbaLkMw4IcTSBYD+rORDliusq58qWve4MM+3OLh9WTizoFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/MgotoXit5cJtdW08mLp8LenlGf7KAfybYjxx9EA3gE=;
- b=D+zrp2lJIvW9y8SM1epYB104+OagRFvfCD0vUaI1sprb/FnQ10GV7k+pP/cYlRT085PKTCecvLg48Bf8Z5IghlmlPwiGGQpiZgKbKaUBK4yLEBO3GWbvNHYXl5now7s5/vfUO22ba2XfYkokXW6jilcKfoh2t114A4SwsbaWA0dpFQYpMAQl+LOb/G+c+PMv56UwcUXRqtW8jVuKBR/P3n4chESzIwjWM4S2ST9LKTnX7pl4nelkXOdPIPGyyA+ktaCF79zzjiUE9d0TQL89sS7HY+NL/6lx6x+6pQiV8XrPb7Xb+t8ZfRyDMKlOApSidjmoEwrEBzZAexjgoFHsDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/MgotoXit5cJtdW08mLp8LenlGf7KAfybYjxx9EA3gE=;
- b=Cpqx1q3dpVsURoEodXj9MivxxkQFIZYRep0slrNUvhFrr2BlYn0rwhJfcqnjYYPRDjafa64RJZgEgoXXj00/6/8itVFFpFxVgqkw4uPCo+65RASCYWtnocXbrhypUB9W6d5lzsSSxnsOOtm/rUbhwOpP03a9rhTGLsEYMpklSm8oW/GZrQ8nQnXAFJgymjVIgXaPsZUkfD6M7LsbaTGlKisBxHSfht9WTMRJbc/z5wBG49NYLvSnpIetplN+5uXVv8w8k07nnwDHHBN03S8QyLs4Bxy0oOJ+wAgWqwKU04mwKuhqHpceItrTbazUI+EB/OKArsdtLhFjfGzuknnagw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by MN6PR12MB8514.namprd12.prod.outlook.com (2603:10b6:208:474::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 08:03:32 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 08:03:32 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	dsahern@kernel.org,
-	horms@kernel.org,
-	kalpan.jani@mpiricsoftware.com,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net] nexthop: Initialize extack in remove_nh_grp_entry()
-Date: Thu,  3 Sep 2026 11:02:59 +0300
-Message-ID: <20260903080259.10378-1-idosch@nvidia.com>
-X-Mailer: git-send-email 2.55.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TLZP290CA0011.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::19) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1/shINN";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WiQ+EQYz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788422926;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pxj+lVXL/zpSaRcXZGTkqNDz4XPtDz61G0ycxj2h4L0=;
+	b=T1/shINNPV3NKnKJqZUqYdrogFjTvZ0xHO4mcQkKnl+M9TEhT6P5r9RE+wfQED2RUSiT1l
+	Pxzg+nfmWgbwayl5nSlch0NamQl3X+xfANFpFJTUjtQBafGQ9CSbt6rvYMXgGhHadjOSjQ
+	90FfPEFUw95eJ5s3y14wKJk7pShXpzY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-193-Y4ghsBItMtGubH7GTZjcAA-1; Thu, 03 Sep 2026 04:08:45 -0400
+X-MC-Unique: Y4ghsBItMtGubH7GTZjcAA-1
+X-Mimecast-MFC-AGG-ID: Y4ghsBItMtGubH7GTZjcAA_1788422924
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f4bff865cso1196551f8f.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 01:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788422924; x=1789027724; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pxj+lVXL/zpSaRcXZGTkqNDz4XPtDz61G0ycxj2h4L0=;
+        b=WiQ+EQYzky0mST7KMIdPaCabJczqxRoZ3qHRXcwrijyP9Zs1HIWhC8f+Z6SRlTaViH
+         9qsw8Avk8m6c81Rrmo5NhSWHAj2fM9CoftoZuIzS83G0dMBabccqsr6sFoXfbIw/WdcX
+         ToyrFxrthzkBHSbOo4VVwkkp2i1mnUAJgWUwkSndX6Z/bZ6EBczCQGvA9OwhPa12oVlV
+         9pWWYM0yGdZKHIKUNWN+u2WxJSFGVRHMIIk97INg/wdbE9x9I6ZCeU/ija5KFY0sFv/P
+         g433zhZOyyl0Gu3iAtG719zarTgiQCuxBN38nbUhG0xwgG28FGxdHu2XreWvhfZoihdq
+         5jCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788422924; x=1789027724;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pxj+lVXL/zpSaRcXZGTkqNDz4XPtDz61G0ycxj2h4L0=;
+        b=Sit6QEfnjFJgqMT2nb7WKu3SZNsHqF2hCp4IsGk1JkWhdcFaMNtx51V9er/7MKD9rL
+         Anwko6/Dyk4jYaahQLhm4GM1M4dnVB+MSM3tLMz8Y3tue6PJQf5gYmIWR/MBsu7dymd4
+         j5IyUBzTQsUP4zJGtJ4bjnNsXDsnpYQh/OInSQs/kCe3tYOiM2Idt7jmtqejJz1Htl+n
+         F84WHxR4FyRFXs9JKzA+pFHlWJTm+3Gqy5u+FYg/xw4M9Sj5wsTBz5TILWkb2oFxNS46
+         S8N4AKum9IHSx97ucjgjQnZRCU0DLI7CIm4KcoVZAVwpi+eiNDeqYyNH0LQBCsYVwhYg
+         scvw==
+X-Forwarded-Encrypted: i=1; AKwUvBzucwJ/7ad1s2E87AWoUDlbPNOQB6X+uoSTaupRDpVQ80AHxlCveu9bykvoBg/yagVQZtyzZdc=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZt2ul/fvoLSTkdOp95oqFMAuyXfni8cTB5EK/6aIp9fBGb08S
+	ecdKWbUJamffD54SX1Nhh7j8L++g+eGewIKFnxQP3fTl50gtig0UDHOIcZTF/q/dk2bOOaM0KxG
+	JoEBiIN7p35iEYEa875Psi0lCnBKo+lrMSFtnBt27OhoxdLOtcf/Hd8prWg==
+X-Gm-Gg: AYBFou0vA40diWBcZ/pXl5ecGiHsH0HcPRoDFH99/r2nKvP4JLpv0WlL9Cc7Caon/da
+	Yt9f56nW4w4HZ7s8WX2FkM4VLik4JkU7A7KjObbYiY7d9ap8VRvWwcKIA8w0efD3mj5nTY0tPNG
+	OHm6VSjhgYsvpew4aNCWJX4ZqxGD0OaMOz9LGR9PoWYgMoJPHrxgwLTC7WcefSxnEUeJTq+ny9C
+	hpQJ3YlCSWhKpKJb7jV9PMTxflUOglI4XKopG0uaC90yWnj0aYvIrOxbWoIbaeYQEmiSGLZ0Vex
+	MI/Mi6boV94Vr3XdbQrACa+1nouE/JLD0vHadLBpf68BF7lPtxC9KchbfhI5Xvncxy58dG82IIi
+	RR52eD9nYvwAMGMOQzvqrwD3Ob3P7Phh9K/zVLK1Z6eHqdJmbF1l1pp72u98+7IyUvp4vOl8kEw
+	==
+X-Received: by 2002:a5d:588f:0:b0:482:fbb5:8a74 with SMTP id ffacd0b85a97d-48488f032b6mr17086055f8f.11.1788422898326;
+        Thu, 03 Sep 2026 01:08:18 -0700 (PDT)
+X-Received: by 2002:a5d:588f:0:b0:482:fbb5:8a74 with SMTP id ffacd0b85a97d-48488f032b6mr17081105f8f.11.1788422866905;
+        Thu, 03 Sep 2026 01:07:46 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e80388sm13498841f8f.14.2026.09.03.01.07.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 01:07:46 -0700 (PDT)
+Message-ID: <da990dc8-a7c5-4870-89f0-ad8e7dad0e0a@redhat.com>
+Date: Thu, 3 Sep 2026 10:07:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MN6PR12MB8514:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0108a75-0ec1-41c9-b8dc-08df0991d8cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|10067099003|11063799006|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	E5aWCu7Wr33spA2zkz7VNWicgGJrEljnBK3Yk+KXk/4smSNBLlyP2fWUNi/iDTJJKUfBejV+/9llK97oQhi6ud8P/keUl9Ao9DAh0WomtWPFaJkLMmcei4lc/x2OVN01V+fSR6gpDLPn2277oKtLrOhtDRSPud7aJklEPCDu4zUd3yWJpvqMGbPBc/9ICFMw5xDPMZacxE1W/63yAvmx2B8jHkbgpGdwfIUVgOt0srg27udVr7/rBTWO3Pc0qg0xViv532hCSRXEt0Os+xXxnM/HGj9NtkR+O4Yk82JZIBG1RKJYnKNNT8W2ET5o/xu5jJp+dZOErUqMREdDsZrHGO+NynxN0o8r7DooBD0vYDZs6h/Xa8gL+Sfc+0YqNRa+PGqFPJGZNozEWVClZY6FoDoNS46mnZzVZL6Cc6SsBITd7bsh5W76/1LoT1pPqDgGYOevstMLfXvzv0LLs93KckKzw27MGh5fuf+dqgZD/gBft7IhoP2dNRL6f4KhIT54XWnemZjdUeu/folDg6N7OTDitIGWBIO51N5wwjTlRFm+yGN1duaYez8DA5qJeOL/ScxsdKqWf4yXDJ/a1r0bI107pLlyOjJpyD8e00Cxz2iwc0GH4QZVkBQCjjiU46fhMSDzaV+gf2wpNQtmLERRKm5LFbW36ITkd4TlGxcyuJo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ziKuQmzETjkU63YAl53HqVy+8isWWqfEKaz3aXLrDweevwyd/Zp++kmlqJ1o?=
- =?us-ascii?Q?ExpE2MeK4tsuA6uJ7/1oje476plEWG7hQghIWrpQ0X4rrpkqnwspnxEd287M?=
- =?us-ascii?Q?hDoJpmwCf8Et1SHlb1nJA8Kl+4e2qu/XA9t3mVI4XfYa6bTqCpdPKnpBNfw7?=
- =?us-ascii?Q?23BvK/3Gfd0+u8D6Z0M5jD2F7DFVX0an+TKV5GQ/WzisgtEL0urMQOdYjquY?=
- =?us-ascii?Q?dA938ldVRg3diiyWRxlYS1SaTSMaa36dwTwHhH7IgFcE5nH9kvYViQemBNlq?=
- =?us-ascii?Q?QeSQMWhOM21kWvsLlXDzBFxutMITKGy0ab/CV2YhuWI+FHPDIuDWdnOYhXU9?=
- =?us-ascii?Q?6zvFKlsuzEhi4N/khoce3jPRahoE98HvjlejkixWCmGqs7cVlyuija2qiORy?=
- =?us-ascii?Q?2u/uj8amzmmiJHqzI9vleKWx2Jmajj2dPFVIlk7imfXPTtNv00n7O0oD1sA3?=
- =?us-ascii?Q?eEkoqa4EhskBMGJ0g2VNg7VDNNTm8+J+L8ReyHugT+9RhgUJ+LElctgLz2ax?=
- =?us-ascii?Q?Ms6y0ak8clcWLgJJdYMxuHeUWzpceoyDDmb6vWFyLbyrOcyGAFct6Yez7+py?=
- =?us-ascii?Q?kbTl0VB4eg7qE+USNJyj0TYObH1kGNzqQpc6eJZljBdgBi1N3gAUCuPzYMeT?=
- =?us-ascii?Q?SJ6ycd3yIwSUDOoSuYliQSSmFnRynjxPcyY8khjkzJqDnPjbRonz6Yg0cxWt?=
- =?us-ascii?Q?+3pL12bnFvFQIcQdv0e54WTRTNj2AqnzooqWf4nubqjmf5dICyMyZd3wzKmG?=
- =?us-ascii?Q?xfCdoTdIQ/1V7zKpjwF0TmMhyuJswtTOnE8OCPYAIMQCuTkmEbFgaME36uln?=
- =?us-ascii?Q?S6Sv1IFqwAt6OaxNsNmDCgpZ2nnvpolIEmMPaU33dXpQV8Oopp1mCEwx+xq2?=
- =?us-ascii?Q?8LtVmhqxZguimZAH3Di2HCKG3o6Bule7F2gOG9RB2NAxFoYO/hcql1l4QWvo?=
- =?us-ascii?Q?dxLjCyjbXy/Gbt2Eum5g7fgI1hQFzbsyke8xGUCALsCBJJJyj/4EmtMFv/n1?=
- =?us-ascii?Q?Hjs7NpXp4TPN2QpaQ/8mcTxSeh/4r9d0XOWepV53UViUHmSRJKlC6AIDdJiE?=
- =?us-ascii?Q?cRhfOf/LkXBC8So2MKrr0NoRBY9yEmuitI4ZCBGADZyp6KGG55vYimZKe5H8?=
- =?us-ascii?Q?vyRSN6mnhiKG23qVrOG1Gww+HDvcLl6gNZj/ZzKuVwBnamt8bwBRWj1OM3e7?=
- =?us-ascii?Q?g/6pVEQ5R0UeMX24m3iIgq2qTYPL3hZqsHpHlOlHQJTRRk/6iVNl2Q88vOnL?=
- =?us-ascii?Q?l/mfLYLlVTGspcfwelUFT0v62lBoqF7mjZR2+Gw7O1hn9P8l9K4kPQ/me9sq?=
- =?us-ascii?Q?Rbv8r7aa4QqST9IZZXwGCgCgsmDWs0fG4ioFcM+Izj3U4igRvsqNyVIWmewX?=
- =?us-ascii?Q?PTgP3vnFlJsXDZaHRDonMyUtzdLy64dEd76o+ghurnyv8Lvx0Sg+Zhtm8y3Q?=
- =?us-ascii?Q?Nb6C4/r+X65XLjyJmZFk10zuw/Zj735IWx1NXNc34f2NKe5KUbnUUbAYCnEv?=
- =?us-ascii?Q?scN+zGiq0AJ/lria67DEKsZc8ISDNCGG7OgAO4jtJaeva9lPTla8GDEj+bLO?=
- =?us-ascii?Q?LXPDOUaPD1BCt+jTGI2NK69hvny6FYzG7qAPBktkoBDbtiqXIOlKRnOV/Qzo?=
- =?us-ascii?Q?/YoGwuOZyvjc02qLMZRpx+6yDpRMzjFGX2SMUA4eaJfulsIP3BHSDCMfKfBv?=
- =?us-ascii?Q?JzUMz+xxpwnwYLMNyg/TbSpdB/j+atICq2dWugiYxtr8/oPG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0108a75-0ec1-41c9-b8dc-08df0991d8cb
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 08:03:32.3133
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v4zhC3vQRUsbBf6A8UusoOBsiSIG7dIri69m9Ke125VW863/HyMU2gwS+VTJBJMfiWMMp0oEd+uHGOQpZj/lpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8514
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] tcp: fix mdev comment in tcp_rtt_estimator()
+To: Ziran Zhang <zhangcoder@yeah.net>, Eric Dumazet <edumazet@google.com>,
+ Neal Cardwell <ncardwell@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260901023539.6986-1-zhangcoder@yeah.net>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260901023539.6986-1-zhangcoder@yeah.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-remove_nh_grp_entry() prints the extack message when a listener fails
-to replace the reduced nexthop group. However, extack is not
-initialized and listeners are not required to set a message when
-returning an error. Neither netdevsim nor mlxsw do so when an
-allocation fails, resulting in the dereference of an uninitialized
-stack pointer.
+On 9/1/26 4:35 AM, Ziran Zhang wrote:
+> The old comment "mdev = 3/4 mdev + 1/4 new" only describes the
+> common case. However, when RTT drops sharply, the code applies
+> a finer gain of 1/32 instead of 1/4, resulting in:
+> mdev = 31/32 mdev + 1/32 * new.
+> 
+> Express both cases with a unified formula using variable
+> gain g.
+> 
+> Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
+> ---
+>  net/ipv4/tcp_input.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 0f60a1dbf..2c9feb181 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -1108,7 +1108,10 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
+>  		} else {
+>  			m -= (tp->mdev_us >> 2);   /* similar update on mdev */
+>  		}
+> -		tp->mdev_us += m;		/* mdev = 3/4 mdev + 1/4 new */
+> +		tp->mdev_us += m;		/*
+> +						 * mdev = (1-g)*mdev + g*new, g=1/4 normally,
+> +						 * g=1/32 on sharp RTT drop
+> +						 */
 
-Fix by zero-initializing extack, as was done in commit 6347c5314cee
-("nexthop: initialize extack in nh_res_bucket_migrate()").
+I'm sorry, I have the feeling the above does not clarify much. Also
+AFAICS it's not a 'sharp' drop but any negative delta.
 
-Fixes: 833a1065eeb1 ("nexthop: Emit a notification when a nexthop group is reduced")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- net/ipv4/nexthop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index a7c2b8dced4e..42e55b5a755e 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2036,7 +2036,7 @@ remove_nh_grp_entry(struct net *net, struct nh_grp_entry *nhge,
- {
- 	struct nh_grp_entry *nhges, *new_nhges;
- 	struct nexthop *nhp = nhge->nh_parent;
--	struct netlink_ext_ack extack;
-+	struct netlink_ext_ack extack = {};
- 	struct nexthop *nh = nhge->nh;
- 	struct nh_group *nhg, *newg;
- 	int i, j, err;
--- 
-2.55.0
+/P
 
