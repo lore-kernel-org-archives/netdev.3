@@ -1,89 +1,104 @@
-Received: from mta0.migadu.com (out-132.mta0.migadu.com [91.218.175.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730D117A2E8
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 02:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44172E7631;
+	Thu,  3 Sep 2026 02:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788401846; cv=none; b=UvqV+xONIef+eecKaPMCZw4c3BJpNMdbH/4JzC/EqxbyMFBWcHdHPQ7Oy+WlY4DOETXkTaVoKMEkQs2p3BsZGrFk+CEf/IESSr8ekSqLmmUxOt1+RlQwDyWUSaR97Rlp5OBW9n+CgSIbiyq5Muwc4lnH8HVJ9O/jnqet/M8PA0A=
+	t=1788402083; cv=none; b=i7PgaYvStNmZX7p2SJmx0N8rpUDDdYzyPkeVKURQiDqyVaYa91iDNs0Rf7qdmRlfKBjn9VZtHW+dqYSGKTjF3LyJTiZQiEvHdLyYqSohhwjaM0Pv6wyfdTAZDixu+yIcWSK0k2q8aa4+cFjdq02O8KMvN5aBVgE/2esJtAxwHtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788401846; c=relaxed/simple;
-	bh=6KHUrCXryuMRO6NbRZhGY1jVIGm3Mw09CKEhifRYOSc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WLDbJ7gXp2s+Dy5io9wqe8MKJZYi+bTKKwsMaD1ZuMfXjq6TkuFDS8ISU6k+2ghYQzcoV/6dJxyOlmzY3urfsyOV8JB9kMH5TOr69BmVSSQfye8q33yjK8Tt9rrKyWq9NWQYl0RNZOKCnoi6u8z5XdVwoNxW6i3yE3/XAMcZxZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z+ipQS3c; arc=none smtp.client-ip=91.218.175.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788402083; c=relaxed/simple;
+	bh=0snNFNPJZeBH0dNv10jDWDoEvqSIo74+5h1V6qx1dTw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fH/FlX/MxbhRKnUJJxV2oyBWeNgZoPxSKfEPpepmddHiYtLzHmYtGDqGqK3i+nk0rbSaf1WHD/FyCiSMuccSc0AiC7qmmVKWfBhCl53Kp9fuXixLm4Tz1DqtURagnzR3OyewHIJbx3Iktz+Gi/Fmnn1ymv87GpAmdQ+NCSeIrQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSKZh/fU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z+ipQS3c"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=6KHUrCXryuMRO6NbRZhGY1jVIGm3Mw09CKEhifRYOSc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788401840; v=1; x=1789006640;
- b=Z+ipQS3c18g4uBgJK67g8G4sbcu2RJfSeKD3/b1IpVrAusdoBtkKptOUAk6m4l7KhZyIsQf9
- KxAT5E/8g396paddDDXw7kXyyfa85wlWQ0TR/ZxNTvf0c1M9GMG6o1W/SxTANI+F8iW/8oa2HxU
- oS6/EiZ7ErjETev9pePUNvBQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 88996744991c2e71;
-	Thu, 03 Sep 2026 02:17:20 +0000
-X-Mizu-Trace-ID: 88996744991c2e71
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <fbb4c7c0-58cd-403d-bf77-8b58ef4c7b16@linux.dev>
-Date: Thu, 3 Sep 2026 10:17:10 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSKZh/fU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773331F000E9;
+	Thu,  3 Sep 2026 02:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788402082;
+	bh=IBYrmRb5vv5AtfBrpzpdgjcJluKkzhoEEMla6JWlj8U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=NSKZh/fUqVSqzG0vdhN+x9wVHVpm202fcK0c6KSEtjgEH+iSAfrw4gX4ntBkcnd5h
+	 KLOIrpN0m8Y4iUENDiVW0hhgghSqJbD5ktbhDe3WpjVbmPKyguXmZvQi6rRJ6h0uaF
+	 ApHxXDUO6DQo+fgjWTnL37R3jDT3wmZEy41f26ABuK3FuRDrXHYAnXYurnwRX9Vx2a
+	 NPIwTo+Py+bhEp+Mf5RUeioSBiTXykwYwj0wz2fvFh/DkqjOfRko5lGew0A52HAJLL
+	 F+N1i4nTR7U5rQ+0CY17E+uuc2DCs/Vntp5bHsSsPl50qIXq1n8bpEOunNepqWvR2L
+	 xb42jwbd3QKnQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569333927056;
+	Thu,  3 Sep 2026 02:20:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: macb: fix NULL pointer dereference on unbind
- with fixed-link
-To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-Cc: git@amd.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-References: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-In-Reply-To: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v5 0/9] net: dsa: mt7530: modernise register
+ access
+ and add two DSA ops
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178840202389.3047971.6055175026951986778.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Sep 2026 02:20:23 +0000
+References: <cover.1788190568.git.daniel@makrotopia.org>
+In-Reply-To: <cover.1788190568.git.daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: chester.a.unal@arinc9.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
 
+Hello:
 
-在 2026/9/2 18:28, Vineeth Karumanchi 写道:
-> When the device tree describes a fixed-link and has no "mdio" child
-> node, macb_mii_init() returns early without allocating the MDIO bus,
-> leaving bp->mii_bus as NULL.
->
-> Two cleanup paths then dereference this NULL bus:
->
-> 1. On driver unbind, macb_remove() unconditionally calls
->     mdiobus_unregister(bp->mii_bus), which oopses:
->
->    Unable to handle kernel NULL pointer dereference at virtual address 00000000000004a8
->    pc : mdiobus_unregister+0x14/0xa4
->    lr : macb_remove+0x38/0xa4
->    Call trace:
->     mdiobus_unregister+0x14/0xa4 (P)
->     macb_remove+0x38/0xa4
->     platform_remove+0x20/0x30
->     device_release_driver_internal+0x1c8/0x224
->     unbind_store+0xb4/0xbc
->
-> 2. On the probe error path in macb_probe(), reached when
->     macb_mii_init() has succeeded but a subsequent step fails, the
->     err_out_unregister_mdio label runs the same unconditional cleanup.
->
-> mdiobus_unregister() and mdiobus_free() do not guard against a NULL
-> bus, so guard the calls in both macb_remove() and the probe error
-> path.
->
-> Fixes: d0c3601f2c4e ("net: macb: Avoid 20s boot delay by skipping MDIO bus registration for fixed-link PHY")
-> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+On Mon, 31 Aug 2026 16:37:43 +0100 you wrote:
+> The mt7530 driver carries its own register accessors that predate the
+> regmap conversion and now largely duplicate what regmap already
+> provides, including locking. Most of this series removes that layer.
+> 
+> It first moves the MDIO bus locking into the switch regmap via
+> .lock/.unlock callbacks, matching the PCS regmaps, so any path reaching
+> the regmap is serialised automatically. With the wrappers no longer
+> adding locking, the thin mt7530_mii_* indirection is folded away and the
+> remaining accessors are replaced mechanically with the plain regmap API,
+> using the coccinelle semantic patches included in the commit messages.
+> The two remaining reset polls are converted to
+> regmap_read_poll_timeout() and the then-unused dummy poll machinery is
+> dropped. Open-coded register fields are converted to
+> FIELD_GET/FIELD_PREP. None of this is intended to change behaviour.
+> 
+> [...]
 
-Thanks,
-Xuanqiang
+Here is the summary with links:
+  - [net-next,v5,1/9] net: dsa: mt7530: move MDIO bus locking into regmap
+    https://git.kernel.org/netdev/net-next/c/fbf5096f540d
+  - [net-next,v5,2/9] net: dsa: mt7530: fold mt7530_mii_write/read into mt7530_write/read
+    https://git.kernel.org/netdev/net-next/c/b62351d125ad
+  - [net-next,v5,3/9] net: dsa: mt7530: replace mt7530_write with regmap_write
+    https://git.kernel.org/netdev/net-next/c/63ba2b758938
+  - [net-next,v5,4/9] net: dsa: mt7530: replace mt7530_rmw/set/clear with regmap API
+    https://git.kernel.org/netdev/net-next/c/f6692ee8def4
+  - [net-next,v5,5/9] net: dsa: mt7530: replace mt7530_read with regmap_read
+    https://git.kernel.org/netdev/net-next/c/10d9d8328e8a
+  - [net-next,v5,6/9] net: dsa: mt7530: drop the dummy poll machinery
+    https://git.kernel.org/netdev/net-next/c/d7110c1dab44
+  - [net-next,v5,7/9] net: dsa: mt7530: convert to use field accessor macros
+    https://git.kernel.org/netdev/net-next/c/3d8ca6f90475
+  - [net-next,v5,8/9] net: dsa: mt7530: implement port_fast_age
+    https://git.kernel.org/netdev/net-next/c/e1d532b6b056
+  - [net-next,v5,9/9] net: dsa: mt7530: implement port_change_conduit op
+    https://git.kernel.org/netdev/net-next/c/e5ed29f15603
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
