@@ -1,126 +1,104 @@
-Received: from griffin.linux.hr (griffin.linux.hr [193.198.212.57])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA0834DCCD;
-	Thu,  3 Sep 2026 07:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.198.212.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBB4402BAB;
+	Thu,  3 Sep 2026 07:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788420905; cv=none; b=srbEHiVOkiNtPLqbIUhHVk5ZMqOINWi3IzG392+399XX7qKeOETf07MRsADr3I0pkLPZksHKb1x+C8ReN8E4k/bVTZDkElfGDBDKVDMBrmiLKus7C3YVPHT4r8QL1f3ZsBIC8BcH3vFYE0/pni8A8QgEvBe5YSis2p+SlOy483E=
+	t=1788420912; cv=none; b=ptwN4pASUdYUHRMpQzM9CDm2XmnzgTObHAGmF1+Yzc/XIRlVp1ZlXuVEwhkoMcxTa31C8HGFEeQpCBPdkh1h+beY1LkBzIqm9buOtXY/+GAZc3SACv+QNY0kbFIw52Da/RVbyJ0unpZ7w9e6V7ny5+SoJJ/dtSsmCcxR5FR1hPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788420905; c=relaxed/simple;
-	bh=uU3M1QH9GAGStJB+cvap9TRM5aLHXRZOvz8g5b8/ow0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dZhzv33W52xKeAFAFa3nFQKI2iBKDylnFcqIA53XZFnht5AZsBUAJDyny/Vl4JNN8YpTwLDULu6xnvLRgIQFf6iU8SkvmXk3iB8yt6J1onfV6/nuF4lNUXFRHOsISLDemoiYr8IQYjwtropw/NbO/VghA7fgYjv6kaROJ0chomQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.hr; spf=none smtp.mailfrom=griffin.linux.hr; arc=none smtp.client-ip=193.198.212.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=griffin.linux.hr
-Received: from vkosturj by griffin.linux.hr with local (Exim 4.94.2)
-	(envelope-from <vkosturj@griffin.linux.hr>)
-	id 1x20pF-0008Uv-LZ; Thu, 03 Sep 2026 08:21:29 +0200
-Date: Thu, 3 Sep 2026 08:21:29 +0200
-From: Vlatko Kosturjak <kost@linux.hr>
-To: linux-ppp@vger.kernel.org, netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] ppp_async: drop the errored frame instead of
- resetting its headroom
-Message-ID: <apkR6ZU+tqP2C3Fl@griffin.linux.hr>
+	s=arc-20240116; t=1788420912; c=relaxed/simple;
+	bh=y6Vy9A6wVPLLPALeOj8WWs+XDRSs8mCIOs7Co2Kv4bI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OrALxW8MD8c3unTceGE9QXzmWsRkT4ZQNiVU45ZJa+r8NI7vKF9Tes2udxdDe/1obrQHeOwOJuGXy/63ZdFp5T1MrEIJd9sClGRIJnrlKSyQTqnzNM2ULL1xpqKdI3Rrxz9o6pY51li7Z13KwEKVrn2apywXYfBi2lSo4SY43BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=x98INcOd; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="x98INcOd"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 882BD2058E;
+	Thu,  3 Sep 2026 09:35:07 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Wr7H04nmi7FM; Thu,  3 Sep 2026 09:35:06 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 8778D207E4;
+	Thu,  3 Sep 2026 09:35:06 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 8778D207E4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788420906;
+	bh=qLkK7xo26NgXVWEASB3FlJ++J8k8espZ4kCXrwapU+0=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=x98INcOdGLyxR7j+ex+miCEttT+2ZCjQeYqXpbMyXPHXFqc2Q5FhTQ7dKlO8Uu+pN
+	 x7ojNuaiTaZwozxAdCr1r8oi0/YxndZfGSmc5KjfWUhYibr7I9rMtgs4XQunzflsD4
+	 CUjwJqVBdDY30XuRPZC7T1fe0n8Gf6FdO/mVU/LA7JnOL4u+urUoLh770A5xRWFgGF
+	 owIyYGUvVnFNypI3OOYRnetaXJaVRSXJ28dkqGVWWIV1glpjCQsjpnIIvmXCMv/wH5
+	 kPUeGsGPFj/JoTkeKE4WTxH7N2kEiQSvU8WiGI05YLxCNXfFqu1iuIT4TRWUxj3R3F
+	 0+c45vzw15DyA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 3 Sep
+ 2026 09:35:05 +0200
+Received: (nullmailer pid 1407955 invoked by uid 1000);
+	Thu, 03 Sep 2026 07:35:04 -0000
+Date: Thu, 3 Sep 2026 09:35:04 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<AutonomousCodeSecurity@microsoft.com>, <xmei5@asu.edu>,
+	<tgopinath@linux.microsoft.com>, <kys@microsoft.com>
+Subject: Re: [PATCH net v2] xfrm: hold net_device reference under RCU in
+ bundle creation
+Message-ID: <apkjKMgkC35QKnHq@secunet.com>
+References: <20260826201745.43267-1-blbllhy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Sender: Vlatko Kosturjak <vkosturj@griffin.linux.hr>
-X-SA-Exim-Connect-IP: <locally generated>
+In-Reply-To: <20260826201745.43267-1-blbllhy@gmail.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-ppp_receive_nonmp_frame() prepends a two-byte direction tag before running
-the pass/active BPF filters:
+On Wed, Aug 26, 2026 at 04:17:45PM -0400, Cen Zhang (Microsoft) wrote:
+> From: "Cen Zhang (Microsoft Security FORGE Labs)" <blbllhy@gmail.com>
+> 
+> xfrm_bundle_create() and xfrm_create_dummy_bundle() read dst->dev into
+> a local pointer without taking a device reference, then pass it to
+> xfrm_fill_dst(). A concurrent RTM_DELLINK replaces dst->dev via
+> dst_dev_put() and frees the old net_device, causing a use-after-free
+> when xfrm6_fill_dst() later dereferences the stale dev pointer.
+> 
+>   BUG: KASAN: slab-use-after-free in xfrm6_fill_dst+0x82c/0x860
+>   (net/ipv6/xfrm6_policy.c:86 netdev_hold())
+>   Read of size 8 at addr ffff8880142fe588 by task exploit/153
+>   Call Trace:
+>    xfrm6_fill_dst+0x82c/0x860
+>    xfrm_resolve_and_create_bundle+0x21d4/0x2bd0
+>    xfrm_lookup_with_ifid+0x485/0x1640
+>    ip6_dst_lookup_flow+0x19b/0x1e0
+>    udpv6_sendmsg+0x1443/0x2dd0
+> 
+> Fix this by reading dst->dev via dst_dev_rcu() and keeping the RCU
+> read-side critical section active until xfrm_fill_dst() has taken the
+> required device references.
+> 
+> Fixes: 25ee3286dcbc ("[IPSEC]: Merge common code into xfrm_bundle_create")
+> Fixes: a0073fe18e71 ("xfrm: Add a state resolution packet queue")
+> Suggested-by: Steffen Klassert <steffen.klassert@secunet.com>
+> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> Link: https://lore.kernel.org/all/20260820200245.44312-1-blbllhy@gmail.com/
+> Cc: AutonomousCodeSecurity@microsoft.com
+> Assisted-by: GitHub-Copilot:claude-opus-4.6
+> Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <blbllhy@gmail.com>
 
-	*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_INBOUND_TAG);
-
-Nothing on the receive path guarantees those two bytes of headroom. The
-frame-error path in ppp_async's process_input_packet() resets a reused skb's
-headroom to zero while claiming to restore it to a freshly allocated state -
-but a fresh skb from dev_alloc_skb() carries NET_SKB_PAD:
-
-	err:
-		if (skb) {
-			/* make skb appear as freshly allocated */
-			skb_trim(skb, 0);
-			skb_reserve(skb, - skb_headroom(skb));
-		}
-
-ap->rpkt still points at that skb, so the next frame is reassembled into it
-with no headroom at all. A peer that sends a bad-FCS frame followed by one
-beginning ff 03 then leaves a single byte of headroom by the time the filter
-tag is pushed, which lands one byte below skb->head:
-
-  skbuff: skb_under_panic: len:49 put:2 head:ffff888003c10000
-          data:ffff888003c0ffff tail:0x30 end:0x640 dev:<NULL>
-  kernel BUG at net/core/skbuff.c:214!
-  RIP: 0010:skb_panic+0x13e/0x230
-  Call Trace:
-   skb_push+0xbd/0x100
-   ppp_receive_nonmp_frame+0x48a/0x1d10
-   ppp_input+0x4e9/0x2f80
-   ppp_async_process+0x2a/0xe0
-   tasklet_action_common+0x20f/0x8a0
-   handle_softirqs+0x18e/0x590
-  Kernel panic - not syncing: Fatal exception in interrupt
-
-Zeroing the headroom violates the NET_SKB_PAD guarantee that dev_alloc_skb()
-gives the rest of the receive path. Besides the filter panic above, when CCP
-compression is enabled ppp_decompress_frame() hands skb->data - 2 to
-->decompress()/->incomp(), which then reads out of bounds before skb->head
-for the same reason.
-
-Rather than restore the headroom, drop the errored frame - as ppp_synctty
-already does on its error path - and clear ap->rpkt so the next frame is
-reassembled into a fresh skb with proper headroom. This is simpler and fixes
-both the filter under-panic and the CCP out-of-bounds read.
-
-The original V1 of this patch made room in ppp_receive_nonmp_frame() with
-skb_cow_head(); Eric pointed out that fixing the root cause in the transport
-is the right approach.
-
-Found by fuzzing the PPP receive path with a mutating peer on a pty; it is an
-interesting (remote) DoS: root configures PPP, the peer supplies two crashing
-frames. The reproducer (repro-ppp-skb.c, unchanged from v1) panics in about a
-second, and returns cleanly with this applied.
-
-Fixes: 6722e78c9005 ("[PPP]: handle misaligned accesses")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Vlatko Kosturjak <kost@linux.hr>
----
-v2:
- - drop the frame in ppp_async instead of making headroom in ppp_generic
-   (Eric Dumazet); this also fixes the ppp_decompress_frame() skb->data - 2
-   out-of-bounds read that the same headroom reset caused
- - Fixes: the commit that introduced the skb_reserve() reset, not 2.6.12-rc2
- - [PATCH net]
-
-v1: https://lore.kernel.org/netdev/CAPAw8HE6QgnePG=UUfU2d9mYXNpY2O_kp5v0J82VuVoR6gwWOg@mail.gmail.com/
-
- drivers/net/ppp/ppp_async.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -812,9 +812,6 @@ process_input_packet(struct asyncppp *ap)
-  err:
- 	/* frame had an error, remember that, reset SC_TOSS & SC_ESCAPE */
- 	ap->state = SC_PREV_ERROR;
--	if (skb) {
--		/* make skb appear as freshly allocated */
--		skb_trim(skb, 0);
--		skb_reserve(skb, - skb_headroom(skb));
--	}
-+	kfree_skb(skb);
-+	ap->rpkt = NULL;
- }
+Applied, thanks a lot!
