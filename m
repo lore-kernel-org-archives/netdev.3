@@ -1,178 +1,223 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7986E3CB572
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 06:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788416601; cv=none; b=apFPTquC1voOG2KH4t7SqwxThw3yPtUe3uLoM8v8oa3HMNCqueXQCvJnefuLIJ/dwJjnyvbVLkWy+QkircMCwSou2QzYNPFqCiGnjQBnvQk//ahr7Yax/VWoKsBqrPoOOWu5HW2keBm6neVbKb/U3GVtDN+nZgh7HkZ/z0JQ+DE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788416601; c=relaxed/simple;
-	bh=TuGxkHJXiyeQ98BYnDOI/eYK4d+LDwKVganzRP6FtLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+dBgbzQdwBAS2ZOjId22mWphBjLCDPXx+XjiYgL2fOnhMuq9kkERBsHnp4YGXS5SXZXTlDSHUEgyyzN/MSdICrHM4tkSnQMKNq8tTRu2I8u+5HL6drsZJy/foU6VkZQmbNDfyXdAvNWT/cdkEhDnif+r4KofwsjRxao6+W9AoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=p3llzWE6; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51745353EF7
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 06:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788417457; cv=pass; b=RAADQ2QZF9LvTZ3Oms295yLdcmfR0Ojm54aYL42fRezl6gTzmGVMyvWdgELfeJS0nSZV8wtCXMXg3Mzzl0qbntrcGDdJ7nr+2O5fT7hK+hRCBr0QJ8PCPbMw26QDa9HMuRXZVPDxAKZQnpI+I1GISvKIfZPA+oeBIhpSnLH/1bs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788417457; c=relaxed/simple;
+	bh=Bf9TWNPNYtmYksx0Z4126nO7+2r16rIPR+pSeEPgWew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E8NGEdBMRgZmJjeMKFLW2Q0/J+INCqMmFVwiZ+MhQukayqpBdFTO5K+lznJkcuFUE/shzjuXL7EVthCzrJ7EObeztmLZ++4Ovis3AaHqWHHg5mpNVL4FvxEGUwJIi4xOJQExy6btHHj95SJNehN+e0fB43MF7ZZrMNccbIzJI/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZTN5a0Vj; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="p3llzWE6"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-855d2bfae95so761997b3a.1
-        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 23:23:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZTN5a0Vj"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-52f9fc510e1so7872711cf.0
+        for <netdev@vger.kernel.org>; Wed, 02 Sep 2026 23:37:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788417451; cv=none;
+        d=google.com; s=arc-20260327;
+        b=f/2Pi95JtMqy44sn/R/q1NmUGWPp5Ed2IXZvNcHTYowHw+uipYdyhL07BZLulHPvTc
+         iuSzqEmpRitIHjrhVkCvhoj03MxdCMniyb2Cp1SCL6L7UCCqryQ2rFVrQwI7GKdIvnN4
+         mab3zRPYJFAs6nnLdYDf0GKVNlU/6E2voC7KEy9tbyxK6wY000lmfmdK4SZz8PX32oAt
+         aTsNe+mhc+Cf+jh+suixRlSM7UGdTCkcyTf2/k/CMIY9xCf7mAzUQCNR699+Xn2xT/AE
+         AfOk62P4RMQ6dZjZMnongqkSRApCtSNyjOc37j8e6csAo2NuLLu4pIwGMbwM0Wv8Vhm3
+         2bCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KqkahuUIc5ZIZCVDrZu0ZNrbpsvf9SIwSaxwkoNLB/o=;
+        fh=QI+qst3lI1Fz5/cdxLU11J8PpDjWBkx8eXXIi3PBEUo=;
+        b=dObnY43XdJRDQnYU+qQz5S4FcpFYqIjjzsr+a50jq3xh0ST8NLR8LQuEzvEshbxssO
+         BSzwmo+iYVWd19KziK95Dv5qw2W9am9YiNye0mIJcVLcuLyN0gLf8JFrkwEdkW/rHdXh
+         WWrOzWpQPwEhYy9GjwxXPbxbqZVTwNql7MrYBRZc+f5NqbGjG0FCRRnIJ2sl4Pu6eFzX
+         KrCTLzDnvgZ55cN57JTxv5Su4wro0qItvK4hdJnZVNWoHzG8Z3L2plT7fRElxVf/YYO2
+         ZBkc5eVhbROKC//HZfa344waMzZ9fET5QcaZweJ1eGy5o5EVs7gFEKjBo1ODNUNjr7+K
+         fvkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788416600; x=1789021400; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aa6xtUnRf3OfVklhSmZ+0EAIJvXGvirPNAHJXrVwJVg=;
-        b=p3llzWE645hb+Z6bm/G1jhBSAoq+N/LA+PMsc29uLx9Hubzu7vtinlt8/V4MbxvTap
-         aULgNps+PI9WLw5IX8TXGkEN8LeQtlEXRJbiOJi+Sin1h+p29LXV5T0wI3Geup02aPal
-         9sAJ2LrK1qgH1tK6sBJHAZMuuysTeKR2zqTlR5aurwGfuxnzAuCaWS5pGD/JogtzSA3z
-         Y5SJ0p2F21UjX3/ATvnhxgv/AwriMMbidw/6z5jbT2dEOfvB8EIbFawVLkKPXvmHqks1
-         0baqdFaC4/VE+9RYqtHbnwwqy8enRoDnRVQwTJ6t2GjhC/7kyMANMY389JAszFQgBiwv
-         8Zww==
+        d=google.com; s=20251104; t=1788417451; x=1789022251; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KqkahuUIc5ZIZCVDrZu0ZNrbpsvf9SIwSaxwkoNLB/o=;
+        b=ZTN5a0VjHJdoA57C0+KpZSXPIxuZaiejJljHOxKtYPgSw23xbYOLv0Yi8M6kwmKMF6
+         ev471eRAUESMxyMBSwd5zf9ZNHMnr/4yyjhD8/at6EGMDvZrFuM8uNAFDByh3P9YpvFo
+         K69ivSlxZfVR6RDeNXKbcHZWFftXWp2WYRTtVWJpPshY2GLMSMK/X6DaqjNRFzV99lxi
+         qIOrQEwYSdOxuRM64D8FvH4J3IuBUxBxTtHZ+fuXdvqgZTzKsjPJeeRxX3MZ8ndMBy/Q
+         fiKsNfWwasFQ4/Z7LJmOElPaV99nSFCXbNGnsK+cf9HhfqJoK60qbTThmHVvr1cfLWxO
+         cNBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788416600; x=1789021400;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aa6xtUnRf3OfVklhSmZ+0EAIJvXGvirPNAHJXrVwJVg=;
-        b=F57EFWCGVM+ugsitmEUB28482qVv5O4b40bpEGPMwRt0ihUmaZVH8Cby+0WGyGjW8r
-         m+Z1Z2DlPJ1EnshC6blN+U36JBlDQzyLuioKnxRvI+zF2eNu8We/KNsbGfSNALTa1og9
-         zIgBZoguQj9LRwlVovixpKurYGP6vKMX0wFd/WXD2jRL/AnLCIBH6ZI0BlPQKoR9HvNd
-         T128wuVg4z4lTc4QxXyZ1o67T7ryLZY2EreBdoq1MZVAUQT+d0JlDM8bkstA691/quC8
-         TNnJPvOflHnjWVubJU3O7SV6bSH29IdL429GsEnnz1EMjutAqwp+1i+EmizUqfAzD5WO
-         SaNg==
-X-Forwarded-Encrypted: i=1; AKwUvBz0cL7jTRX2AX8xuE+erYhzUyac2lvqCwkl7hDfJMCx9WzF+CCnsiy+jnw3FfQwpi6UYutrU3U=@vger.kernel.org
-X-Gm-Message-State: AFuF++n63/NM25DzC3+ddeIaQ5ILGvvdUH2Toa3q+p9y7vkiXwVi6Rf0
-	q9+cydDY71ejmKOXyO/1t1if6HR+fP4b0UhI35T1Z55GIKkJERX6YnYksKzeZCoHmpSI
-X-Gm-Gg: AYBFou3Si4/Z1Ie/4QtQUUmyukjEbm85ZmlIahO4Irtw7R4qUdEUzTWkVseMERgV/RZ
-	MuJLjgpyh8C82vtzZSdtuSyn2yjITgCyKr6cmaDRL5qJmgPortcuHfUvwzjw1TJQXZb1PaUpOn9
-	ZbIVMFcIZvst7og8+5823yFNrFpQF9dSl6lbHqQL7NtLpf7houjqb4OyVPbcL23taDoWyODBUr+
-	4ppZD6in8IejENfbrY7WRmS25lY1j3y5QSm39Jz/DY3qcMOk65WHuEkcuR8A0TU4zVgxh7MNWvi
-	+m9bSMTNfPK/8IwtqhWGhmF5UflWqE2153DS1uVaV8GRblxlPtAsZyf4y9ee73Kor1K1JD8G+Qx
-	WBtY+9fLCuxcO7KKsE1I9M0i82dty+8bCfIVAYfrdx+QXwlG8K7fmX4D53/y4yHGVPH/bAXj4xJ
-	/095KtV3RDUTkG/MFHiW8WD5Q8iQv/w1XWM6x9N8SH2DUnwKpltQVOXHnMWgFDe2/6554a/GfT1
-	WoJ
-X-Received: by 2002:a05:6a21:139a:b0:3c3:750f:3cf9 with SMTP id adf61e73a8af0-3da2142cfdcmr3852165637.11.1788416599634;
-        Wed, 02 Sep 2026 23:23:19 -0700 (PDT)
-Received: from Roxy.localdomain ([203.175.14.32])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc43d240f21sm480533a12.3.2026.09.02.23.23.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 23:23:19 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: idosch@nvidia.com,
-	netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v4 1/1] ipv6: flowlabel: cap duplicate leases per socket
-Date: Thu,  3 Sep 2026 14:23:03 +0800
-Message-ID: <83f8535972ff6e3741548476a1d50dec24c758be.1788415194.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1788415194.git.zhilinz@nebusec.ai>
-References: <cover.1788415194.git.zhilinz@nebusec.ai>
+        d=1e100.net; s=20251104; t=1788417451; x=1789022251;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KqkahuUIc5ZIZCVDrZu0ZNrbpsvf9SIwSaxwkoNLB/o=;
+        b=B8YKWstWqUteA0ycHCwM9ykVphpdMNxT83sFCoKwXMvtZynUeP+IgYfYsSxQ23Md2f
+         OHvm3pJKDLqqpKMfsdLiIVeVbGS4Wk/WE3+kN06rw14hhSsNMJfVDKUdAvd86v8wrsuz
+         LPq7AryD0AIi020mCDwfcFDuNuuUgtwBLh5RGUT0mBwoOcvdV7EbPnRAiMJt+r4NEGkx
+         Bjqsy6TiWq8PILyn//Ew0HLEBvdlKd8ODvhd32VBCllgboztRxVNA6OcC+Bn5fK2m5xN
+         oy7XpI17/NwHNSKiJLp/v+gJLq5WOBfs3ytlxw2qPiDPMZBmyNh8dGhLDUNM5Juti3gg
+         maDg==
+X-Forwarded-Encrypted: i=1; AKwUvByYZitySvwjIzLAUbrxY7pjjl9wfAjT3+ay1esJr4iLhHi0WqSUShl+2Bui00oReNsl/kCFxhM=@vger.kernel.org
+X-Gm-Message-State: AFuF++l0tN99Hpq8mc5BfRhzWA1B45kuRqAi0uvFh1WURuHbDTVxvEM2
+	s1+Lx9L5s7Ok3N+//ik17o1sOakh/lwThQDLISm09N5ipdFhs+l9gOymcRedjdlT8gasPPVcmtn
+	kHDc23TlWXsME6lRsntw95K0nnyytHb42N4sYXKXbFd76TXbhQiYF36figG8=
+X-Gm-Gg: AYBFou2szP9frtelQQci69tKvn9mymUyvm9Hh0LRQ02rjiwS3Cg0kVdrnXAXK0gLtH+
+	uNgEfCx0AjRrw20tGvb0hK1ahsc/V5a9aW7bIU3w38gXhtLPhUuanXLCfN2hs7xKhbfmZgn70qn
+	9ceEpXy8YIONCO7Z8IsrALeC/n1P4J7oyAd9QTnQTWIuYNkS6e6tc9g+vs8nTait8/KG2uj2A/Y
+	xAzFIj76WeTYDpCO4EwJxoU7PLv5K1pirRy5NL65sD4A6lR8Cm6FPEU+xlxWEziXa3pcnIkfENm
+	w4hBvzKS5o5enHXYn19EtptJeUvpO0bLI6ks4q8rdooDr6btuRKKalxkBoU9caClODVeBEFzJiQ
+	KVC1QdSo+XuEcwzhMIr4qJv1pR/PDiI3fvCJttQTvZZmh/mLSxZvPh3LJag==
+X-Received: by 2002:a05:622a:d5:b0:51c:b98c:f772 with SMTP id
+ d75a77b69052e-53048017e0emr12243781cf.15.1788417450800; Wed, 02 Sep 2026
+ 23:37:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1788176024.git.zhilinz@nebusec.ai> <1bf5d64b8ffe1dc1b1f23d5b5ea6cb4ad3b2f562.1788176024.git.zhilinz@nebusec.ai>
+In-Reply-To: <1bf5d64b8ffe1dc1b1f23d5b5ea6cb4ad3b2f562.1788176024.git.zhilinz@nebusec.ai>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 3 Sep 2026 08:37:17 +0200
+X-Gm-Features: AcwNN1XvXyJWTbxaR_juppAtXiCFWgg250XzF3JL_n7xOWkjtwQ4YMaooAIxdiw
+Message-ID: <CANn89iJ62OAU5PEQq9n1b8y-K=g7Z-BzgcX6gxeF=9DiPxiBcA@mail.gmail.com>
+Subject: Re: [PATCH net v7 1/1] tcp: bound SYN-ACK timers to reqsk timeout range
+To: Zhiling Zou <zhilinz@nebusec.ai>
+Cc: pabeni@redhat.com, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	davem@davemloft.net, horms@kernel.org, corbet@lwn.net, 
+	skhan@linuxfoundation.org, ncardwell@google.com, kuniyu@google.com, 
+	vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ipv6_flowlabel_get() allocates an ipv6_fl_socklist entry for every
-successful GET. The recheck path for a compatible existing flowlabel
-links another lease without applying any lease admission check. Repeated
-GET requests for one shareable label can therefore grow a socket's lease
-list without bound.
+On Thu, Sep 3, 2026 at 8:18=E2=80=AFAM Zhiling Zou <zhilinz@nebusec.ai> wro=
+te:
+>
+> request_sock::num_timeout is a 7-bit counter. Commit e6c022a4fa2d
+> ("tcp: better retrans tracking for defer-accept") split this counter
+> out of an 8-bit field, but tcp_synack_retries still accepts an 8-bit
+> value and TCP_DEFER_ACCEPT can still derive a retry count up to 255.
+>
+> If these settings exceed 127, the regular request timer cannot reach
+> its expiration threshold and num_timeout wraps to zero. After the wrap,
+> the request can keep timing out instead of expiring, and the next
+> zero-to-one transition repeats the young-queue accounting decrement.
+>
+> Both request timer paths can also shift req->timeout by 64 or more while
+> calculating the next RTO. UBSAN reports that invalid shift, and systems
+> with panic_on_warn=3D1 panic before the later cap can take effect.
+>
+> Keep the tcp_synack_retries sysctl range unchanged, but cap its effective
+> value in both SYN-ACK timer paths before the young-queue pruning loop.
+> Cap the TCP_DEFER_ACCEPT conversion at the same range so its timer and
+> bare-ACK consumers agree. Saturate the RTO calculation before shifting,
+> and cap the Fast Open extra retry as well.
+>
+> Snapshot the request timeout and num_timeout once before the bounds check
+> and shift. num_timeout is a bitfield, so add a raw view of its existing
+> storage byte for a compile-safe READ_ONCE() snapshot. This keeps the chec=
+k
+> and shift consistent when the timer concurrently increments num_timeout.
+>
+> Document that the sysctl still accepts 0-255 and that the timers silently
+> cap the effective retry count at 127.
+>
+> Fixes: e6c022a4fa2d ("tcp: better retrans tracking for defer-accept")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+> changes in v7:
+>
+>  Documentation/networking/ip-sysctl.rst |  4 +++-
+>  include/net/request_sock.h             | 20 ++++++++++++++++++--
+>  include/net/tcp.h                      | 21 +++++++++++++++++----
+>  net/ipv4/inet_connection_sock.c        |  2 ++
+>  net/ipv4/tcp.c                         |  2 +-
+>  net/ipv4/tcp_timer.c                   |  6 ++++--
+>  6 files changed, 45 insertions(+), 10 deletions(-)
+>
+> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/netwo=
+rking/ip-sysctl.rst
+> index 208f46967ee59..4a2ed964dceab 100644
+> --- a/Documentation/networking/ip-sysctl.rst
+> +++ b/Documentation/networking/ip-sysctl.rst
+> @@ -954,7 +954,9 @@ tcp_stdurg - BOOLEAN
+>
+>  tcp_synack_retries - INTEGER
+>         Number of times SYNACKs for a passive TCP connection attempt will
+> -       be retransmitted. Should not be higher than 255. Default value
+> +       be retransmitted. The sysctl accepts 0-255. Values above 127 are
+> +       silently capped by the SYN-ACK timers, matching the 7-bit
+> +       request_sock::num_timeout field. Default value
+>         is 5, which corresponds to 31seconds till the last retransmission
+>         with the current initial RTO of 1second. With this the final time=
+out
+>         for a passive TCP connection will happen after 63seconds.
+> diff --git a/include/net/request_sock.h b/include/net/request_sock.h
+> index 5a9c826a7092d..a9781fab774aa 100644
+> --- a/include/net/request_sock.h
+> +++ b/include/nets/request_sock.h
+> @@ -58,12 +58,17 @@ struct request_sock {
+>         struct request_sock             *dl_next;
+>         u16                             mss;
+>         u8                              num_retrans; /* number of retrans=
+mits */
+> -       u8                              syncookie:1; /* True if
+> +       union {
+> +               struct {
+> +                       u8              syncookie:1; /* True if
+>                                                       * 1) tcpopts needs =
+to be encoded in
+>                                                       *    TS of SYN+ACK
+>                                                       * 2) ACK is validat=
+ed by BPF kfunc.
+>                                                       */
+> -       u8                              num_timeout:7; /* number of timeo=
+uts */
+> +                       u8              num_timeout:7; /* number of timeo=
+uts */
+> +               };
+> +               u8              num_timeout_syncookie;
+> +       };
+>         u32                             ts_recent;
+>         struct timer_list               rsk_timer;
+>         const struct request_sock_ops   *rsk_ops;
+> @@ -74,6 +79,17 @@ struct request_sock {
+>         u32                             timeout;
+>  };
+>
+> +static inline u8 reqsk_num_timeout(const struct request_sock *req)
+> +{
+> +       u8 num_timeout =3D READ_ONCE(req->num_timeout_syncookie);
+> +
+> +#if defined(__LITTLE_ENDIAN_BITFIELD)
+> +       return num_timeout >> 1;
+> +#else
+> +       return num_timeout & 0x7f;
+> +#endif
+> +}
+> +
 
-Reject a new unprivileged lease once the socket already holds
-FL_MAX_PER_SOCK leases. Check this on the shared recheck path so reuse
-of a globally interned label, including the fl_intern() collision path,
-is covered as well. New-label admission remains under the existing
-mem_check() policy.
+Please drop all the changes to include/net/request_sock.h
 
-Use capable(CAP_NET_ADMIN) rather than ns_capable(), matching
-mem_check(). An unprivileged user must not bypass the cap by creating a
-user namespace and a netns where they have CAP_NET_ADMIN, which would
-still consume host memory.
+Instead, you can simply bound the shift amount in tcp_reqsk_timeout_sk():
 
-Check the capability only when the socket reaches the limit, so
-successful unprivileged GET requests below the cap do not generate a
-capability audit. Do the admission check before updating linger and
-expires so a rejected GET does not refresh the shared label, matching
-the existing socket-list allocation failure path.
+static inline unsigned long tcp_reqsk_timeout_sk(const struct sock *sk,
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v4:
-- Count leases with a dedicated helper on the shared recheck path so
-  the fl_intern() reuse path is covered as well.
-- Restore the original socket-list lookup loop.
-- Explain why the check uses capable() rather than ns_capable().
-- v3 Link: https://lore.kernel.org/all/69d00f6ba09b1d1afd9281370cf7ae5e2ce806b6.1787387550.git.zhilinz@nebusec.ai/
+        const struct request_sock *req)
+{
+        u64 timeout =3D (u64)READ_ONCE(req->timeout) << min_t(u8,
+req->num_timeout, 30);
+        return (unsigned long)min_t(u64, timeout, tcp_rto_max(sk));
+}
 
-changes in v3:
-- Count the socket's full lease list instead of only matching leases.
-- Defer the CAP_NET_ADMIN check until the lease count reaches the limit.
-- v2 Link: https://lore.kernel.org/all/528bc30d301bcf32aca37cda1933b617d2d295f4.1786447968.git.zhilinz@nebusec.ai/
-
-changes in v2:
-- Count only leases of the flowlabel being reused.
-- Fold the count into the existing socket-list lookup.
-- Keep new-label admission under the existing mem_check() policy.
-- Stop after the first matching lease for CAP_NET_ADMIN callers.
-- Explain why a rejected GET does not refresh linger or expires.
-- Correct the reuse-path explanation and trim the Fixes hash.
-- v1 Link: https://lore.kernel.org/all/cf4fdc79ae4dc46bd4eb7eeb57e5de2091c13cd3.1785746178.git.zhilinz@nebusec.ai/
-
- net/ipv6/ip6_flowlabel.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
-index 1ab5ad0dcf24f..006585dc8b5c6 100644
---- a/net/ipv6/ip6_flowlabel.c
-+++ b/net/ipv6/ip6_flowlabel.c
-@@ -461,6 +461,21 @@ fl_create(struct net *net, struct sock *sk, struct in6_flowlabel_req *freq,
- 	return NULL;
- }
- 
-+static bool fl_sock_at_lease_limit(const struct sock *sk)
-+{
-+	const struct ipv6_fl_socklist *sfl;
-+	int count = 0;
-+
-+	rcu_read_lock();
-+	for_each_sk_fl_rcu(sk, sfl) {
-+		if (++count >= FL_MAX_PER_SOCK)
-+			break;
-+	}
-+	rcu_read_unlock();
-+
-+	return count >= FL_MAX_PER_SOCK;
-+}
-+
- static int mem_check(struct sock *sk)
- {
- 	const int unpriv_total_limit = FL_MAX_SIZE - (FL_MAX_SIZE / 4);
-@@ -679,6 +694,10 @@ static int ipv6_flowlabel_get(struct sock *sk, struct in6_flowlabel_req *freq,
- 			err = -ENOMEM;
- 			if (!sfl1)
- 				goto release;
-+			err = -ENOBUFS;
-+			if (fl_sock_at_lease_limit(sk) &&
-+			    !capable(CAP_NET_ADMIN))
-+				goto release;
- 			if (fl->linger > fl1->linger)
- 				fl1->linger = fl->linger;
- 			if ((long)(fl->expires - fl1->expires) > 0)
--- 
-2.43.0
-
+Thanks.
