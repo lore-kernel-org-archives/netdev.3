@@ -1,63 +1,65 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4174A99DC
-	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 13:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2284AF177
+	for <netdev@vger.kernel.org>; Thu,  3 Sep 2026 13:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788442441; cv=none; b=uW4lI+iuAwDh2gEjbwu7frBifDSbjpGuTV2Gs2laW7lsP8CDt6lavz5fht80wUHURREJfatEMNZiNsJVsP4nju94kFo7tnfg+sj/JPr8kQCGV7iaaFylre6TXO4BadeeQUrlUh9ldrHiWAxNOu+3m3kCZcvbVm9e49hhux/wl1A=
+	t=1788442449; cv=none; b=Zj20iuXXOV+G4GNX4iYAN0ee68Y/4/6cVTw+X4gWTt2LlHR4lraKuQXug4osaiC3wrWSIi/x1+nwbQ7gnyiNlsOTBfcjWaxxS0BRaSb+V2Ob6kmVDrbNUr+RgFxeJAiVYRGz01FUw79jTjPYmlqlxnEuL7gK8J+ANnajprFJnHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788442441; c=relaxed/simple;
-	bh=tkBDL4pkwJNZzO9dijwy6kiKURo5w2hkiNZAndxydQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XOLgs6nlKRjzzgKbOVut0a6s+ChJZb3G5U1NMMseV54KTl6d2ofpwBA3js9TpCJQkfA4DS2CH150idiiukVO/8B1Rh4XifN73WZ2e31MPbc0NK7B9lMd9AqNYVRuQBjgPzDe7pXDWsOfLt/l4n5/oQdOmIreKlWOJVo3w0eklnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=RZKwQGvO; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1788442449; c=relaxed/simple;
+	bh=xAikrkaoNe6ulSGCMoG5jDI8eY1vJF+BqHXdSFIy8Ig=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QJxZjbUfBo9h3aQsF6FGnWdskPQkzRefYNbt1gFGtbIayZmdloHXxS3RKW1Uzj9VctaL9jFfC3spioLA/qCnvLQ+DTFSDiXeLEaFg2r6yCWMLBUnHY4rXFozGPFyvcO313w28TgSfS95iJdP6mW0eURyB/10d6iNZwdCQOC/Guo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=RorfLm9E; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="RZKwQGvO"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-399213ef56cso1001965a91.1
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 06:33:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="RorfLm9E"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc2276e6daeso1879348a12.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 06:34:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1788442432; x=1789047232; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NvKqkVuc3hDZQpQxetS/ZUD+52DMOOEV2JwJLL/kRXg=;
-        b=RZKwQGvOq4IZf+jxhxjsTfDYratifsMMXUooDtYoYOslfDmsbQYZD1oOJBCxb+sAJx
-         wLJTSiz6QUu7D8taClCtrba9bbJgbEYl6U78fedH3CK/tRg9wrV7XgP7YrVSDr23WZSL
-         aiz7xhzgPcY4UG7sQomEuPQZN+htN5X9Mb/151VSAxYJj6cK8Vjs6me3KWG5Es6/3qUx
-         fCgKVdjovj08gXnHqzWtXrUQZQZqyqFtripFqNo7fvKzV8uRo/8ye2AJIEnXuxX0vQau
-         wnqJatTSpKonk/CzfwNOXWN1VEMRkpNFbNSC3zR7Ro1zPqdxDUr5SkfKFxkwI3Ot1Wen
-         HxUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788442432; x=1789047232;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1788442440; x=1789047240; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NvKqkVuc3hDZQpQxetS/ZUD+52DMOOEV2JwJLL/kRXg=;
-        b=LLDVdXXDWg7JUJJuInzWCbYpjI0htBRf4t6n2dKI9q9mJR0ChWDlZUqI+IS11bvUM5
-         LwE9dEHi0Mym/dtFmrRup4gA2QcfJCzumauZPcDYjnbs8spMVRlOSe20a2wCBof3zvnF
-         ghlkZAYHPyr+N36qz0mbpVpg0H2caVBnatE8MQwFBWHajqwPgyOkJO9jpLkrQwYiXMjX
-         U8cP3zy7zC4k9xI5Qb+xOZfjLenbSnP8t4r3qI2q2yg8BTFB9QlSBpBfsgz6mY8gc4t5
-         DxZjS/ApAJzuox1yViixEMj7bxU+tda9gcJ9csf0QC7xE8CTW7htKx4OHLqOJ6WiFOSr
-         s3ug==
-X-Gm-Message-State: AFuF++lCFYxOr//N+y5P851o3Psau+dWystnIShaqWisnUmmFVG6SrIh
-	fkS1ZYJB64/WxPRHuppzW4Ug9XmZ68otXZ0IAmjMTGThdA8gCmmErMzf43g9g/2xn85X7OkXWe4
-	SZUyn9vKsgKkZAOfxLCw1ZpwAi1rQ86mrwUeDsMJAQcfrwXGN0F1pWsM2Ec90tOPAgnmrdtbCKg
-	IUOWme
-X-Gm-Gg: AYBFou2khp4nqbenyHUZcB1d3gIklh7dq6h7Dhz9ydok7AjNZwhEBtS/xAVGdwX9PyG
-	HDM9NqbeKIWUiSAAw+341UnKrG1QeSCUKhOhPNdZVJdT7Xs5iZFhvJWzrbRupCb1ETpS6S8G19J
-	enj3Q977wW8xlW/b5uYZGoHsBEB//VUpnEQonADVjLMKJei3ODcTHa2YngYpQAUvOefoUYcohr4
-	iwLGGOiC2XwXo8kOdX7DtBGTLhjqPZ8gmmYw+JJ+qcwJnzBI257GGbA4z+U5FoJPgnhdbmnxmLl
-	Cbb1bOnOhYApbYZKNakAfZ+EFVCHvqxUBAEeuO5dRrkV392VitTW62Wh9qqoEPyeiOvoCNEzkF1
-	oo2Qu5OhwyvHJIyXolviWQl92O6Ei1g5MTQsdJm44ddKxDTwDVWTtyAQGrTIYeBy7ELmjO3K+59
-	YTFgbGvgpGp2pHHooClP6hxZshv5AJNWdfhcUN3MNDByyPC3Q1pyJysoVVYDi9eDjmxPnrwl1az
-	hA3VAs6032D
-X-Received: by 2002:a17:90a:fc45:b0:38f:efed:5448 with SMTP id 98e67ed59e1d1-39aedf2014amr19306784a91.8.1788442431289;
-        Thu, 03 Sep 2026 06:33:51 -0700 (PDT)
+        bh=KXHL95Icp1Gl54s5WQWI0NUGFyuFCI+fXuPlLc4hAyk=;
+        b=RorfLm9EWT0pFpE5GxgGglXn1mwJRJovhuGWDqmLmFQNiz/EL3UiOAD6XEq+Am1Yqf
+         vyQQhwgvUu0ZaZs09Ye1fJ95aSZmgXtLESV8aScltue0flMn75zhE3VQdfC1shu+BMKi
+         LEBRMMpNhVZKcZlS+E8J14aTuCPMjdGUXplREpfDejI9iycJdXDlQm7tVXhWnYoBnceR
+         EWJnMTReW+R1MXzxL0eOU+Cz2koSI6NNB6AoGQt6GRGhX+guv2smYYRlA+eufRD6CAq5
+         o18HkjThup0nLQuPRxSII/QcL5G9yBqzDg7Mci6SN6flG7Qs4boLlKm5SnJJ6+uydtBZ
+         4QNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788442440; x=1789047240;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KXHL95Icp1Gl54s5WQWI0NUGFyuFCI+fXuPlLc4hAyk=;
+        b=DUGtPmn0Zv41xTS+2+gLiB4UypkwRhAyh6QEOWYLc8KwbRW9tXZXJIPedklSrhx+QY
+         wdjlZoZNdkVOp3isYiAECv2DNdawerlLck+zkSgRci0Lb15pEQGSgyNpzlYgzBKURcPw
+         vmDAFOewLBbcINT8/JXV0smKVgedKLIf/tkmJeCjzjIm3pxOPlB7cqiTAeVvBIF8zdTd
+         FtxoE55tap4TDN9fd4IujmHUCHioaf+vis1kE4XMUULZSHCFsq0XJmfBuPHiawFXT0ql
+         s2kF+jqZIe4vT//YDgsotsyKy/9HEqSZdDZghKB0JgsBTxxrRdldIpt3T/qUadxDjC4Y
+         ++6Q==
+X-Gm-Message-State: AFuF++lXNMBpFTxiyJ9kmdjLm81xl+6cDxtohEstsaV/ueus7DsDzjk0
+	jeHEKxw+74jrlMzRT/otdMz2kE4bANFgKuIkQxF9RNFr8Tkp0tPfr+G7d9u31XDnIKF3Wocq+mH
+	ZhXDvHnArXK/fLdC5Zle6gwKSnh5ui8SZAwj0L7yD1MVLyvdt83s2rDjJyyI3GpkMc6eMh1LRMP
+	GbRA==
+X-Gm-Gg: AYBFou3ZPz50d6lsAU8myP46eZWNZqwyVs+YA0STdGv2tVq516BdW87pQVgFVbyNTS5
+	a3mzInZW0puWrbtrO4RycCy58XmT7tRCH6JCb7sZeyPm7jpk8CnSKpgSloVx0+2mKdiCs0Y3U0I
+	vj8TKLRqsqqMEvgpBzx1u8nE3+Mhq+IkXDiE1hOXSmGYV56RawnIv6sIJBr2EKZDGsQDvAHXBtr
+	4lUUKdxq2pxpy9ue+s36ggu6sbDyh18VLOhPYpPeRrwByuBt1Pujnqm40y4r9EL+7rtAcfaDk9y
+	PfNQshAhazvnPk8MqUSLBXAMHX3DTN7w65S111iR4GHm4VdDD/P9EDV6/wuMndilCZWxzVnOZyV
+	qCmVXhPxwKiGh8MlFBn98rjZgtPNjkaW/D+1MsDaWR782mC9F0a3fjiBkdzqZ4l2fjm+nvBJGAC
+	5wB+YjDEBXbXjMZvwrzW9IWl13LFpFeCRJcWNpfMT+YA2ObgCzRsu8rMbqrPr1eI8RdN8pZfpiD
+	Q==
+X-Received: by 2002:a17:90b:4b91:b0:399:149a:3f27 with SMTP id 98e67ed59e1d1-39aedf162e5mr16574545a91.9.1788442439481;
+        Thu, 03 Sep 2026 06:33:59 -0700 (PDT)
 Received: from localhost.localdomain ([23.148.204.128])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3325534e83csm7223347eec.10.2026.09.03.06.33.48
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3325534e83csm7223347eec.10.2026.09.03.06.33.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 06:33:50 -0700 (PDT)
+        Thu, 03 Sep 2026 06:33:58 -0700 (PDT)
 From: Wang Zhan <wang.zhan@smartx.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -67,10 +69,12 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	keyong.sun@smartx.com,
 	Wang Zhan <wang.zhan@smartx.com>
-Subject: [PATCH net-next v2 0/2] net: sysfs: use ops lock for speed and duplex
-Date: Thu,  3 Sep 2026 21:33:12 +0800
-Message-ID: <20260903133314.3703381-1-wang.zhan@smartx.com>
+Subject: [PATCH net-next v2 1/2] net: sysfs: factor out link settings read
+Date: Thu,  3 Sep 2026 21:33:13 +0800
+Message-ID: <20260903133314.3703381-2-wang.zhan@smartx.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260903133314.3703381-1-wang.zhan@smartx.com>
+References: <20260903133314.3703381-1-wang.zhan@smartx.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,37 +83,152 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reading speed and duplex from sysfs currently holds RTNL across the
-get_link_ksettings callback. This unnecessarily serializes monitoring
-reads with unrelated rtnetlink operations.
+speed_show() and duplex_show() duplicate device validation, RTNL
+locking and the link settings query. Move this common work to
+sysfs_get_link_ksettings() so later locking changes stay in one place.
 
-On CPU-throttled hosts, a periodic reader such as node-exporter can hold
-RTNL for hundreds of milliseconds while an mlx5 callback runs, delaying
-unrelated rtnetlink operations.
+RTNL is released before calling sysfs_emit(). The lock only protects the
+link settings query; formatting uses the local cmd copy, so the sysfs
+output and error handling remain unchanged.
 
-Factor the shared link settings read first, then change only the helper's
-locking. Legacy devices and callbacks which request
-ETHTOOL_OP_NEEDS_RTNL_LINKSETTINGS retain the existing RTNL path.
+No functional changes.
 
-Changes in v2:
-- Split the common-code refactoring from the locking change.
-- Keep speed_show() and duplex_show() focused on formatting the result.
+Assisted-by: LLM
+Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+---
+ net/core/net-sysfs.c | 97 ++++++++++++++++++++++----------------------
+ 1 file changed, 48 insertions(+), 49 deletions(-)
 
-v1: https://lore.kernel.org/netdev/20260831080623.1064001-1-wang.zhan@smartx.com/
-
-Checks:
-- checkpatch.pl --strict
-- git diff --check
-- x86_64 defconfig W=1 net/core/net-sysfs.o
-
-Wang Zhan (2):
-  net: sysfs: factor out link settings read
-  net: sysfs: use ops lock for speed and duplex
-
- net/core/net-sysfs.c | 112 ++++++++++++++++++++++++-------------------
- 1 file changed, 63 insertions(+), 49 deletions(-)
-
-
-base-commit: b35d3d2fae3058265ba937544a3895cedce18d08
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 352173df75785..7bb8bbc1f71ea 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -118,6 +118,34 @@ static int sysfs_rtnl_lock(struct kobject *kobj, struct attribute *attr,
+ 	return ret;
+ }
+ 
++static int sysfs_get_link_ksettings(struct device *dev,
++				    struct device_attribute *attr,
++				    struct ethtool_link_ksettings *cmd)
++{
++	struct net_device *netdev = to_net_dev(dev);
++	int ret;
++
++	/*
++	 * The check is also done in __ethtool_get_link_ksettings; this helps
++	 * returning early without hitting the locking section below.
++	 */
++	if (!netdev->ethtool_ops->get_link_ksettings)
++		return -EINVAL;
++
++	ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
++	if (ret)
++		return ret;
++
++	ret = -EINVAL;
++	if (netif_running(netdev)) {
++		if (!__ethtool_get_link_ksettings(netdev, cmd))
++			ret = 0;
++	}
++
++	rtnl_unlock();
++	return ret;
++}
++
+ /* use same locking rules as GIF* ioctl's */
+ static ssize_t netdev_show(const struct device *dev,
+ 			   struct device_attribute *attr, char *buf,
+@@ -332,70 +360,41 @@ static DEVICE_ATTR_RW(carrier);
+ static ssize_t speed_show(struct device *dev,
+ 			  struct device_attribute *attr, char *buf)
+ {
+-	struct net_device *netdev = to_net_dev(dev);
+-	int ret = -EINVAL;
+-
+-	/* The check is also done in __ethtool_get_link_ksettings; this helps
+-	 * returning early without hitting the locking section below.
+-	 */
+-	if (!netdev->ethtool_ops->get_link_ksettings)
+-		return ret;
++	struct ethtool_link_ksettings cmd;
++	int ret;
+ 
+-	ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
++	ret = sysfs_get_link_ksettings(dev, attr, &cmd);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = -EINVAL;
+-	if (netif_running(netdev)) {
+-		struct ethtool_link_ksettings cmd;
+-
+-		if (!__ethtool_get_link_ksettings(netdev, &cmd))
+-			ret = sysfs_emit(buf, fmt_dec, cmd.base.speed);
+-	}
+-	rtnl_unlock();
+-	return ret;
++	return sysfs_emit(buf, fmt_dec, cmd.base.speed);
+ }
+ static DEVICE_ATTR_RO(speed);
+ 
+ static ssize_t duplex_show(struct device *dev,
+ 			   struct device_attribute *attr, char *buf)
+ {
+-	struct net_device *netdev = to_net_dev(dev);
+-	int ret = -EINVAL;
+-
+-	/* The check is also done in __ethtool_get_link_ksettings; this helps
+-	 * returning early without hitting the locking section below.
+-	 */
+-	if (!netdev->ethtool_ops->get_link_ksettings)
+-		return ret;
++	struct ethtool_link_ksettings cmd;
++	const char *duplex;
++	int ret;
+ 
+-	ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
++	ret = sysfs_get_link_ksettings(dev, attr, &cmd);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = -EINVAL;
+-	if (netif_running(netdev)) {
+-		struct ethtool_link_ksettings cmd;
+-
+-		if (!__ethtool_get_link_ksettings(netdev, &cmd)) {
+-			const char *duplex;
+-
+-			switch (cmd.base.duplex) {
+-			case DUPLEX_HALF:
+-				duplex = "half";
+-				break;
+-			case DUPLEX_FULL:
+-				duplex = "full";
+-				break;
+-			default:
+-				duplex = "unknown";
+-				break;
+-			}
+-			ret = sysfs_emit(buf, "%s\n", duplex);
+-		}
++	switch (cmd.base.duplex) {
++	case DUPLEX_HALF:
++		duplex = "half";
++		break;
++	case DUPLEX_FULL:
++		duplex = "full";
++		break;
++	default:
++		duplex = "unknown";
++		break;
+ 	}
+-	rtnl_unlock();
+-	return ret;
++
++	return sysfs_emit(buf, "%s\n", duplex);
+ }
+ static DEVICE_ATTR_RO(duplex);
+ 
 -- 
 2.47.3
+
