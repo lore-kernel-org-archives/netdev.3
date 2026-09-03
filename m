@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A654FB9C3;
-	Thu,  3 Sep 2026 17:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A24F648E;
+	Thu,  3 Sep 2026 17:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788455924; cv=none; b=nN2Q2hvKFXUb28CGavjRteQ3z1PfFfk+DSkCNVKwawheT8/jRzL3tXPXONk5sMIOLjpg1c8L/7XXbyY+Bxht0knEMOczTxiRzbsDxF4Gs4nFik0Qktk1IdY/gxKpo+BRVqqQJlQTvtI1TCFWlCesALGK4FB3sP0fJzZtW0K/quQ=
+	t=1788455926; cv=none; b=igBqoghTSiGAPnVAToI7jIBRzPzt+myO2CfGOymecX9zuAen0RJLFy1RLPo3MybbI1Z+vOParOJeE+tqYjFj6lGL+4W3VHq6xUBCjZuvKaDlI+kTwVnl5R147o6fq6EF/GAMXbvck+IstHtaPUypPr9JHArGWL5SsloHJyr6oF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788455924; c=relaxed/simple;
-	bh=n4yqb12u2SmRLRirXNE38v9y9aZ1BO4pYNjMthMr3pk=;
+	s=arc-20240116; t=1788455926; c=relaxed/simple;
+	bh=H0sJBh3iUa08WvqQ5JDWgyEAeOZooaz4nRPyuuyryZ4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d/hoL4ttQLew2fjqw9e+auMrFNuRF8hu42RNESJvaYVJAxUAs0Sw+abmWZ/pytGshdUg9cK7LnxphHexEbGzRgzzspG/of3RlY6c28OC4E25rRBqa1JE1wIMc5Sn9q7rLM6q3usLjA9tDM4l6HAg4DpDI97j+Vdlidmx8dSUjM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEIZYoer; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=eutUj9c3eXIst9hUxXvg/Dm4/b+MnvwBTc9wytigG+1Rush6HlhlxietNVOpc+giHusyQJ8gBSYRKUZ49/Lt7vmP1nLbV4Ob2hOKCgztq6Ye9xNjK3qrZu+EVaHmTUFV8JUsn5ws2p663ld4bzed0WDdSo0hqun5h+q5/Rq2FII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2mEkntg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEIZYoer"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D0F1F000E9;
-	Thu,  3 Sep 2026 17:18:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2mEkntg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD031F0155A;
+	Thu,  3 Sep 2026 17:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788455922;
-	bh=9y9AltG5MnIXdhGBTrde0ATNL2ExMf3Hzybqkth0dUk=;
+	s=k20260515; t=1788455923;
+	bh=MOtVnJbS/DYlH7nyySfpVxUsD+BgnvAkYBMz7V8I6DM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SEIZYoerQMxYk11PM/bqJQltKIEz3f1Gpp++Jjot9UbMkinXsX5u3PY7Nq4hgKkCR
-	 Jwjole3/wiROu1/ID1X7jMFJGowB1D0uPUQflavgS90jPW6YNriPUjG8zA9SihH/nL
-	 wMnQnNSuE6IUfmQbZDYl1h+eihRC3yKKoxgT549+SNeuiUtmmAHFQmPdH7LpFyBW0G
-	 rvvOPKugHBivW8hrDWQcNC1b56OXL5OqBufptZLPVFhKVFtQj5nJQf/QrJO5S2RrDD
-	 U6OIwPX5wpwFe37j1wWchwOnwqC68E/81YUN+0C5xFhC67sxlIryYCoC1XZLvGOWPs
-	 XUGl8ZtfVIRxA==
-Subject: Re: [v26,net-next,06/10] net/nebula-matrix: add chip-wide hardware
- init/deinit implementation
+	b=k2mEkntg4pQCrjxbAPJJfUvh7iVavCJU5bs5Xro1weVwC+xN6W5s0yNKdRUadTuQ8
+	 CQeZ6K5oeLaZiOPSTKc0nK8AEqJDTnEGEy4kqsD2t5/yTJqHrNaVhMwW0OtLf/HzEf
+	 I90+/aDoBGrPRvcA58Gf2EeBLuXel8RU5apb4PTKytpLsDj342W0JcgXZmuvDRWNU/
+	 xakl48xmKF1g7gQ5Ow63qkFuTylJN4Qa7qaG/rvEmufUT/ZpUuanE0OJxU7kSG/c/7
+	 hTaGmiT1CNy3WQmYLZV3BxD5lzILpAyLLU74xgMQ8pkTFugB4nKC3jPp6Qf/31pRj0
+	 VasE/5vb2YKyg==
+Subject: Re: [v26,net-next,08/10] net/nebula-matrix: dispatch: implement
+ channel RPC framework and serialize hardware ops
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
@@ -36,10 +36,10 @@ Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
  edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
  hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Thu, 03 Sep 2026 17:18:40 +0000
-Message-ID: <178845592064.3394541.11817046722626766650@kernel.org>
-In-Reply-To: <20260831021408.2325-7-illusion.wang@nebula-matrix.com>
-References: <20260831021408.2325-7-illusion.wang@nebula-matrix.com>
+Date: Thu, 03 Sep 2026 17:18:42 +0000
+Message-ID: <178845592228.3394541.3958833094999526357@kernel.org>
+In-Reply-To: <20260831021408.2325-9-illusion.wang@nebula-matrix.com>
+References: <20260831021408.2325-9-illusion.wang@nebula-matrix.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,443 +50,474 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 9 potential
+Thank you for your contribution! Sashiko AI review found 8 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 7
+Critical: 0 · High: 0 · Medium: 4 · Low: 4
 
-- [Medium] nbl_dp_init() programs DPED, UPED, shaping and DSCH into
-  hardware before nbl_ustore_init() validates the firmware-reported…
-- [Medium] Within nbl_uvn_init() the driver read-modify-writes
-  NBL_UVN_DIF_REQ_RO_FLAG and NBL_UVN_QUEUE_ERR_MASK to preserve…
-- [Low] hw_ops->init_module / hw_ops->deinit_module (and the resource
-  wrappers nbl_res_chip_init_module / nbl_res_chip_deinit_module)…
-- [Low] New firmware quirk ABI is described inconsistently.
-- [Low] nbl_hw_deinit_module() clears the driver_status bit and issues a
-  dummy-register read, with no acknowledgement or completion polling for…
-- [Low] New register definitions mix conventions and pollute the global
-  macro namespace: NBL_SHAPING_DPORT_ADDR 0x504700 /…
-- [Low] nbl_uvn_init() is declared `static void` yet its last statement
-  is `return nbl_hw_wr_regs_lock(hw_mgt, NBL_UVN_DESC_PREFETCH_INIT,…
-- [Low] The shaping register block documents two incompatible units for a
-  CIR value of 1: nbl_hw_leonis.h:264 says "cir 1, bandwidth 1kB/s in…
-- [Low] The only documentation of the UQM que_type register added by this
-  patch contradicts itself: `/* bit 0: bp mode , bit1: drop mode, resv…
+- [Medium] All five new *_req() helpers translate the return value of
+  chan_ops->send_msg() with a switch that only enumerates the four wire…
+- [Medium] nbl_disp_setup_msg()'s rollback calls
+  chan_ops->unregister_all_msg(), which is…
+- [Medium] nbl_disp_chan_get_vsi_id_req() and
+  nbl_disp_chan_get_eth_id_req() consume the ACK payload without…
+- [Medium] The newly exposed destroy_msix_map op (local
+  nbl_disp_destroy_msix_map(), remote…
+- [Low] The commit message describes work the diff does not contain.
+- [Low] nbl_disp_init() sets NBL_DISP_CTRL_LVL_NET whenever
+  common->has_net, with a comment claiming this enables the 'net control…
+- [Low] The kernel-doc block that this patch extends states 'Warning: All
+  ops except init_module/deinit_module can be safely called on PF/VF',…
+- [Low] The newly exposed NBL_CHAN_MSG_CONFIGURE_MSIX_MAP handler
+  forwards peer-supplied vector counts straight to the global allocator…
 
 --
 
-net/nebula-matrix: add chip-wide hardware init/deinit implementation
+net/nebula-matrix: dispatch: implement channel RPC framework and serialize
+hardware ops
 
-This adds the Leonis chip-wide init/deinit path, programming the DP
-sub-modules (dped, uped, dsch, ustore, dstore, dvn, uvn, uqm), per-port
-shaping and host padpt flow control, plus the driver_status flag consumed by
-firmware.  It also registers hw_ops.init_module/deinit_module and the matching
-resource_ops entry points, and introduces a firmware quirk word read from the
-mailbox.  A few questions below.
+This adds mailbox RPC request/response handlers for configure_msix_map,
+destroy_msix_map, set_mailbox_irq, get_vsi_id and get_eth_id, resolving the
+dispatch ops to either local hardware calls (control PF) or remote requests
+to the manager PF. It also adds a per-dispatch mutex to serialize the
+mutable hardware ops, plus new wire message types and a permission-denied
+status code.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
-> new file mode 100644
-> index 000000000000..e1ba7b7e36ca
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
-> @@ -0,0 +1,23 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2026 Nebula Matrix Limited.
-> + */
-> +#include <linux/device.h>
-> +#include "nbl_chip.h"
-> +
-> +void nbl_res_chip_deinit_module(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +
-> +	hw_ops->deinit_module(res_mgt->hw_ops_tbl->priv);
-> +}
-> +
-> +int nbl_res_chip_init_module(struct nbl_resource_mgt *res_mgt)
-> +{
-> +	u8 eth_speed = res_mgt->resource_info->board_info.eth_speed;
-> +	u8 eth_num = res_mgt->resource_info->board_info.eth_num;
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
-> +
-> +	return hw_ops->init_module(p, eth_speed, eth_num);
-> +}
-
-[Severity: Low]
-This isn't a bug, but would it be worth adding the has_ctrl check here for
-consistency with the sibling resource ops?
-
-Every other resource op added so far starts with:
-
-	if (!common->has_ctrl)
-		return -EINVAL;
-
-(see nbl_res_intr_cfg_msix_map() and friends in nbl_interrupt.c and the
-helpers in nbl_resource.c), while nbl_res_chip_init_module() and
-nbl_res_chip_deinit_module() go straight into chip-global register
-programming.
-
-The registers touched by that path are well outside the mapping a non-control
-function gets, for example NBL_DRIVER_STATUS_REG 0x1300444 and the dummy
-register used by nbl_flush_writes() at 0x1300904, while nbl_hw_init_leonis()
-only ioremaps NBL_REG_NET_ONLY_LEN when has_ctrl is not set, and
-nbl_hw_wr32()/nbl_hw_rd32() do not bound-check against hw_size.
-
-I checked and this is not reachable: nbl_dev_init() only calls
-nbl_dev_setup_ctrl_dev() under if (common->has_ctrl), and
-disp_ops->init_module/deinit_module are only assigned for
-NBL_DISP_CTRL_LVL_MGT, which is only set when common->has_ctrl.  So this is
-purely a defense-in-depth remark, matching what the commit message already
-says about the caller guarantee.
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> index fd6bc992fa0f..7f2626db731a 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-> @@ -115,6 +115,548 @@ static void nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt, u32 *eth_map)
->  	*eth_map = FIELD_GET(NBL_FW_BOARD_DW6_ETH_BITMAP_MASK, data);
->  }
->  
-> +static u32 nbl_hw_get_quirks(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	u32 quirks = 0;
-> +
-> +	nbl_hw_read_mbx_regs(hw_mgt, NBL_LEONIS_QUIRKS_OFFSET, &quirks,
-> +			     sizeof(u32));
-> +
-> +	if (quirks == ~0u)
-> +		return 0;
-> +
-> +	return quirks;
-> +}
-
-[Severity: Low]
-The quirk interface is described in three places and the three descriptions
-do not agree.
+A few questions below about the commit message and about the new handlers.
 
 The commit message says:
 
-    NBL_QUIRK_UVN_PREFETCH_ALIGN (BIT(1)), BIT(0) is reserved for future use.
+    Improve message payload validation for forward compatibility:
+    reject requests with insufficient payload length, enforce bounds
+    checks before parsing incoming RPC parameters. Fix unimplemented
+    operation check ordering to avoid potential NULL pointer
+    dereferences.
 
-but nbl_include.h defines BIT(0) as a named quirk:
+and:
 
-	#define NBL_QUIRKS_NO_TOE		BIT(0)
-	#define NBL_QUIRK_UVN_PREFETCH_ALIGN	BIT(1)
+    Add helper to register channel response callbacks; extend wire
+    protocol with new message types and NBL_CHAN_RESP_PERM_DENY error
+    code.
 
-with the comment "ABI defined, driver implementation pending".
-NBL_QUIRKS_NO_TOE has no user anywhere in the driver at the end of the
-series.  Should the commit message say BIT(0) is defined but unused, or
-should the define be dropped until it is used?
+[Severity: Low]
+Which pre-existing code do the words "Improve", "Fix ... ordering" and
+"Add helper" refer to?
 
-The two prefixes also differ (NBL_QUIRKS_NO_TOE versus
-NBL_QUIRK_UVN_PREFETCH_ALIGN), and the explanatory comment in nbl_uvn_init()
-names a macro that does not exist in the tree:
+At the parent commit the only helpers in nbl_dispatch.c are
+nbl_disp_init_module() and nbl_disp_deinit_module(), and both already had
+the guard:
 
-	 * Default is sel=1, unless NBL_QUIRKS_UVN_PREFETCH_ALIGN is set,
+	if (res_ops->init_module)
+		return res_ops->init_module(p);
+	return -EOPNOTSUPP;
 
-while the code a few lines below uses NBL_QUIRK_UVN_PREFETCH_ALIGN.
+Neither is touched by this patch, so no check ordering appears to change.
+Likewise, every handler containing a data_len < sizeof(param) test is
+introduced by this patch, so there is no earlier validation being improved.
 
-One more question on the sentinel above: only ~0u is treated as "no quirks",
-so on firmware predating this ABI, any other stale non-zero content at
-mailbox offset 0x140 is taken as live quirk bits and can flip
-NBL_UVN_DESC_PREFETCH_INIT_SEL.  Is there a version or magic word that could
-gate the read instead?  I cannot inspect firmware images, so this part is
-speculative.
+register_msg() and unregister_all_msg() also already exist in
+struct nbl_channel_ops, and nbl_chan_setup_ops() already registers
+NBL_CHAN_MSG_ACK; what this patch adds is a dispatch-layer setup function,
+nbl_disp_setup_msg(), not a channel helper.
 
-[ ... ]
+Could the wording be changed to describe the new code as new, so readers do
+not look for a Fixes: tag and a previously broken commit?
 
-> +static int nbl_shaping_eth_init(struct nbl_hw_mgt *hw_mgt, u8 eth_id, u8 speed)
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> index 3da5f8351fa4..239d8317a9c5 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> @@ -3,9 +3,170 @@
+>   * Copyright (c) 2026 Nebula Matrix Limited.
+>   */
+>  #include <linux/device.h>
+> +#include <linux/mutex.h>
+>  #include <linux/pci.h>
+>  #include "nbl_dispatch.h"
+>  
+> +static int nbl_disp_chan_get_vsi_id_req(struct nbl_dispatch_mgt *disp_mgt,
+> +					u16 type, u16 *vsi_id)
 > +{
-> +	struct nbl_shaping_dvn_dport_u dvn_dport = { 0 };
-> +	struct nbl_shaping_dport_u dport = { 0 };
-> +	u32 rate, half_rate;
-> +	u32 depth;
-> +	u64 low_val, high_val;
+> +	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
+> +	struct nbl_common_info *common = disp_mgt->common;
+> +	struct nbl_chan_param_get_vsi_id result = { 0 };
+> +	struct nbl_chan_param_get_vsi_id param = { 0 };
+> +	struct nbl_chan_send_info chan_send = {0};
+> +	int ret;
 > +
-> +	switch (speed) {
-> +	case NBL_FW_PORT_SPEED_100G:
-> +		rate = 100000;
+> +	param.type = cpu_to_le16(type);
+> +
+> +	nbl_chan_fill_send_info(&chan_send, common->mgt_pf,
+> +				NBL_CHAN_MSG_GET_VSI_ID,
+> +				&param, sizeof(param), &result,
+> +				sizeof(result), 1);
+> +	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
+> +	switch (ret) {
+> +	case NBL_CHAN_RESP_OK:
 > +		break;
-
-[ ... ]
-
-> +	/* 2. write config words (valid=0, safe) */
-> +	low_val = FIELD_PREP(DPORT_CIR_MASK, rate) |
-> +		  FIELD_PREP(DPORT_PIR_MASK, rate) |
-
-[Severity: Low]
-This isn't a bug, but which unit do these fields actually use?  The header
-documents two incompatible ones right above the shaping defines:
-
-	/* cir 1, bandwidth 1kB/s in protol environment */
-	/* cir 1, bandwidth 1Mb/s */
-
-The code here writes 10000/25000/50000/100000 for 10/25/50/100 Gbit/s, which
-matches only the 1 Mb/s reading; under the 1 kB/s reading a 100G port would
-be shaped to roughly 0.8 Gbit/s.  Could the stale comment be deleted or
-qualified?
-
-[ ... ]
-
-> +static int nbl_ustore_init(struct nbl_hw_mgt *hw_mgt, u8 eth_num)
-> +{
-> +	u32 eth_bitmap = 0;
-> +	u32 drop_th = 0;
-> +	u32 pkt_len = 0;
-> +	int i;
-> +
-> +	if (eth_num != 1 && eth_num != 2 && eth_num != 4)
-> +		return -EINVAL;
+> +	case NBL_CHAN_RESP_UNIMPLEMENTED:
+> +		return -EOPNOTSUPP;
+> +	case NBL_CHAN_RESP_ERR:
+> +		return -EREMOTEIO;
+> +	case NBL_CHAN_RESP_PERM_DENY:
+> +		return -EPERM;
+> +	default:
+> +		return -EREMOTEIO;
+> +	}
 
 [Severity: Medium]
-Is it intended that eth_num is validated only here, after several sub-modules
-have already been committed to the chip?
+Does this switch turn every local transport error into -EREMOTEIO?
 
-nbl_dp_init() programs DPED, UPED, shaping and DSCH before reaching this
-check:
+nbl_chan_send_msg() only returns a wire status code when an ACK actually
+arrives.  Otherwise it returns a negative Linux errno:
 
-	nbl_dped_init(hw_mgt);
-	nbl_uped_init(hw_mgt);
-	ret = nbl_shaping_init(hw_mgt, speed);
-	if (ret)
-		return ret;
-	nbl_dsch_qid_max_init(hw_mgt);
-	ret = nbl_ustore_init(hw_mgt, eth_num);
-	if (ret)
-		return ret;
+nbl_channel/nbl_channel.c:nbl_chan_send_msg() {
+	...
+	if (READ_ONCE(chan_info->shutdn)) { ... return -ESHUTDOWN; }
+	...
+	ret = -ETIMEDOUT;
+	...
+	ret = READ_ONCE(wait_head->ack_err);
+}
 
-eth_num comes straight from firmware.  nbl_hw_get_board_info() does:
+plus -EINVAL for oversized arg_len/resp_len, -EAGAIN when all TX wait slots
+are busy, and -EIO when the mailbox IRQ is disabled mid-wait.
 
-	board_info->eth_num = FIELD_GET(NBL_FW_BOARD_DW3_PORT_NUM_MASK, data);
+All of those land in the default arm, so a caller cannot tell a retryable
+or teardown condition from a genuine remote hardware failure, and
+nbl_dev_stop() ends up logging a remote I/O error for what was really
+-ESHUTDOWN or -ETIMEDOUT.  The same switch is repeated in
+nbl_disp_chan_get_eth_id_req(), nbl_disp_chan_cfg_msix_map_req(),
+nbl_disp_chan_destroy_msix_map_req() and
+nbl_disp_chan_set_mailbox_irq_req().
 
-and nbl_res_init_board_info() does not validate it, so a board reporting 0, 3
-or 8 (or a mailbox read that returns early on its own bounds check, leaving
-eth_num 0) fails here with the shaping DPORT/DVN_DPORT VALID bits already set,
-DSCH quanta and QID_MAX applied, DPED L4 checksum enabled and the UPED
-profiles edited.
+Would an early "if (ret < 0) return ret;" before the switch preserve the
+error semantics the changelog aims for?
 
-There is also no unwind, and nbl_hw_init_module() returns the error before
-nbl_hw_set_driver_status(hw_mgt, true), so the firmware cleanup the commit
-message relies on ("FW releases all chip hardware state automatically") is
-never armed for a failed init, and nbl_hw_deinit_module() only clears a bit
-that was never set.
-
-Could eth_num be validated before the first register write?
-
-[ ... ]
-
-> +static void nbl_dvn_descreq_num_cfg(struct nbl_hw_mgt *hw_mgt, u8 descreq_num)
-> +{
-> +	u8 split_ring_num = (descreq_num >> 3) & 0x1;
-> +	u8 ring_num = descreq_num & 0x7;
-> +	u32 num_cfg = 0;
-> +
-> +	num_cfg = FIELD_PREP(NBL_DVN_DESCREQ_NUM_CFG_AVRING_DESREQ_NUM_CFG_MASK,
-> +			     split_ring_num) |
-> +		  FIELD_PREP(NBL_DVN_DESCREQ_NUM_CFG_PACKED_L1_NUM_MASK,
-> +			     ring_num);
-> +
-> +	nbl_hw_wr_regs_lock(hw_mgt, NBL_DVN_DESCREQ_NUM_CFG, &num_cfg,
-> +			    sizeof(num_cfg));
+> +	*vsi_id = le16_to_cpu(result.vsi_id);
+> +	return 0;
 > +}
 
 [ ... ]
 
-> +static void nbl_uvn_init(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	u16 wr_timeout = NBL_UVN_DESC_WR_TIMEOUT_VAL;
-> +	u32 timeout = NBL_UVN_DESC_RD_WAIT_TICKS;
-> +	u32 desc_wr_timeout = 0;
-> +	u32 prefetch_init = 0;
-> +	bool ro_enabled;
-> +	u32 flag = 0;
-> +	u32 mask = 0;
-> +	u32 quirks;
+> +	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
+> +	switch (ret) {
+> +	case NBL_CHAN_RESP_OK:
+> +		break;
+> +	case NBL_CHAN_RESP_UNIMPLEMENTED:
+> +		return -EOPNOTSUPP;
+> +	case NBL_CHAN_RESP_ERR:
+> +		return -EREMOTEIO;
+> +	case NBL_CHAN_RESP_PERM_DENY:
+> +		return -EPERM;
+> +	default:
+> +		return -EREMOTEIO;
+> +	}
+> +	*eth_num = result.eth_num;
+> +	*eth_id = result.eth_id;
+> +	*logic_eth_id = result.logic_eth_id;
 > +
-> +	spin_lock(&hw_mgt->reg_lock);
-> +	nbl_hw_wr32(hw_mgt, NBL_UVN_DESC_RD_WAIT, timeout);
-> +	desc_wr_timeout =
-> +		FIELD_PREP(NBL_UVN_DESC_WR_TIMEOUT_NUM_MASK, wr_timeout);
-> +	nbl_hw_wr_regs(hw_mgt, NBL_UVN_DESC_WR_TIMEOUT, &desc_wr_timeout,
-> +		       sizeof(desc_wr_timeout));
+> +	return 0;
+> +}
 
 [Severity: Medium]
-Does this write clear NBL_UVN_DESC_WR_TIMEOUT_MASK_MASK?  The patch itself
-declares that bit as a live field of the same register:
+Can a short ACK make these two helpers report success with zeroed
+identifiers?
 
-	#define NBL_UVN_DESC_WR_TIMEOUT_NUM_MASK GENMASK(14, 0)
-	#define NBL_UVN_DESC_WR_TIMEOUT_MASK_MASK BIT(15)
+nbl_chan_recv_ack_msg() takes the status straight from the wire and only
+clamps the payload copy, reporting the effective length back through
+chan_send->ack_len:
 
-but desc_wr_timeout starts at 0 and only NUM is filled in, so BIT(15) is
-written back as 0 whatever firmware programmed.  A few lines below, this same
-function read-modify-writes NBL_UVN_DIF_REQ_RO_FLAG and
-NBL_UVN_QUEUE_ERR_MASK precisely to preserve the other bits, so the
-inconsistency is internal to the function.
+nbl_channel/nbl_channel.c:nbl_chan_recv_ack_msg() {
+	...
+	copy_len = min_t(u32, READ_ONCE(wait_head->ack_data_len), ack_datalen);
+	if (READ_ONCE(wait_head->ack_err) >= 0 && copy_len > 0) {
+		...
+		WRITE_ONCE(wait_head->ack_data_len, (u16)copy_len);
+	}
+}
 
-The same pattern applies to two other registers in this patch:
+nbl_disp_chan_get_vsi_id_req() and nbl_disp_chan_get_eth_id_req() never look
+at chan_send.ack_len, so a peer answering status OK with a truncated or
+empty payload leaves the "= { 0 }" initialiser values in place and the
+caller gets vsi_id 0, eth_id 0, logic_eth_id 0, eth_num 0 and a 0 return.
+Per nbl_res_ctrl_dev_vsi_info_init() ("pf0,pf1,pf2,pf3 vsi is 0,256,512,768")
+vsi_id 0 and eth_id 0 are valid identifiers belonging to PF0, so a
+non-control PF would silently adopt another function's VSI/port identity.
 
-  - NBL_UVN_DESC_PREFETCH_INIT is written from scratch with only NUM[7:0] and
-    SEL[16]
-  - NBL_DVN_DESCREQ_NUM_CFG in nbl_dvn_descreq_num_cfg() above is written
-    with only BIT(0) and GENMASK(6, 4)
+There is also no range check on the returned values, unlike the local
+producer:
 
-Since deinit relies entirely on firmware cleanup, whatever gets zeroed here
-stays zeroed for the life of the chip.  Should these be read-modify-writes
-too?  I could not find the reset defaults of those bits documented in the
-tree, so this is based on the field definitions the patch adds.
+nbl_hw/nbl_resource.c:nbl_res_get_eth_id() {
+	...
+	if (rel_pf_id >= eth_info->eth_num) {
+		dev_err(dev, "rel_pf_id %d out of range [0, %u)\n", ...);
+		return -ERANGE;
+	}
+}
 
-> +	ro_enabled = pcie_relaxed_ordering_enabled(hw_mgt->common->pdev);
+Should these helpers check chan_send.ack_len against sizeof(result) and
+bound eth_num/eth_id/logic_eth_id against NBL_MAX_ETHERNET before handing
+the values to the caller?
 
-[ ... ]
-
-> +	spin_unlock(&hw_mgt->reg_lock);
-> +	quirks = nbl_hw_get_quirks(hw_mgt);
-> +	/*
-> +	 * sel=0: use configured num; sel=1: use internal calc (max 32)
-> +	 * Default is sel=1, unless NBL_QUIRKS_UVN_PREFETCH_ALIGN is set,
-> +	 * in which case override to sel=0.
-> +	 */
-> +	prefetch_init =
-> +		FIELD_PREP(NBL_UVN_DESC_PREFETCH_INIT_NUM_MASK,
-> +			   NBL_UVN_DESC_PREFETCH_NUM) |
-> +		FIELD_PREP(NBL_UVN_DESC_PREFETCH_INIT_SEL_MASK,
-> +			   (quirks & NBL_QUIRK_UVN_PREFETCH_ALIGN) ? 0 : 1);
-> +
-> +	return nbl_hw_wr_regs_lock(hw_mgt, NBL_UVN_DESC_PREFETCH_INIT,
-> +				   &prefetch_init, sizeof(prefetch_init));
-> +}
-
-[Severity: Low]
-Was this return intended?  nbl_uvn_init() is declared static void and
-nbl_hw_wr_regs_lock() also returns void, so this is a return with an
-expression in a void function, which ISO C forbids and -Wpedantic
-diagnoses.  Every other sub-init helper in this patch calls the write helper
-as a plain statement, and nbl_dp_init() calls nbl_uvn_init() as a statement
-too, so nothing is propagated.
-
-While on that topic, only nbl_shaping_init() and nbl_ustore_init() can report
-failure to the int-returning nbl_hw_init_module(); the rest are void.  Is the
-mixed failure model deliberate?
-
-[ ... ]
-
-> +	for (i = 0; i < NBL_UQM_DPORT_DROP_DEPTH; i++)
-> +		nbl_hw_wr_regs(hw_mgt,
-> +			       NBL_UQM_DPORT_DROP_CNT + (sizeof(cnt) * i), &cnt,
-> +			       sizeof(cnt));
-> +	/* bit 0: bp mode , bit1: drop mode, resv bit1-31 */
-> +	nbl_hw_wr_regs(hw_mgt, NBL_UQM_QUE_TYPE, &que_type, sizeof(que_type));
-
-[Severity: Low]
-This comment gives bit1 two meanings: "drop mode" and part of the reserved
-range.  Should the reserved range read bit2-31?
-
-[ ... ]
-
-> +/*
-> + * This design is intentional. Setting driver status to false is the
-> + * official teardown mechanism: it notifies firmware to perform full
-> + * cleanup of all per-PF hardware state, including qinfo registers.
-> + * An inverse helper would duplicate work that the firmware already
-> + * does, and would add error-path complexity for no benefit. We keep
-> + * the deinit path minimal and rely on firmware cleanup for correctness,
-> + * including abnormal hardware reset scenarios.
-> + */
-> +static void nbl_hw_deinit_module(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	nbl_hw_set_driver_status(hw_mgt, false);
-> +	/* ensure registers written */
-> +	nbl_flush_writes(hw_mgt);
-> +}
-
-[Severity: Low]
-This isn't a bug, but is there any way for the driver to observe that the
-firmware cleanup completed?  nbl_flush_writes() only reads the dummy register
-to push the posted write out, it is not an acknowledgement, and everything
-init armed stays set on return: shaper VALID bits, DSCH PSHA, USTORE
-port-drop, DSTORE flow control, DVN/UVN RO and error-mask bits, DPED L4
-checksum.
-
-I could not construct a failure path from this in the current series.  The
-only DMA engine set up so far is the mailbox channel, and
-nbl_chan_teardown_queue() calls nbl_chan_stop_queue(), which stops the
-queues in hardware:
-
-	hw_ops->stop_mailbox_rxq(chan_mgt->hw_ops_tbl->priv);
-	hw_ops->stop_mailbox_txq(chan_mgt->hw_ops_tbl->priv);
-
-before the buffers are released, and nbl_dev_remove() runs the ctrl-dev
-teardown before the common-dev teardown.  So this is only a remark: a defined
-"cleanup complete" indication with a timeout would make the firmware contract
-verifiable from the driver side.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> index fed2fb16bff8..95d8a12bdcb5 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> @@ -110,6 +124,216 @@ struct nbl_function_msix_map {
->  	u32 data[NBL_FUNC_MSIX_MAP_DWLEN];
->  };
+> @@ -25,6 +186,346 @@ static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
+>  	return -EOPNOTSUPP;
+>  }
 >  
 
 [ ... ]
 
-> +#define NBL_UVN_DESC_WR_TIMEOUT_NUM_MASK GENMASK(14, 0)
-> +#define NBL_UVN_DESC_WR_TIMEOUT_MASK_MASK BIT(15)
-
-[ ... ]
-
-> +/*  ---------  SHAPING  ---------  */
-> +
-> +/* cir 1, bandwidth 1kB/s in protol environment */
-> +/* cir 1, bandwidth 1Mb/s */
-> +#define NBL_LR_LEONIS_NET_BUCKET_DEPTH		9600
-> +#define NBL_SHAPING_DPORT_ADDR 0x504700
-> +#define NBL_SHAPING_DPORT_DWLEN 4
-> +#define NBL_SHAPING_DPORT_REG(r) \
-> +	(NBL_SHAPING_DPORT_ADDR + (NBL_SHAPING_DPORT_DWLEN * 4) * (r))
-> +#define NBL_SHAPING_DVN_DPORT_ADDR 0x504750
-
-[ ... ]
-
-> +#define DPORT_VALID_MASK (0x1ULL << 0)
-> +#define DPORT_DEPTH_MASK (0x7FFFFULL << 1)	// [19:1]
-> +#define DPORT_CIR_MASK (0x7FFFFULL << 20)	// [38:20]
-> +#define DPORT_PIR_MASK (0x7FFFFULL << 39)	// [57:39]
-> +#define DPORT_CBS_MASK_LOW (0x3FULL << 58)		// [63:58]
-> +#define DPORT_CBS_MASK_HIGH (0x7FFFULL << (0)) // [78:64] -> high[14:0]
-> +#define DPORT_PBS_MASK (0x1FFFFFULL << (79 - 64)) // [99:79] -> high[35:15]
+> +	if (res_ops->cfg_msix_map) {
+> +		mutex_lock(&disp_mgt->ops_mutex_lock);
+> +		ret = res_ops->cfg_msix_map(p, src_id,
+> +					    le16_to_cpu(param.num_net_msix),
+> +					    le16_to_cpu(param.num_others_msix),
+> +					    !!le16_to_cpu(param.msix_mask_en));
+> +		mutex_unlock(&disp_mgt->ops_mutex_lock);
+> +		if (ret)
+> +			err = NBL_CHAN_RESP_ERR;
+> +	} else {
+> +		err = NBL_CHAN_RESP_UNIMPLEMENTED;
+> +	}
 
 [Severity: Low]
-This isn't a bug, but the new register defines mix several conventions.
+Should there be a per-function limit on the requested vector counts here?
 
-The C99 // comments above are a checkpatch error, and the masks are
-hand-rolled shifts where the rest of this header uses GENMASK()/
-GENMASK_ULL().  The DPORT_* and DEFAULT_DVN_* macros also lack the NBL_
-prefix used by everything else, so they land in the global macro namespace.
+After the coarse src_id check the peer-supplied counts go straight to the
+global allocator, which only enforces device-wide maxima:
 
-Several of the new addresses are spelled out numerically even though the
-matching base already exists in this header:
+nbl_hw/nbl_interrupt.c:nbl_res_intr_cfg_msix_map() {
+	...
+	if (num_net_msix > NBL_MSIX_MAP_TABLE_MAX_ENTRIES ||
+	    num_others_msix > NBL_MSIX_MAP_TABLE_MAX_ENTRIES) { ... }
+}
 
-	NBL_SHAPING_DPORT_ADDR     0x504700
-	NBL_SHAPING_DVN_DPORT_ADDR 0x504750
-	NBL_SHAPING_NET_ADDR       0x505800
+The accepted maximum for num_others_msix equals the whole shared pool
+(NBL_MAX_OTHER_INTERRUPT is 1024), so a single request for 1024 drains
+intr_other_bmap and every later allocation for any function, including the
+control PF's own mailbox and misc vectors, then fails with -EAGAIN.
 
-all sit inside NBL_DP_SHAPING_BASE (0x00504000), which is now left with no
-user at all in the tree.  Same for NBL_DSCH_PSHA_EN_ADDR 0x404314
-(NBL_DP_DSCH_BASE + 0x314), NBL_DSTORE_D_DPORT_FC_TH_ADDR 0x704600 and
-NBL_DSTORE_PORT_DROP_TH_ADDR 0x704150 (NBL_DP_DSTORE_BASE + 0x600 / + 0x150),
-and NBL_DPED_L4_CK_CMD_40_ADDR 0x75c338 (NBL_DP_DPED_BASE + 0x338).
+Each request also does a full 1024-entry coherent DMA table allocation and
+the usleep_range(100, 120) quiesce inside nbl_res_intr_destroy_msix_map()
+while ops_mutex_lock is held, which stalls the control PF's mailbox work
+item.
 
-Finally, a number of the added defines have no user at the end of the series,
-for example the NBL_DPED_L4_CK_CMD_40_* field masks other than EN,
-NBL_DSTORE_PORT_DROP_DISC_TH_MASK, NBL_UVN_DESC_WR_TIMEOUT_MASK_MASK and the
-_DEPTH/_WIDTH/_DWLEN triplets.  Could the unused ones be dropped until they
-are needed?
+> +	if (src_id > NBL_MAX_PF_SRC_ID) {
+> +		err = NBL_CHAN_RESP_PERM_DENY;
+> +		goto ack_out;
+> +	}
+> +	if (res_ops->destroy_msix_map) {
+> +		mutex_lock(&disp_mgt->ops_mutex_lock);
+> +		ret = res_ops->destroy_msix_map(p, src_id);
+> +		mutex_unlock(&disp_mgt->ops_mutex_lock);
+> +		if (ret)
+> +			err = NBL_CHAN_RESP_ERR;
+> +	} else {
+> +		err = NBL_CHAN_RESP_UNIMPLEMENTED;
+> +	}
+
+[Severity: Medium]
+Does making destroy_msix_map remotely invokable leave the requester's
+mailbox interrupt routing armed on a recycled vector?
+
+nbl_res_intr_destroy_msix_map() masks the per-vector entries, returns the
+global vector numbers to the bitmaps and frees the per-function array:
+
+nbl_hw/nbl_interrupt.c:nbl_res_intr_destroy_msix_map() {
+	...
+	nbl_intr_release_bitmap(res_mgt, interrupts, intr_num);
+	...
+	kfree(intr_mgt->func_intr_res[func_id].interrupts);
+	intr_mgt->func_intr_res[func_id].interrupts = NULL;
+}
+
+but MSIX_IDX/MSIX_IDX_VALID in NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id),
+written only by nbl_hw_set_mailbox_irq(), is left pointing at the vector
+that was just released.  It cannot be cleared afterwards either:
+
+nbl_hw/nbl_interrupt.c:nbl_res_intr_set_mailbox_irq() {
+	if (!intr_mgt->func_intr_res[func_id].interrupts) {
+		dev_err(dev, "func %u MSIX map not configured\n", func_id);
+		return -ENODEV;
+	}
+}
+
+A later nbl_res_intr_cfg_msix_map() for another function re-validates the
+same global vector with the new owner's BDF, so a mailbox event for the old
+function would raise an interrupt owned by a different PF.
+nbl_res_intr_cfg_msix_map() also calls the same teardown internally, so a
+peer sending CONFIGURE_MSIX_MAP twice, or DESTROY_MSIX_MAP while its
+mailbox IRQ is still armed, reaches this from the wire.
+
+Would it be better to clear the mailbox QINFO mapping as part of
+destroy_msix_map, or at least document the required ordering against
+set_mailbox_irq in nbl_def_dispatch.h?
+
+> +static int nbl_disp_setup_msg(struct nbl_dispatch_mgt *disp_mgt)
+> +{
+> +	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
+> +	struct nbl_channel_mgt *p = disp_mgt->chan_ops_tbl->priv;
+> +	int ret = 0;
+> +	int _ret;
+> +
+> +	_ret = chan_ops->register_msg(p, NBL_CHAN_MSG_CONFIGURE_MSIX_MAP,
+> +				      nbl_disp_chan_cfg_msix_map_resp,
+> +				      disp_mgt);
+> +	if (_ret < 0 && !ret)
+> +		ret = _ret;
+
+[ ... ]
+
+> +	if (ret)
+> +		chan_ops->unregister_all_msg(p);
+> +	return ret;
+> +}
+
+[Severity: Medium]
+Does this rollback destroy state owned by the channel layer?
+
+unregister_all_msg is nbl_chan_remove_msg_handler():
+
+nbl_channel/nbl_channel.c:nbl_chan_remove_msg_handler() {
+	if (!chan_mgt->handle_hash_tbl)
+		return;
+	nbl_common_remove_hash_table(chan_mgt->handle_hash_tbl);
+	chan_mgt->handle_hash_tbl = NULL;
+}
+
+That frees every handler node, including the channel's own ACK handler
+registered by nbl_chan_setup_ops():
+
+	ret = nbl_chan_register_msg(chan_mgt, NBL_CHAN_MSG_ACK,
+				    nbl_chan_recv_ack_msg, chan_mgt);
+
+and then NULLs the shared table pointer with no re-init path, since
+nbl_chan_init_msg_handler() is only called from nbl_chan_setup_chan_mgt().
+Neither accessor tolerates a NULL table:
+
+nbl_common/nbl_common.c:nbl_common_get_hash_node() {
+	...
+	key_size = tbl_mgt->tbl_key.key_size;
+}
+
+Registration is also unpaired at this layer: nbl_disp_remove() is empty and
+delegates handler teardown to nbl_chan_remove_common().  As far as I can
+tell no crash is reachable today, because the only failure mode of
+nbl_chan_register_msg() is -ENOMEM during nbl_disp_init(), and at that point
+no mailbox queue, IRQ or clean_mbx_task exists yet, so nothing looks the
+table up during the unwind.  Would it be more robust to unregister only the
+five message types this function registered, and to do it from
+nbl_disp_remove()?
+
+> @@ -104,14 +621,30 @@ int nbl_disp_init(struct nbl_adapter *adapter)
+>  	adapter->core.disp_mgt = disp_mgt;
+>  	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
+>  
+> +	ret = nbl_disp_setup_msg(disp_mgt);
+> +	if (ret)
+> +		return ret;
+> +
+>  	if (common->has_ctrl)
+>  		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
+>  
+> +	/*
+> +	 * For non-control PF with network capability, enable net control
+> +	 * level.
+> +	 * All dispatch ops declared with NBL_DISP_CTRL_LVL_MGT fall back
+> +	 * to remote mailbox msg_req handlers when MGT bit is not set.
+> +	 */
+> +	if (common->has_net)
+> +		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_NET);
+
+[Severity: Low]
+Is anything reading NBL_DISP_CTRL_LVL_NET?
+
+Grepping the nbl driver at this commit, the symbol appears only in its enum
+definition in nbl_def_dispatch.h and in this new set_bit().  The single
+consumer of ctrl_lvl only tests the MGT bit:
+
+nbl_core/nbl_dispatch.c:nbl_disp_refresh_ctrl_ops() {
+	if (test_bit(NBL_DISP_CTRL_LVL_MGT, disp_mgt->ctrl_lvl)) {
+	...
+}
+
+so the NET bit is write-only state.
+
+The comment also says "For non-control PF with network capability", but the
+condition is just common->has_net, and every entry in nbl_id_table sets
+BIT(NBL_CAP_HAS_NET_BIT), so the control PF takes this branch too.  Should
+the condition and the comment be reconciled, or the bit dropped until a
+reader exists?
+
+>  	nbl_disp_refresh_ctrl_ops(disp_mgt);
+>  	return 0;
+>  }
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+> index d5e7da0fef6e..61083a750da4 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+> @@ -22,12 +22,28 @@ enum {
+>   *               caller must check has_ctrl guard
+>   * @deinit_module: dispatch layer cleanup, ONLY valid on Control PF,
+>   *                 caller must check has_ctrl guard
+> + * @cfg_msix_map: configure function msix mapping table
+> + * @destroy_msix_map: tear down msix mapping resource
+> + * @set_mailbox_irq: bind mailbox interrupt to specified msix vector
+> + * @get_vsi_id: resolve VSI ID by type
+> + * @get_eth_id: resolve eth port info from VSI ID
+> + *
+>   * Warning: All ops except init_module/deinit_module can be safely called
+>   * on PF/VF; init/deinit hooks are control-PF exclusive to prevent NULL ptr.
+>   */
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+> index ebf85702cef6..a53138530c54 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+> @@ -15,6 +15,8 @@
+>  
+>  #define NBL_MAX_FUNC					520
+>  #define NBL_MAX_ETHERNET				4
+> +/* Product firmware only supports 1/2/4 contiguous PFs (ID 0~3) */
+> +#define NBL_MAX_PF_SRC_ID				3
+
+[Severity: Low]
+Does this constant contradict the documented contract just above?
+
+The kernel-doc extended by this patch says the five new ops "can be safely
+called on PF/VF", but on a non-control function they resolve to the *_req()
+helpers, and every new responder starts with:
+
+	if (src_id > NBL_MAX_PF_SRC_ID) {
+		err = NBL_CHAN_RESP_PERM_DENY;
+		goto ack_out;
+	}
+
+src_id is the mailbox descriptor srcid in a function-id space of
+NBL_MAX_FUNC (520), so any VF requester is denied by construction and its
+*_req() helper returns -EPERM.
+
+The hardcoded 3 also disagrees with the runtime model used elsewhere:
+nbl_common_func_id_to_rel_pf_id() computes pf_id - common->mgt_pf and is
+documented to "Support future non-zero management PF", while
+nbl_res_func_id_to_bdf() and nbl_res_get_eth_id() validate against
+resource_info->max_pf.  With mgt_pf != 0 the legitimate absolute PF ids
+exceed 3 and would be denied as well.
+
+No VF can bind this driver today, since nbl_id_table lists only PF device
+ids and mgt_pf is hardcoded to 0 in nbl_core_init(), so this is a
+documentation and future-proofing question rather than an active failure.
+Would validating src_id against mgt_pf plus max_pf be preferable to the new
+constant, or should the "PF/VF" wording be adjusted?
+
+>  
+>  enum {
+>  	NBL_VSI_DATA = 0,
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831021408.2325-1-illusion.wang%40nebula-matrix.com
