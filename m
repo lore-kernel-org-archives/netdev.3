@@ -1,224 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9405480DF3;
-	Fri,  4 Sep 2026 11:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D4B488231
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 11:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788522588; cv=none; b=C84qTSdjMFI1owI0BFixy1RGgCglwVzCR7xE0RiE8Rgj6y4h2OzbnuLwLBHHkSH64xImC4NCA+pk0FhZY1fUV81vceswtRRwLOvGjH5x+urGhfM9Q02Lm81KQ17vMWHTTZP8COJn+T9b2Gpg8lFSYwZg/9rPqVR2CUD1niwtfaA=
+	t=1788523166; cv=none; b=Aaomav8BTfefqkghb8YgwJ7LYzgM0s/t2AIpVUkRX3NRhQqrfspVwt2zudAnqmZiTQC4hD6tCPKawN/j5kJ6wgSf3gCr8D4ectT5D3HEMVjUBZpq4RPoXzau5RN5lEEglLJmy2GOkSDHU1naWlZTKtHT8pOqJLRfviT4dZTpTBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788522588; c=relaxed/simple;
-	bh=vmEGvOKd2TDZkPb5PIj74hifwKPjIMn0AtvZdRg3h/k=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pVURCyakdyvq3YrEjxTgNbGYw6nngtzK49Mf4XSDDNLvhQNESsC/XKGFgxA+AIn+j5LsLfqFnPH/LQpy4AWeT1SidSlIexrYZpi9YvF3TU6ru0L1Nw98Z9KNNtiAGToXO28PDaMRjd81xWTEobGhORBTHL+tpb6MVthJK/iDRKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sa6KEj+r; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788523166; c=relaxed/simple;
+	bh=kB1MKI07S77deBJkcRp4alvrux7z/pJIPbNfJVdZkZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iVZTDQk+4THddDtFiRVpU3W5sR0wzRsv0Dyywer97pDtYYTIZTKSAauXW5QMQ/sK7erYQEnWNpvj/oa/QRf6gFPn8SdVfD/OYv8WeRnU12qtb/wWOxYbn//dmSR9j/ktof0zAwo0EsT1rkawVuRamW9P0+SZW41ezrMjWTKT+OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OEKx6TR6; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sa6KEj+r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC871F00A3D;
-	Fri,  4 Sep 2026 11:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788522586;
-	bh=/DRb5Hvs6OhFmxwqUOQQE77wKJ3oO1v0QrtDvJVdFtY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Sa6KEj+rPUzQE7k1y1nV2su3laVqEXU6DRILowSGmEkjqUqVhP9ct1j/70l76MhHm
-	 kmqD84bGkrjWnE+neJAmjk+uX8YdEbkhDlw7G6rL92kejBc6rmZgcYgtuvouLgv9Cq
-	 7UT8yp9AtWznyoOh8Wq9hRXmLeRQci4rQqQFyDHWf+d5XlEqYYq2IBgctss6l9vYHF
-	 I2thpJHPPKfEq1MJg+d+dK9u5DB+DK1TsqQSfW/ucYt2EKhKcu4eI7QrJQ6e0Z/4dv
-	 3gYNfVXOCaWYHkyVTmCwoAVfnhlOnoF2OxAvNcQdhBXcYZaEwjKpLhmqtvDlk1xupF
-	 qS86o2XUpbS+Q==
-Subject: Re: [PATCH net v2] octeontx2-pf: Fix ethtool timestamping
- capabilities for SDP representors
-From: netdev-bot+sashiko@kernel.org
-To: nshettyj@marvell.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, rfranz@marvell.com,
- sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, horms@kernel.org
-Date: Fri, 04 Sep 2026 11:49:45 +0000
-Message-ID: <178852258532.4131868.9280674038797217075@kernel.org>
-In-Reply-To: <20260901114808.1701352-1-nshettyj@marvell.com>
-References: <20260901114808.1701352-1-nshettyj@marvell.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OEKx6TR6"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so1015756a91.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 04:59:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788523164; x=1789127964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EnusHejKpGyh9HbEBCnQmungQzWoz8PMUq/SwTBA+5g=;
+        b=OEKx6TR6CE7g6OGH1vAgBvxKX9Uj529HHTo/QdwZIsnmpsCWxmR4qWOn8kvfjWhh1e
+         eL1BuKANHoRJ3RrWVl1+2EaBcx10yrEFnMdbcwTYm4421K8AYhiGLzGweyqntyTYKTaK
+         spdQEgE0iPUdGxEPdXC1WavR9yrqSpdD0j+6cLKWz44WClGRDAmNrSbGt4deHKcZLlwi
+         gwfopXyNVgM/MuxgNOxFMnaZaVa1JdOu9EPjVe+mpbALkd1UbIIctyWLBXz8n+8yvF0k
+         q+DHMlpMzXUTIZfWHSV3H37gg51qDtBGo4+S26CNkgpjfipFX93cneTuaU+ZsfNhe7cm
+         +tsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788523164; x=1789127964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EnusHejKpGyh9HbEBCnQmungQzWoz8PMUq/SwTBA+5g=;
+        b=lcFI/YGBUX0DNI4mHfDbiX0yOZbOf1w7yBblvmf4jRzBuScqQR6CHQPuheno44rn8s
+         IHr8bhpr5E/M6SYK/v76uL/5Wk46w5HoO90REyuzfCRhxxMvX3o/Ef0M9pdz8RTWj+/7
+         dgImdTFzck76U8RYbaZmZNkobHyEwt3PyCsxA8P1jYuwazOI+DwdmfMys456c6Q9nfiO
+         x2m1wtH1+6LjaSetAUFb+Gdcxaau6M5LCCqe18J6oOvDYXNy/egVwJ5Ca3yKwvAtHBmo
+         aTCmBibuJvrYrIHxip5Alw2/MAZS0V8Kqp1EmyD5rFcWwcS/LeLLczgwvJ6mkogPVwyN
+         4dVA==
+X-Forwarded-Encrypted: i=1; AKwUvBxojBwju7guNW1DKliHrWmT+2IKuv/iE2UwWb8vq/VtsXxk59ZIjCZOfQPdubf42hVDSoOV2to=@vger.kernel.org
+X-Gm-Message-State: AFuF++l7X2281h0x1bdc6+6eMt1xyTLv5WqPhl3nGjn8DOXdmsbbPr7i
+	RkZ4xk2gzImvsWeXM4sxhL4cw7jNUhPJ/cCiD02fGHSI3RvsPNbs0sr+
+X-Gm-Gg: AYBFou2pC2qQwwdEo8dYWfHjMo95O92Xc3vKzLo1vCrHLbjLZiHRT+3CmDWFgHitI8y
+	nrUphChikkLLJgs3UOY4IUi6m4YNzK2brRGRkjrusNNJHbAzNckgTX//++KKK+gbXseqUWAcBjv
+	AuRhNGFowgYt1AuAsgOKW0naQyVozQdq+Snsx6yFFN4P2ynBTbv5KYqMgoSltXhdnm9eRMcYFU6
+	MQ5grAdlWKViotlaefQvVqifO3iLLQrk9VvNKIURc5NNkGdAIUjutUJjzqUAbPchJF3fy98TVDP
+	K8Qqlwvhw9/sIZOzmkQxx5fRfdmwcDqIXwZPc+RRSkbLbRBa187c7bx3dnRahV/LP/zc+iQ66MM
+	lyc/IQu/0BPOfmnJQaGa7txItbGsQ2wyp0Zws5c0zlU5v0nJ5MSb6uBDsasYzugp8AqIdZf8qOz
+	B4Y5PfVScsjDqVrnWsMMfgBSbSSpuYx2/htIQw+A406xoUu+F2UoHd9YQFyuP00I/1Z9GMOLBxH
+	H1lMKzAjQl1c4A=
+X-Received: by 2002:a17:90b:3fd0:b0:36b:de66:92c3 with SMTP id 98e67ed59e1d1-39b07fed101mr14362000a91.10.1788523163577;
+        Fri, 04 Sep 2026 04:59:23 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339c0ec914sm7034122eec.31.2026.09.04.04.59.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 04:59:23 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] net: cortina: fix typo "trigged" in comment
+Date: Fri,  4 Sep 2026 17:29:16 +0530
+Message-ID: <20260904115917.13695-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Correct "trigged" to "triggered", reported by scripts/checkpatch.pl using
+the misspelling list in scripts/spelling.txt.  Only touches comments, no
+code changes.
 
-Critical: 1 · High: 0 · Medium: 1 · Low: 0 (1)
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+---
+ drivers/net/ethernet/cortina/gemini.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- [Critical] Setting pfvf->ptp = NULL for SDP representors introduces an
-  unprivileged-userspace-triggerable NULL pointer dereference in the…
-- [Medium] Commit message describes a fix in otx2_get_ts_info() ("Fix
-  this by checking if the device is an SDP representor and returning the…
-
-Pre-existing issues:
-- [Low] With pfvf->ptp forced to NULL for SDP representors, the two
-  halves of the hwtstamp ndo pair disagree and the errno is not the…
-
---
-
-octeontx2-pf: Fix ethtool timestamping capabilities for SDP representors
-
-The patch adds is_otx2_sdp_rep() to the early-return condition in
-otx2_ptp_init(), so SDP representors are left with pfvf->ptp == NULL and no
-PTP clock is registered for them.  The intent is that ethtool -T on those
-interfaces reports software-only timestamping.
-
-A few questions below.
-
-> octeontx2-pf: Fix ethtool timestamping capabilities for SDP representors
->
->     SDP representors do not support hardware timestamping. The current
->     implementation of otx2_get_ts_info incorrectly advertises hardware
->     timestamping capabilities and a PHC index to userspace for these
->     interfaces.
->
->     Fix this by checking if the device is an SDP representor and returning
->     the default software timestamping capabilities instead.
-
-[Severity: Medium]
-Does the changelog still match the code?  otx2_ethtool.c is not touched by
-this patch, and otx2_get_ts_info() already had:
-
-	if (!pfvf->ptp)
-		return ethtool_op_get_ts_info(netdev, info);
-
-so the ethtool behaviour changes only as a side effect of forcing
-pfvf->ptp to NULL in otx2_ptp_init().
-
-The wider effects of that are not described in the message body: no PTP
-clock device is registered for SDP representors any more, otx2_sq_init()
-skips the per-SQ sq->timestamps allocation because of
-
-	if (pfvf->ptp && qidx < pfvf->hw.tx_queues)
-
-and otx2_config_hwtstamp_set() now returns -ENODEV for these interfaces.
-
-Could the subject and message be reworded to describe the change in
-otx2_ptp_init() and list those consequences?  The v2 note about disabling
-PTP initialization is below the '---' separator, so it does not appear in
-git log for backporters.  It also looks like the '---' separator and the v2
-changelog were accidentally committed into the message itself.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-> index 95b0a1e7c936d..7b0a51f453cec 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
-> @@ -386,7 +386,7 @@ int otx2_ptp_init(struct otx2_nic *pfvf)
->  	struct ptp_req *req;
->  	int err;
->  
-> -	if (is_otx2_lbkvf(pfvf->pdev)) {
-> +	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev)) {
->  		pfvf->ptp = NULL;
->  		return 0;
->  	}
-
-[Severity: Critical]
-Can this NULL-dereference the transmit path on SDP representors?
-
-otx2vf_probe() calls otx2_ptp_init(vf) for PCI_DEVID_OCTEONTX2_SDP_REP, so
-after this change pfvf->ptp stays NULL and otx2_sq_init() never allocates
-the write-back region:
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c:otx2_sq_init() {
-	...
-	if (pfvf->ptp && qidx < pfvf->hw.tx_queues) {
-		err = qmem_alloc(pfvf->dev, &sq->timestamps, qset->sqe_cnt,
-				 sizeof(*sq->timestamps));
-	...
-}
-
-so sq->timestamps remains NULL for the lifetime of the netdev.
-
-otx2_sq_append_skb() then calls otx2_set_txtstamp() on every transmit, and
-that function gates the timestamping branch only on the skb flags:
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c:otx2_set_txtstamp() {
-	if (unlikely(!skb_shinfo(skb)->gso_size &&
-		     (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP))) {
-		...
-		iova = sq->timestamps->iova + (sq->head * sizeof(u64));
-		otx2_sqe_add_mem(sq, offset, NIX_SENDMEMALG_E_SETTSTMP, iova,
-				 ptp_offset, pfvf->ptp->base_ns, udp_csum_crt);
-	} else {
-		skb_tx_timestamp(skb);
-	}
-}
-
-There is no test of pfvf->ptp, sq->timestamps or
-OTX2_FLAG_TX_TSTAMP_ENABLED here, so both sq->timestamps->iova and
-pfvf->ptp->base_ns are dereferenced through NULL.
-
-SKBTX_HW_TSTAMP comes straight from the socket option, with no check
-against device capability:
-
-net/socket.c:__sock_tx_timestamp() {
-	...
-	if (tsflags & SOF_TIMESTAMPING_TX_HARDWARE)
-		flags |= SKBTX_HW_TSTAMP_NOBPF;
-	...
-}
-
-So an unprivileged setsockopt(SO_TIMESTAMPING,
-SOF_TIMESTAMPING_TX_HARDWARE) plus one non-GSO send out an SDP representor
-appears to be enough, even though otx2_config_hwtstamp_set() refuses the
-ioctl with -ENODEV.
-
-If the first dereference is survived, does the completion side hit the same
-problem in NAPI context?
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c:otx2_snd_pkt_handler() {
-	...
-		timestamp = ((u64 *)sq->timestamps->base)[snd_comp->sqe_id];
-		if (timestamp != 1) {
-			timestamp = pfvf->ptp->convert_tx_ptp_tstmp(timestamp);
-	...
-}
-
-Before this patch SDP representors had a fully initialised pfvf->ptp and an
-allocated sq->timestamps, so this path looks new for this device class.
-Would it work to gate only the reporting paths on is_otx2_sdp_rep(), or
-alternatively add the missing guard in otx2_set_txtstamp():
-
-	if (!pfvf->ptp || !sq->timestamps) {
-		skb_tx_timestamp(skb);
-		return;
-	}
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but routing SDP representors
-into the !pfvf->ptp path exposes an asymmetry between the two hwtstamp
-callbacks.  otx2_config_hwtstamp_get() has no ptp check and succeeds,
-returning the zeroed pfvf->tstamp (HWTSTAMP_TX_OFF / HWTSTAMP_FILTER_NONE):
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:otx2_config_hwtstamp_get() {
-	*config = pfvf->tstamp;
-	return 0;
-}
-
-while the set side rejects every request, including one that re-applies the
-state just reported:
-
-drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c:otx2_config_hwtstamp_set() {
-	if (!pfvf->ptp)
-		return -ENODEV;
-	...
-}
-
-Since ethtool now advertises software-only timestamping through
-ethtool_op_get_ts_info(), is -ENODEV the right errno here?  The netdev is
-registered and present, and dev_get_hwtstamp()/dev_set_hwtstamp() in
-net/core/dev_ioctl.c use -EOPNOTSUPP for the missing-operation case.  The
-existing code predates this patch and already applied to LBK VFs.
-
+diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
+index 24bb989981f2..d359c633c5de 100644
+--- a/drivers/net/ethernet/cortina/gemini.h
++++ b/drivers/net/ethernet/cortina/gemini.h
+@@ -726,7 +726,7 @@ union gmac_config0 {
+ 		unsigned int dis_rx:1;
+ 		/* 2: transmit data loopback enable */
+ 		unsigned int loop_back:1;
+-		/* 3: flow control also trigged by Rx queues */
++		/* 3: flow control also triggered by Rx queues */
+ 		unsigned int flow_ctrl:1;
+ 		/* 4-7: adjust IFG from 96+/-56 */
+ 		unsigned int adj_ifg:4;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901114808.1701352-1-nshettyj%40marvell.com
+2.48.1
+
