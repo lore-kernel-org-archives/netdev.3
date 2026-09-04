@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9142851477F;
-	Fri,  4 Sep 2026 17:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1125A511221;
+	Fri,  4 Sep 2026 17:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788542940; cv=none; b=BfJTe6RI5d3WdK8UEQu3+sf4ueGLKjUCVQnVEljrMduttm3+ip6eYgWF24w8IdkhHiIzXK7J01LCDbDIwNSYbxxJZmksEs46P8bEUO3t7N0Q+6Zbf+QlRr+vBr/DMKK+CNQAXZygv8rg7HloM8f/Z5nqUYxvLHM4Ra/NCpPInoA=
+	t=1788542945; cv=none; b=jAyOxQb3m01Wnki2koV21BREQj90OxmGWrGV7lWoz/2Oea5IkVRmf/qiQ9GE4orPg51pS3RT24x9W70omzYOxaqHClMfVQ75A/fzhE/hWTAPntfdNMWU6X36vH2dAZ3m6CM2K13d4e0OjPVEl/KVfkKtStVH77lkqq0E2iguv2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788542940; c=relaxed/simple;
-	bh=wlSi2rFq7KWkS6PXtXc1Ccq8ddUuIZEu3t4EjSi1EdE=;
+	s=arc-20240116; t=1788542945; c=relaxed/simple;
+	bh=YaYhpYb8ITKG2lZdph7RQGOKNSrerEFmw8Vd3AguqH0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GHYGAFwVby0yS+cDs66rYmD3ptBhdhc6/BK6jOXKVrP/0c24gH0JCy7fxT9j6ozQgmCkTjFH/Kz2ryFPsWSHfU5tia0rhx52A8+MlUFCn9/I2UIVa9rW1sRWcmfXi4ZOKJlcLAtC9F0zSqZEnAJ06zdctPVj5OQGaSoI8RZY29s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=I5H6A6Y5; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=BrpK7jQQ; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=qFsyjNNkpTeYQhoMiRFIPXLRdFsj+cTCvWV08cLZWSmmCxvFI8aouawFN8xHsH7FSABfciGvXcXjMuDtmbwZgUNgQkW0ZDzapYyTukTrUxSmQNBcsZ6Y2q80KadwGALDk+uWBDlvZVwTa0kO5ENlMSczkgbUYLf4bittI+KX3uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=aGOk3VqO; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=1hUkZKDa; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="I5H6A6Y5";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="BrpK7jQQ"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="aGOk3VqO";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="1hUkZKDa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788542927;
-	bh=wlSi2rFq7KWkS6PXtXc1Ccq8ddUuIZEu3t4EjSi1EdE=;
+	s=default; t=1788542931;
+	bh=YaYhpYb8ITKG2lZdph7RQGOKNSrerEFmw8Vd3AguqH0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=I5H6A6Y5u9ZounPXdh/y2lwKlzifIJRA1eO8kgNy0QC3pwkv2hFzdxDKwfC45T+45
-	 WUY3EMNl9W/RFF2m3Z0L/wrM+cIpo0FiX9DORhymGD0g0Zsn4vJteOsP/Z/U5g2abX
-	 TVzH2nXpLrLLGAF+vxwy7jVJCCvuzUfZyJIn3q0o6/2I7u1J26yzr+3Vfh675M+vP0
-	 8kU9PUiifLQtWL0egDt/dM2Ekuh/E7x1c9CsNxOl7cFboRTcTaAY6DwXyFs6bphboL
-	 ZQyoPu1j+qygpXjeksLF66aVukJhXxWj/niPl/x1kS3h6SucWM4jCikFZV1hn0Ozmo
-	 ytFlikJr8IYyA==
+	b=aGOk3VqOnoBJsatvDYT/xbQYMf81t7ypvEn9eCG9Kx83OAg8qSQCsFocLKi3AuS+C
+	 RfPhb/i7aCRifrQuWvyi3KJ+y2/anGnuVcCPaPu4q8HwPOL94r1uY4lQDo1fwpIdD9
+	 L/OKYa1WbVknIYukVp0DoFIJMCIj+OiY8oEq8f0p1Xkwg3Cv+5g7dtqSBcGOzIFREV
+	 LWOwORw+g4jB3cmUAf7JDFYx/x3JcfuRABoZCVV1CxiY58O9A698btWE9jqBGnm7SA
+	 i5AcdWSfNBlDGDjD351pSL1Ioq9lN6R/Ngsd6c40udIGaedHt47Vk+S4+/thHGprwZ
+	 X/ZI6BaNWozdg==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 6AFD13F0FB; Fri,  4 Sep 2026 17:28:47 +0000 (UTC)
+	id 7B09B3F0E8; Fri,  4 Sep 2026 17:28:51 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788542917;
-	bh=wlSi2rFq7KWkS6PXtXc1Ccq8ddUuIZEu3t4EjSi1EdE=;
+	s=default; t=1788542918;
+	bh=YaYhpYb8ITKG2lZdph7RQGOKNSrerEFmw8Vd3AguqH0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BrpK7jQQj47pYOaLjKcingpyJvthSVX1toF6qV2iQIsgmbS0Q8dvLxlyZUClCsBSZ
-	 uduWkHdrCfM6JcDTRIG/jYRZkRTeeHOk1yqM4WLpOiIsUIXS5IRAJwS2Jy4ednG/eK
-	 7IyxVLoJlsaeOLD0QBntpbSRrh+mVBerY9uUMLRzNt4vQdo5q3OKCkCTfMVJPAZsyl
-	 aA6u7+ngVTkF1NNusvzlFaaiINrx51WkGVCIVhJsX62cldTmuRefk1f0nSHnligxyF
-	 xEWtibiGEGaY2gUiJSG96oocqFpzpF/1j9uVYHAt6harFXy+ai7usuPyuDbK4LAi50
-	 1hqybTRrvuBcA==
+	b=1hUkZKDaShq2g4va3hYuCDtSnZm8Y2SaLvupahMpddt3FrFBqO9+FFXJisV1YZYN4
+	 HbpF2uU0QX1CtAJwRYqAZ0qei75igcIfvNtaELu2w18sxcYyV3/CjiXdaRzYaSLmZm
+	 nXWGiyNtR1h3vLgpiCNw6kgpK51rAs3fP4NPSkFnRioqxn2InCn6pA//xuDqwJgBXI
+	 l5oTlIL3YgHJZ1z/+6YcbLQejXZCpILPS2QGjbTt/oTdpCAfHZfs6VkTNEFquD6yrw
+	 +JEkyR4SUhxRpiouqjbXO4qVfvAwI1FDXqMdlIxUBrAHqWdLuRfU+o5dmEbAuEhIRA
+	 8fZWBKT/ecZFA==
 Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id A54853F0EB;
-	Fri,  4 Sep 2026 17:28:36 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id D03303F0DF;
+	Fri,  4 Sep 2026 17:28:37 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Fri, 04 Sep 2026 19:28:35 +0200
-Subject: [PATCH net-next v10 10/15] ax88179_178a: Add AX179A/AX279
- multicast configuration
+Date: Fri, 04 Sep 2026 19:28:38 +0200
+Subject: [PATCH net-next v10 13/15] ax88179_178a: Update driver name and
+ information
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-ax88179a-v10-10-b5e60eca7690@birger-koblitz.de>
+Message-Id: <20260904-ax88179a-v10-13-b5e60eca7690@birger-koblitz.de>
 References: <20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de>
 In-Reply-To: <20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -68,51 +68,88 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Jianhui Xu <neuromoments@gmail.com>
 X-Mailer: b4 0.14.2
 
-Add support for conditionally setting the ip_alignement flag
-AX_RX_CTL_IPE in AX_RX_CTL and make sure that AX_RX_CTL_DROPCRCERR
-is also set to be consistent with the initial configuration in
-ax88179_reset()
+Add additionally supported devices to Kconfig description, add
+further requirements such as PHYLINK.
+
+Update driver name in usb_driver and update MODULE_DESCRIPTION
+to include the additionally supported chips.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/ax88179_lib.c      | 8 ++++++--
- drivers/net/usb/ax88179a_devices.c | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/usb/Kconfig        | 10 +++++++---
+ drivers/net/usb/Makefile       |  2 +-
+ drivers/net/usb/ax88179_178a.c |  8 ++++----
+ 3 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_lib.c b/drivers/net/usb/ax88179_lib.c
-index 3324069e90fc352048817963f27a49ed3872b348..708b0b23f1363daf90f329a3e6b6a2721d110387 100644
---- a/drivers/net/usb/ax88179_lib.c
-+++ b/drivers/net/usb/ax88179_lib.c
-@@ -305,10 +305,14 @@ int ax88179_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8
- void ax88179_set_multicast(struct net_device *net)
- {
- 	struct usbnet *dev = netdev_priv(net);
--	struct ax88179_data *data = dev->driver_priv;
- 	u8 *m_filter = ((u8 *)dev->data);
-+	struct ax88179_data *data;
-+
-+	data = dev->driver_priv;
+diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
+index 115990b0d9537aea2776544c9768b034f32aa7a4..4158455a2da76cd43a9a9d9d0e8c66028d57b095 100644
+--- a/drivers/net/usb/Kconfig
++++ b/drivers/net/usb/Kconfig
+@@ -195,11 +195,12 @@ config USB_NET_AX8817X
+ 	  This driver creates an interface named "ethX", where X depends on
+ 	  what other networking devices you have in use.
  
--	data->rxctl = (AX_RX_CTL_START | AX_RX_CTL_AB | AX_RX_CTL_IPE);
-+	data->rxctl = (AX_RX_CTL_START | AX_RX_CTL_AB | AX_RX_CTL_DROPCRCERR);
-+	if (data->ip_align)
-+		data->rxctl |= AX_RX_CTL_IPE;
+-config USB_NET_AX88179_178A
+-	tristate "ASIX AX88179/178A USB 3.0/2.0 to Gigabit Ethernet"
++config USB_NET_AX88179
++	tristate "ASIX AX88179/179A/178A USB 3.0/2.0 to Gigabit Ethernet"
+ 	depends on USB_USBNET
+-	select CRC32
+ 	select PHYLINK
++	select AX88796B_PHY
++	select CRC32
+ 	default y
+ 	help
+ 	  This option adds support for ASIX AX88179 based USB 3.0/2.0
+@@ -207,6 +208,9 @@ config USB_NET_AX88179_178A
  
- 	if (net->flags & IFF_PROMISC) {
- 		data->rxctl |= AX_RX_CTL_PRO;
-diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
-index 12885a4936223def82e4b85951a566cbb64d2193..e3dc244f79e538c55d64c747e1bb65b7d873247f 100644
---- a/drivers/net/usb/ax88179a_devices.c
-+++ b/drivers/net/usb/ax88179a_devices.c
-@@ -608,6 +608,7 @@ static const struct net_device_ops ax88179a_netdev_ops = {
- 	.ndo_set_mac_address	= ax88179_set_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_eth_ioctl		= usbnet_mii_ioctl,
-+	.ndo_set_rx_mode	= ax88179_set_multicast,
- 	.ndo_set_features	= ax88179a_set_features,
- 	.ndo_vlan_rx_add_vid	= ax88179a_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid	= ax88179a_vlan_rx_kill_vid,
+ 	  This driver should work with at least the following devices:
+ 	    * ASIX AX88179
++	    * ASIX AX88179A/B
++	    * ASIX AX88279
++	    * ASIX AX88772D/E
+ 	    * ASIX AX88178A
+ 	    * Sitcomm LN-032
+ 
+diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
+index 2ecead0181eaf8d66fb6f5dbd6f2905b22b6eb57..4026f19ecb826a6465de38f1d9bb0e4c0af80421 100644
+--- a/drivers/net/usb/Makefile
++++ b/drivers/net/usb/Makefile
+@@ -12,7 +12,7 @@ obj-$(CONFIG_USB_HSO)		+= hso.o
+ obj-$(CONFIG_USB_LAN78XX)	+= lan78xx.o
+ obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
+ asix-y := asix_devices.o asix_common.o ax88172a.o
+-obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179.o
++obj-$(CONFIG_USB_NET_AX88179)      += ax88179.o
+ ax88179-y := ax88179_178a.o ax88179a_devices.o ax88179_lib.o
+ obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
+ obj-$(CONFIG_USB_NET_CDC_EEM)	+= cdc_eem.o
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 44a768c5808ac1f7071e186d9c86cd6149601971..1d35ef90eceb77b27e8d96e64a008c63b40f4bd7 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1341,8 +1341,8 @@ static const struct usb_device_id products[] = {
+ };
+ MODULE_DEVICE_TABLE(usb, products);
+ 
+-static struct usb_driver ax88179_178a_driver = {
+-	.name =		"ax88179_178a",
++static struct usb_driver ax88179_driver = {
++	.name =		"ax88179",
+ 	.id_table =	products,
+ 	.probe =	usbnet_probe,
+ 	.suspend =	ax88179_suspend_wrapper,
+@@ -1353,7 +1353,7 @@ static struct usb_driver ax88179_178a_driver = {
+ 	.disable_hub_initiated_lpm = 1,
+ };
+ 
+-module_usb_driver(ax88179_178a_driver);
++module_usb_driver(ax88179_driver);
+ 
+-MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
++MODULE_DESCRIPTION("ASIX AX88179/179A/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
+ MODULE_LICENSE("GPL");
 
 -- 
 2.47.3
