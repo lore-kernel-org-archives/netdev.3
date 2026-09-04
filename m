@@ -1,174 +1,355 @@
-Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EE01E8826
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.138
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788539878; cv=none; b=MqNfI0iuLFuro/4wHX9g5CsJdBbl/NG8OzKQxdSrZZorX8ZTmFbFxVZsU7TXeGqc5vQk5gsUS14yV191sgIwQRJmbpiLJZHhwZ7LM7ItkPW7mSm161NUYq8D4z8AvcwyHrgN0t4rFx5qfzWnRxFX69yPFq/0kZrMCPeM6GT0C1c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788539878; c=relaxed/simple;
-	bh=zS192RHwYiA7BAe2k/MWKAMMfvMF8U/nMyIDGFgYk70=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kRemOuA1bEK9mUuAv3YrdiZZenDTZ8guR2+lhIt4qoEc2ZLXlIUAvJQ6T+r0UwyVKc1bHa/LtE1bSTUfLC5vM2SwLNRn44RjOiKjM3xbhec7ZOo0u7kYZQfw1tkr/mX+PhriyKBGXIHvpL9r7ysOaMaORPHZvZ/IVD0Sfttb83I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-49b963f51f6so2568795e9.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:37:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3291503BCF
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788539993; cv=pass; b=SbQQKIrlDP3BnDT/PjydkaTqhThCfcJsKF4cdK0F8lzSWc/pI5TwO1q24Wo7GQyr2OwQrowp7wzxCdwgXWur5cCp/Z+qrpzbx+eBXZ1oxJscMa8Htl0SpHdMjLRjm4q6UxTGm9I9rZn8jwxOPiq0YvqsFVDn1aj0cXP2WbkyHx0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788539993; c=relaxed/simple;
+	bh=UXQHDA//Xgi4Xq5SvEFMG2ChOWfzl6YcNQ6aK1bC3zs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UGuK0Pfv2Yw0tvOk60QCEEfbvTc4wM3xO3soVQmlmVHPKb4sxQ/bYORTwo0s7ubkoh/UvPFLUuakOq7DYRW8kq1kUHIBs+CuwW9hZ66LL/MDzbOHnHbH3YY2WtN0r5XvkOBqjbJ+bPvWKJzN5n2fv/ea9WstiZSdmuiNjvfjYN4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I/XlKiKH; arc=pass smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I/XlKiKH"
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4b28d7c729fso977793b6e.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:39:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788539989; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BVC9VP3g0GwAq0tZqVdKe306VCgDrAozUyDgs9pTl+9avORq7de+L9WtuwxfEtEfrh
+         Bs2DHyCtw+4zSeq/i4punWwoFydjMqfdDh1n/FMpW2wGMQdbvyv+2TLtmqDcAmrKu+OM
+         Vxf4OLqPhvrNybyQLZCUV8WJPs4ZUNslEAI7c/P7jPaunYpo7E2T/6X1IQQOSr3ZSq3u
+         rqTLgghtCv0hsBSkpGvrTUz7ljPPy8coSa8MLPsUA94Muw9Qcy44SH6fOo21ADbAOuBU
+         m2gTN/Rj4IW7z4YbW4pekiVDZ0vJoIeoxdUCEJ80CprU9q/I7gGfoSzsr38oV6xqhlji
+         MFHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RofA0hbvv9ASZJURx9yLpYN6t8iWxjME25uhz3es1YQ=;
+        fh=LK91fYHjo/OgYzOuPU3dNhSyGKSo5cmvy9Erodobm7M=;
+        b=ixVBQxxR2TDL3g8ZssIlnPd0EOUeL4gWDDpS0/iHMK2oJGqrqMPE/EfwOMUF2ylEaP
+         uYm6NNePeE8DccDRI2n0o//+CT6E8riUHiXiljePPUhZZLEfv4xs+DAk7Z0NEjmVGSd2
+         y/QHEsPzl5iIv4/OnyWl79IxxWQK6wBlth4KeyUD88diqIqD7Toa2VhV+V3Mb4raQrTt
+         CZlRNv7jKlGM5CVa2S1aUD/mIJH414P/zwmT6WmgbSM/E9GPAdK97dgej+nRhwAV+5Iw
+         dv8qBGs5RqJedk91Mb4n7LOmUkmNPN0p0IZo1NQCLT6Lhjtw6sUsWI1XvjfgiJwxKNku
+         C7UA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788539989; x=1789144789; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RofA0hbvv9ASZJURx9yLpYN6t8iWxjME25uhz3es1YQ=;
+        b=I/XlKiKH5p7yCCl3V8waQUFma5IPr69zuinDpAJiOc3/OdKabSFyiJ3phh1YKbt7JN
+         SI2Z4G2lV14y1Zyber+l6ILRj/dQGWASKUFpxfX1Z2FUVl6oH+JZCDEjzNYT9CjVSm5m
+         gHz9rQT5zu5J1kWQ1uyeH+dMbXCKnjmxdp3WAMVtkoXt4NOjlTzp3Os6vNfZbn1sxBwT
+         wBgtG/sX9k559KqBT75m4WXUJilyPLXqu5UEG2SV6MNtQJuOtHSNxzdSrj++ni2Gfkfa
+         rF/7SBRrXwSRnJGiGMZquX3QfKDjNlTnGOJkMTY/mH8JC82wgA5hotCRJQXOYXwYoC24
+         cp9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788539875; x=1789144675;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=q0aQSdKzOF0PPgy6y9xp4TSkRi235Alw+wnMM1Rh6xs=;
-        b=jssqgt55b3/PqD9IydA/Lbg8kgKgCsahFrch1EbFXTilxgtm83HAYxBCBXnMpFk6oz
-         2jGW9HhK1x4RK3JOHfPnZM/MFguHGteh1hIBQBD54XRB551z33tjDHgZN/iESzJXIR1J
-         BhSS11JkoQgjl5b6sWmRVLc65yyAFqbHJBGba2SKXn7w0GqCQOVN2qLEp30vb9RD0fBZ
-         ObW7EdLGsDqLYhIOsq8wiBQEW/pZuMjr/bthj8cdXYnMQKIXPiHcHeqUDFULF9zijKzA
-         HOczLUDReez/0M3gW9s+2zslXklH4d2rAN+kz7t1hL7QkGHGOZSO1FrP3a64K/NwW6CC
-         Ov7w==
-X-Gm-Message-State: AFuF++ldjbKQpjlBVPJY/eCcR/aw3N99+vUykaFDuXJR+MTtSZ6ccv6x
-	dqBfzx75gng8ikEMnjjxBGJreBl1wQaVuLwcW/X+2YFdJaoBglFOVHPdDaElN7Tz
-X-Gm-Gg: AYBFou2u2yBqGQ+qsGu11GVaaX8YCjiTyuKKztQxvjFpJVkWu1EhRTBhAEezTGIL8bV
-	oCo9eyRQOJeuPuVO5FufcwxQ3O2gaSZaYhxSqgDGwyeMm42eIcBTzT5wA5QveskTRPygFaSJoQB
-	xtyaB7ChhFRUo7nU4+D8Dwm8rkzmeynYTpuYYa6+01HCVIZGb49hbz/ctyiMFShpe4LFzsfP/q9
-	bkm5BO2RNZ0F5NQu7IiZMECqDvayn/kXTCfeRVBkI8n/s1nTRr1FBLSQ4zTgfFwRE+IYr7T4UFb
-	WhRWS76f7QQWWHuy/IqijUaGdP3lRW/dWlInIu2xBw981piZkIfzBZWtA/uOEK86dMmIp5yuRat
-	+YtOwqSi3Je0hidn60BW363CEkv7c7oYifOUpSsZHrA6f+mx9wCSccoIpfqvUcAlVQunswA3HtA
-	kZmGJVGEQXOTdnwk0AJ7GSGKKcHjex4pc4tMj0zi/x3nY1fgdMVwttc36wePaVH1DyvzYIcMXRm
-	UzbdgWRqmiSew==
-X-Received: by 2002:a05:600c:4515:b0:49c:c0d4:53d9 with SMTP id 5b1f17b1804b1-49cf8273002mr65953065e9.14.1788539874756;
-        Fri, 04 Sep 2026 09:37:54 -0700 (PDT)
-Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce554d52esm142440015e9.3.2026.09.04.09.37.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Sep 2026 09:37:54 -0700 (PDT)
-Message-ID: <d5e7fb9b-2fc6-4331-8071-6bdb51e15c6a@ovn.org>
-Date: Fri, 4 Sep 2026 18:37:52 +0200
+        d=1e100.net; s=20251104; t=1788539989; x=1789144789;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RofA0hbvv9ASZJURx9yLpYN6t8iWxjME25uhz3es1YQ=;
+        b=nkld9yHcZntEFTYr6cp61lVUaekhJbaylpvoOcWcIx2Q98d2m4xr9ls+v4KwJ+N9tH
+         HMy30chxS1r+fpyp7v9n7DkYx1BqO0MRkN+igttk4RxpZNo5Opsc4Cn8079fkCVPM9ei
+         9XKtnk13aVC7wSlVSbmKOuWQwddDlCr9UqxXkwBvFd7L6l1aZPjY32/7YBNxq3Xukaf/
+         jGQnRnRtfbCyKz5ylN0CRA2hcJ38NhBapLlu7P/VAhwHThbMz7JoUcn2ecg2SC5S0h+L
+         pAJIOivtPasfifibeiRFCHiGkRKdPq/F4HOQHQzG3mxfxTESQyY8yk77t70nf+uqjhQf
+         TTqw==
+X-Forwarded-Encrypted: i=1; AKwUvByhXy0CZ5rzG7VDQX7MSGsrAxDPa68t+jr7DqJiRZwlPhvAe7mSmdOu2wn6Bjdgv+qpQlQUrrY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lWcduDc91GhQTpTsEZ81tRUa1S7tXEx89vXfENp8Hp4+FkjLu1
+	ZgI4q8YKBsfsst86HY1LudE0mG8wXaE+mI4WY3Xnkvp8Jkiz5kRjInJFMyHwi3rmF5FkITXCYhq
+	IQS5+E8tsa5KcX+UhKFAm/kMawk02ApP3D8IwnVe6
+X-Gm-Gg: AYBFou2DAqroHpQOrbXYbHdlCSz7wt4f4hfK4z6g6r8Q+zVCQ5YhJGjVlST2/xcvxO+
+	PeU5Z0up9159i4INR5WrLWiJvQ6rvA4Dz3q48P8QNWvK4AJAFtVIbH+Yv57pQMeQYoYeRaxKUxE
+	VmvLhBrGzdENkuHZMPehXY/tReVcevatH6SxPC1uzq6rCq9e1EYIfEw4jFN/FFDPGc/9QuihC4u
+	7gnLUp503vmJT6n/X6/6gNZY+hNv5sca0jclbW3QOHXA1qRiYikyKQhgsJlYL8AQJ/U9J5/nFzo
+	paX3FGoPvpZ3EvdjMDD9HVgDmy6R0BIzgW4pYfjZs1AmVZNPaTKnWC9XnmtVWqOc2PcQLHR+G75
+	0v+o5MvwaPGGBgjNsecTpQz5EsWEloQRGt/ZJA05wPZ5EBb3uRd5q94pN9yDUW+SnVLQeujqHD7
+	4O23wSHVRWAlJK
+X-Received: by 2002:a05:6820:c0d4:10b0:6b7:83c5:fdff with SMTP id
+ 006d021491bc7-6b783c603d7mr2523731eaf.64.1788539988939; Fri, 04 Sep 2026
+ 09:39:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [ANN] Containers to run Netdev CI tests locally
-To: Matthieu Baerts <matttbe@kernel.org>, Ilya Maximets <i.maximets@ovn.org>
-Cc: Netdev <netdev@vger.kernel.org>
-References: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
- <dc460046-82bc-4c20-870e-716dee54a6cb@ovn.org>
- <e6d815d3-ed9b-4904-8cbe-8e5ee226661b@kernel.org>
- <275ba183-49fd-45b1-881d-0f362b4c74c0@ovn.org>
- <d456834a-3b3b-4c6b-9c36-d71f7faf5d2d@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <d456834a-3b3b-4c6b-9c36-d71f7faf5d2d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260902203722.926528-12-kuniyu@google.com> <178849140215.4131868.10205662438617953828@kernel.org>
+In-Reply-To: <178849140215.4131868.10205662438617953828@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 4 Sep 2026 09:39:37 -0700
+X-Gm-Features: AcwNN1U2OL2C9r3w8kkN9cA7DUb4M-uFbyix7DawY76P49nrhQ000OkhKjXdgo8
+Message-ID: <CAAVpQUCMmQaDbx2Hv4W7gg3R9pZrNXf1EVD=q=re7XO5VpCREw@mail.gmail.com>
+Subject: Re: [PATCH v6 net-next 11/15] neighbour: Convert neigh_table.entries
+ to refcount_t.
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, 
+	horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org, 
+	razor@blackwall.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/4/26 6:17 PM, Matthieu Baerts wrote:
-> On 04/09/2026 17:25, Ilya Maximets wrote:
->> On 9/4/26 4:54 PM, Matthieu Baerts wrote:
->>> Hi Ilya,
->>>
->>> Thank you for your reply!
->>>
->>> On 04/09/2026 16:01, Ilya Maximets wrote:
->>>> On 9/3/26 6:19 PM, Matthieu Baerts wrote:
->>>>>
->>>>> A wiki page has been added to cover this and explain how to validate the
->>>>> different tests:
->>>>>
->>>>>   https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
->>>>>
->>>>> To help developers, containers are now built, packing all the required
->>>>> dependencies to run these tests in order to run the tests in an
->>>>> environment that would be as close as possible to the CI one. The goal
->>>>> is to have an environment that is easy to maintain -- no heavy
->>>>> optimisations to reduce the images size -- but also easy to use. In
->>>>> short, people (and non-humans) can continue to use the different tools
->>>>> as before, but add a prefix to the different commands to execute them
->>>>> from a container, e.g.
->>>>>
->>>>>   alias run="${nipa}/docker/selftests/run.sh"
->>>>>   run vng --build
->>>>>   run make headers
->>>>>   (...)
->>>> The headers are not used unless the USERCFLAGS="-I$(pwd)/usr/include" is
->>>> passed into the actual make command for the selftests.  So, uAPI changes
->>>> will not be picked up.  Would be good to fix that in the wiki.
->>>
->>> I think setting USERCFLAGS is not supposed to be required for this
->>> purpose: KHDR_INCLUDES is there for that. According to the doc [1], each
->>> target building binaries should have "CFLAGS = $(KHDR_INCLUDES)" in
->>> their Makefile. If KHDR_INCLUDES is not set by the user, then lib.mk
->>> will set it to "-I$(top_srcdir)/usr/include", so the default directory
->>> when "make headers" is used. It needs to be adapted with building in a
->>> different directory.
->>>
->>> At least, when validating all net and drv-net selftests on my side, I
->>> didn't need to specify extra CFLAGS. (I think the netfilter target is
->>> missing KHDR_INCLUDES, I will fix that.)
->>>
->>> Or did you have to do that for a specific target?
->>
->> I was actually having trouble with the netfilter target specifically
->> as I'm working on a patch that changes uAPI and the selftest build
->> can't pick it up without the USERCFLAGS.  But if it's actually a bug
->> in the makefile for that target, then it's better to fix this target,
->> of course, instead of changing the docs. :)
-> 
-> Indeed, it looks like you picked a target not setting KHDR_INCLUDES :)
-> Apparently the net/forwarding one also had the same issue.
-> 
-> Fixes have been sent. Don't hesitate to validate them ;)
-> 
-> https://lore.kernel.org/20260904-net-sft-nf-khdr_includes-v1-0-92455af428e9@kernel.org/
-Will do.  Thanks!
+On Thu, Sep 3, 2026 at 8:10=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>
 
-Best regards, Ilya Maximets.
+Both are false-positive.
+
+> - [Medium] neigh_table_free() frees RCU-published, table-owned resources
+>   with no grace period, while the objects that point at the table are=E2=
+=80=A6
+
+When arp/ND's ->exit() is called, there should be no inflight RCU
+readers and we can simply rely on neigh entries' refcnt.
+
+> - [Low] Teardown ordering concern: neigh_table_clear() ends with
+>   neigh_table_put(), dropping the base reference installed by=E2=80=A6
+
+If a user is reading proc entries, netns cannot be dismantled.
+
+
+>
+> --
+>
+> neighbour: Convert neigh_table.entries to refcount_t.
+>
+> This converts neigh_table.entries from atomic_t to refcount_t and adds
+> neigh_table_get()/neigh_table_put() helpers plus a new neigh_table_free()
+> so that the table resources are released only when the last neighbour is
+> gone.  neigh_table_clear() now just drops the base reference taken in
+> neigh_table_init().
+>
+> A couple of questions about the new teardown path below.
+>
+> > diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> > index 36488dbd1512..7dc8f0cdbb45 100644
+> > --- a/net/core/neighbour.c
+> > +++ b/net/core/neighbour.c
+> > @@ -55,6 +55,23 @@ static void neigh_notify(struct neighbour *n, int ty=
+pe, int flags, u32 pid);
+> >  static void __neigh_notify(struct neighbour *n, int type, int flags, u=
+32 pid);
+> >  static void pneigh_ifdown(struct neigh_table *tbl, struct net_device *=
+dev,
+> >                         bool skip_perm);
+> > +static void neigh_table_free(struct neigh_table *tbl);
+> > +
+> > +static void neigh_table_get(struct neigh_table *tbl)
+> > +{
+> > +     refcount_inc(&tbl->entries);
+> > +}
+> > +
+> > +static void neigh_table_put(struct neigh_table *tbl)
+> > +{
+> > +     if (refcount_dec_and_test(&tbl->entries))
+> > +             neigh_table_free(tbl);
+> > +}
+> > +
+> > +static int neigh_table_entries(struct neigh_table *tbl)
+> > +{
+> > +     return refcount_read(&tbl->entries) - 1;
+> > +}
+> >
+> >  #ifdef CONFIG_PROC_FS
+> >  static const struct seq_operations neigh_stat_seq_ops;
+>
+> [ ... ]
+>
+> > @@ -1845,6 +1862,7 @@ void neigh_table_init(struct neigh_table *tbl)
+> >       tbl->last_flush =3D now;
+> >       tbl->last_rand  =3D now + tbl->parms.reachable_time * 20;
+> >
+> > +     refcount_set(&tbl->entries, 1);
+> >       spin_lock_init(&tbl->lock);
+> >       mutex_init(&tbl->phash_lock);
+> >       skb_queue_head_init_class(&tbl->proxy_queue,
+>
+> [ ... ]
+>
+> > @@ -924,7 +941,7 @@ void neigh_destroy(struct neighbour *neigh)
+> >
+> >       neigh_dbg(2, "neigh %p is destroyed\n", neigh);
+> >
+> > -     atomic_dec(&neigh->tbl->entries);
+> > +     neigh_table_put(neigh->tbl);
+> >       kfree_rcu(neigh, rcu);
+> >  }
+> >  EXPORT_SYMBOL(neigh_destroy);
+>
+> [ ... ]
+>
+> > @@ -1874,6 +1892,21 @@ void neigh_table_init(struct neigh_table *tbl)
+> >       panic("cannot allocate memory");
+> >  }
+> >
+> > +static void neigh_table_free(struct neigh_table *tbl)
+> > +{
+> > +     struct neigh_hash_table *nht;
+> > +
+> > +     free_percpu(tbl->stats);
+> > +     tbl->stats =3D NULL;
+> > +
+> > +     kfree(tbl->phash_buckets);
+> > +     tbl->phash_buckets =3D NULL;
+> > +
+> > +     nht =3D rcu_dereference_protected(tbl->nht, 1);
+> > +     tbl->nht =3D NULL;
+> > +     neigh_hash_free_rcu(&nht->rcu);
+> > +}
+>
+> [Severity: Medium]
+> Is it safe to free these RCU-published members synchronously here?
+> neigh_table_free() calls free_percpu(tbl->stats), kfree(tbl->phash_bucket=
+s)
+> and invokes the RCU callback neigh_hash_free_rcu() directly, with no
+> grace period in between.
+>
+> At the same time neigh_destroy() drops the table reference before the
+> neighbour body is retired:
+>
+>         neigh_table_put(neigh->tbl);
+>         kfree_rcu(neigh, rcu);
+>
+> If that put is the last one, the table (the pointee) is reclaimed
+> immediately while the neighbour holding neigh->tbl survives a full grace
+> period.
+>
+> Lockless readers hold no-ref neighbour pointers under rcu_read_lock() and
+> dereference the table through them, for example in __neigh_event_send():
+>
+>         NEIGH_CACHE_STAT_INC(neigh->tbl, unres_discards);
+>
+> which is reached from the transmit path
+> ip_finish_output2()/ip6_finish_output2() -> neigh_output() ->
+> neigh_event_send().  tbl->nht is read via rcu_dereference() in
+> ___neigh_lookup_noref(), and tbl->phash_buckets is declared __rcu and
+> walked by pneigh_lookup().
+>
+> The same file retires nht only after a grace period:
+>
+> net/core/neighbour.c:neigh_hash_grow() {
+>         ...
+>         rcu_assign_pointer(tbl->nht, new_nht);
+>         call_rcu(&old_nht->rcu, neigh_hash_free_rcu);
+>         ...
+> }
+>
+> Note also that neigh_table_put() can now reach this free from softirq
+> context, since neigh_timer_handler() -> neigh_release() -> neigh_destroy(=
+)
+> runs long after neigh_table_clear() returned, and neigh_destroy() release=
+s
+> the netdev reference before the table reference, so netdev_wait_allrefs()
+> does not order it either.
+>
+> Most reader windows do look drained in practice (cleanup_net() runs
+> synchronize_rcu_expedited() before the pernet exit ops, and
+> unregister_netdevice_many_notify() runs synchronize_net() before the
+> neighbour flush), so I could not show a reader that is still in flight at
+> that instant.  Still, would it be better to defer this free with
+> call_rcu()/kfree_rcu(), or to drop the table reference from the
+> neighbour's own RCU callback, especially since the follow-up patch adds
+> kfree(tbl) to this function?
+>
+> >  /*
+> >   * Only called from ndisc_cleanup(), which means this is dead code
+> >   * because we no longer can unload IPv6 module.
+> > @@ -1881,26 +1914,15 @@ void neigh_table_init(struct neigh_table *tbl)
+> >  int neigh_table_clear(struct neigh_table *tbl)
+> >  {
+> >       struct net *net __maybe_unused =3D &init_net;
+> > -     struct neigh_hash_table *nht;
+> >
+> >       cancel_delayed_work_sync(&tbl->managed_work);
+> >       cancel_delayed_work_sync(&tbl->gc_work);
+> >       timer_shutdown_sync(&tbl->proxy_timer);
+> >
+> >       neigh_ifdown(tbl, NULL);
+> > -     DEBUG_NET_WARN_ON_ONCE(atomic_read(&tbl->entries));
+> > -
+> >       remove_proc_entry(tbl->id, net->proc_net_stat);
+> >
+> > -     free_percpu(tbl->stats);
+> > -     tbl->stats =3D NULL;
+> > -
+> > -     kfree(tbl->phash_buckets);
+> > -     tbl->phash_buckets =3D NULL;
+> > -
+> > -     nht =3D rcu_dereference_protected(tbl->nht, 1);
+> > -     tbl->nht =3D NULL;
+> > -     neigh_hash_free_rcu(&nht->rcu);
+> > +     neigh_table_put(tbl);
+> >
+> >       return 0;
+> >  }
+>
+> [Severity: Low]
+> This is more of an ordering question.  neigh_table_clear() drops the base
+> reference installed by refcount_set(&tbl->entries, 1) in
+> neigh_table_init(), but at this commit the table is still published: in
+> ndisc_cleanup() the call order is neigh_table_clear(&nd_tbl) followed by
+> unregister_pernet_subsys(&ndisc_net_ops).
+>
+> Once the base reference is gone, neigh_table_entries() returns
+> refcount_read() - 1, which is entries - 1 in general and -1 when the last
+> neighbour is gone.  That value feeds the __u32 uAPI field:
+>
+>         .ndtc_entries           =3D neigh_table_entries(tbl),
+>
+> and the %08x in neigh_stat_seq_show(), where it would print as ffffffff.
+>
+> Checking the rest of the series, this looks unreachable in the final
+> state: neigh_table_unregister() sets net->neigh_tables[index] =3D NULL
+> before calling neigh_table_clear(), the proc entry is removed and drained
+> before the put, and ndisc_cleanup() no longer calls neigh_table_clear()
+> at all.  At this commit the only caller is the inet6_init() error path
+> that the comment above already describes as dead code.
+>
+> Would it still be worth dropping the base reference only after the table
+> is unpublished, so the biased accessor is never read without it?
+>
+> > @@ -2275,7 +2297,7 @@ static int neightbl_fill_info(struct sk_buff *skb=
+, struct neigh_table *tbl,
+> >               struct ndt_config ndc =3D {
+> >                       .ndtc_key_len           =3D tbl->key_len,
+> >                       .ndtc_entry_size        =3D tbl->entry_size,
+> > -                     .ndtc_entries           =3D atomic_read(&tbl->ent=
+ries),
+> > +                     .ndtc_entries           =3D neigh_table_entries(t=
+bl),
+> >                       .ndtc_last_flush        =3D jiffies_to_msecs(flus=
+h_delta),
+> >                       .ndtc_last_rand         =3D jiffies_to_msecs(rand=
+_delta),
+> >                       .ndtc_proxy_qlen        =3D READ_ONCE(tbl->proxy_=
+queue.qlen),
+> > @@ -3495,7 +3517,7 @@ static int neigh_stat_seq_show(struct seq_file *s=
+eq, void *v)
+> >       seq_printf(seq, "%08x %08lx %08lx %08lx   %08lx %08lx %08lx   "
+> >                       "%08lx         %08lx         %08lx         "
+> >                       "%08lx       %08lx            %08lx\n",
+> > -                atomic_read(&tbl->entries),
+> > +                neigh_table_entries(tbl),
+> >
+> >                  st->allocs,
+> >                  st->destroys,
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260902203722.926528-1-kuniyu%40google.com
