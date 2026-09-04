@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9893911D3;
-	Fri,  4 Sep 2026 23:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086883DB332
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 23:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788564075; cv=none; b=OrMf+tltxo7BGLwlMkXCPHN2wQUVHZtEBAOMqLl3+hYhOSNOtfmvi/STaRNHw3fboQo+iaWzBoJ7KixKqv7+sj0rtJ5IH9hFsBzdJyq0XjPohj+m0DBCuglRhgzXScC4ZkJnLwi2b1LMOhdoQ7/V1kL5GznaAU0cIqmSo6Nl53k=
+	t=1788564077; cv=none; b=g00TlF+rWfMVpQZeSw527CCwR5qexzLMg19f2BjwwsrkUp8g9rlS/DOSvkl3y/GhgBZwUqfJXE5m6qn8KXIJUaeH3Na79AU5upVFHqMqncRoyCt59zauY7By27G16SauKFq8Ze6LuQcvJQe8uHCulMOEoBaqhZ+iJi03/dOeZVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788564075; c=relaxed/simple;
-	bh=o5d88zNKPunw8C6yKGngd4Oe7Q8mluFNm5TPRzfWi5U=;
+	s=arc-20240116; t=1788564077; c=relaxed/simple;
+	bh=+h5Ot6XipqSjLIGIPy+iMHEoRrlklPtP2F9Yfah4gcM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Q7pJ5Kbmmmw0HNKSRoSxoBV6Ji2VWLjBw5D1SkTIZmx8okFTln/+gOOqsGwYaSU30UQMuHt6k2ZO4eqA3+f35SD/DgjY73kZRTDOFMwVLrZVskRpuqDDNSeShngrQYctrgavv/eHMQXpA0rOauETrD0h6FsFlqwgKBPZoHu/rA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aP6JzP1J; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=oRda4XQ2568V+xGaHGcXfCOoWR9wwJ9+HExtAnwdJ9hKwMQcqSV+QioalTPnQxUiwCmhV3R+cDaNN+1y5S6L2PfGsmnWK+mY44a9DzJi+sO76q/J6xGsf4zHWqIru7d1AOKRQECLQpKqjnvCHG3qdPZfdx+jkoxE25H2oxUlhhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rl3rkx6d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aP6JzP1J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F98E1F00A3D;
-	Fri,  4 Sep 2026 23:21:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rl3rkx6d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADEB1F00A3E;
+	Fri,  4 Sep 2026 23:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788564074;
-	bh=nUQ6ALPNiRV5lGPGYWI9OTwNEqgwdbKqwmFaKP/4Yk0=;
+	s=k20260515; t=1788564075;
+	bh=bsPwDzXditYGw/xq4UCwqnTGRpftRkMknLQTkRstmQI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aP6JzP1JBPh5IwoWpWuayCnT5nqtaWs8tleipdpWNAER4AFcNVmIHBsI0HfCBouR4
-	 A9CZj5S2Xrqhbz+oehYwpKpuDY49jHkFEBxmEAS26zPSG2pKRYGJFamU+ljh7ChQIW
-	 mHqkFTY+XpubL6vXcEWQFKuSyTL/h1QcJGH1eXmVvOaYzjDb4ww5uuKKysgWG0AlOi
-	 Lowx+APzOgleNdziclH9LKi/1UbfvCMUlYUdXdJuowml9enUjYXpObzytvUD/gN3iD
-	 Wu6GImlF9oQZWtr1knJV73+FipYiWjNTVKlBSWT4F7kHSuo2bguYgLMCsUF+Y///GS
-	 ZaMOqHzybwRvw==
+	b=Rl3rkx6dAOUMUD5tkbqTt5j6NC2v2CVe/VHmCP/bbF5Ir+cSiGFHT7gCcf/TfpC31
+	 Y7p7IDU+5llxyQ5Lt33GzrvTOUsbRt/ejyPuSAMCzNmF9SSLJo3qxObonlCn3kfHeD
+	 nf+9SPzBWDaq+Vj099lURScBsRuVm85Jn6wOp6kQFIYniLmPksa5XNHXDOlmlNNugW
+	 2yYzWHtAu1vQKtXlinMCQNs07Yy3AjwvfJToVECRxrTiAA//mOX/oJOumOmPZoa++K
+	 BhIbg/eyxmUcrhCL89QH2gARYfts7l/GZaepreZia6ewT/6e7t9SgswYuIz4HPdv9w
+	 t0tKNGykOkqZw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198F83924A7F;
-	Fri,  4 Sep 2026 23:20:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938AF3924A7F;
+	Fri,  4 Sep 2026 23:20:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: phy: air_en8811h: refuse a firmware blob
- that is not a multiple of 4
+Subject: Re: [PATCH net-next v3] netdev: avoid skipping objects on race with
+ device disappearance
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178856401464.1013351.9095804526644095350.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 23:20:14 +0000
-References: <20260903123650.23855-1-f@lex.la>
-In-Reply-To: <20260903123650.23855-1-f@lex.la>
-To: Aleksei Sviridkin <f@lex.la>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ericwouds@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178856401614.1013351.11404992028614421992.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 23:20:16 +0000
+References: <20260903221154.3359889-1-kuba@kernel.org>
+In-Reply-To: <20260903221154.3359889-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ bobbyeshleman@meta.com, daniel@iogearbox.net, razor@blackwall.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  3 Sep 2026 12:36:50 +0000 you wrote:
-> The download loop streams the blob into the MCU as 32-bit words and
-> reads the last word past the end of a blob whose size is not a multiple
-> of four. The shipped blobs happen to be aligned, so the overread never
-> showed; a truncated or foreign file would carry up to three bytes of
-> whatever follows it into the MCU. Reject it before the first write
-> instead.
+On Thu,  3 Sep 2026 15:11:54 -0700 you wrote:
+> If the currently dumped device disappears while we were mid-dump
+> we will get the next device without resetting the sub-object ID.
+> This is quite unlikely, it was reported by an AI tool not a real
+> user. Let's fix it for better dump consistency.
+> 
+> We only intend to cover the case where device A disappears
+> and we skip over sub-objects of device B which was stable (B existed
+> before and after the dump). We don't intend to provide stable
+> results for any device that gets created or deleted during
+> the dump.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] net: phy: air_en8811h: refuse a firmware blob that is not a multiple of 4
-    https://git.kernel.org/netdev/net-next/c/daf0972d38e9
+  - [net-next,v3] netdev: avoid skipping objects on race with device disappearance
+    https://git.kernel.org/netdev/net-next/c/761ae184f850
 
 You are awesome, thank you!
 -- 
