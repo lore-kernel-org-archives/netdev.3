@@ -1,197 +1,174 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416B4472F87
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788539790; cv=pass; b=licxNAFXN1QcokH8w4PLPXODyHT7EGxKD5Sm4yhxyYlBR9pohijdfkV/VeMOrl3sSE0A2gWTW0CZOZtcMgHlYy726Zs58UormKoQs/quV7PIJyO8LDwCJRdQGkXWtrUIqqKJvaBHt7hMmErOG2ZFmLWQelQA4mVkLA4SmRyZ6fw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788539790; c=relaxed/simple;
-	bh=cpkS/iR+2JljGBHtKRKBjZUmlWfP5sschNulxrgGRm0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hXP7+vP20afHJy2oZMon//gyZ43IXU0ogyT1aIiqL+t+9pZEo0vRs3PlgW7D3JWIvzcOy9PeKa/dQcERJ7mYHEd9eJc/laIKjm/6IdEoDX/P/F37LhcnF11Q57ElDiEA8KhMDMD+xR9E5FWR224LjrfKnQbrY3iSF9deCZ+pVyY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jbyJcOTH; arc=pass smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jbyJcOTH"
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-495b27007d0so1071492b6e.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:36:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788539787; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L/1sIDfNCVzvGHpK/Zvp3x1z7+L1PtbPKmGEOf8LN9FbxovYdozDy5cGPDQwH/xMg7
-         VVBqBR30g9ywChAg6xGCK9iNWMTgjQN2EzlQ4Wm9llTRHvKtEW9GFXSdutdKqH+sC6xK
-         j2gFjbE6v0i2Unp0Q1sXsHaF8oNfmkY9X8AOzM7wo3EssoPkxqmsXooYMvvI4fv7DQ3r
-         EJ8w0jVnUNGtYtCGrJcr4ill97y+WMqusYmukrkqCGXjtwguSRcqPL68sIU50cma4qZ0
-         GAtmKjzMr9MSLYXYKNL5FN325nOOLg3g6usaaJRUXPSOuDtuKHZ5gaEB4C/0r5Ezs2Ku
-         HpgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3e6DJ/udgPJQWJmYBhE0yZNk1UbRH55dAvVIgnRQMGU=;
-        fh=6TzweMH05BvHUKpaPX3Fx7lASet8+dQUoSnd7clsKHg=;
-        b=hbhSo9atXhfPEBzgjxpMKKwJDVcNm6CizKkQlhX/1dHupgf0b4BwaBmDrZJCYEKw5s
-         0ZMHmcKbY+Wu7JJtC9QdVdyNf2XKXE3zzbDBpVW0xNpG6i59z7lj9p5zdrDF5OhK23B1
-         nhFR/cdzE6O2jB6CT6m2n3JNBYaGC6cCnd4GI7z+qoAwVyNyDxhmV0efuaXCyQNPIQ1P
-         fWSYZnhG63Mdh16l3efX+uWpSh5LxFmID8PbU15f/doK333/Dsa1srFdk87RarxzuWIk
-         9bb24J1QoNm53fJ+hKCMTKMbUp7AK53EEFCvd+lI1RCj+vP5ikvQ/TJvp9JrUiCSYJoN
-         E4EQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788539787; x=1789144587; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3e6DJ/udgPJQWJmYBhE0yZNk1UbRH55dAvVIgnRQMGU=;
-        b=jbyJcOTH6Nv4ksgdqBij/+YXhoyvHH7FfQvXLVe9fHcYxRasplTCQM6ic2HeVXwxBT
-         V15ZnQwFqLdRz530KUV1rnSk/KVBfyiTfl3bI4b2h4RuOhRM4L7MGaK3AOabwUTG13pm
-         zBQ3Hbp2lH02uhokTEP3Fxn2GFXijZazf6GKJ/BkQy1Ju36YDpI7yVP/+kfbdwBh94OM
-         qd6SpTYWtILo6jPuvibbdS3p9cJwYJjNmz/o4tzxzPm3tLsOyaERFYBvVmKxKvyDqUmO
-         f8bPf1mqYyBEfd0SolviKPrlTQfs9ope+N1JO2/Ih2lpyhMMirOFA9imVhQToMMKOpzh
-         99jg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EE01E8826
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.138
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788539878; cv=none; b=MqNfI0iuLFuro/4wHX9g5CsJdBbl/NG8OzKQxdSrZZorX8ZTmFbFxVZsU7TXeGqc5vQk5gsUS14yV191sgIwQRJmbpiLJZHhwZ7LM7ItkPW7mSm161NUYq8D4z8AvcwyHrgN0t4rFx5qfzWnRxFX69yPFq/0kZrMCPeM6GT0C1c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788539878; c=relaxed/simple;
+	bh=zS192RHwYiA7BAe2k/MWKAMMfvMF8U/nMyIDGFgYk70=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kRemOuA1bEK9mUuAv3YrdiZZenDTZ8guR2+lhIt4qoEc2ZLXlIUAvJQ6T+r0UwyVKc1bHa/LtE1bSTUfLC5vM2SwLNRn44RjOiKjM3xbhec7ZOo0u7kYZQfw1tkr/mX+PhriyKBGXIHvpL9r7ysOaMaORPHZvZ/IVD0Sfttb83I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-49b963f51f6so2568795e9.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:37:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788539787; x=1789144587;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3e6DJ/udgPJQWJmYBhE0yZNk1UbRH55dAvVIgnRQMGU=;
-        b=ZeZeZlA70qy08kp+YCO5b70bKfjIpScsb02CQV5ThjfsUM/DYUd0EqTTOo8Qmr+x5c
-         TDBpvvsVcKIlcXKQwdCSeTOC9WSFyzBJdke4AkHm9+gQl5qm/nRr02m3N4FnyMw/AOtM
-         mXn7dz/MKF0gyuqhCy+eOIzGxhcKfyZeKoz33J1RqapkmT1vI1++jmLRFitY4pdw1U35
-         gx/wMkoSpfIyi8D6WDhteQH17i8oM/yAsfrBUwcaTQx4g3CoPBl55L/EcdrxyiKtuZ8e
-         bpCaQw/qe9wKpxPCZPFZm4sIkiw5Ei+jscvjcEhVF+V4XoD/Y47oJ74N4jN/7J+sYMWT
-         assA==
-X-Forwarded-Encrypted: i=1; AKwUvBwho2GZt3Jlrd734P5dRqUlCcjaPG0g5Cim4qOVvYiDTLSVSDvtgkuZoRu30oEGBgNQBJY1LYQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++l9ykbpHIlIakdK2+scFRztp68uH5rtL6Z/6uEkBvheAnFizIXq
-	9wVRYysPFk7FfzIBeVIJPJ1/lLfcxWWf+82N48OJHyoZtinaAp4VOvt6NOwVGFq8prBCnzwLnw4
-	oSfIFAzZJPzt7rDiREl8wZ8pJjNt+9ipqxT6hRyJg
-X-Gm-Gg: AYBFou3sLdMfgTnVGjZ4MzQ+RdXCCLPNuuCox8pCvZyCQPgGRZ8WPvaLvBOyDo/Wmn+
-	9FXVatlOZG+/p8ArFGeRiKv3K7POF2v6ccWh/kOMk+VvZP5pM4o/YJyS1Qx5ODZBdk8hqOaasbH
-	38OLb/7qlKV9/sp6qf814UVu9uZ5D4f2WSOkeskQI0CpORKRQfDrsUQMLhYrkDMM+RNZLqtw6G0
-	GYpBEmdlB8Racxh002mR6llvVyfEar5M56mKumjWgBowZ97RMbgnH3k6vQTUwEo5XJ5wXPPSVIx
-	h5/xXUHXCvJ3SJpKZ7vkDN1k31AlJez7/4TlAh16RmNiZF8x/es95ECeHDxNC6t/MTT45vHIjou
-	q27OZajmTy++GRcGmBWKRyp7INzgTh14ta+eXi29kQ0M6L8fQUEkiYtRZjkYWiKou0osaECLw4X
-	fLJgWNNxgtYfEacfzTnk2ntco=
-X-Received: by 2002:a05:6820:1f07:b0:6b1:c181:9386 with SMTP id
- 006d021491bc7-6b6fd5d0472mr5250164eaf.29.1788539786306; Fri, 04 Sep 2026
- 09:36:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788539875; x=1789144675;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q0aQSdKzOF0PPgy6y9xp4TSkRi235Alw+wnMM1Rh6xs=;
+        b=jssqgt55b3/PqD9IydA/Lbg8kgKgCsahFrch1EbFXTilxgtm83HAYxBCBXnMpFk6oz
+         2jGW9HhK1x4RK3JOHfPnZM/MFguHGteh1hIBQBD54XRB551z33tjDHgZN/iESzJXIR1J
+         BhSS11JkoQgjl5b6sWmRVLc65yyAFqbHJBGba2SKXn7w0GqCQOVN2qLEp30vb9RD0fBZ
+         ObW7EdLGsDqLYhIOsq8wiBQEW/pZuMjr/bthj8cdXYnMQKIXPiHcHeqUDFULF9zijKzA
+         HOczLUDReez/0M3gW9s+2zslXklH4d2rAN+kz7t1hL7QkGHGOZSO1FrP3a64K/NwW6CC
+         Ov7w==
+X-Gm-Message-State: AFuF++ldjbKQpjlBVPJY/eCcR/aw3N99+vUykaFDuXJR+MTtSZ6ccv6x
+	dqBfzx75gng8ikEMnjjxBGJreBl1wQaVuLwcW/X+2YFdJaoBglFOVHPdDaElN7Tz
+X-Gm-Gg: AYBFou2u2yBqGQ+qsGu11GVaaX8YCjiTyuKKztQxvjFpJVkWu1EhRTBhAEezTGIL8bV
+	oCo9eyRQOJeuPuVO5FufcwxQ3O2gaSZaYhxSqgDGwyeMm42eIcBTzT5wA5QveskTRPygFaSJoQB
+	xtyaB7ChhFRUo7nU4+D8Dwm8rkzmeynYTpuYYa6+01HCVIZGb49hbz/ctyiMFShpe4LFzsfP/q9
+	bkm5BO2RNZ0F5NQu7IiZMECqDvayn/kXTCfeRVBkI8n/s1nTRr1FBLSQ4zTgfFwRE+IYr7T4UFb
+	WhRWS76f7QQWWHuy/IqijUaGdP3lRW/dWlInIu2xBw981piZkIfzBZWtA/uOEK86dMmIp5yuRat
+	+YtOwqSi3Je0hidn60BW363CEkv7c7oYifOUpSsZHrA6f+mx9wCSccoIpfqvUcAlVQunswA3HtA
+	kZmGJVGEQXOTdnwk0AJ7GSGKKcHjex4pc4tMj0zi/x3nY1fgdMVwttc36wePaVH1DyvzYIcMXRm
+	UzbdgWRqmiSew==
+X-Received: by 2002:a05:600c:4515:b0:49c:c0d4:53d9 with SMTP id 5b1f17b1804b1-49cf8273002mr65953065e9.14.1788539874756;
+        Fri, 04 Sep 2026 09:37:54 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce554d52esm142440015e9.3.2026.09.04.09.37.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 09:37:54 -0700 (PDT)
+Message-ID: <d5e7fb9b-2fc6-4331-8071-6bdb51e15c6a@ovn.org>
+Date: Fri, 4 Sep 2026 18:37:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260902203722.926528-10-kuniyu@google.com> <178849139948.4131868.2733291067982297494@kernel.org>
-In-Reply-To: <178849139948.4131868.2733291067982297494@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 4 Sep 2026 09:36:14 -0700
-X-Gm-Features: AcwNN1Xk58BF5dQ_Bb0NcU8sv2x3s8DvZ_RpYfdWZEtS8bNVXLnZXrEePRWK22U
-Message-ID: <CAAVpQUDTajCP1qUaShzZia8gat=t1G3uAs6PRXccpkUirX_CYA@mail.gmail.com>
-Subject: Re: [PATCH v6 net-next 09/15] ipv6: Replace &nd_tbl with nd_table(net).
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, 
-	horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org, 
-	razor@blackwall.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [ANN] Containers to run Netdev CI tests locally
+To: Matthieu Baerts <matttbe@kernel.org>, Ilya Maximets <i.maximets@ovn.org>
+Cc: Netdev <netdev@vger.kernel.org>
+References: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
+ <dc460046-82bc-4c20-870e-716dee54a6cb@ovn.org>
+ <e6d815d3-ed9b-4904-8cbe-8e5ee226661b@kernel.org>
+ <275ba183-49fd-45b1-881d-0f362b4c74c0@ovn.org>
+ <d456834a-3b3b-4c6b-9c36-d71f7faf5d2d@kernel.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <d456834a-3b3b-4c6b-9c36-d71f7faf5d2d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 3, 2026 at 8:10=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 1 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> - [Critical] Calling `nd_table(net)` before `inet6_init()` executes
->   results in a NULL pointer dereference during driver probe.
->
-> --
->
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c b/d=
-rivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/neigh.c
-> > @@ -17,26 +17,27 @@
-> >  #include "fs_core.h"
-> >  #include "diag/en_rep_tracepoint.h"
-> >
-> > -static unsigned long mlx5e_rep_ipv6_interval(void)
-> > +static unsigned long mlx5e_rep_ipv6_interval(struct net *net)
-> >  {
-> >       if (IS_ENABLED(CONFIG_IPV6) && ipv6_mod_enabled())
-> > -             return NEIGH_VAR(&nd_tbl.parms, DELAY_PROBE_TIME);
-> > +             return NEIGH_VAR(&nd_table(net)->parms, DELAY_PROBE_TIME)=
-;
-> >
-> >       return ~0UL;
-> >  }
-> >
-> >  static void mlx5e_rep_neigh_update_init_interval(struct mlx5e_rep_priv=
- *rpriv)
-> >  {
-> > -     unsigned long ipv6_interval =3D mlx5e_rep_ipv6_interval();
-> >       struct net_device *netdev =3D rpriv->netdev;
-> >       struct net *net =3D dev_net(netdev);
-> >       unsigned long ipv4_interval;
-> > +     unsigned long ipv6_interval;
-> >       struct neigh_table *tbl;
-> >       struct mlx5e_priv *priv;
-> >
-> >       priv =3D netdev_priv(netdev);
-> >       tbl =3D arp_table(net);
-> >       ipv4_interval =3D NEIGH_VAR(&tbl->parms, DELAY_PROBE_TIME);
-> > +     ipv6_interval =3D mlx5e_rep_ipv6_interval(net);
-> >
-> >       rpriv->neigh_update.min_interval =3D min_t(unsigned long, ipv6_in=
-terval, ipv4_interval);
-> >       mlx5_fc_update_sampling_interval(priv->mdev, rpriv->neigh_update.=
-min_interval);
->
-> [Severity: Critical]
-> Unlike &nd_tbl, which is a statically allocated object that is
-> valid from the very first instruction of the kernel, nd_table(net)
-> reads net->neigh_tables[NEIGH_ND_TABLE], which is only populated
-> once ndisc_init()/inet6_init() has run.
->
-> Both of the new dereferences here are on driver probe paths that can
-> run before that point: mlx5e_rep_ipv6_interval() (via
-> mlx5e_rep_neigh_update_init_interval()) and
-> mlxsw_sp_router_neighs_update_interval_init() take
-> &nd_table(net)->parms and feed it to NEIGH_VAR(), so a NULL table
-> turns into a dereference of offsetof(struct neigh_table, parms)
-> rather than a benign zero. For built-in drivers, drivers/ is linked
-> before net/, and both the driver module_init() and inet6_init() are
-> device_initcall(), so the driver can win that race and oops during
-> boot.
+On 9/4/26 6:17 PM, Matthieu Baerts wrote:
+> On 04/09/2026 17:25, Ilya Maximets wrote:
+>> On 9/4/26 4:54 PM, Matthieu Baerts wrote:
+>>> Hi Ilya,
+>>>
+>>> Thank you for your reply!
+>>>
+>>> On 04/09/2026 16:01, Ilya Maximets wrote:
+>>>> On 9/3/26 6:19 PM, Matthieu Baerts wrote:
+>>>>>
+>>>>> A wiki page has been added to cover this and explain how to validate the
+>>>>> different tests:
+>>>>>
+>>>>>   https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
+>>>>>
+>>>>> To help developers, containers are now built, packing all the required
+>>>>> dependencies to run these tests in order to run the tests in an
+>>>>> environment that would be as close as possible to the CI one. The goal
+>>>>> is to have an environment that is easy to maintain -- no heavy
+>>>>> optimisations to reduce the images size -- but also easy to use. In
+>>>>> short, people (and non-humans) can continue to use the different tools
+>>>>> as before, but add a prefix to the different commands to execute them
+>>>>> from a container, e.g.
+>>>>>
+>>>>>   alias run="${nipa}/docker/selftests/run.sh"
+>>>>>   run vng --build
+>>>>>   run make headers
+>>>>>   (...)
+>>>> The headers are not used unless the USERCFLAGS="-I$(pwd)/usr/include" is
+>>>> passed into the actual make command for the selftests.  So, uAPI changes
+>>>> will not be picked up.  Would be good to fix that in the wiki.
+>>>
+>>> I think setting USERCFLAGS is not supposed to be required for this
+>>> purpose: KHDR_INCLUDES is there for that. According to the doc [1], each
+>>> target building binaries should have "CFLAGS = $(KHDR_INCLUDES)" in
+>>> their Makefile. If KHDR_INCLUDES is not set by the user, then lib.mk
+>>> will set it to "-I$(top_srcdir)/usr/include", so the default directory
+>>> when "make headers" is used. It needs to be adapted with building in a
+>>> different directory.
+>>>
+>>> At least, when validating all net and drv-net selftests on my side, I
+>>> didn't need to specify extra CFLAGS. (I think the netfilter target is
+>>> missing KHDR_INCLUDES, I will fix that.)
+>>>
+>>> Or did you have to do that for a specific target?
+>>
+>> I was actually having trouble with the netfilter target specifically
+>> as I'm working on a patch that changes uAPI and the selftest build
+>> can't pick it up without the USERCFLAGS.  But if it's actually a bug
+>> in the makefile for that target, then it's better to fix this target,
+>> of course, instead of changing the docs. :)
+> 
+> Indeed, it looks like you picked a target not setting KHDR_INCLUDES :)
+> Apparently the net/forwarding one also had the same issue.
+> 
+> Fixes have been sent. Don't hesitate to validate them ;)
+> 
+> https://lore.kernel.org/20260904-net-sft-nf-khdr_includes-v1-0-92455af428e9@kernel.org/
+Will do.  Thanks!
 
-I'm a bit surprised that IPv6 uses device_initcall() instead of fs_,
-but looking at 309b905deee5, this is for IPv4 dependency.
-
-If such a race occurs, there should be more issues, and the cleaner
-way would be to add a new init level between fs and device for IPv6.
-
-
-> Note that ipv6_mod_enabled() does not help here: it only
-> reflects the ipv6.disable boot parameter and returns true well
-> before the nd table exists.
->
-> The same concern applies to any other conversion in this series that
-> can be reached from driver probe or from a netdev notifier that runs
-> before inet6_init().
->
-> How do you want to handle this? Either nd_table(net) needs to be
-> safe to call before ndisc_init() (e.g. by allocating the per-netns
-> slots earlier, in a pernet subsys registered ahead of the drivers),
-> or these callers need an explicit NULL check on the returned table
-> before touching ->parms. Please spell out the ordering guarantee you
-> are relying on in the changelog, since it is no longer obvious once
-> &nd_tbl becomes an indirection through struct net.
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260902203722.926528-1-kuniyu%40google.com
+Best regards, Ilya Maximets.
