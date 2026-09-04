@@ -1,52 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7523DB63D;
-	Fri,  4 Sep 2026 23:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245E73911D3;
+	Fri,  4 Sep 2026 23:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788563881; cv=none; b=fN1y6r03e9ePA9/1B5ycj0f7Cn8eibCH/c/hFDWFGcQqkGZ95VQd1KyXgAxa0V/gLLTPsuy/URs5g73ImWhjphoxMbGt3NOPCCpjtNzYCU0LzH9YCLxD1c/KNgqqRmEDb9LLjGnhejLTkECs2FA/Hl+0FRO2av4hwWHJXfj1Kvo=
+	t=1788564068; cv=none; b=fU0Ps2tF8ZdticL4PVSqi0jwVaDNbBhFzat2qMuxRS1AVSIL9G2flRP9mvQOnAMs0jsV3++6KIkQiNJLXZsBYD1O26AkNz4z/m/qpyWGjAJSGZ1XsHyJrHzNg1bbtlCV+WURKLSbPT6RuK9pYIR5MXBe0iSczMNwjSU0VLbAbZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788563881; c=relaxed/simple;
-	bh=zT75j2GXH5jNxRc8qHBSckmGlvotDQQjM4jlGImV5Xc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6tOO60ZgChzHpAfvfpNaQV26VREZnDbx8Jd37Zt8SVpPCnaWy6Rl5bXl7OoG9FEu7UtZy7+8/P5RMR9rsNkIz08gsGOXqAgb+I2Q8MiUsLJup+Ogi0/ptKftGSAElXGA+22LNjfPLL0C7dQQK7zvka51OekjjU7kXio8V3rXpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9VyTXjE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788564068; c=relaxed/simple;
+	bh=WGZhmnQOogl48wgi2aqd89A7QELHYf0Bi9CQdmq86zA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=BNQyiu5Ge0zrSQgUsbWgSi/0qHGiFMaqYQy8Cj6fJwIVlFnsYdGsO1KzC55Jf8ZQJyWtKvd0AZveZOtQ9zz0zcZ9sO0Yh1WKPYeMXnYlvj04Z/d5+96gXNELeqhvsurdG1WRwsiSFbkUlWLDKrDzIxDReVvD6I8T2IoYgCrNiMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=El9P5IVH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9VyTXjE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AA21F00A3E;
-	Fri,  4 Sep 2026 23:17:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="El9P5IVH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02541F00A3D;
+	Fri,  4 Sep 2026 23:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788563880;
-	bh=P5tLENWTBClt5WkRURAtLRHuwoSyuKPVDByJOsd0n90=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f9VyTXjE9iLzXdi3MD966JvStcDqs4r1rs+BvAhcrDLPFHdFLGQ7XS0lnNqiKNoEj
-	 OpB6pPPEQ9WgS0+lz2p+Sz8RCG3BtzKn27SUVw3WHPIeycY9wrDJzQaBYVJpnA0zUJ
-	 UAHDZHl5zlBe4KXQAqPQbb1m/bY8VQzEQ99WqxsZG9Gwehu3c9b0SFkyRAIY04NCRd
-	 2TDpCUZK5JYgHAfrpRdWCfULnWrTcTb0c95R5F3YcZ1dq+2XHu0OcVAJsgEheA4/CM
-	 ZUJw5ijRpzBUBWmDnxZA31xf7UQDkj6L/NzsfHJ+qYv6gTgNeZW9CyVLBvN/Gyg4+I
-	 qAnKMnI97JYOg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: hemendranaik@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	jhs@mojatatu.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	vishy0777@gmail.com,
-	tahiliani@nitk.edu.in
-Subject: Re: [PATCH net-next v5 3/3] net/sched: pie: correct tc_pie_xstats field documentation
-Date: Fri,  4 Sep 2026 16:17:58 -0700
-Message-ID: <20260904231758.4082471-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260902035231.81866-4-hemendranaik@gmail.com>
-References: <20260902035231.81866-4-hemendranaik@gmail.com>
+	s=k20260515; t=1788564066;
+	bh=a9P2gEGbU+vso59Kta3MJ8dJr9QzjuBZ0pND5nJyUzI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=El9P5IVHujnm1fqwOM2iOXVMuONRhkEPL+GkOC7aljuyWm3nDzyTqy1vyK0MO2jRX
+	 akKMIxvvoLTLVzY7vJNbXo4w2DgsL1LTUwsIdhgBse0RADIa4W/VZDgTydu5qpYgFv
+	 R3mEuIWw9m4fg6uyAjbhJ8L8hpDT+ubMNWcxpERjjobFOhz/9PqyfRic12PbbCn5P4
+	 3zNznLSU8iFzeYomwVYOk71bD9WfZLrOHB9YoaNoNXxdnttdHJEVBIxy2Lob/6RsQI
+	 T7U80DC2ArViqrPbyogURs6XyaERR7itZyX5nWOelDZiSOMpe3XWtGQjcVnwQRn2nE
+	 ktO7v6KF9WJ7w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B8D3924A7F;
+	Fri,  4 Sep 2026 23:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,90 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] dibs: Unregister dibs_class after error
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178856400715.1013351.12940036598096810427.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 23:20:07 +0000
+References: <20260902143438.426664-1-wintera@linux.ibm.com>
+In-Reply-To: <20260902143438.426664-1-wintera@linux.ibm.com>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, julianr@linux.ibm.com,
+ netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ horms@kernel.org
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net/sched: pie: correct tc_pie_xstats field documentation
+Hello:
 
-This updates the comments in struct tc_pie_xstats so the delay field is
-described in microseconds and avg_dq_rate in bytes/second. The change is
-described as documentation-only, touching include/uapi/linux/pkt_sched.h.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/include/uapi/linux/pkt_sched.h b/include/uapi/linux/pkt_sched.h
-> index 89d825bac4bee..c1f7bde472fb2 100644
-> --- a/include/uapi/linux/pkt_sched.h
-> +++ b/include/uapi/linux/pkt_sched.h
-> @@ -920,9 +920,9 @@ enum {
->  
->  struct tc_pie_xstats {
->  	__u64 prob;			/* current probability */
-> -	__u32 delay;			/* current delay in ms */
-> +	__u32 delay;			/* current delay in microseconds */
+On Wed,  2 Sep 2026 16:34:38 +0200 you wrote:
+> In case dibs_loopback_init() fails, e.g. because of -ENOMEM, dibs_init()
+> must unregister dibs_class. Otherwise dibs_class and /sys/class/dibs exist
+> even though the functionality is not available. A retry to load the module
+> fails with -EEXIST.
+> 
+> Unregister dibs_class in the error path of dibs_init.
+> 
+> [...]
 
-[Severity: Low]
-Should the vendored copy in tools/include/uapi/linux/pkt_sched.h be updated
-in the same patch?  Its struct tc_pie_xstats still carries exactly the
-wording being removed here:
+Here is the summary with links:
+  - [net] dibs: Unregister dibs_class after error
+    https://git.kernel.org/netdev/net/c/1668a31e3b1a
 
-tools/include/uapi/linux/pkt_sched.h:
-struct tc_pie_xstats {
-	__u32 prob;             /* current probability */
-	__u32 delay;            /* current delay in ms */
-	__u32 avg_dq_rate;      /* current average dq_rate in bits/pie_time */
-	__u32 packets_in;       /* total number of packets enqueued */
-	...
-};
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-So after this change the two in-tree copies of the same structure describe
-the same field with different units.
 
-That copy also looks stale in other ways: it declares __u32 prob and has no
-dq_rate_estimating member, while pie_dump_stats() in net/sched/sch_pie.c
-fills a __u64 prob and always sets st.dq_rate_estimating before
-gnet_stats_copy_app(), and its TCA_PIE_* enum lacks
-TCA_PIE_DQ_RATE_ESTIMATOR.  The FQ-PIE additions exported by
-fq_pie_dump_class_stats() (TCA_FQ_PIE_XSTATS_QDISC/CLASS and
-struct tc_fq_pie_cl_stats) are missing there as well.
-
-The layout drift predates this series, but the unit-comment mismatch between
-the two copies is introduced by touching only one of them.  Would a resync of
-tools/include/uapi/linux/pkt_sched.h, or at least of the tc_pie_xstats
-comments, be appropriate so the stale documentation the commit message aims
-to eliminate is actually gone from the tree?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does the exported value always
-match the newly documented microsecond unit?  pie_dump_stats() in
-net/sched/sch_pie.c computes:
-
-	.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
-			   NSEC_PER_USEC,
-
-PSCHED_TICKS2NS() is a 64-bit shift, and the (u32) cast is applied to the
-nanosecond intermediate before the division, so a qdelay whose nanosecond
-value exceeds 2^32-1 (roughly 4.295 s) wraps modulo 2^32 ns and then gets
-divided, reporting a small microsecond number for a large delay.  The __u32
-field itself can hold about 71 minutes worth of microseconds, so the
-truncation comes only from where the cast sits.
-
-The same expression is used for the per-flow delay in
-fq_pie_dump_class_stats() in net/sched/sch_fq_pie.c:
-
-	xstats.class_stats.delay =
-			((u32)PSCHED_TICKS2NS(READ_ONCE(flow->vars.qdelay))) /
-			NSEC_PER_USEC;
-
-This is reachable with a deep queue on a very slow link, where tc -s qdisc
-show would print a wrong (small) delay.
-
-Would moving the cast after the division in both sch_pie.c and sch_fq_pie.c
-be worth a follow-up, so the code matches the microsecond contract this
-comment now states?
-
->  	__u32 avg_dq_rate;		/* current average dq_rate in
-> -					 * bits/pie_time
-> +					 * bytes/second
->  					 */
->  	__u32 dq_rate_estimating;	/* is avg_dq_rate being calculated? */
->  	__u32 packets_in;		/* total number of packets enqueued */
