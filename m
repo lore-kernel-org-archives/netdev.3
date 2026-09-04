@@ -1,161 +1,160 @@
-Received: from mail-wm2-f0.google.com (mail-wm2-f0.google.com [74.125.225.128])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5AC51A747
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD5651A747
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788545170; cv=none; b=ie5O+BcsO9hD8tMApf5LXQ9AQHZ4tNBX831ghNUexE0Mts32YApVjcV3BohU/Lnm1M6lLpzzzjdiIFKi+GIG4EdRAs01YGzdiMuJ6cwaAJCcBTxnffYn1odtwMEjBKMvvWpSDsl4u+7KPWIpnPDJjAELzu6qF8xRCZzBFDZ5fv4=
+	t=1788545215; cv=none; b=EGhWKUTOLmUpJVq3a2E2jY+xzFf28JmgKmVmkd0qqqR2shITk+JZHzjA3D5i2onGg1PRBeYz51ulFRlpnsbFz7s8zkIjGMghKpcY43SzSqSIrEo9O0Cg5Y2bhZZYVt7PNqFdCFxi6Ut99eE494EzwBO2eJzOoVsZ1YsA1DPauH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788545170; c=relaxed/simple;
-	bh=nvD192iZe8GfQ/+1qju1QKsfcMLglWwZM/JeLmYUs7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FzPBdTQDOiUWJXUqqnS7Kve8tSUCFyoi890MeMevH1xoKOESuC4Lkb/QSP6GSPRvdNh3n5n3rhWkucuMpyyO1cnXaMnc7dTJJhFq4AsBh+Dz4TFOqJ9yARGT3psovqtiEGo8tKcTx0wQpm5pGzbbFKwUCKcBF8QmjVPPDUsfvq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f0.google.com with SMTP id 5b1f17b1804b1-49ced856e8dso5834505e9.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:06:07 -0700 (PDT)
+	s=arc-20240116; t=1788545215; c=relaxed/simple;
+	bh=GxYA4iKznjI636cFMJTo4pS5K5Cg5h7A9ZfCiLargbw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Tfh8nA+AHmOqvL4sNE9qN4Ij1IRI4mXuq4t43KgCr8iAfKLr5yB2GUJRlcSFcqajcouM0M253ujHzmzMiyeV7Leb3sN08/vHV2rP5K/+W8msrJkrjuLw2sXBOKYQIzVQ+xXvpG2c8YsEnVvV+ULvCkq+k9/hDpZvibgqSX7jPo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i8C7OUt1; arc=none smtp.client-ip=209.85.222.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i8C7OUt1"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e820609d9so267888585a.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:06:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788545212; x=1789150012; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DH/M4TRPzR+41f2BvooKoO573DASe14kbYFRV4oxAKQ=;
+        b=i8C7OUt14QXBbSWAKPZGlxrNuJiFbALwh2PnX/pujlq7mL1t2lx5xCaTbvgDgr3NNN
+         dxVi7R+V3gjvSBeBiavSUuT/FVkJRxIvZFPhb/Z2VJzrQDAebxwWqCIAy86Jt8EdLjZy
+         u026KNrSl+qdS5lKa1Lnhd7PFJfFrNURUnxhN93L7bLchIuMk7eiflqGBtacpnsooYyR
+         Ak/7fA1aY8fG0XURjm45P4tDXZ2QCK8CCYjQKksb3n9h44D+0OE6+zh5z2HQfrOCKRk5
+         O8DWe0gD3dZWA/xcdC++bQLNwUhGEwctXN+F/5ARyucwLF1T0jKrStXdmiw5L0EX5lzy
+         dtpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788545166; x=1789149966;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cVV3G2WGefOofImhtecQzvUhLxVMoksQrLF0cjvq644=;
-        b=atQj5mgxzAQUy6uZSi2IAFKVcBbY9acEz8+LFLapgu4DL9Ez1LsAv7gWGMhnSsk2IP
-         uLQeUl0BjtVklH0PhfQMhate6Xo+wxlShFFe386tMqe2/WRgA7RIaZ1jnr508fuNZdsf
-         H9m8gGpomWadKNbniyWk79GdoDmsb6w2d3UMqI5GZGOUZ8CdHn2EQIepBdbm+UeXDXYd
-         cxiSvsBZmM0N13OWui9srFML0PXPejLxy8gEORgN08xsncVviVo/sA56lgehHKkVf3oC
-         ZgLfuLXaGReJNKcOg/wI0MKIM5kbjB/SlHJ0q8RybnwTEvj24RUIhs+9+URyGkOZ6cdw
-         3LTQ==
-X-Gm-Message-State: AFuF++lpii8enW+7WTVCLpR7vfjXQ7qTIkGsUsvTwdxLjQl7fLDi+KwG
-	vh7notYNog1mfr8LJHAcfdEfd8d9R7MxGPqgIy5uzVN9bo1YIT1jpZAL
-X-Gm-Gg: AYBFou0gLxxH9eU08glq/6jv9BFOPTOLmwKZeawU6XqddJ5IqaZFK/ITiZbKNXwIHJk
-	XEgDBBgbOTXVkiwvZAQOzziMTAOhsD+stu2oqApJW9Mr+vsSfDmj4fnteRHlEuGf011virBpp3z
-	F6AP71p8jjaJfAQjDOvvasYCnOH5VDuhqjJn2Mppr80p9JI5hA8eKDtz+fVE43ScQ+fZqpvIVlV
-	EhGmF9AolHxEFOUArY/wWTBiUj4TI3uoanAJWGlY8kYOlTjhxL57XfK8rnXn0LEjMCq7MLL1Nyo
-	RLvqszDp1eMzUBrTSC6rD7a94fcKRub7OkoILo6ybtDPzft6+o9Clc3eBaMzLCytNvUnmQFLvr1
-	nmp73hs26hi4XkgU92ApT1u3xvCDSSTHQBDlww3jwluCremkPB0pb3l1v0y3KEDjLzH+mQBcmM3
-	HkwDAase3+Y4PGUPxAUQt7vU5orszclVwgTt7WEosia5ygY8RFPmMveBH9Aiqjko82O3qMR6Rf7
-	TW92PqOx+iGe3jDv3qglGDa
-X-Received: by 2002:a05:600c:1990:b0:49c:f512:2361 with SMTP id 5b1f17b1804b1-49cf82524a2mr103087225e9.14.1788545166064;
-        Fri, 04 Sep 2026 11:06:06 -0700 (PDT)
-Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf770fcf5sm84756205e9.6.2026.09.04.11.06.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Sep 2026 11:06:04 -0700 (PDT)
-Message-ID: <35704da5-5a12-4b23-b684-dcadc432a380@ovn.org>
-Date: Fri, 4 Sep 2026 20:06:03 +0200
+        d=1e100.net; s=20251104; t=1788545212; x=1789150012;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DH/M4TRPzR+41f2BvooKoO573DASe14kbYFRV4oxAKQ=;
+        b=CkVemnRgab/bdU4qPdEbGVngU6QpsnBxIhLNILxI1oxUgTeHbyYXZb8Iyya2+bKhMW
+         XE5QutPwsUOo0uqhX41cvcgqmtwwx9dAyIT2BBg4zynIeInkS9YbRmWShoFxJz3IoDCg
+         6L9taahJPUniOka9Z5BoDglEvLANSrJhyMSZx6HRDHp5rcgEVw0GU5ygaRAbYzo49Tfp
+         xH/2cAmMKraGJNmDuPcnwgrACPPTYlz8NpO/17oqmgz7Ah4iEyd6oUHEsTuKiJB2+NDc
+         TQmhVMazBHOGlJLvWYqA/mTecCqTPsWnZBPZRwLN6DicIE80oMK7CHBeEBm90577uK90
+         l5Qg==
+X-Gm-Message-State: AFuF++nuNJjvQmwdD5ckj+PpIZ+qCwpvHpUgg3RO10u/Mmto1hlkIc4i
+	J5WZRAcW1RDS4wFpwgLcZ+mN0l7XHikF69gdpb3uXUZyRcmKRYKJkSaMiq6WyL/F6mdt6eCiz0v
+	vpB+cpd2i5bwhgMpP02zK6GHlLw==
+X-Received: from qvbx9.prod.google.com ([2002:a0c:e0e9:0:b0:905:b14f:3f1a])
+ (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:6089:b0:938:d7e4:7fe with SMTP id af79cd13be357-939804536d0mr869291585a.37.1788545211916;
+ Fri, 04 Sep 2026 11:06:51 -0700 (PDT)
+Date: Fri,  4 Sep 2026 18:06:44 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH nf-next] netfilter: conntrack: make filtering by zone
- discoverable
-To: Ilya Maximets <i.maximets@ovn.org>, netfilter-devel@vger.kernel.org
-Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
- Shuah Khan <shuah@kernel.org>, =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?=
- <ast@fiberby.net>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
- "Remy D. Farley" <one-d-wide@protonmail.com>, linux-kernel@vger.kernel.org,
- coreteam@netfilter.org, linux-kselftest@vger.kernel.org
-References: <20260904174452.1913072-1-i.maximets@ovn.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260904174452.1913072-1-i.maximets@ovn.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+Message-ID: <20260904180645.706425-1-namangulati@google.com>
+Subject: [PATCH net] ipv6: null-check fib6_node before accessing in __ip6_del_rt_siblings()
+From: Naman Gulati <namangulati@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, syzbot+a73e5ee0fd534fed75bd@syzkaller.appspotmail.com, 
+	Naman Gulati <namangulati@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/4/26 7:44 PM, Ilya Maximets wrote:
-> Conntrack flush supports filtering by zone using CTA_ZONE, but this
-> attribute is really hard to use from user space applications.  The
-> reason is that it is not possible to tell if it's supported or not.
-> 
-> Older kernels silently ignore CTA_ZONE.  And in that case they just
-> happily flush all the entries from all zones breaking all the existing
-> connections.  So, applications have to infer support from the kernel
-> version.  While it works in most cases, it's not a particularly
-> reliable or desired way to check kernel capabilities from applications
-> that aim to be portable.  There should be a better way to probe or
-> discover features in the kernel.
-> 
-> The CTA_FILTER interface on the other hand is simple enough to probe.
-> We can check for NLM_F_DUMP_FILTERED in the dump to see if filtering
-> is supported.  And unknown sub-attributes in CTA_FILTER are rejected
-> explicitly since strict validation is in use there.
-> 
-> Let's add new CTA_FILTER_ZONE that signals that CTA_ZONE should be
-> filtered on.  It is a flag, since everything in the CTA_FILTER is a
-> bit mask, i.e., a form of a flag.  If set, it means that CTA_ZONE must
-> be present and be used for filtering.  If the flag is not set however,
-> the filtering on CTA_ZONE will still take place to ensure backwards
-> compatibility.  So, the flag doesn't really change the filtering
-> behavior, but it allows user space applications to properly discover
-> support for CTA_ZONE filtering without need to rely on kernel version
-> parsing or risk accidental flushes of the entire conntrack table,
-> and also without modifying the kernel state.
-> 
-> A new test variant is added to test with and without the new flag.
-> Since the setup code is moved into a shared function, expectations
-> replaced with assertions to bail early if the base setup fails to
-> avoid the cascade of secondary failures that can be misleading.
-> Error return is only for the SKIP cases.
-> 
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-> ---
-CI reported a build failure for the selftest.  It is caused by this issue:
-  https://lore.kernel.org/r/20260904-net-sft-nf-khdr_includes-v1-1-92455af428e9@kernel.org
+syzbot reported a null-ptr-deref in __ip6_del_rt_siblings() [0].
 
-Not related to the patch itself.
+The stack trace hinted towards a null dereference of rt->fib6_node when
+fn->leaf is accessed in __ip6_del_rt_siblings(). With
+RTNL_FLAG_DOIT_UNLOCKED set, inet6_rtm_delroute() operations run
+concurrently without acquiring the RTNL lock. In ip6_route_del(), the
+route lookup happens under rcu_read_lock() without acquiring
+table->tb6_lock.
 
-Best regards, Ilya Maximets.
+Between ip6_route_del() looking up the route and __ip6_del_rt_siblings()
+acquiring table->tb6_lock, another thread can modify the routing table.
+For example, when an ECMP route is replaced via RTM_NEWROUTE with
+NLM_F_REPLACE, fib6_add_rt2node() unlinks all old siblings and sets
+iter->fib6_node = NULL. A reproducer was found that triggers this [1].
+
+Add a check to ensure rt->fib6_node is non-null before accessing it.
+
+[0]
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+RIP: 0010:__ip6_del_rt_siblings+0x31e/0x7c0 net/ipv6/route.c:4056
+Call Trace:
+ <TASK>
+ ip6_route_del+0x1054/0x1110 net/ipv6/route.c:4232
+ inet6_rtm_delroute+0x5d7/0x6d0 net/ipv6/route.c:5669
+ rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ ____sys_sendmsg+0x565/0x870 net/socket.c:2713
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+ __sys_sendmsg net/socket.c:2799 [inline]
+ __do_sys_sendmsg net/socket.c:2804 [inline]
+ __se_sys_sendmsg net/socket.c:2802 [inline]
+ __x64_sys_sendmsg+0x1b7/0x290 net/socket.c:2802
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+[1] https://gist.github.com/NamanGulati/0766a1159b6ca61928faaf87425ff899
+
+Fixes: bd11ff421d36 ("ipv6: Get rid of RTNL for SIOCDELRT and RTM_DELROUTE.")
+Reported-by: syzbot+a73e5ee0fd534fed75bd@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6a9b03f9.04649fcc.10325f.0003.GAE@google.com
+Signed-off-by: Naman Gulati <namangulati@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/ipv6/route.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 9658939511e0..08bd68f1b5bb 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -4019,6 +4019,7 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+ 	struct net *net = info->nl_net;
+ 	struct sk_buff *skb = NULL;
+ 	struct fib6_table *table;
++	struct fib6_node *fn;
+ 	int err = -ENOENT;
+ 
+ 	if (rt == net->ipv6.fib6_null_entry)
+@@ -4026,9 +4027,13 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+ 	table = rt->fib6_table;
+ 	spin_lock_bh(&table->tb6_lock);
+ 
++	fn = rcu_dereference_protected(rt->fib6_node,
++				       lockdep_is_held(&table->tb6_lock));
++	if (!fn)
++		goto out_unlock;
++
+ 	if (rt->fib6_nsiblings && cfg->fc_delete_all_nh) {
+ 		struct fib6_info *sibling, *next_sibling;
+-		struct fib6_node *fn;
+ 
+ 		/* prefer to send a single notification with all hops */
+ 		skb = nlmsg_new(rt6_nlmsg_size(rt), GFP_ATOMIC);
+@@ -4051,8 +4056,6 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+ 		 * and emit a replace or delete notification, respectively.
+ 		 */
+ 		info->skip_notify_kernel = 1;
+-		fn = rcu_dereference_protected(rt->fib6_node,
+-					    lockdep_is_held(&table->tb6_lock));
+ 		if (rcu_access_pointer(fn->leaf) == rt) {
+ 			struct fib6_info *last_sibling, *replace_rt;
+ 
+-- 
+2.55.0.979.g7e5102b832-goog
+
