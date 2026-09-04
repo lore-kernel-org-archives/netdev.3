@@ -1,76 +1,101 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA14043B6C4;
-	Fri,  4 Sep 2026 13:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB744999F;
+	Fri,  4 Sep 2026 13:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788529038; cv=none; b=S9NIE6JE10281HKkN44oyVCcxAyjny7Df9NckgpyTFU5k0XSv/5omEezLxFOSHmTKw27UfXv/53kGc09kodsH9I/cLeYlA/96WJ/yeBfnbXukqjzExBxFChJBrbybNWQN0jGO0+nnTmaRn4/XNJb5AYsGHYcchCY5z1jxDYurtk=
+	t=1788529065; cv=none; b=WcPeoc6/mvCfOImvPcoW2aR5bsCL99u9Z/CjgZ5PjvyuEmG4iPVb8ub3Zhb8P6h3y+Nurn5imIAaYVEnCThowwS4NbVTYls2l8QjbkzYYPXLFrFbWsh/kjaoPLcYs4269S571rGphI6Vj/my6oq7ObAwlN5HFrqWiDAHGGU8lzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788529038; c=relaxed/simple;
-	bh=16aecuGOrIiDRDL6Z0PaISMOQweR9D8YgbKVBT3h03Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uOOk0jfUpCUbEjW1Qs8SSGcRqqF5ywWdox14TpPMzZaQgcPDiWHLZbEdihqBQV3HtUE9ALTmdRVS3xUF5+sNERtcTT4uEvhGJbEOHloujkFdA3O1la38dWxK2+XtYrY04oyHZPNl4N17IZHuY62OvNA+TDUOZdRU8k3Llag0pG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2t77N9Ip; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788529065; c=relaxed/simple;
+	bh=Njjasc3IX0xlY9+6WXjjzKL0xM4yf+35381p8OsefCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oi6F/yNJIFf0HKSa1J1m156maDT3HDyU6X8am4JKw5CKuHJeUrXV43Dw16SwQiHUX8pediq+ioTd7dXwCiNPmfCIz0u6eXi5C5en/DYShjL/zT7QvQ3dBt+We8H4WB/bps1u+Vu14bQJ5HfyCp9++FvPMRbfwbYe9p01B79olPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=XHknQjvt; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2t77N9Ip"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=y1z8NzF70GzZT5JberU6kWFYdzKgeuIUvY6fIRAsajw=; b=2t77N9Ipr90No1c0Xv4ChyGXSO
-	TYSL5H6xSeSE/5oyV2tiBOhexmsF9W8eGod0W+ip3t3yg4cj4Fs/JyIJPDfVvG9SGIqYEpu/r/VtK
-	/9oZXPJ7sB7I8TxwHRk2JR0/Z/SeN/iUdKY/+Al5aS4APoQDBWOz3BWltszo8/b/jfNQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x2U6O-002zRC-Oc; Fri, 04 Sep 2026 15:37:08 +0200
-Date: Fri, 4 Sep 2026 15:37:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
-	horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
-Subject: Re: [PATCH net-next v5 3/6] net: dsa: motorcomm: relocate MIB
- polling initialization to dsa_setup()
-Message-ID: <67c8bdef-cf57-4233-a552-ad715f24c47e@lunn.ch>
-References: <20260904095416.1692962-1-kyle.switch@motor-comm.com>
- <20260904095416.1692962-3-kyle.switch@motor-comm.com>
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="XHknQjvt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=oSirYoF2RY8du2LiY0yBrNRVUm+QqIhfZ6Fhn2chzu8=; b=XHknQjvt0NgxRsBupg7P2PhkNT
+	D+1Ta/5ErjnUtCVk4uZKvSILseCTv9YqGiog8X/com2Sf5bCdgFMPj7tlZEAFwE8eMkajTZ6FLYtS
+	fn4E36B6a4C7qSifjje8LcAbZ2EtzfhW3s4ipyrO25meFYlu74ZIdzNvbUKO3czv/YCBWn9Q17AuC
+	VmZn2eTDDGEPuG5t+/wl1uOmQnuSw0MCnjrIqx5gQM71qkmY1tnI4oZtKUCc6XRp8WklST0QfaAE3
+	7TTzzbBV6tqQK8gn8g2GPTNXzSNeJhuRYHcm1k6vQJTDoWEt14Zlgjo1JY7JvSMje+CJH2S/82BcI
+	XC/XafggGOz8rQGGivKdDZLdezOa/zocJx3ZH9QzQyPMskYhBHAUorVTezU5gzSC1F/4fcNE3uZAI
+	CPjNa/6hPOehcMKztjodixp142mgKal9Rt+rZN/MzOYKYC006c+1aEeALKEVr2Aoee1ifNu63gBlx
+	fw8JdE3giIyDE+VPv5yc8YJJmHdfmKsGdBmn3ko9HLM6GZ6ygi4YkHL2dOH9ESgBHNayeLIMmuHYD
+	BOSBwryYimjxUeGvmZmk+zlize6xNWGXJXEm3SKwpk72HOClCsybA+46jlMbqlj8PRMhGwBTjbchY
+	Xej7eMLBAZpw7kSESRXL71JYm2C0jICTxiPiHgnio=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Hemanth Selam <hemanth.selam@gmail.com>
+Cc: linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH] net: fix typos in comments
+Date: Fri, 04 Sep 2026 15:10:18 +0200
+Message-ID: <12963525.O9o76ZdvQC@weasel>
+In-Reply-To: <20260904112100.34541-1-hemanth.selam@gmail.com>
+References: <20260904112100.34541-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904095416.1692962-3-kyle.switch@motor-comm.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Sep 04, 2026 at 05:54:13PM +0800, Kyle Switch wrote:
-> Move MIB polling start from probe() to dsa_setup() so that it can
-> be conditionally enabled based on the actual switch family support,
-> avoiding attempts to enable it on unsupported switch families.
+On Friday, 4 September 2026 13:20:59 CEST Hemanth Selam wrote:
+> Fix typos in comments, reported by scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Only touches comments, no code
+> changes.
 > 
-> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 
-Much better.
+But didn't catch the double spaces in the commit log. ;-)
 
-I would word the commit message slightly differently, in order to make
-it clear what this patch does vs a future patch.
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 
-  > Move MIB polling start from probe() to dsa_setup() so that in a
-  > future patch it can be conditionally enabled based on the actual
-  > switch family support, avoiding attempts to enable it on
-  > unsupported switch families.
+> ---
+>  include/net/9p/9p.h     | 2 +-
+>  include/net/9p/client.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/net/9p/9p.h b/include/net/9p/9p.h
+> index fd7a034b8278..22ab7486795d 100644
+> --- a/include/net/9p/9p.h
+> +++ b/include/net/9p/9p.h
+> @@ -120,7 +120,7 @@ void _p9_debug(enum p9_debug_flags level, const char
+> *func, * @P9_RCREATE: response with file access information
+>   * @P9_TREAD: request to transfer data from a file or directory
+>   * @P9_RREAD: response with data requested
+> - * @P9_TWRITE: reuqest to transfer data to a file
+> + * @P9_TWRITE: request to transfer data to a file
+>   * @P9_RWRITE: response with out much data was transferred to file
+>   * @P9_TCLUNK: forget about a handle to an entity within the file system
+>   * @P9_RCLUNK: response when server has forgotten about the handle
+> diff --git a/include/net/9p/client.h b/include/net/9p/client.h
+> index 55c6cb54bd25..f3aead8939ef 100644
+> --- a/include/net/9p/client.h
+> +++ b/include/net/9p/client.h
+> @@ -97,7 +97,7 @@ struct p9_req_t {
+>   * @proto_version: 9P protocol version to use
+>   * @trans_mod: module API instantiated with this client
+>   * @status: connection state
+> - * @trans: tranport instance state and API
+> + * @trans: transport instance state and API
+>   * @fids: All active FID handles
+>   * @reqs: All active requests.
+>   * @name: node name used as client id
 
-What you want to avoid is my asking, did you forget to make it
-conditional?
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-    Andrew
+
