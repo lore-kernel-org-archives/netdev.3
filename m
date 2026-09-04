@@ -1,244 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB19C274FD1
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 11:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1AC485CF2
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 11:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788519664; cv=none; b=UOPh8UtV3TXoab6AkQJmg+ss6zKLy4q/uP1MHeStUWgAYBYWkBcm0zpQWOSPWjMRxo4zYLBgW5am8ubwzaddhWdIsvOTDFL2qI2pOZEoVi3jkcefNn8P/aHlK/vwpkGCVmsuf0sbOEy5mlbCe+mGLMz1p0jOQgt+3lmRk4HjLv8=
+	t=1788519934; cv=none; b=a7ZrxV4e6OOO18iPanEy+XTR8fkf8K3SJLfrwjc9MjLQi+duPb8tco20WxwKH4SmoFOqUOPFkNLtgykLVx2x0ZhIcvCGfL/XLTwtBK/rdT6U9IWclkL2AxFtcNnbdI7lSFxlJtODlpWc3UvDRbv1C/rGmISFgXrTp1/6HF2siuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788519664; c=relaxed/simple;
-	bh=19Fo65Qlz2zTbc7pRIvQUfABKgthgHG+fUxEY+FLUQA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C1DJ+uaBtEvO6Becct1LvxWL1zVPlSNy2SzWeOz+xGPYSvd5C+pWlC0NrO0RgxkTE8zLlZTUXk8EGS3e5UjUB9jY8WQXFtEXf4ngJIz7d4g5gcmzjc8n8Z5Gsp18eTkTqeRs1F97BRL5aWhWBVacX/w+AGvZUboVHAp/qMb7sd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQmh6+Bz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788519934; c=relaxed/simple;
+	bh=N0NRuMnQNT4U5LjQKRjWQiu7rFtDq9i7K1NImELSQZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nJkBLZRWMSqSfrhExC4ZreUTcZexdGqF+ueakKA/kH9nlqRg4fEd2y0wwfhQ6VCd4qoU1fVcocIRCtFeSSmFPOlbuWarA8JiXZyl+FoyK/ZvCCAO0cOAMrzoe4PRgk9A8uKxR62F7P7zco8RjIPHDSvXT0IL0BSxe09fLQCKaeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WedIWgxN; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQmh6+Bz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AED1F00A3E;
-	Fri,  4 Sep 2026 11:01:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788519662;
-	bh=lSv+wnqWG9X60KQnULWcnjEFamRYLv4xIywhCkAEZH8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YQmh6+BzHnt/e9YKRiYSkpjI0r/knvEXjjHyis7W2isOl/VSk1tNLgj/Q0lJlK86P
-	 HCjt9vSvlo90nzrBQgYKkL/SG0ebDR+U4QRZ9I06OjaA2bl66ABHYKxExqVJVyDMGu
-	 GMJR+YXmxEXxtTLkBBqDnITTg2T6sQ8dba9nstyE5mn3RrJUzqN1mdFy59eJnEyOjd
-	 NEDBExhfgKTi8HTVT+iiNcx7xSL3Zl9vAKGNCeGp3S2pJxnyEtdiJ43EnnYlzEm5G6
-	 O+Qyct+5kMkcODX5jbHNjECEwSb+0yJ0RLPDEnaBkY6VgEXPqLF6raa0nCs+ECzYSL
-	 lNvLz9u60p+ug==
-Subject: Re: [PATCH v2 net] selftests/tc-testing: pass mp_pm via initialiser
-From: netdev-bot+sashiko@kernel.org
-To: fw@strlen.de
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- victor@mojatatu.com, kuba@kernel.org
-Date: Fri, 04 Sep 2026 11:01:00 +0000
-Message-ID: <178851966096.4131868.12758868968085843124@kernel.org>
-In-Reply-To: <20260903103621.13160-1-fw@strlen.de>
-References: <20260903103621.13160-1-fw@strlen.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WedIWgxN"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-4a46a53abc9so884579b6e.3
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 04:05:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788519931; x=1789124731; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pUAku8kEB1Qfbu/4zomfSevYTVMYvS8FyB0ooNWeIWg=;
+        b=WedIWgxNuAwQbSfvNIB/vFwyt2YQvhyhuRpa6+96rvVlaSgnjGfmyvfRNXwrV+hy2j
+         ZsAB9+9N8iFi292JM/eMd2M8UpZ5Vi02Zzi0IcZFHUzmSPj/iL1XIt06QHgRwgmAJ33M
+         UN7e08JSqXbU7CKWwmlgtv1hRZjfOQmd9/6thHsIJzuJ0H90WIBIFrgbL2nrS7E7lIz2
+         DvoBXWsmtOdVUGXr+xr1scFuiXiI9Y0S6E+1DxlqInQGZhU6f8EliEu2I87l5D8hE09S
+         BSDRYkF2+uclEIzoq7xhEk5CRfXL/MEJ95Ry4tnoopmSAB+Pg4/FKVi4oviAUZRdt1EE
+         nObA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788519931; x=1789124731;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pUAku8kEB1Qfbu/4zomfSevYTVMYvS8FyB0ooNWeIWg=;
+        b=OohbQs5uqkMVU8HaVQ9yjuWGwL88YQydBEJgptrh11gntmbV02rOZyn7qS7nCbClLL
+         CdgTETv6TzCJfDqr27uJt5zqmedNLtBCAUWuREUiruyiiOO6m9L5i4M9pPeAdohkImtG
+         FBRWXlIZH1qHzfTwp19fkpcUKW1HowlzsBrkI3VPK8sl7BqiwDmVl//XLR3levnd7zyd
+         xyP6IW8BOrE+xnKkJjMqlk8oYK0TetVmiVsuDZAeX/TTS7hIgUHb1BTY6+co/5NE1Bth
+         7PwWXTLSHsRjCzUS64pdq1KjLPUcprumR8+QLQWxN31IkqSymtdckp91ztFsj6qZAXy+
+         Bc0A==
+X-Forwarded-Encrypted: i=1; AKwUvBzAMdjaaedT8Gytvru1t7vW8Ln+jROQSo41TeGa18zx4JBSvgXd8+rln5b/TvZb8MUC5XmlcaM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mUQXvXwOMQn7va/cpoDUYPIxvfLCkTzfbPGLumS6Q4GGqh34Fv
+	4Wen8jlpKNiay5WEZf+RIYhXBHuOZYvlTKEbVdeEMI2H1ROP/wgXwEC0
+X-Gm-Gg: AYBFou1lkSnO8o03Wfe+dN18b02xuSjK11DNHABMVzuGV9FuhXwPKq4U0yMAc+7Wdch
+	3TvAg7mMwf5Qs+Vdsq+K5NGBepB2/tCMr0517MfZWHYTQ8EYq1GG0RQc8lLpd0IvAnlB4aS1EKP
+	seNRebbrQqqd0X+ZYAU8QALJ39yjpeS1mHS13OrR+lJTfHmSClFPgtPTr6IH/dC5Vds4twPPGrf
+	C1Bt85e1zx2vnirfcTA5UnHKaR3M+KuSppxT7o4JWsOOwes2o37Dr+yGBHRm5Oswye8ao41LXeB
+	ACcBdEWOZuUj2qmiRlnLdGUQ/5WxtZ92f1uYg9wl6HkMYFFsp2PqFe0rOXWg6aNaPyS8vkHJHDI
+	p8IaMxR/BF+1wB13ZE/Mn7MKW/D5lpoOllcmfa0jy2iEI6mO7vjBAJQNQKwz51RC9qSw5Re0p16
+	zYcQOOEpMqviyaXwNduLO6ga2cwJM27hJa8swJoVo9dG5/9pMjlb3GApVLGLjy37BfIhUbhW5ip
+	vwUzNNLHVn7L7k=
+X-Received: by 2002:a05:6820:4b88:b0:6b7:8415:d787 with SMTP id 006d021491bc7-6b78415d81emr1080277eaf.50.1788519930706;
+        Fri, 04 Sep 2026 04:05:30 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-333c9db92b1sm5220280eec.9.2026.09.04.04.05.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 04:05:29 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 1/2] net: sunrpc: fix typo "miliseconds" in comment
+Date: Fri,  4 Sep 2026 16:35:16 +0530
+Message-ID: <20260904110519.15207-2-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260904110519.15207-1-hemanth.selam@gmail.com>
+References: <20260904110519.15207-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+Correct "miliseconds" to "milliseconds", reported by scripts/checkpatch.pl
+using the misspelling list in scripts/spelling.txt.  Only touches comments,
+no code changes.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+---
+ net/sunrpc/auth_gss/auth_gss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- [Medium] run_one_test() (tools/testing/selftests/tc-
-  testing/tdc.py:394-401) rebuilds the per-test substitution dictionary…
-- [Low] The new comment in test_runner_mp() (tdc.py:617-618) states "Use
-  the 'initializer' to pass the unpickleable/shared objects to each…
-- [Low] The commit fixes two independent, user-visible breakages and
-  carries no `Fixes:` tag for either, and squashes them into a single…
-
---
-
-selftests/tc-testing: pass mp_pm via initialiser
-
-This passes pm and args to the multiprocessing workers via
-Pool(initializer=...) instead of relying on module globals, and stops
-run_one_test() from mutating the module-global NAMES dictionary by
-building a per-test copy in args.NAMES. Readers of the substitution
-dictionary are converted to args.NAMES.
-
-No Link: tags in the commit header.
-
-> diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
-> index 511d66c36a2a..7c7f96aaef55 100755
-> --- a/tools/testing/selftests/tc-testing/tdc.py
-> +++ b/tools/testing/selftests/tc-testing/tdc.py
-
-[ ... ]
-
-> @@ -206,7 +206,7 @@ def exec_cmd(caseinfo, args, pm, stage, command):
->      if len(command.strip()) == 0:
->          return None, None
->      if '$' in command:
-> -        command = replace_keywords(command)
-> +        command = replace_keywords(command, args.NAMES)
->  
->      command = pm.call_adjust_command(caseinfo, stage, command)
->      if args.verbose > 0:
-
-[ ... ]
-
-> @@ -396,6 +391,15 @@ def run_one_test(pm, args, index, tidx):
->              pm.call_post_execute(tidx)
->              return res
->  
-> +    # populate NAMES with TESTID for this test
-> +    args.NAMES = NAMES.copy()
-> +    args.NAMES['TESTID'] = tidx['id']
-> +    args.NAMES['NS'] = '{}-{}'.format(NAMES['NS'], tidx['random'])
-> +    args.NAMES['DEV0'] = '{}id{}'.format(NAMES['DEV0'], tidx['id'])
-> +    args.NAMES['DEV1'] = '{}id{}'.format(NAMES['DEV1'], tidx['id'])
-> +    args.NAMES['DUMMY'] = '{}id{}'.format(NAMES['DUMMY'], tidx['id'])
-> +    args.NAMES['IFB'] = '{}id{}'.format(NAMES['IFB'], tidx['id'])
-> +
-
-[Severity: Medium]
-Should this copy start from args.NAMES rather than from the module-global
-NAMES?
-
-In a worker process the module-global NAMES is the pristine dict imported
-from tdc_config.py, because with a non-fork start method the worker
-re-imports tdc.py as __mp_main__.  That is exactly the situation the first
-half of this patch addresses: the reported "NameError: name 'mp_pm' is not
-defined" only happens because the child does not inherit parent module
-state.
-
-The only place -p/--path and -d/--device are applied is
-check_default_settings(), which runs in the parent only:
-
-    if args.path != None:
-        NAMES['TC'] = args.path
-    if args.device != None:
-        NAMES['DEV2'] = args.device
-
-The configured dict does reach the worker as args.NAMES through
-initargs=(pm, args), and run_one_test() then discards it with
-args.NAMES = NAMES.copy().
-
-So for "tdc.py -J4 -p /my/build/tc", do the parallel tests end up running
-/sbin/tc instead of the requested binary?  The parent validated args.path,
-not /sbin/tc, so if /sbin/tc is missing the parallel tests would all fail.
-
-Similarly with -d <nic>: in the worker args.device stays set while
-args.NAMES['DEV2'] is '', so $DEV2 expands to nothing and
-nsPlugin._ipr2_ns_create_cmds() emits commands like
-
-    link set  netns <ns>
-    netns exec <ns> $IP link set  up
-
-which iproute2 rejects and _proc_check() turns into a RuntimeError.
-
-Also, exec_cmd() still reads the module-global dict for the timeout:
-
-    (rawout, serr) = proc.communicate(timeout=NAMES['TIMEOUT'])
-
-while its substitution path now uses args.NAMES.  Should that reader be
-converted too, so there is a single source of truth inside a worker?
-
-One note on the shape of a fix: args.NAMES = args.NAMES.copy() would not
-work, since args.NAMES is reassigned per test and would re-accumulate the
-id<ID> suffixes this patch removes.  Keeping a pristine copy of the
-configured names (for example on args, or passed through __mp_init__) and
-deriving each test's dict from that would avoid both problems.
-
-[ ... ]
-
-> @@ -600,6 +587,18 @@ def mp_bins(alltests):
->  
->      return (serial, parallel)
->  
-> +mp_pm = None
-> +mp_args = None
-> +
-> +def __mp_init__(pm, args):
-> +    """
-> +    This function is called once when each worker process starts.
-> +    It sets the global variables in the child process's memory space.
-> +    """
-> +    global mp_pm, mp_args
-> +    mp_pm = pm
-> +    mp_args = args
-> +
->  def __mp_runner(tests):
->      (_, tsr) = test_runner(mp_pm, mp_args, tests)
->      return tsr._testsuite
-> @@ -615,14 +614,13 @@ def test_runner_mp(pm, args, alltests):
->      print("Executing {} tests in parallel and {} in serial".format(len(parallel), len(serial)))
->      print("Using {} batches and {} workers".format(len(batches), args.mp))
->  
-> -    # We can't pickle these objects so workaround them
-> -    global mp_pm
-> -    mp_pm = pm
-> -
-> -    global mp_args
-> -    mp_args = args
-> -
-> -    with Pool(args.mp) as p:
-> +    # Use the 'initializer' to pass the unpickleable/shared objects
-> +    # to each worker process exactly once upon startup.
-      ^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Low]
-Is the word "unpickleable" right here?  With forkserver or spawn,
-multiprocessing serialises the worker bootstrap payload, initargs
-included, so pm and args have to be picklable for this to work at all.
-If they really were unpicklable, Pool() would raise in the parent before
-__mp_init__() ever ran, and the run would abort with zero tests executed.
-
-The baseline comment said the opposite ("We can't pickle these objects so
-workaround them"); could the new comment say that pm and args are now
-required to be picklable, so the requirement is visible to whoever adds
-the next plugin?
-
-I checked the objects currently shipped and they do pickle: tdc.py
-registers its module-level identity() via
-parser.register('type', None, identity), and nsPlugin's cached_property
-_proc (a subprocess.Popen) is not materialised before Pool() is created,
-since prepare_run() -> call_pre_suite() only records testcount/testlist.
-So there is no failure today.  A plugin from plugin-lib-custom or
-$TDC_PLUGIN_DIR that caches a Popen or a socket in pre_suite() would
-break -J only on newer Python versions.
-
-Could the changelog also name the root cause, that Python 3.14 changed
-the default start method on Linux from fork to forkserver, so the old
-global mp_pm inheritance no longer works?  As written, a backporter
-cannot tell that the failure is Python-version dependent.
-
-> +    with Pool(
-> +        processes=args.mp,
-> +        initializer=__mp_init__,
-> +        initargs=(pm, args)
-> +    ) as p:
->          pres = p.map(__mp_runner, batches)
-
-[Severity: Low]
-Could this be split into two patches, each with a Fixes: tag?
-
-The two problems have separate origins.  The -J NameError comes from the
-global mp_pm/mp_args workaround and the test_runner(mp_pm, mp_args, tests)
-call in __mp_runner(), added by ac9b829309646 ("selftests/tc-testing:
-implement tdc parallel test run").
-
-The doubly-suffixed names such as dummy0id1234idabcd come from the
-mutate-the-global-and-restore pattern in run_one_test() (the
-ns = NAMES['NS'] ... ifb = NAMES['IFB'] save and the restore at the end),
-added by 98cfbe4234a41, with the IFB entry added later by 4177fd4469824.
-The restore is skipped whenever prepare_env() raises PluginMgrTestFail,
-since test_runner() breaks out of the loop, and the worker process is then
-reused for the next batch with the suffixed names still in the global.
-
-As one patch, a maintainer cannot pick up the multiprocessing initializer
-fix without also taking the NAMES ownership rework.
-
+diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
+index 8ddc65e894da..8de85da8ee42 100644
+--- a/net/sunrpc/auth_gss/auth_gss.c
++++ b/net/sunrpc/auth_gss/auth_gss.c
+@@ -1468,7 +1468,7 @@ gss_stringify_acceptor(struct rpc_cred *cred)
+ 
+ /*
+  * Returns -EACCES if GSS context is NULL or will expire within the
+- * timeout (miliseconds)
++ * timeout (milliseconds)
+  */
+ static int
+ gss_key_timeout(struct rpc_cred *rc)
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903103621.13160-1-fw%40strlen.de
+2.48.1
+
