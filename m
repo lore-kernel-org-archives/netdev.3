@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2967551C34E;
-	Fri,  4 Sep 2026 22:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4313B52E077;
+	Fri,  4 Sep 2026 22:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560687; cv=none; b=KaTxBNBmpAwhW176Pb+J1JbOZcZsyGt2nFyAQ8rlnaYxk75L2w9oAsr5HF7dT1YbroZOyni/4vEeZ2HqpqoAIX9TCCXYpMX4GbLmPBOyz1815EBIUZgPxozpWFnV/njbLQzxyeg32LUkVClhCEXBnjmiQ9Phi3InjLb36uGy05o=
+	t=1788560688; cv=none; b=JbFUKWTthrY3KsVW4+bEzD+z0Vw/C4baQMSNa/GGog1mnI5Wl8CeBii6FPCoYD4gDXnL/U/rVSwBlCPwUXmhgxoeAgRApLhf+1uXPxr24NiYDjTgzlo2MkcNYLUdh7TjdKJh/la8o83ynRmHDc+RjLvX5P9SLqOj2icQh+ooLwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560687; c=relaxed/simple;
-	bh=tTMHZ4FuoOhLqZFAf5pVaw5zQ59a6aZoTNWLzsGfKV0=;
+	s=arc-20240116; t=1788560688; c=relaxed/simple;
+	bh=BgX5cqZ0bslRChkmzM3+wVHqLdprMk6Ak7II2HkFAp8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ghYDP8g9+gJmYKwsmh+TouSo9bYL7DOFnSP9DReRH97iAMFSpnmr5eW3cZ/C3jtqkVnjc1cdPJdl4P9RHYnZnsFWMQszTX+u4CuPZlQNiyeKI/Rj1FXZnM4FEqvq5C4aUdxhQH5W44mRej5jfy64HuKtGfBHCiKNipwJdHk7JpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ePLsWfZ2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=UevEcaeCN94BzoRyOKvtwFzaTYPP2zE4jwoKyExJcK34xBkf5G5hQwQw0kr2tiFuy1ciU85GST6Q8Gm7r3ly7mL3VqjqJn0HKfPfHgeQU+wIH71aXMzVRDNBTPMVxJnhuBOz/XFbh2c30wPCSddM0lUqPPxQtlh4kAlH+2Mf9A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EekLT6Ta; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ePLsWfZ2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8993B1F00A3E;
-	Fri,  4 Sep 2026 22:24:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EekLT6Ta"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF6D1F00A3D;
+	Fri,  4 Sep 2026 22:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560682;
-	bh=Dlc5HEqeqW5ha2l+K2IZjg6dMaSI48BAK1XRN67A5WE=;
+	s=k20260515; t=1788560683;
+	bh=s6nq/sYtvdRzwOuOQYFworKtPDwTnU11dzRl3rHs4Bg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ePLsWfZ2tHbGzbVDCLbK8jhJDARCZ334Bc3OSmTe+JpO4/oKWamKfq154n6oYP2Ku
-	 Yn06ykMjUBrC3jBiDoYFVYwZqmnReEgHr3ADsZ/BK7qr/5d29Xr0+SP8dZvns0ShGz
-	 kkcl3Lddt3ve+ISjknnIuI+AH2Ct/yyQMdYglXTYyXf904OIapzC7Wy9q8zmHwXZRZ
-	 EGbvmBxL1msir3U/7vHhJoL5hEAOrhnMxIrBwvg2/2isfnCFEdOFP2IQNFMcnJhD0Q
-	 eVmrbNvfmFcXfBmzi0tXnLiO4oCKezh+ZL86WWtIeV9jenC9B5r545CaPBDfAKB0zf
-	 rBUH4vlMFb7FQ==
-Subject: Re: [PATCH net] net: wwan: qcom_bam_dmux: account network packets
+	b=EekLT6TawyR+Ys6PtViPvveCCI8H7tx0S+wf8+in3gxLLuEHRNlXaWCm3PtQ7XSqg
+	 Xrme1dC23i2961sspWKEHmxX5IObnS1jS5YFZmo79pXRLyol5/cEXpflIxur+PgTOP
+	 yMx7L7G+ShprEHf3PPqbwqROngDAPKshjsOpKTwGgJvbPJsqx94A2QLWod9DDfPoEc
+	 PG+T3Iv24abSvpYn9RtOb61kjgLniar4xEw2XM4m/N5mS2r4Nf0t8cLNelk+48rjom
+	 CHu8Lt/iv/m0x91zDv6xkSWCCpFwiRqu5JiPB0b52vDtw6vTGkA9CGer1VhrQ0zXZf
+	 DTgQK0w4crMvw==
+Subject: Re: [PATCH net v2] net/packet: fix network header offset for non-VLAN
+ raw packets
 From: netdev-bot+sashiko@kernel.org
-To: sinyavin@gmail.com
-Cc: stephan@gerhold.net, loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- johannes@sipsolutions.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 04 Sep 2026 22:24:41 +0000
-Message-ID: <178856068113.219967.2076451083879151620@kernel.org>
-In-Reply-To: <20260830085400.2542956-1-sinyavin@gmail.com>
-References: <20260830085400.2542956-1-sinyavin@gmail.com>
+To: zhangjn_dev@163.com
+Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+ liuhangbin@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ zhangjn11@chinatelecom.cn, sunshx@chinatelecom.cn
+Date: Fri, 04 Sep 2026 22:24:42 +0000
+Message-ID: <178856068266.219967.8739522272038197328@kernel.org>
+In-Reply-To: <20260831072034.40044-1-zhangjn_dev@163.com>
+References: <20260831072034.40044-1-zhangjn_dev@163.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,192 +48,197 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 (2) · Low: 0
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-- [High] Use-after-free write of the per-CPU netdev statistics from the
-  BAM DMA completion tasklet.
-
-Pre-existing issues:
-- [Medium] Registered net_devices are never freed on driver removal.
-- [Medium] bam_dmux_cmd_data() trims the RX skb to the modem-supplied
-  hdr->len (skb_trim(skb, hdr->len), qcom_bam_dmux.c:529) after only…
+- [High] The new guard in packet_parse_headers()
+  (`skb->dev->min_header_len < skb->dev->hard_header_len`) can never be…
+- [Medium] packet_parse_headers() decides the L2/L3 boundary from
+  `is_vlan = eth_type_vlan(skb->protocol)`, i.e. from the socket-…
+- [Medium] packet_parse_headers() re-reads the live
+  `skb->dev->hard_header_len` and `skb->dev->min_header_len` to decide…
 
 --
 
-net: wwan: qcom_bam_dmux: account network packets
+net/packet: fix network header offset for non-VLAN raw packets
 
-The patch makes the BAM-DMUX driver maintain per-CPU software statistics
-so that userspace no longer sees zero traffic.  TX bytes/packets are
-accounted from the DMA completion callback and RX bytes/packets from the
-data command handler, with dev_get_tstats64() wired up as
-ndo_get_stats64.
+This changes packet_parse_headers() so that non-VLAN AF_PACKET SOCK_RAW
+frames on Ethernet devices whose hard_header_len is larger than
+min_header_len get network_header moved to min_header_len before
+skb_probe_transport_header() runs.  The existing VLAN correction is
+reorganized to reuse a new is_vlan boolean.
 
-A few questions below about the netdev lifetime in the new accounting
-paths.
-
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8d6437..40c40bc5645a 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-> @@ -177,8 +177,15 @@ static void bam_dmux_tx_callback(void *data)
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index b22cda322136..9a4c70b659d4 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -1938,6 +1938,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
+>  static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
 >  {
->  	struct bam_dmux_skb_dma *skb_dma = data;
->  	struct sk_buff *skb = skb_dma->skb;
-> +	struct net_device *netdev = skb->dev;
-> +	unsigned int len = 0;
+>  	int depth;
+> +	bool is_vlan = false;
+>  
+>  	/* On TX skb->data is the L2 header; anchor it for all socket types. */
+>  	skb_reset_mac_header(skb);
+> @@ -1946,11 +1947,28 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
+>  	    sock->type == SOCK_RAW)
+>  		skb->protocol = dev_parse_header_protocol(skb);
+>  
+> +	if (likely(skb->dev->type == ARPHRD_ETHER)) {
+> +		is_vlan = eth_type_vlan(skb->protocol);
+
+[Severity: Medium]
+Is is_vlan a reliable statement about the frame layout here?  For SOCK_RAW
+the protocol is only re-derived from the frame when it is zero or
+ETH_P_ALL, just above:
+
+	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
+	    sock->type == SOCK_RAW)
+		skb->protocol = dev_parse_header_protocol(skb);
+
+Otherwise skb->protocol comes from the bind protocol or the user supplied
+sll_protocol, assigned in packet_snd() as skb->protocol = proto shortly
+before this call (and similarly in tpacket_fill_skb()).
+
+So a socket opened as socket(AF_PACKET, SOCK_RAW, htons(ETH_P_IP)) that
+sends a frame which does carry an inline 802.1Q tag keeps
+skb->protocol == ETH_P_IP, is_vlan stays false, and the new branch below
+forces network_header to min_header_len, i.e. onto the VLAN TPID rather
+than the IP header.  The frame-inspecting correction at the end is gated on
+the same is_vlan, so it does not repair that.
+
+For the devices where the new branch actually fires with
+hard_header_len - min_header_len == VLAN_HLEN (for example the usbnet
+gl620a and ps3_gelic_net, both 18), the pre-patch offset of 18 was the
+correct L3 offset for such a single-tagged frame.  Does this turn a correct
+offset into an incorrect one for that case, and would parsing the frame be
+preferable to trusting the socket-declared protocol?
+
 > +
-> +	if (netdev)
-> +		len = ((struct bam_dmux_hdr *)skb->data)->len;
->  
->  	bam_dmux_tx_done(skb_dma);
-> +	if (netdev)
-> +		dev_sw_netstats_tx_add(netdev, 1, len);
->  	dev_consume_skb_any(skb);
->  }
+> +		/* For non-VLAN SOCK_RAW frames on Ethernet devices whose
+> +		 * hard_header_len exceeds the on-wire L2 header length
+> +		 * (min_header_len) -- e.g. software-offload VLAN subinterfaces,
+> +		 * or Ethernet drivers that reserve extra space in
+> +		 * hard_header_len for driver-internal wrapping -- the SOCK_RAW
+> +		 * send paths leave network_header at hard_header_len, while the
+> +		 * user frame's L3 sits at min_header_len. Move network_header
+> +		 * to the actual L2/L3 boundary so the transport header probe
+> +		 * below and subsequent GSO see the right L3.
+> +		 */
+> +		if (!is_vlan && sock->type == SOCK_RAW &&
+> +		    skb->dev->min_header_len < skb->dev->hard_header_len)
+> +			skb_set_network_header(skb, skb->dev->min_header_len);
+> +	}
 
 [Severity: High]
-Can this write into freed per-CPU memory during driver removal?
+Can this condition ever be true for the reproducer described in the commit
+message?  The message says:
 
-skb->dev here is a borrowed pointer with no reference taken, and
-dev_sw_netstats_tx_add() expands to this_cpu_ptr(dev->tstats) plus
-u64_stats_add().  Once the netdev is unregistered, netdev_run_todo()
-calls netdev_do_free_pcpu_stats(), which for NETDEV_PCPU_STAT_TSTATS
-does:
+    "e.g. software-offload VLAN subinterfaces, where hard_header_len =
+    ETH_HLEN + VLAN_HLEN = 18"
 
-net/core/dev.c:netdev_do_free_pcpu_stats() {
-	case NETDEV_PCPU_STAT_TSTATS:
-		free_percpu(dev->tstats);
-		break;
+and
+
+    "Observed on a virtio_net NIC (KVM guest) that advertises
+    NETIF_F_HW_VLAN_CTAG_FILTER but not NETIF_F_HW_VLAN_CTAG_TX, so VLAN
+    subinterfaces use software tag insertion (hard_header_len = 18)."
+
+In this tree vlan_dev_init() no longer inflates hard_header_len; the tag
+space went to needed_headroom:
+
+net/8021q/vlan_dev.c:vlan_dev_init() {
+	...
+	dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN;
+	dev->needed_tailroom = real_dev->needed_tailroom;
+	dev->header_ops      = &vlan_header_ops;
+	dev->hard_header_len = real_dev->hard_header_len;
+	...
 }
 
-dev->tstats is not set to NULL there, and this runs regardless of
-needs_free_netdev.
+vlan_transfer_features() repeats the same unconditional assignment, so
+toggling NETIF_F_HW_VLAN_CTAG_TX does not change hard_header_len either.
+This came in with commit 447cbe95ebb9 ("vlan: fix skb_under_panic and
+races when toggling HW VLAN offload").
 
-In bam_dmux_remove() the unregistration completes well before the TX
-DMA channel is stopped:
+min_header_len for ARPHRD_ETHER is only ever set by ether_setup():
 
-drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_remove() {
-	unregister_netdevice_many(&list);
-	rtnl_unlock();			/* netdev_run_todo(): tstats freed */
-	cancel_work_sync(&dmux->tx_wakeup_work);
+net/ethernet/eth.c:ether_setup() {
 	...
-	if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
+	dev->hard_header_len 	= ETH_HLEN;
+	dev->min_header_len	= ETH_HLEN;
 	...
-	bam_dmux_power_off(dmux);	/* dmaengine_terminate_sync(dmux->tx) */
-	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
 }
 
-Is any TX descriptor completing in that window (which includes a
-wait_event_timeout() of up to BAM_DMUX_REMOTE_TIMEOUT) going to run
-bam_dmux_tx_callback() with skb->dev pointing at the unregistered
-netdev, and write through the already freed dev->tstats?
+and VLAN devices reach it through vlan_setup() -> ether_setup().
+virtio_net does not touch hard_header_len at all.
 
-The presence of bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE) at the
-end of bam_dmux_remove() suggests outstanding TX skbs are an expected
-state at that point.  bam_dmux_netdev_stop() only stops the queue and
-sends a CLOSE command, so netdev_wait_allrefs_any() has nothing to wait
-on for in-flight descriptors.
+That leaves min_header_len == hard_header_len == 14 for both the VLAN
+subinterface and the real device in the described setup, so the branch is
+skipped and the -EINVAL from inet_gso_segment() would still happen.  Is
+the fix a no-op for the configuration it was written for?
 
-There is also the deferred submit path: bam_dmux_netdev_start_xmit()
-can hand work to bam_dmux_tx_wakeup_work(), which blocks in
-pm_runtime_resume_and_get() (bam_dmux_runtime_resume() can wait
-several seconds) and only afterwards calls bam_dmux_skb_dma_submit_tx()
-and dma_async_issue_pending().  Can descriptors be submitted there
-after the netdevs and their tstats are already gone?
-
-Would accounting TX in bam_dmux_netdev_start_xmit(), where the netdev is
-guaranteed live, or terminating the DMA channels and clearing
-dmux->netdevs[] before unregistering, avoid this?
-
-[ ... ]
-
-> @@ -421,6 +429,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
->  	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
->  	dev->needed_tailroom = sizeof(u32); /* word-aligned */
->  	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
-> +	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
-
-[Severity: High]
-This is the line that makes register_netdevice() allocate dev->tstats and
-netdev_run_todo() free it, so it is the other half of the question above.
+The devices that can satisfy the test are unrelated ARPHRD_ETHER drivers
+that enlarge hard_header_len after ether_setup(), such as the usbnet
+gl620a, dm9601, rndis_host, smsc95xx and cdc_eem drivers, thunderbolt,
+cxgb2, ps3_gelic_net and br2684.  Should the changelog and the comment be
+reworded around that device class instead of software-tagging VLAN
+subinterfaces, and could the reproducer be re-checked against the current
+vlan_dev_init()?
 
 [Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but while
-looking at bam_dmux_netdev_setup() I noticed it sets neither
-dev->needs_free_netdev nor a priv_destructor, and bam_dmux_remove() only
-does unregister_netdevice_queue()/unregister_netdevice_many() with no
-matching free_netdev().  The only free_netdev() in the driver is the
-register_netdev() failure path in bam_dmux_register_netdev_work():
+Should these two reads use the caller's snapshot rather than the live
+fields?  packet_snd() takes one:
 
-	ret = register_netdev(netdev);
-	if (ret) {
-		...
-		free_netdev(netdev);
-		return;
-	}
-
-Since netdev_run_todo() only frees the device when dev->needs_free_netdev
-is set, does every successfully registered wwan%d interface (up to
-BAM_DMUX_NUM_CH) leak its struct net_device on unbind or module unload?
-
-> @@ -533,6 +542,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
->  		break;
->  	}
->  
-> +	dev_sw_netstats_rx_add(netdev, skb->len);
->  	netif_receive_skb(skb);
->  }
-
-[Severity: High]
-On the RX side, netdev comes from dmux->netdevs[hdr->ch], which is never
-cleared on unregister, and the only gate is:
-
-	if (!netdev || !netif_running(netdev)) {
-		dev_warn(dmux->dev, "Data for inactive channel %u\n", hdr->ch);
-		return;
-	}
-
-Since this check runs on the DMA tasklet while dev_close() and
-unregistration can proceed in parallel, can the check pass and
-dev_sw_netstats_rx_add() then write through a dev->tstats that
-netdev_run_todo() has already freed?  Before this patch the same stale
-pointer was only dereferenced for reads on this path.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the length now being
-counted as rx_bytes is entirely modem-supplied.  bam_dmux_cmd_data()
-only bounds it against BAM_DMUX_MAX_DATA_SIZE and then trims to it:
-
-	if (hdr->len > BAM_DMUX_MAX_DATA_SIZE) {
-		...
-		return;
+net/packet/af_packet.c:packet_snd() {
+	...
+	hard_header_len = READ_ONCE(dev->hard_header_len);
+	if (sock->type == SOCK_RAW)
+		reserve = hard_header_len;
+	...
+	} else if (reserve) {
+		skb_reserve(skb, -reserve);
+		if (len < reserve + sizeof(struct ipv6hdr) &&
+		    dev->min_header_len != hard_header_len)
+			skb_reset_network_header(skb);
 	}
 	...
-	skb_pull(skb, sizeof(*hdr));
-	skb_trim(skb, hdr->len);
+	packet_parse_headers(skb, sock);
+	...
+}
 
-The RX buffers come from bam_dmux_skb_dma_queue_rx() and are neither
-zeroed nor sized to the actual transfer:
+That snapshot arrived in commit 03390aa32e669 ("packet: use consistent
+hard_header_len in non-ring send paths") because dev->hard_header_len can
+change under a sender, for example from bond_setup_by_slave():
 
-	if (!skb_dma->skb) {
-		skb_dma->skb = __netdev_alloc_skb(NULL, BAM_DMUX_BUFFER_SIZE, gfp);
-		if (!skb_dma->skb)
-			return false;
-		skb_put(skb_dma->skb, BAM_DMUX_BUFFER_SIZE);
-	}
+drivers/net/bonding/bond_main.c:bond_setup_by_slave() {
+	...
+	bond_dev->hard_header_len   = slave_dev->hard_header_len;
+	...
+}
 
-bam_dmux_rx_callback() never consults a transferred length or residue,
-and the buffers are reused across receives.  If the modem declares
-hdr->len larger than the payload it actually DMA'd, are the trailing
-bytes of the reused 2 KB buffer (previous packet contents, or
-uninitialized heap on first use) passed to netif_receive_skb() and now
-also counted by dev_sw_netstats_rx_add(netdev, skb->len)?
+tpacket_fill_skb() is even passed hard_header_len as a parameter for the
+same reason.  If hard_header_len shrinks to min_header_len between skb
+construction (which reserved the larger value) and this point, the branch
+does not fire and network_header stays where the commit message says it is
+wrong; if it grows after the skb was built with reserve == min_header_len,
+the branch fires on a length that was never used to lay out the skb.
 
-I could not confirm from the BAM DMA driver whether a short transfer is
-reportable at all, so this part may not be reachable in practice.
+Would passing the already snapshotted length into packet_parse_headers(),
+or at least a single READ_ONCE() here, keep the offset decision consistent
+with the layout that was used, and avoid the plain concurrent read?
+
+>  
+>  	skb_probe_transport_header(skb);
+>  
+>  	/* Move network header to the right position for VLAN tagged packets */
+> -	if (likely(skb->dev->type == ARPHRD_ETHER) &&
+> -	    eth_type_vlan(skb->protocol) &&
+> +	if (is_vlan &&
+>  	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+>  		skb_set_network_header(skb, depth);
+>  }
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260830085400.2542956-1-sinyavin%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831072034.40044-1-zhangjn_dev%40163.com
