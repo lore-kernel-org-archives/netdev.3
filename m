@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55093DAAB0;
-	Fri,  4 Sep 2026 22:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAA652ED31;
+	Fri,  4 Sep 2026 22:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560725; cv=none; b=Oqx2xHNYLCYvXpA+3m+OhG+srAF6Iblef1RMkW9Q1S7tOAHlfITpLQSI78TLbEB4+F1cDeeNXnOwpTCmDm+yT5JysOGB/0KgvnQrZ4D2bRLOhNMicHyDr2ilTg6mJwQxHF4H/wUCHG5oiQMYHz/105YLNnRm1UOFxBVtsopNbD0=
+	t=1788560728; cv=none; b=sxIVN4t64Je5HgFxc06bifwe96KP93qwZIi6vAYYzmGpdR2ismkDpFJdITCED5DnRURENzVLvh2BiZAyLAuJ6RyErM3Yrw/YgFt3+FuysXJm42EtjM20dlCjKEm9Bwc9Myo15LoCeFLWKpy8w3AyMYXnEJe0+vCfVWfBnlgiQM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560725; c=relaxed/simple;
-	bh=xT/+lLNBqEtRs8d6hGhAFw33kWa1UGG+9w6sadFdcEI=;
+	s=arc-20240116; t=1788560728; c=relaxed/simple;
+	bh=3ZF5lGBK+ZkbpO8m7vIYHWZ7uZ9raHHThvTOliwCyBU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Wk9kCPOfWWKj/9ZoJP3kzSP5HsK9HzLKNSnYjx6c17Z+h5PXo8AewowzBuIqVQcoDC7LIHR8CqOWG53vT4MsBNVLU3YTXdmciRxcZD/gJMfHyoJkSH56H1zAcMiX+PSVrLsy7pA9iMq0hpg9RkNJhKwzjOt1Z9RYOB2w3MC2Esg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pqd49Usa; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=NsQn2M52mzqc24+DC6GCnXYHCsLtIJXEtqx82hTLwF64FQkxAkiY0ZCtM5zTAHspcvlrWl1l3sSji6nUXAQ4OQcAnK82vFqSSgxMeQD11I5jsVcVPPpazZZqDbrl3HV5AsR3E442ZJCkEJgjdiAK+VPLjnkrW+t5tqcc2geRTjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrPqXue7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pqd49Usa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C511F00A3E;
-	Fri,  4 Sep 2026 22:25:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FrPqXue7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF581F00ACA;
+	Fri,  4 Sep 2026 22:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560718;
-	bh=8SdaT1Rre7irmny/AiKrmCEIXC/yaX1ZpzkqWVcM97Y=;
+	s=k20260515; t=1788560722;
+	bh=WMxTN8N4fJu9KnJ2ByfZtaau8Dq/5Aq2DnK9W4MuT8Y=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Pqd49Usa8ZL/AWFoQiUmoy0K8Q5YWcQkIA8ZRN6TSCymoX6UN/dmbYJp650QbepTA
-	 +iGqHgVxZjRjKEgBFc2qwA+IC2JjEUgTkmaXhjJuuDna5W6NoEwOx4Q/3bVKC80pd+
-	 7c+za5SKIbew5FTTYUU8T3Myf6bLDZVNMpk4GZNr0NNtJ28TH3vs8zlHu2xIocEt8C
-	 29ISlDJ5WsP6fclCmf+IwMo8DvwgyV1su/hco8fS5iNlcUub+Cv+iW+5NcKIVPWFkV
-	 ZvEuNYUtKbevSDE7cGEcItQpawlpK5XhFhOwdkRm6IxnjlkoTTiUzvxl7Wt3GHlU1q
-	 IIvG28Qi4ouAQ==
-Subject:
- Re: [PATCH net-next v9 2/7] net: phy: phylink: add helper to modify pause
+	b=FrPqXue7aURcpiXIy2tAtAsUdQBZsgZR8ZwXIfIAxbIpgm5jjDnh0sJ9yo1gCJ8Qz
+	 oxkkaCYdthpphe/llVIvsjbASPsZzzqYPIrJikjzWZQBTER4qSPqPVuNbj13GpiAjS
+	 CBYsRX4qGmn7c6DCczHubZ0CurW8FiRNeEzGmEqd5wbtKhQ3uie/PqJ2Xj+aFaMEa1
+	 My2AON1/yJhiFUqobGJhAUgVOxQNlKC8OnhkzhQWnrVOFPRYAzccQycnsq6arDNpYA
+	 7CpOadX+Te9yNwBu5EyjyhfrFBT8/UZaUdjRocwZaIR7fdxPCwPLiytcggv//UN/FP
+	 +uL2GsEubdReg==
+Subject: Re: [PATCH net-next v9 5/7] r8169: add support for RTL8127atf
 From: netdev-bot+sashiko@kernel.org
 To: javen_xu@realsil.com.cn
 Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
@@ -35,10 +34,10 @@ Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
  maxime.chevallier@bootlin.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, daniel@makrotopia.org, linux@armlinux.org.uk,
  enelsonmoore@gmail.com, daniel@thingy.jp
-Date: Fri, 04 Sep 2026 22:25:16 +0000
-Message-ID: <178856071681.219967.2291837962290089662@kernel.org>
-In-Reply-To: <20260831053745.1197-3-javen_xu@realsil.com.cn>
-References: <20260831053745.1197-3-javen_xu@realsil.com.cn>
+Date: Fri, 04 Sep 2026 22:25:21 +0000
+Message-ID: <178856072110.219967.12213252573988149432@kernel.org>
+In-Reply-To: <20260831053745.1197-6-javen_xu@realsil.com.cn>
+References: <20260831053745.1197-6-javen_xu@realsil.com.cn>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,455 +48,376 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 9 potential
+Thank you for your contribution! Sashiko AI review found 8 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 6 · Low: 2
+Critical: 0 · High: 2 · Medium: 5 · Low: 1
 
-- [High] phylink_update_mac_pause_capabilities() destroys, rather than
-  masks, the requested pause configuration, so the "pause capability…
-- [Medium] phylink_update_mac_pause_capabilities() mutates the live
-  pl->supported mask in place: it unconditionally sets Pause and…
-- [Medium] phylink_update_mac_pause_capabilities() has no guaranteed way
-  to re-program the MAC after a pause-capability change: it relies on…
-- [Medium] phylink_update_mac_pause_capabilities() conveys the capability
-  change only by writing pl->config->mac_capabilities (lines 1923-1924)…
-- [Medium] In phylink_update_mac_pause_capabilities(), the asymmetric-
-  request test is written as '(pause_state & MLO_PAUSE_RX) ^…
-- [Medium] phylink_update_mac_pause_capabilities() treats an asymmetric-
-  only MAC capability as if pause were entirely unsupported: the first…
-- [Medium] phylink_update_mac_pause_capabilities() omits the MLO_AN_FIXED
-  guard that phylink_ethtool_set_pauseparam() applies before reaching…
-- [Low] phylink_update_mac_pause_capabilities() updates
-  pl->config->mac_capabilities and pl->supported inside one…
-- [Low] The commit message describes only the Realtek motivation ("when
-  we enable jumbo, pause are not supported.
+- [High] The 1 Gb/s support the commit claims to add is dead code.
+- [High] RTL8127atf loses its SerDes/PCS re-initialization across
+  suspend/resume, so the fiber link cannot come back up.
+- [Medium] The commit message ("RTL8127atf is also a fiber mode card, but
+  its sds reg base addr is 0x0080 ... Add 10g and 1g support") does not…
+- [Medium] In the newly added r8127_sfp_init_1g() the return value of
+  r8168_phy_ocp_read(tp, 0xc804) is stored in `int val` and immediately…
+- [Medium] r8127_sds_modify() silently swallows both failure modes of the
+  new 0x2348 SDS command interface: it returns void, aborts without any…
+- [Medium] The phylink resolve worker is never quiesced in the
+  suspend/runtime-suspend/shutdown paths, yet this patch makes those…
+- [Medium] rtl8169_pcs_config() unconditionally performs a full SerDes
+  PHY hardware reset (r8127_sfp_sds_phy_reset(): 0x2350 bit0…
+- [Low] Concern (validated as a FALSE POSITIVE): "RTL8127ATF is
+  registered as an in-band 1000BASE-X PCS but its PCS callbacks do not…
 
 --
 
-net: phy: phylink: add helper to modify pause
+r8169: add support for RTL8127atf
 
-This patch factors the body of phylink_ethtool_set_pauseparam() out into a
-new static helper phylink_update_pause_state(), and adds a new exported
-core API, phylink_update_mac_pause_capabilities(), which lets a MAC driver
-withdraw or restore MAC_SYM_PAUSE/MAC_ASYM_PAUSE at runtime.  The stated
-motivation is Realtek hardware that cannot do flow control while jumbo
-frames are enabled.
+The patch wires RTL8127atf into phylink as a 10GBASE-R/1000BASE-X PCS,
+adds a new SerDes command window (0x2348..0x234e) with read/write/modify
+helpers, and adds a 1G SerDes init sequence. It also removes the dummy
+SFP PHY driver entry from the realtek phylib driver and deletes
+include/net/phy/realtek_phy.h.
 
-No Link: tags are present in the commit header.
+The commit message says:
 
->     For Realtek nics, when we enable jumbo, pause are not supported. So we
->     must check the pause capabilities from ourself and lp.
-
-[Severity: Low]
-
-Could the commit message describe what the patch does, in addition to why?
-
-Two things happen here that a reader of the log would want to know about:
-phylink_update_pause_state() is split out of the existing ethtool path as a
-behaviour-preserving refactor, and a new exported core API,
-phylink_update_mac_pause_capabilities(), is added which mutates the
-driver-owned pl->config->mac_capabilities, the phylink supported mask and
-pl->link_config.
-
-The only caller is added later in the same series, in rtl8169_change_mtu(),
-which is the usual API-then-user layout, so that part is fine.
-
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index 3ec3bb439109..646b8e1e727b 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -1829,6 +1829,126 @@ int phylink_set_fixed_link(struct phylink *pl,
->  }
->  EXPORT_SYMBOL_GPL(phylink_set_fixed_link);
->  
-> +/**
-> + * phylink_update_pause_state() - Update the phylink pause frame configuration
-> + * @pl: a pointer to a &struct phylink instance
-> + * @pause_state: bitmask indicating the new pause state
-> + *
-> + * Update the MAC pause frame (flow control) state for the phylink instance.
-> + */
-> +static void phylink_update_pause_state(struct phylink *pl, int pause_state)
-> +{
-> +	struct phylink_link_state *config = &pl->link_config;
-> +	bool tx_pause = !!(pause_state & MLO_PAUSE_TX);
-> +	bool rx_pause = !!(pause_state & MLO_PAUSE_RX);
-> +	bool manual_changed;
-> +
-> +	mutex_lock(&pl->state_mutex);
-> +
-> +	/*
-> +	 * See the comments for linkmode_set_pause(), wrt the deficiencies
-> +	 * with the current implementation.  A solution to this issue would
-> +	 * be:
-> +	 * ethtool  Local device
-> +	 *  rx  tx  Pause AsymDir
-> +	 *  0   0   0     0
-> +	 *  1   0   1     1
-> +	 *  0   1   0     1
-> +	 *  1   1   1     1
-> +	 * and then use the ethtool rx/tx enablement status to mask the
-> +	 * rx/tx pause resolution.
-> +	 */
-> +	linkmode_set_pause(config->advertising, tx_pause,
-> +			   rx_pause);
-> +
-> +	manual_changed = (config->pause ^ pause_state) & MLO_PAUSE_AN ||
-> +			 (!(pause_state & MLO_PAUSE_AN) &&
-> +			   (config->pause ^ pause_state) & MLO_PAUSE_TXRX_MASK);
+  "RTL8127atf is also a fiber mode card, but its sds reg base addr is
+   0x0080, which is different from RTL8116af. Add 10g and 1g support for
+   RTL8127atf in this patch."
 
 [Severity: Medium]
-
-This manual_changed test is the only thing that forces pl->link_failed and
-phylink_run_resolve(), and it was written for the ethtool path where
-MLO_PAUSE_AN can toggle.
-
-When phylink_update_mac_pause_capabilities() calls in, only MLO_PAUSE_RX
-and MLO_PAUSE_TX are ever cleared and MLO_PAUSE_AN never changes, so with
-pause autoneg enabled (the phylink default, link_config.pause =
-MLO_PAUSE_AN) manual_changed is false and no resolve is queued.
-
-For an MLO_AN_INBAND SGMII setup with no phydev, is there anything left to
-re-run mac_link_up()?  phylink_change_inband_advert() ends up in
-phylink_mii_c22_pcs_encode_advertisement(), where the SGMII family has no
-pause bits at all:
-
-	case PHY_INTERFACE_MODE_SGMII:
-	case PHY_INTERFACE_MODE_PSGMII:
-	case PHY_INTERFACE_MODE_QSGMII:
-		return 0x0001;
-
-so pcs_config() reports no change, no AN restart happens and the link does
-not cycle.  Does the MAC then keep the tx_pause/rx_pause programming from
-the previous mac_link_up() call while phylink believes pause is
-unsupported, which is the jumbo-plus-pause combination this series is
-trying to avoid?  The capability-regained direction has the same gap, and
-so does the PHY case when phydev->autoneg is clear, since
-phy_set_asym_pause() only renegotiates when autoneg is set.
-
-> +
-> +	config->pause = pause_state;
-> +
-> +	/* Update our in-band advertisement, triggering a renegotiation if
-> +	 * the advertisement changed.
-> +	 */
-> +	if (!pl->phydev)
-> +		phylink_change_inband_advert(pl);
-> +
-> +	mutex_unlock(&pl->state_mutex);
-> +
-> +	/* If we have a PHY, a change of the pause frame advertisement will
-> +	 * cause phylib to renegotiate (if AN is enabled) which will in turn
-> +	 * call our phylink_phy_change() and trigger a resolve.  Note that
-> +	 * we can't hold our state mutex while calling phy_set_asym_pause().
-> +	 */
-> +	if (pl->phydev)
-> +		phy_set_asym_pause(pl->phydev, rx_pause, tx_pause);
-> +
-> +	/* If the manual pause settings changed, make sure we trigger a
-> +	 * resolve to update their state; we can not guarantee that the
-> +	 * link will cycle.
-> +	 */
-> +	if (manual_changed) {
-> +		pl->link_failed = true;
-> +		phylink_run_resolve(pl);
-> +	}
-> +}
-> +
-> +/**
-> + * phylink_update_mac_pause_capabilities() - Dynamically update MAC pause
-> + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> + * @mac_pause: the new MAC pause capabilities mask
-> + *
-> + * This function allows a MAC driver to dynamically change its pause state,
-> + * such as losing/gaining Pause frame support based on MTU size.
-> + * It recalculates supported link modes and triggers renegotiation if needed.
-> + */
-> +void phylink_update_mac_pause_capabilities(struct phylink *pl, unsigned long mac_pause)
-> +{
-> +	struct phylink_link_state *config = &pl->link_config;
-> +	unsigned long old_pause;
-> +	int pause_state;
-> +
-> +	ASSERT_RTNL();
-> +
-> +	if (mac_pause & ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE)) {
-> +		phylink_err(pl, "Attempted to dynamically change non-pause MAC capabilities\n");
-> +		return;
-> +	}
-
-[Severity: Medium]
-
-The sibling entry point into the same (now shared) code guards it with:
-
-phylink_ethtool_set_pauseparam()
-	if (pl->req_link_an_mode == MLO_AN_FIXED)
-		return -EOPNOTSUPP;
-
-	if (!phylink_test(pl->supported, Pause) &&
-	    !phylink_test(pl->supported, Asym_Pause))
-		return -EOPNOTSUPP;
-
-Should the new exported helper carry the MLO_AN_FIXED check too?  An MTU
-change is independent of the AN mode, so a fixed-link MAC can reach here,
-and phylink_update_pause_state() will then run
-linkmode_set_pause(config->advertising, tx, rx) with tx/rx derived from
-config->pause, which defaults to MLO_PAUSE_AN, i.e. false/false, clearing
-ETHTOOL_LINK_MODE_Pause_BIT and Asym_Pause_BIT from
-pl->link_config.advertising.
-
-That mask is what fixed-link pause resolution consumes:
-
-phylink_get_fixed_state()
-	state->pause = MLO_PAUSE_NONE;
-	phylink_resolve_an_pause(state);
-
-with lp_advertising seeded from the DT properties in
-phylink_parse_fixedlink():
-
-	if (fwnode_property_read_bool(fixed_node, "pause"))
-		__set_bit(ETHTOOL_LINK_MODE_Pause_BIT,
-			  pl->link_config.lp_advertising);
-
-Can this silently disable the flow control described in firmware, with no
-error returned to the caller since the helper is void?
-
-> +
-> +	old_pause = pl->config->mac_capabilities & (MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
-> +	if (old_pause == mac_pause)
-> +		return;
-> +
-> +	mutex_lock(&pl->state_mutex);
-> +
-> +	pl->config->mac_capabilities &= ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
-> +	pl->config->mac_capabilities |= mac_pause;
-
-[Severity: Medium]
-
-Does writing config->mac_capabilities have any effect for a MAC that
-implements mac_get_caps()?  phylink_validate_mac_and_pcs() prefers the
-callback:
-
-	if (pl->mac_ops->mac_get_caps)
-		capabilities = pl->mac_ops->mac_get_caps(pl->config,
-							 state->interface);
-	else
-		capabilities = pl->config->mac_capabilities;
-
-and the mac_get_caps kernel-doc says config->mac_capabilities is only used
-when the callback is absent.  stmmac_mac_get_caps() goes further and
-overwrites the field the helper just wrote:
-
-	config->mac_capabilities = priv->hw->link.caps;
-	return priv->hw->link.caps;
-
-For such a driver, would the phylink_test() checks below both still pass,
-leaving pause_state unmasked while the advertisement is nevertheless
-rewritten by phylink_update_pause_state()?  The helper is void and prints
-no warning, so the driver cannot tell the update was a no-op.
-
-Also, is the core expected to write into the driver-owned struct
-phylink_config after phylink_create()?
-
-> +
-> +	phylink_set(pl->supported, Pause);
-> +	phylink_set(pl->supported, Asym_Pause);
-> +
-> +	if (pl->phydev)
-> +		linkmode_and(pl->supported, pl->supported, pl->phydev->supported);
-> +	else if (pl->sfp_bus)
-> +		linkmode_and(pl->supported, pl->supported, pl->sfp_support);
-> +
-> +	phylink_validate(pl, pl->supported, config);
-
-[Severity: Medium]
-
-Is it safe to force Pause and Asym_Pause into the live pl->supported mask
-and then ignore the phylink_validate() return value?  The bits are only
-removed again inside phylink_validate_mask_caps(), that is, on the success
-path.
-
-phylink_validate() has early returns that leave the caller's mask
-untouched:
-
-	if (!test_bit(state->interface, interfaces))
-		return -EINVAL;
-
-as do the mac_select_pcs() ERR_PTR, PCS interface mismatch and
-pcs_validate() failures.  On those paths pl->supported keeps the
-force-set Pause|Asym_Pause bits, so the phylink_test() checks just below
-conclude pause is supported, the requested restriction is not applied and
-ethtool keeps reporting pause the MAC has just declared unsupported.
-
-Such a failure is reachable in exactly the case this API is for, since
-phylink_get_capabilities() drops RATE_MATCH_PAUSE support when either
-pause capability is missing:
-
-		if (!(mac_capabilities & MAC_SYM_PAUSE) ||
-		    !(mac_capabilities & MAC_ASYM_PAUSE))
-			break;
-
-On the state->interface == PHY_INTERFACE_MODE_NA path,
-phylink_validate_mask() copies a possibly empty accumulator into supported
-before returning -EINVAL, so can pl->supported end up empty and
-pl->link_config.advertising rewritten, with no rollback and no way for the
-void caller to notice?
-
-Related question: every other phylink_validate*() call site validates into
-a local mask, for example phylink_bringup_phy():
-
-	ret = phylink_validate_phy(pl, phy, supported, &config);
-	if (ret) { ... return ret; }
-
-Validating here against the single pl->link_config.interface rather than
-over phy->possible_interfaces or pl->sfp_interfaces looks like it would
-permanently prune modes only reachable via other interface modes on c45
-PHYs and multi-interface SFPs.  Is that intended?
-
-> +
-> +	pause_state = config->pause;
-
-[Severity: High]
-
-Does this destroy the requested pause configuration rather than mask it,
-so that the capability-regained direction can never restore pause?
-
-pause_state is read from config->pause, masked here, and then written back
-into the same field by phylink_update_pause_state():
-
-	linkmode_set_pause(config->advertising, tx_pause,
-			   rx_pause);
-	...
-	config->pause = pause_state;
-	...
-	if (pl->phydev)
-		phy_set_asym_pause(pl->phydev, rx_pause, tx_pause);
-
-There is no saved copy of the original request, and the advertisement is
-re-programmed from the masked value.
-
-In the default configuration phylink_create() sets
-
-	pl->link_config.pause = MLO_PAUSE_AN;
-
-with no MLO_PAUSE_RX/MLO_PAUSE_TX, while phylink_bringup_phy() advertises
-pause via phy_support_asym_pause() and copies those bits into
-pl->link_config.advertising.  So even a call that grants
-MAC_SYM_PAUSE|MAC_ASYM_PAUSE ends up running
-
-	linkmode_set_pause(adv, false, false);
-	phy_set_asym_pause(phydev, false, false);
-
-and linkmode_set_pause() clears both bits for false/false:
-
-	linkmode_mod_bit(ETHTOOL_LINK_MODE_Pause_BIT, advertisement, rx);
-	linkmode_mod_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, advertisement,
-			 rx ^ tx);
-
-With the r8169 caller added later in the series that gives:
-
-	ip link set eth0 mtu 9000
-	  rtl8169_change_mtu()
-	    phylink_update_mac_pause_capabilities(pl, 0)
-	      -> pause bits cleared in phydev->advertising
-	ip link set eth0 mtu 1500
-	  rtl8169_change_mtu()
-	    phylink_update_mac_pause_capabilities(pl, MAC_SYM_PAUSE|MAC_ASYM_PAUSE)
-	      -> pause_state is still MLO_PAUSE_AN, bits cleared again
-
-Nothing re-runs phy_support_asym_pause() or otherwise re-seeds the
-advertisement, so is flow control lost for good after the first
-transition?  Would keeping the user request separately and masking it only
-at resolve time avoid this?
-
-> +
-> +	if (!phylink_test(pl->supported, Pause)) {
-> +		pause_state &= ~(MLO_PAUSE_RX | MLO_PAUSE_TX);
-
-[Severity: Medium]
-
-Should this branch also consider Asym_Pause?  MAC_ASYM_PAUSE is accepted
-independently of MAC_SYM_PAUSE, and phylink_caps_to_linkmodes() sets only
-ETHTOOL_LINK_MODE_Asym_Pause_BIT for it, so pl->supported can legitimately
-hold Asym_Pause without Pause.
-
-The capability table in include/linux/phylink.h documents tx-only pause as
-valid in that state, and phylink_ethtool_set_pauseparam() allows it:
-
-	if (!phylink_test(pl->supported, Pause) &&
-	    !phylink_test(pl->supported, Asym_Pause))
-		return -EOPNOTSUPP;
-
-After phylink_update_mac_pause_capabilities(pl, MAC_ASYM_PAUSE), does an
-existing tx-only setting get cleared here and then un-advertised by
-phylink_update_pause_state(), even though the MAC still supports it?
-
-> +	} else if (!phylink_test(pl->supported, Asym_Pause)) {
-> +		if ((pause_state & MLO_PAUSE_RX) ^ (pause_state & MLO_PAUSE_TX))
-> +			pause_state &= ~(MLO_PAUSE_RX | MLO_PAUSE_TX);
-
-[Severity: Medium]
-
-Does this XOR detect an asymmetric request?  MLO_PAUSE_RX and MLO_PAUSE_TX
-are different bit positions:
-
-	MLO_PAUSE_RX = BIT(0),
-	MLO_PAUSE_TX = BIT(1),
-
-so 0x1 ^ 0x2 == 0x3 and the condition is non-zero whenever either bit is
-set, including the symmetric rx=1/tx=1 case.  It looks equivalent to
-pause_state & MLO_PAUSE_TXRX_MASK, so after "ethtool -A eth0 rx on tx on"
-a symmetric-pause-capable MAC would have flow control cleared entirely.
-
-The peer check in phylink_ethtool_set_pauseparam() expresses the intended
-rule as a plain comparison:
-
-	if (!phylink_test(pl->supported, Asym_Pause) &&
-	    pause->rx_pause != pause->tx_pause)
-		return -EINVAL;
-
-Would !!(pause_state & MLO_PAUSE_RX) != !!(pause_state & MLO_PAUSE_TX) be
-what is wanted here?
-
-> +	}
-> +
-> +	mutex_unlock(&pl->state_mutex);
-> +
-> +	phylink_update_pause_state(pl, pause_state);
-
-[Severity: Low]
-
-The capability update and the dependent pause state are committed in two
-separate pl->state_mutex sections: mac_capabilities and pl->supported are
-written above, the mutex is dropped here, and phylink_update_pause_state()
-re-acquires it to publish link_config.pause and link_config.advertising.
-
-phylink_resolve() runs from system_power_efficient_wq without RTNL and
-takes pl->state_mutex, so it can run in that window and see pl->supported
-already saying pause is unsupported while link_config.pause still has
-MLO_PAUSE_RX|MLO_PAUSE_TX, then call mac_ops->mac_link_up() with pause
-enabled.  The observed combination equals the pre-call state, so this is a
-transient window rather than a lasting one, but would doing both updates
-under a single acquisition be simpler to reason about?
-
-> +}
-> +EXPORT_SYMBOL_GPL(phylink_update_mac_pause_capabilities);
-> +
+Could the message describe the rest of what the patch does?  Beyond the
+SerDes base address and the 10g/1g init sequences it also:
+
+ - removes the "Realtek SFP PHY Mode" phy_driver entry together with
+   rtlgen_sfp_get_features(), rtlgen_sfp_read_status() and
+   rtlgen_sfp_config_aneg() from drivers/net/phy/realtek/realtek_main.c
+
+ - deletes the global header include/net/phy/realtek_phy.h and the dummy
+   MII_PHYSID2 hack in r8168_phy_ocp_read()
+
+ - stops registering an MDIO bus and a phydev for every SFP mode, by
+   changing rtl_init_one() from "if (tp->sfp_mode != RTL_SFP_8168_AF)" to
+   "if (tp->sfp_mode == RTL_SFP_NONE)"
+
+ - drops the RTL8127atf specific forced-speed path in
+   rtl8169_set_link_ksettings()
+
+ - introduces a second SerDes access mechanism (the MMIO window
+   R8127_SDS_CMD/ADDR/DATA_IN/DATA_OUT with index/page/reg encoding),
+   which is unrelated to the "base addr 0x0080" explanation
+
+The phylib change in particular gives the phylib maintainers no notice
+that their subsystem is touched.  Would it make sense to split the
+phylib removal into its own patch, or at least mention it?
+
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index a04acb42e995d..eecde26d9de2c 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
 
 [ ... ]
 
-> diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-> index 1dda5c7ed5f1..3a88a69882a6 100644
-> --- a/include/linux/phylink.h
-> +++ b/include/linux/phylink.h
-> @@ -843,4 +843,6 @@ void phylink_replay_link_begin(struct phylink *pl);
+> @@ -1223,6 +1224,75 @@ static void r8127_sfp_sds_phy_reset(struct rtl8169_private *tp)
+>  	usleep_range(10, 20);
+>  }
 >  
->  void phylink_replay_link_end(struct phylink *pl);
->  
-> +void phylink_update_mac_pause_capabilities(struct phylink *pl, unsigned long mac_pause);
+> +DECLARE_RTL_COND(r8127_sds_cmd_cond)
+> +{
+> +	return RTL_R16(tp, R8127_SDS_CMD) & R8127_SDS_CMD_EXEC;
+> +}
 > +
->  #endif
+> +static int r8127_sds_read(struct rtl8169_private *tp, u16 index,
+> +			  u16 page, u16 reg)
+> +{
+> +	u16 addr = (index << 11) | (page << 5) | reg;
+> +
+> +	RTL_W16(tp, R8127_SDS_ADDR, addr);
+> +	RTL_W16(tp, R8127_SDS_CMD, R8127_SDS_CMD_EXEC);
+> +
+> +	if (rtl_loop_wait_low(tp, &r8127_sds_cmd_cond, 10, 100))
+> +		return RTL_R16(tp, R8127_SDS_DATA_OUT);
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +static int r8127_sds_write(struct rtl8169_private *tp, u16 index, u16 page,
+> +			   u16 reg, u16 val)
+> +{
+> +	u16 addr = (index << 11) | (page << 5) | reg;
+> +
+> +	RTL_W16(tp, R8127_SDS_DATA_IN, val);
+> +	RTL_W16(tp, R8127_SDS_ADDR, addr);
+> +	RTL_W16(tp, R8127_SDS_CMD, R8127_SDS_CMD_EXEC | R8127_SDS_CMD_WE);
+> +
+> +	if (rtl_loop_wait_low(tp, &r8127_sds_cmd_cond, 10, 100))
+> +		return 0;
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +static void r8127_sds_modify(struct rtl8169_private *tp, u16 index, u16 page,
+> +			     u16 reg, u16 clearmask, u16 setmask)
+> +{
+> +	int val = r8127_sds_read(tp, index, page, reg);
+> +
+> +	if (val < 0)
+> +		return;
+> +
+> +	val = (val & ~clearmask) | setmask;
+> +	r8127_sds_write(tp, index, page, reg, val);
+> +}
+
+[Severity: Medium]
+The -ETIMEDOUT returns were added to r8127_sds_read()/r8127_sds_write()
+on purpose, but r8127_sds_modify() is the only consumer and it drops
+both: the read error returns silently and the write return value is
+discarded.
+
+Should the failure be propagated up instead?  As written, if one of the
+three r8127_sds_modify() calls in r8127_sfp_init_1g() never reaches the
+hardware, the following mode select writes still execute:
+
+	r8127_sds_modify(tp, 0, 1, 31, 0, BIT(3));
+	r8127_sds_modify(tp, 0, 2,  0, ...);
+	r8127_sds_modify(tp, 0, 0,  4, 0, BIT(2));
+
+	RTL_W16(tp, 0x233a, 0x8004);
+	RTL_W16(tp, 0x233e, (RTL_R16(tp, 0x233e) & ~0x3003) | 0x0002);
+
+so the SerDes lane keeps its post-reset settings while the mode select
+says 1G.  r8127_sfp_init_1g() is void and rtl8169_pcs_config() returns 0
+unconditionally, so phylink records the PCS as configured and will report
+SPEED_1000/DUPLEX_FULL once MDIO_STAT1 reads link up.  rtl8169_pcs_config()
+already returns -EOPNOTSUPP for an unsupported interface, so a real error
+could be reported here.
+
+> +
+> +static void r8127_sfp_init_1g(struct rtl8169_private *tp)
+> +{
+> +	int val;
+> +
+> +	r8127_sfp_sds_phy_reset(tp);
+> +
+> +	r8127_sds_modify(tp, 0, 1, 31, 0, BIT(3));
+> +	r8127_sds_modify(tp, 0, 2,  0, BIT(13) | BIT(12) | BIT(6),
+> +			 BIT(12) | BIT(6));
+> +	r8127_sds_modify(tp, 0, 0,  4, 0, BIT(2));
+> +
+> +	RTL_W16(tp, 0x233a, 0x8004);
+> +	RTL_W16(tp, 0x233e, (RTL_R16(tp, 0x233e) & ~0x3003) | 0x0002);
+> +
+> +	r8168_phy_ocp_write(tp, 0xc40a, 0x0000);
+> +	r8168_phy_ocp_write(tp, 0xc466, 0x0000);
+> +	r8168_phy_ocp_write(tp, 0xc808, 0x0000);
+> +	r8168_phy_ocp_write(tp, 0xc80a, 0x0000);
+> +
+> +	val = r8168_phy_ocp_read(tp, 0xc804);
+> +	r8168_phy_ocp_write(tp, 0xc804, (val & ~0x000f) | 0x000c);
+> +}
+
+[Severity: Medium]
+Can the unchecked r8168_phy_ocp_read() result corrupt the following
+write?  r8168_phy_ocp_read() can return a negative value:
+
+	return rtl_loop_wait_high(tp, &rtl_ocp_gphy_cond, 25, 10) ?
+		(RTL_R32(tp, GPHY_OCP) & 0xffff) : -ETIMEDOUT;
+
+With val == -ETIMEDOUT, (val & ~0x000f) | 0x000c is 0xffffff9c, and
+r8168_phy_ocp_write() ORs data into the command word without masking it:
+
+	RTL_W32(tp, GPHY_OCP, OCPAR_FLAG | (reg << 15) | data);
+
+rtl_ocp_reg_failure() only validates reg, so every bit of the encoded
+address field ends up set and the write lands somewhere other than
+0xc804.  Would checking val < 0 and aborting the init be better here?
+Note r8127_sfp_init_10g() has the same shape today; this adds a second
+instance of it.
+
+[ ... ]
+
+> @@ -2608,9 +2650,6 @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
+>  	    tp->pci_dev->subsystem_device == 0xe000)
+>  		phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
+>  
+> -	if (tp->sfp_mode == RTL_SFP_8127_ATF)
+> -		rtl_sfp_init(tp);
+> -
+>  	/* We may have called phy_speed_down before */
+>  	phy_speed_up(tp->phydev);
+
+[Severity: High]
+Does RTL8127atf still come back after suspend/resume with this call
+removed?
+
+rtl8169_down() puts the SerDes PHY into reset and programs mode select
+0x233a = 0x801f for this chip:
+
+	if (tp->sfp_mode == RTL_SFP_8127_ATF)
+		rtl_sfp_reset(tp);
+
+and it is reached from rtl8169_close(), rtl8169_suspend(),
+rtl8169_runtime_suspend() and rtl_shutdown() via rtl8169_net_suspend().
+A runtime suspend also drops the device to D3hot.
+
+Previously the re-programming happened on every bring-up through
+rtl8169_up() -> rtl8169_init_phy() -> rtl_sfp_init().  After this patch
+rtl8169_up() only does that under "if (tp->phydev)", and tp->phydev is
+NULL for RTL8127atf because rtl_init_one() now registers the MDIO bus
+only for "tp->sfp_mode == RTL_SFP_NONE".
+
+The only remaining caller of r8127_sfp_init_10g()/r8127_sfp_init_1g() is
+rtl8169_pcs_config(), which phylink invokes from a major config, i.e.
+from phylink_start() in rtl_open() or on an interface change.  r8169
+never calls phylink_suspend()/phylink_resume().  So after a resume the
+SerDes appears to stay in the 0x801f reset mode while phylink believes
+10GBASE-R is configured, and the link stays down until the interface is
+taken down and up again.  Note rtl8169_runtime_idle() schedules a runtime
+suspend 10s after the carrier drops, which is the normal state of a fiber
+port with no module or no link.
+
+[ ... ]
+
+> @@ -4942,7 +4981,7 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+>  	if (status & LinkChg) {
+>  		if (tp->phydev)
+>  			phy_mac_interrupt(tp->phydev);
+> -		else if (tp->sfp_mode == RTL_SFP_8168_AF)
+> +		else if (tp->sfp_mode)
+>  			phylink_mac_change(tp->phylink,
+>  					   !!(RTL_R8(tp, PHYstatus) & LinkStatus));
+>  	}
+
+[Severity: Medium]
+Can the phylink resolve worker now run against a device that is being
+powered down?
+
+This call queues the phylink resolve work from hardirq for RTL8127atf,
+including for the LinkChg caused by rtl_sfp_reset() itself.  Meanwhile
+rtl8169_suspend(), rtl8169_runtime_suspend() and rtl_shutdown() take only
+rtnl_lock() and go through rtl8169_net_suspend() -> rtl8169_down() ->
+rtl_sfp_reset() -> rtl8169_cleanup(); a grep of phylink_ in this file
+shows phylink_stop() only in rtl8169_close() and phylink_start() only in
+rtl_open(), so nothing flushes pl->resolve on the PM paths.
+
+The resolve worker holds only pl->state_mutex, and the suspend path holds
+only RTNL, so the two lock sets are disjoint:
+
+	rtl8169_down()				phylink resolve worker
+	  rtl_sfp_reset()			  rtl8169_pcs_get_state()
+	    r8127_sfp_sds_phy_reset()		    rtl8169_sds_read()
+	  rtl_prepare_power_down()		  rtl_mac_link_up()/down()
+
+Once the device is in D3, MMIO reads return all ones, so MDIO_STAT1 looks
+like LSTATUS is set and phylink reports a 10 Gb/s link on a powered-down
+device.  Should the PM paths call phylink_suspend()/phylink_resume(), or
+at least phylink_stop()?
+
+[ ... ]
+
+> @@ -5725,6 +5785,24 @@ static int rtl8169_pcs_config(struct phylink_pcs *pcs, unsigned int mode,
+>  			      const unsigned long *advertising,
+>  			      bool permit_pause_to_mac)
+>  {
+> +	struct rtl8169_private *tp = container_of(pcs, struct rtl8169_private,
+> +						  pcs);
+> +
+> +	if (tp->sfp_mode == RTL_SFP_8127_ATF) {
+> +		switch (interface) {
+> +		case PHY_INTERFACE_MODE_10GBASER:
+> +			r8127_sfp_init_10g(tp);
+> +			break;
+> +		case PHY_INTERFACE_MODE_1000BASEX:
+> +			r8127_sfp_init_1g(tp);
+> +			break;
+> +		default:
+> +			netdev_err(tp->dev, "Unsupported SFP interface mode: %s\n",
+> +				   phy_modes(interface));
+> +			return -EOPNOTSUPP;
+> +		}
+> +	}
+> +
+>  	return 0;
+>  }
+
+[Severity: Medium]
+Does this bounce the fiber link on an advertisement-only change?  Both
+init helpers start with r8127_sfp_sds_phy_reset(), which toggles 0x2350
+bit 0 and rewrites 0x233a:
+
+	RTL_W8(tp, 0x2350, RTL_R8(tp, 0x2350) & ~BIT(0));
+	udelay(1);
+	RTL_W16(tp, 0x233a, 0x801f);
+	RTL_W8(tp, 0x2350, RTL_R8(tp, 0x2350) | BIT(0));
+
+phylink calls pcs_config() from phylink_change_inband_advert() as well as
+from a major config, and phylink_update_pause_state() does that
+unconditionally when there is no PHY attached:
+
+	if (!pl->phydev)
+		phylink_change_inband_advert(pl);
+
+tp->phydev is NULL for RTL8127atf after this patch, so an
+"ethtool -A <dev> rx off tx off" would reach rtl8169_pcs_config() with an
+unchanged interface and hard-reset the SerDes.  Should the helpers only
+run when the interface actually changes?
+
+[ ... ]
+
+> @@ -5818,8 +5896,14 @@ static int rtl_init_phylink(struct rtl8169_private *tp)
+>  		tp->phylink_config.mac_capabilities |= MAC_1000FD;
+>  		break;
+>  	case RTL_SFP_8127_ATF:
+> -		phy_mode = PHY_INTERFACE_MODE_INTERNAL;
+> -		tp->phylink_config.mac_capabilities |= MAC_10000FD;
+> +		tp->pcs.ops = &r8169_pcs_ops;
+> +		phy_mode = PHY_INTERFACE_MODE_10GBASER;
+> +		tp->phylink_config.default_an_inband = true;
+> +		tp->phylink_config.mac_capabilities |= MAC_1000FD | MAC_10000FD;
+> +		__set_bit(PHY_INTERFACE_MODE_10GBASER,
+> +			  tp->phylink_config.supported_interfaces);
+> +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> +			  tp->phylink_config.supported_interfaces);
+>  		break;
+
+[Severity: High]
+How does the 1 Gb/s support announced in the commit message get selected?
+
+phy_mode is fixed at PHY_INTERFACE_MODE_10GBASER here, so
+phylink_create() -> phylink_parse_mode() derives pl->supported from
+phy_caps_from_interface(10GBASER), i.e. 10 Gb/s link modes only, and
+pl->link_config.interface stays 10GBASER.
+
+There is no PHY (this patch stops registering an MDIO bus for SFP modes)
+and no SFP bus (phylink_register_sfp() finds no "sfp" fwnode on a PCI
+device), so the only PHY-less code that can re-select an interface never
+runs:
+
+drivers/net/phy/phylink.c:phylink_ethtool_ksettings_set() {
+	...
+	if (pl->sfp_bus) {
+		if (kset->base.autoneg == AUTONEG_ENABLE)
+			config.interface = phylink_sfp_select_interface(...);
+		else
+			config.interface = phylink_sfp_select_interface_speed(...);
+	...
+}
+
+With link_config.interface pinned to 10GBASER, is any of the following
+reachable?
+
+ - the PHY_INTERFACE_MODE_1000BASEX case of rtl8169_pcs_config(), and
+   therefore r8127_sfp_init_1g() in its entirety
+ - the "state->interface == PHY_INTERFACE_MODE_1000BASEX" branch of
+   rtl8169_pcs_get_state(), which otherwise always reports SPEED_10000
+ - MAC_1000FD and the 1000BASEX supported_interfaces bit
+
+"ethtool -s <dev> autoneg off speed 1000 duplex full" also looks like it
+returns -EINVAL from phy_caps_lookup() because pl->supported only holds
+10 Gb/s modes.  The patch removes the previous mechanism for forcing a
+mode on this part (the RTL_SFP_8127_ATF case in
+rtl8169_set_link_ksettings() calling rtl_sfp_init()) without adding a
+replacement.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831053745.1197-1-javen_xu%40realsil.com.cn
