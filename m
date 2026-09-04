@@ -1,82 +1,127 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15395388391;
-	Fri,  4 Sep 2026 07:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB2B3EC6B0
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 07:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788506362; cv=none; b=ZHk0FO2QRBdGVteMdC4onm8g+ZI/6fp6fQuUky7gQJ4YMsJOfkRR6JzQUOFtcn1O3ouhVF0feKwsL+umv/C1yHU+3xogPh6qOwdS/BOd+9VA05EXnemepw1vJF8R0lBTY77u7W2F0zrbbBm7Vt3XBYmm4FW3zTPKLYboc/GaGMo=
+	t=1788506452; cv=none; b=Z//VAJX3ve9YYLag0v25urotJphHME22obmelG4p32YcE0kD4woDinaY6l9csSpoHU5fn1IgMF1jszUkA+rOZ5hQP2WHxuKZ8BNPajWhb8tCXj70mYNjebGthAepJxuuuekqed5c7N4yQOhQTkPStNMTSgPGxExDMFoTCr6tD9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788506362; c=relaxed/simple;
-	bh=WjPgyhsJhdzJK/5eZTmlpOqsb5WAQS2B2xKFpuZ3xdU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yfuep6casJTsUqmma/uYP+MAFKIYgNO81xtCaLgSWcNpDvhm1tycdkSDPLx0w4X5t6+YGWxLNEFIWN7ilaL78eXTvFJGkc/QuaoNveMzy0Hs3qnDxgvsn3oAstxUwAK4B4sWFanfcClviidaPnonhc4lKDXDXnLVUAoiusNkZns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=njBUSfnt; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="njBUSfnt"
-Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4c87b05b0;
-	Fri, 4 Sep 2026 15:19:13 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: [PATCH net] ipvs: shut down destination trash timer on netns cleanup
-Date: Fri,  4 Sep 2026 15:19:08 +0800
-Message-Id: <20260904071908.4052966-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1788506452; c=relaxed/simple;
+	bh=UBYBBoGbVT0qDMPUQ7wtDEFeoAv8u4EqWKANGBDwPQU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=miic3yQWFgxrSM4D5ycl0vAYw7i3tFeWJ95B2xzD/7+ssCrM9+mSbBGGt43OvjIx+RtSNTMlom3lD5anYCD7stmkhsTaL86yYT5wXuRhXMVTtPRfqzPGkiISz2raag+JkVPFDplVUKyqjyfH6U/QgHOgFXhDVtkCkxsIfTpBWJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5c5ac25089bso359462e0c.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 00:20:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788506448; x=1789111248;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NS7q+6fusbmwIYCwSSgkm4FqpxMVHZCBweF5L2Z29Tk=;
+        b=ZynHXjaOT3Id9Ef3BHSy4oK3cWO2iVFaCWr1kgWKC5xq9FKdnVP+kH5hOzPx7I3VL6
+         pk0+56r5MTypxMfrW8l9IGk55f0D01oslQRXMCeQJaYyJqU8l+evqky1teX5NvaqcHIy
+         6JK+Htp6AGLmpqZRLaFnc1bBLt210jdh/B+NidHaoEaYdoJ7Xl01U/mLE4QmJIpqbJwX
+         5yO4rxKV1VHjTlqv5zgftrJCFd3vjkp6W4x4Vay/9etJ3b8tRyTbC2sT/NnK0GQYLDvI
+         ndHcGHWZ5obfdszR876bXNpjLiw1pj645Dq5ePFCnfcdLK1a6CYWTowvLDZ5NEpLKBv4
+         /tHA==
+X-Forwarded-Encrypted: i=1; AKwUvBylsWLdF9KlLgs+TTR1hO+XJqfNWIfIobdowLNUuNTvo9hjxMAhKivD/WO7cgZ8/c8NamtcTao=@vger.kernel.org
+X-Gm-Message-State: AFuF++lfrWy11wPorkQ29wCBia2//K0E53Tbq9wGmONeXNJbJsE0VZdp
+	aBbH6E1jAo+X9V+AFydyt3MeloMn+paEdPNGMPO6dVa460Z8BPjw6d1OwcmDrfVao9A=
+X-Gm-Gg: AYBFou2Jzg1YpX2Z5srkeh+SAOZoGzXJYMs8aRZA5oNtCkSs5NPVVXMavqU1GX3RtOY
+	wYGYp3s7wWtiRAsf3XOomQd2W8rjLiD6pXkyRYAcIkpI16ZOE3biVDJSxBx5PAM/YWjwxWdI3kw
+	08WxSWWcc9Xl7/Zk6TCVqIVqiTt4/LLmcvQCyjHe7rpxkrNZBsmZz8FBt5h8UfVrL7tGD42LRgE
+	1ZtXXahDLomV2sjBMLTscq1CAyUM70kNW0hXRjSZAG5Cn2RXxohJlL02mchpQszpzjoN3H/LRwg
+	pgp6cMRJVjxA7LtYLc/yz6z8ZZQyjpZCN0iWYPGMKdOdixCOrzUb3v7BuZEk661SjbbS2vlFfHB
+	tOyDnYtb2/8soTH1cv7ZGuZzAFsnz6vj7V2vbi1Fwk2YidF+TN6xFjtX89UojPG2doxXX6Pg0Th
+	m7XHG+CsBxMp0+QvixXK5Cly1xvPuA/VhYFfgFKWCzhRD4fzsJ6qXCNdQv8LFoRONETnN2KISOb
+	NlXRJXbZs6/xPiL1Na+u7yw1A==
+X-Received: by 2002:a05:6122:6092:b0:573:a779:62cf with SMTP id 71dfb90a1353d-5c7ed83b793mr1634027e0c.7.1788506448492;
+        Fri, 04 Sep 2026 00:20:48 -0700 (PDT)
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c7ec366bb5sm1516741e0c.13.2026.09.04.00.20.47
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 00:20:47 -0700 (PDT)
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-78a4dff7ddfso91659137.3
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 00:20:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxT+tbKYvarPl8aKpNPYMY0YWtYt10iTHld03utC7whDeQj51Z10sI8G9Pur3aTUS5UddEfdZQ=@vger.kernel.org
+X-Received: by 2002:a05:6102:26cd:b0:780:7e65:f0ab with SMTP id
+ ada2fe7eead31-78a4a58e509mr845164137.1.1788506447549; Fri, 04 Sep 2026
+ 00:20:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa06b492fca03a1kunmc2bb1dbc2dfe3
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaT0xPVk5CGR5JSEoeGEhJT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=njBUSfntNTF6zelMXWxmvGK0pgBkoH3JDqSwLQtV8agBObwlw5WzhsDaAnXp9OI7r73OclR8pJha0sgxrxz0xLIa7yREr3k6LERxkPu8i/4H+1GQTWk2HhCmTUSJYl+T25jIJluDOXvY9T/3aZhzeoliaA3KRgkzR7olsI/6Pew=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=tnj/RY/ptp6lpQUCEDvXfPt6ryVtxdbMi4SqTFsPpmQ=;
-	h=date:mime-version:subject:message-id:from;
+References: <e481b6de46cecc6ea604ae165272c667274cc621.1788437140.git.geert+renesas@glider.be>
+ <b3d19098-eccd-4619-b667-ad3b7e0a4422@ti.com> <69f7eabf-95cd-4bfd-a1bc-a1227c4b31e8@ti.com>
+In-Reply-To: <69f7eabf-95cd-4bfd-a1bc-a1227c4b31e8@ti.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 4 Sep 2026 09:20:36 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWyj-x-tm4E+ZC8KMkzx48hpAxkrK==0hjXeG_HQYZDLQ@mail.gmail.com>
+X-Gm-Features: AcwNN1W87AoGB0mn6F4o5J_OUipieRwifJnmyyR6p6PKe6C7v2GciBlPCkwdp3k
+Message-ID: <CAMuHMdWyj-x-tm4E+ZC8KMkzx48hpAxkrK==0hjXeG_HQYZDLQ@mail.gmail.com>
+Subject: Re: [PATCH] net: ethernet: ti: davinci_mdio: Drop commas after match
+ table sentinels
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-ip_vs_dest_trash_expire() accesses the per-network-namespace IPVS state
-and rearms the destination trash timer while entries remain.  The
-cleanup path uses timer_delete_sync(), which waits for a running callback
-but still allows a racing callback to rearm the timer.
+On Fri, 4 Sept 2026 at 06:44, Siddharth Vadapalli <s-vadapalli@ti.com> wrote:
+> On 03/09/26 18:00, Siddharth Vadapalli wrote:
+> > On 03/09/26 17:36, Geert Uytterhoeven wrote:
+> >> It does not make sense to have a comma after a sentinel, as any new
+> >> elements must be added before the sentinel.
+> >
+> > While I agree with it, this seems to require a 'cleanup-series' rather than
+> > an individual patch, given the following statistics:
+> >
+> > As of [0], running
+> >      git grep "sentinel.*}" drivers/net/ | wc -l
+> > gives
+> >      84
+> > and looking for the ones that terminate in a comma by running
+> >      git grep "sentinel.*}," drivers/net/ | wc -l
+> > gives
+> >      38
+> >
+> > So there are '37' other instances (apart from davinci_mdio.c) in
+> > drivers/net alone that require a cleanup.
 
-Use timer_shutdown_sync() when the per-network-namespace destination
-trash is finally cleaned up.  This prevents the callback from being
-queued again before the IPVS state is released.
+[...]
 
-Fixes: f2431e6e9255 ("IPVS: netns, trash handling")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:GPT-5
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> > Since this isn't a functional change, I am not sure why a specific change
+> > is required in davinci_mdio.c, unless you plan to cleanup the remaining
+> > '395' occurrences in the remaining code as well. I am not against the
+> > patch, but the reason for picking just davinci_mdio.c for cleanup isn't
+> > clear to me based on the commit message.
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 4c1c73944..0eb6cdb5f 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1192,7 +1192,7 @@ static void ip_vs_trash_cleanup(struct netns_ipvs *ipvs)
- {
- 	struct ip_vs_dest *dest, *nxt;
- 
--	timer_delete_sync(&ipvs->dest_trash_timer);
-+	timer_shutdown_sync(&ipvs->dest_trash_timer);
- 	/* No need to use dest_trash_lock */
- 	list_for_each_entry_safe(dest, nxt, &ipvs->dest_trash, t_list) {
- 		list_del(&dest->t_list);
+I know. Over the past few years, I fixed several of them I encountered,
+but never got to fixing all of them. After rc1, I flushed a few patches
+that could be sent independently, so there it was!
+
+> I have posted the following series to cleanup all networking drivers
+> (excluding davinci_mdio.c since that is done by your patch) at:
+> https://lore.kernel.org/r/20260904043724.2955444-1-s-vadapalli@ti.com/
+
+Happy to see my single patch triggered your great response!
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.34.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
